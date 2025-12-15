@@ -1,0 +1,376 @@
+/*
+; model_TinyUSB_msc.
+; ==================
+
+;------------------------------------------------------------------------
+; Author:	Edo. Franzi		The 2025-01-01
+; Modifs:
+;
+; Project:	uKOS-X
+; Goal:		Model for the interface for "TinyUSB msc" device.
+;			!! This is only for tests.
+;
+;   (c) 2025-20xx, Edo. Franzi
+;   --------------------------
+;                                              __ ______  _____
+;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
+;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
+;   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
+;                                     \__,_/_/ |_\____//____/
+;   edo.franzi@ukos.ch
+;
+;   Description: Lightweight, real-time multitasking operating
+;   system for embedded microcontroller and DSP-based systems.
+;
+;   Permission is hereby granted, free of charge, to any person
+;   obtaining a copy of this software and associated documentation
+;   files (the "Software"), to deal in the Software without restriction,
+;   including without limitation the rights to use, copy, modify,
+;   merge, publish, distribute, sublicense, and/or sell copies of the
+;   Software, and to permit persons to whom the Software is furnished
+;   to do so, subject to the following conditions:
+;
+;   The above copyright notice and this permission notice shall be
+;   included in all copies or substantial portions of the Software.
+;
+;   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+;   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+;   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+;   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+;   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+;   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+;   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+;   SOFTWARE.
+;
+;------------------------------------------------------------------------
+*/
+
+static	bool	vEjected[KNB_CORES] = MCSET(false);
+
+// Some MCU doesn't have enough 8KB SRAM to store the whole disk
+// We will use Flash as read-only disk with board that has
+// CFG_EXAMPLE_MSC_READONLY defined
+
+#define README_CONTENTS		"Have fun with uKOS-X & TinyUSB."
+
+enum {
+
+// 8KB is the smallest size that windows allow to mount
+
+	DISK_BLOCK_NUM  = 16u,
+	DISK_BLOCK_SIZE = 512u
+};
+
+#if (defined(CFG_EXAMPLE_MSC_READONLY))
+
+const
+#endif
+
+uint8_t	msc_disk[DISK_BLOCK_NUM][DISK_BLOCK_SIZE] = {
+
+//------------- Block0: Boot Sector -------------//
+// byte_per_sector    = DISK_BLOCK_SIZE; fat12_sector_num_16  = DISK_BLOCK_NUM;
+// sector_per_cluster = 1; reserved_sectors = 1;
+// fat_num            = 1; fat12_root_entry_num = 16;
+// sector_per_fat     = 1; sector_per_track = 1; head_num = 1; hidden_sectors = 0;
+// drive_number       = 0x80; media_type = 0xf8; extended_boot_signature = 0x29;
+// filesystem_type    = "FAT12   "; volume_serial_number = 0x1234; volume_label = "TinyUSB MSC";
+// FAT magic code at offset 510-511
+
+	{
+		0xEBu, 0x3Cu, 0x90u, 0x4Du, 0x53u, 0x44u, 0x4Fu, 0x53u, 0x35u, 0x2Eu, 0x30u, 0x00u, 0x02u, 0x01u, 0x01u, 0x00u,
+		0x01u, 0x10u, 0x00u, 0x10u, 0x00u, 0xF8u, 0x01u, 0x00u, 0x01u, 0x00u, 0x01u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+		0x00u, 0x00u, 0x00u, 0x00u, 0x80u, 0x00u, 0x29u, 0x34u, 0x12u, 0x00u, 0x00u, 'T'  , 'i'  , 'n'  , 'y'  , 'U' ,
+		'S'  , 'B'  , ' '  , 'M'  , 'S'  , 'C'  , 0x46u, 0x41u, 0x54u, 0x31u, 0x32u, 0x20u, 0x20u, 0x20u, 0x00u, 0x00u,
+
+// Zero up to 2 last bytes of FAT magic code
+
+		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+
+		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+
+		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+
+		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x55u, 0xAA
+	},
+
+// Block1: FAT12 Table
+
+	{
+
+// first 2 entries must be F8FF, third entry is cluster end of readme file
+
+		0xF8u, 0xFFu, 0xFFu, 0xFFu, 0x0Fu
+	},
+
+// Block2: Root Directory
+
+	{
+
+// First entry is volume label
+
+	'T'  , 'i'  , 'n'  , 'y'  , 'U'  , 'S'  , 'B'  , ' '  , 'M'  , 'S'  , 'C'  , 0x08u, 0x00u, 0x00u, 0x00u, 0x00u,
+	0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x4Fu, 0x6Du, 0x65u, 0x43u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+
+// Second entry is readme file
+
+	'R'  , 'E'  , 'A'  , 'D'  , 'M'  , 'E'  , ' '  , ' '  , 'T'  , 'X'  , 'T'  , 0x20u, 0x00u, 0xC6u, 0x52u, 0x6Du,
+	0x65u, 0x43u, 0x65u, 0x43u, 0x00u, 0x00u, 0x88u, 0x6Du, 0x65u, 0x43u, 0x02u, 0x00u,
+
+ // readme's files size (4 Bytes)
+
+	sizeof(README_CONTENTS) - 1u, 0x00u, 0x00u, 0x00u
+  },
+
+// Block3: Readme Content
+
+	README_CONTENTS
+};
+
+/*
+ * \brief TinyUSB_msc_init
+ *
+ * - Initialise the mscx manager
+ *
+ */
+void	TinyUSB_msc_init(void) {
+
+}
+
+/*
+ * \brief TinyUSB_msc_clean
+ *
+ * - Clean the mscx manager
+ *
+ */
+void	TinyUSB_msc_clean(void) {
+
+}
+
+/*
+ * \brief tud_msc_inquiry_cb
+ *
+ * - Called when received SCSI_CMD_INQUIRY
+ *
+ */
+void	tud_msc_inquiry_cb(uint8_t lun, uint8_t vendor_id[8], uint8_t product_id[16], uint8_t product_rev[4]) {
+	const	char_t	vid[] = "TinyUSB";
+	const	char_t	pid[] = "Mass Storage";
+	const	char_t	rev[] = "1.0";
+
+	UNUSED(lun);
+
+	memcpy(vendor_id  , vid, strlen(vid));
+	memcpy(product_id , pid, strlen(pid));
+	memcpy(product_rev, rev, strlen(rev));
+}
+
+/*
+ * \brief tud_msc_test_unit_ready_cb
+ *
+ * - Called when received Test Unit Ready command
+ *
+ */
+bool	tud_msc_test_unit_ready_cb(uint8_t lun) {
+	uint32_t	core;
+
+	UNUSED(lun);
+
+	core = GET_RUNNING_CORE;
+
+// RAM disk is ready until vEjected
+
+	if (vEjected[core] == true) {
+
+// Additional Sense 3A-00 is NOT_FOUND
+
+		tud_msc_set_sense(lun, SCSI_SENSE_NOT_READY, 0x3Au, 0x00u);
+		return (false);
+	}
+
+	return (true);
+}
+
+/*
+ * \brief tud_msc_capacity_cb
+ *
+ * - Called when received SCSI_CMD_READ_CAPACITY_10 and
+ *   SCSI_CMD_READ_FORMAT_CAPACITY to determine the disk size
+ *
+ */
+void	tud_msc_capacity_cb(uint8_t lun, uint32_t *block_count, uint16_t *block_size) {
+
+	UNUSED(lun);
+
+	*block_count = DISK_BLOCK_NUM;
+	*block_size  = DISK_BLOCK_SIZE;
+}
+
+/*
+ * \brief tud_msc_start_stop_cb
+ *
+ * - Called when received Start Stop Unit command
+ *
+ */
+bool	tud_msc_start_stop_cb(uint8_t lun, uint8_t power_condition, bool start, bool load_eject) {
+	uint32_t	core;
+
+	UNUSED(lun);
+	UNUSED(power_condition);
+
+	core = GET_RUNNING_CORE;
+
+	if (load_eject == true ) {
+		if (start == true) {
+
+// load disk storage
+
+		}
+		else {
+
+// Unload disk storage
+
+			vEjected[core] = true;
+		}
+	}
+	return (true);
+}
+
+/*
+ * \brief tud_msc_read10_cb
+ *
+ * - Called when received READ10 command
+ *
+ */
+int32_t	tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void *buffer, uint32_t bufsize) {
+
+	UNUSED(lun);
+
+// Out of ramdisk
+
+	if (lba >= DISK_BLOCK_NUM ) {
+		return (-1);
+	}
+
+	uint8_t	const *addr = msc_disk[lba] + offset;
+	memcpy(buffer, addr, bufsize);
+
+	return ((int32_t)bufsize);
+}
+
+/*
+ * \brief tud_msc_is_writable_cb
+ *
+ * - Called to determine if the device is writable
+ *
+ */
+bool	tud_msc_is_writable_cb(uint8_t lun) {
+
+	UNUSED(lun);
+
+	#if (defined(CFG_EXAMPLE_MSC_READONLY))
+	return (false);
+
+	#else
+	return (true);
+	#endif
+}
+
+/*
+ * \brief tud_msc_write10_cb
+ *
+ * - Called when received WRITE10 command
+ *
+ */
+int32_t	tud_msc_write10_cb(uint8_t lun, uint32_t lba, uint32_t offset, uint8_t *buffer, uint32_t bufsize) {
+
+	UNUSED(lun);
+
+// Out of ramdisk
+
+	if (lba >= DISK_BLOCK_NUM ) {
+		return (-1);
+	}
+
+	#if (defined(CFG_EXAMPLE_MSC_READONLY))
+	uint8_t *addr = msc_disk[lba] + offset;
+	memcpy(addr, buffer, bufsize);
+
+	#else
+	UNUSED(lba);
+	UNUSED(offset);
+	UNUSED(buffer);
+	#endif
+
+	return ((int32_t)bufsize);
+}
+
+/*
+ * \brief tud_msc_scsi_cb
+ *
+ * - Called when received an SCSI command not in built-in
+ *
+ */
+int32_t	tud_msc_scsi_cb(uint8_t lun, uint8_t const scsi_cmd[16], void *buffer, uint16_t bufsize) {
+			bool	in_xfer = true;
+			int32_t resplen = 0;
+	void	const	*response = NULL;
+
+// Read10 & write10 has their own callback and MUST not be handled here
+// most scsi handled is input
+
+	switch (scsi_cmd[0]) {
+		default:
+
+// Set Sense = Invalid Command Operation
+
+			tud_msc_set_sense(lun, SCSI_SENSE_ILLEGAL_REQUEST, 0x20u, 0x00u);
+
+// Negative means error -> TinyUSB could stall and/or response with failed status
+
+			resplen = -1;
+			break;
+		}
+
+// Return resplen must not larger than bufsize
+
+	if (resplen > bufsize ) {
+		resplen = bufsize;
+	}
+
+	if ((response && (resplen > 0)) == true ) {
+		if(in_xfer == true) {
+			memcpy(buffer, response, (size_t)resplen);
+		}
+		else {
+
+// SCSI output
+
+		}
+	}
+	return ((int32_t)resplen);
+}

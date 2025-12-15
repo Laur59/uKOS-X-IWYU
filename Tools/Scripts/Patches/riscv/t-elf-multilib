@@ -1,0 +1,118 @@
+# fragment for RISC-V
+# ===================
+
+# SPDX-License-Identifier: MIT
+
+#------------------------------------------------------------------------
+# Author:	Edo. Franzi		The 2025-01-01
+# Modifs:
+#
+# Project:	uKOS-X
+# Goal:		Fragment code for gcc-x.y.z (RISC-V cpus).
+#			This fragment allows to generate multilib version of gcc
+#			for the following cpus
+#
+#			RV32I	Base Integer Instruction Set, 32-bit
+#			RV64I	Base Integer Instruction Set, 64-bit
+#
+#			m		Standard Extension for Integer Multiplication and Division
+#			a		Standard Extension for Atomic Instructions
+#			f		Standard Extension for Single-Precision Floating-Point
+#			d		Standard Extension for Double-Precision Floating-Point
+#			c		Standard Extension for Compressed Instructions
+#
+#   (c) 2025-20xx, Edo. Franzi
+#   --------------------------
+#                                              __ ______  _____
+#   Edo. Franzi                         __  __/ //_/ __ \/ ___/
+#   5-Route de Cheseaux                / / / / ,< / / / /\__ \
+#   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
+#                                     \__,_/_/ |_\____//____/
+#   edo.franzi@ukos.ch
+#
+#   Description: Lightweight, real-time multitasking operating
+#   system for embedded microcontroller and DSP-based systems.
+#
+#   Permission is hereby granted, free of charge, to any person
+#   obtaining a copy of this software and associated documentation
+#   files (the "Software"), to deal in the Software without restriction,
+#   including without limitation the rights to use, copy, modify,
+#   merge, publish, distribute, sublicense, and/or sell copies of the
+#   Software, and to permit persons to whom the Software is furnished
+#   to do so, subject to the following conditions:
+#
+#   The above copyright notice and this permission notice shall be
+#   included in all copies or substantial portions of the Software.
+#
+#   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+#   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+#   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+#   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+#   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+#   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+#   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+#   SOFTWARE.
+#
+#------------------------------------------------------------------------
+
+MULTILIB_OPTIONS    =
+MULTILIB_DIRNAMES   =
+MULTILIB_REQUIRED   =
+
+# Useful RISC-V combinations for RV32:
+
+MULTILIB_OPTIONS	+= march=rv32i/march=rv32im/march=rv32imafd/march=rv32iac/march=rv32imac/march=rv32imafc
+MULTILIB_DIRNAMES	+= rv32i       rv32im       rv32imafd       rv32iac       rv32imac       rv32imafc
+
+# Useful RISC-V combinations for RV64:
+
+MULTILIB_OPTIONS	+= march=rv64i/march=rv64ia/march=rv64im/march=rv64if/march=rv64ifd/march=rv64iaf/march=rv64iac/march=rv64iafd/march=rv64imafd/march=rv64imf/march=rv64imac/march=rv64imaf/march=rv64imafc/march=rv64imafdc
+MULTILIB_DIRNAMES	+= rv64i       rv64ia       rv64im       rv64if       rv64ifd       rv64iaf       rv64iac       rv64iafd       rv64imafd       rv64imf       rv64imac       rv64imaf       rv64imafc       rv64imafdc
+
+# Supported ABI:
+
+MULTILIB_OPTIONS	+= mabi=ilp32/mabi=ilp32f/mabi=ilp32d/mabi=lp64/mabi=lp64f/mabi=lp64d
+MULTILIB_DIRNAMES	+= ilp32      ilp32f      ilp32d      lp64      lp64f      lp64d
+
+MULTILIB_OPTIONS	+= mcmodel=medany
+MULTILIB_DIRNAMES	+= medany
+
+# RISC-V, RV32 supported combinations:
+
+MULTILIB_REQUIRED	+= march=rv32i/mabi=ilp32
+MULTILIB_REQUIRED	+= march=rv32im/mabi=ilp32
+MULTILIB_REQUIRED	+= march=rv32imafd/mabi=ilp32d
+MULTILIB_REQUIRED	+= march=rv32iac/mabi=ilp32
+MULTILIB_REQUIRED	+= march=rv32imac/mabi=ilp32
+MULTILIB_REQUIRED	+= march=rv32imafc/mabi=ilp32f
+
+# RISC-V, RV64 supported combinations:
+
+MULTILIB_REQUIRED	+= march=rv64i/mabi=lp64
+MULTILIB_REQUIRED	+= march=rv64i/mabi=lp64/mcmodel=medany
+MULTILIB_REQUIRED	+= march=rv64ia/mabi=lp64
+MULTILIB_REQUIRED	+= march=rv64ia/mabi=lp64/mcmodel=medany
+MULTILIB_REQUIRED	+= march=rv64im/mabi=lp64
+MULTILIB_REQUIRED	+= march=rv64im/mabi=lp64/mcmodel=medany
+MULTILIB_REQUIRED	+= march=rv64if/mabi=lp64f
+MULTILIB_REQUIRED	+= march=rv64if/mabi=lp64f/mcmodel=medany
+MULTILIB_REQUIRED	+= march=rv64ifd/mabi=lp64d
+MULTILIB_REQUIRED	+= march=rv64ifd/mabi=lp64d/mcmodel=medany
+MULTILIB_REQUIRED	+= march=rv64iaf/mabi=lp64f
+MULTILIB_REQUIRED	+= march=rv64iaf/mabi=lp64f/mcmodel=medany
+MULTILIB_REQUIRED	+= march=rv64iac/mabi=lp64
+MULTILIB_REQUIRED	+= march=rv64iac/mabi=lp64/mcmodel=medany
+MULTILIB_REQUIRED	+= march=rv64iafd/mabi=lp64d
+MULTILIB_REQUIRED	+= march=rv64iafd/mabi=lp64d/mcmodel=medany
+MULTILIB_REQUIRED	+= march=rv64imafd/mabi=lp64d
+MULTILIB_REQUIRED	+= march=rv64imafd/mabi=lp64d/mcmodel=medany
+MULTILIB_REQUIRED	+= march=rv64imf/mabi=lp64f
+MULTILIB_REQUIRED	+= march=rv64imf/mabi=lp64f/mcmodel=medany
+MULTILIB_REQUIRED	+= march=rv64imac/mabi=lp64
+MULTILIB_REQUIRED	+= march=rv64imac/mabi=lp64/mcmodel=medany
+MULTILIB_REQUIRED	+= march=rv64imaf/mabi=lp64f
+MULTILIB_REQUIRED	+= march=rv64imaf/mabi=lp64f/mcmodel=medany
+MULTILIB_REQUIRED	+= march=rv64imafc/mabi=lp64f
+MULTILIB_REQUIRED	+= march=rv64imafc/mabi=lp64f/mcmodel=medany
+MULTILIB_REQUIRED	+= march=rv64imafdc/mabi=lp64d
+MULTILIB_REQUIRED	+= march=rv64imafdc/mabi=lp64d/mcmodel=medany

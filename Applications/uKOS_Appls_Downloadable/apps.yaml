@@ -1,0 +1,437 @@
+a_Basics:
+  basic:
+    - Alastor_H743
+    - Asmodee_H747
+    - DevKit_nRF5340
+    - Discovery_U5G9
+    - MAiXDUiNO_K210
+    - Nucleo_F207
+    - Nucleo_H743
+    - Nucleo_L4R5
+    - Nucleo_N657
+    - Pico2_rp2350
+
+  calendar:
+    - Alastor_H743
+    - Asmodee_H747
+    - DevKit_nRF5340
+    - Discovery_U5G9
+    - MAiXDUiNO_K210
+    - Nucleo_H743
+    - Nucleo_L4R5
+    - Nucleo_N657
+    - Pico2_rp2350
+
+  concurrent:
+    - Alastor_H743
+    - Asmodee_H747
+    - DevKit_nRF5340
+    - Discovery_U5G9
+    - MAiXDUiNO_K210
+    - Nucleo_F207
+    - Nucleo_H743
+    - Nucleo_L4R5
+    - Nucleo_N657
+    - Pico2_rp2350
+
+  multiKill:
+    - Alastor_H743
+    - Asmodee_H747
+    - DevKit_nRF5340
+    - Discovery_U5G9
+    - MAiXDUiNO_K210
+    - Nucleo_F207
+    - Nucleo_H743
+    - Nucleo_L4R5
+    - Nucleo_N657
+    - Pico2_rp2350
+
+  plotSin:
+    - Alastor_H743
+    - Asmodee_H747
+    - DevKit_nRF5340
+    - Discovery_U5G9
+    - MAiXDUiNO_K210
+    - Nucleo_F207
+    - Nucleo_H743
+    - Nucleo_L4R5
+    - Nucleo_N657
+    - Pico2_rp2350
+
+  readIMU:
+    - Alastor_H743
+    - Asmodee_H747
+
+  readTEMP:
+    - Alastor_H743
+    - Asmodee_H747
+    - Discovery_U5G9
+
+  suicide:
+    - Alastor_H743
+    - Asmodee_H747
+    - DevKit_nRF5340
+    - Discovery_U5G9
+    - MAiXDUiNO_K210
+    - Nucleo_F207
+    - Nucleo_H743
+    - Nucleo_L4R5
+    - Nucleo_N657
+    - Pico2_rp2350
+
+b_MailBoxes:
+  basic:
+    - Alastor_H743
+    - Asmodee_H747
+    - DevKit_nRF5340
+    - Discovery_U5G9
+    - MAiXDUiNO_K210
+    - Nucleo_F207
+    - Nucleo_H743
+    - Nucleo_L4R5
+    - Nucleo_N657
+    - Pico2_rp2350
+
+  coherence:
+    - Alastor_H743
+    - Asmodee_H747
+    - DevKit_nRF5340
+    - Discovery_U5G9
+    - MAiXDUiNO_K210
+    - Nucleo_F207
+    - Nucleo_H743
+    - Nucleo_L4R5
+    - Nucleo_N657
+    - Pico2_rp2350
+
+  queue:
+    - Alastor_H743
+    - Asmodee_H747
+    - DevKit_nRF5340
+    - Discovery_U5G9
+    - MAiXDUiNO_K210
+    - Nucleo_F207
+    - Nucleo_H743
+    - Nucleo_L4R5
+    - Nucleo_N657
+    - Pico2_rp2350
+
+  timerQueue:
+    - Alastor_H743
+    - Asmodee_H747
+    - Discovery_U5G9
+    - Nucleo_F207
+    - Nucleo_H743
+    - Nucleo_L4R5
+    - Nucleo_N657
+    - Pico2_rp2350
+
+c_Semaphores:
+  basic:
+    - Alastor_H743
+    - Asmodee_H747
+    - DevKit_nRF5340
+    - Discovery_U5G9
+    - MAiXDUiNO_K210
+    - Nucleo_F207
+    - Nucleo_H743
+    - Nucleo_L4R5
+    - Nucleo_N657
+    - Pico2_rp2350
+
+d_Mutexes:
+  basic:
+    - Alastor_H743
+    - Asmodee_H747
+    - DevKit_nRF5340
+    - Discovery_U5G9
+    - MAiXDUiNO_K210
+    - Nucleo_F207
+    - Nucleo_H743
+    - Nucleo_L4R5
+    - Nucleo_N657
+    - Pico2_rp2350
+
+e_SoftwareTimers:
+  basic:
+    - Alastor_H743
+    - Asmodee_H747
+    - DevKit_nRF5340
+    - Discovery_U5G9
+    - MAiXDUiNO_K210
+    - Nucleo_F207
+    - Nucleo_H743
+    - Nucleo_L4R5
+    - Nucleo_N657
+    - Pico2_rp2350
+
+f_Signals:
+  basic:
+    - Alastor_H743
+    - Asmodee_H747
+    - DevKit_nRF5340
+    - Discovery_U5G9
+    - MAiXDUiNO_K210
+    - Nucleo_F207
+    - Nucleo_H743
+    - Nucleo_L4R5
+    - Nucleo_N657
+    - Pico2_rp2350
+
+  calendar:
+    - Alastor_H743
+    - Asmodee_H747
+    - DevKit_nRF5340
+    - Discovery_U5G9
+    - MAiXDUiNO_K210
+    - Nucleo_F207
+    - Nucleo_H743
+    - Nucleo_L4R5
+    - Nucleo_N657
+    - Pico2_rp2350
+
+g_PreciseSignals:
+  basic:
+    - Alastor_H743
+    - Asmodee_H747
+    - DevKit_nRF5340
+    - Discovery_U5G9
+    - Nucleo_F207
+    - Nucleo_H743
+    - Nucleo_L4R5
+    - Nucleo_N657
+
+i_MoreKernels:
+  pooling:
+    - Alastor_H743
+    - Asmodee_H747
+    - DevKit_nRF5340
+    - Discovery_U5G9
+    - MAiXDUiNO_K210
+    - Nucleo_F207
+    - Nucleo_H743
+    - Nucleo_L4R5
+    - Nucleo_N657
+    - Pico2_rp2350
+
+  ticTac:
+    - Alastor_H743
+    - Asmodee_H747
+    - DevKit_nRF5340
+    - Discovery_U5G9
+    - MAiXDUiNO_K210
+    - Nucleo_F207
+    - Nucleo_H743
+    - Nucleo_L4R5
+    - Nucleo_N657
+    - Pico2_rp2350
+
+  tracing:
+    - Alastor_H743
+    - Asmodee_H747
+    - DevKit_nRF5340
+    - Discovery_U5G9
+    - MAiXDUiNO_K210
+    - Nucleo_F207
+    - Nucleo_H743
+    - Nucleo_L4R5
+    - Nucleo_N657
+    - Pico2_rp2350
+
+  watchdog:
+    - Alastor_H743
+    - Asmodee_H747
+    - Discovery_U5G9
+    - Nucleo_F207
+    - Nucleo_H743
+    - Nucleo_L4R5
+    - Nucleo_N657
+
+j_LowLevels:
+  hsPWM:
+    - Nucleo_H743
+    - Nucleo_N657
+
+  intIO:
+    - Alastor_H743
+    - Asmodee_H747
+    - Discovery_U5G9
+    - Nucleo_F207
+    - Nucleo_H743
+    - Nucleo_L4R5
+
+  intTimer:
+    - Alastor_H743
+    - Asmodee_H747
+    - Discovery_U5G9
+    - Nucleo_F207
+    - Nucleo_H743
+    - Nucleo_L4R5
+    - Nucleo_N657
+    - Pico2_rp2350
+
+k_Mathematicals:
+  cordic:
+    - Alastor_H743
+    - Asmodee_H747
+    - DevKit_nRF5340
+    - Discovery_U5G9
+    - MAiXDUiNO_K210
+    - Nucleo_F207
+    - Nucleo_H743
+    - Nucleo_L4R5
+    - Nucleo_N657
+    - Pico2_rp2350
+
+  cortexDSP:
+    - Alastor_H743
+    - Asmodee_H747
+    - DevKit_nRF5340
+    - Discovery_U5G9
+    - Nucleo_H743
+    - Nucleo_L4R5
+    - Nucleo_N657
+    - Pico2_rp2350
+
+  cortexFPU:
+    - Alastor_H743
+    - Asmodee_H747
+    - DevKit_nRF5340
+    - Discovery_U5G9
+    - Nucleo_F207
+    - Nucleo_H743
+    - Nucleo_L4R5
+    - Nucleo_N657
+    - Pico2_rp2350
+
+l_MLPs:
+  class_Py:
+    - Alastor_H743
+    - Asmodee_H747
+    - Discovery_U5G9
+    - MAiXDUiNO_K210
+    - Nucleo_H743
+    - Nucleo_N657
+    - Pico2_rp2350
+
+  class_TFL:
+    - Alastor_H743
+    - Asmodee_H747
+    - Discovery_U5G9
+    - MAiXDUiNO_K210
+    - Nucleo_H743
+    - Nucleo_N657
+    - Pico2_rp2350
+
+  cluster_Py:
+    - Alastor_H743
+    - Asmodee_H747
+    - Discovery_U5G9
+    - MAiXDUiNO_K210
+    - Nucleo_H743
+    - Nucleo_N657
+    - Pico2_rp2350
+
+  cluster_TFL:
+    - Alastor_H743
+    - Asmodee_H747
+    - Discovery_U5G9
+    - MAiXDUiNO_K210
+    - Nucleo_H743
+    - Nucleo_N657
+    - Pico2_rp2350
+
+m_MicroPythons:
+  basic:
+    - Alastor_H743
+    - Asmodee_H747
+    - DevKit_nRF5340
+    - Discovery_U5G9
+    - Nucleo_H743
+    - Nucleo_L4R5
+    - Nucleo_N657
+    - Pico2_rp2350
+
+  fibonacci:
+    - Alastor_H743
+    - Asmodee_H747
+    - DevKit_nRF5340
+    - Discovery_U5G9
+    - Nucleo_H743
+    - Nucleo_L4R5
+    - Nucleo_N657
+    - Pico2_rp2350
+
+n_NewLibs:
+  basic:
+    - Alastor_H743
+    - Nucleo_H743
+    - Nucleo_L4R5
+
+o_Imagings:
+  basic:
+    - Alastor_H743
+    - Asmodee_H747
+
+  image:
+    - Asmodee_H747
+
+  video:
+    - Asmodee_H747
+    - Discovery_U5G9
+    - Nucleo_N657
+
+p_Specials:
+  canary:
+    - Alastor_H743
+    - Asmodee_H747
+    - DevKit_nRF5340
+    - Discovery_U5G9
+    - MAiXDUiNO_K210
+    - Nucleo_F207
+    - Nucleo_H743
+    - Nucleo_L4R5
+    - Nucleo_N657
+    - Pico2_rp2350
+
+  sdcard:
+    - Alastor_H743
+
+  speed:
+    - Alastor_H743
+    - Asmodee_H747
+    - DevKit_nRF5340
+    - Discovery_U5G9
+    - MAiXDUiNO_K210
+    - Nucleo_F207
+    - Nucleo_H743
+    - Nucleo_L4R5
+    - Nucleo_N657
+    - Pico2_rp2350
+
+  test_cpp:
+    - Alastor_H743
+    - Asmodee_H747
+    - DevKit_nRF5340
+    - Discovery_U5G9
+    - MAiXDUiNO_K210
+    - Nucleo_F207
+    - Nucleo_H743
+    - Nucleo_L4R5
+    - Nucleo_N657
+    - Pico2_rp2350
+
+  test_fatfs:
+    - Alastor_H743
+
+  uKOS_minimal:
+    - Alastor_H743
+    - Asmodee_H747
+    - DevKit_nRF5340
+    - Discovery_U5G9
+    - MAiXDUiNO_K210
+    - Nucleo_F207
+    - Nucleo_H743
+    - Nucleo_L4R5
+    - Nucleo_N657
+    - Pico2_rp2350

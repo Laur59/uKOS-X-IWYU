@@ -1,0 +1,154 @@
+/*
+; model_TinyUSB_cdc.
+; ==================
+
+;------------------------------------------------------------------------
+; Author:	Edo. Franzi		The 2025-01-01
+; Modifs:
+;
+; Project:	uKOS-X
+; Goal:		Model for the interface for "TinyUSB cdc" device.
+;
+;   (c) 2025-20xx, Edo. Franzi
+;   --------------------------
+;                                              __ ______  _____
+;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
+;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
+;   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
+;                                     \__,_/_/ |_\____//____/
+;   edo.franzi@ukos.ch
+;
+;   Description: Lightweight, real-time multitasking operating
+;   system for embedded microcontroller and DSP-based systems.
+;
+;   Permission is hereby granted, free of charge, to any person
+;   obtaining a copy of this software and associated documentation
+;   files (the "Software"), to deal in the Software without restriction,
+;   including without limitation the rights to use, copy, modify,
+;   merge, publish, distribute, sublicense, and/or sell copies of the
+;   Software, and to permit persons to whom the Software is furnished
+;   to do so, subject to the following conditions:
+;
+;   The above copyright notice and this permission notice shall be
+;   included in all copies or substantial portions of the Software.
+;
+;   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+;   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+;   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+;   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+;   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+;   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+;   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+;   SOFTWARE.
+;
+;------------------------------------------------------------------------
+*/
+
+#define	KCONNECTED		true
+#define	KDISCONNECTED	false
+
+static	bool	vConnected[KNB_CORES] = MCSET(KDISCONNECTED);
+
+/*
+ * \brief TinyUSB_cdc_init
+ *
+ * - Initialise the cdcx manager
+ *
+ */
+void	TinyUSB_cdc_init(void) {
+
+}
+
+/*
+ * \brief TinyUSB_cdc_clean
+ *
+ * - Clean the cdcx manager
+ *
+ */
+void	TinyUSB_cdc_clean(void) {
+
+}
+
+/*
+ * \brief TinyUSB_cdc_write
+ *
+ * - Write a buffer to the usb cdcx manager
+ *
+ */
+void	TinyUSB_cdc_write(uint8_t itf, const uint8_t *buffer, uint32_t size) {
+	uint32_t	core;
+
+	core = GET_RUNNING_CORE;
+
+	while (tud_cdc_n_write_available(itf) < size) {
+		if (vConnected[core] == KDISCONNECTED) {
+			kern_suspendProcess(10u);
+		}
+		else {
+			kern_suspendProcess(1u);
+		}
+	}
+
+	tud_cdc_n_write(itf, buffer, size);
+	tud_cdc_n_write_flush(itf);
+}
+
+/*
+ * \brief TinyUSB_cdc_read
+ *
+ * - Read a buffer from the usb cdcx manager
+ *
+ */
+void	TinyUSB_cdc_read(uint8_t itf, uint8_t *buffer, uint32_t *size) {
+
+	if (tud_cdc_n_available(itf) != 0u) {
+		*size = tud_cdc_n_read(itf, buffer, *size);
+	}
+	else {
+		*size = 0u;
+	}
+}
+
+// cdc callbacks
+// =============
+
+/*
+ * \brief tud_cdc_line_state_cb
+ *
+ * - Called when cdc when line state changed e.g connected/disconnected
+ *
+ */
+void	tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts) {
+	uint32_t	core;
+
+	UNUSED(itf);
+	UNUSED(rts);
+
+	core = GET_RUNNING_CORE;
+
+	if (dtr == true) {
+		if (vConnected[core] == KDISCONNECTED) {
+			vConnected[core] = KCONNECTED;
+
+			LOG(KINFO_SYSTEM, "model_TinyUSB_cdc: connected");
+		}
+	}
+	else {
+		if (vConnected[core] == KCONNECTED) {
+			vConnected[core] = KDISCONNECTED;
+
+			LOG(KINFO_SYSTEM, "model_TinyUSB_cdc: disconnected");
+		}
+	}
+}
+
+/*
+ * \brief tud_cdc_rx_cb
+ *
+ * - Called when CDC interface received data from host
+ *
+ */
+void	tud_cdc_rx_cb(uint8_t itf) {
+
+	UNUSED(itf);
+}

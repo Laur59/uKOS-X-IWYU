@@ -1,0 +1,1460 @@
+/*
+; nrf5340_network_radio.
+; ======================
+
+; SPDX-License-Identifier: MIT
+
+;------------------------------------------------------------------------
+; Author:	Generated using the .svd description	The 2025-01-01
+; Modifs:
+;
+; Project:	uKOS-X
+; Goal:		nrf5340_network_radio equates.
+;
+;   (c) 2025-20xx, Edo. Franzi
+;   --------------------------
+;                                              __ ______  _____
+;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
+;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
+;   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
+;                                     \__,_/_/ |_\____//____/
+;   edo.franzi@ukos.ch
+;
+;   Description: Lightweight, real-time multitasking operating
+;   system for embedded microcontroller and DSP-based systems.
+;
+;   Permission is hereby granted, free of charge, to any person
+;   obtaining a copy of this software and associated documentation
+;   files (the "Software"), to deal in the Software without restriction,
+;   including without limitation the rights to use, copy, modify,
+;   merge, publish, distribute, sublicense, and/or sell copies of the
+;   Software, and to permit persons to whom the Software is furnished
+;   to do so, subject to the following conditions:
+;
+;   The above copyright notice and this permission notice shall be
+;   included in all copies or substantial portions of the Software.
+;
+;   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+;   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+;   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+;   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+;   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+;   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+;   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+;   SOFTWARE.
+;
+;------------------------------------------------------------------------
+*/
+
+#pragma	once
+
+// RADIO address definitions
+// -------------------------
+
+typedef struct {
+	volatile	uint32_t	TASKS_TXEN;
+	volatile	uint32_t	TASKS_RXEN;
+	volatile	uint32_t	TASKS_START;
+	volatile	uint32_t	TASKS_STOP;
+	volatile	uint32_t	TASKS_DISABLE;
+	volatile	uint32_t	TASKS_RSSISTART;
+	volatile	uint32_t	TASKS_RSSISTOP;
+	volatile	uint32_t	TASKS_BCSTART;
+	volatile	uint32_t	TASKS_BCSTOP;
+	volatile	uint32_t	TASKS_EDSTART;
+	volatile	uint32_t	TASKS_EDSTOP;
+	volatile	uint32_t	TASKS_CCASTART;
+	volatile	uint32_t	TASKS_CCASTOP;
+	volatile	uint32_t	RESERVED0[19];
+	volatile	uint32_t	SUBSCRIBE_TXEN;
+	volatile	uint32_t	SUBSCRIBE_RXEN;
+	volatile	uint32_t	SUBSCRIBE_START;
+	volatile	uint32_t	SUBSCRIBE_STOP;
+	volatile	uint32_t	SUBSCRIBE_DISABLE;
+	volatile	uint32_t	SUBSCRIBE_RSSISTART;
+	volatile	uint32_t	SUBSCRIBE_RSSISTOP;
+	volatile	uint32_t	SUBSCRIBE_BCSTART;
+	volatile	uint32_t	SUBSCRIBE_BCSTOP;
+	volatile	uint32_t	SUBSCRIBE_EDSTART;
+	volatile	uint32_t	SUBSCRIBE_EDSTOP;
+	volatile	uint32_t	SUBSCRIBE_CCASTART;
+	volatile	uint32_t	SUBSCRIBE_CCASTOP;
+	volatile	uint32_t	RESERVED1[19];
+	volatile	uint32_t	EVENTS_READY;
+	volatile	uint32_t	EVENTS_ADDRESS;
+	volatile	uint32_t	EVENTS_PAYLOAD;
+	volatile	uint32_t	EVENTS_END;
+	volatile	uint32_t	EVENTS_DISABLED;
+	volatile	uint32_t	EVENTS_DEVMATCH;
+	volatile	uint32_t	EVENTS_DEVMISS;
+	volatile	uint32_t	EVENTS_RSSIEND;
+	volatile	uint32_t	RESERVED2[2];
+	volatile	uint32_t	EVENTS_BCMATCH;
+	volatile	uint32_t	RESERVED3;
+	volatile	uint32_t	EVENTS_CRCOK;
+	volatile	uint32_t	EVENTS_CRCERROR;
+	volatile	uint32_t	EVENTS_FRAMESTART;
+	volatile	uint32_t	EVENTS_EDEND;
+	volatile	uint32_t	EVENTS_EDSTOPPED;
+	volatile	uint32_t	EVENTS_CCAIDLE;
+	volatile	uint32_t	EVENTS_CCABUSY;
+	volatile	uint32_t	EVENTS_CCASTOPPED;
+	volatile	uint32_t	EVENTS_RATEBOOST;
+	volatile	uint32_t	EVENTS_TXREADY;
+	volatile	uint32_t	EVENTS_RXREADY;
+	volatile	uint32_t	EVENTS_MHRMATCH;
+	volatile	uint32_t	RESERVED4[2];
+	volatile	uint32_t	EVENTS_SYNC;
+	volatile	uint32_t	EVENTS_PHYEND;
+	volatile	uint32_t	EVENTS_CTEPRESENT;
+	volatile	uint32_t	RESERVED5[3];
+	volatile	uint32_t	PUBLISH_READY;
+	volatile	uint32_t	PUBLISH_ADDRESS;
+	volatile	uint32_t	PUBLISH_PAYLOAD;
+	volatile	uint32_t	PUBLISH_END;
+	volatile	uint32_t	PUBLISH_DISABLED;
+	volatile	uint32_t	PUBLISH_DEVMATCH;
+	volatile	uint32_t	PUBLISH_DEVMISS;
+	volatile	uint32_t	PUBLISH_RSSIEND;
+	volatile	uint32_t	RESERVED6[2];
+	volatile	uint32_t	PUBLISH_BCMATCH;
+	volatile	uint32_t	RESERVED7;
+	volatile	uint32_t	PUBLISH_CRCOK;
+	volatile	uint32_t	PUBLISH_CRCERROR;
+	volatile	uint32_t	PUBLISH_FRAMESTART;
+	volatile	uint32_t	PUBLISH_EDEND;
+	volatile	uint32_t	PUBLISH_EDSTOPPED;
+	volatile	uint32_t	PUBLISH_CCAIDLE;
+	volatile	uint32_t	PUBLISH_CCABUSY;
+	volatile	uint32_t	PUBLISH_CCASTOPPED;
+	volatile	uint32_t	PUBLISH_RATEBOOST;
+	volatile	uint32_t	PUBLISH_TXREADY;
+	volatile	uint32_t	PUBLISH_RXREADY;
+	volatile	uint32_t	PUBLISH_MHRMATCH;
+	volatile	uint32_t	RESERVED8[2];
+	volatile	uint32_t	PUBLISH_SYNC;
+	volatile	uint32_t	PUBLISH_PHYEND;
+	volatile	uint32_t	PUBLISH_CTEPRESENT;
+	volatile	uint32_t	RESERVED9[3];
+	volatile	uint32_t	SHORTS;
+	volatile	uint32_t	RESERVED10[64];
+	volatile	uint32_t	INTENSET;
+	volatile	uint32_t	INTENCLR;
+	volatile	uint32_t	RESERVED11[61];
+	volatile	uint32_t	CRCSTATUS;
+	volatile	uint32_t	RESERVED12;
+	volatile	uint32_t	RXMATCH;
+	volatile	uint32_t	RXCRC;
+	volatile	uint32_t	DAI;
+	volatile	uint32_t	PDUSTAT;
+	volatile	uint32_t	RESERVED13[13];
+	volatile	uint32_t	CTESTATUS;
+	volatile	uint32_t	RESERVED14[2];
+	volatile	uint32_t	DFESTATUS;
+	volatile	uint32_t	RESERVED15[42];
+	volatile	uint32_t	PACKETPTR;
+	volatile	uint32_t	FREQUENCY;
+	volatile	uint32_t	TXPOWER;
+	volatile	uint32_t	MODE;
+	volatile	uint32_t	PCNF0;
+	volatile	uint32_t	PCNF1;
+	volatile	uint32_t	BASE0;
+	volatile	uint32_t	BASE1;
+	volatile	uint32_t	PREFIX0;
+	volatile	uint32_t	PREFIX1;
+	volatile	uint32_t	TXADDRESS;
+	volatile	uint32_t	RXADDRESSES;
+	volatile	uint32_t	CRCCNF;
+	volatile	uint32_t	CRCPOLY;
+	volatile	uint32_t	CRCINIT;
+	volatile	uint32_t	RESERVED16;
+	volatile	uint32_t	TIFS;
+	volatile	uint32_t	RSSISAMPLE;
+	volatile	uint32_t	RESERVED17;
+	volatile	uint32_t	STATE;
+	volatile	uint32_t	DATAWHITEIV;
+	volatile	uint32_t	RESERVED18[2];
+	volatile	uint32_t	BCC;
+	volatile	uint32_t	RESERVED19[39];
+	volatile	uint32_t	DAB[8];
+	volatile	uint32_t	DAP[8];
+	volatile	uint32_t	DACNF;
+	volatile	uint32_t	MHRMATCHCONF;
+	volatile	uint32_t	MHRMATCHMAS;
+	volatile	uint32_t	RESERVED20;
+	volatile	uint32_t	MODECNF0;
+	volatile	uint32_t	RESERVED21[3];
+	volatile	uint32_t	SFD;
+	volatile	uint32_t	EDCNT;
+	volatile	uint32_t	EDSAMPLE;
+	volatile	uint32_t	CCACTRL;
+	volatile	uint32_t	RESERVED22[164];
+	volatile	uint32_t	DFEMODE;
+	volatile	uint32_t	CTEINLINECONF;
+	volatile	uint32_t	RESERVED23[2];
+	volatile	uint32_t	DFECTRL1;
+	volatile	uint32_t	DFECTRL2;
+	volatile	uint32_t	RESERVED24[4];
+	volatile	uint32_t	SWITCHPATTERN;
+	volatile	uint32_t	CLEARPATTERN;
+	volatile	uint32_t	PSEL_DFEGPIO[8];
+	volatile	uint32_t	DFEPACKET_PTR;
+	volatile	uint32_t	DFEPACKET_MAXCNT;
+	volatile	uint32_t	DFEPACKET_AMOUNT;
+	volatile	uint32_t	RESERVED25[424];
+	volatile	uint32_t	POWER;
+} RADIO_TypeDef;
+
+#if (defined(__cplusplus))
+#define	RADIO_NS	reinterpret_cast<RADIO_TypeDef *>(0x41008000u)
+
+#else
+#define	RADIO_NS	((RADIO_TypeDef *)0x41008000u)
+#endif
+
+// TASKS_TXEN Configuration
+
+#define	RADIO_TASKS_TXEN_TASKS_TXEN								(0x1u<<0)
+#define	RADIO_TASKS_TXEN_TASKS_TXEN_TRIGGER						(0x1u<<0)
+
+// TASKS_RXEN Configuration
+
+#define	RADIO_TASKS_RXEN_TASKS_RXEN								(0x1u<<0)
+#define	RADIO_TASKS_RXEN_TASKS_RXEN_TRIGGER						(0x1u<<0)
+
+// TASKS_START Configuration
+
+#define	RADIO_TASKS_START_TASKS_START							(0x1u<<0)
+#define	RADIO_TASKS_START_TASKS_START_TRIGGER					(0x1u<<0)
+
+// TASKS_STOP Configuration
+
+#define	RADIO_TASKS_STOP_TASKS_STOP								(0x1u<<0)
+#define	RADIO_TASKS_STOP_TASKS_STOP_TRIGGER						(0x1u<<0)
+
+// TASKS_DISABLE Configuration
+
+#define	RADIO_TASKS_DISABLE_TASKS_DISABLE						(0x1u<<0)
+#define	RADIO_TASKS_DISABLE_TASKS_DISABLE_TRIGGER				(0x1u<<0)
+
+// TASKS_RSSISTART Configuration
+
+#define	RADIO_TASKS_RSSISTART_TASKS_RSSISTART					(0x1u<<0)
+#define	RADIO_TASKS_RSSISTART_TASKS_RSSISTART_TRIGGER			(0x1u<<0)
+
+// TASKS_RSSISTOP Configuration
+
+#define	RADIO_TASKS_RSSISTOP_TASKS_RSSISTOP						(0x1u<<0)
+#define	RADIO_TASKS_RSSISTOP_TASKS_RSSISTOP_TRIGGER				(0x1u<<0)
+
+// TASKS_BCSTART Configuration
+
+#define	RADIO_TASKS_BCSTART_TASKS_BCSTART						(0x1u<<0)
+#define	RADIO_TASKS_BCSTART_TASKS_BCSTART_TRIGGER				(0x1u<<0)
+
+// TASKS_BCSTOP Configuration
+
+#define	RADIO_TASKS_BCSTOP_TASKS_BCSTOP							(0x1u<<0)
+#define	RADIO_TASKS_BCSTOP_TASKS_BCSTOP_TRIGGER					(0x1u<<0)
+
+// TASKS_EDSTART Configuration
+
+#define	RADIO_TASKS_EDSTART_TASKS_EDSTART						(0x1u<<0)
+#define	RADIO_TASKS_EDSTART_TASKS_EDSTART_TRIGGER				(0x1u<<0)
+
+// TASKS_EDSTOP Configuration
+
+#define	RADIO_TASKS_EDSTOP_TASKS_EDSTOP							(0x1u<<0)
+#define	RADIO_TASKS_EDSTOP_TASKS_EDSTOP_TRIGGER					(0x1u<<0)
+
+// TASKS_CCASTART Configuration
+
+#define	RADIO_TASKS_CCASTART_TASKS_CCASTART						(0x1u<<0)
+#define	RADIO_TASKS_CCASTART_TASKS_CCASTART_TRIGGER				(0x1u<<0)
+
+// TASKS_CCASTOP Configuration
+
+#define	RADIO_TASKS_CCASTOP_TASKS_CCASTOP						(0x1u<<0)
+#define	RADIO_TASKS_CCASTOP_TASKS_CCASTOP_TRIGGER				(0x1u<<0)
+
+// SUBSCRIBE_TXEN Configuration
+
+#define	RADIO_SUBSCRIBE_TXEN_EN									(0x1u<<31)
+#define	RADIO_SUBSCRIBE_TXEN_CHIDX								(0xFFu<<0)
+#define	RADIO_SUBSCRIBE_TXEN_CHIDX_0							(0x1u<<0)
+#define	RADIO_SUBSCRIBE_TXEN_EN_DISABLED						(0x0u<<31)
+#define	RADIO_SUBSCRIBE_TXEN_EN_ENABLED							(0x1u<<31)
+
+// SUBSCRIBE_RXEN Configuration
+
+#define	RADIO_SUBSCRIBE_RXEN_EN									(0x1u<<31)
+#define	RADIO_SUBSCRIBE_RXEN_CHIDX								(0xFFu<<0)
+#define	RADIO_SUBSCRIBE_RXEN_CHIDX_0							(0x1u<<0)
+#define	RADIO_SUBSCRIBE_RXEN_EN_DISABLED						(0x0u<<31)
+#define	RADIO_SUBSCRIBE_RXEN_EN_ENABLED							(0x1u<<31)
+
+// SUBSCRIBE_START Configuration
+
+#define	RADIO_SUBSCRIBE_START_EN								(0x1u<<31)
+#define	RADIO_SUBSCRIBE_START_CHIDX								(0xFFu<<0)
+#define	RADIO_SUBSCRIBE_START_CHIDX_0							(0x1u<<0)
+#define	RADIO_SUBSCRIBE_START_EN_DISABLED						(0x0u<<31)
+#define	RADIO_SUBSCRIBE_START_EN_ENABLED						(0x1u<<31)
+
+// SUBSCRIBE_STOP Configuration
+
+#define	RADIO_SUBSCRIBE_STOP_EN									(0x1u<<31)
+#define	RADIO_SUBSCRIBE_STOP_CHIDX								(0xFFu<<0)
+#define	RADIO_SUBSCRIBE_STOP_CHIDX_0							(0x1u<<0)
+#define	RADIO_SUBSCRIBE_STOP_EN_DISABLED						(0x0u<<31)
+#define	RADIO_SUBSCRIBE_STOP_EN_ENABLED							(0x1u<<31)
+
+// SUBSCRIBE_DISABLE Configuration
+
+#define	RADIO_SUBSCRIBE_DISABLE_EN								(0x1u<<31)
+#define	RADIO_SUBSCRIBE_DISABLE_CHIDX							(0xFFu<<0)
+#define	RADIO_SUBSCRIBE_DISABLE_CHIDX_0							(0x1u<<0)
+#define	RADIO_SUBSCRIBE_DISABLE_EN_DISABLED						(0x0u<<31)
+#define	RADIO_SUBSCRIBE_DISABLE_EN_ENABLED						(0x1u<<31)
+
+// SUBSCRIBE_RSSISTART Configuration
+
+#define	RADIO_SUBSCRIBE_RSSISTART_EN							(0x1u<<31)
+#define	RADIO_SUBSCRIBE_RSSISTART_CHIDX							(0xFFu<<0)
+#define	RADIO_SUBSCRIBE_RSSISTART_CHIDX_0						(0x1u<<0)
+#define	RADIO_SUBSCRIBE_RSSISTART_EN_DISABLED					(0x0u<<31)
+#define	RADIO_SUBSCRIBE_RSSISTART_EN_ENABLED					(0x1u<<31)
+
+// SUBSCRIBE_RSSISTOP Configuration
+
+#define	RADIO_SUBSCRIBE_RSSISTOP_EN								(0x1u<<31)
+#define	RADIO_SUBSCRIBE_RSSISTOP_CHIDX							(0xFFu<<0)
+#define	RADIO_SUBSCRIBE_RSSISTOP_CHIDX_0						(0x1u<<0)
+#define	RADIO_SUBSCRIBE_RSSISTOP_EN_DISABLED					(0x0u<<31)
+#define	RADIO_SUBSCRIBE_RSSISTOP_EN_ENABLED						(0x1u<<31)
+
+// SUBSCRIBE_BCSTART Configuration
+
+#define	RADIO_SUBSCRIBE_BCSTART_EN								(0x1u<<31)
+#define	RADIO_SUBSCRIBE_BCSTART_CHIDX							(0xFFu<<0)
+#define	RADIO_SUBSCRIBE_BCSTART_CHIDX_0							(0x1u<<0)
+#define	RADIO_SUBSCRIBE_BCSTART_EN_DISABLED						(0x0u<<31)
+#define	RADIO_SUBSCRIBE_BCSTART_EN_ENABLED						(0x1u<<31)
+
+// SUBSCRIBE_BCSTOP Configuration
+
+#define	RADIO_SUBSCRIBE_BCSTOP_EN								(0x1u<<31)
+#define	RADIO_SUBSCRIBE_BCSTOP_CHIDX							(0xFFu<<0)
+#define	RADIO_SUBSCRIBE_BCSTOP_CHIDX_0							(0x1u<<0)
+#define	RADIO_SUBSCRIBE_BCSTOP_EN_DISABLED						(0x0u<<31)
+#define	RADIO_SUBSCRIBE_BCSTOP_EN_ENABLED						(0x1u<<31)
+
+// SUBSCRIBE_EDSTART Configuration
+
+#define	RADIO_SUBSCRIBE_EDSTART_EN								(0x1u<<31)
+#define	RADIO_SUBSCRIBE_EDSTART_CHIDX							(0xFFu<<0)
+#define	RADIO_SUBSCRIBE_EDSTART_CHIDX_0							(0x1u<<0)
+#define	RADIO_SUBSCRIBE_EDSTART_EN_DISABLED						(0x0u<<31)
+#define	RADIO_SUBSCRIBE_EDSTART_EN_ENABLED						(0x1u<<31)
+
+// SUBSCRIBE_EDSTOP Configuration
+
+#define	RADIO_SUBSCRIBE_EDSTOP_EN								(0x1u<<31)
+#define	RADIO_SUBSCRIBE_EDSTOP_CHIDX							(0xFFu<<0)
+#define	RADIO_SUBSCRIBE_EDSTOP_CHIDX_0							(0x1u<<0)
+#define	RADIO_SUBSCRIBE_EDSTOP_EN_DISABLED						(0x0u<<31)
+#define	RADIO_SUBSCRIBE_EDSTOP_EN_ENABLED						(0x1u<<31)
+
+// SUBSCRIBE_CCASTART Configuration
+
+#define	RADIO_SUBSCRIBE_CCASTART_EN								(0x1u<<31)
+#define	RADIO_SUBSCRIBE_CCASTART_CHIDX							(0xFFu<<0)
+#define	RADIO_SUBSCRIBE_CCASTART_CHIDX_0						(0x1u<<0)
+#define	RADIO_SUBSCRIBE_CCASTART_EN_DISABLED					(0x0u<<31)
+#define	RADIO_SUBSCRIBE_CCASTART_EN_ENABLED						(0x1u<<31)
+
+// SUBSCRIBE_CCASTOP Configuration
+
+#define	RADIO_SUBSCRIBE_CCASTOP_EN								(0x1u<<31)
+#define	RADIO_SUBSCRIBE_CCASTOP_CHIDX							(0xFFu<<0)
+#define	RADIO_SUBSCRIBE_CCASTOP_CHIDX_0							(0x1u<<0)
+#define	RADIO_SUBSCRIBE_CCASTOP_EN_DISABLED						(0x0u<<31)
+#define	RADIO_SUBSCRIBE_CCASTOP_EN_ENABLED						(0x1u<<31)
+
+// EVENTS_READY Configuration
+
+#define	RADIO_EVENTS_READY_EVENTS_READY							(0x1u<<0)
+#define	RADIO_EVENTS_READY_EVENTS_READY_NOTGENERATED			(0x0u<<0)
+#define	RADIO_EVENTS_READY_EVENTS_READY_GENERATED				(0x1u<<0)
+
+// EVENTS_ADDRESS Configuration
+
+#define	RADIO_EVENTS_ADDRESS_EVENTS_ADDRESS						(0x1u<<0)
+#define	RADIO_EVENTS_ADDRESS_EVENTS_ADDRESS_NOTGENERATED		(0x0u<<0)
+#define	RADIO_EVENTS_ADDRESS_EVENTS_ADDRESS_GENERATED			(0x1u<<0)
+
+// EVENTS_PAYLOAD Configuration
+
+#define	RADIO_EVENTS_PAYLOAD_EVENTS_PAYLOAD						(0x1u<<0)
+#define	RADIO_EVENTS_PAYLOAD_EVENTS_PAYLOAD_NOTGENERATED		(0x0u<<0)
+#define	RADIO_EVENTS_PAYLOAD_EVENTS_PAYLOAD_GENERATED			(0x1u<<0)
+
+// EVENTS_END Configuration
+
+#define	RADIO_EVENTS_END_EVENTS_END								(0x1u<<0)
+#define	RADIO_EVENTS_END_EVENTS_END_NOTGENERATED				(0x0u<<0)
+#define	RADIO_EVENTS_END_EVENTS_END_GENERATED					(0x1u<<0)
+
+// EVENTS_DISABLED Configuration
+
+#define	RADIO_EVENTS_DISABLED_EVENTS_DISABLED					(0x1u<<0)
+#define	RADIO_EVENTS_DISABLED_EVENTS_DISABLED_NOTGENERATED		(0x0u<<0)
+#define	RADIO_EVENTS_DISABLED_EVENTS_DISABLED_GENERATED			(0x1u<<0)
+
+// EVENTS_DEVMATCH Configuration
+
+#define	RADIO_EVENTS_DEVMATCH_EVENTS_DEVMATCH					(0x1u<<0)
+#define	RADIO_EVENTS_DEVMATCH_EVENTS_DEVMATCH_NOTGENERATED		(0x0u<<0)
+#define	RADIO_EVENTS_DEVMATCH_EVENTS_DEVMATCH_GENERATED			(0x1u<<0)
+
+// EVENTS_DEVMISS Configuration
+
+#define	RADIO_EVENTS_DEVMISS_EVENTS_DEVMISS						(0x1u<<0)
+#define	RADIO_EVENTS_DEVMISS_EVENTS_DEVMISS_NOTGENERATED		(0x0u<<0)
+#define	RADIO_EVENTS_DEVMISS_EVENTS_DEVMISS_GENERATED			(0x1u<<0)
+
+// EVENTS_RSSIEND Configuration
+
+#define	RADIO_EVENTS_RSSIEND_EVENTS_RSSIEND						(0x1u<<0)
+#define	RADIO_EVENTS_RSSIEND_EVENTS_RSSIEND_NOTGENERATED		(0x0u<<0)
+#define	RADIO_EVENTS_RSSIEND_EVENTS_RSSIEND_GENERATED			(0x1u<<0)
+
+// EVENTS_BCMATCH Configuration
+
+#define	RADIO_EVENTS_BCMATCH_EVENTS_BCMATCH						(0x1u<<0)
+#define	RADIO_EVENTS_BCMATCH_EVENTS_BCMATCH_NOTGENERATED		(0x0u<<0)
+#define	RADIO_EVENTS_BCMATCH_EVENTS_BCMATCH_GENERATED			(0x1u<<0)
+
+// EVENTS_CRCOK Configuration
+
+#define	RADIO_EVENTS_CRCOK_EVENTS_CRCOK							(0x1u<<0)
+#define	RADIO_EVENTS_CRCOK_EVENTS_CRCOK_NOTGENERATED			(0x0u<<0)
+#define	RADIO_EVENTS_CRCOK_EVENTS_CRCOK_GENERATED				(0x1u<<0)
+
+// EVENTS_CRCERROR Configuration
+
+#define	RADIO_EVENTS_CRCERROR_EVENTS_CRCERROR					(0x1u<<0)
+#define	RADIO_EVENTS_CRCERROR_EVENTS_CRCERROR_NOTGENERATED		(0x0u<<0)
+#define	RADIO_EVENTS_CRCERROR_EVENTS_CRCERROR_GENERATED			(0x1u<<0)
+
+// EVENTS_FRAMESTART Configuration
+
+#define	RADIO_EVENTS_FRAMESTART_EVENTS_FRAMESTART				(0x1u<<0)
+#define	RADIO_EVENTS_FRAMESTART_EVENTS_FRAMESTART_NOTGENERATED	(0x0u<<0)
+#define	RADIO_EVENTS_FRAMESTART_EVENTS_FRAMESTART_GENERATED		(0x1u<<0)
+
+// EVENTS_EDEND Configuration
+
+#define	RADIO_EVENTS_EDEND_EVENTS_EDEND							(0x1u<<0)
+#define	RADIO_EVENTS_EDEND_EVENTS_EDEND_NOTGENERATED			(0x0u<<0)
+#define	RADIO_EVENTS_EDEND_EVENTS_EDEND_GENERATED				(0x1u<<0)
+
+// EVENTS_EDSTOPPED Configuration
+
+#define	RADIO_EVENTS_EDSTOPPED_EVENTS_EDSTOPPED					(0x1u<<0)
+#define	RADIO_EVENTS_EDSTOPPED_EVENTS_EDSTOPPED_NOTGENERATED	(0x0u<<0)
+#define	RADIO_EVENTS_EDSTOPPED_EVENTS_EDSTOPPED_GENERATED		(0x1u<<0)
+
+// EVENTS_CCAIDLE Configuration
+
+#define	RADIO_EVENTS_CCAIDLE_EVENTS_CCAIDLE						(0x1u<<0)
+#define	RADIO_EVENTS_CCAIDLE_EVENTS_CCAIDLE_NOTGENERATED		(0x0u<<0)
+#define	RADIO_EVENTS_CCAIDLE_EVENTS_CCAIDLE_GENERATED			(0x1u<<0)
+
+// EVENTS_CCABUSY Configuration
+
+#define	RADIO_EVENTS_CCABUSY_EVENTS_CCABUSY						(0x1u<<0)
+#define	RADIO_EVENTS_CCABUSY_EVENTS_CCABUSY_NOTGENERATED		(0x0u<<0)
+#define	RADIO_EVENTS_CCABUSY_EVENTS_CCABUSY_GENERATED			(0x1u<<0)
+
+// EVENTS_CCASTOPPED Configuration
+
+#define	RADIO_EVENTS_CCASTOPPED_EVENTS_CCASTOPPED				(0x1u<<0)
+#define	RADIO_EVENTS_CCASTOPPED_EVENTS_CCASTOPPED_NOTGENERATED	(0x0u<<0)
+#define	RADIO_EVENTS_CCASTOPPED_EVENTS_CCASTOPPED_GENERATED		(0x1u<<0)
+
+// EVENTS_RATEBOOST Configuration
+
+#define	RADIO_EVENTS_RATEBOOST_EVENTS_RATEBOOST					(0x1u<<0)
+#define	RADIO_EVENTS_RATEBOOST_EVENTS_RATEBOOST_NOTGENERATED	(0x0u<<0)
+#define	RADIO_EVENTS_RATEBOOST_EVENTS_RATEBOOST_GENERATED		(0x1u<<0)
+
+// EVENTS_TXREADY Configuration
+
+#define	RADIO_EVENTS_TXREADY_EVENTS_TXREADY						(0x1u<<0)
+#define	RADIO_EVENTS_TXREADY_EVENTS_TXREADY_NOTGENERATED		(0x0u<<0)
+#define	RADIO_EVENTS_TXREADY_EVENTS_TXREADY_GENERATED			(0x1u<<0)
+
+// EVENTS_RXREADY Configuration
+
+#define	RADIO_EVENTS_RXREADY_EVENTS_RXREADY						(0x1u<<0)
+#define	RADIO_EVENTS_RXREADY_EVENTS_RXREADY_NOTGENERATED		(0x0u<<0)
+#define	RADIO_EVENTS_RXREADY_EVENTS_RXREADY_GENERATED			(0x1u<<0)
+
+// EVENTS_MHRMATCH Configuration
+
+#define	RADIO_EVENTS_MHRMATCH_EVENTS_MHRMATCH					(0x1u<<0)
+#define	RADIO_EVENTS_MHRMATCH_EVENTS_MHRMATCH_NOTGENERATED		(0x0u<<0)
+#define	RADIO_EVENTS_MHRMATCH_EVENTS_MHRMATCH_GENERATED			(0x1u<<0)
+
+// EVENTS_SYNC Configuration
+
+#define	RADIO_EVENTS_SYNC_EVENTS_SYNC							(0x1u<<0)
+#define	RADIO_EVENTS_SYNC_EVENTS_SYNC_NOTGENERATED				(0x0u<<0)
+#define	RADIO_EVENTS_SYNC_EVENTS_SYNC_GENERATED					(0x1u<<0)
+
+// EVENTS_PHYEND Configuration
+
+#define	RADIO_EVENTS_PHYEND_EVENTS_PHYEND						(0x1u<<0)
+#define	RADIO_EVENTS_PHYEND_EVENTS_PHYEND_NOTGENERATED			(0x0u<<0)
+#define	RADIO_EVENTS_PHYEND_EVENTS_PHYEND_GENERATED				(0x1u<<0)
+
+// EVENTS_CTEPRESENT Configuration
+
+#define	RADIO_EVENTS_CTEPRESENT_EVENTS_CTEPRESENT				(0x1u<<0)
+#define	RADIO_EVENTS_CTEPRESENT_EVENTS_CTEPRESENT_NOTGENERATED	(0x0u<<0)
+#define	RADIO_EVENTS_CTEPRESENT_EVENTS_CTEPRESENT_GENERATED		(0x1u<<0)
+
+// PUBLISH_READY Configuration
+
+#define	RADIO_PUBLISH_READY_EN									(0x1u<<31)
+#define	RADIO_PUBLISH_READY_CHIDX								(0xFFu<<0)
+#define	RADIO_PUBLISH_READY_CHIDX_0								(0x1u<<0)
+#define	RADIO_PUBLISH_READY_EN_DISABLED							(0x0u<<31)
+#define	RADIO_PUBLISH_READY_EN_ENABLED							(0x1u<<31)
+
+// PUBLISH_ADDRESS Configuration
+
+#define	RADIO_PUBLISH_ADDRESS_EN								(0x1u<<31)
+#define	RADIO_PUBLISH_ADDRESS_CHIDX								(0xFFu<<0)
+#define	RADIO_PUBLISH_ADDRESS_CHIDX_0							(0x1u<<0)
+#define	RADIO_PUBLISH_ADDRESS_EN_DISABLED						(0x0u<<31)
+#define	RADIO_PUBLISH_ADDRESS_EN_ENABLED						(0x1u<<31)
+
+// PUBLISH_PAYLOAD Configuration
+
+#define	RADIO_PUBLISH_PAYLOAD_EN								(0x1u<<31)
+#define	RADIO_PUBLISH_PAYLOAD_CHIDX								(0xFFu<<0)
+#define	RADIO_PUBLISH_PAYLOAD_CHIDX_0							(0x1u<<0)
+#define	RADIO_PUBLISH_PAYLOAD_EN_DISABLED						(0x0u<<31)
+#define	RADIO_PUBLISH_PAYLOAD_EN_ENABLED						(0x1u<<31)
+
+// PUBLISH_END Configuration
+
+#define	RADIO_PUBLISH_END_EN									(0x1u<<31)
+#define	RADIO_PUBLISH_END_CHIDX									(0xFFu<<0)
+#define	RADIO_PUBLISH_END_CHIDX_0								(0x1u<<0)
+#define	RADIO_PUBLISH_END_EN_DISABLED							(0x0u<<31)
+#define	RADIO_PUBLISH_END_EN_ENABLED							(0x1u<<31)
+
+// PUBLISH_DISABLED Configuration
+
+#define	RADIO_PUBLISH_DISABLED_EN								(0x1u<<31)
+#define	RADIO_PUBLISH_DISABLED_CHIDX							(0xFFu<<0)
+#define	RADIO_PUBLISH_DISABLED_CHIDX_0							(0x1u<<0)
+#define	RADIO_PUBLISH_DISABLED_EN_DISABLED						(0x0u<<31)
+#define	RADIO_PUBLISH_DISABLED_EN_ENABLED						(0x1u<<31)
+
+// PUBLISH_DEVMATCH Configuration
+
+#define	RADIO_PUBLISH_DEVMATCH_EN								(0x1u<<31)
+#define	RADIO_PUBLISH_DEVMATCH_CHIDX							(0xFFu<<0)
+#define	RADIO_PUBLISH_DEVMATCH_CHIDX_0							(0x1u<<0)
+#define	RADIO_PUBLISH_DEVMATCH_EN_DISABLED						(0x0u<<31)
+#define	RADIO_PUBLISH_DEVMATCH_EN_ENABLED						(0x1u<<31)
+
+// PUBLISH_DEVMISS Configuration
+
+#define	RADIO_PUBLISH_DEVMISS_EN								(0x1u<<31)
+#define	RADIO_PUBLISH_DEVMISS_CHIDX								(0xFFu<<0)
+#define	RADIO_PUBLISH_DEVMISS_CHIDX_0							(0x1u<<0)
+#define	RADIO_PUBLISH_DEVMISS_EN_DISABLED						(0x0u<<31)
+#define	RADIO_PUBLISH_DEVMISS_EN_ENABLED						(0x1u<<31)
+
+// PUBLISH_RSSIEND Configuration
+
+#define	RADIO_PUBLISH_RSSIEND_EN								(0x1u<<31)
+#define	RADIO_PUBLISH_RSSIEND_CHIDX								(0xFFu<<0)
+#define	RADIO_PUBLISH_RSSIEND_CHIDX_0							(0x1u<<0)
+#define	RADIO_PUBLISH_RSSIEND_EN_DISABLED						(0x0u<<31)
+#define	RADIO_PUBLISH_RSSIEND_EN_ENABLED						(0x1u<<31)
+
+// PUBLISH_BCMATCH Configuration
+
+#define	RADIO_PUBLISH_BCMATCH_EN								(0x1u<<31)
+#define	RADIO_PUBLISH_BCMATCH_CHIDX								(0xFFu<<0)
+#define	RADIO_PUBLISH_BCMATCH_CHIDX_0							(0x1u<<0)
+#define	RADIO_PUBLISH_BCMATCH_EN_DISABLED						(0x0u<<31)
+#define	RADIO_PUBLISH_BCMATCH_EN_ENABLED						(0x1u<<31)
+
+// PUBLISH_CRCOK Configuration
+
+#define	RADIO_PUBLISH_CRCOK_EN									(0x1u<<31)
+#define	RADIO_PUBLISH_CRCOK_CHIDX								(0xFFu<<0)
+#define	RADIO_PUBLISH_CRCOK_CHIDX_0								(0x1u<<0)
+#define	RADIO_PUBLISH_CRCOK_EN_DISABLED							(0x0u<<31)
+#define	RADIO_PUBLISH_CRCOK_EN_ENABLED							(0x1u<<31)
+
+// PUBLISH_CRCERROR Configuration
+
+#define	RADIO_PUBLISH_CRCERROR_EN								(0x1u<<31)
+#define	RADIO_PUBLISH_CRCERROR_CHIDX							(0xFFu<<0)
+#define	RADIO_PUBLISH_CRCERROR_CHIDX_0							(0x1u<<0)
+#define	RADIO_PUBLISH_CRCERROR_EN_DISABLED						(0x0u<<31)
+#define	RADIO_PUBLISH_CRCERROR_EN_ENABLED						(0x1u<<31)
+
+// PUBLISH_FRAMESTART Configuration
+
+#define	RADIO_PUBLISH_FRAMESTART_EN								(0x1u<<31)
+#define	RADIO_PUBLISH_FRAMESTART_CHIDX							(0xFFu<<0)
+#define	RADIO_PUBLISH_FRAMESTART_CHIDX_0						(0x1u<<0)
+#define	RADIO_PUBLISH_FRAMESTART_EN_DISABLED					(0x0u<<31)
+#define	RADIO_PUBLISH_FRAMESTART_EN_ENABLED						(0x1u<<31)
+
+// PUBLISH_EDEND Configuration
+
+#define	RADIO_PUBLISH_EDEND_EN									(0x1u<<31)
+#define	RADIO_PUBLISH_EDEND_CHIDX								(0xFFu<<0)
+#define	RADIO_PUBLISH_EDEND_CHIDX_0								(0x1u<<0)
+#define	RADIO_PUBLISH_EDEND_EN_DISABLED							(0x0u<<31)
+#define	RADIO_PUBLISH_EDEND_EN_ENABLED							(0x1u<<31)
+
+// PUBLISH_EDSTOPPED Configuration
+
+#define	RADIO_PUBLISH_EDSTOPPED_EN								(0x1u<<31)
+#define	RADIO_PUBLISH_EDSTOPPED_CHIDX							(0xFFu<<0)
+#define	RADIO_PUBLISH_EDSTOPPED_CHIDX_0							(0x1u<<0)
+#define	RADIO_PUBLISH_EDSTOPPED_EN_DISABLED						(0x0u<<31)
+#define	RADIO_PUBLISH_EDSTOPPED_EN_ENABLED						(0x1u<<31)
+
+// PUBLISH_CCAIDLE Configuration
+
+#define	RADIO_PUBLISH_CCAIDLE_EN								(0x1u<<31)
+#define	RADIO_PUBLISH_CCAIDLE_CHIDX								(0xFFu<<0)
+#define	RADIO_PUBLISH_CCAIDLE_CHIDX_0							(0x1u<<0)
+#define	RADIO_PUBLISH_CCAIDLE_EN_DISABLED						(0x0u<<31)
+#define	RADIO_PUBLISH_CCAIDLE_EN_ENABLED						(0x1u<<31)
+
+// PUBLISH_CCABUSY Configuration
+
+#define	RADIO_PUBLISH_CCABUSY_EN								(0x1u<<31)
+#define	RADIO_PUBLISH_CCABUSY_CHIDX								(0xFFu<<0)
+#define	RADIO_PUBLISH_CCABUSY_CHIDX_0							(0x1u<<0)
+#define	RADIO_PUBLISH_CCABUSY_EN_DISABLED						(0x0u<<31)
+#define	RADIO_PUBLISH_CCABUSY_EN_ENABLED						(0x1u<<31)
+
+// PUBLISH_CCASTOPPED Configuration
+
+#define	RADIO_PUBLISH_CCASTOPPED_EN								(0x1u<<31)
+#define	RADIO_PUBLISH_CCASTOPPED_CHIDX							(0xFFu<<0)
+#define	RADIO_PUBLISH_CCASTOPPED_CHIDX_0						(0x1u<<0)
+#define	RADIO_PUBLISH_CCASTOPPED_EN_DISABLED					(0x0u<<31)
+#define	RADIO_PUBLISH_CCASTOPPED_EN_ENABLED						(0x1u<<31)
+
+// PUBLISH_RATEBOOST Configuration
+
+#define	RADIO_PUBLISH_RATEBOOST_EN								(0x1u<<31)
+#define	RADIO_PUBLISH_RATEBOOST_CHIDX							(0xFFu<<0)
+#define	RADIO_PUBLISH_RATEBOOST_CHIDX_0							(0x1u<<0)
+#define	RADIO_PUBLISH_RATEBOOST_EN_DISABLED						(0x0u<<31)
+#define	RADIO_PUBLISH_RATEBOOST_EN_ENABLED						(0x1u<<31)
+
+// PUBLISH_TXREADY Configuration
+
+#define	RADIO_PUBLISH_TXREADY_EN								(0x1u<<31)
+#define	RADIO_PUBLISH_TXREADY_CHIDX								(0xFFu<<0)
+#define	RADIO_PUBLISH_TXREADY_CHIDX_0							(0x1u<<0)
+#define	RADIO_PUBLISH_TXREADY_EN_DISABLED						(0x0u<<31)
+#define	RADIO_PUBLISH_TXREADY_EN_ENABLED						(0x1u<<31)
+
+// PUBLISH_RXREADY Configuration
+
+#define	RADIO_PUBLISH_RXREADY_EN								(0x1u<<31)
+#define	RADIO_PUBLISH_RXREADY_CHIDX								(0xFFu<<0)
+#define	RADIO_PUBLISH_RXREADY_CHIDX_0							(0x1u<<0)
+#define	RADIO_PUBLISH_RXREADY_EN_DISABLED						(0x0u<<31)
+#define	RADIO_PUBLISH_RXREADY_EN_ENABLED						(0x1u<<31)
+
+// PUBLISH_MHRMATCH Configuration
+
+#define	RADIO_PUBLISH_MHRMATCH_EN								(0x1u<<31)
+#define	RADIO_PUBLISH_MHRMATCH_CHIDX							(0xFFu<<0)
+#define	RADIO_PUBLISH_MHRMATCH_CHIDX_0							(0x1u<<0)
+#define	RADIO_PUBLISH_MHRMATCH_EN_DISABLED						(0x0u<<31)
+#define	RADIO_PUBLISH_MHRMATCH_EN_ENABLED						(0x1u<<31)
+
+// PUBLISH_SYNC Configuration
+
+#define	RADIO_PUBLISH_SYNC_EN									(0x1u<<31)
+#define	RADIO_PUBLISH_SYNC_CHIDX								(0xFFu<<0)
+#define	RADIO_PUBLISH_SYNC_CHIDX_0								(0x1u<<0)
+#define	RADIO_PUBLISH_SYNC_EN_DISABLED							(0x0u<<31)
+#define	RADIO_PUBLISH_SYNC_EN_ENABLED							(0x1u<<31)
+
+// PUBLISH_PHYEND Configuration
+
+#define	RADIO_PUBLISH_PHYEND_EN									(0x1u<<31)
+#define	RADIO_PUBLISH_PHYEND_CHIDX								(0xFFu<<0)
+#define	RADIO_PUBLISH_PHYEND_CHIDX_0							(0x1u<<0)
+#define	RADIO_PUBLISH_PHYEND_EN_DISABLED						(0x0u<<31)
+#define	RADIO_PUBLISH_PHYEND_EN_ENABLED							(0x1u<<31)
+
+// PUBLISH_CTEPRESENT Configuration
+
+#define	RADIO_PUBLISH_CTEPRESENT_EN								(0x1u<<31)
+#define	RADIO_PUBLISH_CTEPRESENT_CHIDX							(0xFFu<<0)
+#define	RADIO_PUBLISH_CTEPRESENT_CHIDX_0						(0x1u<<0)
+#define	RADIO_PUBLISH_CTEPRESENT_EN_DISABLED					(0x0u<<31)
+#define	RADIO_PUBLISH_CTEPRESENT_EN_ENABLED						(0x1u<<31)
+
+// SHORTS Configuration
+
+#define	RADIO_SHORTS_PHYEND_START								(0x1u<<21)
+#define	RADIO_SHORTS_PHYEND_DISABLE								(0x1u<<20)
+#define	RADIO_SHORTS_RXREADY_START								(0x1u<<19)
+#define	RADIO_SHORTS_TXREADY_START								(0x1u<<18)
+#define	RADIO_SHORTS_CCAIDLE_STOP								(0x1u<<17)
+#define	RADIO_SHORTS_EDEND_DISABLE								(0x1u<<16)
+#define	RADIO_SHORTS_READY_EDSTART								(0x1u<<15)
+#define	RADIO_SHORTS_FRAMESTART_BCSTART							(0x1u<<14)
+#define	RADIO_SHORTS_CCABUSY_DISABLE							(0x1u<<13)
+#define	RADIO_SHORTS_CCAIDLE_TXEN								(0x1u<<12)
+#define	RADIO_SHORTS_RXREADY_CCASTART							(0x1u<<11)
+#define	RADIO_SHORTS_DISABLED_RSSISTOP							(0x1u<<8)
+#define	RADIO_SHORTS_ADDRESS_BCSTART							(0x1u<<6)
+#define	RADIO_SHORTS_END_START									(0x1u<<5)
+#define	RADIO_SHORTS_ADDRESS_RSSISTART							(0x1u<<4)
+#define	RADIO_SHORTS_DISABLED_RXEN								(0x1u<<3)
+#define	RADIO_SHORTS_DISABLED_TXEN								(0x1u<<2)
+#define	RADIO_SHORTS_END_DISABLE								(0x1u<<1)
+#define	RADIO_SHORTS_READY_START								(0x1u<<0)
+#define	RADIO_SHORTS_PHYEND_START_DISABLED						(0x0u<<21)
+#define	RADIO_SHORTS_PHYEND_START_ENABLED						(0x1u<<21)
+#define	RADIO_SHORTS_PHYEND_DISABLE_DISABLED					(0x0u<<20)
+#define	RADIO_SHORTS_PHYEND_DISABLE_ENABLED						(0x1u<<20)
+#define	RADIO_SHORTS_RXREADY_START_DISABLED						(0x0u<<19)
+#define	RADIO_SHORTS_RXREADY_START_ENABLED						(0x1u<<19)
+#define	RADIO_SHORTS_TXREADY_START_DISABLED						(0x0u<<18)
+#define	RADIO_SHORTS_TXREADY_START_ENABLED						(0x1u<<18)
+#define	RADIO_SHORTS_CCAIDLE_STOP_DISABLED						(0x0u<<17)
+#define	RADIO_SHORTS_CCAIDLE_STOP_ENABLED						(0x1u<<17)
+#define	RADIO_SHORTS_EDEND_DISABLE_DISABLED						(0x0u<<16)
+#define	RADIO_SHORTS_EDEND_DISABLE_ENABLED						(0x1u<<16)
+#define	RADIO_SHORTS_READY_EDSTART_DISABLED						(0x0u<<15)
+#define	RADIO_SHORTS_READY_EDSTART_ENABLED						(0x1u<<15)
+#define	RADIO_SHORTS_FRAMESTART_BCSTART_DISABLED				(0x0u<<14)
+#define	RADIO_SHORTS_FRAMESTART_BCSTART_ENABLED					(0x1u<<14)
+#define	RADIO_SHORTS_CCABUSY_DISABLE_DISABLED					(0x0u<<13)
+#define	RADIO_SHORTS_CCABUSY_DISABLE_ENABLED					(0x1u<<13)
+#define	RADIO_SHORTS_CCAIDLE_TXEN_DISABLED						(0x0u<<12)
+#define	RADIO_SHORTS_CCAIDLE_TXEN_ENABLED						(0x1u<<12)
+#define	RADIO_SHORTS_RXREADY_CCASTART_DISABLED					(0x0u<<11)
+#define	RADIO_SHORTS_RXREADY_CCASTART_ENABLED					(0x1u<<11)
+#define	RADIO_SHORTS_DISABLED_RSSISTOP_DISABLED					(0x0u<<8)
+#define	RADIO_SHORTS_DISABLED_RSSISTOP_ENABLED					(0x1u<<8)
+#define	RADIO_SHORTS_ADDRESS_BCSTART_DISABLED					(0x0u<<6)
+#define	RADIO_SHORTS_ADDRESS_BCSTART_ENABLED					(0x1u<<6)
+#define	RADIO_SHORTS_END_START_DISABLED							(0x0u<<5)
+#define	RADIO_SHORTS_END_START_ENABLED							(0x1u<<5)
+#define	RADIO_SHORTS_ADDRESS_RSSISTART_DISABLED					(0x0u<<4)
+#define	RADIO_SHORTS_ADDRESS_RSSISTART_ENABLED					(0x1u<<4)
+#define	RADIO_SHORTS_DISABLED_RXEN_DISABLED						(0x0u<<3)
+#define	RADIO_SHORTS_DISABLED_RXEN_ENABLED						(0x1u<<3)
+#define	RADIO_SHORTS_DISABLED_TXEN_DISABLED						(0x0u<<2)
+#define	RADIO_SHORTS_DISABLED_TXEN_ENABLED						(0x1u<<2)
+#define	RADIO_SHORTS_END_DISABLE_DISABLED						(0x0u<<1)
+#define	RADIO_SHORTS_END_DISABLE_ENABLED						(0x1u<<1)
+#define	RADIO_SHORTS_READY_START_DISABLED						(0x0u<<0)
+#define	RADIO_SHORTS_READY_START_ENABLED						(0x1u<<0)
+
+// INTENSET Configuration
+
+#define	RADIO_INTENSET_CTEPRESENT								(0x1u<<28)
+#define	RADIO_INTENSET_PHYEND									(0x1u<<27)
+#define	RADIO_INTENSET_SYNC										(0x1u<<26)
+#define	RADIO_INTENSET_MHRMATCH									(0x1u<<23)
+#define	RADIO_INTENSET_RXREADY									(0x1u<<22)
+#define	RADIO_INTENSET_TXREADY									(0x1u<<21)
+#define	RADIO_INTENSET_RATEBOOST								(0x1u<<20)
+#define	RADIO_INTENSET_CCASTOPPED								(0x1u<<19)
+#define	RADIO_INTENSET_CCABUSY									(0x1u<<18)
+#define	RADIO_INTENSET_CCAIDLE									(0x1u<<17)
+#define	RADIO_INTENSET_EDSTOPPED								(0x1u<<16)
+#define	RADIO_INTENSET_EDEND									(0x1u<<15)
+#define	RADIO_INTENSET_FRAMESTART								(0x1u<<14)
+#define	RADIO_INTENSET_CRCERROR									(0x1u<<13)
+#define	RADIO_INTENSET_CRCOK									(0x1u<<12)
+#define	RADIO_INTENSET_BCMATCH									(0x1u<<10)
+#define	RADIO_INTENSET_RSSIEND									(0x1u<<7)
+#define	RADIO_INTENSET_DEVMISS									(0x1u<<6)
+#define	RADIO_INTENSET_DEVMATCH									(0x1u<<5)
+#define	RADIO_INTENSET_DISABLED									(0x1u<<4)
+#define	RADIO_INTENSET_END										(0x1u<<3)
+#define	RADIO_INTENSET_PAYLOAD									(0x1u<<2)
+#define	RADIO_INTENSET_ADDRESS									(0x1u<<1)
+#define	RADIO_INTENSET_READY									(0x1u<<0)
+#define	RADIO_INTENSET_CTEPRESENT_DISABLED						(0x0u<<28)
+#define	RADIO_INTENSET_CTEPRESENT_ENABLED						(0x1u<<28)
+#define	RADIO_INTENSET_CTEPRESENT_SET							(0x1u<<28)
+#define	RADIO_INTENSET_PHYEND_DISABLED							(0x0u<<27)
+#define	RADIO_INTENSET_PHYEND_ENABLED							(0x1u<<27)
+#define	RADIO_INTENSET_PHYEND_SET								(0x1u<<27)
+#define	RADIO_INTENSET_SYNC_DISABLED							(0x0u<<26)
+#define	RADIO_INTENSET_SYNC_ENABLED								(0x1u<<26)
+#define	RADIO_INTENSET_SYNC_SET									(0x1u<<26)
+#define	RADIO_INTENSET_MHRMATCH_DISABLED						(0x0u<<23)
+#define	RADIO_INTENSET_MHRMATCH_ENABLED							(0x1u<<23)
+#define	RADIO_INTENSET_MHRMATCH_SET								(0x1u<<23)
+#define	RADIO_INTENSET_RXREADY_DISABLED							(0x0u<<22)
+#define	RADIO_INTENSET_RXREADY_ENABLED							(0x1u<<22)
+#define	RADIO_INTENSET_RXREADY_SET								(0x1u<<22)
+#define	RADIO_INTENSET_TXREADY_DISABLED							(0x0u<<21)
+#define	RADIO_INTENSET_TXREADY_ENABLED							(0x1u<<21)
+#define	RADIO_INTENSET_TXREADY_SET								(0x1u<<21)
+#define	RADIO_INTENSET_RATEBOOST_DISABLED						(0x0u<<20)
+#define	RADIO_INTENSET_RATEBOOST_ENABLED						(0x1u<<20)
+#define	RADIO_INTENSET_RATEBOOST_SET							(0x1u<<20)
+#define	RADIO_INTENSET_CCASTOPPED_DISABLED						(0x0u<<19)
+#define	RADIO_INTENSET_CCASTOPPED_ENABLED						(0x1u<<19)
+#define	RADIO_INTENSET_CCASTOPPED_SET							(0x1u<<19)
+#define	RADIO_INTENSET_CCABUSY_DISABLED							(0x0u<<18)
+#define	RADIO_INTENSET_CCABUSY_ENABLED							(0x1u<<18)
+#define	RADIO_INTENSET_CCABUSY_SET								(0x1u<<18)
+#define	RADIO_INTENSET_CCAIDLE_DISABLED							(0x0u<<17)
+#define	RADIO_INTENSET_CCAIDLE_ENABLED							(0x1u<<17)
+#define	RADIO_INTENSET_CCAIDLE_SET								(0x1u<<17)
+#define	RADIO_INTENSET_EDSTOPPED_DISABLED						(0x0u<<16)
+#define	RADIO_INTENSET_EDSTOPPED_ENABLED						(0x1u<<16)
+#define	RADIO_INTENSET_EDSTOPPED_SET							(0x1u<<16)
+#define	RADIO_INTENSET_EDEND_DISABLED							(0x0u<<15)
+#define	RADIO_INTENSET_EDEND_ENABLED							(0x1u<<15)
+#define	RADIO_INTENSET_EDEND_SET								(0x1u<<15)
+#define	RADIO_INTENSET_FRAMESTART_DISABLED						(0x0u<<14)
+#define	RADIO_INTENSET_FRAMESTART_ENABLED						(0x1u<<14)
+#define	RADIO_INTENSET_FRAMESTART_SET							(0x1u<<14)
+#define	RADIO_INTENSET_CRCERROR_DISABLED						(0x0u<<13)
+#define	RADIO_INTENSET_CRCERROR_ENABLED							(0x1u<<13)
+#define	RADIO_INTENSET_CRCERROR_SET								(0x1u<<13)
+#define	RADIO_INTENSET_CRCOK_DISABLED							(0x0u<<12)
+#define	RADIO_INTENSET_CRCOK_ENABLED							(0x1u<<12)
+#define	RADIO_INTENSET_CRCOK_SET								(0x1u<<12)
+#define	RADIO_INTENSET_BCMATCH_DISABLED							(0x0u<<10)
+#define	RADIO_INTENSET_BCMATCH_ENABLED							(0x1u<<10)
+#define	RADIO_INTENSET_BCMATCH_SET								(0x1u<<10)
+#define	RADIO_INTENSET_RSSIEND_DISABLED							(0x0u<<7)
+#define	RADIO_INTENSET_RSSIEND_ENABLED							(0x1u<<7)
+#define	RADIO_INTENSET_RSSIEND_SET								(0x1u<<7)
+#define	RADIO_INTENSET_DEVMISS_DISABLED							(0x0u<<6)
+#define	RADIO_INTENSET_DEVMISS_ENABLED							(0x1u<<6)
+#define	RADIO_INTENSET_DEVMISS_SET								(0x1u<<6)
+#define	RADIO_INTENSET_DEVMATCH_DISABLED						(0x0u<<5)
+#define	RADIO_INTENSET_DEVMATCH_ENABLED							(0x1u<<5)
+#define	RADIO_INTENSET_DEVMATCH_SET								(0x1u<<5)
+#define	RADIO_INTENSET_DISABLED_DISABLED						(0x0u<<4)
+#define	RADIO_INTENSET_DISABLED_ENABLED							(0x1u<<4)
+#define	RADIO_INTENSET_DISABLED_SET								(0x1u<<4)
+#define	RADIO_INTENSET_END_DISABLED								(0x0u<<3)
+#define	RADIO_INTENSET_END_ENABLED								(0x1u<<3)
+#define	RADIO_INTENSET_END_SET									(0x1u<<3)
+#define	RADIO_INTENSET_PAYLOAD_DISABLED							(0x0u<<2)
+#define	RADIO_INTENSET_PAYLOAD_ENABLED							(0x1u<<2)
+#define	RADIO_INTENSET_PAYLOAD_SET								(0x1u<<2)
+#define	RADIO_INTENSET_ADDRESS_DISABLED							(0x0u<<1)
+#define	RADIO_INTENSET_ADDRESS_ENABLED							(0x1u<<1)
+#define	RADIO_INTENSET_ADDRESS_SET								(0x1u<<1)
+#define	RADIO_INTENSET_READY_DISABLED							(0x0u<<0)
+#define	RADIO_INTENSET_READY_ENABLED							(0x1u<<0)
+#define	RADIO_INTENSET_READY_SET								(0x1u<<0)
+
+// INTENCLR Configuration
+
+#define	RADIO_INTENCLR_CTEPRESENT								(0x1u<<28)
+#define	RADIO_INTENCLR_PHYEND									(0x1u<<27)
+#define	RADIO_INTENCLR_SYNC										(0x1u<<26)
+#define	RADIO_INTENCLR_MHRMATCH									(0x1u<<23)
+#define	RADIO_INTENCLR_RXREADY									(0x1u<<22)
+#define	RADIO_INTENCLR_TXREADY									(0x1u<<21)
+#define	RADIO_INTENCLR_RATEBOOST								(0x1u<<20)
+#define	RADIO_INTENCLR_CCASTOPPED								(0x1u<<19)
+#define	RADIO_INTENCLR_CCABUSY									(0x1u<<18)
+#define	RADIO_INTENCLR_CCAIDLE									(0x1u<<17)
+#define	RADIO_INTENCLR_EDSTOPPED								(0x1u<<16)
+#define	RADIO_INTENCLR_EDEND									(0x1u<<15)
+#define	RADIO_INTENCLR_FRAMESTART								(0x1u<<14)
+#define	RADIO_INTENCLR_CRCERROR									(0x1u<<13)
+#define	RADIO_INTENCLR_CRCOK									(0x1u<<12)
+#define	RADIO_INTENCLR_BCMATCH									(0x1u<<10)
+#define	RADIO_INTENCLR_RSSIEND									(0x1u<<7)
+#define	RADIO_INTENCLR_DEVMISS									(0x1u<<6)
+#define	RADIO_INTENCLR_DEVMATCH									(0x1u<<5)
+#define	RADIO_INTENCLR_DISABLED									(0x1u<<4)
+#define	RADIO_INTENCLR_END										(0x1u<<3)
+#define	RADIO_INTENCLR_PAYLOAD									(0x1u<<2)
+#define	RADIO_INTENCLR_ADDRESS									(0x1u<<1)
+#define	RADIO_INTENCLR_READY									(0x1u<<0)
+#define	RADIO_INTENCLR_CTEPRESENT_DISABLED						(0x0u<<28)
+#define	RADIO_INTENCLR_CTEPRESENT_ENABLED						(0x1u<<28)
+#define	RADIO_INTENCLR_CTEPRESENT_CLEAR							(0x1u<<28)
+#define	RADIO_INTENCLR_PHYEND_DISABLED							(0x0u<<27)
+#define	RADIO_INTENCLR_PHYEND_ENABLED							(0x1u<<27)
+#define	RADIO_INTENCLR_PHYEND_CLEAR								(0x1u<<27)
+#define	RADIO_INTENCLR_SYNC_DISABLED							(0x0u<<26)
+#define	RADIO_INTENCLR_SYNC_ENABLED								(0x1u<<26)
+#define	RADIO_INTENCLR_SYNC_CLEAR								(0x1u<<26)
+#define	RADIO_INTENCLR_MHRMATCH_DISABLED						(0x0u<<23)
+#define	RADIO_INTENCLR_MHRMATCH_ENABLED							(0x1u<<23)
+#define	RADIO_INTENCLR_MHRMATCH_CLEAR							(0x1u<<23)
+#define	RADIO_INTENCLR_RXREADY_DISABLED							(0x0u<<22)
+#define	RADIO_INTENCLR_RXREADY_ENABLED							(0x1u<<22)
+#define	RADIO_INTENCLR_RXREADY_CLEAR							(0x1u<<22)
+#define	RADIO_INTENCLR_TXREADY_DISABLED							(0x0u<<21)
+#define	RADIO_INTENCLR_TXREADY_ENABLED							(0x1u<<21)
+#define	RADIO_INTENCLR_TXREADY_CLEAR							(0x1u<<21)
+#define	RADIO_INTENCLR_RATEBOOST_DISABLED						(0x0u<<20)
+#define	RADIO_INTENCLR_RATEBOOST_ENABLED						(0x1u<<20)
+#define	RADIO_INTENCLR_RATEBOOST_CLEAR							(0x1u<<20)
+#define	RADIO_INTENCLR_CCASTOPPED_DISABLED						(0x0u<<19)
+#define	RADIO_INTENCLR_CCASTOPPED_ENABLED						(0x1u<<19)
+#define	RADIO_INTENCLR_CCASTOPPED_CLEAR							(0x1u<<19)
+#define	RADIO_INTENCLR_CCABUSY_DISABLED							(0x0u<<18)
+#define	RADIO_INTENCLR_CCABUSY_ENABLED							(0x1u<<18)
+#define	RADIO_INTENCLR_CCABUSY_CLEAR							(0x1u<<18)
+#define	RADIO_INTENCLR_CCAIDLE_DISABLED							(0x0u<<17)
+#define	RADIO_INTENCLR_CCAIDLE_ENABLED							(0x1u<<17)
+#define	RADIO_INTENCLR_CCAIDLE_CLEAR							(0x1u<<17)
+#define	RADIO_INTENCLR_EDSTOPPED_DISABLED						(0x0u<<16)
+#define	RADIO_INTENCLR_EDSTOPPED_ENABLED						(0x1u<<16)
+#define	RADIO_INTENCLR_EDSTOPPED_CLEAR							(0x1u<<16)
+#define	RADIO_INTENCLR_EDEND_DISABLED							(0x0u<<15)
+#define	RADIO_INTENCLR_EDEND_ENABLED							(0x1u<<15)
+#define	RADIO_INTENCLR_EDEND_CLEAR								(0x1u<<15)
+#define	RADIO_INTENCLR_FRAMESTART_DISABLED						(0x0u<<14)
+#define	RADIO_INTENCLR_FRAMESTART_ENABLED						(0x1u<<14)
+#define	RADIO_INTENCLR_FRAMESTART_CLEAR							(0x1u<<14)
+#define	RADIO_INTENCLR_CRCERROR_DISABLED						(0x0u<<13)
+#define	RADIO_INTENCLR_CRCERROR_ENABLED							(0x1u<<13)
+#define	RADIO_INTENCLR_CRCERROR_CLEAR							(0x1u<<13)
+#define	RADIO_INTENCLR_CRCOK_DISABLED							(0x0u<<12)
+#define	RADIO_INTENCLR_CRCOK_ENABLED							(0x1u<<12)
+#define	RADIO_INTENCLR_CRCOK_CLEAR								(0x1u<<12)
+#define	RADIO_INTENCLR_BCMATCH_DISABLED							(0x0u<<10)
+#define	RADIO_INTENCLR_BCMATCH_ENABLED							(0x1u<<10)
+#define	RADIO_INTENCLR_BCMATCH_CLEAR							(0x1u<<10)
+#define	RADIO_INTENCLR_RSSIEND_DISABLED							(0x0u<<7)
+#define	RADIO_INTENCLR_RSSIEND_ENABLED							(0x1u<<7)
+#define	RADIO_INTENCLR_RSSIEND_CLEAR							(0x1u<<7)
+#define	RADIO_INTENCLR_DEVMISS_DISABLED							(0x0u<<6)
+#define	RADIO_INTENCLR_DEVMISS_ENABLED							(0x1u<<6)
+#define	RADIO_INTENCLR_DEVMISS_CLEAR							(0x1u<<6)
+#define	RADIO_INTENCLR_DEVMATCH_DISABLED						(0x0u<<5)
+#define	RADIO_INTENCLR_DEVMATCH_ENABLED							(0x1u<<5)
+#define	RADIO_INTENCLR_DEVMATCH_CLEAR							(0x1u<<5)
+#define	RADIO_INTENCLR_DISABLED_DISABLED						(0x0u<<4)
+#define	RADIO_INTENCLR_DISABLED_ENABLED							(0x1u<<4)
+#define	RADIO_INTENCLR_DISABLED_CLEAR							(0x1u<<4)
+#define	RADIO_INTENCLR_END_DISABLED								(0x0u<<3)
+#define	RADIO_INTENCLR_END_ENABLED								(0x1u<<3)
+#define	RADIO_INTENCLR_END_CLEAR								(0x1u<<3)
+#define	RADIO_INTENCLR_PAYLOAD_DISABLED							(0x0u<<2)
+#define	RADIO_INTENCLR_PAYLOAD_ENABLED							(0x1u<<2)
+#define	RADIO_INTENCLR_PAYLOAD_CLEAR							(0x1u<<2)
+#define	RADIO_INTENCLR_ADDRESS_DISABLED							(0x0u<<1)
+#define	RADIO_INTENCLR_ADDRESS_ENABLED							(0x1u<<1)
+#define	RADIO_INTENCLR_ADDRESS_CLEAR							(0x1u<<1)
+#define	RADIO_INTENCLR_READY_DISABLED							(0x0u<<0)
+#define	RADIO_INTENCLR_READY_ENABLED							(0x1u<<0)
+#define	RADIO_INTENCLR_READY_CLEAR								(0x1u<<0)
+
+// CRCSTATUS Configuration
+
+#define	RADIO_CRCSTATUS_CRCSTATUS								(0x1u<<0)
+#define	RADIO_CRCSTATUS_CRCSTATUS_CRCERROR						(0x0u<<0)
+#define	RADIO_CRCSTATUS_CRCSTATUS_CRCOK							(0x1u<<0)
+
+// RXMATCH Configuration
+
+#define	RADIO_RXMATCH_RXMATCH									(0x7u<<0)
+#define	RADIO_RXMATCH_RXMATCH_0									(0x1u<<0)
+
+// RXCRC Configuration
+
+#define	RADIO_RXCRC_RXCRC										(0xFFFFFFu<<0)
+#define	RADIO_RXCRC_RXCRC_0										(0x1u<<0)
+
+// DAI Configuration
+
+#define	RADIO_DAI_DAI											(0x7u<<0)
+#define	RADIO_DAI_DAI_0											(0x1u<<0)
+
+// PDUSTAT Configuration
+
+#define	RADIO_PDUSTAT_CISTAT									(0x3u<<1)
+#define	RADIO_PDUSTAT_CISTAT_0									(0x1u<<1)
+#define	RADIO_PDUSTAT_PDUSTAT									(0x1u<<0)
+#define	RADIO_PDUSTAT_CISTAT_LR125KBIT							(0x0u<<1)
+#define	RADIO_PDUSTAT_CISTAT_LR500KBIT							(0x1u<<1)
+#define	RADIO_PDUSTAT_PDUSTAT_LESSTHAN							(0x0u<<0)
+#define	RADIO_PDUSTAT_PDUSTAT_GREATERTHAN						(0x1u<<0)
+
+// CTESTATUS Configuration
+
+#define	RADIO_CTESTATUS_CTETYPE									(0x3u<<6)
+#define	RADIO_CTESTATUS_CTETYPE_0								(0x1u<<6)
+#define	RADIO_CTESTATUS_RFU										(0x1u<<5)
+#define	RADIO_CTESTATUS_CTETIME									(0x1Fu<<0)
+#define	RADIO_CTESTATUS_CTETIME_0								(0x1u<<0)
+
+// DFESTATUS Configuration
+
+#define	RADIO_DFESTATUS_SAMPLINGSTATE							(0x1u<<4)
+#define	RADIO_DFESTATUS_SWITCHINGSTATE							(0x7u<<0)
+#define	RADIO_DFESTATUS_SWITCHINGSTATE_0						(0x1u<<0)
+#define	RADIO_DFESTATUS_SAMPLINGSTATE_IDLE						(0x0u<<4)
+#define	RADIO_DFESTATUS_SAMPLINGSTATE_SAMPLING					(0x1u<<4)
+#define	RADIO_DFESTATUS_SWITCHINGSTATE_IDLE						(0x0u<<0)
+#define	RADIO_DFESTATUS_SWITCHINGSTATE_OFFSET					(0x1u<<0)
+#define	RADIO_DFESTATUS_SWITCHINGSTATE_GUARD					(0x2u<<0)
+#define	RADIO_DFESTATUS_SWITCHINGSTATE_REF						(0x3u<<0)
+#define	RADIO_DFESTATUS_SWITCHINGSTATE_SWITCHING				(0x4u<<0)
+#define	RADIO_DFESTATUS_SWITCHINGSTATE_ENDING					(0x5u<<0)
+
+// PACKETPTR Configuration
+
+#define	RADIO_PACKETPTR_PACKETPTR								(0xFFFFFFFFu<<0)
+#define	RADIO_PACKETPTR_PACKETPTR_0								(0x1u<<0)
+
+// FREQUENCY Configuration
+
+#define	RADIO_FREQUENCY_MAP										(0x1u<<8)
+#define	RADIO_FREQUENCY_FREQUENCY								(0x7Fu<<0)
+#define	RADIO_FREQUENCY_FREQUENCY_0								(0x1u<<0)
+#define	RADIO_FREQUENCY_MAP_DEFAULT								(0x0u<<8)
+#define	RADIO_FREQUENCY_MAP_LOW									(0x1u<<8)
+
+// TXPOWER Configuration
+
+#define	RADIO_TXPOWER_TXPOWER									(0xFFu<<0)
+#define	RADIO_TXPOWER_TXPOWER_0									(0x1u<<0)
+#define	RADIO_TXPOWER_TXPOWER_0DBM								(0x0u<<0)
+#define	RADIO_TXPOWER_TXPOWER_NEG1DBM							(0xFFu<<0)
+#define	RADIO_TXPOWER_TXPOWER_NEG2DBM							(0xFEu<<0)
+#define	RADIO_TXPOWER_TXPOWER_NEG3DBM							(0xFDu<<0)
+#define	RADIO_TXPOWER_TXPOWER_NEG4DBM							(0xFCu<<0)
+#define	RADIO_TXPOWER_TXPOWER_NEG5DBM							(0xFBu<<0)
+#define	RADIO_TXPOWER_TXPOWER_NEG6DBM							(0xFAu<<0)
+#define	RADIO_TXPOWER_TXPOWER_NEG7DBM							(0xF9u<<0)
+#define	RADIO_TXPOWER_TXPOWER_NEG8DBM							(0xF8u<<0)
+#define	RADIO_TXPOWER_TXPOWER_NEG12DBM							(0xF4u<<0)
+#define	RADIO_TXPOWER_TXPOWER_NEG16DBM							(0xF0u<<0)
+#define	RADIO_TXPOWER_TXPOWER_NEG20DBM							(0xECu<<0)
+#define	RADIO_TXPOWER_TXPOWER_NEG30DBM							(0xE2u<<0)
+#define	RADIO_TXPOWER_TXPOWER_NEG40DBM							(0xD8u<<0)
+
+// MODE Configuration
+
+#define	RADIO_MODE_MODE											(0xFu<<0)
+#define	RADIO_MODE_MODE_0										(0x1u<<0)
+#define	RADIO_MODE_MODE_NRF_1MBIT								(0x0u<<0)
+#define	RADIO_MODE_MODE_NRF_2MBIT								(0x1u<<0)
+#define	RADIO_MODE_MODE_BLE_1MBIT								(0x3u<<0)
+#define	RADIO_MODE_MODE_BLE_2MBIT								(0x4u<<0)
+#define	RADIO_MODE_MODE_BLE_LR125KBIT							(0x5u<<0)
+#define	RADIO_MODE_MODE_BLE_LR500KBIT							(0x6u<<0)
+#define	RADIO_MODE_MODE_IEEE802154_250KBIT						(0xFu<<0)
+
+// PCNF0 Configuration
+
+#define	RADIO_PCNF0_TERMLEN										(0x3u<<29)
+#define	RADIO_PCNF0_TERMLEN_0									(0x1u<<29)
+#define	RADIO_PCNF0_CRCINC										(0x1u<<26)
+#define	RADIO_PCNF0_PLEN										(0x3u<<24)
+#define	RADIO_PCNF0_PLEN_0										(0x1u<<24)
+#define	RADIO_PCNF0_CILEN										(0x3u<<22)
+#define	RADIO_PCNF0_CILEN_0										(0x1u<<22)
+#define	RADIO_PCNF0_S1INCL										(0x1u<<20)
+#define	RADIO_PCNF0_S1LEN										(0xFu<<16)
+#define	RADIO_PCNF0_S1LEN_0										(0x1u<<16)
+#define	RADIO_PCNF0_S0LEN										(0x1u<<8)
+#define	RADIO_PCNF0_LFLEN										(0xFu<<0)
+#define	RADIO_PCNF0_LFLEN_0										(0x1u<<0)
+#define	RADIO_PCNF0_CRCINC_EXCLUDE								(0x0u<<26)
+#define	RADIO_PCNF0_CRCINC_INCLUDE								(0x1u<<26)
+#define	RADIO_PCNF0_PLEN_8BIT									(0x0u<<24)
+#define	RADIO_PCNF0_PLEN_16BIT									(0x1u<<24)
+#define	RADIO_PCNF0_PLEN_32BITZERO								(0x2u<<24)
+#define	RADIO_PCNF0_PLEN_LONGRANGE								(0x3u<<24)
+#define	RADIO_PCNF0_S1INCL_AUTOMATIC							(0x0u<<20)
+#define	RADIO_PCNF0_S1INCL_INCLUDE								(0x1u<<20)
+
+// PCNF1 Configuration
+
+#define	RADIO_PCNF1_WHITEEN										(0x1u<<25)
+#define	RADIO_PCNF1_ENDIAN										(0x1u<<24)
+#define	RADIO_PCNF1_BALEN										(0x7u<<16)
+#define	RADIO_PCNF1_BALEN_0										(0x1u<<16)
+#define	RADIO_PCNF1_STATLEN										(0xFFu<<8)
+#define	RADIO_PCNF1_STATLEN_0									(0x1u<<8)
+#define	RADIO_PCNF1_MAXLEN										(0xFFu<<0)
+#define	RADIO_PCNF1_MAXLEN_0									(0x1u<<0)
+#define	RADIO_PCNF1_WHITEEN_DISABLED							(0x0u<<25)
+#define	RADIO_PCNF1_WHITEEN_ENABLED								(0x1u<<25)
+#define	RADIO_PCNF1_ENDIAN_LITTLE								(0x0u<<24)
+#define	RADIO_PCNF1_ENDIAN_BIG									(0x1u<<24)
+
+// BASE0 Configuration
+
+#define	RADIO_BASE0_BASE0										(0xFFFFFFFFu<<0)
+#define	RADIO_BASE0_BASE0_0										(0x1u<<0)
+
+// BASE1 Configuration
+
+#define	RADIO_BASE1_BASE1										(0xFFFFFFFFu<<0)
+#define	RADIO_BASE1_BASE1_0										(0x1u<<0)
+
+// PREFIX0 Configuration
+
+#define	RADIO_PREFIX0_AP3										(0xFFu<<24)
+#define	RADIO_PREFIX0_AP3_0										(0x1u<<24)
+#define	RADIO_PREFIX0_AP2										(0xFFu<<16)
+#define	RADIO_PREFIX0_AP2_0										(0x1u<<16)
+#define	RADIO_PREFIX0_AP1										(0xFFu<<8)
+#define	RADIO_PREFIX0_AP1_0										(0x1u<<8)
+#define	RADIO_PREFIX0_AP0										(0xFFu<<0)
+#define	RADIO_PREFIX0_AP0_0										(0x1u<<0)
+
+// PREFIX1 Configuration
+
+#define	RADIO_PREFIX1_AP7										(0xFFu<<24)
+#define	RADIO_PREFIX1_AP7_0										(0x1u<<24)
+#define	RADIO_PREFIX1_AP6										(0xFFu<<16)
+#define	RADIO_PREFIX1_AP6_0										(0x1u<<16)
+#define	RADIO_PREFIX1_AP5										(0xFFu<<8)
+#define	RADIO_PREFIX1_AP5_0										(0x1u<<8)
+#define	RADIO_PREFIX1_AP4										(0xFFu<<0)
+#define	RADIO_PREFIX1_AP4_0										(0x1u<<0)
+
+// TXADDRESS Configuration
+
+#define	RADIO_TXADDRESS_TXADDRESS								(0x7u<<0)
+#define	RADIO_TXADDRESS_TXADDRESS_0								(0x1u<<0)
+
+// RXADDRESSES Configuration
+
+#define	RADIO_RXADDRESSES_ADDR7									(0x1u<<7)
+#define	RADIO_RXADDRESSES_ADDR6									(0x1u<<6)
+#define	RADIO_RXADDRESSES_ADDR5									(0x1u<<5)
+#define	RADIO_RXADDRESSES_ADDR4									(0x1u<<4)
+#define	RADIO_RXADDRESSES_ADDR3									(0x1u<<3)
+#define	RADIO_RXADDRESSES_ADDR2									(0x1u<<2)
+#define	RADIO_RXADDRESSES_ADDR1									(0x1u<<1)
+#define	RADIO_RXADDRESSES_ADDR0									(0x1u<<0)
+#define	RADIO_RXADDRESSES_ADDR7_DISABLED						(0x0u<<7)
+#define	RADIO_RXADDRESSES_ADDR7_ENABLED							(0x1u<<7)
+#define	RADIO_RXADDRESSES_ADDR6_DISABLED						(0x0u<<6)
+#define	RADIO_RXADDRESSES_ADDR6_ENABLED							(0x1u<<6)
+#define	RADIO_RXADDRESSES_ADDR5_DISABLED						(0x0u<<5)
+#define	RADIO_RXADDRESSES_ADDR5_ENABLED							(0x1u<<5)
+#define	RADIO_RXADDRESSES_ADDR4_DISABLED						(0x0u<<4)
+#define	RADIO_RXADDRESSES_ADDR4_ENABLED							(0x1u<<4)
+#define	RADIO_RXADDRESSES_ADDR3_DISABLED						(0x0u<<3)
+#define	RADIO_RXADDRESSES_ADDR3_ENABLED							(0x1u<<3)
+#define	RADIO_RXADDRESSES_ADDR2_DISABLED						(0x0u<<2)
+#define	RADIO_RXADDRESSES_ADDR2_ENABLED							(0x1u<<2)
+#define	RADIO_RXADDRESSES_ADDR1_DISABLED						(0x0u<<1)
+#define	RADIO_RXADDRESSES_ADDR1_ENABLED							(0x1u<<1)
+#define	RADIO_RXADDRESSES_ADDR0_DISABLED						(0x0u<<0)
+#define	RADIO_RXADDRESSES_ADDR0_ENABLED							(0x1u<<0)
+
+// CRCCNF Configuration
+
+#define	RADIO_CRCCNF_SKIPADDR									(0x3u<<8)
+#define	RADIO_CRCCNF_SKIPADDR_0									(0x1u<<8)
+#define	RADIO_CRCCNF_LEN										(0x3u<<0)
+#define	RADIO_CRCCNF_LEN_0										(0x1u<<0)
+#define	RADIO_CRCCNF_SKIPADDR_INCLUDE							(0x0u<<8)
+#define	RADIO_CRCCNF_SKIPADDR_SKIP								(0x1u<<8)
+#define	RADIO_CRCCNF_SKIPADDR_IEEE802154						(0x2u<<8)
+#define	RADIO_CRCCNF_LEN_DISABLED								(0x0u<<0)
+#define	RADIO_CRCCNF_LEN_ONE									(0x1u<<0)
+#define	RADIO_CRCCNF_LEN_TWO									(0x2u<<0)
+#define	RADIO_CRCCNF_LEN_THREE									(0x3u<<0)
+
+// CRCPOLY Configuration
+
+#define	RADIO_CRCPOLY_CRCPOLY									(0xFFFFFFu<<0)
+#define	RADIO_CRCPOLY_CRCPOLY_0									(0x1u<<0)
+
+// CRCINIT Configuration
+
+#define	RADIO_CRCINIT_CRCINIT									(0xFFFFFFu<<0)
+#define	RADIO_CRCINIT_CRCINIT_0									(0x1u<<0)
+
+// TIFS Configuration
+
+#define	RADIO_TIFS_TIFS											(0x3FFu<<0)
+#define	RADIO_TIFS_TIFS_0										(0x1u<<0)
+
+// RSSISAMPLE Configuration
+
+#define	RADIO_RSSISAMPLE_RSSISAMPLE								(0x7Fu<<0)
+#define	RADIO_RSSISAMPLE_RSSISAMPLE_0							(0x1u<<0)
+
+// STATE Configuration
+
+#define	RADIO_STATE_STATE										(0xFu<<0)
+#define	RADIO_STATE_STATE_0										(0x1u<<0)
+#define	RADIO_STATE_STATE_DISABLED								(0x0u<<0)
+#define	RADIO_STATE_STATE_RXRU									(0x1u<<0)
+#define	RADIO_STATE_STATE_RXIDLE								(0x2u<<0)
+#define	RADIO_STATE_STATE_RX									(0x3u<<0)
+#define	RADIO_STATE_STATE_RXDISABLE								(0x4u<<0)
+#define	RADIO_STATE_STATE_TXRU									(0x9u<<0)
+#define	RADIO_STATE_STATE_TXIDLE								(0xAu<<0)
+#define	RADIO_STATE_STATE_TX									(0xBu<<0)
+#define	RADIO_STATE_STATE_TXDISABLE								(0xCu<<0)
+
+// DATAWHITEIV Configuration
+
+#define	RADIO_DATAWHITEIV_DATAWHITEIV							(0x7Fu<<0)
+#define	RADIO_DATAWHITEIV_DATAWHITEIV_0							(0x1u<<0)
+
+// BCC Configuration
+
+#define	RADIO_BCC_BCC											(0xFFFFFFFFu<<0)
+#define	RADIO_BCC_BCC_0											(0x1u<<0)
+
+// DAB Configuration
+
+#define	RADIO_DAB_DAB											(0xFFFFFFFFu<<0)
+#define	RADIO_DAB_DAB_0											(0x1u<<0)
+
+// DAP Configuration
+
+#define	RADIO_DAP_DAP											(0xFFFFu<<0)
+#define	RADIO_DAP_DAP_0											(0x1u<<0)
+
+// DACNF Configuration
+
+#define	RADIO_DACNF_TXADD7										(0x1u<<15)
+#define	RADIO_DACNF_TXADD6										(0x1u<<14)
+#define	RADIO_DACNF_TXADD5										(0x1u<<13)
+#define	RADIO_DACNF_TXADD4										(0x1u<<12)
+#define	RADIO_DACNF_TXADD3										(0x1u<<11)
+#define	RADIO_DACNF_TXADD2										(0x1u<<10)
+#define	RADIO_DACNF_TXADD1										(0x1u<<9)
+#define	RADIO_DACNF_TXADD0										(0x1u<<8)
+#define	RADIO_DACNF_ENA7										(0x1u<<7)
+#define	RADIO_DACNF_ENA6										(0x1u<<6)
+#define	RADIO_DACNF_ENA5										(0x1u<<5)
+#define	RADIO_DACNF_ENA4										(0x1u<<4)
+#define	RADIO_DACNF_ENA3										(0x1u<<3)
+#define	RADIO_DACNF_ENA2										(0x1u<<2)
+#define	RADIO_DACNF_ENA1										(0x1u<<1)
+#define	RADIO_DACNF_ENA0										(0x1u<<0)
+#define	RADIO_DACNF_ENA7_DISABLED								(0x0u<<7)
+#define	RADIO_DACNF_ENA7_ENABLED								(0x1u<<7)
+#define	RADIO_DACNF_ENA6_DISABLED								(0x0u<<6)
+#define	RADIO_DACNF_ENA6_ENABLED								(0x1u<<6)
+#define	RADIO_DACNF_ENA5_DISABLED								(0x0u<<5)
+#define	RADIO_DACNF_ENA5_ENABLED								(0x1u<<5)
+#define	RADIO_DACNF_ENA4_DISABLED								(0x0u<<4)
+#define	RADIO_DACNF_ENA4_ENABLED								(0x1u<<4)
+#define	RADIO_DACNF_ENA3_DISABLED								(0x0u<<3)
+#define	RADIO_DACNF_ENA3_ENABLED								(0x1u<<3)
+#define	RADIO_DACNF_ENA2_DISABLED								(0x0u<<2)
+#define	RADIO_DACNF_ENA2_ENABLED								(0x1u<<2)
+#define	RADIO_DACNF_ENA1_DISABLED								(0x0u<<1)
+#define	RADIO_DACNF_ENA1_ENABLED								(0x1u<<1)
+#define	RADIO_DACNF_ENA0_DISABLED								(0x0u<<0)
+#define	RADIO_DACNF_ENA0_ENABLED								(0x1u<<0)
+
+// MHRMATCHCONF Configuration
+
+#define	RADIO_MHRMATCHCONF_MHRMATCHCONF							(0xFFFFFFFFu<<0)
+#define	RADIO_MHRMATCHCONF_MHRMATCHCONF_0						(0x1u<<0)
+
+// MHRMATCHMAS Configuration
+
+#define	RADIO_MHRMATCHMAS_MHRMATCHMAS							(0xFFFFFFFFu<<0)
+#define	RADIO_MHRMATCHMAS_MHRMATCHMAS_0							(0x1u<<0)
+
+// MODECNF0 Configuration
+
+#define	RADIO_MODECNF0_DTX										(0x3u<<8)
+#define	RADIO_MODECNF0_DTX_0									(0x1u<<8)
+#define	RADIO_MODECNF0_RU										(0x1u<<0)
+#define	RADIO_MODECNF0_DTX_B1									(0x0u<<8)
+#define	RADIO_MODECNF0_DTX_B0									(0x1u<<8)
+#define	RADIO_MODECNF0_DTX_CENTER								(0x2u<<8)
+#define	RADIO_MODECNF0_RU_DEFAULT								(0x0u<<0)
+#define	RADIO_MODECNF0_RU_FAST									(0x1u<<0)
+
+// SFD Configuration
+
+#define	RADIO_SFD_SFD											(0xFFu<<0)
+#define	RADIO_SFD_SFD_0											(0x1u<<0)
+
+// EDCNT Configuration
+
+#define	RADIO_EDCNT_EDCNT										(0x1FFFFFu<<0)
+#define	RADIO_EDCNT_EDCNT_0										(0x1u<<0)
+
+// EDSAMPLE Configuration
+
+#define	RADIO_EDSAMPLE_EDLVL									(0xFFu<<0)
+#define	RADIO_EDSAMPLE_EDLVL_0									(0x1u<<0)
+
+// CCACTRL Configuration
+
+#define	RADIO_CCACTRL_CCACORRCNT								(0xFFu<<24)
+#define	RADIO_CCACTRL_CCACORRCNT_0								(0x1u<<24)
+#define	RADIO_CCACTRL_CCACORRTHRES								(0xFFu<<16)
+#define	RADIO_CCACTRL_CCACORRTHRES_0							(0x1u<<16)
+#define	RADIO_CCACTRL_CCAEDTHRES								(0xFFu<<8)
+#define	RADIO_CCACTRL_CCAEDTHRES_0								(0x1u<<8)
+#define	RADIO_CCACTRL_CCAMODE									(0x7u<<0)
+#define	RADIO_CCACTRL_CCAMODE_0									(0x1u<<0)
+#define	RADIO_CCACTRL_CCAMODE_EDMODE							(0x0u<<0)
+#define	RADIO_CCACTRL_CCAMODE_CARRIERMODE						(0x1u<<0)
+#define	RADIO_CCACTRL_CCAMODE_CARRIERANDEDMODE					(0x2u<<0)
+#define	RADIO_CCACTRL_CCAMODE_CARRIEROREDMODE					(0x3u<<0)
+#define	RADIO_CCACTRL_CCAMODE_EDMODETEST1						(0x4u<<0)
+
+// DFEMODE Configuration
+
+#define	RADIO_DFEMODE_DFEOPMODE									(0x3u<<0)
+#define	RADIO_DFEMODE_DFEOPMODE_0								(0x1u<<0)
+#define	RADIO_DFEMODE_DFEOPMODE_DISABLED						(0x0u<<0)
+#define	RADIO_DFEMODE_DFEOPMODE_AOD								(0x2u<<0)
+#define	RADIO_DFEMODE_DFEOPMODE_AOA								(0x3u<<0)
+
+// CTEINLINECONF Configuration
+
+#define	RADIO_CTEINLINECONF_S0MASK								(0xFFu<<24)
+#define	RADIO_CTEINLINECONF_S0MASK_0							(0x1u<<24)
+#define	RADIO_CTEINLINECONF_S0CONF								(0xFFu<<16)
+#define	RADIO_CTEINLINECONF_S0CONF_0							(0x1u<<16)
+#define	RADIO_CTEINLINECONF_CTEINLINERXMODE2US					(0x7u<<13)
+#define	RADIO_CTEINLINECONF_CTEINLINERXMODE2US_0				(0x1u<<13)
+#define	RADIO_CTEINLINECONF_CTEINLINERXMODE1US					(0x7u<<10)
+#define	RADIO_CTEINLINECONF_CTEINLINERXMODE1US_0				(0x1u<<10)
+#define	RADIO_CTEINLINECONF_CTETIMEVALIDRANGE					(0x3u<<6)
+#define	RADIO_CTEINLINECONF_CTETIMEVALIDRANGE_0					(0x1u<<6)
+#define	RADIO_CTEINLINECONF_CTEERRORHANDLING					(0x1u<<4)
+#define	RADIO_CTEINLINECONF_CTEINFOINS1							(0x1u<<3)
+#define	RADIO_CTEINLINECONF_CTEINLINECTRLEN						(0x1u<<0)
+#define	RADIO_CTEINLINECONF_CTEINLINERXMODE2US_4US				(0x1u<<13)
+#define	RADIO_CTEINLINECONF_CTEINLINERXMODE2US_2US				(0x2u<<13)
+#define	RADIO_CTEINLINECONF_CTEINLINERXMODE2US_1US				(0x3u<<13)
+#define	RADIO_CTEINLINECONF_CTEINLINERXMODE2US_500NS			(0x4u<<13)
+#define	RADIO_CTEINLINECONF_CTEINLINERXMODE2US_250NS			(0x5u<<13)
+#define	RADIO_CTEINLINECONF_CTEINLINERXMODE2US_125NS			(0x6u<<13)
+#define	RADIO_CTEINLINECONF_CTEINLINERXMODE1US_4US				(0x1u<<10)
+#define	RADIO_CTEINLINECONF_CTEINLINERXMODE1US_2US				(0x2u<<10)
+#define	RADIO_CTEINLINECONF_CTEINLINERXMODE1US_1US				(0x3u<<10)
+#define	RADIO_CTEINLINECONF_CTEINLINERXMODE1US_500NS			(0x4u<<10)
+#define	RADIO_CTEINLINECONF_CTEINLINERXMODE1US_250NS			(0x5u<<10)
+#define	RADIO_CTEINLINECONF_CTEINLINERXMODE1US_125NS			(0x6u<<10)
+#define	RADIO_CTEINLINECONF_CTETIMEVALIDRANGE_20				(0x0u<<6)
+#define	RADIO_CTEINLINECONF_CTETIMEVALIDRANGE_31				(0x1u<<6)
+#define	RADIO_CTEINLINECONF_CTETIMEVALIDRANGE_63				(0x2u<<6)
+#define	RADIO_CTEINLINECONF_CTEERRORHANDLING_YES				(0x1u<<4)
+#define	RADIO_CTEINLINECONF_CTEERRORHANDLING_NO					(0x0u<<4)
+#define	RADIO_CTEINLINECONF_CTEINFOINS1_INS1					(0x1u<<3)
+#define	RADIO_CTEINLINECONF_CTEINFOINS1_NOTINS1					(0x0u<<3)
+#define	RADIO_CTEINLINECONF_CTEINLINECTRLEN_ENABLED				(0x1u<<0)
+#define	RADIO_CTEINLINECONF_CTEINLINECTRLEN_DISABLED			(0x0u<<0)
+
+// DFECTRL1 Configuration
+
+#define	RADIO_DFECTRL1_AGCBACKOFFGAIN							(0xFu<<24)
+#define	RADIO_DFECTRL1_AGCBACKOFFGAIN_0							(0x1u<<24)
+#define	RADIO_DFECTRL1_REPEATPATTERN							(0xFu<<20)
+#define	RADIO_DFECTRL1_REPEATPATTERN_0							(0x1u<<20)
+#define	RADIO_DFECTRL1_TSAMPLESPACING							(0x7u<<16)
+#define	RADIO_DFECTRL1_TSAMPLESPACING_0							(0x1u<<16)
+#define	RADIO_DFECTRL1_SAMPLETYPE								(0x1u<<15)
+#define	RADIO_DFECTRL1_TSAMPLESPACINGREF						(0x7u<<12)
+#define	RADIO_DFECTRL1_TSAMPLESPACINGREF_0						(0x1u<<12)
+#define	RADIO_DFECTRL1_TSWITCHSPACING							(0x7u<<8)
+#define	RADIO_DFECTRL1_TSWITCHSPACING_0							(0x1u<<8)
+#define	RADIO_DFECTRL1_DFEINEXTENSION							(0x1u<<7)
+#define	RADIO_DFECTRL1_NUMBEROF8US								(0x3Fu<<0)
+#define	RADIO_DFECTRL1_NUMBEROF8US_0							(0x1u<<0)
+#define	RADIO_DFECTRL1_REPEATPATTERN_NOREPEAT					(0x0u<<20)
+#define	RADIO_DFECTRL1_TSAMPLESPACING_4US						(0x1u<<16)
+#define	RADIO_DFECTRL1_TSAMPLESPACING_2US						(0x2u<<16)
+#define	RADIO_DFECTRL1_TSAMPLESPACING_1US						(0x3u<<16)
+#define	RADIO_DFECTRL1_TSAMPLESPACING_500NS						(0x4u<<16)
+#define	RADIO_DFECTRL1_TSAMPLESPACING_250NS						(0x5u<<16)
+#define	RADIO_DFECTRL1_TSAMPLESPACING_125NS						(0x6u<<16)
+#define	RADIO_DFECTRL1_SAMPLETYPE_IQ							(0x0u<<15)
+#define	RADIO_DFECTRL1_SAMPLETYPE_MAGPHASE						(0x1u<<15)
+#define	RADIO_DFECTRL1_TSAMPLESPACINGREF_4US					(0x1u<<12)
+#define	RADIO_DFECTRL1_TSAMPLESPACINGREF_2US					(0x2u<<12)
+#define	RADIO_DFECTRL1_TSAMPLESPACINGREF_1US					(0x3u<<12)
+#define	RADIO_DFECTRL1_TSAMPLESPACINGREF_500NS					(0x4u<<12)
+#define	RADIO_DFECTRL1_TSAMPLESPACINGREF_250NS					(0x5u<<12)
+#define	RADIO_DFECTRL1_TSAMPLESPACINGREF_125NS					(0x6u<<12)
+#define	RADIO_DFECTRL1_TSWITCHSPACING_4US						(0x1u<<8)
+#define	RADIO_DFECTRL1_TSWITCHSPACING_2US						(0x2u<<8)
+#define	RADIO_DFECTRL1_TSWITCHSPACING_1US						(0x3u<<8)
+#define	RADIO_DFECTRL1_DFEINEXTENSION_CRC						(0x1u<<7)
+#define	RADIO_DFECTRL1_DFEINEXTENSION_PAYLOAD					(0x0u<<7)
+
+// DFECTRL2 Configuration
+
+#define	RADIO_DFECTRL2_TSAMPLEOFFSET							(0xFFFu<<16)
+#define	RADIO_DFECTRL2_TSAMPLEOFFSET_0							(0x1u<<16)
+#define	RADIO_DFECTRL2_TSWITCHOFFSET							(0x1FFFu<<0)
+#define	RADIO_DFECTRL2_TSWITCHOFFSET_0							(0x1u<<0)
+
+// SWITCHPATTERN Configuration
+
+#define	RADIO_SWITCHPATTERN_SWITCHPATTERN						(0xFFu<<0)
+#define	RADIO_SWITCHPATTERN_SWITCHPATTERN_0						(0x1u<<0)
+
+// CLEARPATTERN Configuration
+
+#define	RADIO_CLEARPATTERN_CLEARPATTERN							(0x1u<<0)
+#define	RADIO_CLEARPATTERN_CLEARPATTERN_CLEAR					(0x1u<<0)
+
+// DFEGPIO Configuration
+
+#define	RADIO_PSEL_DFEGPIO_CONNECT								(0x1u<<31)
+#define	RADIO_PSEL_DFEGPIO_PORT									(0x1u<<5)
+#define	RADIO_PSEL_DFEGPIO_PIN									(0x1Fu<<0)
+#define	RADIO_PSEL_DFEGPIO_PIN_0								(0x1u<<0)
+#define	RADIO_PSEL_DFEGPIO_CONNECT_DISCONNECTED					(0x1u<<31)
+#define	RADIO_PSEL_DFEGPIO_CONNECT_CONNECTED					(0x0u<<31)
+
+// PTR Configuration
+
+#define	RADIO_DFEPACKET_PTR_PTR									(0xFFFFFFFFu<<0)
+#define	RADIO_DFEPACKET_PTR_PTR_0								(0x1u<<0)
+
+// MAXCNT Configuration
+
+#define	RADIO_DFEPACKET_MAXCNT_MAXCNT							(0x3FFFu<<0)
+#define	RADIO_DFEPACKET_MAXCNT_MAXCNT_0							(0x1u<<0)
+
+// AMOUNT Configuration
+
+#define	RADIO_DFEPACKET_AMOUNT_AMOUNT							(0xFFFFu<<0)
+#define	RADIO_DFEPACKET_AMOUNT_AMOUNT_0							(0x1u<<0)
+
+// POWER Configuration
+
+#define	RADIO_POWER_POWER										(0x1u<<0)
+#define	RADIO_POWER_POWER_DISABLED								(0x0u<<0)
+#define	RADIO_POWER_POWER_ENABLED								(0x1u<<0)

@@ -1,0 +1,20 @@
+cortex_m_generic:
+  - core: CORTEX_M3
+    target_arch: cortex-m3
+    fpu: soft
+  - core: CORTEX_M4
+    target_arch: cortex-m4+fp
+    fpu: hard
+  - core: CORTEX_M7
+    target_arch: cortex-m7+fp
+    fpu: hard
+  - core: CORTEX_M33
+    target_arch: cortex-m33
+    fpu: hard
+  - core: CORTEX_M55
+    target_arch: cortex-m55
+    fpu: hard
+riscv32_generic:
+  - core: RV64IMAFDC
+    target_arch: rv64imafdc
+    fpu: hard

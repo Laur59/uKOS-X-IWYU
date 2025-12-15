@@ -1,0 +1,12 @@
+targets:
+  - Discovery_U5G9_Cortex-M33
+  - Grove_K210_RV64IMAFDC
+  - Longan_Nano_F103_RV32IMAC
+  - MAiXDUiNO_K210_RV64IMAFDC
+  - nRF5340_App_Cortex-M33
+  - nRF5340_Net_Cortex-M33
+  - Nucleo_F207_Cortex-M3
+  - Nucleo_H743_Cortex-M7
+  - Nucleo_L4R5_Cortex-M4
+  - Nucleo_N657_Cortex-M55
+  - Pico2_rp2350_Cortex-M33

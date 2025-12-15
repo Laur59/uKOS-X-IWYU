@@ -1,0 +1,55 @@
+pico2:
+  - dependency: null
+    soc: rp2350
+    profiles:
+      - cdc_cdc
+
+nrf:
+  - dependency: nrf5340dk
+    soc: nRF5340
+    profiles:
+      - cdc_cdc
+      - cdc_msc
+
+f2:
+  - dependency: null
+    soc: STM32F207
+    profiles:
+      - cdc_cdc
+      - cdc_msc
+
+h7:
+  - dependency: null
+    soc: STM32H743
+    profiles:
+      - cdc_cdc
+      - cdc_msc
+  - dependency: null
+    soc: STM32H747
+    profiles:
+      - cdc_cdc
+      - cdc_msc
+      - cdc_video
+
+l4:
+  - dependency: null
+    soc: STM32L4R5
+    profiles:
+      - cdc_cdc
+      - cdc_msc
+
+u5:
+  - dependency: null
+    soc: STM32U5G9
+    profiles:
+      - cdc_cdc
+      - cdc_msc
+      - cdc_video
+
+n6:
+  - dependency: null
+    soc: STM32N657
+    profiles:
+      - cdc_cdc
+      - cdc_msc
+      - cdc_video

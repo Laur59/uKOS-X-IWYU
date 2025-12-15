@@ -1,0 +1,170 @@
+/*
+; stub_urt0_uart.
+; ===============
+
+; SPDX-License-Identifier: MIT
+
+;------------------------------------------------------------------------
+; Author:	Edo. Franzi		The 2025-01-01
+; Modifs:
+;
+; Project:	uKOS-X
+; Goal:		stub for the connection of the "urt0" manager to the uart device.
+;
+;   (c) 2025-20xx, Edo. Franzi
+;   --------------------------
+;                                              __ ______  _____
+;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
+;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
+;   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
+;                                     \__,_/_/ |_\____//____/
+;   edo.franzi@ukos.ch
+;
+;   Description: Lightweight, real-time multitasking operating
+;   system for embedded microcontroller and DSP-based systems.
+;
+;   Permission is hereby granted, free of charge, to any person
+;   obtaining a copy of this software and associated documentation
+;   files (the "Software"), to deal in the Software without restriction,
+;   including without limitation the rights to use, copy, modify,
+;   merge, publish, distribute, sublicense, and/or sell copies of the
+;   Software, and to permit persons to whom the Software is furnished
+;   to do so, subject to the following conditions:
+;
+;   The above copyright notice and this permission notice shall be
+;   included in all copies or substantial portions of the Software.
+;
+;   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+;   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+;   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+;   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+;   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+;   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+;   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+;   SOFTWARE.
+;
+;------------------------------------------------------------------------
+*/
+
+#include	"uKOS.h"
+
+// Model callbacks
+// ---------------
+
+/*
+ * \brief cb_enable_Cx
+ *
+ * - Enable the device (clock)
+ *
+ */
+static	void	cb_enable_C0(void) {
+
+}
+
+static	void	cb_enable_C1(void) {
+
+}
+
+/*
+ * \brief cb_CTSCheck_Cx
+ *
+ * - Verify the CTS state
+ *   If CTS =  1, then disable the uart TX interruptions
+ *
+ */
+static	bool	cb_CTSCheck_C0(void) {
+
+	return (true);
+}
+
+static	bool	cb_CTSCheck_C1(void) {
+
+	return (true);
+}
+
+/*
+ * \brief cb_init_Cx
+ *
+ * - Specific initializations          __
+ *   i.e the hardware CTS interruption   \__
+ *
+ */
+static	void	cb_init_C0(void) {
+
+}
+
+static	void	cb_init_C1(void) {
+
+}
+
+// Connect the physical device to the logical manager
+// --------------------------------------------------
+
+#define	UART_C0					REG(UART0)
+#define	UART_C1					REG(UART1)
+#define	UART_VECTOR_NUMBER_C0	UART0_IRQ_C0_IRQn
+#define	UART_VECTOR_NUMBER_C1	UART1_IRQ_C1_IRQn
+#define	UART_FREQUENCY_C0		KFREQUENCY_AHB
+#define	UART_FREQUENCY_C1		KFREQUENCY_AHB
+#define	KUART_SEMAPHORE_RX_C0	KURT0_SEMAPHORE_RX
+#define	KUART_SEMAPHORE_RX_C1	KURT0_SEMAPHORE_RX
+#define	KUART_SEMAPHORE_TX_C0	KURT0_SEMAPHORE_TX
+#define	KUART_SEMAPHORE_TX_C1	KURT0_SEMAPHORE_TX
+
+#define	KUART_SZ_TX_BUF_C0		64u
+#define	KUART_SZ_TX_BUF_C1		64u
+#define	KUART_SZ_RX_BUF_C0		128u
+#define	KUART_SZ_RX_BUF_C1		128u
+
+#define	KUART_SEMA_RX_C0_S
+#define	KUART_SEMA_RX_C1_S
+#define	KUART_SEMA_TX_C0_S
+#define	KUART_SEMA_TX_C1_S
+
+#include	"model_uart_C0.c_inc"
+#include	"model_uart_C1.c_inc"
+
+void	stub_urt0_init(void) {
+	uint32_t	core;
+
+	core = GET_RUNNING_CORE;
+
+	if (core == KCORE_0) { model_uart_init_C0(); }
+	else				 { model_uart_init_C1(); }
+}
+
+void	stub_urt0_configure(const urtxCnf_t *configure) {
+	uint32_t	core;
+
+	core = GET_RUNNING_CORE;
+
+	if (core == KCORE_0) { model_uart_configure_C0(configure); }
+	else				 { model_uart_configure_C1(configure); }
+}
+
+void	stub_urt0_write(const uint8_t *buffer, uint32_t size) {
+	uint32_t	core;
+
+	core = GET_RUNNING_CORE;
+
+	if (core == KCORE_0) { model_uart_write_C0(buffer, size); }
+	else				 { model_uart_write_C1(buffer, size); }
+}
+
+void	stub_urt0_read(uint8_t *buffer, uint32_t *size) {
+	uint32_t	core;
+
+	core = GET_RUNNING_CORE;
+
+	if (core == KCORE_0) { model_uart_read_C0(buffer, size); }
+	else				 { model_uart_read_C1(buffer, size); }
+}
+
+void	stub_urt0_flush(void) {
+	uint32_t	core;
+
+	core = GET_RUNNING_CORE;
+
+	if (core == KCORE_0) { model_uart_flush_C0(); }
+	else				 { model_uart_flush_C1(); }
+}

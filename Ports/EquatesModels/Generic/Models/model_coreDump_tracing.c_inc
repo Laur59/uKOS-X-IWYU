@@ -1,0 +1,205 @@
+/*
+; model_coredump_tracing.
+; =======================
+
+;------------------------------------------------------------------------
+; Author:	Edo. Franzi		The 2025-01-01
+; Modifs:
+;
+; Project:	uKOS-X
+; Goal:		Model for the core dump (tracing).
+;
+;   (c) 2025-20xx, Edo. Franzi
+;   --------------------------
+;                                              __ ______  _____
+;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
+;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
+;   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
+;                                     \__,_/_/ |_\____//____/
+;   edo.franzi@ukos.ch
+;
+;   Description: Lightweight, real-time multitasking operating
+;   system for embedded microcontroller and DSP-based systems.
+;
+;   Permission is hereby granted, free of charge, to any person
+;   obtaining a copy of this software and associated documentation
+;   files (the "Software"), to deal in the Software without restriction,
+;   including without limitation the rights to use, copy, modify,
+;   merge, publish, distribute, sublicense, and/or sell copies of the
+;   Software, and to permit persons to whom the Software is furnished
+;   to do so, subject to the following conditions:
+;
+;   The above copyright notice and this permission notice shall be
+;   included in all copies or substantial portions of the Software.
+;
+;   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+;   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+;   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+;   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+;   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+;   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+;   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+;   SOFTWARE.
+;
+;------------------------------------------------------------------------
+*/
+
+#include	"record/private/private_record.h"
+
+// Prototypes
+
+static	void	local_compose(const char_t *identifier, const char_t **idSpacer);
+
+/*
+ * \brief local_printTrace
+ *
+ * - Display the user trace
+ *
+ */
+static	void	__attribute__ ((noinline)) local_printTrace(void) {
+
+	#if (!defined(NO_KERNEL_S))
+	uint32_t	core, i;
+	char_t		string[200 + 1];
+
+	for (core = 0u; core < KNB_CORES; core++) {
+		if (vRecord_NbTraceWrites[core] > 0) {
+			(void)snprintf(&string[0], 200, "Logs core %1"PRIu32"\n", core);
+			cmns_send(KDEF0, "      Time [us]  Parameter            Information\n\n");
+
+			for (i = 0; i < vRecord_NbTraceWrites[core]; i++) {
+				(void)snprintf(&string[0], 200u, "%12"PRIu64"-us  0x%016"PRIXPTR"    %s\n", vRecord_RTraceFifo[core]->oTimeStamp, vRecord_RTraceFifo[core]->oParameter, vRecord_RTraceFifo[core]->oMessage);
+				cmns_send(KDEF0, &string[0]);
+
+				vRecord_RTraceFifo[core]++;
+				vRecord_RTraceFifo[core] = (vRecord_RTraceFifo[core] == &vRecord_traceFifo[core][KRECORD_SZ_TRACE_FIFO]) ? (&vRecord_traceFifo[core][0]) : (vRecord_RTraceFifo[core]);
+			}
+			cmns_send(KDEF0, "\n");
+		}
+	}
+	#endif
+}
+
+/*
+ * \brief local_printLog
+ *
+ * - Display the user log
+ *
+ */
+static	void	__attribute__ ((noinline)) local_printLog(void) {
+
+	#if (!defined(NO_KERNEL_S))
+			uint32_t			core, i;
+			char_t				string[200 + 1];
+			uint64_t			olderTime;
+			recordLogging_t		*rLogBuffer, *rOldLogBuffer;
+			bool				terminate = false;
+	const	char_t				*logCategory, *idSpacerI, *idSpacerF;
+
+	for (core = 0u; core < KNB_CORES; core++) {
+		if (vRecord_NbLogWrites[core] > 0u) {
+
+			(void)snprintf(&string[0], 200u, "Logs core %1"PRIu32"\n", core);
+			cmns_send(KDEF0, &string[0u]);
+
+			cmns_send(KDEF0, "      Time [us]  Category          Process or ISR identifier            Function                              Line   Information\n\n");
+
+			if (vRecord_logBuffer[core][0].oTimeStamp > 0u) {
+				while (terminate == false) {
+					rLogBuffer    = &vRecord_logBuffer[core][0];
+					olderTime     = 0xFFFFFFFFFFFFFFFFu;
+					rOldLogBuffer = NULL;
+
+					for (i = 0; i < KRECORD_SZ_LOG_BUF; i++) {
+
+// Case where the buffer is not full
+
+						if (rLogBuffer->oTimeStamp == 0u) {
+							break;
+						}
+
+// If there is an older table entry not marked yet
+
+						if ((rLogBuffer->oTimeStamp < olderTime) && (rLogBuffer->oMark == false)) {
+							olderTime = rLogBuffer->oTimeStamp;
+							rOldLogBuffer = rLogBuffer;
+						}
+						rLogBuffer++;
+					}
+
+// Verify if there is an entry to print
+// Or terminate
+
+					if (rOldLogBuffer != NULL) {
+						logCategory = "Unknown         ";
+						logCategory = (rOldLogBuffer->oLogCategory == KFATAL_SYSTEM)    ? ("Fatal system    ") : (logCategory);
+						logCategory = (rOldLogBuffer->oLogCategory == KFATAL_KERNEL)    ? ("Fatal kernel    ") : (logCategory);
+						logCategory = (rOldLogBuffer->oLogCategory == KFATAL_MANAGER)   ? ("Fatal manager   ") : (logCategory);
+						logCategory = (rOldLogBuffer->oLogCategory == KFATAL_USER)      ? ("Fatal user      ") : (logCategory);
+
+						logCategory = (rOldLogBuffer->oLogCategory == KERROR_SYSTEM)    ? ("Error system    ") : (logCategory);
+						logCategory = (rOldLogBuffer->oLogCategory == KERROR_KERNEL)    ? ("Error kernel    ") : (logCategory);
+						logCategory = (rOldLogBuffer->oLogCategory == KERROR_MANAGER)   ? ("Error manager   ") : (logCategory);
+						logCategory = (rOldLogBuffer->oLogCategory == KERROR_USER)      ? ("Error user      ") : (logCategory);
+
+						logCategory = (rOldLogBuffer->oLogCategory == KWARNING_SYSTEM)  ? ("Warning system  ") : (logCategory);
+						logCategory = (rOldLogBuffer->oLogCategory == KWARNING_KERNEL)  ? ("Warning kernel  ") : (logCategory);
+						logCategory = (rOldLogBuffer->oLogCategory == KWARNING_MANAGER) ? ("Warning manager ") : (logCategory);
+						logCategory = (rOldLogBuffer->oLogCategory == KWARNING_USER)    ? ("Warning user    ") : (logCategory);
+
+						logCategory = (rOldLogBuffer->oLogCategory == KINFO_SYSTEM)     ? ("Info system     ") : (logCategory);
+						logCategory = (rOldLogBuffer->oLogCategory == KINFO_KERNEL)     ? ("Info kernel     ") : (logCategory);
+						logCategory = (rOldLogBuffer->oLogCategory == KINFO_MANAGER)    ? ("Info manager    ") : (logCategory);
+						logCategory = (rOldLogBuffer->oLogCategory == KINFO_USER)       ? ("Info user       ") : (logCategory);
+
+						local_compose(rOldLogBuffer->oIdentifier, &idSpacerI);
+						local_compose(rOldLogBuffer->oFunction,   &idSpacerF);
+
+						(void)snprintf(&string[0], 200u, "%12"PRIu64"-us  %s  %s  %s  %s  %s  %5"PRIu32"   %s\n", rOldLogBuffer->oTimeStamp,
+																												  logCategory,
+																												  rOldLogBuffer->oIdentifier,
+																												  idSpacerI,
+																												  rOldLogBuffer->oFunction,
+																												  idSpacerF,
+																												  rOldLogBuffer->oLineNumber,
+																												  rOldLogBuffer->oMessage);
+						cmns_send(KDEF0, &string[0]);
+
+						rOldLogBuffer->oMark = true;
+					}
+					else {
+						terminate = true;
+					}
+				}
+			}
+			cmns_send(KDEF0, "\n");
+		}
+		terminate = false;
+	}
+	#endif
+}
+
+/*
+ * \brief local_compose
+ *
+ * - input:  "1234567"
+ * - output: "     "
+ * - to accommodate "1234567     "
+ * -                "            "
+ *
+ * \param[in]	*string		Ptr on a string
+ * \param[out]	**spacer	Ptr on the final space
+ *
+ * \note This function does not return a value (None).
+ *
+ */
+static	void	local_compose(const char_t *identifier, const char_t **idSpacer) {
+	size_t	len;
+
+// --------------------------------------|-------------------------------|---
+//                                      "Process_to_count_the_number_xyztu";
+	static	const	char_t	aSpacer[] = "                                 ";
+
+	len = strlen(identifier);
+	*idSpacer = (len <= (sizeof(aSpacer) - 1u)) ? (&aSpacer[len]) : (&aSpacer[0]);
+}

@@ -1,0 +1,18 @@
+--- /gdb-10.2/gdb/configure 2020-10-24 06:23:02.000000000 +0200
++++ /gdb-10.2/gdb/configure	2021-03-06 14:40:37.000000000 +0100
+@@ -16818,6 +16818,7 @@
+   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+ /* end confdefs.h.  */
+ #include <stdlib.h>
++#include <string.h>
+   #include "bfd.h"
+   #include "elf-bfd.h"
+ 
+@@ -16929,6 +16930,7 @@
+   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+ /* end confdefs.h.  */
+ #include <stdlib.h>
++#include <string.h>
+   #include "bfd.h"
+   #include "mach-o.h"
+ 

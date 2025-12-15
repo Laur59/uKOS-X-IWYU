@@ -1,0 +1,250 @@
+/*
+; cmns.
+; =====
+
+; SPDX-License-Identifier: MIT
+
+;------------------------------------------------------------------------
+; Author:	Edo. Franzi		The 2025-01-01
+; Modifs:	Edo. Franzi		The 2025-01-01	Correct for matching some MISRA recommendations
+;
+; Project:	uKOS-X
+; Goal:		Some common routines used in many modules.
+;
+;   (c) 2025-20xx, Edo. Franzi
+;   --------------------------
+;                                              __ ______  _____
+;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
+;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
+;   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
+;                                     \__,_/_/ |_\____//____/
+;   edo.franzi@ukos.ch
+;
+;   Description: Lightweight, real-time multitasking operating
+;   system for embedded microcontroller and DSP-based systems.
+;
+;   Permission is hereby granted, free of charge, to any person
+;   obtaining a copy of this software and associated documentation
+;   files (the "Software"), to deal in the Software without restriction,
+;   including without limitation the rights to use, copy, modify,
+;   merge, publish, distribute, sublicense, and/or sell copies of the
+;   Software, and to permit persons to whom the Software is furnished
+;   to do so, subject to the following conditions:
+;
+;   The above copyright notice and this permission notice shall be
+;   included in all copies or substantial portions of the Software.
+;
+;   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+;   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+;   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+;   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+;   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+;   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+;   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+;   SOFTWARE.
+;
+;------------------------------------------------------------------------
+*/
+
+#include	"uKOS.h"
+
+// uKOS-X specific (see the module.h)
+// ==================================
+
+// ----------------------------------I------------I-----------------------------------------I--------------I
+
+STRG_LOC_CONST(aStrApplication[]) =	"cmns         Minimal I/O (not under uKOS-X).           (c) EFr-2025";
+STRG_LOC_CONST(aStrHelp[])		  = "Cmns\n"
+									"====\n\n"
+
+									"This code provides some minimal I/O.\n\n"
+
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+
+MODULE(
+	Cmns,							// Module name (the first letter has to be upper case)
+	KID_FAM_STARTUPS,				// Family (defined in the module.h)
+	KNUM_CMNS,						// Module identifier (defined in the module.h)
+	NULL,							// Address of the initialisation code (early pre-init)
+	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+	NULL,							// Address of the clean code (clean the module)
+	" 1.0",							// Revision string (major . minor)
+	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	0								// Execution cores
+);
+
+/*
+ * \brief cmns_init
+ *
+ * \param[in]	-
+ *
+ * \note This function does not return a value (None).
+ *
+ */
+void	cmns_init(void) {
+
+	RCC->APB1ENR2 |= RCC_APB1ENR2_LPUART1EN;
+
+	LPUART1->BRR  = BAUDRATE_LP(KFREQUENCY_APB1, KSERIAL_DEFAULT_BAUDRATE);
+	LPUART1->CR1  = (LPUART1_CR1_UE | LPUART1_CR1_TE | LPUART1_CR1_RE);
+	LPUART1->ISR &= (uint32_t)~LPUART1_ISR_RXFNE;
+	LPUART1->ISR &= (uint32_t)~LPUART1_ISR_TXFE;
+
+	#if (defined(CONFIG_MAN_URT1_S))
+	RCC->APB1ENR1 |= RCC_APB1ENR1_USART2EN;
+
+	USART2->BRR  = BAUDRATE(KFREQUENCY_APB1, KSERIAL_DEFAULT_BAUDRATE);
+	USART2->CR1  = (USART2_CR1_UE | USART2_CR1_TE | USART2_CR1_RE);
+	USART2->ISR &= (uint32_t)~USART2_ISR_RXFNE;
+	USART2->ISR &= (uint32_t)~USART2_ISR_TXFE;
+	#endif
+
+	#if (defined(CONFIG_MAN_URT2_S))
+	RCC->APB1ENR1 |= RCC_APB1ENR1_USART3EN;
+
+	USART3->BRR  = BAUDRATE(KFREQUENCY_APB1, KSERIAL_DEFAULT_BAUDRATE);
+	USART3->CR1  = (USART3_CR1_UE | USART3_CR1_TE | USART3_CR1_RE);
+	USART3->ISR &= (uint32_t)~USART3_ISR_RXFNE;
+	USART3->ISR &= (uint32_t)~USART3_ISR_TXFE;
+	#endif
+}
+
+/*
+ * \brief cmns_send
+ *
+ * \param[in]	serialManager	Serial Communication Manager
+ * \param[in]	*ascii			Ptr on the ascii buffer
+ *
+ * \note This function does not return a value (None).
+ *
+ */
+void	cmns_send(serialManager_t serialManager, const char_t *ascii) {
+			uint8_t		data;
+	const	char_t		*wkAscii = ascii;
+
+	if (ascii == NULL) { return; }
+
+	switch (serialManager) {
+
+// UART 0 device
+
+		default:
+		case KURT0: {
+			while (true) {
+				while ((LPUART1->ISR & LPUART1_ISR_TXFE) == 0u) { ; }
+
+				data = (uint8_t)*wkAscii;
+				wkAscii++;
+				if (data == '\0') {
+					return;
+				}
+
+				LPUART1->TDR = (uint16_t)data;
+			}
+		}
+
+// UART 1 device
+
+		#if (defined(CONFIG_MAN_URT1_S))
+		case KURT1: {
+			while (true) {
+				while ((USART2->ISR & USART2_ISR_TXFE) == 0u) { ; }
+
+				data = (uint8_t)*wkAscii;
+				wkAscii++;
+				if (data == '\0') {
+					return;
+				}
+
+				USART2->TDR = (uint16_t)data;
+			}
+		}
+		#endif
+
+// UART 2 device
+
+		#if (defined(CONFIG_MAN_URT2_S))
+		case KURT2: {
+			while (true) {
+				while ((USART3->ISR & USART3_ISR_TXFE) == 0u) { ; }
+
+				data = (uint8_t)*wkAscii;
+				wkAscii++;
+				if (data == '\0') {
+					return;
+				}
+
+				USART3->TDR = (uint16_t)data;
+			}
+		}
+		#endif
+	}
+}
+
+/*
+ * \brief cmns_receive
+ *
+ * \param[in]	serialManager	Serial Communication Manager
+ * \param[out]	*data			Data received
+ *
+ * \note This function does not return a value (None).
+ *
+ */
+void	cmns_receive(serialManager_t serialManager, char_t *data) {
+
+	switch (serialManager) {
+
+// UART 0 device
+
+		default:
+		case KURT0: {
+			while ((LPUART1->ISR & LPUART1_ISR_RXFNE) == 0u) { ; }
+
+			*data = (uint8_t)LPUART1->RDR;
+			break;
+		}
+
+// UART 1 device
+
+		#if (defined(CONFIG_MAN_URT1_S))
+		case KURT1: {
+			while ((USART2->ISR & USART2_ISR_RXFNE) == 0u) { ; }
+
+			*data = (uint8_t)USART2->RDR;
+			break;
+		}
+		#endif
+
+// UART 2 device
+
+		#if (defined(CONFIG_MAN_URT2_S))
+		case KURT2: {
+			while ((USART3->ISR & USART3_ISR_RXFNE) == 0u) { ; }
+
+			*data = (uint8_t)USART3->RDR;
+			break;
+		}
+		#endif
+	}
+}
+
+/*
+ * \brief cmns_wait
+ *
+ * \param[in]	us		Delay in us
+ *
+ * \note This function does not return a value (None).
+ *
+ */
+void	cmns_wait(uint32_t us) {
+	uint32_t	wkUs = us, time;
+
+	#if (defined(CACHE_S))
+	wkUs = (wkUs / 7u) * (KFREQUENCY_CORE / 1000000u);
+
+	#else
+	wkUs = (wkUs / 12u) * (KFREQUENCY_CORE / 1000000u);
+	#endif
+
+	for (time = 0u; time < wkUs; time++) { NOP; }
+}

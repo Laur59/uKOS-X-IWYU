@@ -1,0 +1,232 @@
+/*
+; model_coredump_soc.
+; ===================
+
+;------------------------------------------------------------------------
+; Author:	Edo. Franzi		The 2025-01-01
+; Modifs:
+;
+; Project:	uKOS-X
+; Goal:		Model for the core dump (SOC specific).
+;
+;   (c) 2025-20xx, Edo. Franzi
+;   --------------------------
+;                                              __ ______  _____
+;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
+;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
+;   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
+;                                     \__,_/_/ |_\____//____/
+;   edo.franzi@ukos.ch
+;
+;   Description: Lightweight, real-time multitasking operating
+;   system for embedded microcontroller and DSP-based systems.
+;
+;   Permission is hereby granted, free of charge, to any person
+;   obtaining a copy of this software and associated documentation
+;   files (the "Software"), to deal in the Software without restriction,
+;   including without limitation the rights to use, copy, modify,
+;   merge, publish, distribute, sublicense, and/or sell copies of the
+;   Software, and to permit persons to whom the Software is furnished
+;   to do so, subject to the following conditions:
+;
+;   The above copyright notice and this permission notice shall be
+;   included in all copies or substantial portions of the Software.
+;
+;   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+;   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+;   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+;   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+;   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+;   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+;   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+;   SOFTWARE.
+;
+;------------------------------------------------------------------------
+*/
+
+// Prototypes
+
+static	void	local_printExt_Interruption(const char_t **vectorName);
+
+/*
+ * \brief model_coreDump_displayInterruptions
+ *
+ *
+ * Display useful postmortem information
+ * Example:
+ *
+ * System dead! Core DUMP!!
+ * ========================
+ *
+ * Exception: EXTI0_IRQn
+ * Process:   Process_User_0
+ *
+ * User trace information
+ *
+ * Stacks contents before the fault
+ * stack[+31] = 0x00000000
+ * stack[+30] = 0x00000000
+ * ...
+ * stack[+01] = 0xBBB10001
+ * stack[+00] = 0xAAA00000
+ *
+ * CPU registers: (PC after the fault instruction)
+ * x0  - zero = 0x00000000    f0  - ft0   = 0xAAA00000
+ * x1  - ra   = 0xAAA00000    f1  - ft1   = 0xADA80008
+ * x2  - sp   = 0xBBB10001    f2  - ft2   = 0xAEA90009
+ * x3  - gp   = 0xCCC20002    f3  - ft3   = 0xAFAA000A
+ * x4  - tp   = 0x001FFFFF    f4  - ft4   = 0xBABB000B
+ * x5  - t0   = 0x3800FFF0    f5  - ft5   = 0xBBBC000C
+ * x6  - t1   = 0xFFF50005    f6  - ft6   = 0x73000540
+ * x7  - t2   = 0xABA60006    f7  - ft7   = 0x08018629
+ * x8  - fp   = 0xACA70007    f8  - fs0   = 0xFFFFFFED
+ * x9  - s1   = 0x61000000    f9  - fs1   = 0x7200020A
+ * x10 - a0   = 0x00000070    f10 - fa0   = 0x7200020A
+ * x11 - a1   = 0x00000070    f11 - fa1   = 0x7200020A
+ * x12 - a2   = 0x00000070    f12 - fa2   = 0x7200020A
+ * x13 - a3   = 0x00000070    f13 - fa3   = 0x7200020A
+ * x14 - a4   = 0x00000070    f14 - fa4   = 0x7200020A
+ * x15 - a5   = 0x00000070	  f15 - fa5   = 0x7200020A
+ * x16 - a6   = 0x00000070    f16 - fa6   = 0xAAA00000
+ * x17 - a7   = 0x00000070    f17 - fa7   = 0xADA80008
+ * x18 - s2   = 0xAAA00000    f18 - fs2   = 0xAEA90009
+ * x19 - s3   = 0xADA80008    f19 - fs3   = 0xAFAA000A
+ * x20 - s4   = 0xAEA90009    f20 - fs4   = 0xBABB000B
+ * x21 - s5   = 0xAFAA000A    f21 - fs5   = 0xBBBC000C
+ * x22 - s6   = 0xBABB000B    f22 - fs6   = 0x73000540
+ * x23 - s7   = 0xBBBC000C    f23 - fs7   = 0x08018629
+ * x24 - s8   = 0x73000540    f24 - fs8   = 0xFFFFFFED
+ * x25 - s9   = 0x08018629    f25 - fs9   = 0x7200020A
+ * x26 - s10  = 0xFFFFFFED    f26 - fs10  = 0x7200020A
+ * x27 - s11  = 0x7200020A    f27 - fs11  = 0x7200020A
+ * x28 - t3   = 0x7200020A    f28 - ft8   = 0x7200020A
+ * x29 - t4   = 0x7200020A    f29 - ft9   = 0x7200020A
+ * x30 - t5   = 0x7200020A    f30 - ft10  = 0x7200020A
+ * x31 - t6   = 0x7200020A	  f31 - ft11  = 0x7200020A
+ * pc         = 0x7200020A
+ *
+ */
+		void	local_processExt(uint32_t core, uint64_t number, uintptr_t *stackBefore, uintptr_t *stackAfter);
+static	void	coreDump_displayExt_Interruption(uint32_t core, uint64_t number) __attribute__ ((naked));
+static	void	coreDump_displayExt_Interruption(uint32_t core __attribute__ ((unused)), uint64_t number __attribute__ ((unused))) {
+
+	CORE_DUMP_SAVE_STACK_FRAME;
+
+	JUMP_FNCT(local_processExt);
+}
+
+/*
+ * \brief local_processExt
+ *
+ * - Collect the stack frame
+ * - Display the interruption
+ * - Display the fault routine & process
+ * - Display the core information
+ * - Display the user trace
+ * - Display the stack frame
+ *
+ */
+void	__attribute__ ((noinline)) local_processExt(uint32_t core, uint64_t number, uintptr_t *stackBefore, uintptr_t *stackAfter) {
+			uint32_t	i;
+	const	uintptr_t	*ptr;
+	const	char_t		*vectorName;
+
+	vExceptionNb[core] = number;
+	vStackBefore[core] = stackBefore;
+	vStackAfter[core]  = stackAfter;
+
+// Collect the stack frame
+
+	ptr = (uintptr_t *)(vStackAfter[core]);
+	for (i = sp; i < ENDREG; i++) {
+		vStackCoreDump[core][i] = *ptr;
+		ptr++;
+	}
+
+	local_printExt_Interruption(&vectorName);
+	local_printFunction(0u, vectorName, "Interruption: ");
+	local_printCore();
+	local_printTrace();
+	local_printLog();
+	local_printStackFrame();
+
+	cb_signal(KINTERRUPTION);
+}
+
+/*
+ * \brief local_printExt_Interruption
+ *
+ * - Display the interruption name
+ *
+ */
+static	void	__attribute__ ((noinline)) local_printExt_Interruption(const char_t **vectorName) {
+	uint32_t	core;
+
+	core = GET_RUNNING_CORE;
+	cmns_send(KDEF0, "\n\n\n\n");
+	cmns_send(KDEF0, "System dead! Core DUMP!!\n");
+	cmns_send(KDEF0, "========================\n\n");
+	switch (vExceptionNb[core]) {
+		case 19u: { *vectorName = "WWDGT_IRQn";				break; }
+		case 20u: { *vectorName = "LVD_IRQn";				break; }
+		case 21u: { *vectorName = "TAMPER_IRQn";			break; }
+		case 22u: { *vectorName = "RTC_IRQn";				break; }
+		case 23u: { *vectorName = "FMC_IRQn";				break; }
+		case 24u: { *vectorName = "RCU_CTC_IRQn";			break; }
+		case 25u: { *vectorName = "EXTI0_IRQn";				break; }
+		case 26u: { *vectorName = "EXTI1_IRQn";				break; }
+		case 27u: { *vectorName = "EXTI2_IRQn";				break; }
+		case 28u: { *vectorName = "EXTI3_IRQn";				break; }
+		case 29u: { *vectorName = "EXTI4_IRQn";				break; }
+		case 30u: { *vectorName = "DMA0_Channel0_IRQn";		break; }
+		case 31u: { *vectorName = "DMA0_Channel1_IRQn";		break; }
+		case 32u: { *vectorName = "DMA0_Channel2_IRQn";		break; }
+		case 33u: { *vectorName = "DMA0_Channel3_IRQn";		break; }
+		case 34u: { *vectorName = "DMA0_Channel4_IRQn";		break; }
+		case 35u: { *vectorName = "DMA0_Channel5_IRQn";		break; }
+		case 36u: { *vectorName = "DMA0_Channel6_IRQn";		break; }
+		case 37u: { *vectorName = "ADC0_1_IRQn";			break; }
+		case 38u: { *vectorName = "CAN0_TX_IRQn";			break; }
+		case 39u: { *vectorName = "CAN0_RX0_IRQn";			break; }
+		case 40u: { *vectorName = "CAN0_RX1_IRQn";			break; }
+		case 41u: { *vectorName = "CAN0_EWMC_IRQn";			break; }
+		case 42u: { *vectorName = "EXTI5_9_IRQn";			break; }
+		case 43u: { *vectorName = "TIMER0_BRK_IRQn";		break; }
+		case 44u: { *vectorName = "TIMER0_UP_IRQn";			break; }
+		case 45u: { *vectorName = "TIMER0_TRG_CMT_IRQn";	break; }
+		case 46u: { *vectorName = "TIMER0_Channel_IRQn";	break; }
+		case 47u: { *vectorName = "TIMER1_IRQn";			break; }
+		case 48u: { *vectorName = "TIMER2_IRQn";			break; }
+		case 49u: { *vectorName = "TIMER3_IRQn";			break; }
+		case 50u: { *vectorName = "I2C0_EV_IRQn";			break; }
+		case 51u: { *vectorName = "I2C0_ER_IRQn";			break; }
+		case 52u: { *vectorName = "I2C1_EV_IRQn";			break; }
+		case 53u: { *vectorName = "I2C1_ER_IRQn";			break; }
+		case 54u: { *vectorName = "SPI0_IRQn";				break; }
+		case 55u: { *vectorName = "SPI1_IRQn";				break; }
+		case 56u: { *vectorName = "USART0_IRQn";			break; }
+		case 57u: { *vectorName = "USART1_IRQn";			break; }
+		case 58u: { *vectorName = "USART2_IRQn";			break; }
+		case 59u: { *vectorName = "EXTI10_15_IRQn";			break; }
+		case 60u: { *vectorName = "RTC_Alarm_IRQn";			break; }
+		case 61u: { *vectorName = "USBFS_WKUP_IRQn";		break; }
+		case 67u: { *vectorName = "EXMC_IRQn";				break; }
+		case 69u: { *vectorName = "TIMER4_IRQn";			break; }
+		case 70u: { *vectorName = "SPI2_IRQn";				break; }
+		case 71u: { *vectorName = "UART3_IRQn";				break; }
+		case 72u: { *vectorName = "UART4_IRQn";				break; }
+		case 73u: { *vectorName = "TIMER5_IRQn";			break; }
+		case 74u: { *vectorName = "TIMER6_IRQn";			break; }
+		case 75u: { *vectorName = "DMA1_Channel0_IRQn";		break; }
+		case 76u: { *vectorName = "DMA1_Channel1_IRQn";		break; }
+		case 77u: { *vectorName = "DMA1_Channel2_IRQn";		break; }
+		case 78u: { *vectorName = "DMA1_Channel3_IRQn";		break; }
+		case 79u: { *vectorName = "DMA1_Channel4_IRQn";		break; }
+		case 82u: { *vectorName = "CAN1_TX_IRQn";			break; }
+		case 83u: { *vectorName = "CAN1_RX0_IRQn";			break; }
+		case 84u: { *vectorName = "CAN1_RX1_IRQn";			break; }
+		case 85u: { *vectorName = "CAN1_EWMC_IRQn";			break; }
+		case 86u: { *vectorName = "USBFS_IRQn";				break; }
+		default:  { *vectorName = "Unknown";				break; }
+	}
+}

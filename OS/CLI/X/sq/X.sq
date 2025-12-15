@@ -1,0 +1,203 @@
+
+// SPDX-License-Identifier: MIT
+
+//------------------------------------------------------------------------
+// Author:	Edo. Franzi		The 2025-01-01
+// Modifs:
+//
+// Project:	uKOS-X
+// Goal:	Read a 128 element vector (temperature).
+//			Display the temperature vector
+//			Display the FFT of the temperature vector
+//
+//   (c) 2025-20xx, Edo. Franzi
+//   --------------------------
+//                                              __ ______  _____
+//   Edo. Franzi                         __  __/ //_/ __ \/ ___/
+//   5-Route de Cheseaux                / / / / ,< / / / /\__ \
+//   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
+//                                     \__,_/_/ |_\____//____/
+//   edo.franzi@ukos.ch
+//
+//   Description: Lightweight, real-time multitasking operating
+//   system for embedded microcontroller and DSP-based systems.
+//
+//   Permission is hereby granted, free of charge, to any person
+//   obtaining a copy of this software and associated documentation
+//   files (the "Software"), to deal in the Software without restriction,
+//   including without limitation the rights to use, copy, modify,
+//   merge, publish, distribute, sublicense, and/or sell copies of the
+//   Software, and to permit persons to whom the Software is furnished
+//   to do so, subject to the following conditions:
+//
+//   The above copyright notice and this permission notice shall be
+//   included in all copies or substantial portions of the Software.
+//
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+//   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+//   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+//   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+//   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+//   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//   SOFTWARE.
+//
+//------------------------------------------------------------------------
+
+title "Temperature analysis"
+
+version
+{@
+Version 1.0, 01 January 2025
+
+(c) 2025-20xx, Edo. Franzi
+@}
+
+help
+{@
+This SQ file allows to display the temperature vector.
+
+1. Connect the board to the USB port of your computer
+
+2. Be sure that the USB port is not already in use
+
+3. Launch the Sysquake executable X.sqd
+
+Important: do not change the device selection while the application is
+running. Before removing the USB cable, it is mandatory to quit Sysquake
+or any applications having the control of the USB port!
+
+@}
+
+extension "serialdev"
+
+variable	fdSerial, devList, devIndex
+variable	temperatures
+
+init        (devList, devIndex) = initDevList
+init		(fdSerial, temperatures) = init(devList, devIndex)
+
+idle		(temperatures) = acquisition(fdSerial)
+
+terminate	terminate(fdSerial)
+beforedump  terminate(fdSerial)
+
+figure "Temperature"
+	draw drawTemperature(temperatures)
+
+figure "FFT"
+	draw drawFFT(temperatures)
+
+restore     (devList, devIndex) = initDevList
+restore		(fdSerial) = init(devList, devIndex)
+
+functions
+{@
+
+define	KNB_SAMPLES			= 128					// Number of samples
+define	KNB_SAMPLES_P2		= 128					// Next power of 2 >= KNB_SAMPLES
+define	KSAMPLING_FREQUENCY	= 5						// Sampling frequency (5-Hz)
+define	KTIME_LOOP			= 0.05					// Loop time (s)
+define	KDELTA_TEMPERATURE	= 30					// Delta temperature
+define	KSERIAL_PORT_STLINK	= 'usbmodem'			// 'usbmodem' for STLink
+define	KSERIAL_PORT_FTDI	= 'usbserial'			// 'usbserial' for FTDI (usually, uKOS uses the port 2)
+define	KBAUDRATE			= 460800				// Baudrate
+
+// Looking for a uKOS-X device (standard console on the device C)
+// ----------------------------------------------------------------
+
+function (devList, devIndex) = initDevList
+	devList = serialdevname;
+	devList = devList(cellfun(@(name) (~isempty(strfind(name, KSERIAL_PORT_STLINK)) || ...
+									   ~isempty(strfind(name, KSERIAL_PORT_FTDI))), devList));
+
+
+
+	if strcmp(KSERIAL_PORT_STLINK, 'usbserial')
+		devIndex = find(cellfun(@(name) name(end) == '2', devList));
+		if ~isempty(devIndex)
+			devIndex = devIndex(1);
+		end
+	else
+		devIndex = 1;
+	end
+
+// Initializations
+// ---------------
+
+function (fdSerial, temperatures) = init(devList, devIndex)
+	fdSerial = serialdevopen(devList{devIndex}, serialdevset('BPS', KBAUDRATE, 'TextMode', true, 'Timeout', 10));
+	fflush(fdSerial);
+
+	temperatures = zeros(1,128);
+	subplots(['Temperature\nFFT']);
+
+// Terminate
+// ---------
+
+// Before closing the channel, be sure
+// that it is empty!!
+// This workaround read the channel under timeout
+// When the timeout occurs, we can close the channel.
+
+function terminate(fdSerial)
+	try
+		while true
+			dummy = fread(fdSerial, 1000, '*uint8');
+		end
+	end
+	fflush(fdSerial);
+	fclose(fdSerial);
+
+// Compute ...
+// ===========
+
+// acquisition loop
+// ----------------
+
+function (temperatures) = acquisition(fdSerial)
+	fflush(fdSerial);
+
+// Asking for the data (temperatures)
+
+	fprintf(fdSerial, 'X\n');
+	answer = fgetl(fdSerial);
+	line = sscanf(answer,'x,%s');
+	vector = sscanf(line,'%d,');
+
+// Correct the temperatures
+
+	temperatures = (vector'/100);
+
+// Display the temperatures
+// ------------------------
+
+function drawTemperature(temperatures)
+	m = min(temperatures);
+	M = max(temperatures);
+	scale([0, KNB_SAMPLES, (273 + (KDELTA_TEMPERATURE / 2)), (273 + KDELTA_TEMPERATURE)]);
+	plot(temperatures);
+	label Sample Kelvin;
+
+// Display the FFT
+// ---------------
+
+function drawFFT(temperatures)
+	frequencies = (KSAMPLING_FREQUENCY / 2) * linspace(0, 1, (KNB_SAMPLES_P2 / 2) + 1);
+	amplitudes  = fft(temperatures, KNB_SAMPLES_P2) / KNB_SAMPLES;
+	amplitudes  = abs(amplitudes(1:(KNB_SAMPLES_P2 / 2) + 1));
+
+// DC component
+// fo of the signal
+
+	dcValue = amplitudes(1)
+	amplitudes(1) = 0;
+
+	[v, ifo] = max(amplitudes);
+	fnyquist = (KSAMPLING_FREQUENCY / 2);
+	fo = (fnyquist / (KNB_SAMPLES / 2)) * (ifo - 1)
+
+	plot(frequencies, (2 * amplitudes));
+	label f-[Hz] |A|;
+
+@}

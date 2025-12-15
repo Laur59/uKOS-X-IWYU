@@ -1,0 +1,5 @@
+FatFs-*/
+FatFs-current
+*.a
+*_ready.txt
+

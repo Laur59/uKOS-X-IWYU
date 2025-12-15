@@ -1,0 +1,161 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# mlp_model.
+# ==========
+
+# SPDX-License-Identifier: MIT
+
+#------------------------------------------------------------------------
+# Author:	Edo. Franzi		The 2025-01-01
+#
+# Project:	uKOS-X
+# Goal:		Generate the TensorFlow Lite C model
+#			for uKOS system.
+#			We use the Sysquake database for the training.
+#
+#			Necessary packages:
+#			pip3 install numpy tensorflow pillow
+#
+#			python3 mlp_model.py
+#			xxd -i  mlp_model.tflite > mlp_model.c_inc
+#
+#   (c) 2025-20xx, Edo. Franzi
+#   --------------------------
+#                                              __ ______  _____
+#   Edo. Franzi                         __  __/ //_/ __ \/ ___/
+#   5-Route de Cheseaux                / / / / ,< / / / /\__ \
+#   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
+#                                     \__,_/_/ |_\____//____/
+#   edo.franzi@ukos.ch
+#
+#   Description: Lightweight, real-time multitasking operating
+#   system for embedded microcontroller and DSP-based systems.
+#
+#   Permission is hereby granted, free of charge, to any person
+#   obtaining a copy of this software and associated documentation
+#   files (the "Software"), to deal in the Software without restriction,
+#   including without limitation the rights to use, copy, modify,
+#   merge, publish, distribute, sublicense, and/or sell copies of the
+#   Software, and to permit persons to whom the Software is furnished
+#   to do so, subject to the following conditions:
+#
+#   The above copyright notice and this permission notice shall be
+#   included in all copies or substantial portions of the Software.
+#
+#   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+#   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+#   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+#   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+#   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+#   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+#   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+#   SOFTWARE.
+#
+#------------------------------------------------------------------------
+
+import	argparse
+import	numpy as np
+import	tensorflow as tf
+import	os
+import	logging
+from	tensorflow import keras
+from	tensorflow.keras import layers
+
+# 0 = all logs, 1 = info, 2 = warning, 3 = error only
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+logging.getLogger('absl').setLevel(logging.ERROR)
+
+# Load the learning dataset
+# -------------------------
+
+def load_data(file_path):
+	try:
+
+		# Use genfromtxt (more flexible than loadtxt)
+		print(f"Lecture du fichier à partir du chemin : {file_path}")
+		data = np.genfromtxt(file_path, delimiter = '\t')
+		print("Données lues depuis le fichier :")
+		print(data)
+
+		if data.shape[1] != 7:
+			raise ValueError("The file needs exactly 7 columns (x1, x2, y1, y2, y3, y4, y5) per line.")
+
+		# Get the inputs (X) and the output (Y)
+		# (x1, x2) are the inputs
+		# (y1, y2, y3, y4, y5) are the output
+		X = data[:, :2]
+		Y = data[:, 2:]
+		return X, Y
+
+	except Exception as e:
+		print(f"Error during the file reading : {e}")
+		return None, None
+
+# Build the model
+# ---------------
+
+def build_model():
+	model = tf.keras.Sequential([
+		tf.keras.layers.InputLayer(shape = (2,), dtype = tf.float32),	# Layer 1,  2 - 12
+		tf.keras.layers.Dense(12, activation = 'tanh'),					# Layer 2, 12 - 24
+		tf.keras.layers.Dense(24, activation = 'tanh'),					# Layer 3, 24 - 5
+		tf.keras.layers.Dense(5,  activation = 'tanh')					# Layer 4, 5
+	])
+
+	# Compile the model
+	model.compile(optimizer = 'adam', loss = 'mean_squared_error', metrics = ['accuracy'])
+	return model
+
+# Main
+# ----
+
+def main():
+
+	# Set up command-line arguments using argparse
+	parser = argparse.ArgumentParser(description = 'Train and test a TensorFlow model.')
+	parser.add_argument('--model_file', type = str, help = 'Path to the TFLite model file', required = True)
+	args = parser.parse_args()
+
+	# Load the learning dataset
+	X, Y = load_data('DB_L_file.txt')
+
+	if X is None or Y is None:
+		print("Data cannot be loaded!")
+		return
+
+	# Build the model
+	# Train the model
+	# Evaluate the model
+	model = build_model()
+	model.fit(X, Y, epochs = 100, batch_size = 32, validation_split = 0.2)
+	loss = model.evaluate(X, Y)
+	print(f'Loss of the model : {loss}')
+
+	# Test the model with TensorFlow
+	output = model(np.array([[-0.5, 0.5], [0.5, 0.5], [-0.5, -0.5], [0.5, -0.5], [0, 0]]))
+	print("Output TF", output)
+
+	# Convert the model to TFLite format
+	model.save('mlp_model.keras')
+	converter = tf.lite.TFLiteConverter.from_keras_model(model)
+	tflite_model = converter.convert()
+	with open('mlp_model.tflite', 'wb') as f:
+		f.write(tflite_model)
+
+	# Use TensorFlow Lite Interpreter to test the TFLite model
+	# Use the argument passed to the command line
+	interpreter = tf.lite.Interpreter(model_path = args.model_file)
+	interpreter.allocate_tensors()
+	input_details  = interpreter.get_input_details()
+	output_details = interpreter.get_output_details()
+
+	for input_data in [[-0.5, 0.5], [0.5, 0.5], [-0.5, -0.5], [0.5, -0.5], [0, 0]]:
+		interpreter.set_tensor(input_details[0]['index'], np.array([input_data], dtype = 'float32') )
+		interpreter.invoke()
+		output = interpreter.get_tensor(output_details[0]['index'])
+		print("Output TFLite", output)
+
+# Main entry point
+if __name__ == "__main__":
+	main()

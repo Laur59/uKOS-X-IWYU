@@ -1,0 +1,19 @@
+--- /libcc1/libcp1plugin.cc	2023-07-27 10:13:07
++++ /libcc1/libcp1plugin.cc	2024-03-12 23:58:46
+@@ -33,6 +33,7 @@
+ #undef PACKAGE_VERSION
+
+ #define INCLUDE_MEMORY
++#define INCLUDE_VECTOR
+ #include "gcc-plugin.h"
+ #include "system.h"
+ #include "coretypes.h"
+@@ -71,8 +72,6 @@
+ #include "rpc.hh"
+ #include "context.hh"
+
+-#include <vector>
+-
+ using namespace cc1_plugin;
+
+ 

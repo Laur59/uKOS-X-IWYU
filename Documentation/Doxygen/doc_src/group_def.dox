@@ -1,0 +1,125 @@
+/** @defgroup apps Examples
+ *  This is the group for all application examples
+ */
+
+/**
+ *  @defgroup app_basic Basic applications
+ *  @ingroup apps
+ *  Applications to get started with uKOS
+ */
+
+/** @defgroup app_sema Using kernel semaphores
+ *  @ingroup apps
+ *  Simple applications using kernel semaphores
+ */
+
+/** @defgroup app_mutx Using kernel mutexes
+ *  @ingroup apps
+ *  Simple applications using kernel mutexes
+ */
+
+/** @defgroup app_mbox Using kernel mail boxes
+ *  @ingroup apps
+ *  Simple applications using kernel mail boxes
+ */
+
+/** @defgroup app_stim Using kernel software timers
+ *  @ingroup apps
+ *  Simple applications using kernel software timers
+ */
+
+/** @defgroup app_sign Using kernel signals
+ *  @ingroup apps
+ *  Simple applications using kernel signals
+ */
+
+/** @defgroup app_psig Using kernel precise signals
+ *  @ingroup apps
+ *  Simple applications using kernel precise signals
+ */
+
+/** @defgroup app_moreKernel Using more kernel possibilities
+ *  @ingroup apps
+ *  Simple applications using more kernel possibilities
+ */
+
+/** @defgroup app_lowLevel Using low level possibilities
+ *  @ingroup apps
+ *  Simple applications using using low level possibilities
+ */
+
+/** @defgroup app_mathematic Using mathematic possibilities
+ *  @ingroup apps
+ *  Simple applications using using mathematic possibilities
+ */
+
+/** @defgroup app_mlp Using MLP possibilities
+ *  @ingroup apps
+ *  Simple applications using using MLP possibilities
+ */
+
+/** @defgroup app_micropython Using Microython possibilities
+ *  @ingroup apps
+ *  Simple applications using using Microython possibilities
+ */
+
+/** @defgroup app_newlib Using newlib possibilities
+ *  @ingroup apps
+ *  Simple applications using using newlib possibilities
+ */
+
+/** @defgroup app_imaging Using imaging possibilities
+ *  @ingroup apps
+ *  Simple applications using using imaging possibilities
+ */
+
+/** @defgroup app_special Using additional possibilities
+ *  @ingroup apps
+ *  Simple applications using using additional possibilities
+ */
+
+/** @defgroup TROM Test ROM
+ *  This is the group for all test ROM
+ */
+
+/**
+ *  @defgroup K210_RiscV K210 ROM collection
+ *  @ingroup TROM
+ *  Initial experiment with a new CPU before porting uKOS
+ */
+
+/**
+ *  @defgroup Longan_Nano_F103 Longan_Nano ROM collection
+ *  @ingroup TROM
+ *  Initial experiment with a new CPU before porting uKOS
+ */
+
+/**
+ *  @defgroup nRF5340_App_Cortex-M33 nRF5340_App ROM collection
+ *  @ingroup TROM
+ *  Initial experiment with a new CPU before porting uKOS
+ */
+
+/**
+ *  @defgroup nRF5340_Net_Cortex-M33 nRF5340_Net ROM collection
+ *  @ingroup TROM
+ *  Initial experiment with a new CPU before porting uKOS
+ */
+
+/**
+ *  @defgroup Nucleo_H743_Cortex-M7 Nucleo_H743 ROM collection
+ *  @ingroup TROM
+ *  Initial experiment with a new CPU before porting uKOS
+ */
+
+/**
+ *  @defgroup Nucleo_F207_Cortex-M3 Nucleo_F207 ROM collection
+ *  @ingroup TROM
+ *  Initial experiment with a new CPU before porting uKOS
+ */
+
+/**
+ *  @defgroup Nucleo_L4R5_Cortex-M4 Nucleo_L4R5 ROM collection
+ *  @ingroup TROM
+ *  Initial experiment with a new CPU before porting uKOS
+ */

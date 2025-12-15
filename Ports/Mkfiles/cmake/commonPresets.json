@@ -1,0 +1,90 @@
+{
+  "version": 10,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 26,
+    "patch": 0
+  },
+
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "description": "Base preset with default options",
+      "generator": "Ninja",
+      "binaryDir": "build",
+      "cacheVariables": {
+        "USER_MODE": "ON",
+        "CANARY": "ON",
+        "USE_LLVM": "OFF"
+      }
+    },
+    {
+      "name": "gcc",
+      "inherits": "base",
+      "description": "GCC toolchain, user mode ON, stack protection ON"
+    },
+    {
+      "name": "llvm",
+      "inherits": "base",
+      "description": "Clang/LLVM toolchain, user mode ON, stack protection ON",
+      "cacheVariables": {
+        "USE_LLVM": "ON"
+      }
+    },
+    {
+      "name": "gcc-nocanary",
+      "inherits": "base",
+      "description": "GCC toolchain, user mode ON, stack protection OFF",
+      "cacheVariables": {
+        "CANARY": "OFF"
+      }
+    },
+    {
+      "name": "gcc-nouser",
+      "inherits": "base",
+      "description": "GCC toolchain, user mode OFF, stack protection ON",
+      "cacheVariables": {
+        "USER_MODE": "OFF"
+      }
+    },
+    {
+      "name": "gcc-nouser-nocanary",
+      "inherits": "base",
+      "description": "GCC toolchain, user mode OFF, stack protection OFF",
+      "cacheVariables": {
+        "USER_MODE": "OFF",
+        "CANARY": "OFF"
+      }
+    },
+
+    {
+      "name": "llvm-nocanary",
+      "inherits": "base",
+      "description": "Clang/LLVM toolchain, user mode ON, canary OFF",
+      "cacheVariables": {
+        "USE_LLVM": "ON",
+        "CANARY": "OFF"
+      }
+    },
+    {
+      "name": "llvm-nouser",
+      "inherits": "base",
+      "description": "Clang/LLVM toolchain, user mode OFF, stack protection ON",
+      "cacheVariables": {
+        "USE_LLVM": "ON",
+        "USER_MODE": "OFF"
+      }
+    },
+    {
+      "name": "llvm-nouser-nocanary",
+      "inherits": "base",
+      "description": "Clang/LLVM toolchain, user mode OFF, stack protection OFF",
+      "cacheVariables": {
+        "USE_LLVM": "ON",
+        "USER_MODE": "OFF",
+        "CANARY": "OFF"
+      }
+    }
+  ]
+}

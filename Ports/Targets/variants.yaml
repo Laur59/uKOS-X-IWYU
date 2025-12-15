@@ -1,0 +1,49 @@
+Alastor_H743:
+  - name: Test
+    core: arm
+
+Discovery_U5G9:
+  - name: Test
+    core: arm
+
+Nucleo_F207:
+  - name: Test
+    core: arm
+
+Nucleo_H743:
+  - name: Test
+    core: arm
+
+Nucleo_L4R5:
+  - name: Test
+    core: arm
+
+Nucleo_N657:
+  - name: Test
+    core: arm
+
+Longan_Nano_F103:
+  - name: Test
+    core: riscv
+
+# Multicores asymmetric
+Asmodee_H747:
+  - name: Test_CM4
+    core: arm
+  - name: Test_CM7
+    core: arm
+
+DevKit_nRF5340:
+  - name: Test_Net
+    core: arm
+  - name: Test_App
+    core: arm
+
+# Multicores symmetric
+MAiXDUiNO_K210:
+  - name: Test
+    core: riscv
+
+Pico2_rp2350:
+  - name: Test
+    core: arm

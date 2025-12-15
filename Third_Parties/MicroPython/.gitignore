@@ -1,0 +1,4 @@
+MicroPython-*/
+MicroPython-current
+*.a
+*_ready.txt

@@ -1,0 +1,745 @@
+/*
+; model_kernel_tick_tim_0A_1A_2A_ecall_C0.
+; ========================================
+
+;------------------------------------------------------------------------
+; Author:	Edo. Franzi		The 2025-01-01
+; Modifs:
+;
+; Project:	uKOS-X
+; Goal:		Model for controlling the "model_kernel_tick_tim_0A_1A_2A_ecall_C0" device.
+;
+;			Tim 0_A	- 1-ms reference time
+;			Tim 1_A	- 1-us free running timer
+;			Tim 2_A	- 20-ms	process timeout
+;			Tim -_-	- user defined intervals for precise signals (not impleented)
+;			ECALL	- software interruption for message passing
+;			GPIOHS	- software interruption for the preemption
+;
+;			This code has to support the following routines:
+;			- model_kernel_init_C0
+;			- model_kernel_runKernel_C0
+;			- model_kernel_setLowPower_C0
+;			- model_kernel_setPreciseSignal_C0
+;			- model_kernel_readTickCount_C0
+;			- model_kernel_newProcessTimeout_C0
+;			- model_kernel_stopProcessTimeout_C0
+;			- kernel_interruptionFast_C0
+;			- kernel_switcher_C0
+;			- kernel_message_C0
+;
+;   (c) 2025-20xx, Edo. Franzi
+;   --------------------------
+;                                              __ ______  _____
+;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
+;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
+;   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
+;                                     \__,_/_/ |_\____//____/
+;   edo.franzi@ukos.ch
+;
+;   Description: Lightweight, real-time multitasking operating
+;   system for embedded microcontroller and DSP-based systems.
+;
+;   Permission is hereby granted, free of charge, to any person
+;   obtaining a copy of this software and associated documentation
+;   files (the "Software"), to deal in the Software without restriction,
+;   including without limitation the rights to use, copy, modify,
+;   merge, publish, distribute, sublicense, and/or sell copies of the
+;   Software, and to permit persons to whom the Software is furnished
+;   to do so, subject to the following conditions:
+;
+;   The above copyright notice and this permission notice shall be
+;   included in all copies or substantial portions of the Software.
+;
+;   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+;   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+;   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+;   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+;   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+;   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+;   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+;   SOFTWARE.
+;
+;------------------------------------------------------------------------
+*/
+
+#include	"kern/private/private_processes.h"
+#include	"kern/private/private_scheduler.h"
+#include	"kern/private/private_temporal.h"
+#include	"kern/private/private_preciseSignals.h"
+
+#define	K1ms_A		((float64_t)(0.001))
+
+#define KARRT0_A	((uint32_t)(KFREQUENCY_1GHz * K1ms_A * KKERN_TIC_TIME))				// Autoreload
+#define KARRT1_A	(~0u)																// Autoreload
+#define KARRT2_A	((uint32_t)(KFREQUENCY_1GHz * K1ms_A * KKERN_PROC_TIMEOUT))			// Autoreload
+
+static	volatile	uint32_t	vTimeStart_C0     = 0u;									// Time-stamp: when the process was scheduled
+static	volatile	uint32_t	vTimeStop_C0      = 0u;									// Time-stamp: when the process was stopped
+static	volatile	uint32_t	vTimeLastStart_C0 = 0u;									// Time-stamp: when the process was started (previous cycle)
+static				uint64_t	vTickCount_C0     = 0u;									// 64-bit timer (1-us)
+static				uint64_t	vTickCount403_C0  = 0u;									// 64-bit timer (2.65-ns) @ 403-MHz
+
+// Prototypes
+
+static	void	local_TIM0_A_IRQHandler_C0(uint32_t core, uint64_t parameter);
+static	void	local_TIM1_A_IRQHandler_C0(uint32_t core, uint64_t parameter);
+static	void	local_TIM2_A_IRQHandler_C0(uint32_t core, uint64_t parameter);
+static	void	local_PREEMPTION_IRQHandler_C0(uint32_t core, uint64_t parameter);
+static	void	local_ECALL_message_C0(uint32_t core, uint64_t message);
+static	void	local_newContextPRE_C0(uint32_t core, uint64_t parameter);
+static	void	local_newContextTOU_C0(uint32_t core, uint64_t parameter);
+static	void	local_newContextMSG_C0(uint32_t core, uint64_t message);
+static	void	local_timeStart_C0(void);
+static	void	local_timeStop_C0(void);
+static	void	local_timeStmp_C0(void);
+
+/*
+ * \brief Initialise the uKernel
+ *
+ * - Initialise the manager
+ *
+ */
+void	model_kernel_init_C0(void) {
+
+	sysctl->clk_en_peri.timer0_clk_en = 1u;			// Turn on the TIM0
+	sysctl->clk_en_peri.timer1_clk_en = 1u;			// Turn on the TIM1
+	sysctl->clk_en_peri.timer2_clk_en = 1u;			// Turn on the TIM2
+}
+
+/*
+ * \brief Run the multitasking
+ *
+ * - Run the kernel
+ *
+ */
+void	model_kernel_runKernel_C0(void) {
+	float64_t	step;
+	uint32_t	current;
+
+	step = 1e9 / (float64_t)KFREQUENCY_TIM;
+
+// 1-ms timer (precise)
+//
+// Set the priority
+// Get current enable bit array by IRQ number
+// Set enable bit in enable bit array
+// Write back the enable bit array
+
+	EXT_INTERRUPT_VECTOR(EINT_TIMER0A_INTERRUPT, local_TIM0_A_IRQHandler_C0);
+
+	plic->source_priorities.priority[EINT_TIMER0A_INTERRUPT] = KINT_LEVEL_KERNEL_TIMERS;
+	current = plic->target_enables.target[KCORE_0].enable[(uint32_t)EINT_TIMER0A_INTERRUPT / 32u];
+	current |= (uint32_t)(1u<<((uint32_t)EINT_TIMER0A_INTERRUPT % 32u));
+	plic->target_enables.target[KCORE_0].enable[(uint32_t)EINT_TIMER0A_INTERRUPT / 32u] = current;
+
+// Initialise the TIM0_A to generate interruptions every 1-ms
+
+	timer0->channel[0].load_count = (uint32_t)(KARRT0_A / step);
+	timer0->channel[0].control &= (uint32_t)~TIMER_CR_INTERRUPT_MASK;
+	timer0->channel[0].control |= (TIMER_CR_USER_MODE | TIMER_CR_ENABLE);
+
+// ~10-s timer
+//
+// Set the priority
+// Get current enable bit array by IRQ number
+// Set enable bit in enable bit array
+// Write back the enable bit array
+
+	EXT_INTERRUPT_VECTOR(EINT_TIMER1A_INTERRUPT, local_TIM1_A_IRQHandler_C0);
+
+	plic->source_priorities.priority[EINT_TIMER1A_INTERRUPT] = KINT_LEVEL_KERNEL_TIMERS;
+	current = plic->target_enables.target[KCORE_0].enable[(uint32_t)EINT_TIMER1A_INTERRUPT / 32u];
+	current |= (uint32_t)(1u<<((uint32_t)EINT_TIMER1A_INTERRUPT % 32u));
+	plic->target_enables.target[KCORE_0].enable[(uint32_t)EINT_TIMER1A_INTERRUPT / 32u] = current;
+
+// Initialise the TIM1_A to generate interruptions every ~10-s
+
+	timer1->channel[0].load_count = (uint32_t)KARRT1_A;
+	timer1->channel[0].control &= (uint32_t)~TIMER_CR_INTERRUPT_MASK;
+	timer1->channel[0].control |= (TIMER_CR_USER_MODE | TIMER_CR_ENABLE);
+
+// 20-ms timer (time slot)
+//
+// Set the priority
+// Get current enable bit array by IRQ number
+// Set enable bit in enable bit array
+// Write back the enable bit array
+
+	EXT_INTERRUPT_VECTOR(EINT_TIMER2A_INTERRUPT, local_TIM2_A_IRQHandler_C0);
+
+	plic->source_priorities.priority[EINT_TIMER2A_INTERRUPT] = KINT_LEVEL_KERNEL_TIMERS;
+	current = plic->target_enables.target[KCORE_0].enable[(uint32_t)EINT_TIMER2A_INTERRUPT / 32u];
+	current |= (uint32_t)(1u<<((uint32_t)EINT_TIMER2A_INTERRUPT % 32u));
+	plic->target_enables.target[KCORE_0].enable[(uint32_t)EINT_TIMER2A_INTERRUPT / 32u] = current;
+
+// Initialise the TIM2_A to generate interruptions every 20-ms
+
+	timer2->channel[0].load_count = (uint32_t)(KARRT2_A / step);
+	timer2->channel[0].control &= (uint32_t)~TIMER_CR_INTERRUPT_MASK;
+	timer2->channel[0].control |=  TIMER_CR_USER_MODE;
+
+// GPIOHS for preemptions
+//
+// Set the priority
+// Get current enable bit array by IRQ number
+// Set enable bit in enable bit array
+// Write back the enable bit array
+
+	EXT_INTERRUPT_VECTOR(KKERN_PREEMPTION_C0, local_PREEMPTION_IRQHandler_C0);
+
+	plic->source_priorities.priority[KKERN_PREEMPTION_C0] = KINT_LEVEL_ALL;
+	current = plic->target_enables.target[KCORE_0].enable[(uint32_t)KKERN_PREEMPTION_C0 / 32u];
+	current |= (uint32_t)(1u<<((uint32_t)KKERN_PREEMPTION_C0 % 32u));
+	plic->target_enables.target[KCORE_0].enable[(uint32_t)KKERN_PREEMPTION_C0 / 32u] = current;
+
+	gpiohs->input_val.u32[0] &= (uint32_t)~(1u<<BKERN_PREEMPTION_C0);
+	gpiohs->input_en.u32[0]  |= (1u<<BKERN_PREEMPTION_C0);
+
+// ECALL for messages
+
+	vMsgs_process[KCORE_0] = local_ECALL_message_C0;
+}
+
+/*
+ * \brief Set the low power mode
+ *
+ * - Set the low power mode
+ *
+ * KKERN_CPU_MODE_NORMAL		-> Normal mode
+ * KKERN_CPU_MODE_DEEP_SLEEP	-> CPU in a deep sleep mode
+ * KKERN_CPU_MODE_HIBERNATE		-> CPU in a hibernate mode
+ * KKERN_CPU_MODE_STOP			-> CPU in a stop mode
+ *
+ */
+void	model_kernel_setLowPower_C0(uint8_t mode) {
+
+	switch (mode) {
+		case KKERN_CPU_MODE_NORMAL:
+		case KKERN_CPU_MODE_DEEP_SLEEP:
+		case KKERN_CPU_MODE_HIBERNATE:
+		case KKERN_CPU_MODE_STOP:
+		default: {
+
+// Waiting for an interruption
+
+			WAITING_INTERRUPTION;
+			break;
+		}
+	}
+}
+
+/*
+ * \brief Precise signal (minimal jitter)
+ *
+ * - Set the precise timer
+ *
+ */
+void	model_kernel_setPreciseSignal_C0(volatile prcs_t *handle) {
+
+	UNUSED(handle);
+}
+
+/*
+ * \brief Read the tickCount
+ *
+ * - Read the tickcount
+ *
+ */
+void	model_kernel_readTickCount_C0(uint64_t *tickCount) {
+
+	local_timeStmp_C0();
+	*tickCount = vTickCount_C0;
+}
+
+/*
+ * \brief Start a new process timeout
+ *
+ * - Start a new process timeout
+ *
+ */
+void	model_kernel_newProcessTimeout_C0(void) {
+
+	timer2->channel[0].eoi;
+	timer2->channel[0].control &= (uint32_t)~TIMER_CR_ENABLE;
+
+	timer2->channel[0].load_count = KARRT2_A;
+	timer2->channel[0].control &= (uint32_t)~TIMER_CR_INTERRUPT_MASK;
+	timer2->channel[0].control |= (TIMER_CR_USER_MODE | TIMER_CR_ENABLE);
+}
+
+/*
+ * \brief Stop the process timeout
+ *
+ * - Stop the process timeout
+ *
+ */
+void	model_kernel_stopProcessTimeout_C0(void) {
+
+	timer2->channel[0].eoi;
+	timer2->channel[0].control &= (uint32_t)~TIMER_CR_ENABLE;
+}
+
+// Local routines
+// ==============
+
+/*
+ * \brief local_TIM0_A_IRQHandler_C0
+ *
+ * - Fine time interruption
+ * - Verify the timeout condition of the suspended processes
+ *
+ */
+static	void	local_TIM0_A_IRQHandler_C0(uint32_t core, uint64_t parameter) {
+
+// INT acknowledge
+
+	timer0->channel[0].eoi;
+	plic->targets.target[core].claim_complete = (uint32_t)parameter;
+
+	scheduler_callBackFast(1u);
+	local_timeStmp_C0();
+}
+
+/*
+ * \brief local_PREEMPTION_IRQHandler_C0
+ *
+ * - Pre-emption
+ * - Save the context
+ * - Save the context stack
+ * - Change the context
+ * - Give another timeout to the process
+ * - Recover another context
+ *
+ * - Save the full stack frame (uKOS-X like)
+ *
+ *		Normal stack frame
+ *
+ *		->	ra
+ *		->	t2..t0
+ *		->	s1..s0
+ *		->	a7..a0
+ *		->	t6..t3
+ *		->	fa7..fa0
+ *		->	ft11..t8
+ *		->	s11..s2
+ *		->	tp
+ *		->	gp
+ *		->	x0
+ *		->	fs11..fs0
+ *		->  fscr
+ *		->	mepc
+ *		->	mcause
+ *		->	mstatus
+ *		->	core
+ *		->	PLIC-mth
+ *
+ * !!! Do not generate prologue/epilogue sequences
+ *
+ */
+		void	local_changeContext_PRE_C0(uint32_t core, uint64_t parameter, uint64_t *threshold, uintptr_t *stack);
+static	void	local_PREEMPTION_IRQHandler_C0(uint32_t core, uint64_t parameter) __attribute__ ((naked));
+static	void	local_PREEMPTION_IRQHandler_C0(uint32_t core, uint64_t parameter) {
+
+	#if (!defined(__clang__))
+	UNUSED(core);
+	UNUSED(parameter);
+	#endif
+
+	KERN_SAVE_FRAME;
+
+// eabi registers a0..a3 are set in the KERN_SAVE_FRAME macro
+// a0 = core, a1 = parameter, a2 = *threshold, a3 = stack
+
+	JUMP_FNCT(local_changeContext_PRE_C0);
+}
+
+// The input parameters have to be provided by the macro KERN_SAVE_FRAME and
+// have to comply with the eabi
+//
+//																	   a0			  a1				  a2					a3
+void	__attribute__ ((noinline)) local_changeContext_PRE_C0(uint32_t core, uint64_t parameter, uint64_t *threshold, uintptr_t *stack) {
+	const	volatile	uint64_t	*newStack;
+
+// Save the plic threshold on the current process stack
+// Save the current process stack
+
+	*threshold = (uint64_t)plic->targets.target[core].priority_threshold & 0x00000000000000FFu;
+	vKern_stackProc[core] = stack;
+
+// Change the context
+
+	local_newContextPRE_C0(core, parameter);
+
+// Recover the new process stack
+// Recover the new plic threshold on the new process stack
+
+	newStack = (volatile uint64_t *)vKern_stackProc[core];
+	plic->targets.target[core].priority_threshold = (uint32_t)(newStack[0] & 0x00000000000000FFu);
+
+// Prepare a1 with the pointer on the new stack (see macro KERN_NEW_FRAME)
+
+	__asm volatile ("add	a1,x0,%0" : : "r" (newStack) :);
+
+	KERN_NEW_FRAME;
+	KERN_RETURN;
+}
+
+/*
+ * \brief local_newContextPRE_C0
+ *
+ * - Pre-emption, change of the context
+ *   - Change the context and prepare the next process
+ *     - Verify the sanity of the stack
+ *     - Stop time of the process
+ *     - Change the context
+ *     - Start time of the process
+ *
+ */
+static	void	__attribute__ ((noinline)) local_newContextPRE_C0(uint32_t core, uint64_t parameter) {
+
+	vExce_isException[core] = false;
+
+	gpiohs->rise_ie.u32[0] &= (uint32_t)~(1u<<BKERN_PREEMPTION_C0);
+	plic->targets.target[core].claim_complete = (uint32_t)parameter;
+
+	timer2->channel[0].eoi;
+	timer2->channel[0].control &= (uint32_t)~TIMER_CR_ENABLE;
+
+	INTERRUPTION_SET_PERIPH;
+	INTERRUPTION_ON_HARD;
+	CHECK_STACK_SANITY(core);
+
+	local_timeStop_C0();
+	scheduler_callBackSlow();
+	local_timeStart_C0();
+
+	#if (KKERN_WITH_STATISTICS_S == true)
+	INTERRUPTION_OFF;
+	const	uint32_t	tStart = vTimeStart_C0;
+	const	uint32_t	tStop  = vTimeStop_C0;
+	const	uint32_t	tLast  = vTimeLastStart_C0;
+	const	uint32_t	tExc   = vKern_TimeException[core];
+			proc_t		*proc  = vKern_backwardProc[core];
+	INTERRUPTION_RESTORE;
+
+	statistics_statistic(proc, tStart, tStop, tLast, tExc);
+	vKern_TimeException[core] = 0u;
+	#endif
+}
+
+/*
+ * \brief local_TIM2_A_IRQHandler_C0
+ *
+ * - Time slice timeout
+ * - Save the context
+ * - Save the context stack
+ * - Change the context
+ * - Give another timeout to the process
+ * - Recover another context
+ *
+ * - Save the full stack frame (uKOS-X like)
+ *
+ *		Normal stack frame
+ *
+ *		->	ra
+ *		->	t2..t0
+ *		->	s1..s0
+ *		->	a7..a0
+ *		->	t6..t3
+ *		->	fa7..fa0
+ *		->	ft11..t8
+ *		->	s11..s2
+ *		->	tp
+ *		->	gp
+ *		->	x0
+ *		->	fs11..fs0
+ *		->  fscr
+ *		->	mepc
+ *		->	mcause
+ *		->	mstatus
+ *		->	core
+ *		->	PLIC-mth
+ *
+ * !!! Do not generate prologue/epilogue sequences
+ *
+ */
+		void	local_changeContext_TOU_C0(uint32_t core, uint64_t parameter, uint64_t *threshold, uintptr_t *stack);
+static	void	local_TIM2_A_IRQHandler_C0(uint32_t core, uint64_t parameter) __attribute__ ((naked));
+static	void	local_TIM2_A_IRQHandler_C0(uint32_t core, uint64_t parameter) {
+
+	#if (!defined(__clang__))
+	UNUSED(core);
+	UNUSED(parameter);
+	#endif
+
+	KERN_SAVE_FRAME;
+
+// eabi registers a0..a3 are set in the KERN_SAVE_FRAME macro
+// a0 = core, a1 = parameter, a2 = *threshold, a3 = stack
+
+	JUMP_FNCT(local_changeContext_TOU_C0);
+}
+
+// The input parameters have to be provided by the macro KERN_SAVE_FRAME and
+// have to comply with the eabi
+//
+//																	   a0			  a1				  a2					a3
+void	__attribute__ ((noinline)) local_changeContext_TOU_C0(uint32_t core, uint64_t parameter, uint64_t *threshold, uintptr_t *stack) {
+	const	volatile	uint64_t	*newStack;
+
+// Save the plic threshold on the current process stack
+// Save the current process stack
+
+	*threshold = (uint64_t)plic->targets.target[core].priority_threshold & 0x00000000000000FFu;
+	vKern_stackProc[core] = stack;
+
+// Change the context
+
+	local_newContextTOU_C0(core, parameter);
+
+// Recover the new process stack
+// Recover the new plic threshold on the new process stack
+
+	newStack = (volatile uint64_t *)vKern_stackProc[core];
+	plic->targets.target[core].priority_threshold = (uint32_t)(newStack[0] & 0x00000000000000FFu);
+
+// Prepare a1 with the pointer on the new stack (see macro KERN_NEW_FRAME)
+
+	__asm volatile ("add	a1,x0,%0" : : "r" (newStack) :);
+
+	KERN_NEW_FRAME;
+	KERN_RETURN;
+}
+
+/*
+ * \brief local_newContextTOU_C0
+ *
+ * - Process timeout, change of the context
+ *   - INT acknowledge and new time for the next process
+ *   - Change the context and prepare the next process
+ *     - Clear the interruption
+ *     - Disable the timer
+ *     - Verify the sanity of the stack
+ *     - Stop time of the process
+ *     - Change the context
+ *     - Start time of the process
+ *
+ */
+static	void	__attribute__ ((noinline)) local_newContextTOU_C0(uint32_t core, uint64_t parameter) {
+
+	vExce_isException[core] = false;
+
+	timer2->channel[0].eoi;
+	plic->targets.target[core].claim_complete = (uint32_t)parameter;
+	timer2->channel[0].control &= (uint32_t)~TIMER_CR_ENABLE;
+
+	INTERRUPTION_SET_PERIPH;
+	INTERRUPTION_ON_HARD;
+	CHECK_STACK_SANITY(core);
+
+	local_timeStop_C0();
+	scheduler_callBackSlow();
+	local_timeStart_C0();
+
+	#if (KKERN_WITH_STATISTICS_S == true)
+	INTERRUPTION_OFF;
+	const	uint32_t	tStart = vTimeStart_C0;
+	const	uint32_t	tStop  = vTimeStop_C0;
+	const	uint32_t	tLast  = vTimeLastStart_C0;
+	const	uint32_t	tExc   = vKern_TimeException[core];
+			proc_t		*proc  = vKern_backwardProc[core];
+	INTERRUPTION_RESTORE;
+
+	statistics_statistic(proc, tStart, tStop, tLast, tExc);
+	vKern_TimeException[core] = 0u;
+	#endif
+}
+
+/*
+ * \brief local_ECALL_message_C0
+ *
+ * - TRAP
+ * - Save the context
+ * - Save the context stack
+ * - Process the message sent
+ * - Change the context
+ * - Give another timeout to the process
+ * - Recover another context
+ *
+ * - Save the full stack frame (uKOS-X like)
+ *
+ *		Message stack frame
+ *
+ *		->	ra
+ *		->	t2..t0
+ *		->	s1..s0
+ *		->	a7..a0
+ *		->	t6..t3
+ *		->	fa7..fa0
+ *		->	ft11..t8
+ *		->	s11..s2
+ *		->	tp
+ *		->	gp
+ *		->	x0
+ *		->	fs11..fs0
+ *		->  fscr
+ *		->	mepc
+ *		->	mcause
+ *		->	mstatus
+ *		->	core
+ *		->	PLIC-mth
+ *
+ * !!! Do not generate prologue/epilogue sequences
+ *
+ */
+		void	local_changeContext_MSG_C0(uint32_t core, uint64_t message, uint64_t *threshold, uintptr_t *stack);
+static	void	local_ECALL_message_C0(uint32_t core, uint64_t message) __attribute__ ((naked));
+static	void	local_ECALL_message_C0(uint32_t core, uint64_t message) {
+
+	#if (!defined(__clang__))
+	UNUSED(core);
+	UNUSED(message);
+	#endif
+
+	KERN_SAVE_FRAME;
+
+// eabi registers a0..a3 are set in the KERN_SAVE_FRAME macro
+// a0 = core, a1 = parameter, a2 = *threshold, a3 = stack
+
+	JUMP_FNCT(local_changeContext_MSG_C0);
+}
+
+// The input parameters have to be provided by the macro KERN_SAVE_FRAME and
+// have to comply with the eabi
+//
+//																	   a0			  a1				a2					  a3
+void	__attribute__ ((noinline)) local_changeContext_MSG_C0(uint32_t core, uint64_t message, uint64_t *threshold, uintptr_t *stack) {
+	const	volatile	uint64_t	*newStack;
+
+// Save the plic threshold on the current process stack
+// Save the current process stack
+
+	*threshold = (uint64_t)plic->targets.target[core].priority_threshold & 0x00000000000000FFu;
+	vKern_stackProc[core] = stack;
+
+// Change the context
+
+	local_newContextMSG_C0(core, message);
+
+// Recover the new process stack
+// Recover the new plic threshold on the new process stack
+
+	newStack = (volatile uint64_t *)vKern_stackProc[core];
+	plic->targets.target[core].priority_threshold = (uint32_t)(newStack[0] & 0x00000000000000FFu);
+
+// Prepare a1 with the pointer on the new stack (see macro KERN_NEW_FRAME)
+
+	__asm volatile ("add	a1,x0,%0" : : "r" (newStack) :);
+
+	KERN_NEW_FRAME;
+	KERN_RETURN;
+}
+
+/*
+ * \brief local_newContextMSG_C0
+ *
+ * - Message, change the context
+ *   - INT acknowledge and new time for the next process
+ *   - Change the context and prepare the next process
+ *     - Verify the sanity of the stack
+ *     - Stop time of the process
+ *     - Change the context
+ *     - Start time of the process
+ *
+ */
+static	void	__attribute__ ((noinline)) local_newContextMSG_C0(uint32_t core, uint64_t message) {
+
+	vExce_isException[core] = false;
+
+	timer2->channel[0].eoi;
+	timer2->channel[0].control &= (uint32_t)~TIMER_CR_ENABLE;
+
+	INTERRUPTION_SET_PERIPH;
+	INTERRUPTION_ON_HARD;
+	CHECK_STACK_SANITY(core);
+
+	local_timeStop_C0();
+	scheduler_callBackTrap((uint32_t)message);
+	local_timeStart_C0();
+
+	#if (KKERN_WITH_STATISTICS_S == true)
+	INTERRUPTION_OFF;
+	const	uint32_t	tStart = vTimeStart_C0;
+	const	uint32_t	tStop  = vTimeStop_C0;
+	const	uint32_t	tLast  = vTimeLastStart_C0;
+	const	uint32_t	tExc   = vKern_TimeException[core];
+			proc_t		*proc  = vKern_backwardProc[core];
+	INTERRUPTION_RESTORE;
+
+	statistics_statistic(proc, tStart, tStop, tLast, tExc);
+	vKern_TimeException[core] = 0u;
+	#endif
+}
+
+/*
+ * \brief local_timeStart_C0
+ *
+ * - Give a new time-stamp (1-us of resolution)
+ *   - 0x00000000 to 0xFFFFFFFF incremental counter
+ *
+ */
+static	void	local_timeStart_C0(void) {
+
+	INTERRUPTION_OFF;
+	vTimeLastStart_C0 = vTimeStart_C0;
+	vTimeStart_C0     = ~timer1->channel[0].current_value / (KFREQUENCY_TIM / 1000000u);
+	INTERRUPTION_RESTORE;
+}
+
+/*
+ * \brief local_timeStop_C0
+ *
+ * - Give a new time-stamp (1-us of resolution)
+ *   - 0x00000000 to 0xFFFFFFFF incremental counter
+ *
+ */
+static	void	local_timeStop_C0(void) {
+
+	vTimeStop_C0 = ~timer1->channel[0].current_value / (KFREQUENCY_TIM / 1000000u);
+}
+
+/*
+ * \brief local_TIM1_A_IRQHandler_C0
+ *
+ * - Build a 64-bit counter @ CPU speed
+ *
+ */
+static	void	local_TIM1_A_IRQHandler_C0(uint32_t core, uint64_t parameter) {
+
+// Acknowledge the TIM1_A interruption
+// Acknowledge the PLIC claim complete
+
+	timer1->channel[0].eoi;
+	plic->targets.target[core].claim_complete = (uint32_t)parameter;
+
+// Compute the vTickCount403_C0
+
+	vTickCount403_C0 = vTickCount403_C0 & 0xFFFFFFFF00000000u;
+	vTickCount403_C0 = vTickCount403_C0 + 0x0000000100000000u;
+}
+
+/*
+ * \brief local_timeStmp_C0
+ *
+ * - Maintain a 64-bit timer with 1-us of resolution
+ *
+ */
+static	void	local_timeStmp_C0(void) {
+
+	INTERRUPTION_OFF;
+	vTickCount403_C0 = vTickCount403_C0 & 0xFFFFFFFF00000000u;
+	vTickCount403_C0 = vTickCount403_C0 | ~timer1->channel[0].current_value;
+	vTickCount_C0    = vTickCount403_C0 / (KFREQUENCY_TIM / 1000000u);
+	INTERRUPTION_RESTORE;
+}

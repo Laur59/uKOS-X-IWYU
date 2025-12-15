@@ -1,0 +1,362 @@
+/*
+; model_coredump_soc.
+; ===================
+
+;------------------------------------------------------------------------
+; Author:	Edo. Franzi		The 2025-01-01
+; Modifs:
+;
+; Project:	uKOS-X
+; Goal:		Model for the core dump (SOC specific).
+;
+;   (c) 2025-20xx, Edo. Franzi
+;   --------------------------
+;                                              __ ______  _____
+;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
+;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
+;   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
+;                                     \__,_/_/ |_\____//____/
+;   edo.franzi@ukos.ch
+;
+;   Description: Lightweight, real-time multitasking operating
+;   system for embedded microcontroller and DSP-based systems.
+;
+;   Permission is hereby granted, free of charge, to any person
+;   obtaining a copy of this software and associated documentation
+;   files (the "Software"), to deal in the Software without restriction,
+;   including without limitation the rights to use, copy, modify,
+;   merge, publish, distribute, sublicense, and/or sell copies of the
+;   Software, and to permit persons to whom the Software is furnished
+;   to do so, subject to the following conditions:
+;
+;   The above copyright notice and this permission notice shall be
+;   included in all copies or substantial portions of the Software.
+;
+;   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+;   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+;   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+;   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+;   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+;   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+;   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+;   SOFTWARE.
+;
+;------------------------------------------------------------------------
+*/
+
+// Prototypes
+
+static	void	local_processInterruption(uintptr_t *stackBefore, uintptr_t *stackAfter);
+static	void	local_printInterruption(const char_t **vectorName);
+
+/*
+ * \brief model_coreDump_displayInterruptions
+ *
+ *
+ * Display useful postmortem information
+ * Example:
+ *
+ * System dead! Core DUMP!!
+ * ========================
+ *
+ * Exception: DMA1_Stream0_IRQn
+ * Routine:   aProcess
+ * Process:   Process_User_0
+ *
+ * User trace information
+ *
+ * Stacks contents before the fault
+ * stack[+31] = 0x00000000
+ * stack[+30] = 0x00000000
+ * ...
+ * stack[+01] = 0xBBB10001
+ * stack[+00] = 0xAAA00000
+ *
+ * CPU registers: (PC after the fault instruction)
+ * psp      = 0x730005A8    msp      = 0x3800FFF0
+ * r00      = 0xAAA00000    r08      = 0xADA80008
+ * r01      = 0xBBB10001    r09      = 0xAEA90009
+ * r02      = 0xCCC20002    r10      = 0xAFAA000A
+ * r03      = 0x001FFFFF    r11      = 0xBABB000B
+ * r04      = 0x3800FFF0    r12      = 0xBBBC000C
+ * r05      = 0xFFF50005    r13 (SP) = 0x73000540
+ * r06      = 0xABA60006    r14      = 0x08018629
+ * r07      = 0xACA70007    lr       = 0xFFFFFFED
+ * xPSR     = 0x61000000    r15 (PC) = 0x7200020A
+ * BASEPRI  = 0x00000070
+ *
+ * FPU registers
+ * s00      = 0x3F800000    s16      = 0x41880000
+ * s01      = 0x40000000    s17      = 0x41900000
+ * s02      = 0x40400000    s18      = 0x41980000
+ * s03      = 0x40800000    s19      = 0x41A00000
+ * s04      = 0x40A00000    s20      = 0x41A80000
+ * s05      = 0x40C00000    s21      = 0x41B00000
+ * s06      = 0x40E00000    s22      = 0x41B80000
+ * s07      = 0x41000000    s23      = 0x41C00000
+ * s08      = 0x41100000    s24      = 0x41C80000
+ * s09      = 0x41200000    s25      = 0x41D00000
+ * s10      = 0x41300000    s26      = 0x41D80000
+ * s11      = 0x41400000    s27      = 0x41E00000
+ * s12      = 0x41500000    s28      = 0x41E80000
+ * s13      = 0x41600000    s29      = 0x41F00000
+ * s14      = 0x41700000    s30      = 0x41F80000
+ * s15      = 0x41800000    s31      = 0xC1F80000
+ * FPSCR    = 0x00000000
+ *
+ */
+static	void	model_coreDump_displayInterruptions(void) __attribute__ ((naked));
+static	void	model_coreDump_displayInterruptions(void) {
+
+	CORE_DUMP_SAVE_STACK_FRAME;
+
+	JUMP_FNCT(local_processInterruption);
+}
+
+/*
+ * \brief local_processInterruption
+ *
+ * - Collect the stack frame
+ * - Display the interruption
+ * - Display the fault routine & process
+ * - Display the core information
+ * - Display the user trace
+ * - Display the stack frame
+ *
+ */
+static	void	__attribute__ ((noinline, used, noreturn)) local_processInterruption(uintptr_t *stackBefore, uintptr_t *stackAfter) {
+			uint32_t	core, i;
+	const	uintptr_t	*ptr;
+	const	char_t		*vectorName;
+
+	core = GET_RUNNING_CORE;
+
+	SET_PRIVILEGED_MODE;
+	vKern_runProc[core]->oSpecification.oMode = KPROC_PRIVILEGED;
+
+	vExceptionNb[core] = core_getIPSR();
+	vStackBefore[core] = stackBefore;
+	vStackAfter[core]  = stackAfter;
+
+// Collect the stack frame
+
+	ptr = vStackAfter[core];
+	vStackCoreDump[core][SPP] = (uintptr_t)vStackAfter[core];
+	for (i = PSP; i < ENDREG; i++) {
+		vStackCoreDump[core][i] = *ptr;
+		ptr++;
+	}
+
+	local_printInterruption(&vectorName);
+	local_printFunction(vStackCoreDump[core][PC], vectorName, "Interruption: ");
+	local_printCore();
+	local_printTrace();
+	local_printLog();
+	local_printStackFrame();
+	cb_signal(KINTERRUPTION);
+}
+
+/*
+ * \brief local_printInterruption
+ *
+ * - Display the interruption name
+ *
+ */
+static	void	__attribute__ ((noinline)) local_printInterruption(const char_t **vectorName) {
+	uint32_t	core;
+
+	core = GET_RUNNING_CORE;
+
+	cmns_send(KDEF0, "\n\n\n\n");
+	cmns_send(KDEF0, "System dead! Core DUMP!!\n");
+	cmns_send(KDEF0, "========================\n\n");
+	switch (vExceptionNb[core]) {
+		case 0u:   { *vectorName = "PVD_PVM_IRQn";			break; }
+		case 2u:   { *vectorName = "DTS_IRQn";				break; }
+		case 3u:   { *vectorName = "RCC_IRQn";				break; }
+		case 4u:   { *vectorName = "LOCKUP_IRQn";			break; }
+		case 5u:   { *vectorName = "CACHE_ECC_IRQn";		break; }
+		case 6u:   { *vectorName = "TCM_ECC_IRQn";			break; }
+		case 7u:   { *vectorName = "BCK_ECC_IRQn";			break; }
+		case 8u:   { *vectorName = "FPU_IRQn";				break; }
+		case 10u:  { *vectorName = "RTC_S_IRQn";			break; }
+		case 11u:  { *vectorName = "TAMP_IRQn";				break; }
+		case 12u:  { *vectorName = "RIFSC_TAMPER_IRQn";		break; }
+		case 13u:  { *vectorName = "IAC_IRQn";				break; }
+		case 14u:  { *vectorName = "RCC_S_IRQn";			break; }
+		case 16u:  { *vectorName = "RTC_IRQn";				break; }
+		case 18u:  { *vectorName = "WDGLS_EARLY_IRQn";		break; }
+		case 19u:  { *vectorName = "WWDG_EARLY_IRQn";		break; }
+		case 20u:  { *vectorName = "EXTI0_IRQn";			break; }
+		case 21u:  { *vectorName = "EXTI1_IRQn";			break; }
+		case 22u:  { *vectorName = "EXTI2_IRQn";			break; }
+		case 23u:  { *vectorName = "EXTI3_IRQn";			break; }
+		case 24u:  { *vectorName = "EXTI4_IRQn";			break; }
+		case 25u:  { *vectorName = "EXTI5_IRQn";			break; }
+		case 26u:  { *vectorName = "EXTI6_IRQn";			break; }
+		case 27u:  { *vectorName = "EXTI7_IRQn";			break; }
+		case 28u:  { *vectorName = "EXTI8_IRQn";			break; }
+		case 29u:  { *vectorName = "EXTI9_IRQn";			break; }
+		case 30u:  { *vectorName = "EXTI10_IRQn";			break; }
+		case 31u:  { *vectorName = "EXTI11_IRQn";			break; }
+		case 32u:  { *vectorName = "EXTI12_IRQn";			break; }
+		case 33u:  { *vectorName = "EXTI13_IRQn";			break; }
+		case 34u:  { *vectorName = "EXTI14_IRQn";			break; }
+		case 35u:  { *vectorName = "EXTI15_IRQn";			break; }
+		case 36u:  { *vectorName = "SAES_IRQn";				break; }
+		case 37u:  { *vectorName = "CRYP_IRQn";				break; }
+		case 38u:  { *vectorName = "PKA_IRQn";				break; }
+		case 39u:  { *vectorName = "HASH_IRQn";				break; }
+		case 40u:  { *vectorName = "RNG_IRQn";				break; }
+		case 42u:  { *vectorName = "MCE1_IRQn";				break; }
+		case 43u:  { *vectorName = "MCE2_IRQn";				break; }
+		case 44u:  { *vectorName = "MCE3_IRQn";				break; }
+		case 45u:  { *vectorName = "MCE4_IRQn";				break; }
+		case 46u:  { *vectorName = "ADC12_IRQn";			break; }
+		case 47u:  { *vectorName = "CSI_DBG_IRQn";			break; }
+		case 48u:  { *vectorName = "DCMIPP_IRQn";			break; }
+		case 52u:  { *vectorName = "PAHB_ERR_IRQn";			break; }
+		case 53u:  { *vectorName = "NPU_END_OF_EPOCH_IRQn";	break; }
+		case 54u:  { *vectorName = "NPU1_IRQn";				break; }
+		case 55u:  { *vectorName = "NPU2_IRQn";				break; }
+		case 56u:  { *vectorName = "NPU3_IRQn";				break; }
+		case 57u:  { *vectorName = "NPUCACHE_IRQn";			break; }
+		case 58u:  { *vectorName = "LTDC_LO_IRQn";			break; }
+		case 59u:  { *vectorName = "LTDC_LO_ERR_IRQn";		break; }
+		case 60u:  { *vectorName = "DMA2D_IRQn";			break; }
+		case 61u:  { *vectorName = "JPEG_IRQn";				break; }
+		case 62u:  { *vectorName = "VENC_IRQn";				break; }
+		case 63u:  { *vectorName = "GFXMMU_IRQn";			break; }
+		case 64u:  { *vectorName = "GFXTIM_IRQn";			break; }
+		case 65u:  { *vectorName = "GPU2D_IRQn";			break; }
+		case 66u:  { *vectorName = "GPU2D_ERROR_IRQn";		break; }
+		case 67u:  { *vectorName = "GPU_CACHE_IRQn";		break; }
+		case 68u:  { *vectorName = "HPDMA1_CH0_IRQn";		break; }
+		case 69u:  { *vectorName = "HPDMA1_CH1_IRQn";		break; }
+		case 70u:  { *vectorName = "HPDMA1_CH2_IRQn";		break; }
+		case 71u:  { *vectorName = "HPDMA1_CH3_IRQn";		break; }
+		case 72u:  { *vectorName = "HPDMA1_CH4_IRQn";		break; }
+		case 73u:  { *vectorName = "HPDMA1_CH5_IRQn";		break; }
+		case 74u:  { *vectorName = "HPDMA1_CH6_IRQn";		break; }
+		case 75u:  { *vectorName = "HPDMA1_CH7_IRQn";		break; }
+		case 76u:  { *vectorName = "HPDMA1_CH8_IRQn";		break; }
+		case 77u:  { *vectorName = "HPDMA1_CH9_IRQn";		break; }
+		case 78u:  { *vectorName = "HPDMA1_CH10_IRQn";		break; }
+		case 79u:  { *vectorName = "HPDMA1_CH11_IRQn";		break; }
+		case 80u:  { *vectorName = "HPDMA1_CH12_IRQn";		break; }
+		case 81u:  { *vectorName = "HPDMA1_CH13_IRQn";		break; }
+		case 82u:  { *vectorName = "HPDMA1_CH14_IRQn";		break; }
+		case 83u:  { *vectorName = "HPDMA1_CH15_IRQn";		break; }
+		case 84u:  { *vectorName = "GPDMA1_CH0_IRQn";		break; }
+		case 85u:  { *vectorName = "GPDMA1_CH1_IRQn";		break; }
+		case 86u:  { *vectorName = "GPDMA1_CH2_IRQn";		break; }
+		case 87u:  { *vectorName = "GPDMA1_CH3_IRQn";		break; }
+		case 88u:  { *vectorName = "GPDMA1_CH4_IRQn";		break; }
+		case 89u:  { *vectorName = "GPDMA1_CH5_IRQn";		break; }
+		case 90u:  { *vectorName = "GPDMA1_CH6_IRQn";		break; }
+		case 91u:  { *vectorName = "GPDMA1_CH7_IRQn";		break; }
+		case 92u:  { *vectorName = "GPDMA1_CH8_IRQn";		break; }
+		case 93u:  { *vectorName = "GPDMA1_CH9_IRQn";		break; }
+		case 94u:  { *vectorName = "GPDMA1_CH10_IRQn";		break; }
+		case 95u:  { *vectorName = "GPDMA1_CH11_IRQn";		break; }
+		case 96u:  { *vectorName = "GPDMA1_CH12_IRQn";		break; }
+		case 97u:  { *vectorName = "GPDMA1_CH13_IRQn";		break; }
+		case 98u:  { *vectorName = "GPDMA1_CH14_IRQn";		break; }
+		case 99u:  { *vectorName = "GPDMA1_CH15_IRQn";		break; }
+		case 100u: { *vectorName = "I2C1_EV_IRQn";			break; }
+		case 101u: { *vectorName = "I2C1_ER_IRQn";			break; }
+		case 102u: { *vectorName = "I2C2_EV_IRQn";			break; }
+		case 103u: { *vectorName = "I2C2_ER_IRQn";			break; }
+		case 104u: { *vectorName = "I2C3_EV_IRQn";			break; }
+		case 105u: { *vectorName = "I2C3_ER_IRQn";			break; }
+		case 106u: { *vectorName = "I2C4_EV_IRQn";			break; }
+		case 107u: { *vectorName = "I2C4_ER_IRQn";			break; }
+		case 108u: { *vectorName = "I3C1_EV_IRQn";			break; }
+		case 109u: { *vectorName = "I3C1_ER_IRQn";			break; }
+		case 110u: { *vectorName = "I3C2_EV_IRQn";			break; }
+		case 111u: { *vectorName = "I3C2_ER_IRQn";			break; }
+		case 112u: { *vectorName = "TIM1_BRK_IRQn";			break; }
+		case 113u: { *vectorName = "TIM1_UP_IRQn";			break; }
+		case 114u: { *vectorName = "TIM1_TRG_CCU_IRQn";		break; }
+		case 115u: { *vectorName = "TIM1_CC_IRQn";			break; }
+		case 116u: { *vectorName = "TIM2_IRQn";				break; }
+		case 117u: { *vectorName = "TIM3_IRQn";				break; }
+		case 118u: { *vectorName = "TIM4_IRQn";				break; }
+		case 119u: { *vectorName = "TIM5_IRQn";				break; }
+		case 120u: { *vectorName = "TIM6_IRQn";				break; }
+		case 121u: { *vectorName = "TIM7_IRQn";				break; }
+		case 122u: { *vectorName = "TIM8_BRK_IRQn";			break; }
+		case 123u: { *vectorName = "TIM8_UP_IRQn";			break; }
+		case 124u: { *vectorName = "TIM8_TRG_CCU_IRQn";		break; }
+		case 125u: { *vectorName = "TIM8_CC_IRQn";			break; }
+		case 126u: { *vectorName = "TIM9_IRQn";				break; }
+		case 127u: { *vectorName = "TIM10_IRQn";			break; }
+		case 128u: { *vectorName = "TIM11_IRQn";			break; }
+		case 129u: { *vectorName = "TIM12_IRQn";			break; }
+		case 130u: { *vectorName = "TIM13_IRQn";			break; }
+		case 131u: { *vectorName = "TIM14_IRQn";			break; }
+		case 132u: { *vectorName = "TIM15_IRQn";			break; }
+		case 133u: { *vectorName = "TIM16_IRQn";			break; }
+		case 134u: { *vectorName = "TIM17_IRQn";			break; }
+		case 135u: { *vectorName = "TIM18_IRQn";			break; }
+		case 136u: { *vectorName = "LPTIM1_IRQn";			break; }
+		case 137u: { *vectorName = "LPTIM2_IRQn";			break; }
+		case 138u: { *vectorName = "LPTIM3_IRQn";			break; }
+		case 139u: { *vectorName = "LPTIM4_IRQn";			break; }
+		case 140u: { *vectorName = "LPTIM5_IRQn";			break; }
+		case 141u: { *vectorName = "ADF1_FLT0_IRQn";		break; }
+		case 142u: { *vectorName = "MDF1_FLT0_IRQn";		break; }
+		case 143u: { *vectorName = "MDF1_FLT1_IRQn";		break; }
+		case 144u: { *vectorName = "MDF1_FLT2_IRQn";		break; }
+		case 145u: { *vectorName = "MDF1_FLT3_IRQn";		break; }
+		case 146u: { *vectorName = "MDF1_FLT4_IRQn";		break; }
+		case 147u: { *vectorName = "MDF1_FLT5_IRQn";		break; }
+		case 148u: { *vectorName = "SAI1_A_IRQn";			break; }
+		case 149u: { *vectorName = "SAI1_B_IRQn";			break; }
+		case 150u: { *vectorName = "SAI2_A_IRQn";			break; }
+		case 151u: { *vectorName = "SAI2_GLOBAL_B_IRQn";	break; }
+		case 152u: { *vectorName = "SPDIFRX_IRQn";			break; }
+		case 153u: { *vectorName = "SPI1_IRQn";				break; }
+		case 154u: { *vectorName = "SPI2_IRQn";				break; }
+		case 155u: { *vectorName = "SPI3_IRQn";				break; }
+		case 156u: { *vectorName = "SPI4_IRQn";				break; }
+		case 157u: { *vectorName = "SPI5_IRQn";				break; }
+		case 158u: { *vectorName = "SPI6_IRQn";				break; }
+		case 159u: { *vectorName = "USART1_IRQn";			break; }
+		case 160u: { *vectorName = "USART2_IRQn";			break; }
+		case 161u: { *vectorName = "USART3_IRQn";			break; }
+		case 162u: { *vectorName = "UART4_IRQn";			break; }
+		case 163u: { *vectorName = "UART5_IRQn";			break; }
+		case 164u: { *vectorName = "USART6_IRQn";			break; }
+		case 165u: { *vectorName = "UART7_IRQn";			break; }
+		case 166u: { *vectorName = "UART8_IRQn";			break; }
+		case 167u: { *vectorName = "UART9_IRQn";			break; }
+		case 168u: { *vectorName = "USART10_IRQn";			break; }
+		case 169u: { *vectorName = "LPUART1_IRQn";			break; }
+		case 170u: { *vectorName = "XSPI1_IRQn";			break; }
+		case 171u: { *vectorName = "XSPI2_IRQn";			break; }
+		case 172u: { *vectorName = "XSPI3_IRQn";			break; }
+		case 173u: { *vectorName = "FMC_IRQn";				break; }
+		case 174u: { *vectorName = "SDMMC1_IRQn";			break; }
+		case 175u: { *vectorName = "SDMMC2_IRQn";			break; }
+		case 176u: { *vectorName = "UCPD_IRQn";				break; }
+		case 177u: { *vectorName = "OTG1_IRQn";				break; }
+		case 178u: { *vectorName = "OTG2_IRQn";				break; }
+		case 179u: { *vectorName = "ETH1_IRQn";				break; }
+		case 180u: { *vectorName = "FDCAN1_IT0_IRQn";		break; }
+		case 181u: { *vectorName = "FDCAN1_IT1_IRQn";		break; }
+		case 182u: { *vectorName = "FDCAN2_IT0_IRQn";		break; }
+		case 183u: { *vectorName = "FDCAN2_IT1_IRQn";		break; }
+		case 184u: { *vectorName = "FDCAN3_IT0_IRQn";		break; }
+		case 185u: { *vectorName = "FDCAN3_IT1_IRQn";		break; }
+		case 186u: { *vectorName = "FDCAN_CU_IRQn";			break; }
+		case 187u: { *vectorName = "MDIOS_IRQn";			break; }
+		case 188u: { *vectorName = "DCMI_PSSI_IRQn";		break; }
+		case 189u: { *vectorName = "WAKEUP_PIN_IRQn";		break; }
+		case 190u: { *vectorName = "CTI0_IRQn";				break; }
+		case 191u: { *vectorName = "CTI1_IRQn";				break; }
+		case 193u: { *vectorName = "LTDC_UP_IRQn";			break; }
+		case 194u: { *vectorName = "LTDC_UP_ERR_IRQn";		break; }
+		default:   { *vectorName = "Unknown";				break; }
+	}
+}

@@ -1,0 +1,394 @@
+/*
+; model_uart_C0.
+; ==============
+
+;------------------------------------------------------------------------
+; Author:	Edo. Franzi		The 2025-01-01
+; Modifs:
+;
+; Project:	uKOS-X
+; Goal:		Model for controlling the "uart" device for C0.
+;
+;   (c) 2025-20xx, Edo. Franzi
+;   --------------------------
+;                                              __ ______  _____
+;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
+;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
+;   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
+;                                     \__,_/_/ |_\____//____/
+;   edo.franzi@ukos.ch
+;
+;   Description: Lightweight, real-time multitasking operating
+;   system for embedded microcontroller and DSP-based systems.
+;
+;   Permission is hereby granted, free of charge, to any person
+;   obtaining a copy of this software and associated documentation
+;   files (the "Software"), to deal in the Software without restriction,
+;   including without limitation the rights to use, copy, modify,
+;   merge, publish, distribute, sublicense, and/or sell copies of the
+;   Software, and to permit persons to whom the Software is furnished
+;   to do so, subject to the following conditions:
+;
+;   The above copyright notice and this permission notice shall be
+;   included in all copies or substantial portions of the Software.
+;
+;   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+;   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+;   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+;   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+;   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+;   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+;   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+;   SOFTWARE.
+;
+;------------------------------------------------------------------------
+*/
+
+static	volatile	bool		vFirstKick_C0 = false;
+static	volatile	bool		vSending_C0 = false;
+static	volatile	bool		vWithSemaphore_RX_C0 = false;
+static	volatile	bool		vWithSemaphore_TX_C0 = false;
+static	volatile	int32_t		vStatus_C0 = KERR_SERIAL_NOERR;
+static	volatile	uint8_t		vSndBuffer_C0[KUART_SZ_TX_BUF_C0];
+static	volatile	uint8_t		vRecBuffer_C0[KUART_SZ_RX_BUF_C0];
+static	volatile	uint8_t		* volatile vRRecBuffer_C0;
+static	volatile	uint8_t		* volatile vWRecBuffer_C0;
+static	volatile	uint8_t		* volatile vRSndBuffer_C0;
+static	volatile	uint8_t		* volatile vWSndBuffer_C0;
+static				sema_t		*vSemaphore_RX_C0;
+static				sema_t		*vSemaphore_TX_C0;
+
+STRG_LOC_CONST(aStrSemaphore_RX_C0[]) = KUART_SEMAPHORE_RX_C0;
+STRG_LOC_CONST(aStrSemaphore_TX_C0[]) = KUART_SEMAPHORE_TX_C0;
+
+// Prototypes
+
+extern	void	cmns_wait(uint32_t us);
+static	void	local_UART_IRQHandler_C0(void);
+
+/*
+ * \brief model_uart_init_C0
+ *
+ * - Initialise the manager
+ *
+ */
+void	model_uart_init_C0(void) {
+
+	cb_enable_C0();
+
+// Create the semaphores
+
+	if (kern_createSemaphore(aStrSemaphore_RX_C0, 0, 1, &vSemaphore_RX_C0) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "model_uart: create sema"); exit(EXIT_OS_PANIC); }
+	if (kern_createSemaphore(aStrSemaphore_TX_C0, 0, 1, &vSemaphore_TX_C0) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "model_uart: create sema"); exit(EXIT_OS_PANIC); }
+
+// Initialise the circular buffers (snd) and (rec)
+
+	vRSndBuffer_C0 = vSndBuffer_C0;
+	vWSndBuffer_C0 = vSndBuffer_C0;
+	vRRecBuffer_C0 = vRecBuffer_C0;
+	vWRecBuffer_C0 = vRecBuffer_C0;
+
+// Initialise the UART (Rx and Tx) and set it to 8-bits, 1-stop-bits, default baudrate and no parity
+// Fifo 1/8, Interruption in reception & timeout interruption
+
+	INTERRUPT_VECTOR(UART_VECTOR_NUMBER_C0, local_UART_IRQHandler_C0);
+	NVIC_SetPriority(UART_VECTOR_NUMBER_C0, KINT_LEVEL_COMMUNICATIONS);
+	NVIC_EnableIRQ(UART_VECTOR_NUMBER_C0);
+
+	UART_C0->UARTCR = 0;
+	BAUDRATE(UART0, UART_FREQUENCY_C0, 460800);
+	UART_C0->UARTIFLS  = (0u * UART_UARTIFLS_TXIFLSEL_0) | (0u * UART_UARTIFLS_RXIFLSEL_0);
+	UART_C0->UARTLCR_H = (3u * UART_UARTLCR_H_WLEN_0) | UART_UARTLCR_H_FEN;
+
+// Enable the UART0
+
+	UART_C0->UARTIMSC |= (UART_UARTIMSC_RXIM | UART_UARTIMSC_RTIM);
+	UART_C0->UARTCR	   = UART_UARTCR_UARTEN | UART_UARTCR_RXE | UART_UARTCR_TXE;
+
+	cb_init_C0();
+}
+
+/*
+ * \brief model_uart_configure_C0
+ *
+ * - Configure the manager
+ *
+ */
+int32_t	model_uart_configure_C0(const urtxCnf_t *configure) {
+
+	INTERRUPTION_OFF;
+	UART_C0->UARTCR &= (uint32_t)~UART_UARTCR_UARTEN;
+
+	UART_C0->UARTLCR_H = 0u;
+	switch (configure->oNBBits) {
+		case KSERIAL_NB_BITS_7: {
+			UART_C0->UARTLCR_H |= (2u * UART_UARTLCR_H_WLEN_0);
+			break;
+		}
+		default:
+		case KSERIAL_NB_BITS_8: {
+			UART_C0->UARTLCR_H |= (3u * UART_UARTLCR_H_WLEN_0);
+			break;
+		}
+	}
+
+	switch (configure->oParity) {
+		case KSERIAL_PARITY_EVEN: {
+			UART_C0->UARTLCR_H |= UART_UARTLCR_H_PEN;
+			UART_C0->UARTLCR_H |= UART_UARTLCR_H_EPS;
+			break;
+		}
+		case KSERIAL_PARITY_ODD: {
+			UART_C0->UARTLCR_H |= UART_UARTLCR_H_PEN;
+			break;
+		}
+		default:
+		case KSERIAL_PARITY_NONE: {
+			break;
+		}
+	}
+
+	(configure->oStopBits == KSERIAL_STOPBITS_2) ? (UART_C0->UARTLCR_H |= UART_UARTLCR_H_STP2) : (UART_C0->UARTLCR_H = UART_C0->UARTLCR_H);
+
+	switch (configure->oBaudRate) {
+		case KSERIAL_BAUDRATE_DEFAULT: { BAUDRATE(UART0, UART_FREQUENCY_C0, KSERIAL_DEFAULT_BAUDRATE); break; }
+		case KSERIAL_BAUDRATE_2400:	   { BAUDRATE(UART0, UART_FREQUENCY_C0, 2400u);        			   break; }
+		case KSERIAL_BAUDRATE_4800:	   { BAUDRATE(UART0, UART_FREQUENCY_C0, 4800u);        			   break; }
+		case KSERIAL_BAUDRATE_9600:	   { BAUDRATE(UART0, UART_FREQUENCY_C0, 9600u);        			   break; }
+		case KSERIAL_BAUDRATE_19200:   { BAUDRATE(UART0, UART_FREQUENCY_C0, 19200u);       			   break; }
+		case KSERIAL_BAUDRATE_38400:   { BAUDRATE(UART0, UART_FREQUENCY_C0, 38400u);       			   break; }
+		case KSERIAL_BAUDRATE_57600:   { BAUDRATE(UART0, UART_FREQUENCY_C0, 57600u);       			   break; }
+		case KSERIAL_BAUDRATE_115200:  { BAUDRATE(UART0, UART_FREQUENCY_C0, 115200u);      			   break; }
+		case KSERIAL_BAUDRATE_230400:  { BAUDRATE(UART0, UART_FREQUENCY_C0, 230400u);      			   break; }
+		case KSERIAL_BAUDRATE_460800:  { BAUDRATE(UART0, UART_FREQUENCY_C0, 460800u);      			   break; }
+		case KSERIAL_BAUDRATE_500000:  { BAUDRATE(UART0, UART_FREQUENCY_C0, 500000u);      			   break; }
+		case KSERIAL_BAUDRATE_921600:  { BAUDRATE(UART0, UART_FREQUENCY_C0, 921600u);      			   break; }
+		case KSERIAL_BAUDRATE_1000000: { BAUDRATE(UART0, UART_FREQUENCY_C0, 1000000u);     			   break; }
+		case KSERIAL_BAUDRATE_1500000: { BAUDRATE(UART0, UART_FREQUENCY_C0, 1500000u);     			   break; }
+		case KSERIAL_BAUDRATE_1843200: { BAUDRATE(UART0, UART_FREQUENCY_C0, 1843200u);     			   break; }
+		case KSERIAL_BAUDRATE_2000000: { BAUDRATE(UART0, UART_FREQUENCY_C0, 2000000u);     			   break; }
+		case KSERIAL_BAUDRATE_2500000: { BAUDRATE(UART0, UART_FREQUENCY_C0, 2500000u);     			   break; }
+		case KSERIAL_BAUDRATE_3000000: { BAUDRATE(UART0, UART_FREQUENCY_C0, 3000000u);     			   break; }
+		default:					   { BAUDRATE(UART0, UART_FREQUENCY_C0, KSERIAL_DEFAULT_BAUDRATE); break; }
+	}
+
+	vWithSemaphore_RX_C0 = ((configure->oKernSync & ((uint32_t)1u<<(uint32_t)BSERIAL_SEMAPHORE_RX)) != 0u) ? (true) : (false);
+	vWithSemaphore_TX_C0 = ((configure->oKernSync & ((uint32_t)1u<<(uint32_t)BSERIAL_SEMAPHORE_TX)) != 0u) ? (true) : (false);
+	UART_C0->UARTCR |= UART_UARTCR_UARTEN;
+	RETURN_INT_RESTORE(KERR_SERIAL_NOERR);
+}
+
+/*
+ * \brief model_uart_write_C0
+ *
+ * - Write a buffer
+ *
+ */
+int32_t	model_uart_write_C0(const uint8_t *buffer, uint32_t size) {
+			uint32_t	i, newSize, wkSize = size;
+	const	uint8_t		*wkBuffer = buffer;
+	static	bool		terminate = false, busy = false;
+
+	INTERRUPTION_OFF;
+	if ((vSending_C0 == true) || (busy == true)) { RETURN_INT_RESTORE(KERR_SERIAL_SEPRO); }
+	if (wkSize == 0u)		  					 { RETURN_INT_RESTORE(KERR_SERIAL_LNBU0); }
+
+	busy = true;
+	INTERRUPTION_RESTORE;
+
+	while (terminate == false) {
+		while (vSending_C0 == true) { kern_suspendProcess(1u); }
+
+		if (wkSize > KUART_SZ_TX_BUF_C0) { newSize = KUART_SZ_TX_BUF_C0; wkSize -= KUART_SZ_TX_BUF_C0; }
+		else							 { newSize = wkSize; terminate = true;						   }
+
+// Copy the input buffer into the send one and start the transfer
+// Enable the TX interruption
+
+		vSending_C0 = true;
+		for (i = 0u; i < newSize; i++) {
+			vSndBuffer_C0[i] = wkBuffer[i];
+		}
+
+		vWSndBuffer_C0 = (volatile	uint8_t *)((uintptr_t)vSndBuffer_C0 + (uintptr_t)newSize);
+		wkBuffer	   = (const uint8_t	*)((uintptr_t)wkBuffer			+ (uintptr_t)newSize);
+		vRSndBuffer_C0 = vSndBuffer_C0;
+
+		vFirstKick_C0 = true;
+		UART_C0->UARTIMSC |= UART_UARTIMSC_TXIM;
+		NVIC_SetPendingIRQ(UART_VECTOR_NUMBER_C0);
+	}
+	busy = false;
+	terminate = false;
+	return (KERR_SERIAL_NOERR);
+}
+
+/*
+ * \brief model_uart_read_C0
+ *
+ * - Read n x bytes
+ *
+ */
+int32_t	model_uart_read_C0(uint8_t *buffer, uint32_t *size) {
+	uint8_t		*wkBuffer = buffer;
+	int32_t		status;
+	uint32_t	i;
+
+	INTERRUPTION_OFF;
+	status  = vStatus_C0;
+	vStatus_C0 = KERR_SERIAL_NOERR;
+
+// Interruption problem: buffer full, Framing error, Overrun error.
+// In this case, we return 0-bytes read with the corresponding error.
+// The Error is then cancelled for the next time.
+
+	if (status != KERR_SERIAL_NOERR)		  { *size = 0u; RETURN_INT_RESTORE(status);			   }
+	if (*size == 0u)						  { *size = 0u; RETURN_INT_RESTORE(KERR_SERIAL_NOERR); }
+
+// cppcheck-suppress premium-misra-c-2023-13.2
+//
+	if (vRRecBuffer_C0 == vWRecBuffer_C0)     { *size = 0u; RETURN_INT_RESTORE(KERR_SERIAL_RBUEM); }
+
+	for (i = 0u; i < *size; i++) {
+
+// cppcheck-suppress premium-misra-c-2023-13.2
+//
+		if (vRRecBuffer_C0 == vWRecBuffer_C0) { *size = i; RETURN_INT_RESTORE(KERR_SERIAL_NOERR);  }
+
+		*wkBuffer = *vRRecBuffer_C0;
+		wkBuffer++;
+		vRRecBuffer_C0++;
+
+// cppcheck-suppress premium-misra-c-2023-13.2
+//
+		vRRecBuffer_C0 = (vRRecBuffer_C0 == &vRecBuffer_C0[KUART_SZ_RX_BUF_C0]) ? (vRecBuffer_C0) : (vRRecBuffer_C0);
+	}
+	RETURN_INT_RESTORE(status);
+}
+
+/*
+ * \brief model_uart_flush_C0
+ *
+ * - Flush the usart manager
+ *
+ */
+int32_t	model_uart_flush_C0(void) {
+	sema_t	*semaphore;
+
+// Initialise the circular buffers (rec) and restart the associated semaphore
+
+	INTERRUPTION_OFF;
+
+	while ((UART_C0->UARTFR & UART_UARTFR_RXFE) == 0u) {
+		(void)UART_C0->UARTDR;
+	}
+	vRRecBuffer_C0 = vRecBuffer_C0;
+	vWRecBuffer_C0 = vRecBuffer_C0;
+	kern_getSemaphoreById(KUART_SEMAPHORE_RX_C0, &semaphore);
+	kern_restartSemaphore(semaphore);
+	RETURN_INT_RESTORE(KERR_SERIAL_NOERR);
+}
+
+// Local routines
+// ==============
+
+/*
+ * \brief local_UART_IRQHandler_C0
+ *
+ * - Interruption RX-TX
+ *
+ */
+static	void	local_UART_IRQHandler_C0(void) {
+				bool		doAction;
+				uint32_t	core;
+	volatile	uint32_t	iir;
+
+	core = GET_RUNNING_CORE;
+
+	iir = UART_C0->UARTMIS;
+	if ((iir & (UART_UARTMIS_RXMIS | UART_UARTMIS_RTMIS)) != 0u ) {
+
+// RX interruption
+
+		UART_C0->UARTICR = UART_UARTICR_RXIC;
+
+		if ((UART_C0->UARTRSR & UART_UARTRSR_OE) != 0u) { UART_C0->UARTRSR = UART_UARTRSR_OE; vStatus_C0 = KERR_SERIAL_EROVR; }
+		if ((UART_C0->UARTRSR & UART_UARTRSR_FE) != 0u) { UART_C0->UARTRSR = UART_UARTRSR_FE; vStatus_C0 = KERR_SERIAL_ERFRA; }
+		if ((UART_C0->UARTRSR & UART_UARTRSR_PE) != 0u) { UART_C0->UARTRSR = UART_UARTRSR_PE; vStatus_C0 = KERR_SERIAL_ERPAR; }
+
+// Read the data and signal the event
+
+		while ((UART_C0->UARTFR & UART_UARTFR_RXFE) == 0u) {
+			*vWRecBuffer_C0 = (uint8_t)UART_C0->UARTDR;
+			vWRecBuffer_C0++;
+
+// cppcheck-suppress premium-misra-c-2023-13.2
+//
+			vStatus_C0 = (vWRecBuffer_C0 == vRRecBuffer_C0) ? (KERR_SERIAL_RBFUL) : (vStatus_C0);
+
+// cppcheck-suppress premium-misra-c-2023-13.2
+//
+			vWRecBuffer_C0 = (vWRecBuffer_C0 == &vRecBuffer_C0[KUART_SZ_RX_BUF_C0]) ? (vRecBuffer_C0) : (vWRecBuffer_C0);
+		}
+
+		UART_C0->UARTICR = (UART_UARTICR_RXIC | UART_UARTICR_RTIC);
+
+		#if (defined(KUART_SEMA_RX_C0_S))
+		if (vWithSemaphore_RX_C0 == true) { kern_signalSemaphore(vSemaphore_RX_C0); }
+		#endif
+
+// cppcheck-suppress premium-misra-c-2023-5.8
+//
+		PREEMPTION_THRESHOLD(core);
+		return;
+	}
+
+// MISRA suggestion
+
+	doAction = false;
+	if ((iir & UART_UARTMIS_TXMIS) != 0u) { doAction = true; }
+	if (vFirstKick_C0 == true)			  { doAction = true; }
+
+	if (doAction == true) {
+
+// TX interruption
+
+		vFirstKick_C0 = false;
+		if (cb_CTSCheck_C0() == true) {
+
+// !!! The first while (true) is just a workaround.
+// It seems if the sending fifo threshold is < 1/8, it stop to generate interruptions
+// This is not a good workaround, but for the moment I accept to remain in the interruption
+// routine as long as the buffer is not sent.
+
+			while (true) {
+				while ((UART_C0->UARTFR & UART_UARTFR_TXFF) == 0u) {
+
+					UART_C0->UARTDR = (uint32_t)*vRSndBuffer_C0;
+					vRSndBuffer_C0++;
+
+// cppcheck-suppress premium-misra-c-2023-13.2
+//
+					if (vRSndBuffer_C0 == vWSndBuffer_C0) {
+
+// Terminated; disable the Tx interruption
+
+						UART_C0->UARTIMSC &= (uint32_t)~UART_UARTIMSC_TXIM;
+						vSending_C0 = false;
+
+						#if (defined(KUART_SEMA_TX_C0_S))
+						if (vWithSemaphore_TX_C0 == true) { kern_signalSemaphore(vSemaphore_TX_C0); }
+						#endif
+
+						UART_C0->UARTICR = UART_UARTICR_TXIC;
+						return;
+					}
+				}
+			}
+		}
+		UART_C0->UARTICR = UART_UARTICR_TXIC;
+
+// Continue to send data
+
+	}
+}
