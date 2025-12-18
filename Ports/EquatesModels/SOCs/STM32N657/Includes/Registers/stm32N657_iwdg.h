@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32N657_iwdg equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // IWDG address definitions
 // ------------------------
 
@@ -61,7 +63,7 @@ typedef struct {
 	volatile	uint32_t	ICR;
 } IWDG_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	IWDG_NS	reinterpret_cast<IWDG_TypeDef *>(0x46004800u)
 #define	IWDG_S	reinterpret_cast<IWDG_TypeDef *>(0x56004800u)
 

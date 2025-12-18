@@ -12,8 +12,8 @@
 ; Goal:		mpyt library.
 ;			uKOS-X interface for MicroPython (www.MicroPython.com).
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -49,7 +49,9 @@
 
 // Needed to support dprintf
 
-#define		_POSIX_C_SOURCE		200809L
+#include	<stdio.h>
+#include	<stdlib.h>
+#include	<string.h>
 
 #include	"macros.h"
 #include	"types.h"
@@ -69,14 +71,11 @@
 #include	"py/mperrno.h"
 #include	"extmod/vfs.h"
 #include	"shared/runtime/pyexec.h"
-#include	<string.h>
-#include	<stdio.h>
-#include	<stdlib.h>
 
 // Library specific
 // ================
 
-#define	KSZ_INPUT		256u		// Size of the MicroPython input buffer
+#define	KSZ_INPUT		256U		// Size of the MicroPython input buffer
 
 STRG_LOC_CONST(aStrTerminated[]) = "quit";
 
@@ -169,7 +168,7 @@ int32_t	microPython_exchangeData(const char_t *pyProgram) {
 // Check the "quit"
 
 			terminate = true;
-			for (i = 0u; i < (uint32_t)(size - 1u); i++) {
+			for (i = 0U; i < (uint32_t)(size - 1U); i++) {
 				if (ascii[i] != aStrTerminated[i]) {
 					terminate = false;
 					local_commandLine(ascii, MP_PARSE_SINGLE_INPUT);
@@ -249,7 +248,7 @@ void	mp_hal_stdout_tx_strn(const uint8_t *ascii, mp_uint_t size) {
 	kern_getProcessRun(&process);
 	kern_getSerialForProcess(process, &serialManager);
 
-	for (i = 0u; i < size; i++) {
+	for (i = 0U; i < size; i++) {
 		(void)dprintf(serialManager, "%c", ascii[i]);
 	}
 }
@@ -272,10 +271,10 @@ char_t	mp_hal_stdin_rx_chr(void) {
 	kern_getSerialForProcess(process, &serialManager);
 
 	do {
-		kern_suspendProcess(1u);
-		size = 1u;
+		kern_suspendProcess(1U);
+		size = 1U;
 		status = serial_read(serialManager, &byte, &size);
-	} while ((status != KERR_SERIAL_NOERR) && (size != 1u));
+	} while ((status != KERR_SERIAL_NOERR) && (size != 1U));
 	return ((char_t)byte);
 }
 
@@ -298,7 +297,7 @@ void	gc_collect(void) {
 // Used stack = (Stack end - stack) / 4
 
 	stack	  = process->oSpecification.oStack;
-	stackSize = ((uintptr_t)process->oSpecification.oStackSize * 4u);
+	stackSize = ((uintptr_t)process->oSpecification.oStackSize * 4U);
 	stackEnd  = ((uintptr_t)process->oSpecification.oStackStart + (uintptr_t)stackSize);
 	usedStack = (stackEnd - (uintptr_t)stack) / sizeof(uintptr_t);
 
@@ -353,7 +352,7 @@ void NORETURN __fatal_error(const char_t *msg) {
 	exit(EXIT_OS_FAILURE);
 }
 
-#if (!defined(NDEBUG))
+#ifndef NDEBUG
 void	MP_WEAK __assert_func(const char_t *file, int line, const char_t *func, const char_t *expr) {
 
 	UNUSED(func);

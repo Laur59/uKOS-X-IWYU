@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		GD32VF103_fwdgt equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // FWDGT address definitions
 // -------------------------
 
@@ -58,7 +60,7 @@ typedef struct {
 	volatile	uint32_t	STAT;
 } FWDGT_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	FWDGT	reinterpret_cast<FWDGT_TypeDef *>(0x40003000u)
 
 #else

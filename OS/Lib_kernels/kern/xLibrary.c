@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Kern - impure data for xlib management.
@@ -14,8 +14,8 @@
 ;			This module is responsible for creating and swapping the impure data
 ;			for the xlib newlib of the uKernel.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -49,9 +49,17 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"kern/private/private_processes.h"
 #include	"kern/private/private_xLibrary.h"
+
+#include	<stddef.h>
+#include	<stdint.h>
+
+#include	<sys/reent.h>
+
+#include	"kern/kern.h"
+#include	"kern/private/private_processes.h"
+#include	"macros_soc.h"
+#include	"newlib/newlib.h"
 
 reent_t		vKern_impureData[KNB_CORES][KKERN_NB_PROCESSES];
 

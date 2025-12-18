@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		uKOS diskio interface to the uKOS-X devices
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -50,9 +50,9 @@
 #include	"os_errors.h"
 #include	"ff.h"
 #include	"diskio.h"
-#include	"storage.h"
-#include	"sdcard.h"
-#include	"serialFlash.h"
+#include	"storage/storage.h"
+#include	"sdcard/sdcard.h"
+#include	"serialFlash/serialFlash.h"
 #include	"macros.h"
 #include	<time.h>
 
@@ -61,7 +61,7 @@
 static	sdcard_specification_t	vSdCard;
 
 enum {
-		DEV_MMC = 0u,							// Map MMC/SD card to physical drive 0
+		DEV_MMC = 0U,							// Map MMC/SD card to physical drive 0
 		DEV_FLASH								// Map serial flash to physical drive 1
 };
 
@@ -264,8 +264,8 @@ DWORD	get_fattime (void) {
 	now = time(NULL);
 	localtime_r(&now, &localTime);
 
-	return ( ((DWORD)localTime.tm_mday<<16u) | ((DWORD)(localTime.tm_mon + 1)<<21u) | ((DWORD)(localTime.tm_year - 80)<<25u)
-		   | ((DWORD)localTime.tm_hour<<11u) | ((DWORD)localTime.tm_min<<5u)		| ((DWORD)localTime.tm_sec>>1u));
+	return ( ((DWORD)localTime.tm_mday<<16U) | ((DWORD)(localTime.tm_mon + 1)<<21U) | ((DWORD)(localTime.tm_year - 80)<<25U)
+		   | ((DWORD)localTime.tm_hour<<11U) | ((DWORD)localTime.tm_min<<5U)		| ((DWORD)localTime.tm_sec>>1U));
 
 
 }

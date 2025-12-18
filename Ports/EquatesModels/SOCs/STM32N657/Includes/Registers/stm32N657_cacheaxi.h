@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32N657_cacheaxi equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // CACHEAXI address definitions
 // ----------------------------
 
@@ -70,7 +72,7 @@ typedef struct {
 	volatile	uint32_t	CMDREADDRR;
 } CACHEAXI_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	CACHEAXI_NS	reinterpret_cast<CACHEAXI_TypeDef *>(0x480DFC00u)
 #define	CACHEAXI_S	reinterpret_cast<CACHEAXI_TypeDef *>(0x580DFC00u)
 

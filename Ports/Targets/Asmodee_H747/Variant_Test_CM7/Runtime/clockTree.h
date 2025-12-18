@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Clock tree definitions.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -68,24 +68,24 @@
 // LPTIM 2,3,4,5							ck = rcc_pclk4 -> APB4
 // TIM 1,2,3,4,5,6,7,8,12,13,14,15,16,17	ck = ??? -> A??
 
-#define KCRYSTAL			16000000u									// Quartz crystal resonator
-#define KFREQUENCY_PLL1P	480000000u									// PLL 1 P bus frequency of 480-MHz
-#define KFREQUENCY_PLL1Q	240000000u									// PLL 1 Q bus frequency of 240-MHz
-#define KFREQUENCY_PLL1R	120000000u									// PLL 1 R bus frequency of 120-MHz
-#define KFREQUENCY_PLL2P	100000000u									// PLL 2 P bus frequency of 100-MHz
-#define KFREQUENCY_PLL2Q	50000000u									// PLL 2 Q bus frequency of 50-MHz
-#define KFREQUENCY_PLL2R	25000000u									// PLL 2 R bus frequency of 25-MHz
-#define KFREQUENCY_PLL3P	120000000u									// PLL 3 P bus frequency of 120-MHz
-#define KFREQUENCY_PLL3Q	48000000u									// PLL 3 Q bus frequency of 48-MHz
-#define KFREQUENCY_PLL3R	120000000u									// PLL 3 R bus frequency of 120-MHz
+#define KCRYSTAL			16000000U									// Quartz crystal resonator
+#define KFREQUENCY_PLL1P	480000000U									// PLL 1 P bus frequency of 480-MHz
+#define KFREQUENCY_PLL1Q	240000000U									// PLL 1 Q bus frequency of 240-MHz
+#define KFREQUENCY_PLL1R	120000000U									// PLL 1 R bus frequency of 120-MHz
+#define KFREQUENCY_PLL2P	100000000U									// PLL 2 P bus frequency of 100-MHz
+#define KFREQUENCY_PLL2Q	50000000U									// PLL 2 Q bus frequency of 50-MHz
+#define KFREQUENCY_PLL2R	25000000U									// PLL 2 R bus frequency of 25-MHz
+#define KFREQUENCY_PLL3P	120000000U									// PLL 3 P bus frequency of 120-MHz
+#define KFREQUENCY_PLL3Q	48000000U									// PLL 3 Q bus frequency of 48-MHz
+#define KFREQUENCY_PLL3R	120000000U									// PLL 3 R bus frequency of 120-MHz
 
-#define KD1CPRE				1u											// Div 1
-#define KHPRE				2u											// Div 2
-#define KD1PPRE				1u											// Div 1
-#define KD2PPRE1			4u											// Div 4
-#define KD2PPRE2			4u											// Div 4
-#define KD3PPRE				2u											// Div 2
-#define KTIMPRE				2u											// Div 2
+#define KD1CPRE				1U											// Div 1
+#define KHPRE				2U											// Div 2
+#define KD1PPRE				1U											// Div 1
+#define KD2PPRE1			4U											// Div 4
+#define KD2PPRE2			4U											// Div 4
+#define KD3PPRE				2U											// Div 2
+#define KTIMPRE				2U											// Div 2
 
 #define KFREQUENCY_AHB		(KFREQUENCY_PLL1P / KD1CPRE)				// AHB bus frequency of 480-MHz
 #define KFREQUENCY_APB		(KFREQUENCY_AHB / KHPRE)					// APB bus frequency of 240-MHz
@@ -100,7 +100,7 @@
 #define KFREQUENCY_APB3		(KFREQUENCY_APB / KD1PPRE)					// APB3 bus frequency of 120-MHz
 #define KFREQUENCY_APB4		(KFREQUENCY_APB / KD3PPRE)					// APB4 bus frequency of 120-MHz
 #define KFREQUENCY_TIM		(KFREQUENCY_APB / KTIMPRE)					// Timer clock 120-MHz
-#define KFREQUENCY_1GHz		1000000000u									// Frequency of 1-GHz
-#define KFREQUENCY_1MHz		1000000u									// Frequency of 1-MHz
-#define KFREQUENCY_1KHz		1000u										// Frequency of 1-KHz
+#define KFREQUENCY_1GHz		1000000000U									// Frequency of 1-GHz
+#define KFREQUENCY_1MHz		1000000U									// Frequency of 1-MHz
+#define KFREQUENCY_1KHz		1000U										// Frequency of 1-KHz
 #define KFREQUENCY_CORE		KFREQUENCY_AHB								// CORE frequency

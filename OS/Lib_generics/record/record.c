@@ -5,16 +5,16 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		record manager.
 ;
 ; 			Management of the tracing & log
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,11 +48,24 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"record/private/private_record.h"
-#include	"kern/private/private_processes.h"
+#ifdef CONFIG_MAN_RECORD_S
 
-#if (defined(CONFIG_MAN_RECORD_S))
+#include	<stddef.h>
+
+#include	"record.h"
+#include	"private/private_record.h"
+
+#include	<stdint.h>
+
+#include	"core_reg.h"		// IWYU pragma: keep (for IS_EXCEPTION)
+#include	"kern/kern.h"
+#include	"kern/private/private_processes.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -75,12 +88,12 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
 typedef	enum {
-			KCUMULATE = 0u,
+			KCUMULATE = 0U,
 			KSCANN
 } recordAction_t;
 
@@ -88,8 +101,8 @@ recordLogging_t		vRecord_logBuffer[KNB_CORES][KRECORD_SZ_LOG_BUF];				// Buffer 
 recordTracing_t		vRecord_traceFifo[KNB_CORES][KRECORD_SZ_TRACE_FIFO];			// Fifo for the trace
 recordTracing_t		*vRecord_RTraceFifo[KNB_CORES];									// Ptr (R) for the trace
 recordTracing_t		*vRecord_WTraceFifo[KNB_CORES];									// Ptr (W) for the trace
-uint32_t			vRecord_NbTraceWrites[KNB_CORES] = MCSET(0u);					// Number of writes in the fifo trace
-uint32_t			vRecord_NbLogWrites[KNB_CORES]   = MCSET(0u);					// Number of writes in the buffer log
+uint32_t			vRecord_NbTraceWrites[KNB_CORES] = MCSET(0U);					// Number of writes in the fifo trace
+uint32_t			vRecord_NbLogWrites[KNB_CORES]   = MCSET(0U);					// Number of writes in the buffer log
 
 // Prototypes
 
@@ -139,7 +152,7 @@ int32_t	record_trace(const char_t *message, uintptr_t parameter) {
 
 	vRollOver[core]			 = (vRecord_WTraceFifo[core] == &vRecord_traceFifo[core][KRECORD_SZ_TRACE_FIFO]) ? (true)						 : (vRollOver[core]);
 	vRecord_WTraceFifo[core] = (vRecord_WTraceFifo[core] == &vRecord_traceFifo[core][KRECORD_SZ_TRACE_FIFO]) ? (&vRecord_traceFifo[core][0]) : (vRecord_WTraceFifo[core]);
-	vRecord_RTraceFifo[core] = (vRollOver[core] == true)													 ? (vRecord_WTraceFifo[core])	 : (&vRecord_traceFifo[core][0]);
+	vRecord_RTraceFifo[core] = (vRollOver[core])													 ? (vRecord_WTraceFifo[core])	 : (&vRecord_traceFifo[core][0]);
 	INTERRUPTION_RESTORE;
 	PRIVILEGE_RESTORE;
 	return (KERR_RECORD_NOERR);
@@ -172,7 +185,7 @@ int32_t	record_log(recordLogCategory_t logCategory, uint32_t lineNumber, const c
 			uint32_t		core, i, index;
 			uint64_t		timeStamp, olderTime;
 	static	recordAction_t	vAction[KNB_CORES] = MCSET(KCUMULATE);
-	static	uint32_t		vIndex[KNB_CORES] = MCSET(0u);
+	static	uint32_t		vIndex[KNB_CORES] = MCSET(0U);
 
 	core = GET_RUNNING_CORE;
 
@@ -181,7 +194,7 @@ int32_t	record_log(recordLogCategory_t logCategory, uint32_t lineNumber, const c
 
 	INTERRUPTION_OFF;
 	kern_readTickCount(&timeStamp);
-	timeStamp = (timeStamp == 0u) ? (1u) : (timeStamp);
+	timeStamp = (timeStamp == 0U) ? (1U) : (timeStamp);
 	switch (vAction[core]) {
 		case KCUMULATE: {
 
@@ -197,14 +210,14 @@ int32_t	record_log(recordLogCategory_t logCategory, uint32_t lineNumber, const c
 // - if no less priority category entries, then, overwrite the last position of the table
 // - if less priority category entries, then, continue the scann for looking for the oldest one
 
-			index			 = (KRECORD_SZ_LOG_BUF - 1u);
+			index			 = (KRECORD_SZ_LOG_BUF - 1U);
 			lessPrioCategory = logCategory;
-			olderTime		 = 0xFFFFFFFFFFFFFFFFu;
+			olderTime		 = 0xFFFFFFFFFFFFFFFFU;
 
 			for (i = 0; i < KRECORD_SZ_LOG_BUF ; i++) {
 				if (vRecord_logBuffer[core][i].oLogCategory >= lessPrioCategory) {
 					if (vRecord_logBuffer[core][i].oLogCategory > lessPrioCategory) {
-						olderTime = 0xFFFFFFFFFFFFFFFFu;
+						olderTime = 0xFFFFFFFFFFFFFFFFU;
 						lessPrioCategory = vRecord_logBuffer[core][i].oLogCategory;
 					}
 
@@ -221,7 +234,7 @@ int32_t	record_log(recordLogCategory_t logCategory, uint32_t lineNumber, const c
 			break;
 		}
 		default: {
-			i = (KRECORD_SZ_LOG_BUF - 1u);
+			i = (KRECORD_SZ_LOG_BUF - 1U);
 			break;
 		}
 	}
@@ -233,7 +246,7 @@ int32_t	record_log(recordLogCategory_t logCategory, uint32_t lineNumber, const c
 	vRecord_logBuffer[core][i].oLineNumber	= lineNumber;
 	vRecord_logBuffer[core][i].oIdentifier	= (IS_EXCEPTION) ? ("From ISR") : (vKern_runProc[core]->oSpecification.oIdentifier);
 
-	vRecord_NbLogWrites[core] += (vRecord_NbLogWrites[core] < KRECORD_SZ_LOG_BUF) ? (1u) : (0u);
+	vRecord_NbLogWrites[core] += (vRecord_NbLogWrites[core] < KRECORD_SZ_LOG_BUF) ? (1U) : (0U);
 	INTERRUPTION_RESTORE;
 	PRIVILEGE_RESTORE;
 	return (KERR_RECORD_NOERR);
@@ -256,19 +269,19 @@ static	void	local_init(void) {
 	core = GET_RUNNING_CORE;
 
 	INTERRUPTION_OFF;
-	if (vInit[core] == false) {
+	if (!vInit[core]) {
 		vInit[core] = true;
 
 		vRecord_RTraceFifo[core] = &vRecord_traceFifo[core][0];
 		vRecord_WTraceFifo[core] = &vRecord_traceFifo[core][0];
 
-		for (i = 0u; i < KRECORD_SZ_LOG_BUF; i++) {
+		for (i = 0U; i < KRECORD_SZ_LOG_BUF; i++) {
 			vRecord_logBuffer[core][i].oLogCategory	= KINFO_USER;
 			vRecord_logBuffer[core][i].oMark		= false;
-			vRecord_logBuffer[core][i].oTimeStamp	= 0u;
+			vRecord_logBuffer[core][i].oTimeStamp	= 0U;
 			vRecord_logBuffer[core][i].oFunction	= NULL;
 			vRecord_logBuffer[core][i].oMessage		= NULL;
-			vRecord_logBuffer[core][i].oLineNumber	= 0u;
+			vRecord_logBuffer[core][i].oLineNumber	= 0U;
 			vRecord_logBuffer[core][i].oIdentifier	= NULL;
 		}
 

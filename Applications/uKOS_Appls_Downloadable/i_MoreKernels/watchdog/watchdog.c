@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Demo of a C application.
 ;			This application shows how to operate with the uKOS-X uKernel.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -63,7 +63,21 @@
  *
  */
 
-#include	"uKOS.h"
+#include	<inttypes.h>
+#include	<stdio.h>
+
+#include	"crt0.h"
+#include	"serial/serial.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"memo/memo.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"types.h"
+#include	"watchdog/watchdog.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -89,7 +103,7 @@ MODULE(
 	aStart,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,								// Address of the clean code (clean the module)
 	" 1.0",								// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0									// Execution cores
 );
 
@@ -104,36 +118,36 @@ MODULE(
  *		 At the output of the loop the watchdog has to restart the system
  */
 static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
-	uint16_t	i;
-
 	UNUSED(argument);
 
-	kern_suspendProcess(1000u);
+	uint16_t	i;
+
+	kern_suspendProcess(1000U);
 
 // Watchdog in automatic mode
 
 	(void)dprintf(KSYST, "\nWatchdog in automatic mode (trying for 10'000-ms)\n");
-	watchdog_arm(1000u, KWATCHDOG_AUTO);
+	watchdog_arm(1000U, KWATCHDOG_AUTO);
 
-	kern_suspendProcess(10000u);
+	kern_suspendProcess(10000U);
 
 // Watchdog in manual mode
 
 	(void)dprintf(KSYST, "Watchdog in manual mode    (trying for 10'000-ms)\n");
-	for (i = 0u; i < 100u; i++) {
-		kern_suspendProcess(60u);
-		watchdog_arm(100u, KWATCHDOG_MANUAL);
+	for (i = 0U; i < 100U; i++) {
+		kern_suspendProcess(60U);
+		watchdog_arm(100U, KWATCHDOG_MANUAL);
 	}
 
 // Now relaunch the watchdog for 20-s and waiting for the restart
 
-	watchdog_arm(20000u, KWATCHDOG_MANUAL);
+	watchdog_arm(20000U, KWATCHDOG_MANUAL);
 	(void)dprintf(KSYST, "\nNow waiting 20-s for the watchdog restart\n");
 
 	i = 0;
 	while (true) {
 		(void)dprintf(KSYST, "Elapsed %"PRIu16"-s!\n", i++);
-		kern_suspendProcess(1000u);
+		kern_suspendProcess(1000U);
 	}
 }
 
@@ -146,15 +160,15 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *
  */
 int		main(int argc, const char *argv[]) {
+	UNUSED(argc);
+	UNUSED(argv);
+
 	proc_t	*process_0;
 
 // ---------------------------------I-----------------------------------------I--------------I
 
 	STRG_LOC_CONST(aStrIden_0[]) = "Process_User_0";
 	STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2025";
-
-	UNUSED(argc);
-	UNUSED(argv);
 
 // Specifications for the processes
 

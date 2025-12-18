@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Give a random (eventually pseudo-random) number.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,18 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<inttypes.h>
+#include	<stdint.h>	// NOLINT(misc-include-cleaner): Explicit include for IWYU compliance
+#include	<stdio.h>
+#include	<stdlib.h>
+
+#include	"macros.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"random/random.h"
+#include	"serial/serial.h"
+#include	"text/text.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -82,14 +93,14 @@ MODULE(
 	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,										// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
 // CLI tool specific
 // =================
 
-#define	KNB_MAX_NUMBERS		16u					// Considered max numbers
+#define	KNB_MAX_NUMBERS		16U					// Considered max numbers
 
 /*
  * \brief Main entry point
@@ -117,22 +128,22 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 
 	switch (argc) {
 		default:
-		case 1u: {
+		case 1U: {
 
 // Single number from the soft generator
 
-			if (random_read(KRANDOM_SOFT, &randomNumber[0], 1u) != KERR_RANDOM_NOERR) {
+			if (random_read(KRANDOM_SOFT, &randomNumber[0], 1U) != KERR_RANDOM_NOERR) {
 				error = true;
 			}
-			nbRandomNumber = 1u;
+			nbRandomNumber = 1U;
 			break;
 		}
 
 // Multiple number, 1 <= nb <= 16 from the soft generator
 
-		case 2u: {
-			nbRandomNumber = (uint32_t)strtol(argv[1], &dummy, 10u);
-			nbRandomNumber = ((nbRandomNumber >= 1u) && (nbRandomNumber <= KNB_MAX_NUMBERS)) ? (nbRandomNumber) : (1u);
+		case 2U: {
+			nbRandomNumber = (uint32_t)strtol(argv[1], &dummy, 10U);
+			nbRandomNumber = ((nbRandomNumber >= 1U) && (nbRandomNumber <= KNB_MAX_NUMBERS)) ? (nbRandomNumber) : (1U);
 			if (random_read(KRANDOM_SOFT, &randomNumber[0], nbRandomNumber) != KERR_RANDOM_NOERR) {
 				error = true;
 			}
@@ -141,13 +152,13 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 
 // Multiple number, 1 <= nb <= 16 from the soft/hard generator
 
-		case 3u: {
+		case 3U: {
 			generator = KRANDOM_SOFT;
-			text_checkAsciiBuffer(argv[1], "-hard", &equals); if (equals == true) { generator = KRANDOM_HARD; }
-			text_checkAsciiBuffer(argv[1], "-soft", &equals); if (equals == true) { generator = KRANDOM_SOFT; }
+			text_checkAsciiBuffer(argv[1], "-hard", &equals); if (equals) { generator = KRANDOM_HARD; }
+			text_checkAsciiBuffer(argv[1], "-soft", &equals); if (equals) { generator = KRANDOM_SOFT; }
 
-			nbRandomNumber = (uint32_t)strtol(argv[2], &dummy, 10u);
-			nbRandomNumber = ((nbRandomNumber >= 1u) && (nbRandomNumber <= KNB_MAX_NUMBERS)) ? (nbRandomNumber) : (1u);
+			nbRandomNumber = (uint32_t)strtol(argv[2], &dummy, 10U);
+			nbRandomNumber = ((nbRandomNumber >= 1U) && (nbRandomNumber <= KNB_MAX_NUMBERS)) ? (nbRandomNumber) : (1U);
 			if (random_read(generator, &randomNumber[0], nbRandomNumber) != KERR_RANDOM_NOERR) {
 				error = true;
 			}
@@ -155,8 +166,8 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 		}
 	}
 
-	if (error == true) {										 (void)dprintf(KSYST, "Protocol error.\n");				 status = EXIT_OS_FAILURE;     }
-	else			   { for (i = 0u; i < nbRandomNumber; i++) { (void)dprintf(KSYST, "%"PRIu32"\n", randomNumber[i]); } status = EXIT_OS_SUCCESS_CLI; }
+	if (error) {										 (void)dprintf(KSYST, "Protocol error.\n");				 status = EXIT_OS_FAILURE;     }
+	else			   { for (i = 0U; i < nbRandomNumber; i++) { (void)dprintf(KSYST, "%"PRIu32"\n", randomNumber[i]); } status = EXIT_OS_SUCCESS_CLI; }
 	(void)dprintf(KSYST, "\n");
 	return (status);
 }

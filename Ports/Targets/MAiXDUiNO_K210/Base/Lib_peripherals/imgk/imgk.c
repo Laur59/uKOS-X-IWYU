@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		imgk manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,10 +46,26 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"../imgk/imgk.h"
-#include	"../imgk/OV2640.h"
+#include	"imgk.h"
+#include	"OV2640.h"
+
 #include	<math.h>
+#include	<stdint.h>
+#include	<stdlib.h>
+
+#include	"Registers/K210_dvp.h"
+#include	"Registers/K210_plic.h"
+#include	"Registers/soc_vectors.h"
+#include	"clockTree.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"memo/memo.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"types.h"
 
 extern				void		(*vExce_extIntVectors[KNB_CORES][KNB_EXT_INTERRUPTIONS])(uint32_t core, uint64_t parameter);
 static				uint16_t	*vImageE0 = NULL;
@@ -57,7 +73,7 @@ static				uint16_t	*vImageE1 = NULL;
 static				sema_t		*vSeHandleAQ;
 static				sema_t		*vSeHandleIM;
 static				mutx_t		*vMutex;
-static	volatile	uint8_t		vPage = 1u;
+static	volatile	uint8_t		vPage = 1U;
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -80,7 +96,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -93,183 +109,183 @@ MODULE(
 // Mclk = 24-MHz, SVGA RGB565, output 25-fps
 
 static	const	ov2640_t	aOV2640_Cnf[] = {
-								{ 0xFFu, 0x01u },
-								{ 0x12u, 0x80u },
-								{ 0xFFu, 0x00u },
-								{ 0x2Cu, 0xFFu },
-								{ 0x2Eu, 0xDFu },
-								{ 0xFFu, 0x01u },
-								{ 0x3Cu, 0x32u },
-								{ 0x11u, 0x00u },
-								{ 0x09u, 0x02u },
-								{ 0x04u, 0x28u },
-								{ 0x13u, 0xE5u },
-								{ 0x14u, 0x48u },
-								{ 0x2Cu, 0x0Cu },
-								{ 0x33u, 0x78u },
-								{ 0x3Au, 0x33u },
-								{ 0x3Bu, 0xFBu },
-								{ 0x3Eu, 0x00u },
-								{ 0x43u, 0x11u },
-								{ 0x16u, 0x10u },
-								{ 0x39u, 0x92u },
-								{ 0x35u, 0xDAu },
-								{ 0x22u, 0x1Au },
-								{ 0x37u, 0xC3u },
-								{ 0x23u, 0x00u },
-								{ 0x34u, 0xC0u },
-								{ 0x36u, 0x1Au },
-								{ 0x06u, 0x88u },
-								{ 0x07u, 0xC0u },
-								{ 0x0Du, 0x87u },
-								{ 0x0Eu, 0x41u },
-								{ 0x4Cu, 0x00u },
-								{ 0x48u, 0x00u },
-								{ 0x5Bu, 0x00u },
-								{ 0x42u, 0x03u },
-								{ 0x4Au, 0x81u },
-								{ 0x21u, 0x99u },
-								{ 0x24u, 0x40u },
-								{ 0x25u, 0x38u },
-								{ 0x26u, 0x82u },
-								{ 0x5Cu, 0x00u },
-								{ 0x63u, 0x00u },
-								{ 0x46u, 0x22u },
-								{ 0x0Cu, 0x3Cu },
-								{ 0x61u, 0x70u },
-								{ 0x62u, 0x80u },
-								{ 0x7Cu, 0x05u },
-								{ 0x20u, 0x80u },
-								{ 0x28u, 0x30u },
-								{ 0x6Cu, 0x00u },
-								{ 0x6Du, 0x80u },
-								{ 0x6Eu, 0x00u },
-								{ 0x70u, 0x02u },
-								{ 0x71u, 0x94u },
-								{ 0x73u, 0xC1u },
-								{ 0x12u, 0x40u },
-								{ 0x17u, 0x11u },
-								{ 0x18u, 0x43u },
-								{ 0x19u, 0x00u },
-								{ 0x1Au, 0x4Bu },
-								{ 0x32u, 0x09u },
-								{ 0x37u, 0xC0u },
-								{ 0x4Fu, 0xCAu },
-								{ 0x50u, 0xA8u },
-								{ 0x5Au, 0x23u },
-								{ 0x6Du, 0x00u },
-								{ 0x3Du, 0x38u },
-								{ 0xFFu, 0x00u },
-								{ 0xE5u, 0x7Fu },
-								{ 0xF9u, 0xC0u },
-								{ 0x41u, 0x24u },
-								{ 0xE0u, 0x14u },
-								{ 0x76u, 0xFFu },
-								{ 0x33u, 0xA0u },
-								{ 0x42u, 0x20u },
-								{ 0x43u, 0x18u },
-								{ 0x4Cu, 0x00u },
-								{ 0x87u, 0xD5u },
-								{ 0x88u, 0x3Fu },
-								{ 0xD7u, 0x03u },
-								{ 0xD9u, 0x10u },
-								{ 0xD3u, 0x82u },
-								{ 0xC8u, 0x08u },
-								{ 0xC9u, 0x80u },
-								{ 0x7Cu, 0x00u },
-								{ 0x7Du, 0x00u },
-								{ 0x7Cu, 0x03u },
-								{ 0x7Du, 0x48u },
-								{ 0x7Du, 0x48u },
-								{ 0x7Cu, 0x08u },
-								{ 0x7Du, 0x20u },
-								{ 0x7Du, 0x10u },
-								{ 0x7Du, 0x0Eu },
-								{ 0x90u, 0x00u },
-								{ 0x91u, 0x0Eu },
-								{ 0x91u, 0x1Au },
-								{ 0x91u, 0x31u },
-								{ 0x91u, 0x5Au },
-								{ 0x91u, 0x69u },
-								{ 0x91u, 0x75u },
-								{ 0x91u, 0x7Eu },
-								{ 0x91u, 0x88u },
-								{ 0x91u, 0x8Fu },
-								{ 0x91u, 0x96u },
-								{ 0x91u, 0xA3u },
-								{ 0x91u, 0xAFu },
-								{ 0x91u, 0xC4u },
-								{ 0x91u, 0xD7u },
-								{ 0x91u, 0xE8u },
-								{ 0x91u, 0x20u },
-								{ 0x92u, 0x00u },
-								{ 0x93u, 0x06u },
-								{ 0x93u, 0xE3u },
-								{ 0x93u, 0x05u },
-								{ 0x93u, 0x05u },
-								{ 0x93u, 0x00u },
-								{ 0x93u, 0x04u },
-								{ 0x93u, 0x00u },
-								{ 0x93u, 0x00u },
-								{ 0x93u, 0x00u },
-								{ 0x93u, 0x00u },
-								{ 0x93u, 0x00u },
-								{ 0x93u, 0x00u },
-								{ 0x93u, 0x00u },
-								{ 0x96u, 0x00u },
-								{ 0x97u, 0x08u },
-								{ 0x97u, 0x19u },
-								{ 0x97u, 0x02u },
-								{ 0x97u, 0x0Cu },
-								{ 0x97u, 0x24u },
-								{ 0x97u, 0x30u },
-								{ 0x97u, 0x28u },
-								{ 0x97u, 0x26u },
-								{ 0x97u, 0x02u },
-								{ 0x97u, 0x98u },
-								{ 0x97u, 0x80u },
-								{ 0x97u, 0x00u },
-								{ 0x97u, 0x00u },
-								{ 0xC3u, 0xEDu },
-								{ 0xA4u, 0x00u },
-								{ 0xA8u, 0x00u },
-								{ 0xC5u, 0x11u },
-								{ 0xC6u, 0x51u },
-								{ 0xBFu, 0x80u },
-								{ 0xC7u, 0x10u },
-								{ 0xB6u, 0x66u },
-								{ 0xB8u, 0xA5u },
-								{ 0xB7u, 0x64u },
-								{ 0xB9u, 0x7Cu },
-								{ 0xB3u, 0xAFu },
-								{ 0xB4u, 0x97u },
-								{ 0xB5u, 0xFFu },
-								{ 0xB0u, 0xC5u },
-								{ 0xB1u, 0x94u },
-								{ 0xB2u, 0x0Fu },
-								{ 0xC4u, 0x5Cu },
-								{ 0xC0u, 0x64u },
-								{ 0xC1u, 0x4Bu },
-								{ 0x8Cu, 0x00u },
-								{ 0x86u, 0x3Du },
-								{ 0x50u, 0x00u },
-								{ 0x51u, 0xC8u },
-								{ 0x52u, 0x96u },
-								{ 0x53u, 0x00u },
-								{ 0x54u, 0x00u },
-								{ 0x55u, 0x00u },
-								{ 0x5Au, 0xC8u },
-								{ 0x5Bu, 0x96u },
-								{ 0x5Cu, 0x00u },
-								{ 0xD3u, 0x82u },
-								{ 0xC3u, 0xEDu },
-								{ 0x7Fu, 0x00u },
-								{ 0xDAu, 0x08u },
-								{ 0xE5u, 0x1Fu },
-								{ 0xE1u, 0x67u },
-								{ 0xE0u, 0x00u },
-								{ 0xDDu, 0x7Fu },
-								{ 0x05u, 0x00u }
+								{ 0xFFU, 0x01U },
+								{ 0x12U, 0x80U },
+								{ 0xFFU, 0x00U },
+								{ 0x2CU, 0xFFU },
+								{ 0x2EU, 0xDFU },
+								{ 0xFFU, 0x01U },
+								{ 0x3CU, 0x32U },
+								{ 0x11U, 0x00U },
+								{ 0x09U, 0x02U },
+								{ 0x04U, 0x28U },
+								{ 0x13U, 0xE5U },
+								{ 0x14U, 0x48U },
+								{ 0x2CU, 0x0CU },
+								{ 0x33U, 0x78U },
+								{ 0x3AU, 0x33U },
+								{ 0x3BU, 0xFBU },
+								{ 0x3EU, 0x00U },
+								{ 0x43U, 0x11U },
+								{ 0x16U, 0x10U },
+								{ 0x39U, 0x92U },
+								{ 0x35U, 0xDAU },
+								{ 0x22U, 0x1AU },
+								{ 0x37U, 0xC3U },
+								{ 0x23U, 0x00U },
+								{ 0x34U, 0xC0U },
+								{ 0x36U, 0x1AU },
+								{ 0x06U, 0x88U },
+								{ 0x07U, 0xC0U },
+								{ 0x0DU, 0x87U },
+								{ 0x0EU, 0x41U },
+								{ 0x4CU, 0x00U },
+								{ 0x48U, 0x00U },
+								{ 0x5BU, 0x00U },
+								{ 0x42U, 0x03U },
+								{ 0x4AU, 0x81U },
+								{ 0x21U, 0x99U },
+								{ 0x24U, 0x40U },
+								{ 0x25U, 0x38U },
+								{ 0x26U, 0x82U },
+								{ 0x5CU, 0x00U },
+								{ 0x63U, 0x00U },
+								{ 0x46U, 0x22U },
+								{ 0x0CU, 0x3CU },
+								{ 0x61U, 0x70U },
+								{ 0x62U, 0x80U },
+								{ 0x7CU, 0x05U },
+								{ 0x20U, 0x80U },
+								{ 0x28U, 0x30U },
+								{ 0x6CU, 0x00U },
+								{ 0x6DU, 0x80U },
+								{ 0x6EU, 0x00U },
+								{ 0x70U, 0x02U },
+								{ 0x71U, 0x94U },
+								{ 0x73U, 0xC1U },
+								{ 0x12U, 0x40U },
+								{ 0x17U, 0x11U },
+								{ 0x18U, 0x43U },
+								{ 0x19U, 0x00U },
+								{ 0x1AU, 0x4BU },
+								{ 0x32U, 0x09U },
+								{ 0x37U, 0xC0U },
+								{ 0x4FU, 0xCAU },
+								{ 0x50U, 0xA8U },
+								{ 0x5AU, 0x23U },
+								{ 0x6DU, 0x00U },
+								{ 0x3DU, 0x38U },
+								{ 0xFFU, 0x00U },
+								{ 0xE5U, 0x7FU },
+								{ 0xF9U, 0xC0U },
+								{ 0x41U, 0x24U },
+								{ 0xE0U, 0x14U },
+								{ 0x76U, 0xFFU },
+								{ 0x33U, 0xA0U },
+								{ 0x42U, 0x20U },
+								{ 0x43U, 0x18U },
+								{ 0x4CU, 0x00U },
+								{ 0x87U, 0xD5U },
+								{ 0x88U, 0x3FU },
+								{ 0xD7U, 0x03U },
+								{ 0xD9U, 0x10U },
+								{ 0xD3U, 0x82U },
+								{ 0xC8U, 0x08U },
+								{ 0xC9U, 0x80U },
+								{ 0x7CU, 0x00U },
+								{ 0x7DU, 0x00U },
+								{ 0x7CU, 0x03U },
+								{ 0x7DU, 0x48U },
+								{ 0x7DU, 0x48U },
+								{ 0x7CU, 0x08U },
+								{ 0x7DU, 0x20U },
+								{ 0x7DU, 0x10U },
+								{ 0x7DU, 0x0EU },
+								{ 0x90U, 0x00U },
+								{ 0x91U, 0x0EU },
+								{ 0x91U, 0x1AU },
+								{ 0x91U, 0x31U },
+								{ 0x91U, 0x5AU },
+								{ 0x91U, 0x69U },
+								{ 0x91U, 0x75U },
+								{ 0x91U, 0x7EU },
+								{ 0x91U, 0x88U },
+								{ 0x91U, 0x8FU },
+								{ 0x91U, 0x96U },
+								{ 0x91U, 0xA3U },
+								{ 0x91U, 0xAFU },
+								{ 0x91U, 0xC4U },
+								{ 0x91U, 0xD7U },
+								{ 0x91U, 0xE8U },
+								{ 0x91U, 0x20U },
+								{ 0x92U, 0x00U },
+								{ 0x93U, 0x06U },
+								{ 0x93U, 0xE3U },
+								{ 0x93U, 0x05U },
+								{ 0x93U, 0x05U },
+								{ 0x93U, 0x00U },
+								{ 0x93U, 0x04U },
+								{ 0x93U, 0x00U },
+								{ 0x93U, 0x00U },
+								{ 0x93U, 0x00U },
+								{ 0x93U, 0x00U },
+								{ 0x93U, 0x00U },
+								{ 0x93U, 0x00U },
+								{ 0x93U, 0x00U },
+								{ 0x96U, 0x00U },
+								{ 0x97U, 0x08U },
+								{ 0x97U, 0x19U },
+								{ 0x97U, 0x02U },
+								{ 0x97U, 0x0CU },
+								{ 0x97U, 0x24U },
+								{ 0x97U, 0x30U },
+								{ 0x97U, 0x28U },
+								{ 0x97U, 0x26U },
+								{ 0x97U, 0x02U },
+								{ 0x97U, 0x98U },
+								{ 0x97U, 0x80U },
+								{ 0x97U, 0x00U },
+								{ 0x97U, 0x00U },
+								{ 0xC3U, 0xEDU },
+								{ 0xA4U, 0x00U },
+								{ 0xA8U, 0x00U },
+								{ 0xC5U, 0x11U },
+								{ 0xC6U, 0x51U },
+								{ 0xBFU, 0x80U },
+								{ 0xC7U, 0x10U },
+								{ 0xB6U, 0x66U },
+								{ 0xB8U, 0xA5U },
+								{ 0xB7U, 0x64U },
+								{ 0xB9U, 0x7CU },
+								{ 0xB3U, 0xAFU },
+								{ 0xB4U, 0x97U },
+								{ 0xB5U, 0xFFU },
+								{ 0xB0U, 0xC5U },
+								{ 0xB1U, 0x94U },
+								{ 0xB2U, 0x0FU },
+								{ 0xC4U, 0x5CU },
+								{ 0xC0U, 0x64U },
+								{ 0xC1U, 0x4BU },
+								{ 0x8CU, 0x00U },
+								{ 0x86U, 0x3DU },
+								{ 0x50U, 0x00U },
+								{ 0x51U, 0xC8U },
+								{ 0x52U, 0x96U },
+								{ 0x53U, 0x00U },
+								{ 0x54U, 0x00U },
+								{ 0x55U, 0x00U },
+								{ 0x5AU, 0xC8U },
+								{ 0x5BU, 0x96U },
+								{ 0x5CU, 0x00U },
+								{ 0xD3U, 0x82U },
+								{ 0xC3U, 0xEDU },
+								{ 0x7FU, 0x00U },
+								{ 0xDAU, 0x08U },
+								{ 0xE5U, 0x1FU },
+								{ 0xE1U, 0x67U },
+								{ 0xE0U, 0x00U },
+								{ 0xDDU, 0x7FU },
+								{ 0x05U, 0x00U }
 							};
 
 #define	KNBCNF		(sizeof(aOV2640_Cnf) / sizeof(ov2640_t))
@@ -305,9 +321,9 @@ static	void	local_initOV2640(const cnfImgk_t *configure);
  *
  */
 int32_t	imgk_reserve(reserveMode_t reserveMode, uint32_t timeout) {
-	int32_t		status;
-
 	UNUSED(reserveMode);
+
+	int32_t		status;
 
 	status = local_init();
 	if (status != KERR_IMGK_NOERR) { return (status); }
@@ -337,9 +353,9 @@ int32_t	imgk_reserve(reserveMode_t reserveMode, uint32_t timeout) {
  *
  */
 int32_t	imgk_release(reserveMode_t reserveMode) {
-	int32_t		status;
-
 	UNUSED(reserveMode);
+
+	int32_t		status;
 
 	status = local_init();
 	if (status != KERR_IMGK_NOERR) { return (status); }
@@ -411,10 +427,10 @@ int32_t	imgk_release(reserveMode_t reserveMode) {
  *
  */
 int32_t	imgk_configure(const cnfImgk_t *configure) {
+	UNUSED(configure);
+
 	uint32_t	current;
 	int32_t		status = KERR_IMGK_NOERR;
-
-	UNUSED(configure);
 
 	status = local_init();
 	if (status != KERR_IMGK_NOERR) { return (status); }
@@ -429,7 +445,7 @@ int32_t	imgk_configure(const cnfImgk_t *configure) {
 	current  = dvp->dvp_cfg & ~(DVP_CFG_HREF_BURST_NUM_MASK | DVP_CFG_LINE_NUM_MASK);
 	current |= DVP_CFG_LINE_NUM(KIMAGER_NB_ROWS_QVGA);
 
-	current |= ((dvp->dvp_cfg & DVP_CFG_BURST_SIZE_4BEATS) != 0u) ? (DVP_CFG_HREF_BURST_NUM(KIMAGER_NB_COLS_QVGA / 8u / 4u)) : (DVP_CFG_HREF_BURST_NUM(KIMAGER_NB_COLS_QVGA / 8 / 1));
+	current |= ((dvp->dvp_cfg & DVP_CFG_BURST_SIZE_4BEATS) != 0U) ? (DVP_CFG_HREF_BURST_NUM(KIMAGER_NB_COLS_QVGA / 8U / 4U)) : (DVP_CFG_HREF_BURST_NUM(KIMAGER_NB_COLS_QVGA / 8 / 1));
 	dvp->dvp_cfg = current;
 
 // Reserve the memory
@@ -437,7 +453,7 @@ int32_t	imgk_configure(const cnfImgk_t *configure) {
 	if (vImageE0 != NULL) { memo_free(vImageE0); }
 	if (vImageE1 != NULL) { memo_free(vImageE1); }
 
-	vPage	  = 1u;
+	vPage	  = 1U;
 	vImageE0  = (uint16_t *)memo_malloc(KMEMO_ALIGN_8, ((size_t)KIMAGER_NB_COLS_QVGA * (size_t)KIMAGER_NB_ROWS_QVGA * sizeof(uint16_t)), "imgk");
 	vImageE1  = (uint16_t *)memo_malloc(KMEMO_ALIGN_8, ((size_t)KIMAGER_NB_COLS_QVGA * (size_t)KIMAGER_NB_ROWS_QVGA * sizeof(uint16_t)), "imgk");
 	if (vImageE0 == NULL) { status = KERR_IMGK_NOMEM; }
@@ -497,7 +513,7 @@ int32_t	imgk_getImage(volatile void **image) {
 	status = local_init();
 	if (status != KERR_IMGK_NOERR) { return (status); }
 
-	if (vPage == 0u) { *image = vImageE0; return (KERR_IMGK_NOERR); }
+	if (vPage == 0U) { *image = vImageE0; return (KERR_IMGK_NOERR); }
 					 { *image = vImageE1; return (KERR_IMGK_NOERR); }
 }
 
@@ -514,9 +530,9 @@ void	local_DVP_IRQHandler(uint32_t core, uint64_t parameter) {
 
 // End-of-Frame interruption
 
-	if ((dvp->sts & DVP_STS_FRAME_FINISH) != 0u) {
-		if (vPage == 0u) { dvp->rgb_addr = (uint32_t)((uintptr_t)vImageE0); vPage = 1u; }
-		else             { dvp->rgb_addr = (uint32_t)((uintptr_t)vImageE1); vPage = 0u; }
+	if ((dvp->sts & DVP_STS_FRAME_FINISH) != 0U) {
+		if (vPage == 0U) { dvp->rgb_addr = (uint32_t)((uintptr_t)vImageE0); vPage = 1U; }
+		else             { dvp->rgb_addr = (uint32_t)((uintptr_t)vImageE1); vPage = 0U; }
 
 		kern_signalSemaphore(vSeHandleIM);
 		dvp->sts = DVP_STS_FRAME_FINISH | DVP_STS_FRAME_FINISH_WE;
@@ -526,8 +542,8 @@ void	local_DVP_IRQHandler(uint32_t core, uint64_t parameter) {
 // Synchronize the end acquisition with the
 // interruption End-of-Start
 
-	if ((dvp->sts & DVP_STS_FRAME_START) != 0u) {
-		if (kern_waitSemaphore(vSeHandleAQ, 0u) == KERR_KERN_NOERR) {
+	if ((dvp->sts & DVP_STS_FRAME_START) != 0U) {
+		if (kern_waitSemaphore(vSeHandleAQ, 0U) == KERR_KERN_NOERR) {
 			dvp->sts = DVP_STS_DVP_EN | DVP_STS_DVP_EN_WE;
 		}
 		dvp->sts = DVP_STS_FRAME_START | DVP_STS_FRAME_START_WE;
@@ -548,7 +564,7 @@ static	int32_t	local_init(void) {
 	static	bool		vInit = false;
 
 	INTERRUPTION_OFF;
-	if (vInit == false) {
+	if (!vInit) {
 		vInit = true;
 
 		if (kern_createMutex(KIMGK_MUTEX_RESERVE, &vMutex)				 != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "imgk: create mutx"); exit(EXIT_OS_PANIC); }
@@ -564,9 +580,9 @@ static	int32_t	local_init(void) {
 		EXT_INTERRUPT_VECTOR(EINT_DVP_INTERRUPT, local_DVP_IRQHandler);
 
 		plic->source_priorities.priority[EINT_DVP_INTERRUPT] = (uint32_t)KINT_LEVEL_PERIPHERALS;
-		current  = plic->target_enables.target[core].enable[(uint32_t)EINT_DVP_INTERRUPT / 32u];
-		current |= (uint32_t)(1u<<((uint32_t)EINT_DVP_INTERRUPT % 32u));
-		plic->target_enables.target[core].enable[(uint32_t)EINT_DVP_INTERRUPT / 32u] = current;
+		current  = plic->target_enables.target[core].enable[(uint32_t)EINT_DVP_INTERRUPT / 32U];
+		current |= (uint32_t)(1U<<((uint32_t)EINT_DVP_INTERRUPT % 32U));
+		plic->target_enables.target[core].enable[(uint32_t)EINT_DVP_INTERRUPT / 32U] = current;
 
 // Initialise the DVP
 // Initialise the clock rate
@@ -589,27 +605,27 @@ static	int32_t	local_init(void) {
  *
  */
 static	void	local_initCKRate(const cnfImgk_t *configure) {
+	UNUSED(configure);
+
 	uint32_t	period;
 	uint32_t	current;
-
-	UNUSED(configure);
 
 // Clock devided by 16, and clock enable
 
 	dvp->cmos_cfg &= ~DVP_CMOS_CLK_DIV_MASK;
-	dvp->cmos_cfg |= DVP_CMOS_CLK_DIV(3u) | DVP_CMOS_CLK_ENABLE;
+	dvp->cmos_cfg |= DVP_CMOS_CLK_DIV(3U) | DVP_CMOS_CLK_ENABLE;
 
 // APB clock / 255
 
 	current  = dvp->sccb_cfg & ~(DVP_SCCB_SCL_LCNT_MASK | DVP_SCCB_SCL_HCNT_MASK);
-	current |= DVP_SCCB_SCL_LCNT(255u) | DVP_SCCB_SCL_HCNT(255u);
+	current |= DVP_SCCB_SCL_LCNT(255U) | DVP_SCCB_SCL_HCNT(255U);
 	dvp->sccb_cfg = current;
 
 // Set the imager clock period
 // Clock devided by KFREQUENCY_APB1 / (24000000 * 2.0), and clock enable
 
 	period = (uint32_t)round(KFREQUENCY_APB1 / (24000000 * 2.0)) - 1;
-	period = (period > 255u) ? (255u) : (period);
+	period = (period > 255U) ? (255U) : (period);
 
 	dvp->cmos_cfg &= ~DVP_CMOS_CLK_DIV_MASK;
 	dvp->cmos_cfg |= DVP_CMOS_CLK_DIV(period) | DVP_CMOS_CLK_ENABLE;
@@ -617,13 +633,13 @@ static	void	local_initCKRate(const cnfImgk_t *configure) {
 // Power-on the cmos imager
 
 	dvp->cmos_cfg |= DVP_CMOS_POWER_DOWN;
-	kern_suspendProcess(200u);
+	kern_suspendProcess(200U);
 	dvp->cmos_cfg &= ~DVP_CMOS_POWER_DOWN;
-	kern_suspendProcess(200u);
+	kern_suspendProcess(200U);
 	dvp->cmos_cfg &= ~DVP_CMOS_RESET;
-	kern_suspendProcess(200u);
+	kern_suspendProcess(200U);
 	dvp->cmos_cfg |= DVP_CMOS_RESET;
-	kern_suspendProcess(200u);
+	kern_suspendProcess(200U);
 
 // Enable the burst
 // Set the output enable
@@ -643,9 +659,9 @@ static	void	local_initCKRate(const cnfImgk_t *configure) {
  *
  */
 static	void	local_initImages(const cnfImgk_t *configure) {
-	uint32_t	current;
-
 	UNUSED(configure);
+
+	uint32_t	current;
 
 // Set the format
 
@@ -657,7 +673,7 @@ static	void	local_initImages(const cnfImgk_t *configure) {
 	current = dvp->dvp_cfg & ~(DVP_CFG_HREF_BURST_NUM_MASK | DVP_CFG_LINE_NUM_MASK);
 	current |= DVP_CFG_LINE_NUM(KIMAGER_NB_ROWS_QVGA);
 
-	current |= ((dvp->dvp_cfg & DVP_CFG_BURST_SIZE_4BEATS) != 0u) ? (DVP_CFG_HREF_BURST_NUM(KIMAGER_NB_COLS_QVGA / 8u / 4u)) : (DVP_CFG_HREF_BURST_NUM(KIMAGER_NB_COLS_QVGA / 8 / 1));
+	current |= ((dvp->dvp_cfg & DVP_CFG_BURST_SIZE_4BEATS) != 0U) ? (DVP_CFG_HREF_BURST_NUM(KIMAGER_NB_COLS_QVGA / 8U / 4U)) : (DVP_CFG_HREF_BURST_NUM(KIMAGER_NB_COLS_QVGA / 8 / 1));
 	dvp->dvp_cfg = current;
 }
 
@@ -678,17 +694,17 @@ static	void	local_sendData(uint8_t address, uint16_t location, uint8_t data) {
 
 // Transfer
 
-	while ((dvp->sts & DVP_STS_SCCB_EN) != 0u) { kern_suspendProcess(1u); }
+	while ((dvp->sts & DVP_STS_SCCB_EN) != 0U) { kern_suspendProcess(1U); }
 	dvp->sts = DVP_STS_SCCB_EN | DVP_STS_SCCB_EN_WE;
-	while ((dvp->sts & DVP_STS_SCCB_EN) != 0u) { kern_suspendProcess(1u); }
+	while ((dvp->sts & DVP_STS_SCCB_EN) != 0U) { kern_suspendProcess(1U); }
 }
 
 static	void	local_initOV2640(const cnfImgk_t *configure) {
-	uint16_t	i;
-
 	UNUSED(configure);
 
-	for (i = 0u; i < (uint16_t)KNBCNF; i++) {
+	uint16_t	i;
+
+	for (i = 0U; i < (uint16_t)KNBCNF; i++) {
 		local_sendData(KOV2640A, aOV2640_Cnf[i].oRegNumber, aOV2640_Cnf[i].oValue);
 	}
 }

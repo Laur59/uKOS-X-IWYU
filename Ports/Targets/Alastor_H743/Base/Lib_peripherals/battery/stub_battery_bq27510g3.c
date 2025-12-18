@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		stub for the connection of the "bat0" manager to the battery,
 ;			bq27510g3 device.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,8 +47,16 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+
 #include	"BQ27510G3/BQ27510G3.h"
+#include	"i2c/i2c.h"
+#include	"i2c0/i2c0.h"
+#include	"i2c_common.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"os_errors.h"
+#include	"types.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
@@ -57,7 +65,7 @@
 #define	model_bq27510g3_read	stub_battery_read
 
 enum {
-		KBAT_VOLTAGE = 0u,
+		KBAT_VOLTAGE = 0U,
 		KBAT_CURRENT,
 		KBAT_TEMPERATURE,
 		KBAT_CHARGED_CAPACITY,
@@ -83,7 +91,7 @@ static	bool	local_readSubRegister(uint16_t command, uint16_t subCommand, uint16_
 static	void	cb_configure(void) {
 					uint16_t	value;
 	static	const	i2cCnf_t	configureI2C0 = {
-									.oTimeout  = 100000u,
+									.oTimeout  = 100000U,
 									.oSpeed    = KI2C_100KBPS,
 								};
 
@@ -92,7 +100,7 @@ static	void	cb_configure(void) {
 	RELEASE(I2C0, KMODE_READ_WRITE);
 
 	local_readSubRegister(BQ27510G3_CNTRL, BQ27510G3_INSERT, &value);
-	kern_suspendProcess(1u);
+	kern_suspendProcess(1U);
 }
 
 /*
@@ -112,7 +120,7 @@ static	bool	cb_getValue(uint8_t mode, uint16_t *value) {
 		case KBAT_TIME_TO_EMPTY:	  { return (local_readRegister(BQ27510G3_TIME_TO_EMPTY, value));		}
 		case KBAT_CYCLE_COUNT:		  { return (local_readRegister(BQ27510G3_CYCLE_COUNT, value));			}
 		default: {
-			*value = 0u;
+			*value = 0U;
 			return (true);
 		}
 	}
@@ -134,9 +142,9 @@ static	bool	local_readRegister(uint16_t command, uint16_t *value) {
 	buffer[0] = (uint8_t)(command>>8);
 
 	RESERVE(I2C0, KMODE_READ_WRITE);
-	status = (i2c_read(KI2C0, KI2C_ADD_BQ27510G3, &buffer[0], 2u) == KERR_I2C_NOERR) ? (false) : (true);
-	kern_suspendProcess(10u);
-	RELEASE(I2C0, KMODE_READ_WRITE);
+	status = (i2c_read(KI2C0, KI2C_ADD_BQ27510G3, &buffer[0], 2U) != KERR_I2C_NOERR);
+	kern_suspendProcess(10U);
+	I2C0_release(KMODE_READ_WRITE);
 
 	*value = (uint16_t)((buffer[1]<<8) | buffer[0]);
 	return (status);
@@ -152,20 +160,20 @@ static	bool	local_readSubRegister(uint16_t command, uint16_t subCommand, uint16_
 	uint8_t		buffer[3];
 	bool		status;
 
-	buffer[0] = (uint8_t)(command>>8u);
+	buffer[0] = (uint8_t)(command>>8U);
 	buffer[1] = (uint8_t)(subCommand);
-	buffer[2] = (uint8_t)(subCommand>>8u);
+	buffer[2] = (uint8_t)(subCommand>>8U);
 
 	RESERVE(I2C0, KMODE_READ_WRITE);
-	status = (i2c_write(KI2C0, KI2C_ADD_BQ27510G3, &buffer[0], 3u) == KERR_I2C_NOERR) ? (false) : (true);
-	kern_suspendProcess(10u);
+	status = (i2c_write(KI2C0, KI2C_ADD_BQ27510G3, &buffer[0], 3U) != KERR_I2C_NOERR);
+	kern_suspendProcess(10U);
 
-	buffer[0] = (uint8_t)(command>>8u);
-	status |= (i2c_read(KI2C0, KI2C_ADD_BQ27510G3, &buffer[0], 2u) == KERR_I2C_NOERR) ? (false) : (true);
-	kern_suspendProcess(10u);
-	RELEASE(I2C0, KMODE_READ_WRITE);
+	buffer[0] = (uint8_t)(command>>8U);
+	status |= (i2c_read(KI2C0, KI2C_ADD_BQ27510G3, &buffer[0], 2U) != KERR_I2C_NOERR);
+	kern_suspendProcess(10U);
+	I2C0_release(KMODE_READ_WRITE);
 
-	*value =(uint16_t)((buffer[1]<<8u) | buffer[0]);
+	*value =(uint16_t)((buffer[1]<<8U) | buffer[0]);
 	return (status);
 }
 

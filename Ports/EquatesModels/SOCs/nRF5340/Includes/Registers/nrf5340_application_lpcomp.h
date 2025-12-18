@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		nrf5340_application_lpcomp equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // LPCOMP address definitions
 // --------------------------
@@ -87,7 +89,7 @@ typedef struct {
 	volatile	uint32_t	HYST;
 } LPCOMP_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	LPCOMP_NS	reinterpret_cast<LPCOMP_TypeDef *>(0x4001A000u)
 #define	LPCOMP_S	reinterpret_cast<LPCOMP_TypeDef *>(0x5001A000u)
 

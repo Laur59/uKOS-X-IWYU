@@ -13,8 +13,8 @@
 ;			References:
 ;			- GD32VF103 RISC-V 32-bit MCU Rev 1.2, p. 28; User Manual
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \

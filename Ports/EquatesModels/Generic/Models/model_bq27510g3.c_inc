@@ -9,8 +9,8 @@
 ; Project:	uKOS-X
 ; Goal:		Model for controlling the "bq27510G3" device.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -44,7 +44,11 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"BQ27510G3/BQ27510G3.h"
+#include	<stdint.h>
+
+#include	"battery_common.h"
+#include	"types.h"
+#include	"os_errors.h"
 
 /*
  * \brief model_bq27510g3_init
@@ -73,8 +77,8 @@ int32_t	model_bq27510g3_read(batteryInfo_t *infoBattery) {
 	infoBattery->oTemperature		  = 0.0;
 	infoBattery->oFullChargedCapacity = 0.0;
 	infoBattery->oRemainingCapacity	  = 0.0;
-	infoBattery->oTimeToEmpty		  = 0u;
-	infoBattery->oCycles			  = 0u;
+	infoBattery->oTimeToEmpty		  = 0U;
+	infoBattery->oCycles			  = 0U;
 
 // Get the battery information
 

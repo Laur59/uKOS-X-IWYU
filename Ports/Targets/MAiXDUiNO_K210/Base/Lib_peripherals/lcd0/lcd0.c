@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		lcd0 manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,10 +46,22 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"../lcd0/lcd0.h"
-#include	"../lcd0/font.h"
+#include	"lcd0.h"
+
+#include	<stdint.h>
+#include	<stdlib.h>
+#include	<string.h>
+
 #include	"../tft0/tft0.h"
+#include	"font.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -72,7 +84,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -82,7 +94,7 @@ MODULE(
 static	mutx_t		*vMutex;
 
 static	lcdCtl_t	vLcdCtl;
-static	uint16_t	vImage[640 * 2] = { 0u };
+static	uint16_t	vImage[640 * 2] = { 0U };
 
 // Prototypes
 
@@ -114,9 +126,9 @@ static	void	local_drawPoint(uint16_t x, uint16_t y, uint16_t color);
  *
  */
 int32_t	lcd0_reserve(reserveMode_t reserveMode, uint32_t timeout) {
-	int32_t		status;
-
 	UNUSED(reserveMode);
+
+	int32_t		status;
 
 	status = local_init();
 	if (status != KERR_LCD0_NOERR) { return (status); }
@@ -147,9 +159,9 @@ int32_t	lcd0_reserve(reserveMode_t reserveMode, uint32_t timeout) {
  *
  */
 int32_t	lcd0_release(reserveMode_t reserveMode) {
-	int32_t		status;
-
 	UNUSED(reserveMode);
+
+	int32_t		status;
 
 	status = local_init();
 	if (status != KERR_LCD0_NOERR) { return (status); }
@@ -184,17 +196,17 @@ int32_t	lcd0_setDirection(uint8_t direction) {
 	if (status != KERR_LCD0_NOERR) { return (status); }
 
 	vLcdCtl.direction = direction;
-	if ((direction & KDIR_XY_MASK) != 0u) {
-		vLcdCtl.width  = KLCD_Y_MAX - 1u;
-		vLcdCtl.height = KLCD_X_MAX - 1u;
+	if ((direction & KDIR_XY_MASK) != 0U) {
+		vLcdCtl.width  = KLCD_Y_MAX - 1U;
+		vLcdCtl.height = KLCD_X_MAX - 1U;
 	}
 	else {
-		vLcdCtl.width  = KLCD_X_MAX - 1u;
-		vLcdCtl.height = KLCD_Y_MAX - 1u;
+		vLcdCtl.width  = KLCD_X_MAX - 1U;
+		vLcdCtl.height = KLCD_Y_MAX - 1U;
 	}
 
 	tft0_writeCommand(KMEMORY_ACCESS_CTL);
-	tft0_write8(&direction, 1u);
+	tft0_write8(&direction, 1U);
 	return (KERR_LCD0_NOERR);
 }
 
@@ -252,7 +264,7 @@ int32_t	lcd0_drawString(uint16_t x, uint16_t y, const char *s, uint16_t color) {
 	while (*s != '\0') {
 		local_drawChar(x, y, *s, color);
 		s++;
-		x += 8u;
+		x += 8U;
 	}
 	return (KERR_LCD0_NOERR);
 }
@@ -285,26 +297,26 @@ int32_t	lcd0_drawRamString(const char *s, uint32_t *area, uint16_t fntColor, uin
 	status = local_init();
 	if (status != KERR_LCD0_NOERR) { return (status); }
 
-	width = (4u * strlen(s));
+	width = (4U * strlen(s));
 	while (*s != '\0') {
-		font = &font0816[(size_t)(*s) * (size_t)16u];
-		for (i = 0u; i < 16u; i++) {
+		font = &font0816[(size_t)(*s) * (size_t)16U];
+		for (i = 0U; i < 16U; i++) {
 			data = *font++;
 			pixel = area + (i * width);
-			for (j = 0u; j < 4u; j++) {
-				switch (data>>6u) {
-					case 0u: { *pixel = ((uint32_t)bgdColor<<16u) | bgdColor; break; }
-					case 1u: { *pixel = ((uint32_t)bgdColor<<16u) | fntColor; break; }
-					case 2u: { *pixel = ((uint32_t)fntColor<<16u) | bgdColor; break; }
-					case 3u: { *pixel = ((uint32_t)fntColor<<16u) | fntColor; break; }
+			for (j = 0U; j < 4U; j++) {
+				switch (data>>6U) {
+					case 0U: { *pixel = ((uint32_t)bgdColor<<16U) | bgdColor; break; }
+					case 1U: { *pixel = ((uint32_t)bgdColor<<16U) | fntColor; break; }
+					case 2U: { *pixel = ((uint32_t)fntColor<<16U) | bgdColor; break; }
+					case 3U: { *pixel = ((uint32_t)fntColor<<16U) | fntColor; break; }
 					default: { *pixel = 0; break; }
 				}
-				data <<= 2u;
+				data <<= 2U;
 				pixel++;
 			}
 		}
 		s++;
-		area += 4u;
+		area += 4U;
 	}
 	return (KERR_LCD0_NOERR);
 }
@@ -330,7 +342,7 @@ int32_t	lcd0_clear(uint16_t color) {
 	status = local_init();
 	if (status != KERR_LCD0_NOERR) { return (status); }
 
-	local_setArea(0u, 0u, vLcdCtl.width, vLcdCtl.height);
+	local_setArea(0U, 0U, vLcdCtl.width, vLcdCtl.height);
 	tft0_fill16(&color, KLCD_X_MAX * KLCD_Y_MAX);
 	return (KERR_LCD0_NOERR);
 }
@@ -357,21 +369,21 @@ int32_t	lcd0_clear(uint16_t color) {
  */
 int32_t	lcd0_drawRectangle(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, uint16_t width, uint16_t color) {
 	uint16_t	*p, data = color;
-	uint32_t	i = 0u;
+	uint32_t	i = 0U;
 	int32_t		status;
 
 	status = local_init();
 	if (status != KERR_LCD0_NOERR) { return (status); }
 
 	p = &vImage[0];
-	for (i = 0u; i < (KLCD_Y_MAX * width); i++) {
+	for (i = 0U; i < (KLCD_Y_MAX * width); i++) {
 		*p++ = data;
 	}
 
-	local_setArea(x0,						   y0,						    x1,						     (uint16_t)(y0 + width - 1u)); tft0_write16(&vImage[0], (uint32_t)(((x1 - x0 + 1) * width) + 1));
-	local_setArea(x0,						   (uint16_t)(y1 - width + 1u), x1,						     y1);						   tft0_write16(&vImage[0], (uint32_t)(((x1 - x0 + 1) * width) + 1));
-	local_setArea(x0,						   y0,						    (uint16_t)(x0 + width - 1u), y1);						   tft0_write16(&vImage[0], (uint32_t)(((y1 - y0 + 1) * width) + 1));
-	local_setArea((uint16_t)(x1 - width + 1u), y0,						    x1,						     y1);						   tft0_write16(&vImage[0], (uint32_t)(((y1 - y0 + 1) * width) + 1));
+	local_setArea(x0,						   y0,						    x1,						     (uint16_t)(y0 + width - 1U)); tft0_write16(&vImage[0], (uint32_t)(((x1 - x0 + 1) * width) + 1));
+	local_setArea(x0,						   (uint16_t)(y1 - width + 1U), x1,						     y1);						   tft0_write16(&vImage[0], (uint32_t)(((x1 - x0 + 1) * width) + 1));
+	local_setArea(x0,						   y0,						    (uint16_t)(x0 + width - 1U), y1);						   tft0_write16(&vImage[0], (uint32_t)(((y1 - y0 + 1) * width) + 1));
+	local_setArea((uint16_t)(x1 - width + 1U), y0,						    x1,						     y1);						   tft0_write16(&vImage[0], (uint32_t)(((y1 - y0 + 1) * width) + 1));
 	return (KERR_LCD0_NOERR);
 }
 
@@ -400,7 +412,7 @@ int32_t	lcd0_drawPicture(uint16_t x, uint16_t y, uint16_t width, uint16_t height
 	status = local_init();
 	if (status != KERR_LCD0_NOERR) { return (status); }
 
-	local_setArea(x, y, (uint16_t)(x + width - 1u), (uint16_t)(y + height - 1u));
+	local_setArea(x, y, (uint16_t)(x + width - 1U), (uint16_t)(y + height - 1U));
 	tft0_write16(area, (uint16_t)(width * height));
 	return (KERR_LCD0_NOERR);
 }
@@ -420,7 +432,7 @@ static	int32_t	local_init(void) {
 	static	bool		vInit = false;
 
 	INTERRUPTION_OFF;
-	if (vInit == false) {
+	if (!vInit) {
 		vInit = true;
 
 		if (kern_createMutex(KLCD0_MUTEX_RESERVE, &vMutex) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "lcd0: create mutx"); exit(EXIT_OS_PANIC); }
@@ -430,15 +442,15 @@ static	int32_t	local_init(void) {
 
 		tft0_init();
 		tft0_writeCommand(KSOFTWARE_RESET);
-		kern_suspendProcess(100u);
+		kern_suspendProcess(100U);
 
 		tft0_writeCommand(KSLEEP_OFF);
-		kern_suspendProcess(100u);
+		kern_suspendProcess(100U);
 
 		tft0_writeCommand(KPIXEL_FORMAT_SET);
 
-		data = 0x55u;
-		tft0_write8(&data, 1u);
+		data = 0x55U;
+		tft0_write8(&data, 1U);
 		lcd0_setDirection(KDIR_XY_LRDU);
 
 // Display on
@@ -457,19 +469,19 @@ static	int32_t	local_init(void) {
 static	void	local_setArea(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1) {
 	uint8_t		data[4];
 
-	data[0] = (uint8_t)(x0>>8u);
+	data[0] = (uint8_t)(x0>>8U);
 	data[1] = (uint8_t)(x0);
-	data[2] = (uint8_t)(x1>>8u);
+	data[2] = (uint8_t)(x1>>8U);
 	data[3] = (uint8_t)(x1);
 	tft0_writeCommand(KHORIZONTAL_ADDRESS_SET);
-	tft0_write8(&data[0], 4u);
+	tft0_write8(&data[0], 4U);
 
-	data[0] = (uint8_t)(y0>>8u);
+	data[0] = (uint8_t)(y0>>8U);
 	data[1] = (uint8_t)(y0);
-	data[2] = (uint8_t)(y1>>8u);
+	data[2] = (uint8_t)(y1>>8U);
 	data[3] = (uint8_t)(y1);
 	tft0_writeCommand(KVERTICAL_ADDRESS_SET);
-	tft0_write8(&data[0], 4u);
+	tft0_write8(&data[0], 4U);
 
 	tft0_writeCommand(KMEMORY_WRITE);
 }
@@ -483,13 +495,13 @@ static	void	local_setArea(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1) {
 static	void	local_drawChar(uint16_t x, uint16_t y, char c, uint16_t color) {
 	uint8_t		i, j, data;
 
-	for (i = 0u; i < 16u; i++) {
-		data = font0816[((uint8_t)c * 16u) + i];
-		for (j = 0; j < 8u; j++) {
-			if ((data & 0x80u) != 0u) {
+	for (i = 0U; i < 16U; i++) {
+		data = font0816[((uint8_t)c * 16U) + i];
+		for (j = 0; j < 8U; j++) {
+			if ((data & 0x80U) != 0U) {
 				local_drawPoint(x + j, y, color);
 			}
-			data <<= 1u;
+			data <<= 1U;
 		}
 		y++;
 	}
@@ -504,5 +516,5 @@ static	void	local_drawChar(uint16_t x, uint16_t y, char c, uint16_t color) {
 static	void	local_drawPoint(uint16_t x, uint16_t y, uint16_t color) {
 
 	local_setArea(x, y, x, y);
-	tft0_write16(&color, 1u);
+	tft0_write16(&color, 1U);
 }

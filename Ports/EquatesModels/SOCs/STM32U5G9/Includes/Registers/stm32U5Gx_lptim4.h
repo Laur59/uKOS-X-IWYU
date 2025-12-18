@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32U5Gx_lptim4 equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // LPTIM4 address definitions
 // --------------------------
 
@@ -68,7 +70,7 @@ typedef struct {
 	volatile	uint32_t	CCR2;
 } LPTIM4_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	LPTIM4_NS	reinterpret_cast<LPTIM4_TypeDef *>(0x46004C00u)
 #define	LPTIM4_S	reinterpret_cast<LPTIM4_TypeDef *>(0x56004C00u)
 

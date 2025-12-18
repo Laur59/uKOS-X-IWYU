@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32N657_xspi equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // XSPI address definitions
 // ------------------------
@@ -111,7 +113,7 @@ typedef struct {
 	volatile	uint32_t	CALSIR;
 } XSPI_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	XSPI1_NS	reinterpret_cast<XSPI_TypeDef *>(0x48025000u)
 #define	XSPI1_S		reinterpret_cast<XSPI_TypeDef *>(0x58025000u)
 #define	XSPI2_NS	reinterpret_cast<XSPI_TypeDef *>(0x4802A000u)

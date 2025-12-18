@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		random manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,9 +46,21 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	"random.h"
 
-#if (defined(CONFIG_MAN_RANDOM_S))
+#include	<stdint.h>
+#include	<stdlib.h>
+
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"types.h"
+
+#ifdef CONFIG_MAN_RANDOM_S
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -71,7 +83,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -117,13 +129,13 @@ int32_t random_read(randomGenerator_t generator, uint32_t *number, uint32_t nbNu
 	PRIVILEGE_ELEVATE;
 	local_init();
 
-	if ((number == NULL) || (nbNumbers == 0u)) {
+	if ((number == NULL) || (nbNumbers == 0U)) {
 		PRIVILEGE_RESTORE;
 		return (KERR_RANDOM_GEERR);
 	}
 
 	kern_lockMutex(vMutex_Reserve_Random[core], KWAIT_INFINITY);
-	for (i = 0u; i < nbNumbers; i++) {
+	for (i = 0U; i < nbNumbers; i++) {
 		stub_rand_read(generator, wkNumber);
 		wkNumber++;
 	}
@@ -149,7 +161,7 @@ static	void	local_init(void) {
 	core = GET_RUNNING_CORE;
 
 	INTERRUPTION_OFF;
-	if (vInit[core] == false) {
+	if (!vInit[core]) {
 		vInit[core] = true;
 
 		if (kern_createMutex(aStrIdSRandom, &vMutex_Reserve_Random[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "rand: create mutx"); exit(EXIT_OS_PANIC); }

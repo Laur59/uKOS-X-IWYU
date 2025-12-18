@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		record manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -65,14 +65,18 @@
  * @{
  */
 
+#include	<stdint.h>
+
+#include	"types.h"
+
 // Modifiable in the makefile: depth of the fifo for the tracing
 
-#if (!defined(KRECORD_SZ_LOG_BUF))
-#define	KRECORD_SZ_LOG_BUF		200u
+#ifndef KRECORD_SZ_LOG_BUF
+#define	KRECORD_SZ_LOG_BUF		200U
 #endif
 
-#if (!defined(KRECORD_SZ_TRACE_FIFO))
-#define	KRECORD_SZ_TRACE_FIFO	200u
+#ifndef KRECORD_SZ_TRACE_FIFO
+#define	KRECORD_SZ_TRACE_FIFO	200U
 #endif
 
 // Trace fifo & log buffer
@@ -111,7 +115,7 @@ typedef	enum {
 
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -159,7 +163,7 @@ extern	int32_t	record_trace(const char_t *message, uintptr_t parameter);
  */
 extern	int32_t	record_log(recordLogCategory_t logCategory, uint32_t lineNumber, const char_t *function, const char_t *message);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 

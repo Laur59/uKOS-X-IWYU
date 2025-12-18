@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		SYSTICK equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // SYSTICK address definitions
 // ---------------------------
 
@@ -58,7 +60,7 @@ typedef struct {
 	volatile	const	uint32_t	CALIB;
 } SysTick_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	SysTick_S	reinterpret_cast<SysTick_TypeDef *>(0xE000E010u)
 #define	SysTick_NS	reinterpret_cast<SysTick_TypeDef *>(0xE002E010u)
 

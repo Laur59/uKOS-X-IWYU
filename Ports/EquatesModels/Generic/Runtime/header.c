@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		header for the uKOS-X applications.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,10 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+
+#include	"types.h"
+#include	"modules.h"
 
 extern	int32_t			aStart(uint32_t argc, const char_t *argv[]);
 extern	uintptr_t		_lnApplication;

@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		led manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,22 +48,24 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 /*!
  * \addtogroup Lib_peripherals
  */
 /**@{*/
 
 enum {
-		KLED_0 = (uint8_t)0u,
-		KLED_1 = (uint8_t)1u,
-		KLED_2 = (uint8_t)2u,
-		KLED_3 = (uint8_t)3u,
-		KLED_4 = (uint8_t)4u,
-		KLED_5 = (uint8_t)5u,
-		KLED_6 = (uint8_t)6u,
-		KLED_7 = (uint8_t)7u,
-		KLED_8 = (uint8_t)8u,
-		KLED_9 = (uint8_t)9u
+		KLED_0 = (uint8_t)0U,
+		KLED_1 = (uint8_t)1U,
+		KLED_2 = (uint8_t)2U,
+		KLED_3 = (uint8_t)3U,
+		KLED_4 = (uint8_t)4U,
+		KLED_5 = (uint8_t)5U,
+		KLED_6 = (uint8_t)6U,
+		KLED_7 = (uint8_t)7U,
+		KLED_8 = (uint8_t)8U,
+		KLED_9 = (uint8_t)9U
 };
 
 /*!
@@ -76,7 +78,7 @@ enum {
  * @{
  */
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -157,7 +159,7 @@ extern	int32_t	led_toggle(uint8_t ledNb);
  */
 extern	int32_t	led_mute(bool mute);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 

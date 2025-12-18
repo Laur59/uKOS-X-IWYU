@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Kill a module (process or other).
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,15 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+#include	<stdio.h>
+
+#include	"macros.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"serial/serial.h"
+#include	"system/system.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -76,7 +84,7 @@ MODULE(
 	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,										// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
@@ -89,7 +97,7 @@ MODULE(
  */
 static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 			int32_t			status;
-			uint16_t		index = 0u;
+			uint16_t		index = 0U;
 			enum { KERR_NOT, KERR_PRO, KERR_PNK, KERR_PNE } error = KERR_NOT;
 	const	uKOS_module_t	*module;
 
@@ -102,13 +110,13 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 //
 // kill alive
 
-	if (argc != 2u) {
+	if (argc != 2U) {
 		error = KERR_PRO;
 	}
 	else {
 		if (system_getModuleName(argv[1], &index, &module) == KERR_SYSTEM_NOERR) {
 			if (module->oClean != NULL) {
-				module->oClean(0u, NULL);
+				module->oClean(0U, NULL);
 			}
 			else {
 				error = KERR_PNK;

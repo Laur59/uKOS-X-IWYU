@@ -37,8 +37,8 @@
 ;   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 ;   THE SOFTWARE.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -74,6 +74,9 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
+#include	"macros.h"
 #include	"osal_kern_interface.h"
 
 extern	uint32_t	SystemCoreClock;
@@ -91,7 +94,7 @@ typedef	osal_semaphore_t		osal_mutex_t;
 typedef	osal_queue_def_t		*osal_queue_t;
 typedef	uint32_t				osal_spinlock_t;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -287,6 +290,6 @@ TU_ATTR_ALWAYS_INLINE	static	inline	void	osal_spin_unlock(osal_spinlock_t *ctx, 
     }
 }
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif

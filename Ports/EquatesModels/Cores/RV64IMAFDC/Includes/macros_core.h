@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Important macros.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,22 +48,23 @@
 
 #pragma	once
 
-#include	"./kern/privileges.h"
+#include	"core.h"	// IWYU pragma: keep
+#include	"macros_soc.h"
 
 // uKernel macros
 // --------------
 
 // Core machine in bits
 
-#define	KMACHINE_BITS			(64u)
+#define	KMACHINE_BITS			(64U)
 
 // Preemptions
 
-#if (!defined(KSTATUS))
+#ifndef KSTATUS
 #define	KSTATUS					(MSTATUS64_SD | MSTATUS_FS | MSTATUS_MPP | MSTATUS_MPIE)
 #endif
 
-#if (!defined(PREEMPTION_THRESHOLD))
+#ifndef PREEMPTION_THRESHOLD
 #define	PREEMPTION_THRESHOLD(core)																								\
 								do {																							\
 									extern	proc_t	*vKern_runProc[KNB_CORES]; 													\
@@ -77,63 +78,63 @@
 // Elevation macros
 // ----------------
 
-#if (!defined(PRIVILEGE_ELEVATE))
+#ifndef PRIVILEGE_ELEVATE
 #define	PRIVILEGE_ELEVATE
 #endif
 
-#if (!defined(PRIVILEGE_RESTORE))
+#ifndef PRIVILEGE_RESTORE
 #define	PRIVILEGE_RESTORE
 #endif
 
-#if (!defined(RIGHTS_ELEVATION))
+#ifndef RIGHTS_ELEVATION
 #define	RIGHTS_ELEVATION
 #endif
 
-#if (!defined(SET_USER_MODE))
+#ifndef SET_USER_MODE
 #define	SET_USER_MODE
 #endif
 
-#if (!defined(SET_PRIVILEGED_MODE))
+#ifndef SET_PRIVILEGED_MODE
 #define	SET_PRIVILEGED_MODE
 #endif
 
-#if (!defined(GET_ADDRESS_ELEVATION_CALLER))
+#ifndef GET_ADDRESS_ELEVATION_CALLER
 #define GET_ADDRESS_ELEVATION_CALLER
 #endif
 
-#if (!defined(GET_ADDRESS_CALLER))
+#ifndef GET_ADDRESS_CALLER
 #define GET_ADDRESS_CALLER(address)
 #endif
 
-#if (!defined(CALL_FNCT_ELEVATION))
+#ifndef CALL_FNCT_ELEVATION
 #define CALL_FNCT_ELEVATION(function)
 #endif
 
-#if (!defined(KERN_RETURN_ELEVATION))
+#ifndef KERN_RETURN_ELEVATION
 #define	KERN_RETURN_ELEVATION
 #endif
 
 // Interruption macros
 // -------------------
 
-#if (!defined(KPROCESS_INIT_MCAUSE))
-#define	KPROCESS_INIT_MCAUSE	(MCAUSE_INTERRUPT | 11u)
+#ifndef KPROCESS_INIT_MCAUSE
+#define	KPROCESS_INIT_MCAUSE	(MCAUSE_INTERRUPT | 11U)
 #endif
 
-#if (!defined(RETURN_INT_RESTORE))
+#ifndef RETURN_INT_RESTORE
 #define	RETURN_INT_RESTORE(status)																								\
 								INTERRUPTION_RESTORE;																			\
 								return (status)
 #endif
 
 
-#if (!defined(WAITING_INTERRUPTION))
+#ifndef WAITING_INTERRUPTION
 #define	WAITING_INTERRUPTION	__asm volatile ("																			 \n \
 								wfi"																							\
 								)
 #endif
 
-#if (!defined(GET_CURRENT_PROCESS_STACK))
+#ifndef GET_CURRENT_PROCESS_STACK
 #define GET_CURRENT_PROCESS_STACK(stack)										 												\
 								__asm volatile ("																			 \n \
 								add			%0,x0,sp"																			\
@@ -143,26 +144,33 @@
 								)
 #endif
 
-#if (!defined(NOP))
+// Vector registration macros
+// --------------------------
+// Moved from macros_soc.h for IWYU compliance (eliminates circular dependency)
+// K210 has PLIC-based interrupt architecture with three types of vectors
+// (extern declarations remain in K210 macros_soc.h as they use SoC-specific constants)
+
+#define	INT_EXCEPTION_VECTOR(vectorNb, address)																					\
+								vExce_intExcVectors[GET_RUNNING_CORE][vectorNb] = address
+
+#define	INT_INTERRUPT_VECTOR(vectorNb, address)																					\
+								vExce_intIntVectors[GET_RUNNING_CORE][vectorNb] = address
+
+#define	EXT_INTERRUPT_VECTOR(vectorNb, address)																					\
+								vExce_extIntVectors[GET_RUNNING_CORE][vectorNb] = address
+
+// Misc assembler macro
+// --------------------
+
+#ifndef NOP
 #define	NOP 					__asm volatile ("																			 \n \
 								nop"																							\
 								)
 #endif
 
-#if (!defined(JUMP_FNCT))
+#ifndef JUMP_FNCT
 #define JUMP_FNCT(function)																										\
 								__asm volatile ("																			 \n \
 								j			"#function																			\
 								)
-#endif
-
-// Stack frame macros
-// ------------------
-
-#if ((!defined(__clang__)) && (__GNUC__ >= 14))
-#include	"macros_core_stackFrame_gcc.h"
-#endif
-
-#if (defined(__clang__))
-#include	"macros_core_stackFrame_clang.h"
 #endif

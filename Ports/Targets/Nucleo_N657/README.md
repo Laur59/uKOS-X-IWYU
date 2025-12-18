@@ -1,6 +1,6 @@
 # Target Nucleo_N657_
 
-(c) 2025-20xx, Edo. Franzi, 2025-01-01
+© 2025-2026, Edo. Franzi, 2025-01-01
 
 ## Base
 

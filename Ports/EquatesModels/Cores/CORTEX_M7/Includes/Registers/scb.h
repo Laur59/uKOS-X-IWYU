@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		SCB equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // SCB address definitions
 // -----------------------
@@ -104,7 +106,7 @@ typedef struct {
 	volatile			uint32_t	ABFSR;
 } SCB_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	SCB		reinterpret_cast<SCB_TypeDef *>(0xE000ED00u)
 
 #else

@@ -6,11 +6,11 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Laurent von Allmen	The 2025-11-01
+# Author:   Laurent von Allmen  The 2025-11-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Generate HTML table for static analysis reports
+# Project:  uKOS-X
+# Goal:     Generate HTML table for static analysis reports
 #
 #   (c) 2025-20xx, Laurent von Allmen
 #   ---------------------------------

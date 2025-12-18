@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32U5Gx_hspi equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // HSPI address definitions
 // ------------------------
@@ -111,7 +113,7 @@ typedef struct {
 	volatile	uint32_t	CALSIR;
 } HSPI_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	HSPI1_NS	reinterpret_cast<HSPI_TypeDef *>(0x420D3400u)
 #define	HSPI1_S		reinterpret_cast<HSPI_TypeDef *>(0x520D3400u)
 

@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Minimal test of the RAM (hardware).
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,8 +46,18 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<inttypes.h>
+#include	<stdio.h>
+#include	<stdlib.h>
+
+#include	"board.h"
+#include	"kern/kern.h"
+#include	"led/led.h"
 #include	"linker.h"
+#include	"macros.h"
+#include	"modules.h"
+#include	"serial/serial.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -80,7 +90,7 @@ MODULE(
 	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,										// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
@@ -88,14 +98,14 @@ MODULE(
 // =================
 
 enum {
-		KERR_NOT = 0u,
+		KERR_NOT = 0U,
 		KERR_PRE,
 		KERR_008,
 		KERR_016,
 		KERR_032
 };
 
-#define	KSTART		0u
+#define	KSTART		0U
 #define	KEND		((uintptr_t)linker_lnEXRAM)
 
 /*
@@ -120,8 +130,8 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 //
 // test 1000
 
-	if (argc == 2u) {
-		nbTests = (int32_t)strtol(argv[1], &dummy, 10u);
+	if (argc == 2U) {
+		nbTests = (int32_t)strtol(argv[1], &dummy, 10U);
 
 // Test 1: LEDs
 // ------------
@@ -129,9 +139,9 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 		(void)dprintf(KSYST, "Test LEDs\n\n");
 
 		#if (KNB_LED > 0)
-		for (led = 0u; led < KNB_LED; led++) { led_off(led);						   }
-		for (led = 0u; led < KNB_LED; led++) { led_on(led); kern_suspendProcess(100u); }
-		for (led = 0u; led < KNB_LED; led++) { led_off(led);						   }
+		for (led = 0U; led < KNB_LED; led++) { led_off(led);						   }
+		for (led = 0U; led < KNB_LED; led++) { led_on(led); kern_suspendProcess(100U); }
+		for (led = 0U; led < KNB_LED; led++) { led_off(led);						   }
 		#endif
 
 // Test 2: Memory 8-bits
@@ -142,20 +152,20 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 		memory_08 = ALIGNED_PTR(uint8_t, linker_stEXRAM);
 
 		(void)dprintf(KSYST, "8-bits:    Test Memory: fill 0xAA - 0x55\n");
-		nb32Dots = 32u;
-		for (tests = 0u; tests < nbTests; tests++) {
+		nb32Dots = 32U;
+		for (tests = 0U; tests < nbTests; tests++) {
 			nb32Dots--;
-			dot      = (nb32Dots > 0u) ? (".")      : (".\n");
-			nb32Dots = (nb32Dots > 0u) ? (nb32Dots) : (32u);
+			dot      = (nb32Dots > 0U) ? (".")      : (".\n");
+			nb32Dots = (nb32Dots > 0U) ? (nb32Dots) : (32U);
 			(void)dprintf(KSYST, "%s", dot);
 
-			for (add = KSTART; add < (KEND / 1u); add++) {
-				*(memory_08 + add) = 0xAAu;
+			for (add = KSTART; add < (KEND / 1U); add++) {
+				*(memory_08 + add) = 0xAAU;
 			}
 
-			for (add = KSTART; add < (KEND / 1u); add++) {
-				if (*(memory_08 + add) != 0xAAu) {
-					expe_08 = 0xAAu;
+			for (add = KSTART; add < (KEND / 1U); add++) {
+				if (*(memory_08 + add) != 0xAAU) {
+					expe_08 = 0xAAU;
 					read_08 = *(memory_08 + add);
 					local_display(KERR_008, (memory_08 + add), (uint32_t)expe_08, (uint32_t)read_08);
 					return (EXIT_OS_FAILURE);
@@ -163,13 +173,13 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 
 			}
 
-			for (add = KSTART; add < (KEND / 1u); add++) {
-				*(memory_08 + add) = 0x55u;
+			for (add = KSTART; add < (KEND / 1U); add++) {
+				*(memory_08 + add) = 0x55U;
 			}
 
-			for (add = KSTART; add < (KEND / 1u); add++) {
-				if (*(memory_08 + add) != 0x55u) {
-					expe_08 = 0x55u;
+			for (add = KSTART; add < (KEND / 1U); add++) {
+				if (*(memory_08 + add) != 0x55U) {
+					expe_08 = 0x55U;
 					read_08 = *(memory_08 + add);
 					local_display(KERR_008, (memory_08 + add), (uint32_t)expe_08, (uint32_t)read_08);
 					return (EXIT_OS_FAILURE);
@@ -177,27 +187,27 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 
 			}
 		}
-		dot = (nb32Dots == 32u) ? ("\n") : ("\n\n");
+		dot = (nb32Dots == 32U) ? ("\n") : ("\n\n");
 		(void)dprintf(KSYST, "%s", dot);
 
 // Test b: circular; fill the memory with an incremental pattern and verify
 
 		(void)dprintf(KSYST, "8-bits:    Test Memory: fill with an incremental pattern\n");
-		nb32Dots = 32u;
-		for (tests = 0u; tests < nbTests; tests++) {
+		nb32Dots = 32U;
+		for (tests = 0U; tests < nbTests; tests++) {
 			nb32Dots--;
-			dot      = (nb32Dots > 0u) ? (".")      : (".\n");
-			nb32Dots = (nb32Dots > 0u) ? (nb32Dots) : (32u);
+			dot      = (nb32Dots > 0U) ? (".")      : (".\n");
+			nb32Dots = (nb32Dots > 0U) ? (nb32Dots) : (32U);
 			(void)dprintf(KSYST, "%s", dot);
 
-			pattern_08 = 0u;
-			for (add = KSTART; add < (KEND / 1u); add++) {
+			pattern_08 = 0U;
+			for (add = KSTART; add < (KEND / 1U); add++) {
 				*(memory_08 + add) = pattern_08;
 				pattern_08++;
 			}
 
-			pattern_08 = 0u;
-			for (add = KSTART; add < (KEND / 1u); add++) {
+			pattern_08 = 0U;
+			for (add = KSTART; add < (KEND / 1U); add++) {
 				if (*(memory_08 + add) != pattern_08) {
 					expe_08 = pattern_08;
 					read_08 = *(memory_08 + add);
@@ -208,7 +218,7 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 				pattern_08++;
 			}
 		}
-		dot = (nb32Dots == 32u) ? ("\n") : ("\n\n");
+		dot = (nb32Dots == 32U) ? ("\n") : ("\n\n");
 		(void)dprintf(KSYST, "%s", dot);
 
 // Test 3: Memory 16-bits
@@ -219,20 +229,20 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 		memory_16 = ALIGNED_PTR(uint16_t, linker_stEXRAM);
 
 		(void)dprintf(KSYST, "16-bits:   Test Memory: fill 0xAA55 - 0x55AA\n");
-		nb32Dots = 32u;
-		for (tests = 0u; tests < nbTests; tests++) {
+		nb32Dots = 32U;
+		for (tests = 0U; tests < nbTests; tests++) {
 			nb32Dots--;
-			dot      = (nb32Dots > 0u) ? (".")      : (".\n");
-			nb32Dots = (nb32Dots > 0u) ? (nb32Dots) : (32u);
+			dot      = (nb32Dots > 0U) ? (".")      : (".\n");
+			nb32Dots = (nb32Dots > 0U) ? (nb32Dots) : (32U);
 			(void)dprintf(KSYST, "%s", dot);
 
-			for (add = KSTART; add < (KEND / 2u); add++) {
-				*(memory_16 + add) = 0xAA55u;
+			for (add = KSTART; add < (KEND / 2U); add++) {
+				*(memory_16 + add) = 0xAA55U;
 			}
 
-			for (add = KSTART; add < (KEND / 2u); add++) {
-				if (*(memory_16 + add) != 0xAA55u) {
-					expe_16 = 0xAA55u;
+			for (add = KSTART; add < (KEND / 2U); add++) {
+				if (*(memory_16 + add) != 0xAA55U) {
+					expe_16 = 0xAA55U;
 					read_16 = *(memory_16 + add);
 					local_display(KERR_016, (memory_16 + add), (uint32_t)expe_16, (uint32_t)read_16);
 					return (EXIT_OS_FAILURE);
@@ -240,13 +250,13 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 
 			}
 
-			for (add = KSTART; add < (KEND / 2u); add++) {
-				*(memory_16 + add) = 0x55AAu;
+			for (add = KSTART; add < (KEND / 2U); add++) {
+				*(memory_16 + add) = 0x55AAU;
 			}
 
-			for (add = KSTART; add < (KEND / 2u); add++) {
-				if (*(memory_16 + add) != 0x55AAu) {
-					expe_16 = 0x55AAu;
+			for (add = KSTART; add < (KEND / 2U); add++) {
+				if (*(memory_16 + add) != 0x55AAU) {
+					expe_16 = 0x55AAU;
 					read_16 = *(memory_16 + add);
 					local_display(KERR_016, (memory_16 + add), (uint32_t)expe_16, (uint32_t)read_16);
 					return (EXIT_OS_FAILURE);
@@ -254,27 +264,27 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 
 			}
 		}
-		dot = (nb32Dots == 32u) ? ("\n") : ("\n\n");
+		dot = (nb32Dots == 32U) ? ("\n") : ("\n\n");
 		(void)dprintf(KSYST, "%s", dot);
 
 // Test b: circular; fill the memory with an incremental pattern and verify
 
 		(void)dprintf(KSYST, "16-bits:   Test Memory: fill with an incremental pattern\n");
-		nb32Dots = 32u;
-		for (tests = 0u; tests < nbTests; tests++) {
+		nb32Dots = 32U;
+		for (tests = 0U; tests < nbTests; tests++) {
 			nb32Dots--;
-			dot      = (nb32Dots > 0u) ? (".")      : (".\n");
-			nb32Dots = (nb32Dots > 0u) ? (nb32Dots) : (32u);
+			dot      = (nb32Dots > 0U) ? (".")      : (".\n");
+			nb32Dots = (nb32Dots > 0U) ? (nb32Dots) : (32U);
 			(void)dprintf(KSYST, "%s", dot);
 
 			pattern_16 = 0;
-			for (add = KSTART; add < (KEND / 2u); add++) {
+			for (add = KSTART; add < (KEND / 2U); add++) {
 				*(memory_16 + add) = pattern_16;
 				pattern_16++;
 			}
 
-			pattern_16 = 0u;
-			for (add = KSTART; add < (KEND / 2u); add++) {
+			pattern_16 = 0U;
+			for (add = KSTART; add < (KEND / 2U); add++) {
 				if (*(memory_16 + add) != pattern_16) {
 					expe_16 = pattern_16;
 					read_16 = *(memory_16 + add);
@@ -285,7 +295,7 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 				pattern_16++;
 			}
 		}
-		dot = (nb32Dots == 32u) ? ("\n") : ("\n\n");
+		dot = (nb32Dots == 32U) ? ("\n") : ("\n\n");
 		(void)dprintf(KSYST, "%s", dot);
 
 // Test 4: Memory 32-bits
@@ -296,20 +306,20 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 		memory_32 = ALIGNED_PTR(uint32_t, linker_stEXRAM);
 
 		(void)dprintf(KSYST, "32-bits:   Test Memory: fill 0xAA55AA55 - 0x55AA55AA\n");
-		nb32Dots = 32u;
-		for (tests = 0u; tests < nbTests; tests++) {
+		nb32Dots = 32U;
+		for (tests = 0U; tests < nbTests; tests++) {
 			nb32Dots--;
-			dot      = (nb32Dots > 0u) ? (".")      : (".\n");
-			nb32Dots = (nb32Dots > 0u) ? (nb32Dots) : (32u);
+			dot      = (nb32Dots > 0U) ? (".")      : (".\n");
+			nb32Dots = (nb32Dots > 0U) ? (nb32Dots) : (32U);
 			(void)dprintf(KSYST, "%s", dot);
 
-			for (add = KSTART; add < (KEND / 4u); add++) {
-				 *(memory_32 + add) = 0xAA55AA55u;
+			for (add = KSTART; add < (KEND / 4U); add++) {
+				 *(memory_32 + add) = 0xAA55AA55U;
 			}
 
-			for (add = KSTART; add < (KEND / 4u); add++) {
-				if (*(memory_32 + add) != 0xAA55AA55u)	{
-					expe_32 = 0xAA55AA55u;
+			for (add = KSTART; add < (KEND / 4U); add++) {
+				if (*(memory_32 + add) != 0xAA55AA55U)	{
+					expe_32 = 0xAA55AA55U;
 					read_32 = *(memory_32 + add);
 					local_display(KERR_032, (memory_32 + add), expe_32, read_32);
 					return (EXIT_OS_FAILURE);
@@ -317,13 +327,13 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 
 			}
 
-			for (add = KSTART; add < (KEND / 4u); add++) {
-				*(memory_32 + add) = 0x55AA55AAu;
+			for (add = KSTART; add < (KEND / 4U); add++) {
+				*(memory_32 + add) = 0x55AA55AAU;
 			}
 
-			for (add = KSTART; add < (KEND / 4u); add++) {
-				if (*(memory_32 + add) != 0x55AA55AAu)	{
-					expe_32 = 0x55AA55AAu;
+			for (add = KSTART; add < (KEND / 4U); add++) {
+				if (*(memory_32 + add) != 0x55AA55AAU)	{
+					expe_32 = 0x55AA55AAU;
 					read_32 = *(memory_32 + add);
 					local_display(KERR_032, (memory_32 + add), expe_32, read_32);
 					return (EXIT_OS_FAILURE);
@@ -331,27 +341,27 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 
 			}
 		}
-		dot = (nb32Dots == 32u) ? ("\n") : ("\n\n");
+		dot = (nb32Dots == 32U) ? ("\n") : ("\n\n");
 		(void)dprintf(KSYST, "%s", dot);
 
 // Test b: circular; fill the memory with an incremental pattern and verify
 
 		(void)dprintf(KSYST, "32-bits:   Test Memory: fill with an incremental pattern\n");
-		nb32Dots = 32u;
-		for (tests = 0u; tests < nbTests; tests++) {
+		nb32Dots = 32U;
+		for (tests = 0U; tests < nbTests; tests++) {
 			nb32Dots--;
-			dot      = (nb32Dots > 0u) ? (".")      : (".\n");
-			nb32Dots = (nb32Dots > 0u) ? (nb32Dots) : (32u);
+			dot      = (nb32Dots > 0U) ? (".")      : (".\n");
+			nb32Dots = (nb32Dots > 0U) ? (nb32Dots) : (32U);
 			(void)dprintf(KSYST, "%s", dot);
 
-			pattern_32 = 0u;
-			for (add = KSTART; add < (KEND / 4u); add++) {
+			pattern_32 = 0U;
+			for (add = KSTART; add < (KEND / 4U); add++) {
 				*(memory_32 + add) = pattern_32;
 				pattern_32++;
 			}
 
-			pattern_32 = 0u;
-			for (add = KSTART; add < (KEND / 4u); add++) {
+			pattern_32 = 0U;
+			for (add = KSTART; add < (KEND / 4U); add++) {
 				if (*(memory_32 + add) != pattern_32) {
 					expe_32 = pattern_32;
 					read_32 = *(memory_32 + add);
@@ -362,7 +372,7 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 				pattern_32++;
 			}
 		}
-		dot = (nb32Dots == 32u) ? ("\n") : ("\n\n");
+		dot = (nb32Dots == 32U) ? ("\n") : ("\n\n");
 		(void)dprintf(KSYST, "%s", dot);
 
 // Test 5: Memory retention
@@ -373,20 +383,20 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 		memory_08 = ALIGNED_PTR(uint8_t, linker_stEXRAM);
 
 		(void)dprintf(KSYST, "Retention: Test Memory: fill with an incremental pattern, waiting for 60-s and verify\n");
-		nb32Dots = 32u;
-		for (tests = 0u; tests < nbTests; tests++) {
+		nb32Dots = 32U;
+		for (tests = 0U; tests < nbTests; tests++) {
 			nb32Dots--;
-			dot      = (nb32Dots > 0u) ? (".")      : (".\n");
-			nb32Dots = (nb32Dots > 0u) ? (nb32Dots) : (32u);
+			dot      = (nb32Dots > 0U) ? (".")      : (".\n");
+			nb32Dots = (nb32Dots > 0U) ? (nb32Dots) : (32U);
 			(void)dprintf(KSYST, "%s", dot);
 
-			pattern_08 = 0u;
-			for (add = KSTART; add < (KEND / 1u); add++) {
+			pattern_08 = 0U;
+			for (add = KSTART; add < (KEND / 1U); add++) {
 				*(memory_08 + add) = pattern_08;
 				pattern_08++;
 			}
 
-			kern_suspendProcess(60000u);
+			kern_suspendProcess(60000U);
 
 			pattern_08 = 0;
 			for (add = KSTART; add < (KEND / 1); add++) {
@@ -400,18 +410,18 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 				pattern_08++;
 			}
 		}
-		dot = (nb32Dots == 32u) ? ("\n") : ("\n\n");
+		dot = (nb32Dots == 32U) ? ("\n") : ("\n\n");
 		(void)dprintf(KSYST, "%s", dot);
 
 // Test passed
 
-		local_display(KERR_NOT, NULL, 0u, 0u);
+		local_display(KERR_NOT, NULL, 0U, 0U);
 		return (EXIT_OS_SUCCESS_CLI);
 	}
 
 // Protocol error
 
-	local_display(KERR_PRE, NULL, 0u, 0u);
+	local_display(KERR_PRE, NULL, 0U, 0U);
 	return (EXIT_OS_FAILURE);
 }
 

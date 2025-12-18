@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Important macros.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,18 +48,23 @@
 
 #pragma	once
 
-#include	"./kern/privileges.h"
+#include	"Registers/rv32_bumblebee.h"
+#include	"Registers/rv32_csr.h"
+#include	"kern/kern.h"		// IWYU pragma: keep for KKERN_PRIORITY_LOW_00
+#include	"macros_soc.h"
+#include	"memo/memo.h"		// IWYU pragma: keep for KMEMO_ALIGN_16
+// #include	"macros_core_stackFrame.h"
 
 // uKernel macros
 // --------------
 
 // Core machine in bits
 
-#define	KMACHINE_BITS			(32u)
+#define	KMACHINE_BITS			(32U)
 
 // Preemptions
 
-#if (!defined(PREEMPTION_THRESHOLD))
+#ifndef PREEMPTION_THRESHOLD
 #define	PREEMPTION_THRESHOLD(core)																								\
 								do {																							\
 									extern	proc_t	*vKern_runProc[KNB_CORES]; 													\
@@ -73,64 +78,64 @@
 // Elevation macros
 // ----------------
 
-#if (!defined(PRIVILEGE_ELEVATE))
+#ifndef PRIVILEGE_ELEVATE
 #define	PRIVILEGE_ELEVATE
 #endif
 
-#if (!defined(PRIVILEGE_RESTORE))
+#ifndef PRIVILEGE_RESTORE
 #define	PRIVILEGE_RESTORE
 #endif
 
-#if (!defined(RIGHTS_ELEVATION))
+#ifndef RIGHTS_ELEVATION
 #define	RIGHTS_ELEVATION
 #endif
 
-#if (!defined(SET_USER_MODE))
+#ifndef SET_USER_MODE
 #define	SET_USER_MODE
 #endif
 
-#if (!defined(SET_PRIVILEGED_MODE))
+#ifndef SET_PRIVILEGED_MODE
 #define	SET_PRIVILEGED_MODE
 #endif
 
-#if (!defined(GET_ADDRESS_ELEVATION_CALLER))
+#ifndef GET_ADDRESS_ELEVATION_CALLER
 #define GET_ADDRESS_ELEVATION_CALLER
 #endif
 
-#if (!defined(GET_ADDRESS_CALLER))
+#ifndef GET_ADDRESS_CALLER
 #define GET_ADDRESS_CALLER(address)
 #endif
 
-#if (!defined(CALL_FNCT_ELEVATION))
+#ifndef CALL_FNCT_ELEVATION
 #define CALL_FNCT_ELEVATION(function)
 #endif
 
-#if (!defined(KERN_RETURN_ELEVATION))
+#ifndef KERN_RETURN_ELEVATION
 #define	KERN_RETURN_ELEVATION
 #endif
 
 // Interruption macros
 // -------------------
 
-#if (!defined(KPROCESS_INIT_MCAUSE))
-#define	KPROCESS_INIT_MCAUSE	(MCAUSE_INTERRUPT | RVBB_MCAUSE_MPP(3u) | RVBB_MCAUSE_MPIE | 11u)
+#ifndef KPROCESS_INIT_MCAUSE
+#define	KPROCESS_INIT_MCAUSE	(MCAUSE_INTERRUPT | RVBB_MCAUSE_MPP(3U) | RVBB_MCAUSE_MPIE | 11U)
 #endif
 
-#if (!defined(INTERRUPTION_OFF_HARD))
+#ifndef INTERRUPTION_OFF_HARD
 #define	INTERRUPTION_OFF_HARD	core_clrBitCSR(RV_CSR_MSTATUS, MSTATUS_MIE)
 #endif
 
-#if (!defined(INTERRUPTION_ON_HARD))
+#ifndef INTERRUPTION_ON_HARD
 #define	INTERRUPTION_ON_HARD	core_setBitCSR(RV_CSR_MSTATUS, MSTATUS_MIE)
 #endif
 
-#if (!defined(WAITING_INTERRUPTION))
+#ifndef WAITING_INTERRUPTION
 #define	WAITING_INTERRUPTION	__asm volatile ("																			 \n \
 								wfi"																						 	\
 								)
 #endif
 
-#if (!defined(GET_CURRENT_PROCESS_STACK))
+#ifndef GET_CURRENT_PROCESS_STACK
 #define GET_CURRENT_PROCESS_STACK(stack)										 												\
 								__asm volatile ("																			 \n \
 								add			%0,x0,sp"																			\
@@ -140,8 +145,8 @@
 								)
 #endif
 
-#if (!defined(EXCEPTION_SPECIFIC_HANDLER))
-#define KEXCEPTION				0u
+#ifndef EXCEPTION_SPECIFIC_HANDLER
+#define KEXCEPTION				0U
 
 extern	void	(*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
 extern	bool	vExce_isException[KNB_CORES];
@@ -177,8 +182,8 @@ extern	bool	vExce_isException[KNB_CORES];
 #define	EXCEPTION_SPECIFIC_HANDLER(irq)
 #endif
 
-#if (!defined(INTERRUPT_SPECIFIC_HANDLER))
-#define KINTERRUPTION			1u
+#ifndef INTERRUPT_SPECIFIC_HANDLER
+#define KINTERRUPTION			1U
 
 extern	void	(*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 extern	bool	vExce_isException[KNB_CORES];
@@ -214,30 +219,35 @@ extern	bool	vExce_isException[KNB_CORES];
 #define	INTERRUPT_SPECIFIC_HANDLER(irq)
 #endif
 
+// Vector registration macros
+// --------------------------
+// Moved from macros_soc.h for IWYU compliance (eliminates circular dependency)
+
+#define	EXCEPTION_VECTOR(vectorNb, address)																							\
+								vExce_indExcVectors[GET_RUNNING_CORE][vectorNb] = address
+
+#define	INTERRUPT_VECTOR(vectorNb, address)																							\
+								vExce_indIntVectors[GET_RUNNING_CORE][vectorNb] = address
+
 // Misc assembler macro
 // --------------------
 
-#if (!defined(NOP))
+#ifndef NOP
 #define	NOP 					__asm volatile ("																			 \n \
 								nop"																						 	\
 								)
 #endif
 
-#if (!defined(JUMP_FNCT))
+#ifndef JUMP_FNCT
 #define JUMP_FNCT(function)																										\
 								__asm volatile ("																			 \n \
 								j			"#function																			\
 								)
 #endif
 
-#if (!defined(CALL_FNCT))
+#ifndef CALL_FNCT
 #define CALL_FNCT(function)																										\
 								__asm volatile ("																			 \n \
 								jal			"#function																			\
 								)
 #endif
-
-// Stack frame macros
-// ------------------
-
-#include	"macros_core_stackFrame.h"

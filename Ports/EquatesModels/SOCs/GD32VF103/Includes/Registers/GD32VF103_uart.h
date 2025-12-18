@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		GD32VF103_uart equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // UART address definitions
 // ------------------------
 
@@ -61,7 +63,7 @@ typedef struct {
 	volatile	uint32_t	GP;
 } UART_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	UART3	reinterpret_cast<UART_TypeDef *>(0x40004C00u)
 #define	UART4	reinterpret_cast<UART_TypeDef *>(0x40005000u)
 

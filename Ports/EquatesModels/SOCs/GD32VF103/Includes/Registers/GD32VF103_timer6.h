@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		GD32VF103_timer6 equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // TIMER6 address definitions
 // --------------------------
 
@@ -69,7 +71,7 @@ typedef struct {
 	volatile	uint16_t	CAR;
 } TIMER6_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	TIMER6	reinterpret_cast<TIMER6_TypeDef *>(0x40001400u)
 
 #else

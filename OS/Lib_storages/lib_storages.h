@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		lib_storages system call interface module.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -71,18 +71,14 @@
  * @{
  */
 
-// IWYU pragma: begin_exports
-
-#if (defined(CONFIG_MAN_STORAGE_S))
-#include	"storage/storage.h"
-#endif
-#if (defined(CONFIG_MAN_SDCARD_S))
+#ifdef CONFIG_MAN_SDCARD_S
 #include	"sdcard/sdcard.h"
 #endif
-#if (defined(CONFIG_MAN_SERIAL_FLASH_S))
+#ifdef CONFIG_MAN_SERIAL_FLASH_S
 #include	"serialFlash/serialFlash.h"
 #endif
-
-// IWYU pragma: end_exports
+#ifdef CONFIG_MAN_STORAGE_S
+#include	"storage/storage.h"
+#endif
 
 /**!@}*/

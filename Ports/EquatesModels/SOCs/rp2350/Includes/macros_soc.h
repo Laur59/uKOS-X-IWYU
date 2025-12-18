@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Important macros.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,18 +48,28 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
+#include	"Registers/RP2350_sio.h"
+
 // Multicore macro
 // ---------------
 
-#define	KNB_CORES				2u
-#define	KCORE_0					0u
-#define	KCORE_1					1u
+#define	KNB_CORES				2U
+#define	KCORE_0					0U
+#define	KCORE_1					1U
 
-#if (!defined(GET_RUNNING_CORE))
-#define	GET_RUNNING_CORE		(REG(SIO)->CPUID & 1u)
+#ifndef GET_RUNNING_CORE
+#ifdef SECURE_S
+#define	GET_RUNNING_CORE		(SIO_S->CPUID & 1U)
+#elif (defined(SECURE_NS))
+#define	GET_RUNNING_CORE		(SIO_NS->CPUID & 1U)
+#else
+#define	GET_RUNNING_CORE		(SIO_S->CPUID & 1U)
+#endif
 #endif
 
-#if (!defined(MCSET))
+#ifndef MCSET
 #if		(KNB_CORES == 1)
 #define MCSET(v)				{ (v) }
 #elif	(KNB_CORES == 2)
@@ -74,11 +84,11 @@
 
 #define	BAUDRATE(UART, ck, baudrate)																							\
 	do {																														\
-		const uint32_t _den  = 16u * (uint32_t)(baudrate);																		\
+		const uint32_t _den  = 16U * (uint32_t)(baudrate);																		\
 		const uint32_t _ibrd = (uint32_t)((uint32_t)(ck) / _den);																\
 		const uint32_t _rem  = (uint32_t)((uint32_t)(ck) % _den);																\
 																																\
-		const uint32_t _fbrd = (uint32_t)((((uint64_t)_rem * (uint64_t)64u) + ((uint64_t)_den / 2u)) / (uint64_t)_den);			\
+		const uint32_t _fbrd = (uint32_t)((((uint64_t)_rem * (uint64_t)64U) + ((uint64_t)_den / 2U)) / (uint64_t)_den);			\
 		REG(UART)->UARTIBRD = _ibrd;																							\
 		REG(UART)->UARTFBRD = _fbrd;																							\
 	} while (0)
@@ -92,7 +102,7 @@ enum {
 // Priorities used to set the NVIC. levels indicated with _KERNEL_
 // are reserved for the uKernel (!!! do not change those values)
 
-		KINT_LEVEL_KERNEL_SWI = 1u,
+		KINT_LEVEL_KERNEL_SWI = 1U,
 		KINT_LEVEL_COMMUNICATIONS,
 		KINT_LEVEL_PERIPHERALS,
 		KINT_LEVEL_KERNEL_TIMERS,
@@ -110,13 +120,13 @@ enum {
 // KINT_IMASK_KERNEL_PREEMPTION	Allows only NMI, SWI, communications, peripherals, kernel timers, kernel preemptions
 // KINT_IMASK_ALL				Allows all
 
-#define	KINT_IMASK_OFF					(KINT_LEVEL_KERNEL_SWI + 1u)
-#define	KINT_IMASK_KERNEL_SWI			(KINT_LEVEL_KERNEL_SWI + 1u)
-#define	KINT_IMASK_COMMUNICATIONS		(KINT_LEVEL_COMMUNICATIONS + 1u)
-#define	KINT_IMASK_PERIPHERALS			(KINT_LEVEL_PERIPHERALS + 1u)
-#define	KINT_IMASK_KERNEL_TIMERS		(KINT_LEVEL_KERNEL_TIMERS + 1u)
-#define	KINT_IMASK_KERNEL_PREEMPTION	(KINT_LEVEL_KERNEL_PREEMPTION + 1u)
-#define	KINT_IMASK_ALL					(KINT_LEVEL_ALL + 1u)
+#define	KINT_IMASK_OFF					(KINT_LEVEL_KERNEL_SWI + 1U)
+#define	KINT_IMASK_KERNEL_SWI			(KINT_LEVEL_KERNEL_SWI + 1U)
+#define	KINT_IMASK_COMMUNICATIONS		(KINT_LEVEL_COMMUNICATIONS + 1U)
+#define	KINT_IMASK_PERIPHERALS			(KINT_LEVEL_PERIPHERALS + 1U)
+#define	KINT_IMASK_KERNEL_TIMERS		(KINT_LEVEL_KERNEL_TIMERS + 1U)
+#define	KINT_IMASK_KERNEL_PREEMPTION	(KINT_LEVEL_KERNEL_PREEMPTION + 1U)
+#define	KINT_IMASK_ALL					(KINT_LEVEL_ALL + 1U)
 
 // Names for the user applications
 
@@ -128,15 +138,11 @@ enum {
 // 2^4 priority levels
 // Priority shift inside the NVIC->PR (P3 P2 P1 P0 x x x x) !!! Vendor specific
 
-#define	KNVIC_PRIORITY_BITS		4u
-#define	KNVIC_PRIORITY_SHIFT	(8u - KNVIC_PRIORITY_BITS)
+#define	KNVIC_PRIORITY_BITS		4U
+#define	KNVIC_PRIORITY_SHIFT	(8U - KNVIC_PRIORITY_BITS)
 
 // PENDSVSET used for preemption (change the context)
 
-#define	BKERN_PREEMPTION		28u
+#define	BKERN_PREEMPTION		28U
 
-#define	EXCEPTION_VECTOR(vectorNb, address)																						\
-								vExce_indExcVectors[GET_RUNNING_CORE][vectorNb] = address
-
-#define	INTERRUPT_VECTOR(vectorNb, address)																						\
-								vExce_indIntVectors[GET_RUNNING_CORE][vectorNb] = address
+// EXCEPTION_VECTOR and INTERRUPT_VECTOR macros moved to macros_core.h for IWYU compliance

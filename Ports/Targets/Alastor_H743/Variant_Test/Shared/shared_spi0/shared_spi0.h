@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		For the shared_spi0 manager module.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,11 +48,13 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // Served managers
 // ---------------
 
 enum {
-		KNOMANAGER = 0u,						// No manager
+		KNOMANAGER = 0U,						// No manager
 		KIMU,									// imu manager
 		KIMUA,									// Accelerometer imu manager
 		KIMUM,									// Magnetometer imu manager
@@ -68,7 +70,7 @@ enum {
 
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -78,7 +80,7 @@ extern	int32_t	shared_spi0_select(uint32_t manager);
 extern	int32_t	shared_spi0_deselect(uint32_t manager);
 extern	int32_t	shared_spi0_writeRead(uint8_t *data);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 

@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		RP2350_dma equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // DMA address definitions
 // -----------------------
@@ -425,7 +427,7 @@ typedef struct {
 	volatile	uint32_t	CH15_DBG_TCR;
 } DMA_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	DMA_NS	reinterpret_cast<DMA_TypeDef *>(0x50000000u)
 #define	DMA_S	reinterpret_cast<DMA_TypeDef *>(0x50000000u)
 #else

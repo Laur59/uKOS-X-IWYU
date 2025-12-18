@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		calendar manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -63,18 +63,22 @@
  * @{
  */
 
+#include	<stdint.h>
+
+#include	"types.h"
+
 // Modifiable in the makefile: default calendar parameters
 
-#if (!defined(KCALENDAR_WITH_HW_RTC_S))
+#ifndef KCALENDAR_WITH_HW_RTC_S
 #define	KCALENDAR_WITH_HW_RTC_S		false
 #endif
 
 typedef	enum {
-			KFROM_TIMER = 0u,									// Time from the internal timer
+			KFROM_TIMER = 0U,									// Time from the internal timer
 			KFROM_RTC											// Time from the RTC
 } calendarFromTimer_t;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -134,7 +138,7 @@ extern	int32_t	calendar_writeUnixTime(uint64_t unixTime);
  */
 extern	int32_t	calendar_readUnixTime(calendarFromTimer_t fromTimer, uint64_t *unixTime);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 

@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32N657_gpiop equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // GPIOP address definitions
 // -------------------------
@@ -89,7 +91,7 @@ typedef struct {
 	volatile	uint32_t	SIDR;
 } GPIOP_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	GPIOP_NS	reinterpret_cast<GPIOP_TypeDef *>(0x46023C00u)
 #define	GPIOP_S		reinterpret_cast<GPIOP_TypeDef *>(0x56023C00u)
 

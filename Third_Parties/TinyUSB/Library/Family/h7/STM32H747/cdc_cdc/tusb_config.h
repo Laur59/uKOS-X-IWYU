@@ -34,8 +34,8 @@
 ;   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 ;   THE SOFTWARE.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -71,7 +71,7 @@
 
 #pragma	once
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -82,7 +82,7 @@ extern	"C" {
 #define	STM32H747xx				1
 #define	CFG_TUSB_OS				OPT_OS_CUSTOM
 
-#if (defined(SYSTEM_TINYUSB_HS_S))
+#ifdef SYSTEM_TINYUSB_HS_S
 #undef	BOARD_TUD_RHPORT
 #undef	CFG_TUD_MAX_SPEED
 #define	BOARD_TUD_RHPORT		1
@@ -96,7 +96,7 @@ extern	"C" {
 #define	CFG_TUD_CDC_EP_BUFSIZE	512
 #endif
 
-#if (defined(SYSTEM_TINYUSB_FS_S))
+#ifdef SYSTEM_TINYUSB_FS_S
 #undef	BOARD_TUD_RHPORT
 #undef	CFG_TUD_MAX_SPEED
 #define	BOARD_TUD_RHPORT		0
@@ -123,18 +123,18 @@ extern	"C" {
 // - CFG_TUSB_MEM SECTION : __attribute__ (( section(".usb_ram") ))
 // - CFG_TUSB_MEM_ALIGN   : __attribute__ ((aligned(4)))
 
-#if (!defined(CFG_TUSB_MEM_SECTION))
+#ifndef CFG_TUSB_MEM_SECTION
 #define	CFG_TUSB_MEM_SECTION
 #endif
 
-#if (!defined(CFG_TUSB_MEM_ALIGN))
+#ifndef CFG_TUSB_MEM_ALIGN
 #define	CFG_TUSB_MEM_ALIGN		__attribute__ ((aligned(4)))
 #endif
 
 // Device Configuration
 // ====================
 
-#if (!defined(CFG_TUD_ENDPOINT0_SIZE))
+#ifndef CFG_TUD_ENDPOINT0_SIZE
 #define	CFG_TUD_ENDPOINT0_SIZE	64
 #endif
 
@@ -147,6 +147,6 @@ extern	"C" {
 #define	CFG_TUD_VENDOR			0
 #define	CFG_TUD_VIDEO			0
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif

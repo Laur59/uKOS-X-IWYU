@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32N657_gpioo equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // GPIOO address definitions
 // -------------------------
@@ -89,7 +91,7 @@ typedef struct {
 	volatile	uint32_t	SIDR;
 } GPIOO_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	GPIOO_NS	reinterpret_cast<GPIOO_TypeDef *>(0x46023800u)
 #define	GPIOO_S		reinterpret_cast<GPIOO_TypeDef *>(0x56023800u)
 

@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32H743 equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -49,8 +49,6 @@
 #pragma	once
 
 // IWYU pragma: begin_exports
-
-#include	<stdint.h>
 
 #include	"Registers/soc_vectors.h"
 #include	"Registers/stm32H743_adc1.h"

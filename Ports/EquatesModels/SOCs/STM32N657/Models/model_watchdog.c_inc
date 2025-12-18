@@ -9,8 +9,8 @@
 ; Project:	uKOS-X
 ; Goal:		Model for controlling the watchdog device.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -44,6 +44,11 @@
 ;------------------------------------------------------------------------
 */
 
+#include	<stdint.h>
+
+#include	"soc_reg.h"
+#include	"macros_core.h"
+
 /*
  * \brief Arm the watchdog
  *
@@ -52,10 +57,10 @@
  *   I.e for the stm32 series the min-max time is 8-ms < time < 32768-ms
  *
  */
-#define	KTIME_WATCHDOG_RES	(256u / 32u)										// Resolution of 8-ms; 1 / (32000 / 256)
-#define	KTIME_WATCHDOG_GAIN	4096u												//
-#define	KTIME_WATCHDOG_MAX	((KTIME_WATCHDOG_GAIN * KTIME_WATCHDOG_RES)	- 1u)	// ms
-#define	KTIME_WATCHDOG_MIN	0u													// ms
+#define	KTIME_WATCHDOG_RES	(256U / 32U)										// Resolution of 8-ms; 1 / (32000 / 256)
+#define	KTIME_WATCHDOG_GAIN	4096U												//
+#define	KTIME_WATCHDOG_MAX	((KTIME_WATCHDOG_GAIN * KTIME_WATCHDOG_RES)	- 1U)	// ms
+#define	KTIME_WATCHDOG_MIN	0U													// ms
 
 void	model_watchdog_arm(uint32_t time) {
 			uint32_t	timeout;
@@ -80,7 +85,7 @@ void	model_watchdog_arm(uint32_t time) {
 
 		REG(IWDG)->PR  = IWDG_PR_1_256;
 		REG(IWDG)->RLR = timeout;
-		do { ; } while ((REG(IWDG)->SR & 0x7u) != 0u);
+		do { } while ((REG(IWDG)->SR & 0x7u) != 0U);
 	}
 
 // Arm the watchdog

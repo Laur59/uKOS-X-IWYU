@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32F217_dma equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // DMA address definitions
 // -----------------------
@@ -106,7 +108,7 @@ typedef struct {
 	volatile	uint32_t	S7FCR;
 } DMA_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	DMA2	reinterpret_cast<DMA_TypeDef *>(0x40026400u)
 #define	DMA1	reinterpret_cast<DMA_TypeDef *>(0x40026000u)
 

@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32U5Gx_gtzc1_tzic equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // GTZC1_TZIC address definitions
 // ------------------------------
 
@@ -66,7 +68,7 @@ typedef struct {
 	volatile	uint32_t	FCR4;
 } GTZC1_TZIC_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	GTZC1_TZIC_NS	reinterpret_cast<GTZC1_TZIC_TypeDef *>(0x40032800u)
 #define	GTZC1_TZIC_S	reinterpret_cast<GTZC1_TZIC_TypeDef *>(0x50032800u)
 

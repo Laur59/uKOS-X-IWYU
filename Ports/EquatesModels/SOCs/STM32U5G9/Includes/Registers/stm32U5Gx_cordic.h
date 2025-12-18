@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32U5Gx_cordic equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // CORDIC address definitions
 // --------------------------
 
@@ -57,7 +59,7 @@ typedef struct {
 	volatile	uint32_t	RDATA;
 } CORDIC_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	CORDIC_NS	reinterpret_cast<CORDIC_TypeDef *>(0x40021000u)
 #define	CORDIC_S	reinterpret_cast<CORDIC_TypeDef *>(0x50021000u)
 

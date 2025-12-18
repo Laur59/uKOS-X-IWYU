@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		spi_commun equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -63,6 +63,8 @@
  * @{
  */
 
+#include	<stdint.h>
+
 // Configuration structure
 // -----------------------
 
@@ -77,14 +79,14 @@ struct spiCnf {
 // Mode (master/slave) (oMode)
 
 enum {
-			KSPI_MASTER = 0u,									// SPI master
+			KSPI_MASTER = 0U,									// SPI master
 			KSPI_SLAVE											// SPI slave
 };
 
 // Clock polarity (oClock)
 
 enum {
-			BSPI_POL = 0u,										// Polarity
+			BSPI_POL = 0U,										// Polarity
 			BSPI_PHA											// Phase
 };
 

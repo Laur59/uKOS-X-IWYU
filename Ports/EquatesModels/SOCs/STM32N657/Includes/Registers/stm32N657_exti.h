@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32N657_exti equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // EXTI address definitions
 // ------------------------
@@ -92,7 +94,7 @@ typedef struct {
 	volatile	uint32_t	EMR3;
 } EXTI_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	EXTI_NS	reinterpret_cast<EXTI_TypeDef *>(0x46025000u)
 #define	EXTI_S	reinterpret_cast<EXTI_TypeDef *>(0x56025000u)
 

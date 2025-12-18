@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32N657_ltdc equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // LTDC address definitions
 // ------------------------
@@ -134,7 +136,7 @@ typedef struct {
 	volatile	uint32_t	L2FPF1R;
 } LTDC_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	LTDC_NS	reinterpret_cast<LTDC_TypeDef *>(0x48001000u)
 #define	LTDC_S	reinterpret_cast<LTDC_TypeDef *>(0x58001000u)
 

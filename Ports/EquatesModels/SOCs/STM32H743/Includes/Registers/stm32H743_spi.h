@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32H743_spi equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // SPI address definitions
 // -----------------------
 
@@ -71,7 +73,7 @@ typedef struct {
 	volatile	uint32_t	CGFR;
 } SPI_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	SPI1	reinterpret_cast<SPI_TypeDef *>(0x40013000u)
 #define	SPI2	reinterpret_cast<SPI_TypeDef *>(0x40003800u)
 #define	SPI3	reinterpret_cast<SPI_TypeDef *>(0x40003C00u)

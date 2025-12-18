@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		stub for the connection of the "kern" manager to the uKernel device.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,7 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	"clockTree.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
@@ -59,9 +59,9 @@
 #define	model_kernel_newProcessTimeout		stub_kern_newProcessTimeout
 #define	model_kernel_stopProcessTimeout		stub_kern_stopProcessTimeout
 
-#define	KFREQUENCY_T2						(2u * KFREQUENCY_APB1)
-#define	KFREQUENCY_T3						(2u * KFREQUENCY_APB1)
-#define	KFREQUENCY_T4						(2u * KFREQUENCY_APB1)
-#define	KFREQUENCY_T5						(2u * KFREQUENCY_APB1)
+#define	KFREQUENCY_T2						(2U * KFREQUENCY_APB1)
+#define	KFREQUENCY_T3						(2U * KFREQUENCY_APB1)
+#define	KFREQUENCY_T4						(2U * KFREQUENCY_APB1)
+#define	KFREQUENCY_T5						(2U * KFREQUENCY_APB1)
 
 #include	"model_kernel_tickless_tim_2_3_4_5_svc.c_inc"

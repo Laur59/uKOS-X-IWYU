@@ -11,8 +11,8 @@
 ;			This takes advantages from the available
 ;			hardware.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,10 +46,19 @@
 ;------------------------------------------------------------------------
 */
 
+#include	<stdint.h>
+
+#include	"Registers/nvic.h"
+#include	"kern/kern.h"
+#include	"macros_soc.h"
+#include	"soc_reg.h"
+
 			bool		vTerminated = false;
 volatile	uint32_t	*vNumber;
 
 // Prototypes
+
+extern	void	(*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 static	void	local_RNG_IRQHandler(void);
 
@@ -104,7 +113,7 @@ static	void	local_RNG_IRQHandler(void) {
 
 // Is data ready, no seed error, no clock error
 
-	if (((RNG->SR & RNG_SR_DRDY) != 0u) && ((RNG->SR & RNG_SR_SEIS) == 0u) && ((RNG->SR & RNG_SR_CEIS) == 0u)) {
+	if (((RNG->SR & RNG_SR_DRDY) != 0U) && ((RNG->SR & RNG_SR_SEIS) == 0U) && ((RNG->SR & RNG_SR_CEIS) == 0U)) {
 		*vNumber = RNG->DR;
 		vTerminated = true;
 		RNG->CR &= ~(RNG_CR_RNGEN | RNG_CR_IE);
@@ -116,7 +125,7 @@ static	void	local_RNG_IRQHandler(void) {
 
 	if ((RNG->SR & RNG_SR_SEIS) == RNG_SR_SEIS) {
 		RNG->SR &= (uint32_t)~RNG_SR_SEIS;
-		for (i = 0u; i < 12u; i++) {
+		for (i = 0U; i < 12U; i++) {
 			RNG->DR;
 		}
 	}

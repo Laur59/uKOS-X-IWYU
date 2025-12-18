@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Demo of a C application.
@@ -20,8 +20,8 @@
 ;			- Spigot algorithm:
 ;			- Pi = Sum 1/16^^n * (4/(8n + 1) - 2/(8n + 4) - 1/(8n + 5) - 1/(8n + 6))
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -55,8 +55,11 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
 #include	<math.h>
+
+#include	"types.h"
+#include	"os_errors.h"
+#include	"macros.h"
 
 /*
  * \brief pi_lambert
@@ -66,10 +69,10 @@
  *
  */
 float64_t	pi_lambert(float64_t index, float32_t oldPi) {
+	UNUSED(oldPi);
+
 			float64_t	pi;
 	static	float64_t	v = 0.0;
-
-	UNUSED(oldPi);
 
 	v = v + (1.0 / pow(index, 2));
 	pi = sqrt(v * 6);

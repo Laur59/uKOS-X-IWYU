@@ -3,8 +3,8 @@
 
 // Layer 1
 
-#define	KMLPN_L1_NB_IN	3u
-#define	KMLPN_L1_NB_OUT	52u
+#define	KMLPN_L1_NB_IN	3U
+#define	KMLPN_L1_NB_OUT	52U
 
 static			float32_t	vInput_L1[KMLPN_L1_NB_IN];
 static			float32_t	vActivation_L1[KMLPN_L1_NB_OUT];
@@ -76,8 +76,8 @@ static	mlpnLayer_t	aLayer_L1 = {
 
 // Layer 2
 
-#define	KMLPN_L2_NB_IN	53u
-#define	KMLPN_L2_NB_OUT	73u
+#define	KMLPN_L2_NB_IN	53U
+#define	KMLPN_L2_NB_OUT	73U
 
 static			float32_t	vActivation_L2[KMLPN_L2_NB_OUT];
 static			float32_t	vOutput_L2[KMLPN_L2_NB_OUT + 1];
@@ -169,8 +169,8 @@ static	mlpnLayer_t	aLayer_L2 = {
 
 // Layer 3
 
-#define	KMLPN_L3_NB_IN	74u
-#define	KMLPN_L3_NB_OUT	2u
+#define	KMLPN_L3_NB_IN	74U
+#define	KMLPN_L3_NB_OUT	2U
 
 static			float32_t	vActivation_L3[KMLPN_L3_NB_OUT];
 static			float32_t	vOutput_L3[KMLPN_L3_NB_OUT + 1];
@@ -191,7 +191,7 @@ static	mlpnLayer_t	aLayer_L3 = {
 
 // The full network
 
-#define	KMLPN_NB_LAYERS	3u
+#define	KMLPN_NB_LAYERS	3U
 
 static	const	mlpnNetwork_t	aNetwork = {
 									KMLPN_NB_LAYERS,

@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-02-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		memo manager.
@@ -16,8 +16,8 @@
 ;			it is mandatory to use the spin lock/unlock technique for
 ;			the core arbitration.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -51,12 +51,27 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"linker.h"
-#include	"kern/private/private_processes.h"
-#include	"memo/private/private_memo.h"
+#ifdef CONFIG_MAN_MEMO_S
 
-#if (defined(CONFIG_MAN_MEMO_S))
+#include	"memo.h"
+
+#include	<stdint.h>
+#include	<stdlib.h>
+#include	<string.h>
+
+#include	"core_reg.h"		// IWYU pragma: keep (for IS_EXCEPTION)
+#include	"kern/kern.h"
+#include	"kern/private/private_processes.h"
+#include	"linker.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"memo/private/private_memo.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"spin.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -79,7 +94,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -95,11 +110,11 @@ static	bool				vFreeDelayed[KNB_CORES] = MCSET(false);				//
 // vMemo_heapInfo has not to be indexed with core information!!!
 
 		mallocHeapInfo_t	vMemo_heapInfo = {
-								.oUsdMemory = 0u,								// Used memory
-								.oNbBlocks = 0u,								// Number of blocks
-								.oNbMaxBlocks = 0u,								// Max number of blocks
-								.oUsdMaxMemory = 0u,							// Max used memory
-								.oFailedAllocations = 0u						// Number of failed allocations
+								.oUsdMemory = 0U,								// Used memory
+								.oNbBlocks = 0U,								// Number of blocks
+								.oNbMaxBlocks = 0U,								// Max number of blocks
+								.oUsdMaxMemory = 0U,							// Max used memory
+								.oFailedAllocations = 0U						// Number of failed allocations
 							};
 
 		#if (KNB_CORES > 1)
@@ -150,11 +165,11 @@ void	*memo_malloc(memoAlignement_t memoAlignement, uint32_t size, const char_t *
 	kern_lockMutex(vMutex[core], KWAIT_INFINITY);
 
 	switch (memoAlignement) {
-		case KMEMO_ALIGN_4:  { wkSize = (wkSize + 3u)  & 0xFFFFFFFCu; pad = 3u;  break; }
-		case KMEMO_ALIGN_8:  { wkSize = (wkSize + 7u)  & 0xFFFFFFF8u; pad = 7u;  break; }
-		case KMEMO_ALIGN_16: { wkSize = (wkSize + 15u) & 0xFFFFFFF0u; pad = 15u; break; }
-		case KMEMO_ALIGN_32: { wkSize = (wkSize + 31u) & 0xFFFFFFE0u; pad = 31u; break; }
-		default:			 { wkSize = (wkSize + 7u)  & 0xFFFFFFF8u; pad = 7u;  break; }
+		case KMEMO_ALIGN_4:  { wkSize = (wkSize + 3U)  & 0xFFFFFFFCU; pad = 3U;  break; }
+		case KMEMO_ALIGN_8:  { wkSize = (wkSize + 7U)  & 0xFFFFFFF8U; pad = 7U;  break; }
+		case KMEMO_ALIGN_16: { wkSize = (wkSize + 15U) & 0xFFFFFFF0U; pad = 15U; break; }
+		case KMEMO_ALIGN_32: { wkSize = (wkSize + 31U) & 0xFFFFFFE0U; pad = 31U; break; }
+		default:			 { wkSize = (wkSize + 7U)  & 0xFFFFFFF8U; pad = 7U;  break; }
 	}
 
 // From the start of the heap memory ...
@@ -170,7 +185,7 @@ void	*memo_malloc(memoAlignement_t memoAlignement, uint32_t size, const char_t *
 // the new allocation demand. Take in account demanded alignment
 
 	nbBlocks = heapInfo->oNbBlocks;
-	for (nb = 0u; nb < nbBlocks; nb++) {
+	for (nb = 0U; nb < nbBlocks; nb++) {
 		if (curBlock->oMabSignature != (uint32_t)KMAB_SIGNATURE) {
 			LOG(KFATAL_MANAGER, "memo: malloc broken");
 			exit(EXIT_OS_PANIC_MALLOC_BROKEN);
@@ -266,7 +281,7 @@ void	*memo_realloc(memoAlignement_t memoAlignement, void *address, uint32_t size
 		return (newAddress);
 	}
 
-	if (size == 0u) {
+	if (size == 0U) {
 		memo_free(address);
 		return (NULL);
 	}
@@ -388,7 +403,7 @@ void	memo_free(void *address) {
 
 // Release the memory block
 
-	curBlock->oMabSignature = 0u;
+	curBlock->oMabSignature = 0U;
 	curBlock->oIdentifier   = NULL;
 
 	released = (curBlock->oSzAllocated + curBlock->oPadBlock + sizeof(memoMab_t));
@@ -439,7 +454,7 @@ void	memo_delayedFree(void *address) {
 	local_init();
 
 	INTERRUPTION_OFF;
-	if (vFreeDelayed[core] == false) {
+	if (!vFreeDelayed[core]) {
 		vAddressFreeDelayed[core] = address;
 		vFreeDelayed[core] = true;
 	}
@@ -467,7 +482,7 @@ static	void	local_init(void) {
 	core = GET_RUNNING_CORE;
 
 	INTERRUPTION_OFF;
-	if (vInit[core] == false) {
+	if (!vInit[core]) {
 		vInit[core] = true;
 
 		if (kern_createMutex(aStrIdSe, &vMutex[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "memo: create mutx"); exit(EXIT_OS_PANIC); }
@@ -481,14 +496,14 @@ static	void	local_init(void) {
 			curBlock->oIdentifier	=  NULL;
 			curBlock->oProcess		=  NULL;
 			curBlock->oMabSignature	=  (uint32_t)KMAB_SIGNATURE;
-			curBlock->oSzAllocated	=  0u;
+			curBlock->oSzAllocated	=  0U;
 			curBlock->oSzAvailable	=  (uint32_t)(lnHeap - sizeof(memoMab_t));
 			curBlock->oPtrPreBlock	=  NULL;
 			curBlock->oPtrNexBlock	=  NULL;
 			curBlock->oPadBlock		=  0u;
 
-			vMemo_heapInfo.oNbBlocks	 = 1u;
-			vMemo_heapInfo.oNbMaxBlocks	 = 1u;
+			vMemo_heapInfo.oNbBlocks	 = 1U;
+			vMemo_heapInfo.oNbMaxBlocks	 = 1U;
 			vMemo_heapInfo.oUsdMemory	 = sizeof(memoMab_t);
 			vMemo_heapInfo.oUsdMaxMemory = sizeof(memoMab_t);
 		}
@@ -497,7 +512,7 @@ static	void	local_init(void) {
 
 // Delayed memo_free
 
-	if (vFreeDelayed[core] == true) {
+	if (vFreeDelayed[core]) {
 		address = vAddressFreeDelayed[core];
 		vAddressFreeDelayed[core] = NULL;
 		vFreeDelayed[core] = false;

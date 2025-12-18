@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32N657_tim1 equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // TIM1 address definitions
 // ------------------------
@@ -87,7 +89,7 @@ typedef struct {
 	volatile	uint32_t	DMAR;
 } TIM1_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	TIM1_S	reinterpret_cast<TIM1_TypeDef *>(0x52000000u)
 
 #else

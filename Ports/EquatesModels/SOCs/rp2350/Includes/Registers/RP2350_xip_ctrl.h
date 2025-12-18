@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		RP2350_xip_ctrl equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // XIP_CTRL address definitions
 // ----------------------------
 
@@ -62,7 +64,7 @@ typedef struct {
 	volatile	uint32_t	STREAM_FIFO;
 } XIP_CTRL_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	XIP_CTRL_NS	reinterpret_cast<XIP_CTRL_TypeDef *>(0x400C8000u)
 #define	XIP_CTRL_S	reinterpret_cast<XIP_CTRL_TypeDef *>(0x400C8000u)
 #else

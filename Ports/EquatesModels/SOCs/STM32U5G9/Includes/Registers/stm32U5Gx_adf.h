@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32U5Gx_adf equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // ADF address definitions
 // -----------------------
 
@@ -74,7 +76,7 @@ typedef struct {
 	volatile	uint32_t	DFLT0DR;
 } ADF_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	ADF1_NS	reinterpret_cast<ADF_TypeDef *>(0x46024000u)
 #define	ADF1_S	reinterpret_cast<ADF_TypeDef *>(0x56024000u)
 

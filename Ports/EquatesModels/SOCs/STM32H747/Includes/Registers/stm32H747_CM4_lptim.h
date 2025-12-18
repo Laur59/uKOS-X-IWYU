@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32H747_CM4_lptim equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // LPTIM address definitions
 // -------------------------
 
@@ -64,7 +66,7 @@ typedef struct {
 	volatile	uint32_t	CFGR2;
 } LPTIM_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	LPTIM1	reinterpret_cast<LPTIM_TypeDef *>(0x40002400u)
 #define	LPTIM2	reinterpret_cast<LPTIM_TypeDef *>(0x58002400u)
 #define	LPTIM3	reinterpret_cast<LPTIM_TypeDef *>(0x58002800u)

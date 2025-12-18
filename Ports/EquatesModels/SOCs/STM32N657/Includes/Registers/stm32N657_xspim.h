@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32N657_xspim equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // XSPIM address definitions
 // -------------------------
 
@@ -55,7 +57,7 @@ typedef struct {
 	volatile	uint32_t	CR;
 } XSPIM_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	XSPIM_NS	reinterpret_cast<XSPIM_TypeDef *>(0x4802B400u)
 #define	XSPIM_S		reinterpret_cast<XSPIM_TypeDef *>(0x5802B400u)
 

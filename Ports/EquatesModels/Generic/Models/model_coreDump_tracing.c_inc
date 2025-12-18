@@ -9,8 +9,8 @@
 ; Project:	uKOS-X
 ; Goal:		Model for the core dump (tracing).
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -44,7 +44,15 @@
 ;------------------------------------------------------------------------
 */
 
+#include	<inttypes.h>
+#include	<stdio.h>
+#include	<string.h>
+
+#include	"macros_soc.h"
 #include	"record/private/private_record.h"
+#include	"record/record.h"
+#include	"serial/serial.h"
+#include	"types.h"
 
 // Prototypes
 
@@ -62,13 +70,13 @@ static	void	__attribute__ ((noinline)) local_printTrace(void) {
 	uint32_t	core, i;
 	char_t		string[200 + 1];
 
-	for (core = 0u; core < KNB_CORES; core++) {
+	for (core = 0U; core < KNB_CORES; core++) {
 		if (vRecord_NbTraceWrites[core] > 0) {
 			(void)snprintf(&string[0], 200, "Logs core %1"PRIu32"\n", core);
 			cmns_send(KDEF0, "      Time [us]  Parameter            Information\n\n");
 
 			for (i = 0; i < vRecord_NbTraceWrites[core]; i++) {
-				(void)snprintf(&string[0], 200u, "%12"PRIu64"-us  0x%016"PRIXPTR"    %s\n", vRecord_RTraceFifo[core]->oTimeStamp, vRecord_RTraceFifo[core]->oParameter, vRecord_RTraceFifo[core]->oMessage);
+				(void)snprintf(&string[0], 200U, "%12"PRIu64"-us  0x%016"PRIXPTR"    %s\n", vRecord_RTraceFifo[core]->oTimeStamp, vRecord_RTraceFifo[core]->oParameter, vRecord_RTraceFifo[core]->oMessage);
 				cmns_send(KDEF0, &string[0]);
 
 				vRecord_RTraceFifo[core]++;
@@ -96,15 +104,15 @@ static	void	__attribute__ ((noinline)) local_printLog(void) {
 			bool				terminate = false;
 	const	char_t				*logCategory, *idSpacerI, *idSpacerF;
 
-	for (core = 0u; core < KNB_CORES; core++) {
-		if (vRecord_NbLogWrites[core] > 0u) {
+	for (core = 0U; core < KNB_CORES; core++) {
+		if (vRecord_NbLogWrites[core] > 0U) {
 
-			(void)snprintf(&string[0], 200u, "Logs core %1"PRIu32"\n", core);
-			cmns_send(KDEF0, &string[0u]);
+			(void)snprintf(&string[0], 200U, "Logs core %1"PRIu32"\n", core);
+			cmns_send(KDEF0, &string[0U]);
 
 			cmns_send(KDEF0, "      Time [us]  Category          Process or ISR identifier            Function                              Line   Information\n\n");
 
-			if (vRecord_logBuffer[core][0].oTimeStamp > 0u) {
+			if (vRecord_logBuffer[core][0].oTimeStamp > 0U) {
 				while (terminate == false) {
 					rLogBuffer    = &vRecord_logBuffer[core][0];
 					olderTime     = 0xFFFFFFFFFFFFFFFFu;
@@ -114,7 +122,7 @@ static	void	__attribute__ ((noinline)) local_printLog(void) {
 
 // Case where the buffer is not full
 
-						if (rLogBuffer->oTimeStamp == 0u) {
+						if (rLogBuffer->oTimeStamp == 0U) {
 							break;
 						}
 
@@ -155,7 +163,7 @@ static	void	__attribute__ ((noinline)) local_printLog(void) {
 						local_compose(rOldLogBuffer->oIdentifier, &idSpacerI);
 						local_compose(rOldLogBuffer->oFunction,   &idSpacerF);
 
-						(void)snprintf(&string[0], 200u, "%12"PRIu64"-us  %s  %s  %s  %s  %s  %5"PRIu32"   %s\n", rOldLogBuffer->oTimeStamp,
+						(void)snprintf(&string[0], 200U, "%12"PRIu64"-us  %s  %s  %s  %s  %s  %5"PRIu32"   %s\n", rOldLogBuffer->oTimeStamp,
 																												  logCategory,
 																												  rOldLogBuffer->oIdentifier,
 																												  idSpacerI,
@@ -201,5 +209,5 @@ static	void	local_compose(const char_t *identifier, const char_t **idSpacer) {
 	static	const	char_t	aSpacer[] = "                                 ";
 
 	len = strlen(identifier);
-	*idSpacer = (len <= (sizeof(aSpacer) - 1u)) ? (&aSpacer[len]) : (&aSpacer[0]);
+	*idSpacer = (len <= (sizeof(aSpacer) - 1U)) ? (&aSpacer[len]) : (&aSpacer[0]);
 }

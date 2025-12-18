@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Kern - Software timers.
@@ -22,8 +22,8 @@
 ;			int32_t	kern_killSoftwareTimer(stim_t *handle);
 ;			int32_t	kern_getSoftwareTimerById(const char_t *identifier, stim_t **handle);
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -57,15 +57,24 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"kern/private/private_kern.h"
+#include	"softwareTimers.h"
 #include	"kern/private/private_softwareTimer.h"
-#include	"kern/private/private_processes.h"
+
+#include	<stdint.h>
+#include	<stdlib.h>
+
+#include	"debug.h"
+#include	"kern/kern.h"
 #include	"kern/private/private_identifiers.h"
-#include	"kern/private/private_lists.h"
+#include	"kern/private/private_processes.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"types.h"
 
 #if (KKERN_NB_SOFTWARE_TIMERS > 0)
-#define	KNB_MAX_STIM_IN_QUEUE	10u
+#define	KNB_MAX_STIM_IN_QUEUE	10U
 
 stim_t		vKern_stim[KNB_CORES][KKERN_NB_SOFTWARE_TIMERS];
 uint16_t	vKern_nbStim[KNB_CORES];
@@ -93,14 +102,14 @@ void	softwareTimers_init(void) {
 	DEBUG_KERN_TRACE("entry: ");
 	core = GET_RUNNING_CORE;
 
-	for (i = 0u; i < KKERN_NB_SOFTWARE_TIMERS; i++) {
+	for (i = 0U; i < KKERN_NB_SOFTWARE_TIMERS; i++) {
 		vKern_stim[core][i].oIdentifier				= NULL;
-		vKern_stim[core][i].oState					= 0u;
-		vKern_stim[core][i].oInitCounter			= 0u;
-		vKern_stim[core][i].oCounter				= 0u;
+		vKern_stim[core][i].oState					= 0U;
+		vKern_stim[core][i].oInitCounter			= 0U;
+		vKern_stim[core][i].oCounter				= 0U;
 		vKern_stim[core][i].oTimerSpec.oMode		= KSTIM_STOP;
-		vKern_stim[core][i].oTimerSpec.oInitialTime	= 0u;
-		vKern_stim[core][i].oTimerSpec.oTime		= 0u;
+		vKern_stim[core][i].oTimerSpec.oInitialTime	= 0U;
+		vKern_stim[core][i].oTimerSpec.oTime		= 0U;
 		vKern_stim[core][i].oTimerSpec.oArgument	= NULL;
 		vKern_stim[core][i].oTimerSpec.oCode		= NULL;
 	}
@@ -108,13 +117,13 @@ void	softwareTimers_init(void) {
 // Create and configure the software timer queue
 
 	configure.oNbMaxPacks	 = KNB_MAX_STIM_IN_QUEUE;
-	configure.oDataEntrySize = 0u;
+	configure.oDataEntrySize = 0U;
 
 	if (kern_createMailbox(KMBOX_SOFTWARE_TIMER, &mailBox) != KERR_KERN_NOERR) { LOG(KFATAL_KERNEL, "stim: create mailbox"); exit(EXIT_OS_PANIC); }
 	if (kern_setMailbox(mailBox, &configure)               != KERR_KERN_NOERR) { LOG(KFATAL_KERNEL, "stim: set mailbox");	 exit(EXIT_OS_PANIC); }
 
-	vKern_nbStim[core]	  = 0u;
-	vKern_nbMaxStim[core] = 0u;
+	vKern_nbStim[core]	  = 0U;
+	vKern_nbMaxStim[core] = 0U;
 	DEBUG_KERN_TRACE("exit: OK");
 }
 
@@ -155,8 +164,8 @@ int32_t	kern_createSoftwareTimer(const char_t *identifier, stim_t **handle) {
 // with the handle of the previously created object
 
 	if (identifier != NULL) {
-		for (i = 0u; i < KKERN_NB_SOFTWARE_TIMERS; i++) {
-			if (identifiers_cmpStrings(vKern_stim[core][i].oIdentifier, identifier) == true) {
+		for (i = 0U; i < KKERN_NB_SOFTWARE_TIMERS; i++) {
+			if (identifiers_cmpStrings(vKern_stim[core][i].oIdentifier, identifier)) {
 				*handle = &vKern_stim[core][i];
 				DEBUG_KERN_TRACE("exit: KO 1");
 				INTERRUPTION_RESTORE;
@@ -167,15 +176,15 @@ int32_t	kern_createSoftwareTimer(const char_t *identifier, stim_t **handle) {
 		}
 	}
 
-	for (i = 0u; i < KKERN_NB_SOFTWARE_TIMERS; i++) {
+	for (i = 0U; i < KKERN_NB_SOFTWARE_TIMERS; i++) {
 		if (vKern_stim[core][i].oIdentifier == NULL) {
 			vKern_stim[core][i].oIdentifier				= (identifier == NULL) ? (KSTIM_ANONYMOUS) : (identifier);
-			vKern_stim[core][i].oState					= (1u<<BSTIM_INSTALLED);
-			vKern_stim[core][i].oInitCounter			= 0u;
-			vKern_stim[core][i].oCounter				= 0u;
+			vKern_stim[core][i].oState					= (1U<<BSTIM_INSTALLED);
+			vKern_stim[core][i].oInitCounter			= 0U;
+			vKern_stim[core][i].oCounter				= 0U;
 			vKern_stim[core][i].oTimerSpec.oMode		= KSTIM_STOP;
-			vKern_stim[core][i].oTimerSpec.oInitialTime	= 0u;
-			vKern_stim[core][i].oTimerSpec.oTime		= 0u;
+			vKern_stim[core][i].oTimerSpec.oInitialTime	= 0U;
+			vKern_stim[core][i].oTimerSpec.oTime		= 0U;
 			vKern_stim[core][i].oTimerSpec.oArgument	= NULL;
 			vKern_stim[core][i].oTimerSpec.oCode		= NULL;
 			*handle = &vKern_stim[core][i];
@@ -234,8 +243,8 @@ int32_t	kern_setSoftwareTimer(stim_t *handle, const tspc_t *configure) {
 			uint32_t	core;
 			mbox_t		*mailBox;
 			uint8_t		i;
-	static	uint8_t		vI[KNB_CORES] = MCSET(0u);
-	static	stim_t		*vSoftTimer[KNB_CORES][KNB_MAX_STIM_IN_QUEUE + 1u];
+	static	uint8_t		vI[KNB_CORES] = MCSET(0U);
+	static	stim_t		*vSoftTimer[KNB_CORES][KNB_MAX_STIM_IN_QUEUE + 1U];
 
 	DEBUG_KERN_TRACE("entry: ");
 	core = GET_RUNNING_CORE;
@@ -246,7 +255,7 @@ int32_t	kern_setSoftwareTimer(stim_t *handle, const tspc_t *configure) {
 	vKern_runProc[core]->oStatistic.oNbKernCalls++;
 	vSoftTimer[core][i] = handle;
 	if (vSoftTimer[core][i] == NULL)								 { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOSTI); }
-	if ((vSoftTimer[core][i]->oState & (1u<<BSTIM_INSTALLED)) == 0u) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOSTI); }
+	if ((vSoftTimer[core][i]->oState & (1U<<BSTIM_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOSTI); }
 
 	vSoftTimer[core][i]->oInitCounter			 = configure->oInitialTime / KKERN_TIC_TIME;
 	vSoftTimer[core][i]->oCounter				 = configure->oTime	/ KKERN_TIC_TIME;
@@ -255,26 +264,26 @@ int32_t	kern_setSoftwareTimer(stim_t *handle, const tspc_t *configure) {
 	vSoftTimer[core][i]->oTimerSpec.oTime		 = configure->oTime	/ KKERN_TIC_TIME;
 	vSoftTimer[core][i]->oTimerSpec.oArgument	 = configure->oArgument;
 	vSoftTimer[core][i]->oTimerSpec.oCode		 = configure->oCode;
-	vSoftTimer[core][i]->oState					|= (1u<<BSTIM_RE_CONFIGURED);
+	vSoftTimer[core][i]->oState					|= (1U<<BSTIM_RE_CONFIGURED);
 
 // Prepare the pack for the software timer process
 
 	if (kern_getMailboxById(KMBOX_SOFTWARE_TIMER, &mailBox) == KERR_KERN_NOERR) {
-		if (kern_writeQueue(mailBox, (uintptr_t)vSoftTimer[core][i], 0u) == KERR_KERN_NOERR) {
+		if (kern_writeQueue(mailBox, (uintptr_t)vSoftTimer[core][i], 0U) == KERR_KERN_NOERR) {
 
 			vI[core]++;
-			vI[core] = (vI[core] == (KNB_MAX_STIM_IN_QUEUE + 1u)) ? (0u) : (vI[core]);
+			vI[core] = (vI[core] == (KNB_MAX_STIM_IN_QUEUE + 1U)) ? (0U) : (vI[core]);
 
 // If the software timer process is suspended for ever, then, relaunch it
 
-			if ((vStimer_handle[core]->oInternal.oState & (1u<<BPROC_LIKE_ISR)) == 0u) {
-				vStimer_handle[core]->oInternal.oTimeout = 0u;
+			if ((vStimer_handle[core]->oInternal.oState & (1U<<BPROC_LIKE_ISR)) == 0U) {
+				vStimer_handle[core]->oInternal.oTimeout = 0U;
 			}
 			DEBUG_KERN_TRACE("exit: OK");
 			INTERRUPTION_RESTORE;
 			PRIVILEGE_RESTORE;
 
-			temporal_testEOTime(0u);
+			temporal_testEOTime(0U);
 			return (KERR_KERN_NOERR);
 		}
 
@@ -314,19 +323,19 @@ int32_t	kern_killSoftwareTimer(stim_t *handle) {
 	vKern_runProc[core]->oStatistic.oNbKernCalls++;
 	softwareTimer = handle;
 	if (softwareTimer == NULL)								   { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOSTI); }
-	if ((softwareTimer->oState & (1u<<BSTIM_INSTALLED)) == 0u) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOSTI); }
+	if ((softwareTimer->oState & (1U<<BSTIM_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOSTI); }
 
 	softwareTimer->oIdentifier			   = NULL;
-	softwareTimer->oState				   = 0u;
-	softwareTimer->oInitCounter			   = 0u;
-	softwareTimer->oCounter				   = 0u;
+	softwareTimer->oState				   = 0U;
+	softwareTimer->oInitCounter			   = 0U;
+	softwareTimer->oCounter				   = 0U;
 	softwareTimer->oTimerSpec.oMode		   = KSTIM_STOP;
-	softwareTimer->oTimerSpec.oInitialTime = 0u;
-	softwareTimer->oTimerSpec.oTime		   = 0u;
+	softwareTimer->oTimerSpec.oInitialTime = 0U;
+	softwareTimer->oTimerSpec.oTime		   = 0U;
 	softwareTimer->oTimerSpec.oArgument	   = NULL;
 	softwareTimer->oTimerSpec.oCode		   = NULL;
 
-	if (vKern_nbStim[core] != 0u) { vKern_nbStim[core] = (uint16_t)(vKern_nbStim[core] - 1u); }
+	if (vKern_nbStim[core] != 0U) { vKern_nbStim[core] = (uint16_t)(vKern_nbStim[core] - 1U); }
 	DEBUG_KERN_TRACE("exit: OK");
 	INTERRUPTION_RESTORE;
 	PRIVILEGE_RESTORE;
@@ -366,8 +375,8 @@ int32_t	kern_getSoftwareTimerById(const char_t *identifier, stim_t **handle) {
 	vKern_runProc[core]->oStatistic.oNbKernCalls++;
 	*handle = NULL;
 
-	for (i = 0u; i < KKERN_NB_SOFTWARE_TIMERS; i++) {
-		if (identifiers_cmpStrings(vKern_stim[core][i].oIdentifier, identifier) == true) {
+	for (i = 0U; i < KKERN_NB_SOFTWARE_TIMERS; i++) {
+		if (identifiers_cmpStrings(vKern_stim[core][i].oIdentifier, identifier)) {
 			*handle = &vKern_stim[core][i];
 			DEBUG_KERN_TRACE("exit: OK");
 			INTERRUPTION_RESTORE;
@@ -381,4 +390,6 @@ int32_t	kern_getSoftwareTimerById(const char_t *identifier, stim_t **handle) {
 	PRIVILEGE_RESTORE;
 	return (KERR_KERN_NOSTI);
 }
+#else
+#error	"KKERN_NB_SOFTWARE_TIMERS SHALL be > 0 in project using kern/softwareTimers.c"
 #endif

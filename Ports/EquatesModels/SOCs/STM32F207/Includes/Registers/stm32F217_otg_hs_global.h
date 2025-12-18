@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32F217_otg_hs_global equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // OTG_HS_GLOBAL address definitions
 // ---------------------------------
@@ -88,7 +90,7 @@ typedef struct {
 	volatile	uint32_t	OTG_HS_DIEPTXF7;
 } OTG_HS_GLOBAL_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	OTG_HS_GLOBAL	reinterpret_cast<OTG_HS_GLOBAL_TypeDef *>(0x40040000u)
 
 #else

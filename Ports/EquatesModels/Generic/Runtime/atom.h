@@ -5,16 +5,16 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Atomic primitives for multi-core.
 ;			These calls uses the low level gcc implementation and
 ;			are core independent
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -90,7 +90,7 @@ __attribute__ ((always_inline))	static	inline	void	atom_init(atomic_flag_t *lock
  */
 __attribute__ ((always_inline))	static	inline	void	atom_lock(atomic_flag_t *lock) {
 
-	while (atomic_flag_test_and_set(lock) == true) { ; }
+	while (atomic_flag_test_and_set(lock) == true) { }
 }
 
 /*

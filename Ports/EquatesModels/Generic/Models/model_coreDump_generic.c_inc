@@ -9,8 +9,8 @@
 ; Project:	uKOS-X
 ; Goal:		Model for the core dump (generic).
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -44,7 +44,19 @@
 ;------------------------------------------------------------------------
 */
 
+#include	<stdint.h>
+
+#include	"kern/kern.h"
+#include	"machine/machine.h"
+#include	"macros_soc.h"
+#include	"serial/serial.h"
+#include	"types.h"
+
 extern	proc_t	*vKern_runProc[KNB_CORES];
+
+// Prototypes
+
+extern	void	cmns_send(serialManager_t serialManager, const char_t *ascii);
 
 /*
  * \brief local_printFunction
@@ -59,7 +71,7 @@ static	void	__attribute__ ((noinline)) local_printFunction(uintptr_t pc, const c
 
 	core = GET_RUNNING_CORE;
 
-	if (pc == 0u) {
+	if (pc == 0U) {
 		cmns_send(KDEF0, excepInter);	    cmns_send(KDEF0, vectorName);   cmns_send(KDEF0, "\n");
 	}
 	else {

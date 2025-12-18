@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Low level init for the uKOS-X nRF5340_SDK module.
@@ -15,8 +15,8 @@
 ;			!!! It is called before to copy and to initialise
 ;			!!! the variable into the RAM.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -50,8 +50,15 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+
+#include	"core.h"
+#include	"core_reg.h"
 #include	"linker.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"modules.h"
+#include	"soc_reg.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -74,7 +81,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -142,7 +149,7 @@ static	void	local_StackLimit_Configuration(void) {
 // Stack limit faults at requested priorities of less than 0 ignored
 
 	#if (defined(STUB_KERN_CHECK_XSP_LIMIT_S))
-	REG(SCB)->CCR |= (1u<<SCB_CCR_STKOFHFNMIGN);
+	REG(SCB)->CCR |= (1U<<SCB_CCR_STKOFHFNMIGN);
 
 	core_setPSPLIM((uintptr_t)linker_lowStackFirst_C0 & 0xFFFFFFF8u);
 	core_setMSPLIM((uintptr_t)linker_lowStackSystem_C0 & 0xFFFFFFF8u);
@@ -162,10 +169,10 @@ static	void	local_SECU_Configuration(void) {
 // Simulate on the bus secure accesses
 // GPIO set in a non secure mode
 
-	REG(SPU)->EXTDOMAIN0_PERM = (1u<<4u);
+	REG(SPU)->EXTDOMAIN0_PERM = (1U<<4U);
 
-	REG(SPU)->GPIOPORT0_PERM  = 0u;
-	REG(SPU)->GPIOPORT1_PERM  = 0u;
+	REG(SPU)->GPIOPORT0_PERM  = 0U;
+	REG(SPU)->GPIOPORT1_PERM  = 0U;
 }
 
 /*
@@ -193,11 +200,11 @@ static	void	local_FPE_Configuration(void) {
  */
 static	void	local_CLOCK_Configuration(void) {
 
-	REG(CLOCK)->HFCLKCTRL = 0u;
+	REG(CLOCK)->HFCLKCTRL = 0U;
 
-	REG(CLOCK)->TASKS_LFCLKSTOP  = 1u;
+	REG(CLOCK)->TASKS_LFCLKSTOP  = 1U;
 	REG(CLOCK)->LFCLKSRC		 = CLOCK_LFCLKSRC_SRC_LFRC;
-	REG(CLOCK)->TASKS_LFCLKSTART = 1u;
+	REG(CLOCK)->TASKS_LFCLKSTART = 1U;
 }
 
 /*
@@ -210,83 +217,83 @@ static	void	local_GPIO_Configuration(void) {
 					uint8_t		i, pin;
 					uint32_t	*pCnf;
 	static	const	gpio_t		aGPIO_Cnf[] = {
-										{ 0u,  (KPIN_TND),																					    0u },	// P0.0 32-KHz
-										{ 1u,  (KPIN_TND),																					    0u },	// P0.1 32-KHz
+										{ 0U,  (KPIN_TND),																					    0U },	// P0.0 32-KHz
+										{ 1U,  (KPIN_TND),																					    0U },	// P0.1 32-KHz
 
-										{ 2u,  (KPIN_PERIPH | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    0u },	// P0.2 NFC
-										{ 3u,  (KPIN_PERIPH | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    0u },	// P0.3 NFC
+										{ 2U,  (KPIN_PERIPH | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    0U },	// P0.2 NFC
+										{ 3U,  (KPIN_PERIPH | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    0U },	// P0.3 NFC
 
-										{ 4u,  (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    0u },	// P0.4 Analog A0
-										{ 5u,  (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    0u },	// P0.5 Analog A1
-										{ 6u,  (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    0u },	// P0.6 Analog A2
-										{ 7u,  (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    0u },	// P0.7 Analog A3
+										{ 4U,  (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    0U },	// P0.4 Analog A0
+										{ 5U,  (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    0U },	// P0.5 Analog A1
+										{ 6U,  (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    0U },	// P0.6 Analog A2
+										{ 7U,  (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    0U },	// P0.7 Analog A3
 
-										{ 8u,  (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP	  | KINPUT_CONNECT	  | KDIR_INPUT),    0u },	// P0.8 Button 3
-										{ 9u,  (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP	  | KINPUT_CONNECT	  | KDIR_INPUT),    0u },	// P0.9 Button 4
+										{ 8U,  (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP	  | KINPUT_CONNECT	  | KDIR_INPUT),    0U },	// P0.8 Button 3
+										{ 9U,  (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP	  | KINPUT_CONNECT	  | KDIR_INPUT),    0U },	// P0.9 Button 4
 
-										{ 10u, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DOWN	  | KINPUT_CONNECT	  | KDIR_INPUT),    0u },	// P0.10 USART_1 /CTS
-										{ 11u, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   0u },	// P0.11 USART_1 /RTS
+										{ 10U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DOWN	  | KINPUT_CONNECT	  | KDIR_INPUT),    0U },	// P0.10 USART_1 /CTS
+										{ 11U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   0U },	// P0.11 USART_1 /RTS
 
-										{ 13u, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP	  | KINPUT_DISCONNECT | KDIR_INPUT),    0u },	// P0.13 SIO_0 SI
-										{ 14u, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   0u },	// P0.14 SIO_1 SO
-										{ 15u, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP	  | KINPUT_DISCONNECT | KDIR_INPUT),    0u },	// P0.15 SIO_2 WP
-										{ 16u, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP	  | KINPUT_DISCONNECT | KDIR_INPUT),    0u },	// P0.16 SIO_2 HOLD
-										{ 17u, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   0u },	// P0.17 SIO SCLK
-										{ 18u, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   1u },	// P0.18 SIO /CS
+										{ 13U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP	  | KINPUT_DISCONNECT | KDIR_INPUT),    0U },	// P0.13 SIO_0 SI
+										{ 14U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   0U },	// P0.14 SIO_1 SO
+										{ 15U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP	  | KINPUT_DISCONNECT | KDIR_INPUT),    0U },	// P0.15 SIO_2 WP
+										{ 16U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP	  | KINPUT_DISCONNECT | KDIR_INPUT),    0U },	// P0.16 SIO_2 HOLD
+										{ 17U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   0U },	// P0.17 SIO SCLK
+										{ 18U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   1U },	// P0.18 SIO /CS
 
-										{ 19u, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   0u },	// P0.19 USART_2 /RTS
-										{ 20u, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   0u },	// P0.20 USART_2 TXD
-										{ 21u, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DOWN	  | KINPUT_CONNECT	  | KDIR_INPUT),    0u },	// P0.21 USART_2 /CTS
-										{ 22u, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP	  | KINPUT_DISCONNECT | KDIR_INPUT),    0u },	// P0.22 USART_2 RXD
+										{ 19U, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   0U },	// P0.19 USART_2 /RTS
+										{ 20U, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   0U },	// P0.20 USART_2 TXD
+										{ 21U, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DOWN	  | KINPUT_CONNECT	  | KDIR_INPUT),    0U },	// P0.21 USART_2 /CTS
+										{ 22U, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP	  | KINPUT_DISCONNECT | KDIR_INPUT),    0U },	// P0.22 USART_2 RXD
 
-										{ 23u, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP	  | KINPUT_CONNECT	  | KDIR_INPUT),    0u },	// P0.23 Button 1
-										{ 24u, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP	  | KINPUT_CONNECT	  | KDIR_INPUT),    0u },	// P0.24 Button 2
+										{ 23U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP	  | KINPUT_CONNECT	  | KDIR_INPUT),    0U },	// P0.23 Button 1
+										{ 24U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP	  | KINPUT_CONNECT	  | KDIR_INPUT),    0U },	// P0.24 Button 2
 
-										{ 25u, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    0u },	// P0.25 Analog A4
-										{ 26u, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    0u },	// P0.26 Analog A5
+										{ 25U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    0U },	// P0.25 Analog A4
+										{ 26U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    0U },	// P0.26 Analog A5
 
-										{ 28u, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   1u },	// P0.28 Led 1
-										{ 29u, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   1u },	// P0.29 Led 2
-										{ 30u, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   1u },	// P0.30 Led 3
-										{ 31u, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   1u },	// P0.31 Led 4
+										{ 28U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   1U },	// P0.28 Led 1
+										{ 29U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   1U },	// P0.29 Led 2
+										{ 30U, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   1U },	// P0.30 Led 3
+										{ 31U, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   1U },	// P0.31 Led 4
 
-										{ 32u, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP	  | KINPUT_DISCONNECT | KDIR_INPUT),    0u },	// P1.0 USART_1 RXD
-										{ 33u, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   0u },	// P1.1 USART_1 TXD
+										{ 32U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP	  | KINPUT_DISCONNECT | KDIR_INPUT),    0U },	// P1.0 USART_1 RXD
+										{ 33U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   0U },	// P1.1 USART_1 TXD
 
-										{ 34u, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP	  | KINPUT_CONNECT	 | KDIR_INPUT),     0u },	// P1.2 Shield detect
-										{ 35u, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP	  | KINPUT_CONNECT	 | KDIR_INPUT),     0u }	// P1.3 Shield detect
+										{ 34U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP	  | KINPUT_CONNECT	 | KDIR_INPUT),     0U },	// P1.2 Shield detect
+										{ 35U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP	  | KINPUT_CONNECT	 | KDIR_INPUT),     0U }	// P1.3 Shield detect
 									};
 
 #define	KNBCNF		(sizeof(aGPIO_Cnf) / sizeof(gpio_t))
 
-	for (i = 0u; i < (uint8_t)KNBCNF; i++) {
+	for (i = 0U; i < (uint8_t)KNBCNF; i++) {
 		pin = aGPIO_Cnf[i].oPin;
-		if (pin < 32u) {
+		if (pin < 32U) {
 
 // P0.0 .. P0.31
 
-			pCnf  = (uint32_t *)((uintptr_t)&REG(P0)->PIN_CNF[0] + (pin * 4u));
+			pCnf  = (uint32_t *)((uintptr_t)&REG(P0)->PIN_CNF[0] + (pin * 4U));
 			*pCnf = aGPIO_Cnf[i].oPinCNFValue;
 
-			(aGPIO_Cnf[i].oOutputQuite == 0) ? (REG(P0)->OUTCLR = (1u<<pin)) : (REG(P0)->OUTSET = (1u<<pin));
+			(aGPIO_Cnf[i].oOutputQuite == 0) ? (REG(P0)->OUTCLR = (1U<<pin)) : (REG(P0)->OUTSET = (1U<<pin));
 		}
 		else {
 
 // P1.0 .. P1.31
 
-			pin = (uint8_t)(pin - 32u);
+			pin = (uint8_t)(pin - 32U);
 
-			pCnf  = (uint32_t *)((uintptr_t)&REG(P1)->PIN_CNF[0] + (pin * 4u));
+			pCnf  = (uint32_t *)((uintptr_t)&REG(P1)->PIN_CNF[0] + (pin * 4U));
 			*pCnf = aGPIO_Cnf[i].oPinCNFValue;
 
-			(aGPIO_Cnf[i].oOutputQuite == 0) ? (REG(P1)->OUTCLR = (1u<<pin)) : (REG(P1)->OUTSET = (1u<<pin));
+			(aGPIO_Cnf[i].oOutputQuite == 0) ? (REG(P1)->OUTCLR = (1U<<pin)) : (REG(P1)->OUTSET = (1U<<pin));
 		}
 	}
 
 // RXD & TXD pin attribution for the uarte 1
 
-	REG(UARTE1)->PSEL_TXD = UARTE_PSEL_TXD_PORT | 1u;
-	REG(UARTE1)->PSEL_RXD = UARTE_PSEL_RXD_PORT | 0u;
+	REG(UARTE1)->PSEL_TXD = UARTE_PSEL_TXD_PORT | 1U;
+	REG(UARTE1)->PSEL_RXD = UARTE_PSEL_RXD_PORT | 0U;
 }
 
 /*
@@ -302,7 +309,7 @@ static	void	local_RAM_SHARED_Configuration(void) {
 	ramShared = ALIGNED_PTR(uint8_t, linker_stShare);
 	nbBytes	  = (intptr_t)(linker_lnShare);
 
-	while (nbBytes-- > 0) { *ramShared = 0u; ramShared++; }
+	while (nbBytes-- > 0) { *ramShared = 0U; ramShared++; }
 }
 
 /*
@@ -314,20 +321,20 @@ static	void	local_RAM_SHARED_Configuration(void) {
  */
 static	void	local_MPU_Configuration(void) {
 
-	SET_MPU8_INDEX(KMPU_FLASH_ATTR, KMPU_RAM_CACHE_ATTR, KMPU_RAM_NOT_CACHE_ATTR, KMPU_PERIPH_ATTR, 0u, 0u, 0u, 0u, 0u);
+	SET_MPU8_INDEX(KMPU_FLASH_ATTR, KMPU_RAM_CACHE_ATTR, KMPU_RAM_NOT_CACHE_ATTR, KMPU_PERIPH_ATTR, 0U, 0U, 0U, 0U, 0U);
 
 	#if (defined(PRIVILEGED_USER_S))
-	SET_MPU8_REGION(0u,	ST_FLASH_INT_0,			EN_FLASH_INT_0,			KMPU_EXECUTABLE,		KMPU_R_ALL,  0u, KMPU_INNER_SHAREABLE);
-	SET_MPU8_REGION(1u,	ST_RAM_INT_0_OS,		EN_RAM_INT_0_OS,		KMPU_EXECUTABLE,		KMPU_RW_PRI, 1u, KMPU_INNER_SHAREABLE);
-	SET_MPU8_REGION(2u,	ST_RAM_INT_0,			EN_RAM_INT_0,			KMPU_EXECUTABLE,		KMPU_RW_ALL, 1u, KMPU_INNER_SHAREABLE);
-	SET_MPU8_REGION(3u,	ST_RAM_INT_0_SHARED,	EN_RAM_INT_0_SHARED,	KMPU_EXECUTABLE,		KMPU_RW_ALL, 2u, KMPU_NOT_SHAREABLE);
-	SET_MPU8_REGION(4u,	ST_PERIPH_SOC, 			EN_PERIPH_SOC,			KMPU_NOT_EXECUTABLE,	KMPU_RW_PRI, 3u, KMPU_NOT_SHAREABLE);
-	SET_MPU8_REGION(5u,	ST_PERIPH_CORE,			EN_PERIPH_CORE,			KMPU_NOT_EXECUTABLE,	KMPU_RW_PRI, 3u, KMPU_NOT_SHAREABLE);
+	SET_MPU8_REGION(0U,	ST_FLASH_INT_0,			EN_FLASH_INT_0,			KMPU_EXECUTABLE,		KMPU_R_ALL,  0U, KMPU_INNER_SHAREABLE);
+	SET_MPU8_REGION(1U,	ST_RAM_INT_0_OS,		EN_RAM_INT_0_OS,		KMPU_EXECUTABLE,		KMPU_RW_PRI, 1U, KMPU_INNER_SHAREABLE);
+	SET_MPU8_REGION(2U,	ST_RAM_INT_0,			EN_RAM_INT_0,			KMPU_EXECUTABLE,		KMPU_RW_ALL, 1U, KMPU_INNER_SHAREABLE);
+	SET_MPU8_REGION(3U,	ST_RAM_INT_0_SHARED,	EN_RAM_INT_0_SHARED,	KMPU_EXECUTABLE,		KMPU_RW_ALL, 2U, KMPU_NOT_SHAREABLE);
+	SET_MPU8_REGION(4U,	ST_PERIPH_SOC, 			EN_PERIPH_SOC,			KMPU_NOT_EXECUTABLE,	KMPU_RW_PRI, 3U, KMPU_NOT_SHAREABLE);
+	SET_MPU8_REGION(5U,	ST_PERIPH_CORE,			EN_PERIPH_CORE,			KMPU_NOT_EXECUTABLE,	KMPU_RW_PRI, 3U, KMPU_NOT_SHAREABLE);
 
 	#else
-	SET_MPU8_REGION(0u,	ST_FLASH_INT_0,			EN_FLASH_INT_0,			KMPU_EXECUTABLE,		KMPU_R_ALL,  0u, KMPU_INNER_SHAREABLE);
-	SET_MPU8_REGION(1u,	ST_RAM_INT_0,			EN_RAM_INT_0,			KMPU_EXECUTABLE,		KMPU_RW_ALL, 1u, KMPU_INNER_SHAREABLE);
-	SET_MPU8_REGION(2u,	ST_RAM_INT_0_SHARED,	EN_RAM_INT_0_SHARED,	KMPU_EXECUTABLE,		KMPU_RW_ALL, 2u, KMPU_NOT_SHAREABLE);
+	SET_MPU8_REGION(0U,	ST_FLASH_INT_0,			EN_FLASH_INT_0,			KMPU_EXECUTABLE,		KMPU_R_ALL,  0U, KMPU_INNER_SHAREABLE);
+	SET_MPU8_REGION(1U,	ST_RAM_INT_0,			EN_RAM_INT_0,			KMPU_EXECUTABLE,		KMPU_RW_ALL, 1U, KMPU_INNER_SHAREABLE);
+	SET_MPU8_REGION(2U,	ST_RAM_INT_0_SHARED,	EN_RAM_INT_0_SHARED,	KMPU_EXECUTABLE,		KMPU_RW_ALL, 2U, KMPU_NOT_SHAREABLE);
 	#endif
 }
 

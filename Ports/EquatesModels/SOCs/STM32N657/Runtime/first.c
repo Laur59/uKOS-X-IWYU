@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Vectors for the uKOS-X system (first).
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,9 +46,17 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+
+#include	"core.h"
+#include	"soc_reg.h"
+#include	"kern/private/private_temporal.h"	// IWYU pragma: keep (for vKern_TimeException)
 #include	"linker.h"
-#include	"kern/private/private_temporal.h"
+#include	"macros_soc.h"
+#include	"macros_core.h"
+
+extern	void	(*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
+extern	void	(*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 // Vector table: ...
 // However rather than start at zero the vector table starts at address 0x00000004,
@@ -490,8 +498,8 @@ INTERRUPT_SPECIFIC_HANDLER(LTDC_UP_ERR_C0)
  */
 void	Reset_C0_Handler(void) {
 
-	#if defined(OZONE_S)
-	register	volatile	uint32_t	wait = 1u;
+	#ifdef OZONE_S
+	register	volatile	uint32_t	wait = 1U;
 	while (wait) { NOP; }
 	#endif
 
@@ -507,18 +515,18 @@ void	Reset_C0_Handler(void) {
 
 	REG(RCC)->AHB2ENR |= RCC_AHB2ENR_RAMCFGEN;
 
-	REG(RAMCFG)->AXISRAM1CR = 0u;
-	REG(RAMCFG)->AXISRAM2CR = 0u;
-	REG(RAMCFG)->AXISRAM3CR = 0u;
-	REG(RAMCFG)->AXISRAM4CR = 0u;
-	REG(RAMCFG)->AXISRAM5CR = 0u;
-	REG(RAMCFG)->AXISRAM6CR = 0u;
+	REG(RAMCFG)->AXISRAM1CR = 0U;
+	REG(RAMCFG)->AXISRAM2CR = 0U;
+	REG(RAMCFG)->AXISRAM3CR = 0U;
+	REG(RAMCFG)->AXISRAM4CR = 0U;
+	REG(RAMCFG)->AXISRAM5CR = 0U;
+	REG(RAMCFG)->AXISRAM6CR = 0U;
 
 // Disable the stack limits (xyzLIM)
 // The FSBL boot set these registers
 
-	core_setPSPLIM(0u);
-	core_setMSPLIM(0u);
+	core_setPSPLIM(0U);
+	core_setMSPLIM(0U);
 	INST_SYNC_BARRIER;
 
 	SET_THREAD_STACK(linker_topStackFirst_C0);

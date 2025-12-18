@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32N657_dbgmcu equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // DBGMCU address definitions
 // --------------------------
 
@@ -69,7 +71,7 @@ typedef struct {
 	volatile	uint32_t	DBG_AUTH_ACK;
 } DBGMCU_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	DBGMCU_NS	reinterpret_cast<DBGMCU_TypeDef *>(0x44001000u)
 #define	DBGMCU_S	reinterpret_cast<DBGMCU_TypeDef *>(0x54001000u)
 

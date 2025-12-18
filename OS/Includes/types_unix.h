@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Basic predefined types (normally machine independent).
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,8 +48,6 @@
 
 #pragma	once
 
-#include	<stdint.h>
-#include	<stdbool.h>
 #include	<stddef.h>
 
 // uKOS-X program returns / exits
@@ -85,23 +83,23 @@ enum : int32_t {
 
 // uKOS-X misc
 
-#if (!defined(NULL))
+#ifndef NULL
 #define	NULL				((void *)0)
 #endif
 
-#if (!defined(tm_t))
+#ifndef tm_t
 typedef	struct	tm			tm_t;
 #endif
 
-#if (!defined(timeval_t))
+#ifndef timeval_t
 typedef	struct timeval		timeval_t;
 #endif
 
-#if (!defined(false))
+#ifndef false
 #define	false				0
 #endif
 
-#if (!defined(true))
+#ifndef true
 #define	true				1
 #endif
 

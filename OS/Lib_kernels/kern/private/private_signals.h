@@ -5,16 +5,16 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Kern - Signal management.
 ;
 ;			Private uKernel variables.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -70,6 +70,12 @@
  * @{
  */
 
+#include	<stdint.h>
+
+#include	"kern/kern.h"
+#include	"macros_soc.h"
+#include	"types.h"
+
 #define	KSIGN_ANONYMOUS_ID	"Sign_anonymous"
 
 typedef	struct	dsin		dsin_t;
@@ -83,7 +89,7 @@ struct dsin {
 struct	sign {
 	const	char_t		*oIdentifier;							// Group identifier
 			uint16_t	oState;									// Group state
-			#define		BSIGN_INSTALLED		0u					// Group installed
+			#define		BSIGN_INSTALLED		0U					// Group installed
 
 			uint32_t	oGroupNumber;							// Group number
 			uint32_t	oUsedBit;								// Used bit

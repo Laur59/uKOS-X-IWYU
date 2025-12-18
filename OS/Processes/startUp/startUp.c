@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		startUp process; execute some important initializations
 ;			before jumping to the selected function.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,7 +47,19 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+#include	<stdlib.h>
+
+#include	"serial/serial.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core_stackFrame.h"
+// memo/memo.h is required for PROCESS_STACKMALLOC
+#include	"memo/memo.h"		// IWYU pragma: keep
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -67,7 +79,7 @@ extern	VAR_DECLARED_ALIGN(const char_t aStartUp_StrHelp[], 4);
 
 // This process has to run on the following cores:
 
-#define	KEXECUTION_CORE		((1u<<BCORE_1) | (1u<<BCORE_0))
+#define	KEXECUTION_CORE		((1U<<BCORE_1) | (1U<<BCORE_0))
 
 MODULE(
 	StartUp,						// Module name (the first letter has to be upper case)
@@ -77,7 +89,7 @@ MODULE(
 	prgm,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	KEXECUTION_CORE					// Execution cores
 );
 
@@ -94,10 +106,10 @@ STRG_LOC_CONST(aStrText[]) = "Process startUp: start of the system.     (c) EFr-
  *
  */
 static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
-	proc_t	*process;
-
 	UNUSED(argc);
 	UNUSED(argv);
+
+	proc_t	*process;
 
 	PROCESS_STACKMALLOC(
 		0,									// Index

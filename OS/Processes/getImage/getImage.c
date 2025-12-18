@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		imager process; continuous acquisition of an image.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,8 +46,23 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+#include	<stdlib.h>
+
 #include	"MT9V03x/MT9V03x.h"
+#include	"cdc0/cdc0.h"
+#include	"serial/serial.h"
+#include	"imager/imager.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"led/led.h"
+// memo/memo.h is required for PROCESS_STACKMALLOC
+#include	"memo/memo.h"		// IWYU pragma: keep
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -71,7 +86,7 @@ static	void		local_transfer(void);
 
 // This process has to run on the following cores:
 
-#define	KEXECUTION_CORE		(1u<<BCORE_0)
+#define	KEXECUTION_CORE		(1U<<BCORE_0)
 
 MODULE(
 	GetImage,						// Module name (the first letter has to be upper case)
@@ -81,14 +96,14 @@ MODULE(
 	prgm,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	imager_clean,					// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	KEXECUTION_CORE					// Execution cores
 );
 
 // Process specific
 // ================
 
-#define	KTIME_ACQ	100u
+#define	KTIME_ACQ	100U
 #define	KLED_XFER	KLED_3
 
 static	bool	vKillRequest[KNB_CORES] = MCSET(false);
@@ -102,16 +117,16 @@ STRG_LOC_CONST(aStrText[]) = "Process getImage: image acquisition.     (c) EFr-2
 // Fixed exposure
 //
 static	const	mt9v03x_t	aTab328248F[] = {
-								{ 1u,	0x00D9u }, { 2u,	0x007Du }, { 3u,	0x00F8u }, { 4u,	0x0149u }, { 5u,	0x016Bu }, { 6u,	0x0032u }, { 7u,	0x0388u }, { 8u,	0x01E0u },
-								{ 9u,	0x01E0u }, { 10u,	0x0164u }, { 11u,	0x0007u }, { 16u,	0x002Du }, { 21u,	0x8032u }, { 32u,	0x03D5u }, { 33u,	0x0012u }, { 34u,	0x0028u },
-								{ 40u,	0x0016u }, { 41u,	0x0018u }, { 43u,	0x0003u }, { 44u,	0x0006u }, { 46u,	0x0004u }, { 47u,	0x0003u }, { 70u,	0x1606u }, { 71u,	0x8081u },
-								{ 72u,	0x007Fu }, { 104u,	0xE5F9u }, { 105u,	0x65D7u }, { 106u,	0x2950u }, { 107u,	0xA040u }, { 112u,	0x0032u }, { 114u,	0x0001u }, { 115u,	0x0307u },
-								{ 116u,	0x0000u }, { 128u,	0x00F4u }, { 129u,	0x0004u }, { 130u,	0x0004u }, { 131u,	0x0004u }, { 132u,	0x0004u }, { 133u,	0x0004u }, { 134u,	0x0004u },
-								{ 135u,	0x0004u }, { 136u,	0x0004u }, { 137u,	0x0004u }, { 138u,	0x0004u }, { 139u,	0x0004u }, { 140u,	0x0004u }, { 141u,	0x0004u }, { 142u,	0x0004u },
-								{ 143u,	0x0004u }, { 144u,	0x0004u }, { 145u,	0x0004u }, { 146u,	0x0004u }, { 147u,	0x0004u }, { 148u,	0x0004u }, { 149u,	0x0004u }, { 150u,	0x0004u },
-								{ 151u,	0x0004u }, { 152u,	0x0004u }, { 154u,	0x013Fu }, { 155u,	0x02F0u }, { 156u,	0x02F0u }, { 157u,	0x02F0u }, { 160u,	0x00EFu }, { 161u,	0x01E0u },
-								{ 162u,	0x01E0u }, { 163u,	0x01E0u }, { 165u,	0x0020u }, { 166u,	0x0008u }, { 168u,	0x0001u }, { 169u,	0x0008u }, { 171u,	0x0001u }, { 175u,	0x0001u },
-								{ 176u,	0x2400u }, { 189u,	0x0120u }, { 194u,	0x0850u }, { 0u,	0x0000u }
+								{ 1U,	0x00D9U }, { 2U,	0x007DU }, { 3U,	0x00F8U }, { 4U,	0x0149U }, { 5U,	0x016BU }, { 6U,	0x0032U }, { 7U,	0x0388U }, { 8U,	0x01E0U },
+								{ 9U,	0x01E0U }, { 10U,	0x0164U }, { 11U,	0x0007U }, { 16U,	0x002DU }, { 21U,	0x8032U }, { 32U,	0x03D5U }, { 33U,	0x0012U }, { 34U,	0x0028U },
+								{ 40U,	0x0016U }, { 41U,	0x0018U }, { 43U,	0x0003U }, { 44U,	0x0006U }, { 46U,	0x0004U }, { 47U,	0x0003U }, { 70U,	0x1606U }, { 71U,	0x8081U },
+								{ 72U,	0x007FU }, { 104U,	0xE5F9U }, { 105U,	0x65D7U }, { 106U,	0x2950U }, { 107U,	0xA040U }, { 112U,	0x0032U }, { 114U,	0x0001U }, { 115U,	0x0307U },
+								{ 116U,	0x0000U }, { 128U,	0x00F4U }, { 129U,	0x0004U }, { 130U,	0x0004U }, { 131U,	0x0004U }, { 132U,	0x0004U }, { 133U,	0x0004U }, { 134U,	0x0004U },
+								{ 135U,	0x0004U }, { 136U,	0x0004U }, { 137U,	0x0004U }, { 138U,	0x0004U }, { 139U,	0x0004U }, { 140U,	0x0004U }, { 141U,	0x0004U }, { 142U,	0x0004U },
+								{ 143U,	0x0004U }, { 144U,	0x0004U }, { 145U,	0x0004U }, { 146U,	0x0004U }, { 147U,	0x0004U }, { 148U,	0x0004U }, { 149U,	0x0004U }, { 150U,	0x0004U },
+								{ 151U,	0x0004U }, { 152U,	0x0004U }, { 154U,	0x013FU }, { 155U,	0x02F0U }, { 156U,	0x02F0U }, { 157U,	0x02F0U }, { 160U,	0x00EFU }, { 161U,	0x01E0U },
+								{ 162U,	0x01E0U }, { 163U,	0x01E0U }, { 165U,	0x0020U }, { 166U,	0x0008U }, { 168U,	0x0001U }, { 169U,	0x0008U }, { 171U,	0x0001U }, { 175U,	0x0001U },
+								{ 176U,	0x2400U }, { 189U,	0x0120U }, { 194U,	0x0850U }, { 0U,	0x0000U }
 							};
 
 /*
@@ -119,11 +134,11 @@ static	const	mt9v03x_t	aTab328248F[] = {
  *
  */
 static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
-	uint32_t	core;
-	proc_t		*process;
-
 	UNUSED(argc);
 	UNUSED(argv);
+
+	uint32_t	core;
+	proc_t		*process;
 
 	core = GET_RUNNING_CORE;
 	vKillRequest[core] = false;
@@ -179,11 +194,11 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 	static	const	imagerCnf_t	configureIMG0 = {
 										.oAcqMode  = KIMAGER_SNAP,
 										.oPixMode  = KIMAGER_PIX_8_BITS,
-										.oStRows   = 0u,
-										.oStCols   = 0u,
+										.oStRows   = 0U,
+										.oStCols   = 0U,
 										.oNbRows   = KIMAGER_NB_ROWS_QVGA,
 										.oNbCols   = KIMAGER_NB_COLS_QVGA,
-										.oKernSync = 0u,
+										.oKernSync = 0U,
 										.oImgCnf   = aTab328248F,
 										.oHSync    = NULL,
 										.oFrame    = NULL,
@@ -191,12 +206,12 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 										.oDMAEc    = NULL,
 									};
 
-	RESERVE(IMG0, KMODE_READ_WRITE);
+	IMG0_reserve(KMODE_READ_WRITE, KWAIT_INFINITY);
 
 // Waiting for 20s before starting
 
 	killRequest	= (const bool *)argument;
-	kern_suspendProcess(20000u);
+	kern_suspendProcess(20000U);
 
 	if (imager_configure(&configureIMG0) != KERR_IMAGER_NOERR) {
 		LOG(KFATAL_SYSTEM, "getImage: imager configure");
@@ -218,7 +233,7 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 // Kill the process & the ressources
 
 	INTERRUPTION_OFF;
-	RELEASE(IMG0, KMODE_READ_WRITE);
+	IMG0_release(KMODE_READ_WRITE);
 
 	led_off(KLED_XFER);
 

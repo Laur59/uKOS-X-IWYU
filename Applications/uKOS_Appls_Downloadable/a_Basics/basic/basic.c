@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Demo of a C application.
 ;			This application shows how to operate with the uKOS-X uKernel.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,8 +47,8 @@
 ;------------------------------------------------------------------------
 */
 
-#define P0_PERIOD 100u
-#define P1_PERIOD 100u
+#define P0_PERIOD 1000U
+#define P1_PERIOD 1000U
 
 /*!
  * \file
@@ -59,7 +59,7 @@
  *
  *			- P0: Every P0_PERIOD ms
  *					- Display a message on the KSYST manager
- *					- Toggle LED 0
+ *					- Toggle LED 1
  *
  *			- P1: Every P1_PERIOD ms
  *					- Display a message on the KSYST manager
@@ -69,7 +69,21 @@
  *
  */
 
-#include	"uKOS.h"
+#include	<inttypes.h>
+#include	<stdio.h>
+
+#include	"crt0.h"
+#include	"serial/serial.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"memo/memo.h"
+#include	"led/led.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -95,7 +109,7 @@ MODULE(
 	aStart,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,								// Address of the clean code (clean the module)
 	" 1.0",								// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0									// Execution cores
 );
 
@@ -107,9 +121,9 @@ MODULE(
  *
  */
 static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
-	int32_t		cpt = 0u;
-
 	UNUSED(argument);
+
+	int32_t		cpt = 0U;
 
 	while (true) {
 		kern_suspendProcess(P0_PERIOD);
@@ -127,9 +141,9 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
-	int32_t		cpt = 0u;
-
 	UNUSED(argument);
+
+	int32_t		cpt = 0U;
 
 	while (true) {
 		kern_suspendProcess(P1_PERIOD);
@@ -147,6 +161,9 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  *
  */
 int		main(int argc, const char *argv[]) {
+	UNUSED(argc);
+	UNUSED(argv);
+
 	proc_t	*process_0, *process_1;
 
 // ---------------------------------I-----------------------------------------I--------------I
@@ -155,9 +172,6 @@ int		main(int argc, const char *argv[]) {
 	STRG_LOC_CONST(aStrIden_1[]) = "Process_User_1";
 	STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2025";
 	STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2025";
-
-	UNUSED(argc);
-	UNUSED(argv);
 
 // Specifications for the processes
 

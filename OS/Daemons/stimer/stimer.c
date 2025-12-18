@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		stim daemon; software timer management
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,9 +46,20 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"kern/private/private_processes.h"
+#include	<stdint.h>
+#include	<stdlib.h>
+
+#include	"debug.h"
+#include	"kern/kern.h"
 #include	"kern/private/private_softwareTimer.h"
+#include	"macros.h"
+#include	"macros_core_stackFrame.h"
+#include	"macros_soc.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"serial/serial.h"
+#include	"types.h"
 
 #if (KKERN_NB_SOFTWARE_TIMERS > 0)
 
@@ -74,7 +85,7 @@ static	void		local_process(const void *argument);
 
 // This process has to run on the following cores:
 
-#define	KEXECUTION_CORE		((1u<<BCORE_0) | (1u<<BCORE_1) | (1u<<BCORE_2) | (1u<<BCORE_3))
+#define	KEXECUTION_CORE		((1U<<BCORE_0) | (1U<<BCORE_1) | (1U<<BCORE_2) | (1U<<BCORE_3))
 
 MODULE(
 	Stimer,									// Module name (the first letter has to be upper case)
@@ -84,7 +95,7 @@ MODULE(
 	prgm,									// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,									// Address of the clean code (clean the module)
 	" 1.0",									// Revision string (major . minor)
-	(1u<<BSHOW),							// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),							// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	KEXECUTION_CORE							// Execution cores
 );
 
@@ -148,18 +159,18 @@ static	void	local_execute(uint16_t i) {
 	code = vKern_stim[core][i].oTimerSpec.oCode;
 
 	vKern_curStim[core] = i;
-	vKern_runProc[core]->oInternal.oState |= (1u<<BPROC_LIKE_ISR);
+	vKern_runProc[core]->oInternal.oState |= (1U<<BPROC_LIKE_ISR);
 
 	argument = vKern_stim[core][i].oTimerSpec.oArgument;
 	kern_setPrivilegeMode(KPROC_USER);
 	code(argument);
 	kern_setPrivilegeMode(KPROC_PRIVILEGED);
 
-	vKern_runProc[core]->oInternal.oState &= (uint16_t)~(1u<<BPROC_LIKE_ISR);
+	vKern_runProc[core]->oInternal.oState &= (uint16_t)~(1U<<BPROC_LIKE_ISR);
 	vKern_curStim[core] = (uint16_t)-1;
 
-	(vKern_stim[core][i].oTimerSpec.oMode == KSTIM_SINGLE_SHOT) ? (vKern_stim[core][i].oState &= (uint16_t)~((1u<<BSTIM_RUNNING) | (1u<<BSTIM_CONFIGURED))) : (vKern_stim[core][i].oState &= (uint16_t)~(0x00));
-	vKern_stim[core][i].oState |= (1u<<BSTIM_EXECUTED);
+	(vKern_stim[core][i].oTimerSpec.oMode == KSTIM_SINGLE_SHOT) ? (vKern_stim[core][i].oState &= (uint16_t)~((1U<<BSTIM_RUNNING) | (1U<<BSTIM_CONFIGURED))) : (vKern_stim[core][i].oState &= (uint16_t)~(0x00));
+	vKern_stim[core][i].oState |= (1U<<BSTIM_EXECUTED);
 }
 
 /*
@@ -170,6 +181,8 @@ static	void	local_execute(uint16_t i) {
  *
  */
 static void __attribute__ ((noreturn)) local_process(const void *argument) {
+	UNUSED(argument);
+
 	uint16_t	i;
 	uintptr_t	data;
 	uint32_t	core, delay, nextTimeout, lastTimeout, errorTimeout, compTime;
@@ -178,13 +191,11 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 	stim_t		*newSTimer;
 	mbox_t		*mailBox;
 
-	UNUSED(argument);
-
 	DEBUG_KERN_TRACE("entry: software timer daemon");
 	core = GET_RUNNING_CORE;
 	kern_setPrivilegeMode(KPROC_PRIVILEGED);
 	nextTimeout  = KWAIT_INFINITY;
-	errorTimeout = 0u;
+	errorTimeout = 0U;
 
 // Special case to support the creation of a software timer before
 // starting the uKernel
@@ -195,7 +206,7 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 	if (kern_getMailboxById(KMBOX_SOFTWARE_TIMER, &mailBox) == KERR_KERN_NOERR) {
 		while (kern_readQueue(mailBox, &data, 0) == KERR_KERN_NOERR) {
 			newSTimer		  = (stim_t *)data;
-			newSTimer->oState = (newSTimer->oTimerSpec.oMode == KSTIM_STOP)	? (0)                       : ((1u<<BSTIM_CONFIGURED) | (1u<<BSTIM_RUNNING));
+			newSTimer->oState = (newSTimer->oTimerSpec.oMode == KSTIM_STOP)	? (0)                       : ((1U<<BSTIM_CONFIGURED) | (1U<<BSTIM_RUNNING));
 			nextTimeout		  = (newSTimer->oInitCounter < nextTimeout)		? (newSTimer->oInitCounter) : (nextTimeout);
 		}
 	}
@@ -208,28 +219,28 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 
 		delta = ((suspendEnd - suspendStart) + (uint64_t)errorTimeout) * (uint64_t)KKERN_TIC_FREQUENCY;
 		lastTimeout  = (uint32_t)(delta / (uint64_t)KKERN_TICKCOUNT_PER_SECOND);
-		errorTimeout = (uint32_t)((suspendEnd - suspendStart) + errorTimeout) % ((KKERN_TICKCOUNT_PER_SECOND + (KKERN_TIC_FREQUENCY / 2u)) / KKERN_TIC_FREQUENCY);
+		errorTimeout = (uint32_t)((suspendEnd - suspendStart) + errorTimeout) % ((KKERN_TICKCOUNT_PER_SECOND + (KKERN_TIC_FREQUENCY / 2U)) / KKERN_TIC_FREQUENCY);
 
 		if (lastTimeout > 0) {
 			nextTimeout = KWAIT_INFINITY;
 			kern_readTickCount(&time[0]);
-			for (i = 0u; i < KKERN_NB_SOFTWARE_TIMERS; i++) {
-				if (((vKern_stim[core][i].oState & (1u<<BSTIM_CONFIGURED)) != 0u)) {
+			for (i = 0U; i < KKERN_NB_SOFTWARE_TIMERS; i++) {
+				if (((vKern_stim[core][i].oState & (1U<<BSTIM_CONFIGURED)) != 0U)) {
 
 // Execute only if mode = Continue
 // or, if mode = SingleShot but never executed
 
-					if ((vKern_stim[core][i].oState & (1u<<BSTIM_RE_CONFIGURED)) == 0u) {
-						if ((vKern_stim[core][i].oTimerSpec.oMode == KSTIM_CONTINUOUS) || ((vKern_stim[core][i].oTimerSpec.oMode == KSTIM_SINGLE_SHOT) && ((vKern_stim[core][i].oState & (1u<<BSTIM_EXECUTED)) == 0u))) {
+					if ((vKern_stim[core][i].oState & (1U<<BSTIM_RE_CONFIGURED)) == 0U) {
+						if ((vKern_stim[core][i].oTimerSpec.oMode == KSTIM_CONTINUOUS) || ((vKern_stim[core][i].oTimerSpec.oMode == KSTIM_SINGLE_SHOT) && ((vKern_stim[core][i].oState & (1U<<BSTIM_EXECUTED)) == 0U))) {
 
 // Verify the initial time
 // Verify the time
 
 							if (vKern_stim[core][i].oInitCounter <= lastTimeout) {
-								if (vKern_stim[core][i].oInitCounter > 0u) {
-									vKern_stim[core][i].oCounter = (vKern_stim[core][i].oCounter > (lastTimeout - vKern_stim[core][i].oInitCounter)) ? (vKern_stim[core][i].oCounter - (lastTimeout - vKern_stim[core][i].oInitCounter)) : 0u;
-									vKern_stim[core][i].oInitCounter = 0u;
-									if (vKern_stim[core][i].oCounter == 0u){
+								if (vKern_stim[core][i].oInitCounter > 0U) {
+									vKern_stim[core][i].oCounter = (vKern_stim[core][i].oCounter > (lastTimeout - vKern_stim[core][i].oInitCounter)) ? (vKern_stim[core][i].oCounter - (lastTimeout - vKern_stim[core][i].oInitCounter)) : 0U;
+									vKern_stim[core][i].oInitCounter = 0U;
+									if (vKern_stim[core][i].oCounter == 0U){
 										local_execute(i);
 										if (vKern_stim[core][i].oTimerSpec.oMode == KSTIM_CONTINUOUS) {
 											nextTimeout = (nextTimeout < vKern_stim[core][i].oCounter) ? (nextTimeout) : (vKern_stim[core][i].oCounter);
@@ -246,12 +257,12 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 									}
 								}
 								else {
-									vKern_stim[core][i].oCounter = (vKern_stim[core][i].oCounter < lastTimeout) ? (0u)		    : (vKern_stim[core][i].oCounter - lastTimeout);
+									vKern_stim[core][i].oCounter = (vKern_stim[core][i].oCounter < lastTimeout) ? (0U)		    : (vKern_stim[core][i].oCounter - lastTimeout);
 									nextTimeout = (nextTimeout < vKern_stim[core][i].oCounter)					? (nextTimeout) : (vKern_stim[core][i].oCounter);
 								}
 							}
 							else {
-								vKern_stim[core][i].oInitCounter = (vKern_stim[core][i].oInitCounter < lastTimeout) ? (0u)			: (vKern_stim[core][i].oInitCounter - lastTimeout);
+								vKern_stim[core][i].oInitCounter = (vKern_stim[core][i].oInitCounter < lastTimeout) ? (0U)			: (vKern_stim[core][i].oInitCounter - lastTimeout);
 								nextTimeout = (nextTimeout < vKern_stim[core][i].oInitCounter)						? (nextTimeout) : (vKern_stim[core][i].oInitCounter);
 							}
 						}
@@ -267,11 +278,11 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 			compTime = (uint32_t)(KKERN_TIC_FREQUENCY * (time[1] - time[0])) / KKERN_TICKCOUNT_PER_SECOND;
 
 			#else
-			compTime = (uint32_t)((uint32_t)(time[1] - time[0])) / (1000u * KKERN_TIC_TIME);
+			compTime = (uint32_t)((uint32_t)(time[1] - time[0])) / (1000U * KKERN_TIC_TIME);
 			#endif
 
 			if (nextTimeout != KWAIT_INFINITY) {
-				nextTimeout = (nextTimeout > compTime) ? (nextTimeout - compTime) : (0u);
+				nextTimeout = (nextTimeout > compTime) ? (nextTimeout - compTime) : (0U);
 			}
 		}
 
@@ -279,17 +290,17 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 // If yes, check if there is a new software timer that
 // need to be included
 
-		if (gotMailBox == false) {
+		if (!gotMailBox) {
 			if (kern_getMailboxById(KMBOX_SOFTWARE_TIMER, &mailBox) == KERR_KERN_NOERR) {
 				gotMailBox = true;
 			}
 		}
 
-		if (gotMailBox == true) {
-			while (kern_readQueue(mailBox, &data, 0u) == KERR_KERN_NOERR) {
+		if (gotMailBox) {
+			while (kern_readQueue(mailBox, &data, 0U) == KERR_KERN_NOERR) {
 				newSTimer		  = (stim_t *)data;
-				newSTimer->oState = (newSTimer->oTimerSpec.oMode == KSTIM_STOP) ? ((1u<<BSTIM_INSTALLED))	: ((1u<<BSTIM_INSTALLED) | (1u<<BSTIM_CONFIGURED) | (1u<<BSTIM_RUNNING));
-				if (newSTimer->oInitCounter > 0u) {
+				newSTimer->oState = (newSTimer->oTimerSpec.oMode == KSTIM_STOP) ? ((1U<<BSTIM_INSTALLED))	: ((1U<<BSTIM_INSTALLED) | (1U<<BSTIM_CONFIGURED) | (1U<<BSTIM_RUNNING));
+				if (newSTimer->oInitCounter > 0U) {
 					nextTimeout   = (newSTimer->oInitCounter < nextTimeout)		? (newSTimer->oInitCounter) : (nextTimeout);
 				}
 				else {
@@ -300,4 +311,6 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 	}
 }
 
+#else
+#error "KKERN_NB_SOFTWARE_TIMERS shall be > 0 to use stimer.c"
 #endif

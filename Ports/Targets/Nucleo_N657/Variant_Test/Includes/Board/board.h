@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Board mapping.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,9 @@
 
 #pragma	once
 
+#include	"macros_core.h"	// IWYU pragma: keep (required for REG)
+#include	"soc_reg.h"		// IWYU pragma: keep (required for GPIOG)
+
 // System identifiers
 // ------------------
 
@@ -76,12 +79,12 @@
 							 	(void)(REG(GPIOG)->ODR);			\
 							} while (0)										// Analyser macros
 
-#define KNB_LED				3u												// Number of LEDs
+#define KNB_LED				3U												// Number of LEDs
 
 // PORTs
 
-#define	BLED_0				8u												// PORT G 8, LED
-#define	BLED_1				10u												// PORT G 10, LED
-#define	BLED_2				0u												// PORT G 0, LED
-#define	BANALYSER			1u												// PORT G 1, Analyser
-#define	BSW_0				13u												// PORT C 13, SW1
+#define	BLED_0				8U												// PORT G 8, LED
+#define	BLED_1				10U												// PORT G 10, LED
+#define	BLED_2				0U												// PORT G 0, LED
+#define	BANALYSER			1U												// PORT G 1, Analyser
+#define	BSW_0				13U												// PORT C 13, SW1

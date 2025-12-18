@@ -5,16 +5,16 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Kern - Identifier management (compare the object IDs)
 ;
 ;			This module is responsible for manipulating the identifiers of the uKernel.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,7 +48,11 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stddef.h>
+#include	<stdint.h>
+
+#include	"kern/kern.h"
+#include	"types.h"
 
 /*
  * \brief Compare 2 identifiers (string_1 -> string_2)
@@ -67,9 +71,9 @@ bool	identifiers_cmpStrings(const char_t *string_1, const char_t *string_2) {
 		return (false);
 	}
 
-	for (i = 0u; i < KKERN_OBJECT_SZ_ID; i++) {
+	for (i = 0U; i < KKERN_OBJECT_SZ_ID; i++) {
 		if ((string_1[i] == '\0') || (string_2[i] == '\0')) {
-			status = (string_1[i] == string_2[i]) ? (true) : (false);
+			status = (string_1[i] == string_2[i]);
 			return (status);
 		}
 

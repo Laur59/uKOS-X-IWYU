@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Hardware specific stub.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,15 +46,27 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
 
-#define KTTIM100US		100u									// For 100-us (10000-Hz)
-#define	KFPRET7			1000000u								// 1'000'000-Hz
+#include	"types.h"
+#include	"os_errors.h"
+#include	"clockTree.h"
+#include	"core_reg.h"
+#include	"soc_reg.h"
+#include	"macros.h"
+#include	"macros_soc.h"
+#include	"macros_core.h"
+#include	"kern/kern.h"
+
+#define KTTIM100US		100U									// For 100-us (10000-Hz)
+#define	KFPRET7			1000000U								// 1'000'000-Hz
 #define	KFINTT7			KTTIM100US								// 10'000-Hz
-#define KPSCT7			((KFREQUENCY_APB2 / KFPRET7) - 1u)		// Prescaler for 1'000'000-Hz
-#define KARRT7			((KFPRET7 / KFINTT7) - 1u)				// Autoreload
+#define KPSCT7			((KFREQUENCY_APB2 / KFPRET7) - 1U)		// Prescaler for 1'000'000-Hz
+#define KARRT7			((KFPRET7 / KFINTT7) - 1U)				// Autoreload
 
 // Prototypes
+
+extern	void	(*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 static	void	stub_intr_timer_interruption(void);
 
@@ -87,11 +99,11 @@ static	void	stub_intr_timer_interruption(void) {
 			int32_t		status;
 	static	mbox_t		*vQueue;
 	static	bool		vInit = false;
-	static	uintptr_t	vCounter = 0u;
+	static	uintptr_t	vCounter = 0U;
 
 	core = GET_RUNNING_CORE;
 
-	if (vInit == false) {
+	if (!vInit) {
 		if (kern_getMailboxById("Queue tim", &vQueue) == KERR_KERN_NOERR) {
 			vInit = true;
 		}
@@ -99,11 +111,11 @@ static	void	stub_intr_timer_interruption(void) {
 
 // INT acknowledge
 
-	if ((TIM7->SR & TIM7_SR_UIF) != 0u) {
+	if ((TIM7->SR & TIM7_SR_UIF) != 0U) {
 		TIM7->SR &= (uint16_t)~TIM7_SR_UIF;
 	}
 
-	status = kern_writeQueue(vQueue, vCounter, 0u);
+	status = kern_writeQueue(vQueue, vCounter, 0U);
 	if (status == KERR_KERN_NOERR) {
 		vCounter++;
 	}

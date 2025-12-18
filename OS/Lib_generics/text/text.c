@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		text manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,9 +46,20 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#ifdef CONFIG_MAN_TEXT_S
 
-#if (defined(CONFIG_MAN_TEXT_S))
+#include	"text.h"
+
+#include	<stdint.h>
+#include	<string.h>
+
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"serial/serial.h"
+#include	"serial_common.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -71,7 +82,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -112,13 +123,13 @@ static	void	local_getChar(serialManager_t serialManager, char_t *c, sema_t *sema
  *
  */
 int32_t	text_readArgs(char_t *ascii, uint32_t size, const char_t *argv[], uint32_t *argc) {
-	uint32_t	i, j = 0u;
+	uint32_t	i, j = 0U;
 	bool		terminate = false, start = false, quote = false;
 
 // First char is \0
 
 	if (ascii[0] == '\0') {
-		*argc = 0u;
+		*argc = 0U;
 		return (KERR_TEXT_NOERR);
 	}
 
@@ -126,8 +137,8 @@ int32_t	text_readArgs(char_t *ascii, uint32_t size, const char_t *argv[], uint32
 // Ex. in:  abc def   werw0wer rtz rtzrz0
 //     out: abc0def000werw000000000000000
 
-	for (i = 0u; i < size; i++) {
-		if (terminate == true) {
+	for (i = 0U; i < size; i++) {
+		if (terminate) {
 			ascii[i] = '\0';
 		}
 		else {
@@ -136,7 +147,7 @@ int32_t	text_readArgs(char_t *ascii, uint32_t size, const char_t *argv[], uint32
 			if ( ascii[i] == '\n')   { ascii[i]  = '\0';   }
 			if ( ascii[i] == '"' )   { quote	 = !quote; }
 
-			if ((quote    == false) &&
+			if ((!quote) &&
 				(ascii[i] == ' ' ))	 { ascii[i]  = '\0';   }
 		}
 	}
@@ -148,17 +159,17 @@ int32_t	text_readArgs(char_t *ascii, uint32_t size, const char_t *argv[], uint32
 
 	argv[j] = ascii;
 	j++;
-	*argc = 1u;
+	*argc = 1U;
 
-	for (i = 0u; i < size; i++) {
+	for (i = 0U; i < size; i++) {
 		if (ascii[i] == '\0') {
 			start = true;
 		}
 		else {
-			if ((start == true) && (ascii[i] != '\0')) {
+			if ((start) && (ascii[i] != '\0')) {
 				argv[j] = (ascii + i);
 				j++;
-				*argc += 1u;
+				*argc += 1U;
 				start = false;
 			}
 		}
@@ -196,11 +207,11 @@ int32_t	text_copyAsciiBufferZ(char_t *asciiD, const char_t *asciiS) {
 	const	char_t	*wkAsciiS = asciiS;
 
 	size = strlen(wkAsciiS);
-	if (size == 0u) {
+	if (size == 0U) {
 		return (KERR_TEXT_NOERR);
 	}
 
-	for (i = 0u; i < size; i++) {
+	for (i = 0U; i < size; i++) {
 		*wkAsciiD = *wkAsciiS;
 		wkAsciiD++;
 		wkAsciiS++;
@@ -235,11 +246,11 @@ int32_t	text_copyAsciiBufferN(char_t *asciiD, const char_t *asciiS) {
 	const	char_t	*wkAsciiS = asciiS;
 
 	size = strlen(wkAsciiS);
-	if (size == 0u) {
+	if (size == 0U) {
 		return (KERR_TEXT_NOERR);
 	}
 
-	for (i = 0u; i < size; i++) {
+	for (i = 0U; i < size; i++) {
 		*wkAsciiD = *wkAsciiS;
 		wkAsciiD++;
 		wkAsciiS++;
@@ -344,11 +355,11 @@ int32_t	text_waitString(serialManager_t serialManager, char_t *ascii, uint32_t s
 			kern_getProcessRun(&process);
 			kern_getSerialForProcess(process, &manager);
 
-			RESERVE_SERIAL(manager, KMODE_READ);
+			serial_reserve(manager, KMODE_READ, KWAIT_INFINITY);
 
 			serial_flush(manager);
 			local_waitOrder(manager, ascii, size);
-			RELEASE_SERIAL(manager, KMODE_READ);
+			serial_release(manager, KMODE_READ);
 
 			break;
 		}
@@ -358,11 +369,11 @@ int32_t	text_waitString(serialManager_t serialManager, char_t *ascii, uint32_t s
 		default: {
 			manager = serialManager;
 
-			RESERVE_SERIAL(manager, KMODE_READ);
+			serial_reserve(manager, KMODE_READ, KWAIT_INFINITY);
 
 			serial_flush(manager);
 			local_waitOrder(manager, ascii, size);
-			RELEASE_SERIAL(manager, KMODE_READ);
+			serial_release(manager, KMODE_READ);
 
 			break;
 		}
@@ -379,7 +390,7 @@ int32_t	text_waitString(serialManager_t serialManager, char_t *ascii, uint32_t s
  */
 static	void	local_waitOrder(serialManager_t serialManager, char_t *ascii, uint32_t size) {
 	char_t		aChar;
-	uint32_t	nbChars = 0u;
+	uint32_t	nbChars = 0U;
 	char_t		*identifier;
 	sema_t		*semaphore;
 
@@ -391,7 +402,7 @@ static	void	local_waitOrder(serialManager_t serialManager, char_t *ascii, uint32
 
 // Skip leading CR/LF (avoid returning empty lines due to leftover \n after \r\n)
 
-		if ((nbChars == 0u) && ((aChar == '\r') || (aChar == '\n'))) {
+		if ((nbChars == 0U) && ((aChar == '\r') || (aChar == '\n'))) {
 			continue;
 		}
 
@@ -405,7 +416,7 @@ static	void	local_waitOrder(serialManager_t serialManager, char_t *ascii, uint32
 // Backspace
 
 		if (aChar == '\b') {
-			if (nbChars > 0u) {
+			if (nbChars > 0U) {
 				nbChars--;
 			}
 			continue;
@@ -413,7 +424,7 @@ static	void	local_waitOrder(serialManager_t serialManager, char_t *ascii, uint32
 
 // Store char if room (keep 1 byte for '\0')
 
-		if (nbChars < (size - 1u)) {
+		if (nbChars < (size - 1U)) {
 			ascii[nbChars++] = aChar;
 		}
 	}
@@ -426,13 +437,13 @@ static	void	local_waitOrder(serialManager_t serialManager, char_t *ascii, uint32
 static	void	local_getChar(serialManager_t serialManager, char_t *c, sema_t *semaphore) {
 	uint32_t	size;
 
-	switch ((uint32_t)serialManager & 0xFFFFFF00u) {
+	switch ((uint32_t)serialManager & 0xFFFFFF00U) {
 
 // The serialManager is a URTx
 
-		case (((uint32_t)'u'<<24u) | ((uint32_t)'r'<<16u) | ((uint32_t)'t'<<8u) | 0x0u): {
+		case (((uint32_t)'u'<<24U) | ((uint32_t)'r'<<16U) | ((uint32_t)'t'<<8U) | 0x0U): {
 			while (true) {
-				size = 1u;
+				size = 1U;
 				if (serial_read(serialManager, (uint8_t *)c, &size) == KERR_SERIAL_NOERR) {
 					return;
 				}
@@ -445,16 +456,16 @@ static	void	local_getChar(serialManager_t serialManager, char_t *c, sema_t *sema
 // The serialManager is a BLTx
 // ... or any other managers
 
-		case (((uint32_t)'u'<<24u) | ((uint32_t)'s'<<16u) | ((uint32_t)'b'<<8u) | 0x0u):
-		case (((uint32_t)'b'<<24u) | ((uint32_t)'l'<<16u) | ((uint32_t)'t'<<8u) | 0x0u):
+		case (((uint32_t)'u'<<24U) | ((uint32_t)'s'<<16U) | ((uint32_t)'b'<<8U) | 0x0U):
+		case (((uint32_t)'b'<<24U) | ((uint32_t)'l'<<16U) | ((uint32_t)'t'<<8U) | 0x0U):
 		default: {
 			while (true) {
-				size = 1u;
+				size = 1U;
 				if (serial_read(serialManager, (uint8_t *)c, &size) == KERR_SERIAL_NOERR) {
 					return;
 				}
 
-				kern_suspendProcess(2u);
+				kern_suspendProcess(2U);
 			}
 		}
 	}

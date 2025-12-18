@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Module IDs for uKOS-X systems.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,10 +48,14 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
+#include	"types.h"
+
 // Specification module macro
 // --------------------------
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #define	C_DECLARE	extern	"C"
 #else
@@ -66,9 +70,9 @@ typedef	struct	uKOS_module		uKOS_module_t;
 // ---------------------------------------
 
 typedef	enum {
-			KNO_MEM = 0u,																					// No memory mass
-			KMEM0	= (((uint32_t)'m'<<24u) | ((uint32_t)'e'<<16u) | ((uint32_t)'m'<<8u) | (uint32_t)'0'),	// Memory location = Internal Flash
-			KMEMU	= (((uint32_t)'m'<<24u) | ((uint32_t)'e'<<16u) | ((uint32_t)'m'<<8u) | (uint32_t)'U')	// Memory location = User RAM
+			KNO_MEM = 0U,																					// No memory mass
+			KMEM0	= (((uint32_t)'m'<<24U) | ((uint32_t)'e'<<16U) | ((uint32_t)'m'<<8U) | (uint32_t)'0'),	// Memory location = Internal Flash
+			KMEMU	= (((uint32_t)'m'<<24U) | ((uint32_t)'e'<<16U) | ((uint32_t)'m'<<8U) | (uint32_t)'U')	// Memory location = User RAM
 } memLocation_t;
 
 struct uKOS_header {
@@ -79,7 +83,7 @@ struct uKOS_header {
 };
 
 typedef	enum {
-			KNO_MODULE = 0u,																					// KNO_MODULE = no more modules
+			KNO_MODULE = 0U,																					// KNO_MODULE = no more modules
 			KBUILD_IN,																						// KBUILD_IN = module built in
 			KSERIAL_EEPROM 																					// KSERIAL_EEPROM = module built in the serial EEPROM
 } moduleLocation_t;
@@ -98,20 +102,20 @@ struct uKOS_module {
 			int32_t				(*oClean)(uint32_t argc, const char_t *argv[]);								// Ptr on the clean (clean the module)
 	const	char_t				*oStrRevision;																// Program Revision
 			uint8_t				oFlag;																		// Module flag
-			#define				BSHOW					0u													// Visible in help
-			#define				BEXE_CONSOLE			1u													// Executable from the Console
-			#define				BCONFIDENTIAL			2u													// No comment
+			#define				BSHOW					0U													// Visible in help
+			#define				BEXE_CONSOLE			1U													// Executable from the Console
+			#define				BCONFIDENTIAL			2U													// No comment
 
 			uint8_t				oExecutionCore;																// Execution cores
-			#define				BCORE_0					0u													// Only for core 0
-			#define				BCORE_1					1u													// Only for core 1
-			#define				BCORE_2					2u													// Only for core 2
-			#define				BCORE_3					3u													// Only for core 3
+			#define				BCORE_0					0U													// Only for core 0
+			#define				BCORE_1					1U													// Only for core 1
+			#define				BCORE_2					2U													// Only for core 2
+			#define				BCORE_3					3U													// Only for core 3
 };
 
 #define	MODULE(name, family, idModule, init, execution, clean, revision, flag, executionCore)															\
 	C_DECLARE	const	uKOS_module_t		a##name##_Specifications = {																				\
-												.oIdModule		 = ( ((uint32_t)family<<24u) | ((uint32_t)idModule<<8u) | ((uint32_t)(uint8_t)'_')),	\
+												.oIdModule		 = ( ((uint32_t)family<<24U) | ((uint32_t)idModule<<8U) | ((uint32_t)(uint8_t)'_')),	\
 												.oStrApplication = aStrApplication,																		\
 												.oStrHelp		 = aStrHelp,																			\
 												.oInit			 = (int32_t (*)(uint32_t argc, const char_t *argv[]))init,								\
@@ -340,6 +344,6 @@ enum {
 			KNUM_LVGL			   = (((uint32_t)'0'<<8) + (uint32_t)'4')									// lvgl library
 };
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif

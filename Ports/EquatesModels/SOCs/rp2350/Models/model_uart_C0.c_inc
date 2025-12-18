@@ -9,8 +9,8 @@
 ; Project:	uKOS-X
 ; Goal:		Model for controlling the "uart" device for C0.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -43,6 +43,19 @@
 ;
 ;------------------------------------------------------------------------
 */
+
+#include	<stdint.h>
+#include	<stdlib.h>
+
+#include	"Registers/nvic.h"
+#include	"Registers/soc_vectors.h"
+#include	"kern/kern.h"
+#include	"os_errors.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"record/record.h"
+#include	"serial/serial.h"
 
 static	volatile	bool		vFirstKick_C0 = false;
 static	volatile	bool		vSending_C0 = false;
@@ -97,8 +110,8 @@ void	model_uart_init_C0(void) {
 
 	UART_C0->UARTCR = 0;
 	BAUDRATE(UART0, UART_FREQUENCY_C0, 460800);
-	UART_C0->UARTIFLS  = (0u * UART_UARTIFLS_TXIFLSEL_0) | (0u * UART_UARTIFLS_RXIFLSEL_0);
-	UART_C0->UARTLCR_H = (3u * UART_UARTLCR_H_WLEN_0) | UART_UARTLCR_H_FEN;
+	UART_C0->UARTIFLS  = (0U * UART_UARTIFLS_TXIFLSEL_0) | (0U * UART_UARTIFLS_RXIFLSEL_0);
+	UART_C0->UARTLCR_H = (3U * UART_UARTLCR_H_WLEN_0) | UART_UARTLCR_H_FEN;
 
 // Enable the UART0
 
@@ -119,15 +132,15 @@ int32_t	model_uart_configure_C0(const urtxCnf_t *configure) {
 	INTERRUPTION_OFF;
 	UART_C0->UARTCR &= (uint32_t)~UART_UARTCR_UARTEN;
 
-	UART_C0->UARTLCR_H = 0u;
+	UART_C0->UARTLCR_H = 0U;
 	switch (configure->oNBBits) {
 		case KSERIAL_NB_BITS_7: {
-			UART_C0->UARTLCR_H |= (2u * UART_UARTLCR_H_WLEN_0);
+			UART_C0->UARTLCR_H |= (2U * UART_UARTLCR_H_WLEN_0);
 			break;
 		}
 		default:
 		case KSERIAL_NB_BITS_8: {
-			UART_C0->UARTLCR_H |= (3u * UART_UARTLCR_H_WLEN_0);
+			UART_C0->UARTLCR_H |= (3U * UART_UARTLCR_H_WLEN_0);
 			break;
 		}
 	}
@@ -152,28 +165,28 @@ int32_t	model_uart_configure_C0(const urtxCnf_t *configure) {
 
 	switch (configure->oBaudRate) {
 		case KSERIAL_BAUDRATE_DEFAULT: { BAUDRATE(UART0, UART_FREQUENCY_C0, KSERIAL_DEFAULT_BAUDRATE); break; }
-		case KSERIAL_BAUDRATE_2400:	   { BAUDRATE(UART0, UART_FREQUENCY_C0, 2400u);        			   break; }
-		case KSERIAL_BAUDRATE_4800:	   { BAUDRATE(UART0, UART_FREQUENCY_C0, 4800u);        			   break; }
-		case KSERIAL_BAUDRATE_9600:	   { BAUDRATE(UART0, UART_FREQUENCY_C0, 9600u);        			   break; }
-		case KSERIAL_BAUDRATE_19200:   { BAUDRATE(UART0, UART_FREQUENCY_C0, 19200u);       			   break; }
-		case KSERIAL_BAUDRATE_38400:   { BAUDRATE(UART0, UART_FREQUENCY_C0, 38400u);       			   break; }
-		case KSERIAL_BAUDRATE_57600:   { BAUDRATE(UART0, UART_FREQUENCY_C0, 57600u);       			   break; }
-		case KSERIAL_BAUDRATE_115200:  { BAUDRATE(UART0, UART_FREQUENCY_C0, 115200u);      			   break; }
-		case KSERIAL_BAUDRATE_230400:  { BAUDRATE(UART0, UART_FREQUENCY_C0, 230400u);      			   break; }
-		case KSERIAL_BAUDRATE_460800:  { BAUDRATE(UART0, UART_FREQUENCY_C0, 460800u);      			   break; }
-		case KSERIAL_BAUDRATE_500000:  { BAUDRATE(UART0, UART_FREQUENCY_C0, 500000u);      			   break; }
-		case KSERIAL_BAUDRATE_921600:  { BAUDRATE(UART0, UART_FREQUENCY_C0, 921600u);      			   break; }
-		case KSERIAL_BAUDRATE_1000000: { BAUDRATE(UART0, UART_FREQUENCY_C0, 1000000u);     			   break; }
-		case KSERIAL_BAUDRATE_1500000: { BAUDRATE(UART0, UART_FREQUENCY_C0, 1500000u);     			   break; }
-		case KSERIAL_BAUDRATE_1843200: { BAUDRATE(UART0, UART_FREQUENCY_C0, 1843200u);     			   break; }
-		case KSERIAL_BAUDRATE_2000000: { BAUDRATE(UART0, UART_FREQUENCY_C0, 2000000u);     			   break; }
-		case KSERIAL_BAUDRATE_2500000: { BAUDRATE(UART0, UART_FREQUENCY_C0, 2500000u);     			   break; }
-		case KSERIAL_BAUDRATE_3000000: { BAUDRATE(UART0, UART_FREQUENCY_C0, 3000000u);     			   break; }
+		case KSERIAL_BAUDRATE_2400:	   { BAUDRATE(UART0, UART_FREQUENCY_C0, 2400U);        			   break; }
+		case KSERIAL_BAUDRATE_4800:	   { BAUDRATE(UART0, UART_FREQUENCY_C0, 4800U);        			   break; }
+		case KSERIAL_BAUDRATE_9600:	   { BAUDRATE(UART0, UART_FREQUENCY_C0, 9600U);        			   break; }
+		case KSERIAL_BAUDRATE_19200:   { BAUDRATE(UART0, UART_FREQUENCY_C0, 19200U);       			   break; }
+		case KSERIAL_BAUDRATE_38400:   { BAUDRATE(UART0, UART_FREQUENCY_C0, 38400U);       			   break; }
+		case KSERIAL_BAUDRATE_57600:   { BAUDRATE(UART0, UART_FREQUENCY_C0, 57600U);       			   break; }
+		case KSERIAL_BAUDRATE_115200:  { BAUDRATE(UART0, UART_FREQUENCY_C0, 115200U);      			   break; }
+		case KSERIAL_BAUDRATE_230400:  { BAUDRATE(UART0, UART_FREQUENCY_C0, 230400U);      			   break; }
+		case KSERIAL_BAUDRATE_460800:  { BAUDRATE(UART0, UART_FREQUENCY_C0, 460800U);      			   break; }
+		case KSERIAL_BAUDRATE_500000:  { BAUDRATE(UART0, UART_FREQUENCY_C0, 500000U);      			   break; }
+		case KSERIAL_BAUDRATE_921600:  { BAUDRATE(UART0, UART_FREQUENCY_C0, 921600U);      			   break; }
+		case KSERIAL_BAUDRATE_1000000: { BAUDRATE(UART0, UART_FREQUENCY_C0, 1000000U);     			   break; }
+		case KSERIAL_BAUDRATE_1500000: { BAUDRATE(UART0, UART_FREQUENCY_C0, 1500000U);     			   break; }
+		case KSERIAL_BAUDRATE_1843200: { BAUDRATE(UART0, UART_FREQUENCY_C0, 1843200U);     			   break; }
+		case KSERIAL_BAUDRATE_2000000: { BAUDRATE(UART0, UART_FREQUENCY_C0, 2000000U);     			   break; }
+		case KSERIAL_BAUDRATE_2500000: { BAUDRATE(UART0, UART_FREQUENCY_C0, 2500000U);     			   break; }
+		case KSERIAL_BAUDRATE_3000000: { BAUDRATE(UART0, UART_FREQUENCY_C0, 3000000U);     			   break; }
 		default:					   { BAUDRATE(UART0, UART_FREQUENCY_C0, KSERIAL_DEFAULT_BAUDRATE); break; }
 	}
 
-	vWithSemaphore_RX_C0 = ((configure->oKernSync & ((uint32_t)1u<<(uint32_t)BSERIAL_SEMAPHORE_RX)) != 0u) ? (true) : (false);
-	vWithSemaphore_TX_C0 = ((configure->oKernSync & ((uint32_t)1u<<(uint32_t)BSERIAL_SEMAPHORE_TX)) != 0u) ? (true) : (false);
+	vWithSemaphore_RX_C0 = ((configure->oKernSync & ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_RX)) != 0U) ? (true) : (false);
+	vWithSemaphore_TX_C0 = ((configure->oKernSync & ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_TX)) != 0U) ? (true) : (false);
 	UART_C0->UARTCR |= UART_UARTCR_UARTEN;
 	RETURN_INT_RESTORE(KERR_SERIAL_NOERR);
 }
@@ -191,13 +204,13 @@ int32_t	model_uart_write_C0(const uint8_t *buffer, uint32_t size) {
 
 	INTERRUPTION_OFF;
 	if ((vSending_C0 == true) || (busy == true)) { RETURN_INT_RESTORE(KERR_SERIAL_SEPRO); }
-	if (wkSize == 0u)		  					 { RETURN_INT_RESTORE(KERR_SERIAL_LNBU0); }
+	if (wkSize == 0U)		  					 { RETURN_INT_RESTORE(KERR_SERIAL_LNBU0); }
 
 	busy = true;
 	INTERRUPTION_RESTORE;
 
 	while (terminate == false) {
-		while (vSending_C0 == true) { kern_suspendProcess(1u); }
+		while (vSending_C0 == true) { kern_suspendProcess(1U); }
 
 		if (wkSize > KUART_SZ_TX_BUF_C0) { newSize = KUART_SZ_TX_BUF_C0; wkSize -= KUART_SZ_TX_BUF_C0; }
 		else							 { newSize = wkSize; terminate = true;						   }
@@ -206,7 +219,7 @@ int32_t	model_uart_write_C0(const uint8_t *buffer, uint32_t size) {
 // Enable the TX interruption
 
 		vSending_C0 = true;
-		for (i = 0u; i < newSize; i++) {
+		for (i = 0U; i < newSize; i++) {
 			vSndBuffer_C0[i] = wkBuffer[i];
 		}
 
@@ -242,14 +255,14 @@ int32_t	model_uart_read_C0(uint8_t *buffer, uint32_t *size) {
 // In this case, we return 0-bytes read with the corresponding error.
 // The Error is then cancelled for the next time.
 
-	if (status != KERR_SERIAL_NOERR)		  { *size = 0u; RETURN_INT_RESTORE(status);			   }
-	if (*size == 0u)						  { *size = 0u; RETURN_INT_RESTORE(KERR_SERIAL_NOERR); }
+	if (status != KERR_SERIAL_NOERR)		  { *size = 0U; RETURN_INT_RESTORE(status);			   }
+	if (*size == 0U)						  { *size = 0U; RETURN_INT_RESTORE(KERR_SERIAL_NOERR); }
 
 // cppcheck-suppress premium-misra-c-2023-13.2
 //
-	if (vRRecBuffer_C0 == vWRecBuffer_C0)     { *size = 0u; RETURN_INT_RESTORE(KERR_SERIAL_RBUEM); }
+	if (vRRecBuffer_C0 == vWRecBuffer_C0)     { *size = 0U; RETURN_INT_RESTORE(KERR_SERIAL_RBUEM); }
 
-	for (i = 0u; i < *size; i++) {
+	for (i = 0U; i < *size; i++) {
 
 // cppcheck-suppress premium-misra-c-2023-13.2
 //
@@ -279,7 +292,7 @@ int32_t	model_uart_flush_C0(void) {
 
 	INTERRUPTION_OFF;
 
-	while ((UART_C0->UARTFR & UART_UARTFR_RXFE) == 0u) {
+	while ((UART_C0->UARTFR & UART_UARTFR_RXFE) == 0U) {
 		(void)UART_C0->UARTDR;
 	}
 	vRRecBuffer_C0 = vRecBuffer_C0;
@@ -306,19 +319,19 @@ static	void	local_UART_IRQHandler_C0(void) {
 	core = GET_RUNNING_CORE;
 
 	iir = UART_C0->UARTMIS;
-	if ((iir & (UART_UARTMIS_RXMIS | UART_UARTMIS_RTMIS)) != 0u ) {
+	if ((iir & (UART_UARTMIS_RXMIS | UART_UARTMIS_RTMIS)) != 0U ) {
 
 // RX interruption
 
 		UART_C0->UARTICR = UART_UARTICR_RXIC;
 
-		if ((UART_C0->UARTRSR & UART_UARTRSR_OE) != 0u) { UART_C0->UARTRSR = UART_UARTRSR_OE; vStatus_C0 = KERR_SERIAL_EROVR; }
-		if ((UART_C0->UARTRSR & UART_UARTRSR_FE) != 0u) { UART_C0->UARTRSR = UART_UARTRSR_FE; vStatus_C0 = KERR_SERIAL_ERFRA; }
-		if ((UART_C0->UARTRSR & UART_UARTRSR_PE) != 0u) { UART_C0->UARTRSR = UART_UARTRSR_PE; vStatus_C0 = KERR_SERIAL_ERPAR; }
+		if ((UART_C0->UARTRSR & UART_UARTRSR_OE) != 0U) { UART_C0->UARTRSR = UART_UARTRSR_OE; vStatus_C0 = KERR_SERIAL_EROVR; }
+		if ((UART_C0->UARTRSR & UART_UARTRSR_FE) != 0U) { UART_C0->UARTRSR = UART_UARTRSR_FE; vStatus_C0 = KERR_SERIAL_ERFRA; }
+		if ((UART_C0->UARTRSR & UART_UARTRSR_PE) != 0U) { UART_C0->UARTRSR = UART_UARTRSR_PE; vStatus_C0 = KERR_SERIAL_ERPAR; }
 
 // Read the data and signal the event
 
-		while ((UART_C0->UARTFR & UART_UARTFR_RXFE) == 0u) {
+		while ((UART_C0->UARTFR & UART_UARTFR_RXFE) == 0U) {
 			*vWRecBuffer_C0 = (uint8_t)UART_C0->UARTDR;
 			vWRecBuffer_C0++;
 
@@ -346,7 +359,7 @@ static	void	local_UART_IRQHandler_C0(void) {
 // MISRA suggestion
 
 	doAction = false;
-	if ((iir & UART_UARTMIS_TXMIS) != 0u) { doAction = true; }
+	if ((iir & UART_UARTMIS_TXMIS) != 0U) { doAction = true; }
 	if (vFirstKick_C0 == true)			  { doAction = true; }
 
 	if (doAction == true) {
@@ -362,7 +375,7 @@ static	void	local_UART_IRQHandler_C0(void) {
 // routine as long as the buffer is not sent.
 
 			while (true) {
-				while ((UART_C0->UARTFR & UART_UARTFR_TXFF) == 0u) {
+				while ((UART_C0->UARTFR & UART_UARTFR_TXFF) == 0U) {
 
 					UART_C0->UARTDR = (uint32_t)*vRSndBuffer_C0;
 					vRSndBuffer_C0++;

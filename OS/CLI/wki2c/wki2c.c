@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		wki2c tool.
 ;			This tool allows to operate with an i2c device.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,7 +47,18 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+#include	<stdio.h>
+#include	<stdlib.h>
+
+#include	"i2c/i2c.h"
+#include	"i2c_common.h"
+#include	"macros.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"serial/serial.h"
+#include	"text/text.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -93,14 +104,14 @@ MODULE(
 	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,										// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
 // CLI tool specific
 // =================
 
-#define	KNB_PARAMETERS	10u
+#define	KNB_PARAMETERS	10U
 
 /*
  * \brief main
@@ -113,14 +124,14 @@ MODULE(
 static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 					char_t			*dummy;
 					int32_t			status;
-					uint16_t		i, number = 0u;
-					uint8_t			unit = 0u, address = 0u, chipRegister = 0u, buffer8[KNB_PARAMETERS];
+					uint16_t		i, number = 0U;
+					uint8_t			unit = 0U, address = 0U, chipRegister = 0U, buffer8[KNB_PARAMETERS];
 					bool			equals;
 					i2cManager_t	i2cManager;
 					enum			{ KWRITE, KREAD } mode = KREAD;
 					enum			{ KOKWRITE, KOKREAD, KERRBUSY, KERRINA, KERRGEN } error = KERRINA;
 	static	const	i2cCnf_t		aConfigure = {
-										.oTimeout  = 100000u,
+										.oTimeout  = 100000U,
 										.oSpeed    = KI2C_100KBPS,
 									};
 
@@ -140,29 +151,29 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 // Read mode (with write register)
 //  wki2c 1 -R address register nbBytes
 
-	unit = (uint8_t)strtol(argv[1], &dummy, 10u);
+	unit = (uint8_t)strtol(argv[1], &dummy, 10U);
 	switch (unit) {
 		default:
-		case 0u: { i2cManager = KI2C0; break; }
-		case 1u: { i2cManager = KI2C1; break; }
-		case 2u: { i2cManager = KI2C2; break; }
-		case 3u: { i2cManager = KI2C3; break; }
+		case 0U: { i2cManager = KI2C0; break; }
+		case 1U: { i2cManager = KI2C1; break; }
+		case 2U: { i2cManager = KI2C2; break; }
+		case 3U: { i2cManager = KI2C3; break; }
 	}
 
-	if (i2c_reserve(i2cManager, KMODE_READ_WRITE, 2000u) == KERR_I2C_NOERR) {
+	if (i2c_reserve(i2cManager, KMODE_READ_WRITE, 2000U) == KERR_I2C_NOERR) {
 		i2c_configure(i2cManager, &aConfigure);
 
-		if (argc > 4u) {
-			address = (uint8_t)strtol(argv[3], &dummy, 16u);
+		if (argc > 4U) {
+			address = (uint8_t)strtol(argv[3], &dummy, 16U);
 
-			text_checkAsciiBuffer(argv[2], "-W", &equals); if (equals == true) { mode = KWRITE; }
-			text_checkAsciiBuffer(argv[2], "-R", &equals); if (equals == true) { mode = KREAD;  }
+			text_checkAsciiBuffer(argv[2], "-W", &equals); if (equals) { mode = KWRITE; }
+			text_checkAsciiBuffer(argv[2], "-R", &equals); if (equals) { mode = KREAD;  }
 
 			switch (mode) {
 				case KWRITE: {
-					number = (uint16_t)(argc - 4u);
-					for (i = 0u; i < number; i++) {
-						buffer8[i] = (uint8_t)strtol(argv[4 + i], &dummy, 16u);
+					number = (uint16_t)(argc - 4U);
+					for (i = 0U; i < number; i++) {
+						buffer8[i] = (uint8_t)strtol(argv[4 + i], &dummy, 16U);
 					}
 					status = i2c_write(i2cManager, address, &buffer8[0], number);
 					switch (status) {
@@ -172,8 +183,8 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 					break;
 				}
 				case KREAD: {
-					number		 = (uint16_t)strtol(argv[5], &dummy, 10u);
-					chipRegister = (uint8_t) strtol(argv[4], &dummy, 16u);
+					number		 = (uint16_t)strtol(argv[5], &dummy, 10U);
+					chipRegister = (uint8_t) strtol(argv[4], &dummy, 16U);
 					buffer8[0]	 = chipRegister;
 
 					status = i2c_read(i2cManager, address, &buffer8[0], number);
@@ -197,11 +208,11 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 
 	switch (error) {
 		case KOKWRITE: { (void)dprintf(KSYST, "i2c%d address %02X written", unit, address);
-						 for (i = 0u; i < number; i++) { (void)dprintf(KSYST, " %02X", buffer8[i]); }
+						 for (i = 0U; i < number; i++) { (void)dprintf(KSYST, " %02X", buffer8[i]); }
 						 (void)dprintf(KSYST, "\n\n");													status = EXIT_OS_SUCCESS_CLI; break; }
 
 		case KOKREAD:  { (void)dprintf(KSYST, "i2c%d address %02X read", unit, address);
-						 for (i = 0u; i < number; i++) { (void)dprintf(KSYST, " %02X", buffer8[i]); }
+						 for (i = 0U; i < number; i++) { (void)dprintf(KSYST, " %02X", buffer8[i]); }
 						 (void)dprintf(KSYST, "\n\n");													status = EXIT_OS_SUCCESS_CLI; break; }
 
 		case KERRINA:  { (void)dprintf(KSYST, "Incorrect arguments.\n\n");								status = EXIT_OS_FAILURE;     break; }

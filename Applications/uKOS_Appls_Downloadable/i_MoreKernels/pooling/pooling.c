@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Demo of a C application.
 ;			This application shows how to operate with the uKOS-X uKernel.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -60,13 +60,29 @@
  *					Set the memory pool block 2, 100-Bytes
  *
  *			- P0: Use the tracing
- *				  Generate an exception (cire dump)
+ *				  Generate an exception (core dump)
  *				  Display the registers
  *
  */
 
-#include	"uKOS.h"
+
+#include	<stdio.h>
+#include	<stdlib.h>
+
+#include	"crt0.h"
+#include	"serial/serial.h"
+#include	"kern/kern.h"
+#include	"kern/pools.h"
 #include	"kern/private/private_pools.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"memo/memo.h"
+#include	"led/led.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -92,7 +108,7 @@ MODULE(
 	aStart,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,								// Address of the clean code (clean the module)
 	" 1.0",								// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0									// Execution cores
 );
 
@@ -112,12 +128,12 @@ static	pool_t	*vMemoryPool;
  *
  */
 static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
+	UNUSED(argument);
+
 	uint16_t	*array_0, *array_1, *array_2;
 	uint32_t	i, nbElements;
 	int32_t		status;
 	pool_t		*memoryPool;
-
-	UNUSED(argument);
 
 	status = kern_getPoolById("Memory pool", &memoryPool);
 	if (status != KERR_KERN_NOERR) { (void)dprintf(KSYST, "No pool\n"); LOG(KFATAL_USER, "No pool"); exit(EXIT_OS_FAILURE); }
@@ -147,13 +163,13 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 	PRIVILEGE_RESTORE;
 
 	while (true) {
-		kern_suspendProcess(1000u);
+		kern_suspendProcess(1000U);
 
 // Fill the 3  pools
 
-		for (i = 0u; i < nbElements; i++) { array_0[i] = (uint16_t)i + 0u; }
-		for (i = 0u; i < nbElements; i++) { array_1[i] = (uint16_t)i + 1u; }
-		for (i = 0u; i < nbElements; i++) { array_2[i] = (uint16_t)i + 2u; }
+		for (i = 0U; i < nbElements; i++) { array_0[i] = (uint16_t)i + 0U; }
+		for (i = 0U; i < nbElements; i++) { array_1[i] = (uint16_t)i + 1U; }
+		for (i = 0U; i < nbElements; i++) { array_2[i] = (uint16_t)i + 2U; }
 		led_toggle(KLED_0);
 	}
 }
@@ -168,17 +184,17 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
+	UNUSED(argument);
+
 	uint16_t	*array_0, *array_1, *array_2;
 	uint32_t	i, nbElements;
 	int32_t		status;
 	pool_t		*memoryPool;
 
-	UNUSED(argument);
-
 // Waiting until P0 has filled at least once the 3 arrays
 // Get the pool information
 
-	kern_suspendProcess(2000u);
+	kern_suspendProcess(2000U);
 
 	status = kern_getPoolById("Memory pool", &memoryPool);
 	if (status != KERR_KERN_NOERR) { (void)dprintf(KSYST, "No pool\n"); LOG(KFATAL_USER, "No pool"); exit(EXIT_OS_FAILURE); }
@@ -208,26 +224,26 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 	PRIVILEGE_RESTORE;
 
 	while (true) {
-		kern_suspendProcess(200u);
+		kern_suspendProcess(200U);
 
 // Test the 3 pools
 
-		for (i = 0u; i < nbElements; i++) {
-			if (array_0[i] != (i + 0u)) {
+		for (i = 0U; i < nbElements; i++) {
+			if (array_0[i] != (i + 0U)) {
 				LOG(KFATAL_USER, "Coherency problem!!");
 				exit(EXIT_OS_FAILURE);
 			}
 
 		}
-		for (i = 0u; i < nbElements; i++) {
-			if (array_1[i] != (i + 1u)) {
+		for (i = 0U; i < nbElements; i++) {
+			if (array_1[i] != (i + 1U)) {
 				LOG(KFATAL_USER, "Coherency problem!!");
 				exit(EXIT_OS_FAILURE);
 			}
 
 		}
-		for (i = 0u; i < nbElements; i++) {
-			if (array_2[i] != (i + 2u)) {
+		for (i = 0U; i < nbElements; i++) {
+			if (array_2[i] != (i + 2U)) {
 				LOG(KFATAL_USER, "Coherency problem!!");
 				exit(EXIT_OS_FAILURE);
 			}
@@ -247,6 +263,9 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  *
  */
 int		main(int argc, const char *argv[]) {
+	UNUSED(argc);
+	UNUSED(argv);
+
 	int32_t		status;
 	void		*memory;
 	proc_t		*process_0, *process_1;
@@ -258,11 +277,8 @@ int		main(int argc, const char *argv[]) {
 	STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2025";
 	STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2025";
 
-	UNUSED(argc);
-	UNUSED(argv);
-
-	vConfigure.oNbBlocks  = 3u;
-	vConfigure.oBlockSize = 1000u * sizeof(uint16_t);
+	vConfigure.oNbBlocks  = 3U;
+	vConfigure.oBlockSize = 1000U * sizeof(uint16_t);
 
 	status = kern_createPool("Memory pool", &vMemoryPool);
 	if (status != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create pool");	 exit(EXIT_OS_FAILURE); }
@@ -270,13 +286,13 @@ int		main(int argc, const char *argv[]) {
 	status = kern_setPool(vMemoryPool, &vConfigure);
 	if (status != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Configure pool"); exit(EXIT_OS_FAILURE); }
 
-	status = kern_allocateBlock(vMemoryPool, &memory, 100u);
+	status = kern_allocateBlock(vMemoryPool, &memory, 100U);
 	if (status != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Allocate bloc");	 exit(EXIT_OS_FAILURE); }
 
-	status = kern_allocateBlock(vMemoryPool, &memory, 100u);
+	status = kern_allocateBlock(vMemoryPool, &memory, 100U);
 	if (status != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Allocate bloc");  exit(EXIT_OS_FAILURE); }
 
-	status = kern_allocateBlock(vMemoryPool, &memory, 100u);
+	status = kern_allocateBlock(vMemoryPool, &memory, 100U);
 	if (status != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Allocate bloc");	 exit(EXIT_OS_FAILURE); }
 
 // Specifications for the processes

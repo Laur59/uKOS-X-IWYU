@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		nrf5340_application_gpio equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // GPIO address definitions
 // ------------------------
 
@@ -67,7 +69,7 @@ typedef struct {
 	volatile	uint32_t	PIN_CNF[32];
 } GPIO_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	P0_NS	reinterpret_cast<GPIO_TypeDef *>(0x40842500u)
 #define	P1_NS	reinterpret_cast<GPIO_TypeDef *>(0x40842800u)
 #define	P0_S	reinterpret_cast<GPIO_TypeDef *>(0x50842500u)

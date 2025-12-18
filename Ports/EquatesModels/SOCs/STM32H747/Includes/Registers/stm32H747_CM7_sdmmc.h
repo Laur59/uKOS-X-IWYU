@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32H747_CM7_sdmmc equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // SDMMC address definitions
 // -------------------------
 
@@ -78,7 +80,7 @@ typedef struct {
 	volatile	uint32_t	FIFOR;
 } SDMMC_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	SDMMC1	reinterpret_cast<SDMMC_TypeDef *>(0x52007000u)
 #define	SDMMC2	reinterpret_cast<SDMMC_TypeDef *>(0x48022400u)
 

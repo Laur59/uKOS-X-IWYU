@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		idle daemon; run when all the other processes are suspended.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,8 +46,26 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+#if ((KKERN_WITH_STATISTICS_S == true) && (KDAEMONS_WITH_STACK_INT_S == true))
+#include	<stdlib.h>
+#else
+#include	<stddef.h>
+#endif
+
+#include	"macros.h"
+#include	"modules.h"
+#if ((KKERN_WITH_STATISTICS_S == true) && (KDAEMONS_WITH_STACK_INT_S == true))
+#include	"debug.h"
+#include	"kern/kern.h"
 #include	"kern/private/private_processes.h"
+#include	"macros_core_stackFrame.h"
+#include	"macros_soc.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"serial/serial.h"
+#endif
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -72,7 +90,7 @@ static	void		local_process(const void *argument);
 
 // This process has to run on the following cores:
 
-#define	KEXECUTION_CORE		((1u<<BCORE_0) | (1u<<BCORE_1) | (1u<<BCORE_2) | (1u<<BCORE_3))
+#define	KEXECUTION_CORE		((1U<<BCORE_0) | (1U<<BCORE_1) | (1U<<BCORE_2) | (1U<<BCORE_3))
 
 MODULE(
 	Stack,							// Module name (the first letter has to be upper case)
@@ -82,7 +100,7 @@ MODULE(
 	prgm,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	KEXECUTION_CORE					// Execution cores
 );
 
@@ -153,21 +171,21 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 	while (true) {
 		kern_suspendProcess(KDAEMONS_TIME_STACK_INT);
 
-		for (i = 0u; i < KKERN_NB_PROCESSES; i++) {
-			if ((vKern_proc[core][i].oInternal.oState & (1u<<BPROC_INSTALLED)) != 0u) {
+		for (i = 0U; i < KKERN_NB_PROCESSES; i++) {
+			if ((vKern_proc[core][i].oInternal.oState & (1U<<BPROC_INSTALLED)) != 0U) {
 				stackStart = vKern_proc[core][i].oSpecification.oStackStart;
 				stackSize  = vKern_proc[core][i].oSpecification.oStackSize;
 
 // Compute the length of the available process stack in bytes
 
-				j = 0u;
+				j = 0U;
 				terminate = false;
 				do {
 					if (*(stackStart+j) != (uintptr_t)KMAGICSTACK) {
-						vKern_proc[core][i].oStatistic.oAvStack = j * 4u;
+						vKern_proc[core][i].oStatistic.oAvStack = j * 4U;
 						terminate = true;
 					}
-				} while ((++j < stackSize) && (terminate == false));
+				} while ((++j < stackSize) && (!terminate));
 
 				#if (KDAEMONS_ALERT_STACK_INT_S == true)
 				if (j < KKERN_CRITICAL_SZ_STACK) {

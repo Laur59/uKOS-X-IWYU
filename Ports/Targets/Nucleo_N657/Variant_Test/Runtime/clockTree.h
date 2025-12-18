@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Clock tree definitions.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,12 @@
 
 #pragma	once
 
+// This header contains only variant-specific compile-time macros.
+// It is not meant to contain function or variable declarations.
+#if defined(__clang__)
+#  pragma clang diagnostic ignored "-Wempty-translation-unit"
+#endif
+
 // Main system clocks
 // ------------------
 
@@ -77,29 +83,29 @@
 // Flpusartx,	pclk4 100-MHz (x=1, 2)
 // Flpuartx,	pclk4 100-MHz (x=1)
 
-#define KCRYSTAL			64000000u									// Quartz crystal resonator
-#define KFREQUENCY_PLL1		800000000u									// PLL 1 CPU frequency of 800-MHz
-#define KFREQUENCY_PLL2		800000000u									// PLL 2 NPU frequency of 800-MHz
-#define KFREQUENCY_PLL3		400000000u									// PLL 3 AXI frequency of 400-MHz
-#define KFREQUENCY_PLL4		400000000u									// PLL 4 PER frequency of 400-MHz
+#define KCRYSTAL			64000000U									// Quartz crystal resonator
+#define KFREQUENCY_PLL1		800000000U									// PLL 1 CPU frequency of 800-MHz
+#define KFREQUENCY_PLL2		800000000U									// PLL 2 NPU frequency of 800-MHz
+#define KFREQUENCY_PLL3		400000000U									// PLL 3 AXI frequency of 400-MHz
+#define KFREQUENCY_PLL4		400000000U									// PLL 4 PER frequency of 400-MHz
 
-#define KTIMPRE				2u											// Div 4 (2^2)
-#define KHPRE				2u											// Div 4 (2^2)
-#define KPPRE1				0u											// Div 1 (2^0)
-#define KPPRE2				0u											// Div 1 (2^0)
-#define KPPRE4				0u											// Div 1 (2^0)
-#define KPPRE5				0u											// Div 1 (2^0)
+#define KTIMPRE				2U											// Div 4 (2^2)
+#define KHPRE				2U											// Div 4 (2^2)
+#define KPPRE1				0U											// Div 1 (2^0)
+#define KPPRE2				0U											// Div 1 (2^0)
+#define KPPRE4				0U											// Div 1 (2^0)
+#define KPPRE5				0U											// Div 1 (2^0)
 
 #define KFREQUENCY_CPU		KFREQUENCY_PLL1								// CPU bus frequency of 800-MHz
 #define KFREQUENCY_NPU		KFREQUENCY_PLL2								// NPU bus frequency of 800-MHz
 #define KFREQUENCY_AXI		KFREQUENCY_PLL3								// AXI bus frequency of 400-MHz
-#define KFREQUENCY_TIM		(KFREQUENCY_AXI / (1u<<KTIMPRE))			// TIM bus frequency of 100-MHz
-#define KFREQUENCY_HCL		(KFREQUENCY_AXI / (1u<<KHPRE))				// HCL bus frequency of 100-MHz
-#define KFREQUENCY_APB1		(KFREQUENCY_HCL / (1u<<KPPRE1))				// APB1 bus frequency of 100-MHz
-#define KFREQUENCY_APB2		(KFREQUENCY_HCL / (1u<<KPPRE2))				// APB2 bus frequency of 100-MHz
-#define KFREQUENCY_APB4		(KFREQUENCY_HCL / (1u<<KPPRE4))				// APB4 bus frequency of 100-MHz
-#define KFREQUENCY_APB5		(KFREQUENCY_HCL / (1u<<KPPRE5))				// APB5 bus frequency of 100-MHz
-#define KFREQUENCY_1GHz		1000000000u									// Frequency of 1-GHz
-#define KFREQUENCY_1MHz		1000000u									// Frequency of 1-MHz
-#define KFREQUENCY_1KHz		1000u										// Frequency of 1-KHz
+#define KFREQUENCY_TIM		(KFREQUENCY_AXI / (1U<<KTIMPRE))			// TIM bus frequency of 100-MHz
+#define KFREQUENCY_HCL		(KFREQUENCY_AXI / (1U<<KHPRE))				// HCL bus frequency of 100-MHz
+#define KFREQUENCY_APB1		(KFREQUENCY_HCL / (1U<<KPPRE1))				// APB1 bus frequency of 100-MHz
+#define KFREQUENCY_APB2		(KFREQUENCY_HCL / (1U<<KPPRE2))				// APB2 bus frequency of 100-MHz
+#define KFREQUENCY_APB4		(KFREQUENCY_HCL / (1U<<KPPRE4))				// APB4 bus frequency of 100-MHz
+#define KFREQUENCY_APB5		(KFREQUENCY_HCL / (1U<<KPPRE5))				// APB5 bus frequency of 100-MHz
+#define KFREQUENCY_1GHz		1000000000U									// Frequency of 1-GHz
+#define KFREQUENCY_1MHz		1000000U									// Frequency of 1-MHz
+#define KFREQUENCY_1KHz		1000U										// Frequency of 1-KHz
 #define KFREQUENCY_CORE		KFREQUENCY_CPU								// CORE frequency

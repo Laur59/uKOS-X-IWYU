@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		Configuration port for MicroPython.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -151,7 +151,7 @@ typedef	long		mp_off_t;
 #define	UKOS_FLOAT_BUILD						"float on simple precision"
 #define	UKOS_PACK_NAME							"Package "MICROPY_VERSION_STRING" for uKOS-X (cortex M7)"
 
-#if (defined(__thumb__))
+#ifdef __thumb__
 #define	MICROPY_MIN_USE_CORTEX_CPU				(1)
 #define	MICROPY_MIN_USE_STM32_MCU				(1)
 #endif

@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32U5Gx_icache equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // ICACHE address definitions
 // --------------------------
 
@@ -65,7 +67,7 @@ typedef struct {
 	volatile	uint32_t	CRR3;
 } ICACHE_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	ICACHE_NS	reinterpret_cast<ICACHE_TypeDef *>(0x40030400u)
 #define	ICACHE_S	reinterpret_cast<ICACHE_TypeDef *>(0x50030400u)
 

@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32H743_fdcan1 equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // FDCAN1 address definitions
 // --------------------------
@@ -126,7 +128,7 @@ typedef struct {
 	volatile	uint32_t	TTTS;
 } FDCAN1_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	FDCAN1	reinterpret_cast<FDCAN1_TypeDef *>(0x4000A000u)
 
 #else

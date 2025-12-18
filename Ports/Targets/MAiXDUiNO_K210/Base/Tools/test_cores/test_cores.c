@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Some core tests.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,20 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+// uKOS-X specific headers
+#define		_POSIX_C_SOURCE		200809L
+
+#include	<inttypes.h>
+#include	<stdbool.h>
+#include	<stdint.h>
+#include	<stdio.h>
+
+#include	"serial/serial.h"
+#include	"core.h"
+#include	"macros.h"
+#include	"macros_soc.h"
+#include	"modules.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -91,6 +104,9 @@ extern				spinlock_t	vLockVector;
  *
  */
 static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
+	UNUSED(argc);
+	UNUSED(argv);
+
 			uint32_t	core;
 			uint8_t		i, first;
 	static	bool		vError[KNB_CORES] = MCSET(false);

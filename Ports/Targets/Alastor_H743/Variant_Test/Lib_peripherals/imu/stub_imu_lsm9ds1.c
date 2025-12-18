@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		stub for the connection of the "imu" manager to the lsm9ds1, spi2 device.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,9 +46,11 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"shared_spi0/shared_spi0.h"
+#include	<stdint.h>
+
 #include	"LSM9DS1/LSM9DS1.h"
+#include	"kern/kern.h"
+#include	"shared_spi0/shared_spi0.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
@@ -58,7 +60,7 @@
 #define	model_lsM9ds1imu_read		stub_imu_read
 
 enum {
-		KIMU_INIT = 0u,
+		KIMU_INIT = 0U,
 		KIMU_RESERVE,
 		KIMU_RELEASE
 };
@@ -88,13 +90,13 @@ static	void	cb_control(uint8_t mode) {
 
 	switch (mode) {
 		case KIMU_INIT: {
-			if (vInit == false) {
+			if (!vInit) {
 
 // Check if the LSM9DS1was already initialised by the TMP
 
-				data = 0x00u; cb_readAcceGyro(LSM9DS1_CTRL_REG6_XL, &data, 1);
-				vInit = ((data & 0xE0u) == 0u) ? (false) : (true);
-				if (vInit == false) {
+				data = 0x00U; cb_readAcceGyro(LSM9DS1_CTRL_REG6_XL, &data, 1);
+				vInit = ((data & 0xE0U) != 0U);
+				if (!vInit) {
 					vInit = true;
 
 // Accelerometer, Gyro & Temperature
@@ -109,16 +111,16 @@ static	void	cb_control(uint8_t mode) {
 //    0 0 0 0 0 1 1 0 = 0x04 - Disable i2c, FIFO enable
 //    110 11111       = 0xDF - FIFO in continuous mode, max threshold
 
-					data = 0x78u; cb_writeAcceGyro(LSM9DS1_CTRL_REG1_G,  &data, 1u);
-					data = 0x00u; cb_writeAcceGyro(LSM9DS1_CTRL_REG2_G,  &data, 1u);
-					data = 0x00u; cb_writeAcceGyro(LSM9DS1_CTRL_REG3_G,  &data, 1u);
-					data = 0x38u; cb_writeAcceGyro(LSM9DS1_CTRL_REG4_G,  &data, 1u);
-					data = 0x38u; cb_writeAcceGyro(LSM9DS1_CTRL_REG5_XL, &data, 1u);
-					data = 0x73u; cb_writeAcceGyro(LSM9DS1_CTRL_REG6_XL, &data, 1u);
-					data = 0x00u; cb_writeAcceGyro(LSM9DS1_CTRL_REG7_XL, &data, 1u);
-					data = 0x34u; cb_writeAcceGyro(LSM9DS1_CTRL_REG8,    &data, 1u);
-					data = 0x06u; cb_writeAcceGyro(LSM9DS1_CTRL_REG9,    &data, 1u);
-					data = 0xDFu; cb_writeAcceGyro(LSM9DS1_FIFO_CTRL,    &data, 1u);
+					data = 0x78U; cb_writeAcceGyro(LSM9DS1_CTRL_REG1_G,  &data, 1U);
+					data = 0x00U; cb_writeAcceGyro(LSM9DS1_CTRL_REG2_G,  &data, 1U);
+					data = 0x00U; cb_writeAcceGyro(LSM9DS1_CTRL_REG3_G,  &data, 1U);
+					data = 0x38U; cb_writeAcceGyro(LSM9DS1_CTRL_REG4_G,  &data, 1U);
+					data = 0x38U; cb_writeAcceGyro(LSM9DS1_CTRL_REG5_XL, &data, 1U);
+					data = 0x73U; cb_writeAcceGyro(LSM9DS1_CTRL_REG6_XL, &data, 1U);
+					data = 0x00U; cb_writeAcceGyro(LSM9DS1_CTRL_REG7_XL, &data, 1U);
+					data = 0x34U; cb_writeAcceGyro(LSM9DS1_CTRL_REG8,    &data, 1U);
+					data = 0x06U; cb_writeAcceGyro(LSM9DS1_CTRL_REG9,    &data, 1U);
+					data = 0xDFU; cb_writeAcceGyro(LSM9DS1_FIFO_CTRL,    &data, 1U);
 				}
 
 // Magnetometer
@@ -127,11 +129,11 @@ static	void	cb_control(uint8_t mode) {
 //    1 0 0 0 0 1 0 0 = 0x84 - SPI On, I2C Off, continuous mode
 //    0 0 0 0 10 0 0  = 0x08 - High performance
 
-				data = 0x50u; cb_writeMagn(LSM9DS1_CTRL_REG1_M, &data, 1u);
-				data = 0x00u; cb_writeMagn(LSM9DS1_CTRL_REG2_M, &data, 1u);
-				data = 0x80u; cb_writeMagn(LSM9DS1_CTRL_REG3_M, &data, 1u);
-				data = 0x08u; cb_writeMagn(LSM9DS1_CTRL_REG4_M, &data, 1u);
-				kern_waitAtLeast(10u);
+				data = 0x50U; cb_writeMagn(LSM9DS1_CTRL_REG1_M, &data, 1U);
+				data = 0x00U; cb_writeMagn(LSM9DS1_CTRL_REG2_M, &data, 1U);
+				data = 0x80U; cb_writeMagn(LSM9DS1_CTRL_REG3_M, &data, 1U);
+				data = 0x08U; cb_writeMagn(LSM9DS1_CTRL_REG4_M, &data, 1U);
+				kern_waitAtLeast(10U);
 			}
 			break;
 		}
@@ -167,7 +169,7 @@ static	void	cb_writeAcceGyro(uint8_t address, const uint8_t *data, uint8_t numbe
 
 	shared_spi0_select(KIMUA);
 	local_writeReadSPI(address);
-	for (i = 0u; i < number; i++) {
+	for (i = 0U; i < number; i++) {
 		local_writeReadSPI(*wkData);
 		wkData++;
 	}
@@ -189,14 +191,14 @@ static	void	cb_writeMagn(uint8_t address, const uint8_t *data, uint8_t number) {
 // Then, write 1..n data
 
 	shared_spi0_select(KIMUM);
-	wkAddress = (number > 1u) ? (0x40u | wkAddress) : (wkAddress);
+	wkAddress = (number > 1U) ? (0x40U | wkAddress) : (wkAddress);
 	local_writeReadSPI(wkAddress);
-	for (i = 0u; i < number; i++) {
+	for (i = 0U; i < number; i++) {
 		local_writeReadSPI(*wkData);
 		wkData++;
 	}
 	shared_spi0_deselect(KIMUM);
-	kern_waitAtLeast(1u);
+	kern_waitAtLeast(1U);
 }
 
 /*
@@ -212,13 +214,13 @@ static	void	cb_readAcceGyro(uint8_t address, uint8_t *data, uint8_t number) {
 // Then, Read 1..n data
 
 	shared_spi0_select(KIMUA);
-	local_writeReadSPI(0x80u | address);
-	for (i = 0u; i < number; i++) {
-		*wkData = local_writeReadSPI(0x00u);
+	local_writeReadSPI(0x80U | address);
+	for (i = 0U; i < number; i++) {
+		*wkData = local_writeReadSPI(0x00U);
 		wkData++;
 	}
 	shared_spi0_deselect(KIMUA);
-	kern_waitAtLeast(1u);
+	kern_waitAtLeast(1U);
 }
 
 /*
@@ -234,14 +236,14 @@ static	void	cb_readMagn(uint8_t address, uint8_t *data, uint8_t number) {
 // Then, Read 1..n data
 
 	shared_spi0_select(KIMUM);
-	wkAddress = (number > 1u) ? (0xC0u | wkAddress) : (0x80u | wkAddress);
+	wkAddress = (number > 1U) ? (0xC0U | wkAddress) : (0x80U | wkAddress);
 	local_writeReadSPI(wkAddress);
-	for (i = 0u; i < number; i++) {
-		*wkData = local_writeReadSPI(0x00u);
+	for (i = 0U; i < number; i++) {
+		*wkData = local_writeReadSPI(0x00U);
 		wkData++;
 	}
 	shared_spi0_deselect(KIMUM);
-	kern_waitAtLeast(1u);
+	kern_waitAtLeast(1U);
 }
 
 // Local routines

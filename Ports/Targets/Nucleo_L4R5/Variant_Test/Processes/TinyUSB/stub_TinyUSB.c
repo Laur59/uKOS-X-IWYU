@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		stub for the "TinyUSB" library.
 ;			Multiple profiles
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,7 +47,13 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+
+#include	"clockTree.h"
+#include	"core_reg.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"soc_reg.h"
 
 // Save the GCC diagnostic
 //
@@ -56,30 +62,30 @@
 // Ignore the GCC diagnostic
 //
 #pragma GCC diagnostic	ignored	"-Wpedantic"
-
 // cppcheck-suppress missingInclude
-//
-#include	"tusb.h"
+#include	"tusb.h"		// IWYU pragma: keep
 
 // Restore the GCC diagnostic
 //
 #pragma GCC	diagnostic	pop
 
 #if (CFG_TUD_CDC > 0)
-#include	"TinyUSB/uKOS_Interface/Models/model_TinyUSB_cdc.c_inc"
+#include	"TinyUSB/uKOS_Interface/Models/model_TinyUSB_cdc.c_inc"	  // IWYU pragma: keep (workaround for app)
 #endif
 
 #if (CFG_TUD_MSC > 0)
-#include	"TinyUSB/uKOS_Interface/Models/model_TinyUSB_msc.c_inc"
+#include	"TinyUSB/uKOS_Interface/Models/model_TinyUSB_msc.c_inc"	  // IWYU pragma: keep (workaround for app)
 #endif
 
 #if (CFG_TUD_VIDEO > 0)
-#include	"TinyUSB/uKOS_Interface/Models/model_TinyUSB_video.c_inc"
+#include	"TinyUSB/uKOS_Interface/Models/model_TinyUSB_video.c_inc" // IWYU pragma: keep (workaround for app)
 #endif
 
 uint32_t	SystemCoreClock = KFREQUENCY_CORE;
 
 // Prototypes
+
+extern	void	(*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 static	void	local_OTG_FS_IRQHandler(void);
 

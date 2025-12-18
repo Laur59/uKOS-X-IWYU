@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		i2c manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,9 +46,30 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	"i2c.h"
 
-#if (defined(CONFIG_MAN_I2C_S))
+#include	<stddef.h>
+#include	<stdint.h>
+
+#include	"i2c_common.h"
+#ifdef CONFIG_MAN_I2C0_S
+#include	"i2c0/i2c0.h"
+#endif
+#ifdef CONFIG_MAN_I2C1_S
+#include	"i2c1/i2c1.h"
+#endif
+#ifdef CONFIG_MAN_I2C2_S
+#include	"i2c2/i2c2.h"
+#endif
+#ifdef CONFIG_MAN_I2C3_S
+#include	"i2c3/i2c3.h"
+#endif
+#include	"macros.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"types.h"
+
+#ifdef CONFIG_MAN_I2C_S
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -71,7 +92,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -102,19 +123,19 @@ int32_t	i2c_reserve(i2cManager_t manager, reserveMode_t reserveMode, uint32_t ti
 
 	switch (manager) {
 
-		#if (defined(CONFIG_MAN_I2C0_S))
+		#ifdef CONFIG_MAN_I2C0_S
 		case KI2C0: { return (i2c0_reserve(reserveMode, timeout)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_I2C1_S))
+		#ifdef CONFIG_MAN_I2C1_S
 		case KI2C1: { return (i2c1_reserve(reserveMode, timeout)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_I2C2_S))
+		#ifdef CONFIG_MAN_I2C2_S
 		case KI2C2: { return (i2c2_reserve(reserveMode, timeout)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_I2C3_S))
+		#ifdef CONFIG_MAN_I2C3_S
 		case KI2C3: { return (i2c3_reserve(reserveMode, timeout)); }
 		#endif
 
@@ -142,19 +163,19 @@ int32_t	i2c_release(i2cManager_t manager, reserveMode_t reserveMode) {
 
 	switch (manager) {
 
-		#if (defined(CONFIG_MAN_I2C0_S))
+		#ifdef CONFIG_MAN_I2C0_S
 		case KI2C0: { return (i2c0_release(reserveMode)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_I2C1_S))
+		#ifdef CONFIG_MAN_I2C1_S
 		case KI2C1: { return (i2c1_release(reserveMode)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_I2C2_S))
+		#ifdef CONFIG_MAN_I2C2_S
 		case KI2C2: { return (i2c2_release(reserveMode)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_I2C3_S))
+		#ifdef CONFIG_MAN_I2C3_S
 		case KI2C3: { return (i2c3_release(reserveMode)); }
 		#endif
 
@@ -186,19 +207,19 @@ int32_t	i2c_configure(i2cManager_t manager, const i2cCnf_t *configure) {
 
 	switch (manager) {
 
-		#if (defined(CONFIG_MAN_I2C0_S))
+		#ifdef CONFIG_MAN_I2C0_S
 		case KI2C0: { return (i2c0_configure(configure)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_I2C1_S))
+		#ifdef CONFIG_MAN_I2C1_S
 		case KI2C1: { return (i2c1_configure(configure)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_I2C2_S))
+		#ifdef CONFIG_MAN_I2C2_S
 		case KI2C2: { return (i2c2_configure(configure)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_I2C3_S))
+		#ifdef CONFIG_MAN_I2C3_S
 		case KI2C3: { return (i2c3_configure(configure)); }
 		#endif
 
@@ -229,19 +250,19 @@ int32_t	i2c_write(i2cManager_t manager, uint8_t address, const uint8_t *buffer, 
 
 	switch (manager) {
 
-		#if (defined(CONFIG_MAN_I2C0_S))
+		#ifdef CONFIG_MAN_I2C0_S
 		case KI2C0: { return (i2c0_write(address, buffer, size)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_I2C1_S))
+		#ifdef CONFIG_MAN_I2C1_S
 		case KI2C1: { return (i2c1_write(address, buffer, size)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_I2C2_S))
+		#ifdef CONFIG_MAN_I2C2_S
 		case KI2C2: { return (i2c2_write(address, buffer, size)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_I2C3_S))
+		#ifdef CONFIG_MAN_I2C3_S
 		case KI2C3: { return (i2c3_write(address, buffer, size)); }
 		#endif
 
@@ -280,19 +301,19 @@ int32_t	i2c_read(i2cManager_t manager, uint8_t address, uint8_t *buffer, uint16_
 
 	switch (manager) {
 
-		#if (defined(CONFIG_MAN_I2C0_S))
+		#ifdef CONFIG_MAN_I2C0_S
 		case KI2C0: { return (i2c0_read(address, buffer, size)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_I2C1_S))
+		#ifdef CONFIG_MAN_I2C1_S
 		case KI2C1: { return (i2c1_read(address, buffer, size)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_I2C2_S))
+		#ifdef CONFIG_MAN_I2C2_S
 		case KI2C2: { return (i2c2_read(address, buffer, size)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_I2C3_S))
+		#ifdef CONFIG_MAN_I2C3_S
 		case KI2C3: { return (i2c3_read(address, buffer, size)); }
 		#endif
 

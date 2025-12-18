@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Important generic macros.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,14 @@
 
 #pragma	once
 
+#include	<stdint.h>	// IWYU pragma: keep
+
+#if (defined(UKOS_S))
+#include	"types.h"			// IWYU pragma: keep (for char_t)
+// Note: RESERVE/RELEASE macros use KWAIT_INFINITY from kern/temporal.h
+// Users must include kern/temporal.h explicitly to use these macros
+#endif
+
 // System & compiler
 // -----------------
 
@@ -63,15 +71,6 @@
 #define uKOS_COMPILER_VERSION	((__GNUC__ * 10000) + (__GNUC_MINOR__ * 100) + (__GNUC_PATCHLEVEL__))
 #endif
 
-#define	uKOS_KBOARD				KBOARD PRIVILEGE_USER_MODE
-
-#if (defined(PRIVILEGED_USER_S))
-#define	PRIVILEGE_USER_MODE		", privileged-user mode"
-
-#else
-#define	PRIVILEGE_USER_MODE		", privileged ONLY mode"
-#endif
-
 // Variable alignment macros for C99 & C11
 // ---------------------------------------
 
@@ -80,7 +79,6 @@
 								varDeclared __attribute__ ((aligned (boundary)))
 
 #else
-#include	<stdalign.h>
 #define	VAR_DECLARED_ALIGN(varDeclared, boundary)											\
 								alignas (boundary) varDeclared
 #endif
@@ -93,19 +91,14 @@
 #define	RELEASE(device, reserveMode)														\
 								device##_release(reserveMode)
 
-#define	RESERVE_SERIAL(serialManager, reserveMode)											\
-								serial_reserve(serialManager, reserveMode, KWAIT_INFINITY)
-#define	RELEASE_SERIAL(serialManager, reserveMode)											\
-								serial_release(serialManager, reserveMode)
-
 // Some useful macros
 // ------------------
 
 #define	GET_PTR_32(ptr)			(															\
-								((uint32_t)((const uint8_t *)(ptr))[0]<<24u) |				\
-								((uint32_t)((const uint8_t *)(ptr))[1]<<16u) |				\
-								((uint32_t)((const uint8_t *)(ptr))[2]<<8u)  |				\
-								((uint32_t)((const uint8_t *)(ptr))[3]<<0u))
+								((uint32_t)((const uint8_t *)(ptr))[0]<<24U) |				\
+								((uint32_t)((const uint8_t *)(ptr))[1]<<16U) |				\
+								((uint32_t)((const uint8_t *)(ptr))[2]<<8U)  |				\
+								((uint32_t)((const uint8_t *)(ptr))[3]<<0U))
 
 #define	UNUSED(x)				(void)(x)
 
@@ -114,23 +107,6 @@
 #define	STRG_GLB_CONST(aId)		VAR_DECLARED_ALIGN(const		char_t	aId, 4)
 
 #define ALIGNED_PTR(type, ptr)	((type *)__builtin_assume_aligned((ptr), _Alignof(type)))
-
-// uKernel macros
-// --------------
-
-#if (KKERN_WITH_STATISTICS_S == true)
-#define	TIC_EXCEPTION_TIME		uint64_t	tic, tac;										\
-								kern_readTickCount(&tic)
-
-#define	TAC_EXCEPTION_TIME(core)															\
-								kern_readTickCount(&tac);									\
-								vKern_TimeException[core] += (uint32_t)(tac - tic);			\
-								(void)vKern_TimeException[core]
-
-#else
-#define	TIC_EXCEPTION_TIME
-#define	TAC_EXCEPTION_TIME
-#endif
 
 // Call suffix for Applications (downloadable) or Tools (romable application)
 // --------------------------------------------------------------------------

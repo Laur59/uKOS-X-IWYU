@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32N657_i3c equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // I3C address definitions
 // -----------------------
@@ -95,7 +97,7 @@ typedef struct {
 	volatile	uint32_t	EPIDR;
 } I3C_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	I3C1_NS	reinterpret_cast<I3C_TypeDef *>(0x40006000u)
 #define	I3C1_S	reinterpret_cast<I3C_TypeDef *>(0x50006000u)
 #define	I3C2_NS	reinterpret_cast<I3C_TypeDef *>(0x40006400u)

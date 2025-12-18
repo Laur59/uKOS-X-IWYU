@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Launch a function module.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,14 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+#include	<stdio.h>
+
+#include	"macros.h"
+#include	"modules.h"
+#include	"serial/serial.h"
+#include	"system/system.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -76,14 +83,14 @@ MODULE(
 	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,										// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
 // CLI tool specific
 // =================
 
-#define	KIDUSER	((KID_FAM_APPLICATIONS<<24u) | (KNUM_APPLICATION<<8u) | '_')
+#define	KIDUSER	((KID_FAM_APPLICATIONS<<24U) | (KNUM_APPLICATION<<8U) | '_')
 
 /*
  * \brief Main entry point

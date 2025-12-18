@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32N657_bsec equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // BSEC address definitions
 // ------------------------
@@ -532,7 +534,7 @@ typedef struct {
 	volatile	uint32_t	WRCR;
 } BSEC_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	BSEC_NS	reinterpret_cast<BSEC_TypeDef *>(0x46009000u)
 #define	BSEC_S	reinterpret_cast<BSEC_TypeDef *>(0x56009000u)
 

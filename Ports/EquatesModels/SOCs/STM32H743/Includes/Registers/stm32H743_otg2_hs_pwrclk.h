@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32H743_otg2_hs_pwrclk equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // OTG2_HS_PWRCLK address definitions
 // ----------------------------------
 
@@ -55,7 +57,7 @@ typedef struct {
 	volatile	uint32_t	OTG_HS_PCGCR;
 } OTG2_HS_PWRCLK_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	OTG2_HS_PWRCLK	reinterpret_cast<OTG2_HS_PWRCLK_TypeDef *>(0x40080E00u)
 
 #else

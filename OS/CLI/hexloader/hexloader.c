@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Intel hex+ loader.
@@ -34,8 +34,8 @@
 ;				"04" extended linear address (for 32-bit CPU)
 ;				"05" execution address
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -69,8 +69,21 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+#include	<stdio.h>
+#include	<string.h>
+
+#include	"kern/kern.h"
+#include	"led/led.h"
 #include	"linker.h"
+#include	"macros.h"
+#include	"macros_soc.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"serial/serial.h"
+#include	"system/system.h"
+#include	"text/text.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -112,17 +125,17 @@ MODULE(
 	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,										// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
 // CLI tool specific
 // =================
 
-#define	KNB_CHAR_BLINK	20u
+#define	KNB_CHAR_BLINK	20U
 
 enum {
-		KERR_H_LOADER_NOT = 0u,
+		KERR_H_LOADER_NOT = 0U,
 		KERR_H_LOADER_CHK,
 		KERR_H_LOADER_BFU,
 		KERR_H_LOADER_NOI,
@@ -131,7 +144,7 @@ enum {
 };
 
 enum {
-		KRUN = 0u,
+		KRUN = 0U,
 		KRUN_NO
 };
 
@@ -140,9 +153,9 @@ enum {
  *
  */
 static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
-	uint8_t			*address = NULL, byte, hexValue, type = 0u, checksum, counter;
+	uint8_t			*address = NULL, byte, hexValue, type = 0U, checksum, counter;
 	int32_t			status, error = KERR_H_LOADER_NOT, (*code)(uint32_t argc, const char_t *argv[]);
-	uintptr_t		offset = 0u, page = 0u;
+	uintptr_t		offset = 0U, page = 0U;
 	bool			terminate = false, equals;
 	uint8_t			run = KRUN;
 	uKOS_header_t	ramHeader;
@@ -152,12 +165,12 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 // Verify if the user memory is available
 // --------------------------------------
 
-	if (system_reserve(KMODE_READ_WRITE, 0u) != KERR_SYSTEM_NOERR) {
+	if (system_reserve(KMODE_READ_WRITE, 0U) != KERR_SYSTEM_NOERR) {
 		(void)dprintf(KSYST, "\nHex: The user memory is busy.\n\n");
 		return (EXIT_OS_FAILURE);
 	}
 
-	RESERVE_SERIAL(KSYST, KMODE_READ);
+	serial_reserve(KSYST, KMODE_READ, KWAIT_INFINITY);
 
 // Analyse the command line
 // ------------------------
@@ -170,9 +183,9 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 // hexloader p0 p1 p2 ... px
 
 	switch (argc) {
-		case 2u: {
-			text_checkAsciiBuffer(argv[1], "-norun", &equals); if (equals == true) { run = KRUN_NO;	}
-			text_checkAsciiBuffer(argv[1], "-run",   &equals); if (equals == true) { run = KRUN;	}
+		case 2U: {
+			text_checkAsciiBuffer(argv[1], "-norun", &equals); if (equals) { run = KRUN_NO;	}
+			text_checkAsciiBuffer(argv[1], "-run",   &equals); if (equals) { run = KRUN;	}
 			break;
 		}
 		default: {
@@ -183,7 +196,7 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 		}
 	}
 
-	while (terminate == false) {
+	while (!terminate) {
 
 // Waiting for the mark ":"
 
@@ -196,31 +209,31 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 				error = local_getType(&type, &checksum);
 				if (error == KERR_H_LOADER_NOT) {
 					switch (type) {
-						case 0u: {
+						case 0U: {
 							address = (uint8_t *)(page + offset);
 							error = local_getData(&counter, &checksum, address); if (error != KERR_H_LOADER_NOT) { terminate = true; break; }
 							error = local_getHexValue(&hexValue);				 if (error != KERR_H_LOADER_NOT) { terminate = true; break; }
-							if (hexValue != (uint8_t)(~checksum) + 1u)        	   { error  = KERR_H_LOADER_CHK;   terminate = true; break; }
+							if (hexValue != (uint8_t)(~checksum) + 1U)        	   { error  = KERR_H_LOADER_CHK;   terminate = true; break; }
 							break;
 						}
-						case 1u: {
+						case 1U: {
 							error = local_getHexValue(&hexValue);				 if (error != KERR_H_LOADER_NOT) { terminate = true; break; }
-							if (hexValue != (uint8_t)(~checksum) + 1u)			   { error  = KERR_H_LOADER_CHK;   terminate = true; break; }
+							if (hexValue != (uint8_t)(~checksum) + 1U)			   { error  = KERR_H_LOADER_CHK;   terminate = true; break; }
 							terminate = true;
 							break;
 						}
-						case 4u: {
+						case 4U: {
 							error = local_getOffset(&page, &checksum);			 if (error != KERR_H_LOADER_NOT) { terminate = true; break; }
-							page <<= 16u;
-							if (page == 0u) { page = (uintptr_t)linker_stUMemo; }
+							page <<= 16U;
+							if (page == 0U) { page = (uintptr_t)linker_stUMemo; }
 							error = local_getHexValue(&hexValue);				 if (error != KERR_H_LOADER_NOT) { terminate = true; break; }
-							if (hexValue != (uint8_t)(~checksum) + 1u)			   { error  = KERR_H_LOADER_CHK;   terminate = true; break; }
+							if (hexValue != (uint8_t)(~checksum) + 1U)			   { error  = KERR_H_LOADER_CHK;   terminate = true; break; }
 							break;
 						}
-						case 5u: {
+						case 5U: {
 							error = local_getExecAddress(&address, &checksum);	 if (error != KERR_H_LOADER_NOT) { terminate = true; break; }
 							error = local_getHexValue(&hexValue);				 if (error != KERR_H_LOADER_NOT) { terminate = true; break; }
-							if (hexValue != (uint8_t)(~checksum) + 1u)			   { error  = KERR_H_LOADER_CHK;   terminate = true; break; }
+							if (hexValue != (uint8_t)(~checksum) + 1U)			   { error  = KERR_H_LOADER_CHK;   terminate = true; break; }
 							break;
 						}
 						default: {
@@ -249,10 +262,10 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 // operates when all the chars are received
 
 	led_off(KLED_1);
-	kern_suspendProcess(500u);
+	kern_suspendProcess(500U);
 	serial_flush(KSYST);
 
-	RELEASE_SERIAL(KSYST, KMODE_READ);
+	serial_release(KSYST, KMODE_READ);
 
 	switch (error) {
 		case KERR_H_LOADER_NOT: {
@@ -264,10 +277,10 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 // Invalidate the header to prevent another execution, like after the reset
 // if the automatic execution from a debugger is installed.
 
-				if (local_checkSignature() == true) {
+				if (local_checkSignature()) {
 					ramHeader.oMemLocation	  = KNO_MEM;
 					ramHeader.oStart		  = NULL;
-					ramHeader.oLnApplication  = 0u;
+					ramHeader.oLnApplication  = 0U;
 					ramHeader.oModule		  = NULL;
 					memcpy((void *)linker_stUMemo, (const void *)&ramHeader, sizeof(ramHeader));
 					return ((*code)(argc, argv));
@@ -301,16 +314,16 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
  *
  */
 static	int32_t	local_getByte(uint8_t *byte) {
-	#define	KSZ_BUFFER	32u
+	#define	KSZ_BUFFER	32U
 			uint32_t	core;
-	static	uint8_t		vBuffer[KNB_CORES][KSZ_BUFFER], vCptBlinkLED[KNB_CORES] = MCSET(0u);
-	static	uint32_t	vI[KNB_CORES] = MCSET(0u), vSize[KNB_CORES] = MCSET(0u);
+	static	uint8_t		vBuffer[KNB_CORES][KSZ_BUFFER], vCptBlinkLED[KNB_CORES] = MCSET(0U);
+	static	uint32_t	vI[KNB_CORES] = MCSET(0U), vSize[KNB_CORES] = MCSET(0U);
 
 	core = GET_RUNNING_CORE;
-	*byte = 0u;
+	*byte = 0U;
 
-	if (vSize[core] == 0u) {
-		vI[core] = 0u;
+	if (vSize[core] == 0U) {
+		vI[core] = 0U;
 		do {
 			kern_switchFast();
 			vSize[core] = KSZ_BUFFER;
@@ -327,11 +340,11 @@ static	int32_t	local_getByte(uint8_t *byte) {
 					break;
 				}
 			}
-		} while (vSize[core] == 0u);
+		} while (vSize[core] == 0U);
 	}
 
 	if (vCptBlinkLED[core]++ >= KNB_CHAR_BLINK) {
-		vCptBlinkLED[core] = 0u;
+		vCptBlinkLED[core] = 0U;
 		led_toggle(KLED_1);
 	}
 	vSize[core]--;
@@ -351,28 +364,28 @@ static	int32_t	local_getHexValue(uint8_t *value) {
 					uint8_t		byte;
 					int32_t		status;
 	static	const	uint8_t		aTabAB[] = {
-									0u,   1u,  2u,  3u,		// '0' '1' '2' '3'
-									4u,   5u,  6u,  7u,		// '4' '5' '6' '7'
-									8u,   9u,  0u,  0u,		// '8' '9' ':' ';'
-									0u,   0u,  0u,  0u,		// '<' '=' '>' '?'
-									0u,  10u, 11u, 12u,		// '@' 'A' 'B' 'C'
-								   13u,  14u, 15u			// 'D' 'E' 'F'
+									0U,   1U,  2U,  3U,		// '0' '1' '2' '3'
+									4U,   5U,  6U,  7U,		// '4' '5' '6' '7'
+									8U,   9U,  0U,  0U,		// '8' '9' ':' ';'
+									0U,   0U,  0U,  0U,		// '<' '=' '>' '?'
+									0U,  10U, 11U, 12U,		// '@' 'A' 'B' 'C'
+								   13U,  14U, 15U			// 'D' 'E' 'F'
 								};
 
-	*value = 0u;
+	*value = 0U;
 	status = local_getByte(&byte);
 	if (status != KERR_H_LOADER_NOT) {
 		return (status);
 	}
 
-	if       ((byte >= '0') && (byte <= '9'))									   { *value  = (uint8_t)(aTabAB[byte - (uint8_t)'0']<<4u);						 }
-	else if (((byte >= 'A') && (byte <= 'F')) || ((byte >= 'a') && (byte <= 'f'))) { *value  = (uint8_t)(aTabAB[(byte & (uint8_t)(~0x20u)) - (uint8_t)'0']<<4u); }
-	else { ; }
+	if       ((byte >= '0') && (byte <= '9'))									   { *value  = (uint8_t)(aTabAB[byte - (uint8_t)'0']<<4U);						 }
+	else if (((byte >= 'A') && (byte <= 'F')) || ((byte >= 'a') && (byte <= 'f'))) { *value  = (uint8_t)(aTabAB[(byte & (uint8_t)(~0x20U)) - (uint8_t)'0']<<4U); }
+	else { }
 
 	status = local_getByte(&byte);  if (status != KERR_H_LOADER_NOT) { return (status); }
 	if       ((byte >= '0') && (byte <= '9'))									   { *value += (uint8_t)(aTabAB[byte - (uint8_t)'0']);							 }
-	else if (((byte >= 'A') && (byte <= 'F')) || ((byte >= 'a') && (byte <= 'f'))) { *value += (uint8_t)(aTabAB[(byte & (uint8_t)(~0x20u)) - (uint8_t)'0']);	 }
-	else { ; }
+	else if (((byte >= 'A') && (byte <= 'F')) || ((byte >= 'a') && (byte <= 'f'))) { *value += (uint8_t)(aTabAB[(byte & (uint8_t)(~0x20U)) - (uint8_t)'0']);	 }
+	else { }
 
 	return (KERR_H_LOADER_NOT);
 }
@@ -407,14 +420,14 @@ static	int32_t	local_getOffset(uintptr_t *offset, uint8_t *checksum) {
 
 // Build the offset 16-bit wide
 
-	*offset = 0u;
-	for (i = 0u; i < 2u; i++) {
+	*offset = 0U;
+	for (i = 0U; i < 2U; i++) {
 		status = local_getHexValue(&hexValue);
 		if (status != KERR_H_LOADER_NOT) {
 			return (status);
 		}
 
-		*offset = (*offset<<8u) + (uint32_t)hexValue;
+		*offset = (*offset<<8U) + (uint32_t)hexValue;
 		*checksum = (uint8_t)(*checksum + hexValue);
 	}
 	return (KERR_H_LOADER_NOT);
@@ -429,17 +442,17 @@ static	int32_t	local_getOffset(uintptr_t *offset, uint8_t *checksum) {
 static	int32_t	local_getExecAddress(uint8_t **address, uint8_t *checksum) {
 	uint8_t		i, hexValue;
 	int32_t		status;
-	uintptr_t	field = 0u;
+	uintptr_t	field = 0U;
 
 // Build the address 32-bit wide
 
-	for (i = 0u; i < 4u; i++) {
+	for (i = 0U; i < 4U; i++) {
 		status = local_getHexValue(&hexValue);
 		if (status != KERR_H_LOADER_NOT) {
 			return (status);
 		}
 
-		field = (field<<8u) + (uintptr_t)hexValue;
+		field = (field<<8U) + (uintptr_t)hexValue;
 		*checksum = (uint8_t)(*checksum + hexValue);
 	}
 	*address = (uint8_t *)field;
@@ -475,7 +488,7 @@ static	int32_t	local_getData(const uint8_t *counter, uint8_t *checksum, uint8_t 
 	int32_t		status;
 
 	load = address;
-	for (i = 0u; i < (*counter); i++) {
+	for (i = 0U; i < (*counter); i++) {
 		status = local_getHexValue(&hexValue);
 		if (status != KERR_H_LOADER_NOT) {
 			return (status);
@@ -497,22 +510,22 @@ static	int32_t	local_getData(const uint8_t *counter, uint8_t *checksum, uint8_t 
  *
  */
 static	bool	local_checkSignature(void) {
-			size_t		ln, i = 0u;
+			size_t		ln, i = 0U;
 	const	uint8_t		*ptr = (uint8_t *)linker_stUMemo;
 	const	char_t		*signature;
 
 	system_getSystemSignature(&signature);
 
-	for (ln = (size_t)linker_lnUMemo; ln > 0u; --ln ) {
+	for (ln = (size_t)linker_lnUMemo; ln > 0U; --ln ) {
 		if (*ptr == signature[i]) {
 			i++;
-			if (*ptr == 0u) {
+			if (*ptr == 0U) {
 				return (true);
 			}
 
 		}
 		else {
-			i = 0u;
+			i = 0U;
 		}
 		ptr++;
 	}

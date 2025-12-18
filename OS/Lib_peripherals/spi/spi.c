@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		spi manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,9 +46,30 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	"spi.h"
 
-#if (defined(CONFIG_MAN_SPI_S))
+#include	<stddef.h>
+#include	<stdint.h>
+
+#include	"macros.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#ifdef CONFIG_MAN_SPI0_S
+#include	"spi0/spi0.h"
+#endif
+#ifdef CONFIG_MAN_SPI1_S
+#include	"spi1/spi1.h"
+#endif
+#ifdef CONFIG_MAN_SPI2_S
+#include	"spi2/spi2.h"
+#endif
+#ifdef CONFIG_MAN_SPI3_S
+#include	"spi3/spi3.h"
+#endif
+#include	"spi_common.h"
+#include	"types.h"
+
+#ifdef CONFIG_MAN_SPI_S
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -71,7 +92,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -102,19 +123,19 @@ int32_t	spi_reserve(spiManager_t manager, reserveMode_t reserveMode, uint32_t ti
 
 	switch (manager) {
 
-		#if (defined(CONFIG_MAN_SPI0_S))
+		#ifdef CONFIG_MAN_SPI0_S
 		case KSPI0: { return (spi0_reserve(reserveMode, timeout)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_SPI1_S))
+		#ifdef CONFIG_MAN_SPI1_S
 		case KSPI1: { return (spi1_reserve(reserveMode, timeout)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_SPI2_S))
+		#ifdef CONFIG_MAN_SPI2_S
 		case KSPI2: { return (spi2_reserve(reserveMode, timeout)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_SPI3_S))
+		#ifdef CONFIG_MAN_SPI3_S
 		case KSPI3: { return (spi3_reserve(reserveMode, timeout)); }
 		#endif
 
@@ -142,19 +163,19 @@ int32_t	spi_release(spiManager_t manager, reserveMode_t reserveMode) {
 
 	switch (manager) {
 
-		#if (defined(CONFIG_MAN_SPI0_S))
+		#ifdef CONFIG_MAN_SPI0_S
 		case KSPI0: { return (spi0_release(reserveMode)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_SPI1_S))
+		#ifdef CONFIG_MAN_SPI1_S
 		case KSPI1: { return (spi1_release(reserveMode)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_SPI2_S))
+		#ifdef CONFIG_MAN_SPI2_S
 		case KSPI2: { return (spi2_release(reserveMode)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_SPI3_S))
+		#ifdef CONFIG_MAN_SPI3_S
 		case KSPI3: { return (spi3_release(reserveMode)); }
 		#endif
 
@@ -170,9 +191,9 @@ int32_t	spi_release(spiManager_t manager, reserveMode_t reserveMode) {
  * \code{.c}
  *          int32_t       status;
  * const    spiCnf_t     configure = {
- *                            .oSpeed    = 5000000u,
+ *                            .oSpeed    = 5000000U,
  *                            .oMode     = (uint8_t)KSPI_MASTER,
- *                            .oClock    = (1u<<(uint8_t)BSPI_POL) | (1u<<(uint8_t)BSPI_PHA)
+ *                            .oClock    = (1U<<(uint8_t)BSPI_POL) | (1U<<(uint8_t)BSPI_PHA)
  *                        };
  *
  *    status = spi_configure(KSPI0, &configure);
@@ -187,19 +208,19 @@ int32_t	spi_configure(spiManager_t manager, const spiCnf_t *configure) {
 
 	switch (manager) {
 
-		#if (defined(CONFIG_MAN_SPI0_S))
+		#ifdef CONFIG_MAN_SPI0_S
 		case KSPI0: { return (spi0_configure(configure)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_SPI1_S))
+		#ifdef CONFIG_MAN_SPI1_S
 		case KSPI1: { return (spi1_configure(configure)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_SPI2_S))
+		#ifdef CONFIG_MAN_SPI2_S
 		case KSPI2: { return (spi2_configure(configure)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_SPI3_S))
+		#ifdef CONFIG_MAN_SPI3_S
 		case KSPI3: { return (spi3_configure(configure)); }
 		#endif
 
@@ -229,19 +250,19 @@ int32_t	spi_writeRead(spiManager_t manager, uint8_t *data) {
 
 	switch (manager) {
 
-		#if (defined(CONFIG_MAN_SPI0_S))
+		#ifdef CONFIG_MAN_SPI0_S
 		case KSPI0: { return (spi0_writeRead(data)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_SPI1_S))
+		#ifdef CONFIG_MAN_SPI1_S
 		case KSPI1: { return (spi1_writeRead(data)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_SPI2_S))
+		#ifdef CONFIG_MAN_SPI2_S
 		case KSPI2: { return (spi2_writeRead(data)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_SPI3_S))
+		#ifdef CONFIG_MAN_SPI3_S
 		case KSPI3: { return (spi3_writeRead(data)); }
 		#endif
 
@@ -298,19 +319,19 @@ int32_t	spi_multipleWriteRead(spiManager_t manager, const uint8_t *wData, uint16
 
 	switch (manager) {
 
-		#if (defined(CONFIG_MAN_SPI0_S))
+		#ifdef CONFIG_MAN_SPI0_S
 		case KSPI0: { return (spi0_multipleWriteRead(wData, wSize, rData, rSize, timeout)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_SPI1_S))
+		#ifdef CONFIG_MAN_SPI1_S
 		case KSPI1: { return (spi1_multipleWriteRead(wData, wSize, rData, rSize, timeout)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_SPI2_S))
+		#ifdef CONFIG_MAN_SPI2_S
 		case KSPI2: { return (spi2_multipleWriteRead(wData, wSize, rData, rSize, timeout)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_SPI3_S))
+		#ifdef CONFIG_MAN_SPI3_S
 		case KSPI3: { return (spi3_multipleWriteRead(wData, wSize, rData, rSize, timeout)); }
 		#endif
 

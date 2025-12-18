@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32H743_tim4 equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // TIM4 address definitions
 // ------------------------
 
@@ -78,7 +80,7 @@ typedef struct {
 	volatile	uint32_t	TISEL;
 } TIM4_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	TIM4	reinterpret_cast<TIM4_TypeDef *>(0x40000800u)
 
 #else

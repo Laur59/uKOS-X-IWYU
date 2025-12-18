@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		stub for the connection of the "urt1" manager to the usart2 device.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,14 +46,16 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include "clockTree.h"
+#include "soc_reg.h"
+#include "urt1/urt1.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
 
 #define	USART					USART2
 #define	USART_VECTOR_NUMBER		USART2_C0_IRQn
-#define	USART_FREQUENCY			KFREQUENCY_APB1
+#define	USART_FREQUENCY			(uint32_t)KFREQUENCY_APB1
 
 #define	model_usart_init		stub_urt1_init
 #define	model_usart_configure	stub_urt1_configure
@@ -66,8 +68,8 @@
 #define	KUSART_SEMAPHORE_RX		KURT1_SEMAPHORE_RX
 #define	KUSART_SEMAPHORE_TX		KURT1_SEMAPHORE_TX
 
-#define	KUSART_SZ_TX_BUF		128u
-#define	KUSART_SZ_RX_BUF		128u
+#define	KUSART_SZ_TX_BUF		128U
+#define	KUSART_SZ_RX_BUF		128U
 
 // Model callbacks
 // ---------------

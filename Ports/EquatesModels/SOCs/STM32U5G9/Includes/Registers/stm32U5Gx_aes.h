@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32U5Gx_aes equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // AES address definitions
 // -----------------------
 
@@ -82,7 +84,7 @@ typedef struct {
 	volatile	uint32_t	ICR;
 } AES_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	AES_NS	reinterpret_cast<AES_TypeDef *>(0x420C0000u)
 #define	AES_S	reinterpret_cast<AES_TypeDef *>(0x520C0000u)
 

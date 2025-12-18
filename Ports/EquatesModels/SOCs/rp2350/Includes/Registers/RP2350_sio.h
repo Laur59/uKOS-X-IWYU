@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		RP2350_sio equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // SIO address definitions
 // -----------------------
@@ -166,7 +168,7 @@ typedef struct {
 	volatile	uint32_t	TMDS_POP_DOUBLE_L2;
 } SIO_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	SIO_NS	reinterpret_cast<SIO_TypeDef *>(0xD0020000u)
 #define	SIO_S	reinterpret_cast<SIO_TypeDef *>(0xD0000000u)
 #else

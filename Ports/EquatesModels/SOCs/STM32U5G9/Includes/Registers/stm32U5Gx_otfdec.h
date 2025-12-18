@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32U5Gx_otfdec equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // OTFDEC address definitions
 // --------------------------
@@ -101,7 +103,7 @@ typedef struct {
 	volatile	uint32_t	IER;
 } OTFDEC_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	OTFDEC1_NS	reinterpret_cast<OTFDEC_TypeDef *>(0x420C5000u)
 #define	OTFDEC1_S	reinterpret_cast<OTFDEC_TypeDef *>(0x520C5000u)
 #define	OTFDEC2_NS	reinterpret_cast<OTFDEC_TypeDef *>(0x420C5400u)

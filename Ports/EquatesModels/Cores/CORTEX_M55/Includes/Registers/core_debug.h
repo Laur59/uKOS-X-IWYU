@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		COREDEBUG equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // COREDEBUG address definitions
 // -----------------------------
 
@@ -61,7 +63,7 @@ typedef struct {
 	volatile	uint32_t	DSCSR;
 } CoreDebug_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	CoreDebug_S		reinterpret_cast<CoreDebug_TypeDef *>(0xE000EDF0u)
 #define	CoreDebug_NS	reinterpret_cast<CoreDebug_TypeDef *>(0xE002EDF0u)
 
@@ -72,4 +74,4 @@ typedef struct {
 
 // DEMCR register
 
-#define CoreDebug_DEMCR_TRCENA		(1u<<24)
+#define CoreDebug_DEMCR_TRCENA		(1U<<24)

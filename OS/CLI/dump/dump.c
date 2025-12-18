@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		This tool allows to dump a memory area.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,16 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+#include	<stdio.h>
+#include	<stdlib.h>
+
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"modules.h"
+#include	"serial/serial.h"
+#include	"text/text.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -80,14 +89,14 @@ MODULE(
 	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,										// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
 // CLI tool specific
 // =================
 
-#define	KLN_ASCII_BUF	96u
+#define	KLN_ASCII_BUF	96U
 
 /*
  * \brief Main entry point
@@ -111,16 +120,16 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 // dump A0001234 A0011234
 // dump -S A0001234 A0011234
 
-	if ((argc < 3u) || (argc > 4u)) {
+	if ((argc < 3U) || (argc > 4U)) {
 		error = true;
 	}
 	else {
-		if (argc == 3u) {
+		if (argc == 3U) {
 
 // User access
 
-			startAdd = (uintptr_t)strtol(argv[1], &dummy, 16u);
-			endAdd	 = (uintptr_t)strtol(argv[2], &dummy, 16u);
+			startAdd = (uintptr_t)strtol(argv[1], &dummy, 16U);
+			endAdd	 = (uintptr_t)strtol(argv[2], &dummy, 16U);
 
 			if (endAdd < startAdd) {
 				endAdd += startAdd;
@@ -131,14 +140,14 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 		}
 		else {
 			text_checkAsciiBuffer(argv[1], "-S", &equals);
-			if (equals == true) {
+			if (equals) {
 
 // Privileged access
 
 				PRIVILEGE_ELEVATE;
 
-				startAdd = (uintptr_t)strtol(argv[2], &dummy, 16u);
-				endAdd	 = (uintptr_t)strtol(argv[3], &dummy, 16u);
+				startAdd = (uintptr_t)strtol(argv[2], &dummy, 16U);
+				endAdd	 = (uintptr_t)strtol(argv[3], &dummy, 16U);
 
 				if (endAdd < startAdd) {
 					endAdd += startAdd;
@@ -155,8 +164,8 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 		}
 	}
 
-	if (error == false) { (void)dprintf(KSYST, "\n");				   status = EXIT_OS_SUCCESS_CLI; }
-	else				{ (void)dprintf(KSYST, "Protocol error.\n\n"); status = EXIT_OS_FAILURE;     }
+	if (!error) { (void)dprintf(KSYST, "\n");				   status = EXIT_OS_SUCCESS_CLI; }
+	else		{ (void)dprintf(KSYST, "Protocol error.\n\n"); status = EXIT_OS_FAILURE;     }
 	return (status);
 }
 
@@ -174,24 +183,24 @@ static	void	local_printLine(const uint8_t *memory, uint32_t nbBytes) {
 			uint8_t		j;
 			uint32_t	i;
 			size_t		offset;
-			char_t		ascii[(8u * 2u) + 1u], element;
+			char_t		ascii[(8U * 2U) + 1U], element;
 	const	uint8_t		*param;
 
-	for (i = 0u; i < ((nbBytes + 16u) / 16u); i++) {
-		offset = (size_t)i * (size_t)16u;
+	for (i = 0U; i < ((nbBytes + 16U) / 16U); i++) {
+		offset = (size_t)i * (size_t)16U;
 		param  = (const uint8_t *)(memory + offset);
 
 		(void)dprintf(KSYST, "0x%016X: ", (uintptr_t)param);
-		for (j = 0u; j < 15u; j++) {
-			(void)dprintf(KSYST, "%02X,",  *(memory + ((size_t)i * (size_t)16u) + (size_t)j));
+		for (j = 0U; j < 15U; j++) {
+			(void)dprintf(KSYST, "%02X,",  *(memory + ((size_t)i * (size_t)16U) + (size_t)j));
 		}
-			(void)dprintf(KSYST, "%02X  ", *(memory + ((size_t)i * (size_t)16u) + (size_t)15u));
+			(void)dprintf(KSYST, "%02X  ", *(memory + ((size_t)i * (size_t)16U) + (size_t)15U));
 
 // The ASCII part of the line
 
-		for (j = 0u; j < 16u; j++) {
-			element = (char_t)*(memory + ((size_t)i * (size_t)16u) + (size_t)j);
-			if ((*(memory + ((size_t)i * (size_t)16u) + (size_t)j) < ' ') || (*(memory + ((size_t)i * (size_t)16u) + (size_t)j) > 0x7Fu)) {
+		for (j = 0U; j < 16U; j++) {
+			element = (char_t)*(memory + ((size_t)i * (size_t)16U) + (size_t)j);
+			if ((*(memory + ((size_t)i * (size_t)16U) + (size_t)j) < ' ') || (*(memory + ((size_t)i * (size_t)16U) + (size_t)j) > 0x7FU)) {
 				element = '.';
 			}
 			ascii[j] = element;

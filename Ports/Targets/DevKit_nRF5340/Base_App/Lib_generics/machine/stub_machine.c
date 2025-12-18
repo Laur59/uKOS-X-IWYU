@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		stub for the "machine" manager module.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,12 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+
+#include	"Registers/scb.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"os_errors.h"
 
 /*
  * \brief stub_machine_init
@@ -71,7 +76,7 @@ int32_t	stub_machine_restart(void) {
 
 	INTERRUPTION_OFF;
 	REG(SCB)->AIRCR = SCB_AIRCR_VECTKEY_MASK | SCB_AIRCR_SYSRESETREQ;
-	while (true) { ; }
+	while (true) { }
 
 	return (KERR_SYSTEM_NOERR);
 }
@@ -83,7 +88,7 @@ int32_t	stub_machine_restart(void) {
  *
  */
 void	stub_machine_readPC(const uintptr_t *stackProcess, uintptr_t *pc) {
-	uint8_t		pcOffset = 0u;
+	uint8_t		pcOffset = 0U;
 	uintptr_t	lr;
 
 // uKOS-X stack frame:
@@ -103,11 +108,11 @@ void	stub_machine_readPC(const uintptr_t *stackProcess, uintptr_t *pc) {
 
 // If the FPU was used         			      s31 to s16
 //										      -----------
-	if ((lr & (1u<<4u)) == 0u) { pcOffset += ((31u-16u)+1u); }
+	if ((lr & (1U<<4U)) == 0U) { pcOffset += ((31U-16U)+1U); }
 
 //               lr (new) basepri       r11..r4         r3..r0      r12  lr (old)
 //               -------- -------    -------------   -------------  ---  --------
-	pcOffset +=      +1u    +1u      +((11u-4u)+1u)  +((3u-0u)+1u)  +1u    +1u;
+	pcOffset +=      +1U    +1U      +((11U-4U)+1U)  +((3U-0U)+1U)  +1U    +1U;
 
 	*pc = (stackProcess[pcOffset]);
 }
@@ -126,9 +131,9 @@ void	stub_machine_readFunctionName(const uintptr_t pc, const char_t **function) 
 			intptr_t	offset, nameLen;
 	const	uintptr_t	*ptr;
 
-	ptr = (const uintptr_t *)((pc + 2u) & (~0x3u));
+	ptr = (const uintptr_t *)((pc + 2U) & (~0x3u));
 
-	for (offset = 1; (offset < (intptr_t)(16u * 1024u)) && ((uintptr_t)&ptr[-offset] > (uintptr_t)0x0u); ++offset) {
+	for (offset = 1; (offset < (intptr_t)(16U * 1024U)) && ((uintptr_t)&ptr[-offset] > (uintptr_t)0x0u); ++offset) {
 		if ((ptr[-offset] & (uintptr_t)0xFFFFFF00u) == (uintptr_t)0xFF000000u) {
 			nameLen = (intptr_t)(ptr[-offset] & (uintptr_t)0xFFu);
 			*function = &((const char_t *)&ptr[-offset])[-nameLen];

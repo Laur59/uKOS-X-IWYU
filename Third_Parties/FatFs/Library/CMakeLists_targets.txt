@@ -1,0 +1,123 @@
+# CMakeLists.
+# ===========
+
+# SPDX-License-Identifier: MIT
+
+#------------------------------------------------------------------------
+# Author:   Laurent von Allmen  The 2025-10-12
+# Modifs:
+#
+# Project:  uKOS-X
+# Goal:     Master CMake file to build all FatFs libraries for uKOS-X.
+#
+# Description:
+#           This master CMakeLists.txt orchestrates the build of FatFs
+#           static libraries for all supported cores. Each core is built
+#           as a separate subdirectory project.
+#
+#           Usage:
+#               cd Library
+#               cmake -B build
+#               cmake --build build
+#
+#           This will build all libraries:
+#               - CORTEX_M3/libFatFs.a
+#               - CORTEX_M33/libFatFs.a
+#               - CORTEX_M4/libFatFs.a
+#               - CORTEX_M55/libFatFs.a
+#               - CORTEX_M7/libFatFs.a
+#               - RV32IMAC/libFatFs.a
+#               - RV64IMAFDC/libFatFs.a
+#
+#   © 2025-2026, Laurent von Allmen
+#   -------------------------------
+#                                              __ ______  _____
+#   Edo. Franzi                         __  __/ //_/ __ \/ ___/
+#   5-Route de Cheseaux                / / / / ,< / / / /\__ \
+#   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
+#                                     \__,_/_/ |_\____//____/
+#   edo.franzi@ukos.ch
+#
+#   Permission is hereby granted, free of charge, to any person
+#   obtaining a copy of this software and associated documentation
+#   files (the "Software"), to deal in the Software without restriction,
+#   including without limitation the rights to use, copy, modify,
+#   merge, publish, distribute, sublicense, and/or sell copies of the
+#   Software, and to permit persons to whom the Software is furnished
+#   to do so, subject to the following conditions:
+#
+#   The above copyright notice and this permission notice shall be
+#   included in all copies or substantial portions of the Software.
+#
+#   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+#   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+#   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+#   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+#   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+#   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+#   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+#   SOFTWARE.
+#
+#------------------------------------------------------------------------
+
+cmake_minimum_required(VERSION 3.26)
+
+project(FatFs_All
+    DESCRIPTION "FatFs static libraries for all supported cores"
+    LANGUAGES NONE
+)
+
+message("╔════════════════════════════════════════════════════════════╗")
+message("║           Building FatFs for All Architectures             ║")
+message("╚════════════════════════════════════════════════════════════╝")
+message("")
+
+# List of all supported cores
+set(SUPPORTED_CORES
+    CORTEX_M3
+    CORTEX_M33
+    CORTEX_M4
+    CORTEX_M55
+    CORTEX_M7
+    RV32IMAC
+    RV64IMAFDC
+)
+
+# Create a custom target for each core that builds independently
+foreach(CORE ${SUPPORTED_CORES})
+    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${CORE}/CMakeLists.txt")
+        message(STATUS "Configuring build for core: ${CORE}")
+
+        # Create a custom target that builds this core independently
+        add_custom_target(build_${CORE}
+            COMMAND ${CMAKE_COMMAND} -B ${CMAKE_CURRENT_SOURCE_DIR}/${CORE}/build -S ${CMAKE_CURRENT_SOURCE_DIR}/${CORE}
+            COMMAND ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_SOURCE_DIR}/${CORE}/build
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${CORE}
+            COMMENT "Building FatFs for ${CORE}"
+            VERBATIM
+        )
+
+        list(APPEND ALL_CORE_TARGETS build_${CORE})
+    else()
+        message(WARNING "Skipping ${CORE}: CMakeLists.txt not found")
+    endif()
+endforeach()
+
+# Create a master target that builds all cores
+# The ALL keyword makes this the default target
+add_custom_target(build_all_cores ALL
+    DEPENDS ${ALL_CORE_TARGETS}
+    COMMENT "Building FatFs for all architectures"
+)
+
+# Summary message
+message("")
+message("──────────────────────────────────────────────────────────────")
+message("Configuration complete.")
+message("")
+message("To build all libraries, run:")
+message("  cmake --build build --target build_all_cores")
+message("")
+message("To build a specific core, run:")
+message("  cmake --build build --target build_CORTEX_M4")
+message("──────────────────────────────────────────────────────────────")

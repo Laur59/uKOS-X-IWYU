@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32H743_jpeg equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // JPEG address definitions
 // ------------------------
 
@@ -69,7 +71,7 @@ typedef struct {
 	volatile	uint32_t	DOR;
 } JPEG_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	JPEG	reinterpret_cast<JPEG_TypeDef *>(0x52003000u)
 
 #else

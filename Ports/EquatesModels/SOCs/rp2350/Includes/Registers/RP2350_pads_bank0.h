@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		RP2350_pads_bank0 equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // PADS_BANK0 address definitions
 // ------------------------------
@@ -105,7 +107,7 @@ typedef struct {
 	volatile	uint32_t	SWD;
 } PADS_BANK0_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	PADS_BANK0_NS	reinterpret_cast<PADS_BANK0_TypeDef *>(0x40038000u)
 #define	PADS_BANK0_S	reinterpret_cast<PADS_BANK0_TypeDef *>(0x40038000u)
 #else

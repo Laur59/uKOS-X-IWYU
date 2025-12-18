@@ -14,8 +14,8 @@
 #
 #			add "-" to suppress a specific rule.
 #
-#   (c) 2025-20xx, Laurent von Allmen
-#   ---------------------------------
+#   © 2025-2026, Laurent von Allmen
+#   -------------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -49,52 +49,32 @@
 #------------------------------------------------------------------------
 
 Checks: >
-  -*,
-
   bugprone-*,
   -bugprone-reserved-identifier,
   -bugprone-integer-division,
   -bugprone-unsafe-functions,
   -bugprone-easily-swappable-parameters,
-
   cert-*,
   -cert-dcl37-c,
   -cert-msc24-c,
   -cert-msc33-c,
   -cert-dcl51-cpp,
-
   performance-*,
   -performance-no-int-to-ptr,
-
   portability-*,
-
-  modernize-*
-  -modernize-macro-to-enum
-  -modernize-use-nullptr
-
+  modernize-use-default-member-init,
+  modernize-use-override,
+  modernize-loop-convert,
   misc-*,
-  -misc-no-recursion,
-  -misc-include-cleaner,
-  -misc-redundant-expression,
-
+  -misc-header-include-cycle,
   readability-*,
-  -readability-uppercase-literal-suffix,
-  -readability-use-concise-preprocessor-directives,
-  -readability-simplify-boolean-expr,
-  -readability-identifier-length,
   -readability-isolate-declaration,
   -readability-implicit-bool-conversion,
   -readability-function-cognitive-complexity,
-  -readability-avoid-const-params-in-decls,
+  -readability-identifier-length,
   -readability-magic-numbers,
-  -readability-inconsistent-declaration-parameter-name,
-  -readability-redundant-declaration,
-
-  clang-analyzer-*,
   -clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling,
   -clang-analyzer-security.insecureAPI.strcpy,
-  -clang-analyzer-optin.performance.Padding,
-
   -google-*,
   -fuchsia-*,
   -altera-*,

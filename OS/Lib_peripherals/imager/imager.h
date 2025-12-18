@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		imager manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -63,7 +63,10 @@
  * @{
  */
 
-#include	"Lib_peripherals/imager_common.h"
+#include	<stdint.h>
+
+#include	"imager_common.h"
+#include	"types.h"
 
 // Semaphores
 // ----------
@@ -74,7 +77,7 @@
 
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -165,7 +168,7 @@ extern	int32_t	imager_release(reserveMode_t reserveMode);
  *                           .oPixMode  = KIMAGER_PIX_8_BITS;
  *                           .oNbRows   = 60;
  *                           .oNbCols   = 60;
- *                           .oKernSync = (1u<<BIMAGER_SEMAPHORE_IM) | (1u<<BIMAGER_SEMAPHORE_VS);
+ *                           .oKernSync = (1U<<BIMAGER_SEMAPHORE_IM) | (1U<<BIMAGER_SEMAPHORE_VS);
  *                           .oHSync    = NULL;
  *                           .oFrame    = NULL;
  *                           .oVSync    = NULL;
@@ -179,7 +182,7 @@ extern	int32_t	imager_release(reserveMode_t reserveMode);
  *                           .oPixMode  = KIMAGER_PIX_8_BITS;
  *                           .oNbRows   = 60;
  *                           .oNbCols   = 60;
- *                           .oKernSync = (1u<<BIMAGER_SEMAPHORE_IM) | (1u<<BIMAGER_SEMAPHORE_VS);
+ *                           .oKernSync = (1U<<BIMAGER_SEMAPHORE_IM) | (1U<<BIMAGER_SEMAPHORE_VS);
  *                           .oHSync    = NULL;
  *                           .oFrame    = NULL;
  *                           .oVSync    = NULL;
@@ -325,7 +328,7 @@ extern	int32_t	imager_standby(uint8_t mode);
  */
 extern	int32_t	imager_exposure(uint32_t time);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 

@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Some common routines used in many modules.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,18 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+#include	<string.h>
+
+#include	"clockTree.h"
+#include	"serial_common.h"
+#include	"serial/serial.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"modules.h"
+#include	"soc_reg.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -69,11 +80,11 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
-#define	KCMNS_SZ_TX_BUF				128u
+#define	KCMNS_SZ_TX_BUF				128U
 
 static	char_t	vTxBuffer_1[KCMNS_SZ_TX_BUF];
 
@@ -89,7 +100,7 @@ void	cmns_init(void) {
 
 	REG(UARTE1)->ENABLE   = 0x8u;
 	REG(UARTE1)->BAUDRATE = BAUDRATE_NRF(KSERIAL_BAUDRATE_460800);
-	REG(UARTE1)->CONFIG   = 0u;
+	REG(UARTE1)->CONFIG   = 0U;
 }
 
 /*
@@ -118,10 +129,10 @@ void	cmns_send(serialManager_t serialManager, const char_t *ascii) {
 
 			REG(UARTE1)->TXD_PTR	   = (uint32_t)vTxBuffer_1;
 			REG(UARTE1)->TXD_MAXCNT	   = (uint32_t)length;
-			REG(UARTE1)->TASKS_STARTTX = 1u;
+			REG(UARTE1)->TASKS_STARTTX = 1U;
 
-			while ((REG(UARTE1)->EVENTS_ENDTX & 1u) == 0u) { ; }
-			REG(UARTE1)->EVENTS_ENDTX  = 0u;
+			while ((REG(UARTE1)->EVENTS_ENDTX & 1U) == 0U) { }
+			REG(UARTE1)->EVENTS_ENDTX  = 0U;
 			break;
 		}
 	}
@@ -148,11 +159,11 @@ void	cmns_receive(serialManager_t serialManager, char_t *data) {
 		default:
 		case KURT0: {
 			REG(UARTE1)->RXD_PTR	   = (uint32_t)data;
-			REG(UARTE1)->RXD_MAXCNT	   = 1u;
-			REG(UARTE1)->TASKS_STARTRX = 1u;
+			REG(UARTE1)->RXD_MAXCNT	   = 1U;
+			REG(UARTE1)->TASKS_STARTRX = 1U;
 
-			while ((REG(UARTE1)->EVENTS_ENDRX & 1u) == 0u) { ; }
-			REG(UARTE1)->EVENTS_ENDRX  = 0u;
+			while ((REG(UARTE1)->EVENTS_ENDRX & 1U) == 0U) { }
+			REG(UARTE1)->EVENTS_ENDRX  = 0U;
 			break;
 		}
 	}
@@ -172,11 +183,11 @@ void	cmns_wait(uint32_t us) {
 	uint32_t	wkUs = us, time;
 
 	#if (defined(CACHE_S))
-	wkUs = (wkUs / 6u) * (KFREQUENCY_CORE / 1000000u);
+	wkUs = (wkUs / 6U) * (KFREQUENCY_CORE / 1000000U);
 
 	#else
-	wkUs = (wkUs / 12u) * (KFREQUENCY_CORE / 1000000u);
+	wkUs = (wkUs / 12U) * (KFREQUENCY_CORE / 1000000U);
 	#endif
 
-	for (time = 0u; time < wkUs; time++) { NOP; }
+	for (time = 0U; time < wkUs; time++) { NOP; }
 }

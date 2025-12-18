@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		stub for the connection of the "wfi0" manager to the "usart1 - esp32" device.
 ;			wifi mode in access point
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,7 +47,18 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+#include	<stdlib.h>
+#include	<string.h>
+
+#include	"board.h"
+#include	"clockTree.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"os_errors.h"
+#include	"soc_reg.h"
+#include	"types.h"
+#include	"wfi0/wfi0.h"
 
 #undef	VERBOSE_S				// Display the answer
 
@@ -70,8 +81,8 @@
 #define	KUSART_SEMAPHORE_RX				KWFI0_SEMAPHORE_RX
 #define	KUSART_SEMAPHORE_TX				KWFI0_SEMAPHORE_TX
 
-#define	KUSART_SZ_TX_BUF				1024u
-#define	KUSART_SZ_RX_BUF				1024u
+#define	KUSART_SZ_TX_BUF				1024U
+#define	KUSART_SZ_RX_BUF				1024U
 
 extern	volatile	uint8_t		vRecBuffer[KUSART_SZ_RX_BUF];
 extern	volatile	uint8_t		* volatile vRRecBuffer;
@@ -143,12 +154,12 @@ static	void	cb_init(void) {
 // Initialise the ESP32 chip
 // Set the TCP server mode
 
-	kern_suspendProcess(10u);
+	kern_suspendProcess(10U);
 
-	GPIOD->ODR |=			 (1u<<BESP32_NDOWNLOAD);
-	GPIOE->ODR &= (uint32_t)~(1u<<BESP32_ENABLE);
-	kern_suspendProcess(10u);
-	GPIOE->ODR |=			 (1u<<BESP32_ENABLE);
+	GPIOD->ODR |=			 (1U<<BESP32_NDOWNLOAD);
+	GPIOE->ODR &= (uint32_t)~(1U<<BESP32_ENABLE);
+	kern_suspendProcess(10U);
+	GPIOE->ODR |=			 (1U<<BESP32_ENABLE);
 
 // Set-up a personalised access-point:
 //	AT+CWMODE=2
@@ -159,13 +170,13 @@ static	void	cb_init(void) {
 //	AT+CIPSERVERMAXCONN=1
 //	AT+CIPSERVER=1,9999
 
-	local_sndCommand(aAT,			    100u);			// AT test
-	local_sndCommand(aCWMODE,		    100u);			// SoftAP mode
-	local_sndCommand(aCWSAP,			1000u);			// ssid, password, channel 1, WPA2_PSK, max connection 1, SSID broadcast
-	local_sndCommand(aCIPMUX,		    100u);			// Multiple connection
-	local_sndCommand(aCIPSERVERMAXCONN, 100u);			// Max. number of clients
-	local_sndCommand(aCIPSERVER,	    100u);			// Create server on the 9999 port
-	local_sndCommand(aATE0,			    100u);			// Without echo
+	local_sndCommand(aAT,			    100U);			// AT test
+	local_sndCommand(aCWMODE,		    100U);			// SoftAP mode
+	local_sndCommand(aCWSAP,			1000U);			// ssid, password, channel 1, WPA2_PSK, max connection 1, SSID broadcast
+	local_sndCommand(aCIPMUX,		    100U);			// Multiple connection
+	local_sndCommand(aCIPSERVERMAXCONN, 100U);			// Max. number of clients
+	local_sndCommand(aCIPSERVER,	    100U);			// Create server on the 9999 port
+	local_sndCommand(aATE0,			    100U);			// Without echo
 
 	vEndInitSeq = true;
 }
@@ -182,14 +193,14 @@ static	void	cb_read(void) {
 
 	vData = (uint8_t)USART->RDR;
 
-	#if (defined(VERBOSE_S))
-	urt1_write(&vData, 1u);
+	#ifdef VERBOSE_S
+	urt1_write(&vData, 1U);
 	#endif
 
 // State machine management
 // During the initialization sequence, do not run the state-machine
 
-	if (vEndInitSeq == true) {
+	if (vEndInitSeq) {
 		if (vState != NULL) {
 			(*vState)(vData);
 			return;
@@ -236,20 +247,20 @@ static	void	cb_read(void) {
  *
  */
 static	void	local_state_CX(uint8_t data) {
-	static	uint8_t		vI = 0u;
+	static	uint8_t		vI = 0U;
 	const	uint8_t		aWaitingFor[] = "0,Cx";
 
 	if (aWaitingFor[vI] == data) {
-		if (++vI == (sizeof(aWaitingFor) - 1u)) {
-			vI = 0u; vState = NULL;
+		if (++vI == (sizeof(aWaitingFor) - 1U)) {
+			vI = 0U; vState = NULL;
 		}
 	}
 	else {
-		if (vI == 3u) {
+		if (vI == 3U) {
 			switch (data) {
-				case 'O': { vI = 0u; vState = local_state_CO; break; }
-				case 'L': { vI = 0u; vState = local_state_CL; break; }
-				default:  { vI = 0u; vState = local_state_EM; break; }
+				case 'O': { vI = 0U; vState = local_state_CO; break; }
+				case 'L': { vI = 0U; vState = local_state_CL; break; }
+				default:  { vI = 0U; vState = local_state_EM; break; }
 			}
 		}
 		else {
@@ -265,14 +276,14 @@ static	void	local_state_CX(uint8_t data) {
  *
  */
 static	void	local_state_CO(uint8_t data) {
-	static	uint8_t		vI = 4u;
+	static	uint8_t		vI = 4U;
 	const	uint8_t		aWaitingFor[] = "0,CONNECT\r\n";
 //              Tested under CX             ^
 //              Entry on CO                  ^
 
 	if (aWaitingFor[vI] == data) {
-		if (++vI == (sizeof(aWaitingFor) - 1u)) {
-			vI = 4u; vState = NULL;
+		if (++vI == (sizeof(aWaitingFor) - 1U)) {
+			vI = 4U; vState = NULL;
 			vConnected = true;
 		}
 	}
@@ -288,14 +299,14 @@ static	void	local_state_CO(uint8_t data) {
  *
  */
 static	void	local_state_CL(uint8_t data) {
-	static	uint8_t		vI = 4u;
+	static	uint8_t		vI = 4U;
 	const	uint8_t		aWaitingFor[] = "0,CLOSED\r\n";
 //              Tested under CX             ^
 //              Entry on CL                  ^
 
 	if (aWaitingFor[vI] == data) {
-		if (++vI == (sizeof(aWaitingFor) - 1u)) {
-			vI = 4u; vState = NULL;
+		if (++vI == (sizeof(aWaitingFor) - 1U)) {
+			vI = 4U; vState = NULL;
 			vConnected = false;
 		}
 	}
@@ -312,16 +323,16 @@ static	void	local_state_CL(uint8_t data) {
  *
  */
 static	void	local_state_PX(uint8_t data) {
-	static	uint8_t		vI = 0u;
+	static	uint8_t		vI = 0U;
 	const	uint8_t		aWaitingFor[] = "+IPD,0,";
 
 	if (aWaitingFor[vI] == data) {
-		if (++vI == (sizeof(aWaitingFor) - 1u)) {
-			vI = 0u; vState = local_state_PD;
+		if (++vI == (sizeof(aWaitingFor) - 1U)) {
+			vI = 0U; vState = local_state_PD;
 		}
 	}
 	else {
-		vI = 0u; vState = local_state_EM;
+		vI = 0U; vState = local_state_EM;
 	}
 }
 
@@ -333,22 +344,22 @@ static	void	local_state_PX(uint8_t data) {
  */
 static	void	local_state_PD(uint8_t data) {
 			char_t		*dummy;
-	static	uint8_t		vI = 0u;
+	static	uint8_t		vI = 0U;
 	static	char_t		vASCIINumber[4 + 1];
 	static	int32_t		vSize;
 	static	bool		vRead = false;
 
-	if (vRead == false) {
+	if (!vRead) {
 		if (data != ':') {
 			vASCIINumber[vI] = (char_t)data;
 			vI++;
-			if (vI == (sizeof(vASCIINumber) - 1u)) {
-				vI = 0u; vState = local_state_EM;
+			if (vI == (sizeof(vASCIINumber) - 1U)) {
+				vI = 0U; vState = local_state_EM;
 			}
 		}
 		else {
 			vASCIINumber[vI] = '\0';
-			vSize = (int32_t)strtol(&vASCIINumber[0], &dummy, 10u);
+			vSize = (int32_t)strtol(&vASCIINumber[0], &dummy, 10U);
 			vRead = true;
 		}
 	}
@@ -368,7 +379,7 @@ static	void	local_state_PD(uint8_t data) {
 
 		if (--vSize == 0) {
 			vRead = false;
-			vI = 0u; vState = NULL;
+			vI = 0U; vState = NULL;
 		}
 	}
 }
@@ -380,17 +391,17 @@ static	void	local_state_PD(uint8_t data) {
  *
  */
 static	void	local_state_SN(uint8_t data) {
-	static	uint8_t		vI = 0u;
+	static	uint8_t		vI = 0U;
 	const	uint8_t		aWaitingFor[] = "SEND OK\r\n";
 
 	if (aWaitingFor[vI] == data) {
-		if (++vI == (sizeof(aWaitingFor) - 1u)) {
+		if (++vI == (sizeof(aWaitingFor) - 1U)) {
 			vI = 0; vState = NULL;
 			vSendAck = true;
 		}
 	}
 	else {
-		vI = 0u; vState = local_state_EM;
+		vI = 0U; vState = local_state_EM;
 	}
 }
 
@@ -401,16 +412,16 @@ static	void	local_state_SN(uint8_t data) {
  *
  */
 static	void	local_state_EM(uint8_t data) {
-	static	uint8_t		i = 0u;
+	static	uint8_t		i = 0U;
 	const	uint8_t		aWaitingFor[] = "\r\n";
 
 	if (aWaitingFor[i] == data) {
-		if (++i == (sizeof(aWaitingFor) - 1u)) {
-			i = 0u; vState = NULL;
+		if (++i == (sizeof(aWaitingFor) - 1U)) {
+			i = 0U; vState = NULL;
 		}
 	}
 	else {
-		i = 0u;
+		i = 0U;
 	}
 }
 

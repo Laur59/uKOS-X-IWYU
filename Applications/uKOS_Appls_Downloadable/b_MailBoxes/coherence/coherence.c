@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Demo of a C application.
 ;			This application shows how to operate with the uKOS-X uKernel.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -65,8 +65,22 @@
  *
  */
 
-#include	"uKOS.h"
-#include	"kern/private/private_mailboxes.h"
+
+#include	<inttypes.h>
+#include	<stdint.h>
+#include	<stdio.h>
+#include	<stdlib.h>
+
+#include	"serial/serial.h"
+#include	"kern/kern.h"
+#include	"kern/private/private_mailboxes.h"	// IWYU pragma: keep (for symbol mbox)
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -84,7 +98,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "This is a romable C application\n"
 
 									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
 
-#if (defined(ROMABLE_S))
+#ifdef ROMABLE_S
 
 // Prototypes
 
@@ -98,7 +112,7 @@ MODULE(
 	prgm,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,								// Address of the clean code (clean the module)
 	" 1.0",								// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0									// Execution cores
 );
 
@@ -111,7 +125,7 @@ MODULE(
 	aStart,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,								// Address of the clean code (clean the module)
 	" 1.0",								// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0									// Execution cores
 );
 #endif
@@ -119,9 +133,9 @@ MODULE(
 // Application specific
 // ====================
 
-#define	KNB_MESSAGES	10u					// Number of usable messages
-#define	KSZ_MAILBOX		(KNB_MESSAGES - 1u)	// Size of the mailbox (!!! has to be smaller than the number of available messages !!)
-#define	KSZ_MESSAGE		20u					// Size of each message
+#define	KNB_MESSAGES	10U					// Number of usable messages
+#define	KSZ_MAILBOX		(KNB_MESSAGES - 1U)	// Size of the mailbox (!!! has to be smaller than the number of available messages !!)
+#define	KSZ_MESSAGE		20U					// Size of each message
 
 typedef	struct	msg		msg_t;
 
@@ -140,7 +154,7 @@ struct	msg {
  */
 static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 			char_t		charMessage = ' ';
-			uint32_t	i = 0u, j, k = 0u;
+			uint32_t	i = 0U, j, k = 0U;
 			mcnf_t		configure;
 			mbox_t		*mailBox;
 	static	msg_t		sndMessages[KNB_MESSAGES];
@@ -150,13 +164,13 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 // Create and configure the "Mailbox_test"
 
 	configure.oNbMaxPacks	 = KSZ_MAILBOX;
-	configure.oDataEntrySize = 0u;
+	configure.oDataEntrySize = 0U;
 
 	if (kern_createMailbox("Mailbox_test", &mailBox) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create mbox");	   exit(EXIT_OS_FAILURE); }
 	if (kern_setMailbox(mailBox, &configure)         != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Configure mbox"); exit(EXIT_OS_FAILURE); }
 
 	while (true) {
-		kern_suspendProcess(10u);
+		kern_suspendProcess(10U);
 
 // Prepare the message
 
@@ -174,8 +188,8 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 
 // Prepare for the next pack
 
-		i = (i < (KNB_MESSAGES - 1u)) ? (i + 1u) : (0u);
-		charMessage = (charMessage < '~') ? (charMessage + 1u) : (' ');
+		i = (i < (KNB_MESSAGES - 1U)) ? (i + 1U) : (0U);
+		charMessage = (charMessage < '~') ? (charMessage + 1U) : (' ');
 	}
 }
 
@@ -189,20 +203,20 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
+	UNUSED(argument);
+
 			uint64_t	time[2];
-			uint32_t	i = 0u, j, k = 0u, size;
+			uint32_t	i = 0U, j, k = 0U, size;
 			mbox_t		*mailBox;
 			msg_t		*recMessages;
 	static	msg_t		lastMessage;
 
-	UNUSED(argument);
-
 // Waiting for the "Mailbox 1 to 0"
 
-	while (kern_getMailboxById("Mailbox_test", &mailBox) != KERR_KERN_NOERR) { kern_suspendProcess(1u); }
+	while (kern_getMailboxById("Mailbox_test", &mailBox) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
 
 	while (true) {
-		kern_suspendProcess(50u);
+		kern_suspendProcess(50U);
 
 // Read the pack
 //
@@ -223,7 +237,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 		time[1] = mailBox->oRead->oWriteTimeStmp;
 		PRIVILEGE_RESTORE;
 
-		for (j = 0u; j < KSZ_MESSAGE; j++) { lastMessage.oMessage[j] = recMessages->oMessage[j]; }
+		for (j = 0U; j < KSZ_MESSAGE; j++) { lastMessage.oMessage[j] = recMessages->oMessage[j]; }
 		lastMessage.oCharMessage = recMessages->oCharMessage;
 		kern_criticalSection(KEXIT_CRITICAL);
 
@@ -234,19 +248,19 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 // Prepare for the next pack
 
 		(void)dprintf(KSYST, "Message rec:  %c --> ", lastMessage.oCharMessage);
-		for (j = 0u; j < KSZ_MESSAGE; j++) {
+		for (j = 0U; j < KSZ_MESSAGE; j++) {
 			(void)dprintf(KSYST, "%"PRIu32" ", lastMessage.oMessage[j]);
 		}
 		(void)dprintf(KSYST, "\n\n");
 
-		for (j = 0u; j < KSZ_MESSAGE; j++) {
+		for (j = 0U; j < KSZ_MESSAGE; j++) {
 			if (lastMessage.oMessage[j] != k++) {
 				LOG(KFATAL_USER, "Coherency problem!!");
 				exit(EXIT_OS_FAILURE);
 			}
 
 		}
-		i = (i < (KNB_MESSAGES - 1u)) ? (i + 1u) : (0u);
+		i = (i < (KNB_MESSAGES - 1U)) ? (i + 1U) : (0U);
 	}
 }
 
@@ -259,6 +273,9 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  *
  */
 MAIN_ENTRY(argc, argv[]) {
+	UNUSED(argc);
+	UNUSED(argv);
+
 	proc_t	*process_0, *process_1;
 
 // ---------------------------------I-----------------------------------------I--------------I
@@ -267,9 +284,6 @@ MAIN_ENTRY(argc, argv[]) {
 	STRG_LOC_CONST(aStrIden_1[]) = "Process_User_1";
 	STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2025";
 	STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2025";
-
-	UNUSED(argc);
-	UNUSED(argv);
 
 // Specifications for the processes
 

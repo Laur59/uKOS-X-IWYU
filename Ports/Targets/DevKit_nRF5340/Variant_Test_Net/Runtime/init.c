@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Low level init for the uKOS-X nRF5340_SDK module.
@@ -15,8 +15,8 @@
 ;			!!! It is called before to copy and to initialise
 ;			!!! the variable into the RAM.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -50,8 +50,15 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+
+#include	"core.h"
+#include	"core_reg.h"
 #include	"linker.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"modules.h"
+#include	"soc_reg.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -74,7 +81,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -133,7 +140,7 @@ static	void	local_StackLimit_Configuration(void) {
 // Stack limit faults at requested priorities of less than 0 ignored
 
 	#if (defined(STUB_KERN_CHECK_XSP_LIMIT_S))
-	REG(SCB)->CCR |= (1u<<SCB_CCR_STKOFHFNMIGN);
+	REG(SCB)->CCR |= (1U<<SCB_CCR_STKOFHFNMIGN);
 
 	core_setPSPLIM((uintptr_t)linker_lowStackFirst_C0 & 0xFFFFFFF8u);
 	core_setMSPLIM((uintptr_t)linker_lowStackSystem_C0 & 0xFFFFFFF8u);
@@ -160,7 +167,7 @@ static	void	local_SECU_Configuration(void) {
  */
 static	void	local_CLOCK_Configuration(void) {
 
-	REG(CLOCK)->HFCLKCTRL = 0u;
+	REG(CLOCK)->HFCLKCTRL = 0U;
 }
 
 /*
@@ -173,48 +180,48 @@ static	void	local_GPIO_Configuration(void) {
 					uint8_t		i, pin;
 					uint32_t	*pCnf;
 	static	const	gpio_t		aGPIO_Cnf[] = {
-										{ 8u,  (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP	  | KINPUT_CONNECT	  | KDIR_INPUT),    0u },	// P0.8 Button 3
-										{ 9u,  (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP	  | KINPUT_CONNECT	  | KDIR_INPUT),    0u },	// P0.9 Button 4
+										{ 8U,  (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP	  | KINPUT_CONNECT	  | KDIR_INPUT),    0U },	// P0.8 Button 3
+										{ 9U,  (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP	  | KINPUT_CONNECT	  | KDIR_INPUT),    0U },	// P0.9 Button 4
 
-										{ 19u, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   0u },	// P0.19 USART_0 /RTS
-										{ 20u, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   0u },	// P0.20 USART_0 TXD
-										{ 21u, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DOWN	  | KINPUT_CONNECT	  | KDIR_INPUT),	0u },	// P0.21 USART_0 /CTS
-										{ 22u, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP	  | KINPUT_DISCONNECT | KDIR_INPUT),    0u },	// P0.22 USART_0 RXD
+										{ 19U, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   0U },	// P0.19 USART_0 /RTS
+										{ 20U, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   0U },	// P0.20 USART_0 TXD
+										{ 21U, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DOWN	  | KINPUT_CONNECT	  | KDIR_INPUT),	0U },	// P0.21 USART_0 /CTS
+										{ 22U, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP	  | KINPUT_DISCONNECT | KDIR_INPUT),    0U },	// P0.22 USART_0 RXD
 
-										{ 30u, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   1u },	// P0.30 Led 3
-										{ 31u, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   1u },	// P0.31 Led 4
+										{ 30U, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   1U },	// P0.30 Led 3
+										{ 31U, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   1U },	// P0.31 Led 4
 									};
 
 #define	KNBCNF		(sizeof(aGPIO_Cnf) / sizeof(gpio_t))
 
-	for (i = 0u; i < (uint8_t)KNBCNF; i++) {
+	for (i = 0U; i < (uint8_t)KNBCNF; i++) {
 		pin = aGPIO_Cnf[i].oPin;
-		if (pin < 32u) {
+		if (pin < 32U) {
 
 // P0.0 .. P0.31
 
-			pCnf  = (uint32_t *)((uintptr_t)&REG(P0)->PIN_CNF[0] + (pin * 4u));
+			pCnf  = (uint32_t *)((uintptr_t)&REG(P0)->PIN_CNF[0] + (pin * 4U));
 			*pCnf = aGPIO_Cnf[i].oPinCNFValue;
 
-			(aGPIO_Cnf[i].oOutputQuite == 0u) ? (REG(P0)->OUTCLR = (1u<<pin)) : (REG(P0)->OUTSET = (1u<<pin));
+			(aGPIO_Cnf[i].oOutputQuite == 0U) ? (REG(P0)->OUTCLR = (1U<<pin)) : (REG(P0)->OUTSET = (1U<<pin));
 		}
 		else {
 
 // P1.0 .. P1.31
 
-			pin = (uint8_t)(pin - 32u);
+			pin = (uint8_t)(pin - 32U);
 
-			pCnf  = (uint32_t *)((uintptr_t)&REG(P1)->PIN_CNF[0] + (pin * 4u));
+			pCnf  = (uint32_t *)((uintptr_t)&REG(P1)->PIN_CNF[0] + (pin * 4U));
 			*pCnf = aGPIO_Cnf[i].oPinCNFValue;
 
-			(aGPIO_Cnf[i].oOutputQuite == 0u) ? (REG(P1)->OUTCLR = (1u<<pin)) : (REG(P1)->OUTSET = (1u<<pin));
+			(aGPIO_Cnf[i].oOutputQuite == 0U) ? (REG(P1)->OUTCLR = (1U<<pin)) : (REG(P1)->OUTSET = (1U<<pin));
 		}
 	}
 
 // RXD & TXD pin attribution for the uarte 0
 
-	REG(UARTE0)->PSEL_TXD = 20u;
-	REG(UARTE0)->PSEL_RXD = 22u;
+	REG(UARTE0)->PSEL_TXD = 20U;
+	REG(UARTE0)->PSEL_RXD = 22U;
 }
 
 /*
@@ -226,21 +233,21 @@ static	void	local_GPIO_Configuration(void) {
  */
 static	void	local_MPU_Configuration(void) {
 
-	SET_MPU8_INDEX(KMPU_FLASH_ATTR, KMPU_RAM_CACHE_ATTR, KMPU_RAM_NOT_CACHE_ATTR, KMPU_PERIPH_ATTR, 0u, 0u, 0u, 0u, 0u);
+	SET_MPU8_INDEX(KMPU_FLASH_ATTR, KMPU_RAM_CACHE_ATTR, KMPU_RAM_NOT_CACHE_ATTR, KMPU_PERIPH_ATTR, 0U, 0U, 0U, 0U, 0U);
 
 	#if (defined(PRIVILEGED_USER_S))
-	SET_MPU8_REGION(0u,	ST_FLASH_INT_0,			EN_FLASH_INT_0,			KMPU_EXECUTABLE,		KMPU_R_ALL,  0u, KMPU_INNER_SHAREABLE);
-	SET_MPU8_REGION(1u,	ST_RAM_INT_0_OS,		EN_RAM_INT_0_OS,		KMPU_EXECUTABLE,		KMPU_RW_PRI, 1u, KMPU_INNER_SHAREABLE);
-	SET_MPU8_REGION(2u,	ST_RAM_INT_0,			EN_RAM_INT_0,			KMPU_EXECUTABLE,		KMPU_RW_ALL, 1u, KMPU_INNER_SHAREABLE);
-	SET_MPU8_REGION(3u,	ST_RAM_INT_1,			EN_RAM_INT_1,			KMPU_EXECUTABLE,		KMPU_RW_ALL, 1u, KMPU_INNER_SHAREABLE);
-	SET_MPU8_REGION(4u,	ST_RAM_INT_1_SHARED,	EN_RAM_INT_1_SHARED,	KMPU_EXECUTABLE,		KMPU_RW_ALL, 2u, KMPU_NOT_SHAREABLE);
-	SET_MPU8_REGION(5u,	ST_PERIPH_SOC,			EN_PERIPH_SOC,			KMPU_NOT_EXECUTABLE,	KMPU_RW_PRI, 3u, KMPU_NOT_SHAREABLE);
-	SET_MPU8_REGION(6u,	ST_PERIPH_CORE,			EN_PERIPH_CORE,			KMPU_NOT_EXECUTABLE,	KMPU_RW_PRI, 3u, KMPU_NOT_SHAREABLE);
+	SET_MPU8_REGION(0U,	ST_FLASH_INT_0,			EN_FLASH_INT_0,			KMPU_EXECUTABLE,		KMPU_R_ALL,  0U, KMPU_INNER_SHAREABLE);
+	SET_MPU8_REGION(1U,	ST_RAM_INT_0_OS,		EN_RAM_INT_0_OS,		KMPU_EXECUTABLE,		KMPU_RW_PRI, 1U, KMPU_INNER_SHAREABLE);
+	SET_MPU8_REGION(2U,	ST_RAM_INT_0,			EN_RAM_INT_0,			KMPU_EXECUTABLE,		KMPU_RW_ALL, 1U, KMPU_INNER_SHAREABLE);
+	SET_MPU8_REGION(3U,	ST_RAM_INT_1,			EN_RAM_INT_1,			KMPU_EXECUTABLE,		KMPU_RW_ALL, 1U, KMPU_INNER_SHAREABLE);
+	SET_MPU8_REGION(4U,	ST_RAM_INT_1_SHARED,	EN_RAM_INT_1_SHARED,	KMPU_EXECUTABLE,		KMPU_RW_ALL, 2U, KMPU_NOT_SHAREABLE);
+	SET_MPU8_REGION(5U,	ST_PERIPH_SOC,			EN_PERIPH_SOC,			KMPU_NOT_EXECUTABLE,	KMPU_RW_PRI, 3U, KMPU_NOT_SHAREABLE);
+	SET_MPU8_REGION(6U,	ST_PERIPH_CORE,			EN_PERIPH_CORE,			KMPU_NOT_EXECUTABLE,	KMPU_RW_PRI, 3U, KMPU_NOT_SHAREABLE);
 
 	#else
-	SET_MPU8_REGION(0u,	ST_FLASH_INT_0,			EN_FLASH_INT_0,			KMPU_EXECUTABLE,		KMPU_R_ALL,  0u, KMPU_INNER_SHAREABLE);
-	SET_MPU8_REGION(1u,	ST_RAM_INT_0,			EN_RAM_INT_0,			KMPU_EXECUTABLE,		KMPU_RW_ALL, 1u, KMPU_INNER_SHAREABLE);
-	SET_MPU8_REGION(2u,	ST_RAM_INT_1,			EN_RAM_INT_1,			KMPU_EXECUTABLE,		KMPU_RW_ALL, 1u, KMPU_INNER_SHAREABLE);
-	SET_MPU8_REGION(3u,	ST_RAM_INT_1_SHARED,	EN_RAM_INT_1_SHARED,	KMPU_EXECUTABLE,		KMPU_RW_ALL, 2u, KMPU_NOT_SHAREABLE);
+	SET_MPU8_REGION(0U,	ST_FLASH_INT_0,			EN_FLASH_INT_0,			KMPU_EXECUTABLE,		KMPU_R_ALL,  0U, KMPU_INNER_SHAREABLE);
+	SET_MPU8_REGION(1U,	ST_RAM_INT_0,			EN_RAM_INT_0,			KMPU_EXECUTABLE,		KMPU_RW_ALL, 1U, KMPU_INNER_SHAREABLE);
+	SET_MPU8_REGION(2U,	ST_RAM_INT_1,			EN_RAM_INT_1,			KMPU_EXECUTABLE,		KMPU_RW_ALL, 1U, KMPU_INNER_SHAREABLE);
+	SET_MPU8_REGION(3U,	ST_RAM_INT_1_SHARED,	EN_RAM_INT_1_SHARED,	KMPU_EXECUTABLE,		KMPU_RW_ALL, 2U, KMPU_NOT_SHAREABLE);
 	#endif
 }

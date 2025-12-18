@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Demo of a C application.
 ;			This application shows how to operate with the uKOS-X uKernel.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -60,11 +60,26 @@
  *			- P0: Get the mailbox "Queue tim" handle
  *				  Waiting for a counter in the Queue "Queue tim" under timeout
  *					- Display & verify the received counter
- *					- Toggle LED 0
+ *					- Toggle LED 1
  *
  */
 
-#include	"uKOS.h"
+#include	<inttypes.h>
+#include	<stdio.h>
+#include	<stdlib.h>
+
+#include	"crt0.h"
+#include	"serial/serial.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"memo/memo.h"
+#include	"led/led.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"types.h"
 
 #define	ALLOW_HARDWARE_ACCESS_S			// define: elevate the privilege for permitting hardware accesses
 										// undef: do not permit hardware accesses
@@ -93,7 +108,7 @@ MODULE(
 	aStart,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,								// Address of the clean code (clean the module)
 	" 1.0",								// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0									// Execution cores
 );
 
@@ -114,15 +129,16 @@ extern	void	stub_intr_timer_init(void);
  *
  */
 static void __attribute__ ((noreturn)) aProcess(const void *argument) {
-	uintptr_t	counter = 0u, expectedCounter = 0u;
+	UNUSED(argument);
+
+	uintptr_t	counter = 0U, expectedCounter = 0U;
 	int32_t		status;
 	mbox_t		*queue;
 	mcnf_t		configure = {
-					.oNbMaxPacks = 10u,
-					.oDataEntrySize	= 0u
+					.oNbMaxPacks = 10U,
+					.oDataEntrySize	= 0U
 				};
-
-	UNUSED(argument);
+	uint32_t ledDecimationCounter = 0U;
 
 	#if(defined(ALLOW_HARDWARE_ACCESS_S))
 	LOG(KWARNING_USER, "Direct hardware access permitted");
@@ -148,7 +164,7 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
 	}
 
 	while (true) {
-		status = kern_readQueue(queue, &counter, 1000u);
+		status = kern_readQueue(queue, &counter, 1000U);
 		if (status == KERR_KERN_TIMEO) {
 			(void)dprintf(KSYST, "Timeout Error Mailbox\n");
 		}
@@ -164,8 +180,11 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
 			}
 
 		}
-		record_trace("Test 2", 1u);
-		led_toggle(KLED_1);
+		record_trace("Test 2", 1);
+		if (ledDecimationCounter++ == 100U) {
+			led_toggle(KLED_1);
+			ledDecimationCounter = 0U;
+		}
 	}
 }
 
@@ -178,15 +197,15 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
  *
  */
 int		main(int argc, const char *argv[]) {
+	UNUSED(argc);
+	UNUSED(argv);
+
 	proc_t	*process;
 
 // -------------------------------I-----------------------------------------I--------------I
 
 	STRG_LOC_CONST(aStrIden[]) = "Process_User";
 	STRG_LOC_CONST(aStrText[]) = "Process user.                             (c) EFr-2025";
-
-	UNUSED(argc);
-	UNUSED(argv);
 
 // Specifications for the processes
 

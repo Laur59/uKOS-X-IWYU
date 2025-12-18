@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Kern - List management.
@@ -83,8 +83,8 @@
 ;			| Ptr on the forward process = B	+ --------------+
 ;			+-----------------------------------+
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -140,20 +140,7 @@
  * @{
  */
 
-typedef	struct	list		list_t;
-typedef	struct	obje		obje_t;
-
-struct	list {
-				proc_t		*oFirst;							// Ptr on the first process
-				proc_t		*oLast;								// Ptr on the last process
-				uint16_t	oNbElements;						// Number of elements of the list
-};
-
-struct	obje {
-				list_t		*oList;								// Ptr on the list where the process is linked
-				proc_t		*oBack;								// Ptr on the back process
-				proc_t		*oForward;							// Ptr on the forward process
-};
+#include	"kern/kern.h"
 
 // Prototypes
 

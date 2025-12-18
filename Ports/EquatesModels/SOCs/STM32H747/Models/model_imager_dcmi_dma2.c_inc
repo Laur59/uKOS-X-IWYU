@@ -16,8 +16,8 @@
 ;			During the H blanking the CPU copies the data from the collected
 ;			horizontal line into the SDRAM for building the final image.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -51,7 +51,17 @@
 ;------------------------------------------------------------------------
 */
 
+#include	<stdint.h>
+
+#include	"Registers/nvic.h"
+#include	"imager_common.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"memo/memo.h"
 #include	"model_cache.c_inc"
+#include	"soc_reg.h"
 
 static				void		(*vHSyncCodeRoutine)(void) = NULL;
 static				void		(*vFrameCodeRoutine)(void) = NULL;
@@ -60,14 +70,14 @@ static				void		(*vDMAEcCodeRoutine)(void) = NULL;
 static	volatile	bool		vWithSemaphore_IM = false;
 static	volatile	bool		vWithSemaphore_VS = false;
 static	volatile	bool		vSingleBuffer     = false;
-static	volatile	uint8_t		vPage      		  = 0u;
+static	volatile	uint8_t		vPage      		  = 0U;
 static				uint8_t		*vImageE0  		  = NULL;
 static				uint8_t		*vImageE1  		  = NULL;
-static	volatile	uint32_t	vNDTR      		  = 0u;
-static	volatile	uint32_t	vSize      		  = 1u;
-static	volatile	uint32_t	vNbRows    		  = 0u;
-static	volatile	uint32_t	vNbCols    		  = 0u;
-static	volatile	uint32_t	vNbPixels  		  = 0u;
+static	volatile	uint32_t	vNDTR      		  = 0U;
+static	volatile	uint32_t	vSize      		  = 1U;
+static	volatile	uint32_t	vNbRows    		  = 0U;
+static	volatile	uint32_t	vNbCols    		  = 0U;
+static	volatile	uint32_t	vNbPixels  		  = 0U;
 static  volatile	uint8_t		vAcqMode   		  = KIMAGER_SNAP;
 static				uint32_t	vRowXX[2048];
 static				sema_t		*vSemaphore_IM;
@@ -79,6 +89,8 @@ STRG_LOC_CONST(aStrSemaphore_IM[]) = KIMAGER_DCMI_SEMAPHORE_IM;
 STRG_LOC_CONST(aStrSemaphore_VS[]) = KIMAGER_DCMI_SEMAPHORE_VS;
 
 // Prototypes
+
+extern	void	(*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 static	int32_t	local_initDCMI(void);
 static	int32_t	local_initDMA2(void);
@@ -103,7 +115,7 @@ int32_t	model_imager_init(void) {
 
 // Initialise the used interfaces
 
-	status = cb_control(KIMG_INIT, 0u); if (status != KERR_IMAGER_NOERR) { return (status); }
+	status = cb_control(KIMG_INIT, 0U); if (status != KERR_IMAGER_NOERR) { return (status); }
 	status = local_initDCMI();		    if (status != KERR_IMAGER_NOERR) { return (status); }
 	status = local_initDMA2();		    if (status != KERR_IMAGER_NOERR) { return (status); }
 
@@ -134,7 +146,7 @@ int32_t	model_imager_configure(const imagerCnf_t *configure) {
 	vNbRows   	  = configure->oNbRows;
 	vNbCols   	  = configure->oNbCols;
 	vNbPixels 	  = (uint32_t)configure->oNbRows * (uint32_t)configure->oNbCols;
-	vSingleBuffer = ((configure->oAcqMode & KIMAGER_SINGLE_BUFFER) != 0u) ? (true) : (false);
+	vSingleBuffer = ((configure->oAcqMode & KIMAGER_SINGLE_BUFFER) != 0U) ? (true) : (false);
 
 // Configure the manager
 
@@ -154,7 +166,7 @@ int32_t	model_imager_configure(const imagerCnf_t *configure) {
 			   |  DCMI_CR_ENABLE;
 
 	if ((configure->oAcqMode & (uint8_t)~KIMAGER_SINGLE_BUFFER) == KIMAGER_SNAP) {
-		kern_suspendProcess(10u);
+		kern_suspendProcess(10U);
 	}
 	return (KERR_IMAGER_NOERR);
 }
@@ -181,13 +193,13 @@ int32_t	model_imager_acquisition(void) {
 		default:
 		case KIMAGER_SNAP: {
 			if (first == true) {
-				kern_suspendProcess(40u);
+				kern_suspendProcess(40U);
 				DCMI->ICR = DCMI_ICR_LINE_ISC;
 				DCMI->ICR = DCMI_ICR_FRAME_ISC;
 				DCMI->ICR = DCMI_ICR_VSYNC_ISC;
 				first = false;
 			}
-			cb_control(KIMG_TRIGGER, 0u);
+			cb_control(KIMG_TRIGGER, 0U);
 			break;
 		}
 	}
@@ -218,7 +230,7 @@ int32_t	model_imager_acquisition(void) {
  */
 int32_t	model_imager_read(volatile void **image) {
 
-	if (vPage == 0u) { *image = vImageE0; return (KERR_IMAGER_NOERR); }
+	if (vPage == 0U) { *image = vImageE0; return (KERR_IMAGER_NOERR); }
 	else			 { *image = vImageE1; return (KERR_IMAGER_NOERR); }
 }
 
@@ -256,8 +268,8 @@ int32_t	model_imager_standby(uint8_t mode) {
 		return (KERR_IMAGER_BDMOD);
 	}
 
-	if (mode == KIMAGER_STANDBY) { cb_control(KIMG_STANDBY, 0u); }
-	else 						 { cb_control(KIMG_NORMAL,  0u); }
+	if (mode == KIMAGER_STANDBY) { cb_control(KIMG_STANDBY, 0U); }
+	else 						 { cb_control(KIMG_NORMAL,  0U); }
 	return (KERR_IMAGER_NOERR);
 }
 
@@ -289,8 +301,8 @@ static	int32_t	local_initDCMI(void) {
 
 	DCMI->CR	 = 0x00000000u;
 	DCMI->IER    = 0x00000000u;
-	DCMI->CWSTRT = (0u * DCMI_CWSTRT_VST_0)
-				 | (0u * DCMI_CWSTRT_HOFFCNT_0);
+	DCMI->CWSTRT = (0U * DCMI_CWSTRT_VST_0)
+				 | (0U * DCMI_CWSTRT_HOFFCNT_0);
 	return (KERR_IMAGER_NOERR);
 }
 
@@ -318,13 +330,13 @@ static	int32_t	local_initDMA2(void) {
 
 	DMA2->S1CR  = 0x00000000u;
 	DMA2->S1PAR = (uint32_t)(uintptr_t)&DCMI->DR;
-	DMA2->S1FCR = (3u * DMA_S1FCR_FTH_0)
+	DMA2->S1FCR = (3U * DMA_S1FCR_FTH_0)
 				| DMA_S1FCR_DMDIS;
 
-	DMA2->S1CR	= (3u * DMA_S1CR_PL_0)
-				| (2u * DMA_S1CR_MSIZE_0)
-				| (2u * DMA_S1CR_PSIZE_0)
-				| (1u * DMA_S1CR_MBURST_0)
+	DMA2->S1CR	= (3U * DMA_S1CR_PL_0)
+				| (2U * DMA_S1CR_MSIZE_0)
+				| (2U * DMA_S1CR_PSIZE_0)
+				| (1U * DMA_S1CR_MBURST_0)
 				| DMA_S1CR_MINC
 				| DMA_S1CR_TCIE;
 
@@ -334,7 +346,7 @@ static	int32_t	local_initDMA2(void) {
 // Stream 1 on the DMA2 -> DMAMUX1_Channel9 (1 + 8)
 
 	DMAMUX1->C9CR = 0x00000000u;
-	DMAMUX1->C9CR = (75u * DMAMUX1_C9CR_DMAREQ_ID_0);
+	DMAMUX1->C9CR = (75U * DMAMUX1_C9CR_DMAREQ_ID_0);
 
 	return (KERR_IMAGER_NOERR);
 }
@@ -359,10 +371,10 @@ static	int32_t	local_confMode(const imagerCnf_t *configure) {
 // Circular mode
 
 		case KIMAGER_CONT: {
-			DMA2->S1CR = (3u * DMA_S1CR_PL_0)
-					   | (2u * DMA_S1CR_MSIZE_0)
-					   | (2u * DMA_S1CR_PSIZE_0)
-					   | (1u * DMA_S1CR_MBURST_0)
+			DMA2->S1CR = (3U * DMA_S1CR_PL_0)
+					   | (2U * DMA_S1CR_MSIZE_0)
+					   | (2U * DMA_S1CR_PSIZE_0)
+					   | (1U * DMA_S1CR_MBURST_0)
 					   | DMA_S1CR_MINC
 					   | DMA_S1CR_TCIE
 					   | DMA_S1CR_CIRC;
@@ -381,10 +393,10 @@ static	int32_t	local_confMode(const imagerCnf_t *configure) {
 
 		default:
 		case KIMAGER_SNAP: {
-			DMA2->S1CR = (3u * DMA_S1CR_PL_0)
-					   | (2u * DMA_S1CR_MSIZE_0)
-					   | (2u * DMA_S1CR_PSIZE_0)
-					   | (1u * DMA_S1CR_MBURST_0)
+			DMA2->S1CR = (3U * DMA_S1CR_PL_0)
+					   | (2U * DMA_S1CR_MSIZE_0)
+					   | (2U * DMA_S1CR_PSIZE_0)
+					   | (1U * DMA_S1CR_MBURST_0)
 					   | DMA_S1CR_MINC
 					   | DMA_S1CR_TCIE;
 
@@ -407,31 +419,31 @@ static	int32_t	local_confMode(const imagerCnf_t *configure) {
 static	int32_t	local_confPixe(const imagerCnf_t *configure) {
 
 	vSize = 2;
-	DMA2->S1NDTR = vNbCols / 2u;
-	vNDTR 		 = vNbCols / 2u;
+	DMA2->S1NDTR = vNbCols / 2U;
+	vNDTR 		 = vNbCols / 2U;
 
 	switch (configure->oPixMode) {
 		default:
 		case KIMAGER_PIX_8_BITS: {
 			vSize = 1;
-			cb_control(KIMG_PIXEL_MODE, 8u);
-			DMA2->S1NDTR = vNbCols / 4u;
-			vNDTR 		 = vNbCols / 4u;
+			cb_control(KIMG_PIXEL_MODE, 8U);
+			DMA2->S1NDTR = vNbCols / 4U;
+			vNDTR 		 = vNbCols / 4U;
 			break;
 		}
 		case KIMAGER_PIX_10_BITS: {
-			cb_control(KIMG_PIXEL_MODE, 10u);
-			DCMI->CR |= (1u * DCMI_CR_EDM_0);
+			cb_control(KIMG_PIXEL_MODE, 10U);
+			DCMI->CR |= (1U * DCMI_CR_EDM_0);
 			break;
 		}
 		case KIMAGER_PIX_12_BITS: {
-			cb_control(KIMG_PIXEL_MODE, 12u);
-			DCMI->CR |= (2u * DCMI_CR_EDM_0);
+			cb_control(KIMG_PIXEL_MODE, 12U);
+			DCMI->CR |= (2U * DCMI_CR_EDM_0);
 			break;
 		}
 		case KIMAGER_PIX_14_BITS: {
-			cb_control(KIMG_PIXEL_MODE, 14u);
-			DCMI->CR |= (3u * DCMI_CR_EDM_0);
+			cb_control(KIMG_PIXEL_MODE, 14U);
+			DCMI->CR |= (3U * DCMI_CR_EDM_0);
 			break;
 		}
 	}
@@ -445,12 +457,12 @@ static	int32_t	local_confPixe(const imagerCnf_t *configure) {
  *
  */
 static	int32_t	local_confMemo(const imagerCnf_t *configure) {
+	UNUSED(configure);
+
 			int32_t		status = KERR_IMAGER_NOERR;
 	const	size_t		nbPixels = (size_t)vNbPixels;
 	const	size_t		elemSize = (size_t)vSize;
 	const	size_t		nbBytes	 = nbPixels * elemSize;
-
-	UNUSED(configure);
 
 	if (vImageE0 != NULL) { memo_free(vImageE0); }
 	if (vImageE1 != NULL) { memo_free(vImageE1); }
@@ -459,7 +471,7 @@ static	int32_t	local_confMemo(const imagerCnf_t *configure) {
 
 // Single buffer
 
-		vPage	 = 0u;
+		vPage	 = 0U;
 		vImageE0 = (uint8_t *)memo_malloc(KMEMO_ALIGN_32, (uint32_t)nbBytes, "dcmi");
 		if (vImageE0 == NULL) { status = KERR_IMAGER_NOMEM; }
 	}
@@ -467,7 +479,7 @@ static	int32_t	local_confMemo(const imagerCnf_t *configure) {
 
 // Double buffer
 
-		vPage	 = 1u;
+		vPage	 = 1U;
 		vImageE0 = (uint8_t *)memo_malloc(KMEMO_ALIGN_32, (uint32_t)nbBytes, "dcmi");
 		vImageE1 = (uint8_t *)memo_malloc(KMEMO_ALIGN_32, (uint32_t)nbBytes, "dcmi");
 		if (vImageE0 == NULL) { status = KERR_IMAGER_NOMEM; }
@@ -490,8 +502,8 @@ static	int32_t	local_confImag(const imagerCnf_t *configure) {
 
 	if ((configure->oNbRows + configure->oStRows) > KNB_ROWS) { return (KERR_IMAGER_CNERR); }
 	if ((configure->oNbCols + configure->oStCols) > KNB_COLS) { return (KERR_IMAGER_CNERR); }
-	DCMI->CWSIZE = (uint32_t)((configure->oNbRows - 1u)<<16u) | (configure->oNbCols - 1u);
-	DCMI->CWSTRT = (uint32_t)( configure->oStRows      <<16u) | (configure->oStCols);
+	DCMI->CWSIZE = (uint32_t)((configure->oNbRows - 1U)<<16U) | (configure->oNbCols - 1U);
+	DCMI->CWSTRT = (uint32_t)( configure->oStRows      <<16U) | (configure->oStCols);
 
 // Configure the imager
 
@@ -499,8 +511,8 @@ static	int32_t	local_confImag(const imagerCnf_t *configure) {
 
 // The semaphore mode
 
-	vWithSemaphore_IM = ((configure->oKernSync & ((uint32_t)1u<<(uint32_t)BIMAGER_SEMAPHORE_IM)) != 0u) ? (true) : (false);
-	vWithSemaphore_VS = ((configure->oKernSync & ((uint32_t)1u<<(uint32_t)BIMAGER_SEMAPHORE_VS)) != 0u) ? (true) : (false);
+	vWithSemaphore_IM = ((configure->oKernSync & ((uint32_t)1U<<(uint32_t)BIMAGER_SEMAPHORE_IM)) != 0U) ? (true) : (false);
+	vWithSemaphore_VS = ((configure->oKernSync & ((uint32_t)1U<<(uint32_t)BIMAGER_SEMAPHORE_VS)) != 0U) ? (true) : (false);
 
 // The interruption callbacks
 // Start the stream
@@ -528,7 +540,7 @@ static	void	local_DCMI_IRQHandler(void) {
 
 // HSYNC - Horizontal callback
 
-	if ((DCMI->RIS & DCMI_RIS_LINE_RIS) != 0u) {
+	if ((DCMI->RIS & DCMI_RIS_LINE_RIS) != 0U) {
 		DCMI->ICR = DCMI_ICR_LINE_ISC;
 		if (vHSyncCodeRoutine != NULL) {
 			go = vHSyncCodeRoutine;
@@ -538,7 +550,7 @@ static	void	local_DCMI_IRQHandler(void) {
 
 // Frame - Frame callback
 
-	if ((DCMI->RIS & DCMI_RIS_FRAME_RIS) != 0u) {
+	if ((DCMI->RIS & DCMI_RIS_FRAME_RIS) != 0U) {
 		DCMI->ICR = DCMI_ICR_FRAME_ISC;
 		if (vFrameCodeRoutine != NULL) {
 			go = vFrameCodeRoutine;
@@ -548,7 +560,7 @@ static	void	local_DCMI_IRQHandler(void) {
 
 // VSYNC - Vertical callback
 
-	if ((DCMI->RIS & DCMI_RIS_VSYNC_RIS) != 0u) {
+	if ((DCMI->RIS & DCMI_RIS_VSYNC_RIS) != 0U) {
 		DCMI->ICR = DCMI_ICR_VSYNC_ISC;
 		if (vVSyncCodeRoutine != NULL) {
 			go = vVSyncCodeRoutine;
@@ -572,7 +584,7 @@ static	void	local_DMA2_Stream1_IRQHandler(void) {
 			int32_t		len;
 			uint32_t	i, *image;
 			size_t		nextRowIndex;
-	static	uint16_t	row = 0u;
+	static	uint16_t	row = 0U;
 
 // This interruption is extremely critical.
 // We need to reactivate the DMA AsAp (during the H blanking)
@@ -592,12 +604,12 @@ static	void	local_DMA2_Stream1_IRQHandler(void) {
 
 	const	size_t		cols0 = (size_t)vNbCols;
 	const	size_t		size0 = (size_t)vSize;
-	const	size_t		r	  = (row > 0u) ? ((size_t)row - 1u) : (0u);
+	const	size_t		r	  = (row > 0U) ? ((size_t)row - 1U) : (0U);
 	const	uint8_t		page  = (uint8_t)vPage;
 	const	bool		sBuf  = (bool)vSingleBuffer;
 
 	nextRowIndex = cols0 * size0 * r;
-	if ((page == 0u) && (sBuf == false)) { image = (uint32_t *)((uintptr_t)vImageE1 + (uintptr_t)nextRowIndex); }
+	if ((page == 0U) && (sBuf == false)) { image = (uint32_t *)((uintptr_t)vImageE1 + (uintptr_t)nextRowIndex); }
 	else								 { image = (uint32_t *)((uintptr_t)vImageE0 + (uintptr_t)nextRowIndex); }
 
 // At the end of the DMA transfer it is necessary to invalidate the cache
@@ -613,7 +625,7 @@ static	void	local_DMA2_Stream1_IRQHandler(void) {
 	len = (int32_t)prod64;
 	cache_D_Invalidate_Add(add, len);
 
-	for (i = 0u; i < limit; i++) {
+	for (i = 0U; i < limit; i++) {
 		image[i] = vRowXX[i];
 	}
 
@@ -621,10 +633,10 @@ static	void	local_DMA2_Stream1_IRQHandler(void) {
 
 // Terminated: the image is fully transfered
 
-		row = 0u;
+		row = 0U;
 
 		if (vSingleBuffer == false) {
-			vPage = (vPage == 0u) ? (1u) : (0u);
+			vPage = (vPage == 0U) ? (1U) : (0U);
 		}
 		if (vDMAEcCodeRoutine != NULL) {
 			go = vDMAEcCodeRoutine;

@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		wkserial tool.
@@ -22,8 +22,8 @@
 ;			wkserial urt1 -W 55
 ;			wkserial cdc0 -read
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -57,7 +57,19 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<inttypes.h>
+#include	<stdint.h>	// NOLINT(misc-include-cleaner): Explicit include for IWYU compliance
+#include	<stdio.h>
+#include	<stdlib.h>
+
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"serial/serial.h"
+#include	"serial_common.h"
+#include	"text/text.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -108,7 +120,7 @@ MODULE(
 	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,										// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
@@ -122,10 +134,10 @@ MODULE(
 static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 	char_t				*dummy;
 	bool				equals;
-	uint32_t			value = 0u;
+	uint32_t			value = 0U;
 	int32_t				status;
 	serialManager_t		serialManager = KDEF0;
-	uint32_t			baudRate = 460800u,  size;
+	uint32_t			baudRate = 460800U,  size;
 	enum				{ KERR_NOT, KERR_OKR, KERR_OKW, KERR_OKS, KERR_INA, KERR_BSY, KERR_ORD, KERR_EMP, KERR_GEN } error = KERR_INA;
 
 	(void)dprintf(KSYST, "wkserial operations.\n");
@@ -145,17 +157,17 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 //  wkserial urt0 -S 460800
 
 	local_getSerialManager(&serialManager, argv[1]);
-	if (serial_reserve(serialManager, KMODE_READ_WRITE, 2000u) == KERR_SERIAL_NOERR) {
+	if (serial_reserve(serialManager, KMODE_READ_WRITE, 2000U) == KERR_SERIAL_NOERR) {
 
 		switch (argc) {
 
 // Read mode
 //  wkserial cdc0 -R
 
-			case 3u: {
+			case 3U: {
 				text_checkAsciiBuffer(argv[2], "-R", &equals);
-				if (equals == true) {
-					size = 1u;
+				if (equals) {
+					size = 1U;
 					status = serial_read(serialManager, (uint8_t *)&value, &size);
 
 					switch (status) {
@@ -173,11 +185,11 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 // Write mode
 //  wkserial urt1 -W 55
 
-			case 4u: {
+			case 4U: {
 				text_checkAsciiBuffer(argv[2], "-W", &equals);
-				if (equals == true) {
-					value = (uint32_t)strtol(argv[3], &dummy, 16u);
-					size = 1u;
+				if (equals) {
+					value = (uint32_t)strtol(argv[3], &dummy, 16U);
+					size = 1U;
 					status = serial_write(serialManager, (uint8_t *)&value, size);
 
 					switch (status) {
@@ -191,28 +203,28 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 //  wkserial urt0 -S 460800
 
 				text_checkAsciiBuffer(argv[2], "-S", &equals);
-				if (equals == true) {
-					value = (uint32_t)strtol(argv[3], &dummy, 10u);
+				if (equals) {
+					value = (uint32_t)strtol(argv[3], &dummy, 10U);
 
 					switch (value) {
-						case 2400u:	   { baudRate = 2400u;		local_setBaudRate(serialManager, KSERIAL_BAUDRATE_2400);    break; }
-						case 4800u:	   { baudRate = 4800u;		local_setBaudRate(serialManager, KSERIAL_BAUDRATE_4800);    break; }
-						case 9600u:	   { baudRate = 9600u;		local_setBaudRate(serialManager, KSERIAL_BAUDRATE_9600);    break; }
-						case 19200u:   { baudRate = 19200u;		local_setBaudRate(serialManager, KSERIAL_BAUDRATE_19200);   break; }
-						case 38400u:   { baudRate = 38400u;		local_setBaudRate(serialManager, KSERIAL_BAUDRATE_38400);   break; }
-						case 57600u:   { baudRate = 57600u;		local_setBaudRate(serialManager, KSERIAL_BAUDRATE_57600);   break; }
-						case 115200u:  { baudRate = 115200u;	local_setBaudRate(serialManager, KSERIAL_BAUDRATE_115200);  break; }
-						case 230400u:  { baudRate = 230400u;	local_setBaudRate(serialManager, KSERIAL_BAUDRATE_230400);  break; }
-						case 460800u:  { baudRate = 460800u;	local_setBaudRate(serialManager, KSERIAL_BAUDRATE_460800);  break; }
-						case 500000u:  { baudRate = 500000u;	local_setBaudRate(serialManager, KSERIAL_BAUDRATE_500000);  break; }
-						case 921600u:  { baudRate = 921600u;	local_setBaudRate(serialManager, KSERIAL_BAUDRATE_921600);  break; }
-						case 1000000u: { baudRate = 1000000u;	local_setBaudRate(serialManager, KSERIAL_BAUDRATE_1000000); break; }
-						case 1500000u: { baudRate = 1500000u;	local_setBaudRate(serialManager, KSERIAL_BAUDRATE_1500000); break; }
-						case 1843200u: { baudRate = 1843200u;	local_setBaudRate(serialManager, KSERIAL_BAUDRATE_1843200); break; }
-						case 2000000u: { baudRate = 2000000u;	local_setBaudRate(serialManager, KSERIAL_BAUDRATE_2000000); break; }
-						case 2500000u: { baudRate = 2500000u;	local_setBaudRate(serialManager, KSERIAL_BAUDRATE_2500000); break; }
-						case 3000000u: { baudRate = 3000000u;	local_setBaudRate(serialManager, KSERIAL_BAUDRATE_3000000); break; }
-						default:	   { baudRate = 460800u;	local_setBaudRate(serialManager, KSERIAL_BAUDRATE_460800);  break; }
+						case 2400U:	   { baudRate = 2400U;		local_setBaudRate(serialManager, KSERIAL_BAUDRATE_2400);    break; }
+						case 4800U:	   { baudRate = 4800U;		local_setBaudRate(serialManager, KSERIAL_BAUDRATE_4800);    break; }
+						case 9600U:	   { baudRate = 9600U;		local_setBaudRate(serialManager, KSERIAL_BAUDRATE_9600);    break; }
+						case 19200U:   { baudRate = 19200U;		local_setBaudRate(serialManager, KSERIAL_BAUDRATE_19200);   break; }
+						case 38400U:   { baudRate = 38400U;		local_setBaudRate(serialManager, KSERIAL_BAUDRATE_38400);   break; }
+						case 57600U:   { baudRate = 57600U;		local_setBaudRate(serialManager, KSERIAL_BAUDRATE_57600);   break; }
+						case 115200U:  { baudRate = 115200U;	local_setBaudRate(serialManager, KSERIAL_BAUDRATE_115200);  break; }
+						case 230400U:  { baudRate = 230400U;	local_setBaudRate(serialManager, KSERIAL_BAUDRATE_230400);  break; }
+						case 460800U:  { baudRate = 460800U;	local_setBaudRate(serialManager, KSERIAL_BAUDRATE_460800);  break; }
+						case 500000U:  { baudRate = 500000U;	local_setBaudRate(serialManager, KSERIAL_BAUDRATE_500000);  break; }
+						case 921600U:  { baudRate = 921600U;	local_setBaudRate(serialManager, KSERIAL_BAUDRATE_921600);  break; }
+						case 1000000U: { baudRate = 1000000U;	local_setBaudRate(serialManager, KSERIAL_BAUDRATE_1000000); break; }
+						case 1500000U: { baudRate = 1500000U;	local_setBaudRate(serialManager, KSERIAL_BAUDRATE_1500000); break; }
+						case 1843200U: { baudRate = 1843200U;	local_setBaudRate(serialManager, KSERIAL_BAUDRATE_1843200); break; }
+						case 2000000U: { baudRate = 2000000U;	local_setBaudRate(serialManager, KSERIAL_BAUDRATE_2000000); break; }
+						case 2500000U: { baudRate = 2500000U;	local_setBaudRate(serialManager, KSERIAL_BAUDRATE_2500000); break; }
+						case 3000000U: { baudRate = 3000000U;	local_setBaudRate(serialManager, KSERIAL_BAUDRATE_3000000); break; }
+						default:	   { baudRate = 460800U;	local_setBaudRate(serialManager, KSERIAL_BAUDRATE_460800);  break; }
 					}
 					error = KERR_OKS;
 				}
@@ -260,10 +272,10 @@ static	void	local_setBaudRate(serialManager_t serialManager, uint8_t baudRate) {
 					.oStopBits = KSERIAL_STOPBITS_1,
 					.oParity   = KSERIAL_PARITY_NONE,
 					.oBaudRate = baudRate,
-					.oKernSync = ((uint32_t)1u<<(uint32_t)BSERIAL_SEMAPHORE_RX)
+					.oKernSync = ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_RX)
 				};
 
-	kern_suspendProcess(500u);
+	kern_suspendProcess(500U);
 	serial_configure(serialManager, &configure);
 }
 
@@ -276,10 +288,10 @@ static	void	local_setBaudRate(serialManager_t serialManager, uint8_t baudRate) {
 static	void	local_getSerialManager(serialManager_t *serialManager, const char_t *string) {
 	uint32_t	mmsb, mlsb, lmsb, llsb;
 
-	mmsb = ((uint32_t)string[0]<<24u) & 0xFF000000u;
-	mlsb = ((uint32_t)string[1]<<16u) & 0x00FF0000u;
-	lmsb = ((uint32_t)string[2]<<8u)  & 0x0000FF00u;
-	llsb = ((uint32_t)string[3]<<0u)  & 0x000000FFu;
+	mmsb = ((uint32_t)string[0]<<24U) & 0xFF000000U;
+	mlsb = ((uint32_t)string[1]<<16U) & 0x00FF0000U;
+	lmsb = ((uint32_t)string[2]<<8U)  & 0x0000FF00U;
+	llsb = ((uint32_t)string[3]<<0U)  & 0x000000FFU;
 
 	*serialManager = (serialManager_t)(mmsb | mlsb | lmsb | llsb);
 }

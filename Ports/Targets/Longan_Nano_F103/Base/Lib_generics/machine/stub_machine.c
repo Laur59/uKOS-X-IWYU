@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		stub for the "machine" manager module.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,13 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stddef.h>
+#include	<stdint.h>
+
+#include	"macros.h"
+#include	"macros_soc.h"
+#include	"os_errors.h"
+#include	"types.h"
 
 /*
  * \brief stub_machine_init
@@ -70,7 +76,7 @@ int32_t	stub_machine_restart(void) {
 // Stop all the interruptions and restart
 
 	INTERRUPTION_OFF;
-	while (true) { ; }
+	while (true) { }
 
 	return (KERR_MACHINE_NOERR);
 }
@@ -82,7 +88,7 @@ int32_t	stub_machine_restart(void) {
  *
  */
 void	stub_machine_readPC(const uintptr_t *stackProcess, uintptr_t *pc) {
-	uint8_t		pcOffset = 0u;
+	uint8_t		pcOffset = 0U;
 
 // uKOS-X stack frame:
 //
@@ -102,7 +108,7 @@ void	stub_machine_readPC(const uintptr_t *stackProcess, uintptr_t *pc) {
 
 //               x0   ra   gp   tp     tp2..tp0        s1..s0         a6..a0         s11..s2        t6..t3      ECLIC  mstatus   mcause     mepc
 //               --   --   --   --    ----------     ----------     ----------     -----------     ----------   -----  -------   ------     ----
-	pcOffset +=  +1u  +1u  +1u  +1u  +((2u-0u)+1u)  +((1u-0u)+1u)  +((6u-0u)+1u)  +((11u-2u)+1u)  +((6u-3u)+1u)  +1u     +1u       +1u      +1u;
+	pcOffset +=  +1U  +1U  +1U  +1U  +((2U-0U)+1U)  +((1U-0U)+1U)  +((6U-0U)+1U)  +((11U-2U)+1U)  +((6U-3U)+1U)  +1U     +1U       +1U      +1U;
 
 	*pc = (stackProcess[pcOffset]);
 }

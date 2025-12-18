@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		nrf5340_network_swi equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // SWI address definitions
 // -----------------------
 
@@ -55,7 +57,7 @@ typedef struct {
 	volatile	uint32_t	UNUSED;
 } SWI_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	SWI0_NS	reinterpret_cast<SWI_TypeDef *>(0x4101A000u)
 #define	SWI1_NS	reinterpret_cast<SWI_TypeDef *>(0x4101B000u)
 #define	SWI2_NS	reinterpret_cast<SWI_TypeDef *>(0x4101C000u)

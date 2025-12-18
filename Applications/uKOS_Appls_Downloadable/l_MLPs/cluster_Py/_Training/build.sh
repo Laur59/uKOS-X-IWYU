@@ -12,8 +12,8 @@
 # Project:	uKOS-X
 # Goal:		Build the mlpn model
 #
-#   (c) 2025-20xx, Edo. Franzi
-#   --------------------------
+#   © 2025-2026, Edo. Franzi
+#   ------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,10 +48,9 @@
 
 set -euo pipefail
 
-if [[ -z "${PATH_UKOS_X_PACKAGE:-}" ]]; then
-	echo "Variable PATH_UKOS_X_PACKAGE is not set!"
-	exit 1
-fi
+# Determine script directory (works if executed via ./script.sh or bash script.sh)
+readonly PATH_PRG="${0:a:h}"
+readonly PATH_UKOS="$(cd "$PATH_PRG/../../../../.." && pwd)"
 
 export	PYTHONPATH="$PYTHONPATH:$(pwd)"
 

@@ -12,8 +12,8 @@
 # Project:	uKOS-X
 # Goal:		Create the TF model
 #
-#   (c) 2025-20xx, Edo. Franzi
-#   --------------------------
+#   © 2025-2026, Edo. Franzi
+#   ------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,12 +48,11 @@
 
 set -euo pipefail
 
-if [[ -z "${PATH_UKOS_X_PACKAGE:-}" ]]; then
-	echo "Variable PATH_UKOS_X_PACKAGE is not set!"
-	exit 1
-fi
+# Determine script directory (works if executed via ./script.sh or bash script.sh)
+readonly PATH_PRG="${0:a:h}"
+readonly PATH_UKOS="$(cd "$PATH_PRG/../../../../.." && pwd)"
 
-TFL_PYTHON_ENV="${PATH_UKOS_X_PACKAGE}"/Third_Parties/Tflite-micro/Tflite-env
+TFL_PYTHON_ENV="${PATH_UKOS}"/Third_Parties/Tflite-micro/Tflite-env
 
 if [[ -d "${TFL_PYTHON_ENV:-}" ]]; then
     source "${TFL_PYTHON_ENV}"/bin/activate

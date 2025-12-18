@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Kern - mailbox management.
@@ -26,8 +26,8 @@
 ;			int32_t	kern_killMailbox(mbox_t *handle);
 ;			int32_t	kern_getMailboxById(const char_t *identifier, mbox_t **handle);
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -61,12 +61,26 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"kern/private/private_kern.h"
+#include	"mailboxes.h"
 #include	"kern/private/private_mailboxes.h"
-#include	"kern/private/private_processes.h"
+
+#include	<stdint.h>
+#include	<string.h>
+
+#include	"debug.h"
+#include	"kern/kern.h"
 #include	"kern/private/private_identifiers.h"
 #include	"kern/private/private_lists.h"
+#include	"kern/private/private_processes.h"
+#include	"kern/private/private_kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"macros_core_stackFrame.h"
+#include	"memo/memo.h"
+#include	"os_errors.h"
+#include	"syscallDispatcher.h"			// IWYU pragma: keep
+#include	"types.h"
 
 mbox_t		vKern_mbox[KNB_CORES][KKERN_NB_MAILBOXES];
 uint16_t	vKern_nbMbox[KNB_CORES];
@@ -98,13 +112,13 @@ void	mailboxes_init(void) {
 	DEBUG_KERN_TRACE("entry: ");
 	core = GET_RUNNING_CORE;
 
-	for (i = 0u; i < KKERN_NB_MAILBOXES; i++) {
+	for (i = 0U; i < KKERN_NB_MAILBOXES; i++) {
 		vKern_mbox[core][i].oIdentifier		= NULL;
-		vKern_mbox[core][i].oState			= 0u;
-		vKern_mbox[core][i].oNbMaxPacks		= 0u;
-		vKern_mbox[core][i].oNbUsedPacks	= 0u;
-		vKern_mbox[core][i].oNbMaxUsedPacks	= 0u;
-		vKern_mbox[core][i].oDataEntrySize	= 0u;
+		vKern_mbox[core][i].oState			= 0U;
+		vKern_mbox[core][i].oNbMaxPacks		= 0U;
+		vKern_mbox[core][i].oNbUsedPacks	= 0U;
+		vKern_mbox[core][i].oNbMaxUsedPacks	= 0U;
+		vKern_mbox[core][i].oDataEntrySize	= 0U;
 		vKern_mbox[core][i].oFIFO			= NULL;
 		vKern_mbox[core][i].oDataBuffer		= NULL;
 		vKern_mbox[core][i].oWrite			= NULL;
@@ -114,8 +128,8 @@ void	mailboxes_init(void) {
 		lists_initialise(&vKern_mbox[core][i].oListFull);
 	}
 
-	vKern_nbMbox[core]	  = 0u;
-	vKern_nbMaxMbox[core] = 0u;
+	vKern_nbMbox[core]	  = 0U;
+	vKern_nbMaxMbox[core] = 0U;
 	DEBUG_KERN_TRACE("exit: OK");
 }
 
@@ -157,7 +171,7 @@ int32_t	kern_createMailbox(const char_t *identifier, mbox_t **handle) {
 
 	if (identifier != NULL) {
 		for (i = 0; i < KKERN_NB_MAILBOXES; i++) {
-			if (identifiers_cmpStrings(vKern_mbox[core][i].oIdentifier, identifier) == true) {
+			if (identifiers_cmpStrings(vKern_mbox[core][i].oIdentifier, identifier)) {
 				*handle = &vKern_mbox[core][i];
 				DEBUG_KERN_TRACE("exit: KO 1");
 				INTERRUPTION_RESTORE;
@@ -168,13 +182,13 @@ int32_t	kern_createMailbox(const char_t *identifier, mbox_t **handle) {
 		}
 	}
 
-	for (i = 0u; i < KKERN_NB_MAILBOXES; i++) {
+	for (i = 0U; i < KKERN_NB_MAILBOXES; i++) {
 		if (vKern_mbox[core][i].oIdentifier == NULL) {
 			vKern_mbox[core][i].oIdentifier  = (identifier == NULL) ? (KMBOX_ANONYMOUS_ID) : (identifier);
-			vKern_mbox[core][i].oState       = (1u<<BMBOX_INSTALLED) | (1u<<BMBOX_EMPTY);
+			vKern_mbox[core][i].oState       = (1U<<BMBOX_INSTALLED) | (1U<<BMBOX_EMPTY);
 			*handle = &vKern_mbox[core][i];
 
-			vKern_nbMbox[core]    = (uint16_t)(vKern_nbMbox[core] + 1u);
+			vKern_nbMbox[core]    = (uint16_t)(vKern_nbMbox[core] + 1U);
 			vKern_nbMaxMbox[core] = (vKern_nbMbox[core] > vKern_nbMaxMbox[core]) ? (vKern_nbMbox[core]) : (vKern_nbMaxMbox[core]);
 			DEBUG_KERN_TRACE("exit: OK");
 			INTERRUPTION_RESTORE;
@@ -230,9 +244,9 @@ int32_t	kern_setMailbox(mbox_t *handle, const mcnf_t *configure) {
 	INTERRUPTION_OFF;
 	vKern_runProc[core]->oStatistic.oNbKernCalls++;
 	if (handle == NULL)								     { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOMBO); }
-	if ((handle->oState & (1u<<BMBOX_INSTALLED)) == 0u)  { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOMBO); }
-	if ((handle->oState & (1u<<BMBOX_CONFIGURED)) != 0u) { DEBUG_KERN_TRACE("exit: KO 3"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_MBCNF); }
-	if (configure->oNbMaxPacks == 0u)				     { DEBUG_KERN_TRACE("exit: KO 4"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_MBCNF); }
+	if ((handle->oState & (1U<<BMBOX_INSTALLED)) == 0U)  { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOMBO); }
+	if ((handle->oState & (1U<<BMBOX_CONFIGURED)) != 0U) { DEBUG_KERN_TRACE("exit: KO 3"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_MBCNF); }
+	if (configure->oNbMaxPacks == 0U)				     { DEBUG_KERN_TRACE("exit: KO 4"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_MBCNF); }
 
 // Reserve the mailbox memory
 
@@ -244,7 +258,7 @@ int32_t	kern_setMailbox(mbox_t *handle, const mcnf_t *configure) {
 		return (KERR_KERN_MBCNF);
 	}
 
-	if (configure->oDataEntrySize > 0u) {
+	if (configure->oDataEntrySize > 0U) {
 		handle->oDataBuffer = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (configure->oNbMaxPacks * configure->oDataEntrySize), "mbox data");
 		if (handle->oDataBuffer == NULL) {
 			memo_free(fifoArray);
@@ -255,27 +269,27 @@ int32_t	kern_setMailbox(mbox_t *handle, const mcnf_t *configure) {
 		}
 
 		handle->oDataWrite	= handle->oDataBuffer;
-		handle->oState	   |= (1u<<BMBOX_BY_COPY);
+		handle->oState	   |= (1U<<BMBOX_BY_COPY);
 	}
 
 	handle->oNbMaxPacks		= configure->oNbMaxPacks;
-	handle->oNbUsedPacks	= 0u;
+	handle->oNbUsedPacks	= 0U;
 	handle->oDataEntrySize	= configure->oDataEntrySize;
 	handle->oFIFO			= fifoArray;
 	handle->oWrite			= fifoArray;
 	handle->oRead			= fifoArray;
 
-	for (i = 0u; i < configure->oNbMaxPacks; i++) {
-		handle->oFIFO[i].oBuff = 0u;
-		handle->oFIFO[i].oSize = 0u;
+	for (i = 0U; i < configure->oNbMaxPacks; i++) {
+		handle->oFIFO[i].oBuff = 0U;
+		handle->oFIFO[i].oSize = 0U;
 
 		#if (KKERN_WITH_STATISTICS_S == true)
-		handle->oFIFO[i].oReadTimeStmp  = 0u;
-		handle->oFIFO[i].oWriteTimeStmp = 0u;
+		handle->oFIFO[i].oReadTimeStmp  = 0U;
+		handle->oFIFO[i].oWriteTimeStmp = 0U;
 		#endif
 	}
 
-	handle->oState |= (1u<<BMBOX_CONFIGURED);
+	handle->oState |= (1U<<BMBOX_CONFIGURED);
 	DEBUG_KERN_TRACE("exit: OK");
 	INTERRUPTION_RESTORE;
 	PRIVILEGE_RESTORE;
@@ -324,7 +338,7 @@ int32_t	kern_writeMailbox(mbox_t *handle, void *message, uint32_t size, uint32_t
 	status = local_writeMailbox(core, handle, message, size, timeout, &preemption);
 	INTERRUPTION_RESTORE;
 
-	if (preemption == true) { PREEMPTION; }
+	if (preemption) { PREEMPTION; }
 	PRIVILEGE_RESTORE;
 	return (status);
 }
@@ -368,7 +382,7 @@ int32_t	kern_writeQueue(mbox_t *handle, uintptr_t message, uint32_t timeout) {
 	status = local_writeMailbox(core, handle, (void *)message, 1, timeout, &preemption);
 	INTERRUPTION_RESTORE;
 
-	if (preemption == true) { PREEMPTION; }
+	if (preemption) { PREEMPTION; }
 	PRIVILEGE_RESTORE;
 	return (status);
 }
@@ -413,7 +427,7 @@ int32_t	kern_readMailbox(mbox_t *handle, void **message, uint32_t *size, uint32_
 	status = local_readMailbox(core, handle, message, size, timeout, &preemption);
 	INTERRUPTION_RESTORE;
 
-	if (preemption == true) { PREEMPTION; }
+	if (preemption) { PREEMPTION; }
 	PRIVILEGE_RESTORE;
 	return (status);
 }
@@ -458,7 +472,7 @@ int32_t	kern_readQueue(mbox_t *handle, uintptr_t *message, uint32_t timeout) {
 	status = local_readMailbox(core, handle, (void **)message, &size, timeout, &preemption);
 	INTERRUPTION_RESTORE;
 
-	if (preemption == true) { PREEMPTION; }
+	if (preemption) { PREEMPTION; }
 	PRIVILEGE_RESTORE;
 	return (status);
 }
@@ -495,33 +509,33 @@ int32_t	kern_killMailbox(mbox_t *handle) {
 	INTERRUPTION_OFF;
 	vKern_runProc[core]->oStatistic.oNbKernCalls++;
 	if (handle == NULL)             				     { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOMBO); }
-	if ((handle->oState & (1u<<BMBOX_INSTALLED)) == 0u)  { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOMBO); }
-	if ((handle->oState & (1u<<BMBOX_CONFIGURED)) != 0u) {
+	if ((handle->oState & (1U<<BMBOX_INSTALLED)) == 0U)  { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOMBO); }
+	if ((handle->oState & (1U<<BMBOX_CONFIGURED)) != 0U) {
 
 // Disconnect the waiting processes from the mailbox empty list
 
-		while (handle->oListEmpty.oNbElements > 0u) {
+		while (handle->oListEmpty.oNbElements > 0U) {
 			process = handle->oListEmpty.oFirst;
-			process->oInternal.oState &= (uint16_t)~(1u<<BPROC_SUSP_MBOX_E);
+			process->oInternal.oState &= (uint16_t)~(1U<<BPROC_SUSP_MBOX_E);
 			lists_disconnectConnect(process->oObject.oList, &vKern_listExec[core], process);
 			process->oInternal.oStatus = KERR_KERN_MBKIL;
 
 // If the ready process has a higher priority, then preemption occurs
 
-			preemption = (process->oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority) ? (true) : (false);
+			preemption = (process->oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority);
 		}
 
 // Disconnect the waiting processes from the mailbox full list
 
-		while (handle->oListFull.oNbElements > 0u) {
+		while (handle->oListFull.oNbElements > 0U) {
 			process = handle->oListFull.oFirst;
-			process->oInternal.oState &= (uint16_t)~(1u<<BPROC_SUSP_MBOX_F);
+			process->oInternal.oState &= (uint16_t)~(1U<<BPROC_SUSP_MBOX_F);
 			lists_disconnectConnect(process->oObject.oList, &vKern_listExec[core], process);
 			process->oInternal.oStatus = KERR_KERN_MBKIL;
 
 // If the ready process has a higher priority, then preemption occurs
 
-			preemption = (process->oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority) ? (true) : (false);
+			preemption = (process->oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority);
 		}
 
 		memo_free(handle->oFIFO);
@@ -531,21 +545,21 @@ int32_t	kern_killMailbox(mbox_t *handle) {
 		}
 	}
 	handle->oIdentifier	   = NULL;
-	handle->oState		   = 0u;
-	handle->oNbMaxPacks	   = 0u;
-	handle->oNbUsedPacks   = 0u;
-	handle->oDataEntrySize = 0u;
+	handle->oState		   = 0U;
+	handle->oNbMaxPacks	   = 0U;
+	handle->oNbUsedPacks   = 0U;
+	handle->oDataEntrySize = 0U;
 	handle->oFIFO		   = NULL;
 	handle->oDataBuffer	   = NULL;
 	handle->oWrite		   = NULL;
 	handle->oRead		   = NULL;
 	handle->oDataWrite	   = NULL;
 
-	if (vKern_nbMbox[core] != 0u) { vKern_nbMbox[core] = (uint16_t)(vKern_nbMbox[core] - 1u); }
+	if (vKern_nbMbox[core] != 0U) { vKern_nbMbox[core] = (uint16_t)(vKern_nbMbox[core] - 1U); }
 	DEBUG_KERN_TRACE("exit: OK");
 	INTERRUPTION_RESTORE;
 
-	if (preemption == true) { PREEMPTION; }
+	if (preemption) { PREEMPTION; }
 	PRIVILEGE_RESTORE;
 	return (KERR_KERN_NOERR);
 }
@@ -583,8 +597,8 @@ int32_t	kern_getMailboxById(const char_t *identifier, mbox_t **handle) {
 	vKern_runProc[core]->oStatistic.oNbKernCalls++;
 	*handle = NULL;
 
-	for (i = 0u; i < KKERN_NB_MAILBOXES; i++) {
-		if (identifiers_cmpStrings(vKern_mbox[core][i].oIdentifier, identifier) == true) {
+	for (i = 0U; i < KKERN_NB_MAILBOXES; i++) {
+		if (identifiers_cmpStrings(vKern_mbox[core][i].oIdentifier, identifier)) {
 			*handle = &vKern_mbox[core][i];
 			DEBUG_KERN_TRACE("exit: OK");
 			INTERRUPTION_RESTORE;
@@ -627,11 +641,11 @@ static	int32_t	local_writeMailbox(uint32_t core, mbox_t *handle, void *message, 
 	uint32_t	i, synchro, wkTimeout;
 
 	vKern_runProc[core]->oStatistic.oNbKernCalls++;
-	if ((IS_EXCEPTION) && (timeout != 0u))												   { DEBUG_KERN_TRACE("exit: KO 1"); return (KERR_KERN_FRISR); }
+	if ((IS_EXCEPTION) && (timeout != 0U))										   		   { DEBUG_KERN_TRACE("exit: KO 1"); return (KERR_KERN_FRISR); }
 	if (handle == NULL)																	   { DEBUG_KERN_TRACE("exit: KO 2"); return (KERR_KERN_NOMBO); }
-	if ((handle->oState  & (1u<<BMBOX_INSTALLED)) == 0u)								   { DEBUG_KERN_TRACE("exit: KO 3"); return (KERR_KERN_NOMBO); }
-	if ((handle->oState  & (1u<<BMBOX_CONFIGURED)) == 0u)								   { DEBUG_KERN_TRACE("exit: KO 4"); return (KERR_KERN_MBNCF); }
-	if (((handle->oState & (1u<<BMBOX_BY_COPY)) != 0u) && (size > handle->oDataEntrySize)) { DEBUG_KERN_TRACE("exit: KO 5"); return (KERR_KERN_MBSIZ); }
+	if ((handle->oState  & (1U<<BMBOX_INSTALLED)) == 0U)								   { DEBUG_KERN_TRACE("exit: KO 3"); return (KERR_KERN_NOMBO); }
+	if ((handle->oState  & (1U<<BMBOX_CONFIGURED)) == 0U)								   { DEBUG_KERN_TRACE("exit: KO 4"); return (KERR_KERN_MBNCF); }
+	if (((handle->oState & (1U<<BMBOX_BY_COPY)) != 0U) && (size > handle->oDataEntrySize)) { DEBUG_KERN_TRACE("exit: KO 5"); return (KERR_KERN_MBSIZ); }
 
 // -------------------------- inputs --------------------------		-------------------------------------- output ---------------------------------------
 //
@@ -647,15 +661,15 @@ static	int32_t	local_writeMailbox(uint32_t core, mbox_t *handle, void *message, 
 		vKern_runProc[core]->oInternal.oTimeout = wkTimeout;
 	}
 
-	if ((handle->oState  & (1u<<BMBOX_FULL)) == 0u) {
+	if ((handle->oState  & (1U<<BMBOX_FULL)) == 0U) {
 		local_write(core, handle, message, size, preemption);
 		DEBUG_KERN_TRACE("exit: OK");
 		return (KERR_KERN_NOERR);
 	}
 
-	if (wkTimeout > 0u) {
+	if (wkTimeout > 0U) {
 		i = (uint32_t)(((uintptr_t)handle - (uintptr_t)&vKern_mbox[core][0]) / sizeof(mbox_t));
-		synchro = KKERN_MSG_WAIT_MBOX_F + (i & 0x0000FFFFu);
+		synchro = KKERN_MSG_WAIT_MBOX_F + (i & 0x0000FFFFU);
 		(void)synchro;
 
 		GOTO_KERN_M(synchro);
@@ -695,7 +709,7 @@ static	void	local_write(uint32_t core, mbox_t *handle, void *message, uint32_t s
 	uint64_t	timeStmp;
 
 	kern_readTickCount(&timeStmp);
-	handle->oWrite->oReadTimeStmp  = 0u;
+	handle->oWrite->oReadTimeStmp  = 0U;
 	handle->oWrite->oWriteTimeStmp = timeStmp;
 	handle->oWrite->oProcess	   = (IS_EXCEPTION) ? (NULL) : (vKern_runProc[core]);
 	#endif
@@ -703,23 +717,23 @@ static	void	local_write(uint32_t core, mbox_t *handle, void *message, uint32_t s
 	handle->oWrite++;
 	handle->oNbUsedPacks++;
 	handle->oNbMaxUsedPacks = (handle->oNbUsedPacks > handle->oNbMaxUsedPacks) ? (handle->oNbUsedPacks) : (handle->oNbMaxUsedPacks);
-	handle->oState &= (uint16_t)~(1u<<BMBOX_EMPTY);
+	handle->oState &= (uint16_t)~(1U<<BMBOX_EMPTY);
 
 	handle->oWrite = (handle->oWrite == &handle->oFIFO[nbMaxPacks]) ? (&handle->oFIFO[0])				   : (handle->oWrite);
-					 (handle->oWrite == handle->oRead)              ? (handle->oState |= (1u<<BMBOX_FULL)) : (handle->oState |= 0u);
+					 (handle->oWrite == handle->oRead)              ? (handle->oState |= (1U<<BMBOX_FULL)) : (handle->oState |= 0U);
 
-	if (handle->oListEmpty.oNbElements > 0u) {
+	if (handle->oListEmpty.oNbElements > 0U) {
 
 // If a reading process was suspended, then, reactivate it
 
 		process = handle->oListEmpty.oFirst;
-		process->oInternal.oState &= (uint16_t)~(1u<<BPROC_SUSP_MBOX_E);
+		process->oInternal.oState &= (uint16_t)~(1U<<BPROC_SUSP_MBOX_E);
 		lists_disconnectConnect(&handle->oListEmpty, &vKern_listExec[core], process);
 		process->oInternal.oStatus = KERR_KERN_NOERR;
 
 // If the ready process has a higher priority, then preemption occurs
 
-		*preemption = (process->oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority) ? (true) : (false);
+		*preemption = (process->oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority);
 	}
 }
 
@@ -748,12 +762,12 @@ static	int32_t	local_readMailbox(uint32_t core, mbox_t *handle, void **message, 
 
 	vKern_runProc[core]->oStatistic.oNbKernCalls++;
 
-	if ((IS_EXCEPTION) && (timeout != 0u))	    		 { DEBUG_KERN_TRACE("exit: KO 1"); return (KERR_KERN_FRISR); }
+	if ((IS_EXCEPTION) && (timeout != 0U))	    		 { DEBUG_KERN_TRACE("exit: KO 1"); return (KERR_KERN_FRISR); }
 	if (handle == NULL)								     { DEBUG_KERN_TRACE("exit: KO 2"); return (KERR_KERN_NOMBO); }
-	if ((handle->oState & (1u<<BMBOX_INSTALLED)) == 0u)  { DEBUG_KERN_TRACE("exit: KO 3"); return (KERR_KERN_NOMBO); }
-	if ((handle->oState & (1u<<BMBOX_CONFIGURED)) == 0u) { DEBUG_KERN_TRACE("exit: KO 4"); return (KERR_KERN_MBNCF); }
+	if ((handle->oState & (1U<<BMBOX_INSTALLED)) == 0U)  { DEBUG_KERN_TRACE("exit: KO 3"); return (KERR_KERN_NOMBO); }
+	if ((handle->oState & (1U<<BMBOX_CONFIGURED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 4"); return (KERR_KERN_MBNCF); }
 
-	if ((handle->oState & (1u<<BMBOX_BY_COPY)) == 0u) {
+	if ((handle->oState & (1U<<BMBOX_BY_COPY)) == 0U) {
 		*message = NULL;
 	}
 
@@ -771,15 +785,15 @@ static	int32_t	local_readMailbox(uint32_t core, mbox_t *handle, void **message, 
 		vKern_runProc[core]->oInternal.oTimeout = wkTimeout;
 	}
 
-	if ((handle->oState & (1u<<BMBOX_EMPTY)) == 0u) {
+	if ((handle->oState & (1U<<BMBOX_EMPTY)) == 0U) {
 		local_read(core, handle, message, size, preemption);
 		DEBUG_KERN_TRACE("exit: OK");
 		return (KERR_KERN_NOERR);
 	}
 
-	if (wkTimeout > 0u) {
+	if (wkTimeout > 0U) {
 		i = (uint32_t)(((uintptr_t)handle - (uintptr_t)&vKern_mbox[core][0]) / sizeof(mbox_t));
-		synchro = KKERN_MSG_WAIT_MBOX_E + (i & 0x0000FFFFu);
+		synchro = KKERN_MSG_WAIT_MBOX_E + (i & 0x0000FFFFU);
 		(void)synchro;
 
 		GOTO_KERN_M(synchro);
@@ -798,18 +812,18 @@ static	int32_t	local_readMailbox(uint32_t core, mbox_t *handle, void **message, 
 }
 
 static	void	local_read(uint32_t core, mbox_t *handle, void **message, uint32_t *size, bool *preemption) {
+	UNUSED(core);
+
 	uint32_t	nbMaxPacks, copySize;
 	proc_t		*process;
-
-	UNUSED(core);
 
 // Read the message
 
 	nbMaxPacks = handle->oNbMaxPacks;
 
 	if (handle->oDataBuffer != NULL) {
-		copySize = (((*size) > handle->oRead->oSize) || (*size == 0u)) ? handle->oRead->oSize : (*size);
-		if ((copySize > 0u) && (*message != NULL)) {
+		copySize = (((*size) > handle->oRead->oSize) || (*size == 0U)) ? handle->oRead->oSize : (*size);
+		if ((copySize > 0U) && (*message != NULL)) {
 			memcpy((void *)(unsigned char *)(*message), (const void *)(const unsigned char *)handle->oRead->oBuff, (size_t)copySize);
 		}
 		*size = copySize;
@@ -828,22 +842,22 @@ static	void	local_read(uint32_t core, mbox_t *handle, void **message, uint32_t *
 
 	handle->oRead++;
 	handle->oNbUsedPacks--;
-	handle->oState &= (uint16_t)~(1u<<BMBOX_FULL);
+	handle->oState &= (uint16_t)~(1U<<BMBOX_FULL);
 
 	handle->oRead = (handle->oRead == &handle->oFIFO[nbMaxPacks]) ? (&handle->oFIFO[0])					  : (handle->oRead);
-					(handle->oRead == handle->oWrite)             ? (handle->oState |= (1u<<BMBOX_EMPTY)) : (handle->oState |= 0u);
+					(handle->oRead == handle->oWrite)             ? (handle->oState |= (1U<<BMBOX_EMPTY)) : (handle->oState |= 0U);
 
-	if (handle->oListFull.oNbElements > 0u) {
+	if (handle->oListFull.oNbElements > 0U) {
 
 // If a writing process was suspended, then, reactivate it
 
 		process = handle->oListFull.oFirst;
-		process->oInternal.oState &= (uint16_t)~(1u<<BPROC_SUSP_MBOX_F);
+		process->oInternal.oState &= (uint16_t)~(1U<<BPROC_SUSP_MBOX_F);
 		lists_disconnectConnect(&handle->oListFull, &vKern_listExec[core], process);
 		process->oInternal.oStatus = KERR_KERN_NOERR;
 
 // If the ready process has a higher priority, then preemption occurs
 
-		*preemption = (process->oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority) ? (true) : (false);
+		*preemption = (process->oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority);
 	}
 }

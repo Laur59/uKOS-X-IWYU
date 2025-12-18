@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		GD32VF103_rtc equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // RTC address definitions
 // -----------------------
 
@@ -64,7 +66,7 @@ typedef struct {
 	volatile	uint32_t	ALRML;
 } RTC_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	RTC	reinterpret_cast<RTC_TypeDef *>(0x40002800u)
 
 #else

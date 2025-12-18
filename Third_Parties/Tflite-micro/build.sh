@@ -12,8 +12,8 @@
 # Project:	uKOS-X
 # Goal:		Build the Tflite-micro package
 #
-#   (c) 2025-20xx, Edo. Franzi
-#   --------------------------
+#   © 2025-2026, Edo. Franzi
+#   ------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -49,10 +49,9 @@
 set -euo pipefail
 setopt KSH_ARRAYS  # Use 0-indexed arrays like bash
 
-if [[ -z "${PATH_UKOS_X_PACKAGE:-}" ]]; then
-	echo "Variable PATH_UKOS_X_PACKAGE is not set!"
-	exit 1
-fi
+# Determine script directory (works if executed via ./script.sh or zsh script.sh)
+
+readonly PATH_PRG="${0:a:h}"
 
 # Colours for messages
 
@@ -71,7 +70,7 @@ readonly splash="
 ║      Fetching upstream + Building all architectures        ║
 ╚════════════════════════════════════════════════════════════╝
 "
-printf '%b%s%b' "${GREEN}" "$splash" "${NC}"
+printf '%b%s%b' "${BLUE}" "$splash" "${NC}"
 
 if [[ -d "Tflite-env/bin" ]]; then
 	source Tflite-env/bin/activate
@@ -80,15 +79,18 @@ fi
 # Packages
 # --------
 
-readonly hash=f5c36ef
+export hash=96881ae2 # Merge remote-tracking branch 'upstream/main f5c36ef2' into macos	148864407+Laur59@users.noreply.github.com	12.12.2025 12:56 AM
 
 # Clone the right package
 
 printf '\n%bDownload the Tflite-micro package ...%b\n\n' "${BOLD}" "${NC}"
 
-cd "${PATH_UKOS_X_PACKAGE}"/Third_Parties/Tflite-micro
-rm -rf "${PATH_UKOS_X_PACKAGE}"/Third_Parties/Tflite-micro/Tflite-micro
-git clone https://github.com/tensorflow/tflite-micro Tflite-micro
+cd "${PATH_PRG}"
+if [[ ! -d Tflite-micro ]]; then
+	git clone https://github.com/Laur59/tflite-micro.git Tflite-micro
+else
+	git -C Tflite-micro fetch
+fi
 cd Tflite-micro
 git checkout ${hash}
 
@@ -101,6 +103,16 @@ ln -s Tflite-micro Tflite-micro-current
 # Parse core.yaml file using yq
 parse_core_yaml() {
 	local yaml_file="../core.yaml"
+
+	if ! [[ -f "${yaml_file}" ]]; then
+		printf "%bError: YAML file not found: %s%b\n" "${RED}" "${yaml_file}" "${NC}" >&2
+		exit 1
+	fi
+
+	if ! command -v yq >/dev/null 2>&1; then
+		printf "%bError: yq is not installed%b\n" "${RED}" "${NC}" >&2
+		exit 1
+	fi
 
 	# Parse YAML: iterate through models and their cores
 	yq eval 'to_entries[] | .key as $model | .value[] | "\($model)\t\(.core)\t\(.target_arch)\t\(.fpu)"' "${yaml_file}"

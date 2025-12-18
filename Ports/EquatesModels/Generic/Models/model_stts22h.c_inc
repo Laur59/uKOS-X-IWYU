@@ -9,8 +9,8 @@
 ; Project:	uKOS-X
 ; Goal:		Model for controlling the "stts22h" device.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -44,7 +44,13 @@
 ;------------------------------------------------------------------------
 */
 
+#include	<stdint.h>
+
 #include	"STTS22H/STTS22H.h"
+#include	"kern/kern.h"
+#include	"os_errors.h"
+#include	"temperature/temperature.h"
+#include	"types.h"
 
 /*
  * \brief model_stts22h_init
@@ -56,11 +62,11 @@ void	model_stts22h_init(void) {
 	uint8_t		buffer[2];
 
 	cb_configure();
-	kern_suspendProcess(1u);
+	kern_suspendProcess(1U);
 
 	buffer[0] = STTS22H_CNTRL;
-	buffer[1] = (1u<<LOW_ODR_START) | (AVG25HZ<<AVG) | (1u<<FREERUN);
-	cb_writeI2C(KI2C_ADD_STTS22H, &buffer[0], 2u);
+	buffer[1] = (1U<<LOW_ODR_START) | (AVG25HZ<<AVG) | (1U<<FREERUN);
+	cb_writeI2C(KI2C_ADD_STTS22H, &buffer[0], 2U);
 }
 
 /*
@@ -76,16 +82,16 @@ int32_t	model_stts22h_read(float64_t *temperature) {
 // Get the temperature
 
 	buffer[0] = STTS22H_TEMP_H;
-	cb_readI2C(KI2C_ADD_STTS22H, &buffer[0], 1u);
+	cb_readI2C(KI2C_ADD_STTS22H, &buffer[0], 1U);
 	msb = buffer[0];
 
 	buffer[0] = STTS22H_TEMP_L;
-	cb_readI2C(KI2C_ADD_STTS22H, &buffer[0], 1u);
+	cb_readI2C(KI2C_ADD_STTS22H, &buffer[0], 1U);
 	lsb = buffer[0];
 
 // Scale it
 
-	value = (int16_t)((msb<<8u) | lsb);
+	value = (int16_t)((msb<<8U) | lsb);
 	*temperature = ((float64_t)value / KSTTS22H_SCALING) - KTEMPERATURE_ZERO_KELVIN;
 	return (KERR_TEMPERATURE_NOERR);
 }
@@ -102,9 +108,9 @@ int32_t	model_stts22h_write(float64_t temperature) {
 // Scale the temperature
 // Save it
 
-	value = (uint8_t)((temperature + KTEMPERATURE_ZERO_KELVIN) / 0.064) + 63u;
+	value = (uint8_t)((temperature + KTEMPERATURE_ZERO_KELVIN) / 0.064) + 63U;
 	buffer[0] = STTS22H_TEMP_H_LIMIT;
 	buffer[1] = value;
-	cb_writeI2C(KI2C_ADD_STTS22H, &buffer[0], 2u);
+	cb_writeI2C(KI2C_ADD_STTS22H, &buffer[0], 2U);
 	return (KERR_TEMPERATURE_NOERR);
 }

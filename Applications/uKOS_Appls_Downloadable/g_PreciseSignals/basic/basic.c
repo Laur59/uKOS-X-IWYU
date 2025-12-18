@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Demo of a C application.
 ;			This application shows how to operate with the uKOS-X uKernel.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -71,7 +71,21 @@
  *
  */
 
-#include	"uKOS.h"
+#include	<inttypes.h>
+#include	<stdio.h>
+#include	<stdlib.h>
+
+#include	"crt0.h"
+#include	"serial/serial.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"memo/memo.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -97,7 +111,7 @@ MODULE(
 	aStart,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,										// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
@@ -110,8 +124,8 @@ static	proc_t		*vProcess_0, *vProcess_1;
 
 static	enum		{ KSTATE1, KSTATE2, KSTATE3, KSTATE4 } vState = KSTATE1;
 
-#define	KSYNC_STATE_MACHINE		(1u<<0u)		// Synchro for the state machine (P1)
-#define	KSYNC_CONTINUOUS		(1u<<1u)		// Synchro for the continuous (P2)
+#define	KSYNC_STATE_MACHINE		(1U<<0U)		// Synchro for the state machine (P1)
+#define	KSYNC_CONTINUOUS		(1U<<1U)		// Synchro for the continuous (P2)
 
 /*
  * \brief aProcess_0
@@ -125,7 +139,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 	UNUSED(argument);
 
 	while (true) {
-		kern_suspendProcess(500u);
+		kern_suspendProcess(500U);
 		(void)dprintf(KSYST,"T1 = %"PRIu32", T2 = %"PRIu32", T3 = %"PRIu32", T4 = %"PRIu32"\n",
 							vDelta[0],
 							vDelta[1],
@@ -151,15 +165,15 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
+	UNUSED(argument);
+
 	uint32_t	signal;
 	prcs_t		*preciseSignal;
 	sign_t		*sigGroup = NULL;
 
-	UNUSED(argument);
-
 	if (kern_createPreciseSignal("My_State_Machine", &preciseSignal) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create prcs"); exit(EXIT_OS_FAILURE); }
 
-	kern_setPreciseSignal(preciseSignal, &sigGroup, vProcess_1, 320u, KPRCS_SINGLE_SHOT, KSYNC_STATE_MACHINE);
+	kern_setPreciseSignal(preciseSignal, &sigGroup, vProcess_1, 320U, KPRCS_SINGLE_SHOT, KSYNC_STATE_MACHINE);
 
 	while (true) {
 		switch (vState) {
@@ -170,7 +184,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 				signal = KSYNC_STATE_MACHINE;
 				kern_waitSignal(sigGroup, &signal, KKERN_HANDLE_FROM_ISR, KWAIT_INFINITY);
 
-				kern_setPreciseSignal(preciseSignal, &sigGroup, vProcess_1, 550u, KPRCS_SINGLE_SHOT, KSYNC_STATE_MACHINE);
+				kern_setPreciseSignal(preciseSignal, &sigGroup, vProcess_1, 550U, KPRCS_SINGLE_SHOT, KSYNC_STATE_MACHINE);
 				kern_readTickCount(&vTime[0]);
 				vDelta[3] = (uint32_t)(vTime[0] - vTime[3]);
 				vState = KSTATE2;
@@ -183,7 +197,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 				signal = KSYNC_STATE_MACHINE;
 				kern_waitSignal(sigGroup, &signal, KKERN_HANDLE_FROM_ISR, KWAIT_INFINITY);
 
-				kern_setPreciseSignal(preciseSignal, &sigGroup, vProcess_1, 2830u, KPRCS_SINGLE_SHOT, KSYNC_STATE_MACHINE);
+				kern_setPreciseSignal(preciseSignal, &sigGroup, vProcess_1, 2830U, KPRCS_SINGLE_SHOT, KSYNC_STATE_MACHINE);
 				kern_readTickCount(&vTime[1]);
 				vDelta[0] = (uint32_t)(vTime[1] - vTime[0]);
 				vState = KSTATE3;
@@ -196,7 +210,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 				signal = KSYNC_STATE_MACHINE;
 				kern_waitSignal(sigGroup, &signal, KKERN_HANDLE_FROM_ISR, KWAIT_INFINITY);
 
-				kern_setPreciseSignal(preciseSignal, &sigGroup, vProcess_1, 2510u, KPRCS_SINGLE_SHOT, KSYNC_STATE_MACHINE);
+				kern_setPreciseSignal(preciseSignal, &sigGroup, vProcess_1, 2510U, KPRCS_SINGLE_SHOT, KSYNC_STATE_MACHINE);
 				kern_readTickCount(&vTime[2]);
 				vDelta[1] = (uint32_t)(vTime[2] - vTime[1]);
 				vState = KSTATE4;
@@ -209,7 +223,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 				signal = KSYNC_STATE_MACHINE;
 				kern_waitSignal(sigGroup, &signal, KKERN_HANDLE_FROM_ISR, KWAIT_INFINITY);
 
-				kern_setPreciseSignal(preciseSignal, &sigGroup, vProcess_1, 320u, KPRCS_SINGLE_SHOT, KSYNC_STATE_MACHINE);
+				kern_setPreciseSignal(preciseSignal, &sigGroup, vProcess_1, 320U, KPRCS_SINGLE_SHOT, KSYNC_STATE_MACHINE);
 				kern_readTickCount(&vTime[3]);
 				vDelta[2] = (uint32_t)(vTime[3] - vTime[2]);
 				vState = KSTATE1;
@@ -234,6 +248,9 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  *
  */
 int		main(int argc, const char *argv[]) {
+	UNUSED(argc);
+	UNUSED(argv);
+
 
 // ---------------------------------I-----------------------------------------I--------------I
 
@@ -241,9 +258,6 @@ int		main(int argc, const char *argv[]) {
 	STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2025";
 	STRG_LOC_CONST(aStrIden_1[]) = "Process_User_1";
 	STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2025";
-
-	UNUSED(argc);
-	UNUSED(argv);
 
 // Specifications for the processes
 

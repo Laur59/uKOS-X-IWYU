@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		nrf5340_application_usbd equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // USBD address definitions
 // ------------------------
@@ -210,7 +212,7 @@ typedef struct {
 	volatile	uint32_t	ISOOUT_AMOUNT;
 } USBD_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	USBD_NS	reinterpret_cast<USBD_TypeDef *>(0x40036000u)
 #define	USBD_S	reinterpret_cast<USBD_TypeDef *>(0x50036000u)
 

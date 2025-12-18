@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		imu manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -63,6 +63,10 @@
  * @{
  */
 
+#include	<stdint.h>
+
+#include	"types.h"
+
 // Semaphores
 // ----------
 
@@ -105,7 +109,7 @@ struct imuMagnPack {
 // Acceleration mode
 
 enum {
-			KIMU_MAX_2G = 0u,									// +/- 2-g
+			KIMU_MAX_2G = 0U,									// +/- 2-g
 			KIMU_MAX_4G,										// +/- 4-g
 			KIMU_MAX_8G,										// +/- 8-g
 			KIMU_MAX_16G										// +/- 16-g
@@ -114,7 +118,7 @@ enum {
 // Giroscope mode
 
 enum {
-			KIMU_MAX_245DPS = 0u,								// +/- 245-dps
+			KIMU_MAX_245DPS = 0U,								// +/- 245-dps
 			KIMU_MAX_500DPS,									// +/- 500-dps
 			KIMU_MAX_2000DPS									// +/- 2000-dps
 };
@@ -122,7 +126,7 @@ enum {
 //  Magnetometer mode
 
 enum {
-			KIMU_MAX_4GAUSS = 0u,								// +/- 4-gauss
+			KIMU_MAX_4GAUSS = 0U,								// +/- 4-gauss
 			KIMU_MAX_8GAUSS,									// +/- 8-gauss
 			KIMU_MAX_12GAUSS,									// +/- 12-gauss
 			KIMU_MAX_16GAUSS									// +/- 16-gauss
@@ -130,7 +134,7 @@ enum {
 
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -238,7 +242,7 @@ extern	int32_t	imu_configure(const imuCnf_t *configure);
  */
 extern	int32_t	imu_read(imuAccePack_t *accelerometer, imuGyroPack_t *gyroscope, imuMagnPack_t *magnetometer);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 

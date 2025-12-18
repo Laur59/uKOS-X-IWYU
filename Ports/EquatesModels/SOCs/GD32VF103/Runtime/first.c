@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Vectors for the uKOS-X system (first).
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,9 +46,16 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"linker.h"
-#include	"kern/private/private_temporal.h"
+#include	<stdint.h>
+
+#include	"soc_reg.h"
+#include	"macros_soc.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"	// IWYU pragma: keep (for INTERRUPTION_IN INTERRUPTION_OUT)
+
+extern	void	(*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
+extern	void	(*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
+extern	bool	vExce_isException[KNB_CORES];
 
 // Vector table: ...
 // However rather than start at zero the vector table starts at address 0x00000004,
@@ -75,8 +82,8 @@ __attribute__ ((noinline)) void local_fixPC(void) {
 // Check if the return address is below the flash
 // Move the return address into the flash area
 
-	if (regRa < 0x08000000u) {
-		regRa |= 0x08000000u;
+	if (regRa < 0x08000000U) {
+		regRa |= 0x08000000U;
 
 		__asm volatile ("add	ra,%0,zero" : : "r" (regRa));
 	}

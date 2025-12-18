@@ -4,14 +4,14 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Laurent von Allmen	The 2025-01-01
+# Author:   Laurent von Allmen  The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		CMake file to set up the building for uKOS-X system.
+# Project:  uKOS-X
+# Goal:     CMake file to set up the building for uKOS-X system.
 #
-#   (c) 2025-20xx, Laurent von Allmen
-#   ---------------------------------
+#   © 2025-2026, Laurent von Allmen
+#   -------------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,16 +47,16 @@
 cmake_minimum_required(VERSION 3.26)
 
 # Applications CMake module setup
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/../../../../Mkfiles/cmake")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/../../../../cmake")
 
 include(set-project-paths)
 
-include(${PATH_UKOS}/Ports/Mkfiles/cmake/select-arm-toolchain.cmake)
+include(${PATH_UKOS}/Ports/cmake/select-arm-toolchain.cmake)
 
 project(
-	readTEMP
-	VERSION 1.0
-	LANGUAGES C
+    readTEMP
+    VERSION 1.0
+    LANGUAGES C
 )
 
 # Microcontroller description (mandatory variables)
@@ -70,8 +70,8 @@ set(BASE Base_CM7)
 
 # Extra compilation options
 add_compile_options(
-	-g3 # include extra information for debugger
-	-Os # optimisation
+    -g3 # include extra information for debugger
+    -Os # optimisation
 )
 
 include(common)

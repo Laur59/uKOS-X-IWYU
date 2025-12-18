@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		K210_clint equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -54,13 +54,13 @@
 #define	CLINT_MTIMECMP_SIZE		0x8u
 #define	CLINT_MTIME				0xBFF8u
 #define	CLINT_MTIME_SIZE		0x8u
-#define CLINT_MAX_CORES			4095u
-#define CLINT_NUM_CORES			2u
-#define CLINT_CLOCK_DIV			50u
+#define CLINT_MAX_CORES			4095U
+#define CLINT_NUM_CORES			2U
+#define CLINT_CLOCK_DIV			50U
 
-#define	PLIC_NUM_SOURCES		(EINT_MAX - 1u)
-#define	PLIC_NUM_PRIORITIES		7u
-#define	PLIC_NUM_CORES			2u
+#define	PLIC_NUM_SOURCES		(EINT_MAX - 1U)
+#define	PLIC_NUM_PRIORITIES		7U
+#define	PLIC_NUM_CORES			2U
 
 // MSIP Registers
 // --------------

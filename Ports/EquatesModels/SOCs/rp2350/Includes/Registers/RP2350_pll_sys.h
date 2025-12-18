@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		RP2350_pll_sys equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // PLL_SYS address definitions
 // ---------------------------
 
@@ -62,7 +64,7 @@ typedef struct {
 	volatile	uint32_t	INTS;
 } PLL_SYS_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	PLL_SYS_NS	reinterpret_cast<PLL_SYS_TypeDef *>(0x40050000u)
 #define	PLL_SYS_S	reinterpret_cast<PLL_SYS_TypeDef *>(0x40050000u)
 #define	PLL_USB_NS	reinterpret_cast<PLL_SYS_TypeDef *>(0x40058000u)

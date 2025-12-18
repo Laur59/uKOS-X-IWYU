@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		nrf5340_application_pwm equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // PWM address definitions
 // -----------------------
@@ -99,7 +101,7 @@ typedef struct {
 	volatile	uint32_t	PSEL_OUT[4];
 } PWM_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	PWM0_NS	reinterpret_cast<PWM_TypeDef *>(0x40021000u)
 #define	PWM0_S	reinterpret_cast<PWM_TypeDef *>(0x50021000u)
 #define	PWM1_NS	reinterpret_cast<PWM_TypeDef *>(0x40022000u)

@@ -13,8 +13,8 @@
 ;			The "reset" exception is not considered. The indirect table
 ;			is reserved in the first.c file.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -113,8 +113,8 @@ typedef enum IRQn {
 	POWMAN_IRQ_TIMER_IRQn	= 45,	//
 } IRQn_Type;
 
-#define	KNB_EXCEPTIONS		14u
-#define	KNB_INTERRUPTIONS	46u
+#define	KNB_EXCEPTIONS		14U
+#define	KNB_INTERRUPTIONS	46U
 
 // For the core 0
 // --------------
@@ -244,7 +244,7 @@ typedef enum IRQn {
 
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -374,6 +374,6 @@ void	PLL_USB_IRQ_C1_IRQHandler(void);
 void	POWMAN_IRQ_POW_C1_IRQHandler(void);
 void	POWMAN_IRQ_TIMER_C1_IRQHandler(void);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif

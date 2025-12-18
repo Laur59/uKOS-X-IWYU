@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		nrf5340_network_twim equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // TWIM address definitions
 // ------------------------
@@ -119,7 +121,7 @@ typedef struct {
 	volatile	uint32_t	ADDRESS;
 } TWIM_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	TWIM0_NS	reinterpret_cast<TWIM_TypeDef *>(0x41013000u)
 
 #else

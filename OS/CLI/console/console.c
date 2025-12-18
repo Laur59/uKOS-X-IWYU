@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Open a console prompt (multi-user).
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,23 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<inttypes.h>
+#include	<stdint.h>	// NOLINT(misc-include-cleaner): Explicit include for IWYU compliance
+#include	<stdio.h>
+#include	<stdlib.h>
+
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core_stackFrame.h"
+#include	"macros_soc.h"
+#include	"memo/memo.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"serial/serial.h"
+#include	"system/system.h"
+#include	"text/text.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -89,7 +105,7 @@ MODULE(
 	prgm,													// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,													// Address of the clean code (clean the module)
 	" 1.0",													// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),						// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),						// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0														// Execution cores
 );
 
@@ -126,9 +142,9 @@ static	const	console_t	aTabConsole[] = {
 
 #define	KNB_CHANNELS			(sizeof(aTabConsole) / sizeof(console_t))
 
-#define	KLN_INIT_CMD_LINE_BUF	128u						// Length of the initial command line
-#define	KLN_CMD_LINE_BUF		2048u						// Length of the command line
-#define	KNB_PARAMETERS			(KLN_CMD_LINE_BUF / 2u)		// It is considered a minimum parameter of "x " (2-bytes)
+#define	KLN_INIT_CMD_LINE_BUF	128U						// Length of the initial command line
+#define	KLN_CMD_LINE_BUF		2048U						// Length of the command line
+#define	KNB_PARAMETERS			(KLN_CMD_LINE_BUF / 2U)		// It is considered a minimum parameter of "x " (2-bytes)
 
 /*
  * \brief Main entry point
@@ -138,7 +154,7 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 	enum				{ KERR_NOT, KERR_INA, KERR_PRO } error = KERR_NOT;
 	int32_t				status;
 	serialManager_t		serialManager = KDEF0;
-	char_t				commandLine[KLN_INIT_CMD_LINE_BUF + 1u];
+	char_t				commandLine[KLN_INIT_CMD_LINE_BUF + 1U];
 	consolePack_t		pack;
 	bool				releasePack = false;
 	uint16_t			i, index;
@@ -152,7 +168,7 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 // console urt1
 // console urt1 xyz
 
-	if (argc < 2u) {
+	if (argc < 2U) {
 		error = KERR_INA;
 	}
 	else {
@@ -164,7 +180,7 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 				break;
 			}
 			default: {
-				for (i = 0u; i < KLN_INIT_CMD_LINE_BUF; i++) {
+				for (i = 0U; i < KLN_INIT_CMD_LINE_BUF; i++) {
 					commandLine[i] = '\0';
 				}
 				break;
@@ -202,7 +218,7 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 
 // Let the time to the process "local_process" to run
 
-	do { kern_suspendProcess(1u); } while ((releasePack == false) && (error == KERR_NOT));
+	do { kern_suspendProcess(1U); } while ((!releasePack) && (error == KERR_NOT));
 
 	return (status);
 }
@@ -228,7 +244,7 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 
 // Reserve the memory for the command line
 
-	commandLine = (char_t *)memo_malloc(KMEMO_ALIGN_8, ((KLN_CMD_LINE_BUF + 1u) * sizeof(char_t)), "cmd_line");
+	commandLine = (char_t *)memo_malloc(KMEMO_ALIGN_8, ((KLN_CMD_LINE_BUF + 1U) * sizeof(char_t)), "cmd_line");
 	argv		= (const char_t **)memo_malloc(KMEMO_ALIGN_8, (KNB_PARAMETERS * sizeof(char_t *)), "argv");
 
 	if ((commandLine == NULL) || (argv == NULL)) {
@@ -241,7 +257,7 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 
 // Initialise the command line
 
-	for (i = 0u; i < KLN_CMD_LINE_BUF; i++) {
+	for (i = 0U; i < KLN_CMD_LINE_BUF; i++) {
 		commandLine[i] = '\0';
 	}
 
@@ -262,7 +278,7 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 
 	text_readArgs(commandLine, KLN_CMD_LINE_BUF, argv, &argc);
 
-	if (argc != 0u) {
+	if (argc != 0U) {
 		local_execute(argc, argv);
 	}
 
@@ -276,7 +292,7 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 		text_waitString(KSYST, commandLine, KLN_CMD_LINE_BUF);
 		text_readArgs(commandLine, KLN_CMD_LINE_BUF, argv, &argc);
 
-		if (argc > 0u) {
+		if (argc > 0U) {
 			switch (local_execute(argc, argv)) {
 				case EXIT_OS_SUCCESS: {
 					memo_free((void *)commandLine);
@@ -326,15 +342,16 @@ static	int32_t	local_execute(uint32_t argc, const char_t *argv[]) {
 		error = true;
 	}
 
-	if (error != true) {
-		error = ((module->oFlag & (1u<<BEXE_CONSOLE)) != 0u) ? (false) : (true);
+	if (!error) {
+		error = ((module->oFlag & (1U<<BEXE_CONSOLE)) == 0U);
 	}
 
-	if (error == true) {
+	if (error) {
 		(void)dprintf(KSYST, "Module not found or user memory busy by a running application.\n\n");
+		status = EXIT_OS_FAILURE;
+	} else {
+		status = module->oExecution(argc, argv);
 	}
-
-	status = (error == true) ? (EXIT_OS_FAILURE) : (module->oExecution(argc, argv));
 	return (status);
 }
 
@@ -347,11 +364,11 @@ static	int32_t	local_execute(uint32_t argc, const char_t *argv[]) {
 static	uint16_t	local_getIndex(serialManager_t serialManager) {
 	uint8_t		index;
 
-	for (index = 0u; index < (uint8_t)KNB_CHANNELS; index++) {
+	for (index = 0U; index < (uint8_t)KNB_CHANNELS; index++) {
 		if (aTabConsole[index].oSerialManager == serialManager) {
 			return (index);
 		}
 
 	}
-	return (0u);
+	return (0U);
 }

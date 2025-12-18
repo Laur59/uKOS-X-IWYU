@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		RP2350_powman equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // POWMAN address definitions
 // --------------------------
@@ -114,7 +116,7 @@ typedef struct {
 	volatile	uint32_t	INTS;
 } POWMAN_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	POWMAN_NS	reinterpret_cast<POWMAN_TypeDef *>(0x40100000u)
 #define	POWMAN_S	reinterpret_cast<POWMAN_TypeDef *>(0x40100000u)
 #else

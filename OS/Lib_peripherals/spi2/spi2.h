@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		spi2 manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -63,7 +63,10 @@
  * @{
  */
 
-#include	"Lib_peripherals/spi_common.h"
+#include	<stdint.h>
+
+#include	"spi_common.h"
+#include	"types.h"
 
 // Semaphores
 // ----------
@@ -72,7 +75,7 @@
 
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -132,9 +135,9 @@ extern	int32_t	spi2_release(reserveMode_t reserveMode);
  * \code{.c}
  *          int32_t       status;
  * const    spiCnf_t    configure = {
- *                            .oSpeed    = 5000000u,
+ *                            .oSpeed    = 5000000U,
  *                            .oMode     = (uint8_t)KSPI_MASTER,
- *                            .oClock    = (1u<<(uint8_t)BSPI_POL) | (1u<<(uint8_t)BSPI_PHA)
+ *                            .oClock    = (1U<<(uint8_t)BSPI_POL) | (1U<<(uint8_t)BSPI_PHA)
  *                        };
  *
  *    status = spi2_configure(&configure);
@@ -215,7 +218,7 @@ extern	int32_t	spi2_writeRead(uint8_t *data);
  */
 extern	int32_t	spi2_multipleWriteRead(const uint8_t *wData, uint16_t wSize, uint8_t *rData, uint16_t rSize, uint32_t timeout);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 

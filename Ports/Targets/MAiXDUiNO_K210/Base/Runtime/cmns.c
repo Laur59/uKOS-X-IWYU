@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Some common routines used in many modules.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,17 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+
+#include	"Registers/K210_sysctl.h"
+#include	"Registers/K210_uart.h"
+#include	"clockTree.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"modules.h"
+#include	"types.h"
+#include	"serial/serial.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -69,7 +79,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -85,29 +95,29 @@ void	cmns_init(void) {
 
 // Turn on the UART1 (used by the core 1)
 
-	sysctl->clk_en_peri.uart1_clk_en = 1u;
-	uart1->LCR |= 1u<<7u;
+	sysctl->clk_en_peri.uart1_clk_en = 1U;
+	uart1->LCR |= 1U<<7U;
 
 	BAUDRATE(KFREQUENCY_APB0, KSERIAL_DEFAULT_BAUDRATE, uart1->DLH, uart1->DLL, uart1->DLF);
 
-	uart1->LCR  = 0u;
+	uart1->LCR  = 0U;
 	uart1->LCR  = UART_LCR_NBBIT8 | UART_LCR_STBIT1 | UART_LCR_PARITYNONE;
-	uart1->LCR &= (uint32_t)~(1u<<7u);
-	uart1->IER |= 0x80u;
-	uart1->FCR  = (UART_FCR_RECEIVE_FIFO_1 | UART_FCR_SEND_FIFO_8) | (1u<<3u) | 0x1u;
+	uart1->LCR &= (uint32_t)~(1U<<7U);
+	uart1->IER |= 0x80U;
+	uart1->FCR  = (UART_FCR_RECEIVE_FIFO_1 | UART_FCR_SEND_FIFO_8) | (1U<<3U) | 0x1U;
 
 // Turn on the UART2 (used by the core 0)
 
-	sysctl->clk_en_peri.uart2_clk_en = 1u;
-	uart2->LCR |= 1u<<7u;
+	sysctl->clk_en_peri.uart2_clk_en = 1U;
+	uart2->LCR |= 1U<<7U;
 
 	BAUDRATE(KFREQUENCY_APB0, KSERIAL_DEFAULT_BAUDRATE, uart2->DLH, uart2->DLL, uart2->DLF);
 
-	uart2->LCR  = 0u;
+	uart2->LCR  = 0U;
 	uart2->LCR  = UART_LCR_NBBIT8 | UART_LCR_STBIT1 | UART_LCR_PARITYNONE;
-	uart2->LCR &= (uint32_t)~(1u<<7u);
-	uart2->IER |= 0x80u;
-	uart2->FCR  = (UART_FCR_RECEIVE_FIFO_1 | UART_FCR_SEND_FIFO_8) | (1u<<3u) | 0x1u;
+	uart2->LCR &= (uint32_t)~(1U<<7U);
+	uart2->IER |= 0x80U;
+	uart2->FCR  = (UART_FCR_RECEIVE_FIFO_1 | UART_FCR_SEND_FIFO_8) | (1U<<3U) | 0x1U;
 }
 
 /*
@@ -135,7 +145,7 @@ void	cmns_send(serialManager_t serialManager, const char_t *ascii) {
 		default:
 		case KCORE_0: {
 			while (true) {
-				while ((uart2->LSR & UART_LSR_TEMT) != 0u) { ; }
+				while ((uart2->LSR & UART_LSR_TEMT) != 0U) { }
 
 				data = (uint8_t)*wkAscii;
 				wkAscii++;
@@ -152,7 +162,7 @@ void	cmns_send(serialManager_t serialManager, const char_t *ascii) {
 
 		case KCORE_1: {
 			while (true) {
-				while ((uart1->LSR & UART_LSR_TEMT) != 0u) { ; }
+				while ((uart1->LSR & UART_LSR_TEMT) != 0U) { }
 
 				data = (uint8_t)*wkAscii;
 				wkAscii++;
@@ -190,18 +200,18 @@ void	cmns_receive(serialManager_t serialManager, char_t *data) {
 
 		default:
 		case KCORE_0: {
-			while ((uart2->LSR & UART_LSR_DATAREADY) == 0u) { ; }
+			while ((uart2->LSR & UART_LSR_DATAREADY) == 0U) { }
 
-			*data = (uint8_t)(uart2->RBR & 0xFFu);
+			*data = (uint8_t)(uart2->RBR & 0xFFU);
 			break;
 		}
 
 // Core 1
 
 		case KCORE_1: {
-			while ((uart1->LSR & UART_LSR_DATAREADY) == 0u) { ; }
+			while ((uart1->LSR & UART_LSR_DATAREADY) == 0U) { }
 
-			*data = (uint8_t)(uart1->RBR & 0xFFu);
+			*data = (uint8_t)(uart1->RBR & 0xFFU);
 			break;
 		}
 	}
@@ -218,12 +228,12 @@ void	cmns_receive(serialManager_t serialManager, char_t *data) {
 void	cmns_wait(uint32_t us) {
 	uint32_t	wkUs = us, time;
 
-	#if (defined(CACHE_S))
-	wkUs = (wkUs / 7u) * (KFREQUENCY_CORE / 1000000u);
+	#ifdef CACHE_S
+	wkUs = (wkUs / 7U) * (KFREQUENCY_CORE / 1000000U);
 
 	#else
-	wkUs = (wkUs / 12u) * (KFREQUENCY_CORE / 1000000u);
+	wkUs = (wkUs / 12U) * (KFREQUENCY_CORE / 1000000U);
 	#endif
 
-	for (time = 0u; time < wkUs; time++) { NOP; }
+	for (time = 0U; time < wkUs; time++) { NOP; }
 }

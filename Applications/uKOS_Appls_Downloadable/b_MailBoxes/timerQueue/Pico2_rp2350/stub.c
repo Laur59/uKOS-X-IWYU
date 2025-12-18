@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Hardware specific stub.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,17 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+
+#include	"types.h"
+#include	"os_errors.h"
+#include	"clockTree.h"
+#include	"core_reg.h"
+#include	"soc_reg.h"
+#include	"macros.h"
+#include	"macros_soc.h"
+#include	"macros_core.h"
+#include	"kern/kern.h"
 
 #define	KTIM_ESAMPLING_0	((float64_t)(0.0001))								// 100-us
 #define KDELTA_TIME_0		((uint32_t)(KFREQUENCY_TIM * KTIM_ESAMPLING_0))		// Delta time
@@ -80,11 +90,11 @@ static	void	stub_intr_timer_interruption(void) {
 			int32_t		status;
 	static	mbox_t		*vQueue;
 	static	bool		vInit = false;
-	static	uintptr_t	vCounter = 0u;
+	static	uintptr_t	vCounter = 0U;
 
 	core = GET_RUNNING_CORE;
 
-	if (vInit == false) {
+	if (!vInit) {
 		if (kern_getMailboxById("Queue tim", &vQueue) == KERR_KERN_NOERR) {
 			vInit = true;
 		}
@@ -92,13 +102,13 @@ static	void	stub_intr_timer_interruption(void) {
 
 // INT acknowledge
 
-	if ((REG(TIMER0)->INTS & TIMER_INTS_ALARM_3) != 0u) {
+	if ((REG(TIMER0)->INTS & TIMER_INTS_ALARM_3) != 0U) {
 		REG(TIMER0)->INTR = TIMER_INTR_ALARM_3;
 
 		REG(TIMER0)->ALARM3 = REG(TIMER0)->TIMERAWL + KDELTA_TIME_0;
 	}
 
-	status = kern_writeQueue(vQueue, vCounter, 0u);
+	status = kern_writeQueue(vQueue, vCounter, 0U);
 	if (status == KERR_KERN_NOERR) {
 		vCounter++;
 	}

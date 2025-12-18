@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Low level init for the uKOS-X Asmodee_H747 module.
@@ -15,8 +15,8 @@
 ;			!!! It is called before to copy and to initialise
 ;			!!! the variable into the RAM.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -50,7 +50,13 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+
+#include	"clockTree.h"
+#include	"core_reg.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"modules.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -73,7 +79,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -102,7 +108,7 @@ void	init_init(void) {
 	local_FPE_Configuration();
 	local_MPU_Configuration();
 
-	local_wait(1000000u);
+	local_wait(1000000U);
 }
 
 /*
@@ -129,26 +135,26 @@ static	void	local_FPE_Configuration(void) {
  */
 static	void	local_MPU_Configuration(void) {
 
-	#if (defined(PRIVILEGED_USER_S))
-	SET_MPU7_REGION(0u, 0u,	ST_FLASH_INT_0,			SZ_FLASH_INT_0,			KMPU_EXECUTABLE,	KMPU_R_ALL,		KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
-	SET_MPU7_REGION(1u, 0u,	ST_RAM_INT_0,			SZ_RAM_INT_0,			KMPU_EXECUTABLE,	KMPU_RW_ALL,	KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
-	SET_MPU7_REGION(2u, 0u,	ST_RAM_INT_0_OS,		SZ_RAM_INT_0_OS,		KMPU_EXECUTABLE,	KMPU_RW_PRI,	KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
-	SET_MPU7_REGION(3u, 0u,	ST_RAM_INT_1,			SZ_RAM_INT_1,			KMPU_EXECUTABLE,	KMPU_RW_ALL,	KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
-	SET_MPU7_REGION(4u, 0u,	ST_RAM_INT_2_SHARED,	SZ_RAM_INT_2_SHARED,	KMPU_EXECUTABLE,	KMPU_RW_ALL,	KMPU_TEX_LEVEL0, KMPU_SHAREABLE,		KMPU_NOT_CASHABLE,	KMPU_NOT_BUFFERABLE);
-	SET_MPU7_REGION(5u, 0u,	ST_PERIPH_SOC,			SZ_PERIPH_SOC,			KMPU_EXECUTABLE,	KMPU_RW_PRI,	KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,	KMPU_NOT_CASHABLE,	KMPU_BUFFERABLE);
-	SET_MPU7_REGION(6u, 0u,	ST_PERIPH_CORE,			SZ_PERIPH_CORE,			KMPU_EXECUTABLE,	KMPU_RW_PRI,	KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,	KMPU_NOT_CASHABLE,	KMPU_BUFFERABLE);
+	#ifdef PRIVILEGED_USER_S
+	SET_MPU7_REGION(0U, 0U,	ST_FLASH_INT_0,			SZ_FLASH_INT_0,			KMPU_EXECUTABLE,	KMPU_R_ALL,		KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
+	SET_MPU7_REGION(1U, 0U,	ST_RAM_INT_0,			SZ_RAM_INT_0,			KMPU_EXECUTABLE,	KMPU_RW_ALL,	KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
+	SET_MPU7_REGION(2U, 0U,	ST_RAM_INT_0_OS,		SZ_RAM_INT_0_OS,		KMPU_EXECUTABLE,	KMPU_RW_PRI,	KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
+	SET_MPU7_REGION(3U, 0U,	ST_RAM_INT_1,			SZ_RAM_INT_1,			KMPU_EXECUTABLE,	KMPU_RW_ALL,	KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
+	SET_MPU7_REGION(4U, 0U,	ST_RAM_INT_2_SHARED,	SZ_RAM_INT_2_SHARED,	KMPU_EXECUTABLE,	KMPU_RW_ALL,	KMPU_TEX_LEVEL0, KMPU_SHAREABLE,		KMPU_NOT_CASHABLE,	KMPU_NOT_BUFFERABLE);
+	SET_MPU7_REGION(5U, 0U,	ST_PERIPH_SOC,			SZ_PERIPH_SOC,			KMPU_EXECUTABLE,	KMPU_RW_PRI,	KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,	KMPU_NOT_CASHABLE,	KMPU_BUFFERABLE);
+	SET_MPU7_REGION(6U, 0U,	ST_PERIPH_CORE,			SZ_PERIPH_CORE,			KMPU_EXECUTABLE,	KMPU_RW_PRI,	KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,	KMPU_NOT_CASHABLE,	KMPU_BUFFERABLE);
 
 	#else
-	SET_MPU7_REGION(0u, 0u,	ST_FLASH_INT_0,			SZ_FLASH_INT_0,			KMPU_EXECUTABLE,	KMPU_R_ALL,		KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
-	SET_MPU7_REGION(1u, 0u,	ST_RAM_INT_0,			SZ_RAM_INT_0,			KMPU_EXECUTABLE,	KMPU_RW_ALL,	KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
-	SET_MPU7_REGION(2u, 0u,	ST_RAM_INT_1,			SZ_RAM_INT_1,			KMPU_EXECUTABLE,	KMPU_RW_ALL,	KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
-	SET_MPU7_REGION(3u, 0u,	ST_RAM_INT_2_SHARED,	SZ_RAM_INT_2_SHARED,	KMPU_EXECUTABLE,	KMPU_RW_ALL,	KMPU_TEX_LEVEL0, KMPU_SHAREABLE,		KMPU_NOT_CASHABLE,	KMPU_NOT_BUFFERABLE);
+	SET_MPU7_REGION(0U, 0U,	ST_FLASH_INT_0,			SZ_FLASH_INT_0,			KMPU_EXECUTABLE,	KMPU_R_ALL,		KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
+	SET_MPU7_REGION(1U, 0U,	ST_RAM_INT_0,			SZ_RAM_INT_0,			KMPU_EXECUTABLE,	KMPU_RW_ALL,	KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
+	SET_MPU7_REGION(2U, 0U,	ST_RAM_INT_1,			SZ_RAM_INT_1,			KMPU_EXECUTABLE,	KMPU_RW_ALL,	KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
+	SET_MPU7_REGION(3U, 0U,	ST_RAM_INT_2_SHARED,	SZ_RAM_INT_2_SHARED,	KMPU_EXECUTABLE,	KMPU_RW_ALL,	KMPU_TEX_LEVEL0, KMPU_SHAREABLE,		KMPU_NOT_CASHABLE,	KMPU_NOT_BUFFERABLE);
 	#endif
 
 // Enable branch prediction
 // Normally not necessary (always on)
 
-	SCB->CCR |= (1u<<18u);
+	SCB->CCR |= (1U<<18U);
 	DATA_SYNC_BARRIER;
 }
 
@@ -163,7 +169,7 @@ static	void	local_MPU_Configuration(void) {
 static	void	local_wait(uint32_t us) {
 	uint32_t	wkUs = us, time;
 
-	wkUs = (wkUs / 12u) * (KFREQUENCY_CORE / 1000000u);
+	wkUs = (wkUs / 12U) * (KFREQUENCY_CORE / 1000000U);
 
-	for (time = 0u; time < wkUs; time++) { NOP; }
+	for (time = 0U; time < wkUs; time++) { NOP; }
 }

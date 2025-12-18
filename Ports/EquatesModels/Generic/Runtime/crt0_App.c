@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		crt0 for the uKOS-X applications.
@@ -31,8 +31,8 @@
 ; linker_enBSS			|                 |
 ; _end					+-----------------+
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -66,7 +66,20 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stddef.h>
+#include	<stdint.h>
+#include	<stdlib.h>
+#include	<string.h>
+
+#include	"serial/serial.h"
+#include	"crt0.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"modules.h"
+#include	"system/system.h"
+#include	"types.h"
 #include	"FLASH.ck"
 
 #ifndef	KSYSTEM_CRT0_CHECK_OS_VERSION_S
@@ -122,7 +135,7 @@ int32_t		aStart(uint32_t argc, const char_t *argv[]) {
 
 
 	PRIVILEGE_ELEVATE;
-	gdb = (vKern_nbIntImbrications != 0u) ? (true) : (false);
+	gdb = (vKern_nbIntImbrications != 0U) ? (true) : (false);
 	if (gdb == true) {
 		kern_criticalSection(KEXIT_CRITICAL);
 	}
@@ -136,7 +149,7 @@ int32_t		aStart(uint32_t argc, const char_t *argv[]) {
 	#if (KSYSTEM_CRT0_CHECK_OS_VERSION_S == true)
 	uint32_t	i;
 
-	for (i = 0u; i < 64u; i++) {
+	for (i = 0U; i < 64U; i++) {
 		if (aFLASH_signature[i] != aSignature[i]) {
 
 			PRIVILEGE_RESTORE;
@@ -194,7 +207,7 @@ int32_t		aStart(uint32_t argc, const char_t *argv[]) {
  *   LDFLAGS += -Wl,--wrap=__stack_chk_fail
  *
  */
-#if (!defined(__clang__))
+#ifndef __clang__
 void	__attribute__ ((noreturn)) __wrap___stack_chk_fail(void) {
 
 	PRIVILEGE_ELEVATE;

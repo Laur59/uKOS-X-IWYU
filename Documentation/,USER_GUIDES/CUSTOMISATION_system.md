@@ -4,113 +4,118 @@
 
 
 
-The system offers extensive customization capabilities to achieve the desired behavior, with fine-tuning accomplished by strategically modifying the behavioral descriptions within the makefile.
+The system offers extensive customization capabilities to achieve the desired behavior, with fine-tuning accomplished by strategically modifying the behavioral descriptions within CMakeLists.txt.
 
 ### Adding console tools or processes
 
-```makefile
+```cmake
 # Example: adding the man tool
-CLI_U      += $(PATH_UKOS)/OS/CLI/man/man.c
+list(APPEND CLI_U ${PATH_UKOS}/OS/CLI/man/man.c)
 
 # Example: adding the process alive
-PROC_U      =  $(PATH_UKOS)/OS/Processes/alive/alive.c
-PROC_HIDE_U =  $(PATH_BASE)/OS/Processes/alive/stub_alive.c
+list(APPEND PROC_U
+    ${PATH_UKOS}/OS/Processes/alive/alive.c
+    ${PATH_BASE}/Processes/alive/stub_alive.c
+)
 ```
 
 ### Adding managers
 
-```makefile
+```cmake
 # Example: adding the urt0 manager
-CONF_SYSTEM += -DCONFIG_MAN_URT0_S
-LIBX_P      += $(PATH_UKOS)/OS/Lib_serials/urt0/urt0.c
+add_source_with_define(LIBX_P ${PATH_UKOS}/OS/Lib_serials/urt0/urt0.c CONFIG_MAN_URT0_S)
 ```
 
 ### Adding third party MicroPython library
 
-```makefile
+```cmake
 # Adding the MicroPython support
-PATH_LIB_MICROPYTHON = $(PATH_UKOS)/Third_Parties/MicroPython/Library/$(CORE)
-MICROPYTHON          = libMicroPython
+add_compile_definitions(CONFIG_MAN_MICROPYTHON_S)
+find_library(MICROPYTHON MicroPython ${PATH_UKOS}/Third_Parties/MicroPython/Library/${CORE})
+file(APPEND "${ARTIFACTS_DIR}/FLASH.cnf" "-DCONFIG_MAN_MICROPYTHON_S ")
 ...
 # Example: adding the MicroPython tool
-CLI_U           += $(PATH_UKOS)/OS/CLI/microPython/microPython.c
+list(APPEND CLI_U ${PATH_UKOS}/OS/CLI/microPython/microPython.c)
 ...
 # With the MicroPython manager (MicroPython Engine)
-CONF_SYSTEM     += -DCONFIG_MAN_MICROPYTHON_S
 UKOS_COMPONENTS += $(MICROPYTHON).a
 ```
 
 ### Adding third party TinyUSB (FS) library
 
-```makefile
+```cmake
 # Adding the TinyUSB support
 # - Provider (st)
 # - Family (nrf)
 # - Speed (FS)
 # - Profile (cdc_cdc)
-PATH_LIB_TINYUSB = \
-    $(PATH_UKOS)/Third_Parties/TinyUSB/Library/Family/$(FAMILY)/$(SOC)/$(PROFILE)
-TINYUSB   =  libTinyUSB_$(SPEED)
-PROVIDER  =  nordic
-FAMILY    =  nrf
-SPEED     =  FS
-PROFILE   =  cdc_cdc
+set(SPEED FS)
+set(PROFILE cdc_cdc)
 
-PATH_INCLUDES  += \
-    -I$(PATH_UKOS)/Third_Parties/TinyUSB/Library/Family/$(FAMILY)/$(SOC)/$(PROFILE)
-PATH_INCLUDES  += -I$(PATH_UKOS)/Third_Parties/TinyUSB/uKOS_Interface/OSAL
-PATH_INCLUDES  += -I$(PATH_UKOS)/Third_Parties/TinyUSB/TinyUSB-current/src
-PATH_INCLUDES  += -I$(PATH_UKOS)/Third_Parties/TinyUSB/TinyUSB-current/src/device
-PATH_INCLUDES  += -I$(PATH_UKOS)/Third_Parties/TinyUSB/TinyUSB-current/src/class
+set(PATH_TINYUSB ${PATH_UKOS}/Third_Parties/TinyUSB)
+
+# Find TinyUSB package config (automatically provides include paths and definitions)
+find_package(TinyUSB REQUIRED
+    PATHS ${PATH_TINYUSB}/Library/Family/${FAMILY}/${SOC}/${PROFILE}
+    NO_DEFAULT_PATH
+)
+
+# Link against the appropriate speed variant
+# This automatically adds include paths and compile definitions
+set(TINYUSB TinyUSB::${SPEED})
 ...
 # With the TinyUSB process
-PROC_U      =  $(PATH_UKOS)/OS/TinyUSB/TinyUSB.c
-PROC_HIDE_U =  $(PATH_VARI)/OS/Processes/TinyUSB/stub_TinyUSB.c
+list(APPEND PROC_U
+    ${PATH_UKOS}/OS/Processes/TinyUSB/TinyUSB.c
+    ${PATH_VARI}/Processes/TinyUSB/stub_TinyUSB.c
+)
 ...
 # With the TinyUSB library
-CONF_SYSTEM     += -DSYSTEM_TINYUSB_$(SPEED)_S
 UKOS_COMPONENTS += $(TINYUSB).a
 ```
 
 ### Adding third party TinyUSB (HS) library
 
-```makefile
+```cmake
 # Adding the TinyUSB support
 # - Provider (st)
 # - Family (u5)
 # - Speed (HS)
 # - Profile (cdc_video)
-PATH_LIB_TINYUSB = \
-               $(PATH_UKOS)/Third_Parties/TinyUSB/Library/Family/$(FAMILY)/$(SOC)/$(PROFILE)
-TINYUSB   =  libTinyUSB_$(SPEED)
-PROVIDER  =  st
-FAMILY    =  u5
-SPEED     =  HS
-PROFILE   =  cdc_video
+set(SPEED HS)
+set(PROFILE cdc_video)
 
-PATH_INCLUDES  += \
-    -I$(PATH_UKOS)/Third_Parties/TinyUSB/Library/Family/$(FAMILY)/$(SOC)/$(PROFILE)
-PATH_INCLUDES  += -I$(PATH_UKOS)/Third_Parties/TinyUSB/uKOS_Interface/OSAL
-PATH_INCLUDES  += -I$(PATH_UKOS)/Third_Parties/TinyUSB/TinyUSB-current/src
+set(PATH_TINYUSB ${PATH_UKOS}/Third_Parties/TinyUSB)
+
+# Find TinyUSB package config (automatically provides include paths and definitions)
+find_package(TinyUSB REQUIRED
+    PATHS ${PATH_TINYUSB}/Library/Family/${FAMILY}/${SOC}/${PROFILE}
+    NO_DEFAULT_PATH
+)
+
+# Link against the appropriate speed variant
+# This automatically adds include paths and compile definitions
+set(TINYUSB TinyUSB::${SPEED})
 ...
 # With the TinyUSB process
-PROC_U      =  $(PATH_UKOS)/OS/TinyUSB/TinyUSB.c
-PROC_HIDE_U =  $(PATH_VARI)/OS/Processes/TinyUSB/stub_TinyUSB.c
+list(APPEND PROC_U
+    ${PATH_UKOS}/OS/Processes/TinyUSB/TinyUSB.c
+    ${PATH_VARI}/Processes/TinyUSB/stub_TinyUSB.c
+)
 ...
 # With the TinyUSB library
-CONF_SYSTEM     += -DSYSTEM_TINYUSB_$(SPEED)_S
 UKOS_COMPONENTS += $(TINYUSB).a
 ```
 
 ### Adding third party FatFs library
 
-```makefile
-# Adding the FatFs support
-PATH_LIB_FATFS = $(PATH_UKOS)/Third_Parties/FatFs/Library/$(CORE)
-FATFS          = libFatFs
+```cmake
+# FATFS (File system) integration
+add_compile_definitions(CONFIG_MAN_FATFS_S)
+find_library(FATFS FatFs ${PATH_UKOS}/Third_Parties/FatFs/Library/${CORE})
+file(APPEND "${ARTIFACTS_DIR}/FLASH.cnf" "-DCONFIG_MAN_FATFS_S ")
 ...
 # With the FATFS manager (File system)
-CONF_SYSTEM     += -DCONFIG_MAN_FATFS_S
 UKOS_COMPONENTS += $(FATFS).a
 ```
 
@@ -134,20 +139,21 @@ By construction, the kernel is set with the following configuration:
 
 Adaptation example
 
-```makefile
+```cmake
 # Modifying the number of objects
 
-# Number of process
-CONF_SYSTEM += -DKKERN_NB_PROCESSES=8
-# Number of mailboxes
-CONF_SYSTEM += -DKKERN_NB_MAILBOXES=4
-# Number of memory pools
-CONF_SYSTEM += -DKKERN_NB_POOLS=0
+add_compile_definitions(
+    KKERN_NB_MAILBOXES=8
+    KKERN_NB_MUTEXES=8
+    KKERN_NB_PROCESSES=8
+    KKERN_NB_SEMAPHORES=8
+    KKERN_NB_SIGNALS=2
+)
 ...
 # Modifying the behaviour of the kernel
 
 # Remove the statistics
-CONF_SYSTEM += -DKKERN_WITH_STATISTICS_S=false
+add_compile_definitions(KKERN_WITH_STATISTICS_S=false)
 ```
 
 ### Customising the libraries
@@ -161,21 +167,7 @@ By construction, the libraries are set with the following configuration:
 
 Adaptation example
 
-```makefile
+```cmake
 # Adding the support of the MMX
-CONF_SYSTEM += -DKGLOBAL_WITH_MMX1_S=true
+add_compile_definitions(KGLOBAL_WITH_MMX1_S=true)
 ```
-
-### Switches defined by the .mk of the cores
-
-| Argument          | Description                             |
-| ----------------- | --------------------------------------- |
-| -DUKOS_S          | Indicates we are using the uKOS package |
-| -D$(BOARD)_S      | Board used by the project               |
-| -D$(SOC)_S        | SOC used by the project                 |
-| -D$(CORE)_S       | Core used by the project                |
-| -DLITTLE_ENDIAN_S | Endianness "little"                     |
-| -DBIG_ENDIAN_S    | Endianness "big"                        |
-| -DROMABLE_S       | To allows romable applications          |
-| -DCACHE_S         | To indicate a core with the cache       |
-|                   |                                         |

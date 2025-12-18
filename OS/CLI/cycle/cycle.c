@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		cycle tool; launch a program cyclically.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,21 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+#include	<stdio.h>
+#include	<stdlib.h>
+
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core_stackFrame.h"
+#include	"macros_soc.h"
+#include	"memo/memo.h"  // IWYU pragma: keep (for KMEMO_ALIGN8)
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"serial/serial.h"
+#include	"system/system.h"
+#include	"text/text.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -83,7 +97,7 @@ MODULE(
 	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	cycle_clean,								// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
@@ -134,9 +148,12 @@ static	bool	vKillRequest[KNB_CORES] = MCSET(false);
  *
  */
 static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
+	UNUSED(argc);
+	UNUSED(argv);
+
 			uint32_t			core;
 			char_t				*dummy;
-			uint16_t			indexModule, indexSerialManager = 0u;
+			uint16_t			indexModule, indexSerialManager = 0U;
 			int32_t				status, nbRep = 0;
 			enum				{ KERR_NOT, KERR_INA, KERR_PNE, KERR_CAU, KERR_PRO, KERR_TER } error = KERR_NOT;
 			enum				{ KMOD_INA, KMOD_FUL, KMOD_PNE, KMOD_STP } mode = KMOD_INA;
@@ -145,9 +162,6 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 			cyclePack_t			pack;
 			bool				stop = false, releasePack = false;
 	const	uKOS_module_t		*module = NULL;
-
-	UNUSED(argc);
-	UNUSED(argv);
 
 	core = GET_RUNNING_CORE;
 	vKillRequest[core] = false;
@@ -178,9 +192,9 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 		}
 		case 2: {
 			text_checkAsciiBuffer(argv[1], "-stop",  &stop);
-			if (stop == true) {
+			if (stop) {
 				serialManager = KURT0;
-				if (local_getIndex(serialManager, &indexSerialManager) == true) {
+				if (local_getIndex(serialManager, &indexSerialManager)) {
 					mode = KMOD_STP;
 				}
 			}
@@ -188,20 +202,20 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 		}
 		case 3: {
 			text_checkAsciiBuffer(argv[1], "-stop",  &stop);
-			if (stop == true) {
+			if (stop) {
 				serialManager = (serialManager_t)(GET_PTR_32(argv[2]));
-				if (local_getIndex(serialManager, &indexSerialManager) == true) {
+				if (local_getIndex(serialManager, &indexSerialManager)) {
 					mode = KMOD_STP;
 				}
 			}
 			break;
 		}
 		default: {
-			nbRep = (int32_t) strtol(argv[1], &dummy, 10u);
-			time  = (uint32_t)strtol(argv[2], &dummy, 10u);
+			nbRep = (int32_t) strtol(argv[1], &dummy, 10U);
+			time  = (uint32_t)strtol(argv[2], &dummy, 10U);
 
 			serialManager = (serialManager_t)(GET_PTR_32(argv[3]));
-			if (local_getIndex(serialManager, &indexSerialManager) == true) {
+			if (local_getIndex(serialManager, &indexSerialManager)) {
 				if (system_getModuleName(argv[4], &indexModule, &module) != KERR_SYSTEM_NOERR) {
 					mode = KMOD_PNE;
 				}
@@ -233,7 +247,7 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 // xxxxx xxxx xxxx xxxx
 // cycle 234  1000 urt0 process -all
 
-			pack.oArgc		  = argc - 4u;
+			pack.oArgc		  = argc - 4U;
 			pack.oArgv		  = &argv[4];
 			pack.oReleasePack = &releasePack;
 
@@ -292,7 +306,7 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 
 // Let the time to the process "local_process" to run
 
-	do { kern_suspendProcess(1u); } while ((releasePack == false) && (error == KERR_NOT));
+	do { kern_suspendProcess(1U); } while ((!releasePack) && (error == KERR_NOT));
 	return (status);
 }
 
@@ -356,7 +370,7 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 	releasePack	 = pack->oReleasePack;
 	*releasePack = true;
 
-	while ((*killRequest == false) && (nbRep != 0u)) {
+	while ((!*killRequest) && (nbRep != 0U)) {
 		kern_suspendProcess(time);
 		if ((*code)(argc, argv) != EXIT_OS_SUCCESS_CLI) { break; }
 		nbRep = (nbRep == -1) ? (nbRep) : (nbRep - 1);
@@ -380,8 +394,8 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 static	bool	local_getIndex(serialManager_t serialManager, uint16_t *index) {
 	uint8_t	i;
 
-	*index = 0u;
-	for (i = 0u; i < (uint8_t)KNB_CHANNELS; i++) {
+	*index = 0U;
+	for (i = 0U; i < (uint8_t)KNB_CHANNELS; i++) {
 		if (aTabCycle[i].oSerialManager == serialManager) {
 			*index = i;
 			return (true);

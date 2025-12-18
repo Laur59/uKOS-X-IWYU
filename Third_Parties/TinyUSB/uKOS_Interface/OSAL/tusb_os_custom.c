@@ -37,8 +37,8 @@
 ;   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 ;   THE SOFTWARE.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -72,6 +72,8 @@
 ;------------------------------------------------------------------------
 */
 
+#include	<stdint.h>
+#include	"os_errors.h"
 #include	"osal_kern_interface.h"
 
 // Save the GCC diagnostic
@@ -99,7 +101,7 @@ uint32_t	board_millis(void) {
 	uint64_t	time;
 
 	kern_readTickCount(&time);
-	time = time / 1000u;
+	time = time / 1000U;
 	return ((uint32_t)time);
 }
 
@@ -114,7 +116,7 @@ size_t	board_get_unique_id(uint8_t id[], size_t max_len) {
 	UNUSED(id);
 	UNUSED(max_len);
 
-	return (0u);
+	return (0U);
 }
 
 /*
@@ -135,9 +137,9 @@ void	osal_task_delay(uint32_t msec) {
  *
  */
 osal_semaphore_t	osal_semaphore_create(osal_semaphore_def_t *semdef) {
-	sema_t	*handle = NULL;
-
 	UNUSED(semdef);
+
+	sema_t	*handle = NULL;
 
 	if (kern_createSemaphore(NULL, 0, 1, &handle) == KERR_KERN_NOERR) {
 		return ((osal_semaphore_t)(handle));
@@ -153,9 +155,9 @@ osal_semaphore_t	osal_semaphore_create(osal_semaphore_def_t *semdef) {
  *
  */
 bool	osal_semaphore_post(osal_semaphore_t sem_hdl, bool in_isr) {
-	bool	status;
-
 	UNUSED(in_isr);
+
+	bool	status;
 
 	status = (kern_signalSemaphore((sema_t *)sem_hdl) == KERR_KERN_NOERR) ? (true) : (false);
 	return (status);
@@ -168,11 +170,11 @@ bool	osal_semaphore_post(osal_semaphore_t sem_hdl, bool in_isr) {
  *
  */
 bool	osal_semaphore_wait(osal_semaphore_t sem_hdl, uint32_t msec) {
-	bool	status;
-
 	UNUSED(msec);
 
-	status = (kern_waitSemaphore((sema_t *)sem_hdl, 0u) == KERR_KERN_NOERR) ? (true) : (false);
+	bool	status;
+
+	status = (kern_waitSemaphore((sema_t *)sem_hdl, 0U) == KERR_KERN_NOERR) ? (true) : (false);
 	return (status);
 }
 
@@ -194,9 +196,9 @@ void	osal_semaphore_reset(osal_semaphore_t sem_hdl) {
  *
  */
 osal_mutex_t osal_mutex_create(osal_mutex_def_t *mdef) {
-	mutx_t	*handle = NULL;
-
 	UNUSED(mdef);
+
+	mutx_t	*handle = NULL;
 
 	if (kern_createMutex(NULL, &handle) == KERR_KERN_NOERR) {
 	    return ((osal_mutex_t)(handle));
@@ -291,19 +293,19 @@ bool	osal_queue_receive(osal_queue_t qhdl, void *data, uint32_t msec) {
  *
  */
 #pragma GCC diagnostic  push
-#if (defined(__clang__))
+#ifdef __clang__
 #pragma GCC diagnostic ignored "-Wincompatible-pointer-types-discards-qualifiers"
 
 #else
 #pragma GCC diagnostic  ignored "-Wdiscarded-qualifiers"
 #endif
 bool	osal_queue_send(osal_queue_t qhdl, void const *data, bool in_isr) {
+	UNUSED(in_isr);
+
 	bool	status;
 	mbox_t	*handle = (mbox_t *)qhdl;
 
-	UNUSED(in_isr);
-
-	status = (kern_writeMailbox((mbox_t *)qhdl, data, handle->oDataEntrySize, 0u) == KERR_KERN_NOERR) ? (true) : (false);
+	status = (kern_writeMailbox((mbox_t *)qhdl, data, handle->oDataEntrySize, 0U) == KERR_KERN_NOERR) ? (true) : (false);
 	return (status);
 }
 #pragma GCC diagnostic  pop
@@ -318,7 +320,7 @@ bool	osal_queue_empty(osal_queue_t qhdl) {
 	bool	status;
 	mbox_t	*handle = (mbox_t *)qhdl;
 
-	status = ((handle->oState & (1u<<BMBOX_EMPTY)) != 0u) ? (true) : (false);
+	status = ((handle->oState & (1U<<BMBOX_EMPTY)) != 0U) ? (true) : (false);
 	return (status);
 }
 

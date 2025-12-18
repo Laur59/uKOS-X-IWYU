@@ -5,16 +5,16 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Kern - Mutex management.
 ;
 ;			Private uKernel variables.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -70,12 +70,18 @@
  * @{
  */
 
+#include	<stdint.h>
+
+#include	"kern/kern.h"
+#include	"macros_soc.h"
+#include	"types.h"
+
 #define	KMUTX_ANONYMOUS_ID	"Mutx_anonymous"
 
 struct	mutx {
 	const	char_t		*oIdentifier;							// Mutex identifier
 			uint16_t	oState;									// Mutex state
-			#define		BMUTX_INSTALLED		0u					// Mutex installed
+			#define		BMUTX_INSTALLED		0U					// Mutex installed
 
 			int32_t		oCounter;								// Mutex counter
 			int32_t		oMaxCounter;							// Mutex counter max value

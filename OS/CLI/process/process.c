@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		List the installed processes.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,8 +46,23 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<inttypes.h>
+#include	<stdint.h>	// NOLINT(misc-include-cleaner): Explicit include for IWYU compliance
+#include	<stdio.h>
+#include	<string.h>
+
+#include	"kern/kern.h"
 #include	"kern/private/private_processes.h"
+#include	"machine/machine.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"memo/memo.h"
+#include	"modules.h"
+#include	"serial/serial.h"
+#include	"spin.h"
+#include	"text/text.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -104,14 +119,14 @@ MODULE(
 	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,										// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
 // CLI tool specific
 // =================
 
-static	uint64_t	vTotalTimeCPU[KNB_CORES] = MCSET(0u);
+static	uint64_t	vTotalTimeCPU[KNB_CORES] = MCSET(0U);
 
 #if (KNB_CORES > 1)
 static	spinlock_t	vProcess = SPIN_LOCK_INIT;
@@ -146,13 +161,13 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 // process -noall
 
 	switch (argc) {
-		case 1u: {
+		case 1U: {
 			all = KALL_NOT;
 			break;
 		}
-		case 2u: {
-			text_checkAsciiBuffer(argv[1], "-noall", &equals); if (equals == true) { all = KALL_NOT; break; }
-			text_checkAsciiBuffer(argv[1], "-all",   &equals); if (equals == true) { all = KALL;	 break; }
+		case 2U: {
+			text_checkAsciiBuffer(argv[1], "-noall", &equals); if (equals) { all = KALL_NOT; break; }
+			text_checkAsciiBuffer(argv[1], "-all",   &equals); if (equals) { all = KALL;	 break; }
 			error = KERR_PAR;
 			break;
 		}
@@ -172,12 +187,12 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 
 				SPIN_LOCK(vProcess);
 				kern_criticalSection(KENTER_CRITICAL);
-				for (j = 0u; j < KNB_CORES; j++) {
-					vTotalTimeCPU[j] = 0u;
-					for (i = 0u; i < KKERN_NB_PROCESSES; i++) {
+				for (j = 0U; j < KNB_CORES; j++) {
+					vTotalTimeCPU[j] = 0U;
+					for (i = 0U; i < KKERN_NB_PROCESSES; i++) {
 						sysProcess = (process_t *)((uintptr_t)bufSysProcess + ((uintptr_t)j * KKERN_NB_PROCESSES * sizeof(process_t)) + ((uintptr_t)i * sizeof(process_t)));
 						sysProcess->oValid = false;
-						if (local_getProcessByNb(j, i, &process) == true) {
+						if (local_getProcessByNb(j, i, &process)) {
 							sysProcess->oValid = true;
 
 							sysProcess->oSpecification.oIdentifier = process->oSpecification.oIdentifier;
@@ -212,7 +227,7 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 								machine_readPC(process, &sysProcess->oPC);
 							}
 							else {
-								sysProcess->oPC = 0u;
+								sysProcess->oPC = 0U;
 							}
 
 							#if (KKERN_WITH_STATISTICS_S == true)
@@ -230,15 +245,15 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 // Compute the statistic in % of time CPU
 // Print the string process
 
-				for (j = 0u; j < KNB_CORES; j++) {
+				for (j = 0U; j < KNB_CORES; j++) {
 					if (all == KALL_NOT) {
 
 						#if (KKERN_WITH_STATISTICS_S == true)
-						if (j >= 1u) { (void)dprintf(KSYST, "\n"); }
+						if (j >= 1U) { (void)dprintf(KSYST, "\n"); }
 						(void)dprintf(KSYST, " #  Process information of the core %d                        State        Used CPU in %%         PC\n\n", j);
 
 						#else
-						if (j >= 1u) { (void)dprintf(KSYST, "\n"); }
+						if (j >= 1U) { (void)dprintf(KSYST, "\n"); }
 						(void)dprintf(KSYST, " #  Process information of the core %d                        State        PC\n\n", j);
 						#endif
 
@@ -247,14 +262,14 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 						(void)dprintf(KSYST, "Process details of the core %d\n\n", j);
 					}
 
-					for (i = 0u; i < KKERN_NB_PROCESSES; i++) {
+					for (i = 0U; i < KKERN_NB_PROCESSES; i++) {
 						sysProcess = (process_t *)((uintptr_t)bufSysProcess + ((uintptr_t)j * KKERN_NB_PROCESSES * sizeof(process_t)) + ((uintptr_t)i * sizeof(process_t)));
-						if (sysProcess->oValid == true) {
+						if (sysProcess->oValid) {
 							if (all == KALL_NOT) {
 
 								local_printParameter_P0(j, i, sysProcess);
 
-								if (sysProcess->oPC != 0u) {
+								if (sysProcess->oPC != 0U) {
 									machine_readFunctionName(sysProcess->oPC, &functionName);
 									if (functionName == NULL) { (void)dprintf(KSYST, " - PC = 0x%016"PRIXPTR"\n",    sysProcess->oPC);               }
 									else {                      (void)dprintf(KSYST, " - PC = 0x%016"PRIXPTR" %s\n", sysProcess->oPC, functionName); }
@@ -326,7 +341,7 @@ static	bool	local_getProcessByNb(uint8_t core, uint16_t number, proc_t **handle)
 	*handle = NULL;
 
 	if (number >= KKERN_NB_PROCESSES)											   { kern_criticalSection(KEXIT_CRITICAL); return (false); }
-	if ((vKern_proc[core][number].oInternal.oState & (1u<<BPROC_INSTALLED)) == 0u) { kern_criticalSection(KEXIT_CRITICAL); return (false); }
+	if ((vKern_proc[core][number].oInternal.oState & (1U<<BPROC_INSTALLED)) == 0U) { kern_criticalSection(KEXIT_CRITICAL); return (false); }
 
 	*handle = &vKern_proc[core][number];
 	kern_criticalSection(KEXIT_CRITICAL);
@@ -353,9 +368,9 @@ static	void	local_printParameter_P0(uint8_t core, uint16_t number, process_t *ha
 	const	char_t		*idSpacer;
 
 	#if (KKERN_WITH_STATISTICS_S == true)
-	pRatio = handle->oStatistic.oTimePAvg * handle->oStatistic.oNbExecutions * 100u;
-	kRatio = handle->oStatistic.oTimeKAvg * handle->oStatistic.oNbExecutions * 100u;
-	eRatio = handle->oStatistic.oTimeEAvg * handle->oStatistic.oNbExecutions * 100u;
+	pRatio = handle->oStatistic.oTimePAvg * handle->oStatistic.oNbExecutions * 100U;
+	kRatio = handle->oStatistic.oTimeKAvg * handle->oStatistic.oNbExecutions * 100U;
+	eRatio = handle->oStatistic.oTimeEAvg * handle->oStatistic.oNbExecutions * 100U;
 
 	pRatioF = (float64_t)pRatio / (float64_t)vTotalTimeCPU[core];
 	kRatioF = (float64_t)kRatio / (float64_t)vTotalTimeCPU[core];
@@ -365,7 +380,7 @@ static	void	local_printParameter_P0(uint8_t core, uint16_t number, process_t *ha
 
 	local_compose(handle->oSpecification.oText, &idSpacer);
 
-	if (((handle->oInternal.oState & (1u<<BPROC_SUSP_TIME)) != 0u) && ((handle->oInternal.oState & (1u<<BPROC_SUSP_DEBG)) == 0u)) {
+	if (((handle->oInternal.oState & (1U<<BPROC_SUSP_TIME)) != 0U) && ((handle->oInternal.oState & (1U<<BPROC_SUSP_DEBG)) == 0U)) {
 		(void)dprintf(KSYST, "%2d  %s%s - Susp. time", number, handle->oSpecification.oText, idSpacer);
 
 		#if (KKERN_WITH_STATISTICS_S == true)
@@ -375,7 +390,7 @@ static	void	local_printParameter_P0(uint8_t core, uint16_t number, process_t *ha
 		return;
 	}
 
-	if (((handle->oInternal.oState & (1u<<BPROC_SUSP_SIGN)) != 0u) && ((handle->oInternal.oState & (1u<<BPROC_SUSP_DEBG)) == 0u)) {
+	if (((handle->oInternal.oState & (1U<<BPROC_SUSP_SIGN)) != 0U) && ((handle->oInternal.oState & (1U<<BPROC_SUSP_DEBG)) == 0U)) {
 		(void)dprintf(KSYST, "%2d  %s%s - Susp. sign", number, handle->oSpecification.oText, idSpacer);
 
 		#if (KKERN_WITH_STATISTICS_S == true)
@@ -385,7 +400,7 @@ static	void	local_printParameter_P0(uint8_t core, uint16_t number, process_t *ha
 		return;
 	}
 
-	if (((handle->oInternal.oState & (1u<<BPROC_SUSP_SEMA)) != 0u) && ((handle->oInternal.oState & (1u<<BPROC_SUSP_DEBG)) == 0u)) {
+	if (((handle->oInternal.oState & (1U<<BPROC_SUSP_SEMA)) != 0U) && ((handle->oInternal.oState & (1U<<BPROC_SUSP_DEBG)) == 0U)) {
 		(void)dprintf(KSYST, "%2d  %s%s - Susp. sema", number, handle->oSpecification.oText, idSpacer);
 
 		#if (KKERN_WITH_STATISTICS_S == true)
@@ -395,7 +410,7 @@ static	void	local_printParameter_P0(uint8_t core, uint16_t number, process_t *ha
 		return;
 	}
 
-	if (((handle->oInternal.oState & (1u<<BPROC_SUSP_MBOX_E)) != 0u) && ((handle->oInternal.oState & (1u<<BPROC_SUSP_DEBG)) == 0u)) {
+	if (((handle->oInternal.oState & (1U<<BPROC_SUSP_MBOX_E)) != 0U) && ((handle->oInternal.oState & (1U<<BPROC_SUSP_DEBG)) == 0U)) {
 		(void)dprintf(KSYST, "%2d  %s%s - Susp. mboE", number, handle->oSpecification.oText, idSpacer);
 
 		#if (KKERN_WITH_STATISTICS_S == true)
@@ -405,7 +420,7 @@ static	void	local_printParameter_P0(uint8_t core, uint16_t number, process_t *ha
 		return;
 	}
 
-	if (((handle->oInternal.oState & (1u<<BPROC_SUSP_MBOX_F)) != 0u) && ((handle->oInternal.oState & (1u<<BPROC_SUSP_DEBG)) == 0u)) {
+	if (((handle->oInternal.oState & (1U<<BPROC_SUSP_MBOX_F)) != 0U) && ((handle->oInternal.oState & (1U<<BPROC_SUSP_DEBG)) == 0U)) {
 		(void)dprintf(KSYST, "%2d  %s%s - Susp. mboF", number, handle->oSpecification.oText, idSpacer);
 
 		#if (KKERN_WITH_STATISTICS_S == true)
@@ -415,7 +430,7 @@ static	void	local_printParameter_P0(uint8_t core, uint16_t number, process_t *ha
 		return;
 	}
 
-	if ((handle->oInternal.oState & (1u<<BPROC_SUSP_DEBG)) != 0u) {
+	if ((handle->oInternal.oState & (1U<<BPROC_SUSP_DEBG)) != 0U) {
 		(void)dprintf(KSYST, "%2d  %s%s - Freezed   ", number, handle->oSpecification.oText, idSpacer);
 
 		#if (KKERN_WITH_STATISTICS_S == true)
@@ -425,7 +440,7 @@ static	void	local_printParameter_P0(uint8_t core, uint16_t number, process_t *ha
 		return;
 	}
 
-	if ((handle->oInternal.oState & (1u<<BPROC_RUNNING)) != 0u) {
+	if ((handle->oInternal.oState & (1U<<BPROC_RUNNING)) != 0U) {
 		(void)dprintf(KSYST, "%2d  %s%s - Running   ", number, handle->oSpecification.oText, idSpacer);
 
 		#if (KKERN_WITH_STATISTICS_S == true)
@@ -443,9 +458,9 @@ static	void	local_printParameter_P0(uint8_t core, uint16_t number, process_t *ha
 }
 
 static	void	local_printParameter_P1(uint8_t core, uint16_t number, process_t *handle) {
-	const	char_t	*space, *father;
-
 	UNUSED(core);
+
+	const	char_t	*space, *father;
 
 	father = (handle->oInternal.oProcFather == NULL)	  ? ("Orphan") : (handle->oInternal.oProcFather->oSpecification.oIdentifier);
 	space  = (handle->oSpecification.oMode == KPROC_USER) ? ("User")   : ("Privileged");
@@ -459,12 +474,12 @@ static	void	local_printParameter_P1(uint8_t core, uint16_t number, process_t *ha
 
 #if (KKERN_WITH_STATISTICS_S == true)
 static	void	local_printParameter_T1(uint8_t core, uint16_t number, process_t *handle) {
+	UNUSED(number);
+
 	uint64_t	ratio;
 	float64_t	ratioF;
 
-	UNUSED(number);
-
-	ratio  = handle->oStatistic.oTimePAvg * handle->oStatistic.oNbExecutions * 100u;
+	ratio  = handle->oStatistic.oTimePAvg * handle->oStatistic.oNbExecutions * 100U;
 	ratioF = (float64_t)ratio / (float64_t)vTotalTimeCPU[core];
 
 	(void)dprintf(KSYST, "CPU time used by the process,    min: %5d [us] max: %5d [us] avg: %5d [us] %7.3f [%%]\n",
@@ -472,12 +487,12 @@ static	void	local_printParameter_T1(uint8_t core, uint16_t number, process_t *ha
 }
 
 static	void	local_printParameter_T2(uint8_t core, uint16_t number, process_t *handle) {
+	UNUSED(number);
+
 	uint64_t	ratio;
 	float64_t	ratioF;
 
-	UNUSED(number);
-
-	ratio  = handle->oStatistic.oTimeKAvg * handle->oStatistic.oNbExecutions * 100u;
+	ratio  = handle->oStatistic.oTimeKAvg * handle->oStatistic.oNbExecutions * 100U;
 	ratioF = (float64_t)ratio / (float64_t)vTotalTimeCPU[core];
 
 	(void)dprintf(KSYST, "CPU time used by the uKernel,    min: %5d [us] max: %5d [us] avg: %5d [us] %7.3f [%%]\n",
@@ -485,12 +500,12 @@ static	void	local_printParameter_T2(uint8_t core, uint16_t number, process_t *ha
 }
 
 static	void	local_printParameter_T3(uint8_t core, uint16_t number, process_t *handle) {
+	UNUSED(number);
+
 	uint64_t	ratio;
 	float64_t	ratioF;
 
-	UNUSED(number);
-
-	ratio  = handle->oStatistic.oTimeEAvg * handle->oStatistic.oNbExecutions * 100u;
+	ratio  = handle->oStatistic.oTimeEAvg * handle->oStatistic.oNbExecutions * 100U;
 	ratioF = (float64_t)ratio / (float64_t)vTotalTimeCPU[core];
 
 	(void)dprintf(KSYST, "CPU time used by the exceptions, min: %5d [us] max: %5d [us] avg: %5d [us] %7.3f [%%]\n",
@@ -503,7 +518,7 @@ static	void	local_printParameter_S0(uint8_t core, uint16_t number, process_t *ha
 	UNUSED(core);
 	UNUSED(number);
 
-	if (handle->oStatistic.oAvStack != 0xFFFFFFFFu) {
+	if (handle->oStatistic.oAvStack != 0xFFFFFFFFU) {
 		(void)dprintf(KSYST, "Available stack size:                        %-"PRIu32" [Bytes]\n", handle->oStatistic.oAvStack);
 	}
 	else {
@@ -551,5 +566,5 @@ static	void	local_compose(const char_t *identifier, const char_t **idSpacer) {
 	static	const	char_t	aSpacer[] = "                                                      ";
 
 	len = strlen(identifier);
-	*idSpacer = (len <= (sizeof(aSpacer) - 1u)) ? (&aSpacer[len]) : (&aSpacer[0]);
+	*idSpacer = (len <= (sizeof(aSpacer) - 1U)) ? (&aSpacer[len]) : (&aSpacer[0]);
 }

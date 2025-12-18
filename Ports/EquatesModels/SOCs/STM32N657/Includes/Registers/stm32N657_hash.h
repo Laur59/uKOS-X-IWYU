@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32N657_hash equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // HASH address definitions
 // ------------------------
@@ -185,7 +187,7 @@ typedef struct {
 	volatile	uint32_t	HR15;
 } HASH_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	HASH_NS	reinterpret_cast<HASH_TypeDef *>(0x44020400u)
 #define	HASH_S	reinterpret_cast<HASH_TypeDef *>(0x54020400u)
 

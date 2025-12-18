@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32U5Gx_dcb equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // DCB address definitions
 // -----------------------
 
@@ -55,7 +57,7 @@ typedef struct {
 	volatile	uint32_t	DSCSR;
 } DCB_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	DCB_NS	reinterpret_cast<DCB_TypeDef *>(0xE000EE08u)
 
 #else

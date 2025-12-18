@@ -1,0 +1,65 @@
+CompileFlags:
+  Add: [
+    -x,
+    c,
+    -Wall,
+    -Wextra,
+    -Wshadow,
+    -Wundef,
+    -Wcast-align,
+    -Wdouble-promotion,
+    -Wsign-conversion,
+    -Wconversion,
+    -fno-exceptions,
+    -fno-rtti,
+    -I.,
+    -I./OS,
+    -I./OS/Boots,
+    -I./OS/Includes,
+    -I./OS/Lib_serials,
+    -I./OS/Lib_generics,
+    -I./OS/Lib_kernels,
+    -I./OS/Lib_peripherals,
+    -I./OS/Lib_neurals,
+    -I./OS/Lib_storages,
+    -I./OS/Lib_cryptographics,
+    -I./OS/Processes,
+    -I./OS/Daemons,
+    -I./OS/CLI
+  ]
+
+Index:
+  Background: Build
+  StandardLibrary: Yes
+
+Diagnostics:
+  ClangTidy:
+    Add:
+      - bugprone-*
+      - cert-*
+      - misc-*
+      - performance-*
+      - portability-*
+      - modernize-use-default-member-init
+      - modernize-use-override
+      - modernize-loop-convert
+    Remove:
+      # Embedded-friendly exclusions
+      - hicpp-*
+      - cppcoreguidelines-avoid-magic-numbers
+      - cppcoreguidelines-pro-type-reinterpret-cast
+      - cppcoreguidelines-pro-bounds-pointer-arithmetic
+      - cppcoreguidelines-avoid-non-const-global-variables
+      - cppcoreguidelines-macro-usage
+      - readability-magic-numbers
+      - readability-function-cognitive-complexity
+      - google-*
+      - fuchsia-*
+      - altera-*
+      - llvm-*
+
+Completion:
+  AllScopes: Yes
+
+Hover:
+  ShowAKA: Yes

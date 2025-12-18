@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Demo of a C application.
@@ -18,8 +18,8 @@
 ;				  Every 100-ms
 ;				  Toggle LED 0
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -61,11 +61,28 @@
  *			Launch 1 processes:
  *
  *			- P0: Every 100-ms
- *					- Toggle LED 0
+ *					- Toggle LED 1
  *
  */
 
-#include	"uKOS.h"
+#include	<cstdlib>
+#include	<stdio.h>
+
+#include	"crt0.h"
+#include	"serial/serial.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"macros_runtime.h"
+#include	"memo/memo.h"
+#include	"led/led.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"types.h"
+
+// Include our process manager
+#include	"demo_class.hpp"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -89,16 +106,11 @@ MODULE(
 	aStart,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,								// Address of the clean code (clean the module)
 	" 1.0",								// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0									// Execution cores
 );
 
-class  TestClass {
-public:
-	TestClass()  { (void)dprintf(KSYST, "Construction\n");  }
-	~TestClass() { (void)dprintf(KSYST, "Destruction\n");   }
-	void doit()	 { (void)dprintf(KSYST, "in the middle\n"); }
-};
+
 
 /*
  * \brief aProcess
@@ -118,7 +130,7 @@ void	__attribute__ ((noreturn)) aProcess_0(const void *argument) {
 	}
 
 	while (true) {
-		kern_suspendProcess(100u);
+		kern_suspendProcess(100U);
 		led_toggle(KLED_0);
 	}
 }
@@ -132,15 +144,15 @@ void	__attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *
  */
 int		main(int argc, const char *argv[]) {
+	UNUSED(argc);
+	UNUSED(argv);
+
 	proc_t	*process_0;
 
 // ------------------------------------I-----------------------------------------I--------------I
 
 	STRG_LOC_CONST(aStrIden_0[]) =    "Process_User";
 	STRG_LOC_CONST(aStrText_0[]) =    "Process user.                             (c) EFr-2025";
-
-	UNUSED(argc);
-	UNUSED(argv);
 
 // Initialise the C++ constructors
 

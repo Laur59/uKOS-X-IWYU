@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Low level init for the uKOS-X MAiXDUiNO_K210 module.
@@ -15,8 +15,8 @@
 ;			!!! It is called before to copy and to initialise
 ;			!!! the variable into the RAM.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -50,7 +50,14 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+
+#include	"board.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"modules.h"
+#include	"soc_reg.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -73,7 +80,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -149,74 +156,74 @@ static	void	local_GPIO_Configuration(void) {
 
 //			  .IOxx  .ch_sel,				.ds,              .oe_en, .oe_inv, .do_sel, .do_inv, .pu, .pd, .resv1, .sl, .ie_en, .ie_inv, .di_inv, .st, .tie_en, .tie_val, .resv0, .pad_di
 
-			{ 0u,     FUNC_JTAG_TCLK,		FPIOA_DRIVING_0,  0u,      0u,       0u,       0u,       0u,   0u,   0u,      0u,    1u,     0u,       0u,       1u,   0u,       0u,        0u,      0u },
-			{ 1u,     FUNC_JTAG_TDI,		FPIOA_DRIVING_0,  0u,      0u,       0u,       0u,       0u,   0u,   0u,      0u,    1u,     0u,       0u,       1u,   0u,       0u,        0u,      0u },
-			{ 2u,     FUNC_JTAG_TMS,		FPIOA_DRIVING_0,  0u,      0u,       0u,       0u,       0u,   0u,   0u,      0u,    1u,     0u,       0u,       1u,   0u,       0u,        0u,      0u },
-			{ 3u,     FUNC_JTAG_TDO,		FPIOA_DRIVING_15, 1u,      0u,       0u,       0u,       0u,   0u,   0u,      0u,    0u,     0u,       0u,       0u,   0u,       0u,        0u,      0u },
-			{ 4u,     FUNC_UART2_RX,		FPIOA_DRIVING_0,  0u,      0u,       0u,       0u,       0u,   0u,   0u,      0u,    1u,     0u,       0u,       1u,   0u,       0u,        0u,      0u },
-			{ 5u,     FUNC_UART2_TX,		FPIOA_DRIVING_15, 1u,      0u,       0u,       0u,       0u,   0u,   0u,      0u,    0u,     0u,       0u,       0u,   0u,       0u,        0u,      0u },
+			{ 0U,     FUNC_JTAG_TCLK,		FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
+			{ 1U,     FUNC_JTAG_TDI,		FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
+			{ 2U,     FUNC_JTAG_TMS,		FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
+			{ 3U,     FUNC_JTAG_TDO,		FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    0U,     0U,       0U,       0U,   0U,       0U,        0U,      0U },
+			{ 4U,     FUNC_UART2_RX,		FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
+			{ 5U,     FUNC_UART2_TX,		FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    0U,     0U,       0U,       0U,   0U,       0U,        0U,      0U },
 
-			{ 6u,     FUNC_UART3_RX,		FPIOA_DRIVING_0,  0u,      0u,       0u,       0u,       0u,   0u,   0u,      0u,    1u,     0u,       0u,       1u,   0u,       0u,        0u,      0u },
-			{ 7u,     FUNC_UART3_TX,		FPIOA_DRIVING_15, 1u,      0u,       0u,       0u,       0u,   0u,   0u,      0u,    0u,     0u,       0u,       0u,   0u,       0u,        0u,      0u },
-			{ 8u,     FUNC_GPIOHS0,			FPIOA_DRIVING_15, 1u,      0u,       0u,       0u,       0u,   0u,   0u,      0u,    1u,     0u,       0u,       1u,   0u,       0u,        0u,      0u },
-			{ 9u,     FUNC_GPIOHS1,			FPIOA_DRIVING_0,  0u,      0u,       0u,       0u,       0u,   0u,   0u,      0u,    1u,     0u,       0u,       1u,   0u,       0u,        0u,      0u },
-			{ 10u,    FUNC_UART1_RX,		FPIOA_DRIVING_0,  0u,      0u,       0u,       0u,       0u,   0u,   0u,      0u,    1u,     0u,       0u,       1u,   0u,       0u,        0u,      0u },
-			{ 11u,    FUNC_UART1_TX,		FPIOA_DRIVING_15, 1u,      0u,       0u,       0u,       0u,   0u,   0u,      0u,    0u,     0u,       0u,       0u,   0u,       0u,        0u,      0u },
+			{ 6U,     FUNC_UART3_RX,		FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
+			{ 7U,     FUNC_UART3_TX,		FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    0U,     0U,       0U,       0U,   0U,       0U,        0U,      0U },
+			{ 8U,     FUNC_GPIOHS0,			FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
+			{ 9U,     FUNC_GPIOHS1,			FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
+			{ 10U,    FUNC_UART1_RX,		FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
+			{ 11U,    FUNC_UART1_TX,		FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    0U,     0U,       0U,       0U,   0U,       0U,        0U,      0U },
 
-			{ 12u,    FUNC_GPIOHS8,			FPIOA_DRIVING_15, 1u,      0u,       0u,       0u,       0u,   0u,   0u,      0u,    1u,     0u,       0u,       1u,   0u,       0u,        0u,      0u },
-			{ 13u,    FUNC_GPIOHS9,			FPIOA_DRIVING_15, 1u,      0u,       0u,       0u,       0u,   0u,   0u,      0u,    1u,     0u,       0u,       1u,   0u,       0u,        0u,      0u },
-			{ 14u,    FUNC_GPIOHS10,		FPIOA_DRIVING_15, 1u,      0u,       0u,       0u,       0u,   0u,   0u,      0u,    1u,     0u,       0u,       1u,   0u,       0u,        0u,      0u },
-			{ 15u,    FUNC_GPIOHS5,			FPIOA_DRIVING_15, 1u,      0u,       0u,       0u,       0u,   0u,   0u,      0u,    1u,     0u,       0u,       1u,   0u,       0u,        0u,      0u },
-			{ 16u,    FUNC_GPIOHS6,			FPIOA_DRIVING_0,  0u,      0u,       0u,       0u,       0u,   0u,   0u,      0u,    1u,     0u,       0u,       1u,   0u,       0u,        0u,      0u },
-			{ 17u,    FUNC_GPIOHS7,			FPIOA_DRIVING_15, 1u,      0u,       0u,       0u,       0u,   0u,   0u,      0u,    1u,     0u,       0u,       1u,   0u,       0u,        0u,      0u },
+			{ 12U,    FUNC_GPIOHS8,			FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
+			{ 13U,    FUNC_GPIOHS9,			FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
+			{ 14U,    FUNC_GPIOHS10,		FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
+			{ 15U,    FUNC_GPIOHS5,			FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
+			{ 16U,    FUNC_GPIOHS6,			FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
+			{ 17U,    FUNC_GPIOHS7,			FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
 
-			{ 36u,    FUNC_SPI0_SS3,		FPIOA_DRIVING_15, 1u,      0u,       0u,       0u,       0u,   0u,   0u,      0u,    0u,     0u,       0u,       0u,   0u,       0u,        0u,      0u },
-			{ 37u,    FUNC_GPIOHS3,			FPIOA_DRIVING_15, 1u,      0u,       0u,       0u,       0u,   0u,   0u,      0u,    1u,     0u,       0u,       1u,   0u,       0u,        0u,      0u },
-			{ 38u,    FUNC_GPIOHS2,			FPIOA_DRIVING_15, 1u,      0u,       0u,       0u,       0u,   0u,   0u,      0u,    1u,     0u,       0u,       1u,   0u,       0u,        0u,      0u },
-			{ 39u,    FUNC_SPI0_SCLK,		FPIOA_DRIVING_15, 1u,      0u,       0u,       0u,       0u,   0u,   0u,      0u,    0u,     0u,       0u,       0u,   0u,       0u,        0u,      0u },
+			{ 36U,    FUNC_SPI0_SS3,		FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    0U,     0U,       0U,       0U,   0U,       0U,        0U,      0U },
+			{ 37U,    FUNC_GPIOHS3,			FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
+			{ 38U,    FUNC_GPIOHS2,			FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
+			{ 39U,    FUNC_SPI0_SCLK,		FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    0U,     0U,       0U,       0U,   0U,       0U,        0U,      0U },
 
-			{ 40u,    FUNC_SCCB_SDA,		FPIOA_DRIVING_0,  1u,      1u,       0u,       0u,       1u,   0u,   0u,      1u,    1u,     0u,       0u,       1u,   0u,       0u,        0u,      0u },
-			{ 41u,    FUNC_SCCB_SCLK,		FPIOA_DRIVING_0,  1u,      1u,       0u,       0u,       1u,   0u,   0u,      1u,    1u,     0u,       0u,       1u,   0u,       0u,        0u,      0u },
-			{ 42u,    FUNC_CMOS_RST,		FPIOA_DRIVING_15, 1u,      0u,       0u,       0u,       0u,   0u,   0u,      0u,    0u,     0u,       0u,       0u,   0u,       0u,        0u,      0u },
-			{ 43u,    FUNC_CMOS_VSYNC,		FPIOA_DRIVING_0,  0u,      0u,       0u,       0u,       0u,   0u,   0u,      0u,    1u,     0u,       0u,       1u,   0u,       0u,        0u,      0u },
-			{ 44u,    FUNC_CMOS_PWDN,		FPIOA_DRIVING_15, 1u,      0u,       0u,       0u,       0u,   0u,   0u,      0u,    0u,     0u,       0u,       0u,   0u,       0u,        0u,      0u },
-			{ 45u,    FUNC_CMOS_HREF,		FPIOA_DRIVING_0,  0u,      0u,       0u,       0u,       0u,   0u,   0u,      0u,    1u,     0u,       0u,       1u,   0u,       0u,        0u,      0u },
-			{ 46u,    FUNC_CMOS_XCLK,		FPIOA_DRIVING_15, 1u,      0u,       0u,       0u,       0u,   0u,   0u,      0u,    0u,     0u,       0u,       0u,   0u,       0u,        0u,      0u },
-			{ 47u,    FUNC_CMOS_PCLK,		FPIOA_DRIVING_0,  0u,      0u,       0u,       0u,       0u,   0u,   0u,      0u,    1u,     0u,       0u,       1u,   0u,       0u,        0u,      0u }
+			{ 40U,    FUNC_SCCB_SDA,		FPIOA_DRIVING_0,  1U,      1U,       0U,       0U,       1U,   0U,   0U,      1U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
+			{ 41U,    FUNC_SCCB_SCLK,		FPIOA_DRIVING_0,  1U,      1U,       0U,       0U,       1U,   0U,   0U,      1U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
+			{ 42U,    FUNC_CMOS_RST,		FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    0U,     0U,       0U,       0U,   0U,       0U,        0U,      0U },
+			{ 43U,    FUNC_CMOS_VSYNC,		FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
+			{ 44U,    FUNC_CMOS_PWDN,		FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    0U,     0U,       0U,       0U,   0U,       0U,        0U,      0U },
+			{ 45U,    FUNC_CMOS_HREF,		FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
+			{ 46U,    FUNC_CMOS_XCLK,		FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    0U,     0U,       0U,       0U,   0U,       0U,        0U,      0U },
+			{ 47U,    FUNC_CMOS_PCLK,		FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U }
 		};
 
 #define	KNBCNF		(sizeof(aGPIO_Cnf)/sizeof(mainGpio_t))
 
-	sysctl->clk_en_cent.apb0_clk_en  = 1u;			// Turn on APB0
-	sysctl->clk_en_peri.fpioa_clk_en = 1u;			// Turn on the FPIOA
-	local_wait_100n(1u);							//
+	sysctl->clk_en_cent.apb0_clk_en  = 1U;			// Turn on APB0
+	sysctl->clk_en_peri.fpioa_clk_en = 1U;			// Turn on the FPIOA
+	local_wait_100n(1U);							//
 
-	sysctl->misc.spi_dvp_data_enable = 1u;			//
-	sysctl->clk_en_peri.dvp_clk_en	 = 1u;			// Enable the spi0-dvp
-	local_wait_100n(1u);							//
+	sysctl->misc.spi_dvp_data_enable = 1U;			//
+	sysctl->clk_en_peri.dvp_clk_en	 = 1U;			// Enable the spi0-dvp
+	local_wait_100n(1U);							//
 
-	sysctl->peri_reset.dvp_reset = 1u;				//
-	local_wait_100n(100u);							//
-	sysctl->peri_reset.dvp_reset = 0u;				// Reset the dvp
-	local_wait_100n(100u);							//
+	sysctl->peri_reset.dvp_reset = 1U;				//
+	local_wait_100n(100U);							//
+	sysctl->peri_reset.dvp_reset = 0U;				// Reset the dvp
+	local_wait_100n(100U);							//
 
 // Initialise tie
 // Set tie enable and tie value
 // 1 seems necessary only for SPIs
 
 	for (i = 0; i < (uint16_t)FUNC_MAX; i++) {
-		tie.en[i  / 32u] = 0u;
-		tie.val[i / 32u] = 0u;
+		tie.en[i  / 32U] = 0U;
+		tie.val[i / 32U] = 0U;
 	}
 
-	tie.en[(uint32_t)FUNC_SPI0_ARB  / 32u] |= (uint32_t)1u<<((uint32_t)FUNC_SPI0_ARB % 32u);
-	tie.val[(uint32_t)FUNC_SPI0_ARB / 32u] |= (uint32_t)1u<<((uint32_t)FUNC_SPI0_ARB % 32u);
-	tie.en[(uint32_t)FUNC_SPI1_ARB  / 32u] |= (uint32_t)1u<<((uint32_t)FUNC_SPI1_ARB % 32u);
-	tie.val[(uint32_t)FUNC_SPI1_ARB / 32u] |= (uint32_t)1u<<((uint32_t)FUNC_SPI1_ARB % 32u);
+	tie.en[(uint32_t)FUNC_SPI0_ARB  / 32U] |= (uint32_t)1U<<((uint32_t)FUNC_SPI0_ARB % 32U);
+	tie.val[(uint32_t)FUNC_SPI0_ARB / 32U] |= (uint32_t)1U<<((uint32_t)FUNC_SPI0_ARB % 32U);
+	tie.en[(uint32_t)FUNC_SPI1_ARB  / 32U] |= (uint32_t)1U<<((uint32_t)FUNC_SPI1_ARB % 32U);
+	tie.val[(uint32_t)FUNC_SPI1_ARB / 32U] |= (uint32_t)1U<<((uint32_t)FUNC_SPI1_ARB % 32U);
 
 // Atomic write every 32-bit register to fpioa function
 
-	for (i = 0u; i < (uint16_t)((uint32_t)FUNC_MAX / 32u); i++) {
+	for (i = 0U; i < (uint16_t)((uint32_t)FUNC_MAX / 32U); i++) {
 		fpioa->tie.val[i] = tie.val[i];
 		fpioa->tie.en[i]  = tie.en[i];
 	}
@@ -225,23 +232,23 @@ static	void	local_GPIO_Configuration(void) {
 // First, for all the PAD attribute the FUNC_RESV0 function
 // Then, scann the table to customize the PADs
 
-	for (i = 0u; i < FPIOA_NUM_IO; i++) {
+	for (i = 0U; i < FPIOA_NUM_IO; i++) {
 		fpioa->io[i].ch_sel = FUNC_RESV0;
-		fpioa->io[i].ds     = 0u;
-		fpioa->io[i].oe_en  = 0u;
-		fpioa->io[i].oe_inv = 0u;
-		fpioa->io[i].do_sel = 0u;
-		fpioa->io[i].do_inv = 0u;
-		fpioa->io[i].pu     = 0u;
-		fpioa->io[i].pd     = 0u;
-		fpioa->io[i].sl     = 0u;
-		fpioa->io[i].ie_en  = 0u;
-		fpioa->io[i].ie_inv = 0u;
-		fpioa->io[i].di_inv = 0u;
-		fpioa->io[i].st     = 0u;
+		fpioa->io[i].ds     = 0U;
+		fpioa->io[i].oe_en  = 0U;
+		fpioa->io[i].oe_inv = 0U;
+		fpioa->io[i].do_sel = 0U;
+		fpioa->io[i].do_inv = 0U;
+		fpioa->io[i].pu     = 0U;
+		fpioa->io[i].pd     = 0U;
+		fpioa->io[i].sl     = 0U;
+		fpioa->io[i].ie_en  = 0U;
+		fpioa->io[i].ie_inv = 0U;
+		fpioa->io[i].di_inv = 0U;
+		fpioa->io[i].st     = 0U;
 	}
 
-	for (i = 0u; i < (uint16_t)KNBCNF; i++) {
+	for (i = 0U; i < (uint16_t)KNBCNF; i++) {
 		ioxx = aGPIO_Cnf[i].IOxx;
 
 		fpioa->io[ioxx].ch_sel = aGPIO_Cnf[i].ch_sel;
@@ -262,16 +269,16 @@ static	void	local_GPIO_Configuration(void) {
 // Port 6 & 7 & 1.8-V (dvp & spi)
 // SYSCTL_POWER_V18 = 1, SYSCTL_POWER_V33 = 0
 
-	*((volatile uint32_t *)(&sysctl->power_sel)) |= (1u<<(uint32_t)SYSCTL_POWER_BANK6);
-	*((volatile uint32_t *)(&sysctl->power_sel)) |= (1u<<(uint32_t)SYSCTL_POWER_BANK7);
+	*((volatile uint32_t *)(&sysctl->power_sel)) |= (1U<<(uint32_t)SYSCTL_POWER_BANK6);
+	*((volatile uint32_t *)(&sysctl->power_sel)) |= (1U<<(uint32_t)SYSCTL_POWER_BANK7);
 
 // Power the outputs
 
-	gpiohs->output_en.u32[0] |= (1u<<BLED_0)
-							 |  (1u<<BLED_1)
-							 |  (1u<<BLED_2)
-							 |  (1u<<BLCD_RST)
-							 |  (1u<<BLCD_DCX);
+	gpiohs->output_en.u32[0] |= (1U<<BLED_0)
+							 |  (1U<<BLED_1)
+							 |  (1U<<BLED_2)
+							 |  (1U<<BLCD_RST)
+							 |  (1U<<BLCD_DCX);
 }
 
 /*
@@ -294,19 +301,19 @@ static	void	local_RCU_Configuration(void) {
 
 // 1. Change CPU CLK to XTAL
 
-	sysctl->clk_sel0.aclk_sel = (uint32_t)SYSCTL_SOURCE_IN0 & 0x01u;
+	sysctl->clk_sel0.aclk_sel = (uint32_t)SYSCTL_SOURCE_IN0 & 0x01U;
 
 // 2. Disable PLLs output
 
-	v_pll_t0->pll_out_en = 0u;
-	v_pll_t1->pll_out_en = 0u;
-	v_pll_t2->pll_out_en = 0u;
+	v_pll_t0->pll_out_en = 0U;
+	v_pll_t1->pll_out_en = 0U;
+	v_pll_t2->pll_out_en = 0U;
 
 // 3. Turn off PLLs
 
-	v_pll_t0->pll_pwrd = 0u;
-	v_pll_t1->pll_pwrd = 0u;
-	v_pll_t2->pll_pwrd = 0u;
+	v_pll_t0->pll_pwrd = 0U;
+	v_pll_t1->pll_pwrd = 0U;
+	v_pll_t2->pll_pwrd = 0U;
 
 // 4. Set PLL new value
 //    Read the registers from the bus
@@ -319,24 +326,24 @@ static	void	local_RCU_Configuration(void) {
 
 // Values for sysctl_pll_set_freq(SYSCTL_PLL0, 800000000)
 
-	pll0.clkr0  = 0x00u;
-	pll0.clkf0  = 0x3Du;
-	pll0.clkod0 = 0x01u;
-	pll0.bwadj0 = 0x3Du;
+	pll0.clkr0  = 0x00U;
+	pll0.clkf0  = 0x3DU;
+	pll0.clkod0 = 0x01U;
+	pll0.bwadj0 = 0x3DU;
 
 // Values for sysctl_pll_set_freq(SYSCTL_PLL1, 160000000)
 
-	pll1.clkr1  = 0x00u;
-	pll1.clkf1  = 0x2Au;
-	pll1.clkod1 = 0x06u;
-	pll1.bwadj1 = 0x2Au;
+	pll1.clkr1  = 0x00U;
+	pll1.clkf1  = 0x2AU;
+	pll1.clkod1 = 0x06U;
+	pll1.bwadj1 = 0x2AU;
 
 // Values for sysctl_pll_set_freq(SYSCTL_PLL2,  45158400)
 
-	pll2.clkr2  = 0x00u;
-	pll2.clkf2  = 0x19u;
-	pll2.clkod2 = 0x0Eu;
-	pll2.bwadj2 = 0x19u;
+	pll2.clkr2  = 0x00U;
+	pll2.clkf2  = 0x19U;
+	pll2.clkod2 = 0x0EU;
+	pll2.bwadj2 = 0x19U;
 
 	sysctl->pll0 = pll0;
 	sysctl->pll1 = pll1;
@@ -344,46 +351,46 @@ static	void	local_RCU_Configuration(void) {
 
 // 5. Power on PLLs
 
-	v_pll_t0->pll_pwrd = 1u;
-	v_pll_t1->pll_pwrd = 1u;
-	v_pll_t2->pll_pwrd = 1u;
-	local_wait_100n(1u);
+	v_pll_t0->pll_pwrd = 1U;
+	v_pll_t1->pll_pwrd = 1U;
+	v_pll_t2->pll_pwrd = 1U;
+	local_wait_100n(1U);
 
 // 6. Reset PLLs then Release Reset
 
-	v_pll_t0->pll_reset = 0u;
-	v_pll_t1->pll_reset = 0u;
-	v_pll_t2->pll_reset = 0u;
-	v_pll_t0->pll_reset = 1u;
-	v_pll_t1->pll_reset = 1u;
-	v_pll_t2->pll_reset = 1u;
-	local_wait_100n(1u);
+	v_pll_t0->pll_reset = 0U;
+	v_pll_t1->pll_reset = 0U;
+	v_pll_t2->pll_reset = 0U;
+	v_pll_t0->pll_reset = 1U;
+	v_pll_t1->pll_reset = 1U;
+	v_pll_t2->pll_reset = 1U;
+	local_wait_100n(1U);
 
-	v_pll_t0->pll_reset = 0u;
-	v_pll_t1->pll_reset = 0u;
-	v_pll_t2->pll_reset = 0u;
+	v_pll_t0->pll_reset = 0U;
+	v_pll_t1->pll_reset = 0U;
+	v_pll_t2->pll_reset = 0U;
 
 // 7. Get lock status, waiting for the PLLs stable
 
-	while ((sysctl->pll_lock.pll_lock0 & 3u) == 0u) {
-		sysctl->pll_lock.pll_slip_clear0 = 1u;
+	while ((sysctl->pll_lock.pll_lock0 & 3U) == 0U) {
+		sysctl->pll_lock.pll_slip_clear0 = 1U;
 	}
-	while ((sysctl->pll_lock.pll_lock1 & 1u) == 0u) {
-		sysctl->pll_lock.pll_slip_clear1 = 1u;
+	while ((sysctl->pll_lock.pll_lock1 & 1U) == 0U) {
+		sysctl->pll_lock.pll_slip_clear1 = 1U;
 	}
-	while ((sysctl->pll_lock.pll_lock2 & 1u) == 0u) {
-		sysctl->pll_lock.pll_slip_clear2 = 1u;
+	while ((sysctl->pll_lock.pll_lock2 & 1U) == 0U) {
+		sysctl->pll_lock.pll_slip_clear2 = 1U;
 	}
 
 // 8. Enable PLLs output
 
-	v_pll_t0->pll_out_en = 1u;
-	v_pll_t1->pll_out_en = 1u;
-	v_pll_t2->pll_out_en = 1u;
+	v_pll_t0->pll_out_en = 1U;
+	v_pll_t1->pll_out_en = 1U;
+	v_pll_t2->pll_out_en = 1U;
 
 // 9. Change CPU CLK to PLL
 
-	sysctl->clk_sel0.aclk_sel = (uint32_t)SYSCTL_SOURCE_PLL0 & 0x01u;
+	sysctl->clk_sel0.aclk_sel = (uint32_t)SYSCTL_SOURCE_PLL0 & 0x01U;
 }
 
 /*
@@ -395,7 +402,7 @@ static	void	local_RCU_Configuration(void) {
 static	void	local_wait_100n(uint32_t n) {
 	uint32_t	i, j;
 
-	for (j = 0u; j < n; j++) {
-		for (i = 0; i < 1000u; i++) { NOP; }
+	for (j = 0U; j < n; j++) {
+		for (i = 0; i < 1000U; i++) { NOP; }
 	}
 }

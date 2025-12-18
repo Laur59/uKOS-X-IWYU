@@ -34,8 +34,8 @@
 ;   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 ;   THE SOFTWARE.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -69,11 +69,15 @@
 ;------------------------------------------------------------------------
 */
 
+#include	<stddef.h>
+#include	<string.h>
+
+#include	"types.h"
+#include	"os_errors.h"
+#include	"macros.h"
 #include	"bsp/board_api.h"
 #include	"tusb.h"
 #include	"usb_descriptors.h"
-
-#define	UNUSED(x)	(void)(x)
 
 // A combination of interfaces must have a unique product id, since PC will save device driver after the first plug.
 // Same VID/PID with different interface e.g MSC (first), then CDC (later) will possibly cause system error on PC.
@@ -435,7 +439,7 @@ uvc_cdc_cfg_desc_t	desc_hs_configuration;
 static	uint8_t	*get_hs_configuration_desc(void) {
 	static	bool	vInit = false;
 
-	if (vInit == false) {
+	if (!vInit) {
 		desc_hs_configuration = desc_fs_configuration;
 
 // Change endpoint bulk size to 512 if bulk streaming
@@ -526,11 +530,11 @@ char_t	const	*string_desc_arr [] = {
 // Application return pointer to descriptor, whose contents must exist long enough for transfer to complete
 
 uint16_t	const	*tud_descriptor_string_cb(uint8_t index, uint16_t langid) {
+	UNUSED(langid);
+
 			size_t		i, chr_count;
 	static	uint16_t	vDesc_str[1 + 32];
 	const	char_t		*str = string_desc_arr[index];
-
-	UNUSED(langid);
 
 	switch (index) {
 		case STRID_LANGID: {

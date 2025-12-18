@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		mcore process; multi-core layer via mbox & asmp.
 ;			For the moment, this layer is limited to 2 cores.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,7 +47,21 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+#include	<stdlib.h>
+#include	<string.h>
+
+#include	"asmp/asmp.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core_stackFrame.h"
+#include	"macros_soc.h"
+#include	"memo/memo.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"serial/serial.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -70,7 +84,7 @@ static	void		local_process_RecX(const void *argument);
 
 // This process has to run on the following cores:
 
-#define	KEXECUTION_CORE		((1u<<BCORE_0) | (1u<<BCORE_1) | (1u<<BCORE_2) | (1u<<BCORE_3))
+#define	KEXECUTION_CORE		((1U<<BCORE_0) | (1U<<BCORE_1) | (1U<<BCORE_2) | (1U<<BCORE_3))
 
 MODULE(
 	Mcore,							// Module name (the first letter has to be upper case)
@@ -80,7 +94,7 @@ MODULE(
 	prgm,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	KEXECUTION_CORE					// Execution cores
 );
 
@@ -99,11 +113,11 @@ STRG_LOC_CONST(aStrText_SndX[]) = "Daemon mcore: send to core x.             (c)
  *
  */
 static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
-	uint32_t	core;
-	proc_t		*process_SndX, *process_RecX;
-
 	UNUSED(argc);
 	UNUSED(argv);
+
+	uint32_t	core;
+	proc_t		*process_SndX, *process_RecX;
 
 	core = GET_RUNNING_CORE;
 
@@ -158,7 +172,9 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
  *
  */
 static void __attribute__ ((noreturn)) local_process_SndX(const void *argument) {
-			uint32_t	core, toCore, size, order = 0u;
+	UNUSED(argument);
+
+			uint32_t	core, toCore, size, order = 0U;
 			uint8_t		*receive = NULL, *send = NULL;
 			mbox_t		*mailBox;
 			sema_t		*semaphore;
@@ -167,8 +183,6 @@ static void __attribute__ ((noreturn)) local_process_SndX(const void *argument) 
 							.oDataEntrySize	= KASMP_MBOX_ENTRY_SIZE
 						};
 	const	char_t		*idSendMbox;
-
-	UNUSED(argument);
 
 // If the running core is the core 0
 //	- The message is for the core 1 via the mailbox 1
@@ -218,7 +232,7 @@ static void __attribute__ ((noreturn)) local_process_SndX(const void *argument) 
 
 // Release the memory if the allocation is dynamic
 
-		if (KASMP_MBOX_ENTRY_SIZE == 0u) { memo_free(receive); }
+		if (KASMP_MBOX_ENTRY_SIZE == 0U) { memo_free(receive); }
 
 		if (asmp_send(toCore, order, size, send) != KERR_ASMP_NOERR) {
 			LOG(KFATAL_SYSTEM, "mcore: coherency problem!!");
@@ -238,6 +252,8 @@ static void __attribute__ ((noreturn)) local_process_SndX(const void *argument) 
  *
  */
 static void __attribute__ ((noreturn)) local_process_RecX(const void *argument) {
+	UNUSED(argument);
+
 			uint32_t	core, fromCore, size, order;
 			uint8_t		*receive = NULL, *send = NULL;
 			mbox_t		*mailBox;
@@ -247,8 +263,6 @@ static void __attribute__ ((noreturn)) local_process_RecX(const void *argument) 
 							.oDataEntrySize	= KASMP_MBOX_ENTRY_SIZE
 						};
 	const	char_t		*idReceiveMbox;
-
-	UNUSED(argument);
 
 // If the running core is the core 0
 //	- The message is coming from the core 1 via the mailbox 1

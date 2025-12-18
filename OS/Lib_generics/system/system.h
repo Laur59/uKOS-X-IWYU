@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		system manager.
@@ -27,8 +27,8 @@
 ;			Excecution from MEME1 (case 4)	lock the User RAM forever (until a restart)
 ;			Listing (case 3)				lock the User RAM during the usage and then, unlock
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -64,6 +64,11 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
+#include	"modules.h"
+#include	"types.h"
+
 /*!
  * \addtogroup Lib_generics
  */
@@ -81,7 +86,7 @@
 
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -368,7 +373,7 @@ extern	int32_t	system_setDownloadCodeAddress(void *address);
  */
 extern	int32_t	system_getDownloadCodeAddress(void **address);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 

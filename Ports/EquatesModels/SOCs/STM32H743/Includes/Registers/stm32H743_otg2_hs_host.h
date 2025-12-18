@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32H743_otg2_hs_host equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // OTG2_HS_HOST address definitions
 // --------------------------------
@@ -171,7 +173,7 @@ typedef struct {
 	volatile	uint32_t	OTG_HS_HCDMA15;
 } OTG2_HS_HOST_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	OTG2_HS_HOST	reinterpret_cast<OTG2_HS_HOST_TypeDef *>(0x40080400u)
 
 #else

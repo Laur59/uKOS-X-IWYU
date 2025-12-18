@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		sdcard R/W tests.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,22 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<inttypes.h>
+#include	<stdio.h>
+#include	<stdlib.h>
+
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"macros_soc.h"
+#include	"memo/memo.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"sdcard/sdcard.h"
+#include	"serial/serial.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -79,17 +94,17 @@ MODULE(
 	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	test_sdcard_clean,							// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
 // CLI tool specific
 // =================
 
-#define	KNB_SD_SECTORS	100u
+#define	KNB_SD_SECTORS	100U
 
 enum {
-		KERR_NOMEM = 0u,
+		KERR_NOMEM = 0U,
 		KERR_SDCARD,
 		KERR_WRITE,
 		KERR_READ,
@@ -108,12 +123,12 @@ STRG_LOC_CONST(aStrText[]) = "Process sdcard; R/W 100 sectors.          (c) EFr-
  *
  */
 static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
+	UNUSED(argc);
+	UNUSED(argv);
+
 	uint32_t	core;
 	int32_t		status;
 	proc_t		*process;
-
-	UNUSED(argc);
-	UNUSED(argv);
 
 	core = GET_RUNNING_CORE;
 	vKillRequest[core] = false;
@@ -147,10 +162,10 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
  *
  */
 static	int32_t	test_sdcard_clean(uint32_t argc, const char_t *argv[]) {
-	uint32_t	core;
-
 	UNUSED(argc);
 	UNUSED(argv);
+
+	uint32_t	core;
 
 	core = GET_RUNNING_CORE;
 	vKillRequest[core] = true;
@@ -171,7 +186,7 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 			uint8_t					*wBuffer;
 			uint8_t					*rBuffer;
 			int32_t					status;
-			uint32_t				i, j, k = 0u, sector = 0u;
+			uint32_t				i, j, k = 0U, sector = 0U;
 			uint64_t				tStamp[2];
 			sdcard_specification_t	sdCard;
 	const	bool					*killRequest;
@@ -181,18 +196,18 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 
 	wBuffer = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (KNB_SD_SECTORS * KSDCARD_SZ_SECTOR * sizeof(uint8_t)), "test_sdcard");
 	if (wBuffer == NULL) {
-		local_error(KERR_NOMEM, 0u, 0u, NULL, NULL);
+		local_error(KERR_NOMEM, 0U, 0U, NULL, NULL);
 	}
 
 	rBuffer = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (KNB_SD_SECTORS * KSDCARD_SZ_SECTOR * sizeof(uint8_t)), "test_sdcard");
 	if (rBuffer == NULL) {
-		local_error(KERR_NOMEM, 0u, 0u, wBuffer, NULL);
+		local_error(KERR_NOMEM, 0U, 0U, wBuffer, NULL);
 	}
 
 	RESERVE(SDCARD, KMODE_READ_WRITE);
 	status = sdcard_initialise(&sdCard);
 	if (status != KERR_STORAGE_NOERR) {
-		local_error(KERR_SDCARD, status, 0u, wBuffer, rBuffer);
+		local_error(KERR_SDCARD, status, 0U, wBuffer, rBuffer);
 	}
 
 // Display the sdcard properties
@@ -238,13 +253,13 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 	(void)dprintf(KURT0, "Card speed            %"PRIu32"-bit/s\n",  sdCard.oSpeed);
 	(void)dprintf(KURT0, "Card voltage          %s\n",				 voltage);
 
-	while (*killRequest == false) {
-		kern_suspendProcess(1u);
+	while (!*killRequest) {
+		kern_suspendProcess(1U);
 
 // Initialise the buffer
 
-		for (i = 0u; i < KNB_SD_SECTORS; i++) {
-			for (j = 0u; j < KSDCARD_SZ_SECTOR; j++) {
+		for (i = 0U; i < KNB_SD_SECTORS; i++) {
+			for (j = 0U; j < KSDCARD_SZ_SECTOR; j++) {
 				*(wBuffer + (i * KSDCARD_SZ_SECTOR) + j) = (uint8_t)k;
 				k++;
 			}
@@ -261,7 +276,7 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 		}
 		(void)dprintf(KSYST, "Write time for 100 sectors:  %"PRIu32"-us, sector nb %"PRIu32"\n", (uint32_t)(tStamp[1] - tStamp[0]), sector);
 
-		kern_suspendProcess(1u);
+		kern_suspendProcess(1U);
 
 		kern_readTickCount(&tStamp[0]);
 		status = sdcard_read(rBuffer, (KNB_SD_SECTORS * KSDCARD_SZ_SECTOR), sector);
@@ -271,15 +286,15 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 		}
 		(void)dprintf(KSYST, "Read  time for 100 sectors:  %"PRIu32"-us, sector nb %"PRIu32"\n", (uint32_t)(tStamp[1] - tStamp[0]), sector);
 
-		kern_suspendProcess(1u);
+		kern_suspendProcess(1U);
 
 // Test if the buffers are equals
 
 		sector += KNB_SD_SECTORS;
-		for (i = 0u; i < KNB_SD_SECTORS; i++) {
-			for (j = 0u; j < KSDCARD_SZ_SECTOR; j++) {
+		for (i = 0U; i < KNB_SD_SECTORS; i++) {
+			for (j = 0U; j < KSDCARD_SZ_SECTOR; j++) {
 				if (*(wBuffer + (i * KSDCARD_SZ_SECTOR) + j) != *(rBuffer + (i * KSDCARD_SZ_SECTOR) + j)) {
-					local_error(KERR_MISMATCH, 0u, sector, wBuffer, rBuffer);
+					local_error(KERR_MISMATCH, 0U, sector, wBuffer, rBuffer);
 				}
 			}
 		}
@@ -304,9 +319,9 @@ static void __attribute__ ((noreturn)) local_error(uint8_t error, int32_t status
 
 	switch (error) {
 		case KERR_NOMEM:    { (void)dprintf(KSYST, "Error: Not enough memory\n");																  break; }
-		case KERR_SDCARD:   { (void)dprintf(KSYST, "Error: status = %08"PRIX32"\n",					   ((uint32_t)status & 0x7FFFFFFFu));		  break; }
-		case KERR_WRITE:    { (void)dprintf(KSYST, "Error: W status = %08"PRIX32" sector %"PRIu32"\n", ((uint32_t)status & 0x7FFFFFFFu), sector); break; }
-		case KERR_READ:     { (void)dprintf(KSYST, "Error: R status = %08"PRIX32" sector %"PRIu32"\n", ((uint32_t)status & 0x7FFFFFFFu), sector); break; }
+		case KERR_SDCARD:   { (void)dprintf(KSYST, "Error: status = %08"PRIX32"\n",					   ((uint32_t)status & 0x7FFFFFFFU));		  break; }
+		case KERR_WRITE:    { (void)dprintf(KSYST, "Error: W status = %08"PRIX32" sector %"PRIu32"\n", ((uint32_t)status & 0x7FFFFFFFU), sector); break; }
+		case KERR_READ:     { (void)dprintf(KSYST, "Error: R status = %08"PRIX32" sector %"PRIu32"\n", ((uint32_t)status & 0x7FFFFFFFU), sector); break; }
 		case KERR_MISMATCH: { (void)dprintf(KSYST, "Error: Read & write mismatch\n");															  break; }
 		default: {
 

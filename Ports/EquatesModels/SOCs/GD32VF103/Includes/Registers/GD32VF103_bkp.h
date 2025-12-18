@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		GD32VF103_bkp equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // BKP address definitions
 // -----------------------
@@ -144,7 +146,7 @@ typedef struct {
 	volatile	uint16_t	DATA41;
 } BKP_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	BKP	reinterpret_cast<BKP_TypeDef *>(0x40006C00u)
 
 #else

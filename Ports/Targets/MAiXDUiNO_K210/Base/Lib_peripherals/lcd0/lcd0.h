@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		lcd0 manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -63,8 +63,13 @@
  * @{
  */
 
-#define	KLCD0_NUM	(((uint32_t)'_'<<8u) + (uint32_t)'2')
-#define	KLCD0MAN	(KLCD0_NUM<<8u)
+#include	<stdint.h>
+
+#include	"modules.h"
+#include	"macros.h"
+
+#define	KLCD0_NUM	(((uint32_t)'_'<<8U) + (uint32_t)'2')
+#define	KLCD0MAN	(KLCD0_NUM<<8U)
 
 // Semaphores
 // ----------
@@ -75,8 +80,8 @@
 
 // LCD dimensions
 
-#define	KLCD_X_MAX		240u
-#define	KLCD_Y_MAX		320u
+#define	KLCD_X_MAX		240U
+#define	KLCD_Y_MAX		320U
 
 // LCD colors
 
@@ -126,7 +131,7 @@ typedef	struct	lcdCtl {
 
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -312,7 +317,7 @@ extern	int32_t	lcd0_drawRectangle(uint16_t x0, uint16_t y0, uint16_t x1, uint16_
  */
 extern	int32_t	lcd0_drawPicture(uint16_t x, uint16_t y, uint16_t width, uint16_t height, const uint16_t *area);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 
@@ -320,11 +325,11 @@ extern	int32_t	lcd0_drawPicture(uint16_t x, uint16_t y, uint16_t width, uint16_t
 // -------------------
 
 //					Negative				 Family Lib Id							Lib Id xx (error)
-#define	KLCD0ERR	((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<24u) | KLCD0MAN)
+#define	KLCD0ERR	((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<24U) | KLCD0MAN)
 
 enum : int32_t {
 	KERR_LCD0_NOERR = 0,							// No error
-	KERR_LCD0_SYCNA = (int32_t)(KLCD0ERR + 1u),		// System call not available
+	KERR_LCD0_SYCNA = (int32_t)(KLCD0ERR + 1U),		// System call not available
 	KERR_LCD0_GEERR,								// General error
 	KERR_LCD0_CHBSY,								// The manager is busy
 	KERR_LCD0_CAREL									// Cannot release the manager

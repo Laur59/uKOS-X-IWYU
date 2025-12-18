@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		asmp manager.
@@ -43,8 +43,8 @@
 ;			In a heterogeneous configuration: PREEMPTION_THRESHOLD(KCORE_0)
 ;			In a homogeneous configuration: PREEMPTION_THRESHOLD(core)
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -80,7 +80,10 @@
 
 #pragma	once
 
-#include	"./kern/kern.h"
+#include	<stdint.h>
+
+#include	"kern/kern.h"
+#include	"types.h"
 
 /*!
  * \addtogroup Lib_generics
@@ -99,20 +102,20 @@
 
 // Modifiable in the makefile: default amp parameters
 
-#if (!defined(KASMP_NB_CORES))
-#define	KASMP_NB_CORES			2u								// Number of cores
+#ifndef KASMP_NB_CORES
+#define	KASMP_NB_CORES			2U								// Number of cores
 #endif
 
-#if (!defined(KASMP_SZ_BUFFER))
-#define	KASMP_SZ_BUFFER			1024u							// Size of the inter core buffer
+#ifndef KASMP_SZ_BUFFER
+#define	KASMP_SZ_BUFFER			1024U							// Size of the inter core buffer
 #endif
 
-#if (!defined(KASMP_MBOX_MAX_PACK))
-#define	KASMP_MBOX_MAX_PACK		10u								// Size of the mbox
+#ifndef KASMP_MBOX_MAX_PACK
+#define	KASMP_MBOX_MAX_PACK		10U								// Size of the mbox
 #endif
 
-#if (!defined(KASMP_MBOX_ENTRY_SIZE))
-#define	KASMP_MBOX_ENTRY_SIZE	0u								// Entry size (0 = mbox with copy)
+#ifndef KASMP_MBOX_ENTRY_SIZE
+#define	KASMP_MBOX_ENTRY_SIZE	0U								// Entry size (0 = mbox with copy)
 #endif
 
 typedef	struct asmpShared	asmpShared_t;
@@ -133,7 +136,7 @@ struct	asmpShared {
 // cores
 
 enum {
-		KASMP_CORE_0 = 0u,
+		KASMP_CORE_0 = 0U,
 		KASMP_CORE_1,
 		KASMP_CORE_2,
 		KASMP_CORE_3
@@ -164,7 +167,7 @@ enum {
 // Internal messages
 
 enum {
-		KASMP_MESSAGE_VALID_FOR_CORE_0 = 1u,
+		KASMP_MESSAGE_VALID_FOR_CORE_0 = 1U,
 		KASMP_MESSAGE_VALID_FOR_CORE_1,
 		KASMP_MESSAGE_VALID_FOR_CORE_2,
 		KASMP_MESSAGE_VALID_FOR_CORE_3,
@@ -176,7 +179,7 @@ enum {
 
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -335,7 +338,7 @@ extern	int32_t	asmp_getSemaphoreTXEmpty(uint32_t core, sema_t **semaphore);
  */
 extern	int32_t	asmp_waitingForReady(void);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 

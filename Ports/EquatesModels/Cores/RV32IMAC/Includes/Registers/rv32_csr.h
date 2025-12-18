@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		rv32_csr equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -374,21 +374,21 @@
 // Bits in registers
 // -----------------
 
-#define	MSTATUS_UIE										(1u<<0)				//
-#define	MSTATUS_SIE										(1u<<1)				//
-#define	MSTATUS_HIE										(1u<<2)				//
-#define	MSTATUS_MIE										(1u<<3)				//
-#define	MSTATUS_UPIE									(1u<<4)				//
-#define	MSTATUS_SPIE									(1u<<5)				//
-#define	MSTATUS_HPIE									(1u<<6)				//
-#define	MSTATUS_MPIE									(1u<<7)				//
-#define	MSTATUS_SPP										(1u<<8)				//
-#define	MSTATUS_MPP										(3u<<11)			//
-#define	MSTATUS_FS										(3u<<13)			//
-#define	MSTATUS_XS										(3u<<15)			//
-#define	MSTATUS_MPRV									(1u<<17)			//
-#define	MSTATUS_PUM										(1u<<18)			//
-#define	MSTATUS_MXR										(1u<<19)			//
+#define	MSTATUS_UIE										(1U<<0)				//
+#define	MSTATUS_SIE										(1U<<1)				//
+#define	MSTATUS_HIE										(1U<<2)				//
+#define	MSTATUS_MIE										(1U<<3)				//
+#define	MSTATUS_UPIE									(1U<<4)				//
+#define	MSTATUS_SPIE									(1U<<5)				//
+#define	MSTATUS_HPIE									(1U<<6)				//
+#define	MSTATUS_MPIE									(1U<<7)				//
+#define	MSTATUS_SPP										(1U<<8)				//
+#define	MSTATUS_MPP										(3U<<11)			//
+#define	MSTATUS_FS										(3U<<13)			//
+#define	MSTATUS_XS										(3U<<15)			//
+#define	MSTATUS_MPRV									(1U<<17)			//
+#define	MSTATUS_PUM										(1U<<18)			//
+#define	MSTATUS_MXR										(1U<<19)			//
 #define	MSTATUS_VM										0x1F000000u			//
 #define	MSTATUS32_SD									0x80000000u			//
 #define	MSTATUS64_SD									0x8000000000000000u	//
@@ -407,20 +407,20 @@
 #define	MCAUSE_INTERRUPT								0x80000000u			//
 #define	MCAUSE_CAUSE									0x7FFFFFFFu			//
 
-#define	MCAUSE_EXC_CODE_INSTRUCTION_ADDRESS_MISALIGNED	0u					//
-#define	MCAUSE_EXC_CODE_INSTRUCTION_ACCESS_FAULT		1u					//
-#define	MCAUSE_EXC_CODE_ILLEGAL_INSTRUCTION				2u					//
-#define	MCAUSE_EXC_CODE_BREAKPOINT						3u					//
-#define	MCAUSE_EXC_CODE_LOAD_ADDRESS_MISALIGNED			4u					//
-#define	MCAUSE_EXC_CODE_LOAD_ACCESS_FAULT				5u					//
-#define	MCAUSE_EXC_CODE_STORE_AMO_ADDRESS_MISALIGNED	6u					//
-#define	MCAUSE_EXC_CODE_STORE_AMO_ACCESS_FAULT			7u					//
-#define	MCAUSE_EXC_CODE_ENV_CALL_FROM_U_MODE			8u					//
-#define	MCAUSE_EXC_CODE_ENV_CALL_FROM_S_MODE			9u					//
-#define	MCAUSE_EXC_CODE_ENV_CALL_FROM_M_MODE			11u					//
-#define	MCAUSE_EXC_CODE_INSTRUCTION_PAGE_FAULT			12u					//
-#define	MCAUSE_EXC_CODE_LOAD_PAGE_FAULT					13u					//
-#define	MCAUSE_EXC_CODE_STORE_AMO_PAGE_FAULT			15u					//
+#define	MCAUSE_EXC_CODE_INSTRUCTION_ADDRESS_MISALIGNED	0U					//
+#define	MCAUSE_EXC_CODE_INSTRUCTION_ACCESS_FAULT		1U					//
+#define	MCAUSE_EXC_CODE_ILLEGAL_INSTRUCTION				2U					//
+#define	MCAUSE_EXC_CODE_BREAKPOINT						3U					//
+#define	MCAUSE_EXC_CODE_LOAD_ADDRESS_MISALIGNED			4U					//
+#define	MCAUSE_EXC_CODE_LOAD_ACCESS_FAULT				5U					//
+#define	MCAUSE_EXC_CODE_STORE_AMO_ADDRESS_MISALIGNED	6U					//
+#define	MCAUSE_EXC_CODE_STORE_AMO_ACCESS_FAULT			7U					//
+#define	MCAUSE_EXC_CODE_ENV_CALL_FROM_U_MODE			8U					//
+#define	MCAUSE_EXC_CODE_ENV_CALL_FROM_S_MODE			9U					//
+#define	MCAUSE_EXC_CODE_ENV_CALL_FROM_M_MODE			11U					//
+#define	MCAUSE_EXC_CODE_INSTRUCTION_PAGE_FAULT			12U					//
+#define	MCAUSE_EXC_CODE_LOAD_PAGE_FAULT					13U					//
+#define	MCAUSE_EXC_CODE_STORE_AMO_PAGE_FAULT			15U					//
 
 #define	CSR_SETBITS(reg, mask) \
 	({ \

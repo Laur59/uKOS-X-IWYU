@@ -9,8 +9,8 @@
 ; Project:	uKOS-X
 ; Goal:		Model for controlling the "spi" device.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -44,6 +44,17 @@
 ;------------------------------------------------------------------------
 */
 
+#include	<stdint.h>
+
+#include	"Registers/nvic.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"os_errors.h"
+#include	"spi_common.h"
+#include	"soc_reg.h"
+
 static	const	volatile	uint8_t		*vWkBuffer;
 static			volatile	uint8_t		*vRkBuffer;
 static			volatile	uint16_t	vWSize;
@@ -56,6 +67,8 @@ static						sema_t		*vSemaphore_TR;
 STRG_LOC_CONST(aStrSemaphore_TR[]) = UNIT " Transaction";
 
 // Prototypes
+
+extern	void	(*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 static	void	local_SPI_IRQHandler(void);
 
@@ -77,8 +90,8 @@ void	model_spi_init(void) {
 
 // Initialise the SPI Master, POL = PHA = 1, Fclk divided by 32
 
-	SPI->CFG1 = (4u * SPI_CFG1_MBR_0)
-			  | ((8u - 1u) * SPI_CFG1_DSIZE_0);
+	SPI->CFG1 = (4U * SPI_CFG1_MBR_0)
+			  | ((8U - 1U) * SPI_CFG1_DSIZE_0);
 
 	SPI->CFG2 = SPI_CFG2_SSOE
 			  | SPI_CFG2_CPHA
@@ -106,28 +119,28 @@ int32_t	model_spi_configure(const spiCnf_t *configure) {
 	SPI->CR1 &= (uint32_t)~SPI_CR1_SPE;
 
 	SPI->CFG2 = SPI_CFG2_SSOE;
-	SPI->CFG1 = ((8u - 1u) * SPI_CFG1_DSIZE_0);
+	SPI->CFG1 = ((8U - 1U) * SPI_CFG1_DSIZE_0);
 
 // The mode
 // The polariry
 
 	if (configure->oMode == (uint8_t)KSPI_MASTER)			 { SPI->CFG2 |= SPI_CFG2_MASTER; }
-	if ((configure->oClock & (1u<<(uint8_t)BSPI_POL)) != 0u) { SPI->CFG2 |= SPI_CFG2_CPOL;   }
-	if ((configure->oClock & (1u<<(uint8_t)BSPI_PHA)) != 0u) { SPI->CFG2 |= SPI_CFG2_CPHA;   }
+	if ((configure->oClock & (1U<<(uint8_t)BSPI_POL)) != 0U) { SPI->CFG2 |= SPI_CFG2_CPOL;   }
+	if ((configure->oClock & (1U<<(uint8_t)BSPI_PHA)) != 0U) { SPI->CFG2 |= SPI_CFG2_CPHA;   }
 
 // The speed factor
 
 	ratio = SPI_FREQUENCY / configure->oSpeed;
 
-	mbr = 0u * SPI_CFG1_MBR_0;
-	mbr = ((ratio <= 2u))					   ? (0u * SPI_CFG1_MBR_0) : (mbr);
-	mbr = ((ratio >  2u)   && (ratio <= 4u))   ? (1u * SPI_CFG1_MBR_0) : (mbr);
-	mbr = ((ratio >  4u)   && (ratio <= 8u))   ? (2u * SPI_CFG1_MBR_0) : (mbr);
-	mbr = ((ratio >  8u)   && (ratio <= 16u))  ? (3u * SPI_CFG1_MBR_0) : (mbr);
-	mbr = ((ratio > 16u)   && (ratio <= 32u))  ? (4u * SPI_CFG1_MBR_0) : (mbr);
-	mbr = ((ratio > 32u)   && (ratio <= 64u))  ? (5u * SPI_CFG1_MBR_0) : (mbr);
-	mbr = ((ratio > 64u)   && (ratio <= 128u)) ? (6u * SPI_CFG1_MBR_0) : (mbr);
-	mbr = ((ratio > 128u))					   ? (7u * SPI_CFG1_MBR_0) : (mbr);
+	mbr = 0U * SPI_CFG1_MBR_0;
+	mbr = ((ratio <= 2U))					   ? (0U * SPI_CFG1_MBR_0) : (mbr);
+	mbr = ((ratio >  2U)   && (ratio <= 4U))   ? (1U * SPI_CFG1_MBR_0) : (mbr);
+	mbr = ((ratio >  4U)   && (ratio <= 8U))   ? (2U * SPI_CFG1_MBR_0) : (mbr);
+	mbr = ((ratio >  8U)   && (ratio <= 16U))  ? (3U * SPI_CFG1_MBR_0) : (mbr);
+	mbr = ((ratio > 16U)   && (ratio <= 32U))  ? (4U * SPI_CFG1_MBR_0) : (mbr);
+	mbr = ((ratio > 32U)   && (ratio <= 64U))  ? (5U * SPI_CFG1_MBR_0) : (mbr);
+	mbr = ((ratio > 64U)   && (ratio <= 128U)) ? (6U * SPI_CFG1_MBR_0) : (mbr);
+	mbr = ((ratio > 128U))					   ? (7U * SPI_CFG1_MBR_0) : (mbr);
 
 	SPI->CFG1 |= mbr;
 
@@ -151,10 +164,10 @@ int32_t	model_spi_multipleWriteRead(const uint8_t *wData, uint16_t wSize, uint8_
 	INTERRUPTION_RESTORE;
 
 	vMode = KSPI_ERROR;
-	vMode = ((wSize != 0u) && (rSize == 0u))					? (KSPI_WRITE)  : (vMode);	// Mode only write
-	vMode = ((wSize == 0u) && (rSize != 0u))					? (KSPI_READ)   : (vMode);	// Mode only read
-	vMode = ((wSize == rSize) && (rSize != 0u))					? (KSPI_READ)	: (vMode);	// Mode write-read
-	vMode = ((wSize < rSize) && (wSize != 0u) && (rSize != 0u)) ? (KSPI_EEPROM) : (vMode);	// Mode EEPROM
+	vMode = ((wSize != 0U) && (rSize == 0U))					? (KSPI_WRITE)  : (vMode);	// Mode only write
+	vMode = ((wSize == 0U) && (rSize != 0U))					? (KSPI_READ)   : (vMode);	// Mode only read
+	vMode = ((wSize == rSize) && (rSize != 0U))					? (KSPI_READ)	: (vMode);	// Mode write-read
+	vMode = ((wSize < rSize) && (wSize != 0U) && (rSize != 0U)) ? (KSPI_EEPROM) : (vMode);	// Mode EEPROM
 
 	vWkBuffer = wData;
 	vRkBuffer = rData;
@@ -179,7 +192,7 @@ int32_t	model_spi_multipleWriteRead(const uint8_t *wData, uint16_t wSize, uint8_
  */
 static	void	local_SPI_IRQHandler(void) {
 			uint8_t		data;
-	static	uint16_t	vNbBytes = 0u;
+	static	uint16_t	vNbBytes = 0U;
 	static	bool		vWrite = false;
 	static	bool		vFirst = true;
 
@@ -214,10 +227,10 @@ static	void	local_SPI_IRQHandler(void) {
 // Skip the first read due to the NVIC_SetPendingIRQ
 
 			if (vFirst == true) { vFirst = false;				  }
-			else                { vRkBuffer[vNbBytes - 1u] = data; }
+			else                { vRkBuffer[vNbBytes - 1U] = data; }
 
 			if (vNbBytes < vRSize) {
-				*((volatile uint8_t *)&SPI->TXDR) = (vWkBuffer == NULL) ? (0u) : (vWkBuffer[vNbBytes]);
+				*((volatile uint8_t *)&SPI->TXDR) = (vWkBuffer == NULL) ? (0U) : (vWkBuffer[vNbBytes]);
 				vNbBytes++;
 				return;
 			}
@@ -242,16 +255,16 @@ static	void	local_SPI_IRQHandler(void) {
 
 				vFirst	 = true;
 				vWrite	 = true;
-				vNbBytes = 0u;
+				vNbBytes = 0U;
 			}
 
 // Skip the first read due to the NVIC_SetPendingIRQ
 
 			if (vFirst == true) { vFirst = false;				  }
-			else                { vRkBuffer[vNbBytes - 1u] = data; }
+			else                { vRkBuffer[vNbBytes - 1U] = data; }
 
 			if (vNbBytes < vRSize) {
-				*((volatile uint8_t *)&SPI->TXDR) = 0u;
+				*((volatile uint8_t *)&SPI->TXDR) = 0U;
 				vNbBytes++;
 				return;
 			}
@@ -270,7 +283,7 @@ static	void	local_SPI_IRQHandler(void) {
 
 	vFirst	 = true;
 	vWrite	 = false;
-	vNbBytes = 0u;
+	vNbBytes = 0U;
 	vBusy	 = false;
 
 	kern_signalSemaphore(vSemaphore_TR);

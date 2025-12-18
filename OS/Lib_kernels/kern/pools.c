@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Kern - Memory pools.
@@ -24,8 +24,8 @@
 ;			int32_t	kern_killPool(pool_t *handle);
 ;			int32_t	kern_getPoolById(const char_t *identifier, pool_t **handle);
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -59,12 +59,24 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"kern/private/private_kern.h"
+#include	"pools.h"
 #include	"kern/private/private_pools.h"
-#include	"kern/private/private_processes.h"
+
+#include	<stddef.h>
+#include	<stdint.h>
+
+#include	"debug.h"
+#include	"kern/kern.h"
 #include	"kern/private/private_identifiers.h"
-#include	"kern/private/private_lists.h"
+#include	"kern/private/private_processes.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"memo/memo.h"
+#include	"os_errors.h"
+#ifdef RV32IMAC_S
+#include	"soc_reg.h"
+#endif
+#include	"types.h"
 
 #if (KKERN_NB_POOLS > 0)
 pool_t		vKern_pool[KNB_CORES][KKERN_NB_POOLS];
@@ -90,18 +102,18 @@ void	pools_init(void) {
 	DEBUG_KERN_TRACE("entry: ");
 	core = GET_RUNNING_CORE;
 
-	for (i = 0u; i < KKERN_NB_POOLS; i++) {
+	for (i = 0U; i < KKERN_NB_POOLS; i++) {
 		vKern_pool[core][i].oIdentifier  = NULL;
-		vKern_pool[core][i].oState		 = 0u;
-		vKern_pool[core][i].oNbBlocks    = 0u;
-		vKern_pool[core][i].oBlockSize   = 0u;
+		vKern_pool[core][i].oState		 = 0U;
+		vKern_pool[core][i].oNbBlocks    = 0U;
+		vKern_pool[core][i].oBlockSize   = 0U;
 		vKern_pool[core][i].oBlockArray  = NULL;
 		vKern_pool[core][i].oUsedBlocks  = NULL;
 		vKern_pool[core][i].oReleaseSema = NULL;
 	}
 
-	vKern_nbPool[core]	  = 0u;
-	vKern_nbMaxPool[core] = 0u;
+	vKern_nbPool[core]	  = 0U;
+	vKern_nbMaxPool[core] = 0U;
 	DEBUG_KERN_TRACE("exit: OK");
 }
 
@@ -142,8 +154,8 @@ int32_t	kern_createPool(const char_t *identifier, pool_t **handle) {
 // with the handle of the previously created object
 
 	if (identifier != NULL) {
-		for (i = 0u; i < KKERN_NB_POOLS; i++) {
-			if (identifiers_cmpStrings(vKern_pool[core][i].oIdentifier, identifier) == true) {
+		for (i = 0U; i < KKERN_NB_POOLS; i++) {
+			if (identifiers_cmpStrings(vKern_pool[core][i].oIdentifier, identifier)) {
 				*handle = &vKern_pool[core][i];
 				DEBUG_KERN_TRACE("exit: KO 1");
 				INTERRUPTION_RESTORE;
@@ -154,10 +166,10 @@ int32_t	kern_createPool(const char_t *identifier, pool_t **handle) {
 		}
 	}
 
-	for (i = 0u; i < KKERN_NB_POOLS; i++) {
+	for (i = 0U; i < KKERN_NB_POOLS; i++) {
 		if (vKern_pool[core][i].oIdentifier == NULL) {
 			vKern_pool[core][i].oIdentifier  = (identifier == NULL) ? (KPOOL_ANONYMOUS_ID) : (identifier);
-			vKern_pool[core][i].oState       = (1u<<BPOOL_INSTALLED);
+			vKern_pool[core][i].oState       = (1U<<BPOOL_INSTALLED);
 			*handle = &vKern_pool[core][i];
 
 			vKern_nbPool[core]    = (uint16_t)(vKern_nbPool[core] + 1);
@@ -211,14 +223,14 @@ int32_t	kern_setPool(pool_t *handle, const pcnf_t *configure) {
 	INTERRUPTION_OFF;
 	vKern_runProc[core]->oStatistic.oNbKernCalls++;
 	if (handle == NULL)						        				  { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPOI); }
-	if ((handle->oState & (1u<<BPOOL_INSTALLED)) == 0u)				  { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPOI); }
-	if ((handle->oState & (1u<<BPOOL_CONFIGURED)) != 0u)			  { DEBUG_KERN_TRACE("exit: KO 3"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_POCNF); }
-	if ((configure->oNbBlocks == 0)	|| (configure->oBlockSize == 0u)) { DEBUG_KERN_TRACE("exit: KO 4"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_POCNF); }
+	if ((handle->oState & (1U<<BPOOL_INSTALLED)) == 0U)				  { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPOI); }
+	if ((handle->oState & (1U<<BPOOL_CONFIGURED)) != 0U)			  { DEBUG_KERN_TRACE("exit: KO 3"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_POCNF); }
+	if ((configure->oNbBlocks == 0)	|| (configure->oBlockSize == 0U)) { DEBUG_KERN_TRACE("exit: KO 4"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_POCNF); }
 
 // Consider always multiple of 4 bytes
 
 	nbBlocks  = configure->oNbBlocks;
-	blockSize = (configure->oBlockSize + 3u) & 0xFFFFFFFCu;
+	blockSize = (configure->oBlockSize + 3U) & 0xFFFFFFFCU;
 
 // Reserve the "array" and the "used block" vector
 // Initialise the vector
@@ -255,11 +267,11 @@ int32_t	kern_setPool(pool_t *handle, const pcnf_t *configure) {
 	handle->oUsedBlocks  = usedBlocks;
 	handle->oReleaseSema = semaphore;
 
-	for (i = 0u; i < handle->oNbBlocks; i++) {
+	for (i = 0U; i < handle->oNbBlocks; i++) {
 		handle->oUsedBlocks[i] = NULL;
 	}
 
-	handle->oState |= (1u<<BPOOL_CONFIGURED);
+	handle->oState |= (1U<<BPOOL_CONFIGURED);
 	DEBUG_KERN_TRACE("exit: OK");
 	INTERRUPTION_RESTORE;
 	PRIVILEGE_RESTORE;
@@ -302,10 +314,10 @@ int32_t	kern_allocateBlock(pool_t *handle, void **address, uint32_t timeout) {
 	*address = NULL;
 
 	if (handle == NULL)								     { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPOI); }
-	if ((handle->oState & (1u<<BPOOL_INSTALLED)) == 0u)  { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPOI); }
-	if ((handle->oState & (1u<<BPOOL_CONFIGURED)) == 0u) { DEBUG_KERN_TRACE("exit: KO 3"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_PONCF); }
+	if ((handle->oState & (1U<<BPOOL_INSTALLED)) == 0U)  { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPOI); }
+	if ((handle->oState & (1U<<BPOOL_CONFIGURED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 3"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_PONCF); }
 
-	for (i = 0u; i < handle->oNbBlocks; i++) {
+	for (i = 0U; i < handle->oNbBlocks; i++) {
 		if (handle->oUsedBlocks[i] == NULL) {
 			handle->oUsedBlocks[i]  = (void *)((uintptr_t)handle->oBlockArray + (uintptr_t)(i * handle->oBlockSize));
 			*address = handle->oUsedBlocks[i];
@@ -320,9 +332,9 @@ int32_t	kern_allocateBlock(pool_t *handle, void **address, uint32_t timeout) {
 	INTERRUPTION_RESTORE;
 	PRIVILEGE_RESTORE;
 
-	if (timeout > 0u) {
+	if (timeout > 0U) {
 		if (kern_waitSemaphore(handle->oReleaseSema, timeout) == KERR_KERN_NOERR) {
-			return (kern_allocateBlock(handle, address, 0u));
+			return (kern_allocateBlock(handle, address, 0U));
 		}
 
 	}
@@ -360,10 +372,10 @@ int32_t	kern_deAllocateBlock(pool_t *handle, const void *address) {
 	INTERRUPTION_OFF;
 	vKern_runProc[core]->oStatistic.oNbKernCalls++;
 	if (handle == NULL)								     { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPOI); }
-	if ((handle->oState & (1u<<BPOOL_INSTALLED)) == 0u)  { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPOI); }
-	if ((handle->oState & (1u<<BPOOL_CONFIGURED)) == 0u) { DEBUG_KERN_TRACE("exit: KO 3"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_PONCF); }
+	if ((handle->oState & (1U<<BPOOL_INSTALLED)) == 0U)  { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPOI); }
+	if ((handle->oState & (1U<<BPOOL_CONFIGURED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 3"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_PONCF); }
 
-	for (i = 0u; i < handle->oNbBlocks; i++) {
+	for (i = 0U; i < handle->oNbBlocks; i++) {
 		if (handle->oUsedBlocks[i] == address) {
 			handle->oUsedBlocks[i]  = NULL;
 			DEBUG_KERN_TRACE("exit: OK");
@@ -408,21 +420,21 @@ int32_t	kern_killPool(pool_t *handle) {
 	INTERRUPTION_OFF;
 	vKern_runProc[core]->oStatistic.oNbKernCalls++;
 	if (handle == NULL)								     { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPOI); }
-	if ((handle->oState & (1u<<BPOOL_INSTALLED)) == 0u)  { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPOI); }
-	if ((handle->oState & (1u<<BPOOL_CONFIGURED)) != 0u) {
+	if ((handle->oState & (1U<<BPOOL_INSTALLED)) == 0U)  { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPOI); }
+	if ((handle->oState & (1U<<BPOOL_CONFIGURED)) != 0U) {
 		memo_free(handle->oBlockArray);
 		memo_free((void *)handle->oUsedBlocks);
 		kern_killSemaphore(handle->oReleaseSema);
 	}
 	handle->oIdentifier  = NULL;
-	handle->oState	     = 0u;
-	handle->oNbBlocks    = 0u;
-	handle->oBlockSize	 = 0u;
+	handle->oState	     = 0U;
+	handle->oNbBlocks    = 0U;
+	handle->oBlockSize	 = 0U;
 	handle->oBlockArray  = NULL;
 	handle->oUsedBlocks  = NULL;
 	handle->oReleaseSema = NULL;
 
-	if (vKern_nbPool[core] != 0u) { vKern_nbPool[core] = (uint16_t)(vKern_nbPool[core] - 1u); }
+	if (vKern_nbPool[core] != 0U) { vKern_nbPool[core] = (uint16_t)(vKern_nbPool[core] - 1U); }
 	DEBUG_KERN_TRACE("exit: OK");
 	INTERRUPTION_RESTORE;
 	PRIVILEGE_RESTORE;
@@ -460,8 +472,8 @@ int32_t	kern_getPoolById(const char_t *identifier, pool_t **handle) {
 	PRIVILEGE_ELEVATE;
 	INTERRUPTION_OFF;
 	vKern_runProc[core]->oStatistic.oNbKernCalls++;
-	for (i = 0u; i < KKERN_NB_POOLS; i++) {
-		if (identifiers_cmpStrings(vKern_pool[core][i].oIdentifier, identifier) == true) {
+	for (i = 0U; i < KKERN_NB_POOLS; i++) {
+		if (identifiers_cmpStrings(vKern_pool[core][i].oIdentifier, identifier)) {
 			*handle = &vKern_pool[core][i];
 			DEBUG_KERN_TRACE("exit: OK");
 			INTERRUPTION_RESTORE;
@@ -476,4 +488,6 @@ int32_t	kern_getPoolById(const char_t *identifier, pool_t **handle) {
 	PRIVILEGE_RESTORE;
 	return (KERR_KERN_NOPOI);
 }
+#else
+#error	"KKERN_NB_POOLS SHALL be > 0 in project using kern/pool.c"
 #endif

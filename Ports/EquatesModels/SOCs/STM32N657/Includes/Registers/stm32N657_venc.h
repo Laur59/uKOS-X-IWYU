@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32N657_venc equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // VENC address definitions
 // ------------------------
@@ -416,7 +418,7 @@ typedef struct {
 	volatile	uint32_t	SWREG498;
 } VENC_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	VENC_NS	reinterpret_cast<VENC_TypeDef *>(0x48005000u)
 #define	VENC_S	reinterpret_cast<VENC_TypeDef *>(0x58005000u)
 

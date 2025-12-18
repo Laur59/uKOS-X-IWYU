@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Hardware specific stub.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,17 +46,27 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
 
-#define KTTIM1MS		1000u									// For 1-ms (1000-Hz)
-#define	KFPRET8			1000000u								// 1'000'000-Hz
+#include	"clockTree.h"
+#include	"core_reg.h"
+#include	"soc_reg.h"
+#include	"macros.h"
+#include	"macros_soc.h"
+#include	"macros_core.h"
+#include	"kern/kern.h"
+
+#define KTTIM1MS		1000U									// For 1-ms (1000-Hz)
+#define	KFPRET8			1000000U								// 1'000'000-Hz
 #define	KFINTT8			KTTIM1MS								// 1'000-Hz
-#define KPSCT8			((KFREQUENCY_APB2 / KFPRET8) - 1u)		// Prescaler for 1'000'000-Hz
-#define KARRT8			((KFPRET8 / KFINTT8) - 1u)				// Autoreload
+#define KPSCT8			((KFREQUENCY_APB2 / KFPRET8) - 1U)		// Prescaler for 1'000'000-Hz
+#define KARRT8			((KFPRET8 / KFINTT8) - 1U)				// Autoreload
 
 extern	volatile	uint32_t	vTimer;
 
 // Prototypes
+
+extern	void	(*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 static	void	stub_intr_timer_interruption(void);
 extern	void	aTimer_callBack(void);
@@ -92,10 +102,10 @@ static	void	stub_intr_timer_interruption(void) {
 
 // INT acknowledge
 
-	if ((TIM8->SR & TIM8_SR_UIF) != 0u) {
+	if ((TIM8->SR & TIM8_SR_UIF) != 0U) {
 		TIM8->SR &= (uint16_t)~TIM8_SR_UIF;
 	}
-	if ((++vTimer % 100u) == 0u) { aTimer_callBack(); }
+	if ((++vTimer % 100U) == 0U) { aTimer_callBack(); }
 
 	PREEMPTION_THRESHOLD(core);
 }

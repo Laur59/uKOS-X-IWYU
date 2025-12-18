@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Bench 04: 	Compute the atan2(x, y) by a cordic in a fixed point.
@@ -26,8 +26,8 @@
 ;			MAiXDUiNO_K210 @ 400-MHz	566
 ;			Discovery_U5G9 @ 160-MHz	2049
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -61,14 +61,25 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+#include	<stdio.h>
 
-#define	KNB_TESTS			1000u
+#include	"kern/kern.h"
+#ifdef __arm__
+#include	"macros_core.h" // ARM: INTERRUPTION_OFF in core
+#endif
+#ifdef __riscv
+#include	"macros_soc.h"	// RISC-V: INTERRUPTION_OFF in soc
+#endif
+#include	"serial/serial.h"
+#include	"types.h"
 
-#define	KMAX_ITERATIONS		32u
+#define	KNB_TESTS			1000U
 
-#define KPI					(float64_t)(3.14159265358979f)
-#define K180				(float64_t)(180.0f)
+#define	KMAX_ITERATIONS		32U
+
+#define KPI					(float64_t)(3.14159265358979F)
+#define K180				(float64_t)(180.0F)
 #define KRAD_TO_DEG			(K180 / KPI)
 
 // CLI tool specific
@@ -83,7 +94,7 @@ static	void	 local_atan2(uint64_t *time, float64_t *angle, int32_t y, int32_t x)
  *
  */
 bool	bench_04(void) {
-	uint64_t	time, sumTime = 0u;
+	uint64_t	time, sumTime = 0U;
 	uint32_t	j;
 	int32_t		x, y;
 	float64_t	angle;
@@ -92,7 +103,7 @@ bool	bench_04(void) {
 
 	x = 10345; y = 234;
 
-	for (j = 0u; j < KNB_TESTS; j++) {
+	for (j = 0U; j < KNB_TESTS; j++) {
 		local_atan2(&time, &angle, y, x);
 		sumTime += time;
 	}
@@ -144,7 +155,7 @@ static	void local_atan2(uint64_t *time, float64_t *angle, int32_t y, int32_t x) 
 	kern_readTickCount(&tStamp[0]);
 
 	INTERRUPTION_OFF_HARD;
-	for (i = 0u; i < KNB_TESTS; i++) {
+	for (i = 0U; i < KNB_TESTS; i++) {
 		*angle = 0.0;
 
 // Special case: vectors = 0
@@ -167,7 +178,7 @@ static	void local_atan2(uint64_t *time, float64_t *angle, int32_t y, int32_t x) 
 
 // Rotate the vector and compute the angle
 
-		for (j = 0u; j < KMAX_ITERATIONS; j++) {
+		for (j = 0U; j < KMAX_ITERATIONS; j++) {
 			if (ly < 0) {
 				sh = ((uint32_t)lx)>>j;
 				yi = ly + (int32_t)sh;

@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		RP2350_usb_dpram equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // USB_DPRAM address definitions
 // -----------------------------
@@ -118,7 +120,7 @@ typedef struct {
 	volatile	uint32_t	EP15_OUT_BUFFER_CONTROL;
 } USB_DPRAM_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	USB_DPRAM_NS	reinterpret_cast<USB_DPRAM_TypeDef *>(0x50100000u)
 #define	USB_DPRAM_S		reinterpret_cast<USB_DPRAM_TypeDef *>(0x50100000u)
 #else

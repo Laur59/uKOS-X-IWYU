@@ -9,8 +9,8 @@
 ; Project:	uKOS-X
 ; Goal:		Model for controlling the "lsm9ds1" device (the IMU part).
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -44,7 +44,12 @@
 ;------------------------------------------------------------------------
 */
 
+#include	<stdint.h>
+
 #include	"LSM9DS1/LSM9DS1.h"
+#include	"imu/imu.h"
+#include	"os_errors.h"
+#include	"types.h"
 
 // Accelerometer, gyroscope, magnetometer sensitivities
 
@@ -142,9 +147,9 @@ int32_t	model_lsM9ds1imu_configure(const imuCnf_t *configure) {
 	cb_control(KIMU_RESERVE);
 	v1G = (int16_t)((1.0) / vSensAcce);
 
-	data = reg1; cb_writeAcceGyro(LSM9DS1_CTRL_REG1_G,  &data, 1u);
-	data = reg6; cb_writeAcceGyro(LSM9DS1_CTRL_REG6_XL, &data, 1u);
-	data = regx; cb_writeMagn(LSM9DS1_CTRL_REG2_M,      &data, 1u);
+	data = reg1; cb_writeAcceGyro(LSM9DS1_CTRL_REG1_G,  &data, 1U);
+	data = reg6; cb_writeAcceGyro(LSM9DS1_CTRL_REG6_XL, &data, 1U);
+	data = regx; cb_writeMagn(LSM9DS1_CTRL_REG2_M,      &data, 1U);
 
 	local_caliImu();
 	cb_control(KIMU_RELEASE);
@@ -161,17 +166,17 @@ int32_t	model_lsM9ds1imu_read(imuAccePack_t *accelerometer, imuGyroPack_t *gyros
 	uint8_t		xsb[2];
 
 	cb_control(KIMU_RESERVE);
-	cb_readAcceGyro(LSM9DS1_OUT_X_L_XL, xsb, 2u); accelerometer->oAcce_X = (float64_t)((int16_t)(xsb[1]<<8u | xsb[0]) - vBiasAcce[0]) * vSensAcce;
-	cb_readAcceGyro(LSM9DS1_OUT_Y_L_XL, xsb, 2u); accelerometer->oAcce_Y = (float64_t)((int16_t)(xsb[1]<<8u | xsb[0]) - vBiasAcce[1]) * vSensAcce;
-	cb_readAcceGyro(LSM9DS1_OUT_Z_L_XL, xsb, 2u); accelerometer->oAcce_Z = (float64_t)((int16_t)(xsb[1]<<8u | xsb[0]) - vBiasAcce[2]) * vSensAcce;
+	cb_readAcceGyro(LSM9DS1_OUT_X_L_XL, xsb, 2U); accelerometer->oAcce_X = (float64_t)((int16_t)(xsb[1]<<8U | xsb[0]) - vBiasAcce[0]) * vSensAcce;
+	cb_readAcceGyro(LSM9DS1_OUT_Y_L_XL, xsb, 2U); accelerometer->oAcce_Y = (float64_t)((int16_t)(xsb[1]<<8U | xsb[0]) - vBiasAcce[1]) * vSensAcce;
+	cb_readAcceGyro(LSM9DS1_OUT_Z_L_XL, xsb, 2U); accelerometer->oAcce_Z = (float64_t)((int16_t)(xsb[1]<<8U | xsb[0]) - vBiasAcce[2]) * vSensAcce;
 
-	cb_readAcceGyro(LSM9DS1_OUT_X_L_G, xsb, 2u);  gyroscope->oGyro_X =     (float64_t)((int16_t)(xsb[1]<<8u | xsb[0]) - vBiasGyro[0]) * vSensGyro;
-	cb_readAcceGyro(LSM9DS1_OUT_Y_L_G, xsb, 2u);  gyroscope->oGyro_Y =     (float64_t)((int16_t)(xsb[1]<<8u | xsb[0]) - vBiasGyro[1]) * vSensGyro;
-	cb_readAcceGyro(LSM9DS1_OUT_Z_L_G, xsb, 2u);  gyroscope->oGyro_Z =     (float64_t)((int16_t)(xsb[1]<<8u | xsb[0]) - vBiasGyro[2]) * vSensGyro;
+	cb_readAcceGyro(LSM9DS1_OUT_X_L_G, xsb, 2U);  gyroscope->oGyro_X =     (float64_t)((int16_t)(xsb[1]<<8U | xsb[0]) - vBiasGyro[0]) * vSensGyro;
+	cb_readAcceGyro(LSM9DS1_OUT_Y_L_G, xsb, 2U);  gyroscope->oGyro_Y =     (float64_t)((int16_t)(xsb[1]<<8U | xsb[0]) - vBiasGyro[1]) * vSensGyro;
+	cb_readAcceGyro(LSM9DS1_OUT_Z_L_G, xsb, 2U);  gyroscope->oGyro_Z =     (float64_t)((int16_t)(xsb[1]<<8U | xsb[0]) - vBiasGyro[2]) * vSensGyro;
 
-	cb_readMagn(LSM9DS1_OUT_X_L_M, xsb, 2u);      magnetometer->oMagn_X =  (float64_t)((int16_t)(xsb[1]<<8u | xsb[0]) - vBiasMagn[0]) * vSensMagn;
-	cb_readMagn(LSM9DS1_OUT_Y_L_M, xsb, 2u);      magnetometer->oMagn_Y =  (float64_t)((int16_t)(xsb[1]<<8u | xsb[0]) - vBiasMagn[1]) * vSensMagn;
-	cb_readMagn(LSM9DS1_OUT_Z_L_M, xsb, 2u);      magnetometer->oMagn_Z =  (float64_t)((int16_t)(xsb[1]<<8u | xsb[0]) - vBiasMagn[2]) * vSensMagn;
+	cb_readMagn(LSM9DS1_OUT_X_L_M, xsb, 2U);      magnetometer->oMagn_X =  (float64_t)((int16_t)(xsb[1]<<8U | xsb[0]) - vBiasMagn[0]) * vSensMagn;
+	cb_readMagn(LSM9DS1_OUT_Y_L_M, xsb, 2U);      magnetometer->oMagn_Y =  (float64_t)((int16_t)(xsb[1]<<8U | xsb[0]) - vBiasMagn[1]) * vSensMagn;
+	cb_readMagn(LSM9DS1_OUT_Z_L_M, xsb, 2U);      magnetometer->oMagn_Z =  (float64_t)((int16_t)(xsb[1]<<8U | xsb[0]) - vBiasMagn[2]) * vSensMagn;
 	cb_control(KIMU_RELEASE);
 	return (KERR_IMU_NOERR);
 }
@@ -204,26 +209,26 @@ static	void	local_caliImu(void) {
 
 // Waiting for the FIFO full (32 samples)
 
-	kern_suspendProcess(100u);
+	kern_suspendProcess(100U);
 
 // Calibrate the accelerometer & the gyro
 
 	summAcce[0] = 0; summAcce[1] = 0; summAcce[2] = 0;
 	summGyro[0] = 0; summGyro[1] = 0; summGyro[2] = 0;
 	summMagn[0] = 0; summMagn[1] = 0; summMagn[2] = 0;
-	for (i = 0u; i < 32u; i++) {
+	for (i = 0U; i < 32U; i++) {
 
 // Read the values
 //      The accelerometer										// The gyroscope									// The magnetometer
 
-		cb_readAcceGyro(LSM9DS1_OUT_X_L_XL, xsbAcce, 2u);		cb_readAcceGyro(LSM9DS1_OUT_X_L_G, xsbGyro, 2u);	cb_readMagn(LSM9DS1_OUT_X_L_M, xsbMagn, 2u);
-		acce[0] = (int16_t)(xsbAcce[1]<<8u | xsbAcce[0]);		gyro[0] = (int16_t)(xsbGyro[1]<<8u | xsbGyro[0]);	magn[0] = (int16_t)(xsbMagn[1]<<8u | xsbMagn[0]);
+		cb_readAcceGyro(LSM9DS1_OUT_X_L_XL, xsbAcce, 2U);		cb_readAcceGyro(LSM9DS1_OUT_X_L_G, xsbGyro, 2U);	cb_readMagn(LSM9DS1_OUT_X_L_M, xsbMagn, 2U);
+		acce[0] = (int16_t)(xsbAcce[1]<<8U | xsbAcce[0]);		gyro[0] = (int16_t)(xsbGyro[1]<<8U | xsbGyro[0]);	magn[0] = (int16_t)(xsbMagn[1]<<8U | xsbMagn[0]);
 
-		cb_readAcceGyro(LSM9DS1_OUT_Y_L_XL, xsbAcce, 2u);		cb_readAcceGyro(LSM9DS1_OUT_Y_L_G, xsbGyro, 2u);	cb_readMagn(LSM9DS1_OUT_Y_L_M, xsbMagn, 2u);
-		acce[1] = (int16_t)(xsbAcce[1]<<8u | xsbAcce[0]);		gyro[1] = (int16_t)(xsbGyro[1]<<8u | xsbGyro[0]);	magn[1] = (int16_t)(xsbMagn[1]<<8u | xsbMagn[0]);
+		cb_readAcceGyro(LSM9DS1_OUT_Y_L_XL, xsbAcce, 2U);		cb_readAcceGyro(LSM9DS1_OUT_Y_L_G, xsbGyro, 2U);	cb_readMagn(LSM9DS1_OUT_Y_L_M, xsbMagn, 2U);
+		acce[1] = (int16_t)(xsbAcce[1]<<8U | xsbAcce[0]);		gyro[1] = (int16_t)(xsbGyro[1]<<8U | xsbGyro[0]);	magn[1] = (int16_t)(xsbMagn[1]<<8U | xsbMagn[0]);
 
-		cb_readAcceGyro(LSM9DS1_OUT_Z_L_XL, xsbAcce, 2u);		cb_readAcceGyro(LSM9DS1_OUT_Z_L_G, xsbGyro, 2u);	cb_readMagn(LSM9DS1_OUT_Z_L_M, xsbMagn, 2u);
-		acce[2] = (int16_t)(xsbAcce[1]<<8u | xsbAcce[0]) + v1G;	gyro[2] = (int16_t)(xsbGyro[1]<<8u | xsbGyro[0]);	magn[2] = (int16_t)(xsbMagn[1]<<8u | xsbMagn[0]);
+		cb_readAcceGyro(LSM9DS1_OUT_Z_L_XL, xsbAcce, 2U);		cb_readAcceGyro(LSM9DS1_OUT_Z_L_G, xsbGyro, 2U);	cb_readMagn(LSM9DS1_OUT_Z_L_M, xsbMagn, 2U);
+		acce[2] = (int16_t)(xsbAcce[1]<<8U | xsbAcce[0]) + v1G;	gyro[2] = (int16_t)(xsbGyro[1]<<8U | xsbGyro[0]);	magn[2] = (int16_t)(xsbMagn[1]<<8U | xsbMagn[0]);
 
 // Cumulate for the mean
 

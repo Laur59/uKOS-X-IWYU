@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		GD32VF103_gpio equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // GPIO address definitions
 // ------------------------
 
@@ -61,7 +63,7 @@ typedef struct {
 	volatile	uint32_t	LOCK;
 } GPIO_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	GPIOA	reinterpret_cast<GPIO_TypeDef *>(0x40010800u)
 #define	GPIOB	reinterpret_cast<GPIO_TypeDef *>(0x40010C00u)
 #define	GPIOC	reinterpret_cast<GPIO_TypeDef *>(0x40011000u)

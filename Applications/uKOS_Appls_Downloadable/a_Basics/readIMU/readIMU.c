@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Demo of a C application.
 ;			This application shows how to operate with the uKOS-X uKernel.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -71,18 +71,34 @@
  *
  */
 
-#include	"uKOS.h"
+#include	<stdio.h>
+
 #include	<fcntl.h>
-#include	<math.h>
+
+#include	"crt0.h"
+#include	"serial/serial.h"
+#include	"imu/imu.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"memo/memo.h"
+#include	"led/led.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"types.h"
 
 #define		DISP_COOLTERM_S				// Display on the CoolTerm
 										// Display on Sysquake
 
-#if (defined(Alastor_H743_S))
+#ifdef Alastor_H743_S
+#include	"urt1/urt1.h"
 #define		KCHANNEL	KURT1
 #endif
 
-#if (defined(Asmodee_H747_S))
+#ifdef Asmodee_H747_S
+#include	"cdc0/cdc0.h"
 #define		KCHANNEL	KCDC0
 #endif
 
@@ -110,20 +126,20 @@ MODULE(
 	aStart,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,								// Address of the clean code (clean the module)
 	" 1.0",								// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0									// Execution cores
 );
 
 enum {
-		KX_AXIS = 0u,
+		KX_AXIS = 0U,
 		KY_AXIS,
 		KZ_AXIS,
 		KNB_AXIS
 };
 
-#define	KDISPLAY_ACC		0u			// Display the acceleration
-#define	KDISPLAY_GYRO		1u			// Display the gyroscope
-#define	KDISPLAY_MAGNETO	2u			// Display the magetometer
+#define	KDISPLAY_ACC		0U			// Display the acceleration
+#define	KDISPLAY_GYRO		1U			// Display the gyroscope
+#define	KDISPLAY_MAGNETO	2U			// Display the magetometer
 
 
 // Prototypes
@@ -153,7 +169,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 	UNUSED(argument);
 
 	while (true) {
-		kern_suspendProcess(1000u);
+		kern_suspendProcess(1000U);
 		led_toggle(KLED_0);
 	}
 }
@@ -168,6 +184,8 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
+	UNUSED(argument);
+
 					float64_t			mAcce_X, mAcce_Y, mAcce_Z;
 					float64_t			mGyro_X, mGyro_Y, mGyro_Z;
 					float64_t			mMagn_X, mMagn_Y, mMagn_Z;
@@ -180,14 +198,12 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 											.oMagnMode = KIMU_MAX_8GAUSS
 										};
 
-	UNUSED(argument);
-
 // Open and reserve a comm channel for write operations
 
 	imu_configure(&configureIMU0);
 
 	while (true) {
-		kern_suspendProcess(10u);
+		kern_suspendProcess(10U);
 
 		imu_read(&accelerometer, &gyroscope, &magnetometer);
 
@@ -215,6 +231,9 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  *
  */
 int		main(int argc, const char *argv[]) {
+	UNUSED(argc);
+	UNUSED(argv);
+
 	proc_t	*process_0, *process_1;
 
 // ---------------------------------I-----------------------------------------I--------------I
@@ -223,9 +242,6 @@ int		main(int argc, const char *argv[]) {
 	STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2025";
 	STRG_LOC_CONST(aStrIden_1[]) = "Process_User_1";
 	STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2025";
-
-	UNUSED(argc);
-	UNUSED(argv);
 
 // Specifications for the processes
 
@@ -267,7 +283,7 @@ int		main(int argc, const char *argv[]) {
  * - Window filtering for the acceleration, the gyro and the magnetometer
  *
  */
-#define	KFILTER		16u
+#define	KFILTER		16U
 
 static	void	local_filter(float64_t ax,   float64_t ay,    float64_t az,
 							 float64_t gx,   float64_t gy,    float64_t gz,
@@ -276,7 +292,7 @@ static	void	local_filter(float64_t ax,   float64_t ay,    float64_t az,
 							 float64_t *mGx, float64_t *mGy,  float64_t *mGz,
 							 float64_t *mMx, float64_t *mMy,  float64_t *mMz) {
 
-	static	uint8_t		i, k = 0u;
+	static	uint8_t		i, k = 0U;
 	static	float64_t	aFilter[KNB_AXIS][KFILTER];
 	static	float64_t	gFilter[KNB_AXIS][KFILTER];
 	static	float64_t	mFilter[KNB_AXIS][KFILTER];
@@ -291,7 +307,7 @@ static	void	local_filter(float64_t ax,   float64_t ay,    float64_t az,
 	*mGx = *mGy = *mGz = 0.0;
 	*mMx = *mMy = *mMz = 0.0;
 
-	for (i = 0u; i < KFILTER; i++) {
+	for (i = 0U; i < KFILTER; i++) {
 		*mAx += aFilter[KX_AXIS][i]; *mAy += aFilter[KY_AXIS][i]; *mAz += aFilter[KZ_AXIS][i];
 		*mGx += gFilter[KX_AXIS][i]; *mGy += gFilter[KY_AXIS][i]; *mGz += gFilter[KZ_AXIS][i];
 		*mMx += mFilter[KX_AXIS][i]; *mMy += mFilter[KY_AXIS][i]; *mMz += mFilter[KZ_AXIS][i];
@@ -300,7 +316,7 @@ static	void	local_filter(float64_t ax,   float64_t ay,    float64_t az,
 	*mGx = *mGx / KFILTER; *mGy = *mGy / KFILTER; *mGz = *mGz / KFILTER;
 	*mMx = *mMx / KFILTER; *mMy = *mMy / KFILTER; *mMz = *mMz / KFILTER;
 
-	k++; if (k == KFILTER) { k = 0u; };
+	k++; if (k == KFILTER) { k = 0U; };
 }
 
 /*
@@ -330,7 +346,7 @@ static	void	local_display(int32_t fpPrint,
 	(void)dprintf(fpPrint, "%f\t%f\t%f\n", x, y, z);
 	#else
 
-	uint32_t	sample = 0u;
+	uint32_t	sample = 0U;
 	(void)dprintf(fpPrint, "%"PRIu32" %f %f %f\n", ++sample, x, y, z);
 	#endif
 }

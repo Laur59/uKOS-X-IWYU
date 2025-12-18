@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32U5Gx_tim8 equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // TIM8 address definitions
 // ------------------------
@@ -83,7 +85,7 @@ typedef struct {
 	volatile	uint32_t	DMAR;
 } TIM8_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	TIM8_NS	reinterpret_cast<TIM8_TypeDef *>(0x40013400u)
 #define	TIM8_S	reinterpret_cast<TIM8_TypeDef *>(0x50013400u)
 

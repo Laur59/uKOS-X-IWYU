@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		rv32_bumblebee equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -66,6 +66,6 @@
 #define	RVBB_CSR_SLEEPVALUE		0x811u					//
 #define	RVBB_CSR_TXEVT			0x812u					//
 
-#define	RVBB_MCAUSE_MINHV		(1u<<30)				//
+#define	RVBB_MCAUSE_MINHV		(1U<<30)				//
 #define	RVBB_MCAUSE_MPP(m)		((((m) & 0x3u)<<28))	//
-#define	RVBB_MCAUSE_MPIE		(1u<<27)				//
+#define	RVBB_MCAUSE_MPIE		(1U<<27)				//

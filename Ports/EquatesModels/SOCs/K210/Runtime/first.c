@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Vectors for the uKOS-X system (first).
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,8 +46,12 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"linker.h"
+#include	"core_reg.h"
+#include	"soc_reg.h"
+#include	"macros.h"
+#include	"macros_soc.h"
+#include	"core.h"
+#include	<stdint.h>
 
 extern	bool		vExce_isException[KNB_CORES];
 
@@ -61,7 +65,7 @@ static	void		local_exception(uint32_t core, uint64_t number, uint64_t message);
 
 void	__attribute__ ((naked)) Reset_Handler(uint32_t core) {
 
-	#if (!defined(__clang__))
+	#ifndef __clang__
 	UNUSED(core);
 	#endif
 
@@ -202,10 +206,10 @@ static	void	__attribute__ ((noinline)) local_exception(uint32_t core, uint64_t n
  *
  */
 void	first_handle_MachineExternal(uint32_t core, uint64_t parameter) {
+	UNUSED(parameter);
+
 	void		(*go)(uint32_t core, uint64_t number);
 	uint64_t	number;
-
-	UNUSED(parameter);
 
 	number = (uint64_t)plic->targets.target[core].claim_complete;
 

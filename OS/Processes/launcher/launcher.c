@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		launcher process; launch all the defined daemon & processes.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,21 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+#include	<stdlib.h>
+
+#include	"serial/serial.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core_stackFrame.h"
+#include	"macros_soc.h"
+// memo/memo.h is required for PROCESS_STACKMALLOC
+#include	"memo/memo.h"		// IWYU pragma: keep
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"system/system.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -68,7 +82,7 @@ static	void		local_process(const void *argument);
 
 // This process has to run on the following cores:
 
-#define	KEXECUTION_CORE		((1u<<BCORE_0) | (1u<<BCORE_1) | (1u<<BCORE_2) | (1u<<BCORE_3))
+#define	KEXECUTION_CORE		((1U<<BCORE_0) | (1U<<BCORE_1) | (1U<<BCORE_2) | (1U<<BCORE_3))
 
 MODULE(
 	Launcher,						// Module name (the first letter has to be upper case)
@@ -78,16 +92,16 @@ MODULE(
 	prgm,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	KEXECUTION_CORE					// Execution cores
 );
 
 // Process specific
 // ================
 
-#define	KID_IDLE			(((uint32_t)KID_FAM_DAEMONS<<24u)   | ((uint32_t)KNUM_IDLE<<8u)		| (uint32_t)'_')
-#define	KID_ALIVE			(((uint32_t)KID_FAM_PROCESSES<<24u) | ((uint32_t)KNUM_ALIVE<<8u)	| (uint32_t)'_')
-#define	KID_LAUNCHER		(((uint32_t)KID_FAM_PROCESSES<<24u) | ((uint32_t)KNUM_LAUNCHER<<8u) | (uint32_t)'_')
+#define	KID_IDLE			(((uint32_t)KID_FAM_DAEMONS<<24U)   | ((uint32_t)KNUM_IDLE<<8U)		| (uint32_t)'_')
+#define	KID_ALIVE			(((uint32_t)KID_FAM_PROCESSES<<24U) | ((uint32_t)KNUM_ALIVE<<8U)	| (uint32_t)'_')
+#define	KID_LAUNCHER		(((uint32_t)KID_FAM_PROCESSES<<24U) | ((uint32_t)KNUM_LAUNCHER<<8U) | (uint32_t)'_')
 
 // ---------------------------I-----------------------------------------I--------------I
 
@@ -99,10 +113,10 @@ STRG_LOC_CONST(aStrText[]) = "Process launcher: launch processes.       (c) EFr-
  *
  */
 static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
-	proc_t	*process;
-
 	UNUSED(argc);
 	UNUSED(argv);
+
+	proc_t	*process;
 
 	PROCESS_STACKMALLOC(
 		0,									// Index
@@ -135,8 +149,10 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
  *
  */
 static void __attribute__ ((noreturn)) local_process(const void *argument) {
-			uint16_t		index = 0u;
-			uint32_t		core, idModule, argc = 4u;
+	UNUSED(argument);
+
+			uint16_t		index = 0U;
+			uint32_t		core, idModule, argc = 4U;
 	const	uKOS_module_t	*module;
 
 	static	const	char_t			*vArgv_alive[4][4] = {
@@ -148,17 +164,15 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 										{ "alive", "50", "950", "3" }	// Core 3
 									};
 
-	UNUSED(argument);
-
 	core = GET_RUNNING_CORE;
 	LOG(KINFO_SYSTEM, "launcher: launching all the processes");
 
 // Looking for a module early initialisation
 
-	index = 0u;
+	index = 0U;
 	while (system_getModuleFamily((uint8_t)KID_FAM_ALL_FAMILIES, &idModule, &index, &module) == KERR_SYSTEM_NOERR) {
 		if (module->oInit != NULL) {
-			module->oInit(0u, NULL);
+			module->oInit(0U, NULL);
 		}
 		index++;
 	}
@@ -166,17 +180,17 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 
 // Install all the processes (special case for the ALIVE process)
 
-	index = 0u;
+	index = 0U;
 	while (system_getModuleFamily((uint8_t)KID_FAM_PROCESSES, &idModule, &index, &module) == KERR_SYSTEM_NOERR) {
 		if (!((idModule == (uint32_t)KID_ALIVE) || (idModule == (uint32_t)KID_LAUNCHER))) {
-			if (((1u<<core) & module->oExecutionCore) != 0u) {
-				module->oExecution(0u, NULL);
+			if (((1U<<core) & module->oExecutionCore) != 0U) {
+				module->oExecution(0U, NULL);
 			}
 		}
 		index++;
 	}
 	if (system_getModuleId((uint32_t)KID_ALIVE, &index, &module) == KERR_SYSTEM_NOERR) {
-		if (((1u<<core) & module->oExecutionCore) != 0) {
+		if (((1U<<core) & module->oExecutionCore) != 0) {
 			module->oExecution(argc, &vArgv_alive[core][0]);
 		}
 	}
@@ -185,11 +199,11 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 // Install all the deamons (except the idle)
 // Consider all the possible cores
 
-	index = 0u;
+	index = 0U;
 	while (system_getModuleFamily((uint8_t)KID_FAM_DAEMONS, &idModule, &index, &module) == KERR_SYSTEM_NOERR) {
 		if ((idModule != (uint32_t)KID_IDLE)) {
-			if (((1u<<core) & module->oExecutionCore) != 0) {
-				module->oExecution(0u, NULL);
+			if (((1U<<core) & module->oExecutionCore) != 0) {
+				module->oExecution(0U, NULL);
 			}
 		}
 		index++;

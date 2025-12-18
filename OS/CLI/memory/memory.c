@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Give the memory information.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,9 +46,19 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<inttypes.h>
+#include	<stdint.h>	// NOLINT(misc-include-cleaner): Explicit include for IWYU compliance
+#include	<stdio.h>
+
+#include	"kern/kern.h"
 #include	"linker.h"
+#include	"macros.h"
+#include	"macros_soc.h"
 #include	"memo/private/private_memo.h"
+#include	"modules.h"
+#include	"serial/serial.h"
+#include	"spin.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -57,7 +67,7 @@
 
 STRG_LOC_CONST(aStrApplication[]) =	"memory       Give the memory section information.      (c) EFr-2025";
 
-#if (defined(PRIVILEGED_USER_S))
+#ifdef PRIVILEGED_USER_S
 STRG_LOC_CONST(aStrHelp[])		  = "Give the memory information\n"
 									"===========================\n\n"
 
@@ -109,14 +119,16 @@ MODULE(
 	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,										// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
 // CLI tool specific
 // =================
 
+#if (KNB_CORES > 1)
 extern	spinlock_t		vMemo;
+#endif
 
 #if (KNB_CORES == 1)
 size_t	size_first		= (size_t)linker_sizeStackFirst_C0;
@@ -137,11 +149,11 @@ size_t	size_system_C1	= (size_t)linker_sizeStackSystem_C1;
  *
  */
 static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
-	uint32_t	usdMemory, nbBlocks;
-	intptr_t	length;
-
 	UNUSED(argc);
 	UNUSED(argv);
+
+	uint32_t	usdMemory, nbBlocks;
+	intptr_t	length;
 
 	(void)dprintf(KSYST, "Memory information.\n");
 
@@ -165,7 +177,7 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 
 	kern_criticalSection(KEXIT_CRITICAL);
 
-	#if (defined(PRIVILEGED_USER_S))
+	#ifdef PRIVILEGED_USER_S
 	uint32_t	usedPrgmCode, usedPrgmData_p, usedPrgmData_u;
 	float64_t	usedPrgmCodef, usedPrgmData_pf, usedPrgmData_uf;
 
@@ -220,7 +232,7 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 	#error	"*** The number of cores (KNB_CORES) exceed 4"
 	#endif
 
-	#if (defined(PRIVILEGED_USER_S))
+	#ifdef PRIVILEGED_USER_S
 	(void)dprintf(KSYST, "Section text:      addr = 0x%016"PRIXPTR", used = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_stTEXT,	  ((uintptr_t)linker_enTEXT   - (uintptr_t)linker_stTEXT));
 	(void)dprintf(KSYST, "Section rodata:    addr = 0x%016"PRIXPTR", used = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_stRODATA, ((uintptr_t)linker_enRODATA - (uintptr_t)linker_stRODATA));
 	(void)dprintf(KSYST, "Section data_p:    addr = 0x%016"PRIXPTR", used = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_stDATA_p, ((uintptr_t)linker_enDATA_p - (uintptr_t)linker_stDATA_p));

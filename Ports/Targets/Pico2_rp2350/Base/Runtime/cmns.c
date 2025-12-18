@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		Some common routines used in many modules.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,15 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stddef.h>
+
+#include	"clockTree.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"modules.h"
+#include	"serial/serial.h"
+#include	"soc_reg.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -69,7 +77,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -90,25 +98,25 @@ void	cmns_init(void) {
 // Reset of the devices
 
 	REG(RESETS)->RESET &= ~RESETS_RESET_UART0;
-	while ((REG(RESETS)->RESET_DONE & RESETS_RESET_UART0) != RESETS_RESET_UART0) { ; }
+	while ((REG(RESETS)->RESET_DONE & RESETS_RESET_UART0) != RESETS_RESET_UART0) { }
 
 	REG(RESETS)->RESET &= ~RESETS_RESET_UART1;
-	while ((REG(RESETS)->RESET_DONE & RESETS_RESET_UART1) != RESETS_RESET_UART1) { ; }
+	while ((REG(RESETS)->RESET_DONE & RESETS_RESET_UART1) != RESETS_RESET_UART1) { }
 
 // Disable the UARTx
 
-	REG(UART0)->UARTCR = 0u;
-	REG(UART1)->UARTCR = 0u;
+	REG(UART0)->UARTCR = 0U;
+	REG(UART1)->UARTCR = 0U;
 
 // Bauds:
 // Div = UARTCLK / (16 * BAUD) = IBRD + FBRD / 64
 // For 150 MHz et 460800 b/s: IBRD = 20, FBRD = 22 (≈460830 b/s)
 // Format 8N1
 
-	BAUDRATE(UART0, 150000000u, 460800u);
-	BAUDRATE(UART1, 150000000u, 460800u);
-	REG(UART0)->UARTLCR_H = (3u * UART_UARTLCR_H_WLEN_0);
-	REG(UART1)->UARTLCR_H = (3u * UART_UARTLCR_H_WLEN_0);
+	BAUDRATE(UART0, 150000000U, 460800U);
+	BAUDRATE(UART1, 150000000U, 460800U);
+	REG(UART0)->UARTLCR_H = (3U * UART_UARTLCR_H_WLEN_0);
+	REG(UART1)->UARTLCR_H = (3U * UART_UARTLCR_H_WLEN_0);
 
 // Enable the UARTx
 
@@ -143,7 +151,7 @@ void	cmns_send(serialManager_t serialManager, const char_t *ascii) {
 		default:
 		case KCORE_0: {
 			while (true) {
-				while ((REG(UART0)->UARTFR & UART_UARTFR_TXFF) != 0u) { ; }
+				while ((REG(UART0)->UARTFR & UART_UARTFR_TXFF) != 0U) { }
 
 				data = (uint8_t)*wkAscii;
 				wkAscii++;
@@ -161,7 +169,7 @@ void	cmns_send(serialManager_t serialManager, const char_t *ascii) {
 
 		case KCORE_1: {
 			while (true) {
-				while ((REG(UART1)->UARTFR & UART_UARTFR_TXFF) != 0u) { ; }
+				while ((REG(UART1)->UARTFR & UART_UARTFR_TXFF) != 0U) { }
 
 				data = (uint8_t)*wkAscii;
 				wkAscii++;
@@ -200,7 +208,7 @@ void	cmns_receive(serialManager_t serialManager, char_t *data) {
 
 		default:
 		case KCORE_0: {
-			while ((REG(UART0)->UARTFR & UART_UARTFR_RXFE) != 0u) { ; }
+			while ((REG(UART0)->UARTFR & UART_UARTFR_RXFE) != 0U) { }
 
 			dr = REG(UART0)->UARTDR;
 			*data = (uint8_t)dr;
@@ -210,7 +218,7 @@ void	cmns_receive(serialManager_t serialManager, char_t *data) {
 // Core 1
 
 		case KCORE_1: {
-			while ((REG(UART1)->UARTFR & UART_UARTFR_RXFE) != 0u) { ; }
+			while ((REG(UART1)->UARTFR & UART_UARTFR_RXFE) != 0U) { }
 
 			dr = REG(UART1)->UARTDR;
 			*data = (uint8_t)dr;
@@ -230,11 +238,11 @@ void	cmns_receive(serialManager_t serialManager, char_t *data) {
 void	cmns_wait(uint32_t us) {
 	uint32_t	wkUs = us, time;
 
-	#if (defined(CACHE_S))
-	wkUs = (wkUs / 7u) * (KFREQUENCY_CORE / 1000000u);
+	#ifdef CACHE_S
+	wkUs = (wkUs / 7U) * (KFREQUENCY_CORE / 1000000U);
 
 	#else
-	wkUs = (wkUs / 12u) * (KFREQUENCY_CORE / 1000000u);
+	wkUs = (wkUs / 12U) * (KFREQUENCY_CORE / 1000000U);
 	#endif
 
 	for (time = 0; time < wkUs; time++) { NOP; }

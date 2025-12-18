@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		machine manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,11 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
+#include	"kern/kern.h"
+#include	"types.h"
+
 /*!
  * \addtogroup Lib_generics
  */
@@ -65,7 +70,7 @@
 
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -130,7 +135,7 @@ extern	int32_t	machine_readFunctionName(const uintptr_t pc, const char_t **funct
  */
 extern	int32_t	machine_restart(void);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 

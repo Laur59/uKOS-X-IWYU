@@ -14,8 +14,8 @@
 ;			- DS14102 Rev 1, p. 27; Datasheet
 ;			- RM0456 Rev 5, p. 143; STM32U5 Series Arm®-based 32-bit MCUs
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \

@@ -5,16 +5,16 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Stack frame management macros.
 ;			This file conains the most sensitive macros
 ;			for the uKernel management
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -50,20 +50,29 @@
 
 #pragma	once
 
+#include	<stdlib.h>		// IWYU pragma: keep (for exit)
+
+#include	"crt0.h"		// IWYU pragma: keep (for exit_terminate)
+#include	"kern/kern.h"
+#include	"macros_soc.h"
+#include	"record/record.h"
+#include	"types.h"		// IWYU pragma: keep (for EXIT_OS_PANIC_STACK_UNDERFLOW)
+
 // For the stack sanity
 
-#if (!defined(KMAGICSTACK))
-#define KMAGICSTACK				(((uint32_t)'u'<<24u) | ((uint32_t)'K'<<16u) | ((uint32_t)'O'<<8u) | (uint32_t)'S')
+#ifndef KMAGICSTACK
+#define KMAGICSTACK				(((uint32_t)'u'<<24U) | ((uint32_t)'K'<<16U) | ((uint32_t)'O'<<8U) | (uint32_t)'S')
 #endif
 
-#if (!defined(BREAK_IFDEBUGGING))
+#ifndef BREAK_IFDEBUGGING
 #define	BREAK_IFDEBUGGING
 #endif
 
-#if (!defined(CHECK_STACK_SANITY))
+#ifndef CHECK_STACK_SANITY
+extern				proc_t	*vKern_runProc[KNB_CORES];
 #define CHECK_STACK_SANITY(core)																								\
-								if ((vKern_runProc[core]->oInternal.oState != 0u) && 											\
-									((vKern_runProc[core]->oInternal.oState & (1u<<BPROC_FIRST)) == 0u)) {						\
+								if ((vKern_runProc[core]->oInternal.oState != 0U) && 											\
+									((vKern_runProc[core]->oInternal.oState & (1U<<BPROC_FIRST)) == 0U)) {						\
 									if ((vKern_runProc[core]->oSpecification.oStackStart > vKern_stackProc[core]) ||			\
 										(vKern_runProc[core]->oSpecification.oStackStart[core] != KMAGICSTACK)) {			  	\
 										LOG(KFATAL_KERNEL, "kern: stack underflow");										  	\
@@ -75,40 +84,40 @@
 
 // Stack alignment (see processes.h)
 
-#if (!defined(KSTACK_ALIGNMENT))
-#define	KSTACK_ALIGNMENT		(16u)
-#define	KSTACK_ALIGNMENT_MASK	(~(KSTACK_ALIGNMENT - 1u))
+#ifndef KSTACK_ALIGNMENT
+#define	KSTACK_ALIGNMENT		(16U)
+#define	KSTACK_ALIGNMENT_MASK	(~(KSTACK_ALIGNMENT - 1U))
 #define	KSTACK_ALIGNMENT_MEMO	(KMEMO_ALIGN_16)
 #endif
 
 // Critical stack size when < (35+10) 32-bit words (stack frame + reserve)
 
-#if (!defined(KKERN_CRITICAL_SZ_STACK))
-#define	KKERN_CRITICAL_SZ_STACK		(35u + 10u)
+#ifndef KKERN_CRITICAL_SZ_STACK
+#define	KKERN_CRITICAL_SZ_STACK		(35U + 10U)
 #endif
 
 // Stack sizes (in machine words of 32-bit)
 
-#if (!defined(KKERN_SZ_STACK_SS))
-#define	KKERN_SZ_STACK_SS			200u
+#ifndef KKERN_SZ_STACK_SS
+#define	KKERN_SZ_STACK_SS			200U
 #endif
-#if (!defined(KKERN_SZ_STACK_MM))
-#define	KKERN_SZ_STACK_MM			400u
+#ifndef KKERN_SZ_STACK_MM
+#define	KKERN_SZ_STACK_MM			400U
 #endif
-#if (!defined(KKERN_SZ_STACK_LL))
-#define	KKERN_SZ_STACK_LL			600u
+#ifndef KKERN_SZ_STACK_LL
+#define	KKERN_SZ_STACK_LL			600U
 #endif
-#if (!defined(KKERN_SZ_STACK_XL))
-#define	KKERN_SZ_STACK_XL			1000u
+#ifndef KKERN_SZ_STACK_XL
+#define	KKERN_SZ_STACK_XL			1000U
 #endif
-#if (!defined(KKERN_SZ_STACK_MIN))
-#define	KKERN_SZ_STACK_MIN			300u
+#ifndef KKERN_SZ_STACK_MIN
+#define	KKERN_SZ_STACK_MIN			300U
 #endif
-#if (!defined(KKERN_SZ_STACK_XLIB))
-#define	KKERN_SZ_STACK_XLIB			(400u + 1000u)
+#ifndef KKERN_SZ_STACK_XLIB
+#define	KKERN_SZ_STACK_XLIB			(400U + 1000U)
 #endif
-#if (!defined(KKERN_SZ_STACK_MPY))
-#define	KKERN_SZ_STACK_MPY			(400u + 1000u)
+#ifndef KKERN_SZ_STACK_MPY
+#define	KKERN_SZ_STACK_MPY			(400U + 1000U)
 #endif
 
 // Stack frame macros
@@ -156,7 +165,7 @@
 //	+4		mcause			=
 //	+0		mepc			= process address
 
-#if (!defined(KERN_PREPARE_FRAME))
+#ifndef KERN_PREPARE_FRAME
 #define KERN_PREPARE_FRAME(stack, code, core, argument, priority)										  						\
 								*(--stack) = KMAGICSTACK;							/* "uKOS"			*/						\
 								*(--stack) = (uintptr_t)exit_terminate;				/* x1 ra			*/						\
@@ -194,7 +203,7 @@
 								*(--stack) = MSTATUS_MPP | MSTATUS_MPIE;			/* mstatus			*/						\
 								*(--stack) = KPROCESS_INIT_MCAUSE;					/* mcause			*/						\
 								*(--stack) = (uintptr_t)code;						/* mepc				*/						\
-								UNUSED(core)
+								(void)(core)
 #endif
 
 // Recover the message
@@ -241,7 +250,7 @@
 // a0 -> *stack
 // a1 -> message
 
-#if (!defined(KERN_RECOVER_MESSAGE))
+#ifndef KERN_RECOVER_MESSAGE
 #define	KERN_RECOVER_MESSAGE	__asm volatile ("																			 \n \
 								lw			t0,35*4(sp)																	 	 \n \
 								add			a1,x0,t0"																			\
@@ -290,7 +299,7 @@
 //
 // a0 -> *stack
 
-#if (!defined(KERN_SAVE_FRAME))
+#ifndef KERN_SAVE_FRAME
 #define	KERN_SAVE_FRAME			__asm volatile ("																			 \n \
 								addi		sp,sp,-(35*4)																	 \n \
 								sw			ra,34*4(sp)																		 \n \
@@ -379,7 +388,7 @@
 //
 // a0 -> *stack
 
-#if (!defined(KERN_SAVE_FRAME_NO_VECT))
+#ifndef KERN_SAVE_FRAME_NO_VECT
 #define	KERN_SAVE_FRAME_NO_VECT	__asm volatile ("																			 \n \
 								addi		sp,sp,-(18*4)																	 \n \
 								sw			gp,16*4(sp)																		 \n \
@@ -447,7 +456,7 @@
 //
 // a0 -> *stack
 
-#if (!defined(KERN_NEW_FRAME))
+#ifndef KERN_NEW_FRAME
 #define	KERN_NEW_FRAME			__asm volatile ("																			 \n \
 								add			sp,x0,a0																		 \n \
 								lw			t0,0*4(sp)																		 \n \
@@ -492,7 +501,7 @@
 
 // Return to a new context
 
-#if (!defined(KERN_RETURN))
+#ifndef KERN_RETURN
 #define	KERN_RETURN				__asm volatile ("																			 \n \
 								mret"																							\
 								)
@@ -500,7 +509,7 @@
 
 // Messages: _I (immediate) _M (memory)
 
-#if (!defined(GOTO_KERN_I))
+#ifndef GOTO_KERN_I
 #define	GOTO_KERN_I(msg)		__asm	volatile ("																			 \n \
 								lui			t0,%%hi(%0)																		 \n \
 								li			t0,%%lo(%0)																		 \n \
@@ -517,7 +526,7 @@
 								)
 #endif
 
-#if (!defined(GOTO_KERN_M))
+#ifndef GOTO_KERN_M
 #define	GOTO_KERN_M(msg)		__asm volatile ("																			 \n \
 								add			t0,x0,%0																		 \n \
 								addi		sp,sp,-8																		 \n \
@@ -536,7 +545,7 @@
 // Interruption macros (IN / OUT)
 // Position 0*4 is an empty space ()
 
-#if (!defined(INTERRUPTION_IN))
+#ifndef INTERRUPTION_IN
 #define	INTERRUPTION_IN			__asm volatile ("																			 \n \
 								addi		sp,sp,-(17*4)																	 \n \
 								sw			ra,16*4(sp)																		 \n \
@@ -559,7 +568,7 @@
 								)
 #endif
 
-#if (!defined(INTERRUPTION_OUT))
+#ifndef INTERRUPTION_OUT
 #define	INTERRUPTION_OUT		__asm volatile ("																			 \n \
 								lw			ra,16*4(sp)																		 \n \
 								lw			t0,15*4(sp)																		 \n \
@@ -631,7 +640,7 @@
 // a1 -> *stackAfter having saved the frame
 
 enum {
-		sp = 0u,										// sp + 0
+		sp = 0U,										// sp + 0
 		epcm, causem, statusm, 							// sp + 1..3
 		Reserve,										// sp + 4
 		s11, s10, s9, s8, s7, s6, s5, s4, s3, s2, s1,	// sp + 5..15
@@ -649,7 +658,7 @@ enum {
 // the value of the stack before and after the stacking
 // to comply with the ABI of local_processException(uintptr_t *stackBefore, uintptr_t *stackAfter)
 
-#if (!defined(CORE_DUMP_SAVE_STACK_FRAME))
+#ifndef CORE_DUMP_SAVE_STACK_FRAME
 #define CORE_DUMP_SAVE_STACK_FRAME																								\
 								__asm volatile ("																			 \n \
 								addi		sp,sp,-(19*4)																	 \n \

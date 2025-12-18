@@ -9,8 +9,8 @@
 ; Project:	uKOS-X
 ; Goal:		Cortex M33 cache management.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -49,9 +49,9 @@
 static	inline	void local_init(DCACHE_TypeDef *cache);
 static	inline	void local_commandByAddress(DCACHE_TypeDef *cache, uint32_t command, void *address, int32_t size);
 
-#define	DCACHE_COMMAND_CLEAN				(1u * DCACHE_CR_CACHECMD_0)
-#define	DCACHE_COMMAND_INVALIDATE			(2u * DCACHE_CR_CACHECMD_0)
-#define	DCACHE_COMMAND_CLEAN_INVALIDATE		(3u * DCACHE_CR_CACHECMD_0)
+#define	DCACHE_COMMAND_CLEAN				(1U * DCACHE_CR_CACHECMD_0)
+#define	DCACHE_COMMAND_INVALIDATE			(2U * DCACHE_CR_CACHECMD_0)
+#define	DCACHE_COMMAND_CLEAN_INVALIDATE		(3U * DCACHE_CR_CACHECMD_0)
 
 /*
  * \brief cache_D_Enable
@@ -62,7 +62,7 @@ static	inline	void local_commandByAddress(DCACHE_TypeDef *cache, uint32_t comman
 static	inline	void	cache_D_Enable(uint8_t unit) {
 	DCACHE_TypeDef	*cache = DCACHE1_NS;
 
-	cache = (unit == 0u) ? (DCACHE1_NS) : (DCACHE2_NS);
+	cache = (unit == 0U) ? (DCACHE1_NS) : (DCACHE2_NS);
 
 	DATA_SYNC_BARRIER;
 	INST_SYNC_BARRIER;
@@ -71,7 +71,7 @@ static	inline	void	cache_D_Enable(uint8_t unit) {
 
 // Check no ongoing operation
 
-	while ((cache->SR & (DCACHE_SR_BUSYF | DCACHE_SR_BUSYCMDF)) != 0u) { ; }
+	while ((cache->SR & (DCACHE_SR_BUSYF | DCACHE_SR_BUSYCMDF)) != 0U) { }
 
 // Enable D-Cache
 
@@ -90,7 +90,7 @@ static	inline	void	cache_D_Enable(uint8_t unit) {
 static	inline	void	cache_D_Disable(uint8_t unit) {
 	DCACHE_TypeDef	*cache = DCACHE1_NS;
 
-	cache = (unit == 0u) ? (DCACHE1_NS) : (DCACHE2_NS);
+	cache = (unit == 0U) ? (DCACHE1_NS) : (DCACHE2_NS);
 
 	DATA_SYNC_BARRIER;
 	INST_SYNC_BARRIER;
@@ -103,7 +103,7 @@ static	inline	void	cache_D_Disable(uint8_t unit) {
 
 // Check no ongoing operation
 
-	while ((cache->SR & (DCACHE_SR_BUSYF | DCACHE_SR_BUSYCMDF)) != 0u) { ; }
+	while ((cache->SR & (DCACHE_SR_BUSYF | DCACHE_SR_BUSYCMDF)) != 0U) { }
 
 	DATA_SYNC_BARRIER;
 	INST_SYNC_BARRIER;
@@ -118,7 +118,7 @@ static	inline	void	cache_D_Disable(uint8_t unit) {
 static	inline	void	cache_D_Invalidate(uint8_t unit) {
 	DCACHE_TypeDef	*cache = DCACHE1_NS;
 
-	cache = (unit == 0u) ? (DCACHE1_NS) : (DCACHE2_NS);
+	cache = (unit == 0U) ? (DCACHE1_NS) : (DCACHE2_NS);
 
 	DATA_SYNC_BARRIER;
 	INST_SYNC_BARRIER;
@@ -127,7 +127,7 @@ static	inline	void	cache_D_Invalidate(uint8_t unit) {
 
 // Check no ongoing operation
 
-	while ((cache->SR & (DCACHE_SR_BUSYF | DCACHE_SR_BUSYCMDF)) != 0u) { ; }
+	while ((cache->SR & (DCACHE_SR_BUSYF | DCACHE_SR_BUSYCMDF)) != 0U) { }
 
 // Make sure flags are reset
 // Set no operation on address range
@@ -139,7 +139,7 @@ static	inline	void	cache_D_Invalidate(uint8_t unit) {
 
 // Wait for end of cache invalidation
 
-	while ((cache->SR & DCACHE_SR_BUSYF) != 0u) { ; }
+	while ((cache->SR & DCACHE_SR_BUSYF) != 0U) { }
 
 	DATA_SYNC_BARRIER;
 	INST_SYNC_BARRIER;
@@ -154,7 +154,7 @@ static	inline	void	cache_D_Invalidate(uint8_t unit) {
 static	inline	void	cache_D_Invalidate_Add(uint8_t unit, void *address, int32_t size) {
 	DCACHE_TypeDef	*cache = DCACHE1_NS;
 
-	cache = (unit == 0u) ? (DCACHE1_NS) : (DCACHE2_NS);
+	cache = (unit == 0U) ? (DCACHE1_NS) : (DCACHE2_NS);
 
 	DATA_SYNC_BARRIER;
 	INST_SYNC_BARRIER;
@@ -175,7 +175,7 @@ static	inline	void	cache_D_Invalidate_Add(uint8_t unit, void *address, int32_t s
 static	inline	void	cache_D_Clean_Add(uint8_t unit, void *address, int32_t size) {
 	DCACHE_TypeDef	*cache = DCACHE1_NS;
 
-	cache = (unit == 0u) ? (DCACHE1_NS) : (DCACHE2_NS);
+	cache = (unit == 0U) ? (DCACHE1_NS) : (DCACHE2_NS);
 
 	DATA_SYNC_BARRIER;
 	INST_SYNC_BARRIER;
@@ -225,7 +225,7 @@ static	inline	void	cache_I_Disable(void) {
 
 // Waiting for instruction cache being disabled
 
-	while ((ICACHE_NS->CR & ICACHE_CR_EN) != 0u) { ; }
+	while ((ICACHE_NS->CR & ICACHE_CR_EN) != 0U) { }
 
 	DATA_SYNC_BARRIER;
 	INST_SYNC_BARRIER;
@@ -244,7 +244,7 @@ static	inline	void	cache_I_Invalidate(void) {
 
 // Check no ongoing operation
 
-	while ((ICACHE_NS->SR & ICACHE_SR_BUSYF) != 0u) { ; }
+	while ((ICACHE_NS->SR & ICACHE_SR_BUSYF) != 0U) { }
 
 // Make sure BSYENDF is reset before to start cache invalidation
 // Launch cache invalidation
@@ -254,8 +254,8 @@ static	inline	void	cache_I_Invalidate(void) {
 
 // Waiting for the end of invalidation
 
-	if ((ICACHE_NS->SR & ICACHE_SR_BUSYF) != 0u) {
-		while ((ICACHE_NS->SR & ICACHE_SR_BSYENDF) == 0u) { ; }
+	if ((ICACHE_NS->SR & ICACHE_SR_BUSYF) != 0U) {
+		while ((ICACHE_NS->SR & ICACHE_SR_BSYENDF) == 0U) { }
 	}
 
 // Clear BSYENDF
@@ -275,7 +275,7 @@ static	inline	void	cache_I_Invalidate(void) {
  */
 static	inline	void local_init(DCACHE_TypeDef *cache) {
 
-	if ((cache->CR & DCACHE_CR_EN) != 0u) {
+	if ((cache->CR & DCACHE_CR_EN) != 0U) {
 		return;
 	}
 
@@ -292,7 +292,7 @@ static	inline	void local_commandByAddress(DCACHE_TypeDef *cache, uint32_t comman
 
 // Check no ongoing operation
 
-	while ((cache->SR & (DCACHE_SR_BUSYF | DCACHE_SR_BUSYCMDF)) != 0u) { ; }
+	while ((cache->SR & (DCACHE_SR_BUSYF | DCACHE_SR_BUSYCMDF)) != 0U) { }
 
 // Make sure flags are reset
 // Fill area start address
@@ -301,7 +301,7 @@ static	inline	void local_commandByAddress(DCACHE_TypeDef *cache, uint32_t comman
 
 	cache->FCR		 |= (DCACHE_FCR_CBSYENDF | DCACHE_FCR_CCMDENDF);
 	cache->CMDRSADDRR = (uint32_t)address;
-	cache->CMDREADDRR = (uint32_t)((uint32_t)address + (uint32_t)size - 1u);
+	cache->CMDREADDRR = (uint32_t)((uint32_t)address + (uint32_t)size - 1U);
 	cache->CR		 &= ~DCACHE_CR_CACHECMD;
 	cache->CR		 |= command;
 
@@ -311,5 +311,5 @@ static	inline	void local_commandByAddress(DCACHE_TypeDef *cache, uint32_t comman
 
 // Wait for end of cache command
 
-	while ((cache->SR & DCACHE_SR_CMDENDF) == 0u) { ; }
+	while ((cache->SR & DCACHE_SR_CMDENDF) == 0U) { }
 }

@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		lib_peripherals system call interface module.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -92,63 +92,59 @@
  * @{
  */
 
-// IWYU pragma: begin_exports
-
-#if (defined(CONFIG_MAN_SPI_S))
+#ifdef CONFIG_MAN_SPI_S
 #include	"spi/spi.h"
 #endif
-#if (defined(CONFIG_MAN_SPI0_S))
+#ifdef CONFIG_MAN_SPI0_S
 #include	"spi0/spi0.h"
 #endif
-#if (defined(CONFIG_MAN_SPI1_S))
+#ifdef CONFIG_MAN_SPI1_S
 #include	"spi1/spi1.h"
 #endif
-#if (defined(CONFIG_MAN_SPI2_S))
+#ifdef CONFIG_MAN_SPI2_S
 #include	"spi2/spi2.h"
 #endif
-#if (defined(CONFIG_MAN_SPI3_S))
+#ifdef CONFIG_MAN_SPI3_S
 #include	"spi3/spi3.h"
 #endif
-#if (defined(CONFIG_MAN_I2C_S))
+#ifdef CONFIG_MAN_I2C_S
 #include	"i2c/i2c.h"
 #endif
-#if (defined(CONFIG_MAN_I2C0_S))
+#ifdef CONFIG_MAN_I2C0_S
 #include	"i2c0/i2c0.h"
 #endif
-#if (defined(CONFIG_MAN_I2C1_S))
+#ifdef CONFIG_MAN_I2C1_S
 #include	"i2c1/i2c1.h"
 #endif
-#if (defined(CONFIG_MAN_I2C2_S))
+#ifdef CONFIG_MAN_I2C2_S
 #include	"i2c2/i2c2.h"
 #endif
-#if (defined(CONFIG_MAN_I2C3_S))
+#ifdef CONFIG_MAN_I2C3_S
 #include	"i2c3/i2c3.h"
 #endif
-#if (defined(CONFIG_MAN_ADC_S))
+#ifdef CONFIG_MAN_ADC_S
 #include	"adc/adc.h"
 #endif
-#if (defined(CONFIG_MAN_BATTERY_S))
+#ifdef CONFIG_MAN_BATTERY_S
 #include	"battery/battery.h"
 #endif
-#if (defined(CONFIG_MAN_IMAGER_S))
+#ifdef CONFIG_MAN_IMAGER_S
 #include	"imager/imager.h"
 #endif
-#if (defined(CONFIG_MAN_IMU_S))
+#ifdef CONFIG_MAN_IMU_S
 #include	"imu/imu.h"
 #endif
-#if (defined(CONFIG_MAN_TEMPERATURE_S))
+#ifdef CONFIG_MAN_TEMPERATURE_S
 #include	"temperature/temperature.h"
 #endif
-#if (defined(CONFIG_MAN_WATCHDOG_S))
+#ifdef CONFIG_MAN_WATCHDOG_S
 #include	"watchdog/watchdog.h"
 #endif
-#if (defined(CONFIG_MAN_LED_S))
+#ifdef CONFIG_MAN_LED_S
 #include	"led/led.h"
 #endif
-#if (defined(CONFIG_MAN_SWITCH_S))
+#ifdef CONFIG_MAN_SWITCH_S
 #include	"switch/switch.h"
 #endif
-
-// IWYU pragma: end_exports
 
 /**!@}*/

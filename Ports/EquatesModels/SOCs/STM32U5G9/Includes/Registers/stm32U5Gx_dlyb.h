@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32U5Gx_dlyb equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // DLYB address definitions
 // ------------------------
 
@@ -56,7 +58,7 @@ typedef struct {
 	volatile	uint32_t	CFGR;
 } DLYB_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	DLYBOS1_NS	reinterpret_cast<DLYB_TypeDef *>(0x420CF000u)
 #define	DLYBOS1_S	reinterpret_cast<DLYB_TypeDef *>(0x520CF000u)
 #define	DLYBOS2_NS	reinterpret_cast<DLYB_TypeDef *>(0x420CF400u)

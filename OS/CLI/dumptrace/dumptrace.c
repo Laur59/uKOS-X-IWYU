@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Display the trace fifo captured with record_trace().
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,8 +46,22 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<inttypes.h>
+#include	<stdint.h>	// NOLINT(misc-include-cleaner): Explicit include for IWYU compliance
+#include	<stdio.h>
+#include	<stdlib.h>
+#include	<string.h>
+
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"memo/memo.h"
+#include	"modules.h"
 #include	"record/private/private_record.h"
+#include	"record/record.h"
+#include	"serial/serial.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -78,7 +92,7 @@ MODULE(
 	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,										// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
@@ -109,19 +123,19 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 // dumptrace n
 
 	switch (argc) {
-		case 1u: {
-			core = 0u;
+		case 1U: {
+			core = 0U;
 			break;
 		}
-		case 2u: {
-			core = (uint32_t)strtol(argv[1], &dummy, 10u);
+		case 2U: {
+			core = (uint32_t)strtol(argv[1], &dummy, 10U);
 			if (core >= KNB_CORES) {
-				core = 0u;
+				core = 0U;
 			}
 			break;
 		}
 		default: {
-			core = 0u;
+			core = 0U;
 			break;
 		}
 	}
@@ -158,7 +172,7 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 		local_compose(identifier, &idSpacer);
 		(void)dprintf(KSYST, "%12lld-us   0x%016"PRIXPTR"   %s%s  %s\n", rTraceFifo->oTimeStamp, rTraceFifo->oParameter, identifier, idSpacer, rTraceFifo->oMessage);
 
-		rTraceFifo = (rTraceFifo == &traceFifo[KRECORD_SZ_TRACE_FIFO]) ? (traceFifo) : (rTraceFifo + 1u);
+		rTraceFifo = (rTraceFifo == &traceFifo[KRECORD_SZ_TRACE_FIFO]) ? (traceFifo) : (rTraceFifo + 1U);
 	}
 	(void)dprintf(KSYST, "\n");
 	memo_delayedFree(traceFifo);
@@ -192,5 +206,5 @@ static	void	local_compose(const char_t *identifier, const char_t **idSpacer) {
 	static	const	char_t	aSpacer[] = "                                 ";
 
 	len = strlen(identifier);
-	*idSpacer = (len <= (sizeof(aSpacer) - 1u)) ? (&aSpacer[len]) : (&aSpacer[0]);
+	*idSpacer = (len <= (sizeof(aSpacer) - 1U)) ? (&aSpacer[len]) : (&aSpacer[0]);
 }

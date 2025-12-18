@@ -1,6 +1,6 @@
 # Cppcheck for uKOS-X (v.1.0)
 
-(c) 2025-20xx, Laurent von Allmen
+© 2025-2026, Laurent von Allmen
 
 ## Environment
 
@@ -12,7 +12,7 @@ module Pygments.
 Recommendation: install the following virtual environment.
 
 ```bash
-cd ${PATH_UKOS_X_PACKAGE}/Third_Parties/Cppcheck
+cd Third_Parties/Cppcheck
 python3 -m venv Cppcheck-env
 source Cppcheck-env/bin/activate
 pip install Pygments
@@ -23,6 +23,8 @@ deactivate
 
 ```bash
 # Enter in the Variant_Test of the Discovery_U5G9 target
+cd Ports/Targets/Discovery_U5G9/Variant_Test
+
 cd ${PATH_UKOS_X_PACKAGE}/Ports/Targets/Discovery_U5G9/Variant_Test
 
 # Open source version

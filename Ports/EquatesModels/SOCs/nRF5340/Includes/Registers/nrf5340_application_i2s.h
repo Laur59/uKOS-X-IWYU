@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		nrf5340_application_i2s equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // I2S address definitions
 // -----------------------
@@ -102,7 +104,7 @@ typedef struct {
 	volatile	uint32_t	PSEL_SDOUT;
 } I2S_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	I2S0_NS	reinterpret_cast<I2S_TypeDef *>(0x40028000u)
 #define	I2S0_S	reinterpret_cast<I2S_TypeDef *>(0x50028000u)
 

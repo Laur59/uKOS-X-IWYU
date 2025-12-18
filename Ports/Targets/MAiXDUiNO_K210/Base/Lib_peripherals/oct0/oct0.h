@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Octo SPI manager (for lcd).
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -63,12 +63,16 @@
  * @{
  */
 
-#define	KOCT0_NUM	(((uint32_t)'_'<<8) + (uint32_t)'0')
-#define	KOCT0MAN	(KOCT0_NUM<<8u)
+#include	<stdint.h>
 
-#define	KFILL		0u													// Fill without auto-incrementation
-#define	KXFER8		1u													// Xfer 8-bits with auto-incrementation
-#define	KXFER16		2u													// Xfer 16-bits with auto-incrementation
+#include	"modules.h"
+
+#define	KOCT0_NUM	(((uint32_t)'_'<<8) + (uint32_t)'0')
+#define	KOCT0MAN	(KOCT0_NUM<<8U)
+
+#define	KFILL		0U													// Fill without auto-incrementation
+#define	KXFER8		1U													// Xfer 8-bits with auto-incrementation
+#define	KXFER16		2U													// Xfer 16-bits with auto-incrementation
 
 // Configuration structure
 // -----------------------
@@ -77,26 +81,26 @@ typedef	struct	cnfOctx		cnfOctx_t;
 
 struct cnfOctx {
 			uint8_t		oMode;											// Mode
-			#define		KDUAL			0u								// Dual spi
-			#define		KQUAD			1u								// Quad spi
-			#define		KOCTAL			2u								// Octo spi
+			#define		KDUAL			0U								// Dual spi
+			#define		KQUAD			1U								// Quad spi
+			#define		KOCTAL			2U								// Octo spi
 
 			uint8_t		oNbBits;										// Number of bits
 
 			uint8_t		oXfer;											// Xfer
-			#define		K8BITSAINC		0u								// 8-bits with auto-incrementation
-			#define		K16BITSAINC		1u								// 16-bits with auto-incrementation
-			#define		K16BITSFILL		2u								// 16-bits without auto-incrementation
+			#define		K8BITSAINC		0U								// 8-bits with auto-incrementation
+			#define		K16BITSAINC		1U								// 16-bits with auto-incrementation
+			#define		K16BITSFILL		2U								// 16-bits without auto-incrementation
 
 			uint8_t		oDevider;										// Clock divider
-			#define		KCLKDIV2		0u								// Fclk / 2
-			#define		KCLKDIV4		1u								// Fclk / 4
-			#define		KCLKDIV8		2u								// Fclk / 8
-			#define		KCLKDIV16		3u								// Fclk / 16
-			#define		KCLKDIV32		4u								// Fclk / 32
-			#define		KCLKDIV64		5u								// Fclk / 64
-			#define		KCLKDIV128		6u								// Fclk / 128
-			#define		KCLKDIV256		7u								// Fclk / 256
+			#define		KCLKDIV2		0U								// Fclk / 2
+			#define		KCLKDIV4		1U								// Fclk / 4
+			#define		KCLKDIV8		2U								// Fclk / 8
+			#define		KCLKDIV16		3U								// Fclk / 16
+			#define		KCLKDIV32		4U								// Fclk / 32
+			#define		KCLKDIV64		5U								// Fclk / 64
+			#define		KCLKDIV128		6U								// Fclk / 128
+			#define		KCLKDIV256		7U								// Fclk / 256
 };
 
 /*!
@@ -164,7 +168,7 @@ extern	int32_t	oct0_configure(const cnfOctx_t *configure);
  */
 extern	int32_t	oct0_write(uint32_t chipSelect, const void *buffer, uint32_t szBuffer, uint32_t xferMode);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 
@@ -172,11 +176,11 @@ extern	int32_t	oct0_write(uint32_t chipSelect, const void *buffer, uint32_t szBu
 // -------------------
 
 //					Negative				 Family Lib Id							Lib Id xx (error)
-#define	KOCT0ERR	((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<24u) | KOCT0MAN)
+#define	KOCT0ERR	((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<24U) | KOCT0MAN)
 
 enum : int32_t {
 	KERR_OCT0_NOERR = 0,							// No error
-	KERR_OCT0_SYCNA = (int32_t)(KOCT0ERR + 1u),		// System call not available
+	KERR_OCT0_SYCNA = (int32_t)(KOCT0ERR + 1U),		// System call not available
 	KERR_OCT0_GEERR									// General error
 };
 

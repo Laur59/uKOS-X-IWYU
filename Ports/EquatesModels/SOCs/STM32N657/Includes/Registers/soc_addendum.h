@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		addendum equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // tim1 additional definitions
 // ---------------------------
@@ -133,7 +135,7 @@ typedef struct {
 	volatile	uint32_t	USBPHYC_TRIM2CR;
 } USB_HS_PHYC_GlobalTypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	USB1_HS_PHYC_NS	reinterpret_cast<USB_HS_PHYC_GlobalTypeDef *>(0x4803FC00u)
 #define	USB1_HS_PHYC_S	reinterpret_cast<USB_HS_PHYC_GlobalTypeDef *>(0x5803FC00u)
 
@@ -187,26 +189,26 @@ typedef struct {
 
 // GPIO for AFR[x] configuration
 
-#define	A00							0u
-#define	A01							1u
-#define	A02							2u
-#define	A03							3u
-#define	A04							4u
-#define	A05							5u
-#define	A06							6u
-#define	A07							7u
-#define	A08							8u
-#define	A09							9u
-#define	A10							10u
-#define	A11							11u
-#define	A12							12u
-#define	A13							13u
-#define	A14							14u
-#define	A15							15u
+#define	A00							0U
+#define	A01							1U
+#define	A02							2U
+#define	A03							3U
+#define	A04							4U
+#define	A05							5U
+#define	A06							6U
+#define	A07							7U
+#define	A08							8U
+#define	A09							9U
+#define	A10							10U
+#define	A11							11U
+#define	A12							12U
+#define	A13							13U
+#define	A14							14U
+#define	A15							15U
 
 // GPIO configure macro
 
-#if (defined(SECURE_S))
+#ifdef SECURE_S
 #define	CNFGPIO(port, \
 				a15, a14, a13, a12, a11, a10, a9, a8, a7, a6, a5, a4, a3, a2, a1, a0, \
 				b15, b14, b13, b12, b11, b10, b9, b8, b7, b6, b5, b4, b3, b2, b1, b0, \

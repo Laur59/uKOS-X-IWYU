@@ -9,8 +9,8 @@
 ; Project:	uKOS-X
 ; Goal:		Model for controlling the "flash" protection.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -63,25 +63,25 @@ void	model_flash_protect(uint8_t level) {
 // Set the selected level 0, 1 or 2
 
 	optcr = FLASH->OPTCR;
-	optcr &= (uint32_t)~(0xFFu<<8u);
+	optcr &= (uint32_t)~(0xFFu<<8U);
 
 	switch (level) {
-		case 0x00u: { optcr |= (0x55u<<8u); break; }
-		case 0x01u: { optcr |= (0xAAu<<8u); break; }
-		case 0x02u: { optcr |= (0xCCu<<8u); break; }
-		default:    { optcr |= (0x55u<<8u); break; }
+		case 0x00u: { optcr |= (0x55u<<8U); break; }
+		case 0x01u: { optcr |= (0xAAu<<8U); break; }
+		case 0x02u: { optcr |= (0xCCu<<8U); break; }
+		default:    { optcr |= (0x55u<<8U); break; }
 	}
 	FLASH->OPTCR = optcr;
 
 // Validate the choice
 
-	kern_suspendProcess(1u);
+	kern_suspendProcess(1U);
 	optcr = FLASH->OPTCR;
 	optcr &= (uint32_t)~(FLASH_OPTCR_OPTSTRT | FLASH_OPTCR_OPTLOCK);
 	optcr |= FLASH_OPTCR_OPTSTRT;
 	FLASH->OPTCR = optcr;
 
-	kern_suspendProcess(1u);
+	kern_suspendProcess(1U);
 	optcr = FLASH->OPTCR;
 	optcr &= (uint32_t)~(FLASH_OPTCR_OPTSTRT | FLASH_OPTCR_OPTLOCK);
 	optcr |= FLASH_OPTCR_OPTLOCK;

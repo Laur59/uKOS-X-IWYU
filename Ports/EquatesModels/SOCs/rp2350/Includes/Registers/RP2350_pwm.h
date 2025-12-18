@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		RP2350_pwm equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // PWM address definitions
 // -----------------------
@@ -122,7 +124,7 @@ typedef struct {
 	volatile	uint32_t	IRQ1_INTS;
 } PWM_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	PWM_NS	reinterpret_cast<PWM_TypeDef *>(0x400A8000u)
 #define	PWM_S	reinterpret_cast<PWM_TypeDef *>(0x400A8000u)
 #else

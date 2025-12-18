@@ -5,16 +5,16 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Kern - mailbox box management.
 ;
 ;			Private uKernel variables.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -70,6 +70,13 @@
  * @{
  */
 
+
+#include	<stdint.h>
+
+#include	"kern/kern.h"
+#include	"macros_soc.h"
+#include	"types.h"
+
 #define	KMBOX_ANONYMOUS_ID	"Mbox_anonymous"
 
 struct	mboxPack {
@@ -86,11 +93,11 @@ struct	mboxPack {
 struct	mbox {
 	const	char_t		*oIdentifier;							// Mailbox identifier
 			uint16_t	oState;									// Mailbox state
-			#define		BMBOX_INSTALLED		0u					// Mailbox installed
-			#define		BMBOX_CONFIGURED	1u					// Mailbox configured
-			#define		BMBOX_EMPTY			2u					// Mailbox empty
-			#define		BMBOX_FULL			3u					// Mailbox full
-			#define		BMBOX_BY_COPY		4u					// Mailbox is copying data
+			#define		BMBOX_INSTALLED		0U					// Mailbox installed
+			#define		BMBOX_CONFIGURED	1U					// Mailbox configured
+			#define		BMBOX_EMPTY			2U					// Mailbox empty
+			#define		BMBOX_FULL			3U					// Mailbox full
+			#define		BMBOX_BY_COPY		4U					// Mailbox is copying data
 
 			uint32_t	oNbMaxPacks;							// Maximum number of packs
 			uint32_t	oNbUsedPacks;							// Used number of packs

@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		RP2350_rosc equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // ROSC address definitions
 // ------------------------
 
@@ -64,7 +66,7 @@ typedef struct {
 	volatile	uint32_t	COUNT;
 } ROSC_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	ROSC_NS	reinterpret_cast<ROSC_TypeDef *>(0x400E8000u)
 #define	ROSC_S	reinterpret_cast<ROSC_TypeDef *>(0x400E8000u)
 #else

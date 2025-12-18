@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		newLib interface for gcc C compiler (reentrant version).
@@ -62,8 +62,8 @@
 ;			stdout
 ;			stderr
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -97,17 +97,36 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"kern/private/private_processes.h"
-#include	<unistd.h>
+#include	"newlib.h"
+
+#include	<stddef.h>
+#include	<stdint.h>
+#include	<string.h>
+
 #include	<errno.h>
-#include	<malloc.h>
-#include	<fcntl.h>
-#include	<sys/types.h>
+#include	<sys/reent.h>
+#include	<sys/stat.h>
 #include	<sys/time.h>
 #include	<sys/times.h>
+#include	<sys/types.h>
+#include	<time.h>
+#include	<unistd.h>
+#include	<sys/_types.h>
+struct timeval;
 
-#if (defined(CONFIG_MAN_NEWLIB_S))
+#include	"calendar/calendar.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#if (KKERN_WITH_STATISTICS_S == true)
+#include	"macros_core.h"
+#endif
+#include	"memo/memo.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"serial/serial.h"
+#include	"types.h"
+
+#ifdef CONFIG_MAN_NEWLIB_S
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -130,7 +149,7 @@ MODULE(
 	NULL,									// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,									// Address of the clean code (clean the module)
 	" 1.0",									// Revision string (major . minor)
-	(1u<<BSHOW),							// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),							// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0										// Execution cores
 );
 
@@ -142,7 +161,7 @@ typedef	struct	devOptTab	devOptTab_t;
 typedef			_CLOCK_T_	clock_t;
 typedef			_off_t		off_t;
 
-#define	KNEWLIB_LN_OUTPUT_BUFFER	128u	// Size of the send buffer
+#define	KNEWLIB_LN_OUTPUT_BUFFER	128U	// Size of the send buffer
 
 // Prototypes
 
@@ -193,12 +212,12 @@ int		_close_r(reent_t *reent, int fd) {
  *
  */
 _ssize_t	_write_r(reent_t *reent, int fd, const void *buf, size_t count) {
+	UNUSED(reent);
+
 	_ssize_t			nbPrintChars;
 	serialManager_t		serialManager;
 	uint32_t			stdio = (uint32_t)fd;
 	proc_t				*process;
-
-	UNUSED(reent);
 
 	switch (stdio) {
 
@@ -218,9 +237,9 @@ _ssize_t	_write_r(reent_t *reent, int fd, const void *buf, size_t count) {
 			kern_getProcessRun(&process);
 			kern_getSerialForProcess(process, &serialManager);
 
-			RESERVE_SERIAL(serialManager, KMODE_WRITE);
+			serial_reserve(serialManager, KMODE_WRITE, KWAIT_INFINITY);
 			nbPrintChars = local_write(serialManager, buf, count);
-			RELEASE_SERIAL(serialManager, KMODE_WRITE);
+			serial_release(serialManager, KMODE_WRITE);
 
 			break;
 		}
@@ -230,9 +249,9 @@ _ssize_t	_write_r(reent_t *reent, int fd, const void *buf, size_t count) {
 		default: {
 			serialManager = (serialManager_t)stdio;
 
-			RESERVE_SERIAL(serialManager, KMODE_WRITE);
+			serial_reserve(serialManager, KMODE_WRITE, KWAIT_INFINITY);
 			nbPrintChars = local_write(serialManager, buf, count);
-			RELEASE_SERIAL(serialManager, KMODE_WRITE);
+			serial_release(serialManager, KMODE_WRITE);
 
 			break;
 		}
@@ -247,12 +266,12 @@ _ssize_t	_write_r(reent_t *reent, int fd, const void *buf, size_t count) {
  *
  */
 _ssize_t	_read_r(reent_t *reent, int fd, void *buf, size_t count) {
+	UNUSED(reent);
+
 	_ssize_t			nbReadChars;
 	serialManager_t		serialManager;
 	uint32_t			stdio = (uint32_t)fd;
 	proc_t				*process;
-
-	UNUSED(reent);
 
 	switch (stdio) {
 
@@ -272,9 +291,9 @@ _ssize_t	_read_r(reent_t *reent, int fd, void *buf, size_t count) {
 			kern_getProcessRun(&process);
 			kern_getSerialForProcess(process, &serialManager);
 
-			RESERVE_SERIAL(serialManager, KMODE_READ);
+			serial_reserve(serialManager, KMODE_READ, KWAIT_INFINITY);
 			nbReadChars = local_read(serialManager, buf, count);
-			RELEASE_SERIAL(serialManager, KMODE_READ);
+			serial_release(serialManager, KMODE_READ);
 
 			break;
 		}
@@ -284,9 +303,9 @@ _ssize_t	_read_r(reent_t *reent, int fd, void *buf, size_t count) {
 		default: {
 			serialManager = (serialManager_t)stdio;
 
-			RESERVE_SERIAL(serialManager, KMODE_READ);
+			serial_reserve(serialManager, KMODE_READ, KWAIT_INFINITY);
 			nbReadChars = local_read(serialManager, buf, count);
-			RELEASE_SERIAL(serialManager, KMODE_READ);
+			serial_release(serialManager, KMODE_READ);
 
 			break;
 		}
@@ -304,10 +323,10 @@ _ssize_t	_read_r(reent_t *reent, int fd, void *buf, size_t count) {
  *
  */
 int		_gettimeofday_r(reent_t *reent, struct timeval *tv, void *tzvp) {
-	uint64_t	unixTime;
-
 	UNUSED(reent);
 	UNUSED(tzvp);
+
+	uint64_t	unixTime;
 
 // Read the 64-bit time @ 1-us resolution
 // Extract the seconds and the micro-seconds
@@ -483,9 +502,9 @@ off_t	_lseek_r(reent_t *reent, int filedes, off_t offset, int whence) {
  *
  */
 int		_getpid_r(reent_t *reent) {
-	proc_t	*process;
-
 	UNUSED(reent);
+
+	proc_t	*process;
 
 	kern_getProcessRun(&process);
 	return ((int)(uintptr_t)process);
@@ -498,10 +517,10 @@ int		_getpid_r(reent_t *reent) {
  *
  */
 int		_kill_r(reent_t *reent, int pid, int sig) {
-	proc_t	*process;
-
 	UNUSED(reent);
 	UNUSED(sig);
+
+	proc_t	*process;
 
 	process = (proc_t *)(uintptr_t)pid;
 	kern_killProcess(process);
@@ -517,7 +536,7 @@ int		_kill_r(reent_t *reent, int pid, int sig) {
 void	__attribute__ ((noreturn)) _exit(int number) {
 
 	crt0_exit(number);
-	while (true) { ; }
+	while (true) { }
 }
 
 // Newlib allocator functions
@@ -552,9 +571,9 @@ void	*_sbrk_r(reent_t *reent, ptrdiff_t increment) {
  *
  */
 void	*__wrap__malloc_r(reent_t *reent, size_t size) {
-	void	*address;
-
 	UNUSED(reent);
+
+	void	*address;
 
 	address = memo_malloc(KMEMO_ALIGN_8, ((uint32_t)size * sizeof(uint8_t)), "__wrap__malloc_r");
 	if (address == NULL) {
@@ -585,9 +604,9 @@ void	__wrap__free_r(reent_t *reent, void *address) {
  *
  */
 void	*__wrap__realloc_r(reent_t *reent, void *address, size_t size) {
-	void	*newAddress;
-
 	UNUSED(reent);
+
+	void	*newAddress;
 
 	newAddress = memo_realloc(KMEMO_ALIGN_8, address, (uint32_t)size, "__wrap__realloc_r");
 	if (newAddress == NULL) {
@@ -605,9 +624,9 @@ void	*__wrap__realloc_r(reent_t *reent, void *address, size_t size) {
  *
  */
 void	*__wrap__calloc_r(reent_t *reent, size_t num, size_t size) {
-	void	*address;
-
 	UNUSED(reent);
+
+	void	*address;
 
 	address = memo_malloc(KMEMO_ALIGN_8, ((uint32_t)((num * size) * sizeof(uint8_t))), "__wrap__calloc_r");
 	if (address == NULL) {
@@ -644,22 +663,22 @@ void	_fini(void) {
  */
 static	_ssize_t	local_write(serialManager_t serialManager, const void *buf, size_t count) {
 			uint8_t		output[KNEWLIB_LN_OUTPUT_BUFFER + 2];
-			uint32_t	i, j = 0u;
+			uint32_t	i, j = 0U;
 	const	uint8_t		*wkAscii;
 
 	wkAscii = (const uint8_t *)buf;
 
-	for (i = 0u; i < count; i++) {
+	for (i = 0U; i < count; i++) {
 		output[j] = wkAscii[i];
 
 		j++;
 		if (j >= KNEWLIB_LN_OUTPUT_BUFFER) {
 			local_outLine(serialManager, output, j);
-			j = 0u;
+			j = 0U;
 		}
 	}
 
-	if (j > 0u) {
+	if (j > 0U) {
 		local_outLine(serialManager, output, j);
 	}
 	return ((_ssize_t)count);
@@ -677,14 +696,14 @@ static	void	local_outLine(serialManager_t serialManager, const uint8_t *output, 
 	while (true) {
 		status = serial_write(serialManager, output, size);
 		if (status != KERR_SERIAL_NOERR) {
-			kern_suspendProcess(1u);
+			kern_suspendProcess(1U);
 		}
 		else {
 
 // Give some time to allow the manager to send the data
 // before sending another bloc
 
-			kern_suspendProcess(1u);
+			kern_suspendProcess(1U);
 			return;
 		}
 	}
@@ -702,17 +721,17 @@ static	_ssize_t	local_read(serialManager_t serialManager, void *buf, size_t coun
 	bool		terminate = false;
 
 	i = (uint32_t)count;
-	if (count > 0u) {
+	if (count > 0U) {
 		ascii = (uint8_t *)buf;
 
-		i = 0u;
+		i = 0U;
 		do {
 			*(ascii + i) = local_inbyte(serialManager);
 			if ((*(ascii + i) == '\n') || (*(ascii + i) == '\r')) {
 				terminate = true;
 			}
 			i++;
-		} while ((i < (uint32_t)count) && (terminate == false));
+		} while ((i < (uint32_t)count) && (!terminate));
 	}
 	return ((_ssize_t)i);
 }
@@ -726,15 +745,15 @@ static	_ssize_t	local_read(serialManager_t serialManager, void *buf, size_t coun
 static	uint8_t	local_inbyte(serialManager_t serialManager) {
 	int32_t		status;
 	uint32_t	size;
-    uint8_t		byte = 0u;
+    uint8_t		byte = 0U;
 
 	do {
-		kern_suspendProcess(1u);
-		size = 1u;
+		kern_suspendProcess(1U);
+		size = 1U;
 		status = serial_read(serialManager, &byte, &size);
 	} while (status != KERR_SERIAL_NOERR);
 
-	if (byte > 0x7Fu) { byte = (uint8_t)'?'; }
+	if (byte > 0x7FU) { byte = (uint8_t)'?'; }
 
 	return (byte);
 }

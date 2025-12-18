@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Demo of a C application.
 ;			This application shows how to operate with the uKOS-X uKernel.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -69,7 +69,23 @@
  *
  */
 
-#include	"uKOS.h"
+#include	<inttypes.h>
+#include	<stdio.h>
+#include	<stdlib.h>
+
+#include	"crt0.h"
+#include	"serial/serial.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"memo/memo.h"
+#include	"led/led.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"types.h"
+#include	"sdcard/sdcard.h"
 #include	<ff.h>
 
 // uKOS-X specific (see the module.h)
@@ -96,7 +112,7 @@ MODULE(
 	aStart,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,										// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
@@ -328,11 +344,11 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 	#endif
 
 	#if (defined(KWITH_SDCARD_S))
-	test_listDirectoryTree(DRIVE_SDCARD "/", 0u);
+	test_listDirectoryTree(DRIVE_SDCARD "/", 0U);
 	#endif
 
 	#if (defined(KWITH_FLASH_S))
-	test_listDirectoryTree(DRIVE_FLASH "/", 0u);
+	test_listDirectoryTree(DRIVE_FLASH "/", 0U);
 	#endif
 
 	exit(EXIT_OS_SUCCESS);
@@ -407,7 +423,7 @@ static	void	test_format(const char_t *device) {
 static	void	test_mount(FATFS *fs, const char_t *device) {
 	FRESULT		res;
 
-	res = f_mount(fs, device, 1u);
+	res = f_mount(fs, device, 1U);
 	if (res != FR_OK) {
 		(void)dprintf(KSYST, "f_mount erreur %d\n", res);
 		while (true);
@@ -560,7 +576,7 @@ static	void	test_listDirectory(const char_t *path) {
 				(void)dprintf(KSYST, "   <DIR>   %s\n", fno.fname); nbDir++;
 			}
 			else {
-				(void)dprintf(KSYST, "%10lu %s\n", fno.fsize, fno.fname); nbFile++;
+				(void)dprintf(KSYST, "%10"PRIu32" %s\n", fno.fsize, fno.fname); nbFile++;
 			}
 		}
 		f_closedir(&dir);
@@ -581,12 +597,12 @@ static	void	test_listDirectory(const char_t *path) {
 static	void	print_date(uint16_t date, uint16_t time) {
 	uint16_t	years, months, days, hours, minutes, seconds;
 
-	years	= ((date>>9u) + 1980u);
-	months	= (date>>5u) & 0xFu;
+	years	= ((date>>9U) + 1980U);
+	months	= (date>>5U) & 0xFu;
 	days	= date & 0x1Fu;
-	hours	= time>>11u;
+	hours	= time>>11U;
 	minutes = (time>>5) & 0x3Fu;
-	seconds	= (time & 0x1Fu) * 2u;
+	seconds	= (time & 0x1Fu) * 2U;
 
 	(void)dprintf(KSYST, "%02d-%02d-%04d   %02d:%02d:%02d", days, months, years, hours, minutes, seconds);
 }
@@ -611,7 +627,7 @@ static	void	listDirectoryTree(const char *path, uint8_t depth) {
 		if ((localFile.fattrib & AM_DIR) != 0) { (void)dprintf(KSYST, "  %s/\n",   name); }
 		else {									 (void)dprintf(KSYST, "     %s\n", name); }
 
-		if ((localFile.fattrib & AM_DIR) != 0u) {
+		if ((localFile.fattrib & AM_DIR) != 0U) {
 			(void)snprintf(next, sizeof(next), "%s/%s", path, name);
 			listDirectoryTree(next, (depth + 1));
 		}

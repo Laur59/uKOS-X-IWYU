@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		stub for the "switch" manager module.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,11 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+
+#include	"Registers/stm32H743_gpio.h"
+#include	"macros_core.h"
+#include	"os_errors.h"
 
 /*
  * \brief stub_switch_init
@@ -65,13 +69,13 @@ void	stub_switch_init(void) {
  *
  */
 int32_t	stub_switch_read(uint32_t *mode) {
-	uint32_t	switches = 0u;
+	uint32_t	switches = 0U;
 
 	INTERRUPTION_OFF;
-	switches |= ((GPIOC->IDR>>10u) & 0x01u);
-	switches |= ((GPIOC->IDR>>10u) & 0x02u);
-	switches |= ((GPIOC->IDR>>10u) & 0x04u);
-	switches |= ((GPIOC->IDR>>10u) & 0x08u);
-	*mode = (switches & 0x0Fu);
+	switches |= ((GPIOC->IDR>>10U) & 0x01U);
+	switches |= ((GPIOC->IDR>>10U) & 0x02U);
+	switches |= ((GPIOC->IDR>>10U) & 0x04U);
+	switches |= ((GPIOC->IDR>>10U) & 0x08U);
+	*mode = (switches & 0x0FU);
 	RETURN_INT_RESTORE(KERR_SWITCH_NOERR);
 }

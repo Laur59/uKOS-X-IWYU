@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ;			uKOS-X interface for MicroPython (www.micropython.com).
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,10 +46,21 @@
 ;------------------------------------------------------------------------
 */
 
-#if (defined(CONFIG_MAN_MICROPYTHON_S))
+#ifdef CONFIG_MAN_MICROPYTHON_S
 
-#include	"uKOS.h"
+#include	<stdint.h>
+#include	<stdio.h>
+#include	<stdlib.h>
+
 #include	"MicroPython/uKOS_System/microPython.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core_stackFrame.h"
+#include	"memo/memo.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"serial/serial.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -81,7 +92,7 @@ MODULE(
 	prgm,												// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,												// Address of the clean code (clean the module)
 	" 1.0",												// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0													// Execution cores
 );
 
@@ -129,7 +140,7 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 //							microPython workspace of 62000-byte
 
 	switch (argc) {
-		case 3u: {
+		case 3U: {
 			MPYSerialManager = (serialManager_t)(GET_PTR_32(argv[1]));
 			break;
 		}
@@ -143,7 +154,7 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 // Try to reserve the MPY memory segment
 
 	if (error == KERR_NOT) {
-		MPYSize   = (uint32_t)strtol(argv[2], &dummy, 10u);
+		MPYSize   = (uint32_t)strtol(argv[2], &dummy, 10U);
 		MPYMemory = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (MPYSize * sizeof(uint8_t)), "mpy");
 		error = (MPYMemory == NULL) ? (KERR_NME) : (error);
 
@@ -180,7 +191,7 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 
 // Let the time to the process "local_process" to run
 
-	do { kern_suspendProcess(1u); } while ((releasePack == false) && (error == KERR_NOT));
+	do { kern_suspendProcess(1U); } while ((!releasePack) && (error == KERR_NOT));
 	return (status);
 }
 
@@ -218,7 +229,7 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 // then, do not release the console (to avoid to have a mix between microPython and console).
 // In this case, the release will be done when we leave microPython
 
-	*releasePack = (CLISerialManager != MPYSerialManager) ? (true) : (false);
+	*releasePack = (CLISerialManager != MPYSerialManager);
 
 	kern_setSerialForProcess(process, MPYSerialManager);
 

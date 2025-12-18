@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		imager_commun equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 /*!
  * \addtogroup Lib_peripherals
  */
@@ -64,8 +66,8 @@
  */
 
 #define		KIMAGER_SINGLE_BUFFER	0x80u						// Single buffer
-#define		KIMAGER_NB_ROWS_QVGA	240u						// Number of rows (QVGA)
-#define		KIMAGER_NB_COLS_QVGA	320u						// Number of columns (QVGA)
+#define		KIMAGER_NB_ROWS_QVGA	240U						// Number of rows (QVGA)
+#define		KIMAGER_NB_COLS_QVGA	320U						// Number of columns (QVGA)
 
 // Configuration structure
 // -----------------------
@@ -90,7 +92,7 @@ struct imagerCnf {
 // Pixel mode (Bits per pixel) (oPixMode)
 
 enum {
-			KIMAGER_PIX_8_BITS = 0u,							// 8-bit resolution
+			KIMAGER_PIX_8_BITS = 0U,							// 8-bit resolution
 			KIMAGER_PIX_10_BITS,								// 10-bit resolution
 			KIMAGER_PIX_12_BITS,								// 12-bit resolution
 			KIMAGER_PIX_14_BITS									// 14-bit resolution
@@ -99,14 +101,14 @@ enum {
 // Kernel synchro semaphores
 
 enum {
-			BIMAGER_SEMAPHORE_IM = 0u,							// IM semaphore
+			BIMAGER_SEMAPHORE_IM = 0U,							// IM semaphore
 			BIMAGER_SEMAPHORE_VS								// Vertical synchro semaphore
 };
 
 // Acquisition modes
 
 enum {
-			KIMAGER_CONT = 0u,									// Continuous mode
+			KIMAGER_CONT = 0U,									// Continuous mode
 			KIMAGER_SNAP,										// Snapshot mode
 			KIMAGER_SYNC										// Sync mode
 };
@@ -114,7 +116,7 @@ enum {
 // Operation modes
 
 enum {
-			KIMAGER_OPERATE = 0u,								// Imager in a normal mode (run)
+			KIMAGER_OPERATE = 0U,								// Imager in a normal mode (run)
 			KIMAGER_STANDBY										// Imager in standby
 };
 

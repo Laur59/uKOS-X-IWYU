@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32H743_comp1 equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // COMP1 address definitions
 // -------------------------
 
@@ -59,11 +61,11 @@ typedef struct {
 	volatile	uint32_t	CFGR2;
 } COMP1_TypeDef;
 
-#if (defined(__cplusplus))
-#define	COMP1	reinterpret_cast<COMP1_TypeDef *>(0x58003800u)
+#ifdef __cplusplus
+#define	COMP1s	reinterpret_cast<COMP1_TypeDef *>(0x58003800u)
 
 #else
-#define	COMP1	((COMP1_TypeDef *)0x58003800u)
+#define	COMP1s	((COMP1_TypeDef *)0x58003800u)
 #endif
 
 // SR Configuration

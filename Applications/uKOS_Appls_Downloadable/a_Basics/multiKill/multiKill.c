@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Demo of a C application.
 ;			This application shows how to operate with the uKOS-X uKernel.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -62,7 +62,21 @@
  *
  */
 
-#include	"uKOS.h"
+#include	<inttypes.h>
+#include	<stdio.h>
+#include	<stdlib.h>
+
+#include	"crt0.h"
+#include	"serial/serial.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"memo/memo.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -88,7 +102,7 @@ MODULE(
 	aStart,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,								// Address of the clean code (clean the module)
 	" 1.0",								// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0									// Execution cores
 );
 
@@ -126,20 +140,20 @@ struct	myPack {
 		};
 
 static	myPack_t	aParameter[10] = {
-						{ 0u },
-						{ 1u },
-						{ 2u },
-						{ 3u },
-						{ 4u },
-						{ 5u },
-						{ 6u },
-						{ 7u },
-						{ 8u },
-						{ 9u }
+						{ 0U },
+						{ 1U },
+						{ 2U },
+						{ 3U },
+						{ 4U },
+						{ 5U },
+						{ 6U },
+						{ 7U },
+						{ 8U },
+						{ 9U }
 					};
 
 static				proc_t		*vProcess[10];
-static	volatile	uint32_t	vCounter = 0u;
+static	volatile	uint32_t	vCounter = 0U;
 
 /*
  * \brief aProcess x
@@ -169,11 +183,13 @@ static void __attribute__ ((noreturn)) aThread_Px(const void *argument) {
 #define	KPRIORITY	KKERN_PRIORITY_LOW_01
 
 static void __attribute__ ((noreturn)) aProcess_a(const void *argument) {
+	UNUSED(argument);
+
 	uint32_t	i;
 
 	UNUSED(argument);
 
-	for (i = 0u; i < 1000000000u; i++) {
+	for (i = 0U; i < 1000000000U; i++) {
 
 // Specifications for the processes
 
@@ -343,14 +359,14 @@ static void __attribute__ ((noreturn)) aProcess_a(const void *argument) {
 			exit(EXIT_OS_FAILURE);
 		}
 
-		if ((i % 1000u) == 0u) {
+		if ((i % 1000U) == 0U) {
 			(void)dprintf(KSYST, "Iteration = %"PRIu32"\n", i);
 		}
-		kern_suspendProcess(1u);
+		kern_suspendProcess(1U);
 	}
 
 	(void)dprintf(KSYST, "Counter = %"PRIu32"\n", vCounter);
-	kern_suspendProcess(1000u);
+	kern_suspendProcess(1000U);
 	exit(EXIT_OS_SUCCESS);
 }
 
@@ -363,15 +379,15 @@ static void __attribute__ ((noreturn)) aProcess_a(const void *argument) {
  *
  */
 int		main(int argc, const char *argv[]) {
+	UNUSED(argc);
+	UNUSED(argv);
+
 	proc_t	*process_a;
 
 // ---------------------------------I-----------------------------------------I--------------I
 
 	STRG_LOC_CONST(aStrIden_a[]) = "Process_User_0";
 	STRG_LOC_CONST(aStrText_a[]) = "Process user 0.                           (c) EFr-2025";
-
-	UNUSED(argc);
-	UNUSED(argv);
 
 // Specifications for the processes
 

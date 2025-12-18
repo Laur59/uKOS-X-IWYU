@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32N657_hdp equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // HDP address definitions
 // -----------------------
 
@@ -61,7 +63,7 @@ typedef struct {
 	volatile	uint32_t	GPOVAL;
 } HDP_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	HDP_NS	reinterpret_cast<HDP_TypeDef *>(0x46000800u)
 #define	HDP_S	reinterpret_cast<HDP_TypeDef *>(0x56000800u)
 

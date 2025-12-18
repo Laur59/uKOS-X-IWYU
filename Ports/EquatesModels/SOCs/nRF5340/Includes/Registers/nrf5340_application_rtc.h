@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		nrf5340_application_rtc equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // RTC address definitions
 // -----------------------
@@ -91,7 +93,7 @@ typedef struct {
 	volatile	uint32_t	CC[4];
 } RTC_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	RTC0_NS	reinterpret_cast<RTC_TypeDef *>(0x40014000u)
 #define	RTC0_S	reinterpret_cast<RTC_TypeDef *>(0x50014000u)
 #define	RTC1_NS	reinterpret_cast<RTC_TypeDef *>(0x40015000u)

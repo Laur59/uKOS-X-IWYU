@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32U5Gx_gtzc1_mpcbb2 equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // GTZC1_MPCBB2 address definitions
 // --------------------------------
@@ -164,7 +166,7 @@ typedef struct {
 	volatile	uint32_t	PRIVCFGR51;
 } GTZC1_MPCBB2_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	GTZC1_MPCBB2_NS	reinterpret_cast<GTZC1_MPCBB2_TypeDef *>(0x40033000u)
 #define	GTZC1_MPCBB2_S	reinterpret_cast<GTZC1_MPCBB2_TypeDef *>(0x50033000u)
 

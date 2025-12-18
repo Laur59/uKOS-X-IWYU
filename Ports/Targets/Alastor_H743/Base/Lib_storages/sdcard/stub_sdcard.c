@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		stub for the connection of the "sdcard" manager with the spi1 device.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,13 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+
+#include	"board.h"
+#include	"kern/kern.h"
+#include	"soc_reg.h"
+#include	"spi/spi.h"
+#include	"spi_common.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
@@ -59,7 +65,7 @@
 #define	model_sdcard_ioctl			stub_sdcard_ioctl
 
 enum {
-		KSDCARD_INIT = 0u,
+		KSDCARD_INIT = 0U,
 		KSDCARD_RELEASE,
 		KSDCARD_SELECT,
 		KSDCARD_DESELECT
@@ -81,14 +87,14 @@ enum {
  */
 static	void	cb_control(uint8_t mode) {
 	static	const	spiCnf_t	configure = {
-									.oSpeed	   = 400000u,
+									.oSpeed	   = 400000U,
 									.oMode     = (uint8_t)KSPI_MASTER,
-									.oClock    = 0u
+									.oClock    = 0U
 								};
 
 	switch (mode) {
 		case KSDCARD_INIT: {
-			GPIOE->ODR |= (1u<<BSEL_SDCARD);
+			GPIOE->ODR |= (1U<<BSEL_SDCARD);
 
 // Master, POL = PHA = 0
 // Speed accesses ~400-Kbit/s
@@ -100,12 +106,12 @@ static	void	cb_control(uint8_t mode) {
 			break;
 		}
 		case KSDCARD_SELECT: {
-			GPIOE->ODR &= (uint32_t)~(1u<<BSEL_SDCARD);
+			GPIOE->ODR &= (uint32_t)~(1U<<BSEL_SDCARD);
 			break;
 		}
 		case KSDCARD_DESELECT:
 		default: {
-			GPIOE->ODR |= (1u<<BSEL_SDCARD);
+			GPIOE->ODR |= (1U<<BSEL_SDCARD);
 			break;
 		}
 	}
@@ -120,8 +126,8 @@ static	void	cb_control(uint8_t mode) {
 static	void	cb_speed(uint32_t speed) {
 	static	spiCnf_t	configure = {
 							.oMode     = (uint8_t)KSPI_MASTER,
-							.oClock    = 0u,
-							.oSpeed	   = 0u
+							.oClock    = 0U,
+							.oSpeed	   = 0U
 						};
 
 	configure.oSpeed = speed;
@@ -136,7 +142,7 @@ static	void	cb_speed(uint32_t speed) {
  */
 static	bool	cb_cardInserted(void) {
 
-	if ((GPIOG->IDR & (1u<<BNO_SDCARD)) != 0u) {
+	if ((GPIOG->IDR & (1U<<BNO_SDCARD)) != 0U) {
 		return (false);
 	}
 
@@ -165,7 +171,7 @@ static	uint8_t	cb_writeRead(uint8_t data) {
  */
 static	void	cb_write(const uint8_t *source, uint16_t size) {
 
-	spi_multipleWriteRead(KSPI1, source, size, NULL, 0u, KWAIT_INFINITY);
+	spi_multipleWriteRead(KSPI1, source, size, NULL, 0U, KWAIT_INFINITY);
 }
 
 /*
@@ -176,7 +182,7 @@ static	void	cb_write(const uint8_t *source, uint16_t size) {
  */
 static	void	cb_readSPI(uint8_t *destination, uint16_t size) {
 
-	spi_multipleWriteRead(KSPI1, NULL, 0u, destination, size, KWAIT_INFINITY);
+	spi_multipleWriteRead(KSPI1, NULL, 0U, destination, size, KWAIT_INFINITY);
 }
 
 #include	"model_sdcard_spi.c_inc"

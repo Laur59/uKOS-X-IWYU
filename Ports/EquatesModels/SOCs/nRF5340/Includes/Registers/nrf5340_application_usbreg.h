@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		nrf5340_application_usbreg equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // USBREG address definitions
 // --------------------------
 
@@ -68,7 +70,7 @@ typedef struct {
 	volatile	uint32_t	USBREGSTATUS;
 } USBREG_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	USBREGULATOR_NS	reinterpret_cast<USBREG_TypeDef *>(0x40037000u)
 #define	USBREGULATOR_S	reinterpret_cast<USBREG_TypeDef *>(0x50037000u)
 

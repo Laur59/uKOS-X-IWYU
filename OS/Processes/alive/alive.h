@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		alive process; blink a LED.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,9 +48,13 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
+#include	"led/led.h"
+
 #define	KLED_ALIVE			KLED_0
-#define	KTIME_ALIVE_ON		50u
-#define	KTIME_ALIVE_OFF		950u
+#define	KTIME_ALIVE_ON		50U
+#define	KTIME_ALIVE_OFF		950U
 
 // Configuration structure
 // -----------------------

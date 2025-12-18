@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		idle daemon; run when all the others processes are suspended.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,8 +46,20 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+#include	<stdlib.h>
+
+#include	"debug.h"
+#include	"kern/kern.h"
 #include	"kern/private/private_processes.h"
+#include	"macros.h"
+#include	"macros_core_stackFrame.h"
+#include	"macros_soc.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"serial/serial.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -69,7 +81,7 @@ static	void		local_process(const void *argument);
 
 // This process has to run on the following cores:
 
-#define	KEXECUTION_CORE		((1u<<BCORE_0) | (1u<<BCORE_1) | (1u<<BCORE_2) | (1u<<BCORE_3))
+#define	KEXECUTION_CORE		((1U<<BCORE_0) | (1U<<BCORE_1) | (1U<<BCORE_2) | (1U<<BCORE_3))
 
 MODULE(
 	Idle,							// Module name (the first letter has to be upper case)
@@ -79,7 +91,7 @@ MODULE(
 	prgm,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	KEXECUTION_CORE					// Execution cores
 );
 
@@ -96,11 +108,11 @@ STRG_LOC_CONST(aStrText[]) = "Daemon idle: run when the others are off. (c) EFr-
  *
  */
 static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
-	uint32_t	core;
-	proc_t		*process;
-
 	UNUSED(argc);
 	UNUSED(argv);
+
+	uint32_t	core;
+	proc_t		*process;
 
 	core = GET_RUNNING_CORE;
 
@@ -136,10 +148,10 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
  *
  */
 static void __attribute__ ((noreturn)) local_process(const void *argument) {
+	UNUSED(argument);
+
 	void		(*code)(uint8_t state);
 	uint32_t	core;
-
-	UNUSED(argument);
 
 	DEBUG_KERN_TRACE("entry: idle daemon");
 	core = GET_RUNNING_CORE;
@@ -150,15 +162,15 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 // Set the low power mode (if possible)
 
 		if (code != NULL) {
-			vKern_runProc[core]->oInternal.oState |= (1u<<BPROC_LIKE_ISR);
+			vKern_runProc[core]->oInternal.oState |= (1U<<BPROC_LIKE_ISR);
 			code(KKERN_IDLE_IN);
-			vKern_runProc[core]->oInternal.oState &= (uint16_t)~(1u<<BPROC_LIKE_ISR);
+			vKern_runProc[core]->oInternal.oState &= (uint16_t)~(1U<<BPROC_LIKE_ISR);
 		}
 		stub_kern_setLowPower(KKERN_CPU_MODE_STOP);
 		if (code != NULL) {
-			vKern_runProc[core]->oInternal.oState |= (1u<<BPROC_LIKE_ISR);
+			vKern_runProc[core]->oInternal.oState |= (1U<<BPROC_LIKE_ISR);
 			code(KKERN_IDLE_OUT);
-			vKern_runProc[core]->oInternal.oState &= (uint16_t)~(1u<<BPROC_LIKE_ISR);
+			vKern_runProc[core]->oInternal.oState &= (uint16_t)~(1U<<BPROC_LIKE_ISR);
 		}
 		kern_switchFast();
 	}

@@ -1,6 +1,6 @@
 # CMake Build System Guide
 
-(c) 2025-20xx, Laurent von Allmen, 2025-01-01
+© 2025-2026, Laurent von Allmen, 2025-01-01
 
 This guide provides comprehensive instructions for building embedded system targets using CMake, supporting both GCC and LLVM toolchains with various configuration options.
 
@@ -8,10 +8,10 @@ This guide provides comprehensive instructions for building embedded system targ
 
 Before using CMake, ensure the following environment variables are defined:
 
-- `PATH_GCC_ARM` - Path to ARM GCC toolchain
-- `PATH_GCC_RVXX` - Path to RISC-V GCC toolchain
-- `PATH_LLVM_ARM` - Path to ARM LLVM toolchain
-- `PATH_LLVM_RVXX` - Path to RISC-V LLVM toolchain
+- `PATH_GCC_ARM` – Path to ARM GCC toolchain
+- `PATH_GCC_RVXX` – Path to RISC-V GCC toolchain  
+- `PATH_LLVM_ARM` – Path to ARM LLVM toolchain
+- `PATH_LLVM_RVXX` – Path to RISC-V LLVM toolchain
 
 ## Quick Start
 
@@ -21,6 +21,11 @@ The simplest way to build a target is to navigate to a **Variant** folder and co
 mkdir build
 cd build
 cmake ..
+```
+
+This prepares a Unix makefile project. Now you can **build** the firmware and **program** the target:
+
+```shell
 make -j
 make burn
 ```
@@ -28,7 +33,7 @@ make burn
 ### Complete Example: Nucleo_H743
 
 ```shell
-cd ${PATH_UKOS_X_PACKAGE}/Ports/Nucleo_H743/Variant_Test
+cd Ports/Nucleo_H743/Variant_Test
 rm -fr build && mkdir build && cd build
 cmake ..
 make -j
@@ -37,7 +42,7 @@ make burn
 
 ## Build Configuration Options
 
-CMake accepts several build options that control compilation behavior:
+CMake accepts several build options that control compilation behaviour:
 
 | Option | Default | Description |
 |--------|---------|-------------|
@@ -57,7 +62,7 @@ To build a Nucleo_H743 system with user mode disabled and LLVM toolchain:
 
 **Configure the project:**
 ```shell
-cd ${PATH_UKOS_X_PACKAGE}/Ports/Nucleo_H743/Variant_Test
+cd Ports/Nucleo_H743/Variant_Test
 cmake -S . -B build -DUSER_MODE=OFF -DUSE_LLVM=ON
 ```
 
@@ -86,14 +91,14 @@ cmake --build build --parallel --clean-first
 Projects can be built in any directory outside the source tree:
 
 ```shell
-cmake -S ${PATH_UKOS_X_PACKAGE}/Ports/Nucleo_H743/Variant_Test -B ${HOME}/mybuilds
+cmake -S Ports/Nucleo_H743/Variant_Test -B ${HOME}/mybuilds
 cmake --build ${HOME}/mybuilds --parallel
 ```
 
 Alternatively, you can use traditional make commands:
 
 ```shell
-cmake -S ${PATH_UKOS_X_PACKAGE}/Ports/Nucleo_H743/Variant_Test -B ${HOME}/mybuilds
+cmake -S Ports/Nucleo_H743/Variant_Test -B ${HOME}/mybuilds
 cd ${HOME}/mybuilds
 make -j
 ```
@@ -166,7 +171,7 @@ which is equivalent to
 cmake -B build -DUSE_LLVM=OFF
 ```
 
-**LLVM Toolchain:** Uses Clang compilers for potentially better optimization
+**LLVM Toolchain:** Uses Clang compilers for potentially better optimisation
 ```shell
 cmake -B build -DUSE_LLVM=ON
 ```

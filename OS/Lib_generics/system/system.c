@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		system manager.
@@ -27,8 +27,8 @@
 ;			Excecution from MEME1 (case 4)	lock the User RAM forever (until a restart)
 ;			Listing (case 3)				lock the User RAM during the usage and then, unlock
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -62,12 +62,33 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"linker.h"
-#include	"version.h"
-#include	"kern/private/private_processes.h"
+#ifdef CONFIG_MAN_SYSTEM_S
 
-#if (defined(CONFIG_MAN_SYSTEM_S))
+#include	"system.h"
+
+#include	<stddef.h>
+#include	<stdint.h>
+
+#include	"board.h"
+#include	"linker.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"text/text.h"
+#include	"uKOSversion.h"
+#include	"types.h"
+#include	"version.h"
+
+#define	uKOS_KBOARD				KBOARD PRIVILEGE_USER_MODE
+
+#ifdef PRIVILEGED_USER_S
+#define	PRIVILEGE_USER_MODE		", privileged-user mode"
+
+#else
+#define	PRIVILEGE_USER_MODE		", privileged ONLY mode"
+#endif
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -90,7 +111,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -133,11 +154,11 @@ static	void	local_init(void);
  *
  */
 int32_t	system_reserve(reserveMode_t reserveMode, uint32_t timeout) {
-	uint32_t	core;
-	int32_t		status;
-
 	UNUSED(reserveMode);
 	UNUSED(timeout);
+
+	uint32_t	core;
+	int32_t		status;
 
 	core = GET_RUNNING_CORE;
 
@@ -150,7 +171,7 @@ int32_t	system_reserve(reserveMode_t reserveMode, uint32_t timeout) {
 	INTERRUPTION_OFF;
 	status = KERR_SYSTEM_CHBSY;
 
-	if (vUserRamBusy[core] == false) {
+	if (!vUserRamBusy[core]) {
 		vUserRamBusy[core] = true;
 		status = KERR_SYSTEM_NOERR;
 	}
@@ -177,9 +198,9 @@ int32_t	system_reserve(reserveMode_t reserveMode, uint32_t timeout) {
  *
  */
 int32_t	system_release(reserveMode_t reserveMode) {
-	uint32_t	core;
-
 	UNUSED(reserveMode);
+
+	uint32_t	core;
 
 	core = GET_RUNNING_CORE;
 
@@ -238,7 +259,7 @@ int32_t	system_getModuleId(uint32_t idModule, uint16_t *index, const uKOS_module
 	local_init();
 
 	*module	= NULL;
-	*index	= 0u;
+	*index	= 0U;
 	while (aDirectory[*index].oModuleLocation != KNO_MODULE) {
 		if (aDirectory[*index].oModule->oIdModule == idModule) {
 			*module = aDirectory[*index].oModule;
@@ -246,7 +267,7 @@ int32_t	system_getModuleId(uint32_t idModule, uint16_t *index, const uKOS_module
 			return (KERR_SYSTEM_NOERR);
 		}
 
-		*index = (uint16_t)(*index + 1u);
+		*index = (uint16_t)(*index + 1U);
 	}
 	PRIVILEGE_RESTORE;
 	return (KERR_SYSTEM_NOMOD);
@@ -323,16 +344,16 @@ int32_t	system_getModuleName(const char_t *name, uint16_t *index, const uKOS_mod
 	local_init();
 
 	*module	= NULL;
-	*index	= 0u;
+	*index	= 0U;
 	while (aDirectory[*index].oModuleLocation != KNO_MODULE) {
 		text_checkAsciiBuffer(aDirectory[*index].oModule->oStrApplication, name, &equals);
-		if (equals == true) {
+		if (equals) {
 			*module = aDirectory[*index].oModule;
 			PRIVILEGE_RESTORE;
 			return (KERR_SYSTEM_NOERR);
 		}
 
-		*index = (uint16_t)(*index + 1u);
+		*index = (uint16_t)(*index + 1U);
 	}
 	PRIVILEGE_RESTORE;
 	return (KERR_SYSTEM_NOMOD);
@@ -393,14 +414,14 @@ int32_t	system_getModuleFamily(uint8_t family, uint32_t *idModule, uint16_t *ind
 
 	*module	= NULL;
 	while (aDirectory[*index].oModuleLocation != KNO_MODULE) {
-		if (((aDirectory[*index].oModule->oIdModule>>24u) == family) || (family == KID_FAM_ALL_FAMILIES)) {
+		if (((aDirectory[*index].oModule->oIdModule>>24U) == family) || (family == KID_FAM_ALL_FAMILIES)) {
 			*idModule = aDirectory[*index].oModule->oIdModule;
 			*module = aDirectory[*index].oModule;
 			PRIVILEGE_RESTORE;
 			return (KERR_SYSTEM_NOERR);
 		}
 
-		*index = (uint16_t)(*index + 1u);
+		*index = (uint16_t)(*index + 1U);
 	}
 	PRIVILEGE_RESTORE;
 	return (KERR_SYSTEM_NOFAM);
@@ -563,7 +584,7 @@ static	void	local_init(void) {
 	core = GET_RUNNING_CORE;
 
 	INTERRUPTION_OFF;
-	if (vInit[core] == false) {
+	if (!vInit[core]) {
 		vInit[core] = true;
 	}
 	INTERRUPTION_RESTORE;

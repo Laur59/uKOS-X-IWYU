@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32N657_ramcfg equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // RAMCFG address definitions
 // --------------------------
@@ -123,7 +125,7 @@ typedef struct {
 	volatile	uint32_t	FLEXRAMERKEYR;
 } RAMCFG_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	RAMCFG_NS	reinterpret_cast<RAMCFG_TypeDef *>(0x42023000u)
 #define	RAMCFG_S	reinterpret_cast<RAMCFG_TypeDef *>(0x52023000u)
 

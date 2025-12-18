@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		crt0 for the uKOS-X system.
 ;			See "ld.pdf" file, "Using LD, the GNU linker" page 48.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -49,11 +49,14 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
+#include	"types.h"
 #include	"serial/serial.h"
 
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -67,7 +70,7 @@ extern	void		cmns_init(void);
 extern	void		cmns_send(serialManager_t serialManager, const char_t *ascii);
 extern	void		cmns_receive(serialManager_t serialManager, char_t *data);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 
 // Do not declare main in c++
 
@@ -77,6 +80,6 @@ extern	int			main(int argc, const char *argv[]);
 #endif
 #endif
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif

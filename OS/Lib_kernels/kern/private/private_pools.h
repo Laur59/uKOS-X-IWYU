@@ -5,16 +5,16 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Kern - Memory pools.
 ;
 ;			Private uKernel variables.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -70,6 +70,12 @@
  * @{
  */
 
+#include	<stdint.h>
+
+#include	"kern/kern.h"
+#include	"macros_soc.h"
+#include	"types.h"
+
 #if (KKERN_NB_POOLS > 0)
 
 #define	KPOOL_ANONYMOUS_ID	"Pool_anonymous"
@@ -77,8 +83,8 @@
 struct	pool {
 	const	char_t		*oIdentifier;							// Memory pool identifier
 			uint16_t	oState;									// Memory pool state
-			#define		BPOOL_INSTALLED		0u					// Memory pool installed
-			#define		BPOOL_CONFIGURED	1u					// Memory pool configured
+			#define		BPOOL_INSTALLED		0U					// Memory pool installed
+			#define		BPOOL_CONFIGURED	1U					// Memory pool configured
 
 			uint32_t	oNbBlocks;								// Number of blocks
 			uint32_t	oBlockSize;								// Block size

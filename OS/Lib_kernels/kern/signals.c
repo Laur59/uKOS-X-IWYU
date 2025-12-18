@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Kern - Signal management.
@@ -27,8 +27,8 @@
 ;			int32_t	kern_killBitSignal(sign_t *handle, uint8_t bitSignal);
 ;			int32_t	kern_getSignalGroupById(char_t *identifier, sign_t **handle);
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -62,12 +62,24 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"kern/private/private_kern.h"
+#include	"signals.h"
 #include	"kern/private/private_signals.h"
-#include	"kern/private/private_processes.h"
+
+#include	<stddef.h>
+#include	<stdint.h>
+
+#include	"debug.h"
+#include	"kern/kern.h"
 #include	"kern/private/private_identifiers.h"
 #include	"kern/private/private_lists.h"
+#include	"kern/private/private_processes.h"
+#include	"kern/private/private_kern.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"macros_soc.h"
+#include	"os_errors.h"
+#include	"syscallDispatcher.h"		// IWYU pragma: keep
+#include	"types.h"
 
 sign_t		vKern_sign[KNB_CORES][KKERN_NB_SIGNALS];
 list_t		vKern_listSign[KNB_CORES];
@@ -93,22 +105,22 @@ void	signals_init(void) {
 	DEBUG_KERN_TRACE("entry: ");
 	core = GET_RUNNING_CORE;
 
-	for (i = 0u; i < KKERN_NB_SIGNALS; i++) {
+	for (i = 0U; i < KKERN_NB_SIGNALS; i++) {
 		vKern_sign[core][i].oIdentifier  = NULL;
-		vKern_sign[core][i].oState		 = 0u;
-		vKern_sign[core][i].oGroupNumber = 0u;
-		vKern_sign[core][i].oUsedBit     = 0u;
+		vKern_sign[core][i].oState		 = 0U;
+		vKern_sign[core][i].oGroupNumber = 0U;
+		vKern_sign[core][i].oUsedBit     = 0U;
 
-		for (j = 0u; j < KKERN_NB_PROCESSES; j++) {
-			vKern_sign[core][i].oSynchro[j].oSignalBitPending  = 0u;
-			vKern_sign[core][i].oSynchro[j].oSignalBitGenerate = 0u;
+		for (j = 0U; j < KKERN_NB_PROCESSES; j++) {
+			vKern_sign[core][i].oSynchro[j].oSignalBitPending  = 0U;
+			vKern_sign[core][i].oSynchro[j].oSignalBitGenerate = 0U;
 			vKern_sign[core][i].oSynchro[j].oSignalFromProcess = NULL;
 		}
 	}
 	lists_initialise(&vKern_listSign[core]);
 
-	vKern_nbSign[core]	  = 0u;
-	vKern_nbMaxSign[core] = 0u;
+	vKern_nbSign[core]	  = 0U;
+	vKern_nbMaxSign[core] = 0U;
 	DEBUG_KERN_TRACE("exit: OK");
 }
 
@@ -149,8 +161,8 @@ int32_t	kern_createSignalGroup(const char_t *identifier, sign_t **handle) {
 // with the handle of the previously created object
 
 	if (identifier != NULL) {
-		for (i = 0u; i < KKERN_NB_SIGNALS; i++) {
-			if (identifiers_cmpStrings(vKern_sign[core][i].oIdentifier, identifier) == true) {
+		for (i = 0U; i < KKERN_NB_SIGNALS; i++) {
+			if (identifiers_cmpStrings(vKern_sign[core][i].oIdentifier, identifier)) {
 				*handle = &vKern_sign[core][i];
 				DEBUG_KERN_TRACE("exit: KO 2");
 				INTERRUPTION_RESTORE;
@@ -161,21 +173,21 @@ int32_t	kern_createSignalGroup(const char_t *identifier, sign_t **handle) {
 		}
 	}
 
-	for (i = 0u; i < KKERN_NB_SIGNALS; i++) {
+	for (i = 0U; i < KKERN_NB_SIGNALS; i++) {
 		if (vKern_sign[core][i].oIdentifier  == NULL) {
 			vKern_sign[core][i].oIdentifier   = (identifier == NULL) ? (KSIGN_ANONYMOUS_ID) : (identifier);
-			vKern_sign[core][i].oState		  = (1u<<BSIGN_INSTALLED);
+			vKern_sign[core][i].oState		  = (1U<<BSIGN_INSTALLED);
 			vKern_sign[core][i].oGroupNumber  = i;
-			vKern_sign[core][i].oUsedBit      = 0u;
+			vKern_sign[core][i].oUsedBit      = 0U;
 
-			for (j = 0u; j < KKERN_NB_PROCESSES; j++) {
-				vKern_sign[core][i].oSynchro[j].oSignalBitPending  = 0u;
-				vKern_sign[core][i].oSynchro[j].oSignalBitGenerate = 0u;
+			for (j = 0U; j < KKERN_NB_PROCESSES; j++) {
+				vKern_sign[core][i].oSynchro[j].oSignalBitPending  = 0U;
+				vKern_sign[core][i].oSynchro[j].oSignalBitGenerate = 0U;
 				vKern_sign[core][i].oSynchro[j].oSignalFromProcess = NULL;
 			}
 			*handle = &vKern_sign[core][i];
 
-			vKern_nbSign[core]    = (uint16_t)(vKern_nbSign[core] + 1u);
+			vKern_nbSign[core]    = (uint16_t)(vKern_nbSign[core] + 1U);
 			vKern_nbMaxSign[core] = (vKern_nbSign[core] > vKern_nbMaxSign[core]) ? (vKern_nbSign[core]) : (vKern_nbMaxSign[core]);
 			DEBUG_KERN_TRACE("exit: OK");
 			INTERRUPTION_RESTORE;
@@ -221,11 +233,11 @@ int32_t	kern_createBitSignal(sign_t *handle, uint8_t *bitSignal) {
 	INTERRUPTION_OFF;
 	vKern_runProc[core]->oStatistic.oNbKernCalls++;
 	if (handle == NULL)								    { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOGRO); }
-	if ((handle->oState & (1u<<BSIGN_INSTALLED)) == 0u) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOGRO); }
+	if ((handle->oState & (1U<<BSIGN_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOGRO); }
 
-	for (i = 0u; i < KSIGN_NB_SIGNALS_PER_GROUP; i++) {
-		if ((handle->oUsedBit & (1u<<i)) == 0u) {
-			handle->oUsedBit |= (uint32_t)(1u<<i);
+	for (i = 0U; i < KSIGN_NB_SIGNALS_PER_GROUP; i++) {
+		if ((handle->oUsedBit & (1U<<i)) == 0U) {
+			handle->oUsedBit |= (uint32_t)(1U<<i);
 			*bitSignal = (uint8_t)i;
 			DEBUG_KERN_TRACE("exit: OK");
 			INTERRUPTION_RESTORE;
@@ -234,7 +246,7 @@ int32_t	kern_createBitSignal(sign_t *handle, uint8_t *bitSignal) {
 		}
 
 	}
-	*bitSignal = 0u;
+	*bitSignal = 0U;
 	DEBUG_KERN_TRACE("exit: KO 3");
 	INTERRUPTION_RESTORE;
 	PRIVILEGE_RESTORE;
@@ -253,7 +265,7 @@ int32_t	kern_createBitSignal(sign_t *handle, uint8_t *bitSignal) {
  * proc_t       *toProcess;
  *
  *    while (kern_getProcessById(“My process”, &toProcess) != KERR_KERN_NOERR) {
- *        kern_suspendProcess(1u);
+ *        kern_suspendProcess(1U);
  *    }
  *
  * // Mode selective
@@ -294,7 +306,7 @@ int32_t	kern_signalSignal(sign_t *handle, uint32_t signals, proc_t *toProcess, u
 	INTERRUPTION_OFF;
 	vKern_runProc[core]->oStatistic.oNbKernCalls++;
 	if (handle == NULL)								    { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOGRO); }
-	if ((handle->oState & (1u<<BSIGN_INSTALLED)) == 0u) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOGRO); }
+	if ((handle->oState & (1U<<BSIGN_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOGRO); }
 	if (toProcess == NULL)							    { DEBUG_KERN_TRACE("exit: KO 3"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPRO); }
 
 	if (toProcess == KKERN_HANDLE_BROADCAST) {
@@ -302,21 +314,21 @@ int32_t	kern_signalSignal(sign_t *handle, uint32_t signals, proc_t *toProcess, u
 // Process broadcast signal
 // ------------------------
 
-		for (i = 0u; i < KKERN_NB_PROCESSES; i++) {
-			if ((vKern_proc[core][i].oInternal.oState & (1u<<BPROC_INSTALLED)) != 0u) {
+		for (i = 0U; i < KKERN_NB_PROCESSES; i++) {
+			if ((vKern_proc[core][i].oInternal.oState & (1U<<BPROC_INSTALLED)) != 0U) {
 				if (&vKern_proc[core][i] != vKern_runProc[core]) {
 					handle->oSynchro[i].oSignalBitPending |= signals;
-					if ((vKern_proc[core][i].oInternal.oState & (1u<<BPROC_SUSP_SIGN)) != 0u) {
+					if ((vKern_proc[core][i].oInternal.oState & (1U<<BPROC_SUSP_SIGN)) != 0U) {
 						theSignals = handle->oSynchro[i].oSignalBitGenerate & signals;
 						if ((theSignals != 0) && ((handle->oSynchro[i].oSignalFromProcess == vKern_runProc[core]) || (handle->oSynchro[i].oSignalFromProcess == KKERN_HANDLE_BROADCAST) || (handle->oSynchro[i].oSignalFromProcess == KKERN_HANDLE_FROM_ISR))) {
-							vKern_proc[core][i].oInternal.oState &= (uint16_t)~(1u<<BPROC_SUSP_SIGN);
+							vKern_proc[core][i].oInternal.oState &= (uint16_t)~(1U<<BPROC_SUSP_SIGN);
 							lists_disconnectConnect(vKern_proc[core][i].oObject.oList, &vKern_listExec[core], &vKern_proc[core][i]);
 							vKern_proc[core][i].oInternal.oStatus = KERR_KERN_NOERR;
 
 // mode == KSIGN_SIGNALE_WITH_CONTEXT_SWITCH
 // If the ready process has a higher priority, then preemption occurs
 
-							preemption = ((mode == KSIGN_SIGNALE_WITH_CONTEXT_SWITCH) && (vKern_proc[core][i].oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority)) ? (true) : (false);
+							preemption = ((mode == KSIGN_SIGNALE_WITH_CONTEXT_SWITCH) && (vKern_proc[core][i].oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority));
 						}
 					}
 				}
@@ -330,19 +342,19 @@ int32_t	kern_signalSignal(sign_t *handle, uint32_t signals, proc_t *toProcess, u
 
 		i = (uint16_t)(((uintptr_t)toProcess - (uintptr_t)&vKern_proc[core][0]) / sizeof(proc_t));
 
-		if ((toProcess->oInternal.oState & (1u<<BPROC_INSTALLED)) != 0u) {
+		if ((toProcess->oInternal.oState & (1U<<BPROC_INSTALLED)) != 0U) {
 			handle->oSynchro[i].oSignalBitPending |= signals;
-			if ((toProcess->oInternal.oState & (1u<<BPROC_SUSP_SIGN)) != 0) {
+			if ((toProcess->oInternal.oState & (1U<<BPROC_SUSP_SIGN)) != 0) {
 				theSignals = handle->oSynchro[i].oSignalBitGenerate & signals;
-				if ((theSignals != 0u) && ((handle->oSynchro[i].oSignalFromProcess == vKern_runProc[core]) || (handle->oSynchro[i].oSignalFromProcess == KKERN_HANDLE_BROADCAST) || (handle->oSynchro[i].oSignalFromProcess == KKERN_HANDLE_FROM_ISR))) {
-					toProcess->oInternal.oState &= (uint16_t)~(1u<<BPROC_SUSP_SIGN);
+				if ((theSignals != 0U) && ((handle->oSynchro[i].oSignalFromProcess == vKern_runProc[core]) || (handle->oSynchro[i].oSignalFromProcess == KKERN_HANDLE_BROADCAST) || (handle->oSynchro[i].oSignalFromProcess == KKERN_HANDLE_FROM_ISR))) {
+					toProcess->oInternal.oState &= (uint16_t)~(1U<<BPROC_SUSP_SIGN);
 					lists_disconnectConnect(toProcess->oObject.oList, &vKern_listExec[core], toProcess);
 					toProcess->oInternal.oStatus = KERR_KERN_NOERR;
 
 // mode == KSIGN_SIGNALE_WITH_CONTEXT_SWITCH
 // If the ready process has a higher priority, then preemption occurs
 
-					preemption = ((mode == KSIGN_SIGNALE_WITH_CONTEXT_SWITCH) && (toProcess->oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority)) ? (true) : (false);
+					preemption = ((mode == KSIGN_SIGNALE_WITH_CONTEXT_SWITCH) && (toProcess->oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority));
 				}
 			}
 		}
@@ -357,7 +369,7 @@ int32_t	kern_signalSignal(sign_t *handle, uint32_t signals, proc_t *toProcess, u
 	DEBUG_KERN_TRACE("exit: OK");
 	INTERRUPTION_RESTORE;
 
-	if (preemption == true) { PREEMPTION; }
+	if (preemption) { PREEMPTION; }
 	PRIVILEGE_RESTORE;
 	return (KERR_KERN_NOERR);
 }
@@ -377,7 +389,7 @@ int32_t	kern_signalSignal(sign_t *handle, uint32_t signals, proc_t *toProcess, u
  *
  *    status = kern_getSignalGroupById(“Chrono trigger”, &signalGroup);
  *
- *    waitSignals = (1u<<BMYSIGNAL)
+ *    waitSignals = (1U<<BMYSIGNAL)
  *    status = kern_waitSignal(signalGroup, &waitSignals, fromProcess, 1000);
  * \endcode
  *
@@ -407,13 +419,13 @@ int32_t	kern_waitSignal(sign_t *handle, uint32_t *signals, proc_t *fromProcess, 
 	DEBUG_KERN_TRACE("entry: ");
 	core = GET_RUNNING_CORE;
 
-	if (*signals == 0u) { DEBUG_KERN_TRACE("exit: OK"); return (KERR_KERN_NOERR); }
+	if (*signals == 0U) { DEBUG_KERN_TRACE("exit: OK"); return (KERR_KERN_NOERR); }
 
 	PRIVILEGE_ELEVATE;
 	INTERRUPTION_OFF;
 	vKern_runProc[core]->oStatistic.oNbKernCalls++;
 	if (handle == NULL)								    { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOGRO); }
-	if ((handle->oState & (1u<<BSIGN_INSTALLED)) == 0u) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOGRO); }
+	if ((handle->oState & (1U<<BSIGN_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOGRO); }
 	if (fromProcess == NULL)						    { DEBUG_KERN_TRACE("exit: KO 3"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPRO); }
 
 // -------------------------- inputs --------------------------		-------------------------------------- output ---------------------------------------
@@ -433,7 +445,7 @@ int32_t	kern_waitSignal(sign_t *handle, uint32_t *signals, proc_t *fromProcess, 
 
 	theSignal = handle->oSynchro[i].oSignalBitPending & *signals;
 
-	if (theSignal != 0u) {
+	if (theSignal != 0U) {
 		handle->oSynchro[i].oSignalBitPending &= ~theSignal;
 		*signals = theSignal;
 		DEBUG_KERN_TRACE("exit: OK");
@@ -444,7 +456,7 @@ int32_t	kern_waitSignal(sign_t *handle, uint32_t *signals, proc_t *fromProcess, 
 
 // Waiting for the signal
 
-	if (wkTimeout > 0u) {
+	if (wkTimeout > 0U) {
 		handle->oSynchro[i].oSignalBitGenerate |= *signals;
 
 		if (handle->oCbOnWaiting != NULL) {
@@ -464,7 +476,7 @@ int32_t	kern_waitSignal(sign_t *handle, uint32_t *signals, proc_t *fromProcess, 
 		return (status);
 	}
 
-	*signals = 0u;
+	*signals = 0U;
 	DEBUG_KERN_TRACE("exit: KO 4");
 	INTERRUPTION_RESTORE;
 	PRIVILEGE_RESTORE;
@@ -501,11 +513,11 @@ int32_t kern_getWaitingSignalMask(sign_t *handle, uint32_t *waitingSignals) {
 	INTERRUPTION_OFF;
 	vKern_runProc[core]->oStatistic.oNbKernCalls++;
 	if (handle == NULL)								    { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOGRO); }
-	if ((handle->oState & (1u<<BSIGN_INSTALLED)) == 0u) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOGRO); }
+	if ((handle->oState & (1U<<BSIGN_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOGRO); }
 
-	mask = 0u;
-	for (i = 0u; i < KKERN_NB_PROCESSES; i++) {
-		if ((vKern_proc[core][i].oInternal.oState & ((1u<<BPROC_INSTALLED) | (1u<<BPROC_SUSP_SIGN))) == ((1u<<BPROC_INSTALLED) | (1u<<BPROC_SUSP_SIGN))) {
+	mask = 0U;
+	for (i = 0U; i < KKERN_NB_PROCESSES; i++) {
+		if ((vKern_proc[core][i].oInternal.oState & ((1U<<BPROC_INSTALLED) | (1U<<BPROC_SUSP_SIGN))) == ((1U<<BPROC_INSTALLED) | (1U<<BPROC_SUSP_SIGN))) {
 			mask |= handle->oSynchro[i].oSignalBitGenerate;
 		}
 	}
@@ -542,13 +554,13 @@ int32_t kern_clearPendingSignal(sign_t *handle, uint32_t toClearMask) {
 	DEBUG_KERN_TRACE("entry: ");
 	core = GET_RUNNING_CORE;
 
-	if (toClearMask == 0u) { DEBUG_KERN_TRACE("exit: OK"); return (KERR_KERN_NOERR); }
+	if (toClearMask == 0U) { DEBUG_KERN_TRACE("exit: OK"); return (KERR_KERN_NOERR); }
 
 	PRIVILEGE_ELEVATE;
 	INTERRUPTION_OFF;
 	vKern_runProc[core]->oStatistic.oNbKernCalls++;
 	if (handle == NULL)								    { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOGRO); }
-	if ((handle->oState & (1u<<BSIGN_INSTALLED)) == 0u) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOGRO); }
+	if ((handle->oState & (1U<<BSIGN_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOGRO); }
 
 	i = (uint16_t)(((uintptr_t)vKern_runProc[core] - (uintptr_t)&vKern_proc[core][0]) / sizeof(proc_t));
 
@@ -593,45 +605,45 @@ int32_t	kern_killSignalGroup(sign_t *handle) {
 	INTERRUPTION_OFF;
 	vKern_runProc[core]->oStatistic.oNbKernCalls++;
 	if (handle == NULL)								    { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOGRO); }
-	if ((handle->oState & (1u<<BSIGN_INSTALLED)) == 0u) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOGRO); }
+	if ((handle->oState & (1U<<BSIGN_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOGRO); }
 
 // Disconnect the waiting processes from the signal list
 // Do not use the "while (vKern_listSign[core].oNbElements > 0) { ... }"
 
 	nbElements = vKern_listSign[core].oNbElements;
-	if (nbElements > 0u) {
-		for (i = 0u; i < nbElements; i++) {
+	if (nbElements > 0U) {
+		for (i = 0U; i < nbElements; i++) {
 			process = vKern_listSign[core].oFirst;
 			j = (uint16_t)(((uintptr_t)process - (uintptr_t)&vKern_proc[core][0]) / sizeof(proc_t));
 
-			if (handle->oSynchro[j].oSignalBitGenerate != 0u) {
-				process->oInternal.oState &= (uint16_t)~(1u<<BPROC_SUSP_SIGN);
+			if (handle->oSynchro[j].oSignalBitGenerate != 0U) {
+				process->oInternal.oState &= (uint16_t)~(1U<<BPROC_SUSP_SIGN);
 				lists_disconnectConnect(process->oObject.oList, &vKern_listExec[core], process);
 				process->oInternal.oStatus = KERR_KERN_SIKIL;
 
 // If the ready process has a higher priority, then preemption occurs
 
-				preemption = (process->oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority) ? (true) : (false);
+				preemption = (process->oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority);
 			}
 		}
 	}
 
 	handle->oIdentifier  = NULL;
-	handle->oState       = 0u;
-	handle->oGroupNumber = 0u;
-	handle->oUsedBit     = 0u;
+	handle->oState       = 0U;
+	handle->oGroupNumber = 0U;
+	handle->oUsedBit     = 0U;
 
 	for (i = 0; i < KKERN_NB_PROCESSES; i++) {
-		handle->oSynchro[i].oSignalBitPending  = 0u;
-		handle->oSynchro[i].oSignalBitGenerate = 0u;
+		handle->oSynchro[i].oSignalBitPending  = 0U;
+		handle->oSynchro[i].oSignalBitGenerate = 0U;
 		handle->oSynchro[i].oSignalFromProcess = NULL;
 	}
 
-	if (vKern_nbSign[core] != 0) { vKern_nbSign[core] = (uint16_t)(vKern_nbSign[core] - 1u); }
+	if (vKern_nbSign[core] != 0) { vKern_nbSign[core] = (uint16_t)(vKern_nbSign[core] - 1U); }
 	DEBUG_KERN_TRACE("exit: OK");
 	INTERRUPTION_RESTORE;
 
-	if (preemption == true) { PREEMPTION; }
+	if (preemption) { PREEMPTION; }
 	PRIVILEGE_RESTORE;
 	return (KERR_KERN_NOERR);
 }
@@ -665,9 +677,9 @@ int32_t	kern_killBitSignal(sign_t *handle, uint8_t bitSignal) {
 	INTERRUPTION_OFF;
 	vKern_runProc[core]->oStatistic.oNbKernCalls++;
 	if (handle == NULL)								    { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOGRO); }
-	if ((handle->oState & (1u<<BSIGN_INSTALLED)) == 0u) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOGRO); }
+	if ((handle->oState & (1U<<BSIGN_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOGRO); }
 
-	maskBit = (uint32_t)(1u<<bitSignal);
+	maskBit = (uint32_t)(1U<<bitSignal);
 	handle->oUsedBit &= ~maskBit;
 	DEBUG_KERN_TRACE("exit: OK");
 	INTERRUPTION_RESTORE;
@@ -708,8 +720,8 @@ int32_t	kern_getSignalGroupById(const char_t *identifier, sign_t **handle) {
 	vKern_runProc[core]->oStatistic.oNbKernCalls++;
 	*handle = NULL;
 
-	for (i = 0u; i < KKERN_NB_SIGNALS; i++) {
-		if (identifiers_cmpStrings(vKern_sign[core][i].oIdentifier, identifier) == true) {
+	for (i = 0U; i < KKERN_NB_SIGNALS; i++) {
+		if (identifiers_cmpStrings(vKern_sign[core][i].oIdentifier, identifier)) {
 			*handle = &vKern_sign[core][i];
 			DEBUG_KERN_TRACE("exit: OK");
 			INTERRUPTION_RESTORE;

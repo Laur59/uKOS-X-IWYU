@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Important macros.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,21 +48,30 @@
 
 #pragma	once
 
-#include	"./kern/privileges.h"
+#include	<stdint.h>	// IWYU pragma: keep
+#include	<stdlib.h>	// IWYU pragma: keep (for exit in CHECK_STACK_SANITY)
+
+#include	"Registers/soc_vectors.h"	// IWYU pragma: keep
+#include	"core.h"	// IWYU pragma: keep
+#include	"core_reg.h"
+#include	"kern/kern.h"
 #include	"linker.h"
+#include	"macros_soc.h"
+#include	"memo/memo.h"		// IWYU pragma: keep for KMEMO_ALIGN_8
+#include	"syscallDispatcher.h"
 
 // uKernel macros
 // --------------
 
 // Core machine in bits
 
-#define	KMACHINE_BITS			(32u)
+#define	KMACHINE_BITS			(32U)
 
 // Preemptions
 
-#if (!defined(PREEMPTION))
+#ifndef PREEMPTION
 #define	PREEMPTION				stub_kern_stopProcessTimeout();																	\
-								SCB->ICSR = (1u<<BKERN_PREEMPTION);																\
+								SCB->ICSR = (1U<<BKERN_PREEMPTION);																\
 								__asm volatile ("																			 \n \
 								sev"																							\
 								);																								\
@@ -71,7 +80,7 @@
 								INST_SYNC_BARRIER;
 #endif
 
-#if (!defined(PREEMPTION_THRESHOLD))
+#ifndef PREEMPTION_THRESHOLD
 #define	PREEMPTION_THRESHOLD(core)																								\
 								do {																							\
 									extern	proc_t	*vKern_runProc[KNB_CORES]; 													\
@@ -85,8 +94,8 @@
 // Elevation macros
 // ----------------
 
-#if (!defined(PRIVILEGE_ELEVATE))
-#if (defined(PRIVILEGED_USER_S))
+#ifndef PRIVILEGE_ELEVATE
+#ifdef PRIVILEGED_USER_S
 #define	PRIVILEGE_ELEVATE		kern_setPrivilegeMode(KPROC_PRIVILEGED)
 
 #else
@@ -94,8 +103,8 @@
 #endif
 #endif
 
-#if (!defined(PRIVILEGE_RESTORE))
-#if (defined(PRIVILEGED_USER_S))
+#ifndef PRIVILEGE_RESTORE
+#ifdef PRIVILEGED_USER_S
 #define	PRIVILEGE_RESTORE		kern_setPrivilegeMode(KPROC_USER)
 
 #else
@@ -103,7 +112,7 @@
 #endif
 #endif
 
-#if (!defined(RIGHTS_ELEVATION))
+#ifndef RIGHTS_ELEVATION
 #define	RIGHTS_ELEVATION		__asm volatile ("																			 \n \
 								.global		priv_returnElevation															 \n \
 								svc			%0																				 \n \
@@ -117,17 +126,17 @@
 								INST_SYNC_BARRIER;
 #endif
 
-#if (!defined(SET_USER_MODE))
+#ifndef SET_USER_MODE
 #define	SET_USER_MODE			core_setCONTROL(core_getCONTROL() | CONTROL_SET_USER_MODE);										\
 								INST_SYNC_BARRIER
 #endif
 
-#if (!defined(SET_PRIVILEGED_MODE))
+#ifndef SET_PRIVILEGED_MODE
 #define	SET_PRIVILEGED_MODE		core_setCONTROL(core_getCONTROL() & ~CONTROL_SET_USER_MODE);									\
 								INST_SYNC_BARRIER
 #endif
 
-#if (!defined(GET_ADDRESS_ELEVATION_CALLER))
+#ifndef GET_ADDRESS_ELEVATION_CALLER
 #define GET_ADDRESS_ELEVATION_CALLER																							\
 								__asm volatile ("																			 \n \
 								tst			lr,#0x4																			 \n \
@@ -138,12 +147,12 @@
 								)
 #endif
 
-#if (!defined(GET_ADDRESS_CALLER))
+#ifndef GET_ADDRESS_CALLER
 #define GET_ADDRESS_CALLER(address)																								\
 								address = core_getLR()
 #endif
 
-#if (!defined(CALL_FNCT_ELEVATION))
+#ifndef CALL_FNCT_ELEVATION
 #define CALL_FNCT_ELEVATION(function)																							\
 								__asm volatile ("																			 \n	\
 								push		{lr}																			 \n	\
@@ -156,7 +165,7 @@
 								)
 #endif
 
-#if (!defined(KERN_RETURN_ELEVATION))
+#ifndef KERN_RETURN_ELEVATION
 #define	KERN_RETURN_ELEVATION	__asm volatile ("																			 \n \
 								bx			lr"																					\
 								)
@@ -165,29 +174,29 @@
 // Interruption macros
 // -------------------
 
-#if (!defined(INTERRUPTION_SET))
+#ifndef INTERRUPTION_SET
 #define	INTERRUPTION_SET		core_setBASEPRI((uint32_t)KINT_IMASK_ALL<<(uint32_t)KNVIC_PRIORITY_SHIFT)
 #endif
 
-#if (!defined(INTERRUPTION_SET_PERIPH))
+#ifndef INTERRUPTION_SET_PERIPH
 #define	INTERRUPTION_SET_PERIPH	core_setBASEPRI((uint32_t)KINT_IMASK_PERIPHERALS<<(uint32_t)KNVIC_PRIORITY_SHIFT)
 #endif
 
-#if (!defined(INTERRUPTION_OFF_HARD))
+#ifndef INTERRUPTION_OFF_HARD
 #define	INTERRUPTION_OFF_HARD	__asm volatile ("																			 \n \
 								cpsid		i"																					\
 								);																								\
 								INST_SYNC_BARRIER;
 #endif
 
-#if (!defined(INTERRUPTION_ON_HARD))
+#ifndef INTERRUPTION_ON_HARD
 #define	INTERRUPTION_ON_HARD	__asm volatile ("																			 \n \
 								cpsie		i"																					\
 								);																								\
 								INST_SYNC_BARRIER;
 #endif
 
-#if (!defined(INTERRUPTION_OFF))
+#ifndef INTERRUPTION_OFF
 #define	INTERRUPTION_OFF		volatile	uint32_t	saveBASEPRI __attribute__ ((unused));									\
 																																\
 								saveBASEPRI = core_getBASEPRI();																\
@@ -195,28 +204,28 @@
 								core_setBASEPRI((uint32_t)KINT_IMASK_OFF<<(uint32_t)KNVIC_PRIORITY_SHIFT)
 #endif
 
-#if (!defined(INTERRUPTION_RESTORE))
+#ifndef INTERRUPTION_RESTORE
 #define	INTERRUPTION_RESTORE	core_setBASEPRI(saveBASEPRI)
 #endif
 
-#if (!defined(RETURN_INT_RESTORE))
+#ifndef RETURN_INT_RESTORE
 #define	RETURN_INT_RESTORE(status)																								\
 								INTERRUPTION_RESTORE;																			\
 								return (status)
 #endif
 
-#if (!defined(INTERRUPTION_OFF_CRITICAL))
+#ifndef INTERRUPTION_OFF_CRITICAL
 #define	INTERRUPTION_OFF_CRITICAL(savemMask)																					\
 								savemMask = core_getBASEPRI();																	\
 								core_setBASEPRI((uint32_t)KINT_IMASK_OFF<<(uint32_t)KNVIC_PRIORITY_SHIFT)
 #endif
 
-#if (!defined(INTERRUPTION_RESTORE_CRITICAL))
+#ifndef INTERRUPTION_RESTORE_CRITICAL
 #define	INTERRUPTION_RESTORE_CRITICAL(savemMask)																				\
 								core_setBASEPRI(savemMask)
 #endif
 
-#if (!defined(WAITING_INTERRUPTION))
+#ifndef WAITING_INTERRUPTION
 #define	WAITING_INTERRUPTION	DATA_SYNC_BARRIER;																				\
 								__asm volatile ("																			 \n \
 								wfi"																							\
@@ -224,17 +233,17 @@
 								INST_SYNC_BARRIER;
 #endif
 
-#if (!defined(IS_EXCEPTION))
-#define	IS_EXCEPTION			((SCB->ICSR & 0x000001FFu) != 0u)
+#ifndef IS_EXCEPTION
+#define	IS_EXCEPTION			((SCB->ICSR & 0x000001FFu) != 0U)
 #endif
 
-#if (!defined(GET_CURRENT_PROCESS_STACK))
+#ifndef GET_CURRENT_PROCESS_STACK
 #define GET_CURRENT_PROCESS_STACK(stack)										 												\
 								stack = core_getPSP()
 #endif
 
-#if (!defined(EXCEPTION_SPECIFIC_HANDLER))
-#define KEXCEPTION				0u
+#ifndef EXCEPTION_SPECIFIC_HANDLER
+#define KEXCEPTION				0U
 
 extern	volatile	bool	vPriv_insideException[KNB_CORES];
 extern				void	(*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
@@ -252,8 +261,8 @@ extern				void	(*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
 								}
 #endif
 
-#if (!defined(INTERRUPT_SPECIFIC_HANDLER))
-#define KINTERRUPTION			1u
+#ifndef INTERRUPT_SPECIFIC_HANDLER
+#define KINTERRUPTION			1U
 
 extern	void	(*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
@@ -271,18 +280,28 @@ extern	void	(*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 								}
 #endif
 
+// Vector registration macros
+// --------------------------
+// Moved from macros_soc.h for IWYU compliance (eliminates circular dependency)
+
+#define	EXCEPTION_VECTOR(vectorNb, address)																						\
+								vExce_indExcVectors[GET_RUNNING_CORE][vectorNb] = address
+
+#define	INTERRUPT_VECTOR(vectorNb, address)																						\
+								vExce_indIntVectors[GET_RUNNING_CORE][vectorNb] = address
+
 // Misc assembler macro
 // --------------------
 
-#if (!defined(SET_PSP_STACK))
-#define	SET_PSP_STACK(stack)	core_setPSP((uintptr_t)stack)
+#ifndef SET_PSP_STACK
+#define	SET_PSP_STACK(stack)	core_setPSP((uintptr_t)(stack))
 #endif
 
-#if (!defined(SET_MSP_STACK))
-#define	SET_MSP_STACK(stack)	core_setMSP((uintptr_t)stack)
+#ifndef SET_MSP_STACK
+#define	SET_MSP_STACK(stack)	core_setMSP((uintptr_t)(stack))
 #endif
 
-#if (!defined(SET_THREAD_STACK))
+#ifndef SET_THREAD_STACK
 #define	SET_THREAD_STACK(stack)	__asm volatile ("																			 \n \
 								msr			psp,%0"																				\
 								:																								\
@@ -298,46 +317,46 @@ extern	void	(*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 // - Copy the MSP to the PSP
 // - Set the PSP as the active stack
 
-#if (!defined(CHECKSET_THREAD_STACK))
-#define	CHECKSET_THREAD_STACK	if (core_getPSP() == 0u) {										 								\
+#ifndef CHECKSET_THREAD_STACK
+#define	CHECKSET_THREAD_STACK	if (core_getPSP() == 0U) {										 								\
 									core_setPSP(core_getMSP());									 								\
 									core_setCONTROL(core_getCONTROL() | CONTROL_SET_PSP_STACK);	 								\
 									INST_SYNC_BARRIER;											 								\
 								}
 #endif
 
-#if (!defined(NOP))
+#ifndef NOP
 #define	NOP 					__asm volatile ("																			 \n \
 								nop"																							\
 								)
 #endif
 
-#if (!defined(DATA_SYNC_BARRIER))
+#ifndef DATA_SYNC_BARRIER
 #define	DATA_SYNC_BARRIER		__asm volatile ("																			 \n \
 								dsb"																							\
 								)
 #endif
 
-#if (!defined(INST_SYNC_BARRIER))
+#ifndef INST_SYNC_BARRIER
 #define	INST_SYNC_BARRIER		__asm volatile ("																			 \n \
 								isb"															  								\
 								)
 #endif
 
-#if (!defined(MEMO_SYNC_BARRIER))
+#ifndef MEMO_SYNC_BARRIER
 #define	MEMO_SYNC_BARRIER		__asm volatile ("																			 \n \
 								dmb"																							\
 								)
 #endif
 
-#if (!defined(JUMP_FNCT))
+#ifndef JUMP_FNCT
 #define JUMP_FNCT(function)																										\
 								__asm volatile ("																			 \n \
 								b			"#function																			\
 								)
 #endif
 
-#if (!defined(CALL_FNCT))
+#ifndef CALL_FNCT
 #define CALL_FNCT(function)																										\
 								__asm volatile ("																			 \n \
 								bl			"#function																			\
@@ -346,8 +365,3 @@ extern	void	(*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 								: "lr"																							\
 								)
 #endif
-
-// Stack frame macros
-// ------------------
-
-#include	"macros_core_stackFrame.h"

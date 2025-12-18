@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		This tool allows to fill a memory with a pattern.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,16 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+#include	<stdio.h>
+#include	<stdlib.h>
+
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"modules.h"
+#include	"serial/serial.h"
+#include	"text/text.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -79,7 +88,7 @@ MODULE(
 	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,										// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
@@ -108,40 +117,40 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 // fill A0001234 A0011234 34
 // fill -S A0001234 A0011234 34
 
-	if ((argc < 4u) || (argc > 5u)) {
+	if ((argc < 4U) || (argc > 5U)) {
 		error = true;
 	}
 	else {
-		if (argc == 4u) {
+		if (argc == 4U) {
 
 // User access
 
-			startAdd = (uintptr_t)strtol(argv[1], &dummy, 16u);
-			endAdd	 = (uintptr_t)strtol(argv[2], &dummy, 16u);
-			value	 = (int32_t)  strtol(argv[3], &dummy, 16u);
+			startAdd = (uintptr_t)strtol(argv[1], &dummy, 16U);
+			endAdd	 = (uintptr_t)strtol(argv[2], &dummy, 16U);
+			value	 = (int32_t)  strtol(argv[3], &dummy, 16U);
 
 			nbBytes = (uint32_t)(endAdd - startAdd);
 			firstAdd = (uint8_t *)startAdd;
-			for (i = 0u; i < nbBytes; i++) {
+			for (i = 0U; i < nbBytes; i++) {
 				*firstAdd = (uint8_t)value;
 				firstAdd++;
 			}
 		}
 		else {
 			text_checkAsciiBuffer(argv[1], "-S", &equals);
-			if (equals == true) {
+			if (equals) {
 
 // Privileged access
 
 				PRIVILEGE_ELEVATE;
 
-				startAdd = (uintptr_t)strtol(argv[2], &dummy, 16u);
-				endAdd	 = (uintptr_t)strtol(argv[3], &dummy, 16u);
-				value	 = (int32_t)  strtol(argv[4], &dummy, 16u);
+				startAdd = (uintptr_t)strtol(argv[2], &dummy, 16U);
+				endAdd	 = (uintptr_t)strtol(argv[3], &dummy, 16U);
+				value	 = (int32_t)  strtol(argv[4], &dummy, 16U);
 
 				nbBytes = (uint32_t)(endAdd - startAdd);
 				firstAdd = (uint8_t *)startAdd;
-				for (i = 0u; i < nbBytes; i++) {
+				for (i = 0U; i < nbBytes; i++) {
 					*firstAdd = (uint8_t)value;
 					firstAdd++;
 				}
@@ -154,7 +163,7 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 		}
 	}
 
-	if (error == false) { (void)dprintf(KSYST, "\n");				   status = EXIT_OS_SUCCESS_CLI; }
-	else				{ (void)dprintf(KSYST, "Protocol error.\n\n"); status = EXIT_OS_FAILURE;     }
+	if (!error) { (void)dprintf(KSYST, "\n");				   status = EXIT_OS_SUCCESS_CLI; }
+	else		{ (void)dprintf(KSYST, "Protocol error.\n\n"); status = EXIT_OS_FAILURE;     }
 	return (status);
 }

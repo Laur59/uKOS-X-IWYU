@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		stub for the connection of the "temperature" manager to the stts22h
 ;			via the i2c1 device.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,8 +47,14 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"STTS22H/STTS22H.h"
+#include	<stdint.h>
+
+#include	"i2c/i2c.h"
+#include	"i2c1/i2c1.h"		// IWYU pragma: keep (for RESERVE)
+#include	"i2c_common.h"
+#include	"kern/temporal.h"	// IWYU pragma: keep (for KWAITINFINITY in RESERVE)
+#include	"macros.h"
+#include	"types.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
@@ -72,11 +78,11 @@ static	void	cb_writeI2C(uint8_t address, const uint8_t *buffer, uint16_t number)
 static	void	cb_configure(void) {
 	static	bool		vInit = false;
 	const	i2cCnf_t	configureI2C1 = {
-							.oTimeout  = 100000u,
+							.oTimeout  = 100000U,
 							.oSpeed    = KI2C_400KBPS,
 						};
 
-	if (vInit == false) {
+	if (!vInit) {
 		vInit = true;
 
 		RESERVE(I2C1, KMODE_READ_WRITE);

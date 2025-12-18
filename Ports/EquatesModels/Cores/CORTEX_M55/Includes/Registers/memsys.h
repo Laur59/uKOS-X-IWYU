@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		MEMSYS equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // MEMSYS address definitions
 // --------------------------
 
@@ -70,7 +72,7 @@ typedef	struct {
 	volatile	uint32_t	DTGU_LUT[16];
 } MemSysCtrl_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	MEMSYSCTL_S		reinterpret_cast<MemSysCtrl_TypeDef *>(0xE001E000u)
 #define	MEMSYSCTL_NS	reinterpret_cast<MemSysCtrl_TypeDef *>(0xE001E000u)
 

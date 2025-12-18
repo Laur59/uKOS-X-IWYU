@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		RP2350_io_bank0 equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // IO_BANK0 address definitions
 // ----------------------------
@@ -223,7 +225,7 @@ typedef struct {
 	volatile	uint32_t	DORMANT_WAKE_INTS5;
 } IO_BANK0_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	IO_BANK0_NS	reinterpret_cast<IO_BANK0_TypeDef *>(0x40028000u)
 #define	IO_BANK0_S	reinterpret_cast<IO_BANK0_TypeDef *>(0x40028000u)
 #else

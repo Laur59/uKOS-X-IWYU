@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Bench 00: 	Compute the X-Y projection and the histogram of
@@ -26,8 +26,8 @@
 ;			MAiXDUiNO_K210 @ 400-MHz	34		39		46		71
 ;			Discovery_U5G9 @ 160-MHz	97		114		97		147
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -61,11 +61,22 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+#include	<stdio.h>
 
-#define	KNB_X		50u
-#define	KNB_Y		50u
-#define	KMAX_BIT	256u
+#include	"kern/kern.h"
+#ifdef __arm__
+#include	"macros_core.h" // ARM: INTERRUPTION_OFF in core
+#endif
+#ifdef __riscv
+#include	"macros_soc.h"	// RISC-V: INTERRUPTION_OFF in soc
+#endif
+#include	"memo/memo.h"
+#include	"serial/serial.h"
+
+#define	KNB_X		50U
+#define	KNB_Y		50U
+#define	KMAX_BIT	256U
 
 // CLI tool specific
 // =================
@@ -131,8 +142,8 @@ static	void	local_fill(uint8_t *array, uint64_t *time) {
 	kern_readTickCount(&tStamp[0]);
 
 	INTERRUPTION_OFF_HARD;
-	for (i = 0u; i < KNB_X; i++) {
-		for (j = 0u; j < KNB_Y; j++) {
+	for (i = 0U; i < KNB_X; i++) {
+		for (j = 0U; j < KNB_Y; j++) {
 			*(array + ((size_t)i * (size_t)KNB_Y) + (size_t)j) = (uint8_t)(j);
 		}
 	}
@@ -155,9 +166,9 @@ static	void	local_prjX(const uint8_t *array, uint64_t *time, uint32_t *x) {
 	kern_readTickCount(&tStamp[0]);
 
 	INTERRUPTION_OFF_HARD;
-	for (i = 0u; i < KNB_X; i++) {
-		*(x + i) = 0u;
-		for (j = 0u; j < KNB_Y; j++) {
+	for (i = 0U; i < KNB_X; i++) {
+		*(x + i) = 0U;
+		for (j = 0U; j < KNB_Y; j++) {
 			p = (x + i);
 			*p += (uint32_t)*(array + ((size_t)j * (size_t)KNB_X) + (size_t)i);
 		}
@@ -181,10 +192,10 @@ static	void	local_prjY(const uint8_t *array, uint64_t *time, uint32_t *y) {
 	kern_readTickCount(&tStamp[0]);
 
 	INTERRUPTION_OFF_HARD;
-	for (j = 0u; j < KNB_Y; j++) {
-		*(y + j) = 0u;
+	for (j = 0U; j < KNB_Y; j++) {
+		*(y + j) = 0U;
 		k = j * KNB_X;
-		for (i = 0u; i < KNB_X; i++) {
+		for (i = 0U; i < KNB_X; i++) {
 			p = (y + j);
 			*p += (uint32_t)*(array + k + i);
 		}
@@ -209,14 +220,14 @@ static	void	local_hist(const uint8_t *array, uint64_t *time, uint32_t *h) {
 
 	INTERRUPTION_OFF_HARD;
 	p = h;
-	for (i = 0u; i < KMAX_BIT; i++) {
-		*p = 0u;
+	for (i = 0U; i < KMAX_BIT; i++) {
+		*p = 0U;
 		p++;
 	}
 
-	for (i = 0u; i < (KNB_X * KNB_Y); i++) {
+	for (i = 0U; i < (KNB_X * KNB_Y); i++) {
 		p = (uint32_t *)((uintptr_t)h + (*(array + i) * sizeof(uint32_t)));
-		*p += 1u;
+		*p += 1U;
 	}
 	INTERRUPTION_ON_HARD;
 

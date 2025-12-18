@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		addendum equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -53,16 +53,16 @@
 // System Reset
 // ------------
 
-#define CONTROL_SET_PSP_STACK			(1u<<1u)
-#define CONTROL_SET_MSP_STACK			(0u<<1u)
-#define CONTROL_SET_USER_MODE			(1u<<0u)
-#define CONTROL_SET_PRIVILEGED_MODE		(0u<<0u)
+#define CONTROL_SET_PSP_STACK			(1U<<1U)
+#define CONTROL_SET_MSP_STACK			(0U<<1U)
+#define CONTROL_SET_USER_MODE			(1U<<0U)
+#define CONTROL_SET_PRIVILEGED_MODE		(0U<<0U)
 
 // MPU additilnal definition & macros
 // ----------------------------------
 
-#define	KMPU_EXECUTABLE					0u
-#define	KMPU_NOT_EXECUTABLE				1u
+#define	KMPU_EXECUTABLE					0U
+#define	KMPU_NOT_EXECUTABLE				1U
 
 // AP[2:0]	Privileged permissions		Unprivileged permissions	Description
 // 000		No access					No access					All accesses generate a permission fault
@@ -74,20 +74,20 @@
 // 110		RO							RO							(KMPU_R_ALL) Read only, by privileged or unprivileged software
 // 111		RO							RO							Read only, by privileged or unprivileged software
 
-#define	KMPU_RW_PRI						1u
-#define	KMPU_RW_PRI_R_UNP				2u
-#define	KMPU_RW_ALL						3u
-#define	KMPU_R_ALL						6u
+#define	KMPU_RW_PRI						1U
+#define	KMPU_RW_PRI_R_UNP				2U
+#define	KMPU_RW_ALL						3U
+#define	KMPU_R_ALL						6U
 
-#define	KMPU_TEX_LEVEL0					0u
-#define	KMPU_TEX_LEVEL6					6u
+#define	KMPU_TEX_LEVEL0					0U
+#define	KMPU_TEX_LEVEL6					6U
 
-#define	KMPU_SHAREABLE					1u
-#define	KMPU_NOT_SHAREABLE				0u
-#define	KMPU_CASHABLE					1u
-#define	KMPU_NOT_CASHABLE				0u
-#define	KMPU_BUFFERABLE					1u
-#define	KMPU_NOT_BUFFERABLE				0u
+#define	KMPU_SHAREABLE					1U
+#define	KMPU_NOT_SHAREABLE				0U
+#define	KMPU_CASHABLE					1U
+#define	KMPU_NOT_CASHABLE				0U
+#define	KMPU_BUFFERABLE					1U
+#define	KMPU_NOT_BUFFERABLE				0U
 
 #define	SET_MPU7_REGION(regionNb, subRegion, start, size, executable, access, tex, sharable, cachable, bufferable)	\
 																													\
@@ -108,7 +108,7 @@ extern	uint8_t	linker_##size[];																					\
 			  | (cachable * MPU_RASR_C)																				\
 			  | (bufferable * MPU_RASR_B)																			\
 			  | (subRegion * MPU_RASR_SRD_0)																		\
-			  | ((uint32_t)linker_##size<<1u)																		\
+			  | ((uint32_t)linker_##size<<1U)																		\
 			  | MPU_RASR_ENABLE;																					\
 																													\
 	MPU->CTRL = MPU_CTRL_PRIVDEFENA | MPU_CTRL_ENABLE;																\

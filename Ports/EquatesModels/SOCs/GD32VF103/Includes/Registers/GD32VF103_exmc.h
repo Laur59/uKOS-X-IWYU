@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		GD32VF103_exmc equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // EXMC address definitions
 // ------------------------
 
@@ -57,7 +59,7 @@ typedef struct {
 	volatile	uint32_t	SNCTL1;
 } EXMC_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	EXMC	reinterpret_cast<EXMC_TypeDef *>(0xA0000000u)
 
 #else

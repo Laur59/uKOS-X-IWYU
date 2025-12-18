@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		TI BQ27510G3 equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -56,17 +56,17 @@
 
 #define	BQ27510G3_CNTRL						0x0001u							// Control register
 #define	BQ27510G3_STATUS					0x0000u							// Reports the status of DF Checksum, Hibernate, IT, etc.
-#define	BQEN								0u								// Status bit indicating the bq27510 Qmax updates enabled. True when set
-#define	BVOK								1u								// Status bit indicating cell voltages are OK for Qmax updates. True when set
-#define	BRUP_DIS							2u								// Status bit indicating the bq27510 Ra table updates disabled. True when set
-#define	BLDMD								3u								// Status bit indicating the bq27510 Impedance TrackTM algorithm using constant-power mode. True when set. Default is 0 (constant-current mode)
-#define	BSLEEP								4u								// Status bit indicating the bq27510 is in SLEEP mode. True when set
-#define	BHYBERNATE							6u								// Status bit indicating a request for entry into HIBERNATE from SLEEP mode. True when set. Default is 0
-#define	BCA									10u								// Status bit indicating the bq27510 board calibration routine is active. Active when set
-#define	BCCA								11u								// Status bit indicating the bq27510 coulomb counter calibration routine. Active when set
-#define	BCSV								12u								// Status bit indicating a valid data flash checksum has been generated. Active when set
-#define	BSS									13u								// Status bit indicating the bq27510 is in the SEALED State. Active when set
-#define	BFAS								14u								// Status bit indicating the bq27510 is in FULL ACCESS SEALED state. Active when set
+#define	BQEN								0U								// Status bit indicating the bq27510 Qmax updates enabled. True when set
+#define	BVOK								1U								// Status bit indicating cell voltages are OK for Qmax updates. True when set
+#define	BRUP_DIS							2U								// Status bit indicating the bq27510 Ra table updates disabled. True when set
+#define	BLDMD								3U								// Status bit indicating the bq27510 Impedance TrackTM algorithm using constant-power mode. True when set. Default is 0 (constant-current mode)
+#define	BSLEEP								4U								// Status bit indicating the bq27510 is in SLEEP mode. True when set
+#define	BHYBERNATE							6U								// Status bit indicating a request for entry into HIBERNATE from SLEEP mode. True when set. Default is 0
+#define	BCA									10U								// Status bit indicating the bq27510 board calibration routine is active. Active when set
+#define	BCCA								11U								// Status bit indicating the bq27510 coulomb counter calibration routine. Active when set
+#define	BCSV								12U								// Status bit indicating a valid data flash checksum has been generated. Active when set
+#define	BSS									13U								// Status bit indicating the bq27510 is in the SEALED State. Active when set
+#define	BFAS								14U								// Status bit indicating the bq27510 is in FULL ACCESS SEALED state. Active when set
 
 #define	BQ27510G3_TYPE						0x0001u							// Reports the device type (bq27510)
 #define	BQ27510G3_VERSION					0x0002u							// Reports the firmware version on the device type
@@ -86,18 +86,18 @@
 #define	BQ27510G3_TEMPERATURE				0x0607u							//
 #define	BQ27510G3_VOLTAGE					0x0809u							//
 #define	BQ27510G3_FLAGS						0x0A0Bu							//
-#define	BDSG								0u								// Flag bit indicating discharging detected. True when set
-#define	BSOCF								1u								// Flag bit indicating state-of-Charge-Threshold Final (SOCF Set %) reached. True when set
-#define	BSOC1								2u								// Flag bit indicating state-of-Charge-Threshold 1 (SOC1 Set) reached. True when set
-#define	BBAT_DET							3u								// Flag bit indicating battery detected. True when set
-#define	BWAIT_ID							4u								// Flag bit indicating waiting to identify inserted battery. True when set
-#define	BOCV_GD								5u								// Flag bit indicating good OCV measurement taken. True when set.
-#define	BCHG								8u								// Flag bit indicating (fast) charging allowed. True when set
-#define	BFC									9u								// Flag bit indicating full-charged condition reached. True when set
-#define	BXCHG								10u								// Flag bit indicating charge Suspend Alert (temp outside the range [Suspend Temperature Low, Suspend Temperature High]). True when set
-#define	BCHG_INH							11u								// Flag bit indicating charge Inhibit: unable to begin charging (temp outside the range [Charge Inhibit Temp Low, Charge Inhibit Temp High]). True when set
-#define	BOTD								14u								// Flag bit indicating over-Temperature in discharge condition is detected. True when set
-#define	BOC									15u								// Flag bit indicating over-Temperature in charge condition is detected. True when set.
+#define	BDSG								0U								// Flag bit indicating discharging detected. True when set
+#define	BSOCF								1U								// Flag bit indicating state-of-Charge-Threshold Final (SOCF Set %) reached. True when set
+#define	BSOC1								2U								// Flag bit indicating state-of-Charge-Threshold 1 (SOC1 Set) reached. True when set
+#define	BBAT_DET							3U								// Flag bit indicating battery detected. True when set
+#define	BWAIT_ID							4U								// Flag bit indicating waiting to identify inserted battery. True when set
+#define	BOCV_GD								5U								// Flag bit indicating good OCV measurement taken. True when set.
+#define	BCHG								8U								// Flag bit indicating (fast) charging allowed. True when set
+#define	BFC									9U								// Flag bit indicating full-charged condition reached. True when set
+#define	BXCHG								10U								// Flag bit indicating charge Suspend Alert (temp outside the range [Suspend Temperature Low, Suspend Temperature High]). True when set
+#define	BCHG_INH							11U								// Flag bit indicating charge Inhibit: unable to begin charging (temp outside the range [Charge Inhibit Temp Low, Charge Inhibit Temp High]). True when set
+#define	BOTD								14U								// Flag bit indicating over-Temperature in discharge condition is detected. True when set
+#define	BOC									15U								// Flag bit indicating over-Temperature in charge condition is detected. True when set.
 
 #define	BQ27510G3_NOMI_AVAILABLE_CAPACITY	0x0C0Du							//
 #define	BQ27510G3_FULL_AVAILABLE_CAPACITY	0x0E0Fu							//

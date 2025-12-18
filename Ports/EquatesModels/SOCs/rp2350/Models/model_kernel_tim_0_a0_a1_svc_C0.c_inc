@@ -24,8 +24,8 @@
 ;			- model_kernel_newProcessTimeout_C0
 ;			- model_kernel_stopProcessTimeout_C0
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -59,10 +59,14 @@
 ;------------------------------------------------------------------------
 */
 
+#include	"Registers/RP2350_resets.h"
+#include	"Registers/RP2350_timer.h"
+#include	"clockTree.h"
+#include	"macros_core_stackFrame.h"
 #include	"kern/private/private_processes.h"
 #include	"kern/private/private_scheduler.h"
 #include	"kern/private/private_temporal.h"
-#include	"kern/private/private_preciseSignals.h"
+#include	"Registers/nvic.h"
 
 #define	K1ms_C0			((float64_t)(0.001))
 
@@ -70,13 +74,15 @@
 
 #define KTOUT_DELTA_C0	((uint32_t)(KFREQUENCY_TIM * KKERN_PROC_TIMEOUT * K1ms_C0))		// 20-ms timeout
 
-static	volatile	uint32_t	vTimeStart_C0     = 0u;									// Time-stamp: when the process was scheduled
-static	volatile	uint32_t	vTimeStop_C0      = 0u;									// Time-stamp: when the process was stopped
-static	volatile	uint32_t	vTimeLastStart_C0 = 0u;									// Time-stamp: when the process was started (previous cycle)
-static	volatile	uint64_t	vTickCount_C0	  = 0u;									// 64-bit timer (1-us)
+static	volatile	uint32_t	vTimeStart_C0     = 0U;									// Time-stamp: when the process was scheduled
+static	volatile	uint32_t	vTimeStop_C0      = 0U;									// Time-stamp: when the process was stopped
+static	volatile	uint32_t	vTimeLastStart_C0 = 0U;									// Time-stamp: when the process was started (previous cycle)
+static	volatile	uint64_t	vTickCount_C0	  = 0U;									// 64-bit timer (1-us)
 extern	volatile	bool		vPriv_insideSVC[KNB_CORES];								// Inside an SVC call
 
 // Prototypes
+
+extern	void	(*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 static	uintptr_t	*local_newContextPRE_C0(uintptr_t *stack);
 static	uintptr_t	*local_newContextTOU_C0(uintptr_t *stack);
@@ -97,7 +103,7 @@ void	model_kernel_init_C0(void) {
 // Reset of the device
 
 	REG(RESETS)->RESET &= ~RESETS_RESET_TIMER0;
-	while ((REG(RESETS)->RESET_DONE & RESETS_RESET_TIMER0) != RESETS_RESET_TIMER0) { ; }
+	while ((REG(RESETS)->RESET_DONE & RESETS_RESET_TIMER0) != RESETS_RESET_TIMER0) { }
 
 	TIMER_C0->INTR = 0xFFFFFFFFu;
 
@@ -131,7 +137,7 @@ void	model_kernel_runKernel_C0(void) {
 	NVIC_EnableIRQ(TIMER_ALA0_VECTOR_NUMBER_C0);
 	NVIC_EnableIRQ(TIMER_ALA1_VECTOR_NUMBER_C0);
 
-	vTickCount_C0 = 0u;
+	vTickCount_C0 = 0U;
 }
 
 /*
@@ -224,7 +230,7 @@ static	void	local_TIM0_ALA0_IRQHandler_C0(void) {
 	TIMER_C0->ALARM0 = TIMER_C0->TIMERAWL + KTIC_DELTA_C0;
 
 	local_timeStmp_C0(false);
-	scheduler_callBackFast(1u);
+	scheduler_callBackFast(1U);
 }
 
 /*
@@ -296,7 +302,7 @@ static	uintptr_t	__attribute__ ((noinline, used)) *local_newContextPRE_C0(uintpt
 // Verify the sanity of the stack
 
 	#if (defined(STUB_KERN_CHECK_XSP_LIMIT_S))
-	core_setPSPLIM(0u);
+	core_setPSPLIM(0U);
 	scheduler_callBackSlow();
 	local_timeStart_C0();
 	core_setPSPLIM((uintptr_t)vKern_runProc[KCORE_0]->oSpecification.oStackStart & 0xFFFFFFF8u);
@@ -320,14 +326,14 @@ static	uintptr_t	__attribute__ ((noinline, used)) *local_newContextPRE_C0(uintpt
 	INTERRUPTION_RESTORE;
 
 	statistics_statistic(proc, tStart, tStop, tLast, tExc);
-	vKern_TimeException[KCORE_0] = 0u;
+	vKern_TimeException[KCORE_0] = 0U;
 	#endif
 
 // Restore the user / privileged mode
 // vKern_runProc is the process that will run in a short ...
 
 	#if (defined(PRIVILEGED_USER_S))
-	if ((vKern_runProc[KCORE_0]->oSpecification.oMode == KPROC_PRIVILEGED) || ((vKern_runProc[KCORE_0]->oInternal.oState & (1u<<BPROC_PRIV_ELEVATED)) != 0u)) { SET_PRIVILEGED_MODE; }
+	if ((vKern_runProc[KCORE_0]->oSpecification.oMode == KPROC_PRIVILEGED) || ((vKern_runProc[KCORE_0]->oInternal.oState & (1U<<BPROC_PRIV_ELEVATED)) != 0U)) { SET_PRIVILEGED_MODE; }
 	else																																					  { SET_USER_MODE;		 }
 	#endif
 
@@ -411,7 +417,7 @@ static	uintptr_t	__attribute__ ((noinline, used)) *local_newContextTOU_C0(uintpt
 // Verify the sanity of the stack
 
 	#if (defined(STUB_KERN_CHECK_XSP_LIMIT_S))
-	core_setPSPLIM(0u);
+	core_setPSPLIM(0U);
 	scheduler_callBackSlow();
 	local_timeStart_C0();
 	core_setPSPLIM((uintptr_t)vKern_runProc[KCORE_0]->oSpecification.oStackStart & 0xFFFFFFF8u);
@@ -435,14 +441,14 @@ static	uintptr_t	__attribute__ ((noinline, used)) *local_newContextTOU_C0(uintpt
 	INTERRUPTION_RESTORE;
 
 	statistics_statistic(proc, tStart, tStop, tLast, tExc);
-	vKern_TimeException[KCORE_0] = 0u;
+	vKern_TimeException[KCORE_0] = 0U;
 	#endif
 
 // Restore the user / privileged mode
 // vKern_runProc is the process that will run in a short ...
 
 	#if (defined(PRIVILEGED_USER_S))
-	if ((vKern_runProc[KCORE_0]->oSpecification.oMode == KPROC_PRIVILEGED) || ((vKern_runProc[KCORE_0]->oInternal.oState & (1u<<BPROC_PRIV_ELEVATED)) != 0u)) { SET_PRIVILEGED_MODE; }
+	if ((vKern_runProc[KCORE_0]->oSpecification.oMode == KPROC_PRIVILEGED) || ((vKern_runProc[KCORE_0]->oInternal.oState & (1U<<BPROC_PRIV_ELEVATED)) != 0U)) { SET_PRIVILEGED_MODE; }
 	else																																					  { SET_USER_MODE;		 }
 	#endif
 
@@ -528,7 +534,7 @@ static	uintptr_t	__attribute__ ((noinline, used)) *local_newContextMSG_C0(uintpt
 // Verify the sanity of the stack
 
 	#if (defined(STUB_KERN_CHECK_XSP_LIMIT_S))
-	core_setPSPLIM(0u);
+	core_setPSPLIM(0U);
 	scheduler_callBackTrap(message);
 	local_timeStart_C0();
 	core_setPSPLIM((uintptr_t)vKern_runProc[KCORE_0]->oSpecification.oStackStart & 0xFFFFFFF8u);
@@ -552,14 +558,14 @@ static	uintptr_t	__attribute__ ((noinline, used)) *local_newContextMSG_C0(uintpt
 	INTERRUPTION_RESTORE;
 
 	statistics_statistic(proc, tStart, tStop, tLast, tExc);
-	vKern_TimeException[KCORE_0] = 0u;
+	vKern_TimeException[KCORE_0] = 0U;
 	#endif
 
 // Restore the user / privileged mode
 // vKern_runProc is the process that will run in a short ...
 
 	#if (defined(PRIVILEGED_USER_S))
-	if ((vKern_runProc[KCORE_0]->oSpecification.oMode == KPROC_PRIVILEGED) || ((vKern_runProc[KCORE_0]->oInternal.oState & (1u<<BPROC_PRIV_ELEVATED)) != 0u)) { SET_PRIVILEGED_MODE; }
+	if ((vKern_runProc[KCORE_0]->oSpecification.oMode == KPROC_PRIVILEGED) || ((vKern_runProc[KCORE_0]->oInternal.oState & (1U<<BPROC_PRIV_ELEVATED)) != 0U)) { SET_PRIVILEGED_MODE; }
 	else																																					  { SET_USER_MODE;		 }
 	#endif
 
@@ -626,7 +632,7 @@ static	void	local_timeStmp_C0(bool overflow) {
 // Normal mode
 // Update the 1-us 64-bit tickCount
 
-	if (newTime > 0u) {
+	if (newTime > 0U) {
 		vTickCount_C0 = (vTickCount_C0 & 0xFFFFFFFF00000000u) | newTime;
 	}
 	INTERRUPTION_RESTORE;

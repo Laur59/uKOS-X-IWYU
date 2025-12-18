@@ -5,16 +5,16 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Freeze the µKernel for gdb.
 ;			- Freeze the uKernel in order to support gdb sessions
 ;			- The gdb loaded application has to start with SET_INTERRUPTION
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,7 +48,16 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+#include	<stdio.h>
+
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core_stackFrame.h"
+#include	"memo/memo.h"		// IWYU pragma: keep (for PROCESS_STACKMALLOC)
+#include	"modules.h"
+#include	"serial/serial.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -79,7 +88,7 @@ MODULE(
 	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,										// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
@@ -96,10 +105,10 @@ STRG_LOC_STATI(vStrIden[]) = "GDB_process";
  *
  */
 static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
-	proc_t	*process;
-
 	UNUSED(argc);
 	UNUSED(argv);
+
+	proc_t	*process;
 
 	(void)dprintf(KSYST, "Freeze the uKernel.\n");
 
@@ -114,7 +123,7 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 		KKERN_PRIORITY_NORMAL_01			// KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
 	);
 
-	kern_suspendProcess(1000u);
+	kern_suspendProcess(1000U);
 	kern_createProcess(&specification, NULL, &process);
 	return (EXIT_OS_SUCCESS_CLI);
 }
@@ -139,8 +148,8 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 				   "- On T2: target extended-remote localhost:3333\n"
 				   "- On T2: load\n\n");
 
-	kern_suspendProcess(1000u);
+	kern_suspendProcess(1000U);
 
 	kern_criticalSection(KENTER_CRITICAL);
-	while (true) { ; }
+	while (true) { }
 }

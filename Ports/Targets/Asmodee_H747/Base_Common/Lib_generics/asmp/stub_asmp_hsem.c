@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		stub for the managemen of the "asmp" manager with HSEM,
@@ -47,8 +47,8 @@
 ;			In a heterogeneous configuration: PREEMPTION_THRESHOLD(KCORE_0)
 ;			In a homogeneous configuration: PREEMPTION_THRESHOLD(core)
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -82,18 +82,27 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+
+#include	"asmp/asmp.h"
+#include	"core_reg.h"
+#include	"kern/kern.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"os_errors.h"
+#include	"soc_reg.h"
+#include	"types.h"
 
 #define	KSIGNATURE_CORE_0		0xC24u				// cortex-M4
 #define	KSIGNATURE_CORE_1		0xC27u				// cortex-M7
 
-#define	KHSEM_COREID_CM4		1u					// Core ID cortex-M4, core 0 (see table 9.4 RM0399 Rev 3)
-#define	KHSEM_COREID_CM7		3u					// Core ID cortex-M7, core 1 (see table 9.4 RM0399 Rev 3)
+#define	KHSEM_COREID_CM4		1U					// Core ID cortex-M4, core 0 (see table 9.4 RM0399 Rev 3)
+#define	KHSEM_COREID_CM7		3U					// Core ID cortex-M7, core 1 (see table 9.4 RM0399 Rev 3)
 
-#define	KHSEM_PROCESS_0			0u					// Process ID for HSEM, message valid for core 0
-#define	KHSEM_PROCESS_1			1u					// Process ID for HSEM, message valid for core 1
-#define	KHSEM_PROCESS_4			4u					// Process ID for HSEM, acknowledge the core 0
-#define	KHSEM_PROCESS_5			5u					// Process ID for HSEM, acknowledge the core 1
+#define	KHSEM_PROCESS_0			0U					// Process ID for HSEM, message valid for core 0
+#define	KHSEM_PROCESS_1			1U					// Process ID for HSEM, message valid for core 1
+#define	KHSEM_PROCESS_4			4U					// Process ID for HSEM, acknowledge the core 0
+#define	KHSEM_PROCESS_5			5U					// Process ID for HSEM, acknowledge the core 1
 
 const	char_t			*tableCoreReference[2] = {
 							"Cortex-M4",
@@ -139,11 +148,11 @@ void	stub_asmp_init(void) {
 	NVIC_EnableIRQ(irqNumber);
 	#endif
 
-	(core == KASMP_CORE_0) ? (HSEM->C2ICR  = (1u<<KHSEM_PROCESS_0)) : (HSEM->C1ICR  = (1u<<KHSEM_PROCESS_1));
-	(core == KASMP_CORE_0) ? (HSEM->C2ICR  = (1u<<KHSEM_PROCESS_4)) : (HSEM->C1ICR  = (1u<<KHSEM_PROCESS_5));
+	(core == KASMP_CORE_0) ? (HSEM->C2ICR  = (1U<<KHSEM_PROCESS_0)) : (HSEM->C1ICR  = (1U<<KHSEM_PROCESS_1));
+	(core == KASMP_CORE_0) ? (HSEM->C2ICR  = (1U<<KHSEM_PROCESS_4)) : (HSEM->C1ICR  = (1U<<KHSEM_PROCESS_5));
 
-	(core == KASMP_CORE_0) ? (HSEM->C2IER |= (1u<<KHSEM_PROCESS_0)) : (HSEM->C1IER |= (1u<<KHSEM_PROCESS_1));
-	(core == KASMP_CORE_0) ? (HSEM->C2IER |= (1u<<KHSEM_PROCESS_4)) : (HSEM->C1IER |= (1u<<KHSEM_PROCESS_5));
+	(core == KASMP_CORE_0) ? (HSEM->C2IER |= (1U<<KHSEM_PROCESS_0)) : (HSEM->C1IER |= (1U<<KHSEM_PROCESS_1));
+	(core == KASMP_CORE_0) ? (HSEM->C2IER |= (1U<<KHSEM_PROCESS_4)) : (HSEM->C1IER |= (1U<<KHSEM_PROCESS_5));
 
 	local_initInterCore(core);
 
@@ -157,7 +166,7 @@ void	stub_asmp_init(void) {
 	kern_signalSemaphore(semaphoreTX);
 
 	INTERRUPTION_OFF;
-	vAsmp_InterCore->oASMPReady |= (core == KASMP_CORE_0) ? (1u<<(uint8_t)KASMP_CORE_0) : (1u<<(uint8_t)KASMP_CORE_1);
+	vAsmp_InterCore->oASMPReady |= (core == KASMP_CORE_0) ? (1U<<(uint8_t)KASMP_CORE_0) : (1U<<(uint8_t)KASMP_CORE_1);
 	INTERRUPTION_RESTORE;
 }
 
@@ -169,7 +178,7 @@ void	stub_asmp_init(void) {
  */
 void	stub_asmp_getRunningCore(uint32_t *core) {
 
-	*core = (((SCB->CPUID & 0x0000FFF0u)>>4u) == KSIGNATURE_CORE_0) ? ((uint32_t)KASMP_CORE_0) : ((uint32_t)KASMP_CORE_1);
+	*core = (((SCB->CPUID & 0x0000FFF0U)>>4U) == KSIGNATURE_CORE_0) ? ((uint32_t)KASMP_CORE_0) : ((uint32_t)KASMP_CORE_1);
 }
 
 /*
@@ -180,7 +189,7 @@ void	stub_asmp_getRunningCore(uint32_t *core) {
  */
 void	stub_asmp_getNumberOfCore(uint8_t *nbCore) {
 
-	*nbCore = ((uint8_t)KASMP_CORE_1 + 1u);
+	*nbCore = ((uint8_t)KASMP_CORE_1 + 1U);
 }
 
 /*
@@ -211,7 +220,7 @@ void	stub_asmp_getReferenceCore(uint32_t core, const char_t **coreReference) {
  *
  */
 int32_t	stub_asmp_signal(uint32_t message) {
-	uint32_t	core, coreID, process = 0u;
+	uint32_t	core, coreID, process = 0U;
 
 	switch (message) {
 		case KASMP_MESSAGE_VALID_FOR_CORE_0:	   { process = KHSEM_PROCESS_0; break; }
@@ -227,14 +236,14 @@ int32_t	stub_asmp_signal(uint32_t message) {
 	}
 
 	local_getRunningCoreId(&coreID);
-	core = (coreID == KSIGNATURE_CORE_0) ? (KHSEM_COREID_CM4<<8u) : (KHSEM_COREID_CM7<<8u);
+	core = (coreID == KSIGNATURE_CORE_0) ? (KHSEM_COREID_CM4<<8U) : (KHSEM_COREID_CM7<<8U);
 
 	INTERRUPTION_OFF;
 	switch (process) {
-		case KHSEM_PROCESS_0: { HSEM->R0 = (HSEM_R0_LOCK | core | process); HSEM->R0 = (0u | core | process); break; }
-		case KHSEM_PROCESS_1: { HSEM->R1 = (HSEM_R1_LOCK | core | process); HSEM->R1 = (0u | core | process); break; }
-		case KHSEM_PROCESS_4: { HSEM->R4 = (HSEM_R4_LOCK | core | process); HSEM->R4 = (0u | core | process); break; }
-		case KHSEM_PROCESS_5: { HSEM->R5 = (HSEM_R5_LOCK | core | process); HSEM->R5 = (0u | core | process); break; }
+		case KHSEM_PROCESS_0: { HSEM->R0 = (HSEM_R0_LOCK | core | process); HSEM->R0 = (0U | core | process); break; }
+		case KHSEM_PROCESS_1: { HSEM->R1 = (HSEM_R1_LOCK | core | process); HSEM->R1 = (0U | core | process); break; }
+		case KHSEM_PROCESS_4: { HSEM->R4 = (HSEM_R4_LOCK | core | process); HSEM->R4 = (0U | core | process); break; }
+		case KHSEM_PROCESS_5: { HSEM->R5 = (HSEM_R5_LOCK | core | process); HSEM->R5 = (0U | core | process); break; }
 		default: {
 
 // Make MISRA happy :-)
@@ -255,7 +264,7 @@ int32_t	stub_asmp_waitingForReady(void) {
 	uint8_t		maskNbCore;
 	int32_t		status;
 
-	maskNbCore = (1u<<(uint8_t)KASMP_CORE_1) | (1u<<(uint8_t)KASMP_CORE_0);
+	maskNbCore = (1U<<(uint8_t)KASMP_CORE_1) | (1U<<(uint8_t)KASMP_CORE_0);
 
 	status = ((vAsmp_InterCore->oASMPReady & maskNbCore) == maskNbCore) ? (KERR_ASMP_NOERR) : (KERR_ASMP_NORDY);
 	return (status);
@@ -276,10 +285,10 @@ static	void	local_initInterCore(uint32_t core) {
 	INTERRUPTION_OFF;
 	vAsmp_InterCore->oStatusRX[core] = KASMP_FREE;
 	vAsmp_InterCore->oStatusTX[core] = KASMP_FREE;
-	vAsmp_InterCore->oSender[core]	 = 0u;
-	vAsmp_InterCore->oOrder[core]	 = 0u;
-	vAsmp_InterCore->oSize[core]	 = 0u;
-	for (i = 0u; i < KASMP_SZ_BUFFER; i++) { vAsmp_InterCore->oBuffer[core][i] = 0u; }
+	vAsmp_InterCore->oSender[core]	 = 0U;
+	vAsmp_InterCore->oOrder[core]	 = 0U;
+	vAsmp_InterCore->oSize[core]	 = 0U;
+	for (i = 0U; i < KASMP_SZ_BUFFER; i++) { vAsmp_InterCore->oBuffer[core][i] = 0U; }
 	INTERRUPTION_RESTORE;
 }
 
@@ -291,7 +300,7 @@ static	void	local_initInterCore(uint32_t core) {
  */
 static	void	local_getRunningCoreId(uint32_t *coreID) {
 
-	*coreID = (((SCB->CPUID & 0x0000FFF0u)>>4u) == KSIGNATURE_CORE_0) ? (KSIGNATURE_CORE_0) : (KSIGNATURE_CORE_1);
+	*coreID = (((SCB->CPUID & 0x0000FFF0U)>>4U) == KSIGNATURE_CORE_0) ? (KSIGNATURE_CORE_0) : (KSIGNATURE_CORE_1);
 }
 
 /*
@@ -320,16 +329,16 @@ static	void	local_hsem_interruptionChannel(void) {
 // core1 indicates to the core0 that there is a valid message in the buffer
 // core1 acknowledge the core0, get free the statusTX of the core1
 
-		if ((HSEM->C2ISR & (1u<<KHSEM_PROCESS_0)) != 0u) { HSEM->C2ICR = (1u<<KHSEM_PROCESS_0); vAsmp_InterCore->oStatusRX[KASMP_CORE_0] = KASMP_LOCK; kern_signalSemaphore(semaphoreRX); }
-		if ((HSEM->C2ISR & (1u<<KHSEM_PROCESS_4)) != 0u) { HSEM->C2ICR = (1u<<KHSEM_PROCESS_4); vAsmp_InterCore->oStatusTX[KASMP_CORE_1] = KASMP_FREE; kern_signalSemaphore(semaphoreTX); }
+		if ((HSEM->C2ISR & (1U<<KHSEM_PROCESS_0)) != 0U) { HSEM->C2ICR = (1U<<KHSEM_PROCESS_0); vAsmp_InterCore->oStatusRX[KASMP_CORE_0] = KASMP_LOCK; kern_signalSemaphore(semaphoreRX); }
+		if ((HSEM->C2ISR & (1U<<KHSEM_PROCESS_4)) != 0U) { HSEM->C2ICR = (1U<<KHSEM_PROCESS_4); vAsmp_InterCore->oStatusTX[KASMP_CORE_1] = KASMP_FREE; kern_signalSemaphore(semaphoreTX); }
 	}
 	else {
 
 // core0 indicates to the core1 that there is a valid message in the buffer
 // core0 acknowledge the core1, get free the statusTX of the core0
 
-		if ((HSEM->C1ISR & (1u<<KHSEM_PROCESS_1)) != 0u) { HSEM->C1ICR = (1u<<KHSEM_PROCESS_1); vAsmp_InterCore->oStatusRX[KASMP_CORE_1] = KASMP_LOCK; kern_signalSemaphore(semaphoreRX); }
-		if ((HSEM->C1ISR & (1u<<KHSEM_PROCESS_5)) != 0u) { HSEM->C1ICR = (1u<<KHSEM_PROCESS_5); vAsmp_InterCore->oStatusTX[KASMP_CORE_0] = KASMP_FREE; kern_signalSemaphore(semaphoreTX); }
+		if ((HSEM->C1ISR & (1U<<KHSEM_PROCESS_1)) != 0U) { HSEM->C1ICR = (1U<<KHSEM_PROCESS_1); vAsmp_InterCore->oStatusRX[KASMP_CORE_1] = KASMP_LOCK; kern_signalSemaphore(semaphoreRX); }
+		if ((HSEM->C1ISR & (1U<<KHSEM_PROCESS_5)) != 0U) { HSEM->C1ICR = (1U<<KHSEM_PROCESS_5); vAsmp_InterCore->oStatusTX[KASMP_CORE_0] = KASMP_FREE; kern_signalSemaphore(semaphoreTX); }
 	}
 
 	PREEMPTION_THRESHOLD(KCORE_0);

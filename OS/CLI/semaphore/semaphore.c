@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		List the semaphores.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,8 +46,19 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<inttypes.h>
+#include	<stdint.h>	// NOLINT(misc-include-cleaner): Explicit include for IWYU compliance
+#include	<stdio.h>
+#include	<string.h>
+
+#include	"kern/kern.h"
 #include	"kern/private/private_semaphores.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"modules.h"
+#include	"serial/serial.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -79,7 +90,7 @@ MODULE(
 	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,										// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
@@ -91,6 +102,9 @@ MODULE(
  *
  */
 static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
+	UNUSED(argc);
+	UNUSED(argv);
+
 			int32_t		status, counter;
 			uint32_t	core;
 			uint16_t	i, j, k, nbAttached;
@@ -98,18 +112,15 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 			proc_t		*process;
 	const	char_t		*idBuffer[KNB_CORES][KKERN_NB_PROCESSES], *identifier, *idSpacerI, *syncProcess, *idSpacerS;
 
-	UNUSED(argc);
-	UNUSED(argv);
-
 	(void)dprintf(KSYST, "List of the system semaphores.\n");
 
 	PRIVILEGE_ELEVATE;
 
 	(void)dprintf(KSYST, " #  Semaphore identifier              Counter  Synchro process identifier        Waiting process\n\n");
 
-	for (core = 0u; core < KNB_CORES; core++) {
+	for (core = 0U; core < KNB_CORES; core++) {
 		(void)dprintf(KSYST, "Semaphores used by the core %"PRIu32"\n\n", core);
-		for (i = 0u; i < KKERN_NB_SEMAPHORES; i++) {
+		for (i = 0U; i < KKERN_NB_SEMAPHORES; i++) {
 			if (vKern_sema[core][i].oIdentifier != NULL) {
 
 // Prepare the generic printing characteristics
@@ -128,11 +139,11 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 // Scann the semaphore list and collect
 // the name of all the attached processes
 
-				nbAttached = 0u;
-				if (vKern_sema[core][i].oList.oNbElements > 0u) {
+				nbAttached = 0U;
+				if (vKern_sema[core][i].oList.oNbElements > 0U) {
 					process = vKern_sema[core][i].oList.oFirst;
 					k = vKern_sema[core][i].oList.oNbElements;
-					for (j = 0u; j < k; j++) {
+					for (j = 0U; j < k; j++) {
 
 // Save the names of all the attached
 // processes
@@ -148,9 +159,9 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 
 // Display all the suspended processes
 
-				if (nbAttached > 0u) {
+				if (nbAttached > 0U) {
 					(void)dprintf(KSYST, "     %s%s  %s\n", syncProcess, idSpacerS, idBuffer[core][0]);
-					for (j = 1u; j < nbAttached; j++) {
+					for (j = 1U; j < nbAttached; j++) {
 						(void)dprintf(KSYST, "                                                                                 %s\n", idBuffer[core][j]);
 					}
 				}
@@ -196,5 +207,5 @@ static	void	local_compose(const char_t *identifier, const char_t **idSpacer) {
 	static	const	char_t	aSpacer[] = "                                ";
 
 	len = strlen(identifier);
-	*idSpacer = (len <= (sizeof(aSpacer) - 1u)) ? (&aSpacer[len]) : (&aSpacer[0]);
+	*idSpacer = (len <= (sizeof(aSpacer) - 1U)) ? (&aSpacer[len]) : (&aSpacer[0]);
 }

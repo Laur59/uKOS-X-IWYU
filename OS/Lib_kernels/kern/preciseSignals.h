@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Kern - Precise signals.
@@ -22,8 +22,8 @@
 ;			int32_t	kern_killPreciseSignal(prcs_t *handle);
 ;			int32_t	kern_getPreciseSignalById(const char_t *identifier, prcs_t **handle);
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -59,6 +59,13 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
+#include	"kern/kern.h"	// IWYU pragma: keep (workaround app bug)
+#include	"types.h"
+
+// IWYU pragma: private, include "kern/kern.h"
+
 #if (KKERN_NB_PRECISE_SIGNALS > 0)
 
 /*!
@@ -82,7 +89,7 @@
 struct prcs {
 	const	char_t		*oIdentifier;							// Ptr on the process identifier
 			uint16_t	oState;									// Precise signal state
-			#define		BPRCS_INSTALLED		0u					// Precise signal installed
+			#define		BPRCS_INSTALLED		0U					// Precise signal installed
 
 			uint8_t		oMode;									// Mode
 			sign_t		*oSignalGroup;							// Ptr on the signal group handle
@@ -95,14 +102,14 @@ struct prcs {
 // Mode
 
 enum {
-			KPRCS_STOP = 0u,									// Stop the execution of the precise signal
+			KPRCS_STOP = 0U,									// Stop the execution of the precise signal
 			KPRCS_SINGLE_SHOT,									// Single shot precise signal (with start)
 			KPRCS_CONTINUOUS									// Continuous precise signal (with start)
 };
 
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -136,7 +143,7 @@ extern	int32_t	kern_createPreciseSignal(const char_t *identifier, prcs_t **handl
  * Call example in C:
  *
  * \code{.c}
- * #define    KTOPACQ    (1u<<0) | (1u<<28)
+ * #define    KTOPACQ    (1U<<0) | (1U<<28)
  *
  *    static  void     aProcess(const void *argument) {
  *        uint32_t     signal;
@@ -148,16 +155,16 @@ extern	int32_t	kern_createPreciseSignal(const char_t *identifier, prcs_t **handl
  *        // system call kern_createBitSignal to automatically obtain a signal.
  *        //
  *        // Create and initialise a precise signal "Test_prcs"
- *        //     Continuous run, period = 200-us, generate the signals (1u<<0) | (1u<<28) on the default signal group, selectively to the process 23
+ *        //     Continuous run, period = 200-us, generate the signals (1U<<0) | (1U<<28) on the default signal group, selectively to the process 23
  *
  *        if (kern_createPreciseSignal("Test_prcs", &preciseSignal)                                         != KERR_KERN_NOERR) { exit(EXIT_OS_FAILURE); }
  *        if (kern_setPreciseSignal(preciseSignal, &signalGroup, process23, 200, KPRCS_CONTINUOUS, KTOPACQ) != KERR_KERN_NOERR) { exit(EXIT_OS_FAILURE); }
  *
  *        while (true) {
  *
- *        // Waiting for the signal (1u<<0) coming from the ISR (always the case)
+ *        // Waiting for the signal (1U<<0) coming from the ISR (always the case)
  *
- *            signal = (1u<<0);
+ *            signal = (1U<<0);
  *            kern_waitSignal(signalGroup, &signal, KKERN_HANDLE_FROM_ISR, KWAIT_INFINITY);
  *            led_toggle(KLED_0);
  *        }
@@ -221,7 +228,7 @@ extern	int32_t	kern_killPreciseSignal(prcs_t *handle);
  */
 extern	int32_t	kern_getPreciseSignalById(const char_t *identifier, prcs_t **handle);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 

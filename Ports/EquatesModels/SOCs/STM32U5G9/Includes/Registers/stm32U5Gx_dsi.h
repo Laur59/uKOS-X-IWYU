@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32U5Gx_dsi equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,10 +48,12 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // DSI address definitions
 // -----------------------
 
-#if (!defined(ADDITIONAL_DSI_S))
+#ifndef ADDITIONAL_DSI_S
 typedef struct {
 	volatile	uint32_t	VR;
 	volatile	uint32_t	CR;
@@ -152,7 +154,7 @@ typedef struct {
 	volatile	uint32_t	DPDL1SRCR;
 } DSI_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	DSI_NS	reinterpret_cast<DSI_TypeDef *>(0x40016C00u)
 #define	DSI_S	reinterpret_cast<DSI_TypeDef *>(0x50016C00u)
 

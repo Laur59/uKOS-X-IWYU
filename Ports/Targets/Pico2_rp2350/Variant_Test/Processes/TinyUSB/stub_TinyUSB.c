@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		stub for the "TinyUSB" library.
 ;			Multiple profiles
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,7 +47,13 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+
+#include	"Registers/nvic.h"
+#include	"Registers/soc_vectors.h"
+#include	"clockTree.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
 
 // Save the GCC diagnostic
 //
@@ -57,6 +63,9 @@
 //
 #pragma GCC diagnostic	ignored	"-Wpedantic"
 #include	"tusb.h"
+#include	"tusb_option.h"
+#include	"tusb_os_custom.h"
+#include	"device/usbd.h"
 
 // Restore the GCC diagnostic
 //

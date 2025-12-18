@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		switch manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,9 +46,20 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#ifdef CONFIG_MAN_SWITCH_S
 
-#if (defined(CONFIG_MAN_SWITCH_S))
+#include	"switch.h"
+
+#include	<stddef.h>
+#include	<stdint.h>
+
+#ifdef PRIVILEGED_USER_S
+#include	"kern/kern.h"		// IWYU pragma: keep (for KPROC_PRIVILEGED)
+#endif
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"modules.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -71,7 +82,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -128,7 +139,7 @@ static	void	local_init(void) {
 	core = GET_RUNNING_CORE;
 
 	INTERRUPTION_OFF;
-	if (vInit[core] == false) {
+	if (!vInit[core]) {
 		vInit[core] = true;
 
 		stub_switch_init();

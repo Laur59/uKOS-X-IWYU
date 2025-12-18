@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		RP2350_watchdog equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // WATCHDOG address definitions
 // ----------------------------
 
@@ -65,7 +67,7 @@ typedef struct {
 	volatile	uint32_t	SCRATCH7;
 } WATCHDOG_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	WATCHDOG_NS	reinterpret_cast<WATCHDOG_TypeDef *>(0x400D8000u)
 #define	WATCHDOG_S	reinterpret_cast<WATCHDOG_TypeDef *>(0x400D8000u)
 #else

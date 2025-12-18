@@ -5,16 +5,16 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Kern - Software timers.
 ;
 ;			Private uKernel variables.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -70,6 +70,12 @@
  * @{
  */
 
+#include	<stdint.h>
+
+#include	"kern/kern.h"
+#include	"macros_soc.h"
+#include	"types.h"
+
 #if (KKERN_NB_SOFTWARE_TIMERS > 0)
 
 #define	KSTIM_ANONYMOUS		"Stim_anonymous"
@@ -77,11 +83,11 @@
 struct	stim {
 	const	char_t		*oIdentifier;									// Software timer identifier
 			uint16_t	oState;											// Software timer state
-			#define		BSTIM_INSTALLED			0u						// Software timer installed
-			#define		BSTIM_CONFIGURED		1u						// Software timer configured
-			#define		BSTIM_RE_CONFIGURED		2u						// Software timer reconfigured
-			#define		BSTIM_RUNNING			3u						// Software timer is running
-			#define		BSTIM_EXECUTED			4u						// Software timer executed (once)
+			#define		BSTIM_INSTALLED			0U						// Software timer installed
+			#define		BSTIM_CONFIGURED		1U						// Software timer configured
+			#define		BSTIM_RE_CONFIGURED		2U						// Software timer reconfigured
+			#define		BSTIM_RUNNING			3U						// Software timer is running
+			#define		BSTIM_EXECUTED			4U						// Software timer executed (once)
 
 			uint32_t	oInitCounter;									// Initial time (decremented)
 			uint32_t	oCounter;										// Continuous time (decremented)

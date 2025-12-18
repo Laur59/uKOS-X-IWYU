@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		System errors.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 #include	"modules.h"
 
 // Lib_kernels managers
@@ -64,11 +66,11 @@
 //					ee		error code
 //
 //							Negative				Family Lib Id	       			   Manager Id
-#define	KKERN_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_KERNELS<<16u) | ((uint32_t)KNUM_KERN<<8u))
+#define	KKERN_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_KERNELS<<16U) | ((uint32_t)KNUM_KERN<<8U))
 
 enum : int32_t {
 	KERR_KERN_NOERR = 0,										// No error
-	KERR_KERN_SYCNA = (int32_t)(KKERN_ERR + 1u),				// System call not available
+	KERR_KERN_SYCNA = (int32_t)(KKERN_ERR + 1U),				// System call not available
 	KERR_KERN_GEERR,											// General error
 	KERR_KERN_TIMEO,											// Timeout error
 	KERR_KERN_FRISR,											// Execution from ISR
@@ -145,11 +147,11 @@ enum : int32_t {
 // ---------------------
 
 //							Negative				 Family Lib Id		   			   	Manager Id
-#define	KSERIAL_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_SERIALS<<16u) | ((uint32_t)KNUM_SERIAL<<8u))
+#define	KSERIAL_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_SERIALS<<16U) | ((uint32_t)KNUM_SERIAL<<8U))
 
 enum : int32_t {
 	KERR_SERIAL_NOERR = 0,										// No error
-	KERR_SERIAL_SYCNA = (int32_t)(KSERIAL_ERR + 1u),			// System call not available
+	KERR_SERIAL_SYCNA = (int32_t)(KSERIAL_ERR + 1U),			// System call not available
 	KERR_SERIAL_GEERR,											// General error
 	KERR_SERIAL_NODEV,											// The device does not exist
 	KERR_SERIAL_NOCHA,											// The channel does not exist
@@ -183,11 +185,11 @@ enum : int32_t {
 // -------------------
 
 //							Negative				 Family Lib Id						 Manager Id
-#define	KASMP_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_GENERICS<<16u) | ((uint32_t)KNUM_ASMP<<8u))
+#define	KASMP_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_GENERICS<<16U) | ((uint32_t)KNUM_ASMP<<8U))
 
 enum : int32_t {
 	KERR_ASMP_NOERR = 0,										// No error
-	KERR_ASMP_SYCNA = (int32_t)(KASMP_ERR + 1u),				// System call not available
+	KERR_ASMP_SYCNA = (int32_t)(KASMP_ERR + 1U),				// System call not available
 	KERR_ASMP_GEERR,											// General error
 	KERR_ASMP_SBFUL,											// The sender buffer is full
 	KERR_ASMP_RBUEM,											// The receiver buffer is empty
@@ -200,11 +202,11 @@ enum : int32_t {
 // -------------------
 
 //							Negative				 Family Lib Id						 Manager Id
-#define	KMEMO_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_GENERICS<<16u) | ((uint32_t)KNUM_MEMO<<8u))
+#define	KMEMO_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_GENERICS<<16U) | ((uint32_t)KNUM_MEMO<<8U))
 
 enum : int32_t {
 	KERR_MEMO_NOERR = 0,										// No error
-	KERR_MEMO_SYCNA = (int32_t)(KMEMO_ERR + 1u),				// System call not available
+	KERR_MEMO_SYCNA = (int32_t)(KMEMO_ERR + 1U),				// System call not available
 	KERR_MEMO_GEERR,											// General error
 	KERR_MEMO_NOBKI												// The block does not exist
 };
@@ -213,11 +215,11 @@ enum : int32_t {
 // ---------------------
 
 //							Negative				 Family Lib Id						 Manager Id
-#define	KRECORD_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_GENERICS<<16u) | ((uint32_t)KNUM_RECORD<<8u))
+#define	KRECORD_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_GENERICS<<16U) | ((uint32_t)KNUM_RECORD<<8U))
 
 enum : int32_t {
 	KERR_RECORD_NOERR = 0,										// No error
-	KERR_RECORD_SYCNA = (int32_t)(KRECORD_ERR + 1u),			// System call not available
+	KERR_RECORD_SYCNA = (int32_t)(KRECORD_ERR + 1U),			// System call not available
 	KERR_RECORD_GEERR											// General error
 };
 
@@ -225,11 +227,11 @@ enum : int32_t {
 // ---------------------
 
 //							Negative				 Family Lib Id						 Manager Id
-#define	KSYSTEM_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_GENERICS<<16u) | ((uint32_t)KNUM_SYSTEM<<8u))
+#define	KSYSTEM_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_GENERICS<<16U) | ((uint32_t)KNUM_SYSTEM<<8U))
 
 enum : int32_t {
 	KERR_SYSTEM_NOERR = 0,										// No error
-	KERR_SYSTEM_SYCNA = (int32_t)(KSYSTEM_ERR + 1u),			// System call not available
+	KERR_SYSTEM_SYCNA = (int32_t)(KSYSTEM_ERR + 1U),			// System call not available
 	KERR_SYSTEM_GEERR,											// General error
 	KERR_SYSTEM_NOMOD,											// The module does not exist
 	KERR_SYSTEM_NOFAM,											// The family does not exist
@@ -244,11 +246,11 @@ enum : int32_t {
 // ---------------------
 
 //							Negative				 Family Lib Id						 Manager Id
-#define	KMACHINE_ERR		((uint32_t)0x80000000u | ((uint32_t)KID_FAM_GENERICS<<16u) | ((uint32_t)KNUM_MACHINE<<8u))
+#define	KMACHINE_ERR		((uint32_t)0x80000000u | ((uint32_t)KID_FAM_GENERICS<<16U) | ((uint32_t)KNUM_MACHINE<<8U))
 
 enum : int32_t {
 	KERR_MACHINE_NOERR = 0,										// No error
-	KERR_MACHINE_SYCNA = (int32_t)(KMACHINE_ERR + 1u),			// System call not available
+	KERR_MACHINE_SYCNA = (int32_t)(KMACHINE_ERR + 1U),			// System call not available
 	KERR_MACHINE_GEERR											// General error
 };
 
@@ -256,11 +258,11 @@ enum : int32_t {
 // -------------------
 
 //							Negative				 Family Lib Id						 Manager Id
-#define	KTEXT_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_GENERICS<<16u) | ((uint32_t)KNUM_TEXT<<8u))
+#define	KTEXT_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_GENERICS<<16U) | ((uint32_t)KNUM_TEXT<<8U))
 
 enum : int32_t {
 	KERR_TEXT_NOERR = 0,										// No error
-	KERR_TEXT_SYCNA = (int32_t)(KTEXT_ERR + 1u),				// System call not available
+	KERR_TEXT_SYCNA = (int32_t)(KTEXT_ERR + 1U),				// System call not available
 	KERR_TEXT_GEERR												// General error
 };
 
@@ -268,11 +270,11 @@ enum : int32_t {
 // -----------------------
 
 //							Negative				 Family Lib Id						 Manager Id
-#define	KCALENDAR_ERR		((uint32_t)0x80000000u | ((uint32_t)KID_FAM_GENERICS<<16u) | ((uint32_t)KNUM_CALENDAR<<8u))
+#define	KCALENDAR_ERR		((uint32_t)0x80000000u | ((uint32_t)KID_FAM_GENERICS<<16U) | ((uint32_t)KNUM_CALENDAR<<8U))
 
 enum : int32_t {
 	KERR_CALENDAR_NOERR = 0,									// No error
-	KERR_CALENDAR_SYCNA = (int32_t)(KCALENDAR_ERR + 1u),		// System call not available
+	KERR_CALENDAR_SYCNA = (int32_t)(KCALENDAR_ERR + 1U),		// System call not available
 	KERR_CALENDAR_GEERR											// General error
 };
 
@@ -280,7 +282,7 @@ enum : int32_t {
 // ---------------------
 
 //							Negative				 Family Lib Id						 Manager Id
-#define	KNEWLIB_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_GENERICS<<16u) | ((uint32_t)KNUM_NEWLIB<<8u))
+#define	KNEWLIB_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_GENERICS<<16U) | ((uint32_t)KNUM_NEWLIB<<8U))
 
 enum : int32_t {
 	KERR_NEWLIB_NOERR = 0										// No error
@@ -293,11 +295,11 @@ enum : int32_t {
 // -------------------
 
 //							Negative				 Family Lib Id					    Manager Id
-#define	KMLPN_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_NEURALS<<16u) | ((uint32_t)KNUM_MLPN<<8u))
+#define	KMLPN_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_NEURALS<<16U) | ((uint32_t)KNUM_MLPN<<8U))
 
 enum : int32_t {
 	KERR_MLPN_NOERR = 0,										// No error
-	KERR_MLPN_SYCNA = (int32_t)(KMLPN_ERR + 1u),				// System call not available
+	KERR_MLPN_SYCNA = (int32_t)(KMLPN_ERR + 1U),				// System call not available
 	KERR_MLPN_GEERR,											// General error
 	KERR_MLPN_CNERR,											// Configuration error
 	KERR_MLPN_TIMEO,											// Timeout error
@@ -313,11 +315,11 @@ enum : int32_t {
 // ------------------
 
 //							Negative				 Family Lib Id						    Manager Id
-#define	KADC_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<16u) | ((uint32_t)KNUM_ADC<<8u))
+#define	KADC_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<16U) | ((uint32_t)KNUM_ADC<<8U))
 
 enum : int32_t {
 	KERR_ADC_NOERR = 0,											// No error
-	KERR_ADC_SYCNA = (int32_t)(KADC_ERR + 1u),					// System call not available
+	KERR_ADC_SYCNA = (int32_t)(KADC_ERR + 1U),					// System call not available
 	KERR_ADC_GEERR,												// General error
 	KERR_ADC_CHBSY,												// The manager is busy
 	KERR_ADC_NODEV,												// The device does not exist
@@ -328,11 +330,11 @@ enum : int32_t {
 // ----------------------
 
 //							Negative				 Family Lib Id						    Manager Id
-#define	KBATTERY_ERR		((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<16u) | ((uint32_t)KNUM_BATTERY<<8u))
+#define	KBATTERY_ERR		((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<16U) | ((uint32_t)KNUM_BATTERY<<8U))
 
 enum : int32_t {
 	KERR_BATTERY_NOERR = 0,										// No error
-	KERR_BATTERY_SYCNA = (int32_t)(KBATTERY_ERR + 1u),			// System call not available
+	KERR_BATTERY_SYCNA = (int32_t)(KBATTERY_ERR + 1U),			// System call not available
 	KERR_BATTERY_GEERR,											// General error
 	KERR_BATTERY_CHBSY,											// The manager is busy
 	KERR_BATTERY_CAREL											// Cannot release the manager
@@ -342,11 +344,11 @@ enum : int32_t {
 // ------------------
 
 //							Negative				 Family Lib Id						    Manager Id
-#define	KI2C_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<16u) | ((uint32_t)KNUM_I2C<<8u))
+#define	KI2C_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<16U) | ((uint32_t)KNUM_I2C<<8U))
 
 enum : int32_t {
 	KERR_I2C_NOERR = 0,											// No error
-	KERR_I2C_SYCNA = (int32_t)(KI2C_ERR + 1u),					// System call not available
+	KERR_I2C_SYCNA = (int32_t)(KI2C_ERR + 1U),					// System call not available
 	KERR_I2C_GEERR,												// General error
 	KERR_I2C_NODEV,												// The device does not exist
 	KERR_I2C_CHBSY,												// The manager is busy
@@ -359,11 +361,11 @@ enum : int32_t {
 // ---------------------
 
 //							Negative				 Family Lib Id						    Manager Id
-#define	KIMAGER_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<16u) | ((uint32_t)KNUM_IMAGER<<8u))
+#define	KIMAGER_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<16U) | ((uint32_t)KNUM_IMAGER<<8U))
 
 enum : int32_t {
 	KERR_IMAGER_NOERR = 0,										// No error
-	KERR_IMAGER_SYCNA = (int32_t)(KIMAGER_ERR + 1u),			// System call not available
+	KERR_IMAGER_SYCNA = (int32_t)(KIMAGER_ERR + 1U),			// System call not available
 	KERR_IMAGER_GEERR,											// General error
 	KERR_IMAGER_CNERR,											// Configuration error
 	KERR_IMAGER_TIMEO,											// Timeout error
@@ -378,11 +380,11 @@ enum : int32_t {
 // ------------------
 
 //							Negative				 Family Lib Id						    Manager Id
-#define	KIMU_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<16u) | ((uint32_t)KNUM_IMU<<8u))
+#define	KIMU_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<16U) | ((uint32_t)KNUM_IMU<<8U))
 
 enum : int32_t {
 	KERR_IMU_NOERR = 0,											// No error
-	KERR_IMU_SYCNA = (int32_t)(KIMU_ERR + 1u),					// System call not available
+	KERR_IMU_SYCNA = (int32_t)(KIMU_ERR + 1U),					// System call not available
 	KERR_IMU_GEERR,												// General error
 	KERR_IMU_CHBSY,												// The manager is busy
 	KERR_IMU_CAREL												// Cannot release the manager
@@ -392,11 +394,11 @@ enum : int32_t {
 // ------------------
 
 //							Negative				 Family Lib Id						    Manager Id
-#define	KSPI_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<16u) | ((uint32_t)KNUM_SPI<<8u))
+#define	KSPI_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<16U) | ((uint32_t)KNUM_SPI<<8U))
 
 enum : int32_t {
 	KERR_SPI_NOERR = 0,											// No error
-	KERR_SPI_SYCNA = (int32_t)(KSPI_ERR + 1u),					// System call not available
+	KERR_SPI_SYCNA = (int32_t)(KSPI_ERR + 1U),					// System call not available
 	KERR_SPI_GEERR,												// General error
 	KERR_SPI_NODEV,												// The device does not exist
 	KERR_SPI_CHBSY,												// The manager is busy
@@ -409,11 +411,11 @@ enum : int32_t {
 // --------------------------
 
 //							Negative				 Family Lib Id						    Manager Id
-#define	KTEMPERATURE_ERR	((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<16u) | ((uint32_t)KNUM_TEMPERATURE<<8u))
+#define	KTEMPERATURE_ERR	((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<16U) | ((uint32_t)KNUM_TEMPERATURE<<8U))
 
 enum : int32_t {
 	KERR_TEMPERATURE_NOERR = 0,									// No error
-	KERR_TEMPERATURE_SYCNA = (int32_t)(KTEMPERATURE_ERR + 1u),	// System call not available
+	KERR_TEMPERATURE_SYCNA = (int32_t)(KTEMPERATURE_ERR + 1U),	// System call not available
 	KERR_TEMPERATURE_GEERR,										// General error
 	KERR_TEMPERATURE_CHBSY,										// The manager is busy
 	KERR_TEMPERATURE_CAREL										// Cannot release the manager
@@ -423,7 +425,7 @@ enum : int32_t {
 // -------------------
 
 //							Negative				 Family Lib Id						    Manager Id
-#define	KWATCHDOG_ERR		((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<16u) | ((uint32_t)KNUM_WATCHDOG<<8u))
+#define	KWATCHDOG_ERR		((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<16U) | ((uint32_t)KNUM_WATCHDOG<<8U))
 
 enum : int32_t {
 	KERR_WATCHDOG_NOERR = 0										// No error
@@ -433,11 +435,11 @@ enum : int32_t {
 // ------------------
 
 //							Negative				 Family Lib Id						    Manager Id
-#define	KLED_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<16u) | ((uint32_t)KNUM_LED<<8u))
+#define	KLED_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<16U) | ((uint32_t)KNUM_LED<<8U))
 
 enum : int32_t {
 	KERR_LED_NOERR = 0,											// No error
-	KERR_LED_SYCNA = (int32_t)(KLED_ERR + 1u),					// System call not available
+	KERR_LED_SYCNA = (int32_t)(KLED_ERR + 1U),					// System call not available
 	KERR_LED_GEERR,												// General error
 	KERR_LED_NODEV												// The device does not exist
 };
@@ -446,11 +448,11 @@ enum : int32_t {
 // ---------------------
 
 //							Negative				 Family Lib Id						    Manager Id
-#define	KSWITCH_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<16u) | ((uint32_t)KNUM_SWITCH<<8u))
+#define	KSWITCH_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<16U) | ((uint32_t)KNUM_SWITCH<<8U))
 
 enum : int32_t {
 	KERR_SWITCH_NOERR = 0,										// No error
-	KERR_SWITCH_SYCNA = (int32_t)(KSWITCH_ERR + 1u),			// System call not available
+	KERR_SWITCH_SYCNA = (int32_t)(KSWITCH_ERR + 1U),			// System call not available
 	KERR_SWITCH_GEERR											// General error
 };
 
@@ -461,11 +463,11 @@ enum : int32_t {
 // -------------------
 
 //							Negative				 Family Lib Id							   Manager Id
-#define	KRANDOM_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_CRYPTOGRAPHICS<<16u) | ((uint32_t)KNUM_RANDOM<<8u))
+#define	KRANDOM_ERR			((uint32_t)0x80000000u | ((uint32_t)KID_FAM_CRYPTOGRAPHICS<<16U) | ((uint32_t)KNUM_RANDOM<<8U))
 
 enum : int32_t {
 	KERR_RANDOM_NOERR = 0,										// No error
-	KERR_RANDOM_SYCNA = (int32_t)(KRANDOM_ERR + 1u),			// System call not available
+	KERR_RANDOM_SYCNA = (int32_t)(KRANDOM_ERR + 1U),			// System call not available
 	KERR_RANDOM_GEERR,											// General error
 };
 
@@ -476,11 +478,11 @@ enum : int32_t {
 // ----------------------
 
 //							Negative				 Family Lib Id					    Manager Id
-#define	KSTORAGE_ERR		((uint32_t)0x80000000u | ((uint32_t)KID_FAM_STORAGE<<16u) | ((uint32_t)KNUM_STORAGE<<8u))
+#define	KSTORAGE_ERR		((uint32_t)0x80000000u | ((uint32_t)KID_FAM_STORAGE<<16U) | ((uint32_t)KNUM_STORAGE<<8U))
 
 enum : int32_t {
 	KERR_STORAGE_NOERR = 0,										// No error
-	KERR_STORAGE_SYCNA = (int32_t)(KSTORAGE_ERR + 1u),			// System call not available
+	KERR_STORAGE_SYCNA = (int32_t)(KSTORAGE_ERR + 1U),			// System call not available
 	KERR_STORAGE_GEERR,											// General error
 	KERR_STORAGE_CHBSY,											// The manager is busy
 	KERR_STORAGE_NODEV,											// The device does not exist
@@ -498,10 +500,10 @@ enum : int32_t {
 // --------------------------
 
 //							Negative				 Family Lib Id							  Manager Id
-#define	KMICROPYTHON_ERR	((uint32_t)0x80000000u | ((uint32_t)KID_FAM_THIRD_PARTIES<<16u) | ((uint32_t)KNUM_MICROPYTHON<<8u))
+#define	KMICROPYTHON_ERR	((uint32_t)0x80000000u | ((uint32_t)KID_FAM_THIRD_PARTIES<<16U) | ((uint32_t)KNUM_MICROPYTHON<<8U))
 
 enum : int32_t {
 	KERR_MICROPYTHON_NOERR = 0,									// No error
-	KERR_MICROPYTHON_SYCNA = (int32_t)(KMICROPYTHON_ERR + 1u),	// System call not available
+	KERR_MICROPYTHON_SYCNA = (int32_t)(KMICROPYTHON_ERR + 1U),	// System call not available
 	KERR_MICROPYTHON_GEERR										// General error
 };

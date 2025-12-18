@@ -39,8 +39,8 @@
 ;														|                 | linker_enBSS_u
 ;														+-----------------+
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -168,7 +168,10 @@ SECTIONS {
 	. = ALIGN(4);
 	.data_u : AT (linker_stINDATA_u) {
 		linker_stDATA_u = ABSOLUTE(.);
-		*(.data .data.* .data*)
+		liblibx_u.a(.data .data.* .data*)
+		libproc_u.a(.data .data.* .data*)
+		libtool_u.a(.data .data.* .data*)
+		*(EXCLUDE_FILE (first.o* *librtcb_p.a *libkern_p.a *liblibx_p.a *libshar_p.a) .data .data.* .data*)
 		. = ALIGN(4);
 		*(vtable)
 		. = ALIGN(4);
@@ -186,7 +189,10 @@ SECTIONS {
 		. = ALIGN(4);
 		linker_stBSS_u = ABSOLUTE(.);
 		KEEP(*(.user))
-		*(.bss .bss.* COMMON)
+		liblibx_u.a(.bss .bss.* COMMON)
+		libproc_u.a(.bss .bss.* COMMON)
+		libtool_u.a(.bss .bss.* COMMON)
+		*(EXCLUDE_FILE (first.o* *librtcb_p.a *libkern_p.a *liblibx_p.a *libshar_p.a) .bss .bss.* .bss*)
 		linker_enBSS_u = ABSOLUTE(.);
 	} > prgm_data_u
 

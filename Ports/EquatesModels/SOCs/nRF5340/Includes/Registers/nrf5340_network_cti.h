@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		nrf5340_network_cti equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // CTI address definitions
 // -----------------------
@@ -86,7 +88,7 @@ typedef struct {
 	volatile	uint32_t	CIDR3;
 } CTI_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	CTI_NS	reinterpret_cast<CTI_TypeDef *>(0xE0042000u)
 
 #else

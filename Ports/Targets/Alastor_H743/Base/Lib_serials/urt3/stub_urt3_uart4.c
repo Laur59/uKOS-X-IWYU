@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		stub for the connection of the "urt3" manager to the uart4 device.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,12 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+
+#ifdef CONFIG_MAN_URT3_S
+
+#include	"clockTree.h"
+#include	"soc_reg.h"
+#include	"urt3/urt3.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
@@ -66,8 +71,8 @@
 #define	KUSART_SEMAPHORE_RX		KURT3_SEMAPHORE_RX
 #define	KUSART_SEMAPHORE_TX		KURT3_SEMAPHORE_TX
 
-#define	KUSART_SZ_TX_BUF		1024u
-#define	KUSART_SZ_RX_BUF		1024u
+#define	KUSART_SZ_TX_BUF		1024U
+#define	KUSART_SZ_RX_BUF		1024U
 
 // Model callbacks
 // ---------------
@@ -107,3 +112,5 @@ static	void	cb_init(void) {
 }
 
 #include	"model_usart.c_inc"
+
+#endif

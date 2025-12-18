@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Kern - Memory pools.
@@ -24,8 +24,8 @@
 ;			int32_t	kern_killPool(pool_t *handle);
 ;			int32_t	kern_getPoolById(const char_t *identifier, pool_t **handle);
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -61,6 +61,11 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
+#include	"kern/kern.h"	// IWYU pragma: keep (workaround app bug)
+#include	"types.h"
+
 #if (KKERN_NB_POOLS > 0)
 
 /*!
@@ -90,7 +95,7 @@ struct	pcnf {
 
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -235,7 +240,7 @@ extern	int32_t	kern_killPool(pool_t *handle);
  */
 extern	int32_t	kern_getPoolById(const char_t *identifier, pool_t **handle);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 

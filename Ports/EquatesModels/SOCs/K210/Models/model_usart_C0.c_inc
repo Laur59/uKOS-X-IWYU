@@ -9,8 +9,8 @@
 ; Project:	uKOS-X
 ; Goal:		Model for controlling the "usart" device for C0.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -43,6 +43,15 @@
 ;
 ;------------------------------------------------------------------------
 */
+
+#include	<stdlib.h>
+
+#include	"os_errors.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"kern/kern.h"
+#include	"record/record.h"
 
 static	volatile	bool		vSending_C0			 = false;
 static	volatile	bool		vWithSemaphore_RX_C0 = false;
@@ -95,21 +104,21 @@ void	model_usart_init_C0(void) {
 	EXT_INTERRUPT_VECTOR(USART_VECTOR_NUMBER_C0, local_USART_IRQHandler_C0);
 
 	plic->source_priorities.priority[USART_VECTOR_NUMBER_C0] = (uint32_t)KINT_LEVEL_COMMUNICATIONS;
-	current = plic->target_enables.target[KCORE_0].enable[(uint32_t)USART_VECTOR_NUMBER_C0 / 32u];
-	current |= (uint32_t)(1u<<((uint32_t)USART_VECTOR_NUMBER_C0 % 32u));
-	plic->target_enables.target[KCORE_0].enable[(uint32_t)USART_VECTOR_NUMBER_C0 / 32u] = current;
+	current = plic->target_enables.target[KCORE_0].enable[(uint32_t)USART_VECTOR_NUMBER_C0 / 32U];
+	current |= (uint32_t)(1U<<((uint32_t)USART_VECTOR_NUMBER_C0 % 32U));
+	plic->target_enables.target[KCORE_0].enable[(uint32_t)USART_VECTOR_NUMBER_C0 / 32U] = current;
 
 // Initialise the UART (Rx and Tx) and set it to 8-bits, 1-stop-bits, default baudrate and no parity
 
-	USART_C0->LCR |= 1u<<7u;
+	USART_C0->LCR |= 1U<<7U;
 
 	BAUDRATE(USART_FREQUENCY_C0, KSERIAL_DEFAULT_BAUDRATE, USART_C0->DLH, USART_C0->DLL, USART_C0->DLF);
 
-	USART_C0->LCR  = 0u;
+	USART_C0->LCR  = 0U;
 	USART_C0->LCR  = UART_LCR_NBBIT8 | UART_LCR_STBIT1 | UART_LCR_PARITYNONE;
-	USART_C0->LCR &= (uint32_t)~(1u<<7u);
+	USART_C0->LCR &= (uint32_t)~(1U<<7U);
 	USART_C0->IER |= 0x80u;
-	USART_C0->FCR  = (UART_FCR_RECEIVE_FIFO_1 | UART_FCR_SEND_FIFO_8) | (1u<<3u) | 0x1u;
+	USART_C0->FCR  = (UART_FCR_RECEIVE_FIFO_1 | UART_FCR_SEND_FIFO_8) | (1U<<3U) | 0x1u;
 	USART_C0->IER |= UART_IER_ERBFI;
 
 	cb_init_C0();
@@ -124,7 +133,7 @@ void	model_usart_init_C0(void) {
 int32_t	model_usart_configure_C0(const urtxCnf_t *configure) {
 
 	INTERRUPTION_OFF;
-	USART_C0->LCR |= 1u<<7u;
+	USART_C0->LCR |= 1U<<7U;
 	USART_C0->LCR &= (uint32_t)~(UART_LCR_PARITYSMSK | UART_LCR_STBITSMSK | UART_LCR_NBBITSMSK);
 
 	switch (configure->oNBBits) {
@@ -148,29 +157,29 @@ int32_t	model_usart_configure_C0(const urtxCnf_t *configure) {
 
 	switch (configure->oBaudRate) {
 		case KSERIAL_BAUDRATE_DEFAULT: { BAUDRATE(USART_FREQUENCY_C0, KSERIAL_DEFAULT_BAUDRATE, USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
-		case KSERIAL_BAUDRATE_2400:	   { BAUDRATE(USART_FREQUENCY_C0, 2400u,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
-		case KSERIAL_BAUDRATE_4800:	   { BAUDRATE(USART_FREQUENCY_C0, 4800u,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
-		case KSERIAL_BAUDRATE_9600:	   { BAUDRATE(USART_FREQUENCY_C0, 9600u,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
-		case KSERIAL_BAUDRATE_19200:   { BAUDRATE(USART_FREQUENCY_C0, 19200u,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
-		case KSERIAL_BAUDRATE_38400:   { BAUDRATE(USART_FREQUENCY_C0, 38400u,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
-		case KSERIAL_BAUDRATE_57600:   { BAUDRATE(USART_FREQUENCY_C0, 57600u,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
-		case KSERIAL_BAUDRATE_115200:  { BAUDRATE(USART_FREQUENCY_C0, 115200u,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
-		case KSERIAL_BAUDRATE_230400:  { BAUDRATE(USART_FREQUENCY_C0, 230400u,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
-		case KSERIAL_BAUDRATE_460800:  { BAUDRATE(USART_FREQUENCY_C0, 460800u,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
-		case KSERIAL_BAUDRATE_500000:  { BAUDRATE(USART_FREQUENCY_C0, 500000u,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
-		case KSERIAL_BAUDRATE_921600:  { BAUDRATE(USART_FREQUENCY_C0, 921600u,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
-		case KSERIAL_BAUDRATE_1000000: { BAUDRATE(USART_FREQUENCY_C0, 1000000u,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
-		case KSERIAL_BAUDRATE_1500000: { BAUDRATE(USART_FREQUENCY_C0, 1500000u,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
-		case KSERIAL_BAUDRATE_1843200: { BAUDRATE(USART_FREQUENCY_C0, 1843200u,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
-		case KSERIAL_BAUDRATE_2000000: { BAUDRATE(USART_FREQUENCY_C0, 2000000u,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
-		case KSERIAL_BAUDRATE_2500000: { BAUDRATE(USART_FREQUENCY_C0, 2500000u,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
-		case KSERIAL_BAUDRATE_3000000: { BAUDRATE(USART_FREQUENCY_C0, 3000000u,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
+		case KSERIAL_BAUDRATE_2400:	   { BAUDRATE(USART_FREQUENCY_C0, 2400U,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
+		case KSERIAL_BAUDRATE_4800:	   { BAUDRATE(USART_FREQUENCY_C0, 4800U,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
+		case KSERIAL_BAUDRATE_9600:	   { BAUDRATE(USART_FREQUENCY_C0, 9600U,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
+		case KSERIAL_BAUDRATE_19200:   { BAUDRATE(USART_FREQUENCY_C0, 19200U,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
+		case KSERIAL_BAUDRATE_38400:   { BAUDRATE(USART_FREQUENCY_C0, 38400U,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
+		case KSERIAL_BAUDRATE_57600:   { BAUDRATE(USART_FREQUENCY_C0, 57600U,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
+		case KSERIAL_BAUDRATE_115200:  { BAUDRATE(USART_FREQUENCY_C0, 115200U,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
+		case KSERIAL_BAUDRATE_230400:  { BAUDRATE(USART_FREQUENCY_C0, 230400U,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
+		case KSERIAL_BAUDRATE_460800:  { BAUDRATE(USART_FREQUENCY_C0, 460800U,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
+		case KSERIAL_BAUDRATE_500000:  { BAUDRATE(USART_FREQUENCY_C0, 500000U,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
+		case KSERIAL_BAUDRATE_921600:  { BAUDRATE(USART_FREQUENCY_C0, 921600U,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
+		case KSERIAL_BAUDRATE_1000000: { BAUDRATE(USART_FREQUENCY_C0, 1000000U,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
+		case KSERIAL_BAUDRATE_1500000: { BAUDRATE(USART_FREQUENCY_C0, 1500000U,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
+		case KSERIAL_BAUDRATE_1843200: { BAUDRATE(USART_FREQUENCY_C0, 1843200U,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
+		case KSERIAL_BAUDRATE_2000000: { BAUDRATE(USART_FREQUENCY_C0, 2000000U,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
+		case KSERIAL_BAUDRATE_2500000: { BAUDRATE(USART_FREQUENCY_C0, 2500000U,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
+		case KSERIAL_BAUDRATE_3000000: { BAUDRATE(USART_FREQUENCY_C0, 3000000U,					USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
 		default:					   { BAUDRATE(USART_FREQUENCY_C0, KSERIAL_DEFAULT_BAUDRATE, USART_C0->DLH, USART_C0->DLL, USART_C0->DLF); break; }
 	}
-	USART_C0->LCR &= (uint32_t)~(1u<<7u);
+	USART_C0->LCR &= (uint32_t)~(1U<<7U);
 
-	vWithSemaphore_RX_C0 = ((configure->oKernSync & ((uint32_t)1u<<(uint32_t)BSERIAL_SEMAPHORE_RX)) != 0u) ? (true) : (false);
-	vWithSemaphore_TX_C0 = ((configure->oKernSync & ((uint32_t)1u<<(uint32_t)BSERIAL_SEMAPHORE_TX)) != 0u) ? (true) : (false);
+	vWithSemaphore_RX_C0 = ((configure->oKernSync & ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_RX)) != 0U) ? (true) : (false);
+	vWithSemaphore_TX_C0 = ((configure->oKernSync & ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_TX)) != 0U) ? (true) : (false);
 	RETURN_INT_RESTORE(KERR_SERIAL_NOERR);
 }
 
@@ -187,13 +196,13 @@ int32_t	model_usart_write_C0(const uint8_t *buffer, uint32_t size) {
 
 	INTERRUPTION_OFF;
 	if ((vSending_C0 == true) || (busy == true)) { RETURN_INT_RESTORE(KERR_SERIAL_SEPRO); }
-	if (wkSize == 0u)							 { RETURN_INT_RESTORE(KERR_SERIAL_LNBU0); }
+	if (wkSize == 0U)							 { RETURN_INT_RESTORE(KERR_SERIAL_LNBU0); }
 
 	busy = true;
 	INTERRUPTION_RESTORE;
 
 	while (terminate == false) {
-		while (vSending_C0 == true) { kern_suspendProcess(1u); }
+		while (vSending_C0 == true) { kern_suspendProcess(1U); }
 
 		if (wkSize > KUSART_SZ_TX_BUF_C0) { newSize = KUSART_SZ_TX_BUF_C0; wkSize -= KUSART_SZ_TX_BUF_C0; }
 		else							  { newSize = wkSize; terminate = true;							  }
@@ -202,7 +211,7 @@ int32_t	model_usart_write_C0(const uint8_t *buffer, uint32_t size) {
 // Enable the TX interruption
 
 		vSending_C0 = true;
-		for (i = 0u; i < newSize; i++) {
+		for (i = 0U; i < newSize; i++) {
 			vSndBuffer_C0[i] = wkBuffer[i];
 		}
 
@@ -236,14 +245,14 @@ int32_t	model_usart_read_C0(uint8_t *buffer, uint32_t *size) {
 // In this case, we return 0-bytes read with the corresponding error.
 // The Error is then cancelled for the next time.
 
-	if (status != KERR_SERIAL_NOERR)		  { *size = 0u; RETURN_INT_RESTORE(status);			   }
-	if (*size == 0u) 						  { *size = 0u; RETURN_INT_RESTORE(KERR_SERIAL_NOERR); }
+	if (status != KERR_SERIAL_NOERR)		  { *size = 0U; RETURN_INT_RESTORE(status);			   }
+	if (*size == 0U) 						  { *size = 0U; RETURN_INT_RESTORE(KERR_SERIAL_NOERR); }
 
 // cppcheck-suppress premium-misra-c-2023-13.2
 //
-	if (vRRecBuffer_C0 == vWRecBuffer_C0)	  { *size = 0u; RETURN_INT_RESTORE(KERR_SERIAL_RBUEM); }
+	if (vRRecBuffer_C0 == vWRecBuffer_C0)	  { *size = 0U; RETURN_INT_RESTORE(KERR_SERIAL_RBUEM); }
 
-	for (i = 0u; i < *size; i++) {
+	for (i = 0U; i < *size; i++) {
 
 // cppcheck-suppress premium-misra-c-2023-13.2
 //
@@ -294,7 +303,7 @@ void	local_USART_IRQHandler_C0(uint32_t core, uint64_t parameter) {
 	UNUSED(parameter);
 
 	iir = USART_C0->IIR;
-	if ((iir & UART_IIR_ERBFI) != 0u) {
+	if ((iir & UART_IIR_ERBFI) != 0U) {
 
 // RX interruption
 // Read the data and signal the event
@@ -321,7 +330,7 @@ void	local_USART_IRQHandler_C0(uint32_t core, uint64_t parameter) {
 		PREEMPTION_THRESHOLD(core);
 	}
 
-	if (((iir & UART_IIR_ETBEI) != 0u) && ((USART_C0->IER & UART_IER_ETBEI) != 0u)) {
+	if (((iir & UART_IIR_ETBEI) != 0U) && ((USART_C0->IER & UART_IER_ETBEI) != 0U)) {
 
 // TX interruption
 

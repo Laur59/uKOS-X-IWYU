@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32U5Gx_sai equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // SAI address definitions
 // -----------------------
 
@@ -73,7 +75,7 @@ typedef struct {
 	volatile	uint32_t	PDMDLY;
 } SAI_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	SAI1_NS	reinterpret_cast<SAI_TypeDef *>(0x40015400u)
 #define	SAI1_S	reinterpret_cast<SAI_TypeDef *>(0x50015400u)
 #define	SAI2_NS	reinterpret_cast<SAI_TypeDef *>(0x40015800u)

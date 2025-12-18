@@ -6,14 +6,14 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Laurent von Allmen		The 2025-10-02
+# Author:   Laurent von Allmen      The 2025-10-02
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Helper tool for Cppcheck static code analysis.
+# Project:  uKOS-X
+# Goal:     Helper tool for Cppcheck static code analysis.
 #
-#   (c) 2025-20xx, Laurent von Allmen
-#   ---------------------------------
+#   © 2025-2026, Laurent von Allmen
+#   -------------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -68,44 +68,49 @@ readonly NC='\033[0m' # No Color
 declare -a premium_options
 
 while getopts ":chP" option; do
-	case ${option} in
-		h)
-			echo "USAGE: code_analysis.sh [-c]"
-			echo
-			echo "OPTIONS:"
-			echo "    -c: clear previous results"
-			echo "    -P: Cppcheck Premium"
-			exit 0
-			;;
-		c)
-			rm -fr Static_Analysis
-			;;
-		P)
-			premium_options=(
-				--premium=cert-cpp-2016
-				--premium=misra-c-2023
-				--premium=safety-off
-			)
-			;;
-		?)
-			echo "Invalid option: -${OPTARG}"
-			exit 1
-			;;
-	esac
+    case ${option} in
+        h)
+            echo "USAGE: code_analysis.sh [-c]"
+            echo
+            echo "OPTIONS:"
+            echo "    -c: clear previous results"
+            echo "    -P: Cppcheck Premium"
+            exit 0
+            ;;
+        c)
+            rm -fr Static_Analysis
+            ;;
+        P)
+            premium_options=(
+                --premium=cert-cpp-2016
+                --premium=misra-c-2023
+                --premium=safety-off
+            )
+            ;;
+        ?)
+            echo "Invalid option: -${OPTARG}"
+            exit 1
+            ;;
+    esac
 done
 
 # check that Cppcheck's applications are available
 
 if ! ( command -v cppcheck &> /dev/null || command -v cppcheck-htmlreport &> /dev/null )
 then
-	printf "%bCppcheck is not in your path%b\n" "${RED}" "${NC}"
-	exit 1
+    printf "%bCppcheck is not in your path%b\n" "${RED}" "${NC}"
+    exit 1
 fi
 
 printf "%bBuilding list of files to check%b\n" "${YELLOW}" "${NC}"
 mkdir -p Static_Analysis
 cd Static_Analysis
+rm -f .gitignore
+echo "*" > .gitignore
 cmake -S .. -B build --preset llvm -DCMAKE_EXPORT_COMPILE_COMMANDS=ON &> /dev/null
+cd build
+sed -i '' 's/-isystem[[:space:]]*/-I/g' compile_commands.json
+cd ..
 
 printf "%bRunning Cppcheck%b\n" "${YELLOW}" "${NC}"
 mkdir -p Cppcheck-build
@@ -116,59 +121,59 @@ mkdir -p Cppcheck-build
 # --premium=misra-c-2025
 
 cppcheck \
-	-D__GNUC__ \
-	-UEXCLUDE_CPPCHECK \
-	--max-configs=1 \
-	--suppressions-list="${PATH_UKOS_X_PACKAGE}"/Third_Parties/Cppcheck/uKOS_misra_rules.suppress -rp=${PATH_UKOS_X_PACKAGE}/Third_Parties/Cppcheck \
-	--suppress=asctimeCalled \
-	--suppress=missingIncludeSystem \
-	--suppress=variableScope \
-	--suppress=unknownMacro \
-	--suppress=unknownSymbol \
-	--suppress=unusedFunction \
-	--suppress=knownConditionTrueFalse \
-	--suppress=badBitmaskCheck \
-	--suppress=duplicateBreak \
-	--suppress=premium-misra-config \
-	--suppress=unmatchedSuppression \
-	--suppress="*:*/Third_Parties/TinyUSB/*" \
-	--suppress="*:*/Third_Parties/MicroPython/*" \
-	--suppress="*:*/Third_Parties/FatFs/*" \
-	--suppress="*:*/Third_Parties/LVGL/*" \
-	--suppress="*:*/Third_Parties/Tflite-micro/*" \
-	"${premium_options[@]}" \
-	-I"${PATH_UKOS_X_PACKAGE}"/OS/Includes \
-	--enable=all --inconclusive \
-	--enable=style \
-	--project=build/compile_commands.json \
-	-iFLASH.sig.c \
-	--cppcheck-build-dir=Cppcheck-build \
-	--inline-suppr \
-	--check-level=exhaustive \
-	--quiet \
-	--xml \
-	--output-file=ukos-analysis.xml
+    -D__GNUC__ \
+    -UEXCLUDE_CPPCHECK \
+    --max-configs=1 \
+    --suppressions-list="${PATH_UKOS_X_PACKAGE}"/Third_Parties/Cppcheck/uKOS_misra_rules.suppress -rp=${PATH_UKOS_X_PACKAGE}/Third_Parties/Cppcheck \
+    --suppress=asctimeCalled \
+    --suppress=missingIncludeSystem \
+    --suppress=variableScope \
+    --suppress=unknownMacro \
+    --suppress=unknownSymbol \
+    --suppress=unusedFunction \
+    --suppress=knownConditionTrueFalse \
+    --suppress=badBitmaskCheck \
+    --suppress=duplicateBreak \
+    --suppress=premium-misra-config \
+    --suppress=unmatchedSuppression \
+    --suppress="*:*/Third_Parties/TinyUSB/*" \
+    --suppress="*:*/Third_Parties/MicroPython/*" \
+    --suppress="*:*/Third_Parties/FatFs/*" \
+    --suppress="*:*/Third_Parties/LVGL/*" \
+    --suppress="*:*/Third_Parties/Tflite-micro/*" \
+    "${premium_options[@]}" \
+    -I"${PATH_UKOS_X_PACKAGE}"/OS/Includes \
+    --enable=all --inconclusive \
+    --enable=style \
+    --project=build/compile_commands.json \
+    -iFLASH.sig.c \
+    --cppcheck-build-dir=Cppcheck-build \
+    --inline-suppr \
+    --check-level=exhaustive \
+    --quiet \
+    --xml \
+    --output-file=ukos-analysis.xml
 
 if [[ -d "${PATH_PRG}"/Cppcheck-env ]]
 then
-	source "${PATH_PRG}"/Cppcheck-env/bin/activate
+    source "${PATH_PRG}"/Cppcheck-env/bin/activate
 fi
 cppcheck-htmlreport --file=ukos-analysis.xml --report-dir=html &> /dev/null
 if [[ -d "${PATH_PRG}"/Cppcheck-env ]]
 then
-	deactivate
+    deactivate
 fi
 
 if [ -f html/index.html ]
 then
-	case "$(uname)" in
-		"Darwin")
-			open html/index.html
-			;;
-		"Linux")
-			printf "%bopen Static_Analysis/html/index.html in your browswer.%b\n" "${BOLD}" "${NC}"
-			;;
-	esac
+    case "$(uname)" in
+        "Darwin")
+            open html/index.html
+            ;;
+        "Linux")
+            printf "%bopen Static_Analysis/html/index.html in your browswer.%b\n" "${BOLD}" "${NC}"
+            ;;
+    esac
 else
-	printf "%bNo error reported.%b\n" "${GREEN}" "${NC}"
+    printf "%bNo error reported.%b\n" "${GREEN}" "${NC}"
 fi

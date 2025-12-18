@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		stub for the connection of the "kern" manager to the uKernel device.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,11 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+
+#include	"clockTree.h"
+#include	"kern/kern.h"
+#include	"macros_soc.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
@@ -85,6 +89,7 @@ void	stub_kern_setLowPower(uint8_t mode) {
 	else				 { model_kernel_setLowPower_C1(mode); }
 }
 
+#if (KKERN_NB_PRECISE_SIGNALS > 0)
 void	stub_kern_setPreciseSignal(prcs_t *handle) {
 	uint32_t	core;
 
@@ -93,6 +98,7 @@ void	stub_kern_setPreciseSignal(prcs_t *handle) {
 	if (core == KCORE_0) { model_kernel_setPreciseSignal_C0(handle); }
 	else				 { model_kernel_setPreciseSignal_C1(handle); }
 }
+#endif
 
 void	stub_kern_readTickCount(uint64_t *tickCount) {
 	uint32_t	core;

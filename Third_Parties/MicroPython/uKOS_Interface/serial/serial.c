@@ -15,8 +15,8 @@
 ;			import serial
 ;			status = serial.send(0, '1234')
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -83,11 +83,11 @@ static	mp_obj_t	serial_send(mp_obj_t unit_obj, mp_obj_t buffer_obj) {
 
 	switch (unit &= 0x07u) {
 		default:
-		case 0u: { serialManager = KURT0; break; }
-		case 1u: { serialManager = KURT1; break; }
-		case 2u: { serialManager = KURT2; break; }
-		case 3u: { serialManager = KURT3; break; }
-		case 4u: { serialManager = KURT4; break; }
+		case 0U: { serialManager = KURT0; break; }
+		case 1U: { serialManager = KURT1; break; }
+		case 2U: { serialManager = KURT2; break; }
+		case 3U: { serialManager = KURT3; break; }
+		case 4U: { serialManager = KURT4; break; }
 	}
 
 	status = serial_write(serialManager, (const uint8_t *)bufInfo.buf, (uint32_t)bufInfo.len);

@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Image viewer.
 ;			This tool allows to send a simulated image via the uvc0 manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,8 +47,21 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<inttypes.h>
+#include	<stdio.h>
+#include	<stdlib.h>
 #include	<string.h>
+
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"macros_soc.h"
+#include	"memo/memo.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"serial/serial.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -83,6 +96,9 @@ static	bool	vKillRequest[KNB_CORES] = MCSET(false);
  *
  */
 int32_t	viewer_uvc0(uint32_t argc, const char_t *argv[]) {
+	UNUSED(argc);
+	UNUSED(argv);
+
 	uint32_t	core;
 	proc_t		*process;
 
@@ -90,9 +106,6 @@ int32_t	viewer_uvc0(uint32_t argc, const char_t *argv[]) {
 
 	STRG_LOC_CONST(aStrIden[]) = "Process_User";
 	STRG_LOC_CONST(aStrText[]) = "Process user.                             (c) EFr-2025";
-
-	UNUSED(argc);
-	UNUSED(argv);
 
 	core = GET_RUNNING_CORE;
 	vKillRequest[core] = false;
@@ -124,10 +137,10 @@ int32_t	viewer_uvc0(uint32_t argc, const char_t *argv[]) {
  *
  */
 int32_t	viewer_uvc0_clean(uint32_t argc, const char_t *argv[]) {
-	uint32_t	core;
-
 	UNUSED(argc);
 	UNUSED(argv);
+
+	uint32_t	core;
 
 	core = GET_RUNNING_CORE;
 	vKillRequest[core] = true;
@@ -147,7 +160,7 @@ int32_t	viewer_uvc0_clean(uint32_t argc, const char_t *argv[]) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess(const void *argument) {
-			uint32_t	w, h, frame = 0u;
+			uint32_t	w, h, frame = 0U;
 			float64_t	frameRate;
 			uint8_t		*image_0, *image_1;
 			uint64_t	time[2];
@@ -160,15 +173,15 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
 	TinyUSB_video_init();
 	TinyUSB_video_getImageSize(&w, &h);
 
-	image_0 = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (w * h * 2u), "video");
-	image_1 = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (w * h * 2u), "video");
+	image_0 = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (w * h * 2U), "video");
+	image_1 = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (w * h * 2U), "video");
 	if ((image_0 == NULL) || (image_1 == NULL)) {
 		LOG(KFATAL_USER, "viewer: out of memory");
 		exit(EXIT_OS_FAILURE);
 	}
 
 	kern_readTickCount(&time[1]);
-	while (*killRequest == false) {
+	while (!*killRequest) {
 		time[0] = time[1];
 		kern_readTickCount(&time[1]);
 
@@ -208,9 +221,9 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
 static	void	local_prepareImage(uint8_t *image, uint32_t w, uint32_t h, uint32_t startPosition) {
 			size_t		i, j, idx;
 			uint8_t		*p;
-	const	size_t		half = (size_t)w / 2u;
-	const	size_t		rowBytes = (size_t)w * 2u;
-	const	size_t		span = ((size_t)w) / (2u * 8u);
+	const	size_t		half = (size_t)w / 2U;
+	const	size_t		rowBytes = (size_t)w * 2U;
+	const	size_t		span = ((size_t)w) / (2U * 8U);
 	const	uint8_t		*end;
 
 
@@ -219,26 +232,26 @@ static	void	local_prepareImage(uint8_t *image, uint32_t w, uint32_t h, uint32_t 
 	static	const	uint8_t		aColorBars[8][4] = {
 
 //		     Y,    U,    Y,    V
-		{ 235u, 128u, 235u, 128u },		// 100% White
-		{ 219u,  16u, 219u, 138u },		// Yellow
-		{ 188u, 154u, 188u,  16u },		// Cyan
-		{ 173u,  42u, 173u,  26u },		// Green
-		{  78u, 214u,  78u, 230u },		// Magenta
-		{  63u, 102u,  63u, 240u },		// Red
-		{  32u, 240u,  32u, 118u },		// Blue
-		{  16u, 128u,  16u, 128u },		// Black
+		{ 235U, 128U, 235U, 128U },		// 100% White
+		{ 219U,  16U, 219U, 138U },		// Yellow
+		{ 188U, 154U, 188U,  16U },		// Cyan
+		{ 173U,  42U, 173U,  26U },		// Green
+		{  78U, 214U,  78U, 230U },		// Magenta
+		{  63U, 102U,  63U, 240U },		// Red
+		{  32U, 240U,  32U, 118U },		// Blue
+		{  16U, 128U,  16U, 128U },		// Black
 	};
 
 // Generate the 1st line
 
 	end = &image[rowBytes];
-	idx = (half - 1u) - ((size_t)startPosition % half);
-	p = &image[idx * 4u];
+	idx = (half - 1U) - ((size_t)startPosition % half);
+	p = &image[idx * 4U];
 
-	for (i = 0u; i < 8u; i++) {
-		for (j = 0u; j < span; j++) {
-			memcpy(p, &aColorBars[i][0], 4u);
-			p += 4u;
+	for (i = 0U; i < 8U; i++) {
+		for (j = 0U; j < span; j++) {
+			memcpy(p, &aColorBars[i][0], 4U);
+			p += 4U;
 			if (p == end) {
 				p = image;
 			}
@@ -248,7 +261,7 @@ static	void	local_prepareImage(uint8_t *image, uint32_t w, uint32_t h, uint32_t 
 // Duplicate the 1st line to the others
 
 	p = &image[rowBytes];
-	for (i = 1u; i < (size_t)h; i++) {
+	for (i = 1U; i < (size_t)h; i++) {
 
 		memcpy(p, image, rowBytes);
 		p = &p[rowBytes];

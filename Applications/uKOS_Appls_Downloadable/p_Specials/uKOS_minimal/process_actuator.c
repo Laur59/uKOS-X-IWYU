@@ -5,16 +5,16 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Process: actuator.
 ;			- Every 1000-ms
 ;				Send a new value to the dispatcher
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,10 +48,21 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"queue.h"
+#include	<stdint.h>
+#include	<stdlib.h>
 
-#define	KTIME_SAMPLING_ACTUATOR		1000u
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"memo/memo.h"
+#include	"os_errors.h"
+#include	"queue.h"
+#include	"record/record.h"
+#include	"types.h"
+#include	"record/record.h"
+
+#define	KTIME_SAMPLING_ACTUATOR		1000U
 
 extern	mbox_t	*vQueue_dispatcher;
 
@@ -75,7 +86,7 @@ bool	installaProcess_actuator(void) {
 // Specifications for the processes
 
 	PROCESS_STACKMALLOC(
-		0u,									// Index
+		0U,									// Index
 		specification,						// Specifications (just use specification_x)
 		aStrText,							// Info string (NULL if anonymous)
 		KKERN_SZ_STACK_MM,					// KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
@@ -97,12 +108,12 @@ bool	installaProcess_actuator(void) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess(const void *argument) {
+	UNUSED(argument);
+
 	uint8_t		motorPosition = 0x00u;
 	uintptr_t	message_actuator;
 
-	UNUSED(argument);
-
-	while (vQueue_dispatcher == NULL) { kern_suspendProcess(1u); }
+	while (vQueue_dispatcher == NULL) { kern_suspendProcess(1); }
 
 	while (true) {
 		kern_suspendProcess(KTIME_SAMPLING_ACTUATOR);

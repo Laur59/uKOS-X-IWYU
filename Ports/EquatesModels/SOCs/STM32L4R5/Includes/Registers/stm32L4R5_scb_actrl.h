@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32L4R5_scb_actrl equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // SCB_ACTRL address definitions
 // -----------------------------
 
@@ -55,7 +57,7 @@ typedef struct {
 	volatile	uint32_t	ACTRL;
 } SCB_ACTRL_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	SCB_ACTRL	reinterpret_cast<SCB_ACTRL_TypeDef *>(0xE000E008u)
 
 #else

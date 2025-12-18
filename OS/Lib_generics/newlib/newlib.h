@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		newLib interface for gcc C compiler (reentrant version).
@@ -57,8 +57,8 @@
 ;			stdout
 ;			stderr
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -94,7 +94,9 @@
 
 #pragma	once
 
-#include	<sys/time.h>
+#include	<machine/time.h>  // for _CLOCKS_PER_SEC_
+#include	<sys/reent.h>
+#include	<unistd.h>        // for STDERR_FILENO, STDIN_FILENO, STDOUT_FILENO
 
 /*!
  * \addtogroup Lib_generics
@@ -125,16 +127,16 @@ typedef	struct	_reent	reent_t;
 // #define _CLOCKS_PER_SEC_ 100
 // in a machine/time.h
 
-#define CLOCKS_PER_SEC_CHECK(x) ((x) == 1000000u)
+#define CLOCKS_PER_SEC_CHECK(x) ((x) == 1000000U)
 static_assert(CLOCKS_PER_SEC_CHECK(_CLOCKS_PER_SEC_), "_CLOCKS_PER_SEC_ must be 1000000");
 
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 

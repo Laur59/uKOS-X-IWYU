@@ -20,8 +20,8 @@
 ;
 ;			See wikipedia "Linear congruential generator"
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -55,11 +55,18 @@
 ;------------------------------------------------------------------------
 */
 
+#include	<stdint.h>
+
+#include	"Registers/soc_vectors.h"
+#include	"macros_soc.h"
+#include	"macros_core.h"
+#include	"core.h"
+
 // !!! Only positive constants
 
-#define	Ka	1103515245u
-#define	Kc	12345u
-#define	Km	((1u<<31u) - 1u)
+#define	Ka	1103515245U
+#define	Kc	12345U
+#define	Km	((1U<<31U) - 1U)
 
 static	uint32_t	vSeed;
 extern	uint32_t	vCrt0_randomSeed;

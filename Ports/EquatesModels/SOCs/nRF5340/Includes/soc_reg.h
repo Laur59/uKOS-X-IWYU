@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		nrf5340 equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -50,9 +50,7 @@
 
 // IWYU pragma: begin_exports
 
-#include	<stdint.h>
-
-#if (defined(CPU_APPLICATION_S))
+#ifdef CPU_APPLICATION_S
 #include	"Registers/soc_vectors_application.h"
 #include	"Registers/nrf5340_application_cache.h"
 #include	"Registers/nrf5340_application_cachedata.h"

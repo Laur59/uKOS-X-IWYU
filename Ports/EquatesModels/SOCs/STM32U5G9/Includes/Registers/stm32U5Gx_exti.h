@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32U5Gx_exti equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // EXTI address definitions
 // ------------------------
 
@@ -70,7 +72,7 @@ typedef struct {
 	volatile	uint32_t	EMR1;
 } EXTI_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	EXTI_NS	reinterpret_cast<EXTI_TypeDef *>(0x46022000u)
 #define	EXTI_S	reinterpret_cast<EXTI_TypeDef *>(0x56022000u)
 

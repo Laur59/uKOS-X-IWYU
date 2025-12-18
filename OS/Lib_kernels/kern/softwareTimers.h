@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Kern - Software timers.
@@ -22,8 +22,8 @@
 ;			int32_t	kern_killSoftwareTimer(stim_t *handle);
 ;			int32_t	kern_getSoftwareTimerById(const char_t *identifier, stim_t **handle);
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -58,6 +58,13 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
+
+#include	"kern/kern.h"	// IWYU pragma: keep (workaround app bug)
+#include	"types.h"
+
+// IWYU pragma: private, include "kern/kern.h"
 
 #if (KKERN_NB_SOFTWARE_TIMERS > 0)
 
@@ -94,14 +101,14 @@ struct	tspc {
 // Mode (oMode)
 
 enum {
-			KSTIM_STOP = 0u,									// Stop the execution of the timer
+			KSTIM_STOP = 0U,									// Stop the execution of the timer
 			KSTIM_SINGLE_SHOT,									// Single shot software timer (with start)
 			KSTIM_CONTINUOUS,									// Continuous software timer (with start)
 };
 
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -208,7 +215,7 @@ extern	int32_t	kern_killSoftwareTimer(stim_t *handle);
  */
 extern	int32_t	kern_getSoftwareTimerById(const char_t *identifier, stim_t **handle);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 

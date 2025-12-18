@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Kern - Stub management.
@@ -24,8 +24,8 @@
 ;			void	stub_kern_newProcessTimeout(void);
 ;			void	stub_kern_stopProcessTimeout(void);
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -61,6 +61,8 @@
 
 #pragma	once
 
+// IWYU pragma: private, include "kern/kern.h"
+
 /*!
  * \addtogroup Lib_kernels
  */
@@ -76,15 +78,19 @@
  * @{
  */
 
+#include	<stdint.h>
+
+#include	"kern/kern.h"
+
 // Modifiable in the makefile: use the PSPLIM & MSPLIM to check the stack overflow (implemented only in armv8.1)
 
-#if (!defined(STUB_KERN_CHECK_XSP_LIMIT_S))
+#ifndef STUB_KERN_CHECK_XSP_LIMIT_S
 #undef	STUB_KERN_CHECK_XSP_LIMIT_S
 #endif
 
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -145,13 +151,14 @@ extern	void	stub_kern_runKernel(void);
  */
 extern	void	stub_kern_setLowPower(uint8_t mode);
 
+#if (KKERN_NB_PRECISE_SIGNALS > 0)
 /*!
  * \brief Precise signal (minimal jitter)
  *
  * Call example in C:
  *
  * \code{.c}
- * #define     KTOPACQ    (1u<<0) | (1u<<28)
+ * #define     KTOPACQ    (1U<<0) | (1U<<28)
  *
  *    static    void    aProcess(const void *argument) {
  *        uint32_t     signal;
@@ -163,16 +170,16 @@ extern	void	stub_kern_setLowPower(uint8_t mode);
  *        // system call kern_createBitSignal to automatically obtain a signal.
  *        //
  *        // Create and initialise a precise signal "Test_prcs"
- *        //     Continuous run, period = 200-us, generate the signals (1u<<0) | (1u<<28) on the default signal group, selectively to the process 23
+ *        //     Continuous run, period = 200-us, generate the signals (1U<<0) | (1U<<28) on the default signal group, selectively to the process 23
  *
  *        if (kern_createPreciseSignal("Test_prcs", &preciseSignal)                                         != KERR_KERN_NOERR) { exit(EXIT_OS_FAILURE); }
  *        if (kern_setPreciseSignal(preciseSignal, &signalGroup, process23, 200, KPRCS_CONTINUOUS, KTOPACQ) != KERR_KERN_NOERR) { exit(EXIT_OS_FAILURE); }
  *
  *        while (true) {
  *
- *        // Waiting for the signal (1u<<0) coming from the ISR (always the case)
+ *        // Waiting for the signal (1U<<0) coming from the ISR (always the case)
  *
- *            signal = (1u<<0);
+ *            signal = (1U<<0);
  *            kern_waitSignal(signalGroup, &signal, KKERN_HANDLE_FROM_ISR, KWAIT_INFINITY);
  *            led_toggle(KLED_0);
  *        }
@@ -185,6 +192,7 @@ extern	void	stub_kern_setLowPower(uint8_t mode);
  *
  */
 extern	void	stub_kern_setPreciseSignal(prcs_t *handle);
+#endif
 
 /*!
  * \brief Read the tickCount
@@ -237,7 +245,7 @@ extern	void	stub_kern_newProcessTimeout(void);
  */
 extern	void	stub_kern_stopProcessTimeout(void);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 

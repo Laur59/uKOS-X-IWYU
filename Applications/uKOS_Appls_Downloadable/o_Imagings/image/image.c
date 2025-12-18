@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Demo of a C application.
 ;			This application shows how to operate with the uKOS-X uKernel.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -61,7 +61,23 @@
  *
  */
 
-#include	"uKOS.h"
+#include	<stdio.h>
+#include	<stdlib.h>
+
+#include	"crt0.h"
+#include	"serial/serial.h"
+#include	"imager/imager.h"
+#include	"imager_common.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"memo/memo.h"
+#include	"led/led.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -87,7 +103,7 @@ MODULE(
 	aStart,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,								// Address of the clean code (clean the module)
 	" 1.0",								// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0									// Execution cores
 );
 
@@ -118,10 +134,10 @@ static	void	local_transfer(void);
  *
  */
 static void __attribute__ ((noreturn)) aProcess_acquisition(const void *argument) {
+	UNUSED(argument);
+
 	imagerCnf_t	configureIMG0;
 	mutx_t			*mutex;
-
-	UNUSED(argument);
 
 	if (kern_createSemaphore(aStrAcquisition, 0, 1, &vSemaImgAcqu) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create sema G"); exit(EXIT_OS_FAILURE); }
 
@@ -130,11 +146,11 @@ static void __attribute__ ((noreturn)) aProcess_acquisition(const void *argument
 	configureIMG0.oAcqMode  = KIMAGER_SNAP;
 	configureIMG0.oImgCnf   = NULL;
 	configureIMG0.oPixMode  = KIMAGER_PIX_8_BITS;
-	configureIMG0.oStRows   = 0u;
-	configureIMG0.oStCols   = 0u;
+	configureIMG0.oStRows   = 0U;
+	configureIMG0.oStCols   = 0U;
 	configureIMG0.oNbRows	= (uint16_t)vH;
 	configureIMG0.oNbCols	= (uint16_t)vW;
-	configureIMG0.oKernSync = 0u;
+	configureIMG0.oKernSync = 0U;
 	configureIMG0.oHSync    = NULL;
 	configureIMG0.oFrame    = NULL;
 	configureIMG0.oVSync    = local_transfer;
@@ -148,7 +164,7 @@ static void __attribute__ ((noreturn)) aProcess_acquisition(const void *argument
 // Just after the SNAP initialization it is necessary waiting for the end of the
 // current transfer (~ 40-ms) before starting.
 
-	kern_suspendProcess(40u);
+	kern_suspendProcess(40U);
 	imager_acquisition();
 
 // Get the mutex "Share_Buffer" ID
@@ -162,7 +178,11 @@ static void __attribute__ ((noreturn)) aProcess_acquisition(const void *argument
 		kern_waitSemaphore(vSemaImgAcqu, KWAIT_INFINITY);
 
 		kern_lockMutex(mutex, KWAIT_INFINITY);
-		imager_read((volatile void **)&vImage);
+		{
+			volatile void *imagePtr = vImage;
+			imager_read(&imagePtr);
+			vImage = (uint8_t *)(uintptr_t)imagePtr;
+		}
 		kern_unlockMutex(mutex);
 
 		imager_acquisition();
@@ -176,10 +196,10 @@ static void __attribute__ ((noreturn)) aProcess_acquisition(const void *argument
  *
  */
 static void __attribute__ ((noreturn)) aProcess_send(const void *argument) {
+	UNUSED(argument);
+
 	uint8_t		*imageGray, *imageYUY2;
 	mutx_t		*mutex;
-
-	UNUSED(argument);
 
 	PRIVILEGE_ELEVATE;
 
@@ -198,7 +218,7 @@ static void __attribute__ ((noreturn)) aProcess_send(const void *argument) {
 	kern_getMutexById(aStrShareBuffer, &mutex);
 
 	while (true) {
-		imageGray = vImage;
+		imageGray = (uint8_t *)(uintptr_t)vImage;
 		if (imageGray != NULL) {
 			kern_lockMutex(mutex, KWAIT_INFINITY);
 			local_convertToYUY2(imageGray, imageYUY2, vW, vH);
@@ -208,7 +228,7 @@ static void __attribute__ ((noreturn)) aProcess_send(const void *argument) {
 			led_toggle(KLED_0);
 		}
 		else {
-			kern_suspendProcess(1u);
+			kern_suspendProcess(1U);
 		}
 	}
 }
@@ -222,6 +242,9 @@ static void __attribute__ ((noreturn)) aProcess_send(const void *argument) {
  *
  */
 int		main(int argc, const char *argv[]) {
+	UNUSED(argc);
+	UNUSED(argv);
+
 	mutx_t	*mutex;
 	proc_t	*process_acquisition, *process_send;
 
@@ -231,9 +254,6 @@ int		main(int argc, const char *argv[]) {
 	STRG_LOC_CONST(aStrText_acquisition[]) = "Process Acquisition.                      (c) EFr-2025";
 	STRG_LOC_CONST(aStrIden_send[])		   = "Process_Send_Image";
 	STRG_LOC_CONST(aStrText_send[])		   = "Process Send Image.                       (c) EFr-2025";
-
-	UNUSED(argc);
-	UNUSED(argv);
 
 // Specifications for the processes
 
@@ -300,9 +320,9 @@ static	void	local_transfer(void) {
 static	void	local_initialiseYUY2(uint8_t *output, uint32_t w, uint32_t h) {
 	uint32_t	i;
 
-	for (i = 0u; i < (w * h); i += 2u) {
-		output[i * 2u + 1u] = 128u;
-		output[i * 2u + 3u] = 128u;
+	for (i = 0U; i < (w * h); i += 2U) {
+		output[i * 2U + 1U] = 128U;
+		output[i * 2U + 3U] = 128U;
 	}
 }
 
@@ -319,11 +339,11 @@ static	void	local_initialiseYUY2(uint8_t *output, uint32_t w, uint32_t h) {
 static	void	local_convertToYUY2(uint8_t *input, uint8_t *output, uint32_t w, uint32_t h) {
 	uint32_t	i;
 
-	for (i = 0u; i < (w * h); i += 2u) {
+	for (i = 0U; i < (w * h); i += 2U) {
 
 // Conversion Gray scale to YUY2
 
-		output[i * 2u]		= input[i];
-		output[i * 2u + 2u] = input[i + 1];
+		output[i * 2U]		= input[i];
+		output[i * 2U + 2U] = input[i + 1];
 	}
 }

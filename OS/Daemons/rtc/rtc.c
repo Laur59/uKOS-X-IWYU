@@ -5,16 +5,16 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		rtc daemon; Update the Unix time Timer value
 ;			with a precise RTC one
 ;			every 2h the Unix time Timer is updated from the RTC.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,8 +48,20 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	<time.h>
+#include	<stdint.h>
+#include	<stdlib.h>
+
+#include	"calendar/calendar.h"
+#include	"debug.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core_stackFrame.h"
+#include	"macros_soc.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"serial/serial.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -74,7 +86,7 @@ static	void		local_process(const void *argument);
 
 // This process has to run on the following cores:
 
-#define	KEXECUTION_CORE		((1u<<BCORE_0) | (1u<<BCORE_1) | (1u<<BCORE_2) | (1u<<BCORE_3))
+#define	KEXECUTION_CORE		((1U<<BCORE_0) | (1U<<BCORE_1) | (1U<<BCORE_2) | (1U<<BCORE_3))
 
 MODULE(
 	Rtc,									// Module name (the first letter has to be upper case)
@@ -84,7 +96,7 @@ MODULE(
 	prgm,									// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,									// Address of the clean code (clean the module)
 	" 1.0",									// Revision string (major . minor)
-	(1u<<BSHOW),							// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),							// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	KEXECUTION_CORE							// Execution cores
 );
 
@@ -93,7 +105,7 @@ MODULE(
 
 #if (KCALENDAR_WITH_HW_RTC_S == true)
 
-#define	KTIME_RTC	(2u * 3600u * 1000u)	// CUpdate the Unix time Timer with the RTC value every 2h
+#define	KTIME_RTC	(2U * 3600U * 1000U)	// CUpdate the Unix time Timer with the RTC value every 2h
 
 // ---------------------------I-----------------------------------------I--------------I
 

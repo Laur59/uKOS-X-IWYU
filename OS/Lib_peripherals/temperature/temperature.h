@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		temperature manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -63,6 +63,10 @@
  * @{
  */
 
+#include	<stdint.h>
+
+#include	"types.h"
+
 // Semaphores
 // ----------
 
@@ -72,7 +76,7 @@
 
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -164,7 +168,7 @@ extern	int32_t	temperature_read(float64_t *temperature);
  */
 extern	int32_t	temperature_write(float64_t temperature);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 

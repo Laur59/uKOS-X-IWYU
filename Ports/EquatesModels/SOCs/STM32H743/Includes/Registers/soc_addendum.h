@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		addendum equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -104,7 +104,7 @@
 // adc additional definitions
 // --------------------------
 
-#define	VREFINT_CAL_VREF				3300u
+#define	VREFINT_CAL_VREF				3300U
 #define	VREFINT_CAL						((uint16_t *)(0x1FF1E860u))
 #define	TEMPSENSOR_CAL1					((uint16_t *)(0x1FF1E820u))
 #define	TEMPSENSOR_CAL2					((uint16_t *)(0x1FF1E840u))
@@ -160,22 +160,22 @@
 
 // GPIO for AFR[x] configuration
 
-#define	A00								0u
-#define	A01								1u
-#define	A02								2u
-#define	A03								3u
-#define	A04								4u
-#define	A05								5u
-#define	A06								6u
-#define	A07								7u
-#define	A08								8u
-#define	A09								9u
-#define	A10								10u
-#define	A11								11u
-#define	A12								12u
-#define	A13								13u
-#define	A14								14u
-#define	A15								15u
+#define	A00								0U
+#define	A01								1U
+#define	A02								2U
+#define	A03								3U
+#define	A04								4U
+#define	A05								5U
+#define	A06								6U
+#define	A07								7U
+#define	A08								8U
+#define	A09								9U
+#define	A10								10U
+#define	A11								11U
+#define	A12								12U
+#define	A13								13U
+#define	A14								14U
+#define	A15								15U
 
 // GPIO configure macro
 

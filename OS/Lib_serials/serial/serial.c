@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		serial manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,9 +46,45 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	"serial.h"
 
-#if (defined(CONFIG_MAN_SERIAL_S))
+#include	<stddef.h>
+#include	<stdint.h>
+
+#ifdef CONFIG_MAN_CDC0_S
+#include	"cdc0/cdc0.h"
+#endif
+#ifdef CONFIG_MAN_CDC1_S
+#include	"cdc1/cdc1.h"
+#endif
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"		// IWYU pragma: keep (to get KNB_CORES)
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"serial_common.h"
+#include	"types.h"
+#ifdef CONFIG_MAN_URT0_S
+#include	"urt0/urt0.h"
+#endif
+#ifdef CONFIG_MAN_URT1_S
+#include	"urt1/urt1.h"
+#endif
+#ifdef CONFIG_MAN_URT2_S
+#include	"urt2/urt2.h"
+#endif
+#ifdef CONFIG_MAN_URT3_S
+#include	"urt3/urt3.h"
+#endif
+#ifdef CONFIG_MAN_URT4_S
+#include	"urt4/urt4.h"
+#endif
+#ifdef CONFIG_MAN_WFI0_S
+#include	"wfi0/wfi0.h"
+#endif
+
+#ifdef CONFIG_MAN_SERIAL_S
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -71,7 +107,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -116,35 +152,35 @@ int32_t	serial_reserve(serialManager_t serialManager, reserveMode_t reserveMode,
 
 	switch (manager) {
 
-		#if (defined(CONFIG_MAN_URT0_S))
+		#ifdef CONFIG_MAN_URT0_S
 		case KURT0: { return (urt0_reserve(reserveMode, timeout)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_URT1_S))
+		#ifdef CONFIG_MAN_URT1_S
 		case KURT1: { return (urt1_reserve(reserveMode, timeout)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_URT2_S))
+		#ifdef CONFIG_MAN_URT2_S
 		case KURT2: { return (urt2_reserve(reserveMode, timeout)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_URT3_S))
+		#ifdef CONFIG_MAN_URT3_S
 		case KURT3: { return (urt3_reserve(reserveMode, timeout)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_URT4_S))
+		#ifdef CONFIG_MAN_URT4_S
 		case KURT4: { return (urt4_reserve(reserveMode, timeout)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_CDC0_S))
+		#ifdef CONFIG_MAN_CDC0_S
 		case KCDC0: { return (cdc0_reserve(reserveMode, timeout)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_CDC1_S))
+		#ifdef CONFIG_MAN_CDC1_S
 		case KCDC1: { return (cdc1_reserve(reserveMode, timeout)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_WFI0_S))
+		#ifdef CONFIG_MAN_WFI0_S
 		case KWFI0: { return (wfi0_reserve(reserveMode, timeout)); }
 		#endif
 
@@ -177,35 +213,35 @@ int32_t	serial_release(serialManager_t serialManager, reserveMode_t reserveMode)
 
 	switch (manager) {
 
-		#if (defined(CONFIG_MAN_URT0_S))
+		#ifdef CONFIG_MAN_URT0_S
 		case KURT0: { return (urt0_release(reserveMode)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_URT1_S))
+		#ifdef CONFIG_MAN_URT1_S
 		case KURT1: { return (urt1_release(reserveMode)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_URT2_S))
+		#ifdef CONFIG_MAN_URT2_S
 		case KURT2: { return (urt2_release(reserveMode)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_URT3_S))
+		#ifdef CONFIG_MAN_URT3_S
 		case KURT3: { return (urt3_release(reserveMode)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_URT4_S))
+		#ifdef CONFIG_MAN_URT4_S
 		case KURT4: { return (urt4_release(reserveMode)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_CDC0_S))
+		#ifdef CONFIG_MAN_CDC0_S
 		case KCDC0: { return (cdc0_release(reserveMode)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_CDC1_S))
+		#ifdef CONFIG_MAN_CDC1_S
 		case KCDC1: { return (cdc1_release(reserveMode)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_WFI0_S))
+		#ifdef CONFIG_MAN_WFI0_S
 		case KWFI0: { return (wfi0_release(reserveMode)); }
 		#endif
 
@@ -222,7 +258,7 @@ int32_t	serial_release(serialManager_t serialManager, reserveMode_t reserveMode)
  *          int32_t       status;
  * const    urtxCnf_t    configure = {
  *                            .oBaudRate = KSERIAL_BAUDRATE_57600,
- *                            .oKernSync = (1u<<BSERIAL_SEMAPHORE_RX),
+ *                            .oKernSync = (1U<<BSERIAL_SEMAPHORE_RX),
  *                            .oNBBits   = KSERIAL_NB_BITS_8,
  *                            .oStopBits = KSERIAL_STOPBITS_1,
  *                            .oParity   = KSERIAL_PARITY_NONE
@@ -245,35 +281,35 @@ int32_t	serial_configure(serialManager_t serialManager, const void *configure) {
 
 	switch (manager) {
 
-		#if (defined(CONFIG_MAN_URT0_S))
+		#ifdef CONFIG_MAN_URT0_S
 		case KURT0: { return (urt0_configure((const urtxCnf_t *)configure)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_URT1_S))
+		#ifdef CONFIG_MAN_URT1_S
 		case KURT1: { return (urt1_configure((const urtxCnf_t *)configure)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_URT2_S))
+		#ifdef CONFIG_MAN_URT2_S
 		case KURT2: { return (urt2_configure((const urtxCnf_t *)configure)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_URT3_S))
+		#ifdef CONFIG_MAN_URT3_S
 		case KURT3: { return (urt3_configure((const urtxCnf_t *)configure)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_URT4_S))
+		#ifdef CONFIG_MAN_URT4_S
 		case KURT4: { return (urt4_configure((const urtxCnf_t *)configure)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_CDC0_S))
+		#ifdef CONFIG_MAN_CDC0_S
 		case KCDC0: { return (cdc0_configure((const cdcxCnf_t *)configure)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_CDC1_S))
+		#ifdef CONFIG_MAN_CDC1_S
 		case KCDC1: { return (cdc1_configure((const cdcxCnf_t *)configure)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_WFI0_S))
+		#ifdef CONFIG_MAN_WFI0_S
 		case KWFI0: { return (wfi0_configure((const urtxCnf_t *)configure)); }
 		#endif
 
@@ -319,35 +355,35 @@ int32_t	serial_write(serialManager_t serialManager, const uint8_t *buffer, uint3
 
 	switch (manager) {
 
-		#if (defined(CONFIG_MAN_URT0_S))
+		#ifdef CONFIG_MAN_URT0_S
 		case KURT0: { return (urt0_write(buffer, size)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_URT1_S))
+		#ifdef CONFIG_MAN_URT1_S
 		case KURT1: { return (urt1_write(buffer, size)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_URT2_S))
+		#ifdef CONFIG_MAN_URT2_S
 		case KURT2: { return (urt2_write(buffer, size)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_URT3_S))
+		#ifdef CONFIG_MAN_URT3_S
 		case KURT3: { return (urt3_write(buffer, size)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_URT4_S))
+		#ifdef CONFIG_MAN_URT4_S
 		case KURT4: { return (urt4_write(buffer, size)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_CDC0_S))
+		#ifdef CONFIG_MAN_CDC0_S
 		case KCDC0: { return (cdc0_write(buffer, size)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_CDC1_S))
+		#ifdef CONFIG_MAN_CDC1_S
 		case KCDC1: { return (cdc1_write(buffer, size)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_WFI0_S))
+		#ifdef CONFIG_MAN_WFI0_S
 		case KWFI0: { return (wfi0_write(buffer, size)); }
 		#endif
 
@@ -387,35 +423,35 @@ int32_t	serial_read(serialManager_t serialManager, uint8_t *buffer, uint32_t *si
 
 	switch (manager) {
 
-		#if (defined(CONFIG_MAN_URT0_S))
+		#ifdef CONFIG_MAN_URT0_S
 		case KURT0: { return (urt0_read(buffer, size)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_URT1_S))
+		#ifdef CONFIG_MAN_URT1_S
 		case KURT1: { return (urt1_read(buffer, size)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_URT2_S))
+		#ifdef CONFIG_MAN_URT2_S
 		case KURT2: { return (urt2_read(buffer, size)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_URT3_S))
+		#ifdef CONFIG_MAN_URT3_S
 		case KURT3: { return (urt3_read(buffer, size)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_URT4_S))
+		#ifdef CONFIG_MAN_URT4_S
 		case KURT4: { return (urt4_read(buffer, size)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_CDC0_S))
+		#ifdef CONFIG_MAN_CDC0_S
 		case KCDC0: { return (cdc0_read(buffer, size)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_CDC1_S))
+		#ifdef CONFIG_MAN_CDC1_S
 		case KCDC1: { return (cdc1_read(buffer, size)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_WFI0_S))
+		#ifdef CONFIG_MAN_WFI0_S
 		case KWFI0: { return (wfi0_read(buffer, size)); }
 		#endif
 
@@ -454,35 +490,35 @@ int32_t	serial_getIdSemaphore(serialManager_t serialManager, uint8_t semaphore, 
 
 	switch (manager) {
 
-		#if (defined(CONFIG_MAN_URT0_S))
+		#ifdef CONFIG_MAN_URT0_S
 		case KURT0: { return (urt0_getIdSemaphore(semaphore, identifier)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_URT1_S))
+		#ifdef CONFIG_MAN_URT1_S
 		case KURT1: { return (urt1_getIdSemaphore(semaphore, identifier)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_URT2_S))
+		#ifdef CONFIG_MAN_URT2_S
 		case KURT2: { return (urt2_getIdSemaphore(semaphore, identifier)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_URT3_S))
+		#ifdef CONFIG_MAN_URT3_S
 		case KURT3: { return (urt3_getIdSemaphore(semaphore, identifier)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_URT4_S))
+		#ifdef CONFIG_MAN_URT4_S
 		case KURT4: { return (urt4_getIdSemaphore(semaphore, identifier)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_CDC0_S))
+		#ifdef CONFIG_MAN_CDC0_S
 		case KCDC0: { return (cdc0_getIdSemaphore(semaphore, identifier)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_CDC1_S))
+		#ifdef CONFIG_MAN_CDC1_S
 		case KCDC1: { return (cdc1_getIdSemaphore(semaphore, identifier)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_WFI0_S))
+		#ifdef CONFIG_MAN_WFI0_S
 		case KWFI0: { return (wfi0_getIdSemaphore(semaphore, identifier)); }
 		#endif
 
@@ -513,35 +549,35 @@ int32_t	serial_flush(serialManager_t serialManager) {
 
 	switch (manager) {
 
-		#if (defined(CONFIG_MAN_URT0_S))
+		#ifdef CONFIG_MAN_URT0_S
 		case KURT0: { return (urt0_flush());	  }
 		#endif
 
-		#if (defined(CONFIG_MAN_URT1_S))
+		#ifdef CONFIG_MAN_URT1_S
 		case KURT1: { return (urt1_flush());	  }
 		#endif
 
-		#if (defined(CONFIG_MAN_URT2_S))
+		#ifdef CONFIG_MAN_URT2_S
 		case KURT2: { return (urt2_flush());	  }
 		#endif
 
-		#if (defined(CONFIG_MAN_URT3_S))
+		#ifdef CONFIG_MAN_URT3_S
 		case KURT3: { return (urt3_flush());	  }
 		#endif
 
-		#if (defined(CONFIG_MAN_URT4_S))
+		#ifdef CONFIG_MAN_URT4_S
 		case KURT4: { return (urt4_flush());	  }
 		#endif
 
-		#if (defined(CONFIG_MAN_CDC0_S))
+		#ifdef CONFIG_MAN_CDC0_S
 		case KCDC0: { return (cdc0_flush());	  }
 		#endif
 
-		#if (defined(CONFIG_MAN_CDC1_S))
+		#ifdef CONFIG_MAN_CDC1_S
 		case KCDC1: { return (cdc1_flush());	  }
 		#endif
 
-		#if (defined(CONFIG_MAN_WFI0_S))
+		#ifdef CONFIG_MAN_WFI0_S
 		case KWFI0: { return (wfi0_flush());	  }
 		#endif
 
@@ -667,4 +703,6 @@ static	void	local_getDevice(serialManager_t serialManager, serialManager_t *mana
 	PRIVILEGE_RESTORE;
 }
 
+#else
+#error	"CONFIG_MAN_COMM_S SHALL be defined in project using serial/serial.c"
 #endif

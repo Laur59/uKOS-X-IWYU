@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32U5Gx_rtc equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // RTC address definitions
 // -----------------------
 
@@ -81,7 +83,7 @@ typedef struct {
 	volatile	uint32_t	ALRBBINR;
 } RTC_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	RTC_NS	reinterpret_cast<RTC_TypeDef *>(0x46007800u)
 #define	RTC_S	reinterpret_cast<RTC_TypeDef *>(0x56007800u)
 

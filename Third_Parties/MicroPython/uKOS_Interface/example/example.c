@@ -16,8 +16,8 @@
 ;			example.add_ints(1, 3)
 ;				should return 4
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -120,7 +120,7 @@ static	mp_obj_t	example_copy(mp_obj_t a_obj, mp_obj_t b_obj) {
 	b   = (uint64_t *)bufinfo_b.buf;
 	len = (uint32_t  )bufinfo_b.len;
 
-	for (i = 0u; i < len; i++) {
+	for (i = 0U; i < len; i++) {
 		*b++ = *a++;
 	}
 	return (mp_const_none);

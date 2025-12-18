@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		startUp process; execute some important initializations
 ;			before jumping to the selected function.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,7 +47,21 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<inttypes.h>
+#include	<stdint.h>
+#include	<stdio.h>
+
+#include	"serial_common.h"
+#include	"serial/serial.h"
+#include	"ip.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"switch/switch.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"system/system.h"
+#include	"types.h"
+#include	"urt0/urt0.h"
 
 // Bootstrap function table
 // ------------------------
@@ -67,8 +81,8 @@ static	const	char_t	*argv_cnsUrt0[] = { "console", "urt0" };
 static	const	char_t	*argv_sloader[] = { "sloader"		  };
 
 static	const	boot_t	aFunction[] = {
-							{ 0x00u, "console", KSERIAL_BAUDRATE_460800, KURT0, 2u, argv_cnsUrt0 },
-							{ 0x01u, "sloader", KSERIAL_BAUDRATE_460800, KURT0, 1u, argv_sloader }
+							{ 0x00u, "console", KSERIAL_BAUDRATE_460800, KURT0, 2U, argv_cnsUrt0 },
+							{ 0x01u, "sloader", KSERIAL_BAUDRATE_460800, KURT0, 1U, argv_sloader }
 						};
 
 #define	KDEF_COMM		KURT0
@@ -113,7 +127,7 @@ void	stub_startUp_launch(void) {
 	configureURTx.oStopBits = KSERIAL_STOPBITS_1;
 	configureURTx.oParity   = KSERIAL_PARITY_NONE;
 	configureURTx.oBaudRate = aFunction[mode].oBaudrate;
-	configureURTx.oKernSync = ((uint32_t)1u<<(uint32_t)BSERIAL_SEMAPHORE_RX);
+	configureURTx.oKernSync = ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_RX);
 	serial_configure(KURT0, &configureURTx);
 
 // Bootstrap ...
@@ -123,7 +137,7 @@ void	stub_startUp_launch(void) {
 // Determine the "i" index on the function table
 
 	kern_getProcessRun(&process);
-	for (i = 0u; i < (uint8_t)KNB_FUNCTIONS; i++) {
+	for (i = 0U; i < (uint8_t)KNB_FUNCTIONS; i++) {
 		if (aFunction[i].oSW == mode) {
 			kern_setSerialForProcess(process, aFunction[i].oSerialManager);
 		}
@@ -135,9 +149,9 @@ void	stub_startUp_launch(void) {
 	(void)dprintf(KSYST, "%s", aStrLogo);
 	(void)dprintf(KSYST, "Signature:\n%s\n\n", signature);
 	(void)dprintf(KSYST, "%ssw = %"PRIX32"\n\n", identifier, mode);
-	kern_suspendProcess(500u);
+	kern_suspendProcess(500U);
 
-	for (i = 0u; i < (uint8_t)KNB_FUNCTIONS; i++) {
+	for (i = 0U; i < (uint8_t)KNB_FUNCTIONS; i++) {
 		if (aFunction[i].oSW == mode) {
 
 // The communication
@@ -161,7 +175,7 @@ void	stub_startUp_launch(void) {
 
 			if (error == true) {
 				(void)dprintf(KSYST, "Module not found or user memory busy by a running application.\n\n");
-				while (true) { kern_suspendProcess(1u); }
+				while (true) { kern_suspendProcess(1U); }
 			}
 			else {
 

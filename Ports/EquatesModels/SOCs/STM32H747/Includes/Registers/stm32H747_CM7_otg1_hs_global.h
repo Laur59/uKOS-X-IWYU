@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32H747_CM7_otg1_hs_global equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // OTG1_HS_GLOBAL address definitions
 // ----------------------------------
@@ -84,7 +86,7 @@ typedef struct {
 	volatile	uint32_t	OTG_DIEPTXF8;
 } OTG1_HS_GLOBAL_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	OTG1_HS_GLOBAL	reinterpret_cast<OTG1_HS_GLOBAL_TypeDef *>(0x40040000u)
 
 #else

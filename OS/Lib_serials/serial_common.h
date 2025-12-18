@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		serial_commun equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -63,6 +63,8 @@
  * @{
  */
 
+#include	<stdint.h>
+
 // Configuration structure
 // -----------------------
 
@@ -84,21 +86,21 @@ struct cdcxCnf {
 // Number of bits (oNBBits)
 
 enum {
-			KSERIAL_NB_BITS_7 = 0u,								// Word of 7-bits
+			KSERIAL_NB_BITS_7 = 0U,								// Word of 7-bits
 			KSERIAL_NB_BITS_8									// Word of 8-bits
 };
 
 // Number of stop bits (oStopBits)
 
 enum {
-			KSERIAL_STOPBITS_1 = 0u,							// 1-stop bits
+			KSERIAL_STOPBITS_1 = 0U,							// 1-stop bits
 			KSERIAL_STOPBITS_2									// 2-stop bits
 };
 
 // Parity (oParity)
 
 enum {
-			KSERIAL_PARITY_NONE = 0u,							// No Parity
+			KSERIAL_PARITY_NONE = 0U,							// No Parity
 			KSERIAL_PARITY_EVEN,								// Parity even
 			KSERIAL_PARITY_ODD									// Parity odd
 
@@ -107,7 +109,7 @@ enum {
 // Baudrates (oBaudRate)
 
 enum {
-			KSERIAL_BAUDRATE_DEFAULT = 0u,						// Default baudrate
+			KSERIAL_BAUDRATE_DEFAULT = 0U,						// Default baudrate
 			KSERIAL_BAUDRATE_2400,								// 2400-bit/s
 			KSERIAL_BAUDRATE_4800,								// 4800-bit/s
 			KSERIAL_BAUDRATE_9600,								// 9600-bit/s
@@ -130,7 +132,7 @@ enum {
 // Kernel synchro semaphores (oKernSync)
 
 enum {
-			BSERIAL_SEMAPHORE_RX = 0u,							// RX semaphore
+			BSERIAL_SEMAPHORE_RX = 0U,							// RX semaphore
 			BSERIAL_SEMAPHORE_TX								// TX semaphore
 };
 

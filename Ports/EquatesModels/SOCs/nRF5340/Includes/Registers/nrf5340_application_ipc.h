@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		nrf5340_application_ipc equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // IPC address definitions
 // -----------------------
 
@@ -72,7 +74,7 @@ typedef struct {
 	volatile	uint32_t	GPMEM[2];
 } IPC_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	IPC_NS	reinterpret_cast<IPC_TypeDef *>(0x4002A000u)
 #define	IPC_S	reinterpret_cast<IPC_TypeDef *>(0x5002A000u)
 

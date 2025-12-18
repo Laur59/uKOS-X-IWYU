@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		nrf5340_application_cacheinfo equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // CACHEINFO address definitions
 // -----------------------------
@@ -310,7 +312,7 @@ typedef struct {
 	volatile	uint32_t	SET255_WAY[2];
 } CACHEINFO_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	CACHEINFO_S	reinterpret_cast<CACHEINFO_TypeDef *>(0x00F08000u)
 
 #else

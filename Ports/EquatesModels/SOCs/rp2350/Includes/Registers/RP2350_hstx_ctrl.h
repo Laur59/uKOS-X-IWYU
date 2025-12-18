@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		RP2350_hstx_ctrl equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // HSTX_CTRL address definitions
 // -----------------------------
 
@@ -65,7 +67,7 @@ typedef struct {
 	volatile	uint32_t	EXPAND_TMDS;
 } HSTX_CTRL_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	HSTX_CTRL_NS	reinterpret_cast<HSTX_CTRL_TypeDef *>(0x400C0000u)
 #define	HSTX_CTRL_S		reinterpret_cast<HSTX_CTRL_TypeDef *>(0x400C0000u)
 #else

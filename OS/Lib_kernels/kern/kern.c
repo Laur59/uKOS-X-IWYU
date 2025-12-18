@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		kern manager (uKernel core).
@@ -150,8 +150,8 @@
 ;			temporal				-					-
 ;			xLibrary				-					-
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -185,9 +185,26 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	"kern.h"
 #include	"kern/private/private_kern.h"
+
+#include	<stddef.h>
+#include	<stdint.h>
+
+#include	"debug.h"
+#if (KKERN_NB_POOLS > 0)
+#include	"kern/pools.h"
+#endif
 #include	"kern/private/private_processes.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"serial/serial.h"
+#ifdef RV32IMAC_S
+#include	"soc_reg.h"
+#endif
 
 #define	KKERN_VERSION	" 1.0"
 
@@ -212,14 +229,14 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	KKERN_VERSION,					// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
 // Library specific
 // ================
 
-		uint32_t	vKern_nbIntImbrications[KNB_CORES] = MCSET(0u);
+		uint32_t	vKern_nbIntImbrications[KNB_CORES] = MCSET(0U);
 static	uint8_t		vKern_state[KNB_CORES] = MCSET(KKERN_NOT_READY);
 
 /*
@@ -255,7 +272,7 @@ int32_t	kern_init(void) {
 
 	if (IS_EXCEPTION) { return (KERR_KERN_FRISR); }
 
-	if (vInit[core] == false) {
+	if (!vInit[core]) {
 		vInit[core] = true;
 
 		INTERRUPTION_OFF;
@@ -323,7 +340,7 @@ int32_t	kern_runKernel(void) {
 	PRIVILEGE_ELEVATE;
 	if (IS_EXCEPTION) { PRIVILEGE_RESTORE; return (KERR_KERN_FRISR); }
 
-	if (vRun[core] == false) {
+	if (!vRun[core]) {
 		vRun[core] = true;
 
 		vKern_runProc[core]->oStatistic.oNbKernCalls++;
@@ -368,21 +385,21 @@ int32_t	kern_criticalSection(uint8_t critical) {
 	PRIVILEGE_ELEVATE;
 	switch (critical) {
 		case KENTER_CRITICAL: {
-			if (vKern_nbIntImbrications[core] == 0u) {
+			if (vKern_nbIntImbrications[core] == 0U) {
 
 				INTERRUPTION_OFF_CRITICAL(vIntMask[core]);
 			}
 
-			vKern_nbIntImbrications[core] = (vKern_nbIntImbrications[core] < UINT32_MAX) ? (vKern_nbIntImbrications[core] + 1u) : (UINT32_MAX);
+			vKern_nbIntImbrications[core] = (vKern_nbIntImbrications[core] < UINT32_MAX) ? (vKern_nbIntImbrications[core] + 1U) : (UINT32_MAX);
 			break;
 		}
 		case KEXIT_CRITICAL: {
-			if (vKern_nbIntImbrications[core] == 1u) {
+			if (vKern_nbIntImbrications[core] == 1U) {
 				vKern_nbIntImbrications[core]--;
 				INTERRUPTION_RESTORE_CRITICAL(vIntMask[core]);
 			}
 			else {
-				vKern_nbIntImbrications[core] = (vKern_nbIntImbrications[core] > 1u ) ? (vKern_nbIntImbrications[core] - 1u) : (vKern_nbIntImbrications[core]);
+				vKern_nbIntImbrications[core] = (vKern_nbIntImbrications[core] > 1U ) ? (vKern_nbIntImbrications[core] - 1U) : (vKern_nbIntImbrications[core]);
 			}
 			break;
 		}

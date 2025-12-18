@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		nrf5340_application_qdec equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // QDEC address definitions
 // ------------------------
@@ -98,7 +100,7 @@ typedef struct {
 	volatile	uint32_t	ACCDBLREAD;
 } QDEC_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	QDEC0_NS	reinterpret_cast<QDEC_TypeDef *>(0x40033000u)
 #define	QDEC0_S		reinterpret_cast<QDEC_TypeDef *>(0x50033000u)
 #define	QDEC1_NS	reinterpret_cast<QDEC_TypeDef *>(0x40034000u)

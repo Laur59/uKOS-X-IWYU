@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Exceptions for the Pico2_rp2350 module.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,19 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stddef.h>
+
+#include	"board.h"
+#include	"core.h"
+#include	"core_reg.h"
+#include	"crt0.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"modules.h"
+#include	"serial/serial.h"
+#include	"soc_reg.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -69,7 +81,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -81,6 +93,7 @@ void	(*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 // Prototypes
 
+extern	void	cmns_send(serialManager_t serialManager, const char_t *ascii);
 extern	void	cmns_wait(uint32_t us);
 static	void	local_setLEDs(uint8_t ledNb);
 static	void	local_clrLEDs(uint8_t ledNb);
@@ -102,28 +115,28 @@ static void __attribute__ ((noreturn)) cb_signal(uint8_t mode) {
 	switch (mode) {
 		default:
 		case KEXCEPTION: {
-			local_cpyLEDs(0xFFu);
+			local_cpyLEDs(0xFFU);
 			while (true) {
-				cmns_wait(1000000u);
-				local_setLEDs(1u);
-				cmns_wait(1000000u);
-				local_clrLEDs(1u);
+				cmns_wait(1000000U);
+				local_setLEDs(1U);
+				cmns_wait(1000000U);
+				local_clrLEDs(1U);
 			}
 		}
 		case KINTERRUPTION: {
-			local_cpyLEDs(0xFFu);
+			local_cpyLEDs(0xFFU);
 			while (true) {
-				cmns_wait(1000000u);
-				local_setLEDs(2u);
-				cmns_wait(1000000u);
-				local_clrLEDs(2u);
+				cmns_wait(1000000U);
+				local_setLEDs(2U);
+				cmns_wait(1000000U);
+				local_clrLEDs(2U);
 			}
 		}
 	}
 }
 
-#include	"model_coreDump_tracing.c_inc"
-#include	"model_coreDump_generic.c_inc"
+#include	"model_coreDump_tracing.c_inc"	// IWYU pragma: keep (workaround for app)
+#include	"model_coreDump_generic.c_inc"	// IWYU pragma: keep (workaround for app)
 #include	"model_coreDump_core.c_inc"
 #include	"model_coredump_soc.c_inc"
 
@@ -138,16 +151,16 @@ static void __attribute__ ((noreturn)) cb_signal(uint8_t mode) {
 void	exce_init(void) {
 	uint8_t		nbExceptions, nbInterruptions;
 
-	for (nbExceptions = 0u; nbExceptions < KNB_EXCEPTIONS; nbExceptions++) {
+	for (nbExceptions = 0U; nbExceptions < KNB_EXCEPTIONS; nbExceptions++) {
 		EXCEPTION_VECTOR(nbExceptions, model_coreDump_displayExceptions);
 	}
 
-	for (nbInterruptions = 0u; nbInterruptions < KNB_INTERRUPTIONS; nbInterruptions++) {
+	for (nbInterruptions = 0U; nbInterruptions < KNB_INTERRUPTIONS; nbInterruptions++) {
 		INTERRUPT_VECTOR(nbInterruptions, model_coreDump_displayInterruptions);
 	}
 
 	core_setBASEPRI((uint32_t)KINT_LEVEL_PERIPHERALS<<(uint32_t)KNVIC_PRIORITY_SHIFT);
-	REG(SCB)->AIRCR = SCB_AIRCR_VECTKEY_MASK | 0x0300u;
+	REG(SCB)->AIRCR = SCB_AIRCR_VECTKEY_MASK | 0x0300U;
 
 	REG(SCB)->SHCSR |= SCB_SHCSR_MEMFAULTENA | SCB_SHCSR_BUSFAULTENA | SCB_SHCSR_USGFAULTENA | SCB_SHCSR_SECUREFAULTENA;
 }
@@ -164,8 +177,8 @@ void	exce_init(void) {
 static	void	local_setLEDs(uint8_t ledNb) {
 
 	switch (ledNb) {
-		case 1: { REG(SIO)->GPIO_OUT_SET = (1u<<BLED_1); break; }
-		case 2: { REG(SIO)->GPIO_OUT_SET = (1u<<BLED_2); break; }
+		case 1: { REG(SIO)->GPIO_OUT_SET = (1U<<BLED_1); break; }
+		case 2: { REG(SIO)->GPIO_OUT_SET = (1U<<BLED_2); break; }
 		default: {
 
 // Make MISRA happy :-)
@@ -184,8 +197,8 @@ static	void	local_setLEDs(uint8_t ledNb) {
 static	void	local_clrLEDs(uint8_t ledNb) {
 
 	switch (ledNb) {
-		case 1: { REG(SIO)->GPIO_OUT_CLR = (1u<<BLED_1); break; }
-		case 2: { REG(SIO)->GPIO_OUT_CLR = (1u<<BLED_2); break; }
+		case 1: { REG(SIO)->GPIO_OUT_CLR = (1U<<BLED_1); break; }
+		case 2: { REG(SIO)->GPIO_OUT_CLR = (1U<<BLED_2); break; }
 		default: {
 
 // Make MISRA happy :-)
@@ -204,8 +217,8 @@ static	void	local_clrLEDs(uint8_t ledNb) {
 static	void	local_cpyLEDs(uint8_t value) {
 	uint8_t		led, mask;
 
-	mask = 0x01u;
-	for (led = 0u; led < 2u; led++) {
+	mask = 0x01U;
+	for (led = 0U; led < 2U; led++) {
 		(value & mask) ? (local_setLEDs(led)) : (local_clrLEDs(led));
 		mask = (uint8_t)(mask<<1);
 	}

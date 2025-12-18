@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		i2c_commun equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -63,6 +63,8 @@
  * @{
  */
 
+#include	<stdint.h>
+
 // Configuration structure
 // -----------------------
 
@@ -76,12 +78,12 @@ struct i2cCnf {
 // Speed (oSpeed)
 
 enum {
-			KI2C_100KBPS =	100000u,							// Sm, bus at 100-Kbit/s
-			KI2C_400KBPS =	400000u,							// Fm, bus at 400-Kbit/s
-			KI2C_1MBPS	 =	1000000u,							// Fm+, bus at 1-Mbit/s
-			KI2C_17MBPS  =	1700000u,							// Hs, bus at 1.7-Mbit/s
-			KI2C_34MBPS  =	3400000u,							// Hs, bus at 3.4-Mbit/s
-			KI2C_5MBPS	 =	5000000u							// UFm, bus at 5-Mbit/s
+			KI2C_100KBPS =	100000U,							// Sm, bus at 100-Kbit/s
+			KI2C_400KBPS =	400000U,							// Fm, bus at 400-Kbit/s
+			KI2C_1MBPS	 =	1000000U,							// Fm+, bus at 1-Mbit/s
+			KI2C_17MBPS  =	1700000U,							// Hs, bus at 1.7-Mbit/s
+			KI2C_34MBPS  =	3400000U,							// Hs, bus at 3.4-Mbit/s
+			KI2C_5MBPS	 =	5000000U							// UFm, bus at 5-Mbit/s
 };
 
 /**@}*/

@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		storage manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,9 +46,19 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	"storage.h"
 
-#if (defined(CONFIG_MAN_STORAGE_S))
+#include	<stddef.h>
+#include	<stdint.h>
+
+#include	"macros.h"
+#include	"modules.h"
+#include	"sdcard/sdcard.h"
+#include	"os_errors.h"
+#include	"serialFlash/serialFlash.h"
+#include	"types.h"
+
+#ifdef CONFIG_MAN_STORAGE_S
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -71,7 +81,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -102,11 +112,11 @@ int32_t	storage_reserve(storage_manager_t manager, reserveMode_t reserveMode, ui
 
 	switch (manager) {
 
-		#if (defined(CONFIG_MAN_SDCARD_S))
+		#ifdef CONFIG_MAN_SDCARD_S
 		case KSDCARD: { return (sdcard_reserve(reserveMode, timeout));			  }
 		#endif
 
-		#if (defined(CONFIG_MAN_SERIAL_FLASH_S))
+		#ifdef CONFIG_MAN_SERIAL_FLASH_S
 		case KSERIAL_FLASH: { return (serialFlash_reserve(reserveMode, timeout)); }
 		#endif
 
@@ -135,11 +145,11 @@ int32_t	storage_release(storage_manager_t manager, reserveMode_t reserveMode) {
 
 	switch (manager) {
 
-		#if (defined(CONFIG_MAN_SDCARD_S))
+		#ifdef CONFIG_MAN_SDCARD_S
 		case KSDCARD: { return (sdcard_release(reserveMode));			 }
 		#endif
 
-		#if (defined(CONFIG_MAN_SERIAL_FLASH_S))
+		#ifdef CONFIG_MAN_SERIAL_FLASH_S
 		case KSERIAL_FLASH: { return (serialFlash_release(reserveMode)); }
 		#endif
 
@@ -171,11 +181,11 @@ int32_t	storage_initialise(storage_manager_t manager, void  *specification) {
 
 	switch (manager) {
 
-		#if (defined(CONFIG_MAN_SDCARD_S))
+		#ifdef CONFIG_MAN_SDCARD_S
 		case KSDCARD: { return (sdcard_initialise((sdcard_specification_t *)specification)); }
 		#endif
 
-		#if (defined(CONFIG_MAN_SERIAL_FLASH_S))
+		#ifdef CONFIG_MAN_SERIAL_FLASH_S
 		case KSERIAL_FLASH: { return (serialFlash_initialise());							 }
 		#endif
 
@@ -203,11 +213,11 @@ int32_t	storage_readStatus(storage_manager_t manager) {
 
 	switch (manager) {
 
-		#if (defined(CONFIG_MAN_SDCARD_S))
+		#ifdef CONFIG_MAN_SDCARD_S
 		case KSDCARD: { return (sdcard_readStatus());			 }
 		#endif
 
-		#if (defined(CONFIG_MAN_SERIAL_FLASH_S))
+		#ifdef CONFIG_MAN_SERIAL_FLASH_S
 		case KSERIAL_FLASH: { return (serialFlash_readStatus()); }
 		#endif
 
@@ -244,11 +254,11 @@ int32_t	storage_read(storage_manager_t manager, uint8_t *buffer, uint32_t size, 
 
 	switch (manager) {
 
-		#if (defined(CONFIG_MAN_SDCARD_S))
+		#ifdef CONFIG_MAN_SDCARD_S
 		case KSDCARD: { return (sdcard_read(buffer, size, sector));			   }
 		#endif
 
-		#if (defined(CONFIG_MAN_SERIAL_FLASH_S))
+		#ifdef CONFIG_MAN_SERIAL_FLASH_S
 		case KSERIAL_FLASH: { return (serialFlash_read(buffer, size, sector)); }
 		#endif
 
@@ -285,11 +295,11 @@ int32_t	storage_write(storage_manager_t manager, const uint8_t *buffer, uint32_t
 
 	switch (manager) {
 
-		#if (defined(CONFIG_MAN_SDCARD_S))
+		#ifdef CONFIG_MAN_SDCARD_S
 		case KSDCARD: { return (sdcard_write(buffer, size, sector));			}
 		#endif
 
-		#if (defined(CONFIG_MAN_SERIAL_FLASH_S))
+		#ifdef CONFIG_MAN_SERIAL_FLASH_S
 		case KSERIAL_FLASH: { return (serialFlash_write(buffer, size, sector)); }
 		#endif
 
@@ -324,11 +334,11 @@ int32_t	storage_ioctl(storage_manager_t manager, storageIoctl_t command, void *b
 
 	switch (manager) {
 
-		#if (defined(CONFIG_MAN_SDCARD_S))
+		#ifdef CONFIG_MAN_SDCARD_S
 		case KSDCARD: { return (sdcard_ioctl(command, buffer));			   }
 		#endif
 
-		#if (defined(CONFIG_MAN_SERIAL_FLASH_S))
+		#ifdef CONFIG_MAN_SERIAL_FLASH_S
 		case KSERIAL_FLASH: { return (serialFlash_ioctl(command, buffer)); }
 		#endif
 

@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		kernel manager (uKernel core).
@@ -150,8 +150,8 @@
 ;			temporal				-					-
 ;			xLibrary				-					-
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -202,54 +202,59 @@
  * @{
  */
 
+#include	<stdint.h>
+
+#include	"serial/serial.h"
+#include	"types.h"		// IWYU pragma: keep
+
 // Exported standard kernel configuration
 // --------------------------------------
 
 // Kernel functionalities
 
-#if (!defined(KKERN_WITH_STATISTICS_S))
+#ifndef KKERN_WITH_STATISTICS_S
 #define	KKERN_WITH_STATISTICS_S		true
 #endif
-#if (!defined(KKERN_WITH_DEBUG_S))
+#ifndef KKERN_WITH_DEBUG_S
 #define	KKERN_WITH_DEBUG_S			true
 #endif
-#if (!defined(KKERN_WITH_TRTC_S))
+#ifndef KKERN_WITH_TRTC_S
 #define	KKERN_WITH_TRTC_S			true
 #endif
 
 // The number of objects
 
-#if (!defined(KKERN_NB_PROCESSES))
-#define	KKERN_NB_PROCESSES			48u
+#ifndef KKERN_NB_PROCESSES
+#define	KKERN_NB_PROCESSES			48U
 #endif
 #if	(defined(KKERN_NB_MAILBOXES))
-static_assert((KKERN_NB_MAILBOXES >= 8u), "KKERN_NB_MAILBOXES shall be >= 8");
+static_assert((KKERN_NB_MAILBOXES >= 8U), "KKERN_NB_MAILBOXES shall be >= 8");
 #else
-#define	KKERN_NB_MAILBOXES			48u
+#define	KKERN_NB_MAILBOXES			48U
 #endif
 #if	(defined(KKERN_NB_SEMAPHORES))
-static_assert((KKERN_NB_SEMAPHORES >= 8u), "KKERN_NB_SEMAPHORES shall be >= 8");
+static_assert((KKERN_NB_SEMAPHORES >= 8U), "KKERN_NB_SEMAPHORES shall be >= 8");
 #else
-#define	KKERN_NB_SEMAPHORES			48u
+#define	KKERN_NB_SEMAPHORES			48U
 #endif
 #if	(defined(KKERN_NB_MUTEXES))
-static_assert((KKERN_NB_MUTEXES >= 8u), "KKERN_NB_MUTEXES shall be >= 8");
+static_assert((KKERN_NB_MUTEXES >= 8U), "KKERN_NB_MUTEXES shall be >= 8");
 #else
-#define	KKERN_NB_MUTEXES			48u
+#define	KKERN_NB_MUTEXES			48U
 #endif
 #if	(defined(KKERN_NB_SIGNALS))
-static_assert((KKERN_NB_SIGNALS >= 1u), "KKERN_NB_SIGNALS shall be >= 1");
+static_assert((KKERN_NB_SIGNALS >= 1U), "KKERN_NB_SIGNALS shall be >= 1");
 #else
-#define	KKERN_NB_SIGNALS			8u
+#define	KKERN_NB_SIGNALS			8U
 #endif
-#if (!defined(KKERN_NB_SOFTWARE_TIMERS))
-#define	KKERN_NB_SOFTWARE_TIMERS	8u
+#ifndef KKERN_NB_SOFTWARE_TIMERS
+#define	KKERN_NB_SOFTWARE_TIMERS	8U
 #endif
-#if (!defined(KKERN_NB_POOLS))
-#define	KKERN_NB_POOLS				8u
+#ifndef KKERN_NB_POOLS
+#define	KKERN_NB_POOLS				8U
 #endif
-#if (!defined(KKERN_NB_PRECISE_SIGNALS))
-#define	KKERN_NB_PRECISE_SIGNALS	8u
+#ifndef KKERN_NB_PRECISE_SIGNALS
+#define	KKERN_NB_PRECISE_SIGNALS	8U
 #endif
 
 #define	KKERN_NB_PRCS_CHECK(x)		((x * KKERN_NB_SIGNALS) >= x)
@@ -257,17 +262,17 @@ static_assert(KKERN_NB_PRCS_CHECK(KKERN_NB_PRECISE_SIGNALS), "KKERN_NB_SIGNALS c
 
 // The kernel temporal (in ms)
 
-#if (!defined(KKERN_TIC_TIME))
-#define	KKERN_TIC_TIME				1u
+#ifndef KKERN_TIC_TIME
+#define	KKERN_TIC_TIME				1U
 #endif
-#if (!defined(KKERN_TIC_FREQUENCY))
-#define	KKERN_TIC_FREQUENCY			1000u
+#ifndef KKERN_TIC_FREQUENCY
+#define	KKERN_TIC_FREQUENCY			1000U
 #endif
-#if (!defined(KKERN_TICKCOUNT_PER_SECOND))
-#define	KKERN_TICKCOUNT_PER_SECOND	(1000u * 1000u)
+#ifndef KKERN_TICKCOUNT_PER_SECOND
+#define	KKERN_TICKCOUNT_PER_SECOND	(1000U * 1000U)
 #endif
-#if (!defined(KKERN_PROC_TIMEOUT))
-#define	KKERN_PROC_TIMEOUT			20u
+#ifndef KKERN_PROC_TIMEOUT
+#define	KKERN_PROC_TIMEOUT			20U
 #endif
 
 // Misc equates
@@ -275,7 +280,7 @@ static_assert(KKERN_NB_PRCS_CHECK(KKERN_NB_PRECISE_SIGNALS), "KKERN_NB_SIGNALS c
 
 // Size of the object names identifiers + \0 !!! Always aligned !!!
 
-#define	KKERN_OBJECT_SZ_ID			31u							//
+#define	KKERN_OBJECT_SZ_ID			31U							//
 
 // Special process handle (used by semaphores and signals)
 
@@ -286,7 +291,7 @@ static_assert(KKERN_NB_PRCS_CHECK(KKERN_NB_PRECISE_SIGNALS), "KKERN_NB_SIGNALS c
 // uKernel states
 
 enum {
-		KKERN_NOT_READY	= 0u,									// Kernel not ready
+		KKERN_NOT_READY	= 0U,									// Kernel not ready
 		KKERN_INITIALISED,										// Kernel Initialised
 		KKERN_RUNNING											// KernelRunning
 };
@@ -294,21 +299,21 @@ enum {
 // Critical sections
 
 enum {
-		KENTER_CRITICAL = 0u,									// Entry into a critical section
+		KENTER_CRITICAL = 0U,									// Entry into a critical section
 		KEXIT_CRITICAL											// Exit from a critical section
 };
 
 // Idle states
 
 enum {
-		KKERN_IDLE_IN = 0u,										// Enter in the idle process
+		KKERN_IDLE_IN = 0U,										// Enter in the idle process
 		KKERN_IDLE_OUT											// Output from the idle process
 };
 
 // uKernel Low power modes (used by the idle process)
 
 enum {
-		KKERN_CPU_MODE_NORMAL = 0u,								// CPU in a normal running mode
+		KKERN_CPU_MODE_NORMAL = 0U,								// CPU in a normal running mode
 		KKERN_CPU_MODE_DEEP_SLEEP,								// CPU in a deep low power mode
 		KKERN_CPU_MODE_HIBERNATE,								// CPU in a hibernate low power mode
 		KKERN_CPU_MODE_STOP										// CPU in a stop mode
@@ -317,7 +322,7 @@ enum {
 // Priorities
 
 typedef	enum {
-		KKERN_PRIORITY_HIGH_Reserved = 0u,						// 00 - High priority (highest priority)
+		KKERN_PRIORITY_HIGH_Reserved = 0U,						// 00 - High priority (highest priority)
 		KKERN_PRIORITY_HIGH_01,									//
 		KKERN_PRIORITY_HIGH_02,									//
 		KKERN_PRIORITY_HIGH_03,									//
@@ -408,6 +413,22 @@ typedef	struct	pool		pool_t;
 typedef	struct	prcs		prcs_t;
 typedef	struct	sign		sign_t;
 
+typedef	struct	list				list_t;
+typedef	struct	obje				obje_t;
+
+struct	list {
+	proc_t		*oFirst;														// Ptr on the first process
+	proc_t		*oLast;															// Ptr on the last process
+	uint16_t	oNbElements;													// Number of elements of the list
+};
+
+struct	obje {
+	list_t		*oList;															// Ptr on the list where the process is linked
+	proc_t		*oBack;															// Ptr on the back process
+	proc_t		*oForward;														// Ptr on the forward process
+};
+
+// IWYU pragma: begin_exports
 #include	"privileges.h"
 #include	"processes.h"
 #include	"mailboxes.h"
@@ -416,15 +437,16 @@ typedef	struct	sign		sign_t;
 #include	"mutexes.h"
 #include	"signals.h"
 #include	"temporal.h"
-#include	"debug.h"
+#include	"kern/debug_list.h"
 #include	"softwareTimers.h"
 #include	"pools.h"
 #include	"preciseSignals.h"
 #include	"stub.h"
+// IWYU pragma: end_exports
 
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -442,7 +464,7 @@ extern	bool	is_exception(void);
  *    installMyProcesses();
  *    status = kern_runKernel();
  *
- *    while (true) { ; }
+ *    while (true) { }
  * \endcode
  *
  * - This function initialises the "kern" manager.
@@ -467,7 +489,7 @@ extern	int32_t	kern_init(void);
  *    installMyProcesses();
  *    status = kern_runKernel();
  *
- *    while (true) { ; }
+ *    while (true) { }
  * \endcode
  *
  * - Initialise all the timers (1-ms & 20-ms)
@@ -572,7 +594,7 @@ extern	int32_t	kern_getSerialForProcess(proc_t *handle, serialManager_t *serialM
  */
 extern	int32_t	kern_getState(uint8_t *state);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 

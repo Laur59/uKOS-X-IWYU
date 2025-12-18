@@ -5,16 +5,16 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Kern - Scheduler management.
 ;
 ;			Private uKernel variables.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -70,8 +70,13 @@
  * @{
  */
 
-enum {
-		KSCHE_FORCE_SWITCH_NORM = 0u,							// Switching process nprmal
+#include	<stdint.h>
+
+#include	"kern/kern.h"
+#include	"macros_soc.h"
+
+enum	{
+		KSCHE_FORCE_SWITCH_NORM = 0U,							// Switching process nprmal
 		KSCHE_TIMEOUT_SWITCH_NORM								// Switching process due to a timeaout
 };
 

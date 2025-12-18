@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Demo of a minimal application using the uKOS-X uKernel.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -75,8 +75,19 @@
  *
  */
 
-#include	"uKOS.h"
-#include	"hard.h"
+#include	<stdint.h>
+#include	<stdlib.h>
+
+#include	"crt0.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"memo/memo.h"
+#include	"led/led.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"types.h"
+#include	"record/record.h"
 
 // Prototypes
 
@@ -111,7 +122,7 @@ MODULE(
 	aStart,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,								// Address of the clean code (clean the module)
 	" 1.0",								// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0									// Execution cores
 );
 
@@ -124,21 +135,21 @@ MODULE(
  *
  */
 int		main(int argc, const char *argv[]) {
+	UNUSED(argc);
+	UNUSED(argv);
+
 	stim_t	*softwareTimer;
 	mcnf_t	configure_mbox = {
-				.oNbMaxPacks	= 10u,
-				.oDataEntrySize	= 0u
+				.oNbMaxPacks	= 10U,
+				.oDataEntrySize	= 0U
 			};
 	tspc_t	configure_stim = {
 				.oMode		  = KSTIM_CONTINUOUS,
-				.oInitialTime = 2000u,
-				.oTime		  = 30u,
+				.oInitialTime = 2000U,
+				.oTime		  = 30U,
 				.oCode		  = local_changeStateLed,
 				.oArgument	  = NULL
 			};
-
-	UNUSED(argc);
-	UNUSED(argv);
 
 // Create the "dispatcher" queue
 // Create the software timer
@@ -164,10 +175,10 @@ int		main(int argc, const char *argv[]) {
  *
  */
 static	void	local_changeStateLed(const void *argument) {
-	static	uint8_t		vCptBlink = 0u;
-
 	UNUSED(argument);
 
-	((vCptBlink & 0x1Fu) > 8u) ? (led_off(KLED_1)) : (led_toggle(KLED_1));
+	static	uint8_t		vCptBlink = 0U;
+
+	((vCptBlink & 0x1Fu) > 8U) ? (led_off(KLED_1)) : (led_toggle(KLED_1));
 	vCptBlink++;
 }

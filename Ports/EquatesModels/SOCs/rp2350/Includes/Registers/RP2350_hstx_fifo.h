@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		RP2350_hstx_fifo equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // HSTX_FIFO address definitions
 // -----------------------------
 
@@ -56,7 +58,7 @@ typedef struct {
 	volatile	uint32_t	FIFO;
 } HSTX_FIFO_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	HSTX_FIFO_NS	reinterpret_cast<HSTX_FIFO_TypeDef *>(0x50600000u)
 #define	HSTX_FIFO_S		reinterpret_cast<HSTX_FIFO_TypeDef *>(0x50600000u)
 #else

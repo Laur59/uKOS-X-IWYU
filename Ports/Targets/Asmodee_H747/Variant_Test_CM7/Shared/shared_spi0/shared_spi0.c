@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		For the shared_spi0 manager module.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,8 +46,19 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
 #include	"shared_spi0.h"
+
+#include	<stdint.h>
+
+#include	"board.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"soc_reg.h"
+#include	"spi/spi.h"
+#include	"spi_common.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -70,7 +81,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -168,8 +179,8 @@ int32_t	shared_spi0_select(uint32_t manager) {
 	PRIVILEGE_ELEVATE;
 	switch (manager) {
 		case KTEMPERATURE:
-		case KIMUA: { GPIOG->ODR &= (uint32_t)~(1u<<BSEL_ACCELERO); break; }
-		case KIMUM: { GPIOB->ODR &= (uint32_t)~(1u<<BSEL_MAGNETO);  break; }
+		case KIMUA: { GPIOG->ODR &= (uint32_t)~(1U<<BSEL_ACCELERO); break; }
+		case KIMUM: { GPIOB->ODR &= (uint32_t)~(1U<<BSEL_MAGNETO);  break; }
 		default: {
 
 // Make MISRA happy :-)
@@ -193,9 +204,9 @@ int32_t	shared_spi0_deselect(uint32_t manager) {
 	PRIVILEGE_ELEVATE;
 	switch (manager) {
 		case KTEMPERATURE:
-		case KIMUA: { GPIOG->ODR |= (1u<<BSEL_ACCELERO);                       			   break; }
-		case KIMUM: { GPIOB->ODR |= (1u<<BSEL_MAGNETO);									   break; }
-		case KIMU:  { GPIOG->ODR |= (1u<<BSEL_ACCELERO); GPIOB->ODR |= (1u<<BSEL_MAGNETO); break; }
+		case KIMUA: { GPIOG->ODR |= (1U<<BSEL_ACCELERO);                       			   break; }
+		case KIMUM: { GPIOB->ODR |= (1U<<BSEL_MAGNETO);									   break; }
+		case KIMU:  { GPIOG->ODR |= (1U<<BSEL_ACCELERO); GPIOB->ODR |= (1U<<BSEL_MAGNETO); break; }
 		default: {
 
 // Make MISRA happy :-)
@@ -233,9 +244,9 @@ int32_t	shared_spi0_writeRead(uint8_t *data) {
  */
 static	void	local_spi0_imu_init(void) {
 	static	const	spiCnf_t	configure = {
-									.oSpeed    = 5000000u,
+									.oSpeed    = 5000000U,
 									.oMode     = (uint8_t)KSPI_MASTER,
-									.oClock    = (1u<<(uint8_t)BSPI_POL) | (1u<<(uint8_t)BSPI_PHA)
+									.oClock    = (1U<<(uint8_t)BSPI_POL) | (1U<<(uint8_t)BSPI_PHA)
 								};
 
 	spi_configure(KSPI0, &configure);

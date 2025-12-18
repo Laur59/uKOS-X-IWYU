@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32F217_usart2 equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // USART2 address definitions
 // --------------------------
 
@@ -61,7 +63,7 @@ typedef struct {
 	volatile	uint32_t	GTPR;
 } USART2_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	USART2	reinterpret_cast<USART2_TypeDef *>(0x40004400u)
 
 #else

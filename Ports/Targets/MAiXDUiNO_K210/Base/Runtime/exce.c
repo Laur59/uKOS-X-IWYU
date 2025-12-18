@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Exceptions for the MAiXDUiNO_K210 module.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,18 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+
+#include	"board.h"
+#include	"core.h"
+#include	"core_reg.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"modules.h"
+#include	"serial/serial.h"
+#include	"soc_reg.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -69,7 +80,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -113,27 +124,27 @@ void	exce_init(void) {
 
 // mcause bit 63 == 0: Internal exception
 
-	for (nbInt_Exceptions = 0u; nbInt_Exceptions < KNB_INT_INTERRUPTIONS; nbInt_Exceptions++) {
+	for (nbInt_Exceptions = 0U; nbInt_Exceptions < KNB_INT_INTERRUPTIONS; nbInt_Exceptions++) {
 		INT_EXCEPTION_VECTOR(nbInt_Exceptions, (void (*)(uint32_t core, uint64_t parameter))coreDump_displayInt_Exceptions);
 	}
 
 // mcause bit 63 == 1: Internal interruption
 
-	for (nbInt_Interruptions = 0u; nbInt_Interruptions < KNB_INT_INTERRUPTIONS; nbInt_Interruptions++) {
+	for (nbInt_Interruptions = 0U; nbInt_Interruptions < KNB_INT_INTERRUPTIONS; nbInt_Interruptions++) {
 		INT_INTERRUPT_VECTOR(nbInt_Interruptions, (void (*)(uint32_t core, uint64_t parameter))coreDump_displayInt_Interruption);
 	}
 
 // mcause bit 63 == 1: Internal interruption
 // Machine External Interrupt (PLIC)
 
-	for (nbExt_Interruptions = 0u; nbExt_Interruptions < KNB_EXT_INTERRUPTIONS; nbExt_Interruptions++) {
+	for (nbExt_Interruptions = 0U; nbExt_Interruptions < KNB_EXT_INTERRUPTIONS; nbExt_Interruptions++) {
 		EXT_INTERRUPT_VECTOR(nbExt_Interruptions, (void (*)(uint32_t core, uint64_t parameter))coreDump_displayExt_Interruption);
 	}
 
 // Disable the interruptions
 
-	for (i = (uint64_t)0u; i < (((uint64_t)PLIC_NUM_SOURCES + (uint64_t)32u) / (uint64_t)32u); i++) {
-		plic->target_enables.target[core].enable[i] = 0u;
+	for (i = (uint64_t)0U; i < (((uint64_t)PLIC_NUM_SOURCES + (uint64_t)32U) / (uint64_t)32U); i++) {
+		plic->target_enables.target[core].enable[i] = 0U;
 	}
 
 // Set the threshold to KINT_IMASK_ALL
@@ -145,7 +156,7 @@ void	exce_init(void) {
 // at any time, even if the EIP is not set.
 
 	i = 0;
-	while ((plic->targets.target[core].claim_complete > 0u) && (i < 100u)) {
+	while ((plic->targets.target[core].claim_complete > 0U) && (i < 100U)) {
 
 // This loop will clear pending bit on the interrupt source
 
@@ -167,12 +178,12 @@ void	exce_init(void) {
 // The following code has to be initialised
 // only by the core 0.
 
-	if (core == 0u) {
+	if (core == 0U) {
 
 // Set priorities to zero
 
-		for (i = (uint64_t)0u; i < (uint64_t)PLIC_NUM_SOURCES; i++) {
-			plic->source_priorities.priority[i] = 0u;
+		for (i = (uint64_t)0U; i < (uint64_t)PLIC_NUM_SOURCES; i++) {
+			plic->source_priorities.priority[i] = 0U;
 		}
 	}
 }
@@ -193,21 +204,21 @@ static void __attribute__ ((noreturn)) cb_signal(uint8_t mode) {
 	switch (mode) {
 		default:
 		case KEXCEPTION: {
-			local_cpyLEDs(0xFFu);
+			local_cpyLEDs(0xFFU);
 			while (true) {
-				cmns_wait(1000000u);
-				local_setLEDs(0u);
-				cmns_wait(1000000u);
-				local_clrLEDs(0u);
+				cmns_wait(1000000U);
+				local_setLEDs(0U);
+				cmns_wait(1000000U);
+				local_clrLEDs(0U);
 			}
 		}
 		case KINTERRUPTION: {
-			local_cpyLEDs(0xFFu);
+			local_cpyLEDs(0xFFU);
 			while (true) {
-				cmns_wait(1000000u);
-				local_setLEDs(1u);
-				cmns_wait(1000000u);
-				local_clrLEDs(1u);
+				cmns_wait(1000000U);
+				local_setLEDs(1U);
+				cmns_wait(1000000U);
+				local_clrLEDs(1U);
 			}
 		}
 	}
@@ -225,9 +236,9 @@ static void __attribute__ ((noreturn)) cb_signal(uint8_t mode) {
 static	void	local_setLEDs(uint8_t ledNb) {
 
 	switch (ledNb) {
-		case 0 : { gpiohs->output_val.u32[0] &= (uint32_t)~(1u<<BLED_0); break; }
-		case 1 : { gpiohs->output_val.u32[0] &= (uint32_t)~(1u<<BLED_1); break; }
-		case 2 : { gpiohs->output_val.u32[0] &= (uint32_t)~(1u<<BLED_2); break; }
+		case 0 : { gpiohs->output_val.u32[0] &= (uint32_t)~(1U<<BLED_0); break; }
+		case 1 : { gpiohs->output_val.u32[0] &= (uint32_t)~(1U<<BLED_1); break; }
+		case 2 : { gpiohs->output_val.u32[0] &= (uint32_t)~(1U<<BLED_2); break; }
 		default: {
 
 // Make MISRA happy :-)
@@ -246,9 +257,9 @@ static	void	local_setLEDs(uint8_t ledNb) {
 static	void	local_clrLEDs(uint8_t ledNb) {
 
 	switch (ledNb) {
-		case 0u: { gpiohs->output_val.u32[0] |= (1u<<BLED_0); break; }
-		case 1u: { gpiohs->output_val.u32[0] |= (1u<<BLED_1); break; }
-		case 2u: { gpiohs->output_val.u32[0] |= (1u<<BLED_2); break; }
+		case 0U: { gpiohs->output_val.u32[0] |= (1U<<BLED_0); break; }
+		case 1U: { gpiohs->output_val.u32[0] |= (1U<<BLED_1); break; }
+		case 2U: { gpiohs->output_val.u32[0] |= (1U<<BLED_2); break; }
 		default: {
 
 // Make MISRA happy :-)
@@ -267,10 +278,10 @@ static	void	local_clrLEDs(uint8_t ledNb) {
 static	void	local_cpyLEDs(uint8_t value) {
 	uint8_t		led, mask;
 
-	mask = 0x01u;
-	for (led = 0u; led < 2u; led++) {
+	mask = 0x01U;
+	for (led = 0U; led < 2U; led++) {
 		(value & mask) ? (local_setLEDs(led)) : (local_clrLEDs(led));
-		mask = (uint8_t)(mask<<1u);
+		mask = (uint8_t)(mask<<1U);
 	}
 }
 

@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		RP2350_clocks equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // CLOCKS address definitions
 // --------------------------
@@ -107,7 +109,7 @@ typedef struct {
 	volatile	uint32_t	INTS;
 } CLOCKS_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	CLOCKS_NS	reinterpret_cast<CLOCKS_TypeDef *>(0x40010000u)
 #define	CLOCKS_S	reinterpret_cast<CLOCKS_TypeDef *>(0x40010000u)
 #else

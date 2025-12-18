@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		GD32VF103_usbfs_host equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // USBFS_HOST address definitions
 // ------------------------------
@@ -111,7 +113,7 @@ typedef struct {
 	volatile	uint32_t	HCH7LEN;
 } USBFS_HOST_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	USBFS_HOST	reinterpret_cast<USBFS_HOST_TypeDef *>(0x50000400u)
 
 #else

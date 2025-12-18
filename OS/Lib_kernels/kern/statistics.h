@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Kern - Statistic management.
@@ -14,8 +14,8 @@
 ;			This module is responsible for computing the statistic of
 ;			the uKernel.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -51,6 +51,10 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
+#include	"kern/kern.h"	// IWYU pragma: keep (workaround bug of app)
+
 #if (KKERN_WITH_STATISTICS_S == true)
 
 /*!
@@ -70,7 +74,7 @@
 
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -105,9 +109,9 @@ extern	"C" {
  *   - KNMEAN = 3, 2^3 = 8
  *
  *                            x ------- 7 ------- +   1       / ---- 8 -----
- *   - PAvg[k+1] = ( (PAvg[k] x ((1u<<KNMEAN)-1)) + PIns[k] ) / (1u<<KNMEAN)
- *   - KAvg[k+1] = ( (KAvg[k] x ((1u<<KNMEAN)-1)) + KIns[k] ) / (1u<<KNMEAN)
- *   - EAvg[k+1] = ( (EAvg[k] x ((1u<<KNMEAN)-1)) + EIns[k] ) / (1u<<KNMEAN)
+ *   - PAvg[k+1] = ( (PAvg[k] x ((1U<<KNMEAN)-1)) + PIns[k] ) / (1U<<KNMEAN)
+ *   - KAvg[k+1] = ( (KAvg[k] x ((1U<<KNMEAN)-1)) + KIns[k] ) / (1U<<KNMEAN)
+ *   - EAvg[k+1] = ( (EAvg[k] x ((1U<<KNMEAN)-1)) + EIns[k] ) / (1U<<KNMEAN)
  *
  * \param[in]	*backwardProcess	Ptr on the backward process
  * \param[in]	timeStart			Time when the process was scheduled
@@ -120,11 +124,24 @@ extern	"C" {
  */
 extern	void	statistics_statistic(proc_t *backwardProcess, uint32_t timeStart, uint32_t timeStop, uint32_t timeLastStart, uint32_t timeE);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 
+#define	TIC_EXCEPTION_TIME		uint64_t	tic, tac;										\
+								kern_readTickCount(&tic)
+
+#define	TAC_EXCEPTION_TIME(core)															\
+								kern_readTickCount(&tac);									\
+								vKern_TimeException[core] += (uint32_t)(tac - tic);			\
+								(void)vKern_TimeException[core]
+
 /**@}*/
 /**@}*/
+
+#else
+
+#define	TIC_EXCEPTION_TIME
+#define	TAC_EXCEPTION_TIME
 
 #endif

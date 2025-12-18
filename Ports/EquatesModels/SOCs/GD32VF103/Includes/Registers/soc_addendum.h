@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		addendum equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // FWDGT address definitions
 // -------------------------
@@ -93,26 +95,26 @@ typedef struct {
 // CFG register
 
 #define	ECLIC_CFG_NLBITS_MASK				0x1Eu			//
-#define	ECLIC_CFG_NLBITS_LSB				1u				//
+#define	ECLIC_CFG_NLBITS_LSB				1U				//
 
 // INT register
 
-#define	ECLIC_INT_ATTR_SHV					1u
-#define	ECLIC_INT_ATTR_TRIG_LEVEL			(0u<<1u)		//
-#define	ECLIC_INT_ATTR_TRIG_EDGE			(1u<<1u)		//
-#define	ECLIC_INT_ATTR_TRIG_EDGE_RISING		(2u<<1u)		//
-#define	ECLIC_INT_ATTR_TRIG_EDGE_FALLING	(3u<<1u)		//
+#define	ECLIC_INT_ATTR_SHV					1U
+#define	ECLIC_INT_ATTR_TRIG_LEVEL			(0U<<1U)		//
+#define	ECLIC_INT_ATTR_TRIG_EDGE			(1U<<1U)		//
+#define	ECLIC_INT_ATTR_TRIG_EDGE_RISING		(2U<<1U)		//
+#define	ECLIC_INT_ATTR_TRIG_EDGE_FALLING	(3U<<1U)		//
 
-#define	ECLIC_INT_ATTR_TRIG_POS				0u				//
-#define	ECLIC_INT_ATTR_TRIG_NEG				4u				//
+#define	ECLIC_INT_ATTR_TRIG_POS				0U				//
+#define	ECLIC_INT_ATTR_TRIG_NEG				4U				//
 
 // GROUP register
 
-#define	ECLIC_GROUP_LEVEL0_PRIO4			(0u<<1u)		//
-#define	ECLIC_GROUP_LEVEL1_PRIO3			(1u<<1u)		//
-#define	ECLIC_GROUP_LEVEL2_PRIO2			(2u<<1u)		//
-#define	ECLIC_GROUP_LEVEL3_PRIO1			(3u<<1u)		//
-#define	ECLIC_GROUP_LEVEL4_PRIO0			(4u<<1u)		//
+#define	ECLIC_GROUP_LEVEL0_PRIO4			(0U<<1U)		//
+#define	ECLIC_GROUP_LEVEL1_PRIO3			(1U<<1U)		//
+#define	ECLIC_GROUP_LEVEL2_PRIO2			(2U<<1U)		//
+#define	ECLIC_GROUP_LEVEL3_PRIO1			(3U<<1U)		//
+#define	ECLIC_GROUP_LEVEL4_PRIO0			(4U<<1U)		//
 
 // gpio additional definitions
 // ---------------------------
@@ -120,24 +122,24 @@ typedef struct {
 // Ports PA, PB, PC
 
 enum {
-	PA00 = 0u, PA01, PA02, PA03, PA04, PA05, PA06, PA07,
+	PA00 = 0U, PA01, PA02, PA03, PA04, PA05, PA06, PA07,
 	PA08,      PA09, PA10, PA11, PA12, PA13, PA14, PA15
 };
 
 enum {
-	PB00 = 20u, PB01, PB02, PB03, PB04, PB05, PB06, PB07,
+	PB00 = 20U, PB01, PB02, PB03, PB04, PB05, PB06, PB07,
 	PB08,       PB09, PB10, PB11, PB12, PB13, PB14, PB15
 };
 
 enum {
-	PC00 = 40u, PC01, PC02, PC03, PC04, PC05, PC06, PC07,
+	PC00 = 40U, PC01, PC02, PC03, PC04, PC05, PC06, PC07,
 	PC08,       PC09, PC10, PC11, PC12, PC13, PC14, PC15
 };
 
 // GPIO configuration modes
 
 enum {
-	KIN_ANAOG = 0u,								// Input analog
+	KIN_ANAOG = 0U,								// Input analog
 	KIN_FLOAT,									// Input floating
 	KIN_PULLD,									// Input with pull down
 	KIN_PULLU,									// Input with pull up
@@ -156,22 +158,21 @@ enum {
 };
 
 enum {
-	GPIO_CTL0_MD_INPUT				= (0u<<0u),
-	GPIO_CTL0_MD_OUTPUT_10MHZ		= (1u<<0u),
-	GPIO_CTL0_MD_OUTPUT_2MHZ		= (2u<<0u),
-	GPIO_CTL0_MD_OUTPUT_50MHZ		= (3u<<0u)
+	GPIO_CTL0_MD_INPUT				= (0U<<0U),
+	GPIO_CTL0_MD_OUTPUT_10MHZ		= (1U<<0U),
+	GPIO_CTL0_MD_OUTPUT_2MHZ		= (2U<<0U),
+	GPIO_CTL0_MD_OUTPUT_50MHZ		= (3U<<0U)
 };
 
 enum {
-	GPIO_CTL0_CTL_INPUT_ANALOG		= (0u<<2u),
-	GPIO_CTL0_CTL_INPUT_FLOATING	= (1u<<2u),
-	GPIO_CTL0_CTL_INPUT_PULL		= (2u<<2u)
+	GPIO_CTL0_CTL_INPUT_ANALOG		= (0U<<2U),
+	GPIO_CTL0_CTL_INPUT_FLOATING	= (1U<<2U),
+	GPIO_CTL0_CTL_INPUT_PULL		= (2U<<2U)
 };
 
 enum {
-	GPIO_CTL0_CTL_OUTPUT_GPIO_PP	= (0u<<2u),
-	GPIO_CTL0_CTL_OUTPUT_GPIO_OD	= (1u<<2u),
-	GPIO_CTL0_CTL_OUTPUT_AFIO_PP	= (2u<<2u),
-	GPIO_CTL0_CTL_OUTPUT_AFIO_OD	= (3u<<2u)
+	GPIO_CTL0_CTL_OUTPUT_GPIO_PP	= (0U<<2U),
+	GPIO_CTL0_CTL_OUTPUT_GPIO_OD	= (1U<<2U),
+	GPIO_CTL0_CTL_OUTPUT_AFIO_PP	= (2U<<2U),
+	GPIO_CTL0_CTL_OUTPUT_AFIO_OD	= (3U<<2U)
 };
-

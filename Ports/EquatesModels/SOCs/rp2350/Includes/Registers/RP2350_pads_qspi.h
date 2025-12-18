@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		RP2350_pads_qspi equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // PADS_QSPI address definitions
 // -----------------------------
 
@@ -61,7 +63,7 @@ typedef struct {
 	volatile	uint32_t	GPIO_QSPI_SS;
 } PADS_QSPI_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	PADS_QSPI_NS	reinterpret_cast<PADS_QSPI_TypeDef *>(0x40040000u)
 #define	PADS_QSPI_S		reinterpret_cast<PADS_QSPI_TypeDef *>(0x40040000u)
 #else

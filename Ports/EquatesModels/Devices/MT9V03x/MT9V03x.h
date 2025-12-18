@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Aptina MT9V03x imager equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // I2c interface
 
 #define	KI2C_ADD_MT9V03x					0x48u							// I2C Aptina address
@@ -63,8 +65,8 @@ struct mt9v03x {
 
 // Max image size
 
-#define	KNB_ROWS							480u							// Max 480 rows
-#define	KNB_COLS							752u							// Max 752 cols
+#define	KNB_ROWS							480U							// Max 480 rows
+#define	KNB_COLS							752U							// Max 752 cols
 
 // Constant for the temperature
 //

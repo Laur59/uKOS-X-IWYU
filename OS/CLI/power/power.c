@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Give the battery information.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,17 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+#include	<stdio.h>
+
+#include	"battery/battery.h"
+#include	"battery_common.h"
+#include	"kern/kern.h"		// IWYU pragma: keep (symbol KWAIT_INFINITY)
+#include	"macros.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"serial/serial.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -82,7 +92,7 @@ MODULE(
 	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,										// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
@@ -94,11 +104,11 @@ MODULE(
  *
  */
 static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
-	batteryInfo_t	batteryInfo;
-	int32_t			status;
-
 	UNUSED(argc);
 	UNUSED(argv);
+
+	batteryInfo_t	batteryInfo;
+	int32_t			status;
 
 	(void)dprintf(KSYST, "Battery information.\n");
 
@@ -114,9 +124,9 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 	(void)dprintf(KSYST, "Full charged capacity: %7.2f [mAh]\n",    batteryInfo.oFullChargedCapacity);
 	(void)dprintf(KSYST, "Remaining capacity:    %7.2f [mAh]\n",    batteryInfo.oRemainingCapacity);
 
-	if (batteryInfo.oTimeToEmpty < 65535u) {
+	if (batteryInfo.oTimeToEmpty < 65535U) {
 		(void)dprintf(KSYST, "Time to empty:          %6d [m]\n",   batteryInfo.oTimeToEmpty);
 	}
-		(void)dprintf(KSYST, "Cycles:                 %6d [-]\n\n", batteryInfo.oCycles);
+	(void)dprintf(KSYST, "Cycles:                 %6d [-]\n\n", batteryInfo.oCycles);
 	return (EXIT_OS_SUCCESS_CLI);
 }

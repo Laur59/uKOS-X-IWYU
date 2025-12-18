@@ -5,16 +5,16 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		memo manager.
 ;
 ;			Private uKernel variables.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -70,9 +70,12 @@
  * @{
  */
 
-#define	KMAB_SIGNATURE		(((uint32_t)'m'<<24u) | ((uint32_t)'a'<<16u) | ((uint32_t)'b'<<8u) | (uint32_t)'_')
+#include	"kern/kern.h"
+#include	"memo/memo.h"
 
-#if (defined(__LP64__))
+#define	KMAB_SIGNATURE		(((uint32_t)'m'<<24U) | ((uint32_t)'a'<<16U) | ((uint32_t)'b'<<8U) | (uint32_t)'_')
+
+#ifdef __LP64__
 // Mandatory:
 // Some CPUs (like cortex m) need to have the stack 16-byte aligned.
 // CPUs with caches need 64-byte alignments

@@ -15,8 +15,8 @@
 #			i.e
 #			./add_new_target.sh XYZ_H743 STM32H743 CORTEX_M7 Nucleo_H743
 #
-#   (c) 2025-20xx, Laurent von Allmen
-#   ---------------------------------
+#   © 2025-2026, Laurent von Allmen
+#   -------------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -50,11 +50,6 @@
 #------------------------------------------------------------------------
 
 set -euo pipefail
-
-if [[ -z "${PATH_UKOS_X_PACKAGE:-}" ]]; then
-	echo "Variable PATH_UKOS_X_PACKAGE is not set!"
-	exit 1
-fi
 
 # Save parameters
 

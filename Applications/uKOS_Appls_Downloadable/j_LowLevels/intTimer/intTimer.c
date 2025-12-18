@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Demo of a C application.
 ;			This application shows how to operate with the uKOS-X uKernel.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -64,10 +64,26 @@
  *
  */
 
-#include	"uKOS.h"
 
 #define	ALLOW_HARDWARE_ACCESS_S			// define: elevate the privilege for permitting hardware accesses
 										// undef: do not permit hardware accesses
+
+#include	<inttypes.h>
+#include	<stdio.h>
+
+#include	"crt0.h"
+#include	"serial/serial.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"memo/memo.h"
+#include	"led/led.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"types.h"
+#include	"serial/serial.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -93,14 +109,14 @@ MODULE(
 	aStart,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,								// Address of the clean code (clean the module)
 	" 1.0",								// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0									// Execution cores
 );
 
 // Application specific
 // ====================
 
-volatile	uint32_t	vTimer = 0u;
+volatile	uint32_t	vTimer = 0U;
 
 // Prototypes
 
@@ -117,10 +133,10 @@ extern	void	stub_intr_timer_init(void);
  *
  */
 static void __attribute__ ((noreturn)) aProcess(const void *argument) {
+	UNUSED(argument);
+
 	int32_t		status;
 	sema_t		*semaphore;
-
-	UNUSED(argument);
 
 	kern_getSemaphoreById("Semaphore tim", &semaphore);
 
@@ -138,7 +154,7 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
 	#endif
 
 	while (true) {
-		status = kern_waitSemaphore(semaphore, 1000u);
+		status = kern_waitSemaphore(semaphore, 1000U);
 		(status == KERR_KERN_TIMEO) ? ((void)dprintf(KSYST, "Timeout Error Semaphore\n")) : ((void)dprintf(KSYST, "Timer = %"PRIu32"\n", vTimer));
 
 		led_toggle(KLED_1);
@@ -167,6 +183,9 @@ void	aTimer_callBack(void) {
  *
  */
 int		main(int argc, const char *argv[]) {
+	UNUSED(argc);
+	UNUSED(argv);
+
 	sema_t	*semaphore;
 	proc_t	*process;
 
@@ -174,9 +193,6 @@ int		main(int argc, const char *argv[]) {
 
 	STRG_LOC_CONST(aStrIden[]) = "Process_User";
 	STRG_LOC_CONST(aStrText[]) = "Process user.                             (c) EFr-2025";
-
-	UNUSED(argc);
-	UNUSED(argv);
 
 // Specifications for the processes
 

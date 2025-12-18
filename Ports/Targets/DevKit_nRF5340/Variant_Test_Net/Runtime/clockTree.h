@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Clock tree definitions.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -51,10 +51,10 @@
 // Main system clocks
 // ------------------
 
-#define KFREQUENCY_HFCLK	64000000u									// HFCLK bus frequency of 64-MHz
-#define KFREQUENCY_1GHz		1000000000u									// Frequency of 1-GHz
-#define KFREQUENCY_1MHz		1000000u									// Frequency of 1-MHz
-#define KFREQUENCY_1KHz		1000u										// Frequency of 1-KHz
-#define KFREQUENCY_16MHz	16000000u									// Frequency of 16-MHz
+#define KFREQUENCY_HFCLK	64000000U									// HFCLK bus frequency of 64-MHz
+#define KFREQUENCY_1GHz		1000000000U									// Frequency of 1-GHz
+#define KFREQUENCY_1MHz		1000000U									// Frequency of 1-MHz
+#define KFREQUENCY_1KHz		1000U										// Frequency of 1-KHz
+#define KFREQUENCY_16MHz	16000000U									// Frequency of 16-MHz
 #define KFREQUENCY_CORE		KFREQUENCY_HFCLK							// CORE frequency
 #define KFREQUENCY_TIM		KFREQUENCY_16MHz							// TIM frequency

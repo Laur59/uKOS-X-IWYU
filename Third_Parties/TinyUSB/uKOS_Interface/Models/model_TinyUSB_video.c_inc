@@ -10,8 +10,8 @@
 ; Goal:		Interface for "TinyUSB video" device.
 ;			!! This is only for tests.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -45,8 +45,15 @@
 ;------------------------------------------------------------------------
 */
 
-#define	FRAME_WIDTH			752u
-#define	FRAME_HEIGHT		480u
+#define	FRAME_WIDTH			752U
+#define	FRAME_HEIGHT		480U
+
+#include	<stdlib.h>
+
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"record/record.h"
+#include	"os_errors.h"
 
 static	sema_t	*vSemaphore_Ready[KNB_CORES];
 
@@ -106,11 +113,11 @@ void	TinyUSB_video_sendImage(uint8_t *image, uint32_t w, uint32_t h) {
 
 	if (tud_video_n_streaming(0, 0) == true) {
 
-		tud_video_n_frame_xfer(0, 0, (void *)image, (w * h * 16u / 8u));
-		kern_waitSemaphore(vSemaphore_Ready[core], 1000u);
+		tud_video_n_frame_xfer(0, 0, (void *)image, (w * h * 16U / 8U));
+		kern_waitSemaphore(vSemaphore_Ready[core], 1000U);
 	}
 	else {
-		kern_suspendProcess(10u);
+		kern_suspendProcess(10U);
 	}
 }
 

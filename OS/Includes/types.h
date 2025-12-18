@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Basic predefined types (normally machine independent).
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,10 +48,6 @@
 
 #pragma	once
 
-#include	<stdint.h>
-#include	<stdbool.h>
-#include	<stddef.h>
-
 // uKOS-X program returns / exits
 //
 // return (code)
@@ -72,6 +68,8 @@
 //         code = EXIT_OS_PANIC_ELEVATION		--->		Failure; panic. System is stopped
 //         code = default						--->		Failure; panic. System is stopped
 
+#include	<stdint.h>
+
 enum : int32_t {
 		EXIT_OS_SUCCESS = 0,
 		EXIT_OS_SUCCESS_CLI,
@@ -86,21 +84,21 @@ enum : int32_t {
 
 // uKOS-X misc
 
-#if (!defined(NULL))
+#ifndef NULL
 #define	NULL				((void *)0)
 #endif
 
-#if (!defined(tm_t))
+#ifndef tm_t
 typedef	struct	tm			tm_t;
 #endif
 
-#if (!defined(timeval_t))
+#ifndef timeval_t
 typedef	struct timeval		timeval_t;
 #endif
 
-#if (!defined(reserveMode_t))
+#ifndef reserveMode_t
 typedef	enum {
-			KMODE_READ = 0u,
+			KMODE_READ = 0U,
 			KMODE_WRITE,
 			KMODE_READ_WRITE,
 } reserveMode_t;
@@ -110,14 +108,14 @@ typedef	enum {
 
 // Types defined by gcc (version > than 4.8)
 
-#if (!defined(char_t))
+#ifndef char_t
 typedef	char				char_t;
 #endif
 
-#if (!defined(float32_t))
+#ifndef float32_t
 typedef float				float32_t;
 #endif
 
-#if (!defined(float64_t))
+#ifndef float64_t
 typedef double				float64_t;
 #endif

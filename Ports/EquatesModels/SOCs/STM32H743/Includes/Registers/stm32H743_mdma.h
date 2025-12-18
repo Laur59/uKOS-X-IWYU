@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32H743_mdma equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // MDMA address definitions
 // ------------------------
@@ -295,7 +297,7 @@ typedef struct {
 	volatile	uint32_t	C15MDR;
 } MDMA_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	MDMA	reinterpret_cast<MDMA_TypeDef *>(0x52000000u)
 
 #else

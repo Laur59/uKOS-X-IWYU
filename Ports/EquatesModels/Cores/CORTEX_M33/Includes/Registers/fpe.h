@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		FPE equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -61,7 +61,7 @@ typedef struct {
 	volatile	uint32_t	MVFR2;
 } FPE_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	FPE_S	reinterpret_cast<FPE_TypeDef *>(0xE000EF30u)
 #define	FPE_NS	reinterpret_cast<FPE_TypeDef *>(0xE002EF30u)
 

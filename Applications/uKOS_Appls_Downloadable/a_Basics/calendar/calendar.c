@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Demo of a C application.
 ;			This application shows how to operate with the uKOS-X uKernel.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -56,16 +56,40 @@
  *
  *			- P0: Every 1000-ms
  *					- Display some time manipulations on the KSYST manager
- *					- Toggle LED 0
+ *					- Toggle LED 1
  *
  *			Note: KSYST is the default I/O channel defined by the PROCESS MACROS.
  *				  In this case, it is used the channel defined by the father
  *
  */
 
-#include	"uKOS.h"
+#include	<inttypes.h>
+#include	<stdint.h>
+#include	<stdio.h>
 #include	<time.h>
+
 #include	<sys/time.h>
+
+#include	"crt0.h"
+#include	"calendar/calendar.h"
+#include	"serial/serial.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"memo/memo.h"
+#include	"led/led.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"types.h"
+
+#ifndef _CLOCKS_PER_SEC_
+#error "_CLOCKS_PER_SEC_ is not defined"
+#endif
+
+#define CLOCKS_PER_SEC_CHECK(x) ((x) == 1000000)
+static_assert(CLOCKS_PER_SEC_CHECK(_CLOCKS_PER_SEC_), "_CLOCKS_PER_SEC_ must be 1000000");
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -91,7 +115,7 @@ MODULE(
 	aStart,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,								// Address of the clean code (clean the module)
 	" 1.0",								// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0									// Execution cores
 );
 
@@ -138,7 +162,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 // !!! This is the measure of the time used by the cpu
 
 	tic1 = clock();
-	kern_suspendProcess(1234u);
+	kern_suspendProcess(1234U);
 	toc1 = clock();
 
 	totalTime = (float64_t)(toc1 - tic1) / CLOCKS_PER_SEC;
@@ -148,7 +172,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 // !!! This is the measure of the real time
 
 	gettimeofday(&tic2, NULL);
-	kern_suspendProcess(1234u);
+	kern_suspendProcess(1234U);
 	gettimeofday(&toc2, NULL);
 
 	totalTime = (double)(toc2.tv_sec - tic2.tv_sec) + (double)(toc2.tv_usec - tic2.tv_usec) / 1e6;
@@ -156,13 +180,13 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 
 // Generate the new Unix time 64-bits with 1us
 
-	currentTime.tm_year	 = 2025u - 1900u;
-	currentTime.tm_mon	 = 3u - 1u;
-	currentTime.tm_mday	 = 31u;
-	currentTime.tm_hour	 = 16u;
-	currentTime.tm_min	 = 07u;
-	currentTime.tm_sec	 = 0u;
-	currentTime.tm_isdst = 1u;
+	currentTime.tm_year	 = 2025U - 1900U;
+	currentTime.tm_mon	 = 3U - 1U;
+	currentTime.tm_mday	 = 31U;
+	currentTime.tm_hour	 = 16U;
+	currentTime.tm_min	 = 07U;
+	currentTime.tm_sec	 = 0U;
+	currentTime.tm_isdst = 1U;
 
 	now = mktime(&currentTime);
 	if (now == -1 ) { (void)dprintf(KSYST, "Error: unable to make time using mktime\n\n"); }
@@ -173,7 +197,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 	}
 
 	while (true) {
-		kern_suspendProcess(1000u);
+		kern_suspendProcess(1000U);
 
 		now = time(NULL);
 		localtime_r(&now, &localTime);
@@ -191,15 +215,15 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *
  */
 int		main(int argc, const char *argv[]) {
+	UNUSED(argc);
+	UNUSED(argv);
+
 	proc_t	*process_0;
 
 // ---------------------------------I-----------------------------------------I--------------I
 
 	STRG_LOC_CONST(aStrIden_0[]) = "Process_User_0";
 	STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2025";
-
-	UNUSED(argc);
-	UNUSED(argv);
 
 // Specifications for the processes
 

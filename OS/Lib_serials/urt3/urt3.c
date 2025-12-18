@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		urt3 manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,9 +46,22 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	"urt3.h"
 
-#if (defined(CONFIG_MAN_URT3_S))
+#include	<stdint.h>
+#include	<stdlib.h>
+
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"		// IWYU pragma: keep (to get KNB_CORES)
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"serial_common.h"
+#include	"types.h"
+
+#ifdef CONFIG_MAN_URT3_S
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -71,7 +84,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -251,7 +264,7 @@ int32_t	urt3_release(reserveMode_t reserveMode) {
  *          int32_t       status;
  * const    urtxCnf_t    configure = {
  *                            .oBaudRate = KSERIAL_BAUDRATE_57600,
- *                            .oKernSync = (1u<<BSERIAL_SEMAPHORE_RX),
+ *                            .oKernSync = (1U<<BSERIAL_SEMAPHORE_RX),
  *                            .oNBBits   = KSERIAL_NB_BITS_8,
  *                            .oStopBits = KSERIAL_STOPBITS_1,
  *                            .oParity   = KSERIAL_PARITY_NONE
@@ -431,7 +444,7 @@ static	int32_t	local_init(void) {
 	core = GET_RUNNING_CORE;
 
 	INTERRUPTION_OFF;
-	if (vInit[core] == false) {
+	if (!vInit[core]) {
 		vInit[core] = true;
 
 		if (kern_createMutex(KURT3_MUTEX_RESERVE_RX, &vMutex_Reserve_RX[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "urt3: create mutx"); exit(EXIT_OS_PANIC); }
@@ -442,4 +455,6 @@ static	int32_t	local_init(void) {
 	RETURN_INT_RESTORE(KERR_SERIAL_NOERR);
 }
 
+#else
+#error	"CONFIG_MAN_URT3_S SHALL be defined in project using urt3/urt3.c"
 #endif

@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32N657_gpioe equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // GPIOE address definitions
 // -------------------------
@@ -89,7 +91,7 @@ typedef struct {
 	volatile	uint32_t	SIDR;
 } GPIOE_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	GPIOE_NS	reinterpret_cast<GPIOE_TypeDef *>(0x46021000u)
 #define	GPIOE_S		reinterpret_cast<GPIOE_TypeDef *>(0x56021000u)
 

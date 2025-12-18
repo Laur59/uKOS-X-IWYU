@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32L4R5_fmc equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // FMC address definitions
 // -----------------------
 
@@ -77,7 +79,7 @@ typedef struct {
 	volatile	uint32_t	BWTR4;
 } FMC_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	FMC	reinterpret_cast<FMC_TypeDef *>(0xA0000000u)
 
 #else

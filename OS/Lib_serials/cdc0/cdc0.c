@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		cdc0 manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,13 +46,24 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	"cdc0.h"
 
+#include	<stdint.h>
+#include	<stdlib.h>
+
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"serial_common.h"
 // cppcheck-suppress missingInclude
-//
 #include	"tusb_config.h"
+#include	"types.h"
 
-#if (defined(CONFIG_MAN_CDC0_S))
+#ifdef CONFIG_MAN_CDC0_S
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -75,7 +86,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -267,7 +278,7 @@ int32_t	cdc0_release(reserveMode_t reserveMode) {
  * \code{.c}
  *          int32_t       status;
  * const    cdcxCnf_t    configure = {
- *                              .oKernSync = (1u<<BSERIAL_SEMAPHORE_RX),
+ *                              .oKernSync = (1U<<BSERIAL_SEMAPHORE_RX),
  *                        };
  *
  *    status = cdc0_configure(&configure);
@@ -444,7 +455,7 @@ static	int32_t	local_init(void) {
 	core = GET_RUNNING_CORE;
 
 	INTERRUPTION_OFF;
-	if (vInit[core] == false) {
+	if (!vInit[core]) {
 		vInit[core] = true;
 
 		TinyUSB_cdc_init();
@@ -469,7 +480,7 @@ static	int32_t	local_configure(const cdcxCnf_t *configure) {
 	core = GET_RUNNING_CORE;
 
 	INTERRUPTION_OFF;
-	vWithSemaphore_TX[core] = ((configure->oKernSync & ((uint32_t)1u<<(uint32_t)BSERIAL_SEMAPHORE_TX)) != 0u) ? (true) : (false);
+	vWithSemaphore_TX[core] = ((configure->oKernSync & ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_TX)) != 0U);
 	RETURN_INT_RESTORE(KERR_SERIAL_NOERR);
 }
 
@@ -488,12 +499,12 @@ static	int32_t	local_write(const uint8_t *buffer, uint32_t size) {
 
 	INTERRUPTION_OFF;
 	if (vBusy[core])  { RETURN_INT_RESTORE(KERR_SERIAL_SEPRO); }
-	if (wkSize == 0u) { RETURN_INT_RESTORE(KERR_SERIAL_LNBU0); }
+	if (wkSize == 0U) { RETURN_INT_RESTORE(KERR_SERIAL_LNBU0); }
 
 	vBusy[core] = true;
 	INTERRUPTION_RESTORE;
 
-	while (vTerminate[core] == false) {
+	while (!vTerminate[core]) {
 		if (wkSize > KCDC0_SZ_TX_BUF) { newSize = KCDC0_SZ_TX_BUF; wkSize -= KCDC0_SZ_TX_BUF; }
 		else						  { newSize = wkSize; vTerminate[core] = true;			  }
 
@@ -506,8 +517,8 @@ static	int32_t	local_write(const uint8_t *buffer, uint32_t size) {
 
 // Signal end of the message
 
-	#if (defined(CDC0_SEMA_TX_S))
-	if (vWithSemaphore_TX[core] == true) { kern_signalSemaphore(vSemaphore_TX[core]); }
+	#ifdef CDC0_SEMA_TX_S
+	if (vWithSemaphore_TX[core]) { kern_signalSemaphore(vSemaphore_TX[core]); }
 	#endif
 
 	vBusy[core] = false;
@@ -526,19 +537,19 @@ static	int32_t	local_read(uint8_t *buffer, uint32_t *size) {
 	uint32_t	wkSize;
 
 	INTERRUPTION_OFF;
-	if (*size == 0) { *size = 0u; RETURN_INT_RESTORE(KERR_SERIAL_NOERR); }
+	if (*size == 0) { *size = 0U; RETURN_INT_RESTORE(KERR_SERIAL_NOERR); }
 
 // Read the data
 
 	wkSize = (*size > KCDC0_SZ_RX_BUF) ? (KCDC0_SZ_RX_BUF) : (*size);
 	TinyUSB_cdc_read(KPORT0, buffer, &wkSize);
 
-	if (wkSize > 0u) {
+	if (wkSize > 0U) {
 		*size = wkSize;
 		RETURN_INT_RESTORE(KERR_SERIAL_NOERR);
 	}
 
-	*size = 0u;
+	*size = 0U;
 	RETURN_INT_RESTORE(KERR_SERIAL_RBUEM);
 }
 
@@ -553,7 +564,7 @@ static	int32_t	local_flush(void) {
 	uint32_t	size;
 
 	INTERRUPTION_OFF;
-	for (i = 0u; i < (512u / 32u); i++) { TinyUSB_cdc_read(KPORT0, &buffer[0], &size); }
+	for (i = 0U; i < (512U / 32U); i++) { TinyUSB_cdc_read(KPORT0, &buffer[0], &size); }
 	RETURN_INT_RESTORE(KERR_SERIAL_NOERR);
 }
 

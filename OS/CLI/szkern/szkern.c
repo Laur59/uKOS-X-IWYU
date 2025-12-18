@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Give the uKernel memory footprint.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,16 +46,29 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<inttypes.h>
+#include	<stdint.h>	// NOLINT(misc-include-cleaner): Explicit include for IWYU compliance
+#include	<stdio.h>
+
+#include	"kern/kern.h"
+#include	"kern/private/private_mailboxes.h"	// IWYU pragma: keep (for sizeof(mbox_t))
+#include	"kern/private/private_mutexes.h"	// IWYU pragma: keep (for sizeof(mutx_t))
+#if (KKERN_NB_POOLS > 0)
+#include	"kern/private/private_pools.h"		// IWYU pragma: keep (for sizeof(pool_t))
+#endif
+#include	"kern/private/private_semaphores.h"	// IWYU pragma: keep (for sizeof(sema_t))
+#if (KKERN_NB_SIGNALS > 0)
+#include	"kern/private/private_signals.h"	// IWYU pragma: keep (for sizeof(signgrp_t))
+#endif
+#if (KKERN_NB_SIGNALS > 0)
+#include	"kern/private/private_softwareTimer.h"	// IWYU pragma: keep (for sizeof(stim_t))
+#endif
 #include	"linker.h"
-#include	"kern/private/private_processes.h"
-#include	"kern/private/private_pools.h"
-#include	"kern/private/private_signals.h"
-#include	"kern/private/private_mailboxes.h"
-#include	"kern/private/private_semaphores.h"
-#include	"kern/private/private_mutexes.h"
-#include	"kern/private/private_softwareTimer.h"
-#include	"kern/private/private_preciseSignals.h"
+#include	"macros.h"
+#include	"macros_core_stackFrame.h"
+#include	"modules.h"
+#include	"serial/serial.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -94,7 +107,7 @@ MODULE(
 	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,										// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
@@ -115,15 +128,15 @@ MODULE(
  *
  */
 static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
-	uint16_t	nbDeamons = 2u;
-	int32_t		szTEXT, szRODATA, szDATA, szBSS;
-	float64_t	szTEXTf, szRODATAf, szDATAf, szBSSf;
-
 	UNUSED(argc);
 	UNUSED(argv);
 
+	uint16_t	nbDeamons = 2U;
+	int32_t		szTEXT, szRODATA, szDATA, szBSS;
+	float64_t	szTEXTf, szRODATAf, szDATAf, szBSSf;
+
 	#if (KKERN_WITH_STATISTICS_S == true)
-	nbDeamons += 1u;
+	nbDeamons += 1U;
 	#endif
 
 	szTEXT   = (int32_t)((uintptr_t)local_linker_enTEXT_KERN_p   - (uintptr_t)local_linker_stTEXT_KERN_p);

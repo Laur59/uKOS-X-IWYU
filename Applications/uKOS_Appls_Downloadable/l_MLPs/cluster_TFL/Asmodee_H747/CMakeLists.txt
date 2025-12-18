@@ -4,14 +4,14 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Laurent von Allmen	The 2025-01-01
+# Author:   Laurent von Allmen  The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		CMake file to set up the building for uKOS-X system.
+# Project:  uKOS-X
+# Goal:     CMake file for the "cluster_TFL" application.
 #
-#   (c) 2025-20xx, Laurent von Allmen
-#   ---------------------------------
+#   © 2025-2026, Laurent von Allmen
+#   -------------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,16 +47,16 @@
 cmake_minimum_required(VERSION 3.26)
 
 # Applications CMake module setup
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/../../../../Mkfiles/cmake")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/../../../../cmake")
 
 include(set-project-paths)
 
-include(${PATH_UKOS}/Ports/Mkfiles/cmake/select-arm-toolchain.cmake)
+include(${PATH_UKOS}/Ports/cmake/select-arm-toolchain.cmake)
 
 project(
-	cluster_TFL
-	VERSION 1.0
-	LANGUAGES CXX C
+    cluster_TFL
+    VERSION 1.0
+    LANGUAGES CXX C
 )
 
 # Microcontroller description (mandatory variables)
@@ -70,11 +70,11 @@ set(BASE Base_CM7)
 
 # Extra compilation options
 add_compile_options(-g3 # includes extra information for debugger
-	$<$<COMPILE_LANGUAGE:CXX>:-std=c++23>
-	$<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
-	$<$<COMPILE_LANGUAGE:CXX>:-fno-exceptions>
-	$<$<COMPILE_LANGUAGE:C>:-std=c2x> # STANDARD
-	-Os # optimisation
+    $<$<COMPILE_LANGUAGE:CXX>:-std=c++23>
+    $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
+    $<$<COMPILE_LANGUAGE:CXX>:-fno-exceptions>
+    $<$<COMPILE_LANGUAGE:C>:-std=c2x> # STANDARD
+    -Os # optimisation
 )
 add_compile_definitions(
     $<$<COMPILE_LANGUAGE:CXX>:TF_LITE_STATIC_MEMORY=1>
@@ -82,9 +82,9 @@ add_compile_definitions(
 )
 
 set(PATH_INCLUDES
-	${PATH_UKOS}/Third_Parties/Tflite-micro/uKOS_Interface/CORTEX_M_generic
-	${PATH_UKOS}/Third_Parties/Tflite-micro/uKOS_Interface/CORTEX_M_generic/third_party/flatbuffers/include
-	${PATH_UKOS}/Third_Parties/Tflite-micro/uKOS_Interface/CORTEX_M_generic/third_party/gemmlowp
+    ${PATH_UKOS}/Third_Parties/Tflite-micro/uKOS_Interface/CORTEX_M_generic
+    ${PATH_UKOS}/Third_Parties/Tflite-micro/uKOS_Interface/CORTEX_M_generic/third_party/flatbuffers/include
+    ${PATH_UKOS}/Third_Parties/Tflite-micro/uKOS_Interface/CORTEX_M_generic/third_party/gemmlowp
 )
 find_library(MYLIB TFLite ${PATH_UKOS}/Third_Parties/Tflite-micro/Library/${CORE})
 

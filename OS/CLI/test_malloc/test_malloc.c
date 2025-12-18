@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Randomly test the memo_maloc.
@@ -19,8 +19,8 @@
 ;				  Each bloc is filled with a pattern
 ;				  When the heap is full, check of the coherence of the blocs & release them
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -54,7 +54,20 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<inttypes.h>
+#include	<stdio.h>
+#include	<stdlib.h>
+
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core_stackFrame.h"
+#include	"macros_soc.h"
+#include	"memo/memo.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"serial/serial.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -88,14 +101,14 @@ MODULE(
 	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,										// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
 // CLI tool specific
 // =================
 
-#define	KNB_PROC	10u							// Number of processes
+#define	KNB_PROC	10U							// Number of processes
 #define	KSZ_STACK	KKERN_SZ_STACK_XL			// Size of the stack
 
 typedef	struct testMallocPack		testMallocPack_t;
@@ -117,21 +130,21 @@ static	testMallocPack_t	vParameter[KNB_PROC];
 static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 	char_t		*dummy;
 	int32_t		status = EXIT_OS_SUCCESS_CLI;;
-	uint32_t	i, nbSamples = 100u;
+	uint32_t	i, nbSamples = 100U;
 	enum		{ KERR_NOT, KERR_INA, KERR_NME } error = KERR_NOT;
 
 	(void)dprintf(KSYST, "Random test of the memo_malloc.\n");
 
-	vParameter[0].oProcessName = (const char_t *)"Process: 0 "; vParameter[0].oTabPtr = NULL; vParameter[0].oNbSamples = 0u;
-	vParameter[1].oProcessName = (const char_t *)"Process: 1 "; vParameter[1].oTabPtr = NULL; vParameter[1].oNbSamples = 0u;
-	vParameter[2].oProcessName = (const char_t *)"Process: 2 "; vParameter[2].oTabPtr = NULL; vParameter[2].oNbSamples = 0u;
-	vParameter[3].oProcessName = (const char_t *)"Process: 3 "; vParameter[3].oTabPtr = NULL; vParameter[3].oNbSamples = 0u;
-	vParameter[4].oProcessName = (const char_t *)"Process: 4 "; vParameter[4].oTabPtr = NULL; vParameter[4].oNbSamples = 0u;
-	vParameter[5].oProcessName = (const char_t *)"Process: 5 "; vParameter[5].oTabPtr = NULL; vParameter[5].oNbSamples = 0u;
-	vParameter[6].oProcessName = (const char_t *)"Process: 6 "; vParameter[6].oTabPtr = NULL; vParameter[6].oNbSamples = 0u;
-	vParameter[7].oProcessName = (const char_t *)"Process: 7 "; vParameter[7].oTabPtr = NULL; vParameter[7].oNbSamples = 0u;
-	vParameter[8].oProcessName = (const char_t *)"Process: 8 "; vParameter[8].oTabPtr = NULL; vParameter[8].oNbSamples = 0u;
-	vParameter[9].oProcessName = (const char_t *)"Process: 9 "; vParameter[9].oTabPtr = NULL; vParameter[9].oNbSamples = 0u;
+	vParameter[0].oProcessName = (const char_t *)"Process: 0 "; vParameter[0].oTabPtr = NULL; vParameter[0].oNbSamples = 0U;
+	vParameter[1].oProcessName = (const char_t *)"Process: 1 "; vParameter[1].oTabPtr = NULL; vParameter[1].oNbSamples = 0U;
+	vParameter[2].oProcessName = (const char_t *)"Process: 2 "; vParameter[2].oTabPtr = NULL; vParameter[2].oNbSamples = 0U;
+	vParameter[3].oProcessName = (const char_t *)"Process: 3 "; vParameter[3].oTabPtr = NULL; vParameter[3].oNbSamples = 0U;
+	vParameter[4].oProcessName = (const char_t *)"Process: 4 "; vParameter[4].oTabPtr = NULL; vParameter[4].oNbSamples = 0U;
+	vParameter[5].oProcessName = (const char_t *)"Process: 5 "; vParameter[5].oTabPtr = NULL; vParameter[5].oNbSamples = 0U;
+	vParameter[6].oProcessName = (const char_t *)"Process: 6 "; vParameter[6].oTabPtr = NULL; vParameter[6].oNbSamples = 0U;
+	vParameter[7].oProcessName = (const char_t *)"Process: 7 "; vParameter[7].oTabPtr = NULL; vParameter[7].oNbSamples = 0U;
+	vParameter[8].oProcessName = (const char_t *)"Process: 8 "; vParameter[8].oTabPtr = NULL; vParameter[8].oNbSamples = 0U;
+	vParameter[9].oProcessName = (const char_t *)"Process: 9 "; vParameter[9].oTabPtr = NULL; vParameter[9].oNbSamples = 0U;
 
 // Analyse the command line
 // ------------------------
@@ -142,13 +155,13 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 // testMalloc 345		use 345 blocs for the tests
 
 	switch (argc) {
-		case 2u: {
-			nbSamples = (uint32_t)strtol(argv[1], &dummy, 10u);
+		case 2U: {
+			nbSamples = (uint32_t)strtol(argv[1], &dummy, 10U);
 
 // Reserve the necessary buffers
 
-			for (i = 0u; i < KNB_PROC; i++) {
-				if (local_reserve(i, nbSamples) == false) {
+			for (i = 0U; i < KNB_PROC; i++) {
+				if (!local_reserve(i, nbSamples)) {
 					error = KERR_NME;
 					break;
 				}
@@ -157,8 +170,8 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 // Install the processes
 
 			if (error == KERR_NOT) {
-				for (i = 0u; i < KNB_PROC; i++) {
-					if (local_install(i) == false) {
+				for (i = 0U; i < KNB_PROC; i++) {
+					if (!local_install(i)) {
 						error = KERR_NME;
 						break;
 					}
@@ -197,8 +210,8 @@ static	bool	local_reserve(uint32_t number, uint32_t nbSamples) {
 	vParameter[number].oNbSamples = nbSamples;
 	vParameter[number].oTabPtr    = (uint8_t **)memo_malloc(KMEMO_ALIGN_16, (nbSamples * sizeof(uint8_t *)), "test_malloc");
 	if (vParameter[number].oTabPtr == NULL) {
-		if (number > 0u) {
-			for (i = 0u; i < number; i++) {
+		if (number > 0U) {
+			for (i = 0U; i < number; i++) {
 				memo_free((void *)vParameter[i].oTabPtr);
 			}
 		}
@@ -234,7 +247,7 @@ static	bool	local_install(uint32_t number) {
 	vSpecification[number].oMode		  = KPROC_USER;
 	vSpecification[number].oScheduleHook  = NULL;
 
-	status = (kern_createProcess(&vSpecification[number], &vParameter[number], &vProcess[number]) == KERR_KERN_NOERR) ? (true) : (false);
+	status = (kern_createProcess(&vSpecification[number], &vParameter[number], &vProcess[number]) == KERR_KERN_NOERR);
 	return (status);
 }
 
@@ -263,18 +276,18 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 
 // Initialise the ptr table
 
-		for (i = 0u; i < nbSamples; i++) {
+		for (i = 0U; i < nbSamples; i++) {
 			aTabPtr[i] = NULL;
 		}
 
 // Try to reserve as many blocs as possible
 // Consider only 5 < blocks < 256
 
-		for (i = 0u; i < nbSamples; i++) {
+		for (i = 0U; i < nbSamples; i++) {
 			do {
 				local_getRND(&amount);
-				amount &= 0x000000FFu;
-			} while (amount < 5u);
+				amount &= 0x000000FFU;
+			} while (amount < 5U);
 
 			aTabPtr[i] = (uint8_t *)memo_malloc(KMEMO_ALIGN_16, (amount * sizeof(uint8_t)), "test_malloc");
 			if (aTabPtr[i] == NULL) {
@@ -289,11 +302,11 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 
 			array   = aTabPtr[i];
 			length  = &array[0];
-			*length = (uint8_t)(amount - 1u);
+			*length = (uint8_t)(amount - 1U);
 			counter = &array[1];
-			cpt     = 0u;
+			cpt     = 0U;
 
-			for (j = 0u; j < *length; j++) {
+			for (j = 0U; j < *length; j++) {
 				counter[j] = cpt;
 				cpt++;
 			}
@@ -305,7 +318,7 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 //
 // Release the reserved blocs
 
-		for (i = 0u; i < nbSamples; i++) {
+		for (i = 0U; i < nbSamples; i++) {
 			if (aTabPtr[i] == NULL) {
 				break;
 			}
@@ -313,9 +326,9 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 			array   = aTabPtr[i];
 			length  = &array[0];
 			counter = &array[1];
-			cpt     = 0u;
+			cpt     = 0U;
 
-			for (j = 0u; j < *length; j++) {
+			for (j = 0U; j < *length; j++) {
 				if (counter[j] != cpt++) {
 					LOG(KFATAL_SYSTEM, "test_malloc: ioherency problem");
 					exit(EXIT_OS_FAILURE);
@@ -334,9 +347,9 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
  * - Return a pseudo random number
  *
  */
-#define	Ka	1103515245u
-#define	Kc	12345u
-#define	Km	((1u<<31u) - 1u)
+#define	Ka	1103515245U
+#define	Kc	12345U
+#define	Km	((1U<<31U) - 1U)
 
 static	void	local_getRND(uint32_t *number) {
 			uint32_t	core;
@@ -347,10 +360,10 @@ static	void	local_getRND(uint32_t *number) {
 
 // Use the LSB tickcount to make unpredictable the initial seed
 
-	if (vInitialSeed[core] == false) {
+	if (!vInitialSeed[core]) {
 		vInitialSeed[core] = true;
 
-		vSeed[core] = 0x74796907u;
+		vSeed[core] = 0x74796907U;
 	}
 
 // X[n + 1] = (Ka * X[n] + Kc) * mod(Km)

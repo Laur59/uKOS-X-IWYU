@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32L4R5_usart1 equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // USART1 address definitions
 // --------------------------
 
@@ -72,7 +74,7 @@ typedef struct {
 	volatile	uint32_t	PRESC;
 } USART1_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	USART1	reinterpret_cast<USART1_TypeDef *>(0x40013800u)
 
 #else

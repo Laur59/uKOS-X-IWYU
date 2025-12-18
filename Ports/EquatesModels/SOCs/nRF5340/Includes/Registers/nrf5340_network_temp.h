@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		nrf5340_network_temp equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // TEMP address definitions
 // ------------------------
@@ -88,7 +90,7 @@ typedef struct {
 	volatile	uint32_t	T4;
 } TEMP_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	TEMP_NS	reinterpret_cast<TEMP_TypeDef *>(0x41010000u)
 
 #else

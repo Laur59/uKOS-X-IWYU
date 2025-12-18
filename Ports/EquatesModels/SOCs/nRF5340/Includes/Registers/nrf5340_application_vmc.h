@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		nrf5340_application_vmc equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // VMC address definitions
 // -----------------------
@@ -86,7 +88,7 @@ typedef struct {
 	volatile	uint32_t	RAM7_POWERCLR;
 } VMC_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	VMC_NS	reinterpret_cast<VMC_TypeDef *>(0x40081000u)
 #define	VMC_S	reinterpret_cast<VMC_TypeDef *>(0x50081000u)
 

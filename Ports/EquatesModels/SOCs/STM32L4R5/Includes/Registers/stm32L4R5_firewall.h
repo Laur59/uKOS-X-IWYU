@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32L4R5_firewall equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // FIREWALL address definitions
 // ----------------------------
 
@@ -62,7 +64,7 @@ typedef struct {
 	volatile	uint32_t	CR;
 } FIREWALL_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	FIREWALL	reinterpret_cast<FIREWALL_TypeDef *>(0x40011C00u)
 
 #else

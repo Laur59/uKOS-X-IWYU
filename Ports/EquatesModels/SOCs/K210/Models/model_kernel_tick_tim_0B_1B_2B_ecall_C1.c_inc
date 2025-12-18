@@ -28,8 +28,8 @@
 ;			- kernel_switcher_C1
 ;			- kernel_message_C1
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -67,18 +67,23 @@
 #include	"kern/private/private_scheduler.h"
 #include	"kern/private/private_temporal.h"
 #include	"kern/private/private_preciseSignals.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"macros_soc.h"
+#include	"lib_generics.h"
 
 #define	K1ms_B		((float64_t)(0.001))
 
 #define KARRT0_B	((uint32_t)(KFREQUENCY_1GHz * K1ms_B * KKERN_TIC_TIME))				// Autoreload
-#define KARRT1_B	(~0u)																// Autoreload
+#define KARRT1_B	(~0U)																// Autoreload
 #define KARRT2_B	((uint32_t)(KFREQUENCY_1GHz * K1ms_B * KKERN_PROC_TIMEOUT))			// Autoreload
 
-static	volatile	uint32_t	vTimeStart_C1     = 0u;									// Time-stamp: when the process was scheduled
-static	volatile	uint32_t	vTimeStop_C1      = 0u;									// Time-stamp: when the process was stopped
-static	volatile	uint32_t	vTimeLastStart_C1 = 0u;									// Time-stamp: when the process was started (previous cycle)
-static				uint64_t	vTickCount_C1     = 0u;									// 64-bit timer (1-us)
-static				uint64_t	vTickCount403_C1  = 0u;									// 64-bit timer (2.65-ns) @ 403-MHz
+static	volatile	uint32_t	vTimeStart_C1     = 0U;									// Time-stamp: when the process was scheduled
+static	volatile	uint32_t	vTimeStop_C1      = 0U;									// Time-stamp: when the process was stopped
+static	volatile	uint32_t	vTimeLastStart_C1 = 0U;									// Time-stamp: when the process was started (previous cycle)
+static				uint64_t	vTickCount_C1     = 0U;									// 64-bit timer (1-us)
+static				uint64_t	vTickCount403_C1  = 0U;									// 64-bit timer (2.65-ns) @ 403-MHz
 
 // Prototypes
 
@@ -102,9 +107,9 @@ static	void	local_timeStmp_C1(void);
  */
 void	model_kernel_init_C1(void) {
 
-	sysctl->clk_en_peri.timer0_clk_en = 1u;			// Turn on the TIM0
-	sysctl->clk_en_peri.timer1_clk_en = 1u;			// Turn on the TIM1
-	sysctl->clk_en_peri.timer2_clk_en = 1u;			// Turn on the TIM2
+	sysctl->clk_en_peri.timer0_clk_en = 1U;			// Turn on the TIM0
+	sysctl->clk_en_peri.timer1_clk_en = 1U;			// Turn on the TIM1
+	sysctl->clk_en_peri.timer2_clk_en = 1U;			// Turn on the TIM2
 }
 
 /*
@@ -129,9 +134,9 @@ void	model_kernel_runKernel_C1(void) {
 	EXT_INTERRUPT_VECTOR(EINT_TIMER0B_INTERRUPT, local_TIM0_B_IRQHandler_C1);
 
 	plic->source_priorities.priority[EINT_TIMER0B_INTERRUPT] = KINT_LEVEL_KERNEL_TIMERS;
-	current = plic->target_enables.target[KCORE_1].enable[(uint32_t)EINT_TIMER0B_INTERRUPT / 32u];
-	current |= (uint32_t)(1u<<((uint32_t)EINT_TIMER0B_INTERRUPT % 32u));
-	plic->target_enables.target[KCORE_1].enable[(uint32_t)EINT_TIMER0B_INTERRUPT / 32u] = current;
+	current = plic->target_enables.target[KCORE_1].enable[(uint32_t)EINT_TIMER0B_INTERRUPT / 32U];
+	current |= (uint32_t)(1U<<((uint32_t)EINT_TIMER0B_INTERRUPT % 32U));
+	plic->target_enables.target[KCORE_1].enable[(uint32_t)EINT_TIMER0B_INTERRUPT / 32U] = current;
 
 // Initialise the TIM0_B to generate interruptions every 1-ms
 
@@ -149,9 +154,9 @@ void	model_kernel_runKernel_C1(void) {
 	EXT_INTERRUPT_VECTOR(EINT_TIMER1B_INTERRUPT, local_TIM1_B_IRQHandler_C1);
 
 	plic->source_priorities.priority[EINT_TIMER1B_INTERRUPT] = KINT_LEVEL_KERNEL_TIMERS;
-	current = plic->target_enables.target[KCORE_1].enable[(uint32_t)EINT_TIMER1B_INTERRUPT / 32u];
-	current |= (uint32_t)(1u<<((uint32_t)EINT_TIMER1B_INTERRUPT % 32u));
-	plic->target_enables.target[KCORE_1].enable[(uint32_t)EINT_TIMER1B_INTERRUPT / 32u] = current;
+	current = plic->target_enables.target[KCORE_1].enable[(uint32_t)EINT_TIMER1B_INTERRUPT / 32U];
+	current |= (uint32_t)(1U<<((uint32_t)EINT_TIMER1B_INTERRUPT % 32U));
+	plic->target_enables.target[KCORE_1].enable[(uint32_t)EINT_TIMER1B_INTERRUPT / 32U] = current;
 
 // Initialise the TIM1_B to generate interruptions every ~10-s
 
@@ -169,9 +174,9 @@ void	model_kernel_runKernel_C1(void) {
 	EXT_INTERRUPT_VECTOR(EINT_TIMER2B_INTERRUPT, local_TIM2_B_IRQHandler_C1);
 
 	plic->source_priorities.priority[EINT_TIMER2B_INTERRUPT] = KINT_LEVEL_KERNEL_TIMERS;
-	current = plic->target_enables.target[KCORE_1].enable[(uint32_t)EINT_TIMER2B_INTERRUPT / 32u];
-	current |= (uint32_t)(1u<<((uint32_t)EINT_TIMER2B_INTERRUPT % 32u));
-	plic->target_enables.target[KCORE_1].enable[(uint32_t)EINT_TIMER2B_INTERRUPT / 32u] = current;
+	current = plic->target_enables.target[KCORE_1].enable[(uint32_t)EINT_TIMER2B_INTERRUPT / 32U];
+	current |= (uint32_t)(1U<<((uint32_t)EINT_TIMER2B_INTERRUPT % 32U));
+	plic->target_enables.target[KCORE_1].enable[(uint32_t)EINT_TIMER2B_INTERRUPT / 32U] = current;
 
 // Initialise the TIM2_B to generate interruptions every 20-ms
 
@@ -189,12 +194,12 @@ void	model_kernel_runKernel_C1(void) {
 	EXT_INTERRUPT_VECTOR(KKERN_PREEMPTION_C1, local_PREEMPTION_IRQHandler_C1);
 
 	plic->source_priorities.priority[KKERN_PREEMPTION_C1] = KINT_LEVEL_ALL;
-	current = plic->target_enables.target[KCORE_1].enable[(uint32_t)KKERN_PREEMPTION_C1 / 32u];
-	current |= (uint32_t)(1u<<((uint32_t)KKERN_PREEMPTION_C1 % 32u));
-	plic->target_enables.target[KCORE_1].enable[(uint32_t)KKERN_PREEMPTION_C1 / 32u] = current;
+	current = plic->target_enables.target[KCORE_1].enable[(uint32_t)KKERN_PREEMPTION_C1 / 32U];
+	current |= (uint32_t)(1U<<((uint32_t)KKERN_PREEMPTION_C1 % 32U));
+	plic->target_enables.target[KCORE_1].enable[(uint32_t)KKERN_PREEMPTION_C1 / 32U] = current;
 
-	gpiohs->input_val.u32[0] &= (uint32_t)~(1u<<BKERN_PREEMPTION_C1);
-	gpiohs->input_en.u32[0]  |= (1u<<BKERN_PREEMPTION_C1);
+	gpiohs->input_val.u32[0] &= (uint32_t)~(1U<<BKERN_PREEMPTION_C1);
+	gpiohs->input_en.u32[0]  |= (1U<<BKERN_PREEMPTION_C1);
 
 // ECALL for messages
 
@@ -229,6 +234,7 @@ void	model_kernel_setLowPower_C1(uint8_t mode) {
 	}
 }
 
+#if (KKERN_NB_PRECISE_SIGNALS > 0)
 /*
  * \brief Precise signal (minimal jitter)
  *
@@ -239,6 +245,7 @@ void	model_kernel_setPreciseSignal_C1(volatile prcs_t *handle) {
 
 	UNUSED(handle);
 }
+#endif
 
 /*
  * \brief Read the tickCount
@@ -297,7 +304,7 @@ static	void	local_TIM0_B_IRQHandler_C1(uint32_t core, uint64_t parameter) {
 	timer0->channel[2].eoi;
 	plic->targets.target[core].claim_complete = (uint32_t)parameter;
 
-	scheduler_callBackFast(1u);
+	scheduler_callBackFast(1U);
 	local_timeStmp_C1();
 }
 
@@ -400,7 +407,7 @@ static	void	__attribute__ ((noinline)) local_newContextPRE_C1(uint32_t core, uin
 
 	vExce_isException[core] = false;
 
-	gpiohs->rise_ie.u32[0] &= (uint32_t)~(1u<<BKERN_PREEMPTION_C1);
+	gpiohs->rise_ie.u32[0] &= (uint32_t)~(1U<<BKERN_PREEMPTION_C1);
 	plic->targets.target[core].claim_complete = (uint32_t)parameter;
 
 	timer2->channel[2].eoi;
@@ -424,7 +431,7 @@ static	void	__attribute__ ((noinline)) local_newContextPRE_C1(uint32_t core, uin
 	INTERRUPTION_RESTORE;
 
 	statistics_statistic(proc, tStart, tStop, tLast, tExc);
-	vKern_TimeException[core] = 0u;
+	vKern_TimeException[core] = 0U;
 	#endif
 }
 
@@ -552,7 +559,7 @@ static	void	__attribute__ ((noinline)) local_newContextTOU_C1(uint32_t core, uin
 	INTERRUPTION_RESTORE;
 
 	statistics_statistic(proc, tStart, tStop, tLast, tExc);
-	vKern_TimeException[core] = 0u;
+	vKern_TimeException[core] = 0U;
 	#endif
 }
 
@@ -678,7 +685,7 @@ static	void	__attribute__ ((noinline)) local_newContextMSG_C1(uint32_t core, uin
 	INTERRUPTION_RESTORE;
 
 	statistics_statistic(proc, tStart, tStop, tLast, tExc);
-	vKern_TimeException[core] = 0u;
+	vKern_TimeException[core] = 0U;
 	#endif
 }
 
@@ -693,7 +700,7 @@ static	void	local_timeStart_C1(void) {
 
 	INTERRUPTION_OFF;
 	vTimeLastStart_C1 = vTimeStart_C1;
-	vTimeStart_C1     = ~timer1->channel[2].current_value / (KFREQUENCY_TIM / 1000000u);
+	vTimeStart_C1     = ~timer1->channel[2].current_value / (KFREQUENCY_TIM / 1000000U);
 	INTERRUPTION_RESTORE;
 }
 
@@ -706,7 +713,7 @@ static	void	local_timeStart_C1(void) {
  */
 static	void	local_timeStop_C1(void) {
 
-	vTimeStop_C1 = ~timer1->channel[2].current_value / (KFREQUENCY_TIM / 1000000u);
+	vTimeStop_C1 = ~timer1->channel[2].current_value / (KFREQUENCY_TIM / 1000000U);
 }
 
 /*
@@ -740,6 +747,6 @@ static	void	local_timeStmp_C1(void) {
 	INTERRUPTION_OFF;
 	vTickCount403_C1 = vTickCount403_C1 & 0xFFFFFFFF00000000u;
 	vTickCount403_C1 = vTickCount403_C1 | ~timer1->channel[2].current_value;
-	vTickCount_C1    = vTickCount403_C1 / (KFREQUENCY_TIM / 1000000u);
+	vTickCount_C1    = vTickCount403_C1 / (KFREQUENCY_TIM / 1000000U);
 	INTERRUPTION_RESTORE;
 }

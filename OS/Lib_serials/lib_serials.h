@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		lib_serials system call interface module.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -76,33 +76,33 @@
 
 // IWYU pragma: begin_exports
 
-#if (defined(CONFIG_MAN_SERIAL_S))
+#ifdef CONFIG_MAN_SERIAL_S
 #include	"serial/serial.h"
 #else
 #define	KDEF0	0
 #endif
-#if (defined(CONFIG_MAN_URT0_S))
+#ifdef CONFIG_MAN_URT0_S
 #include	"urt0/urt0.h"
 #endif
-#if (defined(CONFIG_MAN_URT1_S))
+#ifdef CONFIG_MAN_URT1_S
 #include	"urt1/urt1.h"
 #endif
-#if (defined(CONFIG_MAN_URT2_S))
+#ifdef CONFIG_MAN_URT2_S
 #include	"urt2/urt2.h"
 #endif
-#if (defined(CONFIG_MAN_URT3_S))
+#ifdef CONFIG_MAN_URT3_S
 #include	"urt3/urt3.h"
 #endif
-#if (defined(CONFIG_MAN_URT4_S))
+#ifdef CONFIG_MAN_URT4_S
 #include	"urt4/urt4.h"
 #endif
-#if (defined(CONFIG_MAN_CDC0_S))
+#ifdef CONFIG_MAN_CDC0_S
 #include	"cdc0/cdc0.h"
 #endif
-#if (defined(CONFIG_MAN_CDC1_S))
+#ifdef CONFIG_MAN_CDC1_S
 #include	"cdc1/cdc1.h"
 #endif
-#if (defined(CONFIG_MAN_WFI0_S))
+#ifdef CONFIG_MAN_WFI0_S
 #include	"wfi0/wfi0.h"
 #endif
 

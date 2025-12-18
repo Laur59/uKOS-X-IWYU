@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		spi1 manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,9 +46,22 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	"spi1.h"
 
-#if (defined(CONFIG_MAN_SPI1_S))
+#include	<stdint.h>
+#include	<stdlib.h>
+
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"spi_common.h"
+#include	"types.h"
+
+#ifdef CONFIG_MAN_SPI1_S
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -71,7 +84,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -112,10 +125,10 @@ extern	int32_t		stub_spi1_multipleWriteRead(const uint8_t *wData, uint16_t wSize
  *
  */
 int32_t	spi1_reserve(reserveMode_t reserveMode, uint32_t timeout) {
+	UNUSED(reserveMode);
+
 	uint32_t	core;
 	int32_t		status;
-
-	UNUSED(reserveMode);
 
 	core = GET_RUNNING_CORE;
 
@@ -151,10 +164,10 @@ int32_t	spi1_reserve(reserveMode_t reserveMode, uint32_t timeout) {
  *
  */
 int32_t	spi1_release(reserveMode_t reserveMode) {
+	UNUSED(reserveMode);
+
 	uint32_t	core;
 	int32_t		status;
-
-	UNUSED(reserveMode);
 
 	core = GET_RUNNING_CORE;
 
@@ -180,9 +193,9 @@ int32_t	spi1_release(reserveMode_t reserveMode) {
  * \code{.c}
  *          int32_t       status;
  * const    spiCnf_t    configure = {
- *                            .oSpeed    = 5000000u,
+ *                            .oSpeed    = 5000000U,
  *                            .oMode     = (uint8_t)KSPI_MASTER,
- *                            .oClock    = (1u<<(uint8_t)BSPI_POL) | (1u<<(uint8_t)BSPI_PHA)
+ *                            .oClock    = (1U<<(uint8_t)BSPI_POL) | (1U<<(uint8_t)BSPI_PHA)
  *                        };
  *
  *    status = spi1_configure(&configure);
@@ -232,7 +245,7 @@ int32_t	spi1_writeRead(uint8_t *data) {
 	if (status != KERR_SPI_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
 	wData[0] = *data;
-	status = stub_spi1_multipleWriteRead(&wData[0], 1u, &rData[0], 1u, KWAIT_INFINITY);
+	status = stub_spi1_multipleWriteRead(&wData[0], 1U, &rData[0], 1U, KWAIT_INFINITY);
 
 	*data = rData[0];
 	PRIVILEGE_RESTORE;
@@ -316,7 +329,7 @@ static	int32_t	local_init(void) {
 	core = GET_RUNNING_CORE;
 
 	INTERRUPTION_OFF;
-	if (vInit[core] == false) {
+	if (!vInit[core]) {
 		vInit[core] = true;
 
 		if (kern_createMutex(KSPI1_MUTEX_RESERVE, &vMutex_Reserve[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "spi1: create mutx"); exit(EXIT_OS_PANIC); }

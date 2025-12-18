@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Some consts that could be necessary for debugging tool
 ;			susch as Segger Ozone.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -52,7 +52,7 @@
 // Debug kernel
 // ------------
 
-#if (!defined(DEBUG_KERN_TRACE))
+#ifndef DEBUG_KERN_TRACE
 #define	DEBUG_KERN_TRACE(text);
 #endif
 
@@ -68,13 +68,13 @@
 // risc-v (RV64) RV64IMAFDC		   = 2
 
 #if (defined(CORTEX_M3_S) || defined(CORTEX_M4_S) || defined(CORTEX_M7_S) || defined(CORTEX_M33_S) || defined(CORTEX_M55_S))
-#define	uKOS_ARCHITECTURE	0u
+#define	uKOS_ARCHITECTURE	0U
 
 #elif (defined(RV32IMAC_S))
-#define	uKOS_ARCHITECTURE	1u
+#define	uKOS_ARCHITECTURE	1U
 
 #elif (defined(RV64IMAFDC_S))
-#define	uKOS_ARCHITECTURE	2u
+#define	uKOS_ARCHITECTURE	2U
 
 #else
 #error	"*** Architecture not defined"

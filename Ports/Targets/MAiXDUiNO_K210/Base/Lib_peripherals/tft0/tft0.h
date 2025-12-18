@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		tft0 manager (for nt35310).
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -63,8 +63,12 @@
  * @{
  */
 
-#define	KTFT0_NUM	(((uint32_t)'_'<<8u) + (uint32_t)'1')
-#define	KTFT0MAN	(KTFT0_NUM<<8u)
+#include	<stdint.h>
+
+#include	"modules.h"
+
+#define	KTFT0_NUM	(((uint32_t)'_'<<8U) + (uint32_t)'1')
+#define	KTFT0MAN	(KTFT0_NUM<<8U)
 
 // NT35310 TFT controller commands
 
@@ -145,8 +149,8 @@
 #define KDIGITAL_GAMMA_CTL2			0xE3u
 #define KINTERFACE_CTL				0xF6u
 
-#define SPI_CHANNEL					0u
-#define SPI_SLAVE_SELECT			3u
+#define SPI_CHANNEL					0U
+#define SPI_SLAVE_SELECT			3U
 
 /*!
  * \brief Initialise the tft0 manager
@@ -245,7 +249,7 @@ extern	int32_t	tft0_write16(const uint16_t *buffer, uint32_t szBuffer);
  */
 extern	int32_t	tft0_fill16(const uint16_t *buffer, uint32_t szBuffer);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 
@@ -253,11 +257,11 @@ extern	int32_t	tft0_fill16(const uint16_t *buffer, uint32_t szBuffer);
 // -------------------
 
 //					Negative				 Family Lib Id							Lib Id xx (error)
-#define	KTFT0ERR	((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<24u) | KTFT0MAN)
+#define	KTFT0ERR	((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<24U) | KTFT0MAN)
 
 enum : int32_t {
 	KERR_TFT0_NOERR = 0,							// No error
-	KERR_TFT0_SYCNA = (int32_t)(KTFT0ERR + 1u),		// System call not available
+	KERR_TFT0_SYCNA = (int32_t)(KTFT0ERR + 1U),		// System call not available
 	KERR_TFT0_GEERR									// General error
 };
 

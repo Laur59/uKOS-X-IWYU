@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		RP2350_accessctrl equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // ACCESSCTRL address definitions
 // ------------------------------
@@ -113,7 +115,7 @@ typedef struct {
 	volatile	uint32_t	XIP_AUX;
 } ACCESSCTRL_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	ACCESSCTRL_NS	reinterpret_cast<ACCESSCTRL_TypeDef *>(0x40060000u)
 #define	ACCESSCTRL_S	reinterpret_cast<ACCESSCTRL_TypeDef *>(0x40060000u)
 #else

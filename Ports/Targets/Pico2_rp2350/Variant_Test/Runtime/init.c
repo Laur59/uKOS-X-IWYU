@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Low level init for the uKOS-X Pico2_rp2350 module.
@@ -15,8 +15,8 @@
 ;			!!! It is called before to copy and to initialise
 ;			!!! the variable into the RAM.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -50,8 +50,17 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stddef.h>
+
+#include	"board.h"
+#include	"clockTree.h"
+#include	"core_reg.h"
 #include	"linker.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"macros.h"
+#include	"modules.h"
+#include	"soc_reg.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -74,7 +83,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -105,7 +114,7 @@ static			void		local_emptyRxFifo(void);
 static			void		local_writeRTxFifo(uint32_t data);
 static			uint32_t	local_readRxFifo(void);
 
-#define	KSZ_TABLE	(2u + KNB_EXCEPTIONS + KNB_INTERRUPTIONS)
+#define	KSZ_TABLE	(2U + KNB_EXCEPTIONS + KNB_INTERRUPTIONS)
 
 extern			uintptr_t	g_pfnVectors_C0[];
 extern			uintptr_t	g_pfnVectors_C1[];
@@ -165,7 +174,7 @@ void	init_relocate(void) {
 // Relocate the VTOR for the core 0
 // This is necessary for TinyUSB
 
-		for (i = 0u; i < KSZ_TABLE; i++) {
+		for (i = 0U; i < KSZ_TABLE; i++) {
 			vTableRam_C0[i] = g_pfnVectors_C0[i];
 		}
 
@@ -184,7 +193,7 @@ void	init_relocate(void) {
 static	void	local_GPIO_Configuration(void) {
 
 	REG(RESETS)->RESET &= ~(RESETS_RESET_DONE_IO_BANK0 | RESETS_RESET_DONE_PADS_BANK0);
-	while ((REG(RESETS)->RESET_DONE & (RESETS_RESET_DONE_IO_BANK0 | RESETS_RESET_DONE_PADS_BANK0)) != (RESETS_RESET_DONE_IO_BANK0 | RESETS_RESET_DONE_PADS_BANK0)) { ; }
+	while ((REG(RESETS)->RESET_DONE & (RESETS_RESET_DONE_IO_BANK0 | RESETS_RESET_DONE_PADS_BANK0)) != (RESETS_RESET_DONE_IO_BANK0 | RESETS_RESET_DONE_PADS_BANK0)) { }
 
 // ISO=0, outputs
 
@@ -198,7 +207,7 @@ static	void	local_GPIO_Configuration(void) {
 	REG(IO_BANK0)->GPIO13_CTRL = IO_BANK0_GPIO13_CTRL_FUNCSEL_SIOB_PROC_13;
 	REG(IO_BANK0)->GPIO25_CTRL = IO_BANK0_GPIO25_CTRL_FUNCSEL_SIOB_PROC_25;
 
-	REG(SIO)->GPIO_OE_SET	   = (1u<<BLED_s) | (1u<<BLED_0) | (1u<<BLED_1) | (1u<<BLED_2);
+	REG(SIO)->GPIO_OE_SET	   = (1U<<BLED_s) | (1U<<BLED_0) | (1U<<BLED_1) | (1U<<BLED_2);
 
 // ISO=0, inputs
 
@@ -249,15 +258,15 @@ static	void	local_PLL_Configuration(void) {
 // Turn on the 12-MHz clock
 
 	REG(XOSC)->CTRL	   = XOSC_CTRL_FREQ_RANGE_1_15MHZ;
-	REG(XOSC)->STARTUP = 0x00C4u;
+	REG(XOSC)->STARTUP = 0x00C4U;
 	REG(XOSC)->CTRL	  |= XOSC_CTRL_ENABLE_ENABLE;
-	while ((REG(XOSC)->STATUS & XOSC_STATUS_STABLE) == 0x0u) { ; }
+	while ((REG(XOSC)->STATUS & XOSC_STATUS_STABLE) == 0x0U) { }
 
 // Switch clk_ref on XOSC (glitchless)
 
-	REG(CLOCKS)->CLK_REF_DIV  = 1u * CLOCKS_CLK_REF_DIV_INT_0;
-	REG(CLOCKS)->CLK_REF_CTRL = (REG(CLOCKS)->CLK_REF_CTRL & ~0x3u) | 0x2u;
-	while ((REG(CLOCKS)->CLK_REF_SELECTED & (1u<<0x2u)) == 0x0u) { ; }
+	REG(CLOCKS)->CLK_REF_DIV  = 1U * CLOCKS_CLK_REF_DIV_INT_0;
+	REG(CLOCKS)->CLK_REF_CTRL = (REG(CLOCKS)->CLK_REF_CTRL & ~0x3U) | 0x2U;
+	while ((REG(CLOCKS)->CLK_REF_SELECTED & (1U<<0x2U)) == 0x0U) { }
 
 // The main PLL
 // ------------
@@ -267,7 +276,7 @@ static	void	local_PLL_Configuration(void) {
 	REG(RESETS)->RESET |= RESETS_RESET_PLL_SYS;
 	cmns_wait(10);
 	REG(RESETS)->RESET &= ~RESETS_RESET_PLL_SYS;
-	while ((REG(RESETS)->RESET_DONE & RESETS_RESET_DONE_PLL_SYS) == 0x0u) { ; }
+	while ((REG(RESETS)->RESET_DONE & RESETS_RESET_DONE_PLL_SYS) == 0x0U) { }
 
 	REG(PLL_SYS)->PWR |= (PLL_SYS_PWR_PD | PLL_SYS_PWR_VCOPD | PLL_SYS_PWR_POSTDIVPD);
 
@@ -275,27 +284,27 @@ static	void	local_PLL_Configuration(void) {
 // - VCO = 1500-MHz, REFDIV = 1, FBDIV = 125 (12 * 125 = 1500)
 // - postdiv1 = 5, postdiv2 = 2  => 1500 / (5 * 2) = 150-MHz
 
-	REG(PLL_SYS)->CS		= 0x1u;
-	REG(PLL_SYS)->FBDIV_INT = 125u;
+	REG(PLL_SYS)->CS		= 0x1U;
+	REG(PLL_SYS)->FBDIV_INT = 125U;
 
 // Turn on the VCO
 
 	REG(PLL_SYS)->PWR &= ~(PLL_SYS_PWR_PD | PLL_SYS_PWR_VCOPD);
-	while ((REG(PLL_SYS)->CS & PLL_SYS_CS_LOCK) == 0u) { ; }
+	while ((REG(PLL_SYS)->CS & PLL_SYS_CS_LOCK) == 0U) { }
 
-	REG(PLL_SYS)->PRIM = (5u * PLL_SYS_PRIM_POSTDIV1_0) | (2u * PLL_SYS_PRIM_POSTDIV2_0);
+	REG(PLL_SYS)->PRIM = (5U * PLL_SYS_PRIM_POSTDIV1_0) | (2U * PLL_SYS_PRIM_POSTDIV2_0);
 	REG(PLL_SYS)->PWR &= ~PLL_SYS_PWR_POSTDIVPD;
 
 // Switch the clk_sys on the PLL_SYS (glitchless via SRC/AUXSRC)
 
-	REG(CLOCKS)->CLK_SYS_DIV  = 1u * CLOCKS_CLK_SYS_DIV_INT_0;
-	REG(CLOCKS)->CLK_SYS_CTRL = (REG(CLOCKS)->CLK_SYS_CTRL & ~(0x7u<<5u)) | (0x0u<<5u);
-	REG(CLOCKS)->CLK_SYS_CTRL = (REG(CLOCKS)->CLK_SYS_CTRL & ~0x1u) | 0x1u;
-	while ((REG(CLOCKS)->CLK_SYS_SELECTED & (1u<<0x1u)) == 0x0u) { ; }
+	REG(CLOCKS)->CLK_SYS_DIV  = 1U * CLOCKS_CLK_SYS_DIV_INT_0;
+	REG(CLOCKS)->CLK_SYS_CTRL = (REG(CLOCKS)->CLK_SYS_CTRL & ~(0x7U<<5U)) | (0x0U<<5U);
+	REG(CLOCKS)->CLK_SYS_CTRL = (REG(CLOCKS)->CLK_SYS_CTRL & ~0x1U) | 0x1U;
+	while ((REG(CLOCKS)->CLK_SYS_SELECTED & (1U<<0x1U)) == 0x0U) { }
 
 // Optionnel : clk_peri = clk_sys (no glitchless, just AUXSRC + ENABLE)
 
-	REG(CLOCKS)->CLK_PERI_DIV  = 1u * CLOCKS_CLK_PERI_DIV_INT_0;
+	REG(CLOCKS)->CLK_PERI_DIV  = 1U * CLOCKS_CLK_PERI_DIV_INT_0;
 	REG(CLOCKS)->CLK_PERI_CTRL = CLOCKS_CLK_PERI_CTRL_AUXSRC_CLK_SYS | CLOCKS_CLK_PERI_CTRL_ENABLE;
 
 // The USB PLL
@@ -304,9 +313,9 @@ static	void	local_PLL_Configuration(void) {
 // Reset the PLL_USB
 
 	REG(RESETS)->RESET |= RESETS_RESET_PLL_USB;
-	cmns_wait(10u);
+	cmns_wait(10U);
 	REG(RESETS)->RESET &= ~RESETS_RESET_PLL_USB;
-	while ((REG(RESETS)->RESET_DONE & RESETS_RESET_DONE_PLL_USB) == 0x0u) { ; }
+	while ((REG(RESETS)->RESET_DONE & RESETS_RESET_DONE_PLL_USB) == 0x0U) { }
 
 	REG(PLL_USB)->PWR |= (PLL_USB_PWR_PD | PLL_USB_PWR_VCOPD | PLL_USB_PWR_POSTDIVPD);
 
@@ -314,21 +323,21 @@ static	void	local_PLL_Configuration(void) {
 // - VCO = 480-MHz, REFDIV = 1, FBDIV = 40 (12 * 40 = 480)
 // - postdiv1 = 5, postdiv2 = 2  => 480 / (5 * 2) = 48-MHz
 
-	REG(PLL_USB)->CS		= 0x1u;
-	REG(PLL_USB)->FBDIV_INT = 40u;
+	REG(PLL_USB)->CS		= 0x1U;
+	REG(PLL_USB)->FBDIV_INT = 40U;
 
 // Turn on the VCO
 
 	REG(PLL_USB)->PWR &= ~(PLL_USB_PWR_PD | PLL_USB_PWR_VCOPD);
-	while ((REG(PLL_USB)->CS & PLL_USB_CS_LOCK) == 0u) { ; }
+	while ((REG(PLL_USB)->CS & PLL_USB_CS_LOCK) == 0U) { }
 
-	REG(PLL_USB)->PRIM = (5u * PLL_USB_PRIM_POSTDIV1_0) | (2u * PLL_USB_PRIM_POSTDIV2_0);
+	REG(PLL_USB)->PRIM = (5U * PLL_USB_PRIM_POSTDIV1_0) | (2U * PLL_USB_PRIM_POSTDIV2_0);
 	REG(PLL_USB)->PWR &= ~PLL_USB_PWR_POSTDIVPD;
 
 // Switch the clk_usb on the PLL_USB (via SRC/AUXSRC)
 
-	REG(CLOCKS)->CLK_USB_DIV  = 1u * CLOCKS_CLK_USB_DIV_INT_0;
-	REG(CLOCKS)->CLK_USB_CTRL = (REG(CLOCKS)->CLK_USB_CTRL & ~(0x7u<<5u)) | (0x0u<<5u);
+	REG(CLOCKS)->CLK_USB_DIV  = 1U * CLOCKS_CLK_USB_DIV_INT_0;
+	REG(CLOCKS)->CLK_USB_CTRL = (REG(CLOCKS)->CLK_USB_CTRL & ~(0x7U<<5U)) | (0x0U<<5U);
 	REG(CLOCKS)->CLK_USB_CTRL = (REG(CLOCKS)->CLK_USB_CTRL | CLOCKS_CLK_USB_CTRL_ENABLE);
 
 // The timer clocks
@@ -338,13 +347,13 @@ static	void	local_PLL_Configuration(void) {
 
 	REG(TICKS)->TIMER0_CTRL	  = TICKS_TIMER0_CTRL_ENABLE;
 	REG(TICKS)->TIMER0_CYCLES = KCRYSTAL / KFREQUENCY_TIM;
-	REG(TIMER0)->SOURCE		  = 0u;
+	REG(TIMER0)->SOURCE		  = 0U;
 
 // Timer 1 clocked to 1-MHz
 
 	REG(TICKS)->TIMER1_CTRL	  = TICKS_TIMER1_CTRL_ENABLE;
 	REG(TICKS)->TIMER1_CYCLES = KCRYSTAL / KFREQUENCY_TIM;
-	REG(TIMER1)->SOURCE		  = 0u;
+	REG(TIMER1)->SOURCE		  = 0U;
 }
 
 /*
@@ -356,7 +365,7 @@ static	void	local_PLL_Configuration(void) {
 static	void	local_USB_Configuration(void) {
 
 	REG(RESETS)->RESET &= ~RESETS_RESET_USBCTRL;
-	while ((REG(RESETS)->RESET_DONE & RESETS_RESET_DONE_USBCTRL) == 0x0u) { ; }
+	while ((REG(RESETS)->RESET_DONE & RESETS_RESET_DONE_USBCTRL) == 0x0U) { }
 
 	REG(USB)->MAIN_CTRL &= ~USB_MAIN_CTRL_PHY_ISO;
 	REG(USB)->MAIN_CTRL |= USB_MAIN_CTRL_CONTROLLER_EN;
@@ -375,7 +384,7 @@ static	void	local_RAM_SHARED_Configuration(void) {
 	ramShared = ALIGNED_PTR(uint8_t, linker_stShare);
 	nbBytes	  = (intptr_t)(linker_lnShare);
 
-	while (nbBytes-- > 0) { *ramShared = 0u; ramShared++; }
+	while (nbBytes-- > 0) { *ramShared = 0U; ramShared++; }
 }
 
 /*
@@ -388,16 +397,16 @@ static	void	local_launchCore_1(entryAddr_t entry) {
 			uint32_t	i, cmd, echo;
 	const	uint32_t	vtor   = (uint32_t)g_pfnVectors_C1;
 	const	uint32_t	sp	   = (uint32_t)(uintptr_t)linker_topStackFirst_C1;
-	const	uint32_t	pc	   = ((uint32_t)(uintptr_t)entry) | 1u;
-    const	uint32_t	seq[6] = { 0u, 0u, 1u, vtor, sp, pc };
+	const	uint32_t	pc	   = ((uint32_t)(uintptr_t)entry) | 1U;
+    const	uint32_t	seq[6] = { 0U, 0U, 1U, vtor, sp, pc };
 
-	i = 0u;
+	i = 0U;
     do {
 		cmd = seq[i];
 
 // Before each 0 : empty RX + SEV
 
-        if (cmd == 0u) { local_emptyRxFifo(); sev(); }
+        if (cmd == 0U) { local_emptyRxFifo(); sev(); }
 
 // Send and waiting for the echo
 
@@ -405,8 +414,8 @@ static	void	local_launchCore_1(entryAddr_t entry) {
 		DATA_SYNC_BARRIER;
 
 		echo = local_readRxFifo();
-		i = (echo == cmd) ? (i + 1u) : (0u);
-	} while (i < 6u);
+		i = (echo == cmd) ? (i + 1U) : (0U);
+	} while (i < 6U);
  }
 
 /*
@@ -418,20 +427,20 @@ static	void	local_launchCore_1(entryAddr_t entry) {
  */
 static	void	local_MPU_Configuration(void) {
 
-	SET_MPU8_INDEX(KMPU_FLASH_ATTR, KMPU_RAM_CACHE_ATTR, KMPU_RAM_NOT_CACHE_ATTR, KMPU_PERIPH_ATTR, 0u, 0u, 0u, 0u, 0u);
+	SET_MPU8_INDEX(KMPU_FLASH_ATTR, KMPU_RAM_CACHE_ATTR, KMPU_RAM_NOT_CACHE_ATTR, KMPU_PERIPH_ATTR, 0U, 0U, 0U, 0U, 0U);
 
-	#if (defined(PRIVILEGED_USER_S))
-	SET_MPU8_REGION(0u,	ST_FLASH_INT_0,			EN_FLASH_INT_0,			KMPU_EXECUTABLE,		KMPU_R_ALL,  0u, KMPU_INNER_SHAREABLE);
-	SET_MPU8_REGION(1u,	ST_RAM_INT_0_OS,		EN_RAM_INT_0_OS,		KMPU_EXECUTABLE,		KMPU_RW_PRI, 1u, KMPU_INNER_SHAREABLE);
-	SET_MPU8_REGION(2u,	ST_RAM_INT_0,			EN_RAM_INT_0,			KMPU_EXECUTABLE,		KMPU_RW_ALL, 1u, KMPU_INNER_SHAREABLE);
-	SET_MPU8_REGION(3u,	ST_RAM_INT_0_SHARED,	EN_RAM_INT_0_SHARED,	KMPU_EXECUTABLE,		KMPU_RW_ALL, 2u, KMPU_NOT_SHAREABLE);
-	SET_MPU8_REGION(4u,	ST_PERIPH_SOC,			EN_PERIPH_SOC,			KMPU_NOT_EXECUTABLE,	KMPU_RW_PRI, 3u, KMPU_NOT_SHAREABLE);
-	SET_MPU8_REGION(5u,	ST_EXTERNAL,			EN_EXTERNAL,			KMPU_NOT_EXECUTABLE,	KMPU_RW_ALL, 3u, KMPU_NOT_SHAREABLE);
-	SET_MPU8_REGION(6u,	ST_PERIPH_CORE,			EN_PERIPH_CORE,			KMPU_NOT_EXECUTABLE,	KMPU_RW_PRI, 3u, KMPU_NOT_SHAREABLE);
+	#ifdef PRIVILEGED_USER_S
+	SET_MPU8_REGION(0U,	ST_FLASH_INT_0,			EN_FLASH_INT_0,			KMPU_EXECUTABLE,		KMPU_R_ALL,  0U, KMPU_INNER_SHAREABLE);
+	SET_MPU8_REGION(1U,	ST_RAM_INT_0_OS,		EN_RAM_INT_0_OS,		KMPU_EXECUTABLE,		KMPU_RW_PRI, 1U, KMPU_INNER_SHAREABLE);
+	SET_MPU8_REGION(2U,	ST_RAM_INT_0,			EN_RAM_INT_0,			KMPU_EXECUTABLE,		KMPU_RW_ALL, 1U, KMPU_INNER_SHAREABLE);
+	SET_MPU8_REGION(3U,	ST_RAM_INT_0_SHARED,	EN_RAM_INT_0_SHARED,	KMPU_EXECUTABLE,		KMPU_RW_ALL, 2U, KMPU_NOT_SHAREABLE);
+	SET_MPU8_REGION(4U,	ST_PERIPH_SOC,			EN_PERIPH_SOC,			KMPU_NOT_EXECUTABLE,	KMPU_RW_PRI, 3U, KMPU_NOT_SHAREABLE);
+	SET_MPU8_REGION(5U,	ST_EXTERNAL,			EN_EXTERNAL,			KMPU_NOT_EXECUTABLE,	KMPU_RW_ALL, 3U, KMPU_NOT_SHAREABLE);
+	SET_MPU8_REGION(6U,	ST_PERIPH_CORE,			EN_PERIPH_CORE,			KMPU_NOT_EXECUTABLE,	KMPU_RW_PRI, 3U, KMPU_NOT_SHAREABLE);
 
 	#else
-	SET_MPU8_REGION(0u,	ST_FLASH_INT_0,			EN_FLASH_INT_0,			KMPU_EXECUTABLE,		KMPU_R_ALL,  0u, KMPU_INNER_SHAREABLE);
-	SET_MPU8_REGION(1u,	ST_RAM_INT_0,			EN_RAM_INT_0,			KMPU_EXECUTABLE,		KMPU_RW_ALL, 1u, KMPU_INNER_SHAREABLE);
+	SET_MPU8_REGION(0U,	ST_FLASH_INT_0,			EN_FLASH_INT_0,			KMPU_EXECUTABLE,		KMPU_R_ALL,  0U, KMPU_INNER_SHAREABLE);
+	SET_MPU8_REGION(1U,	ST_RAM_INT_0,			EN_RAM_INT_0,			KMPU_EXECUTABLE,		KMPU_RW_ALL, 1U, KMPU_INNER_SHAREABLE);
 	#endif
 }
 
@@ -464,8 +473,8 @@ static	void	local_StackLimit_Configuration(void) {
 
 // Stack limit faults at requested priorities of less than 0 ignored
 
-	#if (defined(STUB_KERN_CHECK_XSP_LIMIT_S))
-	REG(SCB)->CCR |= (1u<<SCB_CCR_STKOFHFNMIGN);
+	#ifdef STUB_KERN_CHECK_XSP_LIMIT_S
+	REG(SCB)->CCR |= (1U<<SCB_CCR_STKOFHFNMIGN);
 
 	core_setPSPLIM((uintptr_t)linker_lowStackFirst_C0 & 0xFFFFFFF8u);
 	core_setMSPLIM((uintptr_t)linker_lowStackSystem_C0 & 0xFFFFFFF8u);
@@ -481,8 +490,8 @@ static	void	local_StackLimit_Configuration(void) {
 static	void	local_emptyRxFifo(void) {
 	uint8_t		i;
 
-	for (i = 0u; i < 8u; i++) {
-		if ((REG(SIO)->FIFO_ST & SIO_FIFO_ST_VLD) != 0u) {
+	for (i = 0U; i < 8U; i++) {
+		if ((REG(SIO)->FIFO_ST & SIO_FIFO_ST_VLD) != 0U) {
 			(void)REG(SIO)->FIFO_RD;
 		}
 		else { break; }
@@ -500,7 +509,7 @@ static	void	local_writeRTxFifo(uint32_t data) {
 // Waiting for a room in the Tx fifo, and write
 // Wake-up the core 1
 
-	while ((REG(SIO)->FIFO_ST & SIO_FIFO_ST_RDY) == 0u) { wfe(); }
+	while ((REG(SIO)->FIFO_ST & SIO_FIFO_ST_RDY) == 0U) { wfe(); }
 	REG(SIO)->FIFO_WR = data;
 	sev();
 }
@@ -515,6 +524,6 @@ static	uint32_t	local_readRxFifo(void) {
 
 // Waiting for data in the Rx fifo, and read
 
-	while ((REG(SIO)->FIFO_ST & SIO_FIFO_ST_VLD) == 0u) { wfe(); }
+	while ((REG(SIO)->FIFO_ST & SIO_FIFO_ST_VLD) == 0U) { wfe(); }
 	return (REG(SIO)->FIFO_RD);
 }

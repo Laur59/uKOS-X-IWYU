@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		mlpn manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -63,6 +63,10 @@
  * @{
  */
 
+#include	<stdint.h>
+
+#include	"types.h"
+
 // Configuration structure
 // -----------------------
 
@@ -91,14 +95,14 @@ struct mlpnLayer {
 // Non linear (oNonLinear)
 
 enum {
-			KMLPN_TAN0 = 0u,									// libm tanh
+			KMLPN_TAN0 = 0U,									// libm tanh
 			KMLPN_TAN1,											// Lambert's tanh approximation
 			KMLPN_TAN2											// Ultrafast tanh approximation
 };
 
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -213,7 +217,7 @@ extern	int32_t	mlpn_configure(const mlpnNetwork_t *network);
  */
 extern	int32_t	mlpn_compute(const mlpnNetwork_t *network);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 

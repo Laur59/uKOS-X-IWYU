@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		storage manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,10 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
+#include	"types.h"
+
 /*!
  * \addtogroup Lib_storages
  */
@@ -64,8 +68,8 @@
  */
 
 typedef	enum {
-			KSDCARD		  = (((uint32_t)'s'<<24u) | ((uint32_t)'d'<<16u) | ((uint32_t)'c'<<8u) | (uint32_t)'d'),	// sdcard manager
-			KSERIAL_FLASH = (((uint32_t)'s'<<24u) | ((uint32_t)'f'<<16u) | ((uint32_t)'l'<<8u) | (uint32_t)'h')		// serial flash manager
+			KSDCARD		  = (((uint32_t)'s'<<24U) | ((uint32_t)'d'<<16U) | ((uint32_t)'c'<<8U) | (uint32_t)'d'),	// sdcard manager
+			KSERIAL_FLASH = (((uint32_t)'s'<<24U) | ((uint32_t)'f'<<16U) | ((uint32_t)'l'<<8U) | (uint32_t)'h')		// serial flash manager
 } storage_manager_t;
 
 // For ioctl (!! Maintain the same order than suggested by FatFs)
@@ -80,7 +84,7 @@ typedef enum {
 
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -244,7 +248,7 @@ extern	int32_t	storage_write(storage_manager_t manager, const uint8_t *buffer, u
  */
 extern	int32_t	storage_ioctl(storage_manager_t manager, storageIoctl_t command, void *buffer);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 

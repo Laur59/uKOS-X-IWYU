@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		This tool allows to display the date based on the
 ;			system Unix time.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,9 +47,18 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"kern/private/private_temporal.h"
+#include	<inttypes.h>
+#include	<stdint.h>	// NOLINT(misc-include-cleaner): Explicit include for IWYU compliance
+#include	<stdio.h>
+#include	<stdlib.h>
 #include	<time.h>
+
+#include	"calendar/calendar.h"
+#include	"macros.h"
+#include	"modules.h"
+#include	"serial/serial.h"
+#include	"text/text.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -86,7 +95,7 @@ MODULE(
 	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,										// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
@@ -123,7 +132,7 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 
 // date: 0 parameters -> get the UTC & the local time from the internal 64-bit counter
 
-		case 1u: {
+		case 1U: {
 			calendar_readUnixTime(KFROM_TIMER, &unixTime);
 
 			now = time(NULL);
@@ -137,9 +146,9 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 
 // date: 3 parameters -> get the UTC & the local time from the internal 64-bit counter
 
-		case 2u: {
+		case 2U: {
 			text_checkAsciiBuffer(argv[1], "-rtc", &equals);
-			if (equals == true) {
+			if (equals) {
 
 				#if (KCALENDAR_WITH_HW_RTC_S == true)
 				calendar_readUnixTime(KFROM_RTC, &unixTime);
@@ -163,9 +172,9 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 
 // date: 3 parameters -> set the date (i.e. "GMT+1, GMT+5:45")
 
-		case 3u: {
+		case 3U: {
 			text_checkAsciiBuffer(argv[1], "-gmt", &equals);
-			if (equals == true) {
+			if (equals) {
 				calendar_setUTCLocation(argv[1]);
 			}
 			else {
@@ -176,13 +185,13 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 
 // date: 7 parameters -> set the date	"2 4 2025 10 28 00"
 
-		case 7u: {
-			parameter = (int32_t)strtol(argv[1], &dummy, 10u); currentTime.tm_mday  = (int)(parameter);
-			parameter = (int32_t)strtol(argv[2], &dummy, 10u); currentTime.tm_mon   = (int)(parameter - 1);
-			parameter = (int32_t)strtol(argv[3], &dummy, 10u); currentTime.tm_year  = (int)(parameter - 1900);
-			parameter = (int32_t)strtol(argv[4], &dummy, 10u); currentTime.tm_hour  = (int)(parameter);
-			parameter = (int32_t)strtol(argv[5], &dummy, 10u); currentTime.tm_min   = (int)(parameter);
-			parameter = (int32_t)strtol(argv[6], &dummy, 10u); currentTime.tm_sec   = (int)(parameter);
+		case 7U: {
+			parameter = (int32_t)strtol(argv[1], &dummy, 10U); currentTime.tm_mday  = (int)(parameter);
+			parameter = (int32_t)strtol(argv[2], &dummy, 10U); currentTime.tm_mon   = (int)(parameter - 1);
+			parameter = (int32_t)strtol(argv[3], &dummy, 10U); currentTime.tm_year  = (int)(parameter - 1900);
+			parameter = (int32_t)strtol(argv[4], &dummy, 10U); currentTime.tm_hour  = (int)(parameter);
+			parameter = (int32_t)strtol(argv[5], &dummy, 10U); currentTime.tm_min   = (int)(parameter);
+			parameter = (int32_t)strtol(argv[6], &dummy, 10U); currentTime.tm_sec   = (int)(parameter);
 															   currentTime.tm_isdst = -1;
 
 			now = mktime(&currentTime);

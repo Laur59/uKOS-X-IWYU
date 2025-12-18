@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		asmp manager.
@@ -43,8 +43,8 @@
 ;			In a heterogeneous configuration: PREEMPTION_THRESHOLD(KCORE_0)
 ;			In a homogeneous configuration: PREEMPTION_THRESHOLD(core)
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -78,10 +78,21 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"linker.h"
+#ifdef CONFIG_MAN_ASMP_S
 
-#if (defined(CONFIG_MAN_ASMP_S))
+#include	"asmp.h"
+
+#include	<stdint.h>
+#include	<string.h>
+
+#include	"kern/kern.h"
+#include	"linker.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -104,7 +115,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -150,7 +161,7 @@ extern	int32_t		stub_asmp_waitingForReady(void);
  *
  */
 int32_t	asmp_send(uint32_t toCore, uint32_t order, uint32_t size, const uint8_t *send) {
-	uint32_t	core, message = 0u;
+	uint32_t	core, message = 0U;
 	uint8_t		nbCore;
 
 	PRIVILEGE_ELEVATE;
@@ -231,7 +242,7 @@ int32_t	asmp_send(uint32_t toCore, uint32_t order, uint32_t size, const uint8_t 
  *
  */
 int32_t	asmp_receive(uint32_t *fromCore, uint32_t *order, uint32_t *size, uint8_t *receive) {
-	uint32_t	core, message = 0u;
+	uint32_t	core, message = 0U;
 
 	PRIVILEGE_ELEVATE;
 	local_init();
@@ -367,19 +378,19 @@ int32_t	asmp_getSemaphoreRXFull(uint32_t core, sema_t **semaphore) {
 
 	switch (core) {
 		case KASMP_CORE_0: {
-			if (KASMP_NB_CORES > 0u) { identifier = KASMP_SEMA_RX_CORE_0_FULL; }
+			if (KASMP_NB_CORES > 0U) { identifier = KASMP_SEMA_RX_CORE_0_FULL; }
 			break;
 		}
 		case KASMP_CORE_1: {
-			if (KASMP_NB_CORES > 1u) { identifier = KASMP_SEMA_RX_CORE_1_FULL; }
+			if (KASMP_NB_CORES > 1U) { identifier = KASMP_SEMA_RX_CORE_1_FULL; }
 			break;
 		}
 		case KASMP_CORE_2: {
-			if (KASMP_NB_CORES > 2u) { identifier = KASMP_SEMA_RX_CORE_2_FULL; }
+			if (KASMP_NB_CORES > 2U) { identifier = KASMP_SEMA_RX_CORE_2_FULL; }
 			break;
 		}
 		case KASMP_CORE_3: {
-			if (KASMP_NB_CORES > 3u) { identifier = KASMP_SEMA_RX_CORE_3_FULL; }
+			if (KASMP_NB_CORES > 3U) { identifier = KASMP_SEMA_RX_CORE_3_FULL; }
 			break;
 		}
 		default: {
@@ -395,7 +406,7 @@ int32_t	asmp_getSemaphoreRXFull(uint32_t core, sema_t **semaphore) {
 		return (KERR_ASMP_CORNA);
 	}
 
-	while (kern_getSemaphoreById(identifier, semaphore) != KERR_KERN_NOERR) { kern_suspendProcess(1u); }
+	while (kern_getSemaphoreById(identifier, semaphore) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
 	PRIVILEGE_RESTORE;
 	return (KERR_ASMP_NOERR);
 }
@@ -428,19 +439,19 @@ int32_t	asmp_getSemaphoreTXEmpty(uint32_t core, sema_t **semaphore) {
 
 	switch (core) {
 		case KASMP_CORE_0: {
-			if (KASMP_NB_CORES > 0u) { identifier = KASMP_SEMA_TX_CORE_0_EMPTY; }
+			if (KASMP_NB_CORES > 0U) { identifier = KASMP_SEMA_TX_CORE_0_EMPTY; }
 			break;
 		}
 		case KASMP_CORE_1: {
-			if (KASMP_NB_CORES > 1u) { identifier = KASMP_SEMA_TX_CORE_1_EMPTY; }
+			if (KASMP_NB_CORES > 1U) { identifier = KASMP_SEMA_TX_CORE_1_EMPTY; }
 			break;
 		}
 		case KASMP_CORE_2: {
-			if (KASMP_NB_CORES > 2u) { identifier = KASMP_SEMA_TX_CORE_2_EMPTY; }
+			if (KASMP_NB_CORES > 2U) { identifier = KASMP_SEMA_TX_CORE_2_EMPTY; }
 			break;
 		}
 		case KASMP_CORE_3: {
-			if (KASMP_NB_CORES > 3u) { identifier = KASMP_SEMA_TX_CORE_3_EMPTY; }
+			if (KASMP_NB_CORES > 3U) { identifier = KASMP_SEMA_TX_CORE_3_EMPTY; }
 			break;
 		}
 		default: {
@@ -456,7 +467,7 @@ int32_t	asmp_getSemaphoreTXEmpty(uint32_t core, sema_t **semaphore) {
 		return (KERR_ASMP_CORNA);
 	}
 
-	while (kern_getSemaphoreById(identifier, semaphore) != KERR_KERN_NOERR) { kern_suspendProcess(1u); }
+	while (kern_getSemaphoreById(identifier, semaphore) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
 	PRIVILEGE_RESTORE;
 	return (KERR_ASMP_NOERR);
 }
@@ -504,7 +515,7 @@ static	void	local_init(void) {
 	core = GET_RUNNING_CORE;
 
 	INTERRUPTION_OFF;
-	if (vInit[core] == false) {
+	if (!vInit[core]) {
 		vInit[core] = true;
 
 		vAsmp_InterCore = ALIGNED_PTR(asmpShared_t, linker_stShare);

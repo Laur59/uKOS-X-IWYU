@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		serial manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -63,33 +63,35 @@
  * @{
  */
 
-#include	"Lib_serials/serial_common.h"
+#include	<stdint.h>
+
+#include	"types.h"
 
 // Modifiable in the makefile: default baudrate for the system
 
-#if (!defined(KSERIAL_DEFAULT_BAUDRATE))
+#ifndef KSERIAL_DEFAULT_BAUDRATE
 #define	KSERIAL_DEFAULT_BAUDRATE	460800
 #endif
 
 // Supported managers
 
 typedef	enum {
-			KNOTR = (((uint32_t)'n'<<24u) | ((uint32_t)'o'<<16u) | ((uint32_t)'t'<<8u) | (uint32_t)'R'),	// notr manager
-			KSYST = (((uint32_t)'s'<<24u) | ((uint32_t)'y'<<16u) | ((uint32_t)'s'<<8u) | (uint32_t)'t'),	// syst manager
-			KDEF0 = (((uint32_t)'d'<<24u) | ((uint32_t)'e'<<16u) | ((uint32_t)'f'<<8u) | (uint32_t)'0'),	// def0 manager
-			KURT0 = (((uint32_t)'u'<<24u) | ((uint32_t)'r'<<16u) | ((uint32_t)'t'<<8u) | (uint32_t)'0'),	// urt0 manager
-			KURT1 = (((uint32_t)'u'<<24u) | ((uint32_t)'r'<<16u) | ((uint32_t)'t'<<8u) | (uint32_t)'1'),	// urt1 manager
-			KURT2 = (((uint32_t)'u'<<24u) | ((uint32_t)'r'<<16u) | ((uint32_t)'t'<<8u) | (uint32_t)'2'),	// urt2 manager
-			KURT3 = (((uint32_t)'u'<<24u) | ((uint32_t)'r'<<16u) | ((uint32_t)'t'<<8u) | (uint32_t)'3'),	// urt3 manager
-			KURT4 = (((uint32_t)'u'<<24u) | ((uint32_t)'r'<<16u) | ((uint32_t)'t'<<8u) | (uint32_t)'4'),	// urt4 manager
-			KCDC0 = (((uint32_t)'c'<<24u) | ((uint32_t)'d'<<16u) | ((uint32_t)'c'<<8u) | (uint32_t)'0'),	// cdc0 manager
-			KCDC1 = (((uint32_t)'c'<<24u) | ((uint32_t)'d'<<16u) | ((uint32_t)'c'<<8u) | (uint32_t)'1'),	// cdc1 manager
-			KWFI0 = (((uint32_t)'w'<<24u) | ((uint32_t)'f'<<16u) | ((uint32_t)'i'<<8u) | (uint32_t)'0')		// wfi0 manager
+			KNOTR = (((uint32_t)'n'<<24U) | ((uint32_t)'o'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'R'),	// notr manager
+			KSYST = (((uint32_t)'s'<<24U) | ((uint32_t)'y'<<16U) | ((uint32_t)'s'<<8U) | (uint32_t)'t'),	// syst manager
+			KDEF0 = (((uint32_t)'d'<<24U) | ((uint32_t)'e'<<16U) | ((uint32_t)'f'<<8U) | (uint32_t)'0'),	// def0 manager
+			KURT0 = (((uint32_t)'u'<<24U) | ((uint32_t)'r'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'0'),	// urt0 manager
+			KURT1 = (((uint32_t)'u'<<24U) | ((uint32_t)'r'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'1'),	// urt1 manager
+			KURT2 = (((uint32_t)'u'<<24U) | ((uint32_t)'r'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'2'),	// urt2 manager
+			KURT3 = (((uint32_t)'u'<<24U) | ((uint32_t)'r'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'3'),	// urt3 manager
+			KURT4 = (((uint32_t)'u'<<24U) | ((uint32_t)'r'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'4'),	// urt4 manager
+			KCDC0 = (((uint32_t)'c'<<24U) | ((uint32_t)'d'<<16U) | ((uint32_t)'c'<<8U) | (uint32_t)'0'),	// cdc0 manager
+			KCDC1 = (((uint32_t)'c'<<24U) | ((uint32_t)'d'<<16U) | ((uint32_t)'c'<<8U) | (uint32_t)'1'),	// cdc1 manager
+			KWFI0 = (((uint32_t)'w'<<24U) | ((uint32_t)'f'<<16U) | ((uint32_t)'i'<<8U) | (uint32_t)'0')		// wfi0 manager
 } serialManager_t;
 
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -152,7 +154,7 @@ extern	int32_t	serial_release(serialManager_t serialManager, reserveMode_t reser
  *          int32_t       status;
  * const    urtxCnf_t    configure = {
  *                            .oBaudRate = KSERIAL_BAUDRATE_57600,
- *                            .oKernSync = (1u<<BSERIAL_SEMAPHORE_RX),
+ *                            .oKernSync = (1U<<BSERIAL_SEMAPHORE_RX),
  *                            .oNBBits   = KSERIAL_NB_BITS_8,
  *                            .oStopBits = KSERIAL_STOPBITS_1,
  *                            .oParity   = KSERIAL_PARITY_NONE
@@ -327,7 +329,7 @@ extern	int32_t	serial_getDefSerialManager(serialManager_t *serialManager);
  */
 extern	int32_t	serial_getFatherSerialManager(serialManager_t *serialManager);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 

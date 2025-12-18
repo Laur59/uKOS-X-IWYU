@@ -6,17 +6,17 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Laurent von Allmen	The 2025-11-13
+# Author:   Laurent von Allmen  The 2025-11-13
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Run clang analyser; replace scan-build not working with CMake
-#			and use clang-tidy as linter tool.
+# Project:  uKOS-X
+# Goal:     Run clang analyser; replace scan-build not working with CMake
+#           and use clang-tidy as linter tool.
 #
-#			Usage:
-#				alias run-analyser='$PATH_UKOS_X_PACKAGE/Tools/UNIX_Tools/clang-analyser/analyser.sh'
-#				cd variant
-#				run-analyser
+#           Usage:
+#               alias run-analyser='$PATH_UKOS_X_PACKAGE/Tools/UNIX_Tools/clang-analyser/analyser.sh'
+#               cd variant
+#               run-analyser
 #
 #   © 2025-20xx, Laurent von Allmen
 #   -------------------------------
@@ -70,8 +70,8 @@ readonly NC='\033[0m' # No Color
 
 # Check if in a project directory
 if [[ ! -f CMakeLists.txt ]]; then
-	print "Error: not in a target directory"
-	exit 1
+    print "Error: not in a target directory"
+    exit 1
 fi
 
 # Derive project name from current directory
@@ -86,9 +86,9 @@ echo "*" > "${OUTPUT_DIR}"/.gitignore
 
 printf "%bBuilding list of files to check%b\n" "${YELLOW}" "${NC}"
 if ! cmake -S . -B "${BUILD_DIR}" --preset llvm -DCMAKE_EXPORT_COMPILE_COMMANDS=ON > /dev/null 2>&1; then
-	printf "%bError: CMake configuration failed%b\n" "${RED}" "${NC}" >&2
-	printf "Please check that the 'llvm' preset is defined and your CMake configuration is correct.\n" >&2
-	exit 1
+    printf "%bError: CMake configuration failed%b\n" "${RED}" "${NC}" >&2
+    printf "Please check that the 'llvm' preset is defined and your CMake configuration is correct.\n" >&2
+    exit 1
 fi
 readonly COMPILE_DB="${BUILD_DIR}/compile_commands.json"
 
@@ -195,38 +195,38 @@ fi
 # Detect which clang-tidy to use
 # Prefer embedded toolchain clang-tidy (matches compiler) over system clang-tidy
 detect_clang_tidy_path() {
-	local compile_db="$1"
-	local compiler_path=$(jq -r '.[0].command' "${compile_db}" | awk '{print $1}')
+    local compile_db="$1"
+    local compiler_path=$(jq -r '.[0].command' "${compile_db}" | awk '{print $1}')
 
-	# Determine architecture from compiler path
-	if [[ "$compiler_path" == *"riscv"* ]] || [[ "$compiler_path" == *"RVXX"* ]]; then
-		# RISC-V architecture: check embedded toolchain first
-		if [[ -x "${PATH_LLVM_RVXX}/bin/clang-tidy" ]]; then
-			echo "${PATH_LLVM_RVXX}/bin/clang-tidy"
-			return
-		fi
-	else
-		# ARM architecture: check embedded toolchain first
-		if [[ -x "${PATH_LLVM_ARM}/bin/clang-tidy" ]]; then
-			echo "${PATH_LLVM_ARM}/bin/clang-tidy"
-			return
-		fi
-	fi
+    # Determine architecture from compiler path
+    if [[ "$compiler_path" == *"riscv"* ]] || [[ "$compiler_path" == *"RVXX"* ]]; then
+        # RISC-V architecture: check embedded toolchain first
+        if [[ -x "${PATH_LLVM_RVXX}/bin/clang-tidy" ]]; then
+            echo "${PATH_LLVM_RVXX}/bin/clang-tidy"
+            return
+        fi
+    else
+        # ARM architecture: check embedded toolchain first
+        if [[ -x "${PATH_LLVM_ARM}/bin/clang-tidy" ]]; then
+            echo "${PATH_LLVM_ARM}/bin/clang-tidy"
+            return
+        fi
+    fi
 }
 
 readonly CLANG_TIDY=$(detect_clang_tidy_path "${COMPILE_DB}")
 
 # Verify clang-tidy is available
 if [[ ! -x "${CLANG_TIDY}" ]]; then
-	printf "%bWarning: clang-tidy not found at %s%b\n" "${YELLOW}" "${CLANG_TIDY}" "${NC}" >&2
-	printf "%bSkipping clang-tidy checks%b\n" "${YELLOW}" "${NC}" >&2
-	exit 1
+    printf "%bWarning: clang-tidy not found at %s%b\n" "${YELLOW}" "${CLANG_TIDY}" "${NC}" >&2
+    printf "%bSkipping clang-tidy checks%b\n" "${YELLOW}" "${NC}" >&2
+    exit 1
 fi
 
 readonly tidy_config_file="${PATH_PRG}/dot-clang-tidy"
 if [[ ! -f "${tidy_config_file}" ]]; then
-	print "ERROR: missing file ${tidy_config_file}"
-	exit 1
+    print "ERROR: missing file ${tidy_config_file}"
+    exit 1
 fi
 
 printf '\n%b═══════════════════════════════════════════════════════════════
@@ -245,83 +245,83 @@ tidy_warnings=0
 tidy_file_count=0
 
 for current in {1..$TOTAL}; do
-	filename="${filenames[$current]}"
+    filename="${filenames[$current]}"
 
-	# Skip signature files
-	if [[ $filename == *.sig.c ]]; then
-		continue
-	fi
+    # Skip signature files
+    if [[ $filename == *.sig.c ]]; then
+        continue
+    fi
 
-	# Accept only C-family source files
-	case "$filename" in
-		*.c|*.cc|*.cpp|*.cxx)
-			;;
-		*)
-			continue
-			;;
-	esac
+    # Accept only C-family source files
+    case "$filename" in
+        *.c|*.cc|*.cpp|*.cxx)
+            ;;
+        *)
+            continue
+            ;;
+    esac
 
-	# Get source file path
-	source_file=$(jq -r ".[$((current-1))].file" "${COMPILE_DB}")
+    # Get source file path
+    source_file=$(jq -r ".[$((current-1))].file" "${COMPILE_DB}")
 
-	printf "[%3d/%3d] %-40s " "$current" "${TOTAL_1}" "$filename"
+    printf "[%3d/%3d] %-40s " "$current" "${TOTAL_1}" "$filename"
 
-	# Run clang-tidy and capture output (filter out summary lines)
-	tidy_output_file="${TIDY_OUTPUT}/${filename}.txt"
-	tidy_fix_file="${TIDY_OUTPUT}/${filename}.yaml"
-	"${CLANG_TIDY}" -config-file="${tidy_config_file}" -p="${BUILD_DIR}" --export-fixes="${tidy_fix_file}" -checks=-clang-analyzer-core.FixedAddressDereference "${source_file}" 2>&1 | \
-		sed -E '/warnings generated\./d; /^Suppressed .* warnings/d; /^Use -header-filter=/d' > "${tidy_output_file}" || true
+    # Run clang-tidy and capture output (filter out summary lines)
+    tidy_output_file="${TIDY_OUTPUT}/${filename}.txt"
+    tidy_fix_file="${TIDY_OUTPUT}/${filename}.yaml"
+    "${CLANG_TIDY}" -config-file="${tidy_config_file}" -p="${BUILD_DIR}" --export-fixes="${tidy_fix_file}" -checks=-clang-analyzer-core.FixedAddressDereference "${source_file}" 2>&1 | \
+        sed -E '/warnings generated\./d; /^Suppressed .* warnings/d; /^Use -header-filter=/d' > "${tidy_output_file}" || true
 
-	# Count warnings in output
-	file_warnings=$(grep -c ': warning:' "${tidy_output_file}" 2>/dev/null || echo "0")
-	file_warnings=$(echo "$file_warnings" | tr -d '[:space:]')
+    # Count warnings in output
+    file_warnings=$(grep -c ': warning:' "${tidy_output_file}" 2>/dev/null || echo "0")
+    file_warnings=$(echo "$file_warnings" | tr -d '[:space:]')
 
-	if [[ "$file_warnings" -gt 0 ]]; then
-		printf '✗ %d warnings\n' "$file_warnings"
-		tidy_warnings=$((tidy_warnings + file_warnings))
-		tidy_file_count=$((tidy_file_count + 1))
-	else
-		printf '✓\n'
-		# Remove empty output file
-		rm -f "${tidy_output_file}"
-	fi
+    if [[ "$file_warnings" -gt 0 ]]; then
+        printf '✗ %d warnings\n' "$file_warnings"
+        tidy_warnings=$((tidy_warnings + file_warnings))
+        tidy_file_count=$((tidy_file_count + 1))
+    else
+        printf '✓\n'
+        # Remove empty output file
+        rm -f "${tidy_output_file}"
+    fi
 done
 
 # Generate summary report
 printf '\n═══════════════════════════════════════════════════════════════\n'
 
 if [[ "$tidy_warnings" -eq 0 ]]; then
-	printf '%b  clang-tidy: No issues found!%b\n' "${BOLD}" "${NC}"
-	printf '═══════════════════════════════════════════════════════════════\n'
-	rm -fr "${TIDY_OUTPUT}"
+    printf '%b  clang-tidy: No issues found!%b\n' "${BOLD}" "${NC}"
+    printf '═══════════════════════════════════════════════════════════════\n'
+    rm -fr "${TIDY_OUTPUT}"
 else
-	printf '%b  clang-tidy Complete: %d warnings in %d files%b\n' "${BOLD}" "$tidy_warnings" "$tidy_file_count" "${NC}"
-	printf '═══════════════════════════════════════════════════════════════\n'
-	printf '\nTidy reports: %s\n' "${TIDY_OUTPUT}"
+    printf '%b  clang-tidy Complete: %d warnings in %d files%b\n' "${BOLD}" "$tidy_warnings" "$tidy_file_count" "${NC}"
+    printf '═══════════════════════════════════════════════════════════════\n'
+    printf '\nTidy reports: %s\n' "${TIDY_OUTPUT}"
 
-	# Create simple index file for tidy reports
-	{
-		echo "clang-tidy Analysis Results"
-		echo "==========================="
-		echo ""
-		echo "Total warnings: ${tidy_warnings}"
-		echo "Files with warnings: ${tidy_file_count}"
-		echo ""
-		echo "Individual reports:"
-		for report in "${TIDY_OUTPUT}"/*.txt; do
-			if [[ -f "$report" ]]; then
-				basename=$(basename "$report")
-				count=$(grep -c ': warning:' "$report" || echo "0")
-				echo "  - ${basename}: ${count} warnings"
-			fi
-		done
-	} > "${TIDY_OUTPUT}/index.tmp"
-	mv "${TIDY_OUTPUT}/index.tmp" "${TIDY_OUTPUT}/index.txt"
-	printf 'Tidy summary: %s/index.txt\n\n' "${TIDY_OUTPUT}"
+    # Create simple index file for tidy reports
+    {
+        echo "clang-tidy Analysis Results"
+        echo "==========================="
+        echo ""
+        echo "Total warnings: ${tidy_warnings}"
+        echo "Files with warnings: ${tidy_file_count}"
+        echo ""
+        echo "Individual reports:"
+        for report in "${TIDY_OUTPUT}"/*.txt; do
+            if [[ -f "$report" ]]; then
+                basename=$(basename "$report")
+                count=$(grep -c ': warning:' "$report" || echo "0")
+                echo "  - ${basename}: ${count} warnings"
+            fi
+        done
+    } > "${TIDY_OUTPUT}/index.tmp"
+    mv "${TIDY_OUTPUT}/index.tmp" "${TIDY_OUTPUT}/index.txt"
+    printf 'Tidy summary: %s/index.txt\n\n' "${TIDY_OUTPUT}"
 
-	# Generate HTML reports from .txt and .yaml files using Python script
-	printf '%bGenerating HTML reports from clang-tidy output...%b\n' "${YELLOW}" "${NC}"
-	python3 "${PATH_PRG}/make-tidy-html.py" "${TIDY_OUTPUT}"
+    # Generate HTML reports from .txt and .yaml files using Python script
+    printf '%bGenerating HTML reports from clang-tidy output...%b\n' "${YELLOW}" "${NC}"
+    python3 "${PATH_PRG}/make-tidy-html.py" "${TIDY_OUTPUT}"
 fi
 
 # ═══════════════════════════════════════════════════════════════
@@ -329,27 +329,27 @@ fi
 # ═══════════════════════════════════════════════════════════════
 
 if [[ "$warnings" -gt 0 ]] || [[ "${tidy_warnings:-0}" -gt 0 ]]; then
-	printf '%bGenerating unified HTML report...%b\n\n' "${YELLOW}" "${NC}"
+    printf '%bGenerating unified HTML report...%b\n\n' "${YELLOW}" "${NC}"
 
-	# Prepare analyzer table if warnings exist
-	if [[ "$warnings" -gt 0 ]]; then
-		python3 "${PATH_PRG}/make-reports-table.py" "${OUTPUT_DIR}"
-	fi
+    # Prepare analyzer table if warnings exist
+    if [[ "$warnings" -gt 0 ]]; then
+        python3 "${PATH_PRG}/make-reports-table.py" "${OUTPUT_DIR}"
+    fi
 
-	readonly COMPILER_VERSION="$($COMPILER --version | head -n 1)"
-	readonly USERNOM="$(whoami)@$(hostname)"
+    readonly COMPILER_VERSION="$($COMPILER --version | head -n 1)"
+    readonly USERNOM="$(whoami)@$(hostname)"
 
-	# Generate unified index.html
-	rm -f "${OUTPUT_DIR}/index.html"
+    # Generate unified index.html
+    rm -f "${OUTPUT_DIR}/index.html"
 
-	{
-		cat <<EOF
+    {
+        cat <<EOF
 <html>
 <head>
 <title>${PROJECT_NAME} - Static Analysis Results</title>
 EOF
-		cat "${PATH_PRG}/head.html"
-		cat <<EOF
+        cat "${PATH_PRG}/head.html"
+        cat <<EOF
 <body>
 <h1>${PROJECT_NAME} - Static Analysis Results</h1>
 
@@ -364,8 +364,8 @@ EOF
 <h2>Clang Static Analyzer Results</h2>
 EOF
 
-		if [[ "$warnings" -gt 0 ]]; then
-			cat <<EOF
+        if [[ "$warnings" -gt 0 ]]; then
+            cat <<EOF
 <p>Total warnings: ${warnings}</p>
 
 <h3>Bug Summary</h3>
@@ -387,14 +387,14 @@ EOF
 <h3>Analyzer Reports</h3>
 
 EOF
-			cat "${OUTPUT_DIR}/table4index.html"
-		else
-			echo "<p><em>No issues found</em></p>"
-		fi
+            cat "${OUTPUT_DIR}/table4index.html"
+        else
+            echo "<p><em>No issues found</em></p>"
+        fi
 
-		# Add tidy section if tidy reports exist
-		if [[ -d "${OUTPUT_DIR}/tidy-reports" ]] && [[ "${tidy_warnings:-0}" -gt 0 ]]; then
-			cat <<EOF
+        # Add tidy section if tidy reports exist
+        if [[ -d "${OUTPUT_DIR}/tidy-reports" ]] && [[ "${tidy_warnings:-0}" -gt 0 ]]; then
+            cat <<EOF
 
 <!-- clang-tidy Section -->
 <h2>clang-tidy Results</h2>
@@ -412,56 +412,56 @@ EOF
 </tr></thead>
 <tbody>
 EOF
-			# Generate table rows for tidy reports
-			for report in "${OUTPUT_DIR}/tidy-reports"/*.txt; do
-				if [[ -f "$report" ]] && [[ "$(basename "$report")" != "index.txt" ]]; then
-					report_basename=$(basename "$report")
-					report_filename="${report_basename%.txt}"
-					report_count=$(grep -c ': warning:' "$report" || echo "0")
-					html_report="tidy-reports/${report_filename}.html"
+            # Generate table rows for tidy reports
+            for report in "${OUTPUT_DIR}/tidy-reports"/*.txt; do
+                if [[ -f "$report" ]] && [[ "$(basename "$report")" != "index.txt" ]]; then
+                    report_basename=$(basename "$report")
+                    report_filename="${report_basename%.txt}"
+                    report_count=$(grep -c ': warning:' "$report" || echo "0")
+                    html_report="tidy-reports/${report_filename}.html"
 
-					echo "<tr>"
-					echo "  <td>${report_filename}</td>"
-					echo "  <td class=\"Q\">${report_count}</td>"
-					echo "  <td><a href=\"${html_report}\">View Report</a></td>"
-					echo "</tr>"
-				fi
-			done
-			cat <<EOF
+                    echo "<tr>"
+                    echo "  <td>${report_filename}</td>"
+                    echo "  <td class=\"Q\">${report_count}</td>"
+                    echo "  <td><a href=\"${html_report}\">View Report</a></td>"
+                    echo "</tr>"
+                fi
+            done
+            cat <<EOF
 </tbody>
 </table>
 EOF
-		fi
+        fi
 
-		cat <<EOF
+        cat <<EOF
 </body>
 </html>
 EOF
-	} > "${OUTPUT_DIR}/index.html"
+    } > "${OUTPUT_DIR}/index.html"
 
-	# Copy CSS and JS files
-	cp -f "${PATH_PRG}/scanview.css" "${OUTPUT_DIR}"
-	cp -f "${PATH_PRG}/sorttable.js" "${OUTPUT_DIR}"
+    # Copy CSS and JS files
+    cp -f "${PATH_PRG}/scanview.css" "${OUTPUT_DIR}"
+    cp -f "${PATH_PRG}/sorttable.js" "${OUTPUT_DIR}"
 
-	# Clean up temporary files
-	rm -f "${OUTPUT_DIR}"/table4index.html
-	rm -fr "${OUTPUT_DIR}"/build
+    # Clean up temporary files
+    rm -f "${OUTPUT_DIR}"/table4index.html
+    rm -fr "${OUTPUT_DIR}"/build
 
-	printf '%bReport generated: %s/index.html%b\n\n' "${GREEN}" "$OUTPUT_DIR" "${NC}"
+    printf '%bReport generated: %s/index.html%b\n\n' "${GREEN}" "$OUTPUT_DIR" "${NC}"
 fi
 
 # Final cleanup (keep tidy-reports/ if it exists)
 if [[ "$warnings" -gt 0 ]] || [[ "${tidy_warnings:-0}" -gt 0 ]]; then
-	# Keep build directory for debugging if warnings found
-	case "$(uname)" in
-		"Darwin")
-			open "${OUTPUT_DIR}"/index.html
-			;;
-		"Linux")
-			printf "%bopen Static_Analysis/html/index.html in your browswer.%b\n" "${BOLD}" "${NC}"
-			;;
-	esac
+    # Keep build directory for debugging if warnings found
+    case "$(uname)" in
+        "Darwin")
+            open "${OUTPUT_DIR}"/index.html
+            ;;
+        "Linux")
+            printf "%bopen Static_Analysis/html/index.html in your browswer.%b\n" "${BOLD}" "${NC}"
+            ;;
+    esac
 else
-	# Clean up build directory if no issues found anywhere
-	rm -fr "${OUTPUT_DIR}"
+    # Clean up build directory if no issues found anywhere
+    rm -fr "${OUTPUT_DIR}"
 fi

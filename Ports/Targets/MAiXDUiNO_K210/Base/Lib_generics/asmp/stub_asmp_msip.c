@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		stub for the managemen of the "asmp" manager with msip,
@@ -44,8 +44,8 @@
 ;			In a heterogeneous configuration: PREEMPTION_THRESHOLD(KCORE_0)
 ;			In a homogeneous configuration: PREEMPTION_THRESHOLD(core)
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -79,7 +79,20 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+
+#include	"Registers/rv64_csr.h"
+#include	"Registers/K210_clint.h"
+#include	"Registers/soc_vectors.h"
+#include	"asmp/asmp.h"
+#include	"core.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"os_errors.h"
+#include	"spin.h"
+#include	"types.h"
 
 const				char_t		*tableCoreReference[KNB_CORES] = {
 									"RISC-V_C0",
@@ -87,7 +100,7 @@ const				char_t		*tableCoreReference[KNB_CORES] = {
 								};
 
 extern				asmpShared_t	*vAsmp_InterCore;
-static	volatile	uint32_t		vMessage[KNB_CORES] = MCSET(0u);
+static	volatile	uint32_t		vMessage[KNB_CORES] = MCSET(0U);
 
 // Prototypes
 
@@ -112,7 +125,7 @@ void	stub_asmp_init(void) {
 	identifierTX = (core == KCORE_0) ? (KASMP_SEMA_TX_CORE_0_EMPTY) : (KASMP_SEMA_TX_CORE_1_EMPTY);
 
 	INT_INTERRUPT_VECTOR(IINT_MACHINE_SOFTWARE, local_machineSoftware_IRQHandler);
-	core_setBitCSR(RV_CSR_MIE, ((uint64_t)1u<<(uint64_t)IINT_MACHINE_SOFTWARE));
+	core_setBitCSR(RV_CSR_MIE, ((uint64_t)1U<<(uint64_t)IINT_MACHINE_SOFTWARE));
 
 	local_initInterCore(core);
 
@@ -126,7 +139,7 @@ void	stub_asmp_init(void) {
 	kern_signalSemaphore(semaphoreTX);
 
 	INTERRUPTION_OFF;
-	vAsmp_InterCore->oASMPReady |= (core == KASMP_CORE_0) ? (1u<<(uint8_t)KASMP_CORE_0) : (1u<<(uint8_t)KASMP_CORE_1);
+	vAsmp_InterCore->oASMPReady |= (core == KASMP_CORE_0) ? (1U<<(uint8_t)KASMP_CORE_0) : (1U<<(uint8_t)KASMP_CORE_1);
 	INTERRUPTION_RESTORE;
 }
 
@@ -149,7 +162,7 @@ void	stub_asmp_getRunningCore(uint32_t *core) {
  */
 void	stub_asmp_getNumberOfCore(uint8_t *nbCore) {
 
-	*nbCore = ((uint8_t)KASMP_CORE_1 + 1u);
+	*nbCore = ((uint8_t)KASMP_CORE_1 + 1U);
 }
 
 /*
@@ -198,27 +211,27 @@ int32_t	stub_asmp_signal(uint32_t message) {
 
 	switch (core) {
 		case KASMP_CORE_0: {
-			while (clint->msip[KCORE_0].msip != 0u) { kern_switchFast(); }
-			while (clint->msip[KCORE_1].msip != 0u) { kern_switchFast(); }
+			while (clint->msip[KCORE_0].msip != 0U) { kern_switchFast(); }
+			while (clint->msip[KCORE_1].msip != 0U) { kern_switchFast(); }
 
 			vMessage[KCORE_1] = message;
 			vMessage[KCORE_0] = KASMP_MESSAGE_ACKNOWLEDGE_THE_CORE_0;
 			__sync_synchronize();
-			clint->msip[KCORE_1].msip = 1u;
-			kern_suspendProcess(1u);
-			clint->msip[KCORE_0].msip = 1u;
+			clint->msip[KCORE_1].msip = 1U;
+			kern_suspendProcess(1U);
+			clint->msip[KCORE_0].msip = 1U;
 			break;
 		}
 		case KASMP_CORE_1: {
-			while (clint->msip[KCORE_0].msip != 0u) { kern_switchFast(); }
-			while (clint->msip[KCORE_1].msip != 0u) { kern_switchFast(); }
+			while (clint->msip[KCORE_0].msip != 0U) { kern_switchFast(); }
+			while (clint->msip[KCORE_1].msip != 0U) { kern_switchFast(); }
 
 			vMessage[KCORE_0] = message;
 			vMessage[KCORE_1] = KASMP_MESSAGE_ACKNOWLEDGE_THE_CORE_1;
 			__sync_synchronize();
-			clint->msip[KCORE_0].msip = 1u;
-			kern_suspendProcess(1u);
-			clint->msip[KCORE_1].msip = 1u;
+			clint->msip[KCORE_0].msip = 1U;
+			kern_suspendProcess(1U);
+			clint->msip[KCORE_1].msip = 1U;
 			break;
 		}
 		default: {
@@ -243,7 +256,7 @@ int32_t	stub_asmp_waitingForReady(void) {
 	uint8_t		maskNbCore;
 	int32_t		status;
 
-	maskNbCore = (1u<<(uint8_t)KASMP_CORE_1) | (1u<<(uint8_t)KASMP_CORE_0);
+	maskNbCore = (1U<<(uint8_t)KASMP_CORE_1) | (1U<<(uint8_t)KASMP_CORE_0);
 
 	status = ((vAsmp_InterCore->oASMPReady & maskNbCore) == maskNbCore) ? (KERR_ASMP_NOERR) : (KERR_ASMP_NORDY);
 	return (status);
@@ -264,10 +277,10 @@ static	void	local_initInterCore(uint32_t core) {
 	INTERRUPTION_OFF;
 	vAsmp_InterCore->oStatusRX[core] = KASMP_FREE;
 	vAsmp_InterCore->oStatusTX[core] = KASMP_FREE;
-	vAsmp_InterCore->oSender[core]	 = 0u;
-	vAsmp_InterCore->oOrder[core]	 = 0u;
-	vAsmp_InterCore->oSize[core]	 = 0u;
-	for (i = 0u; i < KASMP_SZ_BUFFER; i++) { vAsmp_InterCore->oBuffer[core][i] = 0u; }
+	vAsmp_InterCore->oSender[core]	 = 0U;
+	vAsmp_InterCore->oOrder[core]	 = 0U;
+	vAsmp_InterCore->oSize[core]	 = 0U;
+	for (i = 0U; i < KASMP_SZ_BUFFER; i++) { vAsmp_InterCore->oBuffer[core][i] = 0U; }
 	INTERRUPTION_RESTORE;
 }
 
@@ -311,5 +324,5 @@ static	void	local_machineSoftware_IRQHandler(uint32_t core, uint64_t number) {
 
 	PREEMPTION_THRESHOLD(core);
 
-	clint->msip[core].msip = 0u;
+	clint->msip[core].msip = 0U;
 }

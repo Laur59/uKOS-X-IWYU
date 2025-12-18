@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32L4R5_octospi equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // OCTOSPI address definitions
 // ---------------------------
@@ -95,7 +97,7 @@ typedef struct {
 	volatile	uint32_t	HLCR;
 } OCTOSPI_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	OCTOSPI1	reinterpret_cast<OCTOSPI_TypeDef *>(0xA0001000u)
 #define	OCTOSPI2	reinterpret_cast<OCTOSPI_TypeDef *>(0xA0001400u)
 

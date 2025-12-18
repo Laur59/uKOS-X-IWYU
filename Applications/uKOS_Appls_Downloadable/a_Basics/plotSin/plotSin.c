@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Demo of a C application.
 ;			This application shows how to operate with the uKOS-X uKernel.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -57,7 +57,7 @@
  *			- P0: Every 10-ms
  *					- Compute a noisy sinus
  *					- Send it on the serial comm (using the Arduino format)
- *					- Toggle LED 0
+ *					- Toggle LED 1 with decimation of 10
  *
  *			Used for the scope observation.
  *
@@ -66,9 +66,23 @@
  *
  */
 
-#include	"uKOS.h"
-#include	<stdlib.h>
+#include	<inttypes.h>
 #include	<math.h>
+#include	<stdio.h>
+#include	<stdlib.h>
+
+#include	"crt0.h"
+#include	"serial/serial.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"memo/memo.h"
+#include	"led/led.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -94,7 +108,7 @@ MODULE(
 	aStart,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,								// Address of the clean code (clean the module)
 	" 1.0",								// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0									// Execution cores
 );
 
@@ -119,17 +133,18 @@ MODULE(
  *
  */
 static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
+	UNUSED(argument);
+
 	uint16_t	x;
 	float64_t	y;
-
-	UNUSED(argument);
+	uint32_t ledDecimationCounter = 0;
 
 // Wait a bit (to allow to switch CoolTerm2 in the right mode)
 
-	kern_suspendProcess(10000u);
+	kern_suspendProcess(10000U);
 
 	while (true) {
-		for (x = 0u; x < 360u; x += 1) {
+		for (x = 0U; x < 360U; x += 1) {
 
 // Compute the genuine sin
 // Add a random noise
@@ -142,9 +157,13 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 // Print the data using the Arduino format in CoolTerm2
 
 			(void)dprintf(KSYST, "%"PRIu16"\t%5.2f\n", x, y);
-			kern_suspendProcess(10u);
+			kern_suspendProcess(10U);
 		}
-		led_toggle(KLED_0);
+		ledDecimationCounter++;
+		if (ledDecimationCounter == 10U) {
+			led_toggle(KLED_0);
+			ledDecimationCounter = 0U;
+		}
 	}
 }
 
@@ -157,10 +176,10 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *
  */
 int		main(int argc, const char *argv[]) {
-	proc_t	*process_0;
-
 	UNUSED(argc);
 	UNUSED(argv);
+
+	proc_t	*process_0;
 
 // Specifications for the processes
 

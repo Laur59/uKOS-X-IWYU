@@ -9,8 +9,8 @@
 ; Project:	uKOS-X
 ; Goal:		Model for controlling the "lsM9ds1" device (the TMP part).
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -44,7 +44,13 @@
 ;------------------------------------------------------------------------
 */
 
+#include	<stdint.h>
+
 #include	"LSM9DS1/LSM9DS1.h"
+#include	"macros.h"
+#include	"os_errors.h"
+#include	"temperature/temperature.h"
+#include	"types.h"
 
 /*
  * \brief model_lsM9ds1tmp_init
@@ -70,8 +76,8 @@ int32_t	model_lsM9ds1tmp_read(float64_t *temperature) {
 	int16_t		value;
 
 	cb_control(KTEMPERATURE_RESERVE);
-	cb_readTemp(LSM9DS1_OUT_TEMP_L, xsb, 2u);
-	value = (int16_t)(xsb[1]<<8u | xsb[0]);
+	cb_readTemp(LSM9DS1_OUT_TEMP_L, xsb, 2U);
+	value = (int16_t)(xsb[1]<<8U | xsb[0]);
 	*temperature = (((float64_t)(value)) / 16.0) + 25.0 - KTEMPERATURE_ZERO_KELVIN;
 	cb_control(KTEMPERATURE_RELEASE);
 	return (KERR_TEMPERATURE_NOERR);

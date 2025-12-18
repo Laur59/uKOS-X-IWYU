@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32H747_CM4_adc1 equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // ADC1 address definitions
 // ------------------------
@@ -93,7 +95,7 @@ typedef struct {
 	volatile	uint32_t	CALFACT2;
 } ADC1_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	ADC1	reinterpret_cast<ADC1_TypeDef *>(0x40022000u)
 
 #else

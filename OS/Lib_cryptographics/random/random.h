@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		random manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 /*!
  * \addtogroup Lib_cryptographics
  */
@@ -64,11 +66,11 @@
  */
 
 typedef	enum {
-			KRANDOM_SOFT = 0u,									// Software generator
+			KRANDOM_SOFT = 0U,									// Software generator
 			KRANDOM_HARD										// Hardware generator
 } randomGenerator_t;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -96,7 +98,7 @@ extern	"C" {
  */
 extern	int32_t random_read(randomGenerator_t generator, uint32_t *number, uint32_t nbNumbers);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 

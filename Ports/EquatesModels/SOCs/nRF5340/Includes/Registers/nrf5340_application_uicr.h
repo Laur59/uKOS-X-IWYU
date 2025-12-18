@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		nrf5340_application_uicr equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // UICR address definitions
 // ------------------------
@@ -449,7 +451,7 @@ typedef struct {
 	volatile	uint32_t	KEYSLOT_KEY127_VALUE[4];
 } UICR_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	UICR_S	reinterpret_cast<UICR_TypeDef *>(0x00FF8000u)
 
 #else

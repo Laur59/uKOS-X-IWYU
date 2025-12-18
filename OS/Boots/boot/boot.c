@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Bootstrap of the system
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,8 +46,26 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
 #include	<stdlib.h>
+
+#ifdef RV32IMAC_S
+#include	"core.h"	// IWYU pragma: keep (for core_setBitCSR)
+#endif
+#include	"kern/kern.h"
+#include	"macros.h"
+#ifndef RV64IMAFDC_S
+#include	"macros_core.h"
+#endif
+#include	"macros_runtime.h"
+#include	"macros_soc.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"serial/serial.h"
+#include	"system/system.h"
+#include	"types.h"
+
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -70,14 +88,14 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
 // Boot specific
 // =============
 
-#define	KID_IDLE	((KID_FAM_DAEMONS<<24u) | (KNUM_IDLE<<8u) | '_')
+#define	KID_IDLE	((KID_FAM_DAEMONS<<24U) | (KNUM_IDLE<<8U) | '_')
 
 /*
  * \brief Main entry point
@@ -90,7 +108,7 @@ MODULE(
  *
  */
 int32_t		boot(void) {
-			uint16_t		index = 0u;
+			uint16_t		index = 0U;
 			uint32_t		core;
 	const	uKOS_module_t	*module;
 
@@ -101,7 +119,7 @@ int32_t		boot(void) {
 
 	kern_init();
 
-	#if (defined(CONFIG_MAN_SERIAL_S))
+	#ifdef CONFIG_MAN_SERIAL_S
 	serial_setDefSerialManager(KURT0);
 	#endif
 
@@ -113,8 +131,8 @@ int32_t		boot(void) {
 		exit(EXIT_OS_PANIC);
 	}
 
-	if (((1u<<core) & module->oExecutionCore) != 0u) {
-		module->oExecution(0u, NULL);
+	if (((1U<<core) & module->oExecutionCore) != 0U) {
+		module->oExecution(0U, NULL);
 	}
 	LOG(KINFO_SYSTEM, "boot: daemon idle launched");
 
@@ -126,8 +144,8 @@ int32_t		boot(void) {
 		exit(EXIT_OS_PANIC);
 	}
 
-	if (((1u<<core) & module->oExecutionCore) != 0) {
-		module->oExecution(0u, NULL);
+	if (((1U<<core) & module->oExecutionCore) != 0) {
+		module->oExecution(0U, NULL);
 	}
 	LOG(KINFO_SYSTEM, "boot: Process launcher launched");
 

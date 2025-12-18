@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Demo of a C application.
 ;			This application shows how to operate with the uKOS-X uKernel.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -62,7 +62,24 @@
  *
  */
 
-#include	"uKOS.h"
+#include	<stdio.h>
+#include	<stdlib.h>
+
+#include	"crt0.h"
+#include	"serial/serial.h"
+#include	"imager/imager.h"
+#include	"imager_common.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"memo/memo.h"
+#include	"led/led.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"types.h"
+#include	"urt0/urt0.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -88,15 +105,15 @@ MODULE(
 	aStart,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,								// Address of the clean code (clean the module)
 	" 1.0",								// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0									// Execution cores
 );
 
 // Application specific
 // ====================
 
-#define	KAPP_NB_COLUMNS		752u		// 752
-#define	KAPP_NB_ROWS		480u		// 480
+#define	KAPP_NB_COLUMNS		752U		// 752
+#define	KAPP_NB_ROWS		480U		// 480
 
 STRG_LOC_CONST(aStrAcqu[]) = "imgx - Acquisition";
 
@@ -118,7 +135,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 	UNUSED(argument);
 
 	while (true) {
-		kern_suspendProcess(1000u);
+		kern_suspendProcess(1000U);
 		led_toggle(KLED_0);
 	}
 }
@@ -131,7 +148,6 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
-
 	UNUSED(argument);
 
 	volatile		uint8_t			*image;
@@ -155,7 +171,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 										.oStopBits = KSERIAL_STOPBITS_1,
 										.oParity   = KSERIAL_PARITY_NONE,
 										.oBaudRate = KSERIAL_BAUDRATE_3000000,
-										.oKernSync = ((uint32_t)1u<<(uint32_t)BSERIAL_SEMAPHORE_RX)
+										.oKernSync = ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_RX)
 									};
 
 	if (kern_createSemaphore(aStrAcqu, 0, 1, &vSemaImgAcqu) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create sema G"); exit(EXIT_OS_FAILURE); }
@@ -173,7 +189,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 // Just after the SNAP initialization it is necessary waiting for the end of the
 // current transfer (~ 40-ms) before starting.
 
-	kern_suspendProcess(40u);
+	kern_suspendProcess(40U);
 	imager_acquisition();
 
 	while (true) {
@@ -197,6 +213,9 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  *
  */
 int		main(int argc, const char *argv[]) {
+	UNUSED(argc);
+	UNUSED(argv);
+
 	proc_t	*process_0, *process_1;
 
 // ---------------------------------I-----------------------------------------I--------------I
@@ -205,9 +224,6 @@ int		main(int argc, const char *argv[]) {
 	STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2025";
 	STRG_LOC_CONST(aStrIden_1[]) = "Process_User_1";
 	STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2025";
-
-	UNUSED(argc);
-	UNUSED(argv);
 
 // Specifications for the processes
 
@@ -257,7 +273,7 @@ int		main(int argc, const char *argv[]) {
 static	void	local_transfer(void) {
 
 	#if (defined(Alastor_H743_S))
-	led_toggle(3u);
+	led_toggle(3U);
 	#endif
 
 	kern_signalSemaphore(vSemaImgAcqu);

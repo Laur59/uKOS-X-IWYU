@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32H747_CM4_adc3_common equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // ADC3_COMMON address definitions
 // -------------------------------
 
@@ -59,7 +61,7 @@ typedef struct {
 	volatile	uint32_t	CDR2;
 } ADC3_COMMON_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	ADC3_COMMON	reinterpret_cast<ADC3_COMMON_TypeDef *>(0x58026300u)
 
 #else

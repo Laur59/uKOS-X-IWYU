@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		GD32VF103_timer4 equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // TIMER4 address definitions
 // --------------------------
@@ -86,7 +88,7 @@ typedef struct {
 	volatile	uint32_t	DMATB;
 } TIMER4_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	TIMER4	reinterpret_cast<TIMER4_TypeDef *>(0x40000C00u)
 
 #else

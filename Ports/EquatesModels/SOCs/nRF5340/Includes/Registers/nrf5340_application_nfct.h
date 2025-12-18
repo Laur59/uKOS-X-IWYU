@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		nrf5340_application_nfct equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // NFCT address definitions
 // ------------------------
@@ -147,7 +149,7 @@ typedef struct {
 	volatile	uint32_t	SELRES;
 } NFCT_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	NFCT_NS	reinterpret_cast<NFCT_TypeDef *>(0x4002D000u)
 #define	NFCT_S	reinterpret_cast<NFCT_TypeDef *>(0x5002D000u)
 

@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Hardware specific stub.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,13 +46,22 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+
+#include	"core_reg.h"
+#include	"soc_reg.h"
+#include	"macros.h"
+#include	"macros_soc.h"
+#include	"macros_core.h"
+#include	"kern/kern.h"
 
 extern	volatile	uint32_t	vCounter;
 
-#define	BPC13	13u
+#define	BPC13	13U
 
 // Prototypes
+
+extern	void	(*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 static	void	stub_intr_io_interruption(void);
 
@@ -64,15 +73,15 @@ void	stub_intr_io_init(void) {
 
 	RCC->APB4ENR |= RCC_APB4ENR_SYSCFGEN;
 
-	SYSCFG->EXTICR4 = (2u * SYSCFG_EXTICR4_EXTI13_0);
+	SYSCFG->EXTICR4 = (2U * SYSCFG_EXTICR4_EXTI13_0);
 
 	INTERRUPT_VECTOR(EXTI15_10_C0_IRQn, stub_intr_io_interruption);
 	NVIC_SetPriority(EXTI15_10_C0_IRQn, KHW_PRIORITY_HIGH);
 	NVIC_EnableIRQ(EXTI15_10_C0_IRQn);
 
-	EXTI->FTSR1	  |= (1u<<BPC13);
-	EXTI->D3PMR1  |= (1u<<BPC13);
-	EXTI->CPUIMR1 |= (1u<<BPC13);
+	EXTI->FTSR1	  |= (1U<<BPC13);
+	EXTI->D3PMR1  |= (1U<<BPC13);
+	EXTI->CPUIMR1 |= (1U<<BPC13);
 }
 
 /*
@@ -84,7 +93,7 @@ static	void	stub_intr_io_interruption(void) {
 
 	core = GET_RUNNING_CORE;
 
-	EXTI->CPUPR1 |= (1u<<BPC13);
+	EXTI->CPUPR1 |= (1U<<BPC13);
 	vCounter++;
 
 	PREEMPTION_THRESHOLD(core);

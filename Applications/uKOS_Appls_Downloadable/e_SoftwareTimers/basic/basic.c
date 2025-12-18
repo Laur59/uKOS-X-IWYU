@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Demo of a C application.
 ;			This application shows how to operate with the uKOS-X uKernel.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -61,7 +61,21 @@
  *
  */
 
-#include	"uKOS.h"
+#include	<stdio.h>
+#include	<stdlib.h>
+
+#include	"crt0.h"
+#include	"serial/serial.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"memo/memo.h"
+#include	"led/led.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -87,7 +101,7 @@ MODULE(
 	aStart,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,								// Address of the clean code (clean the module)
 	" 1.0",								// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0									// Execution cores
 );
 
@@ -108,23 +122,22 @@ static	void	local_changeStateLed(const void *argument);
  *
  */
 static void __attribute__ ((noreturn)) aProcess(const void *argument) {
+	UNUSED(argument);
+
 					uint32_t	time;
 					tspc_t		configure_0, configure_1;
 					stim_t		*softwareTimer_0, *softwareTimer_1;
-	static	const	uint32_t	argument_0[2] = { 0u }, argument_1[2] = { 1u };
-
-	UNUSED(argument);
-
+	static	const	uint32_t	argument_0[2] = { 0U }, argument_1[2] = { 1U };
 
 	configure_0.oMode		 = KSTIM_SINGLE_SHOT;
-	configure_0.oInitialTime = 200u;
-	configure_0.oTime 		 = 1234u;
+	configure_0.oInitialTime = 200U;
+	configure_0.oTime 		 = 1234U;
 	configure_0.oCode 		 = local_changeStateLed;
 	configure_0.oArgument	 = &argument_0[0];
 
 	configure_1.oMode		 = KSTIM_CONTINUOUS;
-	configure_1.oInitialTime = 1345u;
-	configure_1.oTime		 = 34u;
+	configure_1.oInitialTime = 1345U;
+	configure_1.oTime		 = 34U;
 	configure_1.oCode		 = local_changeStateLed;
 	configure_1.oArgument	 = &argument_1[0];
 
@@ -138,7 +151,7 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
 		exit(EXIT_OS_FAILURE);
 	}
 
-	kern_suspendProcess(3900u);
+	kern_suspendProcess(3900U);
 
 // Start the timer 1 in one shot mode
 
@@ -150,8 +163,8 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
 // Restart the timer 0 in continue mode
 
 	configure_0.oMode		 = KSTIM_CONTINUOUS;
-	configure_0.oInitialTime = 200u;
-	configure_0.oTime		 = 56u;
+	configure_0.oInitialTime = 200U;
+	configure_0.oTime		 = 56U;
 	configure_0.oCode		 = local_changeStateLed;
 	configure_0.oArgument	 = &argument_0[0];
 	if (kern_setSoftwareTimer(softwareTimer_0, &configure_0) != KERR_KERN_NOERR) {
@@ -161,14 +174,14 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
 
 // Forever
 
-	time = 50u;
-	kern_suspendProcess(1000u);
+	time = 50U;
+	kern_suspendProcess(1000U);
 	while (true) {
-		kern_suspendProcess(2000u);
+		kern_suspendProcess(2000U);
 
-		time = (time > 5000u) ? (50u) : (time + 200u);
+		time = (time > 5000U) ? (50U) : (time + 200U);
 		configure_0.oMode		 = KSTIM_CONTINUOUS;
-		configure_0.oInitialTime = 0u;
+		configure_0.oInitialTime = 0U;
 		configure_0.oTime		 = time;
 		configure_0.oCode		 = local_changeStateLed;
 		configure_0.oArgument	 = &argument_0[0];
@@ -188,7 +201,7 @@ static	void	local_changeStateLed(const void *argument) {
 	const	uint32_t	*pack;
 
 	pack = (const uint32_t *)argument;
-	led = *pack;
+	led = *pack + 1;
 	led_toggle((uint8_t)led);
 }
 
@@ -201,15 +214,15 @@ static	void	local_changeStateLed(const void *argument) {
  *
  */
 int		main(int argc, const char *argv[]) {
+	UNUSED(argc);
+	UNUSED(argv);
+
 	proc_t	*process;
 
 // -------------------------------I-----------------------------------------I--------------I
 
 	STRG_LOC_CONST(aStrIden[]) = "Process_Software_Timer";
 	STRG_LOC_CONST(aStrText[]) = "Process Software Timer.                   (c) EFr-2025";
-
-	UNUSED(argc);
-	UNUSED(argv);
 
 // Specifications for the processes
 

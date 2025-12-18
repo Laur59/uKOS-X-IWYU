@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Demo of a C application.
 ;			This application shows how to operate with the uKOS-X uKernel.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -62,7 +62,22 @@
  *			2. Run the Mac Photo Booth
  */
 
-#include	"uKOS.h"
+#include	<inttypes.h>
+#include	<stdio.h>
+#include	<stdlib.h>
+#include	<string.h>
+
+#include	"crt0.h"
+#include	"serial/serial.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"memo/memo.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -88,7 +103,7 @@ MODULE(
 	aStart,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,								// Address of the clean code (clean the module)
 	" 1.0",								// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0									// Execution cores
 );
 
@@ -108,20 +123,20 @@ static	void	local_prepareImage(uint8_t *image, uint32_t w, uint32_t h, uint32_t 
  *
  */
 static void __attribute__ ((noreturn)) aProcess(const void *argument) {
+	UNUSED(argument);
+
 			uint32_t	w, h, frame = 0;
 			uint8_t		*image_0, *image_1;
 			float64_t	frameRate = 0.0;
 	static	uint64_t	vTime[2];
-
-	UNUSED(argument);
 
 	PRIVILEGE_ELEVATE;
 
 	TinyUSB_video_init();
 
 	TinyUSB_video_getImageSize(&w, &h);
-	image_0 = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (w * h * 2u), "video");
-	image_1 = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (w * h * 2u), "video");
+	image_0 = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (w * h * 2U), "video");
+	image_1 = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (w * h * 2U), "video");
 	if ((image_0 == NULL) || (image_1 == NULL)) {
 		LOG(KFATAL_USER, "Out of memory");
 		exit(EXIT_OS_FAILURE);
@@ -157,15 +172,15 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
  *
  */
 int		main(int argc, const char *argv[]) {
+	UNUSED(argc);
+	UNUSED(argv);
+
 	proc_t	*process;
 
 // -------------------------------I-----------------------------------------I--------------I
 
 	STRG_LOC_CONST(aStrIden[]) = "Process_User";
 	STRG_LOC_CONST(aStrText[]) = "Process user.                             (c) EFr-2025";
-
-	UNUSED(argc);
-	UNUSED(argv);
 
 // Specifications for the processes
 
@@ -204,27 +219,27 @@ static	void	local_prepareImage(uint8_t *image, uint32_t w, uint32_t h, uint32_t 
 	static	const	uint8_t		colorBars[8][4] = {
 
 //			 Y,	   U,	 Y,	   V
-		{ 235u, 128u, 235u, 128u },		// 100% White
-		{ 219u,  16u, 219u, 138u },		// Yellow
-		{ 188u, 154u, 188u,  16u },		// Cyan
-		{ 173u,  42u, 173u,  26u },		// Green
-		{  78u, 214u,  78u, 230u },		// Magenta
-		{  63u, 102u,  63u, 240u },		// Red
-		{  32u, 240u,  32u, 118u },		// Blue
-		{  16u, 128u,  16u, 128u },		// Black
+		{ 235U, 128U, 235U, 128U },		// 100% White
+		{ 219U,  16U, 219U, 138U },		// Yellow
+		{ 188U, 154U, 188U,  16U },		// Cyan
+		{ 173U,  42U, 173U,  26U },		// Green
+		{  78U, 214U,  78U, 230U },		// Magenta
+		{  63U, 102U,  63U, 240U },		// Red
+		{  32U, 240U,  32U, 118U },		// Blue
+		{  16U, 128U,  16U, 128U },		// Black
 	};
 
 // Generate the 1st line
 
-	end = &image[w * 2u];
-	idx = ((w / 2u) - 1u) - (startPosition % (w / 2u));
-	p = &image[idx * 4u];
+	end = &image[w * 2U];
+	idx = ((w / 2U) - 1U) - (startPosition % (w / 2U));
+	p = &image[idx * 4U];
 
-	for (i = 0u; i < 8u; i++) {
-		for (j = 0u; j < (w / (2u * 8u)); j++) {
+	for (i = 0U; i < 8U; i++) {
+		for (j = 0U; j < (w / (2U * 8U)); j++) {
 
-			memcpy(p, &colorBars[i], 4u);
-			p += 4u;
+			memcpy(p, &colorBars[i], 4U);
+			p += 4U;
 			if (end <= p) {
 				p = image;
 			}
@@ -233,10 +248,10 @@ static	void	local_prepareImage(uint8_t *image, uint32_t w, uint32_t h, uint32_t 
 
 // Duplicate the 1st line to the others
 
-	p = &image[w * 2u];
-	for (i = 1u; i < h; i++) {
+	p = &image[w * 2U];
+	for (i = 1U; i < h; i++) {
 
-		memcpy(p, image, (w * 2u));
-		p += w * 2u;
+		memcpy(p, image, (w * 2U));
+		p += w * 2U;
 	}
 }

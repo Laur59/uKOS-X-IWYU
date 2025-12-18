@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		RP2350_otp_data equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // OTP_DATA address definitions
 // ----------------------------
@@ -201,7 +203,7 @@ typedef struct {
 	volatile	uint16_t	KEY6_7;
 } OTP_DATA_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	OTP_DATA_NS	reinterpret_cast<OTP_DATA_TypeDef *>(0x40130000u)
 #define	OTP_DATA_S	reinterpret_cast<OTP_DATA_TypeDef *>(0x40130000u)
 #else

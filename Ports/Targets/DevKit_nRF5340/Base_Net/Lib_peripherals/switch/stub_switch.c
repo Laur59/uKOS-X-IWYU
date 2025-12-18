@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		stub for the "led" manager module.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,12 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+
+#include	"board.h"
+#include	"macros_core.h"
+#include	"os_errors.h"
+#include	"soc_reg.h"
 
 /*
  * \brief stub_switch_init
@@ -66,8 +71,8 @@ void	stub_switch_init(void) {
  */
 int32_t	stub_switch_read(uint32_t *mode) {
 
-	*mode  = 0u;
-	*mode |= ((REG(P0)->IN & (1u<<BSW_0)) != 0u) ? (0u) : (1u<<0u);
-	*mode |= ((REG(P0)->IN & (1u<<BSW_1)) != 0u) ? (0u) : (1u<<1u);
+	*mode  = 0U;
+	*mode |= ((REG(P0)->IN & (1U<<BSW_0)) != 0U) ? (0U) : (1U<<0U);
+	*mode |= ((REG(P0)->IN & (1U<<BSW_1)) != 0U) ? (0U) : (1U<<1U);
 	return (KERR_SWITCH_NOERR);
 }

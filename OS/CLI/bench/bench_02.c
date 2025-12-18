@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Bench 02: 	Searching for the min / max of a small square array
@@ -27,8 +27,8 @@
 ;			MAiXDUiNO_K210 @ 400-MHz	574
 ;			Discovery_U5G9 @ 160-MHz	2052
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -62,10 +62,22 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdio.h>
+#include	<stdint.h>
 
-#define	KNB_TESTS		1000u
-#define	KNB_ELEMENTS	1000u
+#include	"kern/kern.h"
+#ifdef __arm__
+#include	"macros_core.h" // ARM: INTERRUPTION_OFF in core
+#endif
+#ifdef __riscv
+#include	"macros_soc.h"	// RISC-V: INTERRUPTION_OFF in soc
+#endif
+#include	"memo/memo.h"
+#include	"random/random.h"
+#include	"serial/serial.h"
+
+#define	KNB_TESTS		1000U
+#define	KNB_ELEMENTS	1000U
 
 // CLI tool specific
 // =================
@@ -86,9 +98,9 @@ bool	bench_02(void) {
 
 // Initialise the array with a random value
 
-	for (j = 0u; j < KNB_TESTS; j++) {
-		for (i = 0u; i < KNB_ELEMENTS; i++) {
-			random_read(KRANDOM_SOFT, &value, 1u);
+	for (j = 0U; j < KNB_TESTS; j++) {
+		for (i = 0U; i < KNB_ELEMENTS; i++) {
+			random_read(KRANDOM_SOFT, &value, 1U);
 			*(array + i) = value;
 		}
 		local_minMax(array, &time, &min, &max);
@@ -125,8 +137,8 @@ static	void	local_minMax(const uint32_t *array, uint64_t *time, uint32_t *min, u
 	kern_readTickCount(&tStamp[0]);
 
 	INTERRUPTION_OFF_HARD;
-	*min = UINT32_MAX; *max = 0u;
-	for (i = 0u; i < KNB_ELEMENTS; i++) {
+	*min = UINT32_MAX; *max = 0U;
+	for (i = 0U; i < KNB_ELEMENTS; i++) {
 		if (*(array + i) < *min) { *min = *(array + i); }
 		if (*(array + i) > *max) { *max = *(array + i); }
 	}

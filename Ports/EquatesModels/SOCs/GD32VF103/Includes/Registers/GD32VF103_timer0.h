@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		GD32VF103_timer0 equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // TIMER0 address definitions
 // --------------------------
@@ -93,7 +95,7 @@ typedef struct {
 	volatile	uint16_t	DMATB;
 } TIMER0_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	TIMER0	reinterpret_cast<TIMER0_TypeDef *>(0x40012C00u)
 
 #else

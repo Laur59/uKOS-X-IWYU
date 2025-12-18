@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		nrf5340_application_twis equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // TWIS address definitions
 // ------------------------
@@ -119,7 +121,7 @@ typedef struct {
 	volatile	uint32_t	ORC;
 } TWIS_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	TWIS0_NS	reinterpret_cast<TWIS_TypeDef *>(0x40008000u)
 #define	TWIS0_S		reinterpret_cast<TWIS_TypeDef *>(0x50008000u)
 #define	TWIS1_NS	reinterpret_cast<TWIS_TypeDef *>(0x40009000u)

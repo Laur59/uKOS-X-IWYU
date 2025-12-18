@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32F217_fsmc equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // FSMC address definitions
 // ------------------------
@@ -90,7 +92,7 @@ typedef struct {
 	volatile	uint32_t	BWTR4;
 } FSMC_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	FSMC	reinterpret_cast<FSMC_TypeDef *>(0xA0000000u)
 
 #else

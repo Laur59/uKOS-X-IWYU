@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Kern - Process management.
@@ -25,8 +25,8 @@
 ;			int32_t	kern_getProcessRun(proc_t **handle);
 ;			int32_t	kern_installCallBack(void (*code)(uint8_t state));
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -62,6 +62,13 @@
 
 #pragma	once
 
+#include	<stddef.h>
+#include	<stdint.h>
+
+#include	"serial/serial.h"
+#include	"kern/kern.h"	// IWYU pragma: keep (workaround app bug)
+#include	"types.h"
+
 /*!
  * \addtogroup Lib_kernels
  */
@@ -76,9 +83,6 @@
  *
  * @{
  */
-
-#include	"kern/private/private_lists.h"
-#include	"serial/serial.h"
 
 // Structures & macros
 // -------------------
@@ -124,7 +128,7 @@
 // - Static stacks
 // - Mode privileged (if not selected, user the mode user)
 
-#if (defined(PRIVILEGED_USER_S))
+#ifdef PRIVILEGED_USER_S
 #define	PROCESS_PRIVILEGED(index, specification, infoStr, lenStackNbWords, code, identifier, serialManager, priority)												\
 	VAR_DECLARED_ALIGN(static uintptr_t vStack_##index[lenStackNbWords], KSTACK_ALIGNMENT) __attribute__ ((section (".privileged")));								\
 																																									\
@@ -185,21 +189,21 @@ struct spec {
 // Stacks (oStackMode)
 
 enum {
-			KPROC_STACK_STATIC = 0u,												// KPROC_STACK_STATIC = static stack allocation
+			KPROC_STACK_STATIC = 0U,												// KPROC_STACK_STATIC = static stack allocation
 			KPROC_STACK_DYNAMIC														// KPROC_STACK_DYNAMIC = dynamic stack allocation
 };
 
 // Kind of process (oKind)
 
 enum {
-			KPROC_NORMAL = 0u,														// KPROC_NORMAL = normal process
+			KPROC_NORMAL = 0U,														// KPROC_NORMAL = normal process
 			KPROC_DAEMON															// KPROC_DAEMON = daemon process
 };
 
 // Privilege mode (oMode)
 
 enum {
-			KPROC_USER = 0u,														// KPROC_USER = process running in a user space
+			KPROC_USER = 0U,														// KPROC_USER = process running in a user space
 			KPROC_PRIVILEGED														// KPROC_PRIVILEGED = process running in a privileged space
 };
 
@@ -211,18 +215,18 @@ struct work {
 			proc_t			*oProcFather;											// Ptr on the father process (NULL = orphan)
 			uint16_t		oStateDebg;												// Process state (before the kern_stopProcess)
 			uint16_t		oState;													// Process state
-			#define			BPROC_FIRST					0u							// Process first
-			#define			BPROC_INSTALLED				1u							// Process installed
-			#define			BPROC_RUNNING				2u							// Process running
-			#define			BPROC_SUSP_TIME				3u							// Process suspended for a time
-			#define			BPROC_SUSP_SIGN				4u							// Process suspended for an signal
-			#define			BPROC_SUSP_SEMA				5u							// Process suspended for a semaphore
-			#define			BPROC_SUSP_MUTX				6u							// Process suspended for a mutex
-			#define			BPROC_SUSP_MBOX_E			7u							// Process suspended for a mailbox (empty)
-			#define			BPROC_SUSP_MBOX_F			8u							// Process suspended for a mailbox (full)
-			#define			BPROC_SUSP_DEBG				9u							// Process suspended for a debug
-			#define			BPROC_LIKE_ISR				10u							// Process should be considered similar to an ISR for blocking APIs
-			#define			BPROC_PRIV_ELEVATED			11u							// Process elevated (privileged mode)
+			#define			BPROC_FIRST					0U							// Process first
+			#define			BPROC_INSTALLED				1U							// Process installed
+			#define			BPROC_RUNNING				2U							// Process running
+			#define			BPROC_SUSP_TIME				3U							// Process suspended for a time
+			#define			BPROC_SUSP_SIGN				4U							// Process suspended for an signal
+			#define			BPROC_SUSP_SEMA				5U							// Process suspended for a semaphore
+			#define			BPROC_SUSP_MUTX				6U							// Process suspended for a mutex
+			#define			BPROC_SUSP_MBOX_E			7U							// Process suspended for a mailbox (empty)
+			#define			BPROC_SUSP_MBOX_F			8U							// Process suspended for a mailbox (full)
+			#define			BPROC_SUSP_DEBG				9U							// Process suspended for a debug
+			#define			BPROC_LIKE_ISR				10U							// Process should be considered similar to an ISR for blocking APIs
+			#define			BPROC_PRIV_ELEVATED			11U							// Process elevated (privileged mode)
 
 			uint32_t		oNestedPrivilege;										// Nested privilege elevation counter
 			int32_t			oStatus;												// Status
@@ -232,7 +236,7 @@ struct work {
 			void			*oLocal;												// Ptr on a general local structure
 };
 
-#define	KSTATE_EOT_MASK	((1u<<BPROC_SUSP_TIME) | (1u<<BPROC_SUSP_SIGN) | (1u<<BPROC_SUSP_SEMA) | (1u<<BPROC_SUSP_MBOX_E) | (1u<<BPROC_SUSP_MBOX_F))
+#define	KSTATE_EOT_MASK	((1U<<BPROC_SUSP_TIME) | (1U<<BPROC_SUSP_SIGN) | (1U<<BPROC_SUSP_SEMA) | (1U<<BPROC_SUSP_MBOX_E) | (1U<<BPROC_SUSP_MBOX_F))
 
 // Structure for the statistics
 // ----------------------------
@@ -274,7 +278,7 @@ struct proc {
 
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -521,7 +525,7 @@ extern	int32_t	kern_getProcessRun(proc_t **handle);
  */
 extern	int32_t	kern_installCallBack(void (*code)(uint8_t state));
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 

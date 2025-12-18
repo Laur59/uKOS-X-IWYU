@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		GD32VF103_eclic equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // ECLIC address definitions
 // -------------------------
@@ -409,7 +411,7 @@ typedef struct {
 	volatile	uint8_t		CLICINTIP_86;
 } ECLIC_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	ECLIC	reinterpret_cast<ECLIC_TypeDef *>(0xD2000000u)
 
 #else

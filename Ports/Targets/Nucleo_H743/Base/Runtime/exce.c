@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Exceptions for the Nucleo_H743 module.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,17 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+
+#include	"board.h"
+#include	"core.h"
+#include	"core_reg.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"modules.h"
+#include	"soc_reg.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -69,7 +79,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -100,11 +110,11 @@ static	void	local_cpyLEDs(uint8_t value);
 void	exce_init(void) {
 	uint8_t		nbExceptions, nbInterruptions;
 
-	for (nbExceptions = 0u; nbExceptions < KNB_EXCEPTIONS; nbExceptions++) {
+	for (nbExceptions = 0U; nbExceptions < KNB_EXCEPTIONS; nbExceptions++) {
 		EXCEPTION_VECTOR(nbExceptions, model_coreDump_displayExceptions);
 	}
 
-	for (nbInterruptions = 0u; nbInterruptions < KNB_INTERRUPTIONS; nbInterruptions++) {
+	for (nbInterruptions = 0U; nbInterruptions < KNB_INTERRUPTIONS; nbInterruptions++) {
 		INTERRUPT_VECTOR(nbInterruptions, model_coreDump_displayInterruptions);
 	}
 
@@ -130,19 +140,19 @@ static void __attribute__ ((noreturn)) cb_signal(uint8_t mode) {
 		case KEXCEPTION: {
 			local_cpyLEDs(0xFFu);
 			while (true) {
-				cmns_wait(1000000u);
-				local_setLEDs(0u);
-				cmns_wait(1000000u);
-				local_clrLEDs(0u);
+				cmns_wait(1000000U);
+				local_setLEDs(0U);
+				cmns_wait(1000000U);
+				local_clrLEDs(0U);
 			}
 		}
 		case KINTERRUPTION: {
 			local_cpyLEDs(0xFFu);
 			while (true) {
-				cmns_wait(1000000u);
-				local_setLEDs(1u);
-				cmns_wait(1000000u);
-				local_clrLEDs(1u);
+				cmns_wait(1000000U);
+				local_setLEDs(1U);
+				cmns_wait(1000000U);
+				local_clrLEDs(1U);
 			}
 		}
 	}
@@ -160,9 +170,9 @@ static void __attribute__ ((noreturn)) cb_signal(uint8_t mode) {
 static	void	local_setLEDs(uint8_t ledNb) {
 
 	switch (ledNb) {
-		case 0: { GPIOB->ODR |= (1u<<BLED_0); break; }
-		case 1: { GPIOB->ODR |= (1u<<BLED_1); break; }
-		case 2: { GPIOB->ODR |= (1u<<BLED_2); break; }
+		case 0: { GPIOB->ODR |= (1U<<BLED_0); break; }
+		case 1: { GPIOB->ODR |= (1U<<BLED_1); break; }
+		case 2: { GPIOB->ODR |= (1U<<BLED_2); break; }
 		default: {
 
 // Make MISRA happy :-)
@@ -181,9 +191,9 @@ static	void	local_setLEDs(uint8_t ledNb) {
 static	void	local_clrLEDs(uint8_t ledNb) {
 
 	switch (ledNb) {
-		case 0: { GPIOB->ODR &= (uint32_t)~(1u<<BLED_0); break; }
-		case 1: { GPIOB->ODR &= (uint32_t)~(1u<<BLED_1); break; }
-		case 2: { GPIOB->ODR &= (uint32_t)~(1u<<BLED_2); break; }
+		case 0: { GPIOB->ODR &= (uint32_t)~(1U<<BLED_0); break; }
+		case 1: { GPIOB->ODR &= (uint32_t)~(1U<<BLED_1); break; }
+		case 2: { GPIOB->ODR &= (uint32_t)~(1U<<BLED_2); break; }
 		default: {
 
 // Make MISRA happy :-)
@@ -203,9 +213,9 @@ static	void	local_cpyLEDs(uint8_t value) {
 	uint8_t		led, mask;
 
 	mask = 0x01u;
-	for (led = 0u; led < 3u; led++) {
+	for (led = 0U; led < 3U; led++) {
 		(value & mask) ? (local_setLEDs(led)) : (local_clrLEDs(led));
-		mask = (uint8_t)(mask<<1u);
+		mask = (uint8_t)(mask<<1U);
 	}
 }
 

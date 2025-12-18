@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		RP2350_ticks equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // TICKS address definitions
 // -------------------------
 
@@ -72,7 +74,7 @@ typedef struct {
 	volatile	uint32_t	RISCV_COUNT;
 } TICKS_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	TICKS_NS	reinterpret_cast<TICKS_TypeDef *>(0x40108000u)
 #define	TICKS_S		reinterpret_cast<TICKS_TypeDef *>(0x40108000u)
 #else

@@ -15,8 +15,8 @@
 ;			import led
 ;			status = led.led(led_number, led_state)
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -78,9 +78,9 @@ static	mp_obj_t	led_led(mp_obj_t ledNb_obj, mp_obj_t action_obj) {
 	action = mp_obj_get_int(action_obj);
 
 	switch (action) {
-		case 0u: { status = led_off((uint8_t)ledNb);	break; }
-		case 1u: { status = led_on((uint8_t)ledNb);		break; }
-		case 2u: { status = led_toggle((uint8_t)ledNb);	break; }
+		case 0U: { status = led_off((uint8_t)ledNb);	break; }
+		case 1U: { status = led_on((uint8_t)ledNb);		break; }
+		case 2U: { status = led_toggle((uint8_t)ledNb);	break; }
 		default: { status = led_toggle((uint8_t)ledNb);	break; }
 	}
 	return (mp_obj_new_int(status & 0x7FFFFFFFu));

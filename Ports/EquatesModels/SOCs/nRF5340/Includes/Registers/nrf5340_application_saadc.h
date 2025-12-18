@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		nrf5340_application_saadc equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // SAADC address definitions
 // -------------------------
@@ -158,7 +160,7 @@ typedef struct {
 	volatile	uint32_t	RESULT_AMOUNT;
 } SAADC_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	SAADC_NS	reinterpret_cast<SAADC_TypeDef *>(0x4000E000u)
 #define	SAADC_S		reinterpret_cast<SAADC_TypeDef *>(0x5000E000u)
 

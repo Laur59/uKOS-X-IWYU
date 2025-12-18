@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Demo of a C application.
 ;			This application shows how to operate with the uKOS-X uKernel.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -63,9 +63,23 @@
  *
  */
 
-#include	"uKOS.h"
-#include	"MicroPython/uKOS_System/microPython.h"
 #include	<math.h>
+#include	<stdint.h>
+#include	<stdlib.h>
+
+#include	"MicroPython/uKOS_System/microPython.h"
+#include	"crt0.h"
+#include	"serial/serial.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"memo/memo.h"
+#include	"led/led.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -86,7 +100,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "This is a romable C application\n"
 // uKOS-X specific (see the module.h)
 // ==================================
 
-#if (defined(ROMABLE_S))
+#ifdef ROMABLE_S
 
 // Prototypes
 
@@ -100,7 +114,7 @@ MODULE(
 	prgm,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,								// Address of the clean code (clean the module)
 	" 1.0",								// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0									// Execution cores
 );
 
@@ -113,7 +127,7 @@ MODULE(
 	aStart,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,								// Address of the clean code (clean the module)
 	" 1.0",								// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0									// Execution cores
 );
 #endif
@@ -130,7 +144,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 	UNUSED(argument);
 
 	while (true) {
-		kern_suspendProcess(1000u);
+		kern_suspendProcess(1000U);
 		led_toggle(KLED_1);
 	}
 }
@@ -144,6 +158,8 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
+	UNUSED(argument);
+
 			uint32_t			size;
 			uint8_t				*memory;
 			microPythonCnf_t	configure;
@@ -158,11 +174,9 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 
 							 				  "	led.led(1, 2)\n";
 
-	UNUSED(argument);
-
 // Try to reserve the MPY memory segment
 
-	size   = 90000u;
+	size   = 90000U;
 	memory = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (size * sizeof(uint8_t)), "fibonacciMPY");
 	if (memory == NULL) {
 		LOG(KFATAL_USER, "Out of memory");
@@ -178,7 +192,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 	MICROPYTHON_COMPUTE(pyProgram);
 
 	while (true) {
-		kern_suspendProcess(200u);
+		kern_suspendProcess(200U);
 
 		MICROPYTHON_COMPUTE("fibonacci(1000)\n");
 	}
@@ -193,6 +207,9 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  *
  */
 MAIN_ENTRY(argc, argv[]) {
+	UNUSED(argc);
+	UNUSED(argv);
+
 	proc_t	*process_0, *process_1;
 
 // ---------------------------------I-----------------------------------------I--------------I
@@ -201,9 +218,6 @@ MAIN_ENTRY(argc, argv[]) {
 	STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2025";
 	STRG_LOC_CONST(aStrIden_1[]) = "Process_User_1";
 	STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2025";
-
-	UNUSED(argc);
-	UNUSED(argv);
 
 // Specifications for the processes
 

@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32N657_dcmipp equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // DCMIPP address definitions
 // --------------------------
@@ -346,7 +348,7 @@ typedef struct {
 	volatile	uint32_t	P2CPPM0AR2;
 } DCMIPP_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	DCMIPP_NS	reinterpret_cast<DCMIPP_TypeDef *>(0x48002000u)
 #define	DCMIPP_S	reinterpret_cast<DCMIPP_TypeDef *>(0x58002000u)
 

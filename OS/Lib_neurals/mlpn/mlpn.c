@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		mlpn manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,10 +46,20 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	<math.h>
+#include	"mlpn.h"
 
-#if (defined(CONFIG_MAN_MLPN_S))
+#include	<math.h>
+#include	<stdint.h>
+#include	<stdlib.h>
+
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"types.h"
+
+#ifdef CONFIG_MAN_MLPN_S
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -72,14 +82,14 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
 // Library specific
 // ================
 
-#define	KMLPN_BIAS	1.0f			// bias
+#define	KMLPN_BIAS	1.0F			// bias
 
 // Prototypes
 
@@ -181,19 +191,19 @@ int32_t	mlpn_configure(const mlpnNetwork_t *network) {
 // Initialise all the layers
 
 	switch (network->oNBLayer) {
-		case 1u: {
+		case 1U: {
 			if (network->oLayer_L1 == NULL) { return (KERR_MLPN_GEERR); }
 			local_initialiseLayer(network->oLayer_L1);
 			break;
 		}
-		case 2u: {
+		case 2U: {
 			if (network->oLayer_L1 == NULL) { return (KERR_MLPN_GEERR); }
 			if (network->oLayer_L2 == NULL) { return (KERR_MLPN_GEERR); }
 			local_initialiseLayer(network->oLayer_L1);
 			local_initialiseLayer(network->oLayer_L2);
 			break;
 		}
-		case 3u: {
+		case 3U: {
 			if (network->oLayer_L1 == NULL) { return (KERR_MLPN_GEERR); }
 			if (network->oLayer_L2 == NULL) { return (KERR_MLPN_GEERR); }
 			if (network->oLayer_L3 == NULL) { return (KERR_MLPN_GEERR); }
@@ -202,7 +212,7 @@ int32_t	mlpn_configure(const mlpnNetwork_t *network) {
 			local_initialiseLayer(network->oLayer_L3);
 			break;
 		}
-		case 4u: {
+		case 4U: {
 			if (network->oLayer_L1 == NULL) { return (KERR_MLPN_GEERR); }
 			if (network->oLayer_L2 == NULL) { return (KERR_MLPN_GEERR); }
 			if (network->oLayer_L3 == NULL) { return (KERR_MLPN_GEERR); }
@@ -213,7 +223,7 @@ int32_t	mlpn_configure(const mlpnNetwork_t *network) {
 			local_initialiseLayer(network->oLayer_L4);
 			break;
 		}
-		case 5u: {
+		case 5U: {
 			if (network->oLayer_L1 == NULL) { return (KERR_MLPN_GEERR); }
 			if (network->oLayer_L2 == NULL) { return (KERR_MLPN_GEERR); }
 			if (network->oLayer_L3 == NULL) { return (KERR_MLPN_GEERR); }
@@ -268,19 +278,19 @@ int32_t	mlpn_compute(const mlpnNetwork_t *network) {
 // Compute all the layers
 
 	switch (network->oNBLayer) {
-		case 1u: {
+		case 1U: {
 			if (network->oLayer_L1 == NULL) { return (KERR_MLPN_GEERR); }
 			local_computeLayer(network->oLayer_L1);
 			break;
 		}
-		case 2u: {
+		case 2U: {
 			if (network->oLayer_L1 == NULL) { return (KERR_MLPN_GEERR); }
 			if (network->oLayer_L2 == NULL) { return (KERR_MLPN_GEERR); }
 			local_computeLayer(network->oLayer_L1);
 			local_computeLayer(network->oLayer_L2);
 			break;
 		}
-		case 3u: {
+		case 3U: {
 			if (network->oLayer_L1 == NULL) { return (KERR_MLPN_GEERR); }
 			if (network->oLayer_L2 == NULL) { return (KERR_MLPN_GEERR); }
 			if (network->oLayer_L3 == NULL) { return (KERR_MLPN_GEERR); }
@@ -289,7 +299,7 @@ int32_t	mlpn_compute(const mlpnNetwork_t *network) {
 			local_computeLayer(network->oLayer_L3);
 			break;
 		}
-		case 4u: {
+		case 4U: {
 			if (network->oLayer_L1 == NULL) { return (KERR_MLPN_GEERR); }
 			if (network->oLayer_L2 == NULL) { return (KERR_MLPN_GEERR); }
 			if (network->oLayer_L3 == NULL) { return (KERR_MLPN_GEERR); }
@@ -300,7 +310,7 @@ int32_t	mlpn_compute(const mlpnNetwork_t *network) {
 			local_computeLayer(network->oLayer_L4);
 			break;
 		}
-		case 5u: {
+		case 5U: {
 			if (network->oLayer_L1 == NULL) { return (KERR_MLPN_GEERR); }
 			if (network->oLayer_L2 == NULL) { return (KERR_MLPN_GEERR); }
 			if (network->oLayer_L3 == NULL) { return (KERR_MLPN_GEERR); }
@@ -335,7 +345,7 @@ static	int32_t	local_init(void) {
 	core = GET_RUNNING_CORE;
 
 	INTERRUPTION_OFF;
-	if (vInit[core] == false) {
+	if (!vInit[core]) {
 		vInit[core] = true;
 
 	}
@@ -350,7 +360,7 @@ static	int32_t	local_init(void) {
  */
 static	int32_t	local_initialiseLayer(mlpnLayer_t *layer) {
 
-	layer->oInput[layer->oNBInput - 1u] = KMLPN_BIAS;
+	layer->oInput[layer->oNBInput - 1U] = KMLPN_BIAS;
 	return (KERR_MLPN_NOERR);
 }
 
@@ -365,7 +375,7 @@ static	int32_t	local_initialiseLayer(mlpnLayer_t *layer) {
  *   y = f(W . x)
  *
  */
-#if (defined(__clang__))
+#ifdef __clang__
 static int32_t local_computeLayer(mlpnLayer_t *layer) {
 
 #else
@@ -401,13 +411,13 @@ static __attribute__ ((optimize("O3,inline,aggressive-loop-optimizations,unroll-
 
 // For all the neurons
 
-	for (j = 0u; j < nbOutput; j++) {
+	for (j = 0U; j < nbOutput; j++) {
 
 // For one neuron compute the activation
 // Activation = Matrix - vector multiplication (Wi . xi)
 // Output = non-linear f(Activation)
 
-		p = 0.0f;
+		p = 0.0F;
 		for (i = 0; i < nbInput; i++) {
 			p += w[i] * x[i];
 		}
@@ -463,11 +473,11 @@ static	float32_t	local_nonLinear_tan0(float32_t p) {
 static	float32_t	local_nonLinear_tan1(float32_t p) {
 	float32_t	s, a, b;
 
-	if (p < -3.0f) { return (-1.0f); }
-	if (p > +3.0f) { return (+1.0f); }
+	if (p < -3.0F) { return (-1.0F); }
+	if (p > +3.0F) { return (+1.0F); }
 	s = p * p;
-	a = (((((s + 378.0f) * s) + 17325.0f) * s) + 135135.0f) * p;
-	b = (((((28.0f * s) + 3150.0f) * s) + 62370.0f) * s) + 135135.0f;
+	a = (((((s + 378.0F) * s) + 17325.0F) * s) + 135135.0F) * p;
+	b = (((((28.0F * s) + 3150.0F) * s) + 62370.0F) * s) + 135135.0F;
 	return (a / b);
 }
 
@@ -483,8 +493,8 @@ static	float32_t	local_nonLinear_tan1(float32_t p) {
  */
 static	float32_t	local_nonLinear_tan2(float32_t p) {
 
-	if (p <= -1.0f) { return (-1.0f); }
-	if (p >= +1.0f) { return (+1.0f); }
+	if (p <= -1.0F) { return (-1.0F); }
+	if (p >= +1.0F) { return (+1.0F); }
 	return (p);
 }
 

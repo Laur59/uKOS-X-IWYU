@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32F217_uart4 equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // UART4 address definitions
 // -------------------------
 
@@ -60,7 +62,7 @@ typedef struct {
 	volatile	uint32_t	CR3;
 } UART4_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	UART4	reinterpret_cast<UART4_TypeDef *>(0x40004C00u)
 
 #else

@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		sdcard manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,9 +46,21 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#ifdef CONFIG_MAN_SDCARD_S
 
-#if (defined(CONFIG_MAN_SDCARD_S))
+#include	<stdint.h>
+#include	<stdlib.h>
+
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"sdcard/sdcard.h"
+#include	"storage/storage.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -71,7 +83,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -302,7 +314,7 @@ int32_t	sdcard_read(uint8_t *buffer, uint32_t size, uint32_t sector) {
 
 // Write the sectors in chunks
 
-	while (nbSectors > 0u) {
+	while (nbSectors > 0U) {
 		nbSectorsForThisCall = (nbSectors > KSDCARD_MAX_SECTORS_PER_CALL) ? (KSDCARD_MAX_SECTORS_PER_CALL) : ((uint8_t)nbSectors);
 
 		if (local_sdcard_read(&sdcard, memory, nbSectorsForThisCall, wkSector) != KERR_STORAGE_NOERR) {
@@ -318,8 +330,8 @@ int32_t	sdcard_read(uint8_t *buffer, uint32_t size, uint32_t sector) {
 
 // Read the last sector's data, which may not fill it fully
 
-	if (nbBytesLastSector > 0u) {
-		if (local_sdcard_read(&sdcard, lastSectorBuffer, 1u, wkSector) != KERR_STORAGE_NOERR) {
+	if (nbBytesLastSector > 0U) {
+		if (local_sdcard_read(&sdcard, lastSectorBuffer, 1U, wkSector) != KERR_STORAGE_NOERR) {
 			PRIVILEGE_RESTORE;
 			return (KERR_STORAGE_TRANT);
 		}
@@ -392,7 +404,7 @@ int32_t	sdcard_write(const uint8_t *buffer, uint32_t size, uint32_t sector) {
 
 // Write the sectors in chunks.
 
-	while (nbSectors > 0u) {
+	while (nbSectors > 0U) {
 		nbSectorsForThisCall = (nbSectors > KSDCARD_MAX_SECTORS_PER_CALL) ? (KSDCARD_MAX_SECTORS_PER_CALL) : ((uint8_t)nbSectors);
 
 		if (local_sdcard_write(&sdcard, memory, nbSectorsForThisCall, wkSector) != KERR_STORAGE_NOERR) {
@@ -409,15 +421,15 @@ int32_t	sdcard_write(const uint8_t *buffer, uint32_t size, uint32_t sector) {
 // Write the last sector's data, which may not fill it fully
 // Fill the gap with 0x00 (for test)
 
-	if (nbBytesLastSector > 0u) {
-		for (i = 0u; i < KSDCARD_SZ_SECTOR; i++) {
-			lastSectorBuffer[i] = 0u;
+	if (nbBytesLastSector > 0U) {
+		for (i = 0U; i < KSDCARD_SZ_SECTOR; i++) {
+			lastSectorBuffer[i] = 0U;
 		}
-		for (i = 0u; i < nbBytesLastSector; i++) {
+		for (i = 0U; i < nbBytesLastSector; i++) {
 			lastSectorBuffer[i] = *memory;
 			memory++;
 		}
-		if (local_sdcard_write(&sdcard, lastSectorBuffer, 1u, wkSector) != KERR_STORAGE_NOERR) {
+		if (local_sdcard_write(&sdcard, lastSectorBuffer, 1U, wkSector) != KERR_STORAGE_NOERR) {
 			PRIVILEGE_RESTORE;
 			return (KERR_STORAGE_TRANT);
 		}
@@ -478,7 +490,7 @@ static	int32_t	local_init(void) {
 	core = GET_RUNNING_CORE;
 
 	INTERRUPTION_OFF;
-	if (vInit[core] == false) {
+	if (!vInit[core]) {
 		vInit[core] = true;
 
 		if (kern_createMutex(KSDCARD_MUTEX_RESERVE, &vMutex_Reserve[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "sdcard: create mutx"); exit(EXIT_OS_PANIC); }

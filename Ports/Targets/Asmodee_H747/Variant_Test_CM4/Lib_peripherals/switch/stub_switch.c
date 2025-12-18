@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		stub for the "switch" manager module.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,12 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+
+#include	"Registers/stm32H747_CM4_gpio.h"
+#include	"board.h"
+#include	"macros_core.h"
+#include	"os_errors.h"
 
 /*
  * \brief stub_switch_init
@@ -65,14 +70,14 @@ void	stub_switch_init(void) {
  *
  */
 int32_t	stub_switch_read(uint32_t *mode) {
-	uint32_t	switches = 0u;
+	uint32_t	switches = 0U;
 
 	INTERRUPTION_OFF;
-	switches |= ((GPIOB->IDR>>8u)  & 0x01u);
-	switches |= ((GPIOB->IDR>>13u) & 0x02u);
-	switches |= ((GPIOB->IDR>>13u) & 0x04u);
-	switches |= ((GPIOB->IDR<<1u)  & 0x08u);
-	switches |= ((GPIOA->IDR & (1u<<BPUSH_0)) == 0u) ? (0x10u) : (0u);
-	*mode = (switches & 0x1Fu);
+	switches |= ((GPIOB->IDR>>8U)  & 0x01U);
+	switches |= ((GPIOB->IDR>>13U) & 0x02U);
+	switches |= ((GPIOB->IDR>>13U) & 0x04U);
+	switches |= ((GPIOB->IDR<<1U)  & 0x08U);
+	switches |= ((GPIOA->IDR & (1U<<BPUSH_0)) == 0U) ? (0x10U) : (0U);
+	*mode = (switches & 0x1FU);
 	RETURN_INT_RESTORE(KERR_SWITCH_NOERR);
 }

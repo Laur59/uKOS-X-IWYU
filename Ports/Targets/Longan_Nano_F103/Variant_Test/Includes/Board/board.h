@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Board mapping.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -59,20 +59,20 @@
 // GPIO settings
 // -------------
 
-#define	LED_RED_ON			(GPIOC->OCTL &= (uint32_t)~(1u<<BLED_2))	//
-#define	LED_RED_OFF			(GPIOC->OCTL |=			   (1u<<BLED_2))	//
-#define	LED_RED_TOGGLE		(GPIOC->OCTL ^=			   (1u<<BLED_2))	//
-#define	LED_BLUE_ON			(GPIOA->OCTL &= (uint32_t)~(1u<<BLED_1))	//
-#define	LED_BLUE_OFF		(GPIOA->OCTL |=			   (1u<<BLED_1))	//
-#define	LED_BLUE_TOGGLE		(GPIOA->OCTL ^=			   (1u<<BLED_1))	//
-#define	LED_GREEN_ON		(GPIOA->OCTL &= (uint32_t)~(1u<<BLED_0))	//
-#define	LED_GREEN_OFF		(GPIOA->OCTL |=			   (1u<<BLED_0))	//
-#define	LED_GREEN_TOGGLE	(GPIOA->OCTL ^=			   (1u<<BLED_0))	// Led macros
+#define	LED_RED_ON			(GPIOC->OCTL &= (uint32_t)~(1U<<BLED_2))	//
+#define	LED_RED_OFF			(GPIOC->OCTL |=			   (1U<<BLED_2))	//
+#define	LED_RED_TOGGLE		(GPIOC->OCTL ^=			   (1U<<BLED_2))	//
+#define	LED_BLUE_ON			(GPIOA->OCTL &= (uint32_t)~(1U<<BLED_1))	//
+#define	LED_BLUE_OFF		(GPIOA->OCTL |=			   (1U<<BLED_1))	//
+#define	LED_BLUE_TOGGLE		(GPIOA->OCTL ^=			   (1U<<BLED_1))	//
+#define	LED_GREEN_ON		(GPIOA->OCTL &= (uint32_t)~(1U<<BLED_0))	//
+#define	LED_GREEN_OFF		(GPIOA->OCTL |=			   (1U<<BLED_0))	//
+#define	LED_GREEN_TOGGLE	(GPIOA->OCTL ^=			   (1U<<BLED_0))	// Led macros
 
-#define KNB_LED				3u											// Number of LEDs
+#define KNB_LED				3U											// Number of LEDs
 
 // PORTs
 
-#define	BLED_0				1u											// PORT A 1, BLED_0
-#define	BLED_1				2u											// PORT A 2, BLED_1
-#define	BLED_2				13u											// PORT C 13, BLED_2
+#define	BLED_0				1U											// PORT A 1, BLED_0
+#define	BLED_1				2U											// PORT A 2, BLED_1
+#define	BLED_2				13U											// PORT C 13, BLED_2

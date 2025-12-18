@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		nrf5340_network_mutex equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // MUTEX address definitions
 // -------------------------
 
@@ -56,7 +58,7 @@ typedef struct {
 	volatile	uint32_t	MUTEX[16];
 } MUTEX_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	APPMUTEX_NS	reinterpret_cast<MUTEX_TypeDef *>(0x40030000u)
 #define	APPMUTEX_S	reinterpret_cast<MUTEX_TypeDef *>(0x50030000u)
 

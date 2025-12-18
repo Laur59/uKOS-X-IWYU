@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		Some common routines used in many modules.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,17 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stddef.h>
+#include	<stdint.h>
+
+#include	"clockTree.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"modules.h"
+#include	"serial/serial.h"
+#include	"soc_reg.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -69,7 +79,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -90,7 +100,7 @@ void	cmns_init(void) {
 	LPUART1->ISR &= (uint32_t)~LPUART1_ISR_RXFNE;
 	LPUART1->ISR &= (uint32_t)~LPUART1_ISR_TXFE;
 
-	#if (defined(CONFIG_MAN_URT1_S))
+	#ifdef CONFIG_MAN_URT1_S
 	RCC->APB1ENR1 |= RCC_APB1ENR1_USART2EN;
 
 	USART2->BRR  = BAUDRATE(KFREQUENCY_APB1, KSERIAL_DEFAULT_BAUDRATE);
@@ -99,7 +109,7 @@ void	cmns_init(void) {
 	USART2->ISR &= (uint32_t)~USART2_ISR_TXFE;
 	#endif
 
-	#if (defined(CONFIG_MAN_URT2_S))
+	#ifdef CONFIG_MAN_URT2_S
 	RCC->APB1ENR1 |= RCC_APB1ENR1_USART3EN;
 
 	USART3->BRR  = BAUDRATE(KFREQUENCY_APB1, KSERIAL_DEFAULT_BAUDRATE);
@@ -131,7 +141,7 @@ void	cmns_send(serialManager_t serialManager, const char_t *ascii) {
 		default:
 		case KURT0: {
 			while (true) {
-				while ((LPUART1->ISR & LPUART1_ISR_TXFE) == 0u) { ; }
+				while ((LPUART1->ISR & LPUART1_ISR_TXFE) == 0U) { }
 
 				data = (uint8_t)*wkAscii;
 				wkAscii++;
@@ -145,10 +155,10 @@ void	cmns_send(serialManager_t serialManager, const char_t *ascii) {
 
 // UART 1 device
 
-		#if (defined(CONFIG_MAN_URT1_S))
+		#ifdef CONFIG_MAN_URT1_S
 		case KURT1: {
 			while (true) {
-				while ((USART2->ISR & USART2_ISR_TXFE) == 0u) { ; }
+				while ((USART2->ISR & USART2_ISR_TXFE) == 0U) { }
 
 				data = (uint8_t)*wkAscii;
 				wkAscii++;
@@ -163,10 +173,10 @@ void	cmns_send(serialManager_t serialManager, const char_t *ascii) {
 
 // UART 2 device
 
-		#if (defined(CONFIG_MAN_URT2_S))
+		#ifdef CONFIG_MAN_URT2_S
 		case KURT2: {
 			while (true) {
-				while ((USART3->ISR & USART3_ISR_TXFE) == 0u) { ; }
+				while ((USART3->ISR & USART3_ISR_TXFE) == 0U) { }
 
 				data = (uint8_t)*wkAscii;
 				wkAscii++;
@@ -198,7 +208,7 @@ void	cmns_receive(serialManager_t serialManager, char_t *data) {
 
 		default:
 		case KURT0: {
-			while ((LPUART1->ISR & LPUART1_ISR_RXFNE) == 0u) { ; }
+			while ((LPUART1->ISR & LPUART1_ISR_RXFNE) == 0U) { }
 
 			*data = (uint8_t)LPUART1->RDR;
 			break;
@@ -206,9 +216,9 @@ void	cmns_receive(serialManager_t serialManager, char_t *data) {
 
 // UART 1 device
 
-		#if (defined(CONFIG_MAN_URT1_S))
+		#ifdef CONFIG_MAN_URT1_S
 		case KURT1: {
-			while ((USART2->ISR & USART2_ISR_RXFNE) == 0u) { ; }
+			while ((USART2->ISR & USART2_ISR_RXFNE) == 0U) { }
 
 			*data = (uint8_t)USART2->RDR;
 			break;
@@ -217,9 +227,9 @@ void	cmns_receive(serialManager_t serialManager, char_t *data) {
 
 // UART 2 device
 
-		#if (defined(CONFIG_MAN_URT2_S))
+		#ifdef CONFIG_MAN_URT2_S
 		case KURT2: {
-			while ((USART3->ISR & USART3_ISR_RXFNE) == 0u) { ; }
+			while ((USART3->ISR & USART3_ISR_RXFNE) == 0U) { }
 
 			*data = (uint8_t)USART3->RDR;
 			break;
@@ -239,12 +249,12 @@ void	cmns_receive(serialManager_t serialManager, char_t *data) {
 void	cmns_wait(uint32_t us) {
 	uint32_t	wkUs = us, time;
 
-	#if (defined(CACHE_S))
-	wkUs = (wkUs / 7u) * (KFREQUENCY_CORE / 1000000u);
+	#ifdef CACHE_S
+	wkUs = (wkUs / 7U) * (KFREQUENCY_CORE / 1000000U);
 
 	#else
-	wkUs = (wkUs / 12u) * (KFREQUENCY_CORE / 1000000u);
+	wkUs = (wkUs / 12U) * (KFREQUENCY_CORE / 1000000U);
 	#endif
 
-	for (time = 0u; time < wkUs; time++) { NOP; }
+	for (time = 0U; time < wkUs; time++) { NOP; }
 }

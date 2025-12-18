@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		GD32VF103 equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -55,8 +55,6 @@
 
 // IWYU pragma: begin_exports
 
-#include	<stdint.h>
-
 #include	"Registers/soc_vectors.h"
 #include	"Registers/GD32VF103_adc0.h"
 #include	"Registers/GD32VF103_adc1.h"
@@ -69,7 +67,7 @@
 #include	"Registers/GD32VF103_dma0.h"
 #include	"Registers/GD32VF103_dma1.h"
 
-#if (!defined(KDEFINED_IN_ADDENDUM_S))
+#ifndef KDEFINED_IN_ADDENDUM_S
 #include	"Registers/GD32VF103_eclic.h"
 #endif
 

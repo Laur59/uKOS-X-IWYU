@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Show the help of the module.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,16 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+#include	<stdio.h>
+
+#include	"ip.h"
+#include	"macros.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"serial/serial.h"
+#include	"system/system.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -77,7 +86,7 @@ MODULE(
 	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,										// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
@@ -108,7 +117,7 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 // man
 // man console
 
-	if (argc == 2u) {
+	if (argc == 2U) {
 
 // man with parameters
 
@@ -116,7 +125,7 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 			error = true;
 		}
 
-		if (error == false) {
+		if (!error) {
 			(void)dprintf(KSYST, "%s%s", module->oStrHelp, aStrCopyright);
 		}
 	}
@@ -130,16 +139,16 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 // List the CLI components
 
 		(void)dprintf(KSYST, "CLI\n\n");
-		index = 0u;
+		index = 0U;
 		while (system_getModuleFamily(KID_FAM_CLI, &idModule, &index, &module) == KERR_SYSTEM_NOERR) {
-			if ((module->oFlag & (1u<<BSHOW)) != 0u) {
+			if ((module->oFlag & (1U<<BSHOW)) != 0U) {
 				(void)dprintf(KSYST, "%s\n", module->oStrApplication);
 			}
 			index++;
 		}
 	}
 
-	if (error == false) { (void)dprintf(KSYST, "\n");				   status = EXIT_OS_SUCCESS_CLI; }
+	if (!error) { (void)dprintf(KSYST, "\n");				   status = EXIT_OS_SUCCESS_CLI; }
 	else				{ (void)dprintf(KSYST, "Protocol error.\n\n"); status = EXIT_OS_FAILURE;     }
 	return (status);
 }

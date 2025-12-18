@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32U5Gx_flash equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // FLASH address definitions
 // -------------------------
@@ -120,7 +122,7 @@ typedef struct {
 	volatile	uint32_t	PRIV2BBR8;
 } FLASH_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	FLASH_NS	reinterpret_cast<FLASH_TypeDef *>(0x40022000u)
 #define	FLASH_S		reinterpret_cast<FLASH_TypeDef *>(0x50022000u)
 

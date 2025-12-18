@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		calendar manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,15 +46,25 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	"calendar.h"
+
+#include	<stdint.h>
 #include	<stdlib.h>
 #include	<string.h>
 #include	<time.h>
 
-#if (defined(CONFIG_MAN_CALENDAR_S))
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"types.h"
 
-#define	KSZ_TZ_UTC_SHIFT	(16u + 1u)
-#define	KSZ_TZ_DST_SPEC		(32u + 1u)
+#ifdef CONFIG_MAN_CALENDAR_S
+
+#define	KSZ_TZ_UTC_SHIFT	(16U + 1U)
+#define	KSZ_TZ_DST_SPEC		(32U + 1U)
 #define	KSZ_TZ_TIME_ZONE	(KSZ_TZ_UTC_SHIFT + KSZ_TZ_DST_SPEC)
 
 // UTC shift (e.g CET-1, GMT+12, etc.)
@@ -65,8 +75,8 @@
 		char_t		calendar_tzDSTSpec[KNB_CORES][KSZ_TZ_DST_SPEC];
 		char_t		calendar_tzTimeZone[KNB_CORES][KSZ_TZ_TIME_ZONE];
 
-static	uint64_t	vUnixTime[KNB_CORES]	 =  MCSET(0u);						// Absolute Unix time
-static	uint64_t	vOldTickCount[KNB_CORES] =  MCSET(0u);						// Old tickCount
+static	uint64_t	vUnixTime[KNB_CORES]	 =  MCSET(0U);						// Absolute Unix time
+static	uint64_t	vOldTickCount[KNB_CORES] =  MCSET(0U);						// Old tickCount
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -89,7 +99,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -138,7 +148,7 @@ int32_t	calendar_setUTCLocation(const char_t *utcLocation) {
 	memset(&calendar_tzTimeZone[core][0], '\0', KSZ_TZ_TIME_ZONE);
 	local_composeTimeZone(&calendar_tzTimeZone[core][0], &calendar_tzUTCShift[core][0], &calendar_tzDSTSpec[core][0]);
 
-	setenv("TZ", &calendar_tzTimeZone[core][0], 1u);
+	setenv("TZ", &calendar_tzTimeZone[core][0], 1U);
 	tzset();
 	PRIVILEGE_RESTORE;
 	return (KERR_CALENDAR_NOERR);
@@ -243,7 +253,7 @@ static	void	local_init(void) {
 	core = GET_RUNNING_CORE;
 
 	INTERRUPTION_OFF;
-	if (vInit[core] == false) {
+	if (!vInit[core]) {
 		vInit[core] = true;
 
 		memset(&calendar_tzUTCShift[core][0], '\0', KSZ_TZ_UTC_SHIFT);
@@ -286,7 +296,7 @@ static	void	local_composeTimeZone(char_t *timeZone, const char_t *utcLocation, c
 }
 
 #if (KCALENDAR_WITH_HW_RTC_S == true)
-#include	"model_rtc.c_inc"
+#include	"model_rtc.c_inc"	// IWYU pragma: keep (workaround for app)
 #endif
 
 #endif

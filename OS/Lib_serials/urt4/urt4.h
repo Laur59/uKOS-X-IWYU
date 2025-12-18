@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		urt4 manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -63,7 +63,10 @@
  * @{
  */
 
-#include	"Lib_serials/serial_common.h"
+#include	<stdint.h>
+
+#include	"serial_common.h"
+#include	"types.h"
 
 // Semaphores
 // ----------
@@ -75,7 +78,7 @@
 
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -136,7 +139,7 @@ extern	int32_t	urt4_release(reserveMode_t reserveMode);
  *          int32_t       status;
  * const    urtxCnf_t    configure = {
  *                            .oBaudRate = KSERIAL_BAUDRATE_57600,
- *                            .oKernSync = (1u<<BSERIAL_SEMAPHORE_RX),
+ *                            .oKernSync = (1U<<BSERIAL_SEMAPHORE_RX),
  *                            .oNBBits   = KSERIAL_NB_BITS_8,
  *                            .oStopBits = KSERIAL_STOPBITS_1,
  *                            .oParity   = KSERIAL_PARITY_NONE
@@ -248,7 +251,7 @@ extern	int32_t	urt4_getIdSemaphore(uint8_t semaphore, char_t **identifier);
  */
 extern	int32_t	urt4_flush(void);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 

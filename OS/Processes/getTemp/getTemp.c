@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		getTemp process; continuous acquisition of the temperature.
@@ -20,8 +20,8 @@
 ;				- k++							- copy it
 ;												- free the buffer k
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -55,8 +55,22 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+#include	<stdio.h>
 #include	<stdlib.h>
+
+#include	"serial/serial.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"macros_soc.h"
+#include	"memo/memo.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"random/random.h"
+#include	"record/record.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -79,7 +93,7 @@ static	void		local_process(const void *argument);
 
 // This process has to run on the following cores:
 
-#define	KEXECUTION_CORE		(1u<<BCORE_0)
+#define	KEXECUTION_CORE		(1U<<BCORE_0)
 
 MODULE(
 	GetTemp,						// Module name (the first letter has to be upper case)
@@ -89,7 +103,7 @@ MODULE(
 	prgm,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	temperature_clean,				// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	KEXECUTION_CORE					// Execution cores
 );
 
@@ -98,8 +112,8 @@ MODULE(
 
 static	bool	vKillRequest[KNB_CORES] = MCSET(false);
 
-#define	KTIME_ACQ			200u	// 200-ms
-#define	KNB_SAMPLES			128u	// Nb. of samples
+#define	KTIME_ACQ			200U	// 200-ms
+#define	KNB_SAMPLES			128U	// Nb. of samples
 
 // ---------------------------I-----------------------------------------I--------------I
 
@@ -145,10 +159,10 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
  *
  */
 static	int32_t	temperature_clean(uint32_t argc, const char_t *argv[]) {
-	uint32_t	core;
-
 	UNUSED(argc);
 	UNUSED(argv);
+
+	uint32_t	core;
 
 	core = GET_RUNNING_CORE;
 	vKillRequest[core] = true;
@@ -175,12 +189,12 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 					uint32_t	sizeSnd;
 					float64_t	raw;
 					mcnf_t		configure = {
-									.oNbMaxPacks	= 10u,
-									.oDataEntrySize	= 0u
+									.oNbMaxPacks	= 10U,
+									.oDataEntrySize	= 0U
 								};
 			const	bool		*killRequest;
 
-	#if (!defined(CONFIG_REAL_TMPERATURE_S))
+	#ifndef CONFIG_REAL_TMPERATURE_S
 					uint32_t	random;
 	static	const	float64_t	aSimule[KNB_SAMPLES] = {
 									20.23, 20.52, 21.23, 21.87, 22.21, 22.67, 23.12, 23.67,
@@ -212,7 +226,7 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 	if (kern_createMailbox("Temperature", &mailBox) != KERR_KERN_NOERR) { LOG(KFATAL_SYSTEM, "temperature: create Mbox"); exit(EXIT_OS_PANIC);   }
 	if (kern_setMailbox(mailBox, &configure)	    != KERR_KERN_NOERR) { LOG(KFATAL_SYSTEM, "temperature: set mbox\n");  exit(EXIT_OS_FAILURE); }
 
-	while (*killRequest == false) {
+	while (!*killRequest) {
 		kern_suspendProcess(KTIME_ACQ);
 
 // Request a temperature buffer
@@ -229,19 +243,19 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 // then, a random noise (-1.28 .. +1.27 degree) is added
 // The (random & 0xFF) -> +127/-128 numbers
 
-		#if (defined(CONFIG_REAL_TMPERATURE_S))
-		for (i = 0u; i < (KNB_SAMPLES - 1u); i++) {
-			temperature[KNB_SAMPLES - 1u - i] = temperature[KNB_SAMPLES - 2u - i];
+		#ifdef CONFIG_REAL_TMPERATURE_S
+		for (i = 0U; i < (KNB_SAMPLES - 1U); i++) {
+			temperature[KNB_SAMPLES - 1U - i] = temperature[KNB_SAMPLES - 2U - i];
 		}
 
 		temperature_read(&instTemperature);
 		temperature[0] = (int16_t)((instTemperature + 273.16) * 100.0);
 
 		#else
-		for (i = 0u; i < KNB_SAMPLES; i++) {
-			random_read(KRANDOM_SOFT, &random, 1u);
+		for (i = 0U; i < KNB_SAMPLES; i++) {
+			random_read(KRANDOM_SOFT, &random, 1U);
 			raw = (aSimule[i] + 273.16) * 100.0;
-			value = (int32_t)raw + (int32_t)(random & 0xFFu);
+			value = (int32_t)raw + (int32_t)(random & 0xFFU);
 			temperature[i] = (int16_t)value;
 		}
 		#endif

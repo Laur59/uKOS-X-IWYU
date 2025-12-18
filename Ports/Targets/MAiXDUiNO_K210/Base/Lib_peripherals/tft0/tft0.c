@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		tft0 manager (for nt35310).
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,9 +46,16 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"../tft0/tft0.h"
+#include	"tft0.h"
+
+#include	<stdint.h>
+
 #include	"../oct0/oct0.h"
+#include	"Registers/K210_gpiohs.h"
+#include	"board.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"modules.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -71,7 +78,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -93,18 +100,18 @@ MODULE(
 int32_t	tft0_init(void) {
 	cnfOctx_t	configure = {
 					.oMode    = KOCTAL,
-					.oNbBits  = 8u,
+					.oNbBits  = 8U,
 					.oXfer    = K8BITSAINC,
 					.oDevider = KCLKDIV64
 				};
 
-	gpiohs->output_val.u32[0] |= (1u<<BLCD_DCX);
+	gpiohs->output_val.u32[0] |= (1U<<BLCD_DCX);
 	oct0_init();
 
-	gpiohs->output_val.u32[0] &= (uint32_t)~(1u<<BLCD_RST);
-	kern_suspendProcess(100u);
-	gpiohs->output_val.u32[0] |= (1u<<BLCD_RST);
-	kern_suspendProcess(100u);
+	gpiohs->output_val.u32[0] &= (uint32_t)~(1U<<BLCD_RST);
+	kern_suspendProcess(100U);
+	gpiohs->output_val.u32[0] |= (1U<<BLCD_RST);
+	kern_suspendProcess(100U);
 
 	oct0_configure(&configure);
 	return (KERR_TFT0_NOERR);
@@ -131,15 +138,15 @@ int32_t	tft0_init(void) {
 int32_t	tft0_writeCommand(uint8_t command) {
 	cnfOctx_t	configure = {
 					.oMode    = KOCTAL,
-					.oNbBits  = 8u,
+					.oNbBits  = 8U,
 					.oXfer    = K8BITSAINC,
 					.oDevider = KCLKDIV64
 				};
 
 	oct0_configure(&configure);
 
-	gpiohs->output_val.u32[0] &= (uint32_t)~(1u<<BLCD_DCX);
-	oct0_write(SPI_SLAVE_SELECT, &command, 1u, KXFER8);
+	gpiohs->output_val.u32[0] &= (uint32_t)~(1U<<BLCD_DCX);
+	oct0_write(SPI_SLAVE_SELECT, &command, 1U, KXFER8);
 	return (KERR_TFT0_NOERR);
 }
 
@@ -164,14 +171,14 @@ int32_t	tft0_writeCommand(uint8_t command) {
 int32_t	tft0_write8(const uint8_t *buffer, uint32_t szBuffer) {
 	cnfOctx_t	configure = {
 					.oMode    = KOCTAL,
-					.oNbBits  = 8u,
+					.oNbBits  = 8U,
 					.oXfer    = K8BITSAINC,
 					.oDevider = KCLKDIV64
 				};
 
 	oct0_configure(&configure);
 
-	gpiohs->output_val.u32[0] |= (1u<<BLCD_DCX);
+	gpiohs->output_val.u32[0] |= (1U<<BLCD_DCX);
 	oct0_write(SPI_SLAVE_SELECT, buffer, szBuffer, KXFER8);
 	return (KERR_TFT0_NOERR);
 }
@@ -197,14 +204,14 @@ int32_t	tft0_write8(const uint8_t *buffer, uint32_t szBuffer) {
 int32_t	tft0_write16(const uint16_t *buffer, uint32_t szBuffer) {
 	cnfOctx_t	configure = {
 					.oMode    = KOCTAL,
-					.oNbBits  = 16u,
+					.oNbBits  = 16U,
 					.oXfer    = K16BITSAINC,
 					.oDevider = KCLKDIV64
 				};
 
 	oct0_configure(&configure);
 
-	gpiohs->output_val.u32[0] |= (1u<<BLCD_DCX);
+	gpiohs->output_val.u32[0] |= (1U<<BLCD_DCX);
 	oct0_write(SPI_SLAVE_SELECT, buffer, szBuffer, KXFER16);
 	return (KERR_TFT0_NOERR);
 }
@@ -230,14 +237,14 @@ int32_t	tft0_write16(const uint16_t *buffer, uint32_t szBuffer) {
 int32_t	tft0_fill16(const uint16_t *buffer, uint32_t szBuffer) {
 	cnfOctx_t	configure = {
 					.oMode    = KOCTAL,
-					.oNbBits  = 16u,
+					.oNbBits  = 16U,
 					.oXfer    = K16BITSFILL,
 					.oDevider = KCLKDIV64
 				};
 
 	oct0_configure(&configure);
 
-	gpiohs->output_val.u32[0] |= (1u<<BLCD_DCX);
+	gpiohs->output_val.u32[0] |= (1U<<BLCD_DCX);
 	oct0_write(SPI_SLAVE_SELECT, buffer, szBuffer, KFILL);
 	return (KERR_TFT0_NOERR);
 }

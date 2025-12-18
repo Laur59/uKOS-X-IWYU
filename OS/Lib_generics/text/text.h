@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		text manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -63,9 +63,14 @@
  * @{
  */
 
+#include	<stdint.h>
+
+#include	"serial/serial.h"
+#include	"types.h"
+
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -197,7 +202,7 @@ extern	int32_t	text_checkAsciiBuffer(const char_t *ascii1, const char_t *ascii2,
  */
 extern	int32_t	text_waitString(serialManager_t serialManager, char_t *ascii, uint32_t size);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 

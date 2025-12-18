@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32L4R5_lptim equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // LPTIM address definitions
 // -------------------------
 
@@ -62,7 +64,7 @@ typedef struct {
 	volatile	uint32_t	CNT;
 } LPTIM_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	LPTIM1	reinterpret_cast<LPTIM_TypeDef *>(0x40007C00u)
 #define	LPTIM2	reinterpret_cast<LPTIM_TypeDef *>(0x40009400u)
 

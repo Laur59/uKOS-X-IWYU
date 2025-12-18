@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32U5Gx_pssi equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // PSSI address definitions
 // ------------------------
 
@@ -62,7 +64,7 @@ typedef struct {
 	volatile	uint32_t	DR;
 } PSSI_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	PSSI_NS	reinterpret_cast<PSSI_TypeDef *>(0x4202C400u)
 #define	PSSI_S	reinterpret_cast<PSSI_TypeDef *>(0x5202C400u)
 

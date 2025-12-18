@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Test of the multi-core communications layer ASMP.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,27 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+#include	<stdio.h>
+#include	<stdlib.h>
+#include	<string.h>
+
+#include	"asmp/asmp.h"
+#include	"kern/kern.h"
+#include	"led/led.h"
+#include	"macros.h"
+#ifdef __arm__
+#include	"macros_core.h" // ARM: INTERRUPTION_OFF in core
+							// RISC-V: INTERRUPTION_OFF already in macros_soc.h
+#endif
+#include	"macros_core_stackFrame.h"
+#include	"macros_soc.h"
+#include	"memo/memo.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"serial/serial.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -79,15 +99,15 @@ MODULE(
 	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	test_mcore_clean,							// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
 // CLI tool specific
 // =================
 
-#define	KTIME_SEND_1MS	1u						// Send every 1-ms
-#define	KSZ_MESSAGE		256u					// For this App consider a max of 256 chars
+#define	KTIME_SEND_1MS	1U						// Send every 1-ms
+#define	KSZ_MESSAGE		256U					// For this App consider a max of 256 chars
 #define	KLED_TX			KLED_0					// TX led
 #define	KLED_RX			KLED_1					// RX led
 
@@ -108,11 +128,11 @@ STRG_LOC_CONST(message_1to0[]) = "The quick brown fox jumps over the lazy dog.";
  *
  */
 static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
-	uint32_t	core;
-	proc_t		*process_RX, *process_TX;
-
 	UNUSED(argc);
 	UNUSED(argv);
+
+	uint32_t	core;
+	proc_t		*process_RX, *process_TX;
 
 	core = GET_RUNNING_CORE;
 	vKillRequest[core] = false;
@@ -154,10 +174,10 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
  *
  */
 static	int32_t	test_mcore_clean(uint32_t argc, const char_t *argv[]) {
-	uint32_t	core;
-
 	UNUSED(argc);
 	UNUSED(argv);
+
+	uint32_t	core;
 
 	core = GET_RUNNING_CORE;
 	vKillRequest[core] = true;
@@ -193,9 +213,9 @@ static void __attribute__ ((noreturn)) local_process_TX(const void *argument) {
 
 // Waiting for the creation of the mailbax "send to core x"
 
-	while (kern_getMailboxById(idSendMbox, &mailBox) != KERR_KERN_NOERR) { kern_suspendProcess(1u); }
+	while (kern_getMailboxById(idSendMbox, &mailBox) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
 
-	while (*killRequest == false) {
+	while (!*killRequest) {
 
 // Length of the message + the appended counter
 // Prepare the sending buffer (+1 ' ', +1 counter, +1 \0) (strlen skip the \0)
@@ -209,13 +229,13 @@ static void __attribute__ ((noreturn)) local_process_TX(const void *argument) {
 
 		memcpy(&send[0], &message[0], size);
 
-		send[size - 3u] = (uint8_t)' ';
-		send[size - 2u] = counter;
-		send[size - 1u] = (uint8_t)'\0';
+		send[size - 3U] = (uint8_t)' ';
+		send[size - 2U] = counter;
+		send[size - 1U] = (uint8_t)'\0';
 
 // Try to send a the message (place the message into the mailbox))
 
-		status = kern_writeMailbox(mailBox, send, (uint32_t)size, 1000u);
+		status = kern_writeMailbox(mailBox, send, (uint32_t)size, 1000U);
 
 		switch (status) {
 			case KERR_KERN_TIMEO: {
@@ -267,7 +287,7 @@ static void __attribute__ ((noreturn)) local_process_RX(const void *argument) {
 
 // Waiting for the creation of the mailbax "receive from core x"
 
-	while (kern_getMailboxById(idReceiveMbox, &mailBox) != KERR_KERN_NOERR) { kern_suspendProcess(1u); }
+	while (kern_getMailboxById(idReceiveMbox, &mailBox) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
 
 	message = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (KSZ_MESSAGE * sizeof(uint8_t)), "receive");
 	if (message == NULL) {
@@ -275,11 +295,11 @@ static void __attribute__ ((noreturn)) local_process_RX(const void *argument) {
 		exit(EXIT_OS_FAILURE);
 	}
 
-	while (*killRequest == false) {
+	while (!*killRequest) {
 
 // Try to receive a the message (located in the mailbox))
 
-		status = kern_readMailbox(mailBox, (void **)&receive, &size, 1000u);
+		status = kern_readMailbox(mailBox, (void **)&receive, &size, 1000U);
 
 		switch (status) {
 			case KERR_KERN_TIMEO: {
@@ -288,7 +308,7 @@ static void __attribute__ ((noreturn)) local_process_RX(const void *argument) {
 			}
 			case KERR_KERN_NOERR: {
 				memcpy(message, receive, size);
-				if (KASMP_MBOX_ENTRY_SIZE == 0u) { memo_free(receive); }
+				if (KASMP_MBOX_ENTRY_SIZE == 0U) { memo_free(receive); }
 
 				(void)dprintf(KSYST, "Received: %s\n", message);
 				led_toggle(KLED_RX);

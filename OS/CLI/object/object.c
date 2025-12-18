@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Display the structure of a uKOS-X object.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,15 +46,30 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"kern/private/private_processes.h"
+#include	<inttypes.h>
+#include	<stdint.h>	// NOLINT(misc-include-cleaner): Explicit include for IWYU compliance
+#include	<stdio.h>
+#include	<stdlib.h>
+
+#include	"kern/kern.h"
 #include	"kern/private/private_mailboxes.h"
-#include	"kern/private/private_pools.h"
-#include	"kern/private/private_semaphores.h"
 #include	"kern/private/private_mutexes.h"
-#include	"kern/private/private_signals.h"
-#include	"kern/private/private_softwareTimer.h"
+#if KKERN_NB_PRECISE_SIGNALS!=0
 #include	"kern/private/private_preciseSignals.h"
+#endif
+#include	"kern/private/private_processes.h"
+#include	"kern/private/private_semaphores.h"
+#include	"kern/private/private_signals.h"
+#if KKERN_NB_SOFTWARE_TIMERS!=0
+#include	"kern/private/private_softwareTimer.h"
+#endif
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"modules.h"
+#include	"serial/serial.h"
+#include	"text/text.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -99,7 +114,7 @@ MODULE(
 	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,										// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
@@ -134,39 +149,39 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 
 	switch (argc) {
 		default:
-		case 1u: {
+		case 1U: {
 			object = KOBJ_ALL;
 			break;
 		}
-		case 3u: {
-			core = 0u;
-			number = (uint32_t)strtol(argv[2], &dummy, 10u);
-			text_checkAsciiBuffer(argv[1], "-proc", &equals); if (equals == true) { object = KOBJ_PROC; break; }
-			text_checkAsciiBuffer(argv[1], "-sema", &equals); if (equals == true) { object = KOBJ_SEMA;	break; }
-			text_checkAsciiBuffer(argv[1], "-mutx", &equals); if (equals == true) { object = KOBJ_MUTX; break; }
-			text_checkAsciiBuffer(argv[1], "-mbox", &equals); if (equals == true) { object = KOBJ_MBOX; break; }
-			text_checkAsciiBuffer(argv[1], "-stim", &equals); if (equals == true) { object = KOBJ_STIM;	break; }
-			text_checkAsciiBuffer(argv[1], "-sign", &equals); if (equals == true) { object = KOBJ_SIGN; break; }
-			text_checkAsciiBuffer(argv[1], "-prcs", &equals); if (equals == true) { object = KOBJ_PSIG; break; }
+		case 3U: {
+			core = 0U;
+			number = (uint32_t)strtol(argv[2], &dummy, 10U);
+			text_checkAsciiBuffer(argv[1], "-proc", &equals); if (equals) { object = KOBJ_PROC; break; }
+			text_checkAsciiBuffer(argv[1], "-sema", &equals); if (equals) { object = KOBJ_SEMA;	break; }
+			text_checkAsciiBuffer(argv[1], "-mutx", &equals); if (equals) { object = KOBJ_MUTX; break; }
+			text_checkAsciiBuffer(argv[1], "-mbox", &equals); if (equals) { object = KOBJ_MBOX; break; }
+			text_checkAsciiBuffer(argv[1], "-stim", &equals); if (equals) { object = KOBJ_STIM;	break; }
+			text_checkAsciiBuffer(argv[1], "-sign", &equals); if (equals) { object = KOBJ_SIGN; break; }
+			text_checkAsciiBuffer(argv[1], "-prcs", &equals); if (equals) { object = KOBJ_PSIG; break; }
 
 			error = KERR_NOB;
 			break;
 		}
 		case 4: {
-			core = (uint32_t)strtol(argv[1], &dummy, 10u);
+			core = (uint32_t)strtol(argv[1], &dummy, 10U);
 			if (core >= KNB_CORES) {
 				error = KERR_NOC;
 				break;
 			}
 
-			number = (uint32_t)strtol(argv[3], &dummy, 10u);
-			text_checkAsciiBuffer(argv[2], "-proc", &equals); if (equals == true) { object = KOBJ_PROC; break; }
-			text_checkAsciiBuffer(argv[2], "-sema", &equals); if (equals == true) { object = KOBJ_SEMA;	break; }
-			text_checkAsciiBuffer(argv[1], "-mutx", &equals); if (equals == true) { object = KOBJ_MUTX; break; }
-			text_checkAsciiBuffer(argv[2], "-mbox", &equals); if (equals == true) { object = KOBJ_MBOX; break; }
-			text_checkAsciiBuffer(argv[2], "-stim", &equals); if (equals == true) { object = KOBJ_STIM;	break; }
-			text_checkAsciiBuffer(argv[2], "-sign", &equals); if (equals == true) { object = KOBJ_SIGN; break; }
-			text_checkAsciiBuffer(argv[2], "-prcs", &equals); if (equals == true) { object = KOBJ_PSIG; break; }
+			number = (uint32_t)strtol(argv[3], &dummy, 10U);
+			text_checkAsciiBuffer(argv[2], "-proc", &equals); if (equals) { object = KOBJ_PROC; break; }
+			text_checkAsciiBuffer(argv[2], "-sema", &equals); if (equals) { object = KOBJ_SEMA;	break; }
+			text_checkAsciiBuffer(argv[1], "-mutx", &equals); if (equals) { object = KOBJ_MUTX; break; }
+			text_checkAsciiBuffer(argv[2], "-mbox", &equals); if (equals) { object = KOBJ_MBOX; break; }
+			text_checkAsciiBuffer(argv[2], "-stim", &equals); if (equals) { object = KOBJ_STIM;	break; }
+			text_checkAsciiBuffer(argv[2], "-sign", &equals); if (equals) { object = KOBJ_SIGN; break; }
+			text_checkAsciiBuffer(argv[2], "-prcs", &equals); if (equals) { object = KOBJ_PSIG; break; }
 
 			error = KERR_NOB;
 			break;
@@ -253,7 +268,7 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 static	void	local_printObjects(void) {
 	uint32_t	core;
 
-	for (core = 0u; core < KNB_CORES; core++) {
+	for (core = 0U; core < KNB_CORES; core++) {
 		(void)dprintf(KSYST, "Objects used by the core %"PRIu32"\n\n", core);
 		(void)dprintf(KSYST, "Available processes      = %3"PRIu16", max. used processes      = %3"PRIu16", used processes      = %3"PRIu16"\n", KKERN_NB_PROCESSES,       vKern_nbMaxProc[core], vKern_nbProc[core]);
 		(void)dprintf(KSYST, "Available semaphores     = %3"PRIu16", max. used semaphores     = %3"PRIu16", used semaphores     = %3"PRIu16"\n", KKERN_NB_SEMAPHORES,      vKern_nbMaxSema[core], vKern_nbSema[core]);
@@ -305,15 +320,15 @@ static	void	local_printProcess(uint32_t core, uint16_t number) {
 
 	serialManager = (uint32_t)process.oSpecification.oSerialManager;
 
-	#if (defined(LITTLE_ENDIAN_S))
-	for (i = 0u; i < 4u; i++) {
-		serialManagerA[3u - i] = (char_t)(serialManager & 0xFFu);
+	#ifdef LITTLE_ENDIAN_S
+	for (i = 0U; i < 4U; i++) {
+		serialManagerA[3U - i] = (char_t)(serialManager & 0xFFU);
 		serialManager = serialManager>>8;
 	}
 
 	#else
-	for (i = 0u; i < 4u; i++) {
-		serialManagerA[i] = (char_t)(serialManager & 0xFFu);
+	for (i = 0U; i < 4U; i++) {
+		serialManagerA[i] = (char_t)(serialManager & 0xFFU);
 		serialManager = serialManager>>8;
 	}
 	#endif
@@ -324,17 +339,17 @@ static	void	local_printProcess(uint32_t core, uint16_t number) {
 	mode   = (process.oSpecification.oStackMode == KPROC_STACK_STATIC)	    ? ("Static")   : ("Dynamic");
 	kind   = (process.oSpecification.oKind == KPROC_NORMAL)				    ? ("Normal")   : ("Daemon");
 	space  = (process.oSpecification.oMode == KPROC_USER)				    ? ("User")	   : ("Privileged");
-	eleva  = ((process.oInternal.oState & (1u<<BPROC_PRIV_ELEVATED)) != 0u) ? ("Elevated") : ("");
+	eleva  = ((process.oInternal.oState & (1U<<BPROC_PRIV_ELEVATED)) != 0U) ? ("Elevated") : ("");
 
 	state  = "Not installed";
-	state  = ((process.oInternal.oState & (1u<<BPROC_INSTALLED))   != 0u)	? ("Installed")								   : (state);
-	state  = ((process.oInternal.oState & (1u<<BPROC_RUNNING))     != 0u)	? ("Installed & running")					   : (state);
-	state  = ((process.oInternal.oState & (1u<<BPROC_SUSP_TIME))   != 0u)	? ("Installed & waiting for a time")		   : (state);
-	state  = ((process.oInternal.oState & (1u<<BPROC_SUSP_SIGN))   != 0u)	? ("Installed & waiting for a signal")		   : (state);
-	state  = ((process.oInternal.oState & (1u<<BPROC_SUSP_SEMA))   != 0u)	? ("Installed & waiting for a semaphore")	   : (state);
-	state  = ((process.oInternal.oState & (1u<<BPROC_SUSP_MBOX_E)) != 0u)	? ("Installed & waiting for a non empty mbox") : (state);
-	state  = ((process.oInternal.oState & (1u<<BPROC_SUSP_MBOX_F)) != 0u)	? ("Installed & waiting for a non full mbox")  : (state);
-	state  = ((process.oInternal.oState & (1u<<BPROC_SUSP_DEBG))   != 0u)	? ("Installed & waiting for a debug")		   : (state);
+	state  = ((process.oInternal.oState & (1U<<BPROC_INSTALLED))   != 0U)	? ("Installed")								   : (state);
+	state  = ((process.oInternal.oState & (1U<<BPROC_RUNNING))     != 0U)	? ("Installed & running")					   : (state);
+	state  = ((process.oInternal.oState & (1U<<BPROC_SUSP_TIME))   != 0U)	? ("Installed & waiting for a time")		   : (state);
+	state  = ((process.oInternal.oState & (1U<<BPROC_SUSP_SIGN))   != 0U)	? ("Installed & waiting for a signal")		   : (state);
+	state  = ((process.oInternal.oState & (1U<<BPROC_SUSP_SEMA))   != 0U)	? ("Installed & waiting for a semaphore")	   : (state);
+	state  = ((process.oInternal.oState & (1U<<BPROC_SUSP_MBOX_E)) != 0U)	? ("Installed & waiting for a non empty mbox") : (state);
+	state  = ((process.oInternal.oState & (1U<<BPROC_SUSP_MBOX_F)) != 0U)	? ("Installed & waiting for a non full mbox")  : (state);
+	state  = ((process.oInternal.oState & (1U<<BPROC_SUSP_DEBG))   != 0U)	? ("Installed & waiting for a debug")		   : (state);
 
 // Print the result
 
@@ -392,7 +407,7 @@ static	void	local_printSemaphore(uint32_t core, uint16_t number) {
 // Prepare for printing
 
 	state = "Not installed";
-	state = ((semaphore.oState & (1u<<BSEMA_INSTALLED)) != 0u) ? ("Installed semaphore") : (state);
+	state = ((semaphore.oState & (1U<<BSEMA_INSTALLED)) != 0U) ? ("Installed semaphore") : (state);
 
 	owner = "No owner";
 	owner = (semaphore.oOwner == KKERN_HANDLE_FROM_ISR) ? ("ISR owner")					 : (owner);
@@ -434,7 +449,7 @@ static	void	local_printMutex(uint32_t core, uint16_t number) {
 // Prepare for printing
 
 	state = "Not installed";
-	state = ((mutex.oState & (1u<<BMUTX_INSTALLED)) != 0u) ? ("Installed mutex") : (state);
+	state = ((mutex.oState & (1U<<BMUTX_INSTALLED)) != 0U) ? ("Installed mutex") : (state);
 
 	owner = "No owner";
 	owner = (mutex.oOwner == KKERN_HANDLE_FROM_ISR) ? ("ISR owner")				 : (owner);
@@ -476,9 +491,9 @@ static	void	local_printMailBox(uint32_t core, uint16_t number) {
 // Prepare for printing
 
 	state = "Not installed";
-	state = ((mailBox.oState & (1u<<BMBOX_CONFIGURED)) != 0u) ? ("Installed & configured mailbox") : (state);
-	state = ((mailBox.oState & (1u<<BMBOX_EMPTY))	   != 0u) ? ("Mailbox empty")				   : (state);
-	state = ((mailBox.oState & (1u<<BMBOX_FULL))	   != 0u) ? ("Mailbox full")				   : (state);
+	state = ((mailBox.oState & (1U<<BMBOX_CONFIGURED)) != 0U) ? ("Installed & configured mailbox") : (state);
+	state = ((mailBox.oState & (1U<<BMBOX_EMPTY))	   != 0U) ? ("Mailbox empty")				   : (state);
+	state = ((mailBox.oState & (1U<<BMBOX_FULL))	   != 0U) ? ("Mailbox full")				   : (state);
 
 // Print the result
 
@@ -526,7 +541,7 @@ static	void	local_printSignalGroup(uint32_t core, uint16_t number) {
 	(void)dprintf(KSYST, "   Group number:         %"PRIu32"\n",	   signalGroup.oGroupNumber);
 	(void)dprintf(KSYST, "   Used bit:             0x%08"PRIX32"\n\n", signalGroup.oUsedBit);
 
-	for (i = 0u; i < KKERN_NB_PROCESSES; i++) {
+	for (i = 0U; i < KKERN_NB_PROCESSES; i++) {
 		from = signalGroup.oSynchro[i].oSignalFromProcess;
 
 		(void)dprintf(KSYST, "   Process %02"PRIu16"  -->  Signal pending: 0x%08"PRIX32", Signal generate: 0x%08"PRIX32", ", i, signalGroup.oSynchro[i].oSignalBitPending, signalGroup.oSynchro[i].oSignalBitGenerate);
@@ -563,9 +578,9 @@ static	void	local_printSoftwareTimer(uint32_t core, uint16_t number) {
 // Prepare for printing
 
 	state = "Not installed";
-	state = ((softwareTimer.oState & (1u<<BSTIM_CONFIGURED)) != 0u) ? ("installed & configured S-Timer") : (state);
-	state = ((softwareTimer.oState & (1u<<BSTIM_RUNNING))	 != 0u) ? ("S-Timer running")				 : (state);
-	state = ((softwareTimer.oState & (1u<<BSTIM_EXECUTED))   != 0u) ? ("S-Timer executed")				 : (state);
+	state = ((softwareTimer.oState & (1U<<BSTIM_CONFIGURED)) != 0U) ? ("installed & configured S-Timer") : (state);
+	state = ((softwareTimer.oState & (1U<<BSTIM_RUNNING))	 != 0U) ? ("S-Timer running")				 : (state);
+	state = ((softwareTimer.oState & (1U<<BSTIM_EXECUTED))   != 0U) ? ("S-Timer executed")				 : (state);
 
 	mode = "Stop";
 	mode = (softwareTimer.oTimerSpec.oMode == KSTIM_SINGLE_SHOT)	? ("Single shot mode")				 : (mode);
@@ -612,7 +627,7 @@ static	void	local_printSPreciseSignal(uint32_t core, uint16_t number) {
 // Prepare for printing
 
 	state = "Not installed";
-	state = ((preciseSignal.oState & (1u<<BPRCS_INSTALLED)) != 0u) ? ("installed precise signal") : (state);
+	state = ((preciseSignal.oState & (1U<<BPRCS_INSTALLED)) != 0U) ? ("installed precise signal") : (state);
 
 	mode = "Stop";
 	mode = (preciseSignal.oMode == KPRCS_SINGLE_SHOT) ? ("Single shot mode")					  : (mode);

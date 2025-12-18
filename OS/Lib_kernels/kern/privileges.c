@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Kern - Privilege management.
@@ -20,8 +20,8 @@
 ;			int32_t	kern_setPrivilegeMode(uint8_t mode);
 ;			void	kern_privilegeElevate(void); !!! Not for user applications
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -55,15 +55,39 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	"privileges.h"
+
+#include	<stdint.h>
+#ifdef PRIVILEGED_USER_S
+#include	<stdlib.h>
+#endif
+
+#include	"Registers/core_addendum.h"	// IWYU pragma: keep
+#include	"core.h"					// IWYU pragma: keep
+#include	"debug.h"
+#include	"kern/kern.h"
+#ifdef	__arm__
 #include	"kern/private/private_processes.h"
+#include	"macros_core.h"
+#endif
+#include	"macros_soc.h"
+#include	"os_errors.h"
+#ifdef PRIVILEGED_USER_S
+#include	"record/record.h"
+#else
+#include	"macros.h"
+#endif
+#include	"syscallDispatcher.h"		// IWYU pragma: keep
+#ifdef PRIVILEGED_USER_S
+#include	"types.h"
+#endif
 
 volatile	bool	vPriv_insideSVC[KNB_CORES] = MCSET(false);
 volatile	bool	vPriv_insideException[KNB_CORES] = MCSET(false);
 
 // Prototypes
 
-#if (defined(PRIVILEGED_USER_S))
+#ifdef PRIVILEGED_USER_S
 static	void	local_elevate(uintptr_t callAddress);
 #endif
 
@@ -110,15 +134,15 @@ void	privileges_init(void) {
  */
 int32_t	kern_setPrivilegeMode(uint8_t mode) {
 
-	#if (defined(PRIVILEGED_USER_S))
+	#ifdef PRIVILEGED_USER_S
 	uint32_t	core;
 
 	core = GET_RUNNING_CORE;
 
-	const	bool	in_svc = (vPriv_insideSVC[core] == true);
-	const	bool	in_exc = (vPriv_insideException[core] == true);
+	const	bool	in_svc = vPriv_insideSVC[core];
+	const	bool	in_exc = vPriv_insideException[core];
 
-	if ((in_svc == true) || (in_exc == true)) { return (KERR_KERN_NOERR); }
+	if ((in_svc) || (in_exc)) { return (KERR_KERN_NOERR); }
 
 	RIGHTS_ELEVATION;
 	if (vKern_runProc[core]->oSpecification.oMode == KPROC_PRIVILEGED) { INTERRUPTION_ON_HARD; return (KERR_KERN_NOERR); }
@@ -126,13 +150,13 @@ int32_t	kern_setPrivilegeMode(uint8_t mode) {
 	switch (mode) {
 		case KPROC_PRIVILEGED: {
 			vKern_runProc[core]->oInternal.oNestedPrivilege++;
-			vKern_runProc[core]->oInternal.oState |= (1u<<BPROC_PRIV_ELEVATED);
+			vKern_runProc[core]->oInternal.oState |= (1U<<BPROC_PRIV_ELEVATED);
 			break;
 		}
 		case KPROC_USER: {
-			vKern_runProc[core]->oInternal.oNestedPrivilege -= (vKern_runProc[core]->oInternal.oNestedPrivilege > 0) ? (1u) : (0u);
-			if (vKern_runProc[core]->oInternal.oNestedPrivilege == 0u) {
-				vKern_runProc[core]->oInternal.oState &= (uint16_t)~(1u<<BPROC_PRIV_ELEVATED);
+			vKern_runProc[core]->oInternal.oNestedPrivilege -= (vKern_runProc[core]->oInternal.oNestedPrivilege > 0) ? (1U) : (0U);
+			if (vKern_runProc[core]->oInternal.oNestedPrivilege == 0U) {
+				vKern_runProc[core]->oInternal.oState &= (uint16_t)~(1U<<BPROC_PRIV_ELEVATED);
 
 				INTERRUPTION_ON_HARD;
 				SET_USER_MODE;
@@ -151,7 +175,7 @@ int32_t	kern_setPrivilegeMode(uint8_t mode) {
 	INTERRUPTION_ON_HARD;
 
 	#else
-	UNUSED(mode);
+ 	UNUSED(mode);
 	#endif
 
 	return (KERR_KERN_NOERR);
@@ -176,10 +200,9 @@ int32_t	kern_setPrivilegeMode(uint8_t mode) {
  * \note This function does not return a value (None).
  *
  */
-void	kern_privilegeElevate(void) __attribute__ ((naked));
 void	kern_privilegeElevate(void) {
 
-	#if (defined(PRIVILEGED_USER_S))
+	#ifdef PRIVILEGED_USER_S
 
 // Recover the callAddress -> in r0
 // GET_ADDRESS_ELEVATION_CALLER prepare r0 with the caller address
@@ -193,7 +216,7 @@ void	kern_privilegeElevate(void) {
 	#endif
 }
 
-#if (defined(PRIVILEGED_USER_S))
+#ifdef PRIVILEGED_USER_S
 static	void	__attribute__ ((noinline, used)) local_elevate(uintptr_t callAddress) {
 	extern	uintptr_t	priv_returnElevation;
 

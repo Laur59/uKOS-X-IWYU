@@ -9,8 +9,8 @@
 ; Project:	uKOS-X
 ; Goal:		Model for the core dump (SOC specific).
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -43,6 +43,8 @@
 ;
 ;------------------------------------------------------------------------
 */
+
+#include	"macros_core.h"
 
 // Prototypes
 
@@ -171,91 +173,91 @@ static	void	__attribute__ ((noinline)) local_printInterruption(const char_t **ve
 	cmns_send(KDEF0, "System dead! Core DUMP!!\n");
 	cmns_send(KDEF0, "========================\n\n");
 	switch (vExceptionNb[core]) {
-		case 0u:  { *vectorName = "WWDG_IRQn"; 					break; }
-		case 1u:  { *vectorName = "PVD_PVM_IRQn"; 				break; }
-		case 2u:  { *vectorName = "TAMP_STAMP_IRQn"; 			break; }
-		case 3u:  { *vectorName = "RTC_WKUP_IRQn"; 				break; }
-		case 4u:  { *vectorName = "FLASH_IRQn"; 				break; }
-		case 5u:  { *vectorName = "RCC_IRQn"; 					break; }
-		case 6u:  { *vectorName = "EXTI0_IRQn"; 				break; }
-		case 7u:  { *vectorName = "EXTI1_IRQn"; 				break; }
-		case 8u:  { *vectorName = "EXTI2_IRQn"; 				break; }
-		case 9u:  { *vectorName = "EXTI3_IRQn"; 				break; }
-		case 10u: { *vectorName = "EXTI4_IRQn"; 				break; }
-		case 11u: { *vectorName = "DMA1_Channel1_IRQn"; 		break; }
-		case 12u: { *vectorName = "DMA1_Channel2_IRQn"; 		break; }
-		case 13u: { *vectorName = "DMA1_Channel3_IRQn"; 		break; }
-		case 14u: { *vectorName = "DMA1_Channel4_IRQn"; 		break; }
-		case 15u: { *vectorName = "DMA1_Channel5_IRQn"; 		break; }
-		case 16u: { *vectorName = "DMA1_Channel6_IRQn"; 		break; }
-		case 17u: { *vectorName = "DMA1_Channel7_IRQn"; 		break; }
-		case 18u: { *vectorName = "ADC1_IRQn"; 					break; }
-		case 19u: { *vectorName = "CAN1_TX_IRQn"; 				break; }
-		case 20u: { *vectorName = "CAN1_RX0_IRQn"; 				break; }
-		case 21u: { *vectorName = "CAN1_RX1_IRQn"; 				break; }
-		case 22u: { *vectorName = "CAN1_SCE_IRQn"; 				break; }
-		case 23u: { *vectorName = "EXTI9_5_IRQn"; 				break; }
-		case 24u: { *vectorName = "TIM1_BRK_TIM15_IRQn"; 		break; }
-		case 25u: { *vectorName = "TIM1_UP_TIM16_IRQn"; 		break; }
-		case 26u: { *vectorName = "TIM1_TRG_COM_TIM17_IRQn";	break; }
-		case 27u: { *vectorName = "TIM1_CC_IRQn"; 				break; }
-		case 28u: { *vectorName = "TIM2_IRQn"; 					break; }
-		case 29u: { *vectorName = "TIM3_IRQn"; 					break; }
-		case 30u: { *vectorName = "TIM4_IRQn"; 					break; }
-		case 31u: { *vectorName = "I2C1_EV_IRQn"; 				break; }
-		case 32u: { *vectorName = "I2C1_ER_IRQn"; 				break; }
-		case 33u: { *vectorName = "I2C2_EV_IRQn"; 				break; }
-		case 34u: { *vectorName = "I2C2_ER_IRQn"; 				break; }
-		case 35u: { *vectorName = "SPI1_IRQn"; 					break; }
-		case 36u: { *vectorName = "SPI2_IRQn"; 					break; }
-		case 37u: { *vectorName = "USART1_IRQn"; 				break; }
-		case 38u: { *vectorName = "USART2_IRQn"; 				break; }
-		case 39u: { *vectorName = "USART3_IRQn"; 				break; }
-		case 40u: { *vectorName = "EXTI15_10_IRQn"; 			break; }
-		case 41u: { *vectorName = "RTC_Alarm_IRQn"; 			break; }
-		case 42u: { *vectorName = "DFSDM1_FLT3_IRQn"; 			break; }
-		case 43u: { *vectorName = "TIM8_BRK_IRQn"; 				break; }
-		case 44u: { *vectorName = "TIM8_UP_IRQn"; 				break; }
-		case 45u: { *vectorName = "TIM8_TRG_COM_IRQn"; 			break; }
-		case 46u: { *vectorName = "TIM8_CC_IRQn"; 				break; }
-		case 48u: { *vectorName = "FMC_IRQn"; 					break; }
-		case 49u: { *vectorName = "SDMMC1_IRQn"; 				break; }
-		case 50u: { *vectorName = "TIM5_IRQn"; 					break; }
-		case 51u: { *vectorName = "SPI3_IRQn"; 					break; }
-		case 52u: { *vectorName = "UART4_IRQn"; 				break; }
-		case 53u: { *vectorName = "UART5_IRQn"; 				break; }
-		case 54u: { *vectorName = "TIM6_DAC_IRQn"; 				break; }
-		case 55u: { *vectorName = "TIM7_IRQn"; 					break; }
-		case 56u: { *vectorName = "DMA2_Channel1_IRQn"; 		break; }
-		case 57u: { *vectorName = "DMA2_Channel2_IRQn"; 		break; }
-		case 58u: { *vectorName = "DMA2_Channel3_IRQn"; 		break; }
-		case 59u: { *vectorName = "DMA2_Channel4_IRQn"; 		break; }
-		case 60u: { *vectorName = "DMA2_Channel5_IRQn"; 		break; }
-		case 61u: { *vectorName = "DFSDM1_FLT0_IRQn"; 			break; }
-		case 62u: { *vectorName = "DFSDM1_FLT1_IRQn"; 			break; }
-		case 63u: { *vectorName = "DFSDM1_FLT2_IRQn"; 			break; }
-		case 64u: { *vectorName = "COMP_IRQn"; 					break; }
-		case 65u: { *vectorName = "LPTIM1_IRQn"; 				break; }
-		case 66u: { *vectorName = "LPTIM2_IRQn"; 				break; }
-		case 67u: { *vectorName = "OTG_FS_IRQn"; 				break; }
-		case 68u: { *vectorName = "DMA2_Channel6_IRQn"; 		break; }
-		case 69u: { *vectorName = "DMA2_Channel7_IRQn"; 		break; }
-		case 70u: { *vectorName = "LPUART1_IRQn"; 				break; }
-		case 71u: { *vectorName = "OCTOSPI1_IRQn"; 				break; }
-		case 72u: { *vectorName = "I2C3_EV_IRQn"; 				break; }
-		case 73u: { *vectorName = "I2C3_ER_IRQn"; 				break; }
-		case 74u: { *vectorName = "SAI1_IRQn"; 					break; }
-		case 75u: { *vectorName = "SAI2_IRQn"; 					break; }
-		case 76u: { *vectorName = "OCTOSPI2_IRQn"; 				break; }
-		case 77u: { *vectorName = "TSC_IRQn"; 					break; }
-		case 80u: { *vectorName = "RNG_IRQn"; 					break; }
-		case 81u: { *vectorName = "FPU_IRQn"; 					break; }
-		case 82u: { *vectorName = "CRS_IRQn"; 					break; }
-		case 83u: { *vectorName = "I2C4_EV_IRQn"; 				break; }
-		case 84u: { *vectorName = "I2C4_ER_IRQn"; 				break; }
-		case 85u: { *vectorName = "DCMI_IRQn"; 					break; }
-		case 90u: { *vectorName = "DMA2D_IRQn"; 				break; }
-		case 94u: { *vectorName = "DMAMUX1_OVR_IRQn"; 			break; }
+		case 0U:  { *vectorName = "WWDG_IRQn"; 					break; }
+		case 1U:  { *vectorName = "PVD_PVM_IRQn"; 				break; }
+		case 2U:  { *vectorName = "TAMP_STAMP_IRQn"; 			break; }
+		case 3U:  { *vectorName = "RTC_WKUP_IRQn"; 				break; }
+		case 4U:  { *vectorName = "FLASH_IRQn"; 				break; }
+		case 5U:  { *vectorName = "RCC_IRQn"; 					break; }
+		case 6U:  { *vectorName = "EXTI0_IRQn"; 				break; }
+		case 7U:  { *vectorName = "EXTI1_IRQn"; 				break; }
+		case 8U:  { *vectorName = "EXTI2_IRQn"; 				break; }
+		case 9U:  { *vectorName = "EXTI3_IRQn"; 				break; }
+		case 10U: { *vectorName = "EXTI4_IRQn"; 				break; }
+		case 11U: { *vectorName = "DMA1_Channel1_IRQn"; 		break; }
+		case 12U: { *vectorName = "DMA1_Channel2_IRQn"; 		break; }
+		case 13U: { *vectorName = "DMA1_Channel3_IRQn"; 		break; }
+		case 14U: { *vectorName = "DMA1_Channel4_IRQn"; 		break; }
+		case 15U: { *vectorName = "DMA1_Channel5_IRQn"; 		break; }
+		case 16U: { *vectorName = "DMA1_Channel6_IRQn"; 		break; }
+		case 17U: { *vectorName = "DMA1_Channel7_IRQn"; 		break; }
+		case 18U: { *vectorName = "ADC1_IRQn"; 					break; }
+		case 19U: { *vectorName = "CAN1_TX_IRQn"; 				break; }
+		case 20U: { *vectorName = "CAN1_RX0_IRQn"; 				break; }
+		case 21U: { *vectorName = "CAN1_RX1_IRQn"; 				break; }
+		case 22U: { *vectorName = "CAN1_SCE_IRQn"; 				break; }
+		case 23U: { *vectorName = "EXTI9_5_IRQn"; 				break; }
+		case 24U: { *vectorName = "TIM1_BRK_TIM15_IRQn"; 		break; }
+		case 25U: { *vectorName = "TIM1_UP_TIM16_IRQn"; 		break; }
+		case 26U: { *vectorName = "TIM1_TRG_COM_TIM17_IRQn";	break; }
+		case 27U: { *vectorName = "TIM1_CC_IRQn"; 				break; }
+		case 28U: { *vectorName = "TIM2_IRQn"; 					break; }
+		case 29U: { *vectorName = "TIM3_IRQn"; 					break; }
+		case 30U: { *vectorName = "TIM4_IRQn"; 					break; }
+		case 31U: { *vectorName = "I2C1_EV_IRQn"; 				break; }
+		case 32U: { *vectorName = "I2C1_ER_IRQn"; 				break; }
+		case 33U: { *vectorName = "I2C2_EV_IRQn"; 				break; }
+		case 34U: { *vectorName = "I2C2_ER_IRQn"; 				break; }
+		case 35U: { *vectorName = "SPI1_IRQn"; 					break; }
+		case 36U: { *vectorName = "SPI2_IRQn"; 					break; }
+		case 37U: { *vectorName = "USART1_IRQn"; 				break; }
+		case 38U: { *vectorName = "USART2_IRQn"; 				break; }
+		case 39U: { *vectorName = "USART3_IRQn"; 				break; }
+		case 40U: { *vectorName = "EXTI15_10_IRQn"; 			break; }
+		case 41U: { *vectorName = "RTC_Alarm_IRQn"; 			break; }
+		case 42U: { *vectorName = "DFSDM1_FLT3_IRQn"; 			break; }
+		case 43U: { *vectorName = "TIM8_BRK_IRQn"; 				break; }
+		case 44U: { *vectorName = "TIM8_UP_IRQn"; 				break; }
+		case 45U: { *vectorName = "TIM8_TRG_COM_IRQn"; 			break; }
+		case 46U: { *vectorName = "TIM8_CC_IRQn"; 				break; }
+		case 48U: { *vectorName = "FMC_IRQn"; 					break; }
+		case 49U: { *vectorName = "SDMMC1_IRQn"; 				break; }
+		case 50U: { *vectorName = "TIM5_IRQn"; 					break; }
+		case 51U: { *vectorName = "SPI3_IRQn"; 					break; }
+		case 52U: { *vectorName = "UART4_IRQn"; 				break; }
+		case 53U: { *vectorName = "UART5_IRQn"; 				break; }
+		case 54U: { *vectorName = "TIM6_DAC_IRQn"; 				break; }
+		case 55U: { *vectorName = "TIM7_IRQn"; 					break; }
+		case 56U: { *vectorName = "DMA2_Channel1_IRQn"; 		break; }
+		case 57U: { *vectorName = "DMA2_Channel2_IRQn"; 		break; }
+		case 58U: { *vectorName = "DMA2_Channel3_IRQn"; 		break; }
+		case 59U: { *vectorName = "DMA2_Channel4_IRQn"; 		break; }
+		case 60U: { *vectorName = "DMA2_Channel5_IRQn"; 		break; }
+		case 61U: { *vectorName = "DFSDM1_FLT0_IRQn"; 			break; }
+		case 62U: { *vectorName = "DFSDM1_FLT1_IRQn"; 			break; }
+		case 63U: { *vectorName = "DFSDM1_FLT2_IRQn"; 			break; }
+		case 64U: { *vectorName = "COMP_IRQn"; 					break; }
+		case 65U: { *vectorName = "LPTIM1_IRQn"; 				break; }
+		case 66U: { *vectorName = "LPTIM2_IRQn"; 				break; }
+		case 67U: { *vectorName = "OTG_FS_IRQn"; 				break; }
+		case 68U: { *vectorName = "DMA2_Channel6_IRQn"; 		break; }
+		case 69U: { *vectorName = "DMA2_Channel7_IRQn"; 		break; }
+		case 70U: { *vectorName = "LPUART1_IRQn"; 				break; }
+		case 71U: { *vectorName = "OCTOSPI1_IRQn"; 				break; }
+		case 72U: { *vectorName = "I2C3_EV_IRQn"; 				break; }
+		case 73U: { *vectorName = "I2C3_ER_IRQn"; 				break; }
+		case 74U: { *vectorName = "SAI1_IRQn"; 					break; }
+		case 75U: { *vectorName = "SAI2_IRQn"; 					break; }
+		case 76U: { *vectorName = "OCTOSPI2_IRQn"; 				break; }
+		case 77U: { *vectorName = "TSC_IRQn"; 					break; }
+		case 80U: { *vectorName = "RNG_IRQn"; 					break; }
+		case 81U: { *vectorName = "FPU_IRQn"; 					break; }
+		case 82U: { *vectorName = "CRS_IRQn"; 					break; }
+		case 83U: { *vectorName = "I2C4_EV_IRQn"; 				break; }
+		case 84U: { *vectorName = "I2C4_ER_IRQn"; 				break; }
+		case 85U: { *vectorName = "DCMI_IRQn"; 					break; }
+		case 90U: { *vectorName = "DMA2D_IRQn"; 				break; }
+		case 94U: { *vectorName = "DMAMUX1_OVR_IRQn"; 			break; }
 		default:  { *vectorName = "Unknown";					break; }
 	}
 }

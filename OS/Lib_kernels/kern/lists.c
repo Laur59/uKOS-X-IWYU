@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Kern - List management.
@@ -91,8 +91,8 @@
 ;			| Ptr on the forward process = B	+ --------------+
 ;			+-----------------------------------+
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -126,10 +126,20 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+#include	<stdlib.h>
+
+#include	"kern/kern.h"
+#ifdef __arm__
+#include	"macros_core.h"
+#endif
+#include	"macros_soc.h"			// IWYU pragma: keep
+#include	"private/private_lists.h"
+#include	"record/record.h"
+#include	"types.h"
 
 enum {
-		KLIST_EMPTY = 0u,										// The list is empty
+		KLIST_EMPTY = 0U,										// The list is empty
 		KLIST_NORMAL,											// The list is not empty (normal)
 		KLIST_ALONE,											// Only one process connected
 		KLIST_FIRST,											// The process is the first of the list
@@ -155,7 +165,7 @@ void	lists_initialise(list_t *list) {
 
 	list->oFirst	  = NULL;
 	list->oLast		  = NULL;
-	list->oNbElements = 0u;
+	list->oNbElements = 0U;
 }
 
 /*

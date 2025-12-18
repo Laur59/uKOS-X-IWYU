@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		K210_spi equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // SPI device number
 // -----------------
@@ -121,13 +123,13 @@ typedef	enum	_spi_chip_select {
 // SPI SSIENR Register
 // -------------------
 
-#define	SPI_SSIENR_SSI_EN			0u				//
+#define	SPI_SSIENR_SSI_EN			0U				//
 
 // SPI SR Register
 // ---------------
 
-#define	SPI_SR_BUSY					0u				//
-#define	SPI_SR_TFE					2u				//
+#define	SPI_SR_BUSY					0U				//
+#define	SPI_SR_TFE					2U				//
 
 // The SPI address map
 // -------------------

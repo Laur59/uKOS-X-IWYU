@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		nrf5340_application_uarte equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // UARTE address definitions
 // -------------------------
@@ -128,7 +130,7 @@ typedef struct {
 	volatile	uint32_t	CONFIG;
 } UARTE_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	UARTE0_NS	reinterpret_cast<UARTE_TypeDef *>(0x40008000u)
 #define	UARTE0_S	reinterpret_cast<UARTE_TypeDef *>(0x50008000u)
 #define	UARTE1_NS	reinterpret_cast<UARTE_TypeDef *>(0x40009000u)

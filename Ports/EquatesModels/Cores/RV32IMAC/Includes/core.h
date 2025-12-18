@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Collection of core routines
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,9 +48,11 @@
 
 #pragma	once
 
-#include	<stdbool.h>
 #include	<stdint.h>
+#include	<stdatomic.h>
+
 #include	"core_reg.h"
+#include	"macros_soc.h"
 
 /*
  * \brief core_getCSR
@@ -86,7 +88,7 @@ __attribute__ ((always_inline))	static	inline	uint32_t	core_getCSR(uint32_t reg)
  */
 __attribute__ ((always_inline))	static	inline	void	core_putCSR(uint32_t reg, uint32_t value) {
 
-	if (__builtin_constant_p(value) && ((uint32_t)(value) < 32u)) {
+	if (__builtin_constant_p(value) && ((uint32_t)(value) < 32U)) {
 		__asm volatile (
 		"csrw		%0,%1"
 		:
@@ -115,7 +117,7 @@ __attribute__ ((always_inline))	static	inline	void	core_putCSR(uint32_t reg, uin
  */
 __attribute__ ((always_inline))	static	inline	void	core_setBitCSR(uint32_t reg, uint32_t mask) {
 
-	if (__builtin_constant_p(mask) && ((uint32_t)(mask) < 32u)) {
+	if (__builtin_constant_p(mask) && ((uint32_t)(mask) < 32U)) {
 		__asm volatile (
 		"csrs		%0,%1"
 		:
@@ -144,7 +146,7 @@ __attribute__ ((always_inline))	static	inline	void	core_setBitCSR(uint32_t reg, 
  */
 __attribute__ ((always_inline))	static	inline	void	core_clrBitCSR(uint32_t reg, uint32_t mask) {
 
-	if (__builtin_constant_p(mask) && ((uint32_t)(mask) < 32u)) {
+	if (__builtin_constant_p(mask) && ((uint32_t)(mask) < 32U)) {
 		__asm volatile (
 		"csrci		%0,%1"
 		:

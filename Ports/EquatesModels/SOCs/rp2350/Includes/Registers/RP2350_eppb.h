@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		RP2350_eppb equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // EPPB address definitions
 // ------------------------
 
@@ -57,7 +59,7 @@ typedef struct {
 	volatile	uint32_t	SLEEPCTRL;
 } EPPB_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	EPPB_NS	reinterpret_cast<EPPB_TypeDef *>(0xE0080000u)
 #define	EPPB_S	reinterpret_cast<EPPB_TypeDef *>(0xE0080000u)
 #else

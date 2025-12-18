@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Kern - Signal management.
@@ -27,8 +27,8 @@
 ;			int32_t	kern_killBitSignal(sign_t *handle, uint8_t bitSignal);
 ;			int32_t	kern_getSignalGroupById(char_t *identifier, sign_t **handle);
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -64,6 +64,8 @@
 
 #pragma	once
 
+// IWYU pragma: private, include "kern/kern.h"
+
 /*!
  * \addtogroup Lib_kernels
  */
@@ -79,13 +81,18 @@
  * @{
  */
 
-#define	KSIGN_NB_SIGNALS_PER_GROUP				32u				// Number of signals per group (always 32 ... uint32_t)
-#define	KSIGN_SIGNALE_WITH_CONTEXT_SWITCH		0u				// Signal with the context switching
-#define	KSIGN_SIGNALE_WITHOUT_CONTEXT_SWITCH	1u				// Signal without the context switching
+#include	<stdint.h>
+
+#include	"kern/kern.h"	// IWYU pragma: keep (workaround app bug)
+#include	"types.h"
+
+#define	KSIGN_NB_SIGNALS_PER_GROUP				32U				// Number of signals per group (always 32 ... uint32_t)
+#define	KSIGN_SIGNALE_WITH_CONTEXT_SWITCH		0U				// Signal with the context switching
+#define	KSIGN_SIGNALE_WITHOUT_CONTEXT_SWITCH	1U				// Signal without the context switching
 
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -147,7 +154,7 @@ extern	int32_t	kern_createBitSignal(sign_t *handle, uint8_t *bitSignal);
  * proc_t       *toProcess;
  *
  *    while (kern_getProcessById(“My process”, &toProcess) != KERR_KERN_NOERR) {
- *        kern_suspendProcess(1u);
+ *        kern_suspendProcess(1U);
  *    }
  *
  * // Mode selective
@@ -193,7 +200,7 @@ extern	int32_t	kern_signalSignal(sign_t *handle, uint32_t signals, proc_t *toPro
  *
  *    status = kern_getSignalGroupById(“Chrono trigger”, &signalGroup);
  *
- *    waitSignals = (1u<<BMYSIGNAL)
+ *    waitSignals = (1U<<BMYSIGNAL)
  *    status = kern_waitSignal(signalGroup, &waitSignals, fromProcess, 1000);
  * \endcode
  *
@@ -325,7 +332,7 @@ extern	int32_t	kern_killBitSignal(sign_t *handle, uint8_t bitSignal);
  */
 extern	int32_t	kern_getSignalGroupById(const char_t *identifier, sign_t **handle);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 

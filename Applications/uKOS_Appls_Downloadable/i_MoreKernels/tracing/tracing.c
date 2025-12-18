@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Demo of a C application.
 ;			This application shows how to operate with the uKOS-X uKernel.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -60,7 +60,20 @@
  *
  */
 
-#include	"uKOS.h"
+#include	<inttypes.h>
+#include	<stdio.h>
+
+#include	"crt0.h"
+#include	"serial/serial.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"memo/memo.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -86,7 +99,7 @@ MODULE(
 	aStart,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,								// Address of the clean code (clean the module)
 	" 1.0",								// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0									// Execution cores
 );
 
@@ -104,26 +117,26 @@ MODULE(
  *
  */
 static void __attribute__ ((noreturn)) aProcess(const void *argument) {
-	uint32_t	time = 20u;
-	uintptr_t	i;
-
 	UNUSED(argument);
+
+	uint32_t	time = 20U;
+	uintptr_t	i;
 
 	LOG(KINFO_USER, "launched");
 	(void)dprintf(KSYST,"The machine will crash in %"PRIu32" seconds!!\n", time--);
 
 	record_trace("--> Process 0: trace2 example", 0x02020202u);
 
-	for (i = 0u; i < 20u; i++) {
+	for (i = 0U; i < 20U; i++) {
 		record_trace("--> Process 0: value", i);
 
-		kern_suspendProcess(1000u);
+		kern_suspendProcess(1000U);
 		(void)dprintf(KSYST,"The machine will crash in %"PRIu32" seconds!!\n", time--);
 	}
 
 	record_trace("--> Process 0: Out loop", 0x01010101u);
 
-	kern_suspendProcess(1000u);
+	kern_suspendProcess(1000U);
 
 // Load the registers
 
@@ -133,7 +146,7 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
 
 	LOG(KFATAL_USER, "... and now the crash!");
 	*(LOC_CRASH);
-	while (true) { ; }
+	while (true) { }
 }
 
 /*
@@ -145,15 +158,15 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
  *
  */
 int		main(int argc, const char *argv[]) {
+	UNUSED(argc);
+	UNUSED(argv);
+
 	proc_t	*process;
 
 // -------------------------------I-----------------------------------------I--------------I
 
 	STRG_LOC_CONST(aStrIden[]) = "Process_User_0";
 	STRG_LOC_CONST(aStrText[]) = "Process user 0.                           (c) EFr-2025";
-
-	UNUSED(argc);
-	UNUSED(argv);
 
 	LOG(KINFO_USER, "launched");
 	record_trace("--> Main: Enter", 0x04040404);

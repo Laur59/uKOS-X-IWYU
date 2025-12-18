@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Demo of a C application.
 ;			This application shows how to operate with the uKOS-X uKernel.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -55,7 +55,7 @@
  *			Launch 2 processes:
  *
  *			- P0: Every 1000-ms
- *					- Toggle LED 0
+ *					- Toggle LED 1
  *
  *			- P1: Look for the tool "list"
  *				  Execute it
@@ -63,7 +63,21 @@
  *
  */
 
-#include	"uKOS.h"
+#include	<stdlib.h>
+
+#include	"crt0.h"
+#include	"serial/serial.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"memo/memo.h"
+#include	"led/led.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"system/system.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -89,7 +103,7 @@ MODULE(
 	aStart,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,								// Address of the clean code (clean the module)
 	" 1.0",								// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0									// Execution cores
 );
 
@@ -105,7 +119,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 	UNUSED(argument);
 
 	while (true) {
-		kern_suspendProcess(1000u);
+		kern_suspendProcess(1000U);
 		led_toggle(KLED_0);
 	}
 }
@@ -118,18 +132,18 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *		 P1 will commit a suicide
  *
  */
-#define	KIDMODULE	((KID_FAM_CLI<<24u) | (KNUM_LIST<<8u) | '_')
+#define	KIDMODULE	((KID_FAM_CLI<<24U) | (KNUM_LIST<<8U) | '_')
 
 static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
+	UNUSED(argument);
+
 			uint16_t		index;
 	const	uKOS_module_t	*module;
-
-	UNUSED(argument);
 
 // looking for the cmdLine module ...
 
 	if (system_getModuleId(KIDMODULE, &index, &module) == KERR_SYSTEM_NOERR) {
-		module->oExecution(0u, NULL);
+		module->oExecution(0U, NULL);
 	}
 	exit(EXIT_OS_SUCCESS);
 }
@@ -143,6 +157,9 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  *
  */
 int		main(int argc, const char *argv[]) {
+	UNUSED(argc);
+	UNUSED(argv);
+
 	proc_t	*process_0, *process_1;
 
 // ---------------------------------I-----------------------------------------I--------------I
@@ -151,9 +168,6 @@ int		main(int argc, const char *argv[]) {
 	STRG_LOC_CONST(aStrIden_1[]) = "Process_User_1";
 	STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2025";
 	STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2025";
-
-	UNUSED(argc);
-	UNUSED(argv);
 
 // Specifications for the processes
 

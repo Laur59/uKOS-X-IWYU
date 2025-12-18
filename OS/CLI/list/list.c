@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		List the system modules.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,15 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+#include	<stdio.h>
+
+#include	"macros.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"serial/serial.h"
+#include	"system/system.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -95,7 +103,7 @@ MODULE(
 	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,										// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
@@ -129,24 +137,24 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 // list
 // list P
 
-	if (argc == 2u) {
+	if (argc == 2U) {
 
 // List of the selected family module
 
 		str = argv[1];
 		idModule = (uint8_t)(str[0]);
-		error = (local_listModule(idModule) == true) ? (false) : (true);
+		error = !local_listModule(idModule);
 	}
 
 // List of all the module families
 
 	else {
-		for (i = 0u; i < (uint8_t)(sizeof(aFamilies) / sizeof(uint8_t)); i++) {
+		for (i = 0U; i < (uint8_t)(sizeof(aFamilies) / sizeof(uint8_t)); i++) {
 			local_listModule(aFamilies[i]);
 		}
 	}
 
-	if (error == false) {  				 										   status = EXIT_OS_SUCCESS_CLI; }
+	if (!error) {  				 										   status = EXIT_OS_SUCCESS_CLI; }
 	else				{ (void)dprintf(KSYST, "This family does not exist.\n\n"); status = EXIT_OS_FAILURE;	 }
 	return (status);
 }
@@ -161,7 +169,7 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
  *
  */
 static	bool	local_listModule(uint8_t idFamily) {
-			uint16_t		i, index = 0u;
+			uint16_t		i, index = 0U;
 			uint32_t		idModule;
 			bool			found = false;
 			char_t			bufIdent[4 + 1];
@@ -171,7 +179,7 @@ static	bool	local_listModule(uint8_t idFamily) {
 // List inside memx
 
 	while (system_getModuleFamily(idFamily, &idModule, &index, &module) == KERR_SYSTEM_NOERR) {
-		if ((module->oFlag & (1u<<BCONFIDENTIAL)) == 0) {
+		if ((module->oFlag & (1U<<BCONFIDENTIAL)) == 0) {
 			found = true;
 
 // Find a family code; display its identifier
@@ -180,11 +188,11 @@ static	bool	local_listModule(uint8_t idFamily) {
 
 			idIdentifier = (char_t *)&idModule;
 
-			#if (defined(LITTLE_ENDIAN_S))
-			for (i = 0u; i < 4u; i++) { bufIdent[i] = *(idIdentifier + (3u - i)); }
+			#ifdef LITTLE_ENDIAN_S
+			for (i = 0U; i < 4U; i++) { bufIdent[i] = *(idIdentifier + (3U - i)); }
 
 			#else
-			for (i = 0u; i < 4u; i++) { bufIdent[i] = *(idIdentifier + i);		  }
+			for (i = 0U; i < 4U; i++) { bufIdent[i] = *(idIdentifier + i);		  }
 			#endif
 
 			bufIdent[4] = '\0';
@@ -193,6 +201,6 @@ static	bool	local_listModule(uint8_t idFamily) {
 		}
 		index++;
 	}
-	if (found == true) { (void)dprintf(KSYST, "\n"); }
+	if (found) { (void)dprintf(KSYST, "\n"); }
 	return (found);
 }

@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		alive process; blink the LED 0.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,8 +46,21 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
 #include	"alive.h"
+
+#include	<stdint.h>
+#include	<stdlib.h>
+
+#include	"serial/serial.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core_stackFrame.h"
+#include	"macros_soc.h"
+#include	"memo/memo.h"		// IWYU pragma: keep (required for PROCESS_STACKMALLOC)
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -70,7 +83,7 @@ extern	void		stub_alive_process(const void *argument);
 
 // This process has to run on the following cores:
 
-#define	KEXECUTION_CORE		((1u<<BCORE_0) | (1u<<BCORE_1) | (1u<<BCORE_2) | (1u<<BCORE_3))
+#define	KEXECUTION_CORE		((1U<<BCORE_0) | (1U<<BCORE_1) | (1U<<BCORE_2) | (1U<<BCORE_3))
 
 MODULE(
 	Alive,							// Module name (the first letter has to be upper case)
@@ -80,7 +93,7 @@ MODULE(
 	prgm,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	alive_clean,					// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	KEXECUTION_CORE					// Execution cores
 );
 
@@ -118,9 +131,9 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 // Values passed by the boot
 
 	if (argc == 4) {
-		vConfigure[core].oTime[0] = (uint32_t)strtol(argv[1], &dummy, 10u);
-		vConfigure[core].oTime[1] = (uint32_t)strtol(argv[2], &dummy, 10u);
-		vConfigure[core].oLed	  = (uint8_t)strtol(argv[3], &dummy, 10u);
+		vConfigure[core].oTime[0] = (uint32_t)strtol(argv[1], &dummy, 10U);
+		vConfigure[core].oTime[1] = (uint32_t)strtol(argv[2], &dummy, 10U);
+		vConfigure[core].oLed	  = (uint8_t)strtol(argv[3], &dummy, 10U);
 	}
 
 	PROCESS_STACKMALLOC(

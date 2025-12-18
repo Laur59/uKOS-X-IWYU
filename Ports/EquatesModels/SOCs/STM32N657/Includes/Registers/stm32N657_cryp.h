@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32N657_cryp equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // CRYP address definitions
 // ------------------------
@@ -90,7 +92,7 @@ typedef struct {
 	volatile	uint32_t	CSGCM7R;
 } CRYP_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	CRYP_NS	reinterpret_cast<CRYP_TypeDef *>(0x44020800u)
 #define	CRYP_S	reinterpret_cast<CRYP_TypeDef *>(0x54020800u)
 

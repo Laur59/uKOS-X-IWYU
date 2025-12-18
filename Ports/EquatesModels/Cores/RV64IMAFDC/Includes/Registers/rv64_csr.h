@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		rv64_csr equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -374,22 +374,22 @@
 // Bits in registers
 // -----------------
 
-#define	MSTATUS_UIE										(1u<<0)				//
-#define	MSTATUS_SIE										(1u<<1)				//
-#define	MSTATUS_HIE										(1u<<2)				//
-#define	MSTATUS_MIE										(1u<<3)				//
-#define	MSTATUS_UPIE									(1u<<4)				//
-#define	MSTATUS_SPIE									(1u<<5)				//
-#define	MSTATUS_HPIE									(1u<<6)				//
-#define	MSTATUS_MPIE									(1u<<7)				//
-#define	MSTATUS_SPP										(1u<<8)				//
-#define	MSTATUS_HPP										(3u<<9)				//
-#define	MSTATUS_MPP										(3u<<11)			//
-#define	MSTATUS_FS										(3u<<13)			//
-#define	MSTATUS_XS										(3u<<15)			//
-#define	MSTATUS_MPRV									(1u<<17)			//
-#define	MSTATUS_PUM										(1u<<18)			//
-#define	MSTATUS_MXR										(1u<<19)			//
+#define	MSTATUS_UIE										(1U<<0)				//
+#define	MSTATUS_SIE										(1U<<1)				//
+#define	MSTATUS_HIE										(1U<<2)				//
+#define	MSTATUS_MIE										(1U<<3)				//
+#define	MSTATUS_UPIE									(1U<<4)				//
+#define	MSTATUS_SPIE									(1U<<5)				//
+#define	MSTATUS_HPIE									(1U<<6)				//
+#define	MSTATUS_MPIE									(1U<<7)				//
+#define	MSTATUS_SPP										(1U<<8)				//
+#define	MSTATUS_HPP										(3U<<9)				//
+#define	MSTATUS_MPP										(3U<<11)			//
+#define	MSTATUS_FS										(3U<<13)			//
+#define	MSTATUS_XS										(3U<<15)			//
+#define	MSTATUS_MPRV									(1U<<17)			//
+#define	MSTATUS_PUM										(1U<<18)			//
+#define	MSTATUS_MXR										(1U<<19)			//
 #define	MSTATUS_VM										0x1F000000u			//
 #define	MSTATUS32_SD									0x80000000u			//
 #define	MSTATUS64_SD									0x8000000000000000u	//
@@ -408,90 +408,90 @@
 #define	MCAUSE_INTERRUPT								0x8000000000000000u	//
 #define	MCAUSE_CAUSE									0x7FFFFFFFFFFFFFFFu	//
 
-#define	DCSR_XDEBUGVER									(3u<<30)			//
-#define	DCSR_NDRESET									(1u<<29)			//
-#define	DCSR_FULLRESET									(1u<<28)			//
-#define	DCSR_EBREAKM									(1u<<15)			//
-#define	DCSR_EBREAKH									(1u<<14)			//
-#define	DCSR_EBREAKS									(1u<<13)			//
-#define	DCSR_EBREAKU									(1u<<12)			//
-#define	DCSR_STOPCYCLE									(1u<<10)			//
-#define	DCSR_STOPTIME									(1u<<9)				//
-#define	DCSR_CAUSE										(7u<<6)				//
-#define	DCSR_DEBUGINT									(1u<<5)				//
-#define	DCSR_HALT										(1u<<3)				//
-#define	DCSR_STEP										(1u<<2)				//
-#define	DCSR_PRV										(3u<<0)				//
+#define	DCSR_XDEBUGVER									(3U<<30)			//
+#define	DCSR_NDRESET									(1U<<29)			//
+#define	DCSR_FULLRESET									(1U<<28)			//
+#define	DCSR_EBREAKM									(1U<<15)			//
+#define	DCSR_EBREAKH									(1U<<14)			//
+#define	DCSR_EBREAKS									(1U<<13)			//
+#define	DCSR_EBREAKU									(1U<<12)			//
+#define	DCSR_STOPCYCLE									(1U<<10)			//
+#define	DCSR_STOPTIME									(1U<<9)				//
+#define	DCSR_CAUSE										(7U<<6)				//
+#define	DCSR_DEBUGINT									(1U<<5)				//
+#define	DCSR_HALT										(1U<<3)				//
+#define	DCSR_STEP										(1U<<2)				//
+#define	DCSR_PRV										(3U<<0)				//
 
-#define	DCSR_CAUSE_NONE									0u					//
-#define	DCSR_CAUSE_SWBP									1u					//
-#define	DCSR_CAUSE_HWBP									2u					//
-#define	DCSR_CAUSE_DEBUGINT								3u					//
-#define	DCSR_CAUSE_STEP									4u					//
-#define	DCSR_CAUSE_HALT									5u					//
+#define	DCSR_CAUSE_NONE									0U					//
+#define	DCSR_CAUSE_SWBP									1U					//
+#define	DCSR_CAUSE_HWBP									2U					//
+#define	DCSR_CAUSE_DEBUGINT								3U					//
+#define	DCSR_CAUSE_STEP									4U					//
+#define	DCSR_CAUSE_HALT									5U					//
 
-#define	MCONTROL_SELECT									(1u<<19)			//
-#define	MCONTROL_TIMING									(1u<<18)			//
+#define	MCONTROL_SELECT									(1U<<19)			//
+#define	MCONTROL_TIMING									(1U<<18)			//
 #define	MCONTROL_ACTION									(0x3Fu<<12)			//
-#define	MCONTROL_CHAIN									(1u<<11)			//
+#define	MCONTROL_CHAIN									(1U<<11)			//
 #define	MCONTROL_MATCH									(0xFu<<7)			//
-#define	MCONTROL_M										(1u<<6)				//
-#define	MCONTROL_H										(1u<<5)				//
-#define	MCONTROL_S										(1u<<4)				//
-#define	MCONTROL_U										(1u<<3)				//
-#define	MCONTROL_EXECUTE								(1u<<2)				//
-#define	MCONTROL_STORE									(1u<<1)				//
-#define	MCONTROL_LOAD									(1u<<0)				//
-#define	MCONTROL_TYPE_NONE								0u					//
-#define	MCONTROL_TYPE_MATCH								2u					//
-#define	MCONTROL_ACTION_DEBUG_EXCEPTION					0u					//
-#define	MCONTROL_ACTION_DEBUG_MODE						1u					//
-#define	MCONTROL_ACTION_TRACE_START						2u					//
-#define	MCONTROL_ACTION_TRACE_STOP						3u					//
-#define	MCONTROL_ACTION_TRACE_EMIT						4u					//
-#define	MCONTROL_MATCH_EQUAL							0u					//
-#define	MCONTROL_MATCH_NAPOT							1u					//
-#define	MCONTROL_MATCH_GE								2u					//
-#define	MCONTROL_MATCH_LT								3u					//
-#define	MCONTROL_MATCH_MASK_LOW							4u					//
-#define	MCONTROL_MATCH_MASK_HIGH						5u					//
+#define	MCONTROL_M										(1U<<6)				//
+#define	MCONTROL_H										(1U<<5)				//
+#define	MCONTROL_S										(1U<<4)				//
+#define	MCONTROL_U										(1U<<3)				//
+#define	MCONTROL_EXECUTE								(1U<<2)				//
+#define	MCONTROL_STORE									(1U<<1)				//
+#define	MCONTROL_LOAD									(1U<<0)				//
+#define	MCONTROL_TYPE_NONE								0U					//
+#define	MCONTROL_TYPE_MATCH								2U					//
+#define	MCONTROL_ACTION_DEBUG_EXCEPTION					0U					//
+#define	MCONTROL_ACTION_DEBUG_MODE						1U					//
+#define	MCONTROL_ACTION_TRACE_START						2U					//
+#define	MCONTROL_ACTION_TRACE_STOP						3U					//
+#define	MCONTROL_ACTION_TRACE_EMIT						4U					//
+#define	MCONTROL_MATCH_EQUAL							0U					//
+#define	MCONTROL_MATCH_NAPOT							1U					//
+#define	MCONTROL_MATCH_GE								2U					//
+#define	MCONTROL_MATCH_LT								3U					//
+#define	MCONTROL_MATCH_MASK_LOW							4U					//
+#define	MCONTROL_MATCH_MASK_HIGH						5U					//
 
 #define	SIP_SSIP MIP_SSIP
 #define	SIP_STIP MIP_STIP
 
-#define	PRV_U											0u					//
-#define	PRV_S											1u					//
-#define	PRV_H											2u					//
-#define	PRV_M											3u					//
+#define	PRV_U											0U					//
+#define	PRV_S											1U					//
+#define	PRV_H											2U					//
+#define	PRV_M											3U					//
 
-#define	VM_MBARE										0u					//
-#define	VM_MBB											1u					//
-#define	VM_MBBID										2u					//
-#define	VM_SV32											8u					//
-#define	VM_SV39											9u					//
-#define	VM_SV48											10u					//
+#define	VM_MBARE										0U					//
+#define	VM_MBB											1U					//
+#define	VM_MBBID										2U					//
+#define	VM_SV32											8U					//
+#define	VM_SV39											9U					//
+#define	VM_SV48											10U					//
 
-#define	IRQ_S_SOFT										1u					//
-#define	IRQ_H_SOFT										2u					//
-#define	IRQ_M_SOFT										3u					//
-#define	IRQ_S_TIMER										5u					//
-#define	IRQ_H_TIMER										6u					//
-#define	IRQ_M_TIMER										7u					//
-#define	IRQ_S_EXT										9u					//
-#define	IRQ_H_EXT										10u					//
-#define	IRQ_M_EXT										11u					//
-#define	IRQ_COP											12u					//
-#define	IRQ_HOST										13u					//
+#define	IRQ_S_SOFT										1U					//
+#define	IRQ_H_SOFT										2U					//
+#define	IRQ_M_SOFT										3U					//
+#define	IRQ_S_TIMER										5U					//
+#define	IRQ_H_TIMER										6U					//
+#define	IRQ_M_TIMER										7U					//
+#define	IRQ_S_EXT										9U					//
+#define	IRQ_H_EXT										10U					//
+#define	IRQ_M_EXT										11U					//
+#define	IRQ_COP											12U					//
+#define	IRQ_HOST										13U					//
 
-#define	MIP_SSIP										(1u<<IRQ_S_SOFT)	//
-#define	MIP_HSIP										(1u<<IRQ_H_SOFT)	//
-#define	MIP_MSIP										(1u<<IRQ_M_SOFT)	//
-#define	MIP_STIP										(1u<<IRQ_S_TIMER)	//
-#define	MIP_HTIP										(1u<<IRQ_H_TIMER)	//
-#define	MIP_MTIP										(1u<<IRQ_M_TIMER)	//
-#define	MIP_SEIP										(1u<<IRQ_S_EXT)		//
-#define	MIP_HEIP										(1u<<IRQ_H_EXT)		//
-#define	MIP_MEIP										(1u<<IRQ_M_EXT)		//
+#define	MIP_SSIP										(1U<<IRQ_S_SOFT)	//
+#define	MIP_HSIP										(1U<<IRQ_H_SOFT)	//
+#define	MIP_MSIP										(1U<<IRQ_M_SOFT)	//
+#define	MIP_STIP										(1U<<IRQ_S_TIMER)	//
+#define	MIP_HTIP										(1U<<IRQ_H_TIMER)	//
+#define	MIP_MTIP										(1U<<IRQ_M_TIMER)	//
+#define	MIP_SEIP										(1U<<IRQ_S_EXT)		//
+#define	MIP_HEIP										(1U<<IRQ_H_EXT)		//
+#define	MIP_MEIP										(1U<<IRQ_M_EXT)		//
 
 #define	DEFAULT_RSTVEC									0x00001000u			//
 #define	DEFAULT_NMIVEC									0x00001004u			//
@@ -500,20 +500,20 @@
 #define	EXT_IO_BASE										0x40000000u			//
 #define	DRAM_BASE										0x80000000u			//
 
-#define	MCAUSE_EXC_CODE_INSTRUCTION_ADDRESS_MISALIGNED	0u					//
-#define	MCAUSE_EXC_CODE_INSTRUCTION_ACCESS_FAULT		1u					//
-#define	MCAUSE_EXC_CODE_ILLEGAL_INSTRUCTION				2u					//
-#define	MCAUSE_EXC_CODE_BREAKPOINT						3u					//
-#define	MCAUSE_EXC_CODE_LOAD_ADDRESS_MISALIGNED			4u					//
-#define	MCAUSE_EXC_CODE_LOAD_ACCESS_FAULT				5u					//
-#define	MCAUSE_EXC_CODE_STORE_AMO_ADDRESS_MISALIGNED	6u					//
-#define	MCAUSE_EXC_CODE_STORE_AMO_ACCESS_FAULT			7u					//
-#define	MCAUSE_EXC_CODE_ENV_CALL_FROM_U_MODE			8u					//
-#define	MCAUSE_EXC_CODE_ENV_CALL_FROM_S_MODE			9u					//
-#define	MCAUSE_EXC_CODE_ENV_CALL_FROM_M_MODE			11u					//
-#define	MCAUSE_EXC_CODE_INSTRUCTION_PAGE_FAULT			12u					//
-#define	MCAUSE_EXC_CODE_LOAD_PAGE_FAULT					13u					//
-#define	MCAUSE_EXC_CODE_STORE_AMO_PAGE_FAULT			15u					//
+#define	MCAUSE_EXC_CODE_INSTRUCTION_ADDRESS_MISALIGNED	0U					//
+#define	MCAUSE_EXC_CODE_INSTRUCTION_ACCESS_FAULT		1U					//
+#define	MCAUSE_EXC_CODE_ILLEGAL_INSTRUCTION				2U					//
+#define	MCAUSE_EXC_CODE_BREAKPOINT						3U					//
+#define	MCAUSE_EXC_CODE_LOAD_ADDRESS_MISALIGNED			4U					//
+#define	MCAUSE_EXC_CODE_LOAD_ACCESS_FAULT				5U					//
+#define	MCAUSE_EXC_CODE_STORE_AMO_ADDRESS_MISALIGNED	6U					//
+#define	MCAUSE_EXC_CODE_STORE_AMO_ACCESS_FAULT			7U					//
+#define	MCAUSE_EXC_CODE_ENV_CALL_FROM_U_MODE			8U					//
+#define	MCAUSE_EXC_CODE_ENV_CALL_FROM_S_MODE			9U					//
+#define	MCAUSE_EXC_CODE_ENV_CALL_FROM_M_MODE			11U					//
+#define	MCAUSE_EXC_CODE_INSTRUCTION_PAGE_FAULT			12U					//
+#define	MCAUSE_EXC_CODE_LOAD_PAGE_FAULT					13U					//
+#define	MCAUSE_EXC_CODE_STORE_AMO_PAGE_FAULT			15U					//
 
 #define	CSR_SETBITS(reg, mask) \
 	({ \

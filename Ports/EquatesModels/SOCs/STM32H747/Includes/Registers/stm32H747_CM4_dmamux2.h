@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32H747_CM4_dmamux2 equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // DMAMUX2 address definitions
 // ---------------------------
 
@@ -77,7 +79,7 @@ typedef struct {
 	volatile	uint32_t	RGCFR;
 } DMAMUX2_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	DMAMUX2	reinterpret_cast<DMAMUX2_TypeDef *>(0x58025800u)
 
 #else

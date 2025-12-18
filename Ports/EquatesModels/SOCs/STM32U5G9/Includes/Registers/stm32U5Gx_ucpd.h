@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32U5Gx_ucpd equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // UCPD address definitions
 // ------------------------
 
@@ -69,7 +71,7 @@ typedef struct {
 	volatile	uint32_t	RX_ORDEXT2;
 } UCPD_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	UCPD1_NS	reinterpret_cast<UCPD_TypeDef *>(0x4000DC00u)
 #define	UCPD1_S		reinterpret_cast<UCPD_TypeDef *>(0x5000DC00u)
 

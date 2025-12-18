@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		spi manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -63,18 +63,21 @@
  * @{
  */
 
-#include	"Lib_peripherals/spi_common.h"
+#include	<stdint.h>
+
+#include	"spi_common.h"
+#include	"types.h"
 
 typedef	enum {
-			KSPI0 = (((uint32_t)'s'<<24u) | ((uint32_t)'p'<<16u) | ((uint32_t)'i'<<8u) | (uint32_t)'0'),	// spi0 manager
-			KSPI1 = (((uint32_t)'s'<<24u) | ((uint32_t)'p'<<16u) | ((uint32_t)'i'<<8u) | (uint32_t)'1'),	// spi1 manager
-			KSPI2 = (((uint32_t)'s'<<24u) | ((uint32_t)'p'<<16u) | ((uint32_t)'i'<<8u) | (uint32_t)'2'),	// spi2 manager
-			KSPI3 = (((uint32_t)'s'<<24u) | ((uint32_t)'p'<<16u) | ((uint32_t)'i'<<8u) | (uint32_t)'3')		// spi3 manager
+			KSPI0 = (((uint32_t)'s'<<24U) | ((uint32_t)'p'<<16U) | ((uint32_t)'i'<<8U) | (uint32_t)'0'),	// spi0 manager
+			KSPI1 = (((uint32_t)'s'<<24U) | ((uint32_t)'p'<<16U) | ((uint32_t)'i'<<8U) | (uint32_t)'1'),	// spi1 manager
+			KSPI2 = (((uint32_t)'s'<<24U) | ((uint32_t)'p'<<16U) | ((uint32_t)'i'<<8U) | (uint32_t)'2'),	// spi2 manager
+			KSPI3 = (((uint32_t)'s'<<24U) | ((uint32_t)'p'<<16U) | ((uint32_t)'i'<<8U) | (uint32_t)'3')		// spi3 manager
 } spiManager_t;
 
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -132,9 +135,9 @@ extern	int32_t	spi_release(spiManager_t manager, reserveMode_t reserveMode);
  * \code{.c}
  *          int32_t       status;
  * const    spiCnf_t     configure = {
- *                            .oSpeed    = 5000000u,
+ *                            .oSpeed    = 5000000U,
  *                            .oMode     = (uint8_t)KSPI_MASTER,
- *                            .oClock    = (1u<<(uint8_t)BSPI_POL) | (1u<<(uint8_t)BSPI_PHA)
+ *                            .oClock    = (1U<<(uint8_t)BSPI_POL) | (1U<<(uint8_t)BSPI_PHA)
  *                        };
  *
  *    status = spi_configure(KSPI0, &configure);
@@ -214,7 +217,7 @@ extern	int32_t	spi_writeRead(spiManager_t manager, uint8_t *data);
  */
 extern	int32_t	spi_multipleWriteRead(spiManager_t manager, const uint8_t *wData, uint16_t wSize, uint8_t *rData, uint16_t rSize, uint32_t timeout);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 

@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		This tool allows to control the ESP32 Alastor chip.
 ;			!!! This tool is Alastor specific.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,7 +47,26 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#ifndef CONFIG_MAN_URT2_S
+#error "This tool requires urt2 manager"
+#else
+
+#include	<stdint.h>
+#include	<stdio.h>
+#include	<stdlib.h>
+
+#include	"board.h"
+#include	"kern/kern.h"
+#include	"led/led.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"serial/serial.h"
+#include	"serial_common.h"
+#include	"soc_reg.h"
+#include	"text/text.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -81,14 +100,14 @@ MODULE(
 	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,										// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
 // CLI tool specific
 // =================
 
-#define	KSZ_BUFFER		128u
+#define	KSZ_BUFFER		128U
 
 /*
  * \brief Main entry point
@@ -107,7 +126,7 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 					.oStopBits = KSERIAL_STOPBITS_1,
 					.oParity   = KSERIAL_PARITY_NONE,
 					.oBaudRate = KSERIAL_BAUDRATE_DEFAULT,
-					.oKernSync = ((uint32_t)1u<<(uint32_t)BSERIAL_SEMAPHORE_RX)
+					.oKernSync = ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_RX)
 				};
 
 	(void)dprintf(KSYST, "Control of the ESP32 chip.\n");
@@ -123,18 +142,18 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 
 	PRIVILEGE_ELEVATE;
 	switch (argc) {
-		case 1u: {
+		case 1U: {
 			error = KERR_INA;
 			break;
 		}
-		case 2u: {
+		case 2U: {
 			error = KERR_NOT;
 
 // Disable the ESP32
 
 			text_checkAsciiBuffer(argv[1], "-disable", &equals);
-			if (equals == true) {
-				GPIOE->ODR &= (uint32_t)~(1u<<BESP32_ENABLE);
+			if (equals) {
+				GPIOE->ODR &= (uint32_t)~(1U<<BESP32_ENABLE);
 				break;
 			}
 
@@ -142,10 +161,10 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 // BE ---\____/---
 
 			text_checkAsciiBuffer(argv[1], "-reset", &equals);
-			if (equals == true) {
-				GPIOD->ODR |=			 (1u<<BESP32_NDOWNLOAD);
-				GPIOE->ODR &= (uint32_t)~(1u<<BESP32_ENABLE);	 kern_suspendProcess(10u);
-				GPIOE->ODR |=			 (1u<<BESP32_ENABLE);
+			if (equals) {
+				GPIOD->ODR |=			 (1U<<BESP32_NDOWNLOAD);
+				GPIOE->ODR &= (uint32_t)~(1U<<BESP32_ENABLE);	 kern_suspendProcess(10U);
+				GPIOE->ODR |=			 (1U<<BESP32_ENABLE);
 				break;
 			}
 
@@ -154,11 +173,11 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 // BE   -------\____/-------
 
 			text_checkAsciiBuffer(argv[1], "-boot", &equals);
-			if (equals == true) {
-				GPIOD->ODR &= (uint32_t)~(1u<<BESP32_NDOWNLOAD); kern_suspendProcess(10u);
-				GPIOE->ODR &= (uint32_t)~(1u<<BESP32_ENABLE);	 kern_suspendProcess(10u);
-				GPIOE->ODR |=			 (1u<<BESP32_ENABLE);	 kern_suspendProcess(10u);
-				GPIOD->ODR |=			 (1u<<BESP32_NDOWNLOAD);
+			if (equals) {
+				GPIOD->ODR &= (uint32_t)~(1U<<BESP32_NDOWNLOAD); kern_suspendProcess(10U);
+				GPIOE->ODR &= (uint32_t)~(1U<<BESP32_ENABLE);	 kern_suspendProcess(10U);
+				GPIOE->ODR |=			 (1U<<BESP32_ENABLE);	 kern_suspendProcess(10U);
+				GPIOD->ODR |=			 (1U<<BESP32_NDOWNLOAD);
 
 				(void)dprintf(KSYST, "ESP32 bootloader is active!\n");
 				break;
@@ -168,8 +187,8 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 // RTS _______/---
 
 			text_checkAsciiBuffer(argv[1], "-srts", &equals);
-			if (equals == true) {
-				GPIOG->ODR |= (1u<<BESP32_CTS);
+			if (equals) {
+				GPIOG->ODR |= (1U<<BESP32_CTS);
 				break;
 			}
 
@@ -177,56 +196,56 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 // RTS ---\_____
 
 			text_checkAsciiBuffer(argv[1], "-rrts", &equals);
-			if (equals == true) {
-				GPIOG->ODR &= (uint32_t)~(1u<<BESP32_CTS);
+			if (equals) {
+				GPIOG->ODR &= (uint32_t)~(1U<<BESP32_CTS);
 				break;
 			}
 			error = KERR_INA;
 			break;
 		}
-		case 3u: {
+		case 3U: {
 
 // Connect the KURT0 to the KURT2
 // Terminate when KURT0 receives ++++
 
 			text_checkAsciiBuffer(argv[1], "-connect", &equals);
-			if (equals == true) {
-				binary = (int32_t)strtol(argv[2], &dummy, 10u);
+			if (equals) {
+				binary = (int32_t)strtol(argv[2], &dummy, 10U);
 
 				switch (binary) {
-					case 2400u:		{ bdValue = KSERIAL_BAUDRATE_2400;    break; }
-					case 4800u:		{ bdValue = KSERIAL_BAUDRATE_4800;    break; }
-					case 9600u:		{ bdValue = KSERIAL_BAUDRATE_9600;    break; }
-					case 19200u:	{ bdValue = KSERIAL_BAUDRATE_19200;   break; }
-					case 38400u:	{ bdValue = KSERIAL_BAUDRATE_38400;   break; }
-					case 57600u:	{ bdValue = KSERIAL_BAUDRATE_57600;   break; }
-					case 115200u:	{ bdValue = KSERIAL_BAUDRATE_115200;  break; }
-					case 230400u:	{ bdValue = KSERIAL_BAUDRATE_230400;  break; }
-					case 460800u:	{ bdValue = KSERIAL_BAUDRATE_460800;  break; }
-					case 500000u:	{ bdValue = KSERIAL_BAUDRATE_500000;  break; }
-					case 921600u:	{ bdValue = KSERIAL_BAUDRATE_921600;  break; }
-					case 1000000u:	{ bdValue = KSERIAL_BAUDRATE_1000000; break; }
-					case 1500000u:	{ bdValue = KSERIAL_BAUDRATE_1500000; break; }
-					case 1843200u:	{ bdValue = KSERIAL_BAUDRATE_1843200; break; }
-					case 2000000u:	{ bdValue = KSERIAL_BAUDRATE_2000000; break; }
-					case 2500000u:	{ bdValue = KSERIAL_BAUDRATE_2500000; break; }
-					case 3000000u:	{ bdValue = KSERIAL_BAUDRATE_3000000; break; }
+					case 2400U:		{ bdValue = KSERIAL_BAUDRATE_2400;    break; }
+					case 4800U:		{ bdValue = KSERIAL_BAUDRATE_4800;    break; }
+					case 9600U:		{ bdValue = KSERIAL_BAUDRATE_9600;    break; }
+					case 19200U:	{ bdValue = KSERIAL_BAUDRATE_19200;   break; }
+					case 38400U:	{ bdValue = KSERIAL_BAUDRATE_38400;   break; }
+					case 57600U:	{ bdValue = KSERIAL_BAUDRATE_57600;   break; }
+					case 115200U:	{ bdValue = KSERIAL_BAUDRATE_115200;  break; }
+					case 230400U:	{ bdValue = KSERIAL_BAUDRATE_230400;  break; }
+					case 460800U:	{ bdValue = KSERIAL_BAUDRATE_460800;  break; }
+					case 500000U:	{ bdValue = KSERIAL_BAUDRATE_500000;  break; }
+					case 921600U:	{ bdValue = KSERIAL_BAUDRATE_921600;  break; }
+					case 1000000U:	{ bdValue = KSERIAL_BAUDRATE_1000000; break; }
+					case 1500000U:	{ bdValue = KSERIAL_BAUDRATE_1500000; break; }
+					case 1843200U:	{ bdValue = KSERIAL_BAUDRATE_1843200; break; }
+					case 2000000U:	{ bdValue = KSERIAL_BAUDRATE_2000000; break; }
+					case 2500000U:	{ bdValue = KSERIAL_BAUDRATE_2500000; break; }
+					case 3000000U:	{ bdValue = KSERIAL_BAUDRATE_3000000; break; }
 					default:		{ bdValue = KSERIAL_BAUDRATE_460800;  break; }
 				}
 
-				RESERVE_SERIAL(KURT2, KMODE_READ_WRITE);
+				serial_reserve(KURT2, KMODE_READ_WRITE, KWAIT_INFINITY);
 				configureURTx.oBaudRate = bdValue;
 				serial_configure(KURT2, &configureURTx);
 
-				while (terminate == false) {
+				while (!terminate) {
 
 // Read a buffer on the KURT0 and write it on the KURT2
 // Buffer per buffer operation
 
 					nbBytes = KSZ_BUFFER;
-					if (local_getByte(KURT0, &data[0], &nbBytes) == true) {
-						if (nbBytes >= 4u) {
-							if (local_checkExit((const char_t *)&data[0]) == true) {
+					if (local_getByte(KURT0, &data[0], &nbBytes)) {
+						if (nbBytes >= 4U) {
+							if (local_checkExit((const char_t *)&data[0])) {
 								terminate = true;
 							}
 						}
@@ -237,15 +256,15 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 // Buffer per buffer operation
 
 					nbBytes = KSZ_BUFFER;
-					if (local_getByte(KURT2, &data[0], &nbBytes) == true) {
+					if (local_getByte(KURT2, &data[0], &nbBytes)) {
 						local_putByte(KURT0, &data[0], &nbBytes);
 					}
 
 // A pack every 1-ms
 
-					kern_suspendProcess(1u);
+					kern_suspendProcess(1U);
 				}
-				RELEASE_SERIAL(KURT2, KMODE_READ_WRITE);
+				serial_release(KURT2, KMODE_READ_WRITE);
 
 				(void)dprintf(KSYST, "End connection.\n\n");
 				break;
@@ -280,7 +299,7 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 static	bool	local_getByte(serialManager_t serialManager, uint8_t *buffer, uint32_t *nbBytes) {
 	bool	status;
 
-	status = (serial_read(serialManager, buffer, nbBytes) == KERR_SERIAL_NOERR) ? (true) : (false);
+	status = (serial_read(serialManager, buffer, nbBytes) == KERR_SERIAL_NOERR);
 	led_toggle(KLED_0);
 	return (status);
 }
@@ -316,3 +335,4 @@ static	bool	local_checkExit(const char_t *buffer) {
 	if (exitPatter[3] != buffer[3]) { return (false); }
 	return (true);
 }
+#endif

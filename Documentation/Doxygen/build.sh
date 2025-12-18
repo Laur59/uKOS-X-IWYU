@@ -46,6 +46,21 @@
 #
 #------------------------------------------------------------------------
 
+# Get directory of the script
+
+if [[ ${SHELL} == *"zsh"* ]]; then
+	if [[ -n ${ZSH_VERSION} ]]; then
+		PATH_PRG=${0:a:h}
+	else
+		PATH_PRG="$(cd "$(dirname "$0")" && pwd)"
+	fi
+elif [[ ${SHELL} == *"bash"* ]]; then
+	PATH_PRG="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+else
+	PATH_PRG="$(cd "$(dirname "$0")" && pwd)"
+fi
+export PATH_UKOS_X_PACKAGE="${PATH_PRG}/../.."
+
 # check that application Doxygen is available
 
 if ! command -v doxygen &> /dev/null

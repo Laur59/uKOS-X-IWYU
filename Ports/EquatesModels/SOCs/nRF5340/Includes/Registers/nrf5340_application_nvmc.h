@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		nrf5340_application_nvmc equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // NVMC address definitions
 // ------------------------
 
@@ -67,7 +69,7 @@ typedef struct {
 	volatile	uint32_t	WRITEUICRNS;
 } NVMC_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	NVMC_NS	reinterpret_cast<NVMC_TypeDef *>(0x40039000u)
 #define	NVMC_S	reinterpret_cast<NVMC_TypeDef *>(0x50039000u)
 

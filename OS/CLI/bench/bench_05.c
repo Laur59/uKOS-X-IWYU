@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Bench 05: 	Compute a simple loop. 1000000 iterations.
@@ -24,8 +24,8 @@
 ;			MAiXDUiNO_K210 @ 400-MHz	-
 ;			Discovery_U5G9 @ 160-MHz	-
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -59,16 +59,21 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdio.h>
 
-#define	KNB_TESTS			1000000u
+#include	"serial/serial.h"
+
+#ifdef BENCH_ANALYSER_S
+#include	"board.h"
+#include	"kern/kern.h"
+#include	"macros_core.h"
+
+#define	KNB_TESTS			1000000U
 
 // CLI tool specific
 // =================
 
-#if (defined(Nucleo_H743_S) || defined(Nucleo_N657_S))
 static	void	 local_loop(uint32_t nb);
-#endif
 
 /*
  * \brief bench_05
@@ -81,7 +86,7 @@ bool	bench_05(void) {
 	#if (defined(Nucleo_H743_S) || defined(Nucleo_N657_S))
 	(void)dprintf(KSYST, "Bench 05: For scope tests!\n");
 
-	kern_suspendProcess(1000u);
+	kern_suspendProcess(1000U);
 
 	INTERRUPTION_OFF_HARD;
 	while (true) {
@@ -96,8 +101,6 @@ bool	bench_05(void) {
 	return (true);
 }
 
-#if (defined(Nucleo_H743_S) || defined(Nucleo_N657_S))
-
 // Local routines
 // ==============
 
@@ -110,8 +113,15 @@ bool	bench_05(void) {
 static	void local_loop(uint32_t nb) {
 	volatile	uint32_t	i;
 
-	for (i = 0u; i < nb; i++) {
+	for (i = 0U; i < nb; i++) {
 		NOP;
 	}
+}
+#else
+bool	bench_05(void) {
+
+	dprintf(KSYST, "Bench 05: not available for this target\n");
+
+	return (true);
 }
 #endif

@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		K210_sysctl equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,10 +48,12 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // SYSCTL address definitions
 // --------------------------
 
-#define	SYSCTRL_CLOCK_FREQ_IN0		26000000u
+#define	SYSCTRL_CLOCK_FREQ_IN0		26000000U
 
 // System controller register table
 // --------------------------------
@@ -193,7 +195,7 @@ typedef	enum	_sysctl_clock_t {
 	SYSCTL_CLOCK_SHA,								//
 	SYSCTL_CLOCK_OTP,								//
 	SYSCTL_CLOCK_RTC,								//
-	SYSCTL_CLOCK_ACLK = 40u,							//
+	SYSCTL_CLOCK_ACLK = 40U,							//
 	SYSCTL_CLOCK_HCLK,								//
 	SYSCTL_CLOCK_IN0,								//
 	SYSCTL_CLOCK_MAX								//
@@ -210,7 +212,7 @@ typedef	enum	_sysctl_clock_select_t {
 	SYSCTL_CLOCK_SELECT_TIMER1,						//
 	SYSCTL_CLOCK_SELECT_TIMER2,						//
 	SYSCTL_CLOCK_SELECT_SPI3_SAMPLE,				//
-	SYSCTL_CLOCK_SELECT_MAX = 11u					//
+	SYSCTL_CLOCK_SELECT_MAX = 11U					//
 } sysctl_clock_select_t;
 
 typedef	enum	_sysctl_threshold_t {
@@ -241,7 +243,7 @@ typedef	enum	_sysctl_threshold_t {
 	SYSCTL_THRESHOLD_I2C2,							//
 	SYSCTL_THRESHOLD_WDT0,							//
 	SYSCTL_THRESHOLD_WDT1,							//
-	SYSCTL_THRESHOLD_MAX = 28u						//
+	SYSCTL_THRESHOLD_MAX = 28U						//
 } sysctl_threshold_t;
 
 typedef	enum	_sysctl_reset_t {
@@ -274,7 +276,7 @@ typedef	enum	_sysctl_reset_t {
 	SYSCTL_RESET_WDT1,								//
 	SYSCTL_RESET_SHA,								//
 	SYSCTL_RESET_RTC,								//
-	SYSCTL_RESET_MAX = 31u							//
+	SYSCTL_RESET_MAX = 31U							//
 } sysctl_reset_t;
 
 typedef	enum	_sysctl_power_bank {
@@ -677,9 +679,9 @@ typedef	struct	_sysctl_general_pll {
 
 #if 0
 const	uint8_t	get_select_pll2[] = {
-	[SYSCTL_SOURCE_IN0]  = 0u,						//
-	[SYSCTL_SOURCE_PLL0] = 1u,						//
-	[SYSCTL_SOURCE_PLL1] = 2u						//
+	[SYSCTL_SOURCE_IN0]  = 0U,						//
+	[SYSCTL_SOURCE_PLL0] = 1U,						//
+	[SYSCTL_SOURCE_PLL1] = 2U						//
 };
 
 const	uint8_t	get_source_pll2[] = {
@@ -689,8 +691,8 @@ const	uint8_t	get_source_pll2[] = {
 };
 
 const	uint8_t	get_select_aclk[] = {
-	[SYSCTL_SOURCE_IN0]  = 0u,						//
-	[SYSCTL_SOURCE_PLL0] = 1u						//
+	[SYSCTL_SOURCE_IN0]  = 0U,						//
+	[SYSCTL_SOURCE_PLL0] = 1U						//
 };
 
 const	uint8_t	get_source_aclk[] = {

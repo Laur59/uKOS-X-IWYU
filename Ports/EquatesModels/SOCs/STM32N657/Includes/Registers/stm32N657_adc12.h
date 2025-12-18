@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32N657_adc12 equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // ADC12 address definitions
 // -------------------------
 
@@ -60,7 +62,7 @@ typedef struct {
 	volatile	uint32_t	CDR2;
 } ADC12_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	ADC12_NS	reinterpret_cast<ADC12_TypeDef *>(0x40022300u)
 #define	ADC12_S		reinterpret_cast<ADC12_TypeDef *>(0x50022300u)
 

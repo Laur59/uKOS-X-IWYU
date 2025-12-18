@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		watchdog manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,9 +46,23 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	"watchdog.h"
 
-#if (defined(CONFIG_MAN_WATCHDOG_S))
+#include	<stdint.h>
+#include	<stdlib.h>
+
+#include	"serial/serial.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"macros_soc.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"types.h"
+
+#ifdef CONFIG_MAN_WATCHDOG_S
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -71,7 +85,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -151,7 +165,7 @@ int32_t	watchdog_arm(uint32_t time, uint8_t mode) {
 				DAEMON_PRIVILEGED(core, specification, aStrText, vStack, KDAEMON_STACK_SIZE, local_process_watchdog, aStrIden, KSYST, KKERN_PRIORITY_HIGH_15);
 				if (kern_createProcess(&specification, &pack, &process_watchdog[core]) != KERR_KERN_NOERR) { LOG(KFATAL_KERNEL, "wdog: Create process watchdog"); exit(EXIT_OS_PANIC); }
 
-				do { kern_suspendProcess(1u); } while (releasePack == false);
+				do { kern_suspendProcess(1U); } while (!releasePack);
 			}
 			break;
 		}
@@ -195,7 +209,7 @@ static void __attribute__ ((noreturn)) local_process_watchdog(const void *argume
 	watchdog = pack->oTime;
 	time     = (uint32_t)((float64_t)pack->oTime * KWATCHDOG_MARGIN);
 
-	time = (time == 0u) ? (1u) : (time);
+	time = (time == 0U) ? (1U) : (time);
 	releasePack  = pack->oReleasePack;
 	*releasePack = true;
 

@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		EEPROM W25X80L equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -50,10 +50,10 @@
 
 // Memory structure
 
-#define	KSPIM_SZ_SECTOR						4096u							// Sector size
-#define	KSPIM_SZ_PAGE						256u							// Page size
-#define	KSPIM_NB_SECTOR_BLOC				16u								// Number of sector by block
-#define	KSPIM_NB_BLOC						16u								// Number of blocks
+#define	KSPIM_SZ_SECTOR						4096U							// Sector size
+#define	KSPIM_SZ_PAGE						256U							// Page size
+#define	KSPIM_NB_SECTOR_BLOC				16U								// Number of sector by block
+#define	KSPIM_NB_BLOC						16U								// Number of blocks
 #define	KSPIM_SZ_FLASH						(KSZBLOC * KSPIM_NB_BLOC)		// EEPROM size
 
 // Commands for the chip W25X80L
@@ -69,10 +69,10 @@
 
 // Status bits for the chip W25X80L
 
-#define	BBUSY								0u								// Erase or write in progress
-#define	BWEL								1u								// Write enable latch
-#define	BBP0								2u								// Block protect block 0
-#define	BBP1								3u								// Block protect block 1
-#define	BBP2								4u								// Block protect block 2
-#define	BTB									5u								// Top/Bottom write protect
-#define	BSRP								7u								// Status register protect
+#define	BBUSY								0U								// Erase or write in progress
+#define	BWEL								1U								// Write enable latch
+#define	BBP0								2U								// Block protect block 0
+#define	BBP1								3U								// Block protect block 1
+#define	BBP2								4U								// Block protect block 2
+#define	BTB									5U								// Top/Bottom write protect
+#define	BSRP								7U								// Status register protect

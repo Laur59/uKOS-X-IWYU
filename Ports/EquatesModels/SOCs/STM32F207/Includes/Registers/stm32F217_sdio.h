@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32F217_sdio equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // SDIO address definitions
 // ------------------------
 
@@ -74,7 +76,7 @@ typedef struct {
 	volatile	uint32_t	FIFO;
 } SDIO_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	SDIO	reinterpret_cast<SDIO_TypeDef *>(0x40012C00u)
 
 #else

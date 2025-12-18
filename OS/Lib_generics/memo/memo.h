@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		memo manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -63,11 +63,15 @@
  * @{
  */
 
+#include	<stdint.h>
+
+#include	"types.h"
+
 // memo_malloc memory alignments
 // -----------------------------
 
 typedef	enum {
-			KMEMO_ALIGN_4 = 0u,									// Alignment 4-bytes
+			KMEMO_ALIGN_4 = 0U,									// Alignment 4-bytes
 			KMEMO_ALIGN_8,										// Alignment 8-bytes (default)
 			KMEMO_ALIGN_16,										// Alignment 16-bytes
 			KMEMO_ALIGN_32										// Alignment 32-bytes
@@ -86,7 +90,7 @@ struct	memoMallocInf {
 
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -203,7 +207,7 @@ extern	int32_t memo_readBlocInfo(void *address, memoMallocInf_t *allocInfo);
  */
 extern	void	memo_delayedFree(void *address);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 

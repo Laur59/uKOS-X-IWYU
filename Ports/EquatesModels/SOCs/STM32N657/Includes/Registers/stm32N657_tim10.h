@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32N657_tim10 equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // TIM10 address definitions
 // -------------------------
 
@@ -74,7 +76,7 @@ typedef struct {
 	volatile	uint16_t	TISEL;
 } TIM10_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	TIM10_NS	reinterpret_cast<TIM10_TypeDef *>(0x40003000u)
 #define	TIM10_S		reinterpret_cast<TIM10_TypeDef *>(0x50003000u)
 

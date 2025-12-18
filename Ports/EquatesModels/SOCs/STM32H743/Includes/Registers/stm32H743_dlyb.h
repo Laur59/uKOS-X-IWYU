@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32H743_dlyb equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // DLYB address definitions
 // ------------------------
 
@@ -56,7 +58,7 @@ typedef struct {
 	volatile	uint32_t	CFGR;
 } DLYB_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	DELAY_BLOCK_SDMMC1	reinterpret_cast<DLYB_TypeDef *>(0x52008000u)
 #define	DELAY_BLOCK_QUADSPI	reinterpret_cast<DLYB_TypeDef *>(0x52006000u)
 #define	DELAY_BLOCK_SDMMC2	reinterpret_cast<DLYB_TypeDef *>(0x48022800u)

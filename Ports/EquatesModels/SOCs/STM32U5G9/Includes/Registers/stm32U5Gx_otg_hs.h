@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32U5Gx_otg_hs equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // OTG_HS address definitions
 // --------------------------
@@ -347,7 +349,7 @@ typedef struct {
 	volatile	uint32_t	PCGCCTL;
 } OTG_HS_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	OTG_HS_NS	reinterpret_cast<OTG_HS_TypeDef *>(0x42040000u)
 #define	OTG_HS_S	reinterpret_cast<OTG_HS_TypeDef *>(0x52040000u)
 

@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		FLASH MX25R6435 equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -50,11 +50,11 @@
 
 // Memory structure
 
-#define	KFLASH_SPI_SZ_SECTOR				4096u											// Sector size
-#define	KFLASH_SPI_NB_SECTOR				2048u											// Number of sectors
-#define	KFLASH_SPI_SZ_PAGE					256u											// Page size
-#define	KFLASH_SPI_SZ_BLOC					65536u											// Bloc size
-#define	KFLASH_SPI_NB_BLOC					128u											// Number of blocs of 64-KBytes
+#define	KFLASH_SPI_SZ_SECTOR				4096U											// Sector size
+#define	KFLASH_SPI_NB_SECTOR				2048U											// Number of sectors
+#define	KFLASH_SPI_SZ_PAGE					256U											// Page size
+#define	KFLASH_SPI_SZ_BLOC					65536U											// Bloc size
+#define	KFLASH_SPI_NB_BLOC					128U											// Number of blocs of 64-KBytes
 #define	KFLASH_SPI_SZ_FLASH					(KFLASH_SPI_NB_SECTOR * KFLASH_SPI_SZ_SECTOR)	// FLASH size
 
 // Commands for the chip MX25R6435
@@ -71,10 +71,10 @@
 
 // Status bits for the chip MX25R6435
 
-#define	BFLASH_SPI_BUSY						0u												// Erase or write in progress
-#define	BFLASH_SPI_WEL						1u												// Write enable latch
-#define	BFLASH_SPI_BP0						2u												// Block protect block 0
-#define	BFLASH_SPI_BP1						3u												// Block protect block 1
-#define	BFLASH_SPI_BP2						4u												// Block protect block 2
-#define	BFLASH_SPI_BP3						5u												// Block protect block 3
-#define	BFLASH_SPI_SRWD						7u												// Status register protect
+#define	BFLASH_SPI_BUSY						0U												// Erase or write in progress
+#define	BFLASH_SPI_WEL						1U												// Write enable latch
+#define	BFLASH_SPI_BP0						2U												// Block protect block 0
+#define	BFLASH_SPI_BP1						3U												// Block protect block 1
+#define	BFLASH_SPI_BP2						4U												// Block protect block 2
+#define	BFLASH_SPI_BP3						5U												// Block protect block 3
+#define	BFLASH_SPI_SRWD						7U												// Status register protect

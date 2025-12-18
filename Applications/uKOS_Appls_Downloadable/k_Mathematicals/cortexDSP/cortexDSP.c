@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Demo of a C application.
 ;			This application shows how to operate with the uKOS-X uKernel.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -55,7 +55,7 @@
  *			Launch 3 processes:
  *
  *			- P0: Every 1000-ms
- *					- Toggle LED 0
+ *					- Toggle LED 1
  *
  *			- P1: Every 1000-ms
  *					- Compute the vertical-horizontal sums of a matrix
@@ -65,7 +65,21 @@
  *
  */
 
-#include	"uKOS.h"
+#include	<inttypes.h>
+#include	<stdio.h>
+
+#include	"crt0.h"
+#include	"serial/serial.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"memo/memo.h"
+#include	"led/led.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -91,7 +105,7 @@ MODULE(
 	aStart,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,								// Address of the clean code (clean the module)
 	" 1.0",								// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0									// Execution cores
 );
 
@@ -107,7 +121,7 @@ __attribute__ ((always_inline)) static __inline void local_cumulate64(int64_t *v
  * \brief aProcess 0
  *
  * - P0: Every 1000-ms
- *  		- Toggle LED 0
+ *  		- Toggle LED 1
  *
  */
 static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
@@ -115,7 +129,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 	UNUSED(argument);
 
 	while (true) {
-		kern_suspendProcess(1000u);
+		kern_suspendProcess(1000U);
 		led_toggle(KLED_0);
 	}
 }
@@ -128,6 +142,8 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
+	UNUSED(argument);
+
 					uint8_t		i, j;
 	static	const	int16_t		image[10][10] = {
 									{  0,  1,  2,  3,  4,  5,  6,  7,  8,  9 },
@@ -145,26 +161,24 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 	static	int32_t		projections_x[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 	static	int32_t		projections_y[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-	UNUSED(argument);
-
 	while (true) {
-		kern_suspendProcess(1000u);
+		kern_suspendProcess(1000U);
 
 // Compute the vector rows & cols
 
-		for (i = 0u; i < 10u; i++)
-			for (j = 0u; j < 10u; j++) {
+		for (i = 0U; i < 10U; i++)
+			for (j = 0U; j < 10U; j++) {
 				local_cumulate32(&projections_x[i], image[i][j], 1);
 				local_cumulate32(&projections_y[i], image[j][i], 1);
 			}
 
 		(void)dprintf(KSYST, "\nRows\n\n");
-		for (i = 0u; i < 10u; i++) {
+		for (i = 0U; i < 10U; i++) {
 			(void)dprintf(KSYST, "%"PRId32"\n", projections_x[i]);
 		}
 
 		(void)dprintf(KSYST, "\nCols\n\n");
-		for (i = 0u; i < 10u; i++) {
+		for (i = 0U; i < 10U; i++) {
 			(void)dprintf(KSYST, "%"PRId32"\n", projections_y[i]);
 		}
 
@@ -179,20 +193,20 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
+	UNUSED(argument);
+
 			uint8_t		i;
 			int64_t		result;
 	static	int32_t		vector_1[10] = { 1, -2, 3, 4,  5, 6, 7, 8, 9,  10 };
 	static	int32_t		vector_2[10] = { 1,  2, 3, 4, -5, 6, 7, 8, 9, -10 };
 
-	UNUSED(argument);
-
 	while (true) {
-		kern_suspendProcess(1000u);
+		kern_suspendProcess(1000U);
 
 // Compute the vector product
 
 		result = 0;
-		for (i = 0u; i < 10u; i++) {
+		for (i = 0U; i < 10U; i++) {
 			local_cumulate64(&result, vector_1[i], vector_2[i]);
 		}
 
@@ -209,6 +223,9 @@ static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
  *
  */
 int		main(int argc, const char *argv[]) {
+	UNUSED(argc);
+	UNUSED(argv);
+
 	proc_t	*process_0, *process_1, *process_2;
 
 // ---------------------------------I-----------------------------------------I--------------I
@@ -219,9 +236,6 @@ int		main(int argc, const char *argv[]) {
 	STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2025";
 	STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2025";
 	STRG_LOC_CONST(aStrText_2[]) = "Process user 2.                           (c) EFr-2025";
-
-	UNUSED(argc);
-	UNUSED(argv);
 
 // Specifications for the processes
 
@@ -294,5 +308,5 @@ __attribute__ ((always_inline)) static __inline void local_cumulate64(int64_t *v
 	h = (uint32_t)(*value>>32); l = (uint32_t)(*value & 0xFFFFFFFFul);
 
 	__asm volatile ("smlal %0, %1, %2, %3" : "=r" (l), "=r" (h) : "r" (a), "r" (b), "0" (l), "1" (h));
-	*value = (int64_t)(((uint64_t)h<<32u) | l);
+	*value = (int64_t)(((uint64_t)h<<32U) | l);
 }

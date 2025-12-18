@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Some lcd tests.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,8 +46,26 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#define		_POSIX_C_SOURCE		200809L
+
+// C Standard Library headers
+#include	<stdint.h>
+#include	<stdio.h>
+#include	<stdlib.h>
+
+// uKOS-X specific headers
 #include	"../../Lib_peripherals/lcd0/lcd0.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core_stackFrame.h"
+#include	"macros_soc.h"
+#include	"memo/memo.h"		// IWYU pragma: keep
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"random/random.h"
+#include	"record/record.h"
+#include	"serial/serial.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -77,12 +95,12 @@ static	void		local_process_4(const void *argument);
 MODULE(
 	Test_lcd,									// Module name (the first letter has to be upper case)
 	KID_FAM_CLI,								// Family (defined in the module.h)
-	(((uint32_t)'_'<<8u)+(uint32_t)'L'),		// Module identifier (defined in the module.h)
+	(((uint32_t)'_'<<8U)+(uint32_t)'L'),		// Module identifier (defined in the module.h)
 	NULL,										// Address of the initialisation code (early pre-init)
 	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,										// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
@@ -117,10 +135,10 @@ const	uint16_t	aTabColor[KNB_COLORS] = { KBLACK, KNAVY, KDARKGREEN, KDARKCYAN,
  *
  */
 static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
-	proc_t	*process_0, *process_1, *process_2, *process_3, *process_4;
-
 	UNUSED(argc);
 	UNUSED(argv);
+
+	proc_t	*process_0, *process_1, *process_2, *process_3, *process_4;
 
 	(void)dprintf(KSYST, "LCD tests.\n");
 
@@ -199,6 +217,8 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
  *
  */
 static void __attribute__ ((noreturn)) local_process_0(const void *argument) {
+	UNUSED(argument);
+
 
 // Window position
 
@@ -216,40 +236,38 @@ static void __attribute__ ((noreturn)) local_process_0(const void *argument) {
 	const	char_t		strg2[] = "vainqueurs ... nous sommes ";
 	const	char_t		strg3[] = "les petits Schtroumpfs.";
 
-	UNUSED(argument);
-
-	RESERVE(LCD0, KMODE_READ_WRITE);
+	LCD0_reserve(KMODE_READ_WRITE, KWAIT_INFINITY);
 	lcd0_setDirection(KDIR_XY_LRDU);
-	RELEASE(LCD0, KMODE_READ_WRITE);
+	LCD0_release(KMODE_READ_WRITE);
 
 	while (true) {
 
 // Write the strings with a random color
 
-		random_read(KRANDOM_SOFT, &color_0, 1u); color_0 %= KNB_COLORS;
-		random_read(KRANDOM_SOFT, &color_1, 1u); color_1 %= KNB_COLORS;
-		random_read(KRANDOM_SOFT, &color_2, 1u); color_2 %= KNB_COLORS;
-		random_read(KRANDOM_SOFT, &color_3, 1u); color_3 %= KNB_COLORS;
+		random_read(KRANDOM_SOFT, &color_0, 1U); color_0 %= KNB_COLORS;
+		random_read(KRANDOM_SOFT, &color_1, 1U); color_1 %= KNB_COLORS;
+		random_read(KRANDOM_SOFT, &color_2, 1U); color_2 %= KNB_COLORS;
+		random_read(KRANDOM_SOFT, &color_3, 1U); color_3 %= KNB_COLORS;
 
-		RESERVE(LCD0, KMODE_READ_WRITE);
+		LCD0_reserve(KMODE_READ_WRITE, KWAIT_INFINITY);
 		lcd0_drawString((KW0_X0 + KW0_DX), (KW0_Y0 + KW0_DY0), strg0, aTabColor[color_0]);
-		RELEASE(LCD0, KMODE_READ_WRITE);
-		kern_suspendProcess(1000u);
+		LCD0_release(KMODE_READ_WRITE);
+		kern_suspendProcess(1000U);
 
-		RESERVE(LCD0, KMODE_READ_WRITE);
+		LCD0_reserve(KMODE_READ_WRITE, KWAIT_INFINITY);
 		lcd0_drawString((KW0_X0 + KW0_DX), (KW0_Y0 + KW0_DY1), strg1, aTabColor[color_1]);
-		RELEASE(LCD0, KMODE_READ_WRITE);
-		kern_suspendProcess(1000u);
+		LCD0_release(KMODE_READ_WRITE);
+		kern_suspendProcess(1000U);
 
-		RESERVE(LCD0, KMODE_READ_WRITE);
+		LCD0_reserve(KMODE_READ_WRITE, KWAIT_INFINITY);
 		lcd0_drawString((KW0_X0 + KW0_DX), (KW0_Y0 + KW0_DY2), strg2, aTabColor[color_2]);
-		RELEASE(LCD0, KMODE_READ_WRITE);
-		kern_suspendProcess(1000u);
+		LCD0_release(KMODE_READ_WRITE);
+		kern_suspendProcess(1000U);
 
-		RESERVE(LCD0, KMODE_READ_WRITE);
+		LCD0_reserve(KMODE_READ_WRITE, KWAIT_INFINITY);
 		lcd0_drawString((KW0_X0 + KW0_DX), (KW0_Y0 + KW0_DY3), strg3, aTabColor[color_3]);
-		RELEASE(LCD0, KMODE_READ_WRITE);
-		kern_suspendProcess(1000u);
+		LCD0_release(KMODE_READ_WRITE);
+		kern_suspendProcess(1000U);
 	}
 }
 
@@ -260,6 +278,8 @@ static void __attribute__ ((noreturn)) local_process_0(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) local_process_1(const void *argument) {
+	UNUSED(argument);
+
 
 // Window position
 
@@ -271,19 +291,17 @@ static void __attribute__ ((noreturn)) local_process_1(const void *argument) {
 	uint16_t	x, y, color;
 	uint32_t	value;
 
-	UNUSED(argument);
-
 	while (true) {
-		kern_suspendProcess(10u);
+		kern_suspendProcess(10U);
 		random_read(KRANDOM_SOFT, &value, 1);
 
 		x	  = (uint16_t)(value       % KW1_DX);
-		y	  = (uint16_t)((value>>8u) % KW1_DY);
-		color = (uint16_t)(value>>16u  & 0x0000FFFFu) % KNB_COLORS;
+		y	  = (uint16_t)((value>>8U) % KW1_DY);
+		color = (uint16_t)(value>>16U  & 0x0000FFFFU) % KNB_COLORS;
 
-		RESERVE(LCD0, KMODE_READ_WRITE);
+		LCD0_reserve(KMODE_READ_WRITE, KWAIT_INFINITY);
 		lcd0_drawPoint((KW1_X0 + x), (KW1_Y0 + y), aTabColor[color]);
-		RELEASE(LCD0, KMODE_READ_WRITE);
+		LCD0_release(KMODE_READ_WRITE);
 	}
 }
 
@@ -294,6 +312,8 @@ static void __attribute__ ((noreturn)) local_process_1(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) local_process_2(const void *argument) {
+	UNUSED(argument);
+
 
 // Window position
 
@@ -302,17 +322,15 @@ static void __attribute__ ((noreturn)) local_process_2(const void *argument) {
 	#define	KW2_DX		(KLCD_X_MAX - KW2_X0)
 	#define	KW2_DY		(KLCD_Y_MAX - KW2_Y0)
 
-			uint32_t	core, value, time = 0u;
-			uint16_t	x, y, result, oldResult = 0xFFu;
-			uint16_t	color_0 = 0u, color_1 = 0u, color_2 = 0u, color_3 = 0u, color_4 = 0u;
+			uint32_t	core, value, time = 0U;
+			uint16_t	x, y, result, oldResult = 0xFFU;
+			uint16_t	color_0 = 0U, color_1 = 0U, color_2 = 0U, color_3 = 0U, color_4 = 0U;
 	static	uint16_t	vImage[KNB_CORES][KW2_DX * KW2_DY];
-
-	UNUSED(argument);
 
 	core = GET_RUNNING_CORE;
 
 	while (true) {
-		time = (time < 1u) ? (500u) : (time - 1u);
+		time = (time < 1U) ? (500U) : (time - 1U);
 		kern_suspendProcess(time);
 
 		for (y = 0; y < KW2_DY; y++) {
@@ -320,28 +338,28 @@ static void __attribute__ ((noreturn)) local_process_2(const void *argument) {
 			if (result != oldResult) {
 				oldResult = result;
 
-				random_read(KRANDOM_SOFT, &value, 1u); color_0 = aTabColor[value % KNB_COLORS];
-				random_read(KRANDOM_SOFT, &value, 1u); color_1 = aTabColor[value % KNB_COLORS];
-				random_read(KRANDOM_SOFT, &value, 1u); color_2 = aTabColor[value % KNB_COLORS];
-				random_read(KRANDOM_SOFT, &value, 1u); color_3 = aTabColor[value % KNB_COLORS];
-				random_read(KRANDOM_SOFT, &value, 1u); color_4 = aTabColor[value % KNB_COLORS];
+				random_read(KRANDOM_SOFT, &value, 1U); color_0 = aTabColor[value % KNB_COLORS];
+				random_read(KRANDOM_SOFT, &value, 1U); color_1 = aTabColor[value % KNB_COLORS];
+				random_read(KRANDOM_SOFT, &value, 1U); color_2 = aTabColor[value % KNB_COLORS];
+				random_read(KRANDOM_SOFT, &value, 1U); color_3 = aTabColor[value % KNB_COLORS];
+				random_read(KRANDOM_SOFT, &value, 1U); color_4 = aTabColor[value % KNB_COLORS];
 			}
 
 			for (x = 0; x < (uint16_t)KW2_DX; x++) {
-				switch (x / (KW2_DX / 5u)) {
+				switch (x / (KW2_DX / 5U)) {
 					default:
-					case 0u: { vImage[core][(y * KW2_DX) + x] = color_0; break; }
-					case 1u: { vImage[core][(y * KW2_DX) + x] = color_1; break; }
-					case 2u: { vImage[core][(y * KW2_DX) + x] = color_2; break; }
-					case 3u: { vImage[core][(y * KW2_DX) + x] = color_3; break; }
-					case 4u: { vImage[core][(y * KW2_DX) + x] = color_4; break; }
+					case 0U: { vImage[core][(y * KW2_DX) + x] = color_0; break; }
+					case 1U: { vImage[core][(y * KW2_DX) + x] = color_1; break; }
+					case 2U: { vImage[core][(y * KW2_DX) + x] = color_2; break; }
+					case 3U: { vImage[core][(y * KW2_DX) + x] = color_3; break; }
+					case 4U: { vImage[core][(y * KW2_DX) + x] = color_4; break; }
 				}
 			}
 		}
 
-		RESERVE(LCD0, KMODE_READ_WRITE);
+		LCD0_reserve(KMODE_READ_WRITE, KWAIT_INFINITY);
 		lcd0_drawPicture(KW2_X0, KW2_Y0, KW2_DX, KW2_DY, &vImage[core][0]);
-		RELEASE(LCD0, KMODE_READ_WRITE);
+		LCD0_release(KMODE_READ_WRITE);
 	}
 }
 
@@ -352,6 +370,8 @@ static void __attribute__ ((noreturn)) local_process_2(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) local_process_3(const void *argument) {
+	UNUSED(argument);
+
 
 	#define	KW3_X0		60u
 	#define	KW3_Y0		20u
@@ -380,34 +400,32 @@ static void __attribute__ ((noreturn)) local_process_3(const void *argument) {
 									{ " 1                                                                                                                           " }
 								};
 
-	UNUSED(argument);
-
 	while (true) {
-		kern_suspendProcess(1000u);
-		random_read(KRANDOM_SOFT, &value, 1u); color[0] = (uint16_t)(value>>16u & 0x0000FFFFu) % KNB_COLORS;
-		random_read(KRANDOM_SOFT, &value, 1u); color[1] = (uint16_t)(value>>16u & 0x0000FFFFu) % KNB_COLORS;
-		random_read(KRANDOM_SOFT, &value, 1u); color[2] = (uint16_t)(value>>16u & 0x0000FFFFu) % KNB_COLORS;
-		random_read(KRANDOM_SOFT, &value, 1u); color[3] = (uint16_t)(value>>16u & 0x0000FFFFu) % KNB_COLORS;
-		random_read(KRANDOM_SOFT, &value, 1u); color[4] = (uint16_t)(value>>16u & 0x0000FFFFu) % KNB_COLORS;
-		random_read(KRANDOM_SOFT, &value, 1u); color[5] = (uint16_t)(value>>16u & 0x0000FFFFu) % KNB_COLORS;
-		random_read(KRANDOM_SOFT, &value, 1u); color[6] = (uint16_t)(value>>16u & 0x0000FFFFu) % KNB_COLORS;
-		random_read(KRANDOM_SOFT, &value, 1u); color[7] = (uint16_t)(value>>16u & 0x0000FFFFu) % KNB_COLORS;
-		random_read(KRANDOM_SOFT, &value, 1u); color[8] = (uint16_t)(value>>16u & 0x0000FFFFu) % KNB_COLORS;
-		random_read(KRANDOM_SOFT, &value, 1u); color[9] = (uint16_t)(value>>16u & 0x0000FFFFu) % KNB_COLORS;
+		kern_suspendProcess(1000U);
+		random_read(KRANDOM_SOFT, &value, 1U); color[0] = (uint16_t)(value>>16U & 0x0000FFFFU) % KNB_COLORS;
+		random_read(KRANDOM_SOFT, &value, 1U); color[1] = (uint16_t)(value>>16U & 0x0000FFFFU) % KNB_COLORS;
+		random_read(KRANDOM_SOFT, &value, 1U); color[2] = (uint16_t)(value>>16U & 0x0000FFFFU) % KNB_COLORS;
+		random_read(KRANDOM_SOFT, &value, 1U); color[3] = (uint16_t)(value>>16U & 0x0000FFFFU) % KNB_COLORS;
+		random_read(KRANDOM_SOFT, &value, 1U); color[4] = (uint16_t)(value>>16U & 0x0000FFFFU) % KNB_COLORS;
+		random_read(KRANDOM_SOFT, &value, 1U); color[5] = (uint16_t)(value>>16U & 0x0000FFFFU) % KNB_COLORS;
+		random_read(KRANDOM_SOFT, &value, 1U); color[6] = (uint16_t)(value>>16U & 0x0000FFFFU) % KNB_COLORS;
+		random_read(KRANDOM_SOFT, &value, 1U); color[7] = (uint16_t)(value>>16U & 0x0000FFFFU) % KNB_COLORS;
+		random_read(KRANDOM_SOFT, &value, 1U); color[8] = (uint16_t)(value>>16U & 0x0000FFFFU) % KNB_COLORS;
+		random_read(KRANDOM_SOFT, &value, 1U); color[9] = (uint16_t)(value>>16U & 0x0000FFFFU) % KNB_COLORS;
 
-		for (y = 0u; y < KW3_DY; y++) {
-			for (x = 0u; x < KW3_DX; x++) {
+		for (y = 0U; y < KW3_DY; y++) {
+			for (x = 0U; x < KW3_DX; x++) {
 				switch (aUKOS[y][x]) {
-					case '0':  { RESERVE(LCD0, KMODE_READ_WRITE); lcd0_drawPoint((KW3_X0 + x), (KW3_Y0 + y), aTabColor[color[0]]); RELEASE(LCD0, KMODE_READ_WRITE); break; }
-					case '1':  { RESERVE(LCD0, KMODE_READ_WRITE); lcd0_drawPoint((KW3_X0 + x), (KW3_Y0 + y), aTabColor[color[1]]); RELEASE(LCD0, KMODE_READ_WRITE); break; }
-					case '2':  { RESERVE(LCD0, KMODE_READ_WRITE); lcd0_drawPoint((KW3_X0 + x), (KW3_Y0 + y), aTabColor[color[2]]); RELEASE(LCD0, KMODE_READ_WRITE); break; }
-					case '3':  { RESERVE(LCD0, KMODE_READ_WRITE); lcd0_drawPoint((KW3_X0 + x), (KW3_Y0 + y), aTabColor[color[3]]); RELEASE(LCD0, KMODE_READ_WRITE); break; }
-					case '4':  { RESERVE(LCD0, KMODE_READ_WRITE); lcd0_drawPoint((KW3_X0 + x), (KW3_Y0 + y), aTabColor[color[4]]); RELEASE(LCD0, KMODE_READ_WRITE); break; }
-					case '5':  { RESERVE(LCD0, KMODE_READ_WRITE); lcd0_drawPoint((KW3_X0 + x), (KW3_Y0 + y), aTabColor[color[5]]); RELEASE(LCD0, KMODE_READ_WRITE); break; }
-					case '6':  { RESERVE(LCD0, KMODE_READ_WRITE); lcd0_drawPoint((KW3_X0 + x), (KW3_Y0 + y), aTabColor[color[6]]); RELEASE(LCD0, KMODE_READ_WRITE); break; }
-					case '7':  { RESERVE(LCD0, KMODE_READ_WRITE); lcd0_drawPoint((KW3_X0 + x), (KW3_Y0 + y), aTabColor[color[7]]); RELEASE(LCD0, KMODE_READ_WRITE); break; }
-					case '8':  { RESERVE(LCD0, KMODE_READ_WRITE); lcd0_drawPoint((KW3_X0 + x), (KW3_Y0 + y), aTabColor[color[8]]); RELEASE(LCD0, KMODE_READ_WRITE); break; }
-					case '9':  { RESERVE(LCD0, KMODE_READ_WRITE); lcd0_drawPoint((KW3_X0 + x), (KW3_Y0 + y), aTabColor[color[9]]); RELEASE(LCD0, KMODE_READ_WRITE); break; }
+					case '0':  { LCD0_reserve(KMODE_READ_WRITE, KWAIT_INFINITY); lcd0_drawPoint((KW3_X0 + x), (KW3_Y0 + y), aTabColor[color[0]]); LCD0_release(KMODE_READ_WRITE); break; }
+					case '1':  { LCD0_reserve(KMODE_READ_WRITE, KWAIT_INFINITY); lcd0_drawPoint((KW3_X0 + x), (KW3_Y0 + y), aTabColor[color[1]]); LCD0_release(KMODE_READ_WRITE); break; }
+					case '2':  { LCD0_reserve(KMODE_READ_WRITE, KWAIT_INFINITY); lcd0_drawPoint((KW3_X0 + x), (KW3_Y0 + y), aTabColor[color[2]]); LCD0_release(KMODE_READ_WRITE); break; }
+					case '3':  { LCD0_reserve(KMODE_READ_WRITE, KWAIT_INFINITY); lcd0_drawPoint((KW3_X0 + x), (KW3_Y0 + y), aTabColor[color[3]]); LCD0_release(KMODE_READ_WRITE); break; }
+					case '4':  { LCD0_reserve(KMODE_READ_WRITE, KWAIT_INFINITY); lcd0_drawPoint((KW3_X0 + x), (KW3_Y0 + y), aTabColor[color[4]]); LCD0_release(KMODE_READ_WRITE); break; }
+					case '5':  { LCD0_reserve(KMODE_READ_WRITE, KWAIT_INFINITY); lcd0_drawPoint((KW3_X0 + x), (KW3_Y0 + y), aTabColor[color[5]]); LCD0_release(KMODE_READ_WRITE); break; }
+					case '6':  { LCD0_reserve(KMODE_READ_WRITE, KWAIT_INFINITY); lcd0_drawPoint((KW3_X0 + x), (KW3_Y0 + y), aTabColor[color[6]]); LCD0_release(KMODE_READ_WRITE); break; }
+					case '7':  { LCD0_reserve(KMODE_READ_WRITE, KWAIT_INFINITY); lcd0_drawPoint((KW3_X0 + x), (KW3_Y0 + y), aTabColor[color[7]]); LCD0_release(KMODE_READ_WRITE); break; }
+					case '8':  { LCD0_reserve(KMODE_READ_WRITE, KWAIT_INFINITY); lcd0_drawPoint((KW3_X0 + x), (KW3_Y0 + y), aTabColor[color[8]]); LCD0_release(KMODE_READ_WRITE); break; }
+					case '9':  { LCD0_reserve(KMODE_READ_WRITE, KWAIT_INFINITY); lcd0_drawPoint((KW3_X0 + x), (KW3_Y0 + y), aTabColor[color[9]]); LCD0_release(KMODE_READ_WRITE); break; }
 					default: {
 
 // Make MISRA happy :-)
@@ -427,19 +445,19 @@ static void __attribute__ ((noreturn)) local_process_3(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) local_process_4(const void *argument) {
+	UNUSED(argument);
+
 	uint16_t	color;
 	uint32_t	value;
 
-	UNUSED(argument);
-
 	while (true) {
-		kern_suspendProcess(60000u);
-		random_read(KRANDOM_SOFT, &value, 1u);
+		kern_suspendProcess(60000U);
+		random_read(KRANDOM_SOFT, &value, 1U);
 
-		color = (uint16_t)((value>>16u) & 0x0000FFFFu) % KNB_COLORS;
+		color = (uint16_t)((value>>16U) & 0x0000FFFFU) % KNB_COLORS;
 
-		RESERVE(LCD0, KMODE_READ_WRITE);
+		LCD0_reserve(KMODE_READ_WRITE, KWAIT_INFINITY);
 		lcd0_clear(aTabColor[color]);
-		RELEASE(LCD0, KMODE_READ_WRITE);
+		LCD0_release(KMODE_READ_WRITE);
 	}
 }

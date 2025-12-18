@@ -9,8 +9,8 @@
 ; Project:	uKOS-X
 ; Goal:		Cortex M7 L1 cache management.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 #define	DCACHE_LINE_SIZE	32		// Cortex M7 cache line size of 32-bytes
 #define	ICACHE_LINE_SIZE	32		// Cortex M7 cache line size of 32-bytes
 
+#include	"macros_core.h"
+
 // Prototypes
 
 static	inline	uint32_t local_clz(uint32_t data);
@@ -63,7 +65,7 @@ static	inline	void	cache_D_Enable(void) {
 
 // Level 1 data cache
 
-	SCB->CSSELR = (0u<<1u) | (0u<<0u);
+	SCB->CSSELR = (0U<<1U) | (0U<<0U);
 	DATA_SYNC_BARRIER;
 
 // Number of sets - 1
@@ -73,10 +75,10 @@ static	inline	void	cache_D_Enable(void) {
 // Number of ways
 
 	ccsidr        = SCB->CCSIDR;
-	numSets       = ((ccsidr & (0x7FFFu<<13))>>13u);
-	sShift        = (ccsidr & 7u) + 4u;
-	associativity = ((ccsidr & (0x3FFu<<3u))>>3u);
-	wShift        = (local_clz(associativity) & ((uint32_t)DCACHE_LINE_SIZE - 1u));
+	numSets       = ((ccsidr & (0x7FFFu<<13))>>13U);
+	sShift        = (ccsidr & 7U) + 4U;
+	associativity = ((ccsidr & (0x3FFu<<3U))>>3U);
+	wShift        = (local_clz(associativity) & ((uint32_t)DCACHE_LINE_SIZE - 1U));
 
 	DATA_SYNC_BARRIER;
 
@@ -87,15 +89,15 @@ static	inline	void	cache_D_Enable(void) {
 		do {
 			sw = ((tmpAssociativity<<wShift) | (numSets<<sShift));
 			SCB->DCISW = sw;
-		} while (tmpAssociativity-- != 0u);
-	} while (numSets-- != 0u);
+		} while (tmpAssociativity-- != 0U);
+	} while (numSets-- != 0U);
 
 	DATA_SYNC_BARRIER;
 	INST_SYNC_BARRIER;
 
 // Enable D-Cache
 
-	SCB->CCR |= (1u<<16u);
+	SCB->CCR |= (1U<<16U);
 
 	DATA_SYNC_BARRIER;
 	INST_SYNC_BARRIER;
@@ -113,12 +115,12 @@ static	inline	void	cache_D_Disable(void) {
 
 // Level 1 data cache
 
-	SCB->CSSELR = (0u<<1u) | (0u<<0u);
+	SCB->CSSELR = (0U<<1U) | (0U<<0U);
 	DATA_SYNC_BARRIER;
 
 // Disable D-Cache
 
-	SCB->CCR &= (uint32_t)~(1u<<16u);
+	SCB->CCR &= (uint32_t)~(1U<<16U);
 
 // Number of sets - 1
 // Number of shift (2 - log(2)) of the number of words in the cache line
@@ -127,10 +129,10 @@ static	inline	void	cache_D_Disable(void) {
 // Number of ways
 
 	ccsidr        = SCB->CCSIDR;
-	numSets       = ((ccsidr & (0x7FFFu<<13u))>>13u);
-	sShift        = (ccsidr & 7u) + 4u;
-	associativity = ((ccsidr & (0x3FFu<<3u))>>3u);
-	wShift        = (local_clz(associativity) & ((uint32_t)DCACHE_LINE_SIZE - 1u));
+	numSets       = ((ccsidr & (0x7FFFu<<13U))>>13U);
+	sShift        = (ccsidr & 7U) + 4U;
+	associativity = ((ccsidr & (0x3FFu<<3U))>>3U);
+	wShift        = (local_clz(associativity) & ((uint32_t)DCACHE_LINE_SIZE - 1U));
 
 	DATA_SYNC_BARRIER;
 
@@ -141,8 +143,8 @@ static	inline	void	cache_D_Disable(void) {
 		do {
 			sw = ((tmpAssociativity<<wShift) | (numSets<<sShift));
 			SCB->DCCISW = sw;
-		} while (tmpAssociativity-- != 0u);
-	} while (numSets-- != 0u);
+		} while (tmpAssociativity-- != 0U);
+	} while (numSets-- != 0U);
 
 	DATA_SYNC_BARRIER;
 	INST_SYNC_BARRIER;
@@ -160,7 +162,7 @@ static	inline	void	cache_D_Invalidate(void) {
 
 // Level 1 data cache
 
-	SCB->CSSELR = (0u<<1u) | (0u<<0u);
+	SCB->CSSELR = (0U<<1U) | (0U<<0U);
 	DATA_SYNC_BARRIER;
 
 // Number of sets - 1
@@ -170,10 +172,10 @@ static	inline	void	cache_D_Invalidate(void) {
 // Number of ways
 
 	ccsidr        = SCB->CCSIDR;
-	numSets       = ((ccsidr & (0x7FFFu<<13))>>13u);
-	sShift        = (ccsidr & 7u) + 4u;
-	associativity = ((ccsidr & (0x3FFu<<3u))>>3u);
-	wShift        = (local_clz(associativity) & ((uint32_t)DCACHE_LINE_SIZE - 1u));
+	numSets       = ((ccsidr & (0x7FFFu<<13))>>13U);
+	sShift        = (ccsidr & 7U) + 4U;
+	associativity = ((ccsidr & (0x3FFu<<3U))>>3U);
+	wShift        = (local_clz(associativity) & ((uint32_t)DCACHE_LINE_SIZE - 1U));
 
 	DATA_SYNC_BARRIER;
 
@@ -184,8 +186,8 @@ static	inline	void	cache_D_Invalidate(void) {
 		do {
 			sw = ((tmpAssociativity<<wShift) | (numSets<<sShift));
 			SCB->DCISW = sw;
-		} while (tmpAssociativity-- != 0u);
-	} while (numSets-- != 0u);
+		} while (tmpAssociativity-- != 0U);
+	} while (numSets-- != 0U);
 
 	DATA_SYNC_BARRIER;
 	INST_SYNC_BARRIER;
@@ -202,7 +204,7 @@ static	inline	void	cache_D_Invalidate_Add(void *address, int32_t size) {
 	uint32_t	opAddress;
 
 	if (size > 0) {
-		opSize	  = size + (int32_t)(((uint32_t)address) & ((uint32_t)DCACHE_LINE_SIZE - 1u));
+		opSize	  = size + (int32_t)(((uint32_t)address) & ((uint32_t)DCACHE_LINE_SIZE - 1U));
 		opAddress = (uint32_t)address;
 
 		DATA_SYNC_BARRIER;
@@ -230,7 +232,7 @@ static	inline	void	cache_D_Clean(void) {
 
 // Level 1 data cache
 
-	SCB->CSSELR = (0u<<1u) | (0u<<0u);
+	SCB->CSSELR = (0U<<1U) | (0U<<0U);
 	DATA_SYNC_BARRIER;
 
 // Number of sets - 1
@@ -240,10 +242,10 @@ static	inline	void	cache_D_Clean(void) {
 // Number of ways
 
 	ccsidr        = SCB->CCSIDR;
-	numSets       = ((ccsidr & (0x7FFFu<<13u))>>13u);
-	sShift        = (ccsidr & 7u) + 4u;
-	associativity = ((ccsidr & (0x3FFu<<3u))>>3u);
-	wShift        = (local_clz(associativity) & ((uint32_t)DCACHE_LINE_SIZE - 1u));
+	numSets       = ((ccsidr & (0x7FFFu<<13U))>>13U);
+	sShift        = (ccsidr & 7U) + 4U;
+	associativity = ((ccsidr & (0x3FFu<<3U))>>3U);
+	wShift        = (local_clz(associativity) & ((uint32_t)DCACHE_LINE_SIZE - 1U));
 
 	DATA_SYNC_BARRIER;
 
@@ -254,8 +256,8 @@ static	inline	void	cache_D_Clean(void) {
 		do {
 			sw = ((tmpAssociativity<<wShift) | (numSets<<sShift));
 			SCB->DCCSW = sw;
-		} while (tmpAssociativity-- != 0u);
-	} while (numSets-- != 0u);
+		} while (tmpAssociativity-- != 0U);
+	} while (numSets-- != 0U);
 
 	DATA_SYNC_BARRIER;
 	INST_SYNC_BARRIER;
@@ -272,7 +274,7 @@ static	inline	void	cache_D_Clean_Add(void *address, int32_t size) {
 	uint32_t	opAddress;
 
 	if (size > 0) {
-		opSize	  = size + (int32_t)(((uint32_t)address) & ((uint32_t)DCACHE_LINE_SIZE - 1u));
+		opSize	  = size + (int32_t)(((uint32_t)address) & ((uint32_t)DCACHE_LINE_SIZE - 1U));
 		opAddress = (uint32_t)address;
 
 		DATA_SYNC_BARRIER;
@@ -301,14 +303,14 @@ static	inline	void	cache_I_Enable(void) {
 
 // Invalidate I-Cache
 
-	SCB->ICIALLU = 0u;
+	SCB->ICIALLU = 0U;
 
 	DATA_SYNC_BARRIER;
 	INST_SYNC_BARRIER;
 
 // Enable I-Cache
 
-	SCB->CCR |= (1u<<17u);
+	SCB->CCR |= (1U<<17U);
 
 	DATA_SYNC_BARRIER;
 	INST_SYNC_BARRIER;
@@ -328,8 +330,8 @@ static	inline	void	cache_I_Disable(void) {
 // Disable I-Cache
 // Invalidate I-Cache
 
-	SCB->CCR &= (uint32_t)~(1u<<17u);
-	SCB->ICIALLU = 0u;
+	SCB->CCR &= (uint32_t)~(1U<<17U);
+	SCB->ICIALLU = 0U;
 
 	DATA_SYNC_BARRIER;
 	INST_SYNC_BARRIER;
@@ -348,7 +350,7 @@ static	inline	void	cache_I_Invalidate(void) {
 
 // Invalidate I-Cache
 
-	SCB->ICIALLU = 0u;
+	SCB->ICIALLU = 0U;
 
 	DATA_SYNC_BARRIER;
 	INST_SYNC_BARRIER;
@@ -365,7 +367,7 @@ static	inline	void	cache_I_Invalidate_Add(void *address, int32_t size) {
 	uint32_t	opAddress;
 
 	if (size > 0) {
-		opSize	  = size + (int32_t)(((uint32_t)address) & ((uint32_t)ICACHE_LINE_SIZE - 1u));
+		opSize	  = size + (int32_t)(((uint32_t)address) & ((uint32_t)ICACHE_LINE_SIZE - 1U));
 		opAddress = (uint32_t)address;
 
 		DATA_SYNC_BARRIER;
@@ -389,12 +391,12 @@ static	inline	void	cache_I_Invalidate_Add(void *address, int32_t size) {
  *
  */
 static	inline	uint32_t local_clz(uint32_t data) {
-	uint32_t	count = 0u;
+	uint32_t	count = 0U;
 	uint32_t	mask = 0x80000000u;
 
-	 while ((data & mask) == 0u) {
+	 while ((data & mask) == 0U) {
 		count++;
-		mask >>= 1u;
+		mask >>= 1U;
 	}
 	return (count);
   }

@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Some img tests.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,9 +46,25 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#define		_POSIX_C_SOURCE		200809L
+
+// C Standard Library headers
+#include	<stdint.h>
+#include	<stdio.h>
+#include	<stdlib.h>
+
+// uKOS-X specific headers
 #include	"../../Lib_peripherals/lcd0/lcd0.h"
 #include	"../../Lib_peripherals/imgk/imgk.h"
+#include	"serial/serial.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core_stackFrame.h"
+#include	"memo/memo.h"		// IWYU pragma: keep
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -74,12 +90,12 @@ static	void		local_process(const void *argument);
 MODULE(
 	Test_img,									// Module name (the first letter has to be upper case)
 	KID_FAM_CLI,								// Family (defined in the module.h)
-	(((uint32_t)'_'<<8u)+(uint32_t)'I'),		// Module identifier (defined in the module.h)
+	(((uint32_t)'_'<<8U)+(uint32_t)'I'),		// Module identifier (defined in the module.h)
 	NULL,										// Address of the initialisation code (early pre-init)
 	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,										// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
@@ -96,10 +112,10 @@ STRG_LOC_CONST(aStrText[]) = "Process IMGK.                             (c) EFr-
  *
  */
 static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
-	proc_t	*process;
-
 	UNUSED(argc);
 	UNUSED(argv);
+
+	proc_t	*process;
 
 	(void)dprintf(KSYST, "IMG tests.\n");
 
@@ -128,11 +144,11 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
  *
  */
 static void __attribute__ ((noreturn)) local_process(const void *argument) {
+	UNUSED(argument);
+
 	uint16_t	*image;
 	cnfImgk_t	configure;
 	sema_t		*semaphore;
-
-	UNUSED(argument);
 
 // Window position
 
@@ -148,9 +164,9 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 // Image settings
 
 	configure.oPixMode  = KPIX_8_BITS;
-	configure.oStRows   = 0u;
+	configure.oStRows   = 0U;
 	configure.oNbRows   = KIMAGER_NB_ROWS_QVGA;
-	configure.oStCols   = 0u;
+	configure.oStCols   = 0U;
 	configure.oNbCols   = KIMAGER_NB_COLS_QVGA;
 
 	imgk_configure(&configure);
@@ -158,7 +174,7 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 
 	while (true) {
 		imgk_acquisition();
-		kern_suspendProcess(10u);
+		kern_suspendProcess(10U);
 
 		kern_waitSemaphore(semaphore, KWAIT_INFINITY);
 

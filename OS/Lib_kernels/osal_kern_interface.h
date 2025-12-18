@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Osal kernel interface for standalone libraries.
@@ -19,8 +19,8 @@
 ;			sema
 ;			mutx
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -56,26 +56,26 @@
 
 #pragma	once
 
-#if (!defined(__clang__))
+#ifndef __clang__
 #include	"types.h"
 
-#if (!defined(UKOS_S))
+#ifndef UKOS_S
 
 // The comm
 // --------
 
 typedef	enum {
-			KNOTR = (((uint32_t)'n'<<24u) | ((uint32_t)'o'<<16u) | ((uint32_t)'t'<<8u) | (uint32_t)'R'),	// notr manager
-			KSYST = (((uint32_t)'s'<<24u) | ((uint32_t)'y'<<16u) | ((uint32_t)'s'<<8u) | (uint32_t)'t'),	// syst manager
-			KDEF0 = (((uint32_t)'d'<<24u) | ((uint32_t)'e'<<16u) | ((uint32_t)'f'<<8u) | (uint32_t)'0'),	// def0 manager
-			KURT0 = (((uint32_t)'u'<<24u) | ((uint32_t)'r'<<16u) | ((uint32_t)'t'<<8u) | (uint32_t)'0'),	// urt0 manager
-			KURT1 = (((uint32_t)'u'<<24u) | ((uint32_t)'r'<<16u) | ((uint32_t)'t'<<8u) | (uint32_t)'1'),	// urt1 manager
-			KURT2 = (((uint32_t)'u'<<24u) | ((uint32_t)'r'<<16u) | ((uint32_t)'t'<<8u) | (uint32_t)'2'),	// urt2 manager
-			KURT3 = (((uint32_t)'u'<<24u) | ((uint32_t)'r'<<16u) | ((uint32_t)'t'<<8u) | (uint32_t)'3'),	// urt3 manager
-			KURT4 = (((uint32_t)'u'<<24u) | ((uint32_t)'r'<<16u) | ((uint32_t)'t'<<8u) | (uint32_t)'4'),	// urt4 manager
-			KCDC0 = (((uint32_t)'c'<<24u) | ((uint32_t)'d'<<16u) | ((uint32_t)'c'<<8u) | (uint32_t)'0'),	// cdc0 manager
-			KCDC1 = (((uint32_t)'c'<<24u) | ((uint32_t)'d'<<16u) | ((uint32_t)'c'<<8u) | (uint32_t)'1'),	// cdc1 manager
-			KWFI0 = (((uint32_t)'w'<<24u) | ((uint32_t)'f'<<16u) | ((uint32_t)'i'<<8u) | (uint32_t)'0')		// wfi0 manager
+			KNOTR = (((uint32_t)'n'<<24U) | ((uint32_t)'o'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'R'),	// notr manager
+			KSYST = (((uint32_t)'s'<<24U) | ((uint32_t)'y'<<16U) | ((uint32_t)'s'<<8U) | (uint32_t)'t'),	// syst manager
+			KDEF0 = (((uint32_t)'d'<<24U) | ((uint32_t)'e'<<16U) | ((uint32_t)'f'<<8U) | (uint32_t)'0'),	// def0 manager
+			KURT0 = (((uint32_t)'u'<<24U) | ((uint32_t)'r'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'0'),	// urt0 manager
+			KURT1 = (((uint32_t)'u'<<24U) | ((uint32_t)'r'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'1'),	// urt1 manager
+			KURT2 = (((uint32_t)'u'<<24U) | ((uint32_t)'r'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'2'),	// urt2 manager
+			KURT3 = (((uint32_t)'u'<<24U) | ((uint32_t)'r'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'3'),	// urt3 manager
+			KURT4 = (((uint32_t)'u'<<24U) | ((uint32_t)'r'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'4'),	// urt4 manager
+			KCDC0 = (((uint32_t)'c'<<24U) | ((uint32_t)'d'<<16U) | ((uint32_t)'c'<<8U) | (uint32_t)'0'),	// cdc0 manager
+			KCDC1 = (((uint32_t)'c'<<24U) | ((uint32_t)'d'<<16U) | ((uint32_t)'c'<<8U) | (uint32_t)'1'),	// cdc1 manager
+			KWFI0 = (((uint32_t)'w'<<24U) | ((uint32_t)'f'<<16U) | ((uint32_t)'i'<<8U) | (uint32_t)'0')		// wfi0 manager
 } serialManager_t;
 
 // Some necessary equates
@@ -119,7 +119,7 @@ struct	obje {
 // Priorities
 
 typedef	enum {
-		KKERN_PRIORITY_HIGH_Reserved = 0u,						// 00 - High priority (highest priority)
+		KKERN_PRIORITY_HIGH_Reserved = 0U,						// 00 - High priority (highest priority)
 		KKERN_PRIORITY_HIGH_01,									//
 		KKERN_PRIORITY_HIGH_02,									//
 		KKERN_PRIORITY_HIGH_03,									//
@@ -211,21 +211,21 @@ struct spec {
 // Stacks (oStackMode)
 
 enum {
-			KPROC_STACK_STATIC  = 0u,														// KPROC_STACK_STATIC = static stack allocation
+			KPROC_STACK_STATIC  = 0U,														// KPROC_STACK_STATIC = static stack allocation
 			KPROC_STACK_DYNAMIC																// KPROC_STACK_DYNAMIC = dynamic stack allocation
 };
 
 // Kind of process (oKind)
 
 enum {
-			KPROC_NORMAL = 0u,																// KPROC_NORMAL = normal process
+			KPROC_NORMAL = 0U,																// KPROC_NORMAL = normal process
 			KPROC_DAEMON																	// KPROC_DAEMON = daemon process
 };
 
 // Privilege mode (oMode)
 
 enum {
-			KPROC_USER = 0u,																// KPROC_USER = process running in a user space
+			KPROC_USER = 0U,																// KPROC_USER = process running in a user space
 			KPROC_PRIVILEGED																// KPROC_PRIVILEGED = process running in a privileged space
 };
 
@@ -234,18 +234,18 @@ struct work {
 			proc_t				*oProcFather;												// Ptr on the father process (NULL = orphan)
 			uint16_t			oStateDebg;													// Process state (before the kern_stopProcess)
 			uint16_t			oState;														// Process state
-			#define				BPROC_FIRST					0u								// Process first
-			#define				BPROC_INSTALLED				1u								// Process installed
-			#define				BPROC_RUNNING				2u								// Process running
-			#define				BPROC_SUSP_TIME				3u								// Process suspended for a time
-			#define				BPROC_SUSP_SIGN				4u								// Process suspended for an signal
-			#define				BPROC_SUSP_SEMA				5u								// Process suspended for a semaphore
-			#define				BPROC_SUSP_MUTX				6u								// Process suspended for a mutex
-			#define				BPROC_SUSP_MBOX_E			7u								// Process suspended for a mailbox (empty)
-			#define				BPROC_SUSP_MBOX_F			8u								// Process suspended for a mailbox (full)
-			#define				BPROC_SUSP_DEBG				9u								// Process suspended for a debug
-			#define				BPROC_LIKE_ISR				10u								// Process should be considered similar to an ISR for blocking APIs
-			#define				BPROC_PRIV_ELEVATED			11u								// Process elevated (privileged mode)
+			#define				BPROC_FIRST					0U								// Process first
+			#define				BPROC_INSTALLED				1U								// Process installed
+			#define				BPROC_RUNNING				2U								// Process running
+			#define				BPROC_SUSP_TIME				3U								// Process suspended for a time
+			#define				BPROC_SUSP_SIGN				4U								// Process suspended for an signal
+			#define				BPROC_SUSP_SEMA				5U								// Process suspended for a semaphore
+			#define				BPROC_SUSP_MUTX				6U								// Process suspended for a mutex
+			#define				BPROC_SUSP_MBOX_E			7U								// Process suspended for a mailbox (empty)
+			#define				BPROC_SUSP_MBOX_F			8U								// Process suspended for a mailbox (full)
+			#define				BPROC_SUSP_DEBG				9U								// Process suspended for a debug
+			#define				BPROC_LIKE_ISR				10U								// Process should be considered similar to an ISR for blocking APIs
+			#define				BPROC_PRIV_ELEVATED			11U								// Process elevated (privileged mode)
 
 			uint32_t			oNestedPrivilege;											// Nested privilege elevation counter
 			int32_t				oStatus;													// Status
@@ -303,11 +303,11 @@ struct	mboxPack {
 struct	mbox {
 	const	char_t				*oIdentifier;												// Mailbox identifier
 			uint16_t			oState;														// Mailbox state
-			#define				BMBOX_INSTALLED		0u										// Mailbox installed
-			#define				BMBOX_CONFIGURED	1u										// Mailbox configured
-			#define				BMBOX_EMPTY			2u										// Mailbox empty
-			#define				BMBOX_FULL			3u										// Mailbox full
-			#define				BMBOX_BY_COPY		4u										// Mailbox is copying data
+			#define				BMBOX_INSTALLED		0U										// Mailbox installed
+			#define				BMBOX_CONFIGURED	1U										// Mailbox configured
+			#define				BMBOX_EMPTY			2U										// Mailbox empty
+			#define				BMBOX_FULL			3U										// Mailbox full
+			#define				BMBOX_BY_COPY		4U										// Mailbox is copying data
 
 			uint32_t			oNbMaxPacks;												// Maximum number of packs
 			uint32_t			oNbUsedPacks;												// Used number of packs
@@ -328,7 +328,7 @@ struct	mbox {
 struct	mutx {
 	const	char_t				*oIdentifier;												// Mutex identifier
 			uint16_t			oState;														// Mutex state
-			#define				BMUTX_INSTALLED		0u										// Mutex installed
+			#define				BMUTX_INSTALLED		0U										// Mutex installed
 
 			int32_t				oCounter;													// Mutex counter
 			int32_t				oMaxCounter;												// Mutex counter max value
@@ -345,7 +345,7 @@ struct	mutx {
 struct	sema {
 	const	char_t				*oIdentifier;												// Semaphore identifier
 			uint16_t			oState;														// Semaphore state
-			#define				BSEMA_INSTALLED		0u										// Semaphore installed
+			#define				BSEMA_INSTALLED		0U										// Semaphore installed
 
 			int32_t				oCounter;													// Semaphore counter
 			int32_t				oMaxCounter;												// Semaphore counter max value

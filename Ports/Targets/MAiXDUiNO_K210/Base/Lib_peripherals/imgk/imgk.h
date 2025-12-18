@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		imgk manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -63,8 +63,13 @@
  * @{
  */
 
-#define	KIMGK_NUM	(((uint32_t)'_'<<8u) + (uint32_t)'3')
-#define	KIMGKMAN	(KIMGK_NUM<<8u)
+#include	<stdint.h>
+
+#include	"modules.h"
+#include	"macros.h"
+
+#define	KIMGK_NUM	(((uint32_t)'_'<<8U) + (uint32_t)'3')
+#define	KIMGKMAN	(KIMGK_NUM<<8U)
 
 // Configuration structure
 // -----------------------
@@ -73,15 +78,15 @@ typedef	struct	cnfImgk	cnfImgk_t;
 
 struct cnfImgk {
 			uint8_t		oPixMode;										// Pixel mode
-			#define		KPIX_8_BITS				0u						// KPIX_8_BITS  = 8-bit resolution
+			#define		KPIX_8_BITS				0U						// KPIX_8_BITS  = 8-bit resolution
 
 			uint16_t	oStRows;										// Start of rows
 			uint16_t	oNbRows;										// Number of rows
-			#define		KIMAGER_NB_ROWS_QVGA	240u					// Number of rows (QVGA)
+			#define		KIMAGER_NB_ROWS_QVGA	240U					// Number of rows (QVGA)
 
 			uint16_t	oStCols;										// Start of cols
 			uint16_t	oNbCols;										// Number of cols
-			#define		KIMAGER_NB_COLS_QVGA	320u					// Number of columns (QVGA)
+			#define		KIMAGER_NB_COLS_QVGA	320U					// Number of columns (QVGA)
 };
 
 // Semaphores
@@ -93,7 +98,7 @@ struct cnfImgk {
 
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -242,7 +247,7 @@ extern	int32_t	imgk_acquisition(void);
  */
 extern	int32_t	imgk_getImage(volatile void **image);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 
@@ -250,11 +255,11 @@ extern	int32_t	imgk_getImage(volatile void **image);
 // -------------------
 
 //					Negative				 Family Lib Id							Lib Id xx (error)
-#define	KIMGKERR	((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<24u) | KIMGKMAN)
+#define	KIMGKERR	((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<24U) | KIMGKMAN)
 
 enum : int32_t {
 	KERR_IMGK_NOERR = 0, 							// No error
-	KERR_IMGK_SYCNA = (int32_t)(KIMGKERR + 1u),		// System call not available
+	KERR_IMGK_SYCNA = (int32_t)(KIMGKERR + 1U),		// System call not available
 	KERR_IMGK_GEERR,								// General error
 	KERR_IMGK_CNERR,								// Configuration error
 	KERR_IMGK_TIMEO,								// Timeout error

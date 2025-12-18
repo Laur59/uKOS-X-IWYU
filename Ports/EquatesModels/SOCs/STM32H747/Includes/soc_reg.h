@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32H747 equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,7 +48,7 @@
 
 #pragma	once
 
-#if (defined(CORTEX_M4_S))
+#ifdef CORTEX_M4_S
 
 // IWYU pragma: begin_exports
 
@@ -144,7 +144,7 @@
 
 #endif
 
-#if (defined(CORTEX_M7_S))
+#ifdef CORTEX_M7_S
 
 // IWYU pragma: begin_exports
 

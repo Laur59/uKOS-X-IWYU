@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32H747_CM4_iwdg equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // IWDG address definitions
 // ------------------------
 
@@ -59,7 +61,7 @@ typedef struct {
 	volatile	uint32_t	WINR;
 } IWDG_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	IWDG1	reinterpret_cast<IWDG_TypeDef *>(0x58004800u)
 #define	IWDG2	reinterpret_cast<IWDG_TypeDef *>(0x58004C00u)
 

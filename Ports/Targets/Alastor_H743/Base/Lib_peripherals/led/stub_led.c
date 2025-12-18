@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		stub for the "led" manager module.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,12 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+
+#include	"board.h"
+#include	"macros_core.h"
+#include	"os_errors.h"
+#include	"soc_reg.h"
 
 static	bool	vMute;
 
@@ -62,17 +67,17 @@ void	stub_led_init(void) {
 	INTERRUPTION_OFF;
 	vMute = false;
 
-	GPIOB->ODR &= (uint32_t)~(1u<<BLED_0);
-	GPIOB->ODR &= (uint32_t)~(1u<<BLED_1);
-	GPIOB->ODR &= (uint32_t)~(1u<<BLED_2);
-	GPIOC->ODR &= (uint32_t)~(1u<<BLED_3);
-	GPIOC->ODR &= (uint32_t)~(1u<<BLED_4);
-	GPIOC->ODR &= (uint32_t)~(1u<<BLED_5);
-	GPIOC->ODR &= (uint32_t)~(1u<<BLED_6);
-	GPIOC->ODR &= (uint32_t)~(1u<<BLED_7);
+	GPIOB->ODR &= (uint32_t)~(1U<<BLED_0);
+	GPIOB->ODR &= (uint32_t)~(1U<<BLED_1);
+	GPIOB->ODR &= (uint32_t)~(1U<<BLED_2);
+	GPIOC->ODR &= (uint32_t)~(1U<<BLED_3);
+	GPIOC->ODR &= (uint32_t)~(1U<<BLED_4);
+	GPIOC->ODR &= (uint32_t)~(1U<<BLED_5);
+	GPIOC->ODR &= (uint32_t)~(1U<<BLED_6);
+	GPIOC->ODR &= (uint32_t)~(1U<<BLED_7);
 
-	GPIOI->ODR &= (uint32_t)~(1u<<BLOGIC_0);
-	GPIOI->ODR &= (uint32_t)~(1u<<BLOGIC_1);
+	GPIOI->ODR &= (uint32_t)~(1U<<BLOGIC_0);
+	GPIOI->ODR &= (uint32_t)~(1U<<BLOGIC_1);
 	INTERRUPTION_RESTORE;
 }
 
@@ -85,19 +90,19 @@ void	stub_led_init(void) {
 int32_t	stub_led_on(uint8_t ledNb) {
 
 	INTERRUPTION_OFF;
-	if (vMute == true) { RETURN_INT_RESTORE(KERR_LED_NOERR); }
+	if (vMute) { RETURN_INT_RESTORE(KERR_LED_NOERR); }
 	switch (ledNb) {
-		case 0u: { GPIOB->ODR |= (1u<<BLED_0);		break; }
-		case 1u: { GPIOB->ODR |= (1u<<BLED_1);		break; }
-		case 2u: { GPIOB->ODR |= (1u<<BLED_2);		break; }
-		case 3u: { GPIOC->ODR |= (1u<<BLED_3);		break; }
-		case 4u: { GPIOC->ODR |= (1u<<BLED_4);		break; }
-		case 5u: { GPIOC->ODR |= (1u<<BLED_5);		break; }
-		case 6u: { GPIOC->ODR |= (1u<<BLED_6);		break; }
-		case 7u: { GPIOC->ODR |= (1u<<BLED_7);		break; }
+		case 0U: { GPIOB->ODR |= (1U<<BLED_0);		break; }
+		case 1U: { GPIOB->ODR |= (1U<<BLED_1);		break; }
+		case 2U: { GPIOB->ODR |= (1U<<BLED_2);		break; }
+		case 3U: { GPIOC->ODR |= (1U<<BLED_3);		break; }
+		case 4U: { GPIOC->ODR |= (1U<<BLED_4);		break; }
+		case 5U: { GPIOC->ODR |= (1U<<BLED_5);		break; }
+		case 6U: { GPIOC->ODR |= (1U<<BLED_6);		break; }
+		case 7U: { GPIOC->ODR |= (1U<<BLED_7);		break; }
 
-		case 8u: { GPIOI->ODR |= (1u<<BLOGIC_0);	break; }
-		case 9u: { GPIOI->ODR |= (1u<<BLOGIC_1);	break; }
+		case 8U: { GPIOI->ODR |= (1U<<BLOGIC_0);	break; }
+		case 9U: { GPIOI->ODR |= (1U<<BLOGIC_1);	break; }
 		default: { RETURN_INT_RESTORE(KERR_LED_NODEV);	   }
 	}
 
@@ -113,19 +118,19 @@ int32_t	stub_led_on(uint8_t ledNb) {
 int32_t	stub_led_off(uint8_t ledNb) {
 
 	INTERRUPTION_OFF;
-	if (vMute == true) { RETURN_INT_RESTORE(KERR_LED_NOERR); }
+	if (vMute) { RETURN_INT_RESTORE(KERR_LED_NOERR); }
 	switch (ledNb) {
-		case 0u: { GPIOB->ODR &= (uint32_t)~(1u<<BLED_0);	break; }
-		case 1u: { GPIOB->ODR &= (uint32_t)~(1u<<BLED_1);	break; }
-		case 2u: { GPIOB->ODR &= (uint32_t)~(1u<<BLED_2);	break; }
-		case 3u: { GPIOC->ODR &= (uint32_t)~(1u<<BLED_3);	break; }
-		case 4u: { GPIOC->ODR &= (uint32_t)~(1u<<BLED_4);	break; }
-		case 5u: { GPIOC->ODR &= (uint32_t)~(1u<<BLED_5);	break; }
-		case 6u: { GPIOC->ODR &= (uint32_t)~(1u<<BLED_6);	break; }
-		case 7u: { GPIOC->ODR &= (uint32_t)~(1u<<BLED_7);	break; }
+		case 0U: { GPIOB->ODR &= (uint32_t)~(1U<<BLED_0);	break; }
+		case 1U: { GPIOB->ODR &= (uint32_t)~(1U<<BLED_1);	break; }
+		case 2U: { GPIOB->ODR &= (uint32_t)~(1U<<BLED_2);	break; }
+		case 3U: { GPIOC->ODR &= (uint32_t)~(1U<<BLED_3);	break; }
+		case 4U: { GPIOC->ODR &= (uint32_t)~(1U<<BLED_4);	break; }
+		case 5U: { GPIOC->ODR &= (uint32_t)~(1U<<BLED_5);	break; }
+		case 6U: { GPIOC->ODR &= (uint32_t)~(1U<<BLED_6);	break; }
+		case 7U: { GPIOC->ODR &= (uint32_t)~(1U<<BLED_7);	break; }
 
-		case 8u: { GPIOI->ODR &= (uint32_t)~(1u<<BLOGIC_0);	break; }
-		case 9u: { GPIOI->ODR &= (uint32_t)~(1u<<BLOGIC_1);	break; }
+		case 8U: { GPIOI->ODR &= (uint32_t)~(1U<<BLOGIC_0);	break; }
+		case 9U: { GPIOI->ODR &= (uint32_t)~(1U<<BLOGIC_1);	break; }
 		default: { RETURN_INT_RESTORE(KERR_LED_NODEV);			   }
 	}
 
@@ -141,19 +146,19 @@ int32_t	stub_led_off(uint8_t ledNb) {
 int32_t	stub_led_toggle(uint8_t ledNb) {
 
 	INTERRUPTION_OFF;
-	if (vMute == true) { RETURN_INT_RESTORE(KERR_LED_NOERR); }
+	if (vMute) { RETURN_INT_RESTORE(KERR_LED_NOERR); }
 	switch (ledNb) {
-		case 0u: { GPIOB->ODR ^= (1u<<BLED_0);	 break; }
-		case 1u: { GPIOB->ODR ^= (1u<<BLED_1);	 break; }
-		case 2u: { GPIOB->ODR ^= (1u<<BLED_2);	 break; }
-		case 3u: { GPIOC->ODR ^= (1u<<BLED_3);	 break; }
-		case 4u: { GPIOC->ODR ^= (1u<<BLED_4);	 break; }
-		case 5u: { GPIOC->ODR ^= (1u<<BLED_5);	 break; }
-		case 6u: { GPIOC->ODR ^= (1u<<BLED_6);	 break; }
-		case 7u: { GPIOC->ODR ^= (1u<<BLED_7);	 break; }
+		case 0U: { GPIOB->ODR ^= (1U<<BLED_0);	 break; }
+		case 1U: { GPIOB->ODR ^= (1U<<BLED_1);	 break; }
+		case 2U: { GPIOB->ODR ^= (1U<<BLED_2);	 break; }
+		case 3U: { GPIOC->ODR ^= (1U<<BLED_3);	 break; }
+		case 4U: { GPIOC->ODR ^= (1U<<BLED_4);	 break; }
+		case 5U: { GPIOC->ODR ^= (1U<<BLED_5);	 break; }
+		case 6U: { GPIOC->ODR ^= (1U<<BLED_6);	 break; }
+		case 7U: { GPIOC->ODR ^= (1U<<BLED_7);	 break; }
 
-		case 8u: { GPIOI->ODR ^= (1u<<BLOGIC_0); break; }
-		case 9u: { GPIOI->ODR ^= (1u<<BLOGIC_1); break; }
+		case 8U: { GPIOI->ODR ^= (1U<<BLOGIC_0); break; }
+		case 9U: { GPIOI->ODR ^= (1U<<BLOGIC_1); break; }
 		default: { RETURN_INT_RESTORE(KERR_LED_NODEV);	}
 	}
 
@@ -168,21 +173,21 @@ int32_t	stub_led_toggle(uint8_t ledNb) {
  */
 int32_t	stub_led_mute(bool mute) {
 
-	if (mute == false) { vMute = false; return (KERR_LED_NOERR); }
+	if (!mute) { vMute = false; return (KERR_LED_NOERR); }
 
 	INTERRUPTION_OFF;
 	vMute = true;
 
-	GPIOB->ODR &= (uint32_t)~(1u<<BLED_0);
-	GPIOB->ODR &= (uint32_t)~(1u<<BLED_1);
-	GPIOB->ODR &= (uint32_t)~(1u<<BLED_2);
-	GPIOC->ODR &= (uint32_t)~(1u<<BLED_3);
-	GPIOC->ODR &= (uint32_t)~(1u<<BLED_4);
-	GPIOC->ODR &= (uint32_t)~(1u<<BLED_5);
-	GPIOC->ODR &= (uint32_t)~(1u<<BLED_6);
-	GPIOC->ODR &= (uint32_t)~(1u<<BLED_7);
+	GPIOB->ODR &= (uint32_t)~(1U<<BLED_0);
+	GPIOB->ODR &= (uint32_t)~(1U<<BLED_1);
+	GPIOB->ODR &= (uint32_t)~(1U<<BLED_2);
+	GPIOC->ODR &= (uint32_t)~(1U<<BLED_3);
+	GPIOC->ODR &= (uint32_t)~(1U<<BLED_4);
+	GPIOC->ODR &= (uint32_t)~(1U<<BLED_5);
+	GPIOC->ODR &= (uint32_t)~(1U<<BLED_6);
+	GPIOC->ODR &= (uint32_t)~(1U<<BLED_7);
 
-	GPIOI->ODR &= (uint32_t)~(1u<<BLOGIC_0);
-	GPIOI->ODR &= (uint32_t)~(1u<<BLOGIC_1);
+	GPIOI->ODR &= (uint32_t)~(1U<<BLOGIC_0);
+	GPIOI->ODR &= (uint32_t)~(1U<<BLOGIC_1);
 	RETURN_INT_RESTORE(KERR_LED_NOERR);
 }

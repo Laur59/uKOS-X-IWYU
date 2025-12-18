@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Board mapping.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -59,15 +59,15 @@
 // GPIO settings
 // -------------
 
-#define KNB_LED				2u									// Number of LEDs
+#define KNB_LED				2U									// Number of LEDs
 
 // PORTs
 
 // The LEDs 2 & 3 and the Switches 2 & 3 are attributed to
 // the Net cpu
 
-#define	BLED_0				28u									// P0.28, LED
-#define	BLED_1				29u									// P0.29, LED
+#define	BLED_0				28U									// P0.28, LED
+#define	BLED_1				29U									// P0.29, LED
 
-#define	BSW_0				23u									// P0.23, SW0
-#define	BSW_1				24u									// P0.24, SW1
+#define	BSW_0				23U									// P0.23, SW0
+#define	BSW_1				24U									// P0.24, SW1

@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		crt0 for the uKOS-X system.
@@ -31,8 +31,8 @@
 ; linker_enBSS			|                 |
 ; _end					+-----------------+
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -66,9 +66,24 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"linker.h"
+#include	"crt0.h"
+
+#include	<inttypes.h>
+#include	<stddef.h>
+#include	<stdint.h>
+#include	<stdio.h>
+#include	<stdlib.h>
+#include	<string.h>
+
+#include	"kern/kern.h"
 #include	"kern/private/private_processes.h"
+#include	"linker.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"modules.h"
+#include	"serial/serial.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -91,7 +106,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -148,7 +163,7 @@ void	crt0(void) {
 		regionSeed = ALIGNED_PTR(const uint32_t, linker_stPrgmData);
 
 		nbWords    = (intptr_t)(((uintptr_t)linker_lnPrgmData) / 4);
-		seed       = 0u;
+		seed       = 0U;
 		while (nbWords-- > 0) {
 			seed += *regionSeed;
 			regionSeed++;
@@ -156,7 +171,7 @@ void	crt0(void) {
 
 // Initialise the BSS region
 
-		memset(linker_stBSS, 0x00u, (size_t)((uintptr_t)linker_enBSS - (uintptr_t)linker_stBSS));
+		memset(linker_stBSS, 0x00U, (size_t)((uintptr_t)linker_enBSS - (uintptr_t)linker_stBSS));
 
 // Initialise the LOW level (!!! No static variables !!!)
 
@@ -168,10 +183,10 @@ void	crt0(void) {
 
 // Initialise the Heap regions
 
-		memset(linker_stHeap, 0x00u, (size_t)linker_lnHeap);
+		memset(linker_stHeap, 0x00U, (size_t)linker_lnHeap);
 
-		#if (defined(CONFIG_MAN_ASMP_S))
-		memset(linker_stShare,  0x00u, (size_t)linker_lnShare);
+		#ifdef CONFIG_MAN_ASMP_S
+		memset(linker_stShare,  0x00U, (size_t)linker_lnShare);
 		#endif
 
 		vCrt0_randomSeed = seed;
@@ -277,7 +292,7 @@ static	void	__attribute__ ((noinline, noreturn)) local_killProcess(void) {
 
 // Important: do not remove the "while (true);"
 
-	while (true) { ; }
+	while (true) { }
 }
 
 /*
@@ -285,7 +300,7 @@ static	void	__attribute__ ((noinline, noreturn)) local_killProcess(void) {
  *
  */
 static	void	__attribute__ ((noinline)) local_panicMallocBroken(void) {
-	#if (defined(CONFIG_MAN_SERIAL_S))
+	#ifdef CONFIG_MAN_SERIAL_S
 			uint32_t	core;
 	const	char_t		*identifier;
 
@@ -295,7 +310,7 @@ static	void	__attribute__ ((noinline)) local_panicMallocBroken(void) {
 	PRIVILEGE_ELEVATE;
 	INTERRUPTION_OFF;
 
-	#if (defined(CONFIG_MAN_SERIAL_S))
+	#ifdef CONFIG_MAN_SERIAL_S
 	cmns_send(KSYST, "\nPanic: memo_malloc descriptor broken!\nCurrent process: ");
 	identifier = (vKern_runProc[core]->oSpecification.oIdentifier == NULL) ? ("Anonymous") : (vKern_runProc[core]->oSpecification.oIdentifier);
 	cmns_send(KSYST, identifier); cmns_send(KSYST, "\n");
@@ -307,7 +322,7 @@ static	void	__attribute__ ((noinline)) local_panicMallocBroken(void) {
  *
  */
 static	void	__attribute__ ((noinline)) local_panicStackUnderflow(void) {
-	#if (defined(CONFIG_MAN_SERIAL_S))
+	#ifdef CONFIG_MAN_SERIAL_S
 			uint32_t	core;
 			char_t		string[200 + 1];
 			uintptr_t	value;
@@ -319,21 +334,21 @@ static	void	__attribute__ ((noinline)) local_panicStackUnderflow(void) {
 	PRIVILEGE_ELEVATE;
 	INTERRUPTION_OFF;
 
-	#if (defined(CONFIG_MAN_SERIAL_S))
+	#ifdef CONFIG_MAN_SERIAL_S
 	cmns_send(KDEF0, "\nPanic: process stack underflow detected!\n");
 
 	identifier = (vKern_runProc[core]->oSpecification.oIdentifier == NULL) ? ("Anonymous") : (vKern_runProc[core]->oSpecification.oIdentifier);
-	(void)snprintf(&string[0], 200u, "Current process:    %s\n", identifier);
+	(void)snprintf(&string[0], 200U, "Current process:    %s\n", identifier);
 	cmns_send(KDEF0, &string[0]);
 
-	(void)snprintf(&string[0], 200u, "Process code entry: 0x%016"PRIXPTR"\n", (uintptr_t)vKern_runProc[core]->oSpecification.oCode);
+	(void)snprintf(&string[0], 200U, "Process code entry: 0x%016"PRIXPTR"\n", (uintptr_t)vKern_runProc[core]->oSpecification.oCode);
 	cmns_send(KDEF0, &string[0]);
 
-	(void)snprintf(&string[0], 200u, "Start of Stack:     0x%016"PRIXPTR"\n", (uintptr_t)vKern_runProc[core]->oSpecification.oStackStart);
+	(void)snprintf(&string[0], 200U, "Start of Stack:     0x%016"PRIXPTR"\n", (uintptr_t)vKern_runProc[core]->oSpecification.oStackStart);
 	cmns_send(KDEF0, &string[0]);
 
 	GET_CURRENT_PROCESS_STACK(value);
-	(void)snprintf(&string[0], 200u, "Current Stack:      0x%016"PRIXPTR"\n", value);
+	(void)snprintf(&string[0], 200U, "Current Stack:      0x%016"PRIXPTR"\n", value);
 	cmns_send(KDEF0, &string[0]);
 	#endif
 }
@@ -343,7 +358,7 @@ static	void	__attribute__ ((noinline)) local_panicStackUnderflow(void) {
  *
  */
 static	void	__attribute__ ((noinline)) local_panicNoSystemCall(void) {
-	#if (defined(CONFIG_MAN_SERIAL_S))
+	#ifdef CONFIG_MAN_SERIAL_S
 			uint32_t	core;
 	const	char_t		*identifier;
 
@@ -353,7 +368,7 @@ static	void	__attribute__ ((noinline)) local_panicNoSystemCall(void) {
 	PRIVILEGE_ELEVATE;
 	INTERRUPTION_OFF;
 
-	#if (defined(CONFIG_MAN_SERIAL_S))
+	#ifdef CONFIG_MAN_SERIAL_S
 	cmns_send(KSYST, "\nPanic: The system call does not exist!\nCurrent process: ");
 	identifier = (vKern_runProc[core]->oSpecification.oIdentifier == NULL) ? ("Anonymous") : (vKern_runProc[core]->oSpecification.oIdentifier);
 	cmns_send(KSYST, identifier); cmns_send(KSYST, "\n");
@@ -369,7 +384,7 @@ static	void	__attribute__ ((noinline)) local_panicGeneral(void) {
 	PRIVILEGE_ELEVATE;
 	INTERRUPTION_OFF;
 
-	#if (defined(CONFIG_MAN_SERIAL_S))
+	#ifdef CONFIG_MAN_SERIAL_S
 	cmns_send(KSYST, "\nPanic: system stopped!\n");
 	#endif
 }

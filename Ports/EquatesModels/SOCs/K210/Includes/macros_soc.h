@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Important macros.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,18 +48,25 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
+#include	"core.h"
+#include	"core_reg.h"
+#include	"soc_reg.h"
+
+
 // Multicore macro
 // ---------------
 
-#define	KNB_CORES				2u
-#define	KCORE_0					0u
-#define	KCORE_1					1u
+#define	KNB_CORES				2U
+#define	KCORE_0					0U
+#define	KCORE_1					1U
 
-#if (!defined(GET_RUNNING_CORE))
+#ifndef GET_RUNNING_CORE
 #define	GET_RUNNING_CORE		((uint32_t)(core_getCSR(RV_CSR_MHARTID) & 0x1u))
 #endif
 
-#if (!defined(MCSET))
+#ifndef MCSET
 #if		(KNB_CORES == 1)
 #define MCSET(v)				{ (v) }
 #elif	(KNB_CORES == 2)
@@ -72,10 +79,24 @@
 // Baudrate macro
 // --------------
 
-#define	BAUDRATE(ck, baudrate, H, L, F)																							\
-								H = (ck / baudrate)>>12u; 																		\
-								L = ((ck / baudrate) - (H<<12u)) / 16u;															\
-								F = ((ck / baudrate) - (H<<12u)) - (L * 16u)
+[[maybe_unused]] static inline uint32_t BAUDRATE_H_val(uint32_t div) {
+    return div >> 12;
+}
+
+[[maybe_unused]] static inline uint32_t BAUDRATE_L_val(uint32_t div) {
+    return (div & 0xFFF) / 16;
+}
+
+[[maybe_unused]] static inline uint32_t BAUDRATE_F_val(uint32_t div) {
+    return div & 0xF;
+}
+
+#define BAUDRATE(ck, baudrate, H, L, F)  do {						\
+    uint32_t _div = (ck) / (baudrate);								\
+    (H) = BAUDRATE_H_val(_div);										\
+    (L) = BAUDRATE_L_val(_div);										\
+    (F) = BAUDRATE_F_val(_div);										\
+} while(0)
 
 // Interruption macros
 // -------------------
@@ -86,7 +107,7 @@ enum {
 // Priorities used to set the PLIC. levels indicated with _KERNEL_
 // are reserved for the uKernel (!!! do not change those values)
 
-		KINT_LEVEL_ALL = 1u,
+		KINT_LEVEL_ALL = 1U,
 		KINT_LEVEL_KERNEL_PREEMPTION,
 		KINT_LEVEL_KERNEL_TIMERS,
 		KINT_LEVEL_PERIPHERALS,
@@ -104,12 +125,12 @@ enum {
 // KINT_IMASK_KERNEL_SWI		Allows only NMI, SWI
 // KINT_IMASK_OFF				Allows only NMI, SWI
 
-#define	KINT_IMASK_ALL					(KINT_LEVEL_ALL - 1u)
-#define	KINT_IMASK_KERNEL_PREEMPTION	(KINT_LEVEL_KERNEL_PREEMPTION - 1u)
-#define	KINT_IMASK_KERNEL_TIMERS		(KINT_LEVEL_KERNEL_TIMERS - 1u)
-#define	KINT_IMASK_PERIPHERALS			(KINT_LEVEL_PERIPHERALS - 1u)
-#define	KINT_IMASK_COMMUNICATIONS		(KINT_LEVEL_COMMUNICATIONS - 1u)
-#define	KINT_IMASK_KERNEL_SWI			(KINT_LEVEL_KERNEL_SWI - 1u)
+#define	KINT_IMASK_ALL					(KINT_LEVEL_ALL - 1U)
+#define	KINT_IMASK_KERNEL_PREEMPTION	(KINT_LEVEL_KERNEL_PREEMPTION - 1U)
+#define	KINT_IMASK_KERNEL_TIMERS		(KINT_LEVEL_KERNEL_TIMERS - 1U)
+#define	KINT_IMASK_PERIPHERALS			(KINT_LEVEL_PERIPHERALS - 1U)
+#define	KINT_IMASK_COMMUNICATIONS		(KINT_LEVEL_COMMUNICATIONS - 1U)
+#define	KINT_IMASK_KERNEL_SWI			(KINT_LEVEL_KERNEL_SWI - 1U)
 #define	KINT_IMASK_OFF					KINT_LEVEL_KERNEL_SWI
 
 // Names for the user applications
@@ -127,14 +148,14 @@ enum {
 // GPIOHS1 Used for preemption (change the context)
 
 #define	KKERN_PREEMPTION		EINT_GPIOHS0_INTERRUPT
-#define	BKERN_PREEMPTION		0u
+#define	BKERN_PREEMPTION		0U
 #define	KKERN_PREEMPTION_C0		EINT_GPIOHS0_INTERRUPT
-#define	BKERN_PREEMPTION_C0		0u
+#define	BKERN_PREEMPTION_C0		0U
 #define	KKERN_PREEMPTION_C1		EINT_GPIOHS1_INTERRUPT
-#define	BKERN_PREEMPTION_C1		1u
+#define	BKERN_PREEMPTION_C1		1U
 
-#define KEXCEPTION				0u
-#define KINTERRUPTION			1u
+#define KEXCEPTION				0U
+#define KINTERRUPTION			1U
 
 extern	bool					vExce_isException[KNB_CORES];
 extern	void					(*vExce_intIntVectors[KNB_CORES][KNB_INT_INTERRUPTIONS])(uint32_t core, uint64_t parameter);
@@ -142,41 +163,41 @@ extern	void					(*vExce_intExcVectors[KNB_CORES][KNB_INT_EXCEPTIONS])(uint32_t c
 extern	void					(*vExce_extIntVectors[KNB_CORES][KNB_EXT_INTERRUPTIONS])(uint32_t core, uint64_t parameter);
 extern	void					(*vMsgs_process[KNB_CORES])(uint32_t core, uint64_t message);
 
-#if (!defined(KERN_SAVE_PRIORITY))
+#ifndef KERN_SAVE_PRIORITY
 #define	KERN_SAVE_PRIORITY		threshold = (uint64_t)plic->targets.target[core].priority_threshold & 0x00000000000000FFu
 #endif
 
-#if (!defined(KERN_NEW_PRIORITY))
+#ifndef KERN_NEW_PRIORITY
 #define	KERN_NEW_PRIORITY		plic->targets.target[core].priority_threshold = (uint32_t)(threshold & 0x00000000000000FFu)
 #endif
 
-#if (!defined(INTERRUPTION_SET))
+#ifndef INTERRUPTION_SET
 #define	INTERRUPTION_SET		plic->targets.target[GET_RUNNING_CORE].priority_threshold = KINT_IMASK_ALL
 #endif
 
-#if (!defined(INTERRUPTION_SET_PERIPH))
+#ifndef INTERRUPTION_SET_PERIPH
 #define	INTERRUPTION_SET_PERIPH	plic->targets.target[GET_RUNNING_CORE].priority_threshold = KINT_IMASK_PERIPHERALS
 #endif
 
-#if (!defined(INTERRUPTION_OFF_HARD))
+#ifndef INTERRUPTION_OFF_HARD
 #define	INTERRUPTION_OFF_HARD	core_clrBitCSR(RV_CSR_MIE, (uint64_t)MIP_MEIP);												   	\
 								core_clrBitCSR(RV_CSR_MSTATUS, (uint64_t)MSTATUS_MIE)
 #endif
 
-#if (!defined(INTERRUPTION_ON_HARD))
+#ifndef INTERRUPTION_ON_HARD
 #define	INTERRUPTION_ON_HARD	core_setBitCSR(RV_CSR_MIE, (uint64_t)MIP_MEIP);												  	\
 								core_setBitCSR(RV_CSR_MSTATUS, (uint64_t)MSTATUS_MIE)
 
 #endif
 
-#if (!defined(INTERRUPTION_OFF))
+#ifndef INTERRUPTION_OFF
 #define	INTERRUPTION_OFF		volatile	uint32_t	__savePLIC_msk __attribute__ ((unused));  								\
 								__savePLIC_msk = plic->targets.target[GET_RUNNING_CORE].priority_threshold;						\
 								(void)__savePLIC_msk;																			\
 								plic->targets.target[GET_RUNNING_CORE].priority_threshold = KINT_IMASK_OFF
 #endif
 
-#if (!defined(INTERRUPTION_RESTORE))
+#ifndef INTERRUPTION_RESTORE
 #define	INTERRUPTION_RESTORE																									\
 								do {																							\
 									typeof(__savePLIC_msk)	const	msk_  = (__savePLIC_msk);									\
@@ -185,37 +206,31 @@ extern	void					(*vMsgs_process[KNB_CORES])(uint32_t core, uint64_t message);
 								} while (0)
 #endif
 
-#if (!defined(INTERRUPTION_OFF_CRITICAL))
+#ifndef INTERRUPTION_OFF_CRITICAL
 #define	INTERRUPTION_OFF_CRITICAL(savemMask)																					\
 								savemMask = plic->targets.target[GET_RUNNING_CORE].priority_threshold;							\
 								plic->targets.target[0].priority_threshold = KINT_IMASK_OFF
 #endif
 
-#if (!defined(INTERRUPTION_RESTORE_CRITICAL))
+#ifndef INTERRUPTION_RESTORE_CRITICAL
 #define	INTERRUPTION_RESTORE_CRITICAL(savemMask)											   						   			\
 								plic->targets.target[0].priority_threshold = savemMask
 #endif
 
-#if (!defined(IS_EXCEPTION))
+#ifndef IS_EXCEPTION
 #define	IS_EXCEPTION			(vExce_isException[core])
 #endif
 
-#if (!defined(PREEMPTION))
-#define	PREEMPTION				if (GET_RUNNING_CORE == 0u) {																	\
-									gpiohs->rise_ie.u32[0]   |= (1u<<BKERN_PREEMPTION_C0);										\
-									gpiohs->input_val.u32[0] |= (1u<<BKERN_PREEMPTION_C0);										\
+#ifndef PREEMPTION
+#define	PREEMPTION				if (GET_RUNNING_CORE == 0U) {																	\
+									gpiohs->rise_ie.u32[0]   |= (1U<<BKERN_PREEMPTION_C0);										\
+									gpiohs->input_val.u32[0] |= (1U<<BKERN_PREEMPTION_C0);										\
 								}																								\
 								else {																							\
-									gpiohs->rise_ie.u32[0]   |= (1u<<BKERN_PREEMPTION_C1);										\
-									gpiohs->input_val.u32[0] |= (1u<<BKERN_PREEMPTION_C1);										\
+									gpiohs->rise_ie.u32[0]   |= (1U<<BKERN_PREEMPTION_C1);										\
+									gpiohs->input_val.u32[0] |= (1U<<BKERN_PREEMPTION_C1);										\
 								}
 #endif
 
-#define	INT_EXCEPTION_VECTOR(vectorNb, address)																					\
-								vExce_intExcVectors[GET_RUNNING_CORE][vectorNb] = address
-
-#define	INT_INTERRUPT_VECTOR(vectorNb, address)																					\
-								vExce_intIntVectors[GET_RUNNING_CORE][vectorNb] = address
-
-#define	EXT_INTERRUPT_VECTOR(vectorNb, address)																					\
-								vExce_extIntVectors[GET_RUNNING_CORE][vectorNb] = address
+// INT_EXCEPTION_VECTOR, INT_INTERRUPT_VECTOR, and EXT_INTERRUPT_VECTOR macros
+// moved to macros_core.h for IWYU compliance

@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32N657_i2c equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // I2C address definitions
 // -----------------------
 
@@ -65,7 +67,7 @@ typedef struct {
 	volatile	uint32_t	TXDR;
 } I2C_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	I2C1_NS	reinterpret_cast<I2C_TypeDef *>(0x40005400u)
 #define	I2C1_S	reinterpret_cast<I2C_TypeDef *>(0x50005400u)
 #define	I2C2_NS	reinterpret_cast<I2C_TypeDef *>(0x40005800u)

@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Preliminary test of the ipi.
@@ -18,8 +18,8 @@
 ;			test_ipi -display		test_ipi -display
 ;			counter[core 0]			counter[core 1]
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -53,7 +53,24 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#define		_POSIX_C_SOURCE		200809L
+
+#include	<inttypes.h>
+#include	<stdbool.h>
+#include	<stdint.h>
+#include	<stdio.h>
+
+#include	"Registers/K210_clint.h"
+#include	"Registers/rv64_csr.h"
+#include	"Registers/soc_vectors.h"
+#include	"core.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"modules.h"
+#include	"serial/serial.h"
+#include	"text/text.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -80,19 +97,19 @@ static	void		local_machineSoftware_IRQHandler(uint32_t core, uint64_t parameter)
 MODULE(
 	Test_ipi,									// Module name (the first letter has to be upper case)
 	KID_FAM_CLI,								// Family (defined in the module.h)
-	(((uint32_t)'_'<<8u)+(uint32_t)'M'),		// Module identifier (defined in the module.h)
+	(((uint32_t)'_'<<8U)+(uint32_t)'M'),		// Module identifier (defined in the module.h)
 	test_ipi_pre_init,							// Address of the initialisation code (early pre-init)
 	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,										// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
 // CLI tool specific
 // =================
 
-volatile	uint8_t		vCounter[KNB_CORES] = MCSET(0u);
+volatile	uint8_t		vCounter[KNB_CORES] = MCSET(0U);
 volatile	bool		vDataAvailable[KNB_CORES] = MCSET(false);
 
 /*
@@ -109,8 +126,8 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 	switch (argc) {
 		case 2: {
 			text_checkAsciiBuffer(argv[1], "-display",  &display);
-			if (display == true) {
-				if (vDataAvailable[core] == true) {
+			if (display) {
+				if (vDataAvailable[core]) {
 					vDataAvailable[core] = false;
 					(void)dprintf(KSYST, "Counter = %"PRIu8"\n", vCounter[core]);
 				}
@@ -120,10 +137,10 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 				break;
 			}
 			text_checkAsciiBuffer(argv[1], "-generate",  &generate);
-			if (generate == true) {
-				destCore = (core == KCORE_0) ? (1u) : (0u);
-				if (clint->msip[destCore].msip == 0u) {
-					clint->msip[destCore].msip = 1u;
+			if (generate) {
+				destCore = (core == KCORE_0) ? (1U) : (0U);
+				if (clint->msip[destCore].msip == 0U) {
+					clint->msip[destCore].msip = 1U;
 				}
 				else {
 					(void)dprintf(KSYST, "Channel busy!\n");
@@ -158,8 +175,8 @@ static	int32_t	test_ipi_pre_init(uint32_t argc, const char_t *argv[]) {
 
 	INT_INTERRUPT_VECTOR(IINT_MACHINE_SOFTWARE, local_machineSoftware_IRQHandler);
 
-	clint->msip[core].msip = 0u;
-	core_setBitCSR(RV_CSR_MIE, ((uint64_t)1u<<(uint64_t)IINT_MACHINE_SOFTWARE));
+	clint->msip[core].msip = 0U;
+	core_setBitCSR(RV_CSR_MIE, ((uint64_t)1U<<(uint64_t)IINT_MACHINE_SOFTWARE));
 	return (EXIT_OS_SUCCESS);
 }
 
@@ -173,7 +190,7 @@ static	void	local_machineSoftware_IRQHandler(uint32_t core, uint64_t parameter) 
 
 	UNUSED(parameter);
 
-	clint->msip[core].msip = 0u;
+	clint->msip[core].msip = 0U;
 	vCounter[core]++;
 	vDataAvailable[core] = true;
 }

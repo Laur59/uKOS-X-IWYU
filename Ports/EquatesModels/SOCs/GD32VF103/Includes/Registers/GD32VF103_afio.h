@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		GD32VF103_afio equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // AFIO address definitions
 // ------------------------
 
@@ -62,7 +64,7 @@ typedef struct {
 	volatile	uint32_t	PCF1;
 } AFIO_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	AFIO	reinterpret_cast<AFIO_TypeDef *>(0x40010000u)
 
 #else

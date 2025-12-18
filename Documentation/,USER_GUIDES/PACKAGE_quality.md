@@ -13,8 +13,8 @@ To verify the quality of the software package, three solutions are available: th
 PATH=${PATH}:${PATH_TOOLS_GCC}/cross/cppcheckpremium
 
 # Usage
-cd ${PATH_UKOS_X_PACKAGE}/Ports/Nucleo_H743/Variant_Test
-${PATH_UKOS_X_PACKAGE}/Third_Parties/Cppcheck/code_analysis.sh -P
+cd Ports/Nucleo_H743/Variant_Test
+Third_Parties/Cppcheck/code_analysis.sh -P
 ```
 
 ### Cppcheck (open source)
@@ -24,15 +24,15 @@ ${PATH_UKOS_X_PACKAGE}/Third_Parties/Cppcheck/code_analysis.sh -P
 PATH=${PATH}:${PATH_TOOLS_GCC}/cross/cppcheck-current/bin
 
 # Usage
-cd ${PATH_UKOS_X_PACKAGE}/Ports/Nucleo_H743/Variant_Test
-${PATH_UKOS_X_PACKAGE}/Third_Parties/Cppcheck/code_analysis.sh
+cd Ports/Nucleo_H743/Variant_Test
+Third_Parties/Cppcheck/code_analysis.sh
 ```
 
 ### clang-tidy (open source)
 
 ```makefile
 # Usage
-cd ${PATH_UKOS_X_PACKAGE}/Ports/Nucleo_H743/Variant_Test
-${PATH_UKOS_X_PACKAGE}/Tools/UNIX_Tools/clang-analyser/analyser.sh
+cd Ports/Nucleo_H743/Variant_Test
+Tools/UNIX_Tools/clang-analyser/analyser.sh
 ```
 

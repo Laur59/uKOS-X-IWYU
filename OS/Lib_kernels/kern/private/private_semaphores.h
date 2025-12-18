@@ -5,16 +5,16 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Kern - Semaphore management.
 ;
 ;			Private uKernel variables.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -70,12 +70,18 @@
  * @{
  */
 
+#include	<stdint.h>
+
+#include	"kern/kern.h"
+#include	"macros_soc.h"
+#include	"types.h"
+
 #define	KSEMA_ANONYMOUS_ID	"Sema_anonymous"
 
 struct	sema {
 	const	char_t		*oIdentifier;							// Semaphore identifier
 			uint16_t	oState;									// Semaphore state
-			#define		BSEMA_INSTALLED		0u					// Semaphore installed
+			#define		BSEMA_INSTALLED		0U					// Semaphore installed
 
 			int32_t		oCounter;								// Semaphore counter
 			int32_t		oMaxCounter;							// Semaphore counter max value

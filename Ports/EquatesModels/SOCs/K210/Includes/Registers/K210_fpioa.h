@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		K210_fpioa equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,10 +48,12 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // FPIOA address definitions
 // -------------------------
 
-#define	FPIOA_NUM_IO		48u
+#define	FPIOA_NUM_IO		48U
 
 // FPIOA pin function table
 
@@ -648,8 +650,8 @@ typedef	 struct	_fpioa_io_config {
 // Tie high means the SPI Arbitration input is 1
 
 typedef	struct	_fpioa_tie {
-	uint32_t	en[FUNC_MAX / 32u];					// FPIOA GPIO multiplexer tie enable array
-	uint32_t	val[FUNC_MAX / 32u];				// FPIOA GPIO multiplexer tie value array
+	uint32_t	en[FUNC_MAX / 32U];					// FPIOA GPIO multiplexer tie enable array
+	uint32_t	val[FUNC_MAX / 32U];				// FPIOA GPIO multiplexer tie value array
 } __attribute__ ((packed, aligned (4))) fpioa_tie_t;
 
 // FPIOA IO Pin RAM Layout

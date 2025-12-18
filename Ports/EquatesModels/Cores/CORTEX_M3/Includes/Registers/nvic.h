@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		NVIC equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // NVIC address definitions
 // -----------------------
 
@@ -67,7 +69,7 @@ typedef struct {
 	volatile	uint32_t	STIR;
 } NVIC_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	NVIC	reinterpret_cast<NVIC_TypeDef *>(0xE000E100u)
 
 #else
@@ -76,25 +78,25 @@ typedef struct {
 
 // System Reset
 
-#define NVIC_VECTRESET				0u
-#define NVIC_SYSRESETREQ			2u
+#define NVIC_VECTRESET				0U
+#define NVIC_SYSRESETREQ			2U
 #define NVIC_AIRCR_VECTKEY			(0x5FAu<<16)
-#define NVIC_AIRCR_ENDIANESS		15u
+#define NVIC_AIRCR_ENDIANESS		15U
 
 // NVIC macros
 
 #define	NVIC_EnableIRQ(IRQn) \
-		NVIC->ISER[((uint32_t)IRQn) / 32u] = (((uint32_t)1u)<<(((uint32_t)(IRQn)) % 32u))
+		NVIC->ISER[((uint32_t)IRQn) / 32U] = (((uint32_t)1U)<<(((uint32_t)(IRQn)) % 32U))
 
 #define	NVIC_DisableIRQ(IRQn) \
-		NVIC->ICER[((uint32_t)IRQn) / 32u] = (((uint32_t)1u)<<(((uint32_t)(IRQn)) % 32u))
+		NVIC->ICER[((uint32_t)IRQn) / 32U] = (((uint32_t)1U)<<(((uint32_t)(IRQn)) % 32U))
 
 #define	NVIC_SetPendingIRQ(IRQn) \
-		NVIC->ISPR[((uint32_t)IRQn) / 32u] = (((uint32_t)1u)<<(((uint32_t)(IRQn)) % 32u))
+		NVIC->ISPR[((uint32_t)IRQn) / 32U] = (((uint32_t)1U)<<(((uint32_t)(IRQn)) % 32U))
 
 #define	NVIC_ClearPendingIRQ(IRQn) \
-		NVIC->ICPR[((uint32_t)IRQn) / 32u] = (((uint32_t)1u)<<(((uint32_t)(IRQn)) % 32u))
+		NVIC->ICPR[((uint32_t)IRQn) / 32U] = (((uint32_t)1U)<<(((uint32_t)(IRQn)) % 32U))
 
 #define	NVIC_SetPriority(IRQn, priority) \
 		if (IRQn >= 0) { NVIC->IP[(uint32_t)IRQn] = (uint32_t)(((uint32_t)priority)<<(uint32_t)KNVIC_PRIORITY_SHIFT); } \
-		else		   { SCB->SHP[((uint32_t)IRQn & 0xFu) - 4u] = ((uint32_t)priority<<(uint32_t)KNVIC_PRIORITY_SHIFT); }
+		else		   { SCB->SHP[((uint32_t)IRQn & 0xFu) - 4U] = ((uint32_t)priority<<(uint32_t)KNVIC_PRIORITY_SHIFT); }

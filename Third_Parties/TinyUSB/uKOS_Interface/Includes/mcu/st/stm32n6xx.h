@@ -12,8 +12,8 @@
 ; Goal:		Import the uKOS definition (specially mcu) to provide
 ;			the file stm32n6xx.h.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -51,8 +51,18 @@
 
 #define	__NOP()		__asm volatile ("nop")
 
-#include	"Registers/soc_vectors.h"
-#include	"macros_soc.h"
-#include	"macros_core.h"
+// For selecting Secure/NSecure
+
+#ifdef SECURE_S
+#define	REG(x)					(x ## _S)
+#elif (defined(SECURE_NS))
+#define	REG(x)					(x ## _NS)
+#else
+#define	REG(x)					(x ## _S)
+#endif
+
+#define	SEC(x)					(x ## _S)
+#define	NONSEC(x)				(x ## _NS)
+
 #include	"core_reg.h"
 #include	"soc_reg.h"

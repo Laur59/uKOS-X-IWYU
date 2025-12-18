@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		RP2350_timer equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // TIMER address definitions
 // -------------------------
 
@@ -73,7 +75,7 @@ typedef struct {
 	volatile	uint32_t	INTS;
 } TIMER_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	TIMER0_NS	reinterpret_cast<TIMER_TypeDef *>(0x400B0000u)
 #define	TIMER0_S	reinterpret_cast<TIMER_TypeDef *>(0x400B0000u)
 #define	TIMER1_NS	reinterpret_cast<TIMER_TypeDef *>(0x400B8000u)

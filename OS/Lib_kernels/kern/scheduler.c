@@ -5,16 +5,16 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Kern - Scheduler management.
 ;
 ;			This module is responsible for controlling the logic of the uKernel.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,16 +48,27 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"kern/private/private_kern.h"
 #include	"kern/private/private_scheduler.h"
+
+#include	<stdint.h>
+#include	<stdlib.h>
+
+#include	"kern/kern.h"
+#include	"kern/private/private_lists.h"
 #include	"kern/private/private_processes.h"
-#include	"kern/private/private_semaphores.h"
-#include	"kern/private/private_mutexes.h"
+#include	"kern/private/private_kern.h"
 #include	"kern/private/private_mailboxes.h"
-#include	"kern/private/private_temporal.h"
+#include	"kern/private/private_mutexes.h"
+#include	"kern/private/private_semaphores.h"
 #include	"kern/private/private_signals.h"
+#include	"kern/private/private_temporal.h"
 #include	"kern/private/private_xLibrary.h"
+#ifdef __arm__
+#include	"macros_core.h"
+#endif
+#include	"macros_soc.h"
+#include	"record/record.h"
+#include	"types.h"
 
 uintptr_t	*vKern_stackProc[KNB_CORES];
 
@@ -89,13 +100,13 @@ void	scheduler_changeContext(bool force, list_t *list, uint8_t bitNb) {
 
 	INTERRUPTION_OFF;
 	vKern_backwardProc[core] = vKern_runProc[core];
-	vKern_runProc[core]->oInternal.oState &= (uint16_t)~(1u<<BPROC_RUNNING);
+	vKern_runProc[core]->oInternal.oState &= (uint16_t)~(1U<<BPROC_RUNNING);
 
 // force == true,  Context switching due to a specific demand
 // force == false, Context switching due to an event
 
-	if (force == true) { local_nextAction(KSCHE_FORCE_SWITCH_NORM, list, bitNb);   }
-	else			   { local_nextAction(KSCHE_TIMEOUT_SWITCH_NORM, list, bitNb); }
+	if (force) { local_nextAction(KSCHE_FORCE_SWITCH_NORM, list, bitNb);   }
+	else	   { local_nextAction(KSCHE_TIMEOUT_SWITCH_NORM, list, bitNb); }
 
 // Update the impure pointer with the impure data of the process
 // Load the new stack
@@ -103,7 +114,7 @@ void	scheduler_changeContext(bool force, list_t *list, uint8_t bitNb) {
 	xLibrary_update();
 	vKern_stackProc[core] = vKern_runProc[core]->oSpecification.oStack;
 
-	vKern_runProc[core]->oInternal.oState |= (1u<<BPROC_RUNNING);
+	vKern_runProc[core]->oInternal.oState |= (1U<<BPROC_RUNNING);
 
 // Give a new timeout for the process
 
@@ -147,7 +158,7 @@ static	void	local_nextAction(uint8_t action, list_t *list, uint8_t bitNb) {
 
 		case KSCHE_FORCE_SWITCH_NORM: {
 			process = vKern_runProc[core];
-			if ((process->oInternal.oState & (1u<<BPROC_INSTALLED)) != 0u) {
+			if ((process->oInternal.oState & (1U<<BPROC_INSTALLED)) != 0U) {
 				process->oSpecification.oStack = vKern_stackProc[core];
 			}
 			vKern_runProc[core] = local_getNextProcess();
@@ -162,7 +173,7 @@ static	void	local_nextAction(uint8_t action, list_t *list, uint8_t bitNb) {
 
 		case KSCHE_TIMEOUT_SWITCH_NORM: {
 			process = vKern_runProc[core];
-			process->oInternal.oState |= (uint16_t)(1u<<bitNb);
+			process->oInternal.oState |= (uint16_t)(1U<<bitNb);
 			process->oSpecification.oStack = vKern_stackProc[core];
 			lists_disconnectConnect(process->oObject.oList, list, process);
 			vKern_runProc[core] = local_getNextProcess();
@@ -214,7 +225,7 @@ static	proc_t	*local_getNextProcess(void) {
 // In the execution list the idle is always in place
 // Case not possible
 
-		case 0u: {
+		case 0U: {
 			LOG(KFATAL_KERNEL, "sche: case not possible");
 			exit(EXIT_OS_PANIC);
 		}
@@ -222,14 +233,14 @@ static	proc_t	*local_getNextProcess(void) {
 // Only the idle in the execution list
 // Return the idle
 
-		case 1u: {
+		case 1U: {
 			return (idle);
 		}
 
 // Idle + 1 process in the excecution list
 // Return the process connected to the idle
 
-		case 2u: {
+		case 2U: {
 			process->oInternal.oSkip = 0;
 			process->oInternal.oDynamicPriority = process->oSpecification.oPriority;
 			return (process);
@@ -240,7 +251,7 @@ static	proc_t	*local_getNextProcess(void) {
 // (nbElements - 1) because "process->oObject.oForward->oxyz"
 
 		default: {
-			for (i = 1u; i < (uint16_t)(nbElements - 1u); i++) {
+			for (i = 1U; i < (uint16_t)(nbElements - 1U); i++) {
 
 // Determine the next action
 
@@ -289,7 +300,7 @@ static	proc_t	*local_getNextProcess(void) {
 			break;
 		}
 	}
-	priorityProcess->oInternal.oSkip = 0u;
+	priorityProcess->oInternal.oSkip = 0U;
 	priorityProcess->oInternal.oDynamicPriority = priorityProcess->oSpecification.oPriority;
 	return (priorityProcess);
 }
@@ -316,7 +327,7 @@ static	void	local_updateDynaPriority(void) {
 
 // Do not modify the dynamic priority of the idle process.
 
-	if (nbElements == 1u) {
+	if (nbElements == 1U) {
 		INTERRUPTION_RESTORE;
 		return;
 	}
@@ -324,13 +335,13 @@ static	void	local_updateDynaPriority(void) {
 	idle	= vKern_listExec[core].oFirst;
 	process	= idle->oObject.oForward;
 
-	for (i = 1u; i < nbElements; i++) {
+	for (i = 1U; i < nbElements; i++) {
 
 // Do not modify the dynamic priority of the running process.
 // Do not modify the dynamic priority if requested by the user.
 
 		if (process != vKern_runProc[core]) {
-			if (process->oInternal.oDynamicPriority > 0u) {
+			if (process->oInternal.oDynamicPriority > 0U) {
 				dynaPriority = (uint8_t)process->oInternal.oDynamicPriority;
 				dynaPriority--;
 				process->oInternal.oDynamicPriority = (priority_t)dynaPriority;
@@ -356,9 +367,9 @@ static	void	local_callIdleOut(void) {
 
 	if (vKern_backwardProc[core] == &vKern_proc[core][0]) {
 		if (code != NULL) {
-			vKern_runProc[core]->oInternal.oState |= (1u<<BPROC_LIKE_ISR);
+			vKern_runProc[core]->oInternal.oState |= (1U<<BPROC_LIKE_ISR);
 			code(KKERN_IDLE_OUT);
-			vKern_runProc[core]->oInternal.oState &= (uint16_t)~(1u<<BPROC_LIKE_ISR);
+			vKern_runProc[core]->oInternal.oState &= (uint16_t)~(1U<<BPROC_LIKE_ISR);
 		}
 	}
 }
@@ -407,7 +418,7 @@ void	scheduler_callBackFast(uint32_t time) {
  */
 void	scheduler_callBackSlow(void) {
 
-	scheduler_changeContext(true, NULL, 0u);
+	scheduler_changeContext(true, NULL, 0U);
 }
 
 /*
@@ -437,7 +448,7 @@ void	scheduler_callBackTrap(uint32_t message) {
 	uint32_t	core;
 
 	core = GET_RUNNING_CORE;
-	switch (message & 0xFFFF0000u) {
+	switch (message & 0xFFFF0000U) {
 
 // Messages without parameters
 // - Basic services
@@ -445,7 +456,7 @@ void	scheduler_callBackTrap(uint32_t message) {
 		case KKERN_MSG_NO_PARAM: {
 			switch (message) {
 				case KKERN_MSG_JUMP_KERN: {
-					scheduler_changeContext(true, NULL, 0u);
+					scheduler_changeContext(true, NULL, 0U);
 					break;
 				}
 				case KKERN_MSG_WAIT_TIME: {
@@ -469,23 +480,23 @@ void	scheduler_callBackTrap(uint32_t message) {
 // - Mailbox (Empty & Full)
 
 		case KKERN_MSG_WAIT_SEMA_SYN: {
-			if ((message & 0x0000FFFFu) >= KKERN_NB_SEMAPHORES) { LOG(KFATAL_KERNEL, "sche: sema number does not exist"); exit(EXIT_OS_PANIC); }
-			scheduler_changeContext(false, &vKern_sema[core][(message & 0x0000FFFFu)].oList, BPROC_SUSP_SEMA);
+			if ((message & 0x0000FFFFU) >= KKERN_NB_SEMAPHORES) { LOG(KFATAL_KERNEL, "sche: sema number does not exist"); exit(EXIT_OS_PANIC); }
+			scheduler_changeContext(false, &vKern_sema[core][(message & 0x0000FFFFU)].oList, BPROC_SUSP_SEMA);
 			break;
 		}
 		case KKERN_MSG_WAIT_MUTX_SYN: {
-			if ((message & 0x0000FFFFu) >= KKERN_NB_MUTEXES) { LOG(KFATAL_KERNEL, "sche: mutx number does not exist"); exit(EXIT_OS_PANIC); }
-			scheduler_changeContext(false, &vKern_mutx[core][(message & 0x0000FFFFu)].oList, BPROC_SUSP_MUTX);
+			if ((message & 0x0000FFFFU) >= KKERN_NB_MUTEXES) { LOG(KFATAL_KERNEL, "sche: mutx number does not exist"); exit(EXIT_OS_PANIC); }
+			scheduler_changeContext(false, &vKern_mutx[core][(message & 0x0000FFFFU)].oList, BPROC_SUSP_MUTX);
 			break;
 		}
 		case KKERN_MSG_WAIT_MBOX_E: {
-			if ((message & 0x0000FFFFu) >= KKERN_NB_MAILBOXES) { LOG(KFATAL_KERNEL, "sche: mbox number does not exist"); exit(EXIT_OS_PANIC); }
-			scheduler_changeContext(false, &vKern_mbox[core][(message & 0x0000FFFFu)].oListEmpty, BPROC_SUSP_MBOX_E);
+			if ((message & 0x0000FFFFU) >= KKERN_NB_MAILBOXES) { LOG(KFATAL_KERNEL, "sche: mbox number does not exist"); exit(EXIT_OS_PANIC); }
+			scheduler_changeContext(false, &vKern_mbox[core][(message & 0x0000FFFFU)].oListEmpty, BPROC_SUSP_MBOX_E);
 			break;
 		}
 		case KKERN_MSG_WAIT_MBOX_F: {
-			if ((message & 0x0000FFFFu) >= KKERN_NB_MAILBOXES) { LOG(KFATAL_KERNEL, "sche: mbox number does not exist"); exit(EXIT_OS_PANIC); }
-			scheduler_changeContext(false, &vKern_mbox[core][(message & 0x0000FFFFu)].oListFull, BPROC_SUSP_MBOX_F);
+			if ((message & 0x0000FFFFU) >= KKERN_NB_MAILBOXES) { LOG(KFATAL_KERNEL, "sche: mbox number does not exist"); exit(EXIT_OS_PANIC); }
+			scheduler_changeContext(false, &vKern_mbox[core][(message & 0x0000FFFFU)].oListFull, BPROC_SUSP_MBOX_F);
 			break;
 		}
 		default: {

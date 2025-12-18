@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		nrf5340_application_gpiote equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // GPIOTE address definitions
 // --------------------------
 
@@ -77,7 +79,7 @@ typedef struct {
 	volatile	uint32_t	CONFIG[8];
 } GPIOTE_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	GPIOTE0_S	reinterpret_cast<GPIOTE_TypeDef *>(0x5000D000u)
 #define	GPIOTE1_NS	reinterpret_cast<GPIOTE_TypeDef *>(0x4002F000u)
 

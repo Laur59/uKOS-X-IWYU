@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		GD32VF103_usart equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // USART address definitions
 // -------------------------
 
@@ -61,7 +63,7 @@ typedef struct {
 	volatile	uint32_t	GP;
 } USART_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	USART0	reinterpret_cast<USART_TypeDef *>(0x40013800u)
 #define	USART1	reinterpret_cast<USART_TypeDef *>(0x40004400u)
 #define	USART2	reinterpret_cast<USART_TypeDef *>(0x40004800u)

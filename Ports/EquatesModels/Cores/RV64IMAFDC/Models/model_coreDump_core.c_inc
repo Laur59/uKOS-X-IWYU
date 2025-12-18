@@ -9,8 +9,8 @@
 ; Project:	uKOS-X
 ; Goal:		Model for the core dump (Core specific).
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -44,8 +44,14 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"record/private/private_record.h"
-#include	"kern/private/private_processes.h"
+#include	<inttypes.h>
+#include	<stdio.h>
+
+#include	"types.h"
+#include	"macros_soc.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"serial/serial.h"
 
 static	uintptr_t	*vStackBefore[KNB_CORES], *vStackAfter[KNB_CORES], vStackCoreDump[KNB_CORES][ENDREG];
 static	uint64_t	vExceptionNb[KNB_CORES];
@@ -185,7 +191,7 @@ static	void	__attribute__ ((noinline)) local_processInt_Interruption(void) {
 	}
 
 	local_printInt_Interruption(&vectorName);
-	local_printFunction(0u, vectorName, "Interruption: ");
+	local_printFunction(0U, vectorName, "Interruption: ");
 	local_printCore();
 	local_printTrace();
 	local_printLog();
@@ -220,7 +226,7 @@ static	void	__attribute__ ((noinline)) local_processInt_Exceptions(void) {
 	}
 
 	local_printInt_Exception(&vectorName);
-	local_printFunction(0u, vectorName, "Exception:    ");
+	local_printFunction(0U, vectorName, "Exception:    ");
 	local_printCore();
 	local_printTrace();
 	local_printLog();
@@ -243,22 +249,22 @@ static	void	__attribute__ ((noinline)) local_printInt_Interruption(const char_t 
 	cmns_send(KDEF0, "System dead! Core DUMP!!\n");
 	cmns_send(KDEF0, "========================\n\n");
 	switch (vExceptionNb[core]) {
-		case 0u:  { *vectorName = "User Software Interrupt";		break; }
-		case 1u:  { *vectorName = "Supervisor Software Interrupt";	break; }
-		case 2u:  { *vectorName = "Reserved 2";						break; }
-		case 3u:  { *vectorName = "Machine Software Interrupt";		break; }
-		case 4u:  { *vectorName = "User Timer Interrupt";			break; }
-		case 5u:  { *vectorName = "Supervisor Timer Interrupt";		break; }
-		case 6u:  { *vectorName = "Reserved 6";						break; }
-		case 7u:  { *vectorName = "Machine Timer Interrupt";		break; }
-		case 8u:  { *vectorName = "User External Interrupt";		break; }
-		case 9u:  { *vectorName = "Supervisor External Interrupt";	break; }
-		case 10u: { *vectorName = "Reserved 10";					break; }
-		case 11u: { *vectorName = "Machine External Interrupt";		break; }
-		case 12u: { *vectorName = "Reserved 12";					break; }
-		case 13u: { *vectorName = "Reserved 13";					break; }
-		case 14u: { *vectorName = "Reserved 14";					break; }
-		case 15u: { *vectorName = "Reserved 15";					break; }
+		case 0U:  { *vectorName = "User Software Interrupt";		break; }
+		case 1U:  { *vectorName = "Supervisor Software Interrupt";	break; }
+		case 2U:  { *vectorName = "Reserved 2";						break; }
+		case 3U:  { *vectorName = "Machine Software Interrupt";		break; }
+		case 4U:  { *vectorName = "User Timer Interrupt";			break; }
+		case 5U:  { *vectorName = "Supervisor Timer Interrupt";		break; }
+		case 6U:  { *vectorName = "Reserved 6";						break; }
+		case 7U:  { *vectorName = "Machine Timer Interrupt";		break; }
+		case 8U:  { *vectorName = "User External Interrupt";		break; }
+		case 9U:  { *vectorName = "Supervisor External Interrupt";	break; }
+		case 10U: { *vectorName = "Reserved 10";					break; }
+		case 11U: { *vectorName = "Machine External Interrupt";		break; }
+		case 12U: { *vectorName = "Reserved 12";					break; }
+		case 13U: { *vectorName = "Reserved 13";					break; }
+		case 14U: { *vectorName = "Reserved 14";					break; }
+		case 15U: { *vectorName = "Reserved 15";					break; }
 		default:  { *vectorName = "Unknown";						break; }
 	}
 }
@@ -277,22 +283,22 @@ static	void	__attribute__ ((noinline)) local_printInt_Exception(const char_t **v
 	cmns_send(KDEF0, "System dead! Core DUMP!!\n");
 	cmns_send(KDEF0, "========================\n\n");
 	switch (vExceptionNb[core]) {
-		case 0u:  { *vectorName = "Instruction Address Misaligned";	break; }
-		case 1u:  { *vectorName = "Instruction Acces Fault";		break; }
-		case 2u:  { *vectorName = "Illegal Instruction";			break; }
-		case 3u:  { *vectorName = "Breakpoint";						break; }
-		case 4u:  { *vectorName = "Load Address Misaligned";		break; }
-		case 5u:  { *vectorName = "Load Access Fault";				break; }
-		case 6u:  { *vectorName = "Store Address Misaligned";		break; }
-		case 7u:  { *vectorName = "Store Access Fault";				break; }
-		case 8u:  { *vectorName = "Environment Call from U-Mode";	break; }
-		case 9u:  { *vectorName = "Environment Call from S-Mode";	break; }
-		case 10u: { *vectorName = "Reserved 10";					break; }
-		case 11u: { *vectorName = "Environment Call from M-Mode";	break; }
-		case 12u: { *vectorName = "Instruction Page Fault";			break; }
-		case 13u: { *vectorName = "Load Page Fault";				break; }
-		case 14u: { *vectorName = "Reserved 14";					break; }
-		case 15u: { *vectorName = "Store Page Fault";				break; }
+		case 0U:  { *vectorName = "Instruction Address Misaligned";	break; }
+		case 1U:  { *vectorName = "Instruction Acces Fault";		break; }
+		case 2U:  { *vectorName = "Illegal Instruction";			break; }
+		case 3U:  { *vectorName = "Breakpoint";						break; }
+		case 4U:  { *vectorName = "Load Address Misaligned";		break; }
+		case 5U:  { *vectorName = "Load Access Fault";				break; }
+		case 6U:  { *vectorName = "Store Address Misaligned";		break; }
+		case 7U:  { *vectorName = "Store Access Fault";				break; }
+		case 8U:  { *vectorName = "Environment Call from U-Mode";	break; }
+		case 9U:  { *vectorName = "Environment Call from S-Mode";	break; }
+		case 10U: { *vectorName = "Reserved 10";					break; }
+		case 11U: { *vectorName = "Environment Call from M-Mode";	break; }
+		case 12U: { *vectorName = "Instruction Page Fault";			break; }
+		case 13U: { *vectorName = "Load Page Fault";				break; }
+		case 14U: { *vectorName = "Reserved 14";					break; }
+		case 15U: { *vectorName = "Store Page Fault";				break; }
 		default: { *vectorName = "Unknown";							break; }
 	}
 }
@@ -319,32 +325,32 @@ static	void	__attribute__ ((noinline)) local_printCore(void) {
 	mdadaddr = (int64_t)core_getCSR(RV_CSR_MBADADDR);
 	mip		 = (int64_t)core_getCSR(RV_CSR_MIP);
 
-	(void)snprintf(&string[0], 80u, "\nRV_CSR_MVENDORID = 0x%016"PRIX64, mvendor);  cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "\nRV_CSR_MARCHID   = 0x%016"PRIX64, marchid);  cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "\nRV_CSR_MIMPID    = 0x%016"PRIX64, mimpd);    cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "\nRV_CSR_MHARTID   = 0x%016"PRIX64, mhartid);  cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "\nRV_CSR_MVENDORID = 0x%016"PRIX64, mvendor);  cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "\nRV_CSR_MARCHID   = 0x%016"PRIX64, marchid);  cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "\nRV_CSR_MIMPID    = 0x%016"PRIX64, mimpd);    cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "\nRV_CSR_MHARTID   = 0x%016"PRIX64, mhartid);  cmns_send(KDEF0, string);
 
-	(void)snprintf(&string[0], 80u, "\nRV_CSR_MSCRATCH  = 0x%016"PRIX64, mscratch); cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "\nRV_CSR_MEPC      = 0x%016"PRIX64, mpec);		cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "\nRV_CSR_MCAUSE    = 0x%016"PRIX64, mcause);   cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "\nRV_CSR_MBADADDR  = 0x%016"PRIX64, mdadaddr); cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "\nRV_CSR_MIP       = 0x%016"PRIX64, mip);		cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "\nRV_CSR_MSCRATCH  = 0x%016"PRIX64, mscratch); cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "\nRV_CSR_MEPC      = 0x%016"PRIX64, mpec);		cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "\nRV_CSR_MCAUSE    = 0x%016"PRIX64, mcause);   cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "\nRV_CSR_MBADADDR  = 0x%016"PRIX64, mdadaddr); cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "\nRV_CSR_MIP       = 0x%016"PRIX64, mip);		cmns_send(KDEF0, string);
 																					cmns_send(KDEF0, "\nCause            > ");
 	switch ((uint64_t)mcause & (uint64_t)0xFu) {
-		case  0u: { cmns_send(KDEF0, "Address misaligned\n\n");				break; }
-		case  1u: { cmns_send(KDEF0, "Access fault\n\n");					break; }
-		case  2u: { cmns_send(KDEF0, "Illegal instruction\n\n");			break; }
-		case  3u: { cmns_send(KDEF0, "Breakpoint\n\n");						break; }
-		case  4u: { cmns_send(KDEF0, "Load address misaligned\n\n");		break; }
-		case  5u: { cmns_send(KDEF0, "Load access fault\n\n");				break; }
-		case  6u: { cmns_send(KDEF0, "Store AMO address misaligned\n\n");	break; }
-		case  7u: { cmns_send(KDEF0, "Store AMO access fault\n\n");			break; }
-		case  8u: { cmns_send(KDEF0, "Call from U mode\n\n");				break; }
-		case  9u: { cmns_send(KDEF0, "Call from S mode\n\n");				break; }
-		case 11u: { cmns_send(KDEF0, "Call from M mode\n\n");				break; }
-		case 12u: { cmns_send(KDEF0, "Instruction page fault\n\n");			break; }
-		case 13u: { cmns_send(KDEF0, "Load page fault\n\n");				break; }
-		case 15u: { cmns_send(KDEF0, "Store AMO page fault\n\n");			break; }
+		case  0U: { cmns_send(KDEF0, "Address misaligned\n\n");				break; }
+		case  1U: { cmns_send(KDEF0, "Access fault\n\n");					break; }
+		case  2U: { cmns_send(KDEF0, "Illegal instruction\n\n");			break; }
+		case  3U: { cmns_send(KDEF0, "Breakpoint\n\n");						break; }
+		case  4U: { cmns_send(KDEF0, "Load address misaligned\n\n");		break; }
+		case  5U: { cmns_send(KDEF0, "Load access fault\n\n");				break; }
+		case  6U: { cmns_send(KDEF0, "Store AMO address misaligned\n\n");	break; }
+		case  7U: { cmns_send(KDEF0, "Store AMO access fault\n\n");			break; }
+		case  8U: { cmns_send(KDEF0, "Call from U mode\n\n");				break; }
+		case  9U: { cmns_send(KDEF0, "Call from S mode\n\n");				break; }
+		case 11U: { cmns_send(KDEF0, "Call from M mode\n\n");				break; }
+		case 12U: { cmns_send(KDEF0, "Instruction page fault\n\n");			break; }
+		case 13U: { cmns_send(KDEF0, "Load page fault\n\n");				break; }
+		case 15U: { cmns_send(KDEF0, "Store AMO page fault\n\n");			break; }
 		default:  { cmns_send(KDEF0, "Unknown\n\n");						break; }
 	}
 }
@@ -378,7 +384,7 @@ static	void	__attribute__ ((noinline)) local_printCore(void) {
 static	void	local_printStackFrame(void) {
 			char_t		string[80 + 1];
 			uint32_t	core;
-			uintptr_t	offset, x0 = 0u;
+			uintptr_t	offset, x0 = 0U;
 	const	uintptr_t	*stack;
 
 	core = GET_RUNNING_CORE;
@@ -397,78 +403,78 @@ static	void	local_printStackFrame(void) {
 //		|             |
 //		~~~~~~~~~~~~~~~ 0x000..00
 
-	offset = 0u;
+	offset = 0U;
 
 	stack = vStackBefore[core];
 
-	(void)snprintf(&string[0], 80u, "Stack content before the fault: offset = 0x%016"PRIXPTR"\n", offset);														cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+31] = 0x%016"PRIXPTR"\n",   stack[offset + 31u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+30] = 0x%016"PRIXPTR"\n",   stack[offset + 30u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+29] = 0x%016"PRIXPTR"\n",   stack[offset + 29u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+28] = 0x%016"PRIXPTR"\n",   stack[offset + 28u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+27] = 0x%016"PRIXPTR"\n",   stack[offset + 27u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+26] = 0x%016"PRIXPTR"\n",   stack[offset + 26u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+25] = 0x%016"PRIXPTR"\n",   stack[offset + 25u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+24] = 0x%016"PRIXPTR"\n",   stack[offset + 24u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+23] = 0x%016"PRIXPTR"\n",   stack[offset + 23u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+22] = 0x%016"PRIXPTR"\n",   stack[offset + 22u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+21] = 0x%016"PRIXPTR"\n",   stack[offset + 21u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+20] = 0x%016"PRIXPTR"\n",   stack[offset + 20u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+19] = 0x%016"PRIXPTR"\n",   stack[offset + 19u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+18] = 0x%016"PRIXPTR"\n",   stack[offset + 18u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+17] = 0x%016"PRIXPTR"\n",   stack[offset + 17u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+16] = 0x%016"PRIXPTR"\n",   stack[offset + 16u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+15] = 0x%016"PRIXPTR"\n",   stack[offset + 15u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+14] = 0x%016"PRIXPTR"\n",   stack[offset + 14u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+13] = 0x%016"PRIXPTR"\n",   stack[offset + 13u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+12] = 0x%016"PRIXPTR"\n",   stack[offset + 12u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+11] = 0x%016"PRIXPTR"\n",   stack[offset + 11u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+10] = 0x%016"PRIXPTR"\n",   stack[offset + 10u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+09] = 0x%016"PRIXPTR"\n",   stack[offset + 9u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+08] = 0x%016"PRIXPTR"\n",   stack[offset + 8u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+07] = 0x%016"PRIXPTR"\n",   stack[offset + 7u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+06] = 0x%016"PRIXPTR"\n",   stack[offset + 6u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+05] = 0x%016"PRIXPTR"\n",   stack[offset + 5u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+04] = 0x%016"PRIXPTR"\n",   stack[offset + 4u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+03] = 0x%016"PRIXPTR"\n",   stack[offset + 3u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+02] = 0x%016"PRIXPTR"\n",   stack[offset + 2u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+01] = 0x%016"PRIXPTR"\n",   stack[offset + 1u]);																	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "stack[+00] = 0x%016"PRIXPTR"\n\n", stack[offset + 0u]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "Stack content before the fault: offset = 0x%016"PRIXPTR"\n", offset);														cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+31] = 0x%016"PRIXPTR"\n",   stack[offset + 31U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+30] = 0x%016"PRIXPTR"\n",   stack[offset + 30U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+29] = 0x%016"PRIXPTR"\n",   stack[offset + 29U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+28] = 0x%016"PRIXPTR"\n",   stack[offset + 28U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+27] = 0x%016"PRIXPTR"\n",   stack[offset + 27U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+26] = 0x%016"PRIXPTR"\n",   stack[offset + 26U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+25] = 0x%016"PRIXPTR"\n",   stack[offset + 25U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+24] = 0x%016"PRIXPTR"\n",   stack[offset + 24U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+23] = 0x%016"PRIXPTR"\n",   stack[offset + 23U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+22] = 0x%016"PRIXPTR"\n",   stack[offset + 22U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+21] = 0x%016"PRIXPTR"\n",   stack[offset + 21U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+20] = 0x%016"PRIXPTR"\n",   stack[offset + 20U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+19] = 0x%016"PRIXPTR"\n",   stack[offset + 19U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+18] = 0x%016"PRIXPTR"\n",   stack[offset + 18U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+17] = 0x%016"PRIXPTR"\n",   stack[offset + 17U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+16] = 0x%016"PRIXPTR"\n",   stack[offset + 16U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+15] = 0x%016"PRIXPTR"\n",   stack[offset + 15U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+14] = 0x%016"PRIXPTR"\n",   stack[offset + 14U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+13] = 0x%016"PRIXPTR"\n",   stack[offset + 13U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+12] = 0x%016"PRIXPTR"\n",   stack[offset + 12U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+11] = 0x%016"PRIXPTR"\n",   stack[offset + 11U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+10] = 0x%016"PRIXPTR"\n",   stack[offset + 10U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+09] = 0x%016"PRIXPTR"\n",   stack[offset + 9U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+08] = 0x%016"PRIXPTR"\n",   stack[offset + 8U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+07] = 0x%016"PRIXPTR"\n",   stack[offset + 7U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+06] = 0x%016"PRIXPTR"\n",   stack[offset + 6U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+05] = 0x%016"PRIXPTR"\n",   stack[offset + 5U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+04] = 0x%016"PRIXPTR"\n",   stack[offset + 4U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+03] = 0x%016"PRIXPTR"\n",   stack[offset + 3U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+02] = 0x%016"PRIXPTR"\n",   stack[offset + 2U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+01] = 0x%016"PRIXPTR"\n",   stack[offset + 1U]);																	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "stack[+00] = 0x%016"PRIXPTR"\n\n", stack[offset + 0U]);																	cmns_send(KDEF0, string);
 
 // Display the CPU registers
 
 	cmns_send(KDEF0, "CPU registers: (PC after the fault instruction)\n");
-	(void)snprintf(&string[0], 80u, "x0  - zero = 0x%016"PRIXPTR"    f0  - ft0   = 0x%016"PRIXPTR"\n", x0,						  vStackCoreDump[core][ft0]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x1  - ra   = 0x%016"PRIXPTR"    f1  - ft1   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][ra],  vStackCoreDump[core][ft1]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x2  - sp   = 0x%016"PRIXPTR"    f2  - ft2   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][sp],  vStackCoreDump[core][ft2]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x3  - gp   = 0x%016"PRIXPTR"    f3  - ft3   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][gp],  vStackCoreDump[core][ft3]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x4  - tp   = 0x%016"PRIXPTR"    f4  - ft4   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][tp],  vStackCoreDump[core][ft4]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x5  - t0   = 0x%016"PRIXPTR"    f5  - ft5   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][t0],  vStackCoreDump[core][ft5]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x6  - t1   = 0x%016"PRIXPTR"    f6  - ft6   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][t1],  vStackCoreDump[core][ft6]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x7  - t2   = 0x%016"PRIXPTR"    f7  - ft7   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][t2],  vStackCoreDump[core][ft7]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x8  - s0   = 0x%016"PRIXPTR"    f8  - fs0   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][s0],  vStackCoreDump[core][fs0]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x9  - s1   = 0x%016"PRIXPTR"    f9  - fs1   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][s1],  vStackCoreDump[core][fs1]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x10 - a0   = 0x%016"PRIXPTR"    f10 - fa0   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][a0],  vStackCoreDump[core][fa0]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x11 - a1   = 0x%016"PRIXPTR"    f11 - fa1   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][a1],  vStackCoreDump[core][fa1]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x12 - a2   = 0x%016"PRIXPTR"    f12 - fa2   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][a2],  vStackCoreDump[core][fa2]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x13 - a3   = 0x%016"PRIXPTR"    f13 - fa3   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][a3],  vStackCoreDump[core][fa3]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x14 - a4   = 0x%016"PRIXPTR"    f14 - fa4   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][a4],  vStackCoreDump[core][fa4]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x15 - a5   = 0x%016"PRIXPTR"    f15 - fa5   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][a5],  vStackCoreDump[core][fa5]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x16 - a6   = 0x%016"PRIXPTR"    f16 - fa6   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][a6],  vStackCoreDump[core][fa6]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x17 - a7   = 0x%016"PRIXPTR"    f17 - fa7   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][a7],  vStackCoreDump[core][fa7]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x18 - s2   = 0x%016"PRIXPTR"    f18 - fs2   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][s2],  vStackCoreDump[core][fs2]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x19 - s3   = 0x%016"PRIXPTR"    f19 - fs3   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][s3],  vStackCoreDump[core][fs3]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x20 - s4   = 0x%016"PRIXPTR"    f20 - fs4   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][s4],  vStackCoreDump[core][fs4]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x21 - s5   = 0x%016"PRIXPTR"    f21 - fs5   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][s5],  vStackCoreDump[core][fs5]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x22 - s6   = 0x%016"PRIXPTR"    f22 - fs6   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][s6],  vStackCoreDump[core][fs6]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x23 - s7   = 0x%016"PRIXPTR"    f23 - fs7   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][s7],  vStackCoreDump[core][fs7]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x24 - s8   = 0x%016"PRIXPTR"    f24 - fs8   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][s8],  vStackCoreDump[core][fs8]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x25 - s9   = 0x%016"PRIXPTR"    f25 - fs9   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][s9],  vStackCoreDump[core][fs9]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x26 - s10  = 0x%016"PRIXPTR"    f26 - fs10  = 0x%016"PRIXPTR"\n", vStackCoreDump[core][s10], vStackCoreDump[core][fs10]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x27 - s11  = 0x%016"PRIXPTR"    f27 - fs11  = 0x%016"PRIXPTR"\n", vStackCoreDump[core][s11], vStackCoreDump[core][fs11]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x28 - t3   = 0x%016"PRIXPTR"    f28 - ft8   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][t3],  vStackCoreDump[core][ft8]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x29 - t4   = 0x%016"PRIXPTR"    f29 - ft9   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][t4],  vStackCoreDump[core][ft9]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x30 - t5   = 0x%016"PRIXPTR"    f30 - ft10  = 0x%016"PRIXPTR"\n", vStackCoreDump[core][t5],  vStackCoreDump[core][ft10]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "x31 - t6   = 0x%016"PRIXPTR"    f31 - ft11  = 0x%016"PRIXPTR"\n", vStackCoreDump[core][t6],  vStackCoreDump[core][ft11]);	cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80u, "pc         = 0x%016"PRIXPTR"    fscr        = 0x%016"PRIXPTR"\n", vStackCoreDump[core][pcm], vStackCoreDump[core][fcsr]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x0  - zero = 0x%016"PRIXPTR"    f0  - ft0   = 0x%016"PRIXPTR"\n", x0,						  vStackCoreDump[core][ft0]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x1  - ra   = 0x%016"PRIXPTR"    f1  - ft1   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][ra],  vStackCoreDump[core][ft1]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x2  - sp   = 0x%016"PRIXPTR"    f2  - ft2   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][sp],  vStackCoreDump[core][ft2]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x3  - gp   = 0x%016"PRIXPTR"    f3  - ft3   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][gp],  vStackCoreDump[core][ft3]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x4  - tp   = 0x%016"PRIXPTR"    f4  - ft4   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][tp],  vStackCoreDump[core][ft4]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x5  - t0   = 0x%016"PRIXPTR"    f5  - ft5   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][t0],  vStackCoreDump[core][ft5]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x6  - t1   = 0x%016"PRIXPTR"    f6  - ft6   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][t1],  vStackCoreDump[core][ft6]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x7  - t2   = 0x%016"PRIXPTR"    f7  - ft7   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][t2],  vStackCoreDump[core][ft7]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x8  - s0   = 0x%016"PRIXPTR"    f8  - fs0   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][s0],  vStackCoreDump[core][fs0]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x9  - s1   = 0x%016"PRIXPTR"    f9  - fs1   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][s1],  vStackCoreDump[core][fs1]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x10 - a0   = 0x%016"PRIXPTR"    f10 - fa0   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][a0],  vStackCoreDump[core][fa0]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x11 - a1   = 0x%016"PRIXPTR"    f11 - fa1   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][a1],  vStackCoreDump[core][fa1]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x12 - a2   = 0x%016"PRIXPTR"    f12 - fa2   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][a2],  vStackCoreDump[core][fa2]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x13 - a3   = 0x%016"PRIXPTR"    f13 - fa3   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][a3],  vStackCoreDump[core][fa3]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x14 - a4   = 0x%016"PRIXPTR"    f14 - fa4   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][a4],  vStackCoreDump[core][fa4]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x15 - a5   = 0x%016"PRIXPTR"    f15 - fa5   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][a5],  vStackCoreDump[core][fa5]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x16 - a6   = 0x%016"PRIXPTR"    f16 - fa6   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][a6],  vStackCoreDump[core][fa6]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x17 - a7   = 0x%016"PRIXPTR"    f17 - fa7   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][a7],  vStackCoreDump[core][fa7]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x18 - s2   = 0x%016"PRIXPTR"    f18 - fs2   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][s2],  vStackCoreDump[core][fs2]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x19 - s3   = 0x%016"PRIXPTR"    f19 - fs3   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][s3],  vStackCoreDump[core][fs3]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x20 - s4   = 0x%016"PRIXPTR"    f20 - fs4   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][s4],  vStackCoreDump[core][fs4]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x21 - s5   = 0x%016"PRIXPTR"    f21 - fs5   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][s5],  vStackCoreDump[core][fs5]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x22 - s6   = 0x%016"PRIXPTR"    f22 - fs6   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][s6],  vStackCoreDump[core][fs6]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x23 - s7   = 0x%016"PRIXPTR"    f23 - fs7   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][s7],  vStackCoreDump[core][fs7]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x24 - s8   = 0x%016"PRIXPTR"    f24 - fs8   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][s8],  vStackCoreDump[core][fs8]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x25 - s9   = 0x%016"PRIXPTR"    f25 - fs9   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][s9],  vStackCoreDump[core][fs9]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x26 - s10  = 0x%016"PRIXPTR"    f26 - fs10  = 0x%016"PRIXPTR"\n", vStackCoreDump[core][s10], vStackCoreDump[core][fs10]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x27 - s11  = 0x%016"PRIXPTR"    f27 - fs11  = 0x%016"PRIXPTR"\n", vStackCoreDump[core][s11], vStackCoreDump[core][fs11]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x28 - t3   = 0x%016"PRIXPTR"    f28 - ft8   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][t3],  vStackCoreDump[core][ft8]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x29 - t4   = 0x%016"PRIXPTR"    f29 - ft9   = 0x%016"PRIXPTR"\n", vStackCoreDump[core][t4],  vStackCoreDump[core][ft9]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x30 - t5   = 0x%016"PRIXPTR"    f30 - ft10  = 0x%016"PRIXPTR"\n", vStackCoreDump[core][t5],  vStackCoreDump[core][ft10]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "x31 - t6   = 0x%016"PRIXPTR"    f31 - ft11  = 0x%016"PRIXPTR"\n", vStackCoreDump[core][t6],  vStackCoreDump[core][ft11]);	cmns_send(KDEF0, string);
+	(void)snprintf(&string[0], 80U, "pc         = 0x%016"PRIXPTR"    fscr        = 0x%016"PRIXPTR"\n", vStackCoreDump[core][pcm], vStackCoreDump[core][fcsr]);	cmns_send(KDEF0, string);
 }

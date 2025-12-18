@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		GD32VF103_dbg equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // DBG address definitions
 // -----------------------
 
@@ -56,7 +58,7 @@ typedef struct {
 	volatile	uint32_t	CTL;
 } DBG_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	DBG	reinterpret_cast<DBG_TypeDef *>(0xE0042000u)
 
 #else

@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32U5Gx_fmac equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // FMAC address definitions
 // ------------------------
 
@@ -62,7 +64,7 @@ typedef struct {
 	volatile	uint32_t	RDATA;
 } FMAC_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	FMAC_NS	reinterpret_cast<FMAC_TypeDef *>(0x40021400u)
 #define	FMAC_S	reinterpret_cast<FMAC_TypeDef *>(0x50021400u)
 

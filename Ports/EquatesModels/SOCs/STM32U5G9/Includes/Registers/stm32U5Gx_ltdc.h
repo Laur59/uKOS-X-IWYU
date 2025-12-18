@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32U5Gx_ltdc equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,10 +48,12 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // LTDC address definitions
 // ------------------------
 
-#if (!defined(ADDITIONAL_LTDC_S))
+#ifndef ADDITIONAL_LTDC_S
 typedef struct {
 	volatile	uint32_t	RESERVED0[2];
 	volatile	uint32_t	SSCR;
@@ -102,7 +104,7 @@ typedef struct {
 	volatile	uint32_t	L2CLUTWR;
 } LTDC_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	LTDC_NS	reinterpret_cast<LTDC_TypeDef *>(0x40016800u)
 #define	LTDC_S	reinterpret_cast<LTDC_TypeDef *>(0x50016800u)
 

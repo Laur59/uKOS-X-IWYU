@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Important macros.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,17 +48,21 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
+#include	"soc_reg.h"
+
 // Multicore macro
 // ---------------
 
-#define	KNB_CORES				1u
-#define	KCORE_0					0u
+#define	KNB_CORES				1U
+#define	KCORE_0					0U
 
-#if (!defined(GET_RUNNING_CORE))
-#define	GET_RUNNING_CORE		0u
+#ifndef GET_RUNNING_CORE
+#define	GET_RUNNING_CORE		0U
 #endif
 
-#if (!defined(MCSET))
+#ifndef MCSET
 #if		(KNB_CORES == 1)
 #define MCSET(v)				{ (v) }
 #else
@@ -69,9 +73,13 @@
 // Baudrate macro
 // --------------
 
-#define	DIV(ck, baudrate)		((uint32_t)(ck/(baudrate * 16u)))
-#define	REM(ck, baudrate)		((uint32_t)((((ck/(baudrate * 16.0)) - DIV(ck, baudrate)) * 16.0) + 0.5))
-#define	BAUDRATE(ck, baudrate)	(DIV(ck, baudrate)<<4u | REM(ck, baudrate))
+[[maybe_unused]] static inline uint32_t BAUDRATE(uint32_t ck, uint32_t baudrate) {
+    uint32_t divisor = baudrate * 16U;
+    uint32_t div = ck / divisor;
+    uint32_t remainder = ck % divisor;
+    uint32_t rem = ((remainder * 16U) + (divisor / 2U)) / divisor;
+    return (div << 4) | rem;
+}
 
 // Interruption macros
 // -------------------
@@ -98,12 +106,12 @@ enum {
 // Priorities used to set the ECLIC. levels indicated with _KERNEL_
 // are reserved for the uKernel (!!! do not change those values)
 
-		KINT_LEVEL_ALL				 = 32u,
-		KINT_LEVEL_KERNEL_PREEMPTION = 64u,
-		KINT_LEVEL_KERNEL_TIMERS	 = 96u,
-		KINT_LEVEL_PERIPHERALS		 = 128u,
-		KINT_LEVEL_COMMUNICATIONS	 = 160u,
-		KINT_LEVEL_KERNEL_SWI		 = 192u
+		KINT_LEVEL_ALL				 = 32U,
+		KINT_LEVEL_KERNEL_PREEMPTION = 64U,
+		KINT_LEVEL_KERNEL_TIMERS	 = 96U,
+		KINT_LEVEL_PERIPHERALS		 = 128U,
+		KINT_LEVEL_COMMUNICATIONS	 = 160U,
+		KINT_LEVEL_KERNEL_SWI		 = 192U
 };
 
 // Reserved names: all the possible masks
@@ -116,13 +124,13 @@ enum {
 // KINT_IMASK_KERNEL_SWI		Allows only NMI, SWI
 // KINT_IMASK_OFF				Allows only NMI, SWI
 
-#define	KINT_IMASK_ALL					(KINT_LEVEL_ALL - 1u)
-#define	KINT_IMASK_KERNEL_PREEMPTION	(KINT_LEVEL_KERNEL_PREEMPTION - 1u)
-#define	KINT_IMASK_KERNEL_TIMERS		(KINT_LEVEL_KERNEL_TIMERS - 1u)
-#define	KINT_IMASK_PERIPHERALS			(KINT_LEVEL_PERIPHERALS - 1u)
-#define	KINT_IMASK_COMMUNICATIONS		(KINT_LEVEL_COMMUNICATIONS - 1u)
-#define	KINT_IMASK_KERNEL_SWI			(KINT_LEVEL_KERNEL_SWI - 1u)
-#define	KINT_IMASK_OFF					(KINT_LEVEL_KERNEL_SWI - 1u)
+#define	KINT_IMASK_ALL					(KINT_LEVEL_ALL - 1U)
+#define	KINT_IMASK_KERNEL_PREEMPTION	(KINT_LEVEL_KERNEL_PREEMPTION - 1U)
+#define	KINT_IMASK_KERNEL_TIMERS		(KINT_LEVEL_KERNEL_TIMERS - 1U)
+#define	KINT_IMASK_PERIPHERALS			(KINT_LEVEL_PERIPHERALS - 1U)
+#define	KINT_IMASK_COMMUNICATIONS		(KINT_LEVEL_COMMUNICATIONS - 1U)
+#define	KINT_IMASK_KERNEL_SWI			(KINT_LEVEL_KERNEL_SWI - 1U)
+#define	KINT_IMASK_OFF					(KINT_LEVEL_KERNEL_SWI - 1U)
 
 // Names for the user applications
 
@@ -134,67 +142,59 @@ enum {
 // EXTI0 Used for passing messages (change the context)
 // EXTI1 Used for preemption (change the context)
 
-#define	BKERN_MESSAGES			0u
-#define	BKERN_PREEMPTION		1u
+#define	BKERN_MESSAGES			0U
+#define	BKERN_PREEMPTION		1U
 
-#if (!defined(SET_MESSAGE))
-#define	SET_MESSAGE				EXTI->SWIEV |= (1u<<BKERN_MESSAGES);															\
-								while ((EXTI->SWIEV & (1u<<BKERN_MESSAGES)) != 0u) { ; }
+#ifndef SET_MESSAGE
+#define	SET_MESSAGE				EXTI->SWIEV |= (1U<<BKERN_MESSAGES);															\
+								while ((EXTI->SWIEV & (1U<<BKERN_MESSAGES)) != 0U) { }
 #endif
 
-#if (!defined(PREEMPTION))
-#define	PREEMPTION				EXTI->SWIEV |= (1u<<BKERN_PREEMPTION)
+#ifndef PREEMPTION
+#define	PREEMPTION				EXTI->SWIEV |= (1U<<BKERN_PREEMPTION)
 #endif
 
-#if (!defined(INTERRUPTION_SET))
+#ifndef INTERRUPTION_SET
 #define	INTERRUPTION_SET		ECLIC->MTH = KINT_IMASK_ALL
 #endif
 
-#if (!defined(INTERRUPTION_SET_PERIPH))
+#ifndef INTERRUPTION_SET_PERIPH
 #define	INTERRUPTION_SET_PERIPH	ECLIC->MTH = KINT_IMASK_PERIPHERALS
 #endif
 
-#if (!defined(INTERRUPTION_OFF))
+#ifndef INTERRUPTION_OFF
 #define	INTERRUPTION_OFF		volatile	uint32_t	__saveECLIC_msk __attribute__ ((unused));								\
 								__saveECLIC_msk = (uint32_t)ECLIC->MTH;															\
 								(void)__saveECLIC_msk;																			\
 								ECLIC->MTH = KINT_IMASK_OFF
 #endif
 
-#if (!defined(INTERRUPTION_RESTORE))
+#ifndef INTERRUPTION_RESTORE
 #define	INTERRUPTION_RESTORE	ECLIC->MTH = (uint8_t)__saveECLIC_msk
 #endif
 
-#if (!defined(RETURN_INT_RESTORE))
+#ifndef RETURN_INT_RESTORE
 #define	RETURN_INT_RESTORE(status)																								\
 								INTERRUPTION_RESTORE;																			\
 								return (status)
 #endif
 
-#if (!defined(INTERRUPTION_OFF_CRITICAL))
+#ifndef INTERRUPTION_OFF_CRITICAL
 #define	INTERRUPTION_OFF_CRITICAL(savemMask)																					\
 								savemMask = (volatile uint32_t)ECLIC->MTH;														\
 								ECLIC->MTH = KINT_IMASK_OFF
 #endif
 
-#if (!defined(INTERRUPTION_RESTORE_CRITICAL))
+#ifndef INTERRUPTION_RESTORE_CRITICAL
 #define	INTERRUPTION_RESTORE_CRITICAL(savemMask)																				\
 								ECLIC->MTH = (uint8_t)(savemMask)
 #endif
 
 extern	bool	vExce_isException[KNB_CORES];
 
-#if (!defined(IS_EXCEPTION))
+#ifndef IS_EXCEPTION
 #define	IS_EXCEPTION			(vExce_isException[0])
 #endif
 
-// The following macros should be located in the macro_core.
-// However, there is no standard concerning the interruption management,
-// so, to remain as generic as possible I decided to place these macros
-// in the macr_soc
-
-#define	EXCEPTION_VECTOR(vectorNb, address)																						\
-								vExce_indExcVectors[GET_RUNNING_CORE][vectorNb] = address
-
-#define	INTERRUPT_VECTOR(vectorNb, address)																						\
-								vExce_indIntVectors[GET_RUNNING_CORE][vectorNb] = address
+// EXCEPTION_VECTOR and INTERRUPT_VECTOR macros moved to macros_core.h for IWYU compliance
+// This resolves the circular dependency issue noted in the original comment

@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		K210_dmac equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,18 +48,20 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 #define	DMAC_CHANNEL_COUNT	DMAC_CHANNEL_MAX						//
 
 // DMA device number
 // -----------------
 
 typedef	enum	_dmac_channel_number {
-	DMAC_CHANNEL0 = 0u,												//
-	DMAC_CHANNEL1 = 1u,												//
-	DMAC_CHANNEL2 = 2u,												//
-	DMAC_CHANNEL3 = 3u,												//
-	DMAC_CHANNEL4 = 4u,												//
-	DMAC_CHANNEL5 = 5u,												//
+	DMAC_CHANNEL0 = 0U,												//
+	DMAC_CHANNEL1 = 1U,												//
+	DMAC_CHANNEL2 = 2U,												//
+	DMAC_CHANNEL3 = 3U,												//
+	DMAC_CHANNEL4 = 4U,												//
+	DMAC_CHANNEL5 = 5U,												//
 	DMAC_CHANNEL_MAX												//
 } dmac_channel_number_t;
 

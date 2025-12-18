@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		watchdog manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -63,20 +63,22 @@
  * @{
  */
 
+#include	<stdint.h>
+
 // Watchdog modes
 // --------------
 
 enum {
-		KWATCHDOG_AUTO = 0u,									// Mode auto (create a daemon to re-activate the watchdog)
+		KWATCHDOG_AUTO = 0U,									// Mode auto (create a daemon to re-activate the watchdog)
 		KWATCHDOG_MANUAL										// Mode manual (the user is responsible to re-activate the watchdog)
 };
 
 #define	KWATCHDOG_MARGIN		(0.8)							// Time margin for the watchdog process (timeProcessWatchdog = timeWatchdog * KWATCHDOG_MARGIN)
-#define	KWATCHDOG_MAX_TIME_MS	32767u							// Time maximum (in ms) for the watchdog
+#define	KWATCHDOG_MAX_TIME_MS	32767U							// Time maximum (in ms) for the watchdog
 
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -111,7 +113,7 @@ extern	"C" {
  */
 extern	int32_t	watchdog_arm(uint32_t time, uint8_t mode);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 

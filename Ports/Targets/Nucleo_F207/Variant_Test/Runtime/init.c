@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Low level init for the uKOS-X Nucleo_F207 module.
@@ -15,8 +15,8 @@
 ;			!!! It is called before to copy and to initialise
 ;			!!! the variable into the RAM.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -50,7 +50,11 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	"core_reg.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"modules.h"
+#include	"soc_reg.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -73,7 +77,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -164,7 +168,7 @@ static	void	local_GPIO_Configuration(void) {
 			  KPU,KPD,KPU,KNO,KNO,KPU,KPU,KNO,KNO,KPU,KNO,KNO,KPU,KPU,KPU,KNO,
 			  A00,A00,A00,A10,A10,A10,A00,A00,A05,A05,A05,A00,A00,A00,A00,A01,
 			  KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-			  0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 1u, 0u, 0u, 0u, 0u);
+			  0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 1U, 0U, 0U, 0U, 0U);
 
 // PB00, OU,  50-MHz, Push-pull	LED_Geen	AF0
 // PB01, AN,  50-MHz, Pull-up	ADC			AF0		CN10 A6
@@ -189,7 +193,7 @@ static	void	local_GPIO_Configuration(void) {
 			  KNO,KNO,KNO,KNO,KNO,KNO,KPU,KPU,KNO,KNO,KNO,KPU,KNO,KNO,KPU,KNO,
 			  A05,A00,A05,A05,A01,A01,A04,A04,A00,A10,A07,A06,A06,A09,A00,A00,
 			  KPP,KPP,KPP,KPP,KPP,KPP,KOD,KOD,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-			  0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u);
+			  0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
 
 // PC00, AN,  50-MHz, Pull-up	ADC			AF0		CN9  A1
 // PC01, IN,  50-MHz, Pull-up	--------	AF0
@@ -214,7 +218,7 @@ static	void	local_GPIO_Configuration(void) {
 			  KNO,KNO,KPD,KNO,KPU,KPU,KPU,KPU,KNO,KNO,KPU,KPU,KPU,KPU,KPU,KPU,
 			  A00,A00,A00,A12,A12,A12,A12,A12,A06,A00,A00,A00,A00,A00,A00,A00,
 			  KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-			  0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 1u, 0u, 0u, 0u, 0u, 0u, 0u);
+			  0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 1U, 0U, 0U, 0U, 0U, 0U, 0U);
 
 // PD00, AL,  50-MHz, Pull-up	CAN1_RX		AF9		CN9  D67
 // PD01, AL,  50-MHz, Push-pull	CAN1_TX		AF9		CN9  D66
@@ -239,7 +243,7 @@ static	void	local_GPIO_Configuration(void) {
 			  KNO,KNO,KPU,KPU,KPU,KPU,KPU,KNO,KNO,KPU,KNO,KNO,KPU,KNO,KNO,KPU,
 			  A02,A00,A09,A09,A09,A15,A07,A07,A07,A07,A07,A00,A00,A12,A09,A09,
 			  KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-			  0u, 1u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u);
+			  0U, 1U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
 
 // PE00, AL,  50-MHz, Push-pull	TIM4_ETR	AF2		CN10 D34
 // PE01, OU,  50-MHz, Push-pull	Out			AF0		CN11 61
@@ -264,7 +268,7 @@ static	void	local_GPIO_Configuration(void) {
 			  KPU,KNO,KPU,KNO,KNO,KOU,KNO,KNO,KNO,KPU,KNO,KNO,KPU,KPU,KNO,KNO,
 			  A01,A05,A05,A05,A00,A01,A01,A01,A01,A06,A06,A06,A06,A09,A00,A02,
 			  KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-			  0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u);
+			  0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
 
 // PF00, AL,  50-MHz, Open DU	I2C2_SDA	AF4		CN9  D68
 // PF01, AL,  50-MHz, Open DU	I2C2_SCL	AF4		CN9  D69
@@ -289,7 +293,7 @@ static	void	local_GPIO_Configuration(void) {
 			  KNO,KNO,KNO,KNO,KNO,KPU,KNO,KNO,KNO,KNO,KPU,KPU,KPU,KPU,KPU,KPU,
 			  A00,A00,A00,A00,A00,A00,A06,A06,A06,A00,A00,A00,A00,A04,A04,A04,
 			  KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KOD,KOD,
-			  0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u);
+			  0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
 
 // PG00, OU,  50-MHz, Push-pull	Out			AF0		CN9  D65
 // PG01, OU,  50-MHz, Push-pull	Out			AF0		CN9  D64
@@ -314,7 +318,7 @@ static	void	local_GPIO_Configuration(void) {
 			  KNO,KNO,KPU,KNO,KPU,KNO,KPU,KNO,KPU,KPU,KNO,KNO,KNO,KNO,KNO,KNO,
 			  A00,A07,A00,A00,A00,A00,A07,A00,A00,A00,A00,A00,A00,A00,A00,A00,
 			  KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-			  0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u);
+			  0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
 
 // PH00, AL,  50-MHz, -			OSC			AF0
 // PH01, AL,  50-MHz, -			OSC			AF0
@@ -339,7 +343,7 @@ static	void	local_GPIO_Configuration(void) {
 			  KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KNO,KNO,
 			  A00,A00,A00,A00,A00,A00,A00,A00,A00,A00,A00,A00,A00,A00,A00,A00,
 			  KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-			  0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u);
+			  0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
 }
 
 /*
@@ -361,7 +365,7 @@ static	void	local_RCC_Configuration(void) {
 
 // Activate the ART + 3ws (OK for 120-MHz)
 
-	FLASH->ACR = (3u * FLASH_ACR_LATENCY_0);			// Enable caches and prefetch
+	FLASH->ACR = (3U * FLASH_ACR_LATENCY_0);			// Enable caches and prefetch
 
 // Main PLL
 // --------
@@ -371,30 +375,30 @@ static	void	local_RCC_Configuration(void) {
 // f(vco) = f(ck in) * (N/M)	N/M = 240/16 = 15			---> N = 60, M = 4
 // f(4x)  = f(vco) / Q			Q = 5						---> f(4x)  = 48-MHz
 
-	RCC->PLLCFGR = (5u * RCC_PLLCFGR_PLLQ0)				// Q = 5
-				 | (0u * RCC_PLLCFGR_PLLSRC)			// HSI16 as a PLL source
-				 | (0u * RCC_PLLCFGR_PLLP0)				// P = 2
-				 | (60u * RCC_PLLCFGR_PLLN0)			// N = 60
-				 | (4u * RCC_PLLCFGR_PLLM0);			// M = 4
+	RCC->PLLCFGR = (5U * RCC_PLLCFGR_PLLQ0)				// Q = 5
+				 | (0U * RCC_PLLCFGR_PLLSRC)			// HSI16 as a PLL source
+				 | (0U * RCC_PLLCFGR_PLLP0)				// P = 2
+				 | (60U * RCC_PLLCFGR_PLLN0)			// N = 60
+				 | (4U * RCC_PLLCFGR_PLLM0);			// M = 4
 
 // Waiting for stable clock and enable PLL
 // Waiting for the PLL lock
 // Set-up the MCO
 
 	RCC->CR |= RCC_CR_PLLON;
-	while ((RCC->CR & RCC_CR_PLLRDY) == 0u) { ; }
+	while ((RCC->CR & RCC_CR_PLLRDY) == 0U) { }
 
-	RCC->CFGR = (0u * RCC_CFGR_MCO20)					// MCO2 (system clock)
-			  | (0u * RCC_CFGR_MCO2PRE0)				// MCO2 (no division)
-			  | (0u * RCC_CFGR_MCO1PRE0)				// MCO1 (no division)
-			  | (0u * RCC_CFGR_MCO10)					// MCO1 (HSI clock selected)
-			  | (4u * RCC_CFGR_RTCPRE0)					// HSE/4
-			  | (4u * RCC_CFGR_PPRE20)					// APB2 bus @ 120/2 = 60-MHz
-			  | (5u * RCC_CFGR_PPRE10)					// APB1 bus @ 120/4 = 30-MHz
-			  | (0u * RCC_CFGR_HPRE0)					// HPRE bus @ 120-MHz
-			  | (2u * RCC_CFGR_SW0);					// System clock on the PLL
+	RCC->CFGR = (0U * RCC_CFGR_MCO20)					// MCO2 (system clock)
+			  | (0U * RCC_CFGR_MCO2PRE0)				// MCO2 (no division)
+			  | (0U * RCC_CFGR_MCO1PRE0)				// MCO1 (no division)
+			  | (0U * RCC_CFGR_MCO10)					// MCO1 (HSI clock selected)
+			  | (4U * RCC_CFGR_RTCPRE0)					// HSE/4
+			  | (4U * RCC_CFGR_PPRE20)					// APB2 bus @ 120/2 = 60-MHz
+			  | (5U * RCC_CFGR_PPRE10)					// APB1 bus @ 120/4 = 30-MHz
+			  | (0U * RCC_CFGR_HPRE0)					// HPRE bus @ 120-MHz
+			  | (2U * RCC_CFGR_SW0);					// System clock on the PLL
 
-	while ((RCC->CFGR & (3u * RCC_CFGR_SWS0)) != (2u * RCC_CFGR_SWS0)) { ; }
+	while ((RCC->CFGR & (3U * RCC_CFGR_SWS0)) != (2U * RCC_CFGR_SWS0)) { }
 }
 
 /*
@@ -407,20 +411,20 @@ static	void	local_RCC_Configuration(void) {
 static	void	local_MPU_Configuration(void) {
 
 	#if (defined(PRIVILEGED_USER_S))
-	SET_MPU7_REGION(0u, 0u,	ST_FLASH_INT_0,		SZ_FLASH_INT_0,		KMPU_EXECUTABLE,		KMPU_R_ALL,		KMPU_TEX_LEVEL0,	KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
-	SET_MPU7_REGION(1u, 0u,	ST_RAM_INT_0,		SZ_RAM_INT_0,		KMPU_EXECUTABLE,		KMPU_RW_ALL,	KMPU_TEX_LEVEL0,	KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
-	SET_MPU7_REGION(2u, 0u,	ST_RAM_INT_0_OS,	SZ_RAM_INT_0_OS,	KMPU_EXECUTABLE,		KMPU_RW_PRI,	KMPU_TEX_LEVEL0,	KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
-	SET_MPU7_REGION(3u, 0u,	ST_PERIPH_SOC,		SZ_PERIPH_SOC,		KMPU_NOT_EXECUTABLE,	KMPU_RW_PRI,	KMPU_TEX_LEVEL0,	KMPU_NOT_SHAREABLE,	KMPU_NOT_CASHABLE,	KMPU_BUFFERABLE);
-	SET_MPU7_REGION(4u, 0u,	ST_PERIPH_CORE,		SZ_PERIPH_CORE,		KMPU_NOT_EXECUTABLE,	KMPU_RW_PRI,	KMPU_TEX_LEVEL0,	KMPU_NOT_SHAREABLE,	KMPU_NOT_CASHABLE,	KMPU_BUFFERABLE);
+	SET_MPU7_REGION(0U, 0U,	ST_FLASH_INT_0,		SZ_FLASH_INT_0,		KMPU_EXECUTABLE,		KMPU_R_ALL,		KMPU_TEX_LEVEL0,	KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
+	SET_MPU7_REGION(1U, 0U,	ST_RAM_INT_0,		SZ_RAM_INT_0,		KMPU_EXECUTABLE,		KMPU_RW_ALL,	KMPU_TEX_LEVEL0,	KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
+	SET_MPU7_REGION(2U, 0U,	ST_RAM_INT_0_OS,	SZ_RAM_INT_0_OS,	KMPU_EXECUTABLE,		KMPU_RW_PRI,	KMPU_TEX_LEVEL0,	KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
+	SET_MPU7_REGION(3U, 0U,	ST_PERIPH_SOC,		SZ_PERIPH_SOC,		KMPU_NOT_EXECUTABLE,	KMPU_RW_PRI,	KMPU_TEX_LEVEL0,	KMPU_NOT_SHAREABLE,	KMPU_NOT_CASHABLE,	KMPU_BUFFERABLE);
+	SET_MPU7_REGION(4U, 0U,	ST_PERIPH_CORE,		SZ_PERIPH_CORE,		KMPU_NOT_EXECUTABLE,	KMPU_RW_PRI,	KMPU_TEX_LEVEL0,	KMPU_NOT_SHAREABLE,	KMPU_NOT_CASHABLE,	KMPU_BUFFERABLE);
 
 	#else
-	SET_MPU7_REGION(0u, 0u,	ST_FLASH_INT_0,		SZ_FLASH_INT_0,		KMPU_EXECUTABLE,		KMPU_R_ALL,		KMPU_TEX_LEVEL0,	KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
-	SET_MPU7_REGION(1u, 0u,	ST_RAM_INT_0,		SZ_RAM_INT_0,		KMPU_EXECUTABLE,		KMPU_RW_ALL,	KMPU_TEX_LEVEL0,	KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
+	SET_MPU7_REGION(0U, 0U,	ST_FLASH_INT_0,		SZ_FLASH_INT_0,		KMPU_EXECUTABLE,		KMPU_R_ALL,		KMPU_TEX_LEVEL0,	KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
+	SET_MPU7_REGION(1U, 0U,	ST_RAM_INT_0,		SZ_RAM_INT_0,		KMPU_EXECUTABLE,		KMPU_RW_ALL,	KMPU_TEX_LEVEL0,	KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
 	#endif
 
 // Enable branch prediction
 // Normally not necessary (always on)
 
-	SCB->CCR |= (1u<<18u);
+	SCB->CCR |= (1U<<18U);
 	DATA_SYNC_BARRIER;
 }

@@ -5,16 +5,16 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Process: dispatcher.
 ;			- As soon as a new data is available on the queue
 ;				process it
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,8 +48,20 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdio.h>
+#include	<stdlib.h>
+
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"memo/memo.h"
+#include	"led/led.h"
+#include	"os_errors.h"
 #include	"queue.h"
+#include	"record/record.h"
+#include	"types.h"
+#include	"record/record.h"
 
 extern	mbox_t	*vQueue_dispatcher;
 
@@ -73,7 +85,7 @@ bool	installaProcess_dispatcher(void) {
 // Specifications for the processes
 
 	PROCESS_STACKMALLOC(
-		0u,									// Index
+		0U,									// Index
 		specification,						// Specifications (just use specification_x)
 		aStrText,							// Info string (NULL if anonymous)
 		KKERN_SZ_STACK_MM,					// KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
@@ -95,11 +107,11 @@ bool	installaProcess_dispatcher(void) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess(const void *argument) {
-	uintptr_t	message;
-
 	UNUSED(argument);
 
-	while (vQueue_dispatcher == NULL) { kern_suspendProcess(1u); }
+	uintptr_t	message;
+
+	while (vQueue_dispatcher == NULL) { kern_suspendProcess(1U); }
 
 	while (true) {
 		if (kern_readQueue(vQueue_dispatcher, &message, KWAIT_INFINITY) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Read queue"); exit(EXIT_OS_FAILURE); }
@@ -108,7 +120,7 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
 
 		switch (message & 0xFF000000u) {
 			case KID_SENSOR: {
-				((message & 1u) == 1u) ? (led_on(KLED_0)) : (led_off(KLED_0));
+				((message & 1U) == 1U) ? (led_on(KLED_0)) : (led_off(KLED_0));
 				break;
 			}
 			case KID_ACTUATOR: {

@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		echo tool; echo from a Serial Communication Manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,16 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+#include	<stdio.h>
+
+#include	"kern/kern.h"
+#include	"led/led.h"
+#include	"macros.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"serial/serial.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -78,15 +87,15 @@ MODULE(
 	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,										// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
 // CLI tool specific
 // =================
 
-#define	KTIMEOUT_5S		5000000u
-#define	KTIMEOUT_10S	10000000u
+#define	KTIMEOUT_5S		5000000U
+#define	KTIMEOUT_10S	10000000U
 
 /*
  * \brief Main entry point
@@ -121,7 +130,7 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 
 // Reserve the serialManager0 and serialManager1 managers
 
-		switch (serial_reserve(serialManager0, KMODE_READ, 1000u)) {
+		switch (serial_reserve(serialManager0, KMODE_READ, 1000U)) {
 			case KERR_SERIAL_NODEV: {
 				error = KERR_CHA;
 				comm = comm0;
@@ -142,19 +151,19 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 			}
 		}
 
-		switch (serial_reserve(serialManager1, KMODE_WRITE, 1000u)) {
+		switch (serial_reserve(serialManager1, KMODE_WRITE, 1000U)) {
 			case KERR_SERIAL_NODEV: {
 				error = KERR_CHA;
 				comm = comm1;
 				terminate = true;
-				RELEASE_SERIAL(serialManager0, KMODE_READ);
+				serial_release(serialManager0, KMODE_READ);
 				break;
 			}
 			case KERR_SERIAL_CHBSY: {
 				error = KERR_BSY;
 				comm = comm1;
 				terminate = true;
-				RELEASE_SERIAL(serialManager0, KMODE_READ);
+				serial_release(serialManager0, KMODE_READ);
 				break;
 			}
 			default: {
@@ -168,15 +177,15 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 		serial_flush(serialManager0);
 		timeout = KTIMEOUT_10S;
 
-		while (terminate == false) {
+		while (!terminate) {
 
 // Read serialManager0 under a 10s or 5s timeout (10s for the first char) and write on the serialManager1
 
-			if (local_getByte(serialManager0, &data, timeout) == false) {
+			if (!local_getByte(serialManager0, &data, timeout)) {
 				error = KERR_NOT;
 				serial_flush(serialManager0);
-				RELEASE_SERIAL(serialManager0, KMODE_READ);
-				RELEASE_SERIAL(serialManager1, KMODE_WRITE);
+				serial_release(serialManager0, KMODE_READ);
+				serial_release(serialManager1, KMODE_WRITE);
 				local_putByte(serialManager1, &data);
 				terminate = true;
 			}
@@ -213,7 +222,7 @@ static	bool	local_getByte(serialManager_t serialManager, uint8_t *buffer, uint64
 	uint32_t	size;
 	uint64_t	time[2];
 
-	*buffer = 0u;
+	*buffer = 0U;
 	kern_readTickCount(&time[0]);
 
 	do {
@@ -223,7 +232,7 @@ static	bool	local_getByte(serialManager_t serialManager, uint8_t *buffer, uint64
 		}
 
 		kern_switchFast();
-		size = 1u;
+		size = 1U;
 		status = serial_read(serialManager, buffer, &size);
 	} while (status != KERR_SERIAL_NOERR);
 
@@ -243,6 +252,6 @@ static	void	local_putByte(serialManager_t serialManager, const uint8_t *buffer) 
 	do {
 		kern_switchFast();
 
-		status = serial_write(serialManager, buffer, 1u);
+		status = serial_write(serialManager, buffer, 1U);
 	} while (status != KERR_SERIAL_NOERR);
 }

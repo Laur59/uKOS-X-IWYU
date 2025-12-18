@@ -74,7 +74,7 @@ static void hw_endpoint_alloc(struct hw_endpoint* ep, size_t size) {
 
   // double buffered Bulk endpoint
   if (ep->transfer_type == TUSB_XFER_BULK) {
-    size *= 2u;
+    size *= 2U;
   }
 
   // assign buffer
@@ -103,7 +103,7 @@ static void hw_endpoint_init(uint8_t ep_addr, uint16_t wMaxPacketSize, uint8_t t
   // For device, IN is a tx transfer and OUT is an rx transfer
   ep->rx = (dir == TUSB_DIR_OUT);
 
-  ep->next_pid = 0u;
+  ep->next_pid = 0U;
   ep->wMaxPacketSize = wMaxPacketSize;
   ep->transfer_type = transfer_type;
 
@@ -179,14 +179,14 @@ static void hw_endpoint_abort_xfer(struct hw_endpoint* ep) {
 static void __tusb_irq_path_func(hw_handle_buff_status)(void) {
   uint32_t remaining_buffers = usb_hw->buf_status;
   pico_trace("buf_status = 0x%08lx\r\n", remaining_buffers);
-  uint bit = 1u;
+  uint bit = 1U;
   for (uint8_t i = 0; remaining_buffers && i < USB_MAX_ENDPOINTS * 2; i++) {
     if (remaining_buffers & bit) {
       // clear this in advance
       usb_hw_clear->buf_status = bit;
 
       // IN transfer for even i, OUT transfer for odd i
-      struct hw_endpoint* ep = hw_endpoint_get_by_num(i >> 1u, (i & 1u) ? TUSB_DIR_OUT : TUSB_DIR_IN);
+      struct hw_endpoint* ep = hw_endpoint_get_by_num(i >> 1U, (i & 1U) ? TUSB_DIR_OUT : TUSB_DIR_IN);
 
       // Continue xfer
       bool done = hw_endpoint_xfer_continue(ep);
@@ -198,7 +198,7 @@ static void __tusb_irq_path_func(hw_handle_buff_status)(void) {
       }
       remaining_buffers &= ~bit;
     }
-    bit <<= 1u;
+    bit <<= 1U;
   }
 }
 
@@ -207,7 +207,7 @@ TU_ATTR_ALWAYS_INLINE static inline void reset_ep0(void) {
   // setup transfer. Also clear a stall in case
   for (uint8_t dir = 0; dir < 2; dir++) {
     struct hw_endpoint* ep = hw_endpoint_get_by_num(0, dir);
-    ep->next_pid = 1u;
+    ep->next_pid = 1U;
     if (ep->active) {
       hw_endpoint_abort_xfer(ep); // Abort any pending transfer per USB specs
     }
@@ -378,7 +378,7 @@ bool dcd_init(uint8_t rhport, const tusb_rhport_init_t* rh_init) {
   usb_hw->pwr = USB_USB_PWR_VBUS_DETECT_BITS | USB_USB_PWR_VBUS_DETECT_OVERRIDE_EN_BITS;
 #endif
 
-#if (defined(MODE_UKOS_S))
+#ifdef MODE_UKOS_S
 
 #else
   irq_add_shared_handler(USBCTRL_IRQ, dcd_rp2040_irq, PICO_SHARED_IRQ_HANDLER_HIGHEST_ORDER_PRIORITY);
@@ -424,7 +424,7 @@ bool dcd_deinit(uint8_t rhport) {
 void dcd_int_enable(__unused uint8_t rhport) {
   assert(rhport == 0);
 
-#if (defined(MODE_UKOS_S))
+#ifdef MODE_UKOS_S
 
 #else
   irq_set_enabled(USBCTRL_IRQ, true);
@@ -435,7 +435,7 @@ void dcd_int_enable(__unused uint8_t rhport) {
 void dcd_int_disable(__unused uint8_t rhport) {
   assert(rhport == 0);
 
-#if (defined(MODE_UKOS_S))
+#ifdef MODE_UKOS_S
 
 #else
   irq_set_enabled(USBCTRL_IRQ, false);

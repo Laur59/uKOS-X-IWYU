@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Demo of a C application.
@@ -18,8 +18,8 @@
 ;				  Compute the inference
 ;				  Display the classes
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -66,10 +66,22 @@
  *
  */
 
-#include	"uKOS.h"
-#include	<stdlib.h>
-#include	<math.h>
+#include	<stdio.h>
 #include	<cinttypes>
+
+#include	"crt0.h"
+#include	"serial/serial.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"
+#include	"macros_runtime.h"
+#include	"memo/memo.h"
+#include	"led/led.h"
+#include	"modules.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#include	"types.h"
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wconversion"
@@ -87,7 +99,7 @@
 #include	"tensorflow/lite/micro/system_setup.h"
 #include	"tensorflow/lite/schema/schema_generated.h"
 
-#if (defined(CORTEX))
+#ifdef CORTEX
 #include	"tensorflow/lite/micro/cortex_m_generic/debug_log_callback.h"
 #endif
 
@@ -119,7 +131,7 @@ MODULE(
 	aStart,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,								// Address of the clean code (clean the module)
 	" 1.0",								// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0									// Execution cores
 );
 
@@ -137,7 +149,7 @@ void RegisterOps(tflite::MicroMutableOpResolver<3> &resolver) {
 	resolver.AddFullyConnected();
 }
 
-#if (defined(RISCV))
+#ifdef RISCV
 extern "C"	char_t	putchar_(char_t ch) {
 
 	UNUSED(ch);
@@ -146,7 +158,7 @@ extern "C"	char_t	putchar_(char_t ch) {
 }
 #endif
 
-#if (defined(CORTEX))
+#ifdef CORTEX
 static	void	debuglog(const char *s) {
 
 	(void)dprintf(KSYST, "%s\n", s);
@@ -163,6 +175,8 @@ static	void	debuglog(const char *s) {
  *
  */
 static	void	__attribute__ ((noreturn)) aProcess_0(const void *argument) {
+	UNUSED(argument);
+
 			float32_t		x, y, gain = 2.0f;
 			TfLiteTensor	*input;
 			TfLiteTensor	*output;
@@ -170,14 +184,12 @@ static	void	__attribute__ ((noreturn)) aProcess_0(const void *argument) {
 			uint32_t		delta = 0;
 	const	char_t			*result;
 
-	UNUSED(argument);
-
 	#if (defined(CORTEX))
     RegisterDebugLogCallback(debuglog);
 	#endif
 
 	while (true) {
-		kern_suspendProcess(1000u);
+		kern_suspendProcess(1000U);
 		led_toggle(KLED_0);
 
 // Load the TFLite model
@@ -252,15 +264,15 @@ static	void	__attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *
  */
 int		main(int argc, const char *argv[]) {
+	UNUSED(argc);
+	UNUSED(argv);
+
 	proc_t	*process_0;
 
 // ------------------------------------I-----------------------------------------I--------------I
 
 	STRG_LOC_CONST(aStrIden_0[]) =    "Process_User";
 	STRG_LOC_CONST(aStrText_0[]) =    "Process user.                             (c) EFr-2025";
-
-	UNUSED(argc);
-	UNUSED(argv);
 
 // Initialise the C++ constructors
 

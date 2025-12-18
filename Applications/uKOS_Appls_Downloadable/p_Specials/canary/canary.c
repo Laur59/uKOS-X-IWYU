@@ -5,15 +5,15 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Demo of a C application.
 ;			This application shows how to operate with the uKOS-X uKernel.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -64,7 +64,14 @@
  *
  */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+
+#include	"crt0.h"
+#include	"kern/kern.h"
+#include	"macros.h"
+#include	"modules.h"
+#include	"record/record.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -90,7 +97,7 @@ MODULE(
 	aStart,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,								// Address of the clean code (clean the module)
 	" 1.0",								// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0									// Execution cores
 );
 
@@ -102,7 +109,7 @@ MODULE(
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-#define	KNB_ELEMENTS	8u
+#define	KNB_ELEMENTS	8U
 
 // Save the GCC diagnostic
 //
@@ -116,11 +123,11 @@ MODULE(
 //
 #pragma GCC diagnostic	ignored	"-Warray-bounds"
 int		main(int argc, const char *argv[]) {
-				uint32_t	i;
-	volatile	uint32_t	array[KNB_ELEMENTS];
-
 	UNUSED(argc);
 	UNUSED(argv);
+
+				uint32_t	i;
+	volatile	uint32_t	array[KNB_ELEMENTS];
 
 // Initialise 0..n-1 elements
 

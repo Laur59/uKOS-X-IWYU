@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32F217_hash equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // HASH address definitions
 // ------------------------
@@ -116,7 +118,7 @@ typedef struct {
 	volatile	uint32_t	CSR50;
 } HASH_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	HASH	reinterpret_cast<HASH_TypeDef *>(0x50060400u)
 
 #else

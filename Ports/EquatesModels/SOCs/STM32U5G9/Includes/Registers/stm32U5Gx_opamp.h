@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32U5Gx_opamp equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // OPAMP address definitions
 // -------------------------
 
@@ -61,7 +63,7 @@ typedef struct {
 	volatile	uint32_t	OPAMP2_LPOTR;
 } OPAMP_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	OPAMP_NS	reinterpret_cast<OPAMP_TypeDef *>(0x46005000u)
 #define	OPAMP_S		reinterpret_cast<OPAMP_TypeDef *>(0x56005000u)
 

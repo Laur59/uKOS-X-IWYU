@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		stub for the connection of the "urt0" manager to the uart1 device.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,13 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+
+#include	"clockTree.h"
+#include	"macros_soc.h"
+#include	"serial_common.h"
+#include	"soc_reg.h"
+#include	"urt0/urt0.h"
 
 // Model callbacks
 // ---------------
@@ -113,10 +119,10 @@ static	void	cb_init_C1(void) {
 #define	KUSART_SEMAPHORE_TX_C0	KURT0_SEMAPHORE_TX
 #define	KUSART_SEMAPHORE_TX_C1	KURT0_SEMAPHORE_TX
 
-#define	KUSART_SZ_TX_BUF_C0		1024u
-#define	KUSART_SZ_TX_BUF_C1		1024u
-#define	KUSART_SZ_RX_BUF_C0		1024u
-#define	KUSART_SZ_RX_BUF_C1		1024u
+#define	KUSART_SZ_TX_BUF_C0		1024U
+#define	KUSART_SZ_TX_BUF_C1		1024U
+#define	KUSART_SZ_RX_BUF_C0		1024U
+#define	KUSART_SZ_RX_BUF_C1		1024U
 
 #define	KUSART_SEMA_RX_C0_S
 #define	KUSART_SEMA_RX_C1_S

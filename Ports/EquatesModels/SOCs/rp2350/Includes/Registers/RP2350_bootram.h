@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		RP2350_bootram equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // BOOTRAM address definitions
 // ---------------------------
 
@@ -66,7 +68,7 @@ typedef struct {
 	volatile	uint32_t	BOOTLOCK7;
 } BOOTRAM_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	BOOTRAM_NS	reinterpret_cast<BOOTRAM_TypeDef *>(0x400E0000u)
 #define	BOOTRAM_S	reinterpret_cast<BOOTRAM_TypeDef *>(0x400E0000u)
 #else

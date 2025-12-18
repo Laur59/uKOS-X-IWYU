@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Kern - Precise signals.
@@ -22,8 +22,8 @@
 ;			int32_t	kern_killPreciseSignal(prcs_t *handle);
 ;			int32_t	kern_getPreciseSignalById(const char_t *identifier, prcs_t **handle);
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -57,14 +57,29 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"kern/private/private_kern.h"
+#include	"preciseSignals.h"
 #include	"kern/private/private_preciseSignals.h"
-#include	"kern/private/private_processes.h"
+
+#include	<stdint.h>
+#include	<stdlib.h>
+
+#include	"debug.h"
+#include	"kern/kern.h"
 #include	"kern/private/private_identifiers.h"
-#include	"kern/private/private_lists.h"
+#include	"kern/private/private_processes.h"
+#include	"macros_core.h"
+#include	"macros_soc.h"
+#include	"os_errors.h"
+#include	"record/record.h"
+#ifdef RV32IMAC_S
+#include	"soc_reg.h"
+#endif
+#include	"types.h"
 
 #if (KKERN_NB_PRECISE_SIGNALS > 0)
+
+#define KKERN_NB_SIGN_CHECK(x) ((x) > 0)
+static_assert(KKERN_NB_SIGN_CHECK(KKERN_NB_SIGNALS), "KKERN_NB_SIGNALS cannot be 0 when KKERN_NB_PRECISE_SIGNALS > 0");
 
 prcs_t		vKern_prcs[KNB_CORES][KKERN_NB_PRECISE_SIGNALS];
 uint16_t	vKern_nbPrcs[KNB_CORES];
@@ -94,19 +109,19 @@ void	preciseSignals_init(void) {
 
 	if (kern_createSignalGroup(KPRCS_DEFAULT_SIGNAL_GROUP, &vDefaultSignalGroup[core]) != KERR_KERN_NOERR) { LOG(KFATAL_KERNEL, "prcs: create prcs"); exit(EXIT_OS_FAILURE); }
 
-	for (i = 0u; i < KKERN_NB_PRECISE_SIGNALS; i++) {
+	for (i = 0U; i < KKERN_NB_PRECISE_SIGNALS; i++) {
 		vKern_prcs[core][i].oIdentifier	 = NULL;
-		vKern_prcs[core][i].oState		 = 0u;
+		vKern_prcs[core][i].oState		 = 0U;
 		vKern_prcs[core][i].oMode		 = KPRCS_STOP;
 		vKern_prcs[core][i].oSignalGroup = vDefaultSignalGroup[core];
 		vKern_prcs[core][i].oToProcess	 = NULL;
-		vKern_prcs[core][i].oSignal		 = 0u;
-		vKern_prcs[core][i].oPeriod		 = 0u;
-		vKern_prcs[core][i].oNextTime	 = 0u;
+		vKern_prcs[core][i].oSignal		 = 0U;
+		vKern_prcs[core][i].oPeriod		 = 0U;
+		vKern_prcs[core][i].oNextTime	 = 0U;
 	}
 
-	vKern_nbPrcs[core]	  = 0u;
-	vKern_nbMaxPrcs[core] = 0u;
+	vKern_nbPrcs[core]	  = 0U;
+	vKern_nbMaxPrcs[core] = 0U;
 	DEBUG_KERN_TRACE("exit: OK");
 }
 
@@ -147,8 +162,8 @@ int32_t	kern_createPreciseSignal(const char_t *identifier, prcs_t **handle) {
 // with the handle of the previously created object
 
 	if (identifier != NULL) {
-		for (i = 0u; i < KKERN_NB_PRECISE_SIGNALS; i++) {
-			if (identifiers_cmpStrings(vKern_prcs[core][i].oIdentifier, identifier) == true) {
+		for (i = 0U; i < KKERN_NB_PRECISE_SIGNALS; i++) {
+			if (identifiers_cmpStrings(vKern_prcs[core][i].oIdentifier, identifier)) {
 				*handle = &vKern_prcs[core][i];
 				DEBUG_KERN_TRACE("exit: KO 1");
 				INTERRUPTION_RESTORE;
@@ -159,19 +174,19 @@ int32_t	kern_createPreciseSignal(const char_t *identifier, prcs_t **handle) {
 		}
 	}
 
-	for (i = 0u; i < KKERN_NB_PRECISE_SIGNALS; i++) {
+	for (i = 0U; i < KKERN_NB_PRECISE_SIGNALS; i++) {
 		if (vKern_prcs[core][i].oIdentifier == NULL) {
 			vKern_prcs[core][i].oIdentifier  = (identifier == NULL) ? (KPRCS_ANONYMOUS_ID) : (identifier);
-			vKern_prcs[core][i].oState		 = (1u<<BPRCS_INSTALLED);
+			vKern_prcs[core][i].oState		 = (1U<<BPRCS_INSTALLED);
 			vKern_prcs[core][i].oMode		 = KPRCS_STOP;
 			vKern_prcs[core][i].oSignalGroup = vDefaultSignalGroup[core];
 			vKern_prcs[core][i].oToProcess	 = NULL;
-			vKern_prcs[core][i].oSignal		 = 0u;
-			vKern_prcs[core][i].oPeriod		 = 0u;
-			vKern_prcs[core][i].oNextTime	 = 0u;
+			vKern_prcs[core][i].oSignal		 = 0U;
+			vKern_prcs[core][i].oPeriod		 = 0U;
+			vKern_prcs[core][i].oNextTime	 = 0U;
 			*handle = &vKern_prcs[core][i];
 
-			vKern_nbPrcs[core]    = (uint16_t)(vKern_nbPrcs[core] + 1u);
+			vKern_nbPrcs[core]    = (uint16_t)(vKern_nbPrcs[core] + 1U);
 			vKern_nbMaxPrcs[core] = (vKern_nbPrcs[core] > vKern_nbMaxPrcs[core]) ? (vKern_nbPrcs[core]) : (vKern_nbMaxPrcs[core]);
 			DEBUG_KERN_TRACE("exit: OK");
 			INTERRUPTION_RESTORE;
@@ -192,7 +207,7 @@ int32_t	kern_createPreciseSignal(const char_t *identifier, prcs_t **handle) {
  * Call example in C:
  *
  * \code{.c}
- * #define    KTOPACQ    (1u<<0) | (1u<<28)
+ * #define    KTOPACQ    (1U<<0) | (1U<<28)
  *
  *    static  void     aProcess(const void *argument) {
  *        uint32_t     signal;
@@ -204,16 +219,16 @@ int32_t	kern_createPreciseSignal(const char_t *identifier, prcs_t **handle) {
  *        // system call kern_createBitSignal to automatically obtain a signal.
  *        //
  *        // Create and initialise a precise signal "Test_prcs"
- *        //     Continuous run, period = 200-us, generate the signals (1u<<0) | (1u<<28) on the default signal group, selectively to the process 23
+ *        //     Continuous run, period = 200-us, generate the signals (1U<<0) | (1U<<28) on the default signal group, selectively to the process 23
  *
  *        if (kern_createPreciseSignal("Test_prcs", &preciseSignal)                                         != KERR_KERN_NOERR) { exit(EXIT_OS_FAILURE); }
  *        if (kern_setPreciseSignal(preciseSignal, &signalGroup, process23, 200, KPRCS_CONTINUOUS, KTOPACQ) != KERR_KERN_NOERR) { exit(EXIT_OS_FAILURE); }
  *
  *        while (true) {
  *
- *        // Waiting for the signal (1u<<0) coming from the ISR (always the case)
+ *        // Waiting for the signal (1U<<0) coming from the ISR (always the case)
  *
- *            signal = (1u<<0);
+ *            signal = (1U<<0);
  *            kern_waitSignal(signalGroup, &signal, KKERN_HANDLE_FROM_ISR, KWAIT_INFINITY);
  *            led_toggle(KLED_0);
  *        }
@@ -245,7 +260,7 @@ int32_t	kern_setPreciseSignal(prcs_t *handle, sign_t **sigGroup, proc_t *toProce
 	vKern_runProc[core]->oStatistic.oNbKernCalls++;
 	preciseSignal = handle;
 	if (preciseSignal == NULL)								   { *sigGroup = NULL; DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPRC); }
-	if ((preciseSignal->oState & (1u<<BPRCS_INSTALLED)) == 0u) { *sigGroup = NULL; DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPRC); }
+	if ((preciseSignal->oState & (1U<<BPRCS_INSTALLED)) == 0U) { *sigGroup = NULL; DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPRC); }
 
 	preciseSignal->oMode  		= mode;
 	preciseSignal->oSignalGroup = (*sigGroup == NULL) ? (vDefaultSignalGroup[core]) : (*sigGroup);
@@ -291,18 +306,18 @@ int32_t	kern_killPreciseSignal(prcs_t *handle) {
 	vKern_runProc[core]->oStatistic.oNbKernCalls++;
 	preciseSignal = handle;
 	if (preciseSignal == NULL)								   { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPRC); }
-	if ((preciseSignal->oState & (1u<<BPRCS_INSTALLED)) == 0u) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPRC); }
+	if ((preciseSignal->oState & (1U<<BPRCS_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPRC); }
 
 	preciseSignal->oIdentifier	= NULL;
-	preciseSignal->oState		= 0u;
+	preciseSignal->oState		= 0U;
 	preciseSignal->oMode		= KPRCS_STOP;
 	preciseSignal->oSignalGroup	= NULL;
 	preciseSignal->oToProcess	= NULL;
-	preciseSignal->oSignal		= 0u;
-	preciseSignal->oPeriod		= 0u;
-	preciseSignal->oNextTime	= 0u;
+	preciseSignal->oSignal		= 0U;
+	preciseSignal->oPeriod		= 0U;
+	preciseSignal->oNextTime	= 0U;
 
-	if (vKern_nbPrcs[core] != 0u) { vKern_nbPrcs[core] = (uint16_t)(vKern_nbPrcs[core] - 1u); }
+	if (vKern_nbPrcs[core] != 0U) { vKern_nbPrcs[core] = (uint16_t)(vKern_nbPrcs[core] - 1U); }
 	DEBUG_KERN_TRACE("exit: OK");
 	INTERRUPTION_RESTORE;
 	PRIVILEGE_RESTORE;
@@ -342,8 +357,8 @@ int32_t	kern_getPreciseSignalById(const char_t *identifier, prcs_t **handle) {
 	vKern_runProc[core]->oStatistic.oNbKernCalls++;
 	*handle = NULL;
 
-	for (i = 0u; i < KKERN_NB_PRECISE_SIGNALS; i++) {
-		if (identifiers_cmpStrings(vKern_prcs[core][i].oIdentifier, identifier) == true) {
+	for (i = 0U; i < KKERN_NB_PRECISE_SIGNALS; i++) {
+		if (identifiers_cmpStrings(vKern_prcs[core][i].oIdentifier, identifier)) {
 			*handle = &vKern_prcs[core][i];
 			DEBUG_KERN_TRACE("exit: OK");
 			INTERRUPTION_RESTORE;
@@ -357,4 +372,6 @@ int32_t	kern_getPreciseSignalById(const char_t *identifier, prcs_t **handle) {
 	PRIVILEGE_RESTORE;
 	return (KERR_KERN_NOPRC);
 }
+#else
+#error	"KKERN_NB_PRECISE_SIGNALS SHALL be > 0 in project using kern/prcs.c"
 #endif

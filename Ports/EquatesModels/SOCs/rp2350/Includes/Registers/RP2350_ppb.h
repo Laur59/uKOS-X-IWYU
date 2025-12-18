@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		RP2350_ppb equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // PPB address definitions
 // -----------------------
@@ -438,7 +440,7 @@ typedef struct {
 	volatile	uint32_t	CIDR3;
 } PPB_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	PPB_NS	reinterpret_cast<PPB_TypeDef *>(0xE0020000u)
 #define	PPB_S	reinterpret_cast<PPB_TypeDef *>(0xE0000000u)
 #else

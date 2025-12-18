@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		nrf5340_network_timer equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // TIMER address definitions
 // -------------------------
@@ -88,7 +90,7 @@ typedef struct {
 	volatile	uint32_t	ONESHOTEN[8];
 } TIMER_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	TIMER0_NS	reinterpret_cast<TIMER_TypeDef *>(0x4100C000u)
 #define	TIMER1_NS	reinterpret_cast<TIMER_TypeDef *>(0x41018000u)
 #define	TIMER2_NS	reinterpret_cast<TIMER_TypeDef *>(0x41019000u)

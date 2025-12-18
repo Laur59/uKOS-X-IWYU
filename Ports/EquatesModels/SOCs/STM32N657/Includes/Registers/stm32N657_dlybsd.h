@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32N657_dlybsd equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // DLYBSD address definitions
 // --------------------------
 
@@ -56,7 +58,7 @@ typedef struct {
 	volatile	uint32_t	STATUS;
 } DLYBSD_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	DLYBSD_NS	reinterpret_cast<DLYBSD_TypeDef *>(0x48028000u)
 #define	DLYBSD_S	reinterpret_cast<DLYBSD_TypeDef *>(0x58028000u)
 #define	DLYBSD2_NS	reinterpret_cast<DLYBSD_TypeDef *>(0x48026C00u)

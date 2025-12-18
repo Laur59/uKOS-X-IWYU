@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Vectors for the uKOS-X system (first).
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,9 +46,12 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stddef.h>
+
+#include	"kern/private/private_temporal.h"	// IWYU pragma: keep (for vKern_TimeException)
 #include	"linker.h"
-#include	"kern/private/private_temporal.h"
+#include	"macros_core.h"
+#include	"soc_reg.h"
 
 // Vector table: ...
 // However rather than start at zero the vector table starts at address 0x00000004,

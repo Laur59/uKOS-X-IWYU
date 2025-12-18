@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		lib_generics system call interface module.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -87,23 +87,23 @@
 
 // IWYU pragma: begin_exports
 
-#if (defined(CONFIG_MAN_TEXT_S))
-#include	"text/text.h"
-#endif
-#if (defined(CONFIG_MAN_MEMO_S))
-#include	"memo/memo.h"
-#endif
-#if (defined(CONFIG_MAN_ASMP_S))
+#ifdef CONFIG_MAN_ASMP_S
 #include	"asmp/asmp.h"
 #endif
-#if (defined(CONFIG_MAN_SYSTEM_S))
-#include	"system/system.h"
+#ifdef CONFIG_MAN_CALENDAR_S
+#include	"calendar/calendar.h"
 #endif
-#if (defined(CONFIG_MAN_MACHINE_S))
+#ifdef CONFIG_MAN_MACHINE_S
 #include	"machine/machine.h"
 #endif
-#if (defined(CONFIG_MAN_CALENDAR_S))
-#include	"calendar/calendar.h"
+#ifdef CONFIG_MAN_MEMO_S
+#include	"memo/memo.h"
+#endif
+#ifdef CONFIG_MAN_SYSTEM_S
+#include	"system/system.h"
+#endif
+#ifdef CONFIG_MAN_TEXT_S
+#include	"text/text.h"
 #endif
 
 // dprintf and record_trace

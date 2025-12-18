@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		nrf5340_application_ficr equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // FICR address definitions
 // ------------------------
@@ -145,7 +147,7 @@ typedef struct {
 	volatile	uint32_t	XOSC32MTRIM;
 } FICR_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	FICR_S	reinterpret_cast<FICR_TypeDef *>(0x00FF0000u)
 
 #else

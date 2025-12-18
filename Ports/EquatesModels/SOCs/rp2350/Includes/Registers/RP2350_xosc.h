@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		RP2350_xosc equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,8 @@
 
 #pragma	once
 
+#include	<stdint.h>
+
 // XOSC address definitions
 // ------------------------
 
@@ -59,7 +61,7 @@ typedef struct {
 	volatile	uint32_t	COUNT;
 } XOSC_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	XOSC_NS	reinterpret_cast<XOSC_TypeDef *>(0x40048000u)
 #define	XOSC_S	reinterpret_cast<XOSC_TypeDef *>(0x40048000u)
 #else

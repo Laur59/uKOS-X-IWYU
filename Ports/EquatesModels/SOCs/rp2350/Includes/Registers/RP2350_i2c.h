@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		RP2350_i2c equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // I2C0 address definitions
 // ------------------------
@@ -100,7 +102,7 @@ typedef struct {
 	volatile	uint32_t	COMP_TYPE;
 } I2C_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	I2C0_NS	reinterpret_cast<I2C_TypeDef *>(0x40090000u)
 #define	I2C0_S	reinterpret_cast<I2C_TypeDef *>(0x40090000u)
 #define	I2C1_NS	reinterpret_cast<I2C_TypeDef *>(0x40098000u)

@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32U5Gx_pwr equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // PWR address definitions
 // -----------------------
@@ -96,7 +98,7 @@ typedef struct {
 	volatile	uint32_t	CR4;
 } PWR_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	PWR_NS	reinterpret_cast<PWR_TypeDef *>(0x46020800u)
 #define	PWR_S	reinterpret_cast<PWR_TypeDef *>(0x56020800u)
 

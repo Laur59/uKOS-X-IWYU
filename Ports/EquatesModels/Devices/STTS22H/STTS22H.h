@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		ST STTS22H equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -52,7 +52,7 @@
 
 #define	KI2C_ADD_STTS22H					0x3Fu							// I2C STTS22H address
 
-#define	KSTTS22H_SCALING					100u							// Scaling of 100-lsb / Deg
+#define	KSTTS22H_SCALING					100U							// Scaling of 100-lsb / Deg
 
 // Registers
 
@@ -66,20 +66,20 @@
 
 // Control register
 
-#define	ONE_SHOT							0u								// New one-shot temperature acquisition is executed
-#define	TIME_OUT_DIS						1u								// Timeout function of SMBus is disabled
-#define	FREERUN								2u								// Enables freerun mode
-#define	IF_ADD_INC							3u								// Automatic address increment is enabled
-#define	AVG									4u								// Sampling
-#define	AVG25HZ								0u								// Sampling 25-Hz
-#define	AVG50HZ								1u								// Sampling 50-Hz
-#define	AVG100HZ							2u								// Sampling 100-Hz
-#define	AVG200HZ							3u								// Sampling 200-Hz
-#define	BDU									6u								// If BDU is used, TEMP_L_OUT must be read first)
-#define	LOW_ODR_START						7u								// Enables 1 Hz ODR operating mode
+#define	ONE_SHOT							0U								// New one-shot temperature acquisition is executed
+#define	TIME_OUT_DIS						1U								// Timeout function of SMBus is disabled
+#define	FREERUN								2U								// Enables freerun mode
+#define	IF_ADD_INC							3U								// Automatic address increment is enabled
+#define	AVG									4U								// Sampling
+#define	AVG25HZ								0U								// Sampling 25-Hz
+#define	AVG50HZ								1U								// Sampling 50-Hz
+#define	AVG100HZ							2U								// Sampling 100-Hz
+#define	AVG200HZ							3U								// Sampling 200-Hz
+#define	BDU									6U								// If BDU is used, TEMP_L_OUT must be read first)
+#define	LOW_ODR_START						7U								// Enables 1 Hz ODR operating mode
 
 // Status register
 
-#define	BUSY								1u								// The conversion is in progress
-#define	OVER_THH							2u								// High limit temperature exceeded
-#define	OVER_THL							3u								// Low limit temperature exceeded
+#define	BUSY								1U								// The conversion is in progress
+#define	OVER_THH							2U								// High limit temperature exceeded
+#define	OVER_THL							3U								// Low limit temperature exceeded

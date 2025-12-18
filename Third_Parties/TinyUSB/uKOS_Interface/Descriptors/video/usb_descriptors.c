@@ -34,8 +34,8 @@
 ;   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 ;   THE SOFTWARE.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -69,6 +69,12 @@
 ;------------------------------------------------------------------------
 */
 
+#include	<stddef.h>
+#include	<string.h>
+
+#include	"types.h"
+#include	"os_errors.h"
+#include	"macros.h"
 #include	"bsp/board_api.h"
 #include	"tusb.h"
 #include	"usb_descriptors.h"
@@ -506,11 +512,11 @@ char_t	const	*string_desc_arr [] = {
 // Application return pointer to descriptor, whose contents must exist long enough for transfer to complete
 
 uint16_t	const	*tud_descriptor_string_cb(uint8_t index, uint16_t langid) {
+	UNUSED(langid);
+
 			size_t		i, chr_count;
 	static	uint16_t	vDesc_str[1 + 32];
 	const	char_t		*str = string_desc_arr[index];
-
-	UNUSED(langid);
 
 	switch (index) {
 		case STRID_LANGID: {

@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Display the shared area of the multicore system.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +46,14 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<inttypes.h>
+#include	<stdio.h>
+
+#include	"asmp/asmp.h"
+#include	"macros.h"
+#include	"modules.h"
+#include	"serial/serial.h"
+#include	"types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -77,7 +84,7 @@ MODULE(
 	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,										// Address of the clean code (clean the module)
 	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0											// Execution cores
 );
 
@@ -100,14 +107,14 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 
 	(void)dprintf(KSYST, "\nASMPReady: 0x%02"PRIX8"\n\n", vAsmp_InterCore->oASMPReady);
 
-	for (i = 0u; i < KASMP_NB_CORES; i++) {
-		(void)dprintf(KSYST, "Core %ld, StatusRX: %s\n",   i, (vAsmp_InterCore->oStatusRX[i] == true) ? ("LOCK") : ("FREE"));
-		(void)dprintf(KSYST, "Core %ld, StatusTX: %s\n",   i, (vAsmp_InterCore->oStatusTX[i] == true) ? ("LOCK") : ("FREE"));
+	for (i = 0U; i < KASMP_NB_CORES; i++) {
+		(void)dprintf(KSYST, "Core %"PRIu32", StatusRX: %s\n",  		i, (vAsmp_InterCore->oStatusRX[i] == true) ? ("LOCK") : ("FREE"));
+		(void)dprintf(KSYST, "Core %"PRIu32", StatusTX: %s\n",  		i, (vAsmp_InterCore->oStatusTX[i] == true) ? ("LOCK") : ("FREE"));
 
-		(void)dprintf(KSYST, "Core %ld, Sender:   %ld\n",  i, vAsmp_InterCore->oSender[i]);
-		(void)dprintf(KSYST, "Core %ld, Order:    %ld\n",  i, vAsmp_InterCore->oOrder[i]);
-		(void)dprintf(KSYST, "Core %ld, Size:     %ld\n",  i, vAsmp_InterCore->oSize[i]);
-		(void)dprintf(KSYST, "Core %ld, Buffer:   %s\n\n", i, vAsmp_InterCore->oBuffer[i]);
+		(void)dprintf(KSYST, "Core %"PRIu32", Sender:   %"PRIu32"\n",	i, vAsmp_InterCore->oSender[i]);
+		(void)dprintf(KSYST, "Core %"PRIu32", Order:    %"PRIu32"\n",	i, vAsmp_InterCore->oOrder[i]);
+		(void)dprintf(KSYST, "Core %"PRIu32", Size:     %"PRIu32"\n",	i, vAsmp_InterCore->oSize[i]);
+		(void)dprintf(KSYST, "Core %"PRIu32", Buffer:   %s\n\n", 		i, vAsmp_InterCore->oBuffer[i]);
 	}
 	return (EXIT_OS_SUCCESS_CLI);
 }

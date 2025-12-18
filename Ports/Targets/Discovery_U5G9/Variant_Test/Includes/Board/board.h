@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Board mapping.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,12 @@
 
 #pragma	once
 
+// This header contains only board-specific compile-time macros.
+// It is not meant to contain function or variable declarations.
+#if defined(__clang__)
+#  pragma clang diagnostic ignored "-Wempty-translation-unit"
+#endif
+
 // System identifiers
 // ------------------
 
@@ -59,14 +65,14 @@
 // GPIO settings
 // -------------
 
-#define KNB_LED				2u									// Number of LEDs
+#define KNB_LED				2U									// Number of LEDs
 
 // PORTs
 
-#define	BLED_0				0u									// PORT E 0, LED
-#define	BLED_1				1u									// PORT E 1, LED
+#define	BLED_0				0U									// PORT E 0, LED
+#define	BLED_1				1U									// PORT E 1, LED
 
-#define	BSW_0				13u									// PORT C 13, SW1
+#define	BSW_0				13U									// PORT C 13, SW1
 
-#define	BDSI_PWRON			5u									// PORT I 5, DSI Power ON
-#define	BDSI_RESET			5u									// PORT D 5, DSI Reset
+#define	BDSI_PWRON			5U									// PORT I 5, DSI Power ON
+#define	BDSI_RESET			5U									// PORT D 5, DSI Reset

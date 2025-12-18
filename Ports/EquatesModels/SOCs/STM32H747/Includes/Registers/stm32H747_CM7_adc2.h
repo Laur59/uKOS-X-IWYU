@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stm32H747_CM7_adc2 equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,6 +47,8 @@
 */
 
 #pragma	once
+
+#include	<stdint.h>
 
 // ADC2 address definitions
 // ------------------------
@@ -93,7 +95,7 @@ typedef struct {
 	volatile	uint32_t	CALFACT2;
 } ADC2_TypeDef;
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 #define	ADC2	reinterpret_cast<ADC2_TypeDef *>(0x40022100u)
 
 #else

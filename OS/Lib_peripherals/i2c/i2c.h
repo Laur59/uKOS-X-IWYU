@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		i2c manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -63,18 +63,21 @@
  * @{
  */
 
-#include	"Lib_peripherals/i2c_common.h"
+#include	<stdint.h>
+
+#include	"i2c_common.h"
+#include	"types.h"
 
 typedef	enum {
-			KI2C0 = (((uint32_t)'i'<<24u) | ((uint32_t)'2'<<16u) | ((uint32_t)'c'<<8u) | (uint32_t)'0'),	// i2c0 manager
-			KI2C1 = (((uint32_t)'i'<<24u) | ((uint32_t)'2'<<16u) | ((uint32_t)'c'<<8u) | (uint32_t)'1'),	// i2c1 manager
-			KI2C2 = (((uint32_t)'i'<<24u) | ((uint32_t)'2'<<16u) | ((uint32_t)'c'<<8u) | (uint32_t)'2'),	// i2c2 manager
-			KI2C3 = (((uint32_t)'i'<<24u) | ((uint32_t)'2'<<16u) | ((uint32_t)'c'<<8u) | (uint32_t)'3')		// i2c3 manager
+			KI2C0 = (((uint32_t)'i'<<24U) | ((uint32_t)'2'<<16U) | ((uint32_t)'c'<<8U) | (uint32_t)'0'),	// i2c0 manager
+			KI2C1 = (((uint32_t)'i'<<24U) | ((uint32_t)'2'<<16U) | ((uint32_t)'c'<<8U) | (uint32_t)'1'),	// i2c1 manager
+			KI2C2 = (((uint32_t)'i'<<24U) | ((uint32_t)'2'<<16U) | ((uint32_t)'c'<<8U) | (uint32_t)'2'),	// i2c2 manager
+			KI2C3 = (((uint32_t)'i'<<24U) | ((uint32_t)'2'<<16U) | ((uint32_t)'c'<<8U) | (uint32_t)'3')		// i2c3 manager
 } i2cManager_t;
 
 // Prototypes
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 extern	"C" {
 #endif
 
@@ -196,7 +199,7 @@ extern	int32_t	i2c_write(i2cManager_t manager, uint8_t address, const uint8_t *b
  */
 extern	int32_t	i2c_read(i2cManager_t manager, uint8_t address, uint8_t *buffer, uint16_t size);
 
-#if (defined(__cplusplus))
+#ifdef __cplusplus
 }
 #endif
 

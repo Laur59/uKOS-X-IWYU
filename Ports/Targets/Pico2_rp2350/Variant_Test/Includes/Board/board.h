@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Board mapping.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,6 +48,12 @@
 
 #pragma	once
 
+// This header contains only board-specific compile-time macros.
+// It is not meant to contain function or variable declarations.
+#if defined(__clang__)
+#  pragma clang diagnostic ignored "-Wempty-translation-unit"
+#endif
+
 // System identifiers
 // ------------------
 
@@ -75,13 +81,13 @@
 #define	LED_RED_OFF			(REG(SIO)->GPIO_OUT_CLR = (1<<BLED_2))		//
 #define	LED_RED_TOGGLE		(REG(SIO)->GPIO_OUT_XOR = (1<<BLED_2))		// Led macros
 
-#define KNB_LED				4u											// Number of LEDs
+#define KNB_LED				4U											// Number of LEDs
 
 // PORTs
 
-#define	BLED_s				25u											// GPIO25, LED system
-#define	BLED_0				11u											// GPIO11, LED yellow
-#define	BLED_1				12u											// GPIO12, LED green
-#define	BLED_2				13u											// GPIO13, LED red
+#define	BLED_s				25U											// GPIO25, LED system
+#define	BLED_0				11U											// GPIO11, LED yellow
+#define	BLED_1				12U											// GPIO12, LED green
+#define	BLED_2				13U											// GPIO13, LED red
 
-#define	BSW_0				21u											// GPIO21, SW1
+#define	BSW_0				21U											// GPIO21, SW1

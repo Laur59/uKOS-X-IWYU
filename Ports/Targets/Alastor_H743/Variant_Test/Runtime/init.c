@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; Author:	Edo. Franzi
+; Modifs:	Laurent von Allmen
 ;
 ; Project:	uKOS-X
 ; Goal:		Low level init for the uKOS-X Alastor_H743 module.
@@ -15,8 +15,8 @@
 ;			!!! It is called before to copy and to initialise
 ;			!!! the variable into the RAM.
 ;
-;   (c) 2025-20xx, Edo. Franzi
-;   --------------------------
+;   © 2025-2026, Edo. Franzi
+;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -50,7 +50,13 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	<stdint.h>
+
+#include	"core_reg.h"
+#include	"macros.h"
+#include	"macros_core.h"
+#include	"modules.h"
+#include	"soc_reg.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -73,7 +79,7 @@ MODULE(
 	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
 	NULL,							// Address of the clean code (clean the module)
 	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
 	0								// Execution cores
 );
 
@@ -88,9 +94,9 @@ MODULE(
 
 #define	SDRAM_COMMAND_BANK2(command, mrd, cycles)				\
 			do {												\
-				FMC->SDCMR = ((uint32_t)((mrd))<<9u)			\
-						   | ((uint32_t)((cycles))<<5u)			\
-						   | (1u<<3u)							\
+				FMC->SDCMR = ((uint32_t)((mrd))<<9U)			\
+						   | ((uint32_t)((cycles))<<5U)			\
+						   | (1U<<3U)							\
 						   | ((uint32_t)((command)));			\
 			} while (0)
 
@@ -169,9 +175,9 @@ static	void	local_PWR_Configuration(void) {
 	PWR->CR3  |=   PWR_CR3_LDOEN;
 
 	PWR->D3CR &= ~(PWR_D3CR_VOS);
-	PWR->D3CR |=  (3u * PWR_D3CR_VOS_0);
+	PWR->D3CR |=  (3U * PWR_D3CR_VOS_0);
 
-	while ((PWR->D3CR & PWR_D3CR_VOSRDY) == 0u) { ; }
+	while ((PWR->D3CR & PWR_D3CR_VOSRDY) == 0U) { }
 
 	RCC->APB4ENR  |= RCC_APB4ENR_SYSCFGEN;
 	SYSCFG->PWRCR |= SYSCFG_PWRCR_ODEN;
@@ -223,7 +229,7 @@ static	void	local_GPIO_Configuration(void) {
 			  KPU,KPD,KPU,KNO,KNO,KPU,KPU,KNO,KNO,KNO,KNO,KNO,KPU,KNO,KPU,KNO,
 			  A00,A00,A00,A15,A15,A07,A15,A15,A08,A13,A08,A15,A07,A07,A08,A08,
 			  KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-			  0u, 0u, 0u, 0u, 0u, 0u, 0u, 1u, 0u, 0u, 0u, 1u, 0u, 0u, 0u, 0u);
+			  0U, 0U, 0U, 0U, 0U, 0U, 0U, 1U, 0U, 0U, 0U, 1U, 0U, 0U, 0U, 0U);
 
 // PB00, OU,  50-MHz, Push-pull	SPI2_NSS	AF15	/BSEL_WROOM
 // PB01, OU,  50-MHz, Push-pull	LED0		AF15
@@ -248,7 +254,7 @@ static	void	local_GPIO_Configuration(void) {
 			  KNO,KPU,KNO,KNO,KPU,KNO,KPU,KPU,KNO,KNO,KNO,KPU,KNO,KPU,KNO,KNO,
 			  A05,A05,A05,A15,A07,A07,A04,A04,A15,A07,A15,A00,A00,A15,A15,A15,
 			  KPP,KPP,KPP,KPP,KPP,KPP,KOD,KOD,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-			  0u, 0u, 0u, 1u, 0u, 0u, 1u, 1u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 1u);
+			  0U, 0U, 0U, 1U, 0U, 0U, 1U, 1U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 1U);
 
 // PC00, AL,  99-MHz, Push-pull	SDNWE		AF12
 // PC01, IN,  50-MHz, Pull-up	ADC0		AF15
@@ -273,7 +279,7 @@ static	void	local_GPIO_Configuration(void) {
 			  KNO,KNO,KPD,KPD,KPD,KPD,KNO,KNO,KPU,KNO,KNO,KNO,KNO,KPU,KPU,KNO,
 			  A00,A00,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A12,
 			  KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-			  0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 1u, 0u, 0u, 0u, 0u, 0u, 0u);
+			  0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 1U, 0U, 0U, 0U, 0U, 0U, 0U);
 
 // PD00, AL,  99-MHz, Push-pull	FMC_D2		AF12
 // PD01, AL,  99-MHz, Push-pull	FMC_D3		AF12
@@ -298,7 +304,7 @@ static	void	local_GPIO_Configuration(void) {
 			  KNO,KNO,KNO,KPU,KPU,KNO,KNO,KNO,KPU,KPU,KPU,KPU,KPU,KPU,KNO,KNO,
 			  A12,A12,A15,A15,A15,A12,A12,A12,A15,A15,A15,A15,A15,A15,A12,A12,
 			  KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-			  0u, 0u, 1u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u);
+			  0U, 0U, 1U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
 
 // PE00, AL,  99-MHz, Push-pull	FMC_NBL0	AF12
 // PE01, AL,  99-MHz, Push-pull	FMC_NBL1	AF12
@@ -323,7 +329,7 @@ static	void	local_GPIO_Configuration(void) {
 			  KNO,KNO,KNO,KNO,KNO,KNO,KNO,KNO,KNO,KNO,KPU,KNO,KNO,KNO,KPU,KPU,
 			  A12,A12,A12,A12,A12,A12,A12,A12,A12,A05,A05,A15,A15,A05,A12,A12,
 			  KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-			  0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 1u, 0u, 0u, 0u, 0u);
+			  0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 1U, 0U, 0U, 0U, 0U);
 
 // PF00, AL,  99-MHz, Push-pull	FMC_A0		AF12
 // PF01, AL,  99-MHz, Push-pull	FMC_A1		AF12
@@ -348,7 +354,7 @@ static	void	local_GPIO_Configuration(void) {
 			  KNO,KNO,KNO,KNO,KNO,KNO,KPU,KPU,KPU,KPU,KNO,KNO,KNO,KNO,KNO,KNO,
 			  A12,A12,A12,A12,A12,A15,A05,A05,A05,A05,A12,A12,A12,A12,A12,A12,
 			  KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-			  0u, 0u, 0u, 0u, 0u, 1u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u);
+			  0U, 0U, 0U, 0U, 0U, 1U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
 
 // PG00, AL,  99-MHz, Push-pull	FMC_A10		AF12
 // PG01, AL,  99-MHz, Push-pull	FMC_A11		AF12
@@ -373,7 +379,7 @@ static	void	local_GPIO_Configuration(void) {
 			  KNO,KPU,KPU,KPU,KNO,KNO,KNO,KNO,KNO,KNO,KNO,KNO,KNO,KNO,KNO,KNO,
 			  A12,A15,A15,A05,A15,A15,A15,A12,A15,A15,A12,A12,A15,A12,A12,A12,
 			  KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-			  0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 1u, 0u, 0u, 0u, 0u, 0u, 0u);
+			  0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 1U, 0U, 0U, 0U, 0U, 0U, 0U);
 
 // PH00, AL,  50-MHz, -			OSC			AF0
 // PH01, AL,  50-MHz, -			OSC			AF0
@@ -398,7 +404,7 @@ static	void	local_GPIO_Configuration(void) {
 			  KPU,KNO,KPU,KNO,KNO,KNO,KNO,KNO,KNO,KNO,KPU,KPU,KNO,KNO,KNO,KNO,
 			  A15,A13,A15,A13,A13,A13,A13,A13,A12,A12,A04,A04,A15,A15,A00,A00,
 			  KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KOD,KOD,KPP,KPP,KPP,KPP,
-			  0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 1u, 1u, 0u, 0u, 0u, 0u);
+			  0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 1U, 1U, 0U, 0U, 0U, 0U);
 
 // PI00, OU,  50-MHz, Push-pull	OI_W_6		AF15
 // PI01, AL,  50-MHz, Push-pull	DCMI_D8		AF13
@@ -423,7 +429,7 @@ static	void	local_GPIO_Configuration(void) {
 			  KPU,KPU,KPU,KPU,KNO,KNO,KNO,KNO,KNO,KNO,KNO,KNO,KNO,KNO,KNO,KNO,
 			  A15,A15,A15,A15,A15,A15,A15,A15,A13,A13,A13,A13,A15,A13,A13,A15,
 			  KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-			  0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u);
+			  0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
 }
 
 /*
@@ -475,29 +481,29 @@ static	void	local_RCC_Configuration(void) {
 					| RCC_CR_HSEON						// Set HSEON bit
 					| RCC_CR_RC48ON;					// Set HSI48ON bit
 
-	RCC->CFGR       = 0x00000000u;						// Reset CFGR registe
-	RCC->D1CFGR     = 0x00000000u;						// Reset D1CFGR register
-	RCC->D2CFGR     = 0x00000000u;						// Reset D2CFGR register
-	RCC->D3CFGR     = 0x00000000u;						// Reset D3CFGR register
-	RCC->PLLCKSELR  = 0x00000000u;						// Reset PLLCKSELR register
-	RCC->PLLCFGR    = 0x00000000u;						// Reset PLLCFGR register
-	RCC->PLL1DIVR   = 0x00000000u;						// Reset PLL1DIVR register
-	RCC->PLL1FRACR  = 0x00000000u;						// Reset PLL1FRACR register
-	RCC->PLL2DIVR   = 0x00000000u;						// Reset PLL2DIVR register
-	RCC->PLL2FRACR  = 0x00000000u;						// Reset PLL2FRACR register
-	RCC->PLL3DIVR   = 0x00000000u;						// Reset PLL3DIVR register
-	RCC->PLL3FRACR  = 0x00000000u;						// Reset PLL3FRACR register
-	RCC->CIER       = 0x00000000u;						// Disable all interrupts
-	*((volatile uint32_t *)0x51008108u) = 0x000000001u;	// Change the switch matrix read issuing capability to 1 for the AXI SRAM target (Target 7)
+	RCC->CFGR       = 0x00000000U;						// Reset CFGR registe
+	RCC->D1CFGR     = 0x00000000U;						// Reset D1CFGR register
+	RCC->D2CFGR     = 0x00000000U;						// Reset D2CFGR register
+	RCC->D3CFGR     = 0x00000000U;						// Reset D3CFGR register
+	RCC->PLLCKSELR  = 0x00000000U;						// Reset PLLCKSELR register
+	RCC->PLLCFGR    = 0x00000000U;						// Reset PLLCFGR register
+	RCC->PLL1DIVR   = 0x00000000U;						// Reset PLL1DIVR register
+	RCC->PLL1FRACR  = 0x00000000U;						// Reset PLL1FRACR register
+	RCC->PLL2DIVR   = 0x00000000U;						// Reset PLL2DIVR register
+	RCC->PLL2FRACR  = 0x00000000U;						// Reset PLL2FRACR register
+	RCC->PLL3DIVR   = 0x00000000U;						// Reset PLL3DIVR register
+	RCC->PLL3FRACR  = 0x00000000U;						// Reset PLL3FRACR register
+	RCC->CIER       = 0x00000000U;						// Disable all interrupts
+	*((volatile uint32_t *)0x51008108U) = 0x000000001U;	// Change the switch matrix read issuing capability to 1 for the AXI SRAM target (Target 7)
 
-	while ((RCC->CR & RCC_CR_RC48RDY) == 0u) { ; }		// Waiting for the 48-MHz
+	while ((RCC->CR & RCC_CR_RC48RDY) == 0U) { }		// Waiting for the 48-MHz
 
 // Source for the PLL 1 , 2 & 3 input clock (see DM00314099 pages 296, 309 & 348)
 
-	RCC->PLLCKSELR = (0u * RCC_PLLCKSELR_PLLSRC_0)		// PLL1, 2, 3 source HSI (64-MHz)
-				   | (4u * RCC_PLLCKSELR_DIVM1_0)		// DivM1 / 4
-				   | (4u * RCC_PLLCKSELR_DIVM2_0)		// DivM2 / 4
-				   | (4u * RCC_PLLCKSELR_DIVM3_0);		// DivM3 / 4
+	RCC->PLLCKSELR = (0U * RCC_PLLCKSELR_PLLSRC_0)		// PLL1, 2, 3 source HSI (64-MHz)
+				   | (4U * RCC_PLLCKSELR_DIVM1_0)		// DivM1 / 4
+				   | (4U * RCC_PLLCKSELR_DIVM2_0)		// DivM2 / 4
+				   | (4U * RCC_PLLCKSELR_DIVM3_0);		// DivM3 / 4
 
 // PLL 1 CPU
 // ---------
@@ -511,19 +517,19 @@ static	void	local_RCC_Configuration(void) {
 	RCC->PLLCFGR |= RCC_PLLCFGR_DIVR1EN					// Div R enable
 				  | RCC_PLLCFGR_DIVQ1EN					// Div Q enable
 				  | RCC_PLLCFGR_DIVP1EN					// Div P enable
-				  | (3u * RCC_PLLCFGR_PLL1RGE_0);		// Input 16-MHz
+				  | (3U * RCC_PLLCFGR_PLL1RGE_0);		// Input 16-MHz
 
-	RCC->PLL1DIVR = (7u * RCC_PLL1DIVR_DIVR1_0)			// Div R
-				  | (3u * RCC_PLL1DIVR_DIVQ1_0)			// Div Q
-				  | (1u * RCC_PLL1DIVR_DIVP1_0)			// Div P
-				  | (49u * RCC_PLL1DIVR_DIVN1_0);		// Div N 49 = 800-MHz
+	RCC->PLL1DIVR = (7U * RCC_PLL1DIVR_DIVR1_0)			// Div R
+				  | (3U * RCC_PLL1DIVR_DIVQ1_0)			// Div Q
+				  | (1U * RCC_PLL1DIVR_DIVP1_0)			// Div P
+				  | (49U * RCC_PLL1DIVR_DIVN1_0);		// Div N 49 = 800-MHz
 
-	RCC->PLL1FRACR = 0x00000000u;						// Reset PLL1FRACR register
+	RCC->PLL1FRACR = 0x00000000U;						// Reset PLL1FRACR register
 	RCC->CR       |= RCC_CR_PLL1ON;						// PLL1 on
 
 // Waiting for the lock
 
-	while ((RCC->CR & RCC_CR_PLL1RDY) == 0u) { ; }		// Waiting for the lock of the PLL
+	while ((RCC->CR & RCC_CR_PLL1RDY) == 0U) { }		// Waiting for the lock of the PLL
 
 // PLL 2 CPU
 // ---------
@@ -537,19 +543,19 @@ static	void	local_RCC_Configuration(void) {
 	RCC->PLLCFGR |= RCC_PLLCFGR_DIVR2EN					// Div R enable
 				  | RCC_PLLCFGR_DIVQ2EN					// Div Q enable
 				  | RCC_PLLCFGR_DIVP2EN					// Div P enable
-				  | (3u * RCC_PLLCFGR_PLL2RGE_0);		// Input 16-MHz
+				  | (3U * RCC_PLLCFGR_PLL2RGE_0);		// Input 16-MHz
 
-	RCC->PLL2DIVR = (15u * RCC_PLL2DIVR_DIVR2_0)		// Div R
-				  | (7u * RCC_PLL2DIVR_DIVQ2_0)			// Div Q
-				  | (3u * RCC_PLL2DIVR_DIVP2_0)			// Div P
-				  | (24u * RCC_PLL2DIVR_DIVN2_0);		// Div N 24 = 400-MHz
+	RCC->PLL2DIVR = (15U * RCC_PLL2DIVR_DIVR2_0)		// Div R
+				  | (7U * RCC_PLL2DIVR_DIVQ2_0)			// Div Q
+				  | (3U * RCC_PLL2DIVR_DIVP2_0)			// Div P
+				  | (24U * RCC_PLL2DIVR_DIVN2_0);		// Div N 24 = 400-MHz
 
-	RCC->PLL2FRACR = 0x00000000u;						// Reset PLL2FRACR register
+	RCC->PLL2FRACR = 0x00000000U;						// Reset PLL2FRACR register
 	RCC->CR       |= RCC_CR_PLL2ON;						// PLL2 on
 
 // Waiting for the lock
 
-	while ((RCC->CR & RCC_CR_PLL2RDY) == 0u) { ; }		// Waiting for the lock of the PLL
+	while ((RCC->CR & RCC_CR_PLL2RDY) == 0U) { }		// Waiting for the lock of the PLL
 
 // PLL 3 CPU
 // ---------
@@ -563,56 +569,56 @@ static	void	local_RCC_Configuration(void) {
 	RCC->PLLCFGR |= RCC_PLLCFGR_DIVR3EN					// Div R enable
 				  | RCC_PLLCFGR_DIVQ3EN					// Div Q enable
 				  | RCC_PLLCFGR_DIVP3EN					// Div P enable
-				  | (3u * RCC_PLLCFGR_PLL3RGE_0);		// Input 16-MHz
+				  | (3U * RCC_PLLCFGR_PLL3RGE_0);		// Input 16-MHz
 
-	RCC->PLL3DIVR = (1u * RCC_PLL3DIVR_DIVR3_0)			// Div R
-				  | (4u * RCC_PLL3DIVR_DIVQ3_0)			// Div Q
-				  | (1u * RCC_PLL3DIVR_DIVP3_0)			// Div P
-				  | (14u * RCC_PLL3DIVR_DIVN3_0);		// Div N 14 = 240-MHz
+	RCC->PLL3DIVR = (1U * RCC_PLL3DIVR_DIVR3_0)			// Div R
+				  | (4U * RCC_PLL3DIVR_DIVQ3_0)			// Div Q
+				  | (1U * RCC_PLL3DIVR_DIVP3_0)			// Div P
+				  | (14U * RCC_PLL3DIVR_DIVN3_0);		// Div N 14 = 240-MHz
 
-	RCC->PLL3FRACR = 0x00000000u;						// Reset PLL3FRACR register
+	RCC->PLL3FRACR = 0x00000000U;						// Reset PLL3FRACR register
 	RCC->CR       |= RCC_CR_PLL3ON;						// PLL3 on
 
 // Waiting for the lock
 
-	while ((RCC->CR & RCC_CR_PLL3RDY) == 0u) { ; }		// Waiting for the lock of the PLL
+	while ((RCC->CR & RCC_CR_PLL3RDY) == 0U) { }		// Waiting for the lock of the PLL
 
 // Domain clocks
 // -------------
 
-	RCC->D1CFGR = (0u * RCC_D1CFGR_D1CPRE_0)			// D1CPRE / 1
-				| (0u * RCC_D1CFGR_D1PPRE_0)			// D1PPRE / 1
-				| (8u * RCC_D1CFGR_HPRE_0);				// HPRE / 2
+	RCC->D1CFGR = (0U * RCC_D1CFGR_D1CPRE_0)			// D1CPRE / 1
+				| (0U * RCC_D1CFGR_D1PPRE_0)			// D1PPRE / 1
+				| (8U * RCC_D1CFGR_HPRE_0);				// HPRE / 2
 
-	RCC->D2CFGR = (5u * RCC_D2CFGR_D2PPRE2_0)			// D2PPRE2 / 4
-				| (5u * RCC_D2CFGR_D2PPRE1_0);			// D2PPRE1 / 4
+	RCC->D2CFGR = (5U * RCC_D2CFGR_D2PPRE2_0)			// D2PPRE2 / 4
+				| (5U * RCC_D2CFGR_D2PPRE1_0);			// D2PPRE1 / 4
 
-	RCC->D3CFGR = (4u * RCC_D3CFGR_D3PPRE_0);			// D3PPRE / 2
+	RCC->D3CFGR = (4U * RCC_D3CFGR_D3PPRE_0);			// D3PPRE / 2
 
 // RNG & USB clocks
 // ----------------
 
-	RCC->D2CCIP2R = (1u * RCC_D2CCIP2R_RNGSRC_0)		// Set the clock for the RNG @ KFREQUENCY_PLL1Q (200-MHz)
-				  | (2u * RCC_D2CCIP2R_USBSRC_0);		// Set the clock for the USB @ KFREQUENCY_PLL3Q (48-MHz)
+	RCC->D2CCIP2R = (1U * RCC_D2CCIP2R_RNGSRC_0)		// Set the clock for the RNG @ KFREQUENCY_PLL1Q (200-MHz)
+				  | (2U * RCC_D2CCIP2R_USBSRC_0);		// Set the clock for the USB @ KFREQUENCY_PLL3Q (48-MHz)
 
 // RTC
 // ---
 
 	PWR->CR1 |= PWR_CR1_DBP;							//
-	while ((PWR->CR1 & PWR_CR1_DBP) == 0u) { ; }		// Disable backup domain write protection
+	while ((PWR->CR1 & PWR_CR1_DBP) == 0U) { }			// Disable backup domain write protection
 
 // Prepare the LSE (disable bypass),
 
 	RCC->BDCR &= ~RCC_BDCR_LSEBYP;						// LSE oscillator not bypassed
 	RCC->BDCR &= ~RCC_BDCR_LSEDRV;						//
-	RCC->BDCR |=  (3u * RCC_BDCR_LSEDRV_0);				// Highest drive
+	RCC->BDCR |=  (3U * RCC_BDCR_LSEDRV_0);				// Highest drive
 	RCC->BDCR |=  RCC_BDCR_LSEON;						//
-	while ((RCC->BDCR & RCC_BDCR_LSERDY) == 0u) { ; }	// LSE on
+	while ((RCC->BDCR & RCC_BDCR_LSERDY) == 0U) { }		// LSE on
 
 // LSE as a clock for the RTC
 
     RCC->BDCR &= ~RCC_BDCR_RTCSRC;						//
-    RCC->BDCR |=  (1u * RCC_BDCR_RTCSRC_0);				// LSE is the source for the RTC
+    RCC->BDCR |=  (1U * RCC_BDCR_RTCSRC_0);				// LSE is the source for the RTC
     RCC->BDCR |=  RCC_BDCR_RTCEN;						// RTC enable
 
 	RTC->WPR = RTC_WPR_UNLOCK_KEY1;						//
@@ -625,12 +631,12 @@ static	void	local_RCC_Configuration(void) {
 // Flash latency (for 400-MHz ... 2 wait states)
 // ---------------------------------------------
 
-	FLASH->ACR  = (3u * FLASH_ACR_WRHIGHFREQ_0)			// Bus > 385-MHz
-				| (4u * FLASH_ACR_LATENCY_0);			// 4 wait states
+	FLASH->ACR  = (3U * FLASH_ACR_WRHIGHFREQ_0)			// Bus > 385-MHz
+				| (4U * FLASH_ACR_LATENCY_0);			// 4 wait states
 
-	RCC->CFGR = (4u * RCC_CFGR_MCO1SEL_0)				// MCO1 HSI48
-			  | (1u * RCC_CFGR_MCO1PRE_0)				// prescaler / 1
-			  | (3u * RCC_CFGR_SW_0);					// CPU clock = PLL
+	RCC->CFGR = (4U * RCC_CFGR_MCO1SEL_0)				// MCO1 HSI48
+			  | (1U * RCC_CFGR_MCO1PRE_0)				// prescaler / 1
+			  | (3U * RCC_CFGR_SW_0);					// CPU clock = PLL
 }
 
 /*
@@ -643,35 +649,35 @@ static	void	local_FMC_Configuration(void) {
 
 	RCC->AHB3ENR |= RCC_AHB3ENR_FMCEN;
 
-	local_wait_us(200000u);
+	local_wait_us(200000U);
 
 // FMC bank 5-6 & CE1 configuration in the synchronous mode
 // - SDRAM is a 42S16320F-6 speed grade, connected to bank 2 (0xD0000000)
 //   Some bits in SDCR[1] are don't care, and the have to be set in SDCR[0],
 //   they aren't just don't care, the controller will fail if they aren't at 0
 
-	FMC->SDCR1 = (1u * FMC_SDCR1_RPIPE_0)				// 1 clocks cycle delay
+	FMC->SDCR1 = (1U * FMC_SDCR1_RPIPE_0)				// 1 clocks cycle delay
 			   | FMC_SDCR1_RBURST						// Read as bursts
-			   | (2u* FMC_SDCR1_SDCLK_0);				// SDRAM runs @ 100-MHz
+			   | (2U* FMC_SDCR1_SDCLK_0);				// SDRAM runs @ 100-MHz
 
-	FMC->SDCR2 = (2u * FMC_SDCR2_CAS_0)					// CAS latency 2 cycles
+	FMC->SDCR2 = (2U * FMC_SDCR2_CAS_0)					// CAS latency 2 cycles
 			   | FMC_SDCR2_NB							// 4 internal banks
-			   | (1u * FMC_SDCR2_MWID_0)				// 16-bit data bus
-			   | (2u * FMC_SDCR2_NR_0)					// 13-bit row address
-			   | (2u * FMC_SDCR2_NC_0);					// 10-bit column address
+			   | (1U * FMC_SDCR2_MWID_0)				// 16-bit data bus
+			   | (2U * FMC_SDCR2_NR_0)					// 13-bit row address
+			   | (2U * FMC_SDCR2_NC_0);					// 10-bit column address
 
 // One SDRAM clock cycle is 1/100-MHz = 10-ns
 // Some bits in SDTR[1] are don't care, and the have to be set in SDTR[0],
 // they aren't just don't care, the controller will fail if they aren't at 0
 
-	FMC->SDTR1 = ((2u - 1u) * FMC_SDTR1_TRP_0)			// 2 cycle TRP (20.x-ns > 18-ns)
-			   | ((7u - 1u) * FMC_SDTR1_TRC_0);			// 7 cycle TRC (70.x-ns > 60-ns)
+	FMC->SDTR1 = ((2U - 1U) * FMC_SDTR1_TRP_0)			// 2 cycle TRP (20.x-ns > 18-ns)
+			   | ((7U - 1U) * FMC_SDTR1_TRC_0);			// 7 cycle TRC (70.x-ns > 60-ns)
 
-	FMC->SDTR2 = ((2u - 1u) * FMC_SDTR2_TRCD_0)			// 2 cycle TRCD (20.x-ns > 18-ns)
-			   | ((3u - 1u) * FMC_SDTR2_TWR_0)			// 3 cycle TWR
-			   | ((5u - 1u) * FMC_SDTR2_TRAS_0)			// 5 cycle TRAS (50.x-ns > 42-ns)
-			   | ((8u - 1u) * FMC_SDTR2_TXSR_0)			// 8 cycle TXSR (80.x-ns > 70-ns)
-			   | ((2u - 1u) * FMC_SDTR2_TMRD_0);		// 2 cycle TMRD
+	FMC->SDTR2 = ((2U - 1U) * FMC_SDTR2_TRCD_0)			// 2 cycle TRCD (20.x-ns > 18-ns)
+			   | ((3U - 1U) * FMC_SDTR2_TWR_0)			// 3 cycle TWR
+			   | ((5U - 1U) * FMC_SDTR2_TRAS_0)			// 5 cycle TRAS (50.x-ns > 42-ns)
+			   | ((8U - 1U) * FMC_SDTR2_TXSR_0)			// 8 cycle TXSR (80.x-ns > 70-ns)
+			   | ((2U - 1U) * FMC_SDTR2_TMRD_0);		// 2 cycle TMRD
 
 // SDRam mode register
 // Mode: 11 10 09 08   07 06 05 04   03 02 01 00
@@ -683,27 +689,27 @@ static	void	local_FMC_Configuration(void) {
 // M3	   = 0		Sequential
 // M2 - M0 = 000	Burst length 1
 
-	SDRAM_COMMAND_BANK2(0x1u, 0u,     0u      );		// Command Clock Configuration Enable
-	local_wait_us(200000u);
+	SDRAM_COMMAND_BANK2(0x1U, 0U,     0U      );		// Command Clock Configuration Enable
+	local_wait_us(200000U);
 
-	SDRAM_COMMAND_BANK2(0x2u, 0u,     0u      );		// Command All Bank Precharge
-	SDRAM_COMMAND_BANK2(0x3u, 0u,    (2u - 1u));		// Command Auto Refresh (2 cycles)
-	SDRAM_COMMAND_BANK2(0x4u, 0x220u, 0u      );		// Command Load Mode Register (CAS latency = 2, burst len = 1 (only Read))
+	SDRAM_COMMAND_BANK2(0x2U, 0U,     0U      );		// Command All Bank Precharge
+	SDRAM_COMMAND_BANK2(0x3U, 0U,    (2U - 1U));		// Command Auto Refresh (2 cycles)
+	SDRAM_COMMAND_BANK2(0x4U, 0x220U, 0U      );		// Command Load Mode Register (CAS latency = 2, burst len = 1 (only Read))
 
-	#if (defined(SELF_REFRESH_S))
-	SDRAM_COMMAND_BANK2(0x5u, 0u,     0u      );		// Command Self Refresh
+	#ifdef SELF_REFRESH_S
+	SDRAM_COMMAND_BANK2(0x5U, 0U,     0U      );		// Command Self Refresh
 
 	#else
 
 // 64-ms/8192 = 7.8125-us
 // 7.8125-us * 100-MHz = 781-20 = 761
 
-	FMC->SDRTR = (761u * FMC_SDRTR_COUNT_0);			// Refresh timer count
+	FMC->SDRTR = (761U * FMC_SDRTR_COUNT_0);			// Refresh timer count
 	#endif
 
 // Remapping of the SDRAM bank 2 (from 0xD0000000 -> 0x70000000)
 
-	FMC->BCR1 |= (2u * FMC_BCR1_BMAP_0);
+	FMC->BCR1 |= (2U * FMC_BCR1_BMAP_0);
 	FMC->BCR1 |= FMC_BCR1_FMCEN;
 }
 
@@ -717,27 +723,27 @@ static	void	local_FMC_Configuration(void) {
 
 static	void	local_MPU_Configuration(void) {
 
-	#if (defined(PRIVILEGED_USER_S))
-	SET_MPU7_REGION(0u, 0u,	ST_FLASH_INT_0,		SZ_FLASH_INT_0,		KMPU_EXECUTABLE,		KMPU_R_ALL,		KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
-	SET_MPU7_REGION(1u, 0u,	ST_RAM_INT_0,		SZ_RAM_INT_0,		KMPU_EXECUTABLE,		KMPU_RW_ALL,	KMPU_TEX_LEVEL6, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
-	SET_MPU7_REGION(2u, 0u,	ST_RAM_INT_1,		SZ_RAM_INT_1,		KMPU_EXECUTABLE,		KMPU_RW_ALL,	KMPU_TEX_LEVEL6, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
-	SET_MPU7_REGION(3u, 0u,	ST_RAM_INT_2_OS,	SZ_RAM_INT_2_OS,	KMPU_EXECUTABLE,		KMPU_RW_PRI,	KMPU_TEX_LEVEL6, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
-	SET_MPU7_REGION(4u, 0u,	ST_RAM_EXT_0,		SZ_RAM_EXT_0,		KMPU_EXECUTABLE,		KMPU_RW_ALL,	KMPU_TEX_LEVEL6, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
-	SET_MPU7_REGION(5u, 0u,	ST_PERIPH_SOC,		SZ_PERIPH_SOC,		KMPU_NOT_EXECUTABLE,	KMPU_RW_PRI,	KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,	KMPU_NOT_CASHABLE,	KMPU_BUFFERABLE);
-	SET_MPU7_REGION(6u, 0u,	ST_PERIPH_CORE,		SZ_PERIPH_CORE,		KMPU_NOT_EXECUTABLE,	KMPU_RW_PRI,	KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,	KMPU_NOT_CASHABLE,	KMPU_BUFFERABLE);
+	#ifdef PRIVILEGED_USER_S
+	SET_MPU7_REGION(0U, 0U,	ST_FLASH_INT_0,		SZ_FLASH_INT_0,		KMPU_EXECUTABLE,		KMPU_R_ALL,		KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
+	SET_MPU7_REGION(1U, 0U,	ST_RAM_INT_0,		SZ_RAM_INT_0,		KMPU_EXECUTABLE,		KMPU_RW_ALL,	KMPU_TEX_LEVEL6, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
+	SET_MPU7_REGION(2U, 0U,	ST_RAM_INT_1,		SZ_RAM_INT_1,		KMPU_EXECUTABLE,		KMPU_RW_ALL,	KMPU_TEX_LEVEL6, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
+	SET_MPU7_REGION(3U, 0U,	ST_RAM_INT_2_OS,	SZ_RAM_INT_2_OS,	KMPU_EXECUTABLE,		KMPU_RW_PRI,	KMPU_TEX_LEVEL6, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
+	SET_MPU7_REGION(4U, 0U,	ST_RAM_EXT_0,		SZ_RAM_EXT_0,		KMPU_EXECUTABLE,		KMPU_RW_ALL,	KMPU_TEX_LEVEL6, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
+	SET_MPU7_REGION(5U, 0U,	ST_PERIPH_SOC,		SZ_PERIPH_SOC,		KMPU_NOT_EXECUTABLE,	KMPU_RW_PRI,	KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,	KMPU_NOT_CASHABLE,	KMPU_BUFFERABLE);
+	SET_MPU7_REGION(6U, 0U,	ST_PERIPH_CORE,		SZ_PERIPH_CORE,		KMPU_NOT_EXECUTABLE,	KMPU_RW_PRI,	KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,	KMPU_NOT_CASHABLE,	KMPU_BUFFERABLE);
 
 	#else
-	SET_MPU7_REGION(0u, 0u,	ST_FLASH_INT_0,		SZ_FLASH_INT_0,		KMPU_EXECUTABLE,		KMPU_R_ALL,		KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
-	SET_MPU7_REGION(1u, 0u,	ST_RAM_INT_0,		SZ_RAM_INT_0,		KMPU_EXECUTABLE,		KMPU_RW_ALL,	KMPU_TEX_LEVEL6, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
-	SET_MPU7_REGION(2u, 0u,	ST_RAM_INT_1,		SZ_RAM_INT_1,		KMPU_EXECUTABLE,		KMPU_RW_ALL,	KMPU_TEX_LEVEL6, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
-	SET_MPU7_REGION(3u, 0u,	ST_RAM_INT_2,		SZ_RAM_INT_2,		KMPU_EXECUTABLE,		KMPU_RW_ALL,	KMPU_TEX_LEVEL6, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
-	SET_MPU7_REGION(4u, 0u,	ST_RAM_EXT_0,		SZ_RAM_EXT_0,		KMPU_EXECUTABLE,		KMPU_RW_ALL,	KMPU_TEX_LEVEL6, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
+	SET_MPU7_REGION(0U, 0U,	ST_FLASH_INT_0,		SZ_FLASH_INT_0,		KMPU_EXECUTABLE,		KMPU_R_ALL,		KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
+	SET_MPU7_REGION(1U, 0U,	ST_RAM_INT_0,		SZ_RAM_INT_0,		KMPU_EXECUTABLE,		KMPU_RW_ALL,	KMPU_TEX_LEVEL6, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
+	SET_MPU7_REGION(2U, 0U,	ST_RAM_INT_1,		SZ_RAM_INT_1,		KMPU_EXECUTABLE,		KMPU_RW_ALL,	KMPU_TEX_LEVEL6, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
+	SET_MPU7_REGION(3U, 0U,	ST_RAM_INT_2,		SZ_RAM_INT_2,		KMPU_EXECUTABLE,		KMPU_RW_ALL,	KMPU_TEX_LEVEL6, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
+	SET_MPU7_REGION(4U, 0U,	ST_RAM_EXT_0,		SZ_RAM_EXT_0,		KMPU_EXECUTABLE,		KMPU_RW_ALL,	KMPU_TEX_LEVEL6, KMPU_NOT_SHAREABLE,	KMPU_CASHABLE,		KMPU_NOT_BUFFERABLE);
 	#endif
 
 // Enable branch prediction
 // Normally not necessary (always on)
 
-	SCB->CCR |= (1u<<18u);
+	SCB->CCR |= (1U<<18U);
 	DATA_SYNC_BARRIER;
 }
 
@@ -752,7 +758,7 @@ static	void	local_MPU_Configuration(void) {
 static	void	local_wait_us(uint32_t us) {
 	uint32_t	time;
 
-	for (time = 0u; time < us; time++) { NOP; }
+	for (time = 0U; time < us; time++) { NOP; }
 }
 
 /*
@@ -763,12 +769,12 @@ static	void	local_wait_us(uint32_t us) {
  */
 static	void	local_CACHE_Enable(void) {
 
-	#if (defined(CACHE_I_S))
+	#ifdef CACHE_I_S
 	cache_I_Invalidate();
 	cache_I_Enable();
 	#endif
 
-	#if (defined(CACHE_D_S))
+	#ifdef CACHE_D_S
 	cache_D_Invalidate();
 	cache_D_Enable();
 	#endif
