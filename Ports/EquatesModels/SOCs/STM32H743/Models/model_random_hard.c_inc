@@ -51,8 +51,8 @@
 #include	"macros_soc.h"
 #include	"soc_reg.h"
 
-			bool		vTerminated = false;
-volatile	uint32_t	*vNumber;
+static				bool		vTerminated = false;
+static	volatile	uint32_t	*vNumber;
 
 // Prototypes
 
@@ -112,7 +112,7 @@ static	void	local_RNG_IRQHandler(void) {
 // Is data ready, no seed error, no clock error
 
 	if (((RNG->SR & RNG_SR_DRDY) != 0U) && ((RNG->SR & RNG_SR_SEIS) == 0U) && ((RNG->SR & RNG_SR_CEIS) == 0U)) {
-		*vNumber = RNG->DR;
+		*vNumber = RNG->DR & KRAND_MAX;
 		vTerminated = true;
 		RNG->CR &= ~(RNG_CR_RNGEN | RNG_CR_IE);
 		return;

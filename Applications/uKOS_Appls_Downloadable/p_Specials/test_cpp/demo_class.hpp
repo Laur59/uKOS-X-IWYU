@@ -67,5 +67,5 @@ public:
 	/**
 	 * \brief Test method - outputs a message
 	 */
-	void doit();
+	void doit() const;
 }; 

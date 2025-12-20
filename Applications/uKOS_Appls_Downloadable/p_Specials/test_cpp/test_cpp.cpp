@@ -110,8 +110,6 @@ MODULE(
 	0									// Execution cores
 );
 
-
-
 /*
  * \brief aProcess
  *
@@ -120,18 +118,25 @@ MODULE(
  *			- Toggle LED 0
  *
  */
-void	__attribute__ ((noreturn)) aProcess_0(const void *argument) {
+namespace {
+	void	__attribute__ ((noreturn)) aProcess_0(const void *argument) {
 
-	UNUSED(argument);
+		UNUSED(argument);
 
-	{
-	TestClass titi;
-	titi.doit();
-	}
+// Waiting from the uKOS-X prompt
 
-	while (true) {
 		kern_suspendProcess(100U);
-		led_toggle(KLED_0);
+		(void)dprintf(KSYST, "\n");
+
+		{
+		const	TestClass titi;
+		titi.doit();
+		}
+
+		while (true) {
+			kern_suspendProcess(100U);
+			led_toggle(KLED_0);
+		}
 	}
 }
 
@@ -160,6 +165,8 @@ int		main(int argc, const char *argv[]) {
 
 // Specifications for the processes
 
+// NOLINTBEGIN(misc-const-correctness)
+//
 	PROCESS_STACKMALLOC(
 		0,									// Index
 		specification_0,					// Specifications (just use vSpecification_x)
@@ -170,6 +177,9 @@ int		main(int argc, const char *argv[]) {
 		KSYST,								// Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
 		KKERN_PRIORITY_HIGH_02				// KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
 	);
+
+// NOLINTEND(misc-const-correctness)
+//
 
 	if (kern_createProcess(&specification_0, NULL, &process_0) != KERR_KERN_NOERR) { exit(EXIT_OS_FAILURE); }
 	return (EXIT_OS_SUCCESS_CLI);

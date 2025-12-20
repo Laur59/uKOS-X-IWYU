@@ -131,7 +131,7 @@ target_link_libraries(rtcb_p PUBLIC system_compiler_flags)
 
 # uKernel components (privileged) -> libkern_p.a
 list(APPEND KERN_P
-    ${PATH_UKOS}/OS/Lib_kernels/kern/debug_list.c
+    ${PATH_UKOS}/OS/Lib_kernels/kern/debug.c
     ${PATH_UKOS}/OS/Lib_kernels/kern/identifier.c
     ${PATH_UKOS}/OS/Lib_kernels/kern/kern.c
     ${PATH_UKOS}/OS/Lib_kernels/kern/lists.c
@@ -164,6 +164,7 @@ target_link_libraries(kern_u PUBLIC system_compiler_flags)
 
 # Lib_xxxx components (privileged) -> liblibx_p.a
 # (grouped by manager)
+add_source_with_define(LIBX_P ${PATH_UKOS}/OS/Lib_cryptographics/random/random.c CONFIG_MAN_RANDOM_S)
 add_source_with_define(LIBX_P ${PATH_UKOS}/OS/Lib_generics/asmp/asmp.c CONFIG_MAN_ASMP_S)
 add_source_with_define(LIBX_P ${PATH_UKOS}/OS/Lib_generics/calendar/calendar.c CONFIG_MAN_CALENDAR_S)
 add_source_with_define(LIBX_P ${PATH_UKOS}/OS/Lib_generics/machine/machine.c CONFIG_MAN_MACHINE_S)
@@ -177,6 +178,7 @@ add_source_with_define(LIBX_P ${PATH_UKOS}/OS/Lib_serials/cdc1/cdc1.c CONFIG_MAN
 add_source_with_define(LIBX_P ${PATH_UKOS}/OS/Lib_serials/serial/serial.c CONFIG_MAN_SERIAL_S)
 add_source_with_define(LIBX_P ${PATH_UKOS}/OS/Lib_serials/urt0/urt0.c CONFIG_MAN_URT0_S)
 list(APPEND LIBX_P
+    ${PATH_BASE}/Lib_cryptographics/random/stub_random.c
     ${PATH_BASE}/Lib_generics/asmp/stub_asmp_dbell.c
     ${PATH_BASE}/Lib_generics/machine/stub_machine.c
     ${PATH_BASE}/Lib_peripherals/led/stub_led.c
@@ -237,6 +239,7 @@ list(APPEND CLI_U
     ${PATH_UKOS}/OS/CLI/object/object.c
     ${PATH_UKOS}/OS/CLI/process/process.c
     ${PATH_UKOS}/OS/CLI/restart/restart.c
+    ${PATH_UKOS}/OS/CLI/rnd/rnd.c
     ${PATH_UKOS}/OS/CLI/run/run.c
     ${PATH_UKOS}/OS/CLI/semaphore/semaphore.c
     ${PATH_UKOS}/OS/CLI/sloader/sloader.c

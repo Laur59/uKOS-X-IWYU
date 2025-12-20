@@ -126,10 +126,10 @@ if(DEFINED SYSTEM_INSTALL_DIR)
     message(STATUS "Using installed system from: ${SYSTEM_INSTALL_DIR_ABS}")
 else()
     # Default: use source tree paths
-    set(SYSTEM_CNF_PATH "${PATH_VARI}/System/FLASH.cnf")
-    set(SYSTEM_CK_PATH "${PATH_VARI}/System/FLASH.ck")
-    set(SYSTEM_ELF_PATH "${PATH_VARI}/System/FLASH.elf")
-    set(SYSTEM_INCLUDE_DIR "${PATH_VARI}/System")
+    set(SYSTEM_CNF_PATH "${PATH_VARI}/Artefacts/FLASH.cnf")
+    set(SYSTEM_CK_PATH "${PATH_VARI}/Artefacts/FLASH.ck")
+    set(SYSTEM_ELF_PATH "${PATH_VARI}/Artefacts/FLASH.elf")
+    set(SYSTEM_INCLUDE_DIR "${PATH_VARI}/Artefacts")
 endif()
 
 # Sources

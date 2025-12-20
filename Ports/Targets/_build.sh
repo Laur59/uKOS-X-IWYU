@@ -67,7 +67,7 @@ readonly NC='\033[0m' # No Color
 
 # Defaults
 
-COMPILER_TOOL="gcc"
+COMPILER_TOOL="LLVM clang"
 VERBOSITY=""
 CANARY_MODE="ON"
 USER_MODE="ON"
@@ -97,7 +97,7 @@ usage() {
 Usage: ./_build_cmake.sh [-L] [-U] [-Y] [-v|-w]
 
 Options:
-  -L  Use LLVM/clang compiler
+  -G  Use gcc compiler
   -U  Privileged mode only
   -Y  Disable canary stack protection
   -v  Verbose: display warnings and errors
@@ -106,15 +106,15 @@ Options:
 EOF
 }
 
-readonly OPTSTRING=":LUYvwh"
+readonly OPTSTRING=":GUYvwh"
 while getopts "${OPTSTRING}" option; do
     case "${option}" in
         h)
             usage
             exit 0
             ;;
-        L)
-            COMPILER_TOOL="LLVM clang"
+        G)
+            COMPILER_TOOL="gcc"
             ;;
         U)
             USER_MODE="OFF"

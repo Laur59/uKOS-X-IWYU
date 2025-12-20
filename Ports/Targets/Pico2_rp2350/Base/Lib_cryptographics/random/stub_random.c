@@ -1,27 +1,18 @@
 /*
-; model_random_soft.
-; ==================
+; stub_random.
+; ============
+
+; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
 ; Author:	Edo. Franzi		The 2025-01-01
 ; Modifs:
 ;
 ; Project:	uKOS-X
-; Goal:		Model for generating pseudo random numbers.
-;			The generator is implemented using on a
-;			linear congruential generator (LCG)
+; Goal:		stub for the "random" manager module.
 ;
-;			X[n + 1] = (Ka * X[n] + Kc) * mod(Km)
-;
-;			For the BSD formula
-;			Ka = 1103515245
-;			Kc = 12345
-;			X0: use the crt0_randomSeed initial seed
-;
-;			See wikipedia "Linear congruential generator"
-;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-20xx, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -57,50 +48,43 @@
 
 #include	<stdint.h>
 
-#include	"Registers/soc_vectors.h"
-#include	"macros_soc.h"
-#include	"macros_core.h"
-#include	"core.h"
+#include	"os_errors.h"
+#include	"random/random.h"
 
-// !!! Only positive constants
+// Prototypes
 
-#define	Ka	1103515245U
-#define	Kc	12345U
-#define	Km	KRAND_MAX
-
-extern	uint32_t	vCrt0_randomSeed;
-static	uint32_t	vSeed[KNB_CORES] = MCSET(0u);
+void	model_random_soft_init(void);
+void	model_random_soft_read(uint32_t *number);
+void	model_random_hard_init(void);
+void	model_random_hard_read(uint32_t *number);
 
 /*
- * \brief model_random_soft_init
+ * \brief stub_random_init
  *
- * - Initialise the seed
+ * - Initialise some specific CPU parts
  *
  */
-void	model_random_soft_init(void) {
-	uint32_t	core;
+void	stub_random_init(void) {
 
-	core = GET_RUNNING_CORE;
-
-	vSeed[core] = vCrt0_randomSeed;
+	model_random_soft_init();
+	model_random_hard_init();
 }
 
 /*
- * \brief model_random_soft_read
+ * \brief stub_rand_read
  *
- * - Read a pseudo random number
+ * - Return the random number
  *
  */
-void	model_random_soft_read(uint32_t *number) {
-	uint32_t	core;
+int32_t	stub_rand_read(randomGenerator_t generator, uint32_t *number) {
 
-	core = GET_RUNNING_CORE;
-
-// X[n + 1] = (Ka * X[n] + Kc) * mod(Km)
-// With X[n] = vSeed
-
-	INTERRUPTION_OFF;
-	vSeed[core] = ((Ka * vSeed[core]) + Kc) % Km;
-	*number = vSeed[core];
-	INTERRUPTION_RESTORE;
+	if (generator == KRANDOM_SOFT) { model_random_soft_read(number); return (KERR_RANDOM_NOERR); }
+	if (generator == KRANDOM_HARD) { model_random_hard_read(number); return (KERR_RANDOM_NOERR); }
+	return (KERR_RANDOM_GEERR);
 }
+
+// Local routines
+// ==============
+
+#include	"model_random_soft.c_inc"
+#include	"model_random_hard.c_inc"

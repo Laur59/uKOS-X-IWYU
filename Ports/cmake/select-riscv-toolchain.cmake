@@ -47,7 +47,7 @@
 # Get the parent directory of the current file
 cmake_path(GET CMAKE_CURRENT_LIST_FILE PARENT_PATH mkfiles_cmake_path)
 
-option(USE_LLVM "Selection of toolchain" OFF)
+option(USE_LLVM "Selection of toolchain" ON)
 if(${USE_LLVM})
     set(COMPILER_FAMILY llvm)
     set(PREFIX llvm-)

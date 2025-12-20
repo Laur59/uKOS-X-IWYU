@@ -141,11 +141,10 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 		led_toggle(KLED_0);
 
 		kern_readTickCount(&time[0]);
-		Pi = Pi + (1.0 / pow(16, n)) *
-			 	 ((4.0 / ((8.0 * n) + 1.0))  -
-	   			  (2.0 / ((8.0 * n) + 4.0))  -
-	    		  (1.0 / ((8.0 * n) + 5.0))  -
-				  (1.0 / ((8.0 * n) + 6.0)));
+		Pi = Pi + ((1.0 / pow(16, n)) * ((4.0 / ((8.0 * n) + 1.0)))
+	   			- (2.0 / ((8.0 * n) + 4.0))
+	    		- (1.0 / ((8.0 * n) + 5.0))
+				- (1.0 / ((8.0 * n) + 6.0)));
 
 		kern_readTickCount(&time[1]);
 		delta = (uint32_t)(time[1] - time[0]);
@@ -177,12 +176,17 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 // Waiting for 4 integers
 // If we enter garbage, the length will be 0 and we need to empty the buffer
 
+// NOLINTBEGIN(cert-err34-c)
+//
 		if (scanf("%"PRId32" %"PRId32" %"PRId32" %"PRId32"", &a, &b, &c, &d) != 4) {
-			while (getchar() != '\n');
+			while (getchar() != '\n') { ; }
 		}
 		else {
 			(void)dprintf(KURT1, "a = %"PRId32", b = %"PRId32", c = %"PRId32", d = %"PRId32"\n", a, b, c, d);
 		}
+
+// NOLINTEND(cert-err34-c)
+//
 	}
 }
 

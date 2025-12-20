@@ -130,7 +130,7 @@ target_link_libraries(rtcb_p PUBLIC system_compiler_flags)
 
 # uKernel components (privileged) -> libkern_p.a
 list(APPEND KERN_P
-    ${PATH_UKOS}/OS/Lib_kernels/kern/debug_list.c
+    ${PATH_UKOS}/OS/Lib_kernels/kern/debug.c
     ${PATH_UKOS}/OS/Lib_kernels/kern/identifier.c
     ${PATH_UKOS}/OS/Lib_kernels/kern/kern.c
     ${PATH_UKOS}/OS/Lib_kernels/kern/lists.c

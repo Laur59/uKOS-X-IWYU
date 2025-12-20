@@ -60,5 +60,5 @@ const	uKOS_header_t	appHeader = {
 							KMEMU,
 							aStart,
 							(uintptr_t)&_lnApplication,
-							(uKOS_module_t *)&aUserAppl_Specifications
+							&aUserAppl_Specifications
 						};

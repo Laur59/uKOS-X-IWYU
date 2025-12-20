@@ -192,5 +192,5 @@ int32_t	kern_reactivateProcess(proc_t *handle) {
 	return (KERR_KERN_NOERR);
 }
 #else
-#error	"KKERN_WITH_DEBUG_S SHALL be defined in project using kern/debug_list.c"
+#error	"KKERN_WITH_DEBUG_S SHALL be defined in project using kern/debug.c"
 #endif

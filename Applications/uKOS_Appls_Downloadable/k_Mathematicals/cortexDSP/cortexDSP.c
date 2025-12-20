@@ -166,11 +166,12 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 
 // Compute the vector rows & cols
 
-		for (i = 0U; i < 10U; i++)
+		for (i = 0U; i < 10U; i++) {
 			for (j = 0U; j < 10U; j++) {
 				local_cumulate32(&projections_x[i], image[i][j], 1);
 				local_cumulate32(&projections_y[i], image[j][i], 1);
 			}
+		}
 
 		(void)dprintf(KSYST, "\nRows\n\n");
 		for (i = 0U; i < 10U; i++) {
@@ -290,6 +291,8 @@ int		main(int argc, const char *argv[]) {
  *   - value.32 = value.32 + (a.16 * b.16)
  *
  */
+// NOLINTBEGIN(readability-non-const-parameter)
+//
 __attribute__ ((always_inline)) static __inline void local_cumulate32(int32_t *value, int16_t a, int16_t b) {
 
 	__asm volatile ("smlabb %0, %1, %2, %3" : "=r" (*value) : "r" (a), "r" (b), "r" (*value));
@@ -310,3 +313,6 @@ __attribute__ ((always_inline)) static __inline void local_cumulate64(int64_t *v
 	__asm volatile ("smlal %0, %1, %2, %3" : "=r" (l), "=r" (h) : "r" (a), "r" (b), "0" (l), "1" (h));
 	*value = (int64_t)(((uint64_t)h<<32U) | l);
 }
+
+// NOLINTEND(readability-non-const-parameter)
+//

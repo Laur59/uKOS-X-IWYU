@@ -16,13 +16,16 @@
       "cacheVariables": {
         "USER_MODE": "ON",
         "CANARY": "ON",
-        "USE_LLVM": "OFF"
+        "USE_LLVM": "ON"
       }
     },
     {
       "name": "gcc",
       "inherits": "base",
-      "description": "GCC toolchain, user mode ON, stack protection ON"
+      "description": "GCC toolchain, user mode ON, stack protection ON",
+      "cacheVariables": {
+        "USE_LLVM": "OFF"
+      }
     },
     {
       "name": "llvm",
@@ -37,6 +40,7 @@
       "inherits": "base",
       "description": "GCC toolchain, user mode ON, stack protection OFF",
       "cacheVariables": {
+        "USE_LLVM": "OFF",
         "CANARY": "OFF"
       }
     },
@@ -45,6 +49,7 @@
       "inherits": "base",
       "description": "GCC toolchain, user mode OFF, stack protection ON",
       "cacheVariables": {
+        "USE_LLVM": "OFF",
         "USER_MODE": "OFF"
       }
     },
@@ -53,6 +58,7 @@
       "inherits": "base",
       "description": "GCC toolchain, user mode OFF, stack protection OFF",
       "cacheVariables": {
+        "USE_LLVM": "OFF",
         "USER_MODE": "OFF",
         "CANARY": "OFF"
       }

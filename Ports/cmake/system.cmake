@@ -144,7 +144,6 @@ target_include_directories(system_compiler_flags INTERFACE
     ${PATH_UKOS}/OS/Daemons
     ${PATH_UKOS}/OS/CLI
     ${PATH_VARI}/Shared
-    ${PATH_VARI}/System
     ${PATH_VARI}/Runtime
     ${PATH_BASE}/Runtime
     ${PATH_VARI}/Includes/System

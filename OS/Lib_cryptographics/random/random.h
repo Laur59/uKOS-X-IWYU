@@ -70,6 +70,8 @@ typedef	enum {
 			KRANDOM_HARD										// Hardware generator
 } randomGenerator_t;
 
+#define	KRAND_MAX	((1U<<31U) - 1)								// RAND_MAX for 32 bit generator
+
 #ifdef __cplusplus
 extern	"C" {
 #endif

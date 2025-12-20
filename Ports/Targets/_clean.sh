@@ -86,8 +86,7 @@ printf "%bCleaning all the systems ...%b\n" "${BOLD}" "${NC}"
 # Parse YAML and iterate through all build targets
 while IFS=$'\t' read -r family variant_name; do
     printf "."
-    cd "${PATH_PRG}/${family}/Variant_${variant_name}/System"
-    rm -f *.a *.d *.o *.lst *.dis *.map *.elf *.bin *.sig *.s3 *.hex version.h *.su *.nosig.* *.stack *.ck *.sig kernel_config.h ozone_config.jdebug.user *.cnf
-    rm -fr ../build
+    cd "${PATH_PRG}/${family}/Variant_${variant_name}"
+    rm -fr build Artefacts
 done < <(parse_variants_yaml)
 printf "\n%bTerminated!%b\n" "${BOLD}" "${NC}"

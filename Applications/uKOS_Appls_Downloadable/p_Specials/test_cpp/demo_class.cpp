@@ -53,15 +53,15 @@
 
 // Constructor implementation
 TestClass::TestClass() {
-	dprintf(KSYST, "Construction\n");
+	(void)dprintf(KSYST, "Construction\n");
 }
 
 // Destructor implementation
 TestClass::~TestClass() {
-	dprintf(KSYST, "Destruction\n");
+	(void)dprintf(KSYST, "Destruction\n");
 }
 
 // doit method implementation
-void TestClass::doit() {
-	dprintf(KSYST, "in the middle\n");
+void TestClass::doit() const {
+	(void)dprintf(KSYST, "in the middle\n");
 } 

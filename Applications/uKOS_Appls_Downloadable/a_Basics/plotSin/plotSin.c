@@ -81,6 +81,7 @@
 #include	"led/led.h"
 #include	"modules.h"
 #include	"os_errors.h"
+#include	"random/random.h"
 #include	"record/record.h"
 #include	"types.h"
 
@@ -136,6 +137,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 	UNUSED(argument);
 
 	uint16_t	x;
+	uint32_t	random;
 	float64_t	y;
 	uint32_t ledDecimationCounter = 0;
 
@@ -151,7 +153,9 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 // Scale the final signal
 
 			y = KAMPLITUDE_BASIC * sin(x * M_PI / 180.0);
-			y = y + (((float64_t)rand() / RAND_MAX) - 0.5) * KAMPLITUDE_NOISE;
+
+			random_read(KRANDOM_SOFT, &random, 1u);
+			y = y + ((((float64_t)random / KRAND_MAX) - 0.5) * KAMPLITUDE_NOISE);
 			y = KAMPLITUDE_FINAL * y;
 
 // Print the data using the Arduino format in CoolTerm2
