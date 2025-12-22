@@ -95,9 +95,9 @@ MODULE(
 
 class  TestClass {
 public:
-	TestClass()	: counter_(0)	{ (void)dprintf(KSYST, "Construction\n");  }
-	~TestClass()				{ (void)dprintf(KSYST, "Destruction\n");   }
-	void doit()	const			{ (void)dprintf(KSYST, "in the middle\n"); }
+	TestClass()	: counter_(0)	{ (void)dprintf(KSYST, "Construction\n");									 }
+	~TestClass()				{ (void)dprintf(KSYST, "Destruction\n");									 }
+	void doit()	const			{ (void)dprintf(KSYST, "in the middle (counter = %" PRIu32 ")\n", counter_); }
 
 private:
 	uint32_t	counter_;

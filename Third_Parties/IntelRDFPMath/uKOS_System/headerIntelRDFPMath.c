@@ -1,15 +1,16 @@
 /*
-; uKOS.
-; =====
+; headerIntelRDFPMath.
+; ====================
 
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi			The 2025-01-01
-; Modifs:   Laurent von Allmen	The 2025-01-01
+; Author:	Edo. Franzi		The 2025-01-01
+; Modifs:
 ;
 ; Project:	uKOS-X
-; Goal:		Universal h file for uKOS-X systems.
+; Goal:		header for IntelRDFPMath library.
+;			uKOS-X interface for IntelRDFPMath.
 ;
 ;   (c) 2025-20xx, Edo. Franzi
 ;   --------------------------
@@ -46,48 +47,32 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
-
-// IWYU pragma: begin_exports
-
-#include	<stdio.h>
-#include	<string.h>
-#include	<stdlib.h>
-#include	<inttypes.h>
-
-#include	"types.h"
-#include	"os_errors.h"
-#include	"board.h"
-#include	"clockTree.h"
-#include	"ip.h"
-#include	"core_reg.h"
-#include	"soc_reg.h"
-#include	"syscallDispatcher.h"
 #include	"macros.h"
-#include	"macros_soc.h"
-#include	"macros_core.h"
-#include	"macros_runtime.h"
-#include	"core.h"
+#include	"types.h"
 #include	"modules.h"
-#include	"crt0.h"
-#include	"spin.h"
-#include	"lib_kernels.h"
-#include	"lib_generics.h"
-#include	"lib_serials.h"
-#include	"lib_peripherals.h"
-#include	"lib_neurals.h"
-#include	"lib_cryptographics.h"
-#include	"lib_storages.h"
-#include	"debug.h"
+#include	"ip.h"
 
-// IWYU pragma: end_exports
+// uKOS-X specific (see the module.h)
+// ==================================
 
-// uKOS-X main constants
-// -----------------------
+// ----------------------------------I------------I-----------------------------------------I--------------I
 
-#define	uKOS_VERSION_OS			10
-#define	uKOS_VERSION_NUMBER		"0.1.211"
-#define	uKOS_VERSION_MAJOR		0
-#define	uKOS_VERSION_MINOR		1
-#define	uKOS_VERSION_PATCH		211
-#define	uKOS_VERSION			uKOS_VERSION_NUMBER " " STRG(uKOS_NAME) "\n" STRG(uKOS_OWNER)
+STRG_LOC_CONST(aStrApplication[]) =	"IntelRDFP    Third party IntelRDFPMath library.        (c) EFr-2025";
+STRG_LOC_CONST(aStrHelp[])		  = "IntelRDFPMath library\n"
+									"=====================\n\n"
+
+									"This library ...\n\n"
+
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+
+MODULE(
+	HeaderIntelRDFPMath,			// Module name (the first letter has to be upper case)
+	KID_FAM_THIRD_PARTIES,			// Family (defined in the module.h)
+	KNUM_INTEL_RDF_MATH,			// Module identifier (defined in the module.h)
+	NULL,							// Address of the initialisation code (early pre-init)
+	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+	NULL,							// Address of the clean code (clean the module)
+	" 1.0",							// Revision string (major . minor)
+	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+	0								// Execution cores
+);

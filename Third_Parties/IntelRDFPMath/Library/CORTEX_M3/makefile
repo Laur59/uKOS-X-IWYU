@@ -8,7 +8,7 @@
 # Modifs:
 #
 # Project:	uKOS-X
-# Goal:		makefile for uKOS-X for building the libFatFs.a module.
+# Goal:		makefile for uKOS-X for building the libIntelRDFPMath.a module.
 #
 #   (c) 2025-20xx, Edo. Franzi
 #   --------------------------
@@ -61,17 +61,17 @@ endif
 
 # Project paths
 
-# - PATH_UKOS		--> Main uKOS-X folder			--> OS_Kernel-X
-# - PATH_PORT		--> Main uKOS-X port folders	--> OS_Kernel-X/Ports
-# - PATH_FATFS		--> FatFs package
+# - PATH_UKOS			--> Main uKOS-X folder			--> OS_Kernel-X
+# - PATH_PORT			--> Main uKOS-X port folders	--> OS_Kernel-X/Ports
+# - PATH_INTELRDFPMATH	--> IntelRDFPMath package
 
 PATH_UKOS			=  $(PATH_UKOS_X_PACKAGE)
-PATH_FATFS			=  $(PATH_UKOS)/Third_Parties/FatFs
+PATH_INTELRDFPMATH	=  $(PATH_UKOS)/Third_Parties/IntelRDFPMath
 
 # Target & Infrastructure
 
 CORE				=  CORTEX_M3
-FATFS				=  libFatFs.a
+INTELRDFPMATH		=  libIntelRDFPMath.a
 
 STANDARD			=  -std=c2x
 OPTIMISATION		=  -Os
@@ -84,6 +84,6 @@ FLAGS_UKOS			=  -DTHIRD_PARTY_S -DLITTLE_ENDIAN_S -DSECURE_S
 
 # The included makefiles
 
-include	$(PATH_FATFS)/Library/Mkfiles/FatFs.mk
+include	$(PATH_INTELRDFPMATH)/Library/Mkfiles/IntelRDFPMathLib.mk
 -include $(wildcard *.d)
 .PHONY : all clr_all clr build archive

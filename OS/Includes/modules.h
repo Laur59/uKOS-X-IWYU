@@ -337,7 +337,8 @@ enum {
 			KNUM_MICROPYTHON	   = (((uint32_t)'0'<<8) + (uint32_t)'1'),									// mpyt (micropython)library
 			KNUM_TFLITE			   = (((uint32_t)'0'<<8) + (uint32_t)'2'),									// tensorflow lite library
 			KNUM_TINYUSB		   = (((uint32_t)'0'<<8) + (uint32_t)'3'),									// tinyusb library
-			KNUM_LVGL			   = (((uint32_t)'0'<<8) + (uint32_t)'4')									// lvgl library
+			KNUM_LVGL			   = (((uint32_t)'0'<<8) + (uint32_t)'4'),									// lvgl library
+			KNUM_INTEL_RDF_MATH	   = (((uint32_t)'0'<<8) + (uint32_t)'5')									// IntelRDFMath library
 };
 
 #if (defined(__cplusplus))

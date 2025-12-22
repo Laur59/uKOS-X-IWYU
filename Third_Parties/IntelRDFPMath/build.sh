@@ -10,7 +10,7 @@
 # Modifs:
 #
 # Project:	uKOS-X
-# Goal:		Build the TinyUSB package
+# Goal:		Build the IntelRDFPMath package
 #
 #   (c) 2025-20xx, Edo. Franzi
 #   --------------------------
@@ -47,7 +47,6 @@
 #------------------------------------------------------------------------
 
 set -euo pipefail
-setopt KSH_ARRAYS  # Use 0-indexed arrays like bash
 
 if [[ -z "${PATH_UKOS_X_PACKAGE:-}" ]]; then
 	echo "Variable PATH_UKOS_X_PACKAGE is not set!"
@@ -67,7 +66,7 @@ readonly NC='\033[0m' # No Color
 
 readonly splash="
 ╔════════════════════════════════════════════════════════════╗
-║               TinyUSB Package Build System                 ║
+║            IntelRDFPMath Package Build System              ║
 ║      Fetching upstream + Building all architectures        ║
 ╚════════════════════════════════════════════════════════════╝
 "
@@ -76,77 +75,57 @@ printf '%b%s%b' "${GREEN}" "$splash" "${NC}"
 # Packages
 # --------
 
-readonly package=0.20.0
-readonly hash=b209b17
+readonly  package=2.3
+readonly  hash=ffca6d2
 
 export PATH="${PATH_GCC_ARM}/bin":"${PATH}"
 printf '%b%s%b\n' "${YELLOW}" "$(arm-none-eabi-gcc --version)" "${NC}"
 
+arm-none-eabi-gcc --version
+
 # Clone the right package
 
-printf '\n%bDownload the TinyUSB package ...%b\n\n' "${BOLD}" "${NC}"
+printf '\n%bDownload the IntelRDFPMath package ...%b\n\n' "${BOLD}" "${NC}"
 
-cd "${PATH_UKOS_X_PACKAGE}"/Third_Parties/TinyUSB
-rm -rf "${PATH_UKOS_X_PACKAGE}"/Third_Parties/TinyUSB/TinyUSB-"${package}"
-git clone https://github.com/hathach/tinyusb TinyUSB-"${package}"
-cd TinyUSB-"${package}"
-git submodule update --init lib
-git checkout "${hash}"
+cd "${PATH_UKOS_X_PACKAGE}"/Third_Parties/IntelRDFPMath
+rm -rf "${PATH_UKOS_X_PACKAGE}"/Third_Parties/IntelRDFPMath/IntelRDFPMath-"${package}"
+git clone https://github.com/xmake-mirror/IntelRDFPMathLib IntelRDFPMath-"${package}"
+cd IntelRDFPMath-"${package}"
+git checkout ${hash}
 
 # Update path links
 
 cd ..
-rm -f TinyUSB-current
-ln -s TinyUSB-"${package}" TinyUSB-current
+rm -f IntelRDFPMath-current
+ln -s IntelRDFPMath-"${package}" IntelRDFPMath-current
 
-# Clone the pico-sdk package
-
-printf '\n%bDownload the pico-sdk package ...%b\n\n' "${BOLD}" "${NC}"
-
-cd TinyUSB-"${package}"/lib
-git clone https://github.com/raspberrypi/pico-sdk.git
-cd pico-sdk
-git submodule update --init --recursive
-
-cd ../../..
-
-# Parse core.yaml file using yq
-parse_core_yaml() {
-	local yaml_file="core.yaml"
-
-	# Parse YAML: iterate through families, SOCs, and profiles
-	# Output format: family \t dependency \t soc \t profile
-	yq eval 'to_entries[] | .key as $family | .value[] | .dependency as $dep | .soc as $soc | .profiles[] | "\($family)\t\($dep)\t\($soc)\t\(.)"' "${yaml_file}"
+build_core() {
+	cd "${PATH_UKOS_X_PACKAGE}"/Third_Parties/IntelRDFPMath/Library/"${1}"
+	echo "Start of building: $(date)" > libIntelRDFPMath_temp.log
+	make -j all
+	echo "End of building: $(date)" >> libIntelRDFPMath_temp.log
+	mv libIntelRDFPMath_temp.log libIntelRDFPMath_ready.txt
 }
 
-printf '\n%bBuilding all the TinyUSB libraries ...%b\n' "${BOLD}" "${NC}"
+printf '\n%bBuilding for cortex M3! ...%b\n' "${BOLD}" "${NC}"
+build_core CORTEX_M3
 
-# Track the current SOC to avoid running get-deps multiple times for the same SOC
-prev_soc=""
+printf '\n%bBuilding for cortex M4! ...%b\n' "${BOLD}" "${NC}"
+build_core CORTEX_M4
 
-# Parse YAML and iterate through all build targets
-while IFS=$'\t' read -r family dependency soc profile; do
+printf '\n%bBuilding for cortex M7! ...%b\n' "${BOLD}" "${NC}"
+build_core CORTEX_M7
 
-	# Load the dependencies (run get-deps only once per SOC)
-	if [[ "${soc}" != "${prev_soc}" ]]; then
-		if [[ "${dependency}" != "null" ]]; then
-			cd "${PATH_UKOS_X_PACKAGE}"/Third_Parties/TinyUSB/TinyUSB-current/examples/device/cdc_dual_ports
-			make BOARD="${dependency}" get-deps
-		fi
-		prev_soc="${soc}"
-	fi
+printf '\n%bBuilding for cortex M33! ...%b\n' "${BOLD}" "${NC}"
+build_core CORTEX_M33
 
-	# Build a specific profile library
-	printf '\n%bBuild for the soc %s profile %s ...%b\n' "${BOLD}" "${soc}" "${profile}" "${NC}"
+printf '\n%bBuilding for cortex M55! ...%b\n' "${BOLD}" "${NC}"
+build_core CORTEX_M55
 
-	cd "${PATH_UKOS_X_PACKAGE}"/Third_Parties/TinyUSB
-	CURRENT_PROFILE=Library/Family/"${family}"/"${soc}"/"${profile}"
+printf '\n%bBuilding for RV32IMAC! ...%b\n' "${BOLD}" "${NC}"
+build_core RV32IMAC
 
-	cd "${CURRENT_PROFILE}"
-	echo "Start of building: $(date)" > libTinyUSB_temp.log
-	make -j all
-	echo "End of building: $(date)" >> libTinyUSB_temp.log
-	mv libTinyUSB_temp.log libTinyUSB_ready.txt
-done < <(parse_core_yaml)
+printf '\n%bBuilding for RV64IMAFDC! ...%b\n' "${BOLD}" "${NC}"
+build_core RV64IMAFDC
 
 printf '\n🎉 %bBuild Complete%b\n\n' "${GREEN}" "${NC}"

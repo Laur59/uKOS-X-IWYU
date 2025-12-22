@@ -8,7 +8,7 @@
 # Modifs:
 #
 # Project:	uKOS-X
-# Goal:		makefile for uKOS-X for building the libFatFs.a module.
+# Goal:		makefile for uKOS-X for building the libIntelRDFPMath.a module.
 #
 #   (c) 2025-20xx, Edo. Franzi
 #   --------------------------
@@ -49,8 +49,8 @@ SHELL			=  /bin/sh
 ifndef PATH_UKOS_X_PACKAGE
     $(error PATH_UKOS_X_PACKAGE is not defined)
 endif
-ifndef PATH_GCC_ARM
-    $(error PATH_GCC_ARM is not defined)
+ifndef PATH_GCC_RVXX
+    $(error PATH_GCC_RVXX is not defined)
 endif
 
 ifeq ($(origin CC), default)
@@ -61,29 +61,29 @@ endif
 
 # Project paths
 
-# - PATH_UKOS		--> Main uKOS-X folder			--> OS_Kernel-X
-# - PATH_PORT		--> Main uKOS-X port folders	--> OS_Kernel-X/Ports
-# - PATH_FATFS		--> FatFs package
+# - PATH_UKOS			--> Main uKOS-X folder			--> OS_Kernel-X
+# - PATH_PORT			--> Main uKOS-X port folders	--> OS_Kernel-X/Ports
+# - PATH_INTELRDFPMATH	--> IntelRDFPMath package
 
 PATH_UKOS			=  $(PATH_UKOS_X_PACKAGE)
-PATH_FATFS			=  $(PATH_UKOS)/Third_Parties/FatFs
+PATH_INTELRDFPMATH	=  $(PATH_UKOS)/Third_Parties/IntelRDFPMath
 
 # Target & Infrastructure
 
-CORE				=  CORTEX_M3
-FATFS				=  libFatFs.a
+CORE				=  RV64IMAFDC
+INTELRDFPMATH		=  libIntelRDFPMath.a
 
 STANDARD			=  -std=c2x
 OPTIMISATION		=  -Os
 
-PREFIX				?= arm-none-eabi-
-PATH_COMPILER		=  $(PATH_GCC_ARM)
-FLAGS_FP			=  -mfloat-abi=soft
-CPU_SPEC			=  -mcpu=cortex-m3
+PREFIX				?= riscv64-unknown-elf-
+PATH_COMPILER		=  $(PATH_GCC_RVXX)
+FLAGS_FP			=  -mabi=lp64d
+CPU_SPEC			=  -march=rv64imafdc_zicsr_zifencei -mcmodel=medany
 FLAGS_UKOS			=  -DTHIRD_PARTY_S -DLITTLE_ENDIAN_S -DSECURE_S
 
 # The included makefiles
 
-include	$(PATH_FATFS)/Library/Mkfiles/FatFs.mk
+include	$(PATH_INTELRDFPMATH)/Library/Mkfiles/IntelRDFPMathLib.mk
 -include $(wildcard *.d)
 .PHONY : all clr_all clr build archive

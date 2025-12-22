@@ -117,7 +117,7 @@ export BIN_VER=2.45.1
 export GCC_ARM_VER=15.2.0
 export GCC_RVXX_VER=15.2.0
 export NLB_VER=4.5.0
-export GDB_VER=16.3
+export GDB_VER=17.1
 export LLVM_ARM_VER=21.1.8
 export LLVM_ARM_COMMIT=fc180f47
 export LLVM_RVXX_VER=21.1.8
@@ -133,7 +133,7 @@ export LIBCONFUSE_VER=3.3
 export DFUUTIL_VER=1.1
 export LIBJAYLINK_VER=0.4.0
 export DOXYGEN_VER=1.15.0
-export GRAPHVIZ_VER=14.1.0
+export GRAPHVIZ_VER=14.1.1
 export CPPCHECK_VER=2.18.3
 
 # Goodies
