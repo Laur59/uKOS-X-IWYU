@@ -59,6 +59,13 @@ PATH_INCLUDES		+= -I$(PATH_INTELRDFPMATH)/uKOS_System
 SRC					=   $(PATH_INTELRDFPMATH)/uKOS_System/headerIntelRDFPMath.c
 SRC					+=  $(shell find $(PATH_INTELRDFPMATH)/IntelRDFPMath-current/LIBRARY/src -name 'bid32_*.c')
 SRC					+=  $(shell find $(PATH_INTELRDFPMATH)/IntelRDFPMath-current/LIBRARY/src -name 'bid64_*.c')
+SRC					+=  $(shell find $(PATH_INTELRDFPMATH)/IntelRDFPMath-current/LIBRARY/src -name 'bid_*.c')
+SRC					+=				 $(PATH_INTELRDFPMATH)/IntelRDFPMath-current/LIBRARY/src/bid128_2_str_tables.c
+SRC					+=				 $(PATH_INTELRDFPMATH)/IntelRDFPMath-current/LIBRARY/src/strtod32.c
+SRC					+=				 $(PATH_INTELRDFPMATH)/IntelRDFPMath-current/LIBRARY/src/strtod64.c
+SRC					+=				 $(PATH_INTELRDFPMATH)/IntelRDFPMath-current/LIBRARY/src/wcstod32.c
+SRC					+=				 $(PATH_INTELRDFPMATH)/IntelRDFPMath-current/LIBRARY/src/wcstod64.c
+
 OBJ					=   $(patsubst %.c,%.o,$(SRC))
 
 CFLAGS				+= -c -g3 $(OPTIMISATION)
@@ -88,6 +95,8 @@ CFLAGS				+= -Wno-misleading-indentation
 CFLAGS				+= -Wno-overflow
 CFLAGS				+= -Wno-unused-variable
 CFLAGS				+= -Wno-unused-but-set-variable
+CFLAGS				+= -Wno-uninitialized
+CFLAGS				+= -Wno-char-subscripts
 
 ifneq ($(PREFIX),llvm-)
 ifneq (,$(filter $(CORE),CORTEX_M3 CORTEX_M4 CORTEX_M7 CORTEX_M33 CORTEX_M55))
