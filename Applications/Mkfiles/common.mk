@@ -48,10 +48,6 @@ SHELL			=  /bin/sh
 
 PATH_UKOS_X_PACKAGE	?= $(abspath ../../../../..)
 
-ifndef PATH_UKOS_X_PACKAGE
-$(error PATH_UKOS_X_PACKAGE is not defined)
-endif
-
 # Project paths
 
 # - PATH_MKFILE	--> User makefile location	--> MyProjects/Project/Targets/makefile
