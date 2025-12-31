@@ -48,6 +48,10 @@
 
 #pragma	once
 
+#ifndef Nucleo_H743_S
+#define	Nucleo_H743_S
+#endif
+
 #include	"soc_reg.h"
 
 // System identifiers

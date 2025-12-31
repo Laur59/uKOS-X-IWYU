@@ -14,8 +14,8 @@
 #           Shared template to build FatFs static library for a given core
 #           Requires: CORE_NAME to be defined before including this file
 #
-#   © 2025-2026, Laurent von Allmen
-#   -------------------------------
+#   Copyright 2025-2026, Laurent von Allmen
+#   ---------------------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -86,7 +86,7 @@ target_include_directories(${TARGET_LIB} PRIVATE
 
 # Build OPTS_UKOS as a proper list
 list(APPEND OPTS_UKOS
-    -std=c2x
+    -std=c23
     ${CPU_SPEC}
     ${FLAGS_FP}
     -g3

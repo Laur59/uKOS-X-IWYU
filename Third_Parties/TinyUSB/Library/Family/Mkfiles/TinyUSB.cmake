@@ -10,8 +10,8 @@
 # Project:  uKOS-X
 # Goal:     CMake module to build TinyUSB libraries
 #
-#   © 2025-2026, Laurent von Allmen
-#   -------------------------------
+#   Copyright 2025-2026, Laurent von Allmen
+#   ---------------------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -295,7 +295,7 @@ function(add_tinyusb_libraries)
     list(APPEND OPTS_UKOS
         ${CPU_SPEC_LIST}
         ${FLAGS_FP_LIST}
-        -std=c2x
+        -std=c23
         -g3 -Wall -Wno-pedantic -Wlogical-op
         -fsingle-precision-constant
         -Wno-error=undef -Wno-error=unused-parameter

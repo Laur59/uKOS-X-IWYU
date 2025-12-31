@@ -16,7 +16,7 @@
 ;			mode = bytearray(1)
 ;			status = switch.mode(mode)
 ;
-;   © 2025-2026, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   ------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/

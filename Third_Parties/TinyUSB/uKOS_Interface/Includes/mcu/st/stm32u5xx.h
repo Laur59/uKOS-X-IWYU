@@ -12,8 +12,8 @@
 ; Goal:		Import the uKOS definition (specially mcu) to provide
 ;			the file stm32u5xx.h.
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-20xx, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \

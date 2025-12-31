@@ -12,8 +12,8 @@
 # Project:	uKOS-X
 # Goal:		Build the Doxygen-awesome package
 #
-#   © 2025-2026, Edo. Franzi
-#   ------------------------
+#   (c) 2025-20xx, Edo. Franzi
+#   --------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,10 +48,10 @@
 
 set -euo pipefail
 
-# Determine script directory (works if executed via ./script.sh or zsh script.sh)
-
-readonly PATH_PRG="${0:a:h}"
-
+if [[ -z "${PATH_UKOS_X_PACKAGE:-}" ]]; then
+	echo "Variable PATH_UKOS_X_PACKAGE is not set!"
+	exit 1
+fi
 
 # Colours for messages
 
@@ -70,7 +70,7 @@ readonly splash="
 ║      Fetching upstream + Building all the project          ║
 ╚════════════════════════════════════════════════════════════╝
 "
-printf '%b%s%b' "${BLUE}" "$splash" "${NC}"
+printf '%b%s%b' "${GREEN}" "$splash" "${NC}"
 
 # Packages
 # --------
@@ -79,9 +79,9 @@ readonly package=2.4.1
 
 # Clone the right package
 
-cd ${PATH_PRG}
-rm -rf ${PATH_PRG}/Doxygen-awesome-${package}
-git clone https://github.com/jothepro/doxygen-awesome-css.git Doxygen-awesome-${package} -b v${package}
+cd "${PATH_UKOS_X_PACKAGE}"/Third_Parties/Doxygen-awesome
+rm -rf "${PATH_UKOS_X_PACKAGE}"/Third_Parties/Doxygen-awesome/Doxygen-awesome-"${package}"
+git clone https://github.com/jothepro/doxygen-awesome-css.git Doxygen-awesome-"${package}" -b v"${package}"
 
 # Update path links
 

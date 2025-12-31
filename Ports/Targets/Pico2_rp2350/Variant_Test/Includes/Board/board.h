@@ -54,6 +54,10 @@
 #  pragma clang diagnostic ignored "-Wempty-translation-unit"
 #endif
 
+#ifndef Pico2_rp2350_S
+#define	Pico2_rp2350_S
+#endif
+
 // System identifiers
 // ------------------
 

@@ -36,8 +36,8 @@
 #               - STM32N657 (n6): cdc_cdc, cdc_msc, cdc_video
 #               - RP2350 (pico2): cdc_cdc
 #
-#   © 2025-2026, Laurent von Allmen
-#   -------------------------------
+#   Copyright 2025-2026, Laurent von Allmen
+#   ---------------------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -92,7 +92,7 @@ message("")
 
 # Package version and commit hash (matching build_with_cmake.sh)
 set(TINYUSB_VERSION "0.20.0")
-set(TINYUSB_HASH "2b9a778")
+set(TINYUSB_HASH "3eafddb")
 
 message(STATUS "Fetching TinyUSB version ${TINYUSB_VERSION} (commit ${TINYUSB_HASH})")
 

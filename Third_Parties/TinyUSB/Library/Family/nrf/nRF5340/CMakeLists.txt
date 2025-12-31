@@ -11,8 +11,8 @@
 # Goal:     CMakeLists for uKOS-X to build libTinyUSB.a modules
 #           nRF5340 - Cortex-M33
 #
-#   © 2025-2026, Laurent von Allmen
-#   -------------------------------
+#   Copyright 2025-2026, Laurent von Allmen
+#   ---------------------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \

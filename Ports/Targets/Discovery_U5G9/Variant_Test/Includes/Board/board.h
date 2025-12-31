@@ -54,6 +54,10 @@
 #  pragma clang diagnostic ignored "-Wempty-translation-unit"
 #endif
 
+#ifndef Discovery_U5G9_S
+#define	Discovery_U5G9_S
+#endif
+
 // System identifiers
 // ------------------
 

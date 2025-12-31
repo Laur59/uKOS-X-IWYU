@@ -54,6 +54,10 @@
 #  pragma clang diagnostic ignored "-Wempty-translation-unit"
 #endif
 
+#ifndef Asmodee_H747_S
+#define	Asmodee_H747_S
+#endif
+
 // System identifiers
 // ------------------
 

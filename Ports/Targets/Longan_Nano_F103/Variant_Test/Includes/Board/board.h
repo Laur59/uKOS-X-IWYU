@@ -48,6 +48,10 @@
 
 #pragma	once
 
+#ifndef Longan_Nano_F103_S
+#define	Longan_Nano_F103_S
+#endif
+
 // System identifiers
 // ------------------
 

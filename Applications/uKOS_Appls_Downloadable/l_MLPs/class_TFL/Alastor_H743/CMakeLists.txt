@@ -10,8 +10,8 @@
 # Project:  uKOS-X
 # Goal:     CMake file for the "class_TFL" application.
 #
-#   © 2025-2026, Laurent von Allmen
-#   -------------------------------
+#   Copyright 2025-2026, Laurent von Allmen
+#   ---------------------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -69,10 +69,8 @@ set(VARIANT Variant_Test)
 
 # Extra compilation options
 add_compile_options(-g3 # includes extra information for debugger
-    $<$<COMPILE_LANGUAGE:CXX>:-std=c++23>
     $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
     $<$<COMPILE_LANGUAGE:CXX>:-fno-exceptions>
-    $<$<COMPILE_LANGUAGE:C>:-std=c2x> # STANDARD
     -Os # optimisation
 )
 add_compile_definitions(

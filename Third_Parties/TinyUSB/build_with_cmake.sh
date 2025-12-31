@@ -12,8 +12,8 @@
 # Project:  uKOS-X
 # Goal:     Build the TinyUSB package using CMake
 #
-#   © 2025-2026, Laurent von Allmen
-#   -------------------------------
+#   Copyright 2025-2026, Laurent von Allmen
+#   ---------------------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -63,7 +63,7 @@ NC='\033[0m' # No Colour
 # --------
 
 package=0.20.0
-hash=2b9a778
+hash=3eafddb
 
 TinyUSB_PACK="TinyUSB-current"
 

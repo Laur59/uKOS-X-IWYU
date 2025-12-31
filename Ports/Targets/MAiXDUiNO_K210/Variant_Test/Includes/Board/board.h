@@ -48,6 +48,10 @@
 
 #pragma	once
 
+#ifndef MAiXDUiNO_K210_S
+#define	MAiXDUiNO_K210_S
+#endif
+
 // System identifiers
 // ------------------
 

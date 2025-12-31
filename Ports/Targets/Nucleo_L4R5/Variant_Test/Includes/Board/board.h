@@ -54,6 +54,10 @@
 #  pragma clang diagnostic ignored "-Wempty-translation-unit"
 #endif
 
+#ifndef Nucleo_L4R5_S
+#define	Nucleo_L4R5_S
+#endif
+
 // System identifiers
 // ------------------
 

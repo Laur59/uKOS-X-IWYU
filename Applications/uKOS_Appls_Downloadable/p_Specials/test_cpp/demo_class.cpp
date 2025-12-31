@@ -9,8 +9,8 @@
 ; Project:	uKOS-X
 ; Goal:		Implementation file for the TestClass process manager.
 ;
-;   (c) 2025-20xx, Laurent von Allmen
-;   ---------------------------------
+;   Copyright 2025-2026, Laurent von Allmen
+;   ---------------------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -36,20 +36,12 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<cstdlib>
+#include	"demo_class.hpp"
+
 #include	<stdio.h>
 
-#include	"types.h"
-#include	"os_errors.h"
-#include	"macros.h"
-#include	"macros_runtime.h"
-#include	"modules.h"
-#include	"crt0.h"
-#include	"kern/kern.h"
-#include	"led/led.h"
 #include	"serial/serial.h"
 
-#include	"demo_class.hpp"
 
 // Constructor implementation
 TestClass::TestClass() {
@@ -64,4 +56,4 @@ TestClass::~TestClass() {
 // doit method implementation
 void TestClass::doit() const {
 	(void)dprintf(KSYST, "in the middle\n");
-} 
+}

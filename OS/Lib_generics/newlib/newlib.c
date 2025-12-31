@@ -116,6 +116,7 @@ struct timeval;
 
 #include	"calendar/calendar.h"
 #include	"kern/kern.h"
+#include	"kern/private/private_processes.h"
 #include	"macros.h"
 #if (KKERN_WITH_STATISTICS_S == true)
 #include	"macros_core.h"
@@ -172,6 +173,7 @@ static	_ssize_t	local_read(serialManager_t serialManager, void *buf, size_t coun
 extern	void		crt0_exit(int number);
 
 // NOLINTBEGIN(bugprone-reserved-identifier,cert-dcl37-c,cert-dcl51-cpp)
+//
 // Newlib open - close - read - write functions
 // --------------------------------------------
 
@@ -504,10 +506,15 @@ off_t	_lseek_r(reent_t *reent, int filedes, off_t offset, int whence) {
 int		_getpid_r(reent_t *reent) {
 	UNUSED(reent);
 
-	proc_t	*process;
+	int			id;
+	uint32_t	core;
+	proc_t		*process;
+
+    core = GET_RUNNING_CORE;
 
 	kern_getProcessRun(&process);
-	return ((int)(uintptr_t)process);
+	id = (int)(((uintptr_t)process - (uintptr_t)&vKern_proc[core][0]) / sizeof(proc_t));
+	return (id);
 }
 
 /*
@@ -520,9 +527,12 @@ int		_kill_r(reent_t *reent, int pid, int sig) {
 	UNUSED(reent);
 	UNUSED(sig);
 
-	proc_t	*process;
+	proc_t		*process;
+	uint32_t	core;
 
-	process = (proc_t *)(uintptr_t)pid;
+    core = GET_RUNNING_CORE;
+
+	process = (proc_t *)(((uintptr_t)pid * (uintptr_t)sizeof(proc_t)) + (uintptr_t)&vKern_proc[core][0]);
 	kern_killProcess(process);
 	return (0);
 }
@@ -634,7 +644,7 @@ void	*__wrap__calloc_r(reent_t *reent, size_t num, size_t size) {
 		return (NULL);
 	}
 
-	memset(address, 0, (num * size));
+	memset(address, 0u, (num * size));
 	return (address);
 }
 
@@ -642,7 +652,7 @@ void	*__wrap__calloc_r(reent_t *reent, size_t num, size_t size) {
 // However, some standard library C++ functions related to construction and
 // destruction seem to require it
 
-const void	*const	__dso_handle = (void *)0;
+const void	*const	__dso_handle = NULL;
 
 // Called in relation to global C++ destructors.
 // This will never be used, as the system will never exit properly.

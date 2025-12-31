@@ -13,8 +13,8 @@
 #           cd cloned_directory/Ports/Targets
 #           ./_build_cmake.sh [-L] [-U] [-Y] [-v|-w]
 #
-#   (c) 2025-20xx, Laurent von Allmen
-#   ---------------------------------
+#   Copyright 2025-2026, Laurent von Allmen
+#   ---------------------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \

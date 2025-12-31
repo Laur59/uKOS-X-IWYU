@@ -1,6 +1,6 @@
 # Cppcheck for uKOS-X (v.1.0)
 
-© 2025-2026, Laurent von Allmen
+Copyright 2025-2026, Laurent von Allmen
 
 ## Environment
 

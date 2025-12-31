@@ -12,8 +12,8 @@
 ; Goal:		Demo of a C application.
 ;			This application shows how to operate with the uKOS-X uKernel.
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -179,7 +179,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 // NOLINTBEGIN(cert-err34-c)
 //
 		if (scanf("%"PRId32" %"PRId32" %"PRId32" %"PRId32"", &a, &b, &c, &d) != 4) {
-			while (getchar() != '\n') { ; }
+			while (getchar() != '\n') { }
 		}
 		else {
 			(void)dprintf(KURT1, "a = %"PRId32", b = %"PRId32", c = %"PRId32", d = %"PRId32"\n", a, b, c, d);

@@ -11,8 +11,8 @@
 # Goal:     Toolchain file for configuring Cmake to build cross-compiling
 #           projects based on RISC-V core using clang(LLVM).
 #
-#   © 2025-2026, Laurent von Allmen
-#   -------------------------------
+#   Copyright 2025-2026, Laurent von Allmen
+#   ---------------------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \

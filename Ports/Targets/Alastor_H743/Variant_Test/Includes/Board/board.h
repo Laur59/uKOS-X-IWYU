@@ -54,6 +54,10 @@
 #  pragma clang diagnostic ignored "-Wempty-translation-unit"
 #endif
 
+#ifndef Alastor_H743_S
+#define	Alastor_H743_S
+#endif
+
 // System identifiers
 // ------------------
 

@@ -14,8 +14,8 @@
 #           Shared template to build MicroPython static library for a given core
 #           Requires: CORE_NAME to be defined before including this file
 #
-#   © 2025-2026, Laurent von Allmen
-#   -------------------------------
+#   Copyright 2025-2026, Laurent von Allmen
+#   ---------------------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -152,7 +152,7 @@ target_compile_definitions(${MICROPY_TARGET} PUBLIC
 )
 
 target_compile_options(${MICROPY_TARGET} PUBLIC
-    -std=c2x
+    -std=c23
     -nostdlib
     -Wall
     -Wno-pedantic

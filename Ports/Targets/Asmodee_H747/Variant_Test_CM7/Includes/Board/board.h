@@ -48,6 +48,10 @@
 
 #pragma	once
 
+#ifndef Asmodee_H747_S
+#define	Asmodee_H747_S
+#endif
+
 // System identifiers
 // ------------------
 

@@ -1,0 +1,64 @@
+# CMakeLists.
+# ===========
+
+# SPDX-License-Identifier: MIT
+
+#------------------------------------------------------------------------
+# Author:	Laurent von Allmen	The 2025-10-12
+# Modifs:
+#
+# Project:	uKOS-X
+# Goal:		CMake file to build FatFs library for uKOS-X.
+#
+# Description:
+#			An alternative way using cmake is proposed to build the
+#			FatFs library for a given core.
+#
+#	© 2025-2026, Laurent von Allmen
+#	-------------------------------
+#											   __ ______  _____
+#	Edo. Franzi							__	__/ //_/ __ \/ ___/
+#	5-Route de Cheseaux				   / / / / ,< / / / /\__ \
+#	CH 1400 Cheseaux-Noréaz			  / /_/ / /| / /_/ /___/ /
+#									  \__,_/_/ |_\____//____/
+#	edo.franzi@ukos.ch
+#
+#   Permission is hereby granted, free of charge, to any person
+#   obtaining a copy of this software and associated documentation
+#   files (the "Software"), to deal in the Software without restriction,
+#   including without limitation the rights to use, copy, modify,
+#   merge, publish, distribute, sublicense, and/or sell copies of the
+#   Software, and to permit persons to whom the Software is furnished
+#   to do so, subject to the following conditions:
+#
+#   The above copyright notice and this permission notice shall be
+#   included in all copies or substantial portions of the Software.
+#
+#   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+#   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+#   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+#   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+#   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+#   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+#   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+#   SOFTWARE.
+#
+#------------------------------------------------------------------------
+
+cmake_minimum_required(VERSION 3.26)
+
+# Include common build setup
+include(${CMAKE_CURRENT_LIST_DIR}/../Mkfiles/common-setup.cmake)
+include(${PATH_UKOS}/Ports/Mkfiles/cmake/select-riscv-toolchain.cmake)
+
+project(DecNumber_RV32IMAC
+    DESCRIPTION "decnumber static library for RV32IMAC"
+    LANGUAGES C
+)
+
+set(FLAGS_FP -mabi=ilp32)
+set(CPU_SPEC -march=rv32imac_zicsr_zifencei)
+set(FLAGS_UKOS LITTLE_ENDIAN_S SECURE_S)
+
+# Include the shared template with all build logic
+include(${CMAKE_CURRENT_SOURCE_DIR}/../Mkfiles/common-build.cmake)

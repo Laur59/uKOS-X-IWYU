@@ -12,8 +12,8 @@
 ; Goal:		Demo of a C application.
 ;			This application shows how to operate with the uKOS-X uKernel.
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -409,7 +409,7 @@ static	void	test_format(const char_t *device) {
 	res = f_mkfs(device, NULL, work, sizeof work);
 	if (res != FR_OK) {
 		(void)dprintf(KSYST, "f_mkfs erreur %d\n", res);
-		while (true) { ; }
+		while (true) { }
 	}
 	(void)dprintf(KSYST, "f_mkfs passed\n");
 }
@@ -426,7 +426,7 @@ static	void	test_mount(FATFS *fs, const char_t *device) {
 	res = f_mount(fs, device, 1U);
 	if (res != FR_OK) {
 		(void)dprintf(KSYST, "f_mount erreur %d\n", res);
-		while (true) { ; }
+		while (true) { }
 	}
 	(void)dprintf(KSYST, "f_mount passed\n");
 }
@@ -443,7 +443,7 @@ static	void	test_folder(const char_t *folder) {
 	res = f_mkdir(folder);
 	if ((res != FR_OK) && (res != FR_EXIST)) {
 		(void)dprintf(KSYST, "f_mkdir erreur %d\n", res);
-		while (true) { ; }
+		while (true) { }
 	}
 	(void)dprintf(KSYST, "f_mkdir passed\n");
 }
@@ -460,7 +460,7 @@ static	void	test_create(FIL *fp, const char_t *name, BYTE mode) {
 	res = f_open(fp, name, mode);
 	if (res != FR_OK) {
 		(void)dprintf(KSYST, "f_open erreur %d\n", res);
-		while (true) { ; }
+		while (true) { }
 	}
 	(void)dprintf(KSYST, "f_open passed\n");
 }
@@ -477,7 +477,7 @@ static	void	test_write(FIL *fp, const void *buffer, UINT size, UINT *sizeWritten
 	res = f_write(fp, buffer, size, sizeWritten);
 	if (res != FR_OK) {
 		(void)dprintf(KSYST, "f_write erreur %d\n", res);
-		while (true) { ; }
+		while (true) { }
 	}
 	(void)dprintf(KSYST, "f_write passed\n");
 }
@@ -494,7 +494,7 @@ static	void	test_close(FIL *fp) {
 	res = f_close(fp);
 	if (res != FR_OK) {
 		(void)dprintf(KSYST, "f_close erreur %d\n", res);
-		while (true) { ; }
+		while (true) { }
 	}
 	(void)dprintf(KSYST, "f_close passed\n");
 }
@@ -511,7 +511,7 @@ static	void	test_open(FIL *fp, const char_t *name, BYTE mode) {
 	res = f_open(fp, name, mode);
 	if (res != FR_OK) {
 		(void)dprintf(KSYST, "f_open erreur %d\n", res);
-		while (true) { ; }
+		while (true) { }
 	}
 	(void)dprintf(KSYST, "f_open passed\n");
 }
@@ -528,7 +528,7 @@ static	void	test_read(FIL *fp, void *buffer, UINT size, UINT *sizeRead) {
 	res = f_read(fp, buffer, size, sizeRead);
 	if (res != FR_OK) {
 		(void)dprintf(KSYST, "f_read erreur %d\n", res);
-		while (true) { ; }
+		while (true) { }
 	}
 	(void)dprintf(KSYST, "f_read passed\n");
 }
@@ -586,7 +586,7 @@ static	void	test_listDirectory(const char_t *path) {
 	}
 	else {
 		(void)dprintf(KSYST, "Failed to open \"%s\". (%u)\n", path, res);;
-		while (true) { ; }
+		while (true) { }
 	}
 }
 

@@ -11,8 +11,8 @@
 # Goal:     CMakeLists pour uKOS-X pour construire les modules libTinyUSB.a
 #           STM32L4R5 - Cortex-M4
 #
-#   © 2025-2026, Edo. Franzi
-#   ------------------------
+#   Copyright 2025-2026, Laurent von Allmen
+#   ---------------------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \

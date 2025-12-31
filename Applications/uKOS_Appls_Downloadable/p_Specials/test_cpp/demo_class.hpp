@@ -9,8 +9,8 @@
 ; Project:	uKOS-X
 ; Goal:		Header file for the TestClass process manager.
 ;
-;   (c) 2025-20xx, Laurent von Allmen
-;   ---------------------------------
+;   Copyright 2025-2026, Laurent von Allmen
+;   ---------------------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -38,17 +38,9 @@
 
 #pragma once
 
-// uKOS-X specific headers for dprintf and other functions
-#include	"types.h"
-#include	"os_errors.h"
-#include	"macros.h"
-#include	"kern/kern.h"
-#include	"lib_generics.h"
-#include	"serial/serial.h"
-
 /**
  * \brief TestClass - A simple test class for demonstrating C++ in uKOS-X
- * 
+ *
  * This class demonstrates basic C++ functionality within the uKOS-X environment,
  * including constructor/destructor calls and debug output via dprintf.
  */
@@ -58,14 +50,14 @@ public:
 	 * \brief Constructor - outputs construction message
 	 */
 	TestClass();
-	
+
 	/**
 	 * \brief Destructor - outputs destruction message
 	 */
 	~TestClass();
-	
+
 	/**
 	 * \brief Test method - outputs a message
 	 */
 	void doit() const;
-}; 
+};
