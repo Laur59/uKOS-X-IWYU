@@ -22,8 +22,8 @@
 ;			wkserial urt1 -W 55
 ;			wkserial cdc0 -read
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -76,7 +76,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"wkserial     Work with a communication device.         (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"wkserial     Work with a communication device.         (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "Operate with a communication device\n"
 									"===================================\n\n"
 
@@ -104,7 +104,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "Operate with a communication device\n"
 									"Input format:  wkserial {serialManager} -R\n\n"
 									"Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 

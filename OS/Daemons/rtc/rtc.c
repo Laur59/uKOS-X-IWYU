@@ -13,8 +13,8 @@
 ;			with a precise RTC one
 ;			every 2h the Unix time Timer is updated from the RTC.
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -68,13 +68,13 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"rtc          rtc: update the Unix time Timer.          (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"rtc          rtc: update the Unix time Timer.          (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "rtc deamon\n"
 									"==========\n\n"
 
 									"Install the rtc deamon\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 
@@ -110,7 +110,7 @@ MODULE(
 // ---------------------------I-----------------------------------------I--------------I
 
 STRG_LOC_CONST(aStrIden[]) = "Deamon_rtc";
-STRG_LOC_CONST(aStrText[]) = "Daemon rtc: update the Unix time Timer.   (c) EFr-2025";
+STRG_LOC_CONST(aStrText[]) = "Daemon rtc: update the Unix time Timer.   (c) EFr-2026";
 
 /*
  * \brief Main entry point

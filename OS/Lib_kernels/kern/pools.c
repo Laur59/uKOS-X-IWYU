@@ -24,8 +24,8 @@
 ;			int32_t	kern_killPool(pool_t *handle);
 ;			int32_t	kern_getPoolById(const char_t *identifier, pool_t **handle);
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \

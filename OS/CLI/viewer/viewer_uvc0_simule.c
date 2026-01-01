@@ -12,8 +12,8 @@
 ; Goal:		Image viewer.
 ;			This tool allows to send a simulated image via the uvc0 manager.
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -68,14 +68,14 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_GLB_CONST(aStrApplication[]) = "viewer       Send an image, via the uvc0 manager.      (c) EFr-2025";
+STRG_GLB_CONST(aStrApplication[]) = "viewer       Send an image, via the uvc0 manager.      (c) EFr-2026";
 STRG_GLB_CONST(aStrHelp[])		  = "Send a simulated image to the computer\n"
 									"======================================\n\n"
 
 								    "Input format:  viewer\n"
 								    "Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 
@@ -105,7 +105,7 @@ int32_t	viewer_uvc0(uint32_t argc, const char_t *argv[]) {
 // -------------------------------I-----------------------------------------I--------------I
 
 	STRG_LOC_CONST(aStrIden[]) = "Process_User";
-	STRG_LOC_CONST(aStrText[]) = "Process user.                             (c) EFr-2025";
+	STRG_LOC_CONST(aStrText[]) = "Process user.                             (c) EFr-2026";
 
 	core = GET_RUNNING_CORE;
 	vKillRequest[core] = false;

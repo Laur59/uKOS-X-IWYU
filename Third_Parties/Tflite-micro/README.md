@@ -1,6 +1,6 @@
 # TFLite for uKOS-X (v.1.6)
 
-(c) 2025-20xx, Edo. Franzi, Antonio José Restrepo Zea, Laurent von Allmen 
+(c) 2025-2026, Edo. Franzi, Antonio José Restrepo Zea, Laurent von Allmen 
 
 ## Tools and libraries installation
 

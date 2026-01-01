@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		List the system modules.
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -61,7 +61,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"list         List the system modules.                  (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"list         List the system modules.                  (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "List the system modules\n"
 									"=======================\n\n"
 
@@ -88,7 +88,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "List the system modules\n"
 									"   'X' for CLI family\n"
 									"   'Z' for Third Party family\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 

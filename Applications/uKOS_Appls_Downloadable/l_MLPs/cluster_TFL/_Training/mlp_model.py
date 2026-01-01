@@ -20,8 +20,8 @@
 #			python3 mlp_model.py
 #			xxd -i  mlp_model.tflite > mlp_model.c_inc
 #
-#   © 2025-2026, Edo. Franzi
-#   ------------------------
+#   (c) 2025-2026, Edo. Franzi
+#   --------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \

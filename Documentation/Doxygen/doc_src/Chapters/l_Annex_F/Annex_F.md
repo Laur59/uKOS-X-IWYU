@@ -34,7 +34,7 @@ Once this is done, additional required packages must be downloaded and installed
 # Project:    uKOS-X
 # Goal:       Main profile (example).
 #
-#   (c) 2025-20xx, Edo. Franzi
+#   (c) 2025-2026, Edo. Franzi
 #   --------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -177,7 +177,7 @@ pip3 install pillow
 # Project:    uKOS-X
 # Goal:       Main profile.
 #
-#   (c) 2025-20xx, Edo. Franzi
+#   (c) 2025-2026, Edo. Franzi
 #   --------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/

@@ -18,7 +18,7 @@
 ;			1. rm -rf /tmp/file_name
 ;			2. xferUart FTWS6VG0D
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -107,7 +107,7 @@ int		main(int32_t argc, const char_t *argv[]) {
 	uint32_t	type, display, baudrate;
 
 	fprintf(stdout, "\nXfer data from the selected D2XX I/O port to the /tmp/pipe file @ 3'000'000-b/s\n");
-	fprintf(stdout, __DATE__"  "__TIME__" (c) EFr-2025\n");
+	fprintf(stdout, __DATE__"  "__TIME__" (c) EFr-2026\n");
 
 // Analyse the command line
 // ------------------------

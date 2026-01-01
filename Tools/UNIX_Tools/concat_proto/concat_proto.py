@@ -29,7 +29,7 @@
 #			   libkern.a
 #			   libTinyUSB.a
 #
-#   (c) 2025-20xx, Jean-Marc Koller
+#   (c) 2025-2026, Jean-Marc Koller
 #   -------------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/

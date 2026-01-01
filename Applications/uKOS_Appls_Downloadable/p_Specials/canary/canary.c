@@ -78,7 +78,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"canary       Test of the canary detection.             (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"canary       Test of the canary detection.             (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "This is a romable C application\n"
 									"===============================\n\n"
 
@@ -87,7 +87,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "This is a romable C application\n"
 									"Input format:  canary\n"
 									"Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
 	UserAppl,							// Module name (the first letter has to be upper case)

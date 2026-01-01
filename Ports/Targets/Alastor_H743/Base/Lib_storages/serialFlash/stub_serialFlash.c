@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stub for the connection of the "serialFlash" manager 1-Wire device by spi1 device.
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \

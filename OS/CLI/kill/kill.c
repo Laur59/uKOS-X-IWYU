@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		Kill a module (process or other).
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -61,7 +61,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"kill         Kill a module.                            (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"kill         Kill a module.                            (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "Kill a module\n"
 									"=============\n\n"
 
@@ -70,7 +70,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "Kill a module\n"
 									"Input format:  kill {module_name}\n"
 									"Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 

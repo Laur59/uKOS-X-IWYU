@@ -14,7 +14,7 @@
 ;
 ;			Project.SetSmartViewPlugin("xyz/OS_Kernel-X/Ports/Tools/Ozone_Plugin/uKOS-X")
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -1281,7 +1281,7 @@ function uKOS_getAboutRow(rowIndex) {
 	var		line3 = ["uKOS-" + vuKOSString																					 ];
 	var		line4 = ["uKOS-X OS version under debug V " + vuKOSMajorString + "." + vuKOSMinorString + "." + vuKOSPatchString ];
 	var		line5 = ["Architecture under debug: " + vArchString																 ];
-	var		line6 = ["(c) 2025-20xx, Edo. Franzi"																			 ];
+	var		line6 = ["(c) 2025-2026, Edo. Franzi"																			 ];
 
 	if (rowIndex == 0) { return (line0); }
 	if (rowIndex == 1) { return (line1); }

@@ -12,8 +12,8 @@
 ; Goal:		This tool allows to display the date based on the
 ;			system Unix time.
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -65,7 +65,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"date         Set / display date and time.              (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"date         Set / display date and time.              (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "Set/display the date\n"
 									"====================\n\n"
 
@@ -81,7 +81,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "Set/display the date\n"
 									"               Ex. date 31 3 2025 18 00 22\n"
 									"Output format: Local time: Epoch = 1743444022204019, Local time: Mon Mar 31 18:00:22 2025\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 

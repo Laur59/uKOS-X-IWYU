@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		Give a random (eventually pseudo-random) number.
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -64,7 +64,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"rnd          Give a random number.                     (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"rnd          Give a random number.                     (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "Give a random number\n"
 									"====================\n\n"
 
@@ -80,7 +80,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "Give a random number\n"
 									"Input format:  rnd {-hard, -soft} [x, x = 1 to 16]\n"
 									"Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 // Prototypes
 
 static	int32_t		prgm(uint32_t argc, const char_t *argv[]);

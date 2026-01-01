@@ -81,7 +81,7 @@ bool	installaProcess_sensor(void) {
 // -------------------------------I-----------------------------------------I--------------I
 
 	STRG_LOC_CONST(aStrIden[]) = "User_Process_sensor";
-	STRG_LOC_CONST(aStrText[]) = "Process sensor.                           (c) EFr-2025";
+	STRG_LOC_CONST(aStrText[]) = "Process sensor.                           (c) EFr-2026";
 
 // Specifications for the processes
 

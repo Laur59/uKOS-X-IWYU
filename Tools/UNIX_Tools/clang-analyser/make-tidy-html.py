@@ -12,7 +12,7 @@
 # Project:  uKOS-X
 # Goal:     Generate HTML reports for clang-tidy from .txt and .yaml files
 #
-#   (c) 2025-20xx, Laurent von Allmen
+#   (c) 2025-2026, Laurent von Allmen
 #   ---------------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/

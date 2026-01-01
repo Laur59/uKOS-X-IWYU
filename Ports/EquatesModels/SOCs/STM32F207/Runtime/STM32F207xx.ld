@@ -14,8 +14,8 @@
 ;			- DS6329 Rev 17, p. 67; Datasheet
 ;			- RM0433 Rev 8, p. 59; STM32F205xx, STM32F207x, STM32F215xx and STM32F217xx advanced Arm®-based 32-bit MCUs
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \

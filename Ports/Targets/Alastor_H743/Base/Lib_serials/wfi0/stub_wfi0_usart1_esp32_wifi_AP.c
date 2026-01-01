@@ -12,8 +12,8 @@
 ; Goal:		stub for the connection of the "wfi0" manager to the "usart1 - esp32" device.
 ;			wifi mode in access point
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \

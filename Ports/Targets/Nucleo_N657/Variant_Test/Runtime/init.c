@@ -15,8 +15,8 @@
 ;			!!! It is called before to copy and to initialise
 ;			!!! the variable into the RAM.
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -66,13 +66,13 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"init         First hardware initializations.           (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"init         First hardware initializations.           (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "Init\n"
 									"====\n\n"
 
 									"This code places in a quite state the hardware resources.\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
 	Init,							// Module name (the first letter has to be upper case)
@@ -421,21 +421,21 @@ static	void	local_GPIO_Configuration(void) {
 // PE06, AL,  50-MHz, Pull-up	USART1_RX	AF7
 // PE07, IN,  50-MHz, Pull-down	--------	AF15
 // PE08, IN,  50-MHz, Pull-down	--------	AF15
-// PE09, IN,  50-MHz, Pull-down	--------	AF15
-// PE10, OU,  50-MHz, Push_pull	GPIO_0		AF15		CN15	27
-// PE11, OU,  50-MHz, Push_pull	GPIO_1		AF15		CN15	23
+// PE09, OU,  50-MHz, Push_pull	GPIO_0		AF15		CN15	31
+// PE10, OU,  50-MHz, Push_pull	GPIO_1		AF15		CN15	27
+// PE11, OU,  50-MHz, Push_pull	GPIO_2		AF15		CN15	23
 // PE12, AL,  50-MHz, Push_pull	SPI4_SCK	AF15		CN15	1
 // PE13, AL,  50-MHz, Pull-up	SPI4_MISO	AF15		CN15	28
 // PE14, AL,  50-MHz, Push_pull	SPI4_MOSI	AF15		CN15	26
 // PE15, IN,  50-MHz, Pull-down	--------	AF15
 
 //			   15  14  13  12  11  10   9   8   7   6   5   4   3   2   1   0
-	CNFGPIO(E,KIN,KAL,KAL,KAL,KOU,KOU,KIN,KIN,KIN,KAL,KAL,KIN,KIN,KIN,KIN,KIN,
+	CNFGPIO(E,KIN,KAL,KAL,KAL,KOU,KOU,KOU,KIN,KIN,KAL,KAL,KIN,KIN,KIN,KIN,KIN,
 			  K50,K50,K50,K50,K50,K50,K50,K50,K50,K50,K50,K50,K50,K50,K50,K50,
-			  KPD,KNO,KPU,KNO,KNO,KNO,KPD,KPD,KPD,KPU,KNO,KPD,KPD,KPD,KPD,KPD,
+			  KPD,KNO,KPU,KNO,KNO,KNO,KNO,KPD,KPD,KPU,KNO,KPD,KPD,KPD,KPD,KPD,
 			  A15,A05,A05,A05,A15,A15,A15,A15,A15,A07,A07,A15,A15,A15,A15,A15,
 			  KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-			  0U, 0U, 0U, 0U, 1U, 1U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
+			  0U, 0U, 0U, 0U, 1U, 1U, 1U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
 
 // PG00, OU,  50-MHz, Open-D	GPIO		AF15	Led 3
 // PG01, OU,  50-MHz, Push-pull	--------	AF15	(Test analyser)

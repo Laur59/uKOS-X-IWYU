@@ -14,8 +14,8 @@
 ;			- DS12023 Rev 4, p. 20; Datasheet
 ;			- RM0432 Rev 6, p. 92; STM32L4+ Serie advanced Arm®-based 32-bit MCUs
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \

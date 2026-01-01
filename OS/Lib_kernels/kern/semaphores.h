@@ -24,8 +24,8 @@
 ;			int32_t	kern_restartSemaphore(sema_t *handle);
 ;			int32_t	kern_getSemaphoreById(const char_t identifier, sema_t **handle);
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \

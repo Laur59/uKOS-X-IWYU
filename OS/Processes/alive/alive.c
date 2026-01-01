@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		alive process; blink the LED 0.
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -67,13 +67,13 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"alive        Alive process: everything is OK.          (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"alive        Alive process: everything is OK.          (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "alive process\n"
 									"=============\n\n"
 
 									"The system is living\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 
@@ -106,7 +106,7 @@ static	bool	vKillRequest[KNB_CORES] = MCSET(false);
 // ---------------------------I-----------------------------------------I--------------I
 
 STRG_LOC_CONST(aStrIden[]) = "Process_alive";
-STRG_LOC_CONST(aStrText[]) = "Process alive: the system is living.      (c) EFr-2025";
+STRG_LOC_CONST(aStrText[]) = "Process alive: the system is living.      (c) EFr-2026";
 
 /*
  * \brief Main entry point

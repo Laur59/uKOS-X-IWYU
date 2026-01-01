@@ -1,6 +1,6 @@
 # ESP32 AT firmware
 
-© 2025-2026, Edo. Franzi, 2025-01-01
+(c) 2025-2026, Edo. Franzi, 2025-01-01
 
 ## Packages used for building ESP32 WROOM applications
 

@@ -84,7 +84,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"video        Example of how to send an image over usb. (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"video        Example of how to send an image over usb. (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "This is a romable C application\n"
 									"===============================\n\n"
 
@@ -93,7 +93,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "This is a romable C application\n"
 									"Input format:  video\n"
 									"Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
 	UserAppl,							// Module name (the first letter has to be upper case)
@@ -180,7 +180,7 @@ int		main(int argc, const char *argv[]) {
 // -------------------------------I-----------------------------------------I--------------I
 
 	STRG_LOC_CONST(aStrIden[]) = "Process_User";
-	STRG_LOC_CONST(aStrText[]) = "Process user.                             (c) EFr-2025";
+	STRG_LOC_CONST(aStrText[]) = "Process user.                             (c) EFr-2026";
 
 // Specifications for the processes
 

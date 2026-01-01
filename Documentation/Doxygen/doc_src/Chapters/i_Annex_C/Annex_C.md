@@ -91,7 +91,7 @@ This file will contain all exported functions, properly registered and linked to
 ; Project:    uKOS-X
 ; Goal:       stub for the "temperature" manager module.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -269,7 +269,7 @@ To activate this simulation mode, simply define the **SIMULE_S** flag prior to c
 ;                 - k++                      - copy it
 ;                                            - free the buffer k
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -290,14 +290,14 @@ To activate this simulation mode, simply define the **SIMULE_S** flag prior to c
 // ==================================
 
 LOC_CONST_STRG(aStrApplication[]) =
-    "get_temp     temperature acquisition process           (c) EFr-2025";
+    "get_temp     temperature acquisition process           (c) EFr-2026";
 LOC_CONST_STRG(aStrHelp[]) =
     "get_temp process\n"
     "================\n\n"
 
     "Acquisition of the temperature\n\n";
 
-    "Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 
@@ -334,7 +334,7 @@ static bool    vKillRequest[KNB_CORES] = MCSET(false);
 #define    KNB_SAMPLES    128u       // Nb. of samples
 
 STRG_LOC_CONST(aStrIden[]) = "Process_get_temp";
-STRG_LOC_CONST(aStrText[]) = "Process get_temp: acq. temp   (c) EFr-2025";
+STRG_LOC_CONST(aStrText[]) = "Process get_temp: acq. temp   (c) EFr-2026";
 
 /*
  * \brief Main entry point
@@ -519,7 +519,7 @@ The CLI tool **module X** is responsible for handling messages received from a h
 ; Project:    uKOS-X
 ; Goal:       Control the temperature.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -539,7 +539,7 @@ The CLI tool **module X** is responsible for handling messages received from a h
 // ==================================
 
 LOC_CONST_STRG(aStrApplication[]) =
-    ”X            Control the temperature.                  (c) EFr-2025";
+    ”X            Control the temperature.                  (c) EFr-2026";
 LOC_CONST_STRG(aStrHelp[]) =
     ”Control the temperature\n"
     "=======================\n\n"
@@ -550,7 +550,7 @@ LOC_CONST_STRG(aStrHelp[]) =
     "Input format:  X\n"
     "Output format: x,t0,t1,t...t127\n\n";
 
-    "Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 static  int32_t prgm(uint32_t argc, char_t *argv[]);
 
@@ -660,7 +660,7 @@ While Python offers exceptional flexibility and ease of integration, other **vis
 #
 #             python3 X.py
 #
-#   (c) 2025-20xx, Edo. Franzi
+#   (c) 2025-2026, Edo. Franzi
 #   --------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/

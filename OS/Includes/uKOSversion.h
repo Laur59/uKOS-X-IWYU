@@ -9,8 +9,8 @@
 ; Project:	uKOS-X
 ; Goal:		Universal h file for uKOS-X systems.
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Laurent von Allmen
+;   ---------------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -42,8 +42,8 @@
 // -----------------------
 
 #define	uKOS_VERSION_OS			10
-#define	uKOS_VERSION_NUMBER		"0.1.217"
+#define	uKOS_VERSION_NUMBER		"0.1.218"
 #define	uKOS_VERSION_MAJOR		0
 #define	uKOS_VERSION_MINOR		1
-#define	uKOS_VERSION_REVISION	217
+#define	uKOS_VERSION_REVISION	218
 #define	uKOS_VERSION			uKOS_VERSION_NUMBER " " STRG(uKOS_NAME) "\n" STRG(uKOS_OWNER)

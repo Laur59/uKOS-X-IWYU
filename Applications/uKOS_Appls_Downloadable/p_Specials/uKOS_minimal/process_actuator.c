@@ -81,7 +81,7 @@ bool	installaProcess_actuator(void) {
 // -------------------------------I-----------------------------------------I--------------I
 
 	STRG_LOC_CONST(aStrIden[]) = "User_Process_actuator";
-	STRG_LOC_CONST(aStrText[]) = "Process actuator.                         (c) EFr-2025";
+	STRG_LOC_CONST(aStrText[]) = "Process actuator.                         (c) EFr-2026";
 
 // Specifications for the processes
 

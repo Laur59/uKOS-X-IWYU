@@ -12,8 +12,8 @@
 ; Goal:		Image viewer.
 ;			This tool allows to send an image via the uvc0 manager.
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -71,14 +71,14 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_GLB_CONST(aStrApplication[]) = "viewer       Send img0 images, via the uvc0 manager.   (c) EFr-2025";
+STRG_GLB_CONST(aStrApplication[]) = "viewer       Send img0 images, via the uvc0 manager.   (c) EFr-2026";
 STRG_GLB_CONST(aStrHelp[])		  = "Acquire & send an image to the computer\n"
 									"=======================================\n\n"
 
 									"Input format:  viewer\n"
 									"Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // CLI tool specific
 // =================
@@ -86,7 +86,7 @@ STRG_GLB_CONST(aStrHelp[])		  = "Acquire & send an image to the computer\n"
 // ---------------------------------------I-----------------------------------------I--------------I
 
 STRG_LOC_CONST(aStrIden_acquisition[]) = "Process_Acquisition";
-STRG_LOC_CONST(aStrText_acquisition[]) = "Process Acquisition.                      (c) EFr-2025";
+STRG_LOC_CONST(aStrText_acquisition[]) = "Process Acquisition.                      (c) EFr-2026";
 STRG_LOC_CONST(aStrAcqu[])			   = "imager - Acquisition";
 
 // Prototypes

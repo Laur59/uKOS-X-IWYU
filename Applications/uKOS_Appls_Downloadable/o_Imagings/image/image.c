@@ -84,7 +84,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"image        Example of how to use an imager.          (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"image        Example of how to use an imager.          (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "This is a romable C application\n"
 									"===============================\n\n"
 
@@ -93,7 +93,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "This is a romable C application\n"
 									"Input format:  image\n"
 									"Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
 	UserAppl,							// Module name (the first letter has to be upper case)
@@ -251,9 +251,9 @@ int		main(int argc, const char *argv[]) {
 // -------------------------------------------I-----------------------------------------I--------------I
 
 	STRG_LOC_CONST(aStrIden_acquisition[]) = "Process_Acquisition";
-	STRG_LOC_CONST(aStrText_acquisition[]) = "Process Acquisition.                      (c) EFr-2025";
+	STRG_LOC_CONST(aStrText_acquisition[]) = "Process Acquisition.                      (c) EFr-2026";
 	STRG_LOC_CONST(aStrIden_send[])		   = "Process_Send_Image";
-	STRG_LOC_CONST(aStrText_send[])		   = "Process Send Image.                       (c) EFr-2025";
+	STRG_LOC_CONST(aStrText_send[])		   = "Process Send Image.                       (c) EFr-2026";
 
 // Specifications for the processes
 

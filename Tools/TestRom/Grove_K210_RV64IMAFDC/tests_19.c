@@ -11,7 +11,7 @@
 ; Project:	uKOS-X
 ; Goal:		Test of the TIM0_0 in single shot (timeout tasks).
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/

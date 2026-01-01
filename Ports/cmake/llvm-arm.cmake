@@ -11,8 +11,8 @@
 # Goal:     Toolchain file for configuring Cmake to build cross-compiling
 #           projects based on CORTEM M core using clang(LLVM).
 #
-#   Copyright 2025-2026, Laurent von Allmen
-#   ---------------------------------------
+#   (c) 2025-2026, Laurent von Allmen
+#   ---------------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \

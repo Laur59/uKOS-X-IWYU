@@ -1,6 +1,6 @@
 # Target Nucleo_L4R5
 
-© 2025-2026, Edo. Franzi, 2025-01-01
+(c) 2025-2026, Edo. Franzi, 2025-01-01
 
 ## Base
 

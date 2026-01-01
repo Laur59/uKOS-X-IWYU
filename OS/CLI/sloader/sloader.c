@@ -32,8 +32,8 @@
 ;				"S9" end block for addresses coded over 16-bits
 ;				!!! S0 & S5 are not supported but tolerated.
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -88,7 +88,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"sloader      Motorola S1-9, S2-8, S3-7 loader.         (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"sloader      Motorola S1-9, S2-8, S3-7 loader.         (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "Motorola S1-9, S2-8, S3-7 loader\n"
 									"================================\n\n"
 
@@ -99,7 +99,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "Motorola S1-9, S2-8, S3-7 loader\n"
 									"Input format:  sloader [-run | -norun]\n"
 									"Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 

@@ -13,8 +13,8 @@
 ;
 ;			Private uKernel variables.
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -76,7 +76,7 @@
 #include	"macros_soc.h"
 
 #define	KPROC_ANONYMOUS_ID	"Proc_anonymous"
-#define	KPROC_ANONYMOUS_TX	"Process anonymous.                        (c) EFr-2025"
+#define	KPROC_ANONYMOUS_TX	"Process anonymous.                        (c) EFr-2026"
 
 extern			void		(*vKern_codeRoutine[KNB_CORES])(uint8_t state);		// Ptr on the Code for the call-back routine
 extern			proc_t		*vKern_runProc[KNB_CORES];							// Ptr on the current process

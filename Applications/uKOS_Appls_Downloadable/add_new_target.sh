@@ -15,8 +15,8 @@
 #			i.e
 #			./add_new_target.sh XYZ_H743 STM32H743 CORTEX_M7 Nucleo_H743
 #
-#   Copyright 2025-2026, Laurent von Allmen
-#   ---------------------------------------
+#   (c) 2025-2026, Laurent von Allmen
+#   ---------------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \

@@ -20,8 +20,8 @@
 ;				- k++							- copy it
 ;												- free the buffer k
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -77,13 +77,13 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"getTemp      temperature acquisition process           (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"getTemp      temperature acquisition process           (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "temperature process\n"
 									"===================\n\n"
 
 									"Acquisition of the temperature\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 
@@ -118,7 +118,7 @@ static	bool	vKillRequest[KNB_CORES] = MCSET(false);
 // ---------------------------I-----------------------------------------I--------------I
 
 STRG_LOC_CONST(aStrIden[]) = "Process_getTemp";
-STRG_LOC_CONST(aStrText[]) = "Process get temp: temp acquisition.       (c) EFr-2025";
+STRG_LOC_CONST(aStrText[]) = "Process get temp: temp acquisition.       (c) EFr-2026";
 
 /*
  * \brief Main entry point

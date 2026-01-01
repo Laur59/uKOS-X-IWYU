@@ -27,8 +27,8 @@
 ;			Excecution from MEME1 (case 4)	lock the User RAM forever (until a restart)
 ;			Listing (case 3)				lock the User RAM during the usage and then, unlock
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \

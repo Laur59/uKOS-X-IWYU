@@ -115,7 +115,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"class_TFL    TLF 4 layer MLP test.                     (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"class_TFL    TLF 4 layer MLP test.                     (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 									"===============================\n\n"
 
@@ -280,7 +280,7 @@ int		main(int argc, const char *argv[]) {
 // ------------------------------------I-----------------------------------------I--------------I
 
 	STRG_LOC_CONST(aStrIden_0[]) =    "Process_User";
-	STRG_LOC_CONST(aStrText_0[]) =    "Process user.                             (c) EFr-2025";
+	STRG_LOC_CONST(aStrText_0[]) =    "Process user.                             (c) EFr-2026";
 
 // Initialise the C++ constructors
 

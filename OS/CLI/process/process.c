@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		List the installed processes.
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -69,7 +69,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"process      List the installed processes.             (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"process      List the installed processes.             (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "List the installed processes\n"
 									"============================\n\n"
 
@@ -79,7 +79,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "List the installed processes\n"
 									"Input format:  process [-all | -noall]\n"
 									"Output format: Process information\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 typedef	struct	process	process_t;
 
@@ -562,7 +562,7 @@ static	void	local_compose(const char_t *identifier, const char_t **idSpacer) {
 	size_t	len;
 
 // --------------------------------------|----------------------------------------------------|---
-//                                      "Process xyz: this process ...             (c) EFr-2025";
+//                                      "Process xyz: this process ...             (c) EFr-2026";
 	static	const	char_t	aSpacer[] = "                                                      ";
 
 	len = strlen(identifier);

@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		storage manager.
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -65,13 +65,13 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"storage      storage manager.                          (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"storage      storage manager.                          (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "storage manager\n"
 									"===============\n\n"
 
 									"This manager ...\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
 	Storage,						// Module name (the first letter has to be upper case)

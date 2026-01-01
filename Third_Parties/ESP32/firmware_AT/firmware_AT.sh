@@ -39,7 +39,7 @@
 #			console wfi0
 #				nc 192.168.4.1 9999 (on the computer)
 #
-#   (c) 2025-20xx, Edo. Franzi
+#   (c) 2025-2026, Edo. Franzi
 #   --------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/

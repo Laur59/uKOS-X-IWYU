@@ -570,7 +570,7 @@ static const    mlpnNetwork_t     aNetwork = {
 ;                   Compute the inference
 ;                   Display the classes
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -593,7 +593,7 @@ static const    mlpnNetwork_t     aNetwork = {
 #include    "./_Training/network.c_inc"
 
 LOC_CONST_STRG(aStrApplication[]) =
-    "class_Py    Py 4 layer MLP test.                      (c) EFr-2025";
+    "class_Py    Py 4 layer MLP test.                      (c) EFr-2026";
 
 LOC_CONST_STRG(aStrHelp[]) =
     "This is a ROMable C application\n"
@@ -603,7 +603,7 @@ LOC_CONST_STRG(aStrHelp[]) =
 
     "Input format:  class_Py\n"
     "Output format: [result]\n\n";
-    "Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
     UserAppl,                           // Module name
@@ -685,7 +685,7 @@ int main(uint32_t argc, const char_t *argv[]) {
     proc_t    *process_0;
 
     LOC_CONST_STRG(aStrIden_0[]) = "Process_User_0";
-    LOC_CONST_STRG(aStrText_0[]) = "Process user 0           (c) EFr-2025";
+    LOC_CONST_STRG(aStrText_0[]) = "Process user 0           (c) EFr-2026";
 
 // Specifications for the processes
 

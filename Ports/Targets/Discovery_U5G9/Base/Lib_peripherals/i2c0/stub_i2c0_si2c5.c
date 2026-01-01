@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		stub for the connection of the "i2c0" manager to the si2c5 device.
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \

@@ -342,7 +342,7 @@ Two connectors are in place to handle the debug activity; the **Debug** (**J6**)
 ;             !!! It is called before to copy and to initialise
 ;             !!! the variable into the RAM.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -362,7 +362,7 @@ Two connectors are in place to handle the debug activity; the **Debug** (**J6**)
 // ==================================
 
 STRG_LOC_CONST(aStrApplication[]) = \
-    "init         First hardware initialisations.           (c) EFr-2025";
+    "init         First hardware initialisations.           (c) EFr-2026";
 
 STRG_LOC_CONST(aStrHelp[])        = \
     "Init\n"

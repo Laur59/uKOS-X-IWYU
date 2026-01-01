@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		calendar manager.
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -83,13 +83,13 @@ static	uint64_t	vOldTickCount[KNB_CORES] =  MCSET(0U);						// Old tickCount
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"calendar     calendar manager.                         (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"calendar     calendar manager.                         (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "calendar manager\n"
 									"================\n\n"
 
 									"This manager ...\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
 	Calendar,						// Module name (the first letter has to be upper case)

@@ -11,7 +11,7 @@
 ; Project:	uKOS-X
 ; Goal:		Test of the TIM0_0 used to generate a 64-bit 1-us counter.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/

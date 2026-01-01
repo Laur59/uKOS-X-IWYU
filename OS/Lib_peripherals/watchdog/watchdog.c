@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		watchdog manager.
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -69,13 +69,13 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"watchdog     watchdog manager.                         (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"watchdog     watchdog manager.                         (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "watchdog manager\n"
 									"================\n\n"
 
 									"This manager ...\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
 	Watchdog,						// Module name (the first letter has to be upper case)
@@ -142,7 +142,7 @@ int32_t	watchdog_arm(uint32_t time, uint8_t mode) {
 // -------------------------------I-----------------------------------------I--------------I
 
 	STRG_LOC_CONST(aStrIden[]) = "Daemon_watchdog";
-	STRG_LOC_CONST(aStrText[]) = "Daemon, watchdog process.                 (c) EFr-2025";
+	STRG_LOC_CONST(aStrText[]) = "Daemon, watchdog process.                 (c) EFr-2026";
 
 	#undef	KDAEMON_STACK_SIZE
 	#define	KDAEMON_STACK_SIZE	KKERN_SZ_STACK_SS

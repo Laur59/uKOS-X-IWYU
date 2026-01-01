@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		IP macros.
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -51,7 +51,7 @@
 // String macros
 // -------------
 
-#define	STRG_COPYRIGHT_FRANZI	"uKOS-X uKernel is (c) of Edo. Franzi, 2025-20xx\n"																\
+#define	STRG_COPYRIGHT_FRANZI	"uKOS-X uKernel is (c) of Edo. Franzi, 2025-2026\n"																\
 								"                              All rights reserved\n"															\
 								"                              edo.franzi@ukos.ch\n\n"
 
@@ -63,7 +63,7 @@
 								"                     email: edo.franzi@ukos.ch\n\n"
 
 #define	STRG_LOGO				"\n"																											\
-								"uKOS-X, (c) 2025-20xx, Edo. Franzi\n"																			\
+								"uKOS-X, (c) 2025-2026, Edo. Franzi\n"																			\
 								"__________________________________\n\n"																		\
 								"                 _/    _/    _/_/      _/_/_/            _/      _/\n"											\
 								"      _/    _/  _/  _/    _/    _/  _/                    _/  _/         ______   uKernel Operating System\n"	\
@@ -75,7 +75,7 @@
 								"Design & Development by Edo. Franzi\n"																			\
 								"All rights reserved.\n\n"
 
-#define	STRG_LOGO_BOOT			"uKOS-X, (c) 2025-20xx, Edo. Franzi\n"																			\
+#define	STRG_LOGO_BOOT			"uKOS-X, (c) 2025-2026, Edo. Franzi\n"																			\
 								"__________________________________\n\n"																		\
 								"                 _/    _/    _/_/      _/_/_/            _/      _/\n"											\
 								"      _/    _/  _/  _/    _/    _/  _/                    _/  _/         ______   uKernel Operating System\n"	\

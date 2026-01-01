@@ -239,12 +239,12 @@ All key elements of the module descriptor include:
 
 ```bash
 list
-mem0  8  XBF_  v1.0   binfill   Raw binary loader.                             (c) EFr-2025
-mem0  9  XDP_  v1.0   dump      Dump a memory area.                            (c) EFr-2025
-mem0 10  XFI_  v1.0   fill      Fill a memory area with a pattern.             (c) EFr-2025
-mem0 11  XHL_  v1.0   hexloader Intel hex+ (32-bit) loader.                    (c) EFr-2025
-mem0 12  XKI_  v1.0   kill      Kill a running process.                        (c) EFr-2025
-mem0 13  XLS_  v1.0   list      List the system modules.                       (c) EFr-2025
+mem0  8  XBF_  v1.0   binfill   Raw binary loader.                             (c) EFr-2026
+mem0  9  XDP_  v1.0   dump      Dump a memory area.                            (c) EFr-2026
+mem0 10  XFI_  v1.0   fill      Fill a memory area with a pattern.             (c) EFr-2026
+mem0 11  XHL_  v1.0   hexloader Intel hex+ (32-bit) loader.                    (c) EFr-2026
+mem0 12  XKI_  v1.0   kill      Kill a running process.                        (c) EFr-2026
+mem0 13  XLS_  v1.0   list      List the system modules.                       (c) EFr-2026
 ```
 
 ### Example, a system module
@@ -263,7 +263,7 @@ mem0 13  XLS_  v1.0   list      List the system modules.                       (
 ; Project:    uKOS-X
 ; Goal:       Show the help of the module.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -283,7 +283,7 @@ mem0 13  XLS_  v1.0   list      List the system modules.                       (
 // ===================================
 
 STRG_LOC_CONST(aStrApplication[]) =
-    "man          Show the help of the module.              (c) EFr-2025";
+    "man          Show the help of the module.              (c) EFr-2026";
 
 STRG_LOC_CONST(aStrHelp[]) =
     "Show the help of the module\n"
@@ -295,7 +295,7 @@ STRG_LOC_CONST(aStrHelp[]) =
     "Input format:  man {moduleName}\n"
     "Output format: [result]\n\n";
 
-    "Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 static  int32_t prgm(uint32_t argc, const char_t *argv[]);
 
@@ -387,7 +387,7 @@ static int32_t prgm(uint32_t argc, char_t *argv[]) {
 ; Project:    uKOS-X
 ; Goal:       header for the uKOS-X applications.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -429,7 +429,7 @@ const  header_t     appHeader = {
 ; Goal:       crt0 for the uKOS-X applications.
 ;             Privileged only support
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -594,7 +594,7 @@ void __attribute__ ((noreturn)) __wrap___stack_chk_fail(void) {
 ; Goal:       Demo of a C application.
 ;             This application shows how to operate with the uKOS-X uKernel.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -617,7 +617,7 @@ void __attribute__ ((noreturn)) __wrap___stack_chk_fail(void) {
 // ===================================
 
 STRG_LOC_CONST(aStrApplication[]) =
-    "basic    Example of how to use a multi printf.     (c) EFr-2025";
+    "basic    Example of how to use a multi printf.     (c) EFr-2026";
 
 STRG_LOC_CONST(aStrHelp[]) =
     "This is a ROMable C application\n"
@@ -627,7 +627,7 @@ STRG_LOC_CONST(aStrHelp[]) =
 
     "Input format:  basic\n"
     "Output format: [result]\n\n";
-    "Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
     UserAppl,                         // Module name
@@ -691,8 +691,8 @@ int main(uint32_t argc, const char_t *argv[]) {
 
     STRG_LOC_CONST(aStrIden_0[]) = "Process_User_0";
     STRG_LOC_CONST(aStrIden_1[]) = "Process_User_1";
-    STRG_LOC_CONST(aStrText_0[]) = "User 0 process,              (c) EFr-2025";
-    STRG_LOC_CONST(aStrText_1[]) = "User 1 process,              (c) EFr-2025";
+    STRG_LOC_CONST(aStrText_0[]) = "User 0 process,              (c) EFr-2026";
+    STRG_LOC_CONST(aStrText_1[]) = "User 1 process,              (c) EFr-2026";
 
 // Specifications for the processes
 
@@ -746,7 +746,7 @@ int main(uint32_t argc, const char_t *argv[]) {
 ; Goal:       Linker description for uKOS-X applications.
 ;             Privileged only support
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/

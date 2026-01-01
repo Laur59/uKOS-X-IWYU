@@ -11,8 +11,8 @@
 ; Project:	uKOS-X
 ; Goal:		imager process; continuous acquisition of an image.
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -69,13 +69,13 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"getImage    get image process: image acquisition.     (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"getImage    get image process: image acquisition.     (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "getImage process\n"
 									"=================\n\n"
 
 									"Acquisition of an image\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 
@@ -111,7 +111,7 @@ static	bool	vKillRequest[KNB_CORES] = MCSET(false);
 // ---------------------------I-----------------------------------------I--------------I
 
 STRG_LOC_CONST(aStrIden[]) = "Process_getImage";
-STRG_LOC_CONST(aStrText[]) = "Process getImage: image acquisition.     (c) EFr-2025";
+STRG_LOC_CONST(aStrText[]) = "Process getImage: image acquisition.     (c) EFr-2026";
 
 // Image 328 x 248
 // Fixed exposure

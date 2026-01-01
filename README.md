@@ -62,7 +62,7 @@ refer directly to the upstream repository.
 
 # µKOS-X
 
-@ 2025-20xx, Edo. Franzi, [http://www.ukos.ch](http://www.ukos.ch/)
+(c) 2025-2026, Edo. Franzi, [http://www.ukos.ch](http://www.ukos.ch/)
 
 ## Introduction
 

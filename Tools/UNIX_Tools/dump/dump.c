@@ -26,7 +26,7 @@
 ;			2. dump -vcp usbserial-FT000001 460800 -display -file /tmp/file_name
 ;			   dump -d2x FTWS6VG0D 460800 -nodisplay -pipe /tmp/file_name
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -128,7 +128,7 @@ int		main(int32_t argc, const char_t *argv[]) {
 	uint32_t	mode, type, display, baudrate;
 
 	fprintf(stdout, "\nXfer data from the selected D2XX/vcp I/O port to the /tmp/pipe file/pipe\n");
-	fprintf(stdout, __DATE__"  "__TIME__" (c) EFr-2025\n");
+	fprintf(stdout, __DATE__"  "__TIME__" (c) EFr-2026\n");
 
 // Analyse the command line
 // ------------------------

@@ -1,6 +1,6 @@
 # Package quality
 
-(c) 2025-20xx, Laurent von Allmen
+(c) 2025-2026, Laurent von Allmen
 
 
 

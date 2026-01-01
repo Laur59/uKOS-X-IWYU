@@ -13,8 +13,8 @@
 ;			- Freeze the uKernel in order to support gdb sessions
 ;			- The gdb loaded application has to start with SET_INTERRUPTION
 ;
-;   © 2025-2026, Edo. Franzi
-;   ------------------------
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -64,7 +64,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"gdb          Support a gdb session.                    (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"gdb          Support a gdb session.                    (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "gdb\n"
 									"===\n\n"
 
@@ -73,7 +73,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "gdb\n"
 									"Input format:  gdb\n"
 									"Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 
@@ -97,7 +97,7 @@ MODULE(
 
 // ---------------------------I-----------------------------------------I--------------I
 
-STRG_LOC_STATI(vStrText[]) = "GDB process.                              (c) EFr-2025";
+STRG_LOC_STATI(vStrText[]) = "GDB process.                              (c) EFr-2026";
 STRG_LOC_STATI(vStrIden[]) = "GDB_process";
 
 /*

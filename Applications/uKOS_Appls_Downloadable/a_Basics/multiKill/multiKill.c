@@ -83,7 +83,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"multiKill    Example of how to commit a suicide.       (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"multiKill    Example of how to commit a suicide.       (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "This is a romable C application\n"
 									"===============================\n\n"
 
@@ -92,7 +92,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "This is a romable C application\n"
 									"Input format:  multiKill\n"
 									"Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
 	UserAppl,							// Module name (the first letter has to be upper case)
@@ -122,16 +122,16 @@ STRG_LOC_CONST(aStrIden_6[]) = "Process_Test_6";
 STRG_LOC_CONST(aStrIden_7[]) = "Process_Test_7";
 STRG_LOC_CONST(aStrIden_8[]) = "Process_Test_8";
 STRG_LOC_CONST(aStrIden_9[]) = "Process_Test_9";
-STRG_LOC_CONST(aStrText_0[]) = "Process Test 0.                           (c) EFr-2025";
-STRG_LOC_CONST(aStrText_1[]) = "Process Test 1.                           (c) EFr-2025";
-STRG_LOC_CONST(aStrText_2[]) = "Process Test 2.                           (c) EFr-2025";
-STRG_LOC_CONST(aStrText_3[]) = "Process Test 3.                           (c) EFr-2025";
-STRG_LOC_CONST(aStrText_4[]) = "Process Test 4.                           (c) EFr-2025";
-STRG_LOC_CONST(aStrText_5[]) = "Process Test 5.                           (c) EFr-2025";
-STRG_LOC_CONST(aStrText_6[]) = "Process Test 6.                           (c) EFr-2025";
-STRG_LOC_CONST(aStrText_7[]) = "Process Test 7.                           (c) EFr-2025";
-STRG_LOC_CONST(aStrText_8[]) = "Process Test 8.                           (c) EFr-2025";
-STRG_LOC_CONST(aStrText_9[]) = "Process Test 9.                           (c) EFr-2025";
+STRG_LOC_CONST(aStrText_0[]) = "Process Test 0.                           (c) EFr-2026";
+STRG_LOC_CONST(aStrText_1[]) = "Process Test 1.                           (c) EFr-2026";
+STRG_LOC_CONST(aStrText_2[]) = "Process Test 2.                           (c) EFr-2026";
+STRG_LOC_CONST(aStrText_3[]) = "Process Test 3.                           (c) EFr-2026";
+STRG_LOC_CONST(aStrText_4[]) = "Process Test 4.                           (c) EFr-2026";
+STRG_LOC_CONST(aStrText_5[]) = "Process Test 5.                           (c) EFr-2026";
+STRG_LOC_CONST(aStrText_6[]) = "Process Test 6.                           (c) EFr-2026";
+STRG_LOC_CONST(aStrText_7[]) = "Process Test 7.                           (c) EFr-2026";
+STRG_LOC_CONST(aStrText_8[]) = "Process Test 8.                           (c) EFr-2026";
+STRG_LOC_CONST(aStrText_9[]) = "Process Test 9.                           (c) EFr-2026";
 
 typedef	struct	myPack	myPack_t;
 
@@ -387,7 +387,7 @@ int		main(int argc, const char *argv[]) {
 // ---------------------------------I-----------------------------------------I--------------I
 
 	STRG_LOC_CONST(aStrIden_a[]) = "Process_User_0";
-	STRG_LOC_CONST(aStrText_a[]) = "Process user 0.                           (c) EFr-2025";
+	STRG_LOC_CONST(aStrText_a[]) = "Process user 0.                           (c) EFr-2026";
 
 // Specifications for the processes
 

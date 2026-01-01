@@ -13,7 +13,7 @@
 ;
 ; Usage:	bin2s [-type] [hexa_address] [binary_file] [s_file]
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -69,7 +69,7 @@ int		main(int32_t argc, const char_t *argv[]) {
 			FILE		*fpin, *fpout;
 	const	char_t		*inputFileName, *outputFileName;
 
-	fprintf(stdout, __DATE__"  "__TIME__" (c) EFr-2025\n");
+	fprintf(stdout, __DATE__"  "__TIME__" (c) EFr-2026\n");
 
 // Analyse the command line
 // ------------------------
