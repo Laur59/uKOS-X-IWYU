@@ -11,7 +11,7 @@
 ; Project:	uKOS-X
 ; Goal:		Give the memory information.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -55,7 +55,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"memory       Give the memory section information.      (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"memory       Give the memory section information.      (c) EFr-2026";
 
 #if (defined(PRIVILEGED_USER_S))
 STRG_LOC_CONST(aStrHelp[])		  = "Give the memory information\n"
@@ -74,7 +74,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "Give the memory information\n"
 
 									"               heap:              address: 0x********, used: x.y%\nn"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 
 #else
@@ -92,7 +92,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "Give the memory information\n"
 
 									"               heap:              address: 0x********, used: x.y%\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 #endif
 

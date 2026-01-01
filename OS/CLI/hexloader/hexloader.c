@@ -34,7 +34,7 @@
 ;				"04" extended linear address (for 32-bit CPU)
 ;				"05" execution address
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -77,7 +77,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"hexloader    Intel hex+ (32-bit) loader.               (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"hexloader    Intel hex+ (32-bit) loader.               (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "Intel hex+ (32-bit) loader\n"
 									"==========================\n\n"
 
@@ -90,7 +90,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "Intel hex+ (32-bit) loader\n"
 									"Input format:  hexloader [module_name p1 p2 pn][-run | -norun]\n"
 									"Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 

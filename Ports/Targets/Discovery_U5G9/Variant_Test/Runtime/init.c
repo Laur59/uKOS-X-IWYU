@@ -15,7 +15,7 @@
 ;			!!! It is called before to copy and to initialise
 ;			!!! the variable into the RAM.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -58,13 +58,13 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"init         First hardware initializations.           (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"init         First hardware initializations.           (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "Init\n"
 									"====\n\n"
 
 									"This code places in a quite state the hardware resources.\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
 	Init,							// Module name (the first letter has to be upper case)

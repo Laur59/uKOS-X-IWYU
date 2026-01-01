@@ -11,7 +11,7 @@
 ; Project:	uKOS-X
 ; Goal:		lcd0 manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -56,13 +56,13 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"lcd0         lcd0 manager.                             (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"lcd0         lcd0 manager.                             (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "lcd0 manager\n"
 									"============\n\n"
 
 									"This manager ...\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
 	Lcd0,							// Module name (the first letter has to be upper case)

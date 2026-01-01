@@ -10,7 +10,7 @@
 //			Display the temperature vector
 //			Display the FFT of the temperature vector
 //
-//   (c) 2025-20xx, Edo. Franzi
+//   (c) 2025-2026, Edo. Franzi
 //   --------------------------
 //                                              __ ______  _____
 //   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -50,7 +50,7 @@ version
 {@
 Version 1.0, 01 January 2025
 
-(c) 2025-20xx, Edo. Franzi
+(c) 2025-2026, Edo. Franzi
 @}
 
 help

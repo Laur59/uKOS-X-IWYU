@@ -1,6 +1,6 @@
 # Typography
 
-(c) 2025-20xx, Laurent von Allmen, 2025-01-01
+(c) 2025-2026, Laurent von Allmen, 2025-01-01
 
 
 
@@ -29,7 +29,7 @@ Exemple for C source file:
 ; Project:   uKOS-X
 ; Goal:      Universal h file for uKOS-X systems.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -133,7 +133,7 @@ Last line of section is blank.
 ### Section 5
 
 ```
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ```
 

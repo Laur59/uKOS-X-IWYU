@@ -1,6 +1,6 @@
 # CMake Build System Guide
 
-(c) 2025-20xx, Laurent von Allmen, 2025-01-01
+(c) 2025-2026, Laurent von Allmen, 2025-01-01
 
 This guide provides comprehensive instructions for building embedded system targets using CMake, supporting both GCC and LLVM toolchains with various configuration options.
 

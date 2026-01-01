@@ -12,7 +12,7 @@
 ; Goal:		startUp process; execute some important initializations
 ;			before jumping to the selected function.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -54,7 +54,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"startUp      StartUp process of the system.            (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"startUp      StartUp process of the system.            (c) EFr-2026";
 
 // Prototypes
 
@@ -87,7 +87,7 @@ MODULE(
 // ---------------------------I-----------------------------------------I--------------I
 
 STRG_LOC_CONST(aStrIden[]) = "Process_startUp";
-STRG_LOC_CONST(aStrText[]) = "Process startUp: start of the system.     (c) EFr-2025";
+STRG_LOC_CONST(aStrText[]) = "Process startUp: start of the system.     (c) EFr-2026";
 
 /*
  * \brief Main entry point

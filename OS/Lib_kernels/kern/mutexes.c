@@ -24,7 +24,7 @@
 ;			int32_t	kern_restartMutex(mutx_t *handle);
 ;			int32_t	kern_getMutexById(const char_t identifier, mutx_t **handle);
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/

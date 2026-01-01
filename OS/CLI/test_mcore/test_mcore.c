@@ -11,7 +11,7 @@
 ; Project:	uKOS-X
 ; Goal:		Test of the multi-core communications layer ASMP.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -53,7 +53,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"test_mcore   Test of the multi-core communications.    (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"test_mcore   Test of the multi-core communications.    (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "Test of the multi-core communications\n"
 									"=====================================\n\n"
 
@@ -62,7 +62,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "Test of the multi-core communications\n"
 									"Input format:  test_mcore\n"
 									"Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 
@@ -96,9 +96,9 @@ static	bool	vKillRequest[KNB_CORES] = MCSET(false);
 // -------------------------------I-----------------------------------------I--------------I
 
 STRG_LOC_CONST(aStrIden_TX[])  = "Process_Send_Mcore";
-STRG_LOC_CONST(aStrText_TX[])  = "Process Send Mcore.                       (c) EFr-2025";
+STRG_LOC_CONST(aStrText_TX[])  = "Process Send Mcore.                       (c) EFr-2026";
 STRG_LOC_CONST(aStrIden_RX[])  = "Process_Receive_Mcore";
-STRG_LOC_CONST(aStrText_RX[])  = "Process Receive Mcore.                    (c) EFr-2025";
+STRG_LOC_CONST(aStrText_RX[])  = "Process Receive Mcore.                    (c) EFr-2026";
 
 STRG_LOC_CONST(message_0to1[]) = "The old dreams were good dreams. They didn't work out, but I'm glad I had them.";
 STRG_LOC_CONST(message_1to0[]) = "The quick brown fox jumps over the lazy dog.";

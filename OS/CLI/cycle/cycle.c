@@ -11,7 +11,7 @@
 ; Project:	uKOS-X
 ; Goal:		cycle tool; launch a program cyclically.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -53,7 +53,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"cycle        Cycle function.                           (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"cycle        Cycle function.                           (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "cycle\n"
 									"=====\n\n"
 
@@ -66,7 +66,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "cycle\n"
 									"Input format:  cycle -stop [commDevice]\n"
 									"Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 
@@ -113,15 +113,15 @@ struct	cyclePack {
 // -----------------------------------------------------I-----------------------------------------I--------------I
 
 static	const	cycle_t		aTabCycle[] = {
-								{ KSYST, "Cycle_syst", "Process cycle syst.                       (c) EFr-2025" },
-								{ KURT0, "Cycle_urt0", "Process cycle urt0.                       (c) EFr-2025" },
-								{ KURT1, "Cycle_urt1", "Process cycle urt1.                       (c) EFr-2025" },
-								{ KURT2, "Cycle_urt2", "Process cycle urt2.                       (c) EFr-2025" },
-								{ KURT3, "Cycle_urt3", "Process cycle urt3.                       (c) EFr-2025" },
-								{ KURT4, "Cycle_urt4", "Process cycle urt4.                       (c) EFr-2025" },
-								{ KCDC0, "Cycle_cdc0", "Process cycle cdc0.                       (c) EFr-2025" },
-								{ KCDC1, "Cycle_cdc1", "Process cycle cdc1.                       (c) EFr-2025" },
-								{ KWFI0, "Cycle_wfi0", "Process cycle wfi0.                       (c) EFr-2025" }
+								{ KSYST, "Cycle_syst", "Process cycle syst.                       (c) EFr-2026" },
+								{ KURT0, "Cycle_urt0", "Process cycle urt0.                       (c) EFr-2026" },
+								{ KURT1, "Cycle_urt1", "Process cycle urt1.                       (c) EFr-2026" },
+								{ KURT2, "Cycle_urt2", "Process cycle urt2.                       (c) EFr-2026" },
+								{ KURT3, "Cycle_urt3", "Process cycle urt3.                       (c) EFr-2026" },
+								{ KURT4, "Cycle_urt4", "Process cycle urt4.                       (c) EFr-2026" },
+								{ KCDC0, "Cycle_cdc0", "Process cycle cdc0.                       (c) EFr-2026" },
+								{ KCDC1, "Cycle_cdc1", "Process cycle cdc1.                       (c) EFr-2026" },
+								{ KWFI0, "Cycle_wfi0", "Process cycle wfi0.                       (c) EFr-2026" }
 							};
 
 #define	KNB_CHANNELS	(sizeof(aTabCycle) / sizeof(cycle_t))

@@ -15,7 +15,7 @@
 ;
 ;			acq_img 320 240 usbserial-FT000001
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -95,7 +95,7 @@ int		main(int32_t argc, const char_t *argv[]) {
 	const	char_t		*driver;
 
 	fprintf(stdout, "\nDump images from the serial stream to image_xx.raw files\n");
-	fprintf(stdout, __DATE__"  "__TIME__" (c) EFr-2025\n");
+	fprintf(stdout, __DATE__"  "__TIME__" (c) EFr-2026\n");
 
 // Analyse the command line
 // ------------------------

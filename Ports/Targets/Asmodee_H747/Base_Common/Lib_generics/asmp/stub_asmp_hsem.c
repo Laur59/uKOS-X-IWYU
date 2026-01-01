@@ -47,7 +47,7 @@
 ;			In a heterogeneous configuration: PREEMPTION_THRESHOLD(KCORE_0)
 ;			In a homogeneous configuration: PREEMPTION_THRESHOLD(core)
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/

@@ -12,7 +12,7 @@
 ; Goal:		wki2c tool.
 ;			This tool allows to operate with an i2c device.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -54,7 +54,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"wki2c        Communicate with the i2c x device.        (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"wki2c        Communicate with the i2c x device.        (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "Read/write on the i2c x device\n"
 									"==============================\n\n"
 
@@ -79,7 +79,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "Read/write on the i2c x device\n"
 									"Input format:  wki2c {device} -R address, register nbBytes\n"
 									"Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 

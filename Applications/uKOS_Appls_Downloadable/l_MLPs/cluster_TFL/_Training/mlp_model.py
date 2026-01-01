@@ -20,7 +20,7 @@
 #			python3 mlp_model.py
 #			xxd -i  mlp_model.tflite > mlp_model.c_inc
 #
-#   (c) 2025-20xx, Edo. Franzi
+#   (c) 2025-2026, Edo. Franzi
 #   --------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/

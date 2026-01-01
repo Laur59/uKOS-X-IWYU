@@ -18,7 +18,7 @@
 ;			For ubuntu
 ;			gcc -shared -o viewer.so ftdiSPI.c viewer.c -L/opt/uKOS/Packages/D2XX -lftd2xx
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/

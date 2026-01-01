@@ -13,7 +13,7 @@
 ;			- As soon as a new data is available on the queue
 ;				process it
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -68,7 +68,7 @@ bool	installaProcess_dispatcher(void) {
 // -------------------------------I-----------------------------------------I--------------I
 
 	STRG_LOC_CONST(aStrIden[]) = "User_Process_dispatcher";
-	STRG_LOC_CONST(aStrText[]) = "Process dispatcher.                       (c) EFr-2025";
+	STRG_LOC_CONST(aStrText[]) = "Process dispatcher.                       (c) EFr-2026";
 
 // Specifications for the processes
 

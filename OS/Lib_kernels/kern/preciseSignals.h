@@ -22,7 +22,7 @@
 ;			int32_t	kern_killPreciseSignal(prcs_t *handle);
 ;			int32_t	kern_getPreciseSignalById(const char_t *identifier, prcs_t **handle);
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/

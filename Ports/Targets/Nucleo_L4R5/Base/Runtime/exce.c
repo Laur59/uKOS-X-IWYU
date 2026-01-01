@@ -11,7 +11,7 @@
 ; Project:	uKOS-X
 ; Goal:		Exceptions for the Nucleo_L4R5 module.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -53,13 +53,13 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"exce         Exception management.                     (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"exce         Exception management.                     (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "Exce\n"
 									"====\n\n"
 
 									"This code manages the spurious exceptions.\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
 	Exce,							// Module name (the first letter has to be upper case)

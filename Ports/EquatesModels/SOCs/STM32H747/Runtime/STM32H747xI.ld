@@ -14,7 +14,7 @@
 ;			- DS12930 Rev 2, p. 23; Datasheet
 ;			- RM0399 Rev 4, p. 136; STM32H745/755 and STM32H747/757 advanced Arm®-based 32-bit MCUs
 ;
-;   (c) 2025-20xx, Laurent von Allmen
+;   (c) 2025-2026, Laurent von Allmen
 ;   ---------------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/

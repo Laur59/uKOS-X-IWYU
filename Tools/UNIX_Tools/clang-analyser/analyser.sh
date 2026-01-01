@@ -18,7 +18,7 @@
 #				cd variant
 #				run-analyser
 #
-#   (c) 2025-20xx, Laurent von Allmen
+#   (c) 2025-2026, Laurent von Allmen
 #   ---------------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/

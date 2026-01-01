@@ -26,7 +26,7 @@
 ;			int32_t	kern_waitAtLeast(uint16_t time);
 ;			int32_t	kern_hasPendingTimeoutProcesses(bool *nonInfTOActive);
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/

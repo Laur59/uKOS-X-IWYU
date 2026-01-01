@@ -11,7 +11,7 @@
 ; Project:	uKOS-X
 ; Goal:		stm32H743_tim17 equates.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/

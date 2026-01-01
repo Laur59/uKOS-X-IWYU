@@ -11,7 +11,7 @@
 ; Project:	uKOS-X
 ; Goal:		stub for the connection of the "urt3" manager to the uart4 device.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/

@@ -24,7 +24,7 @@
 ;			MAiXDUiNO_K210 @ 400-MHz	-
 ;			Discovery_U5G9 @ 160-MHz	-
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/

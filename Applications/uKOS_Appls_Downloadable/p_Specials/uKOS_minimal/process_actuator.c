@@ -13,7 +13,7 @@
 ;			- Every 1000-ms
 ;				Send a new value to the dispatcher
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -70,7 +70,7 @@ bool	installaProcess_actuator(void) {
 // -------------------------------I-----------------------------------------I--------------I
 
 	STRG_LOC_CONST(aStrIden[]) = "User_Process_actuator";
-	STRG_LOC_CONST(aStrText[]) = "Process actuator.                         (c) EFr-2025";
+	STRG_LOC_CONST(aStrText[]) = "Process actuator.                         (c) EFr-2026";
 
 // Specifications for the processes
 

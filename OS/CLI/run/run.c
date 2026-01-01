@@ -11,7 +11,7 @@
 ; Project:	uKOS-X
 ; Goal:		Launch a function module.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -53,7 +53,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"run          Run a downloaded code.                    (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"run          Run a downloaded code.                    (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "Launch a function module\n"
 									"========================\n\n"
 
@@ -62,7 +62,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "Launch a function module\n"
 									"Input format:  run\n"
 									"Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 

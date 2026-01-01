@@ -11,7 +11,7 @@
 ; Project:	uKOS-X
 ; Goal:		launcher process; launch all the defined daemon & processes.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -53,13 +53,13 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"launcher     Launcher: launch the daemons & processes. (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"launcher     Launcher: launch the daemons & processes. (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "launcher process\n"
 									"================\n\n"
 
 									"Launch all the available daemons & processes of the system\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 
@@ -92,7 +92,7 @@ MODULE(
 // ---------------------------I-----------------------------------------I--------------I
 
 STRG_LOC_CONST(aStrIden[]) = "Process_launcher";
-STRG_LOC_CONST(aStrText[]) = "Process launcher: launch processes.       (c) EFr-2025";
+STRG_LOC_CONST(aStrText[]) = "Process launcher: launch processes.       (c) EFr-2026";
 
 /*
  * \brief Main entry point

@@ -20,7 +20,7 @@
 ;			int32_t	kern_setPrivilegeMode(uint8_t mode);
 ;			void	kern_privilegeElevate(void); !!! Not for user applications
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/

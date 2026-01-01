@@ -12,7 +12,7 @@
 ; Goal:		Image viewer.
 ;			This tool allows to send an image via the xfer manager.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/

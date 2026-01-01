@@ -11,7 +11,7 @@
 ; Project:	uKOS-X
 ; Goal:		Open a console prompt (multi-user).
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -53,7 +53,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"console      Console prompt.                           (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"console      Console prompt.                           (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "Console\n"
 									"=======\n\n"
 
@@ -72,7 +72,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "Console\n"
 									"   Input format:  name [parms ..]\n"
 									"   Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 
@@ -114,14 +114,14 @@ struct	consolePack {
 // -------------------------------------------------------I-----------------------------------------I--------------I
 
 static	const	console_t	aTabConsole[] = {
-								{ KURT0, "Console_urt0", "Process console urt0.                     (c) EFr-2025" },
-								{ KURT1, "Console_urt1", "Process console urt1.                     (c) EFr-2025" },
-								{ KURT2, "Console_urt2", "Process console urt2.                     (c) EFr-2025" },
-								{ KURT3, "Console_urt3", "Process console urt3.                     (c) EFr-2025" },
-								{ KURT4, "Console_urt4", "Process console urt4.                     (c) EFr-2025" },
-								{ KCDC0, "Console_cdc0", "Process console cdc0.                     (c) EFr-2025" },
-								{ KCDC1, "Console_cdc1", "Process console cdc1.                     (c) EFr-2025" },
-								{ KWFI0, "Console_wfi0", "Process console wfi0.                     (c) EFr-2025" }
+								{ KURT0, "Console_urt0", "Process console urt0.                     (c) EFr-2026" },
+								{ KURT1, "Console_urt1", "Process console urt1.                     (c) EFr-2026" },
+								{ KURT2, "Console_urt2", "Process console urt2.                     (c) EFr-2026" },
+								{ KURT3, "Console_urt3", "Process console urt3.                     (c) EFr-2026" },
+								{ KURT4, "Console_urt4", "Process console urt4.                     (c) EFr-2026" },
+								{ KCDC0, "Console_cdc0", "Process console cdc0.                     (c) EFr-2026" },
+								{ KCDC1, "Console_cdc1", "Process console cdc1.                     (c) EFr-2026" },
+								{ KWFI0, "Console_wfi0", "Process console wfi0.                     (c) EFr-2026" }
 							};
 
 #define	KNB_CHANNELS			(sizeof(aTabConsole) / sizeof(console_t))
@@ -258,7 +258,7 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 // Argument passed and saved
 
 	(void)dprintf(KSYST, "Console core %1"PRIu32".\n", core);
-	(void)dprintf(KSYST, __DATE__"  "__TIME__" (c) EFr-2025\n\n");
+	(void)dprintf(KSYST, __DATE__"  "__TIME__" (c) EFr-2026\n\n");
 
 	text_readArgs(commandLine, KLN_CMD_LINE_BUF, argv, &argc);
 

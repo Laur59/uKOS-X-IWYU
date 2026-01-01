@@ -11,7 +11,7 @@
 ; Project:	uKOS-X
 ; Goal:		Demo of a minimal application using the uKOS-X uKernel.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -92,7 +92,7 @@ mbox_t	*vQueue_dispatcher = NULL;
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"uKOS_minimal Minimal app (for ASIC).                   (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"uKOS_minimal Minimal app (for ASIC).                   (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "This is a romable C application\n"
 									"===============================\n\n"
 
@@ -101,7 +101,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "This is a romable C application\n"
 									"Input format:  uKOS_minimal\n"
 									"Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
 	UserAppl,							// Module name (the first letter has to be upper case)

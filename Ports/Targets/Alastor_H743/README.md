@@ -1,6 +1,6 @@
 # Target Alastor_H743
 
-(c) 2025-20xx, Edo. Franzi, 2025-01-01
+(c) 2025-2026, Edo. Franzi, 2025-01-01
 
 ## Base
 

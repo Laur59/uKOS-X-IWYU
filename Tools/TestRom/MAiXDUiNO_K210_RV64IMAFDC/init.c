@@ -15,7 +15,7 @@
 ;			!!! It is called before to copy and to initialise
 ;			!!! the variable into the RAM.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -59,7 +59,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-LOC_CONST_STRG(aStrApplication[]) =	"init         First hardware initializations.           (c) EFr-2025";
+LOC_CONST_STRG(aStrApplication[]) =	"init         First hardware initializations.           (c) EFr-2026";
 LOC_CONST_STRG(aStrHelp[])        = "Init\n"
 									"====\n\n"
 

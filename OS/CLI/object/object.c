@@ -11,7 +11,7 @@
 ; Project:	uKOS-X
 ; Goal:		Display the structure of a uKOS-X object.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -61,7 +61,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"object       Display the structure of an object.       (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"object       Display the structure of an object.       (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "Display the structure of an object\n"
 									"==================================\n\n"
 
@@ -71,7 +71,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "Display the structure of an object\n"
 									"Input format:  object {{core} [-proc | -sema | -mutx | -mbox | -stim | -prcs] number}\n"
 									"Output format: object information\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 

@@ -11,7 +11,7 @@
 ; Project:	uKOS-X
 ; Goal:		Test the atomic access by the multi-cores.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -54,13 +54,13 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"test_atomic  Atomic test.                              (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"test_atomic  Atomic test.                              (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "test_atomic process\n"
 									"===================\n\n"
 
 									"Test of the atomic accesses.\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 
@@ -85,7 +85,7 @@ MODULE(
 // ---------------------------I-----------------------------------------I--------------I
 
 STRG_LOC_CONST(aStrIden[]) = "Process_Atomic";
-STRG_LOC_CONST(aStrText[]) = "Process Atomic: atomic coherence test.    (c) EFr-2025";
+STRG_LOC_CONST(aStrText[]) = "Process Atomic: atomic coherence test.    (c) EFr-2026";
 
 static	atomic_flag_t	lock;
 

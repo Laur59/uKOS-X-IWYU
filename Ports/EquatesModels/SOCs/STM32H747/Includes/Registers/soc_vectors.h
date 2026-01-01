@@ -13,7 +13,7 @@
 ;			The "reset" exception is not considered. The indirect table
 ;			is reserved in the first.c file.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/

@@ -11,7 +11,7 @@
 ; Project:	uKOS-X
 ; Goal:		Test of a preliminary pico kernel (with messages ECALL) and with the macro_core.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/

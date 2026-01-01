@@ -12,7 +12,7 @@
 ; Goal:		This tool allows to control the ESP32 Alastor chip.
 ;			!!! This tool is Alastor specific.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -54,7 +54,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"esp32        Control of the ESP32 processor.           (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"esp32        Control of the ESP32 processor.           (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "Initial control of the ESP32 device\n"
 									"===================================\n\n"
 
@@ -64,7 +64,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "Initial control of the ESP32 device\n"
 									"Input format:  esp32 {-disable | -reset | -boot | -srts | -rrts | -connect baudrate}\n"
 									"Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 

@@ -13,7 +13,7 @@
 ;			This tool allows to operate with an spi device.
 ;			For the moment this tool reserved for STM CPU32 SoCs!!
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -62,7 +62,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"wkspi        Communicate with the spi x device.        (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"wkspi        Communicate with the spi x device.        (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "Read/write on the spi x device (valid only for STM32 SoCs)\n"
 									"==========================================================\n\n"
 
@@ -88,7 +88,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "Read/write on the spi x device (valid only for 
 									"Input format:  wkspi {device} value\n"
 									"Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 

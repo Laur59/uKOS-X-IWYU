@@ -15,7 +15,7 @@
 #			i.e
 #			./add_new_target.sh XYZ_H743 STM32H743 CORTEX_M7 Nucleo_H743
 #
-#   (c) 2025-20xx, Laurent von Allmen
+#   (c) 2025-2026, Laurent von Allmen
 #   ---------------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/

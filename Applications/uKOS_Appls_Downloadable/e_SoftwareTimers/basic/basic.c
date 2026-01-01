@@ -12,7 +12,7 @@
 ; Goal:		Demo of a C application.
 ;			This application shows how to operate with the uKOS-X uKernel.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -68,7 +68,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"basic        Example of how to use a software timer.   (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"basic        Example of how to use a software timer.   (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "This is a romable C application\n"
 									"===============================\n\n"
 
@@ -77,7 +77,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "This is a romable C application\n"
 									"Input format:  basic\n"
 									"Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
 	UserAppl,							// Module name (the first letter has to be upper case)
@@ -206,7 +206,7 @@ int		main(int argc, const char *argv[]) {
 // -------------------------------I-----------------------------------------I--------------I
 
 	STRG_LOC_CONST(aStrIden[]) = "Process_Software_Timer";
-	STRG_LOC_CONST(aStrText[]) = "Process Software Timer.                   (c) EFr-2025";
+	STRG_LOC_CONST(aStrText[]) = "Process Software Timer.                   (c) EFr-2026";
 
 	UNUSED(argc);
 	UNUSED(argv);

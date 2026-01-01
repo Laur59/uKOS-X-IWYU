@@ -1,6 +1,6 @@
 # Generic patches
 
-(c) 2025-20xx, Edo. Franzi
+(c) 2025-2026, Edo. Franzi
 
 ## Creating a patch
 

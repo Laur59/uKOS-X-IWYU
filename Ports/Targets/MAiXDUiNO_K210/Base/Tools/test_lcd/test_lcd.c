@@ -11,7 +11,7 @@
 ; Project:	uKOS-X
 ; Goal:		Some lcd tests.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -54,7 +54,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"test_lcd     Some lcd tests.                           (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"test_lcd     Some lcd tests.                           (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "Test of the lcd\n"
 									"===============\n\n"
 
@@ -63,7 +63,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "Test of the lcd\n"
 									"Input format:  test_lcd\n"
 									"Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 
@@ -92,15 +92,15 @@ MODULE(
 // -----------------------------I-----------------------------------------I--------------I
 
 STRG_LOC_CONST(aStrIden_0[]) = "Process_LCD0";
-STRG_LOC_CONST(aStrText_0[]) = "Process LCD0.                             (c) EFr-2025";
+STRG_LOC_CONST(aStrText_0[]) = "Process LCD0.                             (c) EFr-2026";
 STRG_LOC_CONST(aStrIden_1[]) = "Process_LCD1";
-STRG_LOC_CONST(aStrText_1[]) = "Process LCD1.                             (c) EFr-2025";
+STRG_LOC_CONST(aStrText_1[]) = "Process LCD1.                             (c) EFr-2026";
 STRG_LOC_CONST(aStrIden_2[]) = "Process_LCD2";
-STRG_LOC_CONST(aStrText_2[]) = "Process LCD2.                             (c) EFr-2025";
+STRG_LOC_CONST(aStrText_2[]) = "Process LCD2.                             (c) EFr-2026";
 STRG_LOC_CONST(aStrIden_3[]) = "Process_LCD3";
-STRG_LOC_CONST(aStrText_3[]) = "Process LCD3.                             (c) EFr-2025";
+STRG_LOC_CONST(aStrText_3[]) = "Process LCD3.                             (c) EFr-2026";
 STRG_LOC_CONST(aStrIden_4[]) = "Process_LCD4";
-STRG_LOC_CONST(aStrText_4[]) = "Process LCD4.                             (c) EFr-2025";
+STRG_LOC_CONST(aStrText_4[]) = "Process LCD4.                             (c) EFr-2026";
 
 #define	KNB_COLORS	18u
 

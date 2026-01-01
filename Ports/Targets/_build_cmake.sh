@@ -13,7 +13,7 @@
 #           cd ${PATH_UKOS_X_PACKAGE}/Ports/Targets
 #			./_build_cmake.sh [-L] [-U] [-Y] [-v|-w]
 #
-#   (c) 2025-20xx, Edo. Franzi
+#   (c) 2025-2026, Edo. Franzi
 #   --------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/

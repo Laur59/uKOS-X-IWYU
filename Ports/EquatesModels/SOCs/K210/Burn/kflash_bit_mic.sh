@@ -12,7 +12,7 @@
 #			- Usage:
 #			  ./kflash_bit_mic.sh
 #
-#   (c) 2025-20xx, Edo. Franzi
+#   (c) 2025-2026, Edo. Franzi
 #   --------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/

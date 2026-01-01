@@ -11,7 +11,7 @@
 ; Project:	uKOS-X
 ; Goal:		Test of the TIM0 Alarme 0 (core 0) & 1 (core 1) interruption.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/

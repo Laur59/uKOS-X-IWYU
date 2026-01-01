@@ -25,7 +25,7 @@
 ;			int32_t	kern_getProcessRun(proc_t **handle);
 ;			int32_t	kern_installCallBack(void (*code)(uint8_t state));
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/

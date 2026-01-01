@@ -11,7 +11,7 @@
 ; Project:	uKOS-X
 ; Goal:		Control the temperature.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -53,7 +53,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"X            Control the temperature.                  (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"X            Control the temperature.                  (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "Control the temperature\n"
 									"=======================\n\n"
 
@@ -63,7 +63,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "Control the temperature\n"
 									"Input format:  X\n"
 									"Output format: x,t0,t1,t...t127\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 

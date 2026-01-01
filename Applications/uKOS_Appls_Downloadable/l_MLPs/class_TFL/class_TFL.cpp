@@ -18,7 +18,7 @@
 ;				  Compute the inference
 ;				  Display the classes
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -102,7 +102,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"class_TFL    TLF 4 layer MLP test.                     (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"class_TFL    TLF 4 layer MLP test.                     (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 									"===============================\n\n"
 
@@ -264,7 +264,7 @@ int		main(int argc, const char *argv[]) {
 // ------------------------------------I-----------------------------------------I--------------I
 
 	STRG_LOC_CONST(aStrIden_0[]) =    "Process_User";
-	STRG_LOC_CONST(aStrText_0[]) =    "Process user.                             (c) EFr-2025";
+	STRG_LOC_CONST(aStrText_0[]) =    "Process user.                             (c) EFr-2026";
 
 	UNUSED(argc);
 	UNUSED(argv);

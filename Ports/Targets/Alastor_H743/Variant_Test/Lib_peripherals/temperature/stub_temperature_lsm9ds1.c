@@ -12,7 +12,7 @@
 ; Goal:		stub for the connection of the "temperature" manager to the lsm9ds1
 ;			via the spi2 device.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/

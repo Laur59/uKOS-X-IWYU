@@ -24,7 +24,7 @@
 ;			int32_t	kern_restartSemaphore(sema_t *handle);
 ;			int32_t	kern_getSemaphoreById(const char_t identifier, sema_t **handle);
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/

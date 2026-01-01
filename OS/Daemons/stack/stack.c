@@ -11,7 +11,7 @@
 ; Project:	uKOS-X
 ; Goal:		idle daemon; run when all the other processes are suspended.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -54,13 +54,13 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"stack        stack: verify the stack integrity.        (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"stack        stack: verify the stack integrity.        (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "stack deamon\n"
 									"============\n\n"
 
 									"Install the stack deamon\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 
@@ -94,7 +94,7 @@ MODULE(
 // ---------------------------I-----------------------------------------I--------------I
 
 STRG_LOC_CONST(aStrIden[]) = "Deamon_stack";
-STRG_LOC_CONST(aStrText[]) = "Daemon stack: verify the stack integrity. (c) EFr-2025";
+STRG_LOC_CONST(aStrText[]) = "Daemon stack: verify the stack integrity. (c) EFr-2026";
 
 /*
  * \brief Main entry point

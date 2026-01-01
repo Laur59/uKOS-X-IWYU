@@ -13,7 +13,7 @@
 ;			References:
 ;			- RM0486 Rev 1, p. 162; STM32N647/657xx Arm®-based 32-bit MCUs
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/

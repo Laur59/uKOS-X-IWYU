@@ -10,7 +10,7 @@
 # Project:	uKOS-X
 # Goal:		Configuring options to build kernel and os
 #
-#   (c) 2025-20xx, Laurent von Allmen
+#   (c) 2025-2026, Laurent von Allmen
 #   ---------------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/

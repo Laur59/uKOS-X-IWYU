@@ -11,7 +11,7 @@
 ; Project:	uKOS-X
 ; Goal:		Minimal test of the RAM (hardware).
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -54,7 +54,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"test_ram     Minimal test of the RAM (hardware).       (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"test_ram     Minimal test of the RAM (hardware).       (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "Minimal test of the hardware\n"
 									"============================\n\n"
 
@@ -65,7 +65,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "Minimal test of the hardware\n"
 									"Input format:  test_ram {numberOfTests}\n"
 									"Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 

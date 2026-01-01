@@ -24,7 +24,7 @@
 ;			int32_t	kern_killPool(pool_t *handle);
 ;			int32_t	kern_getPoolById(const char_t *identifier, pool_t **handle);
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/

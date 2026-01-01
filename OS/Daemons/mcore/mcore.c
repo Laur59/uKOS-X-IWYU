@@ -12,7 +12,7 @@
 ; Goal:		mcore process; multi-core layer via mbox & asmp.
 ;			For the moment, this layer is limited to 2 cores.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -54,13 +54,13 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"mcore        mcore process: manage the multi-core      (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"mcore        mcore process: manage the multi-core      (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "mcore process\n"
 									"=============\n\n"
 
 									"Management of the multi-cores\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 
@@ -91,8 +91,8 @@ MODULE(
 
 STRG_LOC_CONST(aStrIden_RecX[]) = "Daemon_rec_from_core_x";
 STRG_LOC_CONST(aStrIden_SndX[]) = "Daemon_snd_to_core_x";
-STRG_LOC_CONST(aStrText_RecX[]) = "Daemon mcore: receive from core x.        (c) EFr-2025";
-STRG_LOC_CONST(aStrText_SndX[]) = "Daemon mcore: send to core x.             (c) EFr-2025";
+STRG_LOC_CONST(aStrText_RecX[]) = "Daemon mcore: receive from core x.        (c) EFr-2026";
+STRG_LOC_CONST(aStrText_SndX[]) = "Daemon mcore: send to core x.             (c) EFr-2026";
 
 /*
  * \brief Main entry point

@@ -11,7 +11,7 @@
 ; Project:	uKOS-X
 ; Goal:		"TinyUSB" management.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -69,13 +69,13 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"TinyUSB      TinyUSB process: management of the USB.   (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"TinyUSB      TinyUSB process: management of the USB.   (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "TinyUSB process\n"
 									"===============\n\n"
 
 									"TinyUSB management\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 
@@ -106,7 +106,7 @@ MODULE(
 // ---------------------------I-----------------------------------------I--------------I
 
 STRG_LOC_CONST(aStrIden[]) = "Process_tinyusb";
-STRG_LOC_CONST(aStrText[]) = "Process TinyUSB: USB management.          (c) EFr-2025";
+STRG_LOC_CONST(aStrText[]) = "Process TinyUSB: USB management.          (c) EFr-2026";
 
 /*
  * \brief Main entry point

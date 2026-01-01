@@ -11,7 +11,7 @@
 ; Project:	uKOS-X
 ; Goal:		Give some uKOS-X info.
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -54,7 +54,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"uKOS         The uKOS-X information.                   (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"uKOS         The uKOS-X information.                   (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "The uKOS-X information\n"
 									"========================\n\n"
 
@@ -64,7 +64,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "The uKOS-X information\n"
 									"Input format:  uKOS\n"
 									"Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 

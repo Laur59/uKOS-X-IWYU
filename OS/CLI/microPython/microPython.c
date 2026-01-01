@@ -11,7 +11,7 @@
 ; Project:	uKOS-X
 ;			uKOS-X interface for MicroPython (www.micropython.com).
 ;
-;   (c) 2025-20xx, Edo. Franzi
+;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -56,7 +56,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"microPython  MicroPython for uKOS-X.                   (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) =	"microPython  MicroPython for uKOS-X.                   (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])		  = "MicroPython Embedded for uKOS-X\n"
 									"=================================\n\n"
 
@@ -66,7 +66,7 @@ STRG_LOC_CONST(aStrHelp[])		  = "MicroPython Embedded for uKOS-X\n"
 									"Input format:  microPython {serialManager [urt0 | ... ] memorySize}\n"
 									"Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 
@@ -91,7 +91,7 @@ MODULE(
 // ---------------------------I-----------------------------------------I--------------I
 
 STRG_LOC_CONST(aStrIden[]) = "Process_MicroPython";
-STRG_LOC_CONST(aStrText[]) = "Process MicroPython (micropython.com)     (c) EFr-2025";
+STRG_LOC_CONST(aStrText[]) = "Process MicroPython (micropython.com)     (c) EFr-2026";
 
 typedef	struct	microPythonPack	microPythonPack_t;
 
