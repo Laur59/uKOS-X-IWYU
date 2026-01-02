@@ -3,17 +3,17 @@
 # code_analysis.
 # ==============
 
-# SPDX-License-Identifier: MIT
-
 #------------------------------------------------------------------------
-# Author:   Laurent von Allmen      The 2025-10-02
-# Modifs:
+# SPDX-License-Identifier: MIT
 #
-# Project:  uKOS-X
-# Goal:     Helper tool for Cppcheck static code analysis.
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #
-#   (c) 2025-2026, Laurent von Allmen
-#   ---------------------------------
+# Project: uKOS-X
+#
+# Purpose:
+#   Helper tool for Cppcheck static code analysis.
+#
+#-----
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \

@@ -3,19 +3,19 @@
 # dot-clang-tidy.
 # ===============
 
-# SPDX-License-Identifier: MIT
-
 #------------------------------------------------------------------------
-# Author:	Laurent von Allmen		The 2025-01-01
-# Modifs:
+# SPDX-License-Identifier: MIT
 #
-# Project:	uKOS-X
-# Goal:		Clang tidy rules for the uKOS project.
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #
-#			add "-" to suppress a specific rule.
+# Project: uKOS-X
 #
-#   (c) 2025-2026, Laurent von Allmen
-#   ---------------------------------
+# Purpose:
+#   Clang tidy rules for the uKOS project.
+#
+#   add "-" to suppress a specific rule.
+#
+#----- 
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \

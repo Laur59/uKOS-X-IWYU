@@ -1,20 +1,20 @@
 #!/usr/bin/env zsh
 
-# SPDX-License-Identifier: MIT
-
 #------------------------------------------------------------------------
-# Author:   Laurent von Allmen  The 2025-01-01
-# Modifs:
+# SPDX-License-Identifier: MIT
 #
-# Project:  uKOS-X
-# Goal:     Build all the projects.
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #
-#           usage: sourced by build.sh
-#           cd cloned_directory/Ports/Targets
-#           ./_build_cmake.sh [-L] [-U] [-Y] [-v|-w]
+# Project: uKOS-X
 #
-#   Copyright 2025-2026, Laurent von Allmen
-#   ---------------------------------------
+# Purpose:
+#   Build all the projects.
+#
+# Usage: sourced by build.sh
+#   cd cloned_directory/Ports/Targets
+#   ./_build_cmake.sh [-L] [-U] [-Y] [-v|-w]
+#
+#-----
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \

@@ -3,23 +3,23 @@
 # analyser.
 # =========
 
-# SPDX-License-Identifier: MIT
-
 #------------------------------------------------------------------------
-# Author:   Laurent von Allmen  The 2025-11-13
-# Modifs:
+# SPDX-License-Identifier: MIT
 #
-# Project:  uKOS-X
-# Goal:     Run clang analyser; replace scan-build not working with CMake
-#           and use clang-tidy as linter tool.
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #
-#           Usage:
-#               alias run-analyser='$PATH_UKOS_X_PACKAGE/Tools/UNIX_Tools/clang-analyser/analyser.sh'
-#               cd variant
-#               run-analyser
+# Project: uKOS-X
 #
-#   (c) 2025-2026, Laurent von Allmen
-#   ---------------------------------
+# Purpose:
+#  Run clang analyser; replace scan-build not working with CMake
+#  and use clang-tidy as linter tool.
+#
+# Usage:
+#   alias run-analyser='$PATH_UKOS_X_PACKAGE/Tools/UNIX_Tools/clang-analyser/analyser.sh'
+#   cd variant
+#   run-analyser
+#
+#-----
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \

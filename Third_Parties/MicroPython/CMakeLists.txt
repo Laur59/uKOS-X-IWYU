@@ -1,62 +1,39 @@
 # CMakeLists.
 # ===========
 
-# SPDX-License-Identifier: MIT
-
 #------------------------------------------------------------------------
-# Author:   Laurent von Allmen  The 2025-10-13
-# Modifs:
+# SPDX-License-Identifier: MIT
 #
-# Project:  uKOS-X
-# Goal:     Umbrella CMake file to build all MicroPython libraries
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #
-# Description:
-#           This umbrella CMakeLists.txt builds all MicroPython static libraries
-#           for all supported Cortex-M cores using ExternalProject.
+# Project: uKOS-X
 #
-#           It replaces the functionality of build_with_cmake.sh, providing
-#           a pure CMake solution for building all MicroPython libraries.
+# Purpose:
+#   Umbrella CMake file to build all MicroPython libraries.
 #
-#           Usage:
-#               cd Third_Parties/MicroPython
-#               cmake -S . -B build -GNinja
-#               cmake --build build
+# Build description:
+#   This top-level CMakeLists.txt drives the build of all MicroPython static
+#   libraries for supported SoCs and profiles using CMake ExternalProject.
 #
-#           This will build libraries for all Cortex-M cores:
-#               - Library/CORTEX_M4/libMicroPython.a
-#               - Library/CORTEX_M7/libMicroPython.a
-#               - Library/CORTEX_M33/libMicroPython.a
-#               - Library/CORTEX_M55/libMicroPython.a
+#   It is functionally equivalent to build_with_cmake.sh and provides
+#   a single, declarative CMake-based build entry point.
 #
-#   Copyright 2025-2026, Laurent von Allmen
-#   ---------------------------------------
-#                                              __ ______  _____
-#   Edo. Franzi                         __  __/ //_/ __ \/ ___/
-#   5-Route de Cheseaux                / / / / ,< / / / /\__ \
-#   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
-#                                     \__,_/_/ |_\____//____/
-#   edo.franzi@ukos.ch
+# Reproducibility:
+#   This build definition is intended to be deterministic and reproducible.
+#   Given identical source inputs, build configuration, toolchain versions,
+#   and build environment, the produced static libraries are expected to be
+#   bit-for-bit identical.
 #
-#   Permission is hereby granted, free of charge, to any person
-#   obtaining a copy of this software and associated documentation
-#   files (the "Software"), to deal in the Software without restriction,
-#   including without limitation the rights to use, copy, modify,
-#   merge, publish, distribute, sublicense, and/or sell copies of the
-#   Software, and to permit persons to whom the Software is furnished
-#   to do so, subject to the following conditions:
+#   The build does not embed wall-clock timestamps. Where applicable,
+#   SOURCE_DATE_EPOCH is expected to be honored by all toolchain components.
 #
-#   The above copyright notice and this permission notice shall be
-#   included in all copies or substantial portions of the Software.
+# Usage:
+#   cd Third_Parties/MicroPython
+#   cmake -S . -B build -GNinja
+#   cmake --build build
 #
-#   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-#   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-#   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-#   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
-#   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-#   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-#   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-#   SOFTWARE.
-#
+# Build outputs:
+#   - Library/*/libMicroPython.a
 #------------------------------------------------------------------------
 
 cmake_minimum_required(VERSION 3.26)

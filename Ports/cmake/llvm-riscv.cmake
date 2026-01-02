@@ -1,18 +1,18 @@
 # llvm-riscv.
 # ===========
 
-# SPDX-License-Identifier: MIT
-
 #------------------------------------------------------------------------
-# Author:   Laurent von Allmen  The 2025-01-01
-# Modifs:
+# SPDX-License-Identifier: MIT
 #
-# Project:  uKOS-X
-# Goal:     Toolchain file for configuring Cmake to build cross-compiling
-#           projects based on RISC-V core using clang(LLVM).
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #
-#   (c) 2025-2026, Laurent von Allmen
-#   ---------------------------------
+# Project: uKOS-X
+#
+# Purpose:
+#   Toolchain file for configuring Cmake to build cross-compiling
+#   projects based on RISC-V core using clang(LLVM).
+#
+#-----
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \

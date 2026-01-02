@@ -3,33 +3,29 @@
 # compare_lib_a.
 # ==============
 
-# SPDX-License-Identifier: MIT
-
 #------------------------------------------------------------------------
-# Author:   Laurent von Allmen      The 2025-10-13
-# Modifs:
+# SPDX-License-Identifier: MIT
 #
-# Project:  uKOS-X
-# Goal:     Compare two static libraries (.a files)
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+#
+# Purpose:
+#   Compare two static libraries (.a files)
 #
 # Description:
-#        Takes two library paths as parameters and performs detailed
-#        comparison of their contents, including:
-#        - File sizes
-#        - Section sizes (text, data, bss)
-#        - Symbol counts and exported symbols
-#        - Undefined symbols (dependencies)
-#        - Object file lists
+#   Takes two library paths as parameters and performs detailed
+#   comparison of their contents, including:
+#   - File sizes
+#   - Section sizes (text, data, bss)
+#   - Symbol counts and exported symbols
+#   - Undefined symbols (dependencies)
+#   - Object file lists
 #
-#        This is a generic version of the TinyUSB compare_folders.sh
-#        script that works with any two libraries for any architecture
-#        (ARM, RISC-V, x86, etc.).
+#   This is a generic version of the TinyUSB compare_folders.sh
+#   script that works with any two libraries for any architecture
+#   (ARM, RISC-V, x86, etc.).
 #
-#        Usage:
-#           ./compare_lib_a.sh path1/libAbc.a path2/libDef.a
-#
-#   (c) 2025-2026, Laurent von Allmen
-#   ---------------------------------
+# Usage:
+#   ./compare_lib_a.sh path1/libAbc.a path2/libDef.a
 #------------------------------------------------------------------------
 
 emulate -L zsh

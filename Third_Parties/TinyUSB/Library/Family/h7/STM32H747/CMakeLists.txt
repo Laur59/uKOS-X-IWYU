@@ -1,25 +1,16 @@
 # CMakeLists.txt
 # ==============
 
-# SPDX-License-Identifier: MIT
-
 #------------------------------------------------------------------------
-# Author:   Claude AI       Le 2025-10-11
-# Modifs:
+# SPDX-License-Identifier: MIT
 #
-# Project:  uKOS-X
-# Goal:     CMakeLists pour uKOS-X pour construire les modules libTinyUSB.a
-#           STM32H747 - Cortex-M7
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #
-#   Copyright 2025-2026, Laurent von Allmen
-#   ---------------------------------------
-#                                              __ ______  _____
-#   Edo. Franzi                         __  __/ //_/ __ \/ ___/
-#   5-Route de Cheseaux                / / / / ,< / / / /\__ \
-#   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
-#                                     \__,_/_/ |_\____//____/
-#   edo.franzi@ukos.ch
+# Project: uKOS-X
 #
+# Purpose:
+#   CMakeLists for uKOS-X to build library libTinyUSB.a.
+#   STM32H747 - Cortex-M7
 #------------------------------------------------------------------------
 
 cmake_minimum_required(VERSION 3.15)

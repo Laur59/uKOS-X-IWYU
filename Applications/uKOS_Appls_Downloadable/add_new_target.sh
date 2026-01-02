@@ -1,22 +1,22 @@
 #!/usr/bin/env zsh
 
-# SPDX-License-Identifier: MIT
-
 #------------------------------------------------------------------------
-# Author:	Laurent von Allmen	The 2025-01-01
-# Modifs:
+# SPDX-License-Identifier: MIT
 #
-# Project:	uKOS-X
-# Goal:		Building all the uKOS downloadable applications.
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #
-#			usage:
-#			./add_new_target.sh Target SOC Core [refTarget]
+# Project: uKOS-X
 #
-#			i.e
-#			./add_new_target.sh XYZ_H743 STM32H743 CORTEX_M7 Nucleo_H743
+# Purpose:
+#   Building all the uKOS downloadable applications.
 #
-#   (c) 2025-2026, Laurent von Allmen
-#   ---------------------------------
+# Usage:
+#   ./add_new_target.sh Target SOC Core [refTarget]
+#
+#   i.e
+#	./add_new_target.sh XYZ_H743 STM32H743 CORTEX_M7 Nucleo_H743
+#
+#-----
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \

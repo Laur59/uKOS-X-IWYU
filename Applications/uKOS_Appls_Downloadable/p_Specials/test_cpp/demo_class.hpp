@@ -3,14 +3,16 @@
 ; ===========
 
 ;------------------------------------------------------------------------
-; Author:	Laurent von Allmen		The 2025-07-05
-; Modifs:
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Header file for the TestClass process manager.
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   Copyright 2025-2026, Laurent von Allmen
-;   ---------------------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;   Header file for the TestClass process manager.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
