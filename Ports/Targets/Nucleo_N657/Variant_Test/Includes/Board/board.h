@@ -48,12 +48,12 @@
 
 #pragma	once
 
-#include	"macros_core.h"	// IWYU pragma: keep (required for REG)
-#include	"soc_reg.h"		// IWYU pragma: keep (required for GPIOG)
-
 #ifndef Nucleo_N657_S
 #define Nucleo_N657_S
 #endif
+
+#include	"macros_core.h"	// IWYU pragma: keep (required for REG)
+#include	"soc_reg.h"		// IWYU pragma: keep (required for GPIOG)
 
 // System identifiers
 // ------------------

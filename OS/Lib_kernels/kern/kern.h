@@ -464,7 +464,7 @@ extern	bool	is_exception(void);
  *    installMyProcesses();
  *    status = kern_runKernel();
  *
- *    while (true) { }
+ *    while (true) { ; }
  * \endcode
  *
  * - This function initialises the "kern" manager.
@@ -489,7 +489,7 @@ extern	int32_t	kern_init(void);
  *    installMyProcesses();
  *    status = kern_runKernel();
  *
- *    while (true) { }
+ *    while (true) { ; }
  * \endcode
  *
  * - Initialise all the timers (1-ms & 20-ms)

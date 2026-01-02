@@ -48,6 +48,10 @@
 
 #pragma	once
 
+#ifndef DevKit_nRF5340_S
+#define	DevKit_nRF5340_S
+#endif
+
 // System identifiers
 // ------------------
 

@@ -254,9 +254,11 @@ list(APPEND CLI_U
     ${PATH_UKOS}/OS/CLI/semaphore/semaphore.c
     ${PATH_UKOS}/OS/CLI/sloader/sloader.c
     ${PATH_UKOS}/OS/CLI/szkern/szkern.c
+    ${PATH_UKOS}/OS/CLI/test_malloc/test_malloc.c
+    ${PATH_UKOS}/OS/CLI/test_ram/test_ram.c
     ${PATH_UKOS}/OS/CLI/uKOS/uKOS.c
-    ${PATH_UKOS}/OS/CLI/viewer/viewer_uvc0_simule.c
     ${PATH_UKOS}/OS/CLI/viewer/viewer.c
+    ${PATH_UKOS}/OS/CLI/viewer/viewer_uvc0_simule.c
     ${PATH_UKOS}/OS/CLI/wki2c/wki2c.c
     ${PATH_UKOS}/OS/CLI/wkserial/wkserial.c
     ${PATH_UKOS}/OS/CLI/wkspi/wkspi.c

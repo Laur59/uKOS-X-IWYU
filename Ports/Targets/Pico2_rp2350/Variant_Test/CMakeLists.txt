@@ -268,9 +268,6 @@ add_compile_definitions(CONFIG_DIFFERENT_SERIAL_PER_CORE_S=false)
 # Statistics support
 add_compile_definitions(KKERN_WITH_STATISTICS_S=true)
 
-# Hardware check of the stack
-# add_compile_definitions(STUB_KERN_CHECK_XSP_LIMIT_S)
-
 # Stack integrity monitoring
 add_compile_definitions(
     KDAEMONS_ALERT_STACK_INT_S=false

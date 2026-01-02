@@ -46,7 +46,9 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include	"clockTree.h"
+#include	"macros_core.h"
+#include	"soc_reg.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------

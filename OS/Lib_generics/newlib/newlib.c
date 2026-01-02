@@ -510,7 +510,7 @@ int		_getpid_r(reent_t *reent) {
 	uint32_t	core;
 	proc_t		*process;
 
-    core = GET_RUNNING_CORE;
+	core = GET_RUNNING_CORE;
 
 	kern_getProcessRun(&process);
 	id = (int)(((uintptr_t)process - (uintptr_t)&vKern_proc[core][0]) / sizeof(proc_t));
@@ -530,7 +530,7 @@ int		_kill_r(reent_t *reent, int pid, int sig) {
 	proc_t		*process;
 	uint32_t	core;
 
-    core = GET_RUNNING_CORE;
+	core = GET_RUNNING_CORE;
 
 	process = (proc_t *)(((uintptr_t)pid * (uintptr_t)sizeof(proc_t)) + (uintptr_t)&vKern_proc[core][0]);
 	kern_killProcess(process);
