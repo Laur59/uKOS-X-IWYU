@@ -67,7 +67,7 @@ SRC					+=  $(LIB_SYS_DIR)/diskio.c
 SRC					+=  $(shell find $(LIB_SRC_DIR) -name '*.c')
 OBJ					=   $(patsubst %.c,%.o,$(SRC))
 
-CFLAGS				+= -c -g3 $(OPTIMISATION)
+CFLAGS				+= -g3 $(OPTIMISATION)
 CFLAGS				+= -MMD
 CFLAGS				+= $(CPU_SPEC) $(FLAGS_FP)
 CFLAGS				+= $(STANDARD)
@@ -119,6 +119,7 @@ clr :
 
 archive :
 	$(AR) rcs $(FATFS) $(OBJ)
+	$(RANLIB) $(FATFS)
 
 # Build & remove
 

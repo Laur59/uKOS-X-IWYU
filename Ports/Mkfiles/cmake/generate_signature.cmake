@@ -95,8 +95,3 @@ file(WRITE "${OUTPUT_SIG_C}"
 file(WRITE "${OUTPUT_CK}"
 "STRG_LOC_CONST(aSignature[]) = \"${HASH_64}\";
 ")
-
-# Optional: Print status message (comment out for quieter builds)
-message(STATUS "Generated signature: ${HASH_64}")
-message(STATUS "  -> ${OUTPUT_SIG_C}")
-message(STATUS "  -> ${OUTPUT_CK}")

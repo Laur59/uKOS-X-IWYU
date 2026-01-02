@@ -212,6 +212,9 @@ add_compile_definitions(
 	KRECORD_SZ_TRACE_FIFO=20
 )
 
+# RND generator
+add_compile_definitions(GLOB_RND_SOFT_S)
+
 add_compile_definitions(
 	KKERN_NB_MAILBOXES=8
 	KKERN_NB_MUTEXES=8

@@ -62,7 +62,7 @@ SRC					=   $(LIB_SYS_DIR)/headerIntelRDFPMath.c
 SRC					+=  $(shell find $(LIB_SRC_DIR) -name '*.c')
 OBJ					=   $(patsubst %.c,%.o,$(SRC))
 
-CFLAGS				+= -c -g3 $(OPTIMISATION)
+CFLAGS				+= -g3 $(OPTIMISATION)
 CFLAGS				+= -MMD
 CFLAGS				+= -ffunction-sections
 CFLAGS				+= -fdata-sections
@@ -124,6 +124,7 @@ clr :
 
 archive :
 	$(AR) rcs $(INTELRDFPMATH) $(OBJ)
+	$(RANLIB) $(INTELRDFPMATH)
 
 # Build & remove
 

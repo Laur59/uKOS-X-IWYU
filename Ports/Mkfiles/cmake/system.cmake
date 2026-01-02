@@ -144,7 +144,6 @@ target_include_directories(system_compiler_flags INTERFACE
 	${PATH_UKOS}/OS/Daemons
 	${PATH_UKOS}/OS/CLI
 	${PATH_VARI}/Shared
-	${PATH_VARI}/System
 	${PATH_VARI}/Runtime
 	${PATH_BASE}/Runtime
 	${PATH_VARI}/Includes/System
@@ -245,11 +244,11 @@ endif()
 
 # Common link options
 set(TARGET_COMMON_LINK_OPTIONS
+	$<$<BOOL:${CANARY}>:-Wl,--wrap=__stack_chk_fail>
 	-Wl,--wrap=_malloc_r
 	-Wl,--wrap=_free_r
 	-Wl,--wrap=_realloc_r
 	-Wl,--wrap=_calloc_r
-	$<$<BOOL:${CANARY}>:-Wl,--wrap=__stack_chk_fail>
 	-L${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC}/Runtime
 	-L${PATH_UKOS}/Ports/EquatesModels/Cores/${CORE}/Runtime
 	-T${LINKS_LD}
@@ -279,7 +278,7 @@ add_custom_command(
 		-DINPUT_FILE=${CMAKE_CURRENT_BINARY_DIR}/NOSIG.bin
 		-DOUTPUT_SIG_C=${CMAKE_CURRENT_BINARY_DIR}/${LOCAL_TARGET}.sig.c
 		-DOUTPUT_CK=${CMAKE_CURRENT_BINARY_DIR}/${LOCAL_TARGET}.ck
-		-P ${PATH_UKOS}/Ports/Mkfiles/cmake/generate_signature.cmake
+		-P ${CMAKE_CURRENT_LIST_DIR}/generate_signature.cmake
 	DEPENDS ${TARGET_NOSIG_ELF} NOSIG.bin
 	COMMENT "Generating signature C source file (SHA-256)"
 	VERBATIM
@@ -302,7 +301,7 @@ set_property(TARGET ${TARGET_ELF} APPEND
 # This section implements a hybrid approach that serves two purposes:
 #
 # 1. DEVELOPMENT WORKFLOW (automatic, via POST_BUILD):
-#	 - Artifacts are automatically copied to ARTIFACTS_DIR after each build
+#	 - Artifacts are automatically copied to ARTEFACTS_DIR after each build
 #	 - Default location: ${CMAKE_SOURCE_DIR}/System (configurable via cache)
 #	 - This preserves the existing workflow where burn scripts expect files in System/
 #	 - Uses copy_if_different for efficiency (only copies when files change)
@@ -316,7 +315,7 @@ set_property(TARGET ${TARGET_ELF} APPEND
 # This design ensures backwards compatibility whilst adding modern CMake capabilities.
 
 # Artifact output directory configuration
-set(ARTIFACTS_DIR "$ENV{PWD}/System" CACHE PATH "Directory for build artifacts")
+set(ARTEFACTS_DIR "$ENV{PWD}/System" CACHE PATH "Directory for build artifacts")
 
 # Print executable size
 add_custom_command(
@@ -331,11 +330,11 @@ add_custom_command(
 )
 
 # Generate output formats and copy to artifact directory
-# Development workflow: automatic copy to ARTIFACTS_DIR for immediate use
+# Development workflow: automatic copy to ARTEFACTS_DIR for immediate use
 add_custom_command(
 	TARGET ${TARGET_ELF}
 	POST_BUILD
-	COMMENT "Generating output formats and copying to ${ARTIFACTS_DIR}"
+	COMMENT "Generating output formats and copying to ${ARTEFACTS_DIR}"
 
 	# Generate output formats
 	COMMAND ${CMAKE_OBJCOPY} -O ihex --strip-all ${TARGET_ELF} ${LOCAL_TARGET}.hex
@@ -343,23 +342,23 @@ add_custom_command(
 	COMMAND ${CMAKE_OBJCOPY} -O srec --strip-all ${TARGET_ELF} ${LOCAL_TARGET}.s3
 
 	# Ensure artifact directory exists
-	COMMAND ${CMAKE_COMMAND} -E make_directory ${ARTIFACTS_DIR}
+	COMMAND ${CMAKE_COMMAND} -E make_directory ${ARTEFACTS_DIR}
 
 	# Copy artifacts (only when changed)
-	COMMAND ${CMAKE_COMMAND} -E copy_if_different ${TARGET_ELF} ${ARTIFACTS_DIR}
-	COMMAND ${CMAKE_COMMAND} -E copy_if_different ${LOCAL_TARGET}.map ${ARTIFACTS_DIR}
-	COMMAND ${CMAKE_COMMAND} -E copy_if_different ${LOCAL_TARGET}.ck ${ARTIFACTS_DIR}
-	COMMAND ${CMAKE_COMMAND} -E copy_if_different ${LOCAL_TARGET}.hex ${ARTIFACTS_DIR}
-	COMMAND ${CMAKE_COMMAND} -E copy_if_different ${LOCAL_TARGET}.bin ${ARTIFACTS_DIR}
-	COMMAND ${CMAKE_COMMAND} -E copy_if_different ${LOCAL_TARGET}.s3 ${ARTIFACTS_DIR}
+	COMMAND ${CMAKE_COMMAND} -E copy_if_different ${TARGET_ELF} ${ARTEFACTS_DIR}
+	COMMAND ${CMAKE_COMMAND} -E copy_if_different ${LOCAL_TARGET}.map ${ARTEFACTS_DIR}
+	COMMAND ${CMAKE_COMMAND} -E copy_if_different ${LOCAL_TARGET}.ck ${ARTEFACTS_DIR}
+	COMMAND ${CMAKE_COMMAND} -E copy_if_different ${LOCAL_TARGET}.hex ${ARTEFACTS_DIR}
+	COMMAND ${CMAKE_COMMAND} -E copy_if_different ${LOCAL_TARGET}.bin ${ARTEFACTS_DIR}
+	COMMAND ${CMAKE_COMMAND} -E copy_if_different ${LOCAL_TARGET}.s3 ${ARTEFACTS_DIR}
 
 	BYPRODUCTS
-		${ARTIFACTS_DIR}/${LOCAL_TARGET}.hex
-		${ARTIFACTS_DIR}/${LOCAL_TARGET}.bin
-		${ARTIFACTS_DIR}/${LOCAL_TARGET}.s3
-		${ARTIFACTS_DIR}/${TARGET_ELF}
-		${ARTIFACTS_DIR}/${LOCAL_TARGET}.map
-		${ARTIFACTS_DIR}/${LOCAL_TARGET}.ck
+		${ARTEFACTS_DIR}/${LOCAL_TARGET}.hex
+		${ARTEFACTS_DIR}/${LOCAL_TARGET}.bin
+		${ARTEFACTS_DIR}/${LOCAL_TARGET}.s3
+		${ARTEFACTS_DIR}/${TARGET_ELF}
+		${ARTEFACTS_DIR}/${LOCAL_TARGET}.map
+		${ARTEFACTS_DIR}/${LOCAL_TARGET}.ck
 	VERBATIM
 )
 
@@ -385,7 +384,7 @@ install(FILES
 install(FILES
 	${CMAKE_CURRENT_BINARY_DIR}/${LOCAL_TARGET}.map
 	${CMAKE_CURRENT_BINARY_DIR}/${LOCAL_TARGET}.ck
-	${ARTIFACTS_DIR}/${LOCAL_TARGET}.cnf
+	${ARTEFACTS_DIR}/${LOCAL_TARGET}.cnf
 	DESTINATION .
 	COMPONENT development
 )
@@ -396,22 +395,22 @@ if(WITH_LISTING)
 	add_custom_command(
 		TARGET ${TARGET_ELF}
 		POST_BUILD
-		COMMAND ${GENERATE_LST} ${TARGET_ELF} > ${ARTIFACTS_DIR}/${LOCAL_TARGET}.lst
-		COMMAND ${GENERATE_DIS} ${TARGET_ELF} > ${ARTIFACTS_DIR}/${LOCAL_TARGET}.dis
+		COMMAND ${GENERATE_LST} ${TARGET_ELF} > ${ARTEFACTS_DIR}/${LOCAL_TARGET}.lst
+		COMMAND ${GENERATE_DIS} ${TARGET_ELF} > ${ARTEFACTS_DIR}/${LOCAL_TARGET}.dis
 		BYPRODUCTS
-			${ARTIFACTS_DIR}/${LOCAL_TARGET}.lst
-			${ARTIFACTS_DIR}/${LOCAL_TARGET}.dis
+			${ARTEFACTS_DIR}/${LOCAL_TARGET}.lst
+			${ARTEFACTS_DIR}/${LOCAL_TARGET}.dis
 		VERBATIM
 	)
 endif()
 
 add_custom_target(listing
 	DEPENDS ${TARGET_ELF}
-	COMMAND ${GENERATE_LST} ${TARGET_ELF} > ${ARTIFACTS_DIR}/${LOCAL_TARGET}.lst
-	COMMAND ${GENERATE_DIS} ${TARGET_ELF} > ${ARTIFACTS_DIR}/${LOCAL_TARGET}.dis
+	COMMAND ${GENERATE_LST} ${TARGET_ELF} > ${ARTEFACTS_DIR}/${LOCAL_TARGET}.lst
+	COMMAND ${GENERATE_DIS} ${TARGET_ELF} > ${ARTEFACTS_DIR}/${LOCAL_TARGET}.dis
 	BYPRODUCTS
-		${ARTIFACTS_DIR}/${LOCAL_TARGET}.lst
-		${ARTIFACTS_DIR}/${LOCAL_TARGET}.dis
+		${ARTEFACTS_DIR}/${LOCAL_TARGET}.lst
+		${ARTEFACTS_DIR}/${LOCAL_TARGET}.dis
 	VERBATIM
 )
 

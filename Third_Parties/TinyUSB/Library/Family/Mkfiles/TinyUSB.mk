@@ -181,7 +181,7 @@ OBJ_C_HS			=  $(OBJ_C:.o=.hs.o)
 OBJ_A_FS			=  $(OBJ_A:.o=.fs.o)
 OBJ_A_HS			=  $(OBJ_A:.o=.hs.o)
 
-CFLAGS				+= -c -g3 $(OPTIMISATION)
+CFLAGS				+= -g3 $(OPTIMISATION)
 CFLAGS				+= $(CPU_SPEC) $(FLAGS_FP)
 CFLAGS				+= $(STANDARD)
 CFLAGS				+= $(FLAGS_UKOS)
@@ -240,9 +240,11 @@ clr:
 
 archive_fs : $(OBJ_C_FS) $(OBJ_A_FS)
 	$(AR) rcs $(TINYUSB_FS) $(OBJ_C_FS) $(OBJ_A_FS)
+	$(RANLIB) $(TINYUSB_FS)
 
 archive_hs : $(OBJ_C_HS) $(OBJ_A_HS)
 	$(AR) rcs $(TINYUSB_HS) $(OBJ_C_HS) $(OBJ_A_HS)
+	$(RANLIB) $(TINYUSB_HS)
 
 # Build & remove
 

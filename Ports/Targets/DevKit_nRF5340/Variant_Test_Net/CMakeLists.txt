@@ -121,13 +121,13 @@ list(APPEND KERN_P
 	${PATH_UKOS}/OS/Lib_kernels/kern/lists.c
 	${PATH_UKOS}/OS/Lib_kernels/kern/mailboxes.c
 	${PATH_UKOS}/OS/Lib_kernels/kern/mutexes.c
-# 	${PATH_UKOS}/OS/Lib_kernels/kern/pools.c
-# 	${PATH_UKOS}/OS/Lib_kernels/kern/preciseSignals.c
+#	${PATH_UKOS}/OS/Lib_kernels/kern/pools.c
+#	${PATH_UKOS}/OS/Lib_kernels/kern/preciseSignals.c
 	${PATH_UKOS}/OS/Lib_kernels/kern/processes.c
 	${PATH_UKOS}/OS/Lib_kernels/kern/scheduler.c
 	${PATH_UKOS}/OS/Lib_kernels/kern/semaphores.c
 	${PATH_UKOS}/OS/Lib_kernels/kern/signals.c
-# 	${PATH_UKOS}/OS/Lib_kernels/kern/softwareTimers.c
+#	${PATH_UKOS}/OS/Lib_kernels/kern/softwareTimers.c
 	${PATH_UKOS}/OS/Lib_kernels/kern/statistics.c
 	${PATH_UKOS}/OS/Lib_kernels/kern/temporal.c
 	${PATH_BASE}/Lib_kernels/kern/stub_kern_kernel.c

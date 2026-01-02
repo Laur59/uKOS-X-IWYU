@@ -164,6 +164,7 @@ target_link_libraries(kern_u PUBLIC system_compiler_flags)
 
 # Lib_xxxx components (privileged) -> liblibx_p.a
 # (grouped by manager)
+add_source_with_define(LIBX_P ${PATH_UKOS}/OS/Lib_cryptographics/random/random.c CONFIG_MAN_RANDOM_S)
 add_source_with_define(LIBX_P ${PATH_UKOS}/OS/Lib_generics/asmp/asmp.c CONFIG_MAN_ASMP_S)
 add_source_with_define(LIBX_P ${PATH_UKOS}/OS/Lib_generics/calendar/calendar.c CONFIG_MAN_CALENDAR_S)
 add_source_with_define(LIBX_P ${PATH_UKOS}/OS/Lib_generics/machine/machine.c CONFIG_MAN_MACHINE_S)
@@ -177,6 +178,7 @@ add_source_with_define(LIBX_P ${PATH_UKOS}/OS/Lib_serials/cdc1/cdc1.c CONFIG_MAN
 add_source_with_define(LIBX_P ${PATH_UKOS}/OS/Lib_serials/serial/serial.c CONFIG_MAN_SERIAL_S)
 add_source_with_define(LIBX_P ${PATH_UKOS}/OS/Lib_serials/urt0/urt0.c CONFIG_MAN_URT0_S)
 list(APPEND LIBX_P
+	${PATH_BASE}/Lib_cryptographics/random/stub_random.c
 	${PATH_BASE}/Lib_generics/asmp/stub_asmp_dbell.c
 	${PATH_BASE}/Lib_generics/machine/stub_machine.c
 	${PATH_BASE}/Lib_peripherals/led/stub_led.c
@@ -237,14 +239,15 @@ list(APPEND CLI_U
 	${PATH_UKOS}/OS/CLI/object/object.c
 	${PATH_UKOS}/OS/CLI/process/process.c
 	${PATH_UKOS}/OS/CLI/restart/restart.c
+	${PATH_UKOS}/OS/CLI/rnd/rnd.c
 	${PATH_UKOS}/OS/CLI/run/run.c
 	${PATH_UKOS}/OS/CLI/semaphore/semaphore.c
 	${PATH_UKOS}/OS/CLI/sloader/sloader.c
 	${PATH_UKOS}/OS/CLI/szkern/szkern.c
+	${PATH_UKOS}/OS/CLI/test_malloc/test_malloc.c
+	${PATH_UKOS}/OS/CLI/test_mcore/test_mcore.c
 	${PATH_UKOS}/OS/CLI/uKOS/uKOS.c
 	${PATH_UKOS}/OS/CLI/wkserial/wkserial.c
-	${PATH_UKOS}/OS/CLI/test_mcore/test_mcore.c
-	${PATH_UKOS}/OS/CLI/test_malloc/test_malloc.c
 )
 add_library(tool_u ${CLI_U})
 target_link_libraries(tool_u PUBLIC system_compiler_flags)
@@ -252,18 +255,18 @@ target_link_libraries(tool_u PUBLIC system_compiler_flags)
 # MicroPython Engine integration (MicroPython manager)
 add_compile_definitions(CONFIG_MAN_MICROPYTHON_S)
 find_library(MICROPYTHON MicroPython ${PATH_UKOS}/Third_Parties/MicroPython/Library/${CORE})
-file(APPEND "${ARTIFACTS_DIR}/FLASH.cnf" "-DCONFIG_MAN_MICROPYTHON_S ")
+file(APPEND "${ARTEFACTS_DIR}/FLASH.cnf" "-DCONFIG_MAN_MICROPYTHON_S ")
 
 # All library components
 set(UKOS_COMPONENTS rtcb_p kern_p kern_u libx_p libx_u proc_p proc_u tool_u ${MICROPYTHON} ${TINYUSB})
 
 # System configuration flags
 
+# With cdc0 on core 0 & urt0 on core 1
+add_compile_definitions(CONFIG_DIFFERENT_SERIAL_PER_CORE_S=false)
+
 # Statistics support
 add_compile_definitions(KKERN_WITH_STATISTICS_S=true)
-
-# Hardware check of the stack
-# add_compile_definitions(STUB_KERN_CHECK_XSP_LIMIT_S)
 
 # Stack integrity monitoring
 add_compile_definitions(

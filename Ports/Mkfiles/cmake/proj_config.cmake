@@ -86,7 +86,7 @@ function(derive_soc_properties SOC_NAME)
 	if(SOC_NAME MATCHES "^rp([0-9]+)")
 		set(PROVIDER "raspberrypi" PARENT_SCOPE)
 		set(FAMILY "pico2" PARENT_SCOPE)
-		message(STATUS "Derived properties for ${SOC_NAME}: PROVIDER=nordic, FAMILY=nrf")
+		message(STATUS "Derived properties for ${SOC_NAME}: PROVIDER=raspberrypi, FAMILY=pico2")
 		return()
 	endif()
 
@@ -301,16 +301,16 @@ endif()
 
 # Artifact directory configuration (shared with system.cmake)
 # This must match the default in system.cmake
-if(NOT DEFINED ARTIFACTS_DIR)
-	set(ARTIFACTS_DIR "$ENV{PWD}/System" CACHE PATH "Directory for build artifacts")
+if(NOT DEFINED ARTEFACTS_DIR)
+	set(ARTEFACTS_DIR "$ENV{PWD}/System" CACHE PATH "Directory for build artifacts")
 endif()
 
-file(REMOVE "${ARTIFACTS_DIR}/FLASH.cnf")
+file(REMOVE "${ARTEFACTS_DIR}/FLASH.cnf")
 # Mark the file for deletion during clean
-set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_CLEAN_FILES "${ARTIFACTS_DIR}/FLASH.cnf")
+set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_CLEAN_FILES "${ARTEFACTS_DIR}/FLASH.cnf")
 # Macro to add a file with an associated define option
 macro(add_source_with_define the_list source_file definition)
 	list(APPEND ${the_list} ${source_file})
 	add_compile_definitions(${definition})
-	file(APPEND "${ARTIFACTS_DIR}/FLASH.cnf" "-D${definition} ")
+	file(APPEND "${ARTEFACTS_DIR}/FLASH.cnf" "-D${definition} ")
 endmacro()

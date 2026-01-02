@@ -80,11 +80,31 @@ set(BURN stlink)
 # Apply project settings
 include(proj_config)
 
+# Derive PROVIDER and FAMILY from SOC (eliminates redundant information)
+derive_soc_properties(${SOC})
+
 # Extra compilation options
 add_compile_options(
 	-g3 # include extra information for debugger
 	-Os # optimisation
 )
+
+# TinyUSB integration (must be before library definitions)
+# Note: PROVIDER and FAMILY are automatically derived from SOC via derive_soc_properties()
+set(SPEED FS)
+set(PROFILE cdc_msc)
+
+set(PATH_TINYUSB ${PATH_UKOS}/Third_Parties/TinyUSB)
+
+# Find TinyUSB package config (automatically provides include paths and definitions)
+find_package(TinyUSB REQUIRED
+	PATHS ${PATH_TINYUSB}/Library/Family/${FAMILY}/${SOC}/${PROFILE}
+	NO_DEFAULT_PATH
+)
+
+# Link against the appropriate speed variant
+# This automatically adds include paths and compile definitions
+set(TINYUSB TinyUSB::${SPEED})
 
 # Sources
 # -------
@@ -159,7 +179,7 @@ list(APPEND LIBX_P
 	${PATH_BASE}/Lib_serials/urt0/stub_urt0_usart3.c
 )
 add_library(libx_p ${LIBX_P})
-target_link_libraries(libx_p PUBLIC system_compiler_flags)
+target_link_libraries(libx_p PUBLIC system_compiler_flags ${TINYUSB})
 
 # Lib_xxxx components (user) -> liblibx_u.a
 add_source_with_define(LIBX_U ${PATH_UKOS}/OS/Lib_generics/newlib/newlib.c CONFIG_MAN_NEWLIB_S)
@@ -187,7 +207,7 @@ list(APPEND PROC_U
 	${PATH_VARI}/Processes/TinyUSB/stub_TinyUSB.c
 )
 add_library(proc_u ${PROC_U})
-target_link_libraries(proc_u PUBLIC system_compiler_flags)
+target_link_libraries(proc_u PUBLIC system_compiler_flags ${TINYUSB})
 
 # CLI components (user) -> libtool_u.a
 list(APPEND CLI_U
@@ -219,22 +239,6 @@ list(APPEND CLI_U
 )
 add_library(tool_u ${CLI_U})
 target_link_libraries(tool_u PUBLIC system_compiler_flags)
-
-# TinyUSB integration
-set(PROVIDER st)
-set(FAMILY f2)
-set(SPEED FS)
-set(PROFILE cdc_msc)
-
-set(PATH_TINYUSB ${PATH_UKOS}/Third_Parties/TinyUSB)
-list(APPEND PATH_INCLUDES
-	${PATH_TINYUSB}/uKOS_Interface/Includes/mcu/${PROVIDER}
-	${PATH_TINYUSB}/Library/Family/${FAMILY}/${SOC}/${PROFILE}
-	${PATH_TINYUSB}/uKOS_Interface/OSAL
-	${PATH_TINYUSB}/TinyUSB-current/src
-)
-add_compile_definitions(SYSTEM_TINYUSB_${SPEED}_S)
-find_library(TINYUSB TinyUSB_${SPEED} ${PATH_TINYUSB}/Library/Family/${FAMILY}/${SOC}/${PROFILE})
 
 # All library components
 set(UKOS_COMPONENTS rtcb_p kern_p kern_u libx_p libx_u proc_p proc_u tool_u ${TINYUSB})

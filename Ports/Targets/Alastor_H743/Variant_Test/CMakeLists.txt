@@ -279,12 +279,12 @@ target_link_libraries(tool_u PUBLIC system_compiler_flags)
 # MicroPython Engine integration (MicroPython manager)
 add_compile_definitions(CONFIG_MAN_MICROPYTHON_S)
 find_library(MICROPYTHON MicroPython ${PATH_UKOS}/Third_Parties/MicroPython/Library/${CORE})
-file(APPEND "System/FLASH.cnf" "-DCONFIG_MAN_MICROPYTHON_S ")
+file(APPEND "${ARTEFACTS_DIR}/FLASH.cnf" "-DCONFIG_MAN_MICROPYTHON_S ")
 
 # FATFS (File system) integration
 add_compile_definitions(CONFIG_MAN_FATFS_S)
 find_library(FATFS FatFs ${PATH_UKOS}/Third_Parties/FatFs/Library/${CORE})
-file(APPEND "System/FLASH.cnf" "-DCONFIG_MAN_FATFS_S ")
+file(APPEND "${ARTEFACTS_DIR}/FLASH.cnf" "-DCONFIG_MAN_FATFS_S ")
 
 # All library components
 set(UKOS_COMPONENTS rtcb_p kern_p kern_u libx_p libx_u shar_p proc_p proc_u tool_u ${MICROPYTHON} ${FATFS})

@@ -80,11 +80,31 @@ set(BURN jlinkexe)
 # Apply project settings
 include(proj_config)
 
+# Derive PROVIDER and FAMILY from SOC (eliminates redundant information)
+derive_soc_properties(${SOC})
+
 # Extra compilation options
 add_compile_options(
 	-g3 # include extra information for debugger
 	-Os # optimisation
 )
+
+# TinyUSB integration (must be before library definitions)
+# Note: PROVIDER and FAMILY are automatically derived from SOC via derive_soc_properties()
+set(SPEED FS)
+set(PROFILE cdc_cdc)
+
+set(PATH_TINYUSB ${PATH_UKOS}/Third_Parties/TinyUSB)
+
+# Find TinyUSB package config (automatically provides include paths and definitions)
+find_package(TinyUSB REQUIRED
+	PATHS ${PATH_TINYUSB}/Library/Family/${FAMILY}/${SOC}/${PROFILE}
+	NO_DEFAULT_PATH
+)
+
+# Link against the appropriate speed variant
+# This automatically adds include paths and compile definitions
+set(TINYUSB TinyUSB::${SPEED})
 
 # Sources
 # -------
@@ -164,7 +184,7 @@ list(APPEND LIBX_P
 	${PATH_BASE}/Lib_serials/urt2/stub_urt2_usart3.c
 )
 add_library(libx_p ${LIBX_P})
-target_link_libraries(libx_p PUBLIC system_compiler_flags)
+target_link_libraries(libx_p PUBLIC system_compiler_flags ${TINYUSB})
 
 # Lib_xxxx components (user) -> liblibx_u.a
 add_source_with_define(LIBX_U ${PATH_UKOS}/OS/Lib_generics/newlib/newlib.c CONFIG_MAN_NEWLIB_S)
@@ -193,7 +213,7 @@ list(APPEND PROC_U
 	${PATH_VARI}/Processes/TinyUSB/stub_TinyUSB.c
 )
 add_library(proc_u ${PROC_U})
-target_link_libraries(proc_u PUBLIC system_compiler_flags)
+target_link_libraries(proc_u PUBLIC system_compiler_flags ${TINYUSB})
 
 # CLI components (user) -> libtool_u.a
 list(APPEND CLI_U
@@ -230,23 +250,7 @@ target_link_libraries(tool_u PUBLIC system_compiler_flags)
 # MicroPython Engine integration (MicroPython manager)
 add_compile_definitions(CONFIG_MAN_MICROPYTHON_S)
 find_library(MICROPYTHON MicroPython ${PATH_UKOS}/Third_Parties/MicroPython/Library/${CORE})
-file(APPEND "System/FLASH.cnf" "-DCONFIG_MAN_MICROPYTHON_S ")
-
-# TinyUSB integration
-set(PROVIDER st)
-set(FAMILY l4)
-set(SPEED FS)
-set(PROFILE cdc_cdc)
-
-set(PATH_TINYUSB ${PATH_UKOS}/Third_Parties/TinyUSB)
-list(APPEND PATH_INCLUDES
-	${PATH_TINYUSB}/uKOS_Interface/Includes/mcu/${PROVIDER}
-	${PATH_TINYUSB}/Library/Family/${FAMILY}/${SOC}/${PROFILE}
-	${PATH_TINYUSB}/uKOS_Interface/OSAL
-	${PATH_TINYUSB}/TinyUSB-current/src
-)
-add_compile_definitions(SYSTEM_TINYUSB_${SPEED}_S)
-find_library(TINYUSB TinyUSB_${SPEED} ${PATH_TINYUSB}/Library/Family/${FAMILY}/${SOC}/${PROFILE})
+file(APPEND "${ARTEFACTS_DIR}/FLASH.cnf" "-DCONFIG_MAN_MICROPYTHON_S ")
 
 # All library components
 set(UKOS_COMPONENTS rtcb_p kern_p kern_u libx_p libx_u proc_p proc_u tool_u ${MICROPYTHON} ${TINYUSB})

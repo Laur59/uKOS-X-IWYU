@@ -75,7 +75,7 @@ add_compile_definitions(
 )
 
 # Flash programming script selection
-set(BURN swd_FT4232_b)
+set(BURN jlinkexe)
 
 # Apply project settings
 include(proj_config)

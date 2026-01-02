@@ -103,7 +103,7 @@ BURN			?= dfu-util
 
 # The really first pcs of code (privileged)
 
-FIRST_P			=												$(PATH_PORT)/EquatesModels/SOCs/$(SOC)/Runtime/vectors.c
+FIRST_P			=												$(PATH_PORT)/EquatesModels/SOCs/$(SOC)/Runtime/vectors.S
 FIRST_P			+=												$(PATH_PORT)/EquatesModels/SOCs/$(SOC)/Runtime/first.c
 
 # The runtime & commun components (privileged)

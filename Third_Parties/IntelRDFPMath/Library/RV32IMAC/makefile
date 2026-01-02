@@ -57,6 +57,7 @@ ifeq ($(origin CC), default)
 CC					=  $(PATH_COMPILER)/bin/$(PREFIX)gcc
 AR					=  $(PATH_COMPILER)/bin/$(PREFIX)ar
 ST					=  $(PATH_COMPILER)/bin/$(PREFIX)strip
+RANLIB				=  $(PATH_COMPILER)/bin/$(PREFIX)ranlib
 endif
 
 # Project paths
