@@ -214,12 +214,12 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
                             address = (uint8_t *)(page + offset);
                             error = local_getData(&counter, &checksum, address); if (error != KERR_H_LOADER_NOT) { terminate = true; break; }
                             error = local_getHexValue(&hexValue);                if (error != KERR_H_LOADER_NOT) { terminate = true; break; }
-                            if (hexValue != (uint8_t)(~checksum) + 1U)             { error  = KERR_H_LOADER_CHK;   terminate = true; break; }
+                            if (hexValue != (uint8_t)(0U - checksum))             { error  = KERR_H_LOADER_CHK;   terminate = true; break; }
                             break;
                         }
                         case 1U: {
                             error = local_getHexValue(&hexValue);                if (error != KERR_H_LOADER_NOT) { terminate = true; break; }
-                            if (hexValue != (uint8_t)(~checksum) + 1U)             { error  = KERR_H_LOADER_CHK;   terminate = true; break; }
+                            if (hexValue != (uint8_t)(0U - checksum))             { error  = KERR_H_LOADER_CHK;   terminate = true; break; }
                             terminate = true;
                             break;
                         }
@@ -228,13 +228,13 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
                             page <<= 16U;
                             if (page == 0U) { page = (uintptr_t)linker_stUMemo; }
                             error = local_getHexValue(&hexValue);                if (error != KERR_H_LOADER_NOT) { terminate = true; break; }
-                            if (hexValue != (uint8_t)(~checksum) + 1U)             { error  = KERR_H_LOADER_CHK;   terminate = true; break; }
+                            if (hexValue != (uint8_t)(0U - checksum))             { error  = KERR_H_LOADER_CHK;   terminate = true; break; }
                             break;
                         }
                         case 5U: {
                             error = local_getExecAddress(&address, &checksum);   if (error != KERR_H_LOADER_NOT) { terminate = true; break; }
                             error = local_getHexValue(&hexValue);                if (error != KERR_H_LOADER_NOT) { terminate = true; break; }
-                            if (hexValue != (uint8_t)(~checksum) + 1U)             { error  = KERR_H_LOADER_CHK;   terminate = true; break; }
+                            if (hexValue != (uint8_t)(0U - checksum))             { error  = KERR_H_LOADER_CHK;   terminate = true; break; }
                             break;
                         }
                         default: {
