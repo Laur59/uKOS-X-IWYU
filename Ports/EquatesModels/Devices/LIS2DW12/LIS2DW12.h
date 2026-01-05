@@ -6,7 +6,7 @@
 
 ;------------------------------------------------------------------------
 ; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; Modifs:
 ;
 ; Project:	uKOS-X
 ; Goal:		ST LIS2DW12 accelerometer equates.

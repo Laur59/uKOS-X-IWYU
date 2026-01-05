@@ -2,17 +2,18 @@
 ; stub_kern_kernel.
 ; =================
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		stub for the connection of the "kern" manager to the uKernel device.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    stub for the connection of the "kern" manager to the uKernel device.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -50,12 +51,12 @@
 // Connect the physical device to the logical manager
 // --------------------------------------------------
 
-#define	model_kernel_init					stub_kern_init
-#define	model_kernel_runKernel				stub_kern_runKernel
-#define	model_kernel_setLowPower			stub_kern_setLowPower
-#define	model_kernel_setPreciseSignal		stub_kern_setPreciseSignal
-#define	model_kernel_readTickCount			stub_kern_readTickCount
-#define	model_kernel_newProcessTimeout		stub_kern_newProcessTimeout
-#define	model_kernel_stopProcessTimeout		stub_kern_stopProcessTimeout
+#define model_kernel_init                   stub_kern_init
+#define model_kernel_runKernel              stub_kern_runKernel
+#define model_kernel_setLowPower            stub_kern_setLowPower
+#define model_kernel_setPreciseSignal       stub_kern_setPreciseSignal
+#define model_kernel_readTickCount          stub_kern_readTickCount
+#define model_kernel_newProcessTimeout      stub_kern_newProcessTimeout
+#define model_kernel_stopProcessTimeout     stub_kern_stopProcessTimeout
 
-#include	"model_kernel_tickless_tim_rtc_0_1_svc.c_inc"
+#include    "model_kernel_tickless_tim_rtc_0_1_svc.c_inc"

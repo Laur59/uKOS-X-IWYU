@@ -2,19 +2,20 @@
 ; syscallDispatcher.
 ; ==================
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Syscall dispatcher.
-;				- uKernel messages
-;				- privilege elevation
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    Syscall dispatcher.
+;    - uKernel messages
+;    - privilege elevation
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,10 +49,10 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 // svc numbers
 // -----------
 
-#define	KKERN_MESSAGE			0				// uKernel (messages passing)
-#define	KPRIV_ELEVATION			1				// priv (privilege elevation)
+#define KKERN_MESSAGE           0               // uKernel (messages passing)
+#define KPRIV_ELEVATION         1               // priv (privilege elevation)

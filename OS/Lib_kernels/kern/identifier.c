@@ -2,19 +2,20 @@
 ; identifier.
 ; ===========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Kern - Identifier management (compare the object IDs)
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;			This module is responsible for manipulating the identifiers of the uKernel.
+; Project: uKOS-X
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Purpose:
+;    Kern - Identifier management (compare the object IDs)
+;
+;    This module is responsible for manipulating the identifiers of the uKernel.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,39 +49,39 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<stddef.h>
-#include	<stdint.h>
+#include    <stddef.h>
+#include    <stdint.h>
 
-#include	"kern/kern.h"
-#include	"types.h"
+#include    "kern/kern.h"
+#include    "types.h"
 
 /*
  * \brief Compare 2 identifiers (string_1 -> string_2)
  *
- * \param[in]	*string_1	Ptr on the identifiers string_1
- * \param[in]	*string_2	Ptr on the identifiers string_2
- * \return		true		string_1 == string_2
- * \return		false		string_1 != string_2
+ * \param[in]   *string_1   Ptr on the identifiers string_1
+ * \param[in]   *string_2   Ptr on the identifiers string_2
+ * \return      true        string_1 == string_2
+ * \return      false       string_1 != string_2
  *
  */
-bool	identifiers_cmpStrings(const char_t *string_1, const char_t *string_2) {
-	uint8_t		i;
-	bool		status;
+bool    identifiers_cmpStrings(const char_t *string_1, const char_t *string_2) {
+    uint8_t     i;
+    bool        status;
 
-	if ((string_1 == NULL) || (string_2 == NULL)) {
-		return (false);
-	}
+    if ((string_1 == NULL) || (string_2 == NULL)) {
+        return (false);
+    }
 
-	for (i = 0U; i < KKERN_OBJECT_SZ_ID; i++) {
-		if ((string_1[i] == '\0') || (string_2[i] == '\0')) {
-			status = (string_1[i] == string_2[i]);
-			return (status);
-		}
+    for (i = 0U; i < KKERN_OBJECT_SZ_ID; i++) {
+        if ((string_1[i] == '\0') || (string_2[i] == '\0')) {
+            status = (string_1[i] == string_2[i]);
+            return (status);
+        }
 
-		if (string_1[i] != string_2[i]) {
-			return (false);
-		}
+        if (string_1[i] != string_2[i]) {
+            return (false);
+        }
 
-	}
-	return (true);
+    }
+    return (true);
 }

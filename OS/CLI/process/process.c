@@ -2,17 +2,18 @@
 ; process.
 ; ========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		List the installed processes.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    List the installed processes.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,110 +47,110 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<inttypes.h>
-#include	<stdint.h>	// NOLINT(misc-include-cleaner): Explicit include for IWYU compliance
-#include	<stdio.h>
-#include	<string.h>
+#include    <inttypes.h>
+#include    <stdint.h>  // NOLINT(misc-include-cleaner): Explicit include for IWYU compliance
+#include    <stdio.h>
+#include    <string.h>
 
-#include	"kern/kern.h"
-#include	"kern/private/private_processes.h"
-#include	"machine/machine.h"
-#include	"macros.h"
-#include	"macros_core.h"
-#include	"macros_soc.h"
-#include	"memo/memo.h"
-#include	"modules.h"
-#include	"serial/serial.h"
-#include	"spin.h"
-#include	"text/text.h"
-#include	"types.h"
+#include    "kern/kern.h"
+#include    "kern/private/private_processes.h"
+#include    "machine/machine.h"
+#include    "macros.h"
+#include    "macros_core.h"
+#include    "macros_soc.h"
+#include    "memo/memo.h"
+#include    "modules.h"
+#include    "serial/serial.h"
+#include    "spin.h"
+#include    "text/text.h"
+#include    "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"process      List the installed processes.             (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "List the installed processes\n"
-									"============================\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "process      List the installed processes.             (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "List the installed processes\n"
+                                    "============================\n\n"
 
-									"This tool displays some information concerning\n"
-									"the installed processes.\n\n"
+                                    "This tool displays some information concerning\n"
+                                    "the installed processes.\n\n"
 
-									"Input format:  process [-all | -noall]\n"
-									"Output format: Process information\n\n"
+                                    "Input format:  process [-all | -noall]\n"
+                                    "Output format: Process information\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
-typedef	struct	process	process_t;
+typedef struct  process process_t;
 
-struct	process {
-			bool		oValid;					// Process valid
-			spec_t		oSpecification;			// Process specification
-			work_t		oInternal;				// Process internal stuff
-			stts_t		oStatistic;				// uKernel statistic
-			uintptr_t	oPC;					// Process PC
-		};
+struct  process {
+            bool        oValid;                 // Process valid
+            spec_t      oSpecification;         // Process specification
+            work_t      oInternal;              // Process internal stuff
+            stts_t      oStatistic;             // uKernel statistic
+            uintptr_t   oPC;                    // Process PC
+        };
 
 // Prototypes
 
-static	int32_t		prgm(uint32_t argc, const char_t *argv[]);
-static	bool		local_getProcessByNb(uint8_t core, uint16_t number, proc_t **handle);
-static	void		local_compose(const char_t *identifier, const char_t **idSpacer);
-static	void		local_printParameter_P0(uint8_t core, uint16_t number, process_t *handle);
-static	void		local_printParameter_P1(uint8_t core, uint16_t number, process_t *handle);
-static	void		local_printParameter_N1(uint8_t core, uint16_t number, process_t *handle);
-static	void		local_printParameter_S2(uint8_t core, uint16_t number, process_t *handle);
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+static  bool        local_getProcessByNb(uint8_t core, uint16_t number, proc_t **handle);
+static  void        local_compose(const char_t *identifier, const char_t **idSpacer);
+static  void        local_printParameter_P0(uint8_t core, uint16_t number, process_t *handle);
+static  void        local_printParameter_P1(uint8_t core, uint16_t number, process_t *handle);
+static  void        local_printParameter_N1(uint8_t core, uint16_t number, process_t *handle);
+static  void        local_printParameter_S2(uint8_t core, uint16_t number, process_t *handle);
 
 #if (KKERN_WITH_STATISTICS_S == true)
-static	void		local_printParameter_T1(uint8_t core, uint16_t number, process_t *handle);
-static	void		local_printParameter_T2(uint8_t core, uint16_t number, process_t *handle);
-static	void		local_printParameter_T3(uint8_t core, uint16_t number, process_t *handle);
+static  void        local_printParameter_T1(uint8_t core, uint16_t number, process_t *handle);
+static  void        local_printParameter_T2(uint8_t core, uint16_t number, process_t *handle);
+static  void        local_printParameter_T3(uint8_t core, uint16_t number, process_t *handle);
 
 #if (KDAEMONS_WITH_STACK_INT_S == true)
-static	void		local_printParameter_S0(uint8_t core, uint16_t number, process_t *handle);
+static  void        local_printParameter_S0(uint8_t core, uint16_t number, process_t *handle);
 #endif
 #endif
 
 MODULE(
-	Process,									// Module name (the first letter has to be upper case)
-	KID_FAM_CLI,								// Family (defined in the module.h)
-	KNUM_PROCESS,								// Module identifier (defined in the module.h)
-	NULL,										// Address of the initialisation code (early pre-init)
-	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	NULL,										// Address of the clean code (clean the module)
-	" 1.0",										// Revision string (major . minor)
-	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0											// Execution cores
+    Process,                                    // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                                // Family (defined in the module.h)
+    KNUM_PROCESS,                               // Module identifier (defined in the module.h)
+    NULL,                                       // Address of the initialisation code (early pre-init)
+    prgm,                                       // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    NULL,                                       // Address of the clean code (clean the module)
+    " 1.0",                                     // Revision string (major . minor)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),         // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                           // Execution cores
 );
 
 // CLI tool specific
 // =================
 
-static	uint64_t	vTotalTimeCPU[KNB_CORES] = MCSET(0U);
+static  uint64_t    vTotalTimeCPU[KNB_CORES] = MCSET(0U);
 
 #if (KNB_CORES > 1)
-static	spinlock_t	vProcess = SPIN_LOCK_INIT;
+static  spinlock_t  vProcess = SPIN_LOCK_INIT;
 #endif
 
 /*
  * \brief Main entry point
  *
  */
-static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
-			bool		equals;
-			enum		{ KALL, KALL_NOT } all = KALL;
-			enum		{ KERR_NOT, KERR_PAR, KERR_MEM } error = KERR_NOT;
-			int32_t		status;
-			uint16_t	i;
-			uint8_t		*bufSysProcess, j;
-			process_t	*sysProcess;
-			proc_t		*process;
-	const	char_t		*functionName;
+static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
+            bool        equals;
+            enum        { KALL, KALL_NOT } all = KALL;
+            enum        { KERR_NOT, KERR_PAR, KERR_MEM } error = KERR_NOT;
+            int32_t     status;
+            uint16_t    i;
+            uint8_t     *bufSysProcess, j;
+            process_t   *sysProcess;
+            proc_t      *process;
+    const   char_t      *functionName;
 
-	(void)dprintf(KSYST, "List of the system processes.\n");
+    (void)dprintf(KSYST, "List of the system processes.\n");
 
-	PRIVILEGE_ELEVATE;
+    PRIVILEGE_ELEVATE;
 
 // Analyse the command line
 // ------------------------
@@ -160,170 +161,170 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 // process -all
 // process -noall
 
-	switch (argc) {
-		case 1U: {
-			all = KALL_NOT;
-			break;
-		}
-		case 2U: {
-			text_checkAsciiBuffer(argv[1], "-noall", &equals); if (equals) { all = KALL_NOT; break; }
-			text_checkAsciiBuffer(argv[1], "-all",   &equals); if (equals) { all = KALL;	 break; }
-			error = KERR_PAR;
-			break;
-		}
-		default: {
-			error = KERR_PAR;
-			break;
-		}
-	}
+    switch (argc) {
+        case 1U: {
+            all = KALL_NOT;
+            break;
+        }
+        case 2U: {
+            text_checkAsciiBuffer(argv[1], "-noall", &equals); if (equals) { all = KALL_NOT; break; }
+            text_checkAsciiBuffer(argv[1], "-all",   &equals); if (equals) { all = KALL;     break; }
+            error = KERR_PAR;
+            break;
+        }
+        default: {
+            error = KERR_PAR;
+            break;
+        }
+    }
 
-	switch (error) {
-		case KERR_NOT: {
+    switch (error) {
+        case KERR_NOT: {
 
 // Collect the process information usable for the statistics
 
-			bufSysProcess = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, ((size_t)KNB_CORES * (size_t)KKERN_NB_PROCESSES * sizeof(process_t)), "process");
-			if (bufSysProcess != NULL) {
+            bufSysProcess = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, ((size_t)KNB_CORES * (size_t)KKERN_NB_PROCESSES * sizeof(process_t)), "process");
+            if (bufSysProcess != NULL) {
 
-				SPIN_LOCK(vProcess);
-				kern_criticalSection(KENTER_CRITICAL);
-				for (j = 0U; j < KNB_CORES; j++) {
-					vTotalTimeCPU[j] = 0U;
-					for (i = 0U; i < KKERN_NB_PROCESSES; i++) {
-						sysProcess = (process_t *)((uintptr_t)bufSysProcess + ((uintptr_t)j * KKERN_NB_PROCESSES * sizeof(process_t)) + ((uintptr_t)i * sizeof(process_t)));
-						sysProcess->oValid = false;
-						if (local_getProcessByNb(j, i, &process)) {
-							sysProcess->oValid = true;
+                SPIN_LOCK(vProcess);
+                kern_criticalSection(KENTER_CRITICAL);
+                for (j = 0U; j < KNB_CORES; j++) {
+                    vTotalTimeCPU[j] = 0U;
+                    for (i = 0U; i < KKERN_NB_PROCESSES; i++) {
+                        sysProcess = (process_t *)((uintptr_t)bufSysProcess + ((uintptr_t)j * KKERN_NB_PROCESSES * sizeof(process_t)) + ((uintptr_t)i * sizeof(process_t)));
+                        sysProcess->oValid = false;
+                        if (local_getProcessByNb(j, i, &process)) {
+                            sysProcess->oValid = true;
 
-							sysProcess->oSpecification.oIdentifier = process->oSpecification.oIdentifier;
-							sysProcess->oSpecification.oText       = process->oSpecification.oText;
-							sysProcess->oSpecification.oPriority   = process->oSpecification.oPriority;
-							sysProcess->oSpecification.oMode       = process->oSpecification.oMode;
+                            sysProcess->oSpecification.oIdentifier = process->oSpecification.oIdentifier;
+                            sysProcess->oSpecification.oText       = process->oSpecification.oText;
+                            sysProcess->oSpecification.oPriority   = process->oSpecification.oPriority;
+                            sysProcess->oSpecification.oMode       = process->oSpecification.oMode;
 
-							sysProcess->oInternal.oState           = process->oInternal.oState;
-							sysProcess->oInternal.oProcFather	   = process->oInternal.oProcFather;
+                            sysProcess->oInternal.oState           = process->oInternal.oState;
+                            sysProcess->oInternal.oProcFather      = process->oInternal.oProcFather;
 
-							sysProcess->oStatistic.oNbExecutions   = process->oStatistic.oNbExecutions;
-							sysProcess->oStatistic.oNbKernCalls    = process->oStatistic.oNbKernCalls;
+                            sysProcess->oStatistic.oNbExecutions   = process->oStatistic.oNbExecutions;
+                            sysProcess->oStatistic.oNbKernCalls    = process->oStatistic.oNbKernCalls;
 
-							#if (KKERN_WITH_STATISTICS_S == true)
+                            #if (KKERN_WITH_STATISTICS_S == true)
 
-							#if (KDAEMONS_WITH_STACK_INT_S == true)
-							sysProcess->oStatistic.oAvStack        = process->oStatistic.oAvStack;
-							#endif
+                            #if (KDAEMONS_WITH_STACK_INT_S == true)
+                            sysProcess->oStatistic.oAvStack        = process->oStatistic.oAvStack;
+                            #endif
 
-							sysProcess->oStatistic.oTimePMin       = process->oStatistic.oTimePMin;
-							sysProcess->oStatistic.oTimePMax       = process->oStatistic.oTimePMax;
-							sysProcess->oStatistic.oTimePAvg       = process->oStatistic.oTimePAvg;
-							sysProcess->oStatistic.oTimeKMin       = process->oStatistic.oTimeKMin;
-							sysProcess->oStatistic.oTimeKMax       = process->oStatistic.oTimeKMax;
-							sysProcess->oStatistic.oTimeKAvg       = process->oStatistic.oTimeKAvg;
-							sysProcess->oStatistic.oTimeEMin       = process->oStatistic.oTimeEMin;
-							sysProcess->oStatistic.oTimeEMax       = process->oStatistic.oTimeEMax;
-							sysProcess->oStatistic.oTimeEAvg       = process->oStatistic.oTimeEAvg;
-							#endif
+                            sysProcess->oStatistic.oTimePMin       = process->oStatistic.oTimePMin;
+                            sysProcess->oStatistic.oTimePMax       = process->oStatistic.oTimePMax;
+                            sysProcess->oStatistic.oTimePAvg       = process->oStatistic.oTimePAvg;
+                            sysProcess->oStatistic.oTimeKMin       = process->oStatistic.oTimeKMin;
+                            sysProcess->oStatistic.oTimeKMax       = process->oStatistic.oTimeKMax;
+                            sysProcess->oStatistic.oTimeKAvg       = process->oStatistic.oTimeKAvg;
+                            sysProcess->oStatistic.oTimeEMin       = process->oStatistic.oTimeEMin;
+                            sysProcess->oStatistic.oTimeEMax       = process->oStatistic.oTimeEMax;
+                            sysProcess->oStatistic.oTimeEAvg       = process->oStatistic.oTimeEAvg;
+                            #endif
 
-							if (vKern_runProc[j]->oSpecification.oStack != process->oSpecification.oStack) {
-								machine_readPC(process, &sysProcess->oPC);
-							}
-							else {
-								sysProcess->oPC = 0U;
-							}
+                            if (vKern_runProc[j]->oSpecification.oStack != process->oSpecification.oStack) {
+                                machine_readPC(process, &sysProcess->oPC);
+                            }
+                            else {
+                                sysProcess->oPC = 0U;
+                            }
 
-							#if (KKERN_WITH_STATISTICS_S == true)
-							vTotalTimeCPU[j] += ((uint64_t)sysProcess->oStatistic.oTimePAvg + \
-												 (uint64_t)sysProcess->oStatistic.oTimeKAvg + \
-												 (uint64_t)sysProcess->oStatistic.oTimeEAvg) * sysProcess->oStatistic.oNbExecutions;
-							#endif
+                            #if (KKERN_WITH_STATISTICS_S == true)
+                            vTotalTimeCPU[j] += ((uint64_t)sysProcess->oStatistic.oTimePAvg + \
+                                                 (uint64_t)sysProcess->oStatistic.oTimeKAvg + \
+                                                 (uint64_t)sysProcess->oStatistic.oTimeEAvg) * sysProcess->oStatistic.oNbExecutions;
+                            #endif
 
-						}
-					}
-				}
-				kern_criticalSection(KEXIT_CRITICAL);
-				SPIN_UNLOCK(vProcess);
+                        }
+                    }
+                }
+                kern_criticalSection(KEXIT_CRITICAL);
+                SPIN_UNLOCK(vProcess);
 
 // Compute the statistic in % of time CPU
 // Print the string process
 
-				for (j = 0U; j < KNB_CORES; j++) {
-					if (all == KALL_NOT) {
+                for (j = 0U; j < KNB_CORES; j++) {
+                    if (all == KALL_NOT) {
 
-						#if (KKERN_WITH_STATISTICS_S == true)
-						if (j >= 1U) { (void)dprintf(KSYST, "\n"); }
-						(void)dprintf(KSYST, " #  Process information of the core %d                        State        Used CPU in %%         PC\n\n", j);
+                        #if (KKERN_WITH_STATISTICS_S == true)
+                        if (j >= 1U) { (void)dprintf(KSYST, "\n"); }
+                        (void)dprintf(KSYST, " #  Process information of the core %d                        State        Used CPU in %%         PC\n\n", j);
 
-						#else
-						if (j >= 1U) { (void)dprintf(KSYST, "\n"); }
-						(void)dprintf(KSYST, " #  Process information of the core %d                        State        PC\n\n", j);
-						#endif
+                        #else
+                        if (j >= 1U) { (void)dprintf(KSYST, "\n"); }
+                        (void)dprintf(KSYST, " #  Process information of the core %d                        State        PC\n\n", j);
+                        #endif
 
-					}
-					else {
-						(void)dprintf(KSYST, "Process details of the core %d\n\n", j);
-					}
+                    }
+                    else {
+                        (void)dprintf(KSYST, "Process details of the core %d\n\n", j);
+                    }
 
-					for (i = 0U; i < KKERN_NB_PROCESSES; i++) {
-						sysProcess = (process_t *)((uintptr_t)bufSysProcess + ((uintptr_t)j * KKERN_NB_PROCESSES * sizeof(process_t)) + ((uintptr_t)i * sizeof(process_t)));
-						if (sysProcess->oValid) {
-							if (all == KALL_NOT) {
+                    for (i = 0U; i < KKERN_NB_PROCESSES; i++) {
+                        sysProcess = (process_t *)((uintptr_t)bufSysProcess + ((uintptr_t)j * KKERN_NB_PROCESSES * sizeof(process_t)) + ((uintptr_t)i * sizeof(process_t)));
+                        if (sysProcess->oValid) {
+                            if (all == KALL_NOT) {
 
-								local_printParameter_P0(j, i, sysProcess);
+                                local_printParameter_P0(j, i, sysProcess);
 
-								if (sysProcess->oPC != 0U) {
-									machine_readFunctionName(sysProcess->oPC, &functionName);
-									if (functionName == NULL) { (void)dprintf(KSYST, " - PC = 0x%016"PRIXPTR"\n",    sysProcess->oPC);               }
-									else {                      (void)dprintf(KSYST, " - PC = 0x%016"PRIXPTR" %s\n", sysProcess->oPC, functionName); }
-								}
-								else {
-									(void)dprintf(KSYST, "\n");
-								}
-							}
-							else {
-								local_printParameter_P1(j, i, sysProcess);
+                                if (sysProcess->oPC != 0U) {
+                                    machine_readFunctionName(sysProcess->oPC, &functionName);
+                                    if (functionName == NULL) { (void)dprintf(KSYST, " - PC = 0x%016"PRIXPTR"\n",    sysProcess->oPC);               }
+                                    else {                      (void)dprintf(KSYST, " - PC = 0x%016"PRIXPTR" %s\n", sysProcess->oPC, functionName); }
+                                }
+                                else {
+                                    (void)dprintf(KSYST, "\n");
+                                }
+                            }
+                            else {
+                                local_printParameter_P1(j, i, sysProcess);
 
-								#if (KKERN_WITH_STATISTICS_S == true)
-								local_printParameter_T1(j, i, sysProcess);
-								local_printParameter_T2(j, i, sysProcess);
-								local_printParameter_T3(j, i, sysProcess);
+                                #if (KKERN_WITH_STATISTICS_S == true)
+                                local_printParameter_T1(j, i, sysProcess);
+                                local_printParameter_T2(j, i, sysProcess);
+                                local_printParameter_T3(j, i, sysProcess);
 
-								#if (KDAEMONS_WITH_STACK_INT_S == true)
-								local_printParameter_S0(j, i, sysProcess);
-								#endif
+                                #if (KDAEMONS_WITH_STACK_INT_S == true)
+                                local_printParameter_S0(j, i, sysProcess);
+                                #endif
 
-								#endif
+                                #endif
 
-								local_printParameter_N1(j, i, sysProcess);
-								local_printParameter_S2(j, i, sysProcess);
-							}
-						}
-					}
-				}
-				memo_delayedFree(bufSysProcess);
-			}
-			else {
-				error = KERR_MEM;
-			}
-			break;
-		}
-		default: {
-			error = KERR_PAR;
-			break;
-		}
-	}
+                                local_printParameter_N1(j, i, sysProcess);
+                                local_printParameter_S2(j, i, sysProcess);
+                            }
+                        }
+                    }
+                }
+                memo_delayedFree(bufSysProcess);
+            }
+            else {
+                error = KERR_MEM;
+            }
+            break;
+        }
+        default: {
+            error = KERR_PAR;
+            break;
+        }
+    }
 
-	switch (error) {
-		case KERR_NOT: {
-			if (all == KALL_NOT) {
-				(void)dprintf(KSYST, "\n");
-			}
-																		   status = EXIT_OS_SUCCESS_CLI; break; }
-		case KERR_MEM: { (void)dprintf(KSYST, "Not enough memory.\n\n");   status = EXIT_OS_FAILURE;     break; }
-		case KERR_PAR: { (void)dprintf(KSYST, "Incorrect arguments.\n\n"); status = EXIT_OS_FAILURE;     break; }
-		default:	   {												   status = EXIT_OS_FAILURE;     break; }
-	}
+    switch (error) {
+        case KERR_NOT: {
+            if (all == KALL_NOT) {
+                (void)dprintf(KSYST, "\n");
+            }
+                                                                           status = EXIT_OS_SUCCESS_CLI; break; }
+        case KERR_MEM: { (void)dprintf(KSYST, "Not enough memory.\n\n");   status = EXIT_OS_FAILURE;     break; }
+        case KERR_PAR: { (void)dprintf(KSYST, "Incorrect arguments.\n\n"); status = EXIT_OS_FAILURE;     break; }
+        default:       {                                                   status = EXIT_OS_FAILURE;     break; }
+    }
 
-	PRIVILEGE_RESTORE;
-	return (status);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 // Local routines
@@ -335,17 +336,17 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
  * - Get the handle of a process by its number & core
  *
  */
-static	bool	local_getProcessByNb(uint8_t core, uint16_t number, proc_t **handle) {
+static  bool    local_getProcessByNb(uint8_t core, uint16_t number, proc_t **handle) {
 
-	kern_criticalSection(KENTER_CRITICAL);
-	*handle = NULL;
+    kern_criticalSection(KENTER_CRITICAL);
+    *handle = NULL;
 
-	if (number >= KKERN_NB_PROCESSES)											   { kern_criticalSection(KEXIT_CRITICAL); return (false); }
-	if ((vKern_proc[core][number].oInternal.oState & (1U<<BPROC_INSTALLED)) == 0U) { kern_criticalSection(KEXIT_CRITICAL); return (false); }
+    if (number >= KKERN_NB_PROCESSES)                                              { kern_criticalSection(KEXIT_CRITICAL); return (false); }
+    if ((vKern_proc[core][number].oInternal.oState & (1U<<BPROC_INSTALLED)) == 0U) { kern_criticalSection(KEXIT_CRITICAL); return (false); }
 
-	*handle = &vKern_proc[core][number];
-	kern_criticalSection(KEXIT_CRITICAL);
-	return (true);
+    *handle = &vKern_proc[core][number];
+    kern_criticalSection(KEXIT_CRITICAL);
+    return (true);
 }
 
 /*
@@ -354,194 +355,194 @@ static	bool	local_getProcessByNb(uint8_t core, uint16_t number, proc_t **handle)
  * - Print a parameter P(riority), T(imes) & N(umbers) ..
  *
  */
-static	void	local_printParameter_P0(uint8_t core, uint16_t number, process_t *handle) {
+static  void    local_printParameter_P0(uint8_t core, uint16_t number, process_t *handle) {
 
-			#if (KKERN_WITH_STATISTICS_S == true)
-			uint64_t	pRatio, kRatio, eRatio;
-			float64_t	pRatioF, kRatioF, eRatioF;
-			float64_t	sum;
+            #if (KKERN_WITH_STATISTICS_S == true)
+            uint64_t    pRatio, kRatio, eRatio;
+            float64_t   pRatioF, kRatioF, eRatioF;
+            float64_t   sum;
 
-			#else
-			UNUSED(core);
-			#endif
+            #else
+            UNUSED(core);
+            #endif
 
-	const	char_t		*idSpacer;
+    const   char_t      *idSpacer;
 
-	#if (KKERN_WITH_STATISTICS_S == true)
-	pRatio = handle->oStatistic.oTimePAvg * handle->oStatistic.oNbExecutions * 100U;
-	kRatio = handle->oStatistic.oTimeKAvg * handle->oStatistic.oNbExecutions * 100U;
-	eRatio = handle->oStatistic.oTimeEAvg * handle->oStatistic.oNbExecutions * 100U;
+    #if (KKERN_WITH_STATISTICS_S == true)
+    pRatio = handle->oStatistic.oTimePAvg * handle->oStatistic.oNbExecutions * 100U;
+    kRatio = handle->oStatistic.oTimeKAvg * handle->oStatistic.oNbExecutions * 100U;
+    eRatio = handle->oStatistic.oTimeEAvg * handle->oStatistic.oNbExecutions * 100U;
 
-	pRatioF = (float64_t)pRatio / (float64_t)vTotalTimeCPU[core];
-	kRatioF = (float64_t)kRatio / (float64_t)vTotalTimeCPU[core];
-	eRatioF = (float64_t)eRatio / (float64_t)vTotalTimeCPU[core];
-	sum = pRatioF + kRatioF + eRatioF;
-	#endif
+    pRatioF = (float64_t)pRatio / (float64_t)vTotalTimeCPU[core];
+    kRatioF = (float64_t)kRatio / (float64_t)vTotalTimeCPU[core];
+    eRatioF = (float64_t)eRatio / (float64_t)vTotalTimeCPU[core];
+    sum = pRatioF + kRatioF + eRatioF;
+    #endif
 
-	local_compose(handle->oSpecification.oText, &idSpacer);
+    local_compose(handle->oSpecification.oText, &idSpacer);
 
-	if (((handle->oInternal.oState & (1U<<BPROC_SUSP_TIME)) != 0U) && ((handle->oInternal.oState & (1U<<BPROC_SUSP_DEBG)) == 0U)) {
-		(void)dprintf(KSYST, "%2d  %s%s - Susp. time", number, handle->oSpecification.oText, idSpacer);
+    if (((handle->oInternal.oState & (1U<<BPROC_SUSP_TIME)) != 0U) && ((handle->oInternal.oState & (1U<<BPROC_SUSP_DEBG)) == 0U)) {
+        (void)dprintf(KSYST, "%2d  %s%s - Susp. time", number, handle->oSpecification.oText, idSpacer);
 
-		#if (KKERN_WITH_STATISTICS_S == true)
-		(void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum);
-		#endif
+        #if (KKERN_WITH_STATISTICS_S == true)
+        (void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum);
+        #endif
 
-		return;
-	}
+        return;
+    }
 
-	if (((handle->oInternal.oState & (1U<<BPROC_SUSP_SIGN)) != 0U) && ((handle->oInternal.oState & (1U<<BPROC_SUSP_DEBG)) == 0U)) {
-		(void)dprintf(KSYST, "%2d  %s%s - Susp. sign", number, handle->oSpecification.oText, idSpacer);
+    if (((handle->oInternal.oState & (1U<<BPROC_SUSP_SIGN)) != 0U) && ((handle->oInternal.oState & (1U<<BPROC_SUSP_DEBG)) == 0U)) {
+        (void)dprintf(KSYST, "%2d  %s%s - Susp. sign", number, handle->oSpecification.oText, idSpacer);
 
-		#if (KKERN_WITH_STATISTICS_S == true)
-		(void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum);
-		#endif
+        #if (KKERN_WITH_STATISTICS_S == true)
+        (void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum);
+        #endif
 
-		return;
-	}
+        return;
+    }
 
-	if (((handle->oInternal.oState & (1U<<BPROC_SUSP_SEMA)) != 0U) && ((handle->oInternal.oState & (1U<<BPROC_SUSP_DEBG)) == 0U)) {
-		(void)dprintf(KSYST, "%2d  %s%s - Susp. sema", number, handle->oSpecification.oText, idSpacer);
+    if (((handle->oInternal.oState & (1U<<BPROC_SUSP_SEMA)) != 0U) && ((handle->oInternal.oState & (1U<<BPROC_SUSP_DEBG)) == 0U)) {
+        (void)dprintf(KSYST, "%2d  %s%s - Susp. sema", number, handle->oSpecification.oText, idSpacer);
 
-		#if (KKERN_WITH_STATISTICS_S == true)
-		(void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum);
-		#endif
+        #if (KKERN_WITH_STATISTICS_S == true)
+        (void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum);
+        #endif
 
-		return;
-	}
+        return;
+    }
 
-	if (((handle->oInternal.oState & (1U<<BPROC_SUSP_MBOX_E)) != 0U) && ((handle->oInternal.oState & (1U<<BPROC_SUSP_DEBG)) == 0U)) {
-		(void)dprintf(KSYST, "%2d  %s%s - Susp. mboE", number, handle->oSpecification.oText, idSpacer);
+    if (((handle->oInternal.oState & (1U<<BPROC_SUSP_MBOX_E)) != 0U) && ((handle->oInternal.oState & (1U<<BPROC_SUSP_DEBG)) == 0U)) {
+        (void)dprintf(KSYST, "%2d  %s%s - Susp. mboE", number, handle->oSpecification.oText, idSpacer);
 
-		#if (KKERN_WITH_STATISTICS_S == true)
-		(void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum);
-		#endif
+        #if (KKERN_WITH_STATISTICS_S == true)
+        (void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum);
+        #endif
 
-		return;
-	}
+        return;
+    }
 
-	if (((handle->oInternal.oState & (1U<<BPROC_SUSP_MBOX_F)) != 0U) && ((handle->oInternal.oState & (1U<<BPROC_SUSP_DEBG)) == 0U)) {
-		(void)dprintf(KSYST, "%2d  %s%s - Susp. mboF", number, handle->oSpecification.oText, idSpacer);
+    if (((handle->oInternal.oState & (1U<<BPROC_SUSP_MBOX_F)) != 0U) && ((handle->oInternal.oState & (1U<<BPROC_SUSP_DEBG)) == 0U)) {
+        (void)dprintf(KSYST, "%2d  %s%s - Susp. mboF", number, handle->oSpecification.oText, idSpacer);
 
-		#if (KKERN_WITH_STATISTICS_S == true)
-		(void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum);
-		#endif
+        #if (KKERN_WITH_STATISTICS_S == true)
+        (void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum);
+        #endif
 
-		return;
-	}
+        return;
+    }
 
-	if ((handle->oInternal.oState & (1U<<BPROC_SUSP_DEBG)) != 0U) {
-		(void)dprintf(KSYST, "%2d  %s%s - Freezed   ", number, handle->oSpecification.oText, idSpacer);
+    if ((handle->oInternal.oState & (1U<<BPROC_SUSP_DEBG)) != 0U) {
+        (void)dprintf(KSYST, "%2d  %s%s - Freezed   ", number, handle->oSpecification.oText, idSpacer);
 
-		#if (KKERN_WITH_STATISTICS_S == true)
-		(void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum);
-		#endif
+        #if (KKERN_WITH_STATISTICS_S == true)
+        (void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum);
+        #endif
 
-		return;
-	}
+        return;
+    }
 
-	if ((handle->oInternal.oState & (1U<<BPROC_RUNNING)) != 0U) {
-		(void)dprintf(KSYST, "%2d  %s%s - Running   ", number, handle->oSpecification.oText, idSpacer);
+    if ((handle->oInternal.oState & (1U<<BPROC_RUNNING)) != 0U) {
+        (void)dprintf(KSYST, "%2d  %s%s - Running   ", number, handle->oSpecification.oText, idSpacer);
 
-		#if (KKERN_WITH_STATISTICS_S == true)
-		(void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum);
-		#endif
+        #if (KKERN_WITH_STATISTICS_S == true)
+        (void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum);
+        #endif
 
-		return;
-	}
+        return;
+    }
 
-		(void)dprintf(KSYST, "%2d  %s%s - Scheduled ", number, handle->oSpecification.oText, idSpacer);
+        (void)dprintf(KSYST, "%2d  %s%s - Scheduled ", number, handle->oSpecification.oText, idSpacer);
 
-		#if (KKERN_WITH_STATISTICS_S == true)
-		(void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum);
-		#endif
+        #if (KKERN_WITH_STATISTICS_S == true)
+        (void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum);
+        #endif
 }
 
-static	void	local_printParameter_P1(uint8_t core, uint16_t number, process_t *handle) {
-	UNUSED(core);
+static  void    local_printParameter_P1(uint8_t core, uint16_t number, process_t *handle) {
+    UNUSED(core);
 
-	const	char_t	*space, *father;
+    const   char_t  *space, *father;
 
-	father = (handle->oInternal.oProcFather == NULL)	  ? ("Orphan") : (handle->oInternal.oProcFather->oSpecification.oIdentifier);
-	space  = (handle->oSpecification.oMode == KPROC_USER) ? ("User")   : ("Privileged");
+    father = (handle->oInternal.oProcFather == NULL)      ? ("Orphan") : (handle->oInternal.oProcFather->oSpecification.oIdentifier);
+    space  = (handle->oSpecification.oMode == KPROC_USER) ? ("User")   : ("Privileged");
 
-	(void)dprintf(KSYST, "Process identifier: %d %s\n", number, handle->oSpecification.oIdentifier);
-	(void)dprintf(KSYST, "Process text:       %s\n",    handle->oSpecification.oText);
-	(void)dprintf(KSYST, "Process father:     %s\n",    father);
-	(void)dprintf(KSYST, "Process space:      %s\n",    space);
-	(void)dprintf(KSYST, "Process priority:   %2d\n",   handle->oSpecification.oPriority);
+    (void)dprintf(KSYST, "Process identifier: %d %s\n", number, handle->oSpecification.oIdentifier);
+    (void)dprintf(KSYST, "Process text:       %s\n",    handle->oSpecification.oText);
+    (void)dprintf(KSYST, "Process father:     %s\n",    father);
+    (void)dprintf(KSYST, "Process space:      %s\n",    space);
+    (void)dprintf(KSYST, "Process priority:   %2d\n",   handle->oSpecification.oPriority);
 }
 
 #if (KKERN_WITH_STATISTICS_S == true)
-static	void	local_printParameter_T1(uint8_t core, uint16_t number, process_t *handle) {
-	UNUSED(number);
+static  void    local_printParameter_T1(uint8_t core, uint16_t number, process_t *handle) {
+    UNUSED(number);
 
-	uint64_t	ratio;
-	float64_t	ratioF;
+    uint64_t    ratio;
+    float64_t   ratioF;
 
-	ratio  = handle->oStatistic.oTimePAvg * handle->oStatistic.oNbExecutions * 100U;
-	ratioF = (float64_t)ratio / (float64_t)vTotalTimeCPU[core];
+    ratio  = handle->oStatistic.oTimePAvg * handle->oStatistic.oNbExecutions * 100U;
+    ratioF = (float64_t)ratio / (float64_t)vTotalTimeCPU[core];
 
-	(void)dprintf(KSYST, "CPU time used by the process,    min: %5d [us] max: %5d [us] avg: %5d [us] %7.3f [%%]\n",
-						 handle->oStatistic.oTimePMin, handle->oStatistic.oTimePMax, handle->oStatistic.oTimePAvg, ratioF);
+    (void)dprintf(KSYST, "CPU time used by the process,    min: %5d [us] max: %5d [us] avg: %5d [us] %7.3f [%%]\n",
+                         handle->oStatistic.oTimePMin, handle->oStatistic.oTimePMax, handle->oStatistic.oTimePAvg, ratioF);
 }
 
-static	void	local_printParameter_T2(uint8_t core, uint16_t number, process_t *handle) {
-	UNUSED(number);
+static  void    local_printParameter_T2(uint8_t core, uint16_t number, process_t *handle) {
+    UNUSED(number);
 
-	uint64_t	ratio;
-	float64_t	ratioF;
+    uint64_t    ratio;
+    float64_t   ratioF;
 
-	ratio  = handle->oStatistic.oTimeKAvg * handle->oStatistic.oNbExecutions * 100U;
-	ratioF = (float64_t)ratio / (float64_t)vTotalTimeCPU[core];
+    ratio  = handle->oStatistic.oTimeKAvg * handle->oStatistic.oNbExecutions * 100U;
+    ratioF = (float64_t)ratio / (float64_t)vTotalTimeCPU[core];
 
-	(void)dprintf(KSYST, "CPU time used by the uKernel,    min: %5d [us] max: %5d [us] avg: %5d [us] %7.3f [%%]\n",
-						 handle->oStatistic.oTimeKMin, handle->oStatistic.oTimeKMax, handle->oStatistic.oTimeKAvg, ratioF);
+    (void)dprintf(KSYST, "CPU time used by the uKernel,    min: %5d [us] max: %5d [us] avg: %5d [us] %7.3f [%%]\n",
+                         handle->oStatistic.oTimeKMin, handle->oStatistic.oTimeKMax, handle->oStatistic.oTimeKAvg, ratioF);
 }
 
-static	void	local_printParameter_T3(uint8_t core, uint16_t number, process_t *handle) {
-	UNUSED(number);
+static  void    local_printParameter_T3(uint8_t core, uint16_t number, process_t *handle) {
+    UNUSED(number);
 
-	uint64_t	ratio;
-	float64_t	ratioF;
+    uint64_t    ratio;
+    float64_t   ratioF;
 
-	ratio  = handle->oStatistic.oTimeEAvg * handle->oStatistic.oNbExecutions * 100U;
-	ratioF = (float64_t)ratio / (float64_t)vTotalTimeCPU[core];
+    ratio  = handle->oStatistic.oTimeEAvg * handle->oStatistic.oNbExecutions * 100U;
+    ratioF = (float64_t)ratio / (float64_t)vTotalTimeCPU[core];
 
-	(void)dprintf(KSYST, "CPU time used by the exceptions, min: %5d [us] max: %5d [us] avg: %5d [us] %7.3f [%%]\n",
-						 handle->oStatistic.oTimeEMin, handle->oStatistic.oTimeEMax, handle->oStatistic.oTimeEAvg, ratioF);
+    (void)dprintf(KSYST, "CPU time used by the exceptions, min: %5d [us] max: %5d [us] avg: %5d [us] %7.3f [%%]\n",
+                         handle->oStatistic.oTimeEMin, handle->oStatistic.oTimeEMax, handle->oStatistic.oTimeEAvg, ratioF);
 }
 
 #if (KDAEMONS_WITH_STACK_INT_S == true)
-static	void	local_printParameter_S0(uint8_t core, uint16_t number, process_t *handle) {
+static  void    local_printParameter_S0(uint8_t core, uint16_t number, process_t *handle) {
 
-	UNUSED(core);
-	UNUSED(number);
+    UNUSED(core);
+    UNUSED(number);
 
-	if (handle->oStatistic.oAvStack != 0xFFFFFFFFU) {
-		(void)dprintf(KSYST, "Available stack size:                        %-"PRIu32" [Bytes]\n", handle->oStatistic.oAvStack);
-	}
-	else {
-		(void)dprintf(KSYST, "Available stack size not updated yet!\n");
-	}
+    if (handle->oStatistic.oAvStack != 0xFFFFFFFFU) {
+        (void)dprintf(KSYST, "Available stack size:                        %-"PRIu32" [Bytes]\n", handle->oStatistic.oAvStack);
+    }
+    else {
+        (void)dprintf(KSYST, "Available stack size not updated yet!\n");
+    }
 }
 #endif
 #endif
 
-static	void	local_printParameter_N1(uint8_t core, uint16_t number, process_t *handle) {
+static  void    local_printParameter_N1(uint8_t core, uint16_t number, process_t *handle) {
 
-	UNUSED(core);
-	UNUSED(number);
+    UNUSED(core);
+    UNUSED(number);
 
-	(void)dprintf(KSYST, "Nb of time that the process was scheduled:   %-lld\n", handle->oStatistic.oNbExecutions);
+    (void)dprintf(KSYST, "Nb of time that the process was scheduled:   %-lld\n", handle->oStatistic.oNbExecutions);
 }
 
-static	void	local_printParameter_S2(uint8_t core, uint16_t number, process_t *handle) {
+static  void    local_printParameter_S2(uint8_t core, uint16_t number, process_t *handle) {
 
-	UNUSED(core);
-	UNUSED(number);
+    UNUSED(core);
+    UNUSED(number);
 
-	(void)dprintf(KSYST, "Nb of system calls to the uKernel functions: %-lld\n\n", handle->oStatistic.oNbKernCalls);
+    (void)dprintf(KSYST, "Nb of system calls to the uKernel functions: %-lld\n\n", handle->oStatistic.oNbKernCalls);
 }
 
 /*
@@ -552,19 +553,19 @@ static	void	local_printParameter_S2(uint8_t core, uint16_t number, process_t *ha
  * - to accommodate "1234567     "
  * -                "            "
  *
- * \param[in]	*string		Ptr on a string
- * \param[out]	**spacer	Ptr on the final space
+ * \param[in]   *string     Ptr on a string
+ * \param[out]  **spacer    Ptr on the final space
  *
  * \note This function does not return a value (None).
  *
  */
-static	void	local_compose(const char_t *identifier, const char_t **idSpacer) {
-	size_t	len;
+static  void    local_compose(const char_t *identifier, const char_t **idSpacer) {
+    size_t  len;
 
 // --------------------------------------|----------------------------------------------------|---
 //                                      "Process xyz: this process ...             (c) EFr-2026";
-	static	const	char_t	aSpacer[] = "                                                      ";
+    static  const   char_t  aSpacer[] = "                                                      ";
 
-	len = strlen(identifier);
-	*idSpacer = (len <= (sizeof(aSpacer) - 1U)) ? (&aSpacer[len]) : (&aSpacer[0]);
+    len = strlen(identifier);
+    *idSpacer = (len <= (sizeof(aSpacer) - 1U)) ? (&aSpacer[len]) : (&aSpacer[0]);
 }

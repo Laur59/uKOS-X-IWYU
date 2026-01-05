@@ -2,17 +2,18 @@
 ; power.
 ; ======
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Give the battery information.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    Give the battery information.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,54 +47,54 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<stdint.h>
-#include	<stdio.h>
+#include    <stdint.h>
+#include    <stdio.h>
 
-#include	"battery/battery.h"
-#include	"battery_common.h"
-#include	"kern/kern.h"		// IWYU pragma: keep (symbol KWAIT_INFINITY)
-#include	"macros.h"
-#include	"modules.h"
-#include	"os_errors.h"
-#include	"serial/serial.h"
-#include	"types.h"
+#include    "battery/battery.h"
+#include    "battery_common.h"
+#include    "kern/kern.h"       // IWYU pragma: keep (symbol KWAIT_INFINITY)
+#include    "macros.h"
+#include    "modules.h"
+#include    "os_errors.h"
+#include    "serial/serial.h"
+#include    "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"power        Give the battery information.             (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "Give the battery information\n"
-									"============================\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "power        Give the battery information.             (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "Give the battery information\n"
+                                    "============================\n\n"
 
-									"This tool displays the battery information.\n\n"
+                                    "This tool displays the battery information.\n\n"
 
-									"Input format:  power\n"
-									"Output format: Voltage:               xx [V]\n"
-									"               Current:               xx [mA]\n"
-									"               Temperature:           xx [K]\n"
-									"               Full charged capacity: xx [mAh]\n"
-									"               Remaining capacity:    xx [mAh]\n"
-									"               Time to empty:         xx [m]\n"
-									"               Number of cycles:      xx [-]\n\n"
+                                    "Input format:  power\n"
+                                    "Output format: Voltage:               xx [V]\n"
+                                    "               Current:               xx [mA]\n"
+                                    "               Temperature:           xx [K]\n"
+                                    "               Full charged capacity: xx [mAh]\n"
+                                    "               Remaining capacity:    xx [mAh]\n"
+                                    "               Time to empty:         xx [m]\n"
+                                    "               Number of cycles:      xx [-]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 
-static	int32_t		prgm(uint32_t argc, const char_t *argv[]);
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 
 MODULE(
-	Power,										// Module name (the first letter has to be upper case)
-	KID_FAM_CLI,								// Family (defined in the module.h)
-	KNUM_POWER,									// Module identifier (defined in the module.h)
-	NULL,										// Address of the initialisation code (early pre-init)
-	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	NULL,										// Address of the clean code (clean the module)
-	" 1.0",										// Revision string (major . minor)
-	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0											// Execution cores
+    Power,                                      // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                                // Family (defined in the module.h)
+    KNUM_POWER,                                 // Module identifier (defined in the module.h)
+    NULL,                                       // Address of the initialisation code (early pre-init)
+    prgm,                                       // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    NULL,                                       // Address of the clean code (clean the module)
+    " 1.0",                                     // Revision string (major . minor)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),         // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                           // Execution cores
 );
 
 // CLI tool specific
@@ -103,30 +104,30 @@ MODULE(
  * \brief Main entry point
  *
  */
-static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
-	UNUSED(argc);
-	UNUSED(argv);
+static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
+    UNUSED(argc);
+    UNUSED(argv);
 
-	batteryInfo_t	batteryInfo;
-	int32_t			status;
+    batteryInfo_t   batteryInfo;
+    int32_t         status;
 
-	(void)dprintf(KSYST, "Battery information.\n");
+    (void)dprintf(KSYST, "Battery information.\n");
 
-	RESERVE(BATTERY, KMODE_READ_WRITE);
-	status = battery_read(&batteryInfo);
-	RELEASE(BATTERY, KMODE_READ_WRITE);
+    RESERVE(BATTERY, KMODE_READ_WRITE);
+    status = battery_read(&batteryInfo);
+    RELEASE(BATTERY, KMODE_READ_WRITE);
 
-	if (status != KERR_BATTERY_NOERR) { (void)dprintf(KSYST, "Battery manager problem!\n\n"); return (EXIT_OS_FAILURE); }
+    if (status != KERR_BATTERY_NOERR) { (void)dprintf(KSYST, "Battery manager problem!\n\n"); return (EXIT_OS_FAILURE); }
 
-	(void)dprintf(KSYST, "Batery voltage:        %7.2f [V]\n",      batteryInfo.oVoltage);
-	(void)dprintf(KSYST, "Battery current:       %7.2f [mA]\n",     batteryInfo.oCurrent);
-	(void)dprintf(KSYST, "Battery temperature:   %7.2f [K]\n",      batteryInfo.oTemperature);
-	(void)dprintf(KSYST, "Full charged capacity: %7.2f [mAh]\n",    batteryInfo.oFullChargedCapacity);
-	(void)dprintf(KSYST, "Remaining capacity:    %7.2f [mAh]\n",    batteryInfo.oRemainingCapacity);
+    (void)dprintf(KSYST, "Batery voltage:        %7.2f [V]\n",      batteryInfo.oVoltage);
+    (void)dprintf(KSYST, "Battery current:       %7.2f [mA]\n",     batteryInfo.oCurrent);
+    (void)dprintf(KSYST, "Battery temperature:   %7.2f [K]\n",      batteryInfo.oTemperature);
+    (void)dprintf(KSYST, "Full charged capacity: %7.2f [mAh]\n",    batteryInfo.oFullChargedCapacity);
+    (void)dprintf(KSYST, "Remaining capacity:    %7.2f [mAh]\n",    batteryInfo.oRemainingCapacity);
 
-	if (batteryInfo.oTimeToEmpty < 65535U) {
-		(void)dprintf(KSYST, "Time to empty:          %6d [m]\n",   batteryInfo.oTimeToEmpty);
-	}
-	(void)dprintf(KSYST, "Cycles:                 %6d [-]\n\n", batteryInfo.oCycles);
-	return (EXIT_OS_SUCCESS_CLI);
+    if (batteryInfo.oTimeToEmpty < 65535U) {
+        (void)dprintf(KSYST, "Time to empty:          %6d [m]\n",   batteryInfo.oTimeToEmpty);
+    }
+    (void)dprintf(KSYST, "Cycles:                 %6d [-]\n\n", batteryInfo.oCycles);
+    return (EXIT_OS_SUCCESS_CLI);
 }

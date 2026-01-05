@@ -2,17 +2,18 @@
 ; watchdog.
 ; =========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		watchdog manager.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    watchdog manager.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,21 +47,21 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"watchdog.h"
+#include    "watchdog.h"
 
-#include	<stdint.h>
-#include	<stdlib.h>
+#include    <stdint.h>
+#include    <stdlib.h>
 
-#include	"serial/serial.h"
-#include	"kern/kern.h"
-#include	"macros.h"
-#include	"macros_core.h"
-#include	"macros_core_stackFrame.h"
-#include	"macros_soc.h"
-#include	"modules.h"
-#include	"os_errors.h"
-#include	"record/record.h"
-#include	"types.h"
+#include    "serial/serial.h"
+#include    "kern/kern.h"
+#include    "macros.h"
+#include    "macros_core.h"
+#include    "macros_core_stackFrame.h"
+#include    "macros_soc.h"
+#include    "modules.h"
+#include    "os_errors.h"
+#include    "record/record.h"
+#include    "types.h"
 
 #ifdef CONFIG_MAN_WATCHDOG_S
 
@@ -69,45 +70,45 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"watchdog     watchdog manager.                         (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "watchdog manager\n"
-									"================\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "watchdog     watchdog manager.                         (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "watchdog manager\n"
+                                    "================\n\n"
 
-									"This manager ...\n\n"
+                                    "This manager ...\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
-	Watchdog,						// Module name (the first letter has to be upper case)
-	KID_FAM_PERIPHERALS,			// Family (defined in the module.h)
-	KNUM_WATCHDOG,						// Module identifier (defined in the module.h)
-	NULL,							// Address of the initialisation code (early pre-init)
-	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	NULL,							// Address of the clean code (clean the module)
-	" 1.0",							// Revision string (major . minor)
-	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0								// Execution cores
+    Watchdog,                       // Module name (the first letter has to be upper case)
+    KID_FAM_PERIPHERALS,            // Family (defined in the module.h)
+    KNUM_WATCHDOG,                      // Module identifier (defined in the module.h)
+    NULL,                           // Address of the initialisation code (early pre-init)
+    NULL,                           // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    NULL,                           // Address of the clean code (clean the module)
+    " 1.0",                         // Revision string (major . minor)
+    (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                               // Execution cores
 );
 
 // Library specific
 // ================
 
-typedef	struct	watchdogPack	watchdogPack_t;
+typedef struct  watchdogPack    watchdogPack_t;
 
-struct	watchdogPack {
-			uint32_t	oTime;
-			bool		*oReleasePack;
-		};
+struct  watchdogPack {
+            uint32_t    oTime;
+            bool        *oReleasePack;
+        };
 
 // Prototypes
 
-static	void	local_process_watchdog(const void *argument);
-extern	void	stub_watchdog_arm(uint32_t time);
+static  void    local_process_watchdog(const void *argument);
+extern  void    stub_watchdog_arm(uint32_t time);
 
 /*
  * \brief Arm the watchdog
  *
- * \warning	This function is hardware dependent
+ * \warning This function is hardware dependent
  *
  * Call example in C:
  *
@@ -127,65 +128,65 @@ extern	void	stub_watchdog_arm(uint32_t time);
  *   I.e for the stm32 series the min-max time is 8-ms < time < 32768-ms
  *   I.e for the gd32vf103 series the min-max time is 6.4 < time < 26214.4-ms
  *
- * \param[in]	time				Restart time if the watchdog is not re-activated
- * \param[in]	mode				KWATCHDOG_AUTO, create a daemon to re-activate the watchdog
- * 				-					KWATCHDOG_MANUAL, the user is responsible to re-activate the watchdog
- * \return		KERR_WATCHDOG_NOERR	OK
+ * \param[in]   time                Restart time if the watchdog is not re-activated
+ * \param[in]   mode                KWATCHDOG_AUTO, create a daemon to re-activate the watchdog
+ *              -                   KWATCHDOG_MANUAL, the user is responsible to re-activate the watchdog
+ * \return      KERR_WATCHDOG_NOERR OK
  *
  */
-int32_t	watchdog_arm(uint32_t time, uint8_t mode) {
-			uint32_t		core, wkTime = time;
-			watchdogPack_t	pack;
-			bool			releasePack = false;
-	static	proc_t			*process_watchdog[KNB_CORES] = MCSET(NULL);
+int32_t watchdog_arm(uint32_t time, uint8_t mode) {
+            uint32_t        core, wkTime = time;
+            watchdogPack_t  pack;
+            bool            releasePack = false;
+    static  proc_t          *process_watchdog[KNB_CORES] = MCSET(NULL);
 
 // -------------------------------I-----------------------------------------I--------------I
 
-	STRG_LOC_CONST(aStrIden[]) = "Daemon_watchdog";
-	STRG_LOC_CONST(aStrText[]) = "Daemon, watchdog process.                 (c) EFr-2026";
+    STRG_LOC_CONST(aStrIden[]) = "Daemon_watchdog";
+    STRG_LOC_CONST(aStrText[]) = "Daemon, watchdog process.                 (c) EFr-2026";
 
-	#undef	KDAEMON_STACK_SIZE
-	#define	KDAEMON_STACK_SIZE	KKERN_SZ_STACK_SS
-	VAR_DECLARED_ALIGN(static	uintptr_t	vStack[KNB_CORES][KDAEMON_STACK_SIZE], KSTACK_ALIGNMENT);
+    #undef  KDAEMON_STACK_SIZE
+    #define KDAEMON_STACK_SIZE  KKERN_SZ_STACK_SS
+    VAR_DECLARED_ALIGN(static   uintptr_t   vStack[KNB_CORES][KDAEMON_STACK_SIZE], KSTACK_ALIGNMENT);
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	PRIVILEGE_ELEVATE;
+    PRIVILEGE_ELEVATE;
 
-	wkTime = (wkTime > KWATCHDOG_MAX_TIME_MS) ? (KWATCHDOG_MAX_TIME_MS) : (wkTime);
+    wkTime = (wkTime > KWATCHDOG_MAX_TIME_MS) ? (KWATCHDOG_MAX_TIME_MS) : (wkTime);
 
-	switch (mode) {
-		case KWATCHDOG_AUTO: {
-			if (process_watchdog[core] == NULL) {
-				stub_watchdog_arm(wkTime);
+    switch (mode) {
+        case KWATCHDOG_AUTO: {
+            if (process_watchdog[core] == NULL) {
+                stub_watchdog_arm(wkTime);
 
-				pack.oTime		  = wkTime;
-				pack.oReleasePack = &releasePack;
+                pack.oTime        = wkTime;
+                pack.oReleasePack = &releasePack;
 
-				DAEMON_PRIVILEGED(core, specification, aStrText, vStack, KDAEMON_STACK_SIZE, local_process_watchdog, aStrIden, KSYST, KKERN_PRIORITY_HIGH_15);
-				if (kern_createProcess(&specification, &pack, &process_watchdog[core]) != KERR_KERN_NOERR) { LOG(KFATAL_KERNEL, "wdog: Create process watchdog"); exit(EXIT_OS_PANIC); }
+                DAEMON_PRIVILEGED(core, specification, aStrText, vStack, KDAEMON_STACK_SIZE, local_process_watchdog, aStrIden, KSYST, KKERN_PRIORITY_HIGH_15);
+                if (kern_createProcess(&specification, &pack, &process_watchdog[core]) != KERR_KERN_NOERR) { LOG(KFATAL_KERNEL, "wdog: Create process watchdog"); exit(EXIT_OS_PANIC); }
 
-				do { kern_suspendProcess(1U); } while (!releasePack);
-			}
-			break;
-		}
-		case KWATCHDOG_MANUAL: {
-			if (process_watchdog[core] != NULL) {
-				kern_killProcess(process_watchdog[core]);
-				process_watchdog[core] = NULL;
-			}
-			stub_watchdog_arm(wkTime);
-			break;
-		}
-		default: {
+                do { kern_suspendProcess(1U); } while (!releasePack);
+            }
+            break;
+        }
+        case KWATCHDOG_MANUAL: {
+            if (process_watchdog[core] != NULL) {
+                kern_killProcess(process_watchdog[core]);
+                process_watchdog[core] = NULL;
+            }
+            stub_watchdog_arm(wkTime);
+            break;
+        }
+        default: {
 
 // Make MISRA happy :-)
 
-			break;
-		}
-	}
-	PRIVILEGE_RESTORE;
-	return (KERR_WATCHDOG_NOERR);
+            break;
+        }
+    }
+    PRIVILEGE_RESTORE;
+    return (KERR_WATCHDOG_NOERR);
 }
 
 // Local routines
@@ -198,25 +199,25 @@ int32_t	watchdog_arm(uint32_t time, uint8_t mode) {
  *
  */
 static void __attribute__ ((noreturn)) local_process_watchdog(const void *argument) {
-			uint32_t		time, watchdog;
-			bool			*releasePack;
-	const	watchdogPack_t	*pack;
+            uint32_t        time, watchdog;
+            bool            *releasePack;
+    const   watchdogPack_t  *pack;
 
 // Recover the process arguments
 
-	pack = (const watchdogPack_t *)argument;
+    pack = (const watchdogPack_t *)argument;
 
-	watchdog = pack->oTime;
-	time     = (uint32_t)((float64_t)pack->oTime * KWATCHDOG_MARGIN);
+    watchdog = pack->oTime;
+    time     = (uint32_t)((float64_t)pack->oTime * KWATCHDOG_MARGIN);
 
-	time = (time == 0U) ? (1U) : (time);
-	releasePack  = pack->oReleasePack;
-	*releasePack = true;
+    time = (time == 0U) ? (1U) : (time);
+    releasePack  = pack->oReleasePack;
+    *releasePack = true;
 
-	while (true) {
-		kern_suspendProcess(time);
-		stub_watchdog_arm(watchdog);
-	}
+    while (true) {
+        kern_suspendProcess(time);
+        stub_watchdog_arm(watchdog);
+    }
 }
 
 #endif

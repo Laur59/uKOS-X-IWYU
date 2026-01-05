@@ -2,17 +2,18 @@
 ; memsys.
 ; =======
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		MEMSYS equates.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    MEMSYS equates.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,48 +47,48 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // MEMSYS address definitions
 // --------------------------
 
-typedef	struct {
-	volatile	uint32_t	MSCR;
-	volatile	uint32_t	PFCR;
-	volatile	uint32_t	RESERVED0[2];
-	volatile	uint32_t	ITCMCR;
-	volatile	uint32_t	DTCMCR;
-	volatile	uint32_t	PAHBCR;
-	volatile	uint32_t	RESERVED1[313];
-	volatile	uint32_t	ITGU_CTRL;
-	volatile	uint32_t	ITGU_CFG;
-	volatile	uint32_t	RESERVED2[2];
-	volatile	uint32_t	ITGU_LUT[16];
-	volatile	uint32_t	RESERVED3[44];
-	volatile	uint32_t	DTGU_CTRL;
-	volatile	uint32_t	DTGU_CFG;
-	volatile	uint32_t	RESERVED4[2];
-	volatile	uint32_t	DTGU_LUT[16];
+typedef struct {
+    volatile    uint32_t    MSCR;
+    volatile    uint32_t    PFCR;
+    volatile    uint32_t    RESERVED0[2];
+    volatile    uint32_t    ITCMCR;
+    volatile    uint32_t    DTCMCR;
+    volatile    uint32_t    PAHBCR;
+    volatile    uint32_t    RESERVED1[313];
+    volatile    uint32_t    ITGU_CTRL;
+    volatile    uint32_t    ITGU_CFG;
+    volatile    uint32_t    RESERVED2[2];
+    volatile    uint32_t    ITGU_LUT[16];
+    volatile    uint32_t    RESERVED3[44];
+    volatile    uint32_t    DTGU_CTRL;
+    volatile    uint32_t    DTGU_CFG;
+    volatile    uint32_t    RESERVED4[2];
+    volatile    uint32_t    DTGU_LUT[16];
 } MemSysCtrl_TypeDef;
 
 #ifdef __cplusplus
-#define	MEMSYSCTL_S		reinterpret_cast<MemSysCtrl_TypeDef *>(0xE001E000u)
-#define	MEMSYSCTL_NS	reinterpret_cast<MemSysCtrl_TypeDef *>(0xE001E000u)
+#define MEMSYSCTL_S     reinterpret_cast<MemSysCtrl_TypeDef *>(0xE001E000u)
+#define MEMSYSCTL_NS    reinterpret_cast<MemSysCtrl_TypeDef *>(0xE001E000u)
 
 #else
-#define	MEMSYSCTL_S		((MemSysCtrl_TypeDef *)0xE001E000u)
-#define	MEMSYSCTL_NS	((MemSysCtrl_TypeDef *)0xE001E000u)
+#define MEMSYSCTL_S     ((MemSysCtrl_TypeDef *)0xE001E000u)
+#define MEMSYSCTL_NS    ((MemSysCtrl_TypeDef *)0xE001E000u)
 #endif
 
 // MSCR register
 
-#define	MEMSYSCTL_MSCR_CPWRDN				(0x1u<<17)
-#define	MEMSYSCTL_MSCR_DCCLEAN				(0x1u<<16)
-#define	MEMSYSCTL_MSCR_ICACTIVE				(0x1u<<13)
-#define	MEMSYSCTL_MSCR_DCACTIVE				(0x1u<<12)
-#define	MEMSYSCTL_MSCR_TECCCHKDIS			(0x1u<<4)
-#define	MEMSYSCTL_MSCR_EVECCFAULT			(0x1u<<3)
-#define	MEMSYSCTL_MSCR_FORCEWT				(0x1u<<2)
-#define	MEMSYSCTL_MSCR_ECCEN				(0x1u<<1)
+#define MEMSYSCTL_MSCR_CPWRDN               (0x1u<<17)
+#define MEMSYSCTL_MSCR_DCCLEAN              (0x1u<<16)
+#define MEMSYSCTL_MSCR_ICACTIVE             (0x1u<<13)
+#define MEMSYSCTL_MSCR_DCACTIVE             (0x1u<<12)
+#define MEMSYSCTL_MSCR_TECCCHKDIS           (0x1u<<4)
+#define MEMSYSCTL_MSCR_EVECCFAULT           (0x1u<<3)
+#define MEMSYSCTL_MSCR_FORCEWT              (0x1u<<2)
+#define MEMSYSCTL_MSCR_ECCEN                (0x1u<<1)

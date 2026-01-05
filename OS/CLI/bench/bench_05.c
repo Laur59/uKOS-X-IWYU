@@ -2,30 +2,31 @@
 ; bench_05.
 ; =========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Bench 05: 	Compute a simple loop. 1000000 iterations.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;			Target used: Nucleo_H743 @ 480-MHz
-;			Target used: Nucleo_N657 @ 600-MHz
-;			Target used: MAiXDUiNO_K210 @ 400-MHz
-;			Target used: Discovery_U5G9 @ 160-MHz
+; Project: uKOS-X
 ;
-;			Bench results in [us]:
+; Purpose:
+;    Bench 05: Compute a simple loop. 1000000 iterations.
 ;
-;										_loop
-;			Nucleo_H743 @ 480-MHz		10400
-;			Nucleo_N657 @ 600-MHz		13240
-;			MAiXDUiNO_K210 @ 400-MHz	-
-;			Discovery_U5G9 @ 160-MHz	-
+;    Target used: Nucleo_H743 @ 480-MHz
+;    Target used: Nucleo_N657 @ 600-MHz
+;    Target used: MAiXDUiNO_K210 @ 400-MHz
+;    Target used: Discovery_U5G9 @ 160-MHz
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+;    Bench results in [us]:
+;
+;                                _loop
+;    Nucleo_H743 @ 480-MHz       10400
+;    Nucleo_N657 @ 600-MHz       13240
+;    MAiXDUiNO_K210 @ 400-MHz    -
+;    Discovery_U5G9 @ 160-MHz    -
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -59,21 +60,21 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<stdio.h>
+#include    <stdio.h>
 
-#include	"serial/serial.h"
+#include    "serial/serial.h"
 
 #ifdef BENCH_ANALYSER_S
-#include	"board.h"
-#include	"kern/kern.h"
-#include	"macros_core.h"
+#include    "board.h"
+#include    "kern/kern.h"
+#include    "macros_core.h"
 
-#define	KNB_TESTS			1000000U
+#define KNB_TESTS           1000000U
 
 // CLI tool specific
 // =================
 
-static	void	 local_loop(uint32_t nb);
+static  void     local_loop(uint32_t nb);
 
 /*
  * \brief bench_05
@@ -81,24 +82,24 @@ static	void	 local_loop(uint32_t nb);
  * - loop
  *
  */
-bool	bench_05(void) {
+bool    bench_05(void) {
 
-	#if (defined(Nucleo_H743_S) || defined(Nucleo_N657_S))
-	(void)dprintf(KSYST, "Bench 05: For scope tests!\n");
+    #if (defined(Nucleo_H743_S) || defined(Nucleo_N657_S))
+    (void)dprintf(KSYST, "Bench 05: For scope tests!\n");
 
-	kern_suspendProcess(1000U);
+    kern_suspendProcess(1000U);
 
-	INTERRUPTION_OFF_HARD;
-	while (true) {
+    INTERRUPTION_OFF_HARD;
+    while (true) {
 
-		ANALYSER_TOGGLE;
-		local_loop(KNB_TESTS);
-	}
-	#else
-	(void)dprintf(KSYST, "Bench 05: not available for this target\n");
-	#endif
+        ANALYSER_TOGGLE;
+        local_loop(KNB_TESTS);
+    }
+    #else
+    (void)dprintf(KSYST, "Bench 05: not available for this target\n");
+    #endif
 
-	return (true);
+    return (true);
 }
 
 // Local routines
@@ -110,18 +111,18 @@ bool	bench_05(void) {
  * - Execute the nop
  *
  */
-static	void local_loop(uint32_t nb) {
-	volatile	uint32_t	i;
+static  void local_loop(uint32_t nb) {
+    volatile    uint32_t    i;
 
-	for (i = 0U; i < nb; i++) {
-		NOP;
-	}
+    for (i = 0U; i < nb; i++) {
+        NOP;
+    }
 }
 #else
-bool	bench_05(void) {
+bool    bench_05(void) {
 
-	dprintf(KSYST, "Bench 05: not available for this target\n");
+    dprintf(KSYST, "Bench 05: not available for this target\n");
 
-	return (true);
+    return (true);
 }
 #endif

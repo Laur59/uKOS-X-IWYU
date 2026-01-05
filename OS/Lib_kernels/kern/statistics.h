@@ -2,20 +2,21 @@
 ; statistics.
 ; ===========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Kern - Statistic management.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;			This module is responsible for computing the statistic of
-;			the uKernel.
+; Project: uKOS-X
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Purpose:
+;    Kern - Statistic management.
+;
+;    This module is responsible for computing the statistic of
+;    the uKernel.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -49,11 +50,11 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"kern/kern.h"	// IWYU pragma: keep (workaround bug of app)
+#include    "kern/kern.h"   // IWYU pragma: keep (workaround bug of app)
 
 #if (KKERN_WITH_STATISTICS_S == true)
 
@@ -75,7 +76,7 @@
 // Prototypes
 
 #ifdef __cplusplus
-extern	"C" {
+extern  "C" {
 #endif
 
 /*!
@@ -113,35 +114,35 @@ extern	"C" {
  *   - KAvg[k+1] = ( (KAvg[k] x ((1U<<KNMEAN)-1)) + KIns[k] ) / (1U<<KNMEAN)
  *   - EAvg[k+1] = ( (EAvg[k] x ((1U<<KNMEAN)-1)) + EIns[k] ) / (1U<<KNMEAN)
  *
- * \param[in]	*backwardProcess	Ptr on the backward process
- * \param[in]	timeStart			Time when the process was scheduled
- * \param[in]	timeStop			Time when the process was stopped
- * \param[in]	timeLastStart		Time when the process was started (previous cycle)
- * \param[in]	timeE				Time spent in the exceptions (int managers)
+ * \param[in]   *backwardProcess    Ptr on the backward process
+ * \param[in]   timeStart           Time when the process was scheduled
+ * \param[in]   timeStop            Time when the process was stopped
+ * \param[in]   timeLastStart       Time when the process was started (previous cycle)
+ * \param[in]   timeE               Time spent in the exceptions (int managers)
  *
  * \note This function does not return a value (None).
  *
  */
-extern	void	statistics_statistic(proc_t *backwardProcess, uint32_t timeStart, uint32_t timeStop, uint32_t timeLastStart, uint32_t timeE);
+extern  void    statistics_statistic(proc_t *backwardProcess, uint32_t timeStart, uint32_t timeStop, uint32_t timeLastStart, uint32_t timeE);
 
 #ifdef __cplusplus
 }
 #endif
 
-#define	TIC_EXCEPTION_TIME		uint64_t	tic, tac;										\
-								kern_readTickCount(&tic)
+#define TIC_EXCEPTION_TIME      uint64_t    tic, tac;                                       \
+                                kern_readTickCount(&tic)
 
-#define	TAC_EXCEPTION_TIME(core)															\
-								kern_readTickCount(&tac);									\
-								vKern_TimeException[core] += (uint32_t)(tac - tic);			\
-								(void)vKern_TimeException[core]
+#define TAC_EXCEPTION_TIME(core)                                                            \
+                                kern_readTickCount(&tac);                                   \
+                                vKern_TimeException[core] += (uint32_t)(tac - tic);         \
+                                (void)vKern_TimeException[core]
 
 /**@}*/
 /**@}*/
 
 #else
 
-#define	TIC_EXCEPTION_TIME
-#define	TAC_EXCEPTION_TIME
+#define TIC_EXCEPTION_TIME
+#define TAC_EXCEPTION_TIME
 
 #endif

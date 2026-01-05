@@ -2,28 +2,29 @@
 ; preciseSignals.
 ; ===============
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Kern - Precise signals.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;			This module implements the software primitives.
+; Project: uKOS-X
 ;
-; 			Precise signal system calls
-; 			---------------------------
+; Purpose:
+;    Kern - Precise signals.
 ;
-;			void	preciseSignals_init(void);
-;			int32_t	kern_createPreciseSignal(const char_t *identifier, prcs_t **handle);
-;			int32_t	kern_setPreciseSignal(prcs_t *handle, sign_t **sigGroup, proc_t *toProcess, uint64_t period, uint8_t mode, uint32_t signal);
-;			int32_t	kern_killPreciseSignal(prcs_t *handle);
-;			int32_t	kern_getPreciseSignalById(const char_t *identifier, prcs_t **handle);
+;    This module implements the software primitives.
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+;    Precise signal system calls
+;    ---------------------------
+;
+;    void    preciseSignals_init(void);
+;    int32_t kern_createPreciseSignal(const char_t *identifier, prcs_t **handle);
+;    int32_t kern_setPreciseSignal(prcs_t *handle, sign_t **sigGroup, proc_t *toProcess, uint64_t period, uint8_t mode, uint32_t signal);
+;    int32_t kern_killPreciseSignal(prcs_t *handle);
+;    int32_t kern_getPreciseSignalById(const char_t *identifier, prcs_t **handle);
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -57,12 +58,12 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"kern/kern.h"	// IWYU pragma: keep (workaround app bug)
-#include	"types.h"
+#include    "kern/kern.h"   // IWYU pragma: keep (workaround app bug)
+#include    "types.h"
 
 // IWYU pragma: private, include "kern/kern.h"
 
@@ -87,33 +88,33 @@
 // ---------------------------------------------
 
 struct prcs {
-	const	char_t		*oIdentifier;							// Ptr on the process identifier
-			uint16_t	oState;									// Precise signal state
-			#define		BPRCS_INSTALLED		0U					// Precise signal installed
+    const   char_t      *oIdentifier;                           // Ptr on the process identifier
+            uint16_t    oState;                                 // Precise signal state
+            #define     BPRCS_INSTALLED     0U                  // Precise signal installed
 
-			uint8_t		oMode;									// Mode
-			sign_t		*oSignalGroup;							// Ptr on the signal group handle
-			proc_t		*oToProcess;							// Ptr on the process handle (selective signal)
-			uint32_t	oSignal;								// Precise signal signal
-			uint64_t	oPeriod;								// Precise signal period
-			uint64_t	oNextTime;								// Precise signal next absolute time
+            uint8_t     oMode;                                  // Mode
+            sign_t      *oSignalGroup;                          // Ptr on the signal group handle
+            proc_t      *oToProcess;                            // Ptr on the process handle (selective signal)
+            uint32_t    oSignal;                                // Precise signal signal
+            uint64_t    oPeriod;                                // Precise signal period
+            uint64_t    oNextTime;                              // Precise signal next absolute time
 };
 
 // Mode
 
 enum {
-			KPRCS_STOP = 0U,									// Stop the execution of the precise signal
-			KPRCS_SINGLE_SHOT,									// Single shot precise signal (with start)
-			KPRCS_CONTINUOUS									// Continuous precise signal (with start)
+            KPRCS_STOP = 0U,                                    // Stop the execution of the precise signal
+            KPRCS_SINGLE_SHOT,                                  // Single shot precise signal (with start)
+            KPRCS_CONTINUOUS                                    // Continuous precise signal (with start)
 };
 
 // Prototypes
 
 #ifdef __cplusplus
-extern	"C" {
+extern  "C" {
 #endif
 
-extern	void	preciseSignals_init(void);
+extern  void    preciseSignals_init(void);
 
 /*!
  * \brief Create a precise signal
@@ -128,14 +129,14 @@ extern	void	preciseSignals_init(void);
  *    status = kern_createPreciseSignal(identifier, &preciseSignal);
  * \endcode
  *
- * \param[in]	*identifier		Ptr on the precise signal identifier (NULL = anonymous)
- * \param[out]	**handle		Ptr on the handle
- * \return		KERR_KERN_NOERR	OK
- * \return		KERR_KERN_PRFUL	No more precise signal
- * \return		KERR_KERN_IDPRC	The precise signal identifier is already used
+ * \param[in]   *identifier     Ptr on the precise signal identifier (NULL = anonymous)
+ * \param[out]  **handle        Ptr on the handle
+ * \return      KERR_KERN_NOERR OK
+ * \return      KERR_KERN_PRFUL No more precise signal
+ * \return      KERR_KERN_IDPRC The precise signal identifier is already used
  *
  */
-extern	int32_t	kern_createPreciseSignal(const char_t *identifier, prcs_t **handle);
+extern  int32_t kern_createPreciseSignal(const char_t *identifier, prcs_t **handle);
 
 /*!
  * \brief Set a precise signal
@@ -171,20 +172,20 @@ extern	int32_t	kern_createPreciseSignal(const char_t *identifier, prcs_t **handl
  *    }
  * \endcode
  *
- * \param[in]		*handle			Ptr on the handle
- * \param[in, out]	**sigGroup		Ptr on the sigGroup handle. Set variable to NULL for the default group
- * \param[in]		*toProcess		Ptr on the process handle (selective signal)
- * \param[in]		-				KKERN_HANDLE_BROADCAST, broadcast to all the installed processes the signals
- * \param[in]		period			Time period in us
- * \param[in]		mode			KPRCS_STOP			-> stop the ongoing timer
- * \param[in]		-				KPRCS_SINGLE_SHOT	-> single shot timer
- * \param[in]		-				KPRCS_CONTINUOUS	-> continuous timer
- * \param[in]		signal			Signal(s) to generate
- * \return			KERR_KERN_NOERR	OK
- * \return			KERR_KERN_NOPRC	The precise signal does not exist
+ * \param[in]       *handle         Ptr on the handle
+ * \param[in, out]  **sigGroup      Ptr on the sigGroup handle. Set variable to NULL for the default group
+ * \param[in]       *toProcess      Ptr on the process handle (selective signal)
+ * \param[in]       -               KKERN_HANDLE_BROADCAST, broadcast to all the installed processes the signals
+ * \param[in]       period          Time period in us
+ * \param[in]       mode            KPRCS_STOP          -> stop the ongoing timer
+ * \param[in]       -               KPRCS_SINGLE_SHOT   -> single shot timer
+ * \param[in]       -               KPRCS_CONTINUOUS    -> continuous timer
+ * \param[in]       signal          Signal(s) to generate
+ * \return          KERR_KERN_NOERR OK
+ * \return          KERR_KERN_NOPRC The precise signal does not exist
  *
  */
-extern	int32_t	kern_setPreciseSignal(prcs_t *handle, sign_t **sigGroup, proc_t *toProcess, uint64_t period, uint8_t mode, uint32_t signal);
+extern  int32_t kern_setPreciseSignal(prcs_t *handle, sign_t **sigGroup, proc_t *toProcess, uint64_t period, uint8_t mode, uint32_t signal);
 
 /*!
  * \brief Kill the precise signal
@@ -198,12 +199,12 @@ extern	int32_t	kern_setPreciseSignal(prcs_t *handle, sign_t **sigGroup, proc_t *
  *    status = kern_killPreciseSignal(preciseSignal);
  * \endcode
  *
- * \param[in]	*handle			Ptr on the handle
- * \return		KERR_KERN_NOERR	OK
- * \return		KERR_KERN_NOPRC	The precise signal does not exist
+ * \param[in]   *handle         Ptr on the handle
+ * \return      KERR_KERN_NOERR OK
+ * \return      KERR_KERN_NOPRC The precise signal does not exist
  *
  */
-extern	int32_t	kern_killPreciseSignal(prcs_t *handle);
+extern  int32_t kern_killPreciseSignal(prcs_t *handle);
 
 /*!
  * \brief Get the handle of a precise signal by its identifier
@@ -220,13 +221,13 @@ extern	int32_t	kern_killPreciseSignal(prcs_t *handle);
  *
  * - This function returns the handle of the precise signal
  *
- * \param[in]	*identifier		Ptr on the precise signal identifier
- * \param[out]	**handle		Ptr on the handle
- * \return		KERR_KERN_NOERR	OK
- * \return		KERR_KERN_NOPRC	The precise signal does not exist
+ * \param[in]   *identifier     Ptr on the precise signal identifier
+ * \param[out]  **handle        Ptr on the handle
+ * \return      KERR_KERN_NOERR OK
+ * \return      KERR_KERN_NOPRC The precise signal does not exist
  *
  */
-extern	int32_t	kern_getPreciseSignalById(const char_t *identifier, prcs_t **handle);
+extern  int32_t kern_getPreciseSignalById(const char_t *identifier, prcs_t **handle);
 
 #ifdef __cplusplus
 }

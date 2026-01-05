@@ -2,17 +2,18 @@
 ; machine.
 ; ========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		machine manager.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    machine manager.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,42 +49,42 @@
 
 #ifdef CONFIG_MAN_MACHINE_S
 
-#include	"machine.h"
+#include    "machine.h"
 
-#include	<stddef.h>
-#include	<stdint.h>
+#include    <stddef.h>
+#include    <stdint.h>
 
-#include	"kern/kern.h"
-#include	"macros.h"
-#include	"macros_core.h"
-#include	"macros_soc.h"
-#include	"modules.h"
-#include	"os_errors.h"
-#include	"types.h"
+#include    "kern/kern.h"
+#include    "macros.h"
+#include    "macros_core.h"
+#include    "macros_soc.h"
+#include    "modules.h"
+#include    "os_errors.h"
+#include    "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"machine      machine manager.                          (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "machine manager\n"
-									"===============\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "machine      machine manager.                          (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "machine manager\n"
+                                    "===============\n\n"
 
-									"This manager ...\n\n"
+                                    "This manager ...\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
-	Machine,						// Module name (the first letter has to be upper case)
-	KID_FAM_GENERICS,				// Family (defined in the module.h)
-	KNUM_MACHINE,					// Module identifier (defined in the module.h)
-	NULL,							// Address of the initialisation code (early pre-init)
-	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	NULL,							// Address of the clean code (clean the module)
-	" 1.0",							// Revision string (major . minor)
-	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0								// Execution cores
+    Machine,                        // Module name (the first letter has to be upper case)
+    KID_FAM_GENERICS,               // Family (defined in the module.h)
+    KNUM_MACHINE,                   // Module identifier (defined in the module.h)
+    NULL,                           // Address of the initialisation code (early pre-init)
+    NULL,                           // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    NULL,                           // Address of the clean code (clean the module)
+    " 1.0",                         // Revision string (major . minor)
+    (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                               // Execution cores
 );
 
 // Library specific
@@ -91,10 +92,10 @@ MODULE(
 
 // Prototypes
 
-static	void		local_init(void);
-extern	int32_t		stub_machine_restart(void);
-extern	int32_t		stub_machine_readPC(const uintptr_t *stackProcess, uintptr_t *pc);
-extern	void		stub_machine_readFunctionName(const uintptr_t pc, const char_t **function);
+static  void        local_init(void);
+extern  int32_t     stub_machine_restart(void);
+extern  int32_t     stub_machine_readPC(const uintptr_t *stackProcess, uintptr_t *pc);
+extern  void        stub_machine_readFunctionName(const uintptr_t pc, const char_t **function);
 
 /*
  * \brief Read the PC of a process
@@ -111,19 +112,19 @@ extern	void		stub_machine_readFunctionName(const uintptr_t pc, const char_t **fu
  *
  * - This function returns the PC of a process
  *
- * \param[in]	*handle				Ptr on the handle
- * \param[out]	*pc					Ptr on the pc
- * \return		KERR_SYSTEM_NOERR	OK
+ * \param[in]   *handle             Ptr on the handle
+ * \param[out]  *pc                 Ptr on the pc
+ * \return      KERR_SYSTEM_NOERR   OK
  *
  */
-int32_t	machine_readPC(const proc_t *handle, uintptr_t *pc) {
+int32_t machine_readPC(const proc_t *handle, uintptr_t *pc) {
 
-	PRIVILEGE_ELEVATE;
-	local_init();
+    PRIVILEGE_ELEVATE;
+    local_init();
 
-	stub_machine_readPC(handle->oSpecification.oStack, pc);
-	PRIVILEGE_RESTORE;
-	return (KERR_SYSTEM_NOERR);
+    stub_machine_readPC(handle->oSpecification.oStack, pc);
+    PRIVILEGE_RESTORE;
+    return (KERR_SYSTEM_NOERR);
 }
 
 /*
@@ -141,19 +142,19 @@ int32_t	machine_readPC(const proc_t *handle, uintptr_t *pc) {
  *
  * - This function returns the name of a function
  *
- * \param[in]	pc					The pc
- * \param[out]	**function			Ptr on the function name
- * \return		KERR_SYSTEM_NOERR	OK
+ * \param[in]   pc                  The pc
+ * \param[out]  **function          Ptr on the function name
+ * \return      KERR_SYSTEM_NOERR   OK
  *
  */
-int32_t	machine_readFunctionName(const uintptr_t pc, const char_t **function) {
+int32_t machine_readFunctionName(const uintptr_t pc, const char_t **function) {
 
-	PRIVILEGE_ELEVATE;
-	local_init();
+    PRIVILEGE_ELEVATE;
+    local_init();
 
-	stub_machine_readFunctionName(pc, function);
-	PRIVILEGE_RESTORE;
-	return (KERR_SYSTEM_NOERR);
+    stub_machine_readFunctionName(pc, function);
+    PRIVILEGE_RESTORE;
+    return (KERR_SYSTEM_NOERR);
 }
 
 /*
@@ -167,19 +168,19 @@ int32_t	machine_readFunctionName(const uintptr_t pc, const char_t **function) {
  *    status = stub_machine_restart();
  * \endcode
  *
- * \param[in]	-
- * \return		KERR_SYSTEM_NOERR	OK
+ * \param[in]   -
+ * \return      KERR_SYSTEM_NOERR   OK
  *
  */
-int32_t	machine_restart(void) {
-	int32_t		status;
+int32_t machine_restart(void) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	local_init();
+    PRIVILEGE_ELEVATE;
+    local_init();
 
-	status = stub_machine_restart();
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_machine_restart();
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 // Local routines
@@ -192,17 +193,17 @@ int32_t	machine_restart(void) {
  *   has to be called at least once
  *
  */
-static	void	local_init(void) {
-			uint32_t	core;
-	static	bool		vInit[KNB_CORES] = MCSET(false);
+static  void    local_init(void) {
+            uint32_t    core;
+    static  bool        vInit[KNB_CORES] = MCSET(false);
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	INTERRUPTION_OFF;
-	if (!vInit[core]) {
-		vInit[core] = true;
-	}
-	INTERRUPTION_RESTORE;
+    INTERRUPTION_OFF;
+    if (!vInit[core]) {
+        vInit[core] = true;
+    }
+    INTERRUPTION_RESTORE;
 }
 
 #endif

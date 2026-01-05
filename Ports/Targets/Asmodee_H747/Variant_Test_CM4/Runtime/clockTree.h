@@ -2,17 +2,18 @@
 ; clockTree.
 ; ==========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Clock tree definitions.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    Clock tree definitions.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +47,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 // This header contains only variant-specific compile-time macros.
 // It is not meant to contain function or variable declarations.
@@ -57,56 +58,56 @@
 // Main system clocks
 // ------------------
 
-// SPI 1,2,3								ck = PLL1 Q
-// SPI 4,5									ck = rcc_pclk2 -> APB2
-// SPI 6									ck = rcc_pclk4 -> APB4
-// QUAD SPI									ck = rcc_hclk3 -> AHB3
-// I2C 1,2,3								ck = rcc_pclk1 -> APB1
-// I2C 4									ck = rcc_pclk4 -> APB4
-// LPUSART 1								ck = rcc_pclk4 -> APB4
-// USART 1,6								ck = rcc_pclk2 -> APB2
-// USART 2,3,4,5,7,8						ck = rcc_pclk1 -> APB1
-// FMC										ck = rcc_hclk3 -> AHB3
-// ADC 1,2,3								ck = PLL2 P
-// RNG										ck = PLL1 Q
-// USB										ck = PLL3 Q
-// LPTIM 1									ck = rcc_pclk1 -> APB1
-// LPTIM 2,3,4,5							ck = rcc_pclk4 -> APB4
-// TIM 1,2,3,4,5,6,7,8,12,13,14,15,16,17	ck = ??? -> A??
+// SPI 1,2,3                                ck = PLL1 Q
+// SPI 4,5                                  ck = rcc_pclk2 -> APB2
+// SPI 6                                    ck = rcc_pclk4 -> APB4
+// QUAD SPI                                 ck = rcc_hclk3 -> AHB3
+// I2C 1,2,3                                ck = rcc_pclk1 -> APB1
+// I2C 4                                    ck = rcc_pclk4 -> APB4
+// LPUSART 1                                ck = rcc_pclk4 -> APB4
+// USART 1,6                                ck = rcc_pclk2 -> APB2
+// USART 2,3,4,5,7,8                        ck = rcc_pclk1 -> APB1
+// FMC                                      ck = rcc_hclk3 -> AHB3
+// ADC 1,2,3                                ck = PLL2 P
+// RNG                                      ck = PLL1 Q
+// USB                                      ck = PLL3 Q
+// LPTIM 1                                  ck = rcc_pclk1 -> APB1
+// LPTIM 2,3,4,5                            ck = rcc_pclk4 -> APB4
+// TIM 1,2,3,4,5,6,7,8,12,13,14,15,16,17    ck = ??? -> A??
 
-#define KCRYSTAL			16000000U									// Quartz crystal resonator
-#define KFREQUENCY_PLL1P	480000000U									// PLL 1 P bus frequency of 480-MHz
-#define KFREQUENCY_PLL1Q	240000000U									// PLL 1 Q bus frequency of 240-MHz
-#define KFREQUENCY_PLL1R	120000000U									// PLL 1 R bus frequency of 120-MHz
-#define KFREQUENCY_PLL2P	100000000U									// PLL 2 P bus frequency of 100-MHz
-#define KFREQUENCY_PLL2Q	50000000U									// PLL 2 Q bus frequency of 50-MHz
-#define KFREQUENCY_PLL2R	25000000U									// PLL 2 R bus frequency of 25-MHz
-#define KFREQUENCY_PLL3P	120000000U									// PLL 3 P bus frequency of 120-MHz
-#define KFREQUENCY_PLL3Q	48000000U									// PLL 3 Q bus frequency of 48-MHz
-#define KFREQUENCY_PLL3R	120000000U									// PLL 3 R bus frequency of 120-MHz
+#define KCRYSTAL            16000000U                                   // Quartz crystal resonator
+#define KFREQUENCY_PLL1P    480000000U                                  // PLL 1 P bus frequency of 480-MHz
+#define KFREQUENCY_PLL1Q    240000000U                                  // PLL 1 Q bus frequency of 240-MHz
+#define KFREQUENCY_PLL1R    120000000U                                  // PLL 1 R bus frequency of 120-MHz
+#define KFREQUENCY_PLL2P    100000000U                                  // PLL 2 P bus frequency of 100-MHz
+#define KFREQUENCY_PLL2Q    50000000U                                   // PLL 2 Q bus frequency of 50-MHz
+#define KFREQUENCY_PLL2R    25000000U                                   // PLL 2 R bus frequency of 25-MHz
+#define KFREQUENCY_PLL3P    120000000U                                  // PLL 3 P bus frequency of 120-MHz
+#define KFREQUENCY_PLL3Q    48000000U                                   // PLL 3 Q bus frequency of 48-MHz
+#define KFREQUENCY_PLL3R    120000000U                                  // PLL 3 R bus frequency of 120-MHz
 
-#define KD1CPRE				1U											// Div 1
-#define KHPRE				2U											// Div 2
-#define KD1PPRE				1U											// Div 1
-#define KD2PPRE1			4U											// Div 4
-#define KD2PPRE2			4U											// Div 4
-#define KD3PPRE				2U											// Div 2
-#define KTIMPRE				2U											// Div 2
+#define KD1CPRE             1U                                          // Div 1
+#define KHPRE               2U                                          // Div 2
+#define KD1PPRE             1U                                          // Div 1
+#define KD2PPRE1            4U                                          // Div 4
+#define KD2PPRE2            4U                                          // Div 4
+#define KD3PPRE             2U                                          // Div 2
+#define KTIMPRE             2U                                          // Div 2
 
-#define KFREQUENCY_AHB		(KFREQUENCY_PLL1P / KD1CPRE)				// AHB bus frequency of 480-MHz
-#define KFREQUENCY_APB		(KFREQUENCY_AHB / KHPRE)					// APB bus frequency of 240-MHz
+#define KFREQUENCY_AHB      (KFREQUENCY_PLL1P / KD1CPRE)                // AHB bus frequency of 480-MHz
+#define KFREQUENCY_APB      (KFREQUENCY_AHB / KHPRE)                    // APB bus frequency of 240-MHz
 
-#define KFREQUENCY_AXI		KFREQUENCY_APB								// AXI bus frequency of 240-MHz
-#define KFREQUENCY_AHB1		KFREQUENCY_APB								// AHB1 bus frequency of 240-MHz
-#define KFREQUENCY_AHB2		KFREQUENCY_APB								// AHB2 bus frequency of 240-MHz
-#define KFREQUENCY_AHB3		KFREQUENCY_APB								// AHB3 bus frequency of 240-MHz
-#define KFREQUENCY_AHB4		KFREQUENCY_APB								// AHB4 bus frequency of 240-MHz
-#define KFREQUENCY_APB1		(KFREQUENCY_APB / KD2PPRE1)					// APB1 bus frequency of 60-MHz
-#define KFREQUENCY_APB2		(KFREQUENCY_APB / KD2PPRE2)					// APB2 bus frequency of 60-MHz
-#define KFREQUENCY_APB3		(KFREQUENCY_APB / KD1PPRE)					// APB3 bus frequency of 120-MHz
-#define KFREQUENCY_APB4		(KFREQUENCY_APB / KD3PPRE)					// APB4 bus frequency of 120-MHz
-#define KFREQUENCY_TIM		(KFREQUENCY_APB / KTIMPRE)					// Timer clock 120-MHz
-#define KFREQUENCY_1GHz		1000000000U									// Frequency of 1-GHz
-#define KFREQUENCY_1MHz		1000000U									// Frequency of 1-MHz
-#define KFREQUENCY_1KHz		1000U										// Frequency of 1-KHz
-#define KFREQUENCY_CORE		(KFREQUENCY_AHB / 2U)						// CORE frequency
+#define KFREQUENCY_AXI      KFREQUENCY_APB                              // AXI bus frequency of 240-MHz
+#define KFREQUENCY_AHB1     KFREQUENCY_APB                              // AHB1 bus frequency of 240-MHz
+#define KFREQUENCY_AHB2     KFREQUENCY_APB                              // AHB2 bus frequency of 240-MHz
+#define KFREQUENCY_AHB3     KFREQUENCY_APB                              // AHB3 bus frequency of 240-MHz
+#define KFREQUENCY_AHB4     KFREQUENCY_APB                              // AHB4 bus frequency of 240-MHz
+#define KFREQUENCY_APB1     (KFREQUENCY_APB / KD2PPRE1)                 // APB1 bus frequency of 60-MHz
+#define KFREQUENCY_APB2     (KFREQUENCY_APB / KD2PPRE2)                 // APB2 bus frequency of 60-MHz
+#define KFREQUENCY_APB3     (KFREQUENCY_APB / KD1PPRE)                  // APB3 bus frequency of 120-MHz
+#define KFREQUENCY_APB4     (KFREQUENCY_APB / KD3PPRE)                  // APB4 bus frequency of 120-MHz
+#define KFREQUENCY_TIM      (KFREQUENCY_APB / KTIMPRE)                  // Timer clock 120-MHz
+#define KFREQUENCY_1GHz     1000000000U                                 // Frequency of 1-GHz
+#define KFREQUENCY_1MHz     1000000U                                    // Frequency of 1-MHz
+#define KFREQUENCY_1KHz     1000U                                       // Frequency of 1-KHz
+#define KFREQUENCY_CORE     (KFREQUENCY_AHB / 2U)                       // CORE frequency

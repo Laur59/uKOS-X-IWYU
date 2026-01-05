@@ -5,8 +5,8 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; Author:	Edo. Franzi		The 2025-01-01
+; Modifs:
 ;
 ; Project:	uKOS-X
 ; Goal:		lib_generics system call interface module.

@@ -2,17 +2,18 @@
 ; dump.
 ; =====
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		This tool allows to dump a memory area.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    This tool allows to dump a memory area.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,71 +47,71 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<stdint.h>
-#include	<stdio.h>
-#include	<stdlib.h>
+#include    <stdint.h>
+#include    <stdio.h>
+#include    <stdlib.h>
 
-#include	"macros.h"
-#include	"macros_core.h"
-#include	"modules.h"
-#include	"serial/serial.h"
-#include	"text/text.h"
-#include	"types.h"
+#include    "macros.h"
+#include    "macros_core.h"
+#include    "modules.h"
+#include    "serial/serial.h"
+#include    "text/text.h"
+#include    "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"dump         Dump a memory area.                       (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "Dump a memory area\n"
-									"==================\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "dump         Dump a memory area.                       (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "Dump a memory area\n"
+                                    "==================\n\n"
 
-									"This tool displays a memory area. The result\n"
-									"is displayed in hexadecimal format.\n"
-									"The memory space is accessed in user mode;\n"
-									"to avoid privilege violations, -S should be used.\n\n"
+                                    "This tool displays a memory area. The result\n"
+                                    "is displayed in hexadecimal format.\n"
+                                    "The memory space is accessed in user mode;\n"
+                                    "to avoid privilege violations, -S should be used.\n\n"
 
-									"Input format:  dump [-S] {hex_startAdd hex_endAdd}\n"
-									"Output format: add  hexadecimal field\n\n"
+                                    "Input format:  dump [-S] {hex_startAdd hex_endAdd}\n"
+                                    "Output format: add  hexadecimal field\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 
-static	int32_t		prgm(uint32_t argc, const char_t *argv[]);
-static	void		local_printLine(const uint8_t *memory, uint32_t nbBytes);
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+static  void        local_printLine(const uint8_t *memory, uint32_t nbBytes);
 
 MODULE(
-	Dump,										// Module name (the first letter has to be upper case)
-	KID_FAM_CLI,								// Family (defined in the module.h)
-	KNUM_DUMP,									// Module identifier (defined in the module.h)
-	NULL,										// Address of the initialisation code (early pre-init)
-	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	NULL,										// Address of the clean code (clean the module)
-	" 1.0",										// Revision string (major . minor)
-	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0											// Execution cores
+    Dump,                                       // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                                // Family (defined in the module.h)
+    KNUM_DUMP,                                  // Module identifier (defined in the module.h)
+    NULL,                                       // Address of the initialisation code (early pre-init)
+    prgm,                                       // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    NULL,                                       // Address of the clean code (clean the module)
+    " 1.0",                                     // Revision string (major . minor)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),         // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                           // Execution cores
 );
 
 // CLI tool specific
 // =================
 
-#define	KLN_ASCII_BUF	96U
+#define KLN_ASCII_BUF   96U
 
 /*
  * \brief Main entry point
  *
  */
-static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
-			char_t		*dummy;
-			uint32_t	nbBytes;
-			int32_t		status;
-			uintptr_t	startAdd, endAdd;
-			bool		error = false, equals;
-	const	uint8_t		*firstAdd;
+static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
+            char_t      *dummy;
+            uint32_t    nbBytes;
+            int32_t     status;
+            uintptr_t   startAdd, endAdd;
+            bool        error = false, equals;
+    const   uint8_t     *firstAdd;
 
-	(void)dprintf(KSYST, "Memory dump.\n");
+    (void)dprintf(KSYST, "Memory dump.\n");
 
 // Analyse the command line
 // ------------------------
@@ -120,53 +121,53 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 // dump A0001234 A0011234
 // dump -S A0001234 A0011234
 
-	if ((argc < 3U) || (argc > 4U)) {
-		error = true;
-	}
-	else {
-		if (argc == 3U) {
+    if ((argc < 3U) || (argc > 4U)) {
+        error = true;
+    }
+    else {
+        if (argc == 3U) {
 
 // User access
 
-			startAdd = (uintptr_t)strtol(argv[1], &dummy, 16U);
-			endAdd	 = (uintptr_t)strtol(argv[2], &dummy, 16U);
+            startAdd = (uintptr_t)strtol(argv[1], &dummy, 16U);
+            endAdd   = (uintptr_t)strtol(argv[2], &dummy, 16U);
 
-			if (endAdd < startAdd) {
-				endAdd += startAdd;
-			}
-			nbBytes  = (uint32_t)(endAdd - startAdd);
-			firstAdd = (uint8_t *)startAdd;
-			local_printLine(firstAdd, nbBytes);
-		}
-		else {
-			text_checkAsciiBuffer(argv[1], "-S", &equals);
-			if (equals) {
+            if (endAdd < startAdd) {
+                endAdd += startAdd;
+            }
+            nbBytes  = (uint32_t)(endAdd - startAdd);
+            firstAdd = (uint8_t *)startAdd;
+            local_printLine(firstAdd, nbBytes);
+        }
+        else {
+            text_checkAsciiBuffer(argv[1], "-S", &equals);
+            if (equals) {
 
 // Privileged access
 
-				PRIVILEGE_ELEVATE;
+                PRIVILEGE_ELEVATE;
 
-				startAdd = (uintptr_t)strtol(argv[2], &dummy, 16U);
-				endAdd	 = (uintptr_t)strtol(argv[3], &dummy, 16U);
+                startAdd = (uintptr_t)strtol(argv[2], &dummy, 16U);
+                endAdd   = (uintptr_t)strtol(argv[3], &dummy, 16U);
 
-				if (endAdd < startAdd) {
-					endAdd += startAdd;
-				}
-				nbBytes  = (uint32_t)(endAdd - startAdd);
-				firstAdd = (uint8_t *)startAdd;
-				local_printLine(firstAdd, nbBytes);
+                if (endAdd < startAdd) {
+                    endAdd += startAdd;
+                }
+                nbBytes  = (uint32_t)(endAdd - startAdd);
+                firstAdd = (uint8_t *)startAdd;
+                local_printLine(firstAdd, nbBytes);
 
-				PRIVILEGE_RESTORE;
-			}
-			else {
-				error = true;
-			}
-		}
-	}
+                PRIVILEGE_RESTORE;
+            }
+            else {
+                error = true;
+            }
+        }
+    }
 
-	if (!error) { (void)dprintf(KSYST, "\n");				   status = EXIT_OS_SUCCESS_CLI; }
-	else		{ (void)dprintf(KSYST, "Protocol error.\n\n"); status = EXIT_OS_FAILURE;     }
-	return (status);
+    if (!error) { (void)dprintf(KSYST, "\n");                  status = EXIT_OS_SUCCESS_CLI; }
+    else        { (void)dprintf(KSYST, "Protocol error.\n\n"); status = EXIT_OS_FAILURE;     }
+    return (status);
 }
 
 // Local routines
@@ -179,33 +180,33 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
  * - 0x12345678: 00 33 34 02 03 04 05 06 07 34 41 BB 62 DD EE FF .34......4A.b...
  *
  */
-static	void	local_printLine(const uint8_t *memory, uint32_t nbBytes) {
-			uint8_t		j;
-			uint32_t	i;
-			size_t		offset;
-			char_t		ascii[(8U * 2U) + 1U], element;
-	const	uint8_t		*param;
+static  void    local_printLine(const uint8_t *memory, uint32_t nbBytes) {
+            uint8_t     j;
+            uint32_t    i;
+            size_t      offset;
+            char_t      ascii[(8U * 2U) + 1U], element;
+    const   uint8_t     *param;
 
-	for (i = 0U; i < ((nbBytes + 16U) / 16U); i++) {
-		offset = (size_t)i * (size_t)16U;
-		param  = (const uint8_t *)(memory + offset);
+    for (i = 0U; i < ((nbBytes + 16U) / 16U); i++) {
+        offset = (size_t)i * (size_t)16U;
+        param  = (const uint8_t *)(memory + offset);
 
-		(void)dprintf(KSYST, "0x%016X: ", (uintptr_t)param);
-		for (j = 0U; j < 15U; j++) {
-			(void)dprintf(KSYST, "%02X,",  *(memory + ((size_t)i * (size_t)16U) + (size_t)j));
-		}
-			(void)dprintf(KSYST, "%02X  ", *(memory + ((size_t)i * (size_t)16U) + (size_t)15U));
+        (void)dprintf(KSYST, "0x%016X: ", (uintptr_t)param);
+        for (j = 0U; j < 15U; j++) {
+            (void)dprintf(KSYST, "%02X,",  *(memory + ((size_t)i * (size_t)16U) + (size_t)j));
+        }
+            (void)dprintf(KSYST, "%02X  ", *(memory + ((size_t)i * (size_t)16U) + (size_t)15U));
 
 // The ASCII part of the line
 
-		for (j = 0U; j < 16U; j++) {
-			element = (char_t)*(memory + ((size_t)i * (size_t)16U) + (size_t)j);
-			if ((*(memory + ((size_t)i * (size_t)16U) + (size_t)j) < ' ') || (*(memory + ((size_t)i * (size_t)16U) + (size_t)j) > 0x7FU)) {
-				element = '.';
-			}
-			ascii[j] = element;
-		}
-		ascii[16] = '\0';
-		(void)dprintf(KSYST, "%s\n", ascii);
-	}
+        for (j = 0U; j < 16U; j++) {
+            element = (char_t)*(memory + ((size_t)i * (size_t)16U) + (size_t)j);
+            if ((*(memory + ((size_t)i * (size_t)16U) + (size_t)j) < ' ') || (*(memory + ((size_t)i * (size_t)16U) + (size_t)j) > 0x7FU)) {
+                element = '.';
+            }
+            ascii[j] = element;
+        }
+        ascii[16] = '\0';
+        (void)dprintf(KSYST, "%s\n", ascii);
+    }
 }

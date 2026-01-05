@@ -2,89 +2,90 @@
 ; private_lists.
 ; ==============
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Kern - List management.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;			Private uKernel variables.
+; Project: uKOS-X
 ;
-;			A process descriptor
-;			--------------------
+; Purpose:
+;    Kern - List management.
 ;
-;			31					 			0
-;			+-------------------------------+
-;			| Ptr on proper list			+
-;			+-------------------------------+
-;			| Ptr on the back process		+
-;			+-------------------------------+
-;			| Ptr on the forward process	+
-;			+-------------------------------+
-;			| Specifications				+
-;			+-------------------------------+
-;			| Internal						+
-;			+-------------------------------+
-;			| Statistic 					+
-;			+-------------------------------+
-;			| Synchro						+
-;			+-------------------------------+
+;           Private uKernel variables.
 ;
-;			A list ...
-;			----------
+;           A process descriptor
+;           --------------------
 ;
-;			31								0
-;			+-------------------------------+
-;			| Ptr on the first process		+
-;			+-------------------------------+
-;			| Ptr on the last process		+
-;			+-------------------------------+
-;			| Ptr on the current process	+
-;			+-------------------------------+
-;			| Number of processes linked	+
-;			+-------------------------------+
+;           31                              0
+;           +-------------------------------+
+;           | Ptr on proper list            +
+;           +-------------------------------+
+;           | Ptr on the back process       +
+;           +-------------------------------+
+;           | Ptr on the forward process    +
+;           +-------------------------------+
+;           | Specifications                +
+;           +-------------------------------+
+;           | Internal                      +
+;           +-------------------------------+
+;           | Statistic                     +
+;           +-------------------------------+
+;           | Synchro                       +
+;           +-------------------------------+
 ;
-;			Example of linked list ...
-;			--------------------------
+;           A list ...
+;           ----------
 ;
-;			31								    0
-;			+-----------------------------------+ X
-;			| Ptr on the first process	 = A	+ ------+
-;			+-----------------------------------+		|
-;			| Ptr on the last process	 = B	+ ------|-------+
-;			+-----------------------------------+		|		|
-;			| Number of processes linked = 3	+		|		|
-;			+-----------------------------------+		|		|
-;													<---+		|
-; Desc 1 	+-----------------------------------+ A <-------+	|
-;			| Ptr on proper list		 = X 	+			|	|
-;			+-----------------------------------+			|	|
-;			| Ptr on the back process	 = 0	+			|	|
-;			+-----------------------------------+			|	|
-;			| Ptr on the forward process = C	+ ------+	|	|
-;			+-----------------------------------+		|	|	|
-;													<---|---|---+
-; Desc 3	+-----------------------------------+ B	<---|---|---+
-;			| Ptr on proper list		 = X 	+		|	|	|
-;			+-----------------------------------+		|	|	|
-;			| Ptr on the back process	 = C	+ ------|---|---|---+
-;			+-----------------------------------+		|	|	|	|
-;			| Ptr on the forward process = 0	+		|	|	|	|
-;			+-----------------------------------+		|	|	|	|
-;													<---|	|	|	|
-; Desc 2 	+-----------------------------------+ C <-------|---|---+
-;			| Ptr on proper list		 = X 	+			|	|
-;			+-----------------------------------+			|	|
-;			| Ptr on the back process    = A	+ ----------+	|
-;			+-----------------------------------+				|
-;			| Ptr on the forward process = B	+ --------------+
-;			+-----------------------------------+
+;           31                              0
+;           +-------------------------------+
+;           | Ptr on the first process      +
+;           +-------------------------------+
+;           | Ptr on the last process       +
+;           +-------------------------------+
+;           | Ptr on the current process    +
+;           +-------------------------------+
+;           | Number of processes linked    +
+;           +-------------------------------+
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+;           Example of linked list ...
+;           --------------------------
+;
+;           31                                  0
+;           +-----------------------------------+ X
+;           | Ptr on the first process   = A    + ------+
+;           +-----------------------------------+       |
+;           | Ptr on the last process    = B    + ------|-------+
+;           +-----------------------------------+       |       |
+;           | Number of processes linked = 3    +       |       |
+;           +-----------------------------------+       |       |
+;                                                   <---+       |
+; Desc 1    +-----------------------------------+ A <-------+   |
+;           | Ptr on proper list         = X    +           |   |
+;           +-----------------------------------+           |   |
+;           | Ptr on the back process    = 0    +           |   |
+;           +-----------------------------------+           |   |
+;           | Ptr on the forward process = C    + ------+   |   |
+;           +-----------------------------------+       |   |   |
+;                                                   <---|---|---+
+; Desc 3    +-----------------------------------+ B <---|---|---+
+;           | Ptr on proper list         = X    +       |   |   |
+;           +-----------------------------------+       |   |   |
+;           | Ptr on the back process    = C    + ------|---|---|---+
+;           +-----------------------------------+       |   |   |   |
+;           | Ptr on the forward process = 0    +       |   |   |   |
+;           +-----------------------------------+       |   |   |   |
+;                                                   <---|   |   |   |
+; Desc 2    +-----------------------------------+ C <-------|---|---+
+;           | Ptr on proper list         = X    +           |   |
+;           +-----------------------------------+           |   |
+;           | Ptr on the back process    = A    + ----------+   |
+;           +-----------------------------------+               |
+;           | Ptr on the forward process = B    + --------------+
+;           +-----------------------------------+
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -118,7 +119,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_kernels
@@ -140,21 +141,21 @@
  * @{
  */
 
-#include	"kern/kern.h"
+#include    "kern/kern.h"
 
 // Prototypes
 
 /*!
  * \brief Initialise a list
  *
- * \param[in]	*list	Ptr on the list
+ * \param[in]   *list   Ptr on the list
  *
  * \note This function does not return a value (None).
  *
  * \warning call usable only by the uKernel.
  *
  */
-extern	void	lists_initialise(list_t *list);
+extern  void    lists_initialise(list_t *list);
 
 /*!
  * \brief Connect a process to a list
@@ -166,15 +167,15 @@ extern	void	lists_initialise(list_t *list);
  * - Case 2: IF (The list is not empty)
  *           - THEN connect the "process" to the last "process" of the "list"
  *
- * \param[in]	*list		Ptr on the list
- * \param[in]	*handle		Ptr on the handle
+ * \param[in]   *list       Ptr on the list
+ * \param[in]   *handle     Ptr on the handle
  *
  * \note This function does not return a value (None).
  *
  * \warning call usable only by the uKernel.
  *
  */
-extern	void	lists_connect(list_t *list, proc_t *handle);
+extern  void    lists_connect(list_t *list, proc_t *handle);
 
 /*!
  * \brief Disconnect a process from the list_d and connect it to the list_c
@@ -188,15 +189,15 @@ extern	void	lists_connect(list_t *list, proc_t *handle);
  *
  * - Case 2: IF (The process is the first)
  *           - THEN disconnect the "process" from the "list"
- *		       the next "process" becomes the "first"
+ *             the next "process" becomes the "first"
  *
  * - Case 3: IF (The process is in the middle)
  *           - THEN disconnect the "process" from the "list"
- *		       connect the next "process" to the previous one
+ *             connect the next "process" to the previous one
  *
  * - Case 4: IF (The process is at the end)
  *           - THEN disconnect the "process" from the "list"
- *		       the previous "process" becomes the "last" one
+ *             the previous "process" becomes the "last" one
  *
  * Connect
  * -------
@@ -208,16 +209,16 @@ extern	void	lists_connect(list_t *list, proc_t *handle);
  * - Case 2: IF (The list is not empty)
  *           - THEN connect the "process" to the last "process" of the "list"
  *
- * \param[in]	*list_d		Ptr on the list (disconnect)
- * \param[in]	*list_c		Ptr on the list (connect)
- * \param[in]	*handle		Ptr on the handle
+ * \param[in]   *list_d     Ptr on the list (disconnect)
+ * \param[in]   *list_c     Ptr on the list (connect)
+ * \param[in]   *handle     Ptr on the handle
  *
  * \note This function does not return a value (None).
  *
  * \warning call usable only by the uKernel.
  *
  */
-extern	void	lists_disconnectConnect(list_t *list_d, list_t *list_c, proc_t *handle);
+extern  void    lists_disconnectConnect(list_t *list_d, list_t *list_c, proc_t *handle);
 
 /**@}*/
 /**@}*/

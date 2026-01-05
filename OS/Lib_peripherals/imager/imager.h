@@ -2,17 +2,18 @@
 ; imager.
 ; =======
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		imager manager.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    imager manager.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +47,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_peripherals
@@ -63,26 +64,26 @@
  * @{
  */
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"imager_common.h"
-#include	"types.h"
+#include    "imager_common.h"
+#include    "types.h"
 
 // Semaphores
 // ----------
 
-#define	KIMAGER_SEMAPHORE_VS	"imager - V synchro"
-#define	KIMAGER_SEMAPHORE_IM	"imager - imge OK"
-#define	KIMAGER_MUTEX_RESERVE	"Reserve_imager"
+#define KIMAGER_SEMAPHORE_VS    "imager - V synchro"
+#define KIMAGER_SEMAPHORE_IM    "imager - imge OK"
+#define KIMAGER_MUTEX_RESERVE   "Reserve_imager"
 
 // Prototypes
 
 #ifdef __cplusplus
-extern	"C" {
+extern  "C" {
 #endif
 
-#define	IMAGER_reserve	imager_reserve
-#define	IMAGER_release	imager_release
+#define IMAGER_reserve  imager_reserve
+#define IMAGER_release  imager_release
 
 /*!
  * \brief Reserve the imager manager
@@ -99,16 +100,16 @@ extern	"C" {
  *    status = imager_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode			Any mode
- * \param[in]	timeout				Timeout (1-ms of resolution)
- * \param[in]	-					KWAIT_INFINITY, waiting forever
- * \param[in]	-					KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_IMAGER_NOERR	The manager is reserved
- * \return		KERR_IMAGER_GEERR	General error
- * \return		KERR_IMAGER_CHBSY	The manager is busy
+ * \param[in]   reserveMode         Any mode
+ * \param[in]   timeout             Timeout (1-ms of resolution)
+ * \param[in]   -                   KWAIT_INFINITY, waiting forever
+ * \param[in]   -                   KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_IMAGER_NOERR   The manager is reserved
+ * \return      KERR_IMAGER_GEERR   General error
+ * \return      KERR_IMAGER_CHBSY   The manager is busy
  *
  */
-extern	int32_t	imager_reserve(reserveMode_t reserveMode, uint32_t timeout);
+extern  int32_t imager_reserve(reserveMode_t reserveMode, uint32_t timeout);
 
 /*!
  * \brief Release the imager manager
@@ -121,13 +122,13 @@ extern	int32_t	imager_reserve(reserveMode_t reserveMode, uint32_t timeout);
  *    status = imager_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode			Any mode
- * \return		KERR_IMAGER_NOERR	OK
- * \return		KERR_IMAGER_GEERR	General error
- * \return		KERR_IMAGER_CAREL	Cannot release the manager
+ * \param[in]   reserveMode         Any mode
+ * \return      KERR_IMAGER_NOERR   OK
+ * \return      KERR_IMAGER_GEERR   General error
+ * \return      KERR_IMAGER_CAREL   Cannot release the manager
  *
  */
-extern	int32_t	imager_release(reserveMode_t reserveMode);
+extern  int32_t imager_release(reserveMode_t reserveMode);
 
 /*!
  * \brief Configure the imager manager
@@ -198,14 +199,14 @@ extern	int32_t	imager_release(reserveMode_t reserveMode);
  * }
  * \endcode
  *
- * \param[in]	*configure			Ptr on the configuration buffer
- * \return		KERR_IMAGER_NOERR	OK
- * \return		KERR_IMAGER_GEERR	General error
- * \return		KERR_IMAGER_TIMEO	Timeout error
- * \return		KERR_IMAGER_NOMEM	Not enough memory
+ * \param[in]   *configure          Ptr on the configuration buffer
+ * \return      KERR_IMAGER_NOERR   OK
+ * \return      KERR_IMAGER_GEERR   General error
+ * \return      KERR_IMAGER_TIMEO   Timeout error
+ * \return      KERR_IMAGER_NOMEM   Not enough memory
  *
  */
-extern	int32_t	imager_configure(const imagerCnf_t *configure);
+extern  int32_t imager_configure(const imagerCnf_t *configure);
 
 /*!
  * \brief Acquisition of an image
@@ -218,13 +219,13 @@ extern	int32_t	imager_configure(const imagerCnf_t *configure);
  *    status = imager_acquisition();
  * \endcode
  *
- * \param[in]	-
- * \return		KERR_IMAGER_NOERR	OK
- * \return		KERR_IMAGER_GEERR	General error
- * \return		KERR_IMAGER_TIMEO	Timeout error
+ * \param[in]   -
+ * \return      KERR_IMAGER_NOERR   OK
+ * \return      KERR_IMAGER_GEERR   General error
+ * \return      KERR_IMAGER_TIMEO   Timeout error
  *
  */
-extern	int32_t	imager_acquisition(void);
+extern  int32_t imager_acquisition(void);
 
 /*!
  * \brief Read the image pointer
@@ -238,12 +239,12 @@ extern	int32_t	imager_acquisition(void);
  *    status = imager_read(&image);
  * \endcode
  *
- * \param[out]	**image				Ptr on the image
- * \return		KERR_IMAGER_NOERR	OK
- * \return		KERR_IMAGER_GEERR	General error
+ * \param[out]  **image             Ptr on the image
+ * \return      KERR_IMAGER_NOERR   OK
+ * \return      KERR_IMAGER_GEERR   General error
  *
  */
-extern	int32_t	imager_read(volatile void **image);
+extern  int32_t imager_read(volatile void **image);
 
 /*!
  * \brief Read the value of an imager register
@@ -257,14 +258,14 @@ extern	int32_t	imager_read(volatile void **image);
  *    status = imager_readRegister(0x34, &value);
  * \endcode
  *
- * \param[in]	registerNb			The register number
- * \param[out]	*value				Ptr on the value
- * \return		KERR_IMAGER_NOERR	OK
- * \return		KERR_IMAGER_GEERR	General error
- * \return		KERR_IMAGER_TIMEO	Timeout error
+ * \param[in]   registerNb          The register number
+ * \param[out]  *value              Ptr on the value
+ * \return      KERR_IMAGER_NOERR   OK
+ * \return      KERR_IMAGER_GEERR   General error
+ * \return      KERR_IMAGER_TIMEO   Timeout error
  *
  */
-extern	int32_t	imager_readRegister(uint8_t registerNb, uint16_t *value);
+extern  int32_t imager_readRegister(uint8_t registerNb, uint16_t *value);
 
 /*!
  * \brief Write a value into an imager register
@@ -278,14 +279,14 @@ extern	int32_t	imager_readRegister(uint8_t registerNb, uint16_t *value);
  *    status = imager_writeRegister(0x34, value);
  * \endcode
  *
- * \param[in]	registerNb			The register number
- * \param[in]	value				The value
- * \return		KERR_IMAGER_NOERR	OK
- * \return		KERR_IMAGER_GEERR	General error
- * \return		KERR_IMAGER_TIMEO	Timeout error
+ * \param[in]   registerNb          The register number
+ * \param[in]   value               The value
+ * \return      KERR_IMAGER_NOERR   OK
+ * \return      KERR_IMAGER_GEERR   General error
+ * \return      KERR_IMAGER_TIMEO   Timeout error
  *
  */
-extern	int32_t	imager_writeRegister(uint8_t registerNb, uint16_t value);
+extern  int32_t imager_writeRegister(uint8_t registerNb, uint16_t value);
 
 /*!
  * \brief Control the standby mode of the imager (only in KIMAGER_SNAP mode)
@@ -298,19 +299,19 @@ extern	int32_t	imager_writeRegister(uint8_t registerNb, uint16_t value);
  *    status = imager_standby(KIMAGER_STANDBY);
  * \endcode
  *
- * \param[in]	mode				KIMAGER_OPERATE, standby OFF
- * \param[in]	-					KIMAGER_STANDBY, standby ON
- * \return		KERR_IMAGER_NOERR	OK
- * \return		KERR_IMAGER_GEERR	General error
- * \return		KERR_IMAGER_BDMOD	Bad mode for called function
+ * \param[in]   mode                KIMAGER_OPERATE, standby OFF
+ * \param[in]   -                   KIMAGER_STANDBY, standby ON
+ * \return      KERR_IMAGER_NOERR   OK
+ * \return      KERR_IMAGER_GEERR   General error
+ * \return      KERR_IMAGER_BDMOD   Bad mode for called function
  *
  */
-extern	int32_t	imager_standby(uint8_t mode);
+extern  int32_t imager_standby(uint8_t mode);
 
 /*!
  * \brief Write the exposure time
  *
- * \warning	After this call it is necessary to acqure a dummy image.
+ * \warning After this call it is necessary to acqure a dummy image.
  *
  * Call example in C:
  *
@@ -320,13 +321,13 @@ extern	int32_t	imager_standby(uint8_t mode);
  *    status = imager_exposure(15000);
  * \endcode
  *
- * \param[in]	time				Integration time (-1 = auto-exposure)
- * \return		KERR_IMAGER_NOERR	OK
- * \return		KERR_IMAGER_GEERR	General error
- * \return		KERR_IMAGER_BDMOD	Bad mode for called function
+ * \param[in]   time                Integration time (-1 = auto-exposure)
+ * \return      KERR_IMAGER_NOERR   OK
+ * \return      KERR_IMAGER_GEERR   General error
+ * \return      KERR_IMAGER_BDMOD   Bad mode for called function
  *
  */
-extern	int32_t	imager_exposure(uint32_t time);
+extern  int32_t imager_exposure(uint32_t time);
 
 #ifdef __cplusplus
 }

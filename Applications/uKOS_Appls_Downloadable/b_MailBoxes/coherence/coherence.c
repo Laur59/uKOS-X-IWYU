@@ -2,18 +2,19 @@
 ; coherence.
 ; ==========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Demo of a C application.
-;			This application shows how to operate with the uKOS-X uKernel.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    Demo of a C application.
+;    This application shows how to operate with the uKOS-X uKernel.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -52,171 +53,171 @@
  * \ingroup app_mbox
  * \brief This application shows how to operate with the uKOS uKernel.
  *
- *			Launch 2 processes:
+ *          Launch 2 processes:
  *
- *			- P0: Create a mailbox "Mailbox_test"
- *				  Every 10-ms
- *					- Write a new message into the mailbox "Mailbox_test"
+ *          - P0: Create a mailbox "Mailbox_test"
+ *                Every 10-ms
+ *                  - Write a new message into the mailbox "Mailbox_test"
  *
- *			- P1: Get the mailbox "Mailbox_test" handle
- *				  Every 10-ms
- *					- Read from the mailbox "Mailbox_test"
- *					- Test the coherence
+ *          - P1: Get the mailbox "Mailbox_test" handle
+ *                Every 10-ms
+ *                  - Read from the mailbox "Mailbox_test"
+ *                  - Test the coherence
  *
  */
 
 
-#include	<inttypes.h>
-#include	<stdint.h>
-#include	<stdio.h>
-#include	<stdlib.h>
+#include    <inttypes.h>
+#include    <stdint.h>
+#include    <stdio.h>
+#include    <stdlib.h>
 
-#include	"serial/serial.h"
-#include	"kern/kern.h"
-#include	"kern/private/private_mailboxes.h"	// IWYU pragma: keep (for symbol mbox)
-#include	"macros.h"
-#include	"macros_core.h"
-#include	"macros_core_stackFrame.h"
-#include	"modules.h"
-#include	"os_errors.h"
-#include	"record/record.h"
-#include	"types.h"
+#include    "serial/serial.h"
+#include    "kern/kern.h"
+#include    "kern/private/private_mailboxes.h"  // IWYU pragma: keep (for symbol mbox)
+#include    "macros.h"
+#include    "macros_core.h"
+#include    "macros_core_stackFrame.h"
+#include    "modules.h"
+#include    "os_errors.h"
+#include    "record/record.h"
+#include    "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"coherence    Example of how to use mailboxes.          (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "This is a romable C application\n"
-									"===============================\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "coherence    Example of how to use mailboxes.          (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
+                                    "===============================\n\n"
 
-									"This user function module is a C written application.\n\n"
+                                    "This user function module is a C written application.\n\n"
 
-									"Input format:  coherence\n"
-									"Output format: [result]\n\n"
+                                    "Input format:  coherence\n"
+                                    "Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 #ifdef ROMABLE_S
 
 // Prototypes
 
-static	int32_t		prgm(uint32_t argc, const char_t *argv[]);
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 
 MODULE(
-	Coherence,							// Module name (the first letter has to be upper case)
-	KID_FAM_CLI,						// Family (defined in the module.h)
-	KNUM_ROMABLE_0,						// Module identifier (defined in the module.h)
-	NULL,								// Address of the initialisation code (early pre-init)
-	prgm,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	NULL,								// Address of the clean code (clean the module)
-	" 1.0",								// Revision string (major . minor)
-	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0									// Execution cores
+    Coherence,                          // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_ROMABLE_0,                     // Module identifier (defined in the module.h)
+    NULL,                               // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    NULL,                               // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
 );
 
 #else
 MODULE(
-	UserAppl,							// Module name (the first letter has to be upper case)
-	KID_FAM_APPLICATIONS,				// Family (defined in the module.h)
-	KNUM_APPLICATION,					// Module identifier (defined in the module.h)
-	NULL,								// Address of the initialisation code (early pre-init)
-	aStart,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	NULL,								// Address of the clean code (clean the module)
-	" 1.0",								// Revision string (major . minor)
-	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0									// Execution cores
+    UserAppl,                           // Module name (the first letter has to be upper case)
+    KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
+    KNUM_APPLICATION,                   // Module identifier (defined in the module.h)
+    NULL,                               // Address of the initialisation code (early pre-init)
+    aStart,                             // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    NULL,                               // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
 );
 #endif
 
 // Application specific
 // ====================
 
-#define	KNB_MESSAGES	10U					// Number of usable messages
-#define	KSZ_MAILBOX		(KNB_MESSAGES - 1U)	// Size of the mailbox (!!! has to be smaller than the number of available messages !!)
-#define	KSZ_MESSAGE		20U					// Size of each message
+#define KNB_MESSAGES    10U                 // Number of usable messages
+#define KSZ_MAILBOX     (KNB_MESSAGES - 1U) // Size of the mailbox (!!! has to be smaller than the number of available messages !!)
+#define KSZ_MESSAGE     20U                 // Size of each message
 
-typedef	struct	msg		msg_t;
+typedef struct  msg     msg_t;
 
-struct	msg {
-		uint32_t	oMessage[KSZ_MESSAGE];
-		char_t		oCharMessage;
+struct  msg {
+        uint32_t    oMessage[KSZ_MESSAGE];
+        char_t      oCharMessage;
 };
 
 /*
  * \brief aProcess 0
  *
  * - P0: Create a mailbox "Mailbox_test"
- *		 Every 10-ms
- *			- Write a new message into the mailbox "Mailbox_test"
+ *       Every 10-ms
+ *          - Write a new message into the mailbox "Mailbox_test"
  *
  */
 static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
-			char_t		charMessage = ' ';
-			uint32_t	i = 0U, j, k = 0U;
-			mcnf_t		configure;
-			mbox_t		*mailBox;
-	static	msg_t		sndMessages[KNB_MESSAGES];
+            char_t      charMessage = ' ';
+            uint32_t    i = 0U, j, k = 0U;
+            mcnf_t      configure;
+            mbox_t      *mailBox;
+    static  msg_t       sndMessages[KNB_MESSAGES];
 
-	UNUSED(argument);
+    UNUSED(argument);
 
 // Create and configure the "Mailbox_test"
 
-	configure.oNbMaxPacks	 = KSZ_MAILBOX;
-	configure.oDataEntrySize = 0U;
+    configure.oNbMaxPacks    = KSZ_MAILBOX;
+    configure.oDataEntrySize = 0U;
 
-	if (kern_createMailbox("Mailbox_test", &mailBox) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create mbox");	   exit(EXIT_OS_FAILURE); }
-	if (kern_setMailbox(mailBox, &configure)         != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Configure mbox"); exit(EXIT_OS_FAILURE); }
+    if (kern_createMailbox("Mailbox_test", &mailBox) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create mbox");    exit(EXIT_OS_FAILURE); }
+    if (kern_setMailbox(mailBox, &configure)         != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Configure mbox"); exit(EXIT_OS_FAILURE); }
 
-	while (true) {
-		kern_suspendProcess(10U);
+    while (true) {
+        kern_suspendProcess(10U);
 
 // Prepare the message
 
-		for (j = 0; j < KSZ_MESSAGE; j++) {
-			sndMessages[i].oMessage[j] = k++;
-		}
-		sndMessages[i].oCharMessage = charMessage;
+        for (j = 0; j < KSZ_MESSAGE; j++) {
+            sndMessages[i].oMessage[j] = k++;
+        }
+        sndMessages[i].oCharMessage = charMessage;
 
 // Send a pack
 
-		if (kern_writeMailbox(mailBox, &sndMessages[i], sizeof(msg_t), KWAIT_INFINITY) == KERR_KERN_TIMEO) {
-			LOG(KFATAL_USER, "mbox full");
-			exit(EXIT_OS_FAILURE);
-		}
+        if (kern_writeMailbox(mailBox, &sndMessages[i], sizeof(msg_t), KWAIT_INFINITY) == KERR_KERN_TIMEO) {
+            LOG(KFATAL_USER, "mbox full");
+            exit(EXIT_OS_FAILURE);
+        }
 
 // Prepare for the next pack
 
-		i = (i < (KNB_MESSAGES - 1U)) ? (i + 1U) : (0U);
-		charMessage = (charMessage < '~') ? (charMessage + 1U) : (' ');
-	}
+        i = (i < (KNB_MESSAGES - 1U)) ? (i + 1U) : (0U);
+        charMessage = (charMessage < '~') ? (charMessage + 1U) : (' ');
+    }
 }
 
 /*
  * \brief aProcess 1
  *
  * - P1: Get the mailbox "Mailbox_test" handle
- *		 Every 50-ms
- *			- Read from the mailbox "Mailbox_test"
- *			- Test the coherence
+ *       Every 50-ms
+ *          - Read from the mailbox "Mailbox_test"
+ *          - Test the coherence
  *
  */
 static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
-	UNUSED(argument);
+    UNUSED(argument);
 
-			uint64_t	time[2];
-			uint32_t	i = 0U, j, k = 0U, size;
-			mbox_t		*mailBox;
-			msg_t		*recMessages;
-	static	msg_t		lastMessage;
+            uint64_t    time[2];
+            uint32_t    i = 0U, j, k = 0U, size;
+            mbox_t      *mailBox;
+            msg_t       *recMessages;
+    static  msg_t       lastMessage;
 
 // Waiting for the "Mailbox 1 to 0"
 
-	while (kern_getMailboxById("Mailbox_test", &mailBox) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
+    while (kern_getMailboxById("Mailbox_test", &mailBox) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
 
-	while (true) {
-		kern_suspendProcess(50U);
+    while (true) {
+        kern_suspendProcess(50U);
 
 // Read the pack
 //
@@ -224,44 +225,44 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 // Copy the content of the message into the local buffer under ioff
 // This because the "kern_readMailbox" release the message in the fifo
 
-		kern_criticalSection(KENTER_CRITICAL);
-		kern_readTickCount(&time[0]);
-		if (kern_readMailbox(mailBox, (void **)&recMessages, &size, KWAIT_INFINITY) == KERR_KERN_TIMEO) {
+        kern_criticalSection(KENTER_CRITICAL);
+        kern_readTickCount(&time[0]);
+        if (kern_readMailbox(mailBox, (void **)&recMessages, &size, KWAIT_INFINITY) == KERR_KERN_TIMEO) {
 
-			kern_criticalSection(KEXIT_CRITICAL);
-			LOG(KFATAL_USER, "Read mbox");
-			exit(EXIT_OS_FAILURE);
-		}
+            kern_criticalSection(KEXIT_CRITICAL);
+            LOG(KFATAL_USER, "Read mbox");
+            exit(EXIT_OS_FAILURE);
+        }
 
-		PRIVILEGE_ELEVATE;
-		time[1] = mailBox->oRead->oWriteTimeStmp;
-		PRIVILEGE_RESTORE;
+        PRIVILEGE_ELEVATE;
+        time[1] = mailBox->oRead->oWriteTimeStmp;
+        PRIVILEGE_RESTORE;
 
-		for (j = 0U; j < KSZ_MESSAGE; j++) { lastMessage.oMessage[j] = recMessages->oMessage[j]; }
-		lastMessage.oCharMessage = recMessages->oCharMessage;
-		kern_criticalSection(KEXIT_CRITICAL);
+        for (j = 0U; j < KSZ_MESSAGE; j++) { lastMessage.oMessage[j] = recMessages->oMessage[j]; }
+        lastMessage.oCharMessage = recMessages->oCharMessage;
+        kern_criticalSection(KEXIT_CRITICAL);
 
-		(void)dprintf(KSYST, "Message Read: %"PRId64", Message Written: %"PRId64", Delta: %"PRId64"\n", time[0], time[1], (time[0] - time[1]));
+        (void)dprintf(KSYST, "Message Read: %"PRId64", Message Written: %"PRId64", Delta: %"PRId64"\n", time[0], time[1], (time[0] - time[1]));
 
 // Display
 // Test the coherence
 // Prepare for the next pack
 
-		(void)dprintf(KSYST, "Message rec:  %c --> ", lastMessage.oCharMessage);
-		for (j = 0U; j < KSZ_MESSAGE; j++) {
-			(void)dprintf(KSYST, "%"PRIu32" ", lastMessage.oMessage[j]);
-		}
-		(void)dprintf(KSYST, "\n\n");
+        (void)dprintf(KSYST, "Message rec:  %c --> ", lastMessage.oCharMessage);
+        for (j = 0U; j < KSZ_MESSAGE; j++) {
+            (void)dprintf(KSYST, "%"PRIu32" ", lastMessage.oMessage[j]);
+        }
+        (void)dprintf(KSYST, "\n\n");
 
-		for (j = 0U; j < KSZ_MESSAGE; j++) {
-			if (lastMessage.oMessage[j] != k++) {
-				LOG(KFATAL_USER, "Coherency problem!!");
-				exit(EXIT_OS_FAILURE);
-			}
+        for (j = 0U; j < KSZ_MESSAGE; j++) {
+            if (lastMessage.oMessage[j] != k++) {
+                LOG(KFATAL_USER, "Coherency problem!!");
+                exit(EXIT_OS_FAILURE);
+            }
 
-		}
-		i = (i < (KNB_MESSAGES - 1U)) ? (i + 1U) : (0U);
-	}
+        }
+        i = (i < (KNB_MESSAGES - 1U)) ? (i + 1U) : (0U);
+    }
 }
 
 /*
@@ -273,45 +274,45 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  *
  */
 MAIN_ENTRY(argc, argv[]) {
-	UNUSED(argc);
-	UNUSED(argv);
+    UNUSED(argc);
+    UNUSED(argv);
 
-	proc_t	*process_0, *process_1;
+    proc_t  *process_0, *process_1;
 
 // ---------------------------------I-----------------------------------------I--------------I
 
-	STRG_LOC_CONST(aStrIden_0[]) = "Process_User_0";
-	STRG_LOC_CONST(aStrIden_1[]) = "Process_User_1";
-	STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2026";
-	STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2026";
+    STRG_LOC_CONST(aStrIden_0[]) = "Process_User_0";
+    STRG_LOC_CONST(aStrIden_1[]) = "Process_User_1";
+    STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2026";
+    STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2026";
 
 // Specifications for the processes
 
-	PROCESS_STACKMALLOC(
-		0,									// Index
-		specification_0,					// Specifications (just use specification_x)
-		aStrText_0,							// Info string (NULL if anonymous)
-		KKERN_SZ_STACK_MM,					// KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
-		aProcess_0,							// Code of the process
-		aStrIden_0,							// Identifier (NULL if anonymous)
-		KSYST,								// Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
-		KKERN_PRIORITY_MEDIUM_02			// KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
-	);
+    PROCESS_STACKMALLOC(
+        0,                                  // Index
+        specification_0,                    // Specifications (just use specification_x)
+        aStrText_0,                         // Info string (NULL if anonymous)
+        KKERN_SZ_STACK_MM,                  // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
+        aProcess_0,                         // Code of the process
+        aStrIden_0,                         // Identifier (NULL if anonymous)
+        KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
+        KKERN_PRIORITY_MEDIUM_02            // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
+    );
 
-	PROCESS_STACKMALLOC(
-		1,									// Index
-		specification_1,					// Specifications (just use specification_x)
-		aStrText_1,							// Info string (NULL if anonymous)
-		KKERN_SZ_STACK_MM,					// KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
-		aProcess_1,							// Code of the process
-		aStrIden_1,							// Identifier (NULL if anonymous)
-		KSYST,								// Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
-		KKERN_PRIORITY_MEDIUM_02			// KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
-	);
+    PROCESS_STACKMALLOC(
+        1,                                  // Index
+        specification_1,                    // Specifications (just use specification_x)
+        aStrText_1,                         // Info string (NULL if anonymous)
+        KKERN_SZ_STACK_MM,                  // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
+        aProcess_1,                         // Code of the process
+        aStrIden_1,                         // Identifier (NULL if anonymous)
+        KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
+        KKERN_PRIORITY_MEDIUM_02            // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
+    );
 
-	if (kern_createProcess(&specification_0, NULL, &process_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
-	if (kern_createProcess(&specification_1, NULL, &process_1) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
+    if (kern_createProcess(&specification_0, NULL, &process_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
+    if (kern_createProcess(&specification_1, NULL, &process_1) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
 
-	LOG(KINFO_USER, "Application launched");
-	return (EXIT_OS_SUCCESS_CLI);
+    LOG(KINFO_USER, "Application launched");
+    return (EXIT_OS_SUCCESS_CLI);
 }

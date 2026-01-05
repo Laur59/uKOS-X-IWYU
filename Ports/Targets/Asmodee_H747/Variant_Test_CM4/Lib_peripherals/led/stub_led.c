@@ -2,17 +2,18 @@
 ; stub_led.
 ; =========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		stub for the "led" manager module.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    stub for the "led" manager module.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,14 +47,14 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"board.h"
-#include	"macros_core.h"
-#include	"os_errors.h"
-#include	"soc_reg.h"
+#include    "board.h"
+#include    "macros_core.h"
+#include    "os_errors.h"
+#include    "soc_reg.h"
 
-static	bool	vMute;
+static  bool    vMute;
 
 /*
  * \brief stub_led_init
@@ -62,7 +63,7 @@ static	bool	vMute;
  *   - The LEDs state
  *
  */
-void	stub_led_init(void) {
+void    stub_led_init(void) {
 
 }
 
@@ -72,26 +73,26 @@ void	stub_led_init(void) {
  * - Turn on a LED
  *
  */
-int32_t	stub_led_on(uint8_t ledNb) {
+int32_t stub_led_on(uint8_t ledNb) {
 
-	INTERRUPTION_OFF;
-	if (vMute) { RETURN_INT_RESTORE(KERR_LED_NOERR); }
-	switch (ledNb) {
-		case 0U:  { GPIOI->ODR |= (1U<<BLED_0);					break; }
-		case 1U:  { GPIOI->ODR |= (1U<<BLED_1);					break; }
-		case 2U:  { GPIOI->ODR |= (1U<<BLED_2);					break; }
-		case 3U:  { GPIOI->ODR |= (1U<<BLED_3);					break; }
-		case 4U:  { GPIOI->ODR |= (1U<<BLED_4);					break; }
-		case 5U:  { GPIOH->ODR |= (1U<<BLED_5);					break; }
-		case 6U:  { GPIOD->ODR |= (1U<<BLED_6);					break; }
-		case 7U:  { GPIOE->ODR |= (1U<<BLED_7);					break; }
-		case 8U:  { GPIOK->ODR &= (uint32_t)~(1U<<BLED_RED);	break; }
-		case 9U:  { GPIOK->ODR &= (uint32_t)~(1U<<BLED_GREEN);	break; }
-		case 10U: { GPIOK->ODR &= (uint32_t)~(1U<<BLED_BLUE);	break; }
-		default:  { RETURN_INT_RESTORE(KERR_LED_NODEV);				   }
-	}
+    INTERRUPTION_OFF;
+    if (vMute) { RETURN_INT_RESTORE(KERR_LED_NOERR); }
+    switch (ledNb) {
+        case 0U:  { GPIOI->ODR |= (1U<<BLED_0);                 break; }
+        case 1U:  { GPIOI->ODR |= (1U<<BLED_1);                 break; }
+        case 2U:  { GPIOI->ODR |= (1U<<BLED_2);                 break; }
+        case 3U:  { GPIOI->ODR |= (1U<<BLED_3);                 break; }
+        case 4U:  { GPIOI->ODR |= (1U<<BLED_4);                 break; }
+        case 5U:  { GPIOH->ODR |= (1U<<BLED_5);                 break; }
+        case 6U:  { GPIOD->ODR |= (1U<<BLED_6);                 break; }
+        case 7U:  { GPIOE->ODR |= (1U<<BLED_7);                 break; }
+        case 8U:  { GPIOK->ODR &= (uint32_t)~(1U<<BLED_RED);    break; }
+        case 9U:  { GPIOK->ODR &= (uint32_t)~(1U<<BLED_GREEN);  break; }
+        case 10U: { GPIOK->ODR &= (uint32_t)~(1U<<BLED_BLUE);   break; }
+        default:  { RETURN_INT_RESTORE(KERR_LED_NODEV);                }
+    }
 
-	RETURN_INT_RESTORE(KERR_LED_NOERR);
+    RETURN_INT_RESTORE(KERR_LED_NOERR);
 }
 
 /*
@@ -100,26 +101,26 @@ int32_t	stub_led_on(uint8_t ledNb) {
  * - Turn off a LED
  *
  */
-int32_t	stub_led_off(uint8_t ledNb) {
+int32_t stub_led_off(uint8_t ledNb) {
 
-	INTERRUPTION_OFF;
-	if (vMute) { RETURN_INT_RESTORE(KERR_LED_NOERR); }
-	switch (ledNb) {
-		case 0U:  { GPIOI->ODR &= (uint32_t)~(1U<<BLED_0);	break; }
-		case 1U:  { GPIOI->ODR &= (uint32_t)~(1U<<BLED_1);	break; }
-		case 2U:  { GPIOI->ODR &= (uint32_t)~(1U<<BLED_2);	break; }
-		case 3U:  { GPIOI->ODR &= (uint32_t)~(1U<<BLED_3);	break; }
-		case 4U:  { GPIOI->ODR &= (uint32_t)~(1U<<BLED_4);	break; }
-		case 5U:  { GPIOH->ODR &= (uint32_t)~(1U<<BLED_5);	break; }
-		case 6U:  { GPIOD->ODR &= (uint32_t)~(1U<<BLED_6);	break; }
-		case 7U:  { GPIOE->ODR &= (uint32_t)~(1U<<BLED_7);	break; }
-		case 8U:  { GPIOK->ODR |= (1U<<BLED_RED);			break; }
-		case 9U:  { GPIOK->ODR |= (1U<<BLED_GREEN);			break; }
-		case 10U: { GPIOK->ODR |= (1U<<BLED_BLUE);			break; }
-		default:  { RETURN_INT_RESTORE(KERR_LED_NODEV);			   }
-	}
+    INTERRUPTION_OFF;
+    if (vMute) { RETURN_INT_RESTORE(KERR_LED_NOERR); }
+    switch (ledNb) {
+        case 0U:  { GPIOI->ODR &= (uint32_t)~(1U<<BLED_0);  break; }
+        case 1U:  { GPIOI->ODR &= (uint32_t)~(1U<<BLED_1);  break; }
+        case 2U:  { GPIOI->ODR &= (uint32_t)~(1U<<BLED_2);  break; }
+        case 3U:  { GPIOI->ODR &= (uint32_t)~(1U<<BLED_3);  break; }
+        case 4U:  { GPIOI->ODR &= (uint32_t)~(1U<<BLED_4);  break; }
+        case 5U:  { GPIOH->ODR &= (uint32_t)~(1U<<BLED_5);  break; }
+        case 6U:  { GPIOD->ODR &= (uint32_t)~(1U<<BLED_6);  break; }
+        case 7U:  { GPIOE->ODR &= (uint32_t)~(1U<<BLED_7);  break; }
+        case 8U:  { GPIOK->ODR |= (1U<<BLED_RED);           break; }
+        case 9U:  { GPIOK->ODR |= (1U<<BLED_GREEN);         break; }
+        case 10U: { GPIOK->ODR |= (1U<<BLED_BLUE);          break; }
+        default:  { RETURN_INT_RESTORE(KERR_LED_NODEV);            }
+    }
 
-	RETURN_INT_RESTORE(KERR_LED_NOERR);
+    RETURN_INT_RESTORE(KERR_LED_NOERR);
 }
 
 /*
@@ -128,26 +129,26 @@ int32_t	stub_led_off(uint8_t ledNb) {
  * - Change the state of a LED
  *
  */
-int32_t	stub_led_toggle(uint8_t ledNb) {
+int32_t stub_led_toggle(uint8_t ledNb) {
 
-	INTERRUPTION_OFF;
-	if (vMute) { RETURN_INT_RESTORE(KERR_LED_NOERR); }
-	switch (ledNb) {
-		case 0U:  { GPIOI->ODR ^= (1U<<BLED_0);		break; }
-		case 1U:  { GPIOI->ODR ^= (1U<<BLED_1);		break; }
-		case 2U:  { GPIOI->ODR ^= (1U<<BLED_2);		break; }
-		case 3U:  { GPIOI->ODR ^= (1U<<BLED_3);		break; }
-		case 4U:  { GPIOI->ODR ^= (1U<<BLED_4);		break; }
-		case 5U:  { GPIOH->ODR ^= (1U<<BLED_5);		break; }
-		case 6U:  { GPIOD->ODR ^= (1U<<BLED_6);		break; }
-		case 7U:  { GPIOE->ODR ^= (1U<<BLED_7);		break; }
-		case 8U:  { GPIOK->ODR ^= (1U<<BLED_RED);	break; }
-		case 9U:  { GPIOK->ODR ^= (1U<<BLED_GREEN);	break; }
-		case 10U: { GPIOK->ODR ^= (1U<<BLED_BLUE);	break; }
-		default:  { RETURN_INT_RESTORE(KERR_LED_NODEV);	   }
-	}
+    INTERRUPTION_OFF;
+    if (vMute) { RETURN_INT_RESTORE(KERR_LED_NOERR); }
+    switch (ledNb) {
+        case 0U:  { GPIOI->ODR ^= (1U<<BLED_0);     break; }
+        case 1U:  { GPIOI->ODR ^= (1U<<BLED_1);     break; }
+        case 2U:  { GPIOI->ODR ^= (1U<<BLED_2);     break; }
+        case 3U:  { GPIOI->ODR ^= (1U<<BLED_3);     break; }
+        case 4U:  { GPIOI->ODR ^= (1U<<BLED_4);     break; }
+        case 5U:  { GPIOH->ODR ^= (1U<<BLED_5);     break; }
+        case 6U:  { GPIOD->ODR ^= (1U<<BLED_6);     break; }
+        case 7U:  { GPIOE->ODR ^= (1U<<BLED_7);     break; }
+        case 8U:  { GPIOK->ODR ^= (1U<<BLED_RED);   break; }
+        case 9U:  { GPIOK->ODR ^= (1U<<BLED_GREEN); break; }
+        case 10U: { GPIOK->ODR ^= (1U<<BLED_BLUE);  break; }
+        default:  { RETURN_INT_RESTORE(KERR_LED_NODEV);    }
+    }
 
-	RETURN_INT_RESTORE(KERR_LED_NOERR);
+    RETURN_INT_RESTORE(KERR_LED_NOERR);
 }
 
 /*
@@ -156,23 +157,23 @@ int32_t	stub_led_toggle(uint8_t ledNb) {
  * - Control (general) of the LEDs
  *
  */
-int32_t	stub_led_mute(bool mute) {
+int32_t stub_led_mute(bool mute) {
 
-	if (!mute) { vMute = false; return (KERR_LED_NOERR); }
+    if (!mute) { vMute = false; return (KERR_LED_NOERR); }
 
-	INTERRUPTION_OFF;
-	vMute = true;
+    INTERRUPTION_OFF;
+    vMute = true;
 
-	GPIOI->ODR &= (uint32_t)~(1U<<BLED_0);
-	GPIOI->ODR &= (uint32_t)~(1U<<BLED_1);
-	GPIOI->ODR &= (uint32_t)~(1U<<BLED_2);
-	GPIOI->ODR &= (uint32_t)~(1U<<BLED_3);
-	GPIOI->ODR &= (uint32_t)~(1U<<BLED_4);
-	GPIOH->ODR &= (uint32_t)~(1U<<BLED_5);
-	GPIOD->ODR &= (uint32_t)~(1U<<BLED_6);
-	GPIOE->ODR &= (uint32_t)~(1U<<BLED_7);
-	GPIOK->ODR |= (1U<<BLED_RED);
-	GPIOK->ODR |= (1U<<BLED_GREEN);
-	GPIOK->ODR |= (1U<<BLED_BLUE);
-	RETURN_INT_RESTORE(KERR_LED_NOERR);
+    GPIOI->ODR &= (uint32_t)~(1U<<BLED_0);
+    GPIOI->ODR &= (uint32_t)~(1U<<BLED_1);
+    GPIOI->ODR &= (uint32_t)~(1U<<BLED_2);
+    GPIOI->ODR &= (uint32_t)~(1U<<BLED_3);
+    GPIOI->ODR &= (uint32_t)~(1U<<BLED_4);
+    GPIOH->ODR &= (uint32_t)~(1U<<BLED_5);
+    GPIOD->ODR &= (uint32_t)~(1U<<BLED_6);
+    GPIOE->ODR &= (uint32_t)~(1U<<BLED_7);
+    GPIOK->ODR |= (1U<<BLED_RED);
+    GPIOK->ODR |= (1U<<BLED_GREEN);
+    GPIOK->ODR |= (1U<<BLED_BLUE);
+    RETURN_INT_RESTORE(KERR_LED_NOERR);
 }

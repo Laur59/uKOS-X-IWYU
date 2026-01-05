@@ -6,7 +6,7 @@
 
 ;------------------------------------------------------------------------
 ; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; Modifs:
 ;
 ; Project:	uKOS-X
 ; Goal:		TI BQ27510G3 equates.

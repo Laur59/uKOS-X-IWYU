@@ -2,17 +2,18 @@
 ; serialFlash.
 ; ============
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		serialFlash manager.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    serialFlash manager.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,12 +47,12 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"storage/storage.h"
-#include	"types.h"
+#include    "storage/storage.h"
+#include    "types.h"
 
 /*!
  * \addtogroup Lib_storages
@@ -71,16 +72,16 @@
 // Semaphores
 // ----------
 
-#define	KSERIAL_FLASH_MUTEX_RESERVE	"Reserve_serialFlash"
+#define KSERIAL_FLASH_MUTEX_RESERVE "Reserve_serialFlash"
 
 // Prototypes
 
 #ifdef __cplusplus
-extern	"C" {
+extern  "C" {
 #endif
 
-#define	SERIAL_FLASH_reserve	serialFlash_reserve
-#define	SERIAL_FLASH_release	serialFlash_release
+#define SERIAL_FLASH_reserve    serialFlash_reserve
+#define SERIAL_FLASH_release    serialFlash_release
 
 /*!
  * \brief Reserve the serialFlash manager
@@ -97,16 +98,16 @@ extern	"C" {
  *    status = serialFlash_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode			Any mode
- * \param[in]	timeout				Timeout (1-ms of resolution)
- * \param[in]	-					KWAIT_INFINITY, waiting forever
- * \param[in]	-					KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_STORAGE_NOERR	The manager is reserved
- * \return		KERR_STORAGE_GEERR	General error
- * \return		KERR_STORAGE_CHBSY	The manager is busy
+ * \param[in]   reserveMode         Any mode
+ * \param[in]   timeout             Timeout (1-ms of resolution)
+ * \param[in]   -                   KWAIT_INFINITY, waiting forever
+ * \param[in]   -                   KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_STORAGE_NOERR  The manager is reserved
+ * \return      KERR_STORAGE_GEERR  General error
+ * \return      KERR_STORAGE_CHBSY  The manager is busy
  *
  */
-extern	int32_t	serialFlash_reserve(reserveMode_t reserveMode, uint32_t timeout);
+extern  int32_t serialFlash_reserve(reserveMode_t reserveMode, uint32_t timeout);
 
 /*!
  * \brief Release the serialFlash manager
@@ -119,13 +120,13 @@ extern	int32_t	serialFlash_reserve(reserveMode_t reserveMode, uint32_t timeout);
  *    status = serialFlash_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode			Any mode
- * \return		KERR_STORAGE_NOERR	OK
- * \return		KERR_STORAGE_GEERR	General error
- * \return		KERR_STORAGE_CAREL	Cannot release the manager
+ * \param[in]   reserveMode         Any mode
+ * \return      KERR_STORAGE_NOERR  OK
+ * \return      KERR_STORAGE_GEERR  General error
+ * \return      KERR_STORAGE_CAREL  Cannot release the manager
  *
  */
-extern	int32_t	serialFlash_release(reserveMode_t reserveMode);
+extern  int32_t serialFlash_release(reserveMode_t reserveMode);
 
 /*!
  * \brief Initialise the serialFlash
@@ -141,12 +142,12 @@ extern	int32_t	serialFlash_release(reserveMode_t reserveMode);
  *    }
  * \endcode
  *
- * \param[in]	-
- * \return		KERR_STORAGE_NOERR	OK
- * \return		KERR_STORAGE_GEERR	General error
+ * \param[in]   -
+ * \return      KERR_STORAGE_NOERR  OK
+ * \return      KERR_STORAGE_GEERR  General error
  *
  */
-extern	int32_t	serialFlash_initialise(void);
+extern  int32_t serialFlash_initialise(void);
 
 /*!
  * \brief Read the status of the serialFlash
@@ -159,13 +160,13 @@ extern	int32_t	serialFlash_initialise(void);
  *    status = serialFlash_readStatus();
  * \endcode
  *
- * \param[in]	-
- * \return		KERR_STORAGE_NOERR	OK
- * \return		KERR_STORAGE_GEERR	General error
- * \return		KERR_STORAGE_NODEV	No serialFlash
+ * \param[in]   -
+ * \return      KERR_STORAGE_NOERR  OK
+ * \return      KERR_STORAGE_GEERR  General error
+ * \return      KERR_STORAGE_NODEV  No serialFlash
  *
  */
-extern	int32_t	serialFlash_readStatus(void);
+extern  int32_t serialFlash_readStatus(void);
 
 /*!
  * \brief Read 1 or more sectors from the serialFlash
@@ -184,15 +185,15 @@ extern	int32_t	serialFlash_readStatus(void);
  *    }
  * \endcode
  *
- * \param[in]	*buffer				Ptr on the buffer
- * \param[in]	size				Number of bytes to read
- * \param[in]	sector				Start sector
- * \return		KERR_STORAGE_NOERR	OK
- * \return		KERR_STORAGE_GEERR	General error
- * \return		KERR_STORAGE_LNBU0	The number of sectors is = 0
+ * \param[in]   *buffer             Ptr on the buffer
+ * \param[in]   size                Number of bytes to read
+ * \param[in]   sector              Start sector
+ * \return      KERR_STORAGE_NOERR  OK
+ * \return      KERR_STORAGE_GEERR  General error
+ * \return      KERR_STORAGE_LNBU0  The number of sectors is = 0
  *
  */
-extern	int32_t	serialFlash_read(uint8_t *buffer, uint32_t size, uint32_t sector);
+extern  int32_t serialFlash_read(uint8_t *buffer, uint32_t size, uint32_t sector);
 
 /*!
  * \brief Write 1 or more sectors to the serialFlash
@@ -211,15 +212,15 @@ extern	int32_t	serialFlash_read(uint8_t *buffer, uint32_t size, uint32_t sector)
  *    }
  * \endcode
  *
- * \param[in]	*buffer				Ptr on the buffer
- * \param[in]	size				Number of bytes to write
- * \param[in]	sector				Start sector
- * \return		KERR_STORAGE_NOERR	OK
- * \return		KERR_STORAGE_GEERR	General error
- * \return		KERR_STORAGE_LNBU0	The number of sectors is = 0
+ * \param[in]   *buffer             Ptr on the buffer
+ * \param[in]   size                Number of bytes to write
+ * \param[in]   sector              Start sector
+ * \return      KERR_STORAGE_NOERR  OK
+ * \return      KERR_STORAGE_GEERR  General error
+ * \return      KERR_STORAGE_LNBU0  The number of sectors is = 0
  *
  */
-extern	int32_t	serialFlash_write(const uint8_t *buffer, uint32_t size, uint32_t sector);
+extern  int32_t serialFlash_write(const uint8_t *buffer, uint32_t size, uint32_t sector);
 
 /*!
  * \brief Get some storage parameters by ioctl
@@ -237,13 +238,13 @@ extern	int32_t	serialFlash_write(const uint8_t *buffer, uint32_t size, uint32_t 
  *    }
  * \endcode
  *
- * \param[in]	command				Command
- * \param[in]	*buffer				Ptr on the buffer
- * \return		KERR_STORAGE_NOERR	OK
- * \return		KERR_STORAGE_GEERR	General error
+ * \param[in]   command             Command
+ * \param[in]   *buffer             Ptr on the buffer
+ * \return      KERR_STORAGE_NOERR  OK
+ * \return      KERR_STORAGE_GEERR  General error
  *
  */
-extern	int32_t	serialFlash_ioctl(storageIoctl_t command, void *buffer);
+extern  int32_t serialFlash_ioctl(storageIoctl_t command, void *buffer);
 
 #ifdef __cplusplus
 }

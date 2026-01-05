@@ -2,18 +2,19 @@
 ; queue.
 ; ======
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Demo of a C application.
-;			This application shows how to operate with the uKOS-X uKernel.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    Demo of a C application.
+;    This application shows how to operate with the uKOS-X uKernel.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -52,140 +53,140 @@
  * \ingroup app_mbox
  * \brief This application shows how to operate with the uKOS uKernel.
  *
- *			Launch 2 processes:
+ *          Launch 2 processes:
  *
- *			- P0: Create a mailbox "Queue 1-to-0"
- *				  Read and display the messages coming from the queue
- *				  Toggle LED 1 with decimation
+ *          - P0: Create a mailbox "Queue 1-to-0"
+ *                Read and display the messages coming from the queue
+ *                Toggle LED 1 with decimation
  *
- *			- P1: Get the mailbox "Queue 1-to-0" handle
- *				  Every 10-ms
- *					- Write a message into the queue queue 1-to-0
+ *          - P1: Get the mailbox "Queue 1-to-0" handle
+ *                Every 10-ms
+ *                  - Write a message into the queue queue 1-to-0
  *
  */
 
-#include	<inttypes.h>
-#include	<stdio.h>
-#include	<stdlib.h>
+#include    <inttypes.h>
+#include    <stdio.h>
+#include    <stdlib.h>
 
-#include	"crt0.h"
-#include	"serial/serial.h"
-#include	"kern/kern.h"
-#include	"macros.h"
-#include	"macros_core.h"
-#include	"macros_core_stackFrame.h"
-#include	"memo/memo.h"
-#include	"led/led.h"
-#include	"modules.h"
-#include	"os_errors.h"
-#include	"record/record.h"
-#include	"types.h"
+#include    "crt0.h"
+#include    "serial/serial.h"
+#include    "kern/kern.h"
+#include    "macros.h"
+#include    "macros_core.h"
+#include    "macros_core_stackFrame.h"
+#include    "memo/memo.h"
+#include    "led/led.h"
+#include    "modules.h"
+#include    "os_errors.h"
+#include    "record/record.h"
+#include    "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"queue        Example of how to use queue.              (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "This is a romable C application\n"
-									"===============================\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "queue        Example of how to use queue.              (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
+                                    "===============================\n\n"
 
-									"This user function module is a C written application.\n\n"
+                                    "This user function module is a C written application.\n\n"
 
-									"Input format:  queue\n"
-									"Output format: [result]\n\n"
+                                    "Input format:  queue\n"
+                                    "Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
-	UserAppl,							// Module name (the first letter has to be upper case)
-	KID_FAM_APPLICATIONS,				// Family (defined in the module.h)
-	KNUM_APPLICATION,					// Module identifier (defined in the module.h)
-	NULL,								// Address of the initialisation code (early pre-init)
-	aStart,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	NULL,								// Address of the clean code (clean the module)
-	" 1.0",								// Revision string (major . minor)
-	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0									// Execution cores
+    UserAppl,                           // Module name (the first letter has to be upper case)
+    KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
+    KNUM_APPLICATION,                   // Module identifier (defined in the module.h)
+    NULL,                               // Address of the initialisation code (early pre-init)
+    aStart,                             // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    NULL,                               // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
 );
 
 /*
  * \brief aProcess 0
  *
  * - P0: Create a mailbox "Queue 1-to-0"
- *		 Read and display the messages coming from the queue
- *			- Toggle LED 0
+ *       Read and display the messages coming from the queue
+ *          - Toggle LED 0
  *
  */
 static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
-	UNUSED(argument);
+    UNUSED(argument);
 
-	uintptr_t	message_1_to_0, expected_1_to_0 = 0U;
-	mbox_t		*queue_1_to_0;
-	mcnf_t		configure = {
-					.oNbMaxPacks = 10U,
-					.oDataEntrySize	= 0U
-			};
-	uint32_t ledDecimationCounter = 0U;
+    uintptr_t   message_1_to_0, expected_1_to_0 = 0U;
+    mbox_t      *queue_1_to_0;
+    mcnf_t      configure = {
+                    .oNbMaxPacks = 10U,
+                    .oDataEntrySize = 0U
+            };
+    uint32_t ledDecimationCounter = 0U;
 
-	if (kern_createMailbox("Queue 1-to-0", &queue_1_to_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create mbox");	exit(EXIT_OS_FAILURE); }
-	if (kern_setMailbox(queue_1_to_0, &configure)         != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Configure mbox"); exit(EXIT_OS_FAILURE); }
+    if (kern_createMailbox("Queue 1-to-0", &queue_1_to_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create mbox");    exit(EXIT_OS_FAILURE); }
+    if (kern_setMailbox(queue_1_to_0, &configure)         != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Configure mbox"); exit(EXIT_OS_FAILURE); }
 
-	while (true) {
+    while (true) {
 
 // Receive the message (if FIFO is not empty)
 // Display the message
 
-		if (kern_readQueue(queue_1_to_0, &message_1_to_0, 100U) == KERR_KERN_TIMEO) {
-			LOG(KFATAL_USER, "Timeout read mbox");
-			exit(EXIT_OS_FAILURE);
-		}
+        if (kern_readQueue(queue_1_to_0, &message_1_to_0, 100U) == KERR_KERN_TIMEO) {
+            LOG(KFATAL_USER, "Timeout read mbox");
+            exit(EXIT_OS_FAILURE);
+        }
 
-		if (message_1_to_0 != expected_1_to_0) {
-			LOG(KFATAL_USER, "Data lost!!");
-			exit(EXIT_OS_FAILURE);
-		}
+        if (message_1_to_0 != expected_1_to_0) {
+            LOG(KFATAL_USER, "Data lost!!");
+            exit(EXIT_OS_FAILURE);
+        }
 
-		expected_1_to_0++;
-		(void)dprintf(KSYST, "Message = %"PRIu32"\n", (uint32_t)message_1_to_0);
-		ledDecimationCounter++;
-		if (ledDecimationCounter == 100U) {
-			led_toggle(KLED_0);
-			ledDecimationCounter = 0U;
-		}
-	}
+        expected_1_to_0++;
+        (void)dprintf(KSYST, "Message = %"PRIu32"\n", (uint32_t)message_1_to_0);
+        ledDecimationCounter++;
+        if (ledDecimationCounter == 100U) {
+            led_toggle(KLED_0);
+            ledDecimationCounter = 0U;
+        }
+    }
 }
 
 /*
  * \brief aProcess 1
  *
  * - P1: Get the mailbox "Queue 1-to-0" handle
- *		 Every 10-ms
- *			- Write a message into the queue queue 1-to-0
+ *       Every 10-ms
+ *          - Write a message into the queue queue 1-to-0
  *
  */
 static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
-	UNUSED(argument);
+    UNUSED(argument);
 
-	uintptr_t	message_1_to_0 = 0;
-	mbox_t		*queue_1_to_0;
+    uintptr_t   message_1_to_0 = 0;
+    mbox_t      *queue_1_to_0;
 
 // Waiting for the queue 1-to-0
 
-	while (kern_getMailboxById("Queue 1-to-0", &queue_1_to_0) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
+    while (kern_getMailboxById("Queue 1-to-0", &queue_1_to_0) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
 
-	while (true) {
-		kern_suspendProcess(10U);
+    while (true) {
+        kern_suspendProcess(10U);
 
 // Send a the message (if FIFO is not full)
 
-		if (kern_writeQueue(queue_1_to_0, message_1_to_0, 100U) == KERR_KERN_TIMEO) {
-			LOG(KFATAL_USER, "mbox full");
-			exit(EXIT_OS_FAILURE);
-		}
+        if (kern_writeQueue(queue_1_to_0, message_1_to_0, 100U) == KERR_KERN_TIMEO) {
+            LOG(KFATAL_USER, "mbox full");
+            exit(EXIT_OS_FAILURE);
+        }
 
-		message_1_to_0++;
-	}
+        message_1_to_0++;
+    }
 }
 
 /*
@@ -196,46 +197,46 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int		main(int argc, const char *argv[]) {
-	UNUSED(argc);
-	UNUSED(argv);
+int     main(int argc, const char *argv[]) {
+    UNUSED(argc);
+    UNUSED(argv);
 
-	proc_t	*process_0, *process_1;
+    proc_t  *process_0, *process_1;
 
 // ---------------------------------I-----------------------------------------I--------------I
 
-	STRG_LOC_CONST(aStrIden_0[]) = "Process_User_0";
-	STRG_LOC_CONST(aStrIden_1[]) = "Process_User_1";
-	STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2026";
-	STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2026";
+    STRG_LOC_CONST(aStrIden_0[]) = "Process_User_0";
+    STRG_LOC_CONST(aStrIden_1[]) = "Process_User_1";
+    STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2026";
+    STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2026";
 
 // Specifications for the processes
 
-	PROCESS_STACKMALLOC(
-		0,									// Index
-		specification_0,					// Specifications (just use specification_x)
-		aStrText_0,							// Info string (NULL if anonymous)
-		KKERN_SZ_STACK_MM,					// KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
-		aProcess_0,							// Code of the process
-		aStrIden_0,							// Identifier (NULL if anonymous)
-		KSYST,								// Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
-		KKERN_PRIORITY_LOW_14				// KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
-	);
+    PROCESS_STACKMALLOC(
+        0,                                  // Index
+        specification_0,                    // Specifications (just use specification_x)
+        aStrText_0,                         // Info string (NULL if anonymous)
+        KKERN_SZ_STACK_MM,                  // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
+        aProcess_0,                         // Code of the process
+        aStrIden_0,                         // Identifier (NULL if anonymous)
+        KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
+        KKERN_PRIORITY_LOW_14               // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
+    );
 
-	PROCESS_STACKMALLOC(
-		1,									// Index
-		specification_1,					// Specifications (just use specification_x)
-		aStrText_1,							// Info string (NULL if anonymous)
-		KKERN_SZ_STACK_MM,					// KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
-		aProcess_1,							// Code of the process
-		aStrIden_1,							// Identifier (NULL if anonymous)
-		KSYST,								// Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
-		KKERN_PRIORITY_MEDIUM_01			// KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
-	);
+    PROCESS_STACKMALLOC(
+        1,                                  // Index
+        specification_1,                    // Specifications (just use specification_x)
+        aStrText_1,                         // Info string (NULL if anonymous)
+        KKERN_SZ_STACK_MM,                  // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
+        aProcess_1,                         // Code of the process
+        aStrIden_1,                         // Identifier (NULL if anonymous)
+        KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
+        KKERN_PRIORITY_MEDIUM_01            // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
+    );
 
-	if (kern_createProcess(&specification_0, NULL, &process_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
-	if (kern_createProcess(&specification_1, NULL, &process_1) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
+    if (kern_createProcess(&specification_0, NULL, &process_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
+    if (kern_createProcess(&specification_1, NULL, &process_1) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
 
-	LOG(KINFO_USER, "Application launched");
-	return (EXIT_OS_SUCCESS_CLI);
+    LOG(KINFO_USER, "Application launched");
+    return (EXIT_OS_SUCCESS_CLI);
 }

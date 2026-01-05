@@ -3,14 +3,17 @@
 ; ===============
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Model for controlling the watchdog device.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project:  uKOS-X
+;
+; Purpose:
+;    Model for controlling the watchdog device.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -52,41 +55,41 @@
  *   I.e for the gd32vf103 series the min-max time is 6.4 < time < 26214.4-ms
  *
  */
-#include	<stdint.h>
-#include	"soc_reg.h"
+#include    <stdint.h>
+#include    "soc_reg.h"
 
-#define	KTIME_WATCHDOG_RES	(256U / 40U)										// Resolution of 6-ms; 1 / (40000 / 256)
-#define	KTIME_WATCHDOG_GAIN	4096U												//
-#define	KTIME_WATCHDOG_MAX	((KTIME_WATCHDOG_GAIN * KTIME_WATCHDOG_RES)	- 1U)	// ms
-#define	KTIME_WATCHDOG_MIN	0U													// ms
+#define KTIME_WATCHDOG_RES  (256U / 40U)                                        // Resolution of 6-ms; 1 / (40000 / 256)
+#define KTIME_WATCHDOG_GAIN 4096U                                               //
+#define KTIME_WATCHDOG_MAX  ((KTIME_WATCHDOG_GAIN * KTIME_WATCHDOG_RES) - 1U)   // ms
+#define KTIME_WATCHDOG_MIN  0U                                                  // ms
 
-void	model_watchdog_arm(uint32_t time) {
-			uint32_t	timeout;
-	static	uint32_t	lastTime = UINT32_MAX;
+void    model_watchdog_arm(uint32_t time) {
+            uint32_t    timeout;
+    static  uint32_t    lastTime = UINT32_MAX;
 
 // timeout = (4096 / (6 * 4096)) x time
 
-	timeout = (KTIME_WATCHDOG_GAIN * time) / (KTIME_WATCHDOG_RES * KTIME_WATCHDOG_GAIN);
+    timeout = (KTIME_WATCHDOG_GAIN * time) / (KTIME_WATCHDOG_RES * KTIME_WATCHDOG_GAIN);
 
-	timeout = (timeout < KTIME_WATCHDOG_RES) ? (KTIME_WATCHDOG_RES) : (timeout);
-	timeout = (timeout > KTIME_WATCHDOG_MAX) ? (KTIME_WATCHDOG_MAX) : (timeout);
+    timeout = (timeout < KTIME_WATCHDOG_RES) ? (KTIME_WATCHDOG_RES) : (timeout);
+    timeout = (timeout > KTIME_WATCHDOG_MAX) ? (KTIME_WATCHDOG_MAX) : (timeout);
 
 // Unlock the watchdog (to make possible writing PSC & RLD registers)
 // Initialise the prescaler / 256; 6.4 < time < 26214.4-ms
 // Start the watchdog
 
-	if (lastTime != timeout) {
-		lastTime = timeout;
+    if (lastTime != timeout) {
+        lastTime = timeout;
 
-		FWDGT->CTL = FWDGT_CTL_START;
-		FWDGT->CTL = FWDGT_CTL_DISABLE;
+        FWDGT->CTL = FWDGT_CTL_START;
+        FWDGT->CTL = FWDGT_CTL_DISABLE;
 
-		FWDGT->PSC = FWDGT_PSC_1_256;
-		FWDGT->RLD = timeout;
-		do { } while ((FWDGT->STAT & 0x3u) != 0U);
-	}
+        FWDGT->PSC = FWDGT_PSC_1_256;
+        FWDGT->RLD = timeout;
+        do { } while ((FWDGT->STAT & 0x3u) != 0U);
+    }
 
 // Arm the watchdog
 
-	FWDGT->CTL = FWDGT_CTL_RELOAD;
+    FWDGT->CTL = FWDGT_CTL_RELOAD;
 }

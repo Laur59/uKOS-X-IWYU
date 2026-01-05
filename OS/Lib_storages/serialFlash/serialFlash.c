@@ -2,17 +2,18 @@
 ; serialFlash.
 ; ============
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		serialFlash manager.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    serialFlash manager.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,20 +47,20 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"serialFlash.h"
+#include    "serialFlash.h"
 
-#include	<stdint.h>
-#include	<stdlib.h>
+#include    <stdint.h>
+#include    <stdlib.h>
 
-#include	"kern/kern.h"
-#include	"macros.h"
-#include	"macros_core.h"
-#include	"macros_soc.h"
-#include	"modules.h"
-#include	"os_errors.h"
-#include	"record/record.h"
-#include	"storage/storage.h"
-#include	"types.h"
+#include    "kern/kern.h"
+#include    "macros.h"
+#include    "macros_core.h"
+#include    "macros_soc.h"
+#include    "modules.h"
+#include    "os_errors.h"
+#include    "record/record.h"
+#include    "storage/storage.h"
+#include    "types.h"
 
 #ifdef CONFIG_MAN_SERIAL_FLASH_S
 
@@ -68,40 +69,40 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"serialFlash  serialFlash manager.                      (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "serialFlash manager\n"
-									"===================\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "serialFlash  serialFlash manager.                      (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "serialFlash manager\n"
+                                    "===================\n\n"
 
-									"This manager ...\n\n"
+                                    "This manager ...\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
-	SerialFlash,					// Module name (the first letter has to be upper case)
-	KID_FAM_STORAGE,				// Family (defined in the module.h)
-	KNUM_SERIAL_FLASH,				// Module identifier (defined in the module.h)
-	NULL,							// Address of the initialisation code (early pre-init)
-	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	NULL,							// Address of the clean code (clean the module)
-	" 1.0",							// Revision string (major . minor)
-	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0								// Execution cores
+    SerialFlash,                    // Module name (the first letter has to be upper case)
+    KID_FAM_STORAGE,                // Family (defined in the module.h)
+    KNUM_SERIAL_FLASH,              // Module identifier (defined in the module.h)
+    NULL,                           // Address of the initialisation code (early pre-init)
+    NULL,                           // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    NULL,                           // Address of the clean code (clean the module)
+    " 1.0",                         // Revision string (major . minor)
+    (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                               // Execution cores
 );
 
 // Library specific
 // ================
 
-static	mutx_t		*vMutex_Reserve[KNB_CORES];
+static  mutx_t      *vMutex_Reserve[KNB_CORES];
 
 // Prototypes
 
-extern	void		stub_serialFlash_init(void);
-extern	int32_t		stub_serialFlash_initialise(void);
-extern	int32_t		stub_serialFlash_readStatus(void);
-extern	int32_t		stub_serialFlash_read(uint8_t *buffer, uint32_t size, uint32_t sector);
-extern	int32_t		stub_serialFlash_write(const uint8_t *buffer, uint32_t size, uint32_t sector);
-extern	int32_t		stub_serialFlash_ioctl(storageIoctl_t command, void *buffer);
-static	int32_t		local_init(void);
+extern  void        stub_serialFlash_init(void);
+extern  int32_t     stub_serialFlash_initialise(void);
+extern  int32_t     stub_serialFlash_readStatus(void);
+extern  int32_t     stub_serialFlash_read(uint8_t *buffer, uint32_t size, uint32_t sector);
+extern  int32_t     stub_serialFlash_write(const uint8_t *buffer, uint32_t size, uint32_t sector);
+extern  int32_t     stub_serialFlash_ioctl(storageIoctl_t command, void *buffer);
+static  int32_t     local_init(void);
 
 /*
  * \brief Reserve the serialFlash manager
@@ -118,35 +119,35 @@ static	int32_t		local_init(void);
  *    status = serialFlash_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode			Any mode
- * \param[in]	timeout				Timeout (1-ms of resolution)
- * \param[in]	-					KWAIT_INFINITY, waiting forever
- * \param[in]	-					KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_STORAGE_NOERR	The manager is reserved
- * \return		KERR_STORAGE_GEERR	General error
- * \return		KERR_STORAGE_CHBSY	The manager is busy
+ * \param[in]   reserveMode         Any mode
+ * \param[in]   timeout             Timeout (1-ms of resolution)
+ * \param[in]   -                   KWAIT_INFINITY, waiting forever
+ * \param[in]   -                   KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_STORAGE_NOERR  The manager is reserved
+ * \return      KERR_STORAGE_GEERR  General error
+ * \return      KERR_STORAGE_CHBSY  The manager is busy
  *
  */
-int32_t	serialFlash_reserve(reserveMode_t reserveMode, uint32_t timeout) {
-	uint32_t	core;
-	int32_t		status;
+int32_t serialFlash_reserve(reserveMode_t reserveMode, uint32_t timeout) {
+    uint32_t    core;
+    int32_t     status;
 
-	UNUSED(reserveMode);
+    UNUSED(reserveMode);
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = kern_lockMutex(vMutex_Reserve[core], timeout);
-	if (status != KERR_KERN_NOERR) {
-		PRIVILEGE_RESTORE;
-		return (KERR_STORAGE_CHBSY);
-	}
+    status = kern_lockMutex(vMutex_Reserve[core], timeout);
+    if (status != KERR_KERN_NOERR) {
+        PRIVILEGE_RESTORE;
+        return (KERR_STORAGE_CHBSY);
+    }
 
-	PRIVILEGE_RESTORE;
-	return (KERR_STORAGE_NOERR);
+    PRIVILEGE_RESTORE;
+    return (KERR_STORAGE_NOERR);
 }
 
 /*
@@ -160,32 +161,32 @@ int32_t	serialFlash_reserve(reserveMode_t reserveMode, uint32_t timeout) {
  *    status = serialFlash_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode			Any mode
- * \return		KERR_STORAGE_NOERR	OK
- * \return		KERR_STORAGE_GEERR	General error
- * \return		KERR_STORAGE_CAREL	Cannot release the manager
+ * \param[in]   reserveMode         Any mode
+ * \return      KERR_STORAGE_NOERR  OK
+ * \return      KERR_STORAGE_GEERR  General error
+ * \return      KERR_STORAGE_CAREL  Cannot release the manager
  *
  */
-int32_t	serialFlash_release(reserveMode_t reserveMode) {
-	uint32_t	core;
-	int32_t		status;
+int32_t serialFlash_release(reserveMode_t reserveMode) {
+    uint32_t    core;
+    int32_t     status;
 
-	UNUSED(reserveMode);
+    UNUSED(reserveMode);
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = kern_unlockMutex(vMutex_Reserve[core]);
-	if (status != KERR_KERN_NOERR) {
-		PRIVILEGE_RESTORE;
-		return (KERR_STORAGE_CAREL);
-	}
+    status = kern_unlockMutex(vMutex_Reserve[core]);
+    if (status != KERR_KERN_NOERR) {
+        PRIVILEGE_RESTORE;
+        return (KERR_STORAGE_CAREL);
+    }
 
-	PRIVILEGE_RESTORE;
-	return (KERR_STORAGE_NOERR);
+    PRIVILEGE_RESTORE;
+    return (KERR_STORAGE_NOERR);
 }
 
 /*
@@ -202,21 +203,21 @@ int32_t	serialFlash_release(reserveMode_t reserveMode) {
  *    }
  * \endcode
  *
- * \param[in]	-
- * \return		KERR_STORAGE_NOERR	OK
- * \return		KERR_STORAGE_GEERR	General error
+ * \param[in]   -
+ * \return      KERR_STORAGE_NOERR  OK
+ * \return      KERR_STORAGE_GEERR  General error
  *
  */
-int32_t	serialFlash_initialise(void) {
-	int32_t		status;
+int32_t serialFlash_initialise(void) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_serialFlash_initialise();
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_serialFlash_initialise();
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 /*
@@ -230,22 +231,22 @@ int32_t	serialFlash_initialise(void) {
  *    status = serialFlash_readStatus();
  * \endcode
  *
- * \param[in]	-
- * \return		KERR_STORAGE_NOERR	OK
- * \return		KERR_STORAGE_GEERR	General error
- * \return		KERR_STORAGE_NODEV	No serialFlash
+ * \param[in]   -
+ * \return      KERR_STORAGE_NOERR  OK
+ * \return      KERR_STORAGE_GEERR  General error
+ * \return      KERR_STORAGE_NODEV  No serialFlash
  *
  */
-int32_t	serialFlash_readStatus(void) {
-	int32_t		status;
+int32_t serialFlash_readStatus(void) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_serialFlash_readStatus();
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_serialFlash_readStatus();
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 /*
@@ -265,24 +266,24 @@ int32_t	serialFlash_readStatus(void) {
  *    }
  * \endcode
  *
- * \param[in]	*buffer				Ptr on the buffer
- * \param[in]	size				Number of bytes to read
- * \param[in]	sector				Start sector
- * \return		KERR_STORAGE_NOERR	OK
- * \return		KERR_STORAGE_GEERR	General error
- * \return		KERR_STORAGE_LNBU0	The number of sectors is = 0
+ * \param[in]   *buffer             Ptr on the buffer
+ * \param[in]   size                Number of bytes to read
+ * \param[in]   sector              Start sector
+ * \return      KERR_STORAGE_NOERR  OK
+ * \return      KERR_STORAGE_GEERR  General error
+ * \return      KERR_STORAGE_LNBU0  The number of sectors is = 0
  *
  */
-int32_t	serialFlash_read(uint8_t *buffer, uint32_t size, uint32_t sector) {
-	int32_t		status;
+int32_t serialFlash_read(uint8_t *buffer, uint32_t size, uint32_t sector) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_serialFlash_read(buffer, size, sector);
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_serialFlash_read(buffer, size, sector);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 /*
@@ -302,24 +303,24 @@ int32_t	serialFlash_read(uint8_t *buffer, uint32_t size, uint32_t sector) {
  *    }
  * \endcode
  *
- * \param[in]	*buffer				Ptr on the buffer
- * \param[in]	size				Number of bytes to write
- * \param[in]	sector				Start sector
- * \return		KERR_STORAGE_NOERR	OK
- * \return		KERR_STORAGE_GEERR	General error
- * \return		KERR_STORAGE_LNBU0	The number of sectors is = 0
+ * \param[in]   *buffer             Ptr on the buffer
+ * \param[in]   size                Number of bytes to write
+ * \param[in]   sector              Start sector
+ * \return      KERR_STORAGE_NOERR  OK
+ * \return      KERR_STORAGE_GEERR  General error
+ * \return      KERR_STORAGE_LNBU0  The number of sectors is = 0
  *
  */
-int32_t	serialFlash_write(const uint8_t *buffer, uint32_t size, uint32_t sector) {
-	int32_t		status;
+int32_t serialFlash_write(const uint8_t *buffer, uint32_t size, uint32_t sector) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_serialFlash_write(buffer, size, sector);
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_serialFlash_write(buffer, size, sector);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 /*
@@ -338,22 +339,22 @@ int32_t	serialFlash_write(const uint8_t *buffer, uint32_t size, uint32_t sector)
  *    }
  * \endcode
  *
- * \param[in]	command				Command
- * \param[in]	*buffer				Ptr on the buffer
- * \return		KERR_STORAGE_NOERR	OK
- * \return		KERR_STORAGE_GEERR	General error
+ * \param[in]   command             Command
+ * \param[in]   *buffer             Ptr on the buffer
+ * \return      KERR_STORAGE_NOERR  OK
+ * \return      KERR_STORAGE_GEERR  General error
  *
  */
-int32_t	serialFlash_ioctl(storageIoctl_t command, void *buffer) {
-	int32_t		status;
+int32_t serialFlash_ioctl(storageIoctl_t command, void *buffer) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_serialFlash_ioctl(command, buffer);
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_serialFlash_ioctl(command, buffer);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 // Local routines
@@ -366,21 +367,21 @@ int32_t	serialFlash_ioctl(storageIoctl_t command, void *buffer) {
  *   has to be called at least once
  *
  */
-static	int32_t	local_init(void) {
-			uint32_t	core;
-	static	bool		vInit[KNB_CORES] = MCSET(false);
+static  int32_t local_init(void) {
+            uint32_t    core;
+    static  bool        vInit[KNB_CORES] = MCSET(false);
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	INTERRUPTION_OFF;
-	if (!vInit[core]) {
-		vInit[core] = true;
+    INTERRUPTION_OFF;
+    if (!vInit[core]) {
+        vInit[core] = true;
 
-		if (kern_createMutex(KSERIAL_FLASH_MUTEX_RESERVE, &vMutex_Reserve[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "serialFlash: create mutx"); exit(EXIT_OS_PANIC); }
+        if (kern_createMutex(KSERIAL_FLASH_MUTEX_RESERVE, &vMutex_Reserve[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "serialFlash: create mutx"); exit(EXIT_OS_PANIC); }
 
-		stub_serialFlash_init();
-	}
-	RETURN_INT_RESTORE(KERR_STORAGE_NOERR);
+        stub_serialFlash_init();
+    }
+    RETURN_INT_RESTORE(KERR_STORAGE_NOERR);
 }
 
 #endif

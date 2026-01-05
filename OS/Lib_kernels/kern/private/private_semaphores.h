@@ -2,19 +2,20 @@
 ; private_semaphores.
 ; ===================
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Kern - Semaphore management.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;			Private uKernel variables.
+; Project: uKOS-X
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Purpose:
+;    Kern - Semaphore management.
+;
+;    Private uKernel variables.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,7 +49,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_kernels
@@ -70,31 +71,31 @@
  * @{
  */
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"kern/kern.h"
-#include	"macros_soc.h"
-#include	"types.h"
+#include    "kern/kern.h"
+#include    "macros_soc.h"
+#include    "types.h"
 
-#define	KSEMA_ANONYMOUS_ID	"Sema_anonymous"
+#define KSEMA_ANONYMOUS_ID  "Sema_anonymous"
 
-struct	sema {
-	const	char_t		*oIdentifier;							// Semaphore identifier
-			uint16_t	oState;									// Semaphore state
-			#define		BSEMA_INSTALLED		0U					// Semaphore installed
+struct  sema {
+    const   char_t      *oIdentifier;                           // Semaphore identifier
+            uint16_t    oState;                                 // Semaphore state
+            #define     BSEMA_INSTALLED     0U                  // Semaphore installed
 
-			int32_t		oCounter;								// Semaphore counter
-			int32_t		oMaxCounter;							// Semaphore counter max value
-			#define		KSEMA_MAX_CPT		INT32_MAX			//
-			#define		KSEMA_MIN_CPT		INT32_MIN			//
+            int32_t     oCounter;                               // Semaphore counter
+            int32_t     oMaxCounter;                            // Semaphore counter max value
+            #define     KSEMA_MAX_CPT       INT32_MAX           //
+            #define     KSEMA_MIN_CPT       INT32_MIN           //
 
-			proc_t		*oOwner;								// Ptr on the process owner of the semaphore
-			list_t		oList;									// Semaphore list
+            proc_t      *oOwner;                                // Ptr on the process owner of the semaphore
+            list_t      oList;                                  // Semaphore list
 };
 
-extern	sema_t		vKern_sema[KNB_CORES][KKERN_NB_SEMAPHORES];	// Semaphores
-extern	uint16_t	vKern_nbSema[KNB_CORES];					// Nb of used semaphores
-extern	uint16_t	vKern_nbMaxSema[KNB_CORES];					// Max number of used semaphores
+extern  sema_t      vKern_sema[KNB_CORES][KKERN_NB_SEMAPHORES]; // Semaphores
+extern  uint16_t    vKern_nbSema[KNB_CORES];                    // Nb of used semaphores
+extern  uint16_t    vKern_nbMaxSema[KNB_CORES];                 // Max number of used semaphores
 
 /**@}*/
 /**@}*/

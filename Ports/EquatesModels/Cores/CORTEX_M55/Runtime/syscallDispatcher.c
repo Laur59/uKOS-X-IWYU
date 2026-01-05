@@ -2,19 +2,20 @@
 ; syscallDispatcher.
 ; ==================
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Syscall dispatcher.
-;				- uKernel messages
-;				- manager system calls
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    Syscall dispatcher.
+;    - uKernel messages
+;    - manager system calls
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,45 +49,45 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<stdint.h>
-#include	<stdlib.h>
+#include    <stdint.h>
+#include    <stdlib.h>
 
-#include	"Lib_generics/record/record.h"
-#include	"macros.h"
-#include	"macros_core_stackFrame.h"
-#include	"types.h"
+#include    "Lib_generics/record/record.h"
+#include    "macros.h"
+#include    "macros_core_stackFrame.h"
+#include    "types.h"
 
-extern	void	kernel_message_C0(void);
-extern	void	kern_privilegeElevate(void);
+extern  void    kernel_message_C0(void);
+extern  void    kern_privilegeElevate(void);
 
 /*
  * \brief SVCall_IRQHandler
  *
  * Stack frame after the SVC(x) instruction
  *
- *	+92		 ...
- *	+28		 xPSR
- *	+24		 pc
- *	+20		 lr
- *	+16		 r12
- *	+12		 r3
- *	+8		 r2
- *	+4		 r1
- *	+0		 r0
+ *  +92      ...
+ *  +28      xPSR
+ *  +24      pc
+ *  +20      lr
+ *  +16      r12
+ *  +12      r3
+ *  +8       r2
+ *  +4       r1
+ *  +0       r0
  */
-void	SVCall_C0_IRQHandler(void) __attribute__ ((naked));
-void	SVCall_C0_IRQHandler(void) {
+void    SVCall_C0_IRQHandler(void) __attribute__ ((naked));
+void    SVCall_C0_IRQHandler(void) {
 
-// Branch to 	 --> kernel_message
-// Branch to 	 --> kern_privilegeElevate
+// Branch to     --> kernel_message
+// Branch to     --> kern_privilegeElevate
 
-	SVC_DISPATCHER_C0;
+    SVC_DISPATCHER_C0;
 }
 
-void	__attribute__ ((noreturn)) syscall(const uintptr_t *arg) {
+void    __attribute__ ((noreturn)) syscall(const uintptr_t *arg) {
 
-	UNUSED(arg);
+    UNUSED(arg);
 
-	LOG(KFATAL_SYSTEM, "syscallDispatcher: no system call");
-	exit(EXIT_OS_PANIC_NO_SYSCALL);
+    LOG(KFATAL_SYSTEM, "syscallDispatcher: no system call");
+    exit(EXIT_OS_PANIC_NO_SYSCALL);
 }

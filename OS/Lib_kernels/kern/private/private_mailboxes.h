@@ -2,19 +2,20 @@
 ; private_mailboxes.
 ; ==================
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Kern - mailbox box management.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;			Private uKernel variables.
+; Project: uKOS-X
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Purpose:
+;    Kern - mailbox box management.
+;
+;    Private uKernel variables.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,7 +49,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_kernels
@@ -71,50 +72,50 @@
  */
 
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"kern/kern.h"
-#include	"macros_soc.h"
-#include	"types.h"
+#include    "kern/kern.h"
+#include    "macros_soc.h"
+#include    "types.h"
 
-#define	KMBOX_ANONYMOUS_ID	"Mbox_anonymous"
+#define KMBOX_ANONYMOUS_ID  "Mbox_anonymous"
 
-struct	mboxPack {
-			uint8_t		*oBuff;									// Ptr on the memory message
-			uint32_t	oSize;									// Size of the message
+struct  mboxPack {
+            uint8_t     *oBuff;                                 // Ptr on the memory message
+            uint32_t    oSize;                                  // Size of the message
 
-			#if (KKERN_WITH_STATISTICS_S == true)
-			uint64_t	oReadTimeStmp;							// Read time stamp
-			uint64_t	oWriteTimeStmp;							// Write time stamp
-			proc_t		*oProcess;								// Source process of the message
-			#endif
+            #if (KKERN_WITH_STATISTICS_S == true)
+            uint64_t    oReadTimeStmp;                          // Read time stamp
+            uint64_t    oWriteTimeStmp;                         // Write time stamp
+            proc_t      *oProcess;                              // Source process of the message
+            #endif
 };
 
-struct	mbox {
-	const	char_t		*oIdentifier;							// Mailbox identifier
-			uint16_t	oState;									// Mailbox state
-			#define		BMBOX_INSTALLED		0U					// Mailbox installed
-			#define		BMBOX_CONFIGURED	1U					// Mailbox configured
-			#define		BMBOX_EMPTY			2U					// Mailbox empty
-			#define		BMBOX_FULL			3U					// Mailbox full
-			#define		BMBOX_BY_COPY		4U					// Mailbox is copying data
+struct  mbox {
+    const   char_t      *oIdentifier;                           // Mailbox identifier
+            uint16_t    oState;                                 // Mailbox state
+            #define     BMBOX_INSTALLED     0U                  // Mailbox installed
+            #define     BMBOX_CONFIGURED    1U                  // Mailbox configured
+            #define     BMBOX_EMPTY         2U                  // Mailbox empty
+            #define     BMBOX_FULL          3U                  // Mailbox full
+            #define     BMBOX_BY_COPY       4U                  // Mailbox is copying data
 
-			uint32_t	oNbMaxPacks;							// Maximum number of packs
-			uint32_t	oNbUsedPacks;							// Used number of packs
-			uint32_t	oNbMaxUsedPacks;						// Maximum number of used packs
-			uint32_t	oDataEntrySize;							// Data entry size in copy mode
-			mboxPack_t	*oFIFO;									// Fifo of packs
-			uint8_t		*oDataBuffer;							// Data copy array
-			mboxPack_t	*oWrite;								// Fifo write pointer
-			mboxPack_t	*oRead;									// Fifo read pointer
-			uint8_t		*oDataWrite;							// Data buffer write pointer
-			list_t		oListEmpty;								// Mailbox empty list
-			list_t		oListFull;								// Mailbox full list
+            uint32_t    oNbMaxPacks;                            // Maximum number of packs
+            uint32_t    oNbUsedPacks;                           // Used number of packs
+            uint32_t    oNbMaxUsedPacks;                        // Maximum number of used packs
+            uint32_t    oDataEntrySize;                         // Data entry size in copy mode
+            mboxPack_t  *oFIFO;                                 // Fifo of packs
+            uint8_t     *oDataBuffer;                           // Data copy array
+            mboxPack_t  *oWrite;                                // Fifo write pointer
+            mboxPack_t  *oRead;                                 // Fifo read pointer
+            uint8_t     *oDataWrite;                            // Data buffer write pointer
+            list_t      oListEmpty;                             // Mailbox empty list
+            list_t      oListFull;                              // Mailbox full list
 };
 
-extern	mbox_t		vKern_mbox[KNB_CORES][KKERN_NB_MAILBOXES];	// Mailboxes
-extern	uint16_t	vKern_nbMbox[KNB_CORES];					// Nb of used mailboxes
-extern	uint16_t	vKern_nbMaxMbox[KNB_CORES];					// Max number of used mailboxes
+extern  mbox_t      vKern_mbox[KNB_CORES][KKERN_NB_MAILBOXES];  // Mailboxes
+extern  uint16_t    vKern_nbMbox[KNB_CORES];                    // Nb of used mailboxes
+extern  uint16_t    vKern_nbMaxMbox[KNB_CORES];                 // Max number of used mailboxes
 
 /**@}*/
 /**@}*/

@@ -2,19 +2,20 @@
 ; private_identifiers.
 ; ====================
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Kern - Object string identifiers management.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;			Private uKernel variables.
+; Project: uKOS-X
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Purpose:
+;    Kern - Object string identifiers management.
+;
+;    Private uKernel variables.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,7 +49,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_kernels
@@ -70,18 +71,18 @@
  * @{
  */
 
-#include	"types.h"
+#include    "types.h"
 
 /*!
  * \brief Compare 2 identifiers (string_1 -> string_2)
  *
- * \param[in]	*string_1	Ptr on the string string_1
- * \param[in]	*string_2	Ptr on the string string_2
- * \return		true		string_1 == string_2
- * \return		false		string_1 != string_2
+ * \param[in]   *string_1   Ptr on the string string_1
+ * \param[in]   *string_2   Ptr on the string string_2
+ * \return      true        string_1 == string_2
+ * \return      false       string_1 != string_2
  *
  */
-extern	bool	identifiers_cmpStrings(const char_t *string_1, const char_t *string_2);
+extern  bool    identifiers_cmpStrings(const char_t *string_1, const char_t *string_2);
 
 /**@}*/
 /**@}*/

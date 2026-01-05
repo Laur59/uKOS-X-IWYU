@@ -2,17 +2,18 @@
 ; sdcard.
 ; =======
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		sdcard manager.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    sdcard manager.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,61 +49,61 @@
 
 #ifdef CONFIG_MAN_SDCARD_S
 
-#include	<stdint.h>
-#include	<stdlib.h>
+#include    <stdint.h>
+#include    <stdlib.h>
 
-#include	"kern/kern.h"
-#include	"macros.h"
-#include	"macros_core.h"
-#include	"macros_soc.h"
-#include	"modules.h"
-#include	"os_errors.h"
-#include	"record/record.h"
-#include	"sdcard/sdcard.h"
-#include	"storage/storage.h"
-#include	"types.h"
+#include    "kern/kern.h"
+#include    "macros.h"
+#include    "macros_core.h"
+#include    "macros_soc.h"
+#include    "modules.h"
+#include    "os_errors.h"
+#include    "record/record.h"
+#include    "sdcard/sdcard.h"
+#include    "storage/storage.h"
+#include    "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"sdcard       sdcard manager.                           (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "sdcard manager\n"
-									"==============\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "sdcard       sdcard manager.                           (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "sdcard manager\n"
+                                    "==============\n\n"
 
-									"This manager ...\n\n"
+                                    "This manager ...\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
-	Sdcard,							// Module name (the first letter has to be upper case)
-	KID_FAM_STORAGE,				// Family (defined in the module.h)
-	KNUM_SDCARD,					// Module identifier (defined in the module.h)
-	NULL,							// Address of the initialisation code (early pre-init)
-	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	NULL,							// Address of the clean code (clean the module)
-	" 1.0",							// Revision string (major . minor)
-	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0								// Execution cores
+    Sdcard,                         // Module name (the first letter has to be upper case)
+    KID_FAM_STORAGE,                // Family (defined in the module.h)
+    KNUM_SDCARD,                    // Module identifier (defined in the module.h)
+    NULL,                           // Address of the initialisation code (early pre-init)
+    NULL,                           // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    NULL,                           // Address of the clean code (clean the module)
+    " 1.0",                         // Revision string (major . minor)
+    (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                               // Execution cores
 );
 
 // Library specific
 // ================
 
-static	mutx_t		*vMutex_Reserve[KNB_CORES];
+static  mutx_t      *vMutex_Reserve[KNB_CORES];
 
 // Prototypes
 
-extern	void		stub_sdcard_init(void);
-extern	int32_t		stub_sdcard_initialise(sdcard_specification_t *specification);
-extern	int32_t		stub_sdcard_readStatus(void);
-extern	int32_t		stub_sdcard_read(const sdcard_specification_t *specification, uint8_t *buffer, uint8_t nbSectors, uint32_t sector);
-extern	int32_t		stub_sdcard_write(const sdcard_specification_t *specification, const uint8_t *buffer, uint8_t nbSectors, uint32_t sector);
-extern	int32_t		stub_sdcard_ioctl(storageIoctl_t command, void *buffer);
-static	int32_t		local_init(void);
-static	int32_t		local_sdcard_read(const sdcard_specification_t *specification, uint8_t *buffer, uint8_t nbSectors, uint32_t sector);
-static	int32_t		local_sdcard_write(const sdcard_specification_t *specification, const uint8_t *buffer, uint8_t nbSectors, uint32_t sector);
+extern  void        stub_sdcard_init(void);
+extern  int32_t     stub_sdcard_initialise(sdcard_specification_t *specification);
+extern  int32_t     stub_sdcard_readStatus(void);
+extern  int32_t     stub_sdcard_read(const sdcard_specification_t *specification, uint8_t *buffer, uint8_t nbSectors, uint32_t sector);
+extern  int32_t     stub_sdcard_write(const sdcard_specification_t *specification, const uint8_t *buffer, uint8_t nbSectors, uint32_t sector);
+extern  int32_t     stub_sdcard_ioctl(storageIoctl_t command, void *buffer);
+static  int32_t     local_init(void);
+static  int32_t     local_sdcard_read(const sdcard_specification_t *specification, uint8_t *buffer, uint8_t nbSectors, uint32_t sector);
+static  int32_t     local_sdcard_write(const sdcard_specification_t *specification, const uint8_t *buffer, uint8_t nbSectors, uint32_t sector);
 
 /*
  * \brief Reserve the sdcard manager
@@ -119,35 +120,35 @@ static	int32_t		local_sdcard_write(const sdcard_specification_t *specification, 
  *    status = sdcard_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode			Any mode
- * \param[in]	timeout				Timeout (1-ms of resolution)
- * \param[in]	-					KWAIT_INFINITY, waiting forever
- * \param[in]	-					KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_STORAGE_NOERR	The manager is reserved
- * \return		KERR_STORAGE_GEERR	General error
- * \return		KERR_STORAGE_CHBSY	The manager is busy
+ * \param[in]   reserveMode         Any mode
+ * \param[in]   timeout             Timeout (1-ms of resolution)
+ * \param[in]   -                   KWAIT_INFINITY, waiting forever
+ * \param[in]   -                   KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_STORAGE_NOERR  The manager is reserved
+ * \return      KERR_STORAGE_GEERR  General error
+ * \return      KERR_STORAGE_CHBSY  The manager is busy
  *
  */
-int32_t	sdcard_reserve(reserveMode_t reserveMode, uint32_t timeout) {
-	uint32_t	core;
-	int32_t		status;
+int32_t sdcard_reserve(reserveMode_t reserveMode, uint32_t timeout) {
+    uint32_t    core;
+    int32_t     status;
 
-	UNUSED(reserveMode);
+    UNUSED(reserveMode);
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = kern_lockMutex(vMutex_Reserve[core], timeout);
-	if (status != KERR_KERN_NOERR) {
-		PRIVILEGE_RESTORE;
-		return (KERR_STORAGE_CHBSY);
-	}
+    status = kern_lockMutex(vMutex_Reserve[core], timeout);
+    if (status != KERR_KERN_NOERR) {
+        PRIVILEGE_RESTORE;
+        return (KERR_STORAGE_CHBSY);
+    }
 
-	PRIVILEGE_RESTORE;
-	return (KERR_STORAGE_NOERR);
+    PRIVILEGE_RESTORE;
+    return (KERR_STORAGE_NOERR);
 }
 
 /*
@@ -161,32 +162,32 @@ int32_t	sdcard_reserve(reserveMode_t reserveMode, uint32_t timeout) {
  *    status = sdcard_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode			Any mode
- * \return		KERR_STORAGE_NOERR	OK
- * \return		KERR_STORAGE_GEERR	General error
- * \return		KERR_STORAGE_CAREL	Cannot release the manager
+ * \param[in]   reserveMode         Any mode
+ * \return      KERR_STORAGE_NOERR  OK
+ * \return      KERR_STORAGE_GEERR  General error
+ * \return      KERR_STORAGE_CAREL  Cannot release the manager
  *
  */
-int32_t	sdcard_release(reserveMode_t reserveMode) {
-	uint32_t	core;
-	int32_t		status;
+int32_t sdcard_release(reserveMode_t reserveMode) {
+    uint32_t    core;
+    int32_t     status;
 
-	UNUSED(reserveMode);
+    UNUSED(reserveMode);
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = kern_unlockMutex(vMutex_Reserve[core]);
-	if (status != KERR_KERN_NOERR) {
-		PRIVILEGE_RESTORE;
-		return (KERR_STORAGE_CAREL);
-	}
+    status = kern_unlockMutex(vMutex_Reserve[core]);
+    if (status != KERR_KERN_NOERR) {
+        PRIVILEGE_RESTORE;
+        return (KERR_STORAGE_CAREL);
+    }
 
-	PRIVILEGE_RESTORE;
-	return (KERR_STORAGE_NOERR);
+    PRIVILEGE_RESTORE;
+    return (KERR_STORAGE_NOERR);
 }
 
 /*
@@ -207,23 +208,23 @@ int32_t	sdcard_release(reserveMode_t reserveMode) {
  *    else                                          sdcard = "sdcard V.2";
  * \endcode
  *
- * \param[in]	*specification		Ptr on the sdcard specification
- * \return		KERR_STORAGE_NOERR	OK
- * \return		KERR_STORAGE_GEERR	General error
- * \return		KERR_STORAGE_NODEV	No sdcard
- * \return		KERR_STORAGE_CANRE	sdcard not recognised
+ * \param[in]   *specification      Ptr on the sdcard specification
+ * \return      KERR_STORAGE_NOERR  OK
+ * \return      KERR_STORAGE_GEERR  General error
+ * \return      KERR_STORAGE_NODEV  No sdcard
+ * \return      KERR_STORAGE_CANRE  sdcard not recognised
  *
  */
-int32_t	sdcard_initialise(sdcard_specification_t *specification) {
-	int32_t		status;
+int32_t sdcard_initialise(sdcard_specification_t *specification) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_sdcard_initialise(specification);
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_sdcard_initialise(specification);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 /*
@@ -237,22 +238,22 @@ int32_t	sdcard_initialise(sdcard_specification_t *specification) {
  *    status = sdcard_readStatus();
  * \endcode
  *
- * \param[in]	-
- * \return		KERR_STORAGE_NOERR	OK
- * \return		KERR_STORAGE_GEERR	General error
- * \return		KERR_STORAGE_NODEV	No sdcard
+ * \param[in]   -
+ * \return      KERR_STORAGE_NOERR  OK
+ * \return      KERR_STORAGE_GEERR  General error
+ * \return      KERR_STORAGE_NODEV  No sdcard
  *
  */
-int32_t	sdcard_readStatus(void) {
-	int32_t		status;
+int32_t sdcard_readStatus(void) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_sdcard_readStatus();
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_sdcard_readStatus();
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 /*
@@ -272,77 +273,77 @@ int32_t	sdcard_readStatus(void) {
  *    }
  * \endcode
  *
- * \param[in]	*buffer				Ptr on the buffer
- * \param[in]	size				Number of bytes to read
- * \param[in]	sector				Start sector
- * \return		KERR_STORAGE_NOERR	OK
- * \return		KERR_STORAGE_GEERR	General error
- * \return		KERR_STORAGE_NODEV	No sdcard
- * \return		KERR_STORAGE_CANRE	sdcard not recognised
- * \return		KERR_STORAGE_LNBU0	The number of sectors is = 0
- * \return		KERR_STORAGE_TRANT	Transfer not terminated
+ * \param[in]   *buffer             Ptr on the buffer
+ * \param[in]   size                Number of bytes to read
+ * \param[in]   sector              Start sector
+ * \return      KERR_STORAGE_NOERR  OK
+ * \return      KERR_STORAGE_GEERR  General error
+ * \return      KERR_STORAGE_NODEV  No sdcard
+ * \return      KERR_STORAGE_CANRE  sdcard not recognised
+ * \return      KERR_STORAGE_LNBU0  The number of sectors is = 0
+ * \return      KERR_STORAGE_TRANT  Transfer not terminated
  *
  */
-int32_t	sdcard_read(uint8_t *buffer, uint32_t size, uint32_t sector) {
-	int32_t					status;
-	uint8_t					nbSectorsForThisCall, lastSectorBuffer[KSDCARD_SZ_SECTOR];
-	uint32_t				i, nbSectors, nbBytesLastSector, wkSector;
-	sdcard_specification_t	sdcard;
-	uint8_t					*memory;
-	size_t					inc;
+int32_t sdcard_read(uint8_t *buffer, uint32_t size, uint32_t sector) {
+    int32_t                 status;
+    uint8_t                 nbSectorsForThisCall, lastSectorBuffer[KSDCARD_SZ_SECTOR];
+    uint32_t                i, nbSectors, nbBytesLastSector, wkSector;
+    sdcard_specification_t  sdcard;
+    uint8_t                 *memory;
+    size_t                  inc;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
 // Read the sdcard specifications
 
-	if (sdcard_initialise(&sdcard) != KERR_STORAGE_NOERR) {
-		PRIVILEGE_RESTORE;
-		return (KERR_STORAGE_NODEV);
-	}
+    if (sdcard_initialise(&sdcard) != KERR_STORAGE_NOERR) {
+        PRIVILEGE_RESTORE;
+        return (KERR_STORAGE_NODEV);
+    }
 
 // Compute the number of sectors to read.
 // We need to treat the last sector specially because
 // the input buffer may not fill it fully, in which case
 // we need to avoid reading beyond the last element in the buffer
 
-	wkSector		  = sector;
-	nbSectors		  = size / KSDCARD_SZ_SECTOR;
-	nbBytesLastSector = size % KSDCARD_SZ_SECTOR;
-	memory			  = buffer;
+    wkSector          = sector;
+    nbSectors         = size / KSDCARD_SZ_SECTOR;
+    nbBytesLastSector = size % KSDCARD_SZ_SECTOR;
+    memory            = buffer;
 
 // Write the sectors in chunks
 
-	while (nbSectors > 0U) {
-		nbSectorsForThisCall = (nbSectors > KSDCARD_MAX_SECTORS_PER_CALL) ? (KSDCARD_MAX_SECTORS_PER_CALL) : ((uint8_t)nbSectors);
+    while (nbSectors > 0U) {
+        nbSectorsForThisCall = (nbSectors > KSDCARD_MAX_SECTORS_PER_CALL) ? (KSDCARD_MAX_SECTORS_PER_CALL) : ((uint8_t)nbSectors);
 
-		if (local_sdcard_read(&sdcard, memory, nbSectorsForThisCall, wkSector) != KERR_STORAGE_NOERR) {
-			PRIVILEGE_RESTORE;
-			return (KERR_STORAGE_TRANT);
-		}
+        if (local_sdcard_read(&sdcard, memory, nbSectorsForThisCall, wkSector) != KERR_STORAGE_NOERR) {
+            PRIVILEGE_RESTORE;
+            return (KERR_STORAGE_TRANT);
+        }
 
-		inc		  =  (size_t)nbSectorsForThisCall * (size_t)KSDCARD_SZ_SECTOR;
-		memory    =  &memory[inc];
-		wkSector  += (uint32_t)nbSectorsForThisCall;
-		nbSectors -= (uint32_t)nbSectorsForThisCall;
-	}
+        inc       =  (size_t)nbSectorsForThisCall * (size_t)KSDCARD_SZ_SECTOR;
+        memory    =  &memory[inc];
+        wkSector  += (uint32_t)nbSectorsForThisCall;
+        nbSectors -= (uint32_t)nbSectorsForThisCall;
+    }
 
 // Read the last sector's data, which may not fill it fully
 
-	if (nbBytesLastSector > 0U) {
-		if (local_sdcard_read(&sdcard, lastSectorBuffer, 1U, wkSector) != KERR_STORAGE_NOERR) {
-			PRIVILEGE_RESTORE;
-			return (KERR_STORAGE_TRANT);
-		}
+    if (nbBytesLastSector > 0U) {
+        if (local_sdcard_read(&sdcard, lastSectorBuffer, 1U, wkSector) != KERR_STORAGE_NOERR) {
+            PRIVILEGE_RESTORE;
+            return (KERR_STORAGE_TRANT);
+        }
 
-		for (i = 0; i < nbBytesLastSector; i++) {
-			*memory = lastSectorBuffer[i];
-			memory++;
-		}
-	}
-	PRIVILEGE_RESTORE;
-	return (KERR_STORAGE_NOERR);
+        for (i = 0; i < nbBytesLastSector; i++) {
+            *memory = lastSectorBuffer[i];
+            memory++;
+        }
+    }
+    PRIVILEGE_RESTORE;
+    return (KERR_STORAGE_NOERR);
 }
 
 /*
@@ -362,81 +363,81 @@ int32_t	sdcard_read(uint8_t *buffer, uint32_t size, uint32_t sector) {
  *    }
  * \endcode
  *
- * \param[in]	*buffer				Ptr on the buffer
- * \param[in]	size				Number of bytes to write
- * \param[in]	sector				Start sector
- * \return		KERR_STORAGE_NOERR	OK
- * \return		KERR_STORAGE_GEERR	General error
- * \return		KERR_STORAGE_NODEV	No sdcard
- * \return		KERR_STORAGE_CANRE	sdcard not recognised
- * \return		KERR_STORAGE_LNBU0	The number of sectors is = 0
- * \return		KERR_STORAGE_TRANT	Transfer not terminated
+ * \param[in]   *buffer             Ptr on the buffer
+ * \param[in]   size                Number of bytes to write
+ * \param[in]   sector              Start sector
+ * \return      KERR_STORAGE_NOERR  OK
+ * \return      KERR_STORAGE_GEERR  General error
+ * \return      KERR_STORAGE_NODEV  No sdcard
+ * \return      KERR_STORAGE_CANRE  sdcard not recognised
+ * \return      KERR_STORAGE_LNBU0  The number of sectors is = 0
+ * \return      KERR_STORAGE_TRANT  Transfer not terminated
  *
  */
-int32_t	sdcard_write(const uint8_t *buffer, uint32_t size, uint32_t sector) {
-			int32_t					status;
-			uint8_t					nbSectorsForThisCall, lastSectorBuffer[KSDCARD_SZ_SECTOR];
-			uint32_t				i, nbSectors, nbBytesLastSector, wkSector;
-			sdcard_specification_t	sdcard;
-			size_t					inc;
-	const	uint8_t					*memory;
+int32_t sdcard_write(const uint8_t *buffer, uint32_t size, uint32_t sector) {
+            int32_t                 status;
+            uint8_t                 nbSectorsForThisCall, lastSectorBuffer[KSDCARD_SZ_SECTOR];
+            uint32_t                i, nbSectors, nbBytesLastSector, wkSector;
+            sdcard_specification_t  sdcard;
+            size_t                  inc;
+    const   uint8_t                 *memory;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
 // Read the sdcard specifications
 
-	if (sdcard_initialise(&sdcard) != KERR_STORAGE_NOERR) {
-		PRIVILEGE_RESTORE;
-		return (KERR_STORAGE_NODEV);
-	}
+    if (sdcard_initialise(&sdcard) != KERR_STORAGE_NOERR) {
+        PRIVILEGE_RESTORE;
+        return (KERR_STORAGE_NODEV);
+    }
 
 // Compute the number of sectors to write.
 // We need to treat the last sector specially because
 // the input buffer may not fill it fully, in which case
 // we need to avoid writing beyond the last element in the buffer
 
-	wkSector		  = sector;
-	nbSectors		  = size / KSDCARD_SZ_SECTOR;
-	nbBytesLastSector = size % KSDCARD_SZ_SECTOR;
-	memory			  = buffer;
+    wkSector          = sector;
+    nbSectors         = size / KSDCARD_SZ_SECTOR;
+    nbBytesLastSector = size % KSDCARD_SZ_SECTOR;
+    memory            = buffer;
 
 // Write the sectors in chunks.
 
-	while (nbSectors > 0U) {
-		nbSectorsForThisCall = (nbSectors > KSDCARD_MAX_SECTORS_PER_CALL) ? (KSDCARD_MAX_SECTORS_PER_CALL) : ((uint8_t)nbSectors);
+    while (nbSectors > 0U) {
+        nbSectorsForThisCall = (nbSectors > KSDCARD_MAX_SECTORS_PER_CALL) ? (KSDCARD_MAX_SECTORS_PER_CALL) : ((uint8_t)nbSectors);
 
-		if (local_sdcard_write(&sdcard, memory, nbSectorsForThisCall, wkSector) != KERR_STORAGE_NOERR) {
-			PRIVILEGE_RESTORE;
-			return (KERR_STORAGE_TRANT);
-		}
+        if (local_sdcard_write(&sdcard, memory, nbSectorsForThisCall, wkSector) != KERR_STORAGE_NOERR) {
+            PRIVILEGE_RESTORE;
+            return (KERR_STORAGE_TRANT);
+        }
 
-		inc		  =  (size_t)nbSectorsForThisCall * (size_t)KSDCARD_SZ_SECTOR;
-		memory    =  &memory[inc];
-		wkSector  += (uint32_t)nbSectorsForThisCall;
-		nbSectors -= (uint32_t)nbSectorsForThisCall;
-	}
+        inc       =  (size_t)nbSectorsForThisCall * (size_t)KSDCARD_SZ_SECTOR;
+        memory    =  &memory[inc];
+        wkSector  += (uint32_t)nbSectorsForThisCall;
+        nbSectors -= (uint32_t)nbSectorsForThisCall;
+    }
 
 // Write the last sector's data, which may not fill it fully
 // Fill the gap with 0x00 (for test)
 
-	if (nbBytesLastSector > 0U) {
-		for (i = 0U; i < KSDCARD_SZ_SECTOR; i++) {
-			lastSectorBuffer[i] = 0U;
-		}
-		for (i = 0U; i < nbBytesLastSector; i++) {
-			lastSectorBuffer[i] = *memory;
-			memory++;
-		}
-		if (local_sdcard_write(&sdcard, lastSectorBuffer, 1U, wkSector) != KERR_STORAGE_NOERR) {
-			PRIVILEGE_RESTORE;
-			return (KERR_STORAGE_TRANT);
-		}
+    if (nbBytesLastSector > 0U) {
+        for (i = 0U; i < KSDCARD_SZ_SECTOR; i++) {
+            lastSectorBuffer[i] = 0U;
+        }
+        for (i = 0U; i < nbBytesLastSector; i++) {
+            lastSectorBuffer[i] = *memory;
+            memory++;
+        }
+        if (local_sdcard_write(&sdcard, lastSectorBuffer, 1U, wkSector) != KERR_STORAGE_NOERR) {
+            PRIVILEGE_RESTORE;
+            return (KERR_STORAGE_TRANT);
+        }
 
-	}
-	PRIVILEGE_RESTORE;
-	return (KERR_STORAGE_NOERR);
+    }
+    PRIVILEGE_RESTORE;
+    return (KERR_STORAGE_NOERR);
 }
 
 /*
@@ -455,22 +456,22 @@ int32_t	sdcard_write(const uint8_t *buffer, uint32_t size, uint32_t sector) {
  *    }
  * \endcode
  *
- * \param[in]	command				Command
- * \param[in]	*buffer				Ptr on the buffer
- * \return		KERR_STORAGE_NOERR	OK
- * \return		KERR_STORAGE_GEERR	General error
+ * \param[in]   command             Command
+ * \param[in]   *buffer             Ptr on the buffer
+ * \return      KERR_STORAGE_NOERR  OK
+ * \return      KERR_STORAGE_GEERR  General error
  *
  */
-int32_t	sdcard_ioctl(storageIoctl_t command, void *buffer) {
-	int32_t		status;
+int32_t sdcard_ioctl(storageIoctl_t command, void *buffer) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_sdcard_ioctl(command, buffer);
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_sdcard_ioctl(command, buffer);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 // Local routines
@@ -483,21 +484,21 @@ int32_t	sdcard_ioctl(storageIoctl_t command, void *buffer) {
  *   has to be called at least once
  *
  */
-static	int32_t	local_init(void) {
-			uint32_t	core;
-	static	bool		vInit[KNB_CORES] = MCSET(false);
+static  int32_t local_init(void) {
+            uint32_t    core;
+    static  bool        vInit[KNB_CORES] = MCSET(false);
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	INTERRUPTION_OFF;
-	if (!vInit[core]) {
-		vInit[core] = true;
+    INTERRUPTION_OFF;
+    if (!vInit[core]) {
+        vInit[core] = true;
 
-		if (kern_createMutex(KSDCARD_MUTEX_RESERVE, &vMutex_Reserve[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "sdcard: create mutx"); exit(EXIT_OS_PANIC); }
+        if (kern_createMutex(KSDCARD_MUTEX_RESERVE, &vMutex_Reserve[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "sdcard: create mutx"); exit(EXIT_OS_PANIC); }
 
-		stub_sdcard_init();
-	}
-	RETURN_INT_RESTORE(KERR_STORAGE_NOERR);
+        stub_sdcard_init();
+    }
+    RETURN_INT_RESTORE(KERR_STORAGE_NOERR);
 }
 
 /*
@@ -506,14 +507,14 @@ static	int32_t	local_init(void) {
  * - This function reads 1 or more sectors (<= 128)
  *
  */
-static	int32_t	local_sdcard_read(const sdcard_specification_t *specification, uint8_t *buffer, uint8_t nbSectors, uint32_t sector) {
-	int32_t		status;
+static  int32_t local_sdcard_read(const sdcard_specification_t *specification, uint8_t *buffer, uint8_t nbSectors, uint32_t sector) {
+    int32_t     status;
 
-	status = local_init();
-	if (status != KERR_STORAGE_NOERR) { return (status); }
+    status = local_init();
+    if (status != KERR_STORAGE_NOERR) { return (status); }
 
-	status = stub_sdcard_read(specification, buffer, nbSectors, sector);
-	return (status);
+    status = stub_sdcard_read(specification, buffer, nbSectors, sector);
+    return (status);
 }
 
 /*
@@ -522,14 +523,14 @@ static	int32_t	local_sdcard_read(const sdcard_specification_t *specification, ui
  * - This function writes 1 or more sectors (<= 128)
  *
  */
-static	int32_t	local_sdcard_write(const sdcard_specification_t *specification, const uint8_t *buffer, uint8_t nbSectors, uint32_t sector) {
-	int32_t		status;
+static  int32_t local_sdcard_write(const sdcard_specification_t *specification, const uint8_t *buffer, uint8_t nbSectors, uint32_t sector) {
+    int32_t     status;
 
-	status = local_init();
-	if (status != KERR_STORAGE_NOERR) { return (status); }
+    status = local_init();
+    if (status != KERR_STORAGE_NOERR) { return (status); }
 
-	status = stub_sdcard_write(specification, buffer, nbSectors, sector);
-	return (status);
+    status = stub_sdcard_write(specification, buffer, nbSectors, sector);
+    return (status);
 }
 
 #endif

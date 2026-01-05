@@ -2,17 +2,18 @@
 ; core_addendum.
 ; ==============
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		addendum equates.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    addendum equates.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,71 +47,71 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	"linker.h"
+#include    "linker.h"
 
 // System Reset
 // ------------
 
-#define CONTROL_SET_PSP_STACK			(1U<<1U)
-#define CONTROL_SET_MSP_STACK			(0U<<1U)
-#define CONTROL_SET_USER_MODE			(1U<<0U)
-#define CONTROL_SET_PRIVILEGED_MODE		(0U<<0U)
+#define CONTROL_SET_PSP_STACK           (1U<<1U)
+#define CONTROL_SET_MSP_STACK           (0U<<1U)
+#define CONTROL_SET_USER_MODE           (1U<<0U)
+#define CONTROL_SET_PRIVILEGED_MODE     (0U<<0U)
 
 // MPU additilnal definition & macros
 // ----------------------------------
 
-#define	KMPU_EXECUTABLE					0U
-#define	KMPU_NOT_EXECUTABLE				1U
+#define KMPU_EXECUTABLE                 0U
+#define KMPU_NOT_EXECUTABLE             1U
 
-// AP[2:0]	Privileged permissions		Unprivileged permissions	Description
-// 000		No access					No access					All accesses generate a permission fault
-// 001		RW							No access					(KMPU_RW_PRI) Access from privileged software only
-// 010		RW							RO							(KMPU_RW_PRI_R_UNP) Writes by unprivileged software generate a permission fault
-// 011		RW							RW							(KMPU_RW_ALL) Full access
-// 100		Unpredictable				Unpredictable				Reserved
-// 101		RO							No access					Reads by privileged software only
-// 110		RO							RO							(KMPU_R_ALL) Read only, by privileged or unprivileged software
-// 111		RO							RO							Read only, by privileged or unprivileged software
+// AP[2:0]  Privileged permissions      Unprivileged permissions    Description
+// 000      No access                   No access                   All accesses generate a permission fault
+// 001      RW                          No access                   (KMPU_RW_PRI) Access from privileged software only
+// 010      RW                          RO                          (KMPU_RW_PRI_R_UNP) Writes by unprivileged software generate a permission fault
+// 011      RW                          RW                          (KMPU_RW_ALL) Full access
+// 100      Unpredictable               Unpredictable               Reserved
+// 101      RO                          No access                   Reads by privileged software only
+// 110      RO                          RO                          (KMPU_R_ALL) Read only, by privileged or unprivileged software
+// 111      RO                          RO                          Read only, by privileged or unprivileged software
 
-#define	KMPU_RW_PRI						1U
-#define	KMPU_RW_PRI_R_UNP				2U
-#define	KMPU_RW_ALL						3U
-#define	KMPU_R_ALL						6U
+#define KMPU_RW_PRI                     1U
+#define KMPU_RW_PRI_R_UNP               2U
+#define KMPU_RW_ALL                     3U
+#define KMPU_R_ALL                      6U
 
-#define	KMPU_TEX_LEVEL0					0U
+#define KMPU_TEX_LEVEL0                 0U
 
-#define	KMPU_SHAREABLE					1U
-#define	KMPU_NOT_SHAREABLE				0U
-#define	KMPU_CASHABLE					1U
-#define	KMPU_NOT_CASHABLE				0U
-#define	KMPU_BUFFERABLE					1U
-#define	KMPU_NOT_BUFFERABLE				0U
+#define KMPU_SHAREABLE                  1U
+#define KMPU_NOT_SHAREABLE              0U
+#define KMPU_CASHABLE                   1U
+#define KMPU_NOT_CASHABLE               0U
+#define KMPU_BUFFERABLE                 1U
+#define KMPU_NOT_BUFFERABLE             0U
 
-#define	SET_MPU7_REGION(regionNb, subRegion, start, size, executable, access, tex, sharable, cachable, bufferable)	\
-																													\
-extern	uint8_t	linker_##start[];																					\
-extern	uint8_t	linker_##size[];																					\
-																													\
-	MEMO_SYNC_BARRIER;																								\
-	INST_SYNC_BARRIER;																								\
-																													\
-	MPU->CTRL = 0x00000000u;																						\
-																													\
-	MPU->RNR  = regionNb;																							\
-	MPU->RBAR = ((uint32_t)linker_##start & 0xFFFFFFE0u);															\
-	MPU->RASR = (executable * MPU_RASR_XN)																			\
-			  | (access * MPU_RASR_AP_0)																			\
-			  | (tex * MPU_RASR_TEX_0)																				\
-			  | (sharable * MPU_RASR_S)																				\
-			  | (cachable * MPU_RASR_C)																				\
-			  | (bufferable * MPU_RASR_B)																			\
-			  | (subRegion * MPU_RASR_SRD_0)																		\
-			  | ((uint32_t)linker_##size<<1U)																		\
-			  | MPU_RASR_ENABLE;																					\
-																													\
-	MPU->CTRL = MPU_CTRL_PRIVDEFENA | MPU_CTRL_ENABLE;																\
-																													\
-	MEMO_SYNC_BARRIER;																								\
-	INST_SYNC_BARRIER;
+#define SET_MPU7_REGION(regionNb, subRegion, start, size, executable, access, tex, sharable, cachable, bufferable)  \
+                                                                                                                    \
+extern  uint8_t linker_##start[];                                                                                   \
+extern  uint8_t linker_##size[];                                                                                    \
+                                                                                                                    \
+    MEMO_SYNC_BARRIER;                                                                                              \
+    INST_SYNC_BARRIER;                                                                                              \
+                                                                                                                    \
+    MPU->CTRL = 0x00000000u;                                                                                        \
+                                                                                                                    \
+    MPU->RNR  = regionNb;                                                                                           \
+    MPU->RBAR = ((uint32_t)linker_##start & 0xFFFFFFE0u);                                                           \
+    MPU->RASR = (executable * MPU_RASR_XN)                                                                          \
+              | (access * MPU_RASR_AP_0)                                                                            \
+              | (tex * MPU_RASR_TEX_0)                                                                              \
+              | (sharable * MPU_RASR_S)                                                                             \
+              | (cachable * MPU_RASR_C)                                                                             \
+              | (bufferable * MPU_RASR_B)                                                                           \
+              | (subRegion * MPU_RASR_SRD_0)                                                                        \
+              | ((uint32_t)linker_##size<<1U)                                                                       \
+              | MPU_RASR_ENABLE;                                                                                    \
+                                                                                                                    \
+    MPU->CTRL = MPU_CTRL_PRIVDEFENA | MPU_CTRL_ENABLE;                                                              \
+                                                                                                                    \
+    MEMO_SYNC_BARRIER;                                                                                              \
+    INST_SYNC_BARRIER;

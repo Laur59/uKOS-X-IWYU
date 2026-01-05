@@ -2,17 +2,18 @@
 ; i2c1.
 ; =====
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		i2c1 manager.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    i2c1 manager.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,20 +47,20 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"i2c1.h"
+#include    "i2c1.h"
 
-#include	<stdint.h>
-#include	<stdlib.h>
+#include    <stdint.h>
+#include    <stdlib.h>
 
-#include	"i2c_common.h"
-#include	"kern/kern.h"
-#include	"macros.h"
-#include	"macros_core.h"
-#include	"macros_soc.h"
-#include	"modules.h"
-#include	"os_errors.h"
-#include	"record/record.h"
-#include	"types.h"
+#include    "i2c_common.h"
+#include    "kern/kern.h"
+#include    "macros.h"
+#include    "macros_core.h"
+#include    "macros_soc.h"
+#include    "modules.h"
+#include    "os_errors.h"
+#include    "record/record.h"
+#include    "types.h"
 
 #if CONFIG_MAN_I2C1_S
 
@@ -68,39 +69,39 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"i2c1         i2c1 manager.                             (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "i2c1 manager\n"
-									"============\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "i2c1         i2c1 manager.                             (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "i2c1 manager\n"
+                                    "============\n\n"
 
-									"This manager ...\n\n"
+                                    "This manager ...\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
-	I2c1,							// Module name (the first letter has to be upper case)
-	KID_FAM_PERIPHERALS,			// Family (defined in the module.h)
-	KNUM_I2C1,						// Module identifier (defined in the module.h)
-	NULL,							// Address of the initialisation code (early pre-init)
-	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	NULL,							// Address of the clean code (clean the module)
-	" 1.0",							// Revision string (major . minor)
-	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0								// Execution cores
+    I2c1,                           // Module name (the first letter has to be upper case)
+    KID_FAM_PERIPHERALS,            // Family (defined in the module.h)
+    KNUM_I2C1,                      // Module identifier (defined in the module.h)
+    NULL,                           // Address of the initialisation code (early pre-init)
+    NULL,                           // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    NULL,                           // Address of the clean code (clean the module)
+    " 1.0",                         // Revision string (major . minor)
+    (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                               // Execution cores
 );
 
 // Library specific
 // ================
 
-static	mutx_t		*vMutex_Reserve[KNB_CORES];
+static  mutx_t      *vMutex_Reserve[KNB_CORES];
 
 // Prototypes
 
-static	int32_t		local_init(void);
-extern	void		stub_i2c1_init(void);
-extern	int32_t		stub_i2c1_configure(const i2cCnf_t *configure);
-extern	int32_t		stub_i2c1_write(uint8_t address, const uint8_t *buffer, uint16_t size);
-extern	int32_t		stub_i2c1_read(uint8_t address, uint8_t *buffer, uint16_t size);
-extern	int32_t		stub_i2c1_flush(void);
+static  int32_t     local_init(void);
+extern  void        stub_i2c1_init(void);
+extern  int32_t     stub_i2c1_configure(const i2cCnf_t *configure);
+extern  int32_t     stub_i2c1_write(uint8_t address, const uint8_t *buffer, uint16_t size);
+extern  int32_t     stub_i2c1_read(uint8_t address, uint8_t *buffer, uint16_t size);
+extern  int32_t     stub_i2c1_flush(void);
 
 /*
  * \brief Reserve the i2c1 manager
@@ -117,35 +118,35 @@ extern	int32_t		stub_i2c1_flush(void);
  *    status = i2c1_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode		Any mode
- * \param[in]	timeout			Timeout (1-ms of resolution)
- * \param[in]	-				KWAIT_INFINITY, waiting forever
- * \param[in]	-				KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_I2C_NOERR	The manager is reserved
- * \return		KERR_I2C_GEERR	General error
- * \return		KERR_I2C_CHBSY	The manager is busy
+ * \param[in]   reserveMode     Any mode
+ * \param[in]   timeout         Timeout (1-ms of resolution)
+ * \param[in]   -               KWAIT_INFINITY, waiting forever
+ * \param[in]   -               KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_I2C_NOERR  The manager is reserved
+ * \return      KERR_I2C_GEERR  General error
+ * \return      KERR_I2C_CHBSY  The manager is busy
  *
  */
-int32_t	i2c1_reserve(reserveMode_t reserveMode, uint32_t timeout) {
-	UNUSED(reserveMode);
+int32_t i2c1_reserve(reserveMode_t reserveMode, uint32_t timeout) {
+    UNUSED(reserveMode);
 
-	uint32_t	core;
-	int32_t		status;
+    uint32_t    core;
+    int32_t     status;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_I2C_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_I2C_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = kern_lockMutex(vMutex_Reserve[core], timeout);
-	if (status != KERR_KERN_NOERR) {
-		PRIVILEGE_RESTORE;
-		return (KERR_I2C_CHBSY);
-	}
+    status = kern_lockMutex(vMutex_Reserve[core], timeout);
+    if (status != KERR_KERN_NOERR) {
+        PRIVILEGE_RESTORE;
+        return (KERR_I2C_CHBSY);
+    }
 
-	PRIVILEGE_RESTORE;
-	return (KERR_I2C_NOERR);
+    PRIVILEGE_RESTORE;
+    return (KERR_I2C_NOERR);
 }
 
 /*
@@ -159,32 +160,32 @@ int32_t	i2c1_reserve(reserveMode_t reserveMode, uint32_t timeout) {
  *    status = i2c1_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode		Any mode
- * \return		KERR_I2C_NOERR	OK
- * \return		KERR_I2C_GEERR	General error
- * \return		KERR_I2C_CAREL	Cannot release the manager
+ * \param[in]   reserveMode     Any mode
+ * \return      KERR_I2C_NOERR  OK
+ * \return      KERR_I2C_GEERR  General error
+ * \return      KERR_I2C_CAREL  Cannot release the manager
  *
  */
-int32_t	i2c1_release(reserveMode_t reserveMode) {
-	UNUSED(reserveMode);
+int32_t i2c1_release(reserveMode_t reserveMode) {
+    UNUSED(reserveMode);
 
-	uint32_t	core;
-	int32_t		status;
+    uint32_t    core;
+    int32_t     status;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_I2C_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_I2C_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = kern_unlockMutex(vMutex_Reserve[core]);
-	if (status != KERR_KERN_NOERR) {
-		PRIVILEGE_RESTORE;
-		return (KERR_I2C_CAREL);
-	}
+    status = kern_unlockMutex(vMutex_Reserve[core]);
+    if (status != KERR_KERN_NOERR) {
+        PRIVILEGE_RESTORE;
+        return (KERR_I2C_CAREL);
+    }
 
-	PRIVILEGE_RESTORE;
-	return (KERR_I2C_NOERR);
+    PRIVILEGE_RESTORE;
+    return (KERR_I2C_NOERR);
 }
 
 /*
@@ -202,21 +203,21 @@ int32_t	i2c1_release(reserveMode_t reserveMode) {
  *    status = i2c1_configure(&configure);
  * \endcode
  *
- * \param[in]	*configure		Ptr on the configuration buffer
- * \return		KERR_I2C_NOERR	OK
- * \return		KERR_I2C_GEERR	General error
+ * \param[in]   *configure      Ptr on the configuration buffer
+ * \return      KERR_I2C_NOERR  OK
+ * \return      KERR_I2C_GEERR  General error
  *
  */
-int32_t	i2c1_configure(const i2cCnf_t *configure) {
-	int32_t		status;
+int32_t i2c1_configure(const i2cCnf_t *configure) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_I2C_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_I2C_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_i2c1_configure(configure);
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_i2c1_configure(configure);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 /*
@@ -231,24 +232,24 @@ int32_t	i2c1_configure(const i2cCnf_t *configure) {
  *    status = i2c1_write(0x34, buffer, sizeof(buffer));
  * \endcode
  *
- * \param[in]	address			i2c device address
- * \param[in]	*buffer			Ptr on the buffer
- * \param[in]	size			Size of the buffer
- * \return		KERR_I2C_NOERR	OK
- * \return		KERR_I2C_GEERR	General error
- * \return		KERR_I2C_TIMEO	Timeout error
+ * \param[in]   address         i2c device address
+ * \param[in]   *buffer         Ptr on the buffer
+ * \param[in]   size            Size of the buffer
+ * \return      KERR_I2C_NOERR  OK
+ * \return      KERR_I2C_GEERR  General error
+ * \return      KERR_I2C_TIMEO  Timeout error
  *
  */
-int32_t	i2c1_write(uint8_t address, const uint8_t *buffer, uint16_t size) {
-	int32_t		status;
+int32_t i2c1_write(uint8_t address, const uint8_t *buffer, uint16_t size) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_I2C_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_I2C_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_i2c1_write(address, buffer, size);
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_i2c1_write(address, buffer, size);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 /*
@@ -271,24 +272,24 @@ int32_t	i2c1_write(uint8_t address, const uint8_t *buffer, uint16_t size) {
  *    status = i2c1_read(0x34, buffer, 2);
  * \endcode
  *
- * \param[in]	address			i2c device address
- * \param[out]	*buffer			Ptr on the buffer
- * \param[in]	size			Size of the buffer
- * \return		KERR_I2C_NOERR	OK
- * \return		KERR_I2C_GEERR	General error
- * \return		KERR_I2C_TIMEO	Timeout error
+ * \param[in]   address         i2c device address
+ * \param[out]  *buffer         Ptr on the buffer
+ * \param[in]   size            Size of the buffer
+ * \return      KERR_I2C_NOERR  OK
+ * \return      KERR_I2C_GEERR  General error
+ * \return      KERR_I2C_TIMEO  Timeout error
  *
  */
-int32_t	i2c1_read(uint8_t address, uint8_t *buffer, uint16_t size) {
-	int32_t		status;
+int32_t i2c1_read(uint8_t address, uint8_t *buffer, uint16_t size) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_I2C_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_I2C_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_i2c1_read(address, buffer, size);
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_i2c1_read(address, buffer, size);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 // Local routines
@@ -301,21 +302,21 @@ int32_t	i2c1_read(uint8_t address, uint8_t *buffer, uint16_t size) {
  *   has to be called at least once
  *
  */
-static	int32_t	local_init(void) {
-			uint32_t	core;
-	static	bool		vInit[KNB_CORES] = MCSET(false);
+static  int32_t local_init(void) {
+            uint32_t    core;
+    static  bool        vInit[KNB_CORES] = MCSET(false);
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	INTERRUPTION_OFF;
-	if (!vInit[core]) {
-		vInit[core] = true;
+    INTERRUPTION_OFF;
+    if (!vInit[core]) {
+        vInit[core] = true;
 
-		if (kern_createMutex(KI2C1_MUTEX_RESERVE, &vMutex_Reserve[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "i2c1: create mutx"); exit(EXIT_OS_PANIC); }
+        if (kern_createMutex(KI2C1_MUTEX_RESERVE, &vMutex_Reserve[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "i2c1: create mutx"); exit(EXIT_OS_PANIC); }
 
-		stub_i2c1_init();
-	}
-	RETURN_INT_RESTORE(KERR_I2C_NOERR);
+        stub_i2c1_init();
+    }
+    RETURN_INT_RESTORE(KERR_I2C_NOERR);
 }
 
 #endif

@@ -2,17 +2,18 @@
 ; watchdog.
 ; =========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		watchdog manager.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    watchdog manager.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +47,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_peripherals
@@ -63,29 +64,29 @@
  * @{
  */
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // Watchdog modes
 // --------------
 
 enum {
-		KWATCHDOG_AUTO = 0U,									// Mode auto (create a daemon to re-activate the watchdog)
-		KWATCHDOG_MANUAL										// Mode manual (the user is responsible to re-activate the watchdog)
+        KWATCHDOG_AUTO = 0U,                                    // Mode auto (create a daemon to re-activate the watchdog)
+        KWATCHDOG_MANUAL                                        // Mode manual (the user is responsible to re-activate the watchdog)
 };
 
-#define	KWATCHDOG_MARGIN		(0.8)							// Time margin for the watchdog process (timeProcessWatchdog = timeWatchdog * KWATCHDOG_MARGIN)
-#define	KWATCHDOG_MAX_TIME_MS	32767U							// Time maximum (in ms) for the watchdog
+#define KWATCHDOG_MARGIN        (0.8)                           // Time margin for the watchdog process (timeProcessWatchdog = timeWatchdog * KWATCHDOG_MARGIN)
+#define KWATCHDOG_MAX_TIME_MS   32767U                          // Time maximum (in ms) for the watchdog
 
 // Prototypes
 
 #ifdef __cplusplus
-extern	"C" {
+extern  "C" {
 #endif
 
 /*!
  * \brief Arm the watchdog
  *
- * \warning	This function is hardware dependent
+ * \warning This function is hardware dependent
  *
  * Call example in C:
  *
@@ -105,13 +106,13 @@ extern	"C" {
  *   I.e for the stm32 series the min-max time is 8-ms < time < 32768-ms
  *   I.e for the gd32vf103 series the min-max time is 6.4 < time < 26214.4-ms
  *
- * \param[in]	time				Restart time if the watchdog is not re-activated
- * \param[in]	mode				KWATCHDOG_AUTO, create a daemon to re-activate the watchdog
- * 				-					KWATCHDOG_MANUAL, the user is responsible to re-activate the watchdog
- * \return		KERR_WATCHDOG_NOERR	OK
+ * \param[in]   time                Restart time if the watchdog is not re-activated
+ * \param[in]   mode                KWATCHDOG_AUTO, create a daemon to re-activate the watchdog
+ *              -                   KWATCHDOG_MANUAL, the user is responsible to re-activate the watchdog
+ * \return      KERR_WATCHDOG_NOERR OK
  *
  */
-extern	int32_t	watchdog_arm(uint32_t time, uint8_t mode);
+extern  int32_t watchdog_arm(uint32_t time, uint8_t mode);
 
 #ifdef __cplusplus
 }

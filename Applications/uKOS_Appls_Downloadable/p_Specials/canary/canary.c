@@ -2,18 +2,19 @@
 ; canary.
 ; =======
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Demo of a C application.
-;			This application shows how to operate with the uKOS-X uKernel.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    Demo of a C application.
+;    This application shows how to operate with the uKOS-X uKernel.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -52,53 +53,53 @@
  * \ingroup app_special
  * \brief This application shows how to operate with the uKOS uKernel.
  *
- *			Launch 0 processes:
+ *          Launch 0 processes:
  *
- *			- main: - Initialise an array n
- *					- Write @ n+1
- *					- return
+ *          - main: - Initialise an array n
+ *                  - Write @ n+1
+ *                  - return
  *
- *			If compiled with make -j NOCANARY=
+ *          If compiled with make -j NOCANARY=
  *
- *			- system stopped!
+ *          - system stopped!
  *
  */
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"crt0.h"
-#include	"kern/kern.h"
-#include	"macros.h"
-#include	"modules.h"
-#include	"record/record.h"
-#include	"types.h"
+#include    "crt0.h"
+#include    "kern/kern.h"
+#include    "macros.h"
+#include    "modules.h"
+#include    "record/record.h"
+#include    "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"canary       Test of the canary detection.             (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "This is a romable C application\n"
-									"===============================\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "canary       Test of the canary detection.             (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
+                                    "===============================\n\n"
 
-									"This user function module is a C written application.\n\n"
+                                    "This user function module is a C written application.\n\n"
 
-									"Input format:  canary\n"
-									"Output format: [result]\n\n"
+                                    "Input format:  canary\n"
+                                    "Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
-	UserAppl,							// Module name (the first letter has to be upper case)
-	KID_FAM_APPLICATIONS,				// Family (defined in the module.h)
-	KNUM_APPLICATION,					// Module identifier (defined in the module.h)
-	NULL,								// Address of the initialisation code (early pre-init)
-	aStart,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	NULL,								// Address of the clean code (clean the module)
-	" 1.0",								// Revision string (major . minor)
-	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0									// Execution cores
+    UserAppl,                           // Module name (the first letter has to be upper case)
+    KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
+    KNUM_APPLICATION,                   // Module identifier (defined in the module.h)
+    NULL,                               // Address of the initialisation code (early pre-init)
+    aStart,                             // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    NULL,                               // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
 );
 
 /*
@@ -109,40 +110,40 @@ MODULE(
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-#define	KNB_ELEMENTS	8U
+#define KNB_ELEMENTS    8U
 
 // Save the GCC diagnostic
 //
-#pragma GCC diagnostic	push
+#pragma GCC diagnostic  push
 
 // Ignore the GCC diagnostic
 //
-#pragma GCC diagnostic	ignored	"-Wunused-but-set-variable"
+#pragma GCC diagnostic  ignored "-Wunused-but-set-variable"
 
 // Ignore the GCC diagnostic
 //
-#pragma GCC diagnostic	ignored	"-Warray-bounds"
-int		main(int argc, const char *argv[]) {
-	UNUSED(argc);
-	UNUSED(argv);
+#pragma GCC diagnostic  ignored "-Warray-bounds"
+int     main(int argc, const char *argv[]) {
+    UNUSED(argc);
+    UNUSED(argv);
 
-				uint32_t	i;
-	volatile	uint32_t	array[KNB_ELEMENTS];
+                uint32_t    i;
+    volatile    uint32_t    array[KNB_ELEMENTS];
 
 // Initialise 0..n-1 elements
 
-	for (i = 0; i < KNB_ELEMENTS; i++) {
-		array[i] = i;
-	}
+    for (i = 0; i < KNB_ELEMENTS; i++) {
+        array[i] = i;
+    }
 
 // Generate the canary, writing into the element n
 
-	array[KNB_ELEMENTS] = 0x012345678u;
+    array[KNB_ELEMENTS] = 0x012345678u;
 
-	LOG(KINFO_USER, "Application launched");
-	return (EXIT_OS_SUCCESS_CLI);
+    LOG(KINFO_USER, "Application launched");
+    return (EXIT_OS_SUCCESS_CLI);
 }
 
 // Restore the GCC diagnostic
 //
-#pragma GCC	diagnostic	pop
+#pragma GCC diagnostic  pop

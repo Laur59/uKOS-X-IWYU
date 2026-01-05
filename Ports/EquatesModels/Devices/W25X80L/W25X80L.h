@@ -6,7 +6,7 @@
 
 ;------------------------------------------------------------------------
 ; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; Modifs:
 ;
 ; Project:	uKOS-X
 ; Goal:		EEPROM W25X80L equates.

@@ -2,17 +2,17 @@
 ; core_addendum.
 ; ==============
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		addendum equates.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    addendum equates.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,4 +46,4 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once

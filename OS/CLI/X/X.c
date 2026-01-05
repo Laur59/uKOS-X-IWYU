@@ -2,17 +2,18 @@
 ; X.
 ; ==
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Control the temperature.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    Control the temperature.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,117 +47,117 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<stdint.h>
-#include	<stdio.h>
-#include	<stdlib.h>
-#include	<string.h>
+#include    <stdint.h>
+#include    <stdio.h>
+#include    <stdlib.h>
+#include    <string.h>
 
-#include	"kern/kern.h"
-#include	"macros.h"
-#include	"macros_soc.h"
-#include	"memo/memo.h"
-#include	"modules.h"
-#include	"os_errors.h"
-#include	"record/record.h"
-#include	"serial/serial.h"
-#include	"types.h"
+#include    "kern/kern.h"
+#include    "macros.h"
+#include    "macros_soc.h"
+#include    "memo/memo.h"
+#include    "modules.h"
+#include    "os_errors.h"
+#include    "record/record.h"
+#include    "serial/serial.h"
+#include    "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"X            Control the temperature.                  (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "Control the temperature\n"
-									"=======================\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "X            Control the temperature.                  (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "Control the temperature\n"
+                                    "=======================\n\n"
 
-									"This tool module allows to operate on the xtmp\n"
-									"temperature manager\n\n"
+                                    "This tool module allows to operate on the xtmp\n"
+                                    "temperature manager\n\n"
 
-									"Input format:  X\n"
-									"Output format: x,t0,t1,t...t127\n\n"
+                                    "Input format:  X\n"
+                                    "Output format: x,t0,t1,t...t127\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 
-static	int32_t		prgm(uint32_t argc, const char_t *argv[]);
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 
 MODULE(
-	X,									// Module name (the first letter has to be upper case)
-	KID_FAM_CLI,						// Family (defined in the module.h)
-	KNUM_X,								// Module identifier (defined in the module.h)
-	NULL,								// Address of the initialisation code (early pre-init)
-	prgm,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	NULL,								// Address of the clean code (clean the module)
-	" 1.0",								// Revision string (major . minor)
-	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0									// Execution cores
+    X,                                  // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_X,                             // Module identifier (defined in the module.h)
+    NULL,                               // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    NULL,                               // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
 );
 
 // CLI tool specific
 // =================
 
-#define	KNB_SAMPLES		128U			// Nb. of samples
+#define KNB_SAMPLES     128U            // Nb. of samples
 
 /*
  * \brief Main entry point
  *
  */
-static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
-	UNUSED(argc);
-	UNUSED(argv);
+static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
+    UNUSED(argc);
+    UNUSED(argv);
 
-			uint32_t	core, sizeRec;
-			int32_t		status;
-			uint16_t	*bufRec, i;
-	static	uint16_t	vTemperature[KNB_CORES][KNB_SAMPLES];
-	static	bool		vInitialised[KNB_CORES] = MCSET(false);
-	static	mbox_t		*vMailBox[KNB_CORES];
+            uint32_t    core, sizeRec;
+            int32_t     status;
+            uint16_t    *bufRec, i;
+    static  uint16_t    vTemperature[KNB_CORES][KNB_SAMPLES];
+    static  bool        vInitialised[KNB_CORES] = MCSET(false);
+    static  mbox_t      *vMailBox[KNB_CORES];
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	if (!vInitialised[core]) {
-		if (kern_getMailboxById("Temperature", &vMailBox[core]) != KERR_KERN_NOERR) {
-			(void)dprintf(KSYST, "Process Temperature not installed!\n");
-			return (EXIT_OS_FAILURE);
-		}
+    if (!vInitialised[core]) {
+        if (kern_getMailboxById("Temperature", &vMailBox[core]) != KERR_KERN_NOERR) {
+            (void)dprintf(KSYST, "Process Temperature not installed!\n");
+            return (EXIT_OS_FAILURE);
+        }
 
-		vInitialised[core] = true;
-	}
+        vInitialised[core] = true;
+    }
 
 // Receive the message (wait until the FIFO is not empty)
 
-	sizeRec = (KNB_SAMPLES * sizeof(uint16_t));
-	status  = kern_readMailbox(vMailBox[core], (void **)&bufRec, &sizeRec, 10000U);
+    sizeRec = (KNB_SAMPLES * sizeof(uint16_t));
+    status  = kern_readMailbox(vMailBox[core], (void **)&bufRec, &sizeRec, 10000U);
 
-	switch (status) {
-		case KERR_KERN_NOERR: {
-			break;
-		}
-		case KERR_KERN_TIMEO:
-		case KERR_KERN_MBKIL: {
-			(void)dprintf(KSYST, "The process Temperature was killed!\n");
-			vInitialised[core] = false;
-			break;
-		}
-		default: {
-			(void)dprintf(KSYST, "mbox problem\n");
-			LOG(KFATAL_USER, "x: mbox problem");
-			exit(EXIT_OS_FAILURE);
-		}
-	}
+    switch (status) {
+        case KERR_KERN_NOERR: {
+            break;
+        }
+        case KERR_KERN_TIMEO:
+        case KERR_KERN_MBKIL: {
+            (void)dprintf(KSYST, "The process Temperature was killed!\n");
+            vInitialised[core] = false;
+            break;
+        }
+        default: {
+            (void)dprintf(KSYST, "mbox problem\n");
+            LOG(KFATAL_USER, "x: mbox problem");
+            exit(EXIT_OS_FAILURE);
+        }
+    }
 
 // Copy it into the temperature buffer before to "free" the memory
 
     memcpy(&vTemperature[core][0], bufRec, (KNB_SAMPLES * sizeof(uint16_t)));
-	memo_free(bufRec);
+    memo_free(bufRec);
 
-	(void)dprintf(KSYST, "x,");
-	for (i = 0U; i < (KNB_SAMPLES - 1U); i++) {
-		(void)dprintf(KSYST, "%d,",  vTemperature[core][i]);
-	}
-	(void)dprintf(KSYST, "%d\n", vTemperature[core][KNB_SAMPLES - 1U]);
+    (void)dprintf(KSYST, "x,");
+    for (i = 0U; i < (KNB_SAMPLES - 1U); i++) {
+        (void)dprintf(KSYST, "%d,",  vTemperature[core][i]);
+    }
+    (void)dprintf(KSYST, "%d\n", vTemperature[core][KNB_SAMPLES - 1U]);
 
-	return (EXIT_OS_SUCCESS_CLI);
+    return (EXIT_OS_SUCCESS_CLI);
 }

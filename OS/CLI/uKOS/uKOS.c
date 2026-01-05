@@ -2,17 +2,18 @@
 ; uKOS.
 ; =====
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi			The 2025-01-01
-; Modifs:	Laurent von Allmen	The 2025-01-01
+; SPDX-License-Identifier: MIT
+;
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
 ; Project:	uKOS-X
-; Goal:		Give some uKOS-X info.
+
+; Purpose:
+;    Give some uKOS-X info.
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \

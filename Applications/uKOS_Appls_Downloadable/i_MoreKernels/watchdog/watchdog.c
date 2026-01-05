@@ -2,18 +2,19 @@
 ; watchdog.
 ; =========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Demo of a C application.
-;			This application shows how to operate with the uKOS-X uKernel.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    Demo of a C application.
+;    This application shows how to operate with the uKOS-X uKernel.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -52,103 +53,103 @@
  * \ingroup app_moreKernel
  * \brief This application shows how to operate with the uKOS uKernel.
  *
- *			Launch 1 processes:
+ *          Launch 1 processes:
  *
- *			- P0: Set the watchdog in auto mode (1000-ms)
- *				  Wait 10000-ms (The watchdog is maintained by a daemon)
- *				  Repeat 100 times
- *					- Set the watchdog in manual mode (100-ms)
- *					- Wait 70-ms
- *				  At the output of the loop the watchdog has to restart the system
+ *          - P0: Set the watchdog in auto mode (1000-ms)
+ *                Wait 10000-ms (The watchdog is maintained by a daemon)
+ *                Repeat 100 times
+ *                  - Set the watchdog in manual mode (100-ms)
+ *                  - Wait 70-ms
+ *                At the output of the loop the watchdog has to restart the system
  *
  */
 
-#include	<inttypes.h>
-#include	<stdio.h>
+#include    <inttypes.h>
+#include    <stdio.h>
 
-#include	"crt0.h"
-#include	"serial/serial.h"
-#include	"kern/kern.h"
-#include	"macros.h"
-#include	"macros_core.h"
-#include	"macros_core_stackFrame.h"
-#include	"memo/memo.h"
-#include	"modules.h"
-#include	"os_errors.h"
-#include	"record/record.h"
-#include	"types.h"
-#include	"watchdog/watchdog.h"
+#include    "crt0.h"
+#include    "serial/serial.h"
+#include    "kern/kern.h"
+#include    "macros.h"
+#include    "macros_core.h"
+#include    "macros_core_stackFrame.h"
+#include    "memo/memo.h"
+#include    "modules.h"
+#include    "os_errors.h"
+#include    "record/record.h"
+#include    "types.h"
+#include    "watchdog/watchdog.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"watchdog     Example of how to use the watchdog.       (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "This is a romable C application\n"
-									"===============================\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "watchdog     Example of how to use the watchdog.       (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
+                                    "===============================\n\n"
 
-									"This user function module is a C written application.\n\n"
+                                    "This user function module is a C written application.\n\n"
 
-									"Input format:  watchdog\n"
-									"Output format: [result]\n\n"
+                                    "Input format:  watchdog\n"
+                                    "Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
-	UserAppl,							// Module name (the first letter has to be upper case)
-	KID_FAM_APPLICATIONS,				// Family (defined in the module.h)
-	KNUM_APPLICATION,					// Module identifier (defined in the module.h)
-	NULL,								// Address of the initialisation code (early pre-init)
-	aStart,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	NULL,								// Address of the clean code (clean the module)
-	" 1.0",								// Revision string (major . minor)
-	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0									// Execution cores
+    UserAppl,                           // Module name (the first letter has to be upper case)
+    KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
+    KNUM_APPLICATION,                   // Module identifier (defined in the module.h)
+    NULL,                               // Address of the initialisation code (early pre-init)
+    aStart,                             // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    NULL,                               // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
 );
 
 /*
  * \brief aProcess 0
  *
  * - P0: Set the watchdog in auto mode (1000-ms)
- * 		 Wait 10000-ms (The watchdog is maintained by a daemon)
- *		 Repeat 100 times
- *			- Set the watchdog in manual mode (100-ms)
- *			- Wait 70-ms
- *		 At the output of the loop the watchdog has to restart the system
+ *       Wait 10000-ms (The watchdog is maintained by a daemon)
+ *       Repeat 100 times
+ *          - Set the watchdog in manual mode (100-ms)
+ *          - Wait 70-ms
+ *       At the output of the loop the watchdog has to restart the system
  */
 static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
-	UNUSED(argument);
+    UNUSED(argument);
 
-	uint16_t	i;
+    uint16_t    i;
 
-	kern_suspendProcess(1000U);
+    kern_suspendProcess(1000U);
 
 // Watchdog in automatic mode
 
-	(void)dprintf(KSYST, "\nWatchdog in automatic mode (trying for 10'000-ms)\n");
-	watchdog_arm(1000U, KWATCHDOG_AUTO);
+    (void)dprintf(KSYST, "\nWatchdog in automatic mode (trying for 10'000-ms)\n");
+    watchdog_arm(1000U, KWATCHDOG_AUTO);
 
-	kern_suspendProcess(10000U);
+    kern_suspendProcess(10000U);
 
 // Watchdog in manual mode
 
-	(void)dprintf(KSYST, "Watchdog in manual mode    (trying for 10'000-ms)\n");
-	for (i = 0U; i < 100U; i++) {
-		kern_suspendProcess(60U);
-		watchdog_arm(100U, KWATCHDOG_MANUAL);
-	}
+    (void)dprintf(KSYST, "Watchdog in manual mode    (trying for 10'000-ms)\n");
+    for (i = 0U; i < 100U; i++) {
+        kern_suspendProcess(60U);
+        watchdog_arm(100U, KWATCHDOG_MANUAL);
+    }
 
 // Now relaunch the watchdog for 20-s and waiting for the restart
 
-	watchdog_arm(20000U, KWATCHDOG_MANUAL);
-	(void)dprintf(KSYST, "\nNow waiting 20-s for the watchdog restart\n");
+    watchdog_arm(20000U, KWATCHDOG_MANUAL);
+    (void)dprintf(KSYST, "\nNow waiting 20-s for the watchdog restart\n");
 
-	i = 0;
-	while (true) {
-		(void)dprintf(KSYST, "Elapsed %"PRIu16"-s!\n", i++);
-		kern_suspendProcess(1000U);
-	}
+    i = 0;
+    while (true) {
+        (void)dprintf(KSYST, "Elapsed %"PRIu16"-s!\n", i++);
+        kern_suspendProcess(1000U);
+    }
 }
 
 /*
@@ -159,32 +160,32 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int		main(int argc, const char *argv[]) {
-	UNUSED(argc);
-	UNUSED(argv);
+int     main(int argc, const char *argv[]) {
+    UNUSED(argc);
+    UNUSED(argv);
 
-	proc_t	*process_0;
+    proc_t  *process_0;
 
 // ---------------------------------I-----------------------------------------I--------------I
 
-	STRG_LOC_CONST(aStrIden_0[]) = "Process_User_0";
-	STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2026";
+    STRG_LOC_CONST(aStrIden_0[]) = "Process_User_0";
+    STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2026";
 
 // Specifications for the processes
 
-	PROCESS_STACKMALLOC(
-		0,									// Index
-		specification_0,					// Specifications (just use specification_x)
-		aStrText_0,							// Info string (NULL if anonymous)
-		KKERN_SZ_STACK_MM,					// KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
-		aProcess_0,							// Code of the process
-		aStrIden_0,							// Identifier (NULL if anonymous)
-		KSYST,								// Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
-		KKERN_PRIORITY_LOW_14				// KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
-	);
+    PROCESS_STACKMALLOC(
+        0,                                  // Index
+        specification_0,                    // Specifications (just use specification_x)
+        aStrText_0,                         // Info string (NULL if anonymous)
+        KKERN_SZ_STACK_MM,                  // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
+        aProcess_0,                         // Code of the process
+        aStrIden_0,                         // Identifier (NULL if anonymous)
+        KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
+        KKERN_PRIORITY_LOW_14               // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
+    );
 
-	if (kern_createProcess(&specification_0, NULL, &process_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
+    if (kern_createProcess(&specification_0, NULL, &process_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
 
-	LOG(KINFO_USER, "Application launched");
-	return (EXIT_OS_SUCCESS_CLI);
+    LOG(KINFO_USER, "Application launched");
+    return (EXIT_OS_SUCCESS_CLI);
 }

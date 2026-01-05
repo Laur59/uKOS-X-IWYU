@@ -2,17 +2,18 @@
 ; battery.
 ; ========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		battery manager.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    battery manager.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,20 +47,20 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"battery.h"
+#include    "battery.h"
 
-#include	<stdint.h>
-#include	<stdlib.h>
+#include    <stdint.h>
+#include    <stdlib.h>
 
-#include	"battery_common.h"
-#include	"kern/kern.h"
-#include	"macros.h"
-#include	"macros_core.h"
-#include	"macros_soc.h"
-#include	"modules.h"
-#include	"os_errors.h"
-#include	"record/record.h"
-#include	"types.h"
+#include    "battery_common.h"
+#include    "kern/kern.h"
+#include    "macros.h"
+#include    "macros_core.h"
+#include    "macros_soc.h"
+#include    "modules.h"
+#include    "os_errors.h"
+#include    "record/record.h"
+#include    "types.h"
 
 #ifdef CONFIG_MAN_BATTERY_S
 
@@ -68,36 +69,36 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"battery      battery manager.                          (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "battery manager\n"
-									"===============\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "battery      battery manager.                          (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "battery manager\n"
+                                    "===============\n\n"
 
-									"This manager ...\n\n"
+                                    "This manager ...\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
-	Battery,						// Module name (the first letter has to be upper case)
-	KID_FAM_PERIPHERALS,			// Family (defined in the module.h)
-	KNUM_BATTERY,					// Module identifier (defined in the module.h)
-	NULL,							// Address of the initialisation code (early pre-init)
-	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	NULL,							// Address of the clean code (clean the module)
-	" 1.0",							// Revision string (major . minor)
-	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0								// Execution cores
+    Battery,                        // Module name (the first letter has to be upper case)
+    KID_FAM_PERIPHERALS,            // Family (defined in the module.h)
+    KNUM_BATTERY,                   // Module identifier (defined in the module.h)
+    NULL,                           // Address of the initialisation code (early pre-init)
+    NULL,                           // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    NULL,                           // Address of the clean code (clean the module)
+    " 1.0",                         // Revision string (major . minor)
+    (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                               // Execution cores
 );
 
 // Library specific
 // ================
 
-static	mutx_t		*vMutex_Reserve[KNB_CORES];
+static  mutx_t      *vMutex_Reserve[KNB_CORES];
 
 // Prototypes
 
-static	int32_t		local_init(void);
-extern	void		stub_battery_init(void);
-extern	int32_t		stub_battery_read(batteryInfo_t *infoBattery);
+static  int32_t     local_init(void);
+extern  void        stub_battery_init(void);
+extern  int32_t     stub_battery_read(batteryInfo_t *infoBattery);
 
 /*
  * \brief Reserve the battery manager
@@ -114,33 +115,33 @@ extern	int32_t		stub_battery_read(batteryInfo_t *infoBattery);
  *    status = battery_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode			Any mode
- * \param[in]	timeout				Timeout (1-ms of resolution)
- * \return		KERR_BATTERY_NOERR	The manager is reserved
- * \return		KERR_BATTERY_GEERR	General error
- * \return		KERR_BATTERY_CHBSY	The manager is busy
+ * \param[in]   reserveMode         Any mode
+ * \param[in]   timeout             Timeout (1-ms of resolution)
+ * \return      KERR_BATTERY_NOERR  The manager is reserved
+ * \return      KERR_BATTERY_GEERR  General error
+ * \return      KERR_BATTERY_CHBSY  The manager is busy
  *
  */
-int32_t	battery_reserve(reserveMode_t reserveMode, uint32_t timeout) {
-	UNUSED(reserveMode);
+int32_t battery_reserve(reserveMode_t reserveMode, uint32_t timeout) {
+    UNUSED(reserveMode);
 
-	uint32_t	core;
-	int32_t		status;
+    uint32_t    core;
+    int32_t     status;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_BATTERY_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_BATTERY_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = kern_lockMutex(vMutex_Reserve[core], timeout);
-	if (status != KERR_KERN_NOERR) {
-		PRIVILEGE_RESTORE;
-		return (KERR_BATTERY_CHBSY);
-	}
+    status = kern_lockMutex(vMutex_Reserve[core], timeout);
+    if (status != KERR_KERN_NOERR) {
+        PRIVILEGE_RESTORE;
+        return (KERR_BATTERY_CHBSY);
+    }
 
-	PRIVILEGE_RESTORE;
-	return (KERR_BATTERY_NOERR);
+    PRIVILEGE_RESTORE;
+    return (KERR_BATTERY_NOERR);
 }
 
 /*!
@@ -154,32 +155,32 @@ int32_t	battery_reserve(reserveMode_t reserveMode, uint32_t timeout) {
  *    status = battery_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode			Any mode
- * \return		KERR_BATTERY_NOERR	OK
- * \return		KERR_BATTERY_GEERR	General error
- * \return		KERR_BATTERY_CAREL	Cannot release the manager
+ * \param[in]   reserveMode         Any mode
+ * \return      KERR_BATTERY_NOERR  OK
+ * \return      KERR_BATTERY_GEERR  General error
+ * \return      KERR_BATTERY_CAREL  Cannot release the manager
  *
  */
-int32_t	battery_release(reserveMode_t reserveMode) {
-	UNUSED(reserveMode);
+int32_t battery_release(reserveMode_t reserveMode) {
+    UNUSED(reserveMode);
 
-	uint32_t	core;
-	int32_t		status;
+    uint32_t    core;
+    int32_t     status;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_BATTERY_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_BATTERY_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = kern_unlockMutex(vMutex_Reserve[core]);
-	if (status != KERR_KERN_NOERR) {
-		PRIVILEGE_RESTORE;
-		return (KERR_BATTERY_CAREL);
-	}
+    status = kern_unlockMutex(vMutex_Reserve[core]);
+    if (status != KERR_KERN_NOERR) {
+        PRIVILEGE_RESTORE;
+        return (KERR_BATTERY_CAREL);
+    }
 
-	PRIVILEGE_RESTORE;
-	return (KERR_BATTERY_NOERR);
+    PRIVILEGE_RESTORE;
+    return (KERR_BATTERY_NOERR);
 }
 
 /*!
@@ -194,21 +195,21 @@ int32_t	battery_release(reserveMode_t reserveMode) {
  *    status = battery_read(&infoBattery);
  * \endcode
  *
- * \param[out]	*infoBattery		Ptr on the battery info
- * \return		KERR_BATTERY_NOERR	OK
- * \return		KERR_BATTERY_GEERR	General error
+ * \param[out]  *infoBattery        Ptr on the battery info
+ * \return      KERR_BATTERY_NOERR  OK
+ * \return      KERR_BATTERY_GEERR  General error
  *
  */
-int32_t	battery_read(batteryInfo_t *infoBattery) {
-	int32_t		status;
+int32_t battery_read(batteryInfo_t *infoBattery) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_BATTERY_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_BATTERY_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_battery_read(infoBattery);
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_battery_read(infoBattery);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 // Local routines
@@ -221,21 +222,21 @@ int32_t	battery_read(batteryInfo_t *infoBattery) {
  *   has to be called at least once
  *
  */
-static	int32_t	local_init(void) {
-			uint32_t	core;
-	static	bool		vInit[KNB_CORES] = MCSET(false);
+static  int32_t local_init(void) {
+            uint32_t    core;
+    static  bool        vInit[KNB_CORES] = MCSET(false);
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	INTERRUPTION_OFF;
-	if (!vInit[core]) {
-		vInit[core] = true;
+    INTERRUPTION_OFF;
+    if (!vInit[core]) {
+        vInit[core] = true;
 
-		if (kern_createMutex(KBATTERY_MUTEX_RESERVE, &vMutex_Reserve[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "battery: create mutx"); exit(EXIT_OS_PANIC); }
+        if (kern_createMutex(KBATTERY_MUTEX_RESERVE, &vMutex_Reserve[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "battery: create mutx"); exit(EXIT_OS_PANIC); }
 
-		stub_battery_init();
-	}
-	RETURN_INT_RESTORE(KERR_BATTERY_NOERR);
+        stub_battery_init();
+    }
+    RETURN_INT_RESTORE(KERR_BATTERY_NOERR);
 }
 
 #endif

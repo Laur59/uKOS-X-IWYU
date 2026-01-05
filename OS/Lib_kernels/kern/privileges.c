@@ -2,26 +2,27 @@
 ; privileges.
 ; ===========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Kern - Privilege management.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;			This module implements the software primitives.
+; Project: uKOS-X
 ;
-; 			Privilege system calls
-; 			---------------------------
+; Purpose:
+;    Kern - Privilege management.
 ;
-;			void	privileges_init(void);
-;			int32_t	kern_setPrivilegeMode(uint8_t mode);
-;			void	kern_privilegeElevate(void); !!! Not for user applications
+;    This module implements the software primitives.
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+;    Privilege system calls
+;    ---------------------------
+;
+;    void    privileges_init(void);
+;    int32_t kern_setPrivilegeMode(uint8_t mode);
+;    void    kern_privilegeElevate(void); !!! Not for user applications
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -55,40 +56,40 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"privileges.h"
+#include    "privileges.h"
 
-#include	<stdint.h>
+#include    <stdint.h>
 #ifdef PRIVILEGED_USER_S
-#include	<stdlib.h>
+#include    <stdlib.h>
 #endif
 
-#include	"Registers/core_addendum.h"	// IWYU pragma: keep
-#include	"core.h"					// IWYU pragma: keep
-#include	"debug.h"
-#include	"kern/kern.h"
-#ifdef	__arm__
-#include	"kern/private/private_processes.h"
-#include	"macros_core.h"
+#include    "Registers/core_addendum.h" // IWYU pragma: keep
+#include    "core.h"                    // IWYU pragma: keep
+#include    "debug.h"
+#include    "kern/kern.h"
+#ifdef  __arm__
+#include    "kern/private/private_processes.h"
+#include    "macros_core.h"
 #endif
-#include	"macros_soc.h"
-#include	"os_errors.h"
+#include    "macros_soc.h"
+#include    "os_errors.h"
 #ifdef PRIVILEGED_USER_S
-#include	"record/record.h"
+#include    "record/record.h"
 #else
-#include	"macros.h"
+#include    "macros.h"
 #endif
-#include	"syscallDispatcher.h"		// IWYU pragma: keep
+#include    "syscallDispatcher.h"       // IWYU pragma: keep
 #ifdef PRIVILEGED_USER_S
-#include	"types.h"
+#include    "types.h"
 #endif
 
-volatile	bool	vPriv_insideSVC[KNB_CORES] = MCSET(false);
-volatile	bool	vPriv_insideException[KNB_CORES] = MCSET(false);
+volatile    bool    vPriv_insideSVC[KNB_CORES] = MCSET(false);
+volatile    bool    vPriv_insideException[KNB_CORES] = MCSET(false);
 
 // Prototypes
 
 #ifdef PRIVILEGED_USER_S
-static	void	local_elevate(uintptr_t callAddress);
+static  void    local_elevate(uintptr_t callAddress);
 #endif
 
 /*
@@ -98,16 +99,16 @@ static	void	local_elevate(uintptr_t callAddress);
  *   Before using the manager functions, it is necessary to
  *   call this function
  *
- * \param[in]	-
+ * \param[in]   -
  *
  * \note This function does not return a value (None).
  *
  */
-void	privileges_init(void) {
+void    privileges_init(void) {
 
-	DEBUG_KERN_TRACE("entry: ");
+    DEBUG_KERN_TRACE("entry: ");
 
-	DEBUG_KERN_TRACE("exit: OK");
+    DEBUG_KERN_TRACE("exit: OK");
 }
 
 /*
@@ -127,58 +128,58 @@ void	privileges_init(void) {
  *
  * - This function allows to change the execution mode (Privileged / user)
  *
- * \param[in]	mode			KPROC_USER, Reduction the process rights in the user mode
- * \param[in]	-				KPROC_PRIVILEGED, Elevate the process rights in the privileged mode
- * \return		KERR_KERN_NOERR	OK
+ * \param[in]   mode            KPROC_USER, Reduction the process rights in the user mode
+ * \param[in]   -               KPROC_PRIVILEGED, Elevate the process rights in the privileged mode
+ * \return      KERR_KERN_NOERR OK
  *
  */
-int32_t	kern_setPrivilegeMode(uint8_t mode) {
+int32_t kern_setPrivilegeMode(uint8_t mode) {
 
-	#ifdef PRIVILEGED_USER_S
-	uint32_t	core;
+    #ifdef PRIVILEGED_USER_S
+    uint32_t    core;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	const	bool	in_svc = vPriv_insideSVC[core];
-	const	bool	in_exc = vPriv_insideException[core];
+    const   bool    in_svc = vPriv_insideSVC[core];
+    const   bool    in_exc = vPriv_insideException[core];
 
-	if ((in_svc) || (in_exc)) { return (KERR_KERN_NOERR); }
+    if ((in_svc) || (in_exc)) { return (KERR_KERN_NOERR); }
 
-	RIGHTS_ELEVATION;
-	if (vKern_runProc[core]->oSpecification.oMode == KPROC_PRIVILEGED) { INTERRUPTION_ON_HARD; return (KERR_KERN_NOERR); }
+    RIGHTS_ELEVATION;
+    if (vKern_runProc[core]->oSpecification.oMode == KPROC_PRIVILEGED) { INTERRUPTION_ON_HARD; return (KERR_KERN_NOERR); }
 
-	switch (mode) {
-		case KPROC_PRIVILEGED: {
-			vKern_runProc[core]->oInternal.oNestedPrivilege++;
-			vKern_runProc[core]->oInternal.oState |= (1U<<BPROC_PRIV_ELEVATED);
-			break;
-		}
-		case KPROC_USER: {
-			vKern_runProc[core]->oInternal.oNestedPrivilege -= (vKern_runProc[core]->oInternal.oNestedPrivilege > 0) ? (1U) : (0U);
-			if (vKern_runProc[core]->oInternal.oNestedPrivilege == 0U) {
-				vKern_runProc[core]->oInternal.oState &= (uint16_t)~(1U<<BPROC_PRIV_ELEVATED);
+    switch (mode) {
+        case KPROC_PRIVILEGED: {
+            vKern_runProc[core]->oInternal.oNestedPrivilege++;
+            vKern_runProc[core]->oInternal.oState |= (1U<<BPROC_PRIV_ELEVATED);
+            break;
+        }
+        case KPROC_USER: {
+            vKern_runProc[core]->oInternal.oNestedPrivilege -= (vKern_runProc[core]->oInternal.oNestedPrivilege > 0) ? (1U) : (0U);
+            if (vKern_runProc[core]->oInternal.oNestedPrivilege == 0U) {
+                vKern_runProc[core]->oInternal.oState &= (uint16_t)~(1U<<BPROC_PRIV_ELEVATED);
 
-				INTERRUPTION_ON_HARD;
-				SET_USER_MODE;
-				return (KERR_KERN_NOERR);
-			}
+                INTERRUPTION_ON_HARD;
+                SET_USER_MODE;
+                return (KERR_KERN_NOERR);
+            }
 
-			break;
-		}
-		default: {
+            break;
+        }
+        default: {
 
 // Make MISRA happy :-)
 
-			break;
-		}
-	}
-	INTERRUPTION_ON_HARD;
+            break;
+        }
+    }
+    INTERRUPTION_ON_HARD;
 
-	#else
- 	UNUSED(mode);
-	#endif
+    #else
+    UNUSED(mode);
+    #endif
 
-	return (KERR_KERN_NOERR);
+    return (KERR_KERN_NOERR);
 }
 
 /*
@@ -195,38 +196,38 @@ int32_t	kern_setPrivilegeMode(uint8_t mode) {
  * - Coming from the TRAP dispatcher.
  * - Set the privileged mode
  *
- * \param[in]	-
+ * \param[in]   -
  *
  * \note This function does not return a value (None).
  *
  */
-void	kern_privilegeElevate(void) __attribute__ ((naked));
-void	kern_privilegeElevate(void) {
+void    kern_privilegeElevate(void) __attribute__ ((naked));
+void    kern_privilegeElevate(void) {
 
-	#ifdef PRIVILEGED_USER_S
+    #ifdef PRIVILEGED_USER_S
 
 // Recover the callAddress -> in r0
 // GET_ADDRESS_ELEVATION_CALLER prepare r0 with the caller address
 // r0 is passed as a parameter to the CALL_FNCT_ELEVATION
 // accordingly to the ABI of the cortex
 
-	GET_ADDRESS_ELEVATION_CALLER;
-	CALL_FNCT_ELEVATION(local_elevate);
+    GET_ADDRESS_ELEVATION_CALLER;
+    CALL_FNCT_ELEVATION(local_elevate);
 
-	KERN_RETURN_ELEVATION;
-	#endif
+    KERN_RETURN_ELEVATION;
+    #endif
 }
 
 #ifdef PRIVILEGED_USER_S
-static	void	__attribute__ ((noinline, used)) local_elevate(uintptr_t callAddress) {
-	extern	uintptr_t	priv_returnElevation;
+static  void    __attribute__ ((noinline, used)) local_elevate(uintptr_t callAddress) {
+    extern  uintptr_t   priv_returnElevation;
 
-	if (callAddress != (uintptr_t)&priv_returnElevation) {
-		LOG(KFATAL_KERNEL, "priv: elevation forbidden");
-		exit(EXIT_OS_PANIC_ELEVATION);
-	}
+    if (callAddress != (uintptr_t)&priv_returnElevation) {
+        LOG(KFATAL_KERNEL, "priv: elevation forbidden");
+        exit(EXIT_OS_PANIC_ELEVATION);
+    }
 
-	SET_PRIVILEGED_MODE;
-	INTERRUPTION_OFF_HARD;
+    SET_PRIVILEGED_MODE;
+    INTERRUPTION_OFF_HARD;
 }
 #endif

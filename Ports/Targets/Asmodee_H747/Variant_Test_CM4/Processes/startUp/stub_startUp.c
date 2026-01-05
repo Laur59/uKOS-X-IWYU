@@ -2,18 +2,19 @@
 ; stub_startUp.
 ; =============
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		startUp process; execute some important initializations
-;			before jumping to the selected function.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    startUp process; execute some important initializations
+;    before jumping to the selected function.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,54 +48,54 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<inttypes.h>
-#include	<stdint.h>
-#include	<stdio.h>
+#include    <inttypes.h>
+#include    <stdint.h>
+#include    <stdio.h>
 
-#include	"ip.h"
-#include	"kern/kern.h"
-#include	"macros.h"
-#include	"switch/switch.h"
-#include	"modules.h"
-#include	"os_errors.h"
-#include	"serial/serial.h"
-#include	"serial_common.h"
-#include	"system/system.h"
-#include	"types.h"
+#include    "ip.h"
+#include    "kern/kern.h"
+#include    "macros.h"
+#include    "switch/switch.h"
+#include    "modules.h"
+#include    "os_errors.h"
+#include    "serial/serial.h"
+#include    "serial_common.h"
+#include    "system/system.h"
+#include    "types.h"
 
 // Bootstrap function table
 // ------------------------
 
-typedef	struct	boot	boot_t;
+typedef struct  boot    boot_t;
 
-struct	boot {
-				uint8_t				oSW;				// Switch value
-		const	char_t				*oFunction;			// Ptr on the function
-				uint8_t				oBaudrate;			// Baudrate
-				serialManager_t		oSerialManager;		// Default Serial Communication Manager
-				uint8_t				oArgC;				// Number of arguments
-		const	char_t				**oArgV;			// Ptr on the arguments
-		};
+struct  boot {
+                uint8_t             oSW;                // Switch value
+        const   char_t              *oFunction;         // Ptr on the function
+                uint8_t             oBaudrate;          // Baudrate
+                serialManager_t     oSerialManager;     // Default Serial Communication Manager
+                uint8_t             oArgC;              // Number of arguments
+        const   char_t              **oArgV;            // Ptr on the arguments
+        };
 
-static	const	char_t	*argv_cnsUrt0[] = { "console", "urt0" };
+static  const   char_t  *argv_cnsUrt0[] = { "console", "urt0" };
 
-static	const	boot_t	aFunction[] = {
-							{ 0x00U, "console", KSERIAL_BAUDRATE_460800, KURT0, 2U, argv_cnsUrt0 }
-						};
+static  const   boot_t  aFunction[] = {
+                            { 0x00U, "console", KSERIAL_BAUDRATE_460800, KURT0, 2U, argv_cnsUrt0 }
+                        };
 
-#define	KDEF_COMM		KURT0
-#define	KNB_FUNCTIONS	(sizeof(aFunction) / sizeof(boot_t))
+#define KDEF_COMM       KURT0
+#define KNB_FUNCTIONS   (sizeof(aFunction) / sizeof(boot_t))
 
 // Module strings
 
 STRG_GLB_CONST(aStartUp_StrHelp[]) = "StartUp process\n"
-									 "===============\n\n"
+                                     "===============\n\n"
 
-									 "StartUp switch action. The default settings are:\n"
-									 "460800-bit/s, 8-bits, 2-stop-bits, no parity.\n\n"
+                                     "StartUp switch action. The default settings are:\n"
+                                     "460800-bit/s, 8-bits, 2-stop-bits, no parity.\n\n"
 
-									 "   SW3\n"
-									 "    0   KURT0, console (460800-bit/s).\n\n";
+                                     "   SW3\n"
+                                     "    0   KURT0, console (460800-bit/s).\n\n";
 
 STRG_LOC_CONST(aStrLogo[]) = STRG_LOGO;
 
@@ -102,32 +103,32 @@ STRG_LOC_CONST(aStrLogo[]) = STRG_LOGO;
  * \brief stub_startUp_launch
  *
  */
-void	stub_startUp_launch(void) {
-			uint8_t			i;
-			uint16_t		index;
-			uint32_t		mode;
-			bool			error = false;
-			urtxCnf_t		configureURTx;
-			proc_t			*process;
-	const	uKOS_module_t	*module;
-	const	char_t			*identifier, *signature;
+void    stub_startUp_launch(void) {
+            uint8_t         i;
+            uint16_t        index;
+            uint32_t        mode;
+            bool            error = false;
+            urtxCnf_t       configureURTx;
+            proc_t          *process;
+    const   uKOS_module_t   *module;
+    const   char_t          *identifier, *signature;
 
 // Configure by default all the Serial Communication Managers
 // Set the default communication device (KSYST)
 
-	switch_read(&mode);
-	if (mode >= KNB_FUNCTIONS) {
-		mode = 0U;
-	}
+    switch_read(&mode);
+    if (mode >= KNB_FUNCTIONS) {
+        mode = 0U;
+    }
 
-	serial_setDefSerialManager(KDEF_COMM);
+    serial_setDefSerialManager(KDEF_COMM);
 
-	configureURTx.oNBBits   = KSERIAL_NB_BITS_8;
-	configureURTx.oStopBits = KSERIAL_STOPBITS_1;
-	configureURTx.oParity   = KSERIAL_PARITY_NONE;
-	configureURTx.oBaudRate = aFunction[mode].oBaudrate;
-	configureURTx.oKernSync = ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_RX);
-	serial_configure(KURT0, &configureURTx);
+    configureURTx.oNBBits   = KSERIAL_NB_BITS_8;
+    configureURTx.oStopBits = KSERIAL_STOPBITS_1;
+    configureURTx.oParity   = KSERIAL_PARITY_NONE;
+    configureURTx.oBaudRate = aFunction[mode].oBaudrate;
+    configureURTx.oKernSync = ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_RX);
+    serial_configure(KURT0, &configureURTx);
 
 // Bootstrap ...
 // -------------
@@ -135,62 +136,62 @@ void	stub_startUp_launch(void) {
 // Launch all the possible applications
 // Determine the "i" index on the function table
 
-	kern_getProcessRun(&process);
-	for (i = 0U; i < (uint8_t)KNB_FUNCTIONS; i++) {
-		if (aFunction[i].oSW == mode) {
-			kern_setSerialForProcess(process, aFunction[i].oSerialManager);
-		}
-	}
+    kern_getProcessRun(&process);
+    for (i = 0U; i < (uint8_t)KNB_FUNCTIONS; i++) {
+        if (aFunction[i].oSW == mode) {
+            kern_setSerialForProcess(process, aFunction[i].oSerialManager);
+        }
+    }
 
-	system_getSystemId(&identifier);
-	system_getSystemSignature(&signature);
+    system_getSystemId(&identifier);
+    system_getSystemSignature(&signature);
 
-	(void)dprintf(KSYST, "%s", aStrLogo);
-	(void)dprintf(KSYST, "Signature:\n%s\n\n", signature);
-	(void)dprintf(KSYST, "%ssw = %"PRIX32"\n\n", identifier, mode);
-	kern_suspendProcess(500U);
+    (void)dprintf(KSYST, "%s", aStrLogo);
+    (void)dprintf(KSYST, "Signature:\n%s\n\n", signature);
+    (void)dprintf(KSYST, "%ssw = %"PRIX32"\n\n", identifier, mode);
+    kern_suspendProcess(500U);
 
-	for (i = 0U; i < (uint8_t)KNB_FUNCTIONS; i++) {
-		if (aFunction[i].oSW == mode) {
+    for (i = 0U; i < (uint8_t)KNB_FUNCTIONS; i++) {
+        if (aFunction[i].oSW == mode) {
 
 // The communication
 
-			switch (aFunction[i].oSerialManager) {
-				case KURT0: { configureURTx.oBaudRate = aFunction[i].oBaudrate; serial_configure(KURT0, &configureURTx); break; }
-				default: {
+            switch (aFunction[i].oSerialManager) {
+                case KURT0: { configureURTx.oBaudRate = aFunction[i].oBaudrate; serial_configure(KURT0, &configureURTx); break; }
+                default: {
 
 // Make MISRA happy :-)
 
-					break;
-				}
-			}
+                    break;
+                }
+            }
 
 // The mode exist
 // Found a module; execute it or error
 
-			if (system_getModuleName(aFunction[i].oFunction, &index, &module) != KERR_SYSTEM_NOERR) {
-				error = true;
-			}
+            if (system_getModuleName(aFunction[i].oFunction, &index, &module) != KERR_SYSTEM_NOERR) {
+                error = true;
+            }
 
-			if (error) {
-				(void)dprintf(KSYST, "Module not found or user memory busy by a running application.\n\n");
-				while (true) { kern_suspendProcess(1U); }
-			}
-			else {
+            if (error) {
+                (void)dprintf(KSYST, "Module not found or user memory busy by a running application.\n\n");
+                while (true) { kern_suspendProcess(1U); }
+            }
+            else {
 
-				switch (module->oExecution(aFunction[i].oArgC, aFunction[i].oArgV)) {
-					case EXIT_OS_FAILURE_CRT0: {
-						(void)dprintf(KSYST, "Incompatible OS!!!\nReload the latest OS inside the target.\n");
-						break;
-					}
-					default: {
+                switch (module->oExecution(aFunction[i].oArgC, aFunction[i].oArgV)) {
+                    case EXIT_OS_FAILURE_CRT0: {
+                        (void)dprintf(KSYST, "Incompatible OS!!!\nReload the latest OS inside the target.\n");
+                        break;
+                    }
+                    default: {
 
 // Make MISRA happy :-)
 
-						break;
-					}
-				}
-			}
-		}
-	}
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }

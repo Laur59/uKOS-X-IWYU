@@ -2,17 +2,18 @@
 ; switch.
 ; =======
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		misc manager.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    misc manager.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,9 +47,9 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 /*!
  * \addtogroup Lib_peripherals
@@ -66,7 +67,7 @@
  */
 
 #ifdef __cplusplus
-extern	"C" {
+extern  "C" {
 #endif
 
 /*!
@@ -81,11 +82,11 @@ extern	"C" {
  *    status = switch_read(&mode);
  * \endcode
  *
- * \param[out]	*mode				Ptr on the jumper value
- * \return		KERR_SWITCH_NOERR	OK
+ * \param[out]  *mode               Ptr on the jumper value
+ * \return      KERR_SWITCH_NOERR   OK
  *
  */
-extern	int32_t	switch_read(uint32_t *mode);
+extern  int32_t switch_read(uint32_t *mode);
 
 #ifdef __cplusplus
 }

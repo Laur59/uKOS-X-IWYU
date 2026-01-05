@@ -2,17 +2,18 @@
 ; stub_urt0_uart.
 ; ===============
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		stub for the connection of the "urt0" manager to the uart1 device.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    stub for the connection of the "urt0" manager to the uart1 device.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,13 +47,13 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"clockTree.h"
-#include	"macros_soc.h"
-#include	"serial_common.h"
-#include	"soc_reg.h"
-#include	"urt0/urt0.h"
+#include    "clockTree.h"
+#include    "macros_soc.h"
+#include    "serial_common.h"
+#include    "soc_reg.h"
+#include    "urt0/urt0.h"
 
 // Model callbacks
 // ---------------
@@ -63,14 +64,14 @@
  * - Enable the device (clock)
  *
  */
-static	void	cb_enable_C0(void) {
+static  void    cb_enable_C0(void) {
 
-	sysctl->clk_en_peri.uart2_clk_en = 1;
+    sysctl->clk_en_peri.uart2_clk_en = 1;
 }
 
-static	void	cb_enable_C1(void) {
+static  void    cb_enable_C1(void) {
 
-	sysctl->clk_en_peri.uart1_clk_en = 1;
+    sysctl->clk_en_peri.uart1_clk_en = 1;
 }
 
 /*
@@ -80,14 +81,14 @@ static	void	cb_enable_C1(void) {
  *   If CTS =  1, then disable the uart TX interruptions
  *
  */
-static	bool	cb_CTSCheck_C0(void) {
+static  bool    cb_CTSCheck_C0(void) {
 
-	return (true);
+    return (true);
 }
 
-static	bool	cb_CTSCheck_C1(void) {
+static  bool    cb_CTSCheck_C1(void) {
 
-	return (true);
+    return (true);
 }
 
 /*
@@ -97,82 +98,82 @@ static	bool	cb_CTSCheck_C1(void) {
  *   i.e the hardware CTS interruption   \__
  *
  */
-static	void	cb_init_C0(void) {
+static  void    cb_init_C0(void) {
 
 }
 
-static	void	cb_init_C1(void) {
+static  void    cb_init_C1(void) {
 
 }
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
 
-#define	USART_C0				uart2
-#define	USART_C1				uart1
-#define	USART_VECTOR_NUMBER_C0	EINT_UART2_INTERRUPT
-#define	USART_VECTOR_NUMBER_C1	EINT_UART1_INTERRUPT
-#define	USART_FREQUENCY_C0		KFREQUENCY_UART
-#define	USART_FREQUENCY_C1		KFREQUENCY_UART
-#define	KUSART_SEMAPHORE_RX_C0	KURT0_SEMAPHORE_RX
-#define	KUSART_SEMAPHORE_RX_C1	KURT0_SEMAPHORE_RX
-#define	KUSART_SEMAPHORE_TX_C0	KURT0_SEMAPHORE_TX
-#define	KUSART_SEMAPHORE_TX_C1	KURT0_SEMAPHORE_TX
+#define USART_C0                uart2
+#define USART_C1                uart1
+#define USART_VECTOR_NUMBER_C0  EINT_UART2_INTERRUPT
+#define USART_VECTOR_NUMBER_C1  EINT_UART1_INTERRUPT
+#define USART_FREQUENCY_C0      KFREQUENCY_UART
+#define USART_FREQUENCY_C1      KFREQUENCY_UART
+#define KUSART_SEMAPHORE_RX_C0  KURT0_SEMAPHORE_RX
+#define KUSART_SEMAPHORE_RX_C1  KURT0_SEMAPHORE_RX
+#define KUSART_SEMAPHORE_TX_C0  KURT0_SEMAPHORE_TX
+#define KUSART_SEMAPHORE_TX_C1  KURT0_SEMAPHORE_TX
 
-#define	KUSART_SZ_TX_BUF_C0		1024U
-#define	KUSART_SZ_TX_BUF_C1		1024U
-#define	KUSART_SZ_RX_BUF_C0		1024U
-#define	KUSART_SZ_RX_BUF_C1		1024U
+#define KUSART_SZ_TX_BUF_C0     1024U
+#define KUSART_SZ_TX_BUF_C1     1024U
+#define KUSART_SZ_RX_BUF_C0     1024U
+#define KUSART_SZ_RX_BUF_C1     1024U
 
-#define	KUSART_SEMA_RX_C0_S
-#define	KUSART_SEMA_RX_C1_S
-#define	KUSART_SEMA_TX_C0_S
-#define	KUSART_SEMA_TX_C1_S
+#define KUSART_SEMA_RX_C0_S
+#define KUSART_SEMA_RX_C1_S
+#define KUSART_SEMA_TX_C0_S
+#define KUSART_SEMA_TX_C1_S
 
-#include	"model_usart_C0.c_inc"
-#include	"model_usart_C1.c_inc"
+#include    "model_usart_C0.c_inc"
+#include    "model_usart_C1.c_inc"
 
-void	stub_urt0_init(void) {
-	uint32_t	core;
+void    stub_urt0_init(void) {
+    uint32_t    core;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	if (core == KCORE_0) { model_usart_init_C0(); }
-	else				 { model_usart_init_C1(); }
+    if (core == KCORE_0) { model_usart_init_C0(); }
+    else                 { model_usart_init_C1(); }
 }
 
-void	stub_urt0_configure(const urtxCnf_t *configure) {
-	uint32_t	core;
+void    stub_urt0_configure(const urtxCnf_t *configure) {
+    uint32_t    core;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	if (core == KCORE_0) { model_usart_configure_C0(configure); }
-	else				 { model_usart_configure_C1(configure); }
+    if (core == KCORE_0) { model_usart_configure_C0(configure); }
+    else                 { model_usart_configure_C1(configure); }
 }
 
-void	stub_urt0_write(const uint8_t *buffer, uint32_t size) {
-	uint32_t	core;
+void    stub_urt0_write(const uint8_t *buffer, uint32_t size) {
+    uint32_t    core;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	if (core == KCORE_0) { model_usart_write_C0(buffer, size); }
-	else				 { model_usart_write_C1(buffer, size); }
+    if (core == KCORE_0) { model_usart_write_C0(buffer, size); }
+    else                 { model_usart_write_C1(buffer, size); }
 }
 
-void	stub_urt0_read(uint8_t *buffer, uint32_t *size) {
-	uint32_t	core;
+void    stub_urt0_read(uint8_t *buffer, uint32_t *size) {
+    uint32_t    core;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	if (core == KCORE_0) { model_usart_read_C0(buffer, size); }
-	else				 { model_usart_read_C1(buffer, size); }
+    if (core == KCORE_0) { model_usart_read_C0(buffer, size); }
+    else                 { model_usart_read_C1(buffer, size); }
 }
 
-void	stub_urt0_flush(void) {
-	uint32_t	core;
+void    stub_urt0_flush(void) {
+    uint32_t    core;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	if (core == KCORE_0) { model_usart_flush_C0(); }
-	else				 { model_usart_flush_C1(); }
+    if (core == KCORE_0) { model_usart_flush_C0(); }
+    else                 { model_usart_flush_C1(); }
 }

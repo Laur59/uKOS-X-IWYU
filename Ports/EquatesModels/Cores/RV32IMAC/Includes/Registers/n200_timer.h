@@ -2,17 +2,18 @@
 ; n200_timer.
 ; ===========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		n200_timer equates.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    n200_timer equates.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,21 +47,21 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // N200_TIMER address definitions
 // ------------------------------
 
 typedef struct {
-	volatile	uint32_t	mtime_lo;
-	volatile	uint32_t	mtime_hi;
-	volatile	uint32_t	mtimecmp_lo;
-	volatile	uint32_t	mtimecmp_hi;
-	volatile	uint32_t	reserved[(0xFF8 - 0x10) / sizeof(uint32_t)];
-	volatile	uint32_t	mstop;
-	volatile	uint32_t	msip;
+    volatile    uint32_t    mtime_lo;
+    volatile    uint32_t    mtime_hi;
+    volatile    uint32_t    mtimecmp_lo;
+    volatile    uint32_t    mtimecmp_hi;
+    volatile    uint32_t    reserved[(0xFF8 - 0x10) / sizeof(uint32_t)];
+    volatile    uint32_t    mstop;
+    volatile    uint32_t    msip;
 } N200_TIMER_Type;
 
-#define	N200_TIMER	((N200_TIMER_Type *)0xD1000000u)
+#define N200_TIMER  ((N200_TIMER_Type *)0xD1000000u)

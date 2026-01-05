@@ -2,17 +2,18 @@
 ; stub.
 ; =====
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Hardware specific stub.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    Hardware specific stub.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,66 +47,66 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"clockTree.h"
-#include	"core_reg.h"
-#include	"soc_reg.h"
-#include	"macros.h"
-#include	"macros_soc.h"
-#include	"macros_core.h"
-#include	"kern/kern.h"
+#include    "clockTree.h"
+#include    "core_reg.h"
+#include    "soc_reg.h"
+#include    "macros.h"
+#include    "macros_soc.h"
+#include    "macros_core.h"
+#include    "kern/kern.h"
 
-#define KTTIM1MS		1000U									// For 1-ms (1000-Hz)
-#define	KFPRET7			1000000U								// 1'000'000-Hz
-#define	KFINTT7			KTTIM1MS								// 1'000-Hz
-#define KPSCT7			((KFREQUENCY_TIM / KFPRET7) - 1U)		// Prescaler for 1'000'000-Hz
-#define KARRT7			((KFPRET7 / KFINTT7) - 1U)				// Autoreload
+#define KTTIM1MS        1000U                                   // For 1-ms (1000-Hz)
+#define KFPRET7         1000000U                                // 1'000'000-Hz
+#define KFINTT7         KTTIM1MS                                // 1'000-Hz
+#define KPSCT7          ((KFREQUENCY_TIM / KFPRET7) - 1U)       // Prescaler for 1'000'000-Hz
+#define KARRT7          ((KFPRET7 / KFINTT7) - 1U)              // Autoreload
 
-extern	volatile	uint32_t	vTimer;
+extern  volatile    uint32_t    vTimer;
 
 // Prototypes
 
-extern	void	(*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
+extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
-static	void	stub_intr_timer_interruption(void);
-extern	void	aTimer_callBack(void);
+static  void    stub_intr_timer_interruption(void);
+extern  void    aTimer_callBack(void);
 
 /*
  * \brief stub_intr_timer_init
  *
  */
-void	stub_intr_timer_init(void) {
+void    stub_intr_timer_init(void) {
 
-	RCC->APB1LENR |= RCC_APB1LENR_TIM7EN;
+    RCC->APB1LENR |= RCC_APB1LENR_TIM7EN;
 
 // Timer 7 (1-ms)
 
-	INTERRUPT_VECTOR(TIM7_C0_IRQn, stub_intr_timer_interruption);
-	NVIC_SetPriority(TIM7_C0_IRQn, KHW_PRIORITY_MODERATE);
-	NVIC_EnableIRQ(TIM7_C0_IRQn);
+    INTERRUPT_VECTOR(TIM7_C0_IRQn, stub_intr_timer_interruption);
+    NVIC_SetPriority(TIM7_C0_IRQn, KHW_PRIORITY_MODERATE);
+    NVIC_EnableIRQ(TIM7_C0_IRQn);
 
-	TIM7->PSC  = KPSCT7;
-	TIM7->ARR  = KARRT7;
-	TIM7->DIER = TIM7_DIER_UIE;
-	TIM7->CR1 |= TIM7_CR1_CEN;
+    TIM7->PSC  = KPSCT7;
+    TIM7->ARR  = KARRT7;
+    TIM7->DIER = TIM7_DIER_UIE;
+    TIM7->CR1 |= TIM7_CR1_CEN;
 }
 
 /*
  * \brief stub_intr_timer_interruption
  *
  */
-static	void	stub_intr_timer_interruption(void) {
-	uint32_t	core;
+static  void    stub_intr_timer_interruption(void) {
+    uint32_t    core;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
 // INT acknowledge
 
-	if ((TIM7->SR & TIM7_SR_UIF) != 0U) {
-		TIM7->SR &= (uint32_t)~TIM7_SR_UIF;
-	}
-	if ((++vTimer % 100U) == 0U) { aTimer_callBack(); }
+    if ((TIM7->SR & TIM7_SR_UIF) != 0U) {
+        TIM7->SR &= (uint32_t)~TIM7_SR_UIF;
+    }
+    if ((++vTimer % 100U) == 0U) { aTimer_callBack(); }
 
-	PREEMPTION_THRESHOLD(core);
+    PREEMPTION_THRESHOLD(core);
 }

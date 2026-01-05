@@ -2,17 +2,18 @@
 ; queue.
 ; ======
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Queue definition.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    Queue definition.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,8 +47,8 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#define	KID_TEST		0x00000000u
-#define	KID_SENSOR		0x01000000u
-#define	KID_ACTUATOR	0x02000000u
+#define KID_TEST        0x00000000u
+#define KID_SENSOR      0x01000000u
+#define KID_ACTUATOR    0x02000000u

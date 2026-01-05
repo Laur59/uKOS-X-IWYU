@@ -2,17 +2,18 @@
 ; serial.
 ; =======
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		serial manager.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    serial manager.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +47,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_serials
@@ -63,40 +64,40 @@
  * @{
  */
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"types.h"
+#include    "types.h"
 
 // Modifiable in the makefile: default baudrate for the system
 
 #ifndef KSERIAL_DEFAULT_BAUDRATE
-#define	KSERIAL_DEFAULT_BAUDRATE	460800
+#define KSERIAL_DEFAULT_BAUDRATE    460800
 #endif
 
 // Supported managers
 
-typedef	enum {
-			KNOTR = (((uint32_t)'n'<<24U) | ((uint32_t)'o'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'R'),	// notr manager
-			KSYST = (((uint32_t)'s'<<24U) | ((uint32_t)'y'<<16U) | ((uint32_t)'s'<<8U) | (uint32_t)'t'),	// syst manager
-			KDEF0 = (((uint32_t)'d'<<24U) | ((uint32_t)'e'<<16U) | ((uint32_t)'f'<<8U) | (uint32_t)'0'),	// def0 manager
-			KURT0 = (((uint32_t)'u'<<24U) | ((uint32_t)'r'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'0'),	// urt0 manager
-			KURT1 = (((uint32_t)'u'<<24U) | ((uint32_t)'r'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'1'),	// urt1 manager
-			KURT2 = (((uint32_t)'u'<<24U) | ((uint32_t)'r'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'2'),	// urt2 manager
-			KURT3 = (((uint32_t)'u'<<24U) | ((uint32_t)'r'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'3'),	// urt3 manager
-			KURT4 = (((uint32_t)'u'<<24U) | ((uint32_t)'r'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'4'),	// urt4 manager
-			KCDC0 = (((uint32_t)'c'<<24U) | ((uint32_t)'d'<<16U) | ((uint32_t)'c'<<8U) | (uint32_t)'0'),	// cdc0 manager
-			KCDC1 = (((uint32_t)'c'<<24U) | ((uint32_t)'d'<<16U) | ((uint32_t)'c'<<8U) | (uint32_t)'1'),	// cdc1 manager
-			KWFI0 = (((uint32_t)'w'<<24U) | ((uint32_t)'f'<<16U) | ((uint32_t)'i'<<8U) | (uint32_t)'0')		// wfi0 manager
+typedef enum {
+            KNOTR = (((uint32_t)'n'<<24U) | ((uint32_t)'o'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'R'),    // notr manager
+            KSYST = (((uint32_t)'s'<<24U) | ((uint32_t)'y'<<16U) | ((uint32_t)'s'<<8U) | (uint32_t)'t'),    // syst manager
+            KDEF0 = (((uint32_t)'d'<<24U) | ((uint32_t)'e'<<16U) | ((uint32_t)'f'<<8U) | (uint32_t)'0'),    // def0 manager
+            KURT0 = (((uint32_t)'u'<<24U) | ((uint32_t)'r'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'0'),    // urt0 manager
+            KURT1 = (((uint32_t)'u'<<24U) | ((uint32_t)'r'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'1'),    // urt1 manager
+            KURT2 = (((uint32_t)'u'<<24U) | ((uint32_t)'r'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'2'),    // urt2 manager
+            KURT3 = (((uint32_t)'u'<<24U) | ((uint32_t)'r'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'3'),    // urt3 manager
+            KURT4 = (((uint32_t)'u'<<24U) | ((uint32_t)'r'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'4'),    // urt4 manager
+            KCDC0 = (((uint32_t)'c'<<24U) | ((uint32_t)'d'<<16U) | ((uint32_t)'c'<<8U) | (uint32_t)'0'),    // cdc0 manager
+            KCDC1 = (((uint32_t)'c'<<24U) | ((uint32_t)'d'<<16U) | ((uint32_t)'c'<<8U) | (uint32_t)'1'),    // cdc1 manager
+            KWFI0 = (((uint32_t)'w'<<24U) | ((uint32_t)'f'<<16U) | ((uint32_t)'i'<<8U) | (uint32_t)'0')     // wfi0 manager
 } serialManager_t;
 
 // Prototypes
 
 #ifdef __cplusplus
-extern	"C" {
+extern  "C" {
 #endif
 
-#define	SERIAL_reserve	serial_reserve
-#define	SERIAL_release	serial_release
+#define SERIAL_reserve  serial_reserve
+#define SERIAL_release  serial_release
 
 /*!
  * \brief Reserve the Serial Communication Manager
@@ -113,17 +114,17 @@ extern	"C" {
  *    status = serial_release(KDEF0, KMODE_WRITE);
  * \endcode
  *
- * \param[in]	serialManager		Serial Communication Manager
- * \param[in]	reserveMode			KMODE_READ, KMODE_WRITE, KMODE_READ_WRITE
- * \param[in]	timeout				Timeout (1-ms of resolution)
- * \param[in]	-					KWAIT_INFINITY, waiting forever
- * \param[in]	-					KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_SERIAL_NOERR	OK
- * \return		KERR_SERIAL_NODEV	No corresponding Serial Communication Manager
- * \return		KERR_xxxxxx_NODEV	Depends on the "xxxx" Serial Communication Manager
+ * \param[in]   serialManager       Serial Communication Manager
+ * \param[in]   reserveMode         KMODE_READ, KMODE_WRITE, KMODE_READ_WRITE
+ * \param[in]   timeout             Timeout (1-ms of resolution)
+ * \param[in]   -                   KWAIT_INFINITY, waiting forever
+ * \param[in]   -                   KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_NODEV   No corresponding Serial Communication Manager
+ * \return      KERR_xxxxxx_NODEV   Depends on the "xxxx" Serial Communication Manager
  *
  */
-extern	int32_t	serial_reserve(serialManager_t serialManager, reserveMode_t reserveMode, uint32_t timeout);
+extern  int32_t serial_reserve(serialManager_t serialManager, reserveMode_t reserveMode, uint32_t timeout);
 
 /*!
  * \brief Release the Serial Communication Manager
@@ -136,14 +137,14 @@ extern	int32_t	serial_reserve(serialManager_t serialManager, reserveMode_t reser
  *    status = serial_release(KDEF0, KMODE_WRITE);
  * \endcode
  *
- * \param[in]	serialManager		Serial Communication Manager
- * \param[in]	reserveMode			KMODE_READ, KMODE_WRITE, KMODE_READ_WRITE
- * \return		KERR_SERIAL_NOERR	OK
- * \return		KERR_SERIAL_NODEV	No corresponding Serial Communication Manager
- * \return		KERR_xxxxxx_NODEV	Depends on the "xxxx" Serial Communication Manager
+ * \param[in]   serialManager       Serial Communication Manager
+ * \param[in]   reserveMode         KMODE_READ, KMODE_WRITE, KMODE_READ_WRITE
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_NODEV   No corresponding Serial Communication Manager
+ * \return      KERR_xxxxxx_NODEV   Depends on the "xxxx" Serial Communication Manager
  *
  */
-extern	int32_t	serial_release(serialManager_t serialManager, reserveMode_t reserveMode);
+extern  int32_t serial_release(serialManager_t serialManager, reserveMode_t reserveMode);
 
 /*!
  * \brief Configure the Serial Communication Manager
@@ -163,14 +164,14 @@ extern	int32_t	serial_release(serialManager_t serialManager, reserveMode_t reser
  *    status = serial_configure(KURT0, (void *)&configure);
  * \endcode
  *
- * \param[in]	serialManager		Serial Communication Manager
- * \param[in]	*configure			Ptr on the configuration buffer
- * \return		KERR_SERIAL_NOERR	OK
- * \return		KERR_SERIAL_NODEV	No corresponding Serial Communication Manager
- * \return		KERR_xxxxxx_NODEV	Depends on the "xxxx" Serial Communication Manager
+ * \param[in]   serialManager       Serial Communication Manager
+ * \param[in]   *configure          Ptr on the configuration buffer
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_NODEV   No corresponding Serial Communication Manager
+ * \return      KERR_xxxxxx_NODEV   Depends on the "xxxx" Serial Communication Manager
  *
  */
-extern	int32_t	serial_configure(serialManager_t serialManager, const void *configure);
+extern  int32_t serial_configure(serialManager_t serialManager, const void *configure);
 
 /*!
  * \brief Write a buffer to the Serial Communication Manager
@@ -195,15 +196,15 @@ extern	int32_t	serial_configure(serialManager_t serialManager, const void *confi
  *    status = serial_write(KDEF0, buffer, KSIZE);
  * \endcode
  *
- * \param[in]	serialManager		Serial Communication Manager
- * \param[in]	*buffer				Ptr on the buffer
- * \param[in]	size				Size of the buffer
- * \return		KERR_SERIAL_NOERR	OK
- * \return		KERR_SERIAL_NODEV	No corresponding Serial Communication Manager
- * \return		KERR_xxxxxx_NODEV	Depends on the "xxxx" Serial Communication Manager
+ * \param[in]   serialManager       Serial Communication Manager
+ * \param[in]   *buffer             Ptr on the buffer
+ * \param[in]   size                Size of the buffer
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_NODEV   No corresponding Serial Communication Manager
+ * \return      KERR_xxxxxx_NODEV   Depends on the "xxxx" Serial Communication Manager
  *
  */
-extern	int32_t	serial_write(serialManager_t serialManager, const uint8_t *buffer, uint32_t size);
+extern  int32_t serial_write(serialManager_t serialManager, const uint8_t *buffer, uint32_t size);
 
 /*!
  * \brief Read a buffer from the Serial Communication Manager
@@ -222,15 +223,15 @@ extern	int32_t	serial_write(serialManager_t serialManager, const uint8_t *buffer
  *    status = serial_read(KDEF0, buffer, &size);
  * \endcode
  *
- * \param[in]		serialManager		Serial Communication Manager
- * \param[in]		*buffer				Ptr on the buffer
- * \param[in, out]	*size				Ptr to a variable storing the size, initialized with the size of the buffer
- * \return			KERR_SERIAL_NOERR	OK
- * \return			KERR_SERIAL_NODEV	No corresponding Serial Communication Manager
- * \return			KERR_xxxxxx_NODEV	Depends on the "xxxx" Serial Communication Manager
+ * \param[in]       serialManager       Serial Communication Manager
+ * \param[in]       *buffer             Ptr on the buffer
+ * \param[in, out]  *size               Ptr to a variable storing the size, initialized with the size of the buffer
+ * \return          KERR_SERIAL_NOERR   OK
+ * \return          KERR_SERIAL_NODEV   No corresponding Serial Communication Manager
+ * \return          KERR_xxxxxx_NODEV   Depends on the "xxxx" Serial Communication Manager
  *
  */
-extern	int32_t	serial_read(serialManager_t serialManager, uint8_t *buffer, uint32_t *size);
+extern  int32_t serial_read(serialManager_t serialManager, uint8_t *buffer, uint32_t *size);
 
 /*!
  * \brief Get the semaphore identifier
@@ -247,16 +248,16 @@ extern	int32_t	serial_read(serialManager_t serialManager, uint8_t *buffer, uint3
  *    (void)dprintf(KSYST, "Semaphore ids: %s, ...%s\n", identifier[0], identifier[1]);
  * \endcode
  *
- * \param[in]	serialManager		Serial Communication Manager
- * \param[in]	semaphore			RX or TX semaphore
- * \param[out]	**identifier		Ptr on the semaphore identifier
- * \return		KERR_SERIAL_NOERR	OK
- * \return		KERR_SERIAL_NODEV	No corresponding Serial Communication Manager
- * \return		KERR_SERIAL_SENOE	The semaphore does not exist
- * \return		KERR_xxxxxx_NODEV	Depends on the "xxxx" Serial Communication Manager
+ * \param[in]   serialManager       Serial Communication Manager
+ * \param[in]   semaphore           RX or TX semaphore
+ * \param[out]  **identifier        Ptr on the semaphore identifier
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_NODEV   No corresponding Serial Communication Manager
+ * \return      KERR_SERIAL_SENOE   The semaphore does not exist
+ * \return      KERR_xxxxxx_NODEV   Depends on the "xxxx" Serial Communication Manager
  *
  */
-extern	int32_t	serial_getIdSemaphore(serialManager_t serialManager, uint8_t semaphore, char_t **identifier);
+extern  int32_t serial_getIdSemaphore(serialManager_t serialManager, uint8_t semaphore, char_t **identifier);
 
 /*!
  * \brief Flush the Serial Communication Manager
@@ -269,12 +270,12 @@ extern	int32_t	serial_getIdSemaphore(serialManager_t serialManager, uint8_t sema
  *    status = serial_flush(KDEF0);
  * \endcode
  *
- * \param[in]	serialManager			Serial Communication Manager
- * \return		KERR_SERIAL_NOERR	OK
- * \return		KERR_SERIAL_NODEV	The serialManager does not exist
+ * \param[in]   serialManager           Serial Communication Manager
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_NODEV   The serialManager does not exist
  *
  */
-extern	int32_t	serial_flush(serialManager_t serialManager);
+extern  int32_t serial_flush(serialManager_t serialManager);
 
 /*!
  * \brief Set the system-wide default Serial Communication Manager
@@ -287,11 +288,11 @@ extern	int32_t	serial_flush(serialManager_t serialManager);
  *    status = serial_setDefSerialManager(KURT0);
  * \endcode
  *
- * \param[in]	serialManager		Serial Communication Manager
- * \return		KERR_SERIAL_NOERR	OK
+ * \param[in]   serialManager       Serial Communication Manager
+ * \return      KERR_SERIAL_NOERR   OK
  *
  */
-extern	int32_t	serial_setDefSerialManager(serialManager_t serialManager);
+extern  int32_t serial_setDefSerialManager(serialManager_t serialManager);
 
 /*!
  * \brief Get the system-wide default Serial Communication Manager
@@ -305,11 +306,11 @@ extern	int32_t	serial_setDefSerialManager(serialManager_t serialManager);
  *    status = serial_getDefSerialManager(&serialManager);
  * \endcode
  *
- * \param[out]	*serialManager		Ptr on the Serial Communication Manager
- * \return		KERR_SERIAL_NOERR	OK
+ * \param[out]  *serialManager      Ptr on the Serial Communication Manager
+ * \return      KERR_SERIAL_NOERR   OK
  *
  */
-extern	int32_t	serial_getDefSerialManager(serialManager_t *serialManager);
+extern  int32_t serial_getDefSerialManager(serialManager_t *serialManager);
 
 /*!
  * \brief Get the father (or older) Serial Communication Manager
@@ -323,11 +324,11 @@ extern	int32_t	serial_getDefSerialManager(serialManager_t *serialManager);
  *    status = serial_getFatherSerialManager(&serialManager);
  * \endcode
  *
- * \param[out]	*serialManager		Ptr on the Serial Communication Manager
- * \return		KERR_SERIAL_NOERR	OK
+ * \param[out]  *serialManager      Ptr on the Serial Communication Manager
+ * \return      KERR_SERIAL_NOERR   OK
  *
  */
-extern	int32_t	serial_getFatherSerialManager(serialManager_t *serialManager);
+extern  int32_t serial_getFatherSerialManager(serialManager_t *serialManager);
 
 #ifdef __cplusplus
 }

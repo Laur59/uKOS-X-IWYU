@@ -3,14 +3,17 @@
 ; ============
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Model for controlling the "usart" device.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project:  uKOS-X
+;
+; Purpose:
+;    Model for controlling the "usart" device.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -44,42 +47,42 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<stdint.h>
-#include	<stdlib.h>
+#include    <stdint.h>
+#include    <stdlib.h>
 
-#include	"Registers/nvic.h"
-#include	"Registers/scb.h"
-#include	"serial/serial.h"
-#include	"kern/kern.h"
-#include	"macros.h"
-#include	"macros_core.h"
-#include	"macros_soc.h"
-#include	"os_errors.h"
-#include	"soc_reg.h"
-#include	"record/record.h"
+#include    "Registers/nvic.h"
+#include    "Registers/scb.h"
+#include    "serial/serial.h"
+#include    "kern/kern.h"
+#include    "macros.h"
+#include    "macros_core.h"
+#include    "macros_soc.h"
+#include    "os_errors.h"
+#include    "soc_reg.h"
+#include    "record/record.h"
 
-static	volatile	bool		vSending = false;
-static	volatile	bool		vWithSemaphore_RX = false;
-static	volatile	bool		vWithSemaphore_TX = false;
-static	volatile	uint8_t		vSndBuffer[KUSART_SZ_TX_BUF];
-static	volatile	uint8_t		vRecBuffer[KUSART_SZ_RX_BUF];
-static	volatile	uint8_t		vPseudoFIFO[4];
-static	volatile	uint8_t		* volatile vRRecBuffer;
-static	volatile	uint8_t		* volatile vWRecBuffer;
-static	volatile	uint8_t		* volatile vRSndBuffer;
-static	volatile	uint8_t		* volatile vWSndBuffer;
-static	volatile	int32_t		vStatus = KERR_SERIAL_NOERR;
-static				sema_t		*vSemaphore_RX;
-static				sema_t		*vSemaphore_TX;
+static  volatile    bool        vSending = false;
+static  volatile    bool        vWithSemaphore_RX = false;
+static  volatile    bool        vWithSemaphore_TX = false;
+static  volatile    uint8_t     vSndBuffer[KUSART_SZ_TX_BUF];
+static  volatile    uint8_t     vRecBuffer[KUSART_SZ_RX_BUF];
+static  volatile    uint8_t     vPseudoFIFO[4];
+static  volatile    uint8_t     * volatile vRRecBuffer;
+static  volatile    uint8_t     * volatile vWRecBuffer;
+static  volatile    uint8_t     * volatile vRSndBuffer;
+static  volatile    uint8_t     * volatile vWSndBuffer;
+static  volatile    int32_t     vStatus = KERR_SERIAL_NOERR;
+static              sema_t      *vSemaphore_RX;
+static              sema_t      *vSemaphore_TX;
 
 STRG_LOC_CONST(aStrSemaphore_RX[]) = KUSART_SEMAPHORE_RX;
 STRG_LOC_CONST(aStrSemaphore_TX[]) = KUSART_SEMAPHORE_TX;
 
 // Prototypes
 
-extern	void	(*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
+extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
-static	void	local_USART_IRQHandler(void);
+static  void    local_USART_IRQHandler(void);
 
 /*
  * \brief model_usart_init
@@ -87,37 +90,37 @@ static	void	local_USART_IRQHandler(void);
  * - Initialise the manager
  *
  */
-void	model_usart_init(void) {
+void    model_usart_init(void) {
 
-	cb_enable();
+    cb_enable();
 
 // Create the semaphores
 
-	if (kern_createSemaphore(aStrSemaphore_RX, 0, 1, &vSemaphore_RX) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "model_usart: create sema"); exit(EXIT_OS_PANIC); }
-	if (kern_createSemaphore(aStrSemaphore_TX, 0, 1, &vSemaphore_TX) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "model_usart: create sema"); exit(EXIT_OS_PANIC); }
+    if (kern_createSemaphore(aStrSemaphore_RX, 0, 1, &vSemaphore_RX) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "model_usart: create sema"); exit(EXIT_OS_PANIC); }
+    if (kern_createSemaphore(aStrSemaphore_TX, 0, 1, &vSemaphore_TX) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "model_usart: create sema"); exit(EXIT_OS_PANIC); }
 
 // Initialise the circular buffers (snd) and (rec)
 
-	vRSndBuffer = vSndBuffer;
-	vWSndBuffer = vSndBuffer;
-	vRRecBuffer = vRecBuffer;
-	vWRecBuffer = vRecBuffer;
+    vRSndBuffer = vSndBuffer;
+    vWSndBuffer = vSndBuffer;
+    vRRecBuffer = vRecBuffer;
+    vWRecBuffer = vRecBuffer;
 
 // Initialise the UART (Rx and Tx) and set it to 8-bits, 1-stop-bits, default baudrate and no parity
 
-	INTERRUPT_VECTOR(USART_VECTOR_NUMBER, local_USART_IRQHandler);
-	NVIC_SetPriority(USART_VECTOR_NUMBER, KINT_LEVEL_COMMUNICATIONS);
-	NVIC_EnableIRQ(USART_VECTOR_NUMBER);
+    INTERRUPT_VECTOR(USART_VECTOR_NUMBER, local_USART_IRQHandler);
+    NVIC_SetPriority(USART_VECTOR_NUMBER, KINT_LEVEL_COMMUNICATIONS);
+    NVIC_EnableIRQ(USART_VECTOR_NUMBER);
 
-	USART->ENABLE		 = 0x8u;
-	USART->BAUDRATE		 = BAUDRATE_NRF(KSERIAL_DEFAULT_BAUDRATE);
-	USART->CONFIG		 = 0U;
-	USART->RXD_PTR		 = (uint32_t)&vPseudoFIFO[0];
-	USART->RXD_MAXCNT	 = 1U;
-	USART->INTENSET		 = (1U<<2);
-	USART->TASKS_STARTRX = 1U;
+    USART->ENABLE        = 0x8u;
+    USART->BAUDRATE      = BAUDRATE_NRF(KSERIAL_DEFAULT_BAUDRATE);
+    USART->CONFIG        = 0U;
+    USART->RXD_PTR       = (uint32_t)&vPseudoFIFO[0];
+    USART->RXD_MAXCNT    = 1U;
+    USART->INTENSET      = (1U<<2);
+    USART->TASKS_STARTRX = 1U;
 
-	cb_init();
+    cb_init();
 }
 
 /*
@@ -126,45 +129,45 @@ void	model_usart_init(void) {
  * - Configure the manager
  *
  */
-int32_t	model_usart_configure(const urtxCnf_t *configure) {
+int32_t model_usart_configure(const urtxCnf_t *configure) {
 
-	INTERRUPTION_OFF;
-	USART->CONFIG = 0;
+    INTERRUPTION_OFF;
+    USART->CONFIG = 0;
 
-	switch (configure->oParity) {
-		case KSERIAL_PARITY_EVEN: { USART->CONFIG |= (7U<<1); break; }
-		case KSERIAL_PARITY_ODD:  { USART->CONFIG |= (1U<<8); break; }
-		default:
-		case KSERIAL_PARITY_NONE: {							  break; }
-	}
+    switch (configure->oParity) {
+        case KSERIAL_PARITY_EVEN: { USART->CONFIG |= (7U<<1); break; }
+        case KSERIAL_PARITY_ODD:  { USART->CONFIG |= (1U<<8); break; }
+        default:
+        case KSERIAL_PARITY_NONE: {                           break; }
+    }
 
-	USART->CONFIG |= (configure->oStopBits == KSERIAL_STOPBITS_2) ? (1U<<4) : (0);
+    USART->CONFIG |= (configure->oStopBits == KSERIAL_STOPBITS_2) ? (1U<<4) : (0);
 
-	switch (configure->oBaudRate) {
-		case KSERIAL_BAUDRATE_DEFAULT: { USART->BAUDRATE = BAUDRATE_NRF(KSERIAL_DEFAULT_BAUDRATE); break; }
-		case KSERIAL_BAUDRATE_2400:	   { USART->BAUDRATE = BAUDRATE_NRF(2400U);          		   break; }
-		case KSERIAL_BAUDRATE_4800:	   { USART->BAUDRATE = BAUDRATE_NRF(4800U);          		   break; }
-		case KSERIAL_BAUDRATE_9600:	   { USART->BAUDRATE = BAUDRATE_NRF(9600U);          		   break; }
-		case KSERIAL_BAUDRATE_19200:   { USART->BAUDRATE = BAUDRATE_NRF(19200U);         		   break; }
-		case KSERIAL_BAUDRATE_38400:   { USART->BAUDRATE = BAUDRATE_NRF(38400U);         		   break; }
-		case KSERIAL_BAUDRATE_57600:   { USART->BAUDRATE = BAUDRATE_NRF(57600U);         		   break; }
-		case KSERIAL_BAUDRATE_115200:  { USART->BAUDRATE = BAUDRATE_NRF(115200U);        		   break; }
-		case KSERIAL_BAUDRATE_230400:  { USART->BAUDRATE = BAUDRATE_NRF(230400U);        		   break; }
-		case KSERIAL_BAUDRATE_460800:  { USART->BAUDRATE = BAUDRATE_NRF(460800U);        		   break; }
-		case KSERIAL_BAUDRATE_500000:  { USART->BAUDRATE = BAUDRATE_NRF(500000U);        		   break; }
-		case KSERIAL_BAUDRATE_921600:  { USART->BAUDRATE = BAUDRATE_NRF(921600U);        		   break; }
-		case KSERIAL_BAUDRATE_1000000: { USART->BAUDRATE = BAUDRATE_NRF(1000000U);       		   break; }
-		case KSERIAL_BAUDRATE_1500000: { USART->BAUDRATE = BAUDRATE_NRF(1500000U);       		   break; }
-		case KSERIAL_BAUDRATE_1843200: { USART->BAUDRATE = BAUDRATE_NRF(1843200U);       		   break; }
-		case KSERIAL_BAUDRATE_2000000: { USART->BAUDRATE = BAUDRATE_NRF(2000000U);       		   break; }
-		case KSERIAL_BAUDRATE_2500000: { USART->BAUDRATE = BAUDRATE_NRF(2500000U);       		   break; }
-		case KSERIAL_BAUDRATE_3000000: { USART->BAUDRATE = BAUDRATE_NRF(3000000U);       		   break; }
-		default:					   { USART->BAUDRATE = BAUDRATE_NRF(KSERIAL_DEFAULT_BAUDRATE); break; }
-	}
+    switch (configure->oBaudRate) {
+        case KSERIAL_BAUDRATE_DEFAULT: { USART->BAUDRATE = BAUDRATE_NRF(KSERIAL_DEFAULT_BAUDRATE); break; }
+        case KSERIAL_BAUDRATE_2400:    { USART->BAUDRATE = BAUDRATE_NRF(2400U);                    break; }
+        case KSERIAL_BAUDRATE_4800:    { USART->BAUDRATE = BAUDRATE_NRF(4800U);                    break; }
+        case KSERIAL_BAUDRATE_9600:    { USART->BAUDRATE = BAUDRATE_NRF(9600U);                    break; }
+        case KSERIAL_BAUDRATE_19200:   { USART->BAUDRATE = BAUDRATE_NRF(19200U);                   break; }
+        case KSERIAL_BAUDRATE_38400:   { USART->BAUDRATE = BAUDRATE_NRF(38400U);                   break; }
+        case KSERIAL_BAUDRATE_57600:   { USART->BAUDRATE = BAUDRATE_NRF(57600U);                   break; }
+        case KSERIAL_BAUDRATE_115200:  { USART->BAUDRATE = BAUDRATE_NRF(115200U);                  break; }
+        case KSERIAL_BAUDRATE_230400:  { USART->BAUDRATE = BAUDRATE_NRF(230400U);                  break; }
+        case KSERIAL_BAUDRATE_460800:  { USART->BAUDRATE = BAUDRATE_NRF(460800U);                  break; }
+        case KSERIAL_BAUDRATE_500000:  { USART->BAUDRATE = BAUDRATE_NRF(500000U);                  break; }
+        case KSERIAL_BAUDRATE_921600:  { USART->BAUDRATE = BAUDRATE_NRF(921600U);                  break; }
+        case KSERIAL_BAUDRATE_1000000: { USART->BAUDRATE = BAUDRATE_NRF(1000000U);                 break; }
+        case KSERIAL_BAUDRATE_1500000: { USART->BAUDRATE = BAUDRATE_NRF(1500000U);                 break; }
+        case KSERIAL_BAUDRATE_1843200: { USART->BAUDRATE = BAUDRATE_NRF(1843200U);                 break; }
+        case KSERIAL_BAUDRATE_2000000: { USART->BAUDRATE = BAUDRATE_NRF(2000000U);                 break; }
+        case KSERIAL_BAUDRATE_2500000: { USART->BAUDRATE = BAUDRATE_NRF(2500000U);                 break; }
+        case KSERIAL_BAUDRATE_3000000: { USART->BAUDRATE = BAUDRATE_NRF(3000000U);                 break; }
+        default:                       { USART->BAUDRATE = BAUDRATE_NRF(KSERIAL_DEFAULT_BAUDRATE); break; }
+    }
 
-	vWithSemaphore_RX = ((configure->oKernSync & ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_RX)) != 0U) ? (true) : (false);
-	vWithSemaphore_TX = ((configure->oKernSync & ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_TX)) != 0U) ? (true) : (false);
-	RETURN_INT_RESTORE(KERR_SERIAL_NOERR);
+    vWithSemaphore_RX = ((configure->oKernSync & ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_RX)) != 0U) ? (true) : (false);
+    vWithSemaphore_TX = ((configure->oKernSync & ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_TX)) != 0U) ? (true) : (false);
+    RETURN_INT_RESTORE(KERR_SERIAL_NOERR);
 }
 
 /*
@@ -173,46 +176,46 @@ int32_t	model_usart_configure(const urtxCnf_t *configure) {
  * - Write a buffer
  *
  */
-int32_t	model_usart_write(const uint8_t *buffer, uint32_t size) {
-			uint32_t	i, newSize, wkSize = size;
-	const	uint8_t		*wkBuffer = buffer;
-	static	bool		terminate = false, busy = false;
+int32_t model_usart_write(const uint8_t *buffer, uint32_t size) {
+            uint32_t    i, newSize, wkSize = size;
+    const   uint8_t     *wkBuffer = buffer;
+    static  bool        terminate = false, busy = false;
 
-	INTERRUPTION_OFF;
-	if ((vSending == true) || (busy == true)) { RETURN_INT_RESTORE(KERR_SERIAL_SEPRO); }
-	if (wkSize == 0U)		  				  { RETURN_INT_RESTORE(KERR_SERIAL_LNBU0); }
+    INTERRUPTION_OFF;
+    if ((vSending == true) || (busy == true)) { RETURN_INT_RESTORE(KERR_SERIAL_SEPRO); }
+    if (wkSize == 0U)                         { RETURN_INT_RESTORE(KERR_SERIAL_LNBU0); }
 
-	busy = true;
-	INTERRUPTION_RESTORE;
+    busy = true;
+    INTERRUPTION_RESTORE;
 
-	while (terminate == false) {
-		while (vSending == true) { kern_suspendProcess(1U); }
+    while (terminate == false) {
+        while (vSending == true) { kern_suspendProcess(1U); }
 
-		if (wkSize > KUSART_SZ_TX_BUF) { newSize = KUSART_SZ_TX_BUF; wkSize -= KUSART_SZ_TX_BUF; }
-		else						   { newSize = wkSize; terminate = true;					 }
+        if (wkSize > KUSART_SZ_TX_BUF) { newSize = KUSART_SZ_TX_BUF; wkSize -= KUSART_SZ_TX_BUF; }
+        else                           { newSize = wkSize; terminate = true;                     }
 
 // Copy the input buffer into the send one and start the transfer
 // Enable the TX interruption
 
-		vSending = true;
-		for (i = 0U; i < newSize; i++) {
-			vSndBuffer[i] = wkBuffer[i];
-		}
+        vSending = true;
+        for (i = 0U; i < newSize; i++) {
+            vSndBuffer[i] = wkBuffer[i];
+        }
 
-		vWSndBuffer = (volatile	uint8_t *)((uintptr_t)vSndBuffer + (uintptr_t)newSize);
-		wkBuffer	= (const uint8_t	*)((uintptr_t)wkBuffer	 + (uintptr_t)newSize);
-		vRSndBuffer = vSndBuffer;
+        vWSndBuffer = (volatile uint8_t *)((uintptr_t)vSndBuffer + (uintptr_t)newSize);
+        wkBuffer    = (const uint8_t    *)((uintptr_t)wkBuffer   + (uintptr_t)newSize);
+        vRSndBuffer = vSndBuffer;
 
-		while (cb_CTSCheck() == false) { kern_suspendProcess(1U); }
+        while (cb_CTSCheck() == false) { kern_suspendProcess(1U); }
 
-		USART->TXD_PTR	  = (uint32_t)vSndBuffer;
-		USART->TXD_MAXCNT = (uint32_t)newSize;
-		USART->INTENSET	  = (1U<<8);
-		USART->TASKS_STARTTX = 1U;
-	}
-	busy = false;
-	terminate = false;
-	return (KERR_SERIAL_NOERR);
+        USART->TXD_PTR    = (uint32_t)vSndBuffer;
+        USART->TXD_MAXCNT = (uint32_t)newSize;
+        USART->INTENSET   = (1U<<8);
+        USART->TASKS_STARTTX = 1U;
+    }
+    busy = false;
+    terminate = false;
+    return (KERR_SERIAL_NOERR);
 }
 
 /*
@@ -221,41 +224,41 @@ int32_t	model_usart_write(const uint8_t *buffer, uint32_t size) {
  * - Read n x bytes
  *
  */
-int32_t	model_usart_read(uint8_t *buffer, uint32_t *size) {
-	uint8_t		*wkBuffer = buffer;
-	int32_t		status;
-	uint32_t	i;
+int32_t model_usart_read(uint8_t *buffer, uint32_t *size) {
+    uint8_t     *wkBuffer = buffer;
+    int32_t     status;
+    uint32_t    i;
 
-	INTERRUPTION_OFF;
-	status  = vStatus;
-	vStatus = KERR_SERIAL_NOERR;
+    INTERRUPTION_OFF;
+    status  = vStatus;
+    vStatus = KERR_SERIAL_NOERR;
 
 // Interruption problem: buffer full, Framing error, Overrun error.
 // In this case, we return 0-bytes read with the corresponding error.
 // The Error is then cancelled for the next time.
 
-	if (status != KERR_SERIAL_NOERR)	{ *size = 0U; RETURN_INT_RESTORE(status);			 }
-	if (*size == 0U) 					{ *size = 0U; RETURN_INT_RESTORE(KERR_SERIAL_NOERR); }
+    if (status != KERR_SERIAL_NOERR)    { *size = 0U; RETURN_INT_RESTORE(status);            }
+    if (*size == 0U)                    { *size = 0U; RETURN_INT_RESTORE(KERR_SERIAL_NOERR); }
 
 // cppcheck-suppress premium-misra-c-2023-13.2
 //
-	if (vRRecBuffer == vWRecBuffer)     { *size = 0U; RETURN_INT_RESTORE(KERR_SERIAL_RBUEM); }
+    if (vRRecBuffer == vWRecBuffer)     { *size = 0U; RETURN_INT_RESTORE(KERR_SERIAL_RBUEM); }
 
-	for (i = 0U; i < *size; i++) {
-
-// cppcheck-suppress premium-misra-c-2023-13.2
-//
-		if (vRRecBuffer == vWRecBuffer) { *size = i; RETURN_INT_RESTORE(KERR_SERIAL_NOERR);  }
-
-		*wkBuffer = *vRRecBuffer;
-		wkBuffer++;
-		vRRecBuffer++;
+    for (i = 0U; i < *size; i++) {
 
 // cppcheck-suppress premium-misra-c-2023-13.2
 //
-		vRRecBuffer = (vRRecBuffer == &vRecBuffer[KUSART_SZ_RX_BUF]) ? (vRecBuffer) : (vRRecBuffer);
-	}
-	RETURN_INT_RESTORE(status);
+        if (vRRecBuffer == vWRecBuffer) { *size = i; RETURN_INT_RESTORE(KERR_SERIAL_NOERR);  }
+
+        *wkBuffer = *vRRecBuffer;
+        wkBuffer++;
+        vRRecBuffer++;
+
+// cppcheck-suppress premium-misra-c-2023-13.2
+//
+        vRRecBuffer = (vRRecBuffer == &vRecBuffer[KUSART_SZ_RX_BUF]) ? (vRecBuffer) : (vRRecBuffer);
+    }
+    RETURN_INT_RESTORE(status);
 }
 
 /*
@@ -264,17 +267,17 @@ int32_t	model_usart_read(uint8_t *buffer, uint32_t *size) {
  * - Flush the usart manager
  *
  */
-int32_t	model_usart_flush(void) {
-	sema_t	*semaphore;
+int32_t model_usart_flush(void) {
+    sema_t  *semaphore;
 
 // Initialise the circular buffers (rec) and restart the associated semaphore
 
-	INTERRUPTION_OFF;
-	vRRecBuffer = vRecBuffer;
-	vWRecBuffer = vRecBuffer;
-	kern_getSemaphoreById(KUSART_SEMAPHORE_RX, &semaphore);
-	kern_restartSemaphore(semaphore);
-	RETURN_INT_RESTORE(KERR_SERIAL_NOERR);
+    INTERRUPTION_OFF;
+    vRRecBuffer = vRecBuffer;
+    vWRecBuffer = vRecBuffer;
+    kern_getSemaphoreById(KUSART_SEMAPHORE_RX, &semaphore);
+    kern_restartSemaphore(semaphore);
+    RETURN_INT_RESTORE(KERR_SERIAL_NOERR);
 }
 
 // Local routines
@@ -286,49 +289,49 @@ int32_t	model_usart_flush(void) {
  * - Interruption RX-TX
  *
  */
-static	void	local_USART_IRQHandler(void) {
-	uint32_t	core;
+static  void    local_USART_IRQHandler(void) {
+    uint32_t    core;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	if ((USART->EVENTS_RXDRDY & 0x1u) != 0U) {
-		USART->EVENTS_RXDRDY = 0U;
-		USART->TASKS_STARTRX = 1U;
+    if ((USART->EVENTS_RXDRDY & 0x1u) != 0U) {
+        USART->EVENTS_RXDRDY = 0U;
+        USART->TASKS_STARTRX = 1U;
 
 // RX interruption
 
-		if ((USART->ERRORSRC & UARTE_ERRORSRC_OVERRUN) != 0U) { vStatus = KERR_SERIAL_EROVR; }
-		if ((USART->ERRORSRC & UARTE_ERRORSRC_FRAMING) != 0U) { vStatus = KERR_SERIAL_ERFRA; }
-		if ((USART->ERRORSRC & UARTE_ERRORSRC_PARITY)  != 0U) { vStatus = KERR_SERIAL_ERPAR; }
+        if ((USART->ERRORSRC & UARTE_ERRORSRC_OVERRUN) != 0U) { vStatus = KERR_SERIAL_EROVR; }
+        if ((USART->ERRORSRC & UARTE_ERRORSRC_FRAMING) != 0U) { vStatus = KERR_SERIAL_ERFRA; }
+        if ((USART->ERRORSRC & UARTE_ERRORSRC_PARITY)  != 0U) { vStatus = KERR_SERIAL_ERPAR; }
 
 // Read the data and signal the event
 
-		*vWRecBuffer = vPseudoFIFO[0];
-		vWRecBuffer++;
-		vStatus = (vWRecBuffer == vRRecBuffer) ? (KERR_SERIAL_RBFUL) : (vStatus);
+        *vWRecBuffer = vPseudoFIFO[0];
+        vWRecBuffer++;
+        vStatus = (vWRecBuffer == vRRecBuffer) ? (KERR_SERIAL_RBFUL) : (vStatus);
 
 // cppcheck-suppress premium-misra-c-2023-13.2
 //
-		vWRecBuffer = (vWRecBuffer == &vRecBuffer[KUSART_SZ_RX_BUF]) ? (vRecBuffer) : (vWRecBuffer);
+        vWRecBuffer = (vWRecBuffer == &vRecBuffer[KUSART_SZ_RX_BUF]) ? (vRecBuffer) : (vWRecBuffer);
 
-		#if (defined(KUSART_SEMA_RX_S))
-		if (vWithSemaphore_RX == true) { kern_signalSemaphore(vSemaphore_RX); }
-		#endif
+        #if (defined(KUSART_SEMA_RX_S))
+        if (vWithSemaphore_RX == true) { kern_signalSemaphore(vSemaphore_RX); }
+        #endif
 
 // cppcheck-suppress premium-misra-c-2023-5.8
 //
-		PREEMPTION_THRESHOLD(core);
-	}
+        PREEMPTION_THRESHOLD(core);
+    }
 
-	if ((USART->EVENTS_ENDTX & 0x1) != 0U) {
-		USART->EVENTS_ENDTX = 0U;
+    if ((USART->EVENTS_ENDTX & 0x1) != 0U) {
+        USART->EVENTS_ENDTX = 0U;
 
 // TX interruption
 
-		vSending = false;
+        vSending = false;
 
-		#if (defined(KUSART_SEMA_TX_S))
-		if (vWithSemaphore_TX == true) { kern_signalSemaphore(vSemaphore_TX); }
-		#endif
-	}
+        #if (defined(KUSART_SEMA_TX_S))
+        if (vWithSemaphore_TX == true) { kern_signalSemaphore(vSemaphore_TX); }
+        #endif
+    }
 }

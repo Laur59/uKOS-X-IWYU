@@ -2,17 +2,18 @@
 ; stub_watchdog.
 ; ==============
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		stub for the connection of the "watchdog" manager to the watchdog device.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    stub for the connection of the "watchdog" manager to the watchdog device.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -49,6 +50,6 @@
 // Connect the physical device to the logical manager
 // --------------------------------------------------
 
-#define	model_watchdog_arm	stub_watchdog_arm
+#define model_watchdog_arm  stub_watchdog_arm
 
-#include	"model_watchdog.c_inc"
+#include    "model_watchdog.c_inc"

@@ -2,17 +2,18 @@
 ; mutex.
 ; ======
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		List the mutexes.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    List the mutexes.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,52 +47,52 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<inttypes.h>
-#include	<stdint.h>	// NOLINT(misc-include-cleaner): Explicit include for IWYU compliance
-#include	<stdio.h>
-#include	<string.h>
+#include    <inttypes.h>
+#include    <stdint.h>  // NOLINT(misc-include-cleaner): Explicit include for IWYU compliance
+#include    <stdio.h>
+#include    <string.h>
 
-#include	"kern/kern.h"
-#include	"kern/private/private_mutexes.h"
-#include	"macros.h"
-#include	"macros_core.h"
-#include	"macros_soc.h"
-#include	"modules.h"
-#include	"serial/serial.h"
-#include	"types.h"
+#include    "kern/kern.h"
+#include    "kern/private/private_mutexes.h"
+#include    "macros.h"
+#include    "macros_core.h"
+#include    "macros_soc.h"
+#include    "modules.h"
+#include    "serial/serial.h"
+#include    "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"mutex        Show all created mutexes.                 (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "Show all created mutexes\n"
-									"========================\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "mutex        Show all created mutexes.                 (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "Show all created mutexes\n"
+                                    "========================\n\n"
 
-									"This tool displays the name of all the used mutexes\n"
-									"with the associated process.\n\n"
+                                    "This tool displays the name of all the used mutexes\n"
+                                    "with the associated process.\n\n"
 
-									"Input format:  mutex\n"
-									"Output format: mutex information\n\n"
+                                    "Input format:  mutex\n"
+                                    "Output format: mutex information\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 
-static	int32_t		prgm(uint32_t argc, const char_t *argv[]);
-static	void		local_compose(const char_t *identifier, const char_t **idSpacer);
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+static  void        local_compose(const char_t *identifier, const char_t **idSpacer);
 
 MODULE(
-	Mutex,										// Module name (the first letter has to be upper case)
-	KID_FAM_CLI,								// Family (defined in the module.h)
-	KNUM_SEMAPHORE,								// Module identifier (defined in the module.h)
-	NULL,										// Address of the initialisation code (early pre-init)
-	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	NULL,										// Address of the clean code (clean the module)
-	" 1.0",										// Revision string (major . minor)
-	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0											// Execution cores
+    Mutex,                                      // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                                // Family (defined in the module.h)
+    KNUM_SEMAPHORE,                             // Module identifier (defined in the module.h)
+    NULL,                                       // Address of the initialisation code (early pre-init)
+    prgm,                                       // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    NULL,                                       // Address of the clean code (clean the module)
+    " 1.0",                                     // Revision string (major . minor)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),         // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                           // Execution cores
 );
 
 // CLI tool specific
@@ -101,85 +102,85 @@ MODULE(
  * \brief Main entry point
  *
  */
-static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
-	UNUSED(argc);
-	UNUSED(argv);
+static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
+    UNUSED(argc);
+    UNUSED(argv);
 
-			int32_t		status, counter;
-			uint32_t	core;
-			uint16_t	i, j, k, nbAttached;
-			enum		{ KERR_NOT, KERR_MEM } error = KERR_NOT;
-			proc_t		*process;
-	const	char_t		*idBuffer[KNB_CORES][KKERN_NB_PROCESSES], *identifier, *idSpacerI, *owner, *idSpacerO;
+            int32_t     status, counter;
+            uint32_t    core;
+            uint16_t    i, j, k, nbAttached;
+            enum        { KERR_NOT, KERR_MEM } error = KERR_NOT;
+            proc_t      *process;
+    const   char_t      *idBuffer[KNB_CORES][KKERN_NB_PROCESSES], *identifier, *idSpacerI, *owner, *idSpacerO;
 
-	(void)dprintf(KSYST, "List of the system mutexes.\n");
+    (void)dprintf(KSYST, "List of the system mutexes.\n");
 
-	PRIVILEGE_ELEVATE;
+    PRIVILEGE_ELEVATE;
 
-	(void)dprintf(KSYST, " #  Mutex identifier                  Counter  Owner process identifier          Waiting process\n\n");
+    (void)dprintf(KSYST, " #  Mutex identifier                  Counter  Owner process identifier          Waiting process\n\n");
 
-	for (core = 0U; core < KNB_CORES; core++) {
-		(void)dprintf(KSYST, "Mutexes used by the core %"PRIu32"\n\n", core);
-		for (i = 0U; i < KKERN_NB_MUTEXES; i++) {
-			if (vKern_mutx[core][i].oIdentifier != NULL) {
+    for (core = 0U; core < KNB_CORES; core++) {
+        (void)dprintf(KSYST, "Mutexes used by the core %"PRIu32"\n\n", core);
+        for (i = 0U; i < KKERN_NB_MUTEXES; i++) {
+            if (vKern_mutx[core][i].oIdentifier != NULL) {
 
 // Prepare the generic printing characteristics
 // for all the mutex (identifier, spacer, counter & owner)
 
-				kern_criticalSection(KENTER_CRITICAL);
-				identifier = vKern_mutx[core][i].oIdentifier;
-				local_compose(identifier, &idSpacerI);
+                kern_criticalSection(KENTER_CRITICAL);
+                identifier = vKern_mutx[core][i].oIdentifier;
+                local_compose(identifier, &idSpacerI);
 
-				counter = vKern_mutx[core][i].oCounter;
+                counter = vKern_mutx[core][i].oCounter;
 
-				if (vKern_mutx[core][i].oOwner == NULL) { owner = "";																															   }
-				else									{ owner = (vKern_mutx[core][i].oOwner == KKERN_HANDLE_FROM_ISR) ? ("From ISR") : (vKern_mutx[core][i].oOwner->oSpecification.oIdentifier); }
-				local_compose(owner, &idSpacerO);
+                if (vKern_mutx[core][i].oOwner == NULL) { owner = "";                                                                                                                              }
+                else                                    { owner = (vKern_mutx[core][i].oOwner == KKERN_HANDLE_FROM_ISR) ? ("From ISR") : (vKern_mutx[core][i].oOwner->oSpecification.oIdentifier); }
+                local_compose(owner, &idSpacerO);
 
 // Scann the mutex list and collect
 // the name of all the attached processes
 
-				nbAttached = 0U;
-				if (vKern_mutx[core][i].oList.oNbElements > 0U) {
-					process = vKern_mutx[core][i].oList.oFirst;
-					k = vKern_mutx[core][i].oList.oNbElements;
-					for (j = 0U; j < k; j++) {
+                nbAttached = 0U;
+                if (vKern_mutx[core][i].oList.oNbElements > 0U) {
+                    process = vKern_mutx[core][i].oList.oFirst;
+                    k = vKern_mutx[core][i].oList.oNbElements;
+                    for (j = 0U; j < k; j++) {
 
 // Save the names of all the attached
 // processes
 
-						idBuffer[core][j] = process->oSpecification.oIdentifier;
-						process = process->oObject.oForward;
-					}
-					nbAttached = j;
-					}
-				kern_criticalSection(KEXIT_CRITICAL);
+                        idBuffer[core][j] = process->oSpecification.oIdentifier;
+                        process = process->oObject.oForward;
+                    }
+                    nbAttached = j;
+                    }
+                kern_criticalSection(KEXIT_CRITICAL);
 
-				(void)dprintf(KSYST, "%2"PRIu16"  %s%s   %3"PRId32"", i, identifier, idSpacerI, counter);
+                (void)dprintf(KSYST, "%2"PRIu16"  %s%s   %3"PRId32"", i, identifier, idSpacerI, counter);
 
 // Display all the suspended processes
 
-				if (nbAttached > 0U) {
-					(void)dprintf(KSYST, "     %s%s  %s\n", owner, idSpacerO, idBuffer[core][0]);
-					for (j = 1U; j < nbAttached; j++) {
-						(void)dprintf(KSYST, "                                                                                 %s\n", idBuffer[core][j]);
-					}
-				}
-				else {
-					(void)dprintf(KSYST, "     %s\n", owner);
-				}
-			}
-		}
-	}
+                if (nbAttached > 0U) {
+                    (void)dprintf(KSYST, "     %s%s  %s\n", owner, idSpacerO, idBuffer[core][0]);
+                    for (j = 1U; j < nbAttached; j++) {
+                        (void)dprintf(KSYST, "                                                                                 %s\n", idBuffer[core][j]);
+                    }
+                }
+                else {
+                    (void)dprintf(KSYST, "     %s\n", owner);
+                }
+            }
+        }
+    }
 
-	switch (error) {
-		case KERR_NOT: { (void)dprintf(KSYST, "\n");					 status = EXIT_OS_SUCCESS_CLI; break; }
-		case KERR_MEM: { (void)dprintf(KSYST, "Not enough memory.\n\n"); status = EXIT_OS_FAILURE;     break; }
-		default:	   {												 status = EXIT_OS_FAILURE;     break; }
-	}
+    switch (error) {
+        case KERR_NOT: { (void)dprintf(KSYST, "\n");                     status = EXIT_OS_SUCCESS_CLI; break; }
+        case KERR_MEM: { (void)dprintf(KSYST, "Not enough memory.\n\n"); status = EXIT_OS_FAILURE;     break; }
+        default:       {                                                 status = EXIT_OS_FAILURE;     break; }
+    }
 
-	PRIVILEGE_RESTORE;
-	return (status);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 // Local routines
@@ -193,19 +194,19 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
  * - to accommodate "1234567     "
  * -                "            "
  *
- * \param[in]	*string		Ptr on a string
- * \param[out]	**spacer	Ptr on the final space
+ * \param[in]   *string     Ptr on a string
+ * \param[out]  **spacer    Ptr on the final space
  *
  * \note This function does not return a value (None).
  *
  */
-static	void	local_compose(const char_t *identifier, const char_t **idSpacer) {
-	size_t	len;
+static  void    local_compose(const char_t *identifier, const char_t **idSpacer) {
+    size_t  len;
 
 // --------------------------------------|------------------------------|---
 //                                      "Semaphore_to_count_the_number_xy";
-	static	const	char_t	aSpacer[] = "                                ";
+    static  const   char_t  aSpacer[] = "                                ";
 
-	len = strlen(identifier);
-	*idSpacer = (len <= (sizeof(aSpacer) - 1U)) ? (&aSpacer[len]) : (&aSpacer[0]);
+    len = strlen(identifier);
+    *idSpacer = (len <= (sizeof(aSpacer) - 1U)) ? (&aSpacer[len]) : (&aSpacer[0]);
 }

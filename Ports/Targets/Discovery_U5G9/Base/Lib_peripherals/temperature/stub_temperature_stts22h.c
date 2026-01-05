@@ -2,18 +2,19 @@
 ; stub_temperature_stts22h.
 ; =========================
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		stub for the connection of the "temperature" manager to the stts22h
-;			via the i2c1 device.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    stub for the connection of the "temperature" manager to the stts22h
+;    via the i2c1 device.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,24 +48,24 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"i2c/i2c.h"
-#include	"i2c1/i2c1.h"		// IWYU pragma: keep (for RESERVE)
-#include	"i2c_common.h"
-#include	"kern/temporal.h"	// IWYU pragma: keep (for KWAITINFINITY in RESERVE)
-#include	"macros.h"
-#include	"types.h"
+#include    "i2c/i2c.h"
+#include    "i2c1/i2c1.h"       // IWYU pragma: keep (for RESERVE)
+#include    "i2c_common.h"
+#include    "kern/temporal.h"   // IWYU pragma: keep (for KWAITINFINITY in RESERVE)
+#include    "macros.h"
+#include    "types.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
 
-#define	model_stts22h_init		stub_temperature_init
-#define	model_stts22h_read		stub_temperature_read
-#define	model_stts22h_write		stub_temperature_write
+#define model_stts22h_init      stub_temperature_init
+#define model_stts22h_read      stub_temperature_read
+#define model_stts22h_write     stub_temperature_write
 
-static	void	cb_readI2C(uint8_t address, uint8_t *buffer, uint16_t number);
-static	void	cb_writeI2C(uint8_t address, const uint8_t *buffer, uint16_t number);
+static  void    cb_readI2C(uint8_t address, uint8_t *buffer, uint16_t number);
+static  void    cb_writeI2C(uint8_t address, const uint8_t *buffer, uint16_t number);
 
 // Model callbacks
 // ---------------
@@ -75,20 +76,20 @@ static	void	cb_writeI2C(uint8_t address, const uint8_t *buffer, uint16_t number)
  * - Configure of the I2C & the stts22h
  *
  */
-static	void	cb_configure(void) {
-	static	bool		vInit = false;
-	const	i2cCnf_t	configureI2C1 = {
-							.oTimeout  = 100000U,
-							.oSpeed    = KI2C_400KBPS,
-						};
+static  void    cb_configure(void) {
+    static  bool        vInit = false;
+    const   i2cCnf_t    configureI2C1 = {
+                            .oTimeout  = 100000U,
+                            .oSpeed    = KI2C_400KBPS,
+                        };
 
-	if (!vInit) {
-		vInit = true;
+    if (!vInit) {
+        vInit = true;
 
-		RESERVE(I2C1, KMODE_READ_WRITE);
-		i2c_configure(KI2C1, &configureI2C1);
-		RELEASE(I2C1, KMODE_READ_WRITE);
-	}
+        RESERVE(I2C1, KMODE_READ_WRITE);
+        i2c_configure(KI2C1, &configureI2C1);
+        RELEASE(I2C1, KMODE_READ_WRITE);
+    }
 }
 
 /*
@@ -97,11 +98,11 @@ static	void	cb_configure(void) {
  * - Write to the i2c
  *
  */
-static	void	cb_writeI2C(uint8_t address, const uint8_t *buffer, uint16_t number) {
+static  void    cb_writeI2C(uint8_t address, const uint8_t *buffer, uint16_t number) {
 
-	RESERVE(I2C1, KMODE_READ_WRITE);
-	i2c_write(KI2C1, address, buffer, number);
-	RELEASE(I2C1, KMODE_READ_WRITE);
+    RESERVE(I2C1, KMODE_READ_WRITE);
+    i2c_write(KI2C1, address, buffer, number);
+    RELEASE(I2C1, KMODE_READ_WRITE);
 }
 
 /*
@@ -110,11 +111,11 @@ static	void	cb_writeI2C(uint8_t address, const uint8_t *buffer, uint16_t number)
  * - Read from the i2c
  *
  */
-static	void	cb_readI2C(uint8_t address, uint8_t *buffer, uint16_t number) {
+static  void    cb_readI2C(uint8_t address, uint8_t *buffer, uint16_t number) {
 
-	RESERVE(I2C1, KMODE_READ_WRITE);
-	i2c_read(KI2C1, address, buffer, number);
-	RELEASE(I2C1, KMODE_READ_WRITE);
+    RESERVE(I2C1, KMODE_READ_WRITE);
+    i2c_read(KI2C1, address, buffer, number);
+    RELEASE(I2C1, KMODE_READ_WRITE);
 }
 
-#include	"model_stts22h.c_inc"
+#include    "model_stts22h.c_inc"

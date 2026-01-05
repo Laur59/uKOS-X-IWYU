@@ -2,17 +2,18 @@
 ; imager_commun.
 ; ==============
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		imager_commun equates.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    imager_commun equates.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,9 +47,9 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 /*!
  * \addtogroup Lib_peripherals
@@ -65,59 +66,59 @@
  * @{
  */
 
-#define		KIMAGER_SINGLE_BUFFER	0x80u						// Single buffer
-#define		KIMAGER_NB_ROWS_QVGA	240U						// Number of rows (QVGA)
-#define		KIMAGER_NB_COLS_QVGA	320U						// Number of columns (QVGA)
+#define     KIMAGER_SINGLE_BUFFER   0x80u                       // Single buffer
+#define     KIMAGER_NB_ROWS_QVGA    240U                        // Number of rows (QVGA)
+#define     KIMAGER_NB_COLS_QVGA    320U                        // Number of columns (QVGA)
 
 // Configuration structure
 // -----------------------
 
-typedef	struct	imagerCnf	imagerCnf_t;
+typedef struct  imagerCnf   imagerCnf_t;
 
 struct imagerCnf {
-			uint8_t		oAcqMode;								// Acquisition mode
-			uint8_t		oPixMode;								// Pixel mode
-			uint16_t	oStRows;								// Start of rows
-			uint16_t	oNbRows;								// Number of rows
-			uint16_t	oStCols;								// Start of cols
-			uint16_t	oNbCols;								// Number of cols
-			uint8_t		oKernSync;								// uKernel synchro
-			void		*oImgCnf;								// Imager configuration table
-			void		(*oHSync)(void);						// Ptr on the callback HSync routine
-			void		(*oFrame)(void);						// Ptr on the callback Frame routine
-			void		(*oVSync)(void);						// Ptr on the callback VSync routine
-			void		(*oDMAEc)(void);						// Ptr on the callback DMAEc routine
+            uint8_t     oAcqMode;                               // Acquisition mode
+            uint8_t     oPixMode;                               // Pixel mode
+            uint16_t    oStRows;                                // Start of rows
+            uint16_t    oNbRows;                                // Number of rows
+            uint16_t    oStCols;                                // Start of cols
+            uint16_t    oNbCols;                                // Number of cols
+            uint8_t     oKernSync;                              // uKernel synchro
+            void        *oImgCnf;                               // Imager configuration table
+            void        (*oHSync)(void);                        // Ptr on the callback HSync routine
+            void        (*oFrame)(void);                        // Ptr on the callback Frame routine
+            void        (*oVSync)(void);                        // Ptr on the callback VSync routine
+            void        (*oDMAEc)(void);                        // Ptr on the callback DMAEc routine
 };
 
 // Pixel mode (Bits per pixel) (oPixMode)
 
 enum {
-			KIMAGER_PIX_8_BITS = 0U,							// 8-bit resolution
-			KIMAGER_PIX_10_BITS,								// 10-bit resolution
-			KIMAGER_PIX_12_BITS,								// 12-bit resolution
-			KIMAGER_PIX_14_BITS									// 14-bit resolution
+            KIMAGER_PIX_8_BITS = 0U,                            // 8-bit resolution
+            KIMAGER_PIX_10_BITS,                                // 10-bit resolution
+            KIMAGER_PIX_12_BITS,                                // 12-bit resolution
+            KIMAGER_PIX_14_BITS                                 // 14-bit resolution
 };
 
 // Kernel synchro semaphores
 
 enum {
-			BIMAGER_SEMAPHORE_IM = 0U,							// IM semaphore
-			BIMAGER_SEMAPHORE_VS								// Vertical synchro semaphore
+            BIMAGER_SEMAPHORE_IM = 0U,                          // IM semaphore
+            BIMAGER_SEMAPHORE_VS                                // Vertical synchro semaphore
 };
 
 // Acquisition modes
 
 enum {
-			KIMAGER_CONT = 0U,									// Continuous mode
-			KIMAGER_SNAP,										// Snapshot mode
-			KIMAGER_SYNC										// Sync mode
+            KIMAGER_CONT = 0U,                                  // Continuous mode
+            KIMAGER_SNAP,                                       // Snapshot mode
+            KIMAGER_SYNC                                        // Sync mode
 };
 
 // Operation modes
 
 enum {
-			KIMAGER_OPERATE = 0U,								// Imager in a normal mode (run)
-			KIMAGER_STANDBY										// Imager in standby
+            KIMAGER_OPERATE = 0U,                               // Imager in a normal mode (run)
+            KIMAGER_STANDBY                                     // Imager in standby
 };
 
 /**@}*/

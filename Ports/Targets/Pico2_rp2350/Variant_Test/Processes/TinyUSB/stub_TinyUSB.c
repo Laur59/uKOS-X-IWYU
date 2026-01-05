@@ -2,18 +2,19 @@
 ; stub_TinyUSB.
 ; =============
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		stub for the "TinyUSB" library.
-;			Multiple profiles
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    stub for the "TinyUSB" library.
+;    Multiple profiles
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,53 +48,53 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"Registers/nvic.h"
-#include	"Registers/soc_vectors.h"
-#include	"clockTree.h"
-#include	"macros_core.h"
-#include	"macros_soc.h"
+#include    "Registers/nvic.h"
+#include    "Registers/soc_vectors.h"
+#include    "clockTree.h"
+#include    "macros_core.h"
+#include    "macros_soc.h"
 
 // Save the GCC diagnostic
 //
-#pragma GCC diagnostic	push
+#pragma GCC diagnostic  push
 
 // Ignore the GCC diagnostic
 //
-#pragma GCC diagnostic	ignored	"-Wpedantic"
-#include	"tusb.h"
-#include	"tusb_option.h"
-#include	"tusb_os_custom.h"
-#include	"device/usbd.h"
+#pragma GCC diagnostic  ignored "-Wpedantic"
+#include    "tusb.h"
+#include    "tusb_option.h"
+#include    "tusb_os_custom.h"
+#include    "device/usbd.h"
 
 // Restore the GCC diagnostic
 //
-#pragma GCC	diagnostic	pop
+#pragma GCC diagnostic  pop
 
 #if (CFG_TUD_CDC > 0)
-#include	"TinyUSB/uKOS_Interface/Models/model_TinyUSB_cdc.c_inc"
+#include    "TinyUSB/uKOS_Interface/Models/model_TinyUSB_cdc.c_inc"
 #endif
 
 #if (CFG_TUD_MSC > 0)
-#include	"TinyUSB/uKOS_Interface/Models/model_TinyUSB_msc.c_inc"
+#include    "TinyUSB/uKOS_Interface/Models/model_TinyUSB_msc.c_inc"
 #endif
 
 #if (CFG_TUD_VIDEO > 0)
-#include	"TinyUSB/uKOS_Interface/Models/model_TinyUSB_video.c_inc"
+#include    "TinyUSB/uKOS_Interface/Models/model_TinyUSB_video.c_inc"
 #endif
 
-uint32_t	SystemCoreClock = KFREQUENCY_CORE;
+uint32_t    SystemCoreClock = KFREQUENCY_CORE;
 
 // Prototypes
 
-static	void	local_USB_FS_IRQHandler(void);
+static  void    local_USB_FS_IRQHandler(void);
 
 // Init device stack on configured roothub port
 
 tusb_rhport_init_t deviceInit = {
-	.role  = TUSB_ROLE_DEVICE,
-	.speed = TUSB_SPEED_AUTO
+    .role  = TUSB_ROLE_DEVICE,
+    .speed = TUSB_SPEED_AUTO
 };
 
 /*
@@ -102,14 +103,14 @@ tusb_rhport_init_t deviceInit = {
  * - USB initialisation
  *
  */
-void	stub_TinyUSB_init(void) {
+void    stub_TinyUSB_init(void) {
 
-	INTERRUPT_VECTOR(USBCTRL_IRQ_C0_IRQn, local_USB_FS_IRQHandler);
-	NVIC_ClearPendingIRQ(USBCTRL_IRQ_C0_IRQn);
-	NVIC_SetPriority(USBCTRL_IRQ_C0_IRQn, KINT_LEVEL_COMMUNICATIONS);
+    INTERRUPT_VECTOR(USBCTRL_IRQ_C0_IRQn, local_USB_FS_IRQHandler);
+    NVIC_ClearPendingIRQ(USBCTRL_IRQ_C0_IRQn);
+    NVIC_SetPriority(USBCTRL_IRQ_C0_IRQn, KINT_LEVEL_COMMUNICATIONS);
     NVIC_EnableIRQ(USBCTRL_IRQ_C0_IRQn);
 
-	tusb_init(BOARD_TUD_RHPORT, &deviceInit);
+    tusb_init(BOARD_TUD_RHPORT, &deviceInit);
 }
 
 /*
@@ -118,9 +119,9 @@ void	stub_TinyUSB_init(void) {
  * - USB management
  *
  */
-void	stub_TinyUSB_cyclic(void) {
+void    stub_TinyUSB_cyclic(void) {
 
-	tud_task();
+    tud_task();
 }
 
 // Local routines
@@ -130,7 +131,7 @@ void	stub_TinyUSB_cyclic(void) {
  * \brief local_USB_FS_IRQHandler
  *
  */
-static	void	local_USB_FS_IRQHandler(void) {
+static  void    local_USB_FS_IRQHandler(void) {
 
-	tud_int_handler(BOARD_TUD_RHPORT);
+    tud_int_handler(BOARD_TUD_RHPORT);
 }

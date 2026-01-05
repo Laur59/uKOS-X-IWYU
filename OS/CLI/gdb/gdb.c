@@ -2,19 +2,20 @@
 ; gdb.
 ; ====
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Freeze the µKernel for gdb.
-;			- Freeze the uKernel in order to support gdb sessions
-;			- The gdb loaded application has to start with SET_INTERRUPTION
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    Freeze the µKernel for gdb.
+;      - Freeze the uKernel in order to support gdb sessions
+;      - The gdb loaded application has to start with SET_INTERRUPTION
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,48 +49,48 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<stdint.h>
-#include	<stdio.h>
+#include    <stdint.h>
+#include    <stdio.h>
 
-#include	"kern/kern.h"
-#include	"macros.h"
-#include	"macros_core_stackFrame.h"
-#include	"memo/memo.h"		// IWYU pragma: keep (for PROCESS_STACKMALLOC)
-#include	"modules.h"
-#include	"serial/serial.h"
-#include	"types.h"
+#include    "kern/kern.h"
+#include    "macros.h"
+#include    "macros_core_stackFrame.h"
+#include    "memo/memo.h"       // IWYU pragma: keep (for PROCESS_STACKMALLOC)
+#include    "modules.h"
+#include    "serial/serial.h"
+#include    "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"gdb          Support a gdb session.                    (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "gdb\n"
-									"===\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "gdb          Support a gdb session.                    (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "gdb\n"
+                                    "===\n\n"
 
-									"This tool freezes the uKernel in order to support gdb sessions\n\n"
+                                    "This tool freezes the uKernel in order to support gdb sessions\n\n"
 
-									"Input format:  gdb\n"
-									"Output format: [result]\n\n"
+                                    "Input format:  gdb\n"
+                                    "Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 
-static	int32_t		prgm(uint32_t argc, const char_t *argv[]);
-static	void		local_process(const void *argument);
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+static  void        local_process(const void *argument);
 
 MODULE(
-	Gdb,										// Module name (the first letter has to be upper case)
-	KID_FAM_CLI,								// Family (defined in the module.h)
-	KNUM_GDB,									// Module identifier (defined in the module.h)
-	NULL,										// Address of the initialisation code (early pre-init)
-	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	NULL,										// Address of the clean code (clean the module)
-	" 1.0",										// Revision string (major . minor)
-	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0											// Execution cores
+    Gdb,                                        // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                                // Family (defined in the module.h)
+    KNUM_GDB,                                   // Module identifier (defined in the module.h)
+    NULL,                                       // Address of the initialisation code (early pre-init)
+    prgm,                                       // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    NULL,                                       // Address of the clean code (clean the module)
+    " 1.0",                                     // Revision string (major . minor)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),         // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                           // Execution cores
 );
 
 // CLI tool specific
@@ -104,28 +105,28 @@ STRG_LOC_STATI(vStrIden[]) = "GDB_process";
  * \brief Main entry point
  *
  */
-static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
-	UNUSED(argc);
-	UNUSED(argv);
+static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
+    UNUSED(argc);
+    UNUSED(argv);
 
-	proc_t	*process;
+    proc_t  *process;
 
-	(void)dprintf(KSYST, "Freeze the uKernel.\n");
+    (void)dprintf(KSYST, "Freeze the uKernel.\n");
 
-	PROCESS_STACKMALLOC(
-		0,									// Index
-		specification,						// Specifications (just use specification_x)
-		vStrText,							// Info string (NULL if anonymous)
-		KKERN_SZ_STACK_LL,					// KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
-		local_process,						// Code of the process
-		vStrIden,							// Identifier (NULL if anonymous)
-		KSYST,								// Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
-		KKERN_PRIORITY_NORMAL_01			// KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
-	);
+    PROCESS_STACKMALLOC(
+        0,                                  // Index
+        specification,                      // Specifications (just use specification_x)
+        vStrText,                           // Info string (NULL if anonymous)
+        KKERN_SZ_STACK_LL,                  // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
+        local_process,                      // Code of the process
+        vStrIden,                           // Identifier (NULL if anonymous)
+        KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
+        KKERN_PRIORITY_NORMAL_01            // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
+    );
 
-	kern_suspendProcess(1000U);
-	kern_createProcess(&specification, NULL, &process);
-	return (EXIT_OS_SUCCESS_CLI);
+    kern_suspendProcess(1000U);
+    kern_createProcess(&specification, NULL, &process);
+    return (EXIT_OS_SUCCESS_CLI);
 }
 
 // Local routines
@@ -139,17 +140,17 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
  */
 static void __attribute__ ((noreturn)) local_process(const void *argument) {
 
-	UNUSED(argument);
+    UNUSED(argument);
 
-	(void)dprintf(KSYST, "\n\nOn the host open 2 terminal tabs:\n"
-				   "(example for cortex based cpus)\n\n"
-				   "- On T1: openocd-cortex -f gdb.cfg\n"
-				   "- On T2: arm-none-eabi-gdb myPRGM.elf\n"
-				   "- On T2: target extended-remote localhost:3333\n"
-				   "- On T2: load\n\n");
+    (void)dprintf(KSYST, "\n\nOn the host open 2 terminal tabs:\n"
+                   "(example for cortex based cpus)\n\n"
+                   "- On T1: openocd-cortex -f gdb.cfg\n"
+                   "- On T2: arm-none-eabi-gdb myPRGM.elf\n"
+                   "- On T2: target extended-remote localhost:3333\n"
+                   "- On T2: load\n\n");
 
-	kern_suspendProcess(1000U);
+    kern_suspendProcess(1000U);
 
-	kern_criticalSection(KENTER_CRITICAL);
-	while (true) { }
+    kern_criticalSection(KENTER_CRITICAL);
+    while (true) { }
 }

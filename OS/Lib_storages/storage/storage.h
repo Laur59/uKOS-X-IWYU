@@ -2,17 +2,18 @@
 ; storage.
 ; ========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		storage manager.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    storage manager.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,11 +47,11 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"types.h"
+#include    "types.h"
 
 /*!
  * \addtogroup Lib_storages
@@ -67,29 +68,29 @@
  * @{
  */
 
-typedef	enum {
-			KSDCARD		  = (((uint32_t)'s'<<24U) | ((uint32_t)'d'<<16U) | ((uint32_t)'c'<<8U) | (uint32_t)'d'),	// sdcard manager
-			KSERIAL_FLASH = (((uint32_t)'s'<<24U) | ((uint32_t)'f'<<16U) | ((uint32_t)'l'<<8U) | (uint32_t)'h')		// serial flash manager
+typedef enum {
+            KSDCARD       = (((uint32_t)'s'<<24U) | ((uint32_t)'d'<<16U) | ((uint32_t)'c'<<8U) | (uint32_t)'d'),    // sdcard manager
+            KSERIAL_FLASH = (((uint32_t)'s'<<24U) | ((uint32_t)'f'<<16U) | ((uint32_t)'l'<<8U) | (uint32_t)'h')     // serial flash manager
 } storage_manager_t;
 
 // For ioctl (!! Maintain the same order than suggested by FatFs)
 
 typedef enum {
-		KGET_CNTRL_SYNC = 0,																						// Not supported
-		KGET_SECTOR_COUNT,																							// Sector count
-		KGET_SECTOR_SIZE,																							// Sector site
-		KGET_BLOCK_SIZE,																							// Block size (1)
-		KGET_CTRL_TRIM																								// Not supported
+        KGET_CNTRL_SYNC = 0,                                                                                        // Not supported
+        KGET_SECTOR_COUNT,                                                                                          // Sector count
+        KGET_SECTOR_SIZE,                                                                                           // Sector site
+        KGET_BLOCK_SIZE,                                                                                            // Block size (1)
+        KGET_CTRL_TRIM                                                                                              // Not supported
 } storageIoctl_t;
 
 // Prototypes
 
 #ifdef __cplusplus
-extern	"C" {
+extern  "C" {
 #endif
 
-#define	STORAGE_reserve		storage_reserve
-#define	STORAGE_release		storage_release
+#define STORAGE_reserve     storage_reserve
+#define STORAGE_release     storage_release
 
 /*!
  * \brief Reserve the storage manager
@@ -106,15 +107,15 @@ extern	"C" {
  *    status = storage_release(KSERIAL_FLASH, KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	manager				Storage manager
- * \param[in]	reserveMode			Any mode
- * \param[in]	timeout				Timeout (1-ms of resolution)
- * \param[in]	-					KWAIT_INFINITY, waiting forever
- * \param[in]	-					KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_FLASH_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager             Storage manager
+ * \param[in]   reserveMode         Any mode
+ * \param[in]   timeout             Timeout (1-ms of resolution)
+ * \param[in]   -                   KWAIT_INFINITY, waiting forever
+ * \param[in]   -                   KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_FLASH_XXXXX    Depends on the "xxxx" device manager
  *
  */
-extern	int32_t	storage_reserve(storage_manager_t manager, reserveMode_t reserveMode, uint32_t timeout);
+extern  int32_t storage_reserve(storage_manager_t manager, reserveMode_t reserveMode, uint32_t timeout);
 
 /*!
  * \brief Release the storage manager
@@ -127,12 +128,12 @@ extern	int32_t	storage_reserve(storage_manager_t manager, reserveMode_t reserveM
  *    status = storage_release(KSERIAL_FLASH, KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	manager				Storage manager
- * \param[in]	reserveMode			Any mode
- * \return		KERR_STORAGE_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager             Storage manager
+ * \param[in]   reserveMode         Any mode
+ * \return      KERR_STORAGE_XXXXX  Depends on the "xxxx" device manager
  *
  */
-extern	int32_t	storage_release(storage_manager_t manager, reserveMode_t reserveMode);
+extern  int32_t storage_release(storage_manager_t manager, reserveMode_t reserveMode);
 
 /*!
  * \brief Initialise the storage manager
@@ -148,12 +149,12 @@ extern	int32_t	storage_release(storage_manager_t manager, reserveMode_t reserveM
  *    }
  * \endcode
  *
- * \param[in]	manager				Storage manager
- * \param[in]	*specification		Ptr on the sdcard specification
- * \return		KERR_STORAGE_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager             Storage manager
+ * \param[in]   *specification      Ptr on the sdcard specification
+ * \return      KERR_STORAGE_XXXXX  Depends on the "xxxx" device manager
  *
  */
-extern	int32_t	storage_initialise(storage_manager_t manager, void *specification);
+extern  int32_t storage_initialise(storage_manager_t manager, void *specification);
 
 /*!
  * \brief Read the status of the storage manager
@@ -166,11 +167,11 @@ extern	int32_t	storage_initialise(storage_manager_t manager, void *specification
  *    status = storage_readStatus();
  * \endcode
  *
- * \param[in]	manager				Storage manager
- * \return		KERR_STORAGE_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager             Storage manager
+ * \return      KERR_STORAGE_XXXXX  Depends on the "xxxx" device manager
  *
  */
-extern	int32_t	storage_readStatus(storage_manager_t manager);
+extern  int32_t storage_readStatus(storage_manager_t manager);
 
 /*!
  * \brief Read 1 or more sectors from the storage manager
@@ -189,14 +190,14 @@ extern	int32_t	storage_readStatus(storage_manager_t manager);
  *    }
  * \endcode
  *
- * \param[in]	manager				Storage manager
- * \param[in]	*buffer				Ptr on the buffer
- * \param[in]	size				Number of bytes to read
- * \param[in]	sector				Start sector
- * \return		KERR_STORAGE_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager             Storage manager
+ * \param[in]   *buffer             Ptr on the buffer
+ * \param[in]   size                Number of bytes to read
+ * \param[in]   sector              Start sector
+ * \return      KERR_STORAGE_XXXXX  Depends on the "xxxx" device manager
  *
  */
-extern	int32_t	storage_read(storage_manager_t manager, uint8_t *buffer, uint32_t size, uint32_t sector);
+extern  int32_t storage_read(storage_manager_t manager, uint8_t *buffer, uint32_t size, uint32_t sector);
 
 /*!
  * \brief Write 1 or more sectors to the storage manager
@@ -215,14 +216,14 @@ extern	int32_t	storage_read(storage_manager_t manager, uint8_t *buffer, uint32_t
  *    }
  * \endcode
  *
- * \param[in]	manager				Storage manager
- * \param[in]	*buffer				Ptr on the buffer
- * \param[in]	size				Number of bytes to write
- * \param[in]	sector				Start sector
- * \return		KERR_STORAGE_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager             Storage manager
+ * \param[in]   *buffer             Ptr on the buffer
+ * \param[in]   size                Number of bytes to write
+ * \param[in]   sector              Start sector
+ * \return      KERR_STORAGE_XXXXX  Depends on the "xxxx" device manager
  *
  */
-extern	int32_t	storage_write(storage_manager_t manager, const uint8_t *buffer, uint32_t size, uint32_t sector);
+extern  int32_t storage_write(storage_manager_t manager, const uint8_t *buffer, uint32_t size, uint32_t sector);
 
 /*!
  * \brief Get some storage parameters by ioctl
@@ -240,13 +241,13 @@ extern	int32_t	storage_write(storage_manager_t manager, const uint8_t *buffer, u
  *    }
  * \endcode
  *
- * \param[in]	manager				Storage manager
- * \param[in]	command				Command
- * \param[in]	*buffer				Ptr on the buffer
- * \return		KERR_STORAGE_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager             Storage manager
+ * \param[in]   command             Command
+ * \param[in]   *buffer             Ptr on the buffer
+ * \return      KERR_STORAGE_XXXXX  Depends on the "xxxx" device manager
  *
  */
-extern	int32_t	storage_ioctl(storage_manager_t manager, storageIoctl_t command, void *buffer);
+extern  int32_t storage_ioctl(storage_manager_t manager, storageIoctl_t command, void *buffer);
 
 #ifdef __cplusplus
 }

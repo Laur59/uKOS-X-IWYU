@@ -2,17 +2,18 @@
 ; serial.
 ; =======
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		serial manager.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    serial manager.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,42 +47,42 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"serial.h"
+#include    "serial.h"
 
-#include	<stddef.h>
-#include	<stdint.h>
+#include    <stddef.h>
+#include    <stdint.h>
 
 #ifdef CONFIG_MAN_CDC0_S
-#include	"cdc0/cdc0.h"
+#include    "cdc0/cdc0.h"
 #endif
 #ifdef CONFIG_MAN_CDC1_S
-#include	"cdc1/cdc1.h"
+#include    "cdc1/cdc1.h"
 #endif
-#include	"kern/kern.h"
-#include	"macros.h"
-#include	"macros_core.h"
-#include	"macros_soc.h"		// IWYU pragma: keep (to get KNB_CORES)
-#include	"modules.h"
-#include	"os_errors.h"
-#include	"serial_common.h"
-#include	"types.h"
+#include    "kern/kern.h"
+#include    "macros.h"
+#include    "macros_core.h"
+#include    "macros_soc.h"      // IWYU pragma: keep (to get KNB_CORES)
+#include    "modules.h"
+#include    "os_errors.h"
+#include    "serial_common.h"
+#include    "types.h"
 #ifdef CONFIG_MAN_URT0_S
-#include	"urt0/urt0.h"
+#include    "urt0/urt0.h"
 #endif
 #ifdef CONFIG_MAN_URT1_S
-#include	"urt1/urt1.h"
+#include    "urt1/urt1.h"
 #endif
 #ifdef CONFIG_MAN_URT2_S
-#include	"urt2/urt2.h"
+#include    "urt2/urt2.h"
 #endif
 #ifdef CONFIG_MAN_URT3_S
-#include	"urt3/urt3.h"
+#include    "urt3/urt3.h"
 #endif
 #ifdef CONFIG_MAN_URT4_S
-#include	"urt4/urt4.h"
+#include    "urt4/urt4.h"
 #endif
 #ifdef CONFIG_MAN_WFI0_S
-#include	"wfi0/wfi0.h"
+#include    "wfi0/wfi0.h"
 #endif
 
 #ifdef CONFIG_MAN_SERIAL_S
@@ -91,34 +92,34 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"serial       serial manager.                           (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "serial manager\n"
-									"==============\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "serial       serial manager.                           (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "serial manager\n"
+                                    "==============\n\n"
 
-									"This manager ...\n\n"
+                                    "This manager ...\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
-	Serial,							// Module name (the first letter has to be upper case)
-	KID_FAM_SERIALS,				// Family (defined in the module.h)
-	KNUM_SERIAL,					// Module identifier (defined in the module.h)
-	NULL,							// Address of the initialisation code (early pre-init)
-	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	NULL,							// Address of the clean code (clean the module)
-	" 1.0",							// Revision string (major . minor)
-	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0								// Execution cores
+    Serial,                         // Module name (the first letter has to be upper case)
+    KID_FAM_SERIALS,                // Family (defined in the module.h)
+    KNUM_SERIAL,                    // Module identifier (defined in the module.h)
+    NULL,                           // Address of the initialisation code (early pre-init)
+    NULL,                           // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    NULL,                           // Address of the clean code (clean the module)
+    " 1.0",                         // Revision string (major . minor)
+    (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                               // Execution cores
 );
 
 // Library specific
 // ================
 
-static	serialManager_t		vDefSerialManager[KNB_CORES];
+static  serialManager_t     vDefSerialManager[KNB_CORES];
 
 // Prototypes
 
-static	void	local_getDevice(serialManager_t serialManager, serialManager_t *manager);
+static  void    local_getDevice(serialManager_t serialManager, serialManager_t *manager);
 
 /*
  * \brief Reserve the Serial Communication Manager
@@ -135,57 +136,57 @@ static	void	local_getDevice(serialManager_t serialManager, serialManager_t *mana
  *    status = serial_release(KDEF0, KMODE_WRITE);
  * \endcode
  *
- * \param[in]	serialManager		Serial Communication Manager
- * \param[in]	reserveMode			KMODE_READ, KMODE_WRITE, KMODE_READ_WRITE
- * \param[in]	timeout				Timeout (1-ms of resolution)
- * \param[in]	-					KWAIT_INFINITY, waiting forever
- * \param[in]	-					KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_SERIAL_NOERR	OK
- * \return		KERR_SERIAL_NODEV	No corresponding Serial Communication Manager
- * \return		KERR_xxxxxx_NODEV	Depends on the "xxxx" Serial Communication Manager
+ * \param[in]   serialManager       Serial Communication Manager
+ * \param[in]   reserveMode         KMODE_READ, KMODE_WRITE, KMODE_READ_WRITE
+ * \param[in]   timeout             Timeout (1-ms of resolution)
+ * \param[in]   -                   KWAIT_INFINITY, waiting forever
+ * \param[in]   -                   KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_NODEV   No corresponding Serial Communication Manager
+ * \return      KERR_xxxxxx_NODEV   Depends on the "xxxx" Serial Communication Manager
  *
  */
-int32_t	serial_reserve(serialManager_t serialManager, reserveMode_t reserveMode, uint32_t timeout) {
-	serialManager_t		manager;
+int32_t serial_reserve(serialManager_t serialManager, reserveMode_t reserveMode, uint32_t timeout) {
+    serialManager_t     manager;
 
-	local_getDevice(serialManager, &manager);
+    local_getDevice(serialManager, &manager);
 
-	switch (manager) {
+    switch (manager) {
 
-		#ifdef CONFIG_MAN_URT0_S
-		case KURT0: { return (urt0_reserve(reserveMode, timeout)); }
-		#endif
+        #ifdef CONFIG_MAN_URT0_S
+        case KURT0: { return (urt0_reserve(reserveMode, timeout)); }
+        #endif
 
-		#ifdef CONFIG_MAN_URT1_S
-		case KURT1: { return (urt1_reserve(reserveMode, timeout)); }
-		#endif
+        #ifdef CONFIG_MAN_URT1_S
+        case KURT1: { return (urt1_reserve(reserveMode, timeout)); }
+        #endif
 
-		#ifdef CONFIG_MAN_URT2_S
-		case KURT2: { return (urt2_reserve(reserveMode, timeout)); }
-		#endif
+        #ifdef CONFIG_MAN_URT2_S
+        case KURT2: { return (urt2_reserve(reserveMode, timeout)); }
+        #endif
 
-		#ifdef CONFIG_MAN_URT3_S
-		case KURT3: { return (urt3_reserve(reserveMode, timeout)); }
-		#endif
+        #ifdef CONFIG_MAN_URT3_S
+        case KURT3: { return (urt3_reserve(reserveMode, timeout)); }
+        #endif
 
-		#ifdef CONFIG_MAN_URT4_S
-		case KURT4: { return (urt4_reserve(reserveMode, timeout)); }
-		#endif
+        #ifdef CONFIG_MAN_URT4_S
+        case KURT4: { return (urt4_reserve(reserveMode, timeout)); }
+        #endif
 
-		#ifdef CONFIG_MAN_CDC0_S
-		case KCDC0: { return (cdc0_reserve(reserveMode, timeout)); }
-		#endif
+        #ifdef CONFIG_MAN_CDC0_S
+        case KCDC0: { return (cdc0_reserve(reserveMode, timeout)); }
+        #endif
 
-		#ifdef CONFIG_MAN_CDC1_S
-		case KCDC1: { return (cdc1_reserve(reserveMode, timeout)); }
-		#endif
+        #ifdef CONFIG_MAN_CDC1_S
+        case KCDC1: { return (cdc1_reserve(reserveMode, timeout)); }
+        #endif
 
-		#ifdef CONFIG_MAN_WFI0_S
-		case KWFI0: { return (wfi0_reserve(reserveMode, timeout)); }
-		#endif
+        #ifdef CONFIG_MAN_WFI0_S
+        case KWFI0: { return (wfi0_reserve(reserveMode, timeout)); }
+        #endif
 
-		default:    { return (KERR_SERIAL_NODEV);				   }
-	}
+        default:    { return (KERR_SERIAL_NODEV);                  }
+    }
 }
 
 /*
@@ -199,54 +200,54 @@ int32_t	serial_reserve(serialManager_t serialManager, reserveMode_t reserveMode,
  *    status = serial_release(KDEF0, KMODE_WRITE);
  * \endcode
  *
- * \param[in]	serialManager		Serial Communication Manager
- * \param[in]	reserveMode			KMODE_READ, KMODE_WRITE, KMODE_READ_WRITE
- * \return		KERR_SERIAL_NOERR	OK
- * \return		KERR_SERIAL_NODEV	No corresponding Serial Communication Manager
- * \return		KERR_xxxxxx_NODEV	Depends on the "xxxx" Serial Communication Manager
+ * \param[in]   serialManager       Serial Communication Manager
+ * \param[in]   reserveMode         KMODE_READ, KMODE_WRITE, KMODE_READ_WRITE
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_NODEV   No corresponding Serial Communication Manager
+ * \return      KERR_xxxxxx_NODEV   Depends on the "xxxx" Serial Communication Manager
  *
  */
-int32_t	serial_release(serialManager_t serialManager, reserveMode_t reserveMode) {
-	serialManager_t		manager;
+int32_t serial_release(serialManager_t serialManager, reserveMode_t reserveMode) {
+    serialManager_t     manager;
 
-	local_getDevice(serialManager, &manager);
+    local_getDevice(serialManager, &manager);
 
-	switch (manager) {
+    switch (manager) {
 
-		#ifdef CONFIG_MAN_URT0_S
-		case KURT0: { return (urt0_release(reserveMode)); }
-		#endif
+        #ifdef CONFIG_MAN_URT0_S
+        case KURT0: { return (urt0_release(reserveMode)); }
+        #endif
 
-		#ifdef CONFIG_MAN_URT1_S
-		case KURT1: { return (urt1_release(reserveMode)); }
-		#endif
+        #ifdef CONFIG_MAN_URT1_S
+        case KURT1: { return (urt1_release(reserveMode)); }
+        #endif
 
-		#ifdef CONFIG_MAN_URT2_S
-		case KURT2: { return (urt2_release(reserveMode)); }
-		#endif
+        #ifdef CONFIG_MAN_URT2_S
+        case KURT2: { return (urt2_release(reserveMode)); }
+        #endif
 
-		#ifdef CONFIG_MAN_URT3_S
-		case KURT3: { return (urt3_release(reserveMode)); }
-		#endif
+        #ifdef CONFIG_MAN_URT3_S
+        case KURT3: { return (urt3_release(reserveMode)); }
+        #endif
 
-		#ifdef CONFIG_MAN_URT4_S
-		case KURT4: { return (urt4_release(reserveMode)); }
-		#endif
+        #ifdef CONFIG_MAN_URT4_S
+        case KURT4: { return (urt4_release(reserveMode)); }
+        #endif
 
-		#ifdef CONFIG_MAN_CDC0_S
-		case KCDC0: { return (cdc0_release(reserveMode)); }
-		#endif
+        #ifdef CONFIG_MAN_CDC0_S
+        case KCDC0: { return (cdc0_release(reserveMode)); }
+        #endif
 
-		#ifdef CONFIG_MAN_CDC1_S
-		case KCDC1: { return (cdc1_release(reserveMode)); }
-		#endif
+        #ifdef CONFIG_MAN_CDC1_S
+        case KCDC1: { return (cdc1_release(reserveMode)); }
+        #endif
 
-		#ifdef CONFIG_MAN_WFI0_S
-		case KWFI0: { return (wfi0_release(reserveMode)); }
-		#endif
+        #ifdef CONFIG_MAN_WFI0_S
+        case KWFI0: { return (wfi0_release(reserveMode)); }
+        #endif
 
-		default:    { return (KERR_SERIAL_NODEV);		  }
-	}
+        default:    { return (KERR_SERIAL_NODEV);         }
+    }
 }
 
 /*
@@ -267,54 +268,54 @@ int32_t	serial_release(serialManager_t serialManager, reserveMode_t reserveMode)
  *    status = serial_configure(KURT0, (void *)&configure);
  * \endcode
  *
- * \param[in]	serialManager		Serial Communication Manager
- * \param[in]	*configure			Ptr on the configuration buffer
- * \return		KERR_SERIAL_NOERR	OK
- * \return		KERR_SERIAL_NODEV	No corresponding Serial Communication Manager
- * \return		KERR_xxxxxx_NODEV	Depends on the "xxxx" Serial Communication Manager
+ * \param[in]   serialManager       Serial Communication Manager
+ * \param[in]   *configure          Ptr on the configuration buffer
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_NODEV   No corresponding Serial Communication Manager
+ * \return      KERR_xxxxxx_NODEV   Depends on the "xxxx" Serial Communication Manager
  *
  */
-int32_t	serial_configure(serialManager_t serialManager, const void *configure) {
-	serialManager_t		manager;
+int32_t serial_configure(serialManager_t serialManager, const void *configure) {
+    serialManager_t     manager;
 
-	local_getDevice(serialManager, &manager);
+    local_getDevice(serialManager, &manager);
 
-	switch (manager) {
+    switch (manager) {
 
-		#ifdef CONFIG_MAN_URT0_S
-		case KURT0: { return (urt0_configure((const urtxCnf_t *)configure)); }
-		#endif
+        #ifdef CONFIG_MAN_URT0_S
+        case KURT0: { return (urt0_configure((const urtxCnf_t *)configure)); }
+        #endif
 
-		#ifdef CONFIG_MAN_URT1_S
-		case KURT1: { return (urt1_configure((const urtxCnf_t *)configure)); }
-		#endif
+        #ifdef CONFIG_MAN_URT1_S
+        case KURT1: { return (urt1_configure((const urtxCnf_t *)configure)); }
+        #endif
 
-		#ifdef CONFIG_MAN_URT2_S
-		case KURT2: { return (urt2_configure((const urtxCnf_t *)configure)); }
-		#endif
+        #ifdef CONFIG_MAN_URT2_S
+        case KURT2: { return (urt2_configure((const urtxCnf_t *)configure)); }
+        #endif
 
-		#ifdef CONFIG_MAN_URT3_S
-		case KURT3: { return (urt3_configure((const urtxCnf_t *)configure)); }
-		#endif
+        #ifdef CONFIG_MAN_URT3_S
+        case KURT3: { return (urt3_configure((const urtxCnf_t *)configure)); }
+        #endif
 
-		#ifdef CONFIG_MAN_URT4_S
-		case KURT4: { return (urt4_configure((const urtxCnf_t *)configure)); }
-		#endif
+        #ifdef CONFIG_MAN_URT4_S
+        case KURT4: { return (urt4_configure((const urtxCnf_t *)configure)); }
+        #endif
 
-		#ifdef CONFIG_MAN_CDC0_S
-		case KCDC0: { return (cdc0_configure((const cdcxCnf_t *)configure)); }
-		#endif
+        #ifdef CONFIG_MAN_CDC0_S
+        case KCDC0: { return (cdc0_configure((const cdcxCnf_t *)configure)); }
+        #endif
 
-		#ifdef CONFIG_MAN_CDC1_S
-		case KCDC1: { return (cdc1_configure((const cdcxCnf_t *)configure)); }
-		#endif
+        #ifdef CONFIG_MAN_CDC1_S
+        case KCDC1: { return (cdc1_configure((const cdcxCnf_t *)configure)); }
+        #endif
 
-		#ifdef CONFIG_MAN_WFI0_S
-		case KWFI0: { return (wfi0_configure((const urtxCnf_t *)configure)); }
-		#endif
+        #ifdef CONFIG_MAN_WFI0_S
+        case KWFI0: { return (wfi0_configure((const urtxCnf_t *)configure)); }
+        #endif
 
-		default:    { return (KERR_SERIAL_NODEV);							  }
-	}
+        default:    { return (KERR_SERIAL_NODEV);                             }
+    }
 }
 
 /*
@@ -340,55 +341,55 @@ int32_t	serial_configure(serialManager_t serialManager, const void *configure) {
  *    status = serial_write(KDEF0, buffer, KSIZE);
  * \endcode
  *
- * \param[in]	serialManager		Serial Communication Manager
- * \param[in]	*buffer				Ptr on the buffer
- * \param[in]	size				Size of the buffer
- * \return		KERR_SERIAL_NOERR	OK
- * \return		KERR_SERIAL_NODEV	No corresponding Serial Communication Manager
- * \return		KERR_xxxxxx_NODEV	Depends on the "xxxx" Serial Communication Manager
+ * \param[in]   serialManager       Serial Communication Manager
+ * \param[in]   *buffer             Ptr on the buffer
+ * \param[in]   size                Size of the buffer
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_NODEV   No corresponding Serial Communication Manager
+ * \return      KERR_xxxxxx_NODEV   Depends on the "xxxx" Serial Communication Manager
  *
  */
-int32_t	serial_write(serialManager_t serialManager, const uint8_t *buffer, uint32_t size) {
-	serialManager_t		manager;
+int32_t serial_write(serialManager_t serialManager, const uint8_t *buffer, uint32_t size) {
+    serialManager_t     manager;
 
-	local_getDevice(serialManager, &manager);
+    local_getDevice(serialManager, &manager);
 
-	switch (manager) {
+    switch (manager) {
 
-		#ifdef CONFIG_MAN_URT0_S
-		case KURT0: { return (urt0_write(buffer, size)); }
-		#endif
+        #ifdef CONFIG_MAN_URT0_S
+        case KURT0: { return (urt0_write(buffer, size)); }
+        #endif
 
-		#ifdef CONFIG_MAN_URT1_S
-		case KURT1: { return (urt1_write(buffer, size)); }
-		#endif
+        #ifdef CONFIG_MAN_URT1_S
+        case KURT1: { return (urt1_write(buffer, size)); }
+        #endif
 
-		#ifdef CONFIG_MAN_URT2_S
-		case KURT2: { return (urt2_write(buffer, size)); }
-		#endif
+        #ifdef CONFIG_MAN_URT2_S
+        case KURT2: { return (urt2_write(buffer, size)); }
+        #endif
 
-		#ifdef CONFIG_MAN_URT3_S
-		case KURT3: { return (urt3_write(buffer, size)); }
-		#endif
+        #ifdef CONFIG_MAN_URT3_S
+        case KURT3: { return (urt3_write(buffer, size)); }
+        #endif
 
-		#ifdef CONFIG_MAN_URT4_S
-		case KURT4: { return (urt4_write(buffer, size)); }
-		#endif
+        #ifdef CONFIG_MAN_URT4_S
+        case KURT4: { return (urt4_write(buffer, size)); }
+        #endif
 
-		#ifdef CONFIG_MAN_CDC0_S
-		case KCDC0: { return (cdc0_write(buffer, size)); }
-		#endif
+        #ifdef CONFIG_MAN_CDC0_S
+        case KCDC0: { return (cdc0_write(buffer, size)); }
+        #endif
 
-		#ifdef CONFIG_MAN_CDC1_S
-		case KCDC1: { return (cdc1_write(buffer, size)); }
-		#endif
+        #ifdef CONFIG_MAN_CDC1_S
+        case KCDC1: { return (cdc1_write(buffer, size)); }
+        #endif
 
-		#ifdef CONFIG_MAN_WFI0_S
-		case KWFI0: { return (wfi0_write(buffer, size)); }
-		#endif
+        #ifdef CONFIG_MAN_WFI0_S
+        case KWFI0: { return (wfi0_write(buffer, size)); }
+        #endif
 
-		default:    { return (KERR_SERIAL_NODEV);		 }
-	}
+        default:    { return (KERR_SERIAL_NODEV);        }
+    }
 }
 
 /*
@@ -408,55 +409,55 @@ int32_t	serial_write(serialManager_t serialManager, const uint8_t *buffer, uint3
  *    status = serial_read(KDEF0, buffer, &size);
  * \endcode
  *
- * \param[in]		serialManager		Serial Communication Manager
- * \param[in]		*buffer				Ptr on the buffer
- * \param[in, out]	*size				Ptr to a variable storing the size, initialized with the size of the buffer
- * \return			KERR_SERIAL_NOERR	OK
- * \return			KERR_SERIAL_NODEV	No corresponding Serial Communication Manager
- * \return			KERR_xxxxxx_NODEV	Depends on the "xxxx" Serial Communication Manager
+ * \param[in]       serialManager       Serial Communication Manager
+ * \param[in]       *buffer             Ptr on the buffer
+ * \param[in, out]  *size               Ptr to a variable storing the size, initialized with the size of the buffer
+ * \return          KERR_SERIAL_NOERR   OK
+ * \return          KERR_SERIAL_NODEV   No corresponding Serial Communication Manager
+ * \return          KERR_xxxxxx_NODEV   Depends on the "xxxx" Serial Communication Manager
  *
  */
-int32_t	serial_read(serialManager_t serialManager, uint8_t *buffer, uint32_t *size) {
-	serialManager_t		manager;
+int32_t serial_read(serialManager_t serialManager, uint8_t *buffer, uint32_t *size) {
+    serialManager_t     manager;
 
-	local_getDevice(serialManager, &manager);
+    local_getDevice(serialManager, &manager);
 
-	switch (manager) {
+    switch (manager) {
 
-		#ifdef CONFIG_MAN_URT0_S
-		case KURT0: { return (urt0_read(buffer, size)); }
-		#endif
+        #ifdef CONFIG_MAN_URT0_S
+        case KURT0: { return (urt0_read(buffer, size)); }
+        #endif
 
-		#ifdef CONFIG_MAN_URT1_S
-		case KURT1: { return (urt1_read(buffer, size)); }
-		#endif
+        #ifdef CONFIG_MAN_URT1_S
+        case KURT1: { return (urt1_read(buffer, size)); }
+        #endif
 
-		#ifdef CONFIG_MAN_URT2_S
-		case KURT2: { return (urt2_read(buffer, size)); }
-		#endif
+        #ifdef CONFIG_MAN_URT2_S
+        case KURT2: { return (urt2_read(buffer, size)); }
+        #endif
 
-		#ifdef CONFIG_MAN_URT3_S
-		case KURT3: { return (urt3_read(buffer, size)); }
-		#endif
+        #ifdef CONFIG_MAN_URT3_S
+        case KURT3: { return (urt3_read(buffer, size)); }
+        #endif
 
-		#ifdef CONFIG_MAN_URT4_S
-		case KURT4: { return (urt4_read(buffer, size)); }
-		#endif
+        #ifdef CONFIG_MAN_URT4_S
+        case KURT4: { return (urt4_read(buffer, size)); }
+        #endif
 
-		#ifdef CONFIG_MAN_CDC0_S
-		case KCDC0: { return (cdc0_read(buffer, size)); }
-		#endif
+        #ifdef CONFIG_MAN_CDC0_S
+        case KCDC0: { return (cdc0_read(buffer, size)); }
+        #endif
 
-		#ifdef CONFIG_MAN_CDC1_S
-		case KCDC1: { return (cdc1_read(buffer, size)); }
-		#endif
+        #ifdef CONFIG_MAN_CDC1_S
+        case KCDC1: { return (cdc1_read(buffer, size)); }
+        #endif
 
-		#ifdef CONFIG_MAN_WFI0_S
-		case KWFI0: { return (wfi0_read(buffer, size)); }
-		#endif
+        #ifdef CONFIG_MAN_WFI0_S
+        case KWFI0: { return (wfi0_read(buffer, size)); }
+        #endif
 
-		default:    { return (KERR_SERIAL_NODEV);		}
-	}
+        default:    { return (KERR_SERIAL_NODEV);       }
+    }
 }
 
 /*
@@ -474,56 +475,56 @@ int32_t	serial_read(serialManager_t serialManager, uint8_t *buffer, uint32_t *si
  *    (void)dprintf(KSYST, "Semaphore ids: %s, ...%s\n", identifier[0], identifier[1]);
  * \endcode
  *
- * \param[in]	serialManager		Serial Communication Manager
- * \param[in]	semaphore			RX or TX semaphore
- * \param[out]	**identifier		Ptr on the semaphore identifier
- * \return		KERR_SERIAL_NOERR	OK
- * \return		KERR_SERIAL_NODEV	No corresponding Serial Communication Manager
- * \return		KERR_SERIAL_SENOE	The semaphore does not exist
- * \return		KERR_xxxxxx_NODEV	Depends on the "xxxx" Serial Communication Manager
+ * \param[in]   serialManager       Serial Communication Manager
+ * \param[in]   semaphore           RX or TX semaphore
+ * \param[out]  **identifier        Ptr on the semaphore identifier
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_NODEV   No corresponding Serial Communication Manager
+ * \return      KERR_SERIAL_SENOE   The semaphore does not exist
+ * \return      KERR_xxxxxx_NODEV   Depends on the "xxxx" Serial Communication Manager
  *
  */
-int32_t	serial_getIdSemaphore(serialManager_t serialManager, uint8_t semaphore, char_t **identifier) {
-	serialManager_t		manager;
+int32_t serial_getIdSemaphore(serialManager_t serialManager, uint8_t semaphore, char_t **identifier) {
+    serialManager_t     manager;
 
-	local_getDevice(serialManager, &manager);
+    local_getDevice(serialManager, &manager);
 
-	switch (manager) {
+    switch (manager) {
 
-		#ifdef CONFIG_MAN_URT0_S
-		case KURT0: { return (urt0_getIdSemaphore(semaphore, identifier)); }
-		#endif
+        #ifdef CONFIG_MAN_URT0_S
+        case KURT0: { return (urt0_getIdSemaphore(semaphore, identifier)); }
+        #endif
 
-		#ifdef CONFIG_MAN_URT1_S
-		case KURT1: { return (urt1_getIdSemaphore(semaphore, identifier)); }
-		#endif
+        #ifdef CONFIG_MAN_URT1_S
+        case KURT1: { return (urt1_getIdSemaphore(semaphore, identifier)); }
+        #endif
 
-		#ifdef CONFIG_MAN_URT2_S
-		case KURT2: { return (urt2_getIdSemaphore(semaphore, identifier)); }
-		#endif
+        #ifdef CONFIG_MAN_URT2_S
+        case KURT2: { return (urt2_getIdSemaphore(semaphore, identifier)); }
+        #endif
 
-		#ifdef CONFIG_MAN_URT3_S
-		case KURT3: { return (urt3_getIdSemaphore(semaphore, identifier)); }
-		#endif
+        #ifdef CONFIG_MAN_URT3_S
+        case KURT3: { return (urt3_getIdSemaphore(semaphore, identifier)); }
+        #endif
 
-		#ifdef CONFIG_MAN_URT4_S
-		case KURT4: { return (urt4_getIdSemaphore(semaphore, identifier)); }
-		#endif
+        #ifdef CONFIG_MAN_URT4_S
+        case KURT4: { return (urt4_getIdSemaphore(semaphore, identifier)); }
+        #endif
 
-		#ifdef CONFIG_MAN_CDC0_S
-		case KCDC0: { return (cdc0_getIdSemaphore(semaphore, identifier)); }
-		#endif
+        #ifdef CONFIG_MAN_CDC0_S
+        case KCDC0: { return (cdc0_getIdSemaphore(semaphore, identifier)); }
+        #endif
 
-		#ifdef CONFIG_MAN_CDC1_S
-		case KCDC1: { return (cdc1_getIdSemaphore(semaphore, identifier)); }
-		#endif
+        #ifdef CONFIG_MAN_CDC1_S
+        case KCDC1: { return (cdc1_getIdSemaphore(semaphore, identifier)); }
+        #endif
 
-		#ifdef CONFIG_MAN_WFI0_S
-		case KWFI0: { return (wfi0_getIdSemaphore(semaphore, identifier)); }
-		#endif
+        #ifdef CONFIG_MAN_WFI0_S
+        case KWFI0: { return (wfi0_getIdSemaphore(semaphore, identifier)); }
+        #endif
 
-		default:    { return (KERR_SERIAL_NODEV);						   }
-	}
+        default:    { return (KERR_SERIAL_NODEV);                          }
+    }
 }
 
 /*
@@ -537,52 +538,52 @@ int32_t	serial_getIdSemaphore(serialManager_t serialManager, uint8_t semaphore, 
  *    status = serial_flush(KDEF0);
  * \endcode
  *
- * \param[in]	serialManager		Serial Communication Manager
- * \return		KERR_SERIAL_NOERR	OK
- * \return		KERR_SERIAL_NODEV	The serialManager does not exist
+ * \param[in]   serialManager       Serial Communication Manager
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_NODEV   The serialManager does not exist
  *
  */
-int32_t	serial_flush(serialManager_t serialManager) {
-	serialManager_t		manager;
+int32_t serial_flush(serialManager_t serialManager) {
+    serialManager_t     manager;
 
-	local_getDevice(serialManager, &manager);
+    local_getDevice(serialManager, &manager);
 
-	switch (manager) {
+    switch (manager) {
 
-		#ifdef CONFIG_MAN_URT0_S
-		case KURT0: { return (urt0_flush());	  }
-		#endif
+        #ifdef CONFIG_MAN_URT0_S
+        case KURT0: { return (urt0_flush());      }
+        #endif
 
-		#ifdef CONFIG_MAN_URT1_S
-		case KURT1: { return (urt1_flush());	  }
-		#endif
+        #ifdef CONFIG_MAN_URT1_S
+        case KURT1: { return (urt1_flush());      }
+        #endif
 
-		#ifdef CONFIG_MAN_URT2_S
-		case KURT2: { return (urt2_flush());	  }
-		#endif
+        #ifdef CONFIG_MAN_URT2_S
+        case KURT2: { return (urt2_flush());      }
+        #endif
 
-		#ifdef CONFIG_MAN_URT3_S
-		case KURT3: { return (urt3_flush());	  }
-		#endif
+        #ifdef CONFIG_MAN_URT3_S
+        case KURT3: { return (urt3_flush());      }
+        #endif
 
-		#ifdef CONFIG_MAN_URT4_S
-		case KURT4: { return (urt4_flush());	  }
-		#endif
+        #ifdef CONFIG_MAN_URT4_S
+        case KURT4: { return (urt4_flush());      }
+        #endif
 
-		#ifdef CONFIG_MAN_CDC0_S
-		case KCDC0: { return (cdc0_flush());	  }
-		#endif
+        #ifdef CONFIG_MAN_CDC0_S
+        case KCDC0: { return (cdc0_flush());      }
+        #endif
 
-		#ifdef CONFIG_MAN_CDC1_S
-		case KCDC1: { return (cdc1_flush());	  }
-		#endif
+        #ifdef CONFIG_MAN_CDC1_S
+        case KCDC1: { return (cdc1_flush());      }
+        #endif
 
-		#ifdef CONFIG_MAN_WFI0_S
-		case KWFI0: { return (wfi0_flush());	  }
-		#endif
+        #ifdef CONFIG_MAN_WFI0_S
+        case KWFI0: { return (wfi0_flush());      }
+        #endif
 
-		default:    { return (KERR_SERIAL_NODEV); }
-	}
+        default:    { return (KERR_SERIAL_NODEV); }
+    }
 }
 
 /*
@@ -596,19 +597,19 @@ int32_t	serial_flush(serialManager_t serialManager) {
  *    status = serial_setDefSerialManager(KURT0);
  * \endcode
  *
- * \param[in]	serialManager		Serial Communication Manager
- * \return		KERR_SERIAL_NOERR	OK
+ * \param[in]   serialManager       Serial Communication Manager
+ * \return      KERR_SERIAL_NOERR   OK
  *
  */
-int32_t	serial_setDefSerialManager(serialManager_t serialManager) {
-	uint32_t	core;
+int32_t serial_setDefSerialManager(serialManager_t serialManager) {
+    uint32_t    core;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	PRIVILEGE_ELEVATE;
-	vDefSerialManager[core] = serialManager;
-	PRIVILEGE_RESTORE;
-	return (KERR_SERIAL_NOERR);
+    PRIVILEGE_ELEVATE;
+    vDefSerialManager[core] = serialManager;
+    PRIVILEGE_RESTORE;
+    return (KERR_SERIAL_NOERR);
 }
 
 /*
@@ -623,19 +624,19 @@ int32_t	serial_setDefSerialManager(serialManager_t serialManager) {
  *    status = serial_getDefSerialManager(&serialManager);
  * \endcode
  *
- * \param[out]	*serialManager		Ptr on the Serial Communication Manager
- * \return		KERR_SERIAL_NOERR	OK
+ * \param[out]  *serialManager      Ptr on the Serial Communication Manager
+ * \return      KERR_SERIAL_NOERR   OK
  *
  */
-int32_t	serial_getDefSerialManager(serialManager_t *serialManager) {
-	uint32_t	core;
+int32_t serial_getDefSerialManager(serialManager_t *serialManager) {
+    uint32_t    core;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	PRIVILEGE_ELEVATE;
-	*serialManager = vDefSerialManager[core];
-	PRIVILEGE_RESTORE;
-	return (KERR_SERIAL_NOERR);
+    PRIVILEGE_ELEVATE;
+    *serialManager = vDefSerialManager[core];
+    PRIVILEGE_RESTORE;
+    return (KERR_SERIAL_NOERR);
 }
 
 /*
@@ -650,14 +651,14 @@ int32_t	serial_getDefSerialManager(serialManager_t *serialManager) {
  *    status = serial_getFatherSerialManager(&serialManager);
  * \endcode
  *
- * \param[out]	*serialManager		Ptr on the Serial Communication Manager
- * \return		KERR_SERIAL_NOERR	OK
+ * \param[out]  *serialManager      Ptr on the Serial Communication Manager
+ * \return      KERR_SERIAL_NOERR   OK
  *
  */
-int32_t	serial_getFatherSerialManager(serialManager_t *serialManager) {
+int32_t serial_getFatherSerialManager(serialManager_t *serialManager) {
 
-	local_getDevice(KSYST, serialManager);
-	return (KERR_SERIAL_NOERR);
+    local_getDevice(KSYST, serialManager);
+    return (KERR_SERIAL_NOERR);
 }
 
 // Local routines
@@ -671,38 +672,38 @@ int32_t	serial_getFatherSerialManager(serialManager_t *serialManager) {
  * - if (serialManager == KXYZT) ---> use the KXYZT Serial Communication Manager
  *
  */
-static	void	local_getDevice(serialManager_t serialManager, serialManager_t *manager) {
-	uint32_t	core;
-	proc_t		*process;
+static  void    local_getDevice(serialManager_t serialManager, serialManager_t *manager) {
+    uint32_t    core;
+    proc_t      *process;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	PRIVILEGE_ELEVATE;
-	*manager = serialManager;
+    PRIVILEGE_ELEVATE;
+    *manager = serialManager;
 
 // As long as we have KSYST, scan the dynasty for a logical device (KURT0, KCDC0, ...)
 // Stop searching for a valuable logical device or if the process is orphan
 
-	kern_getProcessRun(&process);
-	while (*manager == KSYST) {
-		kern_getSerialForProcess(process, manager);
-		if ((*manager != KSYST) || (process->oInternal.oProcFather == NULL)) {
-			break;
-		}
-		process = process->oInternal.oProcFather;
-	}
+    kern_getProcessRun(&process);
+    while (*manager == KSYST) {
+        kern_getSerialForProcess(process, manager);
+        if ((*manager != KSYST) || (process->oInternal.oProcFather == NULL)) {
+            break;
+        }
+        process = process->oInternal.oProcFather;
+    }
 
 // At this point we should have:
 // - The logical device (KURT0, KCDC0, ...)
 // - KDEF0 --> *manager = vDefSerialManager
 // - KSYST --> *manager = vDefSerialManager
 
-	if ((*manager == KDEF0) || (*manager == KSYST)) {
-		*manager = vDefSerialManager[core];
-	}
-	PRIVILEGE_RESTORE;
+    if ((*manager == KDEF0) || (*manager == KSYST)) {
+        *manager = vDefSerialManager[core];
+    }
+    PRIVILEGE_RESTORE;
 }
 
 #else
-#error	"CONFIG_MAN_COMM_S SHALL be defined in project using serial/serial.c"
+#error  "CONFIG_MAN_COMM_S SHALL be defined in project using serial/serial.c"
 #endif

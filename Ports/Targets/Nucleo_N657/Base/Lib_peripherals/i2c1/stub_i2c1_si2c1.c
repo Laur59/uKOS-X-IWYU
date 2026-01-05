@@ -2,17 +2,18 @@
 ; stub_i2c1_si2c1.
 ; ================
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		stub for the connection of the "i2c1" manager to the si2c1 device.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    stub for the connection of the "i2c1" manager to the si2c1 device.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,22 +47,22 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"clockTree.h"
-#include	"macros_core.h"
-#include	"soc_reg.h"
+#include    "clockTree.h"
+#include    "macros_core.h"
+#include    "soc_reg.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
 
-#define	UNIT					"I2C1"
-#define	I2C						REG(I2C1)
-#define	I2C_VECTOR_NUMBER		I2C1_EV_C0_IRQn
-#define	I2C_FREQUENCY			KFREQUENCY_APB1
+#define UNIT                    "I2C1"
+#define I2C                     REG(I2C1)
+#define I2C_VECTOR_NUMBER       I2C1_EV_C0_IRQn
+#define I2C_FREQUENCY           KFREQUENCY_APB1
 
-#define	model_i2c_init			stub_i2c1_init
-#define	model_i2c_configure		stub_i2c1_configure
-#define	model_i2c_write			stub_i2c1_write
-#define	model_i2c_read			stub_i2c1_read
+#define model_i2c_init          stub_i2c1_init
+#define model_i2c_configure     stub_i2c1_configure
+#define model_i2c_write         stub_i2c1_write
+#define model_i2c_read          stub_i2c1_read
 
 // Model callbacks
 // ---------------
@@ -72,10 +73,10 @@
  * - Enable the device (clock)
  *
  */
-static	void	cb_enable(void) {
+static  void    cb_enable(void) {
 
-	REG(RCC)->APB1LENR	 |= RCC_APB1LENR_I2C1EN;
-	REG(RCC)->APB1LLPENR |= RCC_APB1LLPENR_I2C1LPEN;
+    REG(RCC)->APB1LENR   |= RCC_APB1LENR_I2C1EN;
+    REG(RCC)->APB1LLPENR |= RCC_APB1LLPENR_I2C1LPEN;
 }
 
-#include	"model_i2c.c_inc"
+#include    "model_i2c.c_inc"

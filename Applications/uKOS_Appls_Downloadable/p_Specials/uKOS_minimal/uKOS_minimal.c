@@ -2,17 +2,18 @@
 ; uKOS_minimal.
 ; =============
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Demo of a minimal application using the uKOS-X uKernel.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    Demo of a minimal application using the uKOS-X uKernel.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -51,79 +52,79 @@
  * \ingroup app_special
  * \brief This application shows how to operate with the uKOS uKernel.
  *
- *			Launch 3 processes:
+ *          Launch 3 processes:
  *
- *			- P0: process_actuator
- *				  Get the queue "Queue dispatcher" handle
- *				  Every 1000-ms
- *					- Generate a new gray code
- *					- Write the code to the queue
+ *          - P0: process_actuator
+ *                Get the queue "Queue dispatcher" handle
+ *                Every 1000-ms
+ *                  - Generate a new gray code
+ *                  - Write the code to the queue
  *
- *			- P1: process_sensor
- *				  Get the queue "Queue dispatcher" handle
- *				  Every 100-ms
- *					- Increment a counter
- *					- Write the counter to the queue
+ *          - P1: process_sensor
+ *                Get the queue "Queue dispatcher" handle
+ *                Every 100-ms
+ *                  - Increment a counter
+ *                  - Write the counter to the queue
  *
- *			- P2: process_dispatcher
- *				  Get the queue "Queue dispatcher" handle
- *				  Read the messages coming from the queue
- *				  if KID_SENSOR
- *					- turn on/off the led 0
- *				  if KID_ACTUATOR
- *					- Display the code on the KURT0
+ *          - P2: process_dispatcher
+ *                Get the queue "Queue dispatcher" handle
+ *                Read the messages coming from the queue
+ *                if KID_SENSOR
+ *                  - turn on/off the led 0
+ *                if KID_ACTUATOR
+ *                  - Display the code on the KURT0
  *
  */
 
-#include	<stdint.h>
-#include	<stdlib.h>
+#include    <stdint.h>
+#include    <stdlib.h>
 
-#include	"crt0.h"
-#include	"kern/kern.h"
-#include	"macros.h"
-#include	"memo/memo.h"
-#include	"led/led.h"
-#include	"modules.h"
-#include	"os_errors.h"
-#include	"record/record.h"
-#include	"types.h"
-#include	"record/record.h"
+#include    "crt0.h"
+#include    "kern/kern.h"
+#include    "macros.h"
+#include    "memo/memo.h"
+#include    "led/led.h"
+#include    "modules.h"
+#include    "os_errors.h"
+#include    "record/record.h"
+#include    "types.h"
+#include    "record/record.h"
 
 // Prototypes
 
-extern	bool	installaProcess_sensor(void);
-extern	bool	installaProcess_actuator(void);
-extern	bool	installaProcess_dispatcher(void);
-static	void	local_changeStateLed(const void *argument);
+extern  bool    installaProcess_sensor(void);
+extern  bool    installaProcess_actuator(void);
+extern  bool    installaProcess_dispatcher(void);
+static  void    local_changeStateLed(const void *argument);
 
-mbox_t	*vQueue_dispatcher = NULL;
+mbox_t  *vQueue_dispatcher = NULL;
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"uKOS_minimal Minimal app (for ASIC).                   (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "This is a romable C application\n"
-									"===============================\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "uKOS_minimal Minimal app (for ASIC).                   (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
+                                    "===============================\n\n"
 
-									"This user function module is a C written application.\n\n"
+                                    "This user function module is a C written application.\n\n"
 
-									"Input format:  uKOS_minimal\n"
-									"Output format: [result]\n\n"
+                                    "Input format:  uKOS_minimal\n"
+                                    "Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
-	UserAppl,							// Module name (the first letter has to be upper case)
-	KID_FAM_APPLICATIONS,				// Family (defined in the module.h)
-	KNUM_APPLICATION,					// Module identifier (defined in the module.h)
-	NULL,								// Address of the initialisation code (early pre-init)
-	aStart,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	NULL,								// Address of the clean code (clean the module)
-	" 1.0",								// Revision string (major . minor)
-	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0									// Execution cores
+    UserAppl,                           // Module name (the first letter has to be upper case)
+    KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
+    KNUM_APPLICATION,                   // Module identifier (defined in the module.h)
+    NULL,                               // Address of the initialisation code (early pre-init)
+    aStart,                             // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    NULL,                               // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
 );
 
 /*
@@ -134,38 +135,38 @@ MODULE(
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int		main(int argc, const char *argv[]) {
-	UNUSED(argc);
-	UNUSED(argv);
+int     main(int argc, const char *argv[]) {
+    UNUSED(argc);
+    UNUSED(argv);
 
-	stim_t	*softwareTimer;
-	mcnf_t	configure_mbox = {
-				.oNbMaxPacks	= 10U,
-				.oDataEntrySize	= 0U
-			};
-	tspc_t	configure_stim = {
-				.oMode		  = KSTIM_CONTINUOUS,
-				.oInitialTime = 2000U,
-				.oTime		  = 30U,
-				.oCode		  = local_changeStateLed,
-				.oArgument	  = NULL
-			};
+    stim_t  *softwareTimer;
+    mcnf_t  configure_mbox = {
+                .oNbMaxPacks    = 10U,
+                .oDataEntrySize = 0U
+            };
+    tspc_t  configure_stim = {
+                .oMode        = KSTIM_CONTINUOUS,
+                .oInitialTime = 2000U,
+                .oTime        = 30U,
+                .oCode        = local_changeStateLed,
+                .oArgument    = NULL
+            };
 
 // Create the "dispatcher" queue
 // Create the software timer
 // Launch the processes
 
-	if (kern_createMailbox("Queue dispatcher", &vQueue_dispatcher) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create mbox");	 exit(EXIT_OS_FAILURE); }
-	if (kern_setMailbox(vQueue_dispatcher, &configure_mbox)		   != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Configure mbox"); exit(EXIT_OS_FAILURE); }
-	if (kern_createSoftwareTimer("Blink Led 2", &softwareTimer)	   != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create stim");	 exit(EXIT_OS_FAILURE); }
-	if (kern_setSoftwareTimer(softwareTimer, &configure_stim)	   != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Configure stim"); exit(EXIT_OS_FAILURE); }
+    if (kern_createMailbox("Queue dispatcher", &vQueue_dispatcher) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create mbox");    exit(EXIT_OS_FAILURE); }
+    if (kern_setMailbox(vQueue_dispatcher, &configure_mbox)        != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Configure mbox"); exit(EXIT_OS_FAILURE); }
+    if (kern_createSoftwareTimer("Blink Led 2", &softwareTimer)    != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create stim");    exit(EXIT_OS_FAILURE); }
+    if (kern_setSoftwareTimer(softwareTimer, &configure_stim)      != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Configure stim"); exit(EXIT_OS_FAILURE); }
 
-	if (installaProcess_sensor()	 == false)										   { LOG(KFATAL_USER, "Create proc");	 exit(EXIT_OS_FAILURE); }
-	if (installaProcess_actuator()	 == false)										   { LOG(KFATAL_USER, "Create proc");	 exit(EXIT_OS_FAILURE); }
-	if (installaProcess_dispatcher() == false)										   { LOG(KFATAL_USER, "Create proc");	 exit(EXIT_OS_FAILURE); }
+    if (installaProcess_sensor()     == false)                                         { LOG(KFATAL_USER, "Create proc");    exit(EXIT_OS_FAILURE); }
+    if (installaProcess_actuator()   == false)                                         { LOG(KFATAL_USER, "Create proc");    exit(EXIT_OS_FAILURE); }
+    if (installaProcess_dispatcher() == false)                                         { LOG(KFATAL_USER, "Create proc");    exit(EXIT_OS_FAILURE); }
 
-	LOG(KINFO_USER, "Application launched");
-	return (EXIT_OS_SUCCESS_CLI);
+    LOG(KINFO_USER, "Application launched");
+    return (EXIT_OS_SUCCESS_CLI);
 }
 
 /*
@@ -174,11 +175,11 @@ int		main(int argc, const char *argv[]) {
  * - 8 x blinks and long pause
  *
  */
-static	void	local_changeStateLed(const void *argument) {
-	UNUSED(argument);
+static  void    local_changeStateLed(const void *argument) {
+    UNUSED(argument);
 
-	static	uint8_t		vCptBlink = 0U;
+    static  uint8_t     vCptBlink = 0U;
 
-	((vCptBlink & 0x1Fu) > 8U) ? (led_off(KLED_1)) : (led_toggle(KLED_1));
-	vCptBlink++;
+    ((vCptBlink & 0x1Fu) > 8U) ? (led_off(KLED_1)) : (led_toggle(KLED_1));
+    vCptBlink++;
 }

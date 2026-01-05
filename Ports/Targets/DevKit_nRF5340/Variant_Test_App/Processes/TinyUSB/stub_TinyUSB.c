@@ -2,18 +2,19 @@
 ; stub_TinyUSB.
 ; =============
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		stub for the "TinyUSB" library.
-;			Multiple profiles
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    stub for the "TinyUSB" library.
+;    Multiple profiles
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,7 +48,7 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"macros_soc.h"
+#include    "macros_soc.h"
 
 // Save the GCC diagnostic
 //
@@ -56,7 +57,7 @@
 // Ignore the GCC diagnostic
 //
 #pragma GCC diagnostic ignored "-Wpedantic"
-#include	"tusb.h"
+#include    "tusb.h"
 
 #ifdef __clang__
 
@@ -65,22 +66,22 @@
 #pragma GCC diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
 #endif
 
-#include	"tusb_config.h"
-#include	"usbd.h"
+#include    "tusb_config.h"
+#include    "usbd.h"
 
 #if (CFG_TUD_CDC > 0)
-#include	"cdc/cdc_device.h"
-#include	"TinyUSB/uKOS_Interface/Models/model_TinyUSB_cdc.c_inc"
+#include    "cdc/cdc_device.h"
+#include    "TinyUSB/uKOS_Interface/Models/model_TinyUSB_cdc.c_inc"
 #endif
 
 #if (CFG_TUD_MSC > 0)
-#include	"msc/msc_device.h"
-#include	"TinyUSB/uKOS_Interface/Models/model_TinyUSB_msc.c_inc"
+#include    "msc/msc_device.h"
+#include    "TinyUSB/uKOS_Interface/Models/model_TinyUSB_msc.c_inc"
 #endif
 
 #if (CFG_TUD_VIDEO > 0)
-#include	"video/video_device.h"
-#include	"TinyUSB/uKOS_Interface/Models/model_TinyUSB_video.c_inc"
+#include    "video/video_device.h"
+#include    "TinyUSB/uKOS_Interface/Models/model_TinyUSB_video.c_inc"
 #endif
 
 // Restore the GCC diagnostic
@@ -89,13 +90,13 @@
 
 // Prototypes
 
-extern	void	coreUSB_init(void);
+extern  void    coreUSB_init(void);
 
 // Init device stack on configured roothub port
 
 tusb_rhport_init_t deviceInit = {
-	.role  = TUSB_ROLE_DEVICE,
-	.speed = TUSB_SPEED_AUTO
+    .role  = TUSB_ROLE_DEVICE,
+    .speed = TUSB_SPEED_AUTO
 };
 
 /*
@@ -104,10 +105,10 @@ tusb_rhport_init_t deviceInit = {
  * - USB initialisation
  *
  */
-void	stub_TinyUSB_init(void) {
+void    stub_TinyUSB_init(void) {
 
-	coreUSB_init();
-	tusb_init(BOARD_TUD_RHPORT, &deviceInit);
+    coreUSB_init();
+    tusb_init(BOARD_TUD_RHPORT, &deviceInit);
 }
 
 /*
@@ -116,7 +117,7 @@ void	stub_TinyUSB_init(void) {
  * - USB management
  *
  */
-void	stub_TinyUSB_cyclic(void) {
+void    stub_TinyUSB_cyclic(void) {
 
-	tud_task();
+    tud_task();
 }

@@ -2,17 +2,18 @@
 ; stub_machine.
 ; =============
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		stub for the "machine" manager module.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    stub for the "machine" manager module.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,12 +47,12 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"Registers/scb.h"
-#include	"macros.h"
-#include	"macros_core.h"
-#include	"os_errors.h"
+#include    "Registers/scb.h"
+#include    "macros.h"
+#include    "macros_core.h"
+#include    "os_errors.h"
 
 /*
  * \brief stub_machine_init
@@ -59,7 +60,7 @@
  * - Initialise some specific CPU parts
  *
  */
-void	stub_machine_init(void) {
+void    stub_machine_init(void) {
 
 }
 
@@ -70,15 +71,15 @@ void	stub_machine_init(void) {
  * - Restart
  *
  */
-int32_t	stub_machine_restart(void) {
+int32_t stub_machine_restart(void) {
 
 // Stop all the interruptions and restart
 
-	INTERRUPTION_OFF;
-	REG(SCB)->AIRCR = SCB_AIRCR_VECTKEY_MASK | SCB_AIRCR_SYSRESETREQ;
-	while (true) { }
+    INTERRUPTION_OFF;
+    REG(SCB)->AIRCR = SCB_AIRCR_VECTKEY_MASK | SCB_AIRCR_SYSRESETREQ;
+    while (true) { }
 
-	return (KERR_SYSTEM_NOERR);
+    return (KERR_SYSTEM_NOERR);
 }
 
 /*
@@ -87,34 +88,34 @@ int32_t	stub_machine_restart(void) {
  * - Return the PC of the selected process
  *
  */
-void	stub_machine_readPC(const uintptr_t *stackProcess, uintptr_t *pc) {
-	uint8_t		pcOffset = 0U;
-	uintptr_t	lr;
+void    stub_machine_readPC(const uintptr_t *stackProcess, uintptr_t *pc) {
+    uint8_t     pcOffset = 0U;
+    uintptr_t   lr;
 
 // uKOS-X stack frame:
 //
-//	xPSR
-//	s15..s0
-//	pc
-//	lr (old)						-> pcOffset += 1
-//	r12								-> pcOffset += 1
-//	r3..r0							-> pcOffset += ((3 - 0) + 1)
-//	r11..r4							-> pcOffset += ((11 - 4) + 1)
-//	basepri							-> pcOffset += 1
-//	s31..s16 (if FPU)				-> pcOffset += ((31 - 16) + 1)
-//	lr (new)						-> pcOffset  = 0
+//  xPSR
+//  s15..s0
+//  pc
+//  lr (old)                        -> pcOffset += 1
+//  r12                             -> pcOffset += 1
+//  r3..r0                          -> pcOffset += ((3 - 0) + 1)
+//  r11..r4                         -> pcOffset += ((11 - 4) + 1)
+//  basepri                         -> pcOffset += 1
+//  s31..s16 (if FPU)               -> pcOffset += ((31 - 16) + 1)
+//  lr (new)                        -> pcOffset  = 0
 
-	lr = stackProcess[0];
+    lr = stackProcess[0];
 
-// If the FPU was used         			      s31 to s16
-//										      -----------
-	if ((lr & (1U<<4U)) == 0U) { pcOffset += ((31U-16U)+1U); }
+// If the FPU was used                        s31 to s16
+//                                            -----------
+    if ((lr & (1U<<4U)) == 0U) { pcOffset += ((31U-16U)+1U); }
 
 //               lr (new) basepri       r11..r4         r3..r0      r12  lr (old)
 //               -------- -------    -------------   -------------  ---  --------
-	pcOffset +=      +1U    +1U      +((11U-4U)+1U)  +((3U-0U)+1U)  +1U    +1U;
+    pcOffset +=      +1U    +1U      +((11U-4U)+1U)  +((3U-0U)+1U)  +1U    +1U;
 
-	*pc = (stackProcess[pcOffset]);
+    *pc = (stackProcess[pcOffset]);
 }
 
 /*
@@ -123,24 +124,24 @@ void	stub_machine_readPC(const uintptr_t *stackProcess, uintptr_t *pc) {
  * - Return the function name that belong to a given PC
  *
  */
-void	stub_machine_readFunctionName(const uintptr_t pc, const char_t **function) {
+void    stub_machine_readFunctionName(const uintptr_t pc, const char_t **function) {
 
-	UNUSED(pc);
+    UNUSED(pc);
 
-	#if (!defined(__clang__))
-			intptr_t	offset, nameLen;
-	const	uintptr_t	*ptr;
+    #if (!defined(__clang__))
+            intptr_t    offset, nameLen;
+    const   uintptr_t   *ptr;
 
-	ptr = (const uintptr_t *)((pc + 2U) & (~0x3u));
+    ptr = (const uintptr_t *)((pc + 2U) & (~0x3u));
 
-	for (offset = 1; (offset < (intptr_t)(16U * 1024U)) && ((uintptr_t)&ptr[-offset] > (uintptr_t)0x0u); ++offset) {
-		if ((ptr[-offset] & (uintptr_t)0xFFFFFF00u) == (uintptr_t)0xFF000000u) {
-			nameLen = (intptr_t)(ptr[-offset] & (uintptr_t)0xFFu);
-			*function = &((const char_t *)&ptr[-offset])[-nameLen];
-			return;
-		}
-	}
-	#endif
+    for (offset = 1; (offset < (intptr_t)(16U * 1024U)) && ((uintptr_t)&ptr[-offset] > (uintptr_t)0x0u); ++offset) {
+        if ((ptr[-offset] & (uintptr_t)0xFFFFFF00u) == (uintptr_t)0xFF000000u) {
+            nameLen = (intptr_t)(ptr[-offset] & (uintptr_t)0xFFu);
+            *function = &((const char_t *)&ptr[-offset])[-nameLen];
+            return;
+        }
+    }
+    #endif
 
-	*function = NULL;
+    *function = NULL;
 }

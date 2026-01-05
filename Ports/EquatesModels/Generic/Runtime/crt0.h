@@ -2,18 +2,19 @@
 ; crt0.
 ; =====
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		crt0 for the uKOS-X system.
-;			See "ld.pdf" file, "Using LD, the GNU linker" page 48.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project:  uKOS-X
+;
+; Purpose:
+;    crt0 for the uKOS-X system.
+;    See "ld.pdf" file, "Using LD, the GNU linker" page 48.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,28 +48,28 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"types.h"
-#include	"serial/serial.h"
+#include    "types.h"
+#include    "serial/serial.h"
 
 // Prototypes
 
 #ifdef __cplusplus
-extern	"C" {
+extern  "C" {
 #endif
 
-extern	int32_t		aStart(uint32_t argc, const char_t *argv[]);
-extern	int32_t		boot(void);
-extern	void		exit_terminate(void);
+extern  int32_t     aStart(uint32_t argc, const char_t *argv[]);
+extern  int32_t     boot(void);
+extern  void        exit_terminate(void);
 
-extern	void		init_init(void);
-extern	void		exce_init(void);
-extern	void		cmns_init(void);
-extern	void		cmns_send(serialManager_t serialManager, const char_t *ascii);
-extern	void		cmns_receive(serialManager_t serialManager, char_t *data);
+extern  void        init_init(void);
+extern  void        exce_init(void);
+extern  void        cmns_init(void);
+extern  void        cmns_send(serialManager_t serialManager, const char_t *ascii);
+extern  void        cmns_receive(serialManager_t serialManager, char_t *data);
 
 #ifdef __cplusplus
 
@@ -76,7 +77,7 @@ extern	void		cmns_receive(serialManager_t serialManager, char_t *data);
 
 #else
 #if !(defined(__NO_EXTERN_MAIN))
-extern	int			main(int argc, const char *argv[]);
+extern  int         main(int argc, const char *argv[]);
 #endif
 #endif
 

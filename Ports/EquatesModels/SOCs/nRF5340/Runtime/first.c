@@ -2,17 +2,18 @@
 ; first.
 ; ======
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Vectors for the uKOS-X system (first).
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    Vectors for the uKOS-X system (first).
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,121 +47,121 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"Registers/core_addendum.h"
-#include	"kern/kern.h"
-#include	"kern/private/private_temporal.h"
-#include	"linker.h"
-#include	"macros_core.h"
-#include	"macros_soc.h"
-#include	"soc_reg.h"
+#include    "Registers/core_addendum.h"
+#include    "kern/kern.h"
+#include    "kern/private/private_temporal.h"
+#include    "linker.h"
+#include    "macros_core.h"
+#include    "macros_soc.h"
+#include    "soc_reg.h"
 
-extern	void	(*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
-extern	void	(*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
+extern  void    (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
+extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 // Vector table: ...
 // However rather than start at zero the vector table starts at address 0x00000004,
 // the first four bytes are used to store the starting address of the stack pointer.
 
-extern	void		Reset_C0_Handler(void);
-extern	void		crt0(void);
+extern  void        Reset_C0_Handler(void);
+extern  void        crt0(void);
 
-const	uintptr_t	g_pfnVectors_C0[] __attribute__((used, section(".isr_vector"))) = {
+const   uintptr_t   g_pfnVectors_C0[] __attribute__((used, section(".isr_vector"))) = {
 
-	(uintptr_t)linker_topStackSystem_C0,						// MSP Stack
+    (uintptr_t)linker_topStackSystem_C0,                        // MSP Stack
 
 // Cortex-M33 Processor Exceptions Numbers
 
-	(uintptr_t)Reset_C0_Handler,								// Address: 0x0000_0004
-	(uintptr_t)NonMaskableInt_C0_IRQHandler,					// Address: 0x0000_0008
-	(uintptr_t)HardFault_C0_IRQHandler,							// Address: 0x0000_000C
-	(uintptr_t)MemoryManagement_C0_IRQHandler,					// Address: 0x0000_0010
-	(uintptr_t)BusFault_C0_IRQHandler,							// Address: 0x0000_0014
-	(uintptr_t)UsageFault_C0_IRQHandler,						// Address: 0x0000_0018
-	(uintptr_t)SecureFault_C0_IRQHandler,						// Address: 0x0000_001C
-	(uintptr_t)0,												// Address: 0x0000_0020
-	(uintptr_t)0,												// Address: 0x0000_0024
-	(uintptr_t)0,												// Address: 0x0000_0028
-	(uintptr_t)SVCall_C0_IRQHandler,							// Address: 0x0000_002C
-	(uintptr_t)DebugMonitor_C0_IRQHandler,						// Address: 0x0000_0030
-	(uintptr_t)0,												// Address: 0x0000_0034
-	(uintptr_t)PendSV_C0_IRQHandler,							// Address: 0x0000_0038
-	(uintptr_t)SysTick_C0_IRQHandler,							// Address: 0x0000_003C
+    (uintptr_t)Reset_C0_Handler,                                // Address: 0x0000_0004
+    (uintptr_t)NonMaskableInt_C0_IRQHandler,                    // Address: 0x0000_0008
+    (uintptr_t)HardFault_C0_IRQHandler,                         // Address: 0x0000_000C
+    (uintptr_t)MemoryManagement_C0_IRQHandler,                  // Address: 0x0000_0010
+    (uintptr_t)BusFault_C0_IRQHandler,                          // Address: 0x0000_0014
+    (uintptr_t)UsageFault_C0_IRQHandler,                        // Address: 0x0000_0018
+    (uintptr_t)SecureFault_C0_IRQHandler,                       // Address: 0x0000_001C
+    (uintptr_t)0,                                               // Address: 0x0000_0020
+    (uintptr_t)0,                                               // Address: 0x0000_0024
+    (uintptr_t)0,                                               // Address: 0x0000_0028
+    (uintptr_t)SVCall_C0_IRQHandler,                            // Address: 0x0000_002C
+    (uintptr_t)DebugMonitor_C0_IRQHandler,                      // Address: 0x0000_0030
+    (uintptr_t)0,                                               // Address: 0x0000_0034
+    (uintptr_t)PendSV_C0_IRQHandler,                            // Address: 0x0000_0038
+    (uintptr_t)SysTick_C0_IRQHandler,                           // Address: 0x0000_003C
 
-	#if (defined(CPU_APPLICATION_S))
+    #if (defined(CPU_APPLICATION_S))
 
 // nRF5340 Application specific Interrupt Numbers
 
-	(uintptr_t)FPU_C0_IRQHandler,								// Address: 0x0000_0040
-	(uintptr_t)CACHE_C0_IRQHandler,								// Address: 0x0000_0044
-	(uintptr_t)0,												// Address: 0x0000_0048
-	(uintptr_t)SPU_C0_IRQHandler,								// Address: 0x0000_004C
-	(uintptr_t)0,												// Address: 0x0000_0050
-	(uintptr_t)CLOCK_POWER_C0_IRQHandler,						// Address: 0x0000_0054
-	(uintptr_t)0,												// Address: 0x0000_0058
-	(uintptr_t)0,												// Address: 0x0000_005C
-	(uintptr_t)SERIAL0_C0_IRQHandler,							// Address: 0x0000_0060
-	(uintptr_t)SERIAL1_C0_IRQHandler,							// Address: 0x0000_0064
-	(uintptr_t)SPIM4_C0_IRQHandler,								// Address: 0x0000_0068
-	(uintptr_t)SERIAL2_C0_IRQHandler,							// Address: 0x0000_006C
-	(uintptr_t)SERIAL3_C0_IRQHandler,							// Address: 0x0000_0070
-	(uintptr_t)GPIOTE0_C0_IRQHandler,							// Address: 0x0000_0074
-	(uintptr_t)SAADC_C0_IRQHandler,								// Address: 0x0000_0078
-	(uintptr_t)TIMER0_C0_IRQHandler,							// Address: 0x0000_007C
-	(uintptr_t)TIMER1_C0_IRQHandler,							// Address: 0x0000_0080
-	(uintptr_t)TIMER2_C0_IRQHandler,							// Address: 0x0000_0084
-	(uintptr_t)0,												// Address: 0x0000_0088
-	(uintptr_t)0,												// Address: 0x0000_008C
-	(uintptr_t)RTC0_C0_IRQHandler,								// Address: 0x0000_0090
-	(uintptr_t)RTC1_C0_IRQHandler,								// Address: 0x0000_0094
-	(uintptr_t)0,												// Address: 0x0000_0098
-	(uintptr_t)0,												// Address: 0x0000_009C
-	(uintptr_t)WDT0_C0_IRQHandler,								// Address: 0x0000_00A0
-	(uintptr_t)WDT1_C0_IRQHandler,								// Address: 0x0000_00A4
-	(uintptr_t)COMP_LPCOMP_C0_IRQHandler,						// Address: 0x0000_00A8
-	(uintptr_t)EGU0_C0_IRQHandler,								// Address: 0x0000_00AC
-	(uintptr_t)EGU1_C0_IRQHandler,								// Address: 0x0000_00B0
-	(uintptr_t)EGU2_C0_IRQHandler,								// Address: 0x0000_00B4
-	(uintptr_t)EGU3_C0_IRQHandler,								// Address: 0x0000_00B8
-	(uintptr_t)EGU4_C0_IRQHandler,								// Address: 0x0000_00BC
-	(uintptr_t)EGU5_C0_IRQHandler,								// Address: 0x0000_00C0
-	(uintptr_t)PWM0_C0_IRQHandler,								// Address: 0x0000_00C4
-	(uintptr_t)PWM1_C0_IRQHandler,								// Address: 0x0000_00C8
-	(uintptr_t)PWM2_C0_IRQHandler,								// Address: 0x0000_00CC
-	(uintptr_t)PWM3_C0_IRQHandler,								// Address: 0x0000_00D0
-	(uintptr_t)0,												// Address: 0x0000_00D4
-	(uintptr_t)PDM0_C0_IRQHandler,								// Address: 0x0000_00D8
-	(uintptr_t)0,												// Address: 0x0000_00DC
-	(uintptr_t)I2S0_C0_IRQHandler,								// Address: 0x0000_00E0
-	(uintptr_t)0,												// Address: 0x0000_00E4
-	(uintptr_t)IPC_C0_IRQHandler,								// Address: 0x0000_00E8
-	(uintptr_t)QSPI_C0_IRQHandler,								// Address: 0x0000_00EC
-	(uintptr_t)0,												// Address: 0x0000_00F0
-	(uintptr_t)NFCT_C0_IRQHandler,								// Address: 0x0000_00F4
-	(uintptr_t)0,												// Address: 0x0000_00F8
-	(uintptr_t)GPIOTE1_C0_IRQHandler,							// Address: 0x0000_00FC
-	(uintptr_t)0,												// Address: 0x0000_0100
-	(uintptr_t)0,												// Address: 0x0000_0104
-	(uintptr_t)0,												// Address: 0x0000_0108
-	(uintptr_t)QDEC0_C0_IRQHandler,								// Address: 0x0000_010C
-	(uintptr_t)QDEC1_C0_IRQHandler,								// Address: 0x0000_0110
-	(uintptr_t)0,												// Address: 0x0000_0114
-	(uintptr_t)USBD_C0_IRQHandler,								// Address: 0x0000_0118
-	(uintptr_t)USBREGULATOR_C0_IRQHandler,						// Address: 0x0000_011C
-	(uintptr_t)0,												// Address: 0x0000_0120
-	(uintptr_t)KMU_C0_IRQHandler,								// Address: 0x0000_0124
-	(uintptr_t)0,												// Address: 0x0000_0128
-	(uintptr_t)0,												// Address: 0x0000_012C
-	(uintptr_t)0,												// Address: 0x0000_0130
-	(uintptr_t)0,												// Address: 0x0000_0134
-	(uintptr_t)0,												// Address: 0x0000_0138
-	(uintptr_t)0,												// Address: 0x0000_013C
-	(uintptr_t)0,												// Address: 0x0000_0140
-	(uintptr_t)0,												// Address: 0x0000_0144
-	(uintptr_t)0,												// Address: 0x0000_0148
-	(uintptr_t)0,												// Address: 0x0000_014C
-	(uintptr_t)CRYPTOCELL_C0_IRQHandler							// Address: 0x0000_0150
+    (uintptr_t)FPU_C0_IRQHandler,                               // Address: 0x0000_0040
+    (uintptr_t)CACHE_C0_IRQHandler,                             // Address: 0x0000_0044
+    (uintptr_t)0,                                               // Address: 0x0000_0048
+    (uintptr_t)SPU_C0_IRQHandler,                               // Address: 0x0000_004C
+    (uintptr_t)0,                                               // Address: 0x0000_0050
+    (uintptr_t)CLOCK_POWER_C0_IRQHandler,                       // Address: 0x0000_0054
+    (uintptr_t)0,                                               // Address: 0x0000_0058
+    (uintptr_t)0,                                               // Address: 0x0000_005C
+    (uintptr_t)SERIAL0_C0_IRQHandler,                           // Address: 0x0000_0060
+    (uintptr_t)SERIAL1_C0_IRQHandler,                           // Address: 0x0000_0064
+    (uintptr_t)SPIM4_C0_IRQHandler,                             // Address: 0x0000_0068
+    (uintptr_t)SERIAL2_C0_IRQHandler,                           // Address: 0x0000_006C
+    (uintptr_t)SERIAL3_C0_IRQHandler,                           // Address: 0x0000_0070
+    (uintptr_t)GPIOTE0_C0_IRQHandler,                           // Address: 0x0000_0074
+    (uintptr_t)SAADC_C0_IRQHandler,                             // Address: 0x0000_0078
+    (uintptr_t)TIMER0_C0_IRQHandler,                            // Address: 0x0000_007C
+    (uintptr_t)TIMER1_C0_IRQHandler,                            // Address: 0x0000_0080
+    (uintptr_t)TIMER2_C0_IRQHandler,                            // Address: 0x0000_0084
+    (uintptr_t)0,                                               // Address: 0x0000_0088
+    (uintptr_t)0,                                               // Address: 0x0000_008C
+    (uintptr_t)RTC0_C0_IRQHandler,                              // Address: 0x0000_0090
+    (uintptr_t)RTC1_C0_IRQHandler,                              // Address: 0x0000_0094
+    (uintptr_t)0,                                               // Address: 0x0000_0098
+    (uintptr_t)0,                                               // Address: 0x0000_009C
+    (uintptr_t)WDT0_C0_IRQHandler,                              // Address: 0x0000_00A0
+    (uintptr_t)WDT1_C0_IRQHandler,                              // Address: 0x0000_00A4
+    (uintptr_t)COMP_LPCOMP_C0_IRQHandler,                       // Address: 0x0000_00A8
+    (uintptr_t)EGU0_C0_IRQHandler,                              // Address: 0x0000_00AC
+    (uintptr_t)EGU1_C0_IRQHandler,                              // Address: 0x0000_00B0
+    (uintptr_t)EGU2_C0_IRQHandler,                              // Address: 0x0000_00B4
+    (uintptr_t)EGU3_C0_IRQHandler,                              // Address: 0x0000_00B8
+    (uintptr_t)EGU4_C0_IRQHandler,                              // Address: 0x0000_00BC
+    (uintptr_t)EGU5_C0_IRQHandler,                              // Address: 0x0000_00C0
+    (uintptr_t)PWM0_C0_IRQHandler,                              // Address: 0x0000_00C4
+    (uintptr_t)PWM1_C0_IRQHandler,                              // Address: 0x0000_00C8
+    (uintptr_t)PWM2_C0_IRQHandler,                              // Address: 0x0000_00CC
+    (uintptr_t)PWM3_C0_IRQHandler,                              // Address: 0x0000_00D0
+    (uintptr_t)0,                                               // Address: 0x0000_00D4
+    (uintptr_t)PDM0_C0_IRQHandler,                              // Address: 0x0000_00D8
+    (uintptr_t)0,                                               // Address: 0x0000_00DC
+    (uintptr_t)I2S0_C0_IRQHandler,                              // Address: 0x0000_00E0
+    (uintptr_t)0,                                               // Address: 0x0000_00E4
+    (uintptr_t)IPC_C0_IRQHandler,                               // Address: 0x0000_00E8
+    (uintptr_t)QSPI_C0_IRQHandler,                              // Address: 0x0000_00EC
+    (uintptr_t)0,                                               // Address: 0x0000_00F0
+    (uintptr_t)NFCT_C0_IRQHandler,                              // Address: 0x0000_00F4
+    (uintptr_t)0,                                               // Address: 0x0000_00F8
+    (uintptr_t)GPIOTE1_C0_IRQHandler,                           // Address: 0x0000_00FC
+    (uintptr_t)0,                                               // Address: 0x0000_0100
+    (uintptr_t)0,                                               // Address: 0x0000_0104
+    (uintptr_t)0,                                               // Address: 0x0000_0108
+    (uintptr_t)QDEC0_C0_IRQHandler,                             // Address: 0x0000_010C
+    (uintptr_t)QDEC1_C0_IRQHandler,                             // Address: 0x0000_0110
+    (uintptr_t)0,                                               // Address: 0x0000_0114
+    (uintptr_t)USBD_C0_IRQHandler,                              // Address: 0x0000_0118
+    (uintptr_t)USBREGULATOR_C0_IRQHandler,                      // Address: 0x0000_011C
+    (uintptr_t)0,                                               // Address: 0x0000_0120
+    (uintptr_t)KMU_C0_IRQHandler,                               // Address: 0x0000_0124
+    (uintptr_t)0,                                               // Address: 0x0000_0128
+    (uintptr_t)0,                                               // Address: 0x0000_012C
+    (uintptr_t)0,                                               // Address: 0x0000_0130
+    (uintptr_t)0,                                               // Address: 0x0000_0134
+    (uintptr_t)0,                                               // Address: 0x0000_0138
+    (uintptr_t)0,                                               // Address: 0x0000_013C
+    (uintptr_t)0,                                               // Address: 0x0000_0140
+    (uintptr_t)0,                                               // Address: 0x0000_0144
+    (uintptr_t)0,                                               // Address: 0x0000_0148
+    (uintptr_t)0,                                               // Address: 0x0000_014C
+    (uintptr_t)CRYPTOCELL_C0_IRQHandler                         // Address: 0x0000_0150
 };
 
 // cppcheck-suppress-begin premium-unreadVariable
@@ -215,55 +216,55 @@ INTERRUPT_SPECIFIC_HANDLER(CRYPTOCELL_C0)
  * - Call the crt0
  *
  */
-void	Reset_C0_Handler(void) {
+void    Reset_C0_Handler(void) {
 
 // The Application CPU turns-on all the memory (Network CPU included_C0)
 
-	REG(VMC)->RAM0_POWER = 0xFFFFu;
-	REG(VMC)->RAM1_POWER = 0xFFFFu;
-	REG(VMC)->RAM2_POWER = 0xFFFFu;
-	REG(VMC)->RAM3_POWER = 0xFFFFu;
-	REG(VMC)->RAM4_POWER = 0xFFFFu;
-	REG(VMC)->RAM5_POWER = 0xFFFFu;
-	REG(VMC)->RAM6_POWER = 0xFFFFu;
-	REG(VMC)->RAM7_POWER = 0xFFFFu;
+    REG(VMC)->RAM0_POWER = 0xFFFFu;
+    REG(VMC)->RAM1_POWER = 0xFFFFu;
+    REG(VMC)->RAM2_POWER = 0xFFFFu;
+    REG(VMC)->RAM3_POWER = 0xFFFFu;
+    REG(VMC)->RAM4_POWER = 0xFFFFu;
+    REG(VMC)->RAM5_POWER = 0xFFFFu;
+    REG(VMC)->RAM6_POWER = 0xFFFFu;
+    REG(VMC)->RAM7_POWER = 0xFFFFu;
 
-	SET_THREAD_STACK(linker_topStackFirst_C0);
+    SET_THREAD_STACK(linker_topStackFirst_C0);
 
-	crt0();
+    crt0();
 }
 
 #else
-	(uintptr_t)0,												// Address: 0x0000_0040
-	(uintptr_t)0,												// Address: 0x0000_0044
-	(uintptr_t)0,												// Address: 0x0000_0048
-	(uintptr_t)0,												// Address: 0x0000_004C
-	(uintptr_t)0,												// Address: 0x0000_0050
-	(uintptr_t)CLOCK_POWER_C0_IRQHandler,						// Address: 0x0000_0054
-	(uintptr_t)0,												// Address: 0x0000_0058
-	(uintptr_t)0,												// Address: 0x0000_005C
-	(uintptr_t)RADIO_C0_IRQHandler,								// Address: 0x0000_0060
-	(uintptr_t)RNG_C0_IRQHandler,								// Address: 0x0000_0064
-	(uintptr_t)GPIOTE_C0_IRQHandler,							// Address: 0x0000_0068
-	(uintptr_t)WDT_C0_IRQHandler,								// Address: 0x0000_006C
-	(uintptr_t)TIMER0_C0_IRQHandler,							// Address: 0x0000_0070
-	(uintptr_t)ECB_C0_IRQHandler,								// Address: 0x0000_0074
-	(uintptr_t)AAR_CCM_C0_IRQHandler,							// Address: 0x0000_0078
-	(uintptr_t)0,												// Address: 0x0000_007C
-	(uintptr_t)TEMP_C0_IRQHandler,								// Address: 0x0000_0080
-	(uintptr_t)RTC0_C0_IRQHandler,								// Address: 0x0000_0084
-	(uintptr_t)IPC_C0_IRQHandler,								// Address: 0x0000_0088
-	(uintptr_t)SERIAL0_C0_IRQHandler,							// Address: 0x0000_008C
-	(uintptr_t)EGU0_C0_IRQHandler,								// Address: 0x0000_0090
-	(uintptr_t)0,												// Address: 0x0000_0094
-	(uintptr_t)RTC1_C0_IRQHandler,								// Address: 0x0000_0098
-	(uintptr_t)0,												// Address: 0x0000_009C
-	(uintptr_t)TIMER1_C0_IRQHandler,							// Address: 0x0000_00A0
-	(uintptr_t)TIMER2_C0_IRQHandler,							// Address: 0x0000_00A4
-	(uintptr_t)SWI0_C0_IRQHandler,								// Address: 0x0000_00A8
-	(uintptr_t)SWI1_C0_IRQHandler,								// Address: 0x0000_00AC
-	(uintptr_t)SWI2_C0_IRQHandler,								// Address: 0x0000_00B4
-	(uintptr_t)SWI3_C0_IRQHandler,								// Address: 0x0000_00B8
+    (uintptr_t)0,                                               // Address: 0x0000_0040
+    (uintptr_t)0,                                               // Address: 0x0000_0044
+    (uintptr_t)0,                                               // Address: 0x0000_0048
+    (uintptr_t)0,                                               // Address: 0x0000_004C
+    (uintptr_t)0,                                               // Address: 0x0000_0050
+    (uintptr_t)CLOCK_POWER_C0_IRQHandler,                       // Address: 0x0000_0054
+    (uintptr_t)0,                                               // Address: 0x0000_0058
+    (uintptr_t)0,                                               // Address: 0x0000_005C
+    (uintptr_t)RADIO_C0_IRQHandler,                             // Address: 0x0000_0060
+    (uintptr_t)RNG_C0_IRQHandler,                               // Address: 0x0000_0064
+    (uintptr_t)GPIOTE_C0_IRQHandler,                            // Address: 0x0000_0068
+    (uintptr_t)WDT_C0_IRQHandler,                               // Address: 0x0000_006C
+    (uintptr_t)TIMER0_C0_IRQHandler,                            // Address: 0x0000_0070
+    (uintptr_t)ECB_C0_IRQHandler,                               // Address: 0x0000_0074
+    (uintptr_t)AAR_CCM_C0_IRQHandler,                           // Address: 0x0000_0078
+    (uintptr_t)0,                                               // Address: 0x0000_007C
+    (uintptr_t)TEMP_C0_IRQHandler,                              // Address: 0x0000_0080
+    (uintptr_t)RTC0_C0_IRQHandler,                              // Address: 0x0000_0084
+    (uintptr_t)IPC_C0_IRQHandler,                               // Address: 0x0000_0088
+    (uintptr_t)SERIAL0_C0_IRQHandler,                           // Address: 0x0000_008C
+    (uintptr_t)EGU0_C0_IRQHandler,                              // Address: 0x0000_0090
+    (uintptr_t)0,                                               // Address: 0x0000_0094
+    (uintptr_t)RTC1_C0_IRQHandler,                              // Address: 0x0000_0098
+    (uintptr_t)0,                                               // Address: 0x0000_009C
+    (uintptr_t)TIMER1_C0_IRQHandler,                            // Address: 0x0000_00A0
+    (uintptr_t)TIMER2_C0_IRQHandler,                            // Address: 0x0000_00A4
+    (uintptr_t)SWI0_C0_IRQHandler,                              // Address: 0x0000_00A8
+    (uintptr_t)SWI1_C0_IRQHandler,                              // Address: 0x0000_00AC
+    (uintptr_t)SWI2_C0_IRQHandler,                              // Address: 0x0000_00B4
+    (uintptr_t)SWI3_C0_IRQHandler,                              // Address: 0x0000_00B8
 };
 
 // cppcheck-suppress-begin premium-unreadVariable
@@ -297,11 +298,11 @@ INTERRUPT_SPECIFIC_HANDLER(SWI3_C0)
  * - Call the crt0
  *
  */
-void	Reset_C0_Handler(void) {
+void    Reset_C0_Handler(void) {
 
-	SET_THREAD_STACK(linker_topStackFirst_C0);
+    SET_THREAD_STACK(linker_topStackFirst_C0);
 
-	crt0();
+    crt0();
 }
 #endif
 

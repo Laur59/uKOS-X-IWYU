@@ -2,17 +2,18 @@
 ; hard.
 ; =====
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		hard manager.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    hard manager.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,12 +47,12 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // Prototypes
 
-extern	void	hard_onLed(uint32_t ledNb);
-extern	void	hard_offLed(uint32_t ledNb);
-extern	void	hard_toggleLed(uint32_t ledNb);
+extern  void    hard_onLed(uint32_t ledNb);
+extern  void    hard_offLed(uint32_t ledNb);
+extern  void    hard_toggleLed(uint32_t ledNb);

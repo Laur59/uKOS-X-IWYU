@@ -2,17 +2,18 @@
 ; spin.
 ; =====
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Collection of multi-core routines
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project:  uKOS-X
+;
+; Purpose:
+;    Collection of multi-core routines
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,49 +47,49 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
-#include	<stdatomic.h>
+#include    <stdint.h>
+#include    <stdatomic.h>
 
-#include	"macros_soc.h"
+#include    "macros_soc.h"
 
 // Structures for locks
 // --------------------
 
-typedef	struct	spinlock	spinlock_t;
-typedef	struct	corelock	corelock_t;
+typedef struct  spinlock    spinlock_t;
+typedef struct  corelock    corelock_t;
 
-struct	spinlock {
-	atomic_flag		oFlag;
+struct  spinlock {
+    atomic_flag     oFlag;
 };
 
-struct	corelock {
-	spinlock_t		oLock;
-	int64_t			oCount;
-	uint32_t		oCore;
+struct  corelock {
+    spinlock_t      oLock;
+    int64_t         oCount;
+    uint32_t        oCore;
 };
 
 // Prototypes
 
-__attribute__ ((always_inline))	static	inline	void	spin_lockCore(corelock_t *lock);
-__attribute__ ((always_inline))	static	inline	void	spin_unLockCore(corelock_t *lock);
-__attribute__ ((always_inline))	static	inline	bool	spin_tryLockCore(corelock_t *lock);
-__attribute__ ((always_inline))	static	inline	void	spin_lock(spinlock_t *lock);
-__attribute__ ((always_inline))	static	inline	void	spin_unLock(spinlock_t *lock);
-__attribute__ ((always_inline))	static	inline	bool	spin_tryLock(spinlock_t *lock);
+__attribute__ ((always_inline)) static  inline  void    spin_lockCore(corelock_t *lock);
+__attribute__ ((always_inline)) static  inline  void    spin_unLockCore(corelock_t *lock);
+__attribute__ ((always_inline)) static  inline  bool    spin_tryLockCore(corelock_t *lock);
+__attribute__ ((always_inline)) static  inline  void    spin_lock(spinlock_t *lock);
+__attribute__ ((always_inline)) static  inline  void    spin_unLock(spinlock_t *lock);
+__attribute__ ((always_inline)) static  inline  bool    spin_tryLock(spinlock_t *lock);
 
-#define	SPIN_LOCK_INIT		{ ATOMIC_FLAG_INIT }
+#define SPIN_LOCK_INIT      { ATOMIC_FLAG_INIT }
 
 #if (KNB_CORES > 1)
-#define SPIN_LOCK(lock)		do { spin_lock(&(lock)); } while (0)
+#define SPIN_LOCK(lock)     do { spin_lock(&(lock)); } while (0)
 
 #else
 #define SPIN_LOCK(lock)
 #endif
 
 #if (KNB_CORES > 1)
-#define SPIN_UNLOCK(lock)	do { spin_unLock(&(lock)); } while (0)
+#define SPIN_UNLOCK(lock)   do { spin_unLock(&(lock)); } while (0)
 
 #else
 #define SPIN_UNLOCK(lock)
@@ -99,47 +100,47 @@ __attribute__ ((always_inline))	static	inline	bool	spin_tryLock(spinlock_t *lock
  *
  * - Lock for a specific core
  *
- * \param[in]	*lock		Prt on the lock structure
+ * \param[in]   *lock       Prt on the lock structure
  *
  * \note This function does not return a value (None).
  *
  */
-__attribute__ ((always_inline))	static	inline	void	spin_lockCore(corelock_t *lock) {
-	uint32_t	core;
+__attribute__ ((always_inline)) static  inline  void    spin_lockCore(corelock_t *lock) {
+    uint32_t    core;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	while (true) {
-		spin_lock(&lock->oLock);
+    while (true) {
+        spin_lock(&lock->oLock);
 
-		if (lock->oCount == 0) {
-			lock->oCore   = core;
-			lock->oCount  = 1;
-			spin_unLock(&lock->oLock);
-			return;
-		}
-
-		else if (lock->oCore == core) {
-			lock->oCount++;
-			spin_unLock(&lock->oLock);
-			return;
+        if (lock->oCount == 0) {
+            lock->oCore   = core;
+            lock->oCount  = 1;
+            spin_unLock(&lock->oLock);
+            return;
         }
 
-		else {
+        else if (lock->oCore == core) {
+            lock->oCount++;
+            spin_unLock(&lock->oLock);
+            return;
+        }
+
+        else {
 
 // Lock held by another core : try again
 
-		 }
+         }
 
-		spin_unLock(&lock->oLock);
+        spin_unLock(&lock->oLock);
 
-		while (spin_tryLockCore(lock) == true) {
+        while (spin_tryLockCore(lock) == true) {
 
 // Busy, wait
 
-		}
-		return;
-	}
+        }
+        return;
+    }
 }
 
 /*
@@ -147,32 +148,32 @@ __attribute__ ((always_inline))	static	inline	void	spin_lockCore(corelock_t *loc
  *
  * - Unlock for a specific core
  *
- * \param[in]	*lock		Prt on the lock structure
+ * \param[in]   *lock       Prt on the lock structure
  *
  * \note This function does not return a value (None).
  *
  */
-__attribute__ ((always_inline))	static	inline	void	spin_unLockCore(corelock_t *lock) {
-	uint32_t	core;
+__attribute__ ((always_inline)) static  inline  void    spin_unLockCore(corelock_t *lock) {
+    uint32_t    core;
 
-	core = GET_RUNNING_CORE;
-	spin_lock(&lock->oLock);
+    core = GET_RUNNING_CORE;
+    spin_lock(&lock->oLock);
 
-	if (lock->oCore == core) {
-		lock->oCount--;
-		if (lock->oCount <= 0) {
-			lock->oCount = 0;
-			lock->oCore  = 0xFFFFFFFFu;
-		}
-	}
-	else {
+    if (lock->oCore == core) {
+        lock->oCount--;
+        if (lock->oCount <= 0) {
+            lock->oCount = 0;
+            lock->oCore  = 0xFFFFFFFFu;
+        }
+    }
+    else {
 
 // We should never reach this point
 // Probably, exit(FATAL)
 
-	}
+    }
 
-	spin_unLock(&lock->oLock);
+    spin_unLock(&lock->oLock);
 }
 
 /*
@@ -180,35 +181,35 @@ __attribute__ ((always_inline))	static	inline	void	spin_unLockCore(corelock_t *l
  *
  * - Try to lock for a specific core
  *
- * \param[in]	*lock		Prt on the lock structure
- * \return		true		Spin already locked
- * \return		false		Spin was unlocked, now is locked by me
+ * \param[in]   *lock       Prt on the lock structure
+ * \return      true        Spin already locked
+ * \return      false       Spin was unlocked, now is locked by me
  *
  */
-__attribute__ ((always_inline))	static	inline	bool	spin_tryLockCore(corelock_t *lock) {
-	bool		busy = false;
-	uint32_t	core;
+__attribute__ ((always_inline)) static  inline  bool    spin_tryLockCore(corelock_t *lock) {
+    bool        busy = false;
+    uint32_t    core;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	if (spin_tryLock(&lock->oLock) == true) {
-		return (true);
-	}
+    if (spin_tryLock(&lock->oLock) == true) {
+        return (true);
+    }
 
-	if (lock->oCount == 0) {
-		lock->oCore	  = core;
-		lock->oCount  = 1;
-		busy = false;
-	}
-	else if (lock->oCore == core) {
-		lock->oCount++;
-		busy = false;
-	}
-	else {
-		busy = true;
-	}
-	spin_unLock(&lock->oLock);
-	return (busy);
+    if (lock->oCount == 0) {
+        lock->oCore   = core;
+        lock->oCount  = 1;
+        busy = false;
+    }
+    else if (lock->oCore == core) {
+        lock->oCount++;
+        busy = false;
+    }
+    else {
+        busy = true;
+    }
+    spin_unLock(&lock->oLock);
+    return (busy);
 }
 
 /*
@@ -216,18 +217,18 @@ __attribute__ ((always_inline))	static	inline	bool	spin_tryLockCore(corelock_t *
  *
  * - Try to spin lock
  *
- * \param[in]	*lock		Prt on the lock structure
+ * \param[in]   *lock       Prt on the lock structure
  *
  * \note This function does not return a value (None).
  *
  */
-__attribute__ ((always_inline))	static	inline	void	spin_lock(spinlock_t *lock) {
+__attribute__ ((always_inline)) static  inline  void    spin_lock(spinlock_t *lock) {
 
 // MISRA: memory order has to be consistent (defaut)
 
-	while (atomic_flag_test_and_set(&lock->oFlag) == true) {
-		__asm volatile("nop");
-	}
+    while (atomic_flag_test_and_set(&lock->oFlag) == true) {
+        __asm volatile("nop");
+    }
 }
 
 /*
@@ -235,16 +236,16 @@ __attribute__ ((always_inline))	static	inline	void	spin_lock(spinlock_t *lock) {
  *
  * - Try to spin lock
  *
- * \param[in]	*lock		Prt on the lock structure
+ * \param[in]   *lock       Prt on the lock structure
  *
  * \note This function does not return a value (None).
  *
  */
-__attribute__ ((always_inline))	static	inline	void	spin_unLock(spinlock_t *lock) {
+__attribute__ ((always_inline)) static  inline  void    spin_unLock(spinlock_t *lock) {
 
 // MISRA: no specific order
 
-	atomic_flag_clear(&lock->oFlag);
+    atomic_flag_clear(&lock->oFlag);
 }
 
 /*
@@ -252,16 +253,16 @@ __attribute__ ((always_inline))	static	inline	void	spin_unLock(spinlock_t *lock)
  *
  * - Try to lock for a spin
  *
- * \param[in]	*lock		Prt on the lock structure
- * \return		true		Spin already locked
- * \return		false		Spin was unlocked, now is locked by me
+ * \param[in]   *lock       Prt on the lock structure
+ * \return      true        Spin already locked
+ * \return      false       Spin was unlocked, now is locked by me
  *
  */
-__attribute__ ((always_inline))	static	inline	bool	spin_tryLock(spinlock_t *lock) {
-	bool	state;
+__attribute__ ((always_inline)) static  inline  bool    spin_tryLock(spinlock_t *lock) {
+    bool    state;
 
 // MISRA: no specific order
 
-	state = atomic_flag_test_and_set(&lock->oFlag);
-	return (state);
+    state = atomic_flag_test_and_set(&lock->oFlag);
+    return (state);
 }

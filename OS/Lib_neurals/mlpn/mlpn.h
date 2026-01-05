@@ -2,17 +2,18 @@
 ; mlpn.
 ; =====
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		mlpn manager.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    mlpn manager.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +47,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_neurals
@@ -63,47 +64,47 @@
  * @{
  */
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"types.h"
+#include    "types.h"
 
 // Configuration structure
 // -----------------------
 
-typedef	struct	mlpnNetwork		mlpnNetwork_t;
-typedef	struct	mlpnLayer		mlpnLayer_t;
+typedef struct  mlpnNetwork     mlpnNetwork_t;
+typedef struct  mlpnLayer       mlpnLayer_t;
 
 struct mlpnNetwork {
-			uint32_t		oNBLayer;							// Number of layers
-			mlpnLayer_t		*oLayer_L1;							// Ptr on the layer 1
-			mlpnLayer_t		*oLayer_L2;							// Ptr on the layer 2
-			mlpnLayer_t		*oLayer_L3;							// Ptr on the layer 3
-			mlpnLayer_t		*oLayer_L4;							// Ptr on the layer 4
-			mlpnLayer_t		*oLayer_L5;							// Ptr on the layer 5
+            uint32_t        oNBLayer;                           // Number of layers
+            mlpnLayer_t     *oLayer_L1;                         // Ptr on the layer 1
+            mlpnLayer_t     *oLayer_L2;                         // Ptr on the layer 2
+            mlpnLayer_t     *oLayer_L3;                         // Ptr on the layer 3
+            mlpnLayer_t     *oLayer_L4;                         // Ptr on the layer 4
+            mlpnLayer_t     *oLayer_L5;                         // Ptr on the layer 5
 };
 
 struct mlpnLayer {
-			uint32_t		oNonLinear;							// Non linear function
-			uint32_t		oNBInput;							// Number of inputs
-			uint32_t		oNBOutput;							// Number of outputs
-			float32_t		*oInput;							// Ptr on the input vector
-			float32_t		*oActivation;						// Ptr on the activation vector
-			float32_t		*oOutput;							// Ptr on the output vector
-	const	float32_t		*oWeight;							// Ptr on the weight matrix
+            uint32_t        oNonLinear;                         // Non linear function
+            uint32_t        oNBInput;                           // Number of inputs
+            uint32_t        oNBOutput;                          // Number of outputs
+            float32_t       *oInput;                            // Ptr on the input vector
+            float32_t       *oActivation;                       // Ptr on the activation vector
+            float32_t       *oOutput;                           // Ptr on the output vector
+    const   float32_t       *oWeight;                           // Ptr on the weight matrix
 };
 
 // Non linear (oNonLinear)
 
 enum {
-			KMLPN_TAN0 = 0U,									// libm tanh
-			KMLPN_TAN1,											// Lambert's tanh approximation
-			KMLPN_TAN2											// Ultrafast tanh approximation
+            KMLPN_TAN0 = 0U,                                    // libm tanh
+            KMLPN_TAN1,                                         // Lambert's tanh approximation
+            KMLPN_TAN2                                          // Ultrafast tanh approximation
 };
 
 // Prototypes
 
 #ifdef __cplusplus
-extern	"C" {
+extern  "C" {
 #endif
 
 /*!
@@ -180,13 +181,13 @@ extern	"C" {
  * }
  * \endcode
  *
- * \param[in]	*network		Ptr on the network description
- * \return		KERR_MLPN_NOERR	OK
- * \return		KERR_MLPN_GEERR	General error
- * \return		KERR_MLPN_NOMEM	Not enough memory
+ * \param[in]   *network        Ptr on the network description
+ * \return      KERR_MLPN_NOERR OK
+ * \return      KERR_MLPN_GEERR General error
+ * \return      KERR_MLPN_NOMEM Not enough memory
  *
  */
-extern	int32_t	mlpn_configure(const mlpnNetwork_t *network);
+extern  int32_t mlpn_configure(const mlpnNetwork_t *network);
 
 /*!
  * \brief Compute the network
@@ -210,12 +211,12 @@ extern	int32_t	mlpn_configure(const mlpnNetwork_t *network);
  * }
  * \endcode
  *
- * \param[in]	*network		Ptr on the network description
- * \return		KERR_MLPN_NOERR	OK
- * \return		KERR_MLPN_GEERR	General error
+ * \param[in]   *network        Ptr on the network description
+ * \return      KERR_MLPN_NOERR OK
+ * \return      KERR_MLPN_GEERR General error
  *
  */
-extern	int32_t	mlpn_compute(const mlpnNetwork_t *network);
+extern  int32_t mlpn_compute(const mlpnNetwork_t *network);
 
 #ifdef __cplusplus
 }

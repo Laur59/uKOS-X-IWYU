@@ -2,17 +2,18 @@
 ; core.
 ; =====
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Collection of core routines
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    Collection of core routines
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,34 +47,34 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	<stdatomic.h>
+#include    <stdatomic.h>
 
-#include	"core_reg.h"
-#include	"macros_soc.h"
+#include    "core_reg.h"
+#include    "macros_soc.h"
 
 /*
  * \brief core_getCSR
  *
  * - Get a CSR register value
  *
- * \param[in]	reg			The CSR register
- * \return		value		The register value
+ * \param[in]   reg         The CSR register
+ * \return      value       The register value
  *
  */
-__attribute__ ((always_inline))	static	inline	uint64_t	core_getCSR(uint64_t reg) {
-	uint64_t	value;
+__attribute__ ((always_inline)) static  inline  uint64_t    core_getCSR(uint64_t reg) {
+    uint64_t    value;
 
-	__asm volatile (
-	"csrr		%0,%1"
-	: "=r" (value)
-	: "i" (reg)
-	);
+    __asm volatile (
+    "csrr       %0,%1"
+    : "=r" (value)
+    : "i" (reg)
+    );
 
-	return (value);
+    return (value);
 }
 
 /*
@@ -81,28 +82,28 @@ __attribute__ ((always_inline))	static	inline	uint64_t	core_getCSR(uint64_t reg)
  *
  * - Put a value in a CSR register
  *
- * \param[in]	reg			The CSR register
- * \param[in]	value		The register value
+ * \param[in]   reg         The CSR register
+ * \param[in]   value       The register value
  *
  * \note This function does not return a value (None).
  *
  */
-__attribute__ ((always_inline))	static	inline	void	core_putCSR(uint64_t reg, uint64_t value) {
+__attribute__ ((always_inline)) static  inline  void    core_putCSR(uint64_t reg, uint64_t value) {
 
-	if (__builtin_constant_p(value) && ((uint64_t)(value) < 32U)) {
-		__asm volatile (
-		"csrw		%0,%1"
-		:
-		: "i" (reg), "i" (value)
-		);
-	}
-	else {
-		__asm volatile (
-		"csrw		%0,%1"
-		:
-		: "i" (reg), "r" (value)
-		);
-	}
+    if (__builtin_constant_p(value) && ((uint64_t)(value) < 32U)) {
+        __asm volatile (
+        "csrw       %0,%1"
+        :
+        : "i" (reg), "i" (value)
+        );
+    }
+    else {
+        __asm volatile (
+        "csrw       %0,%1"
+        :
+        : "i" (reg), "r" (value)
+        );
+    }
 }
 
 /*
@@ -110,28 +111,28 @@ __attribute__ ((always_inline))	static	inline	void	core_putCSR(uint64_t reg, uin
  *
  * - Set a bit in a CSR register
  *
- * \param[in]	reg			The CSR register
- * \param[in]	mask		The mask value
+ * \param[in]   reg         The CSR register
+ * \param[in]   mask        The mask value
  *
  * \note This function does not return a value (None).
  *
  */
-__attribute__ ((always_inline))	static	inline	void	core_setBitCSR(uint64_t reg, uint64_t mask) {
+__attribute__ ((always_inline)) static  inline  void    core_setBitCSR(uint64_t reg, uint64_t mask) {
 
-	if (__builtin_constant_p(mask) && ((uint64_t)(mask) < 32U)) {
-		__asm volatile (
-		"csrs		%0,%1"
-		:
-		: "i" (reg), "i" (mask)
-		);
-	}
-	else {
-		__asm volatile (
-		"csrs		%0,%1"
-		:
-		: "i" (reg), "r" (mask)
-		);
-	}
+    if (__builtin_constant_p(mask) && ((uint64_t)(mask) < 32U)) {
+        __asm volatile (
+        "csrs       %0,%1"
+        :
+        : "i" (reg), "i" (mask)
+        );
+    }
+    else {
+        __asm volatile (
+        "csrs       %0,%1"
+        :
+        : "i" (reg), "r" (mask)
+        );
+    }
 }
 
 /*
@@ -139,26 +140,26 @@ __attribute__ ((always_inline))	static	inline	void	core_setBitCSR(uint64_t reg, 
  *
  * - Clear a bit in a CSR register
  *
- * \param[in]	reg			The CSR register
- * \param[in]	mask		The mask value
+ * \param[in]   reg         The CSR register
+ * \param[in]   mask        The mask value
  *
  * \note This function does not return a value (None).
  *
  */
-__attribute__ ((always_inline))	static	inline	void	core_clrBitCSR(uint64_t reg, uint64_t mask) {
+__attribute__ ((always_inline)) static  inline  void    core_clrBitCSR(uint64_t reg, uint64_t mask) {
 
-	if (__builtin_constant_p(mask) && ((uint64_t)(mask) < 32U)) {
-		__asm volatile (
-		"csrci		%0,%1"
-		:
-		: "i" (reg), "i" (mask)
-		);
-	}
-	else {
-		__asm volatile (
-		"csrc		%0,%1"
-		:
-		: "i" (reg), "r" (mask)
-		);
-	}
+    if (__builtin_constant_p(mask) && ((uint64_t)(mask) < 32U)) {
+        __asm volatile (
+        "csrci      %0,%1"
+        :
+        : "i" (reg), "i" (mask)
+        );
+    }
+    else {
+        __asm volatile (
+        "csrc       %0,%1"
+        :
+        : "i" (reg), "r" (mask)
+        );
+    }
 }

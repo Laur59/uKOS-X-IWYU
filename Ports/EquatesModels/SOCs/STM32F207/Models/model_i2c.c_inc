@@ -3,14 +3,17 @@
 ; ==========
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Model for controlling the "i2c" device.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project:  uKOS-X
+;
+; Purpose:
+;    Model for controlling the "i2c" device.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -44,23 +47,23 @@
 ;------------------------------------------------------------------------
 */
 
-static	const	volatile	uint8_t		*vSndBuffer;
-static			volatile	uint16_t	vNbSnd;
-static			volatile	uint8_t		*vRecBuffer;
-static			volatile	uint16_t	vNbRec;
-static						uint32_t	vTimeout = 100U;
-static						sema_t		*vSemaphore_TR;
+static  const   volatile    uint8_t     *vSndBuffer;
+static          volatile    uint16_t    vNbSnd;
+static          volatile    uint8_t     *vRecBuffer;
+static          volatile    uint16_t    vNbRec;
+static                      uint32_t    vTimeout = 100U;
+static                      sema_t      *vSemaphore_TR;
 
 STRG_LOC_CONST(aStrSemaphore_TR[]) = UNIT " Transaction";
 
 // Prototypes
 // ==========
 
-static	bool	local_writeByte(const uint8_t *sndBuffer, uint16_t nbSnd);
-static	bool	local_readByte(uint8_t *recBuffer, uint16_t nbRec);
-static	bool	local_checkNotBerr(void);
-static	void	local_setTiming(uint32_t speed);
-static	void	local_I2C_EV_IRQHandler(void);
+static  bool    local_writeByte(const uint8_t *sndBuffer, uint16_t nbSnd);
+static  bool    local_readByte(uint8_t *recBuffer, uint16_t nbRec);
+static  bool    local_checkNotBerr(void);
+static  void    local_setTiming(uint32_t speed);
+static  void    local_I2C_EV_IRQHandler(void);
 
 /*
  * \brief model_i2c_init
@@ -68,25 +71,25 @@ static	void	local_I2C_EV_IRQHandler(void);
  * - Initialise the manager
  *
  */
-void	model_i2c_init(void) {
+void    model_i2c_init(void) {
 
-	cb_enable();
+    cb_enable();
 
 // Create the semaphore
 
-	kern_createSemaphore(aStrSemaphore_TR, 0, 1, &vSemaphore_TR);
+    kern_createSemaphore(aStrSemaphore_TR, 0, 1, &vSemaphore_TR);
 
 // Initialise the I2C Master, default speed 100-KHz
 
-	local_setTiming(KI2C_100KBPS);
+    local_setTiming(KI2C_100KBPS);
 
-	I2C->CR1 = (1U * I2C_CR1_NOSTRETCH)								// Clock stretching disabled
-			 | (1U * I2C_CR1_ANFOFF)								// Analog noise filter disabled
-			 | (1U * I2C_CR1_PE);									// Peripheral enable
+    I2C->CR1 = (1U * I2C_CR1_NOSTRETCH)                             // Clock stretching disabled
+             | (1U * I2C_CR1_ANFOFF)                                // Analog noise filter disabled
+             | (1U * I2C_CR1_PE);                                   // Peripheral enable
 
-	INTERRUPT_VECTOR(I2C_VECTOR_NUMBER, local_I2C_EV_IRQHandler);
-	NVIC_SetPriority(I2C_VECTOR_NUMBER, KHW_PRIORITY_MODERATE);
-	NVIC_EnableIRQ(I2C_VECTOR_NUMBER);
+    INTERRUPT_VECTOR(I2C_VECTOR_NUMBER, local_I2C_EV_IRQHandler);
+    NVIC_SetPriority(I2C_VECTOR_NUMBER, KHW_PRIORITY_MODERATE);
+    NVIC_EnableIRQ(I2C_VECTOR_NUMBER);
 }
 
 /*
@@ -95,17 +98,17 @@ void	model_i2c_init(void) {
  * - Configure the manager
  *
  */
-int32_t	model_i2c_configure(const i2cCnf_t *configure) {
+int32_t model_i2c_configure(const i2cCnf_t *configure) {
 
-	INTERRUPTION_OFF;
-	I2C->CR1 &= (uint32_t)~I2C_CR1_PE;
+    INTERRUPTION_OFF;
+    I2C->CR1 &= (uint32_t)~I2C_CR1_PE;
 
-	vTimeout = (configure->oTimeout == 0U) ? (vTimeout) : (configure->oTimeout);
-	local_setTiming(configure->oSpeed);
+    vTimeout = (configure->oTimeout == 0U) ? (vTimeout) : (configure->oTimeout);
+    local_setTiming(configure->oSpeed);
 
-	I2C->CR1 |= I2C_CR1_PE;
+    I2C->CR1 |= I2C_CR1_PE;
 
-	RETURN_INT_RESTORE(KERR_I2C_NOERR);
+    RETURN_INT_RESTORE(KERR_I2C_NOERR);
 }
 
 /*
@@ -114,82 +117,82 @@ int32_t	model_i2c_configure(const i2cCnf_t *configure) {
  * - Write a buffer
  *
  */
-int32_t	model_i2c_write(uint8_t address, const uint8_t *buffer, uint16_t size) {
+int32_t model_i2c_write(uint8_t address, const uint8_t *buffer, uint16_t size) {
 
-	if (local_checkNotBerr() == false)							{ return (KERR_I2C_TIMEO); }
+    if (local_checkNotBerr() == false)                          { return (KERR_I2C_TIMEO); }
 
-	I2C->CR2 = (0U * I2C_CR2_PECBYTE)								// No packet error
-			 | (1U * I2C_CR2_AUTOEND)								// Automatic end mode
-			 | (0U * I2C_CR2_RELOAD)								// No reload mode
-			 | (uint32_t)((size & 0xFFu) * I2C_CR2_NBYTES_0)		// Number of bytes to transfer
-			 | (0U * I2C_CR2_NACK)									// No NACK
-			 | (0U * I2C_CR2_STOP)									// No STOP
-			 | (0U * I2C_CR2_HEAD10R)								// No HEADER 10
-			 | (0U * I2C_CR2_ADD10)									// Address on 7 bits
-			 | (0U * I2C_CR2_RD_WRN)								// Write transfer
-			 | ((uint32_t)(address<<1U) * I2C_CR2_SADD_0);			// The slave address
+    I2C->CR2 = (0U * I2C_CR2_PECBYTE)                               // No packet error
+             | (1U * I2C_CR2_AUTOEND)                               // Automatic end mode
+             | (0U * I2C_CR2_RELOAD)                                // No reload mode
+             | (uint32_t)((size & 0xFFu) * I2C_CR2_NBYTES_0)        // Number of bytes to transfer
+             | (0U * I2C_CR2_NACK)                                  // No NACK
+             | (0U * I2C_CR2_STOP)                                  // No STOP
+             | (0U * I2C_CR2_HEAD10R)                               // No HEADER 10
+             | (0U * I2C_CR2_ADD10)                                 // Address on 7 bits
+             | (0U * I2C_CR2_RD_WRN)                                // Write transfer
+             | ((uint32_t)(address<<1U) * I2C_CR2_SADD_0);          // The slave address
 
-	I2C->CR2 |= (1U * I2C_CR2_START);								// START
+    I2C->CR2 |= (1U * I2C_CR2_START);                               // START
 
-	if (local_writeByte(buffer, size) == false)					{ return (KERR_I2C_TIMEO); }
-	return (KERR_I2C_NOERR);
+    if (local_writeByte(buffer, size) == false)                 { return (KERR_I2C_TIMEO); }
+    return (KERR_I2C_NOERR);
 }
 
 /*
  * \brief model_i2c_read
  *
  * - Read n x bytes
- *	 - buffer[0] = ORN (Optional Register Number); ORN != 0xFF
- *	 - if buffer[0] != 0xFF, -> write the optional register number (ORN)
+ *   - buffer[0] = ORN (Optional Register Number); ORN != 0xFF
+ *   - if buffer[0] != 0xFF, -> write the optional register number (ORN)
  *
  */
-int32_t	model_i2c_read(uint8_t address, uint8_t *buffer, uint16_t size) {
+int32_t model_i2c_read(uint8_t address, uint8_t *buffer, uint16_t size) {
 
 // Check if we need to transfer the optional register number
 // If yes, first send it to the peripheral,
 // then, read the data
 
-	if (*buffer != 0xFFu) {
+    if (*buffer != 0xFFu) {
 
 // Send the register number
 
-		if (local_checkNotBerr() == false)						{ return (KERR_I2C_TIMEO); }
+        if (local_checkNotBerr() == false)                      { return (KERR_I2C_TIMEO); }
 
-		I2C->CR2 = (0U * I2C_CR2_PECBYTE)							// No packet error
-				 | (0U * I2C_CR2_AUTOEND)							// No automatic end mode
-				 | (0U * I2C_CR2_RELOAD)							// Reload mode
-				 | (1U * I2C_CR2_NBYTES_0)							// Number of bytes to transfer
-				 | (0U * I2C_CR2_NACK)								// No NACK
-				 | (0U * I2C_CR2_STOP)								// No STOP
-				 | (0U * I2C_CR2_HEAD10R)							// No HEADER 10
-				 | (0U * I2C_CR2_ADD10)								// Address on 7 bits
-				 | (0U * I2C_CR2_RD_WRN)							// Write transfer
-				 | ((uint32_t)(address<<1U) * I2C_CR2_SADD_0);		// The slave address
+        I2C->CR2 = (0U * I2C_CR2_PECBYTE)                           // No packet error
+                 | (0U * I2C_CR2_AUTOEND)                           // No automatic end mode
+                 | (0U * I2C_CR2_RELOAD)                            // Reload mode
+                 | (1U * I2C_CR2_NBYTES_0)                          // Number of bytes to transfer
+                 | (0U * I2C_CR2_NACK)                              // No NACK
+                 | (0U * I2C_CR2_STOP)                              // No STOP
+                 | (0U * I2C_CR2_HEAD10R)                           // No HEADER 10
+                 | (0U * I2C_CR2_ADD10)                             // Address on 7 bits
+                 | (0U * I2C_CR2_RD_WRN)                            // Write transfer
+                 | ((uint32_t)(address<<1U) * I2C_CR2_SADD_0);      // The slave address
 
-		I2C->CR2 |= (1U * I2C_CR2_START);							// START
+        I2C->CR2 |= (1U * I2C_CR2_START);                           // START
 
-		if (local_writeByte(buffer, 1) == false)				{ return (KERR_I2C_TIMEO); }
-	}
+        if (local_writeByte(buffer, 1) == false)                { return (KERR_I2C_TIMEO); }
+    }
 
 // Read the register number content
 
-	if (local_checkNotBerr() == false)							{ return (KERR_I2C_TIMEO); }
+    if (local_checkNotBerr() == false)                          { return (KERR_I2C_TIMEO); }
 
-	I2C->CR2 = (0U * I2C_CR2_PECBYTE)								// No packet error
-			 | (1U * I2C_CR2_AUTOEND)								// Automatic end mode
-			 | (0U * I2C_CR2_RELOAD)								// No reload mode
-			 | (uint32_t)((size & 0xFFu) * I2C_CR2_NBYTES_0)		// Number of bytes to transfer
-			 | (0U * I2C_CR2_NACK)									// No NACK
-			 | (0U * I2C_CR2_STOP)									// No STOP
-			 | (0U * I2C_CR2_HEAD10R)								// No HEADER 10
-			 | (0U * I2C_CR2_ADD10)									// Address on 7 bits
-			 | (1U * I2C_CR2_RD_WRN)								// Read transfer
-			 | ((uint32_t)(address<<1U) * I2C_CR2_SADD_0);			// The slave address
+    I2C->CR2 = (0U * I2C_CR2_PECBYTE)                               // No packet error
+             | (1U * I2C_CR2_AUTOEND)                               // Automatic end mode
+             | (0U * I2C_CR2_RELOAD)                                // No reload mode
+             | (uint32_t)((size & 0xFFu) * I2C_CR2_NBYTES_0)        // Number of bytes to transfer
+             | (0U * I2C_CR2_NACK)                                  // No NACK
+             | (0U * I2C_CR2_STOP)                                  // No STOP
+             | (0U * I2C_CR2_HEAD10R)                               // No HEADER 10
+             | (0U * I2C_CR2_ADD10)                                 // Address on 7 bits
+             | (1U * I2C_CR2_RD_WRN)                                // Read transfer
+             | ((uint32_t)(address<<1U) * I2C_CR2_SADD_0);          // The slave address
 
-	I2C->CR2 |= (1U * I2C_CR2_START);								// START
+    I2C->CR2 |= (1U * I2C_CR2_START);                               // START
 
-	if (local_readByte(buffer, size) == false)					{ return (KERR_I2C_TIMEO); }
-	return (KERR_I2C_NOERR);
+    if (local_readByte(buffer, size) == false)                  { return (KERR_I2C_TIMEO); }
+    return (KERR_I2C_NOERR);
 }
 
 // Local routines
@@ -199,94 +202,94 @@ int32_t	model_i2c_read(uint8_t address, uint8_t *buffer, uint16_t size) {
  * \brief local_setTiming
  *
  */
-static	void	local_setTiming(uint32_t speed) {
-			uint32_t	prescaler, clkDiv, clkDiv2;
+static  void    local_setTiming(uint32_t speed) {
+            uint32_t    prescaler, clkDiv, clkDiv2;
 
 // cppcheck-suppress premium-misra-c-2023-10.1
 //
-	const	uint32_t	frequency = (uint32_t)I2C_FREQUENCY;
+    const   uint32_t    frequency = (uint32_t)I2C_FREQUENCY;
 
-	prescaler = (frequency > 16000000U) ? (frequency / 16000000U) : (1U);
-	prescaler = (prescaler > 16U)		? (16U)					  : (prescaler);
+    prescaler = (frequency > 16000000U) ? (frequency / 16000000U) : (1U);
+    prescaler = (prescaler > 16U)       ? (16U)                   : (prescaler);
 
-	clkDiv  = frequency / prescaler / speed;
-	clkDiv2 = clkDiv / 2U;
+    clkDiv  = frequency / prescaler / speed;
+    clkDiv2 = clkDiv / 2U;
 
-	I2C->TIMINGR = ((prescaler - 1U) *		  (uint32_t)I2C_TIMINGR_PRESC_0)	// Timing prescaler
-				 | (9U *					  (uint32_t)I2C_TIMINGR_SCLDEL_0)	// Data setup time
-				 | (1U *					  (uint32_t)I2C_TIMINGR_SDADEL_0)	// Data hold time
-				 | ((clkDiv2 - 1U) * 		  (uint32_t)I2C_TIMINGR_SCLH_0)		// SCL high period
-				 | ((clkDiv - clkDiv2 - 1U) * (uint32_t)I2C_TIMINGR_SCLL_0);	// SCL Low period
+    I2C->TIMINGR = ((prescaler - 1U) *        (uint32_t)I2C_TIMINGR_PRESC_0)    // Timing prescaler
+                 | (9U *                      (uint32_t)I2C_TIMINGR_SCLDEL_0)   // Data setup time
+                 | (1U *                      (uint32_t)I2C_TIMINGR_SDADEL_0)   // Data hold time
+                 | ((clkDiv2 - 1U) *          (uint32_t)I2C_TIMINGR_SCLH_0)     // SCL high period
+                 | ((clkDiv - clkDiv2 - 1U) * (uint32_t)I2C_TIMINGR_SCLL_0);    // SCL Low period
 }
 
 /*
  * \brief local_writeByte
  *
  */
-static	bool	local_writeByte(const uint8_t *sndBuffer, uint16_t nbSnd) {
+static  bool    local_writeByte(const uint8_t *sndBuffer, uint16_t nbSnd) {
 
-	vSndBuffer = sndBuffer;
-	vNbSnd	   = nbSnd;
+    vSndBuffer = sndBuffer;
+    vNbSnd     = nbSnd;
 
-	I2C->CR1 |= I2C_CR1_TXIE;
+    I2C->CR1 |= I2C_CR1_TXIE;
 
 // Waiting for the transaction semaphore or for the timeout
 
-	if (kern_waitSemaphore(vSemaphore_TR, vTimeout) == KERR_KERN_TIMEO) {
+    if (kern_waitSemaphore(vSemaphore_TR, vTimeout) == KERR_KERN_TIMEO) {
 
 // Problem, restart the i2c hardware
 
-		I2C->CR1 &= (uint32_t)~I2C_CR1_PE;
-		kern_switchFast();
-		I2C->CR1 |= I2C_CR1_PE;
-		return (false);
-	}
+        I2C->CR1 &= (uint32_t)~I2C_CR1_PE;
+        kern_switchFast();
+        I2C->CR1 |= I2C_CR1_PE;
+        return (false);
+    }
 
-	return (true);
+    return (true);
 }
 
 /*
  * \brief local_readByte
  *
  */
-static	bool	local_readByte(uint8_t *recBuffer, uint16_t nbRec) {
+static  bool    local_readByte(uint8_t *recBuffer, uint16_t nbRec) {
 
-	vRecBuffer = recBuffer;
-	vNbRec	   = nbRec;
+    vRecBuffer = recBuffer;
+    vNbRec     = nbRec;
 
-	I2C->CR1 |= I2C_CR1_RXIE;
+    I2C->CR1 |= I2C_CR1_RXIE;
 
 // Waiting for the transaction semaphore or for the timeout
 
-	if (kern_waitSemaphore(vSemaphore_TR, vTimeout) == KERR_KERN_TIMEO) {
+    if (kern_waitSemaphore(vSemaphore_TR, vTimeout) == KERR_KERN_TIMEO) {
 
 // Problem, restart the i2c hardware
 
-		I2C->CR1 &= (uint32_t)~I2C_CR1_PE;
-		kern_switchFast();
-		I2C->CR1 |= I2C_CR1_PE;
-		return (false);
-	}
+        I2C->CR1 &= (uint32_t)~I2C_CR1_PE;
+        kern_switchFast();
+        I2C->CR1 |= I2C_CR1_PE;
+        return (false);
+    }
 
-	return (true);
+    return (true);
 }
 
 /*
  * \brief local_checkNotBerr
  *
  */
-static	bool	local_checkNotBerr(void) {
+static  bool    local_checkNotBerr(void) {
 
-	if ((I2C->ISR & I2C_ISR_BERR) == 0U) {
-		return (true);
-	}
+    if ((I2C->ISR & I2C_ISR_BERR) == 0U) {
+        return (true);
+    }
 
 // Problem, restart the i2c hardware
 
-	I2C->CR1 &= (uint32_t)~I2C_CR1_PE;
-	kern_switchFast();
-	I2C->CR1 |= I2C_CR1_PE;
-	return (false);
+    I2C->CR1 &= (uint32_t)~I2C_CR1_PE;
+    kern_switchFast();
+    I2C->CR1 |= I2C_CR1_PE;
+    return (false);
 }
 
 /*
@@ -295,30 +298,30 @@ static	bool	local_checkNotBerr(void) {
  * - I2C event interruptions
  *
  */
-static	void	local_I2C_EV_IRQHandler(void) {
+static  void    local_I2C_EV_IRQHandler(void) {
 
 // Read 1 or more bytes
 
-	if ((I2C->ISR & I2C_ISR_RXNE) != 0U) {
-		*vRecBuffer = (volatile uint8_t)I2C->RXDR;
-		vRecBuffer++;
-		vNbRec--;
-		if (vNbRec == 0) {
-			I2C->CR1 &= (uint32_t)~I2C_CR1_RXIE;
-			kern_signalSemaphore(vSemaphore_TR);
-		}
-		return;
-	}
+    if ((I2C->ISR & I2C_ISR_RXNE) != 0U) {
+        *vRecBuffer = (volatile uint8_t)I2C->RXDR;
+        vRecBuffer++;
+        vNbRec--;
+        if (vNbRec == 0) {
+            I2C->CR1 &= (uint32_t)~I2C_CR1_RXIE;
+            kern_signalSemaphore(vSemaphore_TR);
+        }
+        return;
+    }
 
 // Write 1 or more bytes
 
-	if ((I2C->ISR & I2C_CR1_TXIE) != 0U) {
-		I2C->TXDR = (uint32_t)*vSndBuffer;
-		vSndBuffer++;
-		vNbSnd--;
-		if (vNbSnd == 0) {
-			I2C->CR1 &= (uint32_t)~I2C_CR1_TXIE;
-			kern_signalSemaphore(vSemaphore_TR);
-		}
-	}
+    if ((I2C->ISR & I2C_CR1_TXIE) != 0U) {
+        I2C->TXDR = (uint32_t)*vSndBuffer;
+        vSndBuffer++;
+        vNbSnd--;
+        if (vNbSnd == 0) {
+            I2C->CR1 &= (uint32_t)~I2C_CR1_TXIE;
+            kern_signalSemaphore(vSemaphore_TR);
+        }
+    }
 }

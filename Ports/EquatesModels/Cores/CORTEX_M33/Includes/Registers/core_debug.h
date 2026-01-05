@@ -2,17 +2,18 @@
 ; core_debug.
 ; ===========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		COREDEBUG equates.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    COREDEBUG equates.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,32 +47,32 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // COREDEBUG address definitions
 // -----------------------------
 
 typedef struct {
-	volatile	uint32_t	DHCSR;
-	volatile	uint32_t	DCRSR;
-	volatile	uint32_t	DCRDR;
-	volatile	uint32_t	DEMCR;
-	volatile	uint32_t	RESERVED0;
-	volatile	uint32_t	DAUTHCTRL;
-	volatile	uint32_t	DSCSR;
+    volatile    uint32_t    DHCSR;
+    volatile    uint32_t    DCRSR;
+    volatile    uint32_t    DCRDR;
+    volatile    uint32_t    DEMCR;
+    volatile    uint32_t    RESERVED0;
+    volatile    uint32_t    DAUTHCTRL;
+    volatile    uint32_t    DSCSR;
 } CoreDebug_TypeDef;
 
 #ifdef __cplusplus
-#define	CoreDebug_S		reinterpret_cast<CoreDebug_TypeDef *>(0xE000EDF0u)
-#define	CoreDebug_NS	reinterpret_cast<CoreDebug_TypeDef *>(0xE002EDF0u)
+#define CoreDebug_S     reinterpret_cast<CoreDebug_TypeDef *>(0xE000EDF0u)
+#define CoreDebug_NS    reinterpret_cast<CoreDebug_TypeDef *>(0xE002EDF0u)
 
 #else
-#define	CoreDebug_S		((CoreDebug_TypeDef *)0xE000EDF0u)
-#define	CoreDebug_NS	((CoreDebug_TypeDef *)0xE002EDF0u)
+#define CoreDebug_S     ((CoreDebug_TypeDef *)0xE000EDF0u)
+#define CoreDebug_NS    ((CoreDebug_TypeDef *)0xE002EDF0u)
 #endif
 
 // DEMCR register
 
-#define CoreDebug_DEMCR_TRCENA		(1U<<24)
+#define CoreDebug_DEMCR_TRCENA      (1U<<24)

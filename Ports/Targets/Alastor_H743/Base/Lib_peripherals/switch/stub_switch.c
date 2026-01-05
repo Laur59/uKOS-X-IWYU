@@ -2,17 +2,18 @@
 ; stub_switch
 ; ===========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		stub for the "switch" manager module.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    stub for the "switch" manager module.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,11 +47,11 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"Registers/stm32H743_gpio.h"
-#include	"macros_core.h"
-#include	"os_errors.h"
+#include    "Registers/stm32H743_gpio.h"
+#include    "macros_core.h"
+#include    "os_errors.h"
 
 /*
  * \brief stub_switch_init
@@ -58,7 +59,7 @@
  * - Initialise some specific hardware parts
  *
  */
-void	stub_switch_init(void) {
+void    stub_switch_init(void) {
 
 }
 
@@ -68,14 +69,14 @@ void	stub_switch_init(void) {
  * - Read the jumper configuration
  *
  */
-int32_t	stub_switch_read(uint32_t *mode) {
-	uint32_t	switches = 0U;
+int32_t stub_switch_read(uint32_t *mode) {
+    uint32_t    switches = 0U;
 
-	INTERRUPTION_OFF;
-	switches |= ((GPIOC->IDR>>10U) & 0x01U);
-	switches |= ((GPIOC->IDR>>10U) & 0x02U);
-	switches |= ((GPIOC->IDR>>10U) & 0x04U);
-	switches |= ((GPIOC->IDR>>10U) & 0x08U);
-	*mode = (switches & 0x0FU);
-	RETURN_INT_RESTORE(KERR_SWITCH_NOERR);
+    INTERRUPTION_OFF;
+    switches |= ((GPIOC->IDR>>10U) & 0x01U);
+    switches |= ((GPIOC->IDR>>10U) & 0x02U);
+    switches |= ((GPIOC->IDR>>10U) & 0x04U);
+    switches |= ((GPIOC->IDR>>10U) & 0x08U);
+    *mode = (switches & 0x0FU);
+    RETURN_INT_RESTORE(KERR_SWITCH_NOERR);
 }

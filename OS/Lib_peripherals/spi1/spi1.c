@@ -2,17 +2,18 @@
 ; spi1.
 ; =====
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		spi1 manager.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    spi1 manager.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,20 +47,20 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"spi1.h"
+#include    "spi1.h"
 
-#include	<stdint.h>
-#include	<stdlib.h>
+#include    <stdint.h>
+#include    <stdlib.h>
 
-#include	"kern/kern.h"
-#include	"macros.h"
-#include	"macros_core.h"
-#include	"macros_soc.h"
-#include	"modules.h"
-#include	"os_errors.h"
-#include	"record/record.h"
-#include	"spi_common.h"
-#include	"types.h"
+#include    "kern/kern.h"
+#include    "macros.h"
+#include    "macros_core.h"
+#include    "macros_soc.h"
+#include    "modules.h"
+#include    "os_errors.h"
+#include    "record/record.h"
+#include    "spi_common.h"
+#include    "types.h"
 
 #ifdef CONFIG_MAN_SPI1_S
 
@@ -68,37 +69,37 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"spi1         spi1 manager.                             (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "spi1 manager\n"
-									"============\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "spi1         spi1 manager.                             (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "spi1 manager\n"
+                                    "============\n\n"
 
-									"This manager ...\n\n"
+                                    "This manager ...\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
-	Spi1,							// Module name (the first letter has to be upper case)
-	KID_FAM_PERIPHERALS,			// Family (defined in the module.h)
-	KNUM_SPI1,						// Module identifier (defined in the module.h)
-	NULL,							// Address of the initialisation code (early pre-init)
-	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	NULL,							// Address of the clean code (clean the module)
-	" 1.0",							// Revision string (major . minor)
-	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0								// Execution cores
+    Spi1,                           // Module name (the first letter has to be upper case)
+    KID_FAM_PERIPHERALS,            // Family (defined in the module.h)
+    KNUM_SPI1,                      // Module identifier (defined in the module.h)
+    NULL,                           // Address of the initialisation code (early pre-init)
+    NULL,                           // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    NULL,                           // Address of the clean code (clean the module)
+    " 1.0",                         // Revision string (major . minor)
+    (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                               // Execution cores
 );
 
 // Library specific
 // ================
 
-static	mutx_t		*vMutex_Reserve[KNB_CORES];
+static  mutx_t      *vMutex_Reserve[KNB_CORES];
 
 // Prototypes
 
-static	int32_t		local_init(void);
-extern	void		stub_spi1_init(void);
-extern	int32_t		stub_spi1_configure(const spiCnf_t *configure);
-extern	int32_t		stub_spi1_multipleWriteRead(const uint8_t *wData, uint16_t wSize, uint8_t *rData, uint16_t rSize, uint32_t timeout);
+static  int32_t     local_init(void);
+extern  void        stub_spi1_init(void);
+extern  int32_t     stub_spi1_configure(const spiCnf_t *configure);
+extern  int32_t     stub_spi1_multipleWriteRead(const uint8_t *wData, uint16_t wSize, uint8_t *rData, uint16_t rSize, uint32_t timeout);
 
 /*
  * \brief Reserve the spi1 manager
@@ -115,35 +116,35 @@ extern	int32_t		stub_spi1_multipleWriteRead(const uint8_t *wData, uint16_t wSize
  *    status = spi1_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode		Any mode
- * \param[in]	timeout			Timeout (1-ms of resolution)
- * \param[in]	-				KWAIT_INFINITY, waiting forever
- * \param[in]	-				KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_SPI_NOERR	The manager is reserved
- * \return		KERR_SPI_GEERR	General error
- * \return		KERR_SPI_CHBSY	The manager is busy
+ * \param[in]   reserveMode     Any mode
+ * \param[in]   timeout         Timeout (1-ms of resolution)
+ * \param[in]   -               KWAIT_INFINITY, waiting forever
+ * \param[in]   -               KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_SPI_NOERR  The manager is reserved
+ * \return      KERR_SPI_GEERR  General error
+ * \return      KERR_SPI_CHBSY  The manager is busy
  *
  */
-int32_t	spi1_reserve(reserveMode_t reserveMode, uint32_t timeout) {
-	UNUSED(reserveMode);
+int32_t spi1_reserve(reserveMode_t reserveMode, uint32_t timeout) {
+    UNUSED(reserveMode);
 
-	uint32_t	core;
-	int32_t		status;
+    uint32_t    core;
+    int32_t     status;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_SPI_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_SPI_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = kern_lockMutex(vMutex_Reserve[core], timeout);
-	if (status != KERR_KERN_NOERR) {
-		PRIVILEGE_RESTORE;
-		return (KERR_SPI_CHBSY);
-	}
+    status = kern_lockMutex(vMutex_Reserve[core], timeout);
+    if (status != KERR_KERN_NOERR) {
+        PRIVILEGE_RESTORE;
+        return (KERR_SPI_CHBSY);
+    }
 
-	PRIVILEGE_RESTORE;
-	return (KERR_SPI_NOERR);
+    PRIVILEGE_RESTORE;
+    return (KERR_SPI_NOERR);
 }
 
 /*
@@ -157,32 +158,32 @@ int32_t	spi1_reserve(reserveMode_t reserveMode, uint32_t timeout) {
  *    status = spi1_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode		Any mode
- * \return		KERR_SPI_NOERR	OK
- * \return		KERR_SPI_GEERR	General error
- * \return		KERR_SPI_CAREL	Cannot release the manager
+ * \param[in]   reserveMode     Any mode
+ * \return      KERR_SPI_NOERR  OK
+ * \return      KERR_SPI_GEERR  General error
+ * \return      KERR_SPI_CAREL  Cannot release the manager
  *
  */
-int32_t	spi1_release(reserveMode_t reserveMode) {
-	UNUSED(reserveMode);
+int32_t spi1_release(reserveMode_t reserveMode) {
+    UNUSED(reserveMode);
 
-	uint32_t	core;
-	int32_t		status;
+    uint32_t    core;
+    int32_t     status;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_SPI_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_SPI_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = kern_unlockMutex(vMutex_Reserve[core]);
-	if (status != KERR_KERN_NOERR) {
-		PRIVILEGE_RESTORE;
-		return (KERR_SPI_CAREL);
-	}
+    status = kern_unlockMutex(vMutex_Reserve[core]);
+    if (status != KERR_KERN_NOERR) {
+        PRIVILEGE_RESTORE;
+        return (KERR_SPI_CAREL);
+    }
 
-	PRIVILEGE_RESTORE;
-	return (KERR_SPI_NOERR);
+    PRIVILEGE_RESTORE;
+    return (KERR_SPI_NOERR);
 }
 
 /*
@@ -201,21 +202,21 @@ int32_t	spi1_release(reserveMode_t reserveMode) {
  *    status = spi1_configure(&configure);
  * \endcode
  *
- * \param[in]	*configure		Ptr on the configuration buffer
- * \return		KERR_SPI_NOERR	OK
- * \return		KERR_SPI_GEERR	General error
+ * \param[in]   *configure      Ptr on the configuration buffer
+ * \return      KERR_SPI_NOERR  OK
+ * \return      KERR_SPI_GEERR  General error
  *
  */
-int32_t	spi1_configure(const spiCnf_t *configure) {
-	int32_t		status;
+int32_t spi1_configure(const spiCnf_t *configure) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_SPI_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_SPI_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_spi1_configure(configure);
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_spi1_configure(configure);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 /*
@@ -231,25 +232,25 @@ int32_t	spi1_configure(const spiCnf_t *configure) {
  *    status = spi1_writeRead(&data);
  * \endcode
  *
- * \param[in]	*data			Ptr on the data to write-read
- * \return		KERR_SPI_NOERR	OK
- * \return		KERR_SPI_GEERR	General error
+ * \param[in]   *data           Ptr on the data to write-read
+ * \return      KERR_SPI_NOERR  OK
+ * \return      KERR_SPI_GEERR  General error
  *
  */
-int32_t	spi1_writeRead(uint8_t *data) {
-	uint8_t		rData[1], wData[1];
-	int32_t		status;
+int32_t spi1_writeRead(uint8_t *data) {
+    uint8_t     rData[1], wData[1];
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_SPI_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_SPI_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	wData[0] = *data;
-	status = stub_spi1_multipleWriteRead(&wData[0], 1U, &rData[0], 1U, KWAIT_INFINITY);
+    wData[0] = *data;
+    status = stub_spi1_multipleWriteRead(&wData[0], 1U, &rData[0], 1U, KWAIT_INFINITY);
 
-	*data = rData[0];
-	PRIVILEGE_RESTORE;
-	return (status);
+    *data = rData[0];
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 /*
@@ -257,14 +258,14 @@ int32_t	spi1_writeRead(uint8_t *data) {
  *
  * Supported transfers
  *
- * Simple reads: spi_multipleWriteRead(xyz, 0, &rBuffer[0], 20, KWAIT_INFINITY);			R, R, R, ..
- * Writes-reads: spi_multipleWriteRead(xyz, 20, &rBuffer[0], 20, KWAIT_INFINITY);			W, R, W, ..
- *				 condition (wSize == rSize)
- *				 if xyz == NULL, write 0x00
- *				 if xyz == (&wBuffer[0], write the buffer content
+ * Simple reads: spi_multipleWriteRead(xyz, 0, &rBuffer[0], 20, KWAIT_INFINITY);            R, R, R, ..
+ * Writes-reads: spi_multipleWriteRead(xyz, 20, &rBuffer[0], 20, KWAIT_INFINITY);           W, R, W, ..
+ *               condition (wSize == rSize)
+ *               if xyz == NULL, write 0x00
+ *               if xyz == (&wBuffer[0], write the buffer content
  *
- * EEPROM mode:  spi_multipleWriteRead(&wBuffer[0], 4, &rBuffer[0], 20, KWAIT_INFINITY);	W, W, W, R, R, R, R, ..
- *				 condition (wSize != rSize)
+ * EEPROM mode:  spi_multipleWriteRead(&wBuffer[0], 4, &rBuffer[0], 20, KWAIT_INFINITY);    W, W, W, R, R, R, R, ..
+ *               condition (wSize != rSize)
  *
  * Call example in C:
  *
@@ -286,30 +287,30 @@ int32_t	spi1_writeRead(uint8_t *data) {
  *
  * \endcode
  *
- * \param[in]	*wData			Ptr on the data to write
- * \param[in]	wSize			Size of the write buffer
- * \param[in]	*rData			Ptr on the data to read
- * \param[in]	rSize			Size of the read buffer
- * \param[in]	timeout			Timeout (1-ms of resolution)
- * \param[in]	-				KWAIT_INFINITY, waiting forever
- * \param[in]	-				KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_SPI_NOERR	OK
- * \return		KERR_SPI_GEERR	General error
- * \return		KERR_SPI_TIMEO	Timeout error
+ * \param[in]   *wData          Ptr on the data to write
+ * \param[in]   wSize           Size of the write buffer
+ * \param[in]   *rData          Ptr on the data to read
+ * \param[in]   rSize           Size of the read buffer
+ * \param[in]   timeout         Timeout (1-ms of resolution)
+ * \param[in]   -               KWAIT_INFINITY, waiting forever
+ * \param[in]   -               KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_SPI_NOERR  OK
+ * \return      KERR_SPI_GEERR  General error
+ * \return      KERR_SPI_TIMEO  Timeout error
  *
  */
-int32_t	spi1_multipleWriteRead(const uint8_t *wData, uint16_t wSize, uint8_t *rData, uint16_t rSize, uint32_t timeout) {
-	int32_t		status;
+int32_t spi1_multipleWriteRead(const uint8_t *wData, uint16_t wSize, uint8_t *rData, uint16_t rSize, uint32_t timeout) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_SPI_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_SPI_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_spi1_multipleWriteRead(wData, wSize, rData, rSize, timeout);
-	if (status != KERR_SPI_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    status = stub_spi1_multipleWriteRead(wData, wSize, rData, rSize, timeout);
+    if (status != KERR_SPI_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	PRIVILEGE_RESTORE;
-	return (status);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 // Local routines
@@ -322,21 +323,21 @@ int32_t	spi1_multipleWriteRead(const uint8_t *wData, uint16_t wSize, uint8_t *rD
  *   has to be called at least once
  *
  */
-static	int32_t	local_init(void) {
-			uint32_t	core;
-	static	bool		vInit[KNB_CORES] = MCSET(false);
+static  int32_t local_init(void) {
+            uint32_t    core;
+    static  bool        vInit[KNB_CORES] = MCSET(false);
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	INTERRUPTION_OFF;
-	if (!vInit[core]) {
-		vInit[core] = true;
+    INTERRUPTION_OFF;
+    if (!vInit[core]) {
+        vInit[core] = true;
 
-		if (kern_createMutex(KSPI1_MUTEX_RESERVE, &vMutex_Reserve[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "spi1: create mutx"); exit(EXIT_OS_PANIC); }
+        if (kern_createMutex(KSPI1_MUTEX_RESERVE, &vMutex_Reserve[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "spi1: create mutx"); exit(EXIT_OS_PANIC); }
 
-		stub_spi1_init();
-	}
-	RETURN_INT_RESTORE(KERR_SPI_NOERR);
+        stub_spi1_init();
+    }
+    RETURN_INT_RESTORE(KERR_SPI_NOERR);
 }
 
 #endif

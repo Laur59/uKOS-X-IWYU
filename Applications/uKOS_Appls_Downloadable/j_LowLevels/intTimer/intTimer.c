@@ -2,18 +2,19 @@
 ; intTimer.
 ; =========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Demo of a C application.
-;			This application shows how to operate with the uKOS-X uKernel.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    Demo of a C application.
+;    This application shows how to operate with the uKOS-X uKernel.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -52,113 +53,113 @@
  * \ingroup app_lowLevel
  * \brief This application shows how to operate with the uKOS uKernel.
  *
- *			Define the switch ALLOW_HARDWARE_ACCESS_S to permit
- *			the hardware accesses
+ *          Define the switch ALLOW_HARDWARE_ACCESS_S to permit
+ *          the hardware accesses
  *
- *			Launch 1 processes:
+ *          Launch 1 processes:
  *
- *			- P0: Get the semaphore "Semaphore tim" handle
- *				  Waiting for the semaphore "Semaphore tim" under timeout
- *					- Toggle LED 1
- *					- Display the interruption counter
+ *          - P0: Get the semaphore "Semaphore tim" handle
+ *                Waiting for the semaphore "Semaphore tim" under timeout
+ *                  - Toggle LED 1
+ *                  - Display the interruption counter
  *
  */
 
 
-#define	ALLOW_HARDWARE_ACCESS_S			// define: elevate the privilege for permitting hardware accesses
-										// undef: do not permit hardware accesses
+#define ALLOW_HARDWARE_ACCESS_S         // define: elevate the privilege for permitting hardware accesses
+                                        // undef: do not permit hardware accesses
 
-#include	<inttypes.h>
-#include	<stdio.h>
+#include    <inttypes.h>
+#include    <stdio.h>
 
-#include	"crt0.h"
-#include	"serial/serial.h"
-#include	"kern/kern.h"
-#include	"macros.h"
-#include	"macros_core.h"
-#include	"macros_core_stackFrame.h"
-#include	"memo/memo.h"
-#include	"led/led.h"
-#include	"modules.h"
-#include	"os_errors.h"
-#include	"record/record.h"
-#include	"types.h"
-#include	"serial/serial.h"
+#include    "crt0.h"
+#include    "serial/serial.h"
+#include    "kern/kern.h"
+#include    "macros.h"
+#include    "macros_core.h"
+#include    "macros_core_stackFrame.h"
+#include    "memo/memo.h"
+#include    "led/led.h"
+#include    "modules.h"
+#include    "os_errors.h"
+#include    "record/record.h"
+#include    "types.h"
+#include    "serial/serial.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"intTimer     Example of how to use interruptions.      (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "This is a romable C application\n"
-									"===============================\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "intTimer     Example of how to use interruptions.      (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
+                                    "===============================\n\n"
 
-									"This user function module is a C written application.\n\n"
+                                    "This user function module is a C written application.\n\n"
 
-									"Input format:  intTimer\n"
-									"Output format: [result]\n\n"
+                                    "Input format:  intTimer\n"
+                                    "Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
-	UserAppl,							// Module name (the first letter has to be upper case)
-	KID_FAM_APPLICATIONS,				// Family (defined in the module.h)
-	KNUM_APPLICATION,					// Module identifier (defined in the module.h)
-	NULL,								// Address of the initialisation code (early pre-init)
-	aStart,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	NULL,								// Address of the clean code (clean the module)
-	" 1.0",								// Revision string (major . minor)
-	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0									// Execution cores
+    UserAppl,                           // Module name (the first letter has to be upper case)
+    KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
+    KNUM_APPLICATION,                   // Module identifier (defined in the module.h)
+    NULL,                               // Address of the initialisation code (early pre-init)
+    aStart,                             // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    NULL,                               // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
 );
 
 // Application specific
 // ====================
 
-volatile	uint32_t	vTimer = 0U;
+volatile    uint32_t    vTimer = 0U;
 
 // Prototypes
 
-extern	void	stub_intr_timer_init(void);
-		void	aTimer_callBack(void);
+extern  void    stub_intr_timer_init(void);
+        void    aTimer_callBack(void);
 
 /*
  * \brief aProcess
  *
  * - P0: Get the semaphore "Semaphore tim" handle
- *		 Waiting for the semaphore "Semaphore tim" under timeout
- *			- Display the interruption counter
- *			- Toggle the LED 1
+ *       Waiting for the semaphore "Semaphore tim" under timeout
+ *          - Display the interruption counter
+ *          - Toggle the LED 1
  *
  */
 static void __attribute__ ((noreturn)) aProcess(const void *argument) {
-	UNUSED(argument);
+    UNUSED(argument);
 
-	int32_t		status;
-	sema_t		*semaphore;
+    int32_t     status;
+    sema_t      *semaphore;
 
-	kern_getSemaphoreById("Semaphore tim", &semaphore);
+    kern_getSemaphoreById("Semaphore tim", &semaphore);
 
-	#if(defined(ALLOW_HARDWARE_ACCESS_S))
-	LOG(KWARNING_USER, "Direct hardware access permitted");
+    #if(defined(ALLOW_HARDWARE_ACCESS_S))
+    LOG(KWARNING_USER, "Direct hardware access permitted");
 
-	PRIVILEGE_ELEVATE;
-	stub_intr_timer_init();
-	PRIVILEGE_RESTORE;
+    PRIVILEGE_ELEVATE;
+    stub_intr_timer_init();
+    PRIVILEGE_RESTORE;
 
-	#else
-	LOG(KFATAL_USER, "Generate an Hard Fault, privilege violation: System stopped");
+    #else
+    LOG(KFATAL_USER, "Generate an Hard Fault, privilege violation: System stopped");
 
-	stub_intr_timer_init();
-	#endif
+    stub_intr_timer_init();
+    #endif
 
-	while (true) {
-		status = kern_waitSemaphore(semaphore, 1000U);
-		(status == KERR_KERN_TIMEO) ? ((void)dprintf(KSYST, "Timeout Error Semaphore\n")) : ((void)dprintf(KSYST, "Timer = %"PRIu32"\n", vTimer));
+    while (true) {
+        status = kern_waitSemaphore(semaphore, 1000U);
+        (status == KERR_KERN_TIMEO) ? ((void)dprintf(KSYST, "Timeout Error Semaphore\n")) : ((void)dprintf(KSYST, "Timer = %"PRIu32"\n", vTimer));
 
-		led_toggle(KLED_1);
-	}
+        led_toggle(KLED_1);
+    }
 }
 
 /*
@@ -167,11 +168,11 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
  * - Signal the semaphore "Semaphore tim"
  *
  */
-void	aTimer_callBack(void) {
-	sema_t	*semaphore;
+void    aTimer_callBack(void) {
+    sema_t  *semaphore;
 
-	kern_getSemaphoreById("Semaphore tim", &semaphore);
-	kern_signalSemaphore(semaphore);
+    kern_getSemaphoreById("Semaphore tim", &semaphore);
+    kern_signalSemaphore(semaphore);
 }
 
 /*
@@ -182,34 +183,34 @@ void	aTimer_callBack(void) {
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int		main(int argc, const char *argv[]) {
-	UNUSED(argc);
-	UNUSED(argv);
+int     main(int argc, const char *argv[]) {
+    UNUSED(argc);
+    UNUSED(argv);
 
-	sema_t	*semaphore;
-	proc_t	*process;
+    sema_t  *semaphore;
+    proc_t  *process;
 
 // -------------------------------I-----------------------------------------I--------------I
 
-	STRG_LOC_CONST(aStrIden[]) = "Process_User";
-	STRG_LOC_CONST(aStrText[]) = "Process user.                             (c) EFr-2026";
+    STRG_LOC_CONST(aStrIden[]) = "Process_User";
+    STRG_LOC_CONST(aStrText[]) = "Process user.                             (c) EFr-2026";
 
 // Specifications for the processes
 
-	PROCESS_STACKMALLOC(
-		0,									// Index
-		specification,						// Specifications (just use specification_x)
-		aStrText,							// Info string (NULL if anonymous)
-		KKERN_SZ_STACK_MM,					// KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
-		aProcess,							// Code of the process
-		aStrIden,							// Identifier (NULL if anonymous)
-		KSYST,								// Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
-		KKERN_PRIORITY_LOW_14				// KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
-	);
+    PROCESS_STACKMALLOC(
+        0,                                  // Index
+        specification,                      // Specifications (just use specification_x)
+        aStrText,                           // Info string (NULL if anonymous)
+        KKERN_SZ_STACK_MM,                  // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
+        aProcess,                           // Code of the process
+        aStrIden,                           // Identifier (NULL if anonymous)
+        KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
+        KKERN_PRIORITY_LOW_14               // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
+    );
 
-	if (kern_createSemaphore("Semaphore tim", 0, 1, &semaphore) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
-	if (kern_createProcess(&specification, NULL, &process)		!= KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
+    if (kern_createSemaphore("Semaphore tim", 0, 1, &semaphore) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
+    if (kern_createProcess(&specification, NULL, &process)      != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
 
-	LOG(KINFO_USER, "Application launched");
-	return (EXIT_OS_SUCCESS_CLI);
+    LOG(KINFO_USER, "Application launched");
+    return (EXIT_OS_SUCCESS_CLI);
 }

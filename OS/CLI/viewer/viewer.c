@@ -2,18 +2,19 @@
 ; viewer.
 ; =======
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Image viewer.
-;			This tool allows to send an image via the xfer manager.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    Image viewer.
+;    This tool allows to send an image via the xfer manager.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,32 +48,32 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<stdint.h>
-#include	<stdio.h>
+#include    <stdint.h>
+#include    <stdio.h>
 
-#include	"modules.h"
-#include	"serial/serial.h"
-#include	"types.h"
+#include    "modules.h"
+#include    "serial/serial.h"
+#include    "types.h"
 
-extern	const	char_t		aStrApplication[];
-extern	const	char_t		aStrHelp[];
+extern  const   char_t      aStrApplication[];
+extern  const   char_t      aStrHelp[];
 
 // Prototypes
 
-static	int32_t		prgm(uint32_t argc, const char_t *argv[]);
-extern	int32_t		viewer_uvc0(uint32_t argc, const char_t *argv[]);
-extern	int32_t		viewer_uvc0_clean(uint32_t argc, const char_t *argv[]);
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+extern  int32_t     viewer_uvc0(uint32_t argc, const char_t *argv[]);
+extern  int32_t     viewer_uvc0_clean(uint32_t argc, const char_t *argv[]);
 
 MODULE(
-	Viewer,										// Module name (the first letter has to be upper case)
-	KID_FAM_CLI,								// Family (defined in the module.h)
-	KNUM_VIEWER,								// Module identifier (defined in the module.h)
-	NULL,										// Address of the initialisation code (early pre-init)
-	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	viewer_uvc0_clean,							// Address of the clean code (clean the module)
-	" 1.0",										// Revision string (major . minor)
-	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0											// Execution cores
+    Viewer,                                     // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                                // Family (defined in the module.h)
+    KNUM_VIEWER,                                // Module identifier (defined in the module.h)
+    NULL,                                       // Address of the initialisation code (early pre-init)
+    prgm,                                       // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    viewer_uvc0_clean,                          // Address of the clean code (clean the module)
+    " 1.0",                                     // Revision string (major . minor)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),         // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                           // Execution cores
 );
 
 /*
@@ -83,11 +84,11 @@ MODULE(
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
-	int32_t		status;
+static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
+    int32_t     status;
 
-	(void)dprintf(KSYST, "Viewer process launched.\n");
+    (void)dprintf(KSYST, "Viewer process launched.\n");
 
-	status = viewer_uvc0(argc, argv);
-	return (status);
+    status = viewer_uvc0(argc, argv);
+    return (status);
 }

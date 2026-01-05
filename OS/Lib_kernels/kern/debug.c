@@ -2,26 +2,27 @@
 ; debug.
 ; ======
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Kern - Debug list management.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;			This module implements the stop list primitives.
+; Project: uKOS-X
 ;
-; 			Software debug system calls
-; 			---------------------------
+; Purpose:
+;    Kern - Debug list management.
 ;
-;			void	debug_init(void);
-;			int32_t	kern_stopProcess(proc_t *handle);
-;			int32_t	kern_reactivateProcess(proc_t *handle);
+;    This module implements the stop list primitives.
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+;    Software debug system calls
+;    ---------------------------
+;
+;    void    debug_init(void);
+;    int32_t kern_stopProcess(proc_t *handle);
+;    int32_t kern_reactivateProcess(proc_t *handle);
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -55,22 +56,22 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"kern/debug_list.h"
+#include    "kern/debug_list.h"
 
-#include	<stddef.h>
-#include	<stdint.h>
+#include    <stddef.h>
+#include    <stdint.h>
 
-#include	"debug.h"
-#include	"kern/kern.h"
-#include	"kern/private/private_lists.h"
-#include	"kern/private/private_processes.h"
-#include	"macros_core.h"
-#include	"macros_soc.h"
-#include	"os_errors.h"
+#include    "debug.h"
+#include    "kern/kern.h"
+#include    "kern/private/private_lists.h"
+#include    "kern/private/private_processes.h"
+#include    "macros_core.h"
+#include    "macros_soc.h"
+#include    "os_errors.h"
 
 #if (KKERN_WITH_DEBUG_S == true)
 
-list_t		vKern_listStop[KNB_CORES];
+list_t      vKern_listStop[KNB_CORES];
 
 /*
  * \brief Initialise the manager
@@ -79,18 +80,18 @@ list_t		vKern_listStop[KNB_CORES];
  *   Before using the manager functions, it is necessary to
  *   call this function
  *
- * \param[in]	-
+ * \param[in]   -
  *
  * \note This function does not return a value (None).
  *
  */
-void	debug_init(void) {
-	uint32_t	core;
+void    debug_init(void) {
+    uint32_t    core;
 
-	DEBUG_KERN_TRACE("entry: ");
-	core = GET_RUNNING_CORE;
-	lists_initialise(&vKern_listStop[core]);
-	DEBUG_KERN_TRACE("exit: OK");
+    DEBUG_KERN_TRACE("entry: ");
+    core = GET_RUNNING_CORE;
+    lists_initialise(&vKern_listStop[core]);
+    DEBUG_KERN_TRACE("exit: OK");
 }
 
 /*
@@ -105,43 +106,43 @@ void	debug_init(void) {
  *    status = kern_stopProcess(process);
  * \endcode
  *
- * \param[in]	*handle			Ptr on the handle
- * \return		KERR_KERN_NOERR	OK
- * \return		KERR_KERN_NOPRO	The process does not exist
- * \return		KERR_KERN_DBGER	The process is already in the debug list
- * \return		KERR_KERN_DBNOS	The process is attached to a sensitive list and cannot be stopped
+ * \param[in]   *handle         Ptr on the handle
+ * \return      KERR_KERN_NOERR OK
+ * \return      KERR_KERN_NOPRO The process does not exist
+ * \return      KERR_KERN_DBGER The process is already in the debug list
+ * \return      KERR_KERN_DBNOS The process is attached to a sensitive list and cannot be stopped
  *
  */
-int32_t	kern_stopProcess(proc_t *handle) {
-	bool		preemption = false;
-	uint32_t	core;
+int32_t kern_stopProcess(proc_t *handle) {
+    bool        preemption = false;
+    uint32_t    core;
 
-	DEBUG_KERN_TRACE("entry: ");
-	core = GET_RUNNING_CORE;
+    DEBUG_KERN_TRACE("entry: ");
+    core = GET_RUNNING_CORE;
 
-	PRIVILEGE_ELEVATE;
-	INTERRUPTION_OFF;
-	vKern_runProc[core]->oStatistic.oNbKernCalls++;
-	if (handle == NULL)                           				  { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPRO); }
-	if ((handle->oInternal.oState & (1U<<BPROC_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPRO); }
-	if ((handle->oInternal.oState & (1U<<BPROC_SUSP_DEBG)) != 0U) { DEBUG_KERN_TRACE("exit: KO 3"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_DBGER); }
-	if ((handle->oInternal.oState & (1U<<BPROC_SUSP_SEMA)) != 0U) { DEBUG_KERN_TRACE("exit: KO 4"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_DBNOS); }
+    PRIVILEGE_ELEVATE;
+    INTERRUPTION_OFF;
+    vKern_runProc[core]->oStatistic.oNbKernCalls++;
+    if (handle == NULL)                                           { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPRO); }
+    if ((handle->oInternal.oState & (1U<<BPROC_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPRO); }
+    if ((handle->oInternal.oState & (1U<<BPROC_SUSP_DEBG)) != 0U) { DEBUG_KERN_TRACE("exit: KO 3"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_DBGER); }
+    if ((handle->oInternal.oState & (1U<<BPROC_SUSP_SEMA)) != 0U) { DEBUG_KERN_TRACE("exit: KO 4"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_DBNOS); }
 
-	handle->oInternal.oListDebg  = handle->oObject.oList;
-	handle->oInternal.oStateDebg = handle->oInternal.oState;
-	handle->oInternal.oState     = (1U<<BPROC_INSTALLED) | (1U<<BPROC_SUSP_DEBG);
-	lists_disconnectConnect(handle->oObject.oList, &vKern_listStop[core], handle);
+    handle->oInternal.oListDebg  = handle->oObject.oList;
+    handle->oInternal.oStateDebg = handle->oInternal.oState;
+    handle->oInternal.oState     = (1U<<BPROC_INSTALLED) | (1U<<BPROC_SUSP_DEBG);
+    lists_disconnectConnect(handle->oObject.oList, &vKern_listStop[core], handle);
 
 // The process is stopped by itself
 
-	preemption = (handle == vKern_runProc[core]);
+    preemption = (handle == vKern_runProc[core]);
 
-	DEBUG_KERN_TRACE("exit: OK");
-	INTERRUPTION_RESTORE;
+    DEBUG_KERN_TRACE("exit: OK");
+    INTERRUPTION_RESTORE;
 
-	if (preemption) { PREEMPTION; }
-	PRIVILEGE_RESTORE;
-	return (KERR_KERN_NOERR);
+    if (preemption) { PREEMPTION; }
+    PRIVILEGE_RESTORE;
+    return (KERR_KERN_NOERR);
 }
 
 /*
@@ -156,41 +157,41 @@ int32_t	kern_stopProcess(proc_t *handle) {
  *    status = kern_reactivateProcess(process);
  * \endcode
  *
- * \param[in]	*handle			Ptr on the handle
- * \return		KERR_KERN_NOERR	OK
- * \return		KERR_KERN_NOPRO	The process does not exist
- * \return		KERR_KERN_DBGER	The process is not in the debug list
+ * \param[in]   *handle         Ptr on the handle
+ * \return      KERR_KERN_NOERR OK
+ * \return      KERR_KERN_NOPRO The process does not exist
+ * \return      KERR_KERN_DBGER The process is not in the debug list
  *
  */
-int32_t	kern_reactivateProcess(proc_t *handle) {
-	bool		preemption = false;
-	uint32_t	core;
+int32_t kern_reactivateProcess(proc_t *handle) {
+    bool        preemption = false;
+    uint32_t    core;
 
-	DEBUG_KERN_TRACE("entry: ");
-	core = GET_RUNNING_CORE;
+    DEBUG_KERN_TRACE("entry: ");
+    core = GET_RUNNING_CORE;
 
-	PRIVILEGE_ELEVATE;
-	INTERRUPTION_OFF;
-	vKern_runProc[core]->oStatistic.oNbKernCalls++;
-	if (handle == NULL)                           			      { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPRO); }
-	if ((handle->oInternal.oState & (1U<<BPROC_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPRO); }
-	if ((handle->oInternal.oState & (1U<<BPROC_SUSP_DEBG)) == 0U) { DEBUG_KERN_TRACE("exit: KO 3"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_DBGER); }
+    PRIVILEGE_ELEVATE;
+    INTERRUPTION_OFF;
+    vKern_runProc[core]->oStatistic.oNbKernCalls++;
+    if (handle == NULL)                                           { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPRO); }
+    if ((handle->oInternal.oState & (1U<<BPROC_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPRO); }
+    if ((handle->oInternal.oState & (1U<<BPROC_SUSP_DEBG)) == 0U) { DEBUG_KERN_TRACE("exit: KO 3"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_DBGER); }
 
-	handle->oInternal.oState = handle->oInternal.oStateDebg;
-	lists_disconnectConnect(handle->oObject.oList, handle->oInternal.oListDebg, handle);
+    handle->oInternal.oState = handle->oInternal.oStateDebg;
+    lists_disconnectConnect(handle->oObject.oList, handle->oInternal.oListDebg, handle);
 
 // If the ready process has a higher priority, then preemption occurs
 
-	handle->oInternal.oDynamicPriority = handle->oSpecification.oPriority;
-	preemption = ((handle->oInternal.oListDebg == &vKern_listExec[core]) && (handle->oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority));
+    handle->oInternal.oDynamicPriority = handle->oSpecification.oPriority;
+    preemption = ((handle->oInternal.oListDebg == &vKern_listExec[core]) && (handle->oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority));
 
-	DEBUG_KERN_TRACE("exit: OK");
-	INTERRUPTION_RESTORE;
+    DEBUG_KERN_TRACE("exit: OK");
+    INTERRUPTION_RESTORE;
 
-	if (preemption) { PREEMPTION; }
-	PRIVILEGE_RESTORE;
-	return (KERR_KERN_NOERR);
+    if (preemption) { PREEMPTION; }
+    PRIVILEGE_RESTORE;
+    return (KERR_KERN_NOERR);
 }
 #else
-#error	"KKERN_WITH_DEBUG_S SHALL be defined in project using kern/debug.c"
+#error  "KKERN_WITH_DEBUG_S SHALL be defined in project using kern/debug.c"
 #endif

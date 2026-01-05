@@ -2,17 +2,18 @@
 ; stub_switch.
 ; ============
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		stub for the "switch" manager module.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    stub for the "switch" manager module.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,12 +47,12 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"board.h"
-#include	"macros_core.h"
-#include	"os_errors.h"
-#include	"soc_reg.h"
+#include    "board.h"
+#include    "macros_core.h"
+#include    "os_errors.h"
+#include    "soc_reg.h"
 
 /*
  * \brief stub_switch_init
@@ -59,7 +60,7 @@
  * - Initialise some specific hardware parts
  *
  */
-void	stub_switch_init(void) {
+void    stub_switch_init(void) {
 
 }
 
@@ -69,10 +70,10 @@ void	stub_switch_init(void) {
  * - Read the jumper configuration
  *
  */
-int32_t	stub_switch_read(uint32_t *mode) {
+int32_t stub_switch_read(uint32_t *mode) {
 
-	*mode  = 0U;
-	*mode |= ((REG(P0)->IN & (1U<<BSW_0)) != 0U) ? (0U) : (1U<<0U);
-	*mode |= ((REG(P0)->IN & (1U<<BSW_1)) != 0U) ? (0U) : (1U<<1U);
-	return (KERR_SWITCH_NOERR);
+    *mode  = 0U;
+    *mode |= ((REG(P0)->IN & (1U<<BSW_0)) != 0U) ? (0U) : (1U<<0U);
+    *mode |= ((REG(P0)->IN & (1U<<BSW_1)) != 0U) ? (0U) : (1U<<1U);
+    return (KERR_SWITCH_NOERR);
 }

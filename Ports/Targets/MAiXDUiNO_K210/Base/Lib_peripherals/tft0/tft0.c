@@ -2,17 +2,18 @@
 ; tft0.
 ; =====
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		tft0 manager (for nt35310).
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    tft0 manager (for nt35310).
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,40 +47,40 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tft0.h"
+#include    "tft0.h"
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"../oct0/oct0.h"
-#include	"Registers/K210_gpiohs.h"
-#include	"board.h"
-#include	"kern/kern.h"
-#include	"macros.h"
-#include	"modules.h"
+#include    "../oct0/oct0.h"
+#include    "Registers/K210_gpiohs.h"
+#include    "board.h"
+#include    "kern/kern.h"
+#include    "macros.h"
+#include    "modules.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"tft0         tft0 manager.                             (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "tft0 manager\n"
-									"============\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "tft0         tft0 manager.                             (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "tft0 manager\n"
+                                    "============\n\n"
 
-									"This manager ...\n\n"
+                                    "This manager ...\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
-	Tft0,							// Module name (the first letter has to be upper case)
-	KID_FAM_PERIPHERALS,			// Family (defined in the module.h)
-	KTFT0_NUM,						// Module identifier (defined in the module.h)
-	NULL,							// Address of the initialisation code (early pre-init)
-	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	NULL,							// Address of the clean code (clean the module)
-	" 1.0",							// Revision string (major . minor)
-	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0								// Execution cores
+    Tft0,                           // Module name (the first letter has to be upper case)
+    KID_FAM_PERIPHERALS,            // Family (defined in the module.h)
+    KTFT0_NUM,                      // Module identifier (defined in the module.h)
+    NULL,                           // Address of the initialisation code (early pre-init)
+    NULL,                           // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    NULL,                           // Address of the clean code (clean the module)
+    " 1.0",                         // Revision string (major . minor)
+    (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                               // Execution cores
 );
 
 /*
@@ -92,29 +93,29 @@ MODULE(
  *    status = tft0_init(void);
  * \endcode
  *
- * \param[in]	-
- * \return		KOTFT0NOERR	OK
- * \return		KOTFT0GEERR	General error
+ * \param[in]   -
+ * \return      KOTFT0NOERR OK
+ * \return      KOTFT0GEERR General error
  *
  */
-int32_t	tft0_init(void) {
-	cnfOctx_t	configure = {
-					.oMode    = KOCTAL,
-					.oNbBits  = 8U,
-					.oXfer    = K8BITSAINC,
-					.oDevider = KCLKDIV64
-				};
+int32_t tft0_init(void) {
+    cnfOctx_t   configure = {
+                    .oMode    = KOCTAL,
+                    .oNbBits  = 8U,
+                    .oXfer    = K8BITSAINC,
+                    .oDevider = KCLKDIV64
+                };
 
-	gpiohs->output_val.u32[0] |= (1U<<BLCD_DCX);
-	oct0_init();
+    gpiohs->output_val.u32[0] |= (1U<<BLCD_DCX);
+    oct0_init();
 
-	gpiohs->output_val.u32[0] &= (uint32_t)~(1U<<BLCD_RST);
-	kern_suspendProcess(100U);
-	gpiohs->output_val.u32[0] |= (1U<<BLCD_RST);
-	kern_suspendProcess(100U);
+    gpiohs->output_val.u32[0] &= (uint32_t)~(1U<<BLCD_RST);
+    kern_suspendProcess(100U);
+    gpiohs->output_val.u32[0] |= (1U<<BLCD_RST);
+    kern_suspendProcess(100U);
 
-	oct0_configure(&configure);
-	return (KERR_TFT0_NOERR);
+    oct0_configure(&configure);
+    return (KERR_TFT0_NOERR);
 }
 
 /*
@@ -130,24 +131,24 @@ int32_t	tft0_init(void) {
  *    status = tft0_writeCommand(command);
  * \endcode
  *
- * \param[in]	command			The command
- * \return		KERR_TFT0_NOERR	OK
- * \return		KERR_TFT0_GEERR	General error
+ * \param[in]   command         The command
+ * \return      KERR_TFT0_NOERR OK
+ * \return      KERR_TFT0_GEERR General error
  *
  */
-int32_t	tft0_writeCommand(uint8_t command) {
-	cnfOctx_t	configure = {
-					.oMode    = KOCTAL,
-					.oNbBits  = 8U,
-					.oXfer    = K8BITSAINC,
-					.oDevider = KCLKDIV64
-				};
+int32_t tft0_writeCommand(uint8_t command) {
+    cnfOctx_t   configure = {
+                    .oMode    = KOCTAL,
+                    .oNbBits  = 8U,
+                    .oXfer    = K8BITSAINC,
+                    .oDevider = KCLKDIV64
+                };
 
-	oct0_configure(&configure);
+    oct0_configure(&configure);
 
-	gpiohs->output_val.u32[0] &= (uint32_t)~(1U<<BLCD_DCX);
-	oct0_write(SPI_SLAVE_SELECT, &command, 1U, KXFER8);
-	return (KERR_TFT0_NOERR);
+    gpiohs->output_val.u32[0] &= (uint32_t)~(1U<<BLCD_DCX);
+    oct0_write(SPI_SLAVE_SELECT, &command, 1U, KXFER8);
+    return (KERR_TFT0_NOERR);
 }
 
 /*
@@ -162,25 +163,25 @@ int32_t	tft0_writeCommand(uint8_t command) {
  *    status = tft0_write8(buffer, 23);
  * \endcode
  *
- * \param[in]	*buffer			Ptr on the buffer to write
- * \param[in]	szBuffer		Size of the buffer
- * \return		KERR_TFT0_NOERR	OK
- * \return		KERR_TFT0_GEERR	General error
+ * \param[in]   *buffer         Ptr on the buffer to write
+ * \param[in]   szBuffer        Size of the buffer
+ * \return      KERR_TFT0_NOERR OK
+ * \return      KERR_TFT0_GEERR General error
  *
  */
-int32_t	tft0_write8(const uint8_t *buffer, uint32_t szBuffer) {
-	cnfOctx_t	configure = {
-					.oMode    = KOCTAL,
-					.oNbBits  = 8U,
-					.oXfer    = K8BITSAINC,
-					.oDevider = KCLKDIV64
-				};
+int32_t tft0_write8(const uint8_t *buffer, uint32_t szBuffer) {
+    cnfOctx_t   configure = {
+                    .oMode    = KOCTAL,
+                    .oNbBits  = 8U,
+                    .oXfer    = K8BITSAINC,
+                    .oDevider = KCLKDIV64
+                };
 
-	oct0_configure(&configure);
+    oct0_configure(&configure);
 
-	gpiohs->output_val.u32[0] |= (1U<<BLCD_DCX);
-	oct0_write(SPI_SLAVE_SELECT, buffer, szBuffer, KXFER8);
-	return (KERR_TFT0_NOERR);
+    gpiohs->output_val.u32[0] |= (1U<<BLCD_DCX);
+    oct0_write(SPI_SLAVE_SELECT, buffer, szBuffer, KXFER8);
+    return (KERR_TFT0_NOERR);
 }
 
 /*
@@ -195,25 +196,25 @@ int32_t	tft0_write8(const uint8_t *buffer, uint32_t szBuffer) {
  *    status = tft0_write16(buffer, 23);
  * \endcode
  *
- * \param[in]	*buffer			Ptr on the buffer to write
- * \param[in]	szBuffer		Size of the buffer
- * \return		KERR_TFT0_NOERR	OK
- * \return		KERR_TFT0_GEERR	General error
+ * \param[in]   *buffer         Ptr on the buffer to write
+ * \param[in]   szBuffer        Size of the buffer
+ * \return      KERR_TFT0_NOERR OK
+ * \return      KERR_TFT0_GEERR General error
  *
  */
-int32_t	tft0_write16(const uint16_t *buffer, uint32_t szBuffer) {
-	cnfOctx_t	configure = {
-					.oMode    = KOCTAL,
-					.oNbBits  = 16U,
-					.oXfer    = K16BITSAINC,
-					.oDevider = KCLKDIV64
-				};
+int32_t tft0_write16(const uint16_t *buffer, uint32_t szBuffer) {
+    cnfOctx_t   configure = {
+                    .oMode    = KOCTAL,
+                    .oNbBits  = 16U,
+                    .oXfer    = K16BITSAINC,
+                    .oDevider = KCLKDIV64
+                };
 
-	oct0_configure(&configure);
+    oct0_configure(&configure);
 
-	gpiohs->output_val.u32[0] |= (1U<<BLCD_DCX);
-	oct0_write(SPI_SLAVE_SELECT, buffer, szBuffer, KXFER16);
-	return (KERR_TFT0_NOERR);
+    gpiohs->output_val.u32[0] |= (1U<<BLCD_DCX);
+    oct0_write(SPI_SLAVE_SELECT, buffer, szBuffer, KXFER16);
+    return (KERR_TFT0_NOERR);
 }
 
 /*
@@ -228,23 +229,23 @@ int32_t	tft0_write16(const uint16_t *buffer, uint32_t szBuffer) {
  *    status = tft0_fill16(buffer, 23);
  * \endcode
  *
- * \param[in]	*buffer			Ptr on the buffer to write
- * \param[in]	szBuffer		Size of the buffer
- * \return		KERR_TFT0_NOERR	OK
- * \return		KERR_TFT0_GEERR	General error
+ * \param[in]   *buffer         Ptr on the buffer to write
+ * \param[in]   szBuffer        Size of the buffer
+ * \return      KERR_TFT0_NOERR OK
+ * \return      KERR_TFT0_GEERR General error
  *
  */
-int32_t	tft0_fill16(const uint16_t *buffer, uint32_t szBuffer) {
-	cnfOctx_t	configure = {
-					.oMode    = KOCTAL,
-					.oNbBits  = 16U,
-					.oXfer    = K16BITSFILL,
-					.oDevider = KCLKDIV64
-				};
+int32_t tft0_fill16(const uint16_t *buffer, uint32_t szBuffer) {
+    cnfOctx_t   configure = {
+                    .oMode    = KOCTAL,
+                    .oNbBits  = 16U,
+                    .oXfer    = K16BITSFILL,
+                    .oDevider = KCLKDIV64
+                };
 
-	oct0_configure(&configure);
+    oct0_configure(&configure);
 
-	gpiohs->output_val.u32[0] |= (1U<<BLCD_DCX);
-	oct0_write(SPI_SLAVE_SELECT, buffer, szBuffer, KFILL);
-	return (KERR_TFT0_NOERR);
+    gpiohs->output_val.u32[0] |= (1U<<BLCD_DCX);
+    oct0_write(SPI_SLAVE_SELECT, buffer, szBuffer, KFILL);
+    return (KERR_TFT0_NOERR);
 }

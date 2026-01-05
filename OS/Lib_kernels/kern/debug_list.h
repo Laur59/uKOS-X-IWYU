@@ -2,26 +2,27 @@
 ; debug.
 ; ======
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Kern - Debug list management.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;			This module implements the debug list primitives.
+; Project: uKOS-X
 ;
-; 			Software debug system calls
-; 			---------------------------
+; Purpose:
+;    Kern - Debug list management.
 ;
-;			void	debug_init(void);
-;			int32_t	kern_stopProcess(proc_t *handle);
-;			int32_t	kern_reactivateProcess(proc_t *handle);
+;    This module implements the debug list primitives.
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+;    Software debug system calls
+;    ---------------------------
+;
+;    void    debug_init(void);
+;    int32_t kern_stopProcess(proc_t *handle);
+;    int32_t kern_reactivateProcess(proc_t *handle);
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -55,11 +56,11 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"kern/kern.h"	// IWYU pragma: keep (workaround app bug)
+#include    "kern/kern.h"   // IWYU pragma: keep (workaround app bug)
 
 /*!
  * \addtogroup Lib_kernels
@@ -79,10 +80,10 @@
 // Prototypes
 
 #ifdef __cplusplus
-extern	"C" {
+extern  "C" {
 #endif
 
-extern	void	debug_init(void);
+extern  void    debug_init(void);
 
 /*!
  * \brief Stop a process
@@ -96,14 +97,14 @@ extern	void	debug_init(void);
  *    status = kern_stopProcess(process);
  * \endcode
  *
- * \param[in]	*handle			Ptr on the handle
- * \return		KERR_KERN_NOERR	OK
- * \return		KERR_KERN_NOPRO	The process does not exist
- * \return		KERR_KERN_DBGER	The process is already in the debug list
- * \return		KERR_KERN_DBNOS	The process is attached to a sensitive list and cannot be stopped
+ * \param[in]   *handle         Ptr on the handle
+ * \return      KERR_KERN_NOERR OK
+ * \return      KERR_KERN_NOPRO The process does not exist
+ * \return      KERR_KERN_DBGER The process is already in the debug list
+ * \return      KERR_KERN_DBNOS The process is attached to a sensitive list and cannot be stopped
  *
  */
-extern	int32_t	kern_stopProcess(proc_t *handle);
+extern  int32_t kern_stopProcess(proc_t *handle);
 
 /*!
  * \brief Reactivate a process
@@ -117,13 +118,13 @@ extern	int32_t	kern_stopProcess(proc_t *handle);
  *    status = kern_reactivateProcess(process);
  * \endcode
  *
- * \param[in]	*handle			Ptr on the handle
- * \return		KERR_KERN_NOERR	OK
- * \return		KERR_KERN_NOPRO	The process does not exist
- * \return		KERR_KERN_DBGER	The process is not in the debug list
+ * \param[in]   *handle         Ptr on the handle
+ * \return      KERR_KERN_NOERR OK
+ * \return      KERR_KERN_NOPRO The process does not exist
+ * \return      KERR_KERN_DBGER The process is not in the debug list
  *
  */
-extern	int32_t	kern_reactivateProcess(proc_t *handle);
+extern  int32_t kern_reactivateProcess(proc_t *handle);
 
 #ifdef __cplusplus
 }

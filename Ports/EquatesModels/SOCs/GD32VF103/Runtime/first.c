@@ -2,17 +2,18 @@
 ; first.
 ; ======
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Vectors for the uKOS-X system (first).
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    Vectors for the uKOS-X system (first).
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,16 +47,16 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"soc_reg.h"
-#include	"macros_soc.h"
-#include	"macros_core.h"
-#include	"macros_core_stackFrame.h"	// IWYU pragma: keep (for INTERRUPTION_IN INTERRUPTION_OUT)
+#include    "soc_reg.h"
+#include    "macros_soc.h"
+#include    "macros_core.h"
+#include    "macros_core_stackFrame.h"  // IWYU pragma: keep (for INTERRUPTION_IN INTERRUPTION_OUT)
 
-extern	void	(*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
-extern	void	(*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
-extern	bool	vExce_isException[KNB_CORES];
+extern  void    (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
+extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
+extern  bool    vExce_isException[KNB_CORES];
 
 // Vector table: ...
 // However rather than start at zero the vector table starts at address 0x00000004,
@@ -63,7 +64,7 @@ extern	bool	vExce_isException[KNB_CORES];
 
 // Prototypes
 
-extern	void	crt0(void);
+extern  void    crt0(void);
 
 /*
  * \brief Reset_C0_Handler
@@ -75,30 +76,30 @@ extern	void	crt0(void);
  *
  */
 __attribute__ ((noinline)) void local_fixPC(void) {
-	register	uint32_t	regRa;
+    register    uint32_t    regRa;
 
-	__asm volatile ("add	%0,ra,zero" : "=r" (regRa));
+    __asm volatile ("add    %0,ra,zero" : "=r" (regRa));
 
 // Check if the return address is below the flash
 // Move the return address into the flash area
 
-	if (regRa < 0x08000000U) {
-		regRa |= 0x08000000U;
+    if (regRa < 0x08000000U) {
+        regRa |= 0x08000000U;
 
-		__asm volatile ("add	ra,%0,zero" : : "r" (regRa));
-	}
+        __asm volatile ("add    ra,%0,zero" : : "r" (regRa));
+    }
 }
 
 void __attribute__ ((naked)) Reset_C0_Handler(void) {
 
-	CALL_FNCT(local_fixPC);
+    CALL_FNCT(local_fixPC);
 
 // Initialise the first stack
 // Continue with the crt0
 
-	__asm volatile ("la	sp,linker_topStackFirst_C0");
+    __asm volatile ("la sp,linker_topStackFirst_C0");
 
-	CALL_FNCT(crt0);
+    CALL_FNCT(crt0);
 }
 
 EXCEPTION_SPECIFIC_HANDLER(MSIP_C0)

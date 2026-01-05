@@ -2,50 +2,51 @@
 ; stub_asmp_ipc.
 ; ==============
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		stub for the managemen of the "asmp" manager with IPC,
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;			The messages coming from the API are routed to the respective
-;			peripherals for the IPC management.
+; Project: uKOS-X
 ;
-;			Generic from the API					Target specific
+; Purpose:
+;    stub for the managemen of the "asmp" manager with IPC,
 ;
-;			KASMP_MESSAGE_VALID_FOR_CORE_0			IPC_0_PROCESS_0
-;			KASMP_MESSAGE_VALID_FOR_CORE_1			IPC_1_PROCESS_1
-;			KASMP_MESSAGE_ACKNOWLEDGE_THE_CORE_0	IPC_2_PROCESS_2
-;			KASMP_MESSAGE_ACKNOWLEDGE_THE_CORE_1	IPC_2_PROCESS_3
+;    The messages coming from the API are routed to the respective
+;    peripherals for the IPC management.
 ;
-;			Ex.
-;			core 0 send a message
-;				SenderFull[KASMP_CORE_1] = true
-;				Generate the message KASMP_MESSAGE_VALID_FOR_CORE_1 on the core 1
+;    Generic from the API                    Target specific
 ;
-;			core 1 receives the message KASMP_MESSAGE_VALID_FOR_CORE_1
-;				ReceiverEmpty = false
-;				...
-;				Read the message
-;				Generate the message KASMPMESSAGE_ACKNOWLEDGE_FROM_CORE_1
-;				SenderFull[KASMP_CORE_1] = false
+;    KASMP_MESSAGE_VALID_FOR_CORE_0          IPC_0_PROCESS_0
+;    KASMP_MESSAGE_VALID_FOR_CORE_1          IPC_1_PROCESS_1
+;    KASMP_MESSAGE_ACKNOWLEDGE_THE_CORE_0    IPC_2_PROCESS_2
+;    KASMP_MESSAGE_ACKNOWLEDGE_THE_CORE_1    IPC_2_PROCESS_3
 ;
-;			Important:
-;			In this multicore communication layer, we must take into account both heterogeneous (e.g., M4 + M7)
-;			and homogeneous (e.g., 2 × M33) core configurations.
+;    Ex.
+;    core 0 send a message
+;        SenderFull[KASMP_CORE_1] = true
+;        Generate the message KASMP_MESSAGE_VALID_FOR_CORE_1 on the core 1
 ;
-;			For uKOS:
-;			In a heterogeneous configuration, KNB_CORES is always equal to 1.
-;			In a homogeneous configuration, KNB_CORES is always greater than 1.
-;			Be careful with the PREEMPTION_THRESHOLD macro to ensure it returns the correct core:
-;			In a heterogeneous configuration: PREEMPTION_THRESHOLD(KCORE_0)
-;			In a homogeneous configuration: PREEMPTION_THRESHOLD(core)
+;    core 1 receives the message KASMP_MESSAGE_VALID_FOR_CORE_1
+;        ReceiverEmpty = false
+;        ...
+;        Read the message
+;        Generate the message KASMPMESSAGE_ACKNOWLEDGE_FROM_CORE_1
+;        SenderFull[KASMP_CORE_1] = false
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+;    Important:
+;    In this multicore communication layer, we must take into account both heterogeneous (e.g., M4 + M7)
+;    and homogeneous (e.g., 2 × M33) core configurations.
+;
+;    For uKOS:
+;    In a heterogeneous configuration, KNB_CORES is always equal to 1.
+;    In a homogeneous configuration, KNB_CORES is always greater than 1.
+;    Be careful with the PREEMPTION_THRESHOLD macro to ensure it returns the correct core:
+;    In a heterogeneous configuration: PREEMPTION_THRESHOLD(KCORE_0)
+;    In a homogeneous configuration: PREEMPTION_THRESHOLD(core)
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -79,36 +80,36 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"asmp/asmp.h"
-#include	"core_reg.h"
-#include	"kern/kern.h"
-#include	"macros_core.h"
-#include	"macros_soc.h"
-#include	"os_errors.h"
-#include	"soc_reg.h"
-#include	"types.h"
+#include    "asmp/asmp.h"
+#include    "core_reg.h"
+#include    "kern/kern.h"
+#include    "macros_core.h"
+#include    "macros_soc.h"
+#include    "os_errors.h"
+#include    "soc_reg.h"
+#include    "types.h"
 
-#define	IPC_0_PROCESS_0		0U				// Process ID for IPC, message valid for core 0
-#define	IPC_1_PROCESS_1		1U				// Process ID for IPC, message valid for core 1
-#define	IPC_2_PROCESS_2		2U				// Process ID for IPC, acknowledge the core 0
-#define	IPC_3_PROCESS_3		3U				// Process ID for IPC, acknowledge the core 1
+#define IPC_0_PROCESS_0     0U              // Process ID for IPC, message valid for core 0
+#define IPC_1_PROCESS_1     1U              // Process ID for IPC, message valid for core 1
+#define IPC_2_PROCESS_2     2U              // Process ID for IPC, acknowledge the core 0
+#define IPC_3_PROCESS_3     3U              // Process ID for IPC, acknowledge the core 1
 
-const	char_t	*tableCoreReference[2] = {
-					"Cortex-M33 App (fpu + dsp) ",
-					"Cortex-M33 Net"
-				};
+const   char_t  *tableCoreReference[2] = {
+                    "Cortex-M33 App (fpu + dsp) ",
+                    "Cortex-M33 Net"
+                };
 
-extern	asmpShared_t	*vAsmp_InterCore;
+extern  asmpShared_t    *vAsmp_InterCore;
 
 // Prototypes
 
-extern	void	(*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
+extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
-		void	stub_asmp_getRunningCore(uint32_t *core);
-static	void	local_initInterCore(uint32_t core);
-static	void	local_IPC_interruptionChannel(void);
+        void    stub_asmp_getRunningCore(uint32_t *core);
+static  void    local_initInterCore(uint32_t core);
+static  void    local_IPC_interruptionChannel(void);
 
 /*
  * \brief stub_asmp_init
@@ -117,59 +118,59 @@ static	void	local_IPC_interruptionChannel(void);
  *   has to be called at least once
  *
  */
-void	stub_asmp_init(void) {
-			uint32_t	core;
-			sema_t		*semaphoreRX, *semaphoreTX;
-	const	char_t		*identifierRX, *identifierTX;
+void    stub_asmp_init(void) {
+            uint32_t    core;
+            sema_t      *semaphoreRX, *semaphoreTX;
+    const   char_t      *identifierRX, *identifierTX;
 
-	stub_asmp_getRunningCore(&core);
-	identifierRX = (core == KASMP_CORE_0) ? (KASMP_SEMA_RX_CORE_0_FULL)  : (KASMP_SEMA_RX_CORE_1_FULL);
-	identifierTX = (core == KASMP_CORE_0) ? (KASMP_SEMA_TX_CORE_0_EMPTY) : (KASMP_SEMA_TX_CORE_1_EMPTY);
+    stub_asmp_getRunningCore(&core);
+    identifierRX = (core == KASMP_CORE_0) ? (KASMP_SEMA_RX_CORE_0_FULL)  : (KASMP_SEMA_RX_CORE_1_FULL);
+    identifierTX = (core == KASMP_CORE_0) ? (KASMP_SEMA_TX_CORE_0_EMPTY) : (KASMP_SEMA_TX_CORE_1_EMPTY);
 
-	INTERRUPT_VECTOR(IPC_C0_IRQn, local_IPC_interruptionChannel);
-	NVIC_SetPriority(IPC_C0_IRQn, KINT_LEVEL_PERIPHERALS);
-	NVIC_EnableIRQ(IPC_C0_IRQn);
+    INTERRUPT_VECTOR(IPC_C0_IRQn, local_IPC_interruptionChannel);
+    NVIC_SetPriority(IPC_C0_IRQn, KINT_LEVEL_PERIPHERALS);
+    NVIC_EnableIRQ(IPC_C0_IRQn);
 
-	switch (core) {
-		case KASMP_CORE_0: {
-			REG(IPC)->SEND_CNF[1]	 = (1U<<IPC_1_PROCESS_1);
-			REG(IPC)->SEND_CNF[3]	 = (1U<<IPC_3_PROCESS_3);
-			REG(IPC)->RECEIVE_CNF[0] = (1U<<IPC_0_PROCESS_0);
-			REG(IPC)->RECEIVE_CNF[2] = (1U<<IPC_2_PROCESS_2);
-			REG(IPC)->INTENSET		 = (1U<<IPC_2_PROCESS_2) | (1U<<IPC_0_PROCESS_0);
-			break;
-		}
+    switch (core) {
+        case KASMP_CORE_0: {
+            REG(IPC)->SEND_CNF[1]    = (1U<<IPC_1_PROCESS_1);
+            REG(IPC)->SEND_CNF[3]    = (1U<<IPC_3_PROCESS_3);
+            REG(IPC)->RECEIVE_CNF[0] = (1U<<IPC_0_PROCESS_0);
+            REG(IPC)->RECEIVE_CNF[2] = (1U<<IPC_2_PROCESS_2);
+            REG(IPC)->INTENSET       = (1U<<IPC_2_PROCESS_2) | (1U<<IPC_0_PROCESS_0);
+            break;
+        }
 
-		case KASMP_CORE_1: {
-			REG(IPC)->SEND_CNF[0]	 = (1U<<IPC_0_PROCESS_0);
-			REG(IPC)->SEND_CNF[2]	 = (1U<<IPC_2_PROCESS_2);
-			REG(IPC)->RECEIVE_CNF[1] = (1U<<IPC_1_PROCESS_1);
-			REG(IPC)->RECEIVE_CNF[3] = (1U<<IPC_3_PROCESS_3);
-			REG(IPC)->INTENSET		 = (1U<<IPC_3_PROCESS_3) | (1U<<IPC_1_PROCESS_1);
-			break;
-		}
-		default: {
+        case KASMP_CORE_1: {
+            REG(IPC)->SEND_CNF[0]    = (1U<<IPC_0_PROCESS_0);
+            REG(IPC)->SEND_CNF[2]    = (1U<<IPC_2_PROCESS_2);
+            REG(IPC)->RECEIVE_CNF[1] = (1U<<IPC_1_PROCESS_1);
+            REG(IPC)->RECEIVE_CNF[3] = (1U<<IPC_3_PROCESS_3);
+            REG(IPC)->INTENSET       = (1U<<IPC_3_PROCESS_3) | (1U<<IPC_1_PROCESS_1);
+            break;
+        }
+        default: {
 
 // Make MISRA happy :-)
 
-			break;
-		}
-	}
+            break;
+        }
+    }
 
-	local_initInterCore(core);
+    local_initInterCore(core);
 
 // Create the message ready semaphore
 // Create the message sent semaphore and signal message sent
 // Prepare the information indicating ASMP ready
 
-	kern_createSemaphore(identifierRX, 0, 1, &semaphoreRX);
-	kern_createSemaphore(identifierTX, 0, 1, &semaphoreTX);
+    kern_createSemaphore(identifierRX, 0, 1, &semaphoreRX);
+    kern_createSemaphore(identifierTX, 0, 1, &semaphoreTX);
 
-	kern_signalSemaphore(semaphoreTX);
+    kern_signalSemaphore(semaphoreTX);
 
-	INTERRUPTION_OFF;
-	vAsmp_InterCore->oASMPReady |= (core == KASMP_CORE_0) ? (1U<<(uint8_t)KASMP_CORE_0) : (1U<<(uint8_t)KASMP_CORE_1);
-	INTERRUPTION_RESTORE;
+    INTERRUPTION_OFF;
+    vAsmp_InterCore->oASMPReady |= (core == KASMP_CORE_0) ? (1U<<(uint8_t)KASMP_CORE_0) : (1U<<(uint8_t)KASMP_CORE_1);
+    INTERRUPTION_RESTORE;
 }
 
 /*
@@ -178,15 +179,15 @@ void	stub_asmp_init(void) {
  * - Get the running core
  *
  */
-void	stub_asmp_getRunningCore(uint32_t *core) {
+void    stub_asmp_getRunningCore(uint32_t *core) {
 
-	#if (defined(CPU_APPLICATION_S))
-	*core = (uint32_t)KASMP_CORE_0;
-	#endif
+    #if (defined(CPU_APPLICATION_S))
+    *core = (uint32_t)KASMP_CORE_0;
+    #endif
 
-	#if (defined(CPU_NETWORK_S))
-	*core = (uint32_t)KASMP_CORE_1;
-	#endif
+    #if (defined(CPU_NETWORK_S))
+    *core = (uint32_t)KASMP_CORE_1;
+    #endif
 }
 
 /*
@@ -195,9 +196,9 @@ void	stub_asmp_getRunningCore(uint32_t *core) {
  * - Get the number of core
  *
  */
-void	stub_asmp_getNumberOfCore(uint8_t *nbCore) {
+void    stub_asmp_getNumberOfCore(uint8_t *nbCore) {
 
-	*nbCore = ((uint8_t)KASMP_CORE_1 + 1U);
+    *nbCore = ((uint8_t)KASMP_CORE_1 + 1U);
 }
 
 /*
@@ -206,13 +207,13 @@ void	stub_asmp_getNumberOfCore(uint8_t *nbCore) {
  * - Get the ptr on the core reference table
  *
  */
-void	stub_asmp_getReferenceCore(uint32_t core, const char_t **coreReference) {
+void    stub_asmp_getReferenceCore(uint32_t core, const char_t **coreReference) {
 
-	switch (core) {
-		case KASMP_CORE_0: { *coreReference = tableCoreReference[KASMP_CORE_0]; break; }
-		case KASMP_CORE_1: { *coreReference = tableCoreReference[KASMP_CORE_1]; break; }
-		default:		   { *coreReference = NULL;								break; }
-	}
+    switch (core) {
+        case KASMP_CORE_0: { *coreReference = tableCoreReference[KASMP_CORE_0]; break; }
+        case KASMP_CORE_1: { *coreReference = tableCoreReference[KASMP_CORE_1]; break; }
+        default:           { *coreReference = NULL;                             break; }
+    }
 }
 
 /*
@@ -220,28 +221,28 @@ void	stub_asmp_getReferenceCore(uint32_t core, const char_t **coreReference) {
  *
  * - Signal by an hardware semaphore
  *
- *		Possible values
- *		- KASMP_MESSAGE_VALID_FOR_CORE_0
- *		- KASMP_MESSAGE_VALID_FOR_CORE_1
- *		- KASMP_MESSAGE_ACKNOWLEDGE_THE_CORE_0
- *		- KASMP_MESSAGE_ACKNOWLEDGE_THE_CORE_1
+ *      Possible values
+ *      - KASMP_MESSAGE_VALID_FOR_CORE_0
+ *      - KASMP_MESSAGE_VALID_FOR_CORE_1
+ *      - KASMP_MESSAGE_ACKNOWLEDGE_THE_CORE_0
+ *      - KASMP_MESSAGE_ACKNOWLEDGE_THE_CORE_1
  *
  */
-int32_t	stub_asmp_signal(uint32_t message) {
+int32_t stub_asmp_signal(uint32_t message) {
 
-	switch (message) {
-		case KASMP_MESSAGE_VALID_FOR_CORE_0:	   { REG(IPC)->TASKS_SEND[0] = 1U; break; }
-		case KASMP_MESSAGE_VALID_FOR_CORE_1:	   { REG(IPC)->TASKS_SEND[1] = 1U; break; }
-		case KASMP_MESSAGE_ACKNOWLEDGE_THE_CORE_0: { REG(IPC)->TASKS_SEND[2] = 1U; break; }
-		case KASMP_MESSAGE_ACKNOWLEDGE_THE_CORE_1: { REG(IPC)->TASKS_SEND[3] = 1U; break; }
-		default: {
+    switch (message) {
+        case KASMP_MESSAGE_VALID_FOR_CORE_0:       { REG(IPC)->TASKS_SEND[0] = 1U; break; }
+        case KASMP_MESSAGE_VALID_FOR_CORE_1:       { REG(IPC)->TASKS_SEND[1] = 1U; break; }
+        case KASMP_MESSAGE_ACKNOWLEDGE_THE_CORE_0: { REG(IPC)->TASKS_SEND[2] = 1U; break; }
+        case KASMP_MESSAGE_ACKNOWLEDGE_THE_CORE_1: { REG(IPC)->TASKS_SEND[3] = 1U; break; }
+        default: {
 
 // Make MISRA happy :-)
 
-			break;
-		}
-	}
-	return (KERR_ASMP_NOERR);
+            break;
+        }
+    }
+    return (KERR_ASMP_NOERR);
 }
 
 /*
@@ -250,14 +251,14 @@ int32_t	stub_asmp_signal(uint32_t message) {
  * - Waiting for the ASMP ready
  *
  */
-int32_t	stub_asmp_waitingForReady(void) {
-	uint8_t		maskNbCore;
-	int32_t		status;
+int32_t stub_asmp_waitingForReady(void) {
+    uint8_t     maskNbCore;
+    int32_t     status;
 
-	maskNbCore = (1U<<(uint32_t)KASMP_CORE_1) | (1U<<(uint32_t)KASMP_CORE_0);
+    maskNbCore = (1U<<(uint32_t)KASMP_CORE_1) | (1U<<(uint32_t)KASMP_CORE_0);
 
-	status = ((vAsmp_InterCore->oASMPReady & maskNbCore) == maskNbCore) ? (KERR_ASMP_NOERR) : (KERR_ASMP_NORDY);
-	return (status);
+    status = ((vAsmp_InterCore->oASMPReady & maskNbCore) == maskNbCore) ? (KERR_ASMP_NOERR) : (KERR_ASMP_NORDY);
+    return (status);
 }
 
 // Local routines
@@ -269,17 +270,17 @@ int32_t	stub_asmp_waitingForReady(void) {
  * - Initialise the InterCore structure
  *
  */
-static	void	local_initInterCore(uint32_t core) {
-	uint32_t	i;
+static  void    local_initInterCore(uint32_t core) {
+    uint32_t    i;
 
-	INTERRUPTION_OFF;
-	vAsmp_InterCore->oStatusRX[core] = KASMP_FREE;
-	vAsmp_InterCore->oStatusTX[core] = KASMP_FREE;
-	vAsmp_InterCore->oSender[core]	 = 0U;
-	vAsmp_InterCore->oOrder[core]	 = 0U;
-	vAsmp_InterCore->oSize[core]	 = 0U;
-	for (i = 0U; i < KASMP_SZ_BUFFER; i++) { vAsmp_InterCore->oBuffer[core][i] = 0U; }
-	INTERRUPTION_RESTORE;
+    INTERRUPTION_OFF;
+    vAsmp_InterCore->oStatusRX[core] = KASMP_FREE;
+    vAsmp_InterCore->oStatusTX[core] = KASMP_FREE;
+    vAsmp_InterCore->oSender[core]   = 0U;
+    vAsmp_InterCore->oOrder[core]    = 0U;
+    vAsmp_InterCore->oSize[core]     = 0U;
+    for (i = 0U; i < KASMP_SZ_BUFFER; i++) { vAsmp_InterCore->oBuffer[core][i] = 0U; }
+    INTERRUPTION_RESTORE;
 }
 
 /*
@@ -288,37 +289,37 @@ static	void	local_initInterCore(uint32_t core) {
  * - Channel management
  *
  */
-static	void	local_IPC_interruptionChannel(void) {
-			uint32_t	core;
-			sema_t		*semaphoreRX, *semaphoreTX;
-	const	char_t		*identifierRX, *identifierTX;
+static  void    local_IPC_interruptionChannel(void) {
+            uint32_t    core;
+            sema_t      *semaphoreRX, *semaphoreTX;
+    const   char_t      *identifierRX, *identifierTX;
 
-	stub_asmp_getRunningCore(&core);
-	identifierRX = (core == KASMP_CORE_0) ? (KASMP_SEMA_RX_CORE_0_FULL)  : (KASMP_SEMA_RX_CORE_1_FULL);
-	identifierTX = (core == KASMP_CORE_0) ? (KASMP_SEMA_TX_CORE_0_EMPTY) : (KASMP_SEMA_TX_CORE_1_EMPTY);
+    stub_asmp_getRunningCore(&core);
+    identifierRX = (core == KASMP_CORE_0) ? (KASMP_SEMA_RX_CORE_0_FULL)  : (KASMP_SEMA_RX_CORE_1_FULL);
+    identifierTX = (core == KASMP_CORE_0) ? (KASMP_SEMA_TX_CORE_0_EMPTY) : (KASMP_SEMA_TX_CORE_1_EMPTY);
 
-	kern_getSemaphoreById(identifierRX, &semaphoreRX);
-	kern_getSemaphoreById(identifierTX, &semaphoreTX);
+    kern_getSemaphoreById(identifierRX, &semaphoreRX);
+    kern_getSemaphoreById(identifierTX, &semaphoreTX);
 
 // Interruption message sent
 // Interruption message read
 
-	if (core == KASMP_CORE_0) {
+    if (core == KASMP_CORE_0) {
 
 // core1 indicates to the core0 that there is a valid message in the buffer
 // core1 acknowledge the core0, get free the statusTX of the core1
 
-		if (REG(IPC)->EVENTS_RECEIVE[0] != 0U) { REG(IPC)->EVENTS_RECEIVE[0] = 0U; vAsmp_InterCore->oStatusRX[KASMP_CORE_0] = KASMP_LOCK; kern_signalSemaphore(semaphoreRX); }
-		if (REG(IPC)->EVENTS_RECEIVE[2] != 0U) { REG(IPC)->EVENTS_RECEIVE[2] = 0U; vAsmp_InterCore->oStatusTX[KASMP_CORE_1] = KASMP_FREE; kern_signalSemaphore(semaphoreTX); }
-	}
-	else {
+        if (REG(IPC)->EVENTS_RECEIVE[0] != 0U) { REG(IPC)->EVENTS_RECEIVE[0] = 0U; vAsmp_InterCore->oStatusRX[KASMP_CORE_0] = KASMP_LOCK; kern_signalSemaphore(semaphoreRX); }
+        if (REG(IPC)->EVENTS_RECEIVE[2] != 0U) { REG(IPC)->EVENTS_RECEIVE[2] = 0U; vAsmp_InterCore->oStatusTX[KASMP_CORE_1] = KASMP_FREE; kern_signalSemaphore(semaphoreTX); }
+    }
+    else {
 
 // core0 indicates to the core1 that there is a valid message in the buffer
 // core0 acknowledge the core1, get free the statusTX of the core0
 
-		if (REG(IPC)->EVENTS_RECEIVE[1] != 0U) { REG(IPC)->EVENTS_RECEIVE[1] = 0U; vAsmp_InterCore->oStatusRX[KASMP_CORE_1] = KASMP_LOCK; kern_signalSemaphore(semaphoreRX); }
-		if (REG(IPC)->EVENTS_RECEIVE[3] != 0U) { REG(IPC)->EVENTS_RECEIVE[3] = 0U; vAsmp_InterCore->oStatusTX[KASMP_CORE_0] = KASMP_FREE; kern_signalSemaphore(semaphoreTX); }
-	}
+        if (REG(IPC)->EVENTS_RECEIVE[1] != 0U) { REG(IPC)->EVENTS_RECEIVE[1] = 0U; vAsmp_InterCore->oStatusRX[KASMP_CORE_1] = KASMP_LOCK; kern_signalSemaphore(semaphoreRX); }
+        if (REG(IPC)->EVENTS_RECEIVE[3] != 0U) { REG(IPC)->EVENTS_RECEIVE[3] = 0U; vAsmp_InterCore->oStatusTX[KASMP_CORE_0] = KASMP_FREE; kern_signalSemaphore(semaphoreTX); }
+    }
 
-	PREEMPTION_THRESHOLD(KCORE_0);
+    PREEMPTION_THRESHOLD(KCORE_0);
 }

@@ -2,17 +2,18 @@
 ; i2c_commun.
 ; ===========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		i2c_commun equates.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    i2c_commun equates.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +47,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_peripherals
@@ -63,27 +64,27 @@
  * @{
  */
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // Configuration structure
 // -----------------------
 
-typedef	struct	i2cCnf	i2cCnf_t;
+typedef struct  i2cCnf  i2cCnf_t;
 
 struct i2cCnf {
-			uint32_t	oTimeout;								// I2C bus timeout in us
-			uint32_t	oSpeed;									// I2C speed in bit/s
+            uint32_t    oTimeout;                               // I2C bus timeout in us
+            uint32_t    oSpeed;                                 // I2C speed in bit/s
 };
 
 // Speed (oSpeed)
 
 enum {
-			KI2C_100KBPS =	100000U,							// Sm, bus at 100-Kbit/s
-			KI2C_400KBPS =	400000U,							// Fm, bus at 400-Kbit/s
-			KI2C_1MBPS	 =	1000000U,							// Fm+, bus at 1-Mbit/s
-			KI2C_17MBPS  =	1700000U,							// Hs, bus at 1.7-Mbit/s
-			KI2C_34MBPS  =	3400000U,							// Hs, bus at 3.4-Mbit/s
-			KI2C_5MBPS	 =	5000000U							// UFm, bus at 5-Mbit/s
+            KI2C_100KBPS =  100000U,                            // Sm, bus at 100-Kbit/s
+            KI2C_400KBPS =  400000U,                            // Fm, bus at 400-Kbit/s
+            KI2C_1MBPS   =  1000000U,                           // Fm+, bus at 1-Mbit/s
+            KI2C_17MBPS  =  1700000U,                           // Hs, bus at 1.7-Mbit/s
+            KI2C_34MBPS  =  3400000U,                           // Hs, bus at 3.4-Mbit/s
+            KI2C_5MBPS   =  5000000U                            // UFm, bus at 5-Mbit/s
 };
 
 /**@}*/

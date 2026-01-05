@@ -2,17 +2,18 @@
 ; cdc1.
 ; =====
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		cdc1 manager.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    cdc1 manager.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +47,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_serials
@@ -63,23 +64,23 @@
  * @{
  */
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"serial_common.h"
-#include	"types.h"
+#include    "serial_common.h"
+#include    "types.h"
 
 // Semaphores
 // ----------
 
-#define	KCDC1_SEMAPHORE_RX		"cdc1 - RX char"
-#define	KCDC1_SEMAPHORE_TX		"cdc1 - TX buff"
-#define	KCDC1_MUTEX_RESERVE_RX	"Reserve_cdc1_R"
-#define	KCDC1_MUTEX_RESERVE_TX	"Reserve_cdc1_T"
+#define KCDC1_SEMAPHORE_RX      "cdc1 - RX char"
+#define KCDC1_SEMAPHORE_TX      "cdc1 - TX buff"
+#define KCDC1_MUTEX_RESERVE_RX  "Reserve_cdc1_R"
+#define KCDC1_MUTEX_RESERVE_TX  "Reserve_cdc1_T"
 
 // Prototypes
 
 #ifdef __cplusplus
-extern	"C" {
+extern  "C" {
 #endif
 
 /*!
@@ -97,16 +98,16 @@ extern	"C" {
  *    status = cdc1_release(KMODE_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode			KMODE_READ, KMODE_WRITE, KMODE_READ_WRITE
- * \param[in]	timeout				Timeout (1-ms of resolution)
- * \param[in]	-					KWAIT_INFINITY, waiting forever
- * \param[in]	-					KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_SERIAL_NOERR	The manager is reserved
- * \return		KERR_SERIAL_GEERR	General error
- * \return		KERR_SERIAL_CHBSY	The manager is busy
+ * \param[in]   reserveMode         KMODE_READ, KMODE_WRITE, KMODE_READ_WRITE
+ * \param[in]   timeout             Timeout (1-ms of resolution)
+ * \param[in]   -                   KWAIT_INFINITY, waiting forever
+ * \param[in]   -                   KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_SERIAL_NOERR   The manager is reserved
+ * \return      KERR_SERIAL_GEERR   General error
+ * \return      KERR_SERIAL_CHBSY   The manager is busy
  *
  */
-extern	int32_t	cdc1_reserve(reserveMode_t reserveMode, uint32_t timeout);
+extern  int32_t cdc1_reserve(reserveMode_t reserveMode, uint32_t timeout);
 
 /*!
  * \brief Release the cdc1 manager
@@ -119,13 +120,13 @@ extern	int32_t	cdc1_reserve(reserveMode_t reserveMode, uint32_t timeout);
  *    status = cdc1_release(KMODE_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode			KMODE_READ, KMODE_WRITE, KMODE_READ_WRITE
- * \return		KERR_SERIAL_NOERR	OK
- * \return		KERR_SERIAL_GEERR	General error
- * \return		KERR_SERIAL_CAREL	Cannot release the manager
+ * \param[in]   reserveMode         KMODE_READ, KMODE_WRITE, KMODE_READ_WRITE
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_GEERR   General error
+ * \return      KERR_SERIAL_CAREL   Cannot release the manager
  *
  */
-extern	int32_t	cdc1_release(reserveMode_t reserveMode);
+extern  int32_t cdc1_release(reserveMode_t reserveMode);
 
 /*!
  * \brief Configure the cdc1 manager
@@ -141,13 +142,13 @@ extern	int32_t	cdc1_release(reserveMode_t reserveMode);
  *    status = cdc1_configure(&configure);
  * \endcode
  *
- * \param[in]	*configure			Ptr on the configuration buffer
- * \return		KERR_SERIAL_NOERR	OK
- * \return		KERR_SERIAL_GEERR	General error
- * \return		KERR_SERIAL_NOCNF	The configuration does not exist
+ * \param[in]   *configure          Ptr on the configuration buffer
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_GEERR   General error
+ * \return      KERR_SERIAL_NOCNF   The configuration does not exist
  *
  */
-extern	int32_t	cdc1_configure(const cdcxCnf_t *configure);
+extern  int32_t cdc1_configure(const cdcxCnf_t *configure);
 
 /*!
  * \brief Write a buffer to the cdc1 manager
@@ -163,16 +164,16 @@ extern	int32_t	cdc1_configure(const cdcxCnf_t *configure);
  *    status = cdc1_write(buffer, KSIZE);
  * \endcode
  *
- * \param[in]	*buffer				Ptr on the buffer
- * \param[in]	size				Size of the buffer
- * \return		KERR_SERIAL_NOERR	OK
- * \return		KERR_SERIAL_GEERR	General error
- * \return		KERR_SERIAL_SEPRO	The sender is busy
- * \return		KERR_SERIAL_LNBUB	The buffer length is too big
- * \return		KERR_SERIAL_LNBU0	The buffer length is = 0
+ * \param[in]   *buffer             Ptr on the buffer
+ * \param[in]   size                Size of the buffer
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_GEERR   General error
+ * \return      KERR_SERIAL_SEPRO   The sender is busy
+ * \return      KERR_SERIAL_LNBUB   The buffer length is too big
+ * \return      KERR_SERIAL_LNBU0   The buffer length is = 0
  *
  */
-extern	int32_t	cdc1_write(const uint8_t *buffer, uint32_t size);
+extern  int32_t cdc1_write(const uint8_t *buffer, uint32_t size);
 
 /*!
  * \brief Read a buffer from the cdc1 manager
@@ -188,19 +189,19 @@ extern	int32_t	cdc1_write(const uint8_t *buffer, uint32_t size);
  *    status = cdc1_read(buffer, &size);
  * \endcode
  *
- * \param[in]		*buffer				Ptr on the buffer
- * \param[in, out]	*size				Ptr on the size
- * \return			KERR_SERIAL_NOERR	OK
- * \return			KERR_SERIAL_GEERR	General error
- * \return			KERR_SERIAL_RBUEM	The receiver buffer is empty
- * \return			KERR_SERIAL_RBFUL	The receiver buffer is full
- * \return			KERR_SERIAL_EROVR	Overrun error
- * \return			KERR_SERIAL_ERNOI	Noise error
- * \return			KERR_SERIAL_ERFRA	Framing error
- * \return			KERR_SERIAL_ERPAR	Parity error
+ * \param[in]       *buffer             Ptr on the buffer
+ * \param[in, out]  *size               Ptr on the size
+ * \return          KERR_SERIAL_NOERR   OK
+ * \return          KERR_SERIAL_GEERR   General error
+ * \return          KERR_SERIAL_RBUEM   The receiver buffer is empty
+ * \return          KERR_SERIAL_RBFUL   The receiver buffer is full
+ * \return          KERR_SERIAL_EROVR   Overrun error
+ * \return          KERR_SERIAL_ERNOI   Noise error
+ * \return          KERR_SERIAL_ERFRA   Framing error
+ * \return          KERR_SERIAL_ERPAR   Parity error
  *
  */
-extern	int32_t	cdc1_read(uint8_t *buffer, uint32_t *size);
+extern  int32_t cdc1_read(uint8_t *buffer, uint32_t *size);
 
 /*!
  * \brief Get the semaphore identifier
@@ -217,14 +218,14 @@ extern	int32_t	cdc1_read(uint8_t *buffer, uint32_t *size);
  *    (void)dprintf(KSYST, "Semaphore ids: %s, ...%s\n", identifier[0], identifier[1]);
  * \endcode
  *
- * \param[in]	semaphore			RX or TX semaphore
- * \param[out]	**identifier		Ptr on the semaphore identifier
- * \return		KERR_SERIAL_NOERR	OK
- * \return		KERR_SERIAL_GEERR	General error
- * \return		KERR_SERIAL_SENOE	The semaphore does not exist
+ * \param[in]   semaphore           RX or TX semaphore
+ * \param[out]  **identifier        Ptr on the semaphore identifier
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_GEERR   General error
+ * \return      KERR_SERIAL_SENOE   The semaphore does not exist
  *
  */
-extern	int32_t	cdc1_getIdSemaphore(uint8_t semaphore, char_t **identifier);
+extern  int32_t cdc1_getIdSemaphore(uint8_t semaphore, char_t **identifier);
 
 /*!
  * \brief Flush the cdc1 manager
@@ -237,12 +238,12 @@ extern	int32_t	cdc1_getIdSemaphore(uint8_t semaphore, char_t **identifier);
  *    status = cdc1_flush();
  * \endcode
  *
- * \param[in]	-
- * \return		KERR_SERIAL_NOERR	OK
- * \return		KERR_SERIAL_GEERR	General error
+ * \param[in]   -
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_GEERR   General error
  *
  */
-extern	int32_t	cdc1_flush(void);
+extern  int32_t cdc1_flush(void);
 
 #ifdef __cplusplus
 }

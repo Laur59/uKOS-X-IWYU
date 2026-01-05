@@ -2,49 +2,50 @@
 ; asmp.
 ; =====
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		asmp manager.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;			Interprocessor communication
+; Project: uKOS-X
 ;
-;			core0, 1, 2 ---> core3
-;			core1, 2, 3 ---> core0
-;			core2, 3, 0 ---> core1
-;			core3, 0, 1 ---> core2
+; Purpose:
+;    asmp manager.
 ;
-;			The buffer is associated to the input of a core.
-;			Transfer example (core2 send data to core0)
+;	Interprocessor communication
 ;
-;			core2
-;			if (Buffer core0 empty)
-;				Fill the core0 buffer
-;				Buffer core0 Full
-;				Send a message to the core0 (strobe)
+;	core0, 1, 2 ---> core3
+;	core1, 2, 3 ---> core0
+;	core2, 3, 0 ---> core1
+;	core3, 0, 1 ---> core2
 ;
-;			core0
-;			Read the data
-;			Send a message to the core2 (Ack)
-;			Buffer core0 Empty
+;	The buffer is associated to the input of a core.
+;	Transfer example (core2 send data to core0)
 ;
-;			Important:
-;			In this multicore communication layer, we must take into account both heterogeneous (e.g., M4 + M7)
-;			and homogeneous (e.g., 2 × M33) core configurations.
+;	core2
+;	if (Buffer core0 empty)
+;		Fill the core0 buffer
+;		Buffer core0 Full
+;		Send a message to the core0 (strobe)
 ;
-;			For uKOS:
-;			In a heterogeneous configuration, KNB_CORES is always equal to 1.
-;			In a homogeneous configuration, KNB_CORES is always greater than 1.
-;			Be careful with the PREEMPTION_THRESHOLD macro to ensure it returns the correct core:
-;			In a heterogeneous configuration: PREEMPTION_THRESHOLD(KCORE_0)
-;			In a homogeneous configuration: PREEMPTION_THRESHOLD(core)
+;	core0
+;	Read the data
+;	Send a message to the core2 (Ack)
+;	Buffer core0 Empty
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+;	Important:
+;	In this multicore communication layer, we must take into account both heterogeneous (e.g., M4 + M7)
+;	and homogeneous (e.g., 2 × M33) core configurations.
+;
+;	For uKOS:
+;	In a heterogeneous configuration, KNB_CORES is always equal to 1.
+;	In a homogeneous configuration, KNB_CORES is always greater than 1.
+;	Be careful with the PREEMPTION_THRESHOLD macro to ensure it returns the correct core:
+;	In a heterogeneous configuration: PREEMPTION_THRESHOLD(KCORE_0)
+;	In a homogeneous configuration: PREEMPTION_THRESHOLD(core)
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \

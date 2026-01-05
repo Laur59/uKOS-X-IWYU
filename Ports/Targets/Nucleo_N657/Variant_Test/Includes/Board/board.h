@@ -2,17 +2,18 @@
 ; board.
 ; ======
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Board mapping.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    Board mapping.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,49 +47,49 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 #ifndef Nucleo_N657_S
 #define Nucleo_N657_S
 #endif
 
-#include	"macros_core.h"	// IWYU pragma: keep (required for REG)
-#include	"soc_reg.h"		// IWYU pragma: keep (required for GPIOG)
+#include    "macros_core.h" // IWYU pragma: keep (required for REG)
+#include    "soc_reg.h"     // IWYU pragma: keep (required for GPIOG)
 
 // System identifiers
 // ------------------
 
-#define	KCPU				"ARM-Cortex m55 N"
-#define	KCONTROLLER			"STM32N657"
-#define	KBOARD				"Nucleo N657 (Variant_Test)"
-#define	KTARGET				"Nucleo_N657"
+#define KCPU                "ARM-Cortex m55 N"
+#define KCONTROLLER         "STM32N657"
+#define KBOARD              "Nucleo N657 (Variant_Test)"
+#define KTARGET             "Nucleo_N657"
 
 // GPIO settings
 // -------------
 
-#define	LED_BLUE_ON			(REG(GPIOG)->ODR &= (uint32_t)~(1<<BLED_0))		//
-#define	LED_BLUE_OFF		(REG(GPIOG)->ODR |=  		   (1<<BLED_0))		//
-#define	LED_BLUE_TOGGLE		(REG(GPIOG)->ODR ^=			   (1<<BLED_0))		//
-#define	LED_RED_ON			(REG(GPIOG)->ODR &= (uint32_t)~(1<<BLED_1))		//
-#define	LED_RED_OFF			(REG(GPIOG)->ODR |=  		   (1<<BLED_1))		//
-#define	LED_RED_TOGGLE		(REG(GPIOG)->ODR ^=			   (1<<BLED_1))		//
-#define	LED_GREEN_ON		(REG(GPIOG)->ODR &= (uint32_t)~(1<<BLED_2))		//
-#define	LED_GREEN_OFF		(REG(GPIOG)->ODR |=			   (1<<BLED_2))		//
-#define	LED_GREEN_TOGGLE	(REG(GPIOG)->ODR ^=			   (1<<BLED_2))		// Led macros
+#define LED_BLUE_ON         (REG(GPIOG)->ODR &= (uint32_t)~(1<<BLED_0))     //
+#define LED_BLUE_OFF        (REG(GPIOG)->ODR |=            (1<<BLED_0))     //
+#define LED_BLUE_TOGGLE     (REG(GPIOG)->ODR ^=            (1<<BLED_0))     //
+#define LED_RED_ON          (REG(GPIOG)->ODR &= (uint32_t)~(1<<BLED_1))     //
+#define LED_RED_OFF         (REG(GPIOG)->ODR |=            (1<<BLED_1))     //
+#define LED_RED_TOGGLE      (REG(GPIOG)->ODR ^=            (1<<BLED_1))     //
+#define LED_GREEN_ON        (REG(GPIOG)->ODR &= (uint32_t)~(1<<BLED_2))     //
+#define LED_GREEN_OFF       (REG(GPIOG)->ODR |=            (1<<BLED_2))     //
+#define LED_GREEN_TOGGLE    (REG(GPIOG)->ODR ^=            (1<<BLED_2))     // Led macros
 
-#define	ANALYSER_ON			(REG(GPIOG)->ODR &= (uint32_t)~(1<<BANALYSER))	//
-#define	ANALYSER_OFF		(REG(GPIOG)->ODR |=  		   (1<<BANALYSER))	//
-#define	ANALYSER_TOGGLE		do { \
-								REG(GPIOG)->ODR ^= (1<<BANALYSER);	\
-							 	(void)(REG(GPIOG)->ODR);			\
-							} while (0)										// Analyser macros
+#define ANALYSER_ON         (REG(GPIOG)->ODR &= (uint32_t)~(1<<BANALYSER))  //
+#define ANALYSER_OFF        (REG(GPIOG)->ODR |=            (1<<BANALYSER))  //
+#define ANALYSER_TOGGLE     do { \
+                                REG(GPIOG)->ODR ^= (1<<BANALYSER);  \
+                                (void)(REG(GPIOG)->ODR);            \
+                            } while (0)                                     // Analyser macros
 
-#define KNB_LED				3U												// Number of LEDs
+#define KNB_LED             3U                                              // Number of LEDs
 
 // PORTs
 
-#define	BLED_0				8U												// PORT G 8, LED
-#define	BLED_1				10U												// PORT G 10, LED
-#define	BLED_2				0U												// PORT G 0, LED
-#define	BANALYSER			1U												// PORT G 1, Analyser
-#define	BSW_0				13U												// PORT C 13, SW1
+#define BLED_0              8U                                              // PORT G 8, LED
+#define BLED_1              10U                                             // PORT G 10, LED
+#define BLED_2              0U                                              // PORT G 0, LED
+#define BANALYSER           1U                                              // PORT G 1, Analyser
+#define BSW_0               13U                                             // PORT C 13, SW1

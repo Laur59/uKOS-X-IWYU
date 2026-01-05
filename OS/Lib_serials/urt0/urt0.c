@@ -2,17 +2,18 @@
 ; urt0.
 ; =====
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		urt0 manager.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    urt0 manager.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,20 +47,20 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"urt0.h"
+#include    "urt0.h"
 
-#include	<stdint.h>
-#include	<stdlib.h>
+#include    <stdint.h>
+#include    <stdlib.h>
 
-#include	"kern/kern.h"
-#include	"macros.h"
-#include	"macros_core.h"
-#include	"macros_soc.h"		// IWYU pragma: keep (to get KNB_CORES)
-#include	"modules.h"
-#include	"os_errors.h"
-#include	"record/record.h"
-#include	"serial_common.h"
-#include	"types.h"
+#include    "kern/kern.h"
+#include    "macros.h"
+#include    "macros_core.h"
+#include    "macros_soc.h"      // IWYU pragma: keep (to get KNB_CORES)
+#include    "modules.h"
+#include    "os_errors.h"
+#include    "record/record.h"
+#include    "serial_common.h"
+#include    "types.h"
 
 #ifdef CONFIG_MAN_URT0_S
 
@@ -68,40 +69,40 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"urt0         urt0 manager.                             (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "urt0 manager\n"
-									"============\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "urt0         urt0 manager.                             (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "urt0 manager\n"
+                                    "============\n\n"
 
-									"This manager ...\n\n"
+                                    "This manager ...\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
-	Urt0,							// Module name (the first letter has to be upper case)
-	KID_FAM_SERIALS,				// Family (defined in the module.h)
-	KNUM_URT0,						// Module identifier (defined in the module.h)
-	NULL,							// Address of the initialisation code (early pre-init)
-	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	NULL,							// Address of the clean code (clean the module)
-	" 1.0",							// Revision string (major . minor)
-	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0								// Execution cores
+    Urt0,                           // Module name (the first letter has to be upper case)
+    KID_FAM_SERIALS,                // Family (defined in the module.h)
+    KNUM_URT0,                      // Module identifier (defined in the module.h)
+    NULL,                           // Address of the initialisation code (early pre-init)
+    NULL,                           // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    NULL,                           // Address of the clean code (clean the module)
+    " 1.0",                         // Revision string (major . minor)
+    (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                               // Execution cores
 );
 
 // Library specific
 // ================
 
-static	mutx_t		*vMutex_Reserve_RX[KNB_CORES];
-static	mutx_t		*vMutex_Reserve_TX[KNB_CORES];
+static  mutx_t      *vMutex_Reserve_RX[KNB_CORES];
+static  mutx_t      *vMutex_Reserve_TX[KNB_CORES];
 
 // Prototypes
 
-static	int32_t		local_init(void);
-extern	void		stub_urt0_init(void);
-extern	int32_t		stub_urt0_configure(const urtxCnf_t *configure);
-extern	int32_t		stub_urt0_write(const uint8_t *buffer, uint32_t size);
-extern	int32_t		stub_urt0_read(uint8_t *buffer, uint32_t *size);
-extern	int32_t		stub_urt0_flush(void);
+static  int32_t     local_init(void);
+extern  void        stub_urt0_init(void);
+extern  int32_t     stub_urt0_configure(const urtxCnf_t *configure);
+extern  int32_t     stub_urt0_write(const uint8_t *buffer, uint32_t size);
+extern  int32_t     stub_urt0_read(uint8_t *buffer, uint32_t *size);
+extern  int32_t     stub_urt0_flush(void);
 
 /*
  * \brief Reserve the urt0 manager
@@ -118,69 +119,69 @@ extern	int32_t		stub_urt0_flush(void);
  *    status = urt0_release(KMODE_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode			KMODE_READ, KMODE_WRITE, KMODE_READ_WRITE
- * \param[in]	timeout				Timeout (1-ms of resolution)
- * \param[in]	-					KWAIT_INFINITY, waiting forever
- * \param[in]	-					KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_SERIAL_NOERR	The manager is reserved
- * \return		KERR_SERIAL_GEERR	General error
- * \return		KERR_SERIAL_CHBSY	The manager is busy
+ * \param[in]   reserveMode         KMODE_READ, KMODE_WRITE, KMODE_READ_WRITE
+ * \param[in]   timeout             Timeout (1-ms of resolution)
+ * \param[in]   -                   KWAIT_INFINITY, waiting forever
+ * \param[in]   -                   KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_SERIAL_NOERR   The manager is reserved
+ * \return      KERR_SERIAL_GEERR   General error
+ * \return      KERR_SERIAL_CHBSY   The manager is busy
  *
  */
-int32_t	urt0_reserve(reserveMode_t reserveMode, uint32_t timeout) {
-	uint32_t	core;
-	int32_t		status;
+int32_t urt0_reserve(reserveMode_t reserveMode, uint32_t timeout) {
+    uint32_t    core;
+    int32_t     status;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	switch (reserveMode) {
-		case KMODE_READ: {
-			status = kern_lockMutex(vMutex_Reserve_RX[core], timeout);
-			if (status != KERR_KERN_NOERR) {
-				PRIVILEGE_RESTORE;
-				return (KERR_SERIAL_CHBSY);
-			}
+    switch (reserveMode) {
+        case KMODE_READ: {
+            status = kern_lockMutex(vMutex_Reserve_RX[core], timeout);
+            if (status != KERR_KERN_NOERR) {
+                PRIVILEGE_RESTORE;
+                return (KERR_SERIAL_CHBSY);
+            }
 
-			break;
-		}
-		case KMODE_WRITE: {
-			status = kern_lockMutex(vMutex_Reserve_TX[core], timeout);
-			if (status != KERR_KERN_NOERR) {
-				PRIVILEGE_RESTORE;
-				return (KERR_SERIAL_CHBSY);
-			}
+            break;
+        }
+        case KMODE_WRITE: {
+            status = kern_lockMutex(vMutex_Reserve_TX[core], timeout);
+            if (status != KERR_KERN_NOERR) {
+                PRIVILEGE_RESTORE;
+                return (KERR_SERIAL_CHBSY);
+            }
 
-			break;
-		}
-		case KMODE_READ_WRITE: {
-			status = kern_lockMutex(vMutex_Reserve_RX[core], timeout);
-			if (status != KERR_KERN_NOERR) {
-				PRIVILEGE_RESTORE;
-				return (KERR_SERIAL_CHBSY);
-			}
+            break;
+        }
+        case KMODE_READ_WRITE: {
+            status = kern_lockMutex(vMutex_Reserve_RX[core], timeout);
+            if (status != KERR_KERN_NOERR) {
+                PRIVILEGE_RESTORE;
+                return (KERR_SERIAL_CHBSY);
+            }
 
-			status = kern_lockMutex(vMutex_Reserve_TX[core], timeout);
-			if (status != KERR_KERN_NOERR) {
-				kern_unlockMutex(vMutex_Reserve_RX[core]);
-				PRIVILEGE_RESTORE;
-				return (KERR_SERIAL_CHBSY);
-			}
+            status = kern_lockMutex(vMutex_Reserve_TX[core], timeout);
+            if (status != KERR_KERN_NOERR) {
+                kern_unlockMutex(vMutex_Reserve_RX[core]);
+                PRIVILEGE_RESTORE;
+                return (KERR_SERIAL_CHBSY);
+            }
 
-			break;
-		}
-		default: {
+            break;
+        }
+        default: {
 
 // Make MISRA happy :-)
 
-			break;
-		}
-	}
-	PRIVILEGE_RESTORE;
-	return (KERR_SERIAL_NOERR);
+            break;
+        }
+    }
+    PRIVILEGE_RESTORE;
+    return (KERR_SERIAL_NOERR);
 }
 
 /*
@@ -194,65 +195,65 @@ int32_t	urt0_reserve(reserveMode_t reserveMode, uint32_t timeout) {
  *    status = urt0_release(KMODE_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode			KMODE_READ, KMODE_WRITE, KMODE_READ_WRITE
- * \return		KERR_SERIAL_NOERR	OK
- * \return		KERR_SERIAL_GEERR	General error
- * \return		KERR_SERIAL_CAREL	Cannot release the manager
+ * \param[in]   reserveMode         KMODE_READ, KMODE_WRITE, KMODE_READ_WRITE
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_GEERR   General error
+ * \return      KERR_SERIAL_CAREL   Cannot release the manager
  *
  */
-int32_t	urt0_release(reserveMode_t reserveMode) {
-	uint32_t	core;
-	int32_t		status;
+int32_t urt0_release(reserveMode_t reserveMode) {
+    uint32_t    core;
+    int32_t     status;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	switch (reserveMode) {
-		case KMODE_READ: {
-			status = kern_unlockMutex(vMutex_Reserve_RX[core]);
-			if (status != KERR_KERN_NOERR) {
-				PRIVILEGE_RESTORE;
-				return (KERR_SERIAL_CAREL);
-			}
+    switch (reserveMode) {
+        case KMODE_READ: {
+            status = kern_unlockMutex(vMutex_Reserve_RX[core]);
+            if (status != KERR_KERN_NOERR) {
+                PRIVILEGE_RESTORE;
+                return (KERR_SERIAL_CAREL);
+            }
 
-			break;
-		}
-		case KMODE_WRITE: {
-			status = kern_unlockMutex(vMutex_Reserve_TX[core]);
-			if (status != KERR_KERN_NOERR) {
-				PRIVILEGE_RESTORE;
-				return (KERR_SERIAL_CAREL);
-			}
+            break;
+        }
+        case KMODE_WRITE: {
+            status = kern_unlockMutex(vMutex_Reserve_TX[core]);
+            if (status != KERR_KERN_NOERR) {
+                PRIVILEGE_RESTORE;
+                return (KERR_SERIAL_CAREL);
+            }
 
-			break;
-		}
-		case KMODE_READ_WRITE: {
-			status = kern_unlockMutex(vMutex_Reserve_RX[core]);
-			if (status != KERR_KERN_NOERR) {
-				PRIVILEGE_RESTORE;
-				return (KERR_SERIAL_CAREL);
-			}
+            break;
+        }
+        case KMODE_READ_WRITE: {
+            status = kern_unlockMutex(vMutex_Reserve_RX[core]);
+            if (status != KERR_KERN_NOERR) {
+                PRIVILEGE_RESTORE;
+                return (KERR_SERIAL_CAREL);
+            }
 
-			status = kern_unlockMutex(vMutex_Reserve_TX[core]);
-			if (status != KERR_KERN_NOERR) {
-				PRIVILEGE_RESTORE;
-				return (KERR_SERIAL_CAREL);
-			}
+            status = kern_unlockMutex(vMutex_Reserve_TX[core]);
+            if (status != KERR_KERN_NOERR) {
+                PRIVILEGE_RESTORE;
+                return (KERR_SERIAL_CAREL);
+            }
 
-			break;
-		}
-		default: {
+            break;
+        }
+        default: {
 
 // Make MISRA happy :-)
 
-			break;
-		}
-	}
-	PRIVILEGE_RESTORE;
-	return (KERR_SERIAL_NOERR);
+            break;
+        }
+    }
+    PRIVILEGE_RESTORE;
+    return (KERR_SERIAL_NOERR);
 }
 
 /*
@@ -273,22 +274,22 @@ int32_t	urt0_release(reserveMode_t reserveMode) {
  *    status = urt0_configure(&configure);
  * \endcode
  *
- * \param[in]	*configure			Ptr on the configuration buffer
- * \return		KERR_SERIAL_NOERR	OK
- * \return		KERR_SERIAL_GEERR	General error
- * \return		KERR_SERIAL_NOCNF	The configuration does not exist
+ * \param[in]   *configure          Ptr on the configuration buffer
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_GEERR   General error
+ * \return      KERR_SERIAL_NOCNF   The configuration does not exist
  *
  */
-int32_t	urt0_configure(const urtxCnf_t *configure) {
-	int32_t		status;
+int32_t urt0_configure(const urtxCnf_t *configure) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_urt0_configure(configure);
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_urt0_configure(configure);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 /*
@@ -305,25 +306,25 @@ int32_t	urt0_configure(const urtxCnf_t *configure) {
  *    status = urt0_write(buffer, KSIZE);
  * \endcode
  *
- * \param[in]	*buffer				Ptr on the buffer
- * \param[in]	size				Size of the buffer
- * \return		KERR_SERIAL_NOERR	OK
- * \return		KERR_SERIAL_GEERR	General error
- * \return		KERR_SERIAL_SEPRO	The sender is busy
- * \return		KERR_SERIAL_LNBUB	The buffer length is too big
- * \return		KERR_SERIAL_LNBU0	The buffer length is = 0
+ * \param[in]   *buffer             Ptr on the buffer
+ * \param[in]   size                Size of the buffer
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_GEERR   General error
+ * \return      KERR_SERIAL_SEPRO   The sender is busy
+ * \return      KERR_SERIAL_LNBUB   The buffer length is too big
+ * \return      KERR_SERIAL_LNBU0   The buffer length is = 0
  *
  */
-int32_t	urt0_write(const uint8_t *buffer, uint32_t size) {
-	int32_t		status;
+int32_t urt0_write(const uint8_t *buffer, uint32_t size) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_urt0_write(buffer, size);
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_urt0_write(buffer, size);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 /*
@@ -340,28 +341,28 @@ int32_t	urt0_write(const uint8_t *buffer, uint32_t size) {
  *    status = urt0_read(buffer, &size);
  * \endcode
  *
- * \param[in]		*buffer				Ptr on the buffer
- * \param[in, out]	*size				Ptr on the size
- * \return			KERR_SERIAL_NOERR	OK
- * \return			KERR_SERIAL_GEERR	General error
- * \return			KERR_SERIAL_RBUEM	The receiver buffer is empty
- * \return			KERR_SERIAL_RBFUL	The receiver buffer is full
- * \return			KERR_SERIAL_EROVR	Overrun error
- * \return			KERR_SERIAL_ERNOI	Noise error
- * \return			KERR_SERIAL_ERFRA	Framing error
- * \return			KERR_SERIAL_ERPAR	Parity error
+ * \param[in]       *buffer             Ptr on the buffer
+ * \param[in, out]  *size               Ptr on the size
+ * \return          KERR_SERIAL_NOERR   OK
+ * \return          KERR_SERIAL_GEERR   General error
+ * \return          KERR_SERIAL_RBUEM   The receiver buffer is empty
+ * \return          KERR_SERIAL_RBFUL   The receiver buffer is full
+ * \return          KERR_SERIAL_EROVR   Overrun error
+ * \return          KERR_SERIAL_ERNOI   Noise error
+ * \return          KERR_SERIAL_ERFRA   Framing error
+ * \return          KERR_SERIAL_ERPAR   Parity error
  *
  */
-int32_t	urt0_read(uint8_t *buffer, uint32_t *size) {
-	int32_t		status;
+int32_t urt0_read(uint8_t *buffer, uint32_t *size) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_urt0_read(buffer, size);
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_urt0_read(buffer, size);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 /*
@@ -379,24 +380,24 @@ int32_t	urt0_read(uint8_t *buffer, uint32_t *size) {
  *    (void)dprintf(KSYST, "Semaphore ids: %s, ...%s\n", identifier[0], identifier[1]);
  * \endcode
  *
- * \param[in]	semaphore			RX or TX semaphore
- * \param[out]	**identifier		Ptr on the semaphore identifier
- * \return		KERR_SERIAL_NOERR	OK
- * \return		KERR_SERIAL_GEERR	General error
- * \return		KERR_SERIAL_SENOE	The semaphore does not exist
+ * \param[in]   semaphore           RX or TX semaphore
+ * \param[out]  **identifier        Ptr on the semaphore identifier
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_GEERR   General error
+ * \return      KERR_SERIAL_SENOE   The semaphore does not exist
  *
  */
-int32_t	urt0_getIdSemaphore(uint8_t semaphore, char_t **identifier) {
-	int32_t		status;
+int32_t urt0_getIdSemaphore(uint8_t semaphore, char_t **identifier) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	if (semaphore == BSERIAL_SEMAPHORE_RX) { *identifier = KURT0_SEMAPHORE_RX; PRIVILEGE_RESTORE; return (KERR_SERIAL_NOERR); }
-	if (semaphore == BSERIAL_SEMAPHORE_TX) { *identifier = KURT0_SEMAPHORE_TX; PRIVILEGE_RESTORE; return (KERR_SERIAL_NOERR); }
-	PRIVILEGE_RESTORE;
-	return (KERR_SERIAL_SENOE);
+    if (semaphore == BSERIAL_SEMAPHORE_RX) { *identifier = KURT0_SEMAPHORE_RX; PRIVILEGE_RESTORE; return (KERR_SERIAL_NOERR); }
+    if (semaphore == BSERIAL_SEMAPHORE_TX) { *identifier = KURT0_SEMAPHORE_TX; PRIVILEGE_RESTORE; return (KERR_SERIAL_NOERR); }
+    PRIVILEGE_RESTORE;
+    return (KERR_SERIAL_SENOE);
 }
 
 /*
@@ -410,21 +411,21 @@ int32_t	urt0_getIdSemaphore(uint8_t semaphore, char_t **identifier) {
  *    status = urt0_flush();
  * \endcode
  *
- * \param[in]	-
- * \return		KERR_SERIAL_NOERR	OK
- * \return		KERR_SERIAL_GEERR	General error
+ * \param[in]   -
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_GEERR   General error
  *
  */
-int32_t	urt0_flush(void) {
-	int32_t		status;
+int32_t urt0_flush(void) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_urt0_flush();
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_urt0_flush();
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 // Local routines
@@ -437,24 +438,24 @@ int32_t	urt0_flush(void) {
  *   has to be called at least once
  *
  */
-static	int32_t	local_init(void) {
-			uint32_t	core;
-	static	bool		vInit[KNB_CORES] = MCSET(false);
+static  int32_t local_init(void) {
+            uint32_t    core;
+    static  bool        vInit[KNB_CORES] = MCSET(false);
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	INTERRUPTION_OFF;
-	if (!vInit[core]) {
-		vInit[core] = true;
+    INTERRUPTION_OFF;
+    if (!vInit[core]) {
+        vInit[core] = true;
 
-		if (kern_createMutex(KURT0_MUTEX_RESERVE_RX, &vMutex_Reserve_RX[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "urt0: create mutx"); exit(EXIT_OS_PANIC); }
-		if (kern_createMutex(KURT0_MUTEX_RESERVE_TX, &vMutex_Reserve_TX[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "urt0: create mutx"); exit(EXIT_OS_PANIC); }
+        if (kern_createMutex(KURT0_MUTEX_RESERVE_RX, &vMutex_Reserve_RX[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "urt0: create mutx"); exit(EXIT_OS_PANIC); }
+        if (kern_createMutex(KURT0_MUTEX_RESERVE_TX, &vMutex_Reserve_TX[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "urt0: create mutx"); exit(EXIT_OS_PANIC); }
 
-		stub_urt0_init();
-	}
-	RETURN_INT_RESTORE(KERR_SERIAL_NOERR);
+        stub_urt0_init();
+    }
+    RETURN_INT_RESTORE(KERR_SERIAL_NOERR);
 }
 
 #else
-#error	"CONFIG_MAN_URT0_S SHALL be defined in project using urt0/urt0.c"
+#error  "CONFIG_MAN_URT0_S SHALL be defined in project using urt0/urt0.c"
 #endif

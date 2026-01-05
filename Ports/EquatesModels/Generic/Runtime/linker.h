@@ -6,7 +6,7 @@
 
 ;------------------------------------------------------------------------
 ; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; Modifs:
 ;
 ; Project:	uKOS-X
 ; Goal:		Linker equates for all the uKOS-X project.

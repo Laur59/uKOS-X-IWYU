@@ -2,17 +2,18 @@
 ; machine.
 ; ========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		machine manager.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    machine manager.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,12 +47,12 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"kern/kern.h"
-#include	"types.h"
+#include    "kern/kern.h"
+#include    "types.h"
 
 /*!
  * \addtogroup Lib_generics
@@ -71,7 +72,7 @@
 // Prototypes
 
 #ifdef __cplusplus
-extern	"C" {
+extern  "C" {
 #endif
 
 /*!
@@ -89,12 +90,12 @@ extern	"C" {
  *
  * - This function returns the PC of a process
  *
- * \param[in]	*handle				Ptr on the handle
- * \param[out]	*pc					Ptr on the pc
- * \return		KERR_MACHINE_NOERR	OK
+ * \param[in]   *handle             Ptr on the handle
+ * \param[out]  *pc                 Ptr on the pc
+ * \return      KERR_MACHINE_NOERR  OK
  *
  */
-extern	int32_t	machine_readPC(const proc_t *handle, uintptr_t *pc);
+extern  int32_t machine_readPC(const proc_t *handle, uintptr_t *pc);
 
 /*!
  * \brief Read the function name
@@ -111,12 +112,12 @@ extern	int32_t	machine_readPC(const proc_t *handle, uintptr_t *pc);
  *
  * - This function returns the name of a function
  *
- * \param[in]	pc					The pc
- * \param[out]	**function			Ptr on the function name
- * \return		KERR_MACHINE_NOERR	OK
+ * \param[in]   pc                  The pc
+ * \param[out]  **function          Ptr on the function name
+ * \return      KERR_MACHINE_NOERR  OK
  *
  */
-extern	int32_t	machine_readFunctionName(const uintptr_t pc, const char_t **function);
+extern  int32_t machine_readFunctionName(const uintptr_t pc, const char_t **function);
 
 /*!
  * \brief Restart of the system
@@ -129,11 +130,11 @@ extern	int32_t	machine_readFunctionName(const uintptr_t pc, const char_t **funct
  *    status = stub_machine_restart();
  * \endcode
  *
- * \param[in]	-
- * \return		KERR_SYSTEM_NOERR	OK
+ * \param[in]   -
+ * \return      KERR_SYSTEM_NOERR   OK
  *
  */
-extern	int32_t	machine_restart(void);
+extern  int32_t machine_restart(void);
 
 #ifdef __cplusplus
 }

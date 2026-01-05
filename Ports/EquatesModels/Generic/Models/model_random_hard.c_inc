@@ -3,25 +3,28 @@
 ; ==================
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Model for generating pseudo random numbers.
-;			The generator is implemented using on a
-;			linear congruential generator (LCG)
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;			X[n + 1] = (Ka * X[n] + Kc) * mod(Km)
+; Project:  uKOS-X
 ;
-;			For the BSD formula
-;			Ka = 1103515245
-;			Kc = 12345
-;			X0: use the crt0_randomSeed initial seed
+; Purpose:
+;    Model for generating pseudo random numbers.
+;    The generator is implemented using on a
+;    linear congruential generator (LCG)
 ;
-;			See wikipedia "Linear congruential generator"
+;    X[n + 1] = (Ka * X[n] + Kc) * mod(Km)
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+;    For the BSD formula
+;    Ka = 1103515245
+;    Kc = 12345
+;    X0: use the crt0_randomSeed initial seed
+;
+;    See wikipedia "Linear congruential generator"
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -55,7 +58,7 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 /*
  * \brief model_random_hard_init
@@ -63,7 +66,7 @@
  * - Initialise the seed
  *
  */
-void	model_random_hard_init(void) {
+void    model_random_hard_init(void) {
 
 }
 
@@ -73,7 +76,7 @@ void	model_random_hard_init(void) {
  * - Read a pseudo random number
  *
  */
-void	model_random_hard_read(uint32_t *number) {
+void    model_random_hard_read(uint32_t *number) {
 
-	model_random_soft_read(number);
+    model_random_soft_read(number);
 }

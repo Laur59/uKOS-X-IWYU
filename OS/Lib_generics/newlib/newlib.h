@@ -2,63 +2,64 @@
 ; newlib.
 ; =======
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		newLib interface for gcc C compiler (reentrant version).
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;			See: https://linux.die.net/man/
+; Project: uKOS-X
 ;
-;			Fully or partially supported functions to support
+; Purpose:
+;    newLib interface for gcc C compiler (reentrant version).
 ;
-;			Open - close - read - write newlib functions
-;			_open_r
-;			_close_r
-;			_write_r
-;			_read_r
+;    See: https://linux.die.net/man/
 ;
-;			Generic newlib functions
-;			_times_r
-;			_wait_r
-;			__errno
-;			_fork_r
-;			_stat_r
-;			_fstat_r
-;			_link_r
-;			_unlink_r
-;			_lseek_r
-;			_getpid_r
-;			_kill_r
+;    Fully or partially supported functions to support
 ;
-;			Allocator newlib functions
-;			_sbrk_r
-;			__wrap__malloc_r
-;			__wrap__free_r
-;			__wrap__realloc_r
-;			__wrap__calloc_r
+;    Open - close - read - write newlib functions
+;    _open_r
+;    _close_r
+;    _write_r
+;    _read_r
 ;
-;			Suported devices controlled by the open - close - read - write newlib functions
-;			urt0
-;			urt1
-;			urt2
-;			urt3
-;			urt4
-;			cdc0
-;			cdc1
-;			wfi0
+;    Generic newlib functions
+;    _times_r
+;    _wait_r
+;    __errno
+;    _fork_r
+;    _stat_r
+;    _fstat_r
+;    _link_r
+;    _unlink_r
+;    _lseek_r
+;    _getpid_r
+;    _kill_r
 ;
-;			syst
-;			def0
-;			stdin
-;			stdout
-;			stderr
+;    Allocator newlib functions
+;    _sbrk_r
+;    __wrap__malloc_r
+;    __wrap__free_r
+;    __wrap__realloc_r
+;    __wrap__calloc_r
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+;    Suported devices controlled by the open - close - read - write newlib functions
+;    urt0
+;    urt1
+;    urt2
+;    urt3
+;    urt4
+;    cdc0
+;    cdc1
+;    wfi0
+;
+;    syst
+;    def0
+;    stdin
+;    stdout
+;    stderr
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -92,11 +93,11 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<machine/time.h>  // for _CLOCKS_PER_SEC_
-#include	<sys/reent.h>
-#include	<unistd.h>        // for STDERR_FILENO, STDIN_FILENO, STDOUT_FILENO
+#include    <machine/time.h>  // for _CLOCKS_PER_SEC_
+#include    <sys/reent.h>
+#include    <unistd.h>        // for STDERR_FILENO, STDIN_FILENO, STDOUT_FILENO
 
 /*!
  * \addtogroup Lib_generics
@@ -113,13 +114,13 @@
  * @{
  */
 
-typedef	struct	_reent	reent_t;
+typedef struct  _reent  reent_t;
 
 // Integer equivalence of stdin, stdout, stderr
 
-#define	KSTDIN		STDIN_FILENO
-#define	KSTDOUT		STDOUT_FILENO
-#define	KSTDERR		STDERR_FILENO
+#define KSTDIN      STDIN_FILENO
+#define KSTDOUT     STDOUT_FILENO
+#define KSTDERR     STDERR_FILENO
 
 // This value has to be re-defined accordingly to the
 // µKernel specification. For an unclear reason, the newlib
@@ -133,7 +134,7 @@ static_assert(CLOCKS_PER_SEC_CHECK(_CLOCKS_PER_SEC_), "_CLOCKS_PER_SEC_ must be 
 // Prototypes
 
 #ifdef __cplusplus
-extern	"C" {
+extern  "C" {
 #endif
 
 #ifdef __cplusplus

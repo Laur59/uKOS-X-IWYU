@@ -2,17 +2,18 @@
 ; adc.
 ; ====
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		adc manager.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    adc manager.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,53 +47,53 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"adc.h"
+#include    "adc.h"
 
-#include	<stdlib.h>
+#include    <stdlib.h>
 
-#include	"kern/kern.h"
-#include	"macros.h"
-#include	"macros_core.h"
-#include	"macros_soc.h"		// IWYU pragma: keep (to get KNB_CORES)
-#include	"modules.h"
-#include	"os_errors.h"
-#include	"record/record.h"
+#include    "kern/kern.h"
+#include    "macros.h"
+#include    "macros_core.h"
+#include    "macros_soc.h"      // IWYU pragma: keep (to get KNB_CORES)
+#include    "modules.h"
+#include    "os_errors.h"
+#include    "record/record.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"adc          adc manager.                              (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "adc manager\n"
-									"===========\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "adc          adc manager.                              (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "adc manager\n"
+                                    "===========\n\n"
 
-									"This manager ...\n\n"
+                                    "This manager ...\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
-	Adc,							// Module name (the first letter has to be upper case)
-	KID_FAM_PERIPHERALS,			// Family (defined in the module.h)
-	KNUM_ADC,						// Module identifier (defined in the module.h)
-	NULL,							// Address of the initialisation code (early pre-init)
-	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	NULL,							// Address of the clean code (clean the module)
-	" 1.0",							// Revision string (major . minor)
-	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0								// Execution cores
+    Adc,                            // Module name (the first letter has to be upper case)
+    KID_FAM_PERIPHERALS,            // Family (defined in the module.h)
+    KNUM_ADC,                       // Module identifier (defined in the module.h)
+    NULL,                           // Address of the initialisation code (early pre-init)
+    NULL,                           // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    NULL,                           // Address of the clean code (clean the module)
+    " 1.0",                         // Revision string (major . minor)
+    (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                               // Execution cores
 );
 
 // Library specific
 // ================
 
-static	mutx_t		*vMutex_Reserve[KNB_CORES];
+static  mutx_t      *vMutex_Reserve[KNB_CORES];
 
 // Prototypes
 
-static	int32_t		local_init(void);
-extern	void		stub_adc_init(void);
-extern	int32_t		stub_adc_read(uint8_t channel, float64_t *reference, float64_t *data);
+static  int32_t     local_init(void);
+extern  void        stub_adc_init(void);
+extern  int32_t     stub_adc_read(uint8_t channel, float64_t *reference, float64_t *data);
 
 /*
  * \brief Reserve the adc manager
@@ -109,35 +110,35 @@ extern	int32_t		stub_adc_read(uint8_t channel, float64_t *reference, float64_t *
  *    status = adc_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode		Any mode
- * \param[in]	timeout			Timeout (1-ms of resolution)
- * \param[in]	-				KWAIT_INFINITY, waiting forever
- * \param[in]	-				KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_ADC_NOERR	The manager is reserved
- * \return		KERR_ADC_GEERR	General error
- * \return		KERR_ADC_CHBSY	The manager is busy
+ * \param[in]   reserveMode     Any mode
+ * \param[in]   timeout         Timeout (1-ms of resolution)
+ * \param[in]   -               KWAIT_INFINITY, waiting forever
+ * \param[in]   -               KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_ADC_NOERR  The manager is reserved
+ * \return      KERR_ADC_GEERR  General error
+ * \return      KERR_ADC_CHBSY  The manager is busy
  *
  */
-int32_t	adc_reserve(reserveMode_t reserveMode, uint32_t timeout) {
-	UNUSED(reserveMode);
+int32_t adc_reserve(reserveMode_t reserveMode, uint32_t timeout) {
+    UNUSED(reserveMode);
 
-	uint32_t	core;
-	int32_t		status;
+    uint32_t    core;
+    int32_t     status;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_ADC_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_ADC_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = kern_lockMutex(vMutex_Reserve[core], timeout);
-	if (status != KERR_KERN_NOERR) {
-		PRIVILEGE_RESTORE;
-		return (KERR_ADC_CHBSY);
-	}
+    status = kern_lockMutex(vMutex_Reserve[core], timeout);
+    if (status != KERR_KERN_NOERR) {
+        PRIVILEGE_RESTORE;
+        return (KERR_ADC_CHBSY);
+    }
 
-	PRIVILEGE_RESTORE;
-	return (KERR_ADC_NOERR);
+    PRIVILEGE_RESTORE;
+    return (KERR_ADC_NOERR);
 }
 
 /*
@@ -151,32 +152,32 @@ int32_t	adc_reserve(reserveMode_t reserveMode, uint32_t timeout) {
  *    status = adc_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode		Any mode
- * \return		KERR_ADC_NOERR	OK
- * \return		KERR_ADC_GEERR	General error
- * \return		KERR_ADC_CAREL	Cannot release the manager
+ * \param[in]   reserveMode     Any mode
+ * \return      KERR_ADC_NOERR  OK
+ * \return      KERR_ADC_GEERR  General error
+ * \return      KERR_ADC_CAREL  Cannot release the manager
  *
  */
-int32_t	adc_release(reserveMode_t reserveMode) {
-	UNUSED(reserveMode);
+int32_t adc_release(reserveMode_t reserveMode) {
+    UNUSED(reserveMode);
 
-	uint32_t	core;
-	int32_t		status;
+    uint32_t    core;
+    int32_t     status;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_ADC_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_ADC_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = kern_unlockMutex(vMutex_Reserve[core]);
-	if (status != KERR_KERN_NOERR) {
-		PRIVILEGE_RESTORE;
-		return (KERR_ADC_CAREL);
-	}
+    status = kern_unlockMutex(vMutex_Reserve[core]);
+    if (status != KERR_KERN_NOERR) {
+        PRIVILEGE_RESTORE;
+        return (KERR_ADC_CAREL);
+    }
 
-	PRIVILEGE_RESTORE;
-	return (KERR_ADC_NOERR);
+    PRIVILEGE_RESTORE;
+    return (KERR_ADC_NOERR);
 }
 
 /*
@@ -197,24 +198,24 @@ int32_t	adc_release(reserveMode_t reserveMode) {
  *    }
  * \endcode
  *
- * \param[in]	channel			Channel (0..n)
- * \param[out]	*reference		Ptr on the reference of the A/D
- * \param[out]	*data			Ptr on the conversion result
- * \return		KERR_ADC_NOERR	OK
- * \return		KERR_ADC_GEERR	General error
- * \return		KERR_ADC_NODEV	The selected channel does not exist
+ * \param[in]   channel         Channel (0..n)
+ * \param[out]  *reference      Ptr on the reference of the A/D
+ * \param[out]  *data           Ptr on the conversion result
+ * \return      KERR_ADC_NOERR  OK
+ * \return      KERR_ADC_GEERR  General error
+ * \return      KERR_ADC_NODEV  The selected channel does not exist
  *
  */
-int32_t	adc_read(uint8_t channel, float64_t *reference, float64_t *data) {
-	int32_t		status;
+int32_t adc_read(uint8_t channel, float64_t *reference, float64_t *data) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_ADC_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_ADC_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_adc_read(channel, reference, data);
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_adc_read(channel, reference, data);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 // Local routines
@@ -227,19 +228,19 @@ int32_t	adc_read(uint8_t channel, float64_t *reference, float64_t *data) {
  *   has to be called at least once
  *
  */
-static	int32_t	local_init(void) {
-			uint32_t	core;
-	static	bool		vInit[KNB_CORES] = MCSET(false);
+static  int32_t local_init(void) {
+            uint32_t    core;
+    static  bool        vInit[KNB_CORES] = MCSET(false);
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	INTERRUPTION_OFF;
-	if (!vInit[core]) {
-		vInit[core] = true;
+    INTERRUPTION_OFF;
+    if (!vInit[core]) {
+        vInit[core] = true;
 
-		if (kern_createMutex(KADC_MUTEX_RESERVE, &vMutex_Reserve) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "adc: create mutx"); exit(EXIT_OS_PANIC); }
+        if (kern_createMutex(KADC_MUTEX_RESERVE, &vMutex_Reserve) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "adc: create mutx"); exit(EXIT_OS_PANIC); }
 
-		stub_adc_init();
-	}
-	RETURN_INT_RESTORE(KERR_ADC_NOERR);
+        stub_adc_init();
+    }
+    RETURN_INT_RESTORE(KERR_ADC_NOERR);
 }

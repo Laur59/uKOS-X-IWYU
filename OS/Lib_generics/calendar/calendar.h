@@ -2,17 +2,18 @@
 ; calendar.
 ; =========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		calendar manager.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    calendar manager.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +47,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_generics
@@ -63,23 +64,23 @@
  * @{
  */
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"types.h"
+#include    "types.h"
 
 // Modifiable in the makefile: default calendar parameters
 
 #ifndef KCALENDAR_WITH_HW_RTC_S
-#define	KCALENDAR_WITH_HW_RTC_S		false
+#define KCALENDAR_WITH_HW_RTC_S     false
 #endif
 
-typedef	enum {
-			KFROM_TIMER = 0U,									// Time from the internal timer
-			KFROM_RTC											// Time from the RTC
+typedef enum {
+            KFROM_TIMER = 0U,                                   // Time from the internal timer
+            KFROM_RTC                                           // Time from the RTC
 } calendarFromTimer_t;
 
 #ifdef __cplusplus
-extern	"C" {
+extern  "C" {
 #endif
 
 /*!
@@ -94,11 +95,11 @@ extern	"C" {
  *    status = calendar_setUTCLocation(&utcLocation[0]);
  * \endcode
  *
- * \param[out]	*utcLocation		Ptr on the UTC location
- * \return		KERR_CALENDAR_NOERR	OK
+ * \param[out]  *utcLocation        Ptr on the UTC location
+ * \return      KERR_CALENDAR_NOERR OK
  *
  */
-extern	int32_t	calendar_setUTCLocation(const char_t *utcLocation);
+extern  int32_t calendar_setUTCLocation(const char_t *utcLocation);
 
 /*!
  * \brief Write the Unix time
@@ -112,11 +113,11 @@ extern	int32_t	calendar_setUTCLocation(const char_t *utcLocation);
  *    status = calendar_writeUnixTime(unixTime);
  * \endcode
  *
- * \param[out]	unixTime			Unix time
- * \return		KERR_CALENDAR_NOERR	OK
+ * \param[out]  unixTime            Unix time
+ * \return      KERR_CALENDAR_NOERR OK
  *
  */
-extern	int32_t	calendar_writeUnixTime(uint64_t unixTime);
+extern  int32_t calendar_writeUnixTime(uint64_t unixTime);
 
 /*!
  * \brief Read the Unix time
@@ -130,13 +131,13 @@ extern	int32_t	calendar_writeUnixTime(uint64_t unixTime);
  *    status = calendar_readUnixTime(KFROM_TIMER, &unixTime);
  * \endcode
  *
- * \param[in]	fromTimer			KFROM_TIMER, use the Unix time from the Timer (normal mode)
- * \param[in]	-					KFROM_RTC, use the Unix time from the RTC (used for better precision)
- * \param[out]	*unixTime			Ptr on the Unix time
- * \return		KERR_CALENDAR_NOERR	OK
+ * \param[in]   fromTimer           KFROM_TIMER, use the Unix time from the Timer (normal mode)
+ * \param[in]   -                   KFROM_RTC, use the Unix time from the RTC (used for better precision)
+ * \param[out]  *unixTime           Ptr on the Unix time
+ * \return      KERR_CALENDAR_NOERR OK
  *
  */
-extern	int32_t	calendar_readUnixTime(calendarFromTimer_t fromTimer, uint64_t *unixTime);
+extern  int32_t calendar_readUnixTime(calendarFromTimer_t fromTimer, uint64_t *unixTime);
 
 #ifdef __cplusplus
 }

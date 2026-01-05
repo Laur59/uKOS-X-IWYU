@@ -2,11 +2,10 @@
 ; application.
 ; ============
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; SPDX-License-Identifier: MIT
+;
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;
 ; Project:	uKOS-X
 ; Goal:		Commun Linker description for uKOS-X applications.
@@ -37,8 +36,7 @@
 ;					|                 |
 ; _end				+-----------------+
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \

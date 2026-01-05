@@ -2,17 +2,18 @@
 ; stub_led.
 ; =========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		stub for the "led" manager module.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    stub for the "led" manager module.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,15 +47,15 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"Registers/K210_gpiohs.h"
-#include	"board.h"
-#include	"macros_core.h"
-#include	"macros_soc.h"
-#include	"os_errors.h"
+#include    "Registers/K210_gpiohs.h"
+#include    "board.h"
+#include    "macros_core.h"
+#include    "macros_soc.h"
+#include    "os_errors.h"
 
-static	bool	vMute;
+static  bool    vMute;
 
 /*
  * \brief stub_led_init
@@ -63,15 +64,15 @@ static	bool	vMute;
  *   - The LEDs state
  *
  */
-void	stub_led_init(void) {
+void    stub_led_init(void) {
 
-	INTERRUPTION_OFF;
-	vMute = false;
+    INTERRUPTION_OFF;
+    vMute = false;
 
-	gpiohs->output_val.u32[0] |= (1U<<BLED_0);
-	gpiohs->output_val.u32[0] |= (1U<<BLED_1);
-	gpiohs->output_val.u32[0] |= (1U<<BLED_2);
-	INTERRUPTION_RESTORE;
+    gpiohs->output_val.u32[0] |= (1U<<BLED_0);
+    gpiohs->output_val.u32[0] |= (1U<<BLED_1);
+    gpiohs->output_val.u32[0] |= (1U<<BLED_2);
+    INTERRUPTION_RESTORE;
 }
 
 /*
@@ -80,18 +81,18 @@ void	stub_led_init(void) {
  * - Turn on a LED
  *
  */
-int32_t	stub_led_on(uint8_t ledNb) {
+int32_t stub_led_on(uint8_t ledNb) {
 
-	INTERRUPTION_OFF;
-	if (vMute) { RETURN_INT_RESTORE(KERR_LED_NOERR); }
-	switch (ledNb) {
-		case 0U: { gpiohs->output_val.u32[0] &= (uint32_t)~(1U<<BLED_0); break; }
-		case 1U: { gpiohs->output_val.u32[0] &= (uint32_t)~(1U<<BLED_1); break; }
-		case 2U: { gpiohs->output_val.u32[0] &= (uint32_t)~(1U<<BLED_2); break; }
-		default: { RETURN_INT_RESTORE(KERR_LED_NODEV);							}
-	}
+    INTERRUPTION_OFF;
+    if (vMute) { RETURN_INT_RESTORE(KERR_LED_NOERR); }
+    switch (ledNb) {
+        case 0U: { gpiohs->output_val.u32[0] &= (uint32_t)~(1U<<BLED_0); break; }
+        case 1U: { gpiohs->output_val.u32[0] &= (uint32_t)~(1U<<BLED_1); break; }
+        case 2U: { gpiohs->output_val.u32[0] &= (uint32_t)~(1U<<BLED_2); break; }
+        default: { RETURN_INT_RESTORE(KERR_LED_NODEV);                          }
+    }
 
-	RETURN_INT_RESTORE(KERR_LED_NOERR);
+    RETURN_INT_RESTORE(KERR_LED_NOERR);
 }
 
 /*
@@ -100,18 +101,18 @@ int32_t	stub_led_on(uint8_t ledNb) {
  * - Turn off a LED
  *
  */
-int32_t	stub_led_off(uint8_t ledNb) {
+int32_t stub_led_off(uint8_t ledNb) {
 
-	INTERRUPTION_OFF;
-	if (vMute) { RETURN_INT_RESTORE(KERR_LED_NOERR); }
-	switch (ledNb) {
-		case 0U: { gpiohs->output_val.u32[0] |= (1U<<BLED_0); break; }
-		case 1U: { gpiohs->output_val.u32[0] |= (1U<<BLED_1); break; }
-		case 2U: { gpiohs->output_val.u32[0] |= (1U<<BLED_2); break; }
-		default: { RETURN_INT_RESTORE(KERR_LED_NODEV);				 }
-	}
+    INTERRUPTION_OFF;
+    if (vMute) { RETURN_INT_RESTORE(KERR_LED_NOERR); }
+    switch (ledNb) {
+        case 0U: { gpiohs->output_val.u32[0] |= (1U<<BLED_0); break; }
+        case 1U: { gpiohs->output_val.u32[0] |= (1U<<BLED_1); break; }
+        case 2U: { gpiohs->output_val.u32[0] |= (1U<<BLED_2); break; }
+        default: { RETURN_INT_RESTORE(KERR_LED_NODEV);               }
+    }
 
-	RETURN_INT_RESTORE(KERR_LED_NOERR);
+    RETURN_INT_RESTORE(KERR_LED_NOERR);
 }
 
 /*
@@ -120,18 +121,18 @@ int32_t	stub_led_off(uint8_t ledNb) {
  * - Change the state of a LED
  *
  */
-int32_t	stub_led_toggle(uint8_t ledNb) {
+int32_t stub_led_toggle(uint8_t ledNb) {
 
-	INTERRUPTION_OFF;
-	if (vMute) { RETURN_INT_RESTORE(KERR_LED_NOERR); }
-	switch (ledNb) {
-		case 0U: { gpiohs->output_val.u32[0] ^= (1U<<BLED_0); break; }
-		case 1U: { gpiohs->output_val.u32[0] ^= (1U<<BLED_1); break; }
-		case 2U: { gpiohs->output_val.u32[0] ^= (1U<<BLED_2); break; }
-		default: { RETURN_INT_RESTORE(KERR_LED_NODEV);				 }
-	}
+    INTERRUPTION_OFF;
+    if (vMute) { RETURN_INT_RESTORE(KERR_LED_NOERR); }
+    switch (ledNb) {
+        case 0U: { gpiohs->output_val.u32[0] ^= (1U<<BLED_0); break; }
+        case 1U: { gpiohs->output_val.u32[0] ^= (1U<<BLED_1); break; }
+        case 2U: { gpiohs->output_val.u32[0] ^= (1U<<BLED_2); break; }
+        default: { RETURN_INT_RESTORE(KERR_LED_NODEV);               }
+    }
 
-	RETURN_INT_RESTORE(KERR_LED_NOERR);
+    RETURN_INT_RESTORE(KERR_LED_NOERR);
 }
 
 /*
@@ -140,15 +141,15 @@ int32_t	stub_led_toggle(uint8_t ledNb) {
  * - Control (general) of the LEDs
  *
  */
-int32_t	stub_led_mute(bool mute) {
+int32_t stub_led_mute(bool mute) {
 
-	if (!mute) { vMute = false; return (KERR_LED_NOERR); }
+    if (!mute) { vMute = false; return (KERR_LED_NOERR); }
 
-	INTERRUPTION_OFF;
-	vMute = true;
+    INTERRUPTION_OFF;
+    vMute = true;
 
-	gpiohs->output_val.u32[0] |= (1U<<BLED_0);
-	gpiohs->output_val.u32[0] |= (1U<<BLED_1);
-	gpiohs->output_val.u32[0] |= (1U<<BLED_2);
-	RETURN_INT_RESTORE(KERR_LED_NOERR);
+    gpiohs->output_val.u32[0] |= (1U<<BLED_0);
+    gpiohs->output_val.u32[0] |= (1U<<BLED_1);
+    gpiohs->output_val.u32[0] |= (1U<<BLED_2);
+    RETURN_INT_RESTORE(KERR_LED_NOERR);
 }

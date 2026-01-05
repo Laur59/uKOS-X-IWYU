@@ -2,17 +2,18 @@
 ; temperature.
 ; ============
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		temperature manager.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    temperature manager.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +47,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_peripherals
@@ -63,25 +64,25 @@
  * @{
  */
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"types.h"
+#include    "types.h"
 
 // Semaphores
 // ----------
 
-#define	KTEMPERATURE_MUTEX_RESERVE	"Reserve_temperature"
+#define KTEMPERATURE_MUTEX_RESERVE  "Reserve_temperature"
 
-#define	KTEMPERATURE_ZERO_KELVIN	((float64_t)(-273.16))
+#define KTEMPERATURE_ZERO_KELVIN    ((float64_t)(-273.16))
 
 // Prototypes
 
 #ifdef __cplusplus
-extern	"C" {
+extern  "C" {
 #endif
 
-#define	TEMPERATURE_reserve	temperature_reserve
-#define	TEMPERATURE_release	temperature_release
+#define TEMPERATURE_reserve temperature_reserve
+#define TEMPERATURE_release temperature_release
 
 /*!
  * \brief Reserve the temperature manager
@@ -98,16 +99,16 @@ extern	"C" {
  *    status = temperature_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode				Any mode
- * \param[in]	timeout					Timeout (1-ms of resolution)
- * \param[in]	-						KWAIT_INFINITY, waiting forever
- * \param[in]	-						KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_TEMPERATURE_NOERR	The manager is reserved
- * \return		KERR_TEMPERATURE_GEERR	General error
- * \return		KERR_TEMPERATURE_CHBSY	The manager is busy
+ * \param[in]   reserveMode             Any mode
+ * \param[in]   timeout                 Timeout (1-ms of resolution)
+ * \param[in]   -                       KWAIT_INFINITY, waiting forever
+ * \param[in]   -                       KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_TEMPERATURE_NOERR  The manager is reserved
+ * \return      KERR_TEMPERATURE_GEERR  General error
+ * \return      KERR_TEMPERATURE_CHBSY  The manager is busy
  *
  */
-extern	int32_t	temperature_reserve(reserveMode_t reserveMode, uint32_t timeout);
+extern  int32_t temperature_reserve(reserveMode_t reserveMode, uint32_t timeout);
 
 /*!
  * \brief Release the temperature manager
@@ -120,13 +121,13 @@ extern	int32_t	temperature_reserve(reserveMode_t reserveMode, uint32_t timeout);
  *    status = temperature_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode				Any mode
- * \return		KERR_TEMPERATURE_NOERR	OK
- * \return		KERR_TEMPERATURE_GEERR	General error
- * \return		KERR_TEMPERATURE_CAREL	Cannot release the manager
+ * \param[in]   reserveMode             Any mode
+ * \return      KERR_TEMPERATURE_NOERR  OK
+ * \return      KERR_TEMPERATURE_GEERR  General error
+ * \return      KERR_TEMPERATURE_CAREL  Cannot release the manager
  *
  */
-extern	int32_t	temperature_release(reserveMode_t reserveMode);
+extern  int32_t temperature_release(reserveMode_t reserveMode);
 
 /*!
  * \brief Get the temperature (K)
@@ -142,12 +143,12 @@ extern	int32_t	temperature_release(reserveMode_t reserveMode);
  *    (void)dprintf(KSYST, "Temp = %f\n", temperature);
  * \endcode
  *
- * \param[out]	*temperature			Ptr on the temperature
- * \return		KERR_TEMPERATURE_NOERR	OK
- * \return		KERR_TEMPERATURE_GEERR	General error
+ * \param[out]  *temperature            Ptr on the temperature
+ * \return      KERR_TEMPERATURE_NOERR  OK
+ * \return      KERR_TEMPERATURE_GEERR  General error
  *
  */
-extern	int32_t	temperature_read(float64_t *temperature);
+extern  int32_t temperature_read(float64_t *temperature);
 
 /*!
  * \brief Set the temperature (K)
@@ -161,12 +162,12 @@ extern	int32_t	temperature_read(float64_t *temperature);
  *    status = temperature_write(temperature);
  * \endcode
  *
- * \param[in]	temperature				The temperature
- * \return		KERR_TEMPERATURE_NOERR	OK
- * \return		KERR_TEMPERATURE_GEERR	General error
+ * \param[in]   temperature             The temperature
+ * \return      KERR_TEMPERATURE_NOERR  OK
+ * \return      KERR_TEMPERATURE_GEERR  General error
  *
  */
-extern	int32_t	temperature_write(float64_t temperature);
+extern  int32_t temperature_write(float64_t temperature);
 
 #ifdef __cplusplus
 }

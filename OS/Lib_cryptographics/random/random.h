@@ -2,17 +2,18 @@
 ; random.
 ; =======
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		random manager.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    random manager.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,9 +47,9 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 /*!
  * \addtogroup Lib_cryptographics
@@ -65,15 +66,15 @@
  * @{
  */
 
-typedef	enum {
-			KRANDOM_SOFT = 0U,									// Software generator
-			KRANDOM_HARD										// Hardware generator
+typedef enum {
+            KRANDOM_SOFT = 0U,                                  // Software generator
+            KRANDOM_HARD                                        // Hardware generator
 } randomGenerator_t;
 
-#define	KRAND_MAX	((1U<<31U) - 1)								// RAND_MAX for 32 bit generator
+#define KRAND_MAX   ((1U<<31U) - 1)                             // RAND_MAX for 32 bit generator
 
 #ifdef __cplusplus
-extern	"C" {
+extern  "C" {
 #endif
 
 /*!
@@ -90,15 +91,15 @@ extern	"C" {
  *    status = random_read(KRANDOM_SOFT, &number[0], KNB_NUMBERS);
  * \endcode
  *
- * \param[in]	generator			KRANDOM_SOFT, use the software implementation
- * \param[in]	-					KRANDOM_HARD, use the hardware implementation
- * \param[out]	*number				Ptr on the number
- * \param[in]	nbNumbers			Number of numbers
- * \return		KERR_RANDOM_NOERR	OK
- * \return		KERR_RANDOM_NOERR	General error
+ * \param[in]   generator           KRANDOM_SOFT, use the software implementation
+ * \param[in]   -                   KRANDOM_HARD, use the hardware implementation
+ * \param[out]  *number             Ptr on the number
+ * \param[in]   nbNumbers           Number of numbers
+ * \return      KERR_RANDOM_NOERR   OK
+ * \return      KERR_RANDOM_NOERR   General error
  *
  */
-extern	int32_t random_read(randomGenerator_t generator, uint32_t *number, uint32_t nbNumbers);
+extern  int32_t random_read(randomGenerator_t generator, uint32_t *number, uint32_t nbNumbers);
 
 #ifdef __cplusplus
 }

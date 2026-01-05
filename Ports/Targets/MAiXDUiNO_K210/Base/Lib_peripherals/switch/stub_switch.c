@@ -2,17 +2,18 @@
 ; stub_switch.
 ; ============
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		stub for the "switch" manager module.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    stub for the "switch" manager module.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,9 +47,9 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"os_errors.h"
+#include    "os_errors.h"
 
 
 /*
@@ -57,7 +58,7 @@
  * - Initialise some specific hardware parts
  *
  */
-void	stub_switch_init(void) {
+void    stub_switch_init(void) {
 
 }
 
@@ -67,8 +68,8 @@ void	stub_switch_init(void) {
  * - Read the jumper configuration
  *
  */
-int32_t	stub_switch_read(uint32_t *mode) {
+int32_t stub_switch_read(uint32_t *mode) {
 
-	*mode = 0U;
-	return (KERR_SWITCH_NOERR);
+    *mode = 0U;
+    return (KERR_SWITCH_NOERR);
 }

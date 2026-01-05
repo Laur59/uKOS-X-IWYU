@@ -2,19 +2,20 @@
 ; private_preciseSignals.
 ; =======================
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Kern - Precise signals.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;			Private uKernel variables.
+; Project: uKOS-X
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Purpose:
+;    Kern - Precise signals.
+;
+;    Private uKernel variables.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,12 +49,12 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"kern/kern.h"
-#include	"macros_soc.h"
+#include    "kern/kern.h"
+#include    "macros_soc.h"
 
 /*!
  * \addtogroup Lib_kernels
@@ -77,12 +78,12 @@
 
 #if (KKERN_NB_PRECISE_SIGNALS > 0)
 
-#define	KPRCS_ANONYMOUS_ID			"Prcs_anonymous"
-#define	KPRCS_DEFAULT_SIGNAL_GROUP	"Def_Signal_Group"
+#define KPRCS_ANONYMOUS_ID          "Prcs_anonymous"
+#define KPRCS_DEFAULT_SIGNAL_GROUP  "Def_Signal_Group"
 
-extern	prcs_t		vKern_prcs[KNB_CORES][KKERN_NB_PRECISE_SIGNALS];	// Precise signals
-extern	uint16_t	vKern_nbPrcs[KNB_CORES];							// Nb of used precise signals
-extern	uint16_t	vKern_nbMaxPrcs[KNB_CORES];							// Max number of used precise signals
+extern  prcs_t      vKern_prcs[KNB_CORES][KKERN_NB_PRECISE_SIGNALS];    // Precise signals
+extern  uint16_t    vKern_nbPrcs[KNB_CORES];                            // Nb of used precise signals
+extern  uint16_t    vKern_nbMaxPrcs[KNB_CORES];                         // Max number of used precise signals
 #endif
 
 /**@}*/

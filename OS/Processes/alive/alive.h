@@ -2,17 +2,18 @@
 ; alive.
 ; ======
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		alive process; blink a LED.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    alive process; blink a LED.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,23 +47,23 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"led/led.h"
+#include    "led/led.h"
 
-#define	KLED_ALIVE			KLED_0
-#define	KTIME_ALIVE_ON		50U
-#define	KTIME_ALIVE_OFF		950U
+#define KLED_ALIVE          KLED_0
+#define KTIME_ALIVE_ON      50U
+#define KTIME_ALIVE_OFF     950U
 
 // Configuration structure
 // -----------------------
 
-typedef	struct	aliveCnf	aliveCnf_t;
+typedef struct  aliveCnf    aliveCnf_t;
 
 struct aliveCnf {
-			bool		*oKillRequest;							// Kill request
-			uint32_t	oTime[2];								// Process time
-			uint8_t		oLed;									// Process Led
+            bool        *oKillRequest;                          // Kill request
+            uint32_t    oTime[2];                               // Process time
+            uint8_t     oLed;                                   // Process Led
 };

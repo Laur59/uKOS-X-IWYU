@@ -2,18 +2,19 @@
 ; stub_imager_mt9v03x.
 ; ====================
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		stub for the connection of the "imager" manager to the imager,
-;			MT9V03x device.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    stub for the connection of the "imager" manager to the imager,
+;    MT9V03x device.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,55 +48,55 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"Lib_peripherals/imager_common.h"
-#include	"MT9V03x/MT9V03x.h"
-#include	"board.h"
-#include	"i2c_common.h"
-#include	"i2c1/i2c1.h"	// IWYU pragma: keep (for symbol I2C1_reserve)
-#include	"i2c/i2c.h"
-#include	"imager/imager.h"
-#include	"kern/kern.h"
-#include	"macros.h"
-#include	"os_errors.h"
-#include	"soc_reg.h"
-#include	"types.h"
+#include    "Lib_peripherals/imager_common.h"
+#include    "MT9V03x/MT9V03x.h"
+#include    "board.h"
+#include    "i2c_common.h"
+#include    "i2c1/i2c1.h"   // IWYU pragma: keep (for symbol I2C1_reserve)
+#include    "i2c/i2c.h"
+#include    "imager/imager.h"
+#include    "kern/kern.h"
+#include    "macros.h"
+#include    "os_errors.h"
+#include    "soc_reg.h"
+#include    "types.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
 
-#define	model_imager_init			stub_imager_init
-#define	model_imager_configure		stub_imager_configure
-#define	model_imager_acquisition	stub_imager_acquisition
-#define	model_imager_read			stub_imager_read
-#define	model_imager_readRegister	stub_imager_readRegister
-#define	model_imager_writeRegister	stub_imager_writeRegister
-#define	model_imager_standby		stub_imager_standby
-#define	model_imager_exposure		stub_imager_exposure
+#define model_imager_init           stub_imager_init
+#define model_imager_configure      stub_imager_configure
+#define model_imager_acquisition    stub_imager_acquisition
+#define model_imager_read           stub_imager_read
+#define model_imager_readRegister   stub_imager_readRegister
+#define model_imager_writeRegister  stub_imager_writeRegister
+#define model_imager_standby        stub_imager_standby
+#define model_imager_exposure       stub_imager_exposure
 
-#define	KIMAGER_DCMI_SEMA_IM_S
-#define	KIMAGER_DCMI_SEMA_VS_S
-#define	KIMAGER_DCMI_SEMAPHORE_IM	KIMAGER_SEMAPHORE_IM
-#define	KIMAGER_DCMI_SEMAPHORE_VS	KIMAGER_SEMAPHORE_VS
+#define KIMAGER_DCMI_SEMA_IM_S
+#define KIMAGER_DCMI_SEMA_VS_S
+#define KIMAGER_DCMI_SEMAPHORE_IM   KIMAGER_SEMAPHORE_IM
+#define KIMAGER_DCMI_SEMAPHORE_VS   KIMAGER_SEMAPHORE_VS
 
-#define KIMAGER_PIXEL_CLOCK_MHZ		27U
-#define KIMAGER_TOTAL_HORIZONTALE	(752U + 94U)
+#define KIMAGER_PIXEL_CLOCK_MHZ     27U
+#define KIMAGER_TOTAL_HORIZONTALE   (752U + 94U)
 
 enum {
-		KIMG_INIT = 0U,
-		KIMG_TRIGGER,
-		KIMG_STANDBY,
-		KIMG_NORMAL,
-		KIMG_PIXEL_MODE,
-		KIMG_EXPOSITION
+        KIMG_INIT = 0U,
+        KIMG_TRIGGER,
+        KIMG_STANDBY,
+        KIMG_NORMAL,
+        KIMG_PIXEL_MODE,
+        KIMG_EXPOSITION
 };
 
-extern	volatile	uint8_t		vAcqPage;
+extern  volatile    uint8_t     vAcqPage;
 
 // Prototypes
 
-static	int32_t	local_setAptina(mt9v03x_t *cnfTable);
+static  int32_t local_setAptina(mt9v03x_t *cnfTable);
 
 // Model callbacks
 // ---------------
@@ -112,73 +113,73 @@ static	int32_t	local_setAptina(mt9v03x_t *cnfTable);
  *   - Exposure time
  *
  */
-static	int32_t	cb_control(uint8_t mode, uint32_t value) {
-					uint16_t	agc, grossExpTime, fineExpTime, lineLength;
-					int32_t		status = KERR_IMAGER_NOERR;
-	static	const	i2cCnf_t	configureI2C1 = {
-									.oTimeout  = 100000U,
-									.oSpeed    = KI2C_100KBPS,
-								};
+static  int32_t cb_control(uint8_t mode, uint32_t value) {
+                    uint16_t    agc, grossExpTime, fineExpTime, lineLength;
+                    int32_t     status = KERR_IMAGER_NOERR;
+    static  const   i2cCnf_t    configureI2C1 = {
+                                    .oTimeout  = 100000U,
+                                    .oSpeed    = KI2C_100KBPS,
+                                };
 
-	switch (mode) {
-		case KIMG_INIT: {
-			GPIOH->ODR |= (1U<<BEN_CLK);
-			kern_suspendProcess(10U);
-			GPIOI->ODR &= (uint32_t)~(1U<<BSTANDBY);
-			GPIOI->ODR &= (uint32_t)~(1U<<BEXPOSURE);
+    switch (mode) {
+        case KIMG_INIT: {
+            GPIOH->ODR |= (1U<<BEN_CLK);
+            kern_suspendProcess(10U);
+            GPIOI->ODR &= (uint32_t)~(1U<<BSTANDBY);
+            GPIOI->ODR &= (uint32_t)~(1U<<BEXPOSURE);
 
 // Initialise the i2c1
 
-			RESERVE(I2C1, KMODE_READ_WRITE);
-			status = i2c_configure(KI2C1, &configureI2C1);
-			status = (status == KERR_I2C_NOERR) ? (KERR_IMAGER_NOERR) : (KERR_IMAGER_TIMEO);
-			RELEASE(I2C1, KMODE_READ_WRITE);
-			break;
-		}
-		case KIMG_TRIGGER: {
-			GPIOI->ODR |= (1U<<BEXPOSURE);
-			kern_waitAtLeast(20U);
-			GPIOI->ODR &= (uint32_t)~(1U<<BEXPOSURE);
-			break;
-		}
-		case KIMG_STANDBY: {
-			GPIOI->ODR |= (1U<<BSTANDBY);
-			kern_suspendProcess(10U);
-			GPIOH->ODR &= (uint32_t)~(1U<<BEN_CLK);
-			break;
-		}
-		case KIMG_NORMAL: {
-			GPIOH->ODR |= (1U<<BEN_CLK);
-			kern_suspendProcess(10U);
-			GPIOI->ODR &= (uint32_t)~(1U<<BSTANDBY);
-			break;
-		}
-		case KIMG_PIXEL_MODE: {
-			break;
-		}
-		case KIMG_EXPOSITION: {
-			agc = 1U;
-			if (value != UINT32_MAX) {
-				agc = 0U;
-				lineLength = KIMAGER_TOTAL_HORIZONTALE;
+            RESERVE(I2C1, KMODE_READ_WRITE);
+            status = i2c_configure(KI2C1, &configureI2C1);
+            status = (status == KERR_I2C_NOERR) ? (KERR_IMAGER_NOERR) : (KERR_IMAGER_TIMEO);
+            RELEASE(I2C1, KMODE_READ_WRITE);
+            break;
+        }
+        case KIMG_TRIGGER: {
+            GPIOI->ODR |= (1U<<BEXPOSURE);
+            kern_waitAtLeast(20U);
+            GPIOI->ODR &= (uint32_t)~(1U<<BEXPOSURE);
+            break;
+        }
+        case KIMG_STANDBY: {
+            GPIOI->ODR |= (1U<<BSTANDBY);
+            kern_suspendProcess(10U);
+            GPIOH->ODR &= (uint32_t)~(1U<<BEN_CLK);
+            break;
+        }
+        case KIMG_NORMAL: {
+            GPIOH->ODR |= (1U<<BEN_CLK);
+            kern_suspendProcess(10U);
+            GPIOI->ODR &= (uint32_t)~(1U<<BSTANDBY);
+            break;
+        }
+        case KIMG_PIXEL_MODE: {
+            break;
+        }
+        case KIMG_EXPOSITION: {
+            agc = 1U;
+            if (value != UINT32_MAX) {
+                agc = 0U;
+                lineLength = KIMAGER_TOTAL_HORIZONTALE;
 
-				grossExpTime = (uint16_t)((value * KIMAGER_PIXEL_CLOCK_MHZ) / lineLength);
-				fineExpTime  = (uint16_t)((value - (uint32_t)((grossExpTime * lineLength) / KIMAGER_PIXEL_CLOCK_MHZ)) * KIMAGER_PIXEL_CLOCK_MHZ);
+                grossExpTime = (uint16_t)((value * KIMAGER_PIXEL_CLOCK_MHZ) / lineLength);
+                fineExpTime  = (uint16_t)((value - (uint32_t)((grossExpTime * lineLength) / KIMAGER_PIXEL_CLOCK_MHZ)) * KIMAGER_PIXEL_CLOCK_MHZ);
 
-				imager_writeRegister(KMT9V03x_EXPOSURE, grossExpTime);
-				imager_writeRegister(KMT9V03x_FINE_EXPOSURE, fineExpTime);
-			}
-			imager_writeRegister(KMT9V03x_AUTOMATIC_EXPOSURE, agc);
-			break;
-		}
-		default: {
+                imager_writeRegister(KMT9V03x_EXPOSURE, grossExpTime);
+                imager_writeRegister(KMT9V03x_FINE_EXPOSURE, fineExpTime);
+            }
+            imager_writeRegister(KMT9V03x_AUTOMATIC_EXPOSURE, agc);
+            break;
+        }
+        default: {
 
 // Make MISRA happy :-)
 
-			break;
-		}
-	}
-	return (status);
+            break;
+        }
+    }
+    return (status);
 }
 
 /*
@@ -187,19 +188,19 @@ static	int32_t	cb_control(uint8_t mode, uint32_t value) {
  * - Read an imager register
  *
  */
-static	int32_t	cb_getRegister(uint8_t registerNb, uint16_t *value) {
-	uint8_t		buffer[2];
-	int32_t		status;
+static  int32_t cb_getRegister(uint8_t registerNb, uint16_t *value) {
+    uint8_t     buffer[2];
+    int32_t     status;
 
-	buffer[0] = registerNb;
+    buffer[0] = registerNb;
 
-	RESERVE(I2C1, KMODE_READ_WRITE);
-	status = i2c_read(KI2C1, KI2C_ADD_MT9V03x, &buffer[0], 2U);
-	status = (status == KERR_I2C_NOERR) ? (KERR_IMAGER_NOERR) : (KERR_IMAGER_TIMEO);
-	RELEASE(I2C1, KMODE_READ_WRITE);
+    RESERVE(I2C1, KMODE_READ_WRITE);
+    status = i2c_read(KI2C1, KI2C_ADD_MT9V03x, &buffer[0], 2U);
+    status = (status == KERR_I2C_NOERR) ? (KERR_IMAGER_NOERR) : (KERR_IMAGER_TIMEO);
+    RELEASE(I2C1, KMODE_READ_WRITE);
 
-	*value = (uint16_t)((buffer[0]<<8U) | buffer[1]);
-	return (status);
+    *value = (uint16_t)((buffer[0]<<8U) | buffer[1]);
+    return (status);
 }
 
 /*
@@ -208,20 +209,20 @@ static	int32_t	cb_getRegister(uint8_t registerNb, uint16_t *value) {
  * - Write an imager register
  *
  */
-static	int32_t	cb_putRegister(uint8_t registerNb, uint16_t value) {
-	uint8_t		buffer[3];
-	int32_t		status;
+static  int32_t cb_putRegister(uint8_t registerNb, uint16_t value) {
+    uint8_t     buffer[3];
+    int32_t     status;
 
-	buffer[0] = registerNb;
-	buffer[1] = (uint8_t)(value>>8U);
-	buffer[2] = (uint8_t)value;
+    buffer[0] = registerNb;
+    buffer[1] = (uint8_t)(value>>8U);
+    buffer[2] = (uint8_t)value;
 
-	RESERVE(I2C1, KMODE_READ_WRITE);
-	status = i2c_write(KI2C1, KI2C_ADD_MT9V03x, &buffer[0], 3U);
-	status = (status == KERR_I2C_NOERR) ? (KERR_IMAGER_NOERR) : (KERR_IMAGER_TIMEO);
-	RELEASE(I2C1, KMODE_READ_WRITE);
+    RESERVE(I2C1, KMODE_READ_WRITE);
+    status = i2c_write(KI2C1, KI2C_ADD_MT9V03x, &buffer[0], 3U);
+    status = (status == KERR_I2C_NOERR) ? (KERR_IMAGER_NOERR) : (KERR_IMAGER_TIMEO);
+    RELEASE(I2C1, KMODE_READ_WRITE);
 
-	return (status);
+    return (status);
 }
 
 /*
@@ -230,16 +231,16 @@ static	int32_t	cb_putRegister(uint8_t registerNb, uint16_t value) {
  * - Configure the imager
  *
  */
-static	int32_t	cb_configure(const imagerCnf_t *configure) {
-	int32_t		status = KERR_IMAGER_NOERR;
+static  int32_t cb_configure(const imagerCnf_t *configure) {
+    int32_t     status = KERR_IMAGER_NOERR;
 
 // Configure the sensitivity to the synchro polarity
 // Pixel clock -> active H
 // Horizontal  -> active L
 // Vertical    -> active L
 
-	DCMI->CR &= (uint32_t)~(DCMI_CR_VSPOL | DCMI_CR_HSPOL | DCMI_CR_PCKPOL);
-	DCMI->CR |= DCMI_CR_PCKPOL;
+    DCMI->CR &= (uint32_t)~(DCMI_CR_VSPOL | DCMI_CR_HSPOL | DCMI_CR_PCKPOL);
+    DCMI->CR |= DCMI_CR_PCKPOL;
 
 // The full Aptina registers configuration including ROI, exposure,
 // gain, shutters, interface and control
@@ -247,20 +248,20 @@ static	int32_t	cb_configure(const imagerCnf_t *configure) {
 // Set the horizontal blanking to 1000 pixels (to allow to deserve the DCMI line DMA)
 // Set SNAPSHOT + SEQUENTIAL + SLAVE mode
 
-	status = cb_putRegister(KMT9V03x_V_BLANK, 0x0004U);				if (status != KERR_IMAGER_NOERR) { return (status); }
-	status = cb_putRegister(KMT9V03x_REG20,   0x03C7U);				if (status != KERR_IMAGER_NOERR) { return (status); }
-	status = cb_putRegister(KMT9V03x_REG24,   0x001BU);				if (status != KERR_IMAGER_NOERR) { return (status); }
-	status = cb_putRegister(KMT9V03x_REG2B,   0x0003U);				if (status != KERR_IMAGER_NOERR) { return (status); }
-	status = cb_putRegister(KMT9V03x_REG2F,   0x0003U);				if (status != KERR_IMAGER_NOERR) { return (status); }
-	status = cb_putRegister(KMT9V03x_H_BLANK,   1000U);				if (status != KERR_IMAGER_NOERR) { return (status); }
+    status = cb_putRegister(KMT9V03x_V_BLANK, 0x0004U);             if (status != KERR_IMAGER_NOERR) { return (status); }
+    status = cb_putRegister(KMT9V03x_REG20,   0x03C7U);             if (status != KERR_IMAGER_NOERR) { return (status); }
+    status = cb_putRegister(KMT9V03x_REG24,   0x001BU);             if (status != KERR_IMAGER_NOERR) { return (status); }
+    status = cb_putRegister(KMT9V03x_REG2B,   0x0003U);             if (status != KERR_IMAGER_NOERR) { return (status); }
+    status = cb_putRegister(KMT9V03x_REG2F,   0x0003U);             if (status != KERR_IMAGER_NOERR) { return (status); }
+    status = cb_putRegister(KMT9V03x_H_BLANK,   1000U);             if (status != KERR_IMAGER_NOERR) { return (status); }
 
-	if (configure->oAcqMode == KIMAGER_SNAP) {
-		status = cb_putRegister(KMT9V03x_CTRL_REG, 0x0398U);		if (status != KERR_IMAGER_NOERR) { return (status); }
-	}
-	if (configure->oImgCnf != NULL) {
-		status = local_setAptina((mt9v03x_t *)configure->oImgCnf);	if (status != KERR_IMAGER_NOERR) { return (status); }
-	}
-	return (status);
+    if (configure->oAcqMode == KIMAGER_SNAP) {
+        status = cb_putRegister(KMT9V03x_CTRL_REG, 0x0398U);        if (status != KERR_IMAGER_NOERR) { return (status); }
+    }
+    if (configure->oImgCnf != NULL) {
+        status = local_setAptina((mt9v03x_t *)configure->oImgCnf);  if (status != KERR_IMAGER_NOERR) { return (status); }
+    }
+    return (status);
 }
 
 // Local routines
@@ -270,24 +271,24 @@ static	int32_t	cb_configure(const imagerCnf_t *configure) {
  * \brief local_setAptina
  *
  */
-static	int32_t	local_setAptina(mt9v03x_t *cnfTable) {
-	uint8_t		buffer[3];
-	uint16_t	i = 0U;
-	int32_t		status;
+static  int32_t local_setAptina(mt9v03x_t *cnfTable) {
+    uint8_t     buffer[3];
+    uint16_t    i = 0U;
+    int32_t     status;
 
-	RESERVE(I2C1, KMODE_READ_WRITE);
-	while (true) {
-		buffer[0] = cnfTable[i].oRegNumber;
-		buffer[1] = (uint8_t)(cnfTable[i].oValue>>8U);
-		buffer[2] = (uint8_t)cnfTable[i].oValue;
+    RESERVE(I2C1, KMODE_READ_WRITE);
+    while (true) {
+        buffer[0] = cnfTable[i].oRegNumber;
+        buffer[1] = (uint8_t)(cnfTable[i].oValue>>8U);
+        buffer[2] = (uint8_t)cnfTable[i].oValue;
 
-		if ((buffer[0] == 0U) && (i > 0U)) { RELEASE(I2C1, KMODE_READ_WRITE); return (KERR_IMAGER_NOERR); }
-		i++;
+        if ((buffer[0] == 0U) && (i > 0U)) { RELEASE(I2C1, KMODE_READ_WRITE); return (KERR_IMAGER_NOERR); }
+        i++;
 
-		status = i2c_write(KI2C1, KI2C_ADD_MT9V03x, &buffer[0], 3U);
-		status = (status == KERR_I2C_NOERR) ? (KERR_IMAGER_NOERR) : (KERR_IMAGER_TIMEO);
-		if (status != KERR_IMAGER_NOERR) { RELEASE(I2C1, KMODE_READ_WRITE); return (status); }
-	}
+        status = i2c_write(KI2C1, KI2C_ADD_MT9V03x, &buffer[0], 3U);
+        status = (status == KERR_I2C_NOERR) ? (KERR_IMAGER_NOERR) : (KERR_IMAGER_TIMEO);
+        if (status != KERR_IMAGER_NOERR) { RELEASE(I2C1, KMODE_READ_WRITE); return (status); }
+    }
 }
 
-#include	"model_imager_dcmi_dma2.c_inc"
+#include    "model_imager_dcmi_dma2.c_inc"

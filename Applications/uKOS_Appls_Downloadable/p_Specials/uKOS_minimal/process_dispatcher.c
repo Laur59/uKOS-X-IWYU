@@ -2,19 +2,19 @@
 ; process_dispatcher.
 ; ===================
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Process: dispatcher.
-;			- As soon as a new data is available on the queue
-;				process it
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    Process: dispatcher.
+;    - As soon as a new data is available on the queue process it
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,97 +48,97 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<stdio.h>
-#include	<stdlib.h>
+#include    <stdio.h>
+#include    <stdlib.h>
 
-#include	"kern/kern.h"
-#include	"macros.h"
-#include	"macros_core.h"
-#include	"macros_core_stackFrame.h"
-#include	"memo/memo.h"
-#include	"led/led.h"
-#include	"os_errors.h"
-#include	"queue.h"
-#include	"record/record.h"
-#include	"types.h"
-#include	"record/record.h"
+#include    "kern/kern.h"
+#include    "macros.h"
+#include    "macros_core.h"
+#include    "macros_core_stackFrame.h"
+#include    "memo/memo.h"
+#include    "led/led.h"
+#include    "os_errors.h"
+#include    "queue.h"
+#include    "record/record.h"
+#include    "types.h"
+#include    "record/record.h"
 
-extern	mbox_t	*vQueue_dispatcher;
+extern  mbox_t  *vQueue_dispatcher;
 
 // Prototypes
 
-static	void	aProcess(const void *argument);
+static  void    aProcess(const void *argument);
 
 /*
  * \brief Install & launch the process
  *
  */
-bool	installaProcess_dispatcher(void) {
-	bool	status;
-	proc_t	*process;
+bool    installaProcess_dispatcher(void) {
+    bool    status;
+    proc_t  *process;
 
 // -------------------------------I-----------------------------------------I--------------I
 
-	STRG_LOC_CONST(aStrIden[]) = "User_Process_dispatcher";
-	STRG_LOC_CONST(aStrText[]) = "Process dispatcher.                       (c) EFr-2026";
+    STRG_LOC_CONST(aStrIden[]) = "User_Process_dispatcher";
+    STRG_LOC_CONST(aStrText[]) = "Process dispatcher.                       (c) EFr-2026";
 
 // Specifications for the processes
 
-	PROCESS_STACKMALLOC(
-		0U,									// Index
-		specification,						// Specifications (just use specification_x)
-		aStrText,							// Info string (NULL if anonymous)
-		KKERN_SZ_STACK_MM,					// KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
-		aProcess,							// Code of the process
-		aStrIden,							// Identifier (NULL if anonymous)
-		KSYST,								// Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
-		KKERN_PRIORITY_HIGH_15				// KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
-	);
+    PROCESS_STACKMALLOC(
+        0U,                                 // Index
+        specification,                      // Specifications (just use specification_x)
+        aStrText,                           // Info string (NULL if anonymous)
+        KKERN_SZ_STACK_MM,                  // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
+        aProcess,                           // Code of the process
+        aStrIden,                           // Identifier (NULL if anonymous)
+        KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
+        KKERN_PRIORITY_HIGH_15              // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
+    );
 
-	status = (kern_createProcess(&specification, NULL, &process) == KERR_KERN_NOERR) ? (true) : (false);
-	return (status);
+    status = (kern_createProcess(&specification, NULL, &process) == KERR_KERN_NOERR) ? (true) : (false);
+    return (status);
 }
 
 /*
  * \brief aProcess
  *
  * Px: - As soon as a new data is available on the queue
- *		 - Process it
+ *       - Process it
  *
  */
 static void __attribute__ ((noreturn)) aProcess(const void *argument) {
-	UNUSED(argument);
+    UNUSED(argument);
 
-	uintptr_t	message;
+    uintptr_t   message;
 
-	while (vQueue_dispatcher == NULL) { kern_suspendProcess(1U); }
+    while (vQueue_dispatcher == NULL) { kern_suspendProcess(1U); }
 
-	while (true) {
-		if (kern_readQueue(vQueue_dispatcher, &message, KWAIT_INFINITY) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Read queue"); exit(EXIT_OS_FAILURE); }
+    while (true) {
+        if (kern_readQueue(vQueue_dispatcher, &message, KWAIT_INFINITY) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Read queue"); exit(EXIT_OS_FAILURE); }
 
 // Process the information coming from the queue
 
-		switch (message & 0xFF000000u) {
-			case KID_SENSOR: {
-				((message & 1U) == 1U) ? (led_on(KLED_0)) : (led_off(KLED_0));
-				break;
-			}
-			case KID_ACTUATOR: {
-				switch (message & 0x3u) {
-					case 0x0u: { (void)dprintf(KURT0, "Motor position 00\n"); break; }
-					case 0x1u: { (void)dprintf(KURT0, "Motor position 01\n"); break; }
-					case 0x2u: { (void)dprintf(KURT0, "Motor position 02\n"); break; }
-					case 0x3u: { (void)dprintf(KURT0, "Motor position 03\n"); break; }
-					default: {
+        switch (message & 0xFF000000u) {
+            case KID_SENSOR: {
+                ((message & 1U) == 1U) ? (led_on(KLED_0)) : (led_off(KLED_0));
+                break;
+            }
+            case KID_ACTUATOR: {
+                switch (message & 0x3u) {
+                    case 0x0u: { (void)dprintf(KURT0, "Motor position 00\n"); break; }
+                    case 0x1u: { (void)dprintf(KURT0, "Motor position 01\n"); break; }
+                    case 0x2u: { (void)dprintf(KURT0, "Motor position 02\n"); break; }
+                    case 0x3u: { (void)dprintf(KURT0, "Motor position 03\n"); break; }
+                    default: {
 
 // Make MISRA happy :-)
 
-						break;
-					}
-				}
-				break;
-			}
-			default: { (void)dprintf(KURT0, "ID queue problem\n"); break; }
-		}
-	}
+                        break;
+                    }
+                }
+                break;
+            }
+            default: { (void)dprintf(KURT0, "ID queue problem\n"); break; }
+        }
+    }
 }

@@ -2,17 +2,18 @@
 ; header.
 ; =======
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		header for the uKOS-X applications.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project:  uKOS-X
+;
+; Purpose:
+;    header for the uKOS-X applications.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,19 +47,19 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"types.h"
-#include	"modules.h"
+#include    "types.h"
+#include    "modules.h"
 
-extern	int32_t			aStart(uint32_t argc, const char_t *argv[]);
-extern	uintptr_t		_lnApplication;
-extern	uKOS_module_t	aUserAppl_Specifications;
+extern  int32_t         aStart(uint32_t argc, const char_t *argv[]);
+extern  uintptr_t       _lnApplication;
+extern  uKOS_module_t   aUserAppl_Specifications;
 
 __attribute__ ((section(".header")))
-const	uKOS_header_t	appHeader = {
-							KMEMU,
-							aStart,
-							(uintptr_t)&_lnApplication,
-							&aUserAppl_Specifications
-						};
+const   uKOS_header_t   appHeader = {
+                            KMEMU,
+                            aStart,
+                            (uintptr_t)&_lnApplication,
+                            &aUserAppl_Specifications
+                        };

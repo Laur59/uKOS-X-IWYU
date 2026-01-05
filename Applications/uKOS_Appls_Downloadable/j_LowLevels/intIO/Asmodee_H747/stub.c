@@ -2,17 +2,18 @@
 ; stub.
 ; =====
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Hardware specific stub.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    Hardware specific stub.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,55 +47,55 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"core_reg.h"
-#include	"soc_reg.h"
-#include	"macros.h"
-#include	"macros_soc.h"
-#include	"macros_core.h"
-#include	"kern/kern.h"
+#include    "core_reg.h"
+#include    "soc_reg.h"
+#include    "macros.h"
+#include    "macros_soc.h"
+#include    "macros_core.h"
+#include    "kern/kern.h"
 
-extern	volatile	uint32_t	vCounter;
+extern  volatile    uint32_t    vCounter;
 
-#define	BPA0	0U
+#define BPA0    0U
 
 // Prototypes
 
-extern	void	(*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
+extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
-static	void	stub_intr_io_interruption(void);
+static  void    stub_intr_io_interruption(void);
 
 /*
  * \brief stub_intr_io_init
  *
  */
-void	stub_intr_io_init(void) {
+void    stub_intr_io_init(void) {
 
-	RCC->APB4ENR |= RCC_APB4ENR_SYSCFGEN;
+    RCC->APB4ENR |= RCC_APB4ENR_SYSCFGEN;
 
-	SYSCFG->EXTICR1 = (0U * SYSCFG_EXTICR1_EXTI0_0);
+    SYSCFG->EXTICR1 = (0U * SYSCFG_EXTICR1_EXTI0_0);
 
-	INTERRUPT_VECTOR(EXTI0_C0_IRQn, stub_intr_io_interruption);
-	NVIC_SetPriority(EXTI0_C0_IRQn, KHW_PRIORITY_HIGH);
-	NVIC_EnableIRQ(EXTI0_C0_IRQn);
+    INTERRUPT_VECTOR(EXTI0_C0_IRQn, stub_intr_io_interruption);
+    NVIC_SetPriority(EXTI0_C0_IRQn, KHW_PRIORITY_HIGH);
+    NVIC_EnableIRQ(EXTI0_C0_IRQn);
 
-	EXTI->FTSR1	  |= (1U<<BPA0);
-	EXTI->CPUPR1  |= (1U<<BPA0);
-	EXTI->CPUIMR1 |= (1U<<BPA0);
+    EXTI->FTSR1   |= (1U<<BPA0);
+    EXTI->CPUPR1  |= (1U<<BPA0);
+    EXTI->CPUIMR1 |= (1U<<BPA0);
 }
 
 /*
  * \brief stub_intr_io_interruption
  *
  */
-static	void	stub_intr_io_interruption(void) {
-	uint32_t	core;
+static  void    stub_intr_io_interruption(void) {
+    uint32_t    core;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	EXTI->CPUPR1 |= (1U<<BPA0);
-	vCounter++;
+    EXTI->CPUPR1 |= (1U<<BPA0);
+    vCounter++;
 
-	PREEMPTION_THRESHOLD(core);
+    PREEMPTION_THRESHOLD(core);
 }

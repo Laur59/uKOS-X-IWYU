@@ -2,17 +2,18 @@
 ; dumplog.
 ; ========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Display the log fifo captured with LOG().
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    Display the log fifo captured with LOG().
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,54 +47,54 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<inttypes.h>
-#include	<stdint.h>	// NOLINT(misc-include-cleaner): Explicit include for IWYU compliance
-#include	<stdio.h>
-#include	<stdlib.h>
-#include	<string.h>
+#include    <inttypes.h>
+#include    <stdint.h>  // NOLINT(misc-include-cleaner): Explicit include for IWYU compliance
+#include    <stdio.h>
+#include    <stdlib.h>
+#include    <string.h>
 
-#include	"kern/kern.h"
-#include	"macros.h"
-#include	"macros_core.h"
-#include	"macros_soc.h"
-#include	"memo/memo.h"
-#include	"modules.h"
-#include	"record/private/private_record.h"
-#include	"record/record.h"
-#include	"serial/serial.h"
-#include	"types.h"
+#include    "kern/kern.h"
+#include    "macros.h"
+#include    "macros_core.h"
+#include    "macros_soc.h"
+#include    "memo/memo.h"
+#include    "modules.h"
+#include    "record/private/private_record.h"
+#include    "record/record.h"
+#include    "serial/serial.h"
+#include    "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"dumplog      Dump the log buffer.                      (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "Dump the log buffer\n"
-									"===================\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "dumplog      Dump the log buffer.                      (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "Dump the log buffer\n"
+                                    "===================\n\n"
 
-									"This tool display the content of the log buffer\n\n"
+                                    "This tool display the content of the log buffer\n\n"
 
-									"Input format:  dumplog{[core]}\n"
-									"Output format: [result]\n\n"
+                                    "Input format:  dumplog{[core]}\n"
+                                    "Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // Prototypes
 
-static	int32_t		prgm(uint32_t argc, const char_t *argv[]);
-static	void		local_compose(const char_t *identifier, const char_t **idSpacer);
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+static  void        local_compose(const char_t *identifier, const char_t **idSpacer);
 
 MODULE(
-	Dumplog,									// Module name (the first letter has to be upper case)
-	KID_FAM_CLI,								// Family (defined in the module.h)
-	KNUM_DUMP_LOG,								// Module identifier (defined in the module.h)
-	NULL,										// Address of the initialisation code (early pre-init)
-	prgm,										// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	NULL,										// Address of the clean code (clean the module)
-	" 1.0",										// Revision string (major . minor)
-	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0											// Execution cores
+    Dumplog,                                    // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                                // Family (defined in the module.h)
+    KNUM_DUMP_LOG,                              // Module identifier (defined in the module.h)
+    NULL,                                       // Address of the initialisation code (early pre-init)
+    prgm,                                       // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    NULL,                                       // Address of the clean code (clean the module)
+    " 1.0",                                     // Revision string (major . minor)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),         // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                           // Execution cores
 );
 
 // CLI tool specific
@@ -103,19 +104,19 @@ MODULE(
  * \brief Main entry point
  *
  */
-static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
-	UNUSED(argc);
-	UNUSED(argv);
+static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
+    UNUSED(argc);
+    UNUSED(argv);
 
-			char_t				*dummy;
-			uint64_t			olderTime;
-			uint32_t			i;
-			uint32_t			core;
-			recordLogging_t		*logBuffer, *rLogBuffer, *rOldLogBuffer;
-			bool				terminate = false;
-	const	char_t				*category, *idSpacerI, *idSpacerF;
+            char_t              *dummy;
+            uint64_t            olderTime;
+            uint32_t            i;
+            uint32_t            core;
+            recordLogging_t     *logBuffer, *rLogBuffer, *rOldLogBuffer;
+            bool                terminate = false;
+    const   char_t              *category, *idSpacerI, *idSpacerF;
 
-	(void)dprintf(KSYST, "Log dump.\n");
+    (void)dprintf(KSYST, "Log dump.\n");
 
 // Analyse the command line
 // ------------------------
@@ -126,131 +127,131 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 // dumptlog 0
 // dumptlog n
 
-	switch (argc) {
-		case 1U: {
-			core = 0U;
-			break;
-		}
-		case 2U: {
-			core = (uint32_t)strtol(argv[1], &dummy, 10U);
-			if (core >= KNB_CORES) {
-				core = 0U;
-			}
-			break;
-		}
-		default: {
-			core = 0U;
-			break;
-		}
-	}
+    switch (argc) {
+        case 1U: {
+            core = 0U;
+            break;
+        }
+        case 2U: {
+            core = (uint32_t)strtol(argv[1], &dummy, 10U);
+            if (core >= KNB_CORES) {
+                core = 0U;
+            }
+            break;
+        }
+        default: {
+            core = 0U;
+            break;
+        }
+    }
 
-	PRIVILEGE_ELEVATE;
+    PRIVILEGE_ELEVATE;
 
 // Reserve the necessary memory
 
-	logBuffer = (recordLogging_t *)memo_malloc(KMEMO_ALIGN_8, (KRECORD_SZ_LOG_BUF * sizeof(recordLogging_t)), "dumplog");
-	if (logBuffer == NULL) {
-		(void)dprintf(KSYST, "Not enough memory.\n");
-		PRIVILEGE_RESTORE;
+    logBuffer = (recordLogging_t *)memo_malloc(KMEMO_ALIGN_8, (KRECORD_SZ_LOG_BUF * sizeof(recordLogging_t)), "dumplog");
+    if (logBuffer == NULL) {
+        (void)dprintf(KSYST, "Not enough memory.\n");
+        PRIVILEGE_RESTORE;
 
-		return (EXIT_OS_FAILURE);
-	}
+        return (EXIT_OS_FAILURE);
+    }
 
 // Copy the buffer into a memory (to ensure the coherence between the buffer & the parameter)
 
-	rLogBuffer = logBuffer;
-	for (i = 0U; i < KRECORD_SZ_LOG_BUF; i++) {
-		rLogBuffer->oLogCategory = KINFO_USER;
-		rLogBuffer->oMark		 = false;
-		rLogBuffer->oTimeStamp   = 0U;
-		rLogBuffer->oFunction    = NULL;
-		rLogBuffer->oMessage     = NULL;
-		rLogBuffer->oLineNumber  = 0U;
-		rLogBuffer->oIdentifier  = NULL;
-		rLogBuffer++;
-	}
+    rLogBuffer = logBuffer;
+    for (i = 0U; i < KRECORD_SZ_LOG_BUF; i++) {
+        rLogBuffer->oLogCategory = KINFO_USER;
+        rLogBuffer->oMark        = false;
+        rLogBuffer->oTimeStamp   = 0U;
+        rLogBuffer->oFunction    = NULL;
+        rLogBuffer->oMessage     = NULL;
+        rLogBuffer->oLineNumber  = 0U;
+        rLogBuffer->oIdentifier  = NULL;
+        rLogBuffer++;
+    }
 
-	kern_criticalSection(KENTER_CRITICAL);
-	memcpy(logBuffer, vRecord_logBuffer[core], (KRECORD_SZ_LOG_BUF * sizeof(recordLogging_t)));
-	kern_criticalSection(KEXIT_CRITICAL);
+    kern_criticalSection(KENTER_CRITICAL);
+    memcpy(logBuffer, vRecord_logBuffer[core], (KRECORD_SZ_LOG_BUF * sizeof(recordLogging_t)));
+    kern_criticalSection(KEXIT_CRITICAL);
 
-	(void)dprintf(KSYST, "Log provided by the core %"PRIu32"\n\n", core);
-	(void)dprintf(KSYST, "      Time [us]  Category          Process or ISR identifier            Function                              Line   Information\n\n");
+    (void)dprintf(KSYST, "Log provided by the core %"PRIu32"\n\n", core);
+    (void)dprintf(KSYST, "      Time [us]  Category          Process or ISR identifier            Function                              Line   Information\n\n");
 
-	if (logBuffer->oTimeStamp > 0U) {
-		while (!terminate) {
-			rLogBuffer    = logBuffer;
-			olderTime     = 0xFFFFFFFFFFFFFFFFU;
-			rOldLogBuffer = NULL;
+    if (logBuffer->oTimeStamp > 0U) {
+        while (!terminate) {
+            rLogBuffer    = logBuffer;
+            olderTime     = 0xFFFFFFFFFFFFFFFFU;
+            rOldLogBuffer = NULL;
 
-			for (i = 0; i < KRECORD_SZ_LOG_BUF; i++) {
+            for (i = 0; i < KRECORD_SZ_LOG_BUF; i++) {
 
 // Case where the buffer is not full
 
-				if (rLogBuffer->oTimeStamp == 0U) {
-					break;
-				}
+                if (rLogBuffer->oTimeStamp == 0U) {
+                    break;
+                }
 
 // If there is an older table entry not marked yet
 
-				if ((rLogBuffer->oTimeStamp < olderTime) && (!rLogBuffer->oMark)) {
-					olderTime = rLogBuffer->oTimeStamp;
-					rOldLogBuffer = rLogBuffer;
-				}
-				rLogBuffer++;
-			}
+                if ((rLogBuffer->oTimeStamp < olderTime) && (!rLogBuffer->oMark)) {
+                    olderTime = rLogBuffer->oTimeStamp;
+                    rOldLogBuffer = rLogBuffer;
+                }
+                rLogBuffer++;
+            }
 
 // Verify if there is an entry to print
 // Or terminate
 
-			if (rOldLogBuffer != NULL) {
+            if (rOldLogBuffer != NULL) {
 
-				category = "Unknown         ";
-				category = (rOldLogBuffer->oLogCategory == KFATAL_SYSTEM)    ? ("Fatal system    ") : (category);
-				category = (rOldLogBuffer->oLogCategory == KFATAL_KERNEL)    ? ("Fatal kernel    ") : (category);
-				category = (rOldLogBuffer->oLogCategory == KFATAL_MANAGER)   ? ("Fatal manager   ") : (category);
-				category = (rOldLogBuffer->oLogCategory == KFATAL_USER)      ? ("Fatal user      ") : (category);
+                category = "Unknown         ";
+                category = (rOldLogBuffer->oLogCategory == KFATAL_SYSTEM)    ? ("Fatal system    ") : (category);
+                category = (rOldLogBuffer->oLogCategory == KFATAL_KERNEL)    ? ("Fatal kernel    ") : (category);
+                category = (rOldLogBuffer->oLogCategory == KFATAL_MANAGER)   ? ("Fatal manager   ") : (category);
+                category = (rOldLogBuffer->oLogCategory == KFATAL_USER)      ? ("Fatal user      ") : (category);
 
-				category = (rOldLogBuffer->oLogCategory == KERROR_SYSTEM)    ? ("Error system    ") : (category);
-				category = (rOldLogBuffer->oLogCategory == KERROR_KERNEL)    ? ("Error kernel    ") : (category);
-				category = (rOldLogBuffer->oLogCategory == KERROR_MANAGER)   ? ("Error manager   ") : (category);
-				category = (rOldLogBuffer->oLogCategory == KERROR_USER)      ? ("Error user      ") : (category);
+                category = (rOldLogBuffer->oLogCategory == KERROR_SYSTEM)    ? ("Error system    ") : (category);
+                category = (rOldLogBuffer->oLogCategory == KERROR_KERNEL)    ? ("Error kernel    ") : (category);
+                category = (rOldLogBuffer->oLogCategory == KERROR_MANAGER)   ? ("Error manager   ") : (category);
+                category = (rOldLogBuffer->oLogCategory == KERROR_USER)      ? ("Error user      ") : (category);
 
-				category = (rOldLogBuffer->oLogCategory == KWARNING_SYSTEM)  ? ("Warning system  ") : (category);
-				category = (rOldLogBuffer->oLogCategory == KWARNING_KERNEL)  ? ("Warning kernel  ") : (category);
-				category = (rOldLogBuffer->oLogCategory == KWARNING_MANAGER) ? ("Warning manager ") : (category);
-				category = (rOldLogBuffer->oLogCategory == KWARNING_USER)    ? ("Warning user    ") : (category);
+                category = (rOldLogBuffer->oLogCategory == KWARNING_SYSTEM)  ? ("Warning system  ") : (category);
+                category = (rOldLogBuffer->oLogCategory == KWARNING_KERNEL)  ? ("Warning kernel  ") : (category);
+                category = (rOldLogBuffer->oLogCategory == KWARNING_MANAGER) ? ("Warning manager ") : (category);
+                category = (rOldLogBuffer->oLogCategory == KWARNING_USER)    ? ("Warning user    ") : (category);
 
-				category = (rOldLogBuffer->oLogCategory == KINFO_SYSTEM)     ? ("Info system     ") : (category);
-				category = (rOldLogBuffer->oLogCategory == KINFO_KERNEL)     ? ("Info kernel     ") : (category);
-				category = (rOldLogBuffer->oLogCategory == KINFO_MANAGER)    ? ("Info manager    ") : (category);
-				category = (rOldLogBuffer->oLogCategory == KINFO_USER)       ? ("Info user       ") : (category);
+                category = (rOldLogBuffer->oLogCategory == KINFO_SYSTEM)     ? ("Info system     ") : (category);
+                category = (rOldLogBuffer->oLogCategory == KINFO_KERNEL)     ? ("Info kernel     ") : (category);
+                category = (rOldLogBuffer->oLogCategory == KINFO_MANAGER)    ? ("Info manager    ") : (category);
+                category = (rOldLogBuffer->oLogCategory == KINFO_USER)       ? ("Info user       ") : (category);
 
-				local_compose(rOldLogBuffer->oIdentifier, &idSpacerI);
-				local_compose(rOldLogBuffer->oFunction,   &idSpacerF);
+                local_compose(rOldLogBuffer->oIdentifier, &idSpacerI);
+                local_compose(rOldLogBuffer->oFunction,   &idSpacerF);
 
-				(void)dprintf(KSYST, "%12"PRIu64"-us  %s  %s  %s  %s  %s  %5"PRIu32"   %s\n", rOldLogBuffer->oTimeStamp,	\
-																							  category,						\
-																							  rOldLogBuffer->oIdentifier,	\
-																							  idSpacerI,					\
-																							  rOldLogBuffer->oFunction,		\
-																							  idSpacerF,					\
-																							  rOldLogBuffer->oLineNumber,	\
-																							  rOldLogBuffer->oMessage);
+                (void)dprintf(KSYST, "%12"PRIu64"-us  %s  %s  %s  %s  %s  %5"PRIu32"   %s\n", rOldLogBuffer->oTimeStamp,    \
+                                                                                              category,                     \
+                                                                                              rOldLogBuffer->oIdentifier,   \
+                                                                                              idSpacerI,                    \
+                                                                                              rOldLogBuffer->oFunction,     \
+                                                                                              idSpacerF,                    \
+                                                                                              rOldLogBuffer->oLineNumber,   \
+                                                                                              rOldLogBuffer->oMessage);
 
-				rOldLogBuffer->oMark = true;
-			}
-			else {
-				terminate = true;
-			}
-		}
-		(void)dprintf(KSYST, "\n");
-	}
+                rOldLogBuffer->oMark = true;
+            }
+            else {
+                terminate = true;
+            }
+        }
+        (void)dprintf(KSYST, "\n");
+    }
 
-	memo_delayedFree(logBuffer);
-	PRIVILEGE_RESTORE;
+    memo_delayedFree(logBuffer);
+    PRIVILEGE_RESTORE;
 
-	return (EXIT_OS_SUCCESS_CLI);
+    return (EXIT_OS_SUCCESS_CLI);
 }
 
 // Local routines
@@ -264,19 +265,19 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
  * - to accommodate "1234567     "
  * -                "            "
  *
- * \param[in]	*string		Ptr on a string
- * \param[out]	**spacer	Ptr on the final space
+ * \param[in]   *string     Ptr on a string
+ * \param[out]  **spacer    Ptr on the final space
  *
  * \note This function does not return a value (None).
  *
  */
-static	void	local_compose(const char_t *identifier, const char_t **idSpacer) {
-	size_t	len;
+static  void    local_compose(const char_t *identifier, const char_t **idSpacer) {
+    size_t  len;
 
 // --------------------------------------|-------------------------------|---
 //                                      "Process_to_count_the_number_xyztu";
-	static	const	char_t	aSpacer[] = "                                 ";
+    static  const   char_t  aSpacer[] = "                                 ";
 
-	len = strlen(identifier);
-	*idSpacer = (len <= (sizeof(aSpacer) - 1U)) ? (&aSpacer[len]) : (&aSpacer[0]);
+    len = strlen(identifier);
+    *idSpacer = (len <= (sizeof(aSpacer) - 1U)) ? (&aSpacer[len]) : (&aSpacer[0]);
 }

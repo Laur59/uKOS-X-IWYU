@@ -2,19 +2,20 @@
 ; private_xLibrary.
 ; =================
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Kern - impure data for xLibrary (newlib, picolib, etc.) management.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;			Private uKernel variables.
+; Project: uKOS-X
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Purpose:
+;    Kern - impure data for xLibrary (newlib, picolib, etc.) management.
+;
+;    Private uKernel variables.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,7 +49,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_kernels
@@ -70,41 +71,41 @@
  * @{
  */
 
-#include	<string.h>		// IWYU pragma: keep
+#include    <string.h>      // IWYU pragma: keep
 
-#include	<reent.h>
+#include    <reent.h>
 
-#include	"kern/kern.h"
-#include	"macros_soc.h"
-#include	"newlib/newlib.h"
+#include    "kern/kern.h"
+#include    "macros_soc.h"
+#include    "newlib/newlib.h"
 
-extern	reent_t		vKern_impureData[KNB_CORES][KKERN_NB_PROCESSES];	// Array of impure pointer fr the newlib
+extern  reent_t     vKern_impureData[KNB_CORES][KKERN_NB_PROCESSES];    // Array of impure pointer fr the newlib
 
 // Prototypes
 
 /*!
  * \brief Initialise the impure data of the process
  *
- * \param[in]	*handle		Ptr on the handle
+ * \param[in]   *handle     Ptr on the handle
  *
  * \note This function does not return a value (None).
  *
  * \warning call usable only by the uKernel.
  *
  */
-extern	void	xLibrary_initialise(proc_t *handle);
+extern  void    xLibrary_initialise(proc_t *handle);
 
 /*!
  * \brief update the impure pointer with the impure data of the process
  *
- * \param[in]	-
+ * \param[in]   -
  *
  * \note This function does not return a value (None).
  *
  * \warning call usable only by the uKernel.
  *
  */
-extern	void	xLibrary_update(void);
+extern  void    xLibrary_update(void);
 
 /**@}*/
 /**@}*/

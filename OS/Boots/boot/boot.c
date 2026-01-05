@@ -2,17 +2,18 @@
 ; boot.
 ; =====
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Bootstrap of the system
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    Bootstrap of the system
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,25 +47,25 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<stdint.h>
-#include	<stdlib.h>
+#include    <stdint.h>
+#include    <stdlib.h>
 
 #ifdef RV32IMAC_S
-#include	"core.h"	// IWYU pragma: keep (for core_setBitCSR)
+#include    "core.h"    // IWYU pragma: keep (for core_setBitCSR)
 #endif
-#include	"kern/kern.h"
-#include	"macros.h"
+#include    "kern/kern.h"
+#include    "macros.h"
 #ifndef RV64IMAFDC_S
-#include	"macros_core.h"
+#include    "macros_core.h"
 #endif
-#include	"macros_runtime.h"
-#include	"macros_soc.h"
-#include	"modules.h"
-#include	"os_errors.h"
-#include	"record/record.h"
-#include	"serial/serial.h"
-#include	"system/system.h"
-#include	"types.h"
+#include    "macros_runtime.h"
+#include    "macros_soc.h"
+#include    "modules.h"
+#include    "os_errors.h"
+#include    "record/record.h"
+#include    "serial/serial.h"
+#include    "system/system.h"
+#include    "types.h"
 
 
 // uKOS-X specific (see the module.h)
@@ -72,30 +73,30 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"boot         Bootstrap of uKOS-X.                      (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "Boot\n"
-									"====\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "boot         Bootstrap of uKOS-X.                      (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "Boot\n"
+                                    "====\n\n"
 
-									"This code prepare for the system boot\n\n"
+                                    "This code prepare for the system boot\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
-	Boot,							// Module name (the first letter has to be upper case)
-	KID_FAM_STARTUPS,				// Family (defined in the module.h)
-	KNUM_BOOT,						// Module identifier (defined in the module.h)
-	NULL,							// Address of the initialisation code (early pre-init)
-	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	NULL,							// Address of the clean code (clean the module)
-	" 1.0",							// Revision string (major . minor)
-	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0								// Execution cores
+    Boot,                           // Module name (the first letter has to be upper case)
+    KID_FAM_STARTUPS,               // Family (defined in the module.h)
+    KNUM_BOOT,                      // Module identifier (defined in the module.h)
+    NULL,                           // Address of the initialisation code (early pre-init)
+    NULL,                           // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    NULL,                           // Address of the clean code (clean the module)
+    " 1.0",                         // Revision string (major . minor)
+    (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                               // Execution cores
 );
 
 // Boot specific
 // =============
 
-#define	KID_IDLE	((KID_FAM_DAEMONS<<24U) | (KNUM_IDLE<<8U) | '_')
+#define KID_IDLE    ((KID_FAM_DAEMONS<<24U) | (KNUM_IDLE<<8U) | '_')
 
 /*
  * \brief Main entry point
@@ -107,56 +108,56 @@ MODULE(
  * - Process boot commits a suicide (by the exit)
  *
  */
-int32_t		boot(void) {
-			uint16_t		index = 0U;
-			uint32_t		core;
-	const	uKOS_module_t	*module;
+int32_t     boot(void) {
+            uint16_t        index = 0U;
+            uint32_t        core;
+    const   uKOS_module_t   *module;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
 // Initialise the uKernel
 // Set KURT0 as a default (it could be changed in the start-up process)
 
-	kern_init();
+    kern_init();
 
-	#ifdef CONFIG_MAN_SERIAL_S
-	serial_setDefSerialManager(KURT0);
-	#endif
+    #ifdef CONFIG_MAN_SERIAL_S
+    serial_setDefSerialManager(KURT0);
+    #endif
 
 // Install the daemon idle (HAS TO BE THE FIRST IN THE EXECUTION LIST)
 // Consider all the possible cores
 
-	if (system_getModuleName("idle", &index, &module) != KERR_SYSTEM_NOERR) {
-		LOG(KFATAL_SYSTEM, "boot: daemon idle not found");
-		exit(EXIT_OS_PANIC);
-	}
+    if (system_getModuleName("idle", &index, &module) != KERR_SYSTEM_NOERR) {
+        LOG(KFATAL_SYSTEM, "boot: daemon idle not found");
+        exit(EXIT_OS_PANIC);
+    }
 
-	if (((1U<<core) & module->oExecutionCore) != 0U) {
-		module->oExecution(0U, NULL);
-	}
-	LOG(KINFO_SYSTEM, "boot: daemon idle launched");
+    if (((1U<<core) & module->oExecutionCore) != 0U) {
+        module->oExecution(0U, NULL);
+    }
+    LOG(KINFO_SYSTEM, "boot: daemon idle launched");
 
 // Install the process launcher
 // Consider all the possible cores
 
-	if (system_getModuleName("launcher", &index, &module) != KERR_SYSTEM_NOERR) {
-		LOG(KFATAL_SYSTEM, "boot: process launcher not found");
-		exit(EXIT_OS_PANIC);
-	}
+    if (system_getModuleName("launcher", &index, &module) != KERR_SYSTEM_NOERR) {
+        LOG(KFATAL_SYSTEM, "boot: process launcher not found");
+        exit(EXIT_OS_PANIC);
+    }
 
-	if (((1U<<core) & module->oExecutionCore) != 0) {
-		module->oExecution(0U, NULL);
-	}
-	LOG(KINFO_SYSTEM, "boot: Process launcher launched");
+    if (((1U<<core) & module->oExecutionCore) != 0) {
+        module->oExecution(0U, NULL);
+    }
+    LOG(KINFO_SYSTEM, "boot: Process launcher launched");
 
 // Initialise the C++ constructors
 // Start the time sharing
 // Leave the "first" process and start ...
 
-	CPP_INIT_ARRAYS;
-	kern_runKernel();
+    CPP_INIT_ARRAYS;
+    kern_runKernel();
 
-	INTERRUPTION_ON_HARD;
-	kern_switchFast();
-	return (EXIT_OS_SUCCESS_CLI);
+    INTERRUPTION_ON_HARD;
+    kern_switchFast();
+    return (EXIT_OS_SUCCESS_CLI);
 }

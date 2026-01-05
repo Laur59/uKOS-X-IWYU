@@ -2,19 +2,20 @@
 ; private_temporal.
 ; =================
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Kern - time management.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;			Private uKernel variables.
+; Project: uKOS-X
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Purpose:
+;    Kern - time management.
+;
+;    Private uKernel variables.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,7 +49,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_kernels
@@ -70,13 +71,13 @@
  * @{
  */
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"kern/kern.h"
-#include	"macros_soc.h"
+#include    "kern/kern.h"
+#include    "macros_soc.h"
 
-extern				list_t		vKern_listWait[KNB_CORES];					// Wait list (processes waiting for a time)
-extern	volatile	uint32_t	vKern_TimeException[KNB_CORES];				// Sum of time spent inside all the exceptions
+extern              list_t      vKern_listWait[KNB_CORES];                  // Wait list (processes waiting for a time)
+extern  volatile    uint32_t    vKern_TimeException[KNB_CORES];             // Sum of time spent inside all the exceptions
 
 // Prototypes
 
@@ -86,7 +87,7 @@ extern	volatile	uint32_t	vKern_TimeException[KNB_CORES];				// Sum of time spent
  * \warning call usable only by the uKernel.
  *
  */
-extern	uint32_t	temporal_getNextLowPowerTime(void);
+extern  uint32_t    temporal_getNextLowPowerTime(void);
 
 /**@}*/
 /**@}*/

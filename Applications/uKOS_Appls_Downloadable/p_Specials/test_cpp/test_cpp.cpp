@@ -2,24 +2,25 @@
 ; test_cpp.
 ; =========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Demo of a C application.
-;			This application shows how to operate with the uKOS-X uKernel.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;			Launch 1 processes in C++:
+; Project: uKOS-X
 ;
-;			- P0: Display a classe
-;				  Every 100-ms
-;				  Toggle LED 0
+; Purpose:
+;    Demo of a C application.
+;    This application shows how to operate with the uKOS-X uKernel.
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+;    Launch 1 processes in C++:
+;
+;    - P0: Display a classe
+;          Every 100-ms
+;          Toggle LED 0
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -58,86 +59,86 @@
  * \ingroup app_special
  * \brief This application shows how to operate with the uKOS uKernel.
  *
- *			Launch 1 processes:
+ *          Launch 1 processes:
  *
- *			- P0: Every 100-ms
- *					- Toggle LED 1
+ *          - P0: Every 100-ms
+ *                  - Toggle LED 1
  *
  */
 
-#include	<cstdlib>
-#include	<stdio.h>
+#include    <cstdlib>
+#include    <stdio.h>
 
-#include	"crt0.h"
-#include	"serial/serial.h"
-#include	"kern/kern.h"
-#include	"macros.h"
-#include	"macros_core.h"
-#include	"macros_core_stackFrame.h"
-#include	"macros_runtime.h"
-#include	"memo/memo.h"
-#include	"led/led.h"
-#include	"modules.h"
-#include	"os_errors.h"
-#include	"types.h"
+#include    "crt0.h"
+#include    "serial/serial.h"
+#include    "kern/kern.h"
+#include    "macros.h"
+#include    "macros_core.h"
+#include    "macros_core_stackFrame.h"
+#include    "macros_runtime.h"
+#include    "memo/memo.h"
+#include    "led/led.h"
+#include    "modules.h"
+#include    "os_errors.h"
+#include    "types.h"
 
 // Include our process manager
-#include	"demo_class.hpp"
+#include    "demo_class.hpp"
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"test_cpp     Example of how to use the C++.            (c) EFr-2026";
+STRG_LOC_CONST(aStrApplication[]) = "test_cpp     Example of how to use the C++.            (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
-									"===============================\n\n"
+                                    "===============================\n\n"
 
-									"This user function module is a C written application.\n\n"
+                                    "This user function module is a C written application.\n\n"
 
-									"Input format:  test_cpp\n"
-									"Output format: [result]\n\n";
+                                    "Input format:  test_cpp\n"
+                                    "Output format: [result]\n\n";
 
 MODULE(
-	UserAppl,							// Module name (the first letter has to be upper case)
-	KID_FAM_APPLICATIONS,				// Family (defined in the module.h)
-	KNUM_APPLICATION,					// Module identifier (defined in the module.h)
-	NULL,								// Address of the initialisation code (early pre-init)
-	aStart,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	NULL,								// Address of the clean code (clean the module)
-	" 1.0",								// Revision string (major . minor)
-	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0									// Execution cores
+    UserAppl,                           // Module name (the first letter has to be upper case)
+    KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
+    KNUM_APPLICATION,                   // Module identifier (defined in the module.h)
+    NULL,                               // Address of the initialisation code (early pre-init)
+    aStart,                             // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    NULL,                               // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
 );
 
 /*
  * \brief aProcess
  *
  * - P0: - Display the class
- *		 - Every 100-ms
- *			- Toggle LED 0
+ *       - Every 100-ms
+ *          - Toggle LED 0
  *
  */
 namespace {
-	void	__attribute__ ((noreturn)) aProcess_0(const void *argument) {
+    void    __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 
-		UNUSED(argument);
+        UNUSED(argument);
 
 // Waiting from the uKOS-X prompt
 
-		kern_suspendProcess(100U);
-		(void)dprintf(KSYST, "\n");
+        kern_suspendProcess(100U);
+        (void)dprintf(KSYST, "\n");
 
-		{
-		const	TestClass titi;
-		titi.doit();
-		}
+        {
+        const   TestClass titi;
+        titi.doit();
+        }
 
-		while (true) {
-			kern_suspendProcess(100U);
-			led_toggle(KLED_0);
-		}
-	}
+        while (true) {
+            kern_suspendProcess(100U);
+            led_toggle(KLED_0);
+        }
+    }
 }
 
 /*
@@ -148,39 +149,39 @@ namespace {
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int		main(int argc, const char *argv[]) {
-	UNUSED(argc);
-	UNUSED(argv);
+int     main(int argc, const char *argv[]) {
+    UNUSED(argc);
+    UNUSED(argv);
 
-	proc_t	*process_0;
+    proc_t  *process_0;
 
 // ------------------------------------I-----------------------------------------I--------------I
 
-	STRG_LOC_CONST(aStrIden_0[]) =    "Process_User";
-	STRG_LOC_CONST(aStrText_0[]) =    "Process user.                             (c) EFr-2026";
+    STRG_LOC_CONST(aStrIden_0[]) =    "Process_User";
+    STRG_LOC_CONST(aStrText_0[]) =    "Process user.                             (c) EFr-2026";
 
 // Initialise the C++ constructors
 
-	CPP_INIT_ARRAYS;
+    CPP_INIT_ARRAYS;
 
 // Specifications for the processes
 
 // NOLINTBEGIN(misc-const-correctness)
 //
-	PROCESS_STACKMALLOC(
-		0,									// Index
-		specification_0,					// Specifications (just use vSpecification_x)
-		aStrText_0,							// Info string (NULL if anonymous)
-		KKERN_SZ_STACK_MM,					// KSZSTACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
-		aProcess_0,							// Code of the process
-		aStrIden_0,							// Identifier (NULL if anonymous)
-		KSYST,								// Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
-		KKERN_PRIORITY_HIGH_02				// KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
-	);
+    PROCESS_STACKMALLOC(
+        0,                                  // Index
+        specification_0,                    // Specifications (just use vSpecification_x)
+        aStrText_0,                         // Info string (NULL if anonymous)
+        KKERN_SZ_STACK_MM,                  // KSZSTACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
+        aProcess_0,                         // Code of the process
+        aStrIden_0,                         // Identifier (NULL if anonymous)
+        KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
+        KKERN_PRIORITY_HIGH_02              // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
+    );
 
 // NOLINTEND(misc-const-correctness)
 //
 
-	if (kern_createProcess(&specification_0, NULL, &process_0) != KERR_KERN_NOERR) { exit(EXIT_OS_FAILURE); }
-	return (EXIT_OS_SUCCESS_CLI);
+    if (kern_createProcess(&specification_0, NULL, &process_0) != KERR_KERN_NOERR) { exit(EXIT_OS_FAILURE); }
+    return (EXIT_OS_SUCCESS_CLI);
 }

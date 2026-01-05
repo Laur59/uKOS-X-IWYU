@@ -2,19 +2,20 @@
 ; private_record.
 ; ===============
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		record manager.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;			Private record variables.
+; Project: uKOS-X
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Purpose:
+;    record manager.
+;
+;    Private record variables.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,11 +49,11 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	"kern/kern.h"
-#include	"macros_soc.h"
-#include	"record/record.h"
+#include    "kern/kern.h"
+#include    "macros_soc.h"
+#include    "record/record.h"
 
 /*!
  * \addtogroup Lib_generics
@@ -75,29 +76,29 @@
  */
 
 struct recordTracing {
-				uint64_t			oTimeStamp;												// Time stamp of the trace
-		const	char_t				*oMessage;												// Ptr on the message
-				uintptr_t			oParameter;												// Parameter
-				proc_t				*oProcess;												// Process from which trace has been written
+                uint64_t            oTimeStamp;                                             // Time stamp of the trace
+        const   char_t              *oMessage;                                              // Ptr on the message
+                uintptr_t           oParameter;                                             // Parameter
+                proc_t              *oProcess;                                              // Process from which trace has been written
 };
 
-extern			recordTracing_t		vRecord_traceFifo[KNB_CORES][KRECORD_SZ_TRACE_FIFO];	// Fifo for the trace
-extern			recordTracing_t		*vRecord_RTraceFifo[KNB_CORES];							// Ptr (R) for the trace
-extern			recordTracing_t		*vRecord_WTraceFifo[KNB_CORES];							// Ptr (W) for the trace
-extern			uint32_t			vRecord_NbTraceWrites[KNB_CORES];						// Number of writes in the fifo trace
+extern          recordTracing_t     vRecord_traceFifo[KNB_CORES][KRECORD_SZ_TRACE_FIFO];    // Fifo for the trace
+extern          recordTracing_t     *vRecord_RTraceFifo[KNB_CORES];                         // Ptr (R) for the trace
+extern          recordTracing_t     *vRecord_WTraceFifo[KNB_CORES];                         // Ptr (W) for the trace
+extern          uint32_t            vRecord_NbTraceWrites[KNB_CORES];                       // Number of writes in the fifo trace
 
 struct recordLogging {
-				recordLogCategory_t	oLogCategory;											// Log category
-				bool				oMark;													// Marking (for reading)
-				uint64_t			oTimeStamp;												// Time stamp of the log
-		const	char_t				*oFunction;												// Ptr on the function name
-		const	char_t				*oMessage;												// Ptr on the message
-				uint32_t			oLineNumber;											// Line number
-		const	char_t				*oIdentifier;											// Process identifier from which log has been written
+                recordLogCategory_t oLogCategory;                                           // Log category
+                bool                oMark;                                                  // Marking (for reading)
+                uint64_t            oTimeStamp;                                             // Time stamp of the log
+        const   char_t              *oFunction;                                             // Ptr on the function name
+        const   char_t              *oMessage;                                              // Ptr on the message
+                uint32_t            oLineNumber;                                            // Line number
+        const   char_t              *oIdentifier;                                           // Process identifier from which log has been written
 };
 
-extern			recordLogging_t		vRecord_logBuffer[KNB_CORES][KRECORD_SZ_LOG_BUF];		// Buffer for the logs
-extern			uint32_t			vRecord_NbLogWrites[KNB_CORES];							// Number of writes in the buffer log
+extern          recordLogging_t     vRecord_logBuffer[KNB_CORES][KRECORD_SZ_LOG_BUF];       // Buffer for the logs
+extern          uint32_t            vRecord_NbLogWrites[KNB_CORES];                         // Number of writes in the buffer log
 
 /**@}*/
 /**@}*/

@@ -2,17 +2,18 @@
 ; K210.
 ; =====
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		K210 equates.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    K210 equates.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,22 +47,22 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 // IWYU pragma: begin_exports
 
-#include	"Registers/soc_vectors.h"
-#include	"Registers/K210_fpioa.h"
-#include	"Registers/K210_gpio.h"
-#include	"Registers/K210_gpiohs.h"
-#include	"Registers/K210_spi.h"
-#include	"Registers/K210_uart.h"
-#include	"Registers/K210_timer.h"
-#include	"Registers/K210_sysctl.h"
-#include	"Registers/K210_clint.h"
-#include	"Registers/K210_plic.h"
-#include	"Registers/K210_dvp.h"
-#include	"Registers/K210_dmac.h"
-#include	"Registers/soc_addendum.h"
+#include    "Registers/soc_vectors.h"
+#include    "Registers/K210_fpioa.h"
+#include    "Registers/K210_gpio.h"
+#include    "Registers/K210_gpiohs.h"
+#include    "Registers/K210_spi.h"
+#include    "Registers/K210_uart.h"
+#include    "Registers/K210_timer.h"
+#include    "Registers/K210_sysctl.h"
+#include    "Registers/K210_clint.h"
+#include    "Registers/K210_plic.h"
+#include    "Registers/K210_dvp.h"
+#include    "Registers/K210_dmac.h"
+#include    "Registers/soc_addendum.h"
 
 // IWYU pragma: end_exports

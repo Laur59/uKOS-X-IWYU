@@ -2,17 +2,18 @@
 ; spi_commun.
 ; ===========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		spi_commun equates.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    spi_commun equates.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,7 +47,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_peripherals
@@ -63,31 +64,31 @@
  * @{
  */
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // Configuration structure
 // -----------------------
 
-typedef	struct	spiCnf	spiCnf_t;
+typedef struct  spiCnf  spiCnf_t;
 
 struct spiCnf {
-			uint32_t	oSpeed;									// SPI speed in bit/s
-			uint8_t		oMode;									// Mode
-			uint8_t		oClock;									// Clock format
+            uint32_t    oSpeed;                                 // SPI speed in bit/s
+            uint8_t     oMode;                                  // Mode
+            uint8_t     oClock;                                 // Clock format
 };
 
 // Mode (master/slave) (oMode)
 
 enum {
-			KSPI_MASTER = 0U,									// SPI master
-			KSPI_SLAVE											// SPI slave
+            KSPI_MASTER = 0U,                                   // SPI master
+            KSPI_SLAVE                                          // SPI slave
 };
 
 // Clock polarity (oClock)
 
 enum {
-			BSPI_POL = 0U,										// Polarity
-			BSPI_PHA											// Phase
+            BSPI_POL = 0U,                                      // Polarity
+            BSPI_PHA                                            // Phase
 };
 
 /**@}*/

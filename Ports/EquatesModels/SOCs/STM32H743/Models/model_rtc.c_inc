@@ -3,15 +3,18 @@
 ; ==========
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Model for managing the time & date by a hardware rtc.
-;			In the rtc it stored the local time.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project:  uKOS-X
+;
+; Purpose:
+;     Model for managing the time & date by a hardware rtc.
+;     In the rtc it stored the local time.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -45,16 +48,16 @@
 ;------------------------------------------------------------------------
 */
 
-#include	<stdint.h>
-#include	<time.h>
+#include    <stdint.h>
+#include    <time.h>
 
-#include	"types.h"
-#include	"soc_reg.h"
-#include	"kern/kern.h"
+#include    "types.h"
+#include    "soc_reg.h"
+#include    "kern/kern.h"
 
 // Prototypes
 
-static	void	local_binToBCD(uint8_t *value);
+static  void    local_binToBCD(uint8_t *value);
 
 /*
  * \brief model_rtc_update
@@ -62,77 +65,77 @@ static	void	local_binToBCD(uint8_t *value);
  * - Update the hardware rtc with a new UTC time
  *
  */
-void	model_rtc_update(uint64_t unixTime) {
-	tm_t		localTime;
-	time_t		now;
-	uint8_t		absDays, absMonths, absYears, absHours, absMinutes, absSeconds;
+void    model_rtc_update(uint64_t unixTime) {
+    tm_t        localTime;
+    time_t      now;
+    uint8_t     absDays, absMonths, absYears, absHours, absMinutes, absSeconds;
 
-	now = (time_t)(unixTime / CLOCKS_PER_SEC);
-	localtime_r(&now, &localTime);
+    now = (time_t)(unixTime / CLOCKS_PER_SEC);
+    localtime_r(&now, &localTime);
 
-//			time.h formats		rtc formats
+//          time.h formats      rtc formats
 //
-// Days:	1..31				1..31
-// Months:	0..11				1..12
-// Years:	since 1900			0..99
-// Hours:	0..23				0..23
-// Minutes:	0..59				0..59
-// Seconds:	0..59				0..59
+// Days:    1..31               1..31
+// Months:  0..11               1..12
+// Years:   since 1900          0..99
+// Hours:   0..23               0..23
+// Minutes: 0..59               0..59
+// Seconds: 0..59               0..59
 
-	absDays	   = (uint8_t)localTime.tm_mday;
-	absMonths  = (uint8_t)(localTime.tm_mon  + 1);
-	absYears   = (uint8_t)(localTime.tm_year - 100);
-	absHours   = (uint8_t)localTime.tm_hour;
-	absMinutes = (uint8_t)localTime.tm_min;
-	absSeconds = (uint8_t)localTime.tm_sec;
+    absDays    = (uint8_t)localTime.tm_mday;
+    absMonths  = (uint8_t)(localTime.tm_mon  + 1);
+    absYears   = (uint8_t)(localTime.tm_year - 100);
+    absHours   = (uint8_t)localTime.tm_hour;
+    absMinutes = (uint8_t)localTime.tm_min;
+    absSeconds = (uint8_t)localTime.tm_sec;
 
 // Binary format to BCD
 
-	local_binToBCD(&absDays);
-	local_binToBCD(&absMonths);
-	local_binToBCD(&absYears);
-	local_binToBCD(&absHours);
-	local_binToBCD(&absMinutes);
-	local_binToBCD(&absSeconds);
+    local_binToBCD(&absDays);
+    local_binToBCD(&absMonths);
+    local_binToBCD(&absYears);
+    local_binToBCD(&absHours);
+    local_binToBCD(&absMinutes);
+    local_binToBCD(&absSeconds);
 
 // Make possible the access to the RTC & RTC backup register.
 // After the restart, the RTC is in the protected mode
 // Remove the write protection
 // Enter in the initialization mode
 
-	PWR->CR1 |= PWR_CR1_DBP;
-	RTC->WPR = RTC_WPR_UNLOCK_KEY1;
-	RTC->WPR = RTC_WPR_UNLOCK_KEY2;
+    PWR->CR1 |= PWR_CR1_DBP;
+    RTC->WPR = RTC_WPR_UNLOCK_KEY1;
+    RTC->WPR = RTC_WPR_UNLOCK_KEY2;
 
 // Waiting for ready to write
 // Set the new counter values (BCD values)
 
-	RTC->ISR |= RTC_ISR_INIT;
-	while ((RTC->ISR & RTC_ISR_INITF) == 0U) { }
+    RTC->ISR |= RTC_ISR_INIT;
+    while ((RTC->ISR & RTC_ISR_INITF) == 0U) { }
 
-	kern_suspendProcess(1U);
-	RTC->TR = ((uint32_t)(absHours   /  16U)<<20U)
-			| ((uint32_t)(absHours   & 0xFu)<<16U)
-			| ((uint32_t)(absMinutes /  16U)<<12U)
-			| ((uint32_t)(absMinutes & 0xFu)<<8U)
-			| ((uint32_t)(absSeconds /  16U)<<4U)
-			| ((uint32_t)(absSeconds & 0xFu)<<0U);
+    kern_suspendProcess(1U);
+    RTC->TR = ((uint32_t)(absHours   /  16U)<<20U)
+            | ((uint32_t)(absHours   & 0xFu)<<16U)
+            | ((uint32_t)(absMinutes /  16U)<<12U)
+            | ((uint32_t)(absMinutes & 0xFu)<<8U)
+            | ((uint32_t)(absSeconds /  16U)<<4U)
+            | ((uint32_t)(absSeconds & 0xFu)<<0U);
 
-	kern_suspendProcess(1U);
-	RTC->DR = ((uint32_t)(absYears  / 16U )<<20U)
-			| ((uint32_t)(absYears  & 0xFu)<<16U)
-			| ((uint32_t)(absMonths / 16U )<<12U)
-			| ((uint32_t)(absMonths & 0xFu)<<8U)
-			| ((uint32_t)(absDays   / 16U )<<4U)
-			| ((uint32_t)(absDays   & 0xFu)<<0U);
+    kern_suspendProcess(1U);
+    RTC->DR = ((uint32_t)(absYears  / 16U )<<20U)
+            | ((uint32_t)(absYears  & 0xFu)<<16U)
+            | ((uint32_t)(absMonths / 16U )<<12U)
+            | ((uint32_t)(absMonths & 0xFu)<<8U)
+            | ((uint32_t)(absDays   / 16U )<<4U)
+            | ((uint32_t)(absDays   & 0xFu)<<0U);
 
-	kern_suspendProcess(1U);
-	RTC->ISR &= (uint32_t)~RTC_ISR_INIT;
+    kern_suspendProcess(1U);
+    RTC->ISR &= (uint32_t)~RTC_ISR_INIT;
 
 // Exit from the initialization mode
 // Set the write protection
 
-	RTC->WPR = RTC_WPR_LOCK_KEY;
+    RTC->WPR = RTC_WPR_LOCK_KEY;
 }
 
 /*
@@ -141,38 +144,38 @@ void	model_rtc_update(uint64_t unixTime) {
  * - Read the Unix time from the rtc local time
  *
  */
-void	model_rtc_readUnixTime(uint64_t *unixTime) {
-	time_t		now;
-	tm_t		localTime;
-	uint32_t	date, time;
+void    model_rtc_readUnixTime(uint64_t *unixTime) {
+    time_t      now;
+    tm_t        localTime;
+    uint32_t    date, time;
 
 // Important: read the RTC time before the date
 // Build the Unix time
 
-	time = RTC->TR;
-	date = RTC->DR;
+    time = RTC->TR;
+    date = RTC->DR;
 
 // BCD format to binary
 //
-//			time.h formats		rtc formats
+//          time.h formats      rtc formats
 //
-// Days:	1..31				1..31
-// Months:	0..11				1..12
-// Years:	since 1900			0..99
-// Hours:	0..23				0..23
-// Minutes:	0..59				0..59
-// Seconds:	0..59				0..59
+// Days:    1..31               1..31
+// Months:  0..11               1..12
+// Years:   since 1900          0..99
+// Hours:   0..23               0..23
+// Minutes: 0..59               0..59
+// Seconds: 0..59               0..59
 
-	localTime.tm_mday  = (int)((((date>>4)  & 0x3U) * 10U) + ((date>>0U)  & 0xFU));
-	localTime.tm_mon   = (int)((((date>>12) & 0x1U) * 10U) + ((date>>8U)  & 0xFU) - 1U);
-	localTime.tm_year  = (int)((((date>>20) & 0xFU) * 10U) + ((date>>16U) & 0xFU) + 100U);
-	localTime.tm_hour  = (int)((((time>>20) & 0x3U) * 10U) + ((time>>16U) & 0xFU));
-	localTime.tm_min   = (int)((((time>>12) & 0x7U) * 10U) + ((time>>8U)  & 0xFU));
-	localTime.tm_sec   = (int)((((time>>4)  & 0x7U) * 10U) + ((time>>0U)  & 0xFU));
-	localTime.tm_isdst = -1;
+    localTime.tm_mday  = (int)((((date>>4)  & 0x3U) * 10U) + ((date>>0U)  & 0xFU));
+    localTime.tm_mon   = (int)((((date>>12) & 0x1U) * 10U) + ((date>>8U)  & 0xFU) - 1U);
+    localTime.tm_year  = (int)((((date>>20) & 0xFU) * 10U) + ((date>>16U) & 0xFU) + 100U);
+    localTime.tm_hour  = (int)((((time>>20) & 0x3U) * 10U) + ((time>>16U) & 0xFU));
+    localTime.tm_min   = (int)((((time>>12) & 0x7U) * 10U) + ((time>>8U)  & 0xFU));
+    localTime.tm_sec   = (int)((((time>>4)  & 0x7U) * 10U) + ((time>>0U)  & 0xFU));
+    localTime.tm_isdst = -1;
 
-	now = mktime(&localTime);
-	*unixTime = (uint64_t)(now * CLOCKS_PER_SEC);
+    now = mktime(&localTime);
+    *unixTime = (uint64_t)(now * CLOCKS_PER_SEC);
 }
 
 /*
@@ -181,15 +184,15 @@ void	model_rtc_readUnixTime(uint64_t *unixTime) {
  * - This function converts the binary value in BCD value
  *
  */
-static	void	local_binToBCD(uint8_t *value) {
-	uint8_t		x = *value;
-	uint8_t		bcd = 0U, shift = 0U, digit;
+static  void    local_binToBCD(uint8_t *value) {
+    uint8_t     x = *value;
+    uint8_t     bcd = 0U, shift = 0U, digit;
 
-	while ((x > 0U) && (shift < 8U)) {
-		digit = (uint8_t)((uint32_t)x % 10U);
-		bcd	  = (uint8_t)((uint32_t)bcd | ((uint32_t)digit<<(uint32_t)shift));
-		x	  = (uint8_t)((uint32_t)x / 10U);
-		shift = (uint8_t)(shift + 4U);
+    while ((x > 0U) && (shift < 8U)) {
+        digit = (uint8_t)((uint32_t)x % 10U);
+        bcd   = (uint8_t)((uint32_t)bcd | ((uint32_t)digit<<(uint32_t)shift));
+        x     = (uint8_t)((uint32_t)x / 10U);
+        shift = (uint8_t)(shift + 4U);
     }
     *value = bcd;
 }

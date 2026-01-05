@@ -2,18 +2,19 @@
 ; basic.
 ; ======
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		Demo of a C application.
-;			This application shows how to operate with the uKOS-X uKernel.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    Demo of a C application.
+;    This application shows how to operate with the uKOS-X uKernel.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -52,51 +53,51 @@
  * \ingroup app_micropython
  * \brief This application shows how to operate with the uKOS uKernel.
  *
- *			Launch 2 processes:
+ *          Launch 2 processes:
  *
- *			- P0: Every 1000-ms
- *					- Toggle LED 1
+ *          - P0: Every 1000-ms
+ *                  - Toggle LED 1
  *
- *			- P1: Launch the Mycropython Process
- *				  Every 1000-ms
- *					- Execute a py program
- *					- Toggle LED 2
+ *          - P1: Launch the Mycropython Process
+ *                Every 1000-ms
+ *                  - Execute a py program
+ *                  - Toggle LED 2
  *
  */
 
-#include	<math.h>
-#include	<stdint.h>
-#include	<stdlib.h>
+#include    <math.h>
+#include    <stdint.h>
+#include    <stdlib.h>
 
-#include	"MicroPython/uKOS_System/microPython.h"
-#include	"crt0.h"
-#include	"serial/serial.h"
-#include	"kern/kern.h"
-#include	"macros.h"
-#include	"macros_core.h"
-#include	"macros_core_stackFrame.h"
-#include	"memo/memo.h"
-#include	"led/led.h"
-#include	"modules.h"
-#include	"os_errors.h"
-#include	"record/record.h"
-#include	"types.h"
+#include    "MicroPython/uKOS_System/microPython.h"
+#include    "crt0.h"
+#include    "serial/serial.h"
+#include    "kern/kern.h"
+#include    "macros.h"
+#include    "macros_core.h"
+#include    "macros_core_stackFrame.h"
+#include    "memo/memo.h"
+#include    "led/led.h"
+#include    "modules.h"
+#include    "os_errors.h"
+#include    "record/record.h"
+#include    "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"basic        Example of how to use MPY.                (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "This is a romable C application\n"
-									"===============================\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "basic        Example of how to use MPY.                (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
+                                    "===============================\n\n"
 
-									"This user function module is a C written application.\n\n"
+                                    "This user function module is a C written application.\n\n"
 
-									"Input format:  basic\n"
-									"Output format: [result]\n\n"
+                                    "Input format:  basic\n"
+                                    "Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -105,31 +106,31 @@ STRG_LOC_CONST(aStrHelp[])		  = "This is a romable C application\n"
 
 // Prototypes
 
-static	int32_t		prgm(uint32_t argc, const char_t *argv[]);
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 
 MODULE(
-	BasicMPY,							// Module name (the first letter has to be upper case)
-	KID_FAM_CLI,						// Family (defined in the module.h)
-	KNUM_ROMABLE_0,						// Module identifier (defined in the module.h)
-	NULL,								// Address of the initialisation code (early pre-init)
-	prgm,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	NULL,								// Address of the clean code (clean the module)
-	" 1.0",								// Revision string (major . minor)
-	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0									// Execution cores
+    BasicMPY,                           // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_ROMABLE_0,                     // Module identifier (defined in the module.h)
+    NULL,                               // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    NULL,                               // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
 );
 
 #else
 MODULE(
-	UserAppl,							// Module name (the first letter has to be upper case)
-	KID_FAM_APPLICATIONS,				// Family (defined in the module.h)
-	KNUM_APPLICATION,					// Module identifier (defined in the module.h)
-	NULL,								// Address of the initialisation code (early pre-init)
-	aStart,								// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	NULL,								// Address of the clean code (clean the module)
-	" 1.0",								// Revision string (major . minor)
-	((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0									// Execution cores
+    UserAppl,                           // Module name (the first letter has to be upper case)
+    KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
+    KNUM_APPLICATION,                   // Module identifier (defined in the module.h)
+    NULL,                               // Address of the initialisation code (early pre-init)
+    aStart,                             // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    NULL,                               // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
 );
 #endif
 
@@ -137,67 +138,67 @@ MODULE(
  * \brief aProcess 0
  *
  * - P0: Every 1000-ms
- *			- Toggle LED 1
+ *          - Toggle LED 1
  *
  */
 static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 
-	UNUSED(argument);
+    UNUSED(argument);
 
-	while (true) {
-		kern_suspendProcess(1000U);
-		led_toggle(KLED_1);
-	}
+    while (true) {
+        kern_suspendProcess(1000U);
+        led_toggle(KLED_1);
+    }
 }
 
 /*
  * \brief aProcess 1
  *
  * - P1: Launch the Mycropython Process
- *		 Every 1000-ms
- *			- Execute a py program
- *			- Toggle LED 2
+ *       Every 1000-ms
+ *          - Execute a py program
+ *          - Toggle LED 2
  *
  */
 static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
-	UNUSED(argument);
+    UNUSED(argument);
 
-			uint32_t			size;
-			uint8_t				*memory;
-			microPythonCnf_t	configure;
-	const	char_t				pyProgram[] = "import switch\n"
+            uint32_t            size;
+            uint8_t             *memory;
+            microPythonCnf_t    configure;
+    const   char_t              pyProgram[] = "import switch\n"
 
-							 				  "def getSwitch():\n"
-							 				  "	mode = bytearray(1)\n"
+                                              "def getSwitch():\n"
+                                              " mode = bytearray(1)\n"
 
-							 				  "	switch.mode(mode)\n"
-							 				  "	return mode\n";
+                                              " switch.mode(mode)\n"
+                                              " return mode\n";
 
 // Try to reserve the MPY memory segment
 
-	size   = 90000U;
-	memory = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (size * sizeof(uint8_t)), "basicMPY");
-	if (memory == NULL) {
-		LOG(KFATAL_USER, "Out of memory");
-		exit(EXIT_OS_FAILURE);
-	}
+    size   = 90000U;
+    memory = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (size * sizeof(uint8_t)), "basicMPY");
+    if (memory == NULL) {
+        LOG(KFATAL_USER, "Out of memory");
+        exit(EXIT_OS_FAILURE);
+    }
 
-	configure.oSize   = size;
-	configure.oMemory = memory;
-	microPython_configure(&configure);
+    configure.oSize   = size;
+    configure.oMemory = memory;
+    microPython_configure(&configure);
 
 // Load the program
 
-	MICROPYTHON_COMPUTE(pyProgram);
+    MICROPYTHON_COMPUTE(pyProgram);
 
-	while (true) {
-		kern_suspendProcess(1000U);
+    while (true) {
+        kern_suspendProcess(1000U);
 
-		MICROPYTHON_COMPUTE("sw = getSwitch()\n");
-		MICROPYTHON_COMPUTE("print(sw)		  \n");
+        MICROPYTHON_COMPUTE("sw = getSwitch()\n");
+        MICROPYTHON_COMPUTE("print(sw)        \n");
 
-		led_toggle(KLED_2);
-	}
+        led_toggle(KLED_2);
+    }
 }
 
 /*
@@ -209,45 +210,45 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  *
  */
 MAIN_ENTRY(argc, argv[]) {
-	UNUSED(argc);
-	UNUSED(argv);
+    UNUSED(argc);
+    UNUSED(argv);
 
-	proc_t	*process_0, *process_1;
+    proc_t  *process_0, *process_1;
 
 // ---------------------------------I-----------------------------------------I--------------I
 
-	STRG_LOC_CONST(aStrIden_0[]) = "Process_User_0";
-	STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2026";
-	STRG_LOC_CONST(aStrIden_1[]) = "Process_User_1";
-	STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2026";
+    STRG_LOC_CONST(aStrIden_0[]) = "Process_User_0";
+    STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2026";
+    STRG_LOC_CONST(aStrIden_1[]) = "Process_User_1";
+    STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2026";
 
 // Specifications for the processes
 
-	PROCESS_STACKMALLOC(
-		0,									// Index
-		specification_0,					// Specifications (just use specification_x)
-		aStrText_0,							// Info string (NULL if anonymous)
-		KKERN_SZ_STACK_XLIB,				// KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
-		aProcess_0,							// Code of the process
-		aStrIden_0,							// Identifier (NULL if anonymous)
-		KSYST,								// Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
-		KKERN_PRIORITY_LOW_14				// KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
-	);
+    PROCESS_STACKMALLOC(
+        0,                                  // Index
+        specification_0,                    // Specifications (just use specification_x)
+        aStrText_0,                         // Info string (NULL if anonymous)
+        KKERN_SZ_STACK_XLIB,                // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
+        aProcess_0,                         // Code of the process
+        aStrIden_0,                         // Identifier (NULL if anonymous)
+        KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
+        KKERN_PRIORITY_LOW_14               // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
+    );
 
-	PROCESS_STACKMALLOC(
-		1,									// Index
-		specification_1,					// Specifications (just use specification_x)
-		aStrText_1,							// Info string (NULL if anonymous)
-		KKERN_SZ_STACK_MPY,					// KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
-		aProcess_1,							// Code of the process
-		aStrIden_1,							// Identifier (NULL if anonymous)
-		KSYST,								// Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
-		KKERN_PRIORITY_MEDIUM_01			// KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
-	);
+    PROCESS_STACKMALLOC(
+        1,                                  // Index
+        specification_1,                    // Specifications (just use specification_x)
+        aStrText_1,                         // Info string (NULL if anonymous)
+        KKERN_SZ_STACK_MPY,                 // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
+        aProcess_1,                         // Code of the process
+        aStrIden_1,                         // Identifier (NULL if anonymous)
+        KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
+        KKERN_PRIORITY_MEDIUM_01            // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
+    );
 
-	if (kern_createProcess(&specification_0, NULL, &process_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
-	if (kern_createProcess(&specification_1, NULL, &process_1) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
+    if (kern_createProcess(&specification_0, NULL, &process_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
+    if (kern_createProcess(&specification_1, NULL, &process_1) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
 
-	LOG(KINFO_USER, "Application launched");
-	return (EXIT_OS_SUCCESS_CLI);
+    LOG(KINFO_USER, "Application launched");
+    return (EXIT_OS_SUCCESS_CLI);
 }

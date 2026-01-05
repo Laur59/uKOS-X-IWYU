@@ -2,17 +2,18 @@
 ; core_reg.
 ; =========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		riscv_rv32_core equates.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    riscv_rv32_core equates.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,13 +47,13 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 // IWYU pragma: begin_exports
 
-#include	"Registers/n200_timer.h"
-#include	"Registers/rv32_bumblebee.h"
-#include	"Registers/rv32_csr.h"
-#include	"Registers/core_addendum.h"
+#include    "Registers/n200_timer.h"
+#include    "Registers/rv32_bumblebee.h"
+#include    "Registers/rv32_csr.h"
+#include    "Registers/core_addendum.h"
 
 // IWYU pragma: end_exports

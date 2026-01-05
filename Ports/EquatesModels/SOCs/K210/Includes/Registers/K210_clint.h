@@ -2,17 +2,18 @@
 ; K210_clint.
 ; ===========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		K210_clint equates.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    K210_clint equates.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,21 +47,21 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#define	CLINT_MSIP				0x0000u
-#define	CLINT_MSIP_SIZE			0x4u
-#define	CLINT_MTIMECMP			0x4000u
-#define	CLINT_MTIMECMP_SIZE		0x8u
-#define	CLINT_MTIME				0xBFF8u
-#define	CLINT_MTIME_SIZE		0x8u
-#define CLINT_MAX_CORES			4095U
-#define CLINT_NUM_CORES			2U
-#define CLINT_CLOCK_DIV			50U
+#define CLINT_MSIP              0x0000u
+#define CLINT_MSIP_SIZE         0x4u
+#define CLINT_MTIMECMP          0x4000u
+#define CLINT_MTIMECMP_SIZE     0x8u
+#define CLINT_MTIME             0xBFF8u
+#define CLINT_MTIME_SIZE        0x8u
+#define CLINT_MAX_CORES         4095U
+#define CLINT_NUM_CORES         2U
+#define CLINT_CLOCK_DIV         50U
 
-#define	PLIC_NUM_SOURCES		(EINT_MAX - 1U)
-#define	PLIC_NUM_PRIORITIES		7U
-#define	PLIC_NUM_CORES			2U
+#define PLIC_NUM_SOURCES        (EINT_MAX - 1U)
+#define PLIC_NUM_PRIORITIES     7U
+#define PLIC_NUM_CORES          2U
 
 // MSIP Registers
 // --------------
@@ -72,9 +73,9 @@
 // the msip registers are hardwired to zero. The mapping supports
 // up to 4095 machine-mode cores.
 //
-typedef	struct	_clint_msip {
-	uint32_t	msip : 1;
-	uint32_t	zero : 31;
+typedef struct  _clint_msip {
+    uint32_t    msip : 1;
+    uint32_t    zero : 31;
 } __attribute__ ((packed, aligned(4))) clint_msip_t;
 
 // Timer compare Registers
@@ -89,7 +90,7 @@ typedef	struct	_clint_msip {
 // core’s mtimecmp register. The timer interrupt is reflected in
 // the mtip bit of the associated core’s mip register.
 //
-typedef	uint64_t	clint_mtimecmp_t;
+typedef uint64_t    clint_mtimecmp_t;
 
 // Timer Registers
 // ---------------
@@ -104,7 +105,7 @@ typedef	uint64_t	clint_mtimecmp_t;
 // if interrupts are enabled and the MTIE bit is set in the mie
 // register.
 //
-typedef	uint64_t	clint_mtime_t;
+typedef uint64_t    clint_mtime_t;
 
 // CLINT object
 // ------------
@@ -113,11 +114,11 @@ typedef	uint64_t	clint_mtime_t;
 // local timer interrupts, and other interrupts routed directly to
 // a core.
 //
-typedef	struct	_clint {
-	clint_msip_t		msip[CLINT_MAX_CORES];				// 0x0000 to 0x3FF8, MSIP Registers
-    uint32_t			resv0;								// Resverd space, do not use
-	clint_mtimecmp_t	mtimecmp[CLINT_MAX_CORES];			// 0x4000 to 0xBFF0, Timer Compare Registers
-	clint_mtime_t		mtime;								// 0xBFF8, Time Register
+typedef struct  _clint {
+    clint_msip_t        msip[CLINT_MAX_CORES];              // 0x0000 to 0x3FF8, MSIP Registers
+    uint32_t            resv0;                              // Resverd space, do not use
+    clint_mtimecmp_t    mtimecmp[CLINT_MAX_CORES];          // 0x4000 to 0xBFF0, Timer Compare Registers
+    clint_mtime_t       mtime;                              // 0xBFF8, Time Register
 } __attribute__ ((packed, aligned(4))) clint_t;
 
-#define	clint	((volatile clint_t *)0x02000000u)
+#define clint   ((volatile clint_t *)0x02000000u)

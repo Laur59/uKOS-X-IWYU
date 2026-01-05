@@ -2,17 +2,18 @@
 ; calendar.
 ; =========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; SPDX-License-Identifier: MIT
 ;
-; Project:	uKOS-X
-; Goal:		calendar manager.
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Project: uKOS-X
+;
+; Purpose:
+;    calendar manager.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,61 +47,61 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"calendar.h"
+#include    "calendar.h"
 
-#include	<stdint.h>
-#include	<stdlib.h>
-#include	<string.h>
-#include	<time.h>
+#include    <stdint.h>
+#include    <stdlib.h>
+#include    <string.h>
+#include    <time.h>
 
-#include	"kern/kern.h"
-#include	"macros.h"
-#include	"macros_core.h"
-#include	"macros_soc.h"
-#include	"modules.h"
-#include	"os_errors.h"
-#include	"types.h"
+#include    "kern/kern.h"
+#include    "macros.h"
+#include    "macros_core.h"
+#include    "macros_soc.h"
+#include    "modules.h"
+#include    "os_errors.h"
+#include    "types.h"
 
 #ifdef CONFIG_MAN_CALENDAR_S
 
-#define	KSZ_TZ_UTC_SHIFT	(16U + 1U)
-#define	KSZ_TZ_DST_SPEC		(32U + 1U)
-#define	KSZ_TZ_TIME_ZONE	(KSZ_TZ_UTC_SHIFT + KSZ_TZ_DST_SPEC)
+#define KSZ_TZ_UTC_SHIFT    (16U + 1U)
+#define KSZ_TZ_DST_SPEC     (32U + 1U)
+#define KSZ_TZ_TIME_ZONE    (KSZ_TZ_UTC_SHIFT + KSZ_TZ_DST_SPEC)
 
 // UTC shift (e.g CET-1, GMT+12, etc.)
 // DST summer time sec
 // Time zone string for newlib (UTC + DST)
 
-		char_t		calendar_tzUTCShift[KNB_CORES][KSZ_TZ_UTC_SHIFT];
-		char_t		calendar_tzDSTSpec[KNB_CORES][KSZ_TZ_DST_SPEC];
-		char_t		calendar_tzTimeZone[KNB_CORES][KSZ_TZ_TIME_ZONE];
+        char_t      calendar_tzUTCShift[KNB_CORES][KSZ_TZ_UTC_SHIFT];
+        char_t      calendar_tzDSTSpec[KNB_CORES][KSZ_TZ_DST_SPEC];
+        char_t      calendar_tzTimeZone[KNB_CORES][KSZ_TZ_TIME_ZONE];
 
-static	uint64_t	vUnixTime[KNB_CORES]	 =  MCSET(0U);						// Absolute Unix time
-static	uint64_t	vOldTickCount[KNB_CORES] =  MCSET(0U);						// Old tickCount
+static  uint64_t    vUnixTime[KNB_CORES]     =  MCSET(0U);                      // Absolute Unix time
+static  uint64_t    vOldTickCount[KNB_CORES] =  MCSET(0U);                      // Old tickCount
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"calendar     calendar manager.                         (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "calendar manager\n"
-									"================\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "calendar     calendar manager.                         (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "calendar manager\n"
+                                    "================\n\n"
 
-									"This manager ...\n\n"
+                                    "This manager ...\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
-	Calendar,						// Module name (the first letter has to be upper case)
-	KID_FAM_GENERICS,				// Family (defined in the module.h)
-	KNUM_CALENDAR,					// Module identifier (defined in the module.h)
-	NULL,							// Address of the initialisation code (early pre-init)
-	NULL,							// Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-	NULL,							// Address of the clean code (clean the module)
-	" 1.0",							// Revision string (major . minor)
-	(1U<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0								// Execution cores
+    Calendar,                       // Module name (the first letter has to be upper case)
+    KID_FAM_GENERICS,               // Family (defined in the module.h)
+    KNUM_CALENDAR,                  // Module identifier (defined in the module.h)
+    NULL,                           // Address of the initialisation code (early pre-init)
+    NULL,                           // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
+    NULL,                           // Address of the clean code (clean the module)
+    " 1.0",                         // Revision string (major . minor)
+    (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                               // Execution cores
 );
 
 // Library specific
@@ -108,12 +109,12 @@ MODULE(
 
 // Prototypes
 
-static	void	local_init(void);
-static	void	local_composeTimeZone(char_t *timeZone, const char_t *utcLocation, const char_t *dstLocation);
+static  void    local_init(void);
+static  void    local_composeTimeZone(char_t *timeZone, const char_t *utcLocation, const char_t *dstLocation);
 
 #if (KCALENDAR_WITH_HW_RTC_S == true)
-extern	void	model_rtc_readUnixTime(uint64_t *unixTime);
-extern	void	model_rtc_update(uint64_t unixTime);
+extern  void    model_rtc_readUnixTime(uint64_t *unixTime);
+extern  void    model_rtc_update(uint64_t unixTime);
 #endif
 
 /*
@@ -128,30 +129,30 @@ extern	void	model_rtc_update(uint64_t unixTime);
  *    status = calendar_setUTCLocation(&utcLocation[0]);
  * \endcode
  *
- * \param[out]	*utcLocation		Ptr on the UTC location
- * \return		KERR_CALENDAR_NOERR	OK
+ * \param[out]  *utcLocation        Ptr on the UTC location
+ * \return      KERR_CALENDAR_NOERR OK
  *
  */
-int32_t	calendar_setUTCLocation(const char_t *utcLocation) {
-	uint32_t	core;
+int32_t calendar_setUTCLocation(const char_t *utcLocation) {
+    uint32_t    core;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	PRIVILEGE_ELEVATE;
-	local_init();
+    PRIVILEGE_ELEVATE;
+    local_init();
 
-	strcpy(&calendar_tzUTCShift[core][0], &utcLocation[0]);
-	calendar_tzUTCShift[core][3] = (calendar_tzUTCShift[core][3] == '-') ? ('+') : ('-');
+    strcpy(&calendar_tzUTCShift[core][0], &utcLocation[0]);
+    calendar_tzUTCShift[core][3] = (calendar_tzUTCShift[core][3] == '-') ? ('+') : ('-');
 
-//	calendar_tzTimeZone[core][0] = '\0';
+//  calendar_tzTimeZone[core][0] = '\0';
 
-	memset(&calendar_tzTimeZone[core][0], '\0', KSZ_TZ_TIME_ZONE);
-	local_composeTimeZone(&calendar_tzTimeZone[core][0], &calendar_tzUTCShift[core][0], &calendar_tzDSTSpec[core][0]);
+    memset(&calendar_tzTimeZone[core][0], '\0', KSZ_TZ_TIME_ZONE);
+    local_composeTimeZone(&calendar_tzTimeZone[core][0], &calendar_tzUTCShift[core][0], &calendar_tzDSTSpec[core][0]);
 
-	setenv("TZ", &calendar_tzTimeZone[core][0], 1U);
-	tzset();
-	PRIVILEGE_RESTORE;
-	return (KERR_CALENDAR_NOERR);
+    setenv("TZ", &calendar_tzTimeZone[core][0], 1U);
+    tzset();
+    PRIVILEGE_RESTORE;
+    return (KERR_CALENDAR_NOERR);
 }
 
 /*
@@ -166,29 +167,29 @@ int32_t	calendar_setUTCLocation(const char_t *utcLocation) {
  *    status = calendar_writeUnixTime(&unixTime);
  * \endcode
  *
- * \param[out]	*unixTime			Unix time
- * \return		KERR_CALENDAR_NOERR	OK
+ * \param[out]  *unixTime           Unix time
+ * \return      KERR_CALENDAR_NOERR OK
  *
  */
-int32_t	calendar_writeUnixTime(uint64_t unixTime) {
-	uint32_t	core;
-	uint64_t	tickCount;
+int32_t calendar_writeUnixTime(uint64_t unixTime) {
+    uint32_t    core;
+    uint64_t    tickCount;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	PRIVILEGE_ELEVATE;
-	local_init();
+    PRIVILEGE_ELEVATE;
+    local_init();
 
-	kern_readTickCount(&tickCount);
-	vOldTickCount[core] = tickCount;
-	vUnixTime[core]		= unixTime;
+    kern_readTickCount(&tickCount);
+    vOldTickCount[core] = tickCount;
+    vUnixTime[core]     = unixTime;
 
-	#if (KCALENDAR_WITH_HW_RTC_S == true)
-	model_rtc_update(unixTime);
-	#endif
+    #if (KCALENDAR_WITH_HW_RTC_S == true)
+    model_rtc_update(unixTime);
+    #endif
 
-	PRIVILEGE_RESTORE;
-	return (KERR_CALENDAR_NOERR);
+    PRIVILEGE_RESTORE;
+    return (KERR_CALENDAR_NOERR);
 }
 
 /*
@@ -203,37 +204,37 @@ int32_t	calendar_writeUnixTime(uint64_t unixTime) {
  *    status = calendar_readUnixTime(KFROM_TIMER, &unixTime);
  * \endcode
  *
- * \param[in]	fromTimer			KFROM_TIMER, use the Unix time from the Timer (normal mode)
- * \param[in]	-					KFROM_RTC, use the Unix time from the RTC (used for better precision)
- * \param[out]	*unixTime			Ptr on the Unix time
- * \return		KERR_CALENDAR_NOERR	OK
+ * \param[in]   fromTimer           KFROM_TIMER, use the Unix time from the Timer (normal mode)
+ * \param[in]   -                   KFROM_RTC, use the Unix time from the RTC (used for better precision)
+ * \param[out]  *unixTime           Ptr on the Unix time
+ * \return      KERR_CALENDAR_NOERR OK
  *
  */
-int32_t	calendar_readUnixTime(calendarFromTimer_t fromTimer, uint64_t *unixTime) {
-	uint32_t	core;
-	uint64_t	tickCount, deltaTickCount;
+int32_t calendar_readUnixTime(calendarFromTimer_t fromTimer, uint64_t *unixTime) {
+    uint32_t    core;
+    uint64_t    tickCount, deltaTickCount;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	PRIVILEGE_ELEVATE;
-	local_init();
+    PRIVILEGE_ELEVATE;
+    local_init();
 
-	kern_readTickCount(&tickCount);
-	deltaTickCount		= tickCount - vOldTickCount[core];
-	vOldTickCount[core]	= tickCount;
-	vUnixTime[core]		= vUnixTime[core] + deltaTickCount;
+    kern_readTickCount(&tickCount);
+    deltaTickCount      = tickCount - vOldTickCount[core];
+    vOldTickCount[core] = tickCount;
+    vUnixTime[core]     = vUnixTime[core] + deltaTickCount;
 
-	if (fromTimer == KFROM_RTC) {
+    if (fromTimer == KFROM_RTC) {
 
-		#if (KCALENDAR_WITH_HW_RTC_S == true)
-		model_rtc_readUnixTime(&vUnixTime[core]);
-		#endif
+        #if (KCALENDAR_WITH_HW_RTC_S == true)
+        model_rtc_readUnixTime(&vUnixTime[core]);
+        #endif
 
-	}
-	*unixTime = vUnixTime[core];
+    }
+    *unixTime = vUnixTime[core];
 
-	PRIVILEGE_RESTORE;
-	return (KERR_CALENDAR_NOERR);
+    PRIVILEGE_RESTORE;
+    return (KERR_CALENDAR_NOERR);
 }
 
 // Local routines
@@ -246,57 +247,57 @@ int32_t	calendar_readUnixTime(calendarFromTimer_t fromTimer, uint64_t *unixTime)
  *   has to be called at least once
  *
  */
-static	void	local_init(void) {
-			uint32_t	core;
-	static	bool		vInit[KNB_CORES] = MCSET(false);
+static  void    local_init(void) {
+            uint32_t    core;
+    static  bool        vInit[KNB_CORES] = MCSET(false);
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	INTERRUPTION_OFF;
-	if (!vInit[core]) {
-		vInit[core] = true;
+    INTERRUPTION_OFF;
+    if (!vInit[core]) {
+        vInit[core] = true;
 
-		memset(&calendar_tzUTCShift[core][0], '\0', KSZ_TZ_UTC_SHIFT);
-		memcpy(&calendar_tzUTCShift[core][0], TZ_UTC_SHIFT, sizeof(TZ_UTC_SHIFT));
-		calendar_tzUTCShift[core][KSZ_TZ_UTC_SHIFT - 1] = '\0';
+        memset(&calendar_tzUTCShift[core][0], '\0', KSZ_TZ_UTC_SHIFT);
+        memcpy(&calendar_tzUTCShift[core][0], TZ_UTC_SHIFT, sizeof(TZ_UTC_SHIFT));
+        calendar_tzUTCShift[core][KSZ_TZ_UTC_SHIFT - 1] = '\0';
 
-		memset(&calendar_tzDSTSpec[core][0], '\0', KSZ_TZ_DST_SPEC);
-		memcpy(&calendar_tzDSTSpec[core][0], TZ_DST_SPEC, sizeof(TZ_DST_SPEC));
-		calendar_tzDSTSpec[core][KSZ_TZ_DST_SPEC - 1] = '\0';
+        memset(&calendar_tzDSTSpec[core][0], '\0', KSZ_TZ_DST_SPEC);
+        memcpy(&calendar_tzDSTSpec[core][0], TZ_DST_SPEC, sizeof(TZ_DST_SPEC));
+        calendar_tzDSTSpec[core][KSZ_TZ_DST_SPEC - 1] = '\0';
 
-		memset(&calendar_tzTimeZone[core][0], '\0', KSZ_TZ_TIME_ZONE);
-		local_composeTimeZone(&calendar_tzTimeZone[core][0], &calendar_tzUTCShift[core][0], &calendar_tzDSTSpec[core][0]);
+        memset(&calendar_tzTimeZone[core][0], '\0', KSZ_TZ_TIME_ZONE);
+        local_composeTimeZone(&calendar_tzTimeZone[core][0], &calendar_tzUTCShift[core][0], &calendar_tzDSTSpec[core][0]);
 
 // Set the environment
 
-		setenv("TZ", &calendar_tzTimeZone[core][0], 1);
-		tzset();
+        setenv("TZ", &calendar_tzTimeZone[core][0], 1);
+        tzset();
 
-		#if (KCALENDAR_WITH_HW_RTC_S == true)
-		model_rtc_readUnixTime(&vUnixTime[core]);
-		#endif
+        #if (KCALENDAR_WITH_HW_RTC_S == true)
+        model_rtc_readUnixTime(&vUnixTime[core]);
+        #endif
 
-	}
-	INTERRUPTION_RESTORE;
+    }
+    INTERRUPTION_RESTORE;
 }
 
 /*
  * \brief local_composeTimeZone
  *
  * - This function recover timeZone = CET-1CEST,M3.5.0/2,M10.5.0/2
- *						   from ...
- *						   utcLocation = CET-1
- *						   dstLocation = CEST,M3.5.0/2,M10.5.0/2
+ *                         from ...
+ *                         utcLocation = CET-1
+ *                         dstLocation = CEST,M3.5.0/2,M10.5.0/2
  *
  */
-static	void	local_composeTimeZone(char_t *timeZone, const char_t *utcLocation, const char_t *dstLocation) {
+static  void    local_composeTimeZone(char_t *timeZone, const char_t *utcLocation, const char_t *dstLocation) {
 
-	strcat(&timeZone[0], &utcLocation[0]);
-	strcat(&timeZone[0], &dstLocation[0]);
+    strcat(&timeZone[0], &utcLocation[0]);
+    strcat(&timeZone[0], &dstLocation[0]);
 }
 
 #if (KCALENDAR_WITH_HW_RTC_S == true)
-#include	"model_rtc.c_inc"	// IWYU pragma: keep (workaround for app)
+#include    "model_rtc.c_inc"   // IWYU pragma: keep (workaround for app)
 #endif
 
 #endif
