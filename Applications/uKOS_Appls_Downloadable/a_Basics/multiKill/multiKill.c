@@ -184,8 +184,6 @@ static void __attribute__ ((noreturn)) aThread_Px(const void *argument) {
 #define KPRIORITY   KKERN_PRIORITY_LOW_01
 
 static void __attribute__ ((noreturn)) aProcess_a(const void *argument) {
-    UNUSED(argument);
-
     uint32_t    i;
 
     UNUSED(argument);
@@ -380,15 +378,15 @@ static void __attribute__ ((noreturn)) aProcess_a(const void *argument) {
  *
  */
 int     main(int argc, const char *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     proc_t  *process_a;
 
 // ---------------------------------I-----------------------------------------I--------------I
 
     STRG_LOC_CONST(aStrIden_a[]) = "Process_User_0";
     STRG_LOC_CONST(aStrText_a[]) = "Process user 0.                           (c) EFr-2026";
+
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Specifications for the processes
 

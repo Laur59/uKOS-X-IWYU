@@ -151,10 +151,10 @@ static  void    local_printStruct(mutx_t *mutex, strt_t data);
  *
  */
 static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
-    UNUSED(argument);
-
     int32_t     status;
     mutx_t      *mutex;
+
+    UNUSED(argument);
 
 // Get the mutex handle
 
@@ -163,7 +163,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
     while (true) {
         kern_suspendProcess(10);
 
-        led_toggle(KLED_0);
+        led_toggle(KLED_1);
         status = kern_lockMutex(mutex, 10000U);
         if (status != KERR_KERN_NOERR) {
             exit(EXIT_OS_PANIC);
@@ -196,10 +196,10 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
-    UNUSED(argument);
-
     int32_t     status;
     mutx_t      *mutex;
+
+    UNUSED(argument);
 
 // Get the mutex handle
 
@@ -208,7 +208,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
     while (true) {
         kern_suspendProcess(100U);
 
-        led_toggle(KLED_1);
+        led_toggle(KLED_2);
         status = kern_lockMutex(mutex, 10000U);
         if (status != KERR_KERN_NOERR) {
             exit(EXIT_OS_PANIC);
@@ -241,10 +241,10 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
-    UNUSED(argument);
-
     int32_t     status;
     mutx_t      *mutex;
+
+    UNUSED(argument);
 
 // Get the mutex handle
 
@@ -253,7 +253,7 @@ static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
     while (true) {
         kern_suspendProcess(1000U);
 
-        led_toggle(KLED_2);
+        led_toggle(KLED_3);
         status = kern_lockMutex(mutex, 10000U);
         if (status != KERR_KERN_NOERR) {
             exit(EXIT_OS_PANIC);
@@ -329,9 +329,6 @@ static  void    local_printStruct(mutx_t *mutex, strt_t data) {
  *
  */
 int     main(int argc, const char *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     mutx_t  *mutex;
     proc_t  *process_0, *process_1, *process_2;
 
@@ -343,6 +340,9 @@ int     main(int argc, const char *argv[]) {
     STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2026";
     STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2026";
     STRG_LOC_CONST(aStrText_2[]) = "Process user 2.                           (c) EFr-2026";
+
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Specifications for the processes
 

@@ -204,13 +204,13 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
-    UNUSED(argument);
-
             uint64_t    time[2];
             uint32_t    i = 0U, j, k = 0U, size;
             mbox_t      *mailBox;
             msg_t       *recMessages;
     static  msg_t       lastMessage;
+
+    UNUSED(argument);
 
 // Waiting for the "Mailbox 1 to 0"
 
@@ -274,9 +274,6 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  *
  */
 MAIN_ENTRY(argc, argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     proc_t  *process_0, *process_1;
 
 // ---------------------------------I-----------------------------------------I--------------I
@@ -285,6 +282,9 @@ MAIN_ENTRY(argc, argv[]) {
     STRG_LOC_CONST(aStrIden_1[]) = "Process_User_1";
     STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2026";
     STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2026";
+
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Specifications for the processes
 

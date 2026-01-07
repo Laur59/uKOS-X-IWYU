@@ -132,20 +132,20 @@ MODULE(
  * - P0: Create the signal group 0
  *       Every 1000-ms
  *          - Generate a broadcast signal KPROCESS_0 (group 0)
- *          - Toggle LED 0
+ *          - Toggle LED 1
  *
  */
 static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
-    UNUSED(argument);
-
     sign_t  *group;
+
+    UNUSED(argument);
 
     if (kern_createSignalGroup("Group 0", &group) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create sigr"); exit(EXIT_OS_FAILURE); }
 
     while (true) {
         kern_suspendProcess(1000U);
         kern_signalSignal(group, KPROCESS_0, KKERN_HANDLE_BROADCAST, KSIGN_SIGNALE_WITH_CONTEXT_SWITCH);
-        led_toggle(KLED_0);
+        led_toggle(KLED_1);
     }
 }
 
@@ -155,20 +155,20 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  * - P1: Create the signal group 1
  *       Every 1234-ms
  *          - Generate a broadcast signal KPROCESS_1 (group 1)
- *          - Toggle LED 1
+ *          - Toggle LED 2
  *
  */
 static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
-    UNUSED(argument);
-
     sign_t  *group;
+
+    UNUSED(argument);
 
     if (kern_createSignalGroup("Group 1", &group) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create sigr"); exit(EXIT_OS_FAILURE); }
 
     while (true) {
         kern_suspendProcess(1234U);
         kern_signalSignal(group, KPROCESS_1, KKERN_HANDLE_BROADCAST, KSIGN_SIGNALE_WITH_CONTEXT_SWITCH);
-        led_toggle(KLED_1);
+        led_toggle(KLED_2);
     }
 }
 
@@ -181,10 +181,10 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
-    UNUSED(argument);
-
     uint32_t    signal;
     sign_t      *group;
+
+    UNUSED(argument);
 
 // Get the events
 
@@ -207,10 +207,10 @@ static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess_3(const void *argument) {
-    UNUSED(argument);
-
     uint32_t    signal;
     sign_t      *group;
+
+    UNUSED(argument);
 
     while (kern_getSignalGroupById("Group 1", &group) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
 
@@ -231,9 +231,6 @@ static void __attribute__ ((noreturn)) aProcess_3(const void *argument) {
  *
  */
 int     main(int argc, const char *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     proc_t  *process_0, *process_1, *process_2, *process_3;
 
 // ---------------------------------I-----------------------------------------I--------------I
@@ -246,6 +243,9 @@ int     main(int argc, const char *argv[]) {
     STRG_LOC_CONST(aStrText_1[]) = "Process Synchro 1.                        (c) EFr-2026";
     STRG_LOC_CONST(aStrText_2[]) = "Process user 2.                           (c) EFr-2026";
     STRG_LOC_CONST(aStrText_3[]) = "Process user 3.                           (c) EFr-2026";
+
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Specifications for the processes
 

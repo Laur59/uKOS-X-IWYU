@@ -161,8 +161,6 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
-    UNUSED(argument);
-
             uint32_t            size;
             uint8_t             *memory;
             microPythonCnf_t    configure;
@@ -173,6 +171,8 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 
                                               " switch.mode(mode)\n"
                                               " return mode\n";
+
+    UNUSED(argument);
 
 // Try to reserve the MPY memory segment
 
@@ -210,9 +210,6 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  *
  */
 MAIN_ENTRY(argc, argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     proc_t  *process_0, *process_1;
 
 // ---------------------------------I-----------------------------------------I--------------I
@@ -221,6 +218,9 @@ MAIN_ENTRY(argc, argv[]) {
     STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2026";
     STRG_LOC_CONST(aStrIden_1[]) = "Process_User_1";
     STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2026";
+
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Specifications for the processes
 

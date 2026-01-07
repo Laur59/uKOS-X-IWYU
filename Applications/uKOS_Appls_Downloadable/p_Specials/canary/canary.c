@@ -124,11 +124,11 @@ MODULE(
 //
 #pragma GCC diagnostic  ignored "-Warray-bounds"
 int     main(int argc, const char *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
                 uint32_t    i;
     volatile    uint32_t    array[KNB_ELEMENTS];
+
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Initialise 0..n-1 elements
 

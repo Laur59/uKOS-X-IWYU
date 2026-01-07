@@ -135,10 +135,10 @@ static  void    local_transfer(void);
  *
  */
 static void __attribute__ ((noreturn)) aProcess_acquisition(const void *argument) {
-    UNUSED(argument);
-
     imagerCnf_t configureIMG0;
     mutx_t          *mutex;
+
+    UNUSED(argument);
 
     if (kern_createSemaphore(aStrAcquisition, 0, 1, &vSemaImgAcqu) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create sema G"); exit(EXIT_OS_FAILURE); }
 
@@ -197,10 +197,10 @@ static void __attribute__ ((noreturn)) aProcess_acquisition(const void *argument
  *
  */
 static void __attribute__ ((noreturn)) aProcess_send(const void *argument) {
-    UNUSED(argument);
-
     uint8_t     *imageGray, *imageYUY2;
     mutx_t      *mutex;
+
+    UNUSED(argument);
 
     PRIVILEGE_ELEVATE;
 
@@ -219,14 +219,14 @@ static void __attribute__ ((noreturn)) aProcess_send(const void *argument) {
     kern_getMutexById(aStrShareBuffer, &mutex);
 
     while (true) {
-        imageGray = (uint8_t *)(uintptr_t)vImage;
+        imageGray = vImage;
         if (imageGray != NULL) {
             kern_lockMutex(mutex, KWAIT_INFINITY);
             local_convertToYUY2(imageGray, imageYUY2, vW, vH);
             kern_unlockMutex(mutex);
 
             TinyUSB_video_sendImage(imageYUY2, vW, vH);
-            led_toggle(KLED_0);
+            led_toggle(KLED_1);
         }
         else {
             kern_suspendProcess(1U);
@@ -243,9 +243,6 @@ static void __attribute__ ((noreturn)) aProcess_send(const void *argument) {
  *
  */
 int     main(int argc, const char *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     mutx_t  *mutex;
     proc_t  *process_acquisition, *process_send;
 
@@ -255,6 +252,9 @@ int     main(int argc, const char *argv[]) {
     STRG_LOC_CONST(aStrText_acquisition[]) = "Process Acquisition.                      (c) EFr-2026";
     STRG_LOC_CONST(aStrIden_send[])        = "Process_Send_Image";
     STRG_LOC_CONST(aStrText_send[])        = "Process Send Image.                       (c) EFr-2026";
+
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Specifications for the processes
 

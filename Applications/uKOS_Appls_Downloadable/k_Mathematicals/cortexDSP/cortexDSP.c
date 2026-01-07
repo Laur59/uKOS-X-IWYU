@@ -131,7 +131,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 
     while (true) {
         kern_suspendProcess(1000U);
-        led_toggle(KLED_0);
+        led_toggle(KLED_1);
     }
 }
 
@@ -143,8 +143,6 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
-    UNUSED(argument);
-
                     uint8_t     i, j;
     static  const   int16_t     image[10][10] = {
                                     {  0,  1,  2,  3,  4,  5,  6,  7,  8,  9 },
@@ -161,6 +159,8 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 
     static  int32_t     projections_x[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     static  int32_t     projections_y[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+    UNUSED(argument);
 
     while (true) {
         kern_suspendProcess(1000U);
@@ -195,12 +195,12 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
-    UNUSED(argument);
-
             uint8_t     i;
             int64_t     result;
     static  int32_t     vector_1[10] = { 1, -2, 3, 4,  5, 6, 7, 8, 9,  10 };
     static  int32_t     vector_2[10] = { 1,  2, 3, 4, -5, 6, 7, 8, 9, -10 };
+
+    UNUSED(argument);
 
     while (true) {
         kern_suspendProcess(1000U);
@@ -225,9 +225,6 @@ static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
  *
  */
 int     main(int argc, const char *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     proc_t  *process_0, *process_1, *process_2;
 
 // ---------------------------------I-----------------------------------------I--------------I
@@ -238,6 +235,9 @@ int     main(int argc, const char *argv[]) {
     STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2026";
     STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2026";
     STRG_LOC_CONST(aStrText_2[]) = "Process user 2.                           (c) EFr-2026";
+
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Specifications for the processes
 

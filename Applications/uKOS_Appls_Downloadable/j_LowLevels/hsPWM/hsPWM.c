@@ -154,15 +154,15 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
  *
  */
 int     main(int argc, const char *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     proc_t  *process;
 
 // -------------------------------I-----------------------------------------I--------------I
 
     STRG_LOC_CONST(aStrIden[]) = "Process_User";
     STRG_LOC_CONST(aStrText[]) = "Process user.                             (c) EFr-2026";
+
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Specifications for the processes
 

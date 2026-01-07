@@ -82,7 +82,6 @@
  *
  */
 
-
 #include    <inttypes.h>
 #include    <stdio.h>
 #include    <stdlib.h>
@@ -150,10 +149,10 @@ static  volatile    bool        vEnd = false;
  *
  */
 static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
-    UNUSED(argument);
-
     uint64_t    counter, time;
     sign_t      *group;
+
+    UNUSED(argument);
 
     if (kern_createSignalGroup("Synchro", &group) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); exit(EXIT_OS_FAILURE); }
 
@@ -161,7 +160,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 
     while (true) {
         kern_suspendProcess(1000U);
-        led_toggle(KLED_0);
+        led_toggle(KLED_1);
 
 // Prepare to synchronize the process 1
 
@@ -199,10 +198,10 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
-    UNUSED(argument);
-
     uint32_t    signal;
     sign_t      *group;
+
+    UNUSED(argument);
 
     while (kern_getSignalGroupById("Synchro", &group) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
 
@@ -224,9 +223,6 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  *
  */
 int     main(int argc, const char *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     proc_t  *process_0, *process_1;
 
 // ---------------------------------I-----------------------------------------I--------------I
@@ -235,6 +231,9 @@ int     main(int argc, const char *argv[]) {
     STRG_LOC_CONST(aStrIden_1[]) = "Process_User_1";
     STRG_LOC_CONST(aStrText_0[]) = "Process_Synchro.                          (c) EFr-2026";
     STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2026";
+
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Specifications for the processes
 

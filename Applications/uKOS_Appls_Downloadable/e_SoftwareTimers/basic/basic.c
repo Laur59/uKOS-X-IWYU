@@ -123,12 +123,13 @@ static  void    local_changeStateLed(const void *argument);
  *
  */
 static void __attribute__ ((noreturn)) aProcess(const void *argument) {
-    UNUSED(argument);
-
                     uint32_t    time;
                     tspc_t      configure_0, configure_1;
                     stim_t      *softwareTimer_0, *softwareTimer_1;
     static  const   uint32_t    argument_0[2] = { 0U }, argument_1[2] = { 1U };
+
+    UNUSED(argument);
+
 
     configure_0.oMode        = KSTIM_SINGLE_SHOT;
     configure_0.oInitialTime = 200U;
@@ -215,15 +216,15 @@ static  void    local_changeStateLed(const void *argument) {
  *
  */
 int     main(int argc, const char *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     proc_t  *process;
 
 // -------------------------------I-----------------------------------------I--------------I
 
     STRG_LOC_CONST(aStrIden[]) = "Process_Software_Timer";
     STRG_LOC_CONST(aStrText[]) = "Process Software Timer.                   (c) EFr-2026";
+
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Specifications for the processes
 

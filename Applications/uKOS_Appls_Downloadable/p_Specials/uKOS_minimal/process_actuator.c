@@ -108,12 +108,12 @@ bool    installaProcess_actuator(void) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess(const void *argument) {
-    UNUSED(argument);
-
-    uint8_t     motorPosition = 0x00u;
+    uint8_t     motorPosition = 0x00U;
     uintptr_t   message_actuator;
 
-    while (vQueue_dispatcher == NULL) { kern_suspendProcess(1); }
+    UNUSED(argument);
+
+    while (vQueue_dispatcher == NULL) { kern_suspendProcess(1U); }
 
     while (true) {
         kern_suspendProcess(KTIME_SAMPLING_ACTUATOR);
@@ -123,12 +123,12 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
 
 // Gray code motor position
 
-        switch (motorPosition & 0x3u) {
+        switch (motorPosition & 0x3U) {
             default:
-            case 0x0u: { motorPosition = 0x1u; break; }
-            case 0x1u: { motorPosition = 0x3u; break; }
-            case 0x2u: { motorPosition = 0x0u; break; }
-            case 0x3u: { motorPosition = 0x2u; break; }
+            case 0x0U: { motorPosition = 0x1U; break; }
+            case 0x1U: { motorPosition = 0x3U; break; }
+            case 0x2U: { motorPosition = 0x0U; break; }
+            case 0x3U: { motorPosition = 0x2U; break; }
         }
     }
 }

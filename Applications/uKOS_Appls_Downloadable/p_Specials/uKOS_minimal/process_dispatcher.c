@@ -107,9 +107,9 @@ bool    installaProcess_dispatcher(void) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess(const void *argument) {
-    UNUSED(argument);
-
     uintptr_t   message;
+
+    UNUSED(argument);
 
     while (vQueue_dispatcher == NULL) { kern_suspendProcess(1U); }
 
@@ -120,15 +120,15 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
 
         switch (message & 0xFF000000u) {
             case KID_SENSOR: {
-                ((message & 1U) == 1U) ? (led_on(KLED_0)) : (led_off(KLED_0));
+                ((message & 1U) == 1U) ? (led_on(KLED_1)) : (led_off(KLED_1));
                 break;
             }
             case KID_ACTUATOR: {
-                switch (message & 0x3u) {
-                    case 0x0u: { (void)dprintf(KURT0, "Motor position 00\n"); break; }
-                    case 0x1u: { (void)dprintf(KURT0, "Motor position 01\n"); break; }
-                    case 0x2u: { (void)dprintf(KURT0, "Motor position 02\n"); break; }
-                    case 0x3u: { (void)dprintf(KURT0, "Motor position 03\n"); break; }
+                switch (message & 0x3U) {
+                    case 0x0U: { (void)dprintf(KURT0, "Motor position 00\n"); break; }
+                    case 0x1U: { (void)dprintf(KURT0, "Motor position 01\n"); break; }
+                    case 0x2U: { (void)dprintf(KURT0, "Motor position 02\n"); break; }
+                    case 0x3U: { (void)dprintf(KURT0, "Motor position 03\n"); break; }
                     default: {
 
 // Make MISRA happy :-)

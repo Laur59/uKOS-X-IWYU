@@ -116,18 +116,18 @@ MODULE(
  * - P0: Get the semaphore "urt0 - RX char", handle
  *       Waiting for the semaphore "urt0 - RX char", timeout 500-ms
  *          - if triggered
- *              - pulse on the LED 0
+ *              - pulse on the LED 1
  *          - else (timeout)
  *              - Waiting for the remaining time
- *              - pulse on the LED 0
  *              - pulse on the LED 1
+ *              - pulse on the LED 2
  *
  */
 static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
-    UNUSED(argument);
-
     int32_t     status;
     sema_t      *semaphore;
+
+    UNUSED(argument);
 
     while (kern_getSemaphoreById(KURT0_SEMAPHORE_RX, &semaphore) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
 
@@ -144,20 +144,20 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 // Thanks to the kern_suspendProcess(KWAIT_REMAINING_TIMEOUT);
 
             kern_suspendProcess(KWAIT_REMAINING_TIMEOUT);
-            led_on(KLED_0);
             led_on(KLED_1);
+            led_on(KLED_2);
             kern_suspendProcess(50U);
-            led_off(KLED_0);
             led_off(KLED_1);
+            led_off(KLED_2);
 
         }
         else {
 
 // Timeout of 500-ms (stable)
 
-            led_on(KLED_0);
+            led_on(KLED_1);
             kern_suspendProcess(50U);
-            led_off(KLED_0);
+            led_off(KLED_1);
         }
     }
 }
@@ -171,9 +171,6 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *
  */
 int     main(int argc, const char *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
                     proc_t      *process_0;
     static  const   urtxCnf_t   configureURTx = {
                                     .oNBBits   = KSERIAL_NB_BITS_8,
@@ -191,6 +188,9 @@ int     main(int argc, const char *argv[]) {
 
     STRG_LOC_CONST(aStrIden_0[]) = "Process_User_0";
     STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2026";
+
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Specifications for the processes
 

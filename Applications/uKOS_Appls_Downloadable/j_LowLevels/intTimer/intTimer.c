@@ -134,10 +134,10 @@ extern  void    stub_intr_timer_init(void);
  *
  */
 static void __attribute__ ((noreturn)) aProcess(const void *argument) {
-    UNUSED(argument);
-
     int32_t     status;
     sema_t      *semaphore;
+
+    UNUSED(argument);
 
     kern_getSemaphoreById("Semaphore tim", &semaphore);
 
@@ -184,9 +184,6 @@ void    aTimer_callBack(void) {
  *
  */
 int     main(int argc, const char *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     sema_t  *semaphore;
     proc_t  *process;
 
@@ -194,6 +191,9 @@ int     main(int argc, const char *argv[]) {
 
     STRG_LOC_CONST(aStrIden[]) = "Process_User";
     STRG_LOC_CONST(aStrText[]) = "Process user.                             (c) EFr-2026";
+
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Specifications for the processes
 

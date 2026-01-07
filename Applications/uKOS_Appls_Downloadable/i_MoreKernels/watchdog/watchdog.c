@@ -119,9 +119,9 @@ MODULE(
  *       At the output of the loop the watchdog has to restart the system
  */
 static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
-    UNUSED(argument);
-
     uint16_t    i;
+
+    UNUSED(argument);
 
     kern_suspendProcess(1000U);
 
@@ -161,15 +161,15 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *
  */
 int     main(int argc, const char *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     proc_t  *process_0;
 
 // ---------------------------------I-----------------------------------------I--------------I
 
     STRG_LOC_CONST(aStrIden_0[]) = "Process_User_0";
     STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2026";
+
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Specifications for the processes
 

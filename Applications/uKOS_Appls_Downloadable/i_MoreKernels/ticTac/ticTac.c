@@ -57,7 +57,7 @@
  *
  *          - P0: Every 1000-ms
  *                  - Toggle LED 1
- *                  - Measure (tac - tic) time of the Toggle LED 0 function
+ *                  - Measure (tac - tic) time of the Toggle LED 1 function
  *
  *          - P1: Every 200-ms
  *                  - Measure (tac - tic) time of the printf function
@@ -118,20 +118,20 @@ MODULE(
  * \brief aProcess 0
  *
  * - P0: Every 1000-ms
- *          - Toggle LED 0
- *          - Measure (tac - tic) time of the Toggle LED 0 function
+ *          - Toggle LED 1
+ *          - Measure (tac - tic) time of the Toggle LED 1 function
  *
  */
 static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
-    UNUSED(argument);
-
     uint64_t    time[2];
     uint32_t    delta;
+
+    UNUSED(argument);
 
     while (true) {
         kern_suspendProcess(1000U);
         kern_readTickCount(&time[0]);
-        led_toggle(KLED_0);
+        led_toggle(KLED_1);
         kern_readTickCount(&time[1]);
 
         delta = (uint32_t)(time[1] - time[0]);
@@ -148,10 +148,10 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
-    UNUSED(argument);
-
     uint64_t    time[2];
     uint32_t    delta = 0U;
+
+    UNUSED(argument);
 
     while (true) {
         kern_suspendProcess(200U);
@@ -172,11 +172,11 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
-    UNUSED(argument);
-
             uint32_t    cpt = 0;
     const   char_t      *identifier;
     const   char_t      *family;
+
+    UNUSED(argument);
 
     system_getSystemId(&identifier);
     system_getFamilyId(&family);
@@ -197,9 +197,6 @@ static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
  *
  */
 int     main(int argc, const char *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     proc_t  *process_0, *process_1, *process_2;
 
 // ---------------------------------I-----------------------------------------I--------------I
@@ -210,6 +207,9 @@ int     main(int argc, const char *argv[]) {
     STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2026";
     STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2026";
     STRG_LOC_CONST(aStrText_2[]) = "Process user 2.                           (c) EFr-2026";
+
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Specifications for the processes
 

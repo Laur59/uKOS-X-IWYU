@@ -126,7 +126,7 @@ MODULE(
  * - P0: - Create a mailbox "Mailbox Receive text"
  *          - Read and display the messages coming from the mailbox
  *          - Release the associated memory buffer
- *          - Toggle LED 0
+ *          - Toggle LED 1
  *
  */
 static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
@@ -165,7 +165,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
         strcpy((char_t *)bufPtr, (char_t *)bufRec);
         memo_free(bufRec);
         (void)dprintf(KSYST, "Message size = %"PRIu32"; 0x%016"PRIXPTR" message -> %s\n", sizeRec, (uintptr_t)bufRec, bufPtr);
-        led_toggle(KLED_0);
+        led_toggle(KLED_1);
     }
 }
 
@@ -178,12 +178,12 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
-    UNUSED(argument);
-
     size_t      sizeSnd;
     uint8_t     *bufSnd;
     mbox_t      *mailBox;
     STRG_LOC_CONST(message[]) = "P1: The old dreams were good dreams. They didn't work out, but I'm glad I had them.";
+
+    UNUSED(argument);
 
 // Waiting for the creation of the "Mailbox receive status"
 
@@ -223,12 +223,12 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
-    UNUSED(argument);
-
     size_t      sizeSnd;
     uint8_t     *bufSnd;
     mbox_t      *mailBox;
     STRG_LOC_CONST(message[]) = "P2: The quick brown fox jumps over the lazy dog.";
+
+    UNUSED(argument);
 
 // Waiting for the creation of the "Mailbox receive status"
 
@@ -269,12 +269,12 @@ static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess_3(const void *argument) {
-    UNUSED(argument);
-
     size_t      sizeSnd;
     uint8_t     *bufSnd;
     mbox_t      *mailBox;
     STRG_LOC_CONST(message[]) = "P3: I didn't know he was dead...I thought he was British. (Woody Allen).";
+
+    UNUSED(argument);
 
 // Waiting for the creation of the "Mailbox receive status"
 
@@ -315,9 +315,6 @@ static void __attribute__ ((noreturn)) aProcess_3(const void *argument) {
  *
  */
 int     main(int argc, const char *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     proc_t  *process_0, *process_1, *process_2, *process_3;
 
 // ---------------------------------I-----------------------------------------I--------------I
@@ -330,6 +327,9 @@ int     main(int argc, const char *argv[]) {
     STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2026";
     STRG_LOC_CONST(aStrText_2[]) = "Process user 2.                           (c) EFr-2026";
     STRG_LOC_CONST(aStrText_3[]) = "Process user 3.                           (c) EFr-2026";
+
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Specifications for the processes
 

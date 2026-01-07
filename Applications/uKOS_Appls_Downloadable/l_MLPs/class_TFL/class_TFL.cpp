@@ -184,8 +184,6 @@ namespace {
  */
 namespace {
     void    __attribute__ ((noreturn)) aProcess_0(const void *argument) {
-        UNUSED(argument);
-
                 TfLiteTensor    *input;
                 TfLiteTensor    *output;
                 uint64_t        time[2];
@@ -194,13 +192,15 @@ namespace {
         const   float32_t       gain = 2.0f;
         const   char_t          *result;
 
+        UNUSED(argument);
+
         #if (defined(CORTEX))
         RegisterDebugLogCallback(debuglog);
         #endif
 
         while (true) {
             kern_suspendProcess(1000U);
-            led_toggle(KLED_0);
+            led_toggle(KLED_1);
 
 // Load the TFLite model
 
@@ -273,15 +273,15 @@ namespace {
  *
  */
 int     main(int argc, const char *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     proc_t  *process_0;
 
 // ------------------------------------I-----------------------------------------I--------------I
 
     STRG_LOC_CONST(aStrIden_0[]) =    "Process_User";
     STRG_LOC_CONST(aStrText_0[]) =    "Process user.                             (c) EFr-2026";
+
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Initialise the C++ constructors
 

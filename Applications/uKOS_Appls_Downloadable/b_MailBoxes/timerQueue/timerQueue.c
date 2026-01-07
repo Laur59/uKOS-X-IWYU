@@ -126,12 +126,10 @@ extern  void    stub_intr_timer_init(void);
  * - P0: Get the semaphore "Queue tim" handle
  *       Waiting for a counter in the mailbox "Queue tim" under timeout
  *          - Display & verify the received counter
- *          - Toggle the LED 0
+ *          - Toggle the LED 1
  *
  */
 static void __attribute__ ((noreturn)) aProcess(const void *argument) {
-    UNUSED(argument);
-
     uintptr_t   counter = 0U, expectedCounter = 0U;
     int32_t     status;
     mbox_t      *queue;
@@ -140,6 +138,8 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
                     .oDataEntrySize = 0U
                 };
     uint32_t ledDecimationCounter = 0U;
+
+    UNUSED(argument);
 
     #if(defined(ALLOW_HARDWARE_ACCESS_S))
     LOG(KWARNING_USER, "Direct hardware access permitted");
@@ -198,15 +198,15 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
  *
  */
 int     main(int argc, const char *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     proc_t  *process;
 
 // -------------------------------I-----------------------------------------I--------------I
 
     STRG_LOC_CONST(aStrIden[]) = "Process_User";
     STRG_LOC_CONST(aStrText[]) = "Process user.                             (c) EFr-2026";
+
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Specifications for the processes
 

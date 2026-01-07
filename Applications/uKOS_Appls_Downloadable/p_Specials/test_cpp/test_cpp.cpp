@@ -116,7 +116,7 @@ MODULE(
  *
  * - P0: - Display the class
  *       - Every 100-ms
- *          - Toggle LED 0
+ *          - Toggle LED 1
  *
  */
 namespace {
@@ -136,7 +136,7 @@ namespace {
 
         while (true) {
             kern_suspendProcess(100U);
-            led_toggle(KLED_0);
+            led_toggle(KLED_1);
         }
     }
 }
@@ -150,15 +150,15 @@ namespace {
  *
  */
 int     main(int argc, const char *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     proc_t  *process_0;
 
 // ------------------------------------I-----------------------------------------I--------------I
 
     STRG_LOC_CONST(aStrIden_0[]) =    "Process_User";
     STRG_LOC_CONST(aStrText_0[]) =    "Process user.                             (c) EFr-2026";
+
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Initialise the C++ constructors
 

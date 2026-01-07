@@ -124,7 +124,7 @@ extern  void    stub_intr_io_init(void);
  * \brief aProcess
  *
  * - P0: Every 1000-ms
- *          - Toggle LED 0
+ *          - Toggle LED 1
  *          - Display the interruption counter
  *
  */
@@ -147,7 +147,7 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
 
     while (true) {
         kern_suspendProcess(1000U);
-        led_toggle(KLED_0);
+        led_toggle(KLED_1);
         (void)dprintf(KSYST, "Counter = %08"PRIX32"\n", vCounter);
     }
 }
@@ -161,15 +161,15 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
  *
  */
 int     main(int argc, const char *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     proc_t  *process;
 
 // -------------------------------I-----------------------------------------I--------------I
 
     STRG_LOC_CONST(aStrIden[]) = "Process_User_0";
     STRG_LOC_CONST(aStrText[]) = "Process user 0.                           (c) EFr-2026";
+
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Specifications for the processes
 

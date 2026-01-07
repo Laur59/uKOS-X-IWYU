@@ -77,10 +77,14 @@ INCLUDE     STM32N657xD.ld
 /* RAM2:    stPrgmCode  (Boot)  0x34100400 (400 signature)  */
 /*          64K                                             */
 /* RAM1:    stPrgmCode  (Appl)  0x34000400 (400 signature)  */
-/*          (256K - 1K)                                     */
+/*          (1024K - 1K)                                    */
 /* RAM2:    stPrgmData          0x34100000                  */
 /*          256K                                            */
 /*          stUMemo             0x34140000                  */
+/*          512K                                            */
+/*          stHeap              0x341C0000                  */
+/*          256K +                                          */
+/* RAM3-6:  (4 * 448K)                                      */
 
 stm_lnAXISRAM3_6            = (stm_lnAXISRAM3 + stm_lnAXISRAM4 + stm_lnAXISRAM5 + stm_lnAXISRAM6);  /* Length of internal memory SRAM3 to SRAM6                 */
 
@@ -97,18 +101,8 @@ linker_sizeStackFirst_C0    = (8K);                                             
 linker_stEXRAM              = 0;                                                                    /* 0x00000000: EXRAM, start of the external memory          */
 linker_lnEXRAM              = (0);                                                                  /* Length of the external memory                            */
 
-linker_sizeStackSystem_C0   = (8K);                                                                 /* Length of the System stack                               */
-linker_sizeStackFirst_C0    = (8K);                                                                 /* Length of the First stack                                */
-
-/* IMPORTANT:                                               */
-/* External memory, User (download application) and shared  */
-
-linker_stEXRAM              = 0;                                                                    /* 0x00000000: EXRAM, start of the external memory          */
-
-/* IMPORTANT:                                               */
-/* The heap has to be maintained aligned                    */
-/* on a boundary of 8-bytes                                 */
-
+linker_stUMemo              = (linker_stPrgmData + linker_lnPrgmData);                              /* 0x34140000: UMemo, start of the user memory              */
+linker_lnUMemo              = (512K);                                                               /* Length of the user memory                                */
 
 /* IMPORTANT:                                               */
 /* The heap has to be maintained aligned                    */
@@ -121,7 +115,7 @@ linker_lnHeap               = (256K + stm_lnAXISRAM3_6);                        
 /* uKOS OS Flash + memory                                   */
 
 linker_stPrgmCode           = (stm_stAXISRAM1 + 1K);                                                /* 0x34000400: PrgmCode, start of the Flash                 */
-linker_lnPrgmCode           = (512K - 1K);                                                          /* Length of the the Flash                                  */
+linker_lnPrgmCode           = (1024K - 1K);                                                         /* Length of the the Flash                                  */
 
 linker_stPrgmData           = stm_stAXISRAM2;                                                       /* 0x34100000: PrgmData, start of the RAM                   */
 linker_lnPrgmData           = (256K);                                                               /* Length of the RAM                                        */

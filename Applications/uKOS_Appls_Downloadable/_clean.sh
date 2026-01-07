@@ -67,7 +67,7 @@ readonly NC='\033[0m' # No Color
 
 # Parse apps.yaml file using yq
 parse_apps_yaml() {
-    local yaml_file="${PATH_PRG}"/apps.yaml
+    local yaml_file="${PATH_PRG}/apps.yaml"
 
     if ! [[ -f "${yaml_file}" ]]; then
         printf "%bError: YAML file not found: %s%b\n" "${RED}" "${yaml_file}" "${NC}" >&2

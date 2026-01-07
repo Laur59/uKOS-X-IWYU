@@ -131,15 +131,15 @@ MODULE(
  *
  */
 static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
-    UNUSED(argument);
-
                 uint32_t    delta;
                 uint64_t    time[2];
     volatile    float64_t   n = 0.0, Pi = 0.0;
 
+    UNUSED(argument);
+
     while (true) {
         kern_suspendProcess(100U);
-        led_toggle(KLED_0);
+        led_toggle(KLED_1);
 
         kern_readTickCount(&time[0]);
         Pi = Pi + ((1.0 / pow(16, n)) * ((4.0 / ((8.0 * n) + 1.0)))
@@ -166,13 +166,13 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
-    UNUSED(argument);
-
     int32_t     a, b, c, d;
+
+    UNUSED(argument);
 
     while (true) {
         kern_suspendProcess(100U);
-        led_toggle(KLED_1);
+        led_toggle(KLED_2);
 
 // Waiting for 4 integers
 // If we enter garbage, the length will be 0 and we need to empty the buffer
@@ -199,12 +199,12 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
-    UNUSED(argument);
-
 
 // !!! For big strings, consider to use pointers to accomodate them
 
     char_t  myBigText[] = "P2: The old dreams were good dreams. They didn't work out, but I'm glad I had them.\n";
+
+    UNUSED(argument);
 
     while (true) {
         kern_suspendProcess(100U);
@@ -222,9 +222,6 @@ static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
  *
  */
 int     main(int argc, const char *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     proc_t  *process_0, *process_1, *process_2;
 
 // ---------------------------------I-----------------------------------------I--------------I
@@ -235,6 +232,9 @@ int     main(int argc, const char *argv[]) {
     STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2026";
     STRG_LOC_CONST(aStrIden_2[]) = "Process_User_2";
     STRG_LOC_CONST(aStrText_2[]) = "Process user 2.                           (c) EFr-2026";
+
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Specifications for the processes
 

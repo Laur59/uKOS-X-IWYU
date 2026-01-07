@@ -147,12 +147,12 @@ MODULE(
  *
  */
 static  void    __attribute__ ((noreturn)) aProcess_0(const void *argument) {
-    UNUSED(argument);
-
             float32_t   x, y, gain = 2.0f;
             uint64_t    time[2];
             uint32_t    random[2], delta = 0U;
     const   char_t      *result;
+
+    UNUSED(argument);
 
 //  mlpn_configure(&aNetwork);
 
@@ -205,15 +205,15 @@ static  void    __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *
  */
 MAIN_ENTRY(argc, argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     proc_t  *process_0;
 
 // ---------------------------------I-----------------------------------------I--------------I
 
     STRG_LOC_CONST(aStrIden_0[]) = "Process_User_0";
     STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2026";
+
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Specifications for the processes
 

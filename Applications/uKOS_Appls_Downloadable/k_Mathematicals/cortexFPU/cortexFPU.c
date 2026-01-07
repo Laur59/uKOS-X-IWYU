@@ -133,11 +133,11 @@ MODULE(
 extern  float64_t   pi_spigot(float64_t index, float64_t oldPi);
 
 static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
-    UNUSED(argument);
-
     volatile    float64_t   n = 0.0, pi = 0.0;
     uint64_t    time[2];
     uint32_t    delta;
+
+    UNUSED(argument);
 
     (void)dprintf(KSYST, "\n\n");
     while (true) {
@@ -150,7 +150,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 
         n = n + 1.0;
         (void)dprintf(KSYST, "n = %"PRIu32", Pi = %10.7f Time = %"PRIu32"\n", (uint32_t)n, pi, delta);
-        led_toggle(KLED_0);
+        led_toggle(KLED_1);
     }
 }
 
@@ -166,9 +166,9 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 extern  float64_t   pi_lambert(float64_t index, float64_t oldPi);
 
 static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
-    UNUSED(argument);
-
     volatile    float64_t   n = 1.0, pi = 0.0;
+
+    UNUSED(argument);
 
     (void)dprintf(KSYST, "\n\n");
     while (true) {
@@ -179,7 +179,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
         (void)dprintf(KSYST, "n = %"PRIu32", Pi = %10.7f\n", (uint32_t)n, pi);
 
         n = n + 1.0;
-        led_toggle(KLED_1);
+        led_toggle(KLED_2);
     }
 }
 
@@ -192,9 +192,6 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  *
  */
 int     main(int argc, const char *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     proc_t  *process_0, *process_1;
 
 // ---------------------------------I-----------------------------------------I--------------I
@@ -203,6 +200,9 @@ int     main(int argc, const char *argv[]) {
     STRG_LOC_CONST(aStrIden_1[]) = "Process_User_1";
     STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2026";
     STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2026";
+
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Specifications for the processes
 

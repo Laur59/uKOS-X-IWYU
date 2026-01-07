@@ -56,7 +56,7 @@
  *          Launch 2 processes:
  *
  *          - P0: Every 1000-ms
- *                  - Toggle LED 0
+ *                  - Toggle LED 1
  *
  *          - P1: Waiting for the semaphore "imgx - Acquisition"
  *                  - Acquire an image and send it
@@ -128,7 +128,7 @@ static  void    local_transfer(void);
  * \brief aProcess 0
  *
  * - P0: Every 1000-ms
- *          - Toggle LED 0
+ *          - Toggle LED 1
  *
  */
 static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
@@ -137,7 +137,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 
     while (true) {
         kern_suspendProcess(1000U);
-        led_toggle(KLED_0);
+        led_toggle(KLED_1);
     }
 }
 
@@ -214,9 +214,6 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  *
  */
 int     main(int argc, const char *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     proc_t  *process_0, *process_1;
 
 // ---------------------------------I-----------------------------------------I--------------I
@@ -225,6 +222,9 @@ int     main(int argc, const char *argv[]) {
     STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2026";
     STRG_LOC_CONST(aStrIden_1[]) = "Process_User_1";
     STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2026";
+
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Specifications for the processes
 

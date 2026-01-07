@@ -124,12 +124,12 @@ static  void    local_prepareImage(uint8_t *image, uint32_t w, uint32_t h, uint3
  *
  */
 static void __attribute__ ((noreturn)) aProcess(const void *argument) {
-    UNUSED(argument);
-
             uint32_t    w, h, frame = 0;
             uint8_t     *image_0, *image_1;
             float64_t   frameRate = 0.0;
     static  uint64_t    vTime[2];
+
+    UNUSED(argument);
 
     PRIVILEGE_ELEVATE;
 
@@ -173,15 +173,15 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
  *
  */
 int     main(int argc, const char *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     proc_t  *process;
 
 // -------------------------------I-----------------------------------------I--------------I
 
     STRG_LOC_CONST(aStrIden[]) = "Process_User";
     STRG_LOC_CONST(aStrText[]) = "Process user.                             (c) EFr-2026";
+
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Specifications for the processes
 

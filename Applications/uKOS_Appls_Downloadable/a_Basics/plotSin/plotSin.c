@@ -131,16 +131,16 @@ MODULE(
  * - P0: Every 10-ms
  *          - Compute a noisy sinus
  *          - Send it on the serial comm (using the Arduino format)
- *          - Toggle LED 0
+ *          - Toggle LED 1
  *
  */
 static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
-    UNUSED(argument);
-
     uint16_t    x;
     uint32_t    random;
     float64_t   y;
     uint32_t ledDecimationCounter = 0;
+
+    UNUSED(argument);
 
 // Wait a bit (to allow to switch CoolTerm2 in the right mode)
 
@@ -166,7 +166,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
         }
         ledDecimationCounter++;
         if (ledDecimationCounter == 10U) {
-            led_toggle(KLED_0);
+            led_toggle(KLED_1);
             ledDecimationCounter = 0U;
         }
     }
@@ -181,10 +181,10 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *
  */
 int     main(int argc, const char *argv[]) {
+    proc_t  *process_0;
+
     UNUSED(argc);
     UNUSED(argv);
-
-    proc_t  *process_0;
 
 // Specifications for the processes
 

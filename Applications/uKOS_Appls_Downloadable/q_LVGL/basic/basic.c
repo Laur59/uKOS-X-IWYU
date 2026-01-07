@@ -1,20 +1,19 @@
 /*
-; suicide.
-; ========
+; basic.
+; ======
+
+; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
+; Author:   Edo. Franzi     The 2025-01-01
+; Modifs:
 ;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+; Project:  uKOS-X
+; Goal:     Demo of a C application.
+;           This application shows how to operate with the uKOS-X uKernel.
 ;
-; Project: uKOS-X
-;
-; Purpose:
-;    Demo of a C application.
-;    This application shows how to operate with the uKOS-X uKernel.
-;
-;-----
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -50,51 +49,52 @@
 
 /*!
  * \file
- * \ingroup app_basic
+ * \ingroup app_LVGL
  * \brief This application shows how to operate with the uKOS uKernel.
  *
  *          Launch 2 processes:
  *
- *          - P0: Every 1000-ms
- *                  - Toggle LED 1
+ *          - P0: Every 1-ms
+ *                  - Tick for LVGL
  *
- *          - P1: Look for the tool "list"
- *                Execute it
- *                P1 will commit a suicide
+ *          - P1: Draw some objects
+ *                  - Draw the text 1 "uKOS-X"; every 200-ms change its color
+ *                  - Draw the text 2 "LVGL under uKOS-X control"
+ *                  - Draw the text 3 "(c) 2025-2026, Edo. Franzi"
+ *                  - Draw the arc circle (continuously)
+ *                  - Draw up to 20 squares (continuously)
  *
  */
 
-#include    <stdlib.h>
+#include    <stdint.h>
 
 #include    "crt0.h"
-#include    "serial/serial.h"
 #include    "kern/kern.h"
+#include    "lvgl.h"
 #include    "macros.h"
-#include    "macros_core.h"
 #include    "macros_core_stackFrame.h"
 #include    "memo/memo.h"
-#include    "led/led.h"
 #include    "modules.h"
 #include    "os_errors.h"
+#include    "random/random.h"
 #include    "record/record.h"
-#include    "system/system.h"
-#include    "types.h"
+#include    "ui.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) = "suicide      Example of how to commit a suicide.       (c) EFr-2026";
+STRG_LOC_CONST(aStrApplication[]) = "basic        Example of how to use the LVGL.           (c) EFr-2025";
 STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
                                     "===============================\n\n"
 
                                     "This user function module is a C written application.\n\n"
 
-                                    "Input format:  suicide\n"
+                                    "Input format:  basic\n"
                                     "Output format: [result]\n\n"
 
-                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
 
 MODULE(
     UserAppl,                           // Module name (the first letter has to be upper case)
@@ -108,11 +108,20 @@ MODULE(
     0                                   // Execution cores
 );
 
+static  lv_display_t    *display;
+static  bool            vLVGLReady = false;
+
+// Prototypes
+
+extern  void    stub_LCD_On(void);
+extern  void    stub_LCD_flush_cb(lv_display_t *lv_display, const lv_area_t *area, uint8_t *pixelMapping);
+extern  void    ui_draw(void);
+
 /*
  * \brief aProcess 0
  *
- * - P0: Every 1000-ms
- *          - Toggle LED 1
+ * - P0: Every 1-ms
+ *          - Increment the VLGL tick
  *
  */
 static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
@@ -120,33 +129,58 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
     UNUSED(argument);
 
     while (true) {
-        kern_suspendProcess(1000U);
-        led_toggle(KLED_1);
+        if (vLVGLReady == true) {
+            lv_tick_inc(1u);
+            lv_timer_handler();
+        }
+        kern_suspendProcess(1U);
     }
 }
 
 /*
  * \brief aProcess 1
  *
- * - P1: Look for the tool "list"
- *       Execute it
- *       P1 will commit a suicide
- *
+ * - P1: Draw the text 1 "uKOS-X"; every 200-ms change its color
+ *       Draw the text 2 "LVGL under uKOS-X control"
+ *       Draw the text 3 "(c) 2025-2026, Edo. Franzi"
+ *       Draw the arc circle (continuously)
+ *       Draw up to 20 squares (continuously)
+ *       The process remains active with the LVGL context
  */
-#define KIDMODULE   ((KID_FAM_CLI<<24U) | (KNUM_LIST<<8U) | '_')
-
 static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
-            uint16_t        index;
-    const   uKOS_module_t   *module;
+    uint32_t    LCDBufferSize;
+    lv_color_t  *LCDBuffer;
 
     UNUSED(argument);
 
-// looking for the cmdLine module ...
+// Initialise the LCD and the LVGL
+// Ask for a small image buffer (for partial rendering)
 
-    if (system_getModuleId(KIDMODULE, &index, &module) == KERR_SYSTEM_NOERR) {
-        module->oExecution(0U, NULL);
-    }
-    exit(EXIT_OS_SUCCESS);
+    stub_LCD_On();
+    lv_init();
+
+    LCDBufferSize = (uint32_t)KLCD_WIDTH * (uint32_t)KBUF_LINES * sizeof(lv_color_t);
+    LCDBuffer     = (lv_color_t *)memo_malloc(KMEMO_ALIGN_16, LCDBufferSize, "lcd_buffer");
+
+// Create a display
+// Activate it
+
+    display = lv_display_create(KLCD_WIDTH, KLCD_HEIGHT);
+    lv_display_set_default(display);
+
+    lv_display_set_buffers(display, LCDBuffer, NULL, LCDBufferSize, LV_DISPLAY_RENDER_MODE_PARTIAL);
+    lv_display_set_flush_cb(display, stub_LCD_flush_cb);
+
+// Draw the different objects
+// Activate the lvgl tick
+
+    ui_draw();
+
+    vLVGLReady = true;
+
+// Remain in the lvgl process space
+
+    while (true) { kern_suspendProcess(100U); }
 }
 
 /*
@@ -163,9 +197,9 @@ int     main(int argc, const char *argv[]) {
 // ---------------------------------I-----------------------------------------I--------------I
 
     STRG_LOC_CONST(aStrIden_0[]) = "Process_User_0";
+    STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2025";
     STRG_LOC_CONST(aStrIden_1[]) = "Process_User_1";
-    STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2026";
-    STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2026";
+    STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2025";
 
     UNUSED(argc);
     UNUSED(argv);
@@ -176,7 +210,7 @@ int     main(int argc, const char *argv[]) {
         0,                                  // Index
         specification_0,                    // Specifications (just use specification_x)
         aStrText_0,                         // Info string (NULL if anonymous)
-        KKERN_SZ_STACK_MM,                  // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
+        KKERN_SZ_STACK_XLIB,                // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
         aProcess_0,                         // Code of the process
         aStrIden_0,                         // Identifier (NULL if anonymous)
         KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
@@ -187,11 +221,11 @@ int     main(int argc, const char *argv[]) {
         1,                                  // Index
         specification_1,                    // Specifications (just use specification_x)
         aStrText_1,                         // Info string (NULL if anonymous)
-        KKERN_SZ_STACK_MM,                  // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
+        KKERN_SZ_STACK_XL,                  // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
         aProcess_1,                         // Code of the process
         aStrIden_1,                         // Identifier (NULL if anonymous)
         KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
-        KKERN_PRIORITY_HIGH_01              // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
+        KKERN_PRIORITY_MEDIUM_01            // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
     );
 
     if (kern_createProcess(&specification_0, NULL, &process_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }

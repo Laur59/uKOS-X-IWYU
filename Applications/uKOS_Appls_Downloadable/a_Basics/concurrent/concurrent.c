@@ -179,9 +179,6 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
  *
  */
 int     main(int argc, const char *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     proc_t  *process_0, *process_1;
     proc_t  *process_2, *process_3;
     proc_t  *process_4, *process_5;
@@ -200,6 +197,9 @@ int     main(int argc, const char *argv[]) {
     STRG_LOC_CONST(aStrText_3[]) = "Process user 3.                           (c) EFr-2026";
     STRG_LOC_CONST(aStrText_4[]) = "Process user 4.                           (c) EFr-2026";
     STRG_LOC_CONST(aStrText_5[]) = "Process user 5.                           (c) EFr-2026";
+
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Specifications for the processes
 

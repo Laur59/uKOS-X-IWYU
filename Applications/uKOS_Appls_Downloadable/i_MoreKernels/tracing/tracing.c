@@ -118,10 +118,10 @@ MODULE(
  *
  */
 static void __attribute__ ((noreturn)) aProcess(const void *argument) {
-    UNUSED(argument);
-
     uint32_t    time = 20U;
     uintptr_t   i;
+
+    UNUSED(argument);
 
     LOG(KINFO_USER, "launched");
     (void)dprintf(KSYST,"The machine will crash in %"PRIu32" seconds!!\n", time--);
@@ -159,15 +159,15 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
  *
  */
 int     main(int argc, const char *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     proc_t  *process;
 
 // -------------------------------I-----------------------------------------I--------------I
 
     STRG_LOC_CONST(aStrIden[]) = "Process_User_0";
     STRG_LOC_CONST(aStrText[]) = "Process user 0.                           (c) EFr-2026";
+
+    UNUSED(argc);
+    UNUSED(argv);
 
     LOG(KINFO_USER, "launched");
     record_trace("--> Main: Enter", 0x04040404);

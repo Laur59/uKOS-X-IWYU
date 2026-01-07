@@ -115,12 +115,10 @@ MODULE(
  *
  * - P0: Create a mailbox "Queue 1-to-0"
  *       Read and display the messages coming from the queue
- *          - Toggle LED 0
+ *          - Toggle LED 1
  *
  */
 static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
-    UNUSED(argument);
-
     uintptr_t   message_1_to_0, expected_1_to_0 = 0U;
     mbox_t      *queue_1_to_0;
     mcnf_t      configure = {
@@ -128,6 +126,8 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
                     .oDataEntrySize = 0U
             };
     uint32_t ledDecimationCounter = 0U;
+
+    UNUSED(argument);
 
     if (kern_createMailbox("Queue 1-to-0", &queue_1_to_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create mbox");    exit(EXIT_OS_FAILURE); }
     if (kern_setMailbox(queue_1_to_0, &configure)         != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Configure mbox"); exit(EXIT_OS_FAILURE); }
@@ -151,7 +151,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
         (void)dprintf(KSYST, "Message = %"PRIu32"\n", (uint32_t)message_1_to_0);
         ledDecimationCounter++;
         if (ledDecimationCounter == 100U) {
-            led_toggle(KLED_0);
+            led_toggle(KLED_1);
             ledDecimationCounter = 0U;
         }
     }
@@ -166,10 +166,10 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
-    UNUSED(argument);
-
     uintptr_t   message_1_to_0 = 0;
     mbox_t      *queue_1_to_0;
+
+    UNUSED(argument);
 
 // Waiting for the queue 1-to-0
 
@@ -198,9 +198,6 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  *
  */
 int     main(int argc, const char *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     proc_t  *process_0, *process_1;
 
 // ---------------------------------I-----------------------------------------I--------------I
@@ -209,6 +206,9 @@ int     main(int argc, const char *argv[]) {
     STRG_LOC_CONST(aStrIden_1[]) = "Process_User_1";
     STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2026";
     STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2026";
+
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Specifications for the processes
 

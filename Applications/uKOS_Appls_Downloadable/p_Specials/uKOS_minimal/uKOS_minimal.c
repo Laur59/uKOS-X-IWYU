@@ -136,9 +136,6 @@ MODULE(
  *
  */
 int     main(int argc, const char *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     stim_t  *softwareTimer;
     mcnf_t  configure_mbox = {
                 .oNbMaxPacks    = 10U,
@@ -151,6 +148,9 @@ int     main(int argc, const char *argv[]) {
                 .oCode        = local_changeStateLed,
                 .oArgument    = NULL
             };
+
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Create the "dispatcher" queue
 // Create the software timer
@@ -176,10 +176,10 @@ int     main(int argc, const char *argv[]) {
  *
  */
 static  void    local_changeStateLed(const void *argument) {
-    UNUSED(argument);
-
     static  uint8_t     vCptBlink = 0U;
 
-    ((vCptBlink & 0x1Fu) > 8U) ? (led_off(KLED_1)) : (led_toggle(KLED_1));
+    UNUSED(argument);
+
+    ((vCptBlink & 0x1FU) > 8U) ? (led_off(KLED_1)) : (led_toggle(KLED_1));
     vCptBlink++;
 }
