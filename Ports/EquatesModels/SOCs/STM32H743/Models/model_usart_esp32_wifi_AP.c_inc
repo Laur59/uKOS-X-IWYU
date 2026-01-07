@@ -1,14 +1,15 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+*/
+
+/*
 ; model_usart_esp32_wifi_AP.
 ; ==========================
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
-; Project:  uKOS-X
+; Project: uKOS-X
 ;
 ; Purpose:
 ;     Model for controlling the "usart - esp32" device.

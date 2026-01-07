@@ -1,9 +1,8 @@
 #!/usr/bin/env zsh
+# SPDX-License-Identifier: MIT
 
 # stm32programmer.
 # ================
-
-# SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
 # Author:	Edo. Franzi		The 2025-01-01

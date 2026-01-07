@@ -1,17 +1,18 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+*/
+
+/*
 ; oct0.
 ; =====
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    Octo SPI manager (for lcd).
+;   Octo SPI manager (for lcd).
 ;
 ;-----
 ;                                              __ ______  _____

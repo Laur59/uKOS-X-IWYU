@@ -1,63 +1,63 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; newlib.
 ; =======
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    newLib interface for gcc C compiler (reentrant version).
+;   newLib interface for gcc C compiler (reentrant version).
 ;
-;    See: https://linux.die.net/man/
+;   See: https://linux.die.net/man/
 ;
-;    Fully or partially supported functions to support
+;   Fully or partially supported functions to support
 ;
-;    Open - close - read - write newlib functions
-;    _open_r
-;    _close_r
-;    _write_r
-;    _read_r
+;   Open - close - read - write newlib functions
+;   _open_r
+;   _close_r
+;   _write_r
+;   _read_r
 ;
-;    Generic newlib functions
-;    _times_r
-;    _wait_r
-;    __errno
-;    _fork_r
-;    _stat_r
-;    _fstat_r
-;    _link_r
-;    _unlink_r
-;    _lseek_r
-;    _getpid_r
-;    _kill_r
+;   Generic newlib functions
+;   _times_r
+;   _wait_r
+;   __errno
+;   _fork_r
+;   _stat_r
+;   _fstat_r
+;   _link_r
+;   _unlink_r
+;   _lseek_r
+;   _getpid_r
+;   _kill_r
 ;
-;    Allocator newlib functions
-;    _sbrk_r
-;    __wrap__malloc_r
-;    __wrap__free_r
-;    __wrap__realloc_r
-;    __wrap__calloc_r
+;   Allocator newlib functions
+;   _sbrk_r
+;   __wrap__malloc_r
+;   __wrap__free_r
+;   __wrap__realloc_r
+;   __wrap__calloc_r
 ;
-;    Suported devices controlled by the open - close - read - write newlib functions
-;    urt0
-;    urt1
-;    urt2
-;    urt3
-;    urt4
-;    cdc0
-;    cdc1
-;    wfi0
+;   Suported devices controlled by the open - close - read - write newlib functions
+;   urt0
+;   urt1
+;   urt2
+;   urt3
+;   urt4
+;   cdc0
+;   cdc1
+;   wfi0
 ;
-;    syst
-;    def0
-;    stdin
-;    stdout
-;    stderr
+;   syst
+;   def0
+;   stdin
+;   stdout
+;   stderr
 ;
 ;-----
 ;                                              __ ______  _____

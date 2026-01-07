@@ -1,17 +1,17 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; launcher.
 ; =========
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    launcher process; launch all the defined daemon & processes.
+;   launcher process; launch all the defined daemon & processes.
 ;
 ;-----
 ;                                              __ ______  _____

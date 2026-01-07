@@ -1,19 +1,20 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; ui.
 ; ===
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:   Edo. Franzi     The 2025-01-01
-; Modifs:
+; Project: uKOS-X
 ;
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           Simple UI for the basic demo.
+; Purpose:
+;   Demo of a C application.
+;   Simple UI for the basic demo.
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \

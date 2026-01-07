@@ -1,28 +1,28 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; preciseSignals.
 ; ===============
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    Kern - Precise signals.
+;   Kern - Precise signals.
 ;
-;    This module implements the software primitives.
+;   This module implements the software primitives.
 ;
-;    Precise signal system calls
-;    ---------------------------
+;   Precise signal system calls
+;   ---------------------------
 ;
-;    void    preciseSignals_init(void);
-;    int32_t kern_createPreciseSignal(const char_t *identifier, prcs_t **handle);
-;    int32_t kern_setPreciseSignal(prcs_t *handle, sign_t **sigGroup, proc_t *toProcess, uint64_t period, uint8_t mode, uint32_t signal);
-;    int32_t kern_killPreciseSignal(prcs_t *handle);
-;    int32_t kern_getPreciseSignalById(const char_t *identifier, prcs_t **handle);
+;   void    preciseSignals_init(void);
+;   int32_t kern_createPreciseSignal(const char_t *identifier, prcs_t **handle);
+;   int32_t kern_setPreciseSignal(prcs_t *handle, sign_t **sigGroup, proc_t *toProcess, uint64_t period, uint8_t mode, uint32_t signal);
+;   int32_t kern_killPreciseSignal(prcs_t *handle);
+;   int32_t kern_getPreciseSignalById(const char_t *identifier, prcs_t **handle);
 ;
 ;-----
 ;                                              __ ______  _____

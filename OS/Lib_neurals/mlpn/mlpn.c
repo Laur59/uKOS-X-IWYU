@@ -1,17 +1,17 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; mlpn.
 ; =====
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    mlpn manager.
+;   mlpn manager.
 ;
 ;-----
 ;                                              __ ______  _____

@@ -1,18 +1,19 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; LIS2DW12.
 ; =========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:
-;
 ; Project:	uKOS-X
-; Goal:		ST LIS2DW12 accelerometer equates.
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Purpose:
+;   ST LIS2DW12 accelerometer equates.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \

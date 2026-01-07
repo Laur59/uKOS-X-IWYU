@@ -1,19 +1,19 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; gdb.
 ; ====
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    Freeze the µKernel for gdb.
-;      - Freeze the uKernel in order to support gdb sessions
-;      - The gdb loaded application has to start with SET_INTERRUPTION
+;   Freeze the µKernel for gdb.
+;     - Freeze the uKernel in order to support gdb sessions
+;     - The gdb loaded application has to start with SET_INTERRUPTION
 ;
 ;-----
 ;                                              __ ______  _____

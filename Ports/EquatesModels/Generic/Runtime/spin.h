@@ -1,17 +1,18 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+*/
+
+/*
 ; spin.
 ; =====
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
-; Project:  uKOS-X
+; Project: uKOS-X
 ;
 ; Purpose:
-;    Collection of multi-core routines
+;   Collection of multi-core routines
 ;
 ;-----
 ;                                              __ ______  _____

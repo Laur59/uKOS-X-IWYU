@@ -1,24 +1,24 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; class_TFL.
 ; ==========
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    Demo of a C application.
-;    This application shows how to operate with the uKOS-X uKernel.
+;   Demo of a C application.
+;   This application shows how to operate with the uKOS-X uKernel.
 ;
-;    Launch 1 processes in C++:
+;   Launch 1 processes in C++:
 ;
-;    - P0: Every 1000-ms
-;          Compute the inference
-;          Display the classes
+;   - P0: Every 1000-ms
+;         Compute the inference
+;         Display the classes
 ;
 ;-----
 ;                                              __ ______  _____

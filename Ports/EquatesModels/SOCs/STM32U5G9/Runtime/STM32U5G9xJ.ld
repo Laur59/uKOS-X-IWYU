@@ -1,13 +1,13 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; STM32U5G9xJ.
 ; ============
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
-;
 ; Project:	uKOS-X
 ; Goal:		Specs of STM32U5G9xJ.
 ;			References:

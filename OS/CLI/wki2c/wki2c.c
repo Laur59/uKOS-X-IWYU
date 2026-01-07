@@ -1,18 +1,18 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; wki2c.
 ; ====
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    wki2c tool.
-;    This tool allows to operate with an i2c device.
+;   wki2c tool.
+;   This tool allows to operate with an i2c device.
 ;
 ;-----
 ;                                              __ ______  _____

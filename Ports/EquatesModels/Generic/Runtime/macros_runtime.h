@@ -1,18 +1,19 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; macros_runtime.
 ; ===============
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:
+; Project: uKOS-X
 ;
-; Project:	uKOS-X
-; Goal:		Important runtime macros.
+; Purpose:
+;   Important runtime macros.
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \

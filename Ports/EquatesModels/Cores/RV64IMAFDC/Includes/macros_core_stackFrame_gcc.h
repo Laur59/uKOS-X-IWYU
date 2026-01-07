@@ -1,17 +1,18 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+*/
+
+/*
 ; macros_core_stackFrame_gcc_14.
 ; ==============================
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    Stack frame management macros (gcc-14 version).
+;   Stack frame management macros (gcc-14 version).
 ;    This file conains the most sensitive macros
 ;    for the uKernel management
 ;

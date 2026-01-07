@@ -1,18 +1,16 @@
 #!/usr/bin/env zsh
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #------------------------------------------------------------------------
-# SPDX-License-Identifier: MIT
-#
-# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-#
 # Project: uKOS-X
 #
 # Purpose:
 #   Build all the projects.
 #
-# Usage: sourced by build.sh
+# Usage:
 #   cd cloned_directory/Ports/Targets
-#   ./_build_cmake.sh [-L] [-U] [-Y] [-v|-w]
+#   ./_build.sh [-L] [-U] [-Y] [-v|-w]
 #
 #-----
 #                                              __ ______  _____

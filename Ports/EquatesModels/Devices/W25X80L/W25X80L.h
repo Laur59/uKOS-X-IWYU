@@ -1,18 +1,19 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; W25X80L.
 ; ========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:
-;
 ; Project:	uKOS-X
-; Goal:		EEPROM W25X80L equates.
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Purpose:
+;   EEPROM W25X80L equates.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \

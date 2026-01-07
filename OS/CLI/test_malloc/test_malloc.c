@@ -1,25 +1,25 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; test_malloc.
 ; ============
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    Randomly test the memo_maloc.
+;   Randomly test the memo_maloc.
 ;
-;    Launch 10 processes:
+;   Launch 10 processes:
 ;
-;    - P0..P9
-;          Randomly test the memo_malloc
-;          Ask for random quantity of memory
-;          Each bloc is filled with a pattern
-;          When the heap is full, check of the coherence of the blocs & release them
+;   - P0..P9
+;         Randomly test the memo_malloc
+;         Ask for random quantity of memory
+;         Each bloc is filled with a pattern
+;         When the heap is full, check of the coherence of the blocs & release them
 ;
 ;-----
 ;                                              __ ______  _____

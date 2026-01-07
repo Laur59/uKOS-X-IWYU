@@ -1,19 +1,19 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; rtc.
 ; ====
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    rtc daemon; Update the Unix time Timer value
-;    with a precise RTC one
-;    every 2h the Unix time Timer is updated from the RTC.
+;   rtc daemon; Update the Unix time Timer value
+;   with a precise RTC one
+;   every 2h the Unix time Timer is updated from the RTC.
 ;
 ;-----
 ;                                              __ ______  _____

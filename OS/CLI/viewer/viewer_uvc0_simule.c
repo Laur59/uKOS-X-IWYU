@@ -1,18 +1,18 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; viewer_uvc0_simule.
 ; ===================
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    Image viewer.
-;    This tool allows to send a simulated image via the uvc0 manager.
+;   Image viewer.
+;   This tool allows to send a simulated image via the uvc0 manager.
 ;
 ;-----
 ;                                              __ ______  _____

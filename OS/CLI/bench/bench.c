@@ -1,21 +1,21 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; bench.
 ; ======
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    System benches.
+;   System benches.
 ;
-;    Launch 1 processes:
+;   Launch 1 processes:
 ;
-;    - P0: bench performance
+;   - P0: bench performance
 ;
 ;-----
 ;                                              __ ______  _____

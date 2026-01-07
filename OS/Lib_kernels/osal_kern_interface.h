@@ -1,25 +1,25 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; osal_kern_interface.
 ; ====================
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    Osal kernel interface for standalone libraries.
+;   Osal kernel interface for standalone libraries.
 ;
-;    This file export the major kernel components necessary to
-;    build standalone libraries that use the kernel.
+;   This file export the major kernel components necessary to
+;   build standalone libraries that use the kernel.
 ;
-;    Tipically, the following components are needed:
-;    mbox
-;    sema
-;    mutx
+;   Tipically, the following components are needed:
+;   mbox
+;   sema
+;   mutx
 ;
 ;-----
 ;                                              __ ______  _____

@@ -1,18 +1,18 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; process_dispatcher.
 ; ===================
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    Process: dispatcher.
-;    - As soon as a new data is available on the queue process it
+;   Process: dispatcher.
+;   - As soon as a new data is available on the queue process it
 ;
 ;-----
 ;                                              __ ______  _____

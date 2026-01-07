@@ -1,26 +1,26 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; debug.
 ; ======
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    Kern - Debug list management.
+;   Kern - Debug list management.
 ;
-;    This module implements the debug list primitives.
+;   This module implements the debug list primitives.
 ;
-;    Software debug system calls
-;    ---------------------------
+;   Software debug system calls
+;   ---------------------------
 ;
-;    void    debug_init(void);
-;    int32_t kern_stopProcess(proc_t *handle);
-;    int32_t kern_reactivateProcess(proc_t *handle);
+;   void    debug_init(void);
+;   int32_t kern_stopProcess(proc_t *handle);
+;   int32_t kern_reactivateProcess(proc_t *handle);
 ;
 ;-----
 ;                                              __ ______  _____

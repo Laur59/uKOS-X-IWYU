@@ -1,10 +1,9 @@
-# set-project-paths.
-# ==================
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #------------------------------------------------------------------------
-# SPDX-License-Identifier: MIT
-#
-# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+# set-project-paths.
+# ==================
 #
 # Project: uKOS-X
 #

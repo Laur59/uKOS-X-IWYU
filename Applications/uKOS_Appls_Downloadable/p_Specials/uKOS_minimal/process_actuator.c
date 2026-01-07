@@ -1,18 +1,18 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; process_actuator.
 ; =================
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    Process: actuator.
-;    - Every 1000-ms send a new value to the dispatcher
+;   Process: actuator.
+;   - Every 1000-ms send a new value to the dispatcher
 ;
 ;-----
 ;                                              __ ______  _____

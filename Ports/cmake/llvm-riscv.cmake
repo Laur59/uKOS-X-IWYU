@@ -1,10 +1,9 @@
-# llvm-riscv.
-# ===========
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #------------------------------------------------------------------------
-# SPDX-License-Identifier: MIT
-#
-# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+# llvm-riscv.
+# ===========
 #
 # Project: uKOS-X
 #

@@ -1,32 +1,32 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; bench_01.
 ; =========
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    Bench 01: Compute the X-Y projection and the histogram of
-;              a small square array (200 x 200 uint8_t) elements.
-;              The data is located in the CPU internal memory
+;   Bench 01: Compute the X-Y projection and the histogram of
+;             a small square array (200 x 200 uint8_t) elements.
+;             The data is located in the CPU internal memory
 ;
-;    Target used: Nucleo_H743 @ 480-MHz
-;    Target used: Nucleo_N657 @ 600-MHz
-;    Target used: MAiXDUiNO_K210 @ 400-MHz
-;    Target used: Discovery_U5G9 @ 160-MHz
+;   Target used: Nucleo_H743 @ 480-MHz
+;   Target used: Nucleo_N657 @ 600-MHz
+;   Target used: MAiXDUiNO_K210 @ 400-MHz
+;   Target used: Discovery_U5G9 @ 160-MHz
 ;
-;    Bench results in [us]:
+;   Bench results in [us]:
 ;
 ;                                _fill   _projX  _projY  _histo
-;    Nucleo_H743 @ 480-MHz       171     671     288     450
-;    Nucleo_N657 @ 600-MHz       336     754     478     631
-;    MAiXDUiNO_K210 @ 400-MHz    538     585     728     1230
-;    Discovery_U5G9 @ 160-MHz    1519    1771    1522    2018
+;   Nucleo_H743 @ 480-MHz       171     671     288     450
+;   Nucleo_N657 @ 600-MHz       336     754     478     631
+;   MAiXDUiNO_K210 @ 400-MHz    538     585     728     1230
+;   Discovery_U5G9 @ 160-MHz    1519    1771    1522    2018
 ;
 ;-----
 ;                                              __ ______  _____

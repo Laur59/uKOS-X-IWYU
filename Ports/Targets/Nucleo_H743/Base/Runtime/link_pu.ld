@@ -1,13 +1,13 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; link_pu.
 ; ========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
-;
 ; Project:	uKOS-X
 ; Goal:		Linker description for the uKOS-X system.
 ;			Privileged / user support

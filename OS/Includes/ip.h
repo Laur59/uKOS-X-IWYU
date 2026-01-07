@@ -1,18 +1,22 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; ip.
 ; ===
-
-; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
 ; Author:	Edo. Franzi		The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		IP macros.
+; Project: uKOS-X
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Purpose:
+;   IP macros.
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \

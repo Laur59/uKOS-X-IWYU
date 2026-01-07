@@ -1,33 +1,33 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; signals.
 ; ========
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    Kern - Signal management.
+;   Kern - Signal management.
 ;
-;    This module implements the signals primitives.
+;   This module implements the signals primitives.
 ;
-;    Software signal system calls
-;    ----------------------------
+;   Software signal system calls
+;   ----------------------------
 ;
-;    void    signals_init(void);
-;    int32_t kern_createSignalGroup(const char_t *identifier, sign_t **handle);
-;    int32_t kern_createBitSignal(sign_t *handle, uint8_t *bit);
-;    int32_t kern_signalSignal(sign_t *handle, uint32_t signals, proc_t *toProcess, uint32_t mode);
-;    int32_t kern_waitSignal(sign_t *handle, uint32_t *signals, proc_t *fromProcess, uint32_t timeout);
-;    int32_t kern_getWaitingSignalMask(sign_t *handle, uint32_t *waitingSignals);
-;    int32_t kern_clearPendingSignal(sign_t *handle, uint32_t toClearMask);
-;    int32_t kern_killSignalGroup(sign_t *handle);
-;    int32_t kern_killBitSignal(sign_t *handle, uint8_t bitSignal);
-;    int32_t kern_getSignalGroupById(char_t *identifier, sign_t **handle);
+;   void    signals_init(void);
+;   int32_t kern_createSignalGroup(const char_t *identifier, sign_t **handle);
+;   int32_t kern_createBitSignal(sign_t *handle, uint8_t *bit);
+;   int32_t kern_signalSignal(sign_t *handle, uint32_t signals, proc_t *toProcess, uint32_t mode);
+;   int32_t kern_waitSignal(sign_t *handle, uint32_t *signals, proc_t *fromProcess, uint32_t timeout);
+;   int32_t kern_getWaitingSignalMask(sign_t *handle, uint32_t *waitingSignals);
+;   int32_t kern_clearPendingSignal(sign_t *handle, uint32_t toClearMask);
+;   int32_t kern_killSignalGroup(sign_t *handle);
+;   int32_t kern_killBitSignal(sign_t *handle, uint8_t bitSignal);
+;   int32_t kern_getSignalGroupById(char_t *identifier, sign_t **handle);
 ;
 ;-----
 ;                                              __ ______  _____

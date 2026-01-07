@@ -1,18 +1,22 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; stm32F217.
 ; ==========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Generated using the .svd description	The 2025-01-01
-; Modifs:
-;
 ; Project:	uKOS-X
-; Goal:		stm32F217 equates.
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+; Purpose:
+;   stm32F217 equates.
+;
+; Description:
+;   Generated using the .svd description
+;
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \

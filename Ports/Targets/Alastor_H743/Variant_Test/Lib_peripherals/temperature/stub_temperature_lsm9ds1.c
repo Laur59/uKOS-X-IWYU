@@ -1,18 +1,19 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+*/
+
+/*
 ; stub_temperature_lsm9ds1.
 ; =========================
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    stub for the connection of the "temperature" manager to the lsm9ds1
-;    via the spi2 device.
+;   stub for the connection of the "temperature" manager to the lsm9ds1
+;   via the spi2 device.
 ;
 ;-----
 ;                                              __ ______  _____

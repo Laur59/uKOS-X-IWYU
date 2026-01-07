@@ -1,12 +1,10 @@
 #!/usr/bin/env zsh
-
-# code_analysis.
-# ==============
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #------------------------------------------------------------------------
-# SPDX-License-Identifier: MIT
-#
-# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+# code_analysis.
+# ==============
 #
 # Project: uKOS-X
 #

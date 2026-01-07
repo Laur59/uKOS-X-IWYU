@@ -1,21 +1,22 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+*/
+
+/*
 ; init.
 ; =====
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    Low level init for the uKOS-X Longan_Nano_F103 module.
+;   Low level init for the uKOS-X Longan_Nano_F103 module.
 ;
-;    !!! This code HAS not to contain static data.
-;    !!! It is called before to copy and to initialise
-;    !!! the variable into the RAM.
+;   !!! This code HAS not to contain static data.
+;   !!! It is called before to copy and to initialise
+;   !!! the variable into the RAM.
 ;
 ;-----
 ;                                              __ ______  _____

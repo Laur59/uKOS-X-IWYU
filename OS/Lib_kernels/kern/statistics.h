@@ -1,20 +1,20 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; statistics.
 ; ===========
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    Kern - Statistic management.
+;   Kern - Statistic management.
 ;
-;    This module is responsible for computing the statistic of
-;    the uKernel.
+;   This module is responsible for computing the statistic of
+;   the uKernel.
 ;
 ;-----
 ;                                              __ ______  _____

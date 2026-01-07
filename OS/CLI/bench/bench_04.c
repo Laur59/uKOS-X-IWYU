@@ -1,32 +1,32 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; bench_04.
 ; =========
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    Bench 04: Compute the atan2(x, y) by a cordic in a fixed point.
-;              The data is located in the external memory.
-;              1000 iteractions.
+;   Bench 04: Compute the atan2(x, y) by a cordic in a fixed point.
+;             The data is located in the external memory.
+;             1000 iteractions.
 ;
-;    Target used: Nucleo_H743 @ 480-MHz
-;    Target used: Nucleo_N657 @ 600-MHz
-;    Target used: MAiXDUiNO_K210 @ 400-MHz
-;    Target used: Discovery_U5G9 @ 160-MHz
+;   Target used: Nucleo_H743 @ 480-MHz
+;   Target used: Nucleo_N657 @ 600-MHz
+;   Target used: MAiXDUiNO_K210 @ 400-MHz
+;   Target used: Discovery_U5G9 @ 160-MHz
 ;
-;    Bench results in [us]:
+;   Bench results in [us]:
 ;
-;                                _atan2
-;    Nucleo_H743 @ 480-MHz       1129
-;    Nucleo_N657 @ 600-MHz       870
-;    MAiXDUiNO_K210 @ 400-MHz    566
-;    Discovery_U5G9 @ 160-MHz    2049
+;                               _atan2
+;   Nucleo_H743 @ 480-MHz       1129
+;   Nucleo_N657 @ 600-MHz       870
+;   MAiXDUiNO_K210 @ 400-MHz    566
+;   Discovery_U5G9 @ 160-MHz    2049
 ;
 ;-----
 ;                                              __ ______  _____

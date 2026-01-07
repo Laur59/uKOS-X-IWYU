@@ -1,19 +1,18 @@
 #!/usr/bin/env zsh
-
 # SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi			The 2025-01-01
-# Modifs:	Laurent von Allmen	The 2025-01-01
+# Project: uKOS-X
 #
-# Project:	uKOS-X
-# Goal:		script for burning the arm flash via the kflash_maixduino.
+# Purpose:
+#   script for burning the arm flash via the kflash_maixduino.
 #
-#			- Usage:
-#			  ./kflash_maixduino.sh
+# Usage:
+#   ./kflash_maixduino.sh
 #
-#   (c) 2025-2026, Edo. Franzi
-#   --------------------------
+#-----
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \

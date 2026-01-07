@@ -1,24 +1,24 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; test_cpp.
 ; =========
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    Demo of a C application.
-;    This application shows how to operate with the uKOS-X uKernel.
+;   Demo of a C application.
+;   This application shows how to operate with the uKOS-X uKernel.
 ;
-;    Launch 1 processes in C++:
+;   Launch 1 processes in C++:
 ;
-;    - P0: Display a classe
-;          Every 100-ms
-;          Toggle LED 0
+;   - P0: Display a classe
+;         Every 100-ms
+;         Toggle LED 0
 ;
 ;-----
 ;                                              __ ______  _____

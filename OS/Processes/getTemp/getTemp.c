@@ -1,26 +1,26 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; getTemp.
 ; ========
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    getTemp process; continuous acquisition of the temperature.
-;    The result is pushed in a mailbox.
+;   getTemp process; continuous acquisition of the temperature.
+;   The result is pushed in a mailbox.
 ;
-;    Process                             Tool
-;    temperature                         X
-;    while
-;        - malloc of a buffer k
-;        - send the buffer k             - receive the buffer k
-;        - k++                           - copy it
-;                                        - free the buffer k
+;   Process                             Tool
+;   temperature                         X
+;   while
+;       - malloc of a buffer k
+;       - send the buffer k             - receive the buffer k
+;       - k++                           - copy it
+;                                       - free the buffer k
 ;
 ;-----
 ;                                              __ ______  _____

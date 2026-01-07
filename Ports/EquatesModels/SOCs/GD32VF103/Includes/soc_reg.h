@@ -1,16 +1,17 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; GD32VF103.
 ; ==========
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-;
-; Project:  uKOS-X
+; Project: uKOS-X
 ;
 ; Purpose:
-;    GD32VF103 equates.
+;   GD32VF103 equates.
 ;
 ; Description:
 ;    Generated using the .svd description

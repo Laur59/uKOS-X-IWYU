@@ -1,16 +1,17 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; core_addendum.
 ; ==============
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    addendum equates.
+;   addendum equates.
 ;
 ;-----
 ;                                              __ ______  _____

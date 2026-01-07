@@ -1,19 +1,19 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; wkspi.
 ; ======
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    wkspi tool.
-;    This tool allows to operate with an spi device.
-;    For the moment this tool reserved for STM CPU32 SoCs!!
+;   wkspi tool.
+;   This tool allows to operate with an spi device.
+;   For the moment this tool reserved for STM CPU32 SoCs!!
 ;
 ;-----
 ;                                              __ ______  _____

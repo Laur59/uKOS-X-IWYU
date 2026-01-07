@@ -1,22 +1,22 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; memo.
 ; =====
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    memo manager.
+;   memo manager.
 ;
-;    !!! The memo manager is designed to share the same heap
-;    between all the cores. For a multi-core system KNB_CORES > 1
-;    it is mandatory to use the spin lock/unlock technique for
-;    the core arbitration.
+;   !!! The memo manager is designed to share the same heap
+;   between all the cores. For a multi-core system KNB_CORES > 1
+;   it is mandatory to use the spin lock/unlock technique for
+;   the core arbitration.
 ;
 ;-----
 ;                                              __ ______  _____

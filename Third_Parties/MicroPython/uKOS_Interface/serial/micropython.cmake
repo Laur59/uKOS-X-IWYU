@@ -1,10 +1,9 @@
-# micropython.
-# ============
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #------------------------------------------------------------------------
-# SPDX-License-Identifier: MIT
-#
-# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+# micropython.
+# ============
 #
 # Project: uKOS-X
 #

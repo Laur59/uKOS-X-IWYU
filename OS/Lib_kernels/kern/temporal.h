@@ -1,32 +1,32 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; temporal.
 ; =========
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    Kern - time management.
+;   Kern - time management.
 ;
-;    This module implements the temporal and the call-back primitives.
+;   This module implements the temporal and the call-back primitives.
 ;
-;    Temporal system calls
-;    ---------------------
+;   Temporal system calls
+;   ---------------------
 ;
-;    void    temporal_init(void);
-;    int32_t kern_suspendProcess(uint32_t time);
-;    int32_t kern_setNewTimeout(proc_t *handle, uint32_t timeout);
-;    int32_t kern_resumeProcessWithTimeout(proc_t *handle);
-;    int32_t kern_readRemainingProcessTimeout(uint32_t *timeout);
-;    int32_t kern_switchFast(void);
-;    int32_t kern_readTickCount(uint64_t *tickCount);
-;    int32_t kern_waitAtLeast(uint16_t time);
-;    int32_t kern_hasPendingTimeoutProcesses(bool *nonInfTOActive);
+;   void    temporal_init(void);
+;   int32_t kern_suspendProcess(uint32_t time);
+;   int32_t kern_setNewTimeout(proc_t *handle, uint32_t timeout);
+;   int32_t kern_resumeProcessWithTimeout(proc_t *handle);
+;   int32_t kern_readRemainingProcessTimeout(uint32_t *timeout);
+;   int32_t kern_switchFast(void);
+;   int32_t kern_readTickCount(uint64_t *tickCount);
+;   int32_t kern_waitAtLeast(uint16_t time);
+;   int32_t kern_hasPendingTimeoutProcesses(bool *nonInfTOActive);
 ;
 ;-----
 ;                                              __ ______  _____

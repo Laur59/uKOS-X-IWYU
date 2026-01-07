@@ -1,9 +1,9 @@
 #!/usr/bin/env zsh
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 # firmware_AT.
 # ============
-
-# SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
 # Author:	Edo. Franzi		The 2025-01-01

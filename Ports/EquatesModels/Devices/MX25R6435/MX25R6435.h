@@ -1,18 +1,19 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; MX25R6435.
 ; ==========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; Project: uKOS-X
 ;
-; Project:	uKOS-X
-; Goal:		FLASH MX25R6435 equates.
+; Purpose:
+;   FLASH MX25R6435 equates.
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \

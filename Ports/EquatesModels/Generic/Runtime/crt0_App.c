@@ -1,17 +1,18 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+*/
+
+/*
 ; crt0_App.
 ; =========
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
-; Project:  uKOS-X
+; Project: uKOS-X
 ;
 ; Purpose:
-;    crt0 for the uKOS-X applications.
+;   crt0 for the uKOS-X applications.
 ;    User only support
 ;
 ;                       CODE

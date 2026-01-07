@@ -1,18 +1,19 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+*/
+
+/*
 ; stub_wfi0_usart1_esp32_wifi_AP.
 ; ===============================
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    stub for the connection of the "wfi0" manager to the "usart1 - esp32" device.
-;    wifi mode in access point
+;   stub for the connection of the "wfi0" manager to the "usart1 - esp32" device.
+;   wifi mode in access point
 ;
 ;-----
 ;                                              __ ______  _____

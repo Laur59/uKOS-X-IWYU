@@ -1,13 +1,13 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; STM32N657xD.
 ; ============
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
-;
 ; Project:	uKOS-X
 ; Goal:		Specs of STM32N657xx.
 ;			References:

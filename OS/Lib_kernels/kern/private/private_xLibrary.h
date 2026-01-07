@@ -1,19 +1,19 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; private_xLibrary.
 ; =================
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    Kern - impure data for xLibrary (newlib, picolib, etc.) management.
+;   Kern - impure data for xLibrary (newlib, picolib, etc.) management.
 ;
-;    Private uKernel variables.
+;   Private uKernel variables.
 ;
 ;-----
 ;                                              __ ______  _____

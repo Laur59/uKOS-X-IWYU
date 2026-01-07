@@ -1,10 +1,9 @@
-# application.
-# ============
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #------------------------------------------------------------------------
-# SPDX-License-Identifier: MIT
-#
-# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+# application.
+# ============
 #
 # Project: uKOS-X
 #

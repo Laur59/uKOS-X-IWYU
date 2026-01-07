@@ -1,8 +1,11 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; stm32H747_CM4_otg2_hs_device.
 ; =============================
-
-; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
 ; Author:	Generated using the .svd description	The 2025-01-01

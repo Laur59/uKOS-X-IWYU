@@ -1,20 +1,20 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; xLibrary.
 ; =========
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    Kern - impure data for xlib management.
+;   Kern - impure data for xlib management.
 ;
-;    This module is responsible for creating and swapping the impure data
-;    for the xlib newlib of the uKernel.
+;   This module is responsible for creating and swapping the impure data
+;   for the xlib newlib of the uKernel.
 ;
 ;-----
 ;                                              __ ______  _____

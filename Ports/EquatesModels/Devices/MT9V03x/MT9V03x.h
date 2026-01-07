@@ -1,22 +1,19 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; MT9V03x.
 ; ========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
-; Project:  uKOS-X
+; Project: uKOS-X
 ;
 ; Purpose:
-;    Aptina MT9V03x imager equates.
+;   Aptina MT9V03x imager equates.
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \

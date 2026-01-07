@@ -1,18 +1,18 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; esp32.
 ; ======
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    This tool allows to control the ESP32 Alastor chip.
-;    !!! This tool is Alastor specific.
+;   This tool allows to control the ESP32 Alastor chip.
+;   !!! This tool is Alastor specific.
 ;
 ;-----
 ;                                              __ ______  _____

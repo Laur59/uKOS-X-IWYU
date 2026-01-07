@@ -1,10 +1,9 @@
-# select-riscv-toolchain.
-# =======================
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #------------------------------------------------------------------------
-# SPDX-License-Identifier: MIT
-#
-# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+# select-riscv-toolchain.
+# =======================
 #
 # Project: uKOS-X
 #

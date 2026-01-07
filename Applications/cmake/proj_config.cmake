@@ -1,17 +1,16 @@
-# proj_config.
-# ============
-
 # SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #------------------------------------------------------------------------
-# Author:	Laurent von Allmen	The 2025-01-01
-# Modifs:
+# proj_config.
+# ============
 #
-# Project:	uKOS-X
-# Goal:		Configuring options to build kernel and os
+# Project: uKOS-X
 #
-#   (c) 2025-2026, Laurent von Allmen
-#   ---------------------------------
+# Purpose:
+#   Configuring options to build kernel and os
+#
+#-----
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \

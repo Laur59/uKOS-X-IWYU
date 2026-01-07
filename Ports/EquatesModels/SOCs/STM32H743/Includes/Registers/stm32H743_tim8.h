@@ -1,8 +1,11 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; stm32H743_tim8.
 ; ===============
-
-; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
 ; Author:	Generated using the .svd description	The 2025-01-01

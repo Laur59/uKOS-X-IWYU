@@ -1,13 +1,13 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; vectors.
 ; ========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:
-;
 ; Project:	uKOS-X
 ; Goal:		Vectors of the machine.
 ;			See the link.ld file

@@ -1,24 +1,25 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+*/
+
+/*
 ; test_ipi.
 ; =========
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    Preliminary test of the ipi.
+;   Preliminary test of the ipi.
 ;
-;    core 0                  core 1
-;    test_ipi -generate      counter[core 1]++
-;    counter[core 0]++       test_ipi -generate
+;   core 0                  core 1
+;   test_ipi -generate      counter[core 1]++
+;   counter[core 0]++       test_ipi -generate
 ;
-;    test_ipi -display       test_ipi -display
-;    counter[core 0]         counter[core 1]
+;   test_ipi -display       test_ipi -display
+;   counter[core 0]         counter[core 1]
 ;
 ;-----
 ;                                              __ ______  _____

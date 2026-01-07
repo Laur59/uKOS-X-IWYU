@@ -1,28 +1,28 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; wkserial.
 ; =========
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    wkserial tool.
-;    This tool allows to operate with a communication device.
+;   wkserial tool.
+;   This tool allows to operate with a communication device.
 ;
-;    Possible actions:
-;    wkserial {serialManager} -set {baudrate}
-;    wkserial {serialManager} -write {byte}
-;    wkserial {serialManager} -read
+;   Possible actions:
+;   wkserial {serialManager} -set {baudrate}
+;   wkserial {serialManager} -write {byte}
+;   wkserial {serialManager} -read
 ;
-;    Examples:
-;    wkserial urt0 -set 115200
-;    wkserial urt1 -W 55
-;    wkserial cdc0 -read
+;   Examples:
+;   wkserial urt0 -set 115200
+;   wkserial urt1 -W 55
+;   wkserial cdc0 -read
 ;
 ;-----
 ;                                              __ ______  _____

@@ -1,8 +1,11 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; stm32H743_usb.
 ; ==============
-
-; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
 ; Author:	Edo. Franzi

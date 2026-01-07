@@ -1,20 +1,22 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+*/
+
+/*
 ; atom.
 ; =====
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:
+; Project: uKOS-X
 ;
-; Project:	uKOS-X
-; Goal:		Atomic primitives for multi-core.
-;			These calls uses the low level gcc implementation and
-;			are core independent
+; Purpose:
+;   Atomic primitives for multi-core.
+;	These calls uses the low level gcc implementation and
+;	are core independent
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \

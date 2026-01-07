@@ -1,19 +1,19 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; scheduler.
 ; ==========
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    Kern - Scheduler management.
+;   Kern - Scheduler management.
 ;
-;    This module is responsible for controlling the logic of the uKernel.
+;   This module is responsible for controlling the logic of the uKernel.
 ;
 ;-----
 ;                                              __ ______  _____

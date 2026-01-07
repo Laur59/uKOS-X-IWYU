@@ -1,7 +1,12 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2019 Ha Thach
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; init.
 ; =====
-
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------

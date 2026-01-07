@@ -1,8 +1,13 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2019 Ha Thach
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+
+/*
 ; tusb_os_custom.
 ; ===============
-
-; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
 ; Author:	Edo. Franzi		The 2025-01-01

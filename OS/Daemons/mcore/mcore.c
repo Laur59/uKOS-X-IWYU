@@ -1,18 +1,18 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; mcore.
 ; ======
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
 ; Project: uKOS-X
 ;
 ; Purpose:
-;    mcore process; multi-core layer via mbox & asmp.
-;    For the moment, this layer is limited to 2 cores.
+;   mcore process; multi-core layer via mbox & asmp.
+;   For the moment, this layer is limited to 2 cores.
 ;
 ;-----
 ;                                              __ ______  _____

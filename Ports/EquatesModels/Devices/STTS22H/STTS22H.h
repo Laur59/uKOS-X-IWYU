@@ -1,18 +1,20 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+SPDX-FileContributor: Florence Lorenzin
+*/
+
+/*
 ; STTS22H.
 ; ========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Florence Lorenzin	The 2025-01-01
-; Modifs:
+; Project: uKOS-X
 ;
-; Project:	uKOS-X
-; Goal:		ST STTS22H equates.
+; Purpose:
+;   ST STTS22H equates.
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
