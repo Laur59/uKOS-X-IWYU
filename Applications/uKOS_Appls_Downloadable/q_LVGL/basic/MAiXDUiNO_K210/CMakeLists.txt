@@ -1,16 +1,14 @@
-#!/usr/bin/env zsh
 # SPDX-License-Identifier: MIT
-# SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #------------------------------------------------------------------------
+# CMakeLists.
+# ===========
+#
 # Project: uKOS-X
 #
 # Purpose:
-#   Cleaning all the uKOS downloadable applications.
-#
-# Usage:
-#   ./_clean.sh
+#   CMake file to set up the building for uKOS-X system.
 #
 #-----
 #                                              __ ______  _____
@@ -45,48 +43,48 @@
 #
 #------------------------------------------------------------------------
 
-emulate -L zsh
-setopt ERR_EXIT NO_UNSET PIPE_FAIL EXTENDED_GLOB
-setopt NULL_GLOB
+cmake_minimum_required(VERSION 3.26)
 
-# Determine script directory (works if executed via ./script.sh or zsh script.sh)
+# Applications CMake module setup
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/../../../../cmake")
 
-readonly PATH_PRG="${0:a:h}"
+include(set-project-paths)
 
-# Colours for messages
+include(${PATH_UKOS}/Ports/cmake/select-riscv-toolchain.cmake)
 
-readonly RED='\033[0;31m'
-readonly GREEN='\033[0;32m'
-readonly YELLOW='\033[0;33m'
-readonly BLUE='\033[0;34m'
-readonly BOLD='\033[1m'
-readonly FAINT='\033[2m'
-readonly ITALIC='\033[3m'
-readonly NC='\033[0m' # No Color
+project(
+    basic
+    VERSION 1.0
+    LANGUAGES C
+)
 
-# Parse apps.yaml file using yq
-parse_apps_yaml() {
-    local yaml_file="${PATH_PRG}/apps.yaml"
+set(DISPLAY TFT_2_4_Inches)
+set(PATH_LVGL ${PATH_UKOS}/Third_Parties/LVGL)
 
-    if ! [[ -f "${yaml_file}" ]]; then
-        printf "%bError: YAML file not found: %s%b\n" "${RED}" "${yaml_file}" "${NC}" >&2
-        exit 1
-    fi
+# Microcontroller description (mandatory variables)
+set(SOC K210)
+set(CORE RV64IMAFDC)
 
-    if ! command -v yq >/dev/null 2>&1; then
-        printf "%bError: yq is not installed%b\n" "${RED}" "${NC}" >&2
-        exit 1
-    fi
+# Target
+set(BOARD MAiXDUiNO_K210)
+set(VARIANT Variant_Test)
 
-    # Parse YAML: iterate through families, projects, and targets
-    yq eval 'to_entries[] | .key as $family | .value | to_entries[] | .key as $project | .value[] | "\($family)/\($project)/\(.)"' "${yaml_file}"
-}
+# Extra compilation options
+add_compile_options(
+    -g3 # include extra information for debugger
+    -Os # optimisation
+    -Wno-sign-conversion
+)
 
-printf "%bCleaning all the downloadable applications ...%b\n" "${BOLD}" "${NC}"
-# Parse YAML and iterate through all build targets
-while IFS= read -r CURRENT_TARGET; do
-    printf "."
-    cd "${PATH_PRG}/${CURRENT_TARGET}"
-    rm -fr build *.bin *.elf *.hex *.map *.s3
-done < <(parse_apps_yaml)
-printf "%b\nTerminated!%b\n" "${BOLD}" "${NC}"
+set(PATH_INCLUDES
+    ${PATH_LVGL}/Library/${CORE}/${DISPLAY}
+    ${PATH_LVGL}/LVGL-current
+    ${PATH_LVGL}/LVGL-current/src
+)
+
+set(OBJ
+    ${PROJECT_SOURCE_DIR}/../ui.c
+    ${PROJECT_SOURCE_DIR}/stub.c
+)
+
+include(common)

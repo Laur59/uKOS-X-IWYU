@@ -1,19 +1,17 @@
 #!/usr/bin/env zsh
-
-# mdfiltre.
-# =========
-
 # SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #------------------------------------------------------------------------
-# Author:	Laurent von Allmen 	The 2025-01-01
-# Modifs:
+# mdfiltre.
+# =========
 #
-# Project:	uKOS-X
-# Goal:		filter for doxygen
+# Project: uKOS-X
 #
-#   (c) 2025-2026, Laurent von Allmen
-#   ---------------------------------
+# Purpose:
+#   filter for doxygen
+#
+#-----
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \
