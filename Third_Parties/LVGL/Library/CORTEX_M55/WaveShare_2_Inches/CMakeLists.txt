@@ -1,0 +1,30 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+
+#------------------------------------------------------------------------
+# CMakeLists.
+# ===========
+#
+# Project: uKOS-X
+#
+# Purpose:
+#   CMake file to build LVGL library for uKOS-X.
+#------------------------------------------------------------------------
+
+cmake_minimum_required(VERSION 3.26)
+
+# Include common build setup
+include(${CMAKE_CURRENT_LIST_DIR}/../../Mkfiles/common-setup.cmake)
+include(${PATH_UKOS}/Ports/Mkfiles/cmake/select-arm-toolchain.cmake)
+
+project(LVGL_CORTEX_M55
+    DESCRIPTION "LVGL static library for Cortex_M55"
+    LANGUAGES C
+)
+
+set(FLAGS_FP -mfloat-abi=hard -mfpu=fpv5-sp-d16)
+set(CPU_SPEC -mcpu=cortex-m55 -mthumb)
+set(FLAGS_UKOS LITTLE_ENDIAN_S SECURE_S)
+
+# Include the shared template with all build logic
+include(${CMAKE_CURRENT_SOURCE_DIR}/../../Mkfiles/common-build.cmake)
