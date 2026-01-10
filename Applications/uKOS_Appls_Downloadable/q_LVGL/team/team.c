@@ -8,6 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; basic.
 ; ======
 
+; SPDX-License-Identifier: MIT
+
 ;------------------------------------------------------------------------
 ; Project: uKOS-X
 ;
@@ -56,15 +58,12 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
  *          Launch 2 processes:
  *
- *          - P0: Every 1-ms
+ *          - P_tick: Every 1-ms
  *                  - Tick for LVGL
  *
- *          - P1: Draw some objects
- *                  - Draw the text 1 "uKOS-X"; every 200-ms change its color
- *                  - Draw the text 2 "LVGL under uKOS-X control"
- *                  - Draw the text 3 "(c) 2025-2026, Edo. Franzi"
- *                  - Draw the arc circle (continuously)
- *                  - Draw up to 20 squares (continuously)
+ *          - P_lvgl: Draw some objects
+ *                  - Draw the uKOS-X team picture
+ *                  - Draw the process time usage bars
  *
  */
 
@@ -74,11 +73,11 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    "kern/kern.h"
 #include    "lvgl.h"
 #include    "macros.h"
+#include    "macros_core.h"
 #include    "macros_core_stackFrame.h"
 #include    "memo/memo.h"
 #include    "modules.h"
 #include    "os_errors.h"
-#include    "random/random.h"
 #include    "record/record.h"
 #include    "ui.h"
 
@@ -87,13 +86,13 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) = "basic        Example of how to use the LVGL.           (c) EFr-2025";
+STRG_LOC_CONST(aStrApplication[]) = "team         Example of how to use the LVGL.           (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
                                     "===============================\n\n"
 
                                     "This user function module is a C written application.\n\n"
 
-                                    "Input format:  basic\n"
+                                    "Input format:  team\n"
                                     "Output format: [result]\n\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
@@ -106,7 +105,7 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
     NULL,                               // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 
@@ -118,6 +117,9 @@ static  volatile    bool            vLVGLReady = false;
 extern  void    stub_LCD_On(void);
 extern  void    stub_LCD_flush_cb(lv_display_t *lv_display, const lv_area_t *area, uint8_t *pixelMapping);
 extern  void    ui_draw(void);
+extern  void    ui_setBar_1(uint32_t position);
+extern  void    ui_setBar_2(uint32_t position);
+extern  void    ui_setBar_3(uint32_t position);
 
 /*
  * \brief aProcess_tick
@@ -132,26 +134,27 @@ static void __attribute__ ((noreturn)) aProcess_tick(const void *argument) {
 
     while (true) {
         if (vLVGLReady == true) {
-            lv_tick_inc(2U);
+            lv_tick_inc(2u);
             lv_timer_handler();
         }
-        kern_suspendProcess(2U);
+        kern_suspendProcess(2u);
     }
 }
 
 /*
  * \brief aProcess_lvgl
  *
- * - P_lvgl: Draw the text 1 "uKOS-X"; every 200-ms change its color
- *           Draw the text 2 "LVGL under uKOS-X control"
- *           Draw the text 3 "(c) 2025-2026, Edo. Franzi"
- *           Draw the arc circle (continuously)
- *           Draw up to 20 squares (continuously)
- *           The process remains active with the LVGL context
+ * - P_lvgl: Draw the uKOS-X team picture
+ *           Draw the process time usage bars
+ *           Every 100-ms
+ *          - Draw the process time usage bars
+ *
  */
 static void __attribute__ ((noreturn)) aProcess_lvgl(const void *argument) {
     uint32_t    LCDBufferSize;
     lv_color_t  *LCDBuffer;
+    uint32_t    usedTime_tick, usedTime_lvgl, usedTime_idle;
+    proc_t      *process_tick, *process_lvgl, *process_idle;
 
     UNUSED(argument);
 
@@ -161,7 +164,7 @@ static void __attribute__ ((noreturn)) aProcess_lvgl(const void *argument) {
     stub_LCD_On();
     lv_init();
 
-    LCDBufferSize = (uint32_t)((uint64_t)KLCD_WIDTH * (uint64_t)KBUF_LINES * (uint64_t)sizeof(lv_color_t));
+    LCDBufferSize = (uint32_t)((uint64_t)KLCD_WIDTH * (uint64_t)KLCD_BUF_LINES * (uint64_t)sizeof(lv_color_t));
     LCDBuffer     = (lv_color_t *)memo_malloc(KMEMO_ALIGN_16, LCDBufferSize, "lcd_buffer");
 
 // Create a display
@@ -181,8 +184,25 @@ static void __attribute__ ((noreturn)) aProcess_lvgl(const void *argument) {
     vLVGLReady = true;
 
 // Remain in the lvgl process space
+// Display the mean time used by the process tick & lvgl
 
-    while (true) { kern_suspendProcess(100U); }
+    kern_getProcessById("Deamon_idle",  &process_idle);
+    kern_getProcessById("Process_tick", &process_tick);
+    kern_getProcessById("Process_lvgl", &process_lvgl);
+
+    while (true) {
+
+        PRIVILEGE_ELEVATE;
+        usedTime_idle = (uint32_t)process_idle->oStatistic.oTimePAvg;
+        usedTime_tick = (uint32_t)process_tick->oStatistic.oTimePAvg;
+        usedTime_lvgl = (uint32_t)process_lvgl->oStatistic.oTimePAvg;
+        PRIVILEGE_RESTORE;
+
+        ui_setBar_1(usedTime_idle);
+        ui_setBar_2(usedTime_tick);
+        ui_setBar_3(usedTime_lvgl);
+        kern_suspendProcess(2000);
+    }
 }
 
 /*

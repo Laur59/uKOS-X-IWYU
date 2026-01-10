@@ -52,6 +52,67 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #pragma once
 
+// For the stack sanity
+
+#if (!defined(KMAGICSTACK))
+#define KMAGICSTACK             (((uint32_t)'u'<<24u) | ((uint32_t)'K'<<16u) | ((uint32_t)'O'<<8u) | (uint32_t)'S')
+#endif
+
+#if (!defined(BREAK_IFDEBUGGING))
+#define BREAK_IFDEBUGGING
+#endif
+
+#if (!defined(CHECK_STACK_SANITY))
+#define CHECK_STACK_SANITY(core)                                                                                                \
+                                if ((vKern_runProc[core]->oInternal.oState != 0u) &&                                            \
+                                    ((vKern_runProc[core]->oInternal.oState & (1u<<BPROC_FIRST)) == 0u)) {                      \
+                                    if ((vKern_runProc[core]->oSpecification.oStackStart > vKern_stackProc[core]) ||            \
+                                        (vKern_runProc[core]->oSpecification.oStackStart[core] != KMAGICSTACK)) {               \
+                                        LOG(KFATAL_KERNEL, "kern: stack underflow");                                            \
+                                        BREAK_IFDEBUGGING;                                                                      \
+                                        exit(EXIT_OS_PANIC_STACK_UNDERFLOW);                                                    \
+                                    }                                                                                           \
+                                }
+#endif
+
+// Stack alignment (see processes.h)
+
+#if (!defined(KSTACK_ALIGNMENT))
+#define KSTACK_ALIGNMENT        (16u)
+#define KSTACK_ALIGNMENT_MASK   (~(KSTACK_ALIGNMENT - 1u))
+#define KSTACK_ALIGNMENT_MEMO   (KMEMO_ALIGN_16)
+#endif
+
+// Critical stack size when < (70+10) 32-bit words (stack frame + reserve)
+
+#if (!defined(KKERN_CRITICAL_SZ_STACK))
+#define KKERN_CRITICAL_SZ_STACK     (70u + 10u)
+#endif
+
+// Stack sizes (in machine words of 32-bit)
+
+#if (!defined(KKERN_SZ_STACK_SS))
+#define KKERN_SZ_STACK_SS           400u
+#endif
+#if (!defined(KKERN_SZ_STACK_MM))
+#define KKERN_SZ_STACK_MM           500u
+#endif
+#if (!defined(KKERN_SZ_STACK_LL))
+#define KKERN_SZ_STACK_LL           600u
+#endif
+#if (!defined(KKERN_SZ_STACK_XL))
+#define KKERN_SZ_STACK_XL           1000u
+#endif
+#if (!defined(KKERN_SZ_STACK_MIN))
+#define KKERN_SZ_STACK_MIN          400u
+#endif
+#if (!defined(KKERN_SZ_STACK_XLIB))
+#define KKERN_SZ_STACK_XLIB         (400u + 1000u)
+#endif
+#if (!defined(KKERN_SZ_STACK_MPY))
+#define KKERN_SZ_STACK_MPY          (400u + 1000u)
+#endif
+
 // Stack frame macros
 // ------------------
 

@@ -1,19 +1,17 @@
-#!/usr/bin/env zsh
-
-# mdfiltre.
+# makefile.
 # =========
 
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Laurent von Allmen 	The 2025-01-01
+# Author:	Edo. Franzi		The 2025-01-01
 # Modifs:
 #
 # Project:	uKOS-X
-# Goal:		filter for doxygen
+# Goal:		makefile for the "team" application.
 #
-#   (c) 2025-2026, Laurent von Allmen
-#   ---------------------------------
+#   (c) 2025-20xx, Edo. Franzi
+#   --------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,8 +44,23 @@
 #
 #------------------------------------------------------------------------
 
-set -euo pipefail
+PROJECT			=  team
 
-# Replace the pattern $$ ... $$ by \f[$ ... \f]
+DISPLAY			=  WaveShare_2_Inches
+PATH_LVGL		=  $(PATH_UKOS)/Third_Parties/LVGL
 
-sed 's/^\$\$\(.*\)\$\$/\\f\[\1\\f\]/ ; s/\$\$/\\f\$/g' "${1}"
+# Target & Infrastructure
+
+PREFIX			?=  arm-none-eabi-
+COMPILER_FAMILY	?=  gcc
+
+BOARD			=  Nucleo_N657
+V				=  Variant_Test
+SOC				=  STM32N657
+CORE			=  CORTEX_M55
+OPTIMISATION	=  -Os
+
+CFLAGS			+= -I$(PATH_LVGL)/Library/$(CORE)/$(DISPLAY)
+CFLAGS			+= -isystem $(PATH_LVGL)/LVGL-current
+
+include ../../../../Mkfiles/common.mk

@@ -1,19 +1,16 @@
-#!/usr/bin/env zsh
-
-# mdfiltre.
-# =========
-
 # SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #------------------------------------------------------------------------
-# Author:	Laurent von Allmen 	The 2025-01-01
-# Modifs:
+# CMakeLists.
+# ===========
 #
-# Project:	uKOS-X
-# Goal:		filter for doxygen
+# Project: uKOS-X
 #
-#   (c) 2025-2026, Laurent von Allmen
-#   ---------------------------------
+# Purpose:
+#   CMake file to set up the building for uKOS-X system.
+#
+#-----
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -46,8 +43,48 @@
 #
 #------------------------------------------------------------------------
 
-set -euo pipefail
+cmake_minimum_required(VERSION 3.26)
 
-# Replace the pattern $$ ... $$ by \f[$ ... \f]
+# Applications CMake module setup
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/../../../../cmake")
 
-sed 's/^\$\$\(.*\)\$\$/\\f\[\1\\f\]/ ; s/\$\$/\\f\$/g' "${1}"
+include(set-project-paths)
+
+include(${PATH_UKOS}/Ports/cmake/select-arm-toolchain.cmake)
+
+project(
+    team
+    VERSION 1.0
+    LANGUAGES C
+)
+
+set(DISPLAY WaveShare_2_Inches)
+set(PATH_LVGL ${PATH_UKOS}/Third_Parties/LVGL)
+
+# Microcontroller description (mandatory variables)
+set(SOC STM32N657)
+set(CORE CORTEX_M55)
+
+# Target
+set(BOARD Nucleo_N657)
+set(VARIANT Variant_Test)
+
+# Extra compilation options
+add_compile_options(
+    -g3 # include extra information for debugger
+    -Os # optimisation
+    -Wno-sign-conversion
+)
+
+set(PATH_INCLUDES
+    ${PATH_LVGL}/Library/${CORE}/${DISPLAY}
+    ${PATH_LVGL}/LVGL-current
+    ${PATH_LVGL}/LVGL-current/src
+)
+
+set(OBJ
+    ${PROJECT_SOURCE_DIR}/../ui.c
+    ${PROJECT_SOURCE_DIR}/stub.c
+)
+
+include(common)

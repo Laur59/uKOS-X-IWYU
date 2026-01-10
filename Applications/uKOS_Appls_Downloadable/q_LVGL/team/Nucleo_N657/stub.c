@@ -142,7 +142,7 @@ void    stub_LCD_On(void) {
 
 // The ST7789VW accept a Tscycw (in write) of 16-ns
 
-    const    spiCnf_t    configure = {
+    const   spiCnf_t    configure = {
                                 .oSpeed    = 62500000U,
                                 .oMode     = (uint8_t)KSPI_MASTER,
                                 .oClock    = 0U
