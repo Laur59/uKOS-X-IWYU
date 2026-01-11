@@ -98,6 +98,7 @@ message("───────────────────────�
 # List of all supported cores
 set(SUPPORTED_CORES
     CORTEX_M55
+    RV64IMAFDC
 )
 
 # Determine build type to pass to ExternalProjects

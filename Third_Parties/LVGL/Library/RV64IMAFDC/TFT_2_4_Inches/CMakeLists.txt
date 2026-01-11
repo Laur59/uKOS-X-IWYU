@@ -15,15 +15,15 @@ cmake_minimum_required(VERSION 3.26)
 
 # Include common build setup
 include(${CMAKE_CURRENT_LIST_DIR}/../../cmake/common-setup.cmake)
-include(${PATH_UKOS}/Ports/Mkfiles/cmake/select-arm-toolchain.cmake)
+include(${PATH_UKOS}/Ports/Mkfiles/cmake/select-riscv-toolchain.cmake)
 
-project(LVGL_CORTEX_M55
-    DESCRIPTION "LVGL static library for Cortex_M55"
+project(LVGL_RV64IMAFDC
+    DESCRIPTION "LVGL static library for RV64IMAFDC"
     LANGUAGES C
 )
 
-set(FLAGS_FP -mfloat-abi=hard -mfpu=fpv5-sp-d16)
-set(CPU_SPEC -mcpu=cortex-m55 -mthumb)
+set(FLAGS_FP -mabi=lp64d)
+set(CPU_SPEC -march=rv64imafdc_zicsr_zifencei -mcmodel=medany)
 set(FLAGS_UKOS SECURE_S)
 
 # Include the shared template with all build logic
