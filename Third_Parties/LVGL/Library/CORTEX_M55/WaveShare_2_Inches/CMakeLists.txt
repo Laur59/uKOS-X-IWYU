@@ -14,7 +14,7 @@
 cmake_minimum_required(VERSION 3.26)
 
 # Include common build setup
-include(${CMAKE_CURRENT_LIST_DIR}/../../Mkfiles/common-setup.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/../../cmake/common-setup.cmake)
 include(${PATH_UKOS}/Ports/Mkfiles/cmake/select-arm-toolchain.cmake)
 
 project(LVGL_CORTEX_M55
@@ -27,4 +27,4 @@ set(CPU_SPEC -mcpu=cortex-m55 -mthumb)
 set(FLAGS_UKOS LITTLE_ENDIAN_S SECURE_S)
 
 # Include the shared template with all build logic
-include(${CMAKE_CURRENT_SOURCE_DIR}/../../Mkfiles/common-build.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/common-build.cmake)
