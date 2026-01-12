@@ -15,7 +15,7 @@ cmake_minimum_required(VERSION 3.26)
 
 # Include common build setup
 include(${CMAKE_CURRENT_LIST_DIR}/../../cmake/common-setup.cmake)
-include(${PATH_UKOS}/Ports/Mkfiles/cmake/select-arm-toolchain.cmake)
+include(${PATH_UKOS}/Ports/cmake/select-arm-toolchain.cmake)
 
 project(LVGL_CORTEX_M55
     DESCRIPTION "LVGL static library for Cortex_M55"

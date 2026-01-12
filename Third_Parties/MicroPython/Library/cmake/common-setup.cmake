@@ -48,3 +48,13 @@ endif()
 if(NOT DEFINED USER_C_MODULES)
     set(USER_C_MODULES ${PATH_UKOS}/Third_Parties/MicroPython/uKOS_Interface/user_modules.cmake)
 endif()
+
+# MicroPython source directory
+if(NOT DEFINED MICROPY_DIR)
+    set(MICROPY_DIR "${PATH_UKOS}/Third_Parties/MicroPython/MicroPython-current")
+endif()
+
+# Check that the directory exists
+if(NOT EXISTS ${MICROPY_DIR})
+    message(FATAL_ERROR "MicroPython source directory not found: ${MICROPY_DIR}")
+endif()

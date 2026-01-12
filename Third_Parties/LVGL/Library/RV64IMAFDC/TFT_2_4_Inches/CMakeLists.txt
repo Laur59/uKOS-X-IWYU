@@ -15,7 +15,7 @@ cmake_minimum_required(VERSION 3.26)
 
 # Include common build setup
 include(${CMAKE_CURRENT_LIST_DIR}/../../cmake/common-setup.cmake)
-include(${PATH_UKOS}/Ports/Mkfiles/cmake/select-riscv-toolchain.cmake)
+include(${PATH_UKOS}/Ports/cmake/select-riscv-toolchain.cmake)
 
 project(LVGL_RV64IMAFDC
     DESCRIPTION "LVGL static library for RV64IMAFDC"

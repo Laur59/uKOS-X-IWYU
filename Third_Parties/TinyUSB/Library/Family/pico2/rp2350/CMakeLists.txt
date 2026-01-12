@@ -15,7 +15,7 @@
 cmake_minimum_required(VERSION 3.15)
 
 # Include common TinyUSB setup
-include(${CMAKE_CURRENT_LIST_DIR}/../../Mkfiles/common-setup.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/../../cmake/common-setup.cmake)
 
 project(TinyUSB_RP2350 C ASM)
 
@@ -24,7 +24,7 @@ set(SOC rp2350)
 set(CORE CORTEX_M33)
 
 # Include common TinyUSB build module
-include(${CMAKE_CURRENT_SOURCE_DIR}/../../Mkfiles/TinyUSB.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/TinyUSB.cmake)
 
 # Options selecting profiles to build
 option(BUILD_CDC_CDC "Build profile cdc_cdc" ON)

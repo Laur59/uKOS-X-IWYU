@@ -17,8 +17,8 @@
 cmake_minimum_required(VERSION 3.26)
 
 # Include common build setup
-include(${CMAKE_CURRENT_LIST_DIR}/../Mkfiles/common-setup.cmake)
-include(${PATH_UKOS}/Ports/Mkfiles/cmake/select-riscv-toolchain.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/../cmake/common-setup.cmake)
+include(${PATH_UKOS}/Ports/cmake/select-riscv-toolchain.cmake)
 
 project(DecNumber_RV32IMAC
     DESCRIPTION "decnumber static library for RV32IMAC"
@@ -30,4 +30,4 @@ set(CPU_SPEC -march=rv32imac_zicsr_zifencei)
 set(FLAGS_UKOS SECURE_S)
 
 # Include the shared template with all build logic
-include(${CMAKE_CURRENT_SOURCE_DIR}/../Mkfiles/common-build.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/common-build.cmake)

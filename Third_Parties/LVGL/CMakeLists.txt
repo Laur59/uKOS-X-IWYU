@@ -44,8 +44,6 @@ project(LVGL_Package
     LANGUAGES NONE
 )
 
-set(DISPLAY WaveShare_2_Inches)
-
 # Include ExternalProject module for downloading and building
 include(ExternalProject)
 
@@ -100,6 +98,11 @@ set(SUPPORTED_CORES
     CORTEX_M55
     RV64IMAFDC
 )
+# and their display
+set(CORE_DISPLAY
+    WaveShare_2_Inches
+    TFT_2_4_Inches
+)
 
 # Determine build type to pass to ExternalProjects
 # Default to MinSizeRel for optimal firmware size (adds -Os -DNDEBUG)
@@ -110,7 +113,11 @@ else()
 endif()
 
 # Create an ExternalProject for each core
-foreach(CORE ${SUPPORTED_CORES})
+list(LENGTH SUPPORTED_CORES NUM_CORES)
+math(EXPR LAST_INDEX "${NUM_CORES} - 1")
+foreach(CORE_INDEX RANGE 0 ${LAST_INDEX})
+    list(GET SUPPORTED_CORES ${CORE_INDEX} CORE)
+    list(GET CORE_DISPLAY ${CORE_INDEX} DISPLAY)
     if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Library/${CORE}/${DISPLAY}/CMakeLists.txt")
         message(STATUS "Configuring build for core: ${CORE} and display ${DISPLAY}")
 

@@ -41,16 +41,6 @@ else()
                         "Expected format: MicroPython_<CORE_NAME> (e.g., MicroPython_CORTEX_M4)")
 endif()
 
-# MicroPython source directory
-if(NOT DEFINED MICROPY_DIR)
-    set(MICROPY_DIR "${PATH_UKOS}/Third_Parties/MicroPython/MicroPython-current")
-endif()
-
-# Check that the directory exists
-if(NOT EXISTS ${MICROPY_DIR})
-    message(FATAL_ERROR "MicroPython source directory not found: ${MICROPY_DIR}")
-endif()
-
 # Check for a core header file to ensure the repo is fully cloned
 set(MICROPY_CORE_HEADER ${MICROPY_DIR}/py/mpstate.h)
 if(NOT EXISTS ${MICROPY_CORE_HEADER})
@@ -76,14 +66,6 @@ set(MICROPY_SOURCE_QSTR
     ${MICROPY_DIR}/shared/runtime/pyexec.c
     ${MICROPY_DIR}/shared/readline/readline.c
 )
-
-# Optional libm sources
-if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/libm_src.cmake)
-    include(${CMAKE_CURRENT_SOURCE_DIR}/libm_src.cmake)
-endif()
-
-# Include per-core configuration
-include(${CMAKE_CURRENT_SOURCE_DIR}/core_settings.cmake)
 
 # Build static library libMicroPython.a
 set(MICROPY_TARGET MicroPython)
