@@ -1,12 +1,10 @@
 #!/usr/bin/env zsh
-
-# compare_lib_a.
-# ==============
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #------------------------------------------------------------------------
-# SPDX-License-Identifier: MIT
-#
-# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+# compare_lib_a.
+# ==============
 #
 # Purpose:
 #   Compare two static libraries (.a files)

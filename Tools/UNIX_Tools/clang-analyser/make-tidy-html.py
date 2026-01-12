@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
-
-# make-tidy-html.
-# ===============
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #------------------------------------------------------------------------
-# SPDX-License-Identifier: MIT
-#
-# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+# make-tidy-html.
+# ===============
 #
 # Project: uKOS-X
 #

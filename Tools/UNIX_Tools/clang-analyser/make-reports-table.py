@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
-
-# make-reports-table.
-# ===================
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #------------------------------------------------------------------------
-# SPDX-License-Identifier: MIT
-#
-# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+# make-reports-table.
+# ===================
 #
 # Project: uKOS-X
 #

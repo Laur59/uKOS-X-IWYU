@@ -1,12 +1,10 @@
 #!/usr/bin/env zsh
-
-# analyser.
-# =========
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #------------------------------------------------------------------------
-# SPDX-License-Identifier: MIT
-#
-# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+# analyser.
+# =========
 #
 # Project: uKOS-X
 #
@@ -249,6 +247,7 @@ tidy_warnings=0
 tidy_file_count=0
 
 for current in {1..$length_DB}; do
+    filename="${filenames[$current]}"
 
     # Skip signature files
     if [[ $filename == *.sig.c ]]; then
