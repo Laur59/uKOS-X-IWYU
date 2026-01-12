@@ -27,7 +27,7 @@ project(FatFs_CORTEX_M7
 
 set(FLAGS_FP -mfloat-abi=hard -mfpu=fpv5-sp-d16)
 set(CPU_SPEC -mcpu=cortex-m7)
-set(FLAGS_UKOS LITTLE_ENDIAN_S SECURE_S)
+set(FLAGS_UKOS SECURE_S)
 
 # Include the shared template with all build logic
 include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/common-build.cmake)

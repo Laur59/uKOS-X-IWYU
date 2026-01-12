@@ -189,11 +189,11 @@ static  bool    local_listModule(uint8_t idFamily) {
 
             idIdentifier = (char_t *)&idModule;
 
-            #ifdef LITTLE_ENDIAN_S
-            for (i = 0U; i < 4U; i++) { bufIdent[i] = *(idIdentifier + (3U - i)); }
+            #ifdef BIG_ENDIAN_S
+            for (i = 0U; i < 4U; i++) { bufIdent[i] = *(idIdentifier + i);        }
 
             #else
-            for (i = 0U; i < 4U; i++) { bufIdent[i] = *(idIdentifier + i);        }
+            for (i = 0U; i < 4U; i++) { bufIdent[i] = *(idIdentifier + (3U - i)); }
             #endif
 
             bufIdent[4] = '\0';

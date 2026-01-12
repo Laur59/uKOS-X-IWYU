@@ -321,15 +321,15 @@ static  void    local_printProcess(uint32_t core, uint16_t number) {
 
     serialManager = (uint32_t)process.oSpecification.oSerialManager;
 
-    #ifdef LITTLE_ENDIAN_S
+    #ifdef BIG_ENDIAN_S
     for (i = 0U; i < 4U; i++) {
-        serialManagerA[3U - i] = (char_t)(serialManager & 0xFFU);
+        serialManagerA[i] = (char_t)(serialManager & 0xFFU);
         serialManager = serialManager>>8;
     }
 
     #else
     for (i = 0U; i < 4U; i++) {
-        serialManagerA[i] = (char_t)(serialManager & 0xFFU);
+        serialManagerA[3U - i] = (char_t)(serialManager & 0xFFU);
         serialManager = serialManager>>8;
     }
     #endif

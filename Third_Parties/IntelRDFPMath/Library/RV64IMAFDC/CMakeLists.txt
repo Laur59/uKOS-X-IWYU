@@ -27,7 +27,7 @@ project(IntelRDFPMath_RV64IMAFDC
 
 set(FLAGS_FP -mabi=lp64d)
 set(CPU_SPEC -march=rv64imafdc_zicsr_zifencei -mcmodel=medany)
-set(FLAGS_UKOS LITTLE_ENDIAN_S SECURE_S)
+set(FLAGS_UKOS SECURE_S)
 
 # Include the shared template with all build logic
 include(${CMAKE_CURRENT_SOURCE_DIR}/../Mkfiles/common-build.cmake)

@@ -27,7 +27,7 @@ project(IntelRDFPMath_RV32IMAC
 
 set(FLAGS_FP -mabi=ilp32)
 set(CPU_SPEC -march=rv32imac_zicsr_zifencei)
-set(FLAGS_UKOS LITTLE_ENDIAN_S SECURE_S)
+set(FLAGS_UKOS SECURE_S)
 
 # Include the shared template with all build logic
 include(${CMAKE_CURRENT_SOURCE_DIR}/../Mkfiles/common-build.cmake)
