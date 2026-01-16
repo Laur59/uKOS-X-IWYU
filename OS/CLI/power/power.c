@@ -105,17 +105,21 @@ MODULE(
  *
  */
 static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
+            batteryInfo_t   batteryInfo;
+            int32_t         status;
+            uint16_t        i2cTries = 0;
+    static  uint16_t        maxI2cTries = 0;
+
     UNUSED(argc);
     UNUSED(argv);
-
-    batteryInfo_t   batteryInfo;
-    int32_t         status;
 
     (void)dprintf(KSYST, "Battery information.\n");
 
     RESERVE(BATTERY, KMODE_READ_WRITE);
-    status = battery_read(&batteryInfo);
+    do { status = battery_read(&batteryInfo); i2cTries++; } while (status != KERR_BATTERY_NOERR);
     RELEASE(BATTERY, KMODE_READ_WRITE);
+
+    maxI2cTries = (i2cTries > maxI2cTries) ? (i2cTries) : (maxI2cTries);
 
     if (status != KERR_BATTERY_NOERR) { (void)dprintf(KSYST, "Battery manager problem!\n\n"); return (EXIT_OS_FAILURE); }
 
@@ -128,6 +132,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     if (batteryInfo.oTimeToEmpty < 65535U) {
         (void)dprintf(KSYST, "Time to empty:          %6d [m]\n",   batteryInfo.oTimeToEmpty);
     }
-    (void)dprintf(KSYST, "Cycles:                 %6d [-]\n\n", batteryInfo.oCycles);
+        (void)dprintf(KSYST, "Cycles:                 %6d [-]\n",   batteryInfo.oCycles);
+        (void)dprintf(KSYST, "Max i2c nb tries:       %6d [-]\n\n", maxI2cTries);
     return (EXIT_OS_SUCCESS_CLI);
 }

@@ -124,7 +124,10 @@ SECTIONS {
         linker_enFiniArray = ABSOLUTE(.);
     } > prgm_code
 
-    .ARM.extab : { *(.ARM.extab*) } > prgm_code
+    /* New dedicated sections for ARM exception handling */
+    .ARM.extab : {
+        *(.ARM.extab*)
+    } > prgm_code
 
     .ARM.exidx : {
         __exidx_start = .;

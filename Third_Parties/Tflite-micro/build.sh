@@ -6,11 +6,11 @@
 # ======
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Build the Tflite-micro package
+# Project:  uKOS-X
+# Goal:     Build the Tflite-micro package
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -73,97 +73,93 @@ readonly splash="
 printf '%b%s%b' "${BLUE}" "$splash" "${NC}"
 
 if [[ -d "Tflite-env/bin" ]]; then
-	source Tflite-env/bin/activate
+    source Tflite-env/bin/activate
 fi
 
 # Packages
 # --------
 
-export hash=96881ae2 # Merge remote-tracking branch 'upstream/main f5c36ef2' into macos	148864407+Laur59@users.noreply.github.com	12.12.2025 12:56 AM
-
-# Clone the right package
+export hash=ea948c57 # Merge remote-tracking branch 'upstream/main e028871f' into macos 148864407+Laur59@users.noreply.github.com   14.01.2026 16:37
 
 printf '\n%bDownload the Tflite-micro package ...%b\n\n' "${BOLD}" "${NC}"
 
+# Clone the right package
 cd "${PATH_PRG}"
 if [[ ! -d Tflite-micro ]]; then
-	git clone https://github.com/Laur59/tflite-micro.git Tflite-micro
+    git clone https://github.com/Laur59/tflite-micro.git Tflite-micro
 else
-	git -C Tflite-micro fetch
+    git -C Tflite-micro fetch
 fi
 cd Tflite-micro
 git checkout ${hash}
 
 # Update path links
-
 cd ..
 rm -f Tflite-micro-current
 ln -s Tflite-micro Tflite-micro-current
 
 # Parse core.yaml file using yq
 parse_core_yaml() {
-	local yaml_file="../core.yaml"
+    local yaml_file="../core.yaml"
 
-	if ! [[ -f "${yaml_file}" ]]; then
-		printf "%bError: YAML file not found: %s%b\n" "${RED}" "${yaml_file}" "${NC}" >&2
-		exit 1
-	fi
+    if ! [[ -f "${yaml_file}" ]]; then
+        printf "%bError: YAML file not found: %s%b\n" "${RED}" "${yaml_file}" "${NC}" >&2
+        exit 1
+    fi
 
-	if ! command -v yq >/dev/null 2>&1; then
-		printf "%bError: yq is not installed%b\n" "${RED}" "${NC}" >&2
-		exit 1
-	fi
+    if ! command -v yq >/dev/null 2>&1; then
+        printf "%bError: yq is not installed%b\n" "${RED}" "${NC}" >&2
+        exit 1
+    fi
 
-	# Parse YAML: iterate through models and their cores
-	yq eval 'to_entries[] | .key as $model | .value[] | "\($model)\t\(.core)\t\(.target_arch)\t\(.fpu)"' "${yaml_file}"
+    # Parse YAML: iterate through models and their cores
+    yq eval 'to_entries[] | .key as $model | .value[] | "\($model)\t\(.core)\t\(.target_arch)\t\(.fpu)"' "${yaml_file}"
 }
 
 # Generate the `.h` interface files for all the cortex-M (generic, -m3, m4, -m7, -m33, -m55)
 # Generate the `.h` interface files for all the risc-v (generic, rv64imafdc)
-
 cd ./Tflite-micro-current/
 
 python3 tensorflow/lite/micro/tools/project_generation/create_tflm_tree.py \
-	--makefile_options="TARGET=cortex_m_generic OPTIMIZED_KERNEL_DIR=cmsis_nn TARGET_ARCH=project_generation" \
-	../uKOS_Interface/CORTEX_M_generic
+    --makefile_options="TARGET=cortex_m_generic OPTIMIZED_KERNEL_DIR=cmsis_nn TARGET_ARCH=project_generation" \
+    ../uKOS_Interface/CORTEX_M_generic
 
 python3 tensorflow/lite/micro/tools/project_generation/create_tflm_tree.py \
-	--makefile_options="TARGET=riscv32_generic TARGET_ARCH=project_generation" \
-	../uKOS_Interface/RISCV64_generic
+    --makefile_options="TARGET=riscv32_generic TARGET_ARCH=project_generation" \
+    ../uKOS_Interface/RISCV64_generic
 
 printf '\n%bBuilding all the Tflite-micro libraries ...%b\n' "${BOLD}" "${NC}"
+
 # Parse YAML and iterate through all build targets
 while IFS=$'\t' read -r model core target_arch fpu
 do
 
-	# Build a specific core library
+    # Build a specific core library
+    printf '\n%bBuild for the core %s ...%b\n' "$BOLD" "${core}" "$NC"
 
-	printf '\n%bBuild for the core %s ...%b\n' "$BOLD" "${core}" "$NC"
+    if [[ ${model} == cortex_m_generic ]]; then
+        make -f tensorflow/lite/micro/tools/make/Makefile \
+            TARGET=cortex_m_generic TARGET_ARCH="${target_arch}" \
+            OPTIMIZED_KERNEL_DIR=cmsis_nn microlite -j8 FLOAT="${fpu}" BUILD_TYPE=debug
+        mkdir -p ../Library/"${core}"
+        cp ./gen/cortex_m_generic_"${target_arch}"_debug_cmsis_nn_gcc/lib/libtensorflow-microlite.a \
+            ../Library/"${core}"/libTFLite.a
+    fi
 
-	if [[ ${model} == cortex_m_generic ]]; then
-		make -f tensorflow/lite/micro/tools/make/Makefile \
-			TARGET=cortex_m_generic TARGET_ARCH="${target_arch}" \
-			OPTIMIZED_KERNEL_DIR=cmsis_nn microlite -j8 FLOAT="${fpu}" BUILD_TYPE=debug
-		mkdir -p ../Library/"${core}"
-		cp ./gen/cortex_m_generic_"${target_arch}"_debug_cmsis_nn_gcc/lib/libtensorflow-microlite.a \
-			../Library/"${core}"/libTFLite.a
-	fi
-
-	if [[ ${model} == riscv32_generic ]]; then
-		make -f tensorflow/lite/micro/tools/make/Makefile \
-			TARGET=riscv32_generic TARGET_ARCH="${target_arch}" \
-			RISCV_ARCH=rv64imafdc \
-			RISCV_ABI=lp64d \
-			DISABLE_PRINTF=true \
-			microlite -j8 FLOAT="${fpu}" BUILD_TYPE=debug \
-			CFLAGS_EXTRA="-march=rv64imafdc -mabi=lp64d" \
-			CXXFLAGS_EXTRA="-march=rv64imafdc -mabi=lp64d" \
-			LDFLAGS_EXTRA="-march=rv64imafdc -mabi=lp64d"
-		mkdir -p ../Library/"${core}"
-		cp ./gen/riscv32_generic_"${target_arch}"_debug_gcc/lib/libtensorflow-microlite.a \
-			../Library/"${core}"/libTFLite.a
-	fi
+    if [[ ${model} == riscv32_generic ]]; then
+        make -f tensorflow/lite/micro/tools/make/Makefile \
+            TARGET=riscv32_generic TARGET_ARCH="${target_arch}" \
+            RISCV_ARCH=rv64imafdc \
+            RISCV_ABI=lp64d \
+            DISABLE_PRINTF=true \
+            microlite -j8 FLOAT="${fpu}" BUILD_TYPE=debug \
+            CFLAGS_EXTRA="-march=rv64imafdc -mabi=lp64d" \
+            CXXFLAGS_EXTRA="-march=rv64imafdc -mabi=lp64d" \
+            LDFLAGS_EXTRA="-march=rv64imafdc -mabi=lp64d"
+        mkdir -p ../Library/"${core}"
+        cp ./gen/riscv32_generic_"${target_arch}"_debug_gcc/lib/libtensorflow-microlite.a \
+            ../Library/"${core}"/libTFLite.a
+    fi
 done < <(parse_core_yaml)
 
 printf '\n🎉 %bBuild Complete%b\n\n' "${GREEN}" "${NC}"
-

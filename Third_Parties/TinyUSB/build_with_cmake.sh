@@ -32,7 +32,7 @@ NC='\033[0m' # No Colour
 # --------
 
 package=0.20.0
-hash=593dce2
+hash=71ed9d1
 
 TinyUSB_PACK="TinyUSB-current"
 

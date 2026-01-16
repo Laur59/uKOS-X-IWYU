@@ -8,11 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ========
 
 ;------------------------------------------------------------------------
-; Author:	Generated using the .svd description	The 2025-01-01
+; Author:   Generated using the .svd description    The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		nrf5340 equates.
+; Project:  uKOS-X
+; Goal:     nrf5340 equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -52,7 +52,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 #pragma once
 
 #ifdef CPU_APPLICATION_S
-#include	"soc_vectors_application.h"
+#include    "soc_vectors_application.h"
 #else
-#include	"soc_vectors_network.h"
+#include    "soc_vectors_network.h"
 #endif
