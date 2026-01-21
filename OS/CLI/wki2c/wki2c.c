@@ -132,7 +132,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
                     enum            { KWRITE, KREAD } mode = KREAD;
                     enum            { KOKWRITE, KOKREAD, KERRBUSY, KERRINA, KERRGEN } error = KERRINA;
     static  const   i2cCnf_t        aConfigure = {
-                                        .oTimeout  = 100000U,
+                                        .oTimeout  = 1000U,
                                         .oSpeed    = KI2C_100KBPS,
                                     };
 

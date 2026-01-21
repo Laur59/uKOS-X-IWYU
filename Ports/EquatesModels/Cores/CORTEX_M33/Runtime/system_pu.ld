@@ -195,6 +195,9 @@ SECTIONS {
         libtool_u.a(.bss .bss.* COMMON)
         *(EXCLUDE_FILE (first.o* *librtcb_p.a *libkern_p.a *liblibx_p.a *libshar_p.a) .bss .bss.* .bss*)
         linker_enBSS_u = ABSOLUTE(.);
+        /* Standard symbol used by C library for heap start */
+        end = ABSOLUTE(.);
+        _end = ABSOLUTE(.);
     } > prgm_data_u
 
     .stacks_u (NOLOAD) : {

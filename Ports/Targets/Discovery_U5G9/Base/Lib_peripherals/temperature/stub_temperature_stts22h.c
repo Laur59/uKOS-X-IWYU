@@ -80,7 +80,7 @@ static  void    cb_writeI2C(uint8_t address, const uint8_t *buffer, uint16_t num
 static  void    cb_configure(void) {
     static  bool        vInit = false;
     const   i2cCnf_t    configureI2C1 = {
-                            .oTimeout  = 100000U,
+                            .oTimeout  = 1000U,
                             .oSpeed    = KI2C_400KBPS,
                         };
 

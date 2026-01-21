@@ -408,89 +408,89 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 // a1 -> *newStack
 
 #ifndef KERN_NEW_FRAME
-#define KERN_NEW_FRAME          __asm volatile ("                                                                            \n \
-                                add         sp,x0,a1                                                                         \n \
-                                ld          t0,2*8(sp)                                                                       \n \
-                                csrw        mstatus,t0                                                                       \n \
-                                ld          t0,3*8(sp)                                                                       \n \
-                                csrw        mcause,t0                                                                        \n \
-                                ld          t0,4*8(sp)                                                                       \n \
-                                csrw        mepc,t0                                                                          \n \
-                                lw          t0,5*8(sp)                                                                       \n \
-                                fscsr       t0                                                                               \n \
-                                addi        sp,sp,(6*8)"                                                                        \
-                                );                                                                                              \
-                                                                                                                                \
-                                __asm volatile ("                                                                            \n \
-                                ld          x0,0*8(sp)                                                                       \n \
-                                ld          gp,1*8(sp)                                                                       \n \
-                                ld          tp,2*8(sp)                                                                       \n \
-                                ld          s1,3*8(sp)                                                                       \n \
-                                ld          s2,4*8(sp)                                                                       \n \
-                                ld          s3,5*8(sp)                                                                       \n \
-                                ld          s4,6*8(sp)                                                                       \n \
-                                ld          s5,7*8(sp)                                                                       \n \
-                                ld          s6,8*8(sp)                                                                       \n \
-                                ld          s7,9*8(sp)                                                                       \n \
-                                ld          s8,10*8(sp)                                                                      \n \
-                                ld          s9,11*8(sp)                                                                      \n \
-                                ld          s10,12*8(sp)                                                                     \n \
-                                ld          s11,13*8(sp)                                                                     \n \
-                                addi        sp,sp,(14*8)"                                                                       \
-                                );                                                                                              \
-                                                                                                                                \
-                                __asm volatile ("                                                                            \n \
-                                ld          ra,49*8(sp)                                                                      \n \
-                                ld          t0,48*8(sp)                                                                      \n \
-                                ld          t1,47*8(sp)                                                                      \n \
-                                ld          t2,46*8(sp)                                                                      \n \
-                                ld          s0,45*8(sp)                                                                      \n \
-                                ld          a0,44*8(sp)                                                                      \n \
-                                ld          a1,43*8(sp)                                                                      \n \
-                                ld          a2,42*8(sp)                                                                      \n \
-                                ld          a3,41*8(sp)                                                                      \n \
-                                ld          a4,40*8(sp)                                                                      \n \
-                                ld          a5,39*8(sp)                                                                      \n \
-                                ld          a6,38*8(sp)                                                                      \n \
-                                ld          a7,37*8(sp)                                                                      \n \
-                                ld          t3,36*8(sp)                                                                      \n \
-                                ld          t4,35*8(sp)                                                                      \n \
-                                ld          t5,34*8(sp)                                                                      \n \
-                                ld          t6,33*8(sp)                                                                      \n \
-                                fld         ft0,32*8(sp)                                                                     \n \
-                                fld         ft1,31*8(sp)                                                                     \n \
-                                fld         ft2,30*8(sp)                                                                     \n \
-                                fld         ft3,29*8(sp)                                                                     \n \
-                                fld         ft4,28*8(sp)                                                                     \n \
-                                fld         ft5,27*8(sp)                                                                     \n \
-                                fld         ft6,26*8(sp)                                                                     \n \
-                                fld         ft7,25*8(sp)                                                                     \n \
-                                fld         fa0,24*8(sp)                                                                     \n \
-                                fld         fa1,23*8(sp)                                                                     \n \
-                                fld         fa2,22*8(sp)                                                                     \n \
-                                fld         fa3,21*8(sp)                                                                     \n \
-                                fld         fa4,20*8(sp)                                                                     \n \
-                                fld         fa5,19*8(sp)                                                                     \n \
-                                fld         fa6,18*8(sp)                                                                     \n \
-                                fld         fa7,17*8(sp)                                                                     \n \
-                                fld         ft8,16*8(sp)                                                                     \n \
-                                fld         ft9,15*8(sp)                                                                     \n \
-                                fld         ft10,14*8(sp)                                                                    \n \
-                                fld         ft11,13*8(sp)                                                                    \n \
-                                fld         fs0,12*8(sp)                                                                     \n \
-                                fld         fs1,11*8(sp)                                                                     \n \
-                                fld         fs2,10*8(sp)                                                                     \n \
-                                fld         fs3,9*8(sp)                                                                      \n \
-                                fld         fs4,8*8(sp)                                                                      \n \
-                                fld         fs5,7*8(sp)                                                                      \n \
-                                fld         fs6,6*8(sp)                                                                      \n \
-                                fld         fs7,5*8(sp)                                                                      \n \
-                                fld         fs8,4*8(sp)                                                                      \n \
-                                fld         fs9,3*8(sp)                                                                      \n \
-                                fld         fs10,2*8(sp)                                                                     \n \
-                                fld         fs11,1*8(sp)                                                                     \n \
-                                addi        sp,sp,(50*8)"                                                                       \
-                                )
+#define KERN_NEW_FRAME    __asm volatile ("           \n \
+                          add    sp,x0,a1             \n \
+                          ld     t0,2*8(sp)           \n \
+                          csrw   mstatus,t0           \n \
+                          ld     t0,3*8(sp)           \n \
+                          csrw   mcause,t0            \n \
+                          ld     t0,4*8(sp)           \n \
+                          csrw   mepc,t0              \n \
+                          lw     t0,5*8(sp)           \n \
+                          fscsr  t0                   \n \
+                          addi   sp,sp,(6*8)"            \
+                          );                             \
+                                                         \
+                          __asm volatile ("           \n \
+                          ld     x0,0*8(sp)           \n \
+                          ld     gp,1*8(sp)           \n \
+                          ld     tp,2*8(sp)           \n \
+                          ld     s1,3*8(sp)           \n \
+                          ld     s2,4*8(sp)           \n \
+                          ld     s3,5*8(sp)           \n \
+                          ld     s4,6*8(sp)           \n \
+                          ld     s5,7*8(sp)           \n \
+                          ld     s6,8*8(sp)           \n \
+                          ld     s7,9*8(sp)           \n \
+                          ld     s8,10*8(sp)          \n \
+                          ld     s9,11*8(sp)          \n \
+                          ld     s10,12*8(sp)         \n \
+                          ld     s11,13*8(sp)         \n \
+                          addi   sp,sp,(14*8)"           \
+                          );                             \
+                                                         \
+                          __asm volatile ("           \n \
+                          ld     ra,49*8(sp)          \n \
+                          ld     t0,48*8(sp)          \n \
+                          ld     t1,47*8(sp)          \n \
+                          ld     t2,46*8(sp)          \n \
+                          ld     s0,45*8(sp)          \n \
+                          ld     a0,44*8(sp)          \n \
+                          ld     a1,43*8(sp)          \n \
+                          ld     a2,42*8(sp)          \n \
+                          ld     a3,41*8(sp)          \n \
+                          ld     a4,40*8(sp)          \n \
+                          ld     a5,39*8(sp)          \n \
+                          ld     a6,38*8(sp)          \n \
+                          ld     a7,37*8(sp)          \n \
+                          ld     t3,36*8(sp)          \n \
+                          ld     t4,35*8(sp)          \n \
+                          ld     t5,34*8(sp)          \n \
+                          ld     t6,33*8(sp)          \n \
+                          fld    ft0,32*8(sp)         \n \
+                          fld    ft1,31*8(sp)         \n \
+                          fld    ft2,30*8(sp)         \n \
+                          fld    ft3,29*8(sp)         \n \
+                          fld    ft4,28*8(sp)         \n \
+                          fld    ft5,27*8(sp)         \n \
+                          fld    ft6,26*8(sp)         \n \
+                          fld    ft7,25*8(sp)         \n \
+                          fld    fa0,24*8(sp)         \n \
+                          fld    fa1,23*8(sp)         \n \
+                          fld    fa2,22*8(sp)         \n \
+                          fld    fa3,21*8(sp)         \n \
+                          fld    fa4,20*8(sp)         \n \
+                          fld    fa5,19*8(sp)         \n \
+                          fld    fa6,18*8(sp)         \n \
+                          fld    fa7,17*8(sp)         \n \
+                          fld    ft8,16*8(sp)         \n \
+                          fld    ft9,15*8(sp)         \n \
+                          fld    ft10,14*8(sp)        \n \
+                          fld    ft11,13*8(sp)        \n \
+                          fld    fs0,12*8(sp)         \n \
+                          fld    fs1,11*8(sp)         \n \
+                          fld    fs2,10*8(sp)         \n \
+                          fld    fs3,9*8(sp)          \n \
+                          fld    fs4,8*8(sp)          \n \
+                          fld    fs5,7*8(sp)          \n \
+                          fld    fs6,6*8(sp)          \n \
+                          fld    fs7,5*8(sp)          \n \
+                          fld    fs8,4*8(sp)          \n \
+                          fld    fs9,3*8(sp)          \n \
+                          fld    fs10,2*8(sp)         \n \
+                          fld    fs11,1*8(sp)         \n \
+                          addi   sp,sp,(50*8)"           \
+                          )
 #endif
 
 // Return to a new context

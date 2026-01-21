@@ -191,6 +191,9 @@ SECTIONS {
         KEEP(*(.user))
         *(.bss .bss.* COMMON)
         linker_enBSS_u = ABSOLUTE(.);
+        /* Standard symbol used by C library for heap start */
+        end = ABSOLUTE(.);
+        _end = ABSOLUTE(.);
     } > prgm_data_u
 
     .stacks_u (NOLOAD) : {

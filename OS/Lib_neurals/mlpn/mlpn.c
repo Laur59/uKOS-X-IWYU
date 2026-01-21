@@ -60,7 +60,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 #include    "os_errors.h"
 #include    "types.h"
 
-#ifdef MLPN_HAVE_HELIUM_FP_S
+#ifdef __ARM_FEATURE_MVE
 #include    <arm_mve.h>
 #endif
 
@@ -383,7 +383,7 @@ static  int32_t local_initialiseLayer(mlpnLayer_t *layer) {
 
 // Dot product: Helium FP (MVE) if available (with unroll x2 (8 floats per iteration))
 
-#ifdef MLPN_HAVE_HELIUM_FP_S
+#ifdef __ARM_FEATURE_MVE
 static  inline  float32_t   local_hadd_f32x4(float32x4_t v) {
     float32_t   tmp[4];
 
@@ -394,7 +394,7 @@ static  inline  float32_t   local_hadd_f32x4(float32x4_t v) {
 
 static  inline  float32_t   local_dot_f32(const float32_t * __restrict w, const float32_t * __restrict x, uint16_t n) {
 
-    #if (defined(MLPN_HAVE_HELIUM_FP_S))
+    #ifdef __ARM_FEATURE_MVE
     float32x4_t     acc0 = vdupq_n_f32(0.0F);
     float32x4_t     acc1 = vdupq_n_f32(0.0F);
     uint16_t        i = 0U, rem;

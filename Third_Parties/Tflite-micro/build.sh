@@ -79,7 +79,7 @@ fi
 # Packages
 # --------
 
-export hash=ea948c57 # Merge remote-tracking branch 'upstream/main e028871f' into macos 148864407+Laur59@users.noreply.github.com   14.01.2026 16:37
+export hash=f19d57de #	Merge remote-tracking branch 'upstream/main 2c33e0ca' into macos…	148864407+Laur59@users.noreply.github.com	20.01.2026 19:45
 
 printf '\n%bDownload the Tflite-micro package ...%b\n\n' "${BOLD}" "${NC}"
 
@@ -116,7 +116,7 @@ parse_core_yaml() {
     yq eval 'to_entries[] | .key as $model | .value[] | "\($model)\t\(.core)\t\(.target_arch)\t\(.fpu)"' "${yaml_file}"
 }
 
-# Generate the `.h` interface files for all the cortex-M (generic, -m3, m4, -m7, -m33, -m55)
+# Generate the `.h` interface files for all the cortex-M (generic, -m3, m4, -m7, -m33, -m55 -m85)
 # Generate the `.h` interface files for all the risc-v (generic, rv64imafdc)
 cd ./Tflite-micro-current/
 

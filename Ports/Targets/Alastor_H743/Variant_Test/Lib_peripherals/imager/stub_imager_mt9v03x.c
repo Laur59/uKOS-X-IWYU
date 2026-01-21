@@ -118,7 +118,7 @@ static  int32_t cb_control(uint8_t mode, uint32_t value) {
                     uint16_t    agc, grossExpTime, fineExpTime, lineLength;
                     int32_t     status = KERR_IMAGER_NOERR;
     static  const   i2cCnf_t    configureI2C1 = {
-                                    .oTimeout  = 100000U,
+                                    .oTimeout  = 1000U,
                                     .oSpeed    = KI2C_100KBPS,
                                 };
 

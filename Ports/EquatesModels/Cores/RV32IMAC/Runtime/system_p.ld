@@ -150,6 +150,9 @@ SECTIONS {
         *(.bss .bss.*)
         *(COMMON)
         linker_enBSS = ABSOLUTE(.);
+        /* Standard symbol used by C library for heap start */
+        end = ABSOLUTE(.);
+        _end = ABSOLUTE(.);
     } > prgm_data
 
     .stacks (NOLOAD) : {

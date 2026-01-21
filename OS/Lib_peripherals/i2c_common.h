@@ -72,7 +72,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 typedef struct  i2cCnf  i2cCnf_t;
 
 struct i2cCnf {
-            uint32_t    oTimeout;                               // I2C bus timeout in us
+            uint32_t    oTimeout;                               // I2C bus timeout in ms
             uint32_t    oSpeed;                                 // I2C speed in bit/s
 };
 

@@ -168,43 +168,43 @@ extern              proc_t  *vKern_runProc[KNB_CORES];
 //  +0      mepc            = process address
 
 #ifndef KERN_PREPARE_FRAME
-#define KERN_PREPARE_FRAME(stack, code, core, argument, priority)                                                               \
-                                *(--stack) = KMAGICSTACK;                           /* "uKOS"           */                      \
-                                *(--stack) = (uintptr_t)exit_terminate;             /* x1 ra            */                      \
-                                *(--stack) = 0x05050505u;                           /* x5 t0            */                      \
-                                *(--stack) = 0x06060606u;                           /* x6 t1            */                      \
-                                *(--stack) = 0x07070707u;                           /* x7 t2            */                      \
-                                *(--stack) = 0x08080808u;                           /* x8 s0 fp         */                      \
-                                *(--stack) = (uintptr_t)argument;                   /* x10 a0           */                      \
-                                *(--stack) = 0x11111111u;                           /* x11 a1           */                      \
-                                *(--stack) = 0x12121212u;                           /* x12 a2           */                      \
-                                *(--stack) = 0x13131313u;                           /* x13 a3           */                      \
-                                *(--stack) = 0x14141414u;                           /* x14 a4           */                      \
-                                *(--stack) = 0x15151515u;                           /* x15 a5           */                      \
-                                *(--stack) = 0x16161616u;                           /* x16 a6           */                      \
-                                *(--stack) = 0x17171717u;                           /* x17 a7           */                      \
-                                *(--stack) = 0x28282828u;                           /* x28 t3           */                      \
-                                *(--stack) = 0x29292929u;                           /* x29 t4           */                      \
-                                *(--stack) = 0x30303030u;                           /* x30 t5           */                      \
-                                *(--stack) = 0x31313131u;                           /* x31 t6           */                      \
-                                --stack;                                            /* void (skip x0)   */                      \
-                                *(--stack) = 0x03030303u;                           /* x3 gp            */                      \
-                                *(--stack) = 0x04040404u;                           /* x4 tp            */                      \
-                                *(--stack) = 0x09090909u;                           /* x9 s1            */                      \
-                                *(--stack) = 0x18181818u;                           /* x18 s2           */                      \
-                                *(--stack) = 0x19191919u;                           /* x19 s3           */                      \
-                                *(--stack) = 0x20202020u;                           /* x20 s4           */                      \
-                                *(--stack) = 0x21212121u;                           /* x21 s5           */                      \
-                                *(--stack) = 0x22222222u;                           /* x22 s6           */                      \
-                                *(--stack) = 0x23232323u;                           /* x23 s7           */                      \
-                                *(--stack) = 0x24242424u;                           /* x24 s8           */                      \
-                                *(--stack) = 0x25252525u;                           /* x25 s9           */                      \
-                                *(--stack) = 0x26262626u;                           /* x26 s10          */                      \
-                                *(--stack) = 0x27272727u;                           /* x27 s11          */                      \
-                                *(--stack) = priority;                              /* Priority         */                      \
-                                *(--stack) = MSTATUS_MPP | MSTATUS_MPIE;            /* mstatus          */                      \
-                                *(--stack) = KPROCESS_INIT_MCAUSE;                  /* mcause           */                      \
-                                *(--stack) = (uintptr_t)code;                       /* mepc             */                      \
+#define KERN_PREPARE_FRAME(stack, code, core, argument, priority)                                               \
+                                *(--stack) = KMAGICSTACK;                           /* "uKOS"           */      \
+                                *(--stack) = (uintptr_t)exit_terminate;             /* x1 ra            */      \
+                                *(--stack) = 0x05050505u;                           /* x5 t0            */      \
+                                *(--stack) = 0x06060606u;                           /* x6 t1            */      \
+                                *(--stack) = 0x07070707u;                           /* x7 t2            */      \
+                                *(--stack) = 0x08080808u;                           /* x8 s0 fp         */      \
+                                *(--stack) = (uintptr_t)argument;                   /* x10 a0           */      \
+                                *(--stack) = 0x11111111u;                           /* x11 a1           */      \
+                                *(--stack) = 0x12121212u;                           /* x12 a2           */      \
+                                *(--stack) = 0x13131313u;                           /* x13 a3           */      \
+                                *(--stack) = 0x14141414u;                           /* x14 a4           */      \
+                                *(--stack) = 0x15151515u;                           /* x15 a5           */      \
+                                *(--stack) = 0x16161616u;                           /* x16 a6           */      \
+                                *(--stack) = 0x17171717u;                           /* x17 a7           */      \
+                                *(--stack) = 0x28282828u;                           /* x28 t3           */      \
+                                *(--stack) = 0x29292929u;                           /* x29 t4           */      \
+                                *(--stack) = 0x30303030u;                           /* x30 t5           */      \
+                                *(--stack) = 0x31313131u;                           /* x31 t6           */      \
+                                --stack;                                            /* void (skip x0)   */      \
+                                *(--stack) = 0x03030303u;                           /* x3 gp            */      \
+                                *(--stack) = 0x04040404u;                           /* x4 tp            */      \
+                                *(--stack) = 0x09090909u;                           /* x9 s1            */      \
+                                *(--stack) = 0x18181818u;                           /* x18 s2           */      \
+                                *(--stack) = 0x19191919u;                           /* x19 s3           */      \
+                                *(--stack) = 0x20202020u;                           /* x20 s4           */      \
+                                *(--stack) = 0x21212121u;                           /* x21 s5           */      \
+                                *(--stack) = 0x22222222u;                           /* x22 s6           */      \
+                                *(--stack) = 0x23232323u;                           /* x23 s7           */      \
+                                *(--stack) = 0x24242424u;                           /* x24 s8           */      \
+                                *(--stack) = 0x25252525u;                           /* x25 s9           */      \
+                                *(--stack) = 0x26262626u;                           /* x26 s10          */      \
+                                *(--stack) = 0x27272727u;                           /* x27 s11          */      \
+                                *(--stack) = priority;                              /* Priority         */      \
+                                *(--stack) = MSTATUS_MPP | MSTATUS_MPIE;            /* mstatus          */      \
+                                *(--stack) = KPROCESS_INIT_MCAUSE;                  /* mcause           */      \
+                                *(--stack) = (uintptr_t)code;                       /* mepc             */      \
                                 (void)(core)
 #endif
 
@@ -302,45 +302,45 @@ extern              proc_t  *vKern_runProc[KNB_CORES];
 // a0 -> *stack
 
 #ifndef KERN_SAVE_FRAME
-#define KERN_SAVE_FRAME         __asm volatile ("                                                                            \n \
-                                addi        sp,sp,-(35*4)                                                                    \n \
-                                sw          ra,34*4(sp)                                                                      \n \
-                                sw          t0,33*4(sp)                                                                      \n \
-                                sw          t1,32*4(sp)                                                                      \n \
-                                sw          t2,31*4(sp)                                                                      \n \
-                                sw          s0,30*4(sp)                                                                      \n \
-                                sw          a0,29*4(sp)                                                                      \n \
-                                sw          a1,28*4(sp)                                                                      \n \
-                                sw          a2,27*4(sp)                                                                      \n \
-                                sw          a3,26*4(sp)                                                                      \n \
-                                sw          a4,25*4(sp)                                                                      \n \
-                                sw          a5,24*4(sp)                                                                      \n \
-                                sw          a6,23*4(sp)                                                                      \n \
-                                sw          a7,22*4(sp)                                                                      \n \
-                                sw          t3,21*4(sp)                                                                      \n \
-                                sw          t4,20*4(sp)                                                                      \n \
-                                sw          t5,19*4(sp)                                                                      \n \
-                                sw          t6,18*4(sp)                                                                      \n \
-                                sw          gp,16*4(sp)                                                                      \n \
-                                sw          tp,15*4(sp)                                                                      \n \
-                                sw          s1,14*4(sp)                                                                      \n \
-                                sw          s2,13*4(sp)                                                                      \n \
-                                sw          s3,12*4(sp)                                                                      \n \
-                                sw          s4,11*4(sp)                                                                      \n \
-                                sw          s5,10*4(sp)                                                                      \n \
-                                sw          s6,9*4(sp)                                                                       \n \
-                                sw          s7,8*4(sp)                                                                       \n \
-                                sw          s8,7*4(sp)                                                                       \n \
-                                sw          s9,6*4(sp)                                                                       \n \
-                                sw          s10,5*4(sp)                                                                      \n \
-                                sw          s11,4*4(sp)                                                                      \n \
-                                csrr        t0,mstatus                                                                       \n \
-                                sw          t0,2*4(sp)                                                                       \n \
-                                csrr        t0,mcause                                                                        \n \
-                                sw          t0,1*4(sp)                                                                       \n \
-                                csrr        t0,mepc                                                                          \n \
-                                sw          t0,0*4(sp)                                                                       \n \
-                                add         a0,x0,sp"                                                                           \
+#define KERN_SAVE_FRAME         __asm volatile ("           \n \
+                                addi        sp,sp,-(35*4)   \n \
+                                sw          ra,34*4(sp)     \n \
+                                sw          t0,33*4(sp)     \n \
+                                sw          t1,32*4(sp)     \n \
+                                sw          t2,31*4(sp)     \n \
+                                sw          s0,30*4(sp)     \n \
+                                sw          a0,29*4(sp)     \n \
+                                sw          a1,28*4(sp)     \n \
+                                sw          a2,27*4(sp)     \n \
+                                sw          a3,26*4(sp)     \n \
+                                sw          a4,25*4(sp)     \n \
+                                sw          a5,24*4(sp)     \n \
+                                sw          a6,23*4(sp)     \n \
+                                sw          a7,22*4(sp)     \n \
+                                sw          t3,21*4(sp)     \n \
+                                sw          t4,20*4(sp)     \n \
+                                sw          t5,19*4(sp)     \n \
+                                sw          t6,18*4(sp)     \n \
+                                sw          gp,16*4(sp)     \n \
+                                sw          tp,15*4(sp)     \n \
+                                sw          s1,14*4(sp)     \n \
+                                sw          s2,13*4(sp)     \n \
+                                sw          s3,12*4(sp)     \n \
+                                sw          s4,11*4(sp)     \n \
+                                sw          s5,10*4(sp)     \n \
+                                sw          s6,9*4(sp)      \n \
+                                sw          s7,8*4(sp)      \n \
+                                sw          s8,7*4(sp)      \n \
+                                sw          s9,6*4(sp)      \n \
+                                sw          s10,5*4(sp)     \n \
+                                sw          s11,4*4(sp)     \n \
+                                csrr        t0,mstatus      \n \
+                                sw          t0,2*4(sp)      \n \
+                                csrr        t0,mcause       \n \
+                                sw          t0,1*4(sp)      \n \
+                                csrr        t0,mepc         \n \
+                                sw          t0,0*4(sp)      \n \
+                                add         a0,x0,sp"          \
                                 )
 #endif
 
@@ -391,28 +391,28 @@ extern              proc_t  *vKern_runProc[KNB_CORES];
 // a0 -> *stack
 
 #ifndef KERN_SAVE_FRAME_NO_VECT
-#define KERN_SAVE_FRAME_NO_VECT __asm volatile ("                                                                            \n \
-                                addi        sp,sp,-(18*4)                                                                    \n \
-                                sw          gp,16*4(sp)                                                                      \n \
-                                sw          tp,15*4(sp)                                                                      \n \
-                                sw          s1,14*4(sp)                                                                      \n \
-                                sw          s2,13*4(sp)                                                                      \n \
-                                sw          s3,12*4(sp)                                                                      \n \
-                                sw          s4,11*4(sp)                                                                      \n \
-                                sw          s5,10*4(sp)                                                                      \n \
-                                sw          s6,9*4(sp)                                                                       \n \
-                                sw          s7,8*4(sp)                                                                       \n \
-                                sw          s8,7*4(sp)                                                                       \n \
-                                sw          s9,6*4(sp)                                                                       \n \
-                                sw          s10,5*4(sp)                                                                      \n \
-                                sw          s11,4*4(sp)                                                                      \n \
-                                csrr        t0,mstatus                                                                       \n \
-                                sw          t0,2*4(sp)                                                                       \n \
-                                csrr        t0,mcause                                                                        \n \
-                                sw          t0,1*4(sp)                                                                       \n \
-                                csrr        t0,mepc                                                                          \n \
-                                sw          t0,0*4(sp)                                                                       \n \
-                                add         a0,x0,sp"                                                                           \
+#define KERN_SAVE_FRAME_NO_VECT __asm volatile ("                                \n \
+                                addi        sp,sp,-(18*4)                        \n \
+                                sw          gp,16*4(sp)                          \n \
+                                sw          tp,15*4(sp)                          \n \
+                                sw          s1,14*4(sp)                          \n \
+                                sw          s2,13*4(sp)                          \n \
+                                sw          s3,12*4(sp)                          \n \
+                                sw          s4,11*4(sp)                          \n \
+                                sw          s5,10*4(sp)                          \n \
+                                sw          s6,9*4(sp)                           \n \
+                                sw          s7,8*4(sp)                           \n \
+                                sw          s8,7*4(sp)                           \n \
+                                sw          s9,6*4(sp)                           \n \
+                                sw          s10,5*4(sp)                          \n \
+                                sw          s11,4*4(sp)                          \n \
+                                csrr        t0,mstatus                           \n \
+                                sw          t0,2*4(sp)                           \n \
+                                csrr        t0,mcause                            \n \
+                                sw          t0,1*4(sp)                           \n \
+                                csrr        t0,mepc                              \n \
+                                sw          t0,0*4(sp)                           \n \
+                                add         a0,x0,sp"                               \
                                 );
 #endif
 
@@ -459,46 +459,46 @@ extern              proc_t  *vKern_runProc[KNB_CORES];
 // a0 -> *stack
 
 #ifndef KERN_NEW_FRAME
-#define KERN_NEW_FRAME          __asm volatile ("                                                                            \n \
-                                add         sp,x0,a0                                                                         \n \
-                                lw          t0,0*4(sp)                                                                       \n \
-                                csrw        mepc,t0                                                                          \n \
-                                lw          t0,1*4(sp)                                                                       \n \
-                                csrw        mcause,t0                                                                        \n \
-                                lw          t0,2*4(sp)                                                                       \n \
-                                csrw        mstatus,t0                                                                       \n \
-                                lw          s11,4*4(sp)                                                                      \n \
-                                lw          s10,5*4(sp)                                                                      \n \
-                                lw          s9,6*4(sp)                                                                       \n \
-                                lw          s8,7*4(sp)                                                                       \n \
-                                lw          s7,8*4(sp)                                                                       \n \
-                                lw          s6,9*4(sp)                                                                       \n \
-                                lw          s5,10*4(sp)                                                                      \n \
-                                lw          s4,11*4(sp)                                                                      \n \
-                                lw          s3,12*4(sp)                                                                      \n \
-                                lw          s2,13*4(sp)                                                                      \n \
-                                lw          s1,14*4(sp)                                                                      \n \
-                                lw          tp,15*4(sp)                                                                      \n \
-                                lw          gp,16*4(sp)                                                                      \n \
-                                lw          t6,18*4(sp)                                                                      \n \
-                                lw          t5,19*4(sp)                                                                      \n \
-                                lw          t4,20*4(sp)                                                                      \n \
-                                lw          t3,21*4(sp)                                                                      \n \
-                                lw          a7,22*4(sp)                                                                      \n \
-                                lw          a6,23*4(sp)                                                                      \n \
-                                lw          a5,24*4(sp)                                                                      \n \
-                                lw          a4,25*4(sp)                                                                      \n \
-                                lw          a3,26*4(sp)                                                                      \n \
-                                lw          a2,27*4(sp)                                                                      \n \
-                                lw          a1,28*4(sp)                                                                      \n \
-                                lw          a0,29*4(sp)                                                                      \n \
-                                lw          s0,30*4(sp)                                                                      \n \
-                                lw          t2,31*4(sp)                                                                      \n \
-                                lw          t1,32*4(sp)                                                                      \n \
-                                lw          t0,33*4(sp)                                                                      \n \
-                                lw          ra,34*4(sp)                                                                      \n \
-                                addi        sp,sp,(35*4)"                                                                       \
-                                )
+#define KERN_NEW_FRAME   __asm volatile ("           \n \
+                         add         sp,x0,a0        \n \
+                         lw          t0,0*4(sp)      \n \
+                         csrw        mepc,t0         \n \
+                         lw          t0,1*4(sp)      \n \
+                         csrw        mcause,t0       \n \
+                         lw          t0,2*4(sp)      \n \
+                         csrw        mstatus,t0      \n \
+                         lw          s11,4*4(sp)     \n \
+                         lw          s10,5*4(sp)     \n \
+                         lw          s9,6*4(sp)      \n \
+                         lw          s8,7*4(sp)      \n \
+                         lw          s7,8*4(sp)      \n \
+                         lw          s6,9*4(sp)      \n \
+                         lw          s5,10*4(sp)     \n \
+                         lw          s4,11*4(sp)     \n \
+                         lw          s3,12*4(sp)     \n \
+                         lw          s2,13*4(sp)     \n \
+                         lw          s1,14*4(sp)     \n \
+                         lw          tp,15*4(sp)     \n \
+                         lw          gp,16*4(sp)     \n \
+                         lw          t6,18*4(sp)     \n \
+                         lw          t5,19*4(sp)     \n \
+                         lw          t4,20*4(sp)     \n \
+                         lw          t3,21*4(sp)     \n \
+                         lw          a7,22*4(sp)     \n \
+                         lw          a6,23*4(sp)     \n \
+                         lw          a5,24*4(sp)     \n \
+                         lw          a4,25*4(sp)     \n \
+                         lw          a3,26*4(sp)     \n \
+                         lw          a2,27*4(sp)     \n \
+                         lw          a1,28*4(sp)     \n \
+                         lw          a0,29*4(sp)     \n \
+                         lw          s0,30*4(sp)     \n \
+                         lw          t2,31*4(sp)     \n \
+                         lw          t1,32*4(sp)     \n \
+                         lw          t0,33*4(sp)     \n \
+                         lw          ra,34*4(sp)     \n \
+                         addi        sp,sp,(35*4)"      \
+                         )
 #endif
 
 // Return to a new context

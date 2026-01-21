@@ -157,17 +157,20 @@ SECTIONS {
         linker_enBSS_p = ABSOLUTE(.);
     } > prgm_data_p
 
-        __exidx_end = .;
-    } > prgm_code
-
-    .rodata : {
+    linker_stINDATA_u = linker_stINDATA_p + SIZEOF(.data_p);
+    . = ALIGN(4);
+    .data_u : AT (linker_stINDATA_u) {
+        linker_stDATA_u = ABSOLUTE(.);
+        liblibx_u.a(.data .data.* .data*)
+        libproc_u.a(.data .data.* .data*)
+        libtool_u.a(.data .data.* .data*)
+        *(EXCLUDE_FILE (first.o* *librtcb_p.a *libkern_p.a *liblibx_p.a *libshar_p.a) .data .data.* .data*)
         . = ALIGN(4);
-        linker_stRODATA = ABSOLUTE(.);
-        linker_stRODATA_KERN_p = ABSOLUTE(.);
-        libkern_p.a(.rodata .rodata.* .rodata*)
-        linker_enRODATA_KERN_p = ABSOLUTE(.);
-        *(.rodata .rodata.*)
+        *(vtable)
         . = ALIGN(4);
+        KEEP(*(.eh_frame))
+        linker_enDATA_u = ABSOLUTE(.);
+    } > prgm_data_u
 
     . = ALIGN(4);
     .signature (linker_enRODATA + (linker_enDATA_p - linker_stDATA_p) + (linker_enDATA_u - linker_stDATA_u)) : {
@@ -184,17 +187,9 @@ SECTIONS {
         libtool_u.a(.bss .bss.* COMMON)
         *(EXCLUDE_FILE (first.o* *librtcb_p.a *libkern_p.a *liblibx_p.a *libshar_p.a) .bss .bss.* .bss*)
         linker_enBSS_u = ABSOLUTE(.);
-    } > prgm_data_u
-
-    .bss_u (NOLOAD) : {
-        . = ALIGN(4);
-        linker_stBSS_u = ABSOLUTE(.);
-        KEEP(*(.user))
-        liblibx_u.a(.bss .bss.* COMMON)
-        libproc_u.a(.bss .bss.* COMMON)
-        libtool_u.a(.bss .bss.* COMMON)
-        *(EXCLUDE_FILE (first.o* *librtcb_p.a *libkern_p.a *liblibx_p.a *libshar_p.a) .bss .bss.* .bss*)
-        linker_enBSS_u = ABSOLUTE(.);
+        /* Standard symbol used by C library for heap start */
+        end = ABSOLUTE(.);
+        _end = ABSOLUTE(.);
     } > prgm_data_u
 
 }

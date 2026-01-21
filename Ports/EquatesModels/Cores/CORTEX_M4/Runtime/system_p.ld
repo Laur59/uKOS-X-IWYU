@@ -146,35 +146,6 @@ SECTIONS {
         KEEP(*(.signature))
     } > prgm_code
 
-        . = ALIGN(4);
-        linker_enRODATA = ABSOLUTE(.);
-    } > prgm_code
-
-    . = ALIGN(4);
-    linker_stINDATA = ABSOLUTE(.);
-    .data : AT (linker_stINDATA) {
-        linker_stDATA = ABSOLUTE(.);
-        linker_stDATA_KERN_p = ABSOLUTE(.);
-        libkern_p.a(.data .data.* .data*)
-        linker_enDATA_KERN_p = ABSOLUTE(.);
-        *(.data .data.*)
-        . = ALIGN(4);
-        *(vtable)
-        . = ALIGN(4);
-        KEEP(*(.eh_frame))
-        . = ALIGN(4);
-        *(.ARM.extab*)
-        . = ALIGN(4);
-        *(.ARM.exidx*)
-        linker_enDATA = ABSOLUTE(.);
-    } > prgm_data
-
-    .signature (linker_enRODATA + (linker_enDATA - linker_stDATA)) : {
-    . = ALIGN(4);
-        linker_stSignature = ABSOLUTE(.);
-        KEEP(*(.signature))
-    } > prgm_code
-
     .bss (NOLOAD) : {
         . = ALIGN(4);
         linker_stBSS = ABSOLUTE(.);
@@ -186,5 +157,8 @@ SECTIONS {
         . = ALIGN(4);
         *(COMMON)
         linker_enBSS = ABSOLUTE(.);
+        /* Standard symbol used by C library for heap start */
+        end = ABSOLUTE(.);
+        _end = ABSOLUTE(.);
     } > prgm_data
 }
