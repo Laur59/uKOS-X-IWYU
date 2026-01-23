@@ -69,4 +69,4 @@ if [[ -z "$OPENOCD" ]]; then
 	fi
 fi
 
-"${OPENOCD}" -f "${SCRIPT_PATH}"/stlink.cfg
+"${OPENOCD}" -f "${SCRIPT_PATH}/stlink.cfg"

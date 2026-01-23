@@ -69,4 +69,4 @@ if [[ -z "$OPENOCD" ]]; then
 	fi
 fi
 
-"${OPENOCD}" -f "${SCRIPT_PATH}"/swd_FT4232_b.cfg
+"${OPENOCD}" -f "${SCRIPT_PATH}/swd_FT4232_b.cfg"

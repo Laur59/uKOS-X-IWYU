@@ -52,10 +52,10 @@ set -euo pipefail
 readonly PATH_PRG="${0:a:h}"
 readonly PATH_UKOS="$(cd "$PATH_PRG/../../../../.." && pwd)"
 
-TFL_PYTHON_ENV="${PATH_UKOS}"/Third_Parties/Tflite-micro/Tflite-env
+TFL_PYTHON_ENV="${PATH_UKOS}/Third_Parties/Tflite-micro/Tflite-env"
 
 if [[ -d "${TFL_PYTHON_ENV:-}" ]]; then
-    source "${TFL_PYTHON_ENV}"/bin/activate
+    source "${TFL_PYTHON_ENV}/bin/activate"
 fi
 
 MODEL_FILE="mlp_model.tflite"
