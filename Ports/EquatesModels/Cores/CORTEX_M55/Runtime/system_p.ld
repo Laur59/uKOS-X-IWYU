@@ -163,18 +163,4 @@ SECTIONS {
         end = ABSOLUTE(.);
         _end = ABSOLUTE(.);
     } > prgm_data
-
-    .stacks (NOLOAD) : {
-        . = ALIGN(8);
-        linker_lowStackFirst_C0 = ABSOLUTE(.);
-        . += linker_sizeStackFirst_C0;
-        . = ALIGN(8);
-        linker_topStackFirst_C0 = ABSOLUTE(.) - 8;
-
-        . = ALIGN(8);
-        linker_lowStackSystem_C0 = ABSOLUTE(.);
-        . += linker_sizeStackSystem_C0;
-        . = ALIGN(8);
-        linker_topStackSystem_C0 = ABSOLUTE(.) - 8;
-    } > prgm_data
 }

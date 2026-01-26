@@ -81,4 +81,5 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #define BSW_0               13U                                 // PORT C 13, SW1
 
 #define BDSI_PWRON          5U                                  // PORT I 5, DSI Power ON
+#define BDSI_BL             6U                                  // PORT I 6, DSI Back light
 #define BDSI_RESET          5U                                  // PORT D 5, DSI Reset

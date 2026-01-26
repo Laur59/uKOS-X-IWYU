@@ -73,17 +73,23 @@ INCLUDE		STM32N657xD.ld
 
 /* Mapping:													*/
 /*															*/
-/* RAM2:	stPrgmCode	(Boot)	0x34100400 (400 signature)	*/
+/* RAM2:	Program Code (Boot)	0x34100400 (400 signature)	*/
 /*			64K												*/
-/* RAM1:	stPrgmCode	(Appl)	0x34000400 (400 signature)	*/
+/* RAM1:	Program Code (Appl)	0x34000400 (400 signature)	*/
 /*			(1024K - 1K)									*/
-/* RAM2:	stPrgmData			0x34100000					*/
-/*			256K											*/
-/*			stUMemo				0x34140000					*/
+/* RAM2:	Stacks				0x34100000					*/
+/*			16K												*/
+/*			Program Data		0x34104000					*/
+/*			240K											*/
+/*			User Memory			0x34140000					*/
 /*			512K											*/
-/*			stHeap				0x341C0000					*/
+/*			Heap				0x341C0000					*/
 /*			256K +											*/
 /* RAM3-6:	(4 * 448K)										*/
+
+config_sizeStacks			= (16k);
+config_sizeData				= (240k);
+config_sizeUMemory			= (512K);
 
 stm_lnAXISRAM3_6			= (stm_lnAXISRAM3 + stm_lnAXISRAM4 + stm_lnAXISRAM5 + stm_lnAXISRAM6);	/* Length of internal memory SRAM3 to SRAM6					*/
 
@@ -93,6 +99,15 @@ stm_lnAXISRAM3_6			= (stm_lnAXISRAM3 + stm_lnAXISRAM4 + stm_lnAXISRAM5 + stm_lnA
 
 linker_sizeStackSystem_C0	= (8K);																	/* Length of the System stack  								*/
 linker_sizeStackFirst_C0	= (8K);																	/* Length of the First stack  								*/
+linker_lowStackSystem_C0	= stm_stAXISRAM2;														/* 0x34100000:												*/
+linker_topStackSystem_C0	= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 - 8;				/* 0x34101FF8:												*/
+linker_lowStackFirst_C0		= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;					/* 0x34102000:												*/
+linker_topStackFirst_C0		= linker_lowStackFirst_C0 + linker_sizeStackFirst_C0 - 8;				/* 0x34103FF8:												*/
+ASSERT((linker_lowStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
+ASSERT((linker_topStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
+ASSERT((linker_lowStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
+ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
+ASSERT((linker_sizeStackSystem_C0 + linker_sizeStackFirst_C0)  == config_sizeStacks, "Error in size of stacks")
 
 /* IMPORTANT:												*/
 /* External memory, User (download application) and shared	*/
@@ -101,7 +116,7 @@ linker_stEXRAM				= 0;																	/* 0x00000000: EXRAM, start of the extern
 linker_lnEXRAM				= (0);																	/* Length of the external memory	  						*/
 
 linker_stUMemo				= (linker_stPrgmData + linker_lnPrgmData);								/* 0x34140000: UMemo, start of the user memory 				*/
-linker_lnUMemo				= (512K);																/* Length of the user memory	  							*/
+linker_lnUMemo				= config_sizeUMemory;													/* Length of the user memory	  							*/
 
 /* IMPORTANT:												*/
 /* The heap has to be maintained aligned					*/
@@ -116,8 +131,8 @@ linker_lnHeap				= (256K + stm_lnAXISRAM3_6);											/* Length of the heap			
 linker_stPrgmCode			= (stm_stAXISRAM1 + 1K);												/* 0x34000400: PrgmCode, start of the Flash					*/
 linker_lnPrgmCode			= (1024K - 1K);															/* Length of the the Flash									*/
 
-linker_stPrgmData			= stm_stAXISRAM2;														/* 0x34100000: PrgmData, start of the RAM					*/
-linker_lnPrgmData			= (256K);																/* Length of the RAM										*/
+linker_stPrgmData			= linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;					/* 0x34104000: PrgmData, start of the RAM					*/
+linker_lnPrgmData			= config_sizeData;														/* Length of the RAM										*/
 
 /* IMPORTANT:												*/
 /* equates necessary for the arm_v8 MPU regions				*/
@@ -127,7 +142,7 @@ linker_ST_RAM_INT_1			= (stm_stAXISRAM1);														/* 0x34000000: Privileged
 linker_EN_RAM_INT_1			= (stm_stAXISRAM1 + stm_lnAXISRAM1 - 1);								/* 0x340FFFFF: 1-M											*/
 
 linker_ST_RAM_INT_2			= (stm_stAXISRAM2);														/* 0x34100000: Privileged/User RAM							*/
-linker_EN_RAM_INT_2			= (stm_stAXISRAM2 + stm_lnAXISRAM2 + stm_lnAXISRAM3_6 - 1);				/* 0x342BFFFF: 2816-K										*/
+linker_EN_RAM_INT_2			= (stm_stAXISRAM2 + stm_lnAXISRAM2 + stm_lnAXISRAM3_6 - 1);				/* 0x343BFFFF: 2816-K										*/
 
 MEMORY {
 	prgm_code (rwx)	: ORIGIN = linker_stPrgmCode, LENGTH = linker_lnPrgmCode

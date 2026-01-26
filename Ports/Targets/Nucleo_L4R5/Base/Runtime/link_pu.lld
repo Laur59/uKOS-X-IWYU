@@ -103,8 +103,9 @@ INCLUDE     STM32L4R5xx.ld
 config_sizeStacks           = (6k);
 config_sizeData_p           = (60k);
 config_sizeData_u           = (62k);
+config_sizeUMemory          = (64K);
 config_lnHeap1              = stm_lnSRAM1 - config_sizeStacks - config_sizeData_p - config_sizeData_u;
-config_lnHeap3              = stm_lnSRAM3 - (64K);
+config_lnHeap3              = stm_lnSRAM3 - config_sizeUMemory;
 
 /* IMPORTANT:                                               */
 /* all the stacks have to be maintained aligned             */
@@ -129,26 +130,26 @@ linker_stEXRAM              = 0;                                                
 linker_lnEXRAM              = (0);                                                                      /* Length of the external memory                            */
 
 linker_stUMemo              = (linker_stHeap + linker_lnHeap);                                          /* 0x20090000: UMemo, start of the user memory              */
-linker_lnUMemo              = (64K);                                                                    /* Length of the user memory                                */
+linker_lnUMemo              = config_sizeUMemory;                                                                   /* 0x00010000: Length of the user memory                                */
 
 /* IMPORTANT:                                               */
 /* The heap has to be maintained aligned                    */
 /* on a boundary of 8-bytes                                 */
 
 linker_stHeap               = (linker_stPrgmData_u + linker_lnPrgmData_u);                              /* 0x20020000: start of the heap                            */
-linker_lnHeap               = config_lnHeap1 + stm_lnSRAM2 + config_lnHeap3;                            /* Length of the heap                                       */
+linker_lnHeap               = config_lnHeap1 + stm_lnSRAM2 + config_lnHeap3;                            /* 0x00080000: Length of the heap                                       */
 
 /* IMPORTANT:                                               */
 /* uKOS OS Flash + memory                                   */
 
 linker_stPrgmCode           = stm_stINTFLASH;                                                           /* 0x08000000: PrgmCode, start of the Flash                 */
-linker_lnPrgmCode           = stm_lnINTFLASH;                                                           /* Length of the the Flash                                  */
+linker_lnPrgmCode           = stm_lnINTFLASH;                                                           /* 0x00100000: Length of the the Flash                                  */
 
 linker_stPrgmData_p         = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;                     /* 0x20001000: PrgmData_p, start of the RAM                 */
 linker_lnPrgmData_p         = config_sizeData_p;                                                        /* Length_p of the RAM                                      */
 
 linker_stPrgmData_u         = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;                       /* 0x20010800: PrgmData_p, start of the RAM                 */
-linker_lnPrgmData_u         = config_sizeData_u;                                                        /* Length_p of the RAM                                      */
+linker_lnPrgmData_u         = config_sizeData_u;                                                        /* 0x0000E800: Length_p of the RAM                                      */
 
 /* IMPORTANT:                                               */
 /* equates necessary for the arm_v7 MPU regions             */

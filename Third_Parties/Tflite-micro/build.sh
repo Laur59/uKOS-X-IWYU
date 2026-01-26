@@ -79,7 +79,7 @@ fi
 # Packages
 # --------
 
-export hash=f221f238 #  Merge remote-tracking branch 'upstream/main 2747abd5' into macos    148864407+Laur59@users.noreply.github.com   22.01.2026 23:44
+export hash=3c24a39b # Merge remote-tracking branch 'upstream/main 070751f7' into macos 148864407+Laur59@users.noreply.github.com   26.01.2026 16:36
 
 printf '\n%bDownload the Tflite-micro package ...%b\n\n' "${BOLD}" "${NC}"
 

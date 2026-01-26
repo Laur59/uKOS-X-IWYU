@@ -12,7 +12,8 @@
 #   Build the TinyUSB package using CMake
 #------------------------------------------------------------------------
 
-set -euo pipefail
+emulate -L zsh
+setopt ERR_EXIT NO_UNSET PIPE_FAIL
 
 # Determine script directory (works if executed via ./script.sh or bash script.sh)
 
@@ -20,13 +21,13 @@ PATH_PRG="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Colours for messages
 
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[0;33m'
-BOLD='\033[1m'
-FAINT='\033[2m'
-ITALIC='\033[3m'
-NC='\033[0m' # No Colour
+readonly RED=$'\033[0;31m'
+readonly GREEN=$'\033[0;32m'
+readonly YELLOW=$'\033[0;33m'
+readonly BOLD=$'\033[1m'
+readonly FAINT=$'\033[2m'
+readonly ITALIC=$'\033[3m'
+readonly NC=$'\033[0m' # No Colour
 
 # Packages
 # --------
