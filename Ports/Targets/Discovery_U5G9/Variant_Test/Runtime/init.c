@@ -629,7 +629,7 @@ static  void    local_RCC_Configuration(void) {
                      | (0U * RCC_CCIPR2_OCTOSPISEL_0)           // OCTOSP uses System Clock clock
                      | (0U * RCC_CCIPR2_LTDCSEL)                // LTDC uses PLL3R clock
                      | (0U * RCC_CCIPR2_USART6SEL_0)            // USART6 uses PCLK1 clock
-                     | (1U * RCC_CCIPR2_DSISEL)                 // DSI uses DSI PHY PLL clock
+                     | (0U * RCC_CCIPR2_DSISEL)                 // DSI uses PLL3R clock
                      | (2U * RCC_CCIPR2_RNGSEL_0)               // RNG uses HSI clock
                      | (4U * RCC_CCIPR2_SAI2SEL_0)              // SAI2 uses HSI clock
                      | (4U * RCC_CCIPR2_SAI1SEL_0)              // SAI1 uses HSI clock

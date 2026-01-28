@@ -46,8 +46,8 @@
 #
 #------------------------------------------------------------------------
 
-set -euo pipefail
-setopt KSH_ARRAYS  # Use 0-indexed arrays like bash
+emulate -L zsh
+setopt ERR_EXIT NO_UNSET PIPE_FAIL
 
 # Determine script directory (works if executed via ./script.sh or zsh script.sh)
 
@@ -79,24 +79,18 @@ fi
 # Packages
 # --------
 
-export hash=3c24a39b # Merge remote-tracking branch 'upstream/main 070751f7' into macos 148864407+Laur59@users.noreply.github.com   26.01.2026 16:36
+readonly hash=b46e68e
 
 printf '\n%bDownload the Tflite-micro package ...%b\n\n' "${BOLD}" "${NC}"
 
 # Clone the right package
 cd "${PATH_PRG}"
-if [[ ! -d Tflite-micro ]]; then
-    git clone https://github.com/Laur59/tflite-micro.git Tflite-micro
+if [[ ! -d Tflite-micro-current ]]; then
+    git clone https://github.com/tensorflow/tflite-micro Tflite-micro-current
 else
-    git -C Tflite-micro fetch
+    git -C Tflite-micro-current fetch
 fi
-cd Tflite-micro
-git checkout "${hash}"
-
-# Update path links
-cd ..
-rm -f Tflite-micro-current
-ln -s Tflite-micro Tflite-micro-current
+git -C Tflite-micro-current checkout "${hash}"
 
 # Parse core.yaml file using yq
 parse_core_yaml() {
@@ -129,6 +123,17 @@ python3 tensorflow/lite/micro/tools/project_generation/create_tflm_tree.py \
     ../uKOS_Interface/RISCV64_generic
 
 printf '\n%bBuilding all the Tflite-micro libraries ...%b\n' "${BOLD}" "${NC}"
+
+cd "tensorflow/lite/micro/tools/make/downloads"
+if [[ ! -L gcc_embedded ]]; then
+    rm -fr gcc_embedded
+    ln -s "${PATH_GCC_ARM}" gcc_embedded
+fi
+if [[ ! -L riscv_toolchain ]]; then
+    rm -fr riscv_toolchain
+    ln -s "${PATH_GCC_RVXX}" riscv_toolchain
+fi
+cd ../../../../../..
 
 # Parse YAML and iterate through all build targets
 while IFS=$'\t' read -r model core target_arch fpu
