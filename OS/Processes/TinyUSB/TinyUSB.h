@@ -1,20 +1,18 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
+; TinyUSB.
+; ========
 
-/*
-; stub_switch.
-; ============
+; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Author:	Laurent von Allmen		The 2026-02-02
+; Modifs:
 ;
-; Purpose:
-;   stub for the "switch" manager module.
+; Project:	uKOS-X
+; Goal:		"TinyUSB" management.
 ;
-;-----
+;   (c) 2025-2026, Laurent von Allmen
+;   ---------------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,30 +46,18 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;------------------------------------------------------------------------
 */
 
-#include    "switch/switch.h"
+#pragma	once
 
-#include    <stdint.h>
+#ifdef __cplusplus
+extern	"C" {
+#endif
 
-#include    "os_errors.h"
+// Stub functions (target-specific implementations)
+// -------------------------------------------------
 
-/*
- * \brief stub_switch_init
- *
- * - Initialise some specific hardware parts
- *
- */
-void    stub_switch_init(void) {
+void	stub_TinyUSB_init(void);
+void	stub_TinyUSB_cyclic(void);
 
+#ifdef __cplusplus
 }
-
-/*
- * \brief stub_switch_read
- *
- * - Read the jumper configuration
- *
- */
-int32_t stub_switch_read(uint32_t *mode) {
-
-    *mode = 0U;
-    return KERR_SWITCH_NOERR;
-}
+#endif

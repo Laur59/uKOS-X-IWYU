@@ -67,3 +67,8 @@ struct aliveCnf {
             uint32_t    oTime[2];                               // Process time
             uint8_t     oLed;                                   // Process Led
 };
+
+// Stub function (target-specific implementation)
+// -----------------------------------------------
+
+void __attribute__ ((noreturn)) stub_alive_process(const void *argument);

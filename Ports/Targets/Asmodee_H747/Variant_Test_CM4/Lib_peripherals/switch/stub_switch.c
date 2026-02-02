@@ -48,6 +48,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;------------------------------------------------------------------------
 */
 
+#include    "switch/switch.h"
+
 #include    <stdint.h>
 
 #include    "Registers/stm32H747_CM4_gpio.h"

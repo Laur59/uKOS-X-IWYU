@@ -48,6 +48,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;------------------------------------------------------------------------
 */
 
+#include    "led/led.h"
+
 #include    <stdint.h>
 
 #include    "board.h"

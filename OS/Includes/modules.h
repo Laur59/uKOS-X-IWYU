@@ -115,7 +115,7 @@ struct uKOS_module {
 };
 
 #define MODULE(name, family, idModule, init, execution, clean, revision, flag, executionCore)                                                           \
-    C_DECLARE   const   uKOS_module_t       a##name##_Specifications = {                                                                                \
+    static const    uKOS_module_t           a##name##_Specifications = {                                                                                \
                                                 .oIdModule       = ( ((uint32_t)family<<24U) | ((uint32_t)idModule<<8U) | ((uint32_t)(uint8_t)'_')),    \
                                                 .oStrApplication = aStrApplication,                                                                     \
                                                 .oStrHelp        = aStrHelp,                                                                            \
@@ -126,7 +126,7 @@ struct uKOS_module {
                                                 .oFlag           = flag,                                                                                \
                                                 .oExecutionCore  = executionCore                                                                        \
                                             };                                                                                                          \
-    C_DECLARE   const   uKOS_directory_t    dir##name __attribute__ ((section (".directory"))) = {                                                      \
+    __attribute__((used)) static const  uKOS_directory_t    dir##name __attribute__ ((section (".directory"))) = {                              \
                                                 .oModuleLocation = KBUILD_IN,                                                                           \
                                                 .oModule         = (const uKOS_module_t *)&a##name##_Specifications                                     \
                                             }

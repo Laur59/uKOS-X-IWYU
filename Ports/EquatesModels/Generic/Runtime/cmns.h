@@ -1,20 +1,18 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
+; cmns.
+; =====
 
-/*
-; stub_switch.
-; ============
+; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Author:	Edo. Franzi		The 2025-01-01
+; Modifs:
 ;
-; Purpose:
-;   stub for the "switch" manager module.
+; Project:	uKOS-X
+; Goal:		Some common routines used in many modules.
 ;
-;-----
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,30 +46,22 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;------------------------------------------------------------------------
 */
 
-#include    "switch/switch.h"
+#pragma	once
 
-#include    <stdint.h>
+#include	<stdint.h>
 
-#include    "os_errors.h"
+#include	"serial/serial.h"
+#include	"types.h"
 
-/*
- * \brief stub_switch_init
- *
- * - Initialise some specific hardware parts
- *
- */
-void    stub_switch_init(void) {
+#ifdef __cplusplus
+extern	"C" {
+#endif
 
+void	cmns_init(void);
+void	cmns_send(serialManager_t serialManager, const char_t *ascii);
+void	cmns_receive(serialManager_t serialManager, char_t *data);
+void	cmns_wait(uint32_t us);
+
+#ifdef __cplusplus
 }
-
-/*
- * \brief stub_switch_read
- *
- * - Read the jumper configuration
- *
- */
-int32_t stub_switch_read(uint32_t *mode) {
-
-    *mode = 0U;
-    return KERR_SWITCH_NOERR;
-}
+#endif

@@ -160,6 +160,15 @@ extern  int32_t led_toggle(uint8_t ledNb);
  */
 extern  int32_t led_mute(bool mute);
 
+// Stub functions (target-specific implementations)
+// -------------------------------------------------
+
+void	stub_led_init(void);
+int32_t	stub_led_on(uint8_t ledNb);
+int32_t	stub_led_off(uint8_t ledNb);
+int32_t	stub_led_toggle(uint8_t ledNb);
+int32_t	stub_led_mute(bool mute);
+
 #ifdef __cplusplus
 }
 #endif

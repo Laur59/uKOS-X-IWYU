@@ -49,6 +49,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;------------------------------------------------------------------------
 */
 
+#include    "temperature/temperature.h"
+
 #include    <stdint.h>
 
 #include    "LSM9DS1/LSM9DS1.h"

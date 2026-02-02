@@ -50,6 +50,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #include    <stdint.h>
 
+#include    "crt0.h"
 #include    "kern/private/private_temporal.h"   // IWYU pragma: keep (for vKern_TimeException)
 #include    "linker.h"
 #include    "macros_core.h"
@@ -64,7 +65,6 @@ extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 // the first four bytes are used to store the starting address of the stack pointer.
 
 extern  void        Reset_C0_Handler(void);
-extern  void        crt0(void);
 
 const   uintptr_t   g_pfnVectors_C0[] __attribute__((used, section(".isr_vector"))) = {
 

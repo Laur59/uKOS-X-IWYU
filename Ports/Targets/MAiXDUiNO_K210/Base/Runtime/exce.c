@@ -51,6 +51,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    <stdint.h>
 
 #include    "board.h"
+#include    "cmns.h"
 #include    "core.h"
 #include    "core_reg.h"
 #include    "macros.h"
@@ -100,8 +101,6 @@ MODULE(
 extern  void    first_handle_trap(void);
 extern  void    first_handle_MachineExternal(uint32_t core, uint64_t parameter);
 extern  void    first_handle_EnvironmentalCallM(uint32_t core, uint64_t message);
-extern  void    cmns_send(serialManager_t serialManager, const char_t *ascii);
-extern  void    cmns_wait(uint32_t us);
 static  void    coreDump_displayInt_Interruption(uint32_t core, uint64_t number);
 static  void    coreDump_displayInt_Exceptions(uint32_t core, uint64_t number);
 static  void    coreDump_displayExt_Interruption(uint32_t core, uint64_t number);

@@ -169,6 +169,13 @@ extern  int32_t temperature_read(float64_t *temperature);
  */
 extern  int32_t temperature_write(float64_t temperature);
 
+// Stub functions (target-specific implementations)
+// -------------------------------------------------
+
+void	stub_temperature_init(void);
+int32_t	stub_temperature_read(float64_t *temperature);
+int32_t	stub_temperature_write(float64_t temperature);
+
 #ifdef __cplusplus
 }
 #endif

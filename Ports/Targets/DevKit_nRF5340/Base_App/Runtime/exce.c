@@ -51,6 +51,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    <stdint.h>
 
 #include    "board.h"
+#include    "cmns.h"
 #include    "core.h"
 #include    "core_reg.h"
 #include    "macros.h"
@@ -93,8 +94,6 @@ void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 // Prototypes
 
-extern  void    cmns_send(serialManager_t serialManager, const char_t *ascii);
-extern  void    cmns_wait(uint32_t us);
 static  void    model_coreDump_displayExceptions(void);
 static  void    model_coreDump_displayInterruptions(void);
 static  void    local_setLEDs(uint8_t ledNb);

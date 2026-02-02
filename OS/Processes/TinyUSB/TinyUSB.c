@@ -47,6 +47,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
+#include    "TinyUSB.h"
+
 #include    <stdint.h>
 #include    <stdlib.h>
 
@@ -95,8 +97,6 @@ STRG_LOC_CONST(aStrHelp[])        = "TinyUSB process\n"
 
 static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 static  void        local_process(const void *argument);
-extern  void        stub_TinyUSB_init(void);
-extern  void        stub_TinyUSB_cyclic(void);
 
 // This process has to run on the following cores:
 

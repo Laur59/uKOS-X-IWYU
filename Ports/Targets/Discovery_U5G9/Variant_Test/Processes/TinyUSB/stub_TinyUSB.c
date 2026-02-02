@@ -51,6 +51,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #include    <stdint.h>
 
+#include    "TinyUSB/TinyUSB.h"
 #include    "clockTree.h"
 #include    "core_reg.h"
 #include    "macros_core.h"

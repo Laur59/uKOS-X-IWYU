@@ -97,8 +97,6 @@ static  mutx_t      *vMutex_Reserve_Random[KNB_CORES];
 // Prototypes
 
 static  void        local_init(void);
-extern  void        stub_random_init(void);
-extern  int32_t     stub_rand_read(randomGenerator_t generator, uint32_t *number);
 
 /*
  * \brief Read a pool of random numbers

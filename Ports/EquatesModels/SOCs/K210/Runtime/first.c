@@ -49,6 +49,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 */
 
 #include    "core_reg.h"
+#include    "crt0.h"
 #include    "soc_reg.h"
 #include    "macros.h"
 #include    "macros_soc.h"
@@ -60,7 +61,6 @@ extern  bool        vExce_isException[KNB_CORES];
 // Prototypes
 
 extern  void        cmns_wait(uint32_t us);
-extern  void        crt0(void);
 
 static  void        local_interruptions(uint32_t core, uint64_t number);
 static  void        local_exception(uint32_t core, uint64_t number, uint64_t message);

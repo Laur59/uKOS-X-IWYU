@@ -49,6 +49,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;------------------------------------------------------------------------
 */
 
+#include    "TinyUSB/TinyUSB.h"
 #include    "macros_soc.h"
 
 // Save the GCC diagnostic

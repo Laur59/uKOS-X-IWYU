@@ -48,6 +48,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;------------------------------------------------------------------------
 */
 
+#include    "cmns.h"
+
 #include    <stddef.h>
 
 #include    "clockTree.h"
@@ -82,10 +84,6 @@ MODULE(
     (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                               // Execution cores
 );
-
-// Prototypes
-
-void    cmns_wait(uint32_t us);
 
 /*
  * \brief cmns_init

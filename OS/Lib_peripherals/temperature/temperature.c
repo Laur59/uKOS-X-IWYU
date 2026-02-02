@@ -96,9 +96,6 @@ static  mutx_t      *vMutex_Reserve[KNB_CORES];
 // Prototypes
 
 static  int32_t     local_init(void);
-extern  void        stub_temperature_init(void);
-extern  int32_t     stub_temperature_read(float64_t *temperature);
-extern  int32_t     stub_temperature_write(float64_t temperature);
 
 /*
  * \brief Reserve the temperature manager

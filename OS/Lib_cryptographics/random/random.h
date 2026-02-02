@@ -101,6 +101,12 @@ extern  "C" {
  */
 extern  int32_t random_read(randomGenerator_t generator, uint32_t *number, uint32_t nbNumbers);
 
+// Stub functions (target-specific implementations)
+// -------------------------------------------------
+
+void	stub_random_init(void);
+int32_t	stub_rand_read(randomGenerator_t generator, uint32_t *number);
+
 #ifdef __cplusplus
 }
 #endif

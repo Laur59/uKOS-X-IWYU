@@ -75,7 +75,9 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    <stdlib.h>
 #include    <string.h>
 
+#include    "cmns.h"
 #include    "core.h"
+#include    "init.h"
 #include    "kern/kern.h"
 #include    "kern/private/private_processes.h"
 #include    "linker.h"

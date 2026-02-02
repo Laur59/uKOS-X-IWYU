@@ -80,7 +80,6 @@ STRG_LOC_CONST(aStrHelp[])        = "alive process\n"
 
 static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 static  int32_t     alive_clean(uint32_t argc, const char_t *argv[]);
-extern  void        stub_alive_process(const void *argument);
 
 // This process has to run on the following cores:
 

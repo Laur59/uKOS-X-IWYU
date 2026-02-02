@@ -48,6 +48,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;------------------------------------------------------------------------
 */
 
+#include    "switch/switch.h"
+
 #include    <stdint.h>
 
 #include    "os_errors.h"

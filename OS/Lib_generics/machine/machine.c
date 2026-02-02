@@ -93,9 +93,6 @@ MODULE(
 // Prototypes
 
 static  void        local_init(void);
-extern  int32_t     stub_machine_restart(void);
-extern  int32_t     stub_machine_readPC(const uintptr_t *stackProcess, uintptr_t *pc);
-extern  void        stub_machine_readFunctionName(const uintptr_t pc, const char_t **function);
 
 /*
  * \brief Read the PC of a process

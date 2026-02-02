@@ -42,6 +42,8 @@
 ;------------------------------------------------------------------------
 */
 
+#include    "switch/switch.h"
+
 #include    <stdint.h>
 
 #include    "Registers/stm32H743_gpio.h"

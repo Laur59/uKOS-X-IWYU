@@ -53,6 +53,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    <string.h>
 
 #include    "board.h"
+#include    "cmns.h"
 #include    "core.h"
 #include    "core_reg.h"
 #include    "macros.h"
@@ -98,8 +99,6 @@ extern  void        (* const g_pfnVectors_C0[])(void);
 
 // Prototypes
 
-extern  void    cmns_send(serialManager_t serialManager, const char_t *ascii);
-extern  void    cmns_wait(uint32_t us);
 static  void    model_coreDump_displayExceptions(void);
 static  void    model_coreDump_displayInterruptions(void);
 static  void    local_setLEDs(uint8_t ledNb);

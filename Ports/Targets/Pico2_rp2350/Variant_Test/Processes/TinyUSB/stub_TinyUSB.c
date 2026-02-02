@@ -52,6 +52,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    <stdint.h>
 
 #include    "Registers/nvic.h"
+#include    "TinyUSB/TinyUSB.h"
 #include    "Registers/soc_vectors.h"
 #include    "clockTree.h"
 #include    "macros_core.h"

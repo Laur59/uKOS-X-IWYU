@@ -52,6 +52,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;------------------------------------------------------------------------
 */
 
+#include    "init.h"
+
 #include    <stdint.h>
 
 #include    "core_reg.h"
