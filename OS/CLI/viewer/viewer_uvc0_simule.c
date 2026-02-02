@@ -124,10 +124,10 @@ int32_t viewer_uvc0(uint32_t argc, const char_t *argv[]) {
         KKERN_PRIORITY_HIGH_05              // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
     );
 
-    if (kern_createProcess(&specification, &vKillRequest[core], &process) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "viewer: create proc"); return (EXIT_OS_FAILURE); }
+    if (kern_createProcess(&specification, &vKillRequest[core], &process) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "viewer: create proc"); return EXIT_OS_FAILURE; }
 
     LOG(KINFO_USER, "viewer: application launched");
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }
 
 /*
@@ -146,7 +146,7 @@ int32_t viewer_uvc0_clean(uint32_t argc, const char_t *argv[]) {
     core = GET_RUNNING_CORE;
     vKillRequest[core] = true;
 
-    return (EXIT_OS_SUCCESS);
+    return EXIT_OS_SUCCESS;
 }
 
 // Local routines

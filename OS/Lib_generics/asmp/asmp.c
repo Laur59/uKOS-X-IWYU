@@ -174,8 +174,8 @@ int32_t asmp_send(uint32_t toCore, uint32_t order, uint32_t size, const uint8_t 
 // Core does not exist or toCore = sender
 // size > KASMP_SZ_BUFFER
 
-    if ((toCore >= nbCore) || (toCore == core)) { PRIVILEGE_RESTORE; return (KERR_ASMP_CORNA); }
-    if (size >= KASMP_SZ_BUFFER)                { PRIVILEGE_RESTORE; return (KERR_ASMP_LNBUB); }
+    if ((toCore >= nbCore) || (toCore == core)) { PRIVILEGE_RESTORE; return KERR_ASMP_CORNA; }
+    if (size >= KASMP_SZ_BUFFER)                { PRIVILEGE_RESTORE; return KERR_ASMP_LNBUB; }
 
     switch (toCore) {
         case KASMP_CORE_0: { message = KASMP_MESSAGE_VALID_FOR_CORE_0; break; }
@@ -207,14 +207,14 @@ int32_t asmp_send(uint32_t toCore, uint32_t order, uint32_t size, const uint8_t 
 
         stub_asmp_signal(message);
         PRIVILEGE_RESTORE;
-        return (KERR_ASMP_NOERR);
+        return KERR_ASMP_NOERR;
     }
 
 // NOLINTEND(clang-analyzer-security.ArrayBound)
 //
     INTERRUPTION_RESTORE;
     PRIVILEGE_RESTORE;
-    return (KERR_ASMP_SBFUL);
+    return KERR_ASMP_SBFUL;
 }
 
 /*
@@ -281,12 +281,12 @@ int32_t asmp_receive(uint32_t *fromCore, uint32_t *order, uint32_t *size, uint8_
 
         stub_asmp_signal(message);
         PRIVILEGE_RESTORE;
-        return (KERR_ASMP_NOERR);
+        return KERR_ASMP_NOERR;
     }
 
     INTERRUPTION_RESTORE;
     PRIVILEGE_RESTORE;
-    return (KERR_ASMP_RBUEM);
+    return KERR_ASMP_RBUEM;
 }
 
 /*
@@ -312,7 +312,7 @@ int32_t asmp_getRunningCore(uint32_t *core) {
 
     stub_asmp_getRunningCore(core);
     PRIVILEGE_RESTORE;
-    return (KERR_ASMP_NOERR);
+    return KERR_ASMP_NOERR;
 }
 
 /*
@@ -343,12 +343,12 @@ int32_t asmp_getReferenceCore(uint32_t core, const char_t **coreReference) {
 
     if (core > KASMP_NB_CORES) {
         PRIVILEGE_RESTORE;
-        return (KERR_ASMP_NOERR);
+        return KERR_ASMP_NOERR;
     }
 
     stub_asmp_getReferenceCore(core, coreReference);
     PRIVILEGE_RESTORE;
-    return (KERR_ASMP_NOERR);
+    return KERR_ASMP_NOERR;
 }
 
 /*
@@ -404,12 +404,12 @@ int32_t asmp_getSemaphoreRXFull(uint32_t core, sema_t **semaphore) {
 
     if (identifier == NULL) {
         PRIVILEGE_RESTORE;
-        return (KERR_ASMP_CORNA);
+        return KERR_ASMP_CORNA;
     }
 
     while (kern_getSemaphoreById(identifier, semaphore) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
     PRIVILEGE_RESTORE;
-    return (KERR_ASMP_NOERR);
+    return KERR_ASMP_NOERR;
 }
 
 /*
@@ -465,12 +465,12 @@ int32_t asmp_getSemaphoreTXEmpty(uint32_t core, sema_t **semaphore) {
 
     if (identifier == NULL) {
         PRIVILEGE_RESTORE;
-        return (KERR_ASMP_CORNA);
+        return KERR_ASMP_CORNA;
     }
 
     while (kern_getSemaphoreById(identifier, semaphore) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
     PRIVILEGE_RESTORE;
-    return (KERR_ASMP_NOERR);
+    return KERR_ASMP_NOERR;
 }
 
 /*
@@ -496,7 +496,7 @@ int32_t asmp_waitingForReady(void) {
 
     status = stub_asmp_waitingForReady();
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 // Local routines

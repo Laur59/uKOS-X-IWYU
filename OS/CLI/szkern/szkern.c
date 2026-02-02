@@ -183,5 +183,5 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     (void)dprintf(KSYST, "Section rodata:    addr = 0x%016"PRIXPTR", size = 0x%08"PRIX32" %5.2f [KBytes]\n",   (uintptr_t)local_linker_stRODATA_KERN_p, szRODATA, szRODATAf);
     (void)dprintf(KSYST, "Section data:      addr = 0x%016"PRIXPTR", size = 0x%08"PRIX32" %5.2f [KBytes]\n",   (uintptr_t)local_linker_stDATA_KERN_p,   szDATA,   szDATAf);
     (void)dprintf(KSYST, "Section bss:       addr = 0x%016"PRIXPTR", size = 0x%08"PRIX32" %5.2f [KBytes]\n\n", (uintptr_t)local_linker_stBSS_KERN_p,    szBSS,    szBSSf);
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }

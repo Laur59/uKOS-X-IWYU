@@ -140,7 +140,7 @@ int32_t i2c_reserve(i2cManager_t manager, reserveMode_t reserveMode, uint32_t ti
         case KI2C3: { return (i2c3_reserve(reserveMode, timeout)); }
         #endif
 
-        default:    { return (KERR_I2C_NODEV);                     }
+        default:    { return KERR_I2C_NODEV;                       }
     }
 }
 
@@ -180,7 +180,7 @@ int32_t i2c_release(i2cManager_t manager, reserveMode_t reserveMode) {
         case KI2C3: { return (i2c3_release(reserveMode)); }
         #endif
 
-        default:    { return (KERR_I2C_NODEV);            }
+        default:    { return KERR_I2C_NODEV;              }
     }
 }
 
@@ -224,7 +224,7 @@ int32_t i2c_configure(i2cManager_t manager, const i2cCnf_t *configure) {
         case KI2C3: { return (i2c3_configure(configure)); }
         #endif
 
-        default:    { return (KERR_I2C_NODEV);            }
+        default:    { return KERR_I2C_NODEV;              }
     }
 }
 
@@ -267,7 +267,7 @@ int32_t i2c_write(i2cManager_t manager, uint8_t address, const uint8_t *buffer, 
         case KI2C3: { return (i2c3_write(address, buffer, size)); }
         #endif
 
-        default:    { return (KERR_I2C_NODEV);                    }
+        default:    { return KERR_I2C_NODEV;                      }
     }
 }
 
@@ -318,7 +318,7 @@ int32_t i2c_read(i2cManager_t manager, uint8_t address, uint8_t *buffer, uint16_
         case KI2C3: { return (i2c3_read(address, buffer, size)); }
         #endif
 
-        default:    { return (KERR_I2C_NODEV);                   }
+        default:    { return KERR_I2C_NODEV;                     }
     }
 }
 

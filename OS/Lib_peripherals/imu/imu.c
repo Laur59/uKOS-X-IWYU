@@ -134,16 +134,16 @@ int32_t imu_reserve(reserveMode_t reserveMode, uint32_t timeout) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_IMU_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_IMU_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = kern_lockMutex(vMutex_Reserve[core], timeout);
     if (status != KERR_KERN_NOERR) {
         PRIVILEGE_RESTORE;
-        return (KERR_IMU_CHBSY);
+        return KERR_IMU_CHBSY;
     }
 
     PRIVILEGE_RESTORE;
-    return (KERR_IMU_NOERR);
+    return KERR_IMU_NOERR;
 }
 
 /*
@@ -173,16 +173,16 @@ int32_t imu_release(reserveMode_t reserveMode) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_IMU_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_IMU_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = kern_unlockMutex(vMutex_Reserve[core]);
     if (status != KERR_KERN_NOERR) {
         PRIVILEGE_RESTORE;
-        return (KERR_IMU_CAREL);
+        return KERR_IMU_CAREL;
     }
 
     PRIVILEGE_RESTORE;
-    return (KERR_IMU_NOERR);
+    return KERR_IMU_NOERR;
 }
 
 /*
@@ -211,11 +211,11 @@ int32_t imu_configure(const imuCnf_t *configure) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_IMU_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_IMU_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_imu_configure(configure);
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 /*
@@ -254,11 +254,11 @@ int32_t imu_read(imuAccePack_t *accelerometer, imuGyroPack_t *gyroscope, imuMagn
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_IMU_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_IMU_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_imu_read(accelerometer, gyroscope, magnetometer);
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 // Local routines

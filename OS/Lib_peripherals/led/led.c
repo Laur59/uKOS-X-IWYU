@@ -123,7 +123,7 @@ int32_t led_on(uint8_t ledNb) {
 
     status = stub_led_on(ledNb);
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 /*
@@ -151,7 +151,7 @@ int32_t led_off(uint8_t ledNb) {
 
     status = stub_led_off(ledNb);
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 /*
@@ -179,7 +179,7 @@ int32_t led_toggle(uint8_t ledNb) {
 
     status = stub_led_toggle(ledNb);
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 /*
@@ -208,7 +208,7 @@ int32_t led_mute(bool mute) {
 
     status = stub_led_mute(mute);
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 // Local routines

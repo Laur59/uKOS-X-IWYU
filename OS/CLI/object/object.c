@@ -254,7 +254,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     }
 
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 // Local routines
@@ -336,21 +336,21 @@ static  void    local_printProcess(uint32_t core, uint16_t number) {
 
     serialManagerA[4] = '\0';
 
-    father = (process.oInternal.oProcFather == NULL)                        ? ("Orphan")   : (process.oInternal.oProcFather->oSpecification.oIdentifier);
-    mode   = (process.oSpecification.oStackMode == KPROC_STACK_STATIC)      ? ("Static")   : ("Dynamic");
-    kind   = (process.oSpecification.oKind == KPROC_NORMAL)                 ? ("Normal")   : ("Daemon");
-    space  = (process.oSpecification.oMode == KPROC_USER)                   ? ("User")     : ("Privileged");
-    eleva  = ((process.oInternal.oState & (1U<<BPROC_PRIV_ELEVATED)) != 0U) ? ("Elevated") : ("");
+    father = (process.oInternal.oProcFather == NULL)                        ? "Orphan"   : (process.oInternal.oProcFather->oSpecification.oIdentifier);
+    mode   = (process.oSpecification.oStackMode == KPROC_STACK_STATIC)      ? "Static"   : "Dynamic";
+    kind   = (process.oSpecification.oKind == KPROC_NORMAL)                 ? "Normal"   : "Daemon";
+    space  = (process.oSpecification.oMode == KPROC_USER)                   ? "User"       : "Privileged";
+    eleva  = ((process.oInternal.oState & (1U<<BPROC_PRIV_ELEVATED)) != 0U) ? "Elevated" : "";
 
     state  = "Not installed";
-    state  = ((process.oInternal.oState & (1U<<BPROC_INSTALLED))   != 0U)   ? ("Installed")                                : (state);
-    state  = ((process.oInternal.oState & (1U<<BPROC_RUNNING))     != 0U)   ? ("Installed & running")                      : (state);
-    state  = ((process.oInternal.oState & (1U<<BPROC_SUSP_TIME))   != 0U)   ? ("Installed & waiting for a time")           : (state);
-    state  = ((process.oInternal.oState & (1U<<BPROC_SUSP_SIGN))   != 0U)   ? ("Installed & waiting for a signal")         : (state);
-    state  = ((process.oInternal.oState & (1U<<BPROC_SUSP_SEMA))   != 0U)   ? ("Installed & waiting for a semaphore")      : (state);
-    state  = ((process.oInternal.oState & (1U<<BPROC_SUSP_MBOX_E)) != 0U)   ? ("Installed & waiting for a non empty mbox") : (state);
-    state  = ((process.oInternal.oState & (1U<<BPROC_SUSP_MBOX_F)) != 0U)   ? ("Installed & waiting for a non full mbox")  : (state);
-    state  = ((process.oInternal.oState & (1U<<BPROC_SUSP_DEBG))   != 0U)   ? ("Installed & waiting for a debug")          : (state);
+    state  = ((process.oInternal.oState & (1U<<BPROC_INSTALLED))   != 0U)   ? "Installed"                                   : state;
+    state  = ((process.oInternal.oState & (1U<<BPROC_RUNNING))     != 0U)   ? "Installed & running"                         : state;
+    state  = ((process.oInternal.oState & (1U<<BPROC_SUSP_TIME))   != 0U)   ? "Installed & waiting for a time"              : state;
+    state  = ((process.oInternal.oState & (1U<<BPROC_SUSP_SIGN))   != 0U)   ? "Installed & waiting for a signal"            : state;
+    state  = ((process.oInternal.oState & (1U<<BPROC_SUSP_SEMA))   != 0U)   ? "Installed & waiting for a semaphore"         : state;
+    state  = ((process.oInternal.oState & (1U<<BPROC_SUSP_MBOX_E)) != 0U)   ? "Installed & waiting for a non empty mbox"    : state;
+    state  = ((process.oInternal.oState & (1U<<BPROC_SUSP_MBOX_F)) != 0U)   ? "Installed & waiting for a non full mbox"     : state;
+    state  = ((process.oInternal.oState & (1U<<BPROC_SUSP_DEBG))   != 0U)   ? "Installed & waiting for a debug"             : state;
 
 // Print the result
 
@@ -408,11 +408,11 @@ static  void    local_printSemaphore(uint32_t core, uint16_t number) {
 // Prepare for printing
 
     state = "Not installed";
-    state = ((semaphore.oState & (1U<<BSEMA_INSTALLED)) != 0U) ? ("Installed semaphore") : (state);
+    state = ((semaphore.oState & (1U<<BSEMA_INSTALLED)) != 0U) ? "Installed semaphore"  : state;
 
     owner = "No owner";
-    owner = (semaphore.oOwner == KKERN_HANDLE_FROM_ISR) ? ("ISR owner")                  : (owner);
-    owner = (semaphore.oOwner >  KKERN_HANDLE_FROM_ISR) ? ("Process owner")              : (owner);
+    owner = (semaphore.oOwner == KKERN_HANDLE_FROM_ISR) ? "ISR owner"                   : owner;
+    owner = (semaphore.oOwner >  KKERN_HANDLE_FROM_ISR) ? "Process owner"               : owner;
 
 // Print the result
 
@@ -450,11 +450,11 @@ static  void    local_printMutex(uint32_t core, uint16_t number) {
 // Prepare for printing
 
     state = "Not installed";
-    state = ((mutex.oState & (1U<<BMUTX_INSTALLED)) != 0U) ? ("Installed mutex") : (state);
+    state = ((mutex.oState & (1U<<BMUTX_INSTALLED)) != 0U) ? "Installed mutex"  : state;
 
     owner = "No owner";
-    owner = (mutex.oOwner == KKERN_HANDLE_FROM_ISR) ? ("ISR owner")              : (owner);
-    owner = (mutex.oOwner >  KKERN_HANDLE_FROM_ISR) ? ("Process owner")          : (owner);
+    owner = (mutex.oOwner == KKERN_HANDLE_FROM_ISR) ? "ISR owner"               : owner;
+    owner = (mutex.oOwner >  KKERN_HANDLE_FROM_ISR) ? "Process owner"           : owner;
 
 // Print the result
 
@@ -492,9 +492,9 @@ static  void    local_printMailBox(uint32_t core, uint16_t number) {
 // Prepare for printing
 
     state = "Not installed";
-    state = ((mailBox.oState & (1U<<BMBOX_CONFIGURED)) != 0U) ? ("Installed & configured mailbox") : (state);
-    state = ((mailBox.oState & (1U<<BMBOX_EMPTY))      != 0U) ? ("Mailbox empty")                  : (state);
-    state = ((mailBox.oState & (1U<<BMBOX_FULL))       != 0U) ? ("Mailbox full")                   : (state);
+    state = ((mailBox.oState & (1U<<BMBOX_CONFIGURED)) != 0U) ? "Installed & configured mailbox"    : state;
+    state = ((mailBox.oState & (1U<<BMBOX_EMPTY))      != 0U) ? "Mailbox empty"                     : state;
+    state = ((mailBox.oState & (1U<<BMBOX_FULL))       != 0U) ? "Mailbox full"                      : state;
 
 // Print the result
 
@@ -579,13 +579,13 @@ static  void    local_printSoftwareTimer(uint32_t core, uint16_t number) {
 // Prepare for printing
 
     state = "Not installed";
-    state = ((softwareTimer.oState & (1U<<BSTIM_CONFIGURED)) != 0U) ? ("installed & configured S-Timer") : (state);
-    state = ((softwareTimer.oState & (1U<<BSTIM_RUNNING))    != 0U) ? ("S-Timer running")                : (state);
-    state = ((softwareTimer.oState & (1U<<BSTIM_EXECUTED))   != 0U) ? ("S-Timer executed")               : (state);
+    state = ((softwareTimer.oState & (1U<<BSTIM_CONFIGURED)) != 0U) ? "installed & configured S-Timer"  : state;
+    state = ((softwareTimer.oState & (1U<<BSTIM_RUNNING))    != 0U) ? "S-Timer running"                 : state;
+    state = ((softwareTimer.oState & (1U<<BSTIM_EXECUTED))   != 0U) ? "S-Timer executed"                : state;
 
     mode = "Stop";
-    mode = (softwareTimer.oTimerSpec.oMode == KSTIM_SINGLE_SHOT)    ? ("Single shot mode")               : (mode);
-    mode = (softwareTimer.oTimerSpec.oMode == KSTIM_CONTINUOUS)     ? ("Continuous mode")                : (mode);
+    mode = (softwareTimer.oTimerSpec.oMode == KSTIM_SINGLE_SHOT)    ? "Single shot mode"                : mode;
+    mode = (softwareTimer.oTimerSpec.oMode == KSTIM_CONTINUOUS)     ? "Continuous mode"                 : mode;
 
 // Print the result
 
@@ -628,14 +628,14 @@ static  void    local_printSPreciseSignal(uint32_t core, uint16_t number) {
 // Prepare for printing
 
     state = "Not installed";
-    state = ((preciseSignal.oState & (1U<<BPRCS_INSTALLED)) != 0U) ? ("installed precise signal") : (state);
+    state = ((preciseSignal.oState & (1U<<BPRCS_INSTALLED)) != 0U) ? "installed precise signal" : state;
 
     mode = "Stop";
-    mode = (preciseSignal.oMode == KPRCS_SINGLE_SHOT) ? ("Single shot mode")                      : (mode);
-    mode = (preciseSignal.oMode == KPRCS_CONTINUOUS)  ? ("Continuous mode")                       : (mode);
+    mode = (preciseSignal.oMode == KPRCS_SINGLE_SHOT) ? "Single shot mode"                      : mode;
+    mode = (preciseSignal.oMode == KPRCS_CONTINUOUS)  ? "Continuous mode"                       : mode;
 
     toProcess = "To a selective process";
-    toProcess = (preciseSignal.oToProcess == KKERN_HANDLE_BROADCAST) ? ("To process: Broadcast")  : (toProcess);
+    toProcess = (preciseSignal.oToProcess == KKERN_HANDLE_BROADCAST) ? "To process: Broadcast"  : toProcess;
 
 // Print the result
 

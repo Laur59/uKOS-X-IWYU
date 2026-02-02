@@ -282,7 +282,7 @@ static  bool    local_DMAIsIdle(dmac_channel_number_t channel_num) {
 
     chen.data = *(volatile uint64_t *)(&dmac->chen);
     status = (((chen.data>>channel_num) & 0x1u) != 0U) ? (false) : (true);
-    return (status);
+    return status;
 }
 
 static  void    local_DMAWaitIdle(dmac_channel_number_t channel_num) {

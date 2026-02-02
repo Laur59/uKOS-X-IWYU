@@ -150,7 +150,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
         (void)dprintf(KSYST, "Not enough memory.\n");
         PRIVILEGE_RESTORE;
 
-        return (EXIT_OS_FAILURE);
+        return EXIT_OS_FAILURE;
     }
 
 // Copy the fifo into a memory (to ensure the coherence between the Fifo & the parameter)
@@ -169,17 +169,17 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     (void)dprintf(KSYST, "      Time [us]   Parameter            Process or ISR identifier          Information\n\n");
 
     for (i = 0; i < nbTraceWrites; i++) {
-        identifier = (rTraceFifo->oProcess == NULL) ? ("From ISR") : (rTraceFifo->oProcess->oSpecification.oIdentifier);
+        identifier = (rTraceFifo->oProcess == NULL) ? "From ISR" : (rTraceFifo->oProcess->oSpecification.oIdentifier);
         local_compose(identifier, &idSpacer);
         (void)dprintf(KSYST, "%12lld-us   0x%016"PRIXPTR"   %s%s  %s\n", rTraceFifo->oTimeStamp, rTraceFifo->oParameter, identifier, idSpacer, rTraceFifo->oMessage);
 
-        rTraceFifo = (rTraceFifo == &traceFifo[KRECORD_SZ_TRACE_FIFO]) ? (traceFifo) : (rTraceFifo + 1U);
+        rTraceFifo = (rTraceFifo == &traceFifo[KRECORD_SZ_TRACE_FIFO]) ? traceFifo : (rTraceFifo + 1U);
     }
     (void)dprintf(KSYST, "\n");
     memo_delayedFree(traceFifo);
     PRIVILEGE_RESTORE;
 
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }
 
 // Local routines

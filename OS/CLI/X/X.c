@@ -120,7 +120,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     if (!vInitialised[core]) {
         if (kern_getMailboxById("Temperature", &vMailBox[core]) != KERR_KERN_NOERR) {
             (void)dprintf(KSYST, "Process Temperature not installed!\n");
-            return (EXIT_OS_FAILURE);
+            return EXIT_OS_FAILURE;
         }
 
         vInitialised[core] = true;
@@ -159,5 +159,5 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     }
     (void)dprintf(KSYST, "%d\n", vTemperature[core][KNB_SAMPLES - 1U]);
 
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }

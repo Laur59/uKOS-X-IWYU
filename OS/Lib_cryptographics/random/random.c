@@ -132,7 +132,7 @@ int32_t random_read(randomGenerator_t generator, uint32_t *number, uint32_t nbNu
 
     if ((number == NULL) || (nbNumbers == 0U)) {
         PRIVILEGE_RESTORE;
-        return (KERR_RANDOM_GEERR);
+        return KERR_RANDOM_GEERR;
     }
 
     kern_lockMutex(vMutex_Reserve_Random[core], KWAIT_INFINITY);
@@ -142,7 +142,7 @@ int32_t random_read(randomGenerator_t generator, uint32_t *number, uint32_t nbNu
     }
     kern_unlockMutex(vMutex_Reserve_Random[core]);
     PRIVILEGE_RESTORE;
-    return (KERR_RANDOM_NOERR);
+    return KERR_RANDOM_NOERR;
 }
 
 // Local routines

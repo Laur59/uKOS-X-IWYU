@@ -90,5 +90,5 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     (void)dprintf(KSYST, "Viewer process launched.\n");
 
     status = viewer_uvc0(argc, argv);
-    return (status);
+    return status;
 }

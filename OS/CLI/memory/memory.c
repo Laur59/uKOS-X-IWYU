@@ -249,7 +249,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     #endif
 
     local_displayHeap(linker_stHeap, nbBlocks, usdMemory, length);
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }
 
 // Local routines

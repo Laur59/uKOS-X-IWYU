@@ -95,7 +95,7 @@ bool    bench_03(void) {
     uint64_t    time, sumTime = 0U;
     uint32_t    i, j, *array, value, min, max;
 
-    array = (uint32_t *)memo_malloc(KMEMO_ALIGN_8, (KNB_ELEMENTS * sizeof(uint32_t)), "bench"); if (array == NULL) { return (false); }
+    array = (uint32_t *)memo_malloc(KMEMO_ALIGN_8, (KNB_ELEMENTS * sizeof(uint32_t)), "bench"); if (array == NULL) { return false; }
 
 // Initialise the array with a random value
 
@@ -119,7 +119,7 @@ bool    bench_03(void) {
                          "          Then, compute the min / max values.\n"
                          "          Number of tests                              n = %6d [-]\n"
                          "          Min / Max                                    t = %6lld [us]\n\n", KNB_TESTS, sumTime);
-    return (true);
+    return true;
 }
 
 // Local routines

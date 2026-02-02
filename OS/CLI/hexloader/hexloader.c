@@ -168,7 +168,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
     if (system_reserve(KMODE_READ_WRITE, 0U) != KERR_SYSTEM_NOERR) {
         (void)dprintf(KSYST, "\nHex: The user memory is busy.\n\n");
-        return (EXIT_OS_FAILURE);
+        return EXIT_OS_FAILURE;
     }
 
     serial_reserve(KSYST, KMODE_READ, KWAIT_INFINITY);
@@ -301,7 +301,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
         case KERR_H_LOADER_PAR: { (void)dprintf(KSYST, "\nHex: parity error.\n\n");      status = EXIT_OS_FAILURE;     break; }
         default:                {                                                        status = EXIT_OS_FAILURE;     break; }
     }
-    return (status);
+    return status;
 }
 
 // Local routines
@@ -330,10 +330,10 @@ static  int32_t local_getByte(uint8_t *byte) {
             vSize[core] = KSZ_BUFFER;
 
             switch (serial_read(KSYST, &vBuffer[core][0], &vSize[core])) {
-                case KERR_SERIAL_RBFUL: { return (KERR_H_LOADER_BFU); }
-                case KERR_SERIAL_ERNOI: { return (KERR_H_LOADER_NOI); }
-                case KERR_SERIAL_ERFRA: { return (KERR_H_LOADER_FRA); }
-                case KERR_SERIAL_ERPAR: { return (KERR_H_LOADER_PAR); }
+                case KERR_SERIAL_RBFUL: { return KERR_H_LOADER_BFU; }
+                case KERR_SERIAL_ERNOI: { return KERR_H_LOADER_NOI; }
+                case KERR_SERIAL_ERFRA: { return KERR_H_LOADER_FRA; }
+                case KERR_SERIAL_ERPAR: { return KERR_H_LOADER_PAR; }
                 default: {
 
 // Make MISRA happy :-)
@@ -351,7 +351,7 @@ static  int32_t local_getByte(uint8_t *byte) {
     vSize[core]--;
     *byte = vBuffer[core][vI[core]];
     vI[core]++;
-    return (KERR_H_LOADER_NOT);
+    return KERR_H_LOADER_NOT;
 }
 
 /*
@@ -376,19 +376,19 @@ static  int32_t local_getHexValue(uint8_t *value) {
     *value = 0U;
     status = local_getByte(&byte);
     if (status != KERR_H_LOADER_NOT) {
-        return (status);
+        return status;
     }
 
     if       ((byte >= '0') && (byte <= '9'))                                      { *value  = (uint8_t)(aTabAB[byte - (uint8_t)'0']<<4U);                       }
     else if (((byte >= 'A') && (byte <= 'F')) || ((byte >= 'a') && (byte <= 'f'))) { *value  = (uint8_t)(aTabAB[(byte & (uint8_t)(~0x20U)) - (uint8_t)'0']<<4U); }
     else { }
 
-    status = local_getByte(&byte);  if (status != KERR_H_LOADER_NOT) { return (status); }
+    status = local_getByte(&byte);  if (status != KERR_H_LOADER_NOT) { return status; }
     if       ((byte >= '0') && (byte <= '9'))                                      { *value += (uint8_t)(aTabAB[byte - (uint8_t)'0']);                           }
     else if (((byte >= 'A') && (byte <= 'F')) || ((byte >= 'a') && (byte <= 'f'))) { *value += (uint8_t)(aTabAB[(byte & (uint8_t)(~0x20U)) - (uint8_t)'0']);     }
     else { }
 
-    return (KERR_H_LOADER_NOT);
+    return KERR_H_LOADER_NOT;
 }
 
 /*
@@ -402,11 +402,11 @@ static  int32_t local_getCounter(uint8_t *counter, uint8_t *checksum) {
 
     status = local_getHexValue(counter);
     if (status != KERR_H_LOADER_NOT) {
-        return (status);
+        return status;
     }
 
     *checksum = *counter;
-    return (KERR_H_LOADER_NOT);
+    return KERR_H_LOADER_NOT;
 }
 
 /*
@@ -425,13 +425,13 @@ static  int32_t local_getOffset(uintptr_t *offset, uint8_t *checksum) {
     for (i = 0U; i < 2U; i++) {
         status = local_getHexValue(&hexValue);
         if (status != KERR_H_LOADER_NOT) {
-            return (status);
+            return status;
         }
 
         *offset = (*offset<<8U) + (uint32_t)hexValue;
         *checksum = (uint8_t)(*checksum + hexValue);
     }
-    return (KERR_H_LOADER_NOT);
+    return KERR_H_LOADER_NOT;
 }
 
 /*
@@ -450,14 +450,14 @@ static  int32_t local_getExecAddress(uint8_t **address, uint8_t *checksum) {
     for (i = 0U; i < 4U; i++) {
         status = local_getHexValue(&hexValue);
         if (status != KERR_H_LOADER_NOT) {
-            return (status);
+            return status;
         }
 
         field = (field<<8U) + (uintptr_t)hexValue;
         *checksum = (uint8_t)(*checksum + hexValue);
     }
     *address = (uint8_t *)field;
-    return (KERR_H_LOADER_NOT);
+    return KERR_H_LOADER_NOT;
 }
 
 /*
@@ -471,11 +471,11 @@ static  int32_t local_getType(uint8_t *type, uint8_t *checksum) {
 
     status = local_getHexValue(type);
     if (status != KERR_H_LOADER_NOT) {
-        return (status);
+        return status;
     }
 
     *checksum += *type;
-    return (KERR_H_LOADER_NOT);
+    return KERR_H_LOADER_NOT;
 }
 
 /*
@@ -492,14 +492,14 @@ static  int32_t local_getData(const uint8_t *counter, uint8_t *checksum, uint8_t
     for (i = 0U; i < (*counter); i++) {
         status = local_getHexValue(&hexValue);
         if (status != KERR_H_LOADER_NOT) {
-            return (status);
+            return status;
         }
 
         *load = hexValue;
         load++;
         *checksum = (uint8_t)(*checksum + hexValue);
     }
-    return (KERR_H_LOADER_NOT);
+    return KERR_H_LOADER_NOT;
 }
 
 /*
@@ -521,7 +521,7 @@ static  bool    local_checkSignature(void) {
         if (*ptr == signature[i]) {
             i++;
             if (*ptr == 0U) {
-                return (true);
+                return true;
             }
 
         }
@@ -530,5 +530,5 @@ static  bool    local_checkSignature(void) {
         }
         ptr++;
     }
-    return (false);
+    return false;
 }

@@ -198,7 +198,7 @@ int32_t stub_asmp_signal(uint32_t message) {
             uint32_t    core;
     static  spinlock_t  vSignal = SPIN_LOCK_INIT;
 
-    if ((message == KASMP_MESSAGE_ACKNOWLEDGE_THE_CORE_0) || (message == KASMP_MESSAGE_ACKNOWLEDGE_THE_CORE_1)) { return (KERR_ASMP_NOERR); }
+    if ((message == KASMP_MESSAGE_ACKNOWLEDGE_THE_CORE_0) || (message == KASMP_MESSAGE_ACKNOWLEDGE_THE_CORE_1)) { return KERR_ASMP_NOERR; }
 
     INTERRUPTION_OFF;
     SPIN_LOCK(vSignal);
@@ -245,7 +245,7 @@ int32_t stub_asmp_signal(uint32_t message) {
     }
     SPIN_UNLOCK(vSignal);
     INTERRUPTION_RESTORE;
-    return (KERR_ASMP_NOERR);
+    return KERR_ASMP_NOERR;
 }
 
 /*
@@ -261,7 +261,7 @@ int32_t stub_asmp_waitingForReady(void) {
     maskNbCore = (1U<<(uint8_t)KASMP_CORE_1) | (1U<<(uint8_t)KASMP_CORE_0);
 
     status = ((vAsmp_InterCore->oASMPReady & maskNbCore) == maskNbCore) ? (KERR_ASMP_NOERR) : (KERR_ASMP_NORDY);
-    return (status);
+    return status;
 }
 
 // Local routines

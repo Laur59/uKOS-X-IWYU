@@ -71,5 +71,5 @@ void    stub_switch_init(void) {
 int32_t stub_switch_read(uint32_t *mode) {
 
     *mode = 0U;
-    return (KERR_SWITCH_NOERR);
+    return KERR_SWITCH_NOERR;
 }

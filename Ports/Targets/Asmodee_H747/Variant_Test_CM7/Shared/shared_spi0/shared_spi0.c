@@ -136,7 +136,7 @@ int32_t shared_spi0_reserve(uint32_t manager, uint32_t timeout) {
             break;
         }
     }
-    return (status);
+    return status;
 }
 
 /*
@@ -166,7 +166,7 @@ int32_t shared_spi0_release(void) {
             break;
         }
     }
-    return (status);
+    return status;
 }
 
 /*

@@ -308,7 +308,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 // Let the time to the process "local_process" to run
 
     do { kern_suspendProcess(1U); } while ((!releasePack) && (error == KERR_NOT));
-    return (status);
+    return status;
 }
 
 /*
@@ -327,7 +327,7 @@ static  int32_t cycle_clean(uint32_t argc, const char_t *argv[]) {
     core = GET_RUNNING_CORE;
     vKillRequest[core] = true;
 
-    return (EXIT_OS_SUCCESS);
+    return EXIT_OS_SUCCESS;
 }
 
 // Local routines
@@ -374,7 +374,7 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
     while ((!*killRequest) && (nbRep != 0U)) {
         kern_suspendProcess(time);
         if ((*code)(argc, argv) != EXIT_OS_SUCCESS_CLI) { break; }
-        nbRep = (nbRep == -1) ? (nbRep) : (nbRep - 1);
+        nbRep = (nbRep == -1) ? nbRep : (nbRep - 1);
     }
 
 // Kill the process & the ressources
@@ -399,9 +399,9 @@ static  bool    local_getIndex(serialManager_t serialManager, uint16_t *index) {
     for (i = 0U; i < (uint8_t)KNB_CHANNELS; i++) {
         if (aTabCycle[i].oSerialManager == serialManager) {
             *index = i;
-            return (true);
+            return true;
         }
 
     }
-    return (false);
+    return false;
 }

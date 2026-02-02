@@ -169,7 +169,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
                     expe_08 = 0xAAU;
                     read_08 = *(memory_08 + add);
                     local_display(KERR_008, (memory_08 + add), (uint32_t)expe_08, (uint32_t)read_08);
-                    return (EXIT_OS_FAILURE);
+                    return EXIT_OS_FAILURE;
                 }
 
             }
@@ -183,7 +183,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
                     expe_08 = 0x55U;
                     read_08 = *(memory_08 + add);
                     local_display(KERR_008, (memory_08 + add), (uint32_t)expe_08, (uint32_t)read_08);
-                    return (EXIT_OS_FAILURE);
+                    return EXIT_OS_FAILURE;
                 }
 
             }
@@ -213,7 +213,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
                     expe_08 = pattern_08;
                     read_08 = *(memory_08 + add);
                     local_display(KERR_008, (memory_08 + add), (uint32_t)expe_08, (uint32_t)read_08);
-                    return (EXIT_OS_FAILURE);
+                    return EXIT_OS_FAILURE;
                 }
 
                 pattern_08++;
@@ -246,7 +246,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
                     expe_16 = 0xAA55U;
                     read_16 = *(memory_16 + add);
                     local_display(KERR_016, (memory_16 + add), (uint32_t)expe_16, (uint32_t)read_16);
-                    return (EXIT_OS_FAILURE);
+                    return EXIT_OS_FAILURE;
                 }
 
             }
@@ -260,7 +260,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
                     expe_16 = 0x55AAU;
                     read_16 = *(memory_16 + add);
                     local_display(KERR_016, (memory_16 + add), (uint32_t)expe_16, (uint32_t)read_16);
-                    return (EXIT_OS_FAILURE);
+                    return EXIT_OS_FAILURE;
                 }
 
             }
@@ -290,7 +290,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
                     expe_16 = pattern_16;
                     read_16 = *(memory_16 + add);
                     local_display(KERR_016, (memory_16 + add), (uint32_t)expe_16, (uint32_t)read_16);
-                    return (EXIT_OS_FAILURE);
+                    return EXIT_OS_FAILURE;
                 }
 
                 pattern_16++;
@@ -323,7 +323,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
                     expe_32 = 0xAA55AA55U;
                     read_32 = *(memory_32 + add);
                     local_display(KERR_032, (memory_32 + add), expe_32, read_32);
-                    return (EXIT_OS_FAILURE);
+                    return EXIT_OS_FAILURE;
                 }
 
             }
@@ -337,7 +337,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
                     expe_32 = 0x55AA55AAU;
                     read_32 = *(memory_32 + add);
                     local_display(KERR_032, (memory_32 + add), expe_32, read_32);
-                    return (EXIT_OS_FAILURE);
+                    return EXIT_OS_FAILURE;
                 }
 
             }
@@ -367,7 +367,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
                     expe_32 = pattern_32;
                     read_32 = *(memory_32 + add);
                     local_display(KERR_032, (memory_32 + add), expe_32, read_32);
-                    return (EXIT_OS_FAILURE);
+                    return EXIT_OS_FAILURE;
                 }
 
                 pattern_32++;
@@ -405,7 +405,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
                     expe_08 = pattern_08;
                     read_08 = *(memory_08 + add);
                     local_display(KERR_008, (memory_08 + add), (uint32_t)expe_08, (uint32_t)read_08);
-                    return (EXIT_OS_FAILURE);
+                    return EXIT_OS_FAILURE;
                 }
 
                 pattern_08++;
@@ -417,13 +417,13 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 // Test passed
 
         local_display(KERR_NOT, NULL, 0U, 0U);
-        return (EXIT_OS_SUCCESS_CLI);
+        return EXIT_OS_SUCCESS_CLI;
     }
 
 // Protocol error
 
     local_display(KERR_PRE, NULL, 0U, 0U);
-    return (EXIT_OS_FAILURE);
+    return EXIT_OS_FAILURE;
 }
 
 // Local routines

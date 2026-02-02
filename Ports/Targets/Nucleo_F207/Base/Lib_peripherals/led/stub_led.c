@@ -145,7 +145,7 @@ int32_t stub_led_toggle(uint8_t ledNb) {
  */
 int32_t stub_led_mute(bool mute) {
 
-    if (mute == false) { vMute = false; return (KERR_LED_NOERR); }
+    if (mute == false) { vMute = false; return KERR_LED_NOERR; }
 
     INTERRUPTION_OFF;
     vMute = true;

@@ -133,7 +133,7 @@ int32_t lcd0_reserve(reserveMode_t reserveMode, uint32_t timeout) {
     int32_t     status;
 
     status = local_init();
-    if (status != KERR_LCD0_NOERR) { return (status); }
+    if (status != KERR_LCD0_NOERR) { return status; }
 
     status = kern_lockMutex(vMutex, timeout);
     if (status != KERR_KERN_NOERR) {
@@ -166,7 +166,7 @@ int32_t lcd0_release(reserveMode_t reserveMode) {
     int32_t     status;
 
     status = local_init();
-    if (status != KERR_LCD0_NOERR) { return (status); }
+    if (status != KERR_LCD0_NOERR) { return status; }
 
     status = kern_unlockMutex(vMutex);
     if (status != KERR_KERN_NOERR) {
@@ -195,7 +195,7 @@ int32_t lcd0_setDirection(uint8_t direction) {
     int32_t     status;
 
     status = local_init();
-    if (status != KERR_LCD0_NOERR) { return (status); }
+    if (status != KERR_LCD0_NOERR) { return status; }
 
     vLcdCtl.direction = direction;
     if ((direction & KDIR_XY_MASK) != 0U) {
@@ -233,7 +233,7 @@ int32_t lcd0_drawPoint(uint16_t x, uint16_t y, uint16_t color) {
     int32_t     status;
 
     status = local_init();
-    if (status != KERR_LCD0_NOERR) { return (status); }
+    if (status != KERR_LCD0_NOERR) { return status; }
 
     local_drawPoint(x, y, color);
     return (KERR_LCD0_NOERR);
@@ -261,7 +261,7 @@ int32_t lcd0_drawString(uint16_t x, uint16_t y, const char *s, uint16_t color) {
     int32_t     status;
 
     status = local_init();
-    if (status != KERR_LCD0_NOERR) { return (status); }
+    if (status != KERR_LCD0_NOERR) { return status; }
 
     while (*s != '\0') {
         local_drawChar(x, y, *s, color);
@@ -297,7 +297,7 @@ int32_t lcd0_drawRamString(const char *s, uint32_t *area, uint16_t fntColor, uin
     const   uint8_t     *font;
 
     status = local_init();
-    if (status != KERR_LCD0_NOERR) { return (status); }
+    if (status != KERR_LCD0_NOERR) { return status; }
 
     width = (4U * strlen(s));
     while (*s != '\0') {
@@ -342,7 +342,7 @@ int32_t lcd0_clear(uint16_t color) {
     int32_t     status;
 
     status = local_init();
-    if (status != KERR_LCD0_NOERR) { return (status); }
+    if (status != KERR_LCD0_NOERR) { return status; }
 
     local_setArea(0U, 0U, vLcdCtl.width, vLcdCtl.height);
     tft0_fill16(&color, KLCD_X_MAX * KLCD_Y_MAX);
@@ -375,7 +375,7 @@ int32_t lcd0_drawRectangle(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, u
     int32_t     status;
 
     status = local_init();
-    if (status != KERR_LCD0_NOERR) { return (status); }
+    if (status != KERR_LCD0_NOERR) { return status; }
 
     p = &vImage[0];
     for (i = 0U; i < (KLCD_Y_MAX * width); i++) {
@@ -412,7 +412,7 @@ int32_t lcd0_drawPicture(uint16_t x, uint16_t y, uint16_t width, uint16_t height
     int32_t     status;
 
     status = local_init();
-    if (status != KERR_LCD0_NOERR) { return (status); }
+    if (status != KERR_LCD0_NOERR) { return status; }
 
     local_setArea(x, y, (uint16_t)(x + width - 1U), (uint16_t)(y + height - 1U));
     tft0_write16(area, (uint16_t)(width * height));

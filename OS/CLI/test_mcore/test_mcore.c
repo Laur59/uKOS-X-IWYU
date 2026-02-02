@@ -164,7 +164,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
     if (kern_createProcess(&specification_TX, &vKillRequest[core], &process_TX) != KERR_KERN_NOERR) { LOG(KFATAL_SYSTEM, "test_mcore: create proc"); exit(EXIT_OS_FAILURE); }
     if (kern_createProcess(&specification_RX, &vKillRequest[core], &process_RX) != KERR_KERN_NOERR) { LOG(KFATAL_SYSTEM, "test_mcore: create proc"); exit(EXIT_OS_FAILURE); }
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }
 
 /*
@@ -183,7 +183,7 @@ static  int32_t test_mcore_clean(uint32_t argc, const char_t *argv[]) {
     core = GET_RUNNING_CORE;
     vKillRequest[core] = true;
 
-    return (EXIT_OS_SUCCESS);
+    return EXIT_OS_SUCCESS;
 }
 
 // Local routines

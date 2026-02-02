@@ -89,7 +89,7 @@ int32_t stub_machine_restart(void) {
     DATA_SYNC_BARRIER;
     while (true) { }
 
-    return (KERR_SYSTEM_NOERR);
+    return KERR_SYSTEM_NOERR;
 }
 
 /*

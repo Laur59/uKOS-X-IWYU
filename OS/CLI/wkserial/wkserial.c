@@ -255,7 +255,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
         case KERR_BSY: { (void)dprintf(KSYST, "%s busy or not existent\n\n", argv[1]);           status = EXIT_OS_FAILURE;     break; }
         default:       {                                                                         status = EXIT_OS_FAILURE;     break; }
     }
-    return (status);
+    return status;
 }
 
 // Local routines

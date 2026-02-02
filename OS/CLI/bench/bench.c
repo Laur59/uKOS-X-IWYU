@@ -124,13 +124,13 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     kern_getPriority(process, &priority);
     kern_setPriority(process, KKERN_PRIORITY_HIGH_01);
 
-    if (!bench_00()) { (void)dprintf(KSYST, "Not enough memory.\n"); return (EXIT_OS_FAILURE); }
-    if (!bench_01()) { (void)dprintf(KSYST, "Not enough memory.\n"); return (EXIT_OS_FAILURE); }
-    if (!bench_02()) { (void)dprintf(KSYST, "Not enough memory.\n"); return (EXIT_OS_FAILURE); }
-    if (!bench_03()) { (void)dprintf(KSYST, "Not enough memory.\n"); return (EXIT_OS_FAILURE); }
-    if (!bench_04()) { (void)dprintf(KSYST, "Not enough memory.\n"); return (EXIT_OS_FAILURE); }
-    if (!bench_05()) { (void)dprintf(KSYST, "Not enough memory.\n"); return (EXIT_OS_FAILURE); }
+    if (!bench_00()) { (void)dprintf(KSYST, "Not enough memory.\n"); return EXIT_OS_FAILURE; }
+    if (!bench_01()) { (void)dprintf(KSYST, "Not enough memory.\n"); return EXIT_OS_FAILURE; }
+    if (!bench_02()) { (void)dprintf(KSYST, "Not enough memory.\n"); return EXIT_OS_FAILURE; }
+    if (!bench_03()) { (void)dprintf(KSYST, "Not enough memory.\n"); return EXIT_OS_FAILURE; }
+    if (!bench_04()) { (void)dprintf(KSYST, "Not enough memory.\n"); return EXIT_OS_FAILURE; }
+    if (!bench_05()) { (void)dprintf(KSYST, "Not enough memory.\n"); return EXIT_OS_FAILURE; }
 
     kern_setPriority(process, priority);
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }

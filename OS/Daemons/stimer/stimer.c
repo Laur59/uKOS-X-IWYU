@@ -138,7 +138,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
     LOG(KINFO_SYSTEM, "stimer: daemon stim launched");
 
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }
 
 // Local routines
@@ -170,7 +170,7 @@ static  void    local_execute(uint16_t i) {
     vKern_runProc[core]->oInternal.oState &= (uint16_t)~(1U<<BPROC_LIKE_ISR);
     vKern_curStim[core] = (uint16_t)-1;
 
-    (vKern_stim[core][i].oTimerSpec.oMode == KSTIM_SINGLE_SHOT) ? (vKern_stim[core][i].oState &= (uint16_t)~((1U<<BSTIM_RUNNING) | (1U<<BSTIM_CONFIGURED))) : (vKern_stim[core][i].oState &= (uint16_t)~(0x00));
+    (vKern_stim[core][i].oTimerSpec.oMode == KSTIM_SINGLE_SHOT) ? (vKern_stim[core][i].oState &= (uint16_t)~((1U<<BSTIM_RUNNING) | (1U<<BSTIM_CONFIGURED))) : (vKern_stim[core][i].oState &= (uint16_t)~0x00);
     vKern_stim[core][i].oState |= (1U<<BSTIM_EXECUTED);
 }
 
@@ -207,8 +207,8 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
     if (kern_getMailboxById(KMBOX_SOFTWARE_TIMER, &mailBox) == KERR_KERN_NOERR) {
         while (kern_readQueue(mailBox, &data, 0) == KERR_KERN_NOERR) {
             newSTimer         = (stim_t *)data;
-            newSTimer->oState = (newSTimer->oTimerSpec.oMode == KSTIM_STOP) ? (0)                       : ((1U<<BSTIM_CONFIGURED) | (1U<<BSTIM_RUNNING));
-            nextTimeout       = (newSTimer->oInitCounter < nextTimeout)     ? (newSTimer->oInitCounter) : (nextTimeout);
+            newSTimer->oState = (newSTimer->oTimerSpec.oMode == KSTIM_STOP) ? 0                         : ((1U<<BSTIM_CONFIGURED) | (1U<<BSTIM_RUNNING));
+            nextTimeout       = (newSTimer->oInitCounter < nextTimeout)     ? (newSTimer->oInitCounter) : nextTimeout;
         }
     }
 
@@ -244,27 +244,27 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
                                     if (vKern_stim[core][i].oCounter == 0U){
                                         local_execute(i);
                                         if (vKern_stim[core][i].oTimerSpec.oMode == KSTIM_CONTINUOUS) {
-                                            nextTimeout = (nextTimeout < vKern_stim[core][i].oCounter) ? (nextTimeout) : (vKern_stim[core][i].oCounter);
+                                            nextTimeout = (nextTimeout < vKern_stim[core][i].oCounter) ? nextTimeout : (vKern_stim[core][i].oCounter);
                                         }
                                     }
                                     else {
-                                        nextTimeout = (nextTimeout < vKern_stim[core][i].oCounter) ? (nextTimeout) : (vKern_stim[core][i].oCounter);
+                                        nextTimeout = (nextTimeout < vKern_stim[core][i].oCounter) ? nextTimeout : (vKern_stim[core][i].oCounter);
                                     }
                                 }
                                 else if (vKern_stim[core][i].oCounter <= lastTimeout) {
                                     local_execute(i);
                                     if (vKern_stim[core][i].oTimerSpec.oMode == KSTIM_CONTINUOUS) {
-                                        nextTimeout = (nextTimeout < vKern_stim[core][i].oCounter) ? (nextTimeout) : (vKern_stim[core][i].oCounter);
+                                        nextTimeout = (nextTimeout < vKern_stim[core][i].oCounter) ? nextTimeout : (vKern_stim[core][i].oCounter);
                                     }
                                 }
                                 else {
-                                    vKern_stim[core][i].oCounter = (vKern_stim[core][i].oCounter < lastTimeout) ? (0U)          : (vKern_stim[core][i].oCounter - lastTimeout);
-                                    nextTimeout = (nextTimeout < vKern_stim[core][i].oCounter)                  ? (nextTimeout) : (vKern_stim[core][i].oCounter);
+                                    vKern_stim[core][i].oCounter = (vKern_stim[core][i].oCounter < lastTimeout) ? 0U          : (vKern_stim[core][i].oCounter - lastTimeout);
+                                    nextTimeout = (nextTimeout < vKern_stim[core][i].oCounter)                  ? nextTimeout : (vKern_stim[core][i].oCounter);
                                 }
                             }
                             else {
-                                vKern_stim[core][i].oInitCounter = (vKern_stim[core][i].oInitCounter < lastTimeout) ? (0U)          : (vKern_stim[core][i].oInitCounter - lastTimeout);
-                                nextTimeout = (nextTimeout < vKern_stim[core][i].oInitCounter)                      ? (nextTimeout) : (vKern_stim[core][i].oInitCounter);
+                                vKern_stim[core][i].oInitCounter = (vKern_stim[core][i].oInitCounter < lastTimeout) ? 0U          : (vKern_stim[core][i].oInitCounter - lastTimeout);
+                                nextTimeout = (nextTimeout < vKern_stim[core][i].oInitCounter)                      ? nextTimeout : (vKern_stim[core][i].oInitCounter);
                             }
                         }
                     }
@@ -283,7 +283,7 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
             #endif
 
             if (nextTimeout != KWAIT_INFINITY) {
-                nextTimeout = (nextTimeout > compTime) ? (nextTimeout - compTime) : (0U);
+                nextTimeout = (nextTimeout > compTime) ? (nextTimeout - compTime) : 0U;
             }
         }
 
@@ -300,12 +300,12 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
         if (gotMailBox) {
             while (kern_readQueue(mailBox, &data, 0U) == KERR_KERN_NOERR) {
                 newSTimer         = (stim_t *)data;
-                newSTimer->oState = (newSTimer->oTimerSpec.oMode == KSTIM_STOP) ? ((1U<<BSTIM_INSTALLED))   : ((1U<<BSTIM_INSTALLED) | (1U<<BSTIM_CONFIGURED) | (1U<<BSTIM_RUNNING));
+                newSTimer->oState = (newSTimer->oTimerSpec.oMode == KSTIM_STOP) ? (1U<<BSTIM_INSTALLED)     : ((1U<<BSTIM_INSTALLED) | (1U<<BSTIM_CONFIGURED) | (1U<<BSTIM_RUNNING));
                 if (newSTimer->oInitCounter > 0U) {
-                    nextTimeout   = (newSTimer->oInitCounter < nextTimeout)     ? (newSTimer->oInitCounter) : (nextTimeout);
+                    nextTimeout   = (newSTimer->oInitCounter < nextTimeout)     ? (newSTimer->oInitCounter) : nextTimeout;
                 }
                 else {
-                    nextTimeout   = (newSTimer->oCounter < nextTimeout)         ? (newSTimer->oCounter)     : (nextTimeout);
+                    nextTimeout   = (newSTimer->oCounter < nextTimeout)         ? (newSTimer->oCounter)     : nextTimeout;
                 }
             }
         }

@@ -137,14 +137,14 @@ int32_t wfi0_reserve(reserveMode_t reserveMode, uint32_t timeout) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     switch (reserveMode) {
         case KMODE_READ: {
             status = kern_lockMutex(vMutex_Reserve_RX[core], timeout);
             if (status != KERR_KERN_NOERR) {
                 PRIVILEGE_RESTORE;
-                return (KERR_SERIAL_CHBSY);
+                return KERR_SERIAL_CHBSY;
             }
 
             break;
@@ -153,7 +153,7 @@ int32_t wfi0_reserve(reserveMode_t reserveMode, uint32_t timeout) {
             status = kern_lockMutex(vMutex_Reserve_TX[core], timeout);
             if (status != KERR_KERN_NOERR) {
                 PRIVILEGE_RESTORE;
-                return (KERR_SERIAL_CHBSY);
+                return KERR_SERIAL_CHBSY;
             }
 
             break;
@@ -162,14 +162,14 @@ int32_t wfi0_reserve(reserveMode_t reserveMode, uint32_t timeout) {
             status = kern_lockMutex(vMutex_Reserve_RX[core], timeout);
             if (status != KERR_KERN_NOERR) {
                 PRIVILEGE_RESTORE;
-                return (KERR_SERIAL_CHBSY);
+                return KERR_SERIAL_CHBSY;
             }
 
             status = kern_lockMutex(vMutex_Reserve_TX[core], timeout);
             if (status != KERR_KERN_NOERR) {
                 kern_unlockMutex(vMutex_Reserve_RX[core]);
                 PRIVILEGE_RESTORE;
-                return (KERR_SERIAL_CHBSY);
+                return KERR_SERIAL_CHBSY;
             }
 
             break;
@@ -182,7 +182,7 @@ int32_t wfi0_reserve(reserveMode_t reserveMode, uint32_t timeout) {
         }
     }
     PRIVILEGE_RESTORE;
-    return (KERR_SERIAL_NOERR);
+    return KERR_SERIAL_NOERR;
 }
 
 /*
@@ -210,14 +210,14 @@ int32_t wfi0_release(reserveMode_t reserveMode) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     switch (reserveMode) {
         case KMODE_READ: {
             status = kern_unlockMutex(vMutex_Reserve_RX[core]);
             if (status != KERR_KERN_NOERR) {
                 PRIVILEGE_RESTORE;
-                return (KERR_SERIAL_CAREL);
+                return KERR_SERIAL_CAREL;
             }
 
             break;
@@ -226,7 +226,7 @@ int32_t wfi0_release(reserveMode_t reserveMode) {
             status = kern_unlockMutex(vMutex_Reserve_TX[core]);
             if (status != KERR_KERN_NOERR) {
                 PRIVILEGE_RESTORE;
-                return (KERR_SERIAL_CAREL);
+                return KERR_SERIAL_CAREL;
             }
 
             break;
@@ -235,13 +235,13 @@ int32_t wfi0_release(reserveMode_t reserveMode) {
             status = kern_unlockMutex(vMutex_Reserve_RX[core]);
             if (status != KERR_KERN_NOERR) {
                 PRIVILEGE_RESTORE;
-                return (KERR_SERIAL_CAREL);
+                return KERR_SERIAL_CAREL;
             }
 
             status = kern_unlockMutex(vMutex_Reserve_TX[core]);
             if (status != KERR_KERN_NOERR) {
                 PRIVILEGE_RESTORE;
-                return (KERR_SERIAL_CAREL);
+                return KERR_SERIAL_CAREL;
             }
 
             break;
@@ -254,7 +254,7 @@ int32_t wfi0_release(reserveMode_t reserveMode) {
         }
     }
     PRIVILEGE_RESTORE;
-    return (KERR_SERIAL_NOERR);
+    return KERR_SERIAL_NOERR;
 }
 
 /*
@@ -286,11 +286,11 @@ int32_t wfi0_configure(const urtxCnf_t *configure) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_wfi0_configure(configure);
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 /*
@@ -321,11 +321,11 @@ int32_t wfi0_write(const uint8_t *buffer, uint32_t size) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_wfi0_write(buffer, size);
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 /*
@@ -359,11 +359,11 @@ int32_t wfi0_read(uint8_t *buffer, uint32_t *size) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_wfi0_read(buffer, size);
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 /*
@@ -393,12 +393,12 @@ int32_t wfi0_getIdSemaphore(uint8_t semaphore, char_t **identifier) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return status; }
 
-    if (semaphore == BSERIAL_SEMAPHORE_RX) { *identifier = KWFI0_SEMAPHORE_RX; PRIVILEGE_RESTORE; return (KERR_SERIAL_NOERR); }
-    if (semaphore == BSERIAL_SEMAPHORE_TX) { *identifier = KWFI0_SEMAPHORE_TX; PRIVILEGE_RESTORE; return (KERR_SERIAL_NOERR); }
+    if (semaphore == BSERIAL_SEMAPHORE_RX) { *identifier = KWFI0_SEMAPHORE_RX; PRIVILEGE_RESTORE; return KERR_SERIAL_NOERR; }
+    if (semaphore == BSERIAL_SEMAPHORE_TX) { *identifier = KWFI0_SEMAPHORE_TX; PRIVILEGE_RESTORE; return KERR_SERIAL_NOERR; }
     PRIVILEGE_RESTORE;
-    return (KERR_SERIAL_SENOE);
+    return KERR_SERIAL_SENOE;
 }
 
 /*
@@ -422,11 +422,11 @@ int32_t wfi0_flush(void) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_wfi0_flush();
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 // Local routines

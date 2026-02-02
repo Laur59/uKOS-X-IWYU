@@ -143,10 +143,10 @@ int32_t kern_setPrivilegeMode(uint8_t mode) {
     const   bool    in_svc = vPriv_insideSVC[core];
     const   bool    in_exc = vPriv_insideException[core];
 
-    if ((in_svc) || (in_exc)) { return (KERR_KERN_NOERR); }
+    if (in_svc || in_exc) { return KERR_KERN_NOERR; }
 
     RIGHTS_ELEVATION;
-    if (vKern_runProc[core]->oSpecification.oMode == KPROC_PRIVILEGED) { INTERRUPTION_ON_HARD; return (KERR_KERN_NOERR); }
+    if (vKern_runProc[core]->oSpecification.oMode == KPROC_PRIVILEGED) { INTERRUPTION_ON_HARD; return KERR_KERN_NOERR; }
 
     switch (mode) {
         case KPROC_PRIVILEGED: {
@@ -155,13 +155,13 @@ int32_t kern_setPrivilegeMode(uint8_t mode) {
             break;
         }
         case KPROC_USER: {
-            vKern_runProc[core]->oInternal.oNestedPrivilege -= (vKern_runProc[core]->oInternal.oNestedPrivilege > 0) ? (1U) : (0U);
+            vKern_runProc[core]->oInternal.oNestedPrivilege -= (vKern_runProc[core]->oInternal.oNestedPrivilege > 0) ? 1U : 0U;
             if (vKern_runProc[core]->oInternal.oNestedPrivilege == 0U) {
                 vKern_runProc[core]->oInternal.oState &= (uint16_t)~(1U<<BPROC_PRIV_ELEVATED);
 
                 INTERRUPTION_ON_HARD;
                 SET_USER_MODE;
-                return (KERR_KERN_NOERR);
+                return KERR_KERN_NOERR;
             }
 
             break;
@@ -179,7 +179,7 @@ int32_t kern_setPrivilegeMode(uint8_t mode) {
     UNUSED(mode);
     #endif
 
-    return (KERR_KERN_NOERR);
+    return KERR_KERN_NOERR;
 }
 
 /*

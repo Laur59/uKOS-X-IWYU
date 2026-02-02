@@ -121,7 +121,7 @@ int32_t storage_reserve(storage_manager_t manager, reserveMode_t reserveMode, ui
         case KSERIAL_FLASH: { return (serialFlash_reserve(reserveMode, timeout)); }
         #endif
 
-        default: { return (KERR_STORAGE_NODEV);                                   }
+        default: { return KERR_STORAGE_NODEV;                                     }
     }
 
 }
@@ -154,7 +154,7 @@ int32_t storage_release(storage_manager_t manager, reserveMode_t reserveMode) {
         case KSERIAL_FLASH: { return (serialFlash_release(reserveMode)); }
         #endif
 
-        default: { return (KERR_STORAGE_NODEV);                          }
+        default: { return KERR_STORAGE_NODEV;                            }
     }
 
 }
@@ -190,7 +190,7 @@ int32_t storage_initialise(storage_manager_t manager, void  *specification) {
         case KSERIAL_FLASH: { return (serialFlash_initialise());                             }
         #endif
 
-        default: { return (KERR_STORAGE_NODEV);                                              }
+        default: { return KERR_STORAGE_NODEV;                                                }
     }
 
 }
@@ -222,7 +222,7 @@ int32_t storage_readStatus(storage_manager_t manager) {
         case KSERIAL_FLASH: { return (serialFlash_readStatus()); }
         #endif
 
-        default: { return (KERR_STORAGE_NODEV);                  }
+        default: { return KERR_STORAGE_NODEV;                    }
     }
 
 }
@@ -263,7 +263,7 @@ int32_t storage_read(storage_manager_t manager, uint8_t *buffer, uint32_t size, 
         case KSERIAL_FLASH: { return (serialFlash_read(buffer, size, sector)); }
         #endif
 
-        default: { return (KERR_STORAGE_NODEV);                                }
+        default: { return KERR_STORAGE_NODEV;                                  }
     }
 
 }
@@ -304,7 +304,7 @@ int32_t storage_write(storage_manager_t manager, const uint8_t *buffer, uint32_t
         case KSERIAL_FLASH: { return (serialFlash_write(buffer, size, sector)); }
         #endif
 
-        default: { return (KERR_STORAGE_NODEV);                                 }
+        default: { return KERR_STORAGE_NODEV;                                   }
     }
 
 }
@@ -343,7 +343,7 @@ int32_t storage_ioctl(storage_manager_t manager, storageIoctl_t command, void *b
         case KSERIAL_FLASH: { return (serialFlash_ioctl(command, buffer)); }
         #endif
 
-        default: { return (KERR_STORAGE_NODEV);                            }
+        default: { return KERR_STORAGE_NODEV;                              }
     }
 
 }

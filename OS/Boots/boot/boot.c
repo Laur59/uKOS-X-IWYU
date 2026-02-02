@@ -53,6 +53,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 #ifdef RV32IMAC_S
 #include    "core.h"    // IWYU pragma: keep (for core_setBitCSR)
 #endif
+#include    "crt0.h"
 #include    "kern/kern.h"
 #include    "macros.h"
 #ifndef RV64IMAFDC_S

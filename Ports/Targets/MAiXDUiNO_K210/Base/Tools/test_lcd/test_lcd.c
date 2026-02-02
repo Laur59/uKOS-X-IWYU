@@ -206,7 +206,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     if (kern_createProcess(&specification_2, NULL, &process_2) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "test_lcd: create proc"); exit(EXIT_OS_FAILURE); }
     if (kern_createProcess(&specification_3, NULL, &process_3) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "test_lcd: create proc"); exit(EXIT_OS_FAILURE); }
     if (kern_createProcess(&specification_4, NULL, &process_4) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "test_lcd: create proc"); exit(EXIT_OS_FAILURE); }
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }
 
 // Local routines

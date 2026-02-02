@@ -221,7 +221,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
     do { kern_suspendProcess(1U); } while ((!releasePack) && (error == KERR_NOT));
 
-    return (status);
+    return status;
 }
 
 // Local routines
@@ -353,7 +353,7 @@ static  int32_t local_execute(uint32_t argc, const char_t *argv[]) {
     } else {
         status = module->oExecution(argc, argv);
     }
-    return (status);
+    return status;
 }
 
 /*
@@ -367,9 +367,9 @@ static  uint16_t    local_getIndex(serialManager_t serialManager) {
 
     for (index = 0U; index < (uint8_t)KNB_CHANNELS; index++) {
         if (aTabConsole[index].oSerialManager == serialManager) {
-            return (index);
+            return index;
         }
 
     }
-    return (0U);
+    return 0U;
 }

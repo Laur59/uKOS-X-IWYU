@@ -133,7 +133,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     );
 
     if (kern_createProcess(&specification, NULL, &process) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "test_img: create proc"); exit(EXIT_OS_FAILURE); }
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }
 
 // Local routines

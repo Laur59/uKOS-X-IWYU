@@ -145,7 +145,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     if (kern_createProcess(&specification, NULL, &process) != KERR_KERN_NOERR) { LOG(KFATAL_SYSTEM, "stack: create proc"); exit(EXIT_OS_PANIC); }
 
     LOG(KINFO_SYSTEM, "stack: daemon stack launched");
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }
 
 // Local routines
@@ -208,6 +208,6 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     UNUSED(argc);
     UNUSED(argv);
 
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }
 #endif

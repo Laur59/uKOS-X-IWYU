@@ -285,7 +285,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
         case KERR_INA: { (void)dprintf(KSYST, "Incorrect arguments.\n\n"); status = EXIT_OS_FAILURE;     break; }
         default:       {                                                   status = EXIT_OS_FAILURE;     break; }
     }
-    return (status);
+    return status;
 }
 
 // Local routines
@@ -302,7 +302,7 @@ static  bool    local_getByte(serialManager_t serialManager, uint8_t *buffer, ui
 
     status = (serial_read(serialManager, buffer, nbBytes) == KERR_SERIAL_NOERR);
     led_toggle(KLED_0);
-    return (status);
+    return status;
 }
 
 /*
@@ -330,10 +330,10 @@ static  void    local_putByte(serialManager_t serialManager, const uint8_t *buff
 static  bool    local_checkExit(const char_t *buffer) {
     const   char_t  exitPatter[] = "++++";
 
-    if (exitPatter[0] != buffer[0]) { return (false); }
-    if (exitPatter[1] != buffer[1]) { return (false); }
-    if (exitPatter[2] != buffer[2]) { return (false); }
-    if (exitPatter[3] != buffer[3]) { return (false); }
-    return (true);
+    if (exitPatter[0] != buffer[0]) { return false; }
+    if (exitPatter[1] != buffer[1]) { return false; }
+    if (exitPatter[2] != buffer[2]) { return false; }
+    if (exitPatter[3] != buffer[3]) { return false; }
+    return true;
 }
 #endif

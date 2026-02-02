@@ -145,10 +145,10 @@ static  void    cb_speed(uint32_t speed) {
 static  bool    cb_cardInserted(void) {
 
     if ((GPIOG->IDR & (1U<<BNO_SDCARD)) != 0U) {
-        return (false);
+        return false;
     }
 
-    return (true);
+    return true;
 }
 
 /*

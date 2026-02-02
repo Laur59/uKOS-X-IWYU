@@ -132,16 +132,16 @@ int32_t battery_reserve(reserveMode_t reserveMode, uint32_t timeout) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_BATTERY_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_BATTERY_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = kern_lockMutex(vMutex_Reserve[core], timeout);
     if (status != KERR_KERN_NOERR) {
         PRIVILEGE_RESTORE;
-        return (KERR_BATTERY_CHBSY);
+        return KERR_BATTERY_CHBSY;
     }
 
     PRIVILEGE_RESTORE;
-    return (KERR_BATTERY_NOERR);
+    return KERR_BATTERY_NOERR;
 }
 
 /*!
@@ -171,16 +171,16 @@ int32_t battery_release(reserveMode_t reserveMode) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_BATTERY_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_BATTERY_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = kern_unlockMutex(vMutex_Reserve[core]);
     if (status != KERR_KERN_NOERR) {
         PRIVILEGE_RESTORE;
-        return (KERR_BATTERY_CAREL);
+        return KERR_BATTERY_CAREL;
     }
 
     PRIVILEGE_RESTORE;
-    return (KERR_BATTERY_NOERR);
+    return KERR_BATTERY_NOERR;
 }
 
 /*!
@@ -205,11 +205,11 @@ int32_t battery_read(batteryInfo_t *infoBattery) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_BATTERY_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_BATTERY_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_battery_read(infoBattery);
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 // Local routines

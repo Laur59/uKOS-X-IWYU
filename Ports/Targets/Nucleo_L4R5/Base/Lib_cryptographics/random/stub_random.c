@@ -80,9 +80,9 @@ void    stub_random_init(void) {
  */
 int32_t stub_rand_read(randomGenerator_t generator, uint32_t *number) {
 
-    if (generator == KRANDOM_SOFT) { model_random_soft_read(number); return (KERR_RANDOM_NOERR); }
-    if (generator == KRANDOM_HARD) { model_random_hard_read(number); return (KERR_RANDOM_NOERR); }
-    return (KERR_RANDOM_GEERR);
+    if (generator == KRANDOM_SOFT) { model_random_soft_read(number); return KERR_RANDOM_NOERR; }
+    if (generator == KRANDOM_HARD) { model_random_hard_read(number); return KERR_RANDOM_NOERR; }
+    return KERR_RANDOM_GEERR;
 }
 
 // Local routines

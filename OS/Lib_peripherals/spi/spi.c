@@ -140,7 +140,7 @@ int32_t spi_reserve(spiManager_t manager, reserveMode_t reserveMode, uint32_t ti
         case KSPI3: { return (spi3_reserve(reserveMode, timeout)); }
         #endif
 
-        default:    { return (KERR_SPI_NODEV);                     }
+        default:    { return KERR_SPI_NODEV;                       }
     }
 }
 
@@ -180,7 +180,7 @@ int32_t spi_release(spiManager_t manager, reserveMode_t reserveMode) {
         case KSPI3: { return (spi3_release(reserveMode)); }
         #endif
 
-        default:    { return (KERR_SPI_NODEV);            }
+        default:    { return KERR_SPI_NODEV;              }
     }
 }
 
@@ -225,7 +225,7 @@ int32_t spi_configure(spiManager_t manager, const spiCnf_t *configure) {
         case KSPI3: { return (spi3_configure(configure)); }
         #endif
 
-        default:    { return (KERR_SPI_NODEV);            }
+        default:    { return KERR_SPI_NODEV;              }
     }
 }
 
@@ -267,7 +267,7 @@ int32_t spi_writeRead(spiManager_t manager, uint8_t *data) {
         case KSPI3: { return (spi3_writeRead(data)); }
         #endif
 
-        default:    { return (KERR_SPI_NODEV);       }
+        default:    { return KERR_SPI_NODEV;         }
     }
 }
 
@@ -336,7 +336,7 @@ int32_t spi_multipleWriteRead(spiManager_t manager, const uint8_t *wData, uint16
         case KSPI3: { return (spi3_multipleWriteRead(wData, wSize, rData, rSize, timeout)); }
         #endif
 
-        default:    { return (KERR_SPI_NODEV);                                              }
+        default:    { return KERR_SPI_NODEV;                                                }
     }
 }
 

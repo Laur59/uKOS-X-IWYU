@@ -121,7 +121,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
 // If the vector coherence verification failed, then, stop printing
 
-    if (vError[core] == true) { return (EXIT_OS_SUCCESS_CLI); }
+    if (vError[core] == true) { return EXIT_OS_SUCCESS_CLI; }
 
 // Print the vector
 
@@ -144,5 +144,5 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     SPIN_UNLOCK(vLockVector);
 
     (void)dprintf(KSYST, "\n");
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }

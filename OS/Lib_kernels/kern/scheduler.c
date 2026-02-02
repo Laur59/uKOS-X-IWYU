@@ -235,7 +235,7 @@ static  proc_t  *local_getNextProcess(void) {
 // Return the idle
 
         case 1U: {
-            return (idle);
+            return idle;
         }
 
 // Idle + 1 process in the excecution list
@@ -244,7 +244,7 @@ static  proc_t  *local_getNextProcess(void) {
         case 2U: {
             process->oInternal.oSkip = 0;
             process->oInternal.oDynamicPriority = process->oSpecification.oPriority;
-            return (process);
+            return process;
         }
 
 // Idle + n process in the excecution list (n > 1)
@@ -303,7 +303,7 @@ static  proc_t  *local_getNextProcess(void) {
     }
     priorityProcess->oInternal.oSkip = 0U;
     priorityProcess->oInternal.oDynamicPriority = priorityProcess->oSpecification.oPriority;
-    return (priorityProcess);
+    return priorityProcess;
 }
 
 /*

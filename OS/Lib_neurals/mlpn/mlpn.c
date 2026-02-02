@@ -198,37 +198,37 @@ int32_t mlpn_configure(const mlpnNetwork_t *network) {
     int32_t     status;
 
     status = local_init();
-    if (status != KERR_MLPN_NOERR) { return (status); }
+    if (status != KERR_MLPN_NOERR) { return status; }
 
 // Initialise all the layers
 
     switch (network->oNBLayer) {
         case 1U: {
-            if (network->oLayer_L1 == NULL) { return (KERR_MLPN_GEERR); }
+            if (network->oLayer_L1 == NULL) { return KERR_MLPN_GEERR; }
             local_initialiseLayer(network->oLayer_L1);
             break;
         }
         case 2U: {
-            if (network->oLayer_L1 == NULL) { return (KERR_MLPN_GEERR); }
-            if (network->oLayer_L2 == NULL) { return (KERR_MLPN_GEERR); }
+            if (network->oLayer_L1 == NULL) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L2 == NULL) { return KERR_MLPN_GEERR; }
             local_initialiseLayer(network->oLayer_L1);
             local_initialiseLayer(network->oLayer_L2);
             break;
         }
         case 3U: {
-            if (network->oLayer_L1 == NULL) { return (KERR_MLPN_GEERR); }
-            if (network->oLayer_L2 == NULL) { return (KERR_MLPN_GEERR); }
-            if (network->oLayer_L3 == NULL) { return (KERR_MLPN_GEERR); }
+            if (network->oLayer_L1 == NULL) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L2 == NULL) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L3 == NULL) { return KERR_MLPN_GEERR; }
             local_initialiseLayer(network->oLayer_L1);
             local_initialiseLayer(network->oLayer_L2);
             local_initialiseLayer(network->oLayer_L3);
             break;
         }
         case 4U: {
-            if (network->oLayer_L1 == NULL) { return (KERR_MLPN_GEERR); }
-            if (network->oLayer_L2 == NULL) { return (KERR_MLPN_GEERR); }
-            if (network->oLayer_L3 == NULL) { return (KERR_MLPN_GEERR); }
-            if (network->oLayer_L4 == NULL) { return (KERR_MLPN_GEERR); }
+            if (network->oLayer_L1 == NULL) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L2 == NULL) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L3 == NULL) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L4 == NULL) { return KERR_MLPN_GEERR; }
             local_initialiseLayer(network->oLayer_L1);
             local_initialiseLayer(network->oLayer_L2);
             local_initialiseLayer(network->oLayer_L3);
@@ -236,11 +236,11 @@ int32_t mlpn_configure(const mlpnNetwork_t *network) {
             break;
         }
         case 5U: {
-            if (network->oLayer_L1 == NULL) { return (KERR_MLPN_GEERR); }
-            if (network->oLayer_L2 == NULL) { return (KERR_MLPN_GEERR); }
-            if (network->oLayer_L3 == NULL) { return (KERR_MLPN_GEERR); }
-            if (network->oLayer_L4 == NULL) { return (KERR_MLPN_GEERR); }
-            if (network->oLayer_L5 == NULL) { return (KERR_MLPN_GEERR); }
+            if (network->oLayer_L1 == NULL) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L2 == NULL) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L3 == NULL) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L4 == NULL) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L5 == NULL) { return KERR_MLPN_GEERR; }
             local_initialiseLayer(network->oLayer_L1);
             local_initialiseLayer(network->oLayer_L2);
             local_initialiseLayer(network->oLayer_L3);
@@ -248,10 +248,10 @@ int32_t mlpn_configure(const mlpnNetwork_t *network) {
             local_initialiseLayer(network->oLayer_L5);
             break;
         }
-        default: { return (KERR_MLPN_GEERR); }
+        default: { return KERR_MLPN_GEERR; }
     }
 
-    return (status);
+    return status;
 }
 
 /*
@@ -285,37 +285,37 @@ int32_t mlpn_compute(const mlpnNetwork_t *network) {
     int32_t     status;
 
     status = local_init();
-    if (status != KERR_MLPN_NOERR) { return (status); }
+    if (status != KERR_MLPN_NOERR) { return status; }
 
 // Compute all the layers
 
     switch (network->oNBLayer) {
         case 1U: {
-            if (network->oLayer_L1 == NULL) { return (KERR_MLPN_GEERR); }
+            if (network->oLayer_L1 == NULL) { return KERR_MLPN_GEERR; }
             local_computeLayer(network->oLayer_L1);
             break;
         }
         case 2U: {
-            if (network->oLayer_L1 == NULL) { return (KERR_MLPN_GEERR); }
-            if (network->oLayer_L2 == NULL) { return (KERR_MLPN_GEERR); }
+            if (network->oLayer_L1 == NULL) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L2 == NULL) { return KERR_MLPN_GEERR; }
             local_computeLayer(network->oLayer_L1);
             local_computeLayer(network->oLayer_L2);
             break;
         }
         case 3U: {
-            if (network->oLayer_L1 == NULL) { return (KERR_MLPN_GEERR); }
-            if (network->oLayer_L2 == NULL) { return (KERR_MLPN_GEERR); }
-            if (network->oLayer_L3 == NULL) { return (KERR_MLPN_GEERR); }
+            if (network->oLayer_L1 == NULL) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L2 == NULL) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L3 == NULL) { return KERR_MLPN_GEERR; }
             local_computeLayer(network->oLayer_L1);
             local_computeLayer(network->oLayer_L2);
             local_computeLayer(network->oLayer_L3);
             break;
         }
         case 4U: {
-            if (network->oLayer_L1 == NULL) { return (KERR_MLPN_GEERR); }
-            if (network->oLayer_L2 == NULL) { return (KERR_MLPN_GEERR); }
-            if (network->oLayer_L3 == NULL) { return (KERR_MLPN_GEERR); }
-            if (network->oLayer_L4 == NULL) { return (KERR_MLPN_GEERR); }
+            if (network->oLayer_L1 == NULL) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L2 == NULL) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L3 == NULL) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L4 == NULL) { return KERR_MLPN_GEERR; }
             local_computeLayer(network->oLayer_L1);
             local_computeLayer(network->oLayer_L2);
             local_computeLayer(network->oLayer_L3);
@@ -323,11 +323,11 @@ int32_t mlpn_compute(const mlpnNetwork_t *network) {
             break;
         }
         case 5U: {
-            if (network->oLayer_L1 == NULL) { return (KERR_MLPN_GEERR); }
-            if (network->oLayer_L2 == NULL) { return (KERR_MLPN_GEERR); }
-            if (network->oLayer_L3 == NULL) { return (KERR_MLPN_GEERR); }
-            if (network->oLayer_L4 == NULL) { return (KERR_MLPN_GEERR); }
-            if (network->oLayer_L5 == NULL) { return (KERR_MLPN_GEERR); }
+            if (network->oLayer_L1 == NULL) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L2 == NULL) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L3 == NULL) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L4 == NULL) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L5 == NULL) { return KERR_MLPN_GEERR; }
             local_computeLayer(network->oLayer_L1);
             local_computeLayer(network->oLayer_L2);
             local_computeLayer(network->oLayer_L3);
@@ -335,9 +335,9 @@ int32_t mlpn_compute(const mlpnNetwork_t *network) {
             local_computeLayer(network->oLayer_L5);
             break;
         }
-        default: { return (KERR_MLPN_GEERR); }
+        default: { return KERR_MLPN_GEERR; }
     }
-    return (KERR_MLPN_NOERR);
+    return KERR_MLPN_NOERR;
 }
 
 // Local routines
@@ -373,7 +373,7 @@ static  int32_t local_init(void) {
 static  int32_t local_initialiseLayer(mlpnLayer_t *layer) {
 
     layer->oInput[layer->oNBInput - 1U] = KMLPN_BIAS;
-    return (KERR_MLPN_NOERR);
+    return KERR_MLPN_NOERR;
 }
 
 /*
@@ -456,7 +456,7 @@ static  inline  float32_t   local_dot_f32(const float32_t * __restrict w, const 
     for (i = 0U; i < n; i++) {
         p += w[i] * x[i];
     }
-    return (p);
+    return p;
     #endif
 
 }
@@ -510,7 +510,7 @@ static __attribute__ ((optimize("O3,inline,aggressive-loop-optimizations,unroll-
 
         w = &w[nbInput];
     }
-    return (KERR_MLPN_NOERR);
+    return KERR_MLPN_NOERR;
 }
 
 /*
@@ -578,7 +578,7 @@ static  float32_t   local_nonLinear_tan2(float32_t p) {
 
     if (p <= -1.0F) { return (-1.0F); }
     if (p >= +1.0F) { return (+1.0F); }
-    return (p);
+    return p;
 }
 
 #endif

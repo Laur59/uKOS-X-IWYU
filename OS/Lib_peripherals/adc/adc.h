@@ -140,7 +140,7 @@ extern  int32_t adc_release(reserveMode_t reserveMode);
  *    for (channel = 0; channel < 6; channel++) {
  *        status = adc_read(channel, &reference, &result[channel]);
  *        if (status != KERR_ADC_NOERR) {
- *            return (status);
+ *            return status;
  *        }
  *    }
  * \endcode

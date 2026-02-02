@@ -99,7 +99,7 @@ static  void    cb_enable(void) {
  */
 static  bool    cb_CTSCheck(void) {
 
-    return (true);
+    return true;
 }
 
 /*

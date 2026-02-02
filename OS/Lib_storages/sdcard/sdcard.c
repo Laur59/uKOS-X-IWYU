@@ -139,16 +139,16 @@ int32_t sdcard_reserve(reserveMode_t reserveMode, uint32_t timeout) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = kern_lockMutex(vMutex_Reserve[core], timeout);
     if (status != KERR_KERN_NOERR) {
         PRIVILEGE_RESTORE;
-        return (KERR_STORAGE_CHBSY);
+        return KERR_STORAGE_CHBSY;
     }
 
     PRIVILEGE_RESTORE;
-    return (KERR_STORAGE_NOERR);
+    return KERR_STORAGE_NOERR;
 }
 
 /*
@@ -178,16 +178,16 @@ int32_t sdcard_release(reserveMode_t reserveMode) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = kern_unlockMutex(vMutex_Reserve[core]);
     if (status != KERR_KERN_NOERR) {
         PRIVILEGE_RESTORE;
-        return (KERR_STORAGE_CAREL);
+        return KERR_STORAGE_CAREL;
     }
 
     PRIVILEGE_RESTORE;
-    return (KERR_STORAGE_NOERR);
+    return KERR_STORAGE_NOERR;
 }
 
 /*
@@ -220,11 +220,11 @@ int32_t sdcard_initialise(sdcard_specification_t *specification) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_sdcard_initialise(specification);
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 /*
@@ -249,11 +249,11 @@ int32_t sdcard_readStatus(void) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_sdcard_readStatus();
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 /*
@@ -294,13 +294,13 @@ int32_t sdcard_read(uint8_t *buffer, uint32_t size, uint32_t sector) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return status; }
 
 // Read the sdcard specifications
 
     if (sdcard_initialise(&sdcard) != KERR_STORAGE_NOERR) {
         PRIVILEGE_RESTORE;
-        return (KERR_STORAGE_NODEV);
+        return KERR_STORAGE_NODEV;
     }
 
 // Compute the number of sectors to read.
@@ -320,7 +320,7 @@ int32_t sdcard_read(uint8_t *buffer, uint32_t size, uint32_t sector) {
 
         if (local_sdcard_read(&sdcard, memory, nbSectorsForThisCall, wkSector) != KERR_STORAGE_NOERR) {
             PRIVILEGE_RESTORE;
-            return (KERR_STORAGE_TRANT);
+            return KERR_STORAGE_TRANT;
         }
 
         inc       =  (size_t)nbSectorsForThisCall * (size_t)KSDCARD_SZ_SECTOR;
@@ -334,7 +334,7 @@ int32_t sdcard_read(uint8_t *buffer, uint32_t size, uint32_t sector) {
     if (nbBytesLastSector > 0U) {
         if (local_sdcard_read(&sdcard, lastSectorBuffer, 1U, wkSector) != KERR_STORAGE_NOERR) {
             PRIVILEGE_RESTORE;
-            return (KERR_STORAGE_TRANT);
+            return KERR_STORAGE_TRANT;
         }
 
         for (i = 0; i < nbBytesLastSector; i++) {
@@ -343,7 +343,7 @@ int32_t sdcard_read(uint8_t *buffer, uint32_t size, uint32_t sector) {
         }
     }
     PRIVILEGE_RESTORE;
-    return (KERR_STORAGE_NOERR);
+    return KERR_STORAGE_NOERR;
 }
 
 /*
@@ -384,13 +384,13 @@ int32_t sdcard_write(const uint8_t *buffer, uint32_t size, uint32_t sector) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return status; }
 
 // Read the sdcard specifications
 
     if (sdcard_initialise(&sdcard) != KERR_STORAGE_NOERR) {
         PRIVILEGE_RESTORE;
-        return (KERR_STORAGE_NODEV);
+        return KERR_STORAGE_NODEV;
     }
 
 // Compute the number of sectors to write.
@@ -410,7 +410,7 @@ int32_t sdcard_write(const uint8_t *buffer, uint32_t size, uint32_t sector) {
 
         if (local_sdcard_write(&sdcard, memory, nbSectorsForThisCall, wkSector) != KERR_STORAGE_NOERR) {
             PRIVILEGE_RESTORE;
-            return (KERR_STORAGE_TRANT);
+            return KERR_STORAGE_TRANT;
         }
 
         inc       =  (size_t)nbSectorsForThisCall * (size_t)KSDCARD_SZ_SECTOR;
@@ -432,12 +432,12 @@ int32_t sdcard_write(const uint8_t *buffer, uint32_t size, uint32_t sector) {
         }
         if (local_sdcard_write(&sdcard, lastSectorBuffer, 1U, wkSector) != KERR_STORAGE_NOERR) {
             PRIVILEGE_RESTORE;
-            return (KERR_STORAGE_TRANT);
+            return KERR_STORAGE_TRANT;
         }
 
     }
     PRIVILEGE_RESTORE;
-    return (KERR_STORAGE_NOERR);
+    return KERR_STORAGE_NOERR;
 }
 
 /*
@@ -467,11 +467,11 @@ int32_t sdcard_ioctl(storageIoctl_t command, void *buffer) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_sdcard_ioctl(command, buffer);
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 // Local routines
@@ -511,10 +511,10 @@ static  int32_t local_sdcard_read(const sdcard_specification_t *specification, u
     int32_t     status;
 
     status = local_init();
-    if (status != KERR_STORAGE_NOERR) { return (status); }
+    if (status != KERR_STORAGE_NOERR) { return status; }
 
     status = stub_sdcard_read(specification, buffer, nbSectors, sector);
-    return (status);
+    return status;
 }
 
 /*
@@ -527,10 +527,10 @@ static  int32_t local_sdcard_write(const sdcard_specification_t *specification, 
     int32_t     status;
 
     status = local_init();
-    if (status != KERR_STORAGE_NOERR) { return (status); }
+    if (status != KERR_STORAGE_NOERR) { return status; }
 
     status = stub_sdcard_write(specification, buffer, nbSectors, sector);
-    return (status);
+    return status;
 }
 
 #endif

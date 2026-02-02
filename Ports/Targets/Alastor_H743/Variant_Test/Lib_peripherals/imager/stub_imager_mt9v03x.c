@@ -180,7 +180,7 @@ static  int32_t cb_control(uint8_t mode, uint32_t value) {
             break;
         }
     }
-    return (status);
+    return status;
 }
 
 /*
@@ -201,7 +201,7 @@ static  int32_t cb_getRegister(uint8_t registerNb, uint16_t *value) {
     RELEASE(I2C1, KMODE_READ_WRITE);
 
     *value = (uint16_t)((buffer[0]<<8U) | buffer[1]);
-    return (status);
+    return status;
 }
 
 /*
@@ -223,7 +223,7 @@ static  int32_t cb_putRegister(uint8_t registerNb, uint16_t value) {
     status = (status == KERR_I2C_NOERR) ? (KERR_IMAGER_NOERR) : (KERR_IMAGER_TIMEO);
     RELEASE(I2C1, KMODE_READ_WRITE);
 
-    return (status);
+    return status;
 }
 
 /*
@@ -249,20 +249,20 @@ static  int32_t cb_configure(const imagerCnf_t *configure) {
 // Set the horizontal blanking to 1000 pixels (to allow to deserve the DCMI line DMA)
 // Set SNAPSHOT + SEQUENTIAL + SLAVE mode
 
-    status = cb_putRegister(KMT9V03x_V_BLANK, 0x0004U);             if (status != KERR_IMAGER_NOERR) { return (status); }
-    status = cb_putRegister(KMT9V03x_REG20,   0x03C7U);             if (status != KERR_IMAGER_NOERR) { return (status); }
-    status = cb_putRegister(KMT9V03x_REG24,   0x001BU);             if (status != KERR_IMAGER_NOERR) { return (status); }
-    status = cb_putRegister(KMT9V03x_REG2B,   0x0003U);             if (status != KERR_IMAGER_NOERR) { return (status); }
-    status = cb_putRegister(KMT9V03x_REG2F,   0x0003U);             if (status != KERR_IMAGER_NOERR) { return (status); }
-    status = cb_putRegister(KMT9V03x_H_BLANK,   1000U);             if (status != KERR_IMAGER_NOERR) { return (status); }
+    status = cb_putRegister(KMT9V03x_V_BLANK, 0x0004U);             if (status != KERR_IMAGER_NOERR) { return status; }
+    status = cb_putRegister(KMT9V03x_REG20,   0x03C7U);             if (status != KERR_IMAGER_NOERR) { return status; }
+    status = cb_putRegister(KMT9V03x_REG24,   0x001BU);             if (status != KERR_IMAGER_NOERR) { return status; }
+    status = cb_putRegister(KMT9V03x_REG2B,   0x0003U);             if (status != KERR_IMAGER_NOERR) { return status; }
+    status = cb_putRegister(KMT9V03x_REG2F,   0x0003U);             if (status != KERR_IMAGER_NOERR) { return status; }
+    status = cb_putRegister(KMT9V03x_H_BLANK,   1000U);             if (status != KERR_IMAGER_NOERR) { return status; }
 
     if (configure->oAcqMode == KIMAGER_SNAP) {
-        status = cb_putRegister(KMT9V03x_CTRL_REG, 0x0398U);        if (status != KERR_IMAGER_NOERR) { return (status); }
+        status = cb_putRegister(KMT9V03x_CTRL_REG, 0x0398U);        if (status != KERR_IMAGER_NOERR) { return status; }
     }
     if (configure->oImgCnf != NULL) {
-        status = local_setAptina((mt9v03x_t *)configure->oImgCnf);  if (status != KERR_IMAGER_NOERR) { return (status); }
+        status = local_setAptina((mt9v03x_t *)configure->oImgCnf);  if (status != KERR_IMAGER_NOERR) { return status; }
     }
-    return (status);
+    return status;
 }
 
 // Local routines
@@ -283,12 +283,12 @@ static  int32_t local_setAptina(mt9v03x_t *cnfTable) {
         buffer[1] = (uint8_t)(cnfTable[i].oValue>>8U);
         buffer[2] = (uint8_t)cnfTable[i].oValue;
 
-        if ((buffer[0] == 0U) && (i > 0U)) { RELEASE(I2C1, KMODE_READ_WRITE); return (KERR_IMAGER_NOERR); }
+        if ((buffer[0] == 0U) && (i > 0U)) { RELEASE(I2C1, KMODE_READ_WRITE); return KERR_IMAGER_NOERR; }
         i++;
 
         status = i2c_write(KI2C1, KI2C_ADD_MT9V03x, &buffer[0], 3U);
         status = (status == KERR_I2C_NOERR) ? (KERR_IMAGER_NOERR) : (KERR_IMAGER_TIMEO);
-        if (status != KERR_IMAGER_NOERR) { RELEASE(I2C1, KMODE_READ_WRITE); return (status); }
+        if (status != KERR_IMAGER_NOERR) { RELEASE(I2C1, KMODE_READ_WRITE); return status; }
     }
 }
 

@@ -152,7 +152,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     if (status == EXIT_OS_FAILURE) {
         (void)dprintf(KSYST, "Error: cannot launch the process!\n\n");
     }
-    return (status);
+    return status;
 }
 
 /*
@@ -171,7 +171,7 @@ static  int32_t test_sdcard_clean(uint32_t argc, const char_t *argv[]) {
     core = GET_RUNNING_CORE;
     vKillRequest[core] = true;
 
-    return (EXIT_OS_SUCCESS);
+    return EXIT_OS_SUCCESS;
 }
 
 // Local routines

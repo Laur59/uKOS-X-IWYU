@@ -146,7 +146,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     if (kern_createProcess(&specification, NULL, &process) != KERR_KERN_NOERR) { LOG(KFATAL_SYSTEM, "TinyUSB: create proc"); exit(EXIT_OS_PANIC); }
 
     LOG(KINFO_SYSTEM, "TinyUSB: process TinyUSB launched");
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }
 
 // Local routines

@@ -124,7 +124,7 @@ int32_t machine_readPC(const proc_t *handle, uintptr_t *pc) {
 
     stub_machine_readPC(handle->oSpecification.oStack, pc);
     PRIVILEGE_RESTORE;
-    return (KERR_SYSTEM_NOERR);
+    return KERR_SYSTEM_NOERR;
 }
 
 /*
@@ -154,7 +154,7 @@ int32_t machine_readFunctionName(const uintptr_t pc, const char_t **function) {
 
     stub_machine_readFunctionName(pc, function);
     PRIVILEGE_RESTORE;
-    return (KERR_SYSTEM_NOERR);
+    return KERR_SYSTEM_NOERR;
 }
 
 /*
@@ -180,7 +180,7 @@ int32_t machine_restart(void) {
 
     status = stub_machine_restart();
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 // Local routines

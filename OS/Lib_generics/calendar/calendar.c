@@ -150,7 +150,7 @@ int32_t calendar_setUTCLocation(const char_t *utcLocation) {
     local_init();
 
     strcpy(&calendar_tzUTCShift[core][0], &utcLocation[0]);
-    calendar_tzUTCShift[core][3] = (calendar_tzUTCShift[core][3] == '-') ? ('+') : ('-');
+    calendar_tzUTCShift[core][3] = (calendar_tzUTCShift[core][3] == '-') ? '+' : '-';
 
 //  calendar_tzTimeZone[core][0] = '\0';
 
@@ -160,7 +160,7 @@ int32_t calendar_setUTCLocation(const char_t *utcLocation) {
     setenv("TZ", &calendar_tzTimeZone[core][0], 1U);
     tzset();
     PRIVILEGE_RESTORE;
-    return (KERR_CALENDAR_NOERR);
+    return KERR_CALENDAR_NOERR;
 }
 
 /*
@@ -197,7 +197,7 @@ int32_t calendar_writeUnixTime(uint64_t unixTime) {
     #endif
 
     PRIVILEGE_RESTORE;
-    return (KERR_CALENDAR_NOERR);
+    return KERR_CALENDAR_NOERR;
 }
 
 /*
@@ -242,7 +242,7 @@ int32_t calendar_readUnixTime(calendarFromTimer_t fromTimer, uint64_t *unixTime)
     *unixTime = vUnixTime[core];
 
     PRIVILEGE_RESTORE;
-    return (KERR_CALENDAR_NOERR);
+    return KERR_CALENDAR_NOERR;
 }
 
 // Local routines

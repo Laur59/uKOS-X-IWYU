@@ -129,16 +129,16 @@ int32_t adc_reserve(reserveMode_t reserveMode, uint32_t timeout) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_ADC_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_ADC_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = kern_lockMutex(vMutex_Reserve[core], timeout);
     if (status != KERR_KERN_NOERR) {
         PRIVILEGE_RESTORE;
-        return (KERR_ADC_CHBSY);
+        return KERR_ADC_CHBSY;
     }
 
     PRIVILEGE_RESTORE;
-    return (KERR_ADC_NOERR);
+    return KERR_ADC_NOERR;
 }
 
 /*
@@ -168,16 +168,16 @@ int32_t adc_release(reserveMode_t reserveMode) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_ADC_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_ADC_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = kern_unlockMutex(vMutex_Reserve[core]);
     if (status != KERR_KERN_NOERR) {
         PRIVILEGE_RESTORE;
-        return (KERR_ADC_CAREL);
+        return KERR_ADC_CAREL;
     }
 
     PRIVILEGE_RESTORE;
-    return (KERR_ADC_NOERR);
+    return KERR_ADC_NOERR;
 }
 
 /*
@@ -193,7 +193,7 @@ int32_t adc_release(reserveMode_t reserveMode) {
  *    for (channel = 0; channel < 6; channel++) {
  *        status = adc_read(channel, &reference, &result[channel]);
  *        if (status != KERR_ADC_NOERR) {
- *            return (status);
+ *            return status;
  *        }
  *    }
  * \endcode
@@ -211,11 +211,11 @@ int32_t adc_read(uint8_t channel, float64_t *reference, float64_t *data) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_ADC_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_ADC_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_adc_read(channel, reference, data);
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 // Local routines

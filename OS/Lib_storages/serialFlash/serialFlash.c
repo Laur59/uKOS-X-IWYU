@@ -138,16 +138,16 @@ int32_t serialFlash_reserve(reserveMode_t reserveMode, uint32_t timeout) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = kern_lockMutex(vMutex_Reserve[core], timeout);
     if (status != KERR_KERN_NOERR) {
         PRIVILEGE_RESTORE;
-        return (KERR_STORAGE_CHBSY);
+        return KERR_STORAGE_CHBSY;
     }
 
     PRIVILEGE_RESTORE;
-    return (KERR_STORAGE_NOERR);
+    return KERR_STORAGE_NOERR;
 }
 
 /*
@@ -177,16 +177,16 @@ int32_t serialFlash_release(reserveMode_t reserveMode) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = kern_unlockMutex(vMutex_Reserve[core]);
     if (status != KERR_KERN_NOERR) {
         PRIVILEGE_RESTORE;
-        return (KERR_STORAGE_CAREL);
+        return KERR_STORAGE_CAREL;
     }
 
     PRIVILEGE_RESTORE;
-    return (KERR_STORAGE_NOERR);
+    return KERR_STORAGE_NOERR;
 }
 
 /*
@@ -213,11 +213,11 @@ int32_t serialFlash_initialise(void) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_serialFlash_initialise();
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 /*
@@ -242,11 +242,11 @@ int32_t serialFlash_readStatus(void) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_serialFlash_readStatus();
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 /*
@@ -279,11 +279,11 @@ int32_t serialFlash_read(uint8_t *buffer, uint32_t size, uint32_t sector) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_serialFlash_read(buffer, size, sector);
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 /*
@@ -316,11 +316,11 @@ int32_t serialFlash_write(const uint8_t *buffer, uint32_t size, uint32_t sector)
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_serialFlash_write(buffer, size, sector);
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 /*
@@ -350,11 +350,11 @@ int32_t serialFlash_ioctl(storageIoctl_t command, void *buffer) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_serialFlash_ioctl(command, buffer);
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 // Local routines

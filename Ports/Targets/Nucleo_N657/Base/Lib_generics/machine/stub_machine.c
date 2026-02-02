@@ -81,7 +81,7 @@ int32_t stub_machine_restart(void) {
     REG(SCB)->AIRCR = SCB_AIRCR_VECTKEY_MASK | SCB_AIRCR_SYSRESETREQ;
     while (true) { }
 
-    return (KERR_SYSTEM_NOERR);
+    return KERR_SYSTEM_NOERR;
 }
 
 /*

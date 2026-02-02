@@ -74,5 +74,5 @@ void    stub_switch_init(void) {
 int32_t stub_switch_read(uint32_t *mode) {
 
     *mode = ((REG(GPIOC)->IDR & (1U<<BSW_0)) != 0U) ? (1U) : (0U);
-    return (KERR_SWITCH_NOERR);
+    return KERR_SWITCH_NOERR;
 }

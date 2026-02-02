@@ -126,7 +126,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
     kern_suspendProcess(1000U);
     kern_createProcess(&specification, NULL, &process);
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }
 
 // Local routines

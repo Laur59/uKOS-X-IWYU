@@ -135,16 +135,16 @@ int32_t spi3_reserve(reserveMode_t reserveMode, uint32_t timeout) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_SPI_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_SPI_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = kern_lockMutex(vMutex_Reserve[core], timeout);
     if (status != KERR_KERN_NOERR) {
         PRIVILEGE_RESTORE;
-        return (KERR_SPI_CHBSY);
+        return KERR_SPI_CHBSY;
     }
 
     PRIVILEGE_RESTORE;
-    return (KERR_SPI_NOERR);
+    return KERR_SPI_NOERR;
 }
 
 /*
@@ -174,16 +174,16 @@ int32_t spi3_release(reserveMode_t reserveMode) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_SPI_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_SPI_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = kern_unlockMutex(vMutex_Reserve[core]);
     if (status != KERR_KERN_NOERR) {
         PRIVILEGE_RESTORE;
-        return (KERR_SPI_CAREL);
+        return KERR_SPI_CAREL;
     }
 
     PRIVILEGE_RESTORE;
-    return (KERR_SPI_NOERR);
+    return KERR_SPI_NOERR;
 }
 
 /*
@@ -212,11 +212,11 @@ int32_t spi3_configure(const spiCnf_t *configure) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_SPI_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_SPI_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_spi3_configure(configure);
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 /*
@@ -243,14 +243,14 @@ int32_t spi3_writeRead(uint8_t *data) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_SPI_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_SPI_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     wData[0] = *data;
     status = stub_spi3_multipleWriteRead(&wData[0], 1U, &rData[0], 1U, KWAIT_INFINITY);
 
     *data = rData[0];
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 /*
@@ -304,13 +304,13 @@ int32_t spi3_multipleWriteRead(const uint8_t *wData, uint16_t wSize, uint8_t *rD
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_SPI_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_SPI_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_spi3_multipleWriteRead(wData, wSize, rData, rSize, timeout);
-    if (status != KERR_SPI_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_SPI_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 // Local routines

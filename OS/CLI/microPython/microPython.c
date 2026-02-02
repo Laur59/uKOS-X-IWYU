@@ -155,7 +155,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     if (error == KERR_NOT) {
         MPYSize   = (uint32_t)strtol(argv[2], &dummy, 10U);
         MPYMemory = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (MPYSize * sizeof(uint8_t)), "mpy");
-        error = (MPYMemory == NULL) ? (KERR_NME) : (error);
+        error = (MPYMemory == NULL) ? KERR_NME : error;
 
         kern_getProcessRun(&CLIProcess);
         kern_getSerialForProcess(CLIProcess, &CLISerialManager);
@@ -191,7 +191,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 // Let the time to the process "local_process" to run
 
     do { kern_suspendProcess(1U); } while ((!releasePack) && (error == KERR_NOT));
-    return (status);
+    return status;
 }
 
 // Local routines

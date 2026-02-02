@@ -278,11 +278,11 @@ int32_t kern_createProcess(const spec_t *specification, const void *argument, pr
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
     *handle = NULL;
 
-    if (IS_EXCEPTION)                                                                                                                              { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_FRISR); }
-    if (specification->oStackStart == NULL)                                                                                                        { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOSTK); }
-    if (vKern_listFree[core].oNbElements == 0U)                                                                                                    { DEBUG_KERN_TRACE("exit: KO 3"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_LIFUL); }
+    if (IS_EXCEPTION)                                                                                                                              { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_FRISR; }
+    if (specification->oStackStart == NULL)                                                                                                        { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOSTK; }
+    if (vKern_listFree[core].oNbElements == 0U)                                                                                                    { DEBUG_KERN_TRACE("exit: KO 3"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_LIFUL; }
     if ((specification->oMode == KPROC_PRIVILEGED) &&
-       ((vKern_runProc[core]->oSpecification.oMode == KPROC_USER) && ((vKern_runProc[core]->oInternal.oState & (1U<<BPROC_PRIV_ELEVATED)) == 0U))) { DEBUG_KERN_TRACE("exit: KO 4"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_PRIVI); }
+       ((vKern_runProc[core]->oSpecification.oMode == KPROC_USER) && ((vKern_runProc[core]->oInternal.oState & (1U<<BPROC_PRIV_ELEVATED)) == 0U))) { DEBUG_KERN_TRACE("exit: KO 4"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_PRIVI; }
 
 // Check if the identifier is already used (NULL = anonymous)
 // If the identifier is already used, then, return an error but
@@ -296,7 +296,7 @@ int32_t kern_createProcess(const spec_t *specification, const void *argument, pr
                     DEBUG_KERN_TRACE("exit: KO 5");
                     INTERRUPTION_RESTORE;
                     PRIVILEGE_RESTORE;
-                    return (KERR_KERN_IDPRO);
+                    return KERR_KERN_IDPRO;
                 }
 
             }
@@ -331,7 +331,7 @@ int32_t kern_createProcess(const spec_t *specification, const void *argument, pr
 
     if (preemption) { PREEMPTION; }
     PRIVILEGE_RESTORE;
-    return (KERR_KERN_NOERR);
+    return KERR_KERN_NOERR;
 }
 
 /*
@@ -373,18 +373,18 @@ int32_t kern_killProcess(proc_t *handle) {
 
 // If the handle == NULL, then, commit a suicide
 
-    wkHandle = (wkHandle == NULL) ? (vKern_runProc[core]) : (wkHandle);
+    wkHandle = (wkHandle == NULL) ? (vKern_runProc[core]) : wkHandle;
 
-    if (IS_EXCEPTION)                                                                                                                      { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_FRISR); }
-    if (identifiers_cmpStrings(wkHandle->oSpecification.oIdentifier, aStrFirst))                                                           { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_REFRS); }
-    if (identifiers_cmpStrings(wkHandle->oSpecification.oIdentifier, aStrIden_idle))                                                       { DEBUG_KERN_TRACE("exit: KO 3"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_RESDE); }
+    if (IS_EXCEPTION)                                                                                                                      { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_FRISR; }
+    if (identifiers_cmpStrings(wkHandle->oSpecification.oIdentifier, aStrFirst))                                                           { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_REFRS; }
+    if (identifiers_cmpStrings(wkHandle->oSpecification.oIdentifier, aStrIden_idle))                                                       { DEBUG_KERN_TRACE("exit: KO 3"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_RESDE; }
     if ((wkHandle->oSpecification.oMode == KPROC_PRIVILEGED) &&
-       ((vKern_runProc[core]->oSpecification.oMode == KPROC_USER) && ((vKern_runProc[core]->oInternal.oState & (1U<<BPROC_PRIV_ELEVATED)) == 0U))) { DEBUG_KERN_TRACE("exit: KO 4"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_PRIVI); }
+       ((vKern_runProc[core]->oSpecification.oMode == KPROC_USER) && ((vKern_runProc[core]->oInternal.oState & (1U<<BPROC_PRIV_ELEVATED)) == 0U))) { DEBUG_KERN_TRACE("exit: KO 4"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_PRIVI; }
 
     #ifdef CONFIG_DAEM_KILL_S
 
     #else
-    if (identifiers_cmpStrings(wkHandle->oSpecification.oIdentifier, aStrIden_stack))                                                      { DEBUG_KERN_TRACE("exit: KO 5"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_RESDE); }
+    if (identifiers_cmpStrings(wkHandle->oSpecification.oIdentifier, aStrIden_stack))                                                      { DEBUG_KERN_TRACE("exit: KO 5"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_RESDE; }
     #endif
 
 // Determine the next action
@@ -449,7 +449,7 @@ int32_t kern_killProcess(proc_t *handle) {
     DEBUG_KERN_TRACE("exit: ->");
     INTERRUPTION_RESTORE;
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 /*
@@ -485,12 +485,12 @@ int32_t kern_setPriority(proc_t *handle, priority_t priority) {
 
 // If the handle == NULL, then, consider the current process
 
-    wkHandle = (wkHandle == NULL) ? (vKern_runProc[core]) : (wkHandle);
+    wkHandle = (wkHandle == NULL) ? (vKern_runProc[core]) : wkHandle;
 
-    if ((wkHandle->oInternal.oState & (1U<<BPROC_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPRO); }
+    if ((wkHandle->oInternal.oState & (1U<<BPROC_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOPRO; }
 
-    wkPriority = (wkPriority == KKERN_PRIORITY_HIGH_Reserved) ? (KKERN_PRIORITY_HIGH_01) : (wkPriority);
-    wkPriority = (wkPriority >= KKERN_NB_PRIORITIES)          ? (KKERN_PRIORITY_LOW_14)  : (wkPriority);
+    wkPriority = (wkPriority == KKERN_PRIORITY_HIGH_Reserved) ? KKERN_PRIORITY_HIGH_01 : wkPriority;
+    wkPriority = (wkPriority >= KKERN_NB_PRIORITIES)          ? KKERN_PRIORITY_LOW_14  : wkPriority;
 
 // If the new process priority is higher than the current one, then preemption
 
@@ -502,7 +502,7 @@ int32_t kern_setPriority(proc_t *handle, priority_t priority) {
 
     if (preemption) { PREEMPTION; }
     PRIVILEGE_RESTORE;
-    return (KERR_KERN_NOERR);
+    return KERR_KERN_NOERR;
 }
 
 /*
@@ -537,14 +537,14 @@ int32_t kern_getPriority(proc_t *handle, priority_t *priority) {
 
 // If the handle == NULL, then, consider the current process
 
-    wkHandle = (wkHandle == NULL) ? (vKern_runProc[core]) : (wkHandle);
+    wkHandle = (wkHandle == NULL) ? (vKern_runProc[core]) : wkHandle;
 
-    if ((wkHandle->oInternal.oState & (1U<<BPROC_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPRO); }
+    if ((wkHandle->oInternal.oState & (1U<<BPROC_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOPRO; }
     *priority = wkHandle->oSpecification.oPriority;
     DEBUG_KERN_TRACE("exit: OK");
     INTERRUPTION_RESTORE;
     PRIVILEGE_RESTORE;
-    return (KERR_KERN_NOERR);
+    return KERR_KERN_NOERR;
 }
 
 /*
@@ -586,14 +586,14 @@ int32_t kern_getProcessById(const char_t *identifier, proc_t **handle) {
             DEBUG_KERN_TRACE("exit: OK");
             INTERRUPTION_RESTORE;
             PRIVILEGE_RESTORE;
-            return (KERR_KERN_NOERR);
+            return KERR_KERN_NOERR;
         }
 
     }
     DEBUG_KERN_TRACE("exit: KO 1");
     INTERRUPTION_RESTORE;
     PRIVILEGE_RESTORE;
-    return (KERR_KERN_NOPRO);
+    return KERR_KERN_NOPRO;
 }
 
 /*
@@ -627,7 +627,7 @@ int32_t kern_getProcessRun(proc_t **handle) {
     DEBUG_KERN_TRACE("exit: OK");
     INTERRUPTION_RESTORE;
     PRIVILEGE_RESTORE;
-    return (KERR_KERN_NOERR);
+    return KERR_KERN_NOERR;
 }
 
 /*
@@ -675,7 +675,7 @@ int32_t kern_installCallBack(void (*code)(uint8_t state)) {
     DEBUG_KERN_TRACE("exit: OK");
     INTERRUPTION_RESTORE;
     PRIVILEGE_RESTORE;
-    return (KERR_KERN_NOERR);
+    return KERR_KERN_NOERR;
 }
 
 // Local routines
@@ -714,8 +714,8 @@ static  void    local_initialise(proc_t *handle) {
 static  void    local_setupDescriptor(proc_t *handle, proc_t *father, const spec_t *specification, uint16_t state) {
     priority_t  priority;
 
-    priority = (specification->oPriority == KKERN_PRIORITY_HIGH_Reserved) ? (KKERN_PRIORITY_HIGH_01)  : (specification->oPriority);
-    priority = (priority >= KKERN_NB_PRIORITIES)                          ? (KKERN_PRIORITY_LOW_IDLE) : (priority);
+    priority = (specification->oPriority == KKERN_PRIORITY_HIGH_Reserved) ? KKERN_PRIORITY_HIGH_01  : (specification->oPriority);
+    priority = (priority >= KKERN_NB_PRIORITIES)                          ? KKERN_PRIORITY_LOW_IDLE : priority;
 
 // The process specifications
 

@@ -324,7 +324,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     }
 
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 // Local routines
@@ -341,12 +341,12 @@ static  bool    local_getProcessByNb(uint8_t core, uint16_t number, proc_t **han
     kern_criticalSection(KENTER_CRITICAL);
     *handle = NULL;
 
-    if (number >= KKERN_NB_PROCESSES)                                              { kern_criticalSection(KEXIT_CRITICAL); return (false); }
-    if ((vKern_proc[core][number].oInternal.oState & (1U<<BPROC_INSTALLED)) == 0U) { kern_criticalSection(KEXIT_CRITICAL); return (false); }
+    if (number >= KKERN_NB_PROCESSES)                                              { kern_criticalSection(KEXIT_CRITICAL); return false; }
+    if ((vKern_proc[core][number].oInternal.oState & (1U<<BPROC_INSTALLED)) == 0U) { kern_criticalSection(KEXIT_CRITICAL); return false; }
 
     *handle = &vKern_proc[core][number];
     kern_criticalSection(KEXIT_CRITICAL);
-    return (true);
+    return true;
 }
 
 /*
@@ -463,8 +463,8 @@ static  void    local_printParameter_P1(uint8_t core, uint16_t number, process_t
 
     const   char_t  *space, *father;
 
-    father = (handle->oInternal.oProcFather == NULL)      ? ("Orphan") : (handle->oInternal.oProcFather->oSpecification.oIdentifier);
-    space  = (handle->oSpecification.oMode == KPROC_USER) ? ("User")   : ("Privileged");
+    father = (handle->oInternal.oProcFather == NULL)      ? "Orphan" : (handle->oInternal.oProcFather->oSpecification.oIdentifier);
+    space  = (handle->oSpecification.oMode == KPROC_USER) ? "User"   : "Privileged";
 
     (void)dprintf(KSYST, "Process identifier: %d %s\n", number, handle->oSpecification.oIdentifier);
     (void)dprintf(KSYST, "Process text:       %s\n",    handle->oSpecification.oText);

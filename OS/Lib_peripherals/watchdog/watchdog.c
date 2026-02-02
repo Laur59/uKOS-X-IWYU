@@ -153,7 +153,7 @@ int32_t watchdog_arm(uint32_t time, uint8_t mode) {
 
     PRIVILEGE_ELEVATE;
 
-    wkTime = (wkTime > KWATCHDOG_MAX_TIME_MS) ? (KWATCHDOG_MAX_TIME_MS) : (wkTime);
+    wkTime = (wkTime > KWATCHDOG_MAX_TIME_MS) ? (KWATCHDOG_MAX_TIME_MS) : wkTime;
 
     switch (mode) {
         case KWATCHDOG_AUTO: {
@@ -186,7 +186,7 @@ int32_t watchdog_arm(uint32_t time, uint8_t mode) {
         }
     }
     PRIVILEGE_RESTORE;
-    return (KERR_WATCHDOG_NOERR);
+    return KERR_WATCHDOG_NOERR;
 }
 
 // Local routines
@@ -210,7 +210,7 @@ static void __attribute__ ((noreturn)) local_process_watchdog(const void *argume
     watchdog = pack->oTime;
     time     = (uint32_t)((float64_t)pack->oTime * KWATCHDOG_MARGIN);
 
-    time = (time == 0U) ? (1U) : (time);
+    time = (time == 0U) ? 1U : time;
     releasePack  = pack->oReleasePack;
     *releasePack = true;
 

@@ -84,12 +84,12 @@ static  void    cb_enable_C1(void) {
  */
 static  bool    cb_CTSCheck_C0(void) {
 
-    return (true);
+    return true;
 }
 
 static  bool    cb_CTSCheck_C1(void) {
 
-    return (true);
+    return true;
 }
 
 /*

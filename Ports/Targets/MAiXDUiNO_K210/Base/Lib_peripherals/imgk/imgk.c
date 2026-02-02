@@ -328,7 +328,7 @@ int32_t imgk_reserve(reserveMode_t reserveMode, uint32_t timeout) {
     int32_t     status;
 
     status = local_init();
-    if (status != KERR_IMGK_NOERR) { return (status); }
+    if (status != KERR_IMGK_NOERR) { return status; }
 
     status = kern_lockMutex(vMutex, timeout);
     if (status != KERR_IMGK_NOERR) {
@@ -360,7 +360,7 @@ int32_t imgk_release(reserveMode_t reserveMode) {
     int32_t     status;
 
     status = local_init();
-    if (status != KERR_IMGK_NOERR) { return (status); }
+    if (status != KERR_IMGK_NOERR) { return status; }
 
     status = kern_unlockMutex(vMutex);
     if (status != KERR_IMGK_NOERR) {
@@ -435,7 +435,7 @@ int32_t imgk_configure(const cnfImgk_t *configure) {
     int32_t     status = KERR_IMGK_NOERR;
 
     status = local_init();
-    if (status != KERR_IMGK_NOERR) { return (status); }
+    if (status != KERR_IMGK_NOERR) { return status; }
 
 // Set the format
 
@@ -462,7 +462,7 @@ int32_t imgk_configure(const cnfImgk_t *configure) {
     if (vImageE1 == NULL) { status = KERR_IMGK_NOMEM; }
 
     dvp->rgb_addr = (uint32_t)((uintptr_t)vImageE0);
-    return (status);
+    return status;
 }
 
 /*
@@ -486,7 +486,7 @@ int32_t imgk_acquisition(void) {
     int32_t     status;
 
     status = local_init();
-    if (status != KERR_IMGK_NOERR) { return (status); }
+    if (status != KERR_IMGK_NOERR) { return status; }
 
     kern_signalSemaphore(vSeHandleAQ);
     return (KERR_IMGK_NOERR);
@@ -513,7 +513,7 @@ int32_t imgk_getImage(volatile void **image) {
     int32_t     status;
 
     status = local_init();
-    if (status != KERR_IMGK_NOERR) { return (status); }
+    if (status != KERR_IMGK_NOERR) { return status; }
 
     if (vPage == 0U) { *image = vImageE0; return (KERR_IMGK_NOERR); }
                      { *image = vImageE1; return (KERR_IMGK_NOERR); }

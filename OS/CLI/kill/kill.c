@@ -135,5 +135,5 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
         case KERR_PRO: { (void)dprintf(KSYST, "Protocol error.\n\n");              status = EXIT_OS_FAILURE;     break; }
         default:       {                                                           status = EXIT_OS_FAILURE;     break; }
     }
-    return (status);
+    return status;
 }

@@ -107,5 +107,5 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
     (void)dprintf(KSYST, "Bangla team ...\n");
     (void)dprintf(KSYST, "%s", aStrBangla);
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }

@@ -363,5 +363,5 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
         case KERR_BSY: { (void)dprintf(KSYST, "spi%d busy\n\n", unit);                                                                            status = EXIT_OS_FAILURE;     break; }
         default:       {                                                                                                                          status = EXIT_OS_FAILURE;     break; }
     }
-    return (status);
+    return status;
 }

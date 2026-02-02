@@ -206,7 +206,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
         case KERR_BSY: { (void)dprintf(KSYST, "Serial Communication Manager busy: %s\n\n", comm); status = EXIT_OS_FAILURE;     break; }
         default:       {                                                                          status = EXIT_OS_FAILURE;     break; }
     }
-    return (status);
+    return status;
 }
 
 // Local routines
@@ -229,7 +229,7 @@ static  bool    local_getByte(serialManager_t serialManager, uint8_t *buffer, ui
     do {
         kern_readTickCount(&time[1]);
         if ((time[1] - time[0]) >= timeout) {
-            return (false);
+            return false;
         }
 
         kern_switchFast();
@@ -238,7 +238,7 @@ static  bool    local_getByte(serialManager_t serialManager, uint8_t *buffer, ui
     } while (status != KERR_SERIAL_NOERR);
 
     led_toggle(KLED_1);
-    return (true);
+    return true;
 }
 
 /*

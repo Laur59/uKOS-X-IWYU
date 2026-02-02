@@ -151,12 +151,12 @@ int32_t record_trace(const char_t *message, uintptr_t parameter) {
 
     vRecord_NbTraceWrites[core] = (vRecord_NbTraceWrites[core] == KRECORD_SZ_TRACE_FIFO) ? (KRECORD_SZ_TRACE_FIFO) : (vRecord_NbTraceWrites[core] + 1);
 
-    vRollOver[core]          = (vRecord_WTraceFifo[core] == &vRecord_traceFifo[core][KRECORD_SZ_TRACE_FIFO]) ? (true)                        : (vRollOver[core]);
+    vRollOver[core]          = (vRecord_WTraceFifo[core] == &vRecord_traceFifo[core][KRECORD_SZ_TRACE_FIFO]) ? true                          : (vRollOver[core]);
     vRecord_WTraceFifo[core] = (vRecord_WTraceFifo[core] == &vRecord_traceFifo[core][KRECORD_SZ_TRACE_FIFO]) ? (&vRecord_traceFifo[core][0]) : (vRecord_WTraceFifo[core]);
     vRecord_RTraceFifo[core] = (vRollOver[core])                                                     ? (vRecord_WTraceFifo[core])    : (&vRecord_traceFifo[core][0]);
     INTERRUPTION_RESTORE;
     PRIVILEGE_RESTORE;
-    return (KERR_RECORD_NOERR);
+    return KERR_RECORD_NOERR;
 }
 
 /*
@@ -195,14 +195,14 @@ int32_t record_log(recordLogCategory_t logCategory, uint32_t lineNumber, const c
 
     INTERRUPTION_OFF;
     kern_readTickCount(&timeStamp);
-    timeStamp = (timeStamp == 0U) ? (1U) : (timeStamp);
+    timeStamp = (timeStamp == 0U) ? 1U : timeStamp;
     switch (vAction[core]) {
         case KCUMULATE: {
 
 // As long as there is place in the table, fill it
 
             i = vIndex[core]++;
-            vAction[core] = (vIndex[core] == KRECORD_SZ_LOG_BUF) ? (KSCANN) : (KCUMULATE);
+            vAction[core] = (vIndex[core] == KRECORD_SZ_LOG_BUF) ? KSCANN : KCUMULATE;
             break;
         }
         case KSCANN: {
@@ -245,12 +245,12 @@ int32_t record_log(recordLogCategory_t logCategory, uint32_t lineNumber, const c
     vRecord_logBuffer[core][i].oFunction    = function;
     vRecord_logBuffer[core][i].oMessage     = message;
     vRecord_logBuffer[core][i].oLineNumber  = lineNumber;
-    vRecord_logBuffer[core][i].oIdentifier  = (IS_EXCEPTION) ? ("From ISR") : (vKern_runProc[core]->oSpecification.oIdentifier);
+    vRecord_logBuffer[core][i].oIdentifier  = (IS_EXCEPTION) ? "From ISR" : (vKern_runProc[core]->oSpecification.oIdentifier);
 
-    vRecord_NbLogWrites[core] += (vRecord_NbLogWrites[core] < KRECORD_SZ_LOG_BUF) ? (1U) : (0U);
+    vRecord_NbLogWrites[core] += (vRecord_NbLogWrites[core] < KRECORD_SZ_LOG_BUF) ? 1U : 0U;
     INTERRUPTION_RESTORE;
     PRIVILEGE_RESTORE;
-    return (KERR_RECORD_NOERR);
+    return KERR_RECORD_NOERR;
 }
 
 // Local routines

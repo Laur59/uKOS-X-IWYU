@@ -185,7 +185,7 @@ int32_t serial_reserve(serialManager_t serialManager, reserveMode_t reserveMode,
         case KWFI0: { return (wfi0_reserve(reserveMode, timeout)); }
         #endif
 
-        default:    { return (KERR_SERIAL_NODEV);                  }
+        default:    { return KERR_SERIAL_NODEV;                }
     }
 }
 
@@ -246,7 +246,7 @@ int32_t serial_release(serialManager_t serialManager, reserveMode_t reserveMode)
         case KWFI0: { return (wfi0_release(reserveMode)); }
         #endif
 
-        default:    { return (KERR_SERIAL_NODEV);         }
+        default:    { return KERR_SERIAL_NODEV;       }
     }
 }
 
@@ -314,7 +314,7 @@ int32_t serial_configure(serialManager_t serialManager, const void *configure) {
         case KWFI0: { return (wfi0_configure((const urtxCnf_t *)configure)); }
         #endif
 
-        default:    { return (KERR_SERIAL_NODEV);                             }
+        default:    { return KERR_SERIAL_NODEV;                           }
     }
 }
 
@@ -388,7 +388,7 @@ int32_t serial_write(serialManager_t serialManager, const uint8_t *buffer, uint3
         case KWFI0: { return (wfi0_write(buffer, size)); }
         #endif
 
-        default:    { return (KERR_SERIAL_NODEV);        }
+        default:    { return KERR_SERIAL_NODEV;      }
     }
 }
 
@@ -456,7 +456,7 @@ int32_t serial_read(serialManager_t serialManager, uint8_t *buffer, uint32_t *si
         case KWFI0: { return (wfi0_read(buffer, size)); }
         #endif
 
-        default:    { return (KERR_SERIAL_NODEV);       }
+        default:    { return KERR_SERIAL_NODEV;     }
     }
 }
 
@@ -523,7 +523,7 @@ int32_t serial_getIdSemaphore(serialManager_t serialManager, uint8_t semaphore, 
         case KWFI0: { return (wfi0_getIdSemaphore(semaphore, identifier)); }
         #endif
 
-        default:    { return (KERR_SERIAL_NODEV);                          }
+        default:    { return KERR_SERIAL_NODEV;                        }
     }
 }
 
@@ -582,7 +582,7 @@ int32_t serial_flush(serialManager_t serialManager) {
         case KWFI0: { return (wfi0_flush());      }
         #endif
 
-        default:    { return (KERR_SERIAL_NODEV); }
+        default:    { return KERR_SERIAL_NODEV; }
     }
 }
 
@@ -609,7 +609,7 @@ int32_t serial_setDefSerialManager(serialManager_t serialManager) {
     PRIVILEGE_ELEVATE;
     vDefSerialManager[core] = serialManager;
     PRIVILEGE_RESTORE;
-    return (KERR_SERIAL_NOERR);
+    return KERR_SERIAL_NOERR;
 }
 
 /*
@@ -636,7 +636,7 @@ int32_t serial_getDefSerialManager(serialManager_t *serialManager) {
     PRIVILEGE_ELEVATE;
     *serialManager = vDefSerialManager[core];
     PRIVILEGE_RESTORE;
-    return (KERR_SERIAL_NOERR);
+    return KERR_SERIAL_NOERR;
 }
 
 /*
@@ -658,7 +658,7 @@ int32_t serial_getDefSerialManager(serialManager_t *serialManager) {
 int32_t serial_getFatherSerialManager(serialManager_t *serialManager) {
 
     local_getDevice(KSYST, serialManager);
-    return (KERR_SERIAL_NOERR);
+    return KERR_SERIAL_NOERR;
 }
 
 // Local routines

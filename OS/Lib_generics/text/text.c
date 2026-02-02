@@ -131,7 +131,7 @@ int32_t text_readArgs(char_t *ascii, uint32_t size, const char_t *argv[], uint32
 
     if (ascii[0] == '\0') {
         *argc = 0U;
-        return (KERR_TEXT_NOERR);
+        return KERR_TEXT_NOERR;
     }
 
 // 1st pass; replace the ' ' with '\0'
@@ -167,7 +167,7 @@ int32_t text_readArgs(char_t *ascii, uint32_t size, const char_t *argv[], uint32
             start = true;
         }
         else {
-            if ((start) && (ascii[i] != '\0')) {
+            if (start && (ascii[i] != '\0')) {
                 argv[j] = (ascii + i);
                 j++;
                 *argc += 1U;
@@ -175,7 +175,7 @@ int32_t text_readArgs(char_t *ascii, uint32_t size, const char_t *argv[], uint32
             }
         }
     }
-    return (KERR_TEXT_NOERR);
+    return KERR_TEXT_NOERR;
 }
 
 /*
@@ -209,7 +209,7 @@ int32_t text_copyAsciiBufferZ(char_t *asciiD, const char_t *asciiS) {
 
     size = strlen(wkAsciiS);
     if (size == 0U) {
-        return (KERR_TEXT_NOERR);
+        return KERR_TEXT_NOERR;
     }
 
     for (i = 0U; i < size; i++) {
@@ -218,7 +218,7 @@ int32_t text_copyAsciiBufferZ(char_t *asciiD, const char_t *asciiS) {
         wkAsciiS++;
     }
     *wkAsciiD = '\0';
-    return (KERR_TEXT_NOERR);
+    return KERR_TEXT_NOERR;
 }
 
 /*
@@ -248,7 +248,7 @@ int32_t text_copyAsciiBufferN(char_t *asciiD, const char_t *asciiS) {
 
     size = strlen(wkAsciiS);
     if (size == 0U) {
-        return (KERR_TEXT_NOERR);
+        return KERR_TEXT_NOERR;
     }
 
     for (i = 0U; i < size; i++) {
@@ -256,7 +256,7 @@ int32_t text_copyAsciiBufferN(char_t *asciiD, const char_t *asciiS) {
         wkAsciiD++;
         wkAsciiS++;
     }
-    return (KERR_TEXT_NOERR);
+    return KERR_TEXT_NOERR;
 }
 
 /*
@@ -286,7 +286,7 @@ int32_t text_checkAsciiBuffer(const char_t *ascii1, const char_t *ascii2, bool *
     do {
         if (*wkAscii1 != *wkAscii2) {
             *equals = false;
-            return (KERR_TEXT_NOERR);
+            return KERR_TEXT_NOERR;
         }
 
         wkAscii1++;
@@ -300,7 +300,7 @@ int32_t text_checkAsciiBuffer(const char_t *ascii1, const char_t *ascii2, bool *
         case '\r':
         case '\0': {
             *equals = true;
-            return (KERR_TEXT_NOERR);
+            return KERR_TEXT_NOERR;
         }
         default: {
 
@@ -310,7 +310,7 @@ int32_t text_checkAsciiBuffer(const char_t *ascii1, const char_t *ascii2, bool *
         }
     }
     *equals = false;
-    return (KERR_TEXT_NOERR);
+    return KERR_TEXT_NOERR;
 }
 
 /*
@@ -379,7 +379,7 @@ int32_t text_waitString(serialManager_t serialManager, char_t *ascii, uint32_t s
             break;
         }
     }
-    return (KERR_TEXT_NOERR);
+    return KERR_TEXT_NOERR;
 }
 
 // Local routines

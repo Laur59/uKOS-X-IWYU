@@ -158,7 +158,7 @@ void    *memo_malloc(memoAlignement_t memoAlignement, uint32_t size, const char_
 // memo_malloc not allowed inside exceptions
 
     PRIVILEGE_ELEVATE;
-    if (IS_EXCEPTION) { PRIVILEGE_RESTORE; return (NULL); }
+    if (IS_EXCEPTION) { PRIVILEGE_RESTORE; return NULL; }
 
     local_init();
 
@@ -243,7 +243,7 @@ void    *memo_malloc(memoAlignement_t memoAlignement, uint32_t size, const char_
     SPIN_UNLOCK(vMemo);
 
     PRIVILEGE_RESTORE;
-    return (NULL);
+    return NULL;
 }
 
 /*
@@ -279,12 +279,12 @@ void    *memo_realloc(memoAlignement_t memoAlignement, void *address, uint32_t s
 
     if (address == NULL) {
         newAddress = memo_malloc(memoAlignement, size, identifier);
-        return (newAddress);
+        return newAddress;
     }
 
     if (size == 0U) {
         memo_free(address);
-        return (NULL);
+        return NULL;
     }
 
 // Third case, try to allocate a new block
@@ -293,17 +293,17 @@ void    *memo_realloc(memoAlignement_t memoAlignement, void *address, uint32_t s
 
     newAddress = memo_malloc(memoAlignement, size, identifier);
     if (newAddress == NULL) {
-        return (NULL);
+        return NULL;
     }
 
     curBlock = (const memoMab_t *)((uintptr_t)address - (uintptr_t)sizeof(memoMab_t));
     oldSize = curBlock->oSzAllocated;
 
-    copySize = (oldSize < size) ? (oldSize) : (size);
+    copySize = (oldSize < size) ? oldSize : size;
     memcpy(newAddress, address, copySize);
 
     memo_free(address);
-    return (newAddress);
+    return newAddress;
 }
 
 /*
@@ -335,7 +335,7 @@ int32_t memo_readBlocInfo(const void *address, memoMallocInf_t *allocInfo) {
         SPIN_UNLOCK(vMemo);
 
         PRIVILEGE_RESTORE;
-        return (KERR_MEMO_GEERR);
+        return KERR_MEMO_GEERR;
     }
 
     curBlock = (const memoMab_t *)((uintptr_t)address - (uintptr_t)sizeof(memoMab_t));
@@ -344,7 +344,7 @@ int32_t memo_readBlocInfo(const void *address, memoMallocInf_t *allocInfo) {
         SPIN_UNLOCK(vMemo);
 
         PRIVILEGE_RESTORE;
-        return (KERR_MEMO_NOBKI);
+        return KERR_MEMO_NOBKI;
     }
 
     allocInfo->oSize       = curBlock->oSzAllocated;
@@ -352,7 +352,7 @@ int32_t memo_readBlocInfo(const void *address, memoMallocInf_t *allocInfo) {
     SPIN_UNLOCK(vMemo);
 
     PRIVILEGE_RESTORE;
-    return (KERR_MEMO_NOERR);
+    return KERR_MEMO_NOERR;
 }
 
 /*
@@ -501,7 +501,7 @@ static  void    local_init(void) {
             curBlock->oSzAvailable  =  (uint32_t)(lnHeap - sizeof(memoMab_t));
             curBlock->oPtrPreBlock  =  NULL;
             curBlock->oPtrNexBlock  =  NULL;
-            curBlock->oPadBlock     =  0u;
+            curBlock->oPadBlock     =  0U;
 
             vMemo_heapInfo.oNbBlocks     = 1U;
             vMemo_heapInfo.oNbMaxBlocks  = 1U;

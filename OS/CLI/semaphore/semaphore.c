@@ -134,7 +134,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
                 counter = vKern_sema[core][i].oCounter;
 
                 if (vKern_sema[core][i].oOwner == NULL) { syncProcess = "";                                                                                                                              }
-                else                                    { syncProcess = (vKern_sema[core][i].oOwner == KKERN_HANDLE_FROM_ISR) ? ("From ISR") : (vKern_sema[core][i].oOwner->oSpecification.oIdentifier); }
+                else                                    { syncProcess = (vKern_sema[core][i].oOwner == KKERN_HANDLE_FROM_ISR) ? "From ISR" : (vKern_sema[core][i].oOwner->oSpecification.oIdentifier); }
                 local_compose(syncProcess, &idSpacerS);
 
 // Scann the semaphore list and collect
@@ -180,7 +180,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     }
 
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 // Local routines

@@ -69,19 +69,19 @@ bool    identifiers_cmpStrings(const char_t *string_1, const char_t *string_2) {
     bool        status;
 
     if ((string_1 == NULL) || (string_2 == NULL)) {
-        return (false);
+        return false;
     }
 
     for (i = 0U; i < KKERN_OBJECT_SZ_ID; i++) {
         if ((string_1[i] == '\0') || (string_2[i] == '\0')) {
             status = (string_1[i] == string_2[i]);
-            return (status);
+            return status;
         }
 
         if (string_1[i] != string_2[i]) {
-            return (false);
+            return false;
         }
 
     }
-    return (true);
+    return true;
 }

@@ -99,7 +99,7 @@ bool    bench_05(void) {
     (void)dprintf(KSYST, "Bench 05: not available for this target\n");
     #endif
 
-    return (true);
+    return true;
 }
 
 // Local routines
@@ -123,6 +123,6 @@ bool    bench_05(void) {
 
     dprintf(KSYST, "Bench 05: not available for this target\n");
 
-    return (true);
+    return true;
 }
 #endif

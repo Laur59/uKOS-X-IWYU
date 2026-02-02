@@ -80,7 +80,7 @@ int32_t stub_machine_restart(void) {
     INTERRUPTION_OFF;
     while (true) { }
 
-    return (KERR_MACHINE_NOERR);
+    return KERR_MACHINE_NOERR;
 }
 
 /*

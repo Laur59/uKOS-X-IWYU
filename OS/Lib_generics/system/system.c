@@ -178,7 +178,7 @@ int32_t system_reserve(reserveMode_t reserveMode, uint32_t timeout) {
     }
     INTERRUPTION_RESTORE;
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 /*
@@ -210,7 +210,7 @@ int32_t system_release(reserveMode_t reserveMode) {
 
     vUserRamBusy[core] = false;
     PRIVILEGE_RESTORE;
-    return (KERR_SYSTEM_NOERR);
+    return KERR_SYSTEM_NOERR;
 }
 
 /*
@@ -265,13 +265,13 @@ int32_t system_getModuleId(uint32_t idModule, uint16_t *index, const uKOS_module
         if (aDirectory[*index].oModule->oIdModule == idModule) {
             *module = aDirectory[*index].oModule;
             PRIVILEGE_RESTORE;
-            return (KERR_SYSTEM_NOERR);
+            return KERR_SYSTEM_NOERR;
         }
 
         *index = (uint16_t)(*index + 1U);
     }
     PRIVILEGE_RESTORE;
-    return (KERR_SYSTEM_NOMOD);
+    return KERR_SYSTEM_NOMOD;
 }
 
 /*
@@ -297,7 +297,7 @@ int32_t system_getFamilyId(const char_t **family) {
 
     *family = KFAMILY;
     PRIVILEGE_RESTORE;
-    return (KERR_SYSTEM_NOERR);
+    return KERR_SYSTEM_NOERR;
 }
 
 /*
@@ -351,13 +351,13 @@ int32_t system_getModuleName(const char_t *name, uint16_t *index, const uKOS_mod
         if (equals) {
             *module = aDirectory[*index].oModule;
             PRIVILEGE_RESTORE;
-            return (KERR_SYSTEM_NOERR);
+            return KERR_SYSTEM_NOERR;
         }
 
         *index = (uint16_t)(*index + 1U);
     }
     PRIVILEGE_RESTORE;
-    return (KERR_SYSTEM_NOMOD);
+    return KERR_SYSTEM_NOMOD;
 }
 
 /*
@@ -419,13 +419,13 @@ int32_t system_getModuleFamily(uint8_t family, uint32_t *idModule, uint16_t *ind
             *idModule = aDirectory[*index].oModule->oIdModule;
             *module = aDirectory[*index].oModule;
             PRIVILEGE_RESTORE;
-            return (KERR_SYSTEM_NOERR);
+            return KERR_SYSTEM_NOERR;
         }
 
         *index = (uint16_t)(*index + 1U);
     }
     PRIVILEGE_RESTORE;
-    return (KERR_SYSTEM_NOFAM);
+    return KERR_SYSTEM_NOFAM;
 }
 
 /*
@@ -453,7 +453,7 @@ int32_t system_getSystemId(const char_t **identifier) {
 
     *identifier = aStrApp;
     PRIVILEGE_RESTORE;
-    return (KERR_SYSTEM_NOERR);
+    return KERR_SYSTEM_NOERR;
 }
 
 /*
@@ -508,7 +508,7 @@ int32_t system_getSystemVersion(const char_t **version) {
 
     *version = aStrRev;
     PRIVILEGE_RESTORE;
-    return (KERR_SYSTEM_NOERR);
+    return KERR_SYSTEM_NOERR;
 }
 
 /*
@@ -537,7 +537,7 @@ int32_t system_setDownloadCodeAddress(void *address) {
 
     vDoLoCode[core] = address;
     PRIVILEGE_RESTORE;
-    return (KERR_SYSTEM_NOERR);
+    return KERR_SYSTEM_NOERR;
 }
 
 /*
@@ -565,7 +565,7 @@ int32_t system_getDownloadCodeAddress(void **address) {
 
     *address = vDoLoCode[core];
     PRIVILEGE_RESTORE;
-    return (KERR_SYSTEM_NOERR);
+    return KERR_SYSTEM_NOERR;
 }
 
 // Local routines

@@ -169,7 +169,7 @@ int32_t kern_createPreciseSignal(const char_t *identifier, prcs_t **handle) {
                 DEBUG_KERN_TRACE("exit: KO 1");
                 INTERRUPTION_RESTORE;
                 PRIVILEGE_RESTORE;
-                return (KERR_KERN_IDPRC);
+                return KERR_KERN_IDPRC;
             }
 
         }
@@ -177,7 +177,7 @@ int32_t kern_createPreciseSignal(const char_t *identifier, prcs_t **handle) {
 
     for (i = 0U; i < KKERN_NB_PRECISE_SIGNALS; i++) {
         if (vKern_prcs[core][i].oIdentifier == NULL) {
-            vKern_prcs[core][i].oIdentifier  = (identifier == NULL) ? (KPRCS_ANONYMOUS_ID) : (identifier);
+            vKern_prcs[core][i].oIdentifier  = (identifier == NULL) ? (KPRCS_ANONYMOUS_ID) : identifier;
             vKern_prcs[core][i].oState       = (1U<<BPRCS_INSTALLED);
             vKern_prcs[core][i].oMode        = KPRCS_STOP;
             vKern_prcs[core][i].oSignalGroup = vDefaultSignalGroup[core];
@@ -192,14 +192,14 @@ int32_t kern_createPreciseSignal(const char_t *identifier, prcs_t **handle) {
             DEBUG_KERN_TRACE("exit: OK");
             INTERRUPTION_RESTORE;
             PRIVILEGE_RESTORE;
-            return (KERR_KERN_NOERR);
+            return KERR_KERN_NOERR;
         }
 
     }
     DEBUG_KERN_TRACE("exit: KO 2");
     INTERRUPTION_RESTORE;
     PRIVILEGE_RESTORE;
-    return (KERR_KERN_PRFUL);
+    return KERR_KERN_PRFUL;
 }
 
 /*
@@ -260,8 +260,8 @@ int32_t kern_setPreciseSignal(prcs_t *handle, sign_t **sigGroup, proc_t *toProce
     INTERRUPTION_OFF;
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
     preciseSignal = handle;
-    if (preciseSignal == NULL)                                 { *sigGroup = NULL; DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPRC); }
-    if ((preciseSignal->oState & (1U<<BPRCS_INSTALLED)) == 0U) { *sigGroup = NULL; DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPRC); }
+    if (preciseSignal == NULL)                                 { *sigGroup = NULL; DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOPRC; }
+    if ((preciseSignal->oState & (1U<<BPRCS_INSTALLED)) == 0U) { *sigGroup = NULL; DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOPRC; }
 
     preciseSignal->oMode        = mode;
     preciseSignal->oSignalGroup = (*sigGroup == NULL) ? (vDefaultSignalGroup[core]) : (*sigGroup);
@@ -275,7 +275,7 @@ int32_t kern_setPreciseSignal(prcs_t *handle, sign_t **sigGroup, proc_t *toProce
     DEBUG_KERN_TRACE("exit: OK");
     INTERRUPTION_RESTORE;
     PRIVILEGE_RESTORE;
-    return (KERR_KERN_NOERR);
+    return KERR_KERN_NOERR;
 }
 
 /*
@@ -306,8 +306,8 @@ int32_t kern_killPreciseSignal(prcs_t *handle) {
     INTERRUPTION_OFF;
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
     preciseSignal = handle;
-    if (preciseSignal == NULL)                                 { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPRC); }
-    if ((preciseSignal->oState & (1U<<BPRCS_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPRC); }
+    if (preciseSignal == NULL)                                 { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOPRC; }
+    if ((preciseSignal->oState & (1U<<BPRCS_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOPRC; }
 
     preciseSignal->oIdentifier  = NULL;
     preciseSignal->oState       = 0U;
@@ -322,7 +322,7 @@ int32_t kern_killPreciseSignal(prcs_t *handle) {
     DEBUG_KERN_TRACE("exit: OK");
     INTERRUPTION_RESTORE;
     PRIVILEGE_RESTORE;
-    return (KERR_KERN_NOERR);
+    return KERR_KERN_NOERR;
 }
 
 /*
@@ -364,14 +364,14 @@ int32_t kern_getPreciseSignalById(const char_t *identifier, prcs_t **handle) {
             DEBUG_KERN_TRACE("exit: OK");
             INTERRUPTION_RESTORE;
             PRIVILEGE_RESTORE;
-            return (KERR_KERN_NOERR);
+            return KERR_KERN_NOERR;
         }
 
     }
     DEBUG_KERN_TRACE("exit: KO 1");
     INTERRUPTION_RESTORE;
     PRIVILEGE_RESTORE;
-    return (KERR_KERN_NOPRC);
+    return KERR_KERN_NOPRC;
 }
 #else
 #error  "KKERN_NB_PRECISE_SIGNALS SHALL be > 0 in project using kern/prcs.c"

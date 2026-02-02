@@ -271,7 +271,7 @@ int32_t kern_init(void) {
     DEBUG_KERN_TRACE("entry: ");
     core = GET_RUNNING_CORE;
 
-    if (IS_EXCEPTION) { return (KERR_KERN_FRISR); }
+    if (IS_EXCEPTION) { return KERR_KERN_FRISR; }
 
     if (!vInit[core]) {
         vInit[core] = true;
@@ -305,7 +305,7 @@ int32_t kern_init(void) {
         vKern_state[core] = KKERN_INITIALISED;
     }
     DEBUG_KERN_TRACE("exit: OK");
-    return (KERR_KERN_NOERR);
+    return KERR_KERN_NOERR;
 }
 
 /*
@@ -339,7 +339,7 @@ int32_t kern_runKernel(void) {
     core = GET_RUNNING_CORE;
 
     PRIVILEGE_ELEVATE;
-    if (IS_EXCEPTION) { PRIVILEGE_RESTORE; return (KERR_KERN_FRISR); }
+    if (IS_EXCEPTION) { PRIVILEGE_RESTORE; return KERR_KERN_FRISR; }
 
     if (!vRun[core]) {
         vRun[core] = true;
@@ -351,7 +351,7 @@ int32_t kern_runKernel(void) {
     }
     DEBUG_KERN_TRACE("exit: OK");
     PRIVILEGE_RESTORE;
-    return (KERR_KERN_NOERR);
+    return KERR_KERN_NOERR;
 }
 
 /*
@@ -413,7 +413,7 @@ int32_t kern_criticalSection(uint8_t critical) {
     }
     DEBUG_KERN_TRACE("exit: OK");
     PRIVILEGE_RESTORE;
-    return (KERR_KERN_NOERR);
+    return KERR_KERN_NOERR;
 }
 
 /*
@@ -445,13 +445,13 @@ int32_t kern_setSerialForProcess(proc_t *handle, serialManager_t serialManager) 
     PRIVILEGE_ELEVATE;
     INTERRUPTION_OFF;
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
-    if (handle == NULL) { DEBUG_KERN_TRACE("exit: KO"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPRO); }
+    if (handle == NULL) { DEBUG_KERN_TRACE("exit: KO"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOPRO; }
 
     handle->oSpecification.oSerialManager = serialManager;
     DEBUG_KERN_TRACE("exit: OK");
     INTERRUPTION_RESTORE;
     PRIVILEGE_RESTORE;
-    return (KERR_KERN_NOERR);
+    return KERR_KERN_NOERR;
 }
 
 /*
@@ -484,13 +484,13 @@ int32_t kern_getSerialForProcess(proc_t *handle, serialManager_t *serialManager)
     PRIVILEGE_ELEVATE;
     INTERRUPTION_OFF;
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
-    if (handle == NULL) { DEBUG_KERN_TRACE("exit: KO"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOPRO); }
+    if (handle == NULL) { DEBUG_KERN_TRACE("exit: KO"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOPRO; }
 
     *serialManager = handle->oSpecification.oSerialManager;
     DEBUG_KERN_TRACE("exit: OK");
     INTERRUPTION_RESTORE;
     PRIVILEGE_RESTORE;
-    return (KERR_KERN_NOERR);
+    return KERR_KERN_NOERR;
 }
 
 /*
@@ -525,5 +525,5 @@ int32_t kern_getState(uint8_t *state) {
     *state = vKern_state[core];
     DEBUG_KERN_TRACE("exit: OK");
     PRIVILEGE_RESTORE;
-    return (KERR_KERN_NOERR);
+    return KERR_KERN_NOERR;
 }

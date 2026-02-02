@@ -191,7 +191,7 @@ int     _open_r(reent_t *reent, const char_t *path, int oflag, int mode) {
     UNUSED(mode);
 
     reent->_errno = ENODEV;
-    return (-1);
+    return -1;
 }
 
 /*
@@ -205,7 +205,7 @@ int     _close_r(reent_t *reent, int fd) {
     UNUSED(fd);
 
     reent->_errno = EBADF;
-    return (-1);
+    return -1;
 }
 
 /*
@@ -259,7 +259,7 @@ _ssize_t    _write_r(reent_t *reent, int fd, const void *buf, size_t count) {
             break;
         }
     }
-    return (nbPrintChars);
+    return nbPrintChars;
 }
 
 /*
@@ -313,7 +313,7 @@ _ssize_t    _read_r(reent_t *reent, int fd, void *buf, size_t count) {
             break;
         }
     }
-    return (nbReadChars);
+    return nbReadChars;
 }
 
 // Newlib time/calendat functions
@@ -338,7 +338,7 @@ int     _gettimeofday_r(reent_t *reent, struct timeval *tv, void *tzvp) {
 
     tv->tv_sec  = (time_t)(unixTime / CLOCKS_PER_SEC);
     tv->tv_usec = (suseconds_t)(unixTime % CLOCKS_PER_SEC);
-    return (0);
+    return 0;
 }
 
 /*
@@ -383,7 +383,7 @@ int     _isatty_r(reent_t *reent, int fd) {
 
     UNUSED(reent);
 
-    return ((fd <= 2) ? (1) : (0));
+    return ((fd <= 2) ? 1 : 0);
 }
 
 /*
@@ -397,7 +397,7 @@ int     _wait_r(reent_t *reent, const int *stat_loc) {
     UNUSED(stat_loc);
 
     reent->_errno = ECHILD;
-    return (-1);
+    return -1;
 }
 
 /*
@@ -420,7 +420,7 @@ int     *__errno(void) {
 int     _fork_r(reent_t *reent) {
 
     reent->_errno = ENOTSUP;
-    return (-1);
+    return -1;
 }
 
 /*
@@ -435,7 +435,7 @@ int     _stat_r(reent_t *reent, const char_t *path, struct stat *pstat) {
     UNUSED(path);
 
     pstat->st_mode = S_IFCHR;
-    return (0);
+    return 0;
 }
 
 /*
@@ -450,7 +450,7 @@ int     _fstat_r(reent_t *reent, int fd, struct stat *pstat) {
     UNUSED(fd);
 
     pstat->st_mode = S_IFCHR;
-    return (0);
+    return 0;
 }
 
 /*
@@ -465,7 +465,7 @@ int     _link_r(reent_t *reent, const char_t *oldpath, const char_t *newpath) {
     UNUSED(newpath);
 
     reent->_errno = EMLINK;
-    return (-1);
+    return -1;
 }
 
 /*
@@ -479,7 +479,7 @@ int     _unlink_r(reent_t *reent, const char_t *pathname) {
     UNUSED(pathname);
 
     reent->_errno = EMLINK;
-    return (-1);
+    return -1;
 }
 
 /*
@@ -495,7 +495,7 @@ off_t   _lseek_r(reent_t *reent, int filedes, off_t offset, int whence) {
     UNUSED(offset);
     UNUSED(whence);
 
-    return (0);
+    return 0;
 }
 
 /*
@@ -515,7 +515,7 @@ int     _getpid_r(reent_t *reent) {
 
     kern_getProcessRun(&process);
     id = (int)(((uintptr_t)process - (uintptr_t)&vKern_proc[core][0]) / sizeof(proc_t));
-    return (id);
+    return id;
 }
 
 /*
@@ -535,7 +535,7 @@ int     _kill_r(reent_t *reent, int pid, int sig) {
 
     process = (proc_t *)(((uintptr_t)pid * (uintptr_t)sizeof(proc_t)) + (uintptr_t)&vKern_proc[core][0]);
     kern_killProcess(process);
-    return (0);
+    return 0;
 }
 
 /*
@@ -587,10 +587,10 @@ void    *__wrap__malloc_r(reent_t *reent, size_t size) {
     address = memo_malloc(KMEMO_ALIGN_8, ((uint32_t)size * sizeof(uint8_t)), "__wrap__malloc_r");
     if (address == NULL) {
         reent->_errno = ENOMEM;
-        return (NULL);
+        return NULL;
     }
 
-    return (address);
+    return address;
 }
 
 /*
@@ -620,10 +620,10 @@ void    *__wrap__realloc_r(reent_t *reent, void *address, size_t size) {
     newAddress = memo_realloc(KMEMO_ALIGN_8, address, (uint32_t)size, "__wrap__realloc_r");
     if (newAddress == NULL) {
         reent->_errno = ENOMEM;
-        return (NULL);
+        return NULL;
     }
 
-    return (newAddress);
+    return newAddress;
 }
 
 /*
@@ -640,11 +640,11 @@ void    *__wrap__calloc_r(reent_t *reent, size_t num, size_t size) {
     address = memo_malloc(KMEMO_ALIGN_8, ((uint32_t)((num * size) * sizeof(uint8_t))), "__wrap__calloc_r");
     if (address == NULL) {
         reent->_errno = ENOMEM;
-        return (NULL);
+        return NULL;
     }
 
-    memset(address, 0u, (num * size));
-    return (address);
+    memset(address, 0U, (num * size));
+    return address;
 }
 
 // This variable is supposed to only be used in relation to shared libraries.
@@ -764,7 +764,7 @@ static  uint8_t local_inbyte(serialManager_t serialManager) {
 
     if (byte > 0x7FU) { byte = (uint8_t)'?'; }
 
-    return (byte);
+    return byte;
 }
 // NOLINTEND(bugprone-reserved-identifier,cert-dcl37-c,cert-dcl51-cpp)
 

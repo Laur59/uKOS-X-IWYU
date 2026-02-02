@@ -134,16 +134,16 @@ int32_t temperature_reserve(reserveMode_t reserveMode, uint32_t timeout) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_TEMPERATURE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_TEMPERATURE_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = kern_lockMutex(vMutex_Reserve[core], timeout);
     if (status != KERR_KERN_NOERR) {
         PRIVILEGE_RESTORE;
-        return (KERR_TEMPERATURE_CHBSY);
+        return KERR_TEMPERATURE_CHBSY;
     }
 
     PRIVILEGE_RESTORE;
-    return (KERR_TEMPERATURE_NOERR);
+    return KERR_TEMPERATURE_NOERR;
 }
 
 /*
@@ -173,16 +173,16 @@ int32_t temperature_release(reserveMode_t reserveMode) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_TEMPERATURE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_TEMPERATURE_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = kern_unlockMutex(vMutex_Reserve[core]);
     if (status != KERR_KERN_NOERR) {
         PRIVILEGE_RESTORE;
-        return (KERR_TEMPERATURE_CAREL);
+        return KERR_TEMPERATURE_CAREL;
     }
 
     PRIVILEGE_RESTORE;
-    return (KERR_TEMPERATURE_NOERR);
+    return KERR_TEMPERATURE_NOERR;
 }
 
 /*
@@ -209,11 +209,11 @@ int32_t temperature_read(float64_t *temperature) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_TEMPERATURE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_TEMPERATURE_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_temperature_read(temperature);
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 /*
@@ -238,11 +238,11 @@ int32_t temperature_write(float64_t temperature) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_TEMPERATURE_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_TEMPERATURE_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_temperature_write(temperature);
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 // Local routines

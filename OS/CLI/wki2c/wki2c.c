@@ -221,5 +221,5 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
         case KERRBUSY: { (void)dprintf(KSYST, "i2c%d busy or not existent\n\n", unit);                  status = EXIT_OS_FAILURE;     break; }
         default:       {                                                                                status = EXIT_OS_FAILURE;     break; }
     }
-    return (status);
+    return status;
 }

@@ -158,7 +158,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
             break;
         }
     }
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }
 
 /*
@@ -179,7 +179,7 @@ static  int32_t test_ipi_pre_init(uint32_t argc, const char_t *argv[]) {
 
     clint->msip[core].msip = 0U;
     core_setBitCSR(RV_CSR_MIE, ((uint64_t)1U<<(uint64_t)IINT_MACHINE_SOFTWARE));
-    return (EXIT_OS_SUCCESS);
+    return EXIT_OS_SUCCESS;
 }
 
 /*

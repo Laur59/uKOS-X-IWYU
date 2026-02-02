@@ -120,7 +120,7 @@ int32_t switch_read(uint32_t *mode) {
 
     status = stub_switch_read(mode);
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 // Local routines

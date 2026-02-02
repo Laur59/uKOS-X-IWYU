@@ -157,7 +157,7 @@ int32_t kern_createSemaphore(const char_t *identifier, int32_t iniCounter, int32
     DEBUG_KERN_TRACE("exit: ->");
     INTERRUPTION_RESTORE;
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 /*
@@ -199,7 +199,7 @@ int32_t kern_signalSemaphore(sema_t *handle) {
     if (preemption) { PREEMPTION; }
     DEBUG_KERN_TRACE("exit: ->");
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 /*
@@ -242,7 +242,7 @@ int32_t kern_waitSemaphore(sema_t *handle, uint32_t timeout) {
     DEBUG_KERN_TRACE("exit: ->");
     INTERRUPTION_RESTORE;
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 /*
@@ -276,8 +276,8 @@ int32_t kern_killSemaphore(sema_t *handle) {
     PRIVILEGE_ELEVATE;
     INTERRUPTION_OFF;
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
-    if (handle == NULL)                                 { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOSEM); }
-    if ((handle->oState & (1U<<BSEMA_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOSEM); }
+    if (handle == NULL)                                 { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOSEM; }
+    if ((handle->oState & (1U<<BSEMA_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOSEM; }
 
 // Disconnect the waiting processes from the semaphore list
 
@@ -304,7 +304,7 @@ int32_t kern_killSemaphore(sema_t *handle) {
 
     if (preemption) { PREEMPTION; }
     PRIVILEGE_RESTORE;
-    return (KERR_KERN_NOERR);
+    return KERR_KERN_NOERR;
 }
 
 /*
@@ -335,8 +335,8 @@ int32_t kern_restartSemaphore(sema_t *handle) {
     PRIVILEGE_ELEVATE;
     INTERRUPTION_OFF;
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
-    if (handle == NULL)                                 { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOSEM); }
-    if ((handle->oState & (1U<<BSEMA_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return (KERR_KERN_NOSEM); }
+    if (handle == NULL)                                 { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOSEM; }
+    if ((handle->oState & (1U<<BSEMA_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOSEM; }
 
     while (handle->oList.oNbElements > 0U) {
         process = handle->oList.oFirst;
@@ -356,7 +356,7 @@ int32_t kern_restartSemaphore(sema_t *handle) {
 
     if (preemption) { PREEMPTION; }
     PRIVILEGE_RESTORE;
-    return (KERR_KERN_NOERR);
+    return KERR_KERN_NOERR;
 }
 
 /*
@@ -398,14 +398,14 @@ int32_t kern_getSemaphoreById(const char_t *identifier, sema_t **handle) {
             DEBUG_KERN_TRACE("exit: OK");
             INTERRUPTION_RESTORE;
             PRIVILEGE_RESTORE;
-            return (KERR_KERN_NOERR);
+            return KERR_KERN_NOERR;
         }
 
     }
     DEBUG_KERN_TRACE("exit: KO 1");
     INTERRUPTION_RESTORE;
     PRIVILEGE_RESTORE;
-    return (KERR_KERN_NOSEM);
+    return KERR_KERN_NOSEM;
 }
 
 // Local routines
@@ -440,7 +440,7 @@ static  int32_t local_createSemaphore(const char_t *identifier, int32_t iniCount
             if (identifiers_cmpStrings(vKern_sema[core][i].oIdentifier, identifier)) {
                 *handle = &vKern_sema[core][i];
                 DEBUG_KERN_TRACE("exit: KO 1");
-                return (KERR_KERN_IDSEM);
+                return KERR_KERN_IDSEM;
             }
 
         }
@@ -448,7 +448,7 @@ static  int32_t local_createSemaphore(const char_t *identifier, int32_t iniCount
 
     for (i = 0U; i < KKERN_NB_SEMAPHORES; i++) {
         if (vKern_sema[core][i].oIdentifier == NULL) {
-            vKern_sema[core][i].oIdentifier  = (identifier == NULL) ? (KSEMA_ANONYMOUS_ID) : (identifier);
+            vKern_sema[core][i].oIdentifier  = (identifier == NULL) ? (KSEMA_ANONYMOUS_ID) : identifier;
             vKern_sema[core][i].oState       = (1U<<BSEMA_INSTALLED);
             vKern_sema[core][i].oCounter     = iniCounter;
             vKern_sema[core][i].oMaxCounter  = maxCounter;
@@ -458,12 +458,12 @@ static  int32_t local_createSemaphore(const char_t *identifier, int32_t iniCount
             vKern_nbSema[core]    = (uint16_t)(vKern_nbSema[core] + 1U);
             vKern_nbMaxSema[core] = (vKern_nbSema[core] > vKern_nbMaxSema[core]) ? (vKern_nbSema[core]) : (vKern_nbMaxSema[core]);
             DEBUG_KERN_TRACE("exit: OK");
-            return (KERR_KERN_NOERR);
+            return KERR_KERN_NOERR;
         }
 
     }
     DEBUG_KERN_TRACE("exit: KO 2");
-    return (KERR_KERN_SEFUL);
+    return KERR_KERN_SEFUL;
 }
 
 /*
@@ -486,10 +486,10 @@ static  int32_t local_waitSync(uint32_t core, sema_t *handle, uint32_t timeout) 
     uint32_t    i, synchro, wkTimeout;
 
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
-    if ((IS_EXCEPTION) && (timeout != 0U))              { DEBUG_KERN_TRACE("exit: KO 1"); return (KERR_KERN_FRISR); }
-    if (handle == NULL)                                 { DEBUG_KERN_TRACE("exit: KO 2"); return (KERR_KERN_NOSEM); }
-    if ((handle->oState & (1U<<BSEMA_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 3"); return (KERR_KERN_NOSEM); }
-    if (handle->oCounter == KSEMA_MIN_CPT)              { DEBUG_KERN_TRACE("exit: KO 4"); return (KERR_KERN_SETME); }
+    if ((IS_EXCEPTION) && (timeout != 0U))              { DEBUG_KERN_TRACE("exit: KO 1"); return KERR_KERN_FRISR; }
+    if (handle == NULL)                                 { DEBUG_KERN_TRACE("exit: KO 2"); return KERR_KERN_NOSEM; }
+    if ((handle->oState & (1U<<BSEMA_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 3"); return KERR_KERN_NOSEM; }
+    if (handle->oCounter == KSEMA_MIN_CPT)              { DEBUG_KERN_TRACE("exit: KO 4"); return KERR_KERN_SETME; }
 
 // -------------------------- inputs --------------------------     -------------------------------------- output ---------------------------------------
 //
@@ -500,13 +500,13 @@ static  int32_t local_waitSync(uint32_t core, sema_t *handle, uint32_t timeout) 
 //                                              == timeout value    = (timeout value / unit)                                = (timeout value / unit)
 
     wkTimeout = (timeout == KWAIT_INFINITY)          ? (KWAIT_INFINITY)                          : (timeout / KKERN_TIC_TIME);
-    wkTimeout = (timeout == KWAIT_REMAINING_TIMEOUT) ? (vKern_runProc[core]->oInternal.oTimeout) : (wkTimeout);
+    wkTimeout = (timeout == KWAIT_REMAINING_TIMEOUT) ? (vKern_runProc[core]->oInternal.oTimeout) : wkTimeout;
     vKern_runProc[core]->oInternal.oTimeout = wkTimeout;
 
     handle->oCounter--;
     if (handle->oCounter >= 0) {
         DEBUG_KERN_TRACE("exit: OK");
-        return (KERR_KERN_NOERR);
+        return KERR_KERN_NOERR;
     }
 
     if (wkTimeout > 0U) {
@@ -522,7 +522,7 @@ static  int32_t local_waitSync(uint32_t core, sema_t *handle, uint32_t timeout) 
 
     handle->oCounter++;
     DEBUG_KERN_TRACE("exit: KO 5");
-    return (KERR_KERN_TIMEO);
+    return KERR_KERN_TIMEO;
 }
 
 /*
@@ -540,13 +540,13 @@ static  int32_t local_signalSync(uint32_t core, sema_t *handle,  bool *preemptio
     proc_t  *process;
 
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
-    if (handle == NULL)                                 { DEBUG_KERN_TRACE("exit: KO 1"); return (KERR_KERN_NOSEM); }
-    if ((handle->oState & (1U<<BSEMA_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 2"); return (KERR_KERN_NOSEM); }
-    if (handle->oCounter == handle->oMaxCounter)        { DEBUG_KERN_TRACE("exit: KO 4"); return (KERR_KERN_SETME); }
+    if (handle == NULL)                                 { DEBUG_KERN_TRACE("exit: KO 1"); return KERR_KERN_NOSEM; }
+    if ((handle->oState & (1U<<BSEMA_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 2"); return KERR_KERN_NOSEM; }
+    if (handle->oCounter == handle->oMaxCounter)        { DEBUG_KERN_TRACE("exit: KO 4"); return KERR_KERN_SETME; }
 
     handle->oCounter = (handle->oCounter < handle->oMaxCounter) ? (handle->oCounter + 1) : (handle->oCounter);
 
-    if (handle->oList.oNbElements == 0U)                { DEBUG_KERN_TRACE("exit: OK");   return (KERR_KERN_NOERR); }
+    if (handle->oList.oNbElements == 0U)                { DEBUG_KERN_TRACE("exit: OK");   return KERR_KERN_NOERR; }
 
 // Someone signals an event
 // The first process waiting for such event is extracted from the list
@@ -564,5 +564,5 @@ static  int32_t local_signalSync(uint32_t core, sema_t *handle,  bool *preemptio
     *preemption = (process->oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority);
 
     DEBUG_KERN_TRACE("exit: OK");
-    return (KERR_KERN_NOERR);
+    return KERR_KERN_NOERR;
 }

@@ -157,7 +157,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     if (kern_createProcess(&specification_RecX, NULL, &process_RecX) != KERR_KERN_NOERR) { LOG(KFATAL_SYSTEM, "mcore: create proc"); exit(EXIT_OS_PANIC); }
 
     LOG(KINFO_SYSTEM, "mcore: daemon mcore launched");
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }
 
 // Local routines

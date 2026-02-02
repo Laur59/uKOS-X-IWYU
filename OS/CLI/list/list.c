@@ -157,7 +157,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
     if (!error) {                                                          status = EXIT_OS_SUCCESS_CLI; }
     else                { (void)dprintf(KSYST, "This family does not exist.\n\n"); status = EXIT_OS_FAILURE;     }
-    return (status);
+    return status;
 }
 
 // Local routines
@@ -203,5 +203,5 @@ static  bool    local_listModule(uint8_t idFamily) {
         index++;
     }
     if (found) { (void)dprintf(KSYST, "\n"); }
-    return (found);
+    return found;
 }

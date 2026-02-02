@@ -158,7 +158,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     if (kern_createProcess(&specification, &vKillRequest[core], &process) != KERR_KERN_NOERR) { LOG(KFATAL_SYSTEM, "imager: create proc"); exit(EXIT_OS_PANIC); }
 
     LOG(KINFO_SYSTEM, "getImage: process imager launched");
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }
 
 /*
@@ -177,7 +177,7 @@ static  int32_t imager_clean(uint32_t argc, const char_t *argv[]) {
     core = GET_RUNNING_CORE;
     vKillRequest[core] = true;
 
-    return (EXIT_OS_SUCCESS);
+    return EXIT_OS_SUCCESS;
 }
 
 // Local routines

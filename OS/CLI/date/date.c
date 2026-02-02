@@ -186,12 +186,12 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 // date: 7 parameters -> set the date   "2 4 2025 10 28 00"
 
         case 7U: {
-            parameter = (int32_t)strtol(argv[1], &dummy, 10U); currentTime.tm_mday  = (int)(parameter);
+            parameter = (int32_t)strtol(argv[1], &dummy, 10U); currentTime.tm_mday  = (int)parameter;
             parameter = (int32_t)strtol(argv[2], &dummy, 10U); currentTime.tm_mon   = (int)(parameter - 1);
             parameter = (int32_t)strtol(argv[3], &dummy, 10U); currentTime.tm_year  = (int)(parameter - 1900);
-            parameter = (int32_t)strtol(argv[4], &dummy, 10U); currentTime.tm_hour  = (int)(parameter);
-            parameter = (int32_t)strtol(argv[5], &dummy, 10U); currentTime.tm_min   = (int)(parameter);
-            parameter = (int32_t)strtol(argv[6], &dummy, 10U); currentTime.tm_sec   = (int)(parameter);
+            parameter = (int32_t)strtol(argv[4], &dummy, 10U); currentTime.tm_hour  = (int)parameter;
+            parameter = (int32_t)strtol(argv[5], &dummy, 10U); currentTime.tm_min   = (int)parameter;
+            parameter = (int32_t)strtol(argv[6], &dummy, 10U); currentTime.tm_sec   = (int)parameter;
                                                                currentTime.tm_isdst = -1;
 
             now = mktime(&currentTime);
@@ -218,5 +218,5 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
         case KERR_FMT: { (void)dprintf(KSYST, "Incorrect format.\n\n");    status = EXIT_OS_FAILURE;     break; }
         default:       {                                                   status = EXIT_OS_FAILURE;     break; }
     }
-    return (status);
+    return status;
 }

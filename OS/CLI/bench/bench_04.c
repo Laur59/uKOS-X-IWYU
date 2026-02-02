@@ -118,7 +118,7 @@ bool    bench_04(void) {
                          "          Angle                                        a = %3.6f [Rad]\n"
                          "          Number of tests                              n = %8d [-]\n"
                          "          1000 x atan2(y, x)                           t = %8lld [us]\n\n", angle, KNB_TESTS, sumTime);
-    return (true);
+    return true;
 }
 
 // Local routines

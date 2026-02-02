@@ -117,5 +117,5 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
         (void)dprintf(KSYST, "Core %"PRIu32", Size:     %"PRIu32"\n",   i, vAsmp_InterCore->oSize[i]);
         (void)dprintf(KSYST, "Core %"PRIu32", Buffer:   %s\n\n",        i, vAsmp_InterCore->oBuffer[i]);
     }
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }

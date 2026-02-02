@@ -151,5 +151,5 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
     if (!error) { (void)dprintf(KSYST, "\n");                  status = EXIT_OS_SUCCESS_CLI; }
     else                { (void)dprintf(KSYST, "Protocol error.\n\n"); status = EXIT_OS_FAILURE;     }
-    return (status);
+    return status;
 }

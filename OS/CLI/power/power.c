@@ -121,7 +121,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
     maxI2cTries = (i2cTries > maxI2cTries) ? (i2cTries) : (maxI2cTries);
 
-    if (status != KERR_BATTERY_NOERR) { (void)dprintf(KSYST, "Battery manager problem!\n\n"); return (EXIT_OS_FAILURE); }
+    if (status != KERR_BATTERY_NOERR) { (void)dprintf(KSYST, "Battery manager problem!\n\n"); return EXIT_OS_FAILURE; }
 
     (void)dprintf(KSYST, "Battery voltage:       %7.2f [V]\n",      batteryInfo.oVoltage);
     (void)dprintf(KSYST, "Battery current:       %7.2f [mA]\n",     batteryInfo.oCurrent);
@@ -134,5 +134,5 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     }
         (void)dprintf(KSYST, "Cycles:                 %6d [-]\n",   batteryInfo.oCycles);
         (void)dprintf(KSYST, "Max i2c nb tries:       %6d [-]\n\n", maxI2cTries);
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }

@@ -118,34 +118,34 @@ void    statistics_statistic(proc_t *backwardProcess, uint32_t timeStart, uint32
     timeE32 = timeE;
     timeP32 = (timeStop  - timeLastStart);
     timeK32 = (timeStart - timeStop);
-    timeP32 = (timeP32 < timeE32) ? (0) : (timeP32 - timeE32);
+    timeP32 = (timeP32 < timeE32) ? 0 : (timeP32 - timeE32);
 
 // Time > than 65535 can only appears @ the first process switch;
 // To avoid wrong max, for this case we fix it to 0.
 // The idle could potentially be bigger in extremely low powe situation
 // (everything is sleeping)
 
-    timeP16 = (timeP32 > 65535U) ? (0U) : ((uint16_t)timeP32);
-    timeK16 = (timeK32 > 65535U) ? (0U) : ((uint16_t)timeK32);
-    timeE16 = (timeE32 > 65535U) ? (0U) : ((uint16_t)timeE32);
+    timeP16 = (timeP32 > 65535U) ? 0U : ((uint16_t)timeP32);
+    timeK16 = (timeK32 > 65535U) ? 0U : ((uint16_t)timeK32);
+    timeE16 = (timeE32 > 65535U) ? 0U : ((uint16_t)timeE32);
 
-    backwardProcess->oStatistic.oTimePMin = ((backwardProcess->oStatistic.oTimePMin > timeP16) || (backwardProcess->oStatistic.oTimePMin == 0U)) ? (timeP16) : (backwardProcess->oStatistic.oTimePMin);
-    backwardProcess->oStatistic.oTimeKMin = ((backwardProcess->oStatistic.oTimeKMin > timeK16) || (backwardProcess->oStatistic.oTimeKMin == 0U)) ? (timeK16) : (backwardProcess->oStatistic.oTimeKMin);
-    backwardProcess->oStatistic.oTimeEMin = ((backwardProcess->oStatistic.oTimeEMin > timeE16) || (backwardProcess->oStatistic.oTimeEMin == 0U)) ? (timeE16) : (backwardProcess->oStatistic.oTimeEMin);
-    backwardProcess->oStatistic.oTimePMax = ( backwardProcess->oStatistic.oTimePMax < timeP16)                                                   ? (timeP16) : (backwardProcess->oStatistic.oTimePMax);
-    backwardProcess->oStatistic.oTimeKMax = ( backwardProcess->oStatistic.oTimeKMax < timeK16)                                                   ? (timeK16) : (backwardProcess->oStatistic.oTimeKMax);
-    backwardProcess->oStatistic.oTimeEMax = ( backwardProcess->oStatistic.oTimeEMax < timeE16)                                                   ? (timeE16) : (backwardProcess->oStatistic.oTimeEMax);
-    backwardProcess->oStatistic.oTimePAvg = ( backwardProcess->oStatistic.oTimePAvg == 0U)                                                       ? (timeP16) : (backwardProcess->oStatistic.oTimePAvg);
-    backwardProcess->oStatistic.oTimeKAvg = ( backwardProcess->oStatistic.oTimeKAvg == 0U)                                                       ? (timeK16) : (backwardProcess->oStatistic.oTimeKAvg);
-    backwardProcess->oStatistic.oTimeEAvg = ( backwardProcess->oStatistic.oTimeEAvg == 0U)                                                       ? (timeE16) : (backwardProcess->oStatistic.oTimeEAvg);
+    backwardProcess->oStatistic.oTimePMin = ((backwardProcess->oStatistic.oTimePMin > timeP16) || (backwardProcess->oStatistic.oTimePMin == 0U)) ? timeP16 : (backwardProcess->oStatistic.oTimePMin);
+    backwardProcess->oStatistic.oTimeKMin = ((backwardProcess->oStatistic.oTimeKMin > timeK16) || (backwardProcess->oStatistic.oTimeKMin == 0U)) ? timeK16 : (backwardProcess->oStatistic.oTimeKMin);
+    backwardProcess->oStatistic.oTimeEMin = ((backwardProcess->oStatistic.oTimeEMin > timeE16) || (backwardProcess->oStatistic.oTimeEMin == 0U)) ? timeE16 : (backwardProcess->oStatistic.oTimeEMin);
+    backwardProcess->oStatistic.oTimePMax = ( backwardProcess->oStatistic.oTimePMax < timeP16)                                                   ? timeP16 : (backwardProcess->oStatistic.oTimePMax);
+    backwardProcess->oStatistic.oTimeKMax = ( backwardProcess->oStatistic.oTimeKMax < timeK16)                                                   ? timeK16 : (backwardProcess->oStatistic.oTimeKMax);
+    backwardProcess->oStatistic.oTimeEMax = ( backwardProcess->oStatistic.oTimeEMax < timeE16)                                                   ? timeE16 : (backwardProcess->oStatistic.oTimeEMax);
+    backwardProcess->oStatistic.oTimePAvg = ( backwardProcess->oStatistic.oTimePAvg == 0U)                                                       ? timeP16 : (backwardProcess->oStatistic.oTimePAvg);
+    backwardProcess->oStatistic.oTimeKAvg = ( backwardProcess->oStatistic.oTimeKAvg == 0U)                                                       ? timeK16 : (backwardProcess->oStatistic.oTimeKAvg);
+    backwardProcess->oStatistic.oTimeEAvg = ( backwardProcess->oStatistic.oTimeEAvg == 0U)                                                       ? timeE16 : (backwardProcess->oStatistic.oTimeEAvg);
 
-    backwardProcess->oStatistic.oTimePCum += (uint64_t)(timeP32);
-    backwardProcess->oStatistic.oTimeKCum += (uint64_t)(timeK32);
-    backwardProcess->oStatistic.oTimeECum += (uint64_t)(timeE32);
+    backwardProcess->oStatistic.oTimePCum += (uint64_t)timeP32;
+    backwardProcess->oStatistic.oTimeKCum += (uint64_t)timeK32;
+    backwardProcess->oStatistic.oTimeECum += (uint64_t)timeE32;
 
-    backwardProcess->oStatistic.oTimePAvg  = (uint16_t)((((uint32_t)backwardProcess->oStatistic.oTimePAvg * ((1U<<KNMEAN) - 1)) + (timeP32))>>KNMEAN);
-    backwardProcess->oStatistic.oTimeKAvg  = (uint16_t)((((uint32_t)backwardProcess->oStatistic.oTimeKAvg * ((1U<<KNMEAN) - 1)) + (timeK32))>>KNMEAN);
-    backwardProcess->oStatistic.oTimeEAvg  = (uint16_t)((((uint32_t)backwardProcess->oStatistic.oTimeEAvg * ((1U<<KNMEAN) - 1)) + (timeE32))>>KNMEAN);
+    backwardProcess->oStatistic.oTimePAvg  = (uint16_t)((((uint32_t)backwardProcess->oStatistic.oTimePAvg * ((1U<<KNMEAN) - 1)) + timeP32)>>KNMEAN);
+    backwardProcess->oStatistic.oTimeKAvg  = (uint16_t)((((uint32_t)backwardProcess->oStatistic.oTimeKAvg * ((1U<<KNMEAN) - 1)) + timeK32)>>KNMEAN);
+    backwardProcess->oStatistic.oTimeEAvg  = (uint16_t)((((uint32_t)backwardProcess->oStatistic.oTimeEAvg * ((1U<<KNMEAN) - 1)) + timeE32)>>KNMEAN);
 }
 #else
 #error  "KKERN_WITH_STATISTICS_S SHALL be defined in project using kern/statistics.c"

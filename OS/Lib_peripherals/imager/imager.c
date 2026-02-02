@@ -141,16 +141,16 @@ int32_t imager_reserve(reserveMode_t reserveMode, uint32_t timeout) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = kern_lockMutex(vMutex_Reserve[core], timeout);
     if (status != KERR_KERN_NOERR) {
         PRIVILEGE_RESTORE;
-        return (KERR_IMAGER_CHBSY);
+        return KERR_IMAGER_CHBSY;
     }
 
     PRIVILEGE_RESTORE;
-    return (KERR_IMAGER_NOERR);
+    return KERR_IMAGER_NOERR;
 }
 
 /*
@@ -180,16 +180,16 @@ int32_t imager_release(reserveMode_t reserveMode) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = kern_unlockMutex(vMutex_Reserve[core]);
     if (status != KERR_KERN_NOERR) {
         PRIVILEGE_RESTORE;
-        return (KERR_IMAGER_CAREL);
+        return KERR_IMAGER_CAREL;
     }
 
     PRIVILEGE_RESTORE;
-    return (KERR_IMAGER_NOERR);
+    return KERR_IMAGER_NOERR;
 }
 
 /*
@@ -272,11 +272,11 @@ int32_t imager_configure(const imagerCnf_t *configure) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_imager_configure(configure);
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 /*
@@ -301,11 +301,11 @@ int32_t imager_acquisition(void) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_imager_acquisition();
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 /*
@@ -330,11 +330,11 @@ int32_t imager_read(volatile void **image) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_imager_read(image);
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 /*
@@ -361,11 +361,11 @@ int32_t imager_readRegister(uint8_t registerNb, uint16_t *value) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_imager_readRegister(registerNb, value);
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 /*
@@ -392,11 +392,11 @@ int32_t imager_writeRegister(uint8_t registerNb, uint16_t value) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_imager_writeRegister(registerNb, value);
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 /*
@@ -422,11 +422,11 @@ int32_t imager_standby(uint8_t mode) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_imager_standby(mode);
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 /*
@@ -453,11 +453,11 @@ int32_t imager_exposure(uint32_t time) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_imager_exposure(time);
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 // Local routines
@@ -486,7 +486,7 @@ static  int32_t local_init(void) {
         status = stub_imager_init();
         if (status != KERR_IMAGER_NOERR) {
             INTERRUPTION_RESTORE;
-            return (status);
+            return status;
         }
 
     }

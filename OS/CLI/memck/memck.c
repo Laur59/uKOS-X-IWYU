@@ -171,7 +171,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 // Let the time to the process "local_process" to run
 
     do { kern_suspendProcess(1U); } while ((!releasePack) && (error == KERR_NOT));
-    return (status);
+    return status;
 }
 
 // Local routines

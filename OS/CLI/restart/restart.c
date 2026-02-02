@@ -107,5 +107,5 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
     kern_suspendProcess(KWAIT_05S);
     machine_restart();
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }

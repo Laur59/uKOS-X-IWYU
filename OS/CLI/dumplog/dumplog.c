@@ -154,7 +154,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
         (void)dprintf(KSYST, "Not enough memory.\n");
         PRIVILEGE_RESTORE;
 
-        return (EXIT_OS_FAILURE);
+        return EXIT_OS_FAILURE;
     }
 
 // Copy the buffer into a memory (to ensure the coherence between the buffer & the parameter)
@@ -206,26 +206,27 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
             if (rOldLogBuffer != NULL) {
 
+            if (rOldLogBuffer != NULL) {
+
                 category = "Unknown         ";
-                category = (rOldLogBuffer->oLogCategory == KFATAL_SYSTEM)    ? ("Fatal system    ") : (category);
-                category = (rOldLogBuffer->oLogCategory == KFATAL_KERNEL)    ? ("Fatal kernel    ") : (category);
-                category = (rOldLogBuffer->oLogCategory == KFATAL_MANAGER)   ? ("Fatal manager   ") : (category);
-                category = (rOldLogBuffer->oLogCategory == KFATAL_USER)      ? ("Fatal user      ") : (category);
+                category = (rOldLogBuffer->oLogCategory == KFATAL_SYSTEM)    ? "Fatal system    " : category;
+                category = (rOldLogBuffer->oLogCategory == KFATAL_KERNEL)    ? "Fatal kernel    " : category;
+                category = (rOldLogBuffer->oLogCategory == KFATAL_MANAGER)   ? "Fatal manager   " : category;
+                category = (rOldLogBuffer->oLogCategory == KFATAL_USER)      ? "Fatal user      " : category;
 
-                category = (rOldLogBuffer->oLogCategory == KERROR_SYSTEM)    ? ("Error system    ") : (category);
-                category = (rOldLogBuffer->oLogCategory == KERROR_KERNEL)    ? ("Error kernel    ") : (category);
-                category = (rOldLogBuffer->oLogCategory == KERROR_MANAGER)   ? ("Error manager   ") : (category);
-                category = (rOldLogBuffer->oLogCategory == KERROR_USER)      ? ("Error user      ") : (category);
+                category = (rOldLogBuffer->oLogCategory == KERROR_SYSTEM)    ? "Error system    " : category;
+                category = (rOldLogBuffer->oLogCategory == KERROR_KERNEL)    ? "Error kernel    " : category;
+                category = (rOldLogBuffer->oLogCategory == KERROR_MANAGER)   ? "Error manager   " : category;
+                category = (rOldLogBuffer->oLogCategory == KERROR_USER)      ? "Error user      " : category;
 
-                category = (rOldLogBuffer->oLogCategory == KWARNING_SYSTEM)  ? ("Warning system  ") : (category);
-                category = (rOldLogBuffer->oLogCategory == KWARNING_KERNEL)  ? ("Warning kernel  ") : (category);
-                category = (rOldLogBuffer->oLogCategory == KWARNING_MANAGER) ? ("Warning manager ") : (category);
-                category = (rOldLogBuffer->oLogCategory == KWARNING_USER)    ? ("Warning user    ") : (category);
+                category = (rOldLogBuffer->oLogCategory == KWARNING_SYSTEM)  ? "Warning system  " : category;
+                category = (rOldLogBuffer->oLogCategory == KWARNING_KERNEL)  ? "Warning kernel  " : category;
+                category = (rOldLogBuffer->oLogCategory == KWARNING_MANAGER) ? "Warning manager " : category;
+                category = (rOldLogBuffer->oLogCategory == KWARNING_USER)    ? "Warning user    " : category;
 
-                category = (rOldLogBuffer->oLogCategory == KINFO_SYSTEM)     ? ("Info system     ") : (category);
-                category = (rOldLogBuffer->oLogCategory == KINFO_KERNEL)     ? ("Info kernel     ") : (category);
-                category = (rOldLogBuffer->oLogCategory == KINFO_MANAGER)    ? ("Info manager    ") : (category);
-                category = (rOldLogBuffer->oLogCategory == KINFO_USER)       ? ("Info user       ") : (category);
+                category = (rOldLogBuffer->oLogCategory == KINFO_SYSTEM)     ? "Info system     " : category;
+                category = (rOldLogBuffer->oLogCategory == KINFO_KERNEL)     ? "Info kernel     " : category;
+                category = (rOldLogBuffer->oLogCategory == KINFO_MANAGER)    ? "Info manager    " : category;
 
                 local_compose(rOldLogBuffer->oIdentifier, &idSpacerI);
                 local_compose(rOldLogBuffer->oFunction,   &idSpacerF);
@@ -251,7 +252,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     memo_delayedFree(logBuffer);
     PRIVILEGE_RESTORE;
 
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }
 
 // Local routines

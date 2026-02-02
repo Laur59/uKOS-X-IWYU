@@ -123,7 +123,7 @@ static  bool    cb_getValue(uint8_t mode, uint16_t *value) {
         case KBAT_CYCLE_COUNT:        { return (local_readRegister(BQ27510G3_CYCLE_COUNT, value));          }
         default: {
             *value = 0U;
-            return (true);
+            return true;
         }
     }
 }
@@ -149,7 +149,7 @@ static  bool    local_readRegister(uint16_t command, uint16_t *value) {
     I2C0_release(KMODE_READ_WRITE);
 
     *value = (uint16_t)((buffer[1]<<8) | buffer[0]);
-    return (status);
+    return status;
 }
 
 /*
@@ -176,7 +176,7 @@ static  bool    local_readSubRegister(uint16_t command, uint16_t subCommand, uin
     I2C0_release(KMODE_READ_WRITE);
 
     *value =(uint16_t)((buffer[1]<<8U) | buffer[0]);
-    return (status);
+    return status;
 }
 
 #include    "model_bq27510g3.c_inc"

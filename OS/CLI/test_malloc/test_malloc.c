@@ -192,7 +192,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
         case KERR_NME: { (void)dprintf(KSYST, "Not enough memory. Restart!\n\n"); status = EXIT_OS_FAILURE;     break; }
         default:       {                                                          status = EXIT_OS_FAILURE;     break; }
     }
-    return (status);
+    return status;
 }
 
 // Local routines
@@ -216,10 +216,10 @@ static  bool    local_reserve(uint32_t number, uint32_t nbSamples) {
                 memo_free((void *)vParameter[i].oTabPtr);
             }
         }
-        return (false);
+        return false;
     }
 
-    return (true);
+    return true;
 }
 
 /*
@@ -233,7 +233,7 @@ static  bool    local_install(uint32_t number) {
     uintptr_t   *stack;
 
     stack = (uintptr_t *)memo_malloc(KMEMO_ALIGN_16, (KSZ_STACK * sizeof(uintptr_t *)), "test_malloc");
-    if (stack == NULL) { return (false); }
+    if (stack == NULL) { return false; }
 
     vSpecification[number].oIdentifier    = NULL;
     vSpecification[number].oText          = NULL;
@@ -249,7 +249,7 @@ static  bool    local_install(uint32_t number) {
     vSpecification[number].oScheduleHook  = NULL;
 
     status = (kern_createProcess(&vSpecification[number], &vParameter[number], &vProcess[number]) == KERR_KERN_NOERR);
-    return (status);
+    return status;
 }
 
 /*

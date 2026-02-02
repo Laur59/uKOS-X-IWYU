@@ -137,16 +137,16 @@ int32_t i2c0_reserve(reserveMode_t reserveMode, uint32_t timeout) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_I2C_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_I2C_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = kern_lockMutex(vMutex_Reserve[core], timeout);
     if (status != KERR_KERN_NOERR) {
         PRIVILEGE_RESTORE;
-        return (KERR_I2C_CHBSY);
+        return KERR_I2C_CHBSY;
     }
 
     PRIVILEGE_RESTORE;
-    return (KERR_I2C_NOERR);
+    return KERR_I2C_NOERR;
 }
 
 /*
@@ -176,16 +176,16 @@ int32_t i2c0_release(reserveMode_t reserveMode) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_I2C_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_I2C_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = kern_unlockMutex(vMutex_Reserve[core]);
     if (status != KERR_KERN_NOERR) {
         PRIVILEGE_RESTORE;
-        return (KERR_I2C_CAREL);
+        return KERR_I2C_CAREL;
     }
 
     PRIVILEGE_RESTORE;
-    return (KERR_I2C_NOERR);
+    return KERR_I2C_NOERR;
 }
 
 /*
@@ -213,11 +213,11 @@ int32_t i2c0_configure(const i2cCnf_t *configure) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_I2C_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_I2C_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_i2c0_configure(configure);
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 /*
@@ -245,11 +245,11 @@ int32_t i2c0_write(uint8_t address, const uint8_t *buffer, uint16_t size) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_I2C_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_I2C_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_i2c0_write(address, buffer, size);
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 /*
@@ -285,11 +285,11 @@ int32_t i2c0_read(uint8_t address, uint8_t *buffer, uint16_t size) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_I2C_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_I2C_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_i2c0_read(address, buffer, size);
     PRIVILEGE_RESTORE;
-    return (status);
+    return status;
 }
 
 // Local routines
