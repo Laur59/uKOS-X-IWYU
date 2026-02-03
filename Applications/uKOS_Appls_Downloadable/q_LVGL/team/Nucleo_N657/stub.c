@@ -52,7 +52,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    <stdint.h>
 
 #include    "Registers/stm32N657_gpioe.h"
-#include    "lvgl.h"
+#include    "../../ulvgl.h"
 #include    "macros_core.h"
 #include    "spi/spi.h"
 #include    "spi_common.h"

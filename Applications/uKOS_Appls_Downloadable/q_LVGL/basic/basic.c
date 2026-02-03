@@ -72,7 +72,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #include    "crt0.h"
 #include    "kern/kern.h"
-#include    "lvgl.h"
+#include    "../ulvgl.h"
 #include    "macros.h"
 #include    "macros_core_stackFrame.h"
 #include    "memo/memo.h"

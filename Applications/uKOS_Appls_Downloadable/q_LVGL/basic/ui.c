@@ -53,7 +53,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #include    <stdint.h>
 
-#include    "lvgl.h"
+#include    "../ulvgl.h"
 #include    "macros.h"
 #include    "random/random.h"
 
@@ -222,7 +222,7 @@ static  void    local_square_cb(lv_timer_t *time) {
 // Delete the oldest handle
 // Create a new one
 
-    if (vSquare[index] != NULL) { lv_obj_del(vSquare[index]); }
+    if (vSquare[index] != NULL) { lv_obj_delete(vSquare[index]); }
 
     localSquare    = lv_obj_create(lv_screen_active());
     vSquare[index] = localSquare;

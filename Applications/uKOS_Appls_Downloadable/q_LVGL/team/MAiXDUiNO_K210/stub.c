@@ -52,7 +52,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    <stdint.h>
 
 #include    "kern/kern.h"
-#include    "lvgl.h"
+#include    "../../ulvgl.h"
 #include    "macros_core.h"
 
 // TFT controller commands

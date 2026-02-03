@@ -61,16 +61,6 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    "types.h"
 
 /*
- * \brief stub_machine_init
- *
- * - Initialise some specific CPU parts
- *
- */
-void    stub_machine_init(void) {
-
-}
-
-/*
  * \brief stub_machine_restart
  *
  * - Disable all the system interruption

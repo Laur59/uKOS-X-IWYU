@@ -12,6 +12,9 @@
 #   Clang tidy rules for the uKOS project.
 #
 #   add "-" to suppress a specific rule.
+#   This rule misc-use-internal-linkage, should be activated
+#   for verifying the nedd of static or not, and then, it
+#   should be disabled.
 #
 #----- 
 #                                              __ ______  _____
@@ -71,6 +74,7 @@ Checks: >
   -readability-function-cognitive-complexity,
   -readability-identifier-length,
   -readability-magic-numbers,
+  clang-analyzer-*,
   -clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling,
   -clang-analyzer-security.insecureAPI.strcpy,
   -google-*,
