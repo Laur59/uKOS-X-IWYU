@@ -51,17 +51,10 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    <stdint.h>
 
 #include    "crt0.h"
-#include    "Registers/core_addendum.h"
-#include    "kern/kern.h"
-#include    "kern/private/private_temporal.h"
+#include    "kern/private/private_temporal.h"   // IWYU pragma: keep (for vKern_TimeException)
 #include    "linker.h"
-#include    "macros.h"
 #include    "macros_core.h"
-#include    "macros_soc.h"
 #include    "soc_reg.h"
-
-extern  void    (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 // Vector table: ...
 // However rather than start at zero the vector table starts at address 0x00000004,
@@ -69,7 +62,7 @@ extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 extern  void        Reset_C0_Handler(void);
 
-const   uintptr_t   g_pfnVectors_C0[] __attribute__((used, section(".isr_vector"))) = {
+static  const   uintptr_t   g_pfnVectors_C0[] __attribute__((used, section(".isr_vector"))) = {
 
     (uintptr_t)linker_topStackSystem_C0,                        // MSP Stack
 

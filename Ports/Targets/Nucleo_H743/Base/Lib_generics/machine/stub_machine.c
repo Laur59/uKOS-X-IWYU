@@ -56,6 +56,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    "macros.h"
 #include    "macros_core.h"
 #include    "os_errors.h"
+#include    "types.h"
 
 /*
  * \brief stub_machine_restart
@@ -121,7 +122,7 @@ void    stub_machine_readFunctionName(const uintptr_t pc, const char_t **functio
 
     UNUSED(pc);
 
-    #if (!defined(__clang__))
+    #ifndef __clang__
             intptr_t    offset, nameLen;
     const   uintptr_t   *ptr;
 

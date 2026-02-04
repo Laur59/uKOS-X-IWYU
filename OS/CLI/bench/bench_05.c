@@ -60,6 +60,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
+#include    "bench.h"
+
 #include    <stdio.h>
 
 #include    "serial/serial.h"

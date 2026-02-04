@@ -132,8 +132,8 @@ void    scheduler_changeContext(bool force, list_t *list, uint8_t bitNb) {
     codeCurrent  = vKern_runProc[core]->oSpecification.oScheduleHook;
 
     if (vKern_backwardProc[core] != vKern_runProc[core]) {
-        if (codebackward != NULL) { (codebackward)(vKern_backwardProc[core], false); }
-        if (codeCurrent  != NULL) { (codeCurrent)(vKern_runProc[core],       true);  }
+        if (codebackward != NULL) { codebackward(vKern_backwardProc[core], false); }
+        if (codeCurrent  != NULL) { codeCurrent(vKern_runProc[core],         true);  }
     }
 }
 

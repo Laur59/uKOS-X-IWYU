@@ -56,6 +56,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    "kern/kern.h"
 #include    "led/led.h"
 #include    "macros_core.h"
+#include    "types.h"
 
 /*
  * \brief stub_alive_process
@@ -75,7 +76,7 @@ void __attribute__ ((noreturn)) stub_alive_process(const void *argument) {
     time[1]     = configure->oTime[1];
     led         = configure->oLed;
 
-    while (*killRequest == false) {
+    while (!*killRequest) {
         led_on(led);
         kern_suspendProcess(time[0]);
         led_off(led);

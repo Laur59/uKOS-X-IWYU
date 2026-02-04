@@ -49,6 +49,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;------------------------------------------------------------------------
 */
 
+#include    "startUp/startUp.h"
+
 #include    <inttypes.h>
 #include    <stdint.h>  // NOLINT(misc-include-cleaner): Explicit include for IWYU compliance
 #include    <stdio.h>
@@ -91,6 +93,7 @@ static  const   boot_t  aFunction[] = {
 
 // Module strings
 
+// NOLINTNEXTLINE(misc-use-internal-linkage): Global constant declared in startUp.h
 STRG_GLB_CONST(aStartUp_StrHelp[]) = "StartUp process\n"
                                      "===============\n\n"
 

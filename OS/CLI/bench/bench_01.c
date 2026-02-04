@@ -62,6 +62,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
+#include    "bench.h"
+
 #include    <stdint.h>
 #include    <stdio.h>
 
@@ -145,7 +147,7 @@ static  void    local_fill(uint8_t *array, uint64_t *time) {
     INTERRUPTION_OFF_HARD;
     for (i = 0U; i < KNB_X; i++) {
         for (j = 0U; j < KNB_Y; j++) {
-            *(array + ((size_t)i * (size_t)KNB_Y) + (size_t)j) = (uint8_t)(j);
+            *(array + ((size_t)i * (size_t)KNB_Y) + (size_t)j) = (uint8_t)j;
         }
     }
     INTERRUPTION_ON_HARD;

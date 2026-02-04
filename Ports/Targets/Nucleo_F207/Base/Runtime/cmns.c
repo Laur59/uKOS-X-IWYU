@@ -176,7 +176,7 @@ void    cmns_receive(serialManager_t serialManager, char_t *data) {
 void    cmns_wait(uint32_t us) {
     uint32_t    wkUs = us, time;
 
-    #if (defined(CACHE_S))
+    #ifdef CACHE_S
     wkUs = (wkUs / 7U) * (KFREQUENCY_CORE / 1000000U);
 
     #else

@@ -48,6 +48,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
+#include    "startUp/startUp.h"
+
 #include    <stdint.h>
 #include    <stdlib.h>
 
@@ -73,9 +75,7 @@ STRG_LOC_CONST(aStrApplication[]) = "startUp      StartUp process of the system.
 
 static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 static  void        local_process(const void *argument);
-extern  void        stub_startUp_launch(void);
 
-extern  VAR_DECLARED_ALIGN(const char_t aStartUp_StrHelp[], 4);
 #define aStrHelp    aStartUp_StrHelp
 
 // This process has to run on the following cores:

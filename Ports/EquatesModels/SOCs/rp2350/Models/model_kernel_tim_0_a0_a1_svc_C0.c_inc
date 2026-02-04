@@ -64,12 +64,13 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 */
 
 #include    "Registers/RP2350_resets.h"
-#include    "Registers/RP2350_timer.h"
-#include    "clockTree.h"
-#include    "macros_core_stackFrame.h"
-#include    "kern/private/private_processes.h"
-#include    "kern/private/private_scheduler.h"
-#include    "kern/private/private_temporal.h"
+
+#define K1ms_C0         ((float64_t)(0.001))
+
+#define KTIC_DELTA_C0   ((uint32_t)(KFREQUENCY_TIM * KKERN_TIC_TIME * K1ms_C0))         // 1-ms tic
+
+#define KTOUT_DELTA_C0  ((uint32_t)(KFREQUENCY_TIM * KKERN_PROC_TIMEOUT * K1ms_C0))     // 20-ms timeout
+
 #include    "Registers/nvic.h"
 
 #define K1ms_C0         ((float64_t)(0.001))
@@ -82,7 +83,6 @@ static  volatile    uint32_t    vTimeStart_C0     = 0U;                         
 static  volatile    uint32_t    vTimeStop_C0      = 0U;                                 // Time-stamp: when the process was stopped
 static  volatile    uint32_t    vTimeLastStart_C0 = 0U;                                 // Time-stamp: when the process was started (previous cycle)
 static  volatile    uint64_t    vTickCount_C0     = 0U;                                 // 64-bit timer (1-us)
-extern  volatile    bool        vPriv_insideSVC[KNB_CORES];                             // Inside an SVC call
 
 // Prototypes
 

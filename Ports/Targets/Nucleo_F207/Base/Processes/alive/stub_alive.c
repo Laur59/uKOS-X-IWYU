@@ -58,6 +58,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 // macros_soc.h is required because INTERRUPTION_OFF uses KINT_IMASK_OFF, KNVIC_PRIORITY_SHIFT
 #include    "macros_soc.h"      // IWYU pragma: keep
 #include    "led/led.h"
+#include    "types.h"
 
 /*
  * \brief stub_alive_process
@@ -77,7 +78,7 @@ void __attribute__ ((noreturn)) stub_alive_process(const void *argument) {
     time[1]     = configure->oTime[1];
     led         = configure->oLed;
 
-    while (*killRequest == false) {
+    while (!*killRequest) {
         led_on(led);
         kern_suspendProcess(time[0]);
         led_off(led);

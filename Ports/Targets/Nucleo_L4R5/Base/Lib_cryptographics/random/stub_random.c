@@ -55,10 +55,10 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 // Prototypes
 
-void    model_random_soft_init(void);
-void    model_random_soft_read(uint32_t *number);
-void    model_random_hard_init(void);
-void    model_random_hard_read(uint32_t *number);
+static  void    model_random_soft_init(void);
+static  void    model_random_soft_read(uint32_t *number);
+static  void    model_random_hard_init(void);
+static  void    model_random_hard_read(uint32_t *number);
 
 /*
  * \brief stub_random_init
@@ -97,8 +97,8 @@ int32_t stub_rand_read(randomGenerator_t generator, uint32_t *number) {
 #include    "macros_soc.h"
 #include    "soc_reg.h"
 
-            bool        vTerminated = false;
-volatile    uint32_t    *vNumber;
+static              bool        vTerminated = false;
+static  volatile    uint32_t    *vNumber;
 
 // Prototypes
 
@@ -110,7 +110,7 @@ static  void    local_RNG_IRQHandler(void);
  * - Initialise the hardware
  *
  */
-void    model_random_hard_init(void) {
+static  void    model_random_hard_init(void) {
 
     RCC->AHB2ENR |= RCC_AHB2ENR_RNGEN;
 
@@ -125,7 +125,7 @@ void    model_random_hard_init(void) {
  * - Get a random number
  *
  */
-void    model_random_hard_read(uint32_t *number) {
+static  void    model_random_hard_read(uint32_t *number) {
 
     vNumber = number;
 

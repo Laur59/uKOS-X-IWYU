@@ -50,6 +50,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #include    <stdint.h>
 
+#include    <stdint.h>
+
 #include    "board.h"
 #include    "cmns.h"
 #include    "core.h"
@@ -59,7 +61,6 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    "macros_soc.h"
 #include    "modules.h"
 #include    "soc_reg.h"
-#include    "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -120,7 +121,7 @@ void    exce_init(void) {
     }
 
     core_setBASEPRI((uint32_t)KINT_LEVEL_PERIPHERALS<<(uint32_t)KNVIC_PRIORITY_SHIFT);
-    SCB->AIRCR = SCB_AIRCR_VECTKEY_MASK | 0x0300u;
+    SCB->AIRCR = SCB_AIRCR_VECTKEY_MASK | 0x0300U;
 }
 
 // Model callbacks
@@ -139,7 +140,7 @@ static void __attribute__ ((noreturn)) cb_signal(uint8_t mode) {
     switch (mode) {
         default:
         case KEXCEPTION: {
-            local_cpyLEDs(0xFFu);
+            local_cpyLEDs(0xFFU);
             while (true) {
                 cmns_wait(1000000U);
                 local_setLEDs(0U);
@@ -148,7 +149,7 @@ static void __attribute__ ((noreturn)) cb_signal(uint8_t mode) {
             }
         }
         case KINTERRUPTION: {
-            local_cpyLEDs(0xFFu);
+            local_cpyLEDs(0xFFU);
             while (true) {
                 cmns_wait(1000000U);
                 local_setLEDs(1U);
@@ -213,7 +214,7 @@ static  void    local_clrLEDs(uint8_t ledNb) {
 static  void    local_cpyLEDs(uint8_t value) {
     uint8_t     led, mask;
 
-    mask = 0x01u;
+    mask = 0x01U;
     for (led = 0U; led < 3U; led++) {
         (value & mask) ? (local_setLEDs(led)) : (local_clrLEDs(led));
         mask = (uint8_t)(mask<<1U);

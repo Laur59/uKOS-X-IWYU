@@ -71,7 +71,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #if (KKERN_WITH_DEBUG_S == true)
 
-list_t      vKern_listStop[KNB_CORES];
+static	list_t		vKern_listStop[KNB_CORES];
 
 /*
  * \brief Initialise the manager

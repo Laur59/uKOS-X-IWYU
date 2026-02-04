@@ -48,6 +48,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 */
 
 #include    <inttypes.h>
+#include    <stdint.h>
 #include    <stdio.h>
 #include    <stdlib.h>
 
@@ -156,8 +157,8 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
         nb32Dots = 32U;
         for (tests = 0U; tests < nbTests; tests++) {
             nb32Dots--;
-            dot      = (nb32Dots > 0U) ? (".")      : (".\n");
-            nb32Dots = (nb32Dots > 0U) ? (nb32Dots) : (32U);
+            dot      = (nb32Dots > 0U) ? "."      : ".\n";
+            nb32Dots = (nb32Dots > 0U) ? nb32Dots : 32U;
             (void)dprintf(KSYST, "%s", dot);
 
             for (add = KSTART; add < (KEND / 1U); add++) {
@@ -188,7 +189,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
             }
         }
-        dot = (nb32Dots == 32U) ? ("\n") : ("\n\n");
+        dot = (nb32Dots == 32U) ? "\n" : "\n\n";
         (void)dprintf(KSYST, "%s", dot);
 
 // Test b: circular; fill the memory with an incremental pattern and verify
@@ -197,8 +198,8 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
         nb32Dots = 32U;
         for (tests = 0U; tests < nbTests; tests++) {
             nb32Dots--;
-            dot      = (nb32Dots > 0U) ? (".")      : (".\n");
-            nb32Dots = (nb32Dots > 0U) ? (nb32Dots) : (32U);
+            dot      = (nb32Dots > 0U) ? "."      : ".\n";
+            nb32Dots = (nb32Dots > 0U) ? nb32Dots : 32U;
             (void)dprintf(KSYST, "%s", dot);
 
             pattern_08 = 0U;
@@ -219,7 +220,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
                 pattern_08++;
             }
         }
-        dot = (nb32Dots == 32U) ? ("\n") : ("\n\n");
+        dot = (nb32Dots == 32U) ? "\n" : "\n\n";
         (void)dprintf(KSYST, "%s", dot);
 
 // Test 3: Memory 16-bits
@@ -233,8 +234,8 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
         nb32Dots = 32U;
         for (tests = 0U; tests < nbTests; tests++) {
             nb32Dots--;
-            dot      = (nb32Dots > 0U) ? (".")      : (".\n");
-            nb32Dots = (nb32Dots > 0U) ? (nb32Dots) : (32U);
+            dot      = (nb32Dots > 0U) ? "."      : ".\n";
+            nb32Dots = (nb32Dots > 0U) ? nb32Dots : 32U;
             (void)dprintf(KSYST, "%s", dot);
 
             for (add = KSTART; add < (KEND / 2U); add++) {
@@ -265,7 +266,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
             }
         }
-        dot = (nb32Dots == 32U) ? ("\n") : ("\n\n");
+        dot = (nb32Dots == 32U) ? "\n" : "\n\n";
         (void)dprintf(KSYST, "%s", dot);
 
 // Test b: circular; fill the memory with an incremental pattern and verify
@@ -274,8 +275,8 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
         nb32Dots = 32U;
         for (tests = 0U; tests < nbTests; tests++) {
             nb32Dots--;
-            dot      = (nb32Dots > 0U) ? (".")      : (".\n");
-            nb32Dots = (nb32Dots > 0U) ? (nb32Dots) : (32U);
+            dot      = (nb32Dots > 0U) ? "."      : ".\n";
+            nb32Dots = (nb32Dots > 0U) ? nb32Dots : 32U;
             (void)dprintf(KSYST, "%s", dot);
 
             pattern_16 = 0;
@@ -296,7 +297,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
                 pattern_16++;
             }
         }
-        dot = (nb32Dots == 32U) ? ("\n") : ("\n\n");
+        dot = (nb32Dots == 32U) ? "\n" : "\n\n";
         (void)dprintf(KSYST, "%s", dot);
 
 // Test 4: Memory 32-bits
@@ -310,8 +311,8 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
         nb32Dots = 32U;
         for (tests = 0U; tests < nbTests; tests++) {
             nb32Dots--;
-            dot      = (nb32Dots > 0U) ? (".")      : (".\n");
-            nb32Dots = (nb32Dots > 0U) ? (nb32Dots) : (32U);
+            dot      = (nb32Dots > 0U) ? "."      : ".\n";
+            nb32Dots = (nb32Dots > 0U) ? nb32Dots : 32U;
             (void)dprintf(KSYST, "%s", dot);
 
             for (add = KSTART; add < (KEND / 4U); add++) {
@@ -342,7 +343,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
             }
         }
-        dot = (nb32Dots == 32U) ? ("\n") : ("\n\n");
+        dot = (nb32Dots == 32U) ? "\n" : "\n\n";
         (void)dprintf(KSYST, "%s", dot);
 
 // Test b: circular; fill the memory with an incremental pattern and verify
@@ -351,8 +352,8 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
         nb32Dots = 32U;
         for (tests = 0U; tests < nbTests; tests++) {
             nb32Dots--;
-            dot      = (nb32Dots > 0U) ? (".")      : (".\n");
-            nb32Dots = (nb32Dots > 0U) ? (nb32Dots) : (32U);
+            dot      = (nb32Dots > 0U) ? "."      : ".\n";
+            nb32Dots = (nb32Dots > 0U) ? nb32Dots : 32U;
             (void)dprintf(KSYST, "%s", dot);
 
             pattern_32 = 0U;
@@ -373,7 +374,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
                 pattern_32++;
             }
         }
-        dot = (nb32Dots == 32U) ? ("\n") : ("\n\n");
+        dot = (nb32Dots == 32U) ? "\n" : "\n\n";
         (void)dprintf(KSYST, "%s", dot);
 
 // Test 5: Memory retention
@@ -387,8 +388,8 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
         nb32Dots = 32U;
         for (tests = 0U; tests < nbTests; tests++) {
             nb32Dots--;
-            dot      = (nb32Dots > 0U) ? (".")      : (".\n");
-            nb32Dots = (nb32Dots > 0U) ? (nb32Dots) : (32U);
+            dot      = (nb32Dots > 0U) ? "."      : ".\n";
+            nb32Dots = (nb32Dots > 0U) ? nb32Dots : 32U;
             (void)dprintf(KSYST, "%s", dot);
 
             pattern_08 = 0U;
@@ -411,7 +412,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
                 pattern_08++;
             }
         }
-        dot = (nb32Dots == 32U) ? ("\n") : ("\n\n");
+        dot = (nb32Dots == 32U) ? "\n" : "\n\n";
         (void)dprintf(KSYST, "%s", dot);
 
 // Test passed

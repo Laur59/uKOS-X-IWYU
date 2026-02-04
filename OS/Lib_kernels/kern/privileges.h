@@ -60,6 +60,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #include    <stdint.h>
 
+#include    "macros_soc.h"
+
 // IWYU pragma: private, include "kern/kern.h"
 
 /*!
@@ -80,6 +82,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 #ifdef __cplusplus
 extern  "C" {
 #endif
+
+extern  volatile    bool        vPriv_insideSVC[KNB_CORES];					// Inside an SVC call
 
 extern  void    privileges_init(void);
 

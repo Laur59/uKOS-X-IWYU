@@ -57,6 +57,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    "macros_core.h"
 #include    "macros_soc.h"
 #include    "soc_reg.h"
+#include    "tusb_config.h"
 
 // Save the GCC diagnostic
 //
@@ -66,6 +67,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 //
 #pragma GCC diagnostic  ignored "-Wpedantic"
 #include    "tusb.h"        // IWYU pragma: keep
+#include    "tusb_types.h"
+#include    "usbd.h"
 
 // Restore the GCC diagnostic
 //
@@ -87,13 +90,11 @@ uint32_t    SystemCoreClock = KFREQUENCY_CORE;
 
 // Prototypes
 
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
-
 static  void    local_OTG_FS_IRQHandler(void);
 
 // Init device stack on configured roothub port
 
-tusb_rhport_init_t deviceInit = {
+static  tusb_rhport_init_t deviceInit = {
     .role  = TUSB_ROLE_DEVICE,
     .speed = TUSB_SPEED_AUTO
 };

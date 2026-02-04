@@ -369,7 +369,7 @@ int32_t memo_readBlocInfo(const void *address, memoMallocInf_t *allocInfo) {
  * \param[in]   *address    Ptr on the address bloc to release
  *
  */
-void    memo_free(void *address) {
+void    memo_free(void *address) {  // NOLINT(misc-no-recursion): intentional bounded recursion for delayed-free mechanism (max depth: 2)
     memoMab_t           *preBlock, *curBlock, *nexBlock;
     uintptr_t           *stHeap;
     uint32_t            core, released;
@@ -473,7 +473,7 @@ void    memo_delayedFree(void *address) {
  *   has to be called at least once
  *
  */
-static  void    local_init(void) {
+static  void    local_init(void) {  // NOLINT(misc-no-recursion): intentional bounded recursion for delayed-free mechanism (max depth: 2)
             memoMab_t   *curBlock;
             uint32_t    core;
             uintptr_t   lnHeap;

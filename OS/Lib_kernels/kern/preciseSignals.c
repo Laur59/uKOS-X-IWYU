@@ -82,10 +82,10 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 #define KKERN_NB_SIGN_CHECK(x) ((x) > 0)
 static_assert(KKERN_NB_SIGN_CHECK(KKERN_NB_SIGNALS), "KKERN_NB_SIGNALS cannot be 0 when KKERN_NB_PRECISE_SIGNALS > 0");
 
-prcs_t      vKern_prcs[KNB_CORES][KKERN_NB_PRECISE_SIGNALS];
-uint16_t    vKern_nbPrcs[KNB_CORES];
-uint16_t    vKern_nbMaxPrcs[KNB_CORES];
-sign_t      *vDefaultSignalGroup[KNB_CORES];
+        prcs_t      vKern_prcs[KNB_CORES][KKERN_NB_PRECISE_SIGNALS];
+        uint16_t    vKern_nbPrcs[KNB_CORES];
+        uint16_t    vKern_nbMaxPrcs[KNB_CORES];
+static  sign_t      *vDefaultSignalGroup[KNB_CORES];
 
 /*
  * \brief Initialise the manager

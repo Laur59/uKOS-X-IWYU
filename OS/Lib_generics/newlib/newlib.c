@@ -97,22 +97,24 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;
 ;------------------------------------------------------------------------
 */
+// NOLINTBEGIN
+#include    "newlib.h"
 
 #include    "newlib.h"
 
+#include    <errno.h>       // NOLINT(misc-include-cleaner): provides ENODEV, EBADF, ECHILD, etc.
 #include    <stddef.h>
 #include    <stdint.h>
 #include    <string.h>
 
-#include    <errno.h>
+#include    <sys/_types.h>
 #include    <sys/reent.h>
 #include    <sys/stat.h>
-#include    <sys/time.h>
+#include    <sys/time.h>    // NOLINT(misc-include-cleaner): provides suseconds_t, struct timeval
 #include    <sys/times.h>
 #include    <sys/types.h>
 #include    <time.h>
-#include    <unistd.h>
-#include    <sys/_types.h>
+#include    <unistd.h>      // NOLINT(misc-include-cleaner): provides POSIX types
 struct timeval;
 
 #include    "calendar/calendar.h"
@@ -122,6 +124,7 @@ struct timeval;
 #if (KKERN_WITH_STATISTICS_S == true)
 #include    "macros_core.h"
 #endif
+#include    "macros_soc.h"
 #include    "memo/memo.h"
 #include    "modules.h"
 #include    "os_errors.h"
@@ -769,3 +772,4 @@ static  uint8_t local_inbyte(serialManager_t serialManager) {
 // NOLINTEND(bugprone-reserved-identifier,cert-dcl37-c,cert-dcl51-cpp)
 
 #endif
+// NOLINTEND

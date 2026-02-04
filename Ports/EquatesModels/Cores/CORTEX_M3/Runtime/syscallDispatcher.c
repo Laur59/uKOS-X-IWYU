@@ -50,13 +50,18 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;------------------------------------------------------------------------
 */
 
-#include    "macros.h"
-#include    "macros_core_stackFrame.h"
-#include    "Lib_generics/record/record.h"
+#include    "syscallDispatcher.h"
+
+#include    <stdint.h>
 #include    <stdlib.h>
 
+#include    "Lib_generics/record/record.h"
+#include    "Registers/soc_vectors.h"
+#include    "macros.h"
+#include    "macros_core_stackFrame.h"
+#include    "types.h"
+
 extern  void    kernel_message_C0(void);
-extern  void    kern_privilegeElevate(void);
 
 /*
  * \brief SVCall_C0_IRQHandler
@@ -73,7 +78,7 @@ extern  void    kern_privilegeElevate(void);
  *  +4       r1
  *  +0       r0
  */
-void    SVCall_C0_IRQHandler(void) __attribute__ ((naked));
+[[gnu::naked]]
 void    SVCall_C0_IRQHandler(void) {
 
 // Branch to     --> kernel_message

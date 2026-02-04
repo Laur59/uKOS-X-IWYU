@@ -1,30 +1,28 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
+; startUp.
+; ========
 
-/*
-; stub_switch.
-; ============
+; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   stub for the "switch" manager module.
-;
-;-----
+; Author:	Laurent von Allmen		The 2026-02-03
+; Modifs:
+
+; Project:	uKOS-X
+; Goal:		startUp process header.
+
+;   (c) 2025-2026, Laurent von Allmen
+;   ---------------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
 ;   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
 ;                                     \__,_/_/ |_\____//____/
 ;   edo.franzi@ukos.ch
-;
+
 ;   Description: Lightweight, real-time multitasking operating
 ;   system for embedded microcontroller and DSP-based systems.
-;
+
 ;   Permission is hereby granted, free of charge, to any person
 ;   obtaining a copy of this software and associated documentation
 ;   files (the "Software"), to deal in the Software without restriction,
@@ -32,10 +30,10 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;   merge, publish, distribute, sublicense, and/or sell copies of the
 ;   Software, and to permit persons to whom the Software is furnished
 ;   to do so, subject to the following conditions:
-;
+
 ;   The above copyright notice and this permission notice shall be
 ;   included in all copies or substantial portions of the Software.
-;
+
 ;   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 ;   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 ;   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -44,36 +42,27 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 ;   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ;   SOFTWARE.
-;
+
 ;------------------------------------------------------------------------
 */
 
-#include    "switch/switch.h"
+#pragma	once
 
-#include    <stdint.h>
+#include	"macros.h"
+#include	"types.h"
 
-#include    "Registers/stm32F217_gpio.h"
-#include    "board.h"
-#include    "os_errors.h"
+#ifdef __cplusplus
+extern	"C" {
+#endif
 
-/*
- * \brief stub_switch_init
- *
- * - Initialise some specific hardware parts
- *
- */
-void    stub_switch_init(void) {
+// Stub functions (target-specific implementations)
 
+void	stub_startUp_launch(void);
+
+// Module strings (defined in stub_startUp.c)
+
+extern	VAR_DECLARED_ALIGN(const char_t aStartUp_StrHelp[], 4);
+
+#ifdef __cplusplus
 }
-
-/*
- * \brief stub_switch_read
- *
- * - Read the jumper configuration
- *
- */
-int32_t stub_switch_read(uint32_t *mode) {
-
-    *mode = ((GPIOC->IDR & (1U<<BSW_0)) != 0U) ? 1U : 0U;
-    return KERR_SWITCH_NOERR;
-}
+#endif

@@ -74,6 +74,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    <string.h>
 
 #include    "serial/serial.h"
+#include    "cmns.h"
 #include    "crt0.h"
 #include    "kern/kern.h"
 #include    "macros.h"

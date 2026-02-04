@@ -63,6 +63,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
+#include    "bench.h"
+
 #include    <stdint.h>
 #include    <stdio.h>
 

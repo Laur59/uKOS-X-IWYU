@@ -131,7 +131,7 @@ extern  uintptr_t   __stack_chk_guard;
 
 // Prototypes
 
-void    init_relocate(void) __attribute__((weak));
+void    init_relocate(void) __attribute__((weak));      // NOLINT(misc-use-internal-linkage): weak symbol must have external linkage
 static  void    local_killProcess(void);
 static  void    local_panicMallocBroken(void);
 static  void    local_panicStackUnderflow(void);
@@ -248,7 +248,7 @@ void    __attribute__ ((weak)) init_relocate(void) {
  *   LDFLAGS += -Wl,--wrap=__stack_chk_fail
  *
  */
-void    __attribute__ ((noreturn)) __wrap___stack_chk_fail(void) {
+void    __attribute__ ((noreturn)) __wrap___stack_chk_fail(void) {  // NOLINT(misc-use-internal-linkage): linker wrap mechanism requires external linkage
 
     PRIVILEGE_ELEVATE;
     INTERRUPTION_OFF;

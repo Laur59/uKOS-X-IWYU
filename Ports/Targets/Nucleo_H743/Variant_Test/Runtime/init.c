@@ -465,20 +465,20 @@ static  void    local_RCC_Configuration(void) {
                     | RCC_CR_HSEON                      // Set HSEON bit
                     | RCC_CR_RC48ON;                    // Set HSI48ON bit
 
-    RCC->CFGR       = 0x00000000u;                      // Reset CFGR registe
-    RCC->D1CFGR     = 0x00000000u;                      // Reset D1CFGR register
-    RCC->D2CFGR     = 0x00000000u;                      // Reset D2CFGR register
-    RCC->D3CFGR     = 0x00000000u;                      // Reset D3CFGR register
-    RCC->PLLCKSELR  = 0x00000000u;                      // Reset PLLCKSELR register
-    RCC->PLLCFGR    = 0x00000000u;                      // Reset PLLCFGR register
-    RCC->PLL1DIVR   = 0x00000000u;                      // Reset PLL1DIVR register
-    RCC->PLL1FRACR  = 0x00000000u;                      // Reset PLL1FRACR register
-    RCC->PLL2DIVR   = 0x00000000u;                      // Reset PLL2DIVR register
-    RCC->PLL2FRACR  = 0x00000000u;                      // Reset PLL2FRACR register
-    RCC->PLL3DIVR   = 0x00000000u;                      // Reset PLL3DIVR register
-    RCC->PLL3FRACR  = 0x00000000u;                      // Reset PLL3FRACR register
-    RCC->CIER       = 0x00000000u;                      // Disable all interrupts
-    *((volatile uint32_t *)0x51008108u) = 0x000000001u; // Change the switch matrix read issuing capability to 1 for the AXI SRAM target (Target 7)
+    RCC->CFGR       = 0x00000000U;                      // Reset CFGR registe
+    RCC->D1CFGR     = 0x00000000U;                      // Reset D1CFGR register
+    RCC->D2CFGR     = 0x00000000U;                      // Reset D2CFGR register
+    RCC->D3CFGR     = 0x00000000U;                      // Reset D3CFGR register
+    RCC->PLLCKSELR  = 0x00000000U;                      // Reset PLLCKSELR register
+    RCC->PLLCFGR    = 0x00000000U;                      // Reset PLLCFGR register
+    RCC->PLL1DIVR   = 0x00000000U;                      // Reset PLL1DIVR register
+    RCC->PLL1FRACR  = 0x00000000U;                      // Reset PLL1FRACR register
+    RCC->PLL2DIVR   = 0x00000000U;                      // Reset PLL2DIVR register
+    RCC->PLL2FRACR  = 0x00000000U;                      // Reset PLL2FRACR register
+    RCC->PLL3DIVR   = 0x00000000U;                      // Reset PLL3DIVR register
+    RCC->PLL3FRACR  = 0x00000000U;                      // Reset PLL3FRACR register
+    RCC->CIER       = 0x00000000U;                      // Disable all interrupts
+    *((volatile uint32_t *)0x51008108U) = 0x000000001U; // Change the switch matrix read issuing capability to 1 for the AXI SRAM target (Target 7)
 
     while ((RCC->CR & RCC_CR_RC48RDY) == 0U) { }        // Waiting for the 48-MHz
 
@@ -508,7 +508,7 @@ static  void    local_RCC_Configuration(void) {
                   | (1U * RCC_PLL1DIVR_DIVP1_0)         // Div P
                   | (59U * RCC_PLL1DIVR_DIVN1_0);       // Div N 59 = 960-MHz
 
-    RCC->PLL1FRACR = 0x00000000u;                       // Reset PLL1FRACR register
+    RCC->PLL1FRACR = 0x00000000U;                       // Reset PLL1FRACR register
     RCC->CR       |= RCC_CR_PLL1ON;                     // PLL1 on
 
 // Waiting for the lock
@@ -534,7 +534,7 @@ static  void    local_RCC_Configuration(void) {
                   | (3U  * RCC_PLL2DIVR_DIVP2_0)        // Div P
                   | (24U * RCC_PLL2DIVR_DIVN2_0);       // Div N 24 = 400-MHz
 
-    RCC->PLL2FRACR = 0x00000000u;                       // Reset PLL2FRACR register
+    RCC->PLL2FRACR = 0x00000000U;                       // Reset PLL2FRACR register
     RCC->CR       |= RCC_CR_PLL2ON;                     // PLL2 on
 
 // Waiting for the lock
@@ -560,7 +560,7 @@ static  void    local_RCC_Configuration(void) {
                   | (1U  * RCC_PLL3DIVR_DIVP3_0)        // Div P
                   | (14U * RCC_PLL3DIVR_DIVN3_0);       // Div N 14 = 240-MHz
 
-    RCC->PLL3FRACR = 0x00000000u;                       // Reset PLL3FRACR register
+    RCC->PLL3FRACR = 0x00000000U;                       // Reset PLL3FRACR register
     RCC->CR       |= RCC_CR_PLL3ON;                     // PLL3 on
 
 // Waiting for the lock
@@ -605,7 +605,7 @@ static  void    local_RCC_Configuration(void) {
  */
 static  void    local_MPU_Configuration(void) {
 
-    #if (defined(PRIVILEGED_USER_S))
+    #ifdef PRIVILEGED_USER_S
     SET_MPU7_REGION(0U, 0U, ST_FLASH_INT_0,     SZ_FLASH_INT_0,     KMPU_EXECUTABLE,        KMPU_R_ALL,     KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,    KMPU_CASHABLE,      KMPU_NOT_BUFFERABLE);
     SET_MPU7_REGION(1U, 0U, ST_RAM_INT_0,       SZ_RAM_INT_0,       KMPU_EXECUTABLE,        KMPU_RW_ALL,    KMPU_TEX_LEVEL6, KMPU_NOT_SHAREABLE,    KMPU_CASHABLE,      KMPU_NOT_BUFFERABLE);
     SET_MPU7_REGION(2U, 0U, ST_RAM_INT_1,       SZ_RAM_INT_1,       KMPU_EXECUTABLE,        KMPU_RW_ALL,    KMPU_TEX_LEVEL6, KMPU_NOT_SHAREABLE,    KMPU_CASHABLE,      KMPU_NOT_BUFFERABLE);
@@ -635,12 +635,12 @@ static  void    local_MPU_Configuration(void) {
  */
 static  void    local_CACHE_Enable(void) {
 
-    #if (defined(CACHE_I_S))
+    #ifdef CACHE_I_S
     cache_I_Invalidate();
     cache_I_Enable();
     #endif
 
-    #if (defined(CACHE_D_S))
+    #ifdef CACHE_D_S
     cache_D_Invalidate();
     cache_D_Enable();
     #endif

@@ -49,6 +49,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;------------------------------------------------------------------------
 */
 
+#include    "startUp/startUp.h"
+
 #include    <inttypes.h>
 #include    <stdint.h>
 #include    <stdio.h>
@@ -82,8 +84,8 @@ static  const   char_t  *argv_cnsUrt0[] = { "console", "urt0" };
 static  const   char_t  *argv_mpyUrt0[] = { "mpy",     "urt0", "-internal", "100000" };
 
 static  const   boot_t  aFunction[] = {
-                            { 0x00u, "console", KSERIAL_BAUDRATE_460800, KURT0, 2U, argv_cnsUrt0 },
-                            { 0x01u, "mpy",     KSERIAL_BAUDRATE_460800, KURT0, 4U, argv_mpyUrt0 },
+                            { 0x00U, "console", KSERIAL_BAUDRATE_460800, KURT0, 2U, argv_cnsUrt0 },
+                            { 0x01U, "mpy",     KSERIAL_BAUDRATE_460800, KURT0, 4U, argv_mpyUrt0 },
                         };
 
 #define KDEF_COMM       KURT0
@@ -91,6 +93,7 @@ static  const   boot_t  aFunction[] = {
 
 // Module strings
 
+// NOLINTNEXTLINE(misc-use-internal-linkage): Global constant declared in startUp.h
 STRG_GLB_CONST(aStartUp_StrHelp[]) = "StartUp process\n"
                                      "===============\n\n"
 
@@ -182,7 +185,7 @@ void    stub_startUp_launch(void) {
                 error = true;
             }
 
-            if (error == true) {
+            if (error) {
                 (void)dprintf(KSYST, "Module not found or user memory busy by a running application.\n\n");
                 while (true) { kern_suspendProcess(1U); }
             }

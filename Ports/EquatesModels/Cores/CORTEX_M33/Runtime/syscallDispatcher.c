@@ -54,6 +54,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    <stdlib.h>
 
 #include    "Lib_generics/record/record.h"
+#include    "Registers/soc_vectors.h"
 #include    "macros.h"
 #include    "macros_core_stackFrame.h"
 #include    "macros_soc.h"

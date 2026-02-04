@@ -49,6 +49,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;------------------------------------------------------------------------
 */
 
+#include    "startUp/startUp.h"
+
 #include    <inttypes.h>
 #include    <stdio.h>
 
@@ -97,6 +99,7 @@ static  const   boot_t  aFunction_C1[] = {
 #define KNB_FUNCTIONS_C0    (sizeof(aFunction_C0) / sizeof(boot_t))
 #define KNB_FUNCTIONS_C1    (sizeof(aFunction_C1) / sizeof(boot_t))
 
+// NOLINTNEXTLINE(misc-use-internal-linkage): Global constant declared in startUp.h
 STRG_GLB_CONST(aStartUp_StrHelp[]) = "StartUp process\n"
                                      "================\n\n"
 
@@ -121,6 +124,7 @@ static  const   boot_t  aFunction_Cx[] = {
 #define KDEF_COMM_Cx        KURT0
 #define KNB_FUNCTIONS_Cx    (sizeof(aFunction_Cx) / sizeof(boot_t))
 
+// NOLINTNEXTLINE(misc-use-internal-linkage): Global constant declared in startUp.h
 STRG_GLB_CONST(aStartUp_StrHelp[]) = "StartUp process\n"
                                      "================\n\n"
 

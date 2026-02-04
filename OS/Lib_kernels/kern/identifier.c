@@ -53,6 +53,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 #include    <stdint.h>
 
 #include    "kern/kern.h"
+#include    "kern/private/private_identifiers.h"
 #include    "types.h"
 
 /*

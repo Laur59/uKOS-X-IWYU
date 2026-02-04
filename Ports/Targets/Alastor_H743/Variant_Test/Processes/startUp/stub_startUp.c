@@ -49,6 +49,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;------------------------------------------------------------------------
 */
 
+#include    "startUp/startUp.h"
+
 #include    <inttypes.h>
 #include    <stdio.h>
 #include    <stdint.h>
@@ -100,6 +102,7 @@ static  const   boot_t  aFunction[] = {
 
 // Module strings
 
+// NOLINTNEXTLINE(misc-use-internal-linkage): Global constant declared in startUp.h
 STRG_GLB_CONST(aStartUp_StrHelp[]) = "StartUp process\n"
                                      "===============\n\n"
 

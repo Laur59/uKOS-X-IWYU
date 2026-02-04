@@ -303,7 +303,7 @@ int32_t kern_setPool(pool_t *handle, const pcnf_t *configure) {
  * \return      KERR_KERN_BKFUL No more block
  *
  */
-int32_t kern_allocateBlock(pool_t *handle, void **address, uint32_t timeout) {
+int32_t kern_allocateBlock(pool_t *handle, void **address, uint32_t timeout) {  // NOLINT(misc-no-recursion): intentional tail recursion for retry-after-wait pattern (max depth: 2)
     uint32_t    core, i;
 
     DEBUG_KERN_TRACE("entry: ");

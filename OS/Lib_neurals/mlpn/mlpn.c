@@ -399,7 +399,7 @@ static  inline  float32_t   local_hadd_f32x4(float32x4_t v) {
 }
 #endif
 
-static  inline  float32_t   local_dot_f32(const float32_t * __restrict w, const float32_t * __restrict x, uint16_t n) {
+static  inline  float32_t   local_dot_f32(const float32_t * restrict w, const float32_t * restrict x, uint16_t n) {
 
     #if ((defined(__ARM_FEATURE_MVE)) && (__ARM_FEATURE_MVE == 2))
     float32x4_t     acc0 = vdupq_n_f32(0.0F);

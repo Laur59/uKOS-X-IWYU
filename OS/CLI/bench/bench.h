@@ -1,20 +1,18 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
+; bench.
+; ======
 
-/*
-; stub_switch.
-; ============
+; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Author:	Edo. Franzi		The 2025-01-01
+; Modifs:
 ;
-; Purpose:
-;   stub for the "switch" manager module.
+; Project:	uKOS-X
+; Goal:		System benches.
 ;
-;-----
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -48,32 +46,11 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;------------------------------------------------------------------------
 */
 
-#include    "switch/switch.h"
+#pragma once
 
-#include    <stdint.h>
-
-#include    "Registers/stm32F217_gpio.h"
-#include    "board.h"
-#include    "os_errors.h"
-
-/*
- * \brief stub_switch_init
- *
- * - Initialise some specific hardware parts
- *
- */
-void    stub_switch_init(void) {
-
-}
-
-/*
- * \brief stub_switch_read
- *
- * - Read the jumper configuration
- *
- */
-int32_t stub_switch_read(uint32_t *mode) {
-
-    *mode = ((GPIOC->IDR & (1U<<BSW_0)) != 0U) ? 1U : 0U;
-    return KERR_SWITCH_NOERR;
-}
+extern	bool		bench_00(void);
+extern	bool		bench_01(void);
+extern	bool		bench_02(void);
+extern	bool		bench_03(void);
+extern	bool		bench_04(void);
+extern	bool		bench_05(void);

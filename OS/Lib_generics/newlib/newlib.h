@@ -95,7 +95,9 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #pragma once
 
+#ifdef __riscv
 #include    <machine/time.h>  // for _CLOCKS_PER_SEC_
+#endif
 #include    <sys/reent.h>
 #include    <unistd.h>        // for STDERR_FILENO, STDIN_FILENO, STDOUT_FILENO
 

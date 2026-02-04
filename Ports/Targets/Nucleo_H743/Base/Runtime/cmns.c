@@ -103,7 +103,7 @@ void    cmns_init(void) {
     USART3->ISR &= (uint32_t)~USART_ISR_RXNE;
     USART3->ISR &= (uint32_t)~USART_ISR_TXE;
 
-    #if (defined(CONFIG_MAN_URT1_S))
+    #ifdef CONFIG_MAN_URT1_S
     RCC->APB1LENR |= RCC_APB1LENR_USART2EN;
 
     USART2->BRR  = BAUDRATE((uint32_t)KFREQUENCY_APB1, KSERIAL_DEFAULT_BAUDRATE);
@@ -149,7 +149,7 @@ void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
 
 // UART 1 device
 
-        #if (defined(CONFIG_MAN_URT1_S))
+        #ifdef CONFIG_MAN_URT1_S
         case KURT1: {
             while (true) {
                 while ((USART2->ISR & USART_ISR_TXE) == 0U) { }
@@ -192,7 +192,7 @@ void    cmns_receive(serialManager_t serialManager, char_t *data) {
 
 // UART 1 device
 
-        #if (defined(CONFIG_MAN_URT1_S))
+        #ifdef CONFIG_MAN_URT1_S
         case KURT1: {
             while ((USART2->ISR & USART_ISR_RXNE) == 0) { }
 
@@ -214,7 +214,7 @@ void    cmns_receive(serialManager_t serialManager, char_t *data) {
 void    cmns_wait(uint32_t us) {
     uint32_t    wkUs = us, time;
 
-    #if (defined(CACHE_S))
+    #ifdef CACHE_S
     wkUs = (wkUs / 7U) * (KFREQUENCY_CORE / 1000000U);
 
     #else

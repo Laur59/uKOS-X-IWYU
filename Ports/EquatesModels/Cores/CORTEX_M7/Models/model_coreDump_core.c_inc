@@ -126,7 +126,7 @@ static  void        local_printStackFrame(void);
  * FPSCR    = 0x00000000
  *
  */
-static  void    model_coreDump_displayExceptions(void) __attribute__ ((naked));
+[[gnu::naked]]
 static  void    model_coreDump_displayExceptions(void) {
 
     CORE_DUMP_SAVE_STACK_FRAME;

@@ -79,6 +79,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #endif
 #include    "kern/private/private_scheduler.h"
 #include    "kern/private/private_temporal.h"
+#include    "kern/privileges.h"
 #include    "macros_core.h"
 #include    "macros_core_stackFrame.h"
 #include    "macros_soc.h"
@@ -111,7 +112,6 @@ static  volatile    uint32_t    vTimeLastStart = 0U;                            
 static  volatile    uint64_t    vTickCount     = 0U;                                    // 64-bit timer (1-us)
 static  volatile    bool        vTickLess      = false;                                 // Tickless mode
 static  volatile    bool        vTimeout       = false;                                 // Timeout
-extern  volatile    bool        vPriv_insideSVC[KNB_CORES];                             // Inside an SVC call
 
 // Prototypes
 

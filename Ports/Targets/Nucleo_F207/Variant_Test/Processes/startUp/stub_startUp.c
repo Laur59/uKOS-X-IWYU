@@ -49,6 +49,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;------------------------------------------------------------------------
 */
 
+#include    "startUp/startUp.h"
+
 #include    <inttypes.h>
 #include    <stdint.h>
 #include    <stdio.h>
@@ -58,11 +60,11 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    "ip.h"
 #include    "kern/kern.h"
 #include    "macros.h"
+#include    "modules.h"
 #include    "switch/switch.h"
 #include    "os_errors.h"
 #include    "system/system.h"
 #include    "types.h"
-#include    "urt0/urt0.h"
 
 // Bootstrap function table
 // ------------------------
@@ -82,8 +84,8 @@ static  const   char_t  *argv_cnsUrt0[] = { "console", "urt0" };
 static  const   char_t  *argv_sloader[] = { "sloader", "-run" };
 
 static  const   boot_t  aFunction[] = {
-                            { 0x00u, "console", KSERIAL_BAUDRATE_460800, KSYST, 2U, argv_cnsUrt0 },
-                            { 0x01u, "sloader", KSERIAL_BAUDRATE_460800, KSYST, 2U, argv_sloader }
+                            { 0x00U, "console", KSERIAL_BAUDRATE_460800, KSYST, 2U, argv_cnsUrt0 },
+                            { 0x01U, "sloader", KSERIAL_BAUDRATE_460800, KSYST, 2U, argv_sloader }
                         };
 
 #define KDEF_COMM       KURT0
@@ -91,6 +93,7 @@ static  const   boot_t  aFunction[] = {
 
 // Module strings
 
+// NOLINTNEXTLINE(misc-use-internal-linkage): Global constant declared in startUp.h
 STRG_GLB_CONST(aStartUp_StrHelp[]) = "StartUp process\n"
                                      "===============\n\n"
 
@@ -177,7 +180,7 @@ void    stub_startUp_launch(void) {
                 error = true;
             }
 
-            if (error == true) {
+            if (error) {
                 (void)dprintf(KSYST, "Module not found or user memory busy by a running application.\n\n");
                 while (true) { kern_suspendProcess(1U); }
             }

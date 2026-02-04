@@ -48,24 +48,23 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;------------------------------------------------------------------------
 */
 
-#include	<inttypes.h>
-#include	<stdio.h>
+#include    <inttypes.h>
+#include    <stdio.h>
 
-#include	"types.h"
-#include	"macros_soc.h"
-#include	"macros_core.h"
-#include	"macros_core_stackFrame.h"
-#include	"serial/serial.h"
+#include    "macros_core.h"
+#include    "macros_core_stackFrame.h"
+#include    "macros_soc.h"
+#include    "types.h"
 
-static	uintptr_t	*vStackBefore[KNB_CORES], *vStackAfter[KNB_CORES], vStackCoreDump[KNB_CORES][ENDREG];
-static	uint32_t	vExceptionNb[KNB_CORES];
+static  uintptr_t   *vStackBefore[KNB_CORES], *vStackAfter[KNB_CORES], vStackCoreDump[KNB_CORES][ENDREG];
+static  uint32_t    vExceptionNb[KNB_CORES];
 
 // Prototypes
 
-static	void		local_processException(uintptr_t *stackBefore, uintptr_t *stackAfter);
-static	void		local_printException(const char_t **vectorName);
-static	void		local_printCore(void);
-static	void		local_printStackFrame(void);
+static  void        local_processException(uintptr_t *stackBefore, uintptr_t *stackAfter);
+static  void        local_printException(const char_t **vectorName);
+static  void        local_printCore(void);
+static  void        local_printStackFrame(void);
 
 /*
  * \brief model_coreDump_displayExceptions
@@ -108,12 +107,12 @@ static	void		local_printStackFrame(void);
  * BASEPRI  = 0x00000070
  *
  */
-static	void	model_coreDump_displayExceptions(void) __attribute__ ((naked));
-static	void	model_coreDump_displayExceptions(void) {
+[[gnu::naked]]
+static  void    model_coreDump_displayExceptions(void) {
 
-	CORE_DUMP_SAVE_STACK_FRAME;
+    CORE_DUMP_SAVE_STACK_FRAME;
 
-	JUMP_FNCT(local_processException);
+    JUMP_FNCT(local_processException);
 }
 
 /*
@@ -126,36 +125,36 @@ static	void	model_coreDump_displayExceptions(void) {
  * - Display the stack frame
  *
  */
-static	void	__attribute__ ((noinline, used, noreturn)) local_processException(uintptr_t *stackBefore, uintptr_t *stackAfter) {
-			uint32_t	core, i;
-	const	uintptr_t	*ptr;
-	const	char_t		*vectorName;
+static  void    __attribute__ ((noinline, used, noreturn)) local_processException(uintptr_t *stackBefore, uintptr_t *stackAfter) {
+            uint32_t    core, i;
+    const   uintptr_t   *ptr;
+    const   char_t      *vectorName;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	SET_PRIVILEGED_MODE;
-	vKern_runProc[core]->oSpecification.oMode = KPROC_PRIVILEGED;
+    SET_PRIVILEGED_MODE;
+    vKern_runProc[core]->oSpecification.oMode = KPROC_PRIVILEGED;
 
-	vExceptionNb[core] = core_getIPSR();
-	vStackBefore[core] = stackBefore;
-	vStackAfter[core]  = stackAfter;
+    vExceptionNb[core] = core_getIPSR();
+    vStackBefore[core] = stackBefore;
+    vStackAfter[core]  = stackAfter;
 
 // Collect the stack frame
 
-	ptr = vStackAfter[core];
-	vStackCoreDump[core][SPP] = (uintptr_t)vStackAfter[core];
-	for (i = PSP; i < ENDREG; i++) {
-		vStackCoreDump[core][i] = *ptr;
-		ptr++;
-	}
+    ptr = vStackAfter[core];
+    vStackCoreDump[core][SPP] = (uintptr_t)vStackAfter[core];
+    for (i = PSP; i < ENDREG; i++) {
+        vStackCoreDump[core][i] = *ptr;
+        ptr++;
+    }
 
-	local_printException(&vectorName);
-	local_printFunction(vStackCoreDump[core][PC], vectorName, "Exception:    ");
-	local_printCore();
-	local_printTrace();
-	local_printLog();
-	local_printStackFrame();
-	cb_signal(KEXCEPTION);
+    local_printException(&vectorName);
+    local_printFunction(vStackCoreDump[core][PC], vectorName, "Exception:    ");
+    local_printCore();
+    local_printTrace();
+    local_printLog();
+    local_printStackFrame();
+    cb_signal(KEXCEPTION);
 }
 
 /*
@@ -164,32 +163,32 @@ static	void	__attribute__ ((noinline, used, noreturn)) local_processException(ui
  * - Display the exception name
  *
  */
-static	void	__attribute__ ((noinline)) local_printException(const char_t **vectorName) {
-	uint32_t	core;
+static  void    __attribute__ ((noinline)) local_printException(const char_t **vectorName) {
+    uint32_t    core;
 
-	core = GET_RUNNING_CORE;
-	cmns_send(KDEF0, "\n\n\n\n");
-	cmns_send(KDEF0, "System dead! Core DUMP!!\n");
-	cmns_send(KDEF0, "========================\n\n");
-	switch (vExceptionNb[core]) {
-		case 0U:  { *vectorName = "Thread mode";		break; }
-		case 1U:  { *vectorName = "Reserved";			break; }
-		case 2U:  { *vectorName = "NonMaskableInt";		break; }
-		case 3U:  { *vectorName = "HardFault";			break; }
-		case 4U:  { *vectorName = "MemoryManagement";	break; }
-		case 5U:  { *vectorName = "BusFault";			break; }
-		case 6U:  { *vectorName = "UsageFaultn";		break; }
-		case 7U:  { *vectorName = "Reserved 7";			break; }
-		case 8U:  { *vectorName = "Reserved 8";			break; }
-		case 9U:  { *vectorName = "Reserved 9";			break; }
-		case 10U: { *vectorName = "Reserved 10";		break; }
-		case 11U: { *vectorName = "SVCall_IRQn";		break; }
-		case 12U: { *vectorName = "DebugMonitor";		break; }
-		case 13U: { *vectorName = "Reserved 13";		break; }
-		case 14U: { *vectorName = "PendSV";				break; }
-		case 15U: { *vectorName = "SysTick";			break; }
-		default:  { *vectorName = "Unknown";			break; }
-	}
+    core = GET_RUNNING_CORE;
+    cmns_send(KDEF0, "\n\n\n\n");
+    cmns_send(KDEF0, "System dead! Core DUMP!!\n");
+    cmns_send(KDEF0, "========================\n\n");
+    switch (vExceptionNb[core]) {
+        case 0U:  { *vectorName = "Thread mode";        break; }
+        case 1U:  { *vectorName = "Reserved";           break; }
+        case 2U:  { *vectorName = "NonMaskableInt";     break; }
+        case 3U:  { *vectorName = "HardFault";          break; }
+        case 4U:  { *vectorName = "MemoryManagement";   break; }
+        case 5U:  { *vectorName = "BusFault";           break; }
+        case 6U:  { *vectorName = "UsageFaultn";        break; }
+        case 7U:  { *vectorName = "Reserved 7";         break; }
+        case 8U:  { *vectorName = "Reserved 8";         break; }
+        case 9U:  { *vectorName = "Reserved 9";         break; }
+        case 10U: { *vectorName = "Reserved 10";        break; }
+        case 11U: { *vectorName = "SVCall_IRQn";        break; }
+        case 12U: { *vectorName = "DebugMonitor";       break; }
+        case 13U: { *vectorName = "Reserved 13";        break; }
+        case 14U: { *vectorName = "PendSV";             break; }
+        case 15U: { *vectorName = "SysTick";            break; }
+        default:  { *vectorName = "Unknown";            break; }
+    }
 }
 
 /*
@@ -198,38 +197,38 @@ static	void	__attribute__ ((noinline)) local_printException(const char_t **vecto
  * - Display the core information
  *
  */
-static	void	__attribute__ ((noinline)) local_printCore(void) {
-			char_t		string[80 + 1];
-	const	int32_t		cfsr  = (int32_t)SCB->CFSR;
-	const	int32_t		hfsr  = (int32_t)SCB->HFSR;
-	const	int32_t		mmfar = (int32_t)SCB->MMFAR;
-	const	int32_t		bfar  = (int32_t)SCB->BFAR;
+static  void    __attribute__ ((noinline)) local_printCore(void) {
+            char_t      string[80 + 1];
+    const   int32_t     cfsr  = (int32_t)SCB->CFSR;
+    const   int32_t     hfsr  = (int32_t)SCB->HFSR;
+    const   int32_t     mmfar = (int32_t)SCB->MMFAR;
+    const   int32_t     bfar  = (int32_t)SCB->BFAR;
 
-	(void)snprintf(&string[0], 80U, "\nCFSR     = 0x%08"PRIX32, cfsr);
-	cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "\nCFSR     = 0x%08"PRIX32, cfsr);
+    cmns_send(KDEF0, string);
 
-	if (((uint32_t)cfsr & (uint32_t)(1U<<(0U +  8U))) != 0U) { cmns_send(KDEF0, " IBUSERR");     }
-	if (((uint32_t)cfsr & (uint32_t)(1U<<(1U +  8U))) != 0U) { cmns_send(KDEF0, " PRECISERR");   }
-	if (((uint32_t)cfsr & (uint32_t)(1U<<(2U +  8U))) != 0U) { cmns_send(KDEF0, " IMPRECISERR"); }
-	if (((uint32_t)cfsr & (uint32_t)(1U<<(3U +  8U))) != 0U) { cmns_send(KDEF0, " UNSTKERR");    }
-	if (((uint32_t)cfsr & (uint32_t)(1U<<(4U +  8U))) != 0U) { cmns_send(KDEF0, " STKERR");      }
-	if (((uint32_t)cfsr & (uint32_t)(1U<<(5U +  8U))) != 0U) { cmns_send(KDEF0, " LSPERR");      }
-	if (((uint32_t)cfsr & (uint32_t)(1U<<(7U +  8U))) != 0U) { cmns_send(KDEF0, " BFARVALID");   }
-	if (((uint32_t)cfsr & (uint32_t)(1U<<(0U + 16U))) != 0U) { cmns_send(KDEF0, " UNDEFINSTR");  }
-	if (((uint32_t)cfsr & (uint32_t)(1U<<(1U + 16U))) != 0U) { cmns_send(KDEF0, " INVSTATE");    }
-	if (((uint32_t)cfsr & (uint32_t)(1U<<(2U + 16U))) != 0U) { cmns_send(KDEF0, " INVPC");       }
-	if (((uint32_t)cfsr & (uint32_t)(1U<<(3U + 16U))) != 0U) { cmns_send(KDEF0, " NOCP");        }
-	if (((uint32_t)cfsr & (uint32_t)(1U<<(8U + 16U))) != 0U) { cmns_send(KDEF0, " UNALIGNED");   }
-	if (((uint32_t)cfsr & (uint32_t)(1U<<(9U + 16U))) != 0U) { cmns_send(KDEF0, " DIVBYZERO");   }
-	if (((uint32_t)cfsr & (uint32_t)(1U<<(0U +  0U))) != 0U) { cmns_send(KDEF0, " IACCVIOL");    }
-	if (((uint32_t)cfsr & (uint32_t)(1U<<(1U +  0U))) != 0U) { cmns_send(KDEF0, " DACCVIOL");    }
-	if (((uint32_t)cfsr & (uint32_t)(1U<<(3U +  0U))) != 0U) { cmns_send(KDEF0, " MUNSTKERR");   }
-	if (((uint32_t)cfsr & (uint32_t)(1U<<(4U +  0U))) != 0U) { cmns_send(KDEF0, " MSTKERR");     }
-	if (((uint32_t)cfsr & (uint32_t)(1U<<(7U +  0U))) != 0U) { cmns_send(KDEF0, " MMARVALID");   }
+    if (((uint32_t)cfsr & (uint32_t)(1U<<(0U +  8U))) != 0U) { cmns_send(KDEF0, " IBUSERR");     }
+    if (((uint32_t)cfsr & (uint32_t)(1U<<(1U +  8U))) != 0U) { cmns_send(KDEF0, " PRECISERR");   }
+    if (((uint32_t)cfsr & (uint32_t)(1U<<(2U +  8U))) != 0U) { cmns_send(KDEF0, " IMPRECISERR"); }
+    if (((uint32_t)cfsr & (uint32_t)(1U<<(3U +  8U))) != 0U) { cmns_send(KDEF0, " UNSTKERR");    }
+    if (((uint32_t)cfsr & (uint32_t)(1U<<(4U +  8U))) != 0U) { cmns_send(KDEF0, " STKERR");      }
+    if (((uint32_t)cfsr & (uint32_t)(1U<<(5U +  8U))) != 0U) { cmns_send(KDEF0, " LSPERR");      }
+    if (((uint32_t)cfsr & (uint32_t)(1U<<(7U +  8U))) != 0U) { cmns_send(KDEF0, " BFARVALID");   }
+    if (((uint32_t)cfsr & (uint32_t)(1U<<(0U + 16U))) != 0U) { cmns_send(KDEF0, " UNDEFINSTR");  }
+    if (((uint32_t)cfsr & (uint32_t)(1U<<(1U + 16U))) != 0U) { cmns_send(KDEF0, " INVSTATE");    }
+    if (((uint32_t)cfsr & (uint32_t)(1U<<(2U + 16U))) != 0U) { cmns_send(KDEF0, " INVPC");       }
+    if (((uint32_t)cfsr & (uint32_t)(1U<<(3U + 16U))) != 0U) { cmns_send(KDEF0, " NOCP");        }
+    if (((uint32_t)cfsr & (uint32_t)(1U<<(8U + 16U))) != 0U) { cmns_send(KDEF0, " UNALIGNED");   }
+    if (((uint32_t)cfsr & (uint32_t)(1U<<(9U + 16U))) != 0U) { cmns_send(KDEF0, " DIVBYZERO");   }
+    if (((uint32_t)cfsr & (uint32_t)(1U<<(0U +  0U))) != 0U) { cmns_send(KDEF0, " IACCVIOL");    }
+    if (((uint32_t)cfsr & (uint32_t)(1U<<(1U +  0U))) != 0U) { cmns_send(KDEF0, " DACCVIOL");    }
+    if (((uint32_t)cfsr & (uint32_t)(1U<<(3U +  0U))) != 0U) { cmns_send(KDEF0, " MUNSTKERR");   }
+    if (((uint32_t)cfsr & (uint32_t)(1U<<(4U +  0U))) != 0U) { cmns_send(KDEF0, " MSTKERR");     }
+    if (((uint32_t)cfsr & (uint32_t)(1U<<(7U +  0U))) != 0U) { cmns_send(KDEF0, " MMARVALID");   }
 
-	(void)snprintf(&string[0], 80U, "\nHFSR     = 0x%08"PRIX32, hfsr);		 cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "\nMMFAR    = 0x%08"PRIX32, mmfar);		 cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "\nBFAR     = 0x%08"PRIX32"\n\n", bfar); cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "\nHFSR     = 0x%08"PRIX32, hfsr);       cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "\nMMFAR    = 0x%08"PRIX32, mmfar);      cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "\nBFAR     = 0x%08"PRIX32"\n\n", bfar); cmns_send(KDEF0, string);
 }
 
 /*
@@ -251,9 +250,9 @@ static	void	__attribute__ ((noinline)) local_printCore(void) {
  *     - MSP
  *     - SPP
  *
- *     - void	Exception_XYZ(void) {
- *     - 140:	b508    push	{r3, lr}    --> not used because stacked into the MSP stack
- *     - void	(*go)(uint32_t number);
+ *     - void   Exception_XYZ(void) {
+ *     - 140:   b508    push    {r3, lr}    --> not used because stacked into the MSP stack
+ *     - void   (*go)(uint32_t number);
  *
  *     - go = vExce_indExcVectors[core][XYZ];
  *     - ...
@@ -261,84 +260,84 @@ static	void	__attribute__ ((noinline)) local_printCore(void) {
  *     - ...
  *
  */
-static	void	local_printStackFrame(void) {
-			char_t		string[80 + 1];
-			uint32_t	core;
-			uintptr_t	offset;
-	const	uintptr_t	*stack;
+static  void    local_printStackFrame(void) {
+            char_t      string[80 + 1];
+            uint32_t    core;
+            uintptr_t   offset;
+    const   uintptr_t   *stack;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
 // Display the stack contents (psp or msp previous 32 positions)
 //
-//		~~~~~~~~~~~~~~~ 0xFFF..FF
-//		|             |
-//		|             |
-//		+-------------+ <- stack before the fault
-//		|   ^         |
-//		|   |         | Automatic stack of some registers
-//		|   |         | - No FPU: xPSR, PC, lr r12, r3..r0: offset + 8
-//		|   | offset  |
-//		+-------------+ <- stackBefore
-//		|             |
-//		|             | Stack the remaining registers
-//		|             | - without FPU: r11..r4, BASEPRI, lr
-//		|             |
-//		+-------------+ <- stackAfter
-//		|             |
-//		|             |
-//		~~~~~~~~~~~~~~~ 0x000..00
+//      ~~~~~~~~~~~~~~~ 0xFFF..FF
+//      |             |
+//      |             |
+//      +-------------+ <- stack before the fault
+//      |   ^         |
+//      |   |         | Automatic stack of some registers
+//      |   |         | - No FPU: xPSR, PC, lr r12, r3..r0: offset + 8
+//      |   | offset  |
+//      +-------------+ <- stackBefore
+//      |             |
+//      |             | Stack the remaining registers
+//      |             | - without FPU: r11..r4, BASEPRI, lr
+//      |             |
+//      +-------------+ <- stackAfter
+//      |             |
+//      |             |
+//      ~~~~~~~~~~~~~~~ 0x000..00
 
-	offset = 8U;
+    offset = 8U;
 
-	stack = vStackBefore[core];
+    stack = vStackBefore[core];
 
-	(void)snprintf(&string[0], 80U, "Stack content before the fault: offset = 0x%08"PRIXPTR"\n", offset); 												cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+31] = 0x%08"PRIXPTR"\n",   stack[offset + 31U]);			   												cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+30] = 0x%08"PRIXPTR"\n",   stack[offset + 30U]);			   												cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+29] = 0x%08"PRIXPTR"\n",   stack[offset + 29U]);			   												cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+28] = 0x%08"PRIXPTR"\n",   stack[offset + 28U]);			   												cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+27] = 0x%08"PRIXPTR"\n",   stack[offset + 27U]);			   												cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+26] = 0x%08"PRIXPTR"\n",   stack[offset + 26U]);			   												cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+25] = 0x%08"PRIXPTR"\n",   stack[offset + 25U]);			   												cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+24] = 0x%08"PRIXPTR"\n",   stack[offset + 24U]);			   												cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+23] = 0x%08"PRIXPTR"\n",   stack[offset + 23U]);			   												cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+22] = 0x%08"PRIXPTR"\n",   stack[offset + 22U]);			   												cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+21] = 0x%08"PRIXPTR"\n",   stack[offset + 21U]);			   												cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+20] = 0x%08"PRIXPTR"\n",   stack[offset + 20U]);			   												cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+19] = 0x%08"PRIXPTR"\n",   stack[offset + 19U]);			   												cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+18] = 0x%08"PRIXPTR"\n",   stack[offset + 18U]);			   												cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+17] = 0x%08"PRIXPTR"\n",   stack[offset + 17U]);			   												cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+16] = 0x%08"PRIXPTR"\n",   stack[offset + 16U]);			   												cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+15] = 0x%08"PRIXPTR"\n",   stack[offset + 15U]);			   												cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+14] = 0x%08"PRIXPTR"\n",   stack[offset + 14U]);			   												cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+13] = 0x%08"PRIXPTR"\n",   stack[offset + 13U]);			   												cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+12] = 0x%08"PRIXPTR"\n",   stack[offset + 12U]);			   												cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+11] = 0x%08"PRIXPTR"\n",   stack[offset + 11U]);			   												cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+10] = 0x%08"PRIXPTR"\n",   stack[offset + 10U]);			   												cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+09] = 0x%08"PRIXPTR"\n",   stack[offset + 9U]);			   													cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+08] = 0x%08"PRIXPTR"\n",   stack[offset + 8U]);			   													cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+07] = 0x%08"PRIXPTR"\n",   stack[offset + 7U]);			   													cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+06] = 0x%08"PRIXPTR"\n",   stack[offset + 6U]);			   													cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+05] = 0x%08"PRIXPTR"\n",   stack[offset + 5U]);			   													cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+04] = 0x%08"PRIXPTR"\n",   stack[offset + 4U]);			   													cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+03] = 0x%08"PRIXPTR"\n",   stack[offset + 3U]);			   													cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+02] = 0x%08"PRIXPTR"\n",   stack[offset + 2U]);			   													cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+01] = 0x%08"PRIXPTR"\n",   stack[offset + 1U]);			   													cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "stack[+00] = 0x%08"PRIXPTR"\n\n", stack[offset + 0U]);			   													cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "Stack content before the fault: offset = 0x%08"PRIXPTR"\n", offset);                                               cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+31] = 0x%08"PRIXPTR"\n",   stack[offset + 31U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+30] = 0x%08"PRIXPTR"\n",   stack[offset + 30U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+29] = 0x%08"PRIXPTR"\n",   stack[offset + 29U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+28] = 0x%08"PRIXPTR"\n",   stack[offset + 28U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+27] = 0x%08"PRIXPTR"\n",   stack[offset + 27U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+26] = 0x%08"PRIXPTR"\n",   stack[offset + 26U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+25] = 0x%08"PRIXPTR"\n",   stack[offset + 25U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+24] = 0x%08"PRIXPTR"\n",   stack[offset + 24U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+23] = 0x%08"PRIXPTR"\n",   stack[offset + 23U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+22] = 0x%08"PRIXPTR"\n",   stack[offset + 22U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+21] = 0x%08"PRIXPTR"\n",   stack[offset + 21U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+20] = 0x%08"PRIXPTR"\n",   stack[offset + 20U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+19] = 0x%08"PRIXPTR"\n",   stack[offset + 19U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+18] = 0x%08"PRIXPTR"\n",   stack[offset + 18U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+17] = 0x%08"PRIXPTR"\n",   stack[offset + 17U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+16] = 0x%08"PRIXPTR"\n",   stack[offset + 16U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+15] = 0x%08"PRIXPTR"\n",   stack[offset + 15U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+14] = 0x%08"PRIXPTR"\n",   stack[offset + 14U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+13] = 0x%08"PRIXPTR"\n",   stack[offset + 13U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+12] = 0x%08"PRIXPTR"\n",   stack[offset + 12U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+11] = 0x%08"PRIXPTR"\n",   stack[offset + 11U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+10] = 0x%08"PRIXPTR"\n",   stack[offset + 10U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+09] = 0x%08"PRIXPTR"\n",   stack[offset + 9U]);                                                             cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+08] = 0x%08"PRIXPTR"\n",   stack[offset + 8U]);                                                             cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+07] = 0x%08"PRIXPTR"\n",   stack[offset + 7U]);                                                             cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+06] = 0x%08"PRIXPTR"\n",   stack[offset + 6U]);                                                             cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+05] = 0x%08"PRIXPTR"\n",   stack[offset + 5U]);                                                             cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+04] = 0x%08"PRIXPTR"\n",   stack[offset + 4U]);                                                             cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+03] = 0x%08"PRIXPTR"\n",   stack[offset + 3U]);                                                             cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+02] = 0x%08"PRIXPTR"\n",   stack[offset + 2U]);                                                             cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+01] = 0x%08"PRIXPTR"\n",   stack[offset + 1U]);                                                             cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "stack[+00] = 0x%08"PRIXPTR"\n\n", stack[offset + 0U]);                                                             cmns_send(KDEF0, string);
 
 // Display the CPU registers
 
-	cmns_send(KDEF0, "CPU registers: (PC after the fault instruction)\n");
-	(void)snprintf(&string[0], 80U, "psp      = 0x%08"PRIXPTR"    msp      = 0x%08"PRIXPTR"\n", vStackCoreDump[core][PSP], 	vStackCoreDump[core][MSP]); cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "r00      = 0x%08"PRIXPTR"    r08      = 0x%08"PRIXPTR"\n", vStackCoreDump[core][r00], 	vStackCoreDump[core][r08]); cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "r01      = 0x%08"PRIXPTR"    r09      = 0x%08"PRIXPTR"\n", vStackCoreDump[core][r01], 	vStackCoreDump[core][r09]); cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "r02      = 0x%08"PRIXPTR"    r10      = 0x%08"PRIXPTR"\n", vStackCoreDump[core][r02], 	vStackCoreDump[core][r10]); cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "r03      = 0x%08"PRIXPTR"    r11      = 0x%08"PRIXPTR"\n", vStackCoreDump[core][r03], 	vStackCoreDump[core][r11]); cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "r04      = 0x%08"PRIXPTR"    r12      = 0x%08"PRIXPTR"\n", vStackCoreDump[core][r04], 	vStackCoreDump[core][r12]); cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "r05      = 0x%08"PRIXPTR"    r13 (SP) = 0x%08"PRIXPTR"\n", vStackCoreDump[core][r05], 	vStackCoreDump[core][SPP]); cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "r06      = 0x%08"PRIXPTR"    r14      = 0x%08"PRIXPTR"\n", vStackCoreDump[core][r06], 	vStackCoreDump[core][r14]); cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "r07      = 0x%08"PRIXPTR"    lr       = 0x%08"PRIXPTR"\n", vStackCoreDump[core][r07], 	vStackCoreDump[core][LR]);  cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "xPSR     = 0x%08"PRIXPTR"    r15 (PC) = 0x%08"PRIXPTR"\n", vStackCoreDump[core][xPSR],	vStackCoreDump[core][PC]);  cmns_send(KDEF0, string);
-	(void)snprintf(&string[0], 80U, "BASEPRI  = 0x%08"PRIXPTR"\n",								vStackCoreDump[core][BASEPRI]);							cmns_send(KDEF0, string);
+    cmns_send(KDEF0, "CPU registers: (PC after the fault instruction)\n");
+    (void)snprintf(&string[0], 80U, "psp      = 0x%08"PRIXPTR"    msp      = 0x%08"PRIXPTR"\n", vStackCoreDump[core][PSP],  vStackCoreDump[core][MSP]); cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "r00      = 0x%08"PRIXPTR"    r08      = 0x%08"PRIXPTR"\n", vStackCoreDump[core][r00],  vStackCoreDump[core][r08]); cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "r01      = 0x%08"PRIXPTR"    r09      = 0x%08"PRIXPTR"\n", vStackCoreDump[core][r01],  vStackCoreDump[core][r09]); cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "r02      = 0x%08"PRIXPTR"    r10      = 0x%08"PRIXPTR"\n", vStackCoreDump[core][r02],  vStackCoreDump[core][r10]); cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "r03      = 0x%08"PRIXPTR"    r11      = 0x%08"PRIXPTR"\n", vStackCoreDump[core][r03],  vStackCoreDump[core][r11]); cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "r04      = 0x%08"PRIXPTR"    r12      = 0x%08"PRIXPTR"\n", vStackCoreDump[core][r04],  vStackCoreDump[core][r12]); cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "r05      = 0x%08"PRIXPTR"    r13 (SP) = 0x%08"PRIXPTR"\n", vStackCoreDump[core][r05],  vStackCoreDump[core][SPP]); cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "r06      = 0x%08"PRIXPTR"    r14      = 0x%08"PRIXPTR"\n", vStackCoreDump[core][r06],  vStackCoreDump[core][r14]); cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "r07      = 0x%08"PRIXPTR"    lr       = 0x%08"PRIXPTR"\n", vStackCoreDump[core][r07],  vStackCoreDump[core][LR]);  cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "xPSR     = 0x%08"PRIXPTR"    r15 (PC) = 0x%08"PRIXPTR"\n", vStackCoreDump[core][xPSR], vStackCoreDump[core][PC]);  cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "BASEPRI  = 0x%08"PRIXPTR"\n",                              vStackCoreDump[core][BASEPRI]);                         cmns_send(KDEF0, string);
 }

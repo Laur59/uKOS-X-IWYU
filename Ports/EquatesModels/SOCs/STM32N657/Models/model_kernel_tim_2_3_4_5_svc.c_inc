@@ -79,6 +79,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    "kern/private/private_scheduler.h"
 #include    "kern/private/private_temporal.h"
 #include    "kern/private/private_preciseSignals.h"
+#include    "kern/privileges.h"
 
 #define K1ms        ((float64_t)(0.001))
 
@@ -108,7 +109,6 @@ static  volatile    uint32_t    vTimeStart     = 0U;                            
 static  volatile    uint32_t    vTimeStop      = 0U;                                    // Time-stamp: when the process was stopped
 static  volatile    uint32_t    vTimeLastStart = 0U;                                    // Time-stamp: when the process was started (previous cycle)
 static  volatile    uint64_t    vTickCount     = 0U;                                    // 64-bit timer (1-us)
-extern  volatile    bool        vPriv_insideSVC[KNB_CORES];                             // Inside an SVC call
 
 // Prototypes
 

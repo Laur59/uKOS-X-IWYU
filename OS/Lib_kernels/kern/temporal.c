@@ -505,7 +505,7 @@ void    temporal_testEOTime(uint32_t time) {
 
 // If the ready process has a higher priority, then preemption occurs
 
-                    preemption |= ((vKern_proc[core][i].oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority) || (vKern_runProc[core] == &vKern_proc[core][0])) ? true : false;
+                    preemption |= ((vKern_proc[core][i].oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority) || (vKern_runProc[core] == &vKern_proc[core][0]));
                 }
             }
         }
