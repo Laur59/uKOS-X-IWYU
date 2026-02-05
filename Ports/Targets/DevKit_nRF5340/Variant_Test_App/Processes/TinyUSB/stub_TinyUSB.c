@@ -96,7 +96,7 @@ extern  void    coreUSB_init(void);
 
 // Init device stack on configured roothub port
 
-tusb_rhport_init_t deviceInit = {
+static	tusb_rhport_init_t deviceInit = {
     .role  = TUSB_ROLE_DEVICE,
     .speed = TUSB_SPEED_AUTO
 };

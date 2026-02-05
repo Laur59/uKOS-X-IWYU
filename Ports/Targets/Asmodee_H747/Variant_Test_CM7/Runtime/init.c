@@ -780,7 +780,7 @@ static  void    local_FMC_Configuration(void) {
 
     FMC->SDTR1 = ((2U - 1U) * FMC_SDTR1_TRCD_0)         // 2 cycle TRCD (30.x-ns > 18-ns)
                | ((2U - 1U) * FMC_SDTR1_TRP_0)          // 2 cycle TRP (30.x-ns > 18-ns)
-               | ((0U) * FMC_SDTR1_TWR_0)               // 1 cycle TWR (>= (TRAS - TRCD))
+               | (0U * FMC_SDTR1_TWR_0)                 // 1 cycle TWR (>= (TRAS - TRCD))
                | ((4U - 1U) * FMC_SDTR1_TRC_0)          // 4 cycle TRC (60.x-ns > 60-ns)
                | ((3U - 1U) * FMC_SDTR1_TRAS_0)         // 3 cycle TRAS (45.x-ns > 42-ns)
                | ((5U - 1U) * FMC_SDTR1_TXSR_0)         // 5 cycle TXSR (75.x-ns > 61.5-ns)
@@ -856,7 +856,7 @@ static  void    local_RAM_SHARED_Configuration(void) {
     intptr_t    nbBytes;
 
     ramShared = ALIGNED_PTR(uint8_t, linker_stShare);
-    nbBytes   = (intptr_t)(linker_lnShare);
+    nbBytes   = (intptr_t)linker_lnShare;
 
     while (nbBytes-- > 0) { *ramShared = 0U; ramShared++; }
 }

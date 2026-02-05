@@ -189,8 +189,8 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 
 // Prepare for the next pack
 
-        i = (i < (KNB_MESSAGES - 1U)) ? (i + 1U) : (0U);
-        charMessage = (charMessage < '~') ? (charMessage + 1U) : (' ');
+        i = (i < (KNB_MESSAGES - 1U)) ? (i + 1U) : 0U;
+        charMessage = (charMessage < '~') ? (charMessage + 1U) : ' ';
     }
 }
 
@@ -261,7 +261,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
             }
 
         }
-        i = (i < (KNB_MESSAGES - 1U)) ? (i + 1U) : (0U);
+        i = (i < (KNB_MESSAGES - 1U)) ? (i + 1U) : 0U;
     }
 }
 
@@ -310,9 +310,9 @@ MAIN_ENTRY(argc, argv[]) {
         KKERN_PRIORITY_MEDIUM_02            // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
     );
 
-    if (kern_createProcess(&specification_0, NULL, &process_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
-    if (kern_createProcess(&specification_1, NULL, &process_1) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
+    if (kern_createProcess(&specification_0, NULL, &process_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return EXIT_OS_FAILURE; }
+    if (kern_createProcess(&specification_1, NULL, &process_1) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return EXIT_OS_FAILURE; }
 
     LOG(KINFO_USER, "Application launched");
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }

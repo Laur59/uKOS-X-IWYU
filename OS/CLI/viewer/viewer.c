@@ -54,15 +54,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 #include    "modules.h"
 #include    "serial/serial.h"
 #include    "types.h"
-
-extern  const   char_t      aStrApplication[];
-extern  const   char_t      aStrHelp[];
+#include    "viewer/viewer_uvc0.h"
 
 // Prototypes
 
 static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
-extern  int32_t     viewer_uvc0(uint32_t argc, const char_t *argv[]);
-extern  int32_t     viewer_uvc0_clean(uint32_t argc, const char_t *argv[]);
 
 MODULE(
     Viewer,                                     // Module name (the first letter has to be upper case)

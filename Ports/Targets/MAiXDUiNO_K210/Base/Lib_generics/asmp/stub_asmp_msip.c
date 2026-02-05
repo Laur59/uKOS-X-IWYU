@@ -81,12 +81,13 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;------------------------------------------------------------------------
 */
 
+#include    "asmp/asmp.h"
+
 #include    <stdint.h>
 
 #include    "Registers/rv64_csr.h"
 #include    "Registers/K210_clint.h"
 #include    "Registers/soc_vectors.h"
-#include    "asmp/asmp.h"
 #include    "core.h"
 #include    "kern/kern.h"
 #include    "macros.h"
@@ -96,19 +97,17 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    "spin.h"
 #include    "types.h"
 
-const               char_t      *tableCoreReference[KNB_CORES] = {
+static  const       char_t      *tableCoreReference[KNB_CORES] = {
                                     "RISC-V_C0",
                                     "RISC-V_C1"
                                 };
 
-extern              asmpShared_t    *vAsmp_InterCore;
 static  volatile    uint32_t        vMessage[KNB_CORES] = MCSET(0U);
 
 // Prototypes
 
 static  void    local_initInterCore(uint32_t core);
 static  void    local_machineSoftware_IRQHandler(uint32_t core, uint64_t number);
-        void    stub_asmp_getRunningCore(uint32_t *core);
 
 /*
  * \brief stub_asmp_init
@@ -151,9 +150,10 @@ void    stub_asmp_init(void) {
  * - Get the running core
  *
  */
-void    stub_asmp_getRunningCore(uint32_t *core) {
+int32_t stub_asmp_getRunningCore(uint32_t *core) {
 
     *core = (GET_RUNNING_CORE == KCORE_0) ? ((uint32_t)KASMP_CORE_0) : ((uint32_t)KASMP_CORE_1);
+    return KERR_ASMP_NOERR;
 }
 
 /*
@@ -162,9 +162,10 @@ void    stub_asmp_getRunningCore(uint32_t *core) {
  * - Get the number of core
  *
  */
-void    stub_asmp_getNumberOfCore(uint8_t *nbCore) {
+int32_t stub_asmp_getNumberOfCore(uint8_t *nbCore) {
 
     *nbCore = ((uint8_t)KASMP_CORE_1 + 1U);
+    return KERR_ASMP_NOERR;
 }
 
 /*
@@ -173,13 +174,14 @@ void    stub_asmp_getNumberOfCore(uint8_t *nbCore) {
  * - Get the ptr on the core reference table
  *
  */
-void    stub_asmp_getReferenceCore(uint32_t core, const char_t **coreReference) {
+int32_t stub_asmp_getReferenceCore(uint32_t core, const char_t **coreReference) {
 
     switch (core) {
         case KASMP_CORE_0: { *coreReference = tableCoreReference[KASMP_CORE_0]; break; }
         case KASMP_CORE_1: { *coreReference = tableCoreReference[KASMP_CORE_1]; break; }
         default:           { *coreReference = NULL;                             break; }
     }
+    return KERR_ASMP_NOERR;
 }
 
 /*
@@ -260,7 +262,7 @@ int32_t stub_asmp_waitingForReady(void) {
 
     maskNbCore = (1U<<(uint8_t)KASMP_CORE_1) | (1U<<(uint8_t)KASMP_CORE_0);
 
-    status = ((vAsmp_InterCore->oASMPReady & maskNbCore) == maskNbCore) ? (KERR_ASMP_NOERR) : (KERR_ASMP_NORDY);
+    status = ((vAsmp_InterCore->oASMPReady & maskNbCore) == maskNbCore) ? KERR_ASMP_NOERR : KERR_ASMP_NORDY;
     return status;
 }
 

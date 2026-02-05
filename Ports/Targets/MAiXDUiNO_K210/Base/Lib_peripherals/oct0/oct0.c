@@ -123,7 +123,7 @@ int32_t oct0_init(void) {
         octoSpi0->endian        = 0U;
         octoSpi0->baudr         = 64U;
     }
-    return (KERR_OCT0_NOERR);
+    return KERR_OCT0_NOERR;
 }
 
 /*
@@ -189,7 +189,7 @@ int32_t oct0_configure(const cnfOctx_t *configure) {
     }
 
     octoSpi0->spi_ctrlr0 = (0U<<11U) | (lnInst<<8U) | (0U<<2U) | (uint32_t)SPI_AITM_AS_FRAME_FORMAT;
-    return (KERR_OCT0_NOERR);
+    return KERR_OCT0_NOERR;
 }
 
 #ifndef WITH_DMA_S
@@ -231,7 +231,7 @@ int32_t oct0_write(uint32_t chipSelect, const void *buffer, uint32_t szBuffer, u
 
     while (szBuffer != 0U) {
         szFifo = 32U - octoSpi0->txflr;
-        szFifo = (szFifo < szBuffer) ? (szFifo) : (szBuffer);
+        szFifo = (szFifo < szBuffer) ? szFifo : szBuffer;
 
 // Xfer of 8-bits
 // Xfer of 16-bits
@@ -250,7 +250,7 @@ int32_t oct0_write(uint32_t chipSelect, const void *buffer, uint32_t szBuffer, u
 
     octoSpi0->ser    = 0x00U;
     octoSpi0->ssienr = 0x00U;
-    return (KERR_OCT0_NOERR);
+    return KERR_OCT0_NOERR;
 }
 
 #else

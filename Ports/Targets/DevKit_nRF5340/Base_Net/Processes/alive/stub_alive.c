@@ -77,7 +77,7 @@ void __attribute__ ((noreturn)) stub_alive_process(const void *argument) {
     time[1]     = configure->oTime[1];
     led         = KLED_TARGET_ALIVE;
 
-    while (*killRequest == false) {
+    while (!*killRequest) {
         led_on(led);
         kern_suspendProcess(time[0]);
         led_off(led);

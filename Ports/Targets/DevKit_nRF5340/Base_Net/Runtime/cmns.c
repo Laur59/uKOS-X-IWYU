@@ -102,7 +102,7 @@ static  char_t  vTxBuffer_0[KCMNS_SZ_TX_BUF];
  */
 void    cmns_init(void) {
 
-    REG(UARTE0)->ENABLE   = 0x8u;
+    REG(UARTE0)->ENABLE   = 0x8U;
     REG(UARTE0)->BAUDRATE = BAUDRATE_NRF(KSERIAL_DEFAULT_BAUDRATE);
     REG(UARTE0)->CONFIG   = 0U;
 }
@@ -128,7 +128,7 @@ void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
         default:
         case KURT0: {
             length = strlen(ascii);
-            length = (length >= KCMNS_SZ_TX_BUF) ? (KCMNS_SZ_TX_BUF) : (length);
+            length = (length >= KCMNS_SZ_TX_BUF) ? (KCMNS_SZ_TX_BUF) : length;
             memcpy(vTxBuffer_0, ascii, length);
 
             REG(UARTE0)->TXD_PTR       = (uint32_t)vTxBuffer_0;
@@ -186,7 +186,7 @@ void    cmns_receive(serialManager_t serialManager, char_t *data) {
 void    cmns_wait(uint32_t us) {
     uint32_t    wkUs = us, time;
 
-    #if (defined(CACHE_S))
+    #ifdef CACHE_S
     wkUs = (wkUs / 6U) * (KFREQUENCY_CORE / 1000000U);
 
     #else

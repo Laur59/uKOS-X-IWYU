@@ -83,7 +83,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 extern  "C" {
 #endif
 
-extern  volatile    bool        vPriv_insideSVC[KNB_CORES];					// Inside an SVC call
+extern  volatile    bool    vPriv_insideSVC[KNB_CORES];					// Inside an SVC call
+extern  volatile    bool    vPriv_insideException[KNB_CORES];
 
 extern  void    privileges_init(void);
 

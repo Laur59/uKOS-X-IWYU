@@ -163,7 +163,7 @@ static  bool    local_readSubRegister(uint16_t command, uint16_t subCommand, uin
     bool        status;
 
     buffer[0] = (uint8_t)(command>>8U);
-    buffer[1] = (uint8_t)(subCommand);
+    buffer[1] = (uint8_t)subCommand;
     buffer[2] = (uint8_t)(subCommand>>8U);
 
     RESERVE(I2C0, KMODE_READ_WRITE);

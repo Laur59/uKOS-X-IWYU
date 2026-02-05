@@ -112,11 +112,6 @@ struct  mainGpio {
             uint32_t    pad_di  : 1;        // Read current PAD's data input
         };
 
-extern  void    (*vExce_intIntVectors[KNB_CORES][KNB_INT_INTERRUPTIONS])(uint32_t core, uint64_t parameter);
-extern  void    (*vExce_intExcVectors[KNB_CORES][KNB_INT_EXCEPTIONS])(uint32_t core, uint64_t parameter);
-extern  void    (*vExce_extIntVectors[KNB_CORES][KNB_EXT_INTERRUPTIONS])(uint32_t core, uint64_t parameter);
-extern  void    (*vMsgs_process[KNB_CORES])(uint32_t core, uint64_t message);
-
 // Runtime specific
 // ================
 

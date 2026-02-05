@@ -16,7 +16,7 @@
 #   for verifying the nedd of static or not, and then, it
 #   should be disabled.
 #
-#----- 
+#-----
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -68,6 +68,7 @@ Checks: >
   modernize-loop-convert,
   misc-*,
   -misc-header-include-cycle,
+  -misc-include-cleaner,
   readability-*,
   -readability-isolate-declaration,
   -readability-implicit-bool-conversion,

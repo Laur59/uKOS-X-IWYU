@@ -48,15 +48,14 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;------------------------------------------------------------------------
 */
 
-#include    "core_reg.h"
-#include    "crt0.h"
-#include    "soc_reg.h"
-#include    "macros.h"
-#include    "macros_soc.h"
-#include    "core.h"
 #include    <stdint.h>
 
-extern  bool        vExce_isException[KNB_CORES];
+#include    "core.h"
+#include    "core_reg.h"
+#include    "crt0.h"
+#include    "macros.h"
+#include    "macros_soc.h"
+#include    "soc_reg.h"
 
 // Prototypes
 

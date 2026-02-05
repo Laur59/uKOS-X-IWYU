@@ -181,7 +181,7 @@ void    crt0(void) {
 
         init_init();
 
-        #if (defined(CONFIG_MAN_SERIAL_S))
+        #ifdef CONFIG_MAN_SERIAL_S
         cmns_init();
         #endif
 
@@ -217,7 +217,7 @@ void    crt0(void) {
  *   LDFLAGS += -Wl,--wrap=__stack_chk_fail
  *
  */
-void    __attribute__ ((noreturn)) __wrap___stack_chk_fail(void) {
+void    __attribute__ ((noreturn)) __wrap___stack_chk_fail(void) {  // NOLINT(misc-use-internal-linkage): linker wrap mechanism requires external linkage
 
     uint32_t    core;
 
@@ -316,7 +316,7 @@ static  void    __attribute__ ((noinline)) local_panicMallocBroken(void) {
 
     #ifdef CONFIG_MAN_SERIAL_S
     cmns_send(KSYST, "\nPanic: memo_malloc descriptor broken!\nCurrent process: ");
-    identifier = (vKern_runProc[core]->oSpecification.oIdentifier == NULL) ? ("Anonymous") : (vKern_runProc[core]->oSpecification.oIdentifier);
+    identifier = (vKern_runProc[core]->oSpecification.oIdentifier == NULL) ? "Anonymous" : (vKern_runProc[core]->oSpecification.oIdentifier);
     cmns_send(KSYST, identifier); cmns_send(KSYST, "\n");
     #endif
 }
@@ -341,7 +341,7 @@ static  void    __attribute__ ((noinline)) local_panicStackUnderflow(void) {
     #ifdef CONFIG_MAN_SERIAL_S
     cmns_send(KDEF0, "\nPanic: process stack underflow detected!\n");
 
-    identifier = (vKern_runProc[core]->oSpecification.oIdentifier == NULL) ? ("Anonymous") : (vKern_runProc[core]->oSpecification.oIdentifier);
+    identifier = (vKern_runProc[core]->oSpecification.oIdentifier == NULL) ? "Anonymous" : (vKern_runProc[core]->oSpecification.oIdentifier);
     (void)snprintf(&string[0], 200U, "Current process:    %s\n", identifier);
     cmns_send(KDEF0, &string[0]);
 
@@ -374,7 +374,7 @@ static  void    __attribute__ ((noinline)) local_panicNoSystemCall(void) {
 
     #ifdef CONFIG_MAN_SERIAL_S
     cmns_send(KSYST, "\nPanic: The system call does not exist!\nCurrent process: ");
-    identifier = (vKern_runProc[core]->oSpecification.oIdentifier == NULL) ? ("Anonymous") : (vKern_runProc[core]->oSpecification.oIdentifier);
+    identifier = (vKern_runProc[core]->oSpecification.oIdentifier == NULL) ? "Anonymous" : (vKern_runProc[core]->oSpecification.oIdentifier);
     cmns_send(KSYST, identifier); cmns_send(KSYST, "\n");
     #endif
 }

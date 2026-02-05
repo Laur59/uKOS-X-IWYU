@@ -134,7 +134,7 @@ static  void        local_printStackFrame(void);
  *
  */
         void    local_displayIntInt(int32_t core, uint64_t number);
-static  void    coreDump_displayInt_Interruption(uint32_t core, uint64_t number) __attribute__ ((naked));
+[[gnu::naked]]
 static  void    coreDump_displayInt_Interruption(uint32_t core  __attribute__ ((unused)), uint64_t number __attribute__ ((unused))) {
 
     CORE_DUMP_SAVE_STACK_FRAME;
@@ -152,7 +152,7 @@ void    __attribute__ ((noinline)) local_processIntInt(uint32_t core, uint64_t n
 }
 
         void    local_displayIntExt(int32_t core, uint64_t number);
-static  void    coreDump_displayInt_Exceptions(uint32_t core, uint64_t number) __attribute__ ((naked));
+[[gnu::naked]]
 static  void    coreDump_displayInt_Exceptions(uint32_t core __attribute__ ((unused)), uint64_t number __attribute__ ((unused))) {
 
     CORE_DUMP_SAVE_STACK_FRAME;

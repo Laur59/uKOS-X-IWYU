@@ -124,7 +124,7 @@ STRG_LOC_CONST(aStrText_4[]) = "Process LCD4.                             (c) EF
 
 #define KNB_COLORS  18u
 
-const   uint16_t    aTabColor[KNB_COLORS] = { KBLACK, KNAVY, KDARKGREEN, KDARKCYAN,
+static  const   uint16_t    aTabColor[KNB_COLORS] = { KBLACK, KNAVY, KDARKGREEN, KDARKCYAN,
                                               KMAROON, KPURPLE, KOLIVE, KLIGHTGREY,
                                               KBLUE, KGREEN, KCYAN, KRED,
                                               KMAGENTA, KYELLOW, KWHITE, KORANGE,
@@ -332,7 +332,7 @@ static void __attribute__ ((noreturn)) local_process_2(const void *argument) {
     core = GET_RUNNING_CORE;
 
     while (true) {
-        time = (time < 1U) ? (500U) : (time - 1U);
+        time = (time < 1U) ? 500U : (time - 1U);
         kern_suspendProcess(time);
 
         for (y = 0; y < KW2_DY; y++) {

@@ -67,8 +67,9 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    <stdint.h>
 #include    <stdlib.h>
 
-#include    "clockTree.h"
 #include    "Registers/nvic.h"
+#include    "Registers/soc_vectors.h"
+#include    "clockTree.h"
 #include    "soc_reg.h"
 #include    "macros.h"
 #include    "macros_soc.h"
@@ -97,8 +98,6 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #define N           4U                                                                  // 1 bit corresponds to 0.25-ms
 #define KPSCT5      ((KFREQUENCY_T5 / (N * KFREQUENCY_1KHz)) - 1U)                      // Prescaler for 1'000'000-Hz
 #define KARRT5      ((uint32_t)((N * KFREQUENCY_1KHz * KKERN_TIC_TIME * K1ms) - 1U))    // Autoreload
-
-extern              uintptr_t   *vVectors;                                              // Relocated VTOR
 
 #if (KKERN_NB_PRECISE_SIGNALS > 0)
 static              uint64_t    vPrcsAbsCount  = 0U;                                    // 64-bit timer (1-us) for signal precise

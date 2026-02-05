@@ -128,12 +128,6 @@ asmpShared_t    *vAsmp_InterCore;
 // Prototypes
 
 static  void        local_init(void);
-extern  void        stub_asmp_init(void);
-extern  void        stub_asmp_getRunningCore(uint32_t *core);
-extern  void        stub_asmp_getNumberOfCore(uint8_t *nbCore);
-extern  void        stub_asmp_getReferenceCore(uint32_t core, const char_t **coreReference);
-extern  int32_t     stub_asmp_signal(uint32_t message);
-extern  int32_t     stub_asmp_waitingForReady(void);
 
 /*
  * \brief Send data to core 0..3

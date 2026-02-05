@@ -138,7 +138,7 @@ static  int32_t cb_control(uint8_t mode, uint32_t value) {
 
             I2C0_reserve(KMODE_READ_WRITE, KWAIT_INFINITY);
             status = i2c_configure(KI2C0, &configureI2C0);
-            status = (status == KERR_I2C_NOERR) ? (KERR_IMAGER_NOERR) : (KERR_IMAGER_TIMEO);
+            status = (status == KERR_I2C_NOERR) ? KERR_IMAGER_NOERR : KERR_IMAGER_TIMEO;
             I2C0_release(KMODE_READ_WRITE);
             break;
         }
@@ -202,7 +202,7 @@ static  int32_t cb_getRegister(uint8_t registerNb, uint16_t *value) {
 
     I2C0_reserve(KMODE_READ_WRITE, KWAIT_INFINITY);
     status = i2c_read(KI2C0, KI2C_ADD_MT9V03x, &buffer[0], 2U);
-    status = (status == KERR_I2C_NOERR) ? (KERR_IMAGER_NOERR) : (KERR_IMAGER_TIMEO);
+    status = (status == KERR_I2C_NOERR) ? KERR_IMAGER_NOERR : KERR_IMAGER_TIMEO;
     I2C0_release(KMODE_READ_WRITE);
 
     *value = (uint16_t)((buffer[0]<<8U) | buffer[1]);
@@ -225,7 +225,7 @@ static  int32_t cb_putRegister(uint8_t registerNb, uint16_t value) {
 
     I2C0_reserve(KMODE_READ_WRITE, KWAIT_INFINITY);
     status = i2c_write(KI2C0, KI2C_ADD_MT9V03x, &buffer[0], 3U);
-    status = (status == KERR_I2C_NOERR) ? (KERR_IMAGER_NOERR) : (KERR_IMAGER_TIMEO);
+    status = (status == KERR_I2C_NOERR) ? KERR_IMAGER_NOERR : KERR_IMAGER_TIMEO;
     I2C0_release(KMODE_READ_WRITE);
 
     return status;
@@ -292,7 +292,7 @@ static  int32_t local_setAptina(mt9v03x_t *cnfTable) {
         i++;
 
         status = i2c_write(KI2C0, KI2C_ADD_MT9V03x, &buffer[0], 3U);
-        status = (status == KERR_I2C_NOERR) ? (KERR_IMAGER_NOERR) : (KERR_IMAGER_TIMEO);
+        status = (status == KERR_I2C_NOERR) ? KERR_IMAGER_NOERR : KERR_IMAGER_TIMEO;
         if (status != KERR_IMAGER_NOERR) { I2C0_release(KMODE_READ_WRITE); return status; }
     }
 }

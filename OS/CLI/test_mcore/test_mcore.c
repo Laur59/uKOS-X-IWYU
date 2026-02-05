@@ -245,7 +245,7 @@ static void __attribute__ ((noreturn)) local_process_TX(const void *argument) {
             }
             case KERR_KERN_NOERR: {
                 counter++;
-                counter = (counter > (uint8_t)'z') ? ((uint8_t)'a') : (counter);
+                counter = (counter > (uint8_t)'z') ? ((uint8_t)'a') : counter;
 
                 led_toggle(KLED_TX);
                 break;

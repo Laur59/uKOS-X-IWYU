@@ -86,8 +86,8 @@ static  const   char_t  *argv_cnsUrt0[] = { "console", "urt0" };
 static  const   char_t  *argv_sloader[] = { "sloader"         };
 
 static  const   boot_t  aFunction[] = {
-                            { 0x00u, "console", KSERIAL_BAUDRATE_460800, KURT0, 2U, argv_cnsUrt0 },
-                            { 0x01u, "sloader", KSERIAL_BAUDRATE_460800, KURT0, 1U, argv_sloader }
+                            { 0x00U, "console", KSERIAL_BAUDRATE_460800, KURT0, 2U, argv_cnsUrt0 },
+                            { 0x01U, "sloader", KSERIAL_BAUDRATE_460800, KURT0, 1U, argv_sloader }
                         };
 
 #define KDEF_COMM       KURT0
@@ -184,7 +184,7 @@ void    stub_startUp_launch(void) {
                 error = true;
             }
 
-            if (error == true) {
+            if (error) {
                 (void)dprintf(KSYST, "Module not found or user memory busy by a running application.\n\n");
                 while (true) { kern_suspendProcess(1U); }
             }

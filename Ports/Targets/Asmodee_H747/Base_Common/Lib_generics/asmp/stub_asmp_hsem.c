@@ -106,16 +106,13 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #define KHSEM_PROCESS_4         4U                  // Process ID for HSEM, acknowledge the core 0
 #define KHSEM_PROCESS_5         5U                  // Process ID for HSEM, acknowledge the core 1
 
-const   char_t          *tableCoreReference[2] = {
+static  const   char_t  *tableCoreReference[2] = {
                             "Cortex-M4",
                             "Cortex-M7"
                         };
 
-extern  asmpShared_t    *vAsmp_InterCore;
-
 // Prototypes
 
-        void    stub_asmp_getRunningCore(uint32_t *core);
 static  void    local_initInterCore(uint32_t core);
 static  void    local_getRunningCoreId(uint32_t *coreID);
 static  void    local_hsem_interruptionChannel(void);
@@ -178,9 +175,10 @@ void    stub_asmp_init(void) {
  * - Get the running core
  *
  */
-void    stub_asmp_getRunningCore(uint32_t *core) {
+int32_t stub_asmp_getRunningCore(uint32_t *core) {
 
     *core = (((SCB->CPUID & 0x0000FFF0U)>>4U) == KSIGNATURE_CORE_0) ? ((uint32_t)KASMP_CORE_0) : ((uint32_t)KASMP_CORE_1);
+    return KERR_ASMP_NOERR;
 }
 
 /*
@@ -189,9 +187,10 @@ void    stub_asmp_getRunningCore(uint32_t *core) {
  * - Get the number of core
  *
  */
-void    stub_asmp_getNumberOfCore(uint8_t *nbCore) {
+int32_t stub_asmp_getNumberOfCore(uint8_t *nbCore) {
 
     *nbCore = ((uint8_t)KASMP_CORE_1 + 1U);
+    return KERR_ASMP_NOERR;
 }
 
 /*
@@ -200,13 +199,14 @@ void    stub_asmp_getNumberOfCore(uint8_t *nbCore) {
  * - Get the ptr on the core reference table
  *
  */
-void    stub_asmp_getReferenceCore(uint32_t core, const char_t **coreReference) {
+int32_t stub_asmp_getReferenceCore(uint32_t core, const char_t **coreReference) {
 
     switch (core) {
         case KASMP_CORE_0: { *coreReference = tableCoreReference[KASMP_CORE_0]; break; }
         case KASMP_CORE_1: { *coreReference = tableCoreReference[KASMP_CORE_1]; break; }
         default:           { *coreReference = NULL;                             break; }
     }
+    return KERR_ASMP_NOERR;
 }
 
 /*
@@ -268,7 +268,7 @@ int32_t stub_asmp_waitingForReady(void) {
 
     maskNbCore = (1U<<(uint8_t)KASMP_CORE_1) | (1U<<(uint8_t)KASMP_CORE_0);
 
-    status = ((vAsmp_InterCore->oASMPReady & maskNbCore) == maskNbCore) ? (KERR_ASMP_NOERR) : (KERR_ASMP_NORDY);
+    status = ((vAsmp_InterCore->oASMPReady & maskNbCore) == maskNbCore) ? KERR_ASMP_NOERR : KERR_ASMP_NORDY;
     return status;
 }
 

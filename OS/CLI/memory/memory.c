@@ -136,10 +136,17 @@ static  size_t  size_first      = (size_t)linker_sizeStackFirst_C0;
 static  size_t  size_system     = (size_t)linker_sizeStackSystem_C0;
 
 #elif (KNB_CORES == 2)
+#ifdef __riscv      // TODO: find a proper solution to this workaround for MAiXDUiNO
 size_t  size_first_C0   = (size_t)linker_sizeStackFirst_C0;
 size_t  size_system_C0  = (size_t)linker_sizeStackSystem_C0;
 size_t  size_first_C1   = (size_t)linker_sizeStackFirst_C1;
 size_t  size_system_C1  = (size_t)linker_sizeStackSystem_C1;
+#else
+static  size_t  size_first_C0   = (size_t)linker_sizeStackFirst_C0;
+static  size_t  size_system_C0  = (size_t)linker_sizeStackSystem_C0;
+static  size_t  size_first_C1   = (size_t)linker_sizeStackFirst_C1;
+static  size_t  size_system_C1  = (size_t)linker_sizeStackSystem_C1;
+#endif
 
 #else
 #error  "*** The number of cores (KNB_CORES) exceed 2"
@@ -219,15 +226,35 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     (void)dprintf(KSYST, "uKOS data:         addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes], used: %5.2f [%%]\n", (uintptr_t)linker_stPrgmData, (uintptr_t)linker_lnPrgmData, usedPrgmDataf);
     #endif
 
+                  + (uint32_t)((uintptr_t)linker_enDATA   - (uintptr_t)linker_stDATA);
+
+    usedPrgmData  = (uint32_t)((uintptr_t)linker_enDATA   - (uintptr_t)linker_stDATA)       \
+                  + (uint32_t)((uintptr_t)linker_enBSS    - (uintptr_t)linker_stBSS);
+
+    usedPrgmCodef = ((float64_t)usedPrgmCode / (float64_t)((uintptr_t)linker_lnPrgmCode)) * 100.0;
+    usedPrgmDataf = ((float64_t)usedPrgmData / (float64_t)((uintptr_t)linker_lnPrgmData)) * 100.0;
+
+    (void)dprintf(KSYST, "uKOS code:         addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes], used: %5.2f [%%]\n", (uintptr_t)linker_stPrgmCode, (uintptr_t)linker_lnPrgmCode, usedPrgmCodef);
+    (void)dprintf(KSYST, "uKOS data:         addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes], used: %5.2f [%%]\n", (uintptr_t)linker_stPrgmData, (uintptr_t)linker_lnPrgmData, usedPrgmDataf);
+    #endif
+
     #if (KNB_CORES == 1)
     (void)dprintf(KSYST, "Stack first:       addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_lowStackFirst_C0,  size_first);
     (void)dprintf(KSYST, "Stack system:      addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n\n", (uintptr_t)linker_lowStackSystem_C0, size_system);
+// The folowing lines could be used if one wish to have static to variables size_*_C* also for RISC-V
+// but with an inacurate value of 4 or 8
+//  (void)dprintf(KSYST, "Stack first:       addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_lowStackFirst_C0,  (uintptr_t)linker_topStackFirst_C0  - (uintptr_t)linker_lowStackFirst_C0);
+//  (void)dprintf(KSYST, "Stack system:      addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n\n", (uintptr_t)linker_lowStackSystem_C0, (uintptr_t)linker_topStackSystem_C0 - (uintptr_t)linker_lowStackSystem_C0);
 
     #elif (KNB_CORES == 2)
     (void)dprintf(KSYST, "C0 Stack first:    addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_lowStackFirst_C0,  size_first_C0);
     (void)dprintf(KSYST, "C0 Stack system:   addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_lowStackSystem_C0, size_system_C0);
     (void)dprintf(KSYST, "C1 Stack first:    addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_lowStackFirst_C1,  size_first_C1);
     (void)dprintf(KSYST, "C1 Stack system:   addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n\n", (uintptr_t)linker_lowStackSystem_C1, size_system_C1);
+//  (void)dprintf(KSYST, "C0 Stack first:    addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_lowStackFirst_C0,  (uintptr_t)linker_topStackFirst_C0  - (uintptr_t)linker_lowStackFirst_C0);
+//  (void)dprintf(KSYST, "C0 Stack system:   addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_lowStackSystem_C0, (uintptr_t)linker_topStackSystem_C0 - (uintptr_t)linker_lowStackSystem_C0);
+//  (void)dprintf(KSYST, "C1 Stack first:    addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_lowStackFirst_C1,  (uintptr_t)linker_topStackFirst_C1  - (uintptr_t)linker_lowStackFirst_C1);
+//  (void)dprintf(KSYST, "C1 Stack system:   addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n\n", (uintptr_t)linker_lowStackSystem_C1, (uintptr_t)linker_topStackSystem_C1 - (uintptr_t)linker_lowStackSystem_C1);
 
     #else
     #error  "*** The number of cores (KNB_CORES) exceed 4"

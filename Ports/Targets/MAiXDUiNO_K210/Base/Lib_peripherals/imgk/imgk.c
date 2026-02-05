@@ -69,7 +69,6 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    "record/record.h"
 #include    "types.h"
 
-extern              void        (*vExce_extIntVectors[KNB_CORES][KNB_EXT_INTERRUPTIONS])(uint32_t core, uint64_t parameter);
 static              uint16_t    *vImageE0 = NULL;
 static              uint16_t    *vImageE1 = NULL;
 static              sema_t      *vSeHandleAQ;
@@ -298,7 +297,7 @@ static  int32_t local_init(void);
 static  void    local_initCKRate(const cnfImgk_t *configure);
 static  void    local_initImages(const cnfImgk_t *configure);
 static  void    local_initOV2640(const cnfImgk_t *configure);
-        void    local_DVP_IRQHandler(uint32_t core, uint64_t parameter);
+static  void    local_DVP_IRQHandler(uint32_t core, uint64_t parameter);
 
 /*
  * \brief Reserve the imgk manager
@@ -332,9 +331,9 @@ int32_t imgk_reserve(reserveMode_t reserveMode, uint32_t timeout) {
 
     status = kern_lockMutex(vMutex, timeout);
     if (status != KERR_IMGK_NOERR) {
-        return (KERR_IMGK_CHBSY);
+        return KERR_IMGK_CHBSY;
     }
-    return (KERR_IMGK_NOERR);
+    return KERR_IMGK_NOERR;
 }
 
 /*!
@@ -364,9 +363,9 @@ int32_t imgk_release(reserveMode_t reserveMode) {
 
     status = kern_unlockMutex(vMutex);
     if (status != KERR_IMGK_NOERR) {
-        return (KERR_IMGK_CAREL);
+        return KERR_IMGK_CAREL;
     }
-    return (KERR_IMGK_NOERR);
+    return KERR_IMGK_NOERR;
 }
 
 /*
@@ -489,7 +488,7 @@ int32_t imgk_acquisition(void) {
     if (status != KERR_IMGK_NOERR) { return status; }
 
     kern_signalSemaphore(vSeHandleAQ);
-    return (KERR_IMGK_NOERR);
+    return KERR_IMGK_NOERR;
 }
 
 /*
@@ -515,8 +514,8 @@ int32_t imgk_getImage(volatile void **image) {
     status = local_init();
     if (status != KERR_IMGK_NOERR) { return status; }
 
-    if (vPage == 0U) { *image = vImageE0; return (KERR_IMGK_NOERR); }
-                     { *image = vImageE1; return (KERR_IMGK_NOERR); }
+    if (vPage == 0U) { *image = vImageE0; return KERR_IMGK_NOERR; }
+                     { *image = vImageE1; return KERR_IMGK_NOERR; }
 }
 
 // Local routines
@@ -627,7 +626,7 @@ static  void    local_initCKRate(const cnfImgk_t *configure) {
 // Clock devided by KFREQUENCY_APB1 / (24000000 * 2.0), and clock enable
 
     period = (uint32_t)round(KFREQUENCY_APB1 / (24000000 * 2.0)) - 1;
-    period = (period > 255U) ? (255U) : (period);
+    period = (period > 255U) ? 255U : period;
 
     dvp->cmos_cfg &= ~DVP_CMOS_CLK_DIV_MASK;
     dvp->cmos_cfg |= DVP_CMOS_CLK_DIV(period) | DVP_CMOS_CLK_ENABLE;

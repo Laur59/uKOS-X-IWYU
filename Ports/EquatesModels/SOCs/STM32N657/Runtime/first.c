@@ -55,11 +55,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    "soc_reg.h"
 #include    "kern/private/private_temporal.h"   // IWYU pragma: keep (for vKern_TimeException)
 #include    "linker.h"
-#include    "macros_soc.h"
 #include    "macros_core.h"
-
-extern  void    (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 // Vector table: ...
 // However rather than start at zero the vector table starts at address 0x00000004,

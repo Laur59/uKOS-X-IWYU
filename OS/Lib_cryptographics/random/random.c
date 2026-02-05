@@ -135,7 +135,7 @@ int32_t random_read(randomGenerator_t generator, uint32_t *number, uint32_t nbNu
 
     kern_lockMutex(vMutex_Reserve_Random[core], KWAIT_INFINITY);
     for (i = 0U; i < nbNumbers; i++) {
-        stub_rand_read(generator, wkNumber);
+        stub_random_read(generator, wkNumber);
         wkNumber++;
     }
     kern_unlockMutex(vMutex_Reserve_Random[core]);

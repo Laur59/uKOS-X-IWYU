@@ -1,19 +1,19 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
+; viewer_uvc0.
+; ============
 
-/*
-; random.
-; =======
+; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Author:	Laurent von Allmen		The 2026-02-04
+; Modifs:
 ;
-; Purpose:
-;   random manager.
+; Project:	uKOS-X
+; Goal:		Image viewer.
+;			This tool allows to send a simulated image via the uvc0 manager.
 ;
-;-----
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -49,67 +49,28 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #pragma once
 
-#include    <stdint.h>
+#include	<stdint.h>
 
-/*!
- * \addtogroup Lib_cryptographics
- */
-/**@{*/
+#include	"types.h"
 
-/*!
- * \defgroup random Random
- *
- * \brief Random
- *
- * Random management
- *
- * @{
- */
+extern	const	char_t		aStrApplication[];
+extern	const	char_t		aStrHelp[];
 
-typedef enum {
-            KRANDOM_SOFT = 0U,                                  // Software generator
-            KRANDOM_HARD                                        // Hardware generator
-} randomGenerator_t;
-
-#define KRAND_MAX   ((1U<<31U) - 1)                             // RAND_MAX for 32 bit generator
-
-#ifdef __cplusplus
-extern  "C" {
-#endif
-
-/*!
- * \brief Read a pool of random numbers
+/*
+ * \brief viewer_uvc0
  *
- * Call example in C:
- *
- * \code{.c}
- * #define     KNB_NUMBERS    123
- *
- * int32_t     status;
- * uint32_t    number[KNB_NUMBERS];
- *
- *    status = random_read(KRANDOM_SOFT, &number[0], KNB_NUMBERS);
- * \endcode
- *
- * \param[in]   generator           KRANDOM_SOFT, use the software implementation
- * \param[in]   -                   KRANDOM_HARD, use the hardware implementation
- * \param[out]  *number             Ptr on the number
- * \param[in]   nbNumbers           Number of numbers
- * \return      KERR_RANDOM_NOERR   OK
- * \return      KERR_RANDOM_NOERR   General error
+ * - Initialise the used libraries
+ * - Launch all the processes
+ * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-extern  int32_t random_read(randomGenerator_t generator, uint32_t *number, uint32_t nbNumbers);
+int32_t	viewer_uvc0(uint32_t argc, const char_t *argv[]);
 
-// Stub functions (target-specific implementations)
-// -------------------------------------------------
-
-void	stub_random_init(void);
-int32_t	stub_random_read(randomGenerator_t generator, uint32_t *number);
-
-#ifdef __cplusplus
-}
-#endif
-
-/**@}*/
-/**@}*/
+/*
+ * \brief viewer_uvc0_clean
+ *
+ * - Try to clean the ressources
+ *		- Free all the ressources
+ *
+ */
+int32_t	viewer_uvc0_clean(uint32_t argc, const char_t *argv[]);

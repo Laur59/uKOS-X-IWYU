@@ -193,7 +193,7 @@ static  void    cb_writeMagn(uint8_t address, const uint8_t *data, uint8_t numbe
 // Then, write 1..n data
 
     shared_spi0_select(KIMUM);
-    wkAddress = (number > 1U) ? (0x40U | wkAddress) : (wkAddress);
+    wkAddress = (number > 1U) ? (0x40U | wkAddress) : wkAddress;
     local_writeReadSPI(wkAddress);
     for (i = 0U; i < number; i++) {
         local_writeReadSPI(*wkData);
@@ -262,7 +262,7 @@ static  uint8_t local_writeReadSPI(uint8_t data) {
 
     wRData = data;
     shared_spi0_writeRead(&wRData);
-    return (wRData);
+    return wRData;
 }
 
 #include    "model_lsm9ds1_imu.c_inc"

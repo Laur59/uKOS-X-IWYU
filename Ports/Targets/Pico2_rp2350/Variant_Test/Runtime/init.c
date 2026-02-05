@@ -168,7 +168,7 @@ void    init_init(void) {
  * \note This function does not return a value (None).
  *
  */
-void    init_relocate(void) {
+void    init_relocate(void) {		// NOLINT(misc-use-internal-linkage): must have external linkage to override weak symbol
     uint32_t    core, i;
 
     core = GET_RUNNING_CORE;
@@ -382,11 +382,11 @@ static  void    local_USB_Configuration(void) {
  *
  */
 static  void    local_RAM_SHARED_Configuration(void) {
-    uint8_t     *ramShared;
+    uint8_t     ramShared;
     intptr_t    nbBytes;
 
     ramShared = ALIGNED_PTR(uint8_t, linker_stShare);
-    nbBytes   = (intptr_t)(linker_lnShare);
+    nbBytes	  = (intptr_t)linker_lnShare;
 
     while (nbBytes-- > 0) { *ramShared = 0U; ramShared++; }
 }
@@ -418,7 +418,7 @@ static  void    local_launchCore_1(entryAddr_t entry) {
         DATA_SYNC_BARRIER;
 
         echo = local_readRxFifo();
-        i = (echo == cmd) ? (i + 1U) : (0U);
+        i = (echo == cmd) ? (i + 1U) : 0U;
     } while (i < 6U);
  }
 

@@ -147,7 +147,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
         KKERN_PRIORITY_HIGH_01              // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
     );
 
-    status = (kern_createProcess(&specification, &vKillRequest[core], &process) == KERR_KERN_NOERR) ? (EXIT_OS_SUCCESS_CLI) : (EXIT_OS_FAILURE);
+    status = (kern_createProcess(&specification, &vKillRequest[core], &process) == KERR_KERN_NOERR) ? EXIT_OS_SUCCESS_CLI : EXIT_OS_FAILURE;
 
     if (status == EXIT_OS_FAILURE) {
         (void)dprintf(KSYST, "Error: cannot launch the process!\n\n");

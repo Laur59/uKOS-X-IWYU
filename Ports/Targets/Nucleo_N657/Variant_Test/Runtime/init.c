@@ -659,7 +659,7 @@ static  void    local_RCC_Configuration(void) {
 // System clock (IC1 mux)
 
     REG(RCC)->IC1CFGR = (0U * RCC_IC1CFGR_IC1SEL_0)             // PLL1
-                      | ((0U) * RCC_IC1CFGR_IC1INT_0);          // IC1 = PLL1 / 1, ~800-MHz
+                      | (0U * RCC_IC1CFGR_IC1INT_0);            // IC1 = PLL1 / 1, ~800-MHz
     STRONG_BARRIER;                                             //
     REG(RCC)->DIVENR |= RCC_DIVENR_IC1EN;                       //
     (void)(REG(RCC)->DIVENR);                                   //
@@ -667,7 +667,7 @@ static  void    local_RCC_Configuration(void) {
 // System clock (IC2 mux)
 
     REG(RCC)->IC2CFGR = (3U * RCC_IC2CFGR_IC2SEL_0)             // PLL4
-                      | ((0U) * RCC_IC2CFGR_IC2INT_0);          // IC2 = PLL4 / 1, ~400_MHz
+                      | (0U * RCC_IC2CFGR_IC2INT_0);            // IC2 = PLL4 / 1, ~400_MHz
     STRONG_BARRIER;                                             //
     REG(RCC)->DIVENR |= RCC_DIVENR_IC2EN;                       //
     (void)(REG(RCC)->DIVENR);                                   //

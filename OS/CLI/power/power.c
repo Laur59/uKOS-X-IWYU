@@ -119,7 +119,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     do { status = battery_read(&batteryInfo); i2cTries++; } while (status != KERR_BATTERY_NOERR);
     RELEASE(BATTERY, KMODE_READ_WRITE);
 
-    maxI2cTries = (i2cTries > maxI2cTries) ? (i2cTries) : (maxI2cTries);
+    maxI2cTries = (i2cTries > maxI2cTries) ? i2cTries : maxI2cTries;
 
     if (status != KERR_BATTERY_NOERR) { (void)dprintf(KSYST, "Battery manager problem!\n\n"); return EXIT_OS_FAILURE; }
 

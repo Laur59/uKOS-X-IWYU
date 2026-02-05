@@ -205,7 +205,7 @@ void    crt0(void) {
 // Initialise the BSS region
 
         memcpy(linker_stDATA, linker_stINDATA, (size_t)((uintptr_t)linker_enDATA - (uintptr_t)linker_stDATA));
-        memset(linker_stBSS,  0x00u,           (size_t)((uintptr_t)linker_enBSS  - (uintptr_t)linker_stBSS));
+        memset(linker_stBSS,  0x00U,           (size_t)((uintptr_t)linker_enBSS  - (uintptr_t)linker_stBSS));
         #endif
 
 // Initialise the Heap regions

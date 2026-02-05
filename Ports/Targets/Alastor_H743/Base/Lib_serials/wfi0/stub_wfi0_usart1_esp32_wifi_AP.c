@@ -107,9 +107,7 @@ static  void    local_state_PD(uint8_t data);
 static  void    local_state_BG(uint8_t data);
 static  void    local_state_SN(uint8_t data);
 static  void    local_state_EM(uint8_t data);
-        int32_t stub_wfi0_write(const uint8_t *buffer, uint32_t size);
         int32_t stub_wfi0_writeTransparent(const uint8_t *buffer, uint32_t size);
-        int32_t stub_wfi0_read(uint8_t *buffer, uint32_t *size);
 
 // Model callbacks
 // ---------------

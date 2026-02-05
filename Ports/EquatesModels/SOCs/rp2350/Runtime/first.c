@@ -60,10 +60,10 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 // However rather than start at zero the vector table starts at address 0x00000004,
 // the first four bytes are used to store the starting address of the stack pointer.
 
-        void        Reset_C0_Handler(void);
+        void        Reset_C0_Handler(void);  // NOLINT(misc-use-internal-linkage): called by hardware reset vector
 extern  void        cmns_wait(uint32_t time);
 
-const   uintptr_t   g_pfnVectors_C0[] __attribute__((used, section(".isr_vector"))) = {
+const   uintptr_t   g_pfnVectors_C0[] __attribute__((used, section(".isr_vector"))) = {  // NOLINT(misc-use-internal-linkage): accessed from init.c for RAM vector table copy
 
     (uintptr_t)linker_topStackSystem_C0,                        // MSP Stack
 
@@ -195,7 +195,7 @@ INTERRUPT_SPECIFIC_HANDLER(POWMAN_IRQ_TIMER_C0)
 
 // cppcheck-suppress-end premium-unreadVariable
 
-const   uintptr_t   g_pfnVectors_C1[] __attribute__((used, aligned(512))) = {
+const   uintptr_t   g_pfnVectors_C1[] __attribute__((used, aligned(512))) = {  // NOLINT(misc-use-internal-linkage): accessed from init.c for core 1 VTOR setup
 
     (uintptr_t)linker_topStackSystem_C1,                        // MSP Stack
 
@@ -346,7 +346,7 @@ void    Reset_C0_Handler(void) {
  * - Call the crt0
  *
  */
-void    Reset_C1_Handler(void) {
+void    Reset_C1_Handler(void) {  // NOLINT(misc-use-internal-linkage): called by hardware reset vector for core 1
 
     cmns_wait(1000000);
 

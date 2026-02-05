@@ -92,8 +92,6 @@ MODULE(
 // CLI tool specific
 // =================
 
-extern  asmpShared_t    *vAsmp_InterCore;
-
 /*
  * \brief Main entry point
  *
@@ -109,8 +107,8 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     (void)dprintf(KSYST, "\nASMPReady: 0x%02"PRIX8"\n\n", vAsmp_InterCore->oASMPReady);
 
     for (i = 0U; i < KASMP_NB_CORES; i++) {
-        (void)dprintf(KSYST, "Core %"PRIu32", StatusRX: %s\n",          i, (vAsmp_InterCore->oStatusRX[i] == true) ? ("LOCK") : ("FREE"));
-        (void)dprintf(KSYST, "Core %"PRIu32", StatusTX: %s\n",          i, (vAsmp_InterCore->oStatusTX[i] == true) ? ("LOCK") : ("FREE"));
+        (void)dprintf(KSYST, "Core %"PRIu32", StatusRX: %s\n",          i, (vAsmp_InterCore->oStatusRX[i]) ? "LOCK" : "FREE");
+        (void)dprintf(KSYST, "Core %"PRIu32", StatusTX: %s\n",          i, (vAsmp_InterCore->oStatusTX[i]) ? "LOCK" : "FREE");
 
         (void)dprintf(KSYST, "Core %"PRIu32", Sender:   %"PRIu32"\n",   i, vAsmp_InterCore->oSender[i]);
         (void)dprintf(KSYST, "Core %"PRIu32", Order:    %"PRIu32"\n",   i, vAsmp_InterCore->oOrder[i]);

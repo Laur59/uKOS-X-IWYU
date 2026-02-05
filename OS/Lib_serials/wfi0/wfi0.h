@@ -86,6 +86,12 @@ extern  "C" {
 #define WFI0_reserve    wfi0_reserve
 #define WFI0_release    wfi0_release
 
+extern	void		stub_wfi0_init(void);
+extern	int32_t		stub_wfi0_configure(const urtxCnf_t *configure);
+extern	int32_t		stub_wfi0_write(const uint8_t *buffer, uint32_t size);
+extern	int32_t		stub_wfi0_read(uint8_t *buffer, uint32_t *size);
+extern	int32_t		stub_wfi0_flush(void);
+
 /*!
  * \brief Reserve the wfi0 manager
  *

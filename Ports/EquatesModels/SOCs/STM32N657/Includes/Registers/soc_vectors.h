@@ -261,6 +261,14 @@ typedef enum IRQn {
 #define	KNB_EXCEPTIONS		14U
 #define	KNB_INTERRUPTIONS	195U
 
+// Relocated interrupt vector table (aligned for VTOR)
+
+extern	uintptr_t	vVectors[KNB_EXCEPTIONS + KNB_INTERRUPTIONS];
+
+// Initial interrupt vector table from first.c (placed in .isr_vector section)
+
+extern	const	uintptr_t	g_pfnVectors_C0[];
+
 // For the core 0
 // --------------
 

@@ -52,6 +52,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    <stdint.h>
 #include    <string.h>
 
+#include    "Registers/soc_vectors.h"
 #include    "board.h"
 #include    "cmns.h"
 #include    "core.h"
@@ -95,7 +96,6 @@ MODULE(
         uintptr_t   vVectors[KNB_EXCEPTIONS + KNB_INTERRUPTIONS] __attribute__((aligned(2048)));
         void        (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
         void        (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
-extern  void        (* const g_pfnVectors_C0[])(void);
 
 // Prototypes
 

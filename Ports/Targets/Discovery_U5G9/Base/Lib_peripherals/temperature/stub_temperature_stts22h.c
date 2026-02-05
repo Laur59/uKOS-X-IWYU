@@ -49,8 +49,6 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;------------------------------------------------------------------------
 */
 
-#include    "temperature/temperature.h"
-
 #include    <stdint.h>
 
 #include    "i2c/i2c.h"

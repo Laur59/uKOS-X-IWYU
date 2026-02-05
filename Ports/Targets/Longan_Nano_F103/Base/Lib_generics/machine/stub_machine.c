@@ -81,7 +81,7 @@ int32_t stub_machine_restart(void) {
  * - Return the PC of the selected process
  *
  */
-void    stub_machine_readPC(const uintptr_t *stackProcess, uintptr_t *pc) {
+int32_t stub_machine_readPC(const uintptr_t *stackProcess, uintptr_t *pc) {
     uint8_t     pcOffset = 0U;
 
 // uKOS-X stack frame:
@@ -105,6 +105,7 @@ void    stub_machine_readPC(const uintptr_t *stackProcess, uintptr_t *pc) {
     pcOffset +=  +1U  +1U  +1U  +1U  +((2U-0U)+1U)  +((1U-0U)+1U)  +((6U-0U)+1U)  +((11U-2U)+1U)  +((6U-3U)+1U)  +1U     +1U       +1U      +1U;
 
     *pc = (stackProcess[pcOffset]);
+    return KERR_SYSTEM_NOERR;
 }
 
 /*
@@ -113,9 +114,10 @@ void    stub_machine_readPC(const uintptr_t *stackProcess, uintptr_t *pc) {
  * - Return the function name that belong to a given PC
  *
  */
-void    stub_machine_readFunctionName(const uintptr_t pc, const char_t **function) {
+int32_t stub_machine_readFunctionName(const uintptr_t pc, const char_t **function) {
 
     UNUSED(pc);
 
     *function = NULL;
+    return KERR_SYSTEM_NOERR;
 }

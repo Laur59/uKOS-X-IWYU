@@ -81,9 +81,10 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;------------------------------------------------------------------------
 */
 
+#include    "asmp/asmp.h"
+
 #include    <stdint.h>
 
-#include    "asmp/asmp.h"
 #include    "core_reg.h"
 #include    "kern/kern.h"
 #include    "macros_core.h"
@@ -97,18 +98,13 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #define IPC_2_PROCESS_2     2U              // Process ID for IPC, acknowledge the core 0
 #define IPC_3_PROCESS_3     3U              // Process ID for IPC, acknowledge the core 1
 
-const   char_t  *tableCoreReference[2] = {
-                    "Cortex-M33 App (fpu + dsp) ",
-                    "Cortex-M33 Net"
-                };
-
-extern  asmpShared_t    *vAsmp_InterCore;
+static  const   char_t  *tableCoreReference[2] = {
+                            "Cortex-M33 App (fpu + dsp) ",
+                            "Cortex-M33 Net"
+                        };
 
 // Prototypes
 
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
-
-        void    stub_asmp_getRunningCore(uint32_t *core);
 static  void    local_initInterCore(uint32_t core);
 static  void    local_IPC_interruptionChannel(void);
 
@@ -180,15 +176,17 @@ void    stub_asmp_init(void) {
  * - Get the running core
  *
  */
-void    stub_asmp_getRunningCore(uint32_t *core) {
+int32_t stub_asmp_getRunningCore(uint32_t *core) {
 
-    #if (defined(CPU_APPLICATION_S))
+    #ifdef CPU_APPLICATION_S
     *core = (uint32_t)KASMP_CORE_0;
     #endif
 
-    #if (defined(CPU_NETWORK_S))
+    #ifdef CPU_NETWORK_S
     *core = (uint32_t)KASMP_CORE_1;
     #endif
+
+    return KERR_ASMP_NOERR;
 }
 
 /*
@@ -197,9 +195,10 @@ void    stub_asmp_getRunningCore(uint32_t *core) {
  * - Get the number of core
  *
  */
-void    stub_asmp_getNumberOfCore(uint8_t *nbCore) {
+int32_t stub_asmp_getNumberOfCore(uint8_t *nbCore) {
 
     *nbCore = ((uint8_t)KASMP_CORE_1 + 1U);
+    return KERR_ASMP_NOERR;
 }
 
 /*
@@ -208,13 +207,14 @@ void    stub_asmp_getNumberOfCore(uint8_t *nbCore) {
  * - Get the ptr on the core reference table
  *
  */
-void    stub_asmp_getReferenceCore(uint32_t core, const char_t **coreReference) {
+int32_t stub_asmp_getReferenceCore(uint32_t core, const char_t **coreReference) {
 
     switch (core) {
         case KASMP_CORE_0: { *coreReference = tableCoreReference[KASMP_CORE_0]; break; }
         case KASMP_CORE_1: { *coreReference = tableCoreReference[KASMP_CORE_1]; break; }
         default:           { *coreReference = NULL;                             break; }
     }
+    return KERR_ASMP_NOERR;
 }
 
 /*
@@ -258,7 +258,7 @@ int32_t stub_asmp_waitingForReady(void) {
 
     maskNbCore = (1U<<(uint32_t)KASMP_CORE_1) | (1U<<(uint32_t)KASMP_CORE_0);
 
-    status = ((vAsmp_InterCore->oASMPReady & maskNbCore) == maskNbCore) ? (KERR_ASMP_NOERR) : (KERR_ASMP_NORDY);
+    status = ((vAsmp_InterCore->oASMPReady & maskNbCore) == maskNbCore) ? KERR_ASMP_NOERR : KERR_ASMP_NORDY;
     return status;
 }
 

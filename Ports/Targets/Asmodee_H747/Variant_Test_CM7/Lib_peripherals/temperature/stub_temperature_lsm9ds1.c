@@ -49,9 +49,9 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;------------------------------------------------------------------------
 */
 
-#include	"temperature/temperature.h"
+#include    "temperature/temperature.h"
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 #include    "LSM9DS1/LSM9DS1.h"
 #include    "kern/kern.h"
@@ -101,7 +101,7 @@ static  void    cb_control(uint8_t mode) {
 // Check if the LSM9DS1 was already initialised by the IMU
 
                 data = 0x00U; cb_readTemp(LSM9DS1_CTRL_REG6_XL, &data, 1);
-                vInit = ((data & 0xE0U) == 0U) ? (false) : (true);
+                vInit = ((data & 0xE0U) != 0U);
                 if (!vInit) {
                     vInit = true;
 
@@ -208,7 +208,7 @@ static  uint8_t local_writeReadSPI(uint8_t data) {
 
     wRData = data;
     shared_spi0_writeRead(&wRData);
-    return (wRData);
+    return wRData;
 }
 
 #include    "model_lsm9ds1_tmp.c_inc"

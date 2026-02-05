@@ -55,10 +55,10 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 // Prototypes
 
-void    model_random_soft_init(void);
-void    model_random_soft_read(uint32_t *number);
-void    model_random_hard_init(void);
-void    model_random_hard_read(uint32_t *number);
+static  void    model_random_soft_init(void);
+static  void    model_random_soft_read(uint32_t *number);
+static  void    model_random_hard_init(void);
+static  void    model_random_hard_read(uint32_t *number);
 
 /*
  * \brief stub_random_init
@@ -73,12 +73,12 @@ void    stub_random_init(void) {
 }
 
 /*
- * \brief stub_rand_read
+ * \brief stub_random_read
  *
  * - Return the random number
  *
  */
-int32_t stub_rand_read(randomGenerator_t generator, uint32_t *number) {
+int32_t stub_random_read(randomGenerator_t generator, uint32_t *number) {
 
     if (generator == KRANDOM_SOFT) { model_random_soft_read(number); return KERR_RANDOM_NOERR; }
     if (generator == KRANDOM_HARD) { model_random_hard_read(number); return KERR_RANDOM_NOERR; }

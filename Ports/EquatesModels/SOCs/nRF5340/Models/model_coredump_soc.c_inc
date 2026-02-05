@@ -105,7 +105,7 @@ static	void	local_printInterruption(const char_t **vectorName);
  * FPSCR    = 0x00000000
  *
  */
-static	void	model_coreDump_displayInterruptions(void) __attribute__ ((naked));
+[[gnu::naked]]
 static	void	model_coreDump_displayInterruptions(void) {
 
 	CORE_DUMP_SAVE_STACK_FRAME;

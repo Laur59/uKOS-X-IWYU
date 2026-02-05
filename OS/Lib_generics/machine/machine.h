@@ -140,8 +140,8 @@ extern  int32_t machine_restart(void);
 // -------------------------------------------------
 
 int32_t	stub_machine_restart(void);
-void	stub_machine_readPC(const uintptr_t *stackProcess, uintptr_t *pc);
-void	stub_machine_readFunctionName(const uintptr_t pc, const char_t **function);
+int32_t	stub_machine_readPC(const uintptr_t *stackProcess, uintptr_t *pc);
+int32_t	stub_machine_readFunctionName(const uintptr_t pc, const char_t **function);
 
 #ifdef __cplusplus
 }

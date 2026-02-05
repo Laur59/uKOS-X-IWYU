@@ -48,6 +48,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
+#include    "viewer/viewer_uvc0.h"
+
 #include    <stdint.h>
 #include    <stdio.h>
 #include    <stdlib.h>

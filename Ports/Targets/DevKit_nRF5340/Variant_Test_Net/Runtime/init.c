@@ -143,11 +143,11 @@ static  void    local_StackLimit_Configuration(void) {
 
 // Stack limit faults at requested priorities of less than 0 ignored
 
-    #if (defined(STUB_KERN_CHECK_XSP_LIMIT_S))
+    #ifdef STUB_KERN_CHECK_XSP_LIMIT_S
     REG(SCB)->CCR |= (1U<<SCB_CCR_STKOFHFNMIGN);
 
-    core_setPSPLIM((uintptr_t)linker_lowStackFirst_C0 & 0xFFFFFFF8u);
-    core_setMSPLIM((uintptr_t)linker_lowStackSystem_C0 & 0xFFFFFFF8u);
+    core_setPSPLIM((uintptr_t)linker_lowStackFirst_C0 & 0xFFFFFFF8U);
+    core_setMSPLIM((uintptr_t)linker_lowStackSystem_C0 & 0xFFFFFFF8U);
     #endif
 }
 
@@ -159,7 +159,7 @@ static  void    local_StackLimit_Configuration(void) {
  */
 static  void    local_SECU_Configuration(void) {
 
-    REG(CTRLAP)->APPROTECT_DISABLE = 0x50FA50FAu;
+    REG(CTRLAP)->APPROTECT_DISABLE = 0x50FA50FAU;
 }
 
 /*
@@ -239,7 +239,7 @@ static  void    local_MPU_Configuration(void) {
 
     SET_MPU8_INDEX(KMPU_FLASH_ATTR, KMPU_RAM_CACHE_ATTR, KMPU_RAM_NOT_CACHE_ATTR, KMPU_PERIPH_ATTR, 0U, 0U, 0U, 0U, 0U);
 
-    #if (defined(PRIVILEGED_USER_S))
+    #ifdef PRIVILEGED_USER_S
     SET_MPU8_REGION(0U, ST_FLASH_INT_0,         EN_FLASH_INT_0,         KMPU_EXECUTABLE,        KMPU_R_ALL,  0U, KMPU_INNER_SHAREABLE);
     SET_MPU8_REGION(1U, ST_RAM_INT_0_OS,        EN_RAM_INT_0_OS,        KMPU_EXECUTABLE,        KMPU_RW_PRI, 1U, KMPU_INNER_SHAREABLE);
     SET_MPU8_REGION(2U, ST_RAM_INT_0,           EN_RAM_INT_0,           KMPU_EXECUTABLE,        KMPU_RW_ALL, 1U, KMPU_INNER_SHAREABLE);

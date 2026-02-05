@@ -70,6 +70,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #include    <stdint.h>
 
+#include    <stdint.h>
+
 #include    "crt0.h"
 #include    "kern/kern.h"
 #include    "../ulvgl.h"

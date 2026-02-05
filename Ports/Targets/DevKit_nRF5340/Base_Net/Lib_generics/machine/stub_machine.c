@@ -81,7 +81,7 @@ int32_t stub_machine_restart(void) {
  * - Return the PC of the selected process
  *
  */
-void    stub_machine_readPC(const uintptr_t *stackProcess, uintptr_t *pc) {
+int32_t stub_machine_readPC(const uintptr_t *stackProcess, uintptr_t *pc) {
     uint8_t     pcOffset = 0U;
     uintptr_t   lr;
 
@@ -109,6 +109,7 @@ void    stub_machine_readPC(const uintptr_t *stackProcess, uintptr_t *pc) {
     pcOffset +=      +1U    +1U      +((11U-4U)+1U)  +((3U-0U)+1U)  +1U    +1U;
 
     *pc = (stackProcess[pcOffset]);
+    return KERR_SYSTEM_NOERR;
 }
 
 /*
@@ -117,11 +118,11 @@ void    stub_machine_readPC(const uintptr_t *stackProcess, uintptr_t *pc) {
  * - Return the function name that belong to a given PC
  *
  */
-void    stub_machine_readFunctionName(const uintptr_t pc, const char_t **function) {
+int32_t stub_machine_readFunctionName(const uintptr_t pc, const char_t **function) {
 
     UNUSED(pc);
 
-    #if (!defined(__clang__))
+    #ifndef __clang__
             intptr_t    offset, nameLen;
     const   uintptr_t   *ptr;
 
@@ -131,10 +132,12 @@ void    stub_machine_readFunctionName(const uintptr_t pc, const char_t **functio
         if ((ptr[-offset] & (uintptr_t)0xFFFFFF00u) == (uintptr_t)0xFF000000u) {
             nameLen = (intptr_t)(ptr[-offset] & (uintptr_t)0xFFu);
             *function = &((const char_t *)&ptr[-offset])[-nameLen];
-            return;
+            return KERR_SYSTEM_NOERR;
         }
+
     }
     #endif
 
     *function = NULL;
+    return KERR_SYSTEM_NOERR;
 }

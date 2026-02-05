@@ -76,7 +76,7 @@ void    stub_switch_init(void) {
 int32_t stub_switch_read(uint32_t *mode) {
 
     *mode  = 0U;
-    *mode |= ((REG(P0)->IN & (1U<<BSW_0)) != 0U) ? (0U) : (1U<<0U);
-    *mode |= ((REG(P0)->IN & (1U<<BSW_1)) != 0U) ? (0U) : (1U<<1U);
+    *mode |= ((REG(P0)->IN & (1U<<BSW_0)) != 0U) ? 0U : (1U<<0U);
+    *mode |= ((REG(P0)->IN & (1U<<BSW_1)) != 0U) ? 0U : (1U<<1U);
     return KERR_SWITCH_NOERR;
 }

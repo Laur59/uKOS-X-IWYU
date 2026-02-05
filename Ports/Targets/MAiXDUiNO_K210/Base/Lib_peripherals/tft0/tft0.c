@@ -115,8 +115,8 @@ int32_t tft0_init(void) {
     gpiohs->output_val.u32[0] |= (1U<<BLCD_RST);
     kern_suspendProcess(100U);
 
-    oct0_configure(&configure);
-    return (KERR_TFT0_NOERR);
+	oct0_configure(&configure);
+	return KERR_TFT0_NOERR;
 }
 
 /*
@@ -149,7 +149,7 @@ int32_t tft0_writeCommand(uint8_t command) {
 
     gpiohs->output_val.u32[0] &= (uint32_t)~(1U<<BLCD_DCX);
     oct0_write(SPI_SLAVE_SELECT, &command, 1U, KXFER8);
-    return (KERR_TFT0_NOERR);
+    return KERR_TFT0_NOERR;
 }
 
 /*
@@ -182,7 +182,7 @@ int32_t tft0_write8(const uint8_t *buffer, uint32_t szBuffer) {
 
     gpiohs->output_val.u32[0] |= (1U<<BLCD_DCX);
     oct0_write(SPI_SLAVE_SELECT, buffer, szBuffer, KXFER8);
-    return (KERR_TFT0_NOERR);
+    return KERR_TFT0_NOERR;
 }
 
 /*
@@ -215,7 +215,7 @@ int32_t tft0_write16(const uint16_t *buffer, uint32_t szBuffer) {
 
     gpiohs->output_val.u32[0] |= (1U<<BLCD_DCX);
     oct0_write(SPI_SLAVE_SELECT, buffer, szBuffer, KXFER16);
-    return (KERR_TFT0_NOERR);
+    return KERR_TFT0_NOERR;
 }
 
 /*
@@ -248,5 +248,5 @@ int32_t tft0_fill16(const uint16_t *buffer, uint32_t szBuffer) {
 
     gpiohs->output_val.u32[0] |= (1U<<BLCD_DCX);
     oct0_write(SPI_SLAVE_SELECT, buffer, szBuffer, KFILL);
-    return (KERR_TFT0_NOERR);
+    return KERR_TFT0_NOERR;
 }

@@ -142,7 +142,7 @@ static  uint8_t     cb_writeRead(uint8_t data) {
 
     wRData = data;
     shared_spi0_writeRead(&wRData);
-    return (wRData);
+    return wRData;
 }
 
 #include    "model_flash_1w_spi.c_inc"

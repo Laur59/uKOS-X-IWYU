@@ -59,16 +59,13 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    "macros_soc.h"
 #include    "soc_reg.h"
 
-extern  void    (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
-
 // Vector table: ...
 // However rather than start at zero the vector table starts at address 0x00000004,
 // the first four bytes are used to store the starting address of the stack pointer.
 
 extern  void        Reset_C0_Handler(void);
 
-const   uintptr_t   g_pfnVectors_C0[] __attribute__((used, section(".isr_vector"))) = {
+static const    uintptr_t   g_pfnVectors_C0[] __attribute__((used, section(".isr_vector"))) = {
 
     (uintptr_t)linker_topStackSystem_C0,                        // MSP Stack
 
@@ -90,7 +87,7 @@ const   uintptr_t   g_pfnVectors_C0[] __attribute__((used, section(".isr_vector"
     (uintptr_t)PendSV_C0_IRQHandler,                            // Address: 0x0000_0038
     (uintptr_t)SysTick_C0_IRQHandler,                           // Address: 0x0000_003C
 
-    #if (defined(CPU_APPLICATION_S))
+    #ifdef CPU_APPLICATION_S
 
 // nRF5340 Application specific Interrupt Numbers
 
@@ -221,14 +218,14 @@ void    Reset_C0_Handler(void) {
 
 // The Application CPU turns-on all the memory (Network CPU included_C0)
 
-    REG(VMC)->RAM0_POWER = 0xFFFFu;
-    REG(VMC)->RAM1_POWER = 0xFFFFu;
-    REG(VMC)->RAM2_POWER = 0xFFFFu;
-    REG(VMC)->RAM3_POWER = 0xFFFFu;
-    REG(VMC)->RAM4_POWER = 0xFFFFu;
-    REG(VMC)->RAM5_POWER = 0xFFFFu;
-    REG(VMC)->RAM6_POWER = 0xFFFFu;
-    REG(VMC)->RAM7_POWER = 0xFFFFu;
+    REG(VMC)->RAM0_POWER = 0xFFFFU;
+    REG(VMC)->RAM1_POWER = 0xFFFFU;
+    REG(VMC)->RAM2_POWER = 0xFFFFU;
+    REG(VMC)->RAM3_POWER = 0xFFFFU;
+    REG(VMC)->RAM4_POWER = 0xFFFFU;
+    REG(VMC)->RAM5_POWER = 0xFFFFU;
+    REG(VMC)->RAM6_POWER = 0xFFFFU;
+    REG(VMC)->RAM7_POWER = 0xFFFFU;
 
     SET_THREAD_STACK(linker_topStackFirst_C0);
 

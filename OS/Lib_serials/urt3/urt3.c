@@ -98,11 +98,6 @@ static  mutx_t      *vMutex_Reserve_TX[KNB_CORES];
 // Prototypes
 
 static  int32_t     local_init(void);
-extern  void        stub_urt3_init(void);
-extern  int32_t     stub_urt3_configure(const urtxCnf_t *configure);
-extern  int32_t     stub_urt3_write(const uint8_t *buffer, uint32_t size);
-extern  int32_t     stub_urt3_read(uint8_t *buffer, uint32_t *size);
-extern  int32_t     stub_urt3_flush(void);
 
 /*
  * \brief Reserve the urt3 manager

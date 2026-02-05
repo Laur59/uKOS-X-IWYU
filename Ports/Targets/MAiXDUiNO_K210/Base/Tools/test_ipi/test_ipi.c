@@ -111,8 +111,8 @@ MODULE(
 // CLI tool specific
 // =================
 
-volatile    uint8_t     vCounter[KNB_CORES] = MCSET(0U);
-volatile    bool        vDataAvailable[KNB_CORES] = MCSET(false);
+static  volatile    uint8_t     vCounter[KNB_CORES] = MCSET(0U);
+static  volatile    bool        vDataAvailable[KNB_CORES] = MCSET(false);
 
 /*
  * \brief Main entry point
@@ -140,7 +140,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
             }
             text_checkAsciiBuffer(argv[1], "-generate",  &generate);
             if (generate) {
-                destCore = (core == KCORE_0) ? (1U) : (0U);
+                destCore = (core == KCORE_0) ? 1U : 0U;
                 if (clint->msip[destCore].msip == 0U) {
                     clint->msip[destCore].msip = 1U;
                 }

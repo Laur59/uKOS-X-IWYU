@@ -85,7 +85,7 @@ void    stub_led_init(void) {
 int32_t stub_led_on(uint8_t ledNb) {
 
     INTERRUPTION_OFF;
-    if (vMute == true) { RETURN_INT_RESTORE(KERR_LED_NOERR); }
+    if (vMute) { RETURN_INT_RESTORE(KERR_LED_NOERR); }
     switch (ledNb) {
         case 0U:  { REG(P0)->OUTCLR = (1U<<BLED_0); break; }
         case 1U:  { REG(P0)->OUTCLR = (1U<<BLED_1); break; }
@@ -104,7 +104,7 @@ int32_t stub_led_on(uint8_t ledNb) {
 int32_t stub_led_off(uint8_t ledNb) {
 
     INTERRUPTION_OFF;
-    if (vMute == true) { RETURN_INT_RESTORE(KERR_LED_NOERR); }
+    if (vMute) { RETURN_INT_RESTORE(KERR_LED_NOERR); }
     switch (ledNb) {
         case 0U:  { REG(P0)->OUTSET = (1U<<BLED_0); break; }
         case 1U:  { REG(P0)->OUTSET = (1U<<BLED_1); break; }
@@ -123,7 +123,7 @@ int32_t stub_led_off(uint8_t ledNb) {
 int32_t stub_led_toggle(uint8_t ledNb) {
 
     INTERRUPTION_OFF;
-    if (vMute == true) { RETURN_INT_RESTORE(KERR_LED_NOERR); }
+    if (vMute) { RETURN_INT_RESTORE(KERR_LED_NOERR); }
     switch (ledNb) {
         case 0U:  { ((REG(P0)->OUTSET & (1U<<BLED_0)) == 0U) ? (REG(P0)->OUTSET = (1U<<BLED_0)) : (REG(P0)->OUTCLR = (1U<<BLED_0)); break; }
         case 1U:  { ((REG(P0)->OUTSET & (1U<<BLED_1)) == 0U) ? (REG(P0)->OUTSET = (1U<<BLED_1)) : (REG(P0)->OUTCLR = (1U<<BLED_1)); break; }
@@ -141,7 +141,7 @@ int32_t stub_led_toggle(uint8_t ledNb) {
  */
 int32_t stub_led_mute(bool mute) {
 
-    if (mute == false) { vMute = false; return KERR_LED_NOERR; }
+    if (!mute) { vMute = false; return KERR_LED_NOERR; }
 
     INTERRUPTION_OFF;
     vMute = true;
