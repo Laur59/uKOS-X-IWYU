@@ -54,6 +54,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #include    "init.h"
 
+#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "core_reg.h"
@@ -784,4 +785,4 @@ static  void    local_CACHE_Enable(void) {
     #endif
 }
 
-#include    "model_cache.c_inc"
+#include    "model_cache.c_inc"     // IWYU pragma: keep

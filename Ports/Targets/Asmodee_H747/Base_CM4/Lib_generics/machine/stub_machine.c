@@ -50,6 +50,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #include    "machine/machine.h"
 
+#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "Registers/scb.h"

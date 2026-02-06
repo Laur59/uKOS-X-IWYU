@@ -54,14 +54,14 @@ readonly PATH_PRG="${0:a:h}"
 
 # Colours for messages
 
-readonly RED='\033[0;31m'
-readonly GREEN='\033[0;32m'
-readonly YELLOW='\033[0;33m'
-readonly BLUE='\033[0;34m'
-readonly BOLD='\033[1m'
-readonly FAINT='\033[2m'
-readonly ITALIC='\033[3m'
-readonly NC='\033[0m' # No Color
+readonly RED=$'\033[0;31m'
+readonly GREEN=$'\033[0;32m'
+readonly YELLOW=$'\033[0;33m'
+readonly BLUE=$'\033[0;34m'
+readonly BOLD=$'\033[1m'
+readonly FAINT=$'\033[2m'
+readonly ITALIC=$'\033[3m'
+readonly NC=$'\033[0m' # No Color
 
 # Defaults
 
@@ -144,15 +144,13 @@ get_cmake_preset() {
 
     if [ "$user_mode" = "OFF" ]; then
         preset="${preset}-nouser"
-        if [ "$canary_mode" = "ON" ]; then
-            preset="${preset}-canary"
-        else
+		if [ "$canary_mode" = "OFF" ]; then
             preset="${preset}-nocanary"
         fi
     else
         # user_mode = ON
         if [ "$canary_mode" = "OFF" ]; then
-            preset="${preset}-user-nocanary"
+			preset="${preset}-nocanary"
         fi
         # When user_mode=ON and canary_mode=ON, preset stays as just "${compiler}"
     fi

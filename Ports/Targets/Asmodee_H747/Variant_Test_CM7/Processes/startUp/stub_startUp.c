@@ -53,7 +53,6 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #include    <inttypes.h>
 #include    <stdio.h>
-#include    <stdint.h>
 #include    <time.h>
 
 #include    "calendar/calendar.h"

@@ -48,7 +48,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 */
 
 #include    <inttypes.h>
-#include    <stdint.h>  // NOLINT(misc-include-cleaner): Explicit include for IWYU compliance
 #include    <stdio.h>
 
 #include    "kern/kern.h"
@@ -214,18 +213,6 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
     usedPrgmCode  = (uint32_t)((uintptr_t)linker_enTEXT   - (uintptr_t)linker_stTEXT)       \
                   + (uint32_t)((uintptr_t)linker_enRODATA - (uintptr_t)linker_stRODATA)     \
-                  + (uint32_t)((uintptr_t)linker_enDATA   - (uintptr_t)linker_stDATA);
-
-    usedPrgmData  = (uint32_t)((uintptr_t)linker_enDATA   - (uintptr_t)linker_stDATA)       \
-                  + (uint32_t)((uintptr_t)linker_enBSS    - (uintptr_t)linker_stBSS);
-
-    usedPrgmCodef = ((float64_t)usedPrgmCode / (float64_t)((uintptr_t)linker_lnPrgmCode)) * 100.0;
-    usedPrgmDataf = ((float64_t)usedPrgmData / (float64_t)((uintptr_t)linker_lnPrgmData)) * 100.0;
-
-    (void)dprintf(KSYST, "uKOS code:         addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes], used: %5.2f [%%]\n", (uintptr_t)linker_stPrgmCode, (uintptr_t)linker_lnPrgmCode, usedPrgmCodef);
-    (void)dprintf(KSYST, "uKOS data:         addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes], used: %5.2f [%%]\n", (uintptr_t)linker_stPrgmData, (uintptr_t)linker_lnPrgmData, usedPrgmDataf);
-    #endif
-
                   + (uint32_t)((uintptr_t)linker_enDATA   - (uintptr_t)linker_stDATA);
 
     usedPrgmData  = (uint32_t)((uintptr_t)linker_enDATA   - (uintptr_t)linker_stDATA)       \

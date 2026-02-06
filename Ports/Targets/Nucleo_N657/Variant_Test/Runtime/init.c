@@ -908,4 +908,4 @@ static  void    local_wait_us(uint32_t us) {
     for (time = 0; time < us; time++) { NOP; }
 }
 
-#include    "model_cache.c_inc"
+#include    "model_cache.c_inc"     // IWYU pragma: keep

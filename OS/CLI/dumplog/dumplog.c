@@ -48,7 +48,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 */
 
 #include    <inttypes.h>
-#include    <stdint.h>  // NOLINT(misc-include-cleaner): Explicit include for IWYU compliance
 #include    <stdio.h>
 #include    <stdlib.h>
 #include    <string.h>
@@ -206,8 +205,6 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
             if (rOldLogBuffer != NULL) {
 
-            if (rOldLogBuffer != NULL) {
-
                 category = "Unknown         ";
                 category = (rOldLogBuffer->oLogCategory == KFATAL_SYSTEM)    ? "Fatal system    " : category;
                 category = (rOldLogBuffer->oLogCategory == KFATAL_KERNEL)    ? "Fatal kernel    " : category;
@@ -227,6 +224,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
                 category = (rOldLogBuffer->oLogCategory == KINFO_SYSTEM)     ? "Info system     " : category;
                 category = (rOldLogBuffer->oLogCategory == KINFO_KERNEL)     ? "Info kernel     " : category;
                 category = (rOldLogBuffer->oLogCategory == KINFO_MANAGER)    ? "Info manager    " : category;
+                category = (rOldLogBuffer->oLogCategory == KINFO_USER)       ? "Info user       " : category;
 
                 local_compose(rOldLogBuffer->oIdentifier, &idSpacerI);
                 local_compose(rOldLogBuffer->oFunction,   &idSpacerF);

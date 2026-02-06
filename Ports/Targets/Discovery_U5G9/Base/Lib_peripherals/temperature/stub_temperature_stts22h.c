@@ -56,6 +56,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    "i2c_common.h"
 #include    "kern/temporal.h"   // IWYU pragma: keep (for KWAITINFINITY in RESERVE)
 #include    "macros.h"
+#include    "temperature/temperature.h"
 #include    "types.h"
 
 // Connect the physical device to the logical manager

@@ -52,7 +52,6 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    "startUp/startUp.h"
 
 #include    <inttypes.h>
-#include    <stdint.h>
 #include    <stdio.h>
 
 #include    "serial/serial.h"
@@ -66,7 +65,6 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    "serial_common.h"
 #include    "system/system.h"
 #include    "types.h"
-#include    "urt0/urt0.h"
 
 // Bootstrap function table
 // ------------------------

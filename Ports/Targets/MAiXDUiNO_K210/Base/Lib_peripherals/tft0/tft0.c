@@ -50,6 +50,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #include    "tft0.h"
 
+#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "../oct0/oct0.h"
@@ -115,8 +116,8 @@ int32_t tft0_init(void) {
     gpiohs->output_val.u32[0] |= (1U<<BLCD_RST);
     kern_suspendProcess(100U);
 
-	oct0_configure(&configure);
-	return KERR_TFT0_NOERR;
+    oct0_configure(&configure);
+    return KERR_TFT0_NOERR;
 }
 
 /*

@@ -54,6 +54,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #include    "init.h"
 
+#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "PF1550/PF1550.h"
@@ -1041,4 +1042,4 @@ static  void    local_wait_us(uint32_t us) {
     for (time = 0U; time < us; time++) { NOP; }
 }
 
-#include    "model_cache.c_inc"
+#include    "model_cache.c_inc"     // IWYU pragma: keep

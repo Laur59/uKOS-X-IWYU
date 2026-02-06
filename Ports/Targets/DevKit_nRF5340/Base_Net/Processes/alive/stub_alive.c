@@ -54,8 +54,9 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    <stdlib.h>
 
 #include    "kern/kern.h"
-#include    "macros_core.h"
 #include    "led/led.h"
+#include    "macros_core.h"
+#include    "types.h"
 
 #define KLED_TARGET_ALIVE   KLED_1
 

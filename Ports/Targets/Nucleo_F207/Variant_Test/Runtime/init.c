@@ -54,6 +54,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #include    "init.h"
 
+#include    <stddef.h>
+
 #include    "core_reg.h"
 #include    "macros.h"
 #include    "macros_core.h"

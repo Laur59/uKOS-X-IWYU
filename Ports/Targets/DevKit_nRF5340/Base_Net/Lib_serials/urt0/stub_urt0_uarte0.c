@@ -48,6 +48,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;------------------------------------------------------------------------
 */
 
+#include    "Registers/soc_vectors_network.h"  // for SERIAL0_C0_IRQn
+#include    "macros_core.h"                    // for REG
 #include    "urt0/urt0.h"
 
 // Connect the physical device to the logical manager

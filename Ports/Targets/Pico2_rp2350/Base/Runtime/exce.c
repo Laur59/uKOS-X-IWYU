@@ -53,15 +53,12 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    "board.h"
 #include    "cmns.h"
 #include    "core.h"
-#include    "core_reg.h"
 #include    "crt0.h"
 #include    "macros.h"
 #include    "macros_core.h"
 #include    "macros_soc.h"
 #include    "modules.h"
-#include    "serial/serial.h"
 #include    "soc_reg.h"
-#include    "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

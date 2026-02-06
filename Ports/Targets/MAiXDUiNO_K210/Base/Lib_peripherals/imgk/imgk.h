@@ -68,7 +68,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    <stdint.h>
 
 #include    "modules.h"
-#include    "macros.h"
+#include    "types.h"
 
 #define KIMGK_NUM   (((uint32_t)'_'<<8U) + (uint32_t)'3')
 #define KIMGKMAN    (KIMGK_NUM<<8U)

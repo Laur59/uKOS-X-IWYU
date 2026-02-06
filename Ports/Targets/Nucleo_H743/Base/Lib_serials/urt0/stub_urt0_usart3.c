@@ -48,9 +48,11 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;------------------------------------------------------------------------
 */
 
-#include "clockTree.h"
-#include "soc_reg.h"
-#include "urt0/urt0.h"
+#include	<stdint.h>
+
+#include	"clockTree.h"
+#include	"soc_reg.h"
+#include	"urt0/urt0.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------

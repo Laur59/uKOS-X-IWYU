@@ -382,7 +382,7 @@ static  void    local_USB_Configuration(void) {
  *
  */
 static  void    local_RAM_SHARED_Configuration(void) {
-    uint8_t     ramShared;
+    uint8_t     *ramShared;
     intptr_t    nbBytes;
 
     ramShared = ALIGNED_PTR(uint8_t, linker_stShare);

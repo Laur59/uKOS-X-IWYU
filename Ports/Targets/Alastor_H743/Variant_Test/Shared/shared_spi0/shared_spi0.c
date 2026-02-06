@@ -50,6 +50,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #include    "shared_spi0.h"
 
+#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "board.h"

@@ -48,12 +48,12 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;------------------------------------------------------------------------
 */
 
+#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "board.h"
 #include    "cmns.h"
 #include    "core.h"
-#include    "core_reg.h"
 #include    "macros.h"
 #include    "macros_core.h"
 #include    "macros_soc.h"
@@ -219,7 +219,7 @@ static  void    local_cpyLEDs(uint8_t value) {
     }
 }
 
-#include    "model_coreDump_tracing.c_inc"
-#include    "model_coreDump_generic.c_inc"
-#include    "model_coreDump_core.c_inc"
-#include    "model_coredump_soc.c_inc"
+#include    "model_coreDump_tracing.c_inc"      // IWYU pragma: keep
+#include    "model_coreDump_generic.c_inc"      // IWYU pragma: keep
+#include    "model_coreDump_core.c_inc"         // IWYU pragma: keep
+#include    "model_coredump_soc.c_inc"          // IWYU pragma: keep

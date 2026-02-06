@@ -88,5 +88,5 @@ int32_t stub_random_read(randomGenerator_t generator, uint32_t *number) {
 // Local routines
 // ==============
 
-#include    "model_random_soft.c_inc"
-#include    "model_random_hard.c_inc"
+#include    "model_random_soft.c_inc"       // IWYU pragma: keep
+#include    "model_random_hard.c_inc"       // IWYU pragma: keep

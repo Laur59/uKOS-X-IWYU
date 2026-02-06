@@ -59,7 +59,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 #include    "macros_core.h"
 #include    "macros_soc.h"
 #include    "modules.h"
-#include    "os_errors.h"
 #include    "types.h"
 
 // uKOS-X specific (see the module.h)

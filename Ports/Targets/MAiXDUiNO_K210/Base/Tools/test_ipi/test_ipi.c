@@ -58,8 +58,6 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #define     _POSIX_C_SOURCE     200809L
 
 #include    <inttypes.h>
-#include    <stdbool.h>
-#include    <stdint.h>
 #include    <stdio.h>
 
 #include    "Registers/K210_clint.h"

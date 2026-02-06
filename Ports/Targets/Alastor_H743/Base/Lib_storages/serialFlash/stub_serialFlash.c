@@ -53,7 +53,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    "MX25R6435/MX25R6435.h"
 #include    "Registers/stm32H743_gpio.h"
 #include    "board.h"
-#include    "kern/temporal.h"
+#include    "kern/kern.h"
 #include    "shared_spi0/shared_spi0.h"
 
 // Connect the physical device to the logical manager

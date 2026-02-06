@@ -52,7 +52,6 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    "startUp/startUp.h"
 
 #include    <inttypes.h>
-#include    <stdint.h>  // NOLINT(misc-include-cleaner): Explicit include for IWYU compliance
 #include    <stdio.h>
 
 #include    "ip.h"

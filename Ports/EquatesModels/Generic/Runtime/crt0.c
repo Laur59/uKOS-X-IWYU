@@ -442,4 +442,4 @@ static  void    __attribute__ ((noinline)) local_panicGeneral(void) {
     #endif
 }
 
-#include    "model_coreDump_tracing.c_inc"
+#include    "model_coreDump_tracing.c_inc"      // IWYU pragma: keep

@@ -71,8 +71,6 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    "crt0.h"
 
 #include    <inttypes.h>
-#include    <stddef.h>
-#include    <stdint.h>
 #include    <stdio.h>
 #include    <stdlib.h>
 #include    <string.h>
@@ -393,4 +391,4 @@ static  void    __attribute__ ((noinline)) local_panicGeneral(void) {
     #endif
 }
 
-#include    "model_coreDump_tracing.c_inc"
+#include    "model_coreDump_tracing.c_inc"      // IWYU pragma: keep
