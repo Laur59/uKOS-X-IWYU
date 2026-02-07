@@ -104,9 +104,9 @@ MODULE(
     Calendar,                       // Module name (the first letter has to be upper case)
     KID_FAM_GENERICS,               // Family (defined in the module.h)
     KNUM_CALENDAR,                  // Module identifier (defined in the module.h)
-    NULL,                           // Address of the initialisation code (early pre-init)
-    NULL,                           // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-    NULL,                           // Address of the clean code (clean the module)
+    nullptr,                        // Address of the initialisation code (early pre-init)
+    nullptr,                        // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                        // Address of the clean code (clean the module)
     " 1.0",                         // Revision string (major . minor)
     (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                               // Execution cores
@@ -117,7 +117,7 @@ MODULE(
 
 // Prototypes
 
-static  void    local_init(void);
+static  int32_t local_init(void);
 static  void    local_composeTimeZone(char_t *timeZone, const char_t *utcLocation, const char_t *dstLocation);
 
 #if (KCALENDAR_WITH_HW_RTC_S == true)
@@ -142,12 +142,14 @@ extern  void    model_rtc_update(uint64_t unixTime);
  *
  */
 int32_t calendar_setUTCLocation(const char_t *utcLocation) {
+    int32_t     status;
     uint32_t    core;
 
     core = GET_RUNNING_CORE;
 
     PRIVILEGE_ELEVATE;
-    local_init();
+    status = local_init();
+    if (status != KERR_CALENDAR_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
     strcpy(&calendar_tzUTCShift[core][0], &utcLocation[0]);
     calendar_tzUTCShift[core][3] = (calendar_tzUTCShift[core][3] == '-') ? '+' : '-';
@@ -180,13 +182,15 @@ int32_t calendar_setUTCLocation(const char_t *utcLocation) {
  *
  */
 int32_t calendar_writeUnixTime(uint64_t unixTime) {
+    int32_t     status;
     uint32_t    core;
     uint64_t    tickCount;
 
     core = GET_RUNNING_CORE;
 
     PRIVILEGE_ELEVATE;
-    local_init();
+    status = local_init();
+    if (status != KERR_CALENDAR_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
     kern_readTickCount(&tickCount);
     vOldTickCount[core] = tickCount;
@@ -219,13 +223,15 @@ int32_t calendar_writeUnixTime(uint64_t unixTime) {
  *
  */
 int32_t calendar_readUnixTime(calendarFromTimer_t fromTimer, uint64_t *unixTime) {
+    int32_t     status;
     uint32_t    core;
     uint64_t    tickCount, deltaTickCount;
 
     core = GET_RUNNING_CORE;
 
     PRIVILEGE_ELEVATE;
-    local_init();
+    status = local_init();
+    if (status != KERR_CALENDAR_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
     kern_readTickCount(&tickCount);
     deltaTickCount      = tickCount - vOldTickCount[core];
@@ -255,7 +261,8 @@ int32_t calendar_readUnixTime(calendarFromTimer_t fromTimer, uint64_t *unixTime)
  *   has to be called at least once
  *
  */
-static  void    local_init(void) {
+static  int32_t local_init(void) {
+            int32_t     status = KERR_CALENDAR_NOERR;
             uint32_t    core;
     static  bool        vInit[KNB_CORES] = MCSET(false);
 
@@ -286,7 +293,7 @@ static  void    local_init(void) {
         #endif
 
     }
-    INTERRUPTION_RESTORE;
+    RETURN_INT_RESTORE(status);
 }
 
 /*

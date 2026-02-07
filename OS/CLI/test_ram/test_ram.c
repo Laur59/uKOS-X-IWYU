@@ -87,9 +87,9 @@ MODULE(
     Test_ram,                                   // Module name (the first letter has to be upper case)
     KID_FAM_CLI,                                // Family (defined in the module.h)
     KNUM_TEST_RAM,                              // Module identifier (defined in the module.h)
-    NULL,                                       // Address of the initialisation code (early pre-init)
-    prgm,                                       // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-    NULL,                                       // Address of the clean code (clean the module)
+    nullptr,                                    // Address of the initialisation code (early pre-init)
+    prgm,                                       // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                                    // Address of the clean code (clean the module)
     " 1.0",                                     // Revision string (major . minor)
     ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),         // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                           // Execution cores
@@ -416,13 +416,13 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
 // Test passed
 
-        local_display(KERR_NOT, NULL, 0U, 0U);
+        local_display(KERR_NOT, nullptr, 0U, 0U);
         return EXIT_OS_SUCCESS_CLI;
     }
 
 // Protocol error
 
-    local_display(KERR_PRE, NULL, 0U, 0U);
+    local_display(KERR_PRE, nullptr, 0U, 0U);
     return EXIT_OS_FAILURE;
 }
 

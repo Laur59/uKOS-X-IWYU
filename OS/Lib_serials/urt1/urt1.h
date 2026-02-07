@@ -86,7 +86,7 @@ extern  "C" {
 #define URT1_reserve    urt1_reserve
 #define URT1_release    urt1_release
 
-extern	void		stub_urt1_init(void);
+extern	int32_t		stub_urt1_init(void);
 extern	int32_t		stub_urt1_configure(const urtxCnf_t *configure);
 extern	int32_t		stub_urt1_write(const uint8_t *buffer, uint32_t size);
 extern	int32_t		stub_urt1_read(uint8_t *buffer, uint32_t *size);

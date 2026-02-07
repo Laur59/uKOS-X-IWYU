@@ -50,6 +50,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #include    "clockTree.h"
 #include    "macros_core.h"
+#include    "os_errors.h"
 #include    "serial_common.h"
 #include    "soc_reg.h"
 #include    "urt0/urt0.h"
@@ -130,13 +131,14 @@ static  void    cb_init_C1(void) {
 #include    "model_uart_C0.c_inc"
 #include    "model_uart_C1.c_inc"
 
-void    stub_urt0_init(void) {
+int32_t stub_urt0_init(void) {
     uint32_t    core;
 
     core = GET_RUNNING_CORE;
 
     if (core == KCORE_0) { model_uart_init_C0(); }
     else                 { model_uart_init_C1(); }
+    return KERR_SERIAL_NOERR;
 }
 
 int32_t stub_urt0_configure(const urtxCnf_t *configure) {

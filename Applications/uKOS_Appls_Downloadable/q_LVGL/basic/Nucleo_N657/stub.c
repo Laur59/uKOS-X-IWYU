@@ -196,7 +196,7 @@ void    stub_LCD_flush_cb(lv_display_t *lv_display, const lv_area_t *area, uint8
         chunk = n - sent;
         if(chunk > 65535U) { chunk = 65535U; }
 
-        spi_multipleWriteRead(KSPI0, &pixelMapping[sent], (uint16_t)chunk, NULL, 0U, KWAIT_INFINITY);
+        spi_multipleWriteRead(KSPI0, &pixelMapping[sent], (uint16_t)chunk, nullptr, 0U, KWAIT_INFINITY);
         sent += chunk;
     }
 

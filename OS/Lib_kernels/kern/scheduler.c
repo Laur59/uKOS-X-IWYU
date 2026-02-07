@@ -128,13 +128,13 @@ void    scheduler_changeContext(bool force, list_t *list, uint8_t bitNb) {
 
 // Call-back: exit previous process, set new process
 
-    codebackward = vKern_backwardProc[core]->oSpecification.oScheduleHook;
-    codeCurrent  = vKern_runProc[core]->oSpecification.oScheduleHook;
+	codebackward = vKern_backwardProc[core]->oSpecification.oScheduleHook;
+	codeCurrent  = vKern_runProc[core]->oSpecification.oScheduleHook;
 
-    if (vKern_backwardProc[core] != vKern_runProc[core]) {
-        if (codebackward != NULL) { codebackward(vKern_backwardProc[core], false); }
-        if (codeCurrent  != NULL) { codeCurrent(vKern_runProc[core],         true);  }
-    }
+	if (vKern_backwardProc[core] != vKern_runProc[core]) {
+		if (codebackward != nullptr) { codebackward(vKern_backwardProc[core], false); }
+		if (codeCurrent  != nullptr) { codeCurrent(vKern_runProc[core],		 true);  }
+	}
 }
 
 /*
@@ -359,20 +359,20 @@ static  void    local_updateDynaPriority(void) {
  * - Indicate "out of the idle"
  *
  */
-static  void    local_callIdleOut(void) {
-    uint32_t    core;
-    void        (*code)(uint8_t state);
+static	void	local_callIdleOut(void) {
+	uint32_t	core;
+	void		(*code)(uint8_t state);
 
-    core = GET_RUNNING_CORE;
-    code = vKern_codeRoutine[core];
+	core = GET_RUNNING_CORE;
+	code = vKern_codeRoutine[core];
 
-    if (vKern_backwardProc[core] == &vKern_proc[core][0]) {
-        if (code != NULL) {
-            vKern_runProc[core]->oInternal.oState |= (1U<<BPROC_LIKE_ISR);
-            code(KKERN_IDLE_OUT);
-            vKern_runProc[core]->oInternal.oState &= (uint16_t)~(1U<<BPROC_LIKE_ISR);
-        }
-    }
+	if (vKern_backwardProc[core] == &vKern_proc[core][0]) {
+		if (code != nullptr) {
+			vKern_runProc[core]->oInternal.oState |= (1U<<BPROC_LIKE_ISR);
+			code(KKERN_IDLE_OUT);
+			vKern_runProc[core]->oInternal.oState &= (uint16_t)~(1U<<BPROC_LIKE_ISR);
+		}
+	}
 }
 
 // The callback routines
@@ -417,9 +417,9 @@ void    scheduler_callBackFast(uint32_t time) {
  * \warning call usable only by the uKernel.
  *
  */
-void    scheduler_callBackSlow(void) {
+void	scheduler_callBackSlow(void) {
 
-    scheduler_changeContext(true, NULL, 0U);
+	scheduler_changeContext(true, nullptr, 0U);
 }
 
 /*
@@ -454,27 +454,27 @@ void    scheduler_callBackTrap(uint32_t message) {
 // Messages without parameters
 // - Basic services
 
-        case KKERN_MSG_NO_PARAM: {
-            switch (message) {
-                case KKERN_MSG_JUMP_KERN: {
-                    scheduler_changeContext(true, NULL, 0U);
-                    break;
-                }
-                case KKERN_MSG_WAIT_TIME: {
-                    scheduler_changeContext(false, &vKern_listWait[core], BPROC_SUSP_TIME);
-                    break;
-                }
-                case KKERN_MSG_WAIT_SIGN: {
-                    scheduler_changeContext(false, &vKern_listSign[core], BPROC_SUSP_SIGN);
-                    break;
-                }
-                default: {
-                    LOG(KFATAL_KERNEL, "sche: message not possible");
-                    exit(EXIT_OS_PANIC);
-                }
-            }
-            break;
-        }
+		case KKERN_MSG_NO_PARAM: {
+			switch (message) {
+				case KKERN_MSG_JUMP_KERN: {
+					scheduler_changeContext(true, nullptr, 0U);
+					break;
+				}
+				case KKERN_MSG_WAIT_TIME: {
+					scheduler_changeContext(false, &vKern_listWait[core], BPROC_SUSP_TIME);
+					break;
+				}
+				case KKERN_MSG_WAIT_SIGN: {
+					scheduler_changeContext(false, &vKern_listSign[core], BPROC_SUSP_SIGN);
+					break;
+				}
+				default: {
+					LOG(KFATAL_KERNEL, "sche: message not possible");
+					exit(EXIT_OS_PANIC);
+				}
+			}
+			break;
+		}
 
 // Messages with parameters
 // - Semaphore synchronizations

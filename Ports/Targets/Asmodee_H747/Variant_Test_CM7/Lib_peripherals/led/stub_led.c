@@ -68,7 +68,7 @@ static  bool    vMute;
  *   - The LEDs state
  *
  */
-void    stub_led_init(void) {
+int32_t stub_led_init(void) {
 
     INTERRUPTION_OFF;
     vMute = false;
@@ -84,7 +84,7 @@ void    stub_led_init(void) {
     GPIOK->ODR |= (1U<<BLED_RED);
     GPIOK->ODR |= (1U<<BLED_GREEN);
     GPIOK->ODR |= (1U<<BLED_BLUE);
-    INTERRUPTION_RESTORE;
+    RETURN_INT_RESTORE(KERR_LED_NOERR);
 }
 
 /*

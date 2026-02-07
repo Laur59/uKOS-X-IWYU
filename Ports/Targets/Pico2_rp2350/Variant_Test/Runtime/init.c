@@ -83,9 +83,9 @@ MODULE(
     Init,                           // Module name (the first letter has to be upper case)
     KID_FAM_STARTUPS,               // Family (defined in the module.h)
     KNUM_INIT,                      // Module identifier (defined in the module.h)
-    NULL,                           // Address of the initialisation code (early pre-init)
-    NULL,                           // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-    NULL,                           // Address of the clean code (clean the module)
+    nullptr,                        // Address of the initialisation code (early pre-init)
+    nullptr,                        // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                        // Address of the clean code (clean the module)
     " 1.0",                         // Revision string (major . minor)
     (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                               // Execution cores
@@ -168,7 +168,7 @@ void    init_init(void) {
  * \note This function does not return a value (None).
  *
  */
-void    init_relocate(void) {		// NOLINT(misc-use-internal-linkage): must have external linkage to override weak symbol
+void    init_relocate(void) {       // NOLINT(misc-use-internal-linkage): must have external linkage to override weak symbol
     uint32_t    core, i;
 
     core = GET_RUNNING_CORE;
@@ -386,7 +386,7 @@ static  void    local_RAM_SHARED_Configuration(void) {
     intptr_t    nbBytes;
 
     ramShared = ALIGNED_PTR(uint8_t, linker_stShare);
-    nbBytes	  = (intptr_t)linker_lnShare;
+    nbBytes   = (intptr_t)linker_lnShare;
 
     while (nbBytes-- > 0) { *ramShared = 0U; ramShared++; }
 }

@@ -117,7 +117,7 @@ static  void    local_machineSoftware_IRQHandler(uint32_t core, uint64_t number)
  *   has to be called at least once
  *
  */
-void    stub_asmp_init(void) {
+int32_t stub_asmp_init(void) {
             uint32_t    core;
             sema_t      *semaphoreRX, *semaphoreTX;
     const   char_t      *identifierRX, *identifierTX;
@@ -142,7 +142,7 @@ void    stub_asmp_init(void) {
 
     INTERRUPTION_OFF;
     vAsmp_InterCore->oASMPReady |= (core == KASMP_CORE_0) ? (1U<<(uint8_t)KASMP_CORE_0) : (1U<<(uint8_t)KASMP_CORE_1);
-    INTERRUPTION_RESTORE;
+    RETURN_INT_RESTORE(KERR_ASMP_NOERR);
 }
 
 /*
@@ -180,7 +180,7 @@ int32_t stub_asmp_getReferenceCore(uint32_t core, const char_t **coreReference) 
     switch (core) {
         case KASMP_CORE_0: { *coreReference = tableCoreReference[KASMP_CORE_0]; break; }
         case KASMP_CORE_1: { *coreReference = tableCoreReference[KASMP_CORE_1]; break; }
-        default:           { *coreReference = NULL;                             break; }
+        default:           { *coreReference = nullptr;                          break; }
     }
     return KERR_ASMP_NOERR;
 }

@@ -79,10 +79,10 @@ STRG_LOC_CONST(aStrHelp[])        = "temperature manager\n"
 MODULE(
     Temperature,                    // Module name (the first letter has to be upper case)
     KID_FAM_PERIPHERALS,            // Family (defined in the module.h)
-    KNUM_TEMPERATURE,                       // Module identifier (defined in the module.h)
-    NULL,                           // Address of the initialisation code (early pre-init)
-    NULL,                           // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-    NULL,                           // Address of the clean code (clean the module)
+    KNUM_TEMPERATURE,               // Module identifier (defined in the module.h)
+    nullptr,                        // Address of the initialisation code (early pre-init)
+    nullptr,                        // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                        // Address of the clean code (clean the module)
     " 1.0",                         // Revision string (major . minor)
     (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                               // Execution cores
@@ -122,10 +122,10 @@ static  int32_t     local_init(void);
  *
  */
 int32_t temperature_reserve(reserveMode_t reserveMode, uint32_t timeout) {
-    UNUSED(reserveMode);
-
-    uint32_t    core;
     int32_t     status;
+    uint32_t    core;
+
+    UNUSED(reserveMode);
 
     core = GET_RUNNING_CORE;
 
@@ -161,10 +161,10 @@ int32_t temperature_reserve(reserveMode_t reserveMode, uint32_t timeout) {
  *
  */
 int32_t temperature_release(reserveMode_t reserveMode) {
-    UNUSED(reserveMode);
-
-    uint32_t    core;
     int32_t     status;
+    uint32_t    core;
+
+    UNUSED(reserveMode);
 
     core = GET_RUNNING_CORE;
 
@@ -253,6 +253,7 @@ int32_t temperature_write(float64_t temperature) {
  *
  */
 static  int32_t local_init(void) {
+            int32_t     status = KERR_TEMPERATURE_NOERR;
             uint32_t    core;
     static  bool        vInit[KNB_CORES] = MCSET(false);
 
@@ -264,9 +265,9 @@ static  int32_t local_init(void) {
 
         if (kern_createMutex(KTEMPERATURE_MUTEX_RESERVE, &vMutex_Reserve[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "temperature: create mutx"); exit(EXIT_OS_PANIC); }
 
-        stub_temperature_init();
+        status = stub_temperature_init();
     }
-    RETURN_INT_RESTORE(KERR_TEMPERATURE_NOERR);
+    RETURN_INT_RESTORE(status);
 }
 
 #endif

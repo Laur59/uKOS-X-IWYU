@@ -62,7 +62,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  * - Initialise some specific parts
  *
  */
-void    model_stts22h_init(void) {
+int32_t model_stts22h_init(void) {
     uint8_t     buffer[2];
 
     cb_configure();
@@ -71,6 +71,7 @@ void    model_stts22h_init(void) {
     buffer[0] = STTS22H_CNTRL;
     buffer[1] = (1U<<LOW_ODR_START) | (AVG25HZ<<AVG) | (1U<<FREERUN);
     cb_writeI2C(KI2C_ADD_STTS22H, &buffer[0], 2U);
+    return KERR_TEMPERATURE_NOERR;
 }
 
 /*
@@ -97,7 +98,7 @@ int32_t model_stts22h_read(float64_t *temperature) {
 
     value = (int16_t)((msb<<8U) | lsb);
     *temperature = ((float64_t)value / KSTTS22H_SCALING) - KTEMPERATURE_ZERO_KELVIN;
-    return (KERR_TEMPERATURE_NOERR);
+    return KERR_TEMPERATURE_NOERR;
 }
 
 /*
@@ -116,5 +117,5 @@ int32_t model_stts22h_write(float64_t temperature) {
     buffer[0] = STTS22H_TEMP_H_LIMIT;
     buffer[1] = value;
     cb_writeI2C(KI2C_ADD_STTS22H, &buffer[0], 2U);
-    return (KERR_TEMPERATURE_NOERR);
+    return KERR_TEMPERATURE_NOERR;
 }

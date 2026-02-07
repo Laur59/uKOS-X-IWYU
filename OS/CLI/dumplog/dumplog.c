@@ -88,9 +88,9 @@ MODULE(
     Dumplog,                                    // Module name (the first letter has to be upper case)
     KID_FAM_CLI,                                // Family (defined in the module.h)
     KNUM_DUMP_LOG,                              // Module identifier (defined in the module.h)
-    NULL,                                       // Address of the initialisation code (early pre-init)
-    prgm,                                       // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-    NULL,                                       // Address of the clean code (clean the module)
+    nullptr,                                    // Address of the initialisation code (early pre-init)
+    prgm,                                       // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                                    // Address of the clean code (clean the module)
     " 1.0",                                     // Revision string (major . minor)
     ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),         // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                           // Execution cores
@@ -149,7 +149,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 // Reserve the necessary memory
 
     logBuffer = (recordLogging_t *)memo_malloc(KMEMO_ALIGN_8, (KRECORD_SZ_LOG_BUF * sizeof(recordLogging_t)), "dumplog");
-    if (logBuffer == NULL) {
+    if (logBuffer == nullptr) {
         (void)dprintf(KSYST, "Not enough memory.\n");
         PRIVILEGE_RESTORE;
 
@@ -163,10 +163,10 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
         rLogBuffer->oLogCategory = KINFO_USER;
         rLogBuffer->oMark        = false;
         rLogBuffer->oTimeStamp   = 0U;
-        rLogBuffer->oFunction    = NULL;
-        rLogBuffer->oMessage     = NULL;
+        rLogBuffer->oFunction    = nullptr;
+        rLogBuffer->oMessage     = nullptr;
         rLogBuffer->oLineNumber  = 0U;
-        rLogBuffer->oIdentifier  = NULL;
+        rLogBuffer->oIdentifier  = nullptr;
         rLogBuffer++;
     }
 
@@ -181,7 +181,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
         while (!terminate) {
             rLogBuffer    = logBuffer;
             olderTime     = 0xFFFFFFFFFFFFFFFFU;
-            rOldLogBuffer = NULL;
+            rOldLogBuffer = nullptr;
 
             for (i = 0; i < KRECORD_SZ_LOG_BUF; i++) {
 
@@ -203,7 +203,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 // Verify if there is an entry to print
 // Or terminate
 
-            if (rOldLogBuffer != NULL) {
+            if (rOldLogBuffer != nullptr) {
 
                 category = "Unknown         ";
                 category = (rOldLogBuffer->oLogCategory == KFATAL_SYSTEM)    ? "Fatal system    " : category;

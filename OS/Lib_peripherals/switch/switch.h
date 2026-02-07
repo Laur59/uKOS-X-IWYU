@@ -91,7 +91,7 @@ extern  int32_t switch_read(uint32_t *mode);
 // Stub functions (target-specific implementations)
 // -------------------------------------------------
 
-void	stub_switch_init(void);
+int32_t	stub_switch_init(void);
 int32_t	stub_switch_read(uint32_t *mode);
 
 #ifdef __cplusplus

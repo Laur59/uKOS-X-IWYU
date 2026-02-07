@@ -186,7 +186,7 @@ extern	"C" {
 
 extern	asmpShared_t	*vAsmp_InterCore;
 
-void		stub_asmp_init(void);
+int32_t		stub_asmp_init(void);
 int32_t		stub_asmp_getRunningCore(uint32_t *core);
 int32_t		stub_asmp_getNumberOfCore(uint8_t *nbCore);
 int32_t		stub_asmp_getReferenceCore(uint32_t core, const char_t **coreReference);

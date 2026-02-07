@@ -80,10 +80,10 @@ STRG_LOC_CONST(aStrHelp[])        = "imager manager\n"
 MODULE(
     Imager,                         // Module name (the first letter has to be upper case)
     KID_FAM_PERIPHERALS,            // Family (defined in the module.h)
-    KNUM_IMAGER,                        // Module identifier (defined in the module.h)
-    NULL,                           // Address of the initialisation code (early pre-init)
-    NULL,                           // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-    NULL,                           // Address of the clean code (clean the module)
+    KNUM_IMAGER,                    // Module identifier (defined in the module.h)
+    nullptr,                        // Address of the initialisation code (early pre-init)
+    nullptr,                        // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                        // Address of the clean code (clean the module)
     " 1.0",                         // Revision string (major . minor)
     (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                               // Execution cores
@@ -132,10 +132,10 @@ extern  int32_t     stub_imager_exposure(uint32_t time);
  *
  */
 int32_t imager_reserve(reserveMode_t reserveMode, uint32_t timeout) {
-    UNUSED(reserveMode);
-
-    uint32_t    core;
     int32_t     status;
+    uint32_t    core;
+
+    UNUSED(reserveMode);
 
     core = GET_RUNNING_CORE;
 
@@ -171,10 +171,10 @@ int32_t imager_reserve(reserveMode_t reserveMode, uint32_t timeout) {
  *
  */
 int32_t imager_release(reserveMode_t reserveMode) {
-    UNUSED(reserveMode);
-
-    uint32_t    core;
     int32_t     status;
+    uint32_t    core;
+
+    UNUSED(reserveMode);
 
     core = GET_RUNNING_CORE;
 
@@ -231,9 +231,9 @@ int32_t imager_release(reserveMode_t reserveMode) {
  *                           .oNbRows   = 60;
  *                           .oNbCols   = 60;
  *                           .oKernSync = (1U<<BIMAGER_SEMAPHORE_IM) | (1U<<BIMAGER_SEMAPHORE_VS);
- *                           .oHSync    = NULL;
- *                           .oFrame    = NULL;
- *                           .oVSync    = NULL;
+ *                           .oHSync    = nullptr;
+ *                           .oFrame    = nullptr;
+ *                           .oVSync    = nullptr;
  *                           .oDMAEc    = _myRoutine;
  *                           .oImgCnf   = (void *)aTab060060F;
  *                       };
@@ -245,9 +245,9 @@ int32_t imager_release(reserveMode_t reserveMode) {
  *                           .oNbRows   = 60;
  *                           .oNbCols   = 60;
  *                           .oKernSync = (1U<<BIMAGER_SEMAPHORE_IM) | (1U<<BIMAGER_SEMAPHORE_VS);
- *                           .oHSync    = NULL;
- *                           .oFrame    = NULL;
- *                           .oVSync    = NULL;
+ *                           .oHSync    = nullptr;
+ *                           .oFrame    = nullptr;
+ *                           .oVSync    = nullptr;
  *                           .oDMAEc    = _myRoutine;
  *                           .oImgCnf   = (void *)aTab060060F;
  *                       };
@@ -471,8 +471,8 @@ int32_t imager_exposure(uint32_t time) {
  *
  */
 static  int32_t local_init(void) {
+            int32_t     status = KERR_IMAGER_NOERR;
             uint32_t    core;
-            int32_t     status;
     static  bool        vInit[KNB_CORES] = MCSET(false);
 
     core = GET_RUNNING_CORE;
@@ -484,13 +484,8 @@ static  int32_t local_init(void) {
         if (kern_createMutex(KIMAGER_MUTEX_RESERVE, &vMutex_Reserve[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "imager: create mutx"); exit(EXIT_OS_PANIC); }
 
         status = stub_imager_init();
-        if (status != KERR_IMAGER_NOERR) {
-            INTERRUPTION_RESTORE;
-            return status;
-        }
-
     }
-    RETURN_INT_RESTORE(KERR_IMAGER_NOERR);
+    RETURN_INT_RESTORE(status);
 }
 
 #endif

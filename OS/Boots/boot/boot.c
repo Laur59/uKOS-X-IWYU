@@ -86,9 +86,9 @@ MODULE(
     Boot,                           // Module name (the first letter has to be upper case)
     KID_FAM_STARTUPS,               // Family (defined in the module.h)
     KNUM_BOOT,                      // Module identifier (defined in the module.h)
-    NULL,                           // Address of the initialisation code (early pre-init)
-    NULL,                           // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-    NULL,                           // Address of the clean code (clean the module)
+    nullptr,                        // Address of the initialisation code (early pre-init)
+    nullptr,                        // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                        // Address of the clean code (clean the module)
     " 1.0",                         // Revision string (major . minor)
     (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                               // Execution cores
@@ -134,7 +134,7 @@ int32_t     boot(void) {
     }
 
     if (((1U<<core) & module->oExecutionCore) != 0U) {
-        module->oExecution(0U, NULL);
+        module->oExecution(0U, nullptr);
     }
     LOG(KINFO_SYSTEM, "boot: daemon idle launched");
 
@@ -147,7 +147,7 @@ int32_t     boot(void) {
     }
 
     if (((1U<<core) & module->oExecutionCore) != 0) {
-        module->oExecution(0U, NULL);
+        module->oExecution(0U, nullptr);
     }
     LOG(KINFO_SYSTEM, "boot: Process launcher launched");
 
