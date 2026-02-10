@@ -97,5 +97,5 @@ run_pass -Y ""
 run_pass "" -U
 # Build without USER mode and without canary
 run_pass -Y -U
-./clean.sh > /dev/null
+./_clean.sh > /dev/null
 date
