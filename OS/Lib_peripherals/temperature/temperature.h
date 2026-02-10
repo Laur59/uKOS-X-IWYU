@@ -84,6 +84,10 @@ extern  "C" {
 #define TEMPERATURE_reserve temperature_reserve
 #define TEMPERATURE_release temperature_release
 
+extern	int32_t	stub_temperature_init(void);
+extern	int32_t	stub_temperature_read(float64_t *temperature);
+extern	int32_t	stub_temperature_write(float64_t temperature);
+
 /*!
  * \brief Reserve the temperature manager
  *

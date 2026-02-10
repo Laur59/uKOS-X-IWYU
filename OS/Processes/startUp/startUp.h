@@ -55,9 +55,7 @@
 extern	"C" {
 #endif
 
-// Stub functions (target-specific implementations)
-
-void	stub_startUp_launch(void);
+extern	void	stub_startUp_launch(void);
 
 // Module strings (defined in stub_startUp.c)
 

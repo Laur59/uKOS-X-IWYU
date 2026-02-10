@@ -156,11 +156,11 @@ static  size_t  size_system_C1  = (size_t)linker_sizeStackSystem_C1;
  *
  */
 static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     uint32_t    usdMemory, nbBlocks;
     intptr_t    length;
+
+    UNUSED(argc);
+    UNUSED(argv);
 
     (void)dprintf(KSYST, "Memory information.\n");
 

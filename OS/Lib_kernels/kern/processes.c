@@ -414,7 +414,7 @@ int32_t kern_killProcess(proc_t *handle) {
 
         case KSUICIDE: {
             local_fatherKilled(wkHandle);
-            vKern_stackLocation[core] = (wkHandle->oSpecification.oStackMode == KPROC_STACK_DYNAMIC) ? (wkHandle->oSpecification.oStackStart) : (nullptr);
+            vKern_stackLocation[core] = (wkHandle->oSpecification.oStackMode == KPROC_STACK_DYNAMIC) ? (wkHandle->oSpecification.oStackStart) : nullptr;
             memo_delayedFree(vKern_stackLocation[core]);
             lists_disconnectConnect(wkHandle->oObject.oList, &vKern_listFree[core], wkHandle);
             local_initialise(wkHandle);
@@ -433,7 +433,7 @@ int32_t kern_killProcess(proc_t *handle) {
 
         case KNORMAL: {
             local_fatherKilled(wkHandle);
-            vKern_stackLocation[core] = (wkHandle->oSpecification.oStackMode == KPROC_STACK_DYNAMIC) ? (wkHandle->oSpecification.oStackStart) : (nullptr);
+            vKern_stackLocation[core] = (wkHandle->oSpecification.oStackMode == KPROC_STACK_DYNAMIC) ? (wkHandle->oSpecification.oStackStart) : nullptr;
             memo_free(vKern_stackLocation[core]);
             lists_disconnectConnect(wkHandle->oObject.oList, &vKern_listFree[core], wkHandle);
             local_initialise(wkHandle);

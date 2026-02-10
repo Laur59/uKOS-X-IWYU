@@ -182,8 +182,6 @@ static  void    local_execute(uint16_t i) {
  *
  */
 static void __attribute__ ((noreturn)) local_process(const void *argument) {
-    UNUSED(argument);
-
     uint16_t    i;
     uintptr_t   data;
     uint32_t    core, delay, nextTimeout, lastTimeout, errorTimeout, compTime;
@@ -191,6 +189,8 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
     bool        gotMailBox = false;
     stim_t      *newSTimer;
     mbox_t      *mailBox;
+
+    UNUSED(argument);
 
     DEBUG_KERN_TRACE("entry: software timer daemon");
     core = GET_RUNNING_CORE;

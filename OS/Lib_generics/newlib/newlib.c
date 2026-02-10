@@ -218,12 +218,12 @@ int     _close_r(reent_t *reent, int fd) {
  *
  */
 _ssize_t    _write_r(reent_t *reent, int fd, const void *buf, size_t count) {
-    UNUSED(reent);
-
     _ssize_t            nbPrintChars;
     serialManager_t     serialManager;
     uint32_t            stdio = (uint32_t)fd;
     proc_t              *process;
+
+    UNUSED(reent);
 
     switch (stdio) {
 
@@ -272,12 +272,12 @@ _ssize_t    _write_r(reent_t *reent, int fd, const void *buf, size_t count) {
  *
  */
 _ssize_t    _read_r(reent_t *reent, int fd, void *buf, size_t count) {
-    UNUSED(reent);
-
     _ssize_t            nbReadChars;
     serialManager_t     serialManager;
     uint32_t            stdio = (uint32_t)fd;
     proc_t              *process;
+
+    UNUSED(reent);
 
     switch (stdio) {
 
@@ -329,10 +329,10 @@ _ssize_t    _read_r(reent_t *reent, int fd, void *buf, size_t count) {
  *
  */
 int     _gettimeofday_r(reent_t *reent, struct timeval *tv, void *tzvp) {
+    uint64_t    unixTime;
+
     UNUSED(reent);
     UNUSED(tzvp);
-
-    uint64_t    unixTime;
 
 // Read the 64-bit time @ 1-us resolution
 // Extract the seconds and the micro-seconds
@@ -508,11 +508,11 @@ off_t   _lseek_r(reent_t *reent, int filedes, off_t offset, int whence) {
  *
  */
 int     _getpid_r(reent_t *reent) {
-    UNUSED(reent);
-
     int         id;
     uint32_t    core;
     proc_t      *process;
+
+    UNUSED(reent);
 
     core = GET_RUNNING_CORE;
 
@@ -528,11 +528,11 @@ int     _getpid_r(reent_t *reent) {
  *
  */
 int     _kill_r(reent_t *reent, int pid, int sig) {
-    UNUSED(reent);
-    UNUSED(sig);
-
     proc_t      *process;
     uint32_t    core;
+
+    UNUSED(reent);
+    UNUSED(sig);
 
     core = GET_RUNNING_CORE;
 

@@ -95,12 +95,6 @@ static  mutx_t      *vMutex_Reserve[KNB_CORES];
 
 // Prototypes
 
-extern  int32_t     stub_sdcard_init(void);
-extern  int32_t     stub_sdcard_initialise(sdcard_specification_t *specification);
-extern  int32_t     stub_sdcard_readStatus(void);
-extern  int32_t     stub_sdcard_read(const sdcard_specification_t *specification, uint8_t *buffer, uint8_t nbSectors, uint32_t sector);
-extern  int32_t     stub_sdcard_write(const sdcard_specification_t *specification, const uint8_t *buffer, uint8_t nbSectors, uint32_t sector);
-extern  int32_t     stub_sdcard_ioctl(storageIoctl_t command, void *buffer);
 static  int32_t     local_init(void);
 static  int32_t     local_sdcard_read(const sdcard_specification_t *specification, uint8_t *buffer, uint8_t nbSectors, uint32_t sector);
 static  int32_t     local_sdcard_write(const sdcard_specification_t *specification, const uint8_t *buffer, uint8_t nbSectors, uint32_t sector);

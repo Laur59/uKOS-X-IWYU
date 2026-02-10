@@ -66,7 +66,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 #include    "signals.h"
 #include    "kern/private/private_signals.h"
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "debug.h"

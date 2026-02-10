@@ -68,7 +68,12 @@ struct aliveCnf {
             uint8_t     oLed;                                   // Process Led
 };
 
-// Stub function (target-specific implementation)
-// -----------------------------------------------
+#if (defined(__cplusplus))
+extern	"C" {
+#endif
 
-void __attribute__ ((noreturn)) stub_alive_process(const void *argument);
+extern	void	stub_alive_process(const void *argument);
+
+#if (defined(__cplusplus))
+}
+#endif

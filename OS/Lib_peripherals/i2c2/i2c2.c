@@ -97,11 +97,6 @@ static  mutx_t      *vMutex_Reserve[KNB_CORES];
 // Prototypes
 
 static  int32_t     local_init(void);
-extern  int32_t     stub_i2c2_init(void);
-extern  int32_t     stub_i2c2_configure(const i2cCnf_t *configure);
-extern  int32_t     stub_i2c2_write(uint8_t address, const uint8_t *buffer, uint16_t size);
-extern  int32_t     stub_i2c2_read(uint8_t address, uint8_t *buffer, uint16_t size);
-extern  int32_t     stub_i2c2_flush(void);
 
 /*
  * \brief Reserve the i2c2 manager

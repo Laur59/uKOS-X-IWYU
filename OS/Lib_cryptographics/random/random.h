@@ -77,6 +77,9 @@ typedef enum {
 extern  "C" {
 #endif
 
+extern	int32_t	stub_random_init(void);
+extern	int32_t	stub_random_read(randomGenerator_t generator, uint32_t *number);
+
 /*!
  * \brief Read a pool of random numbers
  *

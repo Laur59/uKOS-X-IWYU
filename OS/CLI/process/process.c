@@ -474,10 +474,10 @@ static  void    local_printParameter_P1(uint8_t core, uint16_t number, process_t
 
 #if (KKERN_WITH_STATISTICS_S == true)
 static  void    local_printParameter_T1(uint8_t core, uint16_t number, process_t *handle) {
-    UNUSED(number);
-
     uint64_t    ratio;
     float64_t   ratioF;
+
+    UNUSED(number);
 
     ratio  = handle->oStatistic.oTimePAvg * handle->oStatistic.oNbExecutions * 100U;
     ratioF = (float64_t)ratio / (float64_t)vTotalTimeCPU[core];
@@ -487,10 +487,10 @@ static  void    local_printParameter_T1(uint8_t core, uint16_t number, process_t
 }
 
 static  void    local_printParameter_T2(uint8_t core, uint16_t number, process_t *handle) {
-    UNUSED(number);
-
     uint64_t    ratio;
     float64_t   ratioF;
+
+    UNUSED(number);
 
     ratio  = handle->oStatistic.oTimeKAvg * handle->oStatistic.oNbExecutions * 100U;
     ratioF = (float64_t)ratio / (float64_t)vTotalTimeCPU[core];
@@ -500,10 +500,10 @@ static  void    local_printParameter_T2(uint8_t core, uint16_t number, process_t
 }
 
 static  void    local_printParameter_T3(uint8_t core, uint16_t number, process_t *handle) {
-    UNUSED(number);
-
     uint64_t    ratio;
     float64_t   ratioF;
+
+    UNUSED(number);
 
     ratio  = handle->oStatistic.oTimeEAvg * handle->oStatistic.oNbExecutions * 100U;
     ratioF = (float64_t)ratio / (float64_t)vTotalTimeCPU[core];

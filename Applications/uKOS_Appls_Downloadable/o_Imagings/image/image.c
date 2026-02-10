@@ -283,9 +283,9 @@ int     main(int argc, const char *argv[]) {
     TinyUSB_video_init();
     TinyUSB_video_getImageSize(&vW, &vH);
 
-    if (kern_createMutex(aStrShareBuffer, &mutex)                                  != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create mutx"); return (EXIT_OS_FAILURE); }
-    if (kern_createProcess(&specification_acquisition, nullptr, &process_acquisition) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
-    if (kern_createProcess(&specification_send,        nullptr, &process_send)        != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
+    if (kern_createMutex(aStrShareBuffer, &mutex)                                     != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create mutx"); return EXIT_OS_FAILURE; }
+    if (kern_createProcess(&specification_acquisition, nullptr, &process_acquisition) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return EXIT_OS_FAILURE; }
+    if (kern_createProcess(&specification_send,        nullptr, &process_send)        != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return EXIT_OS_FAILURE; }
 
     LOG(KINFO_USER, "Application launched");
     return (EXIT_OS_SUCCESS_CLI);

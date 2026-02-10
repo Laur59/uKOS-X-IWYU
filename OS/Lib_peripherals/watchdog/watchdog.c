@@ -103,7 +103,6 @@ struct  watchdogPack {
 // Prototypes
 
 static  void    local_process_watchdog(const void *argument);
-extern  void    stub_watchdog_arm(uint32_t time);
 
 /*
  * \brief Arm the watchdog

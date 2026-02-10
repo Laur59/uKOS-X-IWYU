@@ -56,7 +56,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "debug.h"

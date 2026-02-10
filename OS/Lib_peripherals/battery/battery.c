@@ -97,8 +97,6 @@ static  mutx_t      *vMutex_Reserve[KNB_CORES];
 // Prototypes
 
 static  int32_t     local_init(void);
-extern  int32_t     stub_battery_init(void);
-extern  int32_t     stub_battery_read(batteryInfo_t *infoBattery);
 
 /*
  * \brief Reserve the battery manager

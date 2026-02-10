@@ -50,8 +50,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 #include    <stdint.h>
 #if ((KKERN_WITH_STATISTICS_S == true) && (KDAEMONS_WITH_STACK_INT_S == true))
 #include    <stdlib.h>
-#else
-#include    <stddef.h>
 #endif
 
 #include    "macros.h"

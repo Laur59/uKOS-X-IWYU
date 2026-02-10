@@ -712,7 +712,7 @@ static  void    local_write(uint32_t core, mbox_t *handle, void *message, uint32
     kern_readTickCount(&timeStmp);
     handle->oWrite->oReadTimeStmp  = 0U;
     handle->oWrite->oWriteTimeStmp = timeStmp;
-    handle->oWrite->oProcess       = (IS_EXCEPTION) ? (nullptr) : (vKern_runProc[core]);
+    handle->oWrite->oProcess       = (IS_EXCEPTION) ? nullptr : (vKern_runProc[core]);
     #endif
 
     handle->oWrite++;
@@ -813,10 +813,10 @@ static  int32_t local_readMailbox(uint32_t core, mbox_t *handle, void **message,
 }
 
 static  void    local_read(uint32_t core, mbox_t *handle, void **message, uint32_t *size, bool *preemption) {
-    UNUSED(core);
-
     uint32_t    nbMaxPacks, copySize;
     proc_t      *process;
+
+    UNUSED(core);
 
 // Read the message
 

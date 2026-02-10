@@ -102,15 +102,15 @@ MODULE(
  *
  */
 static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
             int32_t     status, counter;
             uint32_t    core;
             uint16_t    i, j, k, nbAttached;
             enum        { KERR_NOT, KERR_MEM } error = KERR_NOT;
             proc_t      *process;
     const   char_t      *idBuffer[KNB_CORES][KKERN_NB_PROCESSES], *identifier, *idSpacerI, *syncProcess, *idSpacerS;
+
+    UNUSED(argc);
+    UNUSED(argv);
 
     (void)dprintf(KSYST, "List of the system semaphores.\n");
 

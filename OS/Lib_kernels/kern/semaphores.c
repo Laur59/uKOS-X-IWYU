@@ -63,7 +63,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 #include    "semaphores.h"
 #include    "kern/private/private_semaphores.h"
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "debug.h"

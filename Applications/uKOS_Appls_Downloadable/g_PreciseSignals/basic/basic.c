@@ -105,15 +105,15 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
-    UserAppl,                                   // Module name (the first letter has to be upper case)
-    KID_FAM_APPLICATIONS,                       // Family (defined in the module.h)
-    KNUM_APPLICATION,                           // Module identifier (defined in the module.h)
-    nullptr,                                       // Address of the initialisation code (early pre-init)
-    aStart,                                     // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
-    nullptr,                                       // Address of the clean code (clean the module)
-    " 1.0",                                     // Revision string (major . minor)
-    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),         // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-    0                                           // Execution cores
+    UserAppl,                               // Module name (the first letter has to be upper case)
+    KID_FAM_APPLICATIONS,                   // Family (defined in the module.h)
+    KNUM_APPLICATION,                       // Module identifier (defined in the module.h)
+    nullptr,                                // Address of the initialisation code (early pre-init)
+    aStart,                                 // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                                // Address of the clean code (clean the module)
+    " 1.0",                                 // Revision string (major . minor)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),     // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                       // Execution cores
 );
 
 // Application specific
@@ -125,8 +125,8 @@ static  proc_t      *vProcess_0, *vProcess_1;
 
 static  enum        { KSTATE1, KSTATE2, KSTATE3, KSTATE4 } vState = KSTATE1;
 
-#define KSYNC_STATE_MACHINE     (1U<<0U)        // Synchro for the state machine (P1)
-#define KSYNC_CONTINUOUS        (1U<<1U)        // Synchro for the continuous (P2)
+#define KSYNC_STATE_MACHINE     (1U<<0U)    // Synchro for the state machine (P1)
+#define KSYNC_CONTINUOUS        (1U<<1U)    // Synchro for the continuous (P2)
 
 /*
  * \brief aProcess_0

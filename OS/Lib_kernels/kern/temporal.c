@@ -65,7 +65,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 #include    "temporal.h"
 #include    "kern/private/private_temporal.h"
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "debug.h"

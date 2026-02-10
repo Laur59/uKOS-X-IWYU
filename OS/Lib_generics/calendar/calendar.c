@@ -149,7 +149,7 @@ int32_t calendar_setUTCLocation(const char_t *utcLocation) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_CALENDAR_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_CALENDAR_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     strcpy(&calendar_tzUTCShift[core][0], &utcLocation[0]);
     calendar_tzUTCShift[core][3] = (calendar_tzUTCShift[core][3] == '-') ? '+' : '-';
@@ -190,7 +190,7 @@ int32_t calendar_writeUnixTime(uint64_t unixTime) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_CALENDAR_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_CALENDAR_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     kern_readTickCount(&tickCount);
     vOldTickCount[core] = tickCount;
@@ -231,7 +231,7 @@ int32_t calendar_readUnixTime(calendarFromTimer_t fromTimer, uint64_t *unixTime)
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_CALENDAR_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_CALENDAR_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     kern_readTickCount(&tickCount);
     deltaTickCount      = tickCount - vOldTickCount[core];

@@ -92,8 +92,6 @@ static  mutx_t      *vMutex_Reserve[KNB_CORES];
 // Prototypes
 
 static  int32_t     local_init(void);
-extern  int32_t     stub_adc_init(void);
-extern  int32_t     stub_adc_read(uint8_t channel, float64_t *reference, float64_t *data);
 
 /*
  * \brief Reserve the adc manager

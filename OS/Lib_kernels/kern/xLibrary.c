@@ -52,7 +52,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #include    "kern/private/private_xLibrary.h"
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    <sys/reent.h>

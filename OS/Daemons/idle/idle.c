@@ -109,11 +109,11 @@ STRG_LOC_CONST(aStrText[]) = "Daemon idle: run when the others are off. (c) EFr-
  *
  */
 static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     uint32_t    core;
     proc_t      *process;
+
+    UNUSED(argc);
+    UNUSED(argv);
 
     core = GET_RUNNING_CORE;
 

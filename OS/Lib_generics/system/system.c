@@ -67,7 +67,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #include    "system.h"
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "board.h"
@@ -300,7 +299,7 @@ int32_t system_getFamilyId(const char_t **family) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_SYSTEM_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_SYSTEM_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     *family = KFAMILY;
     PRIVILEGE_RESTORE;
@@ -422,7 +421,7 @@ int32_t system_getModuleFamily(uint8_t family, uint32_t *idModule, uint16_t *ind
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_SYSTEM_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_SYSTEM_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     *module = nullptr;
     while (aDirectory[*index].oModuleLocation != KNO_MODULE) {
@@ -462,7 +461,7 @@ int32_t system_getSystemId(const char_t **identifier) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_SYSTEM_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_SYSTEM_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     *identifier = aStrApp;
     PRIVILEGE_RESTORE;
@@ -492,7 +491,7 @@ int32_t system_getSystemSignature(const char_t **signature) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_SYSTEM_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_SYSTEM_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     *signature = ALIGNED_PTR(const char_t, linker_stSignature);
 
@@ -521,7 +520,7 @@ int32_t system_getSystemVersion(const char_t **version) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_SYSTEM_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_SYSTEM_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     *version = aStrRev;
     PRIVILEGE_RESTORE;
@@ -552,7 +551,7 @@ int32_t system_setDownloadCodeAddress(void *address) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_SYSTEM_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_SYSTEM_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     vDoLoCode[core] = address;
     PRIVILEGE_RESTORE;
@@ -582,7 +581,7 @@ int32_t system_getDownloadCodeAddress(void **address) {
 
     PRIVILEGE_ELEVATE;
     status = local_init();
-    if (status != KERR_SYSTEM_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    if (status != KERR_SYSTEM_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     *address = vDoLoCode[core];
     PRIVILEGE_RESTORE;

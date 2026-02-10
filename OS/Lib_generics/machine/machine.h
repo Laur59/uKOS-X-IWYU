@@ -75,6 +75,10 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 extern  "C" {
 #endif
 
+extern	int32_t	stub_machine_restart(void);
+extern	int32_t	stub_machine_readPC(const uintptr_t *stackProcess, uintptr_t *pc);
+extern	int32_t	stub_machine_readFunctionName(const uintptr_t pc, const char_t **function);
+
 /*!
  * \brief Read the PC of a process
  *

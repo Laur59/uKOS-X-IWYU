@@ -83,6 +83,12 @@ enum {
 extern  "C" {
 #endif
 
+extern	int32_t	stub_led_init(void);
+extern	int32_t	stub_led_on(uint8_t ledNb);
+extern	int32_t	stub_led_off(uint8_t ledNb);
+extern	int32_t	stub_led_toggle(uint8_t ledNb);
+extern	int32_t	stub_led_mute(bool mute);
+
 /*!
  * \brief Turn on a LED
  *

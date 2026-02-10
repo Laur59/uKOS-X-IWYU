@@ -83,6 +83,13 @@ extern  "C" {
 #define SERIAL_FLASH_reserve    serialFlash_reserve
 #define SERIAL_FLASH_release    serialFlash_release
 
+extern	int32_t	stub_serialFlash_init(void);
+extern	int32_t	stub_serialFlash_initialise(void);
+extern	int32_t	stub_serialFlash_readStatus(void);
+extern	int32_t	stub_serialFlash_read(uint8_t *buffer, uint32_t size, uint32_t sector);
+extern	int32_t	stub_serialFlash_write(const uint8_t *buffer, uint32_t size, uint32_t sector);
+extern	int32_t	stub_serialFlash_ioctl(storageIoctl_t command, void *buffer);
+
 /*!
  * \brief Reserve the serialFlash manager
  *

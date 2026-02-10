@@ -70,6 +70,9 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 extern  "C" {
 #endif
 
+extern	int32_t	stub_switch_init(void);
+extern	int32_t	stub_switch_read(uint32_t *mode);
+
 /*!
  * \brief Read the configuration mode
  *

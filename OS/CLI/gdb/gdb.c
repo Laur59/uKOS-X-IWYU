@@ -106,10 +106,10 @@ STRG_LOC_STATI(vStrIden[]) = "GDB_process";
  *
  */
 static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
+    proc_t  *process;
+
     UNUSED(argc);
     UNUSED(argv);
-
-    proc_t  *process;
 
     (void)dprintf(KSYST, "Freeze the uKernel.\n");
 

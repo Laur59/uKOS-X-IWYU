@@ -51,7 +51,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #include    "switch.h"
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #ifdef PRIVILEGED_USER_S

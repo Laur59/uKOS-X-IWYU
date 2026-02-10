@@ -127,9 +127,9 @@ static	inline	void	cache_D_Disable(void) {
 // Number of ways
 
 	ccsidr        = REG(SCB)->CCSIDR;
-	numSets       = ((ccsidr & (0x7FFFu<<13U))>>13U);
+	numSets       = ((ccsidr & (0x7FFFU<<13U))>>13U);
 	sShift        = (ccsidr & 7U) + 4U;
-	associativity = ((ccsidr & (0x3FFu<<3U))>>3U);
+	associativity = ((ccsidr & (0x3FFU<<3U))>>3U);
 	wShift        = (local_clz(associativity) & ((uint32_t)DCACHE_LINE_SIZE - 1U));
 
 	DATA_SYNC_BARRIER;
@@ -170,9 +170,9 @@ static	inline	void	cache_D_Invalidate(void) {
 // Number of ways
 
 	ccsidr        = REG(SCB)->CCSIDR;
-	numSets       = ((ccsidr & (0x7FFFu<<13))>>13);
+	numSets       = ((ccsidr & (0x7FFFU<<13))>>13);
 	sShift        = (ccsidr & 7U) + 4U;
-	associativity = ((ccsidr & (0x3FFu<<3U))>>3U);
+	associativity = ((ccsidr & (0x3FFU<<3U))>>3U);
 	wShift        = (local_clz(associativity) & ((uint32_t)DCACHE_LINE_SIZE - 1U));
 
 	DATA_SYNC_BARRIER;
@@ -240,9 +240,9 @@ static	inline	void	cache_D_Clean(void) {
 // Number of ways
 
 	ccsidr        = REG(SCB)->CCSIDR;
-	numSets       = ((ccsidr & (0x7FFFu<<13U))>>13U);
+	numSets       = ((ccsidr & (0x7FFFU<<13U))>>13U);
 	sShift        = (ccsidr & 7U) + 4U;
-	associativity = ((ccsidr & (0x3FFu<<3U))>>3U);
+	associativity = ((ccsidr & (0x3FFU<<3U))>>3U);
 	wShift        = (local_clz(associativity) & ((uint32_t)DCACHE_LINE_SIZE - 1U));
 
 	DATA_SYNC_BARRIER;
@@ -390,11 +390,11 @@ static	inline	void	cache_I_Invalidate_Add(const void *address, int32_t size) {
  */
 static	inline	uint32_t local_clz(uint32_t data) {
 	uint32_t	count = 0U;
-	uint32_t	mask = 0x80000000u;
+	uint32_t	mask = 0x80000000U;
 
 	 while ((data & mask) == 0U) {
 		count++;
 		mask >>= 1U;
 	}
-	return (count);
+	return count;
   }

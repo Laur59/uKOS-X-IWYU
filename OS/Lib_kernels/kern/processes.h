@@ -63,13 +63,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #pragma once
 
-#include    <stddef.h>
-#include    <stdint.h>
-
-#include    "serial/serial.h"
-#include    "kern/kern.h"   // IWYU pragma: keep (workaround app bug)
-#include    "types.h"
-
 /*!
  * \addtogroup Lib_kernels
  */
@@ -84,6 +77,12 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  *
  * @{
  */
+
+#include    <stdint.h>
+
+#include    "serial/serial.h"
+#include    "kern/kern.h"   // IWYU pragma: keep (workaround app bug)
+#include    "types.h"
 
 // Structures & macros
 // -------------------

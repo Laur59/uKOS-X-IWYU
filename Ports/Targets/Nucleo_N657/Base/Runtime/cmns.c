@@ -50,7 +50,6 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #include    "cmns.h"
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "clockTree.h"

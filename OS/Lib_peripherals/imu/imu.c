@@ -96,9 +96,6 @@ static  mutx_t      *vMutex_Reserve[KNB_CORES];
 // Prototypes
 
 static  int32_t     local_init(void);
-extern  int32_t     stub_imu_init(void);
-extern  int32_t     stub_imu_configure(const imuCnf_t *configure);
-extern  int32_t     stub_imu_read(imuAccePack_t *accelerometer, imuGyroPack_t *gyroscope, imuMagnPack_t *magnetometer);
 
 /*
  * \brief Reserve the imu manager

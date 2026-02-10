@@ -86,11 +86,11 @@ extern  "C" {
 #define URT2_reserve    urt2_reserve
 #define URT2_release    urt2_release
 
-extern	int32_t		stub_urt2_init(void);
-extern	int32_t		stub_urt2_configure(const urtxCnf_t *configure);
-extern	int32_t		stub_urt2_write(const uint8_t *buffer, uint32_t size);
-extern	int32_t		stub_urt2_read(uint8_t *buffer, uint32_t *size);
-extern	int32_t		stub_urt2_flush(void);
+extern	int32_t	stub_urt2_init(void);
+extern	int32_t	stub_urt2_configure(const urtxCnf_t *configure);
+extern	int32_t	stub_urt2_write(const uint8_t *buffer, uint32_t size);
+extern	int32_t	stub_urt2_read(uint8_t *buffer, uint32_t *size);
+extern	int32_t	stub_urt2_flush(void);
 
 /*!
  * \brief Reserve the urt2 manager

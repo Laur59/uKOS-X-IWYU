@@ -49,7 +49,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #include    "serial.h"
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #ifdef CONFIG_MAN_CDC0_S

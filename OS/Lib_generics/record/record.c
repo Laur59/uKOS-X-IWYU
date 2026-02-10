@@ -51,8 +51,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #ifdef CONFIG_MAN_RECORD_S
 
-#include    <stddef.h>
-
 #include    "record.h"
 #include    "private/private_record.h"
 
@@ -148,7 +146,7 @@ int32_t record_trace(const char_t *message, uintptr_t parameter) {
     vRecord_WTraceFifo[core]->oMessage   = message;
     vRecord_WTraceFifo[core]->oParameter = parameter;
     vRecord_WTraceFifo[core]->oTimeStamp = timeStamp;
-    vRecord_WTraceFifo[core]->oProcess   = (IS_EXCEPTION) ? (nullptr) : (vKern_runProc[core]);
+    vRecord_WTraceFifo[core]->oProcess   = (IS_EXCEPTION) ? nullptr : (vKern_runProc[core]);
     vRecord_WTraceFifo[core]++;
 
     vRecord_NbTraceWrites[core] = (vRecord_NbTraceWrites[core] == KRECORD_SZ_TRACE_FIFO) ? (KRECORD_SZ_TRACE_FIFO) : (vRecord_NbTraceWrites[core] + 1);

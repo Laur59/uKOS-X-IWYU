@@ -130,7 +130,7 @@ int32_t random_read(randomGenerator_t generator, uint32_t *number, uint32_t nbNu
     status = local_init();
     if (status != KERR_RANDOM_NOERR) { PRIVILEGE_RESTORE; return status; }
 
-    if ((number == nullptr) || (nbNumbers == 0u)) {
+    if ((number == nullptr) || (nbNumbers == 0U)) {
         PRIVILEGE_RESTORE;
         return KERR_RANDOM_GEERR;
     }

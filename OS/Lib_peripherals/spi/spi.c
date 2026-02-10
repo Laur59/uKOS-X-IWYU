@@ -49,7 +49,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #include    "spi.h"
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "macros.h"

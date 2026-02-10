@@ -107,6 +107,8 @@ option(CANARY "Canary stack protection" ON)
 
 option(USER_MODE "User mode activated" ON)
 
+option(CONSTANT_SIG "Use SHA-256 of zero to generate signature" OFF)
+
 add_library(core_compiler_flags INTERFACE)
 if(${USER_MODE} AND (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "ARM"))
     set(MODE _pu)

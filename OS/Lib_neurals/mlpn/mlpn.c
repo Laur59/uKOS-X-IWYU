@@ -51,7 +51,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #include    <math.h>
 #include    <stdint.h>
-#include    <stdlib.h>
 
 #include    "macros.h"
 #include    "macros_core.h"

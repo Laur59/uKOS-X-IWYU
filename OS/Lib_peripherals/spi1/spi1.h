@@ -83,6 +83,10 @@ extern  "C" {
 #define SPI1_reserve    spi1_reserve
 #define SPI1_release    spi1_release
 
+extern	int32_t	stub_spi1_init(void);
+extern	int32_t	stub_spi1_configure(const spiCnf_t *configure);
+extern	int32_t	stub_spi1_multipleWriteRead(const uint8_t *wData, uint16_t wSize, uint8_t *rData, uint16_t rSize, uint32_t timeout);
+
 /*!
  * \brief Reserve the spi1 manager
  *
