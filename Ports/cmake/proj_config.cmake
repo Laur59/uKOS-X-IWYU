@@ -306,7 +306,7 @@ function(configure_arm_core)
             endif()
         elseif(has_nofp)
             # No floating point
-            set(LLVM_TARGET "${BASE_MARCH}-${TARGET_TRIPLE_MIDDLE}-eabi")
+            set(LLVM_TARGET "${MARCH}-${TARGET_TRIPLE_MIDDLE}-eabi")
             set(MFLOAT_ABI "soft")
             unset(MFPU)
         endif()
