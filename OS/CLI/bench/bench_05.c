@@ -70,7 +70,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 #include    "board.h"
 #include    "kern/kern.h"
 #include    "macros_core.h"
-#endif
 
 #define KNB_TESTS           1000000U
 
