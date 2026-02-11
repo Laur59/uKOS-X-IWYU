@@ -1,5 +1,9 @@
 # Third-Party Notices — uKOS-X
 
+(c) 2025-2026, Edo. Franzi, 2026-02-11
+
+
+
 This project includes or may include third-party software components.
 Each component remains under its original license. This file summarizes
 the third-party components shipped in this repository.
@@ -81,7 +85,7 @@ the third-party components shipped in this repository.
 ### 2.8) Tflite-micro
 - Location: `Third_Parties/Tflite-micro/`
 - Upstream: https://github.com/tensorflow/tflite-micro.git
-- Version: commit 3b638dd
+- Version: commit 510a6c5
 - License: Apache-2.0
 - Copyright:
   -  Copyright (c) 2020 The TensorFlow Authors. All rights reserved.
