@@ -50,6 +50,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #include    "machine/machine.h"
 
+#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "Registers/scb.h"
@@ -139,6 +140,6 @@ int32_t stub_machine_readFunctionName(const uintptr_t pc, const char_t **functio
     }
     #endif
 
-    *function = NULL;
+    *function = nullptr;
     return KERR_SYSTEM_NOERR;
 }

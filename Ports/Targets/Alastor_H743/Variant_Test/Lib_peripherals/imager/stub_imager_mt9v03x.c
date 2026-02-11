@@ -49,6 +49,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;------------------------------------------------------------------------
 */
 
+#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "Lib_peripherals/imager_common.h"
@@ -259,7 +260,7 @@ static  int32_t cb_configure(const imagerCnf_t *configure) {
     if (configure->oAcqMode == KIMAGER_SNAP) {
         status = cb_putRegister(KMT9V03x_CTRL_REG, 0x0398U);        if (status != KERR_IMAGER_NOERR) { return status; }
     }
-    if (configure->oImgCnf != NULL) {
+    if (configure->oImgCnf != nullptr) {
         status = local_setAptina((mt9v03x_t *)configure->oImgCnf);  if (status != KERR_IMAGER_NOERR) { return status; }
     }
     return status;

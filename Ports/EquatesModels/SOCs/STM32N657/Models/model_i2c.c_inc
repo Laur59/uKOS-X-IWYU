@@ -75,8 +75,6 @@ STRG_LOC_CONST(aStrSemaphore_TR[]) = UNIT " Transaction";
 // Prototypes
 // ==========
 
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
-
 static  int32_t local_writeByte(const uint8_t *sndBuffer, uint16_t nbSnd);
 static  int32_t local_readByte(uint8_t *recBuffer, uint16_t nbRec);
 static  int32_t local_checkNotBerr(void);
@@ -89,7 +87,7 @@ static  void    local_I2C_EV_IRQHandler(void);
  * - Initialise the manager
  *
  */
-void    model_i2c_init(void) {
+int32_t model_i2c_init(void) {
 
     cb_enable();
 
@@ -108,6 +106,7 @@ void    model_i2c_init(void) {
     INTERRUPT_VECTOR(I2C_VECTOR_NUMBER, local_I2C_EV_IRQHandler);
     NVIC_SetPriority(I2C_VECTOR_NUMBER, KHW_PRIORITY_MODERATE);
     NVIC_EnableIRQ(I2C_VECTOR_NUMBER);
+    return KERR_I2C_NOERR;
 }
 
 /*
@@ -121,7 +120,7 @@ int32_t model_i2c_configure(const i2cCnf_t *configure) {
     INTERRUPTION_OFF;
     I2C->CR1 &= (uint32_t)~I2C_CR1_PE;
 
-    vTimeout = (configure->oTimeout == 0U) ? (vTimeout) : (configure->oTimeout);
+    vTimeout = (configure->oTimeout == 0U) ? vTimeout : (configure->oTimeout);
     local_setTiming(configure->oSpeed);
 
     I2C->CR1 |= I2C_CR1_PE;
@@ -139,7 +138,7 @@ int32_t model_i2c_write(uint8_t address, const uint8_t *buffer, uint16_t size) {
     int32_t     status;
 
     status = local_checkNotBerr();
-    if (status != KERR_I2C_NOERR)                               { return (status); }
+    if (status != KERR_I2C_NOERR)                               { return status; }
 
     I2C->CR2 = (0U * I2C_CR2_PECBYTE)                               // No packet error
              | (1U * I2C_CR2_AUTOEND)                               // Automatic end mode
@@ -160,8 +159,8 @@ int32_t model_i2c_write(uint8_t address, const uint8_t *buffer, uint16_t size) {
     I2C->CR2 |= (1U * I2C_CR2_START);                               // START
 
     status = local_writeByte(buffer, size);
-    if (status != KERR_I2C_NOERR)                               { return (status); }
-    return (KERR_I2C_NOERR);
+    if (status != KERR_I2C_NOERR)                               { return status; }
+    return KERR_I2C_NOERR;
 }
 
 /*
@@ -184,7 +183,7 @@ int32_t model_i2c_read(uint8_t address, uint8_t *buffer, uint16_t size) {
 // Send the register number
 
         status = local_checkNotBerr();
-        if (status != KERR_I2C_NOERR)                           { return (status); }
+        if (status != KERR_I2C_NOERR)                           { return status; }
 
         I2C->CR2 = (0U * I2C_CR2_PECBYTE)                           // No packet error
                  | (0U * I2C_CR2_AUTOEND)                           // No automatic end mode
@@ -205,13 +204,13 @@ int32_t model_i2c_read(uint8_t address, uint8_t *buffer, uint16_t size) {
         I2C->CR2 |= (1U * I2C_CR2_START);                           // START
 
         status = local_writeByte(buffer, 1);
-        if (status != KERR_I2C_NOERR)                           { return (status); }
+        if (status != KERR_I2C_NOERR)                           { return status; }
     }
 
 // Read the register number content
 
     status = local_checkNotBerr();
-    if (status != KERR_I2C_NOERR)                               { return (status); }
+    if (status != KERR_I2C_NOERR)                               { return status; }
 
     I2C->CR2 = (0U * I2C_CR2_PECBYTE)                               // No packet error
              | (1U * I2C_CR2_AUTOEND)                               // Automatic end mode
@@ -232,8 +231,8 @@ int32_t model_i2c_read(uint8_t address, uint8_t *buffer, uint16_t size) {
     I2C->CR2 |= (1U * I2C_CR2_START);                               // START
 
     status = local_readByte(buffer, size);
-    if (status != KERR_I2C_NOERR)                               { return (status); }
-    return (KERR_I2C_NOERR);
+    if (status != KERR_I2C_NOERR)                               { return status; }
+    return KERR_I2C_NOERR;
 }
 
 // Local routines
@@ -250,8 +249,8 @@ static  void    local_setTiming(uint32_t speed) {
 //
     const   uint32_t    frequency = (uint32_t)I2C_FREQUENCY;
 
-    prescaler = (frequency > 16000000U) ? (frequency / 16000000U) : (1U);
-    prescaler = (prescaler > 16U)       ? (16U)                   : (prescaler);
+    prescaler = (frequency > 16000000U) ? (frequency / 16000000U) : 1U;
+    prescaler = (prescaler > 16U)       ? 16U                     : prescaler;
 
     clkDiv  = frequency / prescaler / speed;
     clkDiv2 = clkDiv / 2U;
@@ -277,18 +276,18 @@ static  int32_t local_writeByte(const uint8_t *sndBuffer, uint16_t nbSnd) {
 
     if (kern_waitSemaphore(vSemaphore_TR, vTimeout) == KERR_KERN_TIMEO) {
 
-        status = (vError != KERR_I2C_NOERR) ? (KERR_I2C_GEERR) : (KERR_I2C_TIMEO);
+        status = (vError != KERR_I2C_NOERR) ? KERR_I2C_GEERR : KERR_I2C_TIMEO;
 
 // Problem, restart the i2c hardware
 
         I2C->CR1 &= (uint32_t)~I2C_CR1_PE;
         kern_switchFast();
         I2C->CR1 |= I2C_CR1_PE;
-        return (status);
+        return status;
     }
 
-    status = (vError != KERR_I2C_NOERR) ? (KERR_I2C_GEERR) : (KERR_I2C_NOERR);
-    return (status);
+    status = (vError != KERR_I2C_NOERR) ? KERR_I2C_GEERR : KERR_I2C_NOERR;
+    return status;
 }
 
 /*
@@ -305,18 +304,18 @@ static  int32_t local_readByte(uint8_t *recBuffer, uint16_t nbRec) {
 
     if (kern_waitSemaphore(vSemaphore_TR, vTimeout) == KERR_KERN_TIMEO) {
 
-        status = (vError != KERR_I2C_NOERR) ? (KERR_I2C_GEERR) : (KERR_I2C_TIMEO);
+        status = (vError != KERR_I2C_NOERR) ? KERR_I2C_GEERR : KERR_I2C_TIMEO;
 
 // Problem, restart the i2c hardware
 
         I2C->CR1 &= (uint32_t)~I2C_CR1_PE;
         kern_switchFast();
         I2C->CR1 |= I2C_CR1_PE;
-        return (status);
+        return status;
     }
 
-    status = (vError != KERR_I2C_NOERR) ? (KERR_I2C_GEERR) : (KERR_I2C_NOERR);
-    return (status);
+    status = (vError != KERR_I2C_NOERR) ? KERR_I2C_GEERR : KERR_I2C_NOERR;
+    return status;
 }
 
 /*
@@ -326,7 +325,7 @@ static  int32_t local_readByte(uint8_t *recBuffer, uint16_t nbRec) {
 static  int32_t local_checkNotBerr(void) {
 
     if ((I2C->ISR & I2C_ISR_BERR) == 0U) {
-        return (KERR_I2C_NOERR);
+        return KERR_I2C_NOERR;
     }
 
 // Problem, restart the i2c hardware
@@ -334,7 +333,7 @@ static  int32_t local_checkNotBerr(void) {
     I2C->CR1 &= (uint32_t)~I2C_CR1_PE;
     kern_switchFast();
     I2C->CR1 |= I2C_CR1_PE;
-    return (KERR_I2C_TIMEO);
+    return KERR_I2C_TIMEO;
 }
 
 /*

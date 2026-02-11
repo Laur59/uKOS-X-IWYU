@@ -50,7 +50,6 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #include    <stdint.h>
 
-#include    "crt0.h"
 #include    "soc_reg.h"
 #include    "macros_soc.h"
 #include    "macros_core.h"

@@ -128,7 +128,7 @@ extern  void    memo_free(void *address);
  * \param[in]   -               KMEMO_ALIGN_32
  * \param[in]   size            Size of the memory to allocate
  * \param[in]   *identifier     Ptr on the identifier
- * \return      NULL            Memory block not allocated
+ * \return      nullptr         Memory block not allocated
  * \return      address         Memory address of the allocated block
  *
  */
@@ -158,7 +158,7 @@ extern  void    *memo_malloc(memoAlignement_t memoAlignement, uint32_t size, con
  * \param[in]   *address        Ptr on the address
  * \param[in]   size            Size of the memory to allocate
  * \param[in]   *identifier     Ptr on the identifier
- * \return      NULL            Memory block not allocated
+ * \return      nullptr         Memory block not allocated
  * \return      address         Memory address of the allocated block
  *
  */

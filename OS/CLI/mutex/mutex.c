@@ -48,7 +48,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 */
 
 #include    <inttypes.h>
-#include    <stdint.h>  // NOLINT(misc-include-cleaner): Explicit include for IWYU compliance
 #include    <stdio.h>
 #include    <string.h>
 
@@ -87,9 +86,9 @@ MODULE(
     Mutex,                                      // Module name (the first letter has to be upper case)
     KID_FAM_CLI,                                // Family (defined in the module.h)
     KNUM_SEMAPHORE,                             // Module identifier (defined in the module.h)
-    NULL,                                       // Address of the initialisation code (early pre-init)
-    prgm,                                       // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-    NULL,                                       // Address of the clean code (clean the module)
+    nullptr,                                    // Address of the initialisation code (early pre-init)
+    prgm,                                       // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                                    // Address of the clean code (clean the module)
     " 1.0",                                     // Revision string (major . minor)
     ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),         // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                           // Execution cores
@@ -103,15 +102,15 @@ MODULE(
  *
  */
 static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
             int32_t     status, counter;
             uint32_t    core;
             uint16_t    i, j, k, nbAttached;
             enum        { KERR_NOT, KERR_MEM } error = KERR_NOT;
             proc_t      *process;
     const   char_t      *idBuffer[KNB_CORES][KKERN_NB_PROCESSES], *identifier, *idSpacerI, *owner, *idSpacerO;
+
+    UNUSED(argc);
+    UNUSED(argv);
 
     (void)dprintf(KSYST, "List of the system mutexes.\n");
 
@@ -122,7 +121,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     for (core = 0U; core < KNB_CORES; core++) {
         (void)dprintf(KSYST, "Mutexes used by the core %"PRIu32"\n\n", core);
         for (i = 0U; i < KKERN_NB_MUTEXES; i++) {
-            if (vKern_mutx[core][i].oIdentifier != NULL) {
+            if (vKern_mutx[core][i].oIdentifier != nullptr) {
 
 // Prepare the generic printing characteristics
 // for all the mutex (identifier, spacer, counter & owner)
@@ -133,8 +132,8 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
                 counter = vKern_mutx[core][i].oCounter;
 
-                if (vKern_mutx[core][i].oOwner == NULL) { owner = "";                                                                                                                              }
-                else                                    { owner = (vKern_mutx[core][i].oOwner == KKERN_HANDLE_FROM_ISR) ? "From ISR" : (vKern_mutx[core][i].oOwner->oSpecification.oIdentifier); }
+                if (vKern_mutx[core][i].oOwner == nullptr) { owner = "";                                                                                                                            }
+                else                                       { owner = (vKern_mutx[core][i].oOwner == KKERN_HANDLE_FROM_ISR) ? "From ISR" : (vKern_mutx[core][i].oOwner->oSpecification.oIdentifier); }
                 local_compose(owner, &idSpacerO);
 
 // Scann the mutex list and collect

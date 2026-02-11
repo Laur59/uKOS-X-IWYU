@@ -111,11 +111,11 @@ void    preciseSignals_init(void) {
     if (kern_createSignalGroup(KPRCS_DEFAULT_SIGNAL_GROUP, &vDefaultSignalGroup[core]) != KERR_KERN_NOERR) { LOG(KFATAL_KERNEL, "prcs: create prcs"); exit(EXIT_OS_FAILURE); }
 
     for (i = 0U; i < KKERN_NB_PRECISE_SIGNALS; i++) {
-        vKern_prcs[core][i].oIdentifier  = NULL;
+        vKern_prcs[core][i].oIdentifier  = nullptr;
         vKern_prcs[core][i].oState       = 0U;
         vKern_prcs[core][i].oMode        = KPRCS_STOP;
         vKern_prcs[core][i].oSignalGroup = vDefaultSignalGroup[core];
-        vKern_prcs[core][i].oToProcess   = NULL;
+        vKern_prcs[core][i].oToProcess   = nullptr;
         vKern_prcs[core][i].oSignal      = 0U;
         vKern_prcs[core][i].oPeriod      = 0U;
         vKern_prcs[core][i].oNextTime    = 0U;
@@ -139,7 +139,7 @@ void    preciseSignals_init(void) {
  *    status = kern_createPreciseSignal(identifier, &preciseSignal);
  * \endcode
  *
- * \param[in]   *identifier     Ptr on the precise signal identifier (NULL = anonymous)
+ * \param[in]   *identifier     Ptr on the precise signal identifier (nullptr = anonymous)
  * \param[out]  **handle        Ptr on the handle
  * \return      KERR_KERN_NOERR OK
  * \return      KERR_KERN_PRFUL No more precise signal
@@ -156,13 +156,13 @@ int32_t kern_createPreciseSignal(const char_t *identifier, prcs_t **handle) {
     PRIVILEGE_ELEVATE;
     INTERRUPTION_OFF;
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
-    *handle = NULL;
+    *handle = nullptr;
 
-// Check if the identifier is already used (NULL = anonymous)
+// Check if the identifier is already used (nullptr = anonymous)
 // If the identifier is already used, then, return an error but
 // with the handle of the previously created object
 
-    if (identifier != NULL) {
+    if (identifier != nullptr) {
         for (i = 0U; i < KKERN_NB_PRECISE_SIGNALS; i++) {
             if (identifiers_cmpStrings(vKern_prcs[core][i].oIdentifier, identifier)) {
                 *handle = &vKern_prcs[core][i];
@@ -176,12 +176,12 @@ int32_t kern_createPreciseSignal(const char_t *identifier, prcs_t **handle) {
     }
 
     for (i = 0U; i < KKERN_NB_PRECISE_SIGNALS; i++) {
-        if (vKern_prcs[core][i].oIdentifier == NULL) {
-            vKern_prcs[core][i].oIdentifier  = (identifier == NULL) ? (KPRCS_ANONYMOUS_ID) : identifier;
+        if (vKern_prcs[core][i].oIdentifier == nullptr) {
+            vKern_prcs[core][i].oIdentifier  = (identifier == nullptr) ? (KPRCS_ANONYMOUS_ID) : identifier;
             vKern_prcs[core][i].oState       = (1U<<BPRCS_INSTALLED);
             vKern_prcs[core][i].oMode        = KPRCS_STOP;
             vKern_prcs[core][i].oSignalGroup = vDefaultSignalGroup[core];
-            vKern_prcs[core][i].oToProcess   = NULL;
+            vKern_prcs[core][i].oToProcess   = nullptr;
             vKern_prcs[core][i].oSignal      = 0U;
             vKern_prcs[core][i].oPeriod      = 0U;
             vKern_prcs[core][i].oNextTime    = 0U;
@@ -214,7 +214,7 @@ int32_t kern_createPreciseSignal(const char_t *identifier, prcs_t **handle) {
  *        uint32_t     signal;
  *        prcs_t       *preciseSignal;
  *        proc_t       *process23;
- *        sign_t       *oSignalGroup = NULL;
+ *        sign_t       *oSignalGroup = nullptr;
  *
  *        // In this example the "signal" is hard-coded. The user can also use the
  *        // system call kern_createBitSignal to automatically obtain a signal.
@@ -237,7 +237,7 @@ int32_t kern_createPreciseSignal(const char_t *identifier, prcs_t **handle) {
  * \endcode
  *
  * \param[in]       *handle         Ptr on the handle
- * \param[in, out]  **sigGroup      Ptr on the sigGroup handle. Set variable to NULL for the default group
+ * \param[in, out]  **sigGroup      Ptr on the sigGroup handle. Set variable to nullptr for the default group
  * \param[in]       *toProcess      Ptr on the process handle (selective signal)
  * \param[in]       -               KKERN_HANDLE_BROADCAST, broadcast to all the installed processes the signals
  * \param[in]       period          Time period in us
@@ -260,11 +260,11 @@ int32_t kern_setPreciseSignal(prcs_t *handle, sign_t **sigGroup, proc_t *toProce
     INTERRUPTION_OFF;
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
     preciseSignal = handle;
-    if (preciseSignal == NULL)                                 { *sigGroup = NULL; DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOPRC; }
-    if ((preciseSignal->oState & (1U<<BPRCS_INSTALLED)) == 0U) { *sigGroup = NULL; DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOPRC; }
+    if (preciseSignal == nullptr)                              { *sigGroup = nullptr; DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOPRC; }
+    if ((preciseSignal->oState & (1U<<BPRCS_INSTALLED)) == 0U) { *sigGroup = nullptr; DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOPRC; }
 
     preciseSignal->oMode        = mode;
-    preciseSignal->oSignalGroup = (*sigGroup == NULL) ? (vDefaultSignalGroup[core]) : (*sigGroup);
+    preciseSignal->oSignalGroup = (*sigGroup == nullptr) ? (vDefaultSignalGroup[core]) : (*sigGroup);
     preciseSignal->oToProcess   = toProcess;
     preciseSignal->oSignal      = signal;
     preciseSignal->oPeriod      = period;
@@ -306,14 +306,14 @@ int32_t kern_killPreciseSignal(prcs_t *handle) {
     INTERRUPTION_OFF;
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
     preciseSignal = handle;
-    if (preciseSignal == NULL)                                 { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOPRC; }
+    if (preciseSignal == nullptr)                              { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOPRC; }
     if ((preciseSignal->oState & (1U<<BPRCS_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOPRC; }
 
-    preciseSignal->oIdentifier  = NULL;
+    preciseSignal->oIdentifier  = nullptr;
     preciseSignal->oState       = 0U;
     preciseSignal->oMode        = KPRCS_STOP;
-    preciseSignal->oSignalGroup = NULL;
-    preciseSignal->oToProcess   = NULL;
+    preciseSignal->oSignalGroup = nullptr;
+    preciseSignal->oToProcess   = nullptr;
     preciseSignal->oSignal      = 0U;
     preciseSignal->oPeriod      = 0U;
     preciseSignal->oNextTime    = 0U;
@@ -356,7 +356,7 @@ int32_t kern_getPreciseSignalById(const char_t *identifier, prcs_t **handle) {
     PRIVILEGE_ELEVATE;
     INTERRUPTION_OFF;
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
-    *handle = NULL;
+    *handle = nullptr;
 
     for (i = 0U; i < KKERN_NB_PRECISE_SIGNALS; i++) {
         if (identifiers_cmpStrings(vKern_prcs[core][i].oIdentifier, identifier)) {

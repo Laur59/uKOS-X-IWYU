@@ -48,7 +48,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 */
 
 #include    <inttypes.h>
-#include    <stdint.h>  // NOLINT(misc-include-cleaner): Explicit include for IWYU compliance
 #include    <stdio.h>
 #include    <stdlib.h>
 
@@ -111,9 +110,9 @@ MODULE(
     Object,                                     // Module name (the first letter has to be upper case)
     KID_FAM_CLI,                                // Family (defined in the module.h)
     KNUM_OBJECT,                                // Module identifier (defined in the module.h)
-    NULL,                                       // Address of the initialisation code (early pre-init)
-    prgm,                                       // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-    NULL,                                       // Address of the clean code (clean the module)
+    nullptr,                                    // Address of the initialisation code (early pre-init)
+    prgm,                                       // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                                    // Address of the clean code (clean the module)
     " 1.0",                                     // Revision string (major . minor)
     ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),         // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                           // Execution cores
@@ -336,10 +335,10 @@ static  void    local_printProcess(uint32_t core, uint16_t number) {
 
     serialManagerA[4] = '\0';
 
-    father = (process.oInternal.oProcFather == NULL)                        ? "Orphan"   : (process.oInternal.oProcFather->oSpecification.oIdentifier);
+    father = (process.oInternal.oProcFather == nullptr)                     ? "Orphan"   : (process.oInternal.oProcFather->oSpecification.oIdentifier);
     mode   = (process.oSpecification.oStackMode == KPROC_STACK_STATIC)      ? "Static"   : "Dynamic";
     kind   = (process.oSpecification.oKind == KPROC_NORMAL)                 ? "Normal"   : "Daemon";
-    space  = (process.oSpecification.oMode == KPROC_USER)                   ? "User"       : "Privileged";
+    space  = (process.oSpecification.oMode == KPROC_USER)                   ? "User"     : "Privileged";
     eleva  = ((process.oInternal.oState & (1U<<BPROC_PRIV_ELEVATED)) != 0U) ? "Elevated" : "";
 
     state  = "Not installed";
@@ -547,9 +546,9 @@ static  void    local_printSignalGroup(uint32_t core, uint16_t number) {
 
         (void)dprintf(KSYST, "   Process %02"PRIu16"  -->  Signal pending: 0x%08"PRIX32", Signal generate: 0x%08"PRIX32", ", i, signalGroup.oSynchro[i].oSignalBitPending, signalGroup.oSynchro[i].oSignalBitGenerate);
 
-        if (from == KKERN_HANDLE_FROM_ISR)                     { (void)dprintf(KSYST, "From process: ISR\n");                                                                    }
-        if (from == KKERN_HANDLE_BROADCAST)                    { (void)dprintf(KSYST, "From process: Broadcast\n");                                                              }
-        if ((from == NULL) || (from > KKERN_HANDLE_BROADCAST)) { (void)dprintf(KSYST, "From process: 0x%016"PRIXPTR"\n", (uintptr_t)signalGroup.oSynchro[i].oSignalFromProcess); }
+        if (from == KKERN_HANDLE_FROM_ISR)                     { (void)dprintf(KSYST, "From process: ISR\n");                                                                       }
+        if (from == KKERN_HANDLE_BROADCAST)                    { (void)dprintf(KSYST, "From process: Broadcast\n");                                                                 }
+        if ((from == nullptr) || (from > KKERN_HANDLE_BROADCAST)) { (void)dprintf(KSYST, "From process: 0x%016"PRIXPTR"\n", (uintptr_t)signalGroup.oSynchro[i].oSignalFromProcess); }
     }
     (void)dprintf(KSYST, "\n");
 }

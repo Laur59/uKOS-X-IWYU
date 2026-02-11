@@ -186,12 +186,12 @@ extern	"C" {
 
 extern	asmpShared_t	*vAsmp_InterCore;
 
-void		stub_asmp_init(void);
-int32_t		stub_asmp_getRunningCore(uint32_t *core);
-int32_t		stub_asmp_getNumberOfCore(uint8_t *nbCore);
-int32_t		stub_asmp_getReferenceCore(uint32_t core, const char_t **coreReference);
-int32_t		stub_asmp_signal(uint32_t message);
-int32_t		stub_asmp_waitingForReady(void);
+extern	int32_t	stub_asmp_init(void);
+extern	int32_t	stub_asmp_getRunningCore(uint32_t *core);
+extern	int32_t	stub_asmp_getNumberOfCore(uint8_t *nbCore);
+extern	int32_t	stub_asmp_getReferenceCore(uint32_t core, const char_t **coreReference);
+extern	int32_t	stub_asmp_signal(uint32_t message);
+extern	int32_t	stub_asmp_waitingForReady(void);
 
 /*!
  * \brief Send data to core 0..3
@@ -285,7 +285,7 @@ extern	int32_t	asmp_getRunningCore(uint32_t *core);
  * \return		KERR_ASMP_CORNA	The core number is not not allowed
  *
  */
-int32_t	asmp_getReferenceCore(uint32_t core, const char_t **coreReference);
+extern	int32_t	asmp_getReferenceCore(uint32_t core, const char_t **coreReference);
 
 /*!
  * \brief Get the handle of the RX full semaphore

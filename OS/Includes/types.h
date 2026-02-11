@@ -85,10 +85,6 @@ enum : int32_t {
 
 // uKOS-X misc
 
-#ifndef NULL
-#define NULL                ((void *)0)
-#endif
-
 #ifndef tm_t
 typedef struct  tm          tm_t;
 #endif

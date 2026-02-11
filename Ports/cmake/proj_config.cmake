@@ -107,6 +107,8 @@ option(CANARY "Canary stack protection" ON)
 
 option(USER_MODE "User mode activated" ON)
 
+option(CONSTANT_SIG "Use SHA-256 of zero to generate signature" OFF)
+
 add_library(core_compiler_flags INTERFACE)
 if(${USER_MODE} AND (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "ARM"))
     set(MODE _pu)
@@ -304,7 +306,7 @@ function(configure_arm_core)
             endif()
         elseif(has_nofp)
             # No floating point
-            set(LLVM_TARGET "${BASE_MARCH}-${TARGET_TRIPLE_MIDDLE}-eabi")
+            set(LLVM_TARGET "${MARCH}-${TARGET_TRIPLE_MIDDLE}-eabi")
             set(MFLOAT_ABI "soft")
             unset(MFPU)
         endif()

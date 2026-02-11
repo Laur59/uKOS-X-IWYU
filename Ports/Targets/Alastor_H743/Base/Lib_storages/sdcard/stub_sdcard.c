@@ -48,6 +48,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;------------------------------------------------------------------------
 */
 
+#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "board.h"
@@ -169,7 +170,7 @@ static  uint8_t cb_writeRead(uint8_t data) {
  */
 static  void    cb_write(const uint8_t *source, uint16_t size) {
 
-    spi_multipleWriteRead(KSPI1, source, size, NULL, 0U, KWAIT_INFINITY);
+    spi_multipleWriteRead(KSPI1, source, size, nullptr, 0U, KWAIT_INFINITY);
 }
 
 /*
@@ -180,7 +181,7 @@ static  void    cb_write(const uint8_t *source, uint16_t size) {
  */
 static  void    cb_readSPI(uint8_t *destination, uint16_t size) {
 
-    spi_multipleWriteRead(KSPI1, NULL, 0U, destination, size, KWAIT_INFINITY);
+    spi_multipleWriteRead(KSPI1, nullptr, 0U, destination, size, KWAIT_INFINITY);
 }
 
 #include    "model_sdcard_spi.c_inc"

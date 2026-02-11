@@ -53,7 +53,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 #include    "kern/private/private_temporal.h"   // IWYU pragma: keep (for vKern_TimeException)
 #include    "linker.h"
 #include    "macros_core.h"
-#include    "macros_soc.h"
 #include    "soc_reg.h"
 
 // Vector table: ...

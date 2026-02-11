@@ -89,9 +89,9 @@ MODULE(
     Launcher,                       // Module name (the first letter has to be upper case)
     KID_FAM_PROCESSES,              // Family (defined in the module.h)
     KNUM_LAUNCHER,                  // Module identifier (defined in the module.h)
-    NULL,                           // Address of the initialisation code (early pre-init)
-    prgm,                           // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-    NULL,                           // Address of the clean code (clean the module)
+    nullptr,                        // Address of the initialisation code (early pre-init)
+    prgm,                           // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                        // Address of the clean code (clean the module)
     " 1.0",                         // Revision string (major . minor)
     (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     KEXECUTION_CORE                 // Execution cores
@@ -122,10 +122,10 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     PROCESS_STACKMALLOC(
         0,                                  // Index
         specification,                      // Specifications (just use specification_x)
-        aStrText,                           // Info string (NULL if anonymous)
+        aStrText,                           // Info string (nullptr if anonymous)
         KKERN_SZ_STACK_MM,                  // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
         local_process,                      // Code of the process
-        aStrIden,                           // Identifier (NULL if anonymous)
+        aStrIden,                           // Identifier (nullptr if anonymous)
         KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
         KKERN_PRIORITY_MEDIUM_01            // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
     );
@@ -134,7 +134,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
     specification.oMode = KPROC_PRIVILEGED;
 
-    if (kern_createProcess(&specification, NULL, &process) != KERR_KERN_NOERR) { LOG(KFATAL_SYSTEM, "launcher: create proc"); exit(EXIT_OS_PANIC); }
+    if (kern_createProcess(&specification, nullptr, &process) != KERR_KERN_NOERR) { LOG(KFATAL_SYSTEM, "launcher: create proc"); exit(EXIT_OS_PANIC); }
 
     LOG(KINFO_SYSTEM, "launcher: process launcher launched");
     return EXIT_OS_SUCCESS_CLI;
@@ -150,8 +150,6 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
  *
  */
 static void __attribute__ ((noreturn)) local_process(const void *argument) {
-    UNUSED(argument);
-
             uint16_t        index = 0U;
             uint32_t        core, idModule, argc = 4U;
     const   uKOS_module_t   *module;
@@ -165,6 +163,8 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
                                         { "alive", "50", "950", "3" }   // Core 3
                                     };
 
+    UNUSED(argument);
+
     core = GET_RUNNING_CORE;
     LOG(KINFO_SYSTEM, "launcher: launching all the processes");
 
@@ -172,8 +172,8 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 
     index = 0U;
     while (system_getModuleFamily((uint8_t)KID_FAM_ALL_FAMILIES, &idModule, &index, &module) == KERR_SYSTEM_NOERR) {
-        if (module->oInit != NULL) {
-            module->oInit(0U, NULL);
+        if (module->oInit != nullptr) {
+            module->oInit(0U, nullptr);
         }
         index++;
     }
@@ -185,7 +185,7 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
     while (system_getModuleFamily((uint8_t)KID_FAM_PROCESSES, &idModule, &index, &module) == KERR_SYSTEM_NOERR) {
         if (!((idModule == (uint32_t)KID_ALIVE) || (idModule == (uint32_t)KID_LAUNCHER))) {
             if (((1U<<core) & module->oExecutionCore) != 0U) {
-                module->oExecution(0U, NULL);
+                module->oExecution(0U, nullptr);
             }
         }
         index++;
@@ -204,7 +204,7 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
     while (system_getModuleFamily((uint8_t)KID_FAM_DAEMONS, &idModule, &index, &module) == KERR_SYSTEM_NOERR) {
         if ((idModule != (uint32_t)KID_IDLE)) {
             if (((1U<<core) & module->oExecutionCore) != 0) {
-                module->oExecution(0U, NULL);
+                module->oExecution(0U, nullptr);
             }
         }
         index++;

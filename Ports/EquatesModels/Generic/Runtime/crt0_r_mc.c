@@ -71,8 +71,6 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    "crt0.h"
 
 #include    <inttypes.h>
-#include    <stddef.h>
-#include    <stdint.h>
 #include    <stdio.h>
 #include    <stdlib.h>
 #include    <string.h>
@@ -106,9 +104,9 @@ MODULE(
     Crt0_r_mc,                      // Module name (the first letter has to be upper case)
     KID_FAM_STARTUPS,               // Family (defined in the module.h)
     KNUM_CRT0,                      // Module identifier (defined in the module.h)
-    NULL,                           // Address of the initialisation code (early pre-init)
-    NULL,                           // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-    NULL,                           // Address of the clean code (clean the module)
+    nullptr,                        // Address of the initialisation code (early pre-init)
+    nullptr,                        // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                        // Address of the clean code (clean the module)
     " 1.0",                         // Revision string (major . minor)
     (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                               // Execution cores
@@ -316,7 +314,7 @@ static  void    __attribute__ ((noinline)) local_panicMallocBroken(void) {
 
     #ifdef CONFIG_MAN_SERIAL_S
     cmns_send(KSYST, "\nPanic: memo_malloc descriptor broken!\nCurrent process: ");
-    identifier = (vKern_runProc[core]->oSpecification.oIdentifier == NULL) ? "Anonymous" : (vKern_runProc[core]->oSpecification.oIdentifier);
+    identifier = (vKern_runProc[core]->oSpecification.oIdentifier == nullptr) ? "Anonymous" : (vKern_runProc[core]->oSpecification.oIdentifier);
     cmns_send(KSYST, identifier); cmns_send(KSYST, "\n");
     #endif
 }
@@ -341,7 +339,7 @@ static  void    __attribute__ ((noinline)) local_panicStackUnderflow(void) {
     #ifdef CONFIG_MAN_SERIAL_S
     cmns_send(KDEF0, "\nPanic: process stack underflow detected!\n");
 
-    identifier = (vKern_runProc[core]->oSpecification.oIdentifier == NULL) ? "Anonymous" : (vKern_runProc[core]->oSpecification.oIdentifier);
+    identifier = (vKern_runProc[core]->oSpecification.oIdentifier == nullptr) ? "Anonymous" : (vKern_runProc[core]->oSpecification.oIdentifier);
     (void)snprintf(&string[0], 200U, "Current process:    %s\n", identifier);
     cmns_send(KDEF0, &string[0]);
 
@@ -374,7 +372,7 @@ static  void    __attribute__ ((noinline)) local_panicNoSystemCall(void) {
 
     #ifdef CONFIG_MAN_SERIAL_S
     cmns_send(KSYST, "\nPanic: The system call does not exist!\nCurrent process: ");
-    identifier = (vKern_runProc[core]->oSpecification.oIdentifier == NULL) ? "Anonymous" : (vKern_runProc[core]->oSpecification.oIdentifier);
+    identifier = (vKern_runProc[core]->oSpecification.oIdentifier == nullptr) ? "Anonymous" : (vKern_runProc[core]->oSpecification.oIdentifier);
     cmns_send(KSYST, identifier); cmns_send(KSYST, "\n");
     #endif
 }
@@ -393,4 +391,4 @@ static  void    __attribute__ ((noinline)) local_panicGeneral(void) {
     #endif
 }
 
-#include    "model_coreDump_tracing.c_inc"
+#include    "model_coreDump_tracing.c_inc"      // IWYU pragma: keep

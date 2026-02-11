@@ -51,7 +51,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #include    <math.h>
 #include    <stdint.h>
-#include    <stdlib.h>
 
 #include    "macros.h"
 #include    "macros_core.h"
@@ -90,9 +89,9 @@ MODULE(
     Mlpn,                           // Module name (the first letter has to be upper case)
     KID_FAM_NEURALS,                // Family (defined in the module.h)
     KNUM_MLPN,                      // Module identifier (defined in the module.h)
-    NULL,                           // Address of the initialisation code (early pre-init)
-    NULL,                           // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-    NULL,                           // Address of the clean code (clean the module)
+    nullptr,                        // Address of the initialisation code (early pre-init)
+    nullptr,                        // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                        // Address of the clean code (clean the module)
     " 1.0",                         // Revision string (major . minor)
     (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                               // Execution cores
@@ -178,9 +177,9 @@ static  int32_t     local_initialiseLayer(mlpnLayer_t *layer);
  *                                               KMLPN_NB_LAYERS,
  *                                               &aLayer_L1,
  *                                               &aLayer_L2,
- *                                               NULL,
- *                                               NULL,
- *                                               NULL
+ *                                               nullptr,
+ *                                               nullptr,
+ *                                               nullptr
  *                                            };
  *
  *    status = mlpn_configure(&aNetwork);
@@ -204,31 +203,31 @@ int32_t mlpn_configure(const mlpnNetwork_t *network) {
 
     switch (network->oNBLayer) {
         case 1U: {
-            if (network->oLayer_L1 == NULL) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L1 == nullptr) { return KERR_MLPN_GEERR; }
             local_initialiseLayer(network->oLayer_L1);
             break;
         }
         case 2U: {
-            if (network->oLayer_L1 == NULL) { return KERR_MLPN_GEERR; }
-            if (network->oLayer_L2 == NULL) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L1 == nullptr) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L2 == nullptr) { return KERR_MLPN_GEERR; }
             local_initialiseLayer(network->oLayer_L1);
             local_initialiseLayer(network->oLayer_L2);
             break;
         }
         case 3U: {
-            if (network->oLayer_L1 == NULL) { return KERR_MLPN_GEERR; }
-            if (network->oLayer_L2 == NULL) { return KERR_MLPN_GEERR; }
-            if (network->oLayer_L3 == NULL) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L1 == nullptr) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L2 == nullptr) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L3 == nullptr) { return KERR_MLPN_GEERR; }
             local_initialiseLayer(network->oLayer_L1);
             local_initialiseLayer(network->oLayer_L2);
             local_initialiseLayer(network->oLayer_L3);
             break;
         }
         case 4U: {
-            if (network->oLayer_L1 == NULL) { return KERR_MLPN_GEERR; }
-            if (network->oLayer_L2 == NULL) { return KERR_MLPN_GEERR; }
-            if (network->oLayer_L3 == NULL) { return KERR_MLPN_GEERR; }
-            if (network->oLayer_L4 == NULL) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L1 == nullptr) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L2 == nullptr) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L3 == nullptr) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L4 == nullptr) { return KERR_MLPN_GEERR; }
             local_initialiseLayer(network->oLayer_L1);
             local_initialiseLayer(network->oLayer_L2);
             local_initialiseLayer(network->oLayer_L3);
@@ -236,11 +235,11 @@ int32_t mlpn_configure(const mlpnNetwork_t *network) {
             break;
         }
         case 5U: {
-            if (network->oLayer_L1 == NULL) { return KERR_MLPN_GEERR; }
-            if (network->oLayer_L2 == NULL) { return KERR_MLPN_GEERR; }
-            if (network->oLayer_L3 == NULL) { return KERR_MLPN_GEERR; }
-            if (network->oLayer_L4 == NULL) { return KERR_MLPN_GEERR; }
-            if (network->oLayer_L5 == NULL) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L1 == nullptr) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L2 == nullptr) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L3 == nullptr) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L4 == nullptr) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L5 == nullptr) { return KERR_MLPN_GEERR; }
             local_initialiseLayer(network->oLayer_L1);
             local_initialiseLayer(network->oLayer_L2);
             local_initialiseLayer(network->oLayer_L3);
@@ -291,31 +290,31 @@ int32_t mlpn_compute(const mlpnNetwork_t *network) {
 
     switch (network->oNBLayer) {
         case 1U: {
-            if (network->oLayer_L1 == NULL) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L1 == nullptr) { return KERR_MLPN_GEERR; }
             local_computeLayer(network->oLayer_L1);
             break;
         }
         case 2U: {
-            if (network->oLayer_L1 == NULL) { return KERR_MLPN_GEERR; }
-            if (network->oLayer_L2 == NULL) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L1 == nullptr) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L2 == nullptr) { return KERR_MLPN_GEERR; }
             local_computeLayer(network->oLayer_L1);
             local_computeLayer(network->oLayer_L2);
             break;
         }
         case 3U: {
-            if (network->oLayer_L1 == NULL) { return KERR_MLPN_GEERR; }
-            if (network->oLayer_L2 == NULL) { return KERR_MLPN_GEERR; }
-            if (network->oLayer_L3 == NULL) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L1 == nullptr) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L2 == nullptr) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L3 == nullptr) { return KERR_MLPN_GEERR; }
             local_computeLayer(network->oLayer_L1);
             local_computeLayer(network->oLayer_L2);
             local_computeLayer(network->oLayer_L3);
             break;
         }
         case 4U: {
-            if (network->oLayer_L1 == NULL) { return KERR_MLPN_GEERR; }
-            if (network->oLayer_L2 == NULL) { return KERR_MLPN_GEERR; }
-            if (network->oLayer_L3 == NULL) { return KERR_MLPN_GEERR; }
-            if (network->oLayer_L4 == NULL) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L1 == nullptr) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L2 == nullptr) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L3 == nullptr) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L4 == nullptr) { return KERR_MLPN_GEERR; }
             local_computeLayer(network->oLayer_L1);
             local_computeLayer(network->oLayer_L2);
             local_computeLayer(network->oLayer_L3);
@@ -323,11 +322,11 @@ int32_t mlpn_compute(const mlpnNetwork_t *network) {
             break;
         }
         case 5U: {
-            if (network->oLayer_L1 == NULL) { return KERR_MLPN_GEERR; }
-            if (network->oLayer_L2 == NULL) { return KERR_MLPN_GEERR; }
-            if (network->oLayer_L3 == NULL) { return KERR_MLPN_GEERR; }
-            if (network->oLayer_L4 == NULL) { return KERR_MLPN_GEERR; }
-            if (network->oLayer_L5 == NULL) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L1 == nullptr) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L2 == nullptr) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L3 == nullptr) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L4 == nullptr) { return KERR_MLPN_GEERR; }
+            if (network->oLayer_L5 == nullptr) { return KERR_MLPN_GEERR; }
             local_computeLayer(network->oLayer_L1);
             local_computeLayer(network->oLayer_L2);
             local_computeLayer(network->oLayer_L3);
@@ -351,6 +350,7 @@ int32_t mlpn_compute(const mlpnNetwork_t *network) {
  *
  */
 static  int32_t local_init(void) {
+            int32_t     status = KERR_MLPN_NOERR;
             uint32_t    core;
     static  bool        vInit[KNB_CORES] = MCSET(false);
 
@@ -361,7 +361,7 @@ static  int32_t local_init(void) {
         vInit[core] = true;
 
     }
-    RETURN_INT_RESTORE(KERR_MLPN_NOERR);
+    RETURN_INT_RESTORE(status);
 }
 
 /*

@@ -73,7 +73,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #define Km  KRAND_MAX
 
 extern  uint32_t    vCrt0_randomSeed;
-static  uint32_t    vSeed[KNB_CORES] = MCSET(0u);
+static  uint32_t    vSeed[KNB_CORES] = MCSET(0U);
 
 /*
  * \brief model_random_soft_init

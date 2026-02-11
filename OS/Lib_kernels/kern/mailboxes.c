@@ -114,17 +114,17 @@ void    mailboxes_init(void) {
     core = GET_RUNNING_CORE;
 
     for (i = 0U; i < KKERN_NB_MAILBOXES; i++) {
-        vKern_mbox[core][i].oIdentifier     = NULL;
+        vKern_mbox[core][i].oIdentifier     = nullptr;
         vKern_mbox[core][i].oState          = 0U;
         vKern_mbox[core][i].oNbMaxPacks     = 0U;
         vKern_mbox[core][i].oNbUsedPacks    = 0U;
         vKern_mbox[core][i].oNbMaxUsedPacks = 0U;
         vKern_mbox[core][i].oDataEntrySize  = 0U;
-        vKern_mbox[core][i].oFIFO           = NULL;
-        vKern_mbox[core][i].oDataBuffer     = NULL;
-        vKern_mbox[core][i].oWrite          = NULL;
-        vKern_mbox[core][i].oRead           = NULL;
-        vKern_mbox[core][i].oDataWrite      = NULL;
+        vKern_mbox[core][i].oFIFO           = nullptr;
+        vKern_mbox[core][i].oDataBuffer     = nullptr;
+        vKern_mbox[core][i].oWrite          = nullptr;
+        vKern_mbox[core][i].oRead           = nullptr;
+        vKern_mbox[core][i].oDataWrite      = nullptr;
         lists_initialise(&vKern_mbox[core][i].oListEmpty);
         lists_initialise(&vKern_mbox[core][i].oListFull);
     }
@@ -147,7 +147,7 @@ void    mailboxes_init(void) {
  *    status = kern_createMailbox(identifier, &mailBox);
  * \endcode
  *
- * \param[in]   *identifier     Ptr on the mailbox identifier (NULL = anonymous)
+ * \param[in]   *identifier     Ptr on the mailbox identifier (nullptr = anonymous)
  * \param[out]  **handle        Ptr on the handle
  * \return      KERR_KERN_NOERR OK
  * \return      KERR_KERN_MBFUL No more mailbox
@@ -164,13 +164,13 @@ int32_t kern_createMailbox(const char_t *identifier, mbox_t **handle) {
     PRIVILEGE_ELEVATE;
     INTERRUPTION_OFF;
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
-    *handle = NULL;
+    *handle = nullptr;
 
-// Check if the identifier is already used (NULL = anonymous)
+// Check if the identifier is already used (nullptr = anonymous)
 // If the identifier is already used, then, return an error but
 // with the handle of the previously created object
 
-    if (identifier != NULL) {
+    if (identifier != nullptr) {
         for (i = 0; i < KKERN_NB_MAILBOXES; i++) {
             if (identifiers_cmpStrings(vKern_mbox[core][i].oIdentifier, identifier)) {
                 *handle = &vKern_mbox[core][i];
@@ -184,8 +184,8 @@ int32_t kern_createMailbox(const char_t *identifier, mbox_t **handle) {
     }
 
     for (i = 0U; i < KKERN_NB_MAILBOXES; i++) {
-        if (vKern_mbox[core][i].oIdentifier == NULL) {
-            vKern_mbox[core][i].oIdentifier  = (identifier == NULL) ? (KMBOX_ANONYMOUS_ID) : identifier;
+        if (vKern_mbox[core][i].oIdentifier == nullptr) {
+            vKern_mbox[core][i].oIdentifier  = (identifier == nullptr) ? (KMBOX_ANONYMOUS_ID) : identifier;
             vKern_mbox[core][i].oState       = (1U<<BMBOX_INSTALLED) | (1U<<BMBOX_EMPTY);
             *handle = &vKern_mbox[core][i];
 
@@ -244,7 +244,7 @@ int32_t kern_setMailbox(mbox_t *handle, const mcnf_t *configure) {
     PRIVILEGE_ELEVATE;
     INTERRUPTION_OFF;
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
-    if (handle == NULL)                                  { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOMBO; }
+    if (handle == nullptr)                               { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOMBO; }
     if ((handle->oState & (1U<<BMBOX_INSTALLED)) == 0U)  { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOMBO; }
     if ((handle->oState & (1U<<BMBOX_CONFIGURED)) != 0U) { DEBUG_KERN_TRACE("exit: KO 3"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_MBCNF; }
     if (configure->oNbMaxPacks == 0U)                    { DEBUG_KERN_TRACE("exit: KO 4"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_MBCNF; }
@@ -252,7 +252,7 @@ int32_t kern_setMailbox(mbox_t *handle, const mcnf_t *configure) {
 // Reserve the mailbox memory
 
     fifoArray = (mboxPack_t *)memo_malloc(KMEMO_ALIGN_8, (configure->oNbMaxPacks * sizeof(mboxPack_t)), "mbox");
-    if (fifoArray == NULL) {
+    if (fifoArray == nullptr) {
         DEBUG_KERN_TRACE("exit: KO 5");
         INTERRUPTION_RESTORE;
         PRIVILEGE_RESTORE;
@@ -261,7 +261,7 @@ int32_t kern_setMailbox(mbox_t *handle, const mcnf_t *configure) {
 
     if (configure->oDataEntrySize > 0U) {
         handle->oDataBuffer = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (configure->oNbMaxPacks * configure->oDataEntrySize), "mbox data");
-        if (handle->oDataBuffer == NULL) {
+        if (handle->oDataBuffer == nullptr) {
             memo_free(fifoArray);
             DEBUG_KERN_TRACE("exit: KO 6");
             INTERRUPTION_RESTORE;
@@ -403,7 +403,7 @@ int32_t kern_writeQueue(mbox_t *handle, uintptr_t message, uint32_t timeout) {
  * \endcode
  *
  * \param[in]   *handle         Ptr on the handle
- * \param[out]  **message       Ptr on the message (return NULL in case of error)
+ * \param[out]  **message       Ptr on the message (return nullptr in case of error)
  * \param[out]  *size           Ptr on the  size of the message
  * \param[in]   timeout         Timeout (1-ms of resolution)
  * \param[in]   -               KWAIT_INFINITY, waiting forever
@@ -509,7 +509,7 @@ int32_t kern_killMailbox(mbox_t *handle) {
     PRIVILEGE_ELEVATE;
     INTERRUPTION_OFF;
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
-    if (handle == NULL)                                  { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOMBO; }
+    if (handle == nullptr)                               { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOMBO; }
     if ((handle->oState & (1U<<BMBOX_INSTALLED)) == 0U)  { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOMBO; }
     if ((handle->oState & (1U<<BMBOX_CONFIGURED)) != 0U) {
 
@@ -541,20 +541,20 @@ int32_t kern_killMailbox(mbox_t *handle) {
 
         memo_free(handle->oFIFO);
 
-        if (handle->oDataBuffer != NULL) {
+        if (handle->oDataBuffer != nullptr) {
             memo_free(handle->oDataBuffer);
         }
     }
-    handle->oIdentifier    = NULL;
+    handle->oIdentifier    = nullptr;
     handle->oState         = 0U;
     handle->oNbMaxPacks    = 0U;
     handle->oNbUsedPacks   = 0U;
     handle->oDataEntrySize = 0U;
-    handle->oFIFO          = NULL;
-    handle->oDataBuffer    = NULL;
-    handle->oWrite         = NULL;
-    handle->oRead          = NULL;
-    handle->oDataWrite     = NULL;
+    handle->oFIFO          = nullptr;
+    handle->oDataBuffer    = nullptr;
+    handle->oWrite         = nullptr;
+    handle->oRead          = nullptr;
+    handle->oDataWrite     = nullptr;
 
     if (vKern_nbMbox[core] != 0U) { vKern_nbMbox[core] = (uint16_t)(vKern_nbMbox[core] - 1U); }
     DEBUG_KERN_TRACE("exit: OK");
@@ -596,7 +596,7 @@ int32_t kern_getMailboxById(const char_t *identifier, mbox_t **handle) {
     PRIVILEGE_ELEVATE;
     INTERRUPTION_OFF;
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
-    *handle = NULL;
+    *handle = nullptr;
 
     for (i = 0U; i < KKERN_NB_MAILBOXES; i++) {
         if (identifiers_cmpStrings(vKern_mbox[core][i].oIdentifier, identifier)) {
@@ -643,7 +643,7 @@ static  int32_t local_writeMailbox(uint32_t core, mbox_t *handle, void *message,
 
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
     if ((IS_EXCEPTION) && (timeout != 0U))                                                 { DEBUG_KERN_TRACE("exit: KO 1"); return KERR_KERN_FRISR; }
-    if (handle == NULL)                                                                    { DEBUG_KERN_TRACE("exit: KO 2"); return KERR_KERN_NOMBO; }
+    if (handle == nullptr)                                                                 { DEBUG_KERN_TRACE("exit: KO 2"); return KERR_KERN_NOMBO; }
     if ((handle->oState  & (1U<<BMBOX_INSTALLED)) == 0U)                                   { DEBUG_KERN_TRACE("exit: KO 3"); return KERR_KERN_NOMBO; }
     if ((handle->oState  & (1U<<BMBOX_CONFIGURED)) == 0U)                                  { DEBUG_KERN_TRACE("exit: KO 4"); return KERR_KERN_MBNCF; }
     if (((handle->oState & (1U<<BMBOX_BY_COPY)) != 0U) && (size > handle->oDataEntrySize)) { DEBUG_KERN_TRACE("exit: KO 5"); return KERR_KERN_MBSIZ; }
@@ -697,7 +697,7 @@ static  void    local_write(uint32_t core, mbox_t *handle, void *message, uint32
     nbMaxPacks = handle->oNbMaxPacks;
     handle->oWrite->oSize = size;
 
-    if (handle->oDataBuffer != NULL) {
+    if (handle->oDataBuffer != nullptr) {
         memcpy((void *)(unsigned char *)handle->oDataWrite, (const void *)(const unsigned char *)message, (size_t)size);
         handle->oWrite->oBuff = handle->oDataWrite;
         handle->oDataWrite = (&handle->oDataWrite[handle->oDataEntrySize] >= &handle->oDataBuffer[(size_t)handle->oDataEntrySize * (size_t)handle->oNbMaxPacks]) ? handle->oDataBuffer : &handle->oDataWrite[handle->oDataEntrySize];
@@ -712,7 +712,7 @@ static  void    local_write(uint32_t core, mbox_t *handle, void *message, uint32
     kern_readTickCount(&timeStmp);
     handle->oWrite->oReadTimeStmp  = 0U;
     handle->oWrite->oWriteTimeStmp = timeStmp;
-    handle->oWrite->oProcess       = (IS_EXCEPTION) ? (NULL) : (vKern_runProc[core]);
+    handle->oWrite->oProcess       = (IS_EXCEPTION) ? nullptr : (vKern_runProc[core]);
     #endif
 
     handle->oWrite++;
@@ -745,7 +745,7 @@ static  void    local_write(uint32_t core, mbox_t *handle, void *message, uint32
  *
  * \param[in]   core            Core number
  * \param[in]   *handle         Ptr on the handle
- * \param[out]  **message       Ptr on the message (return NULL in case of error)
+ * \param[out]  **message       Ptr on the message (return nullptr in case of error)
  * \param[out]  *size           Ptr on the size of the message
  * \param[in]   timeout         Timeout (1-ms of resolution)
  * \param[in]   -               KWAIT_INFINITY, waiting forever
@@ -764,12 +764,12 @@ static  int32_t local_readMailbox(uint32_t core, mbox_t *handle, void **message,
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
 
     if ((IS_EXCEPTION) && (timeout != 0U))               { DEBUG_KERN_TRACE("exit: KO 1"); return KERR_KERN_FRISR; }
-    if (handle == NULL)                                  { DEBUG_KERN_TRACE("exit: KO 2"); return KERR_KERN_NOMBO; }
+    if (handle == nullptr)                               { DEBUG_KERN_TRACE("exit: KO 2"); return KERR_KERN_NOMBO; }
     if ((handle->oState & (1U<<BMBOX_INSTALLED)) == 0U)  { DEBUG_KERN_TRACE("exit: KO 3"); return KERR_KERN_NOMBO; }
     if ((handle->oState & (1U<<BMBOX_CONFIGURED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 4"); return KERR_KERN_MBNCF; }
 
     if ((handle->oState & (1U<<BMBOX_BY_COPY)) == 0U) {
-        *message = NULL;
+        *message = nullptr;
     }
 
 // -------------------------- inputs --------------------------     -------------------------------------- output ---------------------------------------
@@ -813,18 +813,18 @@ static  int32_t local_readMailbox(uint32_t core, mbox_t *handle, void **message,
 }
 
 static  void    local_read(uint32_t core, mbox_t *handle, void **message, uint32_t *size, bool *preemption) {
-    UNUSED(core);
-
     uint32_t    nbMaxPacks, copySize;
     proc_t      *process;
+
+    UNUSED(core);
 
 // Read the message
 
     nbMaxPacks = handle->oNbMaxPacks;
 
-    if (handle->oDataBuffer != NULL) {
+    if (handle->oDataBuffer != nullptr) {
         copySize = (((*size) > handle->oRead->oSize) || (*size == 0U)) ? handle->oRead->oSize : (*size);
-        if ((copySize > 0U) && (*message != NULL)) {
+        if ((copySize > 0U) && (*message != nullptr)) {
             memcpy((void *)(unsigned char *)(*message), (const void *)(const unsigned char *)handle->oRead->oBuff, (size_t)copySize);
         }
         *size = copySize;

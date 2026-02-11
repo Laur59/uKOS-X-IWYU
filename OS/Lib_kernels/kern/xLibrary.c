@@ -52,7 +52,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #include    "kern/private/private_xLibrary.h"
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    <sys/reent.h>
@@ -101,7 +100,7 @@ void    xLibrary_update(void) {
 
     core = GET_RUNNING_CORE;
 
-    if (vKern_runProc[core]->oInternal.oLocal != NULL) {
+    if (vKern_runProc[core]->oInternal.oLocal != nullptr) {
         _impure_ptr = (reent_t *)vKern_runProc[core]->oInternal.oLocal;
     }
 }

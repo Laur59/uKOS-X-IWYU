@@ -72,15 +72,15 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #pragma GCC diagnostic  pop
 
 #if (CFG_TUD_CDC > 0)
-#include    "TinyUSB/uKOS_Interface/Models/model_TinyUSB_cdc.c_inc"
+#include    "TinyUSB/uKOS_Interface/Models/model_TinyUSB_cdc.c_inc"     // IWYU pragma: keep
 #endif
 
 #if (CFG_TUD_MSC > 0)
-#include    "TinyUSB/uKOS_Interface/Models/model_TinyUSB_msc.c_inc"
+#include    "TinyUSB/uKOS_Interface/Models/model_TinyUSB_msc.c_inc"     // IWYU pragma: keep
 #endif
 
 #if (CFG_TUD_VIDEO > 0)
-#include    "TinyUSB/uKOS_Interface/Models/model_TinyUSB_video.c_inc"
+#include    "TinyUSB/uKOS_Interface/Models/model_TinyUSB_video.c_inc"   // IWYU pragma: keep
 #endif
 
 uint32_t    SystemCoreClock = KFREQUENCY_CORE;
@@ -91,7 +91,7 @@ static  void    local_OTG_HS_IRQHandler(void);
 
 // Init device stack on configured roothub port
 
-static	tusb_rhport_init_t deviceInit = {
+static  tusb_rhport_init_t deviceInit = {
     .role  = TUSB_ROLE_DEVICE,
     .speed = TUSB_SPEED_AUTO
 };

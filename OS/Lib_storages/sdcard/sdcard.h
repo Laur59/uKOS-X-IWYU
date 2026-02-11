@@ -143,6 +143,13 @@ extern  "C" {
 #define SDCARD_reserve  sdcard_reserve
 #define SDCARD_release  sdcard_release
 
+extern	int32_t	stub_sdcard_init(void);
+extern	int32_t	stub_sdcard_initialise(sdcard_specification_t *specification);
+extern	int32_t	stub_sdcard_readStatus(void);
+extern	int32_t	stub_sdcard_read(const sdcard_specification_t *specification, uint8_t *buffer, uint8_t nbSectors, uint32_t sector);
+extern	int32_t	stub_sdcard_write(const sdcard_specification_t *specification, const uint8_t *buffer, uint8_t nbSectors, uint32_t sector);
+extern	int32_t	stub_sdcard_ioctl(storageIoctl_t command, void *buffer);
+
 /*!
  * \brief Reserve the sdcard manager
  *

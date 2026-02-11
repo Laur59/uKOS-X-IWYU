@@ -87,15 +87,15 @@ bool    installaProcess_dispatcher(void) {
     PROCESS_STACKMALLOC(
         0U,                                 // Index
         specification,                      // Specifications (just use specification_x)
-        aStrText,                           // Info string (NULL if anonymous)
+        aStrText,                           // Info string (nullptr if anonymous)
         KKERN_SZ_STACK_MM,                  // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
         aProcess,                           // Code of the process
-        aStrIden,                           // Identifier (NULL if anonymous)
+        aStrIden,                           // Identifier (nullptr if anonymous)
         KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
         KKERN_PRIORITY_HIGH_15              // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
     );
 
-    status = (kern_createProcess(&specification, NULL, &process) == KERR_KERN_NOERR) ? (true) : (false);
+    status = (kern_createProcess(&specification, nullptr, &process) == KERR_KERN_NOERR) ? (true) : (false);
     return (status);
 }
 
@@ -111,7 +111,7 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
 
     UNUSED(argument);
 
-    while (vQueue_dispatcher == NULL) { kern_suspendProcess(1U); }
+    while (vQueue_dispatcher == nullptr) { kern_suspendProcess(1U); }
 
     while (true) {
         if (kern_readQueue(vQueue_dispatcher, &message, KWAIT_INFINITY) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Read queue"); exit(EXIT_OS_FAILURE); }

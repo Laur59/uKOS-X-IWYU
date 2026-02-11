@@ -52,10 +52,10 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #include    <stdint.h>
 
-#include    "Registers/scb.h"
 #include    "macros.h"
 #include    "macros_core.h"
 #include    "os_errors.h"
+#include    "types.h"
 
 /*
  * \brief stub_machine_restart
@@ -138,6 +138,6 @@ int32_t stub_machine_readFunctionName(const uintptr_t pc, const char_t **functio
     }
     #endif
 
-    *function = NULL;
+    *function = nullptr;
     return KERR_SYSTEM_NOERR;
 }

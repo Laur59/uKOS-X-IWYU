@@ -85,6 +85,12 @@ extern  "C" {
 #define I2C0_reserve    i2c0_reserve
 #define I2C0_release    i2c0_release
 
+extern	int32_t	stub_i2c0_init(void);
+extern	int32_t	stub_i2c0_configure(const i2cCnf_t *configure);
+extern	int32_t	stub_i2c0_write(uint8_t address, const uint8_t *buffer, uint16_t size);
+extern	int32_t	stub_i2c0_read(uint8_t address, uint8_t *buffer, uint16_t size);
+extern	int32_t	stub_i2c0_flush(void);
+
 /*!
  * \brief Reserve the i2c0 manager
  *

@@ -85,6 +85,16 @@ extern  "C" {
 #define IMAGER_reserve  imager_reserve
 #define IMAGER_release  imager_release
 
+extern	int32_t	stub_imager_init(void);
+extern	int32_t	stub_imager_configure(const imagerCnf_t *configure);
+extern	int32_t	stub_imager_acquisition(void);
+extern	int32_t	stub_imager_read(volatile void **image);
+extern	int32_t	stub_imager_getSerialNumber(uint64_t *serialNumber);
+extern	int32_t	stub_imager_readRegister(uint8_t registerNb, uint16_t *value);
+extern	int32_t	stub_imager_writeRegister(uint8_t registerNb, uint16_t value);
+extern  int32_t	stub_imager_standby(uint8_t mode);
+extern  int32_t	stub_imager_exposure(uint32_t time);
+
 /*!
  * \brief Reserve the imager manager
  *
@@ -170,9 +180,9 @@ extern  int32_t imager_release(reserveMode_t reserveMode);
  *                           .oNbRows   = 60;
  *                           .oNbCols   = 60;
  *                           .oKernSync = (1U<<BIMAGER_SEMAPHORE_IM) | (1U<<BIMAGER_SEMAPHORE_VS);
- *                           .oHSync    = NULL;
- *                           .oFrame    = NULL;
- *                           .oVSync    = NULL;
+ *                           .oHSync    = nullptr;
+ *                           .oFrame    = nullptr;
+ *                           .oVSync    = nullptr;
  *                           .oDMAEc    = _myRoutine;
  *                           .oImgCnf   = (void *)aTab060060F;
  *                       };
@@ -184,9 +194,9 @@ extern  int32_t imager_release(reserveMode_t reserveMode);
  *                           .oNbRows   = 60;
  *                           .oNbCols   = 60;
  *                           .oKernSync = (1U<<BIMAGER_SEMAPHORE_IM) | (1U<<BIMAGER_SEMAPHORE_VS);
- *                           .oHSync    = NULL;
- *                           .oFrame    = NULL;
- *                           .oVSync    = NULL;
+ *                           .oHSync    = nullptr;
+ *                           .oFrame    = nullptr;
+ *                           .oVSync    = nullptr;
  *                           .oDMAEc    = _myRoutine;
  *                           .oImgCnf   = (void *)aTab060060F;
  *                       };

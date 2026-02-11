@@ -271,6 +271,14 @@ add_custom_command(
     VERBATIM
 )
 # Generate signature using portable CMake script (cross-platform)
+if(${CONSTANT_SIG})
+file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/${LOCAL_TARGET}.sig.c"
+    "const char aFLASH_signature[] __attribute__((section(\".signature\"))) = \"0000000000000000000000000000000000000000000000000000000000000000\";\n"
+)
+file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/${LOCAL_TARGET}.ck"
+    "\n"
+)
+else()
 add_custom_command(
     OUTPUT ${LOCAL_TARGET}.sig.c ${LOCAL_TARGET}.ck
     COMMAND ${CMAKE_COMMAND}
@@ -282,6 +290,7 @@ add_custom_command(
     COMMENT "Generating signature C source file (SHA-256)"
     VERBATIM
 )
+endif()
 
 add_library(sig_object OBJECT ${LOCAL_TARGET}.sig.c)
 target_link_libraries(sig_object PRIVATE system_compiler_flags)

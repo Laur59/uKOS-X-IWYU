@@ -88,9 +88,9 @@ MODULE(
     Idle,                           // Module name (the first letter has to be upper case)
     KID_FAM_DAEMONS,                // Family (defined in the module.h)
     KNUM_IDLE,                      // Module identifier (defined in the module.h)
-    NULL,                           // Address of the initialisation code (early pre-init)
-    prgm,                           // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-    NULL,                           // Address of the clean code (clean the module)
+    nullptr,                        // Address of the initialisation code (early pre-init)
+    prgm,                           // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                        // Address of the clean code (clean the module)
     " 1.0",                         // Revision string (major . minor)
     (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     KEXECUTION_CORE                 // Execution cores
@@ -109,11 +109,11 @@ STRG_LOC_CONST(aStrText[]) = "Daemon idle: run when the others are off. (c) EFr-
  *
  */
 static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     uint32_t    core;
     proc_t      *process;
+
+    UNUSED(argc);
+    UNUSED(argv);
 
     core = GET_RUNNING_CORE;
 
@@ -122,16 +122,16 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     DAEMON_PRIVILEGED(
         core,                               // Core
         specification,                      // Specifications (just use specification_x)
-        aStrText,                           // Info string (NULL if anonymous)
+        aStrText,                           // Info string (nullptr if anonymous)
         vStack,                             // Stack location
         KKERN_SZ_STACK_SS,                  // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
         local_process,                      // Code of the process
-        aStrIden,                           // Identifier (NULL if anonymous)
+        aStrIden,                           // Identifier (nullptr if anonymous)
         KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
         KKERN_PRIORITY_LOW_IDLE             // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
     );
 
-    if (kern_createProcess(&specification, NULL, &process) != KERR_KERN_NOERR) { LOG(KFATAL_SYSTEM, "idle: create proc"); exit(EXIT_OS_PANIC); }
+    if (kern_createProcess(&specification, nullptr, &process) != KERR_KERN_NOERR) { LOG(KFATAL_SYSTEM, "idle: create proc"); exit(EXIT_OS_PANIC); }
 
     LOG(KINFO_SYSTEM, "idle: daemon idle launched");
     return EXIT_OS_SUCCESS_CLI;
@@ -149,10 +149,10 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
  *
  */
 static void __attribute__ ((noreturn)) local_process(const void *argument) {
-    UNUSED(argument);
-
     void        (*code)(uint8_t state);
     uint32_t    core;
+
+    UNUSED(argument);
 
     DEBUG_KERN_TRACE("entry: idle daemon");
     core = GET_RUNNING_CORE;
@@ -162,13 +162,13 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
 
 // Set the low power mode (if possible)
 
-        if (code != NULL) {
+        if (code != nullptr) {
             vKern_runProc[core]->oInternal.oState |= (1U<<BPROC_LIKE_ISR);
             code(KKERN_IDLE_IN);
             vKern_runProc[core]->oInternal.oState &= (uint16_t)~(1U<<BPROC_LIKE_ISR);
         }
         stub_kern_setLowPower(KKERN_CPU_MODE_STOP);
-        if (code != NULL) {
+        if (code != nullptr) {
             vKern_runProc[core]->oInternal.oState |= (1U<<BPROC_LIKE_ISR);
             code(KKERN_IDLE_OUT);
             vKern_runProc[core]->oInternal.oState &= (uint16_t)~(1U<<BPROC_LIKE_ISR);

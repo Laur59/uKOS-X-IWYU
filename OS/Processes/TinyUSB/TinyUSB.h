@@ -52,11 +52,8 @@
 extern	"C" {
 #endif
 
-// Stub functions (target-specific implementations)
-// -------------------------------------------------
-
-void	stub_TinyUSB_init(void);
-void	stub_TinyUSB_cyclic(void);
+extern	void	stub_TinyUSB_init(void);
+extern	void	stub_TinyUSB_cyclic(void);
 
 #ifdef __cplusplus
 }

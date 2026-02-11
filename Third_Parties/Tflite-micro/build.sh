@@ -79,14 +79,14 @@ fi
 # Packages
 # --------
 
-readonly hash=a6cd602
+readonly hash=510a6c5
 
 printf '\n%bDownload the Tflite-micro package ...%b\n\n' "${BOLD}" "${NC}"
 
 # Clone the right package
 cd "${PATH_PRG}"
 if [[ ! -d Tflite-micro-current ]]; then
-    git clone https://github.com/tensorflow/tflite-micro Tflite-micro-current
+    git clone https://github.com/tensorflow/tflite-micro.git Tflite-micro-current
 else
     git -C Tflite-micro-current fetch
 fi

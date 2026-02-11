@@ -49,6 +49,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 */
 
 #include    "clockTree.h"
+#include    "kern/kern.h"  // for stub_kern_init, stub_kern_newProcessTimeout
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------

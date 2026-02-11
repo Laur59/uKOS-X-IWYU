@@ -48,7 +48,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 */
 
 #include    <inttypes.h>
-#include    <stdint.h>  // NOLINT(misc-include-cleaner): Explicit include for IWYU compliance
 #include    <stdio.h>
 
 #include    "kern/kern.h"
@@ -104,9 +103,9 @@ MODULE(
     Szkern,                                     // Module name (the first letter has to be upper case)
     KID_FAM_CLI,                                // Family (defined in the module.h)
     KNUM_SZ_KERN,                               // Module identifier (defined in the module.h)
-    NULL,                                       // Address of the initialisation code (early pre-init)
-    prgm,                                       // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-    NULL,                                       // Address of the clean code (clean the module)
+    nullptr,                                    // Address of the initialisation code (early pre-init)
+    prgm,                                       // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                                    // Address of the clean code (clean the module)
     " 1.0",                                     // Revision string (major . minor)
     ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),         // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                           // Execution cores
@@ -129,12 +128,12 @@ MODULE(
  *
  */
 static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
-    uint16_t    nbDeamons = 2U;
+    uint16_t    nbDeamons = 2u;
     int32_t     szTEXT, szRODATA, szDATA, szBSS;
     float64_t   szTEXTf, szRODATAf, szDATAf, szBSSf;
+
+    UNUSED(argc);
+    UNUSED(argv);
 
     #if (KKERN_WITH_STATISTICS_S == true)
     nbDeamons += 1U;

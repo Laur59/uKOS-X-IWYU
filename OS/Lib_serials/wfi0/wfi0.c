@@ -82,9 +82,9 @@ MODULE(
     Wfi0,                           // Module name (the first letter has to be upper case)
     KID_FAM_SERIALS,                // Family (defined in the module.h)
     KNUM_WFI0,                      // Module identifier (defined in the module.h)
-    NULL,                           // Address of the initialisation code (early pre-init)
-    NULL,                           // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-    NULL,                           // Address of the clean code (clean the module)
+    nullptr,                        // Address of the initialisation code (early pre-init)
+    nullptr,                        // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                        // Address of the clean code (clean the module)
     " 1.0",                         // Revision string (major . minor)
     (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                               // Execution cores
@@ -125,8 +125,8 @@ static  int32_t     local_init(void);
  *
  */
 int32_t wfi0_reserve(reserveMode_t reserveMode, uint32_t timeout) {
-    uint32_t    core;
     int32_t     status;
+    uint32_t    core;
 
     core = GET_RUNNING_CORE;
 
@@ -198,8 +198,8 @@ int32_t wfi0_reserve(reserveMode_t reserveMode, uint32_t timeout) {
  *
  */
 int32_t wfi0_release(reserveMode_t reserveMode) {
-    uint32_t    core;
     int32_t     status;
+    uint32_t    core;
 
     core = GET_RUNNING_CORE;
 
@@ -435,6 +435,7 @@ int32_t wfi0_flush(void) {
  *
  */
 static  int32_t local_init(void) {
+            int32_t     status = KERR_SERIAL_NOERR;
             uint32_t    core;
     static  bool        vInit[KNB_CORES] = MCSET(false);
 
@@ -447,9 +448,9 @@ static  int32_t local_init(void) {
         if (kern_createMutex(KWFI0_MUTEX_RESERVE_RX, &vMutex_Reserve_RX[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "wfi0: create mutx"); exit(EXIT_OS_PANIC); }
         if (kern_createMutex(KWFI0_MUTEX_RESERVE_TX, &vMutex_Reserve_TX[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "wfi0: create mutx"); exit(EXIT_OS_PANIC); }
 
-        stub_wfi0_init();
+        status = stub_wfi0_init();
     }
-    RETURN_INT_RESTORE(KERR_SERIAL_NOERR);
+    RETURN_INT_RESTORE(status);
 }
 
 #endif

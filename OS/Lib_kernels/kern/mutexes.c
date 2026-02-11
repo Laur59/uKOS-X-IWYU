@@ -60,7 +60,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "mutexes.h"
@@ -109,11 +108,11 @@ void    mutexes_init(void) {
     core = GET_RUNNING_CORE;
 
     for (i = 0U; i < KKERN_NB_MUTEXES; i++) {
-        vKern_mutx[core][i].oIdentifier = NULL;
+        vKern_mutx[core][i].oIdentifier = nullptr;
         vKern_mutx[core][i].oState      = 0U;
         vKern_mutx[core][i].oCounter    = 0;
         vKern_mutx[core][i].oMaxCounter = 0;
-        vKern_mutx[core][i].oOwner      = NULL;
+        vKern_mutx[core][i].oOwner      = nullptr;
         lists_initialise(&vKern_mutx[core][i].oList);
     }
 
@@ -135,7 +134,7 @@ void    mutexes_init(void) {
  *    status = kern_createMutex(identifier, &mutex);
  * \endcode
  *
- * \param[in]   *identifier     Ptr on the mutex identifier (NULL = anonymous)
+ * \param[in]   *identifier     Ptr on the mutex identifier (nullptr = anonymous)
  * \param[out]  **handle        Ptr on the handle
  * \return      KERR_KERN_NOERR OK
  * \return      KERR_KERN_MUFUL No more mutex
@@ -279,7 +278,7 @@ int32_t kern_killMutex(mutx_t *handle) {
     PRIVILEGE_ELEVATE;
     INTERRUPTION_OFF;
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
-    if (handle == NULL)                                 { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOMUT; }
+    if (handle == nullptr)                              { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOMUT; }
     if ((handle->oState & (1U<<BMUTX_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOMUT; }
 
 // Disconnect the waiting processes from the mutex list
@@ -295,11 +294,11 @@ int32_t kern_killMutex(mutx_t *handle) {
         preemption = (process->oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority);
     }
 
-    handle->oIdentifier = NULL;
+    handle->oIdentifier = nullptr;
     handle->oState      = 0U;
     handle->oCounter    = 0;
     handle->oMaxCounter = 0;
-    handle->oOwner      = NULL;
+    handle->oOwner      = nullptr;
 
     if (vKern_nbMutx[core] != 0U) { vKern_nbMutx[core] = (uint16_t)(vKern_nbMutx[core] - 1U); }
     DEBUG_KERN_TRACE("exit: OK");
@@ -338,7 +337,7 @@ int32_t kern_restartMutex(mutx_t *handle) {
     PRIVILEGE_ELEVATE;
     INTERRUPTION_OFF;
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
-    if (handle == NULL)                                 { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOMUT; }
+    if (handle == nullptr)                              { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOMUT; }
     if ((handle->oState & (1U<<BMUTX_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOMUT; }
 
     while (handle->oList.oNbElements > 0U) {
@@ -353,7 +352,7 @@ int32_t kern_restartMutex(mutx_t *handle) {
     }
     handle->oCounter    = 0;
     handle->oMaxCounter = KMUTX_MAX_CPT;
-    handle->oOwner      = NULL;
+    handle->oOwner      = nullptr;
     DEBUG_KERN_TRACE("exit: OK");
     INTERRUPTION_RESTORE;
 
@@ -393,7 +392,7 @@ int32_t kern_getMutexById(const char_t *identifier, mutx_t **handle) {
     PRIVILEGE_ELEVATE;
     INTERRUPTION_OFF;
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
-    *handle = NULL;
+    *handle = nullptr;
 
     for (i = 0U; i < KKERN_NB_MUTEXES; i++) {
         if (identifiers_cmpStrings(vKern_mutx[core][i].oIdentifier, identifier)) {
@@ -417,7 +416,7 @@ int32_t kern_getMutexById(const char_t *identifier, mutx_t **handle) {
 /*
  * \brief local_createMutex
  *
- * \param[in]   *identifier     Ptr on the mutex identifier (NULL = anonymous)
+ * \param[in]   *identifier     Ptr on the mutex identifier (nullptr = anonymous)
  * \param[in]   iniCounter      Initial counter value
  * \param[in]   maxCounter      Max counter value
  * \param[out]  **handle        Ptr on the handle
@@ -432,13 +431,13 @@ static  int32_t local_createMutex(const char_t *identifier, int32_t iniCounter, 
 
     core = GET_RUNNING_CORE;
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
-    *handle = NULL;
+    *handle = nullptr;
 
-// Check if the identifier is already used (NULL = anonymous)
+// Check if the identifier is already used (nullptr = anonymous)
 // If the identifier is already used, then, return an error but
 // with the handle of the previously created object
 
-    if (identifier != NULL) {
+    if (identifier != nullptr) {
         for (i = 0U; i < KKERN_NB_MUTEXES; i++) {
             if (identifiers_cmpStrings(vKern_mutx[core][i].oIdentifier, identifier)) {
                 *handle = &vKern_mutx[core][i];
@@ -450,12 +449,12 @@ static  int32_t local_createMutex(const char_t *identifier, int32_t iniCounter, 
     }
 
     for (i = 0U; i < KKERN_NB_MUTEXES; i++) {
-        if (vKern_mutx[core][i].oIdentifier == NULL) {
-            vKern_mutx[core][i].oIdentifier  = (identifier == NULL) ? (KMUTX_ANONYMOUS_ID) : identifier;
+        if (vKern_mutx[core][i].oIdentifier == nullptr) {
+            vKern_mutx[core][i].oIdentifier  = (identifier == nullptr) ? (KMUTX_ANONYMOUS_ID) : identifier;
             vKern_mutx[core][i].oState       = (1U<<BMUTX_INSTALLED);
             vKern_mutx[core][i].oCounter     = iniCounter;
             vKern_mutx[core][i].oMaxCounter  = maxCounter;
-            vKern_mutx[core][i].oOwner       = NULL;
+            vKern_mutx[core][i].oOwner       = nullptr;
             *handle = &vKern_mutx[core][i];
 
             vKern_nbMutx[core]    = (uint16_t)(vKern_nbMutx[core] + 1U);
@@ -490,7 +489,7 @@ static  int32_t local_waitMutex(uint32_t core, mutx_t *handle, uint32_t timeout)
 
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
     if (IS_EXCEPTION)                                   { DEBUG_KERN_TRACE("exit: KO 1"); return KERR_KERN_FRISR; }
-    if (handle == NULL)                                 { DEBUG_KERN_TRACE("exit: KO 2"); return KERR_KERN_NOMUT; }
+    if (handle == nullptr)                              { DEBUG_KERN_TRACE("exit: KO 2"); return KERR_KERN_NOMUT; }
     if ((handle->oState & (1U<<BMUTX_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 3"); return KERR_KERN_NOMUT; }
     if (handle->oCounter == KMUTX_MIN_CPT)              { DEBUG_KERN_TRACE("exit: KO 5"); return KERR_KERN_MUTME; }
 
@@ -545,7 +544,7 @@ static  int32_t local_signalMutex(uint32_t core, mutx_t *handle, bool *preemptio
 
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
     if (IS_EXCEPTION)                                   { DEBUG_KERN_TRACE("exit: KO 1"); return KERR_KERN_FRISR; }
-    if (handle == NULL)                                 { DEBUG_KERN_TRACE("exit: KO 2"); return KERR_KERN_NOMUT; }
+    if (handle == nullptr)                              { DEBUG_KERN_TRACE("exit: KO 2"); return KERR_KERN_NOMUT; }
     if ((handle->oState & (1U<<BMUTX_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 3"); return KERR_KERN_NOMUT; }
     if (handle->oCounter == KMUTX_MAX_CPT)              { DEBUG_KERN_TRACE("exit: KO 5"); return KERR_KERN_MUTME; }
     if (handle->oOwner != vKern_runProc[core])          { DEBUG_KERN_TRACE("exit: KO 6"); return KERR_KERN_MUNOW; }
@@ -558,7 +557,7 @@ static  int32_t local_signalMutex(uint32_t core, mutx_t *handle, bool *preemptio
 // The new mutex counter remains = 0
 
     if (handle->oList.oNbElements == 0U) {
-        handle->oOwner = NULL;
+        handle->oOwner = nullptr;
         DEBUG_KERN_TRACE("exit: OK");
         return KERR_KERN_NOERR;
     }

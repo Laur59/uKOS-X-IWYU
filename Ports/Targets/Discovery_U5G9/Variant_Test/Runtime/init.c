@@ -54,6 +54,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #include    "init.h"
 
+#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "core.h"
@@ -81,9 +82,9 @@ MODULE(
     Init,                           // Module name (the first letter has to be upper case)
     KID_FAM_STARTUPS,               // Family (defined in the module.h)
     KNUM_INIT,                      // Module identifier (defined in the module.h)
-    NULL,                           // Address of the initialisation code (early pre-init)
-    NULL,                           // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-    NULL,                           // Address of the clean code (clean the module)
+    nullptr,                        // Address of the initialisation code (early pre-init)
+    nullptr,                        // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                        // Address of the clean code (clean the module)
     " 1.0",                         // Revision string (major . minor)
     (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                               // Execution cores
@@ -575,12 +576,14 @@ static  void    local_RCC_Configuration(void) {
 // f(out) = f(vco) / R          f(out) = 20.84-MHz, R = 24  ---> f(vco) = 500-MHz
 // f(vco) = f(ck in) * (N/M)    N/M = 125/4                 ---> N = 125, M = 4
 // f(Q)   = f(vco) / Q          Q = 2                       ---> f(Q) = 250-MHz
+// f(P)   = f(vco) / P          P = 24                      ---> f(P) = 20.84-MHz
+
 // f(P)   = f(vco) / P          P = 8                       ---> f(P) = 62.5-MHz
 
     REG(RCC)->PLL3DIVR = 0U;                                    //
     REG(RCC)->PLL3DIVR = ((24U - 1U) * RCC_PLL3DIVR_PLL3R_0)    // Divider for R
                        | ((2U - 1U) * RCC_PLL3DIVR_PLL3Q_0)     // Divider for Q
-                       | ((8U - 1U) * RCC_PLL3DIVR_PLL3P_0)     // Divider for P
+                       | ((24U - 1U) * RCC_PLL3DIVR_PLL3P_0)    // Divider for P
                        | ((125U - 1U) * RCC_PLL3DIVR_PLL3N_0);  // Divider for N
 
     REG(RCC)->PLL3CFGR = RCC_PLL3CFGR_PLL3REN                   // Out R enable
@@ -685,4 +688,4 @@ static  void    local_CACHE_Enable(void) {
     #endif
 }
 
-#include    "model_cache.c_inc"
+#include    "model_cache.c_inc"     // IWYU pragma: keep

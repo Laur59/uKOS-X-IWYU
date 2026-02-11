@@ -58,8 +58,6 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #define     _POSIX_C_SOURCE     200809L
 
 #include    <inttypes.h>
-#include    <stdbool.h>
-#include    <stdint.h>
 #include    <stdio.h>
 
 #include    "Registers/K210_clint.h"
@@ -101,8 +99,8 @@ MODULE(
     KID_FAM_CLI,                                // Family (defined in the module.h)
     (((uint32_t)'_'<<8U)+(uint32_t)'M'),        // Module identifier (defined in the module.h)
     test_ipi_pre_init,                          // Address of the initialisation code (early pre-init)
-    prgm,                                       // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-    NULL,                                       // Address of the clean code (clean the module)
+    prgm,                                       // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                                    // Address of the clean code (clean the module)
     " 1.0",                                     // Revision string (major . minor)
     ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),         // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                           // Execution cores

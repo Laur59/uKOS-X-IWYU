@@ -56,9 +56,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#include    "kern/debug_list.h"
-
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "debug.h"
@@ -71,7 +68,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #if (KKERN_WITH_DEBUG_S == true)
 
-static	list_t		vKern_listStop[KNB_CORES];
+static  list_t      vKern_listStop[KNB_CORES];
 
 /*
  * \brief Initialise the manager
@@ -123,7 +120,7 @@ int32_t kern_stopProcess(proc_t *handle) {
     PRIVILEGE_ELEVATE;
     INTERRUPTION_OFF;
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
-    if (handle == NULL)                                           { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOPRO; }
+    if (handle == nullptr)                                        { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOPRO; }
     if ((handle->oInternal.oState & (1U<<BPROC_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOPRO; }
     if ((handle->oInternal.oState & (1U<<BPROC_SUSP_DEBG)) != 0U) { DEBUG_KERN_TRACE("exit: KO 3"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_DBGER; }
     if ((handle->oInternal.oState & (1U<<BPROC_SUSP_SEMA)) != 0U) { DEBUG_KERN_TRACE("exit: KO 4"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_DBNOS; }
@@ -173,7 +170,7 @@ int32_t kern_reactivateProcess(proc_t *handle) {
     PRIVILEGE_ELEVATE;
     INTERRUPTION_OFF;
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
-    if (handle == NULL)                                           { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOPRO; }
+    if (handle == nullptr)                                        { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOPRO; }
     if ((handle->oInternal.oState & (1U<<BPROC_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOPRO; }
     if ((handle->oInternal.oState & (1U<<BPROC_SUSP_DEBG)) == 0U) { DEBUG_KERN_TRACE("exit: KO 3"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_DBGER; }
 

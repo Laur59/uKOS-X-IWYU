@@ -81,10 +81,10 @@ STRG_LOC_CONST(aStrHelp[])        = "watchdog manager\n"
 MODULE(
     Watchdog,                       // Module name (the first letter has to be upper case)
     KID_FAM_PERIPHERALS,            // Family (defined in the module.h)
-    KNUM_WATCHDOG,                      // Module identifier (defined in the module.h)
-    NULL,                           // Address of the initialisation code (early pre-init)
-    NULL,                           // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-    NULL,                           // Address of the clean code (clean the module)
+    KNUM_WATCHDOG,                  // Module identifier (defined in the module.h)
+    nullptr,                        // Address of the initialisation code (early pre-init)
+    nullptr,                        // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                        // Address of the clean code (clean the module)
     " 1.0",                         // Revision string (major . minor)
     (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                               // Execution cores
@@ -103,7 +103,6 @@ struct  watchdogPack {
 // Prototypes
 
 static  void    local_process_watchdog(const void *argument);
-extern  void    stub_watchdog_arm(uint32_t time);
 
 /*
  * \brief Arm the watchdog
@@ -138,7 +137,7 @@ int32_t watchdog_arm(uint32_t time, uint8_t mode) {
             uint32_t        core, wkTime = time;
             watchdogPack_t  pack;
             bool            releasePack = false;
-    static  proc_t          *process_watchdog[KNB_CORES] = MCSET(NULL);
+    static  proc_t          *process_watchdog[KNB_CORES] = MCSET(nullptr);
 
 // -------------------------------I-----------------------------------------I--------------I
 
@@ -157,7 +156,7 @@ int32_t watchdog_arm(uint32_t time, uint8_t mode) {
 
     switch (mode) {
         case KWATCHDOG_AUTO: {
-            if (process_watchdog[core] == NULL) {
+            if (process_watchdog[core] == nullptr) {
                 stub_watchdog_arm(wkTime);
 
                 pack.oTime        = wkTime;
@@ -171,9 +170,9 @@ int32_t watchdog_arm(uint32_t time, uint8_t mode) {
             break;
         }
         case KWATCHDOG_MANUAL: {
-            if (process_watchdog[core] != NULL) {
+            if (process_watchdog[core] != nullptr) {
                 kern_killProcess(process_watchdog[core]);
-                process_watchdog[core] = NULL;
+                process_watchdog[core] = nullptr;
             }
             stub_watchdog_arm(wkTime);
             break;

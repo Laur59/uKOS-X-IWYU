@@ -54,6 +54,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #include    "init.h"
 
+#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "PF1550/PF1550.h"
@@ -82,9 +83,9 @@ MODULE(
     Init,                           // Module name (the first letter has to be upper case)
     KID_FAM_STARTUPS,               // Family (defined in the module.h)
     KNUM_INIT,                      // Module identifier (defined in the module.h)
-    NULL,                           // Address of the initialisation code (early pre-init)
-    NULL,                           // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-    NULL,                           // Address of the clean code (clean the module)
+    nullptr,                        // Address of the initialisation code (early pre-init)
+    nullptr,                        // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                        // Address of the clean code (clean the module)
     " 1.0",                         // Revision string (major . minor)
     (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                               // Execution cores
@@ -1041,4 +1042,4 @@ static  void    local_wait_us(uint32_t us) {
     for (time = 0U; time < us; time++) { NOP; }
 }
 
-#include    "model_cache.c_inc"
+#include    "model_cache.c_inc"     // IWYU pragma: keep

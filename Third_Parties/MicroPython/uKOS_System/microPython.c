@@ -137,11 +137,11 @@ int32_t	microPython_configure(microPythonCnf_t *configure) {
  * const    char_t     myRoutine [] = "def plus(a,b):\n"
  *                                    "    return a + b\n";
  *
- *    status = microPython_exchangeData(NULL);
+ *    status = microPython_exchangeData(nullptr);
  *    status = microPython_exchangeData(myRoutine);
  * \endcode
  *
- * \param[in]	*pyProgram				NULL = Command line interpreter mode
+ * \param[in]	*pyProgram				nullptr = Command line interpreter mode
  * \param[in]	-						Ptr on the ascii script / program
  * \return		KERR_MICROPYTHON_NOERR	OK
  *
@@ -158,7 +158,7 @@ int32_t	microPython_exchangeData(const char_t *pyProgram) {
 	kern_getProcessRun(&process);
 	kern_getSerialForProcess(process, &serialManager);
 
-	if (pyProgram == NULL) {
+	if (pyProgram == nullptr) {
 
 // Command line interpreter
 // ------------------------

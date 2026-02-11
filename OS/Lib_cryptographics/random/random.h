@@ -77,6 +77,9 @@ typedef enum {
 extern  "C" {
 #endif
 
+extern	int32_t	stub_random_init(void);
+extern	int32_t	stub_random_read(randomGenerator_t generator, uint32_t *number);
+
 /*!
  * \brief Read a pool of random numbers
  *
@@ -96,7 +99,7 @@ extern  "C" {
  * \param[out]  *number             Ptr on the number
  * \param[in]   nbNumbers           Number of numbers
  * \return      KERR_RANDOM_NOERR   OK
- * \return      KERR_RANDOM_NOERR   General error
+ * \return      KERR_RANDOM_GEERR   General error
  *
  */
 extern  int32_t random_read(randomGenerator_t generator, uint32_t *number, uint32_t nbNumbers);
@@ -104,8 +107,8 @@ extern  int32_t random_read(randomGenerator_t generator, uint32_t *number, uint3
 // Stub functions (target-specific implementations)
 // -------------------------------------------------
 
-void	stub_random_init(void);
-int32_t	stub_random_read(randomGenerator_t generator, uint32_t *number);
+int32_t stub_random_init(void);
+int32_t stub_random_read(randomGenerator_t generator, uint32_t *number);
 
 #ifdef __cplusplus
 }

@@ -142,15 +142,15 @@ void	osal_task_delay(uint32_t msec) {
  *
  */
 osal_semaphore_t	osal_semaphore_create(osal_semaphore_def_t *semdef) {
+	sema_t	*handle = nullptr;
+
 	UNUSED(semdef);
 
-	sema_t	*handle = NULL;
-
-	if (kern_createSemaphore(NULL, 0, 1, &handle) == KERR_KERN_NOERR) {
+	if (kern_createSemaphore(nullptr, 0, 1, &handle) == KERR_KERN_NOERR) {
 		return ((osal_semaphore_t)(handle));
 	}
 
-	return (NULL);
+	return nullptr;
 }
 
 /*
@@ -160,12 +160,12 @@ osal_semaphore_t	osal_semaphore_create(osal_semaphore_def_t *semdef) {
  *
  */
 bool	osal_semaphore_post(osal_semaphore_t sem_hdl, bool in_isr) {
-	UNUSED(in_isr);
-
 	bool	status;
 
+	UNUSED(in_isr);
+
 	status = (kern_signalSemaphore((sema_t *)sem_hdl) == KERR_KERN_NOERR) ? (true) : (false);
-	return (status);
+	return status;
 }
 
 /*
@@ -180,7 +180,7 @@ bool	osal_semaphore_wait(osal_semaphore_t sem_hdl, uint32_t msec) {
 	bool	status;
 
 	status = (kern_waitSemaphore((sema_t *)sem_hdl, 0U) == KERR_KERN_NOERR) ? (true) : (false);
-	return (status);
+	return status;
 }
 
 /*
@@ -201,15 +201,15 @@ void	osal_semaphore_reset(osal_semaphore_t sem_hdl) {
  *
  */
 osal_mutex_t osal_mutex_create(osal_mutex_def_t *mdef) {
+	mutx_t	*handle = nullptr;
+
 	UNUSED(mdef);
 
-	mutx_t	*handle = NULL;
-
-	if (kern_createMutex(NULL, &handle) == KERR_KERN_NOERR) {
+	if (kern_createMutex(nullptr, &handle) == KERR_KERN_NOERR) {
 	    return ((osal_mutex_t)(handle));
 	}
 
-	return (NULL);
+	return nullptr;
 }
 
 /*
@@ -261,16 +261,16 @@ osal_queue_t osal_queue_create(osal_queue_def_t *qdef) {
 						.oNbMaxPacks    = (uint32_t)qdef->depth,
 						.oDataEntrySize = (uint32_t)qdef->item_sz
 					};
-			mbox_t	*handle = NULL;
+			mbox_t	*handle = nullptr;
 
-	if (kern_createMailbox(NULL, &handle) == KERR_KERN_NOERR) {
-		if (kern_setMailbox(handle, &cnf) == KERR_KERN_NOERR) {
+	if (kern_createMailbox(nullptr, &handle) == KERR_KERN_NOERR) {
+		if (kern_setMailbox(handle, &cnf) == KERR_KERN_NOERR)    {
 	       return ((osal_queue_t)(handle));
 		}
 
 		kern_killMailbox(handle);
 	}
-	return (NULL);
+	return nullptr;
 }
 
 /*

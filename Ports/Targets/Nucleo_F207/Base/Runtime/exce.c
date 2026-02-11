@@ -48,6 +48,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;------------------------------------------------------------------------
 */
 
+#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "board.h"
@@ -77,9 +78,9 @@ MODULE(
     Exce,                           // Module name (the first letter has to be upper case)
     KID_FAM_STARTUPS,               // Family (defined in the module.h)
     KNUM_EXCE,                      // Module identifier (defined in the module.h)
-    NULL,                           // Address of the initialisation code (early pre-init)
-    NULL,                           // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-    NULL,                           // Address of the clean code (clean the module)
+    nullptr,                        // Address of the initialisation code (early pre-init)
+    nullptr,                        // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                        // Address of the clean code (clean the module)
     " 1.0",                         // Revision string (major . minor)
     (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                               // Execution cores
@@ -219,7 +220,7 @@ static  void    local_cpyLEDs(uint8_t value) {
     }
 }
 
-#include    "model_coreDump_tracing.c_inc"
-#include    "model_coreDump_generic.c_inc"
-#include    "model_coreDump_core.c_inc"
-#include    "model_coredump_soc.c_inc"
+#include    "model_coreDump_tracing.c_inc"      // IWYU pragma: keep
+#include    "model_coreDump_generic.c_inc"      // IWYU pragma: keep
+#include    "model_coreDump_core.c_inc"         // IWYU pragma: keep
+#include    "model_coredump_soc.c_inc"          // IWYU pragma: keep

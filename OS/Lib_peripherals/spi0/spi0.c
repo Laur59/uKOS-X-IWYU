@@ -81,9 +81,9 @@ MODULE(
     Spi0,                           // Module name (the first letter has to be upper case)
     KID_FAM_PERIPHERALS,            // Family (defined in the module.h)
     KNUM_SPI0,                      // Module identifier (defined in the module.h)
-    NULL,                           // Address of the initialisation code (early pre-init)
-    NULL,                           // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-    NULL,                           // Address of the clean code (clean the module)
+    nullptr,                        // Address of the initialisation code (early pre-init)
+    nullptr,                        // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                        // Address of the clean code (clean the module)
     " 1.0",                         // Revision string (major . minor)
     (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                               // Execution cores
@@ -97,9 +97,6 @@ static  mutx_t      *vMutex_Reserve[KNB_CORES];
 // Prototypes
 
 static  int32_t     local_init(void);
-extern  void        stub_spi0_init(void);
-extern  int32_t     stub_spi0_configure(const spiCnf_t *configure);
-extern  int32_t     stub_spi0_multipleWriteRead(const uint8_t *wData, uint16_t wSize, uint8_t *rData, uint16_t rSize, uint32_t timeout);
 
 /*
  * \brief Reserve the spi0 manager
@@ -126,10 +123,10 @@ extern  int32_t     stub_spi0_multipleWriteRead(const uint8_t *wData, uint16_t w
  *
  */
 int32_t spi0_reserve(reserveMode_t reserveMode, uint32_t timeout) {
-    UNUSED(reserveMode);
-
-    uint32_t    core;
     int32_t     status;
+    uint32_t    core;
+
+    UNUSED(reserveMode);
 
     core = GET_RUNNING_CORE;
 
@@ -165,10 +162,10 @@ int32_t spi0_reserve(reserveMode_t reserveMode, uint32_t timeout) {
  *
  */
 int32_t spi0_release(reserveMode_t reserveMode) {
-    UNUSED(reserveMode);
-
-    uint32_t    core;
     int32_t     status;
+    uint32_t    core;
+
+    UNUSED(reserveMode);
 
     core = GET_RUNNING_CORE;
 
@@ -238,8 +235,8 @@ int32_t spi0_configure(const spiCnf_t *configure) {
  *
  */
 int32_t spi0_writeRead(uint8_t *data) {
-    uint8_t     rData[1], wData[1];
     int32_t     status;
+    uint8_t     rData[1], wData[1];
 
     PRIVILEGE_ELEVATE;
     status = local_init();
@@ -261,7 +258,7 @@ int32_t spi0_writeRead(uint8_t *data) {
  * Simple reads: spi_multipleWriteRead(xyz, 0, &rBuffer[0], 20, KWAIT_INFINITY);            R, R, R, ..
  * Writes-reads: spi_multipleWriteRead(xyz, 20, &rBuffer[0], 20, KWAIT_INFINITY);           W, R, W, ..
  *               condition (wSize == rSize)
- *               if xyz == NULL, write 0x00
+ *               if xyz == nullptr, write 0x00
  *               if xyz == (&wBuffer[0], write the buffer content
  *
  * EEPROM mode:  spi_multipleWriteRead(&wBuffer[0], 4, &rBuffer[0], 20, KWAIT_INFINITY);    W, W, W, R, R, R, R, ..
@@ -324,6 +321,7 @@ int32_t spi0_multipleWriteRead(const uint8_t *wData, uint16_t wSize, uint8_t *rD
  *
  */
 static  int32_t local_init(void) {
+            int32_t     status = KERR_SPI_NOERR;
             uint32_t    core;
     static  bool        vInit[KNB_CORES] = MCSET(false);
 
@@ -335,9 +333,9 @@ static  int32_t local_init(void) {
 
         if (kern_createMutex(KSPI0_MUTEX_RESERVE, &vMutex_Reserve[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "spi0: create mutx"); exit(EXIT_OS_PANIC); }
 
-        stub_spi0_init();
+        status = stub_spi0_init();
     }
-    RETURN_INT_RESTORE(KERR_SPI_NOERR);
+    RETURN_INT_RESTORE(status);
 }
 
 #endif

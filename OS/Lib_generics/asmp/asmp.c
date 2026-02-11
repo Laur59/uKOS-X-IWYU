@@ -112,9 +112,9 @@ MODULE(
     Asmp,                           // Module name (the first letter has to be upper case)
     KID_FAM_GENERICS,               // Family (defined in the module.h)
     KNUM_ASMP,                      // Module identifier (defined in the module.h)
-    NULL,                           // Address of the initialisation code (early pre-init)
-    NULL,                           // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-    NULL,                           // Address of the clean code (clean the module)
+    nullptr,                        // Address of the initialisation code (early pre-init)
+    nullptr,                        // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                        // Address of the clean code (clean the module)
     " 1.0",                         // Revision string (major . minor)
     (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                               // Execution cores
@@ -127,7 +127,7 @@ asmpShared_t    *vAsmp_InterCore;
 
 // Prototypes
 
-static  void        local_init(void);
+static  int32_t     local_init(void);
 
 /*
  * \brief Send data to core 0..3
@@ -156,11 +156,13 @@ static  void        local_init(void);
  *
  */
 int32_t asmp_send(uint32_t toCore, uint32_t order, uint32_t size, const uint8_t *send) {
+    int32_t     status;
     uint32_t    core, message = 0U;
     uint8_t     nbCore;
 
     PRIVILEGE_ELEVATE;
-    local_init();
+    status = local_init();
+    if (status != KERR_ASMP_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     stub_asmp_getRunningCore(&core);
     stub_asmp_getNumberOfCore(&nbCore);
@@ -237,10 +239,12 @@ int32_t asmp_send(uint32_t toCore, uint32_t order, uint32_t size, const uint8_t 
  *
  */
 int32_t asmp_receive(uint32_t *fromCore, uint32_t *order, uint32_t *size, uint8_t *receive) {
+    int32_t     status;
     uint32_t    core, message = 0U;
 
     PRIVILEGE_ELEVATE;
-    local_init();
+    status = local_init();
+    if (status != KERR_ASMP_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     stub_asmp_getRunningCore(&core);
 
@@ -300,9 +304,11 @@ int32_t asmp_receive(uint32_t *fromCore, uint32_t *order, uint32_t *size, uint8_
  *
  */
 int32_t asmp_getRunningCore(uint32_t *core) {
+    int32_t     status;
 
     PRIVILEGE_ELEVATE;
-    local_init();
+    status = local_init();
+    if (status != KERR_ASMP_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     stub_asmp_getRunningCore(core);
     PRIVILEGE_RESTORE;
@@ -329,11 +335,13 @@ int32_t asmp_getRunningCore(uint32_t *core) {
  *
  */
 int32_t asmp_getReferenceCore(uint32_t core, const char_t **coreReference) {
+    int32_t     status;
 
     PRIVILEGE_ELEVATE;
-    local_init();
+    status = local_init();
+    if (status != KERR_ASMP_NOERR) { PRIVILEGE_RESTORE; return status; }
 
-    *coreReference = NULL;
+    *coreReference = nullptr;
 
     if (core > KASMP_NB_CORES) {
         PRIVILEGE_RESTORE;
@@ -366,10 +374,12 @@ int32_t asmp_getReferenceCore(uint32_t core, const char_t **coreReference) {
  *
  */
 int32_t asmp_getSemaphoreRXFull(uint32_t core, sema_t **semaphore) {
-    const   char_t  *identifier = NULL;
+    int32_t     status;
+    const       char_t  *identifier = nullptr;
 
     PRIVILEGE_ELEVATE;
-    local_init();
+    status = local_init();
+    if (status != KERR_ASMP_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     switch (core) {
         case KASMP_CORE_0: {
@@ -396,7 +406,7 @@ int32_t asmp_getSemaphoreRXFull(uint32_t core, sema_t **semaphore) {
         }
     }
 
-    if (identifier == NULL) {
+    if (identifier == nullptr) {
         PRIVILEGE_RESTORE;
         return KERR_ASMP_CORNA;
     }
@@ -427,10 +437,12 @@ int32_t asmp_getSemaphoreRXFull(uint32_t core, sema_t **semaphore) {
  *
  */
 int32_t asmp_getSemaphoreTXEmpty(uint32_t core, sema_t **semaphore) {
-    const   char_t  *identifier = NULL;
+    int32_t     status;
+    const       char_t  *identifier = nullptr;
 
     PRIVILEGE_ELEVATE;
-    local_init();
+    status = local_init();
+    if (status != KERR_ASMP_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     switch (core) {
         case KASMP_CORE_0: {
@@ -457,7 +469,7 @@ int32_t asmp_getSemaphoreTXEmpty(uint32_t core, sema_t **semaphore) {
         }
     }
 
-    if (identifier == NULL) {
+    if (identifier == nullptr) {
         PRIVILEGE_RESTORE;
         return KERR_ASMP_CORNA;
     }
@@ -486,7 +498,8 @@ int32_t asmp_waitingForReady(void) {
     int32_t     status;
 
     PRIVILEGE_ELEVATE;
-    local_init();
+    status = local_init();
+    if (status != KERR_ASMP_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = stub_asmp_waitingForReady();
     PRIVILEGE_RESTORE;
@@ -503,7 +516,8 @@ int32_t asmp_waitingForReady(void) {
  *   has to be called at least once
  *
  */
-static  void    local_init(void) {
+static  int32_t local_init(void) {
+            int32_t     status = KERR_ASMP_NOERR;
             uint32_t    core;
     static  bool        vInit[KNB_CORES] = MCSET(false);
 
@@ -515,9 +529,9 @@ static  void    local_init(void) {
 
         vAsmp_InterCore = ALIGNED_PTR(asmpShared_t, linker_stShare);
 
-        stub_asmp_init();
+        status = stub_asmp_init();
     }
-    INTERRUPTION_RESTORE;
+    RETURN_INT_RESTORE(status);
 }
 
 #endif

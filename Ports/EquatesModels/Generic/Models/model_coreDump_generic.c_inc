@@ -50,6 +50,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #include    <stdint.h>
 
+#include    "cmns.h"
 #include    "kern/kern.h"
 #include    "machine/machine.h"
 #include    "macros_soc.h"
@@ -57,10 +58,6 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    "types.h"
 
 extern  proc_t  *vKern_runProc[KNB_CORES];
-
-// Prototypes
-
-extern  void    cmns_send(serialManager_t serialManager, const char_t *ascii);
 
 /*
  * \brief local_printFunction
@@ -84,7 +81,7 @@ static  void    __attribute__ ((noinline)) local_printFunction(uintptr_t pc, con
         cmns_send(KDEF0, "Routine:      "); cmns_send(KDEF0, functionName); cmns_send(KDEF0, "\n");
     }
 
-    #if (defined(NO_KERNEL_S))
+    #ifdef NO_KERNEL_S
     cmns_send(KDEF0, "No uKOS-X uKernel\n");
 
     #else

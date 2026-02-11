@@ -52,20 +52,18 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    "startUp/startUp.h"
 
 #include    <inttypes.h>
-#include    <stdint.h>
 #include    <stdio.h>
 
-#include    "serial_common.h"
-#include    "serial/serial.h"
 #include    "ip.h"
 #include    "kern/kern.h"
 #include    "macros.h"
-#include    "switch/switch.h"
 #include    "modules.h"
 #include    "os_errors.h"
+#include    "serial/serial.h"
+#include    "serial_common.h"
+#include    "switch/switch.h"
 #include    "system/system.h"
 #include    "types.h"
-#include    "urt0/urt0.h"
 
 // Bootstrap function table
 // ------------------------

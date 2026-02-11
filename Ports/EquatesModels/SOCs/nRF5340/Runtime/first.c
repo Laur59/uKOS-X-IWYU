@@ -51,12 +51,9 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    <stdint.h>
 
 #include    "crt0.h"
-#include    "Registers/core_addendum.h"
-#include    "kern/kern.h"
 #include    "kern/private/private_temporal.h"
 #include    "linker.h"
 #include    "macros_core.h"
-#include    "macros_soc.h"
 #include    "soc_reg.h"
 
 // Vector table: ...

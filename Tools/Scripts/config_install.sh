@@ -117,6 +117,7 @@ export BIN_VER=2.45.1
 export GCC_ARM_VER=15.2.0
 export GCC_RVXX_VER=15.2.0
 export NLB_VER=4.6.0
+export NLB_RVXX_VER=4.5.0
 export GDB_VER=17.1
 export LLVM_ARM_VER=21.1.8
 export LLVM_ARM_COMMIT=fc180f47
@@ -143,7 +144,7 @@ export PICOTOOL_VER=2.2.0-a4
 
 export GCC_ARC_VER=15.2.0
 export BOOST_VER=1.90.0
-export IMAGEMAGICK_VER=7.1.2-12
+export IMAGEMAGICK_VER=7.1.2-13
 export PK2CMD_VER=1.27.01
 export SDCC_VER=4.5.0
 export SRECORD_VER=1.65

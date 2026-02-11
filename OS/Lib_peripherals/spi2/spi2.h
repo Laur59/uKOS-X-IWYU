@@ -83,6 +83,10 @@ extern  "C" {
 #define SPI2_reserve    spi2_reserve
 #define SPI2_release    spi2_release
 
+extern	int32_t	stub_spi2_init(void);
+extern	int32_t	stub_spi2_configure(const spiCnf_t *configure);
+extern	int32_t	stub_spi2_multipleWriteRead(const uint8_t *wData, uint16_t wSize, uint8_t *rData, uint16_t rSize, uint32_t timeout);
+
 /*!
  * \brief Reserve the spi2 manager
  *
@@ -179,7 +183,7 @@ extern  int32_t spi2_writeRead(uint8_t *data);
  * Simple reads: spi_multipleWriteRead(xyz, 0, &rBuffer[0], 20, KWAIT_INFINITY);            R, R, R, ..
  * Writes-reads: spi_multipleWriteRead(xyz, 20, &rBuffer[0], 20, KWAIT_INFINITY);           W, R, W, ..
  *               condition (wSize == rSize)
- *               if xyz == NULL, write 0x00
+ *               if xyz == nullptr, write 0x00
  *               if xyz == (&wBuffer[0], write the buffer content
  *
  * EEPROM mode:  spi_multipleWriteRead(&wBuffer[0], 4, &rBuffer[0], 20, KWAIT_INFINITY);    W, W, W, R, R, R, R, ..

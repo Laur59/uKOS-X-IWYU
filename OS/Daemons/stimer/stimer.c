@@ -92,9 +92,9 @@ MODULE(
     Stimer,                                 // Module name (the first letter has to be upper case)
     KID_FAM_DAEMONS,                        // Family (defined in the module.h)
     KNUM_STIMER,                            // Module identifier (defined in the module.h)
-    NULL,                                   // Address of the initialisation code (early pre-init)
-    prgm,                                   // Address of the code (prgm for tools, aStart for applications, NULL for libraries)
-    NULL,                                   // Address of the clean code (clean the module)
+    nullptr,                                // Address of the initialisation code (early pre-init)
+    prgm,                                   // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                                // Address of the clean code (clean the module)
     " 1.0",                                 // Revision string (major . minor)
     (1U<<BSHOW),                            // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     KEXECUTION_CORE                         // Execution cores
@@ -125,16 +125,16 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     DAEMON_PRIVILEGED(
         core,                               // Core
         specification,                      // Specifications (just use specification_x)
-        aStrText,                           // Info string (NULL if anonymous)
+        aStrText,                           // Info string (nullptr if anonymous)
         vStack,                             // Stack location
         KKERN_SZ_STACK_MM,                  // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
         local_process,                      // Code of the process
-        aStrIden,                           // Identifier (NULL if anonymous)
+        aStrIden,                           // Identifier (nullptr if anonymous)
         KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
         KKERN_PRIORITY_HIGH_15              // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
     );
 
-    if (kern_createProcess(&specification, NULL, &vStimer_handle[core]) != KERR_KERN_NOERR) { LOG(KFATAL_SYSTEM, "stimer: create proc"); exit(EXIT_OS_PANIC); }
+    if (kern_createProcess(&specification, nullptr, &vStimer_handle[core]) != KERR_KERN_NOERR) { LOG(KFATAL_SYSTEM, "stimer: create proc"); exit(EXIT_OS_PANIC); }
 
     LOG(KINFO_SYSTEM, "stimer: daemon stim launched");
 
@@ -182,8 +182,6 @@ static  void    local_execute(uint16_t i) {
  *
  */
 static void __attribute__ ((noreturn)) local_process(const void *argument) {
-    UNUSED(argument);
-
     uint16_t    i;
     uintptr_t   data;
     uint32_t    core, delay, nextTimeout, lastTimeout, errorTimeout, compTime;
@@ -191,6 +189,8 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
     bool        gotMailBox = false;
     stim_t      *newSTimer;
     mbox_t      *mailBox;
+
+    UNUSED(argument);
 
     DEBUG_KERN_TRACE("entry: software timer daemon");
     core = GET_RUNNING_CORE;
