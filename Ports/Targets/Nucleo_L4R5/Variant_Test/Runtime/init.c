@@ -397,6 +397,21 @@ static  void    local_GPIO_Configuration(void) {
 static  void    local_RCC_Configuration(void) {
 
     RCC->CSR     |= RCC_CSR_LSION;                      // Enable the LSI
+
+    #ifdef KCALENDAR_WITH_HW_RTC_S
+    while ((RCC->CSR & RCC_CSR_LSIRDY) == 0U) { }       // Wait for LSI ready
+
+// Enable backup domain access and configure RTC
+
+    PWR->CR1 |= PWR_CR1_DBP;                            // Disable backup domain write protection
+
+// Select LSI as RTC clock source and enable RTC
+
+    RCC->BDCR = (RCC->BDCR & ~RCC_BDCR_RTCSEL)
+              | (2U * RCC_BDCR_RTCSEL_0);               // LSI is the source for the RTC
+    RCC->BDCR |= RCC_BDCR_RTCEN;                        // RTC enable
+    #endif
+
     RCC->CR      &= 0xFFFFFF0EU;                        // MSI off
     RCC->CR      |= 0x000101BCU;                        // HSI & HSE on, MSI 48-MHz
     RCC->CFGR     = 0x00000000U;                        // Reset CFGR register

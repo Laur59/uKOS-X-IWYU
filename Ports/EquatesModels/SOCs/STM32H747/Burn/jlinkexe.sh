@@ -60,8 +60,8 @@ speed 4000
 r
 connect /Reset
 erase
-loadbin Variant_Test_CM7/System/FLASH.bin 0x08000000
-loadbin Variant_Test_CM4/System/FLASH.bin 0x08100000
+loadbin Variant_Test_CM7/Artefacts/FLASH.bin 0x08000000
+loadbin Variant_Test_CM4/Artefacts/FLASH.bin 0x08100000
 r
 g
 exit
