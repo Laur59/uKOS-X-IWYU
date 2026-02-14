@@ -129,6 +129,10 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 #define	OTG1_HS_S					(uintptr_t)OTG1_S
 #define	USB1_OTG_HS_BASE			(uintptr_t)OTG1_HS_S
 
+#define	USB2_OTG_HS_IRQn			OTG2_IRQn
+#define	OTG2_HS_S					(uintptr_t)OTG2_S
+#define	USB2_OTG_HS_BASE			(uintptr_t)OTG2_HS_S
+
 // usbphy additional definitions
 // -----------------------------
 

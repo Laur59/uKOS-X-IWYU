@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
@@ -15,15 +15,16 @@
 emulate -L zsh
 setopt ERR_EXIT NO_UNSET PIPE_FAIL
 
-# Determine script directory (works if executed via ./script.sh or bash script.sh)
+# Determine script directory (works if executed via ./script.sh or zsh script.sh)
 
-PATH_PRG="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly PATH_PRG="${0:a:h}"
 
 # Colours for messages
 
 readonly RED=$'\033[0;31m'
 readonly GREEN=$'\033[0;32m'
 readonly YELLOW=$'\033[0;33m'
+readonly BLUE=$'\033[0;34m'
 readonly BOLD=$'\033[1m'
 readonly FAINT=$'\033[2m'
 readonly ITALIC=$'\033[3m'
@@ -32,8 +33,8 @@ readonly NC=$'\033[0m' # No Colour
 # Packages
 # --------
 
-package=0.20.0
-hash=e416a81
+readonly package=0.20.0
+readonly hash=da10280
 
 TinyUSB_PACK="TinyUSB-current"
 
@@ -42,8 +43,8 @@ TinyUSB_PACK="TinyUSB-current"
 printf '\n%bDownload the TinyUSB package ...%b\n\n' "${BOLD}" "${NC}"
 
 cd "${PATH_PRG}"
-if [ ! -d "${TinyUSB_PACK}" ]; then
-    git clone https://github.com/hathach/tinyusb "${TinyUSB_PACK}"
+if [[ ! -d "${TinyUSB_PACK}" ]]; then
+    git clone https://github.com/hathach/tinyusb.git "${TinyUSB_PACK}"
     git -C "${TinyUSB_PACK}" submodule update --init lib
 else
     git -C "${TinyUSB_PACK}" fetch --quiet
