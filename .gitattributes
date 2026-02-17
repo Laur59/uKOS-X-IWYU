@@ -1,1 +1,4 @@
-*.c_inc linguist-language=C 
+*.c_inc linguist-language=C
+
+# Fork-only files: always keep our version when upstream rename detection causes false conflicts
+Ports/EquatesModels/Generic/Runtime/cmns.h merge=ours
