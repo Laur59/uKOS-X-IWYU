@@ -53,8 +53,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #include    <stdint.h>
 
-#ifdef PRIVILEGED_USER_S
-#endif
 #include    "macros.h"
 #include    "macros_core.h"
 #include    "macros_soc.h"      // IWYU pragma: keep (to get KNB_CORES)

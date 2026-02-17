@@ -64,8 +64,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #pragma once
 
-// IWYU pragma: private, include "kern/kern.h"
-
 /*!
  * \addtogroup Lib_kernels
  */
@@ -83,7 +81,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #include    <stdint.h>
 
-#include    "kern/kern.h"   // IWYU pragma: keep (workaround for app)
+#include    "kern_types.h"  // IWYU pragma: keep
 
 #define KWAIT_INFINITY          ((uint32_t)(-1))                // Waiting forever
 #define KWAIT_REMAINING_TIMEOUT ((uint32_t)(-2))                // Waiting for the remaining timeout

@@ -62,8 +62,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #include    "macros_soc.h"
 
-// IWYU pragma: private, include "kern/kern.h"
-
 /*!
  * \addtogroup Lib_kernels
  */
@@ -83,7 +81,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 extern  "C" {
 #endif
 
-extern  volatile    bool    vPriv_insideSVC[KNB_CORES];					// Inside an SVC call
+extern  volatile    bool    vPriv_insideSVC[KNB_CORES];                 // Inside an SVC call
 extern  volatile    bool    vPriv_insideException[KNB_CORES];
 
 extern  void    privileges_init(void);

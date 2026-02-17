@@ -65,8 +65,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #pragma once
 
-// IWYU pragma: private, include "kern/kern.h"
-
 /*!
  * \addtogroup Lib_kernels
  */
@@ -84,7 +82,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #include    <stdint.h>
 
-#include    "kern/kern.h"   // IWYU pragma: keep (workaround app bug)
+#include    "kern_types.h"  // IWYU pragma: keep
 #include    "types.h"
 
 #define KSIGN_NB_SIGNALS_PER_GROUP              32U             // Number of signals per group (always 32 ... uint32_t)

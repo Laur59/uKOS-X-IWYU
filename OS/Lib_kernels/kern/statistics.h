@@ -54,7 +54,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #include    <stdint.h>
 
-#include    "kern/kern.h"   // IWYU pragma: keep (workaround bug of app)
+#include    "kern_types.h"  // IWYU pragma: keep
 
 #if (KKERN_WITH_STATISTICS_S == true)
 
