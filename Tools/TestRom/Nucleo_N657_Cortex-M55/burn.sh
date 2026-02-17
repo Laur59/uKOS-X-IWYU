@@ -6,15 +6,15 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		script for burning the arm flash via the stm32programmer.
-#			script mainly generated with chatgpt
+# Project:  uKOS-X
+# Goal:     script for burning the arm flash via the stm32programmer.
+#           script mainly generated with chatgpt
 #
-#			- Usage:
-#			./burn.sh
+#           - Usage:
+#           ./burn.sh
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -57,7 +57,7 @@ APPL="testROM"
 
 cp -f "./burn/${BOOT}.doNotErase" "${BOOT}.bin"
 
-STM32_PROGRAMMER_BIN="${STM32_PROGRAMMER_BIN:-/Applications/STMicroelectronics/STM32Cube/STM32CubeProgrammer/STM32CubeProgrammer.app/Contents/MacOs/bin}"
+STM32_PROGRAMMER_BIN="${STM32_PROGRAMMER_BIN:-/Applications/STMicroelectronics/STM32Cube/STM32CubeProgrammer/STM32CubeProgrammer.app/Contents/Resources/bin}"
 STM32_PROGRAMMER_CLI="${STM32_PROGRAMMER_BIN}/STM32_Programmer_CLI"
 STM32_PROGRAMMER_SIG="${STM32_PROGRAMMER_BIN}/STM32_SigningTool_CLI"
 
