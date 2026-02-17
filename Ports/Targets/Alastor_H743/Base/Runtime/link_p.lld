@@ -86,35 +86,34 @@ INCLUDE     STM32H743xI.ld
 /*          User Memory         0x70200000                  */
 /*          6144K                                           */
 
-config_sizeStacks           = (6k);
-config_sizeData             = stm_lnSRAM123 - config_sizeStacks;
+linker_sizeStackSystem_C0	= (4K);															/* Length of the System stack  								*/
+linker_sizeStackFirst_C0	= (2K);															/* Length of the First stack  								*/
+config_sizeData				= stm_lnSRAM123 - linker_sizeStackSystem_C0 - linker_sizeStackFirst_C0;
 config_sizeHeap             = (2048K);
-config_sizeUMemory          = (6144K);
 
 /* IMPORTANT:                                               */
 /* all the stacks have to be maintained aligned             */
 /* on a boundary of 8-bytes                                 */
 
-linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
-linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */
 linker_lowStackFirst_C0     = stm_stSRAM1;                                                  /* 0x30000000:                                              */
 linker_topStackFirst_C0     = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0 - 8;
+
 linker_lowStackSystem_C0    = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;           /* 0x30000800:                                              */
 linker_topStackSystem_C0    = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 - 8;
+
 ASSERT((linker_lowStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
 ASSERT((linker_topStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
 ASSERT((linker_lowStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
 ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
-ASSERT((linker_sizeStackSystem_C0 + linker_sizeStackFirst_C0)  == config_sizeStacks, "Error in size of stacks")
 
 /* IMPORTANT:                                               */
 /* External memory, User (download application) and shared  */
 
 linker_stEXRAM              = 0x70000000;                                                   /* 0x70000000: EXRAM, start of the external memory          */
-linker_lnEXRAM              = config_sizeUMemory + config_sizeHeap;                         /* Length of the external memory                            */
+linker_lnEXRAM				= (8192K);														/* Length of the external memory	  						*/
 
 linker_stUMemo              = 0x70200000;                                                   /* 0x70200000: UMemo, start of the user memory              */
-linker_lnUMemo              = config_sizeUMemory;                                           /* Length of the user memory                                */
+linker_lnUMemo				= linker_lnEXRAM - config_sizeHeap;								/* Length of the user memory	  							*/
 
 /* IMPORTANT:                                               */
 /* The heap has to be maintained aligned                    */
@@ -129,8 +128,9 @@ linker_lnHeap               = config_sizeHeap;                                  
 linker_stPrgmCode           = stm_stINTFLASH;                                               /* 0x08000000: PrgmCode, start of the Flash                 */
 linker_lnPrgmCode           = stm_lnINTFLASH;                                               /* Length of the the Flash                                  */
 
-linker_stPrgmData           = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;         /* 0x30001800: PrgmData, start of the RAM                   */
-linker_lnPrgmData           = config_sizeData;                                              /* Length of the RAM                                        */
+linker_stPrgmData			= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;			/* 0x30001800: start of program data						*/
+linker_lnPrgmData			= stm_lnSRAM123 - linker_sizeStackSystem_C0
+								- linker_sizeStackFirst_C0;									/* Length of program data									*/
 
 /* IMPORTANT:                                               */
 /* equates necessary for the arm_v7 MPU regions             */
@@ -155,7 +155,5 @@ MEMORY {
     prgm_code (rx)  : ORIGIN = linker_stPrgmCode, LENGTH = linker_lnPrgmCode
     prgm_data (rwx) : ORIGIN = linker_stPrgmData, LENGTH = linker_lnPrgmData
 }
-
-ASSERT((linker_sizeStackSystem_C0 + linker_sizeStackFirst_C0 + linker_lnPrgmData) == stm_lnSRAM123, "Check RAM1 mapping: over/under usage")
 
 INCLUDE     system_p.lld

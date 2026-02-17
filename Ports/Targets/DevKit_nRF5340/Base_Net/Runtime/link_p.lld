@@ -75,23 +75,34 @@ INCLUDE     nRF5340xx.ld
 
 /* Mapping:                                                 */
 /*                                                          */
-/* RAM_NET: stPrgmData          0x21000000                  */
-/*          64K                                             */
-/*          stHeap              0x20020000                  */
-/*          256K                                            */
-/*          stUMemo             0x20060000                  */
-/*          64K                                             */
-/*          For NET cpu         0x20070000                  */
+/* RAM_NET:	Stacks				0x21000000					*/
+/*			6K												*/
+/*			Program Data		0x21000000					*/
+/*			58K												*/
+/* RAM:		For NET cpu			0x20070000					*/
+/*			Heap				0x20070000					*/
 /*          32K                                             */
-/*          stShare             0x20078000                  */
+/*			Share				0x20078000					*/
 /*          32K                                             */
+
+linker_sizeStackSystem_C0	= (4K);															/* Length of the System stack  								*/
+linker_sizeStackFirst_C0	= (2K);															/* Length of the First stack  								*/
+config_sizeHeap				= (32K);
 
 /* IMPORTANT:                                               */
 /* all the stacks have to be maintained aligned             */
 /* on a boundary of 8-bytes                                 */
 
-linker_sizeStackSystem_C0   = (4K);                                                     /* Length of the System stack                               */
-linker_sizeStackFirst_C0    = (2K);                                                     /* Length of the First stack                                */
+linker_lowStackFirst_C0 	= nrf_stSRAM_NET;												/* 0x20020000:												*/
+linker_topStackFirst_C0 	= linker_lowStackFirst_C0 + linker_sizeStackFirst_C0 - 8;
+
+linker_lowStackSystem_C0	= linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;			/* 0x20000000: start of the RAM								*/
+linker_topStackSystem_C0 	= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 - 8;
+
+ASSERT((linker_lowStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
+ASSERT((linker_topStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
+ASSERT((linker_lowStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
+ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
 
 /* IMPORTANT:                                               */
 /* External memory, User (download application) and shared  */
@@ -99,7 +110,7 @@ linker_sizeStackFirst_C0    = (2K);                                             
 linker_stEXRAM              = 0;                                                        /* 0x00000000: EXRAM, start of the external memory          */
 linker_lnEXRAM              = (0);                                                      /* Length of the external memory                            */
 
-linker_stUMemo              = 0;                                                        /* 0x20060000: UMemo, start of the user memory              */
+linker_stUMemo				= 0;															/* 0x00000000: UMemo, start of the user memory 				*/
 linker_lnUMemo              = (0);                                                      /* Length of the user memory                                */
 
 linker_stFoNet              = 0x20070000;                                               /* 0x20070000: Share, start of the multicore shared memory  */
@@ -121,8 +132,9 @@ linker_lnHeap               = linker_lnFNet;                                    
 linker_stPrgmCode           = nrf_stINTFLASH_NET;                                       /* 0x01000000: PrgmCode, start of the Flash                 */
 linker_lnPrgmCode           = nrf_lnINTFLASH_NET;                                       /* Length of the the Flash                                  */
 
-linker_stPrgmData           = nrf_stSRAM_NET;                                           /* 0x21000000: PrgmData_p, start of the RAM                 */
-linker_lnPrgmData           = nrf_lnSRAM_NET;                                           /* Length_p of the RAM                                      */
+linker_stPrgmData			= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;			/* 0x21000000: start of program data						*/
+linker_lnPrgmData			= nrf_lnSRAM_NET - linker_sizeStackSystem_C0
+								- linker_sizeStackFirst_C0;									/* Length of program data									*/
 
 /* IMPORTANT:                                               */
 /* equates necessary for the arm_v8 MPU regions             */
@@ -145,4 +157,4 @@ MEMORY {
     prgm_data (rwx) : ORIGIN = linker_stPrgmData, LENGTH = linker_lnPrgmData
 }
 
-INCLUDE     system_p.ld
+INCLUDE		system_p.lld
