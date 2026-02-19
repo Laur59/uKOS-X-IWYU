@@ -1,12 +1,13 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
-
-/*
-;------------------------------------------------------------------------
 ; tests.
 ; ======
+
+; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+
+;------------------------------------------------------------------------
+; Author:   Laurent von Allmen      The 2026-02-16
+; Modifs:
 ;
 ; Project:  uKOS-X
 ; Goal:     Test ROM routine collection.

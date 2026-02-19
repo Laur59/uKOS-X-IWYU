@@ -52,7 +52,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #include    <stdint.h>
 
-// Aptina initialization table
+// Aptina initialisation table
 
 typedef struct  ov2640  ov2640_t;
 
