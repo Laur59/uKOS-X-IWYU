@@ -79,21 +79,38 @@ INCLUDE		STM32F207xx.ld
 
 /* Mapping:													*/
 /*															*/
-/* RAM1:	stPrgmData_p		0x20000000					*/
-/*			32K												*/
-/* 			stPrgmData_u		0x20000800					*/
-/*			48K												*/
+/* RAM1:	Stack System		0x20000000					*/
+/*			  4K												*/
+/*			Program Data (P)	0x20001000					*/
+/*			  28K												*/
+/*			Stack First			0x20008000					*/
+/*			  2K												*/
+/*			Program Data (U)	0x20008800					*/
+/*			  46K												*/
 /*			stHeap				0x20014000					*/
 /*			26K												*/
 /*			stUMemo				0x2001A800					*/
 /*			22K												*/
 
+linker_sizeStackSystem_C0	= (4K);													/* Length of the System stack  								*/
+linker_sizeStackFirst_C0	= (2K);													/* Length of the First stack  								*/
+config_sizeData_p			= (28K);
+
 /* IMPORTANT:												*/
 /* all the stacks have to be maintained aligned				*/
 /* on a boundary of 8-bytes									*/
 
-linker_sizeStackSystem_C0	= (4K);													/* Length of the System stack  								*/
-linker_sizeStackFirst_C0	= (2K);													/* Length of the First stack  								*/
+linker_lowStackSystem_C0	= stm_stSRAM1;											/* 0x20000000:												*/
+linker_topStackSystem_C0	= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 - 8;
+
+linker_lowStackFirst_C0		= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0
+							+ config_sizeData_p;									/* 0x20008000:												*/
+linker_topStackFirst_C0		= linker_lowStackFirst_C0 + linker_sizeStackFirst_C0 - 8;
+
+ASSERT((linker_lowStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
+ASSERT((linker_topStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
+ASSERT((linker_lowStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
+ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
 
 /* IMPORTANT:												*/
 /* External memory, User (download application) and shared	*/
@@ -117,11 +134,11 @@ linker_lnHeap				= (26K);												/* Length of the heap										*/
 linker_stPrgmCode			= stm_stINTFLASH;										/* 0x08000000: PrgmCode, start of the Flash					*/
 linker_lnPrgmCode			= stm_lnINTFLASH;										/* Length of the the Flash									*/
 
-linker_stPrgmData_p			= stm_stSRAM1;											/* 0x20000000: PrgmData_p, start of the RAM					*/
-linker_lnPrgmData_p			= (32K);												/* Length_p of the RAM										*/
+linker_stPrgmData_p			= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;	/* 0x20001000: PrgmData_p, start of the RAM					*/
+linker_lnPrgmData_p			= config_sizeData_p;									/* Length_p of the RAM										*/
 
-linker_stPrgmData_u			= (linker_stPrgmData_p + linker_lnPrgmData_p);			/* 0x20008000: PrgmData_p, start of the RAM					*/
-linker_lnPrgmData_u			= (48K);												/* Length_p of the RAM										*/
+linker_stPrgmData_u			= linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;	/* 0x20008800: PrgmData_u, start of the RAM					*/
+linker_lnPrgmData_u			= (46K);												/* Length_u of the RAM										*/
 
 /* IMPORTANT:												*/
 /* equates necessary for the arm_v7 MPU regions				*/

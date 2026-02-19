@@ -137,14 +137,6 @@ SECTIONS {
 
 	. = ALIGN(4);
 	linker_stINDATA_p = ABSOLUTE(.);
-	.stacks_p (NOLOAD) : {
-		. = ALIGN(8);
-		linker_lowStackSystem_C0 = ABSOLUTE(.);
-		. += linker_sizeStackSystem_C0;
-		. = ALIGN(8);
-		linker_topStackSystem_C0 = ABSOLUTE(.) - 8;
-	} > prgm_data_p
-
 	.data_p : AT (linker_stINDATA_p) {
 		linker_stDATA_p = ABSOLUTE(.);
 		lib*_p.a(.data .data.* .data*)
@@ -166,8 +158,21 @@ SECTIONS {
 	} > prgm_data_p
 
 	linker_stINDATA_u = linker_stINDATA_p + SIZEOF(.data_p);
-	.stacks_u (NOLOAD) : {
     . = ALIGN(4);
+	.data_u : AT (linker_stINDATA_u) {
+		linker_stDATA_u = ABSOLUTE(.);
+		liblibx_u.a(.data .data.* .data*)
+		libproc_u.a(.data .data.* .data*)
+		libtool_u.a(.data .data.* .data*)
+		*(EXCLUDE_FILE (first.o* *librtcb_p.a *libkern_p.a *liblibx_p.a *libshar_p.a) .data .data.* .data*)
+		. = ALIGN(4);
+		*(vtable)
+		. = ALIGN(4);
+		KEEP(*(.eh_frame))
+		linker_enDATA_u = ABSOLUTE(.);
+	} > prgm_data_u
+
+	. = ALIGN(4);
     .signature (linker_enRODATA + (linker_enDATA_p - linker_stDATA_p) + (linker_enDATA_u - linker_stDATA_u)) : {
         linker_stSignature = ABSOLUTE(.);
         KEEP(*(.signature))
@@ -186,16 +191,5 @@ SECTIONS {
         end = ABSOLUTE(.);
         _end = ABSOLUTE(.);
     } > prgm_data_u
-
-		KEEP(*(.signature))
-	} > prgm_code
-
-	.bss_u (NOLOAD) : {
-		. = ALIGN(4);
-		linker_stBSS_u = ABSOLUTE(.);
-		KEEP(*(.user))
-		*(.bss .bss.* COMMON)
-		linker_enBSS_u = ABSOLUTE(.);
-	} > prgm_data_u
 
 }

@@ -100,7 +100,7 @@ INCLUDE     STM32H747xI.ld
 
 linker_sizeStackSystem_C0	= (4K);																				/* Length of the System stack  								*/
 linker_sizeStackFirst_C0	= (2K);																				/* Length of the First stack  								*/
-config_sizeData_p           = (60k);
+config_sizeData_p			= (60K);
 config_sizeHeap             = (2048K);
 
 /* IMPORTANT:                                               */
@@ -117,7 +117,6 @@ ASSERT((linker_lowStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned
 ASSERT((linker_topStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
 ASSERT((linker_lowStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
 ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
-ASSERT((linker_sizeStackSystem_C0 + linker_sizeStackFirst_C0)  == config_sizeStacks, "Error in size of stacks")
 
 /* IMPORTANT:                                               */
 /* External memory, User (download application) and shared  */

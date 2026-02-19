@@ -90,12 +90,13 @@ INCLUDE     STM32F207xx.ld
 /*          stUMemo             0x2001A800                  */
 /*          22K                                             */
 
+linker_sizeStackSystem_C0	= (4K);																			/* Length of the System stack  								*/
+linker_sizeStackFirst_C0	= (2K);																			/* Length of the First stack  								*/
+
 /* IMPORTANT:                                               */
 /* all the stacks have to be maintained aligned             */
 /* on a boundary of 8-bytes                                 */
 
-linker_sizeStackSystem_C0   = (4K);                                                                         /* Length of the System stack                               */
-linker_sizeStackFirst_C0    = (2K);                                                                         /* Length of the First stack                                */
 linker_lowStackSystem_C0    = stm_stSRAM1;                                                                  /* 0x20000000:                                              */
 linker_topStackSystem_C0    = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 - 8;
 linker_lowStackFirst_C0     = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 + linker_lnPrgmData_p;   /* 0x20008000:                                              */

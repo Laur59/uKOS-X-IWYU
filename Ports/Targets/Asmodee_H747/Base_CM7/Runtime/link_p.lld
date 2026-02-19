@@ -79,7 +79,7 @@ INCLUDE     STM32H747xI.ld
 /*          6K                                              */
 /*          Program Data        0x24001800                  */
 /*          250K                                            */
-/* RAM4:    stShare             0x38000000                  */
+/* RAM4:	Share				0x38000000					*/
 /*          64K                                             */
 /* EXT:     Heap                0x70000000                  */
 /*          2048K                                           */

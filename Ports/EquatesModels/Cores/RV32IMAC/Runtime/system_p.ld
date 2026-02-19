@@ -120,20 +120,6 @@ SECTIONS {
 
 	. = ALIGN(8);
 	linker_stINDATA = ABSOLUTE(.);
-	.stacks (NOLOAD) : {
-		. = ALIGN(16);
-		linker_lowStackFirst_C0 = ABSOLUTE(.);
-		. += linker_sizeStackFirst_C0;
-		. = ALIGN(16);
-		linker_topStackFirst_C0 = ABSOLUTE(.) - 16;
-
-		. = ALIGN(16);
-		linker_lowStackSystem_C0 = ABSOLUTE(.);
-		. += linker_sizeStackSystem_C0;
-		. = ALIGN(16);
-		linker_topStackSystem_C0 = ABSOLUTE(.) - 16;
-	} > prgm_data
-
 	.data : AT (linker_stINDATA) {
 		linker_stDATA = ABSOLUTE(.);
 		linker_stDATA_KERN_p = ABSOLUTE(.);
@@ -164,5 +150,9 @@ SECTIONS {
 		*(.bss .bss.*)
 		*(COMMON)
 		linker_enBSS = ABSOLUTE(.);
+		/* Standard symbol used by C library for heap start */
+		end = ABSOLUTE(.);
+		_end = ABSOLUTE(.);
 	} > prgm_data
+
 }

@@ -77,7 +77,7 @@ INCLUDE     nRF5340xx.ld
 /*                                                          */
 /* RAM_NET:	Stacks				0x21000000					*/
 /*			6K												*/
-/*			Program Data		0x21000000					*/
+/*			Program Data		0x21001800					*/
 /*			58K												*/
 /* RAM:		For NET cpu			0x20070000					*/
 /*			Heap				0x20070000					*/

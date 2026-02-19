@@ -83,7 +83,7 @@ INCLUDE     STM32H743xI.ld
 /*                                                          */
 /* RAM1:    Stack First         0x30000000                  */
 /*          2K                                              */
-/*			Program Data (U)	0x30000000					*/
+/*			Program Data (U)	0x30000800					*/
 /*          126K                                            */
 /* RAM2:	Program Data (U)	0x30020000					*/
 /*			128K											*/

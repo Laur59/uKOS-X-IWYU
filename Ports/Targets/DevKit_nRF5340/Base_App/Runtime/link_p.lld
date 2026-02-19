@@ -77,9 +77,9 @@ INCLUDE     nRF5340xx.ld
 /*                                                          */
 /* RAM:		Stacks				0x20000000					*/
 /*			6K												*/
-/*			Program Data		0x20000000					*/
+/*			Program Data		0x20001800					*/
 /*			122K											*/
-/*			Heap				0x20040000					*/
+/*			Heap				0x20020000					*/
 /*          256K                                            */
 /*			User Memory			0x20060000					*/
 /*          64K                                             */

@@ -73,19 +73,33 @@ INCLUDE		STM32U5G9xJ.ld
 
 /* Mapping:													*/
 /*															*/
-/* RAM1:	stPrgmData			0x30000000					*/
-/*			256K											*/
-/*			stHeap				0x30040000					*/
+/* RAM1:	Stacks				0x30000000					*/
+/*			6K												*/
+/*			Program Data		0x30001800					*/
+/*			250K											*/
+/*			Heap				0x30040000					*/
 /*			2048K											*/
-/*			stUMemo				0x30240000					*/
+/*			User Memory			0x30240000					*/
 /*			704K											*/
+
+linker_sizeStackSystem_C0	= (4K);													/* Length of the System stack  								*/
+linker_sizeStackFirst_C0	= (2K);													/* Length of the First stack  								*/
+config_sizeData				= (250K);
 
 /* IMPORTANT:												*/
 /* all the stacks have to be maintained aligned				*/
 /* on a boundary of 8-bytes									*/
 
-linker_sizeStackSystem_C0	= (4K);													/* Length of the System stack  								*/
-linker_sizeStackFirst_C0	= (2K);													/* Length of the First stack  								*/
+linker_lowStackFirst_C0		= stm_stSRAM1;											/* 0x30000000: start of the First stack						*/
+linker_topStackFirst_C0		= linker_lowStackFirst_C0 + linker_sizeStackFirst_C0 - 8;
+
+linker_lowStackSystem_C0	= linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;	/* 0x30000800: start of the System stack					*/
+linker_topStackSystem_C0	= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 - 8;
+
+ASSERT((linker_lowStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
+ASSERT((linker_topStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
+ASSERT((linker_lowStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
+ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
 
 /* IMPORTANT:												*/
 /* External memory, User (download application) and shared	*/
@@ -109,8 +123,8 @@ linker_lnHeap				= (2048K);												/* Length of the heap										*/
 linker_stPrgmCode			= stm_stINTFLASH;										/* 0x0C000000: PrgmCode, start of the Flash					*/
 linker_lnPrgmCode			= stm_lnINTFLASH;										/* Length of the the Flash									*/
 
-linker_stPrgmData			= stm_stSRAM1;											/* 0x30000000: PrgmData, start of the RAM					*/
-linker_lnPrgmData			= (256K);												/* Length of the RAM										*/
+linker_stPrgmData			= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;	/* 0x30001800: start of program data						*/
+linker_lnPrgmData			= config_sizeData;										/* Length of program data									*/
 
 /* IMPORTANT:												*/
 /* equates necessary for the arm_v8 MPU regions				*/

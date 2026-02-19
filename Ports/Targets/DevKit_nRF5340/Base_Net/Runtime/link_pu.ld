@@ -79,22 +79,43 @@ INCLUDE		nRF5340xx.ld
 
 /* Mapping:													*/
 /*															*/
-/* RAM:		stPrgmData_p		0x21000000					*/
+/* RAM_NET:	Protected			0x21000000					*/
+/*			  Stack System		0x21000000					*/
+/*			  4K											*/
+/*			  Program Data (P)	0x21001000					*/
+/*			  20K											*/
+/*			Unprotected			0x21006000					*/
+/*			  Stack First		0x21006000					*/
+/*			  2K											*/
+/*			  Program Data (U)	0x21006800					*/
+/*			  38K											*/
+/* RAM:		For NET cpu			0x20070000					*/
+/*			  Heap				0x20070000					*/
 /*			32K												*/
-/*			stPrgmData_u		0x21008000					*/
+/*			Share				0x20078000					*/
 /*			32K												*/
-/*			For NET cpu			0x20070000					*/
-/*			stHeap				0x20070000					*/
-/*			32K												*/
-/*			stShare				0x20078000					*/
-/*			32K												*/
+
+linker_sizeStackSystem_C0	= (4K);													/* Length of the System stack  								*/
+linker_sizeStackFirst_C0	= (2K);													/* Length of the First stack  								*/
+config_sizeData_p			= (20K);
+config_sizeData_u			= (38K);
+config_sizeHeap				= (32K);
 
 /* IMPORTANT:												*/
 /* all the stacks have to be maintained aligned				*/
 /* on a boundary of 8-bytes									*/
 
-linker_sizeStackSystem_C0	= (4K);													/* Length of the System stack  								*/
-linker_sizeStackFirst_C0	= (2K);													/* Length of the First stack  								*/
+linker_lowStackSystem_C0 	= nrf_stSRAM_NET;										/* 0x21000000:												*/
+linker_topStackSystem_C0 	= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 - 8;
+
+linker_lowStackFirst_C0 	= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0
+							+ config_sizeData_p;									/* 0x21006000:												*/
+linker_topStackFirst_C0 	= linker_lowStackFirst_C0 + linker_sizeStackFirst_C0 - 8;
+
+ASSERT((linker_lowStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
+ASSERT((linker_topStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
+ASSERT((linker_lowStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
+ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
 
 /* IMPORTANT:												*/
 /* External memory, User (download application) and shared	*/
@@ -124,11 +145,11 @@ linker_lnHeap				= linker_lnFNet;										/* Length of the heap										*/
 linker_stPrgmCode			= nrf_stINTFLASH_NET;									/* 0x01000000: PrgmCode, start of the Flash					*/
 linker_lnPrgmCode			= nrf_lnINTFLASH_NET;									/* Length of the the Flash									*/
 
-linker_stPrgmData_p			= nrf_stSRAM_NET;										/* 0x21000000: PrgmData_p, start of the RAM					*/
-linker_lnPrgmData_p			= (24K);												/* Length_p of the RAM										*/
+linker_stPrgmData_p 		= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;	/* 0x21001000: start of protected program data				*/
+linker_lnPrgmData_p 		= config_sizeData_p;									/* Length of protected program data							*/
 
-linker_stPrgmData_u			= (linker_stPrgmData_p + linker_lnPrgmData_p);			/* 0x21006000: PrgmData_p, start of the RAM					*/
-linker_lnPrgmData_u			= (40K);												/* Length_p of the RAM										*/
+linker_stPrgmData_u 		= linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;	/* 0x21006800: start of unprotected program data			*/
+linker_lnPrgmData_u 		= config_sizeData_u;									/* Length of unprotected program data						*/
 
 /* IMPORTANT:												*/
 /* equates necessary for the arm_v8 MPU regions				*/

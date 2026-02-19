@@ -1,17 +1,18 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; system_pu.
 ; ==========
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi			The 2025-01-01
-; Modifs:	Laurent von Allmen	The 2025-01-01	Improved the section management
-; Modifs:	Edo. Franzi			The 2025-01-01	Added the directory section
+; Project: uKOS-X
 ;
-; Project:	uKOS-X
-; Goal:		Commun Linker description for uKOS-X systems.
-;			Privileged / user support
+; Purpose:
+;    Commun Linker description for uKOS-X systems.
+;    Privileged / user support
 ;
 ;                       CODE
 ; linker_stTEXT			+-----------------+
@@ -137,14 +138,6 @@ SECTIONS {
 
 	. = ALIGN(8);
 	linker_stINDATA_p = ABSOLUTE(.);
-	.stacks_p (NOLOAD) : {
-		. = ALIGN(8);
-		linker_lowStackSystem_C0 = ABSOLUTE(.);
-		. += linker_sizeStackSystem_C0;
-		. = ALIGN(8);
-		linker_topStackSystem_C0 = ABSOLUTE(.) - 8;
-	} > prgm_data_p
-
 	.data_p : AT (linker_stINDATA_p) {
 		linker_stDATA_p = ABSOLUTE(.);
 		lib*_p.a(.data .data.* .data*)
@@ -166,15 +159,7 @@ SECTIONS {
 	} > prgm_data_p
 
 	linker_stINDATA_u = linker_stINDATA_p + SIZEOF(.data_p);
-	.stacks_u (NOLOAD) : {
 		. = ALIGN(8);
-		linker_lowStackFirst_C0 = ABSOLUTE(.);
-		. += linker_sizeStackFirst_C0;
-		. = ALIGN(8);
-		linker_topStackFirst_C0 = ABSOLUTE(.) - 8;
-	} > prgm_data_u
-
-	. = ALIGN(8);
 	.data_u : AT (linker_stINDATA_u) {
 		linker_stDATA_u = ABSOLUTE(.);
 		*(.data .data.* .data*)

@@ -75,19 +75,32 @@ INCLUDE		GD32VF103CBT.ld
 
 /* Mapping:													*/
 /*															*/
-/* RAM:		stPrgmData			0x20000000					*/
-/*			16K												*/
-/*			stHeap				0x20004000					*/
+/* RAM:		Stacks				0x20000000					*/
+/*			1.75K											*/
+/*			Program Data		0x20000700					*/
+/*			14.25K											*/
+/*			Heap				0x20004000					*/
 /*			13K												*/
-/*			stUMemo				0x20007400					*/
-/*			16K												*/
+/*			User Memory			0x20007400					*/
+/*			3K												*/
+
+linker_sizeStackSystem_C0	= (0);														/* Length of the System stack  								*/
+linker_sizeStackFirst_C0	= (1792);													/* Length of the First stack  								*/
+config_sizeData				= (14592);
+config_sizeHeap				= (13K);
 
 /* IMPORTANT:												*/
 /* all the stacks have to be maintained aligned				*/
 /* on a boundary of 16-bytes								*/
 
-linker_sizeStackSystem_C0	= (0);													/* Length of the System stack  								*/
-linker_sizeStackFirst_C0	= (1792);												/* Length of the First stack  								*/
+linker_lowStackFirst_C0		= gd_stSRAM;												/* 0x20000000												*/
+linker_topStackFirst_C0		= linker_lowStackFirst_C0 + linker_sizeStackFirst_C0 - 16;
+linker_lowStackSystem_C0	= linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;		/* 0x20000700												*/
+linker_topStackSystem_C0	= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 - 16;
+ASSERT((linker_lowStackSystem_C0 & 15) == 0, "Stack system must be 16-byte aligned")
+ASSERT((linker_topStackSystem_C0 & 15) == 0, "Stack system must be 16-byte aligned")
+ASSERT((linker_lowStackFirst_C0 & 15)  == 0, "Stack user must be 16-byte aligned")
+ASSERT((linker_topStackFirst_C0 & 15)  == 0, "Stack user must be 16-byte aligned")
 
 /* IMPORTANT:												*/
 /* External memory, User (download application) and shared	*/
@@ -96,14 +109,15 @@ linker_stEXRAM				= 0;													/* 0x00000000: EXRAM, start of the external m
 linker_lnEXRAM				= (0);													/* Length of the external memory	  						*/
 
 linker_stUMemo				= (linker_stHeap + linker_lnHeap);						/* 0x20007400: UMemo, start of the user memory 				*/
-linker_lnUMemo				= (3K);													/* Length of the user memory	  							*/
+linker_lnUMemo				= gd_lnSRAM - linker_sizeStackFirst_C0
+								- config_sizeData - config_sizeHeap;					/* Length of the user memory	  							*/
 
 /* IMPORTANT:												*/
 /* The heap has to be maintained aligned					*/
 /* on a boundary of 8-bytes									*/
 
 linker_stHeap				= (linker_stPrgmData + linker_lnPrgmData);				/* 0x20004000: start of the heap							*/
-linker_lnHeap				= (13K);												/* Length of the heap										*/
+linker_lnHeap				= config_sizeHeap;											/* Length of the heap										*/
 
 /* IMPORTANT:												*/
 /* uKOS OS Flash + memory									*/
@@ -111,8 +125,8 @@ linker_lnHeap				= (13K);												/* Length of the heap										*/
 linker_stPrgmCode			= gd_stINTFLASH;										/* 0x08000000: PrgmCode, start of the Flash					*/
 linker_lnPrgmCode			= gd_lnINTFLASH;										/* Length of the the Flash									*/
 
-linker_stPrgmData			= gd_stSRAM;											/* 0x20000000: PrgmData, start of the RAM					*/
-linker_lnPrgmData			= (16K);												/* Length of the RAM										*/
+linker_stPrgmData			= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;		/* 0x20000700: start of program data						*/
+linker_lnPrgmData			= config_sizeData;											/* Length of program data									*/
 
 MEMORY {
 	prgm_code (rx)	: ORIGIN = linker_stPrgmCode, LENGTH = linker_lnPrgmCode

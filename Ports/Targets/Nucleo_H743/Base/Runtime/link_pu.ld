@@ -97,25 +97,24 @@ INCLUDE		STM32H743xI.ld
 /*			  Program Data (P)	0x38001000					*/
 /*			  60K											*/
 
-config_sizeStacks			= (6k);
-config_sizeData_p			= (60k);
-config_sizeData_u			= (62k);
+linker_sizeStackSystem_C0	= (4K);													/* Length of the System stack  								*/
+linker_sizeStackFirst_C0	= (2K);													/* Length of the First stack  								*/
+config_sizeData_u			= (62K);
 
 /* IMPORTANT:												*/
 /* all the stacks have to be maintained aligned				*/
 /* on a boundary of 8-bytes									*/
 
-linker_sizeStackSystem_C0	= (4K);																	/* Length of the System stack  								*/
-linker_sizeStackFirst_C0	= (2K);																	/* Length of the First stack  								*/
-linker_lowStackSystem_C0	= stm_stSRAM4;															/* 0x38000000:												*/
+linker_lowStackSystem_C0	= stm_stSRAM4;											/* 0x38000000: start of the System stack					*/
 linker_topStackSystem_C0	= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 - 8;
-linker_lowStackFirst_C0		= stm_stSRAM1;															/* 0x30000000:												*/
+
+linker_lowStackFirst_C0		= stm_stSRAM1;											/* 0x30000000: start of the First stack						*/
 linker_topStackFirst_C0		= linker_lowStackFirst_C0 + linker_sizeStackFirst_C0 - 8;
+
 ASSERT((linker_lowStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
 ASSERT((linker_topStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
 ASSERT((linker_lowStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
 ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
-ASSERT((linker_sizeStackSystem_C0 + linker_sizeStackFirst_C0)  == config_sizeStacks, "Error in size of stacks")
 
 /* IMPORTANT:												*/
 /* External memory, User (download application) and shared	*/
@@ -130,8 +129,10 @@ linker_lnUMemo				= stm_lnAXISRAM;														/* Length of the user memory	  	
 /* The heap has to be maintained aligned					*/
 /* on a boundary of 8-bytes									*/
 
-linker_stHeap				= (linker_stPrgmData_u + linker_lnPrgmData_u);							/* 0x30010000: start of the heap							*/
-linker_lnHeap				= (stm_lnSRAM123 - config_sizeData_u - linker_sizeStackFirst_C0);		/* Length of the heap										*/
+linker_stHeap				= (linker_stPrgmData_u + config_sizeData_u);			/* 0x30010000: start of the heap							*/
+linker_lnHeap				= (stm_lnSRAM123 - config_sizeData_u
+								- linker_sizeStackFirst_C0);						/* Length of the heap										*/
+ASSERT((linker_stHeap & 7) == 0, "Heap must be 8-byte aligned")
 
 /* IMPORTANT:												*/
 /* uKOS OS Flash + memory									*/
@@ -139,11 +140,11 @@ linker_lnHeap				= (stm_lnSRAM123 - config_sizeData_u - linker_sizeStackFirst_C0
 linker_stPrgmCode			= stm_stINTFLASH;														/* 0x08000000: PrgmCode, start of the Flash					*/
 linker_lnPrgmCode			= stm_lnINTFLASH;														/* Length of the the Flash									*/
 
-linker_stPrgmData_p			= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;					/* 0x38001000: PrgmData_p, start of the RAM					*/
-linker_lnPrgmData_p			= config_sizeData_p;													/* Length_p of the RAM										*/
+linker_stPrgmData_p			= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;	/* 0x38001000: start of protected program data				*/
+linker_lnPrgmData_p			= stm_lnSRAM4 - linker_sizeStackSystem_C0;				/* Length of protected program data							*/
 
-linker_stPrgmData_u			= linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;					/* 0x30000800: PrgmData_p, start of the RAM					*/
-linker_lnPrgmData_u			= config_sizeData_u;													/* Length_p of the RAM										*/
+linker_stPrgmData_u			= linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;	/* 0x30000800: start of unprotected program data			*/
+linker_lnPrgmData_u			= config_sizeData_u;									/* Length of unprotected program data						*/
 
 /* IMPORTANT:												*/
 /* equates necessary for the arm_v7 MPU regions				*/
