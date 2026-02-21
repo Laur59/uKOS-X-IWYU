@@ -496,7 +496,7 @@ int32_t system_getSystemSignature(const char_t **signature) {
     *signature = ALIGNED_PTR(const char_t, linker_stSignature);
 
     PRIVILEGE_RESTORE;
-    return (KERR_SYSTEM_NOERR);
+    return KERR_SYSTEM_NOERR;
 }
 
 /*

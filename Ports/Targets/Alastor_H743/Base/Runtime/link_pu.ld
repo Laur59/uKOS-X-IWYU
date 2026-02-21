@@ -1,6 +1,7 @@
 /*
 SPDX-License-Identifier: MIT
 SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 */
 
 /*
@@ -8,9 +9,10 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ========
 
 ;------------------------------------------------------------------------
-; Project:	uKOS-X
-; Goal:		Linker description for the uKOS-X system.
-;			Privileged / user support
+; Project: uKOS-X
+; Purpose:
+;    Linker description for the uKOS-X system.
+;    Privileged / user support
 ;
 ;                       CODE
 ; linker_stTEXT			+-----------------+
@@ -37,39 +39,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;														| .bss_u          |
 ;														|                 | linker_enBSS_u
 ;														+-----------------+
-;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
-;                                              __ ______  _____
-;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
-;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
-;   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
-;                                     \__,_/_/ |_\____//____/
-;   edo.franzi@ukos.ch
-;
-;   Description: Lightweight, real-time multitasking operating
-;   system for embedded microcontroller and DSP-based systems.
-;
-;   Permission is hereby granted, free of charge, to any person
-;   obtaining a copy of this software and associated documentation
-;   files (the "Software"), to deal in the Software without restriction,
-;   including without limitation the rights to use, copy, modify,
-;   merge, publish, distribute, sublicense, and/or sell copies of the
-;   Software, and to permit persons to whom the Software is furnished
-;   to do so, subject to the following conditions:
-;
-;   The above copyright notice and this permission notice shall be
-;   included in all copies or substantial portions of the Software.
-;
-;   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-;   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-;   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-;   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
-;   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-;   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-;   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-;   SOFTWARE.
-;
 ;------------------------------------------------------------------------
 */
 
@@ -95,43 +64,40 @@ INCLUDE		STM32H743xI.ld
 /*			User Memory			0x70200000					*/
 /*			6144K											*/
 
-config_sizeStacks			= (6k);
-config_sizeData_p			= (60k);
-config_sizeData_u			= stm_lnSRAM123 - (2k);
-config_sizeHeap				= (2048K);
-config_sizeUMemory			= (6144K);
+linker_sizeStackSystem_C0	= (4K);													/* Length of the System stack  								*/
+linker_sizeStackFirst_C0	= (2K);													/* Length of the First stack  								*/
+config_sizeData_u			= (62K);
 
 /* IMPORTANT:												*/
 /* all the stacks have to be maintained aligned				*/
 /* on a boundary of 8-bytes									*/
 
-linker_sizeStackSystem_C0	= (4K);															/* Length of the System stack  								*/
-linker_sizeStackFirst_C0	= (2K);															/* Length of the First stack  								*/
-linker_lowStackSystem_C0	= stm_stSRAM4;													/* 0x38000000:												*/
+linker_lowStackSystem_C0	= stm_stSRAM4;											/* 0x38000000: start of the System stack					*/
 linker_topStackSystem_C0	= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 - 8;
-linker_lowStackFirst_C0		= stm_stSRAM1;													/* 0x30000000:												*/
+
+linker_lowStackFirst_C0		= stm_stSRAM1;											/* 0x30000000: start of the First stack						*/
 linker_topStackFirst_C0		= linker_lowStackFirst_C0 + linker_sizeStackFirst_C0 - 8;
+
 ASSERT((linker_lowStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
 ASSERT((linker_topStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
 ASSERT((linker_lowStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
 ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
-ASSERT((linker_sizeStackSystem_C0 + linker_sizeStackFirst_C0)  == config_sizeStacks, "Error in size of stacks")
 
 /* IMPORTANT:												*/
 /* External memory, User (download application) and shared	*/
 
 linker_stEXRAM				= 0x70000000;													/* 0x70000000: EXRAM, start of the external memory			*/
-linker_lnEXRAM				= config_sizeUMemory + config_sizeHeap;							/* Length of the external memory	  						*/
+linker_lnEXRAM				= (8192K);												/* Length of the external memory	  						*/
 
-linker_stUMemo				= linker_stHeap + config_sizeHeap;								/* 0x70200000: UMemo, start of the user memory 				*/
-linker_lnUMemo				= config_sizeUMemory;											/* Length of the user memory	  							*/
+linker_stUMemo				= 0x70200000;											/* 0x70200000: UMemo, start of the user memory 				*/
+linker_lnUMemo				= (6144K);												/* Length of the user memory	  							*/
 
 /* IMPORTANT:												*/
 /* The heap has to be maintained aligned					*/
 /* on a boundary of 8-bytes									*/
 
 linker_stHeap				= 0x70000000;													/* 0x70000000: start of the heap							*/
-linker_lnHeap				= config_sizeHeap;												/* Length of the heap										*/
+linker_lnHeap				= (2048K);												/* Length of the heap										*/
 
 /* IMPORTANT:												*/
 /* uKOS OS Flash + memory									*/
@@ -139,11 +105,11 @@ linker_lnHeap				= config_sizeHeap;												/* Length of the heap										*/
 linker_stPrgmCode			= stm_stINTFLASH;												/* 0x08000000: PrgmCode, start of the Flash					*/
 linker_lnPrgmCode			= stm_lnINTFLASH;												/* Length of the the Flash									*/
 
-linker_stPrgmData_p			= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;			/* 0x38001000: PrgmData_p, start of the RAM					*/
-linker_lnPrgmData_p			= config_sizeData_p;											/* Length_p of the RAM										*/
+linker_stPrgmData_p			= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;	/* 0x38001000: start of protected program data				*/
+linker_lnPrgmData_p			= stm_lnSRAM4 - linker_sizeStackSystem_C0;				/* Length of protected program data							*/
 
-linker_stPrgmData_u			= linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;			/* 0x30000800: PrgmData_p, start of the RAM					*/
-linker_lnPrgmData_u			= config_sizeData_u;											/* Length_p of the RAM										*/
+linker_stPrgmData_u			= linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;	/* 0x30000800: start of unprotected program data			*/
+linker_lnPrgmData_u			= (stm_lnSRAM123 - linker_sizeStackFirst_C0);			/* Length of unprotected program data						*/
 
 /* IMPORTANT:												*/
 /* equates necessary for the arm_v7 MPU regions				*/

@@ -1,6 +1,7 @@
 /*
 SPDX-License-Identifier: MIT
 SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 */
 
 /*
@@ -8,9 +9,10 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ========
 
 ;------------------------------------------------------------------------
-; Project:	uKOS-X
-; Goal:		Linker description for the uKOS-X system.
-;			Privileged / user support
+; Project: uKOS-X
+; Purpose:
+;    Linker description for the uKOS-X system.
+;    Privileged / user support
 ;
 ;                       CODE
 ; linker_stTEXT			+-----------------+
@@ -37,39 +39,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;														| .bss_u          |
 ;														|                 | linker_enBSS_u
 ;														+-----------------+
-;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
-;                                              __ ______  _____
-;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
-;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
-;   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
-;                                     \__,_/_/ |_\____//____/
-;   edo.franzi@ukos.ch
-;
-;   Description: Lightweight, real-time multitasking operating
-;   system for embedded microcontroller and DSP-based systems.
-;
-;   Permission is hereby granted, free of charge, to any person
-;   obtaining a copy of this software and associated documentation
-;   files (the "Software"), to deal in the Software without restriction,
-;   including without limitation the rights to use, copy, modify,
-;   merge, publish, distribute, sublicense, and/or sell copies of the
-;   Software, and to permit persons to whom the Software is furnished
-;   to do so, subject to the following conditions:
-;
-;   The above copyright notice and this permission notice shall be
-;   included in all copies or substantial portions of the Software.
-;
-;   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-;   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-;   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-;   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
-;   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-;   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-;   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-;   SOFTWARE.
-;
 ;------------------------------------------------------------------------
 */
 
@@ -79,25 +48,57 @@ INCLUDE		rp2350.ld
 
 /* Mapping:													*/
 /*															*/
-/* RAM:		stPrgmData_p		0x20000000					*/
-/*			64K												*/
-/*			stPrgmData_u		0x20010000					*/
+/* RAM:		Protected			0x20000000					*/
+/*			  Stack System		0x20000000					*/
+/*			  8K											*/
+/*			  Program Data (P)	0x20002000					*/
+/*			  56K											*/
+/*			Unprotected			0x20010000					*/
+/*			  Stack First		0x20010000					*/
+/*			  4K											*/
+/*			  Program Data (U)	0x20011000					*/
+/*			  124K											*/
+/*			  Heap				0x20030000					*/
 /*			128K											*/
-/*			stHeap				0x20030000					*/
-/*			128K											*/
-/*			stUMemo				0x20050000					*/
+/*			  User Memory		0x20050000					*/
 /*			136K											*/
-/*			stShare				0x20072000					*/
+/*			  Share				0x20072000					*/
 /*			64K												*/
-
-/* IMPORTANT:												*/
-/* all the stacks have to be maintained aligned				*/
-/* on a boundary of 8-bytes									*/
 
 linker_sizeStackSystem_C0	= (4K);													/* Length of the System stack  								*/
 linker_sizeStackFirst_C0	= (2K);													/* Length of the First stack  								*/
 linker_sizeStackSystem_C1	= (4K);													/* Length of the System stack  								*/
 linker_sizeStackFirst_C1	= (2K);													/* Length of the First stack  								*/
+config_sizeData_p 			= (56K);
+config_sizeData_u 			= (124K);
+config_sizeHeap   			= (128K);
+config_sizeUserMemory  		= (136K);
+config_sizeShare  			= (64K);
+
+/* IMPORTANT:												*/
+/* all the stacks have to be maintained aligned				*/
+/* on a boundary of 8-bytes									*/
+
+linker_lowStackSystem_C0	= rp_stSRAM;																			/* 0x20000000: start of the System stack					*/
+linker_topStackSystem_C0 	= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 - 8;								/* 0x20000ff8												*/
+
+linker_lowStackSystem_C1	= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;									/* 0x20001000: start of the System stack					*/
+linker_topStackSystem_C1 	= linker_lowStackSystem_C1 + linker_sizeStackSystem_C1 - 8;								/* 0x20001ff8												*/
+
+linker_lowStackFirst_C0 	= linker_lowStackSystem_C1 + linker_sizeStackSystem_C1 + config_sizeData_p;				/* 0x20010000: start of the First stack						*/
+linker_topStackFirst_C0 	= linker_lowStackFirst_C0 + linker_sizeStackFirst_C0 - 8;								/* 0x200107f8												*/
+
+linker_lowStackFirst_C1 	= linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;									/* 0x20010800: start of the First stack						*/
+linker_topStackFirst_C1 	= linker_lowStackFirst_C1 + linker_sizeStackFirst_C1 - 8;								/* 0x20010ff8												*/
+
+ASSERT((linker_lowStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
+ASSERT((linker_topStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
+ASSERT((linker_lowStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
+ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
+ASSERT((linker_lowStackSystem_C1 & 7) == 0, "Stack system must be 8-byte aligned")
+ASSERT((linker_topStackSystem_C1 & 7) == 0, "Stack system must be 8-byte aligned")
+ASSERT((linker_lowStackFirst_C1 & 7)  == 0, "Stack user must be 8-byte aligned")
+ASSERT((linker_topStackFirst_C1 & 7)  == 0, "Stack user must be 8-byte aligned")
 
 /* IMPORTANT:												*/
 /* External memory, User (download application) and shared	*/
@@ -106,29 +107,29 @@ linker_stEXRAM				= 0;													/* 0x00000000: EXRAM, start of the external m
 linker_lnEXRAM				= (0);													/* Length of the external memory	  						*/
 
 linker_stUMemo				= (linker_stHeap + linker_lnHeap);						/* 0x20050000: UMemo, start of the user memory 				*/
-linker_lnUMemo				= (136K);												/* Length of the user memory	  							*/
+linker_lnUMemo				= config_sizeUserMemory;																/* 0x00022000: Length of the user memory	  				*/
 
 linker_stShare				= (linker_stUMemo + linker_lnUMemo);					/* 0x20072000: Share, start of the multicore shared memory	*/
-linker_lnShare				= (64K);												/* Length of the user multicore shared memory				*/
+linker_lnShare				= config_sizeShare;																		/* 0x00010000: Length of the user multicore shared memory	*/
 
 /* IMPORTANT:												*/
 /* The heap has to be maintained aligned					*/
 /* on a boundary of 8-bytes									*/
 
 linker_stHeap				= (linker_stPrgmData_u + linker_lnPrgmData_u);			/* 0x20030000: start of the heap							*/
-linker_lnHeap				= (128K);												/* Length of the heap										*/
+linker_lnHeap				= config_sizeHeap;																		/* 0x00020000: Length of the heap							*/
 
 /* IMPORTANT:												*/
 /* uKOS OS Flash + memory									*/
 
 linker_stPrgmCode			= rp_stINTFLASH;										/* 0x10000000: PrgmCode, start of the Flash					*/
-linker_lnPrgmCode			= rp_lnINTFLASH;										/* Length of the the Flash									*/
+linker_lnPrgmCode			= rp_lnINTFLASH;																		/* 0x00400000: Length of the the Flash						*/
 
-linker_stPrgmData_p			= rp_stSRAM;											/* 0x20000000: PrgmData_p, start of the RAM					*/
-linker_lnPrgmData_p			= (64K);												/* Length_p of the RAM										*/
+linker_stPrgmData_p			= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 + linker_sizeStackSystem_C1;		/* 0x20002000: start of protected program data				*/
+linker_lnPrgmData_p			= config_sizeData_p;																	/* 0x0000E000: (56K) Length of protected program data		*/
 
-linker_stPrgmData_u			= (linker_stPrgmData_p + linker_lnPrgmData_p);			/* 0x20010000: PrgmData_p, start of the RAM					*/
-linker_lnPrgmData_u			= (128K);												/* Length_p of the RAM										*/
+linker_stPrgmData_u			= linker_lowStackFirst_C0 + linker_sizeStackFirst_C0 + linker_sizeStackFirst_C1;		/* 0x20011000: start of unprotected program data			*/
+linker_lnPrgmData_u			= config_sizeData_u;																	/* 0x0001F000: (124K) Length of unprotected program data	*/
 
 /* IMPORTANT:												*/
 /* equates necessary for the arm_v8 MPU regions				*/
@@ -138,13 +139,16 @@ linker_ST_FLASH_INT_0		= rp_stINTFLASH;										/* 0x10000000: Privileged/User 
 linker_EN_FLASH_INT_0		= (rp_stINTFLASH + rp_lnINTFLASH - 1);					/* 0x103FFFFF: 4-M											*/
 
 linker_ST_RAM_INT_0_OS		= rp_stSRAM;											/* 0x20000000: Privileged RAM								*/
-linker_EN_RAM_INT_0_OS		= (rp_stSRAM + 64K - 1);								/* 0x2000FFFF: 64-K											*/
+linker_EN_RAM_INT_0_OS		= (rp_stSRAM + config_sizeData_p + linker_sizeStackSystem_C0
+								+ linker_sizeStackSystem_C1 - 1);													/* 0x2000FFFF: 64-K											*/
 
-linker_ST_RAM_INT_0			= linker_stPrgmData_u;									/* 0x20010000: Privileged/User RAM							*/
-linker_EN_RAM_INT_0			= (linker_stPrgmData_u + 128K + 128K + 136K - 1);		/* 0x20071FFF: 392-K										*/
+linker_ST_RAM_INT_0			= (linker_lowStackFirst_C0);															/* 0x20010000: Privileged/User RAM							*/
+local_sizeRAM_INT_0			= config_sizeData_u + linker_sizeStackFirst_C0 + linker_sizeStackFirst_C1
+								+ config_sizeHeap + config_sizeUserMemory;
+linker_EN_RAM_INT_0			= (linker_lowStackFirst_C0 + local_sizeRAM_INT_0 - 1);									/* 0x20071FFF: 392-K										*/
 
 linker_ST_RAM_INT_0_SHARED	= linker_stShare;										/* 0x20072000: Privileged/User RAM							*/
-linker_EN_RAM_INT_0_SHARED	= (linker_stShare + 64K - 1);							/* 0x20081FFF: 64-K											*/
+linker_EN_RAM_INT_0_SHARED	= (linker_stShare + config_sizeShare - 1);												/* 0x20081FFF: 64-K											*/
 
 linker_ST_PERIPH_SOC		= rp_stPERIPH_NS;										/* 0x40000000: Privileged PERIPHERALS						*/
 linker_EN_PERIPH_SOC		= (rp_stPERIPH_NS + 524288K - 1);						/* 0x5FFFFFFF: 2 x 256-M (_S & _NS)							*/

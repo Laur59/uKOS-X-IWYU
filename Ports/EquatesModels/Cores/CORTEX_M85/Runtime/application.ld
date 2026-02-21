@@ -37,8 +37,7 @@
 ;					|                 |
 ; _end				+-----------------+
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -151,4 +150,5 @@ SECTIONS {
 		*(.ARM.extab* .gnu.linkonce.armextab.*)
 		*(.ARM.exidx*)
 	}
+
 }

@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:	Edo. Franzi		The 2025-01-01	Correct for matching some MISRA recommendations
+; Author:   Edo. Franzi     The 2025-01-01
+; Modifs:   Edo. Franzi     The 2025-01-01  Correct for matching some MISRA recommendations
 ;
-; Project:	uKOS-X
-; Goal:		Some common routines used in many modules.
+; Project:  uKOS-X
+; Goal:     Some common routines used in many modules.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,170 +46,164 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
+#include    "tests.h"
 
-#define	CONFIG_DEFAULT_BAUDRATE		460800
+#define CONFIG_DEFAULT_BAUDRATE     460800
 
 /*
  * \brief cmns_init
  *
- * \param[in]	-
+ * \param[in]   -
  *
  * \note This function does not return a value (None).
  *
  */
-void	cmns_init(void) {
+void    cmns_init(void) {
 
-	RCC->APB1ENR2 |= RCC_APB1ENR2_LPUART1EN;
+    RCC->APB1ENR2 |= RCC_APB1ENR2_LPUART1EN;
 
-	LPUART1->BRR  = BAUDRATE_LP(KFREQUENCY_APB1, CONFIG_DEFAULT_BAUDRATE);
-	LPUART1->CR1  = (LPUART1_CR1_UE | LPUART1_CR1_TE | LPUART1_CR1_RE);
-	LPUART1->ISR &= (uint32_t)~LPUART1_ISR_RXFNE;
-	LPUART1->ISR &= (uint32_t)~LPUART1_ISR_TXFE;
+    LPUART1->BRR = BAUDRATE_LP(KFREQUENCY_APB1, CONFIG_DEFAULT_BAUDRATE);
+    LPUART1->CR1 = (LPUART1_CR1_UE | LPUART1_CR1_TE | LPUART1_CR1_RE);
 
-	RCC->APB1ENR1 |= RCC_APB1ENR1_USART2EN;
+    RCC->APB1ENR1 |= RCC_APB1ENR1_USART2EN;
 
-	USART2->BRR  = BAUDRATE(KFREQUENCY_APB1, CONFIG_DEFAULT_BAUDRATE);
-	USART2->CR1  = (USART2_CR1_UE | USART2_CR1_TE | USART2_CR1_RE);
-	USART2->ISR &= (uint32_t)~USART2_ISR_RXFNE;
-	USART2->ISR &= (uint32_t)~USART2_ISR_TXFE;
+    USART2->BRR = BAUDRATE(KFREQUENCY_APB1, CONFIG_DEFAULT_BAUDRATE);
+    USART2->CR1 = (USART2_CR1_UE | USART2_CR1_TE | USART2_CR1_RE);
 
-	RCC->APB1ENR1 |= RCC_APB1ENR1_USART3EN;
+    RCC->APB1ENR1 |= RCC_APB1ENR1_USART3EN;
 
-	USART3->BRR  = BAUDRATE(KFREQUENCY_APB1, CONFIG_DEFAULT_BAUDRATE);
-	USART3->CR1  = (USART3_CR1_UE | USART3_CR1_TE | USART3_CR1_RE);
-	USART3->ISR &= (uint32_t)~USART3_ISR_RXFNE;
-	USART3->ISR &= (uint32_t)~USART3_ISR_TXFE;
+    USART3->BRR = BAUDRATE(KFREQUENCY_APB1, CONFIG_DEFAULT_BAUDRATE);
+    USART3->CR1 = (USART3_CR1_UE | USART3_CR1_TE | USART3_CR1_RE);
 }
 
 /*
  * \brief cmns_send
  *
- * \param[in]	serialManager	Serial Communication Manager
- * \param[in]	*ascii			Ptr on the ascii buffer
+ * \param[in]   serialManager   Serial Communication Manager
+ * \param[in]   *ascii          Ptr on the ascii buffer
  *
  * \note This function does not return a value (None).
  *
  */
-void	cmns_send(serialManager_t serialManager, const char_t *ascii) {
-			uint8_t		data;
-	const	char_t		*wkAscii = ascii;
+void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
+            uint8_t     data;
+    const   char_t      *wkAscii = ascii;
 
-	if (ascii == nullptr) { return; }
+    if (ascii == nullptr) { return; }
 
-	switch (serialManager) {
+    switch (serialManager) {
 
 // UART 0 device
 
-		default:
-		case KURT0: {
-			while (true) {
-				while ((LPUART1->ISR & LPUART1_ISR_TXFE) == 0) { ; }
+        default:
+        case KURT0: {
+            while (true) {
+                while ((LPUART1->ISR & LPUART1_ISR_TXFE) == 0) { ; }
 
-				data = (uint8_t)*wkAscii;
-				wkAscii++;
-				if (data == '\0') {
-					return;
-				}
+                data = (uint8_t)*wkAscii;
+                wkAscii++;
+                if (data == '\0') {
+                    return;
+                }
 
-				LPUART1->TDR = (uint16_t)data;
-			}
-		}
+                LPUART1->TDR = (uint16_t)data;
+            }
+        }
 
 // UART 1 device
 
-		case KURT1: {
-			while (true) {
-				while ((USART2->ISR & USART2_ISR_TXFE) == 0) { ; }
+        case KURT1: {
+            while (true) {
+                while ((USART2->ISR & USART2_ISR_TXFE) == 0) { ; }
 
-				data = (uint8_t)*wkAscii;
-				wkAscii++;
-				if (data == '\0') {
-					return;
-				}
+                data = (uint8_t)*wkAscii;
+                wkAscii++;
+                if (data == '\0') {
+                    return;
+                }
 
-				USART2->TDR = (uint16_t)data;
-			}
-		}
+                USART2->TDR = (uint16_t)data;
+            }
+        }
 
 // UART 2 device
 
-		case KURT2: {
-			while (true) {
-				while ((USART3->ISR & USART3_ISR_TXFE) == 0) { ; }
+        case KURT2: {
+            while (true) {
+                while ((USART3->ISR & USART3_ISR_TXFE) == 0) { ; }
 
-				data = (uint8_t)*wkAscii;
-				wkAscii++;
-				if (data == '\0') {
-					return;
-				}
+                data = (uint8_t)*wkAscii;
+                wkAscii++;
+                if (data == '\0') {
+                    return;
+                }
 
-				USART3->TDR = (uint16_t)data;
-			}
-		}
-	}
+                USART3->TDR = (uint16_t)data;
+            }
+        }
+    }
 }
 
 /*
  * \brief cmns_receive
  *
- * \param[in]	serialManager	Serial Communication Manager
- * \param[out]	*data			Data received
+ * \param[in]   serialManager   Serial Communication Manager
+ * \param[out]  *data           Data received
  *
  * \note This function does not return a value (None).
  *
  */
-void	cmns_receive(serialManager_t serialManager, char_t *data) {
+void    cmns_receive(serialManager_t serialManager, char_t *data) {
 
-	switch (serialManager) {
+    switch (serialManager) {
 
 // UART 0 device
 
-		default:
-		case KURT0: {
-			while ((LPUART1->ISR & LPUART1_ISR_RXFNE) == 0) { ; }
+        default:
+        case KURT0: {
+            while ((LPUART1->ISR & LPUART1_ISR_RXFNE) == 0) { ; }
 
-			*data = (uint8_t)LPUART1->RDR;
-			break;
-		}
+            *data = (uint8_t)LPUART1->RDR;
+            break;
+        }
 
 // UART 1 device
 
-		case KURT1: {
-			while ((USART2->ISR & USART2_ISR_RXFNE) == 0) { ; }
+        case KURT1: {
+            while ((USART2->ISR & USART2_ISR_RXFNE) == 0) { ; }
 
-			*data = (uint8_t)USART2->RDR;
-			break;
-		}
+            *data = (uint8_t)USART2->RDR;
+            break;
+        }
 
 // UART 2 device
 
-		case KURT2: {
-			while ((USART3->ISR & USART3_ISR_RXFNE) == 0) { ; }
+        case KURT2: {
+            while ((USART3->ISR & USART3_ISR_RXFNE) == 0) { ; }
 
-			*data = (uint8_t)USART3->RDR;
-			break;
-		}
-	}
+            *data = (uint8_t)USART3->RDR;
+            break;
+        }
+    }
 }
 
 /*
  * \brief cmns_wait
  *
- * \param[in]	us		Delay in us
+ * \param[in]   us      Delay in us
  *
  * \note This function does not return a value (None).
  *
  */
-void	cmns_wait(uint32_t us) {
-	uint32_t	wkUs = us, time;
+void    cmns_wait(uint32_t us) {
+    uint32_t    wkUs = us, time;
 
-	#if (defined(CACHE_S))
-	wkUs = (wkUs / 7u) * (KFREQUENCY_CORE / 1000000u);
+    #if (defined(CACHE_S))
+    wkUs = (wkUs / 7u) * (KFREQUENCY_CORE / 1000000u);
 
-	#else
-	wkUs = (wkUs / 12u) * (KFREQUENCY_CORE / 1000000u);
-	#endif
+    #else
+    wkUs = (wkUs / 12u) * (KFREQUENCY_CORE / 1000000u);
+    #endif
 
-	for (time = 0; time < wkUs; time++) { NOP; }
+    for (time = 0; time < wkUs; time++) { NOP; }
 }

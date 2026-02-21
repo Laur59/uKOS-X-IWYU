@@ -8,12 +8,12 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ============
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		mpyt library.
-;			uKOS-X interface for MicroPython (www.MicroPython.com).
+; Project:  uKOS-X
+; Goal:     mpyt library.
+;           uKOS-X interface for MicroPython (www.MicroPython.com).
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -52,42 +52,42 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 // Needed to support dprintf
 
-#define		_POSIX_C_SOURCE		200809L
+#define     _POSIX_C_SOURCE     200809L
 
-#include	<stdio.h>
-#include	<stdlib.h>
-#include	<string.h>
+#include    <stdio.h>
+#include    <stdlib.h>
+#include    <string.h>
 
-#include	"macros.h"
-#include	"types.h"
-#include	"modules.h"
-#include	"os_errors.h"
-#include	"ip.h"
-#include	"crt0.h"
-#include	"microPython.h"
-#include	"serial/serial.h"
-#include	"text/text.h"
-#include	"kern/kern.h"
-#include	"py/nlr.h"
-#include	"py/compile.h"
-#include	"py/runtime.h"
-#include	"py/repl.h"
-#include	"py/gc.h"
-#include	"py/mperrno.h"
-#include	"extmod/vfs.h"
-#include	"shared/runtime/pyexec.h"
+#include    "macros.h"
+#include    "types.h"
+#include    "modules.h"
+#include    "os_errors.h"
+#include    "ip.h"
+#include    "crt0.h"
+#include    "microPython.h"
+#include    "serial/serial.h"
+#include    "text/text.h"
+#include    "kern/kern.h"
+#include    "py/nlr.h"
+#include    "py/compile.h"
+#include    "py/runtime.h"
+#include    "py/repl.h"
+#include    "py/gc.h"
+#include    "py/mperrno.h"
+#include    "extmod/vfs.h"
+#include    "shared/runtime/pyexec.h"
 
 // Library specific
 // ================
 
-#define	KSZ_INPUT		256U		// Size of the MicroPython input buffer
+#define KSZ_INPUT       256U        // Size of the MicroPython input buffer
 
 STRG_LOC_CONST(aStrTerminated[]) = "quit";
 
 // Prototypes
 
-static	void	local_init(void);
-static	void	local_commandLine(const char_t *src, mp_parse_input_kind_t input_kind);
+static  void    local_init(void);
+static  void    local_commandLine(const char_t *src, mp_parse_input_kind_t input_kind);
 
 /*
  * \brief Configure the microPython manager
@@ -107,24 +107,24 @@ static	void	local_commandLine(const char_t *src, mp_parse_input_kind_t input_kin
  *    status = microPython_configure(&configure);
  * \endcode
  *
- * \param[in]	*configure				Ptr on the configuration buffer
- * \return		KERR_MYCROPYTHON_NOERR	OK
+ * \param[in]   *configure              Ptr on the configuration buffer
+ * \return      KERR_MYCROPYTHON_NOERR  OK
  *
  */
-int32_t	microPython_configure(microPythonCnf_t *configure) {
+int32_t microPython_configure(microPythonCnf_t *configure) {
 
-	local_init();
+    local_init();
 
-	(void)dprintf(KSYST, "\nuKOS interface for MicroPython (www.MicroPython.com)\n");
-	(void)dprintf(KSYST, "%s\n", UKOS_PACK_NAME);
-	(void)dprintf(KSYST, "Built with %s and %s\n\n", UKOS_INT_BUILD, UKOS_FLOAT_BUILD);
+    (void)dprintf(KSYST, "\nuKOS interface for MicroPython (www.MicroPython.com)\n");
+    (void)dprintf(KSYST, "%s\n", UKOS_PACK_NAME);
+    (void)dprintf(KSYST, "Built with %s and %s\n\n", UKOS_INT_BUILD, UKOS_FLOAT_BUILD);
 
 // Initialise the MPTY session
 
-	gc_init(configure->oMemory, (uint8_t *)((uintptr_t)configure->oMemory + (uintptr_t)configure->oSize));
-	mp_init();
+    gc_init(configure->oMemory, (uint8_t *)((uintptr_t)configure->oMemory + (uintptr_t)configure->oSize));
+    mp_init();
 
-	return (KERR_MICROPYTHON_NOERR);
+    return (KERR_MICROPYTHON_NOERR);
 }
 
 /*
@@ -141,55 +141,55 @@ int32_t	microPython_configure(microPythonCnf_t *configure) {
  *    status = microPython_exchangeData(myRoutine);
  * \endcode
  *
- * \param[in]	*pyProgram				nullptr = Command line interpreter mode
- * \param[in]	-						Ptr on the ascii script / program
- * \return		KERR_MICROPYTHON_NOERR	OK
+ * \param[in]   *pyProgram              nullptr = Command line interpreter mode
+ * \param[in]   -                       Ptr on the ascii script / program
+ * \return      KERR_MICROPYTHON_NOERR  OK
  *
  */
-int32_t	microPython_exchangeData(const char_t *pyProgram) {
-	char_t				ascii[KSZ_INPUT + 1];
-	uint32_t			i, size;
-	serialManager_t		serialManager;
-	bool				terminate = false;
-	proc_t				*process;
+int32_t microPython_exchangeData(const char_t *pyProgram) {
+    char_t              ascii[KSZ_INPUT + 1];
+    uint32_t            i, size;
+    serialManager_t     serialManager;
+    bool                terminate = false;
+    proc_t              *process;
 
-	local_init();
+    local_init();
 
-	kern_getProcessRun(&process);
-	kern_getSerialForProcess(process, &serialManager);
+    kern_getProcessRun(&process);
+    kern_getSerialForProcess(process, &serialManager);
 
-	if (pyProgram == nullptr) {
+    if (pyProgram == nullptr) {
 
 // Command line interpreter
 // ------------------------
 
-		while (terminate == false) {
-			(void)dprintf(KSYST, ">>> ");
-			text_waitString(serialManager, ascii, (KSZ_INPUT - 4));
+        while (terminate == false) {
+            (void)dprintf(KSYST, ">>> ");
+            text_waitString(serialManager, ascii, (KSZ_INPUT - 4));
 
-			size = strlen(ascii);
-			ascii[size - 1] = '\r'; ascii[size - 0] = '\n'; ascii[size + 1] = '\0';
+            size = strlen(ascii);
+            ascii[size] = '\r'; ascii[size + 1] = '\n'; ascii[size + 2] = '\0';
 
 // Check the "quit"
 
-			terminate = true;
-			for (i = 0U; i < (uint32_t)(size - 1U); i++) {
-				if (ascii[i] != aStrTerminated[i]) {
-					terminate = false;
-					local_commandLine(ascii, MP_PARSE_SINGLE_INPUT);
-					break;
-				}
-			}
-		}
-		mp_deinit();
-		return (KERR_MICROPYTHON_NOERR);
-	}
+            terminate = true;
+            for (i = 0U; i < (uint32_t)(size - 1U); i++) {
+                if (ascii[i] != aStrTerminated[i]) {
+                    terminate = false;
+                    local_commandLine(ascii, MP_PARSE_SINGLE_INPUT);
+                    break;
+                }
+            }
+        }
+        mp_deinit();
+        return (KERR_MICROPYTHON_NOERR);
+    }
 
 // Script / program interpreter
 // ----------------------------
 
-	local_commandLine(pyProgram, MP_PARSE_FILE_INPUT);
-	return (KERR_MICROPYTHON_NOERR);
+    local_commandLine(pyProgram, MP_PARSE_FILE_INPUT);
+    return (KERR_MICROPYTHON_NOERR);
 }
 
 // Local routines
@@ -202,85 +202,85 @@ int32_t	microPython_exchangeData(const char_t *pyProgram) {
  *   has to be called at least once
  *
  */
-static	void	local_init(void) {
+static  void    local_init(void) {
 
-	kern_setPrivilegeMode(KPROC_PRIVILEGED);
+    kern_setPrivilegeMode(KPROC_PRIVILEGED);
 }
 
 /*
  * \brief local_commandLine
  *
- * \param[in]	*ascii		Ptr on the input line
- * \param[in]	input_kind	Input kind (MP_PARSE_SINGLE_INPUT, MP_PARSE_FILE_INPUT)
+ * \param[in]   *ascii      Ptr on the input line
+ * \param[in]   input_kind  Input kind (MP_PARSE_SINGLE_INPUT, MP_PARSE_FILE_INPUT)
  *
  * \note This function does not return a value (None).
  *
  */
-static	void	local_commandLine(const char_t *ascii, mp_parse_input_kind_t input_kind) {
-	nlr_buf_t		nlr;
-	mp_lexer_t		*lex;
-	qstr			sourceName;
-	mp_parse_tree_t	parseTree;
-	mp_obj_t		moduleFun;
+static  void    local_commandLine(const char_t *ascii, mp_parse_input_kind_t input_kind) {
+    nlr_buf_t       nlr;
+    mp_lexer_t      *lex;
+    qstr            sourceName;
+    mp_parse_tree_t parseTree;
+    mp_obj_t        moduleFun;
 
-	if (nlr_push(&nlr) == 0) {
-		lex = mp_lexer_new_from_str_len(MP_QSTR__lt_stdin_gt_, ascii, strlen(ascii), 0);
-		sourceName = lex->source_name;
-		parseTree = mp_parse(lex, input_kind);
-		moduleFun = mp_compile(&parseTree, sourceName, true);
-		mp_call_function_0(moduleFun);
-		nlr_pop();
-	}
-	else {
-		mp_obj_print_exception(&mp_plat_print, (mp_obj_t)nlr.ret_val);
-	}
+    if (nlr_push(&nlr) == 0) {
+        lex = mp_lexer_new_from_str_len(MP_QSTR__lt_stdin_gt_, ascii, strlen(ascii), 0);
+        sourceName = lex->source_name;
+        parseTree = mp_parse(lex, input_kind);
+        moduleFun = mp_compile(&parseTree, sourceName, true);
+        mp_call_function_0(moduleFun);
+        nlr_pop();
+    }
+    else {
+        mp_obj_print_exception(&mp_plat_print, (mp_obj_t)nlr.ret_val);
+    }
 }
 
 /*
  * \brief mp_hal_stdout_tx_strn
  *
- * \param[in]	*ascii	Ptr on the input line
- * \param[in]	size	Size f the ascii
+ * \param[in]   *ascii  Ptr on the input line
+ * \param[in]   size    Size f the ascii
  *
  * \note This function does not return a value (None).
  *
  */
-void	mp_hal_stdout_tx_strn(const uint8_t *ascii, mp_uint_t size) {
-	int16_t				i;
-	serialManager_t		serialManager;
-	proc_t				*process;
+void    mp_hal_stdout_tx_strn(const uint8_t *ascii, mp_uint_t size) {
+    int16_t             i;
+    serialManager_t     serialManager;
+    proc_t              *process;
 
-	kern_getProcessRun(&process);
-	kern_getSerialForProcess(process, &serialManager);
+    kern_getProcessRun(&process);
+    kern_getSerialForProcess(process, &serialManager);
 
-	for (i = 0U; i < size; i++) {
-		(void)dprintf(serialManager, "%c", ascii[i]);
-	}
+    for (i = 0U; i < size; i++) {
+        (void)dprintf(serialManager, "%c", ascii[i]);
+    }
 }
 
 /*
  * \brief mp_hal_stdin_rx_chr
  *
- * \param[in]	-
- * \return		char	The read char
+ * \param[in]   -
+ * \return      char    The read char
  *
  */
-char_t	mp_hal_stdin_rx_chr(void) {
-	uint8_t				byte;
-	int32_t				status;
-	uint32_t			size;
-	serialManager_t		serialManager;
-	proc_t				*process;
+char_t  mp_hal_stdin_rx_chr(void) {
+    uint8_t             byte;
+    int32_t             status;
+    uint32_t            size;
+    serialManager_t     serialManager;
+    proc_t              *process;
 
-	kern_getProcessRun(&process);
-	kern_getSerialForProcess(process, &serialManager);
+    kern_getProcessRun(&process);
+    kern_getSerialForProcess(process, &serialManager);
 
-	do {
-		kern_suspendProcess(1U);
-		size = 1U;
-		status = serial_read(serialManager, &byte, &size);
-	} while ((status != KERR_SERIAL_NOERR) && (size != 1U));
-	return ((char_t)byte);
+    do {
+        kern_suspendProcess(1U);
+        size = 1U;
+        status = serial_read(serialManager, &byte, &size);
+    } while ((status != KERR_SERIAL_NOERR) && (size != 1U));
+    return ((char_t)byte);
 }
 
 // Needed by the package
@@ -289,80 +289,80 @@ char_t	mp_hal_stdin_rx_chr(void) {
 // !!! Not clear how the garbage collector works !!!
 // !!! Just follow some implementation examples  !!!
 
-void	gc_collect(void) {
-	uintptr_t	*stack;
-	uintptr_t	stackEnd, usedStack, stackSize;
-	proc_t		*process;
+void    gc_collect(void) {
+    uintptr_t   *stack;
+    uintptr_t   stackEnd, usedStack, stackSize;
+    proc_t      *process;
 
-	kern_getProcessRun(&process);
+    kern_getProcessRun(&process);
 
 // Stack pointer
 // Stack size in bytes = oStackSize * 4
 // Stack end  = stack start + Stack size
 // Used stack = (Stack end - stack) / 4
 
-	stack	  = process->oSpecification.oStack;
-	stackSize = ((uintptr_t)process->oSpecification.oStackSize * 4U);
-	stackEnd  = ((uintptr_t)process->oSpecification.oStackStart + (uintptr_t)stackSize);
-	usedStack = (stackEnd - (uintptr_t)stack) / sizeof(uintptr_t);
+    stack     = process->oSpecification.oStack;
+    stackSize = ((uintptr_t)process->oSpecification.oStackSize * 4U);
+    stackEnd  = ((uintptr_t)process->oSpecification.oStackStart + (uintptr_t)stackSize);
+    usedStack = (stackEnd - (uintptr_t)stack) / sizeof(uintptr_t);
 
-	gc_collect_start();
+    gc_collect_start();
 
 // Trace the stack, including the registers (since they live on the stack in this function)
 // Not sure what is the purpose of this function
 
-	gc_collect_root((void *)stack, usedStack);
-	gc_collect_end();
-	gc_dump_info(&mp_plat_print);
+    gc_collect_root((void *)stack, usedStack);
+    gc_collect_end();
+    gc_dump_info(&mp_plat_print);
 }
 
-mp_lexer_t	*mp_lexer_new_from_file(qstr filename) {
+mp_lexer_t  *mp_lexer_new_from_file(qstr filename) {
 
-	UNUSED(filename);
+    UNUSED(filename);
 
-	mp_raise_OSError(MP_ENOENT);
+    mp_raise_OSError(MP_ENOENT);
 }
 
-mp_import_stat_t	mp_import_stat(const char_t *path) {
+mp_import_stat_t    mp_import_stat(const char_t *path) {
 
-	UNUSED(path);
+    UNUSED(path);
 
-	return (MP_IMPORT_STAT_NO_EXIST);
+    return (MP_IMPORT_STAT_NO_EXIST);
 }
 
-mp_obj_t	mp_builtin_open(uint n_args, const mp_obj_t *args, mp_map_t *kwargs) {
+mp_obj_t    mp_builtin_open(uint n_args, const mp_obj_t *args, mp_map_t *kwargs) {
 
-	UNUSED(n_args);
-	UNUSED(args);
-	UNUSED(kwargs);
+    UNUSED(n_args);
+    UNUSED(args);
+    UNUSED(kwargs);
 
-	return (mp_const_none);
+    return (mp_const_none);
 }
 MP_DEFINE_CONST_FUN_OBJ_KW(mp_builtin_open_obj, 1, mp_builtin_open);
 
 void NORETURN nlr_jump_fail(void *val) {
 
-	UNUSED(val);
+    UNUSED(val);
 
-	(void)dprintf(KSYST, "MicroPython fatal error\n");
-	(void)dprintf(KSYST, "Leave the MicroPython process!\n");
-	exit(EXIT_OS_FAILURE);
+    (void)dprintf(KSYST, "MicroPython fatal error\n");
+    (void)dprintf(KSYST, "Leave the MicroPython process!\n");
+    exit(EXIT_OS_FAILURE);
 }
 
 void NORETURN __fatal_error(const char_t *msg) {
 
-	(void)dprintf(KSYST, "MicroPython fatal error\n");
-	(void)dprintf(KSYST, "%s\n", msg);
-	(void)dprintf(KSYST, "Leave the MicroPython process!\n");
-	exit(EXIT_OS_FAILURE);
+    (void)dprintf(KSYST, "MicroPython fatal error\n");
+    (void)dprintf(KSYST, "%s\n", msg);
+    (void)dprintf(KSYST, "Leave the MicroPython process!\n");
+    exit(EXIT_OS_FAILURE);
 }
 
 #ifndef NDEBUG
-void	MP_WEAK __assert_func(const char_t *file, int line, const char_t *func, const char_t *expr) {
+void    MP_WEAK __assert_func(const char_t *file, int line, const char_t *func, const char_t *expr) {
 
-	UNUSED(func);
+    UNUSED(func);
 
-	(void)dprintf(KSYST, "Assertion '%s' failed, at file %s:%d\n", expr, file, line);
-	__fatal_error("Assertion failed");
+    (void)dprintf(KSYST, "Assertion '%s' failed, at file %s:%d\n", expr, file, line);
+    __fatal_error("Assertion failed");
 }
 #endif

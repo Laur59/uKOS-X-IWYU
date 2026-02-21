@@ -48,11 +48,11 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;------------------------------------------------------------------------
 */
 
-#include	<stdint.h>
+#include    <stdint.h>
 
-#include	"clockTree.h"
-#include	"soc_reg.h"
-#include	"urt1/urt1.h"
+#include    "clockTree.h"
+#include    "soc_reg.h"
+#include    "urt1/urt1.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
@@ -104,7 +104,7 @@ static  bool    cb_CTSCheck(void) {
 /*
  * \brief cb_init
  *
- * - Specific initializations          __
+ * - Specific initialisations          __
  *   i.e the hardware CTS interruption   \__
  *
  */

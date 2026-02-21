@@ -12,7 +12,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; Project: uKOS-X
 ;
 ; Purpose:
-;   startUp process; execute some important initializations
+;   startUp process; execute some important initialisations
 ;   before jumping to the selected function.
 ;
 ;-----

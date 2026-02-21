@@ -60,7 +60,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #include    <stdint.h>
 
-#include    "kern/kern.h"   // IWYU pragma: keep (workaround app bug)
+#include    "kern_types.h"  // IWYU pragma: keep
 
 /*!
  * \addtogroup Lib_kernels

@@ -1,6 +1,7 @@
 /*
 SPDX-License-Identifier: MIT
 SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 */
 
 /*
@@ -8,9 +9,10 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =======
 
 ;------------------------------------------------------------------------
-; Project:	uKOS-X
-; Goal:		Linker description for the uKOS-X system.
-;			Privileged only support
+; Project: uKOS-X
+; Purpose:
+;    Linker description for the uKOS-X system.
+;    Privileged only support
 ;
 ;                       CODE
 ; linker_stTEXT			+-----------------+
@@ -31,39 +33,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;														| COMMON          |
 ;														|                 | linker_enBSS
 ;														+-----------------+
-;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
-;                                              __ ______  _____
-;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
-;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
-;   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
-;                                     \__,_/_/ |_\____//____/
-;   edo.franzi@ukos.ch
-;
-;   Description: Lightweight, real-time multitasking operating
-;   system for embedded microcontroller and DSP-based systems.
-;
-;   Permission is hereby granted, free of charge, to any person
-;   obtaining a copy of this software and associated documentation
-;   files (the "Software"), to deal in the Software without restriction,
-;   including without limitation the rights to use, copy, modify,
-;   merge, publish, distribute, sublicense, and/or sell copies of the
-;   Software, and to permit persons to whom the Software is furnished
-;   to do so, subject to the following conditions:
-;
-;   The above copyright notice and this permission notice shall be
-;   included in all copies or substantial portions of the Software.
-;
-;   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-;   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-;   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-;   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
-;   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-;   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-;   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-;   SOFTWARE.
-;
 ;------------------------------------------------------------------------
 */
 
@@ -86,25 +55,23 @@ INCLUDE		STM32H743xI.ld
 /*			Program Data		0x38001800					*/
 /*			58K												*/
 
-config_sizeStacks			= (6k);
-config_sizeData				= (58k);
-config_sizeHeap				= stm_lnSRAM1 + stm_lnSRAM2 + stm_lnSRAM3;
+linker_sizeStackSystem_C0	= (4K);													/* Length of the System stack  								*/
+linker_sizeStackFirst_C0	= (2K);													/* Length of the First stack  								*/
 
 /* IMPORTANT:												*/
 /* all the stacks have to be maintained aligned				*/
 /* on a boundary of 8-bytes									*/
 
-linker_sizeStackSystem_C0	= (4K);															/* Length of the System stack  								*/
-linker_sizeStackFirst_C0	= (2K);															/* Length of the First stack  								*/
-linker_lowStackFirst_C0		= stm_stSRAM4;													/* 0x38000000:												*/
+linker_lowStackFirst_C0		= stm_stSRAM4;											/* 0x38000000: start of the First stack						*/
 linker_topStackFirst_C0		= linker_lowStackFirst_C0 + linker_sizeStackFirst_C0 - 8;
-linker_lowStackSystem_C0	= linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;			/* 0x38000800:												*/
+
+linker_lowStackSystem_C0	= linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;	/* 0x38000800: start of the System stack					*/
 linker_topStackSystem_C0	= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 - 8;
+
 ASSERT((linker_lowStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
 ASSERT((linker_topStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
 ASSERT((linker_lowStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
 ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
-ASSERT((linker_sizeStackSystem_C0 + linker_sizeStackFirst_C0)  == config_sizeStacks, "Error in size of stacks")
 
 /* IMPORTANT:												*/
 /* External memory, User (download application) and shared	*/
@@ -120,7 +87,8 @@ linker_lnUMemo				= stm_lnAXISRAM;												/* Length of the user memory	  			
 /* on a boundary of 8-bytes									*/
 
 linker_stHeap				= stm_stSRAM1;													/* 0x30000000: start of the heap							*/
-linker_lnHeap				= config_sizeHeap;												/* Length of the heap										*/
+linker_lnHeap				= stm_lnSRAM123;										/* Length of the heap										*/
+
 
 /* IMPORTANT:												*/
 /* uKOS OS Flash + memory									*/
@@ -128,8 +96,9 @@ linker_lnHeap				= config_sizeHeap;												/* Length of the heap										*/
 linker_stPrgmCode			= stm_stINTFLASH;												/* 0x08000000: PrgmCode, start of the Flash					*/
 linker_lnPrgmCode			= stm_lnINTFLASH;												/* Length of the the Flash									*/
 
-linker_stPrgmData			= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;			/* 0x38001800: PrgmData, start of the RAM					*/
-linker_lnPrgmData			= config_sizeData;												/* Length of the RAM										*/
+linker_stPrgmData			= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;	/* 0x38001800: start of program data						*/
+linker_lnPrgmData			= stm_lnSRAM4 - linker_sizeStackSystem_C0
+								- linker_sizeStackFirst_C0;							/* Length of program data									*/
 
 /* IMPORTANT:												*/
 /* equates necessary for the arm_v7 MPU regions				*/

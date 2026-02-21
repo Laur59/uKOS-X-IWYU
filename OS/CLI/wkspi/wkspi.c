@@ -53,6 +53,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 #include    <stdio.h>
 #include    <stdlib.h>
 
+#include    "kern/kern.h"
 #include    "macros.h"
 #include    "macros_core.h"
 #include    "modules.h"

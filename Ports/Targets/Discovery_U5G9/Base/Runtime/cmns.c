@@ -99,10 +99,8 @@ void    cmns_init(void) {
 
     REG(RCC)->APB2ENR |= RCC_APB2ENR_USART1EN;
 
-    REG(USART1)->BRR  = BAUDRATE(KFREQUENCY_APB2, KSERIAL_DEFAULT_BAUDRATE);
-    REG(USART1)->CR1  = (USART_CR1_UE | USART_CR1_TE | USART_CR1_RE);
-    REG(USART1)->ISR &= (uint32_t)~USART_ISR_RXFNE;
-    REG(USART1)->ISR &= (uint32_t)~USART_ISR_TXFNF;
+    REG(USART1)->BRR = BAUDRATE(KFREQUENCY_APB2, KSERIAL_DEFAULT_BAUDRATE);
+    REG(USART1)->CR1 = (USART_CR1_UE | USART_CR1_TE | USART_CR1_RE);
 }
 
 /*
@@ -127,7 +125,7 @@ void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
         default:
         case KURT0: {
             while (true) {
-                while ((REG(USART1)->ISR & USART_ISR_TXFNF) == 0U) { }
+                while ((REG(USART1)->ISR & USART_ISR_TXFNF) == 0U) { ; }
 
                 data = (uint8_t)*wkAscii;
                 wkAscii++;
@@ -158,7 +156,7 @@ void    cmns_receive(serialManager_t serialManager, char_t *data) {
 
         default:
         case KURT0: {
-            while ((REG(USART1)->ISR & USART_ISR_RXFNE) == 0U) { }
+            while ((REG(USART1)->ISR & USART_ISR_RXFNE) == 0U) { ; }
 
             *data = (uint8_t)REG(USART1)->RDR;
             break;

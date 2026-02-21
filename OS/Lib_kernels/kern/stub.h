@@ -62,8 +62,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #pragma once
 
-// IWYU pragma: private, include "kern/kern.h"
-
 /*!
  * \addtogroup Lib_kernels
  */
@@ -81,7 +79,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #include    <stdint.h>
 
-#include    "kern/kern.h"
+#include    "kern_types.h"  // IWYU pragma: keep
 
 // Modifiable in the makefile: use the PSPLIM & MSPLIM to check the stack overflow (implemented only in armv8.1)
 
