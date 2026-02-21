@@ -99,18 +99,14 @@ void    cmns_init(void) {
 
     RCC->APB1LENR |= RCC_APB1LENR_USART3EN;
 
-    USART3->BRR  = BAUDRATE((uint32_t)KFREQUENCY_APB1, KSERIAL_DEFAULT_BAUDRATE);
-    USART3->CR1  = (USART_CR1_UE | USART_CR1_TE | USART_CR1_RE);
-    USART3->ISR &= (uint32_t)~USART_ISR_RXNE;
-    USART3->ISR &= (uint32_t)~USART_ISR_TXE;
+    USART3->BRR = BAUDRATE(KFREQUENCY_APB1, KSERIAL_DEFAULT_BAUDRATE);
+    USART3->CR1 = (USART_CR1_UE | USART_CR1_TE | USART_CR1_RE);
 
     #ifdef CONFIG_MAN_URT1_S
     RCC->APB1LENR |= RCC_APB1LENR_USART2EN;
 
-    USART2->BRR  = BAUDRATE((uint32_t)KFREQUENCY_APB1, KSERIAL_DEFAULT_BAUDRATE);
-    USART2->CR1  = (USART_CR1_UE | USART_CR1_TE | USART_CR1_RE);
-    USART2->ISR &= (uint32_t)~USART_ISR_RXNE;
-    USART2->ISR &= (uint32_t)~USART_ISR_TXE;
+    USART2->BRR = BAUDRATE(KFREQUENCY_APB1, KSERIAL_DEFAULT_BAUDRATE);
+    USART2->CR1 = (USART_CR1_UE | USART_CR1_TE | USART_CR1_RE);
     #endif
 }
 
@@ -136,7 +132,7 @@ void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
         default:
         case KURT0: {
             while (true) {
-                while ((USART3->ISR & USART_ISR_TXE) == 0U) { }
+                while ((USART3->ISR & USART_ISR_TXE) == 0U) { ; }
 
                 data = (uint8_t)*wkAscii;
                 wkAscii++;
@@ -153,7 +149,7 @@ void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
         #ifdef CONFIG_MAN_URT1_S
         case KURT1: {
             while (true) {
-                while ((USART2->ISR & USART_ISR_TXE) == 0U) { }
+                while ((USART2->ISR & USART_ISR_TXE) == 0U) { ; }
 
                 data = (uint8_t)*wkAscii;
                 wkAscii++;
@@ -185,7 +181,7 @@ void    cmns_receive(serialManager_t serialManager, char_t *data) {
 
         default:
         case KURT0: {
-            while ((USART3->ISR & USART_ISR_RXNE) == 0) { }
+            while ((USART3->ISR & USART_ISR_RXNE) == 0) { ; }
 
             *data = (uint8_t)USART3->RDR;
             break;
@@ -195,7 +191,7 @@ void    cmns_receive(serialManager_t serialManager, char_t *data) {
 
         #ifdef CONFIG_MAN_URT1_S
         case KURT1: {
-            while ((USART2->ISR & USART_ISR_RXNE) == 0) { }
+            while ((USART2->ISR & USART_ISR_RXNE) == 0) { ; }
 
             *data = (uint8_t)USART2->RDR;
             break;

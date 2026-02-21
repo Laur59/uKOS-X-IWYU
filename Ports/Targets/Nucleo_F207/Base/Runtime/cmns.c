@@ -99,10 +99,8 @@ void    cmns_init(void) {
 
     RCC->APB1ENR |= RCC_APB1ENR_USART3EN;
 
-    USART3->BRR  = BAUDRATE(KFREQUENCY_APB1, KSERIAL_DEFAULT_BAUDRATE);
-    USART3->CR1  = (USART3_CR1_UE | USART3_CR1_TE | USART3_CR1_RE);
-    USART3->SR  &= (uint32_t)~USART3_SR_RXNE;
-    USART3->SR  &= (uint32_t)~USART3_SR_TXE;
+    USART3->BRR = BAUDRATE(KFREQUENCY_APB1, KSERIAL_DEFAULT_BAUDRATE);
+    USART3->CR1 = (USART3_CR1_UE | USART3_CR1_TE | USART3_CR1_RE);
 }
 
 /*
@@ -127,7 +125,7 @@ void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
         default:
         case KURT0: {
             while (true) {
-                while ((USART3->SR & USART3_SR_TXE) == 0U) { }
+                while ((USART3->SR & USART3_SR_TXE) == 0U) { ; }
 
                 data = (uint8_t)*wkAscii;
                 wkAscii++;
@@ -158,7 +156,7 @@ void    cmns_receive(serialManager_t serialManager, char_t *data) {
 
         default:
         case KURT0: {
-            while ((USART3->SR & USART3_SR_RXNE) == 0U) { }
+            while ((USART3->SR & USART3_SR_RXNE) == 0U) { ; }
 
             *data = (uint8_t)USART3->DR;
             break;

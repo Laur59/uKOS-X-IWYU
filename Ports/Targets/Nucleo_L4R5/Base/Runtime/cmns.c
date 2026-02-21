@@ -50,7 +50,6 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #include    "cmns.h"
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "clockTree.h"
@@ -99,27 +98,21 @@ void    cmns_init(void) {
 
     RCC->APB1ENR2 |= RCC_APB1ENR2_LPUART1EN;
 
-    LPUART1->BRR  = BAUDRATE_LP(KFREQUENCY_APB1, KSERIAL_DEFAULT_BAUDRATE);
-    LPUART1->CR1  = (LPUART1_CR1_UE | LPUART1_CR1_TE | LPUART1_CR1_RE);
-    LPUART1->ISR &= (uint32_t)~LPUART1_ISR_RXFNE;
-    LPUART1->ISR &= (uint32_t)~LPUART1_ISR_TXFE;
+    LPUART1->BRR = BAUDRATE_LP(KFREQUENCY_APB1, KSERIAL_DEFAULT_BAUDRATE);
+    LPUART1->CR1 = (LPUART1_CR1_UE | LPUART1_CR1_TE | LPUART1_CR1_RE);
 
     #ifdef CONFIG_MAN_URT1_S
     RCC->APB1ENR1 |= RCC_APB1ENR1_USART2EN;
 
-    USART2->BRR  = BAUDRATE(KFREQUENCY_APB1, KSERIAL_DEFAULT_BAUDRATE);
-    USART2->CR1  = (USART2_CR1_UE | USART2_CR1_TE | USART2_CR1_RE);
-    USART2->ISR &= (uint32_t)~USART2_ISR_RXFNE;
-    USART2->ISR &= (uint32_t)~USART2_ISR_TXFE;
+    USART2->BRR = BAUDRATE(KFREQUENCY_APB1, KSERIAL_DEFAULT_BAUDRATE);
+    USART2->CR1 = (USART2_CR1_UE | USART2_CR1_TE | USART2_CR1_RE);
     #endif
 
     #ifdef CONFIG_MAN_URT2_S
     RCC->APB1ENR1 |= RCC_APB1ENR1_USART3EN;
 
-    USART3->BRR  = BAUDRATE(KFREQUENCY_APB1, KSERIAL_DEFAULT_BAUDRATE);
-    USART3->CR1  = (USART3_CR1_UE | USART3_CR1_TE | USART3_CR1_RE);
-    USART3->ISR &= (uint32_t)~USART3_ISR_RXFNE;
-    USART3->ISR &= (uint32_t)~USART3_ISR_TXFE;
+    USART3->BRR = BAUDRATE(KFREQUENCY_APB1, KSERIAL_DEFAULT_BAUDRATE);
+    USART3->CR1 = (USART3_CR1_UE | USART3_CR1_TE | USART3_CR1_RE);
     #endif
 }
 
@@ -145,7 +138,7 @@ void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
         default:
         case KURT0: {
             while (true) {
-                while ((LPUART1->ISR & LPUART1_ISR_TXFE) == 0U) { }
+                while ((LPUART1->ISR & LPUART1_ISR_TXFE) == 0U) { ; }
 
                 data = (uint8_t)*wkAscii;
                 wkAscii++;
@@ -162,7 +155,7 @@ void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
         #ifdef CONFIG_MAN_URT1_S
         case KURT1: {
             while (true) {
-                while ((USART2->ISR & USART2_ISR_TXFE) == 0U) { }
+                while ((USART2->ISR & USART2_ISR_TXFE) == 0U) { ; }
 
                 data = (uint8_t)*wkAscii;
                 wkAscii++;
@@ -180,7 +173,7 @@ void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
         #ifdef CONFIG_MAN_URT2_S
         case KURT2: {
             while (true) {
-                while ((USART3->ISR & USART3_ISR_TXFE) == 0U) { }
+                while ((USART3->ISR & USART3_ISR_TXFE) == 0U) { ; }
 
                 data = (uint8_t)*wkAscii;
                 wkAscii++;
@@ -212,7 +205,7 @@ void    cmns_receive(serialManager_t serialManager, char_t *data) {
 
         default:
         case KURT0: {
-            while ((LPUART1->ISR & LPUART1_ISR_RXFNE) == 0U) { }
+            while ((LPUART1->ISR & LPUART1_ISR_RXFNE) == 0U) { ; }
 
             *data = (uint8_t)LPUART1->RDR;
             break;
@@ -222,7 +215,7 @@ void    cmns_receive(serialManager_t serialManager, char_t *data) {
 
         #ifdef CONFIG_MAN_URT1_S
         case KURT1: {
-            while ((USART2->ISR & USART2_ISR_RXFNE) == 0U) { }
+            while ((USART2->ISR & USART2_ISR_RXFNE) == 0U) { ; }
 
             *data = (uint8_t)USART2->RDR;
             break;
@@ -233,7 +226,7 @@ void    cmns_receive(serialManager_t serialManager, char_t *data) {
 
         #ifdef CONFIG_MAN_URT2_S
         case KURT2: {
-            while ((USART3->ISR & USART3_ISR_RXFNE) == 0U) { }
+            while ((USART3->ISR & USART3_ISR_RXFNE) == 0U) { ; }
 
             *data = (uint8_t)USART3->RDR;
             break;
