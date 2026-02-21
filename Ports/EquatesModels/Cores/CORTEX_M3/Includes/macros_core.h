@@ -54,6 +54,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    "Registers/scb.h"
 #include    "Registers/soc_vectors.h"
 #include    "core.h"    // IWYU pragma: keep
+#include    "kern/kern.h"
 #include    "kern/processes.h"  // IWYU pragma: keep
 #include    "linker.h"
 #include    "macros_soc.h"

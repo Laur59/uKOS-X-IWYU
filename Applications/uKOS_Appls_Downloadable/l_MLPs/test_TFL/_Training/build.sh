@@ -1,5 +1,7 @@
-# makefile.
-# =========
+#!/usr/bin/env zsh
+
+# build.
+# ======
 
 # SPDX-License-Identifier: MIT
 
@@ -8,7 +10,7 @@
 # Modifs:
 #
 # Project:	uKOS-X
-# Goal:		makefile for the "class_Py" application.
+# Goal:		Create the TF model
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -44,17 +46,19 @@
 #
 #------------------------------------------------------------------------
 
-PROJECT			=  class_Py
+set -euo pipefail
 
-# Target & Infrastructure
+if [[ -z "${PATH_UKOS_X_PACKAGE:-}" ]]; then
+	echo "Variable PATH_UKOS_X_PACKAGE is not set!"
+	exit 1
+fi
 
-PREFIX			?=  arm-none-eabi-
-COMPILER_FAMILY	?=  gcc
+TFL_PYTHON_ENV="${PATH_UKOS_X_PACKAGE}/Third_Parties/Tflite-micro/Tflite-env"
 
-BOARD			=  Discovery_V873
-V				=  Variant_Test
-SOC				=  STM32V873
-CORE			=  CORTEX_M85
-OPTIMISATION	=  -Os
+if [[ -d "${TFL_PYTHON_ENV:-}" ]]; then
+    source "${TFL_PYTHON_ENV}/bin/activate"
+fi
 
-include ../../../../Mkfiles/common.mk
+MODEL_FILE="mlp_test.tflite"
+
+xxd -i "${MODEL_FILE}" > mlp_test.c_inc
