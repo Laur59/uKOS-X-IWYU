@@ -40,38 +40,6 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;                                                       | .bss_u          |
 ;                                                       |                 | linker_enBSS_u
 ;                                                       +-----------------+
-;
-;-----
-;                                              __ ______  _____
-;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
-;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
-;   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
-;                                     \__,_/_/ |_\____//____/
-;   edo.franzi@ukos.ch
-;
-;   Description: Lightweight, real-time multitasking operating
-;   system for embedded microcontroller and DSP-based systems.
-;
-;   Permission is hereby granted, free of charge, to any person
-;   obtaining a copy of this software and associated documentation
-;   files (the "Software"), to deal in the Software without restriction,
-;   including without limitation the rights to use, copy, modify,
-;   merge, publish, distribute, sublicense, and/or sell copies of the
-;   Software, and to permit persons to whom the Software is furnished
-;   to do so, subject to the following conditions:
-;
-;   The above copyright notice and this permission notice shall be
-;   included in all copies or substantial portions of the Software.
-;
-;   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-;   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-;   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-;   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
-;   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-;   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-;   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-;   SOFTWARE.
-;
 ;------------------------------------------------------------------------
 */
 
@@ -137,14 +105,6 @@ SECTIONS {
 
 	. = ALIGN(4);
 	linker_stINDATA_p = ABSOLUTE(.);
-	.stacks_p (NOLOAD) : {
-		. = ALIGN(8);
-		linker_lowStackSystem_C0 = ABSOLUTE(.);
-		. += linker_sizeStackSystem_C0;
-		. = ALIGN(8);
-		linker_topStackSystem_C0 = ABSOLUTE(.) - 8;
-	} > prgm_data_p
-
 	.data_p : AT (linker_stINDATA_p) {
 		linker_stDATA_p = ABSOLUTE(.);
 		lib*_p.a(.data .data.* .data*)
@@ -166,18 +126,13 @@ SECTIONS {
 	} > prgm_data_p
 
 	linker_stINDATA_u = linker_stINDATA_p + SIZEOF(.data_p);
-	.stacks_u (NOLOAD) : {
-		. = ALIGN(8);
-		linker_lowStackFirst_C0 = ABSOLUTE(.);
-		. += linker_sizeStackFirst_C0;
-		. = ALIGN(8);
-		linker_topStackFirst_C0 = ABSOLUTE(.) - 8;
-	} > prgm_data_u
-
 	. = ALIGN(4);
 	.data_u : AT (linker_stINDATA_u) {
 		linker_stDATA_u = ABSOLUTE(.);
-		*(.data .data.* .data*)
+		liblibx_u.a(.data .data.* .data*)
+		libproc_u.a(.data .data.* .data*)
+		libtool_u.a(.data .data.* .data*)
+		*(EXCLUDE_FILE (first.o* *librtcb_p.a *libkern_p.a *liblibx_p.a *libshar_p.a) .data .data.* .data*)
 		. = ALIGN(4);
 		*(vtable)
 		. = ALIGN(4);
@@ -195,8 +150,14 @@ SECTIONS {
 		. = ALIGN(4);
 		linker_stBSS_u = ABSOLUTE(.);
 		KEEP(*(.user))
-		*(.bss .bss.* COMMON)
+		liblibx_u.a(.bss .bss.* COMMON)
+		libproc_u.a(.bss .bss.* COMMON)
+		libtool_u.a(.bss .bss.* COMMON)
+		*(EXCLUDE_FILE (first.o* *librtcb_p.a *libkern_p.a *liblibx_p.a *libshar_p.a) .bss .bss.* .bss*)
 		linker_enBSS_u = ABSOLUTE(.);
+		/* Standard symbol used by C library for heap start */
+		end = ABSOLUTE(.);
+		_end = ABSOLUTE(.);
 	} > prgm_data_u
 
 }

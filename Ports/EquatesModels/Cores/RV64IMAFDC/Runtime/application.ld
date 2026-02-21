@@ -37,8 +37,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;					|                 |
 ; _end				+-----------------+
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -138,4 +137,5 @@ SECTIONS {
 		. = ALIGN(8);
 		linker_enBSS = ABSOLUTE(.);
 	} > prgm_data
+
 }
