@@ -64,19 +64,13 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #include    <stdio.h>
 
+#include    "board.h"       // IWYU pragma: keep (for board_S)
 #include    "serial/serial.h"
-
-#ifdef BENCH_ANALYSER_S
-#include    "board.h"
-#include    "kern/kern.h"
-#include    "macros_core.h"
 
 #define KNB_TESTS           1000000U
 
 // CLI tool specific
 // =================
-
-static  void     local_loop(uint32_t nb);
 
 /*
  * \brief bench_05
@@ -84,9 +78,23 @@ static  void     local_loop(uint32_t nb);
  * - loop
  *
  */
+#if (!defined(Nucleo_H743_S) && !defined(Nucleo_N657_S))
+
 bool    bench_05(void) {
 
-    #if (defined(Nucleo_H743_S) || defined(Nucleo_N657_S))
+    (void)dprintf(KSYST, "Bench 05: not available for this target\n");
+    return true;
+}
+
+#else
+
+#include    "kern/kern.h"
+#include    "macros_core.h"
+
+static  void     local_loop(uint32_t nb);
+
+bool    bench_05(void) {
+
     (void)dprintf(KSYST, "Bench 05: For scope tests!\n");
 
     kern_suspendProcess(1000U);
@@ -97,9 +105,6 @@ bool    bench_05(void) {
         ANALYSER_TOGGLE;
         local_loop(KNB_TESTS);
     }
-    #else
-    (void)dprintf(KSYST, "Bench 05: not available for this target\n");
-    #endif
 
     return true;
 }
@@ -120,11 +125,5 @@ static  void local_loop(uint32_t nb) {
         NOP;
     }
 }
-#else
-bool    bench_05(void) {
 
-    dprintf(KSYST, "Bench 05: not available for this target\n");
-
-    return true;
-}
 #endif
