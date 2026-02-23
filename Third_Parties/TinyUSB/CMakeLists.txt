@@ -46,6 +46,13 @@ project(TinyUSB_Package
     LANGUAGES NONE
 )
 
+# Default build type to MinSizeRel (-Os) for optimal firmware size.
+# This must be set here because ExternalProject_Add forwards CMAKE_BUILD_TYPE
+# to all sub-projects (see Step 3 below).
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE MinSizeRel CACHE STRING "Build type")
+endif()
+
 # Include FetchContent module for downloading upstream TinyUSB
 include(FetchContent)
 # Include ExternalProject module for building libraries
@@ -63,7 +70,7 @@ message("")
 
 # Package version and commit hash (matching build_with_cmake.sh)
 set(TINYUSB_VERSION "0.20.0")
-set(TINYUSB_HASH "da10280")
+set(TINYUSB_HASH "dc072da")
 
 message(STATUS "Fetching TinyUSB version ${TINYUSB_VERSION} (commit ${TINYUSB_HASH})")
 
@@ -145,7 +152,7 @@ if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/TinyUSB-current/lib/pico-sdk/README.m
     FetchContent_Declare(
         pico_sdk_upstream
         GIT_REPOSITORY https://github.com/raspberrypi/pico-sdk.git
-        GIT_TAG        2.1.0
+        GIT_TAG        master
         SOURCE_DIR     ${CMAKE_CURRENT_SOURCE_DIR}/TinyUSB-current/lib/pico-sdk
         GIT_SHALLOW    OFF
         GIT_PROGRESS   TRUE

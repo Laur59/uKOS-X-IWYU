@@ -3,11 +3,11 @@
 ; ==================
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Model for the interface for "TinyUSB cdc" device.
+; Project:  uKOS-X
+; Goal:     Model for the interface for "TinyUSB cdc" device.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -44,15 +44,15 @@
 ;------------------------------------------------------------------------
 */
 
-#define	KCONNECTED		true
-#define	KDISCONNECTED	false
+#define KCONNECTED      true
+#define KDISCONNECTED   false
 
-#include	"cdc/cdc_device.h"
-#include	"macros.h"
-#include	"kern/kern.h"
-#include	"record/record.h"
+#include    "cdc/cdc_device.h"
+#include    "macros.h"
+#include    "kern/kern.h"
+#include    "record/record.h"
 
-static	bool	vConnected[KNB_CORES] = MCSET(KDISCONNECTED);
+static  bool    vConnected[CFG_TUD_CDC] = MCSET(KDISCONNECTED);
 
 /*
  * \brief TinyUSB_cdc_init
@@ -60,7 +60,7 @@ static	bool	vConnected[KNB_CORES] = MCSET(KDISCONNECTED);
  * - Initialise the cdcx manager
  *
  */
-void	TinyUSB_cdc_init(void) {
+void    TinyUSB_cdc_init(void) {
 
 }
 
@@ -70,7 +70,7 @@ void	TinyUSB_cdc_init(void) {
  * - Clean the cdcx manager
  *
  */
-void	TinyUSB_cdc_clean(void) {
+void    TinyUSB_cdc_clean(void) {
 
 }
 
@@ -80,22 +80,22 @@ void	TinyUSB_cdc_clean(void) {
  * - Write a buffer to the usb cdcx manager
  *
  */
-void	TinyUSB_cdc_write(uint8_t itf, const uint8_t *buffer, uint32_t size) {
-	uint32_t	core;
+void    TinyUSB_cdc_write(uint8_t itf, const uint8_t *buffer, uint32_t size) {
+    uint32_t    retry = 0U;
 
-	core = GET_RUNNING_CORE;
+// When connected, wait for the FIFO to have enough space
+// When disconnected, try briefly then give up (do not block forever)
 
-	while (tud_cdc_n_write_available(itf) < size) {
-		if (vConnected[core] == KDISCONNECTED) {
-			kern_suspendProcess(10U);
-		}
-		else {
-			kern_suspendProcess(1U);
-		}
-	}
+    while (tud_cdc_n_write_available(itf) < size) {
+        kern_suspendProcess(1U);
+        retry++;
+        if ((vConnected[itf] == KDISCONNECTED) && (retry > 10U)) {
+            return;
+        }
+    }
 
-	tud_cdc_n_write(itf, buffer, size);
-	tud_cdc_n_write_flush(itf);
+    tud_cdc_n_write(itf, buffer, size);
+    tud_cdc_n_write_flush(itf);
 }
 
 /*
@@ -104,14 +104,14 @@ void	TinyUSB_cdc_write(uint8_t itf, const uint8_t *buffer, uint32_t size) {
  * - Read a buffer from the usb cdcx manager
  *
  */
-void	TinyUSB_cdc_read(uint8_t itf, uint8_t *buffer, uint32_t *size) {
+void    TinyUSB_cdc_read(uint8_t itf, uint8_t *buffer, uint32_t *size) {
 
-	if (tud_cdc_n_available(itf) != 0U) {
-		*size = tud_cdc_n_read(itf, buffer, *size);
-	}
-	else {
-		*size = 0U;
-	}
+    if (tud_cdc_n_available(itf) != 0U) {
+        *size = tud_cdc_n_read(itf, buffer, *size);
+    }
+    else {
+        *size = 0U;
+    }
 }
 
 // cdc callbacks
@@ -123,28 +123,24 @@ void	TinyUSB_cdc_read(uint8_t itf, uint8_t *buffer, uint32_t *size) {
  * - Called when cdc when line state changed e.g connected/disconnected
  *
  */
-void	tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts) {
-	UNUSED(itf);
-	UNUSED(rts);
+void    tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts) {
 
-	uint32_t	core;
+    UNUSED(rts);
 
-	core = GET_RUNNING_CORE;
+    if (dtr == true) {
+        if (vConnected[itf] == KDISCONNECTED) {
+            vConnected[itf] = KCONNECTED;
 
-	if (dtr == true) {
-		if (vConnected[core] == KDISCONNECTED) {
-			vConnected[core] = KCONNECTED;
+            LOG(KINFO_SYSTEM, "model_TinyUSB_cdc: connected");
+        }
+    }
+    else {
+        if (vConnected[itf] == KCONNECTED) {
+            vConnected[itf] = KDISCONNECTED;
 
-			LOG(KINFO_SYSTEM, "model_TinyUSB_cdc: connected");
-		}
-	}
-	else {
-		if (vConnected[core] == KCONNECTED) {
-			vConnected[core] = KDISCONNECTED;
-
-			LOG(KINFO_SYSTEM, "model_TinyUSB_cdc: disconnected");
-		}
-	}
+            LOG(KINFO_SYSTEM, "model_TinyUSB_cdc: disconnected");
+        }
+    }
 }
 
 /*
@@ -153,7 +149,18 @@ void	tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts) {
  * - Called when CDC interface received data from host
  *
  */
-void	tud_cdc_rx_cb(uint8_t itf) {
+void    tud_cdc_rx_cb(uint8_t itf) {
 
-	UNUSED(itf);
+    UNUSED(itf);
+}
+
+/*
+ * \brief TinyUSB_cdc_isConnected
+ *
+ * - Return whether a CDC interface is connected
+ *
+ */
+bool    TinyUSB_cdc_isConnected(uint8_t itf) {
+
+    return vConnected[itf];
 }

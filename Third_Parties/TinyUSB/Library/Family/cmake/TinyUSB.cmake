@@ -54,18 +54,15 @@ function(add_tinyusb_libraries)
         set(TINYUSB_PROVIDER "st")
     endif()
 
-    # Remove NDEBUG from build flags for Raspberry Pi to match make build behavior
-    # The pico-sdk requires hard_assertion_failure() when NDEBUG is defined,
-    # but this library doesn't provide it. The make build uses -Os without -DNDEBUG.
-    if(TINYUSB_PROVIDER STREQUAL "raspberrypi")
-        string(REPLACE "-DNDEBUG" "" _tmp_flags "${CMAKE_C_FLAGS_MINSIZEREL}")
-        set(CMAKE_C_FLAGS_MINSIZEREL "${_tmp_flags}" CACHE STRING "Flags for MinSizeRel build" FORCE)
-        string(REPLACE "-DNDEBUG" "" _tmp_flags "${CMAKE_C_FLAGS_RELEASE}")
-        set(CMAKE_C_FLAGS_RELEASE "${_tmp_flags}" CACHE STRING "Flags for Release build" FORCE)
-        string(REPLACE "-DNDEBUG" "" _tmp_flags "${CMAKE_C_FLAGS_RELWITHDEBINFO}")
-        set(CMAKE_C_FLAGS_RELWITHDEBINFO "${_tmp_flags}" CACHE STRING "Flags for RelWithDebInfo build" FORCE)
-        unset(_tmp_flags)
-    endif()
+    # Remove NDEBUG from build flags to match make build behavior.
+    # The make build uses -Os without -DNDEBUG for all providers.
+    string(REPLACE "-DNDEBUG" "" _tmp_flags "${CMAKE_C_FLAGS_MINSIZEREL}")
+    set(CMAKE_C_FLAGS_MINSIZEREL "${_tmp_flags}" CACHE STRING "Flags for MinSizeRel build" FORCE)
+    string(REPLACE "-DNDEBUG" "" _tmp_flags "${CMAKE_C_FLAGS_RELEASE}")
+    set(CMAKE_C_FLAGS_RELEASE "${_tmp_flags}" CACHE STRING "Flags for Release build" FORCE)
+    string(REPLACE "-DNDEBUG" "" _tmp_flags "${CMAKE_C_FLAGS_RELWITHDEBINFO}")
+    set(CMAKE_C_FLAGS_RELWITHDEBINFO "${_tmp_flags}" CACHE STRING "Flags for RelWithDebInfo build" FORCE)
+    unset(_tmp_flags)
 
     # Common include paths (similar to PATH_INCLUDES in TinyUSB.mk)
     set(COMMON_INCLUDES
@@ -84,7 +81,7 @@ function(add_tinyusb_libraries)
     # Add paths specific to provider ST
     if(TINYUSB_PROVIDER STREQUAL "st")
         list(APPEND COMMON_INCLUDES
-        $   {PATH_TINYUSB}/TinyUSB-current/lib/CMSIS_5/CMSIS/Core/Include
+            ${PATH_TINYUSB}/TinyUSB-current/lib/CMSIS_5/CMSIS/Core/Include
             ${PATH_UKOS}/Ports/EquatesModels/Generic/Runtime
             ${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC}/Includes
             ${PATH_UKOS}/Ports/EquatesModels/Cores/${CORE}/Includes
