@@ -1,30 +1,16 @@
 /*
 SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 */
 
 /*
-; bench_05.
-; =========
+; tests.
+; ======
 
 ;------------------------------------------------------------------------
 ; Project: uKOS-X
 ;
-; Purpose:
-;   Bench 05: Compute a simple loop. 1000000 iterations.
-;
-;   Target used: Nucleo_H743 @ 480-MHz
-;   Target used: Nucleo_N657 @ 600-MHz
-;   Target used: MAiXDUiNO_K210 @ 400-MHz
-;   Target used: Discovery_U5G9 @ 160-MHz
-;
-;   Bench results in [us]:
-;
-;                               _loop
-;   Nucleo_H743 @ 480-MHz       10400
-;   Nucleo_N657 @ 600-MHz       13240
-;   MAiXDUiNO_K210 @ 400-MHz    -
-;   Discovery_U5G9 @ 160-MHz    -
+; Goal:     Test ROM routine collection.
 ;
 ;-----
 ;                                              __ ______  _____
@@ -60,70 +46,34 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#include    "bench.h"
+#pragma once
 
-#include    <stdio.h>
-
-#include    "board.h"       // IWYU pragma: keep (for board_S)
-#include    "serial/serial.h"
-
-#define KNB_TESTS           1000000U
-
-// CLI tool specific
-// =================
-
-/*
- * \brief bench_05
- *
- * - loop
- *
- */
-#if (!defined(Nucleo_H743_S) && !defined(Nucleo_N657_S))
-
-bool    bench_05(void) {
-
-    (void)dprintf(KSYST, "Bench 05: not available for this target\n");
-    return true;
-}
-
-#else
-
-#include    "kern/kern.h"
+#include    "types.h"
+#include    "cmns.h"
+#include    "debug.h"
+#include    "core_reg.h"
+#include    "soc_reg.h"
+#include    "board.h"
+#include    "clockTree.h"
+#include    "macros.h"
+#include    "macros_soc.h"
 #include    "macros_core.h"
+#include    "core.h"
+#include    "spin.h"
 
-static  void     local_loop(uint32_t nb);
-
-bool    bench_05(void) {
-
-    (void)dprintf(KSYST, "Bench 05: For scope tests!\n");
-
-    kern_suspendProcess(1000U);
-
-    INTERRUPTION_OFF_HARD;
-    while (true) {
-
-        ANALYSER_TOGGLE;
-        local_loop(KNB_TESTS);
-    }
-
-    return true;
-}
-
-// Local routines
-// ==============
-
-/*
- * \brief local_loop
- *
- * - Execute the nop
- *
- */
-static  void local_loop(uint32_t nb) {
-    volatile    uint32_t    i;
-
-    for (i = 0U; i < nb; i++) {
-        NOP;
-    }
-}
-
+#ifndef USING_CMAKE
+#define TEST_00_S           // Test blink the RED, GREEN, YELLOW and system Leds
+#undef  TEST_01_S           // Test sending data via the cnms manager
+#undef  TEST_02_S           // Test reading & sending data via the cnms manager
+#undef  TEST_03_S           // Test of the UART0 Rx interruption
+#undef  TEST_04_S           // Test of the UART0 Tx interruption
+#undef  TEST_05_S           // Test of the TIM0 Alarme 0 & 1 interruption
+#undef  TEST_06_S           // Test of a preliminary pico kernel (with messages swi)
+#undef  TEST_07_S           // Test of the UART0 Tx interruption
+#undef  TEST_08_S           // Test of the boot of the core 1
+#undef  TEST_09_S           // Test of the TIM0 Alarme 0 (core 0) & 1 (core 1) interruption
+#undef  TEST_10_S           // Test of the spin lock
+#undef  TEST_11_S           // Test of the door bell
 #endif
+
+#define NO_KERNEL_S         // No kernels (naked function entries)

@@ -1,20 +1,16 @@
 #!/usr/bin/env zsh
 
-# burn.
-# =====
+# build.
+# ======
 
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:   Edo. Franzi     The 2025-01-01
+# Author:	Edo. Franzi		The 2025-01-01
 # Modifs:
 #
-# Project:  uKOS-X
-# Goal:     script for burning the arm flash via the stm32programmer.
-#           script mainly generated with chatgpt
-#
-#           - Usage:
-#           ./burn.sh
+# Project:	uKOS-X
+# Goal:		Create the TF model
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -52,17 +48,19 @@
 
 set -euo pipefail
 
-BOOT="FSBL"
-APPL="testROM"
+if [[ -z "${PATH_UKOS_X_PACKAGE:-}" ]]; then
+	echo "Variable PATH_UKOS_X_PACKAGE is not set!"
+	exit 1
+fi
 
-cp -f "./burn/${BOOT}.doNotErase" "${BOOT}.bin"
+TFL_PYTHON_ENV="${PATH_UKOS_X_PACKAGE}/Third_Parties/Tflite-micro/Tflite-env"
 
-STM32_PROGRAMMER_BIN="${STM32_PROGRAMMER_BIN:-/Applications/STMicroelectronics/STM32Cube/STM32CubeProgrammer/STM32CubeProgrammer.app/Contents/Resources/bin}"
-STM32_PROGRAMMER_CLI="${STM32_PROGRAMMER_BIN}/STM32_Programmer_CLI"
-STM32_PROGRAMMER_SIG="${STM32_PROGRAMMER_BIN}/STM32_SigningTool_CLI"
+if [[ -d "${TFL_PYTHON_ENV:-}" ]]; then
+    source "${TFL_PYTHON_ENV}/bin/activate"
+fi
 
-"${STM32_PROGRAMMER_SIG}" -s -bin "${BOOT}.bin" -nk -of 0x80000000 -t fsbl -o "${BOOT}-trusted.bin" -hv 2.3 -dump "${BOOT}-trusted.bin" -align
-"${STM32_PROGRAMMER_SIG}" -s -bin "${APPL}.bin" -nk -of 0x80000000 -t fsbl -o "${APPL}-trusted.bin" -hv 2.3 -dump "${APPL}-trusted.bin" -align
+MODEL_FILE="mlp_TFL_test.tflite"
 
-"${STM32_PROGRAMMER_CLI}" -c port=SWD mode=HOTPLUG ap=1 -el "${STM32_PROGRAMMER_BIN}/ExternalLoader/MX25UM51245G_STM32N6570-NUCLEO.stldr" -d "${BOOT}-trusted.bin" 0x70000000
-"${STM32_PROGRAMMER_CLI}" -c port=SWD mode=HOTPLUG ap=1 -el "${STM32_PROGRAMMER_BIN}/ExternalLoader/MX25UM51245G_STM32N6570-NUCLEO.stldr" -d "${APPL}-trusted.bin" 0x70100000
+# Create the TensorFlowLite C executable
+
+xxd -i "${MODEL_FILE}" > mlp_TFL_test.c_inc

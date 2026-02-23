@@ -1,23 +1,17 @@
-#!/usr/bin/env zsh
-
-# burn.
-# =====
+# CMakeLists.
+# ===========
 
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:   Edo. Franzi     The 2025-01-01
+# Author:   Laurent von Allmen  The 2025-01-01
 # Modifs:
 #
 # Project:  uKOS-X
-# Goal:     script for burning the arm flash via the stm32programmer.
-#           script mainly generated with chatgpt
+# Goal:     CMake file to set up the building for uKOS-X system.
 #
-#           - Usage:
-#           ./burn.sh
-#
-#   (c) 2025-2026, Edo. Franzi
-#   --------------------------
+#   (c) 2025-2026, Laurent von Allmen
+#   ---------------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -50,19 +44,45 @@
 #
 #------------------------------------------------------------------------
 
-set -euo pipefail
+cmake_minimum_required(VERSION 3.26)
 
-BOOT="FSBL"
-APPL="testROM"
+# Applications CMake module setup
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/../../../../cmake")
 
-cp -f "./burn/${BOOT}.doNotErase" "${BOOT}.bin"
+include(set-project-paths)
 
-STM32_PROGRAMMER_BIN="${STM32_PROGRAMMER_BIN:-/Applications/STMicroelectronics/STM32Cube/STM32CubeProgrammer/STM32CubeProgrammer.app/Contents/Resources/bin}"
-STM32_PROGRAMMER_CLI="${STM32_PROGRAMMER_BIN}/STM32_Programmer_CLI"
-STM32_PROGRAMMER_SIG="${STM32_PROGRAMMER_BIN}/STM32_SigningTool_CLI"
+include(${PATH_UKOS}/Ports/cmake/select-arm-toolchain.cmake)
 
-"${STM32_PROGRAMMER_SIG}" -s -bin "${BOOT}.bin" -nk -of 0x80000000 -t fsbl -o "${BOOT}-trusted.bin" -hv 2.3 -dump "${BOOT}-trusted.bin" -align
-"${STM32_PROGRAMMER_SIG}" -s -bin "${APPL}.bin" -nk -of 0x80000000 -t fsbl -o "${APPL}-trusted.bin" -hv 2.3 -dump "${APPL}-trusted.bin" -align
+project(
+	tfl_vs_ukos
+	VERSION 1.0
+	LANGUAGES CXX C
+)
 
-"${STM32_PROGRAMMER_CLI}" -c port=SWD mode=HOTPLUG ap=1 -el "${STM32_PROGRAMMER_BIN}/ExternalLoader/MX25UM51245G_STM32N6570-NUCLEO.stldr" -d "${BOOT}-trusted.bin" 0x70000000
-"${STM32_PROGRAMMER_CLI}" -c port=SWD mode=HOTPLUG ap=1 -el "${STM32_PROGRAMMER_BIN}/ExternalLoader/MX25UM51245G_STM32N6570-NUCLEO.stldr" -d "${APPL}-trusted.bin" 0x70100000
+# Microcontroller description (mandatory variables)
+set(SOC STM32N657)
+set(CORE CORTEX_M55)
+
+# Target
+set(BOARD Nucleo_N657)
+set(VARIANT Variant_Test)
+
+# Extra compilation options
+add_compile_options(-g3 # includes extra information for debugger
+    $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
+    $<$<COMPILE_LANGUAGE:CXX>:-fno-exceptions>
+    -Os # optimisation
+)
+add_compile_definitions(
+    $<$<COMPILE_LANGUAGE:CXX>:TF_LITE_STATIC_MEMORY=1>
+    $<$<COMPILE_LANGUAGE:CXX>:CORTEX>
+)
+
+set(PATH_INCLUDES
+    ${PATH_UKOS}/Third_Parties/Tflite-micro/uKOS_Interface/CORTEX_M_generic
+    ${PATH_UKOS}/Third_Parties/Tflite-micro/uKOS_Interface/CORTEX_M_generic/third_party/flatbuffers/include
+    ${PATH_UKOS}/Third_Parties/Tflite-micro/uKOS_Interface/CORTEX_M_generic/third_party/gemmlowp
+)
+find_library(MYLIB TFLite ${PATH_UKOS}/Third_Parties/Tflite-micro/Library/${CORE})
+
+include(common)

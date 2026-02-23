@@ -6,15 +6,14 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:   Edo. Franzi     The 2025-01-01
+# Author:	Edo. Franzi		The 2025-01-01
 # Modifs:
 #
-# Project:  uKOS-X
-# Goal:     script for burning the arm flash via the stm32programmer.
-#           script mainly generated with chatgpt
+# Project:	uKOS-X
+# Goal:		script for burning the arm flash via the picotool.
 #
-#           - Usage:
-#           ./burn.sh
+#			- Usage:
+#			./burn.sh
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -52,17 +51,5 @@
 
 set -euo pipefail
 
-BOOT="FSBL"
-APPL="testROM"
-
-cp -f "./burn/${BOOT}.doNotErase" "${BOOT}.bin"
-
-STM32_PROGRAMMER_BIN="${STM32_PROGRAMMER_BIN:-/Applications/STMicroelectronics/STM32Cube/STM32CubeProgrammer/STM32CubeProgrammer.app/Contents/Resources/bin}"
-STM32_PROGRAMMER_CLI="${STM32_PROGRAMMER_BIN}/STM32_Programmer_CLI"
-STM32_PROGRAMMER_SIG="${STM32_PROGRAMMER_BIN}/STM32_SigningTool_CLI"
-
-"${STM32_PROGRAMMER_SIG}" -s -bin "${BOOT}.bin" -nk -of 0x80000000 -t fsbl -o "${BOOT}-trusted.bin" -hv 2.3 -dump "${BOOT}-trusted.bin" -align
-"${STM32_PROGRAMMER_SIG}" -s -bin "${APPL}.bin" -nk -of 0x80000000 -t fsbl -o "${APPL}-trusted.bin" -hv 2.3 -dump "${APPL}-trusted.bin" -align
-
-"${STM32_PROGRAMMER_CLI}" -c port=SWD mode=HOTPLUG ap=1 -el "${STM32_PROGRAMMER_BIN}/ExternalLoader/MX25UM51245G_STM32N6570-NUCLEO.stldr" -d "${BOOT}-trusted.bin" 0x70000000
-"${STM32_PROGRAMMER_CLI}" -c port=SWD mode=HOTPLUG ap=1 -el "${STM32_PROGRAMMER_BIN}/ExternalLoader/MX25UM51245G_STM32N6570-NUCLEO.stldr" -d "${APPL}-trusted.bin" 0x70100000
+picotool load testROM.elf --family rp2350-riscv --verify
+picotool reboot

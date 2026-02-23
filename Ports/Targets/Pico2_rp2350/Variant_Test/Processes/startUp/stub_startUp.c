@@ -64,6 +64,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    "system/system.h"
 #include    "types.h"
 
+extern  bool    TinyUSB_cdc_isConnected(uint8_t itf);
+
 // Bootstrap function table
 // ------------------------
 
@@ -136,7 +138,6 @@ STRG_GLB_CONST(aStartUp_StrHelp[]) = "StartUp process\n"
 
 // Module strings
 
-
 STRG_LOC_CONST(aStrLogo[]) = STRG_LOGO;
 
 /*
@@ -154,7 +155,6 @@ void    stub_startUp_launch(void) {
     const   boot_t          *functions;
     const   uKOS_module_t   *module;
     const   char_t          *identifier, *signature;
-
 
 // Configure by default all the Serial Communication Managers
 // Set the default communication device (KSYST)
@@ -229,7 +229,7 @@ void    stub_startUp_launch(void) {
 // Determine the "i" index on the function table
 
     kern_getProcessRun(&process);
-    for (i = 0U; i < nbFunctions; i++) {
+    for (i = 0u; i < nbFunctions; i++) {
         if (functions[i].oSW == mode) {
             kern_setSerialForProcess(process, functions[i].oSerialManager);
         }
@@ -238,14 +238,36 @@ void    stub_startUp_launch(void) {
     system_getSystemId(&identifier);
     system_getSystemSignature(&signature);
 
-    (void)dprintf(KSYST, "%s", aStrLogo);
-    (void)dprintf(KSYST, "Signature:\n%s\n\n", signature);
-    (void)dprintf(KSYST, "%ssw = %"PRIX32"\n", identifier, mode);
+    #if (CONFIG_DIFFERENT_SERIAL_PER_CORE_S == true)
+    if (core != KCORE_0) {
+    #endif
 
-    kern_suspendProcess(500U);
+        (void)dprintf(KSYST, "%s", aStrLogo);
+        (void)dprintf(KSYST, "Signature:\n%s\n\n", signature);
+        (void)dprintf(KSYST, "%ssw = %"PRIX32"\n", identifier, mode);
 
+    #if (CONFIG_DIFFERENT_SERIAL_PER_CORE_S == true)
+    }
+    #endif
 
-    for (i = 0U; i < nbFunctions; i++) {
+    kern_suspendProcess(500u);
+
+// Waiting for the first CDC0 connection and display the splash screen
+// Core 0 uses CDC0 which has no host connected at boot time
+
+    #if (CONFIG_DIFFERENT_SERIAL_PER_CORE_S == true)
+    if (core == KCORE_0) {
+        while (TinyUSB_cdc_isConnected(0u) == false) {
+            kern_suspendProcess(10u);
+        }
+        kern_suspendProcess(100u);
+        (void)dprintf(KSYST, "%s", aStrLogo);
+        (void)dprintf(KSYST, "Signature:\n%s\n\n", signature);
+        (void)dprintf(KSYST, "%ssw = %"PRIX32"\n", identifier, mode);
+    }
+    #endif
+
+    for (i = 0u; i < nbFunctions; i++) {
         if (functions[i].oSW == mode) {
 
 // The communication

@@ -12,7 +12,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; Project: uKOS-X
 ;
 ; Purpose:
-;   Low level init for the uKOS-X Discovery_U5G9 module.
+;    Low level init for the uKOS-X Nucleo_N657_Cortex-M55 module.
 ;
 ;   !!! This code HAS not to contain static data.
 ;   !!! It is called before to copy and to initialise
@@ -120,6 +120,7 @@ static  inline  void    cache_D_Invalidate(void);
 static  inline  void    cache_I_Enable(void);
 static  inline  void    cache_I_Disable(void);
 static  inline  void    cache_I_Invalidate(void);
+
 /*
  * \brief init_init
  *
@@ -225,7 +226,7 @@ static  void    local_PWR_Configuration(void) {
     STRONG_BARRIER;
 
     REG(PWR)->VOSCR |= PWR_VOSCR_VOS;
-    while ((REG(PWR)->VOSCR & PWR_VOSCR_VOSRDY) == 0U) { }
+    while ((REG(PWR)->VOSCR & PWR_VOSCR_VOSRDY) == 0U) { ; }
 
     REG(PWR)->SVMCR3 |= PWR_SVMCR3_ASV;
     (void)(REG(PWR)->SVMCR3);
@@ -278,7 +279,7 @@ static  void    local_USB_Configuration(void) {
 
     REG(PWR)->SVMCR3 |= PWR_SVMCR3_USB33VMEN;
     (void)(REG(PWR)->SVMCR3);
-    while ((REG(PWR)->SVMCR3 & PWR_SVMCR3_USB33RDY) == 0U) { }
+    while ((REG(PWR)->SVMCR3 & PWR_SVMCR3_USB33RDY) == 0U) { ; }
 
     REG(PWR)->SVMCR3 |= PWR_SVMCR3_USB33SV;
 
@@ -548,8 +549,8 @@ static  void    local_RCC_Configuration(void) {
                   | RCC_CR_HSEON;                               // Set HSEON bit (48-MHz)
     (void)(REG(RCC)->CR);                                       //
 
-    while ((REG(RCC)->SR & RCC_SR_HSIRDY) == 0U) { }            // Waiting for the HSI stable
-    while ((REG(RCC)->SR & RCC_SR_HSERDY) == 0U) { }            // Waiting for the HSE stable
+    while ((REG(RCC)->SR & RCC_SR_HSIRDY) == 0U) { ; }          // Waiting for the HSI stable
+    while ((REG(RCC)->SR & RCC_SR_HSERDY) == 0U) { ; }          // Waiting for the HSE stable
 
 // PLL 1, 800-MHz, clocks to the CPU, buses, and storage (XSPI, SDMMC)
 // -------------------------------------------------------------------
@@ -580,7 +581,7 @@ static  void    local_RCC_Configuration(void) {
 
     REG(RCC)->CR |= RCC_CR_PLL1ON;                              // PLL1 on
     (void)(REG(RCC)->CR);                                       //
-    while ((REG(RCC)->SR & RCC_SR_PLL1RDY) == 0U) { }           // Waiting for the PLL 1 stable
+    while ((REG(RCC)->SR & RCC_SR_PLL1RDY) == 0U) { ; }         // Waiting for the PLL 1 stable
 
 // PLL 2, 800-MHz, clocks to NPU and audio peripherals
 // ---------------------------------------------------
@@ -611,7 +612,7 @@ static  void    local_RCC_Configuration(void) {
 
     REG(RCC)->CR |= RCC_CR_PLL2ON;                              // PLL2 on
     (void)(REG(RCC)->CR);                                       //
-    while ((REG(RCC)->SR & RCC_SR_PLL2RDY) == 0U) { }           // Waiting for the PLL 2 stable
+    while ((REG(RCC)->SR & RCC_SR_PLL2RDY) == 0U) { ; }         // Waiting for the PLL 2 stable
 
 // PLL 3, 400-MHz, clocks to CACHEAXI RAM and Ethernet
 // ---------------------------------------------------
@@ -642,7 +643,7 @@ static  void    local_RCC_Configuration(void) {
 
     REG(RCC)->CR |= RCC_CR_PLL3ON;                              // PLL3 on
     (void)(REG(RCC)->CR);                                       //
-    while ((REG(RCC)->SR & RCC_SR_PLL3RDY) == 0U) { }           // Waiting for the PLL 3 stable
+    while ((REG(RCC)->SR & RCC_SR_PLL3RDY) == 0U) { ; }         // Waiting for the PLL 3 stable
 
 // PLL 4, 400-MHz, clocks to display, camera, FDCAN, and other peripherals
 // -----------------------------------------------------------------------
@@ -673,7 +674,7 @@ static  void    local_RCC_Configuration(void) {
 
     REG(RCC)->CR |= RCC_CR_PLL4ON;                              // PLL4 on
     (void)(REG(RCC)->CR);                                       //
-    while ((REG(RCC)->SR & RCC_SR_PLL4RDY) == 0U) { }           // Waiting for the PLL 4 stable
+    while ((REG(RCC)->SR & RCC_SR_PLL4RDY) == 0U) { ; }         // Waiting for the PLL 4 stable
 
 // Muxes
 // -----
@@ -904,7 +905,7 @@ static  void    local_writeByte(uint8_t byte) {
  */
 static  void    local_waitingForFlagOn(uint32_t flag) {
 
-    while ((REG(I2C2)->ISR & flag) != flag) { }
+    while ((REG(I2C2)->ISR & flag) != flag) { ; }
 }
 
 /*
@@ -913,7 +914,7 @@ static  void    local_waitingForFlagOn(uint32_t flag) {
  */
 static  void    local_waitingForFlagOff(uint32_t flag) {
 
-    while ((REG(I2C2)->ISR & flag) == flag) { }
+    while ((REG(I2C2)->ISR & flag) == flag) { ; }
 }
 
 /*
