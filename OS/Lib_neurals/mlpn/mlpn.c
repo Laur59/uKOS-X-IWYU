@@ -602,8 +602,8 @@ static  float32_t   local_nonLinear_tan2(float32_t p) {
  */
 static  float32_t   local_nonLinear_relu(float32_t p) {
 
-    if (p <= 0.0F) { return 0.0F; }
-    if (p > +1.0F) { return p;  }
+    if (p <= 0.0F) { return (0.0F); }
+    if (p > +1.0F) { return (p);    }
     return p;
 }
 
@@ -617,7 +617,7 @@ static  float32_t   local_nonLinear_relu(float32_t p) {
  */
 static  float32_t   local_nonLinear_line(float32_t p) {
 
-    return (p);
+    return p;
 }
 
 #endif

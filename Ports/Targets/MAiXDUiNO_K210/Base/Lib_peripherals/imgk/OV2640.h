@@ -68,4 +68,4 @@ struct ov2640 {
 
 // I2c interface
 
-#define KOV2640A                0x60u                                   // I2C Omni vision address
+#define KOV2640A                0x60U                                   // I2C Omni vision address
