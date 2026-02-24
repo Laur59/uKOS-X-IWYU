@@ -143,6 +143,24 @@ else
    print "${GREEN}✓ Size difference acceptable${NC}"
 fi
 
+# Long filename string table (//) size
+# The ar archive stores long member names in a dedicated // entry.
+# Different naming conventions (e.g. .c.o vs .fs.o) affect this table.
+lib1_strtab=$(ar -tv "${LIB1}" 2>/dev/null | awk '$NF == "//" {print $3}')
+lib2_strtab=$(ar -tv "${LIB2}" 2>/dev/null | awk '$NF == "//" {print $3}')
+lib1_strtab=${lib1_strtab:-0}
+lib2_strtab=${lib2_strtab:-0}
+strtab_diff=$((lib2_strtab - lib1_strtab))
+
+print ""
+printf "String table (//): %6d vs %6d bytes (diff: %d)\n" ${lib1_strtab} ${lib2_strtab} ${strtab_diff}
+if [[ ${strtab_diff} -ne 0 ]]; then
+    print "${FAINT}  Object naming conventions differ (e.g. .c.o vs .fs.o)${NC}"
+    if [[ ${size_diff} -ne 0 ]] && [[ ${size_diff} -eq ${strtab_diff} ]]; then
+        print "${FAINT}  This accounts for the entire file size difference${NC}"
+fi
+fi
+
 # 2. Compare section sizes
 echo ""
 print "${BOLD}${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"

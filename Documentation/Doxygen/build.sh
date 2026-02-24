@@ -3,14 +3,14 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Building the documentation.
+# Project:  uKOS-X
+# Goal:     Building the documentation.
 #
-#			usage:
-#			./build.sh
+#           usage:
+#           ./build.sh
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -46,20 +46,24 @@
 #
 #------------------------------------------------------------------------
 
+# Get directory of the script
+
+export PATH_UKOS_X_PACKAGE="${0:a:h:h:h}"
+
 # check that application Doxygen is available
 
 if ! command -v doxygen &> /dev/null
 then
-	echo "doxygen is not in your path"
-	exit 1
+    echo "doxygen is not in your path"
+    exit 1
 fi
 
 # check that GraphViz has been installed
 
 if ! command -v dot &> /dev/null
 then
-	echo "dot (GraphViz) is not in your path"
-	exit 1
+    echo "dot (GraphViz) is not in your path"
+    exit 1
 fi
 
 doxygen ./doc_src/Doxyfile > /dev/null
