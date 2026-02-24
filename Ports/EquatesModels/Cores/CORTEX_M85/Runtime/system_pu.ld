@@ -127,7 +127,7 @@ SECTIONS {
 	} > prgm_data_p
 
 	linker_stINDATA_u = linker_stINDATA_p + SIZEOF(.data_p);
-		. = ALIGN(8);
+	. = ALIGN(8);
 	.data_u : AT (linker_stINDATA_u) {
 		linker_stDATA_u = ABSOLUTE(.);
 		*(.data .data.* .data*)
