@@ -150,7 +150,7 @@ void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
         default:
         case KCORE_0: {
             while (true) {
-                while ((uart2->LSR & UART_LSR_TEMT) != 0U) { }
+                while ((uart2->LSR & UART_LSR_TEMT) != 0U) { ; }
 
                 data = (uint8_t)*wkAscii;
                 wkAscii++;
@@ -167,7 +167,7 @@ void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
 
         case KCORE_1: {
             while (true) {
-                while ((uart1->LSR & UART_LSR_TEMT) != 0U) { }
+                while ((uart1->LSR & UART_LSR_TEMT) != 0U) { ; }
 
                 data = (uint8_t)*wkAscii;
                 wkAscii++;
@@ -205,7 +205,7 @@ void    cmns_receive(serialManager_t serialManager, char_t *data) {
 
         default:
         case KCORE_0: {
-            while ((uart2->LSR & UART_LSR_DATAREADY) == 0U) { }
+            while ((uart2->LSR & UART_LSR_DATAREADY) == 0U) { ; }
 
             *data = (uint8_t)(uart2->RBR & 0xFFU);
             break;
@@ -214,7 +214,7 @@ void    cmns_receive(serialManager_t serialManager, char_t *data) {
 // Core 1
 
         case KCORE_1: {
-            while ((uart1->LSR & UART_LSR_DATAREADY) == 0U) { }
+            while ((uart1->LSR & UART_LSR_DATAREADY) == 0U) { ; }
 
             *data = (uint8_t)(uart1->RBR & 0xFFU);
             break;

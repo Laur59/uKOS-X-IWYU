@@ -392,7 +392,7 @@ static  void    local_RCC_Configuration(void) {
 // Set-up the MCO
 
     RCC->CR |= RCC_CR_PLLON;
-    while ((RCC->CR & RCC_CR_PLLRDY) == 0U) { }
+    while ((RCC->CR & RCC_CR_PLLRDY) == 0U) { ; }
 
     RCC->CFGR = (0U * RCC_CFGR_MCO20)                   // MCO2 (system clock)
               | (0U * RCC_CFGR_MCO2PRE0)                // MCO2 (no division)
@@ -404,7 +404,7 @@ static  void    local_RCC_Configuration(void) {
               | (0U * RCC_CFGR_HPRE0)                   // HPRE bus @ 120-MHz
               | (2U * RCC_CFGR_SW0);                    // System clock on the PLL
 
-    while ((RCC->CFGR & (3U * RCC_CFGR_SWS0)) != (2U * RCC_CFGR_SWS0)) { }
+    while ((RCC->CFGR & (3U * RCC_CFGR_SWS0)) != (2U * RCC_CFGR_SWS0)) { ; }
 }
 
 /*

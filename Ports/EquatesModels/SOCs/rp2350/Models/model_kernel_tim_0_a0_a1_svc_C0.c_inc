@@ -64,13 +64,13 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 */
 
 #include    "Registers/RP2350_resets.h"
-#include	"Registers/RP2350_timer.h"
-#include	"clockTree.h"
-#include	"macros_core_stackFrame.h"
-#include	"kern/private/private_processes.h"
-#include	"kern/private/private_scheduler.h"
-#include	"kern/private/private_temporal.h"
-#include	"kern/privileges.h"
+#include    "Registers/RP2350_timer.h"
+#include    "clockTree.h"
+#include    "macros_core_stackFrame.h"
+#include    "kern/private/private_processes.h"
+#include    "kern/private/private_scheduler.h"
+#include    "kern/private/private_temporal.h"
+#include    "kern/privileges.h"
 #include    "Registers/nvic.h"
 
 #define K1ms_C0         ((float64_t)(0.001))
@@ -107,7 +107,7 @@ void    model_kernel_init_C0(void) {
 // Reset of the device
 
     REG(RESETS)->RESET &= ~RESETS_RESET_TIMER0;
-    while ((REG(RESETS)->RESET_DONE & RESETS_RESET_TIMER0) != RESETS_RESET_TIMER0) { }
+    while ((REG(RESETS)->RESET_DONE & RESETS_RESET_TIMER0) != RESETS_RESET_TIMER0) { ; }
 
     TIMER_C0->INTR = 0xFFFFFFFFu;
 

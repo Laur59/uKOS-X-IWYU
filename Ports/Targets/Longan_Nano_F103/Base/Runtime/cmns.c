@@ -128,7 +128,7 @@ void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
         default:
         case KURT0: {
             while (true) {
-                while ((USART0->STAT & USART_STAT_TBE) == 0U) { }
+                while ((USART0->STAT & USART_STAT_TBE) == 0U) { ; }
 
                 data = (uint8_t)*wkAscii;
                 wkAscii++;
@@ -159,7 +159,7 @@ void    cmns_receive(serialManager_t serialManager, char_t *data) {
 
         default:
         case KURT0: {
-            while ((USART0->STAT & USART_STAT_RBNE) == 0U) { }
+            while ((USART0->STAT & USART_STAT_RBNE) == 0U) { ; }
 
             *data = (char_t)USART0->DATA;
             break;

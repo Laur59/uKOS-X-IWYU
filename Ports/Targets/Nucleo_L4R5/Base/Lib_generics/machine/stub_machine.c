@@ -72,7 +72,7 @@ int32_t stub_machine_restart(void) {
 
     INTERRUPTION_OFF;
     SCB->AIRCR = SCB_AIRCR_VECTKEY_MASK | SCB_AIRCR_SYSRESETREQ;
-    while (true) { }
+    while (true) { ; }
 
     return KERR_SYSTEM_NOERR;
 }

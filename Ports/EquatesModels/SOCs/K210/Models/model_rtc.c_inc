@@ -113,7 +113,7 @@ void    model_rtc_update(uint64_t unixTime) {
 
 // Wait for write enable with timeout
 
-    while (rtc->register_ctrl.write_enable == 0U) { }
+    while (rtc->register_ctrl.write_enable == 0U) { ; }
 
 // Write date and time registers (K210 uses binary format, not BCD)
 
@@ -154,7 +154,7 @@ void    model_rtc_readUnixTime(uint64_t *unixTime) {
 
 // Waiting for read enable with timeout
 
-    while (rtc->register_ctrl.read_enable == 0U) { }
+    while (rtc->register_ctrl.read_enable == 0U) { ; }
 
 // Read the RTC registers (K210 uses binary format, not BCD)
 // Important: read atomically to avoid inconsistent values

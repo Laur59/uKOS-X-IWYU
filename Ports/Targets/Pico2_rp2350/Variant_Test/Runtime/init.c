@@ -197,7 +197,7 @@ void    init_relocate(void) {       // NOLINT(misc-use-internal-linkage): must h
 static  void    local_GPIO_Configuration(void) {
 
     REG(RESETS)->RESET &= ~(RESETS_RESET_DONE_IO_BANK0 | RESETS_RESET_DONE_PADS_BANK0);
-    while ((REG(RESETS)->RESET_DONE & (RESETS_RESET_DONE_IO_BANK0 | RESETS_RESET_DONE_PADS_BANK0)) != (RESETS_RESET_DONE_IO_BANK0 | RESETS_RESET_DONE_PADS_BANK0)) { }
+    while ((REG(RESETS)->RESET_DONE & (RESETS_RESET_DONE_IO_BANK0 | RESETS_RESET_DONE_PADS_BANK0)) != (RESETS_RESET_DONE_IO_BANK0 | RESETS_RESET_DONE_PADS_BANK0)) { ; }
 
 // ISO=0, outputs
 
@@ -264,7 +264,7 @@ static  void    local_PLL_Configuration(void) {
     REG(XOSC)->CTRL    = XOSC_CTRL_FREQ_RANGE_1_15MHZ;
     REG(XOSC)->STARTUP = 0x00C4U;
     REG(XOSC)->CTRL   |= XOSC_CTRL_ENABLE_ENABLE;
-    while ((REG(XOSC)->STATUS & XOSC_STATUS_STABLE) == 0x0U) { }
+    while ((REG(XOSC)->STATUS & XOSC_STATUS_STABLE) == 0x0U) { ; }
 
 // Switch clk_ref on XOSC (glitchless)
 
@@ -280,7 +280,7 @@ static  void    local_PLL_Configuration(void) {
     REG(RESETS)->RESET |= RESETS_RESET_PLL_SYS;
     cmns_wait(10);
     REG(RESETS)->RESET &= ~RESETS_RESET_PLL_SYS;
-    while ((REG(RESETS)->RESET_DONE & RESETS_RESET_DONE_PLL_SYS) == 0x0U) { }
+    while ((REG(RESETS)->RESET_DONE & RESETS_RESET_DONE_PLL_SYS) == 0x0U) { ; }
 
     REG(PLL_SYS)->PWR |= (PLL_SYS_PWR_PD | PLL_SYS_PWR_VCOPD | PLL_SYS_PWR_POSTDIVPD);
 
@@ -294,7 +294,7 @@ static  void    local_PLL_Configuration(void) {
 // Turn on the VCO
 
     REG(PLL_SYS)->PWR &= ~(PLL_SYS_PWR_PD | PLL_SYS_PWR_VCOPD);
-    while ((REG(PLL_SYS)->CS & PLL_SYS_CS_LOCK) == 0U) { }
+    while ((REG(PLL_SYS)->CS & PLL_SYS_CS_LOCK) == 0U) { ; }
 
     REG(PLL_SYS)->PRIM = (5U * PLL_SYS_PRIM_POSTDIV1_0) | (2U * PLL_SYS_PRIM_POSTDIV2_0);
     REG(PLL_SYS)->PWR &= ~PLL_SYS_PWR_POSTDIVPD;
@@ -304,7 +304,7 @@ static  void    local_PLL_Configuration(void) {
     REG(CLOCKS)->CLK_SYS_DIV  = 1U * CLOCKS_CLK_SYS_DIV_INT_0;
     REG(CLOCKS)->CLK_SYS_CTRL = (REG(CLOCKS)->CLK_SYS_CTRL & ~(0x7U<<5U)) | (0x0U<<5U);
     REG(CLOCKS)->CLK_SYS_CTRL = (REG(CLOCKS)->CLK_SYS_CTRL & ~0x1U) | 0x1U;
-    while ((REG(CLOCKS)->CLK_SYS_SELECTED & (1U<<0x1U)) == 0x0U) { }
+    while ((REG(CLOCKS)->CLK_SYS_SELECTED & (1U<<0x1U)) == 0x0U) { ; }
 
 // Optionnel : clk_peri = clk_sys (no glitchless, just AUXSRC + ENABLE)
 
@@ -319,7 +319,7 @@ static  void    local_PLL_Configuration(void) {
     REG(RESETS)->RESET |= RESETS_RESET_PLL_USB;
     cmns_wait(10U);
     REG(RESETS)->RESET &= ~RESETS_RESET_PLL_USB;
-    while ((REG(RESETS)->RESET_DONE & RESETS_RESET_DONE_PLL_USB) == 0x0U) { }
+    while ((REG(RESETS)->RESET_DONE & RESETS_RESET_DONE_PLL_USB) == 0x0U) { ; }
 
     REG(PLL_USB)->PWR |= (PLL_USB_PWR_PD | PLL_USB_PWR_VCOPD | PLL_USB_PWR_POSTDIVPD);
 
@@ -333,7 +333,7 @@ static  void    local_PLL_Configuration(void) {
 // Turn on the VCO
 
     REG(PLL_USB)->PWR &= ~(PLL_USB_PWR_PD | PLL_USB_PWR_VCOPD);
-    while ((REG(PLL_USB)->CS & PLL_USB_CS_LOCK) == 0U) { }
+    while ((REG(PLL_USB)->CS & PLL_USB_CS_LOCK) == 0U) { ; }
 
     REG(PLL_USB)->PRIM = (5U * PLL_USB_PRIM_POSTDIV1_0) | (2U * PLL_USB_PRIM_POSTDIV2_0);
     REG(PLL_USB)->PWR &= ~PLL_USB_PWR_POSTDIVPD;
@@ -369,7 +369,7 @@ static  void    local_PLL_Configuration(void) {
 static  void    local_USB_Configuration(void) {
 
     REG(RESETS)->RESET &= ~RESETS_RESET_USBCTRL;
-    while ((REG(RESETS)->RESET_DONE & RESETS_RESET_DONE_USBCTRL) == 0x0U) { }
+    while ((REG(RESETS)->RESET_DONE & RESETS_RESET_DONE_USBCTRL) == 0x0U) { ; }
 
     REG(USB)->MAIN_CTRL &= ~USB_MAIN_CTRL_PHY_ISO;
     REG(USB)->MAIN_CTRL |= USB_MAIN_CTRL_CONTROLLER_EN;

@@ -189,7 +189,7 @@ static  void    local_PWR_Configuration(void) {
     REG(PWR)->VOSR  = (3U * PWR_VOSR_VOS_0);
     REG(PWR)->VOSR |= PWR_VOSR_BOOSTEN;
 
-    while ((REG(PWR)->VOSR & PWR_VOSR_VOSRDY) == 0U) { }
+    while ((REG(PWR)->VOSR & PWR_VOSR_VOSRDY) == 0U) { ; }
 }
 
 /*
@@ -549,9 +549,9 @@ static  void    local_RCC_Configuration(void) {
 
     REG(RCC)->CR |= RCC_CR_HSION | RCC_CR_HSEON | RCC_CR_HSI48ON;
 
-    while ((REG(RCC)->CR & RCC_CR_HSIRDY)   == 0U) { }
-    while ((REG(RCC)->CR & RCC_CR_HSERDY)   == 0U) { }
-    while ((REG(RCC)->CR & RCC_CR_HSI48RDY) == 0U) { }
+    while ((REG(RCC)->CR & RCC_CR_HSIRDY)   == 0U) { ; }
+    while ((REG(RCC)->CR & RCC_CR_HSERDY)   == 0U) { ; }
+    while ((REG(RCC)->CR & RCC_CR_HSI48RDY) == 0U) { ; }
 
 // Configure Flash latency for desired frequency
 // 4-ws (OK for 160-MHz)
@@ -586,7 +586,7 @@ static  void    local_RCC_Configuration(void) {
 // Waiting for the PLL lock
 
     REG(RCC)->CR |= RCC_CR_PLL1ON;
-    while ((REG(RCC)->CR & RCC_CR_PLL1RDY) == 0) { }
+    while ((REG(RCC)->CR & RCC_CR_PLL1RDY) == 0) { ; }
 
 // PLL 3
 // -----

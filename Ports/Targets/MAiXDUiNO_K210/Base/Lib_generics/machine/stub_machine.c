@@ -70,7 +70,7 @@ int32_t stub_machine_restart(void) {
 // Stop all the interruptions and restart
 
     INTERRUPTION_OFF;
-    while (true) { }
+    while (true) { ; }
 
     return KERR_MACHINE_NOERR;
 }

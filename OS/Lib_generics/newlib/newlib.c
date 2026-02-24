@@ -550,7 +550,7 @@ int     _kill_r(reent_t *reent, int pid, int sig) {
 void    __attribute__ ((noreturn)) _exit(int number) {
 
     crt0_exit(number);
-    while (true) { }
+    while (true) { ; }
 }
 
 // Newlib allocator functions

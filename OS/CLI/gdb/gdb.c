@@ -152,5 +152,5 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
     kern_suspendProcess(1000U);
 
     kern_criticalSection(KENTER_CRITICAL);
-    while (true) { }
+    while (true) { ; }
 }
