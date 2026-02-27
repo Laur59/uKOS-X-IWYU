@@ -250,6 +250,7 @@ function(add_tinyusb_libraries)
     list(APPEND DEFS_UKOS
         THIRD_PARTY_S
         ${SOC}_S
+        ${CORE}_S
     )
 
     # Convert string arguments to lists (handles space-separated flags properly)

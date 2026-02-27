@@ -50,7 +50,6 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #include    "machine/machine.h"
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "Registers/scb.h"
@@ -72,7 +71,7 @@ int32_t stub_machine_restart(void) {
 
     INTERRUPTION_OFF;
     SCB->AIRCR = SCB_AIRCR_VECTKEY_MASK | SCB_AIRCR_SYSRESETREQ;
-    while (true) { }
+    while (true) { ; }
 
     return KERR_SYSTEM_NOERR;
 }

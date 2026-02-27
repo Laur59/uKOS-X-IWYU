@@ -279,7 +279,7 @@ static  void    local_RCU_Configuration(void) {
 
     RCU->AHBEN |= RCU_AHBEN_USBFSEN;                        // USBFS clock enable
 
-    while ((RCU->CTL & RCU_CTL_PLLSTB) == 0U) { }           // Waiting for PLL stable
+    while ((RCU->CTL & RCU_CTL_PLLSTB) == 0U) { ; }         // Waiting for PLL stable
 
 // Turn on the 40-KHz clock
 

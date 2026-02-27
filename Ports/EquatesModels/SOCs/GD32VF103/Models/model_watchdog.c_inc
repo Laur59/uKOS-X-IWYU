@@ -87,7 +87,7 @@ void    model_watchdog_arm(uint32_t time) {
 
         FWDGT->PSC = FWDGT_PSC_1_256;
         FWDGT->RLD = timeout;
-        do { } while ((FWDGT->STAT & 0x3u) != 0U);
+        do { ; } while ((FWDGT->STAT & 0x3u) != 0U);
     }
 
 // Arm the watchdog

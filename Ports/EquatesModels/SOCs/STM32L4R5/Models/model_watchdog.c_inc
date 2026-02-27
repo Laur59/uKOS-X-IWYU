@@ -88,7 +88,7 @@ void    model_watchdog_arm(uint32_t time) {
 
         IWDG->PR  = IWDG_PR_1_256;
         IWDG->RLR = timeout;
-        do { } while ((IWDG->SR & 0x7u) != 0U);
+        do { ; } while ((IWDG->SR & 0x7u) != 0U);
     }
 
 // Arm the watchdog

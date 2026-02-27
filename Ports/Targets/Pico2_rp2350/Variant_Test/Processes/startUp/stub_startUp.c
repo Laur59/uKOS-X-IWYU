@@ -229,7 +229,7 @@ void    stub_startUp_launch(void) {
 // Determine the "i" index on the function table
 
     kern_getProcessRun(&process);
-    for (i = 0u; i < nbFunctions; i++) {
+    for (i = 0U; i < nbFunctions; i++) {
         if (functions[i].oSW == mode) {
             kern_setSerialForProcess(process, functions[i].oSerialManager);
         }
@@ -250,24 +250,24 @@ void    stub_startUp_launch(void) {
     }
     #endif
 
-    kern_suspendProcess(500u);
+    kern_suspendProcess(500U);
 
 // Waiting for the first CDC0 connection and display the splash screen
 // Core 0 uses CDC0 which has no host connected at boot time
 
     #if (CONFIG_DIFFERENT_SERIAL_PER_CORE_S == true)
     if (core == KCORE_0) {
-        while (TinyUSB_cdc_isConnected(0u) == false) {
-            kern_suspendProcess(10u);
+        while (!TinyUSB_cdc_isConnected(0U)) {
+            kern_suspendProcess(10U);
         }
-        kern_suspendProcess(100u);
+        kern_suspendProcess(100U);
         (void)dprintf(KSYST, "%s", aStrLogo);
         (void)dprintf(KSYST, "Signature:\n%s\n\n", signature);
         (void)dprintf(KSYST, "%ssw = %"PRIX32"\n", identifier, mode);
     }
     #endif
 
-    for (i = 0u; i < nbFunctions; i++) {
+    for (i = 0U; i < nbFunctions; i++) {
         if (functions[i].oSW == mode) {
 
 // The communication

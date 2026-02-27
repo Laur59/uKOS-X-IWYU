@@ -180,7 +180,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 // NOLINTBEGIN(cert-err34-c)
 //
         if (scanf("%"PRId32" %"PRId32" %"PRId32" %"PRId32"", &a, &b, &c, &d) != 4) {
-            while (getchar() != '\n') { }
+            while (getchar() != '\n') { ; }
         }
         else {
             (void)dprintf(KURT1, "a = %"PRId32", b = %"PRId32", c = %"PRId32", d = %"PRId32"\n", a, b, c, d);

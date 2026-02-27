@@ -294,7 +294,7 @@ static  void    __attribute__ ((noinline, noreturn)) local_killProcess(void) {
 
 // Important: do not remove the "while (true);"
 
-    while (true) { }
+    while (true) { ; }
 }
 
 /*

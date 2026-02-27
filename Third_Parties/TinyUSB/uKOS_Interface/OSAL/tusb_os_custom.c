@@ -10,14 +10,14 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ===============
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		uKOS OS interface between uKOS-X & TinyUSB.
+; Project:  uKOS-X
+; Goal:     uKOS OS interface between uKOS-X & TinyUSB.
 ;
-;			Work based on an preliminary initial version
-;			written by Jean-Marc Koller.
+;           Work based on an preliminary initial version
+;           written by Jean-Marc Koller.
 ;
 ;   (c) 2019 Ha Thach (tinyusb.org)
 ;   -------------------------------
@@ -77,37 +77,37 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#include	<stdint.h>
-#include	"os_errors.h"
-#include	"osal_kern_interface.h"
+#include    <stdint.h>
+#include    "os_errors.h"
+#include    "osal_kern_interface.h"
 
 // Save the GCC diagnostic
 //
-#pragma GCC diagnostic	push
+#pragma GCC diagnostic  push
 
 // Ignore the GCC diagnostic
 //
-#pragma GCC diagnostic	ignored	"-Wpedantic"
-#include	"tusb.h"
+#pragma GCC diagnostic  ignored "-Wpedantic"
+#include    "tusb.h"
 
 // Restore the GCC diagnostic
 //
-#pragma GCC	diagnostic	pop
+#pragma GCC diagnostic  pop
 
 /*
  * \brief board_millis
  *
  * - Return the number of milli-seconds
- *	 This call is not used but it is in place
- *	 to allow the compilation
+ *   This call is not used but it is in place
+ *   to allow the compilation
  *
  */
-uint32_t	board_millis(void) {
-	uint64_t	time;
+uint32_t    board_millis(void) {
+    uint64_t    time;
 
-	kern_readTickCount(&time);
-	time = time / 1000U;
-	return ((uint32_t)time);
+    kern_readTickCount(&time);
+    time = time / 1000U;
+    return ((uint32_t)time);
 }
 
 /*
@@ -116,12 +116,12 @@ uint32_t	board_millis(void) {
  * - No idea
  *
  */
-size_t	board_get_unique_id(uint8_t id[], size_t max_len) {
+size_t  board_get_unique_id(uint8_t id[], size_t max_len) {
 
-	UNUSED(id);
-	UNUSED(max_len);
+    UNUSED(id);
+    UNUSED(max_len);
 
-	return (0U);
+    return (0U);
 }
 
 /*
@@ -130,9 +130,9 @@ size_t	board_get_unique_id(uint8_t id[], size_t max_len) {
  * - Wait in ms
  *
  */
-void	osal_task_delay(uint32_t msec) {
+void    osal_task_delay(uint32_t msec) {
 
-	kern_suspendProcess(msec);
+    kern_suspendProcess(msec);
 }
 
 /*
@@ -141,16 +141,16 @@ void	osal_task_delay(uint32_t msec) {
  * - Create an anonymous synchro semaphore
  *
  */
-osal_semaphore_t	osal_semaphore_create(osal_semaphore_def_t *semdef) {
-	sema_t	*handle = nullptr;
+osal_semaphore_t    osal_semaphore_create(osal_semaphore_def_t *semdef) {
+    sema_t  *handle = nullptr;
 
-	UNUSED(semdef);
+    UNUSED(semdef);
 
-	if (kern_createSemaphore(nullptr, 0, 1, &handle) == KERR_KERN_NOERR) {
-		return ((osal_semaphore_t)(handle));
-	}
+    if (kern_createSemaphore(nullptr, 0, 1, &handle) == KERR_KERN_NOERR) {
+        return ((osal_semaphore_t)(handle));
+    }
 
-	return nullptr;
+    return nullptr;
 }
 
 /*
@@ -159,13 +159,13 @@ osal_semaphore_t	osal_semaphore_create(osal_semaphore_def_t *semdef) {
  * - Signal the synchro semaphore
  *
  */
-bool	osal_semaphore_post(osal_semaphore_t sem_hdl, bool in_isr) {
-	bool	status;
+bool    osal_semaphore_post(osal_semaphore_t sem_hdl, bool in_isr) {
+    bool    status;
 
-	UNUSED(in_isr);
+    UNUSED(in_isr);
 
-	status = (kern_signalSemaphore((sema_t *)sem_hdl) == KERR_KERN_NOERR) ? (true) : (false);
-	return status;
+    status = (kern_signalSemaphore((sema_t *)sem_hdl) == KERR_KERN_NOERR) ? (true) : (false);
+    return status;
 }
 
 /*
@@ -174,13 +174,13 @@ bool	osal_semaphore_post(osal_semaphore_t sem_hdl, bool in_isr) {
  * - Waiting for the synchro semaphore
  *
  */
-bool	osal_semaphore_wait(osal_semaphore_t sem_hdl, uint32_t msec) {
-	UNUSED(msec);
+bool    osal_semaphore_wait(osal_semaphore_t sem_hdl, uint32_t msec) {
+    bool    status;
 
-	bool	status;
+    UNUSED(msec);
 
-	status = (kern_waitSemaphore((sema_t *)sem_hdl, 0U) == KERR_KERN_NOERR) ? (true) : (false);
-	return status;
+    status = (kern_waitSemaphore((sema_t *)sem_hdl, 0U) == KERR_KERN_NOERR) ? (true) : (false);
+    return status;
 }
 
 /*
@@ -189,9 +189,9 @@ bool	osal_semaphore_wait(osal_semaphore_t sem_hdl, uint32_t msec) {
  * - Restart the synchro semaphore
  *
  */
-void	osal_semaphore_reset(osal_semaphore_t sem_hdl) {
+void    osal_semaphore_reset(osal_semaphore_t sem_hdl) {
 
-	kern_restartSemaphore((sema_t *)sem_hdl);
+    kern_restartSemaphore((sema_t *)sem_hdl);
 }
 
 /*
@@ -201,15 +201,15 @@ void	osal_semaphore_reset(osal_semaphore_t sem_hdl) {
  *
  */
 osal_mutex_t osal_mutex_create(osal_mutex_def_t *mdef) {
-	mutx_t	*handle = nullptr;
+    mutx_t  *handle = nullptr;
 
-	UNUSED(mdef);
+    UNUSED(mdef);
 
-	if (kern_createMutex(nullptr, &handle) == KERR_KERN_NOERR) {
-	    return ((osal_mutex_t)(handle));
-	}
+    if (kern_createMutex(nullptr, &handle) == KERR_KERN_NOERR) {
+        return ((osal_mutex_t)(handle));
+    }
 
-	return nullptr;
+    return nullptr;
 }
 
 /*
@@ -220,8 +220,8 @@ osal_mutex_t osal_mutex_create(osal_mutex_def_t *mdef) {
  */
 bool osal_mutex_delete(osal_mutex_t mutex_hdl) {
 
-	kern_killMutex((mutx_t *)mutex_hdl);
-	return (true);
+    kern_killMutex((mutx_t *)mutex_hdl);
+    return (true);
 }
 
 /*
@@ -231,10 +231,10 @@ bool osal_mutex_delete(osal_mutex_t mutex_hdl) {
  *
  */
 bool osal_mutex_lock(osal_mutex_t mutex_hdl, uint32_t msec) {
-	bool	status;
+    bool    status;
 
-	status = (kern_lockMutex((mutx_t *)mutex_hdl, msec) == KERR_KERN_NOERR) ? (true) : (false);
-	return (status);
+    status = (kern_lockMutex((mutx_t *)mutex_hdl, msec) == KERR_KERN_NOERR) ? (true) : (false);
+    return (status);
 }
 
 /*
@@ -244,10 +244,10 @@ bool osal_mutex_lock(osal_mutex_t mutex_hdl, uint32_t msec) {
  *
  */
 bool osal_mutex_unlock(osal_mutex_t mutex_hdl) {
-	bool	status;
+    bool    status;
 
-	status = (kern_unlockMutex((mutx_t *)mutex_hdl) == KERR_KERN_NOERR) ? (true) : (false);
-	return (status);
+    status = (kern_unlockMutex((mutx_t *)mutex_hdl) == KERR_KERN_NOERR) ? (true) : (false);
+    return (status);
 }
 
 /*
@@ -257,20 +257,20 @@ bool osal_mutex_unlock(osal_mutex_t mutex_hdl) {
  *
  */
 osal_queue_t osal_queue_create(osal_queue_def_t *qdef) {
-	const	mcnf_t	cnf = {
-						.oNbMaxPacks    = (uint32_t)qdef->depth,
-						.oDataEntrySize = (uint32_t)qdef->item_sz
-					};
-			mbox_t	*handle = nullptr;
+    const   mcnf_t  cnf = {
+                        .oNbMaxPacks    = (uint32_t)qdef->depth,
+                        .oDataEntrySize = (uint32_t)qdef->item_sz
+                    };
+            mbox_t  *handle = nullptr;
 
-	if (kern_createMailbox(nullptr, &handle) == KERR_KERN_NOERR) {
-		if (kern_setMailbox(handle, &cnf) == KERR_KERN_NOERR)    {
-	       return ((osal_queue_t)(handle));
-		}
+    if (kern_createMailbox(nullptr, &handle) == KERR_KERN_NOERR) {
+        if (kern_setMailbox(handle, &cnf) == KERR_KERN_NOERR)    {
+           return ((osal_queue_t)(handle));
+        }
 
-		kern_killMailbox(handle);
-	}
-	return nullptr;
+        kern_killMailbox(handle);
+    }
+    return nullptr;
 }
 
 /*
@@ -279,16 +279,16 @@ osal_queue_t osal_queue_create(osal_queue_def_t *qdef) {
  * - Receive data from the queue
  *
  */
-bool	osal_queue_receive(osal_queue_t qhdl, void *data, uint32_t msec) {
-	bool		status;
-	uint32_t	size, timeout;
-	mbox_t		*handle = (mbox_t *)qhdl;
+bool    osal_queue_receive(osal_queue_t qhdl, void *data, uint32_t msec) {
+    bool        status;
+    uint32_t    size, timeout;
+    mbox_t      *handle = (mbox_t *)qhdl;
 
-	timeout = (msec == UINT32_MAX) ? (KWAIT_INFINITY) : (msec);
+    timeout = (msec == UINT32_MAX) ? (KWAIT_INFINITY) : (msec);
 
-	size = handle->oDataEntrySize;
-	status = (kern_readMailbox(handle, &data, &size, timeout) == KERR_KERN_NOERR) ? (true) : (false);
-	return (status);
+    size = handle->oDataEntrySize;
+    status = (kern_readMailbox(handle, &data, &size, timeout) == KERR_KERN_NOERR) ? (true) : (false);
+    return (status);
 }
 
 /*
@@ -304,14 +304,14 @@ bool	osal_queue_receive(osal_queue_t qhdl, void *data, uint32_t msec) {
 #else
 #pragma GCC diagnostic  ignored "-Wdiscarded-qualifiers"
 #endif
-bool	osal_queue_send(osal_queue_t qhdl, void const *data, bool in_isr) {
-	UNUSED(in_isr);
+bool    osal_queue_send(osal_queue_t qhdl, void const *data, bool in_isr) {
+    bool    status;
+    mbox_t  *handle = (mbox_t *)qhdl;
 
-	bool	status;
-	mbox_t	*handle = (mbox_t *)qhdl;
+    UNUSED(in_isr);
 
-	status = (kern_writeMailbox((mbox_t *)qhdl, data, handle->oDataEntrySize, 0U) == KERR_KERN_NOERR) ? (true) : (false);
-	return (status);
+    status = (kern_writeMailbox((mbox_t *)qhdl, data, handle->oDataEntrySize, 0u) == KERR_KERN_NOERR) ? (true) : (false);
+    return (status);
 }
 #pragma GCC diagnostic  pop
 
@@ -321,12 +321,12 @@ bool	osal_queue_send(osal_queue_t qhdl, void const *data, bool in_isr) {
  * - Check if the queue is empty
  *
  */
-bool	osal_queue_empty(osal_queue_t qhdl) {
-	bool	status;
-	mbox_t	*handle = (mbox_t *)qhdl;
+bool    osal_queue_empty(osal_queue_t qhdl) {
+    bool    status;
+    mbox_t  *handle = (mbox_t *)qhdl;
 
-	status = ((handle->oState & (1U<<BMBOX_EMPTY)) != 0U) ? (true) : (false);
-	return (status);
+    status = ((handle->oState & (1U<<BMBOX_EMPTY)) != 0U) ? (true) : (false);
+    return (status);
 }
 
 /*
@@ -335,9 +335,9 @@ bool	osal_queue_empty(osal_queue_t qhdl) {
  * - Delete the queue
  *
  */
-bool	osal_queue_delete(osal_queue_t qhdl) {
-	bool	status;
+bool    osal_queue_delete(osal_queue_t qhdl) {
+    bool    status;
 
-	status = (kern_killMailbox((mbox_t *)qhdl) == KERR_KERN_NOERR) ? (true) : (false);
-	return (status);
+    status = (kern_killMailbox((mbox_t *)qhdl) == KERR_KERN_NOERR) ? (true) : (false);
+    return (status);
 }

@@ -107,7 +107,7 @@ void    model_kernel_init_C1(void) {
 // Reset of the device
 
     REG(RESETS)->RESET &= ~RESETS_RESET_TIMER1;
-    while ((REG(RESETS)->RESET_DONE & RESETS_RESET_TIMER1) != RESETS_RESET_TIMER1) { }
+    while ((REG(RESETS)->RESET_DONE & RESETS_RESET_TIMER1) != RESETS_RESET_TIMER1) { ; }
 
     TIMER_C1->INTR = 0xFFFFFFFFu;
 

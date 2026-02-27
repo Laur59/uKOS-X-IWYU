@@ -410,7 +410,7 @@ static  void    test_format(const char_t *device) {
     res = f_mkfs(device, nullptr, work, sizeof work);
     if (res != FR_OK) {
         (void)dprintf(KSYST, "f_mkfs erreur %d\n", res);
-        while (true) { }
+        while (true) { ; }
     }
     (void)dprintf(KSYST, "f_mkfs passed\n");
 }
@@ -427,7 +427,7 @@ static  void    test_mount(FATFS *fs, const char_t *device) {
     res = f_mount(fs, device, 1U);
     if (res != FR_OK) {
         (void)dprintf(KSYST, "f_mount erreur %d\n", res);
-        while (true) { }
+        while (true) { ; }
     }
     (void)dprintf(KSYST, "f_mount passed\n");
 }
@@ -444,7 +444,7 @@ static  void    test_folder(const char_t *folder) {
     res = f_mkdir(folder);
     if ((res != FR_OK) && (res != FR_EXIST)) {
         (void)dprintf(KSYST, "f_mkdir erreur %d\n", res);
-        while (true) { }
+        while (true) { ; }
     }
     (void)dprintf(KSYST, "f_mkdir passed\n");
 }
@@ -461,7 +461,7 @@ static  void    test_create(FIL *fp, const char_t *name, BYTE mode) {
     res = f_open(fp, name, mode);
     if (res != FR_OK) {
         (void)dprintf(KSYST, "f_open erreur %d\n", res);
-        while (true) { }
+        while (true) { ; }
     }
     (void)dprintf(KSYST, "f_open passed\n");
 }
@@ -478,7 +478,7 @@ static  void    test_write(FIL *fp, const void *buffer, UINT size, UINT *sizeWri
     res = f_write(fp, buffer, size, sizeWritten);
     if (res != FR_OK) {
         (void)dprintf(KSYST, "f_write erreur %d\n", res);
-        while (true) { }
+        while (true) { ; }
     }
     (void)dprintf(KSYST, "f_write passed\n");
 }
@@ -495,7 +495,7 @@ static  void    test_close(FIL *fp) {
     res = f_close(fp);
     if (res != FR_OK) {
         (void)dprintf(KSYST, "f_close erreur %d\n", res);
-        while (true) { }
+        while (true) { ; }
     }
     (void)dprintf(KSYST, "f_close passed\n");
 }
@@ -512,7 +512,7 @@ static  void    test_open(FIL *fp, const char_t *name, BYTE mode) {
     res = f_open(fp, name, mode);
     if (res != FR_OK) {
         (void)dprintf(KSYST, "f_open erreur %d\n", res);
-        while (true) { }
+        while (true) { ; }
     }
     (void)dprintf(KSYST, "f_open passed\n");
 }
@@ -529,7 +529,7 @@ static  void    test_read(FIL *fp, void *buffer, UINT size, UINT *sizeRead) {
     res = f_read(fp, buffer, size, sizeRead);
     if (res != FR_OK) {
         (void)dprintf(KSYST, "f_read erreur %d\n", res);
-        while (true) { }
+        while (true) { ; }
     }
     (void)dprintf(KSYST, "f_read passed\n");
 }
@@ -587,7 +587,7 @@ static  void    test_listDirectory(const char_t *path) {
     }
     else {
         (void)dprintf(KSYST, "Failed to open \"%s\". (%u)\n", path, res);;
-        while (true) { }
+        while (true) { ; }
     }
 }
 

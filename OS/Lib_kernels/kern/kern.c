@@ -189,7 +189,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 #include    "kern.h"
 #include    "kern/private/private_kern.h"
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "debug.h"

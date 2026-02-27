@@ -8,10 +8,10 @@ This guide provides comprehensive instructions for building embedded system targ
 
 Before using CMake, ensure the following environment variables are defined:
 
-- `PATH_GCC_ARM` – Path to ARM GCC toolchain
-- `PATH_GCC_RVXX` – Path to RISC-V GCC toolchain  
-- `PATH_LLVM_ARM` – Path to ARM LLVM toolchain
-- `PATH_LLVM_RVXX` – Path to RISC-V LLVM toolchain
+- `PATH_GCC_ARM` - Path to ARM GCC toolchain
+- `PATH_GCC_RVXX` - Path to RISC-V GCC toolchain
+- `PATH_LLVM_ARM` - Path to ARM LLVM toolchain
+- `PATH_LLVM_RVXX` - Path to RISC-V LLVM toolchain
 
 ## Quick Start
 

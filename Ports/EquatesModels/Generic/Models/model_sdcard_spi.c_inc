@@ -232,7 +232,7 @@ int32_t model_sdcard_initialise(sdcard_specification_t *specification) {
         return (KERR_STORAGE_CANRE);
     }
 
-    while (cb_writeRead(0xFFu) != KDATA_TOKEN_FE) { }
+    while (cb_writeRead(0xFFu) != KDATA_TOKEN_FE) { ; }
     for (i = 0U; i < 16U; i++) { cid[i] = cb_writeRead(0xFFu);                }
     for (i = 0U; i <  5U; i++) { specification->oProductName[i] = cid[3U + i]; }
     specification->oProductName[5] = 0;
@@ -246,7 +246,7 @@ int32_t model_sdcard_initialise(sdcard_specification_t *specification) {
         return (KERR_STORAGE_CANRE);
     }
 
-    while (cb_writeRead(0xFFu) != KDATA_TOKEN_FE) { }
+    while (cb_writeRead(0xFFu) != KDATA_TOKEN_FE) { ; }
     for (i = 0U; i < 16U; i++) { csd[i] = cb_writeRead(0xFFu); }
     specification->oSize = (uint64_t)((((csd[7] & 0x3Fu)<<16U | (uint32_t)csd[8]<<8U | csd[9]) + 1LL) * 512U * 1024U);
 

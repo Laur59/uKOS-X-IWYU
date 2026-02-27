@@ -134,7 +134,7 @@ void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
             REG(UARTE0)->TXD_MAXCNT    = (uint32_t)length;
             REG(UARTE0)->TASKS_STARTTX = 1U;
 
-            while ((REG(UARTE0)->EVENTS_ENDTX & 1U) == 0U) { }
+            while ((REG(UARTE0)->EVENTS_ENDTX & 1U) == 0U) { ; }
             REG(UARTE0)->EVENTS_ENDTX  = 0U;
             break;
         }
@@ -165,7 +165,7 @@ void    cmns_receive(serialManager_t serialManager, char_t *data) {
             REG(UARTE0)->RXD_MAXCNT    = 1U;
             REG(UARTE0)->TASKS_STARTRX = 1U;
 
-            while ((REG(UARTE0)->EVENTS_ENDRX & 1U) == 0U) { }
+            while ((REG(UARTE0)->EVENTS_ENDRX & 1U) == 0U) { ; }
             REG(UARTE0)->EVENTS_ENDRX  = 0U;
             break;
         }

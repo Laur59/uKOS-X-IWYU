@@ -247,7 +247,7 @@ int32_t oct0_write(uint32_t chipSelect, const void *buffer, uint32_t szBuffer, u
         szBuffer -= szFifo;
     }
 
-    while ((octoSpi0->sr & ((1U<<(uint32_t)SPI_SR_TFE) | (1U<<(uint32_t)SPI_SR_BUSY))) != (1U<<(uint32_t)SPI_SR_TFE)) { }
+    while ((octoSpi0->sr & ((1U<<(uint32_t)SPI_SR_TFE) | (1U<<(uint32_t)SPI_SR_BUSY))) != (1U<<(uint32_t)SPI_SR_TFE)) { ; }
 
     octoSpi0->ser    = 0x00U;
     octoSpi0->ssienr = 0x00U;
@@ -288,7 +288,7 @@ static  bool    local_DMAIsIdle(dmac_channel_number_t channel_num) {
 
 static  void    local_DMAWaitIdle(dmac_channel_number_t channel_num) {
 
-    while (local_DMAIsIdle(channel_num) == false) { }
+    while (local_DMAIsIdle(channel_num) == false) { ; }
     (*(volatile uint64_t *)(&dmac->channel[channel_num].intclear)) = 0xFFFFFFFFu;
 }
 
@@ -351,7 +351,7 @@ int32_t     oct0_write(uint32_t chipSelect, const void *buffer, uint32_t szBuffe
 
 // Waiting for the idle
 
-    while (local_DMAIsIdle(DMAC_CHANNEL0) == 0U) { }
+    while (local_DMAIsIdle(DMAC_CHANNEL0) == 0U) { ; }
     (*(volatile uint64_t *)(&dmac->channel[DMAC_CHANNEL0].intclear)) = 0xFFFFFFFFu;
 
 // Set the DMA channel

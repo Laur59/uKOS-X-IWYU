@@ -45,6 +45,10 @@
 
 cmake_minimum_required(VERSION 3.26)
 
+if (${USER_MODE})
+    message(WARNING "Microcontroller has no User/Supervisor modes. Using privileged mode.")
+endif()
+
 # uKOS-X CMake module setup
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/../../../cmake")
 

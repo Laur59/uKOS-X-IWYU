@@ -39,7 +39,7 @@
 cmake_minimum_required(VERSION 3.26)
 
 project(LVGL_Package
-    VERSION 9.4.0
+    VERSION 9.5.0
     DESCRIPTION "LVGL package with upstream source fetch"
     LANGUAGES NONE
 )
@@ -58,8 +58,8 @@ message("")
 #------------------------------------------------------------------------
 
 # Package version and commit hash (matching build.sh)
-set(LVGL_VERSION "9.4.0")
-set(LVGL_HASH "v9.4.0")
+set(LVGL_VERSION "9.5.0")
+set(LVGL_HASH "v9.5.0")
 
 message(STATUS "Fetching LVGL version ${LVGL_VERSION} (commit ${LVGL_HASH})")
 

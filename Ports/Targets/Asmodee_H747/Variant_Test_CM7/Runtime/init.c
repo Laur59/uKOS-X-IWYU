@@ -192,7 +192,7 @@ static  void    local_PWR_Configuration(void) {
     PWR->CR3   = (3U * PWR_CR3_SDLEVEL_0) | PWR_CR3_SDEN | PWR_CR3_LDOEN;
     PWR->D3CR &= ~PWR_D3CR_VOS;
     PWR->D3CR  = (2U * PWR_D3CR_VOS_0);
-    while ((PWR->D3CR & PWR_D3CR_VOSRDY) == 0U) { }
+    while ((PWR->D3CR & PWR_D3CR_VOSRDY) == 0U) { ; }
 
     PWR->D3CR      = (3U *PWR_D3CR_VOS_0);
     SYSCFG->PWRCR |= SYSCFG_PWRCR_ODEN;
@@ -631,7 +631,7 @@ static  void    local_RCC_Configuration(void) {
     RCC->PLL3FRACR  = 0x00000000U;                      // Reset PLL3FRACR register
     RCC->CIER       = 0x00000000U;                      // Disable all interrupts
 
-    while ((RCC->CR & RCC_CR_RC48RDY) == 0) { }         // Waiting for the 48-MHz
+    while ((RCC->CR & RCC_CR_RC48RDY) == 0) { ; }       // Waiting for the 48-MHz
 
 // Source for the PLL 1 , 2 & 3 input clock (see DM00314099 pages 296, 309 & 348)
 
@@ -664,7 +664,7 @@ static  void    local_RCC_Configuration(void) {
 
 // Waiting for the lock
 
-    while ((RCC->CR & RCC_CR_PLL1RDY) == 0) { }         // Waiting for the lock of the PLL
+    while ((RCC->CR & RCC_CR_PLL1RDY) == 0) { ; }       // Waiting for the lock of the PLL
 
 // PLL 2 CPU
 // ---------
@@ -690,7 +690,7 @@ static  void    local_RCC_Configuration(void) {
 
 // Waiting for the lock
 
-    while ((RCC->CR & RCC_CR_PLL2RDY) == 0U) { }        // Waiting for the lock of the PLL
+    while ((RCC->CR & RCC_CR_PLL2RDY) == 0U) { ; }      // Waiting for the lock of the PLL
 
 // PLL 3 CPU
 // ---------
@@ -716,7 +716,7 @@ static  void    local_RCC_Configuration(void) {
 
 // Waiting for the lock
 
-    while ((RCC->CR & RCC_CR_PLL3RDY) == 0U) { }        // Waiting for the lock of the PLL
+    while ((RCC->CR & RCC_CR_PLL3RDY) == 0U) { ; }      // Waiting for the lock of the PLL
 
 // Domain clocks
 // -------------
@@ -1016,7 +1016,7 @@ static  void    local_writeByte(uint8_t byte) {
  */
 static  void    local_waitingForFlagOn(uint32_t flag) {
 
-    while ((I2C1->ISR & flag) != flag) { }
+    while ((I2C1->ISR & flag) != flag) { ; }
 }
 
 /*
@@ -1025,7 +1025,7 @@ static  void    local_waitingForFlagOn(uint32_t flag) {
  */
 static  void    local_waitingForFlagOff(uint32_t flag) {
 
-    while ((I2C1->ISR & flag) == flag) { }
+    while ((I2C1->ISR & flag) == flag) { ; }
 }
 
 /*

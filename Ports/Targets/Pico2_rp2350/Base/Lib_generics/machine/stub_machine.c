@@ -79,7 +79,7 @@ int32_t stub_machine_restart(void) {
     REG(WATCHDOG)->CTRL = WATCHDOG_CTRL_ENABLE;
     REG(WATCHDOG)->LOAD = 10U;
     DATA_SYNC_BARRIER;
-    while (true) { }
+    while (true) { ; }
 
     return KERR_SYSTEM_NOERR;
 }

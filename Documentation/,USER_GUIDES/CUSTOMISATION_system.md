@@ -4,7 +4,7 @@
 
 
 
-The system offers extensive customization capabilities to achieve the desired behavior, with fine-tuning accomplished by strategically modifying the behavioural descriptions within CMakeLists.txt.
+The system offers extensive customization capabilities to achieve the desired behaviour, with fine-tuning accomplished by strategically modifying the behavioural descriptions within CMakeLists.txt.
 
 ### Adding console tools or processes
 

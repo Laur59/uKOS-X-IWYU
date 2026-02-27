@@ -98,10 +98,10 @@ void    cmns_init(void) {
 // Reset of the devices
 
     REG(RESETS)->RESET &= ~RESETS_RESET_UART0;
-    while ((REG(RESETS)->RESET_DONE & RESETS_RESET_UART0) != RESETS_RESET_UART0) { }
+    while ((REG(RESETS)->RESET_DONE & RESETS_RESET_UART0) != RESETS_RESET_UART0) { ; }
 
     REG(RESETS)->RESET &= ~RESETS_RESET_UART1;
-    while ((REG(RESETS)->RESET_DONE & RESETS_RESET_UART1) != RESETS_RESET_UART1) { }
+    while ((REG(RESETS)->RESET_DONE & RESETS_RESET_UART1) != RESETS_RESET_UART1) { ; }
 
 // Disable the UARTx
 
@@ -151,7 +151,7 @@ void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
         default:
         case KCORE_0: {
             while (true) {
-                while ((REG(UART0)->UARTFR & UART_UARTFR_TXFF) != 0U) { }
+                while ((REG(UART0)->UARTFR & UART_UARTFR_TXFF) != 0U) { ; }
 
                 data = (uint8_t)*wkAscii;
                 wkAscii++;
@@ -169,7 +169,7 @@ void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
 
         case KCORE_1: {
             while (true) {
-                while ((REG(UART1)->UARTFR & UART_UARTFR_TXFF) != 0U) { }
+                while ((REG(UART1)->UARTFR & UART_UARTFR_TXFF) != 0U) { ; }
 
                 data = (uint8_t)*wkAscii;
                 wkAscii++;
@@ -208,7 +208,7 @@ void    cmns_receive(serialManager_t serialManager, char_t *data) {
 
         default:
         case KCORE_0: {
-            while ((REG(UART0)->UARTFR & UART_UARTFR_RXFE) != 0U) { }
+            while ((REG(UART0)->UARTFR & UART_UARTFR_RXFE) != 0U) { ; }
 
             dr = REG(UART0)->UARTDR;
             *data = (uint8_t)dr;
@@ -218,7 +218,7 @@ void    cmns_receive(serialManager_t serialManager, char_t *data) {
 // Core 1
 
         case KCORE_1: {
-            while ((REG(UART1)->UARTFR & UART_UARTFR_RXFE) != 0U) { }
+            while ((REG(UART1)->UARTFR & UART_UARTFR_RXFE) != 0U) { ; }
 
             dr = REG(UART1)->UARTDR;
             *data = (uint8_t)dr;

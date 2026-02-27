@@ -149,7 +149,7 @@ enum {
 
 #ifndef SET_MESSAGE
 #define SET_MESSAGE             EXTI->SWIEV |= (1U<<BKERN_MESSAGES);                                                            \
-                                while ((EXTI->SWIEV & (1U<<BKERN_MESSAGES)) != 0U) { }
+                                while ((EXTI->SWIEV & (1U<<BKERN_MESSAGES)) != 0U) { ; }
 #endif
 
 #ifndef PREEMPTION

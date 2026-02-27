@@ -147,7 +147,7 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
 
     LOG(KFATAL_USER, "... and now the crash!");
     *(LOC_CRASH);
-    while (true) { }
+    while (true) { ; }
 }
 
 /*

@@ -182,7 +182,7 @@ static  void    local_PWR_Configuration(void) {
     PWR->D3CR &= ~(PWR_D3CR_VOS);
     PWR->D3CR |=  (3U * PWR_D3CR_VOS_0);
 
-    while ((PWR->D3CR & PWR_D3CR_VOSRDY) == 0U) { }
+    while ((PWR->D3CR & PWR_D3CR_VOSRDY) == 0U) { ; }
 
     RCC->APB4ENR  |= RCC_APB4ENR_SYSCFGEN;
     SYSCFG->PWRCR |= SYSCFG_PWRCR_ODEN;
@@ -501,7 +501,7 @@ static  void    local_RCC_Configuration(void) {
     RCC->CIER       = 0x00000000U;                      // Disable all interrupts
     *((volatile uint32_t *)0x51008108U) = 0x000000001U; // Change the switch matrix read issuing capability to 1 for the AXI SRAM target (Target 7)
 
-    while ((RCC->CR & RCC_CR_RC48RDY) == 0U) { }        // Waiting for the 48-MHz
+    while ((RCC->CR & RCC_CR_RC48RDY) == 0U) { ; }      // Waiting for the 48-MHz
 
 // Source for the PLL 1 , 2 & 3 input clock (see DM00314099 pages 296, 309 & 348)
 
@@ -534,7 +534,7 @@ static  void    local_RCC_Configuration(void) {
 
 // Waiting for the lock
 
-    while ((RCC->CR & RCC_CR_PLL1RDY) == 0U) { }        // Waiting for the lock of the PLL
+    while ((RCC->CR & RCC_CR_PLL1RDY) == 0U) { ; }      // Waiting for the lock of the PLL
 
 // PLL 2 CPU
 // ---------
@@ -560,7 +560,7 @@ static  void    local_RCC_Configuration(void) {
 
 // Waiting for the lock
 
-    while ((RCC->CR & RCC_CR_PLL2RDY) == 0U) { }        // Waiting for the lock of the PLL
+    while ((RCC->CR & RCC_CR_PLL2RDY) == 0U) { ; }      // Waiting for the lock of the PLL
 
 // PLL 3 CPU
 // ---------
@@ -586,7 +586,7 @@ static  void    local_RCC_Configuration(void) {
 
 // Waiting for the lock
 
-    while ((RCC->CR & RCC_CR_PLL3RDY) == 0U) { }        // Waiting for the lock of the PLL
+    while ((RCC->CR & RCC_CR_PLL3RDY) == 0U) { ; }      // Waiting for the lock of the PLL
 
 // Domain clocks
 // -------------
@@ -610,7 +610,7 @@ static  void    local_RCC_Configuration(void) {
 // ---
 
     PWR->CR1 |= PWR_CR1_DBP;                            //
-    while ((PWR->CR1 & PWR_CR1_DBP) == 0U) { }          // Disable backup domain write protection
+    while ((PWR->CR1 & PWR_CR1_DBP) == 0U) { ; }        // Disable backup domain write protection
 
 // Prepare the LSE (disable bypass),
 
@@ -618,7 +618,7 @@ static  void    local_RCC_Configuration(void) {
     RCC->BDCR &= ~RCC_BDCR_LSEDRV;                      //
     RCC->BDCR |=  (3U * RCC_BDCR_LSEDRV_0);             // Highest drive
     RCC->BDCR |=  RCC_BDCR_LSEON;                       //
-    while ((RCC->BDCR & RCC_BDCR_LSERDY) == 0U) { }     // LSE on
+    while ((RCC->BDCR & RCC_BDCR_LSERDY) == 0U) { ; }   // LSE on
 
 // LSE as a clock for the RTC
 

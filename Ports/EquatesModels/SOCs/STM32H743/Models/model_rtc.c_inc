@@ -112,7 +112,7 @@ void    model_rtc_update(uint64_t unixTime) {
 // Set the new counter values (BCD values)
 
     RTC->ISR |= RTC_ISR_INIT;
-    while ((RTC->ISR & RTC_ISR_INITF) == 0U) { }
+    while ((RTC->ISR & RTC_ISR_INITF) == 0U) { ; }
 
     kern_suspendProcess(1U);
     RTC->TR = ((uint32_t)(absHours   /  16U)<<20U)
