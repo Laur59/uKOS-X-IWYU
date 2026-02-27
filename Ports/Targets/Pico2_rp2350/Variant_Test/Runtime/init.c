@@ -270,7 +270,7 @@ static  void    local_PLL_Configuration(void) {
 
     REG(CLOCKS)->CLK_REF_DIV  = 1U * CLOCKS_CLK_REF_DIV_INT_0;
     REG(CLOCKS)->CLK_REF_CTRL = (REG(CLOCKS)->CLK_REF_CTRL & ~0x3U) | 0x2U;
-    while ((REG(CLOCKS)->CLK_REF_SELECTED & (1U<<0x2U)) == 0x0U) { }
+    while ((REG(CLOCKS)->CLK_REF_SELECTED & (1U<<0x2U)) == 0x0U) { ; }
 
 // The main PLL
 // ------------

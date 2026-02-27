@@ -186,16 +186,22 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #ifndef INTERRUPTION_OFF_HARD
 #define INTERRUPTION_OFF_HARD   __asm volatile ("                                                                            \n \
-                                cpsid       i"                                                                                  \
-                                );                                                                                              \
-                                INST_SYNC_BARRIER;
+                                cpsid       i                                                                                \n \
+                                isb         0xF"                                                                                \
+                                :                                                                                               \
+                                :                                                                                               \
+                                : "memory"                                                                                      \
+                                )
 #endif
 
 #ifndef INTERRUPTION_ON_HARD
 #define INTERRUPTION_ON_HARD    __asm volatile ("                                                                            \n \
-                                cpsie       i"                                                                                  \
-                                );                                                                                              \
-                                INST_SYNC_BARRIER;
+                                cpsie       i                                                                                \n \
+                                isb         0xF"                                                                                \
+                                :                                                                                               \
+                                :                                                                                               \
+                                : "memory"                                                                                      \
+                                )
 #endif
 
 #ifndef INTERRUPTION_OFF
@@ -335,19 +341,28 @@ extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 #ifndef DATA_SYNC_BARRIER
 #define DATA_SYNC_BARRIER       __asm volatile ("                                                                            \n \
-                                dsb"                                                                                            \
+                                dsb         0xF"                                                                                \
+                                :                                                                                               \
+                                :                                                                                               \
+                                : "memory"                                                                                      \
                                 )
 #endif
 
 #ifndef INST_SYNC_BARRIER
 #define INST_SYNC_BARRIER       __asm volatile ("                                                                            \n \
-                                isb"                                                                                            \
+                                isb         0xF"                                                                                \
+                                :                                                                                               \
+                                :                                                                                               \
+                                : "memory"                                                                                      \
                                 )
 #endif
 
 #ifndef MEMO_SYNC_BARRIER
 #define MEMO_SYNC_BARRIER       __asm volatile ("                                                                            \n \
-                                dmb"                                                                                            \
+                                dmb         0xF"                                                                                \
+                                :                                                                                               \
+                                :                                                                                               \
+                                : "memory"                                                                                      \
                                 )
 #endif
 

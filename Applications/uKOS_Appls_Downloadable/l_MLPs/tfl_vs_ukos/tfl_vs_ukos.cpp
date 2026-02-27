@@ -15,10 +15,10 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;
 ;           Launch 1 processes in C++:
 ;
-;			- P0: Every 1000-ms
-;				  Compute the inference for the TensorFlowLite model
-;				  Compute the inference for the uKOS-X model
-;				  Display the inference execution times
+;           - P0: Every 1000-ms
+;                 Compute the inference for the TensorFlowLite model
+;                 Compute the inference for the uKOS-X model
+;                 Display the inference execution times
 ;
 ;-----
 ;                                              __ ______  _____
@@ -61,10 +61,10 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  *
  *          Launch 1 processes:
  *
- *			- P0: Every 1000-ms
- *					- Compute the inference for the TensorFlowLite model
- *					- Compute the inference for the uKOS-X model
- *					- Display the inference execution times
+ *          - P0: Every 1000-ms
+ *                  - Compute the inference for the TensorFlowLite model
+ *                  - Compute the inference for the uKOS-X model
+ *                  - Display the inference execution times
  *
  */
 
@@ -112,22 +112,22 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 // TFLite & uKOS-X models
 
-#include	"./_Models/mlp_TFL_test.c_inc"
-#include	"./_Models/network.c_inc"
+#include    "./_Models/mlp_TFL_test.c_inc"
+#include    "./_Models/network.c_inc"
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"tfl_vs_ukos  TLF vs uKOS-X inference test speed.       (c) EFr-2026";
+STRG_LOC_CONST(aStrApplication[]) = "tfl_vs_ukos  TLF vs uKOS-X inference test speed.       (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
-									"===============================\n\n"
+                                    "===============================\n\n"
 
-									"This user function module is a C written application.\n\n"
+                                    "This user function module is a C written application.\n\n"
 
-									"Input format:  tfl_vs_ukos\n"
-									"Output format: [result]\n\n";
+                                    "Input format:  tfl_vs_ukos\n"
+                                    "Output format: [result]\n\n";
 
 MODULE(
     UserAppl,                           // Module name (the first letter has to be upper case)
@@ -181,9 +181,9 @@ namespace {
  * \brief aProcess
  *
  * - P0:  Every 1000-ms
- *			- Compute the inference for the TensorFlowLite model
- *			- Compute the inference for the uKOS-X model
- *			- Display the inference execution times
+ *          - Compute the inference for the TensorFlowLite model
+ *          - Compute the inference for the uKOS-X model
+ *          - Display the inference execution times
  *
  */
 namespace {
@@ -203,11 +203,11 @@ namespace {
 
 // Load the TFLite model
 
-			const tflite::Model *model = tflite::GetModel(mlp_TFL_test_tflite);
-			if (model->version() != TFLITE_SCHEMA_VERSION) {
-				(void)dprintf(KSYST, "Error : Model version not compatible\n");
-				exit(EXIT_OS_FAILURE);
-   			}
+            const tflite::Model *model = tflite::GetModel(mlp_TFL_test_tflite);
+            if (model->version() != TFLITE_SCHEMA_VERSION) {
+                (void)dprintf(KSYST, "Error : Model version not compatible\n");
+                exit(EXIT_OS_FAILURE);
+            }
 
 // Create the resolver operator
 // Create the micro interpreter
@@ -228,21 +228,21 @@ namespace {
 
 // For TensorFlowLite
 
-			kern_readTickCount(&time[0]);
-			interpreter.Invoke();
-			kern_readTickCount(&time[1]);
-			delta = (uint32_t)(time[1] - time[0]);
-			(void)dprintf(KSYST, "Exec time for TensorFlowLite = %" PRIu32 " [us]\n", delta);
+            kern_readTickCount(&time[0]);
+            interpreter.Invoke();
+            kern_readTickCount(&time[1]);
+            delta = (uint32_t)(time[1] - time[0]);
+            (void)dprintf(KSYST, "Exec time for TensorFlowLite = %" PRIu32 " [us]\n", delta);
 
 // For MLPN uKOS-X
 
-			kern_readTickCount(&time[0]);
-			mlpn_compute(&aNetwork);
-			kern_readTickCount(&time[1]);
-			delta = (uint32_t)(time[1] - time[0]);
-			(void)dprintf(KSYST, "Exec time for MLPN uKOS-X    = %" PRIu32 " [us]\n", delta);
-		}
-	}
+            kern_readTickCount(&time[0]);
+            mlpn_compute(&aNetwork);
+            kern_readTickCount(&time[1]);
+            delta = (uint32_t)(time[1] - time[0]);
+            (void)dprintf(KSYST, "Exec time for MLPN uKOS-X    = %" PRIu32 " [us]\n", delta);
+        }
+    }
 }
 
 /*

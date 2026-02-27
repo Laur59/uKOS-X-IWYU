@@ -262,7 +262,7 @@ set(UKOS_COMPONENTS rtcb_p kern_p kern_u libx_p libx_u proc_p proc_u tool_u ${MI
 # System configuration flags
 
 # With cdc0 on core 0 & urt0 on core 1
-add_compile_definitions(CONFIG_DIFFERENT_SERIAL_PER_CORE_S=false)
+add_compile_definitions(CONFIG_DIFFERENT_SERIAL_PER_CORE_S=true)
 
 # Statistics support
 add_compile_definitions(KKERN_WITH_STATISTICS_S=true)

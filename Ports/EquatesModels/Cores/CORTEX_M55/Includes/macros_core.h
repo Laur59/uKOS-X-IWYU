@@ -198,16 +198,22 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #ifndef INTERRUPTION_OFF_HARD
 #define INTERRUPTION_OFF_HARD   __asm volatile ("                                                                            \n \
-                                cpsid       i"                                                                                  \
-                                );                                                                                              \
-                                INST_SYNC_BARRIER;
+                                cpsid       i                                                                                \n \
+                                isb         0xF"                                                                                \
+                                :                                                                                               \
+                                :                                                                                               \
+                                : "memory"                                                                                      \
+                                )
 #endif
 
 #ifndef INTERRUPTION_ON_HARD
 #define INTERRUPTION_ON_HARD    __asm volatile ("                                                                            \n \
-                                cpsie       i"                                                                                  \
-                                );                                                                                              \
-                                INST_SYNC_BARRIER;
+                                cpsie       i                                                                                \n \
+                                isb         0xF"                                                                                \
+                                :                                                                                               \
+                                :                                                                                               \
+                                : "memory"                                                                                      \
+                                )
 #endif
 
 #ifndef INTERRUPTION_OFF

@@ -64,6 +64,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
  */
 int32_t stub_switch_init(void) {
+
     return KERR_SWITCH_NOERR;
 }
 
