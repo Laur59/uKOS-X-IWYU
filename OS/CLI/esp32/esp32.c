@@ -48,10 +48,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#ifndef CONFIG_MAN_URT2_S
-#error "This tool requires urt2 manager"
-#else
-
 #include    <stdint.h>
 #include    <stdio.h>
 #include    <stdlib.h>
@@ -336,4 +332,3 @@ static  bool    local_checkExit(const char_t *buffer) {
     if (exitPatter[3] != buffer[3]) { return false; }
     return true;
 }
-#endif

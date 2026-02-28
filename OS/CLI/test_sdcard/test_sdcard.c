@@ -124,12 +124,12 @@ STRG_LOC_CONST(aStrText[]) = "Process sdcard; R/W 100 sectors.          (c) EFr-
  *
  */
 static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     uint32_t    core;
     int32_t     status;
     proc_t      *process;
+
+    UNUSED(argc);
+    UNUSED(argv);
 
     core = GET_RUNNING_CORE;
     vKillRequest[core] = false;
@@ -163,10 +163,10 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
  *
  */
 static  int32_t test_sdcard_clean(uint32_t argc, const char_t *argv[]) {
+    uint32_t    core;
+
     UNUSED(argc);
     UNUSED(argv);
-
-    uint32_t    core;
 
     core = GET_RUNNING_CORE;
     vKillRequest[core] = true;

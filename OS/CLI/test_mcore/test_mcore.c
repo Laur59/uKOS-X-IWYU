@@ -129,11 +129,11 @@ STRG_LOC_CONST(message_1to0[]) = "The quick brown fox jumps over the lazy dog.";
  *
  */
 static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     uint32_t    core;
     proc_t      *process_RX, *process_TX;
+
+    UNUSED(argc);
+    UNUSED(argv);
 
     core = GET_RUNNING_CORE;
     vKillRequest[core] = false;
@@ -175,10 +175,10 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
  *
  */
 static  int32_t test_mcore_clean(uint32_t argc, const char_t *argv[]) {
+    uint32_t    core;
+
     UNUSED(argc);
     UNUSED(argv);
-
-    uint32_t    core;
 
     core = GET_RUNNING_CORE;
     vKillRequest[core] = true;

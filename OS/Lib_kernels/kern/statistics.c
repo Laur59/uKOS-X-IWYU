@@ -147,6 +147,4 @@ void    statistics_statistic(proc_t *backwardProcess, uint32_t timeStart, uint32
     backwardProcess->oStatistic.oTimeKAvg  = (uint16_t)((((uint32_t)backwardProcess->oStatistic.oTimeKAvg * ((1U<<KNMEAN) - 1)) + timeK32)>>KNMEAN);
     backwardProcess->oStatistic.oTimeEAvg  = (uint16_t)((((uint32_t)backwardProcess->oStatistic.oTimeEAvg * ((1U<<KNMEAN) - 1)) + timeE32)>>KNMEAN);
 }
-#else
-#error  "KKERN_WITH_STATISTICS_S SHALL be defined in project using kern/statistics.c"
 #endif

@@ -67,7 +67,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 #include    "os_errors.h"
 
 #if (KKERN_WITH_DEBUG_S == true)
-
 static  list_t      vKern_listStop[KNB_CORES];
 
 /*
@@ -189,6 +188,4 @@ int32_t kern_reactivateProcess(proc_t *handle) {
     PRIVILEGE_RESTORE;
     return KERR_KERN_NOERR;
 }
-#else
-#error  "KKERN_WITH_DEBUG_S SHALL be defined in project using kern/debug.c"
 #endif

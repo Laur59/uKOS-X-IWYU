@@ -76,7 +76,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 #include    "kern/kern.h"
 #include    "macros_soc.h"
 
-enum    {
+enum {
         KSCHE_FORCE_SWITCH_NORM = 0U,                           // Switching process nprmal
         KSCHE_TIMEOUT_SWITCH_NORM                               // Switching process due to a timeaout
 };

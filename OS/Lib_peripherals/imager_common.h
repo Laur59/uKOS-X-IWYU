@@ -66,7 +66,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  * @{
  */
 
-#define     KIMAGER_SINGLE_BUFFER   0x80u                       // Single buffer
+#define     KIMAGER_SINGLE_BUFFER   0x80U                       // Single buffer
 #define     KIMAGER_NB_ROWS_QVGA    240U                        // Number of rows (QVGA)
 #define     KIMAGER_NB_COLS_QVGA    320U                        // Number of columns (QVGA)
 

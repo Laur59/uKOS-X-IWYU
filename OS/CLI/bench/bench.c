@@ -104,11 +104,11 @@ MODULE(
  *
  */
 static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     priority_t  priority;
     proc_t      *process;
+
+    UNUSED(argc);
+    UNUSED(argv);
 
     PRIVILEGE_ELEVATE;
 

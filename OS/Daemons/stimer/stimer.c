@@ -312,6 +312,4 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
     }
 }
 
-#else
-#error "KKERN_NB_SOFTWARE_TIMERS shall be > 0 to use stimer.c"
 #endif

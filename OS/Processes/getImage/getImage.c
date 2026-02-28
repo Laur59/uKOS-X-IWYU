@@ -135,11 +135,11 @@ static  const   mt9v03x_t   aTab328248F[] = {
  *
  */
 static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     uint32_t    core;
     proc_t      *process;
+
+    UNUSED(argc);
+    UNUSED(argv);
 
     core = GET_RUNNING_CORE;
     vKillRequest[core] = false;

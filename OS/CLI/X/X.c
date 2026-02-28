@@ -105,15 +105,15 @@ MODULE(
  *
  */
 static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
             uint32_t    core, sizeRec;
             int32_t     status;
             uint16_t    *bufRec, i;
     static  uint16_t    vTemperature[KNB_CORES][KNB_SAMPLES];
     static  bool        vInitialised[KNB_CORES] = MCSET(false);
     static  mbox_t      *vMailBox[KNB_CORES];
+
+    UNUSED(argc);
+    UNUSED(argv);
 
     core = GET_RUNNING_CORE;
 
