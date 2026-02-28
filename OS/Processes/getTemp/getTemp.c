@@ -160,10 +160,10 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
  *
  */
 static  int32_t temperature_clean(uint32_t argc, const char_t *argv[]) {
+    uint32_t    core;
+
     UNUSED(argc);
     UNUSED(argv);
-
-    uint32_t    core;
 
     core = GET_RUNNING_CORE;
     vKillRequest[core] = true;

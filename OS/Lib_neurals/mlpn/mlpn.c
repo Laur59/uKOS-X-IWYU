@@ -66,7 +66,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 // 1 indicates that only the Helium integer intrinsics are available
 // 3 indicates that both the Helium integer and floating-point intrinsics are available
 
-#if ((defined(__ARM_FEATURE_MVE)) && (__ARM_FEATURE_MVE == 2))
+#if (defined(__ARM_FEATURE_MVE) && (__ARM_FEATURE_MVE >= 3))
 #include    <arm_mve.h>
 #endif
 
@@ -392,7 +392,7 @@ static  int32_t local_initialiseLayer(mlpnLayer_t *layer) {
 
 // Dot product: Helium FP (MVE) if available (with unroll x2 (8 floats per iteration))
 
-#if ((defined(__ARM_FEATURE_MVE)) && (__ARM_FEATURE_MVE == 2))
+#if (defined(__ARM_FEATURE_MVE) && (__ARM_FEATURE_MVE >= 3))
 static  inline  float32_t   local_hadd_f32x4(float32x4_t v) {
     float32_t   tmp[4];
 
@@ -403,9 +403,9 @@ static  inline  float32_t   local_hadd_f32x4(float32x4_t v) {
 
 static  inline  float32_t   local_dot_f32(const float32_t * restrict w, const float32_t * restrict x, uint16_t n) {
 
-    #if ((defined(__ARM_FEATURE_MVE)) && (__ARM_FEATURE_MVE == 2))
-    float32x4_t     acc0 = vdupq_n_f32(0.0F);
-    float32x4_t     acc1 = vdupq_n_f32(0.0F);
+    #if (defined(__ARM_FEATURE_MVE) && (__ARM_FEATURE_MVE >= 3))
+    float32x4_t     acc0 = vdupq_n_f32(0.0f);
+    float32x4_t     acc1 = vdupq_n_f32(0.0f);
     uint16_t        i = 0U, rem;
 
     w = (const float32_t *)__builtin_assume_aligned(w, 16);

@@ -61,6 +61,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 #include    "record/record.h"
 #include    "serial_common.h"
 // cppcheck-suppress missingInclude
+//
 #include    "tusb_config.h"
 #include    "types.h"
 

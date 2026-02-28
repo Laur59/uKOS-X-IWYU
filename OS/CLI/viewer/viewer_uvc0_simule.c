@@ -99,9 +99,6 @@ static  bool    vKillRequest[KNB_CORES] = MCSET(false);
  *
  */
 int32_t viewer_uvc0(uint32_t argc, const char_t *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     uint32_t    core;
     proc_t      *process;
 
@@ -109,6 +106,9 @@ int32_t viewer_uvc0(uint32_t argc, const char_t *argv[]) {
 
     STRG_LOC_CONST(aStrIden[]) = "Process_User";
     STRG_LOC_CONST(aStrText[]) = "Process user.                             (c) EFr-2026";
+
+    UNUSED(argc);
+    UNUSED(argv);
 
     core = GET_RUNNING_CORE;
     vKillRequest[core] = false;
@@ -140,10 +140,10 @@ int32_t viewer_uvc0(uint32_t argc, const char_t *argv[]) {
  *
  */
 int32_t viewer_uvc0_clean(uint32_t argc, const char_t *argv[]) {
+    uint32_t    core;
+
     UNUSED(argc);
     UNUSED(argv);
-
-    uint32_t    core;
 
     core = GET_RUNNING_CORE;
     vKillRequest[core] = true;

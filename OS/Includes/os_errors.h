@@ -67,7 +67,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 //                  ee      error code
 //
 //                          Negative                Family Lib Id                      Manager Id
-#define KKERN_ERR           ((uint32_t)0x80000000u | ((uint32_t)KID_FAM_KERNELS<<16U) | ((uint32_t)KNUM_KERN<<8U))
+#define KKERN_ERR           ((uint32_t)0x80000000U | ((uint32_t)KID_FAM_KERNELS<<16U) | ((uint32_t)KNUM_KERN<<8U))
 
 enum : int32_t {
     KERR_KERN_NOERR = 0,                                        // No error
@@ -148,7 +148,7 @@ enum : int32_t {
 // ---------------------
 
 //                          Negative                 Family Lib Id                      Manager Id
-#define KSERIAL_ERR         ((uint32_t)0x80000000u | ((uint32_t)KID_FAM_SERIALS<<16U) | ((uint32_t)KNUM_SERIAL<<8U))
+#define KSERIAL_ERR         ((uint32_t)0x80000000U | ((uint32_t)KID_FAM_SERIALS<<16U) | ((uint32_t)KNUM_SERIAL<<8U))
 
 enum : int32_t {
     KERR_SERIAL_NOERR = 0,                                      // No error
@@ -186,7 +186,7 @@ enum : int32_t {
 // -------------------
 
 //                          Negative                 Family Lib Id                       Manager Id
-#define KASMP_ERR           ((uint32_t)0x80000000u | ((uint32_t)KID_FAM_GENERICS<<16U) | ((uint32_t)KNUM_ASMP<<8U))
+#define KASMP_ERR           ((uint32_t)0x80000000U | ((uint32_t)KID_FAM_GENERICS<<16U) | ((uint32_t)KNUM_ASMP<<8U))
 
 enum : int32_t {
     KERR_ASMP_NOERR = 0,                                        // No error
@@ -203,7 +203,7 @@ enum : int32_t {
 // -------------------
 
 //                          Negative                 Family Lib Id                       Manager Id
-#define KMEMO_ERR           ((uint32_t)0x80000000u | ((uint32_t)KID_FAM_GENERICS<<16U) | ((uint32_t)KNUM_MEMO<<8U))
+#define KMEMO_ERR           ((uint32_t)0x80000000U | ((uint32_t)KID_FAM_GENERICS<<16U) | ((uint32_t)KNUM_MEMO<<8U))
 
 enum : int32_t {
     KERR_MEMO_NOERR = 0,                                        // No error
@@ -216,7 +216,7 @@ enum : int32_t {
 // ---------------------
 
 //                          Negative                 Family Lib Id                       Manager Id
-#define KRECORD_ERR         ((uint32_t)0x80000000u | ((uint32_t)KID_FAM_GENERICS<<16U) | ((uint32_t)KNUM_RECORD<<8U))
+#define KRECORD_ERR         ((uint32_t)0x80000000U | ((uint32_t)KID_FAM_GENERICS<<16U) | ((uint32_t)KNUM_RECORD<<8U))
 
 enum : int32_t {
     KERR_RECORD_NOERR = 0,                                      // No error
@@ -228,7 +228,7 @@ enum : int32_t {
 // ---------------------
 
 //                          Negative                 Family Lib Id                       Manager Id
-#define KSYSTEM_ERR         ((uint32_t)0x80000000u | ((uint32_t)KID_FAM_GENERICS<<16U) | ((uint32_t)KNUM_SYSTEM<<8U))
+#define KSYSTEM_ERR         ((uint32_t)0x80000000U | ((uint32_t)KID_FAM_GENERICS<<16U) | ((uint32_t)KNUM_SYSTEM<<8U))
 
 enum : int32_t {
     KERR_SYSTEM_NOERR = 0,                                      // No error
@@ -247,7 +247,7 @@ enum : int32_t {
 // ---------------------
 
 //                          Negative                 Family Lib Id                       Manager Id
-#define KMACHINE_ERR        ((uint32_t)0x80000000u | ((uint32_t)KID_FAM_GENERICS<<16U) | ((uint32_t)KNUM_MACHINE<<8U))
+#define KMACHINE_ERR        ((uint32_t)0x80000000U | ((uint32_t)KID_FAM_GENERICS<<16U) | ((uint32_t)KNUM_MACHINE<<8U))
 
 enum : int32_t {
     KERR_MACHINE_NOERR = 0,                                     // No error
@@ -259,7 +259,7 @@ enum : int32_t {
 // -------------------
 
 //                          Negative                 Family Lib Id                       Manager Id
-#define KTEXT_ERR           ((uint32_t)0x80000000u | ((uint32_t)KID_FAM_GENERICS<<16U) | ((uint32_t)KNUM_TEXT<<8U))
+#define KTEXT_ERR           ((uint32_t)0x80000000U | ((uint32_t)KID_FAM_GENERICS<<16U) | ((uint32_t)KNUM_TEXT<<8U))
 
 enum : int32_t {
     KERR_TEXT_NOERR = 0,                                        // No error
@@ -271,7 +271,7 @@ enum : int32_t {
 // -----------------------
 
 //                          Negative                 Family Lib Id                       Manager Id
-#define KCALENDAR_ERR       ((uint32_t)0x80000000u | ((uint32_t)KID_FAM_GENERICS<<16U) | ((uint32_t)KNUM_CALENDAR<<8U))
+#define KCALENDAR_ERR       ((uint32_t)0x80000000U | ((uint32_t)KID_FAM_GENERICS<<16U) | ((uint32_t)KNUM_CALENDAR<<8U))
 
 enum : int32_t {
     KERR_CALENDAR_NOERR = 0,                                    // No error
@@ -283,7 +283,7 @@ enum : int32_t {
 // ---------------------
 
 //                          Negative                 Family Lib Id                       Manager Id
-#define KNEWLIB_ERR         ((uint32_t)0x80000000u | ((uint32_t)KID_FAM_GENERICS<<16U) | ((uint32_t)KNUM_NEWLIB<<8U))
+#define KNEWLIB_ERR         ((uint32_t)0x80000000U | ((uint32_t)KID_FAM_GENERICS<<16U) | ((uint32_t)KNUM_NEWLIB<<8U))
 
 enum : int32_t {
     KERR_NEWLIB_NOERR = 0                                       // No error
@@ -296,7 +296,7 @@ enum : int32_t {
 // -------------------
 
 //                          Negative                 Family Lib Id                      Manager Id
-#define KMLPN_ERR           ((uint32_t)0x80000000u | ((uint32_t)KID_FAM_NEURALS<<16U) | ((uint32_t)KNUM_MLPN<<8U))
+#define KMLPN_ERR           ((uint32_t)0x80000000U | ((uint32_t)KID_FAM_NEURALS<<16U) | ((uint32_t)KNUM_MLPN<<8U))
 
 enum : int32_t {
     KERR_MLPN_NOERR = 0,                                        // No error
@@ -316,7 +316,7 @@ enum : int32_t {
 // ------------------
 
 //                          Negative                 Family Lib Id                          Manager Id
-#define KADC_ERR            ((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<16U) | ((uint32_t)KNUM_ADC<<8U))
+#define KADC_ERR            ((uint32_t)0x80000000U | ((uint32_t)KID_FAM_PERIPHERALS<<16U) | ((uint32_t)KNUM_ADC<<8U))
 
 enum : int32_t {
     KERR_ADC_NOERR = 0,                                         // No error
@@ -331,7 +331,7 @@ enum : int32_t {
 // ----------------------
 
 //                          Negative                 Family Lib Id                          Manager Id
-#define KBATTERY_ERR        ((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<16U) | ((uint32_t)KNUM_BATTERY<<8U))
+#define KBATTERY_ERR        ((uint32_t)0x80000000U | ((uint32_t)KID_FAM_PERIPHERALS<<16U) | ((uint32_t)KNUM_BATTERY<<8U))
 
 enum : int32_t {
     KERR_BATTERY_NOERR = 0,                                     // No error
@@ -345,7 +345,7 @@ enum : int32_t {
 // ------------------
 
 //                          Negative                 Family Lib Id                          Manager Id
-#define KI2C_ERR            ((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<16U) | ((uint32_t)KNUM_I2C<<8U))
+#define KI2C_ERR            ((uint32_t)0x80000000U | ((uint32_t)KID_FAM_PERIPHERALS<<16U) | ((uint32_t)KNUM_I2C<<8U))
 
 enum : int32_t {
     KERR_I2C_NOERR = 0,                                         // No error
@@ -362,7 +362,7 @@ enum : int32_t {
 // ---------------------
 
 //                          Negative                 Family Lib Id                          Manager Id
-#define KIMAGER_ERR         ((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<16U) | ((uint32_t)KNUM_IMAGER<<8U))
+#define KIMAGER_ERR         ((uint32_t)0x80000000U | ((uint32_t)KID_FAM_PERIPHERALS<<16U) | ((uint32_t)KNUM_IMAGER<<8U))
 
 enum : int32_t {
     KERR_IMAGER_NOERR = 0,                                      // No error
@@ -381,7 +381,7 @@ enum : int32_t {
 // ------------------
 
 //                          Negative                 Family Lib Id                          Manager Id
-#define KIMU_ERR            ((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<16U) | ((uint32_t)KNUM_IMU<<8U))
+#define KIMU_ERR            ((uint32_t)0x80000000U | ((uint32_t)KID_FAM_PERIPHERALS<<16U) | ((uint32_t)KNUM_IMU<<8U))
 
 enum : int32_t {
     KERR_IMU_NOERR = 0,                                         // No error
@@ -395,7 +395,7 @@ enum : int32_t {
 // ------------------
 
 //                          Negative                 Family Lib Id                          Manager Id
-#define KSPI_ERR            ((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<16U) | ((uint32_t)KNUM_SPI<<8U))
+#define KSPI_ERR            ((uint32_t)0x80000000U | ((uint32_t)KID_FAM_PERIPHERALS<<16U) | ((uint32_t)KNUM_SPI<<8U))
 
 enum : int32_t {
     KERR_SPI_NOERR = 0,                                         // No error
@@ -412,7 +412,7 @@ enum : int32_t {
 // --------------------------
 
 //                          Negative                 Family Lib Id                          Manager Id
-#define KTEMPERATURE_ERR    ((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<16U) | ((uint32_t)KNUM_TEMPERATURE<<8U))
+#define KTEMPERATURE_ERR    ((uint32_t)0x80000000U | ((uint32_t)KID_FAM_PERIPHERALS<<16U) | ((uint32_t)KNUM_TEMPERATURE<<8U))
 
 enum : int32_t {
     KERR_TEMPERATURE_NOERR = 0,                                 // No error
@@ -426,7 +426,7 @@ enum : int32_t {
 // -------------------
 
 //                          Negative                 Family Lib Id                          Manager Id
-#define KWATCHDOG_ERR       ((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<16U) | ((uint32_t)KNUM_WATCHDOG<<8U))
+#define KWATCHDOG_ERR       ((uint32_t)0x80000000U | ((uint32_t)KID_FAM_PERIPHERALS<<16U) | ((uint32_t)KNUM_WATCHDOG<<8U))
 
 enum : int32_t {
     KERR_WATCHDOG_NOERR = 0                                     // No error
@@ -436,7 +436,7 @@ enum : int32_t {
 // ------------------
 
 //                          Negative                 Family Lib Id                          Manager Id
-#define KLED_ERR            ((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<16U) | ((uint32_t)KNUM_LED<<8U))
+#define KLED_ERR            ((uint32_t)0x80000000U | ((uint32_t)KID_FAM_PERIPHERALS<<16U) | ((uint32_t)KNUM_LED<<8U))
 
 enum : int32_t {
     KERR_LED_NOERR = 0,                                         // No error
@@ -449,7 +449,7 @@ enum : int32_t {
 // ---------------------
 
 //                          Negative                 Family Lib Id                          Manager Id
-#define KSWITCH_ERR         ((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<16U) | ((uint32_t)KNUM_SWITCH<<8U))
+#define KSWITCH_ERR         ((uint32_t)0x80000000U | ((uint32_t)KID_FAM_PERIPHERALS<<16U) | ((uint32_t)KNUM_SWITCH<<8U))
 
 enum : int32_t {
     KERR_SWITCH_NOERR = 0,                                      // No error
@@ -464,7 +464,7 @@ enum : int32_t {
 // -------------------
 
 //                          Negative                 Family Lib Id                             Manager Id
-#define KRANDOM_ERR         ((uint32_t)0x80000000u | ((uint32_t)KID_FAM_CRYPTOGRAPHICS<<16U) | ((uint32_t)KNUM_RANDOM<<8U))
+#define KRANDOM_ERR         ((uint32_t)0x80000000U | ((uint32_t)KID_FAM_CRYPTOGRAPHICS<<16U) | ((uint32_t)KNUM_RANDOM<<8U))
 
 enum : int32_t {
     KERR_RANDOM_NOERR = 0,                                      // No error
@@ -479,7 +479,7 @@ enum : int32_t {
 // ----------------------
 
 //                          Negative                 Family Lib Id                      Manager Id
-#define KSTORAGE_ERR        ((uint32_t)0x80000000u | ((uint32_t)KID_FAM_STORAGE<<16U) | ((uint32_t)KNUM_STORAGE<<8U))
+#define KSTORAGE_ERR        ((uint32_t)0x80000000U | ((uint32_t)KID_FAM_STORAGE<<16U) | ((uint32_t)KNUM_STORAGE<<8U))
 
 enum : int32_t {
     KERR_STORAGE_NOERR = 0,                                     // No error
@@ -501,7 +501,7 @@ enum : int32_t {
 // --------------------------
 
 //                          Negative                 Family Lib Id                            Manager Id
-#define KMICROPYTHON_ERR    ((uint32_t)0x80000000u | ((uint32_t)KID_FAM_THIRD_PARTIES<<16U) | ((uint32_t)KNUM_MICROPYTHON<<8U))
+#define KMICROPYTHON_ERR    ((uint32_t)0x80000000U | ((uint32_t)KID_FAM_THIRD_PARTIES<<16U) | ((uint32_t)KNUM_MICROPYTHON<<8U))
 
 enum : int32_t {
     KERR_MICROPYTHON_NOERR = 0,                                 // No error

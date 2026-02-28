@@ -458,9 +458,9 @@ static  void    local_printParameter_P0(uint8_t core, uint16_t number, process_t
 }
 
 static  void    local_printParameter_P1(uint8_t core, uint16_t number, process_t *handle) {
-    UNUSED(core);
-
     const   char_t  *space, *father;
+
+    UNUSED(core);
 
     father = (handle->oInternal.oProcFather == nullptr)   ? "Orphan" : (handle->oInternal.oProcFather->oSpecification.oIdentifier);
     space  = (handle->oSpecification.oMode == KPROC_USER) ? "User"   : "Privileged";

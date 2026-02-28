@@ -114,11 +114,11 @@ STRG_LOC_CONST(aStrText_SndX[]) = "Daemon mcore: send to core x.             (c)
  *
  */
 static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
     uint32_t    core;
     proc_t      *process_SndX, *process_RecX;
+
+    UNUSED(argc);
+    UNUSED(argv);
 
     core = GET_RUNNING_CORE;
 
@@ -173,8 +173,6 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
  *
  */
 static void __attribute__ ((noreturn)) local_process_SndX(const void *argument) {
-    UNUSED(argument);
-
             uint32_t    core, toCore, size, order = 0U;
             uint8_t     *receive = nullptr, *send = nullptr;
             mbox_t      *mailBox;
@@ -184,6 +182,8 @@ static void __attribute__ ((noreturn)) local_process_SndX(const void *argument) 
                             .oDataEntrySize = KASMP_MBOX_ENTRY_SIZE
                         };
     const   char_t      *idSendMbox;
+
+    UNUSED(argument);
 
 // If the running core is the core 0
 //  - The message is for the core 1 via the mailbox 1
@@ -253,8 +253,6 @@ static void __attribute__ ((noreturn)) local_process_SndX(const void *argument) 
  *
  */
 static void __attribute__ ((noreturn)) local_process_RecX(const void *argument) {
-    UNUSED(argument);
-
             uint32_t    core, fromCore, size, order;
             uint8_t     *receive = nullptr, *send = nullptr;
             mbox_t      *mailBox;
@@ -264,6 +262,8 @@ static void __attribute__ ((noreturn)) local_process_RecX(const void *argument) 
                             .oDataEntrySize = KASMP_MBOX_ENTRY_SIZE
                         };
     const   char_t      *idReceiveMbox;
+
+    UNUSED(argument);
 
 // If the running core is the core 0
 //  - The message is coming from the core 1 via the mailbox 1

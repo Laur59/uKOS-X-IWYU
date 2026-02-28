@@ -373,6 +373,4 @@ int32_t kern_getPreciseSignalById(const char_t *identifier, prcs_t **handle) {
     PRIVILEGE_RESTORE;
     return KERR_KERN_NOPRC;
 }
-#else
-#error  "KKERN_NB_PRECISE_SIGNALS SHALL be > 0 in project using kern/prcs.c"
 #endif

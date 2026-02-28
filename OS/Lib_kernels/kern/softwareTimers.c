@@ -391,6 +391,4 @@ int32_t kern_getSoftwareTimerById(const char_t *identifier, stim_t **handle) {
     PRIVILEGE_RESTORE;
     return KERR_KERN_NOSTI;
 }
-#else
-#error  "KKERN_NB_SOFTWARE_TIMERS SHALL be > 0 in project using kern/softwareTimers.c"
 #endif

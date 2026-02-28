@@ -489,6 +489,4 @@ int32_t kern_getPoolById(const char_t *identifier, pool_t **handle) {
     PRIVILEGE_RESTORE;
     return KERR_KERN_NOPOI;
 }
-#else
-#error  "KKERN_NB_POOLS SHALL be > 0 in project using kern/pool.c"
 #endif

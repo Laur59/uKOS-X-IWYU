@@ -114,10 +114,10 @@ STRG_LOC_CONST(aStrText[]) = "Process launcher: launch processes.       (c) EFr-
  *
  */
 static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
+    proc_t  *process;
+
     UNUSED(argc);
     UNUSED(argv);
-
-    proc_t  *process;
 
     PROCESS_STACKMALLOC(
         0,                                  // Index

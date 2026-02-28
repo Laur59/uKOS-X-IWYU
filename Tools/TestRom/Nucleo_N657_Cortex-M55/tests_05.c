@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test of the USART1 Tx interruption.
+; Project:  uKOS-X
+; Goal:     Test of the USART1 Tx interruption.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,15 +46,15 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
+#include    "tests.h"
 
 #if (defined(TEST_05_S))
-bool		vTransmitted = false;
-uint8_t		vString[] = ".. but we are not afraid, we are alway firsts ...\n";
+bool        vTransmitted = false;
+uint8_t     vString[] = ".. but we are not afraid, we are alway firsts ...\n";
 
 // Prototypes
 
-void	local_USART1_IRQHandler(void);
+void    local_USART1_IRQHandler(void);
 
 /*
  * \brief test_05
@@ -62,33 +62,33 @@ void	local_USART1_IRQHandler(void);
  * - Test of the USART3 Tx interruption
  *
  */
-void	test_05(void) {
+void    test_05(void) {
 
 // Initialise the USART1 to generate Tx interruptions
 
-	INTERRUPT_VECTOR(USART1_C0_IRQn, local_USART1_IRQHandler);
-	NVIC_SetPriority(USART1_C0_IRQn, KINT_LEVEL_COMMUNICATIONS);
-	NVIC_EnableIRQ(USART1_C0_IRQn);
+    INTERRUPT_VECTOR(USART1_C0_IRQn, local_USART1_IRQHandler);
+    NVIC_SetPriority(USART1_C0_IRQn, KINT_LEVEL_COMMUNICATIONS);
+    NVIC_EnableIRQ(USART1_C0_IRQn);
 
-	cmns_init();
+    cmns_init();
 
 // Waiting for the USART1 interruption
 
-	__asm volatile ("			\n \
-		cpsie		i"			   \
-	);
+    __asm volatile ("           \n \
+        cpsie       i"             \
+    );
 
-	while (true) {
-		REG(USART1)->CR1_FIFO |= USART_CR1_FIFO_TXFNFIE;
+    while (true) {
+        REG(USART1)->CR1_FIFO |= USART_CR1_FIFO_TXFNFIE;
 
 // Let terminate the buffer transfer
 
-		cmns_wait(100000);
-		do { } while (vTransmitted == false);
+        cmns_wait(100000);
+        do { } while (vTransmitted == false);
 
-		vTransmitted = false;
-		LED_RED_TOGGLE;
-	}
+        vTransmitted = false;
+        LED_RED_TOGGLE;
+    }
 }
 
 /*
@@ -97,35 +97,35 @@ void	test_05(void) {
  * - Blink the BLUE Led
  *
  */
-void	local_USART1_IRQHandler(void) {
-			volatile	uint16_t	data;
-			volatile	uint32_t	iir;
-	static	volatile	uint8_t		index = 0;
-	static	const		uint8_t		aSendText[] = "This is a text ...\n";
+void    local_USART1_IRQHandler(void) {
+            volatile    uint16_t    data;
+            volatile    uint32_t    iir;
+    static  volatile    uint8_t     index = 0;
+    static  const       uint8_t     aSendText[] = "This is a text ...\n";
 
-	iir = REG(USART1)->ISR_FIFO;
-	if ((iir & USART_ISR_FIFO_RXFNE) != 0) {
+    iir = REG(USART1)->ISR_FIFO;
+    if ((iir & USART_ISR_FIFO_RXFNE) != 0) {
 
 // Rx interruption
 
-		data = REG(USART1)->RDR;
-		LED_BLUE_TOGGLE;
-	}
+        data = REG(USART1)->RDR;
+        LED_BLUE_TOGGLE;
+    }
 
-	if ((iir & USART_ISR_FIFO_TXFNF) != 0) {
-		data = (uint16_t)aSendText[index];
-		if (data == 0) {
+    if ((iir & USART_ISR_FIFO_TXFNF) != 0) {
+        data = (uint16_t)aSendText[index];
+        if (data == 0) {
 
 // Terminated
 
-			index = 0;
-			vTransmitted = true;
-			REG(USART1)->CR1_FIFO &= ~USART_CR1_FIFO_TXFNFIE;
-		}
-		else {
-			REG(USART1)->TDR = data;
-			index++;
-		}
-	}
+            index = 0;
+            vTransmitted = true;
+            REG(USART1)->CR1_FIFO &= ~USART_CR1_FIFO_TXFNFIE;
+        }
+        else {
+            REG(USART1)->TDR = data;
+            index++;
+        }
+    }
 }
 #endif

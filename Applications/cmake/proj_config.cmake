@@ -268,28 +268,26 @@ function(configure_arm_core)
 
     elseif(${CORE} STREQUAL "CORTEX_M55")
         set(LLVM_TARGET "thumbv8.1m.main-${TARGET_TRIPLE_MIDDLE}-eabihf")
-        set(MCPU "cortex-m55")
         set(MARCH "thumbv8.1m.main")
         set(MFLOAT_ABI "hard")
-        set(MFPU "fpv5-sp-d16")
         # Check for feature-based configuration
         if(DEFINED CPU_FEATURES AND NOT "${CPU_FEATURES}" STREQUAL "")
             # CORTEX_M55_VALID_FEATURES
-            #   "mve|Helium M-Profile Vector Extension||MLPN_HAVE_HELIUM_FP_S|+mve"
-            #   "mve.fp|Helium MVE with explicit FP support||MLPN_HAVE_HELIUM_FP_S|+mve.fp"
+            #   "Helium|Helium M-Profile Vector Extension||MLPN_HAVE_HELIUM_FP_S|+mve"
+            #   "Double|Double precision FP support||MLPN_HAVE_HELIUM_FP_S|+mve.fp"
             #   "nofp|Disable floating point unit|||+nofp"
             foreach(feature IN LISTS CPU_FEATURES)
-                if(${feature} STREQUAL "mve")
+                if(${feature} STREQUAL "Helium")
                     set(has_mve TRUE)
-                elseif(${feature} STREQUAL "mve.fp")
-                    set(has_mve_fp TRUE)
+                elseif(${feature} STREQUAL "Double")
+                    set(has_dp TRUE)
                 elseif(${feature} STREQUAL "nofp")
                     set(has_nofp TRUE)
                 endif()
             endforeach()
         endif()
         # Check if MVE/Helium is requested
-        if(has_mve OR has_mve_fp)
+        if(has_mve)
             # Helium/MVE mode
             unset(MFPU)  # MVE doesn't use -mfpu
             # Build -march with MVE extensions
@@ -297,11 +295,12 @@ function(configure_arm_core)
             if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
                 set(MARCH "armv8.1-m.main")
             endif()
-            if(has_mve_fp)
-                set(MARCH "${MARCH}+mve.fp")
-            else()
-                set(MARCH "${MARCH}+mve")
+            set(MARCH "${MARCH}+mve.fp")
+            if(has_dp)
+                set(MARCH "${MARCH}+fp.dp")
             endif()
+        elseif(has_dp)
+            set(MARCH "${MARCH}+fp.dp")
         elseif(has_nofp)
             # No floating point
             set(LLVM_TARGET "${BASE_MARCH}-${TARGET_TRIPLE_MIDDLE}-eabi")
@@ -346,7 +345,7 @@ function(configure_arm_core)
     if(DEFINED MCPU)
         list(APPEND COMPILE_FLAGS "-mcpu=${MCPU}")
     endif()
-    if(DEFINED MARCH AND CMAKE_C_COMPILER_ID STREQUAL "Clang")
+    if(DEFINED MARCH AND (CMAKE_C_COMPILER_ID STREQUAL "Clang" OR ${CORE} STREQUAL "CORTEX_M55"))
         list(APPEND COMPILE_FLAGS "-march=${MARCH}")
     endif()
     if(DEFINED MFLOAT_ABI)

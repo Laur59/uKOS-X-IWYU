@@ -703,6 +703,4 @@ static  void    local_getDevice(serialManager_t serialManager, serialManager_t *
     PRIVILEGE_RESTORE;
 }
 
-#else
-#error  "CONFIG_MAN_COMM_S SHALL be defined in project using serial/serial.c"
 #endif
