@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test of the SPI DMA transfer (read).
+; Project:  uKOS-X
+; Goal:     Test of the SPI DMA transfer (read).
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,39 +46,39 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
+#include    "tests.h"
 
 #if (defined(TEST_11_S))
-#define	KSPIM_SZ_PAGE		256
+#define KSPIM_SZ_PAGE       256
 
-		uint8_t		vBuffer[KSPIM_SZ_PAGE];
-const	uint8_t		aBuffer[KSPIM_SZ_PAGE] = {
-						0xAA, 0x04, 0x55, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-						0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-						0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-						0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-						0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-						0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-						0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-						0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-						0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-						0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-						0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-						0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-						0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-						0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-						0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-						0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10, 0x08, 0x04, 0x02
-					};
+        uint8_t     vBuffer[KSPIM_SZ_PAGE];
+const   uint8_t     aBuffer[KSPIM_SZ_PAGE] = {
+                        0xAA, 0x04, 0x55, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10, 0x08, 0x04, 0x02
+                    };
 
-static	char_t		vString[20];
+static  char_t      vString[20];
 
 // Prototypes
 
-static	void	local_initSPI1(void);
-static	void	local_initDMA1(void);
-static	void	local_DMA1_STR0_IRQHandler(void);
-static	void	local_DMA1_STR1_IRQHandler(void);
+static  void    local_initSPI1(void);
+static  void    local_initDMA1(void);
+static  void    local_DMA1_STR0_IRQHandler(void);
+static  void    local_DMA1_STR1_IRQHandler(void);
 
 /*
  * \brief test_11
@@ -86,56 +86,54 @@ static	void	local_DMA1_STR1_IRQHandler(void);
  * - Test of the SPI DMA transfer (read)
  *
  */
-void	test_11(void) {
-	uint32_t	i, *data;
+void    test_11(void) {
+    uint32_t    i, *data;
 
-	RCC->AHB1ENR |= RCC_AHB1ENR_DMA1EN;
-	RCC->APB2ENR |= RCC_APB2ENR_SPI1EN;
+    RCC->AHB1ENR |= RCC_AHB1ENR_DMA1EN;
+    RCC->APB2ENR |= RCC_APB2ENR_SPI1EN;
 
-	for (i = 0; i < KSPIM_SZ_PAGE; i++) {
-		vBuffer[i] = (uint8_t)(i | 0x80);
-	}
+    for (i = 0; i < KSPIM_SZ_PAGE; i++) {
+        vBuffer[i] = (uint8_t)(i | 0x80);
+    }
 
-	cmns_init();
+    cmns_init();
 
 // Initialise the SPI1 and the DMA1
 
-	local_initSPI1();
-	local_initDMA1();
+    local_initSPI1();
+    local_initDMA1();
 
 // Waiting for the DMA interruption
 
-	__asm volatile ("			\n \
-	cpsie		i"				   \
-	);
+    INTERRUPTION_ON_HARD;
 
-	while (true) {
+    while (true) {
 
 // SPI generate TX DMAs
 // Start
 
-		DMA1->S1CR |= DMA_S1CR_EN;
-		DMA1->S0CR |= DMA_S0CR_EN;
-		SPI3->CFG1 |= (SPI_CFG1_RXDMAEN | SPI_CFG1_TXDMAEN);
-		SPI3->CR1  |= SPI_CR1_CSTART;
+        DMA1->S1CR |= DMA_S1CR_EN;
+        DMA1->S0CR |= DMA_S0CR_EN;
+        SPI3->CFG1 |= (SPI_CFG1_RXDMAEN | SPI_CFG1_TXDMAEN);
+        SPI3->CR1  |= SPI_CR1_CSTART;
 
-		LED_RED_TOGGLE;
-		cmns_wait(100000);
+        LED_RED_TOGGLE;
+        cmns_wait(100000);
 
 // Display the result of the transfer
 
-		debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&DMA1->S1NDTR);
-		cmns_send(KURT0, "DMA NDTR 0x"); cmns_send(KURT0, vString); cmns_send(KURT0, "\n");
+        debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&DMA1->S1NDTR);
+        cmns_send(KURT0, "DMA NDTR 0x"); cmns_send(KURT0, vString); cmns_send(KURT0, "\n");
 
-		data = (uint32_t *)&vBuffer[0];
-		for (i = 0; i < (KSPIM_SZ_PAGE / 4); i++) {
-			debug_cnvtValInt32ToHexAscii(vString, (int32_t *)data);
-			cmns_send(KURT0, "0x"); cmns_send(KURT0, vString);
-			(((i + 1) % 4) == 0) ? (cmns_send(KURT0, "\n")) : (cmns_send(KURT0, " "));
-			data++;
-		}
-		cmns_send(KURT0, "\n");
-	}
+        data = (uint32_t *)&vBuffer[0];
+        for (i = 0; i < (KSPIM_SZ_PAGE / 4); i++) {
+            debug_cnvtValInt32ToHexAscii(vString, (int32_t *)data);
+            cmns_send(KURT0, "0x"); cmns_send(KURT0, vString);
+            (((i + 1) % 4) == 0) ? (cmns_send(KURT0, "\n")) : (cmns_send(KURT0, " "));
+            data++;
+        }
+        cmns_send(KURT0, "\n");
+    }
 }
 
 /*
@@ -144,19 +142,19 @@ void	test_11(void) {
  * - Initialise the SPI1
  *
  */
-static	void	local_initSPI1(void) {
+static  void    local_initSPI1(void) {
 
 // 8-bit transfers
 // Initialise the SPI Master, POL = PHA = 0, Fclk divided by 32
 
-	SPI1->CR1  = 0;
-	SPI1->CFG1 = (4 * SPI_CFG1_MBR_0)
-			   | ((8u - 1u)<<0);
+    SPI1->CR1  = 0;
+    SPI1->CFG1 = (4 * SPI_CFG1_MBR_0)
+               | ((8u - 1u)<<0);
 
-	SPI1->CFG2 = SPI_CFG2_SSOE
-			   | SPI_CFG2_MASTER;
+    SPI1->CFG2 = SPI_CFG2_SSOE
+               | SPI_CFG2_MASTER;
 
-	SPI1->CR1 |= SPI_CR1_SPE;
+    SPI1->CR1 |= SPI_CR1_SPE;
 }
 
 /*
@@ -165,16 +163,16 @@ static	void	local_initSPI1(void) {
  * - Initialise the DMA1 stream 0 & 1 for the SPI transfer
  *
  */
-static	void	local_initDMA1(void) {
-	uint8_t		value = 0;
+static  void    local_initDMA1(void) {
+    uint8_t     value = 0;
 
-	INTERRUPT_VECTOR(DMA1_STR0_C0_IRQn, local_DMA1_STR0_IRQHandler);
-	NVIC_SetPriority(DMA1_STR0_C0_IRQn, KINT_LEVEL_PERIPHERALS);
-	NVIC_EnableIRQ(DMA1_STR0_C0_IRQn);
+    INTERRUPT_VECTOR(DMA1_STR0_C0_IRQn, local_DMA1_STR0_IRQHandler);
+    NVIC_SetPriority(DMA1_STR0_C0_IRQn, KINT_LEVEL_PERIPHERALS);
+    NVIC_EnableIRQ(DMA1_STR0_C0_IRQn);
 
-	INTERRUPT_VECTOR(DMA1_STR1_C0_IRQn, local_DMA1_STR1_IRQHandler);
-	NVIC_SetPriority(DMA1_STR1_C0_IRQn, KINT_LEVEL_PERIPHERALS);
-	NVIC_EnableIRQ(DMA1_STR1_C0_IRQn);
+    INTERRUPT_VECTOR(DMA1_STR1_C0_IRQn, local_DMA1_STR1_IRQHandler);
+    NVIC_SetPriority(DMA1_STR1_C0_IRQn, KINT_LEVEL_PERIPHERALS);
+    NVIC_EnableIRQ(DMA1_STR1_C0_IRQn);
 
 // Stream 0 SPI1 transfer (write)
 //
@@ -183,23 +181,23 @@ static	void	local_initDMA1(void) {
 // Memory size 16-bits
 // Peripheral size 8-bits
 
-	DMA1->S0CR   = 0x00000000;
-	DMA1->S0PAR  = (uint32_t)(&SPI1->TXDR);
-	DMA1->S0M0AR = (uint32_t)&value;
-	DMA1->S0NDTR = KSPIM_SZ_PAGE;
-	DMA1->S0FCR  = 0;
+    DMA1->S0CR   = 0x00000000;
+    DMA1->S0PAR  = (uint32_t)(&SPI1->TXDR);
+    DMA1->S0M0AR = (uint32_t)&value;
+    DMA1->S0NDTR = KSPIM_SZ_PAGE;
+    DMA1->S0FCR  = 0;
 
-	DMA1->S0CR = (1 * DMA_S0CR_PL_0)
-			   | (1 * DMA_S0CR_DIR_0)
-			   | DMA_S0CR_TCIE;
+    DMA1->S0CR = (1 * DMA_S0CR_PL_0)
+               | (1 * DMA_S0CR_DIR_0)
+               | DMA_S0CR_TCIE;
 
-	DMA1->LIFCR = DMA_LIFCR_CTCIF0 | DMA_LIFCR_CFEIF0;
+    DMA1->LIFCR = DMA_LIFCR_CTCIF0 | DMA_LIFCR_CFEIF0;
 
 // Routing the SPI1 TX requests with the Stream 0, No synchronization
 // Stream 0 on the DMA1 -> DMAMUX1_Channel0 (0 + 0)
 
-	DMAMUX1->C0CR = 0x00000000;
-	DMAMUX1->C0CR = 38 * DMAMUX1_C0CR_DMAREQ_ID_0;
+    DMAMUX1->C0CR = 0x00000000;
+    DMAMUX1->C0CR = 38 * DMAMUX1_C0CR_DMAREQ_ID_0;
 
 // Stream 1 SPI1 transfer (read)
 //
@@ -210,24 +208,24 @@ static	void	local_initDMA1(void) {
 // Memory auto incremented
 // Transfer complete interruption
 
-	DMA1->S1CR   = 0x00000000;
-	DMA1->S1PAR  = (uint32_t)(&SPI1->RXDR);
-	DMA1->S1M0AR = (uint32_t)vBuffer;
-	DMA1->S1NDTR = KSPIM_SZ_PAGE;
-	DMA1->S1FCR  = 0;
+    DMA1->S1CR   = 0x00000000;
+    DMA1->S1PAR  = (uint32_t)(&SPI1->RXDR);
+    DMA1->S1M0AR = (uint32_t)vBuffer;
+    DMA1->S1NDTR = KSPIM_SZ_PAGE;
+    DMA1->S1FCR  = 0;
 
-	DMA1->S1CR = (1 * DMA_S1CR_PL_0)
-			   | (1 * DMA_S1CR_MSIZE_0)
-			   | DMA_S1CR_MINC
-			   | DMA_S1CR_TCIE;
+    DMA1->S1CR = (1 * DMA_S1CR_PL_0)
+               | (1 * DMA_S1CR_MSIZE_0)
+               | DMA_S1CR_MINC
+               | DMA_S1CR_TCIE;
 
-	DMA1->LIFCR = DMA_LIFCR_CTCIF1 | DMA_LIFCR_CFEIF1;
+    DMA1->LIFCR = DMA_LIFCR_CTCIF1 | DMA_LIFCR_CFEIF1;
 
 // Routing the SPI1 RX requests with the Stream 1, No synchronization
 // Stream 1 on the DMA1 -> DMAMUX1_Channel1 (1 + 0)
 
-	DMAMUX1->C1CR = 0x00000000;
-	DMAMUX1->C1CR = 37 * DMAMUX1_C1CR_DMAREQ_ID_0;
+    DMAMUX1->C1CR = 0x00000000;
+    DMAMUX1->C1CR = 37 * DMAMUX1_C1CR_DMAREQ_ID_0;
 }
 
 /*
@@ -236,13 +234,13 @@ static	void	local_initDMA1(void) {
  * - DMA interruption
  *
  */
-static	void	local_DMA1_STR0_IRQHandler(void) {
+static  void    local_DMA1_STR0_IRQHandler(void) {
 
-	UNUSED(number);
+    UNUSED(number);
 
-	DMA1->LIFCR = DMA_LIFCR_CTCIF0 | DMA_LIFCR_CFEIF0;
+    DMA1->LIFCR = DMA_LIFCR_CTCIF0 | DMA_LIFCR_CFEIF0;
 
-	LED_YELLOW_TOGGLE;
+    LED_YELLOW_TOGGLE;
 }
 
 /*
@@ -251,15 +249,15 @@ static	void	local_DMA1_STR0_IRQHandler(void) {
  * - DMA interruption
  *
  */
-static	void	local_DMA1_STR1_IRQHandler(void) {
+static  void    local_DMA1_STR1_IRQHandler(void) {
 
-	UNUSED(number);
+    UNUSED(number);
 
-	DMA1->LIFCR = DMA_LIFCR_CTCIF1 | DMA_LIFCR_CFEIF1;
+    DMA1->LIFCR = DMA_LIFCR_CTCIF1 | DMA_LIFCR_CFEIF1;
 
-	cache_D_Invalidate_Add((void *)(uintptr_t)vBuffer, KSPIM_SZ_PAGE);
+    cache_D_Invalidate_Add((void *)(uintptr_t)vBuffer, KSPIM_SZ_PAGE);
 
-	LED_GREEN_TOGGLE;
+    LED_GREEN_TOGGLE;
 }
 
 #endif

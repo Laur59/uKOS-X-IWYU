@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test of the RTC0 interruption with reading of the CNT.
+; Project:  uKOS-X
+; Goal:     Test of the RTC0 interruption with reading of the CNT.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,18 +46,18 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
+#include    "tests.h"
 
 #if (defined(TEST_11_S))
-#define	N				2							//
-#define	KTTIMESAMPLING	(N * 10)					// 10-ms - > 100-Hz
-#define KTIMPRESC0		((32768 / (N * 1000)) - 1)	// Prescaler for N x 1-KHz
+#define N               2                           //
+#define KTTIMESAMPLING  (N * 10)                    // 10-ms - > 100-Hz
+#define KTIMPRESC0      ((32768 / (N * 1000)) - 1)  // Prescaler for N x 1-KHz
 
-static	char_t	vString[20];
+static  char_t  vString[20];
 
 // Prototypes
 
-void	local_RTC0_IRQHandler(void);
+void    local_RTC0_IRQHandler(void);
 
 /*
  * \brief test_11
@@ -65,41 +65,39 @@ void	local_RTC0_IRQHandler(void);
  * - Test of the RTC0 interruption with reading of the CNT
  *
  */
-void	test_11(void) {
-	uint32_t	time;
+void    test_11(void) {
+    uint32_t    time;
 
-	cmns_init();
+    cmns_init();
 
 // Clock frequency of N * 1000-Hz
 // 24-bit counter
 
-	REG(RTC0)->PRESCALER   = KTIMPRESC0;
-	REG(RTC0)->CC[0]	   = KTTIMESAMPLING;
-	REG(RTC0)->TASKS_CLEAR = 1u;
-	REG(RTC0)->TASKS_START = 1u;
+    REG(RTC0)->PRESCALER   = KTIMPRESC0;
+    REG(RTC0)->CC[0]       = KTTIMESAMPLING;
+    REG(RTC0)->TASKS_CLEAR = 1u;
+    REG(RTC0)->TASKS_START = 1u;
 
 // Initialise the TIM0 to generate an interruption every 500-ms
 
-	INTERRUPT_VECTOR(RTC0_C0_IRQn, local_RTC0_IRQHandler);
-	NVIC_SetPriority(RTC0_C0_IRQn, KINT_LEVEL_KERNEL_TIMERS);
-	NVIC_EnableIRQ(RTC0_C0_IRQn);
+    INTERRUPT_VECTOR(RTC0_C0_IRQn, local_RTC0_IRQHandler);
+    NVIC_SetPriority(RTC0_C0_IRQn, KINT_LEVEL_KERNEL_TIMERS);
+    NVIC_EnableIRQ(RTC0_C0_IRQn);
 
-	REG(RTC0)->INTENSET = (1u<<16);
+    REG(RTC0)->INTENSET = (1u<<16);
 
 // Waiting for the RTC0 interruption
 
-	__asm volatile ("			\n \
-	cpsie		i"				   \
-	);
+    INTERRUPTION_ON_HARD;
 
-	while (true) {
-		cmns_wait(1000000);
-		REG(RTC0)->TASKS_CAPTURE[1] = 1u;
-		time = REG(RTC0)->CC[1];
+    while (true) {
+        cmns_wait(1000000);
+        REG(RTC0)->TASKS_CAPTURE[1] = 1u;
+        time = REG(RTC0)->CC[1];
 
-		debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&time);
-		cmns_send(KURT0, "Time captured 0x"); cmns_send(KURT0, vString); cmns_send(KURT0, "\n");
-	}
+        debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&time);
+        cmns_send(KURT0, "Time captured 0x"); cmns_send(KURT0, vString); cmns_send(KURT0, "\n");
+    }
 }
 
 /*
@@ -108,27 +106,27 @@ void	test_11(void) {
  * - Blink the 1 Led
  *
  */
-void	local_RTC0_IRQHandler(void) {
-			uint32_t	nextStop;
-	static	uint16_t	cpt = 50;
+void    local_RTC0_IRQHandler(void) {
+            uint32_t    nextStop;
+    static  uint16_t    cpt = 50;
 
 // Acknowledge the RTC0 interruption
 // Prepare for the next stop (consider the rollover of the 24-bits)
 //
 // CNT = 0x0FFFFFFE, next stop CNT + 5 -> next stop = 3
 // if (CNT + next) > 0x0FFFFFFF, then,
-//		next stop = next stop - (0x0FFFFFFF - CNT)
+//      next stop = next stop - (0x0FFFFFFF - CNT)
 
-	REG(RTC0)->TASKS_CAPTURE[1] = 1u;
+    REG(RTC0)->TASKS_CAPTURE[1] = 1u;
 
-	nextStop = ((REG(RTC0)->CC[1] + KTTIMESAMPLING) > 0x0FFFFFFF) ? (KTTIMESAMPLING - (0x0FFFFFFF - REG(RTC0)->CC[1])) : (KTTIMESAMPLING);
-	REG(RTC0)->CC[0] = REG(RTC0)->CC[1] + nextStop;
-	REG(RTC0)->EVENTS_COMPARE[0] = 0;
+    nextStop = ((REG(RTC0)->CC[1] + KTTIMESAMPLING) > 0x0FFFFFFF) ? (KTTIMESAMPLING - (0x0FFFFFFF - REG(RTC0)->CC[1])) : (KTTIMESAMPLING);
+    REG(RTC0)->CC[0] = REG(RTC0)->CC[1] + nextStop;
+    REG(RTC0)->EVENTS_COMPARE[0] = 0;
 
-	cpt--;
-	if (cpt == 0) {
-		cpt = 50;
-		LED_1_TOGGLE;
-	}
+    cpt--;
+    if (cpt == 0) {
+        cpt = 50;
+        LED_1_TOGGLE;
+    }
 }
 #endif

@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test of the UART0 Tx interruption.
+; Project:  uKOS-X
+; Goal:     Test of the UART0 Tx interruption.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,16 +46,16 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
+#include    "tests.h"
 
 #if (defined(TEST_04_S))
-volatile	bool		vTransmitted = false;
-volatile	bool		vFirstKick = false;
-volatile	uint8_t		vString[] = ".. but we are not afraid, we are alway firsts ...\n";
+volatile    bool        vTransmitted = false;
+volatile    bool        vFirstKick = false;
+volatile    uint8_t     vString[] = ".. but we are not afraid, we are alway firsts ...\n";
 
 // Prototypes
 
-void	local_UART0_IRQHandler(void);
+void    local_UART0_IRQHandler(void);
 
 /*
  * \brief test_04
@@ -63,44 +63,42 @@ void	local_UART0_IRQHandler(void);
  * - Test of the UART0 Tx interruption
  *
  */
-void	test_04(void) {
+void    test_04(void) {
 
 // Initialise the UART0 to generate Tx interruptions
 
-	INTERRUPT_VECTOR(UART0_IRQ_C0_IRQn, local_UART0_IRQHandler);
-	NVIC_SetPriority(UART0_IRQ_C0_IRQn, KINT_LEVEL_COMMUNICATIONS);
-	NVIC_EnableIRQ(UART0_IRQ_C0_IRQn);
+    INTERRUPT_VECTOR(UART0_IRQ_C0_IRQn, local_UART0_IRQHandler);
+    NVIC_SetPriority(UART0_IRQ_C0_IRQn, KINT_LEVEL_COMMUNICATIONS);
+    NVIC_EnableIRQ(UART0_IRQ_C0_IRQn);
 
-	cmns_init();
+    cmns_init();
 
 // Fifo 1/8, Interruption in reception & timeout interruption
 
-	REG(UART0)->UARTLCR_H |= UART_UARTLCR_H_FEN;
-	REG(UART0)->UARTIFLS   = (0u * UART_UARTIFLS_TXIFLSEL_0) | (0u * UART_UARTIFLS_RXIFLSEL_0);
-	REG(UART0)->UARTIMSC  |= (UART_UARTIMSC_RXIM | UART_UARTIMSC_RTIM);
+    REG(UART0)->UARTLCR_H |= UART_UARTLCR_H_FEN;
+    REG(UART0)->UARTIFLS   = (0u * UART_UARTIFLS_TXIFLSEL_0) | (0u * UART_UARTIFLS_RXIFLSEL_0);
+    REG(UART0)->UARTIMSC  |= (UART_UARTIMSC_RXIM | UART_UARTIMSC_RTIM);
 
 // Waiting for the UART0 interruption
 
-	__asm volatile ("			\n \
-		cpsie		i"			   \
-	);
+    INTERRUPTION_ON_HARD;
 
-	while (true) {
-		vTransmitted = false;
+    while (true) {
+        vTransmitted = false;
 
-		REG(UART0)->UARTICR   = UART_UARTICR_TXIC;
-		REG(UART0)->UARTIMSC |= UART_UARTIMSC_TXIM;
+        REG(UART0)->UARTICR   = UART_UARTICR_TXIC;
+        REG(UART0)->UARTIMSC |= UART_UARTIMSC_TXIM;
 
-		vFirstKick = true;
-		NVIC_SetPendingIRQ(UART0_IRQ_C0_IRQn);
+        vFirstKick = true;
+        NVIC_SetPendingIRQ(UART0_IRQ_C0_IRQn);
 
-		LED_RED_TOGGLE;
+        LED_RED_TOGGLE;
 
 // Let terminate the buffer transfer
 
-		cmns_wait(1000000);
-		do { } while (vTransmitted == false);
-	}
+        cmns_wait(1000000);
+        do { } while (vTransmitted == false);
+    }
 }
 
 /*
@@ -110,54 +108,54 @@ void	test_04(void) {
  *
  */
 
-void	local_UART0_IRQHandler(void) {
-			uint8_t		c;
-			uint32_t	iir;
-	static	uint8_t		index = 0u;
+void    local_UART0_IRQHandler(void) {
+            uint8_t     c;
+            uint32_t    iir;
+    static  uint8_t     index = 0u;
 
     LED_GREEN_TOGGLE;
 
-	iir = REG(UART0)->UARTMIS;
+    iir = REG(UART0)->UARTMIS;
 
-	if ((iir & (UART_UARTMIS_RXMIS | UART_UARTMIS_RTMIS)) != 0u ) {
+    if ((iir & (UART_UARTMIS_RXMIS | UART_UARTMIS_RTMIS)) != 0u ) {
 
 // Rx interruption
 // Try to get empty the fifo
 
-		while ((REG(UART0)->UARTFR & UART_UARTFR_RXFE) == 0u) {
-			REG(UART0)->UARTDR;
-			cmns_send(KURT0, "OK interruptions\n");
+        while ((REG(UART0)->UARTFR & UART_UARTFR_RXFE) == 0u) {
+            REG(UART0)->UARTDR;
+            cmns_send(KURT0, "OK interruptions\n");
 
-			LED_YELLOW_TOGGLE;
-		}
+            LED_YELLOW_TOGGLE;
+        }
 
 // Acknowledge the UART0 interruption
 
-		REG(UART0)->UARTICR = (UART_UARTICR_RXIC | UART_UARTICR_RTIC);
-	}
+        REG(UART0)->UARTICR = (UART_UARTICR_RXIC | UART_UARTICR_RTIC);
+    }
 
-	if (((iir & UART_UARTMIS_TXMIS) != 0u) || (vFirstKick == true)) {
-		vFirstKick = false;
+    if (((iir & UART_UARTMIS_TXMIS) != 0u) || (vFirstKick == true)) {
+        vFirstKick = false;
 
 // Tx interruption
 // Try to fill the fifo
 
-		while ((REG(UART0)->UARTFR & UART_UARTFR_TXFF) == 0u) {
-			c = (uint8_t)vString[index++];
-			if (c == '\0') {
-				LED_GREEN_TOGGLE;
+        while ((REG(UART0)->UARTFR & UART_UARTFR_TXFF) == 0u) {
+            c = (uint8_t)vString[index++];
+            if (c == '\0') {
+                LED_GREEN_TOGGLE;
 
-				index = 0u;
-				vTransmitted = true;
-				REG(UART0)->UARTIMSC &= ~UART_UARTIMSC_TXIM;
-				break;
-			}
-			REG(UART0)->UARTDR = (uint32_t)c;
-		}
+                index = 0u;
+                vTransmitted = true;
+                REG(UART0)->UARTIMSC &= ~UART_UARTIMSC_TXIM;
+                break;
+            }
+            REG(UART0)->UARTDR = (uint32_t)c;
+        }
 
 // Acknowledge the UART0 interruption
 
        REG(UART0)->UARTICR = UART_UARTICR_TXIC;
-	}
+    }
 }
 #endif
