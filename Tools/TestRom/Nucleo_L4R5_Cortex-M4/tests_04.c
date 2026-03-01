@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test of the LPUART1 Rx interruption.
+; Project:  uKOS-X
+; Goal:     Test of the LPUART1 Rx interruption.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,13 +46,13 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
+#include    "tests.h"
 
 #if (defined(TEST_04_S))
 
 // Prototypes
 
-void	local_LPUART1_IRQHandler(void);
+void    local_LPUART1_IRQHandler(void);
 
 /*
  * \brief test_04
@@ -60,27 +60,25 @@ void	local_LPUART1_IRQHandler(void);
  * - Test of the LPUART1 Rx interruption
  *
  */
-void	test_04(void) {
+void    test_04(void) {
 
 // Initialise the LPUART1 to generate Rx interruptions
 
-	INTERRUPT_VECTOR(LPUART1_C0_IRQn, local_LPUART1_IRQHandler);
-	NVIC_SetPriority(LPUART1_C0_IRQn, KINT_LEVEL_COMMUNICATIONS);
-	NVIC_EnableIRQ(LPUART1_C0_IRQn);
+    INTERRUPT_VECTOR(LPUART1_C0_IRQn, local_LPUART1_IRQHandler);
+    NVIC_SetPriority(LPUART1_C0_IRQn, KINT_LEVEL_COMMUNICATIONS);
+    NVIC_EnableIRQ(LPUART1_C0_IRQn);
 
-	cmns_init();
-	LPUART1->CR1 |= LPUART1_CR1_RXFNEIE;
+    cmns_init();
+    LPUART1->CR1 |= LPUART1_CR1_RXFNEIE;
 
 // Waiting for the USART3 interruption
 
-	__asm volatile ("			\n \
-		cpsie		i"			   \
-	);
+    INTERRUPTION_ON_HARD;
 
-	while (true) {
-		cmns_wait(1000000);
-		LED_RED_TOGGLE;
-	}
+    while (true) {
+        cmns_wait(1000000);
+        LED_RED_TOGGLE;
+    }
 }
 
 /*
@@ -89,13 +87,13 @@ void	test_04(void) {
  * - Blink the BLUE Led
  *
  */
-void	local_LPUART1_IRQHandler(void) {
+void    local_LPUART1_IRQHandler(void) {
 
 // Acknowledge the LPUART1 interruption
 
-	LPUART1->RDR;
+    LPUART1->RDR;
 
-	cmns_send(KURT0, "OK interruptions\n");
-	LED_BLUE_TOGGLE;
+    cmns_send(KURT0, "OK interruptions\n");
+    LED_BLUE_TOGGLE;
 }
 #endif

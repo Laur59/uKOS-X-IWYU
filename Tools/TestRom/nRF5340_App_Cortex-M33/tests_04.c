@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test of the UARTE_1 Tx interruption.
+; Project:  uKOS-X
+; Goal:     Test of the UARTE_1 Tx interruption.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,16 +46,16 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
-#include	<string.h>
+#include    "tests.h"
+#include    <string.h>
 
 #if (defined(TEST_04_S))
-bool		vTransmitted = false;
-char_t		vString[] = ".. but we are not afraid, we are alway firsts ...\n";
+bool        vTransmitted = false;
+char_t      vString[] = ".. but we are not afraid, we are alway firsts ...\n";
 
 // Prototypes
 
-void	local_SERIAL1_IRQHandler(void);
+void    local_SERIAL1_IRQHandler(void);
 
 /*
  * \brief test_04
@@ -63,38 +63,36 @@ void	local_SERIAL1_IRQHandler(void);
  * - Test of the UARTE_1 Tx interruption
  *
  */
-void	test_04(void) {
-	size_t	length;
+void    test_04(void) {
+    size_t  length;
 
 // Initialise the LPUART1 to generate Tx interruptions
 
-	INTERRUPT_VECTOR(SERIAL1_C0_IRQn, local_SERIAL1_IRQHandler);
-	NVIC_SetPriority(SERIAL1_C0_IRQn, KINT_LEVEL_COMMUNICATIONS);
-	NVIC_EnableIRQ(SERIAL1_C0_IRQn);
+    INTERRUPT_VECTOR(SERIAL1_C0_IRQn, local_SERIAL1_IRQHandler);
+    NVIC_SetPriority(SERIAL1_C0_IRQn, KINT_LEVEL_COMMUNICATIONS);
+    NVIC_EnableIRQ(SERIAL1_C0_IRQn);
 
-	cmns_init();
+    cmns_init();
 
 // Waiting for the UARTE_1 interruption
 
-	__asm volatile ("			\n \
-	cpsie		i"				   \
-	);
+    INTERRUPTION_ON_HARD;
 
-	while (true) {
-		length = strlen(vString);
-		REG(UARTE1)->TXD_PTR	   = (uint32_t)vString;
-		REG(UARTE1)->TXD_MAXCNT	   = (uint32_t)length;
-		REG(UARTE1)->INTENSET	   = (1u<<8);
-		REG(UARTE1)->TASKS_STARTTX = 1u;
+    while (true) {
+        length = strlen(vString);
+        REG(UARTE1)->TXD_PTR       = (uint32_t)vString;
+        REG(UARTE1)->TXD_MAXCNT    = (uint32_t)length;
+        REG(UARTE1)->INTENSET      = (1u<<8);
+        REG(UARTE1)->TASKS_STARTTX = 1u;
 
 // Let terminate the buffer transfer
 
-		cmns_wait(1000000);
-		do { } while (vTransmitted == false);
+        cmns_wait(1000000);
+        do { } while (vTransmitted == false);
 
-		vTransmitted = false;
-		LED_0_TOGGLE;
-	}
+        vTransmitted = false;
+        LED_0_TOGGLE;
+    }
 }
 
 /*
@@ -103,10 +101,10 @@ void	test_04(void) {
  * - Blink the Led 1
  *
  */
-void	local_SERIAL1_IRQHandler(void) {
+void    local_SERIAL1_IRQHandler(void) {
 
-	REG(UARTE1)->EVENTS_ENDTX = 0u;
-	vTransmitted = true;
-	LED_1_TOGGLE;
+    REG(UARTE1)->EVENTS_ENDTX = 0u;
+    vTransmitted = true;
+    LED_1_TOGGLE;
 }
 #endif

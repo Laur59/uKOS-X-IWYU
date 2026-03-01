@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test of the TIM2 interruption.
+; Project:  uKOS-X
+; Goal:     Test of the TIM2 interruption.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,19 +46,19 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
+#include    "tests.h"
 
 #if (defined(TEST_01_S))
-#define	KTTIMESAMPLING	500									// 2-Hz
+#define KTTIMESAMPLING  500                                 // 2-Hz
 
-#define	KFPRET2			1000000								// 1'000'000-Hz
-#define	KFINTT2			(1000 / KTTIMESAMPLING)				// 50-Hz
-#define KPSCT2			((KFREQUENCY_TIM / KFPRET2) - 1)	// Prescaler for 1'000'000-Hz
-#define KARRT2			((KFPRET2 / KFINTT2) - 1)			// Autoreload
+#define KFPRET2         1000000                             // 1'000'000-Hz
+#define KFINTT2         (1000 / KTTIMESAMPLING)             // 50-Hz
+#define KPSCT2          ((KFREQUENCY_TIM / KFPRET2) - 1)    // Prescaler for 1'000'000-Hz
+#define KARRT2          ((KFPRET2 / KFINTT2) - 1)           // Autoreload
 
 // Prototypes
 
-void	local_TIM2_IRQHandler(void);
+void    local_TIM2_IRQHandler(void);
 
 /*
  * \brief test_01
@@ -66,32 +66,30 @@ void	local_TIM2_IRQHandler(void);
  * - Test of the TIM2 interruption
  *
  */
-void	test_01(void) {
+void    test_01(void) {
 
-	RCC->APB1LENR |= RCC_APB1LENR_TIM2EN;
+    RCC->APB1LENR |= RCC_APB1LENR_TIM2EN;
 
 // Initialise the TIM2 to generate an interruption every 500-ms
 
-	INTERRUPT_VECTOR(TIM2_C0_IRQn, local_TIM2_IRQHandler);
-	NVIC_SetPriority(TIM2_C0_IRQn, KINT_LEVEL_KERNEL_TIMERS);
-	NVIC_EnableIRQ(TIM2_C0_IRQn);
+    INTERRUPT_VECTOR(TIM2_C0_IRQn, local_TIM2_IRQHandler);
+    NVIC_SetPriority(TIM2_C0_IRQn, KINT_LEVEL_KERNEL_TIMERS);
+    NVIC_EnableIRQ(TIM2_C0_IRQn);
 
-	TIM2->PSC  = KPSCT2;
-	TIM2->ARR  = KARRT2;
-	TIM2->CNT  = 0;
-	TIM2->DIER = TIM2_DIER_UIE;
-	TIM2->CR1 |= TIM2_CR1_CEN;
+    TIM2->PSC  = KPSCT2;
+    TIM2->ARR  = KARRT2;
+    TIM2->CNT  = 0;
+    TIM2->DIER = TIM2_DIER_UIE;
+    TIM2->CR1 |= TIM2_CR1_CEN;
 
 // Waiting for the TIM2 interruption
 
-	__asm volatile ("			\n \
-		cpsie		i"			   \
-	);
+    INTERRUPTION_ON_HARD;
 
-	while (true) {
-		cmns_wait(1000000);
-//		LED_RED_TOGGLE;
-	}
+    while (true) {
+        cmns_wait(1000000);
+//      LED_RED_TOGGLE;
+    }
 }
 
 /*
@@ -100,14 +98,14 @@ void	test_01(void) {
  * - Blink the YELLOW Led
  *
  */
-void	local_TIM2_IRQHandler(void) {
+void    local_TIM2_IRQHandler(void) {
 
 // Acknowledge the TIM2 interruption
 
-	TIM2->SR &= (uint32_t)~TIM2_SR_UIF;
+    TIM2->SR &= (uint32_t)~TIM2_SR_UIF;
 
-	LED_YELLOW_TOGGLE;
-	LED_YELLOW_TOGGLE;
-	LED_YELLOW_TOGGLE;
+    LED_YELLOW_TOGGLE;
+    LED_YELLOW_TOGGLE;
+    LED_YELLOW_TOGGLE;
 }
 #endif
