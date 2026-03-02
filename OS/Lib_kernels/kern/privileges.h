@@ -60,7 +60,9 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #include    <stdint.h>
 
+#ifdef UKOS_S
 #include    "macros_soc.h"
+#endif
 
 /*!
  * \addtogroup Lib_kernels
@@ -81,8 +83,10 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 extern  "C" {
 #endif
 
+#ifdef UKOS_S
 extern  volatile    bool    vPriv_insideSVC[KNB_CORES];                 // Inside an SVC call
 extern  volatile    bool    vPriv_insideException[KNB_CORES];
+#endif
 
 extern  void    privileges_init(void);
 

@@ -169,6 +169,7 @@ endif()
 
 # Link options
 set(TARGET_COMMON_LINK_OPTIONS
+    $<$<C_COMPILER_ID:Clang>:-Wl,--gc-sections>
     -Wl,--wrap=_malloc_r
     -Wl,--wrap=_free_r
     -Wl,--wrap=_realloc_r

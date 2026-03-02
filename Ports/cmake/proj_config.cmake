@@ -139,10 +139,11 @@ set(TARGET_TRIPLE_MIDDLE unknown-none)
 #     (No configurable features)
 #
 #   CORTEX_M4:
-#     (No configurable features)
+#     nofp            - Disable floating point unit
 #
 #   CORTEX_M7:
-#     (No configurable features)
+#     Double          - Enable double-precision FPU (fpv5-d16 instead of fpv5-sp-d16)
+#     nofp            - Disable floating point unit
 #
 #   CORTEX_M33:
 #     nodsp           - Disable DSP instructions
@@ -213,41 +214,87 @@ function(configure_arm_core)
     endif()
 
     add_link_options($<$<C_COMPILER_ID:GNU>:-Wl,--no-warn-rwx-segment>)
-    target_compile_options(core_compiler_flags INTERFACE -mthumb -Wformat-security)
+    target_compile_options(core_compiler_flags INTERFACE -mthumb -Wformat-security
+        $<$<C_COMPILER_ID:Clang>:-ffunction-sections>
+        $<$<C_COMPILER_ID:Clang>:-fdata-sections>
+    )
     target_compile_definitions(core_compiler_flags INTERFACE _MACHTIME_H_ _CLOCKS_PER_SEC_=1000000)
 
     # ARM Cortex-M core configurations
     if(${CORE} STREQUAL "CORTEX_M3")
         set(LLVM_TARGET "thumbv7m-${TARGET_TRIPLE_MIDDLE}-eabi")
         set(MCPU "cortex-m3")
-        set(MARCH "thumbv7m")
+        set(MARCH "armv7-m")
         set(MFLOAT_ABI "soft")
         set(EXTRA_COMPILE_FLAGS "$<$<C_COMPILER_ID:Clang>:-mfpu=none>")
 
     elseif(${CORE} STREQUAL "CORTEX_M4")
-        set(LLVM_TARGET "thumbv7em-${TARGET_TRIPLE_MIDDLE}-eabihf")
+        set(LLVM_TARGET "thumbv7em-${TARGET_TRIPLE_MIDDLE}-eabi")
         set(MCPU "cortex-m4")
-        set(MARCH "thumbv7em")
-        set(MFLOAT_ABI "hard")
-        set(MFPU "fpv4-sp-d16")
+        set(MARCH "armv7e-m")
+        # Check for feature-based configuration
+        if(DEFINED CPU_FEATURES AND NOT "${CPU_FEATURES}" STREQUAL "")
+            # CORTEX_M4_VALID_FEATURES
+            #   "nofp|Disable floating point unit|||"
+            foreach(feature IN LISTS CPU_FEATURES)
+                if(${feature} STREQUAL "nofp")
+                    set(MFLOAT_ABI "soft")
+                    set(EXTRA_COMPILE_FLAGS "$<$<C_COMPILER_ID:Clang>:-mfpu=none>")
+                endif()
+            endforeach()
+        else()
+            # Hard float ABI with single-precision FPU (default)
+            set(LLVM_TARGET "${LLVM_TARGET}hf")
+            set(MFLOAT_ABI "hard")
+            set(MFPU "fpv4-sp-d16")
+        endif()
 
     elseif(${CORE} STREQUAL "CORTEX_M7")
-        set(LLVM_TARGET "thumbv7em-${TARGET_TRIPLE_MIDDLE}-eabihf")
+        set(LLVM_TARGET "thumbv7em-${TARGET_TRIPLE_MIDDLE}-eabi")
         set(MCPU "cortex-m7")
-        set(MARCH "thumbv7em")
-        set(MFLOAT_ABI "hard")
-        set(MFPU "fpv5-sp-d16")
+        set(MARCH "armv7e-m")
+        # Check for feature-based configuration
+        if(DEFINED CPU_FEATURES AND NOT "${CPU_FEATURES}" STREQUAL "")
+            # CORTEX_M7_VALID_FEATURES
+            #   "Double|Double-precision FPU|||"
+            #   "nofp|Disable floating point unit|||"
+            foreach(feature IN LISTS CPU_FEATURES)
+                if(${feature} STREQUAL "Double")
+                    set(has_dp TRUE)
+                elseif(${feature} STREQUAL "nofp")
+                    set(has_nofp TRUE)
+                endif()
+            endforeach()
+            if(has_nofp)
+                set(MFLOAT_ABI "soft")
+                set(EXTRA_COMPILE_FLAGS "$<$<C_COMPILER_ID:Clang>:-mfpu=none>")
+            elseif(has_dp)
+                set(LLVM_TARGET "${LLVM_TARGET}hf")
+                set(MFLOAT_ABI "hard")
+                set(MFPU "fpv5-d16")
+            else()
+                # Single-precision FPU (default when features are set but not Double/nofp)
+                set(LLVM_TARGET "${LLVM_TARGET}hf")
+                set(MFLOAT_ABI "hard")
+                set(MFPU "fpv5-sp-d16")
+            endif()
+        else()
+            # Hard float ABI with single-precision FPU (default)
+            set(LLVM_TARGET "${LLVM_TARGET}hf")
+            set(MFLOAT_ABI "hard")
+            set(MFPU "fpv5-sp-d16")
+        endif()
         set(HAS_CACHE TRUE)
 
     elseif(${CORE} STREQUAL "CORTEX_M33")
         set(LLVM_TARGET "thumbv8m.main-${TARGET_TRIPLE_MIDDLE}-eabi")
         set(MCPU "cortex-m33")
-        set(MARCH "thumbv8m.main")
         # Check for feature-based configuration
         if(DEFINED CPU_FEATURES AND NOT "${CPU_FEATURES}" STREQUAL "")
             # CORTEX_M33_VALID_FEATURES
             #   "nodsp|Disable DSP instructions|||+nodsp"
             #   "nofp|Disable floating point unit|||+nofp"
+            set(MARCH "armv8-m.main")
             foreach(feature IN LISTS CPU_FEATURES)
                 if(${feature} STREQUAL "nodsp")
                     set(MCPU "${MCPU}+nodsp")
@@ -262,6 +309,7 @@ function(configure_arm_core)
             endforeach()
         else()
             # Hard float ABI (default)
+            set(MARCH "armv8-m.main+dsp+fp")
             set(LLVM_TARGET "${LLVM_TARGET}hf")
             set(MFLOAT_ABI "hard")
             set(MFPU "fpv5-sp-d16")
@@ -270,28 +318,26 @@ function(configure_arm_core)
 
     elseif(${CORE} STREQUAL "CORTEX_M55")
         set(LLVM_TARGET "thumbv8.1m.main-${TARGET_TRIPLE_MIDDLE}-eabihf")
-        set(MCPU "cortex-m55")
-        set(MARCH "thumbv8.1m.main")
+        set(MARCH "armv8.1-m.main")
         set(MFLOAT_ABI "hard")
-        set(MFPU "fpv5-sp-d16")
         # Check for feature-based configuration
         if(DEFINED CPU_FEATURES AND NOT "${CPU_FEATURES}" STREQUAL "")
             # CORTEX_M55_VALID_FEATURES
-            #   "mve|Helium M-Profile Vector Extension||MLPN_HAVE_HELIUM_FP_S|+mve"
-            #   "mve.fp|Helium MVE with explicit FP support||MLPN_HAVE_HELIUM_FP_S|+mve.fp"
+            #   "Helium|Helium M-Profile Vector Extension||MLPN_HAVE_HELIUM_FP_S|+mve"
+            #   "Double|Double precision FP support||MLPN_HAVE_HELIUM_FP_S|+mve.fp"
             #   "nofp|Disable floating point unit|||+nofp"
             foreach(feature IN LISTS CPU_FEATURES)
-                if(${feature} STREQUAL "mve")
+                if(${feature} STREQUAL "Helium")
                     set(has_mve TRUE)
-                elseif(${feature} STREQUAL "mve.fp")
-                    set(has_mve_fp TRUE)
+                elseif(${feature} STREQUAL "Double")
+                    set(has_dp TRUE)
                 elseif(${feature} STREQUAL "nofp")
                     set(has_nofp TRUE)
                 endif()
             endforeach()
         endif()
         # Check if MVE/Helium is requested
-        if(has_mve OR has_mve_fp)
+        if(has_mve)
             # Helium/MVE mode
             unset(MFPU)  # MVE doesn't use -mfpu
             # Build -march with MVE extensions
@@ -299,11 +345,12 @@ function(configure_arm_core)
             if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
                 set(MARCH "armv8.1-m.main")
             endif()
-            if(has_mve_fp)
-                set(MARCH "${MARCH}+mve.fp")
-            else()
-                set(MARCH "${MARCH}+mve")
+            set(MARCH "${MARCH}+mve.fp")
+            if(has_dp)
+                set(MARCH "${MARCH}+fp.dp")
             endif()
+        elseif(has_dp)
+            set(MARCH "${MARCH}+fp.dp")
         elseif(has_nofp)
             # No floating point
             set(LLVM_TARGET "${MARCH}-${TARGET_TRIPLE_MIDDLE}-eabi")
@@ -315,7 +362,7 @@ function(configure_arm_core)
     elseif(${CORE} STREQUAL "CORTEX_M85")
         set(LLVM_TARGET "thumbv8m.main-${TARGET_TRIPLE_MIDDLE}-eabi")
         set(MCPU "cortex-m85")
-        set(MARCH "thumbv8m.main")
+        set(MARCH "armv8-m.main")
         # Hard float ABI (default)
         set(LLVM_TARGET "${LLVM_TARGET}hf")
         set(MFLOAT_ABI "hard")
@@ -345,10 +392,10 @@ function(configure_arm_core)
 
     # Build compile flags
     set(COMPILE_FLAGS "")
-    if(DEFINED MCPU)
+    if(DEFINED MCPU AND NOT CMAKE_C_COMPILER_ID STREQUAL "Clang")
         list(APPEND COMPILE_FLAGS "-mcpu=${MCPU}")
     endif()
-    if(DEFINED MARCH AND CMAKE_C_COMPILER_ID STREQUAL "Clang")
+    if(DEFINED MARCH)
         list(APPEND COMPILE_FLAGS "-march=${MARCH}")
     endif()
     if(DEFINED MFLOAT_ABI)
