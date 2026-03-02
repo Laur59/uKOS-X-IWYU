@@ -118,98 +118,11 @@ endif()
 
 set(TARGET_TRIPLE_MIDDLE unknown-none)
 
-# ==============================================================================
-# CPU FEATURES SYSTEM
-# ==============================================================================
-#
-# The CPU_FEATURES variable allows specifying optional CPU capabilities that
-# modify compiler flags and code generation.
-#
-# USAGE:
-#   In your target's CMakeLists.txt, BEFORE include(proj_config):
-#
-#   set(CPU_FEATURES "feature1;feature2;...")
-#   include(proj_config)
-#
-# VALID FEATURES BY CORE:
-#
-#   CORTEX_M3:
-#     (No configurable features)
-#
-#   CORTEX_M4:
-#     (No configurable features)
-#
-#   CORTEX_M7:
-#     (No configurable features)
-#
-#   CORTEX_M33:
-#     nodsp           - Disable DSP instructions
-#     nofp            - Disable floating point unit
-#
-#   CORTEX_M55:
-#     mve             - Enable Arm Helium M-Profile Vector Extension
-#                       (integer and floating-point vector processing)
-#     mve.fp          - Enable Helium with explicit FP support
-#     nofp            - Disable floating point unit
-#
-#   CORTEX_A7:
-#     (No optional features)
-#
-#   RV32IMAC:
-#     zicsr           - Control and Status Register instructions
-#     zifencei        - Instruction-Fetch Fence instructions
-#
-#   RV64IMAFDC:
-#     zicsr           - Control and Status Register instructions
-#     zifencei        - Instruction-Fetch Fence instructions
-#
-# EXAMPLES:
-#
-#   # Cortex-M55 with Helium/MVE enabled for neural networks
-#   set(SOC STM32N657)
-#   set(CORE CORTEX_M55)
-#   set(CPU_FEATURES "mve")
-#   include(proj_config)
-#
-#   # Cortex-M33 without FPU or DSP (minimal configuration)
-#   set(SOC nRF5340)
-#   set(CORE CORTEX_M33)
-#   set(CPU_FEATURES "nodsp;nofp")
-#   include(proj_config)
-#
-#   # Cortex-M55 with scalar FPU only (default behaviour)
-#   set(SOC STM32N657)
-#   set(CORE CORTEX_M55)
-#   # No CPU_FEATURES needed - scalar FPU is default
-#   include(proj_config)
-#
-# MIGRATION FROM OLD SYSTEM:
-#
-#   Old: set(NOFPU ON)
-#   New: Remove line entirely (scalar FPU is now the default)
-#        OR set(CPU_FEATURES "nofp") to disable FPU completely
-#
-#   Old: set(CPU_SPEC "-mcpu=cortex-m33+nodsp+nofp")
-#   New: set(CPU_FEATURES "nodsp;nofp")
-#
-# FEATURE EFFECTS:
-#
-#   Features automatically:
-#   - Modify compiler flags (-march, -mcpu, -mfpu, etc.)
-#   - Add compile definitions (e.g., MLPN_HAVE_HELIUM_FP_S)
-#   - Adjust linker flags
-#   - Set appropriate LLVM target triple
-#
-# ==============================================================================
+# Core configuration database
+# This table-driven approach makes it easy to add new cores
+# Format: CORE -> (llvm_target, mcpu, mfloat_abi, mfpu, extra_flags, has_cache, march)
 
 function(configure_arm_core)
-    # Check for conflicts between old and new feature systems
-    if(DEFINED CPU_FEATURES AND (DEFINED NOFPU OR DEFINED CPU_SPEC))
-        message(FATAL_ERROR
-            "Cannot specify both CPU_FEATURES and legacy options (NOFPU/CPU_SPEC).\n"
-            "Please use only CPU_FEATURES for feature configuration.")
-    endif()
-
     add_link_options($<$<C_COMPILER_ID:GNU>:-Wl,--no-warn-rwx-segment>)
     target_compile_options(core_compiler_flags INTERFACE -mthumb -Wformat-security)
     target_compile_definitions(core_compiler_flags INTERFACE _MACHTIME_H_ _CLOCKS_PER_SEC_=1000000)
@@ -218,107 +131,38 @@ function(configure_arm_core)
     if(${CORE} STREQUAL "CORTEX_M3")
         set(LLVM_TARGET "thumbv7m-${TARGET_TRIPLE_MIDDLE}-eabi")
         set(MCPU "cortex-m3")
-        set(MARCH "thumbv7m")
         set(MFLOAT_ABI "soft")
         set(EXTRA_COMPILE_FLAGS "$<$<C_COMPILER_ID:Clang>:-mfpu=none>")
-
     elseif(${CORE} STREQUAL "CORTEX_M4")
         set(LLVM_TARGET "thumbv7em-${TARGET_TRIPLE_MIDDLE}-eabihf")
         set(MCPU "cortex-m4")
-        set(MARCH "thumbv7em")
         set(MFLOAT_ABI "hard")
         set(MFPU "fpv4-sp-d16")
-
     elseif(${CORE} STREQUAL "CORTEX_M7")
         set(LLVM_TARGET "thumbv7em-${TARGET_TRIPLE_MIDDLE}-eabihf")
         set(MCPU "cortex-m7")
-        set(MARCH "thumbv7em")
         set(MFLOAT_ABI "hard")
         set(MFPU "fpv5-sp-d16")
         set(HAS_CACHE TRUE)
-
     elseif(${CORE} STREQUAL "CORTEX_M33")
-        set(LLVM_TARGET "thumbv8m.main-${TARGET_TRIPLE_MIDDLE}-eabi")
-        set(MCPU "cortex-m33")
-        set(MARCH "thumbv8m.main")
-        # Check for feature-based configuration
-        if(DEFINED CPU_FEATURES AND NOT "${CPU_FEATURES}" STREQUAL "")
-            # CORTEX_M33_VALID_FEATURES
-            #   "nodsp|Disable DSP instructions|||+nodsp"
-            #   "nofp|Disable floating point unit|||+nofp"
-            foreach(feature IN LISTS CPU_FEATURES)
-                if(${feature} STREQUAL "nodsp")
-                    set(MCPU "${MCPU}+nodsp")
-                    set(MARCH "${MARCH}+nodsp")
-                elseif(${feature} STREQUAL "nofp")
-                    set(MCPU "${MCPU}+nofp")
-                    set(MARCH "${MARCH}+nofp")
-                    # Soft float ABI when FP disabled
-                    set(MFLOAT_ABI "soft")
-                    unset(MFPU)
-                endif()
-            endforeach()
+        # M33 uses CPU_SPEC variable, handle separately
+        if(NOT DEFINED CPU_SPEC)
+            set(LLVM_TARGET "thumbv8m.main-${TARGET_TRIPLE_MIDDLE}-eabihf")
+            set(CPU_SPEC "-mcpu=cortex-m33;-mfloat-abi=hard;-mfpu=fpv5-sp-d16")
         else()
-            # Hard float ABI (default)
-            set(LLVM_TARGET "${LLVM_TARGET}hf")
-            set(MFLOAT_ABI "hard")
-            set(MFPU "fpv5-sp-d16")
+            set(LLVM_TARGET "thumbv8m.main-${TARGET_TRIPLE_MIDDLE}-eabi")
         endif()
         set(HAS_CACHE TRUE)
-
+        target_compile_options(core_compiler_flags INTERFACE ${CPU_SPEC})
+        target_compile_definitions(core_compiler_flags INTERFACE CACHE_S)
+        add_link_options(${CPU_SPEC})
+        return()
     elseif(${CORE} STREQUAL "CORTEX_M55")
         set(LLVM_TARGET "thumbv8.1m.main-${TARGET_TRIPLE_MIDDLE}-eabihf")
-        set(MARCH "thumbv8.1m.main")
-        set(MFLOAT_ABI "hard")
-        # Check for feature-based configuration
-        if(DEFINED CPU_FEATURES AND NOT "${CPU_FEATURES}" STREQUAL "")
-            # CORTEX_M55_VALID_FEATURES
-            #   "Helium|Helium M-Profile Vector Extension||MLPN_HAVE_HELIUM_FP_S|+mve"
-            #   "Double|Double precision FP support||MLPN_HAVE_HELIUM_FP_S|+mve.fp"
-            #   "nofp|Disable floating point unit|||+nofp"
-            foreach(feature IN LISTS CPU_FEATURES)
-                if(${feature} STREQUAL "Helium")
-                    set(has_mve TRUE)
-                elseif(${feature} STREQUAL "Double")
-                    set(has_dp TRUE)
-                elseif(${feature} STREQUAL "nofp")
-                    set(has_nofp TRUE)
-                endif()
-            endforeach()
-        endif()
-        # Check if MVE/Helium is requested
-        if(has_mve)
-            # Helium/MVE mode
-            unset(MFPU)  # MVE doesn't use -mfpu
-            # Build -march with MVE extensions
-            # GCC uses armv8.1-m.main, LLVM uses thumbv8.1m.main
-            if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
-                set(MARCH "armv8.1-m.main")
-            endif()
-            set(MARCH "${MARCH}+mve.fp")
-            if(has_dp)
-                set(MARCH "${MARCH}+fp.dp")
-            endif()
-        elseif(has_dp)
-            set(MARCH "${MARCH}+fp.dp")
-        elseif(has_nofp)
-            # No floating point
-            set(LLVM_TARGET "${BASE_MARCH}-${TARGET_TRIPLE_MIDDLE}-eabi")
-            set(MFLOAT_ABI "soft")
-            unset(MFPU)
-        endif()
-        set(HAS_CACHE TRUE)
-
-    elseif(${CORE} STREQUAL "CORTEX_M85")
-        set(LLVM_TARGET "thumbv8m.main-${TARGET_TRIPLE_MIDDLE}-eabi")
-        set(MCPU "cortex-m85")
-        set(MARCH "thumbv8m.main")
-        # Hard float ABI (default)
-        set(LLVM_TARGET "${LLVM_TARGET}hf")
+        set(MCPU "cortex-m55")
         set(MFLOAT_ABI "hard")
         set(MFPU "fpv5-sp-d16")
         set(HAS_CACHE TRUE)
-
     elseif(${CORE} STREQUAL "CORTEX_A7")
         if(${COMPILER_FAMILY} STREQUAL "llvm")
             message(WARNING "LLVM target not defined for CORTEX_A7")
@@ -336,22 +180,16 @@ function(configure_arm_core)
     endif()
 
     # Apply LLVM target if using LLVM
-    if(CMAKE_C_COMPILER_ID STREQUAL "Clang" AND DEFINED LLVM_TARGET)
+    if(${COMPILER_FAMILY} STREQUAL "llvm" AND DEFINED LLVM_TARGET)
         set(CMAKE_C_COMPILER_TARGET ${LLVM_TARGET} PARENT_SCOPE)
     endif()
 
     # Build compile flags
-    set(COMPILE_FLAGS "")
-    if(DEFINED MCPU)
-        list(APPEND COMPILE_FLAGS "-mcpu=${MCPU}")
-    endif()
-    if(DEFINED MARCH AND (CMAKE_C_COMPILER_ID STREQUAL "Clang" OR ${CORE} STREQUAL "CORTEX_M55"))
-        list(APPEND COMPILE_FLAGS "-march=${MARCH}")
-    endif()
+    set(COMPILE_FLAGS "-mcpu=${MCPU}")
     if(DEFINED MFLOAT_ABI)
         list(APPEND COMPILE_FLAGS "-mfloat-abi=${MFLOAT_ABI}")
     endif()
-    if(NOT DEFINED NOFPU AND DEFINED MFPU)
+    if(DEFINED MFPU)
         list(APPEND COMPILE_FLAGS "-mfpu=${MFPU}")
     endif()
     if(DEFINED EXTRA_COMPILE_FLAGS)
@@ -373,18 +211,12 @@ function(configure_riscv_core)
 
     # RISC-V core configurations
     if(${CORE} STREQUAL "RV32IMAC")
-        # RV32IMAC_VALID_FEATURES
-        #   "zicsr|Control and Status Register instructions|||_zicsr"
-        #   "zifencei|Instruction-Fetch Fence instructions|||_zifencei"
         set(LLVM_TARGET "riscv32-unknown-elf")
         set(MARCH_GNU "rv32imac_zicsr_zifencei")
         set(MARCH_LLVM "rv32imac")
         set(MABI "ilp32")
         set(EXTRA_FLAGS "-gdwarf-4")
     elseif(${CORE} STREQUAL "RV64IMAFDC")
-        # RV64IMAFDC_VALID_FEATURES
-        #   "zicsr|Control and Status Register instructions|||_zicsr"
-        #   "zifencei|Instruction-Fetch Fence instructions|||_zifencei"
         set(LLVM_TARGET "riscv64-unknown-elf")
         set(MARCH_GNU "rv64imafdc_zicsr_zifencei")
         set(MARCH_LLVM "rv64imafdc")
@@ -461,11 +293,8 @@ file(REMOVE "${ARTEFACTS_DIR}/FLASH.cnf")
 # Mark the file for deletion during clean
 set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_CLEAN_FILES "${ARTEFACTS_DIR}/FLASH.cnf")
 # Macro to add a file with an associated define option
-macro(add_source_with_define the_list source_file)
+macro(add_source_with_define the_list source_file definition)
     list(APPEND ${the_list} ${source_file})
-    # Handle all definitions passed as remaining arguments
-    foreach(definition ${ARGN})
-        add_compile_definitions(${definition})
-        file(APPEND "${ARTEFACTS_DIR}/FLASH.cnf" "-D${definition} ")
-    endforeach()
+    add_compile_definitions(${definition})
+    file(APPEND "${ARTEFACTS_DIR}/FLASH.cnf" "-D${definition} ")
 endmacro()
