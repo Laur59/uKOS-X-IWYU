@@ -213,7 +213,10 @@ function(configure_arm_core)
     endif()
 
     add_link_options($<$<C_COMPILER_ID:GNU>:-Wl,--no-warn-rwx-segment>)
-    target_compile_options(core_compiler_flags INTERFACE -mthumb -Wformat-security)
+    target_compile_options(core_compiler_flags INTERFACE -mthumb -Wformat-security
+        $<$<C_COMPILER_ID:Clang>:-ffunction-sections>
+        $<$<C_COMPILER_ID:Clang>:-fdata-sections>
+    )
     target_compile_definitions(core_compiler_flags INTERFACE _MACHTIME_H_ _CLOCKS_PER_SEC_=1000000)
 
     # ARM Cortex-M core configurations
