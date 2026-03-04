@@ -274,6 +274,10 @@ struct proc {
             spec_t          oSpecification;                                     // Process specification
             work_t          oInternal;                                          // Process internal stuff
             stts_t          oStatistic;                                         // uKernel statistic
+
+            #ifdef CONFIG_MAN_PICOLIBC_S
+            int             oErrnoPicolibc;                                     // Per-process errno for picolibc
+            #endif
 };
 
 // Prototypes

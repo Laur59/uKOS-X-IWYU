@@ -104,7 +104,6 @@ option(WITH_LISTING "Control generation of dis and lst files" OFF)
 option(CANARY "Canary stack protection" ON)
 
 # Set default mode to privileged
-
 option(USER_MODE "User mode activated" ON)
 
 option(CONSTANT_SIG "Use SHA-256 of zero to generate signature" OFF)
@@ -420,6 +419,10 @@ endfunction()
 
 function(configure_riscv_core)
     add_link_options($<$<C_COMPILER_ID:GNU>:-Wl,--no-warn-rwx-segment>)
+    target_compile_options(core_compiler_flags INTERFACE
+        $<$<C_COMPILER_ID:Clang>:-ffunction-sections>
+        $<$<C_COMPILER_ID:Clang>:-fdata-sections>
+    )
 
     # RISC-V core configurations
     if(${CORE} STREQUAL "RV32IMAC")
@@ -445,8 +448,6 @@ function(configure_riscv_core)
             "-ffast-math"
             "-fno-math-errno"
             "-fno-zero-initialized-in-bss"
-            "-ffunction-sections"
-            "-fdata-sections"
             "-Wno-format"
             "-Wno-format-security"
         )

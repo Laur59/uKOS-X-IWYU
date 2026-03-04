@@ -151,7 +151,7 @@ add_source_with_define(LIBX_P ${PATH_UKOS}/OS/Lib_serials/urt0/urt0.c CONFIG_MAN
 list(APPEND LIBX_P
     ${PATH_BASE}/Lib_cryptographics/random/stub_random.c
     ${PATH_BASE}/Lib_generics/machine/stub_machine.c
-	${PATH_BASE}/Lib_serials/urt0/stub_urt0_uart8.c
+    ${PATH_BASE}/Lib_serials/urt0/stub_urt0_uart8.c
     ${PATH_COMX}/Lib_generics/asmp/stub_asmp_hsem.c
     ${PATH_VARI}/Lib_peripherals/led/stub_led.c
     ${PATH_VARI}/Lib_peripherals/switch/stub_switch.c
@@ -160,7 +160,12 @@ add_library(libx_p ${LIBX_P})
 target_link_libraries(libx_p PUBLIC system_compiler_flags)
 
 # Lib_xxxx components (user) -> liblibx_u.a
+# C library integration (conditional based on detected C library)
+if(C_LIBRARY STREQUAL "picolibc")
+    add_source_with_define(LIBX_U ${PATH_UKOS}/OS/Lib_generics/picolibc/picolibc.c CONFIG_MAN_PICOLIBC_S)
+else()
 add_source_with_define(LIBX_U ${PATH_UKOS}/OS/Lib_generics/newlib/newlib.c CONFIG_MAN_NEWLIB_S)
+endif()
 add_source_with_define(LIBX_U ${PATH_UKOS}/OS/Lib_generics/text/text.c CONFIG_MAN_TEXT_S)
 add_library(libx_u ${LIBX_U})
 target_link_libraries(libx_u PUBLIC system_compiler_flags)

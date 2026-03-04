@@ -186,7 +186,12 @@ add_library(libx_p ${LIBX_P})
 target_link_libraries(libx_p PUBLIC system_compiler_flags ${TINYUSB})
 
 # Lib_xxxx components (user) -> liblibx_u.a
-add_source_with_define(LIBX_U ${PATH_UKOS}/OS/Lib_generics/newlib/newlib.c CONFIG_MAN_NEWLIB_S)
+# C library integration (conditional based on detected C library)
+if(C_LIBRARY STREQUAL "picolibc")
+    add_source_with_define(LIBX_U ${PATH_UKOS}/OS/Lib_generics/picolibc/picolibc.c CONFIG_MAN_PICOLIBC_S)
+else()
+    add_source_with_define(LIBX_U ${PATH_UKOS}/OS/Lib_generics/newlib/newlib.c CONFIG_MAN_NEWLIB_S)
+endif()
 add_source_with_define(LIBX_U ${PATH_UKOS}/OS/Lib_generics/text/text.c CONFIG_MAN_TEXT_S)
 add_source_with_define(LIBX_U ${PATH_UKOS}/OS/Lib_neurals/mlpn/mlpn.c CONFIG_MAN_MLPN_S)
 add_library(libx_u ${LIBX_U})

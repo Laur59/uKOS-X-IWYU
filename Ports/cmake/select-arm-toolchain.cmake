@@ -51,31 +51,40 @@ if(${USE_LLVM})
     set(COMPILER_FAMILY llvm)
     set(PREFIX llvm-)
 
-    if(DEFINED ENV{PATH_LLVM_ARM})
-        set(PATH_LLVM_ARM $ENV{PATH_LLVM_ARM})
+    if(DEFINED C_LIBRARY AND C_LIBRARY STREQUAL "picolibc")
+        if(DEFINED ENV{PATH_LLVM_ARMP})
+            set(PATH_LLVM_ARM $ENV{PATH_LLVM_ARMP})
+        else()
+            message(FATAL_ERROR "Environment variable PATH_LLVM_ARMP is not defined")
+        endif()
     else()
-        find_program(CLANG_COMPILER
-            NAMES clang
-            DOC "Clang compiler"
-        )
-        if(NOT CLANG_COMPILER)
-            message(FATAL_ERROR "Environment variable PATH_LLVM_ARM is not defined")
+        set(C_LIBRARY "newlib")
+        if(DEFINED ENV{PATH_LLVM_ARM})
+            set(PATH_LLVM_ARM $ENV{PATH_LLVM_ARM})
+        else()
+            find_program(CLANG_COMPILER
+                NAMES clang
+                DOC "Clang compiler"
+            )
+            if(NOT CLANG_COMPILER)
+                message(FATAL_ERROR "Environment variable PATH_LLVM_ARM is not defined")
+            endif()
+            # Check for support for ARM
+            execute_process(
+                COMMAND ${CLANG_COMPILER} --print-target-triple
+                OUTPUT_VARIABLE CLANG_TARGETS
+                OUTPUT_STRIP_TRAILING_WHITESPACE
+                RESULT_VARIABLE CLANG_CHECK_RESULT
+            )
+            if(NOT CLANG_CHECK_RESULT EQUAL 0)
+                message(FATAL_ERROR "Failed to check Clang targets")
+            endif()
+            if(NOT CLANG_TARGETS MATCHES "arm")
+                message(FATAL_ERROR "Clang found but does not support ARM targets")
+            endif()
+            get_filename_component(CLANG_BIN_DIR ${CLANG_COMPILER} DIRECTORY)
+            cmake_path(GET CLANG_BIN_DIR PARENT_PATH PATH_LLVM_ARM)
         endif()
-        # Check for support for ARM
-        execute_process(
-            COMMAND ${CLANG_COMPILER} --print-target-triple
-            OUTPUT_VARIABLE CLANG_TARGETS
-            OUTPUT_STRIP_TRAILING_WHITESPACE
-            RESULT_VARIABLE CLANG_CHECK_RESULT
-        )
-        if(NOT CLANG_CHECK_RESULT EQUAL 0)
-            message(FATAL_ERROR "Failed to check Clang targets")
-        endif()
-        if(NOT CLANG_TARGETS MATCHES "arm")
-            message(FATAL_ERROR "Clang found but does not support ARM targets")
-        endif()
-        get_filename_component(CLANG_BIN_DIR ${CLANG_COMPILER} DIRECTORY)
-        cmake_path(GET CLANG_BIN_DIR PARENT_PATH PATH_LLVM_ARM)
     endif()
 
     include(${mkfiles_cmake_path}/llvm-arm.cmake)

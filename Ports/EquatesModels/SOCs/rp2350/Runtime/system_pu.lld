@@ -150,6 +150,7 @@ SECTIONS {
         . = ALIGN(4);
         linker_stDATA_u = ABSOLUTE(.);
         *(EXCLUDE_FILE (*lib*_p.a) .data .data.* .data*)
+        *(.tdata .tdata.*)
         . = ALIGN(4);
         *(vtable)
         . = ALIGN(4);
@@ -183,6 +184,17 @@ SECTIONS {
         lib*_u.a(.bss .bss.* COMMON)
         *(EXCLUDE_FILE (*lib*_p.a) .bss .bss.* .bss*)
         linker_enBSS_u = ABSOLUTE(.);
+    } > prgm_data_u
+
+    /* Thread-local storage BSS section - treated as regular BSS for bare-metal */
+    .tbss (NOLOAD) : {
+        linker_stTBSS = ABSOLUTE(.);
+        *(.tbss .tbss.*)
+        linker_enTBSS = ABSOLUTE(.);
+        /* Standard symbol used by C library for heap start */
+        /* Placed after .tbss so heap doesn't overlap with TLS data */
+        end = ABSOLUTE(.);
+        _end = ABSOLUTE(.);
     } > prgm_data_u
 
 }

@@ -190,6 +190,9 @@ void    crt0(void) {
         memcpy(linker_stDATA_u, linker_stINDATA_u, (size_t)((uintptr_t)linker_enDATA_u - (uintptr_t)linker_stDATA_u));
         memset(linker_stBSS_p,  0x00U,             (size_t)((uintptr_t)linker_enBSS_p  - (uintptr_t)linker_stBSS_p));
         memset(linker_stBSS_u,  0x00U,             (size_t)((uintptr_t)linker_enBSS_u  - (uintptr_t)linker_stBSS_u));
+        #ifdef __clang__
+        memset(linker_stTBSS,   0x00U,             (size_t)((uintptr_t)linker_enTBSS   - (uintptr_t)linker_stTBSS));
+        #endif
 
         #else
         regionSeed = ALIGNED_PTR(uint32_t, linker_stPrgmData);
@@ -206,6 +209,9 @@ void    crt0(void) {
 
         memcpy(linker_stDATA, linker_stINDATA, (size_t)((uintptr_t)linker_enDATA - (uintptr_t)linker_stDATA));
         memset(linker_stBSS,  0x00U,           (size_t)((uintptr_t)linker_enBSS  - (uintptr_t)linker_stBSS));
+        #ifdef __clang__
+        memset(linker_stTBSS, 0x00U,           (size_t)((uintptr_t)linker_enTBSS - (uintptr_t)linker_stTBSS));
+        #endif
         #endif
 
 // Initialise the Heap regions

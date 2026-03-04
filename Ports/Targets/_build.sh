@@ -34,6 +34,7 @@ COMPILER_TOOL="LLVM clang"
 VERBOSITY=""
 CANARY_MODE="ON"
 USER_MODE="ON"
+C_LIB="newlib"
 
 # Cleanup trap (runs on Ctrl-C)
 cleanup() {
@@ -57,10 +58,11 @@ trap cleanup INT TERM
 
 usage() {
     cat <<'EOF'
-Usage: ./_build_cmake.sh [-G] [-U] [-Y] [-v|-w]
+Usage: ./_build_cmake.sh [-G] [-P] [-U] [-Y] [-v|-w]
 
 Options:
   -G  Use gcc compiler
+  -P  Use picolibc
   -U  Privileged mode only
   -Y  Disable canary stack protection
   -v  Verbose: display warnings and errors
@@ -69,7 +71,7 @@ Options:
 EOF
 }
 
-readonly OPTSTRING=":GUYvwh"
+readonly OPTSTRING=":GPUYvwh"
 while getopts "${OPTSTRING}" option; do
     case "${option}" in
         h)
@@ -78,6 +80,9 @@ while getopts "${OPTSTRING}" option; do
             ;;
         G)
             COMPILER_TOOL="gcc"
+            ;;
+        P)
+            C_LIB="picolibc"
             ;;
         U)
             USER_MODE="OFF"
@@ -109,13 +114,13 @@ get_cmake_preset() {
 
     if [ "$user_mode" = "OFF" ]; then
         preset="${preset}-nouser"
-		if [ "$canary_mode" = "OFF" ]; then
+        if [ "$canary_mode" = "OFF" ]; then
             preset="${preset}-nocanary"
         fi
     else
         # user_mode = ON
         if [ "$canary_mode" = "OFF" ]; then
-			preset="${preset}-nocanary"
+            preset="${preset}-nocanary"
         fi
         # When user_mode=ON and canary_mode=ON, preset stays as just "${compiler}"
     fi
@@ -195,7 +200,7 @@ build_failure=""
 build_success=""
 readonly LOG_FILE="build/compilation.log"
 
-printf "%bBuilding all the systems with --preset %s%b (USER_MODE=%s CANARY=%s)\n" "${BOLD}" "${CMAKE_PRESET}" "${NC}" "${USER_MODE}" "${CANARY_MODE})"
+printf "%bBuilding all the systems with --preset %s -DC_LIBRARY=%s%b (USER_MODE=%s CANARY=%s)\n" "${BOLD}" "${CMAKE_PRESET}" "${C_LIB}" "${NC}" "${USER_MODE}" "${CANARY_MODE})"
 # Parse YAML and iterate through all build targets
 while IFS=$'\t' read -r family variant_name; do
     CURRENT_VARIANT="${family}/Variant_${variant_name}"
@@ -209,7 +214,7 @@ while IFS=$'\t' read -r family variant_name; do
 
     was_error=0
     rm -fr build
-    cmake --preset "${CMAKE_PRESET}" >/dev/null && \
+    cmake --preset "${CMAKE_PRESET}" -DC_LIBRARY=${C_LIB} &>/dev/null && \
     cmake --build build --parallel >"${LOG_FILE}" 2>&1 || was_error=1
 
     # Filter out Ninja progress lines (e.g., "[1/100] Building...") to keep only warnings/errors

@@ -21,55 +21,57 @@ setopt ERR_EXIT NO_UNSET PIPE_FAIL EXTENDED_GLOB
 readonly PATH_PRG="${0:a:h}"
 
 if [[ -z "${PATH_GCC_ARM:-}" ]]; then
-    printf "Variable PATH_GCC_ARM is not set! ARM targets will not build!\n" >&2
+    printf 'Variable PATH_GCC_ARM is not set! ARM targets will not build!\n' >&2
 fi
 
 if [[ -z "${PATH_GCC_RVXX:-}" ]]; then
-    printf "Variable PATH_GCC_RVXX is not set! RISC-V targets will not build!\n" >&2
+    printf 'Variable PATH_GCC_RVXX is not set! RISC-V targets will not build!\n' >&2
 fi
 
 if [[ -z "${PATH_LLVM_ARM:-}" ]]; then
-    printf "Variable PATH_LLVM_ARM is not set! ARM targets will not build!\n" >&2
+    printf 'Variable PATH_LLVM_ARM is not set! ARM targets will not build!\n' >&2
 fi
 
 if [[ -z "${PATH_LLVM_RVXX:-}" ]]; then
-    printf "Variable PATH_LLVM_RVXX is not set! RISC-V targets will not build!\n" >&2
+    printf 'Variable PATH_LLVM_RVXX is not set! RISC-V targets will not build!\n' >&2
 fi
 
 # Colours for messages
 
-readonly RED='\033[0;31m'
-readonly GREEN='\033[0;32m'
-readonly YELLOW='\033[0;33m'
-readonly BLUE='\033[0;34m'
-readonly BOLD='\033[1m'
-readonly FAINT='\033[2m'
-readonly ITALIC='\033[3m'
-readonly NC='\033[0m' # No Color
+readonly RED=$'\033[0;31m'
+readonly GREEN=$'\033[0;32m'
+readonly YELLOW=$'\033[0;33m'
+readonly BLUE=$'\033[0;34m'
+readonly BOLD=$'\033[1m'
+readonly FAINT=$'\033[2m'
+readonly ITALIC=$'\033[3m'
+readonly NC=$'\033[0m' # No Color
 
 # Defaults
 
-CMAKE_CANARY_MODE=""
-CMAKE_USER_MODE=""
-COMPILER_TOOL="LLVM clang"
-TOOLCHAIN_VAR=""
-VERBOSITY=""
+CMAKE_CANARY_MODE=''
+CMAKE_USER_MODE=''
+COMPILER_TOOL='gcc'
+TOOLCHAIN_VAR=''
+VERBOSITY=''
+C_LIB="newlib"
 
 usage() {
-    cat <<EOF
-Usage: ./_build_cmake.sh [-L] [-U] [-Y] [-v|-w]
+    cat <<'EOF'
+Usage: ./_build_cmake.sh [-G] [-P] [-U] [-Y] [-v|-w]
 
 Options:
   -G    Use gcc compiler
-  -U    Privileged mode only (USER_MODE=OFF)
-  -Y    Disable canary stack protection (CANARY_MODE=OFF)
-  -v    Verbose: display warnings and errors
-  -w    Keep warnings/errors in log files
-  -h    Show this help message
+  -P  Use picolibc
+  -U  Privileged mode only
+  -Y  Disable canary stack protection
+  -v  Verbose: display warnings and errors
+  -w  Keep error and warning messages in log file
+  -h  Show this help message
 EOF
 }
 
-OPTSTRING=":GUYvwh"
+OPTSTRING=":GPUYvwh"
 while getopts ${OPTSTRING} option; do
     case ${option} in
         h)
@@ -79,6 +81,9 @@ while getopts ${OPTSTRING} option; do
         G)
             COMPILER_TOOL="gcc"
             TOOLCHAIN_VAR="-DUSE_LLVM=OFF"
+            ;;
+        P)
+            C_LIB="picolibc"
             ;;
         U)
             CMAKE_USER_MODE="-DUSER_MODE=OFF"
@@ -115,8 +120,8 @@ case ${COMPILER_TOOL} in
         ;;
 esac
 
-cmake_version=$(cmake --version | head -1 | awk '{print $3}')
-printf "%bUsing cmake %s and %s (%s)%b\n" "${YELLOW}" "${cmake_version}" "${COMPILER_TOOL}" "${COMPILER_VERSIONS}" "${NC}"
+cmake_version=$(cmake --version | awk 'NR==1{print $3; exit}')
+printf '%bUsing cmake (%s) and %s (%s)%b\n' "${YELLOW}" "${cmake_version}" "${COMPILER_TOOL}" "${COMPILER_VERSIONS}" "${NC}"
 
 process_option() {
     local log_file="$1"
@@ -156,7 +161,7 @@ build_warning=""
 build_success=""
 readonly LOG_FILE="build/compilation.log"
 
-printf "%bBuilding all the downloadable applications with CMake options %s %s %s%b\n" "${BOLD}" "${TOOLCHAIN_VAR}" "${CMAKE_USER_MODE}" "${CMAKE_CANARY_MODE}" "${NC}"
+printf '%bBuilding all the downloadable applications with CMake options %s %s %s -DC_LIBRARY=%s%b\n' "${BOLD}" "${TOOLCHAIN_VAR}" "${CMAKE_USER_MODE}" "${CMAKE_CANARY_MODE}" "${C_LIB}" "${NC}"
 # Parse YAML and iterate through all build targets
 while IFS= read -r CURRENT_TARGET; do
     printf "%s " "${CURRENT_TARGET}"
@@ -169,7 +174,7 @@ while IFS= read -r CURRENT_TARGET; do
     # If make error         -> "FAIL"
 
     was_error=0
-    cmake -S . -B build ${TOOLCHAIN_VAR} ${CMAKE_CANARY_MODE} ${CMAKE_USER_MODE} >/dev/null && \
+    cmake -S . -B build ${TOOLCHAIN_VAR} ${CMAKE_CANARY_MODE} ${CMAKE_USER_MODE} -DC_LIBRARY=${C_LIB} >/dev/null && \
     cmake --build build >/dev/null 2>"${LOG_FILE}" || was_error=1
     if (( was_error == 0 )); then
         if [[ ! -s "${LOG_FILE}" ]]; then
