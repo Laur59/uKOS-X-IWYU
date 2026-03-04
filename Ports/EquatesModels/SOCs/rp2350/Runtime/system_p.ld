@@ -142,4 +142,15 @@ SECTIONS {
         linker_enBSS = ABSOLUTE(.);
     } > prgm_data
 
+    /* Thread-local storage BSS section - treated as regular BSS for bare-metal */
+    .tbss (NOLOAD) : {
+        linker_stTBSS = ABSOLUTE(.);
+        *(.tbss .tbss.*)
+        linker_enTBSS = ABSOLUTE(.);
+        /* Standard symbol used by C library for heap start */
+        /* Placed after .tbss so heap doesn't overlap with TLS data */
+        end = ABSOLUTE(.);
+        _end = ABSOLUTE(.);
+    } > prgm_data
+
 }

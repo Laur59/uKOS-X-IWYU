@@ -8,7 +8,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =============
 
 ;------------------------------------------------------------------------
-; Project:	uKOS-X
+; Project:  uKOS-X
 ;
 ; Purpose:
 ;   lib_generics system call interface module.
@@ -47,7 +47,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \defgroup Lib_generics Library for generic manager
@@ -89,29 +89,37 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 // IWYU pragma: begin_exports
 
 #ifdef CONFIG_MAN_ASMP_S
-#include	"asmp/asmp.h"
+#include    "asmp/asmp.h"
 #endif
 #ifdef CONFIG_MAN_CALENDAR_S
-#include	"calendar/calendar.h"
+#include    "calendar/calendar.h"
 #endif
 #ifdef CONFIG_MAN_MACHINE_S
-#include	"machine/machine.h"
+#include    "machine/machine.h"
 #endif
 #ifdef CONFIG_MAN_MEMO_S
-#include	"memo/memo.h"
+#include    "memo/memo.h"
 #endif
 #ifdef CONFIG_MAN_SYSTEM_S
-#include	"system/system.h"
+#include    "system/system.h"
 #endif
 #ifdef CONFIG_MAN_TEXT_S
-#include	"text/text.h"
+#include    "text/text.h"
 #endif
 
 // dprintf and record_trace
 // These functions are always defined.
 
-#include	"record/record.h"
-#include	"newlib/newlib.h"
+#include    "record/record.h"
+
+// C library integration
+#ifdef CONFIG_MAN_NEWLIB_S
+#include    "newlib/newlib.h"
+#elif defined(CONFIG_MAN_PICOLIBC_S)
+#include    "picolibc/picolibc.h"
+#else
+#error "No C library configured (CONFIG_MAN_NEWLIB_S or CONFIG_MAN_PICOLIBC_S required)"
+#endif
 
 // IWYU pragma: end_exports
 

@@ -11,9 +11,9 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; Project: uKOS-X
 ;
 ; Purpose:
-;   Kern - impure data for xLibrary (newlib, picolib, etc.) management.
+;   Kern - C library integration for xLibrary (newlib, picolibc, etc.) management.
 ;
-;   Private uKernel variables.
+;   Private uKernel variables and function prototypes.
 ;
 ;-----
 ;                                              __ ______  _____
@@ -73,13 +73,23 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #include    <string.h>      // IWYU pragma: keep
 
-#include    <reent.h>
-
 #include    "kern/kern.h"
 #include    "macros_soc.h"
+
+#ifdef CONFIG_MAN_NEWLIB_S
+#include    <reent.h>
 #include    "newlib/newlib.h"
 
-extern  reent_t     vKern_impureData[KNB_CORES][KKERN_NB_PROCESSES];    // Array of impure pointer fr the newlib
+extern  reent_t     vKern_impureData[KNB_CORES][KKERN_NB_PROCESSES];    // Array of impure pointer for newlib
+
+#elif defined(CONFIG_MAN_PICOLIBC_S)
+#include    "picolibc/picolibc.h"
+
+// No global impure data for picolibc - errno is stored per-process in proc_t
+
+#else
+#error "No C library configured (CONFIG_MAN_NEWLIB_S or CONFIG_MAN_PICOLIBC_S required)"
+#endif
 
 // Prototypes
 

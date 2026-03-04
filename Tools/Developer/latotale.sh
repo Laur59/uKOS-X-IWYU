@@ -3,10 +3,10 @@
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #------------------------------------------------------------------------
-# Goal:	Build all systems for each configuration and all toolchains
+# Goal: Build all systems for each configuration and all toolchains
 #
 # Usage:
-#		./latotale.sh
+#       ./latotale.sh
 #------------------------------------------------------------------------
 
 emulate -L zsh
@@ -22,43 +22,70 @@ readonly FAINT=$'\033[2m'
 readonly ITALIC=$'\033[3m'
 readonly NC=$'\033[0m' # No Color
 
-exclude_clang=0
-exclude_gcc=0
+do_clang=1
+do_gcc=1
+do_newlib=1
+do_picolibc=1
+do_U=1
+do_Y=1
 
-OPTSTRING=":LGph"
+OPTSTRING=":LGNPUYh"
 while getopts ${OPTSTRING} option; do
-	case ${option} in
-		h)
-			echo "USAGE: ./latotale.sh [-L] [-G] [-p]"
-			echo
-			echo "OPTIONS:"
-			echo "    -G: exclude gcc"
-			echo "    -L: exclude clang"
-			echo "    -p: build with picolibc"
-			exit 0
-			;;
-		L)
-			exclude_clang=1
-			;;
-		G)
-			exclude_gcc=1
-			;;
-		p)
-			picolibc_flag="-P"
-			;;
-		?)
-			echo "Invalid option: -${OPTARG}"
-			exit 1
-		;;
-	esac
+    case ${option} in
+        h)
+            echo "USAGE: ./latotale.sh [-L] [-G] [-N] [-P] [-U] [-Y]"
+            echo
+            echo "OPTIONS:"
+            echo "    -G: exclude gcc"
+            echo "    -L: exclude clang"
+            echo "    -P: exclude picolibc"
+            echo "    -U: exclude user mode"
+            echo "    -Y: exclude canary"
+            exit 0
+            ;;
+        L)
+            if [[ ! $do_gcc ]]; then
+                print 'Nothing to be done.'
+                exit 0
+            fi
+            do_clang=
+            ;;
+        G)
+            if [[ ! $do_clang ]]; then
+                print 'Nothing to be done.'
+                exit 0
+            fi
+            do_gcc=
+            ;;
+        N)
+            if [[ ! $do_picolibc ]]; then
+                print 'Nothing to be done.'
+                exit 0
+            fi
+            do_newlib=
+            ;;
+        P)
+            if [[ ! $do_newlib ]]; then
+                print 'Nothing to be done.'
+                exit 0
+            fi
+            do_picolibc=
+            ;;
+        U)
+            do_U=
+            ;;
+        Y)
+            do_Y=
+            ;;
+        ?)
+            echo "Invalid option: -${OPTARG}"
+            exit 1
+        ;;
+    esac
 done
 
-if [[ "${exclude_clang}" = 1 ]] && [[ "${exclude_gcc}" = 1 ]]; then
-	print "Nothing to be done."
-	exit 0
-fi
-
-date
+tic=$(date +%s)
+print "$(date -r $tic)"
 cd "${PROJECT_DIRECTORY}"/Ports/Targets
 print "${YELLOW}\ngit branch $(git branch --show-current)${NC}\n"
 export NOLISTING=1
@@ -73,29 +100,49 @@ print "\nVersion of clang for RISC-V"
 "$PATH_LLVM_RVXX"/bin/clang --version
 print
 #
-run_pass()
-{
-	local canary=$1
-	local usermode=$2
-	if [ "${exclude_gcc}" != 1 ]; then
-		# cmake and gcc
-		./_build.sh -G $canary $usermode
-		print
-	fi
-	if [[ "${exclude_clang}" != 1 ]]; then
-		# cmake and clang
-		./_build.sh $canary $usermode
-		print
-	fi
-}
+if [[ $do_newlib ]]; then
+    [[ $do_gcc ]] && ./_build_cmake.sh
+    [[ $do_clang ]] && ./_build_cmake.sh -L
 
-# Build with USER mode and canary
-run_pass "" ""
-# Build without canary
-run_pass -Y ""
-# Build without USER mode
-run_pass "" -U
-# Build without USER mode and without canary
-run_pass -Y -U
-./_clean.sh > /dev/null
-date
+    if [[ $do_Y ]]; then
+        [[ $do_gcc ]] && ./_build_cmake.sh -Y
+        [[ $do_clang ]] && ./_build_cmake.sh -LY
+    fi
+
+    if [[ $do_U ]]; then
+        [[ $do_gcc ]] && ./_build_cmake.sh -U
+        [[ $do_clang ]] && ./_build_cmake.sh -LU
+
+        if [[ $do_Y ]]; then
+            [[ $do_gcc ]] && ./_build_cmake.sh -UY
+            [[ $do_clang ]] && ./_build_cmake.sh -LUY
+        fi
+    fi
+fi
+#
+if [[ $do_picolibc ]]; then
+    [[ $do_gcc ]] && ./_build_cmake.sh -P
+    [[ $do_clang ]] && ./_build_cmake.sh -PL
+
+    if [[ $do_Y ]]; then
+        [[ $do_gcc ]] && ./_build_cmake.sh -PY
+        [[ $do_clang ]] && ./_build_cmake.sh -PLY
+    fi
+
+    if [[ $do_U ]]; then
+        [[ $do_gcc ]] && ./_build_cmake.sh -PU
+        [[ $do_clang ]] && ./_build_cmake.sh -PLU
+
+        if [[ $do_Y ]]; then
+            [[ $do_gcc ]] && ./_build_cmake.sh -PUY
+            [[ $do_clang ]] && ./_build_cmake.sh -PLUY
+        fi
+    fi
+fi
+
+./clean.sh > /dev/null
+tac=$(date +%s)
+print "$(date -r $tac)"
+elapsed=$(( tac - tic ))
+printf "Elapsed: %dmin %dssec\n" $(( elapsed / 60 )) $(( elapsed % 60 ))
+exit 0

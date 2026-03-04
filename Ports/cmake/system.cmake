@@ -89,8 +89,50 @@ target_compile_definitions(system_compiler_flags INTERFACE
     ${CORE}_S
     ROMABLE_S
     "$<$<BOOL:${KERNEL_OPT}>:${KERNEL_OPT}_S>"
-    _POSIX_C_SOURCE=200809L
 )
+
+# C library specific compile definitions
+if(C_LIBRARY STREQUAL "picolibc")
+    target_compile_definitions(system_compiler_flags INTERFACE
+        CONFIG_MAN_PICOLIBC_S
+        _GNU_SOURCE
+        _REENT_GLOBAL_ERRNO
+    )
+    message(STATUS "C library compile definitions: CONFIG_MAN_PICOLIBC_S, _GNU_SOURCE, _REENT_GLOBAL_ERRNO")
+else()
+    # newlib (default)
+    target_compile_definitions(system_compiler_flags INTERFACE
+        CONFIG_MAN_NEWLIB_S
+        __DYNAMIC_REENT__
+        _POSIX_C_SOURCE=200809L
+    )
+    message(STATUS "C library compile definitions: CONFIG_MAN_NEWLIB_S, __DYNAMIC_REENT__, _POSIX_C_SOURCE=200809L")
+endif()
+
+# C library specific specs for GCC (compiler and linker)
+# Note: Clang/LLVM uses picolibc by default, no specs needed
+if(COMPILER_FAMILY STREQUAL "gcc")
+    if(C_LIBRARY STREQUAL "picolibc")
+        # GCC with picolibc: Use specs for both compilation and linking
+        # The picolibc.specs file provides:
+        # - Include paths to picolibc headers
+        # - Library paths to picolibc libraries
+        # - Automatic --gc-sections for linker (reduces binary size)
+        # - Default picolibc.ld linker script (overridden by our -T flag)
+        # Note: Our custom linker scripts override picolibc's default via -T flag
+        target_compile_options(system_compiler_flags INTERFACE
+            -specs=picolibc.specs
+        )
+        target_link_options(system_compiler_flags INTERFACE
+            -specs=picolibc.specs
+        )
+        message(STATUS "C library specs (GCC): -specs=picolibc.specs for compilation and linking")
+    else()
+        # GCC with newlib (default)
+        # Note: -specs=nano.specs is typically added in target-specific CMakeLists.txt
+        message(STATUS "C library specs (GCC): newlib (no additional specs at system level)")
+    endif()
+endif()
 
 # Common flags from *_system_CORTEX_M3.mk, *_system_CORTEX_M4.mk,
 # *_system_CORTEX_M7.mk, *_system_RV32IMAC.mk and *_system_RV64IMAFDC.mk
@@ -244,16 +286,41 @@ endif()
 # Common link options
 set(TARGET_COMMON_LINK_OPTIONS
     $<$<BOOL:${CANARY}>:-Wl,--wrap=__stack_chk_fail>
-    -Wl,--wrap=_malloc_r
-    -Wl,--wrap=_free_r
-    -Wl,--wrap=_realloc_r
-    -Wl,--wrap=_calloc_r
     -L${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC}/Runtime
     -L${PATH_UKOS}/Ports/EquatesModels/Cores/${CORE}/Runtime
     -T${LINKS_LD}
     $<$<C_COMPILER_ID:GNU>:-nostartfiles>
     $<$<AND:$<VERSION_GREATER_EQUAL:$<C_COMPILER_VERSION>,20>,$<C_COMPILER_ID:Clang>>:-nostartfiles>
 )
+
+# C library specific memory allocator wrapping
+if(C_LIBRARY STREQUAL "picolibc")
+    # Picolibc uses standard function names (no _r suffix)
+    list(APPEND TARGET_COMMON_LINK_OPTIONS
+        -Wl,--wrap=malloc
+        -Wl,--wrap=free
+        -Wl,--wrap=realloc
+        -Wl,--wrap=calloc
+    )
+    # Counteract picolibc.specs' --gc-sections for the system build.
+    # picolibc.specs unconditionally adds --gc-sections, which discards .text sections
+    # from --whole-archive objects when no symbol in that section is referenced within
+    # the system binary. This affects kernel API functions and peripheral drivers
+    # (e.g. watchdog_arm) that are only called by downloadable applications.
+    list(APPEND TARGET_COMMON_LINK_OPTIONS
+        $<$<C_COMPILER_ID:GNU>:-Wl,--no-gc-sections>
+    )
+    message(STATUS "C library malloc wrapping: --wrap=malloc, --wrap=free, --wrap=realloc, --wrap=calloc")
+else()
+    # Newlib uses reentrant function names (_r suffix)
+    list(APPEND TARGET_COMMON_LINK_OPTIONS
+        -Wl,--wrap=_malloc_r
+        -Wl,--wrap=_free_r
+        -Wl,--wrap=_realloc_r
+        -Wl,--wrap=_calloc_r
+    )
+    message(STATUS "C library malloc wrapping: --wrap=_malloc_r, --wrap=_free_r, --wrap=_realloc_r, --wrap=_calloc_r")
+endif()
 target_link_options(${TARGET_NOSIG_ELF} PRIVATE ${TARGET_COMMON_LINK_OPTIONS})
 target_link_options(${TARGET_ELF} PRIVATE
     ${TARGET_COMMON_LINK_OPTIONS}
