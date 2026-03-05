@@ -140,9 +140,9 @@ if [[ $do_picolibc ]]; then
     fi
 fi
 
-./clean.sh > /dev/null
+./clean.sh > /dev/null 2>&1
 tac=$(date +%s)
 print "$(date -r $tac)"
 elapsed=$(( tac - tic ))
-printf "Elapsed: %dmin %dssec\n" $(( elapsed / 60 )) $(( elapsed % 60 ))
+printf 'Elapsed: %d min %d sec\n' $(( elapsed / 60 )) $(( elapsed % 60 ))
 exit 0

@@ -207,7 +207,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
             text_checkAsciiBuffer(argv[1], "-connect", &equals);
             if (equals) {
-                binary = (int32_t)strtol(argv[2], &dummy, 10U);
+                binary = (int32_t)strtoul(argv[2], &dummy, 10U);
 
                 switch (binary) {
                     case 2400U:     { bdValue = KSERIAL_BAUDRATE_2400;    break; }

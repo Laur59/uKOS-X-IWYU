@@ -213,7 +213,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
         }
         default: {
             nbRep = (int32_t) strtol(argv[1], &dummy, 10U);
-            time  = (uint32_t)strtol(argv[2], &dummy, 10U);
+            time  = (uint32_t)strtoul(argv[2], &dummy, 10U);
 
             serialManager = (serialManager_t)(GET_PTR_32(argv[3]));
             if (local_getIndex(serialManager, &indexSerialManager)) {
