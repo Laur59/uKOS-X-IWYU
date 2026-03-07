@@ -188,7 +188,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
             case 4U: {
                 text_checkAsciiBuffer(argv[2], "-W", &equals);
                 if (equals) {
-                    value = (uint32_t)strtol(argv[3], &dummy, 16U);
+                    value = (uint32_t)strtoul(argv[3], &dummy, 16U);
                     size = 1U;
                     status = serial_write(serialManager, (uint8_t *)&value, size);
 
@@ -204,7 +204,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
                 text_checkAsciiBuffer(argv[2], "-S", &equals);
                 if (equals) {
-                    value = (uint32_t)strtol(argv[3], &dummy, 10U);
+                    value = (uint32_t)strtoul(argv[3], &dummy, 10U);
 
                     switch (value) {
                         case 2400U:    { baudRate = 2400U;      local_setBaudRate(serialManager, KSERIAL_BAUDRATE_2400);    break; }

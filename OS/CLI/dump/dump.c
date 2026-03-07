@@ -129,8 +129,8 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
 // User access
 
-            startAdd = (uintptr_t)strtol(argv[1], &dummy, 16U);
-            endAdd   = (uintptr_t)strtol(argv[2], &dummy, 16U);
+            startAdd = (uintptr_t)strtoul(argv[1], &dummy, 16U);
+            endAdd   = (uintptr_t)strtoul(argv[2], &dummy, 16U);
 
             if (endAdd < startAdd) {
                 endAdd += startAdd;
@@ -147,8 +147,8 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
                 PRIVILEGE_ELEVATE;
 
-                startAdd = (uintptr_t)strtol(argv[2], &dummy, 16U);
-                endAdd   = (uintptr_t)strtol(argv[3], &dummy, 16U);
+                startAdd = (uintptr_t)strtoul(argv[2], &dummy, 16U);
+                endAdd   = (uintptr_t)strtoul(argv[3], &dummy, 16U);
 
                 if (endAdd < startAdd) {
                     endAdd += startAdd;

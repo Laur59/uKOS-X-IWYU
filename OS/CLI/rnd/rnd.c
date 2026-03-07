@@ -142,7 +142,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 // Multiple number, 1 <= nb <= 16 from the soft generator
 
         case 2U: {
-            nbRandomNumber = (uint32_t)strtol(argv[1], &dummy, 10U);
+            nbRandomNumber = (uint32_t)strtoul(argv[1], &dummy, 10U);
             nbRandomNumber = ((nbRandomNumber >= 1U) && (nbRandomNumber <= KNB_MAX_NUMBERS)) ? nbRandomNumber : 1U;
             if (random_read(KRANDOM_SOFT, &randomNumber[0], nbRandomNumber) != KERR_RANDOM_NOERR) {
                 error = true;
@@ -157,7 +157,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
             text_checkAsciiBuffer(argv[1], "-hard", &equals); if (equals) { generator = KRANDOM_HARD; }
             text_checkAsciiBuffer(argv[1], "-soft", &equals); if (equals) { generator = KRANDOM_SOFT; }
 
-            nbRandomNumber = (uint32_t)strtol(argv[2], &dummy, 10U);
+            nbRandomNumber = (uint32_t)strtoul(argv[2], &dummy, 10U);
             nbRandomNumber = ((nbRandomNumber >= 1U) && (nbRandomNumber <= KNB_MAX_NUMBERS)) ? nbRandomNumber : 1U;
             if (random_read(generator, &randomNumber[0], nbRandomNumber) != KERR_RANDOM_NOERR) {
                 error = true;

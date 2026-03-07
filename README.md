@@ -12,6 +12,7 @@ The main differences compared to the upstream repository are:
 - The **CMake** build system is the only supported build system in this fork
 - Development and testing are performed on **macOS**
   (Linux is likely to work but is not actively tested)
+- Experimental support of picolibc
 
 This fork aims to improve maintainability and build correctness rather than to
 extend or modify functionality.

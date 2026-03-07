@@ -165,7 +165,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 // Set mode
 //  wkspi 0 -set POL PHA Speed
 
-    unit = (uint8_t)strtol(argv[1], &dummy, 10U);
+    unit = (uint8_t)strtoul(argv[1], &dummy, 10U);
     switch (unit) {
         default:
         case 0U: { spiManager = KSPI0; break; }
@@ -183,7 +183,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 //  wkspi 1 32
 
             case 3U: {
-                valueW = (uint8_t)strtol(argv[2], &dummy, 16U);
+                valueW = (uint8_t)strtoul(argv[2], &dummy, 16U);
                 valueR = valueW;
                 status = spi_writeRead(spiManager, &valueR);
 
@@ -305,7 +305,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
                 if ((port != nullptr) && ((m == (uint8_t)KCS_LOW) || (m == (uint8_t)KCS_HIGH))) {
 
                     PRIVILEGE_ELEVATE;
-                    pin = (uint8_t)strtol(argv[4], &dummy, 10U);
+                    pin = (uint8_t)strtoul(argv[4], &dummy, 10U);
                     if (mode == KCS_HIGH) { *port |=            (1U<<(pin & 0xFU)); }
                     if (mode == KCS_LOW)  { *port &= (uint32_t)~(1U<<(pin & 0xFU)); }
                     PRIVILEGE_RESTORE;
@@ -324,9 +324,9 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
             case 6U: {
                 text_checkAsciiBuffer(argv[2], "-S", &equals);
                 if (equals) {
-                    pol   = (uint8_t) strtol(argv[3], &dummy, 10U);
-                    pha   = (uint8_t) strtol(argv[4], &dummy, 10U);
-                    speed = (uint32_t)strtol(argv[5], &dummy, 10U);
+                    pol   = (uint8_t) strtoul(argv[3], &dummy, 10U);
+                    pha   = (uint8_t) strtoul(argv[4], &dummy, 10U);
+                    speed = (uint32_t)strtoul(argv[5], &dummy, 10U);
 
                     pol = pol & 0x1U; pha = pha & 0x1U;
                     configure.oClock = 0;
