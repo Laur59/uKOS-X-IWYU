@@ -51,31 +51,40 @@ if(${USE_LLVM})
     set(COMPILER_FAMILY llvm)
     set(PREFIX llvm-)
 
-    if(DEFINED ENV{PATH_LLVM_RVXX})
-        set(PATH_LLVM_RVXX $ENV{PATH_LLVM_RVXX})
+    if(DEFINED C_LIBRARY AND C_LIBRARY STREQUAL "picolibc")
+        if(DEFINED ENV{PATH_LLVM_RVXXP})
+            set(PATH_LLVM_RVXX $ENV{PATH_LLVM_RVXXP})
+        else()
+            message(FATAL_ERROR "Environment variable PATH_LLVM_RVXXP is not defined")
+        endif()
     else()
-        find_program(CLANG_COMPILER
-            NAMES clang
-            DOC "Clang compiler"
-        )
-        if(NOT CLANG_COMPILER)
-            message(FATAL_ERROR "Environment variable PATH_LLVM_RVXX is not defined")
+        set(C_LIBRARY "newlib")
+        if(DEFINED ENV{PATH_LLVM_RVXX})
+            set(PATH_LLVM_RVXX $ENV{PATH_LLVM_RVXX})
+        else()
+            find_program(CLANG_COMPILER
+                NAMES clang
+                DOC "Clang compiler"
+            )
+            if(NOT CLANG_COMPILER)
+                message(FATAL_ERROR "Environment variable PATH_LLVM_RVXX is not defined")
+            endif()
+            # Check for support for RISCV
+            execute_process(
+                COMMAND ${CLANG_COMPILER} --print-target-triple
+                OUTPUT_VARIABLE CLANG_TARGETS
+                OUTPUT_STRIP_TRAILING_WHITESPACE
+                RESULT_VARIABLE CLANG_CHECK_RESULT
+            )
+            if(NOT CLANG_CHECK_RESULT EQUAL 0)
+                message(FATAL_ERROR "Failed to check Clang targets")
+            endif()
+            if(NOT CLANG_TARGETS MATCHES "riscv")
+                message(FATAL_ERROR "Clang found but does not support RISCV targets")
+            endif()
+            get_filename_component(CLANG_BIN_DIR ${CLANG_COMPILER} DIRECTORY)
+            cmake_path(GET CLANG_BIN_DIR PARENT_PATH PATH_LLVM_RVXX)
         endif()
-        # Check for support for RISCV
-        execute_process(
-            COMMAND ${CLANG_COMPILER} --print-target-triple
-            OUTPUT_VARIABLE CLANG_TARGETS
-            OUTPUT_STRIP_TRAILING_WHITESPACE
-            RESULT_VARIABLE CLANG_CHECK_RESULT
-        )
-        if(NOT CLANG_CHECK_RESULT EQUAL 0)
-            message(FATAL_ERROR "Failed to check Clang targets")
-        endif()
-        if(NOT CLANG_TARGETS MATCHES "riscv")
-            message(FATAL_ERROR "Clang found but does not support RISCV targets")
-        endif()
-        get_filename_component(CLANG_BIN_DIR ${CLANG_COMPILER} DIRECTORY)
-        cmake_path(GET CLANG_BIN_DIR PARENT_PATH PATH_LLVM_RVXX)
     endif()
 
     include(${mkfiles_cmake_path}/llvm-riscv.cmake)
