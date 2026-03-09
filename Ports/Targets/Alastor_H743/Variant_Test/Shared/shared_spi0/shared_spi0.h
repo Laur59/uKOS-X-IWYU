@@ -52,7 +52,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #include    <stdint.h>
 
-#include	"os_errors.h"
+#include    "os_errors.h"
 
 // Served managers
 // ---------------

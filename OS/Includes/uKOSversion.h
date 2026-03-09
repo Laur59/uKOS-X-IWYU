@@ -21,8 +21,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 // -----------------------
 
 #define uKOS_VERSION_OS         10
-#define uKOS_VERSION_NUMBER     "2.22.0"
+#define uKOS_VERSION_NUMBER     "2.24.0"
 #define uKOS_VERSION_MAJOR      2
-#define uKOS_VERSION_MINOR      22
+#define uKOS_VERSION_MINOR      24
 #define uKOS_VERSION_REVISION   0
 #define uKOS_VERSION            uKOS_VERSION_NUMBER " " STRG(uKOS_NAME) "\n" STRG(uKOS_OWNER)

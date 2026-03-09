@@ -109,12 +109,12 @@ static  void    local_cpyLEDs(uint8_t value);
 void    exce_init(void) {
     uint8_t     nbExceptions, nbInterruptions;
 
-    for (nbExceptions = 0U; nbExceptions < KNB_EXCEPTIONS; nbExceptions++) {
-        EXCEPTION_VECTOR(nbExceptions, model_coreDump_displayExceptions);
+    for (nbExceptions = 0u; nbExceptions < KNB_EXCEPTIONS; nbExceptions++) {
+        vExce_indExcVectors[GET_RUNNING_CORE][nbExceptions] = model_coreDump_displayExceptions;
     }
 
-    for (nbInterruptions = 0U; nbInterruptions < KNB_INTERRUPTIONS; nbInterruptions++) {
-        INTERRUPT_VECTOR(nbInterruptions, model_coreDump_displayInterruptions);
+    for (nbInterruptions = 0u; nbInterruptions < KNB_INTERRUPTIONS; nbInterruptions++) {
+        vExce_indIntVectors[GET_RUNNING_CORE][nbInterruptions] = model_coreDump_displayInterruptions;
     }
 }
 

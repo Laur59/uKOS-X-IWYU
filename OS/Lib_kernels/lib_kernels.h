@@ -8,7 +8,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ============
 
 ;------------------------------------------------------------------------
-; Project:	uKOS-X
+; Project:  uKOS-X
 ;
 ; Purpose:
 ;   lib_kernels system call interface module.
@@ -47,7 +47,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \defgroup Lib_kernels Library for micro-kernel
@@ -75,8 +75,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 // IWYU pragma: begin_exports
 
-#include	"modules.h"
-#include	"kern/kern.h"
+#include    "modules.h"
+#include    "kern/kern.h"
 
 // IWYU pragma: end_exports
 

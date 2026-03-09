@@ -86,11 +86,11 @@ extern  "C" {
 #define URT0_reserve    urt0_reserve
 #define URT0_release    urt0_release
 
-extern	int32_t	stub_urt0_init(void);
-extern	int32_t	stub_urt0_configure(const urtxCnf_t *configure);
-extern	int32_t	stub_urt0_write(const uint8_t *buffer, uint32_t size);
-extern	int32_t	stub_urt0_read(uint8_t *buffer, uint32_t *size);
-extern	int32_t	stub_urt0_flush(void);
+extern  int32_t stub_urt0_init(void);
+extern  int32_t stub_urt0_configure(const urtxCnf_t *configure);
+extern  int32_t stub_urt0_write(const uint8_t *buffer, uint32_t size);
+extern  int32_t stub_urt0_read(uint8_t *buffer, uint32_t *size);
+extern  int32_t stub_urt0_flush(void);
 
 /*!
  * \brief Reserve the urt0 manager

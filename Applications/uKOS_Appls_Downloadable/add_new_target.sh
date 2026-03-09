@@ -12,7 +12,7 @@
 #   ./add_new_target.sh Target SOC Core [refTarget]
 #
 #   i.e
-#	./add_new_target.sh XYZ_H743 STM32H743 CORTEX_M7 Nucleo_H743
+#   ./add_new_target.sh XYZ_H743 STM32H743 CORTEX_M7 Nucleo_H743
 #
 #-----
 #                                              __ ______  _____
@@ -50,8 +50,8 @@
 set -euo pipefail
 
 if [[ -z "${PATH_UKOS_X_PACKAGE:-}" ]]; then
-	echo 'Variable PATH_UKOS_X_PACKAGE is not set!'
-	exit 1
+    echo 'Variable PATH_UKOS_X_PACKAGE is not set!'
+    exit 1
 fi
 
 # Save parameters
@@ -62,7 +62,7 @@ export core_new_target="${3}"
 
 # check for optional reference target to use as source for copy
 if [[ $# -gt 3 ]]; then
-	export reference_target="${4}"
+    export reference_target="${4}"
 fi
 
 # Create a list of all folders in uKOS_Appls_Downloadable

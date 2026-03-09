@@ -53,6 +53,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #include    "kern/kern.h"
 #include    "macros.h"
+#include    "macros_core.h"
 #include    "macros_core_stackFrame.h"
 #include    "macros_soc.h"
 #include    "memo/memo.h"  // IWYU pragma: keep (for KMEMO_ALIGN8)
@@ -351,6 +352,8 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
     const   char_t              **argv;
     const   cyclePack_t         *pack;
 
+    PRIVILEGE_ELEVATE;
+
     core = GET_RUNNING_CORE;
     kern_getProcessRun(&process);
 
@@ -383,6 +386,8 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
     vProcess[core][indexSerialManager] = nullptr;
     vKillRequest[core] = false;
     (void)dprintf(KSYST, "Cycle terminated.\n\n");
+
+    PRIVILEGE_RESTORE;
     exit(EXIT_OS_SUCCESS);
 }
 

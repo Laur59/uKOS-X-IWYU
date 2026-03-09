@@ -47,7 +47,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \defgroup Lib_cryptographics Library for the crypto tools
@@ -75,7 +75,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 // IWYU pragma: begin_exports
 
 #ifdef CONFIG_MAN_RANDOM_S
-#include	"random/random.h"
+#include    "random/random.h"
 #endif
 
 // IWYU pragma: end_exports

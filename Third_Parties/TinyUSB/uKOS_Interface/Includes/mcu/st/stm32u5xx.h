@@ -8,12 +8,12 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ==========
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Import the uKOS definition (specially mcu) to provide
-;			the file stm32u5xx.h.
+; Project:  uKOS-X
+; Goal:     Import the uKOS definition (specially mcu) to provide
+;           the file stm32u5xx.h.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -50,22 +50,22 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 // For selecting Secure/NSecure
 
 #ifdef SECURE_S
-#define	REG(x)					(x ## _S)
+#define REG(x)                  (x ## _S)
 #elif (defined(SECURE_NS))
-#define	REG(x)					(x ## _NS)
+#define REG(x)                  (x ## _NS)
 #else
-#define	REG(x)					(x ## _S)
+#define REG(x)                  (x ## _S)
 #endif
 
-#define	SEC(x)					(x ## _S)
-#define	NONSEC(x)				(x ## _NS)
+#define SEC(x)                  (x ## _S)
+#define NONSEC(x)               (x ## _NS)
 
-#define	__NOP()		__asm volatile ("nop")
+#define __NOP()     __asm volatile ("nop")
 
-#include	"core_reg.h"
-#include	"soc_reg.h"
+#include    "core_reg.h"
+#include    "soc_reg.h"

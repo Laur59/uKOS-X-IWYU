@@ -8,7 +8,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ================
 
 ;------------------------------------------------------------------------
-; Project:	uKOS-X
+; Project:  uKOS-X
 ;
 ; Purpose:
 ;   lib_peripherals system call interface module.
@@ -47,7 +47,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \defgroup Lib_peripherals Library for handling the peripherals
@@ -94,58 +94,58 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  */
 
 #ifdef CONFIG_MAN_SPI_S
-#include	"spi/spi.h"
+#include    "spi/spi.h"
 #endif
 #ifdef CONFIG_MAN_SPI0_S
-#include	"spi0/spi0.h"
+#include    "spi0/spi0.h"
 #endif
 #ifdef CONFIG_MAN_SPI1_S
-#include	"spi1/spi1.h"
+#include    "spi1/spi1.h"
 #endif
 #ifdef CONFIG_MAN_SPI2_S
-#include	"spi2/spi2.h"
+#include    "spi2/spi2.h"
 #endif
 #ifdef CONFIG_MAN_SPI3_S
-#include	"spi3/spi3.h"
+#include    "spi3/spi3.h"
 #endif
 #ifdef CONFIG_MAN_I2C_S
-#include	"i2c/i2c.h"
+#include    "i2c/i2c.h"
 #endif
 #ifdef CONFIG_MAN_I2C0_S
-#include	"i2c0/i2c0.h"
+#include    "i2c0/i2c0.h"
 #endif
 #ifdef CONFIG_MAN_I2C1_S
-#include	"i2c1/i2c1.h"
+#include    "i2c1/i2c1.h"
 #endif
 #ifdef CONFIG_MAN_I2C2_S
-#include	"i2c2/i2c2.h"
+#include    "i2c2/i2c2.h"
 #endif
 #ifdef CONFIG_MAN_I2C3_S
-#include	"i2c3/i2c3.h"
+#include    "i2c3/i2c3.h"
 #endif
 #ifdef CONFIG_MAN_ADC_S
-#include	"adc/adc.h"
+#include    "adc/adc.h"
 #endif
 #ifdef CONFIG_MAN_BATTERY_S
-#include	"battery/battery.h"
+#include    "battery/battery.h"
 #endif
 #ifdef CONFIG_MAN_IMAGER_S
-#include	"imager/imager.h"
+#include    "imager/imager.h"
 #endif
 #ifdef CONFIG_MAN_IMU_S
-#include	"imu/imu.h"
+#include    "imu/imu.h"
 #endif
 #ifdef CONFIG_MAN_TEMPERATURE_S
-#include	"temperature/temperature.h"
+#include    "temperature/temperature.h"
 #endif
 #ifdef CONFIG_MAN_WATCHDOG_S
-#include	"watchdog/watchdog.h"
+#include    "watchdog/watchdog.h"
 #endif
 #ifdef CONFIG_MAN_LED_S
-#include	"led/led.h"
+#include    "led/led.h"
 #endif
 #ifdef CONFIG_MAN_SWITCH_S
-#include	"switch/switch.h"
+#include    "switch/switch.h"
 #endif
 
 /**!@}*/

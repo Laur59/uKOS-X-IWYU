@@ -8,11 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =============
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi
-; Modifs:	Laurent von Allmen
+; Author:   Edo. Franzi
+; Modifs:   Laurent von Allmen
 ;
-; Project:	uKOS-X
-; Goal:		addendum equates.
+; Project:  uKOS-X
+; Goal:     addendum equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -49,4 +49,4 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once

@@ -53,9 +53,9 @@ include(set-project-paths)
 include(${PATH_UKOS}/Ports/cmake/select-arm-toolchain.cmake)
 
 project(
-	rpn
-	VERSION 1.0
-	LANGUAGES C
+    rpn
+    VERSION 1.0
+    LANGUAGES C
 )
 
 set(PATH_DECNUMBER ${PATH_UKOS}/Third_Parties/decnumber)
@@ -71,8 +71,8 @@ set(BASE Base_CM7)
 
 # Extra compilation options
 add_compile_options(
-	-g3 # include extra information for debugger
-	-Os # optimisation
+    -g3 # include extra information for debugger
+    -Os # optimisation
 )
 
 if(CMAKE_C_COMPILER_ID MATCHES "Clang")
@@ -80,8 +80,8 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang")
 endif()
 
 set(PATH_INCLUDES
-	${PATH_DECNUMBER}/decnumber-current/include
-	${PATH_DECNUMBER}/decnumber-current/include/libdecnumber
+    ${PATH_DECNUMBER}/decnumber-current/include
+    ${PATH_DECNUMBER}/decnumber-current/include/libdecnumber
 )
 find_library(MYLIB decnumber ${PATH_DECNUMBER}/Library/${CORE})
 

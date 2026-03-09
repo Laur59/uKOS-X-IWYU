@@ -96,7 +96,7 @@ static  mutx_t      *vMutex_Reserve[KNB_CORES];
 
 // Prototypes
 
-static	int32_t		local_init(void);
+static  int32_t     local_init(void);
 
 /*
  * \brief Reserve the i2c3 manager

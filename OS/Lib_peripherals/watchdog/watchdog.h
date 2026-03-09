@@ -83,7 +83,7 @@ enum {
 extern  "C" {
 #endif
 
-extern	void	stub_watchdog_arm(uint32_t time);
+extern  void    stub_watchdog_arm(uint32_t time);
 
 /*!
  * \brief Arm the watchdog

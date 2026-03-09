@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Important macros.
+; Project:  uKOS-X
+; Goal:     Important macros.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,49 +46,49 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 // uKernel macros
 // --------------
 
 // Core machine in bits
 
-#define	KMACHINE_BITS			(32u)
+#define KMACHINE_BITS           (32u)
 
 // Preemptions
 
 #if (!defined(PREEMPTION_THRESHOLD))
-#define	PREEMPTION_THRESHOLD(core)																								\
-								do {																							\
-									extern	proc_t	*vKern_runProc[KNB_CORES]; 													\
-																																\
-									if (vKern_runProc[(uint32_t)core]->oSpecification.oPriority > KKERN_PRIORITY_LOW_00) {		\
-										PREEMPTION;																				\
-									}																							\
-								} while (0)
+#define PREEMPTION_THRESHOLD(core)                                                                                              \
+                                do {                                                                                            \
+                                    extern  proc_t  *vKern_runProc[KNB_CORES];                                                  \
+                                                                                                                                \
+                                    if (vKern_runProc[(uint32_t)core]->oSpecification.oPriority > KKERN_PRIORITY_LOW_00) {      \
+                                        PREEMPTION;                                                                             \
+                                    }                                                                                           \
+                                } while (0)
 #endif
 
 // Elevation macros
 // ----------------
 
 #if (!defined(PRIVILEGE_ELEVATE))
-#define	PRIVILEGE_ELEVATE
+#define PRIVILEGE_ELEVATE
 #endif
 
 #if (!defined(PRIVILEGE_RESTORE))
-#define	PRIVILEGE_RESTORE
+#define PRIVILEGE_RESTORE
 #endif
 
 #if (!defined(RIGHTS_ELEVATION))
-#define	RIGHTS_ELEVATION
+#define RIGHTS_ELEVATION
 #endif
 
 #if (!defined(SET_USER_MODE))
-#define	SET_USER_MODE
+#define SET_USER_MODE
 #endif
 
 #if (!defined(SET_PRIVILEGED_MODE))
-#define	SET_PRIVILEGED_MODE
+#define SET_PRIVILEGED_MODE
 #endif
 
 #if (!defined(GET_ADDRESS_ELEVATION_CALLER))
@@ -104,45 +104,45 @@
 #endif
 
 #if (!defined(KERN_RETURN_ELEVATION))
-#define	KERN_RETURN_ELEVATION
+#define KERN_RETURN_ELEVATION
 #endif
 
 // Interruption macros
 // -------------------
 
 #if (!defined(KPROCESS_INIT_MCAUSE))
-#define	KPROCESS_INIT_MCAUSE	(MCAUSE_INTERRUPT | RVBB_MCAUSE_MPP(3u) | RVBB_MCAUSE_MPIE | 11u)
+#define KPROCESS_INIT_MCAUSE    (MCAUSE_INTERRUPT | RVBB_MCAUSE_MPP(3u) | RVBB_MCAUSE_MPIE | 11u)
 #endif
 
 #if (!defined(INTERRUPTION_OFF_HARD))
-#define	INTERRUPTION_OFF_HARD	core_clrBitCSR(RV_CSR_MSTATUS, MSTATUS_MIE)
+#define INTERRUPTION_OFF_HARD   core_clrBitCSR(RV_CSR_MSTATUS, MSTATUS_MIE)
 #endif
 
 #if (!defined(INTERRUPTION_ON_HARD))
-#define	INTERRUPTION_ON_HARD	core_setBitCSR(RV_CSR_MSTATUS, MSTATUS_MIE)
+#define INTERRUPTION_ON_HARD    core_setBitCSR(RV_CSR_MSTATUS, MSTATUS_MIE)
 #endif
 
 #if (!defined(WAITING_INTERRUPTION))
-#define	WAITING_INTERRUPTION	__asm volatile ("																			 \n \
-								wfi"																						 	\
-								)
+#define WAITING_INTERRUPTION    __asm volatile ("                                                                            \n \
+                                wfi"                                                                                            \
+                                )
 #endif
 
 #if (!defined(GET_CURRENT_PROCESS_STACK))
-#define GET_CURRENT_PROCESS_STACK(stack)										 												\
-								__asm volatile ("																			 \n \
-								add			%0,x0,sp"																			\
-								: "=r" (stack)																					\
-								:																								\
-								:																								\
-								)
+#define GET_CURRENT_PROCESS_STACK(stack)                                                                                        \
+                                __asm volatile ("                                                                            \n \
+                                add         %0,x0,sp"                                                                           \
+                                : "=r" (stack)                                                                                  \
+                                :                                                                                               \
+                                :                                                                                               \
+                                )
 #endif
 
 #if (!defined(EXCEPTION_SPECIFIC_HANDLER))
-#define KEXCEPTION				0u
+#define KEXCEPTION              0u
 
-extern	void	(*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
-extern	bool	vExce_isException[KNB_CORES];
+extern  void    (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
+extern  bool    vExce_isException[KNB_CORES];
 
 // Suppress the cppcheck warning for the following code portion
 // ------------------------------------------------------------
@@ -150,36 +150,36 @@ extern	bool	vExce_isException[KNB_CORES];
 #define EXCLUDE_CPPCHECK
 #ifdef EXCLUDE_CPPCHECK
 
-#define	EXCEPTION_SPECIFIC_HANDLER(irq)																							\
-								void irq##_local_IRQHandler(void) {																\
-									uint32_t	core;																			\
-									void		(*go)(void);																	\
-																																\
-									core = GET_RUNNING_CORE;																	\
-									vExce_isException[core] = true;																\
-									go = vExce_indExcVectors[core][irq##_IRQn];													\
-									(*go)();																					\
-									vExce_isException[core] = false;															\
-								}																								\
-																																\
-								void irq##_IRQHandler(void) __attribute__ ((weak, naked));										\
-								void irq##_IRQHandler(void) {																	\
-																																\
-									INTERRUPTION_IN;																			\
-									CALL_FNCT(irq##_local_IRQHandler);															\
-									INTERRUPTION_OUT;																			\
-								}
+#define EXCEPTION_SPECIFIC_HANDLER(exc)                                                                                         \
+                                void exc##_local_IRQHandler(void) {                                                             \
+                                    uint32_t    core;                                                                           \
+                                    void        (*go)(void);                                                                    \
+                                                                                                                                \
+                                    core = GET_RUNNING_CORE;                                                                    \
+                                    vExce_isException[core] = true;                                                             \
+                                    go = vExce_indExcVectors[core][exc##_IRQn];                                                 \
+                                    (*go)();                                                                                    \
+                                    vExce_isException[core] = false;                                                            \
+                                }                                                                                               \
+                                                                                                                                \
+                                void exc##_IRQHandler(void) __attribute__ ((weak, naked));                                      \
+                                void exc##_IRQHandler(void) {                                                                   \
+                                                                                                                                \
+                                    INTERRUPTION_IN;                                                                            \
+                                    CALL_FNCT(exc##_local_IRQHandler);                                                          \
+                                    INTERRUPTION_OUT;                                                                           \
+                                }
 #endif
 
 #else
-#define	EXCEPTION_SPECIFIC_HANDLER(irq)
+#define EXCEPTION_SPECIFIC_HANDLER(irq)
 #endif
 
 #if (!defined(INTERRUPT_SPECIFIC_HANDLER))
-#define KINTERRUPTION			1u
+#define KINTERRUPTION           1u
 
-extern	void	(*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
-extern	bool	vExce_isException[KNB_CORES];
+extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
+extern  bool    vExce_isException[KNB_CORES];
 
 // Suppress the cppcheck warning for the following code portion
 // ------------------------------------------------------------
@@ -187,55 +187,55 @@ extern	bool	vExce_isException[KNB_CORES];
 #define EXCLUDE_CPPCHECK
 #ifdef EXCLUDE_CPPCHECK
 
-#define	INTERRUPT_SPECIFIC_HANDLER(irq)																							\
-								void irq##_local_IRQHandler(void) {																\
-									uint32_t	core;																			\
-									void		(*go)(void);																	\
-																																\
-									core = GET_RUNNING_CORE;																	\
-									vExce_isException[core] = true;																\
-									go = vExce_indIntVectors[core][irq##_IRQn];													\
-									(*go)();																					\
-									vExce_isException[core] = false;															\
-								}																								\
-																																\
-								void irq##_IRQHandler(void) __attribute__ ((weak, naked));										\
-								void irq##_IRQHandler(void) {																	\
-																																\
-									INTERRUPTION_IN;																			\
-									CALL_FNCT(irq##_local_IRQHandler);															\
-									INTERRUPTION_OUT;																			\
-								}
+#define INTERRUPT_SPECIFIC_HANDLER(irq)                                                                                         \
+                                void irq##_local_IRQHandler(void) {                                                             \
+                                    uint32_t    core;                                                                           \
+                                    void        (*go)(void);                                                                    \
+                                                                                                                                \
+                                    core = GET_RUNNING_CORE;                                                                    \
+                                    vExce_isException[core] = true;                                                             \
+                                    go = vExce_indIntVectors[core][irq##_IRQn];                                                 \
+                                    (*go)();                                                                                    \
+                                    vExce_isException[core] = false;                                                            \
+                                }                                                                                               \
+                                                                                                                                \
+                                void irq##_IRQHandler(void) __attribute__ ((weak, naked));                                      \
+                                void irq##_IRQHandler(void) {                                                                   \
+                                                                                                                                \
+                                    INTERRUPTION_IN;                                                                            \
+                                    CALL_FNCT(irq##_local_IRQHandler);                                                          \
+                                    INTERRUPTION_OUT;                                                                           \
+                                }
 #endif
 
 #else
-#define	INTERRUPT_SPECIFIC_HANDLER(irq)
+#define INTERRUPT_SPECIFIC_HANDLER(irq)
 #endif
 
 // Misc assembler macro
 // --------------------
 
 #if (!defined(NOP))
-#define	NOP 					__asm volatile ("																			 \n \
-								nop"																						 	\
-								)
+#define NOP                     __asm volatile ("                                                                            \n \
+                                nop"                                                                                            \
+                                )
 #endif
 
 #if (!defined(JUMP_FNCT))
-#define JUMP_FNCT(function)																										\
-								__asm volatile ("																			 \n \
-								j			"#function																			\
-								)
+#define JUMP_FNCT(function)                                                                                                     \
+                                __asm volatile ("                                                                            \n \
+                                j           "#function                                                                          \
+                                )
 #endif
 
 #if (!defined(CALL_FNCT))
-#define CALL_FNCT(function)																										\
-								__asm volatile ("																			 \n \
-								jal			"#function																			\
-								)
+#define CALL_FNCT(function)                                                                                                     \
+                                __asm volatile ("                                                                            \n \
+                                jal         "#function                                                                          \
+                                )
 #endif
 
 // Stack frame macros
 // ------------------
 
-#include	"macros_core_stackFrame.h"
+#include    "macros_core_stackFrame.h"

@@ -69,10 +69,10 @@ struct aliveCnf {
 };
 
 #if (defined(__cplusplus))
-extern	"C" {
+extern  "C" {
 #endif
 
-extern	void	stub_alive_process(const void *argument);
+extern  void    stub_alive_process(const void *argument);
 
 #if (defined(__cplusplus))
 }

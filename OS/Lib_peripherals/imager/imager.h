@@ -85,15 +85,15 @@ extern  "C" {
 #define IMAGER_reserve  imager_reserve
 #define IMAGER_release  imager_release
 
-extern	int32_t	stub_imager_init(void);
-extern	int32_t	stub_imager_configure(const imagerCnf_t *configure);
-extern	int32_t	stub_imager_acquisition(void);
-extern	int32_t	stub_imager_read(volatile void **image);
-extern	int32_t	stub_imager_getSerialNumber(uint64_t *serialNumber);
-extern	int32_t	stub_imager_readRegister(uint8_t registerNb, uint16_t *value);
-extern	int32_t	stub_imager_writeRegister(uint8_t registerNb, uint16_t value);
-extern  int32_t	stub_imager_standby(uint8_t mode);
-extern  int32_t	stub_imager_exposure(uint32_t time);
+extern  int32_t stub_imager_init(void);
+extern  int32_t stub_imager_configure(const imagerCnf_t *configure);
+extern  int32_t stub_imager_acquisition(void);
+extern  int32_t stub_imager_read(volatile void **image);
+extern  int32_t stub_imager_getSerialNumber(uint64_t *serialNumber);
+extern  int32_t stub_imager_readRegister(uint8_t registerNb, uint16_t *value);
+extern  int32_t stub_imager_writeRegister(uint8_t registerNb, uint16_t value);
+extern  int32_t stub_imager_standby(uint8_t mode);
+extern  int32_t stub_imager_exposure(uint32_t time);
 
 /*!
  * \brief Reserve the imager manager

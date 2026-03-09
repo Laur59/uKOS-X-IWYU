@@ -66,9 +66,9 @@ INCLUDE     STM32H747xI.ld
 /*          User Memory         0x70200000                  */
 /*          6144K                                           */
 
-linker_sizeStackSystem_C0	= (4K);																				/* Length of the System stack  								*/
-linker_sizeStackFirst_C0	= (2K);																				/* Length of the First stack  								*/
-config_sizeData_p			= (60K);
+linker_sizeStackSystem_C0   = (4K);                                                                             /* Length of the System stack                               */
+linker_sizeStackFirst_C0    = (2K);                                                                             /* Length of the First stack                                */
+config_sizeData_p           = (60K);
 config_sizeHeap             = (2048K);
 
 /* IMPORTANT:                                               */
@@ -78,7 +78,7 @@ config_sizeHeap             = (2048K);
 linker_lowStackSystem_C0    = stm_stAXISRAM;                                                                    /* 0x24000000:                                              */
 linker_topStackSystem_C0    = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 - 8;
 
-linker_lowStackFirst_C0		= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 + config_sizeData_p;			/* 0x24010000:												*/
+linker_lowStackFirst_C0     = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 + config_sizeData_p;         /* 0x24010000:                                              */
 linker_topStackFirst_C0     = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0 - 8;
 
 ASSERT((linker_lowStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
@@ -90,10 +90,10 @@ ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
 /* External memory, User (download application) and shared  */
 
 linker_stEXRAM              = 0x70000000;                                                                       /* 0x70000000: EXRAM, start of the external memory          */
-linker_lnEXRAM				= (8192K);																			/* Length of the external memory	  						*/
+linker_lnEXRAM              = (8192K);                                                                          /* Length of the external memory                            */
 
 linker_stUMemo              = (linker_stHeap + linker_lnHeap);                                                  /* 0x70200000: UMemo, start of the user memory              */
-linker_lnUMemo				= linker_lnEXRAM - config_sizeHeap;													/* Length of the user memory	  							*/
+linker_lnUMemo              = linker_lnEXRAM - config_sizeHeap;                                                 /* Length of the user memory                                */
 
 linker_stShare              = stm_stSRAM4;                                                                      /* 0x38000000: Share, start of the multicore shared memory  */
 linker_lnShare              = stm_lnSRAM4;                                                                      /* Length of the user multicore shared memory               */
@@ -111,12 +111,12 @@ linker_lnHeap               = config_sizeHeap;                                  
 linker_stPrgmCode           = stm_stINTFLASH_CM7;                                                               /* 0x08000000: PrgmCode, start of the Flash                 */
 linker_lnPrgmCode           = stm_lnINTFLASH_CM7;                                                               /* Length of the the Flash                                  */
 
-linker_stPrgmData_p			= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;								/* 0x24001000: start of protected program data				*/
-linker_lnPrgmData_p			= config_sizeData_p;																/* Length of protected program data							*/
+linker_stPrgmData_p         = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;                             /* 0x24001000: start of protected program data              */
+linker_lnPrgmData_p         = config_sizeData_p;                                                                /* Length of protected program data                         */
 
-linker_stPrgmData_u			= linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;								/* 0x24010800: start of unprotected program data			*/
-linker_lnPrgmData_u			= stm_lnAXISRAM - linker_sizeStackSystem_C0 - linker_sizeStackFirst_C0
-								- config_sizeData_p;															/* Length of unprotected program data						*/
+linker_stPrgmData_u         = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;                               /* 0x24010800: start of unprotected program data            */
+linker_lnPrgmData_u         = stm_lnAXISRAM - linker_sizeStackSystem_C0 - linker_sizeStackFirst_C0
+                                - config_sizeData_p;                                                            /* Length of unprotected program data                       */
 
 /* IMPORTANT:                                               */
 /* equates necessary for the arm_v7 MPU regions             */
