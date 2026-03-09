@@ -2,15 +2,15 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		script for burning the arm flash via the jlinkexe.
-#			!!! It is mandatory to program the CM7 before the CM4
+# Project:  uKOS-X
+# Goal:     script for burning the arm flash via the jlinkexe.
+#           !!! It is mandatory to program the CM7 before the CM4
 #
-#			- Usage:
-#			  ./jlinkexe.sh
+#           - Usage:
+#             ./jlinkexe.sh
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------

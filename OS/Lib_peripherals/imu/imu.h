@@ -142,9 +142,9 @@ extern  "C" {
 #define IMU_reserve     imu_reserve
 #define IMU_release     imu_release
 
-extern	int32_t	stub_imu_init(void);
-extern	int32_t	stub_imu_configure(const imuCnf_t *configure);
-extern	int32_t	stub_imu_read(imuAccePack_t *accelerometer, imuGyroPack_t *gyroscope, imuMagnPack_t *magnetometer);
+extern  int32_t stub_imu_init(void);
+extern  int32_t stub_imu_configure(const imuCnf_t *configure);
+extern  int32_t stub_imu_read(imuAccePack_t *accelerometer, imuGyroPack_t *gyroscope, imuMagnPack_t *magnetometer);
 
 /*!
  * \brief Reserve the imu manager

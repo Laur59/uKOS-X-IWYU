@@ -52,7 +52,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // svc numbers
 // -----------
@@ -60,4 +60,4 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #define KKERN_MESSAGE           0               // uKernel (messages passing)
 #define KPRIV_ELEVATION         1               // priv (privilege elevation)
 
-void	__attribute__ ((noreturn)) syscall(const uintptr_t *arg);
+void    __attribute__ ((noreturn)) syscall(const uintptr_t *arg);

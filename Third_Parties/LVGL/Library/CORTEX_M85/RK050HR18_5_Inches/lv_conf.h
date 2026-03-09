@@ -1,24 +1,23 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
 ; lv_conf.
 ; ========
 
+; SPDX-License-Identifier: MIT
+
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Author:   Edo. Franzi     The 2026-01-01
+; Modifs:
 ;
-; Purpose:
-;   Basic LVGL configuration
-;   Set 16 & 26 pixel fonts.
-;   Internal memory allocator
+; Project:  uKOS-X
+; Goal:     Basic LVGL configuration
+;           Set 16 & 26 pixel fonts.
+;           Internal memory allocator
 ;
-;   Configuration file for LVGL v9.5.x
-;   (based on lv_conf_template.h v9.5.0)
+;           Configuration file for LVGL v9.5.x
+;           (based on lv_conf_template.h v9.5.0)
 ;
-;-----
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -62,7 +61,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 // Color depth: 1 (I1), 8 (L8), 16 (RGB565), 24 (RGB888), 32 (XRGB8888)
 //
-#define LV_COLOR_DEPTH                                  16
+#define LV_COLOR_DEPTH                                  32
 
 // STDLIB WRAPPER SETTINGS
 // =======================
@@ -116,8 +115,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 // Résolution
 //
-#define LV_HOR_RES_MAX                                  320
-#define LV_VER_RES_MAX                                  240
+#define LV_HOR_RES_MAX                                  800
+#define LV_VER_RES_MAX                                  480
 
 // OPERATING SYSTEM
 // ================

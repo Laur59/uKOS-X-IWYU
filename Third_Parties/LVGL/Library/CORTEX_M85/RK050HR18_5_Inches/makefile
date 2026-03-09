@@ -8,9 +8,9 @@
 # Modifs:
 #
 # Project:	uKOS-X
-# Goal:		makefile for the "team" application.
+# Goal:		makefile for uKOS-X for building the libLVGL.a module.
 #
-#   (c) 2025-20xx, Edo. Franzi
+#   (c) 2025-2026, Edo. Franzi
 #   --------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
@@ -44,23 +44,49 @@
 #
 #------------------------------------------------------------------------
 
-PROJECT			=  team
+SHELL			=  /bin/sh
 
-DISPLAY			=  WaveShare_2_Inches
-PATH_LVGL		=  $(PATH_UKOS)/Third_Parties/LVGL
+ifndef PATH_UKOS_X_PACKAGE
+    $(error PATH_UKOS_X_PACKAGE is not defined)
+endif
+ifndef PATH_GCC_ARM
+    $(error PATH_GCC_ARM is not defined)
+endif
+
+ifeq ($(origin CC), default)
+CC					=  $(PATH_COMPILER)/bin/$(PREFIX)gcc
+AR					=  $(PATH_COMPILER)/bin/$(PREFIX)ar
+ST					=  $(PATH_COMPILER)/bin/$(PREFIX)strip
+RANLIB				=  $(PATH_COMPILER)/bin/$(PREFIX)ranlib
+endif
+
+# Project paths
+
+# - PATH_UKOS		--> Main uKOS-X folder			--> OS_Kernel-X
+# - PATH_PORT		--> Main uKOS-X port folders	--> OS_Kernel-X/Ports
+# - PATH_LVGL		--> LVGL package
+
+PATH_UKOS			=  $(PATH_UKOS_X_PACKAGE)
+PATH_LVGL			=  $(PATH_UKOS)/Third_Parties/LVGL
 
 # Target & Infrastructure
 
-PREFIX			?=  arm-none-eabi-
-COMPILER_FAMILY	?=  gcc
+CORE				=  CORTEX_M85
+LVGL				=  libLVGL.a
+DISPLAY				=  RK050HR18_5_Inches
 
-BOARD			=  Nucleo_N657
-V				=  Variant_Test
-SOC				=  STM32N657
-CORE			=  CORTEX_M55
-OPTIMISATION	=  -Os
+STANDARD			=  -std=c23
+OPTIMISATION		=  -Os
 
-CFLAGS			+= -I$(PATH_LVGL)/Library/$(CORE)/$(DISPLAY)
-CFLAGS			+= -isystem $(PATH_LVGL)/LVGL-current
+PREFIX				?= arm-none-eabi-
+PATH_COMPILER		=  $(PATH_GCC_ARM)
+FLAGS_FP			=  -mfloat-abi=hard -mfpu=fpv5-sp-d16
+CPU_SPEC			=  -mcpu=cortex-m85 -mthumb
+FLAGS_UKOS			=  -DTHIRD_PARTY_S -DSECURE_S
 
-include ../../../../Mkfiles/common.mk
+# The included makefiles
+
+include	$(PATH_LVGL)/Library/Mkfiles/LVGL.mk
+DEP					:= $(OBJ:.o=.d)
+-include $(DEP)
+.PHONY : all clr_all clr build archive

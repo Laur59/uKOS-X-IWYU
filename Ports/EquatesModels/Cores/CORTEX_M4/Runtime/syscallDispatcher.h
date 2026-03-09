@@ -57,7 +57,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 // svc numbers
 // -----------
 
-#define	KKERN_MESSAGE			0				// uKernel (messages passing)
-#define	KPRIV_ELEVATION			1				// priv (privilege elevation)
+#define KKERN_MESSAGE           0               // uKernel (messages passing)
+#define KPRIV_ELEVATION         1               // priv (privilege elevation)
 
 void    __attribute__ ((noreturn)) syscall(const uintptr_t *arg);

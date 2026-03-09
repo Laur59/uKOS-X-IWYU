@@ -54,9 +54,9 @@ include(set-project-paths)
 include(${PATH_UKOS}/Ports/cmake/select-arm-toolchain.cmake)
 
 project(
-	tfl_vs_ukos
-	VERSION 1.0
-	LANGUAGES CXX C
+    tfl_vs_ukos
+    VERSION 1.0
+    LANGUAGES CXX C
 )
 
 # Microcontroller description (mandatory variables)

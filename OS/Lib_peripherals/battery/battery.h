@@ -83,8 +83,8 @@ extern  "C" {
 #define BATTERY_reserve     battery_reserve
 #define BATTERY_release     battery_release
 
-extern	int32_t	stub_battery_init(void);
-extern	int32_t	stub_battery_read(batteryInfo_t *infoBattery);
+extern  int32_t stub_battery_init(void);
+extern  int32_t stub_battery_read(batteryInfo_t *infoBattery);
 
 /*!
  * \brief Reserve the battery manager

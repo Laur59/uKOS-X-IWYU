@@ -8,7 +8,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =============
 
 ;------------------------------------------------------------------------
-; Project:	uKOS-X
+; Project:  uKOS-X
 ;
 ; Purpose:
 ;   lib_storages system call interface module.
@@ -47,7 +47,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \defgroup Lib_storages Library for storage manager
@@ -73,13 +73,13 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  */
 
 #ifdef CONFIG_MAN_SDCARD_S
-#include	"sdcard/sdcard.h"
+#include    "sdcard/sdcard.h"
 #endif
 #ifdef CONFIG_MAN_SERIAL_FLASH_S
-#include	"serialFlash/serialFlash.h"
+#include    "serialFlash/serialFlash.h"
 #endif
 #ifdef CONFIG_MAN_STORAGE_S
-#include	"storage/storage.h"
+#include    "storage/storage.h"
 #endif
 
 /**!@}*/

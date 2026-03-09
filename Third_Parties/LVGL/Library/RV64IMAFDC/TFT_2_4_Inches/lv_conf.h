@@ -13,7 +13,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; Purpose:
 ;   Basic LVGL configuration
 ;   Set 16 & 26 pixel fonts.
-;   Internal memry allocator
+;   Internal memory allocator
 ;
 ;   Configuration file for LVGL v9.5.x
 ;   (based on lv_conf_template.h v9.5.0)
@@ -61,6 +61,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 // ==============
 
 // Color depth: 1 (I1), 8 (L8), 16 (RGB565), 24 (RGB888), 32 (XRGB8888)
+//
 #define LV_COLOR_DEPTH                                  16
 
 // STDLIB WRAPPER SETTINGS
@@ -93,7 +94,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 //
 #define LV_USE_STDLIB_SPRINTF                           LV_STDLIB_CLIB
 
-// Std includes (laisse CLIB si tu as libc, sinon adapte)
+// Std includes
+//
 #define LV_STDINT_INCLUDE                               <stdint.h>
 #define LV_STDDEF_INCLUDE                               <stddef.h>
 #define LV_STDBOOL_INCLUDE                              <stdbool.h>
@@ -105,14 +107,14 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 // ============
 
 // Default display refresh, input device read and animation step period i ms
+//
 #define LV_DEF_REFR_PERIOD                              33
 
 // Default Dots Per Inch.[px/inch]
+//
 #define LV_DPI_DEF                                      130
 
-// Résolution “max” (utile pour certains modules et pour borner des buffers).
-// LVGL v9 met surtout la résolution au niveau lv_display_set_resolution(),
-// mais ces macros restent utiles comme “cap”.
+// Résolution
 //
 #define LV_HOR_RES_MAX                                  320
 #define LV_VER_RES_MAX                                  240
@@ -120,7 +122,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 // OPERATING SYSTEM
 // ================
 
-// Select operating system to use.
+// Select operating system to use
+//
 #define LV_USE_OS                                       LV_OS_NONE
 
 // RENDERING CONFIGURATION
@@ -165,9 +168,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 // =====================
 
 // Logging
+//
 #define LV_USE_LOG                                      0
 
 // Asserts
+//
 #define LV_USE_ASSERT_NULL                              0
 #define LV_USE_ASSERT_MALLOC                            0
 #define LV_USE_ASSERT_STYLE                             0
@@ -178,6 +183,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 #define LV_ASSERT_HANDLER                               while(1);
 
 // Others
+//
 #define LV_ENABLE_GLOBAL_CUSTOM                         0
 #define LV_CACHE_DEF_SIZE                               0
 #define LV_IMAGE_HEADER_CACHE_DEF_CNT                   0

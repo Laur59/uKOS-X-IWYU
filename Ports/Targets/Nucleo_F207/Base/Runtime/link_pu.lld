@@ -58,8 +58,8 @@ INCLUDE     STM32F207xx.ld
 /*          stUMemo             0x2001A800                  */
 /*          22K                                             */
 
-linker_sizeStackSystem_C0	= (4K);																			/* Length of the System stack  								*/
-linker_sizeStackFirst_C0	= (2K);																			/* Length of the First stack  								*/
+linker_sizeStackSystem_C0   = (4K);                                                                         /* Length of the System stack                               */
+linker_sizeStackFirst_C0    = (2K);                                                                         /* Length of the First stack                                */
 
 /* IMPORTANT:                                               */
 /* all the stacks have to be maintained aligned             */

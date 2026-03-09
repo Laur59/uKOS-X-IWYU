@@ -83,9 +83,9 @@ extern  "C" {
 #define SPI0_reserve    spi0_reserve
 #define SPI0_release    spi0_release
 
-extern	int32_t	stub_spi0_init(void);
-extern	int32_t	stub_spi0_configure(const spiCnf_t *configure);
-extern	int32_t	stub_spi0_multipleWriteRead(const uint8_t *wData, uint16_t wSize, uint8_t *rData, uint16_t rSize, uint32_t timeout);
+extern  int32_t stub_spi0_init(void);
+extern  int32_t stub_spi0_configure(const spiCnf_t *configure);
+extern  int32_t stub_spi0_multipleWriteRead(const uint8_t *wData, uint16_t wSize, uint8_t *rData, uint16_t rSize, uint32_t timeout);
 
 /*!
  * \brief Reserve the spi0 manager

@@ -38,96 +38,96 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 */
 
 SECTIONS {
-	.text : {
-		linker_stVECTORS = ABSOLUTE(.);
-		KEEP(*(.isr_vector))
-		linker_enVECTORS = ABSOLUTE(.);
+    .text : {
+        linker_stVECTORS = ABSOLUTE(.);
+        KEEP(*(.isr_vector))
+        linker_enVECTORS = ABSOLUTE(.);
 
-		linker_stTEXT = ABSOLUTE(.);
-		linker_stTEXT_KERN_p = ABSOLUTE(.);
-		libkern_p.a(.text .text.* .text*)
-		linker_enTEXT_KERN_p = ABSOLUTE(.);
-		*(.text .text.*)
-		linker_enTEXT = ABSOLUTE(.);
-	} > prgm_code
+        linker_stTEXT = ABSOLUTE(.);
+        linker_stTEXT_KERN_p = ABSOLUTE(.);
+        libkern_p.a(.text .text.* .text*)
+        linker_enTEXT_KERN_p = ABSOLUTE(.);
+        *(.text .text.*)
+        linker_enTEXT = ABSOLUTE(.);
+    } > prgm_code
 
-	.directory : {
-		linker_stDirectory = ABSOLUTE(.);
-		KEEP(*(.directory))
-		LONG(0x00000000)
-		LONG(0x00000000)
-	} > prgm_code
+    .directory : {
+        linker_stDirectory = ABSOLUTE(.);
+        KEEP(*(.directory))
+        LONG(0x00000000)
+        LONG(0x00000000)
+    } > prgm_code
 
-	.init_array : {
-		. = ALIGN(4);
-		linker_stInitArray = ABSOLUTE(.);
-		KEEP(*(.init .init.* .init*))
-		linker_enInitArray = ABSOLUTE(.);
-	} > prgm_code
+    .init_array : {
+        . = ALIGN(4);
+        linker_stInitArray = ABSOLUTE(.);
+        KEEP(*(.init .init.* .init*))
+        linker_enInitArray = ABSOLUTE(.);
+    } > prgm_code
 
-	.fini_array : {
-		. = ALIGN(4);
-		linker_stFiniArray = ABSOLUTE(.);
-		KEEP(*(.fini .fini.* .fini*))
-		linker_enFiniArray = ABSOLUTE(.);
-	} > prgm_code
+    .fini_array : {
+        . = ALIGN(4);
+        linker_stFiniArray = ABSOLUTE(.);
+        KEEP(*(.fini .fini.* .fini*))
+        linker_enFiniArray = ABSOLUTE(.);
+    } > prgm_code
 
-	.ARM.exidx : {
-		__exidx_start = ABSOLUTE(.);
-		*(.ARM.exidx* .gnu.linkonce.armexidx.*)
-		__exidx_end = ABSOLUTE(.);
-	} > prgm_code
+    .ARM.exidx : {
+        __exidx_start = ABSOLUTE(.);
+        *(.ARM.exidx* .gnu.linkonce.armexidx.*)
+        __exidx_end = ABSOLUTE(.);
+    } > prgm_code
 
-	.rodata : {
-		. = ALIGN(4);
-		linker_stRODATA = ABSOLUTE(.);
-		linker_stRODATA_KERN_p = ABSOLUTE(.);
-		libkern_p.a(.rodata .rodata.* .rodata*)
-		linker_enRODATA_KERN_p = ABSOLUTE(.);
-		*(.rodata .rodata.*)
-		. = ALIGN(4);
-		linker_enRODATA = ABSOLUTE(.);
-	} > prgm_code
+    .rodata : {
+        . = ALIGN(4);
+        linker_stRODATA = ABSOLUTE(.);
+        linker_stRODATA_KERN_p = ABSOLUTE(.);
+        libkern_p.a(.rodata .rodata.* .rodata*)
+        linker_enRODATA_KERN_p = ABSOLUTE(.);
+        *(.rodata .rodata.*)
+        . = ALIGN(4);
+        linker_enRODATA = ABSOLUTE(.);
+    } > prgm_code
 
-	. = ALIGN(4);
-	linker_stINDATA = ABSOLUTE(.);
-	.data : AT (linker_stINDATA) {
-		linker_stDATA = ABSOLUTE(.);
-		linker_stDATA_KERN_p = ABSOLUTE(.);
-		libkern_p.a(.data .data.* .data*)
-		linker_enDATA_KERN_p = ABSOLUTE(.);
-		*(.data .data.*)
-		. = ALIGN(4);
-		*(vtable)
-		. = ALIGN(4);
-		KEEP(*(.eh_frame))
-		. = ALIGN(4);
-		*(.ARM.extab*)
-		. = ALIGN(4);
-		*(.ARM.exidx*)
-		linker_enDATA = ABSOLUTE(.);
-	} > prgm_data
+    . = ALIGN(4);
+    linker_stINDATA = ABSOLUTE(.);
+    .data : AT (linker_stINDATA) {
+        linker_stDATA = ABSOLUTE(.);
+        linker_stDATA_KERN_p = ABSOLUTE(.);
+        libkern_p.a(.data .data.* .data*)
+        linker_enDATA_KERN_p = ABSOLUTE(.);
+        *(.data .data.*)
+        . = ALIGN(4);
+        *(vtable)
+        . = ALIGN(4);
+        KEEP(*(.eh_frame))
+        . = ALIGN(4);
+        *(.ARM.extab*)
+        . = ALIGN(4);
+        *(.ARM.exidx*)
+        linker_enDATA = ABSOLUTE(.);
+    } > prgm_data
 
-	.signature (linker_enRODATA + (linker_enDATA - linker_stDATA)) : {
-	. = ALIGN(4);
-		linker_stSignature = ABSOLUTE(.);
-		KEEP(*(.signature))
-	} > prgm_code
+    .signature (linker_enRODATA + (linker_enDATA - linker_stDATA)) : {
+    . = ALIGN(4);
+        linker_stSignature = ABSOLUTE(.);
+        KEEP(*(.signature))
+    } > prgm_code
 
-	.bss (NOLOAD) : {
-		. = ALIGN(4);
-		linker_stBSS = ABSOLUTE(.);
-		KEEP(*(.user))
-		linker_stBSS_KERN_p = ABSOLUTE(.);
-		libkern_p.a(.bss .bss.* COMMON)
-		linker_enBSS_KERN_p = ABSOLUTE(.);
-		*(.bss .bss.*)
-		. = ALIGN(4);
-		*(COMMON)
-		linker_enBSS = ABSOLUTE(.);
-		/* Standard symbol used by C library for heap start */
-		end = ABSOLUTE(.);
-		_end = ABSOLUTE(.);
-	} > prgm_data
+    .bss (NOLOAD) : {
+        . = ALIGN(4);
+        linker_stBSS = ABSOLUTE(.);
+        KEEP(*(.user))
+        linker_stBSS_KERN_p = ABSOLUTE(.);
+        libkern_p.a(.bss .bss.* COMMON)
+        linker_enBSS_KERN_p = ABSOLUTE(.);
+        *(.bss .bss.*)
+        . = ALIGN(4);
+        *(COMMON)
+        linker_enBSS = ABSOLUTE(.);
+        /* Standard symbol used by C library for heap start */
+        end = ABSOLUTE(.);
+        _end = ABSOLUTE(.);
+    } > prgm_data
 
 }

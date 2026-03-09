@@ -5,16 +5,16 @@
 # =======
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		script for burning the arm flash via the openocd.
-#			STLink
-#			SWD hla transport
+# Project:  uKOS-X
+# Goal:     script for burning the arm flash via the openocd.
+#           STLink
+#           SWD hla transport
 #
-#			- Usage:
-#			  ./stlink.sh
+#           - Usage:
+#             ./stlink.sh
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -57,16 +57,16 @@ SCRIPT_PATH="${0:A:h}"
 # Allow the user to choose its prefered application
 
 if [[ -z "$OPENOCD" ]]; then
-	if command -v openocd-stm &> /dev/null
-	then
-		OPENOCD=openocd-stm
-	elif command -v openocd &> /dev/null
-	then
-		OPENOCD=openocd
-	else
-		echo "openocd could not be found"
-		exit 1
-	fi
+    if command -v openocd-stm &> /dev/null
+    then
+        OPENOCD=openocd-stm
+    elif command -v openocd &> /dev/null
+    then
+        OPENOCD=openocd
+    else
+        echo "openocd could not be found"
+        exit 1
+    fi
 fi
 
 "${OPENOCD}" -f "${SCRIPT_PATH}/stlink.cfg"

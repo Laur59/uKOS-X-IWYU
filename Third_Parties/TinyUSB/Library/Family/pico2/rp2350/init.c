@@ -9,11 +9,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =====
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Board initial set-up.
+; Project:  uKOS-X
+; Goal:     Board initial set-up.
 ;
 ;   (c) 2019 Ha Thach (tinyusb.org)
 ;   -------------------------------

@@ -8,34 +8,34 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =========
 
 ;------------------------------------------------------------------------
-; Project:	uKOS-X
-; Goal:		Linker description for uKOS-X applications.
-;			User only support
+; Project:  uKOS-X
+; Goal:     Linker description for uKOS-X applications.
+;           User only support
 ;
 ;                   CODE
-; linker_stTEXT		+-----------------+
-;					|                 |
-;					| .header         |
-;					| .text           |
-;					| .ctor           |
-;					| .dtor           |
-; linker_enCTOR		|                 |
-; linker_enDTOR		|                 |
-; linker_enTEXT		|                 |
-; linker_stRODATA	+-----------------+
-;					|                 |
-;					| .rodata         |
-; linker_enRODATA	|                 |
-; linker_stDATA		+-----------------+
-;					|                 |
-;					| .data           |
-; linker_enDATA		|                 |
-; linker_stBSS		+-----------------+
-;					|                 |
-;					| .bss            |
-; linker_enBSS		| COMMON          |
-;					|                 |
-; _end				+-----------------+
+; linker_stTEXT     +-----------------+
+;                   |                 |
+;                   | .header         |
+;                   | .text           |
+;                   | .ctor           |
+;                   | .dtor           |
+; linker_enCTOR     |                 |
+; linker_enDTOR     |                 |
+; linker_enTEXT     |                 |
+; linker_stRODATA   +-----------------+
+;                   |                 |
+;                   | .rodata         |
+; linker_enRODATA   |                 |
+; linker_stDATA     +-----------------+
+;                   |                 |
+;                   | .data           |
+; linker_enDATA     |                 |
+; linker_stBSS      +-----------------+
+;                   |                 |
+;                   | .bss            |
+; linker_enBSS      | COMMON          |
+;                   |                 |
+; _end              +-----------------+
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -75,8 +75,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ENTRY(aStart)
 
 MEMORY {
-	prgm_code (rx)	: ORIGIN = 0x34140000, LENGTH = 384K
-	prgm_data (rwx)	: ORIGIN = 0x341A0000, LENGTH = 128K
+    prgm_code (rx)  : ORIGIN = 0x34140000, LENGTH = 384K
+    prgm_data (rwx) : ORIGIN = 0x341A0000, LENGTH = 128K
 }
 
-INCLUDE		application.ld
+INCLUDE     application.ld

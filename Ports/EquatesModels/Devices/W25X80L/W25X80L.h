@@ -8,7 +8,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ========
 
 ;------------------------------------------------------------------------
-; Project:	uKOS-X
+; Project:  uKOS-X
 ;
 ; Purpose:
 ;   EEPROM W25X80L equates.
@@ -47,33 +47,33 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 // Memory structure
 
-#define	KSPIM_SZ_SECTOR						4096U							// Sector size
-#define	KSPIM_SZ_PAGE						256U							// Page size
-#define	KSPIM_NB_SECTOR_BLOC				16U								// Number of sector by block
-#define	KSPIM_NB_BLOC						16U								// Number of blocks
-#define	KSPIM_SZ_FLASH						(KSZBLOC * KSPIM_NB_BLOC)		// EEPROM size
+#define KSPIM_SZ_SECTOR                     4096U                           // Sector size
+#define KSPIM_SZ_PAGE                       256U                            // Page size
+#define KSPIM_NB_SECTOR_BLOC                16U                             // Number of sector by block
+#define KSPIM_NB_BLOC                       16U                             // Number of blocks
+#define KSPIM_SZ_FLASH                      (KSZBLOC * KSPIM_NB_BLOC)       // EEPROM size
 
 // Commands for the chip W25X80L
 
-#define	KCMD_WR_STATUS						0x01u							// EEPROM write status command
-#define	KCMD_WRITE							0x02u							// EEPROM write command
-#define	KCMD_READ							0x03u							// EEPROM read command
-#define	KCMD_WR_DISABLE						0x04u							// EEPROM write disable command
-#define	KCMD_RD_STATUS						0x05u							// EEPROM read status command
-#define	KCMD_WR_ENABLE						0x06u							// EEPROM write enable command
-#define	KCMD_ERASE_SECTOR					0x20u							// EEPROM erase sector command
-#define	KCMD_BULK_ERASE						0xC7u							// EEPROM bulk erase command
+#define KCMD_WR_STATUS                      0x01u                           // EEPROM write status command
+#define KCMD_WRITE                          0x02u                           // EEPROM write command
+#define KCMD_READ                           0x03u                           // EEPROM read command
+#define KCMD_WR_DISABLE                     0x04u                           // EEPROM write disable command
+#define KCMD_RD_STATUS                      0x05u                           // EEPROM read status command
+#define KCMD_WR_ENABLE                      0x06u                           // EEPROM write enable command
+#define KCMD_ERASE_SECTOR                   0x20u                           // EEPROM erase sector command
+#define KCMD_BULK_ERASE                     0xC7u                           // EEPROM bulk erase command
 
 // Status bits for the chip W25X80L
 
-#define	BBUSY								0U								// Erase or write in progress
-#define	BWEL								1U								// Write enable latch
-#define	BBP0								2U								// Block protect block 0
-#define	BBP1								3U								// Block protect block 1
-#define	BBP2								4U								// Block protect block 2
-#define	BTB									5U								// Top/Bottom write protect
-#define	BSRP								7U								// Status register protect
+#define BBUSY                               0U                              // Erase or write in progress
+#define BWEL                                1U                              // Write enable latch
+#define BBP0                                2U                              // Block protect block 0
+#define BBP1                                3U                              // Block protect block 1
+#define BBP2                                4U                              // Block protect block 2
+#define BTB                                 5U                              // Top/Bottom write protect
+#define BSRP                                7U                              // Status register protect

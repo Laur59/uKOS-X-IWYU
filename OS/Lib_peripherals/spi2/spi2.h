@@ -83,9 +83,9 @@ extern  "C" {
 #define SPI2_reserve    spi2_reserve
 #define SPI2_release    spi2_release
 
-extern	int32_t	stub_spi2_init(void);
-extern	int32_t	stub_spi2_configure(const spiCnf_t *configure);
-extern	int32_t	stub_spi2_multipleWriteRead(const uint8_t *wData, uint16_t wSize, uint8_t *rData, uint16_t rSize, uint32_t timeout);
+extern  int32_t stub_spi2_init(void);
+extern  int32_t stub_spi2_configure(const spiCnf_t *configure);
+extern  int32_t stub_spi2_multipleWriteRead(const uint8_t *wData, uint16_t wSize, uint8_t *rData, uint16_t rSize, uint32_t timeout);
 
 /*!
  * \brief Reserve the spi2 manager

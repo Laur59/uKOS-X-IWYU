@@ -8,7 +8,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ============
 
 ;------------------------------------------------------------------------
-; Project:	uKOS-X
+; Project:  uKOS-X
 ;
 ; Purpose:
 ;   lib_neurals system call interface module.
@@ -47,7 +47,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \defgroup Lib_neurals Library for the neural networks
@@ -74,7 +74,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  */
 
 #ifdef CONFIG_MAN_MLPN_S
-#include	"mlpn/mlpn.h"		// IWYU pragma: export
+#include    "mlpn/mlpn.h"       // IWYU pragma: export
 #endif
 
 /**!@}*/

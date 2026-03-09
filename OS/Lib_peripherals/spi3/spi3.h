@@ -83,9 +83,9 @@ extern  "C" {
 #define SPI3_reserve    spi3_reserve
 #define SPI3_release    spi3_release
 
-extern	int32_t	stub_spi3_init(void);
-extern	int32_t	stub_spi3_configure(const spiCnf_t *configure);
-extern	int32_t	stub_spi3_multipleWriteRead(const uint8_t *wData, uint16_t wSize, uint8_t *rData, uint16_t rSize, uint32_t timeout);
+extern  int32_t stub_spi3_init(void);
+extern  int32_t stub_spi3_configure(const spiCnf_t *configure);
+extern  int32_t stub_spi3_multipleWriteRead(const uint8_t *wData, uint16_t wSize, uint8_t *rData, uint16_t rSize, uint32_t timeout);
 
 /*!
  * \brief Reserve the spi3 manager

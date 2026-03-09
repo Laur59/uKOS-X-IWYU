@@ -86,11 +86,11 @@ extern  "C" {
 #define URT4_reserve    urt4_reserve
 #define URT4_release    urt4_release
 
-extern	int32_t	stub_urt4_init(void);
-extern	int32_t	stub_urt4_configure(const urtxCnf_t *configure);
-extern	int32_t	stub_urt4_write(const uint8_t *buffer, uint32_t size);
-extern	int32_t	stub_urt4_read(uint8_t *buffer, uint32_t *size);
-extern	int32_t	stub_urt4_flush(void);
+extern  int32_t stub_urt4_init(void);
+extern  int32_t stub_urt4_configure(const urtxCnf_t *configure);
+extern  int32_t stub_urt4_write(const uint8_t *buffer, uint32_t size);
+extern  int32_t stub_urt4_read(uint8_t *buffer, uint32_t *size);
+extern  int32_t stub_urt4_flush(void);
 
 /*!
  * \brief Reserve the urt4 manager
