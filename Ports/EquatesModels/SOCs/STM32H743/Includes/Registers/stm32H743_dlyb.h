@@ -8,11 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ===============
 
 ;------------------------------------------------------------------------
-; Author:	Generated using the .svd description	The 2025-01-01
+; Author:   Generated using the .svd description    The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		stm32H743_dlyb equates.
+; Project:  uKOS-X
+; Goal:     stm32H743_dlyb equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -49,40 +49,40 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // DLYB address definitions
 // ------------------------
 
 typedef struct {
-	volatile	uint32_t	CR;
-	volatile	uint32_t	CFGR;
+    volatile    uint32_t    CR;
+    volatile    uint32_t    CFGR;
 } DLYB_TypeDef;
 
 #ifdef __cplusplus
-#define	DELAY_BLOCK_SDMMC1	reinterpret_cast<DLYB_TypeDef *>(0x52008000u)
-#define	DELAY_BLOCK_QUADSPI	reinterpret_cast<DLYB_TypeDef *>(0x52006000u)
-#define	DELAY_BLOCK_SDMMC2	reinterpret_cast<DLYB_TypeDef *>(0x48022800u)
+#define DELAY_BLOCK_SDMMC1  reinterpret_cast<DLYB_TypeDef *>(0x52008000u)
+#define DELAY_BLOCK_QUADSPI reinterpret_cast<DLYB_TypeDef *>(0x52006000u)
+#define DELAY_BLOCK_SDMMC2  reinterpret_cast<DLYB_TypeDef *>(0x48022800u)
 
 #else
-#define	DELAY_BLOCK_SDMMC1	((DLYB_TypeDef *)0x52008000u)
-#define	DELAY_BLOCK_QUADSPI	((DLYB_TypeDef *)0x52006000u)
-#define	DELAY_BLOCK_SDMMC2	((DLYB_TypeDef *)0x48022800u)
+#define DELAY_BLOCK_SDMMC1  ((DLYB_TypeDef *)0x52008000u)
+#define DELAY_BLOCK_QUADSPI ((DLYB_TypeDef *)0x52006000u)
+#define DELAY_BLOCK_SDMMC2  ((DLYB_TypeDef *)0x48022800u)
 #endif
 
 // CR Configuration
 
-#define	DLYB_CR_SEN			(0x1u<<1)
-#define	DLYB_CR_DEN			(0x1u<<0)
+#define DLYB_CR_SEN         (0x1u<<1)
+#define DLYB_CR_DEN         (0x1u<<0)
 
 // CFGR Configuration
 
-#define	DLYB_CFGR_LNGF		(0x1u<<31)
-#define	DLYB_CFGR_LNG		(0xFFFu<<16)
-#define	DLYB_CFGR_LNG_0		(0x1u<<16)
-#define	DLYB_CFGR_UNIT		(0x7Fu<<8)
-#define	DLYB_CFGR_UNIT_0	(0x1u<<8)
-#define	DLYB_CFGR_SEL		(0xFu<<0)
-#define	DLYB_CFGR_SEL_0		(0x1u<<0)
+#define DLYB_CFGR_LNGF      (0x1u<<31)
+#define DLYB_CFGR_LNG       (0xFFFu<<16)
+#define DLYB_CFGR_LNG_0     (0x1u<<16)
+#define DLYB_CFGR_UNIT      (0x7Fu<<8)
+#define DLYB_CFGR_UNIT_0    (0x1u<<8)
+#define DLYB_CFGR_SEL       (0xFu<<0)
+#define DLYB_CFGR_SEL_0     (0x1u<<0)

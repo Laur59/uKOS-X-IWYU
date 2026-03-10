@@ -8,11 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ==============
 
 ;------------------------------------------------------------------------
-; Author:	Generated using the .svd description	The 2025-01-01
+; Author:   Generated using the .svd description    The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		stm32F217_crc equates.
+; Project:  uKOS-X
+; Goal:     stm32F217_crc equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -49,36 +49,36 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // CRC address definitions
 // -----------------------
 
 typedef struct {
-	volatile	uint32_t	DR;
-	volatile	uint32_t	IDR;
-	volatile	uint32_t	CR;
+    volatile    uint32_t    DR;
+    volatile    uint32_t    IDR;
+    volatile    uint32_t    CR;
 } CRC_TypeDef;
 
 #ifdef __cplusplus
-#define	CRC	reinterpret_cast<CRC_TypeDef *>(0x40023000u)
+#define CRC reinterpret_cast<CRC_TypeDef *>(0x40023000u)
 
 #else
-#define	CRC	((CRC_TypeDef *)0x40023000u)
+#define CRC ((CRC_TypeDef *)0x40023000u)
 #endif
 
 // DR Configuration
 
-#define	CRC_DR_DR		(0xFFFFFFFFu<<0)
-#define	CRC_DR_DR_0		(0x1u<<0)
+#define CRC_DR_DR       (0xFFFFFFFFu<<0)
+#define CRC_DR_DR_0     (0x1u<<0)
 
 // IDR Configuration
 
-#define	CRC_IDR_IDR		(0xFFu<<0)
-#define	CRC_IDR_IDR_0	(0x1u<<0)
+#define CRC_IDR_IDR     (0xFFu<<0)
+#define CRC_IDR_IDR_0   (0x1u<<0)
 
 // CR Configuration
 
-#define	CRC_CR_RESET	(0x1u<<0)
+#define CRC_CR_RESET    (0x1u<<0)

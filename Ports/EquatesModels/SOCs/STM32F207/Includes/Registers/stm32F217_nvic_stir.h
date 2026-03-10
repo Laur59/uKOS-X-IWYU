@@ -8,11 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ====================
 
 ;------------------------------------------------------------------------
-; Author:	Generated using the .svd description	The 2025-01-01
+; Author:   Generated using the .svd description    The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		stm32F217_nvic_stir equates.
+; Project:  uKOS-X
+; Goal:     stm32F217_nvic_stir equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -49,25 +49,25 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // NVIC_STIR address definitions
 // -----------------------------
 
 typedef struct {
-	volatile	uint32_t	STIR;
+    volatile    uint32_t    STIR;
 } NVIC_STIR_TypeDef;
 
 #ifdef __cplusplus
-#define	NVIC_STIR	reinterpret_cast<NVIC_STIR_TypeDef *>(0xE000EF00u)
+#define NVIC_STIR   reinterpret_cast<NVIC_STIR_TypeDef *>(0xE000EF00u)
 
 #else
-#define	NVIC_STIR	((NVIC_STIR_TypeDef *)0xE000EF00u)
+#define NVIC_STIR   ((NVIC_STIR_TypeDef *)0xE000EF00u)
 #endif
 
 // STIR Configuration
 
-#define	NVIC_STIR_STIR_INTID	(0x1FFu<<0)
-#define	NVIC_STIR_STIR_INTID_0	(0x1u<<0)
+#define NVIC_STIR_STIR_INTID    (0x1FFu<<0)
+#define NVIC_STIR_STIR_INTID_0  (0x1u<<0)

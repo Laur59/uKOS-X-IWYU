@@ -8,11 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =================
 
 ;------------------------------------------------------------------------
-; Author:	Generated using the .svd description	The 2025-01-01
+; Author:   Generated using the .svd description    The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		stm32F217_usart1 equates.
+; Project:  uKOS-X
+; Goal:     stm32F217_usart1 equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -49,105 +49,105 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // USART1 address definitions
 // --------------------------
 
 typedef struct {
-	volatile	uint32_t	SR;
-	volatile	uint32_t	DR;
-	volatile	uint32_t	BRR;
-	volatile	uint32_t	CR1;
-	volatile	uint32_t	CR2;
-	volatile	uint32_t	CR3;
-	volatile	uint32_t	GTPR;
+    volatile    uint32_t    SR;
+    volatile    uint32_t    DR;
+    volatile    uint32_t    BRR;
+    volatile    uint32_t    CR1;
+    volatile    uint32_t    CR2;
+    volatile    uint32_t    CR3;
+    volatile    uint32_t    GTPR;
 } USART1_TypeDef;
 
 #ifdef __cplusplus
-#define	USART1	reinterpret_cast<USART1_TypeDef *>(0x40011000u)
+#define USART1  reinterpret_cast<USART1_TypeDef *>(0x40011000u)
 
 #else
-#define	USART1	((USART1_TypeDef *)0x40011000u)
+#define USART1  ((USART1_TypeDef *)0x40011000u)
 #endif
 
 // SR Configuration
 
-#define	USART1_SR_PE				(0x1u<<0)
-#define	USART1_SR_FE				(0x1u<<1)
-#define	USART1_SR_NF				(0x1u<<2)
-#define	USART1_SR_ORE				(0x1u<<3)
-#define	USART1_SR_IDLE				(0x1u<<4)
-#define	USART1_SR_RXNE				(0x1u<<5)
-#define	USART1_SR_TC				(0x1u<<6)
-#define	USART1_SR_TXE				(0x1u<<7)
-#define	USART1_SR_LBD				(0x1u<<8)
-#define	USART1_SR_CTS				(0x1u<<9)
+#define USART1_SR_PE                (0x1u<<0)
+#define USART1_SR_FE                (0x1u<<1)
+#define USART1_SR_NF                (0x1u<<2)
+#define USART1_SR_ORE               (0x1u<<3)
+#define USART1_SR_IDLE              (0x1u<<4)
+#define USART1_SR_RXNE              (0x1u<<5)
+#define USART1_SR_TC                (0x1u<<6)
+#define USART1_SR_TXE               (0x1u<<7)
+#define USART1_SR_LBD               (0x1u<<8)
+#define USART1_SR_CTS               (0x1u<<9)
 
 // DR Configuration
 
-#define	USART1_DR_DR				(0x1FFu<<0)
-#define	USART1_DR_DR_0				(0x1u<<0)
+#define USART1_DR_DR                (0x1FFu<<0)
+#define USART1_DR_DR_0              (0x1u<<0)
 
 // BRR Configuration
 
-#define	USART1_BRR_DIV_FRACTION		(0xFu<<0)
-#define	USART1_BRR_DIV_FRACTION_0	(0x1u<<0)
-#define	USART1_BRR_DIV_MANTISSA		(0xFFFu<<4)
-#define	USART1_BRR_DIV_MANTISSA_0	(0x1u<<4)
+#define USART1_BRR_DIV_FRACTION     (0xFu<<0)
+#define USART1_BRR_DIV_FRACTION_0   (0x1u<<0)
+#define USART1_BRR_DIV_MANTISSA     (0xFFFu<<4)
+#define USART1_BRR_DIV_MANTISSA_0   (0x1u<<4)
 
 // CR1 Configuration
 
-#define	USART1_CR1_SBK				(0x1u<<0)
-#define	USART1_CR1_RWU				(0x1u<<1)
-#define	USART1_CR1_RE				(0x1u<<2)
-#define	USART1_CR1_TE				(0x1u<<3)
-#define	USART1_CR1_IDLEIE			(0x1u<<4)
-#define	USART1_CR1_RXNEIE			(0x1u<<5)
-#define	USART1_CR1_TCIE				(0x1u<<6)
-#define	USART1_CR1_TXEIE			(0x1u<<7)
-#define	USART1_CR1_PEIE				(0x1u<<8)
-#define	USART1_CR1_PS				(0x1u<<9)
-#define	USART1_CR1_PCE				(0x1u<<10)
-#define	USART1_CR1_WAKE				(0x1u<<11)
-#define	USART1_CR1_M				(0x1u<<12)
-#define	USART1_CR1_UE				(0x1u<<13)
-#define	USART1_CR1_OVER8			(0x1u<<15)
+#define USART1_CR1_SBK              (0x1u<<0)
+#define USART1_CR1_RWU              (0x1u<<1)
+#define USART1_CR1_RE               (0x1u<<2)
+#define USART1_CR1_TE               (0x1u<<3)
+#define USART1_CR1_IDLEIE           (0x1u<<4)
+#define USART1_CR1_RXNEIE           (0x1u<<5)
+#define USART1_CR1_TCIE             (0x1u<<6)
+#define USART1_CR1_TXEIE            (0x1u<<7)
+#define USART1_CR1_PEIE             (0x1u<<8)
+#define USART1_CR1_PS               (0x1u<<9)
+#define USART1_CR1_PCE              (0x1u<<10)
+#define USART1_CR1_WAKE             (0x1u<<11)
+#define USART1_CR1_M                (0x1u<<12)
+#define USART1_CR1_UE               (0x1u<<13)
+#define USART1_CR1_OVER8            (0x1u<<15)
 
 // CR2 Configuration
 
-#define	USART1_CR2_ADD				(0xFu<<0)
-#define	USART1_CR2_ADD_0			(0x1u<<0)
-#define	USART1_CR2_LBDL				(0x1u<<5)
-#define	USART1_CR2_LBDIE			(0x1u<<6)
-#define	USART1_CR2_LBCL				(0x1u<<8)
-#define	USART1_CR2_CPHA				(0x1u<<9)
-#define	USART1_CR2_CPOL				(0x1u<<10)
-#define	USART1_CR2_CLKEN			(0x1u<<11)
-#define	USART1_CR2_STOP				(0x3u<<12)
-#define	USART1_CR2_STOP_0			(0x1u<<12)
-#define	USART1_CR2_LINEN			(0x1u<<14)
+#define USART1_CR2_ADD              (0xFu<<0)
+#define USART1_CR2_ADD_0            (0x1u<<0)
+#define USART1_CR2_LBDL             (0x1u<<5)
+#define USART1_CR2_LBDIE            (0x1u<<6)
+#define USART1_CR2_LBCL             (0x1u<<8)
+#define USART1_CR2_CPHA             (0x1u<<9)
+#define USART1_CR2_CPOL             (0x1u<<10)
+#define USART1_CR2_CLKEN            (0x1u<<11)
+#define USART1_CR2_STOP             (0x3u<<12)
+#define USART1_CR2_STOP_0           (0x1u<<12)
+#define USART1_CR2_LINEN            (0x1u<<14)
 
 // CR3 Configuration
 
-#define	USART1_CR3_EIE				(0x1u<<0)
-#define	USART1_CR3_IREN				(0x1u<<1)
-#define	USART1_CR3_IRLP				(0x1u<<2)
-#define	USART1_CR3_HDSEL			(0x1u<<3)
-#define	USART1_CR3_NACK				(0x1u<<4)
-#define	USART1_CR3_SCEN				(0x1u<<5)
-#define	USART1_CR3_DMAR				(0x1u<<6)
-#define	USART1_CR3_DMAT				(0x1u<<7)
-#define	USART1_CR3_RTSE				(0x1u<<8)
-#define	USART1_CR3_CTSE				(0x1u<<9)
-#define	USART1_CR3_CTSIE			(0x1u<<10)
-#define	USART1_CR3_ONEBIT			(0x1u<<11)
+#define USART1_CR3_EIE              (0x1u<<0)
+#define USART1_CR3_IREN             (0x1u<<1)
+#define USART1_CR3_IRLP             (0x1u<<2)
+#define USART1_CR3_HDSEL            (0x1u<<3)
+#define USART1_CR3_NACK             (0x1u<<4)
+#define USART1_CR3_SCEN             (0x1u<<5)
+#define USART1_CR3_DMAR             (0x1u<<6)
+#define USART1_CR3_DMAT             (0x1u<<7)
+#define USART1_CR3_RTSE             (0x1u<<8)
+#define USART1_CR3_CTSE             (0x1u<<9)
+#define USART1_CR3_CTSIE            (0x1u<<10)
+#define USART1_CR3_ONEBIT           (0x1u<<11)
 
 // GTPR Configuration
 
-#define	USART1_GTPR_PSC				(0xFFu<<0)
-#define	USART1_GTPR_PSC_0			(0x1u<<0)
-#define	USART1_GTPR_GT				(0xFFu<<8)
-#define	USART1_GTPR_GT_0			(0x1u<<8)
+#define USART1_GTPR_PSC             (0xFFu<<0)
+#define USART1_GTPR_PSC_0           (0x1u<<0)
+#define USART1_GTPR_GT              (0xFFu<<8)
+#define USART1_GTPR_GT_0            (0x1u<<8)

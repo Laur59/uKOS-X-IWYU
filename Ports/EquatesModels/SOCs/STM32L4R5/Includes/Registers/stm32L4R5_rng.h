@@ -8,11 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ==============
 
 ;------------------------------------------------------------------------
-; Author:	Generated using the .svd description	The 2025-01-01
+; Author:   Generated using the .svd description    The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		stm32L4R5_rng equates.
+; Project:  uKOS-X
+; Goal:     stm32L4R5_rng equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -49,40 +49,40 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // RNG address definitions
 // -----------------------
 
 typedef struct {
-	volatile	uint32_t	CR;
-	volatile	uint32_t	SR;
-	volatile	uint32_t	DR;
+    volatile    uint32_t    CR;
+    volatile    uint32_t    SR;
+    volatile    uint32_t    DR;
 } RNG_TypeDef;
 
 #ifdef __cplusplus
-#define	RNG	reinterpret_cast<RNG_TypeDef *>(0x50060800u)
+#define RNG reinterpret_cast<RNG_TypeDef *>(0x50060800u)
 
 #else
-#define	RNG	((RNG_TypeDef *)0x50060800u)
+#define RNG ((RNG_TypeDef *)0x50060800u)
 #endif
 
 // CR Configuration
 
-#define	RNG_CR_RNGEN	(0x1u<<2)
-#define	RNG_CR_IE		(0x1u<<3)
+#define RNG_CR_RNGEN    (0x1u<<2)
+#define RNG_CR_IE       (0x1u<<3)
 
 // SR Configuration
 
-#define	RNG_SR_DRDY		(0x1u<<0)
-#define	RNG_SR_CECS		(0x1u<<1)
-#define	RNG_SR_SECS		(0x1u<<2)
-#define	RNG_SR_CEIS		(0x1u<<5)
-#define	RNG_SR_SEIS		(0x1u<<6)
+#define RNG_SR_DRDY     (0x1u<<0)
+#define RNG_SR_CECS     (0x1u<<1)
+#define RNG_SR_SECS     (0x1u<<2)
+#define RNG_SR_CEIS     (0x1u<<5)
+#define RNG_SR_SEIS     (0x1u<<6)
 
 // DR Configuration
 
-#define	RNG_DR_RNDATA	(0xFFFFFFFFu<<0)
-#define	RNG_DR_RNDATA_0	(0x1u<<0)
+#define RNG_DR_RNDATA   (0xFFFFFFFFu<<0)
+#define RNG_DR_RNDATA_0 (0x1u<<0)

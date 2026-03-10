@@ -8,11 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ========================
 
 ;------------------------------------------------------------------------
-; Author:	Generated using the .svd description	The 2025-01-01
+; Author:   Generated using the .svd description    The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		stm32F217_otg_hs_pwrclk equates.
+; Project:  uKOS-X
+; Goal:     stm32F217_otg_hs_pwrclk equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -49,26 +49,26 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 // OTG_HS_PWRCLK address definitions
-#include	<stdint.h>
+#include    <stdint.h>
 
 // ---------------------------------
 
 typedef struct {
-	volatile	uint32_t	OTG_HS_PCGCR;
+    volatile    uint32_t    OTG_HS_PCGCR;
 } OTG_HS_PWRCLK_TypeDef;
 
 #ifdef __cplusplus
-#define	OTG_HS_PWRCLK	reinterpret_cast<OTG_HS_PWRCLK_TypeDef *>(0x40040E00u)
+#define OTG_HS_PWRCLK   reinterpret_cast<OTG_HS_PWRCLK_TypeDef *>(0x40040E00u)
 
 #else
-#define	OTG_HS_PWRCLK	((OTG_HS_PWRCLK_TypeDef *)0x40040E00u)
+#define OTG_HS_PWRCLK   ((OTG_HS_PWRCLK_TypeDef *)0x40040E00u)
 #endif
 
 // OTG_HS_PCGCR Configuration
 
-#define	OTG_HS_PWRCLK_OTG_HS_PCGCR_PHYSUSP	(0x1u<<4)
-#define	OTG_HS_PWRCLK_OTG_HS_PCGCR_GATEHCLK	(0x1u<<1)
-#define	OTG_HS_PWRCLK_OTG_HS_PCGCR_STPPCLK	(0x1u<<0)
+#define OTG_HS_PWRCLK_OTG_HS_PCGCR_PHYSUSP  (0x1u<<4)
+#define OTG_HS_PWRCLK_OTG_HS_PCGCR_GATEHCLK (0x1u<<1)
+#define OTG_HS_PWRCLK_OTG_HS_PCGCR_STPPCLK  (0x1u<<0)

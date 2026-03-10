@@ -206,7 +206,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 #include    "soc_reg.h"
 #endif
 
-#define KKERN_VERSION   " 1.0"
+#define KKERN_VERSION   " 1.1"
 
 // uKOS-X specific (see the module.h)
 // ==================================

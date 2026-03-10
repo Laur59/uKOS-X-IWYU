@@ -114,7 +114,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 //
 #define LV_DPI_DEF                                      130
 
-// Résolution
+// Resolution
 //
 #define LV_HOR_RES_MAX                                  320
 #define LV_VER_RES_MAX                                  240

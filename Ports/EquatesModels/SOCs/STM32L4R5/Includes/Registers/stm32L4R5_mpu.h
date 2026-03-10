@@ -8,11 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ==============
 
 ;------------------------------------------------------------------------
-; Author:	Generated using the .svd description	The 2025-01-01
+; Author:   Generated using the .svd description    The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		stm32L4R5_mpu equates.
+; Project:  uKOS-X
+; Goal:     stm32L4R5_mpu equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -49,67 +49,67 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // MPU address definitions
 // -----------------------
 
 typedef struct {
-	volatile	uint32_t	TYPER;
-	volatile	uint32_t	CTRL;
-	volatile	uint32_t	RNR;
-	volatile	uint32_t	RBAR;
-	volatile	uint32_t	RASR;
+    volatile    uint32_t    TYPER;
+    volatile    uint32_t    CTRL;
+    volatile    uint32_t    RNR;
+    volatile    uint32_t    RBAR;
+    volatile    uint32_t    RASR;
 } MPU_TypeDef;
 
 #ifdef __cplusplus
-#define	MPU	reinterpret_cast<MPU_TypeDef *>(0xE000ED90u)
+#define MPU reinterpret_cast<MPU_TypeDef *>(0xE000ED90u)
 
 #else
-#define	MPU	((MPU_TypeDef *)0xE000ED90u)
+#define MPU ((MPU_TypeDef *)0xE000ED90u)
 #endif
 
 // TYPER Configuration
 
-#define	MPU_TYPER_IREGION	(0xFFu<<16)
-#define	MPU_TYPER_IREGION_0	(0x1u<<16)
-#define	MPU_TYPER_DREGION	(0xFFu<<8)
-#define	MPU_TYPER_DREGION_0	(0x1u<<8)
-#define	MPU_TYPER_SEPARATE	(0x1u<<0)
+#define MPU_TYPER_IREGION   (0xFFu<<16)
+#define MPU_TYPER_IREGION_0 (0x1u<<16)
+#define MPU_TYPER_DREGION   (0xFFu<<8)
+#define MPU_TYPER_DREGION_0 (0x1u<<8)
+#define MPU_TYPER_SEPARATE  (0x1u<<0)
 
 // CTRL Configuration
 
-#define	MPU_CTRL_PRIVDEFENA	(0x1u<<2)
-#define	MPU_CTRL_HFNMIENA	(0x1u<<1)
-#define	MPU_CTRL_ENABLE		(0x1u<<0)
+#define MPU_CTRL_PRIVDEFENA (0x1u<<2)
+#define MPU_CTRL_HFNMIENA   (0x1u<<1)
+#define MPU_CTRL_ENABLE     (0x1u<<0)
 
 // RNR Configuration
 
-#define	MPU_RNR_REGION		(0xFFu<<0)
-#define	MPU_RNR_REGION_0	(0x1u<<0)
+#define MPU_RNR_REGION      (0xFFu<<0)
+#define MPU_RNR_REGION_0    (0x1u<<0)
 
 // RBAR Configuration
 
-#define	MPU_RBAR_ADDR		(0x7FFFFFFu<<5)
-#define	MPU_RBAR_ADDR_0		(0x1u<<5)
-#define	MPU_RBAR_VALID		(0x1u<<4)
-#define	MPU_RBAR_REGION		(0xFu<<0)
-#define	MPU_RBAR_REGION_0	(0x1u<<0)
+#define MPU_RBAR_ADDR       (0x7FFFFFFu<<5)
+#define MPU_RBAR_ADDR_0     (0x1u<<5)
+#define MPU_RBAR_VALID      (0x1u<<4)
+#define MPU_RBAR_REGION     (0xFu<<0)
+#define MPU_RBAR_REGION_0   (0x1u<<0)
 
 // RASR Configuration
 
-#define	MPU_RASR_XN			(0x1u<<28)
-#define	MPU_RASR_AP			(0x7u<<24)
-#define	MPU_RASR_AP_0		(0x1u<<24)
-#define	MPU_RASR_TEX		(0x7u<<19)
-#define	MPU_RASR_TEX_0		(0x1u<<19)
-#define	MPU_RASR_S			(0x1u<<18)
-#define	MPU_RASR_C			(0x1u<<17)
-#define	MPU_RASR_B			(0x1u<<16)
-#define	MPU_RASR_SRD		(0xFFu<<8)
-#define	MPU_RASR_SRD_0		(0x1u<<8)
-#define	MPU_RASR_SIZE		(0x1Fu<<1)
-#define	MPU_RASR_SIZE_0		(0x1u<<1)
-#define	MPU_RASR_ENABLE		(0x1u<<0)
+#define MPU_RASR_XN         (0x1u<<28)
+#define MPU_RASR_AP         (0x7u<<24)
+#define MPU_RASR_AP_0       (0x1u<<24)
+#define MPU_RASR_TEX        (0x7u<<19)
+#define MPU_RASR_TEX_0      (0x1u<<19)
+#define MPU_RASR_S          (0x1u<<18)
+#define MPU_RASR_C          (0x1u<<17)
+#define MPU_RASR_B          (0x1u<<16)
+#define MPU_RASR_SRD        (0xFFu<<8)
+#define MPU_RASR_SRD_0      (0x1u<<8)
+#define MPU_RASR_SIZE       (0x1Fu<<1)
+#define MPU_RASR_SIZE_0     (0x1u<<1)
+#define MPU_RASR_ENABLE     (0x1u<<0)

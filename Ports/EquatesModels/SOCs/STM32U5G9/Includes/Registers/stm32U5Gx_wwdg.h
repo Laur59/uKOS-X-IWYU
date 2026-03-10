@@ -8,11 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ===============
 
 ;------------------------------------------------------------------------
-; Author:	Generated using the .svd description	The 2025-01-01
+; Author:   Generated using the .svd description    The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		stm32U5Gx_wwdg equates.
+; Project:  uKOS-X
+; Goal:     stm32U5Gx_wwdg equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -49,42 +49,42 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // WWDG address definitions
 // ------------------------
 
 typedef struct {
-	volatile	uint32_t	CR;
-	volatile	uint32_t	CFR;
-	volatile	uint32_t	SR;
+    volatile    uint32_t    CR;
+    volatile    uint32_t    CFR;
+    volatile    uint32_t    SR;
 } WWDG_TypeDef;
 
 #ifdef __cplusplus
-#define	WWDG_NS	reinterpret_cast<WWDG_TypeDef *>(0x40002C00u)
-#define	WWDG_S	reinterpret_cast<WWDG_TypeDef *>(0x50002C00u)
+#define WWDG_NS reinterpret_cast<WWDG_TypeDef *>(0x40002C00u)
+#define WWDG_S  reinterpret_cast<WWDG_TypeDef *>(0x50002C00u)
 
 #else
-#define	WWDG_NS	((WWDG_TypeDef *)0x40002C00u)
-#define	WWDG_S	((WWDG_TypeDef *)0x50002C00u)
+#define WWDG_NS ((WWDG_TypeDef *)0x40002C00u)
+#define WWDG_S  ((WWDG_TypeDef *)0x50002C00u)
 #endif
 
 // CR Configuration
 
-#define	WWDG_CR_T			(0x7Fu<<0)
-#define	WWDG_CR_T_0			(0x1u<<0)
-#define	WWDG_CR_WDGA		(0x1u<<7)
+#define WWDG_CR_T           (0x7Fu<<0)
+#define WWDG_CR_T_0         (0x1u<<0)
+#define WWDG_CR_WDGA        (0x1u<<7)
 
 // CFR Configuration
 
-#define	WWDG_CFR_W			(0x7Fu<<0)
-#define	WWDG_CFR_W_0		(0x1u<<0)
-#define	WWDG_CFR_EWI		(0x1u<<9)
-#define	WWDG_CFR_WDGTB		(0x7u<<11)
-#define	WWDG_CFR_WDGTB_0	(0x1u<<11)
+#define WWDG_CFR_W          (0x7Fu<<0)
+#define WWDG_CFR_W_0        (0x1u<<0)
+#define WWDG_CFR_EWI        (0x1u<<9)
+#define WWDG_CFR_WDGTB      (0x7u<<11)
+#define WWDG_CFR_WDGTB_0    (0x1u<<11)
 
 // SR Configuration
 
-#define	WWDG_SR_EWIF		(0x1u<<0)
+#define WWDG_SR_EWIF        (0x1u<<0)

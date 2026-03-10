@@ -8,11 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ====================
 
 ;------------------------------------------------------------------------
-; Author:	Generated using the .svd description	The 2025-01-01
+; Author:   Generated using the .svd description    The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		nrf5340_network_swi equates.
+; Project:  uKOS-X
+; Goal:     nrf5340_network_swi equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -49,26 +49,26 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // SWI address definitions
 // -----------------------
 
 typedef struct {
-	volatile	uint32_t	UNUSED;
+    volatile    uint32_t    UNUSED;
 } SWI_TypeDef;
 
 #ifdef __cplusplus
-#define	SWI0_NS	reinterpret_cast<SWI_TypeDef *>(0x4101A000u)
-#define	SWI1_NS	reinterpret_cast<SWI_TypeDef *>(0x4101B000u)
-#define	SWI2_NS	reinterpret_cast<SWI_TypeDef *>(0x4101C000u)
-#define	SWI3_NS	reinterpret_cast<SWI_TypeDef *>(0x4101D000u)
+#define SWI0_NS reinterpret_cast<SWI_TypeDef *>(0x4101A000u)
+#define SWI1_NS reinterpret_cast<SWI_TypeDef *>(0x4101B000u)
+#define SWI2_NS reinterpret_cast<SWI_TypeDef *>(0x4101C000u)
+#define SWI3_NS reinterpret_cast<SWI_TypeDef *>(0x4101D000u)
 
 #else
-#define	SWI0_NS	((SWI_TypeDef *)0x4101A000u)
-#define	SWI1_NS	((SWI_TypeDef *)0x4101B000u)
-#define	SWI2_NS	((SWI_TypeDef *)0x4101C000u)
-#define	SWI3_NS	((SWI_TypeDef *)0x4101D000u)
+#define SWI0_NS ((SWI_TypeDef *)0x4101A000u)
+#define SWI1_NS ((SWI_TypeDef *)0x4101B000u)
+#define SWI2_NS ((SWI_TypeDef *)0x4101C000u)
+#define SWI3_NS ((SWI_TypeDef *)0x4101D000u)
 #endif

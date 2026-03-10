@@ -8,11 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ====================
 
 ;------------------------------------------------------------------------
-; Author:	Generated using the .svd description	The 2025-01-01
+; Author:   Generated using the .svd description    The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		stm32L4R5_fpu_cpacr equates.
+; Project:  uKOS-X
+; Goal:     stm32L4R5_fpu_cpacr equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -49,25 +49,25 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // FPU_CPACR address definitions
 // -----------------------------
 
 typedef struct {
-	volatile	uint32_t	CPACR;
+    volatile    uint32_t    CPACR;
 } FPU_CPACR_TypeDef;
 
 #ifdef __cplusplus
-#define	FPU_CPACR	reinterpret_cast<FPU_CPACR_TypeDef *>(0xE000ED88u)
+#define FPU_CPACR   reinterpret_cast<FPU_CPACR_TypeDef *>(0xE000ED88u)
 
 #else
-#define	FPU_CPACR	((FPU_CPACR_TypeDef *)0xE000ED88u)
+#define FPU_CPACR   ((FPU_CPACR_TypeDef *)0xE000ED88u)
 #endif
 
 // CPACR Configuration
 
-#define	FPU_CPACR_CPACR_CP		(0xFu<<20)
-#define	FPU_CPACR_CPACR_CP_0	(0x1u<<20)
+#define FPU_CPACR_CPACR_CP      (0xFu<<20)
+#define FPU_CPACR_CPACR_CP_0    (0x1u<<20)

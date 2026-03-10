@@ -8,11 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ===============================
 
 ;------------------------------------------------------------------------
-; Author:	Generated using the .svd description	The 2025-01-01
+; Author:   Generated using the .svd description    The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		nrf5340_application_cryptocell equates.
+; Project:  uKOS-X
+; Goal:     nrf5340_application_cryptocell equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -49,27 +49,27 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // CRYPTOCELL address definitions
 // ------------------------------
 
 typedef struct {
-	volatile	uint32_t	RESERVED0[320];
-	volatile	uint32_t	ENABLE;
+    volatile    uint32_t    RESERVED0[320];
+    volatile    uint32_t    ENABLE;
 } CRYPTOCELL_TypeDef;
 
 #ifdef __cplusplus
-#define	CRYPTOCELL_S	reinterpret_cast<CRYPTOCELL_TypeDef *>(0x50844000u)
+#define CRYPTOCELL_S    reinterpret_cast<CRYPTOCELL_TypeDef *>(0x50844000u)
 
 #else
-#define	CRYPTOCELL_S	((CRYPTOCELL_TypeDef *)0x50844000u)
+#define CRYPTOCELL_S    ((CRYPTOCELL_TypeDef *)0x50844000u)
 #endif
 
 // ENABLE Configuration
 
-#define	CRYPTOCELL_ENABLE_ENABLE			(0x1u<<0)
-#define	CRYPTOCELL_ENABLE_ENABLE_DISABLED	(0x0u<<0)
-#define	CRYPTOCELL_ENABLE_ENABLE_ENABLED	(0x1u<<0)
+#define CRYPTOCELL_ENABLE_ENABLE            (0x1u<<0)
+#define CRYPTOCELL_ENABLE_ENABLE_DISABLED   (0x0u<<0)
+#define CRYPTOCELL_ENABLE_ENABLE_ENABLED    (0x1u<<0)
