@@ -8,11 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =====================
 
 ;------------------------------------------------------------------------
-; Author:	Generated using the .svd description	The 2025-01-01
+; Author:   Generated using the .svd description    The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		nrf5340_network_uicr equates.
+; Project:  uKOS-X
+; Goal:     nrf5340_network_uicr equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -49,49 +49,49 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // UICR address definitions
 // ------------------------
 
 typedef struct {
-	volatile	uint32_t	APPROTECT;
-	volatile	uint32_t	ERASEPROTECT;
-	volatile	uint32_t	RESERVED0[126];
-	volatile	uint32_t	NRFFW[32];
-	volatile	uint32_t	RESERVED1[32];
-	volatile	uint32_t	CUSTOMER[32];
+    volatile    uint32_t    APPROTECT;
+    volatile    uint32_t    ERASEPROTECT;
+    volatile    uint32_t    RESERVED0[126];
+    volatile    uint32_t    NRFFW[32];
+    volatile    uint32_t    RESERVED1[32];
+    volatile    uint32_t    CUSTOMER[32];
 } UICR_TypeDef;
 
 #ifdef __cplusplus
-#define	UICR_NS	reinterpret_cast<UICR_TypeDef *>(0x01FF8000u)
+#define UICR_NS reinterpret_cast<UICR_TypeDef *>(0x01FF8000u)
 
 #else
-#define	UICR_NS	((UICR_TypeDef *)0x01FF8000u)
+#define UICR_NS ((UICR_TypeDef *)0x01FF8000u)
 #endif
 
 // APPROTECT Configuration
 
-#define	UICR_APPROTECT_PALL						(0xFFFFFFFFu<<0)
-#define	UICR_APPROTECT_PALL_0					(0x1u<<0)
-#define	UICR_APPROTECT_PALL_UNPROTECTED			(0x50FA50FAu<<0)
-#define	UICR_APPROTECT_PALL_PROTECTED			(0x0u<<0)
+#define UICR_APPROTECT_PALL                     (0xFFFFFFFFu<<0)
+#define UICR_APPROTECT_PALL_0                   (0x1u<<0)
+#define UICR_APPROTECT_PALL_UNPROTECTED         (0x50FA50FAu<<0)
+#define UICR_APPROTECT_PALL_PROTECTED           (0x0u<<0)
 
 // ERASEPROTECT Configuration
 
-#define	UICR_ERASEPROTECT_PALL					(0xFFFFFFFFu<<0)
-#define	UICR_ERASEPROTECT_PALL_0				(0x1u<<0)
-#define	UICR_ERASEPROTECT_PALL_UNPROTECTED		(0xFFFFFFFFu<<0)
-#define	UICR_ERASEPROTECT_PALL_PROTECTED		(0x0u<<0)
+#define UICR_ERASEPROTECT_PALL                  (0xFFFFFFFFu<<0)
+#define UICR_ERASEPROTECT_PALL_0                (0x1u<<0)
+#define UICR_ERASEPROTECT_PALL_UNPROTECTED      (0xFFFFFFFFu<<0)
+#define UICR_ERASEPROTECT_PALL_PROTECTED        (0x0u<<0)
 
 // NRFFW Configuration
 
-#define	UICR_NRFFW_NRFFW						(0xFFFFFFFFu<<0)
-#define	UICR_NRFFW_NRFFW_0						(0x1u<<0)
+#define UICR_NRFFW_NRFFW                        (0xFFFFFFFFu<<0)
+#define UICR_NRFFW_NRFFW_0                      (0x1u<<0)
 
 // CUSTOMER Configuration
 
-#define	UICR_CUSTOMER_CUSTOMER					(0xFFFFFFFFu<<0)
-#define	UICR_CUSTOMER_CUSTOMER_0				(0x1u<<0)
+#define UICR_CUSTOMER_CUSTOMER                  (0xFFFFFFFFu<<0)
+#define UICR_CUSTOMER_CUSTOMER_0                (0x1u<<0)

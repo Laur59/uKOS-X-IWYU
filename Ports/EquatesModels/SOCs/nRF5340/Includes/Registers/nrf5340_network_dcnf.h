@@ -8,11 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =====================
 
 ;------------------------------------------------------------------------
-; Author:	Generated using the .svd description	The 2025-01-01
+; Author:   Generated using the .svd description    The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		nrf5340_network_dcnf equates.
+; Project:  uKOS-X
+; Goal:     nrf5340_network_dcnf equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -49,26 +49,26 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // DCNF address definitions
 // ------------------------
 
 typedef struct {
-	volatile	uint32_t	RESERVED0[264];
-	volatile	uint32_t	CPUID;
+    volatile    uint32_t    RESERVED0[264];
+    volatile    uint32_t    CPUID;
 } DCNF_TypeDef;
 
 #ifdef __cplusplus
-#define	DCNF_NS	reinterpret_cast<DCNF_TypeDef *>(0x41000000u)
+#define DCNF_NS reinterpret_cast<DCNF_TypeDef *>(0x41000000u)
 
 #else
-#define	DCNF_NS	((DCNF_TypeDef *)0x41000000u)
+#define DCNF_NS ((DCNF_TypeDef *)0x41000000u)
 #endif
 
 // CPUID Configuration
 
-#define	DCNF_CPUID_CPUID	(0xFFu<<0)
-#define	DCNF_CPUID_CPUID_0	(0x1u<<0)
+#define DCNF_CPUID_CPUID    (0xFFu<<0)
+#define DCNF_CPUID_CPUID_0  (0x1u<<0)

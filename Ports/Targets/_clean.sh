@@ -86,6 +86,6 @@ printf "%bCleaning all the systems ...%b\n" "${BOLD}" "${NC}"
 while IFS=$'\t' read -r family variant_name; do
     printf '.'
     cd "${PATH_PRG}/${family}/Variant_${variant_name}"
-    rm -fr build Artefacts
+    rm -fr build Artefacts*(N)
 done < <(parse_variants_yaml)
 printf '\n%bTerminated!%b\n' "${BOLD}" "${NC}"

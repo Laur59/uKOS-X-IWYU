@@ -8,11 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =======================
 
 ;------------------------------------------------------------------------
-; Author:	Generated using the .svd description	The 2025-01-01
+; Author:   Generated using the .svd description    The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		GD32VF103_usbfs_pwrclk equates.
+; Project:  uKOS-X
+; Goal:     GD32VF103_usbfs_pwrclk equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -49,25 +49,25 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // USBFS_PWRCLK address definitions
 // --------------------------------
 
 typedef struct {
-	volatile	uint32_t	PWRCLKCTL;
+    volatile    uint32_t    PWRCLKCTL;
 } USBFS_PWRCLK_TypeDef;
 
 #ifdef __cplusplus
-#define	USBFS_PWRCLK	reinterpret_cast<USBFS_PWRCLK_TypeDef *>(0x50000E00u)
+#define USBFS_PWRCLK    reinterpret_cast<USBFS_PWRCLK_TypeDef *>(0x50000E00u)
 
 #else
-#define	USBFS_PWRCLK	((USBFS_PWRCLK_TypeDef *)0x50000E00u)
+#define USBFS_PWRCLK    ((USBFS_PWRCLK_TypeDef *)0x50000E00u)
 #endif
 
 // PWRCLKCTL Configuration
 
-#define	USBFS_PWRCLK_PWRCLKCTL_SHCLK	(0x1u<<1)
-#define	USBFS_PWRCLK_PWRCLKCTL_SUCLK	(0x1u<<0)
+#define USBFS_PWRCLK_PWRCLKCTL_SHCLK    (0x1u<<1)
+#define USBFS_PWRCLK_PWRCLKCTL_SUCLK    (0x1u<<0)

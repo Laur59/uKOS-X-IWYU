@@ -8,11 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =================
 
 ;------------------------------------------------------------------------
-; Author:	Generated using the .svd description	The 2025-01-01
+; Author:   Generated using the .svd description    The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		GD32VF103_timer5 equates.
+; Project:  uKOS-X
+; Goal:     GD32VF103_timer5 equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -49,75 +49,75 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // TIMER5 address definitions
 // --------------------------
 
 typedef struct {
-	volatile	uint16_t	CTL0;
-	volatile	uint16_t	RESERVED0;
-	volatile	uint16_t	CTL1;
-	volatile	uint16_t	RESERVED1[3];
-	volatile	uint16_t	DMAINTEN;
-	volatile	uint16_t	RESERVED2;
-	volatile	uint16_t	INTF;
-	volatile	uint16_t	RESERVED3;
-	volatile	uint16_t	SWEVG;
-	volatile	uint16_t	RESERVED4[7];
-	volatile	uint16_t	CNT;
-	volatile	uint16_t	RESERVED5;
-	volatile	uint16_t	PSC;
-	volatile	uint16_t	RESERVED6;
-	volatile	uint16_t	CAR;
+    volatile    uint16_t    CTL0;
+    volatile    uint16_t    RESERVED0;
+    volatile    uint16_t    CTL1;
+    volatile    uint16_t    RESERVED1[3];
+    volatile    uint16_t    DMAINTEN;
+    volatile    uint16_t    RESERVED2;
+    volatile    uint16_t    INTF;
+    volatile    uint16_t    RESERVED3;
+    volatile    uint16_t    SWEVG;
+    volatile    uint16_t    RESERVED4[7];
+    volatile    uint16_t    CNT;
+    volatile    uint16_t    RESERVED5;
+    volatile    uint16_t    PSC;
+    volatile    uint16_t    RESERVED6;
+    volatile    uint16_t    CAR;
 } TIMER5_TypeDef;
 
 #ifdef __cplusplus
-#define	TIMER5	reinterpret_cast<TIMER5_TypeDef *>(0x40001000u)
+#define TIMER5  reinterpret_cast<TIMER5_TypeDef *>(0x40001000u)
 
 #else
-#define	TIMER5	((TIMER5_TypeDef *)0x40001000u)
+#define TIMER5  ((TIMER5_TypeDef *)0x40001000u)
 #endif
 
 // CTL0 Configuration
 
-#define	TIMER5_CTL0_CEN			(0x1u<<0)
-#define	TIMER5_CTL0_UPDIS		(0x1u<<1)
-#define	TIMER5_CTL0_UPS			(0x1u<<2)
-#define	TIMER5_CTL0_SPM			(0x1u<<3)
-#define	TIMER5_CTL0_ARSE		(0x1u<<7)
+#define TIMER5_CTL0_CEN         (0x1u<<0)
+#define TIMER5_CTL0_UPDIS       (0x1u<<1)
+#define TIMER5_CTL0_UPS         (0x1u<<2)
+#define TIMER5_CTL0_SPM         (0x1u<<3)
+#define TIMER5_CTL0_ARSE        (0x1u<<7)
 
 // CTL1 Configuration
 
-#define	TIMER5_CTL1_MMC			(0x7u<<4)
-#define	TIMER5_CTL1_MMC_0		(0x1u<<4)
+#define TIMER5_CTL1_MMC         (0x7u<<4)
+#define TIMER5_CTL1_MMC_0       (0x1u<<4)
 
 // DMAINTEN Configuration
 
-#define	TIMER5_DMAINTEN_UPIE	(0x1u<<0)
-#define	TIMER5_DMAINTEN_UPDEN	(0x1u<<8)
+#define TIMER5_DMAINTEN_UPIE    (0x1u<<0)
+#define TIMER5_DMAINTEN_UPDEN   (0x1u<<8)
 
 // INTF Configuration
 
-#define	TIMER5_INTF_UPIF		(0x1u<<0)
+#define TIMER5_INTF_UPIF        (0x1u<<0)
 
 // SWEVG Configuration
 
-#define	TIMER5_SWEVG_UPG		(0x1u<<0)
+#define TIMER5_SWEVG_UPG        (0x1u<<0)
 
 // CNT Configuration
 
-#define	TIMER5_CNT_CNT			(0xFFFFu<<0)
-#define	TIMER5_CNT_CNT_0		(0x1u<<0)
+#define TIMER5_CNT_CNT          (0xFFFFu<<0)
+#define TIMER5_CNT_CNT_0        (0x1u<<0)
 
 // PSC Configuration
 
-#define	TIMER5_PSC_PSC			(0xFFFFu<<0)
-#define	TIMER5_PSC_PSC_0		(0x1u<<0)
+#define TIMER5_PSC_PSC          (0xFFFFu<<0)
+#define TIMER5_PSC_PSC_0        (0x1u<<0)
 
 // CAR Configuration
 
-#define	TIMER5_CAR_CARL			(0xFFFFu<<0)
-#define	TIMER5_CAR_CARL_0		(0x1u<<0)
+#define TIMER5_CAR_CARL         (0xFFFFu<<0)
+#define TIMER5_CAR_CARL_0       (0x1u<<0)

@@ -8,11 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ==================
 
 ;------------------------------------------------------------------------
-; Author:	Generated using the .svd description	The 2025-01-01
+; Author:   Generated using the .svd description    The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		stm32H747_CM7_art equates.
+; Project:  uKOS-X
+; Goal:     stm32H747_CM7_art equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -49,26 +49,26 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // ART address definitions
 // -----------------------
 
 typedef struct {
-	volatile	uint32_t	CTR;
+    volatile    uint32_t    CTR;
 } ART_TypeDef;
 
 #ifdef __cplusplus
-#define	ART	reinterpret_cast<ART_TypeDef *>(0x40024400u)
+#define ART reinterpret_cast<ART_TypeDef *>(0x40024400u)
 
 #else
-#define	ART	((ART_TypeDef *)0x40024400u)
+#define ART ((ART_TypeDef *)0x40024400u)
 #endif
 
 // CTR Configuration
 
-#define	ART_CTR_PCACHEADDR		(0xFFFu<<8)
-#define	ART_CTR_PCACHEADDR_0	(0x1u<<8)
-#define	ART_CTR_EN				(0x1u<<0)
+#define ART_CTR_PCACHEADDR      (0xFFFu<<8)
+#define ART_CTR_PCACHEADDR_0    (0x1u<<8)
+#define ART_CTR_EN              (0x1u<<0)

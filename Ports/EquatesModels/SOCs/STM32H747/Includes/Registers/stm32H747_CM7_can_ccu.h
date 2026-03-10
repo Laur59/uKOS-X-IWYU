@@ -8,11 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ======================
 
 ;------------------------------------------------------------------------
-; Author:	Generated using the .svd description	The 2025-01-01
+; Author:   Generated using the .svd description    The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		stm32H747_CM7_can_ccu equates.
+; Project:  uKOS-X
+; Goal:     stm32H747_CM7_can_ccu equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -49,78 +49,78 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // CAN_CCU address definitions
 // ---------------------------
 
 typedef struct {
-	volatile	uint32_t	CREL;
-	volatile	uint32_t	CCFG;
-	volatile	uint32_t	CSTAT;
-	volatile	uint32_t	CWD;
-	volatile	uint32_t	IR;
-	volatile	uint32_t	IE;
+    volatile    uint32_t    CREL;
+    volatile    uint32_t    CCFG;
+    volatile    uint32_t    CSTAT;
+    volatile    uint32_t    CWD;
+    volatile    uint32_t    IR;
+    volatile    uint32_t    IE;
 } CAN_CCU_TypeDef;
 
 #ifdef __cplusplus
-#define	CAN_CCU	reinterpret_cast<CAN_CCU_TypeDef *>(0x4000A800u)
+#define CAN_CCU reinterpret_cast<CAN_CCU_TypeDef *>(0x4000A800u)
 
 #else
-#define	CAN_CCU	((CAN_CCU_TypeDef *)0x4000A800u)
+#define CAN_CCU ((CAN_CCU_TypeDef *)0x4000A800u)
 #endif
 
 // CREL Configuration
 
-#define	CAN_CCU_CREL_REL		(0xFu<<28)
-#define	CAN_CCU_CREL_REL_0		(0x1u<<28)
-#define	CAN_CCU_CREL_STEP		(0xFu<<24)
-#define	CAN_CCU_CREL_STEP_0		(0x1u<<24)
-#define	CAN_CCU_CREL_SUBSTEP	(0xFu<<20)
-#define	CAN_CCU_CREL_SUBSTEP_0	(0x1u<<20)
-#define	CAN_CCU_CREL_YEAR		(0xFu<<16)
-#define	CAN_CCU_CREL_YEAR_0		(0x1u<<16)
-#define	CAN_CCU_CREL_MON		(0xFFu<<8)
-#define	CAN_CCU_CREL_MON_0		(0x1u<<8)
-#define	CAN_CCU_CREL_DAY		(0xFFu<<0)
-#define	CAN_CCU_CREL_DAY_0		(0x1u<<0)
+#define CAN_CCU_CREL_REL        (0xFu<<28)
+#define CAN_CCU_CREL_REL_0      (0x1u<<28)
+#define CAN_CCU_CREL_STEP       (0xFu<<24)
+#define CAN_CCU_CREL_STEP_0     (0x1u<<24)
+#define CAN_CCU_CREL_SUBSTEP    (0xFu<<20)
+#define CAN_CCU_CREL_SUBSTEP_0  (0x1u<<20)
+#define CAN_CCU_CREL_YEAR       (0xFu<<16)
+#define CAN_CCU_CREL_YEAR_0     (0x1u<<16)
+#define CAN_CCU_CREL_MON        (0xFFu<<8)
+#define CAN_CCU_CREL_MON_0      (0x1u<<8)
+#define CAN_CCU_CREL_DAY        (0xFFu<<0)
+#define CAN_CCU_CREL_DAY_0      (0x1u<<0)
 
 // CCFG Configuration
 
-#define	CAN_CCU_CCFG_SWR		(0x1u<<31)
-#define	CAN_CCU_CCFG_CDIV		(0xFu<<16)
-#define	CAN_CCU_CCFG_CDIV_0		(0x1u<<16)
-#define	CAN_CCU_CCFG_OCPM		(0xFFu<<8)
-#define	CAN_CCU_CCFG_OCPM_0		(0x1u<<8)
-#define	CAN_CCU_CCFG_CFL		(0x1u<<7)
-#define	CAN_CCU_CCFG_BCC		(0x1u<<6)
-#define	CAN_CCU_CCFG_TQBT		(0x1Fu<<0)
-#define	CAN_CCU_CCFG_TQBT_0		(0x1u<<0)
+#define CAN_CCU_CCFG_SWR        (0x1u<<31)
+#define CAN_CCU_CCFG_CDIV       (0xFu<<16)
+#define CAN_CCU_CCFG_CDIV_0     (0x1u<<16)
+#define CAN_CCU_CCFG_OCPM       (0xFFu<<8)
+#define CAN_CCU_CCFG_OCPM_0     (0x1u<<8)
+#define CAN_CCU_CCFG_CFL        (0x1u<<7)
+#define CAN_CCU_CCFG_BCC        (0x1u<<6)
+#define CAN_CCU_CCFG_TQBT       (0x1Fu<<0)
+#define CAN_CCU_CCFG_TQBT_0     (0x1u<<0)
 
 // CSTAT Configuration
 
-#define	CAN_CCU_CSTAT_CALS		(0x3u<<30)
-#define	CAN_CCU_CSTAT_CALS_0	(0x1u<<30)
-#define	CAN_CCU_CSTAT_TQC		(0x7FFu<<18)
-#define	CAN_CCU_CSTAT_TQC_0		(0x1u<<18)
-#define	CAN_CCU_CSTAT_OCPC		(0x3FFFFu<<0)
-#define	CAN_CCU_CSTAT_OCPC_0	(0x1u<<0)
+#define CAN_CCU_CSTAT_CALS      (0x3u<<30)
+#define CAN_CCU_CSTAT_CALS_0    (0x1u<<30)
+#define CAN_CCU_CSTAT_TQC       (0x7FFu<<18)
+#define CAN_CCU_CSTAT_TQC_0     (0x1u<<18)
+#define CAN_CCU_CSTAT_OCPC      (0x3FFFFu<<0)
+#define CAN_CCU_CSTAT_OCPC_0    (0x1u<<0)
 
 // CWD Configuration
 
-#define	CAN_CCU_CWD_WDV			(0xFFFFu<<16)
-#define	CAN_CCU_CWD_WDV_0		(0x1u<<16)
-#define	CAN_CCU_CWD_WDC			(0xFFFFu<<0)
-#define	CAN_CCU_CWD_WDC_0		(0x1u<<0)
+#define CAN_CCU_CWD_WDV         (0xFFFFu<<16)
+#define CAN_CCU_CWD_WDV_0       (0x1u<<16)
+#define CAN_CCU_CWD_WDC         (0xFFFFu<<0)
+#define CAN_CCU_CWD_WDC_0       (0x1u<<0)
 
 // IR Configuration
 
-#define	CAN_CCU_IR_CSC			(0x1u<<1)
-#define	CAN_CCU_IR_CWE			(0x1u<<0)
+#define CAN_CCU_IR_CSC          (0x1u<<1)
+#define CAN_CCU_IR_CWE          (0x1u<<0)
 
 // IE Configuration
 
-#define	CAN_CCU_IE_CSCE			(0x1u<<1)
-#define	CAN_CCU_IE_CWEE			(0x1u<<0)
+#define CAN_CCU_IE_CSCE         (0x1u<<1)
+#define CAN_CCU_IE_CWEE         (0x1u<<0)

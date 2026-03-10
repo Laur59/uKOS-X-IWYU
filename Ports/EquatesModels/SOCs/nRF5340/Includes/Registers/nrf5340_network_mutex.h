@@ -8,11 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ======================
 
 ;------------------------------------------------------------------------
-; Author:	Generated using the .svd description	The 2025-01-01
+; Author:   Generated using the .svd description    The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		nrf5340_network_mutex equates.
+; Project:  uKOS-X
+; Goal:     nrf5340_network_mutex equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -49,29 +49,29 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // MUTEX address definitions
 // -------------------------
 
 typedef struct {
-	volatile	uint32_t	RESERVED0[256];
-	volatile	uint32_t	MUTEX[16];
+    volatile    uint32_t    RESERVED0[256];
+    volatile    uint32_t    MUTEX[16];
 } MUTEX_TypeDef;
 
 #ifdef __cplusplus
-#define	APPMUTEX_NS	reinterpret_cast<MUTEX_TypeDef *>(0x40030000u)
-#define	APPMUTEX_S	reinterpret_cast<MUTEX_TypeDef *>(0x50030000u)
+#define APPMUTEX_NS reinterpret_cast<MUTEX_TypeDef *>(0x40030000u)
+#define APPMUTEX_S  reinterpret_cast<MUTEX_TypeDef *>(0x50030000u)
 
 #else
-#define	APPMUTEX_NS	((MUTEX_TypeDef *)0x40030000u)
-#define	APPMUTEX_S	((MUTEX_TypeDef *)0x50030000u)
+#define APPMUTEX_NS ((MUTEX_TypeDef *)0x40030000u)
+#define APPMUTEX_S  ((MUTEX_TypeDef *)0x50030000u)
 #endif
 
 // MUTEX Configuration
 
-#define	MUTEX_MUTEX_MUTEX			(0x1u<<0)
-#define	MUTEX_MUTEX_MUTEX_UNLOCKED	(0x0u<<0)
-#define	MUTEX_MUTEX_MUTEX_LOCKED	(0x1u<<0)
+#define MUTEX_MUTEX_MUTEX           (0x1u<<0)
+#define MUTEX_MUTEX_MUTEX_UNLOCKED  (0x0u<<0)
+#define MUTEX_MUTEX_MUTEX_LOCKED    (0x1u<<0)

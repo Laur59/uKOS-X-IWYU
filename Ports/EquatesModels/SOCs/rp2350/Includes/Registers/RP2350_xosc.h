@@ -8,11 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ============
 
 ;------------------------------------------------------------------------
-; Author:	Generated using the .svd description	The 2025-01-01
+; Author:   Generated using the .svd description    The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		RP2350_xosc equates.
+; Project:  uKOS-X
+; Goal:     RP2350_xosc equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -49,68 +49,68 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // XOSC address definitions
 // ------------------------
 
 typedef struct {
-	volatile	uint32_t	CTRL;
-	volatile	uint32_t	STATUS;
-	volatile	uint32_t	DORMANT;
-	volatile	uint32_t	STARTUP;
-	volatile	uint32_t	COUNT;
+    volatile    uint32_t    CTRL;
+    volatile    uint32_t    STATUS;
+    volatile    uint32_t    DORMANT;
+    volatile    uint32_t    STARTUP;
+    volatile    uint32_t    COUNT;
 } XOSC_TypeDef;
 
 #ifdef __cplusplus
-#define	XOSC_NS	reinterpret_cast<XOSC_TypeDef *>(0x40048000u)
-#define	XOSC_S	reinterpret_cast<XOSC_TypeDef *>(0x40048000u)
+#define XOSC_NS reinterpret_cast<XOSC_TypeDef *>(0x40048000u)
+#define XOSC_S  reinterpret_cast<XOSC_TypeDef *>(0x40048000u)
 #else
-#define	XOSC_NS	((XOSC_TypeDef *)0x40048000u)
-#define	XOSC_S	((XOSC_TypeDef *)0x40048000u)
+#define XOSC_NS ((XOSC_TypeDef *)0x40048000u)
+#define XOSC_S  ((XOSC_TypeDef *)0x40048000u)
 #endif
 
 // CTRL Configuration
 
-#define	XOSC_CTRL_FREQ_RANGE				(0xFFFu<<0)
-#define	XOSC_CTRL_FREQ_RANGE_0				(0x1u<<0)
-#define	XOSC_CTRL_ENABLE					(0xFFFu<<12)
-#define	XOSC_CTRL_ENABLE_0					(0x1u<<12)
-#define	XOSC_CTRL_FREQ_RANGE_1_15MHZ		(0xAA0u<<0)
-#define	XOSC_CTRL_FREQ_RANGE_10_30MHZ		(0xAA1u<<0)
-#define	XOSC_CTRL_FREQ_RANGE_25_60MHZ		(0xAA2u<<0)
-#define	XOSC_CTRL_FREQ_RANGE_40_100MHZ		(0xAA3u<<0)
-#define	XOSC_CTRL_ENABLE_DISABLE			(0xD1Eu<<12)
-#define	XOSC_CTRL_ENABLE_ENABLE				(0xFABu<<12)
+#define XOSC_CTRL_FREQ_RANGE                (0xFFFu<<0)
+#define XOSC_CTRL_FREQ_RANGE_0              (0x1u<<0)
+#define XOSC_CTRL_ENABLE                    (0xFFFu<<12)
+#define XOSC_CTRL_ENABLE_0                  (0x1u<<12)
+#define XOSC_CTRL_FREQ_RANGE_1_15MHZ        (0xAA0u<<0)
+#define XOSC_CTRL_FREQ_RANGE_10_30MHZ       (0xAA1u<<0)
+#define XOSC_CTRL_FREQ_RANGE_25_60MHZ       (0xAA2u<<0)
+#define XOSC_CTRL_FREQ_RANGE_40_100MHZ      (0xAA3u<<0)
+#define XOSC_CTRL_ENABLE_DISABLE            (0xD1Eu<<12)
+#define XOSC_CTRL_ENABLE_ENABLE             (0xFABu<<12)
 
 // STATUS Configuration
 
-#define	XOSC_STATUS_FREQ_RANGE				(0x3u<<0)
-#define	XOSC_STATUS_FREQ_RANGE_0			(0x1u<<0)
-#define	XOSC_STATUS_ENABLED					(0x1u<<12)
-#define	XOSC_STATUS_BADWRITE				(0x1u<<24)
-#define	XOSC_STATUS_STABLE					(0x1u<<31)
-#define	XOSC_STATUS_FREQ_RANGE_1_15MHZ		(0x0u<<0)
-#define	XOSC_STATUS_FREQ_RANGE_10_30MHZ		(0x1u<<0)
-#define	XOSC_STATUS_FREQ_RANGE_25_60MHZ		(0x2u<<0)
-#define	XOSC_STATUS_FREQ_RANGE_40_100MHZ	(0x3u<<0)
+#define XOSC_STATUS_FREQ_RANGE              (0x3u<<0)
+#define XOSC_STATUS_FREQ_RANGE_0            (0x1u<<0)
+#define XOSC_STATUS_ENABLED                 (0x1u<<12)
+#define XOSC_STATUS_BADWRITE                (0x1u<<24)
+#define XOSC_STATUS_STABLE                  (0x1u<<31)
+#define XOSC_STATUS_FREQ_RANGE_1_15MHZ      (0x0u<<0)
+#define XOSC_STATUS_FREQ_RANGE_10_30MHZ     (0x1u<<0)
+#define XOSC_STATUS_FREQ_RANGE_25_60MHZ     (0x2u<<0)
+#define XOSC_STATUS_FREQ_RANGE_40_100MHZ    (0x3u<<0)
 
 // DORMANT Configuration
 
-#define	XOSC_DORMANT_DORMANT				(0xFFFFFFFFu<<0)
-#define	XOSC_DORMANT_DORMANT_0				(0x1u<<0)
-#define	XOSC_DORMANT_DORMANT_DORMANT		(0x636F6D61u<<0)
-#define	XOSC_DORMANT_DORMANT_WAKE			(0x77616B65u<<0)
+#define XOSC_DORMANT_DORMANT                (0xFFFFFFFFu<<0)
+#define XOSC_DORMANT_DORMANT_0              (0x1u<<0)
+#define XOSC_DORMANT_DORMANT_DORMANT        (0x636F6D61u<<0)
+#define XOSC_DORMANT_DORMANT_WAKE           (0x77616B65u<<0)
 
 // STARTUP Configuration
 
-#define	XOSC_STARTUP_DELAY					(0x3FFFu<<0)
-#define	XOSC_STARTUP_DELAY_0				(0x1u<<0)
-#define	XOSC_STARTUP_X4						(0x1u<<20)
+#define XOSC_STARTUP_DELAY                  (0x3FFFu<<0)
+#define XOSC_STARTUP_DELAY_0                (0x1u<<0)
+#define XOSC_STARTUP_X4                     (0x1u<<20)
 
 // COUNT Configuration
 
-#define	XOSC_COUNT_COUNT					(0xFFFFu<<0)
-#define	XOSC_COUNT_COUNT_0					(0x1u<<0)
+#define XOSC_COUNT_COUNT                    (0xFFFFu<<0)
+#define XOSC_COUNT_COUNT_0                  (0x1u<<0)

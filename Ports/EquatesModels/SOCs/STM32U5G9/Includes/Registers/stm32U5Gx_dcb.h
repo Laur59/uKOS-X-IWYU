@@ -8,11 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ==============
 
 ;------------------------------------------------------------------------
-; Author:	Generated using the .svd description	The 2025-01-01
+; Author:   Generated using the .svd description    The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		stm32U5Gx_dcb equates.
+; Project:  uKOS-X
+; Goal:     stm32U5Gx_dcb equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -49,24 +49,24 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // DCB address definitions
 // -----------------------
 
 typedef struct {
-	volatile	uint32_t	DSCSR;
+    volatile    uint32_t    DSCSR;
 } DCB_TypeDef;
 
 #ifdef __cplusplus
-#define	DCB_NS	reinterpret_cast<DCB_TypeDef *>(0xE000EE08u)
+#define DCB_NS  reinterpret_cast<DCB_TypeDef *>(0xE000EE08u)
 
 #else
-#define	DCB_NS	((DCB_TypeDef *)0xE000EE08u)
+#define DCB_NS  ((DCB_TypeDef *)0xE000EE08u)
 #endif
 
 // DSCSR Configuration
 
-#define	DCB_DSCSR_CDS	(0x1u<<16)
+#define DCB_DSCSR_CDS   (0x1u<<16)

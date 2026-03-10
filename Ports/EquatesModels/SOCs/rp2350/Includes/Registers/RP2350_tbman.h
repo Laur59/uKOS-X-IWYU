@@ -8,11 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =============
 
 ;------------------------------------------------------------------------
-; Author:	Generated using the .svd description	The 2025-01-01
+; Author:   Generated using the .svd description    The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		RP2350_tbman equates.
+; Project:  uKOS-X
+; Goal:     RP2350_tbman equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -49,27 +49,27 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // TBMAN address definitions
 // -------------------------
 
 typedef struct {
-	volatile	uint32_t	PLATFORM;
+    volatile    uint32_t    PLATFORM;
 } TBMAN_TypeDef;
 
 #ifdef __cplusplus
-#define	TBMAN_NS	reinterpret_cast<TBMAN_TypeDef *>(0x40160000u)
-#define	TBMAN_S		reinterpret_cast<TBMAN_TypeDef *>(0x40160000u)
+#define TBMAN_NS    reinterpret_cast<TBMAN_TypeDef *>(0x40160000u)
+#define TBMAN_S     reinterpret_cast<TBMAN_TypeDef *>(0x40160000u)
 #else
-#define	TBMAN_NS	((TBMAN_TypeDef *)0x40160000u)
-#define	TBMAN_S		((TBMAN_TypeDef *)0x40160000u)
+#define TBMAN_NS    ((TBMAN_TypeDef *)0x40160000u)
+#define TBMAN_S     ((TBMAN_TypeDef *)0x40160000u)
 #endif
 
 // PLATFORM Configuration
 
-#define	TBMAN_PLATFORM_ASIC		(0x1u<<0)
-#define	TBMAN_PLATFORM_FPGA		(0x1u<<1)
-#define	TBMAN_PLATFORM_HDLSIM	(0x1u<<2)
+#define TBMAN_PLATFORM_ASIC     (0x1u<<0)
+#define TBMAN_PLATFORM_FPGA     (0x1u<<1)
+#define TBMAN_PLATFORM_HDLSIM   (0x1u<<2)

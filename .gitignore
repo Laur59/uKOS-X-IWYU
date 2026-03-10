@@ -8,6 +8,7 @@
 *.sig
 version.h
 compilation.log
+Artefacts*/
 
 # Files about stack usage
 *.su
@@ -35,7 +36,3 @@ Static_Analysis/
 .vscode
 .env.local
 .cache
-
-# Personal settings
-UnitTest/
-.gitmessage

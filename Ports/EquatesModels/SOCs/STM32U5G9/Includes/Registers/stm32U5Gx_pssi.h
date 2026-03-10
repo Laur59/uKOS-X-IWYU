@@ -8,11 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ===============
 
 ;------------------------------------------------------------------------
-; Author:	Generated using the .svd description	The 2025-01-01
+; Author:   Generated using the .svd description    The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		stm32U5Gx_pssi equates.
+; Project:  uKOS-X
+; Goal:     stm32U5Gx_pssi equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -49,74 +49,74 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // PSSI address definitions
 // ------------------------
 
 typedef struct {
-	volatile	uint32_t	CR;
-	volatile	uint32_t	SR;
-	volatile	uint32_t	RIS;
-	volatile	uint32_t	IER;
-	volatile	uint32_t	MIS;
-	volatile	uint32_t	ICR;
-	volatile	uint32_t	RESERVED0[4];
-	volatile	uint32_t	DR;
+    volatile    uint32_t    CR;
+    volatile    uint32_t    SR;
+    volatile    uint32_t    RIS;
+    volatile    uint32_t    IER;
+    volatile    uint32_t    MIS;
+    volatile    uint32_t    ICR;
+    volatile    uint32_t    RESERVED0[4];
+    volatile    uint32_t    DR;
 } PSSI_TypeDef;
 
 #ifdef __cplusplus
-#define	PSSI_NS	reinterpret_cast<PSSI_TypeDef *>(0x4202C400u)
-#define	PSSI_S	reinterpret_cast<PSSI_TypeDef *>(0x5202C400u)
+#define PSSI_NS reinterpret_cast<PSSI_TypeDef *>(0x4202C400u)
+#define PSSI_S  reinterpret_cast<PSSI_TypeDef *>(0x5202C400u)
 
 #else
-#define	PSSI_NS	((PSSI_TypeDef *)0x4202C400u)
-#define	PSSI_S	((PSSI_TypeDef *)0x5202C400u)
+#define PSSI_NS ((PSSI_TypeDef *)0x4202C400u)
+#define PSSI_S  ((PSSI_TypeDef *)0x5202C400u)
 #endif
 
 // CR Configuration
 
-#define	PSSI_CR_OUTEN		(0x1u<<31)
-#define	PSSI_CR_DMAEN		(0x1u<<30)
-#define	PSSI_CR_DERDYCFG	(0x7u<<18)
-#define	PSSI_CR_DERDYCFG_0	(0x1u<<18)
-#define	PSSI_CR_ENABLE		(0x1u<<14)
-#define	PSSI_CR_EDM			(0x3u<<10)
-#define	PSSI_CR_EDM_0		(0x1u<<10)
-#define	PSSI_CR_RDYPOL		(0x1u<<8)
-#define	PSSI_CR_DEPOL		(0x1u<<6)
-#define	PSSI_CR_CKPOL		(0x1u<<5)
+#define PSSI_CR_OUTEN       (0x1u<<31)
+#define PSSI_CR_DMAEN       (0x1u<<30)
+#define PSSI_CR_DERDYCFG    (0x7u<<18)
+#define PSSI_CR_DERDYCFG_0  (0x1u<<18)
+#define PSSI_CR_ENABLE      (0x1u<<14)
+#define PSSI_CR_EDM         (0x3u<<10)
+#define PSSI_CR_EDM_0       (0x1u<<10)
+#define PSSI_CR_RDYPOL      (0x1u<<8)
+#define PSSI_CR_DEPOL       (0x1u<<6)
+#define PSSI_CR_CKPOL       (0x1u<<5)
 
 // SR Configuration
 
-#define	PSSI_SR_RTT1B		(0x1u<<3)
-#define	PSSI_SR_RTT4B		(0x1u<<2)
+#define PSSI_SR_RTT1B       (0x1u<<3)
+#define PSSI_SR_RTT4B       (0x1u<<2)
 
 // RIS Configuration
 
-#define	PSSI_RIS_OVR_RIS	(0x1u<<1)
+#define PSSI_RIS_OVR_RIS    (0x1u<<1)
 
 // IER Configuration
 
-#define	PSSI_IER_OVR_IE		(0x1u<<1)
+#define PSSI_IER_OVR_IE     (0x1u<<1)
 
 // MIS Configuration
 
-#define	PSSI_MIS_OVR_MIS	(0x1u<<1)
+#define PSSI_MIS_OVR_MIS    (0x1u<<1)
 
 // ICR Configuration
 
-#define	PSSI_ICR_OVR_ISC	(0x1u<<1)
+#define PSSI_ICR_OVR_ISC    (0x1u<<1)
 
 // DR Configuration
 
-#define	PSSI_DR_BYTE3		(0xFFu<<24)
-#define	PSSI_DR_BYTE3_0		(0x1u<<24)
-#define	PSSI_DR_BYTE2		(0xFFu<<16)
-#define	PSSI_DR_BYTE2_0		(0x1u<<16)
-#define	PSSI_DR_BYTE1		(0xFFu<<8)
-#define	PSSI_DR_BYTE1_0		(0x1u<<8)
-#define	PSSI_DR_BYTE0		(0xFFu<<0)
-#define	PSSI_DR_BYTE0_0		(0x1u<<0)
+#define PSSI_DR_BYTE3       (0xFFu<<24)
+#define PSSI_DR_BYTE3_0     (0x1u<<24)
+#define PSSI_DR_BYTE2       (0xFFu<<16)
+#define PSSI_DR_BYTE2_0     (0x1u<<16)
+#define PSSI_DR_BYTE1       (0xFFu<<8)
+#define PSSI_DR_BYTE1_0     (0x1u<<8)
+#define PSSI_DR_BYTE0       (0xFFu<<0)
+#define PSSI_DR_BYTE0_0     (0x1u<<0)

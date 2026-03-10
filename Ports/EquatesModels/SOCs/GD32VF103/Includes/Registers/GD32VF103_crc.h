@@ -8,11 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ==============
 
 ;------------------------------------------------------------------------
-; Author:	Generated using the .svd description	The 2025-01-01
+; Author:   Generated using the .svd description    The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		GD32VF103_crc equates.
+; Project:  uKOS-X
+; Goal:     GD32VF103_crc equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -49,36 +49,36 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // CRC address definitions
 // -----------------------
 
 typedef struct {
-	volatile	uint32_t	DATA;
-	volatile	uint32_t	FDATA;
-	volatile	uint32_t	CTL;
+    volatile    uint32_t    DATA;
+    volatile    uint32_t    FDATA;
+    volatile    uint32_t    CTL;
 } CRC_TypeDef;
 
 #ifdef __cplusplus
-#define	CRC	reinterpret_cast<CRC_TypeDef *>(0x40023000u)
+#define CRC reinterpret_cast<CRC_TypeDef *>(0x40023000u)
 
 #else
-#define	CRC	((CRC_TypeDef *)0x40023000u)
+#define CRC ((CRC_TypeDef *)0x40023000u)
 #endif
 
 // DATA Configuration
 
-#define	CRC_DATA_DATA		(0xFFFFFFFFu<<0)
-#define	CRC_DATA_DATA_0		(0x1u<<0)
+#define CRC_DATA_DATA       (0xFFFFFFFFu<<0)
+#define CRC_DATA_DATA_0     (0x1u<<0)
 
 // FDATA Configuration
 
-#define	CRC_FDATA_FDATA		(0xFFu<<0)
-#define	CRC_FDATA_FDATA_0	(0x1u<<0)
+#define CRC_FDATA_FDATA     (0xFFu<<0)
+#define CRC_FDATA_FDATA_0   (0x1u<<0)
 
 // CTL Configuration
 
-#define	CRC_CTL_RST			(0x1u<<0)
+#define CRC_CTL_RST         (0x1u<<0)

@@ -8,11 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ================
 
 ;------------------------------------------------------------------------
-; Author:	Generated using the .svd description	The 2025-01-01
+; Author:   Generated using the .svd description    The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		GD32VF103_fwdgt equates.
+; Project:  uKOS-X
+; Goal:     GD32VF103_fwdgt equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -49,43 +49,43 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // FWDGT address definitions
 // -------------------------
 
 typedef struct {
-	volatile	uint32_t	CTL;
-	volatile	uint32_t	PSC;
-	volatile	uint32_t	RLD;
-	volatile	uint32_t	STAT;
+    volatile    uint32_t    CTL;
+    volatile    uint32_t    PSC;
+    volatile    uint32_t    RLD;
+    volatile    uint32_t    STAT;
 } FWDGT_TypeDef;
 
 #ifdef __cplusplus
-#define	FWDGT	reinterpret_cast<FWDGT_TypeDef *>(0x40003000u)
+#define FWDGT   reinterpret_cast<FWDGT_TypeDef *>(0x40003000u)
 
 #else
-#define	FWDGT	((FWDGT_TypeDef *)0x40003000u)
+#define FWDGT   ((FWDGT_TypeDef *)0x40003000u)
 #endif
 
 // CTL Configuration
 
-#define	FWDGT_CTL_CMD	(0xFFFFu<<0)
-#define	FWDGT_CTL_CMD_0	(0x1u<<0)
+#define FWDGT_CTL_CMD   (0xFFFFu<<0)
+#define FWDGT_CTL_CMD_0 (0x1u<<0)
 
 // PSC Configuration
 
-#define	FWDGT_PSC_PSC	(0x7u<<0)
-#define	FWDGT_PSC_PSC_0	(0x1u<<0)
+#define FWDGT_PSC_PSC   (0x7u<<0)
+#define FWDGT_PSC_PSC_0 (0x1u<<0)
 
 // RLD Configuration
 
-#define	FWDGT_RLD_RLD	(0xFFFu<<0)
-#define	FWDGT_RLD_RLD_0	(0x1u<<0)
+#define FWDGT_RLD_RLD   (0xFFFu<<0)
+#define FWDGT_RLD_RLD_0 (0x1u<<0)
 
 // STAT Configuration
 
-#define	FWDGT_STAT_RUD	(0x1u<<1)
-#define	FWDGT_STAT_PUD	(0x1u<<0)
+#define FWDGT_STAT_RUD  (0x1u<<1)
+#define FWDGT_STAT_PUD  (0x1u<<0)

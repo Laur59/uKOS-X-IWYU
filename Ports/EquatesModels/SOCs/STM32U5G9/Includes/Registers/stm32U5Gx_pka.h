@@ -8,11 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ==============
 
 ;------------------------------------------------------------------------
-; Author:	Generated using the .svd description	The 2025-01-01
+; Author:   Generated using the .svd description    The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		stm32U5Gx_pka equates.
+; Project:  uKOS-X
+; Goal:     stm32U5Gx_pka equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -49,51 +49,51 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // PKA address definitions
 // -----------------------
 
 typedef struct {
-	volatile	uint32_t	CR;
-	volatile	uint32_t	SR;
-	volatile	uint32_t	CLRFR;
+    volatile    uint32_t    CR;
+    volatile    uint32_t    SR;
+    volatile    uint32_t    CLRFR;
 } PKA_TypeDef;
 
 #ifdef __cplusplus
-#define	PKA_NS	reinterpret_cast<PKA_TypeDef *>(0x420C2000u)
-#define	PKA_S	reinterpret_cast<PKA_TypeDef *>(0x520C2000u)
+#define PKA_NS  reinterpret_cast<PKA_TypeDef *>(0x420C2000u)
+#define PKA_S   reinterpret_cast<PKA_TypeDef *>(0x520C2000u)
 
 #else
-#define	PKA_NS	((PKA_TypeDef *)0x420C2000u)
-#define	PKA_S	((PKA_TypeDef *)0x520C2000u)
+#define PKA_NS  ((PKA_TypeDef *)0x420C2000u)
+#define PKA_S   ((PKA_TypeDef *)0x520C2000u)
 #endif
 
 // CR Configuration
 
-#define	PKA_CR_EN			(0x1u<<0)
-#define	PKA_CR_START		(0x1u<<1)
-#define	PKA_CR_MODE			(0x3Fu<<8)
-#define	PKA_CR_MODE_0		(0x1u<<8)
-#define	PKA_CR_PROCENDIE	(0x1u<<17)
-#define	PKA_CR_RAMERRIE		(0x1u<<19)
-#define	PKA_CR_ADDRERRIE	(0x1u<<20)
-#define	PKA_CR_OPERRIE		(0x1u<<21)
+#define PKA_CR_EN           (0x1u<<0)
+#define PKA_CR_START        (0x1u<<1)
+#define PKA_CR_MODE         (0x3Fu<<8)
+#define PKA_CR_MODE_0       (0x1u<<8)
+#define PKA_CR_PROCENDIE    (0x1u<<17)
+#define PKA_CR_RAMERRIE     (0x1u<<19)
+#define PKA_CR_ADDRERRIE    (0x1u<<20)
+#define PKA_CR_OPERRIE      (0x1u<<21)
 
 // SR Configuration
 
-#define	PKA_SR_OPERRF		(0x1u<<21)
-#define	PKA_SR_ADDRERRF		(0x1u<<20)
-#define	PKA_SR_RAMERRF		(0x1u<<19)
-#define	PKA_SR_PROCENDF		(0x1u<<17)
-#define	PKA_SR_BUSY			(0x1u<<16)
-#define	PKA_SR_INITOK		(0x1u<<0)
+#define PKA_SR_OPERRF       (0x1u<<21)
+#define PKA_SR_ADDRERRF     (0x1u<<20)
+#define PKA_SR_RAMERRF      (0x1u<<19)
+#define PKA_SR_PROCENDF     (0x1u<<17)
+#define PKA_SR_BUSY         (0x1u<<16)
+#define PKA_SR_INITOK       (0x1u<<0)
 
 // CLRFR Configuration
 
-#define	PKA_CLRFR_OPERRFC	(0x1u<<21)
-#define	PKA_CLRFR_ADDRERRFC	(0x1u<<20)
-#define	PKA_CLRFR_RAMERRFC	(0x1u<<19)
-#define	PKA_CLRFR_PROCENDFC	(0x1u<<17)
+#define PKA_CLRFR_OPERRFC   (0x1u<<21)
+#define PKA_CLRFR_ADDRERRFC (0x1u<<20)
+#define PKA_CLRFR_RAMERRFC  (0x1u<<19)
+#define PKA_CLRFR_PROCENDFC (0x1u<<17)

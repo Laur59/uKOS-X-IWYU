@@ -8,11 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =======================
 
 ;------------------------------------------------------------------------
-; Author:	Generated using the .svd description	The 2025-01-01
+; Author:   Generated using the .svd description    The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		RP2350_glitch_detector equates.
+; Project:  uKOS-X
+; Goal:     RP2350_glitch_detector equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -49,80 +49,80 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdint.h>
+#include    <stdint.h>
 
 // GLITCH_DETECTOR address definitions
 // -----------------------------------
 
 typedef struct {
-	volatile	uint32_t	ARM;
-	volatile	uint32_t	DISARM;
-	volatile	uint32_t	SENSITIVITY;
-	volatile	uint32_t	LOCK;
-	volatile	uint32_t	TRIG_STATUS;
-	volatile	uint32_t	TRIG_FORCE;
+    volatile    uint32_t    ARM;
+    volatile    uint32_t    DISARM;
+    volatile    uint32_t    SENSITIVITY;
+    volatile    uint32_t    LOCK;
+    volatile    uint32_t    TRIG_STATUS;
+    volatile    uint32_t    TRIG_FORCE;
 } GLITCH_DETECTOR_TypeDef;
 
 #ifdef __cplusplus
-#define	GLITCH_DETECTOR_NS	reinterpret_cast<GLITCH_DETECTOR_TypeDef *>(0x40158000u)
-#define	GLITCH_DETECTOR_S	reinterpret_cast<GLITCH_DETECTOR_TypeDef *>(0x40158000u)
+#define GLITCH_DETECTOR_NS  reinterpret_cast<GLITCH_DETECTOR_TypeDef *>(0x40158000u)
+#define GLITCH_DETECTOR_S   reinterpret_cast<GLITCH_DETECTOR_TypeDef *>(0x40158000u)
 #else
-#define	GLITCH_DETECTOR_NS	((GLITCH_DETECTOR_TypeDef *)0x40158000u)
-#define	GLITCH_DETECTOR_S	((GLITCH_DETECTOR_TypeDef *)0x40158000u)
+#define GLITCH_DETECTOR_NS  ((GLITCH_DETECTOR_TypeDef *)0x40158000u)
+#define GLITCH_DETECTOR_S   ((GLITCH_DETECTOR_TypeDef *)0x40158000u)
 #endif
 
 // ARM Configuration
 
-#define	GLITCH_DETECTOR_ARM_ARM						(0xFFFFu<<0)
-#define	GLITCH_DETECTOR_ARM_ARM_0					(0x1u<<0)
-#define	GLITCH_DETECTOR_ARM_ARM_NO					(0x5BADu<<0)
-#define	GLITCH_DETECTOR_ARM_ARM_YES					(0x0u<<0)
+#define GLITCH_DETECTOR_ARM_ARM                     (0xFFFFu<<0)
+#define GLITCH_DETECTOR_ARM_ARM_0                   (0x1u<<0)
+#define GLITCH_DETECTOR_ARM_ARM_NO                  (0x5BADu<<0)
+#define GLITCH_DETECTOR_ARM_ARM_YES                 (0x0u<<0)
 
 // DISARM Configuration
 
-#define	GLITCH_DETECTOR_DISARM_DISARM				(0xFFFFu<<0)
-#define	GLITCH_DETECTOR_DISARM_DISARM_0				(0x1u<<0)
-#define	GLITCH_DETECTOR_DISARM_DISARM_NO			(0x0u<<0)
-#define	GLITCH_DETECTOR_DISARM_DISARM_YES			(0xDCAFu<<0)
+#define GLITCH_DETECTOR_DISARM_DISARM               (0xFFFFu<<0)
+#define GLITCH_DETECTOR_DISARM_DISARM_0             (0x1u<<0)
+#define GLITCH_DETECTOR_DISARM_DISARM_NO            (0x0u<<0)
+#define GLITCH_DETECTOR_DISARM_DISARM_YES           (0xDCAFu<<0)
 
 // SENSITIVITY Configuration
 
-#define	GLITCH_DETECTOR_SENSITIVITY_DET0			(0x3u<<0)
-#define	GLITCH_DETECTOR_SENSITIVITY_DET0_0			(0x1u<<0)
-#define	GLITCH_DETECTOR_SENSITIVITY_DET1			(0x3u<<2)
-#define	GLITCH_DETECTOR_SENSITIVITY_DET1_0			(0x1u<<2)
-#define	GLITCH_DETECTOR_SENSITIVITY_DET2			(0x3u<<4)
-#define	GLITCH_DETECTOR_SENSITIVITY_DET2_0			(0x1u<<4)
-#define	GLITCH_DETECTOR_SENSITIVITY_DET3			(0x3u<<6)
-#define	GLITCH_DETECTOR_SENSITIVITY_DET3_0			(0x1u<<6)
-#define	GLITCH_DETECTOR_SENSITIVITY_DET0_INV		(0x3u<<8)
-#define	GLITCH_DETECTOR_SENSITIVITY_DET0_INV_0		(0x1u<<8)
-#define	GLITCH_DETECTOR_SENSITIVITY_DET1_INV		(0x3u<<10)
-#define	GLITCH_DETECTOR_SENSITIVITY_DET1_INV_0		(0x1u<<10)
-#define	GLITCH_DETECTOR_SENSITIVITY_DET2_INV		(0x3u<<12)
-#define	GLITCH_DETECTOR_SENSITIVITY_DET2_INV_0		(0x1u<<12)
-#define	GLITCH_DETECTOR_SENSITIVITY_DET3_INV		(0x3u<<14)
-#define	GLITCH_DETECTOR_SENSITIVITY_DET3_INV_0		(0x1u<<14)
-#define	GLITCH_DETECTOR_SENSITIVITY_DEFAULT			(0xFFu<<24)
-#define	GLITCH_DETECTOR_SENSITIVITY_DEFAULT_0		(0x1u<<24)
-#define	GLITCH_DETECTOR_SENSITIVITY_DEFAULT_YES		(0x0u<<24)
-#define	GLITCH_DETECTOR_SENSITIVITY_DEFAULT_NO		(0xDEu<<24)
+#define GLITCH_DETECTOR_SENSITIVITY_DET0            (0x3u<<0)
+#define GLITCH_DETECTOR_SENSITIVITY_DET0_0          (0x1u<<0)
+#define GLITCH_DETECTOR_SENSITIVITY_DET1            (0x3u<<2)
+#define GLITCH_DETECTOR_SENSITIVITY_DET1_0          (0x1u<<2)
+#define GLITCH_DETECTOR_SENSITIVITY_DET2            (0x3u<<4)
+#define GLITCH_DETECTOR_SENSITIVITY_DET2_0          (0x1u<<4)
+#define GLITCH_DETECTOR_SENSITIVITY_DET3            (0x3u<<6)
+#define GLITCH_DETECTOR_SENSITIVITY_DET3_0          (0x1u<<6)
+#define GLITCH_DETECTOR_SENSITIVITY_DET0_INV        (0x3u<<8)
+#define GLITCH_DETECTOR_SENSITIVITY_DET0_INV_0      (0x1u<<8)
+#define GLITCH_DETECTOR_SENSITIVITY_DET1_INV        (0x3u<<10)
+#define GLITCH_DETECTOR_SENSITIVITY_DET1_INV_0      (0x1u<<10)
+#define GLITCH_DETECTOR_SENSITIVITY_DET2_INV        (0x3u<<12)
+#define GLITCH_DETECTOR_SENSITIVITY_DET2_INV_0      (0x1u<<12)
+#define GLITCH_DETECTOR_SENSITIVITY_DET3_INV        (0x3u<<14)
+#define GLITCH_DETECTOR_SENSITIVITY_DET3_INV_0      (0x1u<<14)
+#define GLITCH_DETECTOR_SENSITIVITY_DEFAULT         (0xFFu<<24)
+#define GLITCH_DETECTOR_SENSITIVITY_DEFAULT_0       (0x1u<<24)
+#define GLITCH_DETECTOR_SENSITIVITY_DEFAULT_YES     (0x0u<<24)
+#define GLITCH_DETECTOR_SENSITIVITY_DEFAULT_NO      (0xDEu<<24)
 
 // LOCK Configuration
 
-#define	GLITCH_DETECTOR_LOCK_LOCK					(0xFFu<<0)
-#define	GLITCH_DETECTOR_LOCK_LOCK_0					(0x1u<<0)
+#define GLITCH_DETECTOR_LOCK_LOCK                   (0xFFu<<0)
+#define GLITCH_DETECTOR_LOCK_LOCK_0                 (0x1u<<0)
 
 // TRIG_STATUS Configuration
 
-#define	GLITCH_DETECTOR_TRIG_STATUS_DET0			(0x1u<<0)
-#define	GLITCH_DETECTOR_TRIG_STATUS_DET1			(0x1u<<1)
-#define	GLITCH_DETECTOR_TRIG_STATUS_DET2			(0x1u<<2)
-#define	GLITCH_DETECTOR_TRIG_STATUS_DET3			(0x1u<<3)
+#define GLITCH_DETECTOR_TRIG_STATUS_DET0            (0x1u<<0)
+#define GLITCH_DETECTOR_TRIG_STATUS_DET1            (0x1u<<1)
+#define GLITCH_DETECTOR_TRIG_STATUS_DET2            (0x1u<<2)
+#define GLITCH_DETECTOR_TRIG_STATUS_DET3            (0x1u<<3)
 
 // TRIG_FORCE Configuration
 
-#define	GLITCH_DETECTOR_TRIG_FORCE_TRIG_FORCE		(0xFu<<0)
-#define	GLITCH_DETECTOR_TRIG_FORCE_TRIG_FORCE_0		(0x1u<<0)
+#define GLITCH_DETECTOR_TRIG_FORCE_TRIG_FORCE       (0xFu<<0)
+#define GLITCH_DETECTOR_TRIG_FORCE_TRIG_FORCE_0     (0x1u<<0)
