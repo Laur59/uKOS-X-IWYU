@@ -257,7 +257,7 @@ extern  int32_t imgk_getImage(volatile void **image);
 // -------------------
 
 //                  Negative                 Family Lib Id                          Lib Id xx (error)
-#define KIMGKERR    ((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<24U) | KIMGKMAN)
+#define KIMGKERR    ((uint32_t)0x80000000U | ((uint32_t)KID_FAM_PERIPHERALS<<24U) | KIMGKMAN)
 
 enum : int32_t {
     KERR_IMGK_NOERR = 0,                            // No error

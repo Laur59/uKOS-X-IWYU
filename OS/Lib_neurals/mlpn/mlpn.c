@@ -404,8 +404,8 @@ static  inline  float32_t   local_hadd_f32x4(float32x4_t v) {
 static  inline  float32_t   local_dot_f32(const float32_t * restrict w, const float32_t * restrict x, uint16_t n) {
 
     #if (defined(__ARM_FEATURE_MVE) && (__ARM_FEATURE_MVE >= 3))
-    float32x4_t     acc0 = vdupq_n_f32(0.0f);
-    float32x4_t     acc1 = vdupq_n_f32(0.0f);
+    float32x4_t     acc0 = vdupq_n_f32(0.0F);
+    float32x4_t     acc1 = vdupq_n_f32(0.0F);
     uint16_t        i = 0U, rem;
 
     w = (const float32_t *)__builtin_assume_aligned(w, 16);
@@ -602,8 +602,8 @@ static  float32_t   local_nonLinear_tan2(float32_t p) {
  */
 static  float32_t   local_nonLinear_relu(float32_t p) {
 
-    if (p <= 0.0F) { return (0.0F); }
-    if (p > +1.0F) { return (p);    }
+    if (p <= 0.0F) { return 0.0F; }
+    if (p > +1.0F) { return p;  }
     return p;
 }
 

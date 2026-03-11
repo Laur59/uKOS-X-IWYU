@@ -78,13 +78,13 @@ typedef struct {
 } SCB_TypeDef;
 
 #ifdef __cplusplus
-#define SCB     reinterpret_cast<SCB_TypeDef *>(0xE000ED00u)
+#define SCB     reinterpret_cast<SCB_TypeDef *>(0xE000ED00U)
 
 #else
-#define SCB     ((SCB_TypeDef *)0xE000ED00u)
+#define SCB     ((SCB_TypeDef *)0xE000ED00U)
 #endif
 
 // AIRCR register
 
-#define SCB_AIRCR_VECTKEY_MASK          0x05FA0000u
-#define SCB_AIRCR_SYSRESETREQ           0x00000004u
+#define SCB_AIRCR_VECTKEY_MASK          0x05FA0000U
+#define SCB_AIRCR_SYSRESETREQ           0x00000004U

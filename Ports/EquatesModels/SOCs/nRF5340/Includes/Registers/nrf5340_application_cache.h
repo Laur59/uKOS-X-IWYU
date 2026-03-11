@@ -80,79 +80,79 @@ typedef struct {
 } CACHE_TypeDef;
 
 #ifdef __cplusplus
-#define NCACHE_S    reinterpret_cast<CACHE_TypeDef *>(0x50001000u)
+#define NCACHE_S    reinterpret_cast<CACHE_TypeDef *>(0x50001000U)
 
 #else
-#define NCACHE_S    ((CACHE_TypeDef *)0x50001000u)
+#define NCACHE_S    ((CACHE_TypeDef *)0x50001000U)
 #endif
 
 // IHIT Configuration
 
-#define CACHE_PROFILING_IHIT_HITS                           (0xFFFFFFFFu<<0)
-#define CACHE_PROFILING_IHIT_HITS_0                         (0x1u<<0)
+#define CACHE_PROFILING_IHIT_HITS                           (0xFFFFFFFFU<<0)
+#define CACHE_PROFILING_IHIT_HITS_0                         (0x1U<<0)
 
 // IMISS Configuration
 
-#define CACHE_PROFILING_IMISS_MISSES                (0xFFFFFFFFu<<0)
-#define CACHE_PROFILING_IMISS_MISSES_0              (0x1u<<0)
+#define CACHE_PROFILING_IMISS_MISSES                (0xFFFFFFFFU<<0)
+#define CACHE_PROFILING_IMISS_MISSES_0              (0x1U<<0)
 
 // DHIT Configuration
 
-#define CACHE_PROFILING_DHIT_HITS                   (0xFFFFFFFFu<<0)
-#define CACHE_PROFILING_DHIT_HITS_0                 (0x1u<<0)
+#define CACHE_PROFILING_DHIT_HITS                   (0xFFFFFFFFU<<0)
+#define CACHE_PROFILING_DHIT_HITS_0                 (0x1U<<0)
 
 // DMISS Configuration
 
-#define CACHE_PROFILING_DMISS_MISSES                (0xFFFFFFFFu<<0)
-#define CACHE_PROFILING_DMISS_MISSES_0              (0x1u<<0)
+#define CACHE_PROFILING_DMISS_MISSES                (0xFFFFFFFFU<<0)
+#define CACHE_PROFILING_DMISS_MISSES_0              (0x1U<<0)
 
 // ENABLE Configuration
 
-#define CACHE_ENABLE_ENABLE                         (0x1u<<0)
-#define CACHE_ENABLE_ENABLE_DISABLED                (0x0u<<0)
-#define CACHE_ENABLE_ENABLE_ENABLED                 (0x1u<<0)
+#define CACHE_ENABLE_ENABLE                         (0x1U<<0)
+#define CACHE_ENABLE_ENABLE_DISABLED                (0x0U<<0)
+#define CACHE_ENABLE_ENABLE_ENABLED                 (0x1U<<0)
 
 // INVALIDATE Configuration
 
-#define CACHE_INVALIDATE_INVALIDATE                 (0x1u<<0)
-#define CACHE_INVALIDATE_INVALIDATE_INVALIDATE      (0x1u<<0)
+#define CACHE_INVALIDATE_INVALIDATE                 (0x1U<<0)
+#define CACHE_INVALIDATE_INVALIDATE_INVALIDATE      (0x1U<<0)
 
 // ERASE Configuration
 
-#define CACHE_ERASE_ERASE                           (0x1u<<0)
-#define CACHE_ERASE_ERASE_ERASE                     (0x1u<<0)
+#define CACHE_ERASE_ERASE                           (0x1U<<0)
+#define CACHE_ERASE_ERASE_ERASE                     (0x1U<<0)
 
 // PROFILINGENABLE Configuration
 
-#define CACHE_PROFILINGENABLE_ENABLE                (0x1u<<0)
-#define CACHE_PROFILINGENABLE_ENABLE_DISABLE        (0x0u<<0)
-#define CACHE_PROFILINGENABLE_ENABLE_ENABLE         (0x1u<<0)
+#define CACHE_PROFILINGENABLE_ENABLE                (0x1U<<0)
+#define CACHE_PROFILINGENABLE_ENABLE_DISABLE        (0x0U<<0)
+#define CACHE_PROFILINGENABLE_ENABLE_ENABLE         (0x1U<<0)
 
 // PROFILINGCLEAR Configuration
 
-#define CACHE_PROFILINGCLEAR_CLEAR                  (0x1u<<0)
-#define CACHE_PROFILINGCLEAR_CLEAR_CLEAR            (0x1u<<0)
+#define CACHE_PROFILINGCLEAR_CLEAR                  (0x1U<<0)
+#define CACHE_PROFILINGCLEAR_CLEAR_CLEAR            (0x1U<<0)
 
 // MODE Configuration
 
-#define CACHE_MODE_MODE                             (0x1u<<0)
-#define CACHE_MODE_MODE_CACHE                       (0x0u<<0)
-#define CACHE_MODE_MODE_RAM                         (0x1u<<0)
+#define CACHE_MODE_MODE                             (0x1U<<0)
+#define CACHE_MODE_MODE_CACHE                       (0x0U<<0)
+#define CACHE_MODE_MODE_RAM                         (0x1U<<0)
 
 // DEBUGLOCK Configuration
 
-#define CACHE_DEBUGLOCK_DEBUGLOCK                   (0x1u<<0)
-#define CACHE_DEBUGLOCK_DEBUGLOCK_UNLOCKED          (0x0u<<0)
-#define CACHE_DEBUGLOCK_DEBUGLOCK_LOCKED            (0x1u<<0)
+#define CACHE_DEBUGLOCK_DEBUGLOCK                   (0x1U<<0)
+#define CACHE_DEBUGLOCK_DEBUGLOCK_UNLOCKED          (0x0U<<0)
+#define CACHE_DEBUGLOCK_DEBUGLOCK_LOCKED            (0x1U<<0)
 
 // ERASESTATUS Configuration
 
-#define CACHE_ERASESTATUS_ERASESTATUS               (0x1u<<0)
-#define CACHE_ERASESTATUS_ERASESTATUS_IDLE          (0x0u<<0)
-#define CACHE_ERASESTATUS_ERASESTATUS_FINISHED      (0x1u<<0)
+#define CACHE_ERASESTATUS_ERASESTATUS               (0x1U<<0)
+#define CACHE_ERASESTATUS_ERASESTATUS_IDLE          (0x0U<<0)
+#define CACHE_ERASESTATUS_ERASESTATUS_FINISHED      (0x1U<<0)
 
 // WRITELOCK Configuration
 
-#define CACHE_WRITELOCK_WRITELOCK                   (0x1u<<0)
-#define CACHE_WRITELOCK_WRITELOCK_UNLOCKED          (0x0u<<0)
-#define CACHE_WRITELOCK_WRITELOCK_LOCKED            (0x1u<<0)
+#define CACHE_WRITELOCK_WRITELOCK                   (0x1U<<0)
+#define CACHE_WRITELOCK_WRITELOCK_UNLOCKED          (0x0U<<0)
+#define CACHE_WRITELOCK_WRITELOCK_LOCKED            (0x1U<<0)

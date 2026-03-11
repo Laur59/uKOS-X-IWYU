@@ -108,7 +108,7 @@ int32_t model_flash_1w_read(uint8_t *buffer, uint32_t size, uint32_t sector) {
     cb_control(KFLASH_RESERVE_SPI);
     address = sector * KFLASH_SPI_SZ_SECTOR;
 
-// A read cycle 0x03u 0xAAu 0xAAu 0xAAu 0x00u
+// A read cycle 0x03u 0xAAu 0xAAu 0xAAu 0x00U
 // 0x03u --> Read order
 // 0xAAu --> 24-bit address
 
@@ -120,7 +120,7 @@ int32_t model_flash_1w_read(uint8_t *buffer, uint32_t size, uint32_t sector) {
     cb_writeRead((uint8_t)(address));
 
     for (index = 0U; index < size; index++) {
-        *wkBuffer = cb_writeRead(0x00u);
+        *wkBuffer = cb_writeRead(0x00U);
         wkBuffer++;
     }
     cb_control(KFLASH_DESELECT);

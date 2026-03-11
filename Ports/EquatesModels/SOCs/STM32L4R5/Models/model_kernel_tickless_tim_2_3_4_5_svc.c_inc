@@ -120,7 +120,6 @@ static  volatile    uint32_t    vTimeLastStart = 0U;                            
 static  volatile    uint64_t    vTickCount     = 0U;                                    // 64-bit timer (1-us)
 static  volatile    bool        vTickLess      = false;                                 // Tickless mode
 static  volatile    bool        vTimeout       = false;                                 // Timeout
-extern  volatile    bool        vPriv_insideSVC[KNB_CORES];                             // Inside an SVC call
 
 // Prototypes
 
@@ -264,7 +263,7 @@ void    model_kernel_setLowPower(uint8_t mode) {
 
             TIM3->CR1 &= (uint16_t)~TIM3_CR1_CEN;
 
-            if (vTickLess == false) {
+            if (!vTickLess) {
 
                 INTERRUPTION_OFF;
                 vTickLess = true;
@@ -290,7 +289,7 @@ void    model_kernel_setLowPower(uint8_t mode) {
 // - Conventional interruptions
 
             vTimeout = false;
-            do { WAITING_INTERRUPTION; } while (vTimeout == false);
+            do { WAITING_INTERRUPTION; } while (!vTimeout);
 
             break;
         }
@@ -309,7 +308,7 @@ void    model_kernel_setPreciseSignal(prcs_t *handle) {
     TIM4->DIER &= (uint16_t)~TIM4_DIER_CC1IE;
 
     INTERRUPTION_OFF;
-    vPrcsAbsCount &= 0xFFFFFFFFFFFF0000u;
+    vPrcsAbsCount &= 0xFFFFFFFFFFFF0000U;
     vPrcsAbsCount |= (uint64_t)TIM4->CNT;
 
     handle->oNextTime = vPrcsAbsCount + handle->oPeriod;
@@ -401,9 +400,9 @@ static  void    local_TIM4_IRQHandler(void) {
     if ((TIM4->SR & TIM4_SR_UIF) != 0U) {
         TIM4->SR &= (uint16_t)~TIM4_SR_UIF;
 
-        vPrcsAbsCount &= 0xFFFFFFFFFFFF0000u;
+        vPrcsAbsCount &= 0xFFFFFFFFFFFF0000U;
         vPrcsAbsCount |= (uint64_t)TIM4->CNT;
-        vPrcsAbsCount += 0x10000u;
+        vPrcsAbsCount += 0x10000U;
 
         local_nextTime(vPrcsAbsCount);
         return;
@@ -416,7 +415,7 @@ static  void    local_TIM4_IRQHandler(void) {
     if ((TIM4->SR & TIM4_SR_CC1IF) != 0U) {
         TIM4->SR &= (uint16_t)~TIM4_SR_CC1IF;
 
-        vPrcsAbsCount &= 0xFFFFFFFFFFFF0000u;
+        vPrcsAbsCount &= 0xFFFFFFFFFFFF0000U;
         vPrcsAbsCount |= (uint64_t)TIM4->CNT;
 
         i = vPrcsIndex;
@@ -455,7 +454,7 @@ static  void    local_nextTime(uint64_t absTime) {
 
 // Determine the next shortest time
 
-    minNextTime = 0xFFFFFFFFFFFFFFFFu;
+    minNextTime = 0xFFFFFFFFFFFFFFFFU;
     for (i = 0U; i < KKERN_NB_PRECISE_SIGNALS; i++) {
         if ((vKern_prcs[KCORE_0][i].oState & (1U<<BPRCS_INSTALLED)) != 0U) {
             if (vKern_prcs[KCORE_0][i].oMode != KPRCS_STOP) {
@@ -471,7 +470,7 @@ static  void    local_nextTime(uint64_t absTime) {
 // For Shortest request, it can happen that minNextTime < vCNT (too slow process).
 // In this case, we launch the new time with a minimal delay of 2 ...
 
-    if (found == true) {
+    if (found) {
         minNextTime = (minNextTime < absTime) ? (2U) : (minNextTime - absTime);
         minNextTime = (minNextTime < 2U)      ? (2U) : (minNextTime);
         if (minNextTime < 65536U) {
@@ -861,7 +860,7 @@ static  void    __attribute__ ((used)) local_updateTickless(uint8_t mode) {
         case KWUNORTO: {
             vTimeout = true;
             elapsedTime = (TIM5->ARR + 1U) / N;
-            if (vTickLess == true) {
+            if (vTickLess) {
                 vTickLess = false;
 
                 local_updateTickTimer(KARRT5);
@@ -875,7 +874,7 @@ static  void    __attribute__ ((used)) local_updateTickless(uint8_t mode) {
 // - Update the process list with the elapsed time (timeout -= elapsed time)
 
         case KWUINTPR: {
-            if (vTickLess == true) {
+            if (vTickLess) {
                 vTickLess = false;
 
                 elapsedTime = TIM5->CNT / N;
@@ -960,8 +959,8 @@ static  void    local_timeStmp(bool overflow) {
 // Overflow; add 0x100000000 to the counter
 // Update the 1-us 64-bit tickCount
 
-    if (overflow == true) {
-        vTickCount = (vTickCount & 0xFFFFFFFF00000000u) + 0x100000000u;
+    if (overflow) {
+        vTickCount = (vTickCount & 0xFFFFFFFF00000000U) + 0x100000000U;
         INTERRUPTION_RESTORE;
         return;
     }
@@ -970,7 +969,7 @@ static  void    local_timeStmp(bool overflow) {
 // Update the 1-us 64-bit tickCount
 
     if (newTime > 0U) {
-        vTickCount = (vTickCount & 0xFFFFFFFF00000000u) | newTime;
+        vTickCount = (vTickCount & 0xFFFFFFFF00000000U) | newTime;
     }
     INTERRUPTION_RESTORE;
 }

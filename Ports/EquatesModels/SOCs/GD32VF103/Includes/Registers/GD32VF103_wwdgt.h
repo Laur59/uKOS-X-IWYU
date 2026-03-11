@@ -63,26 +63,26 @@ typedef struct {
 } WWDGT_TypeDef;
 
 #ifdef __cplusplus
-#define WWDGT   reinterpret_cast<WWDGT_TypeDef *>(0x40002C00u)
+#define WWDGT   reinterpret_cast<WWDGT_TypeDef *>(0x40002C00U)
 
 #else
-#define WWDGT   ((WWDGT_TypeDef *)0x40002C00u)
+#define WWDGT   ((WWDGT_TypeDef *)0x40002C00U)
 #endif
 
 // CTL Configuration
 
-#define WWDGT_CTL_CNT       (0x7Fu<<0)
-#define WWDGT_CTL_CNT_0     (0x1u<<0)
-#define WWDGT_CTL_WDGTEN    (0x1u<<7)
+#define WWDGT_CTL_CNT       (0x7FU<<0)
+#define WWDGT_CTL_CNT_0     (0x1U<<0)
+#define WWDGT_CTL_WDGTEN    (0x1U<<7)
 
 // CFG Configuration
 
-#define WWDGT_CFG_WIN       (0x7Fu<<0)
-#define WWDGT_CFG_WIN_0     (0x1u<<0)
-#define WWDGT_CFG_PSC       (0x3u<<7)
-#define WWDGT_CFG_PSC_0     (0x1u<<7)
-#define WWDGT_CFG_EWIE      (0x1u<<9)
+#define WWDGT_CFG_WIN       (0x7FU<<0)
+#define WWDGT_CFG_WIN_0     (0x1U<<0)
+#define WWDGT_CFG_PSC       (0x3U<<7)
+#define WWDGT_CFG_PSC_0     (0x1U<<7)
+#define WWDGT_CFG_EWIE      (0x1U<<9)
 
 // STAT Configuration
 
-#define WWDGT_STAT_EWIF     (0x1u<<0)
+#define WWDGT_STAT_EWIF     (0x1U<<0)

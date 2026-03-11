@@ -62,21 +62,21 @@ typedef struct {
 } VREFBUF_TypeDef;
 
 #ifdef __cplusplus
-#define VREFBUF reinterpret_cast<VREFBUF_TypeDef *>(0x58003C00u)
+#define VREFBUF reinterpret_cast<VREFBUF_TypeDef *>(0x58003C00U)
 
 #else
-#define VREFBUF ((VREFBUF_TypeDef *)0x58003C00u)
+#define VREFBUF ((VREFBUF_TypeDef *)0x58003C00U)
 #endif
 
 // CSR Configuration
 
-#define VREFBUF_CSR_VRS     (0x7u<<4)
-#define VREFBUF_CSR_VRS_0   (0x1u<<4)
-#define VREFBUF_CSR_VRR     (0x1u<<3)
-#define VREFBUF_CSR_HIZ     (0x1u<<1)
-#define VREFBUF_CSR_ENVR    (0x1u<<0)
+#define VREFBUF_CSR_VRS     (0x7U<<4)
+#define VREFBUF_CSR_VRS_0   (0x1U<<4)
+#define VREFBUF_CSR_VRR     (0x1U<<3)
+#define VREFBUF_CSR_HIZ     (0x1U<<1)
+#define VREFBUF_CSR_ENVR    (0x1U<<0)
 
 // CCR Configuration
 
-#define VREFBUF_CCR_TRIM    (0x3Fu<<0)
-#define VREFBUF_CCR_TRIM_0  (0x1u<<0)
+#define VREFBUF_CCR_TRIM    (0x3FU<<0)
+#define VREFBUF_CCR_TRIM_0  (0x1U<<0)

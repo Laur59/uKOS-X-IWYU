@@ -702,4 +702,4 @@ const   uint8_t get_source_aclk[] = {
 };
 #endif
 
-#define sysctl  ((volatile sysctl_t *)0x50440000u)
+#define sysctl  ((volatile sysctl_t *)0x50440000U)

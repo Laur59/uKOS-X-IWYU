@@ -241,4 +241,4 @@ typedef struct  _plic {
             plic_target_t               targets;            // 0x0C200000-0x0FFFF004
 } __attribute__ ((packed, aligned (4))) plic_t;
 
-#define plic    ((volatile plic_t *)0x0C000000u)
+#define plic    ((volatile plic_t *)0x0C000000U)

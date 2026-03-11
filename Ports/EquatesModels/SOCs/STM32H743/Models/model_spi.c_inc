@@ -164,7 +164,7 @@ int32_t model_spi_multipleWriteRead(const uint8_t *wData, uint16_t wSize, uint8_
     int32_t     status;
 
     INTERRUPTION_OFF;
-    if (vBusy == true) { RETURN_INT_RESTORE(KERR_SPI_CHBSY); }
+    if (vBusy) { RETURN_INT_RESTORE(KERR_SPI_CHBSY); }
     vBusy = true;
     INTERRUPTION_RESTORE;
 
@@ -231,8 +231,8 @@ static  void    local_SPI_IRQHandler(void) {
 
 // Skip the first read due to the NVIC_SetPendingIRQ
 
-            if (vFirst == true) { vFirst = false;                 }
-            else                { vRkBuffer[vNbBytes - 1U] = data; }
+            if (vFirst) { vFirst = false;                 }
+            else        { vRkBuffer[vNbBytes - 1U] = data; }
 
             if (vNbBytes < vRSize) {
                 *((volatile uint8_t *)&SPI->TXDR) = (vWkBuffer == nullptr) ? (0U) : (vWkBuffer[vNbBytes]);
@@ -251,7 +251,7 @@ static  void    local_SPI_IRQHandler(void) {
 // First full write, then full read
 
         case KSPI_EEPROM: {
-            if (vWrite == false) {
+            if (!vWrite) {
                 if (vNbBytes < vWSize) {
                     *((volatile uint8_t *)&SPI->TXDR) = vWkBuffer[vNbBytes];
                     vNbBytes++;
@@ -265,8 +265,8 @@ static  void    local_SPI_IRQHandler(void) {
 
 // Skip the first read due to the NVIC_SetPendingIRQ
 
-            if (vFirst == true) { vFirst = false;                  }
-            else                { vRkBuffer[vNbBytes - 1U] = data; }
+            if (vFirst) { vFirst = false;                  }
+            else        { vRkBuffer[vNbBytes - 1U] = data; }
 
             if (vNbBytes < vRSize) {
                 *((volatile uint8_t *)&SPI->TXDR) = 0U;

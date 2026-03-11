@@ -75,73 +75,73 @@ typedef struct {
 } TIM13_TypeDef;
 
 #ifdef __cplusplus
-#define TIM13   reinterpret_cast<TIM13_TypeDef *>(0x40001C00u)
+#define TIM13   reinterpret_cast<TIM13_TypeDef *>(0x40001C00U)
 
 #else
-#define TIM13   ((TIM13_TypeDef *)0x40001C00u)
+#define TIM13   ((TIM13_TypeDef *)0x40001C00U)
 #endif
 
 // CR1 Configuration
 
-#define TIM13_CR1_CEN       (0x1u<<0)
-#define TIM13_CR1_UDIS      (0x1u<<1)
-#define TIM13_CR1_URS       (0x1u<<2)
-#define TIM13_CR1_ARPE      (0x1u<<7)
-#define TIM13_CR1_CKD       (0x3u<<8)
-#define TIM13_CR1_CKD_0     (0x1u<<8)
+#define TIM13_CR1_CEN       (0x1U<<0)
+#define TIM13_CR1_UDIS      (0x1U<<1)
+#define TIM13_CR1_URS       (0x1U<<2)
+#define TIM13_CR1_ARPE      (0x1U<<7)
+#define TIM13_CR1_CKD       (0x3U<<8)
+#define TIM13_CR1_CKD_0     (0x1U<<8)
 
 // DIER Configuration
 
-#define TIM13_DIER_UIE      (0x1u<<0)
-#define TIM13_DIER_CC1IE    (0x1u<<1)
+#define TIM13_DIER_UIE      (0x1U<<0)
+#define TIM13_DIER_CC1IE    (0x1U<<1)
 
 // SR Configuration
 
-#define TIM13_SR_UIF        (0x1u<<0)
-#define TIM13_SR_CC1IF      (0x1u<<1)
-#define TIM13_SR_CC1OF      (0x1u<<9)
+#define TIM13_SR_UIF        (0x1U<<0)
+#define TIM13_SR_CC1IF      (0x1U<<1)
+#define TIM13_SR_CC1OF      (0x1U<<9)
 
 // EGR Configuration
 
-#define TIM13_EGR_UG        (0x1u<<0)
-#define TIM13_EGR_CC1G      (0x1u<<1)
+#define TIM13_EGR_UG        (0x1U<<0)
+#define TIM13_EGR_CC1G      (0x1U<<1)
 
 // CCMR1 Configuration
 
-#define TIM13_CCMR1_OC1M    (0x7u<<4)
-#define TIM13_CCMR1_OC1M_0  (0x1u<<4)
-#define TIM13_CCMR1_OC1PE   (0x1u<<3)
-#define TIM13_CCMR1_OC1FE   (0x1u<<2)
-#define TIM13_CCMR1_CC1S    (0x3u<<0)
-#define TIM13_CCMR1_CC1S_0  (0x1u<<0)
+#define TIM13_CCMR1_OC1M    (0x7U<<4)
+#define TIM13_CCMR1_OC1M_0  (0x1U<<4)
+#define TIM13_CCMR1_OC1PE   (0x1U<<3)
+#define TIM13_CCMR1_OC1FE   (0x1U<<2)
+#define TIM13_CCMR1_CC1S    (0x3U<<0)
+#define TIM13_CCMR1_CC1S_0  (0x1U<<0)
 
 // CCER Configuration
 
-#define TIM13_CCER_CC1E     (0x1u<<0)
-#define TIM13_CCER_CC1P     (0x1u<<1)
-#define TIM13_CCER_CC1NP    (0x1u<<3)
+#define TIM13_CCER_CC1E     (0x1U<<0)
+#define TIM13_CCER_CC1P     (0x1U<<1)
+#define TIM13_CCER_CC1NP    (0x1U<<3)
 
 // CNT Configuration
 
-#define TIM13_CNT_CNT       (0xFFFFu<<0)
-#define TIM13_CNT_CNT_0     (0x1u<<0)
+#define TIM13_CNT_CNT       (0xFFFFU<<0)
+#define TIM13_CNT_CNT_0     (0x1U<<0)
 
 // PSC Configuration
 
-#define TIM13_PSC_PSC       (0xFFFFu<<0)
-#define TIM13_PSC_PSC_0     (0x1u<<0)
+#define TIM13_PSC_PSC       (0xFFFFU<<0)
+#define TIM13_PSC_PSC_0     (0x1U<<0)
 
 // ARR Configuration
 
-#define TIM13_ARR_ARR       (0xFFFFu<<0)
-#define TIM13_ARR_ARR_0     (0x1u<<0)
+#define TIM13_ARR_ARR       (0xFFFFU<<0)
+#define TIM13_ARR_ARR_0     (0x1U<<0)
 
 // CCR1 Configuration
 
-#define TIM13_CCR1_CCR1     (0xFFFFu<<0)
-#define TIM13_CCR1_CCR1_0   (0x1u<<0)
+#define TIM13_CCR1_CCR1     (0xFFFFU<<0)
+#define TIM13_CCR1_CCR1_0   (0x1U<<0)
 
 // OR Configuration
 
-#define TIM13_OR_RMP        (0x3u<<0)
-#define TIM13_OR_RMP_0      (0x1u<<0)
+#define TIM13_OR_RMP        (0x3U<<0)
+#define TIM13_OR_RMP_0      (0x1U<<0)

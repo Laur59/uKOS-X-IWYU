@@ -61,14 +61,14 @@ typedef struct {
 } ART_TypeDef;
 
 #ifdef __cplusplus
-#define ART reinterpret_cast<ART_TypeDef *>(0x40024400u)
+#define ART reinterpret_cast<ART_TypeDef *>(0x40024400U)
 
 #else
-#define ART ((ART_TypeDef *)0x40024400u)
+#define ART ((ART_TypeDef *)0x40024400U)
 #endif
 
 // CTR Configuration
 
-#define ART_CTR_PCACHEADDR      (0xFFFu<<8)
-#define ART_CTR_PCACHEADDR_0    (0x1u<<8)
-#define ART_CTR_EN              (0x1u<<0)
+#define ART_CTR_PCACHEADDR      (0xFFFU<<8)
+#define ART_CTR_PCACHEADDR_0    (0x1U<<8)
+#define ART_CTR_EN              (0x1U<<0)

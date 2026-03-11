@@ -92,27 +92,27 @@ typedef struct {
 } ACL_TypeDef;
 
 #ifdef __cplusplus
-#define ACL_NS  reinterpret_cast<ACL_TypeDef *>(0x41080000u)
+#define ACL_NS  reinterpret_cast<ACL_TypeDef *>(0x41080000U)
 
 #else
-#define ACL_NS  ((ACL_TypeDef *)0x41080000u)
+#define ACL_NS  ((ACL_TypeDef *)0x41080000U)
 #endif
 
 // ADDR Configuration
 
-#define ACL_ACL_ADDR_ADDR           (0xFFFFFFFFu<<0)
-#define ACL_ACL_ADDR_ADDR_0         (0x1u<<0)
+#define ACL_ACL_ADDR_ADDR           (0xFFFFFFFFU<<0)
+#define ACL_ACL_ADDR_ADDR_0         (0x1U<<0)
 
 // SIZE Configuration
 
-#define ACL_ACL_SIZE_SIZE           (0xFFFFFFFFu<<0)
-#define ACL_ACL_SIZE_SIZE_0         (0x1u<<0)
+#define ACL_ACL_SIZE_SIZE           (0xFFFFFFFFU<<0)
+#define ACL_ACL_SIZE_SIZE_0         (0x1U<<0)
 
 // PERM Configuration
 
-#define ACL_ACL_PERM_READ           (0x1u<<2)
-#define ACL_ACL_PERM_WRITE          (0x1u<<1)
-#define ACL_ACL_PERM_READ_ENABLE    (0x0u<<2)
-#define ACL_ACL_PERM_READ_DISABLE   (0x1u<<2)
-#define ACL_ACL_PERM_WRITE_ENABLE   (0x0u<<1)
-#define ACL_ACL_PERM_WRITE_DISABLE  (0x1u<<1)
+#define ACL_ACL_PERM_READ           (0x1U<<2)
+#define ACL_ACL_PERM_WRITE          (0x1U<<1)
+#define ACL_ACL_PERM_READ_ENABLE    (0x0U<<2)
+#define ACL_ACL_PERM_READ_DISABLE   (0x1U<<2)
+#define ACL_ACL_PERM_WRITE_ENABLE   (0x0U<<1)
+#define ACL_ACL_PERM_WRITE_DISABLE  (0x1U<<1)

@@ -54,150 +54,150 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 // Unique device ID register base address
 // --------------------------------------
 
-#define UID_BASE                        0x1FFF7590u
+#define UID_BASE                        0x1FFF7590U
 
 // USART generic
 // -------------
 
 // CR1 Configuration
 
-#define USART_CR1_RXFFIE                (0x1u<<31)
-#define USART_CR1_TXFEIE                (0x1u<<30)
-#define USART_CR1_FIFOEN                (0x1u<<29)
-#define USART_CR1_M1                    (0x1u<<28)
-#define USART_CR1_EOBIE                 (0x1u<<27)
-#define USART_CR1_RTOIE                 (0x1u<<26)
-#define USART_CR1_DEAT                  (0x1Fu<<21)
-#define USART_CR1_DEAT_0                (0x1u<<21)
-#define USART_CR1_DEDT                  (0x1Fu<<16)
-#define USART_CR1_DEDT_0                (0x1u<<16)
-#define USART_CR1_OVER8                 (0x1u<<15)
-#define USART_CR1_CMIE                  (0x1u<<14)
-#define USART_CR1_MME                   (0x1u<<13)
-#define USART_CR1_M0                    (0x1u<<12)
-#define USART_CR1_WAKE                  (0x1u<<11)
-#define USART_CR1_PCE                   (0x1u<<10)
-#define USART_CR1_PS                    (0x1u<<9)
-#define USART_CR1_PEIE                  (0x1u<<8)
-#define USART_CR1_TXFNFIE               (0x1u<<7)
-#define USART_CR1_TCIE                  (0x1u<<6)
-#define USART_CR1_RXFNEIE               (0x1u<<5)
-#define USART_CR1_IDLEIE                (0x1u<<4)
-#define USART_CR1_TE                    (0x1u<<3)
-#define USART_CR1_RE                    (0x1u<<2)
-#define USART_CR1_UESM                  (0x1u<<1)
-#define USART_CR1_UE                    (0x1u<<0)
+#define USART_CR1_RXFFIE                (0x1U<<31)
+#define USART_CR1_TXFEIE                (0x1U<<30)
+#define USART_CR1_FIFOEN                (0x1U<<29)
+#define USART_CR1_M1                    (0x1U<<28)
+#define USART_CR1_EOBIE                 (0x1U<<27)
+#define USART_CR1_RTOIE                 (0x1U<<26)
+#define USART_CR1_DEAT                  (0x1FU<<21)
+#define USART_CR1_DEAT_0                (0x1U<<21)
+#define USART_CR1_DEDT                  (0x1FU<<16)
+#define USART_CR1_DEDT_0                (0x1U<<16)
+#define USART_CR1_OVER8                 (0x1U<<15)
+#define USART_CR1_CMIE                  (0x1U<<14)
+#define USART_CR1_MME                   (0x1U<<13)
+#define USART_CR1_M0                    (0x1U<<12)
+#define USART_CR1_WAKE                  (0x1U<<11)
+#define USART_CR1_PCE                   (0x1U<<10)
+#define USART_CR1_PS                    (0x1U<<9)
+#define USART_CR1_PEIE                  (0x1U<<8)
+#define USART_CR1_TXFNFIE               (0x1U<<7)
+#define USART_CR1_TCIE                  (0x1U<<6)
+#define USART_CR1_RXFNEIE               (0x1U<<5)
+#define USART_CR1_IDLEIE                (0x1U<<4)
+#define USART_CR1_TE                    (0x1U<<3)
+#define USART_CR1_RE                    (0x1U<<2)
+#define USART_CR1_UESM                  (0x1U<<1)
+#define USART_CR1_UE                    (0x1U<<0)
 
 // CR2 Configuration
 
-#define USART_CR2_ADD                   (0xFFu<<24)
-#define USART_CR2_ADD_0                 (0x1u<<24)
-#define USART_CR2_RTOEN                 (0x1u<<23)
-#define USART_CR2_ABRMOD                (0x3u<<21)
-#define USART_CR2_ABRMOD_0              (0x1u<<21)
-#define USART_CR2_ABREN                 (0x1u<<20)
-#define USART_CR2_MSBFIRST              (0x1u<<19)
-#define USART_CR2_DATAINV               (0x1u<<18)
-#define USART_CR2_TXINV                 (0x1u<<17)
-#define USART_CR2_RXINV                 (0x1u<<16)
-#define USART_CR2_SWAP                  (0x1u<<15)
-#define USART_CR2_LINEN                 (0x1u<<14)
-#define USART_CR2_STOP                  (0x3u<<12)
-#define USART_CR2_STOP_0                (0x1u<<12)
-#define USART_CR2_CLKEN                 (0x1u<<11)
-#define USART_CR2_CPOL                  (0x1u<<10)
-#define USART_CR2_CPHA                  (0x1u<<9)
-#define USART_CR2_LBCL                  (0x1u<<8)
-#define USART_CR2_LBDIE                 (0x1u<<6)
-#define USART_CR2_LBDL                  (0x1u<<5)
-#define USART_CR2_ADDM7                 (0x1u<<4)
-#define USART_CR2_DIS_NSS               (0x1u<<3)
-#define USART_CR2_SLVEN                 (0x1u<<0)
+#define USART_CR2_ADD                   (0xFFU<<24)
+#define USART_CR2_ADD_0                 (0x1U<<24)
+#define USART_CR2_RTOEN                 (0x1U<<23)
+#define USART_CR2_ABRMOD                (0x3U<<21)
+#define USART_CR2_ABRMOD_0              (0x1U<<21)
+#define USART_CR2_ABREN                 (0x1U<<20)
+#define USART_CR2_MSBFIRST              (0x1U<<19)
+#define USART_CR2_DATAINV               (0x1U<<18)
+#define USART_CR2_TXINV                 (0x1U<<17)
+#define USART_CR2_RXINV                 (0x1U<<16)
+#define USART_CR2_SWAP                  (0x1U<<15)
+#define USART_CR2_LINEN                 (0x1U<<14)
+#define USART_CR2_STOP                  (0x3U<<12)
+#define USART_CR2_STOP_0                (0x1U<<12)
+#define USART_CR2_CLKEN                 (0x1U<<11)
+#define USART_CR2_CPOL                  (0x1U<<10)
+#define USART_CR2_CPHA                  (0x1U<<9)
+#define USART_CR2_LBCL                  (0x1U<<8)
+#define USART_CR2_LBDIE                 (0x1U<<6)
+#define USART_CR2_LBDL                  (0x1U<<5)
+#define USART_CR2_ADDM7                 (0x1U<<4)
+#define USART_CR2_DIS_NSS               (0x1U<<3)
+#define USART_CR2_SLVEN                 (0x1U<<0)
 
 // ISR Configuration
 
-#define USART_ISR_TXFT                  (0x1u<<27)
-#define USART_ISR_RXFT                  (0x1u<<26)
-#define USART_ISR_TCBGT                 (0x1u<<25)
-#define USART_ISR_RXFF                  (0x1u<<24)
-#define USART_ISR_TXFE                  (0x1u<<23)
-#define USART_ISR_REACK                 (0x1u<<22)
-#define USART_ISR_TEACK                 (0x1u<<21)
-#define USART_ISR_WUF                   (0x1u<<20)
-#define USART_ISR_RWU                   (0x1u<<19)
-#define USART_ISR_SBKF                  (0x1u<<18)
-#define USART_ISR_CMF                   (0x1u<<17)
-#define USART_ISR_BUSY                  (0x1u<<16)
-#define USART_ISR_ABRF                  (0x1u<<15)
-#define USART_ISR_ABRE                  (0x1u<<14)
-#define USART_ISR_UDR                   (0x1u<<13)
-#define USART_ISR_EOBF                  (0x1u<<12)
-#define USART_ISR_RTOF                  (0x1u<<11)
-#define USART_ISR_CTS                   (0x1u<<10)
-#define USART_ISR_CTSIF                 (0x1u<<9)
-#define USART_ISR_LBDF                  (0x1u<<8)
-#define USART_ISR_TXFNF                 (0x1u<<7)
-#define USART_ISR_TC                    (0x1u<<6)
-#define USART_ISR_RXFNE                 (0x1u<<5)
-#define USART_ISR_IDLE                  (0x1u<<4)
-#define USART_ISR_ORE                   (0x1u<<3)
-#define USART_ISR_NE                    (0x1u<<2)
-#define USART_ISR_FE                    (0x1u<<1)
-#define USART_ISR_PE                    (0x1u<<0)
+#define USART_ISR_TXFT                  (0x1U<<27)
+#define USART_ISR_RXFT                  (0x1U<<26)
+#define USART_ISR_TCBGT                 (0x1U<<25)
+#define USART_ISR_RXFF                  (0x1U<<24)
+#define USART_ISR_TXFE                  (0x1U<<23)
+#define USART_ISR_REACK                 (0x1U<<22)
+#define USART_ISR_TEACK                 (0x1U<<21)
+#define USART_ISR_WUF                   (0x1U<<20)
+#define USART_ISR_RWU                   (0x1U<<19)
+#define USART_ISR_SBKF                  (0x1U<<18)
+#define USART_ISR_CMF                   (0x1U<<17)
+#define USART_ISR_BUSY                  (0x1U<<16)
+#define USART_ISR_ABRF                  (0x1U<<15)
+#define USART_ISR_ABRE                  (0x1U<<14)
+#define USART_ISR_UDR                   (0x1U<<13)
+#define USART_ISR_EOBF                  (0x1U<<12)
+#define USART_ISR_RTOF                  (0x1U<<11)
+#define USART_ISR_CTS                   (0x1U<<10)
+#define USART_ISR_CTSIF                 (0x1U<<9)
+#define USART_ISR_LBDF                  (0x1U<<8)
+#define USART_ISR_TXFNF                 (0x1U<<7)
+#define USART_ISR_TC                    (0x1U<<6)
+#define USART_ISR_RXFNE                 (0x1U<<5)
+#define USART_ISR_IDLE                  (0x1U<<4)
+#define USART_ISR_ORE                   (0x1U<<3)
+#define USART_ISR_NE                    (0x1U<<2)
+#define USART_ISR_FE                    (0x1U<<1)
+#define USART_ISR_PE                    (0x1U<<0)
 
 // ICR Configuration
 
-#define USART_ICR_WUCF                  (0x1u<<20)
-#define USART_ICR_CMCF                  (0x1u<<17)
-#define USART_ICR_UDRCF                 (0x1u<<13)
-#define USART_ICR_EOBCF                 (0x1u<<12)
-#define USART_ICR_RTOCF                 (0x1u<<11)
-#define USART_ICR_CTSCF                 (0x1u<<9)
-#define USART_ICR_LBDCF                 (0x1u<<8)
-#define USART_ICR_TCBGTCF               (0x1u<<7)
-#define USART_ICR_TCCF                  (0x1u<<6)
-#define USART_ICR_TXFECF                (0x1u<<5)
-#define USART_ICR_IDLECF                (0x1u<<4)
-#define USART_ICR_ORECF                 (0x1u<<3)
-#define USART_ICR_NECF                  (0x1u<<2)
-#define USART_ICR_FECF                  (0x1u<<1)
-#define USART_ICR_PECF                  (0x1u<<0)
+#define USART_ICR_WUCF                  (0x1U<<20)
+#define USART_ICR_CMCF                  (0x1U<<17)
+#define USART_ICR_UDRCF                 (0x1U<<13)
+#define USART_ICR_EOBCF                 (0x1U<<12)
+#define USART_ICR_RTOCF                 (0x1U<<11)
+#define USART_ICR_CTSCF                 (0x1U<<9)
+#define USART_ICR_LBDCF                 (0x1U<<8)
+#define USART_ICR_TCBGTCF               (0x1U<<7)
+#define USART_ICR_TCCF                  (0x1U<<6)
+#define USART_ICR_TXFECF                (0x1U<<5)
+#define USART_ICR_IDLECF                (0x1U<<4)
+#define USART_ICR_ORECF                 (0x1U<<3)
+#define USART_ICR_NECF                  (0x1U<<2)
+#define USART_ICR_FECF                  (0x1U<<1)
+#define USART_ICR_PECF                  (0x1U<<0)
 
 // mpu additional definitions
 // --------------------------
 
-#define PERIPH_BASE                     0x40000000u
+#define PERIPH_BASE                     0x40000000U
 
 // rtc additional definitions
 // --------------------------
 
-#define RTC_WPR_UNLOCK_KEY1             0x000000CAu
-#define RTC_WPR_UNLOCK_KEY2             0x00000053u
-#define RTC_WPR_LOCK_KEY                0x000000FFu
+#define RTC_WPR_UNLOCK_KEY1             0x000000CAU
+#define RTC_WPR_UNLOCK_KEY2             0x00000053U
+#define RTC_WPR_LOCK_KEY                0x000000FFU
 
 // iwdg additional definitions
 // ---------------------------
 
 // KR Configuration
 
-#define IWDG_KR_DISABLE                 0x5555u
-#define IWDG_KR_START                   0xCCCCu
-#define IWDG_KR_RELOAD                  0xAAAAu
+#define IWDG_KR_DISABLE                 0x5555U
+#define IWDG_KR_START                   0xCCCCU
+#define IWDG_KR_RELOAD                  0xAAAAU
 
 // PR Configuration
 
-#define IWDG_PR_1_4                     0x0000u
-#define IWDG_PR_1_8                     0x0001u
-#define IWDG_PR_1_16                    0x0002u
-#define IWDG_PR_1_32                    0x0003u
-#define IWDG_PR_1_64                    0x0004u
-#define IWDG_PR_1_128                   0x0005u
-#define IWDG_PR_1_256                   0x0006u
+#define IWDG_PR_1_4                     0x0000U
+#define IWDG_PR_1_8                     0x0001U
+#define IWDG_PR_1_16                    0x0002U
+#define IWDG_PR_1_32                    0x0003U
+#define IWDG_PR_1_64                    0x0004U
+#define IWDG_PR_1_128                   0x0005U
+#define IWDG_PR_1_256                   0x0006U
 
 // otg additional definitions
 // --------------------------
 
-#define USB_OTG_GCCFG_VBDEN             (0x1u<<21)
+#define USB_OTG_GCCFG_VBDEN             (0x1U<<21)
 #define USB_OTG_FS_PERIPH_BASE          (uintptr_t)OTG_FS_GLOBAL
 
 // gpio additional definitions
@@ -209,17 +209,17 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 // - Alternate function
 // - Analog function
 
-#define KIN                             0x0u
-#define KOU                             0x1u
-#define KAL                             0x2u
-#define KAN                             0x3u
+#define KIN                             0x0U
+#define KOU                             0x1U
+#define KAL                             0x2U
+#define KAN                             0x3U
 
 // GPIO for OTYPER configuration
 // - Output Push-pull
 // - Output Open Drain
 
-#define KPP                             0x0u
-#define KOD                             0x1u
+#define KPP                             0x0U
+#define KOD                             0x1U
 
 // GPIO for OSPEEDR configuration
 // - Low speed 2-MHz
@@ -227,10 +227,10 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 // - Fast speed 50-MHz
 // - High speed 100-MHz
 
-#define K02                             0x0u
-#define K25                             0x1u
-#define K50                             0x2u
-#define K99                             0x3u
+#define K02                             0x0U
+#define K25                             0x1U
+#define K50                             0x2U
+#define K99                             0x3U
 
 // GPIO for PUPDR configuration
 // - No pull-up, pull-down
@@ -238,10 +238,10 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 // - Pull-down
 // - Reserved
 
-#define KNO                             0x0u
-#define KPU                             0x1u
-#define KPD                             0x2u
-#define KRE                             0x3u
+#define KNO                             0x0U
+#define KPU                             0x1U
+#define KPD                             0x2U
+#define KRE                             0x3U
 
 // GPIO for AFR[x] configuration
 

@@ -191,7 +191,7 @@ static  void    __attribute__ ((noinline)) local_exception(uint32_t core, uint64
     newPC += 4;
     core_putCSR(RV_CSR_MEPC, newPC);
 
-    parameter = (number == IEXC_ENVIRONMENTAL_CALL_M_MODE) ? (message) : (number);
+    parameter = (number == IEXC_ENVIRONMENTAL_CALL_M_MODE) ? message : number;
 
     go = vExce_intExcVectors[core][number];
     (*go)(core, parameter);

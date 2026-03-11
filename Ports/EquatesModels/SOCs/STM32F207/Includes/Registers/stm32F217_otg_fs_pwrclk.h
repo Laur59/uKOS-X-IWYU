@@ -61,14 +61,14 @@ typedef struct {
 } OTG_FS_PWRCLK_TypeDef;
 
 #ifdef __cplusplus
-#define OTG_FS_PWRCLK   reinterpret_cast<OTG_FS_PWRCLK_TypeDef *>(0x50000E00u)
+#define OTG_FS_PWRCLK   reinterpret_cast<OTG_FS_PWRCLK_TypeDef *>(0x50000E00U)
 
 #else
-#define OTG_FS_PWRCLK   ((OTG_FS_PWRCLK_TypeDef *)0x50000E00u)
+#define OTG_FS_PWRCLK   ((OTG_FS_PWRCLK_TypeDef *)0x50000E00U)
 #endif
 
 // FS_PCGCCTL Configuration
 
-#define OTG_FS_PWRCLK_FS_PCGCCTL_PHYSUSP    (0x1u<<4)
-#define OTG_FS_PWRCLK_FS_PCGCCTL_GATEHCLK   (0x1u<<1)
-#define OTG_FS_PWRCLK_FS_PCGCCTL_STPPCLK    (0x1u<<0)
+#define OTG_FS_PWRCLK_FS_PCGCCTL_PHYSUSP    (0x1U<<4)
+#define OTG_FS_PWRCLK_FS_PCGCCTL_GATEHCLK   (0x1U<<1)
+#define OTG_FS_PWRCLK_FS_PCGCCTL_STPPCLK    (0x1U<<0)

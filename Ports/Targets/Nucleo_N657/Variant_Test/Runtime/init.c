@@ -194,8 +194,8 @@ static  void    local_StackLimit_Configuration(void) {
     #ifdef STUB_KERN_CHECK_XSP_LIMIT_S
     REG(SCB)->CCR |= (1U<<SCB_CCR_STKOFHFNMIGN);
 
-    core_setPSPLIM((uintptr_t)linker_lowStackFirst_C0 & 0xFFFFFFF8u);
-    core_setMSPLIM((uintptr_t)linker_lowStackSystem_C0 & 0xFFFFFFF8u);
+    core_setPSPLIM((uintptr_t)linker_lowStackFirst_C0 & 0xFFFFFFF8U);
+    core_setMSPLIM((uintptr_t)linker_lowStackSystem_C0 & 0xFFFFFFF8U);
     #endif
 }
 
@@ -838,7 +838,7 @@ static  void    local_CACHE_Enable(void) {
  * - Set the power of the TCPP0203 to normal
  *
  */
-#define KI2C_ADD_TCPP0203   0x34u
+#define KI2C_ADD_TCPP0203   0x34U
 #define KTCPP0203_NB_MONO   2U
 
 static  void    local_write_TCPP0203(uint8_t addresse, uint8_t value) {

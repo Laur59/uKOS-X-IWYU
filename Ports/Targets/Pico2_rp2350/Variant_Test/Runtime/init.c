@@ -480,8 +480,8 @@ static  void    local_StackLimit_Configuration(void) {
     #ifdef STUB_KERN_CHECK_XSP_LIMIT_S
     REG(SCB)->CCR |= (1U<<SCB_CCR_STKOFHFNMIGN);
 
-    core_setPSPLIM((uintptr_t)linker_lowStackFirst_C0 & 0xFFFFFFF8u);
-    core_setMSPLIM((uintptr_t)linker_lowStackSystem_C0 & 0xFFFFFFF8u);
+    core_setPSPLIM((uintptr_t)linker_lowStackFirst_C0 & 0xFFFFFFF8U);
+    core_setMSPLIM((uintptr_t)linker_lowStackSystem_C0 & 0xFFFFFFF8U);
     #endif
 }
 

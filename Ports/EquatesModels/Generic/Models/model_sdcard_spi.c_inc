@@ -58,8 +58,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 // Definitions for the SDC commands
 
-#define KCMD                    0x40u                                   // Command type CMD
-#define KACMD                   0xC0u                                   // Command type ACMD
+#define KCMD                    0x40U                                   // Command type CMD
+#define KACMD                   0xC0U                                   // Command type ACMD
 
 #define KGO_IDLE_STATE          (KCMD + 0U)                             // GO_IDLE_STATE
 #define KSEND_OP_COND_MMC       (KCMD + 1U)                             // KSEND_OP_COND (MMC)
@@ -90,20 +90,20 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #define BADD_ERR                5U                                      // Address error
 #define BPAR_ERR                6U                                      // Parameter error
 
-#define KR1_OK                  0x00u                                   // R1 OK
+#define KR1_OK                  0x00U                                   // R1 OK
 
 // Data token
 
-#define KDATA_TOKEN_FE          0xFEu                                   // Data token for command 17, 18, 24
-#define KDATA_TOKEN_FC          0xFCu                                   // Data token for command 25
-#define KDATA_TOKEN_FD          0xFDu                                   // Data stop token for command 25
+#define KDATA_TOKEN_FE          0xFEU                                   // Data token for command 17, 18, 24
+#define KDATA_TOKEN_FC          0xFCU                                   // Data token for command 25
+#define KDATA_TOKEN_FD          0xFDU                                   // Data stop token for command 25
 
 // Data Answer
 
-#define KDATA_ACCEPTED          0x05u                                   // Data accepted
-#define KDATA_REJECTED_CRC_ERR  0x0Bu                                   // Data rejected CRC error
-#define KDATA_REJECTED_WR_ERR   0x0Du                                   // Data rejected write error
-#define KMSK_ANSWER             0x1Fu                                   // Mask
+#define KDATA_ACCEPTED          0x05U                                   // Data accepted
+#define KDATA_REJECTED_CRC_ERR  0x0BU                                   // Data rejected CRC error
+#define KDATA_REJECTED_WR_ERR   0x0DU                                   // Data rejected write error
+#define KMSK_ANSWER             0x1FU                                   // Mask
 
 // Prototypes
 
@@ -149,18 +149,18 @@ int32_t model_sdcard_readStatus(void) {
  *   - Place the SPI in a slow mode (< 400-KHz) and disable the sdcard
  *   - Generate > 80 SPI clocks
  *   - Send the KGO_IDLE_STATE (software reset)
- *     - if R1 == 0x01u OK, else, unknown sdcard
+ *     - if R1 == 0x01U OK, else, unknown sdcard
  *
  *   - Send the KSEND_IF_COND (Check the voltage range)
- *     - if R1 == 0x01u       OK, else, unknown sdcard
- *     - if R7 == 0x000001AAu OK, else, unknown sdcard
+ *     - if R1 == 0x01U       OK, else, unknown sdcard
+ *     - if R7 == 0x000001AAU OK, else, unknown sdcard
  *
- *   - Send the KSEND_OP_COND_SDC(0x40000000u) (sdcard initialisation process)
+ *   - Send the KSEND_OP_COND_SDC(0x40000000U) (sdcard initialisation process)
  *     - if R1 == 0x00u OK, else, waiting under timeout, then, unknown sdcard
  *
  *   - Send the KREAD_OCR (Read the ocr)
- *     - if R1 == 0x01u sdcard V 2.0 (Block address)
- *     - if R1 == 0x00u sdcard V 2.0 (Byte address)
+ *     - if R1 == 0x01U sdcard V 2.0 (Block address)
+ *     - if R1 == 0x00U sdcard V 2.0 (Byte address)
  *
  */
 int32_t model_sdcard_initialise(sdcard_specification_t *specification) {
@@ -170,7 +170,7 @@ int32_t model_sdcard_initialise(sdcard_specification_t *specification) {
     vSdCard = (sdcard_specification_t){ 0 };
 
     cb_speed(speed);
-    if (cb_cardInserted() == false) {
+    if (!cb_cardInserted()) {
         local_deselectRelease();
         return (KERR_STORAGE_NODEV);
     }
@@ -185,7 +185,7 @@ int32_t model_sdcard_initialise(sdcard_specification_t *specification) {
 // Send the KGO_IDLE_STATE (software reset)
 
     for (i = 0U; i < 20U; i++) {
-        (void)cb_writeRead(0xFFu);
+        (void)cb_writeRead(0xFFU);
     }
     if (local_writeCommand(KGO_IDLE_STATE, 0U) != (1U<<BIDLE)) {
         local_deselectRelease();
@@ -194,22 +194,22 @@ int32_t model_sdcard_initialise(sdcard_specification_t *specification) {
 
 // Try to determine the card model
 // Send cmd KSEND_IF_COND: No answer                    -> unknown (SD V1 not supported)
-//                         Answer match 0x1AAu          -> SD V2 byte address, or SD V2 block address
-//                         Answer does not match 0x1AAu -> Unknown
+//                         Answer match 0x1AAU          -> SD V2 byte address, or SD V2 block address
+//                         Answer does not match 0x1AAU -> Unknown
 // Send cmd KSEND_OP_COND_SDC: (Repeat until != idle)   -> initialisation phase
 
-    if (local_writeCommand(KSEND_IF_COND, 0x000001AAu) != (1U<<BIDLE)) {
+    if (local_writeCommand(KSEND_IF_COND, 0x000001AAU) != (1U<<BIDLE)) {
         local_deselectRelease();
         return (KERR_STORAGE_CANRE);
     }
 
-    for (i = 0U; i < 4U; i++) { ans[i] = cb_writeRead(0xFFu); }
-    if ((ans[2] != 0x01u) || (ans[3] != 0xAAu)) {
+    for (i = 0U; i < 4U; i++) { ans[i] = cb_writeRead(0xFFU); }
+    if ((ans[2] != 0x01u) || (ans[3] != 0xAAU)) {
         local_deselectRelease();
         return (KERR_STORAGE_CANRE);
     }
 
-    while (local_writeCommand(KSEND_OP_COND_SDC, 0x40000000u) == (1U<<BIDLE)) {
+    while (local_writeCommand(KSEND_OP_COND_SDC, 0x40000000U) == (1U<<BIDLE)) {
         kern_suspendProcess(1U);
     }
 
@@ -220,10 +220,10 @@ int32_t model_sdcard_initialise(sdcard_specification_t *specification) {
         return (KERR_STORAGE_CANRE);
     }
 
-    for (i = 0U; i < 1U; i++) {    (void)cb_writeRead(0xFFu); }
-    for (i = 0U; i < 5U; i++) { ocr[i] = cb_writeRead(0xFFu); }
-    specification->oCapacityStatus    = (ocr[0] & 0x40u) ? ((uint8_t)KSDCARD_CT_SD2 | (uint8_t)KSDCARD_CT_BLOCK) : ((uint8_t)KSDCARD_CT_SD2);
-    specification->oVoltage           = (uint16_t)(((uint32_t)ocr[1]<<8U | (ocr[2] & 0x80u))>>7U);
+    for (i = 0U; i < 1U; i++) {    (void)cb_writeRead(0xFFU); }
+    for (i = 0U; i < 5U; i++) { ocr[i] = cb_writeRead(0xFFU); }
+    specification->oCapacityStatus    = (ocr[0] & 0x40U) ? ((uint8_t)KSDCARD_CT_SD2 | (uint8_t)KSDCARD_CT_BLOCK) : ((uint8_t)KSDCARD_CT_SD2);
+    specification->oVoltage           = (uint16_t)(((uint32_t)ocr[1]<<8U | (ocr[2] & 0x80U))>>7U);
 
 // Read the CID (sdcard IDs)
 
@@ -232,8 +232,8 @@ int32_t model_sdcard_initialise(sdcard_specification_t *specification) {
         return (KERR_STORAGE_CANRE);
     }
 
-    while (cb_writeRead(0xFFu) != KDATA_TOKEN_FE) { ; }
-    for (i = 0U; i < 16U; i++) { cid[i] = cb_writeRead(0xFFu);                }
+    while (cb_writeRead(0xFFU) != KDATA_TOKEN_FE) { ; }
+    for (i = 0U; i < 16U; i++) { cid[i] = cb_writeRead(0xFFU);                }
     for (i = 0U; i <  5U; i++) { specification->oProductName[i] = cid[3U + i]; }
     specification->oProductName[5] = 0;
     specification->oManufacturer   = cid[0];
@@ -246,34 +246,34 @@ int32_t model_sdcard_initialise(sdcard_specification_t *specification) {
         return (KERR_STORAGE_CANRE);
     }
 
-    while (cb_writeRead(0xFFu) != KDATA_TOKEN_FE) { ; }
-    for (i = 0U; i < 16U; i++) { csd[i] = cb_writeRead(0xFFu); }
-    specification->oSize = (uint64_t)((((csd[7] & 0x3Fu)<<16U | (uint32_t)csd[8]<<8U | csd[9]) + 1LL) * 512U * 1024U);
+    while (cb_writeRead(0xFFU) != KDATA_TOKEN_FE) { ; }
+    for (i = 0U; i < 16U; i++) { csd[i] = cb_writeRead(0xFFU); }
+    specification->oSize = (uint64_t)((((csd[7] & 0x3FU)<<16U | (uint32_t)csd[8]<<8U | csd[9]) + 1LL) * 512U * 1024U);
 
-    switch (csd[3] & 0x07u) {
-        case 0x0u: { speed = 100000U;           break; }
-        case 0x1u: { speed = 1000000U;          break; }
-        case 0x2u: { speed = 10000000U;         break; }
-        case 0x3u: { speed = 100000000U;        break; }
+    switch (csd[3] & 0x07U) {
+        case 0x0U: { speed = 100000U;           break; }
+        case 0x1U: { speed = 1000000U;          break; }
+        case 0x2U: { speed = 10000000U;         break; }
+        case 0x3U: { speed = 100000000U;        break; }
         default:   { speed = 100000U;           break; }
     }
 
-    switch ((csd[3] & 0xF8u)>>3U) {
-        case 0x1u: { speed = speed * 10U / 10U; break; }
-        case 0x2u: { speed = speed * 12U / 10U; break; }
-        case 0x3u: { speed = speed * 13U / 10U; break; }
-        case 0x4u: { speed = speed * 15U / 10U; break; }
-        case 0x5u: { speed = speed * 20U / 10U; break; }
-        case 0x6u: { speed = speed * 25U / 10U; break; }
-        case 0x7u: { speed = speed * 30U / 10U; break; }
-        case 0x8u: { speed = speed * 35U / 10U; break; }
-        case 0x9u: { speed = speed * 40U / 10U; break; }
-        case 0xAu: { speed = speed * 45U / 10U; break; }
-        case 0xBu: { speed = speed * 50U / 10U; break; }
-        case 0xCu: { speed = speed * 55U / 10U; break; }
-        case 0xDu: { speed = speed * 60U / 10U; break; }
-        case 0xEu: { speed = speed * 70U / 10U; break; }
-        case 0xFu: { speed = speed * 80U / 10U; break; }
+    switch ((csd[3] & 0xF8U)>>3U) {
+        case 0x1U: { speed = speed * 10U / 10U; break; }
+        case 0x2U: { speed = speed * 12U / 10U; break; }
+        case 0x3U: { speed = speed * 13U / 10U; break; }
+        case 0x4U: { speed = speed * 15U / 10U; break; }
+        case 0x5U: { speed = speed * 20U / 10U; break; }
+        case 0x6U: { speed = speed * 25U / 10U; break; }
+        case 0x7U: { speed = speed * 30U / 10U; break; }
+        case 0x8U: { speed = speed * 35U / 10U; break; }
+        case 0x9U: { speed = speed * 40U / 10U; break; }
+        case 0xAU: { speed = speed * 45U / 10U; break; }
+        case 0xBU: { speed = speed * 50U / 10U; break; }
+        case 0xCU: { speed = speed * 55U / 10U; break; }
+        case 0xDU: { speed = speed * 60U / 10U; break; }
+        case 0xEU: { speed = speed * 70U / 10U; break; }
+        case 0xFU: { speed = speed * 80U / 10U; break; }
         default:   { speed = speed * 10U / 10U; break; }
     }
 
@@ -313,7 +313,7 @@ int32_t model_sdcard_read(const sdcard_specification_t *specification, uint8_t *
     uint8_t     *wkBuffer = buffer;
 
     cb_speed(specification->oSpeed);
-    if (cb_cardInserted() == false) {
+    if (!cb_cardInserted()) {
         local_deselectRelease();
         return (KERR_STORAGE_NODEV);
     }
@@ -332,12 +332,12 @@ int32_t model_sdcard_read(const sdcard_specification_t *specification, uint8_t *
     command = (wkNbSectors > 1U) ? (KREAD_MULTIPLE_BLOCK) : (KREAD_SINGLE_BLOCK);
     if (local_writeCommand(command, wkSector) == KR1_OK) {
         do {
-            if (local_readSector(wkBuffer, KSDCARD_SZ_SECTOR) == false) {
+            if (!local_readSector(wkBuffer, KSDCARD_SZ_SECTOR)) {
                 error = true;
             }
 
             wkBuffer = &wkBuffer[KSDCARD_SZ_SECTOR];
-        } while ((--wkNbSectors > 0U) && (error == false));
+        } while ((--wkNbSectors > 0U) && (!error));
 
         if (command == KREAD_MULTIPLE_BLOCK) {
             local_writeCommand(KSTOP_TRANSMISSION, 0U);
@@ -352,7 +352,7 @@ int32_t model_sdcard_read(const sdcard_specification_t *specification, uint8_t *
     uint8_t     *wkBuffer = buffer;
 
     cb_speed(specification->oSpeed);
-    if (cb_cardInserted() == false) {
+    if (!cb_cardInserted()) {
         local_deselectRelease();
         return (KERR_STORAGE_NODEV);
     }
@@ -371,7 +371,7 @@ int32_t model_sdcard_read(const sdcard_specification_t *specification, uint8_t *
         wkSector = ((specification->oCapacityStatus & (uint8_t)KSDCARD_CT_BLOCK) == 0U) ? (wkSector * KSDCARD_SZ_SECTOR) : (wkSector);
 
         if (local_writeCommand(KREAD_SINGLE_BLOCK, wkSector) == KR1_OK) {
-            if (local_readSector(wkBuffer, KSDCARD_SZ_SECTOR) == false) {
+            if (!local_readSector(wkBuffer, KSDCARD_SZ_SECTOR)) {
                 error = true;
             }
         }
@@ -382,7 +382,7 @@ int32_t model_sdcard_read(const sdcard_specification_t *specification, uint8_t *
     #endif
 
     local_deselectRelease();
-    status = (error == true) ? (KERR_STORAGE_TRANT) : (KERR_STORAGE_NOERR);
+    status = (error) ? (KERR_STORAGE_TRANT) : (KERR_STORAGE_NOERR);
     return (status);
 }
 
@@ -400,7 +400,7 @@ int32_t model_sdcard_write(const sdcard_specification_t *specification, const ui
     const   uint8_t     *wkBuffer = buffer;
 
     cb_speed(specification->oSpeed);
-    if (cb_cardInserted() == false) {
+    if (!cb_cardInserted()) {
         local_deselectRelease();
         return (KERR_STORAGE_NODEV);
     }
@@ -418,7 +418,7 @@ int32_t model_sdcard_write(const sdcard_specification_t *specification, const ui
 
     if (wkNbSectors == 1U) {
         if (local_writeCommand(KWRITE_BLOCK, wkSector) == KR1_OK) {
-            if (local_writeSector(wkBuffer, KDATA_TOKEN_FE) == false) {
+            if (!local_writeSector(wkBuffer, KDATA_TOKEN_FE)) {
                 error = true;
             }
         }
@@ -430,21 +430,21 @@ int32_t model_sdcard_write(const sdcard_specification_t *specification, const ui
         local_writeCommand(KSET_WR_BLK_ERASE_COUNT, wkNbSectors);
         if (local_writeCommand(KWRITE_MULTIPLE_BLOCK, wkSector) == KR1_OK) {
             do {
-                if (local_writeSector(wkBuffer, KDATA_TOKEN_FC) == false) {
+                if (!local_writeSector(wkBuffer, KDATA_TOKEN_FC)) {
                     error = true;
                 }
 
                 wkBuffer = &wkBuffer[KSDCARD_SZ_SECTOR];
-            } while ((--wkNbSectors > 0U) && (error == false));
+            } while ((--wkNbSectors > 0U) && (!error));
 
-            if (local_writeSector(0U, KDATA_TOKEN_FD) == false) {
+            if (!local_writeSector(0U, KDATA_TOKEN_FD)) {
                 error = true;
             }
         }
     }
 
     local_deselectRelease();
-    status = (error == true) ? (KERR_STORAGE_TRANT) : (KERR_STORAGE_NOERR);
+    status = (error) ? (KERR_STORAGE_TRANT) : (KERR_STORAGE_NOERR);
     return (status);
 }
 
@@ -510,8 +510,8 @@ static  uint8_t local_writeCommand(uint8_t command, uint32_t argument) {
 
 // Verify if it is a KACMD command
 
-    if ((wkCommand & 0x80u) != 0U) {
-        wkCommand &= 0x7Fu;
+    if ((wkCommand & 0x80U) != 0U) {
+        wkCommand &= 0x7FU;
         R1 = local_writeCommand(KAPP_CMD, 0U);
         if ((R1 & ~(1U<<BIDLE)) != 0U) {
             return (R1);
@@ -525,8 +525,8 @@ static  uint8_t local_writeCommand(uint8_t command, uint32_t argument) {
         cb_control(KSDCARD_DESELECT);
         kern_waitAtLeast(1U);
         cb_control(KSDCARD_SELECT);
-        if (local_waitReady() == false) {
-            return (0xFFu);
+        if (!local_waitReady()) {
+            return (0xFFU);
         }
 
     }
@@ -539,24 +539,24 @@ static  uint8_t local_writeCommand(uint8_t command, uint32_t argument) {
     (void)cb_writeRead((uint8_t)(argument>>8U));
     (void)cb_writeRead((uint8_t)argument);
 
-                                       crc = 0x01u;
-    if (wkCommand == KGO_IDLE_STATE) { crc = 0x95u; }
-    if (wkCommand == KSEND_IF_COND)  { crc = 0x87u; }
+                                       crc = 0x01U;
+    if (wkCommand == KGO_IDLE_STATE) { crc = 0x95U; }
+    if (wkCommand == KSEND_IF_COND)  { crc = 0x87U; }
     (void)cb_writeRead(crc);
 
 // Receive the command answer
 
     if (wkCommand == KSTOP_TRANSMISSION) {
-        (void)cb_writeRead(0xFFu);
+        (void)cb_writeRead(0xFFU);
     }
 
 // Waiting for a valid answer; try 10 attempts
 
     i = 10U;
     do {
-        R1 = cb_writeRead(0xFFu);
+        R1 = cb_writeRead(0xFFU);
         i--;
-    } while (((R1 & 0x80u) != 0U) && (i > 0));
+    } while (((R1 & 0x80U) != 0U) && (i > 0));
     return (R1);
 }
 
@@ -568,7 +568,7 @@ static  uint8_t local_writeCommand(uint8_t command, uint32_t argument) {
  *
  *   - HOST ->
  *   - CARD ->  Token  Data block     CRC
- *              0xFEu  1..2048 bytes  2 bytes
+ *              0xFEU  1..2048 bytes  2 bytes
  *
  */
 static  bool    local_readSector(uint8_t *destination, uint32_t size) {
@@ -578,7 +578,7 @@ static  bool    local_readSector(uint8_t *destination, uint32_t size) {
 
     kern_readTickCount(&time[0]);
     do {
-        if (cb_writeRead(0xFFu) == KDATA_TOKEN_FE) { break; }
+        if (cb_writeRead(0xFFU) == KDATA_TOKEN_FE) { break; }
         kern_readTickCount(&time[1]);
         if ((time[1] - time[0]) >= 1000000U) {
             return (false);
@@ -591,8 +591,8 @@ static  bool    local_readSector(uint8_t *destination, uint32_t size) {
 
     cb_readSPI(destination, (uint16_t)size);
 
-    (void)cb_writeRead(0xFFu);
-    (void)cb_writeRead(0xFFu);
+    (void)cb_writeRead(0xFFU);
+    (void)cb_writeRead(0xFFU);
     return (true);
 }
 
@@ -603,7 +603,7 @@ static  bool    local_readSector(uint8_t *destination, uint32_t size) {
  *   - Format of the answer
  *
  *   - HOST ->  W2  Token  Data block     CRC
- *                  0xFDu  1..2048 bytes  2 bytes
+ *                  0xFDU  1..2048 bytes  2 bytes
  *   - CARD ->                                    Data answer
  *                                                1 byte
  *
@@ -612,7 +612,7 @@ static  bool    local_readSector(uint8_t *destination, uint32_t size) {
  */
 static  bool    local_writeSector(const uint8_t *source, uint8_t token) {
 
-    if (local_waitReady() == false) {
+    if (!local_waitReady()) {
         return (false);
     }
 
@@ -626,10 +626,10 @@ static  bool    local_writeSector(const uint8_t *source, uint8_t token) {
 
         cb_write(source, KSDCARD_SZ_SECTOR);
 
-        (void)cb_writeRead(0xFFu);
-        (void)cb_writeRead(0xFFu);
+        (void)cb_writeRead(0xFFU);
+        (void)cb_writeRead(0xFFU);
 
-        if ((cb_writeRead(0xFFu) & KMSK_ANSWER) != KDATA_ACCEPTED) {
+        if ((cb_writeRead(0xFFU) & KMSK_ANSWER) != KDATA_ACCEPTED) {
             return (false);
         }
 
@@ -644,10 +644,10 @@ static  bool    local_writeSector(const uint8_t *source, uint8_t token) {
 static  bool    local_waitReady(void) {
     uint64_t    time[2];
 
-    (void)cb_writeRead(0xFFu);
+    (void)cb_writeRead(0xFFU);
     kern_readTickCount(&time[0]);
     do {
-        if (cb_writeRead(0xFFu) == 0xFFu) { break; }
+        if (cb_writeRead(0xFFu) == 0xFFU) { break; }
         kern_readTickCount(&time[1]);
         if ((time[1] - time[0]) >= 1000000U) {
             return (false);

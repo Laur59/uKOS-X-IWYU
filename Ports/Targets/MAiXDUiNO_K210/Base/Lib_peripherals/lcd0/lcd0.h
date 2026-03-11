@@ -87,39 +87,39 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 // LCD colors
 
-#define KBLACK          0x0000u
-#define KNAVY           0x000Fu
-#define KDARKGREEN      0x03E0u
-#define KDARKCYAN       0x03EFu
-#define KMAROON         0x7800u
-#define KPURPLE         0x780Fu
-#define KOLIVE          0x7BE0u
-#define KLIGHTGREY      0xC618u
-#define KDARKGREY       0x7BEFu
-#define KBLUE           0x001Fu
-#define KGREEN          0x07E0u
-#define KCYAN           0x07FFu
-#define KRED            0xF800u
-#define KMAGENTA        0xF81Fu
-#define KYELLOW         0xFFE0u
-#define KWHITE          0xFFFFu
-#define KORANGE         0xFD20u
-#define KGREENYELLOW    0xAFE5u
-#define KPINK           0xF81Fu
-#define KUSER_COLOR     0xAA55u
+#define KBLACK          0x0000U
+#define KNAVY           0x000FU
+#define KDARKGREEN      0x03E0U
+#define KDARKCYAN       0x03EFU
+#define KMAROON         0x7800U
+#define KPURPLE         0x780FU
+#define KOLIVE          0x7BE0U
+#define KLIGHTGREY      0xC618U
+#define KDARKGREY       0x7BEFU
+#define KBLUE           0x001FU
+#define KGREEN          0x07E0U
+#define KCYAN           0x07FFU
+#define KRED            0xF800U
+#define KMAGENTA        0xF81FU
+#define KYELLOW         0xFFE0U
+#define KWHITE          0xFFFFU
+#define KORANGE         0xFD20U
+#define KGREENYELLOW    0xAFE5U
+#define KPINK           0xF81FU
+#define KUSER_COLOR     0xAA55U
 
 // LCD directions
 
-#define KDIR_XY_RLUD    0x00u
-#define KDIR_YX_RLUD    0x20u
-#define KDIR_XY_LRUD    0x40u
-#define KDIR_YX_LRUD    0x60u
-#define KDIR_XY_RLDU    0x80u
-#define KDIR_YX_RLDU    0xA0u
-#define KDIR_XY_LRDU    0xC0u
-#define KDIR_YX_LRDU    0xE0u
-#define KDIR_XY_MASK    0x20u
-#define KDIR_MASK       0xE0u
+#define KDIR_XY_RLUD    0x00U
+#define KDIR_YX_RLUD    0x20U
+#define KDIR_XY_LRUD    0x40U
+#define KDIR_YX_LRUD    0x60U
+#define KDIR_XY_RLDU    0x80U
+#define KDIR_YX_RLDU    0xA0U
+#define KDIR_XY_LRDU    0xC0U
+#define KDIR_YX_LRDU    0xE0U
+#define KDIR_XY_MASK    0x20U
+#define KDIR_MASK       0xE0U
 
 // LCD control structure
 // ---------------------
@@ -327,7 +327,7 @@ extern  int32_t lcd0_drawPicture(uint16_t x, uint16_t y, uint16_t width, uint16_
 // -------------------
 
 //                  Negative                 Family Lib Id                          Lib Id xx (error)
-#define KLCD0ERR    ((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<24U) | KLCD0MAN)
+#define KLCD0ERR    ((uint32_t)0x80000000U | ((uint32_t)KID_FAM_PERIPHERALS<<24U) | KLCD0MAN)
 
 enum : int32_t {
     KERR_LCD0_NOERR = 0,                            // No error

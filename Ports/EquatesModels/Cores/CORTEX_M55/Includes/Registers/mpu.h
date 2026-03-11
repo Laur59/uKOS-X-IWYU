@@ -73,10 +73,10 @@ typedef struct {
 } MPU_TypeDef;
 
 #ifdef __cplusplus
-#define MPU_S   reinterpret_cast<MPU_TypeDef *>(0xE000ED90u)
-#define MPU_NS  reinterpret_cast<MPU_TypeDef *>(0xE002ED90u)
+#define MPU_S   reinterpret_cast<MPU_TypeDef *>(0xE000ED90U)
+#define MPU_NS  reinterpret_cast<MPU_TypeDef *>(0xE002ED90U)
 
 #else
-#define MPU_S   ((MPU_TypeDef *)0xE000ED90u)
-#define MPU_NS  ((MPU_TypeDef *)0xE002ED90u)
+#define MPU_S   ((MPU_TypeDef *)0xE000ED90U)
+#define MPU_NS  ((MPU_TypeDef *)0xE002ED90U)
 #endif

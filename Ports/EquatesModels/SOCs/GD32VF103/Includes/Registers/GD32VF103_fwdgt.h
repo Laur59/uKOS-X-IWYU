@@ -64,28 +64,28 @@ typedef struct {
 } FWDGT_TypeDef;
 
 #ifdef __cplusplus
-#define FWDGT   reinterpret_cast<FWDGT_TypeDef *>(0x40003000u)
+#define FWDGT   reinterpret_cast<FWDGT_TypeDef *>(0x40003000U)
 
 #else
-#define FWDGT   ((FWDGT_TypeDef *)0x40003000u)
+#define FWDGT   ((FWDGT_TypeDef *)0x40003000U)
 #endif
 
 // CTL Configuration
 
-#define FWDGT_CTL_CMD   (0xFFFFu<<0)
-#define FWDGT_CTL_CMD_0 (0x1u<<0)
+#define FWDGT_CTL_CMD   (0xFFFFU<<0)
+#define FWDGT_CTL_CMD_0 (0x1U<<0)
 
 // PSC Configuration
 
-#define FWDGT_PSC_PSC   (0x7u<<0)
-#define FWDGT_PSC_PSC_0 (0x1u<<0)
+#define FWDGT_PSC_PSC   (0x7U<<0)
+#define FWDGT_PSC_PSC_0 (0x1U<<0)
 
 // RLD Configuration
 
-#define FWDGT_RLD_RLD   (0xFFFu<<0)
-#define FWDGT_RLD_RLD_0 (0x1u<<0)
+#define FWDGT_RLD_RLD   (0xFFFU<<0)
+#define FWDGT_RLD_RLD_0 (0x1U<<0)
 
 // STAT Configuration
 
-#define FWDGT_STAT_RUD  (0x1u<<1)
-#define FWDGT_STAT_PUD  (0x1u<<0)
+#define FWDGT_STAT_RUD  (0x1U<<1)
+#define FWDGT_STAT_PUD  (0x1U<<0)

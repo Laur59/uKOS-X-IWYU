@@ -66,32 +66,32 @@ typedef struct {
 } UICR_TypeDef;
 
 #ifdef __cplusplus
-#define UICR_NS reinterpret_cast<UICR_TypeDef *>(0x01FF8000u)
+#define UICR_NS reinterpret_cast<UICR_TypeDef *>(0x01FF8000U)
 
 #else
-#define UICR_NS ((UICR_TypeDef *)0x01FF8000u)
+#define UICR_NS ((UICR_TypeDef *)0x01FF8000U)
 #endif
 
 // APPROTECT Configuration
 
-#define UICR_APPROTECT_PALL                     (0xFFFFFFFFu<<0)
-#define UICR_APPROTECT_PALL_0                   (0x1u<<0)
-#define UICR_APPROTECT_PALL_UNPROTECTED         (0x50FA50FAu<<0)
-#define UICR_APPROTECT_PALL_PROTECTED           (0x0u<<0)
+#define UICR_APPROTECT_PALL                     (0xFFFFFFFFU<<0)
+#define UICR_APPROTECT_PALL_0                   (0x1U<<0)
+#define UICR_APPROTECT_PALL_UNPROTECTED         (0x50FA50FAU<<0)
+#define UICR_APPROTECT_PALL_PROTECTED           (0x0U<<0)
 
 // ERASEPROTECT Configuration
 
-#define UICR_ERASEPROTECT_PALL                  (0xFFFFFFFFu<<0)
-#define UICR_ERASEPROTECT_PALL_0                (0x1u<<0)
-#define UICR_ERASEPROTECT_PALL_UNPROTECTED      (0xFFFFFFFFu<<0)
-#define UICR_ERASEPROTECT_PALL_PROTECTED        (0x0u<<0)
+#define UICR_ERASEPROTECT_PALL                  (0xFFFFFFFFU<<0)
+#define UICR_ERASEPROTECT_PALL_0                (0x1U<<0)
+#define UICR_ERASEPROTECT_PALL_UNPROTECTED      (0xFFFFFFFFU<<0)
+#define UICR_ERASEPROTECT_PALL_PROTECTED        (0x0U<<0)
 
 // NRFFW Configuration
 
-#define UICR_NRFFW_NRFFW                        (0xFFFFFFFFu<<0)
-#define UICR_NRFFW_NRFFW_0                      (0x1u<<0)
+#define UICR_NRFFW_NRFFW                        (0xFFFFFFFFU<<0)
+#define UICR_NRFFW_NRFFW_0                      (0x1U<<0)
 
 // CUSTOMER Configuration
 
-#define UICR_CUSTOMER_CUSTOMER                  (0xFFFFFFFFu<<0)
-#define UICR_CUSTOMER_CUSTOMER_0                (0x1u<<0)
+#define UICR_CUSTOMER_CUSTOMER                  (0xFFFFFFFFU<<0)
+#define UICR_CUSTOMER_CUSTOMER_0                (0x1U<<0)

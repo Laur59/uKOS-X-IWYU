@@ -70,7 +70,7 @@ int32_t stub_random_init(void) {
 
     model_random_soft_init();
     model_random_hard_init();
-    return (KERR_RANDOM_NOERR);
+    return KERR_RANDOM_NOERR;
 }
 
 /*

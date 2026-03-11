@@ -68,7 +68,7 @@ static  bool    vMute;
  */
 int32_t stub_led_init(void) {
 
-    return (KERR_LED_NOERR);
+    return KERR_LED_NOERR;
 }
 
 /*

@@ -157,6 +157,6 @@ typedef struct  _uart {
     volatile    uint32_t    CTR;                    //
 } uart_t;
 
-#define uart1   ((volatile  uart_t *)0x50210000u)
-#define uart2   ((volatile  uart_t *)0x50220000u)
-#define uart3   ((volatile  uart_t *)0x50230000u)
+#define uart1   ((volatile  uart_t *)0x50210000U)
+#define uart2   ((volatile  uart_t *)0x50220000U)
+#define uart3   ((volatile  uart_t *)0x50230000U)

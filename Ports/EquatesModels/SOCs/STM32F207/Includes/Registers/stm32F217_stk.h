@@ -64,30 +64,30 @@ typedef struct {
 } STK_TypeDef;
 
 #ifdef __cplusplus
-#define STK reinterpret_cast<STK_TypeDef *>(0xE000E010u)
+#define STK reinterpret_cast<STK_TypeDef *>(0xE000E010U)
 
 #else
-#define STK ((STK_TypeDef *)0xE000E010u)
+#define STK ((STK_TypeDef *)0xE000E010U)
 #endif
 
 // CTRL Configuration
 
-#define STK_CTRL_COUNTFLAG  (0x1u<<16)
-#define STK_CTRL_CLKSOURCE  (0x1u<<2)
-#define STK_CTRL_TICKINT    (0x1u<<1)
-#define STK_CTRL_ENABLE     (0x1u<<0)
+#define STK_CTRL_COUNTFLAG  (0x1U<<16)
+#define STK_CTRL_CLKSOURCE  (0x1U<<2)
+#define STK_CTRL_TICKINT    (0x1U<<1)
+#define STK_CTRL_ENABLE     (0x1U<<0)
 
 // LOAD_ Configuration
 
-#define STK_LOAD__RELOAD    (0xFFFFFFu<<0)
-#define STK_LOAD__RELOAD_0  (0x1u<<0)
+#define STK_LOAD__RELOAD    (0xFFFFFFU<<0)
+#define STK_LOAD__RELOAD_0  (0x1U<<0)
 
 // VAL Configuration
 
-#define STK_VAL_CURRENT     (0xFFFFFFu<<0)
-#define STK_VAL_CURRENT_0   (0x1u<<0)
+#define STK_VAL_CURRENT     (0xFFFFFFU<<0)
+#define STK_VAL_CURRENT_0   (0x1U<<0)
 
 // CALIB Configuration
 
-#define STK_CALIB_TENMS     (0xFFFFFFu<<0)
-#define STK_CALIB_TENMS_0   (0x1u<<0)
+#define STK_CALIB_TENMS     (0xFFFFFFU<<0)
+#define STK_CALIB_TENMS_0   (0x1U<<0)

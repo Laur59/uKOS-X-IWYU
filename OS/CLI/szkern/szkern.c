@@ -128,7 +128,7 @@ MODULE(
  *
  */
 static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
-    uint16_t    nbDeamons = 2u;
+    uint16_t    nbDeamons = 2U;
     int32_t     szTEXT, szRODATA, szDATA, szBSS;
     float64_t   szTEXTf, szRODATAf, szDATAf, szBSSf;
 

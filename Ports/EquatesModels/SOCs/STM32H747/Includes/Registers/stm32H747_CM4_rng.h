@@ -63,27 +63,27 @@ typedef struct {
 } RNG_TypeDef;
 
 #ifdef __cplusplus
-#define RNG reinterpret_cast<RNG_TypeDef *>(0x48021800u)
+#define RNG reinterpret_cast<RNG_TypeDef *>(0x48021800U)
 
 #else
-#define RNG ((RNG_TypeDef *)0x48021800u)
+#define RNG ((RNG_TypeDef *)0x48021800U)
 #endif
 
 // CR Configuration
 
-#define RNG_CR_CED      (0x1u<<5)
-#define RNG_CR_IE       (0x1u<<3)
-#define RNG_CR_RNGEN    (0x1u<<2)
+#define RNG_CR_CED      (0x1U<<5)
+#define RNG_CR_IE       (0x1U<<3)
+#define RNG_CR_RNGEN    (0x1U<<2)
 
 // SR Configuration
 
-#define RNG_SR_SEIS     (0x1u<<6)
-#define RNG_SR_CEIS     (0x1u<<5)
-#define RNG_SR_SECS     (0x1u<<2)
-#define RNG_SR_CECS     (0x1u<<1)
-#define RNG_SR_DRDY     (0x1u<<0)
+#define RNG_SR_SEIS     (0x1U<<6)
+#define RNG_SR_CEIS     (0x1U<<5)
+#define RNG_SR_SECS     (0x1U<<2)
+#define RNG_SR_CECS     (0x1U<<1)
+#define RNG_SR_DRDY     (0x1U<<0)
 
 // DR Configuration
 
-#define RNG_DR_RNDATA   (0xFFFFFFFFu<<0)
-#define RNG_DR_RNDATA_0 (0x1u<<0)
+#define RNG_DR_RNDATA   (0xFFFFFFFFU<<0)
+#define RNG_DR_RNDATA_0 (0x1U<<0)

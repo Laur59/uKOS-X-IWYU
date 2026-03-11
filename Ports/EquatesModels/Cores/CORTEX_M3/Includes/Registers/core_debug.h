@@ -63,10 +63,10 @@ typedef struct {
 } CoreDebug_TypeDef;
 
 #ifdef __cplusplus
-#define CoreDebug   reinterpret_cast<CoreDebug_TypeDef *>(0xE000EDF0u)
+#define CoreDebug   reinterpret_cast<CoreDebug_TypeDef *>(0xE000EDF0U)
 
 #else
-#define CoreDebug   ((CoreDebug_TypeDef *)0xE000EDF0u)
+#define CoreDebug   ((CoreDebug_TypeDef *)0xE000EDF0U)
 #endif
 
 // DEMCR register

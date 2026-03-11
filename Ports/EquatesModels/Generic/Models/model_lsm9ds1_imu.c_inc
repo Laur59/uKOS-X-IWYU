@@ -127,26 +127,26 @@ int32_t model_lsM9ds1imu_configure(const imuCnf_t *configure) {
 //    0 0 0 0 10 0 0  = 0x08 - High performance
 
     switch (configure->oAcceMode) {
-        case KIMU_MAX_2G:       { vSensAcce = KACCSEN2G;      reg6 = 0x63u; break; }
-        case KIMU_MAX_4G:       { vSensAcce = KACCSEN4G;      reg6 = 0x73u; break; }
-        case KIMU_MAX_8G:       { vSensAcce = KACCSEN8G;      reg6 = 0x7Bu; break; }
-        case KIMU_MAX_16G:      { vSensAcce = KACCSEN16G;     reg6 = 0x6Bu; break; }
-        default:                { vSensAcce = KACCSEN4G;      reg6 = 0x73u; break; }
+        case KIMU_MAX_2G:       { vSensAcce = KACCSEN2G;      reg6 = 0x63U; break; }
+        case KIMU_MAX_4G:       { vSensAcce = KACCSEN4G;      reg6 = 0x73U; break; }
+        case KIMU_MAX_8G:       { vSensAcce = KACCSEN8G;      reg6 = 0x7BU; break; }
+        case KIMU_MAX_16G:      { vSensAcce = KACCSEN16G;     reg6 = 0x6BU; break; }
+        default:                { vSensAcce = KACCSEN4G;      reg6 = 0x73U; break; }
     }
 
     switch (configure->oGyroMode) {
-        case KIMU_MAX_245DPS:  { vSensGyro = KGYRSEN245DPS;  reg1 = 0x60u; break; }
-        case KIMU_MAX_500DPS:  { vSensGyro = KGYRSEN500DPS;  reg1 = 0x70u; break; }
-        case KIMU_MAX_2000DPS: { vSensGyro = KGYRSEN2000DPS; reg1 = 0x78u; break; }
-        default:               { vSensGyro = KGYRSEN2000DPS; reg1 = 0x78u; break; }
+        case KIMU_MAX_245DPS:  { vSensGyro = KGYRSEN245DPS;  reg1 = 0x60U; break; }
+        case KIMU_MAX_500DPS:  { vSensGyro = KGYRSEN500DPS;  reg1 = 0x70U; break; }
+        case KIMU_MAX_2000DPS: { vSensGyro = KGYRSEN2000DPS; reg1 = 0x78U; break; }
+        default:               { vSensGyro = KGYRSEN2000DPS; reg1 = 0x78U; break; }
     }
 
     switch (configure->oMagnMode) {
-        case KIMU_MAX_4GAUSS:  { vSensMagn = KMAGSEN4GAUSS;  regx = 0x00u; break; }
-        case KIMU_MAX_8GAUSS:  { vSensMagn = KMAGSEN8GAUSS;  regx = 0x20u; break; }
-        case KIMU_MAX_12GAUSS: { vSensMagn = KMAGSEN12GAUSS; regx = 0x40u; break; }
-        case KIMU_MAX_16GAUSS: { vSensMagn = KMAGSEN16GAUSS; regx = 0x60u; break; }
-        default:               { vSensMagn = KMAGSEN4GAUSS;  regx = 0x00u; break; }
+        case KIMU_MAX_4GAUSS:  { vSensMagn = KMAGSEN4GAUSS;  regx = 0x00U; break; }
+        case KIMU_MAX_8GAUSS:  { vSensMagn = KMAGSEN8GAUSS;  regx = 0x20U; break; }
+        case KIMU_MAX_12GAUSS: { vSensMagn = KMAGSEN12GAUSS; regx = 0x40U; break; }
+        case KIMU_MAX_16GAUSS: { vSensMagn = KMAGSEN16GAUSS; regx = 0x60U; break; }
+        default:               { vSensMagn = KMAGSEN4GAUSS;  regx = 0x00U; break; }
     }
 
     cb_control(KIMU_RESERVE);

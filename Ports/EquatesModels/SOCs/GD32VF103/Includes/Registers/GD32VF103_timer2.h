@@ -92,171 +92,171 @@ typedef struct {
 } TIMER2_TypeDef;
 
 #ifdef __cplusplus
-#define TIMER2  reinterpret_cast<TIMER2_TypeDef *>(0x40000400u)
+#define TIMER2  reinterpret_cast<TIMER2_TypeDef *>(0x40000400U)
 
 #else
-#define TIMER2  ((TIMER2_TypeDef *)0x40000400u)
+#define TIMER2  ((TIMER2_TypeDef *)0x40000400U)
 #endif
 
 // CTL0 Configuration
 
-#define TIMER2_CTL0_CEN             (0x1u<<0)
-#define TIMER2_CTL0_UPDIS           (0x1u<<1)
-#define TIMER2_CTL0_UPS             (0x1u<<2)
-#define TIMER2_CTL0_SPM             (0x1u<<3)
-#define TIMER2_CTL0_DIR             (0x1u<<4)
-#define TIMER2_CTL0_CAM             (0x3u<<5)
-#define TIMER2_CTL0_CAM_0           (0x1u<<5)
-#define TIMER2_CTL0_ARSE            (0x1u<<7)
-#define TIMER2_CTL0_CKDIV           (0x3u<<8)
-#define TIMER2_CTL0_CKDIV_0         (0x1u<<8)
+#define TIMER2_CTL0_CEN             (0x1U<<0)
+#define TIMER2_CTL0_UPDIS           (0x1U<<1)
+#define TIMER2_CTL0_UPS             (0x1U<<2)
+#define TIMER2_CTL0_SPM             (0x1U<<3)
+#define TIMER2_CTL0_DIR             (0x1U<<4)
+#define TIMER2_CTL0_CAM             (0x3U<<5)
+#define TIMER2_CTL0_CAM_0           (0x1U<<5)
+#define TIMER2_CTL0_ARSE            (0x1U<<7)
+#define TIMER2_CTL0_CKDIV           (0x3U<<8)
+#define TIMER2_CTL0_CKDIV_0         (0x1U<<8)
 
 // CTL1 Configuration
 
-#define TIMER2_CTL1_DMAS            (0x1u<<3)
-#define TIMER2_CTL1_MMC             (0x7u<<4)
-#define TIMER2_CTL1_MMC_0           (0x1u<<4)
-#define TIMER2_CTL1_TI0S            (0x1u<<7)
+#define TIMER2_CTL1_DMAS            (0x1U<<3)
+#define TIMER2_CTL1_MMC             (0x7U<<4)
+#define TIMER2_CTL1_MMC_0           (0x1U<<4)
+#define TIMER2_CTL1_TI0S            (0x1U<<7)
 
 // SMCFG Configuration
 
-#define TIMER2_SMCFG_SMC            (0x7u<<0)
-#define TIMER2_SMCFG_SMC_0          (0x1u<<0)
-#define TIMER2_SMCFG_TRGS           (0x7u<<4)
-#define TIMER2_SMCFG_TRGS_0         (0x1u<<4)
-#define TIMER2_SMCFG_MSM            (0x1u<<7)
-#define TIMER2_SMCFG_ETFC           (0xFu<<8)
-#define TIMER2_SMCFG_ETFC_0         (0x1u<<8)
-#define TIMER2_SMCFG_ETPSC          (0x3u<<12)
-#define TIMER2_SMCFG_ETPSC_0        (0x1u<<12)
-#define TIMER2_SMCFG_SMC1           (0x1u<<14)
-#define TIMER2_SMCFG_ETP            (0x1u<<15)
+#define TIMER2_SMCFG_SMC            (0x7U<<0)
+#define TIMER2_SMCFG_SMC_0          (0x1U<<0)
+#define TIMER2_SMCFG_TRGS           (0x7U<<4)
+#define TIMER2_SMCFG_TRGS_0         (0x1U<<4)
+#define TIMER2_SMCFG_MSM            (0x1U<<7)
+#define TIMER2_SMCFG_ETFC           (0xFU<<8)
+#define TIMER2_SMCFG_ETFC_0         (0x1U<<8)
+#define TIMER2_SMCFG_ETPSC          (0x3U<<12)
+#define TIMER2_SMCFG_ETPSC_0        (0x1U<<12)
+#define TIMER2_SMCFG_SMC1           (0x1U<<14)
+#define TIMER2_SMCFG_ETP            (0x1U<<15)
 
 // DMAINTEN Configuration
 
-#define TIMER2_DMAINTEN_UPIE        (0x1u<<0)
-#define TIMER2_DMAINTEN_CH0IE       (0x1u<<1)
-#define TIMER2_DMAINTEN_CH1IE       (0x1u<<2)
-#define TIMER2_DMAINTEN_CH2IE       (0x1u<<3)
-#define TIMER2_DMAINTEN_CH3IE       (0x1u<<4)
-#define TIMER2_DMAINTEN_TRGIE       (0x1u<<6)
-#define TIMER2_DMAINTEN_UPDEN       (0x1u<<8)
-#define TIMER2_DMAINTEN_CH0DEN      (0x1u<<9)
-#define TIMER2_DMAINTEN_CH1DEN      (0x1u<<10)
-#define TIMER2_DMAINTEN_CH2DEN      (0x1u<<11)
-#define TIMER2_DMAINTEN_CH3DEN      (0x1u<<12)
-#define TIMER2_DMAINTEN_TRGDEN      (0x1u<<14)
+#define TIMER2_DMAINTEN_UPIE        (0x1U<<0)
+#define TIMER2_DMAINTEN_CH0IE       (0x1U<<1)
+#define TIMER2_DMAINTEN_CH1IE       (0x1U<<2)
+#define TIMER2_DMAINTEN_CH2IE       (0x1U<<3)
+#define TIMER2_DMAINTEN_CH3IE       (0x1U<<4)
+#define TIMER2_DMAINTEN_TRGIE       (0x1U<<6)
+#define TIMER2_DMAINTEN_UPDEN       (0x1U<<8)
+#define TIMER2_DMAINTEN_CH0DEN      (0x1U<<9)
+#define TIMER2_DMAINTEN_CH1DEN      (0x1U<<10)
+#define TIMER2_DMAINTEN_CH2DEN      (0x1U<<11)
+#define TIMER2_DMAINTEN_CH3DEN      (0x1U<<12)
+#define TIMER2_DMAINTEN_TRGDEN      (0x1U<<14)
 
 // INTF Configuration
 
-#define TIMER2_INTF_UPIF            (0x1u<<0)
-#define TIMER2_INTF_CH0IF           (0x1u<<1)
-#define TIMER2_INTF_CH1IF           (0x1u<<2)
-#define TIMER2_INTF_CH2IF           (0x1u<<3)
-#define TIMER2_INTF_CH3IF           (0x1u<<4)
-#define TIMER2_INTF_TRGIF           (0x1u<<6)
-#define TIMER2_INTF_CH0OF           (0x1u<<9)
-#define TIMER2_INTF_CH1OF           (0x1u<<10)
-#define TIMER2_INTF_CH2OF           (0x1u<<11)
-#define TIMER2_INTF_CH3OF           (0x1u<<12)
+#define TIMER2_INTF_UPIF            (0x1U<<0)
+#define TIMER2_INTF_CH0IF           (0x1U<<1)
+#define TIMER2_INTF_CH1IF           (0x1U<<2)
+#define TIMER2_INTF_CH2IF           (0x1U<<3)
+#define TIMER2_INTF_CH3IF           (0x1U<<4)
+#define TIMER2_INTF_TRGIF           (0x1U<<6)
+#define TIMER2_INTF_CH0OF           (0x1U<<9)
+#define TIMER2_INTF_CH1OF           (0x1U<<10)
+#define TIMER2_INTF_CH2OF           (0x1U<<11)
+#define TIMER2_INTF_CH3OF           (0x1U<<12)
 
 // SWEVG Configuration
 
-#define TIMER2_SWEVG_UPG            (0x1u<<0)
-#define TIMER2_SWEVG_CH0G           (0x1u<<1)
-#define TIMER2_SWEVG_CH1G           (0x1u<<2)
-#define TIMER2_SWEVG_CH2G           (0x1u<<3)
-#define TIMER2_SWEVG_CH3G           (0x1u<<4)
-#define TIMER2_SWEVG_TRGG           (0x1u<<6)
+#define TIMER2_SWEVG_UPG            (0x1U<<0)
+#define TIMER2_SWEVG_CH0G           (0x1U<<1)
+#define TIMER2_SWEVG_CH1G           (0x1U<<2)
+#define TIMER2_SWEVG_CH2G           (0x1U<<3)
+#define TIMER2_SWEVG_CH3G           (0x1U<<4)
+#define TIMER2_SWEVG_TRGG           (0x1U<<6)
 
 // CHCTL0 Configuration
 
-#define TIMER2_CHCTL0_CH0MS         (0x3u<<0)
-#define TIMER2_CHCTL0_CH0MS_0       (0x1u<<0)
-#define TIMER2_CHCTL0_CH0COMFEN     (0x1u<<2)
-#define TIMER2_CHCTL0_CH0COMSEN     (0x1u<<3)
-#define TIMER2_CHCTL0_CH0COMCTL     (0x7u<<4)
-#define TIMER2_CHCTL0_CH0COMCTL_0   (0x1u<<4)
-#define TIMER2_CHCTL0_CH0COMCEN     (0x1u<<7)
-#define TIMER2_CHCTL0_CH1MS         (0x3u<<8)
-#define TIMER2_CHCTL0_CH1MS_0       (0x1u<<8)
-#define TIMER2_CHCTL0_CH1COMFEN     (0x1u<<10)
-#define TIMER2_CHCTL0_CH1COMSEN     (0x1u<<11)
-#define TIMER2_CHCTL0_CH1COMCTL     (0x7u<<12)
-#define TIMER2_CHCTL0_CH1COMCTL_0   (0x1u<<12)
-#define TIMER2_CHCTL0_CH1COMCEN     (0x1u<<15)
+#define TIMER2_CHCTL0_CH0MS         (0x3U<<0)
+#define TIMER2_CHCTL0_CH0MS_0       (0x1U<<0)
+#define TIMER2_CHCTL0_CH0COMFEN     (0x1U<<2)
+#define TIMER2_CHCTL0_CH0COMSEN     (0x1U<<3)
+#define TIMER2_CHCTL0_CH0COMCTL     (0x7U<<4)
+#define TIMER2_CHCTL0_CH0COMCTL_0   (0x1U<<4)
+#define TIMER2_CHCTL0_CH0COMCEN     (0x1U<<7)
+#define TIMER2_CHCTL0_CH1MS         (0x3U<<8)
+#define TIMER2_CHCTL0_CH1MS_0       (0x1U<<8)
+#define TIMER2_CHCTL0_CH1COMFEN     (0x1U<<10)
+#define TIMER2_CHCTL0_CH1COMSEN     (0x1U<<11)
+#define TIMER2_CHCTL0_CH1COMCTL     (0x7U<<12)
+#define TIMER2_CHCTL0_CH1COMCTL_0   (0x1U<<12)
+#define TIMER2_CHCTL0_CH1COMCEN     (0x1U<<15)
 
 // CHCTL1 Configuration
 
-#define TIMER2_CHCTL1_CH2MS         (0x3u<<0)
-#define TIMER2_CHCTL1_CH2MS_0       (0x1u<<0)
-#define TIMER2_CHCTL1_CH2COMFEN     (0x1u<<2)
-#define TIMER2_CHCTL1_CH2COMSEN     (0x1u<<3)
-#define TIMER2_CHCTL1_CH2COMCTL     (0x7u<<4)
-#define TIMER2_CHCTL1_CH2COMCTL_0   (0x1u<<4)
-#define TIMER2_CHCTL1_CH2COMCEN     (0x1u<<7)
-#define TIMER2_CHCTL1_CH3MS         (0x3u<<8)
-#define TIMER2_CHCTL1_CH3MS_0       (0x1u<<8)
-#define TIMER2_CHCTL1_CH3COMFEN     (0x1u<<10)
-#define TIMER2_CHCTL1_CH3COMSEN     (0x1u<<11)
-#define TIMER2_CHCTL1_CH3COMCTL     (0x7u<<12)
-#define TIMER2_CHCTL1_CH3COMCTL_0   (0x1u<<12)
-#define TIMER2_CHCTL1_CH3COMCEN     (0x1u<<15)
+#define TIMER2_CHCTL1_CH2MS         (0x3U<<0)
+#define TIMER2_CHCTL1_CH2MS_0       (0x1U<<0)
+#define TIMER2_CHCTL1_CH2COMFEN     (0x1U<<2)
+#define TIMER2_CHCTL1_CH2COMSEN     (0x1U<<3)
+#define TIMER2_CHCTL1_CH2COMCTL     (0x7U<<4)
+#define TIMER2_CHCTL1_CH2COMCTL_0   (0x1U<<4)
+#define TIMER2_CHCTL1_CH2COMCEN     (0x1U<<7)
+#define TIMER2_CHCTL1_CH3MS         (0x3U<<8)
+#define TIMER2_CHCTL1_CH3MS_0       (0x1U<<8)
+#define TIMER2_CHCTL1_CH3COMFEN     (0x1U<<10)
+#define TIMER2_CHCTL1_CH3COMSEN     (0x1U<<11)
+#define TIMER2_CHCTL1_CH3COMCTL     (0x7U<<12)
+#define TIMER2_CHCTL1_CH3COMCTL_0   (0x1U<<12)
+#define TIMER2_CHCTL1_CH3COMCEN     (0x1U<<15)
 
 // CHCTL2 Configuration
 
-#define TIMER2_CHCTL2_CH0EN         (0x1u<<0)
-#define TIMER2_CHCTL2_CH0P          (0x1u<<1)
-#define TIMER2_CHCTL2_CH1EN         (0x1u<<4)
-#define TIMER2_CHCTL2_CH1P          (0x1u<<5)
-#define TIMER2_CHCTL2_CH2EN         (0x1u<<8)
-#define TIMER2_CHCTL2_CH2P          (0x1u<<9)
-#define TIMER2_CHCTL2_CH3EN         (0x1u<<12)
-#define TIMER2_CHCTL2_CH3P          (0x1u<<13)
+#define TIMER2_CHCTL2_CH0EN         (0x1U<<0)
+#define TIMER2_CHCTL2_CH0P          (0x1U<<1)
+#define TIMER2_CHCTL2_CH1EN         (0x1U<<4)
+#define TIMER2_CHCTL2_CH1P          (0x1U<<5)
+#define TIMER2_CHCTL2_CH2EN         (0x1U<<8)
+#define TIMER2_CHCTL2_CH2P          (0x1U<<9)
+#define TIMER2_CHCTL2_CH3EN         (0x1U<<12)
+#define TIMER2_CHCTL2_CH3P          (0x1U<<13)
 
 // CNT Configuration
 
-#define TIMER2_CNT_CNT              (0xFFFFu<<0)
-#define TIMER2_CNT_CNT_0            (0x1u<<0)
+#define TIMER2_CNT_CNT              (0xFFFFU<<0)
+#define TIMER2_CNT_CNT_0            (0x1U<<0)
 
 // PSC Configuration
 
-#define TIMER2_PSC_PSC              (0xFFFFu<<0)
-#define TIMER2_PSC_PSC_0            (0x1u<<0)
+#define TIMER2_PSC_PSC              (0xFFFFU<<0)
+#define TIMER2_PSC_PSC_0            (0x1U<<0)
 
 // CAR Configuration
 
-#define TIMER2_CAR_CARL             (0xFFFFu<<0)
-#define TIMER2_CAR_CARL_0           (0x1u<<0)
+#define TIMER2_CAR_CARL             (0xFFFFU<<0)
+#define TIMER2_CAR_CARL_0           (0x1U<<0)
 
 // CH0CV Configuration
 
-#define TIMER2_CH0CV_CH0VAL         (0xFFFFu<<0)
-#define TIMER2_CH0CV_CH0VAL_0       (0x1u<<0)
+#define TIMER2_CH0CV_CH0VAL         (0xFFFFU<<0)
+#define TIMER2_CH0CV_CH0VAL_0       (0x1U<<0)
 
 // CH1CV Configuration
 
-#define TIMER2_CH1CV_CH1VAL         (0xFFFFu<<0)
-#define TIMER2_CH1CV_CH1VAL_0       (0x1u<<0)
+#define TIMER2_CH1CV_CH1VAL         (0xFFFFU<<0)
+#define TIMER2_CH1CV_CH1VAL_0       (0x1U<<0)
 
 // CH2CV Configuration
 
-#define TIMER2_CH2CV_CH2VAL         (0xFFFFu<<0)
-#define TIMER2_CH2CV_CH2VAL_0       (0x1u<<0)
+#define TIMER2_CH2CV_CH2VAL         (0xFFFFU<<0)
+#define TIMER2_CH2CV_CH2VAL_0       (0x1U<<0)
 
 // CH3CV Configuration
 
-#define TIMER2_CH3CV_CH3VAL         (0xFFFFu<<0)
-#define TIMER2_CH3CV_CH3VAL_0       (0x1u<<0)
+#define TIMER2_CH3CV_CH3VAL         (0xFFFFU<<0)
+#define TIMER2_CH3CV_CH3VAL_0       (0x1U<<0)
 
 // DMACFG Configuration
 
-#define TIMER2_DMACFG_DMATA         (0x1Fu<<0)
-#define TIMER2_DMACFG_DMATA_0       (0x1u<<0)
-#define TIMER2_DMACFG_DMATC         (0x1Fu<<8)
-#define TIMER2_DMACFG_DMATC_0       (0x1u<<8)
+#define TIMER2_DMACFG_DMATA         (0x1FU<<0)
+#define TIMER2_DMACFG_DMATA_0       (0x1U<<0)
+#define TIMER2_DMACFG_DMATC         (0x1FU<<8)
+#define TIMER2_DMACFG_DMATC_0       (0x1U<<8)
 
 // DMATB Configuration
 
-#define TIMER2_DMATB_DMATB          (0xFFFFu<<0)
-#define TIMER2_DMATB_DMATB_0        (0x1u<<0)
+#define TIMER2_DMATB_DMATB          (0xFFFFU<<0)
+#define TIMER2_DMATB_DMATB_0        (0x1U<<0)

@@ -113,11 +113,11 @@ extern  uint32_t    vKern_nbIntImbrications;
 
 extern  uintptr_t   __stack_chk_guard;
 
-#if (UINTPTR_MAX == 0xFFFFFFFFu)
+#if (UINTPTR_MAX == 0xFFFFFFFFU)
 #define KSTACK_GARD_VALUE   0xDeadBeefu
 
 #else
-#define KSTACK_GARD_VALUE   0xDeadBeeffeeBdaeDu;
+#define KSTACK_GARD_VALUE   0xDeadBeeffeeBdaeDU;
 #endif
 
 /*
@@ -139,13 +139,13 @@ int32_t     aStart(uint32_t argc, const char_t *argv[]) {
 
     PRIVILEGE_ELEVATE;
     gdb = (vKern_nbIntImbrications != 0U) ? (true) : (false);
-    if (gdb == true) {
+    if (gdb) {
         kern_criticalSection(KEXIT_CRITICAL);
     }
 
 // Initialise the BSS region
 
-    memset(linker_stBSS, 0x00u, (size_t)((uintptr_t)linker_enBSS - (uintptr_t)linker_stBSS));
+    memset(linker_stBSS, 0x00U, (size_t)((uintptr_t)linker_enBSS - (uintptr_t)linker_stBSS));
 
 // Verify if the application is compatible with the burned OS
 
@@ -191,7 +191,7 @@ int32_t     aStart(uint32_t argc, const char_t *argv[]) {
     }
     #endif
 
-    if (gdb == true) {
+    if (gdb) {
         exit(EXIT_OS_SUCCESS);
     }
 

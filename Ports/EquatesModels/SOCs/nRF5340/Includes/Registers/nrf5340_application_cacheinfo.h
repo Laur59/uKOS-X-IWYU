@@ -316,19 +316,19 @@ typedef struct {
 } CACHEINFO_TypeDef;
 
 #ifdef __cplusplus
-#define CACHEINFO_S reinterpret_cast<CACHEINFO_TypeDef *>(0x00F08000u)
+#define CACHEINFO_S reinterpret_cast<CACHEINFO_TypeDef *>(0x00F08000U)
 
 #else
-#define CACHEINFO_S ((CACHEINFO_TypeDef *)0x00F08000u)
+#define CACHEINFO_S ((CACHEINFO_TypeDef *)0x00F08000U)
 #endif
 
 // WAY Configuration
 
-#define CACHEINFO_SET_WAY_MRU       (0x1u<<31)
-#define CACHEINFO_SET_WAY_V         (0x1u<<30)
-#define CACHEINFO_SET_WAY_TAG       (0x1FFFFu<<0)
-#define CACHEINFO_SET_WAY_TAG_0     (0x1u<<0)
-#define CACHEINFO_SET_WAY_MRU_WAY0  (0x0u<<31)
-#define CACHEINFO_SET_WAY_MRU_WAY1  (0x1u<<31)
-#define CACHEINFO_SET_WAY_V_INVALID (0x0u<<30)
-#define CACHEINFO_SET_WAY_V_VALID   (0x1u<<30)
+#define CACHEINFO_SET_WAY_MRU       (0x1U<<31)
+#define CACHEINFO_SET_WAY_V         (0x1U<<30)
+#define CACHEINFO_SET_WAY_TAG       (0x1FFFFU<<0)
+#define CACHEINFO_SET_WAY_TAG_0     (0x1U<<0)
+#define CACHEINFO_SET_WAY_MRU_WAY0  (0x0U<<31)
+#define CACHEINFO_SET_WAY_MRU_WAY1  (0x1U<<31)
+#define CACHEINFO_SET_WAY_V_INVALID (0x0U<<30)
+#define CACHEINFO_SET_WAY_V_VALID   (0x1U<<30)

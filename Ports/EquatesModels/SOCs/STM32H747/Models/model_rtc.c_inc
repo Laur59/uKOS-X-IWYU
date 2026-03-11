@@ -116,19 +116,19 @@ void    model_rtc_update(uint64_t unixTime) {
 
     kern_suspendProcess(1U);
     RTC->TR = ((uint32_t)(absHours   /  16U)<<20U)
-            | ((uint32_t)(absHours   & 0xFu)<<16U)
+            | ((uint32_t)(absHours   & 0xFU)<<16U)
             | ((uint32_t)(absMinutes /  16U)<<12U)
-            | ((uint32_t)(absMinutes & 0xFu)<<8U)
+            | ((uint32_t)(absMinutes & 0xFU)<<8U)
             | ((uint32_t)(absSeconds /  16U)<<4U)
-            | ((uint32_t)(absSeconds & 0xFu)<<0U);
+            | ((uint32_t)(absSeconds & 0xFU)<<0U);
 
     kern_suspendProcess(1U);
     RTC->DR = ((uint32_t)(absYears  / 16U )<<20U)
-            | ((uint32_t)(absYears  & 0xFu)<<16U)
+            | ((uint32_t)(absYears  & 0xFU)<<16U)
             | ((uint32_t)(absMonths / 16U )<<12U)
-            | ((uint32_t)(absMonths & 0xFu)<<8U)
+            | ((uint32_t)(absMonths & 0xFU)<<8U)
             | ((uint32_t)(absDays   / 16U )<<4U)
-            | ((uint32_t)(absDays   & 0xFu)<<0U);
+            | ((uint32_t)(absDays   & 0xFU)<<0U);
 
     kern_suspendProcess(1U);
     RTC->ISR &= (uint32_t)~RTC_ISR_INIT;

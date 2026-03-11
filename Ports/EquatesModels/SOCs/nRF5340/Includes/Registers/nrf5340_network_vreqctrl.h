@@ -64,20 +64,20 @@ typedef struct {
 } VREQCTRL_TypeDef;
 
 #ifdef __cplusplus
-#define VREQCTRL_NS reinterpret_cast<VREQCTRL_TypeDef *>(0x41004000u)
+#define VREQCTRL_NS reinterpret_cast<VREQCTRL_TypeDef *>(0x41004000U)
 
 #else
-#define VREQCTRL_NS ((VREQCTRL_TypeDef *)0x41004000u)
+#define VREQCTRL_NS ((VREQCTRL_TypeDef *)0x41004000U)
 #endif
 
 // VREQH Configuration
 
-#define VREQCTRL_VREGRADIO_VREQH_VREQH                  (0x1u<<0)
-#define VREQCTRL_VREGRADIO_VREQH_VREQH_DISABLED         (0x0u<<0)
-#define VREQCTRL_VREGRADIO_VREQH_VREQH_ENABLED          (0x1u<<0)
+#define VREQCTRL_VREGRADIO_VREQH_VREQH                  (0x1U<<0)
+#define VREQCTRL_VREGRADIO_VREQH_VREQH_DISABLED         (0x0U<<0)
+#define VREQCTRL_VREGRADIO_VREQH_VREQH_ENABLED          (0x1U<<0)
 
 // VREQHREADY Configuration
 
-#define VREQCTRL_VREGRADIO_VREQHREADY_READY             (0x1u<<0)
-#define VREQCTRL_VREGRADIO_VREQHREADY_READY_NOTREADY    (0x0u<<0)
-#define VREQCTRL_VREGRADIO_VREQHREADY_READY_READY       (0x1u<<0)
+#define VREQCTRL_VREGRADIO_VREQHREADY_READY             (0x1U<<0)
+#define VREQCTRL_VREGRADIO_VREQHREADY_READY_NOTREADY    (0x0U<<0)
+#define VREQCTRL_VREGRADIO_VREQHREADY_READY_READY       (0x1U<<0)

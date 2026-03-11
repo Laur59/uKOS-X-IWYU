@@ -158,4 +158,4 @@ typedef struct  _rtc {
     rtc_extended_t      extended;               // No. 10 (0x28): Timer extended information
 } __attribute__ ((packed, aligned (4))) rtc_t;
 
-#define rtc     ((volatile rtc_t *)0x50460000u)
+#define rtc     ((volatile rtc_t *)0x50460000U)

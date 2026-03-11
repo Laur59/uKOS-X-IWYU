@@ -59,14 +59,14 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 // Commands for the chip W25X80L
 
-#define KCMD_WR_STATUS                      0x01u                           // EEPROM write status command
-#define KCMD_WRITE                          0x02u                           // EEPROM write command
-#define KCMD_READ                           0x03u                           // EEPROM read command
-#define KCMD_WR_DISABLE                     0x04u                           // EEPROM write disable command
-#define KCMD_RD_STATUS                      0x05u                           // EEPROM read status command
-#define KCMD_WR_ENABLE                      0x06u                           // EEPROM write enable command
-#define KCMD_ERASE_SECTOR                   0x20u                           // EEPROM erase sector command
-#define KCMD_BULK_ERASE                     0xC7u                           // EEPROM bulk erase command
+#define KCMD_WR_STATUS                      0x01U                           // EEPROM write status command
+#define KCMD_WRITE                          0x02U                           // EEPROM write command
+#define KCMD_READ                           0x03U                           // EEPROM read command
+#define KCMD_WR_DISABLE                     0x04U                           // EEPROM write disable command
+#define KCMD_RD_STATUS                      0x05U                           // EEPROM read status command
+#define KCMD_WR_ENABLE                      0x06U                           // EEPROM write enable command
+#define KCMD_ERASE_SECTOR                   0x20U                           // EEPROM erase sector command
+#define KCMD_BULK_ERASE                     0xC7U                           // EEPROM bulk erase command
 
 // Status bits for the chip W25X80L
 

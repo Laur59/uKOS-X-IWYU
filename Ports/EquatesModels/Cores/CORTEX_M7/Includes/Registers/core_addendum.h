@@ -99,10 +99,10 @@ extern  uint8_t linker_##size[];                                                
     MEMO_SYNC_BARRIER;                                                                                              \
     INST_SYNC_BARRIER;                                                                                              \
                                                                                                                     \
-    MPU->CTRL = 0x00000000u;                                                                                        \
+    MPU->CTRL = 0x00000000U;                                                                                        \
                                                                                                                     \
     MPU->RNR  = regionNb;                                                                                           \
-    MPU->RBAR = ((uint32_t)linker_##start & 0xFFFFFFE0u);                                                           \
+    MPU->RBAR = ((uint32_t)linker_##start & 0xFFFFFFE0U);                                                           \
     MPU->RASR = (executable * MPU_RASR_XN)                                                                          \
               | (access * MPU_RASR_AP_0)                                                                            \
               | (tex * MPU_RASR_TEX_0)                                                                              \

@@ -86,7 +86,7 @@ MODULE(
     0                               // Execution cores
 );
 
-#define octoSpi0    ((volatile  spi_t *)0x52000000u)
+#define octoSpi0    ((volatile  spi_t *)0x52000000U)
 
 /*
  * \brief Initialise the oct0 manager
@@ -282,14 +282,14 @@ static  bool    local_DMAIsIdle(dmac_channel_number_t channel_num) {
     bool            status;
 
     chen.data = *(volatile uint64_t *)(&dmac->chen);
-    status = (((chen.data>>channel_num) & 0x1u) != 0U) ? (false) : (true);
+    status = (((chen.data>>channel_num) & 0x1U) != 0U) ? (false) : (true);
     return status;
 }
 
 static  void    local_DMAWaitIdle(dmac_channel_number_t channel_num) {
 
-    while (local_DMAIsIdle(channel_num) == false) { ; }
-    (*(volatile uint64_t *)(&dmac->channel[channel_num].intclear)) = 0xFFFFFFFFu;
+    while (!local_DMAIsIdle(channel_num)) { ; }
+    (*(volatile uint64_t *)(&dmac->channel[channel_num].intclear)) = 0xFFFFFFFFU;
 }
 
 int32_t     oct0_write(uint32_t chipSelect, const void *buffer, uint32_t szBuffer, uint32_t xferMode) {
@@ -328,7 +328,7 @@ int32_t     oct0_write(uint32_t chipSelect, const void *buffer, uint32_t szBuffe
         }
     }
 
-    octoSpi0->dmacr  = 0x2u;
+    octoSpi0->dmacr  = 0x2U;
     octoSpi0->ssienr = (1U<<(uint32_t)SPI_SSIENR_SSI_EN);
 
 // Select the DMA
@@ -340,7 +340,7 @@ int32_t     oct0_write(uint32_t chipSelect, const void *buffer, uint32_t szBuffe
 // DMA in a single mode
 // --------------------
 
-    (*(volatile uint64_t *)(&dmac->channel[DMAC_CHANNEL0].intclear)) = 0xFFFFFFFFu;
+    (*(volatile uint64_t *)(&dmac->channel[DMAC_CHANNEL0].intclear)) = 0xFFFFFFFFU;
 
 // Disable the channel
 
@@ -352,7 +352,7 @@ int32_t     oct0_write(uint32_t chipSelect, const void *buffer, uint32_t szBuffe
 // Waiting for the idle
 
     while (local_DMAIsIdle(DMAC_CHANNEL0) == 0U) { ; }
-    (*(volatile uint64_t *)(&dmac->channel[DMAC_CHANNEL0].intclear)) = 0xFFFFFFFFu;
+    (*(volatile uint64_t *)(&dmac->channel[DMAC_CHANNEL0].intclear)) = 0xFFFFFFFFU;
 
 // Set the DMA channel
 
@@ -406,8 +406,8 @@ int32_t     oct0_write(uint32_t chipSelect, const void *buffer, uint32_t szBuffe
 
     while ((octoSpi0->sr & ((1U<<(uint32_t)SPI_SR_TFE) | (1U<<(uint32_t)SPI_SR_BUSY))) != (1U<<(uint32_t)SPI_SR_TFE));
 
-    octoSpi0->ser    = 0x00u;
-    octoSpi0->ssienr = 0x00u;
+    octoSpi0->ser    = 0x00U;
+    octoSpi0->ssienr = 0x00U;
     return (KERR_OCT0_NOERR);
 }
 #endif

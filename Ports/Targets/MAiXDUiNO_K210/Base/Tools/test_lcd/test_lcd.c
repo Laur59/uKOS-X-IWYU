@@ -97,7 +97,7 @@ static  void        local_process_4(const void *argument);
 MODULE(
     Test_lcd,                                   // Module name (the first letter has to be upper case)
     KID_FAM_CLI,                                // Family (defined in the module.h)
-    (((uint32_t)'_'<<8u)+(uint32_t)'L'),        // Module identifier (defined in the module.h)
+    (((uint32_t)'_'<<8U)+(uint32_t)'L'),        // Module identifier (defined in the module.h)
     nullptr,                                    // Address of the initialisation code (early pre-init)
     prgm,                                       // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                                    // Address of the clean code (clean the module)

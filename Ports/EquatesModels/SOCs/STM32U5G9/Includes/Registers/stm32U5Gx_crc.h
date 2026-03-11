@@ -66,39 +66,39 @@ typedef struct {
 } CRC_TypeDef;
 
 #ifdef __cplusplus
-#define CRC_NS  reinterpret_cast<CRC_TypeDef *>(0x40023000u)
-#define CRC_S   reinterpret_cast<CRC_TypeDef *>(0x50023000u)
+#define CRC_NS  reinterpret_cast<CRC_TypeDef *>(0x40023000U)
+#define CRC_S   reinterpret_cast<CRC_TypeDef *>(0x50023000U)
 
 #else
-#define CRC_NS  ((CRC_TypeDef *)0x40023000u)
-#define CRC_S   ((CRC_TypeDef *)0x50023000u)
+#define CRC_NS  ((CRC_TypeDef *)0x40023000U)
+#define CRC_S   ((CRC_TypeDef *)0x50023000U)
 #endif
 
 // DR Configuration
 
-#define CRC_DR_DR           (0xFFFFFFFFu<<0)
-#define CRC_DR_DR_0         (0x1u<<0)
+#define CRC_DR_DR           (0xFFFFFFFFU<<0)
+#define CRC_DR_DR_0         (0x1U<<0)
 
 // IDR Configuration
 
-#define CRC_IDR_IDR         (0xFFFFFFFFu<<0)
-#define CRC_IDR_IDR_0       (0x1u<<0)
+#define CRC_IDR_IDR         (0xFFFFFFFFU<<0)
+#define CRC_IDR_IDR_0       (0x1U<<0)
 
 // CR Configuration
 
-#define CRC_CR_RESET        (0x1u<<0)
-#define CRC_CR_POLYSIZE     (0x3u<<3)
-#define CRC_CR_POLYSIZE_0   (0x1u<<3)
-#define CRC_CR_REV_IN       (0x3u<<5)
-#define CRC_CR_REV_IN_0     (0x1u<<5)
-#define CRC_CR_REV_OUT      (0x1u<<7)
+#define CRC_CR_RESET        (0x1U<<0)
+#define CRC_CR_POLYSIZE     (0x3U<<3)
+#define CRC_CR_POLYSIZE_0   (0x1U<<3)
+#define CRC_CR_REV_IN       (0x3U<<5)
+#define CRC_CR_REV_IN_0     (0x1U<<5)
+#define CRC_CR_REV_OUT      (0x1U<<7)
 
 // INIT Configuration
 
-#define CRC_INIT_CRC_INIT   (0xFFFFFFFFu<<0)
-#define CRC_INIT_CRC_INIT_0 (0x1u<<0)
+#define CRC_INIT_CRC_INIT   (0xFFFFFFFFU<<0)
+#define CRC_INIT_CRC_INIT_0 (0x1U<<0)
 
 // POL Configuration
 
-#define CRC_POL_POL         (0xFFFFFFFFu<<0)
-#define CRC_POL_POL_0       (0x1u<<0)
+#define CRC_POL_POL         (0xFFFFFFFFU<<0)
+#define CRC_POL_POL_0       (0x1U<<0)

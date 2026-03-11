@@ -66,45 +66,45 @@ typedef struct {
 } IWDG_TypeDef;
 
 #ifdef __cplusplus
-#define IWDG_NS reinterpret_cast<IWDG_TypeDef *>(0x40003000u)
-#define IWDG_S  reinterpret_cast<IWDG_TypeDef *>(0x50003000u)
+#define IWDG_NS reinterpret_cast<IWDG_TypeDef *>(0x40003000U)
+#define IWDG_S  reinterpret_cast<IWDG_TypeDef *>(0x50003000U)
 
 #else
-#define IWDG_NS ((IWDG_TypeDef *)0x40003000u)
-#define IWDG_S  ((IWDG_TypeDef *)0x50003000u)
+#define IWDG_NS ((IWDG_TypeDef *)0x40003000U)
+#define IWDG_S  ((IWDG_TypeDef *)0x50003000U)
 #endif
 
 // KR Configuration
 
-#define IWDG_KR_KEY         (0xFFFFu<<0)
-#define IWDG_KR_KEY_0       (0x1u<<0)
+#define IWDG_KR_KEY         (0xFFFFU<<0)
+#define IWDG_KR_KEY_0       (0x1U<<0)
 
 // PR Configuration
 
-#define IWDG_PR_PR          (0xFu<<0)
-#define IWDG_PR_PR_0        (0x1u<<0)
+#define IWDG_PR_PR          (0xFU<<0)
+#define IWDG_PR_PR_0        (0x1U<<0)
 
 // RLR Configuration
 
-#define IWDG_RLR_RL         (0xFFFu<<0)
-#define IWDG_RLR_RL_0       (0x1u<<0)
+#define IWDG_RLR_RL         (0xFFFU<<0)
+#define IWDG_RLR_RL_0       (0x1U<<0)
 
 // SR Configuration
 
-#define IWDG_SR_PVU         (0x1u<<0)
-#define IWDG_SR_RVU         (0x1u<<1)
-#define IWDG_SR_WVU         (0x1u<<2)
-#define IWDG_SR_EWU         (0x1u<<3)
-#define IWDG_SR_EWIF        (0x1u<<14)
+#define IWDG_SR_PVU         (0x1U<<0)
+#define IWDG_SR_RVU         (0x1U<<1)
+#define IWDG_SR_WVU         (0x1U<<2)
+#define IWDG_SR_EWU         (0x1U<<3)
+#define IWDG_SR_EWIF        (0x1U<<14)
 
 // WINR Configuration
 
-#define IWDG_WINR_WIN       (0xFFFu<<0)
-#define IWDG_WINR_WIN_0     (0x1u<<0)
+#define IWDG_WINR_WIN       (0xFFFU<<0)
+#define IWDG_WINR_WIN_0     (0x1U<<0)
 
 // EWCR Configuration
 
-#define IWDG_EWCR_EWIE      (0x1u<<15)
-#define IWDG_EWCR_EWIC      (0x1u<<14)
-#define IWDG_EWCR_EWIT      (0xFFFu<<0)
-#define IWDG_EWCR_EWIT_0    (0x1u<<0)
+#define IWDG_EWCR_EWIE      (0x1U<<15)
+#define IWDG_EWCR_EWIC      (0x1U<<14)
+#define IWDG_EWCR_EWIT      (0xFFFU<<0)
+#define IWDG_EWCR_EWIT_0    (0x1U<<0)

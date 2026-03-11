@@ -122,11 +122,11 @@ uint32_t    vCrt0_randomSeed;
 
 extern  uintptr_t   __stack_chk_guard;
 
-#if (UINTPTR_MAX == 0xFFFFFFFFu)
+#if (UINTPTR_MAX == 0xFFFFFFFFU)
 #define KSTACK_GARD_VALUE   0xDeadBeefu
 
 #else
-#define KSTACK_GARD_VALUE   0xDeadBeeffeeBdaeDu;
+#define KSTACK_GARD_VALUE   0xDeadBeeffeeBdaeDU;
 #endif
 
 // Prototypes

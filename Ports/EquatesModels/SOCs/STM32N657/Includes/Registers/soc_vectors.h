@@ -53,6 +53,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #pragma once
 
+#include    <stdint.h>
+
 typedef enum IRQn {
 
 // Cortex_M55 Processor Exceptions Numbers
@@ -260,6 +262,10 @@ typedef enum IRQn {
 
 #define KNB_EXCEPTIONS      14U
 #define KNB_INTERRUPTIONS   195U
+
+// Relocated interrupt vector table (aligned for VTOR)
+
+extern  uintptr_t   vVectors[KNB_EXCEPTIONS + KNB_INTERRUPTIONS];
 
 // For the core 0
 // --------------
