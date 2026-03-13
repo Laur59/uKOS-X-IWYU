@@ -41,12 +41,19 @@ message(STATUS "Using IntelRDFPMath source at ${INTELRDFPMATH_SRC_DIR}")
 
 # Collect all .c files recursively
 file(GLOB_RECURSE INTELRDFPMATH_SOURCES APPEND
-    "${INTELRDFPMATH_SRC_DIR}/bid32_*.c"
-    "${INTELRDFPMATH_SRC_DIR}/bid64_*.c"
-    "${INTELRDFPMATH_SRC_DIR}/bid_*.c"
+    "${INTELRDFPMATH_SRC_DIR}/*.c"
 )
 # Make CMake reconfigure automatically if source directory contents change
 set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${INTELRDFPMATH_SRC_DIR}")
+
+# Remove NDEBUG from build flags to match make build behavior.
+# The make build uses -Os without -DNDEBUG for all providers.
+string(REPLACE "-DNDEBUG" "" _tmp_flags "${CMAKE_C_FLAGS_MINSIZEREL}")
+set(CMAKE_C_FLAGS_MINSIZEREL "${_tmp_flags}" CACHE STRING "Flags for MinSizeRel build" FORCE)
+string(REPLACE "-DNDEBUG" "" _tmp_flags "${CMAKE_C_FLAGS_RELEASE}")
+set(CMAKE_C_FLAGS_RELEASE "${_tmp_flags}" CACHE STRING "Flags for Release build" FORCE)
+string(REPLACE "-DNDEBUG" "" _tmp_flags "${CMAKE_C_FLAGS_RELWITHDEBINFO}")
+set(CMAKE_C_FLAGS_RELWITHDEBINFO "${_tmp_flags}" CACHE STRING "Flags for RelWithDebInfo build" FORCE)
 
 # Create unique target name for CMake (to avoid conflicts when building all cores)
 # But keep output filename as libIntelRDFPMath.a
@@ -54,11 +61,6 @@ set(TARGET_LIB IntelRDFPMath_${CORE_NAME})
 add_library(${TARGET_LIB} STATIC
     ${PATH_INTELRDFPMATH}/uKOS_System/headerIntelRDFPMath.c
     ${INTELRDFPMATH_SOURCES}
-    "${INTELRDFPMATH_SRC_DIR}/bid128_2_str_tables.c"
-    "${INTELRDFPMATH_SRC_DIR}/strtod32.c"
-    "${INTELRDFPMATH_SRC_DIR}/strtod64.c"
-    "${INTELRDFPMATH_SRC_DIR}/wcstod32.c"
-    "${INTELRDFPMATH_SRC_DIR}/wcstod64.c"
 )
 
 target_include_directories(${TARGET_LIB} PRIVATE
@@ -98,6 +100,10 @@ target_compile_options(${TARGET_LIB} PRIVATE
     -Wno-unused-but-set-variable
     -Wno-uninitialized
     -Wno-char-subscripts
+    -ffunction-sections
+    -fdata-sections
+    -fno-strict-aliasing
+    -fno-builtin
     $<$<C_COMPILER_ID:GNU>:-fsingle-precision-constant>
     $<$<C_COMPILER_ID:Clang>:-cl-single-precision-constant>
 )

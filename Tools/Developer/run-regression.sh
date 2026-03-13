@@ -38,7 +38,7 @@ readonly NC=$'\033[0m'
 
 # Paths
 readonly PATH_ROOT="${0:a:h:h:h}"
-readonly PATH_ARTEFACTS="${PATH_ROOT}/artefacts"
+readonly PATH_ARTEFACTS="${PATH_ROOT:h}/artefacts"
 readonly PATH_VARIANTS_YAML="${PATH_ROOT}/Ports/Targets/variants.yaml"
 readonly PATH_APPS_YAML="${PATH_ROOT}/Applications/uKOS_Appls_Downloadable/apps.yaml"
 
