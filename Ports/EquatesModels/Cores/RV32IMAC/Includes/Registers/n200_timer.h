@@ -65,4 +65,4 @@ typedef struct {
     volatile    uint32_t    msip;
 } N200_TIMER_Type;
 
-#define N200_TIMER  ((N200_TIMER_Type *)0xD1000000u)
+#define N200_TIMER  ((N200_TIMER_Type *)0xD1000000U)

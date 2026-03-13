@@ -75,22 +75,22 @@ typedef struct {
 
 #ifdef ONLY_ONE_NVIC_S
 #ifdef __cplusplus
-#define NVIC_S  reinterpret_cast<NVIC_TypeDef *>(0xE000E100u)
-#define NVIC_NS reinterpret_cast<NVIC_TypeDef *>(0xE000E100u)
+#define NVIC_S  reinterpret_cast<NVIC_TypeDef *>(0xE000E100U)
+#define NVIC_NS reinterpret_cast<NVIC_TypeDef *>(0xE000E100U)
 
 #else
-#define NVIC_S  ((NVIC_TypeDef *)0xE000E100u)
-#define NVIC_NS ((NVIC_TypeDef *)0xE000E100u)
+#define NVIC_S  ((NVIC_TypeDef *)0xE000E100U)
+#define NVIC_NS ((NVIC_TypeDef *)0xE000E100U)
 #endif
 
 #else
 #ifdef __cplusplus
-#define NVIC_S  reinterpret_cast<NVIC_TypeDef *>(0xE000E100u)
-#define NVIC_NS reinterpret_cast<NVIC_TypeDef *>(0xE002E100u)
+#define NVIC_S  reinterpret_cast<NVIC_TypeDef *>(0xE000E100U)
+#define NVIC_NS reinterpret_cast<NVIC_TypeDef *>(0xE002E100U)
 
 #else
-#define NVIC_S  ((NVIC_TypeDef *)0xE000E100u)
-#define NVIC_NS ((NVIC_TypeDef *)0xE002E100u)
+#define NVIC_S  ((NVIC_TypeDef *)0xE000E100U)
+#define NVIC_NS ((NVIC_TypeDef *)0xE002E100U)
 #endif
 #endif
 
@@ -98,7 +98,7 @@ typedef struct {
 
 #define NVIC_VECTRESET              0U
 #define NVIC_SYSRESETREQ            2U
-#define NVIC_AIRCR_VECTKEY          (0x5FAu<<16)
+#define NVIC_AIRCR_VECTKEY          (0x5FAU<<16)
 #define NVIC_AIRCR_ENDIANESS        15U
 
 // NVIC macros
@@ -117,4 +117,4 @@ typedef struct {
 
 #define NVIC_SetPriority(IRQn, priority) \
         if (IRQn >= 0) { REG(NVIC)->IP[(uint32_t)IRQn] = (uint32_t)(((uint32_t)priority)<<(uint32_t)KNVIC_PRIORITY_SHIFT); } \
-        else           { REG(SCB)->SHP[((uint32_t)IRQn & 0xFu) - 4U] = ((uint32_t)priority<<(uint32_t)KNVIC_PRIORITY_SHIFT); }
+        else           { REG(SCB)->SHP[((uint32_t)IRQn & 0xFU) - 4U] = ((uint32_t)priority<<(uint32_t)KNVIC_PRIORITY_SHIFT); }

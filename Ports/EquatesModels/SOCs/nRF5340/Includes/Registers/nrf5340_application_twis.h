@@ -125,359 +125,359 @@ typedef struct {
 } TWIS_TypeDef;
 
 #ifdef __cplusplus
-#define TWIS0_NS    reinterpret_cast<TWIS_TypeDef *>(0x40008000u)
-#define TWIS0_S     reinterpret_cast<TWIS_TypeDef *>(0x50008000u)
-#define TWIS1_NS    reinterpret_cast<TWIS_TypeDef *>(0x40009000u)
-#define TWIS1_S     reinterpret_cast<TWIS_TypeDef *>(0x50009000u)
-#define TWIS2_NS    reinterpret_cast<TWIS_TypeDef *>(0x4000B000u)
-#define TWIS2_S     reinterpret_cast<TWIS_TypeDef *>(0x5000B000u)
-#define TWIS3_NS    reinterpret_cast<TWIS_TypeDef *>(0x4000C000u)
-#define TWIS3_S     reinterpret_cast<TWIS_TypeDef *>(0x5000C000u)
+#define TWIS0_NS    reinterpret_cast<TWIS_TypeDef *>(0x40008000U)
+#define TWIS0_S     reinterpret_cast<TWIS_TypeDef *>(0x50008000U)
+#define TWIS1_NS    reinterpret_cast<TWIS_TypeDef *>(0x40009000U)
+#define TWIS1_S     reinterpret_cast<TWIS_TypeDef *>(0x50009000U)
+#define TWIS2_NS    reinterpret_cast<TWIS_TypeDef *>(0x4000B000U)
+#define TWIS2_S     reinterpret_cast<TWIS_TypeDef *>(0x5000B000U)
+#define TWIS3_NS    reinterpret_cast<TWIS_TypeDef *>(0x4000C000U)
+#define TWIS3_S     reinterpret_cast<TWIS_TypeDef *>(0x5000C000U)
 
 #else
-#define TWIS0_NS    ((TWIS_TypeDef *)0x40008000u)
-#define TWIS0_S     ((TWIS_TypeDef *)0x50008000u)
-#define TWIS1_NS    ((TWIS_TypeDef *)0x40009000u)
-#define TWIS1_S     ((TWIS_TypeDef *)0x50009000u)
-#define TWIS2_NS    ((TWIS_TypeDef *)0x4000B000u)
-#define TWIS2_S     ((TWIS_TypeDef *)0x5000B000u)
-#define TWIS3_NS    ((TWIS_TypeDef *)0x4000C000u)
-#define TWIS3_S     ((TWIS_TypeDef *)0x5000C000u)
+#define TWIS0_NS    ((TWIS_TypeDef *)0x40008000U)
+#define TWIS0_S     ((TWIS_TypeDef *)0x50008000U)
+#define TWIS1_NS    ((TWIS_TypeDef *)0x40009000U)
+#define TWIS1_S     ((TWIS_TypeDef *)0x50009000U)
+#define TWIS2_NS    ((TWIS_TypeDef *)0x4000B000U)
+#define TWIS2_S     ((TWIS_TypeDef *)0x5000B000U)
+#define TWIS3_NS    ((TWIS_TypeDef *)0x4000C000U)
+#define TWIS3_S     ((TWIS_TypeDef *)0x5000C000U)
 #endif
 
 // TASKS_STOP Configuration
 
-#define TWIS_TASKS_STOP_TASKS_STOP                          (0x1u<<0)
-#define TWIS_TASKS_STOP_TASKS_STOP_TRIGGER                  (0x1u<<0)
+#define TWIS_TASKS_STOP_TASKS_STOP                          (0x1U<<0)
+#define TWIS_TASKS_STOP_TASKS_STOP_TRIGGER                  (0x1U<<0)
 
 // TASKS_SUSPEND Configuration
 
-#define TWIS_TASKS_SUSPEND_TASKS_SUSPEND                    (0x1u<<0)
-#define TWIS_TASKS_SUSPEND_TASKS_SUSPEND_TRIGGER            (0x1u<<0)
+#define TWIS_TASKS_SUSPEND_TASKS_SUSPEND                    (0x1U<<0)
+#define TWIS_TASKS_SUSPEND_TASKS_SUSPEND_TRIGGER            (0x1U<<0)
 
 // TASKS_RESUME Configuration
 
-#define TWIS_TASKS_RESUME_TASKS_RESUME                      (0x1u<<0)
-#define TWIS_TASKS_RESUME_TASKS_RESUME_TRIGGER              (0x1u<<0)
+#define TWIS_TASKS_RESUME_TASKS_RESUME                      (0x1U<<0)
+#define TWIS_TASKS_RESUME_TASKS_RESUME_TRIGGER              (0x1U<<0)
 
 // TASKS_PREPARERX Configuration
 
-#define TWIS_TASKS_PREPARERX_TASKS_PREPARERX                (0x1u<<0)
-#define TWIS_TASKS_PREPARERX_TASKS_PREPARERX_TRIGGER        (0x1u<<0)
+#define TWIS_TASKS_PREPARERX_TASKS_PREPARERX                (0x1U<<0)
+#define TWIS_TASKS_PREPARERX_TASKS_PREPARERX_TRIGGER        (0x1U<<0)
 
 // TASKS_PREPARETX Configuration
 
-#define TWIS_TASKS_PREPARETX_TASKS_PREPARETX                (0x1u<<0)
-#define TWIS_TASKS_PREPARETX_TASKS_PREPARETX_TRIGGER        (0x1u<<0)
+#define TWIS_TASKS_PREPARETX_TASKS_PREPARETX                (0x1U<<0)
+#define TWIS_TASKS_PREPARETX_TASKS_PREPARETX_TRIGGER        (0x1U<<0)
 
 // SUBSCRIBE_STOP Configuration
 
-#define TWIS_SUBSCRIBE_STOP_EN                              (0x1u<<31)
-#define TWIS_SUBSCRIBE_STOP_CHIDX                           (0xFFu<<0)
-#define TWIS_SUBSCRIBE_STOP_CHIDX_0                         (0x1u<<0)
-#define TWIS_SUBSCRIBE_STOP_EN_DISABLED                     (0x0u<<31)
-#define TWIS_SUBSCRIBE_STOP_EN_ENABLED                      (0x1u<<31)
+#define TWIS_SUBSCRIBE_STOP_EN                              (0x1U<<31)
+#define TWIS_SUBSCRIBE_STOP_CHIDX                           (0xFFU<<0)
+#define TWIS_SUBSCRIBE_STOP_CHIDX_0                         (0x1U<<0)
+#define TWIS_SUBSCRIBE_STOP_EN_DISABLED                     (0x0U<<31)
+#define TWIS_SUBSCRIBE_STOP_EN_ENABLED                      (0x1U<<31)
 
 // SUBSCRIBE_SUSPEND Configuration
 
-#define TWIS_SUBSCRIBE_SUSPEND_EN                           (0x1u<<31)
-#define TWIS_SUBSCRIBE_SUSPEND_CHIDX                        (0xFFu<<0)
-#define TWIS_SUBSCRIBE_SUSPEND_CHIDX_0                      (0x1u<<0)
-#define TWIS_SUBSCRIBE_SUSPEND_EN_DISABLED                  (0x0u<<31)
-#define TWIS_SUBSCRIBE_SUSPEND_EN_ENABLED                   (0x1u<<31)
+#define TWIS_SUBSCRIBE_SUSPEND_EN                           (0x1U<<31)
+#define TWIS_SUBSCRIBE_SUSPEND_CHIDX                        (0xFFU<<0)
+#define TWIS_SUBSCRIBE_SUSPEND_CHIDX_0                      (0x1U<<0)
+#define TWIS_SUBSCRIBE_SUSPEND_EN_DISABLED                  (0x0U<<31)
+#define TWIS_SUBSCRIBE_SUSPEND_EN_ENABLED                   (0x1U<<31)
 
 // SUBSCRIBE_RESUME Configuration
 
-#define TWIS_SUBSCRIBE_RESUME_EN                            (0x1u<<31)
-#define TWIS_SUBSCRIBE_RESUME_CHIDX                         (0xFFu<<0)
-#define TWIS_SUBSCRIBE_RESUME_CHIDX_0                       (0x1u<<0)
-#define TWIS_SUBSCRIBE_RESUME_EN_DISABLED                   (0x0u<<31)
-#define TWIS_SUBSCRIBE_RESUME_EN_ENABLED                    (0x1u<<31)
+#define TWIS_SUBSCRIBE_RESUME_EN                            (0x1U<<31)
+#define TWIS_SUBSCRIBE_RESUME_CHIDX                         (0xFFU<<0)
+#define TWIS_SUBSCRIBE_RESUME_CHIDX_0                       (0x1U<<0)
+#define TWIS_SUBSCRIBE_RESUME_EN_DISABLED                   (0x0U<<31)
+#define TWIS_SUBSCRIBE_RESUME_EN_ENABLED                    (0x1U<<31)
 
 // SUBSCRIBE_PREPARERX Configuration
 
-#define TWIS_SUBSCRIBE_PREPARERX_EN                         (0x1u<<31)
-#define TWIS_SUBSCRIBE_PREPARERX_CHIDX                      (0xFFu<<0)
-#define TWIS_SUBSCRIBE_PREPARERX_CHIDX_0                    (0x1u<<0)
-#define TWIS_SUBSCRIBE_PREPARERX_EN_DISABLED                (0x0u<<31)
-#define TWIS_SUBSCRIBE_PREPARERX_EN_ENABLED                 (0x1u<<31)
+#define TWIS_SUBSCRIBE_PREPARERX_EN                         (0x1U<<31)
+#define TWIS_SUBSCRIBE_PREPARERX_CHIDX                      (0xFFU<<0)
+#define TWIS_SUBSCRIBE_PREPARERX_CHIDX_0                    (0x1U<<0)
+#define TWIS_SUBSCRIBE_PREPARERX_EN_DISABLED                (0x0U<<31)
+#define TWIS_SUBSCRIBE_PREPARERX_EN_ENABLED                 (0x1U<<31)
 
 // SUBSCRIBE_PREPARETX Configuration
 
-#define TWIS_SUBSCRIBE_PREPARETX_EN                         (0x1u<<31)
-#define TWIS_SUBSCRIBE_PREPARETX_CHIDX                      (0xFFu<<0)
-#define TWIS_SUBSCRIBE_PREPARETX_CHIDX_0                    (0x1u<<0)
-#define TWIS_SUBSCRIBE_PREPARETX_EN_DISABLED                (0x0u<<31)
-#define TWIS_SUBSCRIBE_PREPARETX_EN_ENABLED                 (0x1u<<31)
+#define TWIS_SUBSCRIBE_PREPARETX_EN                         (0x1U<<31)
+#define TWIS_SUBSCRIBE_PREPARETX_CHIDX                      (0xFFU<<0)
+#define TWIS_SUBSCRIBE_PREPARETX_CHIDX_0                    (0x1U<<0)
+#define TWIS_SUBSCRIBE_PREPARETX_EN_DISABLED                (0x0U<<31)
+#define TWIS_SUBSCRIBE_PREPARETX_EN_ENABLED                 (0x1U<<31)
 
 // EVENTS_STOPPED Configuration
 
-#define TWIS_EVENTS_STOPPED_EVENTS_STOPPED                  (0x1u<<0)
-#define TWIS_EVENTS_STOPPED_EVENTS_STOPPED_NOTGENERATED     (0x0u<<0)
-#define TWIS_EVENTS_STOPPED_EVENTS_STOPPED_GENERATED        (0x1u<<0)
+#define TWIS_EVENTS_STOPPED_EVENTS_STOPPED                  (0x1U<<0)
+#define TWIS_EVENTS_STOPPED_EVENTS_STOPPED_NOTGENERATED     (0x0U<<0)
+#define TWIS_EVENTS_STOPPED_EVENTS_STOPPED_GENERATED        (0x1U<<0)
 
 // EVENTS_ERROR Configuration
 
-#define TWIS_EVENTS_ERROR_EVENTS_ERROR                      (0x1u<<0)
-#define TWIS_EVENTS_ERROR_EVENTS_ERROR_NOTGENERATED         (0x0u<<0)
-#define TWIS_EVENTS_ERROR_EVENTS_ERROR_GENERATED            (0x1u<<0)
+#define TWIS_EVENTS_ERROR_EVENTS_ERROR                      (0x1U<<0)
+#define TWIS_EVENTS_ERROR_EVENTS_ERROR_NOTGENERATED         (0x0U<<0)
+#define TWIS_EVENTS_ERROR_EVENTS_ERROR_GENERATED            (0x1U<<0)
 
 // EVENTS_RXSTARTED Configuration
 
-#define TWIS_EVENTS_RXSTARTED_EVENTS_RXSTARTED              (0x1u<<0)
-#define TWIS_EVENTS_RXSTARTED_EVENTS_RXSTARTED_NOTGENERATED (0x0u<<0)
-#define TWIS_EVENTS_RXSTARTED_EVENTS_RXSTARTED_GENERATED    (0x1u<<0)
+#define TWIS_EVENTS_RXSTARTED_EVENTS_RXSTARTED              (0x1U<<0)
+#define TWIS_EVENTS_RXSTARTED_EVENTS_RXSTARTED_NOTGENERATED (0x0U<<0)
+#define TWIS_EVENTS_RXSTARTED_EVENTS_RXSTARTED_GENERATED    (0x1U<<0)
 
 // EVENTS_TXSTARTED Configuration
 
-#define TWIS_EVENTS_TXSTARTED_EVENTS_TXSTARTED              (0x1u<<0)
-#define TWIS_EVENTS_TXSTARTED_EVENTS_TXSTARTED_NOTGENERATED (0x0u<<0)
-#define TWIS_EVENTS_TXSTARTED_EVENTS_TXSTARTED_GENERATED    (0x1u<<0)
+#define TWIS_EVENTS_TXSTARTED_EVENTS_TXSTARTED              (0x1U<<0)
+#define TWIS_EVENTS_TXSTARTED_EVENTS_TXSTARTED_NOTGENERATED (0x0U<<0)
+#define TWIS_EVENTS_TXSTARTED_EVENTS_TXSTARTED_GENERATED    (0x1U<<0)
 
 // EVENTS_WRITE Configuration
 
-#define TWIS_EVENTS_WRITE_EVENTS_WRITE                      (0x1u<<0)
-#define TWIS_EVENTS_WRITE_EVENTS_WRITE_NOTGENERATED         (0x0u<<0)
-#define TWIS_EVENTS_WRITE_EVENTS_WRITE_GENERATED            (0x1u<<0)
+#define TWIS_EVENTS_WRITE_EVENTS_WRITE                      (0x1U<<0)
+#define TWIS_EVENTS_WRITE_EVENTS_WRITE_NOTGENERATED         (0x0U<<0)
+#define TWIS_EVENTS_WRITE_EVENTS_WRITE_GENERATED            (0x1U<<0)
 
 // EVENTS_READ Configuration
 
-#define TWIS_EVENTS_READ_EVENTS_READ                        (0x1u<<0)
-#define TWIS_EVENTS_READ_EVENTS_READ_NOTGENERATED           (0x0u<<0)
-#define TWIS_EVENTS_READ_EVENTS_READ_GENERATED              (0x1u<<0)
+#define TWIS_EVENTS_READ_EVENTS_READ                        (0x1U<<0)
+#define TWIS_EVENTS_READ_EVENTS_READ_NOTGENERATED           (0x0U<<0)
+#define TWIS_EVENTS_READ_EVENTS_READ_GENERATED              (0x1U<<0)
 
 // PUBLISH_STOPPED Configuration
 
-#define TWIS_PUBLISH_STOPPED_EN                             (0x1u<<31)
-#define TWIS_PUBLISH_STOPPED_CHIDX                          (0xFFu<<0)
-#define TWIS_PUBLISH_STOPPED_CHIDX_0                        (0x1u<<0)
-#define TWIS_PUBLISH_STOPPED_EN_DISABLED                    (0x0u<<31)
-#define TWIS_PUBLISH_STOPPED_EN_ENABLED                     (0x1u<<31)
+#define TWIS_PUBLISH_STOPPED_EN                             (0x1U<<31)
+#define TWIS_PUBLISH_STOPPED_CHIDX                          (0xFFU<<0)
+#define TWIS_PUBLISH_STOPPED_CHIDX_0                        (0x1U<<0)
+#define TWIS_PUBLISH_STOPPED_EN_DISABLED                    (0x0U<<31)
+#define TWIS_PUBLISH_STOPPED_EN_ENABLED                     (0x1U<<31)
 
 // PUBLISH_ERROR Configuration
 
-#define TWIS_PUBLISH_ERROR_EN                               (0x1u<<31)
-#define TWIS_PUBLISH_ERROR_CHIDX                            (0xFFu<<0)
-#define TWIS_PUBLISH_ERROR_CHIDX_0                          (0x1u<<0)
-#define TWIS_PUBLISH_ERROR_EN_DISABLED                      (0x0u<<31)
-#define TWIS_PUBLISH_ERROR_EN_ENABLED                       (0x1u<<31)
+#define TWIS_PUBLISH_ERROR_EN                               (0x1U<<31)
+#define TWIS_PUBLISH_ERROR_CHIDX                            (0xFFU<<0)
+#define TWIS_PUBLISH_ERROR_CHIDX_0                          (0x1U<<0)
+#define TWIS_PUBLISH_ERROR_EN_DISABLED                      (0x0U<<31)
+#define TWIS_PUBLISH_ERROR_EN_ENABLED                       (0x1U<<31)
 
 // PUBLISH_RXSTARTED Configuration
 
-#define TWIS_PUBLISH_RXSTARTED_EN                           (0x1u<<31)
-#define TWIS_PUBLISH_RXSTARTED_CHIDX                        (0xFFu<<0)
-#define TWIS_PUBLISH_RXSTARTED_CHIDX_0                      (0x1u<<0)
-#define TWIS_PUBLISH_RXSTARTED_EN_DISABLED                  (0x0u<<31)
-#define TWIS_PUBLISH_RXSTARTED_EN_ENABLED                   (0x1u<<31)
+#define TWIS_PUBLISH_RXSTARTED_EN                           (0x1U<<31)
+#define TWIS_PUBLISH_RXSTARTED_CHIDX                        (0xFFU<<0)
+#define TWIS_PUBLISH_RXSTARTED_CHIDX_0                      (0x1U<<0)
+#define TWIS_PUBLISH_RXSTARTED_EN_DISABLED                  (0x0U<<31)
+#define TWIS_PUBLISH_RXSTARTED_EN_ENABLED                   (0x1U<<31)
 
 // PUBLISH_TXSTARTED Configuration
 
-#define TWIS_PUBLISH_TXSTARTED_EN                           (0x1u<<31)
-#define TWIS_PUBLISH_TXSTARTED_CHIDX                        (0xFFu<<0)
-#define TWIS_PUBLISH_TXSTARTED_CHIDX_0                      (0x1u<<0)
-#define TWIS_PUBLISH_TXSTARTED_EN_DISABLED                  (0x0u<<31)
-#define TWIS_PUBLISH_TXSTARTED_EN_ENABLED                   (0x1u<<31)
+#define TWIS_PUBLISH_TXSTARTED_EN                           (0x1U<<31)
+#define TWIS_PUBLISH_TXSTARTED_CHIDX                        (0xFFU<<0)
+#define TWIS_PUBLISH_TXSTARTED_CHIDX_0                      (0x1U<<0)
+#define TWIS_PUBLISH_TXSTARTED_EN_DISABLED                  (0x0U<<31)
+#define TWIS_PUBLISH_TXSTARTED_EN_ENABLED                   (0x1U<<31)
 
 // PUBLISH_WRITE Configuration
 
-#define TWIS_PUBLISH_WRITE_EN                               (0x1u<<31)
-#define TWIS_PUBLISH_WRITE_CHIDX                            (0xFFu<<0)
-#define TWIS_PUBLISH_WRITE_CHIDX_0                          (0x1u<<0)
-#define TWIS_PUBLISH_WRITE_EN_DISABLED                      (0x0u<<31)
-#define TWIS_PUBLISH_WRITE_EN_ENABLED                       (0x1u<<31)
+#define TWIS_PUBLISH_WRITE_EN                               (0x1U<<31)
+#define TWIS_PUBLISH_WRITE_CHIDX                            (0xFFU<<0)
+#define TWIS_PUBLISH_WRITE_CHIDX_0                          (0x1U<<0)
+#define TWIS_PUBLISH_WRITE_EN_DISABLED                      (0x0U<<31)
+#define TWIS_PUBLISH_WRITE_EN_ENABLED                       (0x1U<<31)
 
 // PUBLISH_READ Configuration
 
-#define TWIS_PUBLISH_READ_EN                                (0x1u<<31)
-#define TWIS_PUBLISH_READ_CHIDX                             (0xFFu<<0)
-#define TWIS_PUBLISH_READ_CHIDX_0                           (0x1u<<0)
-#define TWIS_PUBLISH_READ_EN_DISABLED                       (0x0u<<31)
-#define TWIS_PUBLISH_READ_EN_ENABLED                        (0x1u<<31)
+#define TWIS_PUBLISH_READ_EN                                (0x1U<<31)
+#define TWIS_PUBLISH_READ_CHIDX                             (0xFFU<<0)
+#define TWIS_PUBLISH_READ_CHIDX_0                           (0x1U<<0)
+#define TWIS_PUBLISH_READ_EN_DISABLED                       (0x0U<<31)
+#define TWIS_PUBLISH_READ_EN_ENABLED                        (0x1U<<31)
 
 // SHORTS Configuration
 
-#define TWIS_SHORTS_READ_SUSPEND                            (0x1u<<14)
-#define TWIS_SHORTS_WRITE_SUSPEND                           (0x1u<<13)
-#define TWIS_SHORTS_READ_SUSPEND_DISABLED                   (0x0u<<14)
-#define TWIS_SHORTS_READ_SUSPEND_ENABLED                    (0x1u<<14)
-#define TWIS_SHORTS_WRITE_SUSPEND_DISABLED                  (0x0u<<13)
-#define TWIS_SHORTS_WRITE_SUSPEND_ENABLED                   (0x1u<<13)
+#define TWIS_SHORTS_READ_SUSPEND                            (0x1U<<14)
+#define TWIS_SHORTS_WRITE_SUSPEND                           (0x1U<<13)
+#define TWIS_SHORTS_READ_SUSPEND_DISABLED                   (0x0U<<14)
+#define TWIS_SHORTS_READ_SUSPEND_ENABLED                    (0x1U<<14)
+#define TWIS_SHORTS_WRITE_SUSPEND_DISABLED                  (0x0U<<13)
+#define TWIS_SHORTS_WRITE_SUSPEND_ENABLED                   (0x1U<<13)
 
 // INTEN Configuration
 
-#define TWIS_INTEN_READ                                     (0x1u<<26)
-#define TWIS_INTEN_WRITE                                    (0x1u<<25)
-#define TWIS_INTEN_TXSTARTED                                (0x1u<<20)
-#define TWIS_INTEN_RXSTARTED                                (0x1u<<19)
-#define TWIS_INTEN_ERROR                                    (0x1u<<9)
-#define TWIS_INTEN_STOPPED                                  (0x1u<<1)
-#define TWIS_INTEN_READ_DISABLED                            (0x0u<<26)
-#define TWIS_INTEN_READ_ENABLED                             (0x1u<<26)
-#define TWIS_INTEN_WRITE_DISABLED                           (0x0u<<25)
-#define TWIS_INTEN_WRITE_ENABLED                            (0x1u<<25)
-#define TWIS_INTEN_TXSTARTED_DISABLED                       (0x0u<<20)
-#define TWIS_INTEN_TXSTARTED_ENABLED                        (0x1u<<20)
-#define TWIS_INTEN_RXSTARTED_DISABLED                       (0x0u<<19)
-#define TWIS_INTEN_RXSTARTED_ENABLED                        (0x1u<<19)
-#define TWIS_INTEN_ERROR_DISABLED                           (0x0u<<9)
-#define TWIS_INTEN_ERROR_ENABLED                            (0x1u<<9)
-#define TWIS_INTEN_STOPPED_DISABLED                         (0x0u<<1)
-#define TWIS_INTEN_STOPPED_ENABLED                          (0x1u<<1)
+#define TWIS_INTEN_READ                                     (0x1U<<26)
+#define TWIS_INTEN_WRITE                                    (0x1U<<25)
+#define TWIS_INTEN_TXSTARTED                                (0x1U<<20)
+#define TWIS_INTEN_RXSTARTED                                (0x1U<<19)
+#define TWIS_INTEN_ERROR                                    (0x1U<<9)
+#define TWIS_INTEN_STOPPED                                  (0x1U<<1)
+#define TWIS_INTEN_READ_DISABLED                            (0x0U<<26)
+#define TWIS_INTEN_READ_ENABLED                             (0x1U<<26)
+#define TWIS_INTEN_WRITE_DISABLED                           (0x0U<<25)
+#define TWIS_INTEN_WRITE_ENABLED                            (0x1U<<25)
+#define TWIS_INTEN_TXSTARTED_DISABLED                       (0x0U<<20)
+#define TWIS_INTEN_TXSTARTED_ENABLED                        (0x1U<<20)
+#define TWIS_INTEN_RXSTARTED_DISABLED                       (0x0U<<19)
+#define TWIS_INTEN_RXSTARTED_ENABLED                        (0x1U<<19)
+#define TWIS_INTEN_ERROR_DISABLED                           (0x0U<<9)
+#define TWIS_INTEN_ERROR_ENABLED                            (0x1U<<9)
+#define TWIS_INTEN_STOPPED_DISABLED                         (0x0U<<1)
+#define TWIS_INTEN_STOPPED_ENABLED                          (0x1U<<1)
 
 // INTENSET Configuration
 
-#define TWIS_INTENSET_READ                                  (0x1u<<26)
-#define TWIS_INTENSET_WRITE                                 (0x1u<<25)
-#define TWIS_INTENSET_TXSTARTED                             (0x1u<<20)
-#define TWIS_INTENSET_RXSTARTED                             (0x1u<<19)
-#define TWIS_INTENSET_ERROR                                 (0x1u<<9)
-#define TWIS_INTENSET_STOPPED                               (0x1u<<1)
-#define TWIS_INTENSET_READ_DISABLED                         (0x0u<<26)
-#define TWIS_INTENSET_READ_ENABLED                          (0x1u<<26)
-#define TWIS_INTENSET_READ_SET                              (0x1u<<26)
-#define TWIS_INTENSET_WRITE_DISABLED                        (0x0u<<25)
-#define TWIS_INTENSET_WRITE_ENABLED                         (0x1u<<25)
-#define TWIS_INTENSET_WRITE_SET                             (0x1u<<25)
-#define TWIS_INTENSET_TXSTARTED_DISABLED                    (0x0u<<20)
-#define TWIS_INTENSET_TXSTARTED_ENABLED                     (0x1u<<20)
-#define TWIS_INTENSET_TXSTARTED_SET                         (0x1u<<20)
-#define TWIS_INTENSET_RXSTARTED_DISABLED                    (0x0u<<19)
-#define TWIS_INTENSET_RXSTARTED_ENABLED                     (0x1u<<19)
-#define TWIS_INTENSET_RXSTARTED_SET                         (0x1u<<19)
-#define TWIS_INTENSET_ERROR_DISABLED                        (0x0u<<9)
-#define TWIS_INTENSET_ERROR_ENABLED                         (0x1u<<9)
-#define TWIS_INTENSET_ERROR_SET                             (0x1u<<9)
-#define TWIS_INTENSET_STOPPED_DISABLED                      (0x0u<<1)
-#define TWIS_INTENSET_STOPPED_ENABLED                       (0x1u<<1)
-#define TWIS_INTENSET_STOPPED_SET                           (0x1u<<1)
+#define TWIS_INTENSET_READ                                  (0x1U<<26)
+#define TWIS_INTENSET_WRITE                                 (0x1U<<25)
+#define TWIS_INTENSET_TXSTARTED                             (0x1U<<20)
+#define TWIS_INTENSET_RXSTARTED                             (0x1U<<19)
+#define TWIS_INTENSET_ERROR                                 (0x1U<<9)
+#define TWIS_INTENSET_STOPPED                               (0x1U<<1)
+#define TWIS_INTENSET_READ_DISABLED                         (0x0U<<26)
+#define TWIS_INTENSET_READ_ENABLED                          (0x1U<<26)
+#define TWIS_INTENSET_READ_SET                              (0x1U<<26)
+#define TWIS_INTENSET_WRITE_DISABLED                        (0x0U<<25)
+#define TWIS_INTENSET_WRITE_ENABLED                         (0x1U<<25)
+#define TWIS_INTENSET_WRITE_SET                             (0x1U<<25)
+#define TWIS_INTENSET_TXSTARTED_DISABLED                    (0x0U<<20)
+#define TWIS_INTENSET_TXSTARTED_ENABLED                     (0x1U<<20)
+#define TWIS_INTENSET_TXSTARTED_SET                         (0x1U<<20)
+#define TWIS_INTENSET_RXSTARTED_DISABLED                    (0x0U<<19)
+#define TWIS_INTENSET_RXSTARTED_ENABLED                     (0x1U<<19)
+#define TWIS_INTENSET_RXSTARTED_SET                         (0x1U<<19)
+#define TWIS_INTENSET_ERROR_DISABLED                        (0x0U<<9)
+#define TWIS_INTENSET_ERROR_ENABLED                         (0x1U<<9)
+#define TWIS_INTENSET_ERROR_SET                             (0x1U<<9)
+#define TWIS_INTENSET_STOPPED_DISABLED                      (0x0U<<1)
+#define TWIS_INTENSET_STOPPED_ENABLED                       (0x1U<<1)
+#define TWIS_INTENSET_STOPPED_SET                           (0x1U<<1)
 
 // INTENCLR Configuration
 
-#define TWIS_INTENCLR_READ                                  (0x1u<<26)
-#define TWIS_INTENCLR_WRITE                                 (0x1u<<25)
-#define TWIS_INTENCLR_TXSTARTED                             (0x1u<<20)
-#define TWIS_INTENCLR_RXSTARTED                             (0x1u<<19)
-#define TWIS_INTENCLR_ERROR                                 (0x1u<<9)
-#define TWIS_INTENCLR_STOPPED                               (0x1u<<1)
-#define TWIS_INTENCLR_READ_DISABLED                         (0x0u<<26)
-#define TWIS_INTENCLR_READ_ENABLED                          (0x1u<<26)
-#define TWIS_INTENCLR_READ_CLEAR                            (0x1u<<26)
-#define TWIS_INTENCLR_WRITE_DISABLED                        (0x0u<<25)
-#define TWIS_INTENCLR_WRITE_ENABLED                         (0x1u<<25)
-#define TWIS_INTENCLR_WRITE_CLEAR                           (0x1u<<25)
-#define TWIS_INTENCLR_TXSTARTED_DISABLED                    (0x0u<<20)
-#define TWIS_INTENCLR_TXSTARTED_ENABLED                     (0x1u<<20)
-#define TWIS_INTENCLR_TXSTARTED_CLEAR                       (0x1u<<20)
-#define TWIS_INTENCLR_RXSTARTED_DISABLED                    (0x0u<<19)
-#define TWIS_INTENCLR_RXSTARTED_ENABLED                     (0x1u<<19)
-#define TWIS_INTENCLR_RXSTARTED_CLEAR                       (0x1u<<19)
-#define TWIS_INTENCLR_ERROR_DISABLED                        (0x0u<<9)
-#define TWIS_INTENCLR_ERROR_ENABLED                         (0x1u<<9)
-#define TWIS_INTENCLR_ERROR_CLEAR                           (0x1u<<9)
-#define TWIS_INTENCLR_STOPPED_DISABLED                      (0x0u<<1)
-#define TWIS_INTENCLR_STOPPED_ENABLED                       (0x1u<<1)
-#define TWIS_INTENCLR_STOPPED_CLEAR                         (0x1u<<1)
+#define TWIS_INTENCLR_READ                                  (0x1U<<26)
+#define TWIS_INTENCLR_WRITE                                 (0x1U<<25)
+#define TWIS_INTENCLR_TXSTARTED                             (0x1U<<20)
+#define TWIS_INTENCLR_RXSTARTED                             (0x1U<<19)
+#define TWIS_INTENCLR_ERROR                                 (0x1U<<9)
+#define TWIS_INTENCLR_STOPPED                               (0x1U<<1)
+#define TWIS_INTENCLR_READ_DISABLED                         (0x0U<<26)
+#define TWIS_INTENCLR_READ_ENABLED                          (0x1U<<26)
+#define TWIS_INTENCLR_READ_CLEAR                            (0x1U<<26)
+#define TWIS_INTENCLR_WRITE_DISABLED                        (0x0U<<25)
+#define TWIS_INTENCLR_WRITE_ENABLED                         (0x1U<<25)
+#define TWIS_INTENCLR_WRITE_CLEAR                           (0x1U<<25)
+#define TWIS_INTENCLR_TXSTARTED_DISABLED                    (0x0U<<20)
+#define TWIS_INTENCLR_TXSTARTED_ENABLED                     (0x1U<<20)
+#define TWIS_INTENCLR_TXSTARTED_CLEAR                       (0x1U<<20)
+#define TWIS_INTENCLR_RXSTARTED_DISABLED                    (0x0U<<19)
+#define TWIS_INTENCLR_RXSTARTED_ENABLED                     (0x1U<<19)
+#define TWIS_INTENCLR_RXSTARTED_CLEAR                       (0x1U<<19)
+#define TWIS_INTENCLR_ERROR_DISABLED                        (0x0U<<9)
+#define TWIS_INTENCLR_ERROR_ENABLED                         (0x1U<<9)
+#define TWIS_INTENCLR_ERROR_CLEAR                           (0x1U<<9)
+#define TWIS_INTENCLR_STOPPED_DISABLED                      (0x0U<<1)
+#define TWIS_INTENCLR_STOPPED_ENABLED                       (0x1U<<1)
+#define TWIS_INTENCLR_STOPPED_CLEAR                         (0x1U<<1)
 
 // ERRORSRC Configuration
 
-#define TWIS_ERRORSRC_OVERREAD                              (0x1u<<3)
-#define TWIS_ERRORSRC_DNACK                                 (0x1u<<2)
-#define TWIS_ERRORSRC_OVERFLOW                              (0x1u<<0)
-#define TWIS_ERRORSRC_OVERREAD_NOTDETECTED                  (0x0u<<3)
-#define TWIS_ERRORSRC_OVERREAD_DETECTED                     (0x1u<<3)
-#define TWIS_ERRORSRC_DNACK_NOTRECEIVED                     (0x0u<<2)
-#define TWIS_ERRORSRC_DNACK_RECEIVED                        (0x1u<<2)
-#define TWIS_ERRORSRC_OVERFLOW_NOTDETECTED                  (0x0u<<0)
-#define TWIS_ERRORSRC_OVERFLOW_DETECTED                     (0x1u<<0)
+#define TWIS_ERRORSRC_OVERREAD                              (0x1U<<3)
+#define TWIS_ERRORSRC_DNACK                                 (0x1U<<2)
+#define TWIS_ERRORSRC_OVERFLOW                              (0x1U<<0)
+#define TWIS_ERRORSRC_OVERREAD_NOTDETECTED                  (0x0U<<3)
+#define TWIS_ERRORSRC_OVERREAD_DETECTED                     (0x1U<<3)
+#define TWIS_ERRORSRC_DNACK_NOTRECEIVED                     (0x0U<<2)
+#define TWIS_ERRORSRC_DNACK_RECEIVED                        (0x1U<<2)
+#define TWIS_ERRORSRC_OVERFLOW_NOTDETECTED                  (0x0U<<0)
+#define TWIS_ERRORSRC_OVERFLOW_DETECTED                     (0x1U<<0)
 
 // MATCH Configuration
 
-#define TWIS_MATCH_MATCH                                    (0x1u<<0)
+#define TWIS_MATCH_MATCH                                    (0x1U<<0)
 
 // ENABLE Configuration
 
-#define TWIS_ENABLE_ENABLE                                  (0xFu<<0)
-#define TWIS_ENABLE_ENABLE_0                                (0x1u<<0)
-#define TWIS_ENABLE_ENABLE_DISABLED                         (0x0u<<0)
-#define TWIS_ENABLE_ENABLE_ENABLED                          (0x9u<<0)
+#define TWIS_ENABLE_ENABLE                                  (0xFU<<0)
+#define TWIS_ENABLE_ENABLE_0                                (0x1U<<0)
+#define TWIS_ENABLE_ENABLE_DISABLED                         (0x0U<<0)
+#define TWIS_ENABLE_ENABLE_ENABLED                          (0x9U<<0)
 
 // SCL Configuration
 
-#define TWIS_PSEL_SCL_CONNECT                               (0x1u<<31)
-#define TWIS_PSEL_SCL_PORT                                  (0x1u<<5)
-#define TWIS_PSEL_SCL_PIN                                   (0x1Fu<<0)
-#define TWIS_PSEL_SCL_PIN_0                                 (0x1u<<0)
-#define TWIS_PSEL_SCL_CONNECT_DISCONNECTED                  (0x1u<<31)
-#define TWIS_PSEL_SCL_CONNECT_CONNECTED                     (0x0u<<31)
+#define TWIS_PSEL_SCL_CONNECT                               (0x1U<<31)
+#define TWIS_PSEL_SCL_PORT                                  (0x1U<<5)
+#define TWIS_PSEL_SCL_PIN                                   (0x1FU<<0)
+#define TWIS_PSEL_SCL_PIN_0                                 (0x1U<<0)
+#define TWIS_PSEL_SCL_CONNECT_DISCONNECTED                  (0x1U<<31)
+#define TWIS_PSEL_SCL_CONNECT_CONNECTED                     (0x0U<<31)
 
 // SDA Configuration
 
-#define TWIS_PSEL_SDA_CONNECT                               (0x1u<<31)
-#define TWIS_PSEL_SDA_PORT                                  (0x1u<<5)
-#define TWIS_PSEL_SDA_PIN                                   (0x1Fu<<0)
-#define TWIS_PSEL_SDA_PIN_0                                 (0x1u<<0)
-#define TWIS_PSEL_SDA_CONNECT_DISCONNECTED                  (0x1u<<31)
-#define TWIS_PSEL_SDA_CONNECT_CONNECTED                     (0x0u<<31)
+#define TWIS_PSEL_SDA_CONNECT                               (0x1U<<31)
+#define TWIS_PSEL_SDA_PORT                                  (0x1U<<5)
+#define TWIS_PSEL_SDA_PIN                                   (0x1FU<<0)
+#define TWIS_PSEL_SDA_PIN_0                                 (0x1U<<0)
+#define TWIS_PSEL_SDA_CONNECT_DISCONNECTED                  (0x1U<<31)
+#define TWIS_PSEL_SDA_CONNECT_CONNECTED                     (0x0U<<31)
 
 // PTR Configuration
 
-#define TWIS_RXD_PTR_PTR                                    (0xFFFFFFFFu<<0)
-#define TWIS_RXD_PTR_PTR_0                                  (0x1u<<0)
+#define TWIS_RXD_PTR_PTR                                    (0xFFFFFFFFU<<0)
+#define TWIS_RXD_PTR_PTR_0                                  (0x1U<<0)
 
 // MAXCNT Configuration
 
-#define TWIS_RXD_MAXCNT_MAXCNT                              (0xFFFFu<<0)
-#define TWIS_RXD_MAXCNT_MAXCNT_0                            (0x1u<<0)
+#define TWIS_RXD_MAXCNT_MAXCNT                              (0xFFFFU<<0)
+#define TWIS_RXD_MAXCNT_MAXCNT_0                            (0x1U<<0)
 
 // AMOUNT Configuration
 
-#define TWIS_RXD_AMOUNT_AMOUNT                              (0xFFFFu<<0)
-#define TWIS_RXD_AMOUNT_AMOUNT_0                            (0x1u<<0)
+#define TWIS_RXD_AMOUNT_AMOUNT                              (0xFFFFU<<0)
+#define TWIS_RXD_AMOUNT_AMOUNT_0                            (0x1U<<0)
 
 // LIST Configuration
 
-#define TWIS_RXD_LIST_LIST                                  (0x3u<<0)
-#define TWIS_RXD_LIST_LIST_0                                (0x1u<<0)
-#define TWIS_RXD_LIST_LIST_DISABLED                         (0x0u<<0)
-#define TWIS_RXD_LIST_LIST_ARRAYLIST                        (0x1u<<0)
+#define TWIS_RXD_LIST_LIST                                  (0x3U<<0)
+#define TWIS_RXD_LIST_LIST_0                                (0x1U<<0)
+#define TWIS_RXD_LIST_LIST_DISABLED                         (0x0U<<0)
+#define TWIS_RXD_LIST_LIST_ARRAYLIST                        (0x1U<<0)
 
 // PTR Configuration
 
-#define TWIS_TXD_PTR_PTR                                    (0xFFFFFFFFu<<0)
-#define TWIS_TXD_PTR_PTR_0                                  (0x1u<<0)
+#define TWIS_TXD_PTR_PTR                                    (0xFFFFFFFFU<<0)
+#define TWIS_TXD_PTR_PTR_0                                  (0x1U<<0)
 
 // MAXCNT Configuration
 
-#define TWIS_TXD_MAXCNT_MAXCNT                              (0xFFFFu<<0)
-#define TWIS_TXD_MAXCNT_MAXCNT_0                            (0x1u<<0)
+#define TWIS_TXD_MAXCNT_MAXCNT                              (0xFFFFU<<0)
+#define TWIS_TXD_MAXCNT_MAXCNT_0                            (0x1U<<0)
 
 // AMOUNT Configuration
 
-#define TWIS_TXD_AMOUNT_AMOUNT                              (0xFFFFu<<0)
-#define TWIS_TXD_AMOUNT_AMOUNT_0                            (0x1u<<0)
+#define TWIS_TXD_AMOUNT_AMOUNT                              (0xFFFFU<<0)
+#define TWIS_TXD_AMOUNT_AMOUNT_0                            (0x1U<<0)
 
 // LIST Configuration
 
-#define TWIS_TXD_LIST_LIST                                  (0x3u<<0)
-#define TWIS_TXD_LIST_LIST_0                                (0x1u<<0)
-#define TWIS_TXD_LIST_LIST_DISABLED                         (0x0u<<0)
-#define TWIS_TXD_LIST_LIST_ARRAYLIST                        (0x1u<<0)
+#define TWIS_TXD_LIST_LIST                                  (0x3U<<0)
+#define TWIS_TXD_LIST_LIST_0                                (0x1U<<0)
+#define TWIS_TXD_LIST_LIST_DISABLED                         (0x0U<<0)
+#define TWIS_TXD_LIST_LIST_ARRAYLIST                        (0x1U<<0)
 
 // ADDRESS Configuration
 
-#define TWIS_ADDRESS_ADDRESS                                (0x7Fu<<0)
-#define TWIS_ADDRESS_ADDRESS_0                              (0x1u<<0)
+#define TWIS_ADDRESS_ADDRESS                                (0x7FU<<0)
+#define TWIS_ADDRESS_ADDRESS_0                              (0x1U<<0)
 
 // CONFIG Configuration
 
-#define TWIS_CONFIG_ADDRESS1                                (0x1u<<1)
-#define TWIS_CONFIG_ADDRESS0                                (0x1u<<0)
-#define TWIS_CONFIG_ADDRESS1_DISABLED                       (0x0u<<1)
-#define TWIS_CONFIG_ADDRESS1_ENABLED                        (0x1u<<1)
-#define TWIS_CONFIG_ADDRESS0_DISABLED                       (0x0u<<0)
-#define TWIS_CONFIG_ADDRESS0_ENABLED                        (0x1u<<0)
+#define TWIS_CONFIG_ADDRESS1                                (0x1U<<1)
+#define TWIS_CONFIG_ADDRESS0                                (0x1U<<0)
+#define TWIS_CONFIG_ADDRESS1_DISABLED                       (0x0U<<1)
+#define TWIS_CONFIG_ADDRESS1_ENABLED                        (0x1U<<1)
+#define TWIS_CONFIG_ADDRESS0_DISABLED                       (0x0U<<0)
+#define TWIS_CONFIG_ADDRESS0_ENABLED                        (0x1U<<0)
 
 // ORC Configuration
 
-#define TWIS_ORC_ORC                                        (0xFFu<<0)
-#define TWIS_ORC_ORC_0                                      (0x1u<<0)
+#define TWIS_ORC_ORC                                        (0xFFU<<0)
+#define TWIS_ORC_ORC_0                                      (0x1U<<0)

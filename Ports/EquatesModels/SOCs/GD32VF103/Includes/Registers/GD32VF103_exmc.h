@@ -63,47 +63,47 @@ typedef struct {
 } EXMC_TypeDef;
 
 #ifdef __cplusplus
-#define EXMC    reinterpret_cast<EXMC_TypeDef *>(0xA0000000u)
+#define EXMC    reinterpret_cast<EXMC_TypeDef *>(0xA0000000U)
 
 #else
-#define EXMC    ((EXMC_TypeDef *)0xA0000000u)
+#define EXMC    ((EXMC_TypeDef *)0xA0000000U)
 #endif
 
 // SNCTL0 Configuration
 
-#define EXMC_SNCTL0_NRBKEN      (0x1u<<0)
-#define EXMC_SNCTL0_NRMUX       (0x1u<<1)
-#define EXMC_SNCTL0_NRTP        (0x3u<<2)
-#define EXMC_SNCTL0_NRTP_0      (0x1u<<2)
-#define EXMC_SNCTL0_NRW         (0x3u<<4)
-#define EXMC_SNCTL0_NRW_0       (0x1u<<4)
-#define EXMC_SNCTL0_NREN        (0x1u<<6)
-#define EXMC_SNCTL0_NRWTPOL     (0x1u<<9)
-#define EXMC_SNCTL0_WREN        (0x1u<<12)
-#define EXMC_SNCTL0_NRWTEN      (0x1u<<13)
-#define EXMC_SNCTL0_ASYNCWAIT   (0x1u<<15)
+#define EXMC_SNCTL0_NRBKEN      (0x1U<<0)
+#define EXMC_SNCTL0_NRMUX       (0x1U<<1)
+#define EXMC_SNCTL0_NRTP        (0x3U<<2)
+#define EXMC_SNCTL0_NRTP_0      (0x1U<<2)
+#define EXMC_SNCTL0_NRW         (0x3U<<4)
+#define EXMC_SNCTL0_NRW_0       (0x1U<<4)
+#define EXMC_SNCTL0_NREN        (0x1U<<6)
+#define EXMC_SNCTL0_NRWTPOL     (0x1U<<9)
+#define EXMC_SNCTL0_WREN        (0x1U<<12)
+#define EXMC_SNCTL0_NRWTEN      (0x1U<<13)
+#define EXMC_SNCTL0_ASYNCWAIT   (0x1U<<15)
 
 // SNTCFG0 Configuration
 
-#define EXMC_SNTCFG0_ASET       (0xFu<<0)
-#define EXMC_SNTCFG0_ASET_0     (0x1u<<0)
-#define EXMC_SNTCFG0_AHLD       (0xFu<<4)
-#define EXMC_SNTCFG0_AHLD_0     (0x1u<<4)
-#define EXMC_SNTCFG0_DSET       (0xFFu<<8)
-#define EXMC_SNTCFG0_DSET_0     (0x1u<<8)
-#define EXMC_SNTCFG0_BUSLAT     (0xFu<<16)
-#define EXMC_SNTCFG0_BUSLAT_0   (0x1u<<16)
+#define EXMC_SNTCFG0_ASET       (0xFU<<0)
+#define EXMC_SNTCFG0_ASET_0     (0x1U<<0)
+#define EXMC_SNTCFG0_AHLD       (0xFU<<4)
+#define EXMC_SNTCFG0_AHLD_0     (0x1U<<4)
+#define EXMC_SNTCFG0_DSET       (0xFFU<<8)
+#define EXMC_SNTCFG0_DSET_0     (0x1U<<8)
+#define EXMC_SNTCFG0_BUSLAT     (0xFU<<16)
+#define EXMC_SNTCFG0_BUSLAT_0   (0x1U<<16)
 
 // SNCTL1 Configuration
 
-#define EXMC_SNCTL1_NRBKEN      (0x1u<<0)
-#define EXMC_SNCTL1_NRMUX       (0x1u<<1)
-#define EXMC_SNCTL1_NRTP        (0x3u<<2)
-#define EXMC_SNCTL1_NRTP_0      (0x1u<<2)
-#define EXMC_SNCTL1_NRW         (0x3u<<4)
-#define EXMC_SNCTL1_NRW_0       (0x1u<<4)
-#define EXMC_SNCTL1_NREN        (0x1u<<6)
-#define EXMC_SNCTL1_NRWTPOL     (0x1u<<9)
-#define EXMC_SNCTL1_WREN        (0x1u<<12)
-#define EXMC_SNCTL1_NRWTEN      (0x1u<<13)
-#define EXMC_SNCTL1_ASYNCWAIT   (0x1u<<15)
+#define EXMC_SNCTL1_NRBKEN      (0x1U<<0)
+#define EXMC_SNCTL1_NRMUX       (0x1U<<1)
+#define EXMC_SNCTL1_NRTP        (0x3U<<2)
+#define EXMC_SNCTL1_NRTP_0      (0x1U<<2)
+#define EXMC_SNCTL1_NRW         (0x3U<<4)
+#define EXMC_SNCTL1_NRW_0       (0x1U<<4)
+#define EXMC_SNCTL1_NREN        (0x1U<<6)
+#define EXMC_SNCTL1_NRWTPOL     (0x1U<<9)
+#define EXMC_SNCTL1_WREN        (0x1U<<12)
+#define EXMC_SNCTL1_NRWTEN      (0x1U<<13)
+#define EXMC_SNCTL1_ASYNCWAIT   (0x1U<<15)

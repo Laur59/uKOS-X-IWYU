@@ -105,9 +105,9 @@ typedef enum    _spi_transfer_mode {
 // ------------------
 
 typedef enum    _spi_transfer_width {
-    SPI_TRANS_CHAR  = 0x1u,                         //
-    SPI_TRANS_SHORT = 0x2u,                         //
-    SPI_TRANS_INT   = 0x4u                          //
+    SPI_TRANS_CHAR  = 0x1U,                         //
+    SPI_TRANS_SHORT = 0x2U,                         //
+    SPI_TRANS_INT   = 0x4U                          //
 } spi_transfer_width_t;
 
 // SPI chip selects
@@ -174,6 +174,6 @@ typedef struct  _spi {
     volatile    uint32_t    endian;                 // SPI endianess                                             (0x118)
 } __attribute__ ((packed, aligned (4))) spi_t;
 
-#define spi0    ((volatile  spi_t *)0x52000000u)
-#define spi1    ((volatile  spi_t *)0x53000000u)
-#define spi3    ((volatile  spi_t *)0x54000000u)
+#define spi0    ((volatile  spi_t *)0x52000000U)
+#define spi1    ((volatile  spi_t *)0x53000000U)
+#define spi3    ((volatile  spi_t *)0x54000000U)

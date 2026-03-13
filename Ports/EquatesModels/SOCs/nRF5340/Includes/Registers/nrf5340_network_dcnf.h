@@ -62,13 +62,13 @@ typedef struct {
 } DCNF_TypeDef;
 
 #ifdef __cplusplus
-#define DCNF_NS reinterpret_cast<DCNF_TypeDef *>(0x41000000u)
+#define DCNF_NS reinterpret_cast<DCNF_TypeDef *>(0x41000000U)
 
 #else
-#define DCNF_NS ((DCNF_TypeDef *)0x41000000u)
+#define DCNF_NS ((DCNF_TypeDef *)0x41000000U)
 #endif
 
 // CPUID Configuration
 
-#define DCNF_CPUID_CPUID    (0xFFu<<0)
-#define DCNF_CPUID_CPUID_0  (0x1u<<0)
+#define DCNF_CPUID_CPUID    (0xFFU<<0)
+#define DCNF_CPUID_CPUID_0  (0x1U<<0)

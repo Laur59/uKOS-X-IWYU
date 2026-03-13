@@ -262,7 +262,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #endif
 
 #ifndef IS_EXCEPTION
-#define IS_EXCEPTION            ((REG(SCB)->ICSR & 0x000001FFu) != 0U)
+#define IS_EXCEPTION            ((REG(SCB)->ICSR & 0x000001FFU) != 0U)
 #endif
 
 #ifndef GET_CURRENT_PROCESS_STACK

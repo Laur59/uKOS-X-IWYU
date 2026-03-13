@@ -66,7 +66,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 // Per-process reentrancy structures for newlib
 reent_t     vKern_impureData[KNB_CORES][KKERN_NB_PROCESSES];
 
-#elif defined(CONFIG_MAN_PICOLIBC_S)
+#elifdef CONFIG_MAN_PICOLIBC_S
 #include    "picolibc/picolibc.h"
 
 // No global storage needed for picolibc - errno is stored per-process in proc_t
@@ -125,7 +125,7 @@ void    xLibrary_update(void) {
     }
 }
 
-#elif defined(CONFIG_MAN_PICOLIBC_S)
+#elifdef CONFIG_MAN_PICOLIBC_S
 
 /*
  * \brief Initialise the per-process errno for picolibc

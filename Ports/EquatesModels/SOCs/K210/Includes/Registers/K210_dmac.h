@@ -67,49 +67,49 @@ typedef enum    _dmac_channel_number {
 } dmac_channel_number_t;
 
 typedef enum    _dmac_master_number {
-    DMAC_MASTER1 = 0x0u,                                            //
-    DMAC_MASTER2 = 0x1u                                             //
+    DMAC_MASTER1 = 0x0U,                                            //
+    DMAC_MASTER2 = 0x1U                                             //
 } dmac_master_number_t;
 
 typedef enum    _dmac_address_increment {
-    DMAC_ADDR_INCREMENT = 0x0u,                                     //
-    DMAC_ADDR_NOCHANGE  = 0x1u                                      //
+    DMAC_ADDR_INCREMENT = 0x0U,                                     //
+    DMAC_ADDR_NOCHANGE  = 0x1U                                      //
 } dmac_address_increment_t;
 
 typedef enum    _dmac_transfer_width {
-    DMAC_TRANS_WIDTH_8   = 0x0u,                                    //
-    DMAC_TRANS_WIDTH_16  = 0x1u,                                    //
-    DMAC_TRANS_WIDTH_32  = 0x2u,                                    //
-    DMAC_TRANS_WIDTH_64  = 0x3u,                                    //
-    DMAC_TRANS_WIDTH_128 = 0x4u,                                    //
-    DMAC_TRANS_WIDTH_256 = 0x5u                                     //
+    DMAC_TRANS_WIDTH_8   = 0x0U,                                    //
+    DMAC_TRANS_WIDTH_16  = 0x1U,                                    //
+    DMAC_TRANS_WIDTH_32  = 0x2U,                                    //
+    DMAC_TRANS_WIDTH_64  = 0x3U,                                    //
+    DMAC_TRANS_WIDTH_128 = 0x4U,                                    //
+    DMAC_TRANS_WIDTH_256 = 0x5U                                     //
 } dmac_transfer_width_t;
 
 typedef enum    _dmac_transfer_flow {
-    DMAC_MEM2MEM_DMA    = 0x0u,                                     //
-    DMAC_MEM2PRF_DMA    = 0x1u,                                     //
-    DMAC_PRF2MEM_DMA    = 0x2u,                                     //
-    DMAC_PRF2PRF_DMA    = 0x3u,                                     //
-    DMAC_PRF2MEM_PRF    = 0x4u,                                     //
-    DMAC_PRF2PRF_SRCPRF = 0x5u,                                     //
-    DMAC_MEM2PRF_PRF    = 0x6u,                                     //
-    DMAC_PRF2PRF_DSTPRF = 0x7u                                      //
+    DMAC_MEM2MEM_DMA    = 0x0U,                                     //
+    DMAC_MEM2PRF_DMA    = 0x1U,                                     //
+    DMAC_PRF2MEM_DMA    = 0x2U,                                     //
+    DMAC_PRF2PRF_DMA    = 0x3U,                                     //
+    DMAC_PRF2MEM_PRF    = 0x4U,                                     //
+    DMAC_PRF2PRF_SRCPRF = 0x5U,                                     //
+    DMAC_MEM2PRF_PRF    = 0x6U,                                     //
+    DMAC_PRF2PRF_DSTPRF = 0x7U                                      //
 } dmac_transfer_flow_t;
 
 typedef enum    _dmac_sw_hw_hs_select {
-    DMAC_HS_HARDWARE = 0x0u,                                        //
-    DMAC_HS_SOFTWARE = 0x1u                                         //
+    DMAC_HS_HARDWARE = 0x0U,                                        //
+    DMAC_HS_SOFTWARE = 0x1U                                         //
 } dmac_sw_hw_hs_select_t;
 
 typedef enum    _dmac_burst_trans_length {
-    DMAC_MSIZE_1   = 0x0u,                                          //
-    DMAC_MSIZE_4   = 0x1u,                                          //
-    DMAC_MSIZE_8   = 0x2u,                                          //
-    DMAC_MSIZE_16  = 0x3u,                                          //
-    DMAC_MSIZE_32  = 0x4u,                                          //
-    DMAC_MSIZE_64  = 0x5u,                                          //
-    DMAC_MSIZE_128 = 0x6u,                                          //
-    DMAC_MSIZE_256 = 0x7u                                           //
+    DMAC_MSIZE_1   = 0x0U,                                          //
+    DMAC_MSIZE_4   = 0x1U,                                          //
+    DMAC_MSIZE_8   = 0x2U,                                          //
+    DMAC_MSIZE_16  = 0x3U,                                          //
+    DMAC_MSIZE_32  = 0x4U,                                          //
+    DMAC_MSIZE_64  = 0x5U,                                          //
+    DMAC_MSIZE_128 = 0x6U,                                          //
+    DMAC_MSIZE_256 = 0x7U                                           //
 } dmac_burst_trans_length_t;
 
 // Structure for accessing DMAC channel registers
@@ -204,7 +204,7 @@ typedef struct  _damc_chen {
     uint64_t    rsvd7        : 16;                                  //
 } __attribute__ ((packed, aligned (8))) damc_chen_t;
 
-typedef union   _dmac_chen_u {
+typedef union   _dmac_chen_U {
     damc_chen_t     dmac_chen;                                      //
     uint64_t        data;                                           //
 } dmac_chen_u_t;
@@ -218,7 +218,7 @@ typedef struct  _dmac_cfg {
     uint64_t    rsvd    : 62;                                       //
 } __attribute__ ((packed, aligned (8))) dmac_cfg_t;
 
-typedef union   _dmac_cfg_u {
+typedef union   _dmac_cfg_U {
     dmac_cfg_t  cfg;                                                //
     uint64_t    data;                                               //
 } dmac_cfg_u_t;
@@ -257,7 +257,7 @@ typedef struct  _dmac_ch_ctl {
     uint64_t    shadowreg_or_lli_valid : 1;                         //
 } __attribute__ ((packed, aligned (8))) dmac_ch_ctl_t;
 
-typedef union   _dmac_ch_ctl_u {
+typedef union   _dmac_ch_ctl_U {
     dmac_ch_ctl_t   ch_ctl;                                         //
     uint64_t        data;                                           //
 } dmac_ch_ctl_u_t;
@@ -285,9 +285,9 @@ typedef struct  _dmac_ch_cfg {
     uint64_t    dst_osr_lmt      : 4;                               //
 } __attribute__ ((packed, aligned (8))) dmac_ch_cfg_t;
 
-typedef union   _dmac_ch_cfg_u {
+typedef union   _dmac_ch_cfg_U {
     dmac_ch_cfg_t   ch_cfg;                                         //
     uint64_t        data;                                           //
 } dmac_ch_cfg_u_t;
 
-#define dmac    ((volatile  dmac_t *)0x50000000u)
+#define dmac    ((volatile  dmac_t *)0x50000000U)

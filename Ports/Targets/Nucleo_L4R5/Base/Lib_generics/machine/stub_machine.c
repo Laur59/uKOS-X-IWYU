@@ -127,9 +127,9 @@ int32_t stub_machine_readFunctionName(const uintptr_t pc, const char_t **functio
             intptr_t    offset, nameLen;
     const   uintptr_t   *ptr;
 
-    ptr = (const uintptr_t *)((pc + 2U) & (~0x3u));
+    ptr = (const uintptr_t *)((pc + 2U) & (~0x3U));
 
-    for (offset = 1; (offset < (intptr_t)(16U * 1024U)) && ((uintptr_t)&ptr[-offset] > (uintptr_t)0x0u); ++offset) {
+    for (offset = 1; (offset < (intptr_t)(16U * 1024U)) && ((uintptr_t)&ptr[-offset] > (uintptr_t)0x0U); ++offset) {
         if ((ptr[-offset] & (uintptr_t)0xFFFFFF00U) == (uintptr_t)0xFF000000U) {
             nameLen = (intptr_t)(ptr[-offset] & (uintptr_t)0xFFU);
             *function = &((const char_t *)&ptr[-offset])[-nameLen];

@@ -105,23 +105,23 @@ typedef struct {
 } SCB_TypeDef;
 
 #ifdef __cplusplus
-#define SCB_S   reinterpret_cast<SCB_TypeDef *>(0xE000ED00u)
-#define SCB_NS  reinterpret_cast<SCB_TypeDef *>(0xE002ED00u)
+#define SCB_S   reinterpret_cast<SCB_TypeDef *>(0xE000ED00U)
+#define SCB_NS  reinterpret_cast<SCB_TypeDef *>(0xE002ED00U)
 
 #else
-#define SCB_S   ((SCB_TypeDef *)0xE000ED00u)
-#define SCB_NS  ((SCB_TypeDef *)0xE002ED00u)
+#define SCB_S   ((SCB_TypeDef *)0xE000ED00U)
+#define SCB_NS  ((SCB_TypeDef *)0xE002ED00U)
 #endif
 
 // AIRCR register
 
-#define SCB_AIRCR_VECTKEY_MASK          0x05FA0000u
-#define SCB_AIRCR_SYSRESETREQ           0x00000004u
+#define SCB_AIRCR_VECTKEY_MASK          0x05FA0000U
+#define SCB_AIRCR_SYSRESETREQ           0x00000004U
 
 // CPACR register
 
-#define SCB_CPACR_CP10                  (0x3u<<20)
-#define SCB_CPACR_CP11                  (0x3u<<22)
+#define SCB_CPACR_CP10                  (0x3U<<20)
+#define SCB_CPACR_CP11                  (0x3U<<22)
 
 // CCR register
 
@@ -129,7 +129,7 @@ typedef struct {
 
 // SHCSR register
 
-#define SCB_SHCSR_MEMFAULTENA           0x00010000u
-#define SCB_SHCSR_BUSFAULTENA           0x00020000u
-#define SCB_SHCSR_USGFAULTENA           0x00040000u
-#define SCB_SHCSR_SECUREFAULTENA        0x00080000u
+#define SCB_SHCSR_MEMFAULTENA           0x00010000U
+#define SCB_SHCSR_BUSFAULTENA           0x00020000U
+#define SCB_SHCSR_USGFAULTENA           0x00040000U
+#define SCB_SHCSR_SECUREFAULTENA        0x00080000U

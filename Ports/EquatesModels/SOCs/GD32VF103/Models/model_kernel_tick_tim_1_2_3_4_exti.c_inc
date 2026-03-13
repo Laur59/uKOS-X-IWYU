@@ -184,7 +184,7 @@ void    model_kernel_init(void) {
 
     EXTI->INTEN      = 0U;
     EXTI->SWIEV      = 0U;
-    EXTI->PD         = 0x7FFFFu;
+    EXTI->PD         = 0x7FFFFU;
     EXTI->INTEN      = (1U<<BKERN_MESSAGES) | (1U<<BKERN_PREEMPTION);
 
     ECLIC->MTH = KINT_IMASK_ALL;
@@ -273,7 +273,7 @@ void    model_kernel_setPreciseSignal(prcs_t *handle) {
     TIMER4->DMAINTEN &= (uint16_t)~TIMER4_DMAINTEN_CH0IE;
 
     INTERRUPTION_OFF;
-    vPrcsAbsCount &= 0xFFFFFFFFFFFF0000u;
+    vPrcsAbsCount &= 0xFFFFFFFFFFFF0000U;
     vPrcsAbsCount |= (uint64_t)TIMER4->CNT;
 
     handle->oNextTime = vPrcsAbsCount + handle->oPeriod;
@@ -365,9 +365,9 @@ static  void    local_TIMER4_IRQHandler(void) {
     if ((TIMER4->INTF & TIMER4_INTF_UPIF) != 0U) {
         TIMER4->INTF &= (uint16_t)~TIMER4_INTF_UPIF;
 
-        vPrcsAbsCount &= 0xFFFFFFFFFFFF0000u;
+        vPrcsAbsCount &= 0xFFFFFFFFFFFF0000U;
         vPrcsAbsCount |= (uint64_t)TIMER4->CNT;
-        vPrcsAbsCount += 0x10000u;
+        vPrcsAbsCount += 0x10000U;
 
         local_nextTime(vPrcsAbsCount);
         return;
@@ -380,7 +380,7 @@ static  void    local_TIMER4_IRQHandler(void) {
     if ((TIMER4->INTF & TIMER4_INTF_CH0IF) != 0U) {
         TIMER4->INTF &= (uint16_t)~TIMER4_INTF_CH0IF;
 
-        vPrcsAbsCount &= 0xFFFFFFFFFFFF0000u;
+        vPrcsAbsCount &= 0xFFFFFFFFFFFF0000U;
         vPrcsAbsCount |= (uint64_t)TIMER4->CNT;
 
         i = vPrcsIndex;
@@ -419,7 +419,7 @@ static  void    local_nextTime(uint64_t absTime) {
 
 // Determine the next shortest time
 
-    minNextTime = 0xFFFFFFFFFFFFFFFFu;
+    minNextTime = 0xFFFFFFFFFFFFFFFFU;
     for (i = 0U; i < KKERN_NB_PRECISE_SIGNALS; i++) {
         if ((vKern_prcs[KCORE_0][i].oState & (1U<<BPRCS_INSTALLED)) != 0U) {
             if (vKern_prcs[KCORE_0][i].oMode != KPRCS_STOP) {
@@ -435,7 +435,7 @@ static  void    local_nextTime(uint64_t absTime) {
 // For Shortest request, it can happen that minNextTime < vCNT (too slow process).
 // In this case, we launch the new time with a minimal delay of 2 ...
 
-    if (found == true) {
+    if (found) {
         minNextTime = (minNextTime < absTime) ? (2U) : (minNextTime - absTime);
         minNextTime = (minNextTime < 2U)      ? (2U) : (minNextTime);
         if (minNextTime < 65536U) {
@@ -535,7 +535,7 @@ static  uintptr_t   __attribute__ ((noinline, used)) *local_newContextPRE(uintpt
 // Save the old priority
 
     vKern_stackProc[KCORE_0]    = stack;
-    vKern_stackProc[KCORE_0][3] = ECLIC->MTH & 0x000000FFu;
+    vKern_stackProc[KCORE_0][3] = ECLIC->MTH & 0x000000FFU;
 
     local_timeStop();
     EXTI->SWIEV &= (uint32_t)~(1U<<BKERN_PREEMPTION);
@@ -660,7 +660,7 @@ static  uintptr_t   __attribute__ ((noinline, used)) *local_newContextTOU(uintpt
 // Save the old priority
 
     vKern_stackProc[KCORE_0]    = stack;
-    vKern_stackProc[KCORE_0][3] = ECLIC->MTH & 0x000000FFu;
+    vKern_stackProc[KCORE_0][3] = ECLIC->MTH & 0x000000FFU;
 
     local_timeStop();
     TIMER2->INTF &= (uint16_t)~TIMER2_INTF_UPIF;
@@ -784,7 +784,7 @@ static  uintptr_t   __attribute__ ((noinline, used)) *local_newContextMSG(uintpt
 // Save the old priority
 
     vKern_stackProc[KCORE_0]    = stack;
-    vKern_stackProc[KCORE_0][3] = ECLIC->MTH & 0x000000FFu;
+    vKern_stackProc[KCORE_0][3] = ECLIC->MTH & 0x000000FFU;
 
     local_timeStop();
     EXTI->SWIEV &= (uint32_t)~(1U<<BKERN_MESSAGES);
@@ -877,13 +877,13 @@ static  void    local_timeStmp(bool overflow) {
     uint32_t    newTime;
 
     INTERRUPTION_OFF;
-    newTime = TIMER3->CNT & 0x0000FFFFu;
+    newTime = TIMER3->CNT & 0x0000FFFFU;
 
 // Overflow; add 0x10000 to the counter
 // Update the 1-us 64-bit tickCount
 
-    if (overflow == true) {
-        vTickCount = (vTickCount & 0xFFFFFFFFFFFF0000u) + 0x10000u;
+    if (overflow) {
+        vTickCount = (vTickCount & 0xFFFFFFFFFFFF0000U) + 0x10000U;
         INTERRUPTION_RESTORE;
         return;
     }
@@ -892,7 +892,7 @@ static  void    local_timeStmp(bool overflow) {
 // Update the 1-us 64-bit tickCount
 
     if (newTime > 0U) {
-        vTickCount = (vTickCount & 0xFFFFFFFFFFFF0000u) | newTime;
+        vTickCount = (vTickCount & 0xFFFFFFFFFFFF0000U) | newTime;
     }
     INTERRUPTION_RESTORE;
 }

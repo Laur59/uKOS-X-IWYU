@@ -49,12 +49,12 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #pragma once
 
-#define CLINT_MSIP              0x0000u
-#define CLINT_MSIP_SIZE         0x4u
-#define CLINT_MTIMECMP          0x4000u
-#define CLINT_MTIMECMP_SIZE     0x8u
-#define CLINT_MTIME             0xBFF8u
-#define CLINT_MTIME_SIZE        0x8u
+#define CLINT_MSIP              0x0000U
+#define CLINT_MSIP_SIZE         0x4U
+#define CLINT_MTIMECMP          0x4000U
+#define CLINT_MTIMECMP_SIZE     0x8U
+#define CLINT_MTIME             0xBFF8U
+#define CLINT_MTIME_SIZE        0x8U
 #define CLINT_MAX_CORES         4095U
 #define CLINT_NUM_CORES         2U
 #define CLINT_CLOCK_DIV         50U
@@ -121,4 +121,4 @@ typedef struct  _clint {
     clint_mtime_t       mtime;                              // 0xBFF8, Time Register
 } __attribute__ ((packed, aligned(4))) clint_t;
 
-#define clint   ((volatile clint_t *)0x02000000u)
+#define clint   ((volatile clint_t *)0x02000000U)

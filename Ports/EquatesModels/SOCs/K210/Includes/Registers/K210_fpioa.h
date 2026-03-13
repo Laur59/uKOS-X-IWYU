@@ -713,4 +713,4 @@ typedef struct  _fpioa  {
     fpioa_tie_t         tie;                        // FPIOA GPIO multiplexer tie
 } __attribute__ ((packed, aligned (4))) fpioa_t;
 
-#define fpioa   ((volatile  fpioa_t *)0x502B0000u)
+#define fpioa   ((volatile  fpioa_t *)0x502B0000U)

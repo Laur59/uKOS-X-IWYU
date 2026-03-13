@@ -199,14 +199,14 @@ int32_t model_usart_write(const uint8_t *buffer, uint32_t size) {
     static  bool        terminate = false, busy = false;
 
     INTERRUPTION_OFF;
-    if ((vSending == true) || (busy == true)) { RETURN_INT_RESTORE(KERR_SERIAL_SEPRO); }
-    if (wkSize == 0U)                         { RETURN_INT_RESTORE(KERR_SERIAL_LNBU0); }
+    if (vSending || busy) { RETURN_INT_RESTORE(KERR_SERIAL_SEPRO); }
+    if (wkSize == 0U)     { RETURN_INT_RESTORE(KERR_SERIAL_LNBU0); }
 
     busy = true;
     INTERRUPTION_RESTORE;
 
-    while (terminate == false) {
-        while (vSending == true) { kern_suspendProcess(1U); }
+    while (!terminate) {
+        while (vSending) { kern_suspendProcess(1U); }
 
         if (wkSize > KUSART_SZ_TX_BUF) { newSize = KUSART_SZ_TX_BUF; wkSize -= KUSART_SZ_TX_BUF; }
         else                           { newSize = wkSize; terminate = true;                     }
@@ -332,7 +332,7 @@ static  void    local_USART_IRQHandler(void) {
         } while ((USART->ISR & USART_ISR_RXNE) != 0U);
 
         #if (defined(KUSART_SEMA_RX_S))
-        if (vWithSemaphore_RX == true) { kern_signalSemaphore(vSemaphore_RX); }
+        if (vWithSemaphore_RX) { kern_signalSemaphore(vSemaphore_RX); }
         #endif
 
 // cppcheck-suppress premium-misra-c-2023-5.8
@@ -344,7 +344,7 @@ static  void    local_USART_IRQHandler(void) {
 
 // TX interruption
 
-        if (cb_CTSCheck() == true) {
+        if (cb_CTSCheck()) {
             USART->TDR = (uint16_t)*vRSndBuffer;
             vRSndBuffer++;
 
@@ -358,7 +358,7 @@ static  void    local_USART_IRQHandler(void) {
                 vSending = false;
 
                 #if (defined(KUSART_SEMA_TX_S))
-                if (vWithSemaphore_TX == true) { kern_signalSemaphore(vSemaphore_TX); }
+                if (vWithSemaphore_TX) { kern_signalSemaphore(vSemaphore_TX); }
                 #endif
             }
         }

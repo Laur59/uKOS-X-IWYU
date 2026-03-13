@@ -65,7 +65,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #define KCORE_1                 1U
 
 #ifndef GET_RUNNING_CORE
-#define GET_RUNNING_CORE        ((uint32_t)(core_getCSR(RV_CSR_MHARTID) & 0x1u))
+#define GET_RUNNING_CORE        ((uint32_t)(core_getCSR(RV_CSR_MHARTID) & 0x1U))
 #endif
 
 #ifndef MCSET
@@ -166,11 +166,11 @@ extern  void                    (*vExce_extIntVectors[KNB_CORES][KNB_EXT_INTERRU
 extern  void                    (*vMsgs_process[KNB_CORES])(uint32_t core, uint64_t message);
 
 #ifndef KERN_SAVE_PRIORITY
-#define KERN_SAVE_PRIORITY      threshold = (uint64_t)plic->targets.target[core].priority_threshold & 0x00000000000000FFu
+#define KERN_SAVE_PRIORITY      threshold = (uint64_t)plic->targets.target[core].priority_threshold & 0x00000000000000FFU
 #endif
 
 #ifndef KERN_NEW_PRIORITY
-#define KERN_NEW_PRIORITY       plic->targets.target[core].priority_threshold = (uint32_t)(threshold & 0x00000000000000FFu)
+#define KERN_NEW_PRIORITY       plic->targets.target[core].priority_threshold = (uint32_t)(threshold & 0x00000000000000FFU)
 #endif
 
 #ifndef INTERRUPTION_SET

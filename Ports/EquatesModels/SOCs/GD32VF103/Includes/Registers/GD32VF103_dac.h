@@ -73,97 +73,97 @@ typedef struct {
 } DAC_TypeDef;
 
 #ifdef __cplusplus
-#define DAC reinterpret_cast<DAC_TypeDef *>(0x40007400u)
+#define DAC reinterpret_cast<DAC_TypeDef *>(0x40007400U)
 
 #else
-#define DAC ((DAC_TypeDef *)0x40007400u)
+#define DAC ((DAC_TypeDef *)0x40007400U)
 #endif
 
 // CTL Configuration
 
-#define DAC_CTL_DDMAEN1             (0x1u<<28)
-#define DAC_CTL_DWBW1               (0xFu<<24)
-#define DAC_CTL_DWBW1_0             (0x1u<<24)
-#define DAC_CTL_DWM1                (0x3u<<22)
-#define DAC_CTL_DWM1_0              (0x1u<<22)
-#define DAC_CTL_DTSEL1              (0x7u<<19)
-#define DAC_CTL_DTSEL1_0            (0x1u<<19)
-#define DAC_CTL_DTEN1               (0x1u<<18)
-#define DAC_CTL_DBOFF1              (0x1u<<17)
-#define DAC_CTL_DEN1                (0x1u<<16)
-#define DAC_CTL_DDMAEN0             (0x1u<<12)
-#define DAC_CTL_DWBW0               (0xFu<<8)
-#define DAC_CTL_DWBW0_0             (0x1u<<8)
-#define DAC_CTL_DWM0                (0x3u<<6)
-#define DAC_CTL_DWM0_0              (0x1u<<6)
-#define DAC_CTL_DTSEL0              (0x7u<<3)
-#define DAC_CTL_DTSEL0_0            (0x1u<<3)
-#define DAC_CTL_DTEN0               (0x1u<<2)
-#define DAC_CTL_DBOFF0              (0x1u<<1)
-#define DAC_CTL_DEN0                (0x1u<<0)
+#define DAC_CTL_DDMAEN1             (0x1U<<28)
+#define DAC_CTL_DWBW1               (0xFU<<24)
+#define DAC_CTL_DWBW1_0             (0x1U<<24)
+#define DAC_CTL_DWM1                (0x3U<<22)
+#define DAC_CTL_DWM1_0              (0x1U<<22)
+#define DAC_CTL_DTSEL1              (0x7U<<19)
+#define DAC_CTL_DTSEL1_0            (0x1U<<19)
+#define DAC_CTL_DTEN1               (0x1U<<18)
+#define DAC_CTL_DBOFF1              (0x1U<<17)
+#define DAC_CTL_DEN1                (0x1U<<16)
+#define DAC_CTL_DDMAEN0             (0x1U<<12)
+#define DAC_CTL_DWBW0               (0xFU<<8)
+#define DAC_CTL_DWBW0_0             (0x1U<<8)
+#define DAC_CTL_DWM0                (0x3U<<6)
+#define DAC_CTL_DWM0_0              (0x1U<<6)
+#define DAC_CTL_DTSEL0              (0x7U<<3)
+#define DAC_CTL_DTSEL0_0            (0x1U<<3)
+#define DAC_CTL_DTEN0               (0x1U<<2)
+#define DAC_CTL_DBOFF0              (0x1U<<1)
+#define DAC_CTL_DEN0                (0x1U<<0)
 
 // SWT Configuration
 
-#define DAC_SWT_SWTR1               (0x1u<<1)
-#define DAC_SWT_SWTR0               (0x1u<<0)
+#define DAC_SWT_SWTR1               (0x1U<<1)
+#define DAC_SWT_SWTR0               (0x1U<<0)
 
 // DAC0_R12DH Configuration
 
-#define DAC_DAC0_R12DH_DAC0_DH      (0xFFFu<<0)
-#define DAC_DAC0_R12DH_DAC0_DH_0    (0x1u<<0)
+#define DAC_DAC0_R12DH_DAC0_DH      (0xFFFU<<0)
+#define DAC_DAC0_R12DH_DAC0_DH_0    (0x1U<<0)
 
 // DAC0_L12DH Configuration
 
-#define DAC_DAC0_L12DH_DAC0_DH      (0xFFFu<<4)
-#define DAC_DAC0_L12DH_DAC0_DH_0    (0x1u<<4)
+#define DAC_DAC0_L12DH_DAC0_DH      (0xFFFU<<4)
+#define DAC_DAC0_L12DH_DAC0_DH_0    (0x1U<<4)
 
 // DAC0_R8DH Configuration
 
-#define DAC_DAC0_R8DH_DAC0_DH       (0xFFu<<0)
-#define DAC_DAC0_R8DH_DAC0_DH_0     (0x1u<<0)
+#define DAC_DAC0_R8DH_DAC0_DH       (0xFFU<<0)
+#define DAC_DAC0_R8DH_DAC0_DH_0     (0x1U<<0)
 
 // DAC1_R12DH Configuration
 
-#define DAC_DAC1_R12DH_DAC1_DH      (0xFFFu<<0)
-#define DAC_DAC1_R12DH_DAC1_DH_0    (0x1u<<0)
+#define DAC_DAC1_R12DH_DAC1_DH      (0xFFFU<<0)
+#define DAC_DAC1_R12DH_DAC1_DH_0    (0x1U<<0)
 
 // DAC1_L12DH Configuration
 
-#define DAC_DAC1_L12DH_DAC1_DH      (0xFFFu<<4)
-#define DAC_DAC1_L12DH_DAC1_DH_0    (0x1u<<4)
+#define DAC_DAC1_L12DH_DAC1_DH      (0xFFFU<<4)
+#define DAC_DAC1_L12DH_DAC1_DH_0    (0x1U<<4)
 
 // DAC1_R8DH Configuration
 
-#define DAC_DAC1_R8DH_DAC1_DH       (0xFFu<<0)
-#define DAC_DAC1_R8DH_DAC1_DH_0     (0x1u<<0)
+#define DAC_DAC1_R8DH_DAC1_DH       (0xFFU<<0)
+#define DAC_DAC1_R8DH_DAC1_DH_0     (0x1U<<0)
 
 // DACC_R12DH Configuration
 
-#define DAC_DACC_R12DH_DAC1_DH      (0xFFFu<<16)
-#define DAC_DACC_R12DH_DAC1_DH_0    (0x1u<<16)
-#define DAC_DACC_R12DH_DAC0_DH      (0xFFFu<<0)
-#define DAC_DACC_R12DH_DAC0_DH_0    (0x1u<<0)
+#define DAC_DACC_R12DH_DAC1_DH      (0xFFFU<<16)
+#define DAC_DACC_R12DH_DAC1_DH_0    (0x1U<<16)
+#define DAC_DACC_R12DH_DAC0_DH      (0xFFFU<<0)
+#define DAC_DACC_R12DH_DAC0_DH_0    (0x1U<<0)
 
 // DACC_L12DH Configuration
 
-#define DAC_DACC_L12DH_DAC1_DH      (0xFFFu<<20)
-#define DAC_DACC_L12DH_DAC1_DH_0    (0x1u<<20)
-#define DAC_DACC_L12DH_DAC0_DH      (0xFFFu<<4)
-#define DAC_DACC_L12DH_DAC0_DH_0    (0x1u<<4)
+#define DAC_DACC_L12DH_DAC1_DH      (0xFFFU<<20)
+#define DAC_DACC_L12DH_DAC1_DH_0    (0x1U<<20)
+#define DAC_DACC_L12DH_DAC0_DH      (0xFFFU<<4)
+#define DAC_DACC_L12DH_DAC0_DH_0    (0x1U<<4)
 
 // DACC_R8DH Configuration
 
-#define DAC_DACC_R8DH_DAC1_DH       (0xFFu<<8)
-#define DAC_DACC_R8DH_DAC1_DH_0     (0x1u<<8)
-#define DAC_DACC_R8DH_DAC0_DH       (0xFFu<<0)
-#define DAC_DACC_R8DH_DAC0_DH_0     (0x1u<<0)
+#define DAC_DACC_R8DH_DAC1_DH       (0xFFU<<8)
+#define DAC_DACC_R8DH_DAC1_DH_0     (0x1U<<8)
+#define DAC_DACC_R8DH_DAC0_DH       (0xFFU<<0)
+#define DAC_DACC_R8DH_DAC0_DH_0     (0x1U<<0)
 
 // DAC0_DO Configuration
 
-#define DAC_DAC0_DO_DAC0_DO         (0xFFFu<<0)
-#define DAC_DAC0_DO_DAC0_DO_0       (0x1u<<0)
+#define DAC_DAC0_DO_DAC0_DO         (0xFFFU<<0)
+#define DAC_DAC0_DO_DAC0_DO_0       (0x1U<<0)
 
 // DAC1_DO Configuration
 
-#define DAC_DAC1_DO_DAC1_DO         (0xFFFu<<0)
-#define DAC_DAC1_DO_DAC1_DO_0       (0x1u<<0)
+#define DAC_DAC1_DO_DAC1_DO         (0xFFFU<<0)
+#define DAC_DAC1_DO_DAC1_DO_0       (0x1U<<0)

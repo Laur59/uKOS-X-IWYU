@@ -207,14 +207,14 @@ int32_t model_uart_write_C1(const uint8_t *buffer, uint32_t size) {
     static  bool        terminate = false, busy = false;
 
     INTERRUPTION_OFF;
-    if ((vSending_C1 == true) || (busy == true)) { RETURN_INT_RESTORE(KERR_SERIAL_SEPRO); }
-    if (wkSize == 0U)                            { RETURN_INT_RESTORE(KERR_SERIAL_LNBU0); }
+    if (vSending_C1 || busy) { RETURN_INT_RESTORE(KERR_SERIAL_SEPRO); }
+    if (wkSize == 0U)        { RETURN_INT_RESTORE(KERR_SERIAL_LNBU0); }
 
     busy = true;
     INTERRUPTION_RESTORE;
 
-    while (terminate == false) {
-        while (vSending_C1 == true) { kern_suspendProcess(1U); }
+    while (!terminate) {
+        while (vSending_C1) { kern_suspendProcess(1U); }
 
         if (wkSize > KUART_SZ_TX_BUF_C1) { newSize = KUART_SZ_TX_BUF_C1; wkSize -= KUART_SZ_TX_BUF_C1; }
         else                             { newSize = wkSize; terminate = true;                         }
@@ -351,7 +351,7 @@ static  void    local_UART_IRQHandler_C1(void) {
         UART_C1->UARTICR = (UART_UARTICR_RXIC | UART_UARTICR_RTIC);
 
         #if (defined(KUART_SEMA_RX_C1_S))
-        if (vWithSemaphore_RX_C1 == true) { kern_signalSemaphore(vSemaphore_RX_C1); }
+        if (vWithSemaphore_RX_C1) { kern_signalSemaphore(vSemaphore_RX_C1); }
         #endif
 
 // cppcheck-suppress premium-misra-c-2023-5.8
@@ -364,14 +364,14 @@ static  void    local_UART_IRQHandler_C1(void) {
 
     doAction = false;
     if ((iir & UART_UARTMIS_TXMIS) != 0U) { doAction = true; }
-    if (vFirstKick_C1 == true)            { doAction = true; }
+    if (vFirstKick_C1)            { doAction = true; }
 
-    if (doAction == true) {
+    if (doAction) {
 
 // TX interruption
 
         vFirstKick_C1 = false;
-        if (cb_CTSCheck_C1() == true) {
+        if (cb_CTSCheck_C1()) {
 
 // !!! The first while (true) is just a workaround.
 // It seems if the sending fifo threshold is < 1/8, it stop to generate interruptions
@@ -394,7 +394,7 @@ static  void    local_UART_IRQHandler_C1(void) {
                         vSending_C1 = false;
 
                         #if (defined(KUART_SEMA_TX_C1_S))
-                        if (vWithSemaphore_TX_C1 == true) { kern_signalSemaphore(vSemaphore_TX_C1); }
+                        if (vWithSemaphore_TX_C1) { kern_signalSemaphore(vSemaphore_TX_C1); }
                         #endif
 
                         UART_C1->UARTICR = UART_UARTICR_TXIC;

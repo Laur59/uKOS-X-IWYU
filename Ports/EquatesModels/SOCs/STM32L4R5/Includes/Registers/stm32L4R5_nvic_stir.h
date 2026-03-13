@@ -61,13 +61,13 @@ typedef struct {
 } NVIC_STIR_TypeDef;
 
 #ifdef __cplusplus
-#define NVIC_STIR   reinterpret_cast<NVIC_STIR_TypeDef *>(0xE000EF00u)
+#define NVIC_STIR   reinterpret_cast<NVIC_STIR_TypeDef *>(0xE000EF00U)
 
 #else
-#define NVIC_STIR   ((NVIC_STIR_TypeDef *)0xE000EF00u)
+#define NVIC_STIR   ((NVIC_STIR_TypeDef *)0xE000EF00U)
 #endif
 
 // STIR Configuration
 
-#define NVIC_STIR_STIR_INTID    (0x1FFu<<0)
-#define NVIC_STIR_STIR_INTID_0  (0x1u<<0)
+#define NVIC_STIR_STIR_INTID    (0x1FFU<<0)
+#define NVIC_STIR_STIR_INTID_0  (0x1U<<0)

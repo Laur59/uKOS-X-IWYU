@@ -70,69 +70,69 @@ typedef struct {
 } DBGMCU_TypeDef;
 
 #ifdef __cplusplus
-#define DBGMCU  reinterpret_cast<DBGMCU_TypeDef *>(0x5C001000u)
+#define DBGMCU  reinterpret_cast<DBGMCU_TypeDef *>(0x5C001000U)
 
 #else
-#define DBGMCU  ((DBGMCU_TypeDef *)0x5C001000u)
+#define DBGMCU  ((DBGMCU_TypeDef *)0x5C001000U)
 #endif
 
 // IDC Configuration
 
-#define DBGMCU_IDC_REV_ID           (0xFFFFu<<16)
-#define DBGMCU_IDC_REV_ID_0         (0x1u<<16)
-#define DBGMCU_IDC_DEV_ID           (0xFFFu<<0)
-#define DBGMCU_IDC_DEV_ID_0         (0x1u<<0)
+#define DBGMCU_IDC_REV_ID           (0xFFFFU<<16)
+#define DBGMCU_IDC_REV_ID_0         (0x1U<<16)
+#define DBGMCU_IDC_DEV_ID           (0xFFFU<<0)
+#define DBGMCU_IDC_DEV_ID_0         (0x1U<<0)
 
 // CR Configuration
 
-#define DBGMCU_CR_TRGOEN            (0x1u<<28)
-#define DBGMCU_CR_D3DBGCKEN         (0x1u<<22)
-#define DBGMCU_CR_D1DBGCKEN         (0x1u<<21)
-#define DBGMCU_CR_TRACECLKEN        (0x1u<<20)
-#define DBGMCU_CR_DBGSTBY_D3        (0x1u<<8)
-#define DBGMCU_CR_DBGSTOP_D3        (0x1u<<7)
-#define DBGMCU_CR_DBGSTBY_D2        (0x1u<<5)
-#define DBGMCU_CR_DBGSTOP_D2        (0x1u<<4)
-#define DBGMCU_CR_DBGSLEEP_D2       (0x1u<<3)
-#define DBGMCU_CR_DBGSTBY_D1        (0x1u<<2)
-#define DBGMCU_CR_DBGSTOP_D1        (0x1u<<1)
-#define DBGMCU_CR_DBGSLEEP_D1       (0x1u<<0)
+#define DBGMCU_CR_TRGOEN            (0x1U<<28)
+#define DBGMCU_CR_D3DBGCKEN         (0x1U<<22)
+#define DBGMCU_CR_D1DBGCKEN         (0x1U<<21)
+#define DBGMCU_CR_TRACECLKEN        (0x1U<<20)
+#define DBGMCU_CR_DBGSTBY_D3        (0x1U<<8)
+#define DBGMCU_CR_DBGSTOP_D3        (0x1U<<7)
+#define DBGMCU_CR_DBGSTBY_D2        (0x1U<<5)
+#define DBGMCU_CR_DBGSTOP_D2        (0x1U<<4)
+#define DBGMCU_CR_DBGSLEEP_D2       (0x1U<<3)
+#define DBGMCU_CR_DBGSTBY_D1        (0x1U<<2)
+#define DBGMCU_CR_DBGSTOP_D1        (0x1U<<1)
+#define DBGMCU_CR_DBGSLEEP_D1       (0x1U<<0)
 
 // APB3FZ1 Configuration
 
-#define DBGMCU_APB3FZ1_WWDG1        (0x1u<<6)
+#define DBGMCU_APB3FZ1_WWDG1        (0x1U<<6)
 
 // APB1LFZ1 Configuration
 
-#define DBGMCU_APB1LFZ1_DBG_I2C3    (0x1u<<23)
-#define DBGMCU_APB1LFZ1_DBG_I2C2    (0x1u<<22)
-#define DBGMCU_APB1LFZ1_DBG_I2C1    (0x1u<<21)
-#define DBGMCU_APB1LFZ1_DBG_LPTIM1  (0x1u<<9)
-#define DBGMCU_APB1LFZ1_DBG_TIM14   (0x1u<<8)
-#define DBGMCU_APB1LFZ1_DBG_TIM13   (0x1u<<7)
-#define DBGMCU_APB1LFZ1_DBG_TIM12   (0x1u<<6)
-#define DBGMCU_APB1LFZ1_DBG_TIM7    (0x1u<<5)
-#define DBGMCU_APB1LFZ1_DBG_TIM6    (0x1u<<4)
-#define DBGMCU_APB1LFZ1_DBG_TIM5    (0x1u<<3)
-#define DBGMCU_APB1LFZ1_DBG_TIM4    (0x1u<<2)
-#define DBGMCU_APB1LFZ1_DBG_TIM3    (0x1u<<1)
-#define DBGMCU_APB1LFZ1_DBG_TIM2    (0x1u<<0)
+#define DBGMCU_APB1LFZ1_DBG_I2C3    (0x1U<<23)
+#define DBGMCU_APB1LFZ1_DBG_I2C2    (0x1U<<22)
+#define DBGMCU_APB1LFZ1_DBG_I2C1    (0x1U<<21)
+#define DBGMCU_APB1LFZ1_DBG_LPTIM1  (0x1U<<9)
+#define DBGMCU_APB1LFZ1_DBG_TIM14   (0x1U<<8)
+#define DBGMCU_APB1LFZ1_DBG_TIM13   (0x1U<<7)
+#define DBGMCU_APB1LFZ1_DBG_TIM12   (0x1U<<6)
+#define DBGMCU_APB1LFZ1_DBG_TIM7    (0x1U<<5)
+#define DBGMCU_APB1LFZ1_DBG_TIM6    (0x1U<<4)
+#define DBGMCU_APB1LFZ1_DBG_TIM5    (0x1U<<3)
+#define DBGMCU_APB1LFZ1_DBG_TIM4    (0x1U<<2)
+#define DBGMCU_APB1LFZ1_DBG_TIM3    (0x1U<<1)
+#define DBGMCU_APB1LFZ1_DBG_TIM2    (0x1U<<0)
 
 // APB2FZ1 Configuration
 
-#define DBGMCU_APB2FZ1_DBG_HRTIM    (0x1u<<29)
-#define DBGMCU_APB2FZ1_DBG_TIM17    (0x1u<<18)
-#define DBGMCU_APB2FZ1_DBG_TIM16    (0x1u<<17)
-#define DBGMCU_APB2FZ1_DBG_TIM15    (0x1u<<16)
-#define DBGMCU_APB2FZ1_DBG_TIM8     (0x1u<<1)
-#define DBGMCU_APB2FZ1_DBG_TIM1     (0x1u<<0)
+#define DBGMCU_APB2FZ1_DBG_HRTIM    (0x1U<<29)
+#define DBGMCU_APB2FZ1_DBG_TIM17    (0x1U<<18)
+#define DBGMCU_APB2FZ1_DBG_TIM16    (0x1U<<17)
+#define DBGMCU_APB2FZ1_DBG_TIM15    (0x1U<<16)
+#define DBGMCU_APB2FZ1_DBG_TIM8     (0x1U<<1)
+#define DBGMCU_APB2FZ1_DBG_TIM1     (0x1U<<0)
 
 // APB4FZ1 Configuration
 
-#define DBGMCU_APB4FZ1_DBG_IWDG1    (0x1u<<18)
-#define DBGMCU_APB4FZ1_DBG_RTC      (0x1u<<16)
-#define DBGMCU_APB4FZ1_DBG_LPTIM5   (0x1u<<12)
-#define DBGMCU_APB4FZ1_DBG_LPTIM4   (0x1u<<11)
-#define DBGMCU_APB4FZ1_DBG_LPTIM3   (0x1u<<10)
-#define DBGMCU_APB4FZ1_DBG_LPTIM2   (0x1u<<9)
-#define DBGMCU_APB4FZ1_DBG_I2C4     (0x1u<<7)
+#define DBGMCU_APB4FZ1_DBG_IWDG1    (0x1U<<18)
+#define DBGMCU_APB4FZ1_DBG_RTC      (0x1U<<16)
+#define DBGMCU_APB4FZ1_DBG_LPTIM5   (0x1U<<12)
+#define DBGMCU_APB4FZ1_DBG_LPTIM4   (0x1U<<11)
+#define DBGMCU_APB4FZ1_DBG_LPTIM3   (0x1U<<10)
+#define DBGMCU_APB4FZ1_DBG_LPTIM2   (0x1U<<9)
+#define DBGMCU_APB4FZ1_DBG_I2C4     (0x1U<<7)

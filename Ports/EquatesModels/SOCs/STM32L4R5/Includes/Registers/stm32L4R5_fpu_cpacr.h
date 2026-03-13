@@ -61,13 +61,13 @@ typedef struct {
 } FPU_CPACR_TypeDef;
 
 #ifdef __cplusplus
-#define FPU_CPACR   reinterpret_cast<FPU_CPACR_TypeDef *>(0xE000ED88u)
+#define FPU_CPACR   reinterpret_cast<FPU_CPACR_TypeDef *>(0xE000ED88U)
 
 #else
-#define FPU_CPACR   ((FPU_CPACR_TypeDef *)0xE000ED88u)
+#define FPU_CPACR   ((FPU_CPACR_TypeDef *)0xE000ED88U)
 #endif
 
 // CPACR Configuration
 
-#define FPU_CPACR_CPACR_CP      (0xFu<<20)
-#define FPU_CPACR_CPACR_CP_0    (0x1u<<20)
+#define FPU_CPACR_CPACR_CP      (0xFU<<20)
+#define FPU_CPACR_CPACR_CP_0    (0x1U<<20)

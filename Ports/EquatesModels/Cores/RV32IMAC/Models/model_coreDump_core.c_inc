@@ -140,7 +140,7 @@ static  void    __attribute__ ((noinline, used, noreturn)) local_processExceptio
     const   char_t      *vectorName;
 
     core = GET_RUNNING_CORE;
-    vExceptionNb[core] = (core_getCSR(RV_CSR_MCAUSE) & 0x7FFFFFFFu);
+    vExceptionNb[core] = (core_getCSR(RV_CSR_MCAUSE) & 0x7FFFFFFFU);
     vStackBefore[core] = stackBefore;
     vStackAfter[core]  = stackAfter;
 
@@ -231,7 +231,7 @@ static  void    __attribute__ ((noinline)) local_printCore(void) {
     (void)snprintf(&string[0], 80U, "\nRV_CSR_MBADADDR  = 0x%08"PRIX32, mdadaddr); cmns_send(KDEF0, string);
     (void)snprintf(&string[0], 80U, "\nRV_CSR_MIP       = 0x%08"PRIX32, mip);      cmns_send(KDEF0, string);
                                                                                    cmns_send(KDEF0, "\nCause            > ");
-    switch ((uint32_t)mcause & 0xFu) {
+    switch ((uint32_t)mcause & 0xFU) {
         case  0U: { cmns_send(KDEF0, "Address misaligned\n\n");             break; }
         case  1U: { cmns_send(KDEF0, "Access fault\n\n");                   break; }
         case  2U: { cmns_send(KDEF0, "Illegal instruction\n\n");            break; }

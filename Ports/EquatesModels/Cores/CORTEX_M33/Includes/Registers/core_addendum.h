@@ -129,10 +129,10 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 // RAM_CACHE:   Normal memory, Shareable, Write-Through
 // Peripheral:  Device memory, Always Shareable (KMPU_DEVICE_nGnRnE)
 
-#define KMPU_FLASH_ATTR                 ((0xAu<<KMPU_OUTER) | (0xAu<<KMPU_INNER))
-#define KMPU_RAM_CACHE_ATTR             ((0xBu<<KMPU_OUTER) | (0xBu<<KMPU_INNER))
-#define KMPU_RAM_NOT_CACHE_ATTR         ((0x4u<<KMPU_OUTER) | (0x4u<<KMPU_INNER))
-#define KMPU_PERIPH_ATTR                ((0x0u<<4)          | (KMPU_DEVICE_nGnRnE<<0))
+#define KMPU_FLASH_ATTR                 ((0xAU<<KMPU_OUTER) | (0xAU<<KMPU_INNER))
+#define KMPU_RAM_CACHE_ATTR             ((0xBU<<KMPU_OUTER) | (0xBU<<KMPU_INNER))
+#define KMPU_RAM_NOT_CACHE_ATTR         ((0x4U<<KMPU_OUTER) | (0x4U<<KMPU_INNER))
+#define KMPU_PERIPH_ATTR                ((0x0U<<4)          | (KMPU_DEVICE_nGnRnE<<0))
 
 #define KMPU_INDEX0                     0U
 #define KMPU_INDEX1                     8U
@@ -142,7 +142,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #define SET_MPU8_INDEX(idx0, idx1, idx2, idx3, idx4, idx5, idx6, idx7, idx8)                                        \
                                                                                                                     \
     MEMO_SYNC_BARRIER;                                                                                              \
-    REG(MPU)->CTRL = 0x00000000u;                                                                                   \
+    REG(MPU)->CTRL = 0x00000000U;                                                                                   \
                                                                                                                     \
     REG(MPU)->MAIR0 = ((idx0)<<KMPU_INDEX0)                                                                         \
                     | ((idx1)<<KMPU_INDEX1)                                                                         \
@@ -165,14 +165,14 @@ extern  uint8_t linker_##end[];                                                 
     MEMO_SYNC_BARRIER;                                                                                              \
     INST_SYNC_BARRIER;                                                                                              \
                                                                                                                     \
-    REG(MPU)->CTRL = 0x00000000u;                                                                                   \
+    REG(MPU)->CTRL = 0x00000000U;                                                                                   \
                                                                                                                     \
     REG(MPU)->RNR  = regionNb;                                                                                      \
-    REG(MPU)->RBAR = ((uint32_t)linker_##start & 0xFFFFFFE0u)                                                       \
+    REG(MPU)->RBAR = ((uint32_t)linker_##start & 0xFFFFFFE0U)                                                       \
                    | (executable * MPU_RBAR_XN_0)                                                                   \
                    | (access * MPU_RBAR_AP_0)                                                                       \
                    | (sharable * MPU_RBAR_SH_0);                                                                    \
-    REG(MPU)->RLAR = ((uint32_t)linker_##end & 0xFFFFFFE0u)                                                         \
+    REG(MPU)->RLAR = ((uint32_t)linker_##end & 0xFFFFFFE0U)                                                         \
                    | (index * MPU_ATTRINDEX_0)                                                                      \
                    | (1U * MPU_RLAR_E_0);                                                                           \
                                                                                                                     \

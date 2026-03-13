@@ -100,7 +100,7 @@ void    model_random_hard_read(uint32_t *number) {
     vTerminated = false;
     REG(RNG)->CR |= (RNG_CR_RNGEN | RNG_CR_IE);
 
-    while (vTerminated == false) {
+    while (!vTerminated) {
         kern_switchFast();
     }
 }

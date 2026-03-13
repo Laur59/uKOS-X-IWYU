@@ -113,7 +113,7 @@ int32_t model_usart_init(void) {
     NVIC_SetPriority(USART_VECTOR_NUMBER, KINT_LEVEL_COMMUNICATIONS);
     NVIC_EnableIRQ(USART_VECTOR_NUMBER);
 
-    USART->ENABLE        = 0x8u;
+    USART->ENABLE        = 0x8U;
     USART->BAUDRATE      = BAUDRATE_NRF(KSERIAL_DEFAULT_BAUDRATE);
     USART->CONFIG        = 0U;
     USART->RXD_PTR       = (uint32_t)&vPseudoFIFO[0];
@@ -184,14 +184,14 @@ int32_t model_usart_write(const uint8_t *buffer, uint32_t size) {
     static  bool        terminate = false, busy = false;
 
     INTERRUPTION_OFF;
-    if ((vSending == true) || (busy == true)) { RETURN_INT_RESTORE(KERR_SERIAL_SEPRO); }
-    if (wkSize == 0U)                         { RETURN_INT_RESTORE(KERR_SERIAL_LNBU0); }
+    if (vSending || busy) { RETURN_INT_RESTORE(KERR_SERIAL_SEPRO); }
+    if (wkSize == 0U)     { RETURN_INT_RESTORE(KERR_SERIAL_LNBU0); }
 
     busy = true;
     INTERRUPTION_RESTORE;
 
-    while (terminate == false) {
-        while (vSending == true) { kern_suspendProcess(1U); }
+    while (!terminate) {
+        while (vSending) { kern_suspendProcess(1U); }
 
         if (wkSize > KUSART_SZ_TX_BUF) { newSize = KUSART_SZ_TX_BUF; wkSize -= KUSART_SZ_TX_BUF; }
         else                           { newSize = wkSize; terminate = true;                     }
@@ -208,7 +208,7 @@ int32_t model_usart_write(const uint8_t *buffer, uint32_t size) {
         wkBuffer    = (const uint8_t    *)((uintptr_t)wkBuffer   + (uintptr_t)newSize);
         vRSndBuffer = vSndBuffer;
 
-        while (cb_CTSCheck() == false) { kern_suspendProcess(1U); }
+        while (!cb_CTSCheck()) { kern_suspendProcess(1U); }
 
         USART->TXD_PTR    = (uint32_t)vSndBuffer;
         USART->TXD_MAXCNT = (uint32_t)newSize;
@@ -296,7 +296,7 @@ static  void    local_USART_IRQHandler(void) {
 
     core = GET_RUNNING_CORE;
 
-    if ((USART->EVENTS_RXDRDY & 0x1u) != 0U) {
+    if ((USART->EVENTS_RXDRDY & 0x1U) != 0U) {
         USART->EVENTS_RXDRDY = 0U;
         USART->TASKS_STARTRX = 1U;
 
@@ -317,7 +317,7 @@ static  void    local_USART_IRQHandler(void) {
         vWRecBuffer = (vWRecBuffer == &vRecBuffer[KUSART_SZ_RX_BUF]) ? (vRecBuffer) : (vWRecBuffer);
 
         #if (defined(KUSART_SEMA_RX_S))
-        if (vWithSemaphore_RX == true) { kern_signalSemaphore(vSemaphore_RX); }
+        if (vWithSemaphore_RX) { kern_signalSemaphore(vSemaphore_RX); }
         #endif
 
 // cppcheck-suppress premium-misra-c-2023-5.8
@@ -333,7 +333,7 @@ static  void    local_USART_IRQHandler(void) {
         vSending = false;
 
         #if (defined(KUSART_SEMA_TX_S))
-        if (vWithSemaphore_TX == true) { kern_signalSemaphore(vSemaphore_TX); }
+        if (vWithSemaphore_TX) { kern_signalSemaphore(vSemaphore_TX); }
         #endif
     }
 }

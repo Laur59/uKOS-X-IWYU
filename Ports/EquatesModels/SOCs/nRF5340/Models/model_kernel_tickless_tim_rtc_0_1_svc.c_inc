@@ -94,7 +94,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #define KTIME1MS    ((uint32_t)(N * KFREQUENCY_1KHz * KKERN_TIC_TIME * K1ms))           // 2000-Hz
 #define KTIME20MS   ((uint32_t)(KFREQUENCY_1MHz * KKERN_PROC_TIMEOUT * K1ms))           // 50-Hz
 #define KTIMOVRFLOW (~0U)                                                               // Eevery 4294-s
-#define KMAXRTCBIT  (0xFFFFFFu)                                                         // 24-bit counter
+#define KMAXRTCBIT  (0xFFFFFFU)                                                         // 24-bit counter
 
 enum {
         KWUNORTO = 0U,                                                                  // Tickless wake-up by a normal timeout
@@ -235,7 +235,7 @@ void    model_kernel_setLowPower(uint8_t mode) {
             REG(TIMER1)->EVENTS_COMPARE[1] = 0U;
             REG(TIMER1)->INTENCLR          = (1U<<16U);
 
-            if (vTickLess == false) {
+            if (!vTickLess) {
 
                 INTERRUPTION_OFF;
                 vTickLess = true;
@@ -262,7 +262,7 @@ void    model_kernel_setLowPower(uint8_t mode) {
 // - Conventional interruptions
 
             vTimeout = false;
-            do { WAITING_INTERRUPTION; } while (vTimeout == false);
+            do { WAITING_INTERRUPTION; } while (!vTimeout);
 
             break;
         }
@@ -280,7 +280,7 @@ void    model_kernel_setPreciseSignal(prcs_t *handle) {
 
     INTERRUPTION_OFF;
     REG(TIMER0)->TASKS_CAPTURE[1] = 1U;
-    vPrcsAbsCount &= 0xFFFFFFFF00000000u;
+    vPrcsAbsCount &= 0xFFFFFFFF00000000U;
     vPrcsAbsCount |= (uint64_t)REG(TIMER0)->CC[1];
 
     handle->oNextTime = vPrcsAbsCount + handle->oPeriod;
@@ -354,7 +354,7 @@ static  void    local_RTC0_IRQHandler(void) {
 
 // CC0 Verify the timeout condition of the suspended processes
 
-    if ((REG(RTC0)->EVENTS_COMPARE[0] & 0x1u) != 0U) {
+    if ((REG(RTC0)->EVENTS_COMPARE[0] & 0x1U) != 0U) {
         REG(RTC0)->EVENTS_COMPARE[0] = 0U;
 
         local_updateTickless(KWUNORTO);
@@ -386,11 +386,11 @@ static  void    local_TIM0_IRQHandler(void) {
 // CC2 Used for user defined intervals for precise signals
 
     #if (KKERN_NB_PRECISE_SIGNALS > 0)
-    if ((REG(TIMER0)->EVENTS_COMPARE[2] & 0x1u) != 0U) {
+    if ((REG(TIMER0)->EVENTS_COMPARE[2] & 0x1U) != 0U) {
         REG(TIMER0)->EVENTS_COMPARE[2] = 0U;
 
         REG(TIMER0)->TASKS_CAPTURE[1] = 1U;
-        vPrcsAbsCount &= 0xFFFFFFFF00000000u;
+        vPrcsAbsCount &= 0xFFFFFFFF00000000U;
         vPrcsAbsCount |= (uint64_t)REG(TIMER0)->CC[1];
 
         i = vPrcsIndex;
@@ -414,16 +414,16 @@ static  void    local_TIM0_IRQHandler(void) {
 
 // CC3 Tim 0 overflow (every 4294-s)
 
-    if ((REG(TIMER0)->EVENTS_COMPARE[3] & 0x1u) != 0U) {
+    if ((REG(TIMER0)->EVENTS_COMPARE[3] & 0x1U) != 0U) {
         REG(TIMER0)->EVENTS_COMPARE[3] = 0U;
         REG(TIMER0)->CC[3] += KTIMOVRFLOW;
 
         REG(TIMER0)->TASKS_CAPTURE[1] = 1U;
 
         #if (KKERN_NB_PRECISE_SIGNALS > 0)
-        vPrcsAbsCount &= 0xFFFFFFFF00000000u;
+        vPrcsAbsCount &= 0xFFFFFFFF00000000U;
         vPrcsAbsCount |= (uint64_t)REG(TIMER0)->CC[1];
-        vPrcsAbsCount += 0x100000000u;
+        vPrcsAbsCount += 0x100000000U;
 
         local_nextTime(vPrcsAbsCount);
         #endif
@@ -449,7 +449,7 @@ static  void    local_nextTime(uint64_t absTime) {
 
 // Determine the next shortest time
 
-    minNextTime = 0xFFFFFFFFFFFFFFFFu;
+    minNextTime = 0xFFFFFFFFFFFFFFFFU;
     for (i = 0U; i < KKERN_NB_PRECISE_SIGNALS; i++) {
         if ((vKern_prcs[KCORE_0][i].oState & (1U<<BPRCS_INSTALLED)) != 0U) {
             if (vKern_prcs[KCORE_0][i].oMode != KPRCS_STOP) {
@@ -465,10 +465,10 @@ static  void    local_nextTime(uint64_t absTime) {
 // For Shortest request, it can happen that minNextTime < vCNT (too slow process).
 // In this case, we launch the new time with a minimal delay of 2 ...
 
-    if (found == true) {
+    if (found) {
         minNextTime = (minNextTime < absTime) ? (2) : (minNextTime - absTime);
         minNextTime = (minNextTime < 2U)      ? (2) : (minNextTime);
-        if (minNextTime < 0x100000000u) {
+        if (minNextTime < 0x100000000U) {
             REG(TIMER0)->TASKS_CAPTURE[1] = 1U;
             REG(TIMER0)->CC[2] = REG(TIMER0)->CC[1] + (uint32_t)minNextTime;
             REG(TIMER0)->INTENSET = (1U<<18U);
@@ -551,7 +551,7 @@ static  uintptr_t   __attribute__ ((noinline, used)) *local_newContextPRE(uintpt
     core_setPSPLIM(0U);
     scheduler_callBackSlow();
     local_timeStart();
-    core_setPSPLIM((uintptr_t)vKern_runProc[KCORE_0]->oSpecification.oStackStart & 0xFFFFFFF8u);
+    core_setPSPLIM((uintptr_t)vKern_runProc[KCORE_0]->oSpecification.oStackStart & 0xFFFFFFF8U);
 
     #else
     CHECK_STACK_SANITY(KCORE_0);
@@ -666,7 +666,7 @@ static  uintptr_t   __attribute__ ((noinline, used)) *local_newContextTOU(uintpt
     core_setPSPLIM(0U);
     scheduler_callBackSlow();
     local_timeStart();
-    core_setPSPLIM((uintptr_t)vKern_runProc[KCORE_0]->oSpecification.oStackStart & 0xFFFFFFF8u);
+    core_setPSPLIM((uintptr_t)vKern_runProc[KCORE_0]->oSpecification.oStackStart & 0xFFFFFFF8U);
 
     #else
     CHECK_STACK_SANITY(KCORE_0);
@@ -783,7 +783,7 @@ static  uintptr_t   __attribute__ ((noinline, used)) *local_newContextMSG(uintpt
     core_setPSPLIM(0U);
     scheduler_callBackTrap(message);
     local_timeStart();
-    core_setPSPLIM((uintptr_t)vKern_runProc[KCORE_0]->oSpecification.oStackStart & 0xFFFFFFF8u);
+    core_setPSPLIM((uintptr_t)vKern_runProc[KCORE_0]->oSpecification.oStackStart & 0xFFFFFFF8U);
 
     #else
     CHECK_STACK_SANITY(KCORE_0);
@@ -865,7 +865,7 @@ static  void    __attribute__ ((used)) local_updateTickless(uint8_t mode) {
         case KWUNORTO: {
             vTimeout = true;
             elapsedTime = REG(RTC0)->CC[0] / N;
-            if (vTickLess == true) {
+            if (vTickLess) {
                 vTickLess = false;
 
                 local_updateTickTimer(KTIME1MS);
@@ -879,7 +879,7 @@ static  void    __attribute__ ((used)) local_updateTickless(uint8_t mode) {
 // - Update the process list with the elapsed time (timeout -= elapsed time)
 
         case KWUINTPR: {
-            if (vTickLess == true) {
+            if (vTickLess) {
                 vTickLess = false;
 
                 REG(RTC0)->TASKS_CAPTURE[1] = 1U;
@@ -967,8 +967,8 @@ static  void    local_timeStmp(bool overflow) {
 // Overflow; add 0x100000000 to the counter
 // Update the 1-us 64-bit tickCount
 
-    if (overflow == true) {
-        vTickCount = (vTickCount & 0xFFFFFFFF00000000u) + 0x100000000u;
+    if (overflow) {
+        vTickCount = (vTickCount & 0xFFFFFFFF00000000U) + 0x100000000U;
         INTERRUPTION_RESTORE;
         return;
     }
@@ -977,7 +977,7 @@ static  void    local_timeStmp(bool overflow) {
 // Update the 1-us 64-bit tickCount
 
     if (newTime > 0U) {
-        vTickCount = (vTickCount & 0xFFFFFFFF00000000u) | newTime;
+        vTickCount = (vTickCount & 0xFFFFFFFF00000000U) | newTime;
     }
     INTERRUPTION_RESTORE;
 }

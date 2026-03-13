@@ -455,92 +455,92 @@ typedef struct {
 } UICR_TypeDef;
 
 #ifdef __cplusplus
-#define UICR_S  reinterpret_cast<UICR_TypeDef *>(0x00FF8000u)
+#define UICR_S  reinterpret_cast<UICR_TypeDef *>(0x00FF8000U)
 
 #else
-#define UICR_S  ((UICR_TypeDef *)0x00FF8000u)
+#define UICR_S  ((UICR_TypeDef *)0x00FF8000U)
 #endif
 
 // APPROTECT Configuration
 
-#define UICR_APPROTECT_PALL                         (0xFFFFFFFFu<<0)
-#define UICR_APPROTECT_PALL_0                       (0x1u<<0)
-#define UICR_APPROTECT_PALL_UNPROTECTED             (0x50FA50FAu<<0)
-#define UICR_APPROTECT_PALL_PROTECTED               (0x0u<<0)
+#define UICR_APPROTECT_PALL                         (0xFFFFFFFFU<<0)
+#define UICR_APPROTECT_PALL_0                       (0x1U<<0)
+#define UICR_APPROTECT_PALL_UNPROTECTED             (0x50FA50FAU<<0)
+#define UICR_APPROTECT_PALL_PROTECTED               (0x0U<<0)
 
 // VREGHVOUT Configuration
 
-#define UICR_VREGHVOUT_VREGHVOUT                    (0x7u<<0)
-#define UICR_VREGHVOUT_VREGHVOUT_0                  (0x1u<<0)
-#define UICR_VREGHVOUT_VREGHVOUT_1V8                (0x0u<<0)
-#define UICR_VREGHVOUT_VREGHVOUT_2V1                (0x1u<<0)
-#define UICR_VREGHVOUT_VREGHVOUT_2V4                (0x2u<<0)
-#define UICR_VREGHVOUT_VREGHVOUT_2V7                (0x3u<<0)
-#define UICR_VREGHVOUT_VREGHVOUT_3V0                (0x4u<<0)
-#define UICR_VREGHVOUT_VREGHVOUT_3V3                (0x5u<<0)
-#define UICR_VREGHVOUT_VREGHVOUT_DEFAULT            (0x7u<<0)
+#define UICR_VREGHVOUT_VREGHVOUT                    (0x7U<<0)
+#define UICR_VREGHVOUT_VREGHVOUT_0                  (0x1U<<0)
+#define UICR_VREGHVOUT_VREGHVOUT_1V8                (0x0U<<0)
+#define UICR_VREGHVOUT_VREGHVOUT_2V1                (0x1U<<0)
+#define UICR_VREGHVOUT_VREGHVOUT_2V4                (0x2U<<0)
+#define UICR_VREGHVOUT_VREGHVOUT_2V7                (0x3U<<0)
+#define UICR_VREGHVOUT_VREGHVOUT_3V0                (0x4U<<0)
+#define UICR_VREGHVOUT_VREGHVOUT_3V3                (0x5U<<0)
+#define UICR_VREGHVOUT_VREGHVOUT_DEFAULT            (0x7U<<0)
 
 // HFXOCNT Configuration
 
-#define UICR_HFXOCNT_HFXOCNT                        (0xFFu<<0)
-#define UICR_HFXOCNT_HFXOCNT_0                      (0x1u<<0)
-#define UICR_HFXOCNT_HFXOCNT_MINDEBOUNCETIME        (0x0u<<0)
-#define UICR_HFXOCNT_HFXOCNT_MAXDEBOUNCETIME        (0xFEu<<0)
-#define UICR_HFXOCNT_HFXOCNT_DEFAULTDEBOUNCETIME    (0xFFu<<0)
+#define UICR_HFXOCNT_HFXOCNT                        (0xFFU<<0)
+#define UICR_HFXOCNT_HFXOCNT_0                      (0x1U<<0)
+#define UICR_HFXOCNT_HFXOCNT_MINDEBOUNCETIME        (0x0U<<0)
+#define UICR_HFXOCNT_HFXOCNT_MAXDEBOUNCETIME        (0xFEU<<0)
+#define UICR_HFXOCNT_HFXOCNT_DEFAULTDEBOUNCETIME    (0xFFU<<0)
 
 // SECUREAPPROTECT Configuration
 
-#define UICR_SECUREAPPROTECT_PALL                   (0xFFFFFFFFu<<0)
-#define UICR_SECUREAPPROTECT_PALL_0                 (0x1u<<0)
-#define UICR_SECUREAPPROTECT_PALL_UNPROTECTED       (0x50FA50FAu<<0)
-#define UICR_SECUREAPPROTECT_PALL_PROTECTED         (0x0u<<0)
+#define UICR_SECUREAPPROTECT_PALL                   (0xFFFFFFFFU<<0)
+#define UICR_SECUREAPPROTECT_PALL_0                 (0x1U<<0)
+#define UICR_SECUREAPPROTECT_PALL_UNPROTECTED       (0x50FA50FAU<<0)
+#define UICR_SECUREAPPROTECT_PALL_PROTECTED         (0x0U<<0)
 
 // ERASEPROTECT Configuration
 
-#define UICR_ERASEPROTECT_PALL                      (0xFFFFFFFFu<<0)
-#define UICR_ERASEPROTECT_PALL_0                    (0x1u<<0)
-#define UICR_ERASEPROTECT_PALL_UNPROTECTED          (0xFFFFFFFFu<<0)
-#define UICR_ERASEPROTECT_PALL_PROTECTED            (0x0u<<0)
+#define UICR_ERASEPROTECT_PALL                      (0xFFFFFFFFU<<0)
+#define UICR_ERASEPROTECT_PALL_0                    (0x1U<<0)
+#define UICR_ERASEPROTECT_PALL_UNPROTECTED          (0xFFFFFFFFU<<0)
+#define UICR_ERASEPROTECT_PALL_PROTECTED            (0x0U<<0)
 
 // TINSTANCE Configuration
 
-#define UICR_TINSTANCE_TINSTANCE                    (0xFu<<28)
-#define UICR_TINSTANCE_TINSTANCE_0                  (0x1u<<28)
+#define UICR_TINSTANCE_TINSTANCE                    (0xFU<<28)
+#define UICR_TINSTANCE_TINSTANCE_0                  (0x1U<<28)
 
 // NFCPINS Configuration
 
-#define UICR_NFCPINS_PROTECT                        (0x1u<<0)
-#define UICR_NFCPINS_PROTECT_DISABLED               (0x0u<<0)
-#define UICR_NFCPINS_PROTECT_NFC                    (0x1u<<0)
+#define UICR_NFCPINS_PROTECT                        (0x1U<<0)
+#define UICR_NFCPINS_PROTECT_DISABLED               (0x0U<<0)
+#define UICR_NFCPINS_PROTECT_NFC                    (0x1U<<0)
 
 // OTP Configuration
 
-#define UICR_OTP_UPPER                              (0xFFFFu<<16)
-#define UICR_OTP_UPPER_0                            (0x1u<<16)
-#define UICR_OTP_LOWER                              (0xFFFFu<<0)
-#define UICR_OTP_LOWER_0                            (0x1u<<0)
+#define UICR_OTP_UPPER                              (0xFFFFU<<16)
+#define UICR_OTP_UPPER_0                            (0x1U<<16)
+#define UICR_OTP_LOWER                              (0xFFFFU<<0)
+#define UICR_OTP_LOWER_0                            (0x1U<<0)
 
 // DEST Configuration
 
-#define UICR_KEYSLOT_CONFIG_DEST_DEST               (0xFFFFFFFFu<<0)
-#define UICR_KEYSLOT_CONFIG_DEST_DEST_0             (0x1u<<0)
+#define UICR_KEYSLOT_CONFIG_DEST_DEST               (0xFFFFFFFFU<<0)
+#define UICR_KEYSLOT_CONFIG_DEST_DEST_0             (0x1U<<0)
 
 // PERM Configuration
 
-#define UICR_KEYSLOT_CONFIG_PERM_STATE              (0x1u<<16)
-#define UICR_KEYSLOT_CONFIG_PERM_PUSH               (0x1u<<2)
-#define UICR_KEYSLOT_CONFIG_PERM_READ               (0x1u<<1)
-#define UICR_KEYSLOT_CONFIG_PERM_WRITE              (0x1u<<0)
-#define UICR_KEYSLOT_CONFIG_PERM_STATE_REVOKED      (0x0u<<16)
-#define UICR_KEYSLOT_CONFIG_PERM_STATE_ACTIVE       (0x1u<<16)
-#define UICR_KEYSLOT_CONFIG_PERM_PUSH_DISABLED      (0x0u<<2)
-#define UICR_KEYSLOT_CONFIG_PERM_PUSH_ENABLED       (0x1u<<2)
-#define UICR_KEYSLOT_CONFIG_PERM_READ_DISABLED      (0x0u<<1)
-#define UICR_KEYSLOT_CONFIG_PERM_READ_ENABLED       (0x1u<<1)
-#define UICR_KEYSLOT_CONFIG_PERM_WRITE_DISABLED     (0x0u<<0)
-#define UICR_KEYSLOT_CONFIG_PERM_WRITE_ENABLED      (0x1u<<0)
+#define UICR_KEYSLOT_CONFIG_PERM_STATE              (0x1U<<16)
+#define UICR_KEYSLOT_CONFIG_PERM_PUSH               (0x1U<<2)
+#define UICR_KEYSLOT_CONFIG_PERM_READ               (0x1U<<1)
+#define UICR_KEYSLOT_CONFIG_PERM_WRITE              (0x1U<<0)
+#define UICR_KEYSLOT_CONFIG_PERM_STATE_REVOKED      (0x0U<<16)
+#define UICR_KEYSLOT_CONFIG_PERM_STATE_ACTIVE       (0x1U<<16)
+#define UICR_KEYSLOT_CONFIG_PERM_PUSH_DISABLED      (0x0U<<2)
+#define UICR_KEYSLOT_CONFIG_PERM_PUSH_ENABLED       (0x1U<<2)
+#define UICR_KEYSLOT_CONFIG_PERM_READ_DISABLED      (0x0U<<1)
+#define UICR_KEYSLOT_CONFIG_PERM_READ_ENABLED       (0x1U<<1)
+#define UICR_KEYSLOT_CONFIG_PERM_WRITE_DISABLED     (0x0U<<0)
+#define UICR_KEYSLOT_CONFIG_PERM_WRITE_ENABLED      (0x1U<<0)
 
 // VALUE Configuration
 
-#define UICR_KEYSLOT_KEY_VALUE_VALUE                (0xFFFFFFFFu<<0)
-#define UICR_KEYSLOT_KEY_VALUE_VALUE_0              (0x1u<<0)
+#define UICR_KEYSLOT_KEY_VALUE_VALUE                (0xFFFFFFFFU<<0)
+#define UICR_KEYSLOT_KEY_VALUE_VALUE_0              (0x1U<<0)

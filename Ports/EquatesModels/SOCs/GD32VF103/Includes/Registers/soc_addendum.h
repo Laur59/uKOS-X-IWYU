@@ -58,19 +58,19 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 // CTL register
 
-#define FWDGT_CTL_DISABLE                   0x5555u
-#define FWDGT_CTL_START                     0xCCCCu
-#define FWDGT_CTL_RELOAD                    0xAAAAu
+#define FWDGT_CTL_DISABLE                   0x5555U
+#define FWDGT_CTL_START                     0xCCCCU
+#define FWDGT_CTL_RELOAD                    0xAAAAU
 
 // PSC register
 
-#define FWDGT_PSC_1_4                       0x0000u
-#define FWDGT_PSC_1_8                       0x0001u
-#define FWDGT_PSC_1_16                      0x0002u
-#define FWDGT_PSC_1_32                      0x0003u
-#define FWDGT_PSC_1_64                      0x0004u
-#define FWDGT_PSC_1_128                     0x0005u
-#define FWDGT_PSC_1_256                     0x0006u
+#define FWDGT_PSC_1_4                       0x0000U
+#define FWDGT_PSC_1_8                       0x0001U
+#define FWDGT_PSC_1_16                      0x0002U
+#define FWDGT_PSC_1_32                      0x0003U
+#define FWDGT_PSC_1_64                      0x0004U
+#define FWDGT_PSC_1_128                     0x0005U
+#define FWDGT_PSC_1_256                     0x0006U
 
 // ECLIC address definitions
 // -------------------------
@@ -93,11 +93,11 @@ typedef struct {
                 struct  cint        CLICINT[4096];
 } ECLIC_Type;
 
-#define ECLIC   ((ECLIC_Type *)0xD2000000u)
+#define ECLIC   ((ECLIC_Type *)0xD2000000U)
 
 // CFG register
 
-#define ECLIC_CFG_NLBITS_MASK               0x1Eu           //
+#define ECLIC_CFG_NLBITS_MASK               0x1EU           //
 #define ECLIC_CFG_NLBITS_LSB                1U              //
 
 // INT register

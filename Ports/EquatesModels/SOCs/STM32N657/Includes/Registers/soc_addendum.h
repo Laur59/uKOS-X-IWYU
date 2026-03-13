@@ -58,69 +58,69 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 // CCMR1 Configuration
 
-#define TIM1_CCMR1_OC2M_3           (0x1u<<24)
-#define TIM1_CCMR1_OC1M_3           (0x1u<<16)
-#define TIM1_CCMR1_OC2CE            (0x1u<<15)
-#define TIM1_CCMR1_OC2M             (0x7u<<12)
-#define TIM1_CCMR1_OC2M_0           (0x1u<<12)
-#define TIM1_CCMR1_OC2PE            (0x1u<<11)
-#define TIM1_CCMR1_OC2FE            (0x1u<<10)
-#define TIM1_CCMR1_OC1CE            (0x1u<<7)
-#define TIM1_CCMR1_OC1M             (0x7u<<4)
-#define TIM1_CCMR1_OC1M_0           (0x1u<<4)
-#define TIM1_CCMR1_OC1PE            (0x1u<<3)
-#define TIM1_CCMR1_OC1FE            (0x1u<<2)
+#define TIM1_CCMR1_OC2M_3           (0x1U<<24)
+#define TIM1_CCMR1_OC1M_3           (0x1U<<16)
+#define TIM1_CCMR1_OC2CE            (0x1U<<15)
+#define TIM1_CCMR1_OC2M             (0x7U<<12)
+#define TIM1_CCMR1_OC2M_0           (0x1U<<12)
+#define TIM1_CCMR1_OC2PE            (0x1U<<11)
+#define TIM1_CCMR1_OC2FE            (0x1U<<10)
+#define TIM1_CCMR1_OC1CE            (0x1U<<7)
+#define TIM1_CCMR1_OC1M             (0x7U<<4)
+#define TIM1_CCMR1_OC1M_0           (0x1U<<4)
+#define TIM1_CCMR1_OC1PE            (0x1U<<3)
+#define TIM1_CCMR1_OC1FE            (0x1U<<2)
 
 // CCMR2 Configuration
 
-#define TIM1_CCMR2_OC4M_4           (0x1u<<24)
-#define TIM1_CCMR2_OC3M_3           (0x1u<<16)
-#define TIM1_CCMR2_OC4CE            (0x1u<<15)
-#define TIM1_CCMR2_OC4M             (0x7u<<12)
-#define TIM1_CCMR2_OC4M_0           (0x1u<<12)
-#define TIM1_CCMR2_OC4PE            (0x1u<<11)
-#define TIM1_CCMR2_OC4FE            (0x1u<<10)
-#define TIM1_CCMR2_OC3CE            (0x1u<<7)
-#define TIM1_CCMR2_OC3M             (0x7u<<4)
-#define TIM1_CCMR2_OC3M_0           (0x1u<<4)
-#define TIM1_CCMR2_OC3PE            (0x1u<<3)
-#define TIM1_CCMR2_OC3FE            (0x1u<<2)
+#define TIM1_CCMR2_OC4M_4           (0x1U<<24)
+#define TIM1_CCMR2_OC3M_3           (0x1U<<16)
+#define TIM1_CCMR2_OC4CE            (0x1U<<15)
+#define TIM1_CCMR2_OC4M             (0x7U<<12)
+#define TIM1_CCMR2_OC4M_0           (0x1U<<12)
+#define TIM1_CCMR2_OC4PE            (0x1U<<11)
+#define TIM1_CCMR2_OC4FE            (0x1U<<10)
+#define TIM1_CCMR2_OC3CE            (0x1U<<7)
+#define TIM1_CCMR2_OC3M             (0x7U<<4)
+#define TIM1_CCMR2_OC3M_0           (0x1U<<4)
+#define TIM1_CCMR2_OC3PE            (0x1U<<3)
+#define TIM1_CCMR2_OC3FE            (0x1U<<2)
 
 // tim15 additional definitions
 // ----------------------------
 
 // CCMR1 Configuration
 
-#define TIM15_CCMR1_OC2M_3          (0x1u<<24)
-#define TIM15_CCMR1_OC1M_3          (0x1u<<16)
-#define TIM15_CCMR1_OC2M            (0x7u<<12)
-#define TIM15_CCMR1_OC2M_0          (0x1u<<12)
-#define TIM15_CCMR1_OC2PE           (0x1u<<11)
-#define TIM15_CCMR1_OC2FE           (0x1u<<10)
-#define TIM15_CCMR1_OC1M            (0x7u<<4)
-#define TIM15_CCMR1_OC1M_0          (0x1u<<4)
-#define TIM15_CCMR1_OC1PE           (0x1u<<3)
-#define TIM15_CCMR1_OC1FE           (0x1u<<2)
+#define TIM15_CCMR1_OC2M_3          (0x1U<<24)
+#define TIM15_CCMR1_OC1M_3          (0x1U<<16)
+#define TIM15_CCMR1_OC2M            (0x7U<<12)
+#define TIM15_CCMR1_OC2M_0          (0x1U<<12)
+#define TIM15_CCMR1_OC2PE           (0x1U<<11)
+#define TIM15_CCMR1_OC2FE           (0x1U<<10)
+#define TIM15_CCMR1_OC1M            (0x7U<<4)
+#define TIM15_CCMR1_OC1M_0          (0x1U<<4)
+#define TIM15_CCMR1_OC1PE           (0x1U<<3)
+#define TIM15_CCMR1_OC1FE           (0x1U<<2)
 
 // iwdg additional definitions
 // ---------------------------
 
 // KR Configuration
 
-#define IWDG_KR_DISABLE             0x5555u
-#define IWDG_KR_START               0xCCCCu
-#define IWDG_KR_RELOAD              0xAAAAu
+#define IWDG_KR_DISABLE             0x5555U
+#define IWDG_KR_START               0xCCCCU
+#define IWDG_KR_RELOAD              0xAAAAU
 
 // PR Configuration
 
-#define IWDG_PR_1_4                 0x0000u
-#define IWDG_PR_1_8                 0x0001u
-#define IWDG_PR_1_16                0x0002u
-#define IWDG_PR_1_32                0x0003u
-#define IWDG_PR_1_64                0x0004u
-#define IWDG_PR_1_128               0x0005u
-#define IWDG_PR_1_256               0x0006u
-#define IWDG_PR_1_512               0x0007u
+#define IWDG_PR_1_4                 0x0000U
+#define IWDG_PR_1_8                 0x0001U
+#define IWDG_PR_1_16                0x0002U
+#define IWDG_PR_1_32                0x0003U
+#define IWDG_PR_1_64                0x0004U
+#define IWDG_PR_1_128               0x0005U
+#define IWDG_PR_1_256               0x0006U
+#define IWDG_PR_1_512               0x0007U
 
 // otg additional definitions
 // --------------------------
@@ -143,12 +143,12 @@ typedef struct {
 } USB_HS_PHYC_GlobalTypeDef;
 
 #ifdef __cplusplus
-#define USB1_HS_PHYC_NS reinterpret_cast<USB_HS_PHYC_GlobalTypeDef *>(0x4803FC00u)
-#define USB1_HS_PHYC_S  reinterpret_cast<USB_HS_PHYC_GlobalTypeDef *>(0x5803FC00u)
+#define USB1_HS_PHYC_NS reinterpret_cast<USB_HS_PHYC_GlobalTypeDef *>(0x4803FC00U)
+#define USB1_HS_PHYC_S  reinterpret_cast<USB_HS_PHYC_GlobalTypeDef *>(0x5803FC00U)
 
 #else
-#define USB1_HS_PHYC_NS ((USB_HS_PHYC_GlobalTypeDef *)0x4803FC00u)
-#define USB1_HS_PHYC_S  ((USB_HS_PHYC_GlobalTypeDef *)0x5803FC00u)
+#define USB1_HS_PHYC_NS ((USB_HS_PHYC_GlobalTypeDef *)0x4803FC00U)
+#define USB1_HS_PHYC_S  ((USB_HS_PHYC_GlobalTypeDef *)0x5803FC00U)
 #endif
 
 // gpio additional definitions
@@ -160,17 +160,17 @@ typedef struct {
 // - Alternate function
 // - Analog function
 
-#define KIN                         0x0u
-#define KOU                         0x1u
-#define KAL                         0x2u
-#define KAN                         0x3u
+#define KIN                         0x0U
+#define KOU                         0x1U
+#define KAL                         0x2U
+#define KAN                         0x3U
 
 // GPIO for OTYPER configuration
 // - Output Push-pull
 // - Output Open Drain
 
-#define KPP                         0x0u
-#define KOD                         0x1u
+#define KPP                         0x0U
+#define KOD                         0x1U
 
 // GPIO for OSPEEDR configuration
 // - Low speed 2-MHz
@@ -178,10 +178,10 @@ typedef struct {
 // - Fast speed 50-MHz
 // - High speed 100-MHz
 
-#define K02                         0x0u
-#define K25                         0x1u
-#define K50                         0x2u
-#define K99                         0x3u
+#define K02                         0x0U
+#define K25                         0x1U
+#define K50                         0x2U
+#define K99                         0x3U
 
 // GPIO for PUPDR configuration
 // - No pull-up, pull-down
@@ -189,10 +189,10 @@ typedef struct {
 // - Pull-down
 // - Reserved
 
-#define KNO                         0x0u
-#define KPU                         0x1u
-#define KPD                         0x2u
-#define KRE                         0x3u
+#define KNO                         0x0U
+#define KPU                         0x1U
+#define KPD                         0x2U
+#define KRE                         0x3U
 
 // GPIO for AFR[x] configuration
 
@@ -287,7 +287,7 @@ typedef struct {
 
 // WPR Configuration (Write Protection Register)
 
-#define RTC_WPR_UNLOCK_KEY1     0x000000CAu
-#define RTC_WPR_UNLOCK_KEY2     0x00000053u
-#define RTC_WPR_LOCK_KEY        0x000000FFu
+#define RTC_WPR_UNLOCK_KEY1     0x000000CAU
+#define RTC_WPR_UNLOCK_KEY2     0x00000053U
+#define RTC_WPR_LOCK_KEY        0x000000FFU
 

@@ -60,15 +60,15 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 // Commands for the chip MX25R6435
 
-#define KFLASH_SPI_CMD_WRITE_STATUS         0x01u                                           // FLASH write status command
-#define KFLASH_SPI_CMD_WRITE                0x02u                                           // FLASH write command (pages of 256 bytes)
-#define KFLASH_SPI_CMD_READ                 0x03u                                           // FLASH read command
-#define KFLASH_SPI_CMD_WRITE_DISABLE        0x04u                                           // FLASH write disable command
-#define KFLASH_SPI_CMD_READ_STATUS          0x05u                                           // FLASH read status command
-#define KFLASH_SPI_CMD_WRITE_ENABLE         0x06u                                           // FLASH write enable command
-#define KFLASH_SPI_CMD_ERASE_SECTOR         0x20u                                           // FLASH erase sector command
-#define KFLASH_SPI_CMD_ERASE_BLOC           0xD8u                                           // FLASH erase bloc command
-#define KFLASH_SPI_CMD_ERASE_BULK           0xC7u                                           // FLASH bulk erase command
+#define KFLASH_SPI_CMD_WRITE_STATUS         0x01U                                           // FLASH write status command
+#define KFLASH_SPI_CMD_WRITE                0x02U                                           // FLASH write command (pages of 256 bytes)
+#define KFLASH_SPI_CMD_READ                 0x03U                                           // FLASH read command
+#define KFLASH_SPI_CMD_WRITE_DISABLE        0x04U                                           // FLASH write disable command
+#define KFLASH_SPI_CMD_READ_STATUS          0x05U                                           // FLASH read status command
+#define KFLASH_SPI_CMD_WRITE_ENABLE         0x06U                                           // FLASH write enable command
+#define KFLASH_SPI_CMD_ERASE_SECTOR         0x20U                                           // FLASH erase sector command
+#define KFLASH_SPI_CMD_ERASE_BLOC           0xD8U                                           // FLASH erase bloc command
+#define KFLASH_SPI_CMD_ERASE_BULK           0xC7U                                           // FLASH bulk erase command
 
 // Status bits for the chip MX25R6435
 

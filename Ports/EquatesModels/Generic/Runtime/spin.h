@@ -135,7 +135,7 @@ __attribute__ ((always_inline)) static  inline  void    spin_lockCore(corelock_t
 
         spin_unLock(&lock->oLock);
 
-        while (spin_tryLockCore(lock) == true) {
+        while (spin_tryLockCore(lock)) {
 
 // Busy, wait
 
@@ -164,7 +164,7 @@ __attribute__ ((always_inline)) static  inline  void    spin_unLockCore(corelock
         lock->oCount--;
         if (lock->oCount <= 0) {
             lock->oCount = 0;
-            lock->oCore  = 0xFFFFFFFFu;
+            lock->oCore  = 0xFFFFFFFFU;
         }
     }
     else {
@@ -193,7 +193,7 @@ __attribute__ ((always_inline)) static  inline  bool    spin_tryLockCore(coreloc
 
     core = GET_RUNNING_CORE;
 
-    if (spin_tryLock(&lock->oLock) == true) {
+    if (spin_tryLock(&lock->oLock)) {
         return (true);
     }
 
@@ -227,7 +227,7 @@ __attribute__ ((always_inline)) static  inline  void    spin_lock(spinlock_t *lo
 
 // MISRA: memory order has to be consistent (defaut)
 
-    while (atomic_flag_test_and_set(&lock->oFlag) == true) {
+    while (atomic_flag_test_and_set(&lock->oFlag)) {
         __asm volatile("nop");
     }
 }

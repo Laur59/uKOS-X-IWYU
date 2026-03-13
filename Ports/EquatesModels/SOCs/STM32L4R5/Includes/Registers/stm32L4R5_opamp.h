@@ -67,69 +67,69 @@ typedef struct {
 } OPAMP_TypeDef;
 
 #ifdef __cplusplus
-#define OPAMP   reinterpret_cast<OPAMP_TypeDef *>(0x40007800u)
+#define OPAMP   reinterpret_cast<OPAMP_TypeDef *>(0x40007800U)
 
 #else
-#define OPAMP   ((OPAMP_TypeDef *)0x40007800u)
+#define OPAMP   ((OPAMP_TypeDef *)0x40007800U)
 #endif
 
 // OPAMP1_CSR Configuration
 
-#define OPAMP_OPAMP1_CSR_OPA_RANGE          (0x1u<<31)
-#define OPAMP_OPAMP1_CSR_CALOUT             (0x1u<<15)
-#define OPAMP_OPAMP1_CSR_USERTRIM           (0x1u<<14)
-#define OPAMP_OPAMP1_CSR_CALSEL             (0x1u<<13)
-#define OPAMP_OPAMP1_CSR_CALON              (0x1u<<12)
-#define OPAMP_OPAMP1_CSR_VP_SEL             (0x1u<<10)
-#define OPAMP_OPAMP1_CSR_VM_SEL             (0x3u<<8)
-#define OPAMP_OPAMP1_CSR_VM_SEL_0           (0x1u<<8)
-#define OPAMP_OPAMP1_CSR_PGA_GAIN           (0x3u<<4)
-#define OPAMP_OPAMP1_CSR_PGA_GAIN_0         (0x1u<<4)
-#define OPAMP_OPAMP1_CSR_OPAMODE            (0x3u<<2)
-#define OPAMP_OPAMP1_CSR_OPAMODE_0          (0x1u<<2)
-#define OPAMP_OPAMP1_CSR_OPALPM             (0x1u<<1)
-#define OPAMP_OPAMP1_CSR_OPAEN              (0x1u<<0)
+#define OPAMP_OPAMP1_CSR_OPA_RANGE          (0x1U<<31)
+#define OPAMP_OPAMP1_CSR_CALOUT             (0x1U<<15)
+#define OPAMP_OPAMP1_CSR_USERTRIM           (0x1U<<14)
+#define OPAMP_OPAMP1_CSR_CALSEL             (0x1U<<13)
+#define OPAMP_OPAMP1_CSR_CALON              (0x1U<<12)
+#define OPAMP_OPAMP1_CSR_VP_SEL             (0x1U<<10)
+#define OPAMP_OPAMP1_CSR_VM_SEL             (0x3U<<8)
+#define OPAMP_OPAMP1_CSR_VM_SEL_0           (0x1U<<8)
+#define OPAMP_OPAMP1_CSR_PGA_GAIN           (0x3U<<4)
+#define OPAMP_OPAMP1_CSR_PGA_GAIN_0         (0x1U<<4)
+#define OPAMP_OPAMP1_CSR_OPAMODE            (0x3U<<2)
+#define OPAMP_OPAMP1_CSR_OPAMODE_0          (0x1U<<2)
+#define OPAMP_OPAMP1_CSR_OPALPM             (0x1U<<1)
+#define OPAMP_OPAMP1_CSR_OPAEN              (0x1U<<0)
 
 // OPAMP1_OTR Configuration
 
-#define OPAMP_OPAMP1_OTR_TRIMOFFSETP        (0x1Fu<<8)
-#define OPAMP_OPAMP1_OTR_TRIMOFFSETP_0      (0x1u<<8)
-#define OPAMP_OPAMP1_OTR_TRIMOFFSETN        (0x1Fu<<0)
-#define OPAMP_OPAMP1_OTR_TRIMOFFSETN_0      (0x1u<<0)
+#define OPAMP_OPAMP1_OTR_TRIMOFFSETP        (0x1FU<<8)
+#define OPAMP_OPAMP1_OTR_TRIMOFFSETP_0      (0x1U<<8)
+#define OPAMP_OPAMP1_OTR_TRIMOFFSETN        (0x1FU<<0)
+#define OPAMP_OPAMP1_OTR_TRIMOFFSETN_0      (0x1U<<0)
 
 // OPAMP1_LPOTR Configuration
 
-#define OPAMP_OPAMP1_LPOTR_TRIMLPOFFSETP    (0x1Fu<<8)
-#define OPAMP_OPAMP1_LPOTR_TRIMLPOFFSETP_0  (0x1u<<8)
-#define OPAMP_OPAMP1_LPOTR_TRIMLPOFFSETN    (0x1Fu<<0)
-#define OPAMP_OPAMP1_LPOTR_TRIMLPOFFSETN_0  (0x1u<<0)
+#define OPAMP_OPAMP1_LPOTR_TRIMLPOFFSETP    (0x1FU<<8)
+#define OPAMP_OPAMP1_LPOTR_TRIMLPOFFSETP_0  (0x1U<<8)
+#define OPAMP_OPAMP1_LPOTR_TRIMLPOFFSETN    (0x1FU<<0)
+#define OPAMP_OPAMP1_LPOTR_TRIMLPOFFSETN_0  (0x1U<<0)
 
 // OPAMP2_CSR Configuration
 
-#define OPAMP_OPAMP2_CSR_CALOUT             (0x1u<<15)
-#define OPAMP_OPAMP2_CSR_USERTRIM           (0x1u<<14)
-#define OPAMP_OPAMP2_CSR_CALSEL             (0x1u<<13)
-#define OPAMP_OPAMP2_CSR_CALON              (0x1u<<12)
-#define OPAMP_OPAMP2_CSR_VP_SEL             (0x1u<<10)
-#define OPAMP_OPAMP2_CSR_VM_SEL             (0x3u<<8)
-#define OPAMP_OPAMP2_CSR_VM_SEL_0           (0x1u<<8)
-#define OPAMP_OPAMP2_CSR_PGA_GAIN           (0x3u<<4)
-#define OPAMP_OPAMP2_CSR_PGA_GAIN_0         (0x1u<<4)
-#define OPAMP_OPAMP2_CSR_OPAMODE            (0x3u<<2)
-#define OPAMP_OPAMP2_CSR_OPAMODE_0          (0x1u<<2)
-#define OPAMP_OPAMP2_CSR_OPALPM             (0x1u<<1)
-#define OPAMP_OPAMP2_CSR_OPAEN              (0x1u<<0)
+#define OPAMP_OPAMP2_CSR_CALOUT             (0x1U<<15)
+#define OPAMP_OPAMP2_CSR_USERTRIM           (0x1U<<14)
+#define OPAMP_OPAMP2_CSR_CALSEL             (0x1U<<13)
+#define OPAMP_OPAMP2_CSR_CALON              (0x1U<<12)
+#define OPAMP_OPAMP2_CSR_VP_SEL             (0x1U<<10)
+#define OPAMP_OPAMP2_CSR_VM_SEL             (0x3U<<8)
+#define OPAMP_OPAMP2_CSR_VM_SEL_0           (0x1U<<8)
+#define OPAMP_OPAMP2_CSR_PGA_GAIN           (0x3U<<4)
+#define OPAMP_OPAMP2_CSR_PGA_GAIN_0         (0x1U<<4)
+#define OPAMP_OPAMP2_CSR_OPAMODE            (0x3U<<2)
+#define OPAMP_OPAMP2_CSR_OPAMODE_0          (0x1U<<2)
+#define OPAMP_OPAMP2_CSR_OPALPM             (0x1U<<1)
+#define OPAMP_OPAMP2_CSR_OPAEN              (0x1U<<0)
 
 // OPAMP2_OTR Configuration
 
-#define OPAMP_OPAMP2_OTR_TRIMOFFSETP        (0x1Fu<<8)
-#define OPAMP_OPAMP2_OTR_TRIMOFFSETP_0      (0x1u<<8)
-#define OPAMP_OPAMP2_OTR_TRIMOFFSETN        (0x1Fu<<0)
-#define OPAMP_OPAMP2_OTR_TRIMOFFSETN_0      (0x1u<<0)
+#define OPAMP_OPAMP2_OTR_TRIMOFFSETP        (0x1FU<<8)
+#define OPAMP_OPAMP2_OTR_TRIMOFFSETP_0      (0x1U<<8)
+#define OPAMP_OPAMP2_OTR_TRIMOFFSETN        (0x1FU<<0)
+#define OPAMP_OPAMP2_OTR_TRIMOFFSETN_0      (0x1U<<0)
 
 // OPAMP2_LPOTR Configuration
 
-#define OPAMP_OPAMP2_LPOTR_TRIMLPOFFSETP    (0x1Fu<<8)
-#define OPAMP_OPAMP2_LPOTR_TRIMLPOFFSETP_0  (0x1u<<8)
-#define OPAMP_OPAMP2_LPOTR_TRIMLPOFFSETN    (0x1Fu<<0)
-#define OPAMP_OPAMP2_LPOTR_TRIMLPOFFSETN_0  (0x1u<<0)
+#define OPAMP_OPAMP2_LPOTR_TRIMLPOFFSETP    (0x1FU<<8)
+#define OPAMP_OPAMP2_LPOTR_TRIMLPOFFSETP_0  (0x1U<<8)
+#define OPAMP_OPAMP2_LPOTR_TRIMLPOFFSETN    (0x1FU<<0)
+#define OPAMP_OPAMP2_LPOTR_TRIMLPOFFSETN_0  (0x1U<<0)

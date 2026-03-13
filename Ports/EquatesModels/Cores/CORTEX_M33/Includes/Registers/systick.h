@@ -63,17 +63,17 @@ typedef struct {
 } SysTick_TypeDef;
 
 #ifdef __cplusplus
-#define SysTick_S   reinterpret_cast<SysTick_TypeDef *>(0xE000E010u)
-#define SysTick_NS  reinterpret_cast<SysTick_TypeDef *>(0xE002E010u)
+#define SysTick_S   reinterpret_cast<SysTick_TypeDef *>(0xE000E010U)
+#define SysTick_NS  reinterpret_cast<SysTick_TypeDef *>(0xE002E010U)
 
 #else
-#define SysTick_S   ((SysTick_TypeDef *)0xE000E010u)
-#define SysTick_NS  ((SysTick_TypeDef *)0xE002E010u)
+#define SysTick_S   ((SysTick_TypeDef *)0xE000E010U)
+#define SysTick_NS  ((SysTick_TypeDef *)0xE002E010U)
 #endif
 
 // SysTick_CTRL register
 
-#define SysTick_CTRL_ENABLE         0x00000001u
-#define SysTick_CTRL_TICKINT        0x00000002u
-#define SysTick_CTRL_CLKSOURCE      0x00000004u
-#define SysTick_CTRL_COUNTFLAG      0x00010000u
+#define SysTick_CTRL_ENABLE         0x00000001U
+#define SysTick_CTRL_TICKINT        0x00000002U
+#define SysTick_CTRL_CLKSOURCE      0x00000004U
+#define SysTick_CTRL_COUNTFLAG      0x00010000U

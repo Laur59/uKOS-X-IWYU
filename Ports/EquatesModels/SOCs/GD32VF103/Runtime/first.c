@@ -55,10 +55,6 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    "macros_core.h"
 #include    "macros_core_stackFrame.h"  // IWYU pragma: keep (for INTERRUPTION_IN INTERRUPTION_OUT)
 
-extern  void    (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
-extern  bool    vExce_isException[KNB_CORES];
-
 // Vector table: ...
 // However rather than start at zero the vector table starts at address 0x00000004,
 // the first four bytes are used to store the starting address of the stack pointer.

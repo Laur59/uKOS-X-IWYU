@@ -66,70 +66,70 @@ typedef struct {
 } UART5_TypeDef;
 
 #ifdef __cplusplus
-#define UART5   reinterpret_cast<UART5_TypeDef *>(0x40005000u)
+#define UART5   reinterpret_cast<UART5_TypeDef *>(0x40005000U)
 
 #else
-#define UART5   ((UART5_TypeDef *)0x40005000u)
+#define UART5   ((UART5_TypeDef *)0x40005000U)
 #endif
 
 // SR Configuration
 
-#define UART5_SR_PE                 (0x1u<<0)
-#define UART5_SR_FE                 (0x1u<<1)
-#define UART5_SR_NF                 (0x1u<<2)
-#define UART5_SR_ORE                (0x1u<<3)
-#define UART5_SR_IDLE               (0x1u<<4)
-#define UART5_SR_RXNE               (0x1u<<5)
-#define UART5_SR_TC                 (0x1u<<6)
-#define UART5_SR_TXE                (0x1u<<7)
-#define UART5_SR_LBD                (0x1u<<8)
+#define UART5_SR_PE                 (0x1U<<0)
+#define UART5_SR_FE                 (0x1U<<1)
+#define UART5_SR_NF                 (0x1U<<2)
+#define UART5_SR_ORE                (0x1U<<3)
+#define UART5_SR_IDLE               (0x1U<<4)
+#define UART5_SR_RXNE               (0x1U<<5)
+#define UART5_SR_TC                 (0x1U<<6)
+#define UART5_SR_TXE                (0x1U<<7)
+#define UART5_SR_LBD                (0x1U<<8)
 
 // DR Configuration
 
-#define UART5_DR_DR                 (0x1FFu<<0)
-#define UART5_DR_DR_0               (0x1u<<0)
+#define UART5_DR_DR                 (0x1FFU<<0)
+#define UART5_DR_DR_0               (0x1U<<0)
 
 // BRR Configuration
 
-#define UART5_BRR_DIV_FRACTION      (0xFu<<0)
-#define UART5_BRR_DIV_FRACTION_0    (0x1u<<0)
-#define UART5_BRR_DIV_MANTISSA      (0xFFFu<<4)
-#define UART5_BRR_DIV_MANTISSA_0    (0x1u<<4)
+#define UART5_BRR_DIV_FRACTION      (0xFU<<0)
+#define UART5_BRR_DIV_FRACTION_0    (0x1U<<0)
+#define UART5_BRR_DIV_MANTISSA      (0xFFFU<<4)
+#define UART5_BRR_DIV_MANTISSA_0    (0x1U<<4)
 
 // CR1 Configuration
 
-#define UART5_CR1_SBK               (0x1u<<0)
-#define UART5_CR1_RWU               (0x1u<<1)
-#define UART5_CR1_RE                (0x1u<<2)
-#define UART5_CR1_TE                (0x1u<<3)
-#define UART5_CR1_IDLEIE            (0x1u<<4)
-#define UART5_CR1_RXNEIE            (0x1u<<5)
-#define UART5_CR1_TCIE              (0x1u<<6)
-#define UART5_CR1_TXEIE             (0x1u<<7)
-#define UART5_CR1_PEIE              (0x1u<<8)
-#define UART5_CR1_PS                (0x1u<<9)
-#define UART5_CR1_PCE               (0x1u<<10)
-#define UART5_CR1_WAKE              (0x1u<<11)
-#define UART5_CR1_M                 (0x1u<<12)
-#define UART5_CR1_UE                (0x1u<<13)
-#define UART5_CR1_OVER8             (0x1u<<15)
+#define UART5_CR1_SBK               (0x1U<<0)
+#define UART5_CR1_RWU               (0x1U<<1)
+#define UART5_CR1_RE                (0x1U<<2)
+#define UART5_CR1_TE                (0x1U<<3)
+#define UART5_CR1_IDLEIE            (0x1U<<4)
+#define UART5_CR1_RXNEIE            (0x1U<<5)
+#define UART5_CR1_TCIE              (0x1U<<6)
+#define UART5_CR1_TXEIE             (0x1U<<7)
+#define UART5_CR1_PEIE              (0x1U<<8)
+#define UART5_CR1_PS                (0x1U<<9)
+#define UART5_CR1_PCE               (0x1U<<10)
+#define UART5_CR1_WAKE              (0x1U<<11)
+#define UART5_CR1_M                 (0x1U<<12)
+#define UART5_CR1_UE                (0x1U<<13)
+#define UART5_CR1_OVER8             (0x1U<<15)
 
 // CR2 Configuration
 
-#define UART5_CR2_ADD               (0xFu<<0)
-#define UART5_CR2_ADD_0             (0x1u<<0)
-#define UART5_CR2_LBDL              (0x1u<<5)
-#define UART5_CR2_LBDIE             (0x1u<<6)
-#define UART5_CR2_STOP              (0x3u<<12)
-#define UART5_CR2_STOP_0            (0x1u<<12)
-#define UART5_CR2_LINEN             (0x1u<<14)
+#define UART5_CR2_ADD               (0xFU<<0)
+#define UART5_CR2_ADD_0             (0x1U<<0)
+#define UART5_CR2_LBDL              (0x1U<<5)
+#define UART5_CR2_LBDIE             (0x1U<<6)
+#define UART5_CR2_STOP              (0x3U<<12)
+#define UART5_CR2_STOP_0            (0x1U<<12)
+#define UART5_CR2_LINEN             (0x1U<<14)
 
 // CR3 Configuration
 
-#define UART5_CR3_EIE               (0x1u<<0)
-#define UART5_CR3_IREN              (0x1u<<1)
-#define UART5_CR3_IRLP              (0x1u<<2)
-#define UART5_CR3_HDSEL             (0x1u<<3)
-#define UART5_CR3_DMAR              (0x1u<<6)
-#define UART5_CR3_DMAT              (0x1u<<7)
-#define UART5_CR3_ONEBIT            (0x1u<<11)
+#define UART5_CR3_EIE               (0x1U<<0)
+#define UART5_CR3_IREN              (0x1U<<1)
+#define UART5_CR3_IRLP              (0x1U<<2)
+#define UART5_CR3_HDSEL             (0x1U<<3)
+#define UART5_CR3_DMAR              (0x1U<<6)
+#define UART5_CR3_DMAT              (0x1U<<7)
+#define UART5_CR3_ONEBIT            (0x1U<<11)

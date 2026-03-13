@@ -52,19 +52,19 @@ SPDX-FileContributor: Florence Lorenzin
 
 // I2c interface
 
-#define KI2C_ADD_STTS22H                    0x3Fu                           // I2C STTS22H address
+#define KI2C_ADD_STTS22H                    0x3FU                           // I2C STTS22H address
 
 #define KSTTS22H_SCALING                    100U                            // Scaling of 100-lsb / Deg
 
 // Registers
 
-#define STTS22H_WHO_AM_I                    0x01u                           // Register WHOAMI
-#define STTS22H_TEMP_H_LIMIT                0x02u                           // Register of the input for the high threshold decoder
-#define STTS22H_TEMP_L_LIMIT                0x03u                           // Register of the input for the high threshold decoder
-#define STTS22H_CNTRL                       0x04u                           // Register of control
-#define STTS22H_STATUS                      0x05u                           // Register of status
-#define STTS22H_TEMP_L                      0x06u                           // Register L of the temperature
-#define STTS22H_TEMP_H                      0x07u                           // Register H of the temperature
+#define STTS22H_WHO_AM_I                    0x01U                           // Register WHOAMI
+#define STTS22H_TEMP_H_LIMIT                0x02U                           // Register of the input for the high threshold decoder
+#define STTS22H_TEMP_L_LIMIT                0x03U                           // Register of the input for the high threshold decoder
+#define STTS22H_CNTRL                       0x04U                           // Register of control
+#define STTS22H_STATUS                      0x05U                           // Register of status
+#define STTS22H_TEMP_L                      0x06U                           // Register L of the temperature
+#define STTS22H_TEMP_H                      0x07U                           // Register H of the temperature
 
 // Control register
 

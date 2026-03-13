@@ -142,9 +142,9 @@ int32_t model_imager_configure(const imagerCnf_t *configure) {
 
 // Stop the DMA streams
 
-    DMA2->S1CR = 0x00000000u;
-    DCMI->CR   = 0x00000000u;
-    DCMI->IER  = 0x00000000u;
+    DMA2->S1CR = 0x00000000U;
+    DCMI->CR   = 0x00000000U;
+    DCMI->IER  = 0x00000000U;
 
     vAcqMode      = configure->oAcqMode & (uint8_t)~KIMAGER_SINGLE_BUFFER;
     vNbRows       = configure->oNbRows;
@@ -196,7 +196,7 @@ int32_t model_imager_acquisition(void) {
 
         default:
         case KIMAGER_SNAP: {
-            if (first == true) {
+            if (first) {
                 kern_suspendProcess(40U);
                 DCMI->ICR = DCMI_ICR_LINE_ISC;
                 DCMI->ICR = DCMI_ICR_FRAME_ISC;
@@ -303,8 +303,8 @@ static  int32_t local_initDCMI(void) {
     NVIC_SetPriority(DCMI_C0_IRQn, KINT_LEVEL_PERIPHERALS);
     NVIC_EnableIRQ(DCMI_C0_IRQn);
 
-    DCMI->CR     = 0x00000000u;
-    DCMI->IER    = 0x00000000u;
+    DCMI->CR     = 0x00000000U;
+    DCMI->IER    = 0x00000000U;
     DCMI->CWSTRT = (0U * DCMI_CWSTRT_VST_0)
                  | (0U * DCMI_CWSTRT_HOFFCNT_0);
     return (KERR_IMAGER_NOERR);
@@ -332,7 +332,7 @@ static  int32_t local_initDMA2(void) {
 // Memory auto incremented
 // Transfer complete interruption
 
-    DMA2->S1CR  = 0x00000000u;
+    DMA2->S1CR  = 0x00000000U;
     DMA2->S1PAR = (uint32_t)(uintptr_t)&DCMI->DR;
     DMA2->S1FCR = (3U * DMA_S1FCR_FTH_0)
                 | DMA_S1FCR_DMDIS;
@@ -349,7 +349,7 @@ static  int32_t local_initDMA2(void) {
 // Routing the DCMI requests with the Stream 1, No synchronization
 // Stream 1 on the DMA2 -> DMAMUX1_Channel9 (1 + 8)
 
-    DMAMUX1->C9CR = 0x00000000u;
+    DMAMUX1->C9CR = 0x00000000U;
     DMAMUX1->C9CR = (75U * DMAMUX1_C9CR_DMAREQ_ID_0);
 
     return (KERR_IMAGER_NOERR);
@@ -471,7 +471,7 @@ static  int32_t local_confMemo(const imagerCnf_t *configure) {
     if (vImageE0 != nullptr) { memo_free(vImageE0); }
     if (vImageE1 != nullptr) { memo_free(vImageE1); }
 
-    if (vSingleBuffer == true) {
+    if (vSingleBuffer) {
 
 // Single buffer
 
@@ -571,7 +571,7 @@ static  void    local_DCMI_IRQHandler(void) {
             go();
 
             #if (defined(KIMAGER_SEMA_VS_S))
-            if (vWithSemaphore_VS == true) { kern_signalSemaphore(vSemaphore_VS); }
+            if (vWithSemaphore_VS) { kern_signalSemaphore(vSemaphore_VS); }
             #endif
         }
     }
@@ -613,8 +613,8 @@ static  void    local_DMA2_Stream1_IRQHandler(void) {
     const   bool        sBuf  = (bool)vSingleBuffer;
 
     nextRowIndex = cols0 * size0 * r;
-    if ((page == 0U) && (sBuf == false)) { image = (uint32_t *)((uintptr_t)vImageE1 + (uintptr_t)nextRowIndex); }
-    else                                 { image = (uint32_t *)((uintptr_t)vImageE0 + (uintptr_t)nextRowIndex); }
+    if ((page == 0U) && (!sBuf)) { image = (uint32_t *)((uintptr_t)vImageE1 + (uintptr_t)nextRowIndex); }
+    else                         { image = (uint32_t *)((uintptr_t)vImageE0 + (uintptr_t)nextRowIndex); }
 
 // At the end of the DMA transfer it is necessary to invalidate the cache
 // See the ST application note AN4839
@@ -639,7 +639,7 @@ static  void    local_DMA2_Stream1_IRQHandler(void) {
 
         row = 0U;
 
-        if (vSingleBuffer == false) {
+        if (!vSingleBuffer) {
             vPage = (vPage == 0U) ? (1U) : (0U);
         }
         if (vDMAEcCodeRoutine != nullptr) {
@@ -648,7 +648,7 @@ static  void    local_DMA2_Stream1_IRQHandler(void) {
         }
 
         #if (defined(KIMAGER_SEMA_IM_S))
-        if (vWithSemaphore_IM == true) { kern_signalSemaphore(vSemaphore_IM); }
+        if (vWithSemaphore_IM) { kern_signalSemaphore(vSemaphore_IM); }
         #endif
     }
 }

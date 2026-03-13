@@ -178,7 +178,7 @@ extern  int32_t oct0_write(uint32_t chipSelect, const void *buffer, uint32_t szB
 // -------------------
 
 //                  Negative                 Family Lib Id                          Lib Id xx (error)
-#define KOCT0ERR    ((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<24U) | KOCT0MAN)
+#define KOCT0ERR    ((uint32_t)0x80000000U | ((uint32_t)KID_FAM_PERIPHERALS<<24U) | KOCT0MAN)
 
 enum : int32_t {
     KERR_OCT0_NOERR = 0,                            // No error

@@ -70,54 +70,54 @@ typedef struct {
 } TIM7_TypeDef;
 
 #ifdef __cplusplus
-#define TIM7_NS reinterpret_cast<TIM7_TypeDef *>(0x40001400u)
-#define TIM7_S  reinterpret_cast<TIM7_TypeDef *>(0x50001400u)
+#define TIM7_NS reinterpret_cast<TIM7_TypeDef *>(0x40001400U)
+#define TIM7_S  reinterpret_cast<TIM7_TypeDef *>(0x50001400U)
 
 #else
-#define TIM7_NS ((TIM7_TypeDef *)0x40001400u)
-#define TIM7_S  ((TIM7_TypeDef *)0x50001400u)
+#define TIM7_NS ((TIM7_TypeDef *)0x40001400U)
+#define TIM7_S  ((TIM7_TypeDef *)0x50001400U)
 #endif
 
 // CR1 Configuration
 
-#define TIM7_CR1_CEN        (0x1u<<0)
-#define TIM7_CR1_UDIS       (0x1u<<1)
-#define TIM7_CR1_URS        (0x1u<<2)
-#define TIM7_CR1_OPM        (0x1u<<3)
-#define TIM7_CR1_ARPE       (0x1u<<7)
-#define TIM7_CR1_UIFREMAP   (0x1u<<11)
-#define TIM7_CR1_DITHEN     (0x1u<<12)
+#define TIM7_CR1_CEN        (0x1U<<0)
+#define TIM7_CR1_UDIS       (0x1U<<1)
+#define TIM7_CR1_URS        (0x1U<<2)
+#define TIM7_CR1_OPM        (0x1U<<3)
+#define TIM7_CR1_ARPE       (0x1U<<7)
+#define TIM7_CR1_UIFREMAP   (0x1U<<11)
+#define TIM7_CR1_DITHEN     (0x1U<<12)
 
 // CR2 Configuration
 
-#define TIM7_CR2_MMS        (0x7u<<4)
-#define TIM7_CR2_MMS_0      (0x1u<<4)
+#define TIM7_CR2_MMS        (0x7U<<4)
+#define TIM7_CR2_MMS_0      (0x1U<<4)
 
 // DIER Configuration
 
-#define TIM7_DIER_UIE       (0x1u<<0)
-#define TIM7_DIER_UDE       (0x1u<<8)
+#define TIM7_DIER_UIE       (0x1U<<0)
+#define TIM7_DIER_UDE       (0x1U<<8)
 
 // SR Configuration
 
-#define TIM7_SR_UIF         (0x1u<<0)
+#define TIM7_SR_UIF         (0x1U<<0)
 
 // EGR Configuration
 
-#define TIM7_EGR_UG         (0x1u<<0)
+#define TIM7_EGR_UG         (0x1U<<0)
 
 // CNT Configuration
 
-#define TIM7_CNT_CNT        (0xFFFFu<<0)
-#define TIM7_CNT_CNT_0      (0x1u<<0)
-#define TIM7_CNT_UIFCPY     (0x1u<<31)
+#define TIM7_CNT_CNT        (0xFFFFU<<0)
+#define TIM7_CNT_CNT_0      (0x1U<<0)
+#define TIM7_CNT_UIFCPY     (0x1U<<31)
 
 // PSC Configuration
 
-#define TIM7_PSC_PSC        (0xFFFFu<<0)
-#define TIM7_PSC_PSC_0      (0x1u<<0)
+#define TIM7_PSC_PSC        (0xFFFFU<<0)
+#define TIM7_PSC_PSC_0      (0x1U<<0)
 
 // ARR Configuration
 
-#define TIM7_ARR_ARR        (0xFFFFFu<<0)
-#define TIM7_ARR_ARR_0      (0x1u<<0)
+#define TIM7_ARR_ARR        (0xFFFFFU<<0)
+#define TIM7_ARR_ARR_0      (0x1U<<0)

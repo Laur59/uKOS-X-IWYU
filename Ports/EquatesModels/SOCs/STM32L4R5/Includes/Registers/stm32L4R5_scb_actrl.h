@@ -61,16 +61,16 @@ typedef struct {
 } SCB_ACTRL_TypeDef;
 
 #ifdef __cplusplus
-#define SCB_ACTRL   reinterpret_cast<SCB_ACTRL_TypeDef *>(0xE000E008u)
+#define SCB_ACTRL   reinterpret_cast<SCB_ACTRL_TypeDef *>(0xE000E008U)
 
 #else
-#define SCB_ACTRL   ((SCB_ACTRL_TypeDef *)0xE000E008u)
+#define SCB_ACTRL   ((SCB_ACTRL_TypeDef *)0xE000E008U)
 #endif
 
 // ACTRL Configuration
 
-#define SCB_ACTRL_ACTRL_DISOOFP     (0x1u<<9)
-#define SCB_ACTRL_ACTRL_DISFPCA     (0x1u<<8)
-#define SCB_ACTRL_ACTRL_DISFOLD     (0x1u<<2)
-#define SCB_ACTRL_ACTRL_DISDEFWBUF  (0x1u<<1)
-#define SCB_ACTRL_ACTRL_DISMCYCINT  (0x1u<<0)
+#define SCB_ACTRL_ACTRL_DISOOFP     (0x1U<<9)
+#define SCB_ACTRL_ACTRL_DISFPCA     (0x1U<<8)
+#define SCB_ACTRL_ACTRL_DISFOLD     (0x1U<<2)
+#define SCB_ACTRL_ACTRL_DISDEFWBUF  (0x1U<<1)
+#define SCB_ACTRL_ACTRL_DISMCYCINT  (0x1U<<0)

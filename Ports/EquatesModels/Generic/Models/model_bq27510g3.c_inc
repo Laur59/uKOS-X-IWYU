@@ -96,7 +96,7 @@ int32_t model_bq27510g3_read(batteryInfo_t *infoBattery) {
     error |= cb_getValue(KBAT_TIME_TO_EMPTY,      &timeToEmpty);
     error |= cb_getValue(KBAT_CYCLE_COUNT,        &cycles);
 
-    if (error == true) { return (KERR_BATTERY_GEERR); }
+    if (error) { return (KERR_BATTERY_GEERR); }
 
     infoBattery->oVoltage             = (float64_t)voltage / 1000.0;
     infoBattery->oCurrent             = (float64_t)current;

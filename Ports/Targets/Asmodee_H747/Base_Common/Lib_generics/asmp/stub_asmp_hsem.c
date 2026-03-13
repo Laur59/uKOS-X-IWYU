@@ -96,8 +96,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #include    "soc_reg.h"
 #include    "types.h"
 
-#define KSIGNATURE_CORE_0       0xC24u              // cortex-M4
-#define KSIGNATURE_CORE_1       0xC27u              // cortex-M7
+#define KSIGNATURE_CORE_0       0xC24U              // cortex-M4
+#define KSIGNATURE_CORE_1       0xC27U              // cortex-M7
 
 #define KHSEM_COREID_CM4        1U                  // Core ID cortex-M4, core 0 (see table 9.4 RM0399 Rev 3)
 #define KHSEM_COREID_CM7        3U                  // Core ID cortex-M7, core 1 (see table 9.4 RM0399 Rev 3)

@@ -61,14 +61,14 @@ typedef struct {
 } SWI_TypeDef;
 
 #ifdef __cplusplus
-#define SWI0_NS reinterpret_cast<SWI_TypeDef *>(0x4101A000u)
-#define SWI1_NS reinterpret_cast<SWI_TypeDef *>(0x4101B000u)
-#define SWI2_NS reinterpret_cast<SWI_TypeDef *>(0x4101C000u)
-#define SWI3_NS reinterpret_cast<SWI_TypeDef *>(0x4101D000u)
+#define SWI0_NS reinterpret_cast<SWI_TypeDef *>(0x4101A000U)
+#define SWI1_NS reinterpret_cast<SWI_TypeDef *>(0x4101B000U)
+#define SWI2_NS reinterpret_cast<SWI_TypeDef *>(0x4101C000U)
+#define SWI3_NS reinterpret_cast<SWI_TypeDef *>(0x4101D000U)
 
 #else
-#define SWI0_NS ((SWI_TypeDef *)0x4101A000u)
-#define SWI1_NS ((SWI_TypeDef *)0x4101B000u)
-#define SWI2_NS ((SWI_TypeDef *)0x4101C000u)
-#define SWI3_NS ((SWI_TypeDef *)0x4101D000u)
+#define SWI0_NS ((SWI_TypeDef *)0x4101A000U)
+#define SWI1_NS ((SWI_TypeDef *)0x4101B000U)
+#define SWI2_NS ((SWI_TypeDef *)0x4101C000U)
+#define SWI3_NS ((SWI_TypeDef *)0x4101D000U)
 #endif

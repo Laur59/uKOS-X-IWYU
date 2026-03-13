@@ -377,7 +377,7 @@ void    __attribute__ ((noinline)) local_changeContext_PRE_C0(uint32_t core, uin
 // Save the plic threshold on the current process stack
 // Save the current process stack
 
-    *threshold = (uint64_t)plic->targets.target[core].priority_threshold & 0x00000000000000FFu;
+    *threshold = (uint64_t)plic->targets.target[core].priority_threshold & 0x00000000000000FFU;
     vKern_stackProc[core] = stack;
 
 // Change the context
@@ -388,7 +388,7 @@ void    __attribute__ ((noinline)) local_changeContext_PRE_C0(uint32_t core, uin
 // Recover the new plic threshold on the new process stack
 
     newStack = (volatile uint64_t *)vKern_stackProc[core];
-    plic->targets.target[core].priority_threshold = (uint32_t)(newStack[0] & 0x00000000000000FFu);
+    plic->targets.target[core].priority_threshold = (uint32_t)(newStack[0] & 0x00000000000000FFU);
 
 // Prepare a1 with the pointer on the new stack (see macro KERN_NEW_FRAME)
 
@@ -504,7 +504,7 @@ void    __attribute__ ((noinline)) local_changeContext_TOU_C0(uint32_t core, uin
 // Save the plic threshold on the current process stack
 // Save the current process stack
 
-    *threshold = (uint64_t)plic->targets.target[core].priority_threshold & 0x00000000000000FFu;
+    *threshold = (uint64_t)plic->targets.target[core].priority_threshold & 0x00000000000000FFU;
     vKern_stackProc[core] = stack;
 
 // Change the context
@@ -515,7 +515,7 @@ void    __attribute__ ((noinline)) local_changeContext_TOU_C0(uint32_t core, uin
 // Recover the new plic threshold on the new process stack
 
     newStack = (volatile uint64_t *)vKern_stackProc[core];
-    plic->targets.target[core].priority_threshold = (uint32_t)(newStack[0] & 0x00000000000000FFu);
+    plic->targets.target[core].priority_threshold = (uint32_t)(newStack[0] & 0x00000000000000FFU);
 
 // Prepare a1 with the pointer on the new stack (see macro KERN_NEW_FRAME)
 
@@ -633,7 +633,7 @@ void    __attribute__ ((noinline)) local_changeContext_MSG_C0(uint32_t core, uin
 // Save the plic threshold on the current process stack
 // Save the current process stack
 
-    *threshold = (uint64_t)plic->targets.target[core].priority_threshold & 0x00000000000000FFu;
+    *threshold = (uint64_t)plic->targets.target[core].priority_threshold & 0x00000000000000FFU;
     vKern_stackProc[core] = stack;
 
 // Change the context
@@ -644,7 +644,7 @@ void    __attribute__ ((noinline)) local_changeContext_MSG_C0(uint32_t core, uin
 // Recover the new plic threshold on the new process stack
 
     newStack = (volatile uint64_t *)vKern_stackProc[core];
-    plic->targets.target[core].priority_threshold = (uint32_t)(newStack[0] & 0x00000000000000FFu);
+    plic->targets.target[core].priority_threshold = (uint32_t)(newStack[0] & 0x00000000000000FFU);
 
 // Prepare a1 with the pointer on the new stack (see macro KERN_NEW_FRAME)
 
@@ -738,8 +738,8 @@ static  void    local_TIM1_A_IRQHandler_C0(uint32_t core, uint64_t parameter) {
 
 // Compute the vTickCount403_C0
 
-    vTickCount403_C0 = vTickCount403_C0 & 0xFFFFFFFF00000000u;
-    vTickCount403_C0 = vTickCount403_C0 + 0x0000000100000000u;
+    vTickCount403_C0 = vTickCount403_C0 & 0xFFFFFFFF00000000U;
+    vTickCount403_C0 = vTickCount403_C0 + 0x0000000100000000U;
 }
 
 /*
@@ -751,7 +751,7 @@ static  void    local_TIM1_A_IRQHandler_C0(uint32_t core, uint64_t parameter) {
 static  void    local_timeStmp_C0(void) {
 
     INTERRUPTION_OFF;
-    vTickCount403_C0 = vTickCount403_C0 & 0xFFFFFFFF00000000u;
+    vTickCount403_C0 = vTickCount403_C0 & 0xFFFFFFFF00000000U;
     vTickCount403_C0 = vTickCount403_C0 | ~timer1->channel[0].current_value;
     vTickCount_C0    = vTickCount403_C0 / (KFREQUENCY_TIM / 1000000U);
     INTERRUPTION_RESTORE;

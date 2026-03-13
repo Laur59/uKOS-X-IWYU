@@ -61,25 +61,25 @@ void    model_flash_protect(uint8_t level) {
 
 // Allow operations on the Flash
 
-    FLASH->OPTKEYR = 0x08192A3Bu;
-    FLASH->OPTKEYR = 0x4C5D6E7Fu;
+    FLASH->OPTKEYR = 0x08192A3BU;
+    FLASH->OPTKEYR = 0x4C5D6E7FU;
 
     if ((FLASH->OPTCR & FLASH_OPTCR_OPTLOCK) == 0U) {
 
 // Set the selected level 0, 1 or 2
 
         optprg = FLASH->OPTSR_PRG;
-        optprg &= (uint32_t)~(0xFFu<<8U);
+        optprg &= (uint32_t)~(0xFFU<<8U);
 
         switch (level) {
-            case 0x00u: { optprg |= (0xAAu<<8U); break; }
-            case 0x01u: { optprg |= (0x55u<<8U); break; }
+            case 0x00U: { optprg |= (0xAAU<<8U); break; }
+            case 0x01U: { optprg |= (0x55U<<8U); break; }
 
             #if (defined(ALLOW_L2_S))
-            case 0x02u: { optprg |= (0xCCu<<8U); break; }
+            case 0x02U: { optprg |= (0xCCU<<8U); break; }
             #endif
 
-            default:   { optprg |= (0xAAu<<8U); break; }
+            default:   { optprg |= (0xAAU<<8U); break; }
         }
 
         FLASH->OPTSR_PRG = optprg;

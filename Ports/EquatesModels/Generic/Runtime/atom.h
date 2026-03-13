@@ -92,7 +92,7 @@ __attribute__ ((always_inline)) static  inline  void    atom_init(atomic_flag_t 
  */
 __attribute__ ((always_inline)) static  inline  void    atom_lock(atomic_flag_t *lock) {
 
-    while (atomic_flag_test_and_set(lock) == true) { ; }
+    while (atomic_flag_test_and_set(lock)) { ; }
 }
 
 /*

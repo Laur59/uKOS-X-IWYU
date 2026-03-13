@@ -53,7 +53,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 // I2c interface
 
-#define KI2C_ADD_MT9V03x                    0x48u                           // I2C Aptina address
+#define KI2C_ADD_MT9V03x                    0x48U                           // I2C Aptina address
 
 // Imager generic
 
@@ -78,34 +78,34 @@ struct mt9v03x {
 
 // Some imager registers
 
-#define KMT9V03x_CTRL_REG                   0x07u                           // Aptina Control Register Address
-#define KMT9V03x_START_COL                  0x01u                           // ROI horizontal offset
-#define KMT9V03x_START_ROW                  0x02u                           // ROI vertical offset
-#define KMT9V03x_ROI_H                      0x03u                           // ROI height
-#define KMT9V03x_ROI_W                      0x04u                           // ROI width
-#define KMT9V03x_H_BLANK                    0x05u                           // Horizontal blank duration in number of pixels
-#define KMT9V03x_V_BLANK                    0x06u                           // Vertical blank duration in number of lines
-#define KMT9V03x_EXPOSURE                   0x0Bu                           // Exposure Time
-#define KMT9V03x_BINNING                    0x0Du                           // Binning control
-#define KMT9V03x_ANALOG_GAIN                0x35u                           // Analog Gain
-#define KMT9V03x_BLACK_LEVEL_CORRECTION     0x47u                           // Black level correction
-#define KMT9V03x_V_BLACK_LEVEL              0x48u                           // VBlack value for correction
-#define KMT9V03x_NOISE_ACTIVATION           0x70u                           // Noise correction activation
-#define KMT9V03x_CONSTANT_NOISE             0x71u                           // Constant for noise correction
-#define KMT9V03x_AUTOMATIC_EXPOSURE         0xAFu                           // Automatic exposure + gain control
-#define KMT9V03x_TEMP                       0xC1u                           // I2C Aptina temperature register
-#define KMT9V03x_FINE_EXPOSURE              0xD5u                           // Fine exposure tuning
+#define KMT9V03x_CTRL_REG                   0x07U                           // Aptina Control Register Address
+#define KMT9V03x_START_COL                  0x01U                           // ROI horizontal offset
+#define KMT9V03x_START_ROW                  0x02U                           // ROI vertical offset
+#define KMT9V03x_ROI_H                      0x03U                           // ROI height
+#define KMT9V03x_ROI_W                      0x04U                           // ROI width
+#define KMT9V03x_H_BLANK                    0x05U                           // Horizontal blank duration in number of pixels
+#define KMT9V03x_V_BLANK                    0x06U                           // Vertical blank duration in number of lines
+#define KMT9V03x_EXPOSURE                   0x0BU                           // Exposure Time
+#define KMT9V03x_BINNING                    0x0DU                           // Binning control
+#define KMT9V03x_ANALOG_GAIN                0x35U                           // Analog Gain
+#define KMT9V03x_BLACK_LEVEL_CORRECTION     0x47U                           // Black level correction
+#define KMT9V03x_V_BLACK_LEVEL              0x48U                           // VBlack value for correction
+#define KMT9V03x_NOISE_ACTIVATION           0x70U                           // Noise correction activation
+#define KMT9V03x_CONSTANT_NOISE             0x71U                           // Constant for noise correction
+#define KMT9V03x_AUTOMATIC_EXPOSURE         0xAFU                           // Automatic exposure + gain control
+#define KMT9V03x_TEMP                       0xC1U                           // I2C Aptina temperature register
+#define KMT9V03x_FINE_EXPOSURE              0xD5U                           // Fine exposure tuning
 
 // Reserved register (Aptina datasheet page 21)
 
-#define KMT9V03x_REG20                      0x20u                           // Reserved
-#define KMT9V03x_REG24                      0x24u                           // Reserved
-#define KMT9V03x_REG2B                      0x2Bu                           // Reserved
-#define KMT9V03x_REG2F                      0x2Fu                           // Reserved
+#define KMT9V03x_REG20                      0x20U                           // Reserved
+#define KMT9V03x_REG24                      0x24U                           // Reserved
+#define KMT9V03x_REG2B                      0x2BU                           // Reserved
+#define KMT9V03x_REG2F                      0x2FU                           // Reserved
 
 // Reserved register (not documented)
 
-#define KMT9V03x_PRODUCTION_N0              0x68u                           // Production number 0
-#define KMT9V03x_PRODUCTION_N1              0x69u                           // Production number 1
-#define KMT9V03x_PRODUCTION_N2              0x6Au                           // Production number 2
-#define KMT9V03x_PRODUCTION_N3              0x6Bu                           // Production number 3
+#define KMT9V03x_PRODUCTION_N0              0x68U                           // Production number 0
+#define KMT9V03x_PRODUCTION_N1              0x69U                           // Production number 1
+#define KMT9V03x_PRODUCTION_N2              0x6AU                           // Production number 2
+#define KMT9V03x_PRODUCTION_N3              0x6BU                           // Production number 3

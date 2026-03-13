@@ -75,12 +75,12 @@ typedef enum    _timer_channel_number {
 // TIMER Control Register
 // ----------------------
 
-#define TIMER_CR_ENABLE             0x00000001u     //
-#define TIMER_CR_MODE_MASK          0x00000002u     //
-#define TIMER_CR_FREE_MODE          0x00000000u     //
-#define TIMER_CR_USER_MODE          0x00000002u     //
-#define TIMER_CR_INTERRUPT_MASK     0x00000004u     //
-#define TIMER_CR_PWM_ENABLE         0x00000008u     //
+#define TIMER_CR_ENABLE             0x00000001U     //
+#define TIMER_CR_MODE_MASK          0x00000002U     //
+#define TIMER_CR_FREE_MODE          0x00000000U     //
+#define TIMER_CR_USER_MODE          0x00000002U     //
+#define TIMER_CR_INTERRUPT_MASK     0x00000004U     //
+#define TIMER_CR_PWM_ENABLE         0x00000008U     //
 
 // The TIMER address map
 // ---------------------
@@ -104,6 +104,6 @@ typedef struct  _kendryte_timer {
     volatile    uint32_t        load_count2[4];     // TIMER_N Load Count2 Register             (0xb0-0xbc)
 } __attribute__ ((packed, aligned (4))) kendryte_timer_t;
 
-#define timer0  ((volatile  kendryte_timer_t *)0x502D0000u)
-#define timer1  ((volatile  kendryte_timer_t *)0x502E0000u)
-#define timer2  ((volatile  kendryte_timer_t *)0x502F0000u)
+#define timer0  ((volatile  kendryte_timer_t *)0x502D0000U)
+#define timer1  ((volatile  kendryte_timer_t *)0x502E0000U)
+#define timer2  ((volatile  kendryte_timer_t *)0x502F0000U)

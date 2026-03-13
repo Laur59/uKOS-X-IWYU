@@ -252,7 +252,7 @@
 #endif
 
 #if (!defined(IS_EXCEPTION))
-#define IS_EXCEPTION            ((REG(SCB)->ICSR & 0x000001FFu) != 0u)
+#define IS_EXCEPTION            ((REG(SCB)->ICSR & 0x000001FFU) != 0U)
 #endif
 
 #if (!defined(GET_CURRENT_PROCESS_STACK))

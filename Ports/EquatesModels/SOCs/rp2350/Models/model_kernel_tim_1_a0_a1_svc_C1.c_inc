@@ -109,7 +109,7 @@ void    model_kernel_init_C1(void) {
     REG(RESETS)->RESET &= ~RESETS_RESET_TIMER1;
     while ((REG(RESETS)->RESET_DONE & RESETS_RESET_TIMER1) != RESETS_RESET_TIMER1) { ; }
 
-    TIMER_C1->INTR = 0xFFFFFFFFu;
+    TIMER_C1->INTR = 0xFFFFFFFFU;
 
     INTERRUPT_VECTOR(TIMER_ALA0_VECTOR_NUMBER_C1, local_TIM1_ALA0_IRQHandler_C1);
 
@@ -309,7 +309,7 @@ static  uintptr_t   __attribute__ ((noinline, used)) *local_newContextPRE_C1(uin
     core_setPSPLIM(0U);
     scheduler_callBackSlow();
     local_timeStart_C1();
-    core_setPSPLIM((uintptr_t)vKern_runProc[KCORE_1]->oSpecification.oStackStart & 0xFFFFFFF8u);
+    core_setPSPLIM((uintptr_t)vKern_runProc[KCORE_1]->oSpecification.oStackStart & 0xFFFFFFF8U);
 
     #else
     CHECK_STACK_SANITY(KCORE_1);
@@ -424,7 +424,7 @@ static  uintptr_t   __attribute__ ((noinline, used)) *local_newContextTOU_C1(uin
     core_setPSPLIM(0U);
     scheduler_callBackSlow();
     local_timeStart_C1();
-    core_setPSPLIM((uintptr_t)vKern_runProc[KCORE_1]->oSpecification.oStackStart & 0xFFFFFFF8u);
+    core_setPSPLIM((uintptr_t)vKern_runProc[KCORE_1]->oSpecification.oStackStart & 0xFFFFFFF8U);
 
     #else
     CHECK_STACK_SANITY(KCORE_1);
@@ -541,7 +541,7 @@ static  uintptr_t   __attribute__ ((noinline, used)) *local_newContextMSG_C1(uin
     core_setPSPLIM(0U);
     scheduler_callBackTrap(message);
     local_timeStart_C1();
-    core_setPSPLIM((uintptr_t)vKern_runProc[KCORE_1]->oSpecification.oStackStart & 0xFFFFFFF8u);
+    core_setPSPLIM((uintptr_t)vKern_runProc[KCORE_1]->oSpecification.oStackStart & 0xFFFFFFF8U);
 
     #else
     CHECK_STACK_SANITY(KCORE_1);
@@ -627,8 +627,8 @@ static  void    local_timeStmp_C1(bool overflow) {
 // Overflow; add 0x100000000 to the counter
 // Update the 1-us 64-bit tickCount
 
-    if (overflow == true) {
-        vTickCount_C1 = (vTickCount_C1 & 0xFFFFFFFF00000000u) + 0x100000000u;
+    if (overflow) {
+        vTickCount_C1 = (vTickCount_C1 & 0xFFFFFFFF00000000U) + 0x100000000U;
         INTERRUPTION_RESTORE;
         return;
     }
@@ -637,7 +637,7 @@ static  void    local_timeStmp_C1(bool overflow) {
 // Update the 1-us 64-bit tickCount
 
     if (newTime > 0U) {
-        vTickCount_C1 = (vTickCount_C1 & 0xFFFFFFFF00000000u) | newTime;
+        vTickCount_C1 = (vTickCount_C1 & 0xFFFFFFFF00000000U) | newTime;
     }
     INTERRUPTION_RESTORE;
 }

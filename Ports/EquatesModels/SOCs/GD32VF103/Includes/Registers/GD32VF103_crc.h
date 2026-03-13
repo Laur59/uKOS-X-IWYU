@@ -63,22 +63,22 @@ typedef struct {
 } CRC_TypeDef;
 
 #ifdef __cplusplus
-#define CRC reinterpret_cast<CRC_TypeDef *>(0x40023000u)
+#define CRC reinterpret_cast<CRC_TypeDef *>(0x40023000U)
 
 #else
-#define CRC ((CRC_TypeDef *)0x40023000u)
+#define CRC ((CRC_TypeDef *)0x40023000U)
 #endif
 
 // DATA Configuration
 
-#define CRC_DATA_DATA       (0xFFFFFFFFu<<0)
-#define CRC_DATA_DATA_0     (0x1u<<0)
+#define CRC_DATA_DATA       (0xFFFFFFFFU<<0)
+#define CRC_DATA_DATA_0     (0x1U<<0)
 
 // FDATA Configuration
 
-#define CRC_FDATA_FDATA     (0xFFu<<0)
-#define CRC_FDATA_FDATA_0   (0x1u<<0)
+#define CRC_FDATA_FDATA     (0xFFU<<0)
+#define CRC_FDATA_FDATA_0   (0x1U<<0)
 
 // CTL Configuration
 
-#define CRC_CTL_RST         (0x1u<<0)
+#define CRC_CTL_RST         (0x1U<<0)

@@ -75,49 +75,49 @@ typedef struct {
 } TIMER5_TypeDef;
 
 #ifdef __cplusplus
-#define TIMER5  reinterpret_cast<TIMER5_TypeDef *>(0x40001000u)
+#define TIMER5  reinterpret_cast<TIMER5_TypeDef *>(0x40001000U)
 
 #else
-#define TIMER5  ((TIMER5_TypeDef *)0x40001000u)
+#define TIMER5  ((TIMER5_TypeDef *)0x40001000U)
 #endif
 
 // CTL0 Configuration
 
-#define TIMER5_CTL0_CEN         (0x1u<<0)
-#define TIMER5_CTL0_UPDIS       (0x1u<<1)
-#define TIMER5_CTL0_UPS         (0x1u<<2)
-#define TIMER5_CTL0_SPM         (0x1u<<3)
-#define TIMER5_CTL0_ARSE        (0x1u<<7)
+#define TIMER5_CTL0_CEN         (0x1U<<0)
+#define TIMER5_CTL0_UPDIS       (0x1U<<1)
+#define TIMER5_CTL0_UPS         (0x1U<<2)
+#define TIMER5_CTL0_SPM         (0x1U<<3)
+#define TIMER5_CTL0_ARSE        (0x1U<<7)
 
 // CTL1 Configuration
 
-#define TIMER5_CTL1_MMC         (0x7u<<4)
-#define TIMER5_CTL1_MMC_0       (0x1u<<4)
+#define TIMER5_CTL1_MMC         (0x7U<<4)
+#define TIMER5_CTL1_MMC_0       (0x1U<<4)
 
 // DMAINTEN Configuration
 
-#define TIMER5_DMAINTEN_UPIE    (0x1u<<0)
-#define TIMER5_DMAINTEN_UPDEN   (0x1u<<8)
+#define TIMER5_DMAINTEN_UPIE    (0x1U<<0)
+#define TIMER5_DMAINTEN_UPDEN   (0x1U<<8)
 
 // INTF Configuration
 
-#define TIMER5_INTF_UPIF        (0x1u<<0)
+#define TIMER5_INTF_UPIF        (0x1U<<0)
 
 // SWEVG Configuration
 
-#define TIMER5_SWEVG_UPG        (0x1u<<0)
+#define TIMER5_SWEVG_UPG        (0x1U<<0)
 
 // CNT Configuration
 
-#define TIMER5_CNT_CNT          (0xFFFFu<<0)
-#define TIMER5_CNT_CNT_0        (0x1u<<0)
+#define TIMER5_CNT_CNT          (0xFFFFU<<0)
+#define TIMER5_CNT_CNT_0        (0x1U<<0)
 
 // PSC Configuration
 
-#define TIMER5_PSC_PSC          (0xFFFFu<<0)
-#define TIMER5_PSC_PSC_0        (0x1u<<0)
+#define TIMER5_PSC_PSC          (0xFFFFU<<0)
+#define TIMER5_PSC_PSC_0        (0x1U<<0)
 
 // CAR Configuration
 
-#define TIMER5_CAR_CARL         (0xFFFFu<<0)
-#define TIMER5_CAR_CARL_0       (0x1u<<0)
+#define TIMER5_CAR_CARL         (0xFFFFU<<0)
+#define TIMER5_CAR_CARL_0       (0x1U<<0)

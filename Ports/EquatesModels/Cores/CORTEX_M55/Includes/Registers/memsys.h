@@ -75,21 +75,21 @@ typedef struct {
 } MemSysCtrl_TypeDef;
 
 #ifdef __cplusplus
-#define MEMSYSCTL_S     reinterpret_cast<MemSysCtrl_TypeDef *>(0xE001E000u)
-#define MEMSYSCTL_NS    reinterpret_cast<MemSysCtrl_TypeDef *>(0xE001E000u)
+#define MEMSYSCTL_S     reinterpret_cast<MemSysCtrl_TypeDef *>(0xE001E000U)
+#define MEMSYSCTL_NS    reinterpret_cast<MemSysCtrl_TypeDef *>(0xE001E000U)
 
 #else
-#define MEMSYSCTL_S     ((MemSysCtrl_TypeDef *)0xE001E000u)
-#define MEMSYSCTL_NS    ((MemSysCtrl_TypeDef *)0xE001E000u)
+#define MEMSYSCTL_S     ((MemSysCtrl_TypeDef *)0xE001E000U)
+#define MEMSYSCTL_NS    ((MemSysCtrl_TypeDef *)0xE001E000U)
 #endif
 
 // MSCR register
 
-#define MEMSYSCTL_MSCR_CPWRDN               (0x1u<<17)
-#define MEMSYSCTL_MSCR_DCCLEAN              (0x1u<<16)
-#define MEMSYSCTL_MSCR_ICACTIVE             (0x1u<<13)
-#define MEMSYSCTL_MSCR_DCACTIVE             (0x1u<<12)
-#define MEMSYSCTL_MSCR_TECCCHKDIS           (0x1u<<4)
-#define MEMSYSCTL_MSCR_EVECCFAULT           (0x1u<<3)
-#define MEMSYSCTL_MSCR_FORCEWT              (0x1u<<2)
-#define MEMSYSCTL_MSCR_ECCEN                (0x1u<<1)
+#define MEMSYSCTL_MSCR_CPWRDN               (0x1U<<17)
+#define MEMSYSCTL_MSCR_DCCLEAN              (0x1U<<16)
+#define MEMSYSCTL_MSCR_ICACTIVE             (0x1U<<13)
+#define MEMSYSCTL_MSCR_DCACTIVE             (0x1U<<12)
+#define MEMSYSCTL_MSCR_TECCCHKDIS           (0x1U<<4)
+#define MEMSYSCTL_MSCR_EVECCFAULT           (0x1U<<3)
+#define MEMSYSCTL_MSCR_FORCEWT              (0x1U<<2)
+#define MEMSYSCTL_MSCR_ECCEN                (0x1U<<1)

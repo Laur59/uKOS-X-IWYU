@@ -66,78 +66,78 @@ typedef struct {
 } ICACHE_TypeDef;
 
 #ifdef __cplusplus
-#define ICACHE_NS   reinterpret_cast<ICACHE_TypeDef *>(0x48035000u)
-#define ICACHE_S    reinterpret_cast<ICACHE_TypeDef *>(0x58035000u)
+#define ICACHE_NS   reinterpret_cast<ICACHE_TypeDef *>(0x48035000U)
+#define ICACHE_S    reinterpret_cast<ICACHE_TypeDef *>(0x58035000U)
 
 #else
-#define ICACHE_NS   ((ICACHE_TypeDef *)0x48035000u)
-#define ICACHE_S    ((ICACHE_TypeDef *)0x58035000u)
+#define ICACHE_NS   ((ICACHE_TypeDef *)0x48035000U)
+#define ICACHE_S    ((ICACHE_TypeDef *)0x58035000U)
 #endif
 
 // CR Configuration
 
-#define ICACHE_CR_MISSMRST          (0x1u<<19)
-#define ICACHE_CR_HITMRST           (0x1u<<18)
-#define ICACHE_CR_MISSMEN           (0x1u<<17)
-#define ICACHE_CR_HITMEN            (0x1u<<16)
-#define ICACHE_CR_WAYSEL            (0x1u<<2)
-#define ICACHE_CR_CACHEINV          (0x1u<<1)
-#define ICACHE_CR_EN                (0x1u<<0)
+#define ICACHE_CR_MISSMRST          (0x1U<<19)
+#define ICACHE_CR_HITMRST           (0x1U<<18)
+#define ICACHE_CR_MISSMEN           (0x1U<<17)
+#define ICACHE_CR_HITMEN            (0x1U<<16)
+#define ICACHE_CR_WAYSEL            (0x1U<<2)
+#define ICACHE_CR_CACHEINV          (0x1U<<1)
+#define ICACHE_CR_EN                (0x1U<<0)
 
-#define ICACHE_CR_MISSMRST_B_0X0    (0x0u<<19)
-#define ICACHE_CR_MISSMRST_B_0X1    (0x1u<<19)
-#define ICACHE_CR_HITMRST_B_0X0     (0x0u<<18)
-#define ICACHE_CR_HITMRST_B_0X1     (0x1u<<18)
-#define ICACHE_CR_MISSMEN_B_0X0     (0x0u<<17)
-#define ICACHE_CR_MISSMEN_B_0X1     (0x1u<<17)
-#define ICACHE_CR_HITMEN_B_0X0      (0x0u<<16)
-#define ICACHE_CR_HITMEN_B_0X1      (0x1u<<16)
-#define ICACHE_CR_WAYSEL_B_0X0      (0x0u<<2)
-#define ICACHE_CR_WAYSEL_B_0X1      (0x1u<<2)
-#define ICACHE_CR_CACHEINV_B_0X0    (0x0u<<1)
-#define ICACHE_CR_CACHEINV_B_0X1    (0x1u<<1)
-#define ICACHE_CR_EN_B_0X0          (0x0u<<0)
-#define ICACHE_CR_EN_B_0X1          (0x1u<<0)
+#define ICACHE_CR_MISSMRST_B_0X0    (0x0U<<19)
+#define ICACHE_CR_MISSMRST_B_0X1    (0x1U<<19)
+#define ICACHE_CR_HITMRST_B_0X0     (0x0U<<18)
+#define ICACHE_CR_HITMRST_B_0X1     (0x1U<<18)
+#define ICACHE_CR_MISSMEN_B_0X0     (0x0U<<17)
+#define ICACHE_CR_MISSMEN_B_0X1     (0x1U<<17)
+#define ICACHE_CR_HITMEN_B_0X0      (0x0U<<16)
+#define ICACHE_CR_HITMEN_B_0X1      (0x1U<<16)
+#define ICACHE_CR_WAYSEL_B_0X0      (0x0U<<2)
+#define ICACHE_CR_WAYSEL_B_0X1      (0x1U<<2)
+#define ICACHE_CR_CACHEINV_B_0X0    (0x0U<<1)
+#define ICACHE_CR_CACHEINV_B_0X1    (0x1U<<1)
+#define ICACHE_CR_EN_B_0X0          (0x0U<<0)
+#define ICACHE_CR_EN_B_0X1          (0x1U<<0)
 
 // SR Configuration
 
-#define ICACHE_SR_ERRF              (0x1u<<2)
-#define ICACHE_SR_BSYENDF           (0x1u<<1)
-#define ICACHE_SR_BUSYF             (0x1u<<0)
+#define ICACHE_SR_ERRF              (0x1U<<2)
+#define ICACHE_SR_BSYENDF           (0x1U<<1)
+#define ICACHE_SR_BUSYF             (0x1U<<0)
 
-#define ICACHE_SR_ERRF_B_0X0        (0x0u<<2)
-#define ICACHE_SR_ERRF_B_0X1        (0x1u<<2)
-#define ICACHE_SR_BSYENDF_B_0X0     (0x0u<<1)
-#define ICACHE_SR_BSYENDF_B_0X1     (0x1u<<1)
-#define ICACHE_SR_BUSYF_B_0X0       (0x0u<<0)
-#define ICACHE_SR_BUSYF_B_0X1       (0x1u<<0)
+#define ICACHE_SR_ERRF_B_0X0        (0x0U<<2)
+#define ICACHE_SR_ERRF_B_0X1        (0x1U<<2)
+#define ICACHE_SR_BSYENDF_B_0X0     (0x0U<<1)
+#define ICACHE_SR_BSYENDF_B_0X1     (0x1U<<1)
+#define ICACHE_SR_BUSYF_B_0X0       (0x0U<<0)
+#define ICACHE_SR_BUSYF_B_0X1       (0x1U<<0)
 
 // IER Configuration
 
-#define ICACHE_IER_ERRIE            (0x1u<<2)
-#define ICACHE_IER_BSYENDIE         (0x1u<<1)
+#define ICACHE_IER_ERRIE            (0x1U<<2)
+#define ICACHE_IER_BSYENDIE         (0x1U<<1)
 
-#define ICACHE_IER_ERRIE_B_0X0      (0x0u<<2)
-#define ICACHE_IER_ERRIE_B_0X1      (0x1u<<2)
-#define ICACHE_IER_BSYENDIE_B_0X0   (0x0u<<1)
-#define ICACHE_IER_BSYENDIE_B_0X1   (0x1u<<1)
+#define ICACHE_IER_ERRIE_B_0X0      (0x0U<<2)
+#define ICACHE_IER_ERRIE_B_0X1      (0x1U<<2)
+#define ICACHE_IER_BSYENDIE_B_0X0   (0x0U<<1)
+#define ICACHE_IER_BSYENDIE_B_0X1   (0x1U<<1)
 
 // FCR Configuration
 
-#define ICACHE_FCR_CERRF            (0x1u<<2)
-#define ICACHE_FCR_CBSYENDF         (0x1u<<1)
+#define ICACHE_FCR_CERRF            (0x1U<<2)
+#define ICACHE_FCR_CBSYENDF         (0x1U<<1)
 
-#define ICACHE_FCR_CERRF_B_0X0      (0x0u<<2)
-#define ICACHE_FCR_CERRF_B_0X1      (0x1u<<2)
-#define ICACHE_FCR_CBSYENDF_B_0X0   (0x0u<<1)
-#define ICACHE_FCR_CBSYENDF_B_0X1   (0x1u<<1)
+#define ICACHE_FCR_CERRF_B_0X0      (0x0U<<2)
+#define ICACHE_FCR_CERRF_B_0X1      (0x1U<<2)
+#define ICACHE_FCR_CBSYENDF_B_0X0   (0x0U<<1)
+#define ICACHE_FCR_CBSYENDF_B_0X1   (0x1U<<1)
 
 // HMONR Configuration
 
-#define ICACHE_HMONR_HITMON         (0xFFFFFFFFu<<0)
-#define ICACHE_HMONR_HITMON_0       (0x1u<<0)
+#define ICACHE_HMONR_HITMON         (0xFFFFFFFFU<<0)
+#define ICACHE_HMONR_HITMON_0       (0x1U<<0)
 
 // MMONR Configuration
 
-#define ICACHE_MMONR_MISSMON        (0xFFFFu<<0)
-#define ICACHE_MMONR_MISSMON_0      (0x1u<<0)
+#define ICACHE_MMONR_MISSMON        (0xFFFFU<<0)
+#define ICACHE_MMONR_MISSMON_0      (0x1U<<0)

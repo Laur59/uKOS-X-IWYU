@@ -70,7 +70,7 @@ message("")
 
 # Package version and commit hash (matching build_with_cmake.sh)
 set(TINYUSB_VERSION "0.20.0")
-set(TINYUSB_HASH "7ddf631")
+set(TINYUSB_HASH "f245078")
 
 message(STATUS "Fetching TinyUSB version ${TINYUSB_VERSION} (commit ${TINYUSB_HASH})")
 

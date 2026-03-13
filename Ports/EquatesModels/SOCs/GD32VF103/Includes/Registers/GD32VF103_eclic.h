@@ -415,1680 +415,1680 @@ typedef struct {
 } ECLIC_TypeDef;
 
 #ifdef __cplusplus
-#define ECLIC   reinterpret_cast<ECLIC_TypeDef *>(0xD2000000u)
+#define ECLIC   reinterpret_cast<ECLIC_TypeDef *>(0xD2000000U)
 
 #else
-#define ECLIC   ((ECLIC_TypeDef *)0xD2000000u)
+#define ECLIC   ((ECLIC_TypeDef *)0xD2000000U)
 #endif
 
 // CLICCFG Configuration
 
-#define ECLIC_CLICCFG_NLBITS                    (0xFu<<1)
-#define ECLIC_CLICCFG_NLBITS_0                  (0x1u<<1)
+#define ECLIC_CLICCFG_NLBITS                    (0xFU<<1)
+#define ECLIC_CLICCFG_NLBITS_0                  (0x1U<<1)
 
 // CLICINFO Configuration
 
-#define ECLIC_CLICINFO_CLICINTCTLBITS           (0xFu<<21)
-#define ECLIC_CLICINFO_CLICINTCTLBITS_0         (0x1u<<21)
-#define ECLIC_CLICINFO_VERSION                  (0xFFu<<13)
-#define ECLIC_CLICINFO_VERSION_0                (0x1u<<13)
-#define ECLIC_CLICINFO_NUM_INTERRUPT            (0x1FFFu<<0)
-#define ECLIC_CLICINFO_NUM_INTERRUPT_0          (0x1u<<0)
+#define ECLIC_CLICINFO_CLICINTCTLBITS           (0xFU<<21)
+#define ECLIC_CLICINFO_CLICINTCTLBITS_0         (0x1U<<21)
+#define ECLIC_CLICINFO_VERSION                  (0xFFU<<13)
+#define ECLIC_CLICINFO_VERSION_0                (0x1U<<13)
+#define ECLIC_CLICINFO_NUM_INTERRUPT            (0x1FFFU<<0)
+#define ECLIC_CLICINFO_NUM_INTERRUPT_0          (0x1U<<0)
 
 // MTH Configuration
 
-#define ECLIC_MTH_MTH                           (0xFFu<<0)
-#define ECLIC_MTH_MTH_0                         (0x1u<<0)
+#define ECLIC_MTH_MTH                           (0xFFU<<0)
+#define ECLIC_MTH_MTH_0                         (0x1U<<0)
 
 // CLICINTIP_0 Configuration
 
-#define ECLIC_CLICINTIP_0_IP                    (0x1u<<0)
+#define ECLIC_CLICINTIP_0_IP                    (0x1U<<0)
 
 // CLICINTIE_0 Configuration
 
-#define ECLIC_CLICINTIE_0_IE                    (0x1u<<0)
+#define ECLIC_CLICINTIE_0_IE                    (0x1U<<0)
 
 // CLICINTATTR_0 Configuration
 
-#define ECLIC_CLICINTATTR_0_TRIG                (0x3u<<1)
-#define ECLIC_CLICINTATTR_0_TRIG_0              (0x1u<<1)
-#define ECLIC_CLICINTATTR_0_SHV                 (0x1u<<0)
+#define ECLIC_CLICINTATTR_0_TRIG                (0x3U<<1)
+#define ECLIC_CLICINTATTR_0_TRIG_0              (0x1U<<1)
+#define ECLIC_CLICINTATTR_0_SHV                 (0x1U<<0)
 
 // CLICINTCTL_0 Configuration
 
-#define ECLIC_CLICINTCTL_0_LEVEL_PRIORITY       (0xFFu<<0)
-#define ECLIC_CLICINTCTL_0_LEVEL_PRIORITY_0     (0x1u<<0)
+#define ECLIC_CLICINTCTL_0_LEVEL_PRIORITY       (0xFFU<<0)
+#define ECLIC_CLICINTCTL_0_LEVEL_PRIORITY_0     (0x1U<<0)
 
 // CLICINTIP_1 Configuration
 
-#define ECLIC_CLICINTIP_1_IP                    (0x1u<<0)
+#define ECLIC_CLICINTIP_1_IP                    (0x1U<<0)
 
 // CLICINTIE_1 Configuration
 
-#define ECLIC_CLICINTIE_1_IE                    (0x1u<<0)
+#define ECLIC_CLICINTIE_1_IE                    (0x1U<<0)
 
 // CLICINTATTR_1 Configuration
 
-#define ECLIC_CLICINTATTR_1_TRIG                (0x3u<<1)
-#define ECLIC_CLICINTATTR_1_TRIG_0              (0x1u<<1)
-#define ECLIC_CLICINTATTR_1_SHV                 (0x1u<<0)
+#define ECLIC_CLICINTATTR_1_TRIG                (0x3U<<1)
+#define ECLIC_CLICINTATTR_1_TRIG_0              (0x1U<<1)
+#define ECLIC_CLICINTATTR_1_SHV                 (0x1U<<0)
 
 // CLICINTCTL_1 Configuration
 
-#define ECLIC_CLICINTCTL_1_LEVEL_PRIORITY       (0xFFu<<0)
-#define ECLIC_CLICINTCTL_1_LEVEL_PRIORITY_0     (0x1u<<0)
+#define ECLIC_CLICINTCTL_1_LEVEL_PRIORITY       (0xFFU<<0)
+#define ECLIC_CLICINTCTL_1_LEVEL_PRIORITY_0     (0x1U<<0)
 
 // CLICINTIP_2 Configuration
 
-#define ECLIC_CLICINTIP_2_IP                    (0x1u<<0)
+#define ECLIC_CLICINTIP_2_IP                    (0x1U<<0)
 
 // CLICINTIE_2 Configuration
 
-#define ECLIC_CLICINTIE_2_IE                    (0x1u<<0)
+#define ECLIC_CLICINTIE_2_IE                    (0x1U<<0)
 
 // CLICINTATTR_2 Configuration
 
-#define ECLIC_CLICINTATTR_2_TRIG                (0x3u<<1)
-#define ECLIC_CLICINTATTR_2_TRIG_0              (0x1u<<1)
-#define ECLIC_CLICINTATTR_2_SHV                 (0x1u<<0)
+#define ECLIC_CLICINTATTR_2_TRIG                (0x3U<<1)
+#define ECLIC_CLICINTATTR_2_TRIG_0              (0x1U<<1)
+#define ECLIC_CLICINTATTR_2_SHV                 (0x1U<<0)
 
 // CLICINTCTL_2 Configuration
 
-#define ECLIC_CLICINTCTL_2_LEVEL_PRIORITY       (0xFFu<<0)
-#define ECLIC_CLICINTCTL_2_LEVEL_PRIORITY_0     (0x1u<<0)
+#define ECLIC_CLICINTCTL_2_LEVEL_PRIORITY       (0xFFU<<0)
+#define ECLIC_CLICINTCTL_2_LEVEL_PRIORITY_0     (0x1U<<0)
 
 // CLICINTIP_3 Configuration
 
-#define ECLIC_CLICINTIP_3_IP                    (0x1u<<0)
+#define ECLIC_CLICINTIP_3_IP                    (0x1U<<0)
 
 // CLICINTIE_3 Configuration
 
-#define ECLIC_CLICINTIE_3_IE                    (0x1u<<0)
+#define ECLIC_CLICINTIE_3_IE                    (0x1U<<0)
 
 // CLICINTATTR_3 Configuration
 
-#define ECLIC_CLICINTATTR_3_TRIG                (0x3u<<1)
-#define ECLIC_CLICINTATTR_3_TRIG_0              (0x1u<<1)
-#define ECLIC_CLICINTATTR_3_SHV                 (0x1u<<0)
+#define ECLIC_CLICINTATTR_3_TRIG                (0x3U<<1)
+#define ECLIC_CLICINTATTR_3_TRIG_0              (0x1U<<1)
+#define ECLIC_CLICINTATTR_3_SHV                 (0x1U<<0)
 
 // CLICINTCTL_3 Configuration
 
-#define ECLIC_CLICINTCTL_3_LEVEL_PRIORITY       (0xFFu<<0)
-#define ECLIC_CLICINTCTL_3_LEVEL_PRIORITY_0     (0x1u<<0)
+#define ECLIC_CLICINTCTL_3_LEVEL_PRIORITY       (0xFFU<<0)
+#define ECLIC_CLICINTCTL_3_LEVEL_PRIORITY_0     (0x1U<<0)
 
 // CLICINTIP_4 Configuration
 
-#define ECLIC_CLICINTIP_4_IP                    (0x1u<<0)
+#define ECLIC_CLICINTIP_4_IP                    (0x1U<<0)
 
 // CLICINTIE_4 Configuration
 
-#define ECLIC_CLICINTIE_4_IE                    (0x1u<<0)
+#define ECLIC_CLICINTIE_4_IE                    (0x1U<<0)
 
 // CLICINTATTR_4 Configuration
 
-#define ECLIC_CLICINTATTR_4_TRIG                (0x3u<<1)
-#define ECLIC_CLICINTATTR_4_TRIG_0              (0x1u<<1)
-#define ECLIC_CLICINTATTR_4_SHV                 (0x1u<<0)
+#define ECLIC_CLICINTATTR_4_TRIG                (0x3U<<1)
+#define ECLIC_CLICINTATTR_4_TRIG_0              (0x1U<<1)
+#define ECLIC_CLICINTATTR_4_SHV                 (0x1U<<0)
 
 // CLICINTCTL_4 Configuration
 
-#define ECLIC_CLICINTCTL_4_LEVEL_PRIORITY       (0xFFu<<0)
-#define ECLIC_CLICINTCTL_4_LEVEL_PRIORITY_0     (0x1u<<0)
+#define ECLIC_CLICINTCTL_4_LEVEL_PRIORITY       (0xFFU<<0)
+#define ECLIC_CLICINTCTL_4_LEVEL_PRIORITY_0     (0x1U<<0)
 
 // CLICINTIP_5 Configuration
 
-#define ECLIC_CLICINTIP_5_IP                    (0x1u<<0)
+#define ECLIC_CLICINTIP_5_IP                    (0x1U<<0)
 
 // CLICINTIE_5 Configuration
 
-#define ECLIC_CLICINTIE_5_IE                    (0x1u<<0)
+#define ECLIC_CLICINTIE_5_IE                    (0x1U<<0)
 
 // CLICINTATTR_5 Configuration
 
-#define ECLIC_CLICINTATTR_5_TRIG                (0x3u<<1)
-#define ECLIC_CLICINTATTR_5_TRIG_0              (0x1u<<1)
-#define ECLIC_CLICINTATTR_5_SHV                 (0x1u<<0)
+#define ECLIC_CLICINTATTR_5_TRIG                (0x3U<<1)
+#define ECLIC_CLICINTATTR_5_TRIG_0              (0x1U<<1)
+#define ECLIC_CLICINTATTR_5_SHV                 (0x1U<<0)
 
 // CLICINTCTL_5 Configuration
 
-#define ECLIC_CLICINTCTL_5_LEVEL_PRIORITY       (0xFFu<<0)
-#define ECLIC_CLICINTCTL_5_LEVEL_PRIORITY_0     (0x1u<<0)
+#define ECLIC_CLICINTCTL_5_LEVEL_PRIORITY       (0xFFU<<0)
+#define ECLIC_CLICINTCTL_5_LEVEL_PRIORITY_0     (0x1U<<0)
 
 // CLICINTIP_6 Configuration
 
-#define ECLIC_CLICINTIP_6_IP                    (0x1u<<0)
+#define ECLIC_CLICINTIP_6_IP                    (0x1U<<0)
 
 // CLICINTIE_6 Configuration
 
-#define ECLIC_CLICINTIE_6_IE                    (0x1u<<0)
+#define ECLIC_CLICINTIE_6_IE                    (0x1U<<0)
 
 // CLICINTATTR_6 Configuration
 
-#define ECLIC_CLICINTATTR_6_TRIG                (0x3u<<1)
-#define ECLIC_CLICINTATTR_6_TRIG_0              (0x1u<<1)
-#define ECLIC_CLICINTATTR_6_SHV                 (0x1u<<0)
+#define ECLIC_CLICINTATTR_6_TRIG                (0x3U<<1)
+#define ECLIC_CLICINTATTR_6_TRIG_0              (0x1U<<1)
+#define ECLIC_CLICINTATTR_6_SHV                 (0x1U<<0)
 
 // CLICINTCTL_6 Configuration
 
-#define ECLIC_CLICINTCTL_6_LEVEL_PRIORITY       (0xFFu<<0)
-#define ECLIC_CLICINTCTL_6_LEVEL_PRIORITY_0     (0x1u<<0)
+#define ECLIC_CLICINTCTL_6_LEVEL_PRIORITY       (0xFFU<<0)
+#define ECLIC_CLICINTCTL_6_LEVEL_PRIORITY_0     (0x1U<<0)
 
 // CLICINTIP_7 Configuration
 
-#define ECLIC_CLICINTIP_7_IP                    (0x1u<<0)
+#define ECLIC_CLICINTIP_7_IP                    (0x1U<<0)
 
 // CLICINTIE_7 Configuration
 
-#define ECLIC_CLICINTIE_7_IE                    (0x1u<<0)
+#define ECLIC_CLICINTIE_7_IE                    (0x1U<<0)
 
 // CLICINTATTR_7 Configuration
 
-#define ECLIC_CLICINTATTR_7_TRIG                (0x3u<<1)
-#define ECLIC_CLICINTATTR_7_TRIG_0              (0x1u<<1)
-#define ECLIC_CLICINTATTR_7_SHV                 (0x1u<<0)
+#define ECLIC_CLICINTATTR_7_TRIG                (0x3U<<1)
+#define ECLIC_CLICINTATTR_7_TRIG_0              (0x1U<<1)
+#define ECLIC_CLICINTATTR_7_SHV                 (0x1U<<0)
 
 // CLICINTCTL_7 Configuration
 
-#define ECLIC_CLICINTCTL_7_LEVEL_PRIORITY       (0xFFu<<0)
-#define ECLIC_CLICINTCTL_7_LEVEL_PRIORITY_0     (0x1u<<0)
+#define ECLIC_CLICINTCTL_7_LEVEL_PRIORITY       (0xFFU<<0)
+#define ECLIC_CLICINTCTL_7_LEVEL_PRIORITY_0     (0x1U<<0)
 
 // CLICINTIP_8 Configuration
 
-#define ECLIC_CLICINTIP_8_IP                    (0x1u<<0)
+#define ECLIC_CLICINTIP_8_IP                    (0x1U<<0)
 
 // CLICINTIE_8 Configuration
 
-#define ECLIC_CLICINTIE_8_IE                    (0x1u<<0)
+#define ECLIC_CLICINTIE_8_IE                    (0x1U<<0)
 
 // CLICINTATTR_8 Configuration
 
-#define ECLIC_CLICINTATTR_8_TRIG                (0x3u<<1)
-#define ECLIC_CLICINTATTR_8_TRIG_0              (0x1u<<1)
-#define ECLIC_CLICINTATTR_8_SHV                 (0x1u<<0)
+#define ECLIC_CLICINTATTR_8_TRIG                (0x3U<<1)
+#define ECLIC_CLICINTATTR_8_TRIG_0              (0x1U<<1)
+#define ECLIC_CLICINTATTR_8_SHV                 (0x1U<<0)
 
 // CLICINTCTL_8 Configuration
 
-#define ECLIC_CLICINTCTL_8_LEVEL_PRIORITY       (0xFFu<<0)
-#define ECLIC_CLICINTCTL_8_LEVEL_PRIORITY_0     (0x1u<<0)
+#define ECLIC_CLICINTCTL_8_LEVEL_PRIORITY       (0xFFU<<0)
+#define ECLIC_CLICINTCTL_8_LEVEL_PRIORITY_0     (0x1U<<0)
 
 // CLICINTIP_9 Configuration
 
-#define ECLIC_CLICINTIP_9_IP                    (0x1u<<0)
+#define ECLIC_CLICINTIP_9_IP                    (0x1U<<0)
 
 // CLICINTIE_9 Configuration
 
-#define ECLIC_CLICINTIE_9_IE                    (0x1u<<0)
+#define ECLIC_CLICINTIE_9_IE                    (0x1U<<0)
 
 // CLICINTATTR_9 Configuration
 
-#define ECLIC_CLICINTATTR_9_TRIG                (0x3u<<1)
-#define ECLIC_CLICINTATTR_9_TRIG_0              (0x1u<<1)
-#define ECLIC_CLICINTATTR_9_SHV                 (0x1u<<0)
+#define ECLIC_CLICINTATTR_9_TRIG                (0x3U<<1)
+#define ECLIC_CLICINTATTR_9_TRIG_0              (0x1U<<1)
+#define ECLIC_CLICINTATTR_9_SHV                 (0x1U<<0)
 
 // CLICINTCTL_9 Configuration
 
-#define ECLIC_CLICINTCTL_9_LEVEL_PRIORITY       (0xFFu<<0)
-#define ECLIC_CLICINTCTL_9_LEVEL_PRIORITY_0     (0x1u<<0)
+#define ECLIC_CLICINTCTL_9_LEVEL_PRIORITY       (0xFFU<<0)
+#define ECLIC_CLICINTCTL_9_LEVEL_PRIORITY_0     (0x1U<<0)
 
 // CLICINTIP_10 Configuration
 
-#define ECLIC_CLICINTIP_10_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_10_IP                   (0x1U<<0)
 
 // CLICINTIE_10 Configuration
 
-#define ECLIC_CLICINTIE_10_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_10_IE                   (0x1U<<0)
 
 // CLICINTATTR_10 Configuration
 
-#define ECLIC_CLICINTATTR_10_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_10_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_10_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_10_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_10_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_10_SHV                (0x1U<<0)
 
 // CLICINTCTL_10 Configuration
 
-#define ECLIC_CLICINTCTL_10_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_10_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_10_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_10_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_11 Configuration
 
-#define ECLIC_CLICINTIP_11_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_11_IP                   (0x1U<<0)
 
 // CLICINTIE_11 Configuration
 
-#define ECLIC_CLICINTIE_11_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_11_IE                   (0x1U<<0)
 
 // CLICINTATTR_11 Configuration
 
-#define ECLIC_CLICINTATTR_11_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_11_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_11_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_11_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_11_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_11_SHV                (0x1U<<0)
 
 // CLICINTCTL_11 Configuration
 
-#define ECLIC_CLICINTCTL_11_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_11_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_11_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_11_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_12 Configuration
 
-#define ECLIC_CLICINTIP_12_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_12_IP                   (0x1U<<0)
 
 // CLICINTIE_12 Configuration
 
-#define ECLIC_CLICINTIE_12_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_12_IE                   (0x1U<<0)
 
 // CLICINTATTR_12 Configuration
 
-#define ECLIC_CLICINTATTR_12_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_12_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_12_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_12_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_12_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_12_SHV                (0x1U<<0)
 
 // CLICINTCTL_12 Configuration
 
-#define ECLIC_CLICINTCTL_12_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_12_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_12_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_12_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_13 Configuration
 
-#define ECLIC_CLICINTIP_13_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_13_IP                   (0x1U<<0)
 
 // CLICINTIE_13 Configuration
 
-#define ECLIC_CLICINTIE_13_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_13_IE                   (0x1U<<0)
 
 // CLICINTATTR_13 Configuration
 
-#define ECLIC_CLICINTATTR_13_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_13_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_13_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_13_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_13_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_13_SHV                (0x1U<<0)
 
 // CLICINTCTL_13 Configuration
 
-#define ECLIC_CLICINTCTL_13_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_13_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_13_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_13_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_14 Configuration
 
-#define ECLIC_CLICINTIP_14_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_14_IP                   (0x1U<<0)
 
 // CLICINTIE_14 Configuration
 
-#define ECLIC_CLICINTIE_14_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_14_IE                   (0x1U<<0)
 
 // CLICINTATTR_14 Configuration
 
-#define ECLIC_CLICINTATTR_14_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_14_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_14_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_14_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_14_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_14_SHV                (0x1U<<0)
 
 // CLICINTCTL_14 Configuration
 
-#define ECLIC_CLICINTCTL_14_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_14_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_14_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_14_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_15 Configuration
 
-#define ECLIC_CLICINTIP_15_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_15_IP                   (0x1U<<0)
 
 // CLICINTIE_15 Configuration
 
-#define ECLIC_CLICINTIE_15_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_15_IE                   (0x1U<<0)
 
 // CLICINTATTR_15 Configuration
 
-#define ECLIC_CLICINTATTR_15_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_15_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_15_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_15_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_15_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_15_SHV                (0x1U<<0)
 
 // CLICINTCTL_15 Configuration
 
-#define ECLIC_CLICINTCTL_15_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_15_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_15_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_15_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_16 Configuration
 
-#define ECLIC_CLICINTIP_16_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_16_IP                   (0x1U<<0)
 
 // CLICINTIE_16 Configuration
 
-#define ECLIC_CLICINTIE_16_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_16_IE                   (0x1U<<0)
 
 // CLICINTATTR_16 Configuration
 
-#define ECLIC_CLICINTATTR_16_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_16_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_16_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_16_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_16_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_16_SHV                (0x1U<<0)
 
 // CLICINTCTL_16 Configuration
 
-#define ECLIC_CLICINTCTL_16_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_16_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_16_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_16_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_17 Configuration
 
-#define ECLIC_CLICINTIP_17_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_17_IP                   (0x1U<<0)
 
 // CLICINTIE_17 Configuration
 
-#define ECLIC_CLICINTIE_17_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_17_IE                   (0x1U<<0)
 
 // CLICINTATTR_17 Configuration
 
-#define ECLIC_CLICINTATTR_17_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_17_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_17_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_17_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_17_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_17_SHV                (0x1U<<0)
 
 // CLICINTCTL_17 Configuration
 
-#define ECLIC_CLICINTCTL_17_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_17_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_17_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_17_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_18 Configuration
 
-#define ECLIC_CLICINTIP_18_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_18_IP                   (0x1U<<0)
 
 // CLICINTIE_18 Configuration
 
-#define ECLIC_CLICINTIE_18_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_18_IE                   (0x1U<<0)
 
 // CLICINTATTR_18 Configuration
 
-#define ECLIC_CLICINTATTR_18_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_18_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_18_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_18_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_18_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_18_SHV                (0x1U<<0)
 
 // CLICINTCTL_18 Configuration
 
-#define ECLIC_CLICINTCTL_18_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_18_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_18_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_18_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_19 Configuration
 
-#define ECLIC_CLICINTIP_19_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_19_IP                   (0x1U<<0)
 
 // CLICINTIE_19 Configuration
 
-#define ECLIC_CLICINTIE_19_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_19_IE                   (0x1U<<0)
 
 // CLICINTATTR_19 Configuration
 
-#define ECLIC_CLICINTATTR_19_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_19_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_19_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_19_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_19_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_19_SHV                (0x1U<<0)
 
 // CLICINTCTL_19 Configuration
 
-#define ECLIC_CLICINTCTL_19_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_19_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_19_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_19_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_20 Configuration
 
-#define ECLIC_CLICINTIP_20_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_20_IP                   (0x1U<<0)
 
 // CLICINTIE_20 Configuration
 
-#define ECLIC_CLICINTIE_20_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_20_IE                   (0x1U<<0)
 
 // CLICINTATTR_20 Configuration
 
-#define ECLIC_CLICINTATTR_20_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_20_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_20_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_20_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_20_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_20_SHV                (0x1U<<0)
 
 // CLICINTCTL_20 Configuration
 
-#define ECLIC_CLICINTCTL_20_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_20_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_20_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_20_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_21 Configuration
 
-#define ECLIC_CLICINTIP_21_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_21_IP                   (0x1U<<0)
 
 // CLICINTIE_21 Configuration
 
-#define ECLIC_CLICINTIE_21_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_21_IE                   (0x1U<<0)
 
 // CLICINTATTR_21 Configuration
 
-#define ECLIC_CLICINTATTR_21_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_21_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_21_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_21_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_21_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_21_SHV                (0x1U<<0)
 
 // CLICINTCTL_21 Configuration
 
-#define ECLIC_CLICINTCTL_21_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_21_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_21_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_21_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_22 Configuration
 
-#define ECLIC_CLICINTIP_22_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_22_IP                   (0x1U<<0)
 
 // CLICINTIE_22 Configuration
 
-#define ECLIC_CLICINTIE_22_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_22_IE                   (0x1U<<0)
 
 // CLICINTATTR_22 Configuration
 
-#define ECLIC_CLICINTATTR_22_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_22_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_22_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_22_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_22_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_22_SHV                (0x1U<<0)
 
 // CLICINTCTL_22 Configuration
 
-#define ECLIC_CLICINTCTL_22_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_22_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_22_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_22_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_23 Configuration
 
-#define ECLIC_CLICINTIP_23_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_23_IP                   (0x1U<<0)
 
 // CLICINTIE_23 Configuration
 
-#define ECLIC_CLICINTIE_23_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_23_IE                   (0x1U<<0)
 
 // CLICINTATTR_23 Configuration
 
-#define ECLIC_CLICINTATTR_23_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_23_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_23_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_23_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_23_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_23_SHV                (0x1U<<0)
 
 // CLICINTCTL_23 Configuration
 
-#define ECLIC_CLICINTCTL_23_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_23_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_23_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_23_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_24 Configuration
 
-#define ECLIC_CLICINTIP_24_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_24_IP                   (0x1U<<0)
 
 // CLICINTIE_24 Configuration
 
-#define ECLIC_CLICINTIE_24_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_24_IE                   (0x1U<<0)
 
 // CLICINTATTR_24 Configuration
 
-#define ECLIC_CLICINTATTR_24_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_24_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_24_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_24_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_24_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_24_SHV                (0x1U<<0)
 
 // CLICINTCTL_24 Configuration
 
-#define ECLIC_CLICINTCTL_24_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_24_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_24_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_24_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_25 Configuration
 
-#define ECLIC_CLICINTIP_25_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_25_IP                   (0x1U<<0)
 
 // CLICINTIE_25 Configuration
 
-#define ECLIC_CLICINTIE_25_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_25_IE                   (0x1U<<0)
 
 // CLICINTATTR_25 Configuration
 
-#define ECLIC_CLICINTATTR_25_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_25_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_25_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_25_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_25_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_25_SHV                (0x1U<<0)
 
 // CLICINTCTL_25 Configuration
 
-#define ECLIC_CLICINTCTL_25_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_25_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_25_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_25_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_26 Configuration
 
-#define ECLIC_CLICINTIP_26_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_26_IP                   (0x1U<<0)
 
 // CLICINTIE_26 Configuration
 
-#define ECLIC_CLICINTIE_26_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_26_IE                   (0x1U<<0)
 
 // CLICINTATTR_26 Configuration
 
-#define ECLIC_CLICINTATTR_26_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_26_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_26_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_26_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_26_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_26_SHV                (0x1U<<0)
 
 // CLICINTCTL_26 Configuration
 
-#define ECLIC_CLICINTCTL_26_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_26_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_26_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_26_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_27 Configuration
 
-#define ECLIC_CLICINTIP_27_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_27_IP                   (0x1U<<0)
 
 // CLICINTIE_27 Configuration
 
-#define ECLIC_CLICINTIE_27_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_27_IE                   (0x1U<<0)
 
 // CLICINTATTR_27 Configuration
 
-#define ECLIC_CLICINTATTR_27_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_27_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_27_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_27_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_27_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_27_SHV                (0x1U<<0)
 
 // CLICINTCTL_27 Configuration
 
-#define ECLIC_CLICINTCTL_27_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_27_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_27_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_27_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_28 Configuration
 
-#define ECLIC_CLICINTIP_28_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_28_IP                   (0x1U<<0)
 
 // CLICINTIE_28 Configuration
 
-#define ECLIC_CLICINTIE_28_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_28_IE                   (0x1U<<0)
 
 // CLICINTATTR_28 Configuration
 
-#define ECLIC_CLICINTATTR_28_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_28_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_28_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_28_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_28_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_28_SHV                (0x1U<<0)
 
 // CLICINTCTL_28 Configuration
 
-#define ECLIC_CLICINTCTL_28_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_28_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_28_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_28_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_29 Configuration
 
-#define ECLIC_CLICINTIP_29_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_29_IP                   (0x1U<<0)
 
 // CLICINTIE_29 Configuration
 
-#define ECLIC_CLICINTIE_29_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_29_IE                   (0x1U<<0)
 
 // CLICINTATTR_29 Configuration
 
-#define ECLIC_CLICINTATTR_29_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_29_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_29_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_29_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_29_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_29_SHV                (0x1U<<0)
 
 // CLICINTCTL_29 Configuration
 
-#define ECLIC_CLICINTCTL_29_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_29_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_29_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_29_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_30 Configuration
 
-#define ECLIC_CLICINTIP_30_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_30_IP                   (0x1U<<0)
 
 // CLICINTIE_30 Configuration
 
-#define ECLIC_CLICINTIE_30_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_30_IE                   (0x1U<<0)
 
 // CLICINTATTR_30 Configuration
 
-#define ECLIC_CLICINTATTR_30_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_30_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_30_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_30_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_30_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_30_SHV                (0x1U<<0)
 
 // CLICINTCTL_30 Configuration
 
-#define ECLIC_CLICINTCTL_30_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_30_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_30_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_30_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_31 Configuration
 
-#define ECLIC_CLICINTIP_31_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_31_IP                   (0x1U<<0)
 
 // CLICINTIE_31 Configuration
 
-#define ECLIC_CLICINTIE_31_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_31_IE                   (0x1U<<0)
 
 // CLICINTATTR_31 Configuration
 
-#define ECLIC_CLICINTATTR_31_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_31_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_31_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_31_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_31_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_31_SHV                (0x1U<<0)
 
 // CLICINTCTL_31 Configuration
 
-#define ECLIC_CLICINTCTL_31_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_31_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_31_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_31_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_32 Configuration
 
-#define ECLIC_CLICINTIP_32_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_32_IP                   (0x1U<<0)
 
 // CLICINTIE_32 Configuration
 
-#define ECLIC_CLICINTIE_32_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_32_IE                   (0x1U<<0)
 
 // CLICINTATTR_32 Configuration
 
-#define ECLIC_CLICINTATTR_32_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_32_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_32_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_32_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_32_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_32_SHV                (0x1U<<0)
 
 // CLICINTCTL_32 Configuration
 
-#define ECLIC_CLICINTCTL_32_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_32_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_32_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_32_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_33 Configuration
 
-#define ECLIC_CLICINTIP_33_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_33_IP                   (0x1U<<0)
 
 // CLICINTIE_33 Configuration
 
-#define ECLIC_CLICINTIE_33_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_33_IE                   (0x1U<<0)
 
 // CLICINTATTR_33 Configuration
 
-#define ECLIC_CLICINTATTR_33_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_33_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_33_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_33_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_33_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_33_SHV                (0x1U<<0)
 
 // CLICINTCTL_33 Configuration
 
-#define ECLIC_CLICINTCTL_33_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_33_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_33_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_33_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_34 Configuration
 
-#define ECLIC_CLICINTIP_34_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_34_IP                   (0x1U<<0)
 
 // CLICINTIE_34 Configuration
 
-#define ECLIC_CLICINTIE_34_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_34_IE                   (0x1U<<0)
 
 // CLICINTATTR_34 Configuration
 
-#define ECLIC_CLICINTATTR_34_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_34_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_34_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_34_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_34_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_34_SHV                (0x1U<<0)
 
 // CLICINTCTL_34 Configuration
 
-#define ECLIC_CLICINTCTL_34_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_34_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_34_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_34_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_35 Configuration
 
-#define ECLIC_CLICINTIP_35_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_35_IP                   (0x1U<<0)
 
 // CLICINTIE_35 Configuration
 
-#define ECLIC_CLICINTIE_35_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_35_IE                   (0x1U<<0)
 
 // CLICINTATTR_35 Configuration
 
-#define ECLIC_CLICINTATTR_35_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_35_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_35_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_35_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_35_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_35_SHV                (0x1U<<0)
 
 // CLICINTCTL_35 Configuration
 
-#define ECLIC_CLICINTCTL_35_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_35_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_35_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_35_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_36 Configuration
 
-#define ECLIC_CLICINTIP_36_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_36_IP                   (0x1U<<0)
 
 // CLICINTIE_36 Configuration
 
-#define ECLIC_CLICINTIE_36_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_36_IE                   (0x1U<<0)
 
 // CLICINTATTR_36 Configuration
 
-#define ECLIC_CLICINTATTR_36_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_36_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_36_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_36_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_36_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_36_SHV                (0x1U<<0)
 
 // CLICINTCTL_36 Configuration
 
-#define ECLIC_CLICINTCTL_36_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_36_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_36_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_36_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_37 Configuration
 
-#define ECLIC_CLICINTIP_37_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_37_IP                   (0x1U<<0)
 
 // CLICINTIE_37 Configuration
 
-#define ECLIC_CLICINTIE_37_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_37_IE                   (0x1U<<0)
 
 // CLICINTATTR_37 Configuration
 
-#define ECLIC_CLICINTATTR_37_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_37_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_37_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_37_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_37_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_37_SHV                (0x1U<<0)
 
 // CLICINTCTL_37 Configuration
 
-#define ECLIC_CLICINTCTL_37_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_37_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_37_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_37_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_38 Configuration
 
-#define ECLIC_CLICINTIP_38_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_38_IP                   (0x1U<<0)
 
 // CLICINTIE_38 Configuration
 
-#define ECLIC_CLICINTIE_38_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_38_IE                   (0x1U<<0)
 
 // CLICINTATTR_38 Configuration
 
-#define ECLIC_CLICINTATTR_38_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_38_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_38_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_38_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_38_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_38_SHV                (0x1U<<0)
 
 // CLICINTCTL_38 Configuration
 
-#define ECLIC_CLICINTCTL_38_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_38_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_38_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_38_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_39 Configuration
 
-#define ECLIC_CLICINTIP_39_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_39_IP                   (0x1U<<0)
 
 // CLICINTIE_39 Configuration
 
-#define ECLIC_CLICINTIE_39_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_39_IE                   (0x1U<<0)
 
 // CLICINTATTR_39 Configuration
 
-#define ECLIC_CLICINTATTR_39_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_39_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_39_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_39_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_39_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_39_SHV                (0x1U<<0)
 
 // CLICINTCTL_39 Configuration
 
-#define ECLIC_CLICINTCTL_39_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_39_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_39_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_39_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_40 Configuration
 
-#define ECLIC_CLICINTIP_40_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_40_IP                   (0x1U<<0)
 
 // CLICINTIE_40 Configuration
 
-#define ECLIC_CLICINTIE_40_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_40_IE                   (0x1U<<0)
 
 // CLICINTATTR_40 Configuration
 
-#define ECLIC_CLICINTATTR_40_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_40_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_40_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_40_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_40_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_40_SHV                (0x1U<<0)
 
 // CLICINTCTL_40 Configuration
 
-#define ECLIC_CLICINTCTL_40_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_40_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_40_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_40_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_41 Configuration
 
-#define ECLIC_CLICINTIP_41_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_41_IP                   (0x1U<<0)
 
 // CLICINTIE_41 Configuration
 
-#define ECLIC_CLICINTIE_41_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_41_IE                   (0x1U<<0)
 
 // CLICINTATTR_41 Configuration
 
-#define ECLIC_CLICINTATTR_41_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_41_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_41_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_41_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_41_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_41_SHV                (0x1U<<0)
 
 // CLICINTCTL_41 Configuration
 
-#define ECLIC_CLICINTCTL_41_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_41_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_41_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_41_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_42 Configuration
 
-#define ECLIC_CLICINTIP_42_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_42_IP                   (0x1U<<0)
 
 // CLICINTIE_42 Configuration
 
-#define ECLIC_CLICINTIE_42_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_42_IE                   (0x1U<<0)
 
 // CLICINTATTR_42 Configuration
 
-#define ECLIC_CLICINTATTR_42_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_42_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_42_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_42_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_42_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_42_SHV                (0x1U<<0)
 
 // CLICINTCTL_42 Configuration
 
-#define ECLIC_CLICINTCTL_42_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_42_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_42_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_42_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_43 Configuration
 
-#define ECLIC_CLICINTIP_43_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_43_IP                   (0x1U<<0)
 
 // CLICINTIE_43 Configuration
 
-#define ECLIC_CLICINTIE_43_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_43_IE                   (0x1U<<0)
 
 // CLICINTATTR_43 Configuration
 
-#define ECLIC_CLICINTATTR_43_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_43_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_43_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_43_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_43_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_43_SHV                (0x1U<<0)
 
 // CLICINTCTL_43 Configuration
 
-#define ECLIC_CLICINTCTL_43_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_43_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_43_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_43_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_44 Configuration
 
-#define ECLIC_CLICINTIP_44_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_44_IP                   (0x1U<<0)
 
 // CLICINTIE_44 Configuration
 
-#define ECLIC_CLICINTIE_44_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_44_IE                   (0x1U<<0)
 
 // CLICINTATTR_44 Configuration
 
-#define ECLIC_CLICINTATTR_44_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_44_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_44_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_44_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_44_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_44_SHV                (0x1U<<0)
 
 // CLICINTCTL_44 Configuration
 
-#define ECLIC_CLICINTCTL_44_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_44_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_44_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_44_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_45 Configuration
 
-#define ECLIC_CLICINTIP_45_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_45_IP                   (0x1U<<0)
 
 // CLICINTIE_45 Configuration
 
-#define ECLIC_CLICINTIE_45_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_45_IE                   (0x1U<<0)
 
 // CLICINTATTR_45 Configuration
 
-#define ECLIC_CLICINTATTR_45_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_45_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_45_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_45_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_45_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_45_SHV                (0x1U<<0)
 
 // CLICINTCTL_45 Configuration
 
-#define ECLIC_CLICINTCTL_45_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_45_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_45_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_45_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_46 Configuration
 
-#define ECLIC_CLICINTIP_46_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_46_IP                   (0x1U<<0)
 
 // CLICINTIE_46 Configuration
 
-#define ECLIC_CLICINTIE_46_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_46_IE                   (0x1U<<0)
 
 // CLICINTATTR_46 Configuration
 
-#define ECLIC_CLICINTATTR_46_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_46_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_46_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_46_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_46_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_46_SHV                (0x1U<<0)
 
 // CLICINTCTL_46 Configuration
 
-#define ECLIC_CLICINTCTL_46_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_46_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_46_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_46_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_47 Configuration
 
-#define ECLIC_CLICINTIP_47_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_47_IP                   (0x1U<<0)
 
 // CLICINTIE_47 Configuration
 
-#define ECLIC_CLICINTIE_47_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_47_IE                   (0x1U<<0)
 
 // CLICINTATTR_47 Configuration
 
-#define ECLIC_CLICINTATTR_47_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_47_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_47_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_47_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_47_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_47_SHV                (0x1U<<0)
 
 // CLICINTCTL_47 Configuration
 
-#define ECLIC_CLICINTCTL_47_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_47_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_47_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_47_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_48 Configuration
 
-#define ECLIC_CLICINTIP_48_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_48_IP                   (0x1U<<0)
 
 // CLICINTIE_48 Configuration
 
-#define ECLIC_CLICINTIE_48_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_48_IE                   (0x1U<<0)
 
 // CLICINTATTR_48 Configuration
 
-#define ECLIC_CLICINTATTR_48_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_48_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_48_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_48_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_48_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_48_SHV                (0x1U<<0)
 
 // CLICINTCTL_48 Configuration
 
-#define ECLIC_CLICINTCTL_48_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_48_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_48_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_48_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_49 Configuration
 
-#define ECLIC_CLICINTIP_49_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_49_IP                   (0x1U<<0)
 
 // CLICINTIE_49 Configuration
 
-#define ECLIC_CLICINTIE_49_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_49_IE                   (0x1U<<0)
 
 // CLICINTATTR_49 Configuration
 
-#define ECLIC_CLICINTATTR_49_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_49_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_49_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_49_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_49_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_49_SHV                (0x1U<<0)
 
 // CLICINTCTL_49 Configuration
 
-#define ECLIC_CLICINTCTL_49_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_49_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_49_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_49_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_50 Configuration
 
-#define ECLIC_CLICINTIP_50_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_50_IP                   (0x1U<<0)
 
 // CLICINTIE_50 Configuration
 
-#define ECLIC_CLICINTIE_50_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_50_IE                   (0x1U<<0)
 
 // CLICINTATTR_50 Configuration
 
-#define ECLIC_CLICINTATTR_50_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_50_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_50_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_50_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_50_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_50_SHV                (0x1U<<0)
 
 // CLICINTCTL_50 Configuration
 
-#define ECLIC_CLICINTCTL_50_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_50_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_50_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_50_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_51 Configuration
 
-#define ECLIC_CLICINTIP_51_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_51_IP                   (0x1U<<0)
 
 // CLICINTIE_51 Configuration
 
-#define ECLIC_CLICINTIE_51_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_51_IE                   (0x1U<<0)
 
 // CLICINTATTR_51 Configuration
 
-#define ECLIC_CLICINTATTR_51_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_51_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_51_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_51_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_51_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_51_SHV                (0x1U<<0)
 
 // CLICINTCTL_51 Configuration
 
-#define ECLIC_CLICINTCTL_51_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_51_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_51_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_51_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_52 Configuration
 
-#define ECLIC_CLICINTIP_52_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_52_IP                   (0x1U<<0)
 
 // CLICINTIE_52 Configuration
 
-#define ECLIC_CLICINTIE_52_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_52_IE                   (0x1U<<0)
 
 // CLICINTATTR_52 Configuration
 
-#define ECLIC_CLICINTATTR_52_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_52_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_52_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_52_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_52_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_52_SHV                (0x1U<<0)
 
 // CLICINTCTL_52 Configuration
 
-#define ECLIC_CLICINTCTL_52_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_52_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_52_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_52_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_53 Configuration
 
-#define ECLIC_CLICINTIP_53_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_53_IP                   (0x1U<<0)
 
 // CLICINTIE_53 Configuration
 
-#define ECLIC_CLICINTIE_53_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_53_IE                   (0x1U<<0)
 
 // CLICINTATTR_53 Configuration
 
-#define ECLIC_CLICINTATTR_53_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_53_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_53_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_53_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_53_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_53_SHV                (0x1U<<0)
 
 // CLICINTCTL_53 Configuration
 
-#define ECLIC_CLICINTCTL_53_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_53_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_53_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_53_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_54 Configuration
 
-#define ECLIC_CLICINTIP_54_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_54_IP                   (0x1U<<0)
 
 // CLICINTIE_54 Configuration
 
-#define ECLIC_CLICINTIE_54_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_54_IE                   (0x1U<<0)
 
 // CLICINTATTR_54 Configuration
 
-#define ECLIC_CLICINTATTR_54_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_54_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_54_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_54_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_54_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_54_SHV                (0x1U<<0)
 
 // CLICINTCTL_54 Configuration
 
-#define ECLIC_CLICINTCTL_54_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_54_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_54_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_54_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_55 Configuration
 
-#define ECLIC_CLICINTIP_55_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_55_IP                   (0x1U<<0)
 
 // CLICINTIE_55 Configuration
 
-#define ECLIC_CLICINTIE_55_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_55_IE                   (0x1U<<0)
 
 // CLICINTATTR_55 Configuration
 
-#define ECLIC_CLICINTATTR_55_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_55_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_55_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_55_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_55_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_55_SHV                (0x1U<<0)
 
 // CLICINTCTL_55 Configuration
 
-#define ECLIC_CLICINTCTL_55_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_55_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_55_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_55_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_56 Configuration
 
-#define ECLIC_CLICINTIP_56_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_56_IP                   (0x1U<<0)
 
 // CLICINTIE_56 Configuration
 
-#define ECLIC_CLICINTIE_56_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_56_IE                   (0x1U<<0)
 
 // CLICINTATTR_56 Configuration
 
-#define ECLIC_CLICINTATTR_56_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_56_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_56_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_56_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_56_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_56_SHV                (0x1U<<0)
 
 // CLICINTCTL_56 Configuration
 
-#define ECLIC_CLICINTCTL_56_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_56_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_56_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_56_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_57 Configuration
 
-#define ECLIC_CLICINTIP_57_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_57_IP                   (0x1U<<0)
 
 // CLICINTIE_57 Configuration
 
-#define ECLIC_CLICINTIE_57_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_57_IE                   (0x1U<<0)
 
 // CLICINTATTR_57 Configuration
 
-#define ECLIC_CLICINTATTR_57_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_57_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_57_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_57_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_57_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_57_SHV                (0x1U<<0)
 
 // CLICINTCTL_57 Configuration
 
-#define ECLIC_CLICINTCTL_57_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_57_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_57_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_57_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_58 Configuration
 
-#define ECLIC_CLICINTIP_58_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_58_IP                   (0x1U<<0)
 
 // CLICINTIE_58 Configuration
 
-#define ECLIC_CLICINTIE_58_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_58_IE                   (0x1U<<0)
 
 // CLICINTATTR_58 Configuration
 
-#define ECLIC_CLICINTATTR_58_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_58_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_58_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_58_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_58_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_58_SHV                (0x1U<<0)
 
 // CLICINTCTL_58 Configuration
 
-#define ECLIC_CLICINTCTL_58_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_58_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_58_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_58_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_59 Configuration
 
-#define ECLIC_CLICINTIP_59_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_59_IP                   (0x1U<<0)
 
 // CLICINTIE_59 Configuration
 
-#define ECLIC_CLICINTIE_59_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_59_IE                   (0x1U<<0)
 
 // CLICINTATTR_59 Configuration
 
-#define ECLIC_CLICINTATTR_59_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_59_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_59_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_59_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_59_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_59_SHV                (0x1U<<0)
 
 // CLICINTCTL_59 Configuration
 
-#define ECLIC_CLICINTCTL_59_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_59_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_59_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_59_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_60 Configuration
 
-#define ECLIC_CLICINTIP_60_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_60_IP                   (0x1U<<0)
 
 // CLICINTIE_60 Configuration
 
-#define ECLIC_CLICINTIE_60_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_60_IE                   (0x1U<<0)
 
 // CLICINTATTR_60 Configuration
 
-#define ECLIC_CLICINTATTR_60_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_60_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_60_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_60_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_60_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_60_SHV                (0x1U<<0)
 
 // CLICINTCTL_60 Configuration
 
-#define ECLIC_CLICINTCTL_60_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_60_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_60_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_60_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_61 Configuration
 
-#define ECLIC_CLICINTIP_61_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_61_IP                   (0x1U<<0)
 
 // CLICINTIE_61 Configuration
 
-#define ECLIC_CLICINTIE_61_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_61_IE                   (0x1U<<0)
 
 // CLICINTATTR_61 Configuration
 
-#define ECLIC_CLICINTATTR_61_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_61_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_61_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_61_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_61_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_61_SHV                (0x1U<<0)
 
 // CLICINTCTL_61 Configuration
 
-#define ECLIC_CLICINTCTL_61_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_61_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_61_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_61_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_62 Configuration
 
-#define ECLIC_CLICINTIP_62_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_62_IP                   (0x1U<<0)
 
 // CLICINTIE_62 Configuration
 
-#define ECLIC_CLICINTIE_62_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_62_IE                   (0x1U<<0)
 
 // CLICINTATTR_62 Configuration
 
-#define ECLIC_CLICINTATTR_62_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_62_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_62_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_62_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_62_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_62_SHV                (0x1U<<0)
 
 // CLICINTCTL_62 Configuration
 
-#define ECLIC_CLICINTCTL_62_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_62_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_62_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_62_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_63 Configuration
 
-#define ECLIC_CLICINTIP_63_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_63_IP                   (0x1U<<0)
 
 // CLICINTIE_63 Configuration
 
-#define ECLIC_CLICINTIE_63_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_63_IE                   (0x1U<<0)
 
 // CLICINTATTR_63 Configuration
 
-#define ECLIC_CLICINTATTR_63_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_63_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_63_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_63_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_63_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_63_SHV                (0x1U<<0)
 
 // CLICINTCTL_63 Configuration
 
-#define ECLIC_CLICINTCTL_63_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_63_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_63_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_63_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_64 Configuration
 
-#define ECLIC_CLICINTIP_64_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_64_IP                   (0x1U<<0)
 
 // CLICINTIE_64 Configuration
 
-#define ECLIC_CLICINTIE_64_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_64_IE                   (0x1U<<0)
 
 // CLICINTATTR_64 Configuration
 
-#define ECLIC_CLICINTATTR_64_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_64_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_64_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_64_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_64_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_64_SHV                (0x1U<<0)
 
 // CLICINTCTL_64 Configuration
 
-#define ECLIC_CLICINTCTL_64_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_64_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_64_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_64_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_65 Configuration
 
-#define ECLIC_CLICINTIP_65_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_65_IP                   (0x1U<<0)
 
 // CLICINTIE_65 Configuration
 
-#define ECLIC_CLICINTIE_65_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_65_IE                   (0x1U<<0)
 
 // CLICINTATTR_65 Configuration
 
-#define ECLIC_CLICINTATTR_65_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_65_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_65_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_65_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_65_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_65_SHV                (0x1U<<0)
 
 // CLICINTCTL_65 Configuration
 
-#define ECLIC_CLICINTCTL_65_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_65_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_65_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_65_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_66 Configuration
 
-#define ECLIC_CLICINTIP_66_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_66_IP                   (0x1U<<0)
 
 // CLICINTIE_66 Configuration
 
-#define ECLIC_CLICINTIE_66_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_66_IE                   (0x1U<<0)
 
 // CLICINTATTR_66 Configuration
 
-#define ECLIC_CLICINTATTR_66_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_66_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_66_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_66_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_66_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_66_SHV                (0x1U<<0)
 
 // CLICINTCTL_66 Configuration
 
-#define ECLIC_CLICINTCTL_66_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_66_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_66_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_66_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_67 Configuration
 
-#define ECLIC_CLICINTIP_67_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_67_IP                   (0x1U<<0)
 
 // CLICINTIE_67 Configuration
 
-#define ECLIC_CLICINTIE_67_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_67_IE                   (0x1U<<0)
 
 // CLICINTATTR_67 Configuration
 
-#define ECLIC_CLICINTATTR_67_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_67_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_67_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_67_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_67_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_67_SHV                (0x1U<<0)
 
 // CLICINTCTL_67 Configuration
 
-#define ECLIC_CLICINTCTL_67_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_67_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_67_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_67_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_68 Configuration
 
-#define ECLIC_CLICINTIP_68_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_68_IP                   (0x1U<<0)
 
 // CLICINTIE_68 Configuration
 
-#define ECLIC_CLICINTIE_68_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_68_IE                   (0x1U<<0)
 
 // CLICINTATTR_68 Configuration
 
-#define ECLIC_CLICINTATTR_68_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_68_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_68_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_68_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_68_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_68_SHV                (0x1U<<0)
 
 // CLICINTCTL_68 Configuration
 
-#define ECLIC_CLICINTCTL_68_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_68_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_68_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_68_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_69 Configuration
 
-#define ECLIC_CLICINTIP_69_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_69_IP                   (0x1U<<0)
 
 // CLICINTIE_69 Configuration
 
-#define ECLIC_CLICINTIE_69_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_69_IE                   (0x1U<<0)
 
 // CLICINTATTR_69 Configuration
 
-#define ECLIC_CLICINTATTR_69_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_69_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_69_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_69_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_69_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_69_SHV                (0x1U<<0)
 
 // CLICINTCTL_69 Configuration
 
-#define ECLIC_CLICINTCTL_69_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_69_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_69_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_69_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_70 Configuration
 
-#define ECLIC_CLICINTIP_70_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_70_IP                   (0x1U<<0)
 
 // CLICINTIE_70 Configuration
 
-#define ECLIC_CLICINTIE_70_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_70_IE                   (0x1U<<0)
 
 // CLICINTATTR_70 Configuration
 
-#define ECLIC_CLICINTATTR_70_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_70_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_70_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_70_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_70_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_70_SHV                (0x1U<<0)
 
 // CLICINTCTL_70 Configuration
 
-#define ECLIC_CLICINTCTL_70_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_70_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_70_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_70_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_71 Configuration
 
-#define ECLIC_CLICINTIP_71_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_71_IP                   (0x1U<<0)
 
 // CLICINTIE_71 Configuration
 
-#define ECLIC_CLICINTIE_71_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_71_IE                   (0x1U<<0)
 
 // CLICINTATTR_71 Configuration
 
-#define ECLIC_CLICINTATTR_71_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_71_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_71_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_71_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_71_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_71_SHV                (0x1U<<0)
 
 // CLICINTCTL_71 Configuration
 
-#define ECLIC_CLICINTCTL_71_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_71_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_71_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_71_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_72 Configuration
 
-#define ECLIC_CLICINTIP_72_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_72_IP                   (0x1U<<0)
 
 // CLICINTIE_72 Configuration
 
-#define ECLIC_CLICINTIE_72_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_72_IE                   (0x1U<<0)
 
 // CLICINTATTR_72 Configuration
 
-#define ECLIC_CLICINTATTR_72_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_72_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_72_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_72_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_72_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_72_SHV                (0x1U<<0)
 
 // CLICINTCTL_72 Configuration
 
-#define ECLIC_CLICINTCTL_72_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_72_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_72_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_72_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_73 Configuration
 
-#define ECLIC_CLICINTIP_73_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_73_IP                   (0x1U<<0)
 
 // CLICINTIE_73 Configuration
 
-#define ECLIC_CLICINTIE_73_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_73_IE                   (0x1U<<0)
 
 // CLICINTATTR_73 Configuration
 
-#define ECLIC_CLICINTATTR_73_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_73_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_73_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_73_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_73_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_73_SHV                (0x1U<<0)
 
 // CLICINTCTL_73 Configuration
 
-#define ECLIC_CLICINTCTL_73_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_73_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_73_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_73_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_74 Configuration
 
-#define ECLIC_CLICINTIP_74_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_74_IP                   (0x1U<<0)
 
 // CLICINTIE_74 Configuration
 
-#define ECLIC_CLICINTIE_74_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_74_IE                   (0x1U<<0)
 
 // CLICINTATTR_74 Configuration
 
-#define ECLIC_CLICINTATTR_74_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_74_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_74_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_74_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_74_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_74_SHV                (0x1U<<0)
 
 // CLICINTCTL_74 Configuration
 
-#define ECLIC_CLICINTCTL_74_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_74_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_74_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_74_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_75 Configuration
 
-#define ECLIC_CLICINTIP_75_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_75_IP                   (0x1U<<0)
 
 // CLICINTIE_75 Configuration
 
-#define ECLIC_CLICINTIE_75_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_75_IE                   (0x1U<<0)
 
 // CLICINTATTR_75 Configuration
 
-#define ECLIC_CLICINTATTR_75_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_75_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_75_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_75_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_75_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_75_SHV                (0x1U<<0)
 
 // CLICINTCTL_75 Configuration
 
-#define ECLIC_CLICINTCTL_75_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_75_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_75_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_75_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_76 Configuration
 
-#define ECLIC_CLICINTIP_76_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_76_IP                   (0x1U<<0)
 
 // CLICINTIE_76 Configuration
 
-#define ECLIC_CLICINTIE_76_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_76_IE                   (0x1U<<0)
 
 // CLICINTATTR_76 Configuration
 
-#define ECLIC_CLICINTATTR_76_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_76_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_76_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_76_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_76_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_76_SHV                (0x1U<<0)
 
 // CLICINTCTL_76 Configuration
 
-#define ECLIC_CLICINTCTL_76_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_76_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_76_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_76_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_77 Configuration
 
-#define ECLIC_CLICINTIP_77_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_77_IP                   (0x1U<<0)
 
 // CLICINTIE_77 Configuration
 
-#define ECLIC_CLICINTIE_77_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_77_IE                   (0x1U<<0)
 
 // CLICINTATTR_77 Configuration
 
-#define ECLIC_CLICINTATTR_77_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_77_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_77_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_77_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_77_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_77_SHV                (0x1U<<0)
 
 // CLICINTCTL_77 Configuration
 
-#define ECLIC_CLICINTCTL_77_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_77_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_77_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_77_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_78 Configuration
 
-#define ECLIC_CLICINTIP_78_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_78_IP                   (0x1U<<0)
 
 // CLICINTIE_78 Configuration
 
-#define ECLIC_CLICINTIE_78_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_78_IE                   (0x1U<<0)
 
 // CLICINTATTR_78 Configuration
 
-#define ECLIC_CLICINTATTR_78_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_78_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_78_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_78_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_78_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_78_SHV                (0x1U<<0)
 
 // CLICINTCTL_78 Configuration
 
-#define ECLIC_CLICINTCTL_78_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_78_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_78_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_78_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_79 Configuration
 
-#define ECLIC_CLICINTIP_79_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_79_IP                   (0x1U<<0)
 
 // CLICINTIE_79 Configuration
 
-#define ECLIC_CLICINTIE_79_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_79_IE                   (0x1U<<0)
 
 // CLICINTATTR_79 Configuration
 
-#define ECLIC_CLICINTATTR_79_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_79_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_79_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_79_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_79_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_79_SHV                (0x1U<<0)
 
 // CLICINTCTL_79 Configuration
 
-#define ECLIC_CLICINTCTL_79_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_79_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_79_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_79_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_80 Configuration
 
-#define ECLIC_CLICINTIP_80_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_80_IP                   (0x1U<<0)
 
 // CLICINTIE_80 Configuration
 
-#define ECLIC_CLICINTIE_80_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_80_IE                   (0x1U<<0)
 
 // CLICINTATTR_80 Configuration
 
-#define ECLIC_CLICINTATTR_80_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_80_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_80_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_80_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_80_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_80_SHV                (0x1U<<0)
 
 // CLICINTCTL_80 Configuration
 
-#define ECLIC_CLICINTCTL_80_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_80_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_80_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_80_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_81 Configuration
 
-#define ECLIC_CLICINTIP_81_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_81_IP                   (0x1U<<0)
 
 // CLICINTIE_81 Configuration
 
-#define ECLIC_CLICINTIE_81_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_81_IE                   (0x1U<<0)
 
 // CLICINTATTR_81 Configuration
 
-#define ECLIC_CLICINTATTR_81_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_81_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_81_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_81_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_81_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_81_SHV                (0x1U<<0)
 
 // CLICINTCTL_81 Configuration
 
-#define ECLIC_CLICINTCTL_81_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_81_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_81_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_81_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_82 Configuration
 
-#define ECLIC_CLICINTIP_82_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_82_IP                   (0x1U<<0)
 
 // CLICINTIE_82 Configuration
 
-#define ECLIC_CLICINTIE_82_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_82_IE                   (0x1U<<0)
 
 // CLICINTATTR_82 Configuration
 
-#define ECLIC_CLICINTATTR_82_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_82_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_82_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_82_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_82_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_82_SHV                (0x1U<<0)
 
 // CLICINTCTL_82 Configuration
 
-#define ECLIC_CLICINTCTL_82_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_82_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_82_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_82_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_83 Configuration
 
-#define ECLIC_CLICINTIP_83_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_83_IP                   (0x1U<<0)
 
 // CLICINTIE_83 Configuration
 
-#define ECLIC_CLICINTIE_83_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_83_IE                   (0x1U<<0)
 
 // CLICINTATTR_83 Configuration
 
-#define ECLIC_CLICINTATTR_83_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_83_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_83_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_83_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_83_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_83_SHV                (0x1U<<0)
 
 // CLICINTCTL_83 Configuration
 
-#define ECLIC_CLICINTCTL_83_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_83_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_83_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_83_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_84 Configuration
 
-#define ECLIC_CLICINTIP_84_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_84_IP                   (0x1U<<0)
 
 // CLICINTIE_84 Configuration
 
-#define ECLIC_CLICINTIE_84_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_84_IE                   (0x1U<<0)
 
 // CLICINTATTR_84 Configuration
 
-#define ECLIC_CLICINTATTR_84_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_84_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_84_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_84_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_84_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_84_SHV                (0x1U<<0)
 
 // CLICINTCTL_84 Configuration
 
-#define ECLIC_CLICINTCTL_84_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_84_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_84_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_84_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIE_85 Configuration
 
-#define ECLIC_CLICINTIE_85_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_85_IE                   (0x1U<<0)
 
 // CLICINTATTR_85 Configuration
 
-#define ECLIC_CLICINTATTR_85_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_85_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_85_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_85_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_85_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_85_SHV                (0x1U<<0)
 
 // CLICINTCTL_85 Configuration
 
-#define ECLIC_CLICINTCTL_85_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_85_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_85_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_85_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_85 Configuration
 
-#define ECLIC_CLICINTIP_85_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_85_IP                   (0x1U<<0)
 
 // CLICINTIE_86 Configuration
 
-#define ECLIC_CLICINTIE_86_IE                   (0x1u<<0)
+#define ECLIC_CLICINTIE_86_IE                   (0x1U<<0)
 
 // CLICINTATTR_86 Configuration
 
-#define ECLIC_CLICINTATTR_86_TRIG               (0x3u<<1)
-#define ECLIC_CLICINTATTR_86_TRIG_0             (0x1u<<1)
-#define ECLIC_CLICINTATTR_86_SHV                (0x1u<<0)
+#define ECLIC_CLICINTATTR_86_TRIG               (0x3U<<1)
+#define ECLIC_CLICINTATTR_86_TRIG_0             (0x1U<<1)
+#define ECLIC_CLICINTATTR_86_SHV                (0x1U<<0)
 
 // CLICINTCTL_86 Configuration
 
-#define ECLIC_CLICINTCTL_86_LEVEL_PRIORITY      (0xFFu<<0)
-#define ECLIC_CLICINTCTL_86_LEVEL_PRIORITY_0    (0x1u<<0)
+#define ECLIC_CLICINTCTL_86_LEVEL_PRIORITY      (0xFFU<<0)
+#define ECLIC_CLICINTCTL_86_LEVEL_PRIORITY_0    (0x1U<<0)
 
 // CLICINTIP_86 Configuration
 
-#define ECLIC_CLICINTIP_86_IP                   (0x1u<<0)
+#define ECLIC_CLICINTIP_86_IP                   (0x1U<<0)

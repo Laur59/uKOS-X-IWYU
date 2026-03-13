@@ -82,178 +82,178 @@ typedef struct {
 } DAC_TypeDef;
 
 #ifdef __cplusplus
-#define DAC1_NS reinterpret_cast<DAC_TypeDef *>(0x46021800u)
-#define DAC1_S  reinterpret_cast<DAC_TypeDef *>(0x56021800u)
+#define DAC1_NS reinterpret_cast<DAC_TypeDef *>(0x46021800U)
+#define DAC1_S  reinterpret_cast<DAC_TypeDef *>(0x56021800U)
 
 #else
-#define DAC1_NS ((DAC_TypeDef *)0x46021800u)
-#define DAC1_S  ((DAC_TypeDef *)0x56021800u)
+#define DAC1_NS ((DAC_TypeDef *)0x46021800U)
+#define DAC1_S  ((DAC_TypeDef *)0x56021800U)
 #endif
 
 // CR Configuration
 
-#define DAC_CR_CEN2             (0x1u<<30)
-#define DAC_CR_DMAUDRIE2        (0x1u<<29)
-#define DAC_CR_DMAEN2           (0x1u<<28)
-#define DAC_CR_MAMP2            (0xFu<<24)
-#define DAC_CR_MAMP2_0          (0x1u<<24)
-#define DAC_CR_WAVE2            (0x3u<<22)
-#define DAC_CR_WAVE2_0          (0x1u<<22)
-#define DAC_CR_TSEL2            (0xFu<<18)
-#define DAC_CR_TSEL2_0          (0x1u<<18)
-#define DAC_CR_TEN2             (0x1u<<17)
-#define DAC_CR_EN2              (0x1u<<16)
-#define DAC_CR_CEN1             (0x1u<<14)
-#define DAC_CR_DMAUDRIE1        (0x1u<<13)
-#define DAC_CR_DMAEN1           (0x1u<<12)
-#define DAC_CR_MAMP1            (0xFu<<8)
-#define DAC_CR_MAMP1_0          (0x1u<<8)
-#define DAC_CR_WAVE1            (0x3u<<6)
-#define DAC_CR_WAVE1_0          (0x1u<<6)
-#define DAC_CR_TSEL1            (0xFu<<2)
-#define DAC_CR_TSEL1_0          (0x1u<<2)
-#define DAC_CR_TEN1             (0x1u<<1)
-#define DAC_CR_EN1              (0x1u<<0)
+#define DAC_CR_CEN2             (0x1U<<30)
+#define DAC_CR_DMAUDRIE2        (0x1U<<29)
+#define DAC_CR_DMAEN2           (0x1U<<28)
+#define DAC_CR_MAMP2            (0xFU<<24)
+#define DAC_CR_MAMP2_0          (0x1U<<24)
+#define DAC_CR_WAVE2            (0x3U<<22)
+#define DAC_CR_WAVE2_0          (0x1U<<22)
+#define DAC_CR_TSEL2            (0xFU<<18)
+#define DAC_CR_TSEL2_0          (0x1U<<18)
+#define DAC_CR_TEN2             (0x1U<<17)
+#define DAC_CR_EN2              (0x1U<<16)
+#define DAC_CR_CEN1             (0x1U<<14)
+#define DAC_CR_DMAUDRIE1        (0x1U<<13)
+#define DAC_CR_DMAEN1           (0x1U<<12)
+#define DAC_CR_MAMP1            (0xFU<<8)
+#define DAC_CR_MAMP1_0          (0x1U<<8)
+#define DAC_CR_WAVE1            (0x3U<<6)
+#define DAC_CR_WAVE1_0          (0x1U<<6)
+#define DAC_CR_TSEL1            (0xFU<<2)
+#define DAC_CR_TSEL1_0          (0x1U<<2)
+#define DAC_CR_TEN1             (0x1U<<1)
+#define DAC_CR_EN1              (0x1U<<0)
 
 // SWTRGR Configuration
 
-#define DAC_SWTRGR_SWTRIG2      (0x1u<<1)
-#define DAC_SWTRGR_SWTRIG1      (0x1u<<0)
+#define DAC_SWTRGR_SWTRIG2      (0x1U<<1)
+#define DAC_SWTRGR_SWTRIG1      (0x1U<<0)
 
 // DHR12R1 Configuration
 
-#define DAC_DHR12R1_DACC1DHRB   (0xFFFu<<16)
-#define DAC_DHR12R1_DACC1DHRB_0 (0x1u<<16)
-#define DAC_DHR12R1_DACC1DHR    (0xFFFu<<0)
-#define DAC_DHR12R1_DACC1DHR_0  (0x1u<<0)
+#define DAC_DHR12R1_DACC1DHRB   (0xFFFU<<16)
+#define DAC_DHR12R1_DACC1DHRB_0 (0x1U<<16)
+#define DAC_DHR12R1_DACC1DHR    (0xFFFU<<0)
+#define DAC_DHR12R1_DACC1DHR_0  (0x1U<<0)
 
 // DHR12L1 Configuration
 
-#define DAC_DHR12L1_DACC1DHRB   (0xFFFu<<20)
-#define DAC_DHR12L1_DACC1DHRB_0 (0x1u<<20)
-#define DAC_DHR12L1_DACC1DHR    (0xFFFu<<4)
-#define DAC_DHR12L1_DACC1DHR_0  (0x1u<<4)
+#define DAC_DHR12L1_DACC1DHRB   (0xFFFU<<20)
+#define DAC_DHR12L1_DACC1DHRB_0 (0x1U<<20)
+#define DAC_DHR12L1_DACC1DHR    (0xFFFU<<4)
+#define DAC_DHR12L1_DACC1DHR_0  (0x1U<<4)
 
 // DHR8R1 Configuration
 
-#define DAC_DHR8R1_DACC1DHRB    (0xFFu<<8)
-#define DAC_DHR8R1_DACC1DHRB_0  (0x1u<<8)
-#define DAC_DHR8R1_DACC1DHR     (0xFFu<<0)
-#define DAC_DHR8R1_DACC1DHR_0   (0x1u<<0)
+#define DAC_DHR8R1_DACC1DHRB    (0xFFU<<8)
+#define DAC_DHR8R1_DACC1DHRB_0  (0x1U<<8)
+#define DAC_DHR8R1_DACC1DHR     (0xFFU<<0)
+#define DAC_DHR8R1_DACC1DHR_0   (0x1U<<0)
 
 // DHR12R2 Configuration
 
-#define DAC_DHR12R2_DACC2DHRB   (0xFFFu<<16)
-#define DAC_DHR12R2_DACC2DHRB_0 (0x1u<<16)
-#define DAC_DHR12R2_DACC2DHR    (0xFFFu<<0)
-#define DAC_DHR12R2_DACC2DHR_0  (0x1u<<0)
+#define DAC_DHR12R2_DACC2DHRB   (0xFFFU<<16)
+#define DAC_DHR12R2_DACC2DHRB_0 (0x1U<<16)
+#define DAC_DHR12R2_DACC2DHR    (0xFFFU<<0)
+#define DAC_DHR12R2_DACC2DHR_0  (0x1U<<0)
 
 // DHR12L2 Configuration
 
-#define DAC_DHR12L2_DACC2DHRB   (0xFFFu<<20)
-#define DAC_DHR12L2_DACC2DHRB_0 (0x1u<<20)
-#define DAC_DHR12L2_DACC2DHR    (0xFFFu<<4)
-#define DAC_DHR12L2_DACC2DHR_0  (0x1u<<4)
+#define DAC_DHR12L2_DACC2DHRB   (0xFFFU<<20)
+#define DAC_DHR12L2_DACC2DHRB_0 (0x1U<<20)
+#define DAC_DHR12L2_DACC2DHR    (0xFFFU<<4)
+#define DAC_DHR12L2_DACC2DHR_0  (0x1U<<4)
 
 // DHR8R2 Configuration
 
-#define DAC_DHR8R2_DACC2DHRB    (0xFFu<<8)
-#define DAC_DHR8R2_DACC2DHRB_0  (0x1u<<8)
-#define DAC_DHR8R2_DACC2DHR     (0xFFu<<0)
-#define DAC_DHR8R2_DACC2DHR_0   (0x1u<<0)
+#define DAC_DHR8R2_DACC2DHRB    (0xFFU<<8)
+#define DAC_DHR8R2_DACC2DHRB_0  (0x1U<<8)
+#define DAC_DHR8R2_DACC2DHR     (0xFFU<<0)
+#define DAC_DHR8R2_DACC2DHR_0   (0x1U<<0)
 
 // DHR12RD Configuration
 
-#define DAC_DHR12RD_DACC2DHR    (0xFFFu<<16)
-#define DAC_DHR12RD_DACC2DHR_0  (0x1u<<16)
-#define DAC_DHR12RD_DACC1DHR    (0xFFFu<<0)
-#define DAC_DHR12RD_DACC1DHR_0  (0x1u<<0)
+#define DAC_DHR12RD_DACC2DHR    (0xFFFU<<16)
+#define DAC_DHR12RD_DACC2DHR_0  (0x1U<<16)
+#define DAC_DHR12RD_DACC1DHR    (0xFFFU<<0)
+#define DAC_DHR12RD_DACC1DHR_0  (0x1U<<0)
 
 // DHR12LD Configuration
 
-#define DAC_DHR12LD_DACC2DHR    (0xFFFu<<20)
-#define DAC_DHR12LD_DACC2DHR_0  (0x1u<<20)
-#define DAC_DHR12LD_DACC1DHR    (0xFFFu<<4)
-#define DAC_DHR12LD_DACC1DHR_0  (0x1u<<4)
+#define DAC_DHR12LD_DACC2DHR    (0xFFFU<<20)
+#define DAC_DHR12LD_DACC2DHR_0  (0x1U<<20)
+#define DAC_DHR12LD_DACC1DHR    (0xFFFU<<4)
+#define DAC_DHR12LD_DACC1DHR_0  (0x1U<<4)
 
 // DHR8RD Configuration
 
-#define DAC_DHR8RD_DACC2DHR     (0xFFu<<8)
-#define DAC_DHR8RD_DACC2DHR_0   (0x1u<<8)
-#define DAC_DHR8RD_DACC1DHR     (0xFFu<<0)
-#define DAC_DHR8RD_DACC1DHR_0   (0x1u<<0)
+#define DAC_DHR8RD_DACC2DHR     (0xFFU<<8)
+#define DAC_DHR8RD_DACC2DHR_0   (0x1U<<8)
+#define DAC_DHR8RD_DACC1DHR     (0xFFU<<0)
+#define DAC_DHR8RD_DACC1DHR_0   (0x1U<<0)
 
 // DOR1 Configuration
 
-#define DAC_DOR1_DACC1DORB      (0xFFFu<<16)
-#define DAC_DOR1_DACC1DORB_0    (0x1u<<16)
-#define DAC_DOR1_DACC1DOR       (0xFFFu<<0)
-#define DAC_DOR1_DACC1DOR_0     (0x1u<<0)
+#define DAC_DOR1_DACC1DORB      (0xFFFU<<16)
+#define DAC_DOR1_DACC1DORB_0    (0x1U<<16)
+#define DAC_DOR1_DACC1DOR       (0xFFFU<<0)
+#define DAC_DOR1_DACC1DOR_0     (0x1U<<0)
 
 // DOR2 Configuration
 
-#define DAC_DOR2_DACC2DORB      (0xFFFu<<16)
-#define DAC_DOR2_DACC2DORB_0    (0x1u<<16)
-#define DAC_DOR2_DACC2DOR       (0xFFFu<<0)
-#define DAC_DOR2_DACC2DOR_0     (0x1u<<0)
+#define DAC_DOR2_DACC2DORB      (0xFFFU<<16)
+#define DAC_DOR2_DACC2DORB_0    (0x1U<<16)
+#define DAC_DOR2_DACC2DOR       (0xFFFU<<0)
+#define DAC_DOR2_DACC2DOR_0     (0x1U<<0)
 
 // SR Configuration
 
-#define DAC_SR_BWST2            (0x1u<<31)
-#define DAC_SR_CAL_FLAG2        (0x1u<<30)
-#define DAC_SR_DMAUDR2          (0x1u<<29)
-#define DAC_SR_DORSTAT2         (0x1u<<28)
-#define DAC_SR_DAC2RDY          (0x1u<<27)
-#define DAC_SR_BWST1            (0x1u<<15)
-#define DAC_SR_CAL_FLAG1        (0x1u<<14)
-#define DAC_SR_DMAUDR1          (0x1u<<13)
-#define DAC_SR_DORSTAT1         (0x1u<<12)
-#define DAC_SR_DAC1RDY          (0x1u<<11)
+#define DAC_SR_BWST2            (0x1U<<31)
+#define DAC_SR_CAL_FLAG2        (0x1U<<30)
+#define DAC_SR_DMAUDR2          (0x1U<<29)
+#define DAC_SR_DORSTAT2         (0x1U<<28)
+#define DAC_SR_DAC2RDY          (0x1U<<27)
+#define DAC_SR_BWST1            (0x1U<<15)
+#define DAC_SR_CAL_FLAG1        (0x1U<<14)
+#define DAC_SR_DMAUDR1          (0x1U<<13)
+#define DAC_SR_DORSTAT1         (0x1U<<12)
+#define DAC_SR_DAC1RDY          (0x1U<<11)
 
 // CCR Configuration
 
-#define DAC_CCR_OTRIM2          (0x1Fu<<16)
-#define DAC_CCR_OTRIM2_0        (0x1u<<16)
-#define DAC_CCR_OTRIM1          (0x1Fu<<0)
-#define DAC_CCR_OTRIM1_0        (0x1u<<0)
+#define DAC_CCR_OTRIM2          (0x1FU<<16)
+#define DAC_CCR_OTRIM2_0        (0x1U<<16)
+#define DAC_CCR_OTRIM1          (0x1FU<<0)
+#define DAC_CCR_OTRIM1_0        (0x1U<<0)
 
 // MCR Configuration
 
-#define DAC_MCR_SINFORMAT2      (0x1u<<25)
-#define DAC_MCR_DMADOUBLE2      (0x1u<<24)
-#define DAC_MCR_MODE2           (0x7u<<16)
-#define DAC_MCR_MODE2_0         (0x1u<<16)
-#define DAC_MCR_HFSEL           (0x3u<<14)
-#define DAC_MCR_HFSEL_0         (0x1u<<14)
-#define DAC_MCR_SINFORMAT1      (0x1u<<9)
-#define DAC_MCR_DMADOUBLE1      (0x1u<<8)
-#define DAC_MCR_MODE1           (0x7u<<0)
-#define DAC_MCR_MODE1_0         (0x1u<<0)
+#define DAC_MCR_SINFORMAT2      (0x1U<<25)
+#define DAC_MCR_DMADOUBLE2      (0x1U<<24)
+#define DAC_MCR_MODE2           (0x7U<<16)
+#define DAC_MCR_MODE2_0         (0x1U<<16)
+#define DAC_MCR_HFSEL           (0x3U<<14)
+#define DAC_MCR_HFSEL_0         (0x1U<<14)
+#define DAC_MCR_SINFORMAT1      (0x1U<<9)
+#define DAC_MCR_DMADOUBLE1      (0x1U<<8)
+#define DAC_MCR_MODE1           (0x7U<<0)
+#define DAC_MCR_MODE1_0         (0x1U<<0)
 
 // SHSR1 Configuration
 
-#define DAC_SHSR1_TSAMPLE1      (0x3FFu<<0)
-#define DAC_SHSR1_TSAMPLE1_0    (0x1u<<0)
+#define DAC_SHSR1_TSAMPLE1      (0x3FFU<<0)
+#define DAC_SHSR1_TSAMPLE1_0    (0x1U<<0)
 
 // SHSR2 Configuration
 
-#define DAC_SHSR2_TSAMPLE2      (0x3FFu<<0)
-#define DAC_SHSR2_TSAMPLE2_0    (0x1u<<0)
+#define DAC_SHSR2_TSAMPLE2      (0x3FFU<<0)
+#define DAC_SHSR2_TSAMPLE2_0    (0x1U<<0)
 
 // SHHR Configuration
 
-#define DAC_SHHR_THOLD2         (0x3FFu<<16)
-#define DAC_SHHR_THOLD2_0       (0x1u<<16)
-#define DAC_SHHR_THOLD1         (0x3FFu<<0)
-#define DAC_SHHR_THOLD1_0       (0x1u<<0)
+#define DAC_SHHR_THOLD2         (0x3FFU<<16)
+#define DAC_SHHR_THOLD2_0       (0x1U<<16)
+#define DAC_SHHR_THOLD1         (0x3FFU<<0)
+#define DAC_SHHR_THOLD1_0       (0x1U<<0)
 
 // SHRR Configuration
 
-#define DAC_SHRR_TREFRESH2      (0xFFu<<16)
-#define DAC_SHRR_TREFRESH2_0    (0x1u<<16)
-#define DAC_SHRR_TREFRESH1      (0xFFu<<0)
-#define DAC_SHRR_TREFRESH1_0    (0x1u<<0)
+#define DAC_SHRR_TREFRESH2      (0xFFU<<16)
+#define DAC_SHRR_TREFRESH2_0    (0x1U<<16)
+#define DAC_SHRR_TREFRESH1      (0xFFU<<0)
+#define DAC_SHRR_TREFRESH1_0    (0x1U<<0)
 
 // AUTOCR Configuration
 
-#define DAC_AUTOCR_AUTOMODE     (0x1u<<22)
+#define DAC_AUTOCR_AUTOMODE     (0x1U<<22)

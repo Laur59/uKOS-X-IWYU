@@ -127,4 +127,4 @@ typedef struct  _gpio {
     gpio_access_tp_t    interrupt_bothedge;         // Offset 0x68: Interrupt both edge type
 } __attribute__ ((packed, aligned (4))) gpio_t;
 
-#define gpio    ((volatile  gpio_t *)0x50200000u)
+#define gpio    ((volatile  gpio_t *)0x50200000U)

@@ -61,15 +61,15 @@ typedef struct {
 } TBMAN_TypeDef;
 
 #ifdef __cplusplus
-#define TBMAN_NS    reinterpret_cast<TBMAN_TypeDef *>(0x40160000u)
-#define TBMAN_S     reinterpret_cast<TBMAN_TypeDef *>(0x40160000u)
+#define TBMAN_NS    reinterpret_cast<TBMAN_TypeDef *>(0x40160000U)
+#define TBMAN_S     reinterpret_cast<TBMAN_TypeDef *>(0x40160000U)
 #else
-#define TBMAN_NS    ((TBMAN_TypeDef *)0x40160000u)
-#define TBMAN_S     ((TBMAN_TypeDef *)0x40160000u)
+#define TBMAN_NS    ((TBMAN_TypeDef *)0x40160000U)
+#define TBMAN_S     ((TBMAN_TypeDef *)0x40160000U)
 #endif
 
 // PLATFORM Configuration
 
-#define TBMAN_PLATFORM_ASIC     (0x1u<<0)
-#define TBMAN_PLATFORM_FPGA     (0x1u<<1)
-#define TBMAN_PLATFORM_HDLSIM   (0x1u<<2)
+#define TBMAN_PLATFORM_ASIC     (0x1U<<0)
+#define TBMAN_PLATFORM_FPGA     (0x1U<<1)
+#define TBMAN_PLATFORM_HDLSIM   (0x1U<<2)

@@ -85,195 +85,195 @@ typedef struct {
 } UART_TypeDef;
 
 #ifdef __cplusplus
-#define UART0_NS    reinterpret_cast<UART_TypeDef *>(0x40070000u)
-#define UART0_S     reinterpret_cast<UART_TypeDef *>(0x40070000u)
-#define UART1_NS    reinterpret_cast<UART_TypeDef *>(0x40078000u)
-#define UART1_S     reinterpret_cast<UART_TypeDef *>(0x40078000u)
+#define UART0_NS    reinterpret_cast<UART_TypeDef *>(0x40070000U)
+#define UART0_S     reinterpret_cast<UART_TypeDef *>(0x40070000U)
+#define UART1_NS    reinterpret_cast<UART_TypeDef *>(0x40078000U)
+#define UART1_S     reinterpret_cast<UART_TypeDef *>(0x40078000U)
 #else
-#define UART0_NS    ((UART_TypeDef *)0x40070000u)
-#define UART0_S     ((UART_TypeDef *)0x40070000u)
-#define UART1_NS    ((UART_TypeDef *)0x40078000u)
-#define UART1_S     ((UART_TypeDef *)0x40078000u)
+#define UART0_NS    ((UART_TypeDef *)0x40070000U)
+#define UART0_S     ((UART_TypeDef *)0x40070000U)
+#define UART1_NS    ((UART_TypeDef *)0x40078000U)
+#define UART1_S     ((UART_TypeDef *)0x40078000U)
 #endif
 
 // UARTDR Configuration
 
-#define UART_UARTDR_DATA                    (0xFFu<<0)
-#define UART_UARTDR_DATA_0                  (0x1u<<0)
-#define UART_UARTDR_FE                      (0x1u<<8)
-#define UART_UARTDR_PE                      (0x1u<<9)
-#define UART_UARTDR_BE                      (0x1u<<10)
-#define UART_UARTDR_OE                      (0x1u<<11)
+#define UART_UARTDR_DATA                    (0xFFU<<0)
+#define UART_UARTDR_DATA_0                  (0x1U<<0)
+#define UART_UARTDR_FE                      (0x1U<<8)
+#define UART_UARTDR_PE                      (0x1U<<9)
+#define UART_UARTDR_BE                      (0x1U<<10)
+#define UART_UARTDR_OE                      (0x1U<<11)
 
 // UARTRSR Configuration
 
-#define UART_UARTRSR_FE                     (0x1u<<0)
-#define UART_UARTRSR_PE                     (0x1u<<1)
-#define UART_UARTRSR_BE                     (0x1u<<2)
-#define UART_UARTRSR_OE                     (0x1u<<3)
+#define UART_UARTRSR_FE                     (0x1U<<0)
+#define UART_UARTRSR_PE                     (0x1U<<1)
+#define UART_UARTRSR_BE                     (0x1U<<2)
+#define UART_UARTRSR_OE                     (0x1U<<3)
 
 // UARTFR Configuration
 
-#define UART_UARTFR_CTS                     (0x1u<<0)
-#define UART_UARTFR_DSR                     (0x1u<<1)
-#define UART_UARTFR_DCD                     (0x1u<<2)
-#define UART_UARTFR_BUSY                    (0x1u<<3)
-#define UART_UARTFR_RXFE                    (0x1u<<4)
-#define UART_UARTFR_TXFF                    (0x1u<<5)
-#define UART_UARTFR_RXFF                    (0x1u<<6)
-#define UART_UARTFR_TXFE                    (0x1u<<7)
-#define UART_UARTFR_RI                      (0x1u<<8)
+#define UART_UARTFR_CTS                     (0x1U<<0)
+#define UART_UARTFR_DSR                     (0x1U<<1)
+#define UART_UARTFR_DCD                     (0x1U<<2)
+#define UART_UARTFR_BUSY                    (0x1U<<3)
+#define UART_UARTFR_RXFE                    (0x1U<<4)
+#define UART_UARTFR_TXFF                    (0x1U<<5)
+#define UART_UARTFR_RXFF                    (0x1U<<6)
+#define UART_UARTFR_TXFE                    (0x1U<<7)
+#define UART_UARTFR_RI                      (0x1U<<8)
 
 // UARTILPR Configuration
 
-#define UART_UARTILPR_ILPDVSR               (0xFFu<<0)
-#define UART_UARTILPR_ILPDVSR_0             (0x1u<<0)
+#define UART_UARTILPR_ILPDVSR               (0xFFU<<0)
+#define UART_UARTILPR_ILPDVSR_0             (0x1U<<0)
 
 // UARTIBRD Configuration
 
-#define UART_UARTIBRD_BAUD_DIVINT           (0xFFFFu<<0)
-#define UART_UARTIBRD_BAUD_DIVINT_0         (0x1u<<0)
+#define UART_UARTIBRD_BAUD_DIVINT           (0xFFFFU<<0)
+#define UART_UARTIBRD_BAUD_DIVINT_0         (0x1U<<0)
 
 // UARTFBRD Configuration
 
-#define UART_UARTFBRD_BAUD_DIVFRAC          (0x3Fu<<0)
-#define UART_UARTFBRD_BAUD_DIVFRAC_0        (0x1u<<0)
+#define UART_UARTFBRD_BAUD_DIVFRAC          (0x3FU<<0)
+#define UART_UARTFBRD_BAUD_DIVFRAC_0        (0x1U<<0)
 
 // UARTLCR_H Configuration
 
-#define UART_UARTLCR_H_BRK                  (0x1u<<0)
-#define UART_UARTLCR_H_PEN                  (0x1u<<1)
-#define UART_UARTLCR_H_EPS                  (0x1u<<2)
-#define UART_UARTLCR_H_STP2                 (0x1u<<3)
-#define UART_UARTLCR_H_FEN                  (0x1u<<4)
-#define UART_UARTLCR_H_WLEN                 (0x3u<<5)
-#define UART_UARTLCR_H_WLEN_0               (0x1u<<5)
-#define UART_UARTLCR_H_SPS                  (0x1u<<7)
+#define UART_UARTLCR_H_BRK                  (0x1U<<0)
+#define UART_UARTLCR_H_PEN                  (0x1U<<1)
+#define UART_UARTLCR_H_EPS                  (0x1U<<2)
+#define UART_UARTLCR_H_STP2                 (0x1U<<3)
+#define UART_UARTLCR_H_FEN                  (0x1U<<4)
+#define UART_UARTLCR_H_WLEN                 (0x3U<<5)
+#define UART_UARTLCR_H_WLEN_0               (0x1U<<5)
+#define UART_UARTLCR_H_SPS                  (0x1U<<7)
 
 // UARTCR Configuration
 
-#define UART_UARTCR_UARTEN                  (0x1u<<0)
-#define UART_UARTCR_SIREN                   (0x1u<<1)
-#define UART_UARTCR_SIRLP                   (0x1u<<2)
-#define UART_UARTCR_LBE                     (0x1u<<7)
-#define UART_UARTCR_TXE                     (0x1u<<8)
-#define UART_UARTCR_RXE                     (0x1u<<9)
-#define UART_UARTCR_DTR                     (0x1u<<10)
-#define UART_UARTCR_RTS                     (0x1u<<11)
-#define UART_UARTCR_OUT1                    (0x1u<<12)
-#define UART_UARTCR_OUT2                    (0x1u<<13)
-#define UART_UARTCR_RTSEN                   (0x1u<<14)
-#define UART_UARTCR_CTSEN                   (0x1u<<15)
+#define UART_UARTCR_UARTEN                  (0x1U<<0)
+#define UART_UARTCR_SIREN                   (0x1U<<1)
+#define UART_UARTCR_SIRLP                   (0x1U<<2)
+#define UART_UARTCR_LBE                     (0x1U<<7)
+#define UART_UARTCR_TXE                     (0x1U<<8)
+#define UART_UARTCR_RXE                     (0x1U<<9)
+#define UART_UARTCR_DTR                     (0x1U<<10)
+#define UART_UARTCR_RTS                     (0x1U<<11)
+#define UART_UARTCR_OUT1                    (0x1U<<12)
+#define UART_UARTCR_OUT2                    (0x1U<<13)
+#define UART_UARTCR_RTSEN                   (0x1U<<14)
+#define UART_UARTCR_CTSEN                   (0x1U<<15)
 
 // UARTIFLS Configuration
 
-#define UART_UARTIFLS_TXIFLSEL              (0x7u<<0)
-#define UART_UARTIFLS_TXIFLSEL_0            (0x1u<<0)
-#define UART_UARTIFLS_RXIFLSEL              (0x7u<<3)
-#define UART_UARTIFLS_RXIFLSEL_0            (0x1u<<3)
+#define UART_UARTIFLS_TXIFLSEL              (0x7U<<0)
+#define UART_UARTIFLS_TXIFLSEL_0            (0x1U<<0)
+#define UART_UARTIFLS_RXIFLSEL              (0x7U<<3)
+#define UART_UARTIFLS_RXIFLSEL_0            (0x1U<<3)
 
 // UARTIMSC Configuration
 
-#define UART_UARTIMSC_RIMIM                 (0x1u<<0)
-#define UART_UARTIMSC_CTSMIM                (0x1u<<1)
-#define UART_UARTIMSC_DCDMIM                (0x1u<<2)
-#define UART_UARTIMSC_DSRMIM                (0x1u<<3)
-#define UART_UARTIMSC_RXIM                  (0x1u<<4)
-#define UART_UARTIMSC_TXIM                  (0x1u<<5)
-#define UART_UARTIMSC_RTIM                  (0x1u<<6)
-#define UART_UARTIMSC_FEIM                  (0x1u<<7)
-#define UART_UARTIMSC_PEIM                  (0x1u<<8)
-#define UART_UARTIMSC_BEIM                  (0x1u<<9)
-#define UART_UARTIMSC_OEIM                  (0x1u<<10)
+#define UART_UARTIMSC_RIMIM                 (0x1U<<0)
+#define UART_UARTIMSC_CTSMIM                (0x1U<<1)
+#define UART_UARTIMSC_DCDMIM                (0x1U<<2)
+#define UART_UARTIMSC_DSRMIM                (0x1U<<3)
+#define UART_UARTIMSC_RXIM                  (0x1U<<4)
+#define UART_UARTIMSC_TXIM                  (0x1U<<5)
+#define UART_UARTIMSC_RTIM                  (0x1U<<6)
+#define UART_UARTIMSC_FEIM                  (0x1U<<7)
+#define UART_UARTIMSC_PEIM                  (0x1U<<8)
+#define UART_UARTIMSC_BEIM                  (0x1U<<9)
+#define UART_UARTIMSC_OEIM                  (0x1U<<10)
 
 // UARTRIS Configuration
 
-#define UART_UARTRIS_RIRMIS                 (0x1u<<0)
-#define UART_UARTRIS_CTSRMIS                (0x1u<<1)
-#define UART_UARTRIS_DCDRMIS                (0x1u<<2)
-#define UART_UARTRIS_DSRRMIS                (0x1u<<3)
-#define UART_UARTRIS_RXRIS                  (0x1u<<4)
-#define UART_UARTRIS_TXRIS                  (0x1u<<5)
-#define UART_UARTRIS_RTRIS                  (0x1u<<6)
-#define UART_UARTRIS_FERIS                  (0x1u<<7)
-#define UART_UARTRIS_PERIS                  (0x1u<<8)
-#define UART_UARTRIS_BERIS                  (0x1u<<9)
-#define UART_UARTRIS_OERIS                  (0x1u<<10)
+#define UART_UARTRIS_RIRMIS                 (0x1U<<0)
+#define UART_UARTRIS_CTSRMIS                (0x1U<<1)
+#define UART_UARTRIS_DCDRMIS                (0x1U<<2)
+#define UART_UARTRIS_DSRRMIS                (0x1U<<3)
+#define UART_UARTRIS_RXRIS                  (0x1U<<4)
+#define UART_UARTRIS_TXRIS                  (0x1U<<5)
+#define UART_UARTRIS_RTRIS                  (0x1U<<6)
+#define UART_UARTRIS_FERIS                  (0x1U<<7)
+#define UART_UARTRIS_PERIS                  (0x1U<<8)
+#define UART_UARTRIS_BERIS                  (0x1U<<9)
+#define UART_UARTRIS_OERIS                  (0x1U<<10)
 
 // UARTMIS Configuration
 
-#define UART_UARTMIS_RIMMIS                 (0x1u<<0)
-#define UART_UARTMIS_CTSMMIS                (0x1u<<1)
-#define UART_UARTMIS_DCDMMIS                (0x1u<<2)
-#define UART_UARTMIS_DSRMMIS                (0x1u<<3)
-#define UART_UARTMIS_RXMIS                  (0x1u<<4)
-#define UART_UARTMIS_TXMIS                  (0x1u<<5)
-#define UART_UARTMIS_RTMIS                  (0x1u<<6)
-#define UART_UARTMIS_FEMIS                  (0x1u<<7)
-#define UART_UARTMIS_PEMIS                  (0x1u<<8)
-#define UART_UARTMIS_BEMIS                  (0x1u<<9)
-#define UART_UARTMIS_OEMIS                  (0x1u<<10)
+#define UART_UARTMIS_RIMMIS                 (0x1U<<0)
+#define UART_UARTMIS_CTSMMIS                (0x1U<<1)
+#define UART_UARTMIS_DCDMMIS                (0x1U<<2)
+#define UART_UARTMIS_DSRMMIS                (0x1U<<3)
+#define UART_UARTMIS_RXMIS                  (0x1U<<4)
+#define UART_UARTMIS_TXMIS                  (0x1U<<5)
+#define UART_UARTMIS_RTMIS                  (0x1U<<6)
+#define UART_UARTMIS_FEMIS                  (0x1U<<7)
+#define UART_UARTMIS_PEMIS                  (0x1U<<8)
+#define UART_UARTMIS_BEMIS                  (0x1U<<9)
+#define UART_UARTMIS_OEMIS                  (0x1U<<10)
 
 // UARTICR Configuration
 
-#define UART_UARTICR_RIMIC                  (0x1u<<0)
-#define UART_UARTICR_CTSMIC                 (0x1u<<1)
-#define UART_UARTICR_DCDMIC                 (0x1u<<2)
-#define UART_UARTICR_DSRMIC                 (0x1u<<3)
-#define UART_UARTICR_RXIC                   (0x1u<<4)
-#define UART_UARTICR_TXIC                   (0x1u<<5)
-#define UART_UARTICR_RTIC                   (0x1u<<6)
-#define UART_UARTICR_FEIC                   (0x1u<<7)
-#define UART_UARTICR_PEIC                   (0x1u<<8)
-#define UART_UARTICR_BEIC                   (0x1u<<9)
-#define UART_UARTICR_OEIC                   (0x1u<<10)
+#define UART_UARTICR_RIMIC                  (0x1U<<0)
+#define UART_UARTICR_CTSMIC                 (0x1U<<1)
+#define UART_UARTICR_DCDMIC                 (0x1U<<2)
+#define UART_UARTICR_DSRMIC                 (0x1U<<3)
+#define UART_UARTICR_RXIC                   (0x1U<<4)
+#define UART_UARTICR_TXIC                   (0x1U<<5)
+#define UART_UARTICR_RTIC                   (0x1U<<6)
+#define UART_UARTICR_FEIC                   (0x1U<<7)
+#define UART_UARTICR_PEIC                   (0x1U<<8)
+#define UART_UARTICR_BEIC                   (0x1U<<9)
+#define UART_UARTICR_OEIC                   (0x1U<<10)
 
 // UARTDMACR Configuration
 
-#define UART_UARTDMACR_RXDMAE               (0x1u<<0)
-#define UART_UARTDMACR_TXDMAE               (0x1u<<1)
-#define UART_UARTDMACR_DMAONERR             (0x1u<<2)
+#define UART_UARTDMACR_RXDMAE               (0x1U<<0)
+#define UART_UARTDMACR_TXDMAE               (0x1U<<1)
+#define UART_UARTDMACR_DMAONERR             (0x1U<<2)
 
 // UARTPERIPHID0 Configuration
 
-#define UART_UARTPERIPHID0_PARTNUMBER0      (0xFFu<<0)
-#define UART_UARTPERIPHID0_PARTNUMBER0_0    (0x1u<<0)
+#define UART_UARTPERIPHID0_PARTNUMBER0      (0xFFU<<0)
+#define UART_UARTPERIPHID0_PARTNUMBER0_0    (0x1U<<0)
 
 // UARTPERIPHID1 Configuration
 
-#define UART_UARTPERIPHID1_PARTNUMBER1      (0xFu<<0)
-#define UART_UARTPERIPHID1_PARTNUMBER1_0    (0x1u<<0)
-#define UART_UARTPERIPHID1_DESIGNER0        (0xFu<<4)
-#define UART_UARTPERIPHID1_DESIGNER0_0      (0x1u<<4)
+#define UART_UARTPERIPHID1_PARTNUMBER1      (0xFU<<0)
+#define UART_UARTPERIPHID1_PARTNUMBER1_0    (0x1U<<0)
+#define UART_UARTPERIPHID1_DESIGNER0        (0xFU<<4)
+#define UART_UARTPERIPHID1_DESIGNER0_0      (0x1U<<4)
 
 // UARTPERIPHID2 Configuration
 
-#define UART_UARTPERIPHID2_DESIGNER1        (0xFu<<0)
-#define UART_UARTPERIPHID2_DESIGNER1_0      (0x1u<<0)
-#define UART_UARTPERIPHID2_REVISION         (0xFu<<4)
-#define UART_UARTPERIPHID2_REVISION_0       (0x1u<<4)
+#define UART_UARTPERIPHID2_DESIGNER1        (0xFU<<0)
+#define UART_UARTPERIPHID2_DESIGNER1_0      (0x1U<<0)
+#define UART_UARTPERIPHID2_REVISION         (0xFU<<4)
+#define UART_UARTPERIPHID2_REVISION_0       (0x1U<<4)
 
 // UARTPERIPHID3 Configuration
 
-#define UART_UARTPERIPHID3_CONFIGURATION    (0xFFu<<0)
-#define UART_UARTPERIPHID3_CONFIGURATION_0  (0x1u<<0)
+#define UART_UARTPERIPHID3_CONFIGURATION    (0xFFU<<0)
+#define UART_UARTPERIPHID3_CONFIGURATION_0  (0x1U<<0)
 
 // UARTPCELLID0 Configuration
 
-#define UART_UARTPCELLID0_UARTPCELLID0      (0xFFu<<0)
-#define UART_UARTPCELLID0_UARTPCELLID0_0    (0x1u<<0)
+#define UART_UARTPCELLID0_UARTPCELLID0      (0xFFU<<0)
+#define UART_UARTPCELLID0_UARTPCELLID0_0    (0x1U<<0)
 
 // UARTPCELLID1 Configuration
 
-#define UART_UARTPCELLID1_UARTPCELLID1      (0xFFu<<0)
-#define UART_UARTPCELLID1_UARTPCELLID1_0    (0x1u<<0)
+#define UART_UARTPCELLID1_UARTPCELLID1      (0xFFU<<0)
+#define UART_UARTPCELLID1_UARTPCELLID1_0    (0x1U<<0)
 
 // UARTPCELLID2 Configuration
 
-#define UART_UARTPCELLID2_UARTPCELLID2      (0xFFu<<0)
-#define UART_UARTPCELLID2_UARTPCELLID2_0    (0x1u<<0)
+#define UART_UARTPCELLID2_UARTPCELLID2      (0xFFU<<0)
+#define UART_UARTPCELLID2_UARTPCELLID2_0    (0x1U<<0)
 
 // UARTPCELLID3 Configuration
 
-#define UART_UARTPCELLID3_UARTPCELLID3      (0xFFu<<0)
-#define UART_UARTPCELLID3_UARTPCELLID3_0    (0x1u<<0)
+#define UART_UARTPCELLID3_UARTPCELLID3      (0xFFU<<0)
+#define UART_UARTPCELLID3_UARTPCELLID3_0    (0x1U<<0)

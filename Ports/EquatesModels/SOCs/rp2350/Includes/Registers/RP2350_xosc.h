@@ -65,52 +65,52 @@ typedef struct {
 } XOSC_TypeDef;
 
 #ifdef __cplusplus
-#define XOSC_NS reinterpret_cast<XOSC_TypeDef *>(0x40048000u)
-#define XOSC_S  reinterpret_cast<XOSC_TypeDef *>(0x40048000u)
+#define XOSC_NS reinterpret_cast<XOSC_TypeDef *>(0x40048000U)
+#define XOSC_S  reinterpret_cast<XOSC_TypeDef *>(0x40048000U)
 #else
-#define XOSC_NS ((XOSC_TypeDef *)0x40048000u)
-#define XOSC_S  ((XOSC_TypeDef *)0x40048000u)
+#define XOSC_NS ((XOSC_TypeDef *)0x40048000U)
+#define XOSC_S  ((XOSC_TypeDef *)0x40048000U)
 #endif
 
 // CTRL Configuration
 
-#define XOSC_CTRL_FREQ_RANGE                (0xFFFu<<0)
-#define XOSC_CTRL_FREQ_RANGE_0              (0x1u<<0)
-#define XOSC_CTRL_ENABLE                    (0xFFFu<<12)
-#define XOSC_CTRL_ENABLE_0                  (0x1u<<12)
-#define XOSC_CTRL_FREQ_RANGE_1_15MHZ        (0xAA0u<<0)
-#define XOSC_CTRL_FREQ_RANGE_10_30MHZ       (0xAA1u<<0)
-#define XOSC_CTRL_FREQ_RANGE_25_60MHZ       (0xAA2u<<0)
-#define XOSC_CTRL_FREQ_RANGE_40_100MHZ      (0xAA3u<<0)
-#define XOSC_CTRL_ENABLE_DISABLE            (0xD1Eu<<12)
-#define XOSC_CTRL_ENABLE_ENABLE             (0xFABu<<12)
+#define XOSC_CTRL_FREQ_RANGE                (0xFFFU<<0)
+#define XOSC_CTRL_FREQ_RANGE_0              (0x1U<<0)
+#define XOSC_CTRL_ENABLE                    (0xFFFU<<12)
+#define XOSC_CTRL_ENABLE_0                  (0x1U<<12)
+#define XOSC_CTRL_FREQ_RANGE_1_15MHZ        (0xAA0U<<0)
+#define XOSC_CTRL_FREQ_RANGE_10_30MHZ       (0xAA1U<<0)
+#define XOSC_CTRL_FREQ_RANGE_25_60MHZ       (0xAA2U<<0)
+#define XOSC_CTRL_FREQ_RANGE_40_100MHZ      (0xAA3U<<0)
+#define XOSC_CTRL_ENABLE_DISABLE            (0xD1EU<<12)
+#define XOSC_CTRL_ENABLE_ENABLE             (0xFABU<<12)
 
 // STATUS Configuration
 
-#define XOSC_STATUS_FREQ_RANGE              (0x3u<<0)
-#define XOSC_STATUS_FREQ_RANGE_0            (0x1u<<0)
-#define XOSC_STATUS_ENABLED                 (0x1u<<12)
-#define XOSC_STATUS_BADWRITE                (0x1u<<24)
-#define XOSC_STATUS_STABLE                  (0x1u<<31)
-#define XOSC_STATUS_FREQ_RANGE_1_15MHZ      (0x0u<<0)
-#define XOSC_STATUS_FREQ_RANGE_10_30MHZ     (0x1u<<0)
-#define XOSC_STATUS_FREQ_RANGE_25_60MHZ     (0x2u<<0)
-#define XOSC_STATUS_FREQ_RANGE_40_100MHZ    (0x3u<<0)
+#define XOSC_STATUS_FREQ_RANGE              (0x3U<<0)
+#define XOSC_STATUS_FREQ_RANGE_0            (0x1U<<0)
+#define XOSC_STATUS_ENABLED                 (0x1U<<12)
+#define XOSC_STATUS_BADWRITE                (0x1U<<24)
+#define XOSC_STATUS_STABLE                  (0x1U<<31)
+#define XOSC_STATUS_FREQ_RANGE_1_15MHZ      (0x0U<<0)
+#define XOSC_STATUS_FREQ_RANGE_10_30MHZ     (0x1U<<0)
+#define XOSC_STATUS_FREQ_RANGE_25_60MHZ     (0x2U<<0)
+#define XOSC_STATUS_FREQ_RANGE_40_100MHZ    (0x3U<<0)
 
 // DORMANT Configuration
 
-#define XOSC_DORMANT_DORMANT                (0xFFFFFFFFu<<0)
-#define XOSC_DORMANT_DORMANT_0              (0x1u<<0)
-#define XOSC_DORMANT_DORMANT_DORMANT        (0x636F6D61u<<0)
-#define XOSC_DORMANT_DORMANT_WAKE           (0x77616B65u<<0)
+#define XOSC_DORMANT_DORMANT                (0xFFFFFFFFU<<0)
+#define XOSC_DORMANT_DORMANT_0              (0x1U<<0)
+#define XOSC_DORMANT_DORMANT_DORMANT        (0x636F6D61U<<0)
+#define XOSC_DORMANT_DORMANT_WAKE           (0x77616B65U<<0)
 
 // STARTUP Configuration
 
-#define XOSC_STARTUP_DELAY                  (0x3FFFu<<0)
-#define XOSC_STARTUP_DELAY_0                (0x1u<<0)
-#define XOSC_STARTUP_X4                     (0x1u<<20)
+#define XOSC_STARTUP_DELAY                  (0x3FFFU<<0)
+#define XOSC_STARTUP_DELAY_0                (0x1U<<0)
+#define XOSC_STARTUP_X4                     (0x1U<<20)
 
 // COUNT Configuration
 
-#define XOSC_COUNT_COUNT                    (0xFFFFu<<0)
-#define XOSC_COUNT_COUNT_0                  (0x1u<<0)
+#define XOSC_COUNT_COUNT                    (0xFFFFU<<0)
+#define XOSC_COUNT_COUNT_0                  (0x1U<<0)

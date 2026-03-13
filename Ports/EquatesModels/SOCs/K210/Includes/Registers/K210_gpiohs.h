@@ -59,23 +59,23 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 // Register address offsets
 // ------------------------
 
-#define GPIOHS_INPUT_VAL    0x00u                   //
-#define GPIOHS_INPUT_EN     0x04u                   //
-#define GPIOHS_OUTPUT_EN    0x08u                   //
-#define GPIOHS_OUTPUT_VA    0x0Cu                   //
-#define GPIOHS_PULLUP_EN    0x10u                   //
-#define GPIOHS_DRIVE        0x14u                   //
-#define GPIOHS_RISE_IE      0x18u                   //
-#define GPIOHS_RISE_IP      0x1Cu                   //
-#define GPIOHS_FALL_IE      0x20u                   //
-#define GPIOHS_FALL_IP      0x24u                   //
-#define GPIOHS_HIGH_IE      0x28u                   //
-#define GPIOHS_HIGH_IP      0x2Cu                   //
-#define GPIOHS_LOW_IE       0x30u                   //
-#define GPIOHS_LOW_IP       0x34u                   //
-#define GPIOHS_IOF_EN       0x38u                   //
-#define GPIOHS_IOF_SEL      0x3Cu                   //
-#define GPIOHS_OUTPUT_XOR   0x40u                   //
+#define GPIOHS_INPUT_VAL    0x00U                   //
+#define GPIOHS_INPUT_EN     0x04U                   //
+#define GPIOHS_OUTPUT_EN    0x08U                   //
+#define GPIOHS_OUTPUT_VA    0x0CU                   //
+#define GPIOHS_PULLUP_EN    0x10U                   //
+#define GPIOHS_DRIVE        0x14U                   //
+#define GPIOHS_RISE_IE      0x18U                   //
+#define GPIOHS_RISE_IP      0x1CU                   //
+#define GPIOHS_FALL_IE      0x20U                   //
+#define GPIOHS_FALL_IP      0x24U                   //
+#define GPIOHS_HIGH_IE      0x28U                   //
+#define GPIOHS_HIGH_IP      0x2CU                   //
+#define GPIOHS_LOW_IE       0x30U                   //
+#define GPIOHS_LOW_IP       0x34U                   //
+#define GPIOHS_IOF_EN       0x38U                   //
+#define GPIOHS_IOF_SEL      0x3CU                   //
+#define GPIOHS_OUTPUT_XOR   0x40U                   //
 
 // GPIO bits raw object
 // --------------------
@@ -171,4 +171,4 @@ typedef struct  _gpiohs {
     gpiohs_u32_t    output_xor;                     // Address offset 0x40, Output XOR (invert)
 } __attribute__ ((packed, aligned (4))) gpiohs_t;
 
-#define gpiohs  ((volatile  gpiohs_t *)0x38001000u)
+#define gpiohs  ((volatile  gpiohs_t *)0x38001000U)
