@@ -101,7 +101,8 @@ void    SVCall_C1_IRQHandler(void) {
 }
 #endif
 
-void    __attribute__ ((noreturn)) syscall(const uintptr_t *arg) {
+[[noreturn]]
+void    syscall(const uintptr_t *arg) {
 
     UNUSED(arg);
 

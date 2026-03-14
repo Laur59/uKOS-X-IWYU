@@ -85,7 +85,8 @@ __attribute__ ((noinline)) void local_fixPC(void) {
     }
 }
 
-void __attribute__ ((naked)) Reset_C0_Handler(void) {
+[[gnu::naked]]
+void Reset_C0_Handler(void) {
 
     CALL_FNCT(local_fixPC);
 

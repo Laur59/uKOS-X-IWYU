@@ -3,11 +3,11 @@
 ; ===================
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Model for the core dump (SOC specific).
+; Project:  uKOS-X
+; Goal:     Model for the core dump (SOC specific).
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,8 +46,8 @@
 
 // Prototypes
 
-static	void	local_processInterruption(uintptr_t *stackBefore, uintptr_t *stackAfter);
-static	void	local_printInterruption(const char_t **vectorName);
+static  void    local_processInterruption(uintptr_t *stackBefore, uintptr_t *stackAfter);
+static  void    local_printInterruption(const char_t **vectorName);
 
 /*
  * \brief model_coreDump_displayInterruptions
@@ -106,11 +106,11 @@ static	void	local_printInterruption(const char_t **vectorName);
  *
  */
 [[gnu::naked]]
-static	void	model_coreDump_displayInterruptions(void) {
+static  void    model_coreDump_displayInterruptions(void) {
 
-	CORE_DUMP_SAVE_STACK_FRAME;
+    CORE_DUMP_SAVE_STACK_FRAME;
 
-	JUMP_FNCT(local_processInterruption);
+    JUMP_FNCT(local_processInterruption);
 }
 
 /*
@@ -124,36 +124,37 @@ static	void	model_coreDump_displayInterruptions(void) {
  * - Display the stack frame
  *
  */
-static	void	__attribute__ ((noinline, used, noreturn)) local_processInterruption(uintptr_t *stackBefore, uintptr_t *stackAfter) {
-			uint32_t	core, i;
-	const	uintptr_t	*ptr;
-	const	char_t		*vectorName;
+[[gnu::noinline, gnu::used]] [[noreturn]]
+static  void    local_processInterruption(uintptr_t *stackBefore, uintptr_t *stackAfter) {
+            uint32_t    core, i;
+    const   uintptr_t   *ptr;
+    const   char_t      *vectorName;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	SET_PRIVILEGED_MODE;
-	vKern_runProc[core]->oSpecification.oMode = KPROC_PRIVILEGED;
+    SET_PRIVILEGED_MODE;
+    vKern_runProc[core]->oSpecification.oMode = KPROC_PRIVILEGED;
 
-	vExceptionNb[core] = core_getIPSR();
-	vStackBefore[core] = stackBefore;
-	vStackAfter[core]  = stackAfter;
+    vExceptionNb[core] = core_getIPSR();
+    vStackBefore[core] = stackBefore;
+    vStackAfter[core]  = stackAfter;
 
 // Collect the stack frame
 
-	ptr = vStackAfter[core];
-	vStackCoreDump[core][SPP] = (uintptr_t)vStackAfter[core];
-	for (i = PSP; i < ENDREG; i++) {
-		vStackCoreDump[core][i] = *ptr;
-		ptr++;
-	}
+    ptr = vStackAfter[core];
+    vStackCoreDump[core][SPP] = (uintptr_t)vStackAfter[core];
+    for (i = PSP; i < ENDREG; i++) {
+        vStackCoreDump[core][i] = *ptr;
+        ptr++;
+    }
 
-	local_printInterruption(&vectorName);
-	local_printFunction(vStackCoreDump[core][PC], vectorName, "Interruption: ");
-	local_printCore();
-	local_printTrace();
-	local_printLog();
-	local_printStackFrame();
-	cb_signal(KINTERRUPTION);
+    local_printInterruption(&vectorName);
+    local_printFunction(vStackCoreDump[core][PC], vectorName, "Interruption: ");
+    local_printCore();
+    local_printTrace();
+    local_printLog();
+    local_printStackFrame();
+    cb_signal(KINTERRUPTION);
 }
 
 /*
@@ -162,83 +163,84 @@ static	void	__attribute__ ((noinline, used, noreturn)) local_processInterruption
  * - Display the interruption name
  *
  */
-static	void	__attribute__ ((noinline)) local_printInterruption(const char_t **vectorName) {
-	uint32_t	core;
+[[gnu::noinline]]
+static  void    local_printInterruption(const char_t **vectorName) {
+    uint32_t    core;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	cmns_send(KDEF0, "\n\n\n\n");
-	cmns_send(KDEF0, "System dead! Core DUMP!!\n");
-	cmns_send(KDEF0, "========================\n\n");
-	switch (vExceptionNb[core]) {
+    cmns_send(KDEF0, "\n\n\n\n");
+    cmns_send(KDEF0, "System dead! Core DUMP!!\n");
+    cmns_send(KDEF0, "========================\n\n");
+    switch (vExceptionNb[core]) {
 
-		#if(defined(CPU_APPLICATION_S))
-		case 0U:  { *vectorName = "FPU_IRQn";			break; }
-		case 1U:  { *vectorName = "CACHE_IRQn";			break; }
-		case 3U:  { *vectorName = "SPU_IRQn";			break; }
-		case 5U:  { *vectorName = "CLOCK_POWER_IRQn";	break; }
-		case 8U:  { *vectorName = "SERIAL0_IRQn";		break; }
-		case 9U:  { *vectorName = "SERIAL1_IRQn";		break; }
-		case 10U: { *vectorName = "SPIM4_IRQn";			break; }
-		case 11U: { *vectorName = "SERIAL2_IRQn";		break; }
-		case 12U: { *vectorName = "SERIAL3_IRQn";		break; }
-		case 13U: { *vectorName = "GPIOTE0_IRQn";		break; }
-		case 14U: { *vectorName = "SAADC_IRQn";			break; }
-		case 15U: { *vectorName = "TIMER0_IRQn";		break; }
-		case 16U: { *vectorName = "TIMER1_IRQn";		break; }
-		case 17U: { *vectorName = "TIMER2_IRQn";		break; }
-		case 20U: { *vectorName = "RTC0_IRQn";			break; }
-		case 21U: { *vectorName = "RTC1_IRQn";			break; }
-		case 24U: { *vectorName = "WDT0_IRQn";			break; }
-		case 25U: { *vectorName = "WDT1_IRQn";			break; }
-		case 26U: { *vectorName = "COMP_LPCOMP_IRQn";	break; }
-		case 27U: { *vectorName = "EGU0_IRQn";			break; }
-		case 28U: { *vectorName = "EGU1_IRQn";			break; }
-		case 29U: { *vectorName = "EGU2_IRQn";			break; }
-		case 30U: { *vectorName = "EGU3_IRQn";			break; }
-		case 31U: { *vectorName = "EGU4_IRQn";			break; }
-		case 32U: { *vectorName = "EGU5_IRQn";			break; }
-		case 33U: { *vectorName = "PWM0_IRQn";			break; }
-		case 34U: { *vectorName = "PWM1_IRQn";			break; }
-		case 35U: { *vectorName = "PWM2_IRQn";			break; }
-		case 36U: { *vectorName = "PWM3_IRQn";			break; }
-		case 38U: { *vectorName = "PDM0_IRQn";			break; }
-		case 40U: { *vectorName = "I2S0_IRQn";			break; }
-		case 42U: { *vectorName = "IPC_IRQn";			break; }
-		case 43U: { *vectorName = "QSPI_IRQn";			break; }
-		case 45U: { *vectorName = "NFCT_IRQn";			break; }
-		case 47U: { *vectorName = "GPIOTE1_IRQn";		break; }
-		case 51U: { *vectorName = "QDEC0_IRQn";			break; }
-		case 52U: { *vectorName = "QDEC1_IRQn";			break; }
-		case 54U: { *vectorName = "USBD_IRQn";			break; }
-		case 55U: { *vectorName = "USBREGULATOR_IRQn";	break; }
-		case 57U: { *vectorName = "KMU_IRQn";			break; }
-		case 68U: { *vectorName = "CRYPTOCELL_IRQn";	break; }
-		default:  { *vectorName = "Unknown";			break; }
+        #if(defined(CPU_APPLICATION_S))
+        case 0U:  { *vectorName = "FPU_IRQn";           break; }
+        case 1U:  { *vectorName = "CACHE_IRQn";         break; }
+        case 3U:  { *vectorName = "SPU_IRQn";           break; }
+        case 5U:  { *vectorName = "CLOCK_POWER_IRQn";   break; }
+        case 8U:  { *vectorName = "SERIAL0_IRQn";       break; }
+        case 9U:  { *vectorName = "SERIAL1_IRQn";       break; }
+        case 10U: { *vectorName = "SPIM4_IRQn";         break; }
+        case 11U: { *vectorName = "SERIAL2_IRQn";       break; }
+        case 12U: { *vectorName = "SERIAL3_IRQn";       break; }
+        case 13U: { *vectorName = "GPIOTE0_IRQn";       break; }
+        case 14U: { *vectorName = "SAADC_IRQn";         break; }
+        case 15U: { *vectorName = "TIMER0_IRQn";        break; }
+        case 16U: { *vectorName = "TIMER1_IRQn";        break; }
+        case 17U: { *vectorName = "TIMER2_IRQn";        break; }
+        case 20U: { *vectorName = "RTC0_IRQn";          break; }
+        case 21U: { *vectorName = "RTC1_IRQn";          break; }
+        case 24U: { *vectorName = "WDT0_IRQn";          break; }
+        case 25U: { *vectorName = "WDT1_IRQn";          break; }
+        case 26U: { *vectorName = "COMP_LPCOMP_IRQn";   break; }
+        case 27U: { *vectorName = "EGU0_IRQn";          break; }
+        case 28U: { *vectorName = "EGU1_IRQn";          break; }
+        case 29U: { *vectorName = "EGU2_IRQn";          break; }
+        case 30U: { *vectorName = "EGU3_IRQn";          break; }
+        case 31U: { *vectorName = "EGU4_IRQn";          break; }
+        case 32U: { *vectorName = "EGU5_IRQn";          break; }
+        case 33U: { *vectorName = "PWM0_IRQn";          break; }
+        case 34U: { *vectorName = "PWM1_IRQn";          break; }
+        case 35U: { *vectorName = "PWM2_IRQn";          break; }
+        case 36U: { *vectorName = "PWM3_IRQn";          break; }
+        case 38U: { *vectorName = "PDM0_IRQn";          break; }
+        case 40U: { *vectorName = "I2S0_IRQn";          break; }
+        case 42U: { *vectorName = "IPC_IRQn";           break; }
+        case 43U: { *vectorName = "QSPI_IRQn";          break; }
+        case 45U: { *vectorName = "NFCT_IRQn";          break; }
+        case 47U: { *vectorName = "GPIOTE1_IRQn";       break; }
+        case 51U: { *vectorName = "QDEC0_IRQn";         break; }
+        case 52U: { *vectorName = "QDEC1_IRQn";         break; }
+        case 54U: { *vectorName = "USBD_IRQn";          break; }
+        case 55U: { *vectorName = "USBREGULATOR_IRQn";  break; }
+        case 57U: { *vectorName = "KMU_IRQn";           break; }
+        case 68U: { *vectorName = "CRYPTOCELL_IRQn";    break; }
+        default:  { *vectorName = "Unknown";            break; }
 
-		#else
-		case 5U:  { *vectorName = "CLOCK_POWER_IRQn";	break; }
-		case 8U:  { *vectorName = "RADIO_IRQn";			break; }
-		case 9U:  { *vectorName = "RNG_IRQn";			break; }
-		case 10U: { *vectorName = "GPIOTE_IRQn";		break; }
-		case 11U: { *vectorName = "WDT_IRQn";			break; }
-		case 12U: { *vectorName = "TIMER0_IRQn";		break; }
-		case 13U: { *vectorName = "ECB_IRQn";			break; }
-		case 14U: { *vectorName = "AAR_CCM_IRQn";		break; }
-		case 16U: { *vectorName = "TEMP_IRQn";			break; }
-		case 17U: { *vectorName = "RTC0_IRQn";			break; }
-		case 18U: { *vectorName = "IPC_IRQn";			break; }
-		case 19U: { *vectorName = "SERIAL0_IRQn";		break; }
-		case 20U: { *vectorName = "EGU0_IRQn";			break; }
-		case 22U: { *vectorName = "RTC1_IRQn";			break; }
-		case 24U: { *vectorName = "TIMER1_IRQn";		break; }
-		case 25U: { *vectorName = "TIMER2_IRQn";		break; }
-		case 26U: { *vectorName = "SWI0_IRQn";			break; }
-		case 27U: { *vectorName = "SWI1_IRQn";			break; }
-		case 28U: { *vectorName = "SWI2_IRQn";			break; }
-		case 29U: { *vectorName = "SWI3_IRQn";			break; }
-		default:  { *vectorName = "Unknown";			break; }
-		#endif
+        #else
+        case 5U:  { *vectorName = "CLOCK_POWER_IRQn";   break; }
+        case 8U:  { *vectorName = "RADIO_IRQn";         break; }
+        case 9U:  { *vectorName = "RNG_IRQn";           break; }
+        case 10U: { *vectorName = "GPIOTE_IRQn";        break; }
+        case 11U: { *vectorName = "WDT_IRQn";           break; }
+        case 12U: { *vectorName = "TIMER0_IRQn";        break; }
+        case 13U: { *vectorName = "ECB_IRQn";           break; }
+        case 14U: { *vectorName = "AAR_CCM_IRQn";       break; }
+        case 16U: { *vectorName = "TEMP_IRQn";          break; }
+        case 17U: { *vectorName = "RTC0_IRQn";          break; }
+        case 18U: { *vectorName = "IPC_IRQn";           break; }
+        case 19U: { *vectorName = "SERIAL0_IRQn";       break; }
+        case 20U: { *vectorName = "EGU0_IRQn";          break; }
+        case 22U: { *vectorName = "RTC1_IRQn";          break; }
+        case 24U: { *vectorName = "TIMER1_IRQn";        break; }
+        case 25U: { *vectorName = "TIMER2_IRQn";        break; }
+        case 26U: { *vectorName = "SWI0_IRQn";          break; }
+        case 27U: { *vectorName = "SWI1_IRQn";          break; }
+        case 28U: { *vectorName = "SWI2_IRQn";          break; }
+        case 29U: { *vectorName = "SWI3_IRQn";          break; }
+        default:  { *vectorName = "Unknown";            break; }
+        #endif
 
-	}
+    }
 }

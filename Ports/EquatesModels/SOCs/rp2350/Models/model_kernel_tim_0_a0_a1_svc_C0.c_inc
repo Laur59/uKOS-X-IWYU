@@ -267,7 +267,7 @@ static  void    local_TIM0_ALA0_IRQHandler_C0(void) {
  * !!! Do not generate prologue/epilogue sequences
  *
  */
-void    PendSV_C0_IRQHandler(void) __attribute__ ((naked));
+[[gnu::naked]]
 void    PendSV_C0_IRQHandler(void) {
 
     KERN_SAVE_FRAME_NORMAL;
@@ -376,7 +376,7 @@ static  uintptr_t   __attribute__ ((noinline, used)) *local_newContextPRE_C0(uin
  * !!! Do not generate prologue/epilogue sequences
  *
  */
-void    TIMER0_IRQ_1_C0_IRQHandler(void) __attribute__ ((naked));
+[[gnu::naked]]
 void    TIMER0_IRQ_1_C0_IRQHandler(void) {
 
     KERN_SAVE_FRAME_NORMAL;
@@ -496,7 +496,7 @@ static  uintptr_t   __attribute__ ((noinline, used)) *local_newContextTOU_C0(uin
  * !!! Do not generate prologue/epilogue sequences
  *
  */
-void    kernel_message_C0(void) __attribute__ ((naked));
+[[gnu::naked]]
 void    kernel_message_C0(void) {
 
     KERN_RECOVER_MESSAGE;

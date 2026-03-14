@@ -87,7 +87,8 @@ void    SVCall_C0_IRQHandler(void) {
     SVC_DISPATCHER_C0;
 }
 
-void    __attribute__ ((noreturn)) syscall(const uintptr_t *arg) {
+[[noreturn]]
+void    syscall(const uintptr_t *arg) {
 
     UNUSED(arg);
 

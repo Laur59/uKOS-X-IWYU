@@ -231,7 +231,8 @@ void    kern_privilegeElevate(void) {
 }
 
 #ifdef PRIVILEGED_USER_S
-static  void    __attribute__ ((noinline, used)) local_elevate(uintptr_t callAddress) {
+[[gnu::noinline, gnu::used]]
+static  void    local_elevate(uintptr_t callAddress) {
     extern  uintptr_t   priv_returnElevation;
 
     if (callAddress != (uintptr_t)&priv_returnElevation) {

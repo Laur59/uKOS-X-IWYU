@@ -103,12 +103,7 @@ fi
 printf '%bBuilding list of files to check%b\n' "${YELLOW}" "${NC}"
 mkdir -p Static_Analysis
 cd Static_Analysis
-rm -f .gitignore
-echo "*" > .gitignore
 cmake -S .. -B build --preset llvm -DCMAKE_EXPORT_COMPILE_COMMANDS=ON &> /dev/null
-cd build
-sed -i '' 's/-isystem[[:space:]]*/-I/g' compile_commands.json
-cd ..
 
 printf '%bRunning Cppcheck%b\n' "${YELLOW}" "${NC}"
 mkdir -p Cppcheck-build

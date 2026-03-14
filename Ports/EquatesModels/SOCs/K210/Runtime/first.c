@@ -64,7 +64,8 @@ extern  void        cmns_wait(uint32_t us);
 static  void        local_interruptions(uint32_t core, uint64_t number);
 static  void        local_exception(uint32_t core, uint64_t number, uint64_t message);
 
-void    __attribute__ ((naked)) Reset_Handler(uint32_t core) {
+[[gnu::naked]]
+void    Reset_Handler(uint32_t core) {
 
     #ifndef __clang__
     UNUSED(core);

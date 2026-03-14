@@ -351,7 +351,7 @@ static  void    local_TIM0_A_IRQHandler_C0(uint32_t core, uint64_t parameter) {
  *
  */
         void    local_changeContext_PRE_C0(uint32_t core, uint64_t parameter, uint64_t *threshold, uintptr_t *stack);
-static  void    local_PREEMPTION_IRQHandler_C0(uint32_t core, uint64_t parameter) __attribute__ ((naked));
+[[gnu::naked]]
 static  void    local_PREEMPTION_IRQHandler_C0(uint32_t core, uint64_t parameter) {
 
     #if (!defined(__clang__))
@@ -478,7 +478,7 @@ static  void    __attribute__ ((noinline)) local_newContextPRE_C0(uint32_t core,
  *
  */
         void    local_changeContext_TOU_C0(uint32_t core, uint64_t parameter, uint64_t *threshold, uintptr_t *stack);
-static  void    local_TIM2_A_IRQHandler_C0(uint32_t core, uint64_t parameter) __attribute__ ((naked));
+[[gnu::naked]]
 static  void    local_TIM2_A_IRQHandler_C0(uint32_t core, uint64_t parameter) {
 
     #if (!defined(__clang__))
@@ -607,7 +607,7 @@ static  void    __attribute__ ((noinline)) local_newContextTOU_C0(uint32_t core,
  *
  */
         void    local_changeContext_MSG_C0(uint32_t core, uint64_t message, uint64_t *threshold, uintptr_t *stack);
-static  void    local_ECALL_message_C0(uint32_t core, uint64_t message) __attribute__ ((naked));
+[[gnu::naked]]
 static  void    local_ECALL_message_C0(uint32_t core, uint64_t message) {
 
     #if (!defined(__clang__))

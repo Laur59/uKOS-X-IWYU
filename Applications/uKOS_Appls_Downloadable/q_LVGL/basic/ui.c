@@ -103,7 +103,7 @@ static  void    local_DrawText_1(void) {
 // Red line ... and then randomly changed every 200-ms
 
     vL1 = lv_label_create(lv_screen_active());
-    lv_label_set_text(vL1, "uKOS-X");
+    lv_label_set_text(vL1, "uKOS-X " uKOS_COMPILER);
     lv_obj_set_style_text_color(vL1, lv_color_hex(KRED), 0);
     lv_obj_set_style_text_font(vL1, &lv_font_montserrat_26, 0);
     lv_obj_align(vL1, LV_ALIGN_CENTER, KTEXT_POS_X, KTEXT_POS_Y_1);

@@ -497,9 +497,7 @@ static  void    local_TIMER1_IRQHandler(void) {
  * !!! Do not generate prologue/epilogue sequences
  *
  */
-void    local_EXTI1_IRQHandler(void) __attribute__ ((naked));
-
-void    EXTI1_C0_IRQHandler(void) __attribute__ ((naked));
+[[gnu::naked]]
 void    EXTI1_C0_IRQHandler(void) {
 
     KERN_SAVE_FRAME;
@@ -507,7 +505,7 @@ void    EXTI1_C0_IRQHandler(void) {
     JUMP_FNCT(local_EXTI1_IRQHandler);
 }
 
-void    local_EXTI1_IRQHandler(void) __attribute__ ((naked));
+[[gnu::naked]]
 void    local_EXTI1_IRQHandler(void) {
 
     CALL_FNCT(local_newContextPRE);
@@ -619,9 +617,7 @@ static  uintptr_t   __attribute__ ((noinline, used)) *local_newContextPRE(uintpt
  * !!! Do not generate prologue/epilogue sequences
  *
  */
-void    local_TIMER2_IRQHandler(void) __attribute__ ((naked));
-
-void    TIMER2_C0_IRQHandler(void) __attribute__ ((naked));
+[[gnu::naked]]
 void    TIMER2_C0_IRQHandler(void) {
 
     KERN_SAVE_FRAME;
@@ -629,7 +625,7 @@ void    TIMER2_C0_IRQHandler(void) {
     JUMP_FNCT(local_TIMER2_IRQHandler);
 }
 
-void    local_TIMER2_IRQHandler(void) __attribute__ ((naked));
+[[gnu::naked]]
 void    local_TIMER2_IRQHandler(void) {
 
     CALL_FNCT(local_newContextTOU);
@@ -744,9 +740,7 @@ static  uintptr_t   __attribute__ ((noinline, used)) *local_newContextTOU(uintpt
  * !!! Do not generate prologue/epilogue sequences
  *
  */
-void    local_EXTI0_IRQHandler(void) __attribute__ ((naked));
-
-void    EXTI0_C0_IRQHandler(void) __attribute__ ((naked));
+[[gnu::naked]]
 void    EXTI0_C0_IRQHandler(void) {
 
     KERN_SAVE_FRAME;
@@ -755,7 +749,7 @@ void    EXTI0_C0_IRQHandler(void) {
     JUMP_FNCT(local_EXTI0_IRQHandler);
 }
 
-void    local_EXTI0_IRQHandler(void) __attribute__ ((naked));
+[[gnu::naked]]
 void    local_EXTI0_IRQHandler(void) {
 
     CALL_FNCT(local_newContextMSG);
