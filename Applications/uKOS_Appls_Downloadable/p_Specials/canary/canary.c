@@ -5,12 +5,12 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Demo of a C application.
-;			This application shows how to operate with the uKOS-X uKernel.
+; Project:  uKOS-X
+; Goal:     Demo of a C application.
+;           This application shows how to operate with the uKOS-X uKernel.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -52,47 +52,67 @@
  * \ingroup app_special
  * \brief This application shows how to operate with the uKOS uKernel.
  *
- *			Launch 0 processes:
+ *          Launch 0 processes:
  *
- *			- main: - Initialise an array n
- *					- Write @ n+1
- *					- return
+ *          - main: - Initialise an array n
+ *                  - Write @ n+1
+ *                  - return
  *
- *			If compiled with make -j NOCANARY=
+ *          If compiled with make -j NOCANARY=
  *
- *			- system stopped!
+ *          - system stopped!
  *
  */
 
-#include	"uKOS.h"
+#include    "uKOS.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"canary       Test of the canary detection.             (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "This is a romable C application\n"
-									"===============================\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "canary       Test of the canary detection.             (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
+                                    "===============================\n\n"
 
-									"This user function module is a C written application.\n\n"
+                                    "This user function module is a C written application.\n\n"
 
-									"Input format:  canary\n"
-									"Output format: [result]\n\n"
+                                    "Input format:  canary\n"
+                                    "Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+
+#if (defined(ROMABLE_S))
+
+// Prototypes
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 
 MODULE(
-	UserAppl,							// Module name (the first letter has to be upper case)
-	KID_FAM_APPLICATIONS,				// Family (defined in the module.h)
-	KNUM_APPLICATION,					// Module identifier (defined in the module.h)
-	nullptr,							// Address of the initialisation code (early pre-init)
-	aStart,								// Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
-	nullptr,							// Address of the clean code (clean the module)
-	" 1.0",								// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0									// Execution cores
+    Canary,                             // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_ROMABLE_0,                     // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
 );
+
+#else
+MODULE(
+    UserAppl,                           // Module name (the first letter has to be upper case)
+    KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
+    KNUM_APPLICATION,                   // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
+);
+#endif
 
 /*
  * \brief main
@@ -102,40 +122,40 @@ MODULE(
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-#define	KNB_ELEMENTS	8u
+#define KNB_ELEMENTS    8u
 
 // Save the GCC diagnostic
 //
-#pragma GCC diagnostic	push
+#pragma GCC diagnostic  push
 
 // Ignore the GCC diagnostic
 //
-#pragma GCC diagnostic	ignored	"-Wunused-but-set-variable"
+#pragma GCC diagnostic  ignored "-Wunused-but-set-variable"
 
 // Ignore the GCC diagnostic
 //
-#pragma GCC diagnostic	ignored	"-Warray-bounds"
-int		main(int argc, const char *argv[]) {
-				uint32_t	i;
-	volatile	uint32_t	array[KNB_ELEMENTS];
+#pragma GCC diagnostic  ignored "-Warray-bounds"
+MAIN_ENTRY(argc, argv[]) {
+                uint32_t    i;
+    volatile    uint32_t    array[KNB_ELEMENTS];
 
-	UNUSED(argc);
-	UNUSED(argv);
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Initialise 0..n-1 elements
 
-	for (i = 0; i < KNB_ELEMENTS; i++) {
-		array[i] = i;
-	}
+    for (i = 0; i < KNB_ELEMENTS; i++) {
+        array[i] = i;
+    }
 
 // Generate the canary, writing into the element n
 
-	array[KNB_ELEMENTS] = 0x012345678u;
+    array[KNB_ELEMENTS] = 0x012345678u;
 
-	LOG(KINFO_USER, "Application launched");
-	return (EXIT_OS_SUCCESS_CLI);
+    LOG(KINFO_USER, "Application launched");
+    return (EXIT_OS_SUCCESS_CLI);
 }
 
 // Restore the GCC diagnostic
 //
-#pragma GCC	diagnostic	pop
+#pragma GCC diagnostic  pop

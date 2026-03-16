@@ -5,12 +5,12 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Demo of a C application.
-;			This application shows how to operate with the uKOS-X uKernel.
+; Project:  uKOS-X
+; Goal:     Demo of a C application.
+;           This application shows how to operate with the uKOS-X uKernel.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -52,140 +52,160 @@
  * \ingroup app_imaging
  * \brief This application shows how to operate with the uKOS uKernel.
  *
- *			Launch 2 processes:
+ *          Launch 2 processes:
  *
- *			- P0: Every 1000-ms
- *					- Toggle LED 1
+ *          - P0: Every 1000-ms
+ *                  - Toggle LED 1
  *
- *			- P1: Waiting for the semaphore "imgx - Acquisition"
- *					- Acquire an image and send it
+ *          - P1: Waiting for the semaphore "imgx - Acquisition"
+ *                  - Acquire an image and send it
  *
  */
 
-#include	"uKOS.h"
+#include    "uKOS.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"basic        Example of how to use an imager.          (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "This is a romable C application\n"
-									"===============================\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "basic        Example of how to use an imager.          (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
+                                    "===============================\n\n"
 
-									"This user function module is a C written application.\n\n"
+                                    "This user function module is a C written application.\n\n"
 
-									"Input format:  basic\n"
-									"Output format: [result]\n\n"
+                                    "Input format:  basic\n"
+                                    "Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+
+#if (defined(ROMABLE_S))
+
+// Prototypes
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 
 MODULE(
-	UserAppl,							// Module name (the first letter has to be upper case)
-	KID_FAM_APPLICATIONS,				// Family (defined in the module.h)
-	KNUM_APPLICATION,					// Module identifier (defined in the module.h)
-	nullptr,							// Address of the initialisation code (early pre-init)
-	aStart,								// Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
-	nullptr,							// Address of the clean code (clean the module)
-	" 1.0",								// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0									// Execution cores
+    Basic,                              // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_ROMABLE_0,                     // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
 );
+
+#else
+MODULE(
+    UserAppl,                           // Module name (the first letter has to be upper case)
+    KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
+    KNUM_APPLICATION,                   // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
+);
+#endif
 
 // Application specific
 // ====================
 
-#define	KAPP_NB_COLUMNS		752u		// 752
-#define	KAPP_NB_ROWS		480u		// 480
+#define KAPP_NB_COLUMNS     752u        // 752
+#define KAPP_NB_ROWS        480u        // 480
 
 STRG_LOC_CONST(aStrAcqu[]) = "imgx - Acquisition";
 
-static	sema_t	*vSemaImgAcqu;
+static  sema_t  *vSemaImgAcqu;
 
 // Prototypes
 
-static	void	local_transfer(void);
+static  void    local_transfer(void);
 
 /*
  * \brief aProcess 0
  *
  * - P0: Every 1000-ms
- *			- Toggle LED 1
+ *          - Toggle LED 1
  *
  */
 static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 
-	UNUSED(argument);
+    UNUSED(argument);
 
-	while (true) {
-		kern_suspendProcess(1000u);
-		led_toggle(KLED_1);
-	}
+    while (true) {
+        kern_suspendProcess(1000u);
+        led_toggle(KLED_1);
+    }
 }
 
 /*
  * \brief aProcess 1
  *
  * - P1: Waiting for the semaphore "imgx - Acquisition"
- *			- Acquire an image and send it
+ *          - Acquire an image and send it
  *
  */
 static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 
-	UNUSED(argument);
+    UNUSED(argument);
 
-	volatile		uint8_t			*image;
-	static	const	imagerCnf_t	configureIMG0 = {
-										.oAcqMode  = KIMAGER_SNAP,
-										.oImgCnf   = nullptr,
-										.oPixMode  = KIMAGER_PIX_8_BITS,
-										.oStRows   = 0,
-										.oStCols   = 0,
-										.oNbRows   = KAPP_NB_ROWS,
-										.oNbCols   = KAPP_NB_COLUMNS,
-										.oKernSync = 0,
-										.oHSync    = nullptr,
-										.oFrame    = nullptr,
-										.oVSync    = local_transfer,
-										.oDMAEc    = nullptr
-									};
+    volatile        uint8_t         *image;
+    static  const   imagerCnf_t configureIMG0 = {
+                                        .oAcqMode  = KIMAGER_SNAP,
+                                        .oImgCnf   = nullptr,
+                                        .oPixMode  = KIMAGER_PIX_8_BITS,
+                                        .oStRows   = 0,
+                                        .oStCols   = 0,
+                                        .oNbRows   = KAPP_NB_ROWS,
+                                        .oNbCols   = KAPP_NB_COLUMNS,
+                                        .oKernSync = 0,
+                                        .oHSync    = nullptr,
+                                        .oFrame    = nullptr,
+                                        .oVSync    = local_transfer,
+                                        .oDMAEc    = nullptr
+                                    };
 
-	static	const	urtxCnf_t		configureURTx = {
-										.oNBBits   = KSERIAL_NB_BITS_8,
-										.oStopBits = KSERIAL_STOPBITS_1,
-										.oParity   = KSERIAL_PARITY_NONE,
-										.oBaudRate = KSERIAL_BAUDRATE_3000000,
-										.oKernSync = ((uint32_t)1u<<(uint32_t)BSERIAL_SEMAPHORE_RX)
-									};
+    static  const   urtxCnf_t       configureURTx = {
+                                        .oNBBits   = KSERIAL_NB_BITS_8,
+                                        .oStopBits = KSERIAL_STOPBITS_1,
+                                        .oParity   = KSERIAL_PARITY_NONE,
+                                        .oBaudRate = KSERIAL_BAUDRATE_3000000,
+                                        .oKernSync = ((uint32_t)1u<<(uint32_t)BSERIAL_SEMAPHORE_RX)
+                                    };
 
-	if (kern_createSemaphore(aStrAcqu, 0, 1, &vSemaImgAcqu) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create sema G"); exit(EXIT_OS_FAILURE); }
+    if (kern_createSemaphore(aStrAcqu, 0, 1, &vSemaImgAcqu) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create sema G"); exit(EXIT_OS_FAILURE); }
 
 // Configurations the communications channels
 // Configurations for an imager APTINA
 
-	serial_configure(KURT0, &configureURTx);
+    serial_configure(KURT0, &configureURTx);
 
-	if (imager_configure(&configureIMG0) != KERR_IMAGER_NOERR) {
-		(void)dprintf(KSYST, "img0 manager problem\n");
-	}
+    if (imager_configure(&configureIMG0) != KERR_IMAGER_NOERR) {
+        (void)dprintf(KSYST, "img0 manager problem\n");
+    }
 
 // At the power-on the imager starts to send images.
 // Just after the SNAP initialisation it is necessary waiting for the end of the
 // current transfer (~ 40-ms) before starting.
 
-	kern_suspendProcess(40u);
-	imager_acquisition();
+    kern_suspendProcess(40u);
+    imager_acquisition();
 
-	while (true) {
+    while (true) {
 
 // Waiting for the semaphore "vSemaImgAcqu"
 
-		kern_waitSemaphore(vSemaImgAcqu, KWAIT_INFINITY);
+        kern_waitSemaphore(vSemaImgAcqu, KWAIT_INFINITY);
 
-		imager_read((volatile void **)&image);
-		serial_write(KURT0, (const uint8_t *)(uintptr_t)image, (KAPP_NB_ROWS * KAPP_NB_COLUMNS));
-		imager_acquisition();
-	}
+        imager_read((volatile void **)&image);
+        serial_write(KURT0, (const uint8_t *)(uintptr_t)image, (KAPP_NB_ROWS * KAPP_NB_COLUMNS));
+        imager_acquisition();
+    }
 }
 
 /*
@@ -196,48 +216,48 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int		main(int argc, const char *argv[]) {
-	proc_t	*process_0, *process_1;
+MAIN_ENTRY(argc, argv[]) {
+    proc_t  *process_0, *process_1;
 
 // ---------------------------------I-----------------------------------------I--------------I
 
-	STRG_LOC_CONST(aStrIden_0[]) = "Process_User_0";
-	STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2026";
-	STRG_LOC_CONST(aStrIden_1[]) = "Process_User_1";
-	STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2026";
+    STRG_LOC_CONST(aStrIden_0[]) = "Process_User_0";
+    STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2026";
+    STRG_LOC_CONST(aStrIden_1[]) = "Process_User_1";
+    STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2026";
 
-	UNUSED(argc);
-	UNUSED(argv);
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Specifications for the processes
 
-	PROCESS_STACKMALLOC(
-		0,									// Index
-		specification_0,					// Specifications (just use specification_x)
-		aStrText_0,							// Info string (nullptr if anonymous)
-		KKERN_SZ_STACK_MM,					// KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
-		aProcess_0,							// Code of the process
-		aStrIden_0,							// Identifier (nullptr if anonymous)
-		KSYST,								// Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
-		KKERN_PRIORITY_LOW_14				// KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
-	);
+    PROCESS_STACKMALLOC(
+        0,                                  // Index
+        specification_0,                    // Specifications (just use specification_x)
+        aStrText_0,                         // Info string (nullptr if anonymous)
+        KKERN_SZ_STACK_MM,                  // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
+        aProcess_0,                         // Code of the process
+        aStrIden_0,                         // Identifier (nullptr if anonymous)
+        KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
+        KKERN_PRIORITY_LOW_14               // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
+    );
 
-	PROCESS_STACKMALLOC(
-		1,									// Index
-		specification_1,					// Specifications (just use specification_x)
-		aStrText_1,							// Info string (nullptr if anonymous)
-		KKERN_SZ_STACK_MM,					// KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
-		aProcess_1,							// Code of the process
-		aStrIden_1,							// Identifier (nullptr if anonymous)
-		KSYST,								// Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
-		KKERN_PRIORITY_NORMAL_01			// KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
-	);
+    PROCESS_STACKMALLOC(
+        1,                                  // Index
+        specification_1,                    // Specifications (just use specification_x)
+        aStrText_1,                         // Info string (nullptr if anonymous)
+        KKERN_SZ_STACK_MM,                  // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
+        aProcess_1,                         // Code of the process
+        aStrIden_1,                         // Identifier (nullptr if anonymous)
+        KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
+        KKERN_PRIORITY_NORMAL_01            // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
+    );
 
-	if (kern_createProcess(&specification_0, nullptr, &process_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
-	if (kern_createProcess(&specification_1, nullptr, &process_1) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
+    if (kern_createProcess(&specification_0, nullptr, &process_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
+    if (kern_createProcess(&specification_1, nullptr, &process_1) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
 
-	LOG(KINFO_USER, "Application launched");
-	return (EXIT_OS_SUCCESS_CLI);
+    LOG(KINFO_USER, "Application launched");
+    return (EXIT_OS_SUCCESS_CLI);
 }
 
 // Local routines
@@ -247,18 +267,18 @@ int		main(int argc, const char *argv[]) {
  * \brief local_transfer
  *
  * - waiting for the semaphore "vSemaImgAcqu"
- *		- trigger an acquisition
- *		- return
+ *      - trigger an acquisition
+ *      - return
  *
  * - !!! This is an interrupt call-back function
  *       Not all the system calls are allowed inside this portion of code
  *
  */
-static	void	local_transfer(void) {
+static  void    local_transfer(void) {
 
-	#if (defined(Alastor_H743_S))
-	led_toggle(3u);
-	#endif
+    #if (defined(Alastor_H743_S))
+    led_toggle(3u);
+    #endif
 
-	kern_signalSemaphore(vSemaImgAcqu);
+    kern_signalSemaphore(vSemaImgAcqu);
 }

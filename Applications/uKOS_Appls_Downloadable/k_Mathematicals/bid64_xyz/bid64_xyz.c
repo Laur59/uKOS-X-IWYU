@@ -5,12 +5,12 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Demo of a C application.
-;			This application shows how to operate with the uKOS-X uKernel.
+; Project:  uKOS-X
+; Goal:     Demo of a C application.
+;           This application shows how to operate with the uKOS-X uKernel.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -52,66 +52,86 @@
  * \ingroup app_mathematic
  * \brief This application shows how to operate with the uKOS uKernel.
  *
- *			Launch 1 processes:
+ *          Launch 1 processes:
  *
- *			- P0: - Initialise the decnumber math library
- *				  - Compute some basic operator
- *				  - Display the result
- *				  - Commit a suicide
+ *          - P0: - Initialise the decnumber math library
+ *                - Compute some basic operator
+ *                - Display the result
+ *                - Commit a suicide
  *
  */
 
-#include	"uKOS.h"
-#include	"decNumber.h"
-#include	"decContext.h"
-#include	"bid/decimal64.h"
-#include	<stdio.h>
-#include	<math.h>
-#include	<string.h>
+#include    "uKOS.h"
+#include    "decNumber.h"
+#include    "decContext.h"
+#include    "bid/decimal64.h"
+#include    <stdio.h>
+#include    <math.h>
+#include    <string.h>
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"bid64_xyz    Example of how to use the Intel math lib. (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "This is a romable C application\n"
-									"===============================\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "bid64_xyz    Example of how to use the Intel math lib. (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
+                                    "===============================\n\n"
 
-									"This user function module is a C written application.\n\n"
+                                    "This user function module is a C written application.\n\n"
 
-									"Input format:  bid64_xyz\n"
-									"Output format: [result]\n\n"
+                                    "Input format:  bid64_xyz\n"
+                                    "Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+
+#if (defined(ROMABLE_S))
+
+// Prototypes
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 
 MODULE(
-	UserAppl,							// Module name (the first letter has to be upper case)
-	KID_FAM_APPLICATIONS,				// Family (defined in the module.h)
-	KNUM_APPLICATION,					// Module identifier (defined in the module.h)
-	nullptr,							// Address of the initialisation code (early pre-init)
-	aStart,								// Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
-	nullptr,							// Address of the clean code (clean the module)
-	" 1.0",								// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0									// Execution cores
+    Bid64_xyz,                          // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_ROMABLE_0,                     // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
 );
+
+#else
+MODULE(
+    UserAppl,                           // Module name (the first letter has to be upper case)
+    KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
+    KNUM_APPLICATION,                   // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
+);
+#endif
 
 // Application specific
 // ====================
 
-static	char_t		vResult[128];
-static	char_t		*vN1 = "0.004565e-3";
-static	char_t		*vN2 = "1.747470e+4";
-static	char_t		*vZe = "00000000000";
-static	decContext	vSet;
+static  char_t      vResult[128];
+static  char_t      *vN1 = "0.004565e-3";
+static  char_t      *vN2 = "1.747470e+4";
+static  char_t      *vZe = "00000000000";
+static  decContext  vSet;
 
-#define	KDIGIT_PRECISION	16u			// 16 digits for decimal 64-bits
-#define	KNO_TRAP			0u			// No trap
+#define KDIGIT_PRECISION    16u         // 16 digits for decimal 64-bits
+#define KNO_TRAP            0u          // No trap
 
 // Prototypes
 
-static	void	local_printStatus(decContext set);
+static  void    local_printStatus(decContext set);
 
 /*
  * \brief aProcess
@@ -123,53 +143,53 @@ static	void	local_printStatus(decContext set);
  *
  */
 static void __attribute__ ((noreturn)) aProcess(const void *argument) {
-	decNumber	a, b, r;
-	decimal64	rd64;
+    decNumber   a, b, r;
+    decimal64   rd64;
 
-	UNUSED(argument);
+    UNUSED(argument);
 
-	kern_suspendProcess(1000u);
-	(void)dprintf(KSYST, "\n");
+    kern_suspendProcess(1000u);
+    (void)dprintf(KSYST, "\n");
 
-	decContextDefault(&vSet, DEC_INIT_DECIMAL64);
-	vSet.traps  = KNO_TRAP;
-	vSet.digits = KDIGIT_PRECISION;
+    decContextDefault(&vSet, DEC_INIT_DECIMAL64);
+    vSet.traps  = KNO_TRAP;
+    vSet.digits = KDIGIT_PRECISION;
 
 // Multiplication
 
-	decNumberFromString(&a, vN1, &vSet);
-	decNumberFromString(&b, vN2, &vSet);
-	decNumberMultiply(&r, &a, &b, &vSet);
-	decimal64FromNumber(&rd64, &r, &vSet);
-	decimal64ToString(&rd64, vResult);
-	local_printStatus(vSet);
+    decNumberFromString(&a, vN1, &vSet);
+    decNumberFromString(&b, vN2, &vSet);
+    decNumberMultiply(&r, &a, &b, &vSet);
+    decimal64FromNumber(&rd64, &r, &vSet);
+    decimal64ToString(&rd64, vResult);
+    local_printStatus(vSet);
 
-	(void)dprintf(KSYST, "%s mul %s = %s\n\n", vN1, vN2, vResult);
+    (void)dprintf(KSYST, "%s mul %s = %s\n\n", vN1, vN2, vResult);
 
 // Division (!= 0)
 
-	decNumberFromString(&a, vN1, &vSet);
-	decNumberFromString(&b, vN2, &vSet);
-	decNumberDivide(&r, &a, &b, &vSet);
-	decimal64FromNumber(&rd64, &r, &vSet);
-	decimal64ToString(&rd64, vResult);
-	local_printStatus(vSet);
+    decNumberFromString(&a, vN1, &vSet);
+    decNumberFromString(&b, vN2, &vSet);
+    decNumberDivide(&r, &a, &b, &vSet);
+    decimal64FromNumber(&rd64, &r, &vSet);
+    decimal64ToString(&rd64, vResult);
+    local_printStatus(vSet);
 
-	(void)dprintf(KSYST, "%s div %s = %s\n\n", vN1, vN2, vResult);
+    (void)dprintf(KSYST, "%s div %s = %s\n\n", vN1, vN2, vResult);
 
 // Division (= 0)
 
-	decNumberFromString(&a, vN1, &vSet);
-	decNumberFromString(&b, vZe, &vSet);
-	decNumberDivide(&r, &a, &b, &vSet);
-	decimal64FromNumber(&rd64, &r, &vSet);
-	decimal64ToString(&rd64, vResult);
-	local_printStatus(vSet);
+    decNumberFromString(&a, vN1, &vSet);
+    decNumberFromString(&b, vZe, &vSet);
+    decNumberDivide(&r, &a, &b, &vSet);
+    decimal64FromNumber(&rd64, &r, &vSet);
+    decimal64ToString(&rd64, vResult);
+    local_printStatus(vSet);
 
-	(void)dprintf(KSYST, "%s div %s = %s\n\n", vN1, vZe, vResult);
+    (void)dprintf(KSYST, "%s div %s = %s\n\n", vN1, vZe, vResult);
 
-	kern_suspendProcess(1000u);
-	exit(EXIT_OS_SUCCESS);
+    kern_suspendProcess(1000u);
+    exit(EXIT_OS_SUCCESS);
 }
 
 /*
@@ -180,34 +200,34 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int		main(int argc, const char *argv[]) {
-	proc_t	*process;
+MAIN_ENTRY(argc, argv[]) {
+    proc_t  *process;
 
 // -------------------------------I-----------------------------------------I--------------I
 
-	STRG_LOC_CONST(aStrIden[]) = "Process_User";
-	STRG_LOC_CONST(aStrText[]) = "Process user.                             (c) EFr-2026";
+    STRG_LOC_CONST(aStrIden[]) = "Process_User";
+    STRG_LOC_CONST(aStrText[]) = "Process user.                             (c) EFr-2026";
 
-	UNUSED(argc);
-	UNUSED(argv);
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Specifications for the processes
 
-	PROCESS_STACKMALLOC(
-		0,									// Index
-		specification,						// Specifications (just use specification_x)
-		aStrText,							// Info string (nullptr if anonymous)
-		KKERN_SZ_STACK_MM,					// KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
-		aProcess,							// Code of the process
-		aStrIden,							// Identifier (nullptr if anonymous)
-		KSYST,								// Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
-		KKERN_PRIORITY_MEDIUM_01			// KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
-	);
+    PROCESS_STACKMALLOC(
+        0,                                  // Index
+        specification,                      // Specifications (just use specification_x)
+        aStrText,                           // Info string (nullptr if anonymous)
+        KKERN_SZ_STACK_MM,                  // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
+        aProcess,                           // Code of the process
+        aStrIden,                           // Identifier (nullptr if anonymous)
+        KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
+        KKERN_PRIORITY_MEDIUM_01            // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
+    );
 
-	if (kern_createProcess(&specification, nullptr, &process) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
+    if (kern_createProcess(&specification, nullptr, &process) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
 
-	LOG(KINFO_USER, "Application launched");
-	return (EXIT_OS_SUCCESS_CLI);
+    LOG(KINFO_USER, "Application launched");
+    return (EXIT_OS_SUCCESS_CLI);
 }
 
 // Local routines
@@ -219,11 +239,11 @@ int		main(int argc, const char *argv[]) {
  * - Display the status of the operation
  *
  */
-static	void	local_printStatus(decContext set) {
+static  void    local_printStatus(decContext set) {
 
-	if ((set.status & DEC_Errors) == 0u) { return; }
+    if ((set.status & DEC_Errors) == 0u) { return; }
 
-	set.status &= DEC_Errors;
+    set.status &= DEC_Errors;
 
-	(void)dprintf(KSYST, "Problem: %s\n", decContextStatusToString(&set));
+    (void)dprintf(KSYST, "Problem: %s\n", decContextStatusToString(&set));
 }

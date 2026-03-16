@@ -4,15 +4,15 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Laurent von Allmen	The 2025-01-01
-# Modifs:	Edo. Franzi			The 2025-01-01
+# Author:   Laurent von Allmen  The 2025-01-01
+# Modifs:   Edo. Franzi         The 2025-01-01
 #
-# Project:	uKOS-X
-# Goal:		Prepare the environment to install the tools
-#			for macOS & ubuntu machines (for the uKOS-X project)
+# Project:  uKOS-X
+# Goal:     Prepare the environment to install the tools
+#           for macOS & ubuntu machines (for the uKOS-X project)
 #
-#			Usage:
-#			source config_install.sh
+#           Usage:
+#           source config_install.sh
 #
 #   (c) 2025-2026, Laurent von Allmen
 #   ---------------------------------
@@ -49,8 +49,8 @@
 #------------------------------------------------------------------------
 
 if [[ -z "${PATH_TOOLS_ROOT:-}" ]]; then
-	echo "ERROR: variable PATH_TOOLS_ROOT is not set!"
-	return
+    echo "ERROR: variable PATH_TOOLS_ROOT is not set!"
+    return
 fi
 
 # check that the directory exists, if not create it
@@ -60,12 +60,12 @@ umask 002
 sudo mkdir -p "${PATH_TOOLS_ROOT}"
 sudo chgrp admin "${PATH_TOOLS_ROOT}"
 case "$(uname)" in
-	"Darwin")
-		sudo chmod g+w "${PATH_TOOLS_ROOT}"
-		;;
-	"Linux")
-		sudo chmod g+sw "${PATH_TOOLS_ROOT}"
-		;;
+    "Darwin")
+        sudo chmod g+w "${PATH_TOOLS_ROOT}"
+        ;;
+    "Linux")
+        sudo chmod g+sw "${PATH_TOOLS_ROOT}"
+        ;;
 esac
 mkdir -p "${PATH_TOOLS_ROOT}"/local/bin
 fi
@@ -73,15 +73,15 @@ fi
 # Get directory of the script
 
 if [[ ${SHELL} == *"zsh"* ]]; then
-	if [[ -n "${ZSH_VERSION-}" ]]; then
-		PATH_SCRIPTS=${0:a:h}
-	else
-		PATH_SCRIPTS="$(cd "$(dirname "$0")" && pwd)"
-	fi
+    if [[ -n "${ZSH_VERSION-}" ]]; then
+        PATH_SCRIPTS=${0:a:h}
+    else
+        PATH_SCRIPTS="$(cd "$(dirname "$0")" && pwd)"
+    fi
 elif [[ ${SHELL} == *"bash"* ]]; then
-	PATH_SCRIPTS="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    PATH_SCRIPTS="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 else
-	PATH_SCRIPTS="$(cd "$(dirname "$0")" && pwd)"
+    PATH_SCRIPTS="$(cd "$(dirname "$0")" && pwd)"
 fi
 export PATH_SCRIPTS
 
@@ -119,10 +119,10 @@ export GCC_RVXX_VER=15.2.0
 export NLB_VER=4.6.0
 export NLB_RVXX_VER=4.5.0
 export GDB_VER=17.1
-export LLVM_ARM_VER=22.1.0
-export LLVM_ARM_COMMIT=6f93ee96
-export LLVM_RVXX_VER=22.1.0
-export LLVM_RVXX_COMMIT=f5026aa5
+export LLVM_ARM_VER=22.1.1
+export LLVM_ARM_COMMIT=c2e3f0b2
+export LLVM_RVXX_VER=22.1.1
+export LLVM_RVXX_COMMIT=c9f0bc85
 export GMP_VER=6.3.0
 export MPFR_VER=4.2.2
 export OPENOCD_VER=0.12.0
@@ -144,7 +144,7 @@ export PICOTOOL_VER=2.2.0-a4
 
 export GCC_ARC_VER=15.2.0
 export BOOST_VER=1.90.0
-export IMAGEMAGICK_VER=7.1.2-16
+export IMAGEMAGICK_VER=7.1.2-17
 export PK2CMD_VER=1.27.01
 export SDCC_VER=4.5.0
 export SRECORD_VER=1.65
@@ -173,12 +173,12 @@ export PATH
 # --------------
 
 case "$(uname)" in
-	"Darwin")
-		WGET=(curl -OL)
-		;;
-	*)
-		WGET=(wget)
-		;;
+    "Darwin")
+        WGET=(curl -OL)
+        ;;
+    *)
+        WGET=(wget)
+        ;;
 esac
 readonly WGET
 
@@ -189,22 +189,22 @@ mkdir -p "${PATH_TOOLS_ROOT}"/Packages/,Archive
 # Move file to Archive only if it exists (do not fail on missing file)
 
 move_to_archive () {
-	# Move files matching a quoted glob pattern to ../,Archive/
-	# Usage:
-	#	move_to_archive "dummy-*"
-	#	move_to_archive "data-*.tgz"
-	#
-	# The argument MUST be quoted so the pattern is passed literally.
-	# Temporarily disable nomatch error for this function
-	setopt local_options null_glob
+    # Move files matching a quoted glob pattern to ../,Archive/
+    # Usage:
+    #   move_to_archive "dummy-*"
+    #   move_to_archive "data-*.tgz"
+    #
+    # The argument MUST be quoted so the pattern is passed literally.
+    # Temporarily disable nomatch error for this function
+    setopt local_options null_glob
 
-	local pattern="${1}"
-	local files=( ${~pattern} )	 # ~ forces zsh to expand pattern stored inside a variable
+    local pattern="${1}"
+    local files=( ${~pattern} )  # ~ forces zsh to expand pattern stored inside a variable
 
-	# Move each matched file safely
-	for file in "${files[@]}"; do
-		[[ -e "$file" ]] && mv -- "$file" ../,Archive/
-	done
+    # Move each matched file safely
+    for file in "${files[@]}"; do
+        [[ -e "$file" ]] && mv -- "$file" ../,Archive/
+    done
 }
 
 # Environment validation

@@ -5,18 +5,18 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Demo of a C application.
-;			This application shows how to operate with the uKOS-X uKernel.
+; Project:  uKOS-X
+; Goal:     Demo of a C application.
+;           This application shows how to operate with the uKOS-X uKernel.
 ;
-;			Launch 1 processes in C++:
+;           Launch 1 processes in C++:
 ;
-;			- P0: Display a classe
-;				  Every 100-ms
-;				  Toggle LED 1
+;           - P0: Display a classe
+;                 Every 100-ms
+;                 Toggle LED 1
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -58,79 +58,99 @@
  * \ingroup app_special
  * \brief This application shows how to operate with the uKOS uKernel.
  *
- *			Launch 1 processes:
+ *          Launch 1 processes:
  *
- *			- P0: Every 100-ms
- *					- Toggle LED 1
+ *          - P0: Every 100-ms
+ *                  - Toggle LED 1
  *
  */
 
-#include	"uKOS.h"
+#include    "uKOS.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"test_cpp     Example of how to use the C++.            (c) EFr-2026";
+STRG_LOC_CONST(aStrApplication[]) = "test_cpp     Example of how to use the C++.            (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
-									"===============================\n\n"
+                                    "===============================\n\n"
 
-									"This user function module is a C written application.\n\n"
+                                    "This user function module is a C written application.\n\n"
 
-									"Input format:  test_cpp\n"
-									"Output format: [result]\n\n";
+                                    "Input format:  test_cpp\n"
+                                    "Output format: [result]\n\n";
+
+#if (defined(ROMABLE_S))
+
+// Prototypes
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 
 MODULE(
-	UserAppl,							// Module name (the first letter has to be upper case)
-	KID_FAM_APPLICATIONS,				// Family (defined in the module.h)
-	KNUM_APPLICATION,					// Module identifier (defined in the module.h)
-	nullptr,							// Address of the initialisation code (early pre-init)
-	aStart,								// Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
-	nullptr,							// Address of the clean code (clean the module)
-	" 1.0",								// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0									// Execution cores
+    Test_cpp,                           // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_ROMABLE_0,                     // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
 );
+
+#else
+MODULE(
+    UserAppl,                           // Module name (the first letter has to be upper case)
+    KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
+    KNUM_APPLICATION,                   // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
+);
+#endif
 
 class  TestClass {
 public:
-	TestClass()	: counter_(0)	{ (void)dprintf(KSYST, "Construction\n");									 }
-	~TestClass()				{ (void)dprintf(KSYST, "Destruction\n");									 }
-	void doit()	const			{ (void)dprintf(KSYST, "in the middle (counter = %" PRIu32 ")\n", counter_); }
+    TestClass() : counter_(0)   { (void)dprintf(KSYST, "Construction\n");                                    }
+    ~TestClass()                { (void)dprintf(KSYST, "Destruction\n");                                     }
+    void doit() const           { (void)dprintf(KSYST, "in the middle (counter = %" PRIu32 ")\n", counter_); }
 
 private:
-	uint32_t	counter_;
+    uint32_t    counter_;
 };
 
 /*
  * \brief aProcess
  *
  * - P0: - Display the class
- *		 - Every 100-ms
- *			- Toggle LED 1
+ *       - Every 100-ms
+ *          - Toggle LED 1
  *
  */
 namespace {
-	void	__attribute__ ((noreturn)) aProcess_0(const void *argument) {
+    void    __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 
-		UNUSED(argument);
+        UNUSED(argument);
 
 // Waiting from the uKOS-X prompt
 
-		kern_suspendProcess(100u);
-		(void)dprintf(KSYST, "\n");
+        kern_suspendProcess(100u);
+        (void)dprintf(KSYST, "\n");
 
-		{
-		const	TestClass titi;
-		titi.doit();
-		}
+        {
+        const   TestClass titi;
+        titi.doit();
+        }
 
-		while (true) {
-			kern_suspendProcess(100u);
-			led_toggle(KLED_1);
-		}
-	}
+        while (true) {
+            kern_suspendProcess(100u);
+            led_toggle(KLED_1);
+        }
+    }
 }
 
 /*
@@ -141,39 +161,39 @@ namespace {
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int		main(int argc, const char *argv[]) {
-	proc_t	*process_0;
+MAIN_ENTRY(argc, argv[]) {
+    proc_t  *process_0;
 
 // ------------------------------------I-----------------------------------------I--------------I
 
-	STRG_LOC_CONST(aStrIden_0[]) =    "Process_User";
-	STRG_LOC_CONST(aStrText_0[]) =    "Process user.                             (c) EFr-2026";
+    STRG_LOC_CONST(aStrIden_0[]) =    "Process_User";
+    STRG_LOC_CONST(aStrText_0[]) =    "Process user.                             (c) EFr-2026";
 
-	UNUSED(argc);
-	UNUSED(argv);
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Initialise the C++ constructors
 
-	CPP_INIT_ARRAYS;
+    CPP_INIT_ARRAYS;
 
 // Specifications for the processes
 
 // NOLINTBEGIN(misc-const-correctness)
 //
-	PROCESS_STACKMALLOC(
-		0,									// Index
-		specification_0,					// Specifications (just use vSpecification_x)
-		aStrText_0,							// Info string (nullptr if anonymous)
-		KKERN_SZ_STACK_MM,					// KSZSTACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
-		aProcess_0,							// Code of the process
-		aStrIden_0,							// Identifier (nullptr if anonymous)
-		KSYST,								// Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
-		KKERN_PRIORITY_HIGH_02				// KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
-	);
+    PROCESS_STACKMALLOC(
+        0,                                  // Index
+        specification_0,                    // Specifications (just use vSpecification_x)
+        aStrText_0,                         // Info string (nullptr if anonymous)
+        KKERN_SZ_STACK_MM,                  // KSZSTACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
+        aProcess_0,                         // Code of the process
+        aStrIden_0,                         // Identifier (nullptr if anonymous)
+        KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
+        KKERN_PRIORITY_HIGH_02              // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
+    );
 
 // NOLINTEND(misc-const-correctness)
 //
 
-	if (kern_createProcess(&specification_0, nullptr, &process_0) != KERR_KERN_NOERR) { exit(EXIT_OS_FAILURE); }
-	return (EXIT_OS_SUCCESS_CLI);
+    if (kern_createProcess(&specification_0, nullptr, &process_0) != KERR_KERN_NOERR) { exit(EXIT_OS_FAILURE); }
+    return (EXIT_OS_SUCCESS_CLI);
 }

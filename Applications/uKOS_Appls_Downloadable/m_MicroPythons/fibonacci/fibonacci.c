@@ -5,12 +5,12 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Demo of a C application.
-;			This application shows how to operate with the uKOS-X uKernel.
+; Project:  uKOS-X
+; Goal:     Demo of a C application.
+;           This application shows how to operate with the uKOS-X uKernel.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -52,36 +52,36 @@
  * \ingroup app_micropython
  * \brief This application shows how to operate with the uKOS uKernel.
  *
- *			Launch 2 processes:
+ *          Launch 2 processes:
  *
- *			- P0: Every 1000-ms
- *					- Toggle LED 1
+ *          - P0: Every 1000-ms
+ *                  - Toggle LED 1
  *
- *			- P1: Launch the Mycropython Process
- *				  Every 200-ms
- *					- Compute the fibonacci serie
+ *          - P1: Launch the Mycropython Process
+ *                Every 200-ms
+ *                  - Compute the fibonacci serie
  *
  */
 
-#include	"uKOS.h"
-#include	"MicroPython/uKOS_System/microPython.h"
-#include	<math.h>
+#include    "uKOS.h"
+#include    "MicroPython/uKOS_System/microPython.h"
+#include    <math.h>
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"fibonacci    Example of how to use MPY.                (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "This is a romable C application\n"
-									"===============================\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "fibonacci    Example of how to use MPY.                (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
+                                    "===============================\n\n"
 
-									"This user function module is a C written application.\n\n"
+                                    "This user function module is a C written application.\n\n"
 
-									"Input format:  fibonacci\n"
-									"Output format: [result]\n\n"
+                                    "Input format:  fibonacci\n"
+                                    "Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -90,31 +90,31 @@ STRG_LOC_CONST(aStrHelp[])		  = "This is a romable C application\n"
 
 // Prototypes
 
-static	int32_t		prgm(uint32_t argc, const char_t *argv[]);
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 
 MODULE(
-	FibonacciMPY,						// Module name (the first letter has to be upper case)
-	KID_FAM_CLI,						// Family (defined in the module.h)
-	KNUM_ROMABLE_0,						// Module identifier (defined in the module.h)
-	nullptr,							// Address of the initialisation code (early pre-init)
-	prgm,								// Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
-	nullptr,							// Address of the clean code (clean the module)
-	" 1.0",								// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0									// Execution cores
+    Fibonacci,                          // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_ROMABLE_0,                     // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
 );
 
 #else
 MODULE(
-	UserAppl,							// Module name (the first letter has to be upper case)
-	KID_FAM_APPLICATIONS,				// Family (defined in the module.h)
-	KNUM_APPLICATION,					// Module identifier (defined in the module.h)
-	nullptr,							// Address of the initialisation code (early pre-init)
-	aStart,								// Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
-	nullptr,							// Address of the clean code (clean the module)
-	" 1.0",								// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),	// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0									// Execution cores
+    UserAppl,                           // Module name (the first letter has to be upper case)
+    KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
+    KNUM_APPLICATION,                   // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
 );
 #endif
 
@@ -122,66 +122,66 @@ MODULE(
  * \brief aProcess 0
  *
  * - P0: Every 1000-ms
- *			- Toggle LED 1
+ *          - Toggle LED 1
  *
  */
 static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 
-	UNUSED(argument);
+    UNUSED(argument);
 
-	while (true) {
-		kern_suspendProcess(1000u);
-		led_toggle(KLED_1);
-	}
+    while (true) {
+        kern_suspendProcess(1000u);
+        led_toggle(KLED_1);
+    }
 }
 
 /*
  * \brief aProcess 1
  *
  * - P1: Launch the Mycropython Process
- *		 Every 200-ms
- *			- Compute the fibonacci serie
+ *       Every 200-ms
+ *          - Compute the fibonacci serie
  *
  */
 static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
-			uint32_t			size;
-			uint8_t				*memory;
-			microPythonCnf_t	configure;
-	const	char_t				pyProgram[] = "import led\n"
+            uint32_t            size;
+            uint8_t             *memory;
+            microPythonCnf_t    configure;
+    const   char_t              pyProgram[] = "import led\n"
 
-							 				  "def fibonacci(n):\n"
-							 				  "	a, b = 0, 1\n"
-							 				  "	while a < n:\n"
-											  "		print(a, end = ' ')\n"
-							 				  "		a, b = b, a + b\n"
-							 				  "	print()\n"
+                                              "def fibonacci(n):\n"
+                                              " a, b = 0, 1\n"
+                                              " while a < n:\n"
+                                              "     print(a, end = ' ')\n"
+                                              "     a, b = b, a + b\n"
+                                              " print()\n"
 
-							 				  "	led.led(1, 2)\n";
+                                              " led.led(1, 2)\n";
 
-	UNUSED(argument);
+    UNUSED(argument);
 
 // Try to reserve the MPY memory segment
 
-	size   = 90000u;
-	memory = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (size * sizeof(uint8_t)), "fibonacciMPY");
-	if (memory == nullptr) {
-		LOG(KFATAL_USER, "Out of memory");
-		exit(EXIT_OS_FAILURE);
-	}
+    size   = 90000u;
+    memory = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (size * sizeof(uint8_t)), "fibonacciMPY");
+    if (memory == nullptr) {
+        LOG(KFATAL_USER, "Out of memory");
+        exit(EXIT_OS_FAILURE);
+    }
 
-	configure.oSize   = size;
-	configure.oMemory = memory;
-	microPython_configure(&configure);
+    configure.oSize   = size;
+    configure.oMemory = memory;
+    microPython_configure(&configure);
 
 // Load the program
 
-	MICROPYTHON_COMPUTE(pyProgram);
+    MICROPYTHON_COMPUTE(pyProgram);
 
-	while (true) {
-		kern_suspendProcess(200u);
+    while (true) {
+        kern_suspendProcess(200u);
 
-		MICROPYTHON_COMPUTE("fibonacci(1000)\n");
-	}
+        MICROPYTHON_COMPUTE("fibonacci(1000)\n");
+    }
 }
 
 /*
@@ -193,45 +193,45 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  *
  */
 MAIN_ENTRY(argc, argv[]) {
-	proc_t	*process_0, *process_1;
+    proc_t  *process_0, *process_1;
 
 // ---------------------------------I-----------------------------------------I--------------I
 
-	STRG_LOC_CONST(aStrIden_0[]) = "Process_User_0";
-	STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2026";
-	STRG_LOC_CONST(aStrIden_1[]) = "Process_User_1";
-	STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2026";
+    STRG_LOC_CONST(aStrIden_0[]) = "Process_User_0";
+    STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2026";
+    STRG_LOC_CONST(aStrIden_1[]) = "Process_User_1";
+    STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2026";
 
-	UNUSED(argc);
-	UNUSED(argv);
+    UNUSED(argc);
+    UNUSED(argv);
 
 // Specifications for the processes
 
-	PROCESS_STACKMALLOC(
-		0,									// Index
-		specification_0,					// Specifications (just use specification_x)
-		aStrText_0,							// Info string (nullptr if anonymous)
-		KKERN_SZ_STACK_XLIB,				// KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
-		aProcess_0,							// Code of the process
-		aStrIden_0,							// Identifier (nullptr if anonymous)
-		KSYST,								// Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
-		KKERN_PRIORITY_LOW_14				// KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
-	);
+    PROCESS_STACKMALLOC(
+        0,                                  // Index
+        specification_0,                    // Specifications (just use specification_x)
+        aStrText_0,                         // Info string (nullptr if anonymous)
+        KKERN_SZ_STACK_XLIB,                // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
+        aProcess_0,                         // Code of the process
+        aStrIden_0,                         // Identifier (nullptr if anonymous)
+        KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
+        KKERN_PRIORITY_LOW_14               // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
+    );
 
-	PROCESS_STACKMALLOC(
-		1,									// Index
-		specification_1,					// Specifications (just use specification_x)
-		aStrText_1,							// Info string (nullptr if anonymous)
-		KKERN_SZ_STACK_MPY,					// KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
-		aProcess_1,							// Code of the process
-		aStrIden_1,							// Identifier (nullptr if anonymous)
-		KSYST,								// Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
-		KKERN_PRIORITY_MEDIUM_01			// KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
-	);
+    PROCESS_STACKMALLOC(
+        1,                                  // Index
+        specification_1,                    // Specifications (just use specification_x)
+        aStrText_1,                         // Info string (nullptr if anonymous)
+        KKERN_SZ_STACK_MPY,                 // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
+        aProcess_1,                         // Code of the process
+        aStrIden_1,                         // Identifier (nullptr if anonymous)
+        KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
+        KKERN_PRIORITY_MEDIUM_01            // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
+    );
 
-	if (kern_createProcess(&specification_0, nullptr, &process_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
-	if (kern_createProcess(&specification_1, nullptr, &process_1) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
+    if (kern_createProcess(&specification_0, nullptr, &process_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
+    if (kern_createProcess(&specification_1, nullptr, &process_1) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
 
-	LOG(KINFO_USER, "Application launched");
-	return (EXIT_OS_SUCCESS_CLI);
+    LOG(KINFO_USER, "Application launched");
+    return (EXIT_OS_SUCCESS_CLI);
 }
