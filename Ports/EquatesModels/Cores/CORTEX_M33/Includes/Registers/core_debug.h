@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ===========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   COREDEBUG equates.
+; Project:  uKOS-X
+; Goal:     COREDEBUG equates.
 ;
 ;-----
 ;                                              __ ______  _____

@@ -1,18 +1,8 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-
-#------------------------------------------------------------------------
-# CMakeLists.
-# ===========
 #
-# Project: uKOS-X
-#
-# Purpose:
-#   CMake file to build decnumber library for uKOS-X.
-#
-# Build description:
-#   Alternative way to build decnumber static library for a given core.
-#------------------------------------------------------------------------
+# uKOS-X build system
+# Builds decnumber library for Cortex-M55
 
 cmake_minimum_required(VERSION 3.26)
 

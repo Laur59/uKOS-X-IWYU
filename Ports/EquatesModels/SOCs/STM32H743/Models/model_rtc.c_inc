@@ -9,11 +9,9 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ==========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;     Model for managing the time & date by a hardware rtc.
-;     In the rtc it stored the local time.
+; Project:  uKOS-X
+; Goal:     Model for managing the time & date by a hardware rtc.
+;           In the rtc it stored the local time.
 ;
 ;-----
 ;                                              __ ______  _____

@@ -9,9 +9,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
 ; Project:  uKOS-X
-;
-; Purpose:
-;   TI BQ27510G3 equates.
+; Goal:     TI BQ27510G3 equates.
 ;
 ;-----
 ;                                              __ ______  _____

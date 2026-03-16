@@ -9,26 +9,24 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ==========================================
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     Model for controlling the "model_kernel_tickless_tim_14_15_16_17_svc" device.
 ;
-; Purpose:
-;    Model for controlling the "model_kernel_tickless_tim_14_15_16_17_svc" device.
+;           Tim 14  - 1-us free running timer
+;           Tim 15  - 20-ms process timeout
+;           Tim 16  - user defined intervals for precise signals
+;           Tim 17  - Nx1-ms reference time for tickless
+;           svc     - software interruption for message passing
+;           PendSV  - software interruption for the preemption
 ;
-;    Tim 14  - 1-us free running timer
-;    Tim 15  - 20-ms process timeout
-;    Tim 16  - user defined intervals for precise signals
-;    Tim 17  - Nx1-ms reference time for tickless
-;    svc     - software interruption for message passing
-;    PendSV  - software interruption for the preemption
-;
-;    This code has to support the following routines:
-;    - model_kernel_init
-;    - model_kernel_runKernel
-;    - model_kernel_setLowPower
-;    - model_kernel_setPreciseSignal
-;    - model_kernel_readTickCount
-;    - model_kernel_newProcessTimeout
-;    - model_kernel_stopProcessTimeout
+;           This code has to support the following routines:
+;           - model_kernel_init
+;           - model_kernel_runKernel
+;           - model_kernel_setLowPower
+;           - model_kernel_setPreciseSignal
+;           - model_kernel_readTickCount
+;           - model_kernel_newProcessTimeout
+;           - model_kernel_stopProcessTimeout
 ;
 ;-----
 ;                                              __ ______  _____
@@ -525,7 +523,7 @@ static  void    local_TIM17_IRQHandler(void) {
  * !!! Do not generate prologue/epilogue sequences
  *
  */
-void    PendSV_C0_IRQHandler(void) __attribute__ ((naked));
+[[gnu::naked]]
 void    PendSV_C0_IRQHandler(void) {
 
     KERN_SAVE_FRAME_NORMAL;
@@ -627,7 +625,7 @@ static  uintptr_t   __attribute__ ((noinline, used)) *local_newContextPRE(uintpt
  * !!! Do not generate prologue/epilogue sequences
  *
  */
-void    TIM15_C0_IRQHandler(void) __attribute__ ((naked));
+[[gnu::naked]]
 void    TIM15_C0_IRQHandler(void) {
 
     KERN_SAVE_FRAME_NORMAL;
@@ -739,7 +737,7 @@ static  uintptr_t   __attribute__ ((noinline, used)) *local_newContextTOU(uintpt
  * !!! Do not generate prologue/epilogue sequences
  *
  */
-void    kernel_message_C0(void) __attribute__ ((naked));
+[[gnu::naked]]
 void    kernel_message_C0(void) {
 
     KERN_RECOVER_MESSAGE;

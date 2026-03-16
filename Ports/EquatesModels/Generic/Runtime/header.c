@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; =======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   header for the uKOS-X applications.
+; Project:  uKOS-X
+; Goal:     header for the uKOS-X applications.
 ;
 ;-----
 ;                                              __ ______  _____

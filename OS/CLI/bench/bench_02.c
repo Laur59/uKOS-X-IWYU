@@ -8,26 +8,24 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     Bench 02:   Searching for the min / max of a small square array
+;                       (1000 uint32_t) elements.
+;                       The data is located in the CPU internal memory.
+;                       1000 iteractions.
 ;
-; Purpose:
-;   Bench 02: Searching for the min / max of a small square array
-;             (1000 uint32_t) elements.
-;             The data is located in the CPU internal memory.
-;             1000 iteractions.
+;           Target used: Nucleo_H743 @ 480-MHz
+;           Target used: Nucleo_N657 @ 600-MHz
+;           Target used: MAiXDUiNO_K210 @ 400-MHz
+;           Target used: Discovery_U5G9 @ 160-MHz
 ;
-;   Target used: Nucleo_H743 @ 480-MHz
-;   Target used: Nucleo_N657 @ 600-MHz
-;   Target used: MAiXDUiNO_K210 @ 400-MHz
-;   Target used: Discovery_U5G9 @ 160-MHz
+;           Bench results in [us]:
 ;
-;   Bench results in [us]:
-;
-;                                _minMax
-;   Nucleo_H743 @ 480-MHz       1131
-;   Nucleo_N657 @ 600-MHz       857
-;   MAiXDUiNO_K210 @ 400-MHz    574
-;   Discovery_U5G9 @ 160-MHz    2052
+;                                       _minMax
+;           Nucleo_H743 @ 480-MHz       1131
+;           Nucleo_N657 @ 600-MHz       857
+;           MAiXDUiNO_K210 @ 400-MHz    574
+;           Discovery_U5G9 @ 160-MHz    2052
 ;
 ;-----
 ;                                              __ ______  _____

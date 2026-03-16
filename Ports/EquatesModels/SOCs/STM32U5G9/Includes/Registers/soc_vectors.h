@@ -8,16 +8,13 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ============
 
 ;------------------------------------------------------------------------
-; Author:   Generated using the .svd description    The 2025-01-01
-; Modifs:
-;
 ; Project:  uKOS-X
 ; Goal:     Indirect Exception Vectors for Cortex_M33.
 ;           The "reset" exception is not considered. The indirect table
 ;           is reserved in the first.c file.
+;           Generated using the .svd description
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \

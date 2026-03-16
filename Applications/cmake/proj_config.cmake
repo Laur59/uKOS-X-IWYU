@@ -1,14 +1,12 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
-#------------------------------------------------------------------------
 # proj_config.
 # ============
-#
-# Project: uKOS-X
-#
-# Purpose:
-#   Configuring options to build kernel and os
+
+#------------------------------------------------------------------------
+# Project:  uKOS-X
+# Goal:     Configuring options to build kernel and os
 #
 #-----
 #                                              __ ______  _____

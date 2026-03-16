@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Board mapping.
+; Project:  uKOS-X
+; Goal:     Board mapping.
 ;
 ;-----
 ;                                              __ ______  _____

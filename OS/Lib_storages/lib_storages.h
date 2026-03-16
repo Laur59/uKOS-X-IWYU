@@ -9,9 +9,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
 ; Project:  uKOS-X
-;
-; Purpose:
-;   lib_storages system call interface module.
+; Goal:     lib_storages system call interface module.
 ;
 ;-----
 ;                                              __ ______  _____

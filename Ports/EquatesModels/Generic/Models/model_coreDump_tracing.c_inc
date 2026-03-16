@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; =======================
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;    Model for the core dump (tracing).
+; Project:  uKOS-X
+; Goal:     Model for the core dump (tracing).
 ;
 ;-----
 ;                                              __ ______  _____

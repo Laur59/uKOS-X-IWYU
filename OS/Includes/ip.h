@@ -8,13 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ===
 
 ;------------------------------------------------------------------------
-; Author:   Edo. Franzi     The 2025-01-01
-; Modifs:
-;
-; Project: uKOS-X
-;
-; Purpose:
-;   IP macros.
+; Project:  uKOS-X
+; Goal:     IP macros.
 ;
 ;-----
 ;                                              __ ______  _____

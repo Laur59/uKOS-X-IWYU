@@ -8,11 +8,10 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ===================
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Process: dispatcher.
-;   - As soon as a new data is available on the queue process it
+; Project:  uKOS-X
+; Goal:     Process: dispatcher.
+;           - As soon as a new data is available on the queue
+;               process it
 ;
 ;-----
 ;                                              __ ______  _____

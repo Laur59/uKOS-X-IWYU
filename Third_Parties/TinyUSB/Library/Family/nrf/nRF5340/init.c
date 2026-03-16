@@ -7,17 +7,12 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 /*
 ; init.
 ; =====
-; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:   Edo. Franzi     The 2025-01-01
-; Modifs:
-;
 ; Project:  uKOS-X
 ; Goal:     Board initial set-up.
 ;
-;   (c) 2019 Ha Thach (tinyusb.org)
-;   -------------------------------
+;-----
 ;
 ;   The MIT License (MIT)
 ;
@@ -39,8 +34,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 ;   THE SOFTWARE.
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \

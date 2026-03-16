@@ -8,10 +8,9 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   This tool allows to display the date based on the system Unix time.
+; Project:  uKOS-X
+; Goal:     This tool allows to display the date based on the
+;           system Unix time.
 ;
 ;-----
 ;                                              __ ______  _____

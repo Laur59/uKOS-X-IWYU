@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   idle daemon; run when all the other processes are suspended.
+; Project:  uKOS-X
+; Goal:     idle daemon; run when all the other processes are suspended.
 ;
 ;-----
 ;                                              __ ______  _____

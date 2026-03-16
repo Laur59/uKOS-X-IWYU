@@ -8,11 +8,9 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ===================
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Image viewer.
-;   This tool allows to send an image via the uvc0 manager.
+; Project:  uKOS-X
+; Goal:     Image viewer.
+;           This tool allows to send an image via the uvc0 manager.
 ;
 ;-----
 ;                                              __ ______  _____

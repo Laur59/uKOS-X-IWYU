@@ -1,9 +1,5 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-
-#------------------------------------------------------------------------
-# common-setup.
-# =============
 #
 # Project: uKOS-X
 #
@@ -23,7 +19,6 @@
 #
 #   The build does not embed wall-clock timestamps. Where applicable,
 #   SOURCE_DATE_EPOCH is expected to be honored by all toolchain components.
-#------------------------------------------------------------------------
 
 # Compute PATH_UKOS from directory structure
 # CMAKE_CURRENT_LIST_DIR points to the directory containing this file (Library/)

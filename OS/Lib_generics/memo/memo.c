@@ -8,15 +8,13 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     memo manager.
 ;
-; Purpose:
-;   memo manager.
-;
-;   !!! The memo manager is designed to share the same heap
-;   between all the cores. For a multi-core system KNB_CORES > 1
-;   it is mandatory to use the spin lock/unlock technique for
-;   the core arbitration.
+;           !!! The memo manager is designed to share the same heap
+;           between all the cores. For a multi-core system KNB_CORES > 1
+;           it is mandatory to use the spin lock/unlock technique for
+;           the core arbitration.
 ;
 ;-----
 ;                                              __ ______  _____

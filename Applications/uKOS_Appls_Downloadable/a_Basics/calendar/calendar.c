@@ -8,11 +8,9 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Demo of a C application.
-;   This application shows how to operate with the uKOS-X uKernel.
+; Project:  uKOS-X
+; Goal:     Demo of a C application.
+;           This application shows how to operate with the uKOS-X uKernel.
 ;
 ;-----
 ;                                              __ ______  _____
@@ -237,7 +235,7 @@ int     main(int argc, const char *argv[]) {
         0,                                  // Index
         specification_0,                    // Specifications (just use specification_x)
         aStrText_0,                         // Info string (nullptr if anonymous)
-        KKERN_SZ_STACK_MM,                  // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
+        KKERN_SZ_STACK_LL,                  // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
         aProcess_0,                         // Code of the process
         aStrIden_0,                         // Identifier (nullptr if anonymous)
         KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)

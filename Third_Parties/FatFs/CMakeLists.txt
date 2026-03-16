@@ -1,14 +1,8 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-
-#------------------------------------------------------------------------
-# CMakeLists.
-# ===========
 #
-# Project: uKOS-X
-#
-# Purpose:
-#   Umbrella CMake file to fetch upstream FatFs and build all libraries.
+# uKOS-X build system
+# Builds all FatFs libraries
 #
 # Build description:
 #   This top-level CMakeLists.txt drives the build of all FatFs static
@@ -35,7 +29,6 @@
 #
 # Build outputs:
 #   - Library/*/libFatFs.a
-#------------------------------------------------------------------------
 
 cmake_minimum_required(VERSION 3.26)
 

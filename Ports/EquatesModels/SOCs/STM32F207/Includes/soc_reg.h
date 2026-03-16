@@ -9,12 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
 ; Project:  uKOS-X
-;
-; Purpose:
-;   stm32F217 equates.
-;
-; Description:
-;   Generated using the .svd description
+; Goal:     stm32F217 equates.
+;           Generated using the .svd description
 ;
 ;-----
 ;                                              __ ______  _____

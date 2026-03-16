@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ============
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Important macros.
+; Project:  uKOS-X
+; Goal:     Important macros.
 ;
 ;-----
 ;                                              __ ______  _____
@@ -253,14 +251,6 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
                                 INST_SYNC_BARRIER;
 #endif
 
-#ifndef WAITING_EVENT
-#define WAITING_EVENT           DATA_SYNC_BARRIER;                                                                              \
-                                __asm volatile ("                                                                            \n \
-                                wfe"                                                                                            \
-                                );                                                                                              \
-                                INST_SYNC_BARRIER;
-#endif
-
 #ifndef IS_EXCEPTION
 #define IS_EXCEPTION            ((REG(SCB)->ICSR & 0x000001FFU) != 0U)
 #endif
@@ -275,18 +265,30 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 extern  volatile    bool    vPriv_insideException[KNB_CORES];
 extern              void    (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
+extern              void    __attribute__ ((noreturn)) model_coreDump_displayExceptions(uintptr_t lr, uintptr_t *msp);
 
 #define EXCEPTION_SPECIFIC_HANDLER(exc)                                                                                         \
-                                void exc##_IRQHandler(void) __attribute__ ((weak));                                             \
-                                void exc##_IRQHandler(void) {                                                                   \
-                                    uint32_t    core;                                                                           \
+                                void exc##_local_IRQHandler(uintptr_t lr, uintptr_t *msp) {                                     \
+                                    uint32_t    core = GET_RUNNING_CORE;                                                        \
                                     void        (*go)(void);                                                                    \
                                                                                                                                 \
-                                    core = GET_RUNNING_CORE;                                                                    \
-                                    vPriv_insideException[core] = true;                                                         \
                                     go = vExce_indExcVectors[core][(int32_t)exc##_IRQn + (int32_t)KNB_EXCEPTIONS];              \
+                                    if (go == nullptr) {                                                                        \
+                                        model_coreDump_displayExceptions(lr, msp);                                              \
+                                    }                                                                                           \
+                                    vPriv_insideException[core] = true;                                                         \
                                     (*go)();                                                                                    \
                                     vPriv_insideException[core] = false;                                                        \
+                                }                                                                                               \
+                                                                                                                                \
+                                void exc##_IRQHandler(void) __attribute__ ((weak, naked));                                      \
+                                void exc##_IRQHandler(void) {                                                                   \
+                                                                                                                                \
+                                    __asm volatile ("                                                                        \n \
+                                    mov         r0,lr                                                                        \n \
+                                    mrs         r1,msp"                                                                         \
+                                    );                                                                                          \
+                                    JUMP_FNCT(exc##_local_IRQHandler);                                                          \
                                 }
 #endif
 
@@ -294,18 +296,30 @@ extern              void    (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(vo
 #define KINTERRUPTION           1U
 
 extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
+extern  void    __attribute__ ((noreturn)) model_coreDump_displayInterruptions(uintptr_t lr, uintptr_t *msp);
 
 #define INTERRUPT_SPECIFIC_HANDLER(irq)                                                                                         \
-                                void irq##_IRQHandler(void) __attribute__ ((weak));                                             \
-                                void irq##_IRQHandler(void) {                                                                   \
-                                    uint32_t    core;                                                                           \
+                                void irq##_local_IRQHandler(uintptr_t lr, uintptr_t *msp) {                                     \
+                                    uint32_t    core = GET_RUNNING_CORE;                                                        \
                                     void        (*go)(void);                                                                    \
                                                                                                                                 \
-                                    core = GET_RUNNING_CORE;                                                                    \
+                                    go = vExce_indIntVectors[core][(int32_t)irq##_IRQn];                                        \
+                                    if (go == nullptr) {                                                                        \
+                                        model_coreDump_displayInterruptions(lr, msp);                                           \
+                                    }                                                                                           \
                                     TIC_EXCEPTION_TIME;                                                                         \
-                                    go = vExce_indIntVectors[core][irq##_IRQn];                                                 \
                                     (*go)();                                                                                    \
                                     TAC_EXCEPTION_TIME(core);                                                                   \
+                                }                                                                                               \
+                                                                                                                                \
+                                void irq##_IRQHandler(void) __attribute__ ((weak, naked));                                      \
+                                void irq##_IRQHandler(void) {                                                                   \
+                                                                                                                                \
+                                    __asm volatile ("                                                                        \n \
+                                    mov         r0,lr                                                                        \n \
+                                    mrs         r1,msp"                                                                         \
+                                    );                                                                                          \
+                                    JUMP_FNCT(irq##_local_IRQHandler);                                                          \
                                 }
 #endif
 

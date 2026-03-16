@@ -9,9 +9,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
 ; Project:  uKOS-X
-;
-; Purpose:
-;   ST LIS2DW12 accelerometer equates.
+; Goal:     ST LIS2DW12 accelerometer equates.
 ;
 ;-----
 ;                                              __ ______  _____

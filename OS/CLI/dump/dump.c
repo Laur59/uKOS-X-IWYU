@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   This tool allows to dump a memory area.
+; Project:  uKOS-X
+; Goal:     This tool allows to dump a memory area.
 ;
 ;-----
 ;                                              __ ______  _____

@@ -1,16 +1,8 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-
-#------------------------------------------------------------------------
-# CMakeLists.txt
-# ==============
 #
-# Project: uKOS-X
-#
-# Purpose:
-#   CMakeLists for uKOS-X to build library libTinyUSB.a.
-#   STM32U5G9 - Cortex-M33
-#------------------------------------------------------------------------
+# uKOS-X build system
+# Builds libTinyUSB.a for STM32U5G9 (Cortex-M33)
 
 cmake_minimum_required(VERSION 3.15)
 

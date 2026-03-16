@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; =====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Exceptions for the Pico2_rp2350 module.
+; Project:  uKOS-X
+; Goal:     Exceptions for the Pico2_rp2350 module.
 ;
 ;-----
 ;                                              __ ______  _____
@@ -150,11 +148,11 @@ void    exce_init(void) {
     uint8_t     nbExceptions, nbInterruptions;
 
     for (nbExceptions = 0U; nbExceptions < KNB_EXCEPTIONS; nbExceptions++) {
-        vExce_indExcVectors[GET_RUNNING_CORE][nbExceptions] = model_coreDump_displayExceptions;
+        vExce_indExcVectors[GET_RUNNING_CORE][nbExceptions] = nullptr;
     }
 
     for (nbInterruptions = 0U; nbInterruptions < KNB_INTERRUPTIONS; nbInterruptions++) {
-        vExce_indIntVectors[GET_RUNNING_CORE][nbInterruptions] = model_coreDump_displayInterruptions;
+        vExce_indIntVectors[GET_RUNNING_CORE][nbInterruptions] = nullptr;
     }
 
     core_setBASEPRI((uint32_t)KINT_LEVEL_PERIPHERALS<<(uint32_t)KNVIC_PRIORITY_SHIFT);

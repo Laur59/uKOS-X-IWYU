@@ -8,17 +8,15 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     Demo of a C application.
+;           This application shows how to operate with the uKOS-X uKernel.
 ;
-; Purpose:
-;   Demo of a C application.
-;   This application shows how to operate with the uKOS-X uKernel.
+;           Launch 1 processes in C++:
 ;
-;   Launch 1 processes in C++:
-;
-;   - P0: Display a classe
-;         Every 100-ms
-;         Toggle LED 0
+;           - P0: Display a classe
+;                 Every 100-ms
+;                 Toggle LED 1
 ;
 ;-----
 ;                                              __ ______  _____

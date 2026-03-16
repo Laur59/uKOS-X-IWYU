@@ -9,11 +9,9 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; =====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Exceptions for the MAiXDUiNO_K210 module.
-;
+; Project:  uKOS-X
+; Goal:     Exceptions for the MAiXDUiNO_K210 module.
+
 ;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/

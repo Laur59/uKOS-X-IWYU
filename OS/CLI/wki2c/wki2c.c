@@ -8,11 +8,9 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   wki2c tool.
-;   This tool allows to operate with an i2c device.
+; Project:  uKOS-X
+; Goal:     wki2c tool.
+;           This tool allows to operate with an i2c device.
 ;
 ;-----
 ;                                              __ ______  _____

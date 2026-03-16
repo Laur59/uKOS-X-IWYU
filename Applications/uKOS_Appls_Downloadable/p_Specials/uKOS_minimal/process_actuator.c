@@ -8,11 +8,10 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =================
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Process: actuator.
-;   - Every 1000-ms send a new value to the dispatcher
+; Project:  uKOS-X
+; Goal:     Process: actuator.
+;           - Every 1000-ms
+;               Send a new value to the dispatcher
 ;
 ;-----
 ;                                              __ ______  _____

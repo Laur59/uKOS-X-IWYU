@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; =====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   NVIC equates.
+; Project:  uKOS-X
+; Goal:     NVIC equates.
 ;
 ;-----
 ;                                              __ ______  _____

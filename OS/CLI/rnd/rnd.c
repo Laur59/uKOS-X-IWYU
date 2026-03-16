@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Give a random (eventually pseudo-random) number.
+; Project:  uKOS-X
+; Goal:     Give a random (eventually pseudo-random) number.
 ;
 ;-----
 ;                                              __ ______  _____

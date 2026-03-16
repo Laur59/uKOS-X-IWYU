@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Important generic macros.
+; Project:  uKOS-X
+; Goal:     Important generic macros.
 ;
 ;-----
 ;                                              __ ______  _____

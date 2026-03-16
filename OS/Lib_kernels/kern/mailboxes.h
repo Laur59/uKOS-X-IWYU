@@ -8,25 +8,23 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ==========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     Kern - mailbox management.
 ;
-; Purpose:
-;   Kern - mailbox management.
+;           This module implements the mailbox primitives.
 ;
-;   This module implements the mailbox primitives.
+;           Mailbox system calls
+;           --------------------
 ;
-;   Mailbox system calls
-;   --------------------
-;
-;   void    mailboxes_init(void);
-;   int32_t kern_createMailbox(const char_t *identifier, mbox_t **handle);
-;   int32_t kern_setMailbox(mbox_t *handle, const mcnf_t *configure);
-;   int32_t kern_writeMailbox(mbox_t *handle, void *message, uint32_t size, uint32_t timeout);
-;   int32_t kern_writeQueue(mbox_t *handle, uintptr_t message, uint32_t timeout);
-;   int32_t kern_readMailbox(mbox_t *handle, void **message, uint32_t *size, uint32_t timeout);
-;   int32_t kern_readQueue(mbox_t *handle, uintptr_t *message, uint32_t timeout);
-;   int32_t kern_killMailbox(mbox_t *handle);
-;   int32_t kern_getMailboxById(const char_t *identifier, mbox_t **handle);
+;           void    mailboxes_init(void);
+;           int32_t kern_createMailbox(const char_t *identifier, mbox_t **handle);
+;           int32_t kern_setMailbox(mbox_t *handle, const mcnf_t *configure);
+;           int32_t kern_writeMailbox(mbox_t *handle, void *message, uint32_t size, uint32_t timeout);
+;           int32_t kern_writeQueue(mbox_t *handle, uintptr_t message, uint32_t timeout);
+;           int32_t kern_readMailbox(mbox_t *handle, void **message, uint32_t *size, uint32_t timeout);
+;           int32_t kern_readQueue(mbox_t *handle, uintptr_t *message, uint32_t timeout);
+;           int32_t kern_killMailbox(mbox_t *handle);
+;           int32_t kern_getMailboxById(const char_t *identifier, mbox_t **handle);
 ;
 ;-----
 ;                                              __ ______  _____

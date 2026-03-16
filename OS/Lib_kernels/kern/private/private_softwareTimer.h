@@ -8,12 +8,10 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ======================
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     Kern - Software timers.
 ;
-; Purpose:
-;   Kern - Software timers.
-;
-;   Private uKernel variables.
+;           Private uKernel variables.
 ;
 ;-----
 ;                                              __ ______  _____

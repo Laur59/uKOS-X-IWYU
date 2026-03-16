@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   FPE equates.
+; Project:  uKOS-X
+; Goal:     FPE equates.
 ;
 ;-----
 ;                                              __ ______  _____

@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; =======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Linker equates for all the uKOS-X project.
+; Project:  uKOS-X
+; Goal:     Linker equates for all the uKOS-X project.
 ;
 ;-----
 ;                                              __ ______  _____

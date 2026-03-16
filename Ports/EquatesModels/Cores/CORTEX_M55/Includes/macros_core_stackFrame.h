@@ -477,6 +477,8 @@ enum {
 #define CORE_DUMP_SAVE_STACK_FRAME                                                                                              \
                                 __asm volatile ("                                                                            \n \
                                 cpsid       i                                                                                \n \
+                                mov         lr,r0                                                                            \n \
+                                msr         msp,r1                                                                           \n \
                                 tst         lr,#0x4                                                                          \n \
                                 ite         eq                                                                               \n \
                                 mrseq       r1,msp                                                                           \n \

@@ -8,21 +8,19 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ===============
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     Kern - Software timers.
 ;
-; Purpose:
-;   Kern - Software timers.
+;           This module implements the software primitives.
 ;
-;   This module implements the software primitives.
+;           Software timer system calls
+;           ---------------------------
 ;
-;   Software timer system calls
-;   ---------------------------
-;
-;   void    softwareTimers_init(void);
-;   int32_t kern_createSoftwareTimer(const char_t *identifier, stim_t **handle);
-;   int32_t kern_setSoftwareTimer(stim_t *handle, const tspc_t *configure);
-;   int32_t kern_killSoftwareTimer(stim_t *handle);
-;   int32_t kern_getSoftwareTimerById(const char_t *identifier, stim_t **handle);
+;           void    softwareTimers_init(void);
+;           int32_t kern_createSoftwareTimer(const char_t *identifier, stim_t **handle);
+;           int32_t kern_setSoftwareTimer(stim_t *handle, const tspc_t *configure);
+;           int32_t kern_killSoftwareTimer(stim_t *handle);
+;           int32_t kern_getSoftwareTimerById(const char_t *identifier, stim_t **handle);
 ;
 ;-----
 ;                                              __ ______  _____

@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Hardware specific stub.
+; Project:  uKOS-X
+; Goal:     Hardware specific stub.
 ;
 ;-----
 ;                                              __ ______  _____

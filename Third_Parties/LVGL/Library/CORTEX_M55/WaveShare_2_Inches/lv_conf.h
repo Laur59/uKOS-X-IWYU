@@ -8,15 +8,13 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     Basic LVGL configuration
+;           Set 16 & 26 pixel fonts.
+;           Internal memory allocator
 ;
-; Purpose:
-;   Basic LVGL configuration
-;   Set 16 & 26 pixel fonts.
-;   Internal memory allocator
-;
-;   Configuration file for LVGL v9.5.x
-;   (based on lv_conf_template.h v9.5.0)
+;           Configuration file for LVGL v9.5.x
+;           (based on lv_conf_template.h v9.5.0)
 ;
 ;-----
 ;                                              __ ______  _____

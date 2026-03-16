@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ==========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Clock tree definitions.
+; Project:  uKOS-X
+; Goal:     Clock tree definitions.
 ;
 ;-----
 ;                                              __ ______  _____

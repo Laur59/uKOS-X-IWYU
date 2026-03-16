@@ -9,11 +9,9 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; =========================
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   stub for the connection of the "temperature" manager to the lsm9ds1
-;   via the spi2 device.
+; Project:  uKOS-X
+; Goal:     stub for the connection of the "temperature" manager to the lsm9ds1
+;           via the spi2 device.
 ;
 ;-----
 ;                                              __ ______  _____

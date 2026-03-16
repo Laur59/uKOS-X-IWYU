@@ -8,19 +8,17 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ===========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     Kern - Privilege management.
 ;
-; Purpose:
-;   Kern - Privilege management.
+;           This module implements the software primitives.
 ;
-;   This module implements the software primitives.
+;           Privilege system calls
+;           ---------------------------
 ;
-;   Privilege system calls
-;   ---------------------------
-;
-;   void    privileges_init(void);
-;   int32_t kern_setPrivilegeMode(uint8_t mode);
-;   void    kern_privilegeElevate(void); !!! Not for user applications
+;           void    privileges_init(void);
+;           int32_t kern_setPrivilegeMode(uint8_t mode);
+;           void    kern_privilegeElevate(void); !!! Not for user applications
 ;
 ;-----
 ;                                              __ ______  _____
@@ -231,7 +229,8 @@ void    kern_privilegeElevate(void) {
 }
 
 #ifdef PRIVILEGED_USER_S
-static  void    __attribute__ ((noinline, used)) local_elevate(uintptr_t callAddress) {
+[[gnu::noinline, gnu::used]]
+static  void    local_elevate(uintptr_t callAddress) {
     extern  uintptr_t   priv_returnElevation;
 
     if (callAddress != (uintptr_t)&priv_returnElevation) {

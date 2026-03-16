@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; =============
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   stub for the "machine" manager module.
+; Project:  uKOS-X
+; Goal:     stub for the "machine" manager module.
 ;
 ;-----
 ;                                              __ ______  _____

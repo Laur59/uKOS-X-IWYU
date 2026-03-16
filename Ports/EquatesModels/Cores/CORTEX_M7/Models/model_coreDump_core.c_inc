@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ====================
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;    Model for the core dump (Core specific).
+; Project:  uKOS-X
+; Goal:     Model for the core dump (Core specific).
 ;
 ;-----
 ;                                              __ ______  _____
@@ -61,10 +59,10 @@ static  uint32_t    vExceptionNb[KNB_CORES];
 
 // Prototypes
 
-static  void        local_processException(uintptr_t *stackBefore, uintptr_t *stackAfter);
-static  void        local_printException(const char_t **vectorName);
-static  void        local_printCore(void);
-static  void        local_printStackFrame(void);
+static  void    local_processException(uintptr_t *stackBefore, uintptr_t *stackAfter);
+static  void    local_printException(const char_t **vectorName);
+static  void    local_printCore(void);
+static  void    local_printStackFrame(void);
 
 /*
  * \brief model_coreDump_displayExceptions
@@ -126,8 +124,8 @@ static  void        local_printStackFrame(void);
  * FPSCR    = 0x00000000
  *
  */
-[[gnu::naked]]
-static  void    model_coreDump_displayExceptions(void) {
+[[gnu::naked]] [[noreturn]]
+void    model_coreDump_displayExceptions([[maybe_unused]] uintptr_t lr, [[maybe_unused]] uintptr_t *msp) {
 
     CORE_DUMP_SAVE_STACK_FRAME;
 
@@ -144,15 +142,13 @@ static  void    model_coreDump_displayExceptions(void) {
  * - Display the stack frame
  *
  */
-static  void    __attribute__ ((noinline, used, noreturn)) local_processException(uintptr_t *stackBefore, uintptr_t *stackAfter) {
+[[gnu::noinline, gnu::used]] [[noreturn]]
+static  void    local_processException(uintptr_t *stackBefore, uintptr_t *stackAfter) {
             uint32_t    core, i;
     const   uintptr_t   *ptr;
     const   char_t      *vectorName;
 
     core = GET_RUNNING_CORE;
-
-    SET_PRIVILEGED_MODE;
-    vKern_runProc[core]->oSpecification.oMode = KPROC_PRIVILEGED;
 
     vExceptionNb[core] = core_getIPSR();
     vStackBefore[core] = stackBefore;
@@ -182,7 +178,8 @@ static  void    __attribute__ ((noinline, used, noreturn)) local_processExceptio
  * - Display the exception name
  *
  */
-static  void    __attribute__ ((noinline)) local_printException(const char_t **vectorName) {
+[[gnu::noinline]]
+static  void    local_printException(const char_t **vectorName) {
     uint32_t    core;
 
     core = GET_RUNNING_CORE;
@@ -191,17 +188,17 @@ static  void    __attribute__ ((noinline)) local_printException(const char_t **v
     cmns_send(KDEF0, "========================\n\n");
     switch (vExceptionNb[core]) {
         case 0U:  { *vectorName = "Thread mode";        break; }
-        case 1U:  { *vectorName = "Reserved";           break; }
+        case 1U:  { *vectorName = "Reserved 1";         break; }
         case 2U:  { *vectorName = "NonMaskableInt";     break; }
         case 3U:  { *vectorName = "HardFault";          break; }
         case 4U:  { *vectorName = "MemoryManagement";   break; }
         case 5U:  { *vectorName = "BusFault";           break; }
-        case 6U:  { *vectorName = "UsageFaultn";        break; }
+        case 6U:  { *vectorName = "UsageFault";         break; }
         case 7U:  { *vectorName = "Reserved 7";         break; }
         case 8U:  { *vectorName = "Reserved 8";         break; }
         case 9U:  { *vectorName = "Reserved 9";         break; }
         case 10U: { *vectorName = "Reserved 10";        break; }
-        case 11U: { *vectorName = "SVCall_IRQn";        break; }
+        case 11U: { *vectorName = "SVCall";             break; }
         case 12U: { *vectorName = "DebugMonitor";       break; }
         case 13U: { *vectorName = "Reserved 13";        break; }
         case 14U: { *vectorName = "PendSV";             break; }
@@ -216,7 +213,8 @@ static  void    __attribute__ ((noinline)) local_printException(const char_t **v
  * - Display the core information
  *
  */
-static  void    __attribute__ ((noinline)) local_printCore(void) {
+[[gnu::noinline]]
+static  void    local_printCore(void) {
             char_t      string[80 + 1];
     const   int32_t     cfsr  = (int32_t)SCB->CFSR;
     const   int32_t     hfsr  = (int32_t)SCB->HFSR;
@@ -299,7 +297,7 @@ static  void    local_printStackFrame(void) {
 //      |   ^         |
 //      |   |         | Automatic stack of some registers
 //      |   |         | - if no FPU:                          xPSR, PC, lr r12, r3..r0: offset + 8
-//      |   |         | - if    FPU: Reserve, FPSCR, s15..s0, xPSR, PC, lr r12, r3..r0: offset + 1+17+8
+//      |   |         | - if    FPU: Reserve, FPSCR, s15..s0, xPSR, PC, lr r12, r3..r0: offset + 26
 //      |   | offset  |
 //      +-------------+ <- stackBefore
 //      |             |
@@ -311,9 +309,9 @@ static  void    local_printStackFrame(void) {
 //      |             |
 //      ~~~~~~~~~~~~~~~ 0x000..00
 
-    offset = ((vStackCoreDump[core][LR] & (1U<<4U)) == 0U) ? (1U + 17U + 8U) : (8U);
+    offset = ((vStackCoreDump[core][LR] & (1U<<4U)) == 0U) ? 26U : 8U;
 
-    stack = vStackBefore[core];
+    stack = &vStackBefore[core][SPP];
 
     (void)snprintf(&string[0], 80U, "Stack content before the fault: offset = 0x%08"PRIXPTR"\n", offset);                                               cmns_send(KDEF0, string);
     (void)snprintf(&string[0], 80U, "stack[+31] = 0x%08"PRIXPTR"\n",   stack[offset + 31U]);                                                            cmns_send(KDEF0, string);
@@ -359,7 +357,7 @@ static  void    local_printStackFrame(void) {
     (void)snprintf(&string[0], 80U, "r03      = 0x%08"PRIXPTR"    r11      = 0x%08"PRIXPTR"\n", vStackCoreDump[core][r03],  vStackCoreDump[core][r11]); cmns_send(KDEF0, string);
     (void)snprintf(&string[0], 80U, "r04      = 0x%08"PRIXPTR"    r12      = 0x%08"PRIXPTR"\n", vStackCoreDump[core][r04],  vStackCoreDump[core][r12]); cmns_send(KDEF0, string);
     (void)snprintf(&string[0], 80U, "r05      = 0x%08"PRIXPTR"    r13 (SP) = 0x%08"PRIXPTR"\n", vStackCoreDump[core][r05],  vStackCoreDump[core][SPP]); cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80U, "r06      = 0x%08"PRIXPTR"    r14      = 0x%08"PRIXPTR"\n", vStackCoreDump[core][r06],  vStackCoreDump[core][r14]); cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80U, "r06      = 0x%08"PRIXPTR"    r14 (LR) = 0x%08"PRIXPTR"\n", vStackCoreDump[core][r06],  vStackCoreDump[core][r14]); cmns_send(KDEF0, string);
     (void)snprintf(&string[0], 80U, "r07      = 0x%08"PRIXPTR"    lr       = 0x%08"PRIXPTR"\n", vStackCoreDump[core][r07],  vStackCoreDump[core][LR]);  cmns_send(KDEF0, string);
     (void)snprintf(&string[0], 80U, "xPSR     = 0x%08"PRIXPTR"    r15 (PC) = 0x%08"PRIXPTR"\n", vStackCoreDump[core][xPSR], vStackCoreDump[core][PC]);  cmns_send(KDEF0, string);
     (void)snprintf(&string[0], 80U, "BASEPRI  = 0x%08"PRIXPTR"\n\n",                            vStackCoreDump[core][BASEPRI]);                         cmns_send(KDEF0, string);
@@ -367,7 +365,7 @@ static  void    local_printStackFrame(void) {
 // Verify if the FPU registers were stacked
 // if yes, display the FPU registers
 
-    if ((vStackCoreDump[core][LR] & (1U<<4)) != 0U) { return; }
+    if ((vStackCoreDump[core][LR] & (1U<<4U)) != 0U) { return; }
 
     cmns_send(KDEF0, "FPU registers\n");
     (void)snprintf(&string[0], 80U, "s00      = 0x%08"PRIXPTR"    s16      = 0x%08"PRIXPTR"\n", vStackCoreDump[core][s00],  vStackCoreDump[core][s16]); cmns_send(KDEF0, string);

@@ -8,11 +8,9 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Some consts that could be necessary for debugging tool
-;   such as Segger Ozone.
+; Project:  uKOS-X
+; Goal:     Some consts that could be necessary for debugging tool
+;           susch as Segger Ozone.
 ;
 ;-----
 ;                                              __ ______  _____

@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ==============
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   serial_commun equates.
+; Project:  uKOS-X
+; Goal:     serial_commun equates.
 ;
 ;-----
 ;                                              __ ______  _____

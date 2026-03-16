@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ============
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Important macros.
+; Project:  uKOS-X
+; Goal:     Important macros.
 ;
 ;-----
 ;                                              __ ______  _____
@@ -171,7 +169,7 @@ extern  bool    vExce_isException[KNB_CORES];
                                     vExce_isException[core] = false;                                                            \
                                 }                                                                                               \
                                                                                                                                 \
-                                void exc##_IRQHandler(void) __attribute__ ((weak, naked));                                      \
+                                [[gnu::weak, gnu::naked]]                                                           \
                                 void exc##_IRQHandler(void) {                                                                   \
                                                                                                                                 \
                                     INTERRUPTION_IN;                                                                            \
@@ -208,7 +206,7 @@ extern  bool    vExce_isException[KNB_CORES];
                                     vExce_isException[core] = false;                                                            \
                                 }                                                                                               \
                                                                                                                                 \
-                                void irq##_IRQHandler(void) __attribute__ ((weak, naked));                                      \
+                                [[gnu::weak, gnu::naked]]                                                           \
                                 void irq##_IRQHandler(void) {                                                                   \
                                                                                                                                 \
                                     INTERRUPTION_IN;                                                                            \

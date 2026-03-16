@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Module IDs for uKOS-X systems.
+; Project:  uKOS-X
+; Goal:     Module IDs for uKOS-X systems.
 ;
 ;-----
 ;                                              __ ______  _____

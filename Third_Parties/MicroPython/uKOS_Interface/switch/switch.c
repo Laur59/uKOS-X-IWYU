@@ -8,9 +8,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =======
 
 ;------------------------------------------------------------------------
-; Author:   Edo. Franzi     The 2025-01-01
-; Modifs:
-;
 ; Project:  uKOS-X
 ; Goal:     uKOS switch interface
 ;
@@ -19,8 +16,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;           mode = bytearray(1)
 ;           status = switch.mode(mode)
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \

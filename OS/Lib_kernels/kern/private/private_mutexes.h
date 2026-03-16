@@ -8,12 +8,10 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ================
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     Kern - Mutex management.
 ;
-; Purpose:
-;   Kern - Mutex management.
-;
-;   Private uKernel variables.
+;           Private uKernel variables.
 ;
 ;-----
 ;                                              __ ______  _____

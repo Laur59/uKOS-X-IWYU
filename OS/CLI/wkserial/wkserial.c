@@ -8,21 +8,19 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     wkserial tool.
+;           This tool allows to operate with a communication device.
 ;
-; Purpose:
-;   wkserial tool.
-;   This tool allows to operate with a communication device.
+;           Possible actions:
+;           wkserial {serialManager} -set {baudrate}
+;           wkserial {serialManager} -write {byte}
+;           wkserial {serialManager} -read
 ;
-;   Possible actions:
-;   wkserial {serialManager} -set {baudrate}
-;   wkserial {serialManager} -write {byte}
-;   wkserial {serialManager} -read
-;
-;   Examples:
-;   wkserial urt0 -set 115200
-;   wkserial urt1 -W 55
-;   wkserial cdc0 -read
+;           Examples:
+;           wkserial urt0 -set 115200
+;           wkserial urt1 -W 55
+;           wkserial cdc0 -read
 ;
 ;-----
 ;                                              __ ______  _____

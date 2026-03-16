@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   imu manager.
+; Project:  uKOS-X
+; Goal:     imu manager.
 ;
 ;-----
 ;                                              __ ______  _____

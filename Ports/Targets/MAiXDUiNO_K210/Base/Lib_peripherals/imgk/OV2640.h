@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; =======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Omni vision OV2640 imager equates.
+; Project:  uKOS-X
+; Goal:     Omni vision OV2640 imager equates.
 ;
 ;-----
 ;                                              __ ______  _____

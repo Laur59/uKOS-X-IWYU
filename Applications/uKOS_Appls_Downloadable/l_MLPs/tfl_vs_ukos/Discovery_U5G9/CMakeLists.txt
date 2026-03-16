@@ -1,17 +1,14 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+
 # CMakeLists.
 # ===========
 
-# SPDX-License-Identifier: MIT
-
 #------------------------------------------------------------------------
-# Author:   Laurent von Allmen  The 2025-01-01
-# Modifs:
-#
 # Project:  uKOS-X
 # Goal:     CMake file to set up the building for uKOS-X system.
 #
-#   (c) 2025-2026, Laurent von Allmen
-#   ---------------------------------
+#-----
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \

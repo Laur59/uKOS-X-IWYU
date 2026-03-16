@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Aptina MT9V03x imager equates.
+; Project:  uKOS-X
+; Goal:     Aptina MT9V03x imager equates.
 ;
 ;-----
 ;                                              __ ______  _____

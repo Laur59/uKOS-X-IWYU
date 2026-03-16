@@ -1,14 +1,12 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
-#------------------------------------------------------------------------
 # common.
 # =======
-#
-# Project: uKOS-X
-#
-# Purpose:
-#   CMake common file for the all the application.
+
+#------------------------------------------------------------------------
+# Project:  uKOS-X
+# Goal:     CMake common file for the all the application.
 #
 #-----
 #                                              __ ______  _____

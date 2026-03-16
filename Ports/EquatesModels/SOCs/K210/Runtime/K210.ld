@@ -13,8 +13,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;           References:
 ;           - K210 Technical Reference Manual Rev 1.x, p. 67
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \

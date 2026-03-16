@@ -9,12 +9,10 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ==========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;    Commun Linker description for uKOS-X systems.
-;    Privileged / user support
-;    Special version for rp2350
+; Project:  uKOS-X
+; Goal:     Commun Linker description for uKOS-X systems.
+;           Privileged / user support
+;           Special version for rp2350
 ;
 ;                       CODE
 ; linker_stTEXT         +-----------------+

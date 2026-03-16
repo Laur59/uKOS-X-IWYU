@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ==========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   FLASH MX25R6435 equates.
+; Project:  uKOS-X
+; Goal:     FLASH MX25R6435 equates.
 ;
 ;-----
 ;                                              __ ______  _____

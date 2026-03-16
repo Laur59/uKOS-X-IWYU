@@ -9,12 +9,10 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ==================
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Syscall dispatcher.
-;    - uKernel messages
-;    - manager system calls
+; Project:  uKOS-X
+; Goal:     Syscall dispatcher.
+;               - uKernel messages
+;               - manager system calls
 ;
 ;-----
 ;                                              __ ______  _____
@@ -101,7 +99,8 @@ void    SVCall_C1_IRQHandler(void) {
 }
 #endif
 
-void    __attribute__ ((noreturn)) syscall(const uintptr_t *arg) {
+[[noreturn]]
+void    syscall(const uintptr_t *arg) {
 
     UNUSED(arg);
 

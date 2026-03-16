@@ -8,13 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ===========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     Kern - Statistic management.
 ;
-; Purpose:
-;   Kern - Statistic management.
-;
-;   This module is responsible for computing the statistic of
-;   the uKernel.
+;           This module is responsible for computing the statistic of
+;           the uKernel.
 ;
 ;-----
 ;                                              __ ______  _____

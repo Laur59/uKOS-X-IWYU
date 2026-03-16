@@ -1,21 +1,20 @@
 #!/usr/bin/env zsh
+
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
-#------------------------------------------------------------------------
 # analyser.
 # =========
+
+#------------------------------------------------------------------------
+# Project:  uKOS-X
+# Goal:     Run clang analyser; replace scan-build not working with CMake
+#           and use clang-tidy as linter tool.
 #
-# Project: uKOS-X
-#
-# Purpose:
-#  Run clang analyser; replace scan-build not working with CMake
-#  and use clang-tidy as linter tool.
-#
-# Usage:
-#   alias run-analyser='$PATH_UKOS_X_PACKAGE/Tools/UNIX_Tools/clang-analyser/analyser.sh'
-#   cd variant
-#   run-analyser
+#           Usage:
+#               alias run-analyser='$PATH_UKOS_X_PACKAGE/Tools/UNIX_Tools/clang-analyser/analyser.sh'
+#               cd variant
+#               run-analyser
 #
 #-----
 #                                              __ ______  _____

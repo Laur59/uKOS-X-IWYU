@@ -1,14 +1,12 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
-#------------------------------------------------------------------------
 # select-riscv-toolchain.
 # =======================
-#
-# Project: uKOS-X
-#
-# Purpose:
-#   Selecting toolchain to build kernel and os
+
+#------------------------------------------------------------------------
+# Project:  uKOS-X
+# Goal:     Selecting toolchain to build kernel and os
 #
 #-----
 #                                              __ ______  _____

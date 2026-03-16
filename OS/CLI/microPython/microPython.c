@@ -8,7 +8,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ============
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
 ;           uKOS-X interface for MicroPython (www.micropython.com).
 ;
 ;-----

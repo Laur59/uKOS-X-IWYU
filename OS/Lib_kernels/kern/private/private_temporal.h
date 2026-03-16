@@ -8,12 +8,10 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =================
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     Kern - time management.
 ;
-; Purpose:
-;   Kern - time management.
-;
-;   Private uKernel variables.
+;           Private uKernel variables.
 ;
 ;-----
 ;                                              __ ______  _____

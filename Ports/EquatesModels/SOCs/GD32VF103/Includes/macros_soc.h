@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ===========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Important macros.
+; Project:  uKOS-X
+; Goal:     Important macros.
 ;
 ;-----
 ;                                              __ ______  _____

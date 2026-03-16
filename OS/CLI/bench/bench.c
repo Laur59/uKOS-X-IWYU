@@ -8,14 +8,12 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     System benches.
 ;
-; Purpose:
-;   System benches.
+;           Launch 1 processes:
 ;
-;   Launch 1 processes:
-;
-;   - P0: bench performance
+;           - P0: bench performance
 ;
 ;-----
 ;                                              __ ______  _____

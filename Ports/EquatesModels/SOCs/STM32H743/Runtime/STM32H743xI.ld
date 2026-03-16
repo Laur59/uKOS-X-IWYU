@@ -8,13 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ============
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Specs of STM32H743xI.
-;   References:
-;   - DS12110 Rev 10, p. 36; Datasheet
-;   - RM0433 Rev 8, p. 131; STM32H742, STM32H743/753 and STM32H750 Value line advanced Arm®-based 32-bit MCUs
+; Project:  uKOS-X
+; Goal:     Specs of STM32H743xI.
+;           References:
+;           - DS12110 Rev 10, p. 36; Datasheet
+;           - RM0433 Rev 8, p. 131; STM32H742, STM32H743/753 and STM32H750 Value line advanced Arm®-based 32-bit MCUs
 ;
 ;-----
 ;                                              __ ______  _____

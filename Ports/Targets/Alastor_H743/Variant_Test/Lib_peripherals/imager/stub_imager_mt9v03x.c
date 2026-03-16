@@ -9,11 +9,9 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ====================
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   stub for the connection of the "imager" manager to the imager,
-;   MT9V03x device.
+; Project:  uKOS-X
+; Goal:     stub for the connection of the "imager" manager to the imager,
+;           MT9V03x device.
 ;
 ;-----
 ;                                              __ ______  _____

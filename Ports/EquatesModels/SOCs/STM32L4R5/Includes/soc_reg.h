@@ -8,13 +8,9 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ==========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   stm32L4R5 equates.
-;
-; Description:
-;   Generated using the .svd description
+; Project:  uKOS-X
+; Goal:     stm32L4R5 equates.
+;           Generated using the .svd description
 ;
 ;-----
 ;                                              __ ______  _____

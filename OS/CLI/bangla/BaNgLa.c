@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Display the purpose of the Bangla team.
+; Project:  uKOS-X
+; Goal:     Display the purpose of the Bangla team.
 ;
 ;-----
 ;                                              __ ______  _____

@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; =====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Collection of multi-core routines
+; Project:  uKOS-X
+; Goal:     Collection of multi-core routines
 ;
 ;-----
 ;                                              __ ______  _____

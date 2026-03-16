@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Vectors for the uKOS-X system (first).
+; Project:  uKOS-X
+; Goal:     Vectors for the uKOS-X system (first).
 ;
 ;-----
 ;                                              __ ______  _____
@@ -85,7 +83,8 @@ __attribute__ ((noinline)) void local_fixPC(void) {
     }
 }
 
-void __attribute__ ((naked)) Reset_C0_Handler(void) {
+[[gnu::naked]]
+void Reset_C0_Handler(void) {
 
     CALL_FNCT(local_fixPC);
 

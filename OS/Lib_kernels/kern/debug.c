@@ -8,19 +8,17 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     Kern - Debug list management.
 ;
-; Purpose:
-;   Kern - Debug list management.
+;           This module implements the stop list primitives.
 ;
-;   This module implements the stop list primitives.
+;           Software debug system calls
+;           ---------------------------
 ;
-;   Software debug system calls
-;   ---------------------------
-;
-;   void    debug_init(void);
-;   int32_t kern_stopProcess(proc_t *handle);
-;   int32_t kern_reactivateProcess(proc_t *handle);
+;           void    debug_init(void);
+;           int32_t kern_stopProcess(proc_t *handle);
+;           int32_t kern_reactivateProcess(proc_t *handle);
 ;
 ;-----
 ;                                              __ ______  _____

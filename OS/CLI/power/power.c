@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Give the battery information.
+; Project:  uKOS-X
+; Goal:     Give the battery information.
 ;
 ;-----
 ;                                              __ ______  _____

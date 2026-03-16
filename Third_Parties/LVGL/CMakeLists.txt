@@ -1,14 +1,8 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-
-#------------------------------------------------------------------------
-# CMakeLists.txt
-# ==============
 #
-# Project: uKOS-X
-#
-# Purpose:
-#   Umbrella CMake file to fetch upstream LVGL and build all libraries.
+# uKOS-X build system
+# Builds all LVGL libraries
 #
 # Build description:
 #   This top-level CMakeLists.txt drives the build of all LVGL static
@@ -34,7 +28,6 @@
 #
 # Build outputs:
 #   - Library/*/*/libLVGL.a
-#------------------------------------------------------------------------
 
 cmake_minimum_required(VERSION 3.26)
 

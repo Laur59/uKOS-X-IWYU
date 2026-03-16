@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ===========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   alive process; the system is working.
+; Project:  uKOS-X
+; Goal:     alive process; the system is working.
 ;
 ;-----
 ;                                              __ ______  _____

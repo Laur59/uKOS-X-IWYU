@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Bootstrap of the system
+; Project:  uKOS-X
+; Goal:     Bootstrap of the system
 ;
 ;-----
 ;                                              __ ______  _____

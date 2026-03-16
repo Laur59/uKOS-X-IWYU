@@ -9,11 +9,9 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ==========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   crt0 for the uKOS-X system.
-;    Privileged only support (only for multi-cores)
+; Project:  uKOS-X
+; Goal:     crt0 for the uKOS-X system.
+;           Privileged only support (only for multi-cores)
 ;
 ;                       CODE
 ; linker_stTEXT         +-----------------+

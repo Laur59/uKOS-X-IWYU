@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ============
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   sdcard R/W tests.
+; Project:  uKOS-X
+; Goal:     sdcard R/W tests.
 ;
 ;-----
 ;                                              __ ______  _____

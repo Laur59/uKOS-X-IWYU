@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   calendar manager.
+; Project:  uKOS-X
+; Goal:     calendar manager.
 ;
 ;-----
 ;                                              __ ______  _____

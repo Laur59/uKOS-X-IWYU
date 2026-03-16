@@ -8,13 +8,11 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ============
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Specs of STM32H747xI.
-;   References:
-;   - DS12930 Rev 2, p. 23; Datasheet
-;   - RM0399 Rev 4, p. 136; STM32H745/755 and STM32H747/757 advanced Arm®-based 32-bit MCUs
+; Project:  uKOS-X
+; Goal:     Specs of STM32H747xI.
+;           References:
+;           - DS12930 Rev 2, p. 23; Datasheet
+;           - RM0399 Rev 4, p. 136; STM32H745/755 and STM32H747/757 advanced Arm®-based 32-bit MCUs
 ;
 ;-----
 ;                                              __ ______  _____

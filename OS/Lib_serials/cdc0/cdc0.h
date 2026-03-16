@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   cdc0 manager.
+; Project:  uKOS-X
+; Goal:     cdc0 manager.
 ;
 ;-----
 ;                                              __ ______  _____

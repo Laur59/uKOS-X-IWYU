@@ -1,9 +1,5 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-
-#------------------------------------------------------------------------
-# TinyUSB.
-# ========
 #
 # Project: uKOS-X
 #
@@ -18,7 +14,6 @@
 #
 #   The build does not embed wall-clock timestamps. Where applicable,
 #   SOURCE_DATE_EPOCH is expected to be honored by all toolchain components.
-#------------------------------------------------------------------------
 
 include_guard(GLOBAL)
 
@@ -275,7 +270,7 @@ function(add_tinyusb_libraries)
         ${CPU_SPEC_LIST}
         ${FLAGS_FP_LIST}
         -std=c23
-        -g3 -Wall -Wno-pedantic -Wlogical-op
+        -Wall -Wno-pedantic -Wlogical-op
         -fsingle-precision-constant
         -Wno-error=undef -Wno-error=unused-parameter
         -Wno-error=cast-align -Wno-error=cast-qual

@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Minimal test of the RAM (hardware).
+; Project:  uKOS-X
+; Goal:     Minimal test of the RAM (hardware).
 ;
 ;-----
 ;                                              __ ______  _____

@@ -1,14 +1,12 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
-#------------------------------------------------------------------------
 # CMakeLists.
 # ===========
-#
-# Project: uKOS-X
-#
-# Purpose:
-#   CMake file to set up the building for uKOS-X system.
+
+#------------------------------------------------------------------------
+# Project:  uKOS-X
+# Goal:     CMake file to set up the building for uKOS-X system.
 #
 #-----
 #                                              __ ______  _____

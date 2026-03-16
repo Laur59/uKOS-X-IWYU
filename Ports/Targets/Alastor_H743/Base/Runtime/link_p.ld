@@ -9,10 +9,9 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; =======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-; Purpose:
-;    Linker description for the uKOS-X system.
-;    Privileged only support
+; Project:  uKOS-X
+; Goal:     Linker description for the uKOS-X system.
+;           Privileged only support
 ;
 ;                       CODE
 ; linker_stTEXT         +-----------------+
