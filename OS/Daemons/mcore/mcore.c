@@ -8,11 +8,9 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   mcore process; multi-core layer via mbox & asmp.
-;   For the moment, this layer is limited to 2 cores.
+; Project:  uKOS-X
+; Goal:     mcore process; multi-core layer via mbox & asmp.
+;           For the moment, this layer is limited to 2 cores.
 ;
 ;-----
 ;                                              __ ______  _____

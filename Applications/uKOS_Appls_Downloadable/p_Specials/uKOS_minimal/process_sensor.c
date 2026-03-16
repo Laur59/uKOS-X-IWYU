@@ -8,11 +8,10 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ===============
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Process: sensor.
-;   - Every 100-ms send a new value to the dispatcher
+; Project:  uKOS-X
+; Goal:     Process: sensor.
+;           - Every 100-ms
+;               Send a new value to the dispatcher
 ;
 ;-----
 ;                                              __ ______  _____

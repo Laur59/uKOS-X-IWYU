@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ==================
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;    Model for controlling the "lsM9ds1" device (the TMP part).
+; Project:  uKOS-X
+; Goal:     Model for controlling the "lsM9ds1" device (the TMP part).
 ;
 ;-----
 ;                                              __ ______  _____

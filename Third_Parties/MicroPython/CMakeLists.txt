@@ -1,21 +1,12 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-
-#------------------------------------------------------------------------
-# CMakeLists.
-# ===========
 #
-# Project: uKOS-X
-#
-# Purpose:
-#   Umbrella CMake file to build all MicroPython libraries.
+# uKOS-X build system
+# Builds all MicroPython libraries
 #
 # Build description:
 #   This top-level CMakeLists.txt drives the build of all MicroPython static
 #   libraries for supported SoCs and profiles using CMake ExternalProject.
-#
-#   It is functionally equivalent to build_with_cmake.sh and provides
-#   a single, declarative CMake-based build entry point.
 #
 # Reproducibility:
 #   This build definition is intended to be deterministic and reproducible.
@@ -33,7 +24,6 @@
 #
 # Build outputs:
 #   - Library/*/libMicroPython.a
-#------------------------------------------------------------------------
 
 cmake_minimum_required(VERSION 3.26)
 

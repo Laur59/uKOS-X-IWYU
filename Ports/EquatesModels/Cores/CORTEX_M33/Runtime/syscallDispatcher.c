@@ -9,12 +9,10 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ==================
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Syscall dispatcher.
-;    - uKernel messages
-;    - manager system calls
+; Project:  uKOS-X
+; Goal:     Syscall dispatcher.
+;               - uKernel messages
+;               - manager system calls
 ;
 ;-----
 ;                                              __ ______  _____

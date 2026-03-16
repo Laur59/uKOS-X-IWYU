@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ===========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Display the shared area of the multicore system.
+; Project:  uKOS-X
+; Goal:     Display the shared area of the multicore system.
 ;
 ;-----
 ;                                              __ ______  _____

@@ -8,13 +8,9 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   stm32H747 equates.
-;
-; Description:
-;   Generated using the .svd description
+; Project:  uKOS-X
+; Goal:     stm32H747 equates.
+;           Generated using the .svd description
 ;
 ;-----
 ;                                              __ ______  _____

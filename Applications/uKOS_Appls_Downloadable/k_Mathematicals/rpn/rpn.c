@@ -8,22 +8,19 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     Demo of a C application.
+;           This application shows how to operate with the uKOS-X uKernel.
 ;
-; Purpose:
-;   Demo of a C application.
-;   This application shows how to operate with the uKOS-X uKernel.
+;           Preliminary rpn hp25 calculator.
+;           Usage:
 ;
-;   Preliminary rpn hp25 calculator.
-;
-; Usage:
-;
-;   35
-;   ENTER
-;   5
-;   +
-;   10
-;   /
+;           35
+;           ENTER
+;           5
+;           +
+;           10
+;           /
 ;
 ;-----
 ;                                              __ ______  _____
@@ -180,9 +177,9 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
           char_t **parameters = (char_t **)memo_malloc(KMEMO_ALIGN_8, (KNB_PARAMETERS * sizeof(char_t *)), "parameters");
     const char_t **argv       = (const char_t **)memo_malloc(KMEMO_ALIGN_8, (KNB_PARAMETERS * sizeof(char_t *)), "argv");
 
-    if (commandLine == nullptr) { LOG(KFATAL_USER, "memo_malloc commandLine"); exit(EXIT_OS_FAILURE); }
-    if (parameters == nullptr)  { LOG(KFATAL_USER, "memo_malloc parameters");  exit(EXIT_OS_FAILURE); }
-    if (argv == nullptr)        { LOG(KFATAL_USER, "memo_malloc argv");        exit(EXIT_OS_FAILURE); }
+    if (commandLine == nullptr) { LOG(KFATAL_USER, "memo_malloc commandLine"); exit(EXIT_OS_FAILURE);  }
+    if (parameters == nullptr)  { LOG(KFATAL_USER, "memo_malloc parameters");   exit(EXIT_OS_FAILURE); }
+    if (argv == nullptr)        { LOG(KFATAL_USER, "memo_malloc argv");     exit(EXIT_OS_FAILURE);     }
 
     UNUSED(argument);
 

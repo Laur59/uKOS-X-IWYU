@@ -8,12 +8,10 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ============
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Indirect Exception Vectors for RISC-V.
-;    The "reset" exception is not considered. The indirect table
-;    is reserved in the first.s file.
+; Project:  uKOS-X
+; Goal:     Indirect Exception Vectors for RISC-V.
+;           The "reset" exception is not considered. The indirect table
+;           is reserved in the first.s file.
 ;
 ;-----
 ;                                              __ ______  _____

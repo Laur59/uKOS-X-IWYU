@@ -1,9 +1,5 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-
-#------------------------------------------------------------------------
-# common-build.
-# =============
 #
 # Project: uKOS-X
 #
@@ -22,7 +18,6 @@
 #
 #   The build does not embed wall-clock timestamps. Where applicable,
 #   SOURCE_DATE_EPOCH is expected to be honored by all toolchain components.
-#------------------------------------------------------------------------
 
 option(BUILD_VERBOSE "Increase build verbosity" OFF)
 

@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Give the uKernel memory footprint.
+; Project:  uKOS-X
+; Goal:     Give the uKernel memory footprint.
 ;
 ;-----
 ;                                              __ ______  _____

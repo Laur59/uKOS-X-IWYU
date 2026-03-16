@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   stim daemon; software timer management
+; Project:  uKOS-X
+; Goal:     stim daemon; software timer management
 ;
 ;-----
 ;                                              __ ______  _____

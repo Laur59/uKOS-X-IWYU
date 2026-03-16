@@ -8,12 +8,10 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   rtc daemon; Update the Unix time Timer value
-;   with a precise RTC one
-;   every 2h the Unix time Timer is updated from the RTC.
+; Project:  uKOS-X
+; Goal:     rtc daemon; Update the Unix time Timer value
+;           with a precise RTC one
+;           every 2h the Unix time Timer is updated from the RTC.
 ;
 ;-----
 ;                                              __ ______  _____

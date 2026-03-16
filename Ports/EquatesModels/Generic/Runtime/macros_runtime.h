@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ===============
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Important runtime macros.
+; Project:  uKOS-X
+; Goal:     Important runtime macros.
 ;
 ;-----
 ;                                              __ ______  _____

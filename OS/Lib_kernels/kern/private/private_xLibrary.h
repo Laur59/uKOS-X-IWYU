@@ -8,12 +8,10 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =================
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     Kern - impure data for xLibrary (newlib, picolib, etc.) management.
 ;
-; Purpose:
-;   Kern - C library integration for xLibrary (newlib, picolibc, etc.) management.
-;
-;   Private uKernel variables and function prototypes.
+;           Private uKernel variables.
 ;
 ;-----
 ;                                              __ ______  _____

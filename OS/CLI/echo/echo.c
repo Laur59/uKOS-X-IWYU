@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   echo tool; echo from a Serial Communication Manager.
+; Project:  uKOS-X
+; Goal:     echo tool; echo from a Serial Communication Manager.
 ;
 ;-----
 ;                                              __ ______  _____

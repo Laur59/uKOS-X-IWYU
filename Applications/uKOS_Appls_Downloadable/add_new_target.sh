@@ -1,18 +1,17 @@
 #!/usr/bin/env zsh
+
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #------------------------------------------------------------------------
-# Project: uKOS-X
+# Project:  uKOS-X
+# Goal:     Building all the uKOS downloadable applications.
 #
-# Purpose:
-#   Building all the uKOS downloadable applications.
+#           usage:
+#           ./add_new_target.sh Target SOC Core [refTarget]
 #
-# Usage:
-#   ./add_new_target.sh Target SOC Core [refTarget]
-#
-#   i.e
-#   ./add_new_target.sh XYZ_H743 STM32H743 CORTEX_M7 Nucleo_H743
+#           i.e
+#           ./add_new_target.sh XYZ_H743 STM32H743 CORTEX_M7 Nucleo_H743
 #
 #-----
 #                                              __ ______  _____

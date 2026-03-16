@@ -1,15 +1,13 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
-#------------------------------------------------------------------------
 # gcc-cortex-m.
 # =============
-#
-# Project: uKOS-X
-#
-# Purpose:
-#   Toolchain file for configuring Cmake to build cross-compiling
-#   projects based on CORTEX M core.
+
+#------------------------------------------------------------------------
+# Project:  uKOS-X
+# Goal:     Toolchain file for configuring Cmake to build cross-compiling
+#           projects based on CORTEM M core.
 #
 #-----
 #                                              __ ______  _____

@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   i2c2 manager.
+; Project:  uKOS-X
+; Goal:     i2c2 manager.
 ;
 ;-----
 ;                                              __ ______  _____

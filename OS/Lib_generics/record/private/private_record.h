@@ -8,12 +8,10 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ===============
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     record manager.
 ;
-; Purpose:
-;   record manager.
-;
-;   Private record variables.
+;           Private record variables.
 ;
 ;-----
 ;                                              __ ______  _____

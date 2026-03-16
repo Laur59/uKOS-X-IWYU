@@ -1,14 +1,17 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+*/
+
+/*
 ; private_processes
 ; =================
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     Kern - Process management.
 ;
-; Purpose:
-;   Kern - Process management.
-;
-;   Private uKernel variables.
+;           Private uKernel variables.
 ;
 ;-----
 ;                                              __ ______  _____

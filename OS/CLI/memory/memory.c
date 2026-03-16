@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Give the memory information.
+; Project:  uKOS-X
+; Goal:     Give the memory information.
 ;
 ;-----
 ;                                              __ ______  _____

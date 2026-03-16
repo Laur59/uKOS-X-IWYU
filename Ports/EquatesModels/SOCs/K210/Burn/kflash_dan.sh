@@ -1,16 +1,15 @@
 #!/usr/bin/env zsh
+
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #------------------------------------------------------------------------
-# Project: uKOS-X
+# Project:  uKOS-X
+# Goal:     script for burning the arm flash via the kflash_dan.
 #
-# Goal:
-#   script for burning the arm flash via the kflash_dan.
-#
-# Usage:
-#   ./kflash_dan.sh
+#           - Usage:
+#             ./kflash_dan.sh
 #
 #-----
 #                                              __ ______  _____

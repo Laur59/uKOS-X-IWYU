@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
-#------------------------------------------------------------------------
 # generate_signature.
 # ===================
+
+#------------------------------------------------------------------------
+# Project:  uKOS-X
+# Goal:     Cross-platform signature generation script for uKOS-X.
 #
-# Project: uKOS-X
+#    This script generates a SHA-256 signature from a binary file and creates
+#    C source files containing the signature as a compile-time constant.
 #
-# Purpose:
-#   Cross-platform signature generation script for uKOS-X.
-#
-# Description:
-#   This script generates a SHA-256 signature from a binary file and creates
-#   C source files containing the signature as a compile-time constant.
-#
-#   Required input variables (pass via -D on command line):
+#    Required input variables (pass via -D on command line):
 #      INPUT_FILE   - Path to input binary file (e.g., NOSIG.bin)
 #      OUTPUT_SIG_C - Path to output C source file (e.g., FLASH.sig.c)
 #      OUTPUT_CK    - Path to output checksum file (e.g., FLASH.ck)
 #
-# Usage:
-#   cmake -DINPUT_FILE=NOSIG.bin \
+#    Example usage:
+#      cmake -DINPUT_FILE=NOSIG.bin \
 #         -DOUTPUT_SIG_C=FLASH.sig.c \
 #         -DOUTPUT_CK=FLASH.ck \
 #         -P generate_signature.cmake

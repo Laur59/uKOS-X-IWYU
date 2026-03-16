@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; =========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   cortex_m3_core equates.
+; Project:  uKOS-X
+; Goal:     cortex_m3_core equates.
 ;
 ;-----
 ;                                              __ ______  _____

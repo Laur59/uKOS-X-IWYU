@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   SCB equates.
+; Project:  uKOS-X
+; Goal:     SCB equates.
 ;
 ;-----
 ;                                              __ ______  _____

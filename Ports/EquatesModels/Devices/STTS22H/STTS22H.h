@@ -9,10 +9,8 @@ SPDX-FileContributor: Florence Lorenzin
 ; ========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   ST STTS22H equates.
+; Project:  uKOS-X
+; Goal:     ST STTS22H equates.
 ;
 ;-----
 ;                                              __ ______  _____

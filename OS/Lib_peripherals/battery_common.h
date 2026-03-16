@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ===============
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   battery_common equates.
+; Project:  uKOS-X
+; Goal:     battery_common equates.
 ;
 ;-----
 ;                                              __ ______  _____

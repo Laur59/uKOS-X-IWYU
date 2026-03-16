@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   List the installed processes.
+; Project:  uKOS-X
+; Goal:     List the installed processes.
 ;
 ;-----
 ;                                              __ ______  _____

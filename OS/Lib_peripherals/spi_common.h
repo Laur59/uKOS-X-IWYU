@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ===========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   spi_commun equates.
+; Project:  uKOS-X
+; Goal:     spi_commun equates.
 ;
 ;-----
 ;                                              __ ______  _____

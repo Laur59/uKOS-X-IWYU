@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
@@ -34,7 +35,7 @@ readonly NC=$'\033[0m' # No Colour
 # --------
 
 readonly package=0.20.0
-readonly hash=f245078
+readonly hash=8b59e62
 
 TinyUSB_PACK="TinyUSB-current"
 

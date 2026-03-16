@@ -8,18 +8,16 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ====================
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     Osal kernel interface for standalone libraries.
 ;
-; Purpose:
-;   Osal kernel interface for standalone libraries.
+;           This file export the major kernel components necessary to
+;           build standalone libraries that use the kernel.
 ;
-;   This file export the major kernel components necessary to
-;   build standalone libraries that use the kernel.
-;
-;   Tipically, the following components are needed:
-;   mbox
-;   sema
-;   mutx
+;           Tipically, the following components are needed:
+;           mbox
+;           sema
+;           mutx
 ;
 ;-----
 ;                                              __ ______  _____

@@ -1,9 +1,5 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-
-#------------------------------------------------------------------------
-# common-build.
-# =============
 #
 # Project: uKOS-X
 #
@@ -22,7 +18,6 @@
 #
 #   The build does not embed wall-clock timestamps. Where applicable,
 #   SOURCE_DATE_EPOCH is expected to be honored by all toolchain components.
-#------------------------------------------------------------------------
 
 # Extract core name from project name with strict validation
 # Use PROJECT_NAME (current subproject) not CMAKE_PROJECT_NAME (top-level project)
@@ -63,7 +58,6 @@ list(APPEND OPTS_UKOS
     -std=c23
     ${CPU_SPEC}
     ${FLAGS_FP}
-    -g3
 )
 
 target_compile_definitions(${TARGET_LIB} PRIVATE

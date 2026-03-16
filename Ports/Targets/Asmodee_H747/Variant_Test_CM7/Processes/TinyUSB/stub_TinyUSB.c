@@ -9,11 +9,9 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; =============
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   stub for the "TinyUSB" library.
-;   Multiple profiles
+; Project:  uKOS-X
+; Goal:     stub for the "TinyUSB" library.
+;           Multiple profiles
 ;
 ;-----
 ;                                              __ ______  _____

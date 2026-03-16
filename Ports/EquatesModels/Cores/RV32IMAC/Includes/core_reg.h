@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; =========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   riscv_rv32_core equates.
+; Project:  uKOS-X
+; Goal:     riscv_rv32_core equates.
 ;
 ;-----
 ;                                              __ ______  _____

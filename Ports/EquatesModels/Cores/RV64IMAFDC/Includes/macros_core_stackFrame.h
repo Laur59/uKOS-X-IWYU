@@ -9,12 +9,10 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; =======================
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Stack frame management macros.
-;    This file conains the most sensitive macros
-;    for the uKernel management
+; Project:  uKOS-X
+; Goal:     Stack frame management macros.
+;           This file conains the most sensitive macros
+;           for the uKernel management
 ;
 ;-----
 ;                                              __ ______  _____

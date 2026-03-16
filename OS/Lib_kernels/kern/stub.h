@@ -8,23 +8,21 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     Kern - Stub management.
 ;
-; Purpose:
-;   Kern - Stub management.
+;           This module implements the interface with the model_kern_xyz.c_inc.
 ;
-;   This module implements the interface with the model_kern_xyz.c_inc.
+;           stub system calls
+;           -----------------
 ;
-;   stub system calls
-;   -----------------
-;
-;   void    stub_kern_init(void);
-;   void    stub_kern_runKernel(void);
-;   void    stub_kern_setLowPower(uint8_t mode);
-;   void    stub_kern_setPreciseSignal(prcs_t *handle);
-;   void    stub_kern_readTickCount(uint64_t *tickCount);
-;   void    stub_kern_newProcessTimeout(void);
-;   void    stub_kern_stopProcessTimeout(void);
+;           void    stub_kern_init(void);
+;           void    stub_kern_runKernel(void);
+;           void    stub_kern_setLowPower(uint8_t mode);
+;           void    stub_kern_setPreciseSignal(prcs_t *handle);
+;           void    stub_kern_readTickCount(uint64_t *tickCount);
+;           void    stub_kern_newProcessTimeout(void);
+;           void    stub_kern_stopProcessTimeout(void);
 ;
 ;-----
 ;                                              __ ______  _____

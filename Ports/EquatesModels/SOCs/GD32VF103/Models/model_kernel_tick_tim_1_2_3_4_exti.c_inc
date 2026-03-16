@@ -9,26 +9,24 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ===================================
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     Model for controlling the "model_kernel_tick_tim_1_2_3_4_exti" device.
 ;
-; Purpose:
-;     Model for controlling the "model_kernel_tick_tim_1_2_3_4_exti" device.
+;           Tim 3   - 1-us free running timer
+;           Tim 2   - 20-ms process timeout
+;           Tim 4   - user defined intervals for precise signals
+;           Tim 1   - 1-ms reference time
+;           EXT0    - software interruption for message passing
+;           EXT1    - software interruption for the preemption
 ;
-;     Tim 3   - 1-us free running timer
-;     Tim 2   - 20-ms process timeout
-;     Tim 4   - user defined intervals for precise signals
-;     Tim 1   - 1-ms reference time
-;     EXT0    - software interruption for message passing
-;     EXT1    - software interruption for the preemption
-;
-;     This code has to support the following routines:
-;     - model_kernel_init
-;     - model_kernel_runKernel
-;     - model_kernel_setLowPower
-;     - model_kernel_setPreciseSignal
-;     - model_kernel_readTickCount
-;     - model_kernel_newProcessTimeout
-;     - model_kernel_stopProcessTimeout
+;           This code has to support the following routines:
+;           - model_kernel_init
+;           - model_kernel_runKernel
+;           - model_kernel_setLowPower
+;           - model_kernel_setPreciseSignal
+;           - model_kernel_readTickCount
+;           - model_kernel_newProcessTimeout
+;           - model_kernel_stopProcessTimeout
 ;
 ;-----
 ;                                              __ ______  _____

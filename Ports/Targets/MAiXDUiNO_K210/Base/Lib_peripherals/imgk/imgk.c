@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; =====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   imgk manager.
+; Project:  uKOS-X
+; Goal:     imgk manager.
 ;
 ;-----
 ;                                              __ ______  _____

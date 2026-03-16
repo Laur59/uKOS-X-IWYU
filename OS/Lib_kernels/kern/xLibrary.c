@@ -8,14 +8,12 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     Kern - impure data for xlib management.
 ;
-; Purpose:
-;   Kern - C library integration for xlib management.
-;
-;   This module is responsible for C library integration with uKOS-X.
-;   For newlib: creating and swapping the impure data (_impure_ptr).
-    For picolibc: initialising per-process errno (no context switch overhead).
+;           This module is responsible for C library integration with uKOS-X.
+;           For newlib: creating and swapping the impure data (_impure_ptr).
+;           For picolibc: initialising per-process errno (no context switch overhead).
 ;
 ;-----
 ;                                              __ ______  _____

@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ===========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Basic predefined types (normally machine independent).
+; Project:  uKOS-X
+; Goal:     Basic predefined types (normally machine independent).
 ;
 ;-----
 ;                                              __ ______  _____

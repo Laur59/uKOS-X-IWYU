@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   urt4 manager.
+; Project:  uKOS-X
+; Goal:     urt4 manager.
 ;
 ;-----
 ;                                              __ ______  _____

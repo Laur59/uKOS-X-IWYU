@@ -8,11 +8,9 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ===========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   header for LVGL library.
-;   uKOS-X interface for LVGL (www.lvgl.io).
+; Project:  uKOS-X
+; Goal:     header for LVGL library.
+;           uKOS-X interface for LVGL (www.lvgl.io).
 ;
 ;-----
 ;                                              __ ______  _____

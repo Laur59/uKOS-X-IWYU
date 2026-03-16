@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   This tool cyclically verify the memory integrity.
+; Project:  uKOS-X
+; Goal:     This tool cyclically verify the memory integrity.
 ;
 ;-----
 ;                                              __ ______  _____

@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   battery manager.
+; Project:  uKOS-X
+; Goal:     battery manager.
 ;
 ;-----
 ;                                              __ ______  _____

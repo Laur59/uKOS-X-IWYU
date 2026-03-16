@@ -9,13 +9,10 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ==================
 
 ;------------------------------------------------------------------------
-;
-; Project: uKOS-X
-;
-; Purpose:
-;     Model for generating random numbers.
-;     This takes advantages from the available
-;     hardware.
+; Project:  uKOS-X
+; Goal:     Model for generating random numbers.
+;           This takes advantages from the available
+;           hardware.
 ;
 ;-----
 ;                                              __ ______  _____

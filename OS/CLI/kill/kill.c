@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Kill a module (process or other).
+; Project:  uKOS-X
+; Goal:     Kill a module (process or other).
 ;
 ;-----
 ;                                              __ ______  _____

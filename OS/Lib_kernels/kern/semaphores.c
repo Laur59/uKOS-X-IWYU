@@ -8,23 +8,21 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ===========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     Kern - Semaphore management.
 ;
-; Purpose:
-;   Kern - Semaphore management.
+;           This module implements the semaphore primitives.
 ;
-;   This module implements the semaphore primitives.
+;           Semaphore system calls
+;           ----------------------
 ;
-;   Semaphore system calls
-;   ----------------------
-;
-;   void    semaphores_init(void);
-;   int32_t kern_createSemaphore(const char_t *identifier, int32_t iniCounter, int32_t maxCounter, sema_t **handle);
-;   int32_t kern_signalSemaphore(sema_t *handle);
-;   int32_t kern_waitSemaphore(sema_t *handle, uint32_t timeout);
-;   int32_t kern_killSemaphore(sema_t *handle);
-;   int32_t kern_restartSemaphore(sema_t *handle);
-;   int32_t kern_getSemaphoreById(const char_t identifier, sema_t **handle);
+;           void    semaphores_init(void);
+;           int32_t kern_createSemaphore(const char_t *identifier, int32_t iniCounter, int32_t maxCounter, sema_t **handle);
+;           int32_t kern_signalSemaphore(sema_t *handle);
+;           int32_t kern_waitSemaphore(sema_t *handle, uint32_t timeout);
+;           int32_t kern_killSemaphore(sema_t *handle);
+;           int32_t kern_restartSemaphore(sema_t *handle);
+;           int32_t kern_getSemaphoreById(const char_t identifier, sema_t **handle);
 ;
 ;-----
 ;                                              __ ______  _____

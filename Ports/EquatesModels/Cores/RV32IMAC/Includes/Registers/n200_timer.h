@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ===========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   n200_timer equates.
+; Project:  uKOS-X
+; Goal:     n200_timer equates.
 ;
 ;-----
 ;                                              __ ______  _____

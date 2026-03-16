@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; =====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   tft0 manager (for nt35310).
+; Project:  uKOS-X
+; Goal:     tft0 manager (for nt35310).
 ;
 ;-----
 ;                                              __ ______  _____

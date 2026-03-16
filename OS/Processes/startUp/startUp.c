@@ -8,11 +8,9 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   startUp process; execute some important initialisations
-;   before jumping to the selected function.
+; Project:  uKOS-X
+; Goal:     startUp process; execute some important initialisations
+;           before jumping to the selected function.
 ;
 ;-----
 ;                                              __ ______  _____

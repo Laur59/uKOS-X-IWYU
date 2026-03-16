@@ -9,9 +9,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
 ; Project:  uKOS-X
-;
-; Purpose:
-;   NXP PF1550 equates.
+; Goal:     NXP PF1550 equates.
 ;
 ;-----
 ;                                              __ ______  _____

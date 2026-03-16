@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Display the structure of a uKOS-X object.
+; Project:  uKOS-X
+; Goal:     Display the structure of a uKOS-X object.
 ;
 ;-----
 ;                                              __ ______  _____

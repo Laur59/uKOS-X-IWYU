@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; =======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   MEMSYS equates.
+; Project:  uKOS-X
+; Goal:     MEMSYS equates.
 ;
 ;-----
 ;                                              __ ______  _____

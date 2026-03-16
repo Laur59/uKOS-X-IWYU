@@ -8,13 +8,9 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Goal:
-;   nrf5340 equates.
-;
-; Description:
-;   Generated using the .svd description
+; Project:  uKOS-X
+; Goal:     nrf5340 equates.
+;           Generated using the .svd description
 ;
 ;-----
 ;                                              __ ______  _____

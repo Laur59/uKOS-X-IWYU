@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; =================
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   stub for the connection of the "urt1" manager to the usart3 device.
+; Project:  uKOS-X
+; Goal:     stub for the connection of the "urt1" manager to the usart3 device.
 ;
 ;-----
 ;                                              __ ______  _____

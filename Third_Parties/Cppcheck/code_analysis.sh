@@ -1,15 +1,14 @@
 #!/usr/bin/env zsh
+
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
-#------------------------------------------------------------------------
 # code_analysis.
 # ==============
-#
-# Project: uKOS-X
-#
-# Purpose:
-#   Helper tool for Cppcheck static code analysis.
+
+#------------------------------------------------------------------------
+# Project:  uKOS-X
+# Goal:     Helper tool for Cppcheck static code analysis.
 #
 #-----
 #                                              __ ______  _____

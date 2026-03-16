@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   cycle tool; launch a program cyclically.
+; Project:  uKOS-X
+; Goal:     cycle tool; launch a program cyclically.
 ;
 ;-----
 ;                                              __ ______  _____

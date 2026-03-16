@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   imager process; continuous acquisition of an image.
+; Project:  uKOS-X
+; Goal:     imager process; continuous acquisition of an image.
 ;
 ;-----
 ;                                              __ ______  _____

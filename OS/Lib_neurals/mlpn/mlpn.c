@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   mlpn manager.
+; Project:  uKOS-X
+; Goal:     mlpn manager.
 ;
 ;-----
 ;                                              __ ______  _____

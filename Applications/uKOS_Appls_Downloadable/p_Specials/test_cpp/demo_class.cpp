@@ -1,6 +1,6 @@
 /*
 SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 */
 
 /*
@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ===========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Implementation file for the TestClass process manager.
+; Project:  uKOS-X
+; Goal:     Implementation file for the TestClass process manager.
 ;
 ;-----
 ;                                              __ ______  _____

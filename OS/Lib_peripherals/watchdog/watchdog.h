@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   watchdog manager.
+; Project:  uKOS-X
+; Goal:     watchdog manager.
 ;
 ;-----
 ;                                              __ ______  _____

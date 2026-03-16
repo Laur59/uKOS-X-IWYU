@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Display the log fifo captured with LOG().
+; Project:  uKOS-X
+; Goal:     Display the log fifo captured with LOG().
 ;
 ;-----
 ;                                              __ ______  _____

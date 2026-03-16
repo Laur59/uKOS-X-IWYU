@@ -8,12 +8,10 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ==========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     Kern - Scheduler management.
 ;
-; Purpose:
-;   Kern - Scheduler management.
-;
-;   This module is responsible for controlling the logic of the uKernel.
+;           This module is responsible for controlling the logic of the uKernel.
 ;
 ;-----
 ;                                              __ ______  _____

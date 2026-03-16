@@ -9,23 +9,21 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ==========================
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     Model for controlling the "usart - esp32" device.
+;           wifi mode in access point
 ;
-; Purpose:
-;     Model for controlling the "usart - esp32" device.
-;     wifi mode in access point
+;           Set-up a personalised access-point:
+;           AT+CWMODE=2
+;           AT+CWSAP="uKOS-X_wifi","",1,0,4,0
 ;
-;     Set-up a personalised access-point:
-;     AT+CWMODE=2
-;     AT+CWSAP="uKOS-X_wifi","",1,0,4,0
+;           Open a TCP server:
+;           AT+CIPMUX=1
+;           AT+CIPSERVERMAXCONN=1
+;           AT+CIPSERVER=1,9999
 ;
-;     Open a TCP server:
-;     AT+CIPMUX=1
-;     AT+CIPSERVERMAXCONN=1
-;     AT+CIPSERVER=1,9999
-;
-;     Set-up the Mac
-;     nc 192.168.4.1 9999
+;           Set-up the Mac
+;           nc 192.168.4.1 9999
 ;
 ;-----
 ;                                              __ ______  _____

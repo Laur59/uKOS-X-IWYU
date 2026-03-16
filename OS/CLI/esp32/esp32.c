@@ -8,11 +8,9 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   This tool allows to control the ESP32 Alastor chip.
-;   !!! This tool is Alastor specific.
+; Project:  uKOS-X
+; Goal:     This tool allows to control the ESP32 Alastor chip.
+;           !!! This tool is Alastor specific.
 ;
 ;-----
 ;                                              __ ______  _____

@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   alive process; blink a LED.
+; Project:  uKOS-X
+; Goal:     alive process; blink a LED.
 ;
 ;-----
 ;                                              __ ______  _____

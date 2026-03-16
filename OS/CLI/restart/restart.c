@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Make a restart.
+; Project:  uKOS-X
+; Goal:     Make a restart.
 ;
 ;-----
 ;                                              __ ______  _____

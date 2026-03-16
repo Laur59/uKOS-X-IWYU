@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ==========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Display the trace fifo captured with record_trace().
+; Project:  uKOS-X
+; Goal:     Display the trace fifo captured with record_trace().
 ;
 ;-----
 ;                                              __ ______  _____

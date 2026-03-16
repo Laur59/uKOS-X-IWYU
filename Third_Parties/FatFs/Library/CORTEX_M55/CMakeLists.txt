@@ -1,18 +1,8 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-
-#------------------------------------------------------------------------
-# CMakeLists.
-# ===========
 #
-# Project: uKOS-X
-#
-# Purpose:
-#   CMake file to build FatFs library for uKOS-X.
-#
-# Build description:
-#   Alternative way to build FatFs static library for a given core.
-#------------------------------------------------------------------------
+# uKOS-X build system
+# Builds FatFs library for Cortex-M55
 
 cmake_minimum_required(VERSION 3.26)
 

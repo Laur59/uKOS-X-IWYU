@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ===========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Some core tests.
+; Project:  uKOS-X
+; Goal:     Some core tests.
 ;
 ;-----
 ;                                              __ ______  _____

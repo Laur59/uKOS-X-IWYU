@@ -9,13 +9,9 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; =======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   stm32U5Gx equates.
-;
-; Description:
-;    Generated using the .svd description
+; Project:  uKOS-X
+; Goal:     stm32U5Gx equates.
+;           Generated using the .svd description
 ;
 ;-----
 ;                                              __ ______  _____

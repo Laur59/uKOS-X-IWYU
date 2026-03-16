@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   text manager.
+; Project:  uKOS-X
+; Goal:     text manager.
 ;
 ;-----
 ;                                              __ ______  _____

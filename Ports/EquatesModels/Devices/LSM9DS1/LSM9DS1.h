@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   ST LSM9DS1 iNEMO equates.
+; Project:  uKOS-X
+; Goal:     ST LSM9DS1 iNEMO equates.
 ;
 ;-----
 ;                                              __ ______  _____

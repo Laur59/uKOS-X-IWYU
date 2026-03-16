@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Launch a function module.
+; Project:  uKOS-X
+; Goal:     Launch a function module.
 ;
 ;-----
 ;                                              __ ______  _____

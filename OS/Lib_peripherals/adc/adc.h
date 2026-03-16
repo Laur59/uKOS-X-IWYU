@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   adc manager.
+; Project:  uKOS-X
+; Goal:     adc manager.
 ;
 ;-----
 ;                                              __ ______  _____

@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   sdcard manager.
+; Project:  uKOS-X
+; Goal:     sdcard manager.
 ;
 ;-----
 ;                                              __ ______  _____

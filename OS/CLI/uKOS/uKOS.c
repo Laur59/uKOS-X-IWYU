@@ -9,9 +9,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
 ; Project:  uKOS-X
-
-; Purpose:
-;   Give some uKOS-X info.
+; Goal:     Give some uKOS-X info.
 ;
 ;-----
 ;                                              __ ______  _____

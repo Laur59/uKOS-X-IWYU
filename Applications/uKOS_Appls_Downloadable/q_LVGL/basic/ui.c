@@ -9,11 +9,9 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ===
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Demo of a C application.
-;   Simple UI for the basic demo.
+; Project:  uKOS-X
+; Goal:     Demo of a C application.
+;           Simple UI for the basic demo.
 ;
 ;-----
 ;                                              __ ______  _____

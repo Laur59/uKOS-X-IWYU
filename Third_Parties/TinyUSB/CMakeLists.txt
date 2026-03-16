@@ -1,14 +1,8 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-
-#------------------------------------------------------------------------
-# CMakeLists.
-# ===========
 #
-# Project: uKOS-X
-#
-# Purpose:
-#   Umbrella CMake build definition for producing TinyUSB static libraries.
+# uKOS-X build system
+# Builds all TinyUSB static libraries
 #
 # Build description:
 #   This top-level CMakeLists.txt drives the build of all TinyUSB static
@@ -36,7 +30,6 @@
 #   - Family/*/SOC/profile/libTinyUSB_HS.a
 #
 # Supported SoCs and profiles are defined in core.list.
-#------------------------------------------------------------------------
 
 cmake_minimum_required(VERSION 3.26)
 
@@ -70,7 +63,7 @@ message("")
 
 # Package version and commit hash (matching build_with_cmake.sh)
 set(TINYUSB_VERSION "0.20.0")
-set(TINYUSB_HASH "f245078")
+set(TINYUSB_HASH "8b59e62")
 
 message(STATUS "Fetching TinyUSB version ${TINYUSB_VERSION} (commit ${TINYUSB_HASH})")
 

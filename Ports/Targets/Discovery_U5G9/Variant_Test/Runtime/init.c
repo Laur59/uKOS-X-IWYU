@@ -9,14 +9,12 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; =====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     Low level init for the uKOS-X Discovery_U5G9 module.
 ;
-; Purpose:
-;   Low level init for the uKOS-X Discovery_U5G9 module.
-;
-;   !!! This code HAS not to contain static data.
-;   !!! It is called before to copy and to initialise
-;   !!! the variable into the RAM.
+;           !!! This code HAS not to contain static data.
+;           !!! It is called before to copy and to initialise
+;           !!! the variable into the RAM.
 ;
 ;-----
 ;                                              __ ______  _____

@@ -8,25 +8,23 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     Bench 00:   Compute the X-Y projection and the histogram of
+;                       a small square array (50 x 50 uint8_t) elements.
+;                       The data is located in the CPU internal memory
 ;
-; Purpose:
-;   Bench 00: Compute the X-Y projection and the histogram of
-;             a small square array (50 x 50 uint8_t) elements.
-;             The data is located in the CPU internal memory
+;           Target used: Nucleo_H743 @ 480-MHz
+;           Target used: Nucleo_N657 @ 600-MHz
+;           Target used: MAiXDUiNO_K210 @ 400-MHz
+;           Target used: Discovery_U5G9 @ 160-MHz
 ;
-;   Target used: Nucleo_H743 @ 480-MHz
-;   Target used: Nucleo_N657 @ 600-MHz
-;   Target used: MAiXDUiNO_K210 @ 400-MHz
-;   Target used: Discovery_U5G9 @ 160-MHz
+;           Bench results in [us]:
 ;
-;   Bench results in [us]:
-;
-;                                _fill   _projX  _projY  _histo
-;   Nucleo_H743 @ 480-MHz       12      41      18      30
-;   Nucleo_N657 @ 600-MHz       22      34      26      44
-;   MAiXDUiNO_K210 @ 400-MHz    34      39      46      71
-;   Discovery_U5G9 @ 160-MHz    97      114     97      147
+;                                       _fill   _projX  _projY  _histo
+;           Nucleo_H743 @ 480-MHz       12      41      18      30
+;           Nucleo_N657 @ 600-MHz       22      34      26      44
+;           MAiXDUiNO_K210 @ 400-MHz    34      39      46      71
+;           Discovery_U5G9 @ 160-MHz    97      114     97      147
 ;
 ;-----
 ;                                              __ ______  _____

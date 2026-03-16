@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ==========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   System errors.
+; Project:  uKOS-X
+; Goal:     System errors.
 ;
 ;-----
 ;                                              __ ______  _____

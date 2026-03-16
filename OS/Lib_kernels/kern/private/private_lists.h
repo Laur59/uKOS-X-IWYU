@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ==============
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Kern - List management.
+; Project:  uKOS-X
+; Goal:     Kern - List management.
 ;
 ;           Private uKernel variables.
 ;

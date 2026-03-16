@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; =====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Octo SPI manager (for lcd).
+; Project:  uKOS-X
+; Goal:     Octo SPI manager (for lcd).
 ;
 ;-----
 ;                                              __ ______  _____

@@ -8,12 +8,10 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ===========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     Kern - Identifier management (compare the object IDs)
 ;
-; Purpose:
-;   Kern - Identifier management (compare the object IDs)
-;
-;   This module is responsible for manipulating the identifiers of the uKernel.
+;           This module is responsible for manipulating the identifiers of the uKernel.
 ;
 ;-----
 ;                                              __ ______  _____

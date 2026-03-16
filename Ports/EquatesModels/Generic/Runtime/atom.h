@@ -9,12 +9,10 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; =====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Atomic primitives for multi-core.
-;   These calls uses the low level gcc implementation and
-;   are core independent
+; Project:  uKOS-X
+; Goal:     Atomic primitives for multi-core.
+;           These calls uses the low level gcc implementation and
+;           are core independent
 ;
 ;-----
 ;                                              __ ______  _____

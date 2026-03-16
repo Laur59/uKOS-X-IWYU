@@ -9,17 +9,15 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; =======================
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     Model for controlling the "imager" device (single DMA transfers).
 ;
-; Purpose:
-;     Model for controlling the "imager" device (single DMA transfers).
-;
-;     The DCMI provides new data every ~30-ns (with a pixel clok @ 27-MHz)!
-;     This rate cannot be sustained by the SDRAM.
-;     The strategy consist in using an internal line buffer
-;     (located in the internal SRAM) to collect a complete horizontal line.
-;     During the H blanking the CPU copies the data from the collected
-;     horizontal line into the SDRAM for building the final image.
+;           The DCMI provides new data every ~30-ns (with a pixel clok @ 27-MHz)!
+;           This rate cannot be sustained by the SDRAM.
+;           The strategy consist in using an internal line buffer
+;           (located in the internal SRAM) to collect a complete horizontal line.
+;           During the H blanking the CPU copies the data from the collected
+;           horizontal line into the SDRAM for building the final image.
 ;
 ;-----
 ;                                              __ ______  _____

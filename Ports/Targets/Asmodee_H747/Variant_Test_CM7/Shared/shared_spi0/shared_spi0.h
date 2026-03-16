@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ============
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   For the shared_spi0 manager module.
+; Project:  uKOS-X
+; Goal:     For the shared_spi0 manager module.
 ;
 ;-----
 ;                                              __ ______  _____

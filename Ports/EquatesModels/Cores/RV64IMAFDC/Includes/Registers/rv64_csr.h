@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; =========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   rv64_csr equates.
+; Project:  uKOS-X
+; Goal:     rv64_csr equates.
 ;
 ;-----
 ;                                              __ ______  _____

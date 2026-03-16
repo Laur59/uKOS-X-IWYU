@@ -8,19 +8,17 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     getTemp process; continuous acquisition of the temperature.
+;           The result is pushed in a mailbox.
 ;
-; Purpose:
-;   getTemp process; continuous acquisition of the temperature.
-;   The result is pushed in a mailbox.
-;
-;   Process                             Tool
-;   temperature                         X
-;   while
-;       - malloc of a buffer k
-;       - send the buffer k             - receive the buffer k
-;       - k++                           - copy it
-;                                       - free the buffer k
+;           Process                             Tool
+;           temperature                         X
+;           while
+;               - malloc of a buffer k
+;               - send the buffer k             - receive the buffer k
+;               - k++                           - copy it
+;                                               - free the buffer k
 ;
 ;-----
 ;                                              __ ______  _____

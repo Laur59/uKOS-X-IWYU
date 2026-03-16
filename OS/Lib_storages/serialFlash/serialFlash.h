@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ============
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   serialFlash manager.
+; Project:  uKOS-X
+; Goal:     serialFlash manager.
 ;
 ;-----
 ;                                              __ ______  _____

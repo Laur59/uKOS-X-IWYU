@@ -1,15 +1,13 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
-#------------------------------------------------------------------------
 # gcc-riscv.
 # ==========
-#
-# Project: uKOS-X
-#
-# Purpose:
-#   Toolchain file for configuring Cmake to build cross-compiling
-#   projects based on RISC-V core.
+
+#------------------------------------------------------------------------
+# Project:  uKOS-X
+# Goal:     Toolchain file for configuring Cmake to build cross-compiling
+#           projects based on RISC-V core.
 #
 #-----
 #                                              __ ______  _____

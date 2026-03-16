@@ -9,9 +9,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
 ; Project:  uKOS-X
-;
-; Purpose:
-;   lib_peripherals system call interface module.
+; Goal:     lib_peripherals system call interface module.
 ;
 ;-----
 ;                                              __ ______  _____

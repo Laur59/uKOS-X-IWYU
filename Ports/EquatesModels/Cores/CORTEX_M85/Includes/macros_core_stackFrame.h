@@ -1,20 +1,20 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+*/
+
+/*
 ; macros_core_stackFrame.
 ; =======================
 
-; SPDX-License-Identifier: MIT
-
 ;------------------------------------------------------------------------
-; Author:   Edo. Franzi     The 2025-01-01
-; Modifs:
-;
 ; Project:  uKOS-X
 ; Goal:     Stack frame management macros.
 ;           This file conains the most sensitive macros
 ;           for the uKernel management
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+;-----
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -465,6 +465,8 @@ enum {
 #define CORE_DUMP_SAVE_STACK_FRAME                                                                                              \
                                 __asm volatile ("                                                                            \n \
                                 cpsid       i                                                                                \n \
+                                mov         lr,r0                                                                            \n \
+                                msr         msp,r1                                                                           \n \
                                 tst         lr,#0x4                                                                          \n \
                                 ite         eq                                                                               \n \
                                 mrseq       r1,msp                                                                           \n \

@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ==========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;    Model for controlling the "i2c" device.
+; Project:  uKOS-X
+; Goal:     Model for controlling the "i2c" device.
 ;
 ;-----
 ;                                              __ ______  _____

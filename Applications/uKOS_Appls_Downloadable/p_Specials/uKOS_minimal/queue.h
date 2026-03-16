@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Queue definition.
+; Project:  uKOS-X
+; Goal:     Queue definition.
 ;
 ;-----
 ;                                              __ ______  _____

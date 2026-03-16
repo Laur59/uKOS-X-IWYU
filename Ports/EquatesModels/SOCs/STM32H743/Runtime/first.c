@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Vectors for the uKOS-X system (first).
+; Project:  uKOS-X
+; Goal:     Vectors for the uKOS-X system (first).
 ;
 ;-----
 ;                                              __ ______  _____

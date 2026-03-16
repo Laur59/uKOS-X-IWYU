@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; =====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Simple 8 x 16 pixel font.
+; Project:  uKOS-X
+; Goal:     Simple 8 x 16 pixel font.
 ;
 ;-----
 ;                                              __ ______  _____

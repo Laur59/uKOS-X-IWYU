@@ -9,25 +9,23 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ================================
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     Model for controlling the "model_kernel_tim_0_a0_a1_svc_C0" device.
 ;
-; Purpose:
-;    Model for controlling the "model_kernel_tim_0_a0_a1_svc_C0" device.
+;           Tim 0   - 1-us free running timer
+;           Ala 0   - 20-ms process timeout
+;           Ala 1   - 1-ms reference time
+;           svc     - software interruption for message passing
+;           PendSV  - software interruption for the preemption
 ;
-;    Tim 0   - 1-us free running timer
-;    Ala 0   - 20-ms process timeout
-;    Ala 1   - 1-ms reference time
-;    svc     - software interruption for message passing
-;    PendSV  - software interruption for the preemption
-;
-;    This code has to support the following routines:
-;    - model_kernel_init_C0
-;    - model_kernel_runKernel_C0
-;    - model_kernel_setLowPower_C0
-;    - model_kernel_setPreciseSignal_C0
-;    - model_kernel_readTickCount_C0
-;    - model_kernel_newProcessTimeout_C0
-;    - model_kernel_stopProcessTimeout_C0
+;           This code has to support the following routines:
+;           - model_kernel_init_C0
+;           - model_kernel_runKernel_C0
+;           - model_kernel_setLowPower_C0
+;           - model_kernel_setPreciseSignal_C0
+;           - model_kernel_readTickCount_C0
+;           - model_kernel_newProcessTimeout_C0
+;           - model_kernel_stopProcessTimeout_C0
 ;
 ;-----
 ;                                              __ ______  _____

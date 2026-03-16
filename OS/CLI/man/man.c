@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Show the help of the module.
+; Project:  uKOS-X
+; Goal:     Show the help of the module.
 ;
 ;-----
 ;                                              __ ______  _____

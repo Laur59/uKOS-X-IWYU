@@ -9,29 +9,27 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; =========================================
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     Model for controlling the "model_kernel_tickless_tim_rtc_0_1_svc.c_inc" device.
+;           This model uses less timers but for long delay, we need to wake-up
+;           more often the cpu; tipically every ~2-h (2^24 / 2).
 ;
-; Purpose:
-;    Model for controlling the "model_kernel_tickless_tim_rtc_0_1_svc.c_inc" device.
-;    This model uses less timers but for long delay, we need to wake-up
-;    more often the cpu; tipically every ~2-h (2^24 / 2).
+;           Tim 0   - CC1 1-us free running timer
+;           Tim 1   - CC0 20-ms process timeout
+;           Tim 0   - CC2 user defined intervals for precise signals
+;           RTC 0   - CC0 1-ms reference time
+;           Tim 0   - CC3 Tim 0 overflow
+;           svc     - software interruption for message passing
+;           PendSV  - software interruption for the preemption
 ;
-;    Tim 0   - CC1 1-us free running timer
-;    Tim 1   - CC0 20-ms process timeout
-;    Tim 0   - CC2 user defined intervals for precise signals
-;    RTC 0   - CC0 1-ms reference time
-;    Tim 0   - CC3 Tim 0 overflow
-;    svc     - software interruption for message passing
-;    PendSV  - software interruption for the preemption
-;
-;    This code has to support the following routines:
-;    - model_kernel_init
-;    - model_kernel_runKernel
-;    - model_kernel_setLowPower
-;    - model_kernel_setPreciseSignal
-;    - model_kernel_readTickCount
-;    - model_kernel_newProcessTimeout
-;    - model_kernel_stopProcessTimeout
+;           This code has to support the following routines:
+;           - model_kernel_init
+;           - model_kernel_runKernel
+;           - model_kernel_setLowPower
+;           - model_kernel_setPreciseSignal
+;           - model_kernel_readTickCount
+;           - model_kernel_newProcessTimeout
+;           - model_kernel_stopProcessTimeout
 ;
 ;-----
 ;                                              __ ______  _____

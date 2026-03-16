@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   led manager.
+; Project:  uKOS-X
+; Goal:     led manager.
 ;
 ;-----
 ;                                              __ ______  _____

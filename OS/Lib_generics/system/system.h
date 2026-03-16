@@ -8,26 +8,24 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     system manager.
 ;
-; Purpose:
-;   system manager.
+;           Management of the User RAM
 ;
-;   Management of the User RAM
+;           The User RAM is used for these purposes:
+;           1. Download and execute a programm or a tool
+;           2. Download without the excecution of a program
+;               - For a later excecution
+;               - For burning the programm in a Mass Storage device
 ;
-;   The User RAM is used for these purposes:
-;   1. Download and execute a programm or a tool
-;   2. Download without the excecution of a program
-;       - For a later excecution
-;       - For burning the programm in a Mass Storage device
+;           3. Excecution from a Mass Storage device (load the User RAM and execute)
 ;
-;   3. Excecution from a Mass Storage device (load the User RAM and execute)
+;           Logic for the management of the User RAM
 ;
-;   Logic for the management of the User RAM
-;
-;   Download (cases 1 and 2)        lock the User RAM forever (until a restart)
-;   Excecution from MEME1 (case 4)  lock the User RAM forever (until a restart)
-;   Listing (case 3)                lock the User RAM during the usage and then, unlock
+;           Download (cases 1 and 2)        lock the User RAM forever (until a restart)
+;           Excecution from MEME1 (case 4)  lock the User RAM forever (until a restart)
+;           Listing (case 3)                lock the User RAM during the usage and then, unlock
 ;
 ;-----
 ;                                              __ ______  _____

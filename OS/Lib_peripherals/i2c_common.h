@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ===========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   i2c_commun equates.
+; Project:  uKOS-X
+; Goal:     i2c_commun equates.
 ;
 ;-----
 ;                                              __ ______  _____

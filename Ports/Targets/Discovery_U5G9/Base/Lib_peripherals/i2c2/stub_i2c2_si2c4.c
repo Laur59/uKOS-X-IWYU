@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ================
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   stub for the connection of the "i2c2" manager to the si2c4 device.
+; Project:  uKOS-X
+; Goal:     stub for the connection of the "i2c2" manager to the si2c4 device.
 ;
 ;-----
 ;                                              __ ______  _____

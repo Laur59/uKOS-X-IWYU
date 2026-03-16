@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   storage manager.
+; Project:  uKOS-X
+; Goal:     storage manager.
 ;
 ;-----
 ;                                              __ ______  _____

@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   launcher process; launch all the defined daemon & processes.
+; Project:  uKOS-X
+; Goal:     launcher process; launch all the defined daemon & processes.
 ;
 ;-----
 ;                                              __ ______  _____

@@ -9,21 +9,19 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ==================
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
+; Project:  uKOS-X
+; Goal:     Model for generating pseudo random numbers.
+;           The generator is implemented using on a
+;           linear congruential generator (LCG)
 ;
-; Purpose:
-;    Model for generating pseudo random numbers.
-;    The generator is implemented using on a
-;    linear congruential generator (LCG)
+;           X[n + 1] = (Ka * X[n] + Kc) * mod(Km)
 ;
-;    X[n + 1] = (Ka * X[n] + Kc) * mod(Km)
+;           For the BSD formula
+;           Ka = 1103515245
+;           Kc = 12345
+;           X0: use the crt0_randomSeed initial seed
 ;
-;    For the BSD formula
-;    Ka = 1103515245
-;    Kc = 12345
-;    X0: use the crt0_randomSeed initial seed
-;
-;    See wikipedia "Linear congruential generator"
+;           See wikipedia "Linear congruential generator"
 ;
 ;-----
 ;                                              __ ______  _____

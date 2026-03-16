@@ -9,11 +9,9 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ===============================
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   stub for the connection of the "wfi0" manager to the "usart1 - esp32" device.
-;   wifi mode in access point
+; Project:  uKOS-X
+; Goal:     stub for the connection of the "wfi0" manager to the "usart1 - esp32" device.
+;           wifi mode in access point
 ;
 ;-----
 ;                                              __ ______  _____

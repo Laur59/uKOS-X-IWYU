@@ -8,12 +8,10 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   wkspi tool.
-;   This tool allows to operate with an spi device.
-;   For the moment this tool reserved for STM CPU32 SoCs!!
+; Project:  uKOS-X
+; Goal:     wkspi tool.
+;           This tool allows to operate with an spi device.
+;           For the moment this tool reserved for STM CPU32 SoCs!!
 ;
 ;-----
 ;                                              __ ______  _____

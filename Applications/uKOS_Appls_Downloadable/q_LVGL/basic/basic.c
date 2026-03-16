@@ -9,11 +9,9 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; ======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Demo of a C application.
-;   This application shows how to operate with the uKOS-X uKernel.
+; Project:  uKOS-X
+; Goal:     Demo of a C application.
+;           This application shows how to operate with the uKOS-X uKernel.
 ;
 ;-----
 ;                                              __ ______  _____

@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   machine manager.
+; Project:  uKOS-X
+; Goal:     machine manager.
 ;
 ;-----
 ;                                              __ ______  _____

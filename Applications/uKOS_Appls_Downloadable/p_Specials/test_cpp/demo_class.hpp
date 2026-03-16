@@ -1,16 +1,15 @@
 /*
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+*/
+
+/*
 ; demo_class.
 ; ===========
 
 ;------------------------------------------------------------------------
-; SPDX-License-Identifier: MIT
-;
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-;
-; Project: uKOS-X
-;
-; Purpose:
-;   Header file for the TestClass process manager.
+; Project:	uKOS-X
+; Goal:		Header file for the TestClass process manager.
 ;
 ;-----
 ;                                              __ ______  _____

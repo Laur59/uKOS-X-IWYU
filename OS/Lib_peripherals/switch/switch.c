@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; =======
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   switch manager.
+; Project:  uKOS-X
+; Goal:     switch manager.
 ;
 ;-----
 ;                                              __ ______  _____

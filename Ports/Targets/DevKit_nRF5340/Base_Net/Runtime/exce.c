@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; =====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Exceptions for the DevKit_nRF5340 module.
+; Project:  uKOS-X
+; Goal:     Exceptions for the DevKit_nRF5340 module.
 ;
 ;-----
 ;                                              __ ______  _____
@@ -93,8 +91,6 @@ void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 // Prototypes
 
-static  void    model_coreDump_displayExceptions(void);
-static  void    model_coreDump_displayInterruptions(void);
 static  void    local_setLEDs(uint8_t ledNb);
 static  void    local_clrLEDs(uint8_t ledNb);
 static  void    local_cpyLEDs(uint8_t value);
@@ -111,11 +107,11 @@ void    exce_init(void) {
     uint8_t     nbExceptions, nbInterruptions;
 
     for (nbExceptions = 0U; nbExceptions < KNB_EXCEPTIONS; nbExceptions++) {
-        vExce_indExcVectors[GET_RUNNING_CORE][nbExceptions] = model_coreDump_displayExceptions;
+        vExce_indExcVectors[GET_RUNNING_CORE][nbExceptions] = nullptr;
     }
 
     for (nbInterruptions = 0U; nbInterruptions < KNB_INTERRUPTIONS; nbInterruptions++) {
-        vExce_indIntVectors[GET_RUNNING_CORE][nbInterruptions] = model_coreDump_displayInterruptions;
+        vExce_indIntVectors[GET_RUNNING_CORE][nbInterruptions] = nullptr;
     }
 
     core_setBASEPRI((uint32_t)KINT_LEVEL_PERIPHERALS<<(uint32_t)KNVIC_PRIORITY_SHIFT);

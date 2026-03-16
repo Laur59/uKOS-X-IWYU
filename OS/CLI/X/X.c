@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ==
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   Control the temperature.
+; Project:  uKOS-X
+; Goal:     Control the temperature.
 ;
 ;-----
 ;                                              __ ______  _____

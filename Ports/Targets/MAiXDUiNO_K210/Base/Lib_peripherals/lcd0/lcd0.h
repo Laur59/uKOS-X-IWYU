@@ -9,10 +9,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; =====
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   lcd0 manager.
+; Project:  uKOS-X
+; Goal:     lcd0 manager.
 ;
 ;-----
 ;                                              __ ______  _____

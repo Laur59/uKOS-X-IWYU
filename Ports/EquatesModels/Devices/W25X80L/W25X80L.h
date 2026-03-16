@@ -9,9 +9,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
 ; Project:  uKOS-X
-;
-; Purpose:
-;   EEPROM W25X80L equates.
+; Goal:     EEPROM W25X80L equates.
 ;
 ;-----
 ;                                              __ ______  _____

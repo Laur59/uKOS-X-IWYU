@@ -8,10 +8,8 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ; ========
 
 ;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   "TinyUSB" management.
+; Project:  uKOS-X
+; Goal:     "TinyUSB" management.
 ;
 ;-----
 ;                                              __ ______  _____
