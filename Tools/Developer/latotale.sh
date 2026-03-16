@@ -102,41 +102,41 @@ print "\nVersion of clang for RISC-V"
 print
 #
 if [[ $do_newlib ]]; then
-    [[ $do_gcc ]] && ./_build_cmake.sh
-    [[ $do_clang ]] && ./_build_cmake.sh -L
+    [[ $do_gcc ]] && ./_build.sh -G
+    [[ $do_clang ]] && ./_build.sh
 
     if [[ $do_Y ]]; then
-        [[ $do_gcc ]] && ./_build_cmake.sh -Y
-        [[ $do_clang ]] && ./_build_cmake.sh -LY
+        [[ $do_gcc ]] && ./_build.sh -GY
+        [[ $do_clang ]] && ./_build.sh -Y
     fi
 
     if [[ $do_U ]]; then
-        [[ $do_gcc ]] && ./_build_cmake.sh -U
-        [[ $do_clang ]] && ./_build_cmake.sh -LU
+        [[ $do_gcc ]] && ./_build.sh -GU
+        [[ $do_clang ]] && ./_build.sh -U
 
         if [[ $do_Y ]]; then
-            [[ $do_gcc ]] && ./_build_cmake.sh -UY
-            [[ $do_clang ]] && ./_build_cmake.sh -LUY
+            [[ $do_gcc ]] && ./_build.sh -GUY
+            [[ $do_clang ]] && ./_build.sh -UY
         fi
     fi
 fi
 #
 if [[ $do_picolibc ]]; then
-    [[ $do_gcc ]] && ./_build_cmake.sh -P
-    [[ $do_clang ]] && ./_build_cmake.sh -PL
+    [[ $do_gcc ]] && ./_build.sh -P
+    [[ $do_clang ]] && ./_build.sh -PL
 
     if [[ $do_Y ]]; then
-        [[ $do_gcc ]] && ./_build_cmake.sh -PY
-        [[ $do_clang ]] && ./_build_cmake.sh -PLY
+        [[ $do_gcc ]] && ./_build.sh -PY
+        [[ $do_clang ]] && ./_build.sh -PLY
     fi
 
     if [[ $do_U ]]; then
-        [[ $do_gcc ]] && ./_build_cmake.sh -PU
-        [[ $do_clang ]] && ./_build_cmake.sh -PLU
+        [[ $do_gcc ]] && ./_build.sh -PU
+        [[ $do_clang ]] && ./_build.sh -PLU
 
         if [[ $do_Y ]]; then
-            [[ $do_gcc ]] && ./_build_cmake.sh -PUY
-            [[ $do_clang ]] && ./_build_cmake.sh -PLUY
+            [[ $do_gcc ]] && ./_build.sh -PUY
+            [[ $do_clang ]] && ./_build.sh -PLUY
         fi
     fi
 fi
