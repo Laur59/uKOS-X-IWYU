@@ -17,6 +17,8 @@ The main differences compared to the upstream repository are:
 This fork aims to improve maintainability and build correctness rather than to
 extend or modify functionality.
 
+For project history, heritage, and credits, see [ABOUT.md](ABOUT.md).
+
 ## Unsupported components in this fork
 
 This fork is based on the upstream repository:

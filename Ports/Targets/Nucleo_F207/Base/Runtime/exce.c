@@ -13,36 +13,6 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ; Goal:     Exceptions for the Nucleo_F207 module.
 ;
 ;-----
-;                                              __ ______  _____
-;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
-;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
-;   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
-;                                     \__,_/_/ |_\____//____/
-;   edo.franzi@ukos.ch
-;
-;   Description: Lightweight, real-time multitasking operating
-;   system for embedded microcontroller and DSP-based systems.
-;
-;   Permission is hereby granted, free of charge, to any person
-;   obtaining a copy of this software and associated documentation
-;   files (the "Software"), to deal in the Software without restriction,
-;   including without limitation the rights to use, copy, modify,
-;   merge, publish, distribute, sublicense, and/or sell copies of the
-;   Software, and to permit persons to whom the Software is furnished
-;   to do so, subject to the following conditions:
-;
-;   The above copyright notice and this permission notice shall be
-;   included in all copies or substantial portions of the Software.
-;
-;   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-;   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-;   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-;   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
-;   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-;   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-;   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-;   SOFTWARE.
-;
 ;------------------------------------------------------------------------
 */
 
@@ -107,16 +77,16 @@ static  void    local_cpyLEDs(uint8_t value);
 void    exce_init(void) {
     uint8_t     nbExceptions, nbInterruptions;
 
-    for (nbExceptions = 0U; nbExceptions < KNB_EXCEPTIONS; nbExceptions++) {
+    for (nbExceptions = 0u; nbExceptions < KNB_EXCEPTIONS; nbExceptions++) {
         vExce_indExcVectors[GET_RUNNING_CORE][nbExceptions] = nullptr;
     }
 
-    for (nbInterruptions = 0U; nbInterruptions < KNB_INTERRUPTIONS; nbInterruptions++) {
+    for (nbInterruptions = 0u; nbInterruptions < KNB_INTERRUPTIONS; nbInterruptions++) {
         vExce_indIntVectors[GET_RUNNING_CORE][nbInterruptions] = nullptr;
     }
 
     core_setBASEPRI((uint32_t)KINT_LEVEL_PERIPHERALS<<(uint32_t)KNVIC_PRIORITY_SHIFT);
-    SCB->AIRCR = SCB_AIRCR_VECTKEY_MASK | 0x0300U;
+    SCB->AIRCR = SCB_AIRCR_VECTKEY_MASK | 0x0300u;
 }
 
 // Model callbacks
@@ -135,21 +105,21 @@ static void __attribute__ ((noreturn)) cb_signal(uint8_t mode) {
     switch (mode) {
         default:
         case KEXCEPTION: {
-            local_cpyLEDs(0xFFU);
+            local_cpyLEDs(0xFFu);
             while (true) {
-                cmns_wait(1000000U);
-                local_setLEDs(0U);
-                cmns_wait(1000000U);
-                local_clrLEDs(0U);
+                cmns_wait(1000000u);
+                local_setLEDs(0u);
+                cmns_wait(1000000u);
+                local_clrLEDs(0u);
             }
         }
         case KINTERRUPTION: {
-            local_cpyLEDs(0xFFU);
+            local_cpyLEDs(0xFFu);
             while (true) {
-                cmns_wait(1000000U);
-                local_setLEDs(1U);
-                cmns_wait(1000000U);
-                local_clrLEDs(1U);
+                cmns_wait(1000000u);
+                local_setLEDs(1u);
+                cmns_wait(1000000u);
+                local_clrLEDs(1u);
             }
         }
     }
@@ -167,9 +137,9 @@ static void __attribute__ ((noreturn)) cb_signal(uint8_t mode) {
 static  void    local_setLEDs(uint8_t ledNb) {
 
     switch (ledNb) {
-        case 0: { GPIOB->ODR |= (1U<<BLED_0); break; }
-        case 1: { GPIOB->ODR |= (1U<<BLED_1); break; }
-        case 2: { GPIOA->ODR |= (1U<<BLED_2); break; }
+        case 0: { GPIOB->ODR |= (1u<<BLED_0); break; }
+        case 1: { GPIOB->ODR |= (1u<<BLED_1); break; }
+        case 2: { GPIOA->ODR |= (1u<<BLED_2); break; }
         default: {
 
 // Make MISRA happy :-)
@@ -188,9 +158,9 @@ static  void    local_setLEDs(uint8_t ledNb) {
 static  void    local_clrLEDs(uint8_t ledNb) {
 
     switch (ledNb) {
-        case 0: { GPIOB->ODR &= (uint32_t)~(1U<<BLED_0); break; }
-        case 1: { GPIOB->ODR &= (uint32_t)~(1U<<BLED_1); break; }
-        case 2: { GPIOA->ODR &= (uint32_t)~(1U<<BLED_2); break; }
+        case 0: { GPIOB->ODR &= (uint32_t)~(1u<<BLED_0); break; }
+        case 1: { GPIOB->ODR &= (uint32_t)~(1u<<BLED_1); break; }
+        case 2: { GPIOA->ODR &= (uint32_t)~(1u<<BLED_2); break; }
         default: {
 
 // Make MISRA happy :-)
@@ -209,10 +179,10 @@ static  void    local_clrLEDs(uint8_t ledNb) {
 static  void    local_cpyLEDs(uint8_t value) {
     uint8_t     led, mask;
 
-    mask = 0x01U;
-    for (led = 0U; led < 3U; led++) {
+    mask = 0x01u;
+    for (led = 0u; led < 3u; led++) {
         (value & mask) ? (local_setLEDs(led)) : (local_clrLEDs(led));
-        mask = (uint8_t)(mask<<1U);
+        mask = (uint8_t)(mask<<1u);
     }
 }
 

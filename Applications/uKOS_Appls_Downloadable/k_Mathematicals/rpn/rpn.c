@@ -23,36 +23,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;           /
 ;
 ;-----
-;                                              __ ______  _____
-;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
-;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
-;   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
-;                                     \__,_/_/ |_\____//____/
-;   edo.franzi@ukos.ch
-;
-;   Description: Lightweight, real-time multitasking operating
-;   system for embedded microcontroller and DSP-based systems.
-;
-;   Permission is hereby granted, free of charge, to any person
-;   obtaining a copy of this software and associated documentation
-;   files (the "Software"), to deal in the Software without restriction,
-;   including without limitation the rights to use, copy, modify,
-;   merge, publish, distribute, sublicense, and/or sell copies of the
-;   Software, and to permit persons to whom the Software is furnished
-;   to do so, subject to the following conditions:
-;
-;   The above copyright notice and this permission notice shall be
-;   included in all copies or substantial portions of the Software.
-;
-;   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-;   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-;   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-;   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
-;   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-;   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-;   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-;   SOFTWARE.
-;
 ;------------------------------------------------------------------------
 */
 
@@ -102,6 +72,25 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
+#if (defined(ROMABLE_S))
+
+// Prototypes
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+
+MODULE(
+    Rpn,                                // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_ROMABLE_0,                     // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
+);
+
+#else
 MODULE(
     UserAppl,                           // Module name (the first letter has to be upper case)
     KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
@@ -110,17 +99,18 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
+#endif
 
 // Application specific
 // ====================
 
-#define KLN_CMD_LINE_BUF    256U        // Length of the command line
-#define KNB_PARAMETERS      10U         // Nb of parameters
-#define KDIGIT_PRECISION    16U         // 16 digits for decimal 64-bits
-#define KNO_TRAP            0U          // No trap
+#define KLN_CMD_LINE_BUF    256u        // Length of the command line
+#define KNB_PARAMETERS      10u         // Nb of parameters
+#define KDIGIT_PRECISION    16u         // 16 digits for decimal 64-bits
+#define KNO_TRAP            0u          // No trap
 
 typedef struct  command         command_t;
 typedef struct  machineStack    machineStack_t;
@@ -169,11 +159,11 @@ static  void    local_pow(uint32_t argc, const char_t *argv[]);
  */
 static void __attribute__ ((noreturn)) aProcess(const void *argument) {
     decNumber       x;
-    uint32_t        argc = 0U;
+    uint32_t        argc = 0u;
 
 // Reserve the memory for the command line
 
-          char_t *commandLine = (char_t *)memo_malloc(KMEMO_ALIGN_8, ((KLN_CMD_LINE_BUF + 1U) * sizeof(char_t)), "cmd_line");
+          char_t *commandLine = (char_t *)memo_malloc(KMEMO_ALIGN_8, ((KLN_CMD_LINE_BUF + 1u) * sizeof(char_t)), "cmd_line");
           char_t **parameters = (char_t **)memo_malloc(KMEMO_ALIGN_8, (KNB_PARAMETERS * sizeof(char_t *)), "parameters");
     const char_t **argv       = (const char_t **)memo_malloc(KMEMO_ALIGN_8, (KNB_PARAMETERS * sizeof(char_t *)), "argv");
 
@@ -200,14 +190,14 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
 
         memcpy((void *)parameters, (const void *)argv, KNB_PARAMETERS);
 
-        vSet.status = 0U;
+        vSet.status = 0u;
         decNumberFromString(&x, parameters[0], &vSet);
 
 // The commandLine could be a decimal number or an order.
 // If decNumberFromString returns a problem, the command line
 // could be a command. If no, indicate a syntax error.
 
-        if ((vSet.status & DEC_Errors) == 0U)  {
+        if ((vSet.status & DEC_Errors) == 0u)  {
             if (vEnter == true) {               vRpnStack.oX = x; local_printStack(); vEnter = false; }
             else                { local_push(); vRpnStack.oX = x; local_printStack(); vEnter = false; }
         }
@@ -220,7 +210,7 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
     memo_free((void *)parameters);
     memo_free((void *)argv);
 
-    kern_suspendProcess(1000U);
+    kern_suspendProcess(1000u);
     exit(EXIT_OS_SUCCESS);
 }
 
@@ -232,7 +222,7 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int     main(int argc, const char *argv[]) {
+MAIN_ENTRY(argc, argv[]) {
     proc_t  *process;
 
 // -------------------------------I-----------------------------------------I--------------I
@@ -276,19 +266,19 @@ int     main(int argc, const char *argv[]) {
                 (x) = vRpnStack.oX;                                                             \
                 (y) = vRpnStack.oY;                                                             \
                                                                                                 \
-                vSet.status = 0U;                                                               \
+                vSet.status = 0u;                                                               \
                 decNumber##op(&(r), &(y), &(x), &(vSet));                                       \
-                local_printStatus(1U, &(vSet));                                                 \
-                vSet.status = 0U;                                                               \
+                local_printStatus(1u, &(vSet));                                                 \
+                vSet.status = 0u;                                                               \
                 decimal64FromNumber(&(rd64), &(r), &(vSet));                                    \
-                local_printStatus(2U, &(vSet));                                                 \
-                vSet.status = 0U;                                                               \
+                local_printStatus(2u, &(vSet));                                                 \
+                vSet.status = 0u;                                                               \
                 decimal64ToString(&(rd64), (vResult));                                          \
-                local_printStatus(3U, &(vSet));                                                 \
+                local_printStatus(3u, &(vSet));                                                 \
                                                                                                 \
                 (void)dprintf(KSYST, "Result = %s\n\n", (vResult));                             \
                                                                                                 \
-                if (((vSet.status) & DEC_Errors) == 0U) { local_pop(); vRpnStack.oX = (r); }    \
+                if (((vSet.status) & DEC_Errors) == 0u) { local_pop(); vRpnStack.oX = (r); }    \
             } while (0)
 
 /*
@@ -299,7 +289,7 @@ int     main(int argc, const char *argv[]) {
  */
 static  void    local_printStatus(uint8_t n, decContext *set) {
 
-    if ((set->status & DEC_Errors) == 0U) { return; }
+    if ((set->status & DEC_Errors) == 0u) { return; }
 
     set->status &= DEC_Errors;
 

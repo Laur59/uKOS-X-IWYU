@@ -13,36 +13,6 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;           This application shows how to operate with the uKOS-X uKernel.
 ;
 ;-----
-;                                              __ ______  _____
-;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
-;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
-;   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
-;                                     \__,_/_/ |_\____//____/
-;   edo.franzi@ukos.ch
-;
-;   Description: Lightweight, real-time multitasking operating
-;   system for embedded microcontroller and DSP-based systems.
-;
-;   Permission is hereby granted, free of charge, to any person
-;   obtaining a copy of this software and associated documentation
-;   files (the "Software"), to deal in the Software without restriction,
-;   including without limitation the rights to use, copy, modify,
-;   merge, publish, distribute, sublicense, and/or sell copies of the
-;   Software, and to permit persons to whom the Software is furnished
-;   to do so, subject to the following conditions:
-;
-;   The above copyright notice and this permission notice shall be
-;   included in all copies or substantial portions of the Software.
-;
-;   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-;   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-;   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-;   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
-;   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-;   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-;   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-;   SOFTWARE.
-;
 ;------------------------------------------------------------------------
 */
 
@@ -59,7 +29,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  *                  Set the memory pool block 2, 100-Bytes
  *
  *          - P0: Use the tracing
- *                Generate an exception (core dump)
+ *                Generate an exception (cire dump)
  *                Display the registers
  *
  */
@@ -99,6 +69,25 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
+#if (defined(ROMABLE_S))
+
+// Prototypes
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+
+MODULE(
+    Pooling,                            // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_ROMABLE_0,                     // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
+);
+
+#else
 MODULE(
     UserAppl,                           // Module name (the first letter has to be upper case)
     KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
@@ -107,9 +96,10 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
+#endif
 
 // Application specific
 // ====================
@@ -162,13 +152,13 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
     PRIVILEGE_RESTORE;
 
     while (true) {
-        kern_suspendProcess(1000U);
+        kern_suspendProcess(1000u);
 
 // Fill the 3  pools
 
-        for (i = 0U; i < nbElements; i++) { array_0[i] = (uint16_t)i + 0U; }
-        for (i = 0U; i < nbElements; i++) { array_1[i] = (uint16_t)i + 1U; }
-        for (i = 0U; i < nbElements; i++) { array_2[i] = (uint16_t)i + 2U; }
+        for (i = 0u; i < nbElements; i++) { array_0[i] = (uint16_t)i + 0u; }
+        for (i = 0u; i < nbElements; i++) { array_1[i] = (uint16_t)i + 1u; }
+        for (i = 0u; i < nbElements; i++) { array_2[i] = (uint16_t)i + 2u; }
         led_toggle(KLED_1);
     }
 }
@@ -193,7 +183,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 // Waiting until P0 has filled at least once the 3 arrays
 // Get the pool information
 
-    kern_suspendProcess(2000U);
+    kern_suspendProcess(2000u);
 
     status = kern_getPoolById("Memory pool", &memoryPool);
     if (status != KERR_KERN_NOERR) { (void)dprintf(KSYST, "No pool\n"); LOG(KFATAL_USER, "No pool"); exit(EXIT_OS_FAILURE); }
@@ -223,26 +213,26 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
     PRIVILEGE_RESTORE;
 
     while (true) {
-        kern_suspendProcess(200U);
+        kern_suspendProcess(200u);
 
 // Test the 3 pools
 
-        for (i = 0U; i < nbElements; i++) {
-            if (array_0[i] != (i + 0U)) {
+        for (i = 0u; i < nbElements; i++) {
+            if (array_0[i] != (i + 0u)) {
                 LOG(KFATAL_USER, "Coherency problem!!");
                 exit(EXIT_OS_FAILURE);
             }
 
         }
-        for (i = 0U; i < nbElements; i++) {
-            if (array_1[i] != (i + 1U)) {
+        for (i = 0u; i < nbElements; i++) {
+            if (array_1[i] != (i + 1u)) {
                 LOG(KFATAL_USER, "Coherency problem!!");
                 exit(EXIT_OS_FAILURE);
             }
 
         }
-        for (i = 0U; i < nbElements; i++) {
-            if (array_2[i] != (i + 2U)) {
+        for (i = 0u; i < nbElements; i++) {
+            if (array_2[i] != (i + 2u)) {
                 LOG(KFATAL_USER, "Coherency problem!!");
                 exit(EXIT_OS_FAILURE);
             }
@@ -261,7 +251,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int     main(int argc, const char *argv[]) {
+MAIN_ENTRY(argc, argv[]) {
     int32_t     status;
     void        *memory;
     proc_t      *process_0, *process_1;
@@ -276,8 +266,8 @@ int     main(int argc, const char *argv[]) {
     UNUSED(argc);
     UNUSED(argv);
 
-    vConfigure.oNbBlocks  = 3U;
-    vConfigure.oBlockSize = 1000U * sizeof(uint16_t);
+    vConfigure.oNbBlocks  = 3u;
+    vConfigure.oBlockSize = 1000u * sizeof(uint16_t);
 
     status = kern_createPool("Memory pool", &vMemoryPool);
     if (status != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create pool");    exit(EXIT_OS_FAILURE); }
@@ -285,13 +275,13 @@ int     main(int argc, const char *argv[]) {
     status = kern_setPool(vMemoryPool, &vConfigure);
     if (status != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Configure pool"); exit(EXIT_OS_FAILURE); }
 
-    status = kern_allocateBlock(vMemoryPool, &memory, 100U);
+    status = kern_allocateBlock(vMemoryPool, &memory, 100u);
     if (status != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Allocate bloc");  exit(EXIT_OS_FAILURE); }
 
-    status = kern_allocateBlock(vMemoryPool, &memory, 100U);
+    status = kern_allocateBlock(vMemoryPool, &memory, 100u);
     if (status != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Allocate bloc");  exit(EXIT_OS_FAILURE); }
 
-    status = kern_allocateBlock(vMemoryPool, &memory, 100U);
+    status = kern_allocateBlock(vMemoryPool, &memory, 100u);
     if (status != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Allocate bloc");  exit(EXIT_OS_FAILURE); }
 
 // Specifications for the processes

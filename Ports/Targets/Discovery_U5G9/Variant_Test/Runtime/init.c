@@ -17,36 +17,6 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;           !!! the variable into the RAM.
 ;
 ;-----
-;                                              __ ______  _____
-;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
-;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
-;   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
-;                                     \__,_/_/ |_\____//____/
-;   edo.franzi@ukos.ch
-;
-;   Description: Lightweight, real-time multitasking operating
-;   system for embedded microcontroller and DSP-based systems.
-;
-;   Permission is hereby granted, free of charge, to any person
-;   obtaining a copy of this software and associated documentation
-;   files (the "Software"), to deal in the Software without restriction,
-;   including without limitation the rights to use, copy, modify,
-;   merge, publish, distribute, sublicense, and/or sell copies of the
-;   Software, and to permit persons to whom the Software is furnished
-;   to do so, subject to the following conditions:
-;
-;   The above copyright notice and this permission notice shall be
-;   included in all copies or substantial portions of the Software.
-;
-;   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-;   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-;   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-;   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
-;   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-;   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-;   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-;   SOFTWARE.
-;
 ;------------------------------------------------------------------------
 */
 
@@ -84,7 +54,7 @@ MODULE(
     nullptr,                        // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                        // Address of the clean code (clean the module)
     " 1.0",                         // Revision string (major . minor)
-    (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    (1u<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                               // Execution cores
 );
 
@@ -144,11 +114,11 @@ static  void    local_StackLimit_Configuration(void) {
 
 // Stack limit faults at requested priorities of less than 0 ignored
 
-    #ifdef STUB_KERN_CHECK_XSP_LIMIT_S
-    REG(SCB)->CCR |= (1U<<SCB_CCR_STKOFHFNMIGN);
+    #if (defined(STUB_KERN_CHECK_XSP_LIMIT_S))
+    REG(SCB)->CCR |= (1u<<SCB_CCR_STKOFHFNMIGN);
 
-    core_setPSPLIM((uintptr_t)linker_lowStackFirst_C0 & 0xFFFFFFF8U);
-    core_setMSPLIM((uintptr_t)linker_lowStackSystem_C0 & 0xFFFFFFF8U);
+    core_setPSPLIM((uintptr_t)linker_lowStackFirst_C0 & 0xFFFFFFF8u);
+    core_setMSPLIM((uintptr_t)linker_lowStackSystem_C0 & 0xFFFFFFF8u);
     #endif
 }
 
@@ -184,10 +154,10 @@ static  void    local_PWR_Configuration(void) {
     REG(PWR)->SVMCR |= PWR_SVMCR_IO2SV;
     REG(PWR)->SVMCR |= PWR_SVMCR_ASV;
 
-    REG(PWR)->VOSR  = (3U * PWR_VOSR_VOS_0);
+    REG(PWR)->VOSR  = (3u * PWR_VOSR_VOS_0);
     REG(PWR)->VOSR |= PWR_VOSR_BOOSTEN;
 
-    while ((REG(PWR)->VOSR & PWR_VOSR_VOSRDY) == 0U) { ; }
+    while ((REG(PWR)->VOSR & PWR_VOSR_VOSRDY) == 0u) { ; }
 }
 
 /*
@@ -208,7 +178,7 @@ static  void    local_USB_Configuration(void) {
     REG(RCC)->CCIPR2 = REG(RCC)->CCIPR2 & ~RCC_CCIPR2_OTGHSSEL;
 
     tmp = REG(SYSCFG)->OTGHSPHYCR & ~SYSCFG_OTGHSPHYCR_CLKSEL;
-    REG(SYSCFG)->OTGHSPHYCR = tmp | (3U<<2U);
+    REG(SYSCFG)->OTGHSPHYCR = tmp | (3u<<2u);
 
 // Enable the USB VDD
 // USB power EN and USB boost EN
@@ -265,9 +235,9 @@ static  void    local_GPIO_Configuration(void) {
 // PA10, AL,  50-MHz, Pull-up   USART1_RX   AF07
 // PA11, AL,  99-MHz, Push_pull OTG_FS_DM   AF10
 // PA12, AL,  99-MHz, Push_pull OTG_FS_DP   AF10
-// PA13, AL,  50-MHz, Pull-up   SWDIO       AF0
-// PA14, AL,  50-MHz, Pull-down SWCLK       AF0
-// PA15, AL,  50-MHz, Pull-up   TDI         AF0
+// PA13, AL,  50-MHz, Pull-up   SWDIO       AF00
+// PA14, AL,  50-MHz, Pull-down SWCLK       AF00
+// PA15, AL,  50-MHz, Pull-up   TDI         AF00
 
 //             15  14  13  12  11  10   9   8   7   6   5   4   3   2   1   0
     CNFGPIO(A,KAL,KAL,KAL,KAL,KAL,KAL,KAL,KAL,KIN,KIN,KIN,KIN,KIN,KIN,KIN,KIN,
@@ -275,8 +245,8 @@ static  void    local_GPIO_Configuration(void) {
               KPU,KPD,KPU,KNO,KNO,KPU,KNO,KNO,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,
               A15,A00,A00,A10,A10,A07,A07,A00,A15,A15,A15,A15,A15,A15,A15,A15,
               KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-              0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 1U, 0U, 0U, 0U, 0U,
-              0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
+              0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 1u, 0u, 0u, 0u, 0u,
+              0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u);
 
 // PB00, IN,  50-MHz, Pull-up   --------    AF15
 // PB01, IN,  50-MHz, Pull-up   --------    AF15
@@ -301,8 +271,8 @@ static  void    local_GPIO_Configuration(void) {
               KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,
               A15,A15,A15,A15,A15,A15,A15,A15,A05,A05,A15,A15,A15,A15,A15,A15,
               KPP,KPP,KPP,KPP,KPP,KPP,KOD,KOD,KOD,KOD,KPP,KPP,KPP,KPP,KPP,KPP,
-              0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 1U, 1U, 0U, 0U, 0U, 0U, 0U, 0U,
-              0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
+              0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 1u, 1u, 0u, 0u, 0u, 0u, 0u, 0u,
+              0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u);
 
 
 // PC00, IN,  50-MHz, Pull-up   --------    AF15
@@ -328,8 +298,8 @@ static  void    local_GPIO_Configuration(void) {
               KPU,KPU,KPD,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KNO,KPU,KPU,
               A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,
               KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-              0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
-              0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
+              0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u,
+              0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u);
 
 
 // PD00, AL,  50-MHz, Open DU   I2C6_SDA    AF02
@@ -355,8 +325,8 @@ static  void    local_GPIO_Configuration(void) {
               KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPD,KPU,KPU,KPU,KPU,KPU,
               A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A02,A02,
               KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KOD,KOD,
-              0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 1U, 1U,
-              0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
+              0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 1u, 1u,
+              0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u);
 
 
 // PE00, OU,  50-MHz, Push_pull LED_Green   AF15
@@ -382,8 +352,8 @@ static  void    local_GPIO_Configuration(void) {
               KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,
               A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,
               KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-              0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
-              0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
+              0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u,
+              0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u);
 
 // PF00, IN,  50-MHz, Pull-up   --------    AF15
 // PF01, IN,  50-MHz, Pull-up   --------    AF15
@@ -408,8 +378,8 @@ static  void    local_GPIO_Configuration(void) {
               KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,
               A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,
               KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-              0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
-              0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
+              0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u,
+              0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u);
 
 // PG00, IN,  50-MHz, Pull-up   --------    AF15
 // PG01, IN,  50-MHz, -------   VBUS_SENSE  AF15
@@ -434,8 +404,8 @@ static  void    local_GPIO_Configuration(void) {
               KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,
               A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,
               KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-              0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
-              0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
+              0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u,
+              0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u);
 
 // PH00, IN,  50-MHz, Pull-up   --------    AF15
 // PH01, IN,  50-MHz, Pull-up   --------    AF15
@@ -460,8 +430,8 @@ static  void    local_GPIO_Configuration(void) {
               KNO,KNO,KNO,KNO,KNO,KNO,KNO,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,
               A08,A08,A08,A08,A08,A08,A08,A04,A04,A15,A02,A02,A15,A15,A15,A15,
               KPP,KPP,KPP,KPP,KPP,KPP,KPP,KOD,KOD,KPP,KOD,KOD,KPP,KPP,KPP,KPP,
-              0U, 0U, 0U, 0U, 0U, 0U, 0U, 1U, 1U, 0U, 1U, 1U, 0U, 0U, 0U, 0U,
-              1U, 1U, 1U, 1U, 1U, 1U, 1U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
+              0u, 0u, 0u, 0u, 0u, 0u, 0u, 1u, 1u, 0u, 1u, 1u, 0u, 0u, 0u, 0u,
+              1u, 1u, 1u, 1u, 1u, 1u, 1u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u);
 
 // PI00, AL,  99-MHz, --------  HSPI1_IO6   AF08
 // PI01, AL,  99-MHz, --------  HSPI1_IO7   AF08
@@ -486,8 +456,8 @@ static  void    local_GPIO_Configuration(void) {
               KNO,KNO,KNO,KNO,KNO,KNO,KNO,KNO,KPU,KNO,KNO,KPU,KNO,KNO,KNO,KNO,
               A08,A08,A08,A08,A08,A08,A08,A08,A15,A15,A15,A15,A08,A08,A08,A08,
               KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-              0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
-              1U, 1U, 1U, 1U, 1U, 1U, 1U, 1U, 0U, 0U, 0U, 0U, 1U, 1U, 1U, 1U);
+              0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u,
+              1u, 1u, 1u, 1u, 1u, 1u, 1u, 1u, 0u, 0u, 0u, 0u, 1u, 1u, 1u, 1u);
 
 // PJ00, AL,  99-MHz, --------  HSPI1_IO15  AF08
 // PJ01, IN,  50-MHz, Pull-up   --------    AF15
@@ -512,8 +482,8 @@ static  void    local_GPIO_Configuration(void) {
               KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KPU,KNO,
               A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A08,
               KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-              0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
-              0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 1U);
+              0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u,
+              0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 1u);
 }
 
 /*
@@ -535,27 +505,27 @@ static  void    local_RCC_Configuration(void) {
 
     REG(RCC)->BDCR = (REG(RCC)->BDCR & ~RCC_BDCR_RTCSEL)
                    | RCC_BDCR_LSION                             // Enable the LSI
-                   | (2U * RCC_BDCR_RTCSEL_0)                   // LSI is the source for the RTC
+                   | (2u * RCC_BDCR_RTCSEL_0)                   // LSI is the source for the RTC
                    | RCC_BDCR_RTCEN;                            // RTC enable
 
 // Waiting for LSI ready
 
-    while ((REG(RCC)->BDCR & RCC_BDCR_LSIRDY) == 0U) { }
+    while ((REG(RCC)->BDCR & RCC_BDCR_LSIRDY) == 0U) { ; }
     #endif
 
 // Enable HSI, HSE & HSI48 clocks
 
     REG(RCC)->CR |= RCC_CR_HSION | RCC_CR_HSEON | RCC_CR_HSI48ON;
 
-    while ((REG(RCC)->CR & RCC_CR_HSIRDY)   == 0U) { ; }
-    while ((REG(RCC)->CR & RCC_CR_HSERDY)   == 0U) { ; }
-    while ((REG(RCC)->CR & RCC_CR_HSI48RDY) == 0U) { ; }
+    while ((REG(RCC)->CR & RCC_CR_HSIRDY)   == 0u) { ; }
+    while ((REG(RCC)->CR & RCC_CR_HSERDY)   == 0u) { ; }
+    while ((REG(RCC)->CR & RCC_CR_HSI48RDY) == 0u) { ; }
 
 // Configure Flash latency for desired frequency
 // 4-ws (OK for 160-MHz)
 // The I csache should compensate the 4-ws for ~0-ws
 
-    REG(FLASH)->ACR = (4U * FLASH_ACR_LATENCY_0);
+    REG(FLASH)->ACR = (4u * FLASH_ACR_LATENCY_0);
 
 // PLL 1
 // -----
@@ -566,19 +536,19 @@ static  void    local_RCC_Configuration(void) {
 // f(Q)   = f(vco) / Q          Q = 2                       ---> f(Q) = 160-MHz
 // f(P)   = f(vco) / P          P = 2                       ---> f(P) = 160-MHz
 
-    REG(RCC)->PLL1DIVR = 0U;                                    //
-    REG(RCC)->PLL1DIVR = ((2U - 1U) * RCC_PLL1DIVR_PLL1R_0)     // Divider for R
-                       | ((2U - 1U) * RCC_PLL1DIVR_PLL1Q_0)     // Divider for Q
-                       | ((2U - 1U) * RCC_PLL1DIVR_PLL1P_0)     // Divider for P
-                       | ((20U - 1U) * RCC_PLL1DIVR_PLL1N_0);   // Divider for N
+    REG(RCC)->PLL1DIVR = 0u;                                    //
+    REG(RCC)->PLL1DIVR = ((2u - 1u) * RCC_PLL1DIVR_PLL1R_0)     // Divider for R
+                       | ((2u - 1u) * RCC_PLL1DIVR_PLL1Q_0)     // Divider for Q
+                       | ((2u - 1u) * RCC_PLL1DIVR_PLL1P_0)     // Divider for P
+                       | ((20u - 1u) * RCC_PLL1DIVR_PLL1N_0);   // Divider for N
 
     REG(RCC)->PLL1CFGR = RCC_PLL1CFGR_PLL1REN                   // Out R enable
                        | RCC_PLL1CFGR_PLL1QEN                   // Out Q enable
                        | RCC_PLL1CFGR_PLL1PEN                   // Out P enable
-                       | (0U * RCC_PLL1CFGR_PLL1MBOOST_0)       // PLL1 M Booster / 1
-                       | (0U * RCC_PLL1CFGR_PLL1M_0)            // PLL1 M Prescaler / 1
-                       | (3U * RCC_PLL1CFGR_PLL1RGE_0)          // PLL input frequency in the range of 8-MHz..16-MHz
-                       | (2U * RCC_PLL1CFGR_PLL1SRC_0);         // HSI 16-MHz as a PLL input
+                       | (0u * RCC_PLL1CFGR_PLL1MBOOST_0)       // PLL1 M Booster / 1
+                       | (0u * RCC_PLL1CFGR_PLL1M_0)            // PLL1 M Prescaler / 1
+                       | (3u * RCC_PLL1CFGR_PLL1RGE_0)          // PLL input frequency in the range of 8-MHz..16-MHz
+                       | (2u * RCC_PLL1CFGR_PLL1SRC_0);         // HSI 16-MHz as a PLL input
 
 // Waiting for stable clock and enable PLL
 // Waiting for the PLL lock
@@ -595,76 +565,74 @@ static  void    local_RCC_Configuration(void) {
 // f(Q)   = f(vco) / Q          Q = 2                       ---> f(Q) = 250-MHz
 // f(P)   = f(vco) / P          P = 24                      ---> f(P) = 20.84-MHz
 
-// f(P)   = f(vco) / P          P = 8                       ---> f(P) = 62.5-MHz
-
-    REG(RCC)->PLL3DIVR = 0U;                                    //
-    REG(RCC)->PLL3DIVR = ((24U - 1U) * RCC_PLL3DIVR_PLL3R_0)    // Divider for R
-                       | ((2U - 1U) * RCC_PLL3DIVR_PLL3Q_0)     // Divider for Q
-                       | ((24U - 1U) * RCC_PLL3DIVR_PLL3P_0)    // Divider for P
-                       | ((125U - 1U) * RCC_PLL3DIVR_PLL3N_0);  // Divider for N
+    REG(RCC)->PLL3DIVR = 0u;                                    //
+    REG(RCC)->PLL3DIVR = ((24u - 1u) * RCC_PLL3DIVR_PLL3R_0)    // Divider for R
+                       | ((2u - 1u) * RCC_PLL3DIVR_PLL3Q_0)     // Divider for Q
+                       | ((24u - 1u) * RCC_PLL3DIVR_PLL3P_0)    // Divider for P
+                       | ((125u - 1u) * RCC_PLL3DIVR_PLL3N_0);  // Divider for N
 
     REG(RCC)->PLL3CFGR = RCC_PLL3CFGR_PLL3REN                   // Out R enable
                        | RCC_PLL3CFGR_PLL3QEN                   // Out Q enable
                        | RCC_PLL3CFGR_PLL3PEN                   // Out P enable
-                       | ((4U - 1U) * RCC_PLL3CFGR_PLL3M_0)     // PLL3 M Prescaler / 4
-                       | (0U * RCC_PLL3CFGR_PLL3RGE_0)          // PLL input frequency in the range of 4-MHz..8-MHz
-                       | (2U * RCC_PLL3CFGR_PLL3SRC_0);         // HSI 16-MHz as a PLL input
+                       | ((4u - 1u) * RCC_PLL3CFGR_PLL3M_0)     // PLL3 M Prescaler / 4
+                       | (0u * RCC_PLL3CFGR_PLL3RGE_0)          // PLL input frequency in the range of 4-MHz..8-MHz
+                       | (2u * RCC_PLL3CFGR_PLL3SRC_0);         // HSI 16-MHz as a PLL input
 
 // Waiting for stable clock and enable PLL
 // Waiting for the PLL lock
 
     REG(RCC)->CR |= RCC_CR_PLL3ON;
-    while ((REG(RCC)->CR & RCC_CR_PLL3RDY) == 0U) { ; }
+    while ((REG(RCC)->CR & RCC_CR_PLL3RDY) == 0u) { ; }
 
 // Set-up the MCO
 
-    REG(RCC)->CFGR1 = (2U * RCC_CFGR1_MCOPRE_0)                 // MCO / 4
-                    | (1U * RCC_CFGR1_MCOSEL_0)                 // SYSCLK output
-                    | (3U * RCC_CFGR1_SW_0);                    // System clock on the PLL1
+    REG(RCC)->CFGR1 = (2u * RCC_CFGR1_MCOPRE_0)                 // MCO / 4
+                    | (1u * RCC_CFGR1_MCOSEL_0)                 // SYSCLK output
+                    | (3u * RCC_CFGR1_SW_0);                    // System clock on the PLL1
 
-    REG(RCC)->CFGR2 = (4U * RCC_CFGR2_PPRE2_0)                  // APB2 = HCLK / 2
-                    | (4U * RCC_CFGR2_PPRE1_0)                  // APB1 = HCLK / 2
-                    | (0U * RCC_CFGR2_HPRE_0);                  // HCLK = SYSCLK / 1
+    REG(RCC)->CFGR2 = (4u * RCC_CFGR2_PPRE2_0)                  // APB2 = HCLK / 2
+                    | (4u * RCC_CFGR2_PPRE1_0)                  // APB1 = HCLK / 2
+                    | (0u * RCC_CFGR2_HPRE_0);                  // HCLK = SYSCLK / 1
 
-    REG(RCC)->CFGR3 = (4U * RCC_CFGR3_PPRE3_0);                 // APB3 = HCLK / 2
+    REG(RCC)->CFGR3 = (4u * RCC_CFGR3_PPRE3_0);                 // APB3 = HCLK / 2
 
-    REG(RCC)->CCIPR1 = (0U * RCC_CCIPR1_TIMICSEL_0)             //
-                     | (0U * RCC_CCIPR1_ICLKSEL_0)              // USB_OTG_FS uses 48-MHz clock
-                     | (1U * RCC_CCIPR1_FDCAN1SEL_0)            // FDCAN uses PLL1Q clock
-                     | (0U * RCC_CCIPR1_SYSTICKSEL_0)           // SYSTICK uses HCLK / 8 clock
-                     | (0U * RCC_CCIPR1_SPI1SEL_0)              // SPI1 uses PCLK2 clock
-                     | (0U * RCC_CCIPR1_LPTIM2SEL_0)            // LPTIM2 uses PCLK1 clock
-                     | (0U * RCC_CCIPR1_SPI2SEL_0)              // SPI2 uses PCLK1 clock
-                     | (0U * RCC_CCIPR1_I2C4SEL_0)              // I2C4 uses PCLK1 clock
-                     | (0U * RCC_CCIPR1_I2C2SEL_0)              // I2C2 uses PCLK1 clock
-                     | (0U * RCC_CCIPR1_I2C1SEL_0)              // I2C1 uses PCLK1 clock
-                     | (0U * RCC_CCIPR1_UART5SEL_0)             // UART5 uses PCLK1 clock
-                     | (0U * RCC_CCIPR1_UART4SEL_0)             // UART4 uses PCLK1 clock
-                     | (0U * RCC_CCIPR1_USART3SEL_0)            // USART3 uses PCLK1 clock
-                     | (0U * RCC_CCIPR1_USART2SEL_0)            // USART2 uses PCLK1 clock
-                     | (0U * RCC_CCIPR1_USART1SEL_0);           // USART1 uses PCLK2 clock
+    REG(RCC)->CCIPR1 = (0u * RCC_CCIPR1_TIMICSEL_0)             //
+                     | (0u * RCC_CCIPR1_ICLKSEL_0)              // USB_OTG_FS uses 48-MHz clock
+                     | (1u * RCC_CCIPR1_FDCAN1SEL_0)            // FDCAN uses PLL1Q clock
+                     | (0u * RCC_CCIPR1_SYSTICKSEL_0)           // SYSTICK uses HCLK / 8 clock
+                     | (0u * RCC_CCIPR1_SPI1SEL_0)              // SPI1 uses PCLK2 clock
+                     | (0u * RCC_CCIPR1_LPTIM2SEL_0)            // LPTIM2 uses PCLK1 clock
+                     | (0u * RCC_CCIPR1_SPI2SEL_0)              // SPI2 uses PCLK1 clock
+                     | (0u * RCC_CCIPR1_I2C4SEL_0)              // I2C4 uses PCLK1 clock
+                     | (0u * RCC_CCIPR1_I2C2SEL_0)              // I2C2 uses PCLK1 clock
+                     | (0u * RCC_CCIPR1_I2C1SEL_0)              // I2C1 uses PCLK1 clock
+                     | (0u * RCC_CCIPR1_UART5SEL_0)             // UART5 uses PCLK1 clock
+                     | (0u * RCC_CCIPR1_UART4SEL_0)             // UART4 uses PCLK1 clock
+                     | (0u * RCC_CCIPR1_USART3SEL_0)            // USART3 uses PCLK1 clock
+                     | (0u * RCC_CCIPR1_USART2SEL_0)            // USART2 uses PCLK1 clock
+                     | (0u * RCC_CCIPR1_USART1SEL_0);           // USART1 uses PCLK2 clock
 
-    REG(RCC)->CCIPR2 = (0U * RCC_CCIPR2_OTGHSSEL_0)             // OTGH uses HSE clock
-                     | (0U * RCC_CCIPR2_I2C6SEL_0)              // I2C6 uses PCLK1 clock
-                     | (0U * RCC_CCIPR2_I2C5SEL_0)              // I2C5 uses PCLK1 clock
-                     | (0U * RCC_CCIPR2_HSPI1SEL_0)             // HSPI1 uses System Clock clock
-                     | (0U * RCC_CCIPR2_OCTOSPISEL_0)           // OCTOSP uses System Clock clock
-                     | (0U * RCC_CCIPR2_LTDCSEL)                // LTDC uses PLL3R clock
-                     | (0U * RCC_CCIPR2_USART6SEL_0)            // USART6 uses PCLK1 clock
-                     | (0U * RCC_CCIPR2_DSISEL)                 // DSI uses PLL3R clock
-                     | (2U * RCC_CCIPR2_RNGSEL_0)               // RNG uses HSI clock
-                     | (4U * RCC_CCIPR2_SAI2SEL_0)              // SAI2 uses HSI clock
-                     | (4U * RCC_CCIPR2_SAI1SEL_0)              // SAI1 uses HSI clock
-                     | (0U * RCC_CCIPR2_MDF1SEL_0);             // MDF1 uses HCLK clock
+    REG(RCC)->CCIPR2 = (0u * RCC_CCIPR2_OTGHSSEL_0)             // OTGH uses HSE clock
+                     | (0u * RCC_CCIPR2_I2C6SEL_0)              // I2C6 uses PCLK1 clock
+                     | (0u * RCC_CCIPR2_I2C5SEL_0)              // I2C5 uses PCLK1 clock
+                     | (0u * RCC_CCIPR2_HSPI1SEL_0)             // HSPI1 uses System Clock clock
+                     | (0u * RCC_CCIPR2_OCTOSPISEL_0)           // OCTOSP uses System Clock clock
+                     | (0u * RCC_CCIPR2_LTDCSEL)                // LTDC uses PLL3R clock
+                     | (0u * RCC_CCIPR2_USART6SEL_0)            // USART6 uses PCLK1 clock
+                     | (0u * RCC_CCIPR2_DSISEL)                 // DSI uses PLL3P clock
+                     | (2u * RCC_CCIPR2_RNGSEL_0)               // RNG uses HSI clock
+                     | (4u * RCC_CCIPR2_SAI2SEL_0)              // SAI2 uses HSI clock
+                     | (4u * RCC_CCIPR2_SAI1SEL_0)              // SAI1 uses HSI clock
+                     | (0u * RCC_CCIPR2_MDF1SEL_0);             // MDF1 uses HCLK clock
 
-    REG(RCC)->CCIPR3 = (0U * RCC_CCIPR3_ADF1SEL_0)              // ADF1 uses HCLK clock
+    REG(RCC)->CCIPR3 = (0u * RCC_CCIPR3_ADF1SEL_0)              // ADF1 uses HCLK clock
                      | RCC_CCIPR3_DAC1SEL                       // DAC1 uses LSI clock
-                     | (0U * RCC_CCIPR3_ADCDACSEL_0)            // ADCDAC uses HCLK clock
-                     | (2U * RCC_CCIPR3_LPTIM1SEL_0)            // LPTIM1 uses HSI16 clock
-                     | (2U * RCC_CCIPR3_LPTIM34SEL_0)           // LPTIM34 uses HSI clock
-                     | (0U * RCC_CCIPR3_I2C3SEL_0)              // I2C3 uses PCLK3 clock
-                     | (0U * RCC_CCIPR3_SPI3SEL_0)              // SPI3 uses PCLK3 clock
-                     | (0U * RCC_CCIPR3_LPUART1SEL_0);          // LPUART1 uses PCLK3 clock
+                     | (0u * RCC_CCIPR3_ADCDACSEL_0)            // ADCDAC uses HCLK clock
+                     | (2u * RCC_CCIPR3_LPTIM1SEL_0)            // LPTIM1 uses HSI16 clock
+                     | (2u * RCC_CCIPR3_LPTIM34SEL_0)           // LPTIM34 uses HSI clock
+                     | (0u * RCC_CCIPR3_I2C3SEL_0)              // I2C3 uses PCLK3 clock
+                     | (0u * RCC_CCIPR3_SPI3SEL_0)              // SPI3 uses PCLK3 clock
+                     | (0u * RCC_CCIPR3_LPUART1SEL_0);          // LPUART1 uses PCLK3 clock
 }
 
 /*
@@ -676,18 +644,18 @@ static  void    local_RCC_Configuration(void) {
  */
 static  void    local_MPU_Configuration(void) {
 
-    SET_MPU8_INDEX(KMPU_FLASH_ATTR, KMPU_RAM_CACHE_ATTR, KMPU_RAM_NOT_CACHE_ATTR, KMPU_PERIPH_ATTR, 0U, 0U, 0U, 0U, 0U);
+    SET_MPU8_INDEX(KMPU_FLASH_ATTR, KMPU_RAM_CACHE_ATTR, KMPU_RAM_NOT_CACHE_ATTR, KMPU_PERIPH_ATTR, 0u, 0u, 0u, 0u, 0u);
 
-    #ifdef PRIVILEGED_USER_S
-    SET_MPU8_REGION(0U, ST_FLASH_INT_0,     EN_FLASH_INT_0,     KMPU_EXECUTABLE,        KMPU_R_ALL,  0U, KMPU_INNER_SHAREABLE);
-    SET_MPU8_REGION(1U, ST_RAM_INT_0_OS,    EN_RAM_INT_0_OS,    KMPU_EXECUTABLE,        KMPU_RW_PRI, 1U, KMPU_INNER_SHAREABLE);
-    SET_MPU8_REGION(2U, ST_RAM_INT_0,       EN_RAM_INT_0,       KMPU_EXECUTABLE,        KMPU_RW_ALL, 1U, KMPU_INNER_SHAREABLE);
-    SET_MPU8_REGION(3U, ST_PERIPH_SOC,      EN_PERIPH_SOC,      KMPU_NOT_EXECUTABLE,    KMPU_RW_PRI, 3U, KMPU_NOT_SHAREABLE);
-    SET_MPU8_REGION(4U, ST_PERIPH_CORE,     EN_PERIPH_CORE,     KMPU_NOT_EXECUTABLE,    KMPU_RW_PRI, 3U, KMPU_NOT_SHAREABLE);
+    #if (defined(PRIVILEGED_USER_S))
+    SET_MPU8_REGION(0u, ST_FLASH_INT_0,     EN_FLASH_INT_0,     KMPU_EXECUTABLE,        KMPU_R_ALL,  0u, KMPU_INNER_SHAREABLE);
+    SET_MPU8_REGION(1u, ST_RAM_INT_0_OS,    EN_RAM_INT_0_OS,    KMPU_EXECUTABLE,        KMPU_RW_PRI, 1u, KMPU_INNER_SHAREABLE);
+    SET_MPU8_REGION(2u, ST_RAM_INT_0,       EN_RAM_INT_0,       KMPU_EXECUTABLE,        KMPU_RW_ALL, 1u, KMPU_INNER_SHAREABLE);
+    SET_MPU8_REGION(3u, ST_PERIPH_SOC,      EN_PERIPH_SOC,      KMPU_NOT_EXECUTABLE,    KMPU_RW_PRI, 3u, KMPU_NOT_SHAREABLE);
+    SET_MPU8_REGION(4u, ST_PERIPH_CORE,     EN_PERIPH_CORE,     KMPU_NOT_EXECUTABLE,    KMPU_RW_PRI, 3u, KMPU_NOT_SHAREABLE);
 
     #else
-    SET_MPU8_REGION(0U, ST_FLASH_INT_0,     EN_FLASH_INT_0,     KMPU_EXECUTABLE,        KMPU_R_ALL,  0U, KMPU_INNER_SHAREABLE);
-    SET_MPU8_REGION(1U, ST_RAM_INT_0,       EN_RAM_INT_0,       KMPU_EXECUTABLE,        KMPU_RW_ALL, 1U, KMPU_INNER_SHAREABLE);
+    SET_MPU8_REGION(0u, ST_FLASH_INT_0,     EN_FLASH_INT_0,     KMPU_EXECUTABLE,        KMPU_R_ALL,  0u, KMPU_INNER_SHAREABLE);
+    SET_MPU8_REGION(1u, ST_RAM_INT_0,       EN_RAM_INT_0,       KMPU_EXECUTABLE,        KMPU_RW_ALL, 1u, KMPU_INNER_SHAREABLE);
     #endif
 }
 
@@ -699,7 +667,7 @@ static  void    local_MPU_Configuration(void) {
  */
 static  void    local_CACHE_Enable(void) {
 
-    #ifdef CACHE_I_S
+    #if (defined(CACHE_I_S))
     cache_I_Invalidate();
     cache_I_Enable();
     #endif

@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test ROM routine collection.
+; Project:  uKOS-X
+; Goal:     Test ROM routine collection.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -51,15 +51,31 @@
  * \ingroup Nucleo_H743_Cortex-M7
  * \brief Test ROM for Nucleo_H743.
  *
- *		tests_00: Test blink the RED & YELLOW Leds
+ *      tests_00: Test blink the RED & YELLOW Leds
  *
  */
 
-#include	"tests.h"
+#include    "tests.h"
 
-			void	(*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
-			void	(*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
-volatile	bool	vPriv_insideException[KNB_CORES] = MCSET(false);
+            void    (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
+            void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
+volatile    bool    vPriv_insideException[KNB_CORES] = MCSET(false);
+
+void    __attribute__ ((noreturn)) model_coreDump_displayExceptions(uintptr_t lr, uintptr_t *msp) {
+
+    UNUSED(lr);
+    UNUSED(msp);
+
+    while (true) { ; }
+}
+
+void    __attribute__ ((noreturn)) model_coreDump_displayInterruptions(uintptr_t lr, uintptr_t *msp) {
+
+    UNUSED(lr);
+    UNUSED(msp);
+
+    while (true) { ; }
+}
 
 /*
  * \brief main
@@ -67,15 +83,15 @@ volatile	bool	vPriv_insideException[KNB_CORES] = MCSET(false);
  * - Execute the selected test
  *
  */
-int		main(int argc, const char_t *argv[]) {
+int     main(int argc, const char_t *argv[]) {
 
 // Launch the test
 
 #if (defined(TEST_00_S))
-void	test_00(void);
-	test_00();
+void    test_00(void);
+    test_00();
 #endif
 
 }
 
-#include	"tests_00.c"
+#include    "tests_00.c"

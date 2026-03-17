@@ -15,36 +15,6 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;           for the uKernel management
 ;
 ;-----
-;                                              __ ______  _____
-;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
-;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
-;   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
-;                                     \__,_/_/ |_\____//____/
-;   edo.franzi@ukos.ch
-;
-;   Description: Lightweight, real-time multitasking operating
-;   system for embedded microcontroller and DSP-based systems.
-;
-;   Permission is hereby granted, free of charge, to any person
-;   obtaining a copy of this software and associated documentation
-;   files (the "Software"), to deal in the Software without restriction,
-;   including without limitation the rights to use, copy, modify,
-;   merge, publish, distribute, sublicense, and/or sell copies of the
-;   Software, and to permit persons to whom the Software is furnished
-;   to do so, subject to the following conditions:
-;
-;   The above copyright notice and this permission notice shall be
-;   included in all copies or substantial portions of the Software.
-;
-;   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-;   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-;   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-;   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
-;   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-;   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-;   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-;   SOFTWARE.
-;
 ;------------------------------------------------------------------------
 */
 
@@ -72,7 +42,6 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #endif
 
 #ifndef CHECK_STACK_SANITY
-extern              proc_t  *vKern_runProc[KNB_CORES];
 #define CHECK_STACK_SANITY(core)                                                                                                \
                                 if ((vKern_runProc[core]->oInternal.oState != 0U) &&                                            \
                                     ((vKern_runProc[core]->oInternal.oState & (1U<<BPROC_FIRST)) == 0U)) {                      \
@@ -440,9 +409,22 @@ enum {
         ENDREG                                                                  // spp + 21
 };
 
-// IMPORTANT! This macro HAS to prepare r0 & r1 with
-// the value of the stack before and after the stacking
-// to comply with the ABI of local_processException(uintptr_t *stackBefore, uintptr_t *stackAfter)
+// IMPORTANT!
+// On exception entry, Cortex-M automatically stacks the basic CPU context.
+// model_coreDump_displayExceptions(lr, msp) receives:
+//   - r0 = lr  : EXC_RETURN value
+//   - r1 = msp : Main Stack Pointer value at handler entry
+//
+// This macro reconstructs the interrupted stack context, detects whether
+// MSP or PSP was active before the exception, then saves the additional
+// registers required for core dump analysis.
+//
+// Output:
+//   - r0 = pointer to the original stacked context (stackBefore)
+//   - r1 = pointer to the extended saved context (stackAfter)
+//
+// These outputs match the ABI expected by:
+//   local_processException(uintptr_t *stackBefore, uintptr_t *stackAfter)
 
 #ifndef CORE_DUMP_SAVE_STACK_FRAME
 #define CORE_DUMP_SAVE_STACK_FRAME                                                                                              \

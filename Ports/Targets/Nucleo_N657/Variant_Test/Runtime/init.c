@@ -17,36 +17,6 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 ;           !!! the variable into the RAM.
 ;
 ;-----
-;                                              __ ______  _____
-;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
-;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
-;   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
-;                                     \__,_/_/ |_\____//____/
-;   edo.franzi@ukos.ch
-;
-;   Description: Lightweight, real-time multitasking operating
-;   system for embedded microcontroller and DSP-based systems.
-;
-;   Permission is hereby granted, free of charge, to any person
-;   obtaining a copy of this software and associated documentation
-;   files (the "Software"), to deal in the Software without restriction,
-;   including without limitation the rights to use, copy, modify,
-;   merge, publish, distribute, sublicense, and/or sell copies of the
-;   Software, and to permit persons to whom the Software is furnished
-;   to do so, subject to the following conditions:
-;
-;   The above copyright notice and this permission notice shall be
-;   included in all copies or substantial portions of the Software.
-;
-;   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-;   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-;   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-;   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
-;   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-;   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-;   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-;   SOFTWARE.
-;
 ;------------------------------------------------------------------------
 */
 
@@ -159,14 +129,14 @@ static  void    local_Boot_thirdStageBoot(void) {
                         size_t      remaining;
                         uint8_t     tmp;
                 const   size_t      lnFLASH = (size_t)((uintptr_t)linker_enCODE - (uintptr_t)linker_stCODE);
-    volatile    const   uint8_t     *from = (volatile const uint8_t *)(0x70100000U + 0x10000U);
-    volatile            uint8_t     *to   = (volatile       uint8_t *)(0x34000000U + 0x10000U);
+    volatile    const   uint8_t     *from = (volatile const uint8_t *)(0x70100000u + 0x10000u);
+    volatile            uint8_t     *to   = (volatile       uint8_t *)(0x34000000u + 0x10000u);
 
 // Third boot stage (if the lnFLASH > 64K)
 
-    if (lnFLASH >= 65536U) {
+    if (lnFLASH >= 65536u) {
         remaining = lnFLASH;
-        while (remaining != 0U) {
+        while (remaining != 0u) {
             tmp = *from;
             *to = tmp;
             to++; from++;
@@ -189,11 +159,11 @@ static  void    local_StackLimit_Configuration(void) {
 
 // Stack limit faults at requested priorities of less than 0 ignored
 
-    #ifdef STUB_KERN_CHECK_XSP_LIMIT_S
-    REG(SCB)->CCR |= (1U<<SCB_CCR_STKOFHFNMIGN);
+    #if (defined(STUB_KERN_CHECK_XSP_LIMIT_S))
+    REG(SCB)->CCR |= (1u<<SCB_CCR_STKOFHFNMIGN);
 
-    core_setPSPLIM((uintptr_t)linker_lowStackFirst_C0 & 0xFFFFFFF8U);
-    core_setMSPLIM((uintptr_t)linker_lowStackSystem_C0 & 0xFFFFFFF8U);
+    core_setPSPLIM((uintptr_t)linker_lowStackFirst_C0 & 0xFFFFFFF8u);
+    core_setMSPLIM((uintptr_t)linker_lowStackSystem_C0 & 0xFFFFFFF8u);
     #endif
 }
 
@@ -224,7 +194,7 @@ static  void    local_PWR_Configuration(void) {
     STRONG_BARRIER;
 
     REG(PWR)->VOSCR |= PWR_VOSCR_VOS;
-    while ((REG(PWR)->VOSCR & PWR_VOSCR_VOSRDY) == 0U) { ; }
+    while ((REG(PWR)->VOSCR & PWR_VOSCR_VOSRDY) == 0u) { ; }
 
     REG(PWR)->SVMCR3 |= PWR_SVMCR3_ASV;
     (void)(REG(PWR)->SVMCR3);
@@ -262,7 +232,7 @@ static  void    local_USB_Configuration(void) {
     REG(RCC)->MISCENSR = RCC_MISCENSR_PERENS;
     (void)(REG(RCC)->MISCENSR);
 
-    REG(RCC)->CCIPR6 |= RCC_CCIPR6_OTGPHY1CKREFSEL | (3U * RCC_CCIPR6_OTGPHY1SEL_0);
+    REG(RCC)->CCIPR6 |= RCC_CCIPR6_OTGPHY1CKREFSEL | (3u * RCC_CCIPR6_OTGPHY1SEL_0);
     (void)(REG(RCC)->CCIPR6);
 
     REG(RCC)->HSECFGR |= RCC_HSECFGR_HSEDIV2BYP;
@@ -277,7 +247,7 @@ static  void    local_USB_Configuration(void) {
 
     REG(PWR)->SVMCR3 |= PWR_SVMCR3_USB33VMEN;
     (void)(REG(PWR)->SVMCR3);
-    while ((REG(PWR)->SVMCR3 & PWR_SVMCR3_USB33RDY) == 0U) { ; }
+    while ((REG(PWR)->SVMCR3 & PWR_SVMCR3_USB33RDY) == 0u) { ; }
 
     REG(PWR)->SVMCR3 |= PWR_SVMCR3_USB33SV;
 
@@ -299,14 +269,14 @@ static  void    local_USB_Configuration(void) {
 
 // 6. Setup of the PHY
 
-    local_wait_us(10U);
-    REG(USB1_HS_PHYC)->USBPHYC_CR &= (uint32_t)~(0x7U<<0x4U);
-    REG(USB1_HS_PHYC)->USBPHYC_CR |= (0x1U<<16U) | (0x2U<<4U) | (0x1U<<2U) | 0x1U;
+    local_wait_us(10u);
+    REG(USB1_HS_PHYC)->USBPHYC_CR &= (uint32_t)~(0x7u<<0x4u);
+    REG(USB1_HS_PHYC)->USBPHYC_CR |= (0x1u<<16u) | (0x2u<<4u) | (0x1u<<2u) | 0x1u;
 
 // 7. PHY: resets (SETR/CLRR) + clock
 
     REG(RCC)->AHB5RSTCR = RCC_AHB5RSTCR_OTGPHY1RSTC;
-    local_wait_us(10U);
+    local_wait_us(10u);
     REG(RCC)->AHB5RSTCR = RCC_AHB5RSTCR_OTG1RSTC;
     REG(RCC)->AHB5ENSR  = RCC_AHB5ENSR_OTGPHY1ENS;
     (void)(REG(RCC)->AHB5ENR);
@@ -315,9 +285,9 @@ static  void    local_USB_Configuration(void) {
 //    Set the mode hybernate to make possible
 //    the usage of all the USB-C cable (CCx negotiation)
 
-    local_wait_us(1000U);
-    local_write_TCPP0203(0x00U, 0x00U);
-    local_wait_us(1000000U);
+    local_wait_us(1000u);
+    local_write_TCPP0203(0x00u, 0x00u);
+    local_wait_us(1000000u);
 }
 
 /*
@@ -363,7 +333,7 @@ static  void    local_GPIO_Configuration(void) {
               KPD,KPD,KPD,KPD,KPU,KPU,KPD,KPD,KNO,KPD,KPD,KPD,KPD,KPD,KPD,KPD,
               A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,
               KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-              0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 1U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
+              0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 1u, 0u, 0u, 0u, 0u, 0u, 0u, 0u);
 
 // PB00, IN,  50-MHz, Pull-down --------    AF15
 // PB01, IN,  50-MHz, Pull-down --------    AF15
@@ -375,8 +345,8 @@ static  void    local_GPIO_Configuration(void) {
 // PB07, IN,  50-MHz, Pull-down --------    AF15
 // PB08, IN,  50-MHz, Pull-down --------    AF15
 // PB09, IN,  50-MHz, Pull-down --------    AF15
-// PB10, AL,  50-MHz, Open-D    I2C2_SCL    AF4
-// PB11, AL,  50-MHz, Open-D    I2C2_SDA    AF4
+// PB10, AL,  50-MHz, Open-D    I2C2_SCL    AF04
+// PB11, AL,  50-MHz, Open-D    I2C2_SDA    AF04
 // PB12, IN,  50-MHz, Pull-down --------    AF15
 // PB13, IN,  50-MHz, Pull-down --------    AF15
 // PB14, IN,  50-MHz, Pull-down --------    AF15
@@ -388,10 +358,10 @@ static  void    local_GPIO_Configuration(void) {
               KPD,KPD,KPD,KPD,KPU,KPU,KPD,KPD,KPD,KPD,KPD,KPD,KPD,KPD,KPD,KPD,
               A15,A15,A15,A15,A04,A04,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,
               KPP,KPP,KPP,KPP,KOD,KOD,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-              0U, 0U, 0U, 0U, 1U, 1U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
+              0u, 0u, 0u, 0u, 1u, 1u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u);
 
 // PC00, IN,  50-MHz, Pull-down --------    AF15
-// PC01, AL,  50-MHz, Open-D    I2C1_SDA    AF4
+// PC01, AL,  50-MHz, Open-D    I2C1_SDA    AF04
 // PC02, IN,  50-MHz, Pull-down --------    AF15
 // PC03, IN,  50-MHz, Pull-down --------    AF15
 // PC04, IN,  50-MHz, Pull-down --------    AF15
@@ -399,7 +369,7 @@ static  void    local_GPIO_Configuration(void) {
 // PC06, IN,  50-MHz, Pull-down --------    AF15
 // PC07, IN,  50-MHz, Pull-down --------    AF15
 // PC08, IN,  50-MHz, Pull-down --------    AF15
-// PC09, AL,  50-MHz, Pull-down MCO2        AF0
+// PC09, AL,  50-MHz, Pull-down MCO2        AF00
 // PC10, IN,  50-MHz, Pull-down --------    AF15
 // PC11, IN,  50-MHz, Pull-down --------    AF15
 // PC12, IN,  50-MHz, Pull-down --------    AF15
@@ -413,15 +383,15 @@ static  void    local_GPIO_Configuration(void) {
               KPD,KPD,KPD,KPD,KPD,KPD,KPD,KPD,KPD,KPD,KPD,KPD,KPD,KPD,KPU,KPD,
               A15,A15,A15,A15,A15,A15,A00,A15,A15,A15,A15,A15,A15,A15,A04,A15,
               KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KOD,KPP,
-              0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 1U, 0U);
+              0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 1u, 0u);
 
 // PE00, IN,  50-MHz, Pull-down --------    AF15
 // PE01, IN,  50-MHz, Pull-down --------    AF15
 // PE02, IN,  50-MHz, Pull-down --------    AF15
 // PE03, IN,  50-MHz, Pull-down --------    AF15
 // PE04, IN,  50-MHz, Pull-down --------    AF15
-// PE05, AL,  50-MHz, Push-pull USART1_TX   AF7
-// PE06, AL,  50-MHz, Pull-up   USART1_RX   AF7
+// PE05, AL,  50-MHz, Push-pull USART1_TX   AF07
+// PE06, AL,  50-MHz, Pull-up   USART1_RX   AF07
 // PE07, IN,  50-MHz, Pull-down --------    AF15
 // PE08, IN,  50-MHz, Pull-down --------    AF15
 // PE09, OU,  50-MHz, Push_pull GPIO_0      AF15    CN15    31
@@ -438,7 +408,7 @@ static  void    local_GPIO_Configuration(void) {
               KNO,KNO,KPU,KNO,KNO,KNO,KNO,KPD,KPD,KPU,KNO,KPD,KPD,KPD,KPD,KPD,
               A15,A05,A05,A05,A15,A15,A15,A15,A15,A07,A07,A15,A15,A15,A15,A15,
               KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-              0U, 0U, 0U, 0U, 1U, 1U, 1U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
+              0u, 0u, 0u, 0u, 1u, 1u, 1u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u);
 
 // PG00, OU,  50-MHz, Open-D    GPIO        AF15    Led 3
 // PG01, OU,  50-MHz, Push-pull --------    AF15    (Test analyser)
@@ -463,7 +433,7 @@ static  void    local_GPIO_Configuration(void) {
               KPD,KPD,KPD,KPD,KPD,KNO,KPD,KNO,KPD,KPD,KPD,KPD,KPD,KPD,KNO,KNO,
               A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,
               KPP,KPP,KPP,KPP,KPP,KOD,KPP,KOD,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KOD,
-              0U, 0U, 0U, 0U, 0U, 1U, 0U, 1U, 0U, 0U, 0U, 1U, 0U, 0U, 0U, 1U);
+              0u, 0u, 0u, 0u, 0u, 1u, 0u, 1u, 0u, 0u, 0u, 1u, 0u, 0u, 0u, 1u);
 
 // PH00, IN,  50-MHz, Pull-down --------    AF15
 // PH01, IN,  50-MHz, Pull-down --------    AF15
@@ -474,7 +444,7 @@ static  void    local_GPIO_Configuration(void) {
 // PH06, IN,  50-MHz, Pull-down --------    AF15
 // PH07, IN,  50-MHz, Pull-down --------    AF15
 // PH08, IN,  50-MHz, Pull-down --------    AF15
-// PH09, AL,  50-MHz, Open-D    I2C2_SCL    AF4
+// PH09, AL,  50-MHz, Open-D    I2C2_SCL    AF04
 // PH10, IN,  50-MHz, Pull-down --------    AF15
 // PH11, IN,  50-MHz, Pull-down --------    AF15
 // PH12, IN,  50-MHz, Pull-down --------    AF15
@@ -488,7 +458,7 @@ static  void    local_GPIO_Configuration(void) {
               KPD,KPD,KPD,KPD,KPD,KPD,KPU,KPD,KPD,KPD,KPD,KPD,KPD,KPD,KPD,KPD,
               A15,A15,A15,A15,A15,A15,A04,A15,A15,A15,A15,A15,A15,A15,A15,A15,
               KPP,KPP,KPP,KPP,KPP,KPP,KOD,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-              0U, 0U, 0U, 0U, 0U, 0U, 1U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
+              0u, 0u, 0u, 0u, 0u, 0u, 1u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u);
 }
 
 /*
@@ -534,12 +504,12 @@ static  void    local_RCC_Configuration(void) {
 
 // Waiting for LSI ready
 
-    while ((REG(RCC)->SR & RCC_SR_LSIRDY) == 0U) { }
+    while ((REG(RCC)->SR & RCC_SR_LSIRDY) == 0U) { ; }
 
 // Select LSI as RTC source and enable RTC
 
     REG(RCC)->CCIPR7 = (REG(RCC)->CCIPR7 & ~RCC_CCIPR7_RTCSEL)
-                     | (2U * RCC_CCIPR7_RTCSEL_0);              // LSI is the source for the RTC
+                     | (2u * RCC_CCIPR7_RTCSEL_0);              // LSI is the source for the RTC
     REG(RCC)->APB4LENR |= RCC_APB4LENR_RTCEN;                   // RTC enable
     #endif
 
@@ -547,8 +517,8 @@ static  void    local_RCC_Configuration(void) {
                   | RCC_CR_HSEON;                               // Set HSEON bit (48-MHz)
     (void)(REG(RCC)->CR);                                       //
 
-    while ((REG(RCC)->SR & RCC_SR_HSIRDY) == 0U) { ; }          // Waiting for the HSI stable
-    while ((REG(RCC)->SR & RCC_SR_HSERDY) == 0U) { ; }          // Waiting for the HSE stable
+    while ((REG(RCC)->SR & RCC_SR_HSIRDY) == 0u) { ; }          // Waiting for the HSI stable
+    while ((REG(RCC)->SR & RCC_SR_HSERDY) == 0u) { ; }          // Waiting for the HSE stable
 
 // PLL 1, 800-MHz, clocks to the CPU, buses, and storage (XSPI, SDMMC)
 // -------------------------------------------------------------------
@@ -559,27 +529,27 @@ static  void    local_RCC_Configuration(void) {
 // f(vco) = 1600-MHz, N/M = 25
 // N = 125, M = 5
 
-    REG(RCC)->PLL1CFGR1 = (0U   * RCC_PLL1CFGR1_PLL1SEL_0)      // f(input) HSI
-                        | (0U   * RCC_PLL1CFGR1_PLL1BYP)        // No bypass
-                        | (5U   * RCC_PLL1CFGR1_PLL1DIVM_0)     // M = 5
-                        | (125U * RCC_PLL1CFGR1_PLL1DIVN_0);    // N = 125
+    REG(RCC)->PLL1CFGR1 = (0u   * RCC_PLL1CFGR1_PLL1SEL_0)      // f(input) HSI
+                        | (0u   * RCC_PLL1CFGR1_PLL1BYP)        // No bypass
+                        | (5u   * RCC_PLL1CFGR1_PLL1DIVM_0)     // M = 5
+                        | (125u * RCC_PLL1CFGR1_PLL1DIVN_0);    // N = 125
 
-    REG(RCC)->PLL1CFGR2 = 0U;                                   // No fractional
+    REG(RCC)->PLL1CFGR2 = 0u;                                   // No fractional
 
     REG(RCC)->PLL1CFGR3 = RCC_PLL1CFGR3_PLL1PDIVEN              // Post div activate
-                        | (2U * RCC_PLL1CFGR3_PLL1PDIV1_0)      //
-                        | (1U * RCC_PLL1CFGR3_PLL1PDIV2_0)      // VCO / 2
-                        | (0U * RCC_PLL1CFGR3_PLL1MODSPR_0)     //
-                        | (0U * RCC_PLL1CFGR3_PLL1MODDIV_0)     //
-                        | (0U * RCC_PLL1CFGR3_PLL1MODSPRDW)     //
-                        | (0U * RCC_PLL1CFGR3_PLL1MODDSEN)      //
-                        | (1U * RCC_PLL1CFGR3_PLL1MODSSDIS)     //
-                        | (0U * RCC_PLL1CFGR3_PLL1DACEN)        //
-                        | (1U * RCC_PLL1CFGR3_PLL1MODSSRST);    //
+                        | (2u * RCC_PLL1CFGR3_PLL1PDIV1_0)      //
+                        | (1u * RCC_PLL1CFGR3_PLL1PDIV2_0)      // VCO / 2
+                        | (0u * RCC_PLL1CFGR3_PLL1MODSPR_0)     //
+                        | (0u * RCC_PLL1CFGR3_PLL1MODDIV_0)     //
+                        | (0u * RCC_PLL1CFGR3_PLL1MODSPRDW)     //
+                        | (0u * RCC_PLL1CFGR3_PLL1MODDSEN)      //
+                        | (1u * RCC_PLL1CFGR3_PLL1MODSSDIS)     //
+                        | (0u * RCC_PLL1CFGR3_PLL1DACEN)        //
+                        | (1u * RCC_PLL1CFGR3_PLL1MODSSRST);    //
 
     REG(RCC)->CR |= RCC_CR_PLL1ON;                              // PLL1 on
     (void)(REG(RCC)->CR);                                       //
-    while ((REG(RCC)->SR & RCC_SR_PLL1RDY) == 0U) { ; }         // Waiting for the PLL 1 stable
+    while ((REG(RCC)->SR & RCC_SR_PLL1RDY) == 0u) { ; }         // Waiting for the PLL 1 stable
 
 // PLL 2, 800-MHz, clocks to NPU and audio peripherals
 // ---------------------------------------------------
@@ -590,27 +560,27 @@ static  void    local_RCC_Configuration(void) {
 // f(vco) = 1600-MHz, N/M = 25
 // N = 125, M = 5
 
-    REG(RCC)->PLL2CFGR1 = (0U   * RCC_PLL2CFGR1_PLL2SEL_0)      // f(input) HSI
-                        | (0U   * RCC_PLL2CFGR1_PLL2BYP)        // No bypass
-                        | (5U   * RCC_PLL2CFGR1_PLL2DIVM_0)     // M = 5
-                        | (125U * RCC_PLL2CFGR1_PLL2DIVN_0);    // N = 125
+    REG(RCC)->PLL2CFGR1 = (0u   * RCC_PLL2CFGR1_PLL2SEL_0)      // f(input) HSI
+                        | (0u   * RCC_PLL2CFGR1_PLL2BYP)        // No bypass
+                        | (5u   * RCC_PLL2CFGR1_PLL2DIVM_0)     // M = 5
+                        | (125u * RCC_PLL2CFGR1_PLL2DIVN_0);    // N = 125
 
-    REG(RCC)->PLL2CFGR2 = 0U;                                   // No fractional
+    REG(RCC)->PLL2CFGR2 = 0u;                                   // No fractional
 
     REG(RCC)->PLL2CFGR3 = RCC_PLL2CFGR3_PLL2PDIVEN              // Post div activate
-                        | (2U * RCC_PLL2CFGR3_PLL2PDIV1_0)      //
-                        | (1U * RCC_PLL2CFGR3_PLL2PDIV2_0)      // VCO / 2
-                        | (0U * RCC_PLL2CFGR3_PLL2MODSPR_0)     //
-                        | (0U * RCC_PLL2CFGR3_PLL2MODDIV_0)     //
-                        | (0U * RCC_PLL2CFGR3_PLL2MODSPRDW)     //
-                        | (0U * RCC_PLL2CFGR3_PLL2MODDSEN)      //
-                        | (1U * RCC_PLL2CFGR3_PLL2MODSSDIS)     //
-                        | (0U * RCC_PLL2CFGR3_PLL2DACEN)        //
-                        | (1U * RCC_PLL2CFGR3_PLL2MODSSRST);    //
+                        | (2u * RCC_PLL2CFGR3_PLL2PDIV1_0)      //
+                        | (1u * RCC_PLL2CFGR3_PLL2PDIV2_0)      // VCO / 2
+                        | (0u * RCC_PLL2CFGR3_PLL2MODSPR_0)     //
+                        | (0u * RCC_PLL2CFGR3_PLL2MODDIV_0)     //
+                        | (0u * RCC_PLL2CFGR3_PLL2MODSPRDW)     //
+                        | (0u * RCC_PLL2CFGR3_PLL2MODDSEN)      //
+                        | (1u * RCC_PLL2CFGR3_PLL2MODSSDIS)     //
+                        | (0u * RCC_PLL2CFGR3_PLL2DACEN)        //
+                        | (1u * RCC_PLL2CFGR3_PLL2MODSSRST);    //
 
     REG(RCC)->CR |= RCC_CR_PLL2ON;                              // PLL2 on
     (void)(REG(RCC)->CR);                                       //
-    while ((REG(RCC)->SR & RCC_SR_PLL2RDY) == 0U) { ; }         // Waiting for the PLL 2 stable
+    while ((REG(RCC)->SR & RCC_SR_PLL2RDY) == 0u) { ; }         // Waiting for the PLL 2 stable
 
 // PLL 3, 400-MHz, clocks to CACHEAXI RAM and Ethernet
 // ---------------------------------------------------
@@ -621,27 +591,27 @@ static  void    local_RCC_Configuration(void) {
 // f(vco) = 1600-MHz, N/M = 25
 // N = 125, M = 5
 
-    REG(RCC)->PLL3CFGR1 = (0U   * RCC_PLL3CFGR1_PLL3SEL_0)      // f(input) HSI
-                        | (0U   * RCC_PLL3CFGR1_PLL3BYP)        // No bypass
-                        | (5U   * RCC_PLL3CFGR1_PLL3DIVM_0)     // M = 5
-                        | (125U * RCC_PLL3CFGR1_PLL3DIVN_0);    // N = 125
+    REG(RCC)->PLL3CFGR1 = (0u   * RCC_PLL3CFGR1_PLL3SEL_0)      // f(input) HSI
+                        | (0u   * RCC_PLL3CFGR1_PLL3BYP)        // No bypass
+                        | (5u   * RCC_PLL3CFGR1_PLL3DIVM_0)     // M = 5
+                        | (125u * RCC_PLL3CFGR1_PLL3DIVN_0);    // N = 125
 
-    REG(RCC)->PLL3CFGR2 = 0U;                                   // No fractional
+    REG(RCC)->PLL3CFGR2 = 0u;                                   // No fractional
 
     REG(RCC)->PLL3CFGR3 = RCC_PLL3CFGR3_PLL3PDIVEN              // Post div activate
-                        | (4U * RCC_PLL3CFGR3_PLL3PDIV1_0)      //
-                        | (1U * RCC_PLL3CFGR3_PLL3PDIV2_0)      // VCO / 4
-                        | (0U * RCC_PLL3CFGR3_PLL3MODSPR_0)     //
-                        | (0U * RCC_PLL3CFGR3_PLL3MODDIV_0)     //
-                        | (0U * RCC_PLL3CFGR3_PLL3MODSPRDW)     //
-                        | (0U * RCC_PLL3CFGR3_PLL3MODDSEN)      //
-                        | (1U * RCC_PLL3CFGR3_PLL3MODSSDIS)     //
-                        | (0U * RCC_PLL3CFGR3_PLL3DACEN)        //
-                        | (1U * RCC_PLL3CFGR3_PLL3MODSSRST);    //
+                        | (4u * RCC_PLL3CFGR3_PLL3PDIV1_0)      //
+                        | (1u * RCC_PLL3CFGR3_PLL3PDIV2_0)      // VCO / 4
+                        | (0u * RCC_PLL3CFGR3_PLL3MODSPR_0)     //
+                        | (0u * RCC_PLL3CFGR3_PLL3MODDIV_0)     //
+                        | (0u * RCC_PLL3CFGR3_PLL3MODSPRDW)     //
+                        | (0u * RCC_PLL3CFGR3_PLL3MODDSEN)      //
+                        | (1u * RCC_PLL3CFGR3_PLL3MODSSDIS)     //
+                        | (0u * RCC_PLL3CFGR3_PLL3DACEN)        //
+                        | (1u * RCC_PLL3CFGR3_PLL3MODSSRST);    //
 
     REG(RCC)->CR |= RCC_CR_PLL3ON;                              // PLL3 on
     (void)(REG(RCC)->CR);                                       //
-    while ((REG(RCC)->SR & RCC_SR_PLL3RDY) == 0U) { ; }         // Waiting for the PLL 3 stable
+    while ((REG(RCC)->SR & RCC_SR_PLL3RDY) == 0u) { ; }         // Waiting for the PLL 3 stable
 
 // PLL 4, 400-MHz, clocks to display, camera, FDCAN, and other peripherals
 // -----------------------------------------------------------------------
@@ -652,67 +622,67 @@ static  void    local_RCC_Configuration(void) {
 // f(vco) = 1600-MHz, N/M = 25
 // N = 125, M = 5
 
-    REG(RCC)->PLL4CFGR1 = (0U   * RCC_PLL4CFGR1_PLL4SEL_0)      // f(input) HSI
-                        | (0U   * RCC_PLL4CFGR1_PLL4BYP)        // No bypass
-                        | (5U   * RCC_PLL4CFGR1_PLL4DIVM_0)     // M = 5
-                        | (125U * RCC_PLL4CFGR1_PLL4DIVN_0);    // N = 125
+    REG(RCC)->PLL4CFGR1 = (0u   * RCC_PLL4CFGR1_PLL4SEL_0)      // f(input) HSI
+                        | (0u   * RCC_PLL4CFGR1_PLL4BYP)        // No bypass
+                        | (5u   * RCC_PLL4CFGR1_PLL4DIVM_0)     // M = 5
+                        | (125u * RCC_PLL4CFGR1_PLL4DIVN_0);    // N = 125
 
-    REG(RCC)->PLL4CFGR2 = 0U;                                   // No fractional
+    REG(RCC)->PLL4CFGR2 = 0u;                                   // No fractional
 
     REG(RCC)->PLL4CFGR3 = RCC_PLL4CFGR3_PLL4PDIVEN              // Post div activate
-                        | (4U * RCC_PLL4CFGR3_PLL4PDIV1_0)      //
-                        | (1U * RCC_PLL4CFGR3_PLL4PDIV2_0)      // VCO / 4
-                        | (0U * RCC_PLL4CFGR3_PLL4MODSPR_0)     //
-                        | (0U * RCC_PLL4CFGR3_PLL4MODDIV_0)     //
-                        | (0U * RCC_PLL4CFGR3_PLL4MODSPRDW)     //
-                        | (0U * RCC_PLL4CFGR3_PLL4MODDSEN)      //
-                        | (1U * RCC_PLL4CFGR3_PLL4MODSSDIS)     //
-                        | (0U * RCC_PLL4CFGR3_PLL4DACEN)        //
-                        | (1U * RCC_PLL4CFGR3_PLL4MODSSRST);    //
+                        | (4u * RCC_PLL4CFGR3_PLL4PDIV1_0)      //
+                        | (1u * RCC_PLL4CFGR3_PLL4PDIV2_0)      // VCO / 4
+                        | (0u * RCC_PLL4CFGR3_PLL4MODSPR_0)     //
+                        | (0u * RCC_PLL4CFGR3_PLL4MODDIV_0)     //
+                        | (0u * RCC_PLL4CFGR3_PLL4MODSPRDW)     //
+                        | (0u * RCC_PLL4CFGR3_PLL4MODDSEN)      //
+                        | (1u * RCC_PLL4CFGR3_PLL4MODSSDIS)     //
+                        | (0u * RCC_PLL4CFGR3_PLL4DACEN)        //
+                        | (1u * RCC_PLL4CFGR3_PLL4MODSSRST);    //
 
     REG(RCC)->CR |= RCC_CR_PLL4ON;                              // PLL4 on
     (void)(REG(RCC)->CR);                                       //
-    while ((REG(RCC)->SR & RCC_SR_PLL4RDY) == 0U) { ; }         // Waiting for the PLL 4 stable
+    while ((REG(RCC)->SR & RCC_SR_PLL4RDY) == 0u) { ; }         // Waiting for the PLL 4 stable
 
 // Muxes
 // -----
 
 // System clock (IC1 mux)
 
-    REG(RCC)->IC1CFGR = (0U * RCC_IC1CFGR_IC1SEL_0)             // PLL1
-                      | (0U * RCC_IC1CFGR_IC1INT_0);            // IC1 = PLL1 / 1, ~800-MHz
+    REG(RCC)->IC1CFGR = (0u * RCC_IC1CFGR_IC1SEL_0)             // PLL1
+                      | ((1u - 1u) * RCC_IC1CFGR_IC1INT_0);     // IC1 = PLL1 / 1, ~800-MHz
     STRONG_BARRIER;                                             //
     REG(RCC)->DIVENR |= RCC_DIVENR_IC1EN;                       //
     (void)(REG(RCC)->DIVENR);                                   //
 
 // System clock (IC2 mux)
 
-    REG(RCC)->IC2CFGR = (3U * RCC_IC2CFGR_IC2SEL_0)             // PLL4
-                      | (0U * RCC_IC2CFGR_IC2INT_0);            // IC2 = PLL4 / 1, ~400_MHz
+    REG(RCC)->IC2CFGR = (3u * RCC_IC2CFGR_IC2SEL_0)             // PLL4
+                      | ((1u - 1u) * RCC_IC2CFGR_IC2INT_0);     // IC2 = PLL4 / 1, ~400_MHz
     STRONG_BARRIER;                                             //
     REG(RCC)->DIVENR |= RCC_DIVENR_IC2EN;                       //
     (void)(REG(RCC)->DIVENR);                                   //
 
 // System clock (IC15 mux) (for MCO2)
 
-    REG(RCC)->IC15CFGR = (0U * RCC_IC15CFGR_IC15SEL_0)          // PLL1
-                       | ((2U - 1U) * RCC_IC15CFGR_IC15INT_0);  // IC15 = PLL1 / 2, ~400-MHz
+    REG(RCC)->IC15CFGR = (0u * RCC_IC15CFGR_IC15SEL_0)          // PLL1
+                       | ((2u - 1u) * RCC_IC15CFGR_IC15INT_0);  // IC15 = PLL1 / 2, ~400-MHz
     STRONG_BARRIER;                                             //
     REG(RCC)->DIVENR |= RCC_DIVENR_IC15EN;                      //
     (void)(REG(RCC)->DIVENR);                                   //
 
 // System clock (IC20 mux) (for MCO2)
 
-    REG(RCC)->IC20CFGR = (2U * RCC_IC20CFGR_IC20SEL_0)          // PLL3
-                       | ((10U - 1U) * RCC_IC20CFGR_IC20INT_0); // IC20 = PLL3 / 10, ~40-MHz
+    REG(RCC)->IC20CFGR = (2u * RCC_IC20CFGR_IC20SEL_0)          // PLL3
+                       | ((10u - 1u) * RCC_IC20CFGR_IC20INT_0); // IC20 = PLL3 / 10, ~40-MHz
     STRONG_BARRIER;                                             //
     REG(RCC)->DIVENR |= RCC_DIVENR_IC20EN;                      //
     (void)(REG(RCC)->DIVENR);                                   //
 
 // System clock (IC9 mux) (for ....)
 
-    REG(RCC)->IC9CFGR = (2U * RCC_IC9CFGR_IC9SEL_0)             // PLL3
-                      | ((4U - 1U) * RCC_IC9CFGR_IC9INT_0);     // IC9 = PLL3 / 4, ~100-MHz
+    REG(RCC)->IC9CFGR = (2u * RCC_IC9CFGR_IC9SEL_0)             // PLL3
+                      | ((4u - 1u) * RCC_IC9CFGR_IC9INT_0);     // IC9 = PLL3 / 4, ~100-MHz
     STRONG_BARRIER;                                             //
     REG(RCC)->DIVENR |= RCC_DIVENR_IC9EN;                       //
     (void)(REG(RCC)->DIVENR);                                   //
@@ -727,10 +697,10 @@ static  void    local_RCC_Configuration(void) {
 //                  (sysd_ck) not used
 // - PERCK -> HSI
 
-    REG(RCC)->CFGR1 = (3U * RCC_CFGR1_CPUSW_0)                  // IC1 (PLL1 / 1) as a CPU clock
-                    | (3U * RCC_CFGR1_SYSSW_0);                 // IC2 (PLL4 / 1) as a SYS clock
+    REG(RCC)->CFGR1 = (3u * RCC_CFGR1_CPUSW_0)                  // IC1 (PLL1 / 1) as a CPU clock
+                    | (3u * RCC_CFGR1_SYSSW_0);                 // IC2 (PLL4 / 1) as a SYS clock
 
-    REG(RCC)->CCIPR7 = (0U * RCC_CCIPR7_PERSEL_0);              // per_ck (periph kernel = HSI)
+    REG(RCC)->CCIPR7 = (0u * RCC_CCIPR7_PERSEL_0);              // per_ck (periph kernel = HSI)
 
 // Bus peripheral clocks
 // - Timers                 -> 100-MHz
@@ -758,18 +728,18 @@ static  void    local_RCC_Configuration(void) {
  */
 static  void    local_MPU_Configuration(void) {
 
-    SET_MPU8_INDEX(KMPU_FLASH_ATTR, KMPU_RAM_CACHE_ATTR, KMPU_RAM_NOT_CACHE_ATTR, KMPU_PERIPH_ATTR, 0U, 0U, 0U, 0U, 0U);
+    SET_MPU8_INDEX(KMPU_FLASH_ATTR, KMPU_RAM_CACHE_ATTR, KMPU_RAM_NOT_CACHE_ATTR, KMPU_PERIPH_ATTR, 0u, 0u, 0u, 0u, 0u);
 
-    #ifdef PRIVILEGED_USER_S
-    SET_MPU8_REGION(0U, ST_RAM_INT_1,       EN_RAM_INT_1,       KMPU_EXECUTABLE,        KMPU_R_ALL,  0U, KMPU_NOT_SHAREABLE);
-    SET_MPU8_REGION(1U, ST_RAM_INT_2_OS,    EN_RAM_INT_2_OS,    KMPU_EXECUTABLE,        KMPU_RW_PRI, 1U, KMPU_NOT_SHAREABLE);
-    SET_MPU8_REGION(2U, ST_RAM_INT_2,       EN_RAM_INT_2,       KMPU_EXECUTABLE,        KMPU_RW_ALL, 1U, KMPU_NOT_SHAREABLE);
-    SET_MPU8_REGION(3U, ST_PERIPH_SOC,      EN_PERIPH_SOC,      KMPU_NOT_EXECUTABLE,    KMPU_RW_PRI, 3U, KMPU_NOT_SHAREABLE);
-    SET_MPU8_REGION(4U, ST_PERIPH_CORE,     EN_PERIPH_CORE,     KMPU_NOT_EXECUTABLE,    KMPU_RW_PRI, 3U, KMPU_NOT_SHAREABLE);
+    #if (defined(PRIVILEGED_USER_S))
+    SET_MPU8_REGION(0u, ST_RAM_INT_1,       EN_RAM_INT_1,       KMPU_EXECUTABLE,        KMPU_R_ALL,  0u, KMPU_NOT_SHAREABLE);
+    SET_MPU8_REGION(1u, ST_RAM_INT_2_OS,    EN_RAM_INT_2_OS,    KMPU_EXECUTABLE,        KMPU_RW_PRI, 1u, KMPU_NOT_SHAREABLE);
+    SET_MPU8_REGION(2u, ST_RAM_INT_2,       EN_RAM_INT_2,       KMPU_EXECUTABLE,        KMPU_RW_ALL, 1u, KMPU_NOT_SHAREABLE);
+    SET_MPU8_REGION(3u, ST_PERIPH_SOC,      EN_PERIPH_SOC,      KMPU_NOT_EXECUTABLE,    KMPU_RW_PRI, 3u, KMPU_NOT_SHAREABLE);
+    SET_MPU8_REGION(4u, ST_PERIPH_CORE,     EN_PERIPH_CORE,     KMPU_NOT_EXECUTABLE,    KMPU_RW_PRI, 3u, KMPU_NOT_SHAREABLE);
 
     #else
-    SET_MPU8_REGION(0U, ST_RAM_INT_1,       EN_RAM_INT_1,       KMPU_EXECUTABLE,        KMPU_R_ALL,  0U, KMPU_NOT_SHAREABLE);
-    SET_MPU8_REGION(1U, ST_RAM_INT_2,       EN_RAM_INT_2,       KMPU_EXECUTABLE,        KMPU_RW_ALL, 1U, KMPU_NOT_SHAREABLE);
+    SET_MPU8_REGION(0u, ST_RAM_INT_1,       EN_RAM_INT_1,       KMPU_EXECUTABLE,        KMPU_R_ALL,  0u, KMPU_NOT_SHAREABLE);
+    SET_MPU8_REGION(1u, ST_RAM_INT_2,       EN_RAM_INT_2,       KMPU_EXECUTABLE,        KMPU_RW_ALL, 1u, KMPU_NOT_SHAREABLE);
     #endif
 
 }
@@ -789,7 +759,7 @@ static  void    local_MCO2_Configuration(void) {
 // PA08, MCO1 (not usable)
 // PC09, MCO2 (maybe blocked by OTP124)
 
-    value = REG(RCC)->CCIPR5 & ((0xFFF8U<<19U) | (0x1U<<11U) | (0x1U<<3U));
+    value = REG(RCC)->CCIPR5 & ((0xFFF8u<<19u) | (0x1u<<11u) | (0x1u<<3u));
 
 // MCO2
 //
@@ -802,10 +772,10 @@ static  void    local_MCO2_Configuration(void) {
 // n = 6, ic20_ck       (OK, ~40-MHz !!!)  = pll3 / 10 -> pll3 = 400-MHz
 // n = 7, sysb_ck       (OK, ~400-MHz !!!) = pll4
 
-#define n   5U
+#define n   5u
 
     value |= (n          * RCC_CCIPR5_MCO2SEL_0)    //
-           | ((10U - 1U) * RCC_CCIPR5_MCO2PRE_0);   // Clock / 10
+           | ((10u - 1u) * RCC_CCIPR5_MCO2PRE_0);   // Clock / 10
     REG(RCC)->CCIPR5 = value;                       //
 }
 
@@ -819,12 +789,12 @@ static  void    local_CACHE_Enable(void) {
 
     REG(MEMSYSCTL)->MSCR |= MEMSYSCTL_MSCR_DCACTIVE | MEMSYSCTL_MSCR_ICACTIVE;
 
-    #ifdef CACHE_I_S
+    #if (defined(CACHE_I_S))
     cache_I_Invalidate();
     cache_I_Enable();
     #endif
 
-    #ifdef CACHE_D_S
+    #if (defined(CACHE_D_S))
     cache_D_Invalidate();
     cache_D_Enable();
     #endif
@@ -836,8 +806,8 @@ static  void    local_CACHE_Enable(void) {
  * - Set the power of the TCPP0203 to normal
  *
  */
-#define KI2C_ADD_TCPP0203   0x34U
-#define KTCPP0203_NB_MONO   2U
+#define KI2C_ADD_TCPP0203   0x34u
+#define KTCPP0203_NB_MONO   2u
 
 static  void    local_write_TCPP0203(uint8_t addresse, uint8_t value) {
 
@@ -845,11 +815,11 @@ static  void    local_write_TCPP0203(uint8_t addresse, uint8_t value) {
 
     REG(I2C2)->CR2 &= (uint32_t)~I2C_CR1_PE;
 
-    REG(I2C2)->TIMINGR = (4U * I2C_TIMINGR_PRESC_0)                     // Timing prescaler
-                       | (9U * I2C_TIMINGR_SCLDEL_0)                    // Data setup time
-                       | (1U * I2C_TIMINGR_SDADEL_0)                    // Data hold time
-                       | (52U * I2C_TIMINGR_SCLH_0)                     // SCL high period
-                       | (52U * I2C_TIMINGR_SCLL_0);                    // SCL Low period
+    REG(I2C2)->TIMINGR = (4u * I2C_TIMINGR_PRESC_0)                     // Timing prescaler
+                       | (9u * I2C_TIMINGR_SCLDEL_0)                    // Data setup time
+                       | (1u * I2C_TIMINGR_SDADEL_0)                    // Data hold time
+                       | (52u * I2C_TIMINGR_SCLH_0)                     // SCL high period
+                       | (52u * I2C_TIMINGR_SCLL_0);                    // SCL Low period
 
     REG(I2C2)->CR1     = I2C_CR1_NOSTRETCH                              // Clock stretching disabled
                        | I2C_CR1_ANFOFF;                                // Analog noise filter disabled
@@ -861,16 +831,16 @@ static  void    local_write_TCPP0203(uint8_t addresse, uint8_t value) {
     local_waitingForFlagOff(I2C_ISR_BERR);
     local_waitingForFlagOn(I2C_ISR_TXE);
 
-    REG(I2C2)->CR2 = (0U * I2C_CR2_PECBYTE)                             // No packet error
+    REG(I2C2)->CR2 = (0u * I2C_CR2_PECBYTE)                             // No packet error
                    | I2C_CR2_AUTOEND                                    // Automatic end mode
-                   | (0U * I2C_CR2_RELOAD)                              // No reload mode
-                   | ((KTCPP0203_NB_MONO & 0xFFU) * I2C_CR2_NBYTES_0)   // Number of bytes to transfer
-                   | (0U * I2C_CR2_NACK)                                // No NACK
-                   | (0U * I2C_CR2_STOP)                                // No STOP
-                   | (0U * I2C_CR2_HEAD10R)                             // No HEADER 10
-                   | (0U * I2C_CR2_ADD10)                               // Address on 7 bits
-                   | (0U * I2C_CR2_RD_WRN)                              // Write transfer
-                   | ((KI2C_ADD_TCPP0203<<1U) * I2C_CR2_SADD_0);        // The slave address
+                   | (0u * I2C_CR2_RELOAD)                              // No reload mode
+                   | ((KTCPP0203_NB_MONO & 0xFFu) * I2C_CR2_NBYTES_0)   // Number of bytes to transfer
+                   | (0u * I2C_CR2_NACK)                                // No NACK
+                   | (0u * I2C_CR2_STOP)                                // No STOP
+                   | (0u * I2C_CR2_HEAD10R)                             // No HEADER 10
+                   | (0u * I2C_CR2_ADD10)                               // Address on 7 bits
+                   | (0u * I2C_CR2_RD_WRN)                              // Write transfer
+                   | ((KI2C_ADD_TCPP0203<<1u) * I2C_CR2_SADD_0);        // The slave address
 
     REG(I2C2)->CR2 |= I2C_CR2_START;                                    // START
 
@@ -883,7 +853,7 @@ static  void    local_write_TCPP0203(uint8_t addresse, uint8_t value) {
 
 // Wait after each write
 
-    local_wait_us(1000000U);                                            //
+    local_wait_us(1000000u);                                            //
 }
 
 /*
@@ -929,4 +899,4 @@ static  void    local_wait_us(uint32_t us) {
     for (time = 0; time < us; time++) { NOP; }
 }
 
-#include    "model_cache.c_inc"     // IWYU pragma: keep
+#include    "model_cache.c_inc"
