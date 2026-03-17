@@ -102,17 +102,37 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
+#if (defined(ROMABLE_S))
+
+// Prototypes
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+
 MODULE(
-    UserAppl,                               // Module name (the first letter has to be upper case)
-    KID_FAM_APPLICATIONS,                   // Family (defined in the module.h)
-    KNUM_APPLICATION,                       // Module identifier (defined in the module.h)
-    nullptr,                                // Address of the initialisation code (early pre-init)
-    aStart,                                 // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
-    nullptr,                                // Address of the clean code (clean the module)
-    " 1.0",                                 // Revision string (major . minor)
-    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),     // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-    0                                       // Execution cores
+    Basic,                              // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_ROMABLE_0,                     // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
 );
+
+#else
+MODULE(
+    UserAppl,                           // Module name (the first letter has to be upper case)
+    KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
+    KNUM_APPLICATION,                   // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
+);
+#endif
 
 // Application specific
 // ====================
@@ -123,8 +143,8 @@ static  proc_t      *vProcess_0, *vProcess_1;
 
 static  enum        { KSTATE1, KSTATE2, KSTATE3, KSTATE4 } vState = KSTATE1;
 
-#define KSYNC_STATE_MACHINE     (1U<<0U)    // Synchro for the state machine (P1)
-#define KSYNC_CONTINUOUS        (1U<<1U)    // Synchro for the continuous (P2)
+#define KSYNC_STATE_MACHINE     (1u<<0u)    // Synchro for the state machine (P1)
+#define KSYNC_CONTINUOUS        (1u<<1u)    // Synchro for the continuous (P2)
 
 /*
  * \brief aProcess_0
@@ -138,7 +158,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
     UNUSED(argument);
 
     while (true) {
-        kern_suspendProcess(500U);
+        kern_suspendProcess(500u);
         (void)dprintf(KSYST,"T1 = %"PRIu32", T2 = %"PRIu32", T3 = %"PRIu32", T4 = %"PRIu32"\n",
                             vDelta[0],
                             vDelta[1],
@@ -172,7 +192,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 
     if (kern_createPreciseSignal("My_State_Machine", &preciseSignal) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create prcs"); exit(EXIT_OS_FAILURE); }
 
-    kern_setPreciseSignal(preciseSignal, &sigGroup, vProcess_1, 320U, KPRCS_SINGLE_SHOT, KSYNC_STATE_MACHINE);
+    kern_setPreciseSignal(preciseSignal, &sigGroup, vProcess_1, 320u, KPRCS_SINGLE_SHOT, KSYNC_STATE_MACHINE);
 
     while (true) {
         switch (vState) {
@@ -183,7 +203,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
                 signal = KSYNC_STATE_MACHINE;
                 kern_waitSignal(sigGroup, &signal, KKERN_HANDLE_FROM_ISR, KWAIT_INFINITY);
 
-                kern_setPreciseSignal(preciseSignal, &sigGroup, vProcess_1, 550U, KPRCS_SINGLE_SHOT, KSYNC_STATE_MACHINE);
+                kern_setPreciseSignal(preciseSignal, &sigGroup, vProcess_1, 550u, KPRCS_SINGLE_SHOT, KSYNC_STATE_MACHINE);
                 kern_readTickCount(&vTime[0]);
                 vDelta[3] = (uint32_t)(vTime[0] - vTime[3]);
                 vState = KSTATE2;
@@ -196,7 +216,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
                 signal = KSYNC_STATE_MACHINE;
                 kern_waitSignal(sigGroup, &signal, KKERN_HANDLE_FROM_ISR, KWAIT_INFINITY);
 
-                kern_setPreciseSignal(preciseSignal, &sigGroup, vProcess_1, 2830U, KPRCS_SINGLE_SHOT, KSYNC_STATE_MACHINE);
+                kern_setPreciseSignal(preciseSignal, &sigGroup, vProcess_1, 2830u, KPRCS_SINGLE_SHOT, KSYNC_STATE_MACHINE);
                 kern_readTickCount(&vTime[1]);
                 vDelta[0] = (uint32_t)(vTime[1] - vTime[0]);
                 vState = KSTATE3;
@@ -209,7 +229,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
                 signal = KSYNC_STATE_MACHINE;
                 kern_waitSignal(sigGroup, &signal, KKERN_HANDLE_FROM_ISR, KWAIT_INFINITY);
 
-                kern_setPreciseSignal(preciseSignal, &sigGroup, vProcess_1, 2510U, KPRCS_SINGLE_SHOT, KSYNC_STATE_MACHINE);
+                kern_setPreciseSignal(preciseSignal, &sigGroup, vProcess_1, 2510u, KPRCS_SINGLE_SHOT, KSYNC_STATE_MACHINE);
                 kern_readTickCount(&vTime[2]);
                 vDelta[1] = (uint32_t)(vTime[2] - vTime[1]);
                 vState = KSTATE4;
@@ -222,7 +242,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
                 signal = KSYNC_STATE_MACHINE;
                 kern_waitSignal(sigGroup, &signal, KKERN_HANDLE_FROM_ISR, KWAIT_INFINITY);
 
-                kern_setPreciseSignal(preciseSignal, &sigGroup, vProcess_1, 320U, KPRCS_SINGLE_SHOT, KSYNC_STATE_MACHINE);
+                kern_setPreciseSignal(preciseSignal, &sigGroup, vProcess_1, 320u, KPRCS_SINGLE_SHOT, KSYNC_STATE_MACHINE);
                 kern_readTickCount(&vTime[3]);
                 vDelta[2] = (uint32_t)(vTime[3] - vTime[2]);
                 vState = KSTATE1;
@@ -246,7 +266,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int     main(int argc, const char *argv[]) {
+MAIN_ENTRY(argc, argv[]) {
 
 // ---------------------------------I-----------------------------------------I--------------I
 

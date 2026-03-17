@@ -109,7 +109,7 @@ static  void    __attribute__ ((noinline)) local_printFunction(uintptr_t pc, con
         cmns_send(KDEF0, "Routine:      "); cmns_send(KDEF0, functionName); cmns_send(KDEF0, "\n");
     }
 
-    #ifdef NO_KERNEL_S
+    #if (defined(NO_KERNEL_S))
     cmns_send(KDEF0, "No uKOS-X uKernel\n");
 
     #else

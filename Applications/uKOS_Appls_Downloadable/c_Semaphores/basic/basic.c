@@ -96,6 +96,25 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
+#if (defined(ROMABLE_S))
+
+// Prototypes
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+
+MODULE(
+    Basic,                              // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_ROMABLE_0,                     // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
+);
+
+#else
 MODULE(
     UserAppl,                           // Module name (the first letter has to be upper case)
     KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
@@ -104,9 +123,10 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
+#endif
 
 /*
  * \brief aProcess 0
@@ -127,10 +147,10 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 
     UNUSED(argument);
 
-    while (kern_getSemaphoreById(KURT0_SEMAPHORE_RX, &semaphore) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
+    while (kern_getSemaphoreById(KURT0_SEMAPHORE_RX, &semaphore) != KERR_KERN_NOERR) { kern_suspendProcess(1u); }
 
     while (true) {
-        status = kern_waitSemaphore(semaphore, 500U);
+        status = kern_waitSemaphore(semaphore, 500u);
 
 // Maintains the sampling rate always @ 500-ms
 // Thanks to the kern_suspendProcess(KWAIT_REMAINING_TIMEOUT);
@@ -144,7 +164,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
             kern_suspendProcess(KWAIT_REMAINING_TIMEOUT);
             led_on(KLED_1);
             led_on(KLED_2);
-            kern_suspendProcess(50U);
+            kern_suspendProcess(50u);
             led_off(KLED_1);
             led_off(KLED_2);
 
@@ -154,7 +174,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 // Timeout of 500-ms (stable)
 
             led_on(KLED_1);
-            kern_suspendProcess(50U);
+            kern_suspendProcess(50u);
             led_off(KLED_1);
         }
     }
@@ -168,17 +188,17 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int     main(int argc, const char *argv[]) {
+MAIN_ENTRY(argc, argv[]) {
                     proc_t      *process_0;
     static  const   urtxCnf_t   configureURTx = {
                                     .oNBBits   = KSERIAL_NB_BITS_8,
                                     .oStopBits = KSERIAL_STOPBITS_1,
                                     .oParity   = KSERIAL_PARITY_NONE,
                                     .oBaudRate = KSERIAL_BAUDRATE_DEFAULT,
-                                    .oKernSync = ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_RX)
+                                    .oKernSync = ((uint32_t)1u<<(uint32_t)BSERIAL_SEMAPHORE_RX)
                                 };
 
-    kern_suspendProcess(100U);
+    kern_suspendProcess(100u);
     serial_configure(KURT0, &configureURTx);
     serial_flush(KURT0);
 

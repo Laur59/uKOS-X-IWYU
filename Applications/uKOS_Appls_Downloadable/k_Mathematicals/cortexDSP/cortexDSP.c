@@ -96,6 +96,25 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
+#if (defined(ROMABLE_S))
+
+// Prototypes
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+
+MODULE(
+    CortexDSP,                          // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_ROMABLE_0,                     // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
+);
+
+#else
 MODULE(
     UserAppl,                           // Module name (the first letter has to be upper case)
     KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
@@ -104,9 +123,10 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
+#endif
 
 // Application specific
 // ====================
@@ -128,7 +148,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
     UNUSED(argument);
 
     while (true) {
-        kern_suspendProcess(1000U);
+        kern_suspendProcess(1000u);
         led_toggle(KLED_1);
     }
 }
@@ -161,24 +181,24 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
     UNUSED(argument);
 
     while (true) {
-        kern_suspendProcess(1000U);
+        kern_suspendProcess(1000u);
 
 // Compute the vector rows & cols
 
-        for (i = 0U; i < 10U; i++) {
-            for (j = 0U; j < 10U; j++) {
+        for (i = 0u; i < 10u; i++) {
+            for (j = 0u; j < 10u; j++) {
                 local_cumulate32(&projections_x[i], image[i][j], 1);
                 local_cumulate32(&projections_y[i], image[j][i], 1);
             }
         }
 
         (void)dprintf(KSYST, "\nRows\n\n");
-        for (i = 0U; i < 10U; i++) {
+        for (i = 0u; i < 10u; i++) {
             (void)dprintf(KSYST, "%"PRId32"\n", projections_x[i]);
         }
 
         (void)dprintf(KSYST, "\nCols\n\n");
-        for (i = 0U; i < 10U; i++) {
+        for (i = 0u; i < 10u; i++) {
             (void)dprintf(KSYST, "%"PRId32"\n", projections_y[i]);
         }
 
@@ -201,12 +221,12 @@ static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
     UNUSED(argument);
 
     while (true) {
-        kern_suspendProcess(1000U);
+        kern_suspendProcess(1000u);
 
 // Compute the vector product
 
         result = 0;
-        for (i = 0U; i < 10U; i++) {
+        for (i = 0u; i < 10u; i++) {
             local_cumulate64(&result, vector_1[i], vector_2[i]);
         }
 
@@ -222,7 +242,7 @@ static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int     main(int argc, const char *argv[]) {
+MAIN_ENTRY(argc, argv[]) {
     proc_t  *process_0, *process_1, *process_2;
 
 // ---------------------------------I-----------------------------------------I--------------I
@@ -311,7 +331,7 @@ __attribute__ ((always_inline)) static __inline void local_cumulate64(int64_t *v
     h = (uint32_t)(*value>>32); l = (uint32_t)(*value & 0xFFFFFFFFul);
 
     __asm volatile ("smlal %0, %1, %2, %3" : "=r" (l), "=r" (h) : "r" (a), "r" (b), "0" (l), "1" (h));
-    *value = (int64_t)(((uint64_t)h<<32U) | l);
+    *value = (int64_t)(((uint64_t)h<<32u) | l);
 }
 
 // NOLINTEND(readability-non-const-parameter)

@@ -97,6 +97,25 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
+#if (defined(ROMABLE_S))
+
+// Prototypes
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+
+MODULE(
+    Bid64_xyz,                          // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_ROMABLE_0,                     // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
+);
+
+#else
 MODULE(
     UserAppl,                           // Module name (the first letter has to be upper case)
     KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
@@ -105,9 +124,10 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
+#endif
 
 // Application specific
 // ====================
@@ -118,8 +138,8 @@ static  char_t      *vN2 = "1.747470e+4";
 static  char_t      *vZe = "00000000000";
 static  decContext  vSet;
 
-#define KDIGIT_PRECISION    16U         // 16 digits for decimal 64-bits
-#define KNO_TRAP            0U          // No trap
+#define KDIGIT_PRECISION    16u         // 16 digits for decimal 64-bits
+#define KNO_TRAP            0u          // No trap
 
 // Prototypes
 
@@ -140,7 +160,7 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
 
     UNUSED(argument);
 
-    kern_suspendProcess(1000U);
+    kern_suspendProcess(1000u);
     (void)dprintf(KSYST, "\n");
 
     decContextDefault(&vSet, DEC_INIT_DECIMAL64);
@@ -180,7 +200,7 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
 
     (void)dprintf(KSYST, "%s div %s = %s\n\n", vN1, vZe, vResult);
 
-    kern_suspendProcess(1000U);
+    kern_suspendProcess(1000u);
     exit(EXIT_OS_SUCCESS);
 }
 
@@ -192,7 +212,7 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int     main(int argc, const char *argv[]) {
+MAIN_ENTRY(argc, argv[]) {
     proc_t  *process;
 
 // -------------------------------I-----------------------------------------I--------------I
@@ -233,7 +253,7 @@ int     main(int argc, const char *argv[]) {
  */
 static  void    local_printStatus(decContext set) {
 
-    if ((set.status & DEC_Errors) == 0U) { return; }
+    if ((set.status & DEC_Errors) == 0u) { return; }
 
     set.status &= DEC_Errors;
 

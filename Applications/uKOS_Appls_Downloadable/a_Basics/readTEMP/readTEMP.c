@@ -94,6 +94,25 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
+#if (defined(ROMABLE_S))
+
+// Prototypes
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+
+MODULE(
+    ReadTEMP,                           // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_ROMABLE_0,                     // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
+);
+
+#else
 MODULE(
     UserAppl,                           // Module name (the first letter has to be upper case)
     KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
@@ -102,9 +121,10 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
+#endif
 
 /*
  * \brief aProcess 0
@@ -118,7 +138,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
     UNUSED(argument);
 
     while (true) {
-        kern_suspendProcess(1000U);
+        kern_suspendProcess(1000u);
         led_toggle(KLED_1);
     }
 }
@@ -137,7 +157,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
     UNUSED(argument);
 
     while (true) {
-        kern_suspendProcess(1000U);
+        kern_suspendProcess(1000u);
         temperature_read(&temperature);
         (void)dprintf(KSYST, "Temperature = %5.2f [K]\n", temperature);
     }
@@ -151,7 +171,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int     main(int argc, const char *argv[]) {
+MAIN_ENTRY(argc, argv[]) {
     proc_t  *process_0, *process_1;
 
 // ---------------------------------I-----------------------------------------I--------------I

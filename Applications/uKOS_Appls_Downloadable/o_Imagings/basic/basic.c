@@ -96,6 +96,25 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
+#if (defined(ROMABLE_S))
+
+// Prototypes
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+
+MODULE(
+    Basic,                              // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_ROMABLE_0,                     // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
+);
+
+#else
 MODULE(
     UserAppl,                           // Module name (the first letter has to be upper case)
     KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
@@ -104,15 +123,16 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
+#endif
 
 // Application specific
 // ====================
 
-#define KAPP_NB_COLUMNS     752U        // 752
-#define KAPP_NB_ROWS        480U        // 480
+#define KAPP_NB_COLUMNS     752u        // 752
+#define KAPP_NB_ROWS        480u        // 480
 
 STRG_LOC_CONST(aStrAcqu[]) = "imgx - Acquisition";
 
@@ -134,7 +154,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
     UNUSED(argument);
 
     while (true) {
-        kern_suspendProcess(1000U);
+        kern_suspendProcess(1000u);
         led_toggle(KLED_1);
     }
 }
@@ -171,7 +191,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
                                         .oStopBits = KSERIAL_STOPBITS_1,
                                         .oParity   = KSERIAL_PARITY_NONE,
                                         .oBaudRate = KSERIAL_BAUDRATE_3000000,
-                                        .oKernSync = ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_RX)
+                                        .oKernSync = ((uint32_t)1u<<(uint32_t)BSERIAL_SEMAPHORE_RX)
                                     };
 
     if (kern_createSemaphore(aStrAcqu, 0, 1, &vSemaImgAcqu) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create sema G"); exit(EXIT_OS_FAILURE); }
@@ -189,7 +209,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 // Just after the SNAP initialisation it is necessary waiting for the end of the
 // current transfer (~ 40-ms) before starting.
 
-    kern_suspendProcess(40U);
+    kern_suspendProcess(40u);
     imager_acquisition();
 
     while (true) {
@@ -212,7 +232,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int     main(int argc, const char *argv[]) {
+MAIN_ENTRY(argc, argv[]) {
     proc_t  *process_0, *process_1;
 
 // ---------------------------------I-----------------------------------------I--------------I
@@ -273,7 +293,7 @@ int     main(int argc, const char *argv[]) {
 static  void    local_transfer(void) {
 
     #if (defined(Alastor_H743_S))
-    led_toggle(3U);
+    led_toggle(3u);
     #endif
 
     kern_signalSemaphore(vSemaImgAcqu);

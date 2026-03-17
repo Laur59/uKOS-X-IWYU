@@ -72,9 +72,10 @@ static  void    local_RNG_IRQHandler(void);
  */
 void    model_random_hard_init(void) {
 
-    REG(RCC)->AHB3ENR |= RCC_AHB3ENR_RNGEN;
+    REG(RCC)->AHB3ENR   |= RCC_AHB3ENR_RNGEN;
+    REG(RCC)->AHB3LPENR |= RCC_AHB3LPENR_RNGLPEN;
 
-    INTERRUPT_VECTOR(RNG_IRQn, local_RNG_IRQHandler);
+    INTERRUPT_VECTOR(RNG_C0_IRQn, local_RNG_IRQHandler);
     NVIC_SetPriority(RNG_C0_IRQn, KINT_LEVEL_PERIPHERALS);
     NVIC_EnableIRQ(RNG_C0_IRQn);
 }
@@ -96,7 +97,7 @@ void    model_random_hard_read(uint32_t *number) {
     vTerminated = false;
     REG(RNG)->CR |= (RNG_CR_RNGEN | RNG_CR_IE);
 
-    while (!vTerminated) {
+    while (vTerminated == false) {
         kern_switchFast();
     }
 }
@@ -114,7 +115,7 @@ static  void    local_RNG_IRQHandler(void) {
 
 // Is data ready, no seed error, no clock error
 
-    if (((REG(RNG)->SR & RNG_SR_DRDY) != 0U) && ((REG(RNG)->SR & RNG_SR_SEIS) == 0U) && ((REG(RNG)->SR & RNG_SR_CEIS) == 0U)) {
+    if (((REG(RNG)->SR & RNG_SR_DRDY) != 0u) && ((REG(RNG)->SR & RNG_SR_SEIS) == 0u) && ((REG(RNG)->SR & RNG_SR_CEIS) == 0u)) {
         *vNumber = REG(RNG)->DR & KRAND_MAX;
         vTerminated = true;
         REG(RNG)->CR &= ~(RNG_CR_RNGEN | RNG_CR_IE);

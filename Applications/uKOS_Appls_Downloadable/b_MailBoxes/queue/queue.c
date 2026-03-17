@@ -55,7 +55,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  *
  *          - P0: Create a mailbox "Queue 1-to-0"
  *                Read and display the messages coming from the queue
- *                Toggle LED 1 with decimation
+ *                Toggle LED 1
  *
  *          - P1: Get the mailbox "Queue 1-to-0" handle
  *                Every 10-ms
@@ -96,6 +96,25 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
+#if (defined(ROMABLE_S))
+
+// Prototypes
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+
+MODULE(
+    Queue,                              // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_ROMABLE_0,                     // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
+);
+
+#else
 MODULE(
     UserAppl,                           // Module name (the first letter has to be upper case)
     KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
@@ -104,9 +123,10 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
+#endif
 
 /*
  * \brief aProcess 0
@@ -117,13 +137,12 @@ MODULE(
  *
  */
 static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
-    uintptr_t   message_1_to_0, expected_1_to_0 = 0U;
+    uintptr_t   message_1_to_0, expected_1_to_0 = 0u;
     mbox_t      *queue_1_to_0;
     mcnf_t      configure = {
-                    .oNbMaxPacks = 10U,
-                    .oDataEntrySize = 0U
+                    .oNbMaxPacks = 10u,
+                    .oDataEntrySize = 0u
             };
-    uint32_t ledDecimationCounter = 0U;
 
     UNUSED(argument);
 
@@ -135,7 +154,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 // Receive the message (if FIFO is not empty)
 // Display the message
 
-        if (kern_readQueue(queue_1_to_0, &message_1_to_0, 100U) == KERR_KERN_TIMEO) {
+        if (kern_readQueue(queue_1_to_0, &message_1_to_0, 100u) == KERR_KERN_TIMEO) {
             LOG(KFATAL_USER, "Timeout read mbox");
             exit(EXIT_OS_FAILURE);
         }
@@ -147,11 +166,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 
         expected_1_to_0++;
         (void)dprintf(KSYST, "Message = %"PRIu32"\n", (uint32_t)message_1_to_0);
-        ledDecimationCounter++;
-        if (ledDecimationCounter == 100U) {
-            led_toggle(KLED_1);
-            ledDecimationCounter = 0U;
-        }
+        led_toggle(KLED_1);
     }
 }
 
@@ -171,14 +186,14 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 
 // Waiting for the queue 1-to-0
 
-    while (kern_getMailboxById("Queue 1-to-0", &queue_1_to_0) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
+    while (kern_getMailboxById("Queue 1-to-0", &queue_1_to_0) != KERR_KERN_NOERR) { kern_suspendProcess(1u); }
 
     while (true) {
-        kern_suspendProcess(10U);
+        kern_suspendProcess(10u);
 
 // Send a the message (if FIFO is not full)
 
-        if (kern_writeQueue(queue_1_to_0, message_1_to_0, 100U) == KERR_KERN_TIMEO) {
+        if (kern_writeQueue(queue_1_to_0, message_1_to_0, 100u) == KERR_KERN_TIMEO) {
             LOG(KFATAL_USER, "mbox full");
             exit(EXIT_OS_FAILURE);
         }
@@ -195,7 +210,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int     main(int argc, const char *argv[]) {
+MAIN_ENTRY(argc, argv[]) {
     proc_t  *process_0, *process_1;
 
 // ---------------------------------I-----------------------------------------I--------------I

@@ -94,6 +94,25 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
+#if (defined(ROMABLE_S))
+
+// Prototypes
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+
+MODULE(
+    Watchdog,                           // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_ROMABLE_0,                     // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
+);
+
+#else
 MODULE(
     UserAppl,                           // Module name (the first letter has to be upper case)
     KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
@@ -102,9 +121,10 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
+#endif
 
 /*
  * \brief aProcess 0
@@ -121,32 +141,32 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 
     UNUSED(argument);
 
-    kern_suspendProcess(1000U);
+    kern_suspendProcess(1000u);
 
 // Watchdog in automatic mode
 
     (void)dprintf(KSYST, "\nWatchdog in automatic mode (trying for 10'000-ms)\n");
-    watchdog_arm(1000U, KWATCHDOG_AUTO);
+    watchdog_arm(1000u, KWATCHDOG_AUTO);
 
-    kern_suspendProcess(10000U);
+    kern_suspendProcess(10000u);
 
 // Watchdog in manual mode
 
     (void)dprintf(KSYST, "Watchdog in manual mode    (trying for 10'000-ms)\n");
-    for (i = 0U; i < 100U; i++) {
-        kern_suspendProcess(60U);
-        watchdog_arm(100U, KWATCHDOG_MANUAL);
+    for (i = 0u; i < 100u; i++) {
+        kern_suspendProcess(60u);
+        watchdog_arm(100u, KWATCHDOG_MANUAL);
     }
 
 // Now relaunch the watchdog for 20-s and waiting for the restart
 
-    watchdog_arm(20000U, KWATCHDOG_MANUAL);
+    watchdog_arm(20000u, KWATCHDOG_MANUAL);
     (void)dprintf(KSYST, "\nNow waiting 20-s for the watchdog restart\n");
 
     i = 0;
     while (true) {
         (void)dprintf(KSYST, "Elapsed %"PRIu16"-s!\n", i++);
-        kern_suspendProcess(1000U);
+        kern_suspendProcess(1000u);
     }
 }
 
@@ -158,7 +178,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int     main(int argc, const char *argv[]) {
+MAIN_ENTRY(argc, argv[]) {
     proc_t  *process_0;
 
 // ---------------------------------I-----------------------------------------I--------------I

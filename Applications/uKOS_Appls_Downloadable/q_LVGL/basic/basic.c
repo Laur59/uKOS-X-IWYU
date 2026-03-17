@@ -98,6 +98,25 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2025\n\n";
 
+#if (defined(ROMABLE_S))
+
+// Prototypes
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+
+MODULE(
+    Basic,                              // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_ROMABLE_0,                     // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
+);
+
+#else
 MODULE(
     UserAppl,                           // Module name (the first letter has to be upper case)
     KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
@@ -106,9 +125,10 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
+#endif
 
 static              lv_display_t    *display;
 static  volatile    bool            vLVGLReady = false;
@@ -132,17 +152,17 @@ static void __attribute__ ((noreturn)) aProcess_tick(const void *argument) {
 
     UNUSED(argument);
 
-    do { kern_suspendProcess(1U); } while (!vLVGLReady);
+    do { kern_suspendProcess(1u); } while (vLVGLReady == false);
 
     kern_readTickCount(&last);
 
     while (true) {
         kern_readTickCount(&now);
 
-        delta = (uint32_t)((now - last) / 1000U);
-        if (delta > 0U) {
+        delta = (uint32_t)((now - last) / 1000u);
+        if (delta > 0u) {
             lv_tick_inc(delta);
-            last += (uint64_t)delta * 1000U;
+            last += (uint64_t)delta * 1000u;
         }
 
         lv_timer_handler();
@@ -193,7 +213,7 @@ static void __attribute__ ((noreturn)) aProcess_lvgl(const void *argument) {
 
 // Remain in the lvgl process space
 
-    while (true) { kern_suspendProcess(100U); }
+    while (true) { kern_suspendProcess(1000u); }
 }
 
 /*
@@ -204,7 +224,7 @@ static void __attribute__ ((noreturn)) aProcess_lvgl(const void *argument) {
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int     main(int argc, const char *argv[]) {
+MAIN_ENTRY(argc, argv[]) {
     proc_t  *process_tick, *process_lvgl;
 
 // ------------------------------------I-----------------------------------------I--------------I

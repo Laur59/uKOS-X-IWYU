@@ -72,7 +72,6 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #endif
 
 #ifndef CHECK_STACK_SANITY
-extern              proc_t  *vKern_runProc[KNB_CORES];
 #define CHECK_STACK_SANITY(core)                                                                                                \
                                 if ((vKern_runProc[core]->oInternal.oState != 0U) &&                                            \
                                     ((vKern_runProc[core]->oInternal.oState & (1U<<BPROC_FIRST)) == 0U)) {                      \
@@ -440,9 +439,22 @@ enum {
         ENDREG                                                                  // spp + 21
 };
 
-// IMPORTANT! This macro HAS to prepare r0 & r1 with
-// the value of the stack before and after the stacking
-// to comply with the ABI of local_processException(uintptr_t *stackBefore, uintptr_t *stackAfter)
+// IMPORTANT!
+// On exception entry, Cortex-M automatically stacks the basic CPU context.
+// model_coreDump_displayExceptions(lr, msp) receives:
+//   - r0 = lr  : EXC_RETURN value
+//   - r1 = msp : Main Stack Pointer value at handler entry
+//
+// This macro reconstructs the interrupted stack context, detects whether
+// MSP or PSP was active before the exception, then saves the additional
+// registers required for core dump analysis.
+//
+// Output:
+//   - r0 = pointer to the original stacked context (stackBefore)
+//   - r1 = pointer to the extended saved context (stackAfter)
+//
+// These outputs match the ABI expected by:
+//   local_processException(uintptr_t *stackBefore, uintptr_t *stackAfter)
 
 #ifndef CORE_DUMP_SAVE_STACK_FRAME
 #define CORE_DUMP_SAVE_STACK_FRAME                                                                                              \

@@ -142,24 +142,24 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #if (!defined(KERN_PREPARE_FRAME))
 #define KERN_PREPARE_FRAME(stack, code, core, argument, priority)                                                               \
-                                *(--stack) = 0x01000000U;                                                                       \
+                                *(--stack) = 0x01000000u;                                                                       \
                                 *(--stack) = (uintptr_t)code;                                                                   \
                                 *(--stack) = (uintptr_t)exit_terminate;                                                         \
-                                *(--stack) = 0x12121212U;                                                                       \
-                                *(--stack) = 0x03030303U;                                                                       \
-                                *(--stack) = 0x02020202U;                                                                       \
-                                *(--stack) = 0x01010101U;                                                                       \
+                                *(--stack) = 0x12121212u;                                                                       \
+                                *(--stack) = 0x03030303u;                                                                       \
+                                *(--stack) = 0x02020202u;                                                                       \
+                                *(--stack) = 0x01010101u;                                                                       \
                                 *(--stack) = (uintptr_t)argument;                                                               \
-                                *(--stack) = 0x11111111U;                                                                       \
-                                *(--stack) = 0x10101010U;                                                                       \
-                                *(--stack) = 0x09090909U;                                                                       \
-                                *(--stack) = 0x08080808U;                                                                       \
-                                *(--stack) = 0x07070707U;                                                                       \
-                                *(--stack) = 0x06060606U;                                                                       \
-                                *(--stack) = 0x05050505U;                                                                       \
-                                *(--stack) = 0x04040404U;                                                                       \
+                                *(--stack) = 0x11111111u;                                                                       \
+                                *(--stack) = 0x10101010u;                                                                       \
+                                *(--stack) = 0x09090909u;                                                                       \
+                                *(--stack) = 0x08080808u;                                                                       \
+                                *(--stack) = 0x07070707u;                                                                       \
+                                *(--stack) = 0x06060606u;                                                                       \
+                                *(--stack) = 0x05050505u;                                                                       \
+                                *(--stack) = 0x04040404u;                                                                       \
                                 *(--stack) = ((uintptr_t)priority<<(uintptr_t)KNVIC_PRIORITY_SHIFT);                            \
-                                *(--stack) = 0xFFFFFFFDU;                                                                       \
+                                *(--stack) = 0xFFFFFFFDu;                                                                       \
                                 UNUSED(core)
 #endif
 
@@ -314,7 +314,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
                                 push        {r0}                                                                             \n \
                                 push        {r0}"                                                                               \
                                 :                                                                                               \
-                                : "i" ((msg) & 0x0000FFFFU), "i" ((msg)>>16U)                                                   \
+                                : "i" ((msg) & 0x0000FFFFu), "i" ((msg)>>16u)                                                   \
                                 : "r0"                                                                                          \
                                 );                                                                                              \
                                 __asm volatile ("                                                                            \n \
@@ -457,9 +457,22 @@ enum {
         ENDREG                                                                              // spp + 54
 };
 
-// IMPORTANT! This macro HAS to prepare r0 & r1 with
-// the value of the stack before and after the stacking
-// to comply with the ABI of local_processException(uintptr_t *stackBefore, uintptr_t *stackAfter)
+// IMPORTANT!
+// On exception entry, Cortex-M automatically stacks the basic CPU context.
+// model_coreDump_displayExceptions(lr, msp) receives:
+//   - r0 = lr  : EXC_RETURN value
+//   - r1 = msp : Main Stack Pointer value at handler entry
+//
+// This macro reconstructs the interrupted stack context, detects whether
+// MSP or PSP was active before the exception, then saves the additional
+// registers required for core dump analysis.
+//
+// Output:
+//   - r0 = pointer to the original stacked context (stackBefore)
+//   - r1 = pointer to the extended saved context (stackAfter)
+//
+// These outputs match the ABI expected by:
+//   local_processException(uintptr_t *stackBefore, uintptr_t *stackAfter)
 
 #if (!defined(CORE_DUMP_SAVE_STACK_FRAME))
 #define CORE_DUMP_SAVE_STACK_FRAME                                                                                              \

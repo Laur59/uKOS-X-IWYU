@@ -94,6 +94,25 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
+#if (defined(ROMABLE_S))
+
+// Prototypes
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+
+MODULE(
+    Image,                              // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_ROMABLE_0,                     // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
+);
+
+#else
 MODULE(
     UserAppl,                           // Module name (the first letter has to be upper case)
     KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
@@ -102,9 +121,10 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
+#endif
 
 // Application specific
 // ====================
@@ -145,11 +165,11 @@ static void __attribute__ ((noreturn)) aProcess_acquisition(const void *argument
     configureIMG0.oAcqMode  = KIMAGER_SNAP;
     configureIMG0.oImgCnf   = nullptr;
     configureIMG0.oPixMode  = KIMAGER_PIX_8_BITS;
-    configureIMG0.oStRows   = 0U;
-    configureIMG0.oStCols   = 0U;
+    configureIMG0.oStRows   = 0u;
+    configureIMG0.oStCols   = 0u;
     configureIMG0.oNbRows   = (uint16_t)vH;
     configureIMG0.oNbCols   = (uint16_t)vW;
-    configureIMG0.oKernSync = 0U;
+    configureIMG0.oKernSync = 0u;
     configureIMG0.oHSync    = nullptr;
     configureIMG0.oFrame    = nullptr;
     configureIMG0.oVSync    = local_transfer;
@@ -163,7 +183,7 @@ static void __attribute__ ((noreturn)) aProcess_acquisition(const void *argument
 // Just after the SNAP initialisation it is necessary waiting for the end of the
 // current transfer (~ 40-ms) before starting.
 
-    kern_suspendProcess(40U);
+    kern_suspendProcess(40u);
     imager_acquisition();
 
 // Get the mutex "Share_Buffer" ID
@@ -177,11 +197,7 @@ static void __attribute__ ((noreturn)) aProcess_acquisition(const void *argument
         kern_waitSemaphore(vSemaImgAcqu, KWAIT_INFINITY);
 
         kern_lockMutex(mutex, KWAIT_INFINITY);
-        {
-            volatile void *imagePtr = vImage;
-            imager_read(&imagePtr);
-            vImage = (uint8_t *)(uintptr_t)imagePtr;
-        }
+        imager_read((volatile void **)&vImage);
         kern_unlockMutex(mutex);
 
         imager_acquisition();
@@ -227,7 +243,7 @@ static void __attribute__ ((noreturn)) aProcess_send(const void *argument) {
             led_toggle(KLED_1);
         }
         else {
-            kern_suspendProcess(1U);
+            kern_suspendProcess(1u);
         }
     }
 }
@@ -240,7 +256,7 @@ static void __attribute__ ((noreturn)) aProcess_send(const void *argument) {
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int     main(int argc, const char *argv[]) {
+MAIN_ENTRY(argc, argv[]) {
     mutx_t  *mutex;
     proc_t  *process_acquisition, *process_send;
 
@@ -281,9 +297,9 @@ int     main(int argc, const char *argv[]) {
     TinyUSB_video_init();
     TinyUSB_video_getImageSize(&vW, &vH);
 
-    if (kern_createMutex(aStrShareBuffer, &mutex)                                     != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create mutx"); return EXIT_OS_FAILURE; }
-    if (kern_createProcess(&specification_acquisition, nullptr, &process_acquisition) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return EXIT_OS_FAILURE; }
-    if (kern_createProcess(&specification_send,        nullptr, &process_send)        != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return EXIT_OS_FAILURE; }
+    if (kern_createMutex(aStrShareBuffer, &mutex)                                  != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create mutx"); return (EXIT_OS_FAILURE); }
+    if (kern_createProcess(&specification_acquisition, nullptr, &process_acquisition) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
+    if (kern_createProcess(&specification_send,        nullptr, &process_send)         != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
 
     LOG(KINFO_USER, "Application launched");
     return (EXIT_OS_SUCCESS_CLI);
@@ -319,9 +335,9 @@ static  void    local_transfer(void) {
 static  void    local_initialiseYUY2(uint8_t *output, uint32_t w, uint32_t h) {
     uint32_t    i;
 
-    for (i = 0U; i < (w * h); i += 2U) {
-        output[(i * 2U) + 1U] = 128U;
-        output[(i * 2U) + 3U] = 128U;
+    for (i = 0u; i < (w * h); i += 2u) {
+        output[(i * 2u) + 1u] = 128u;
+        output[(i * 2u) + 3u] = 128u;
     }
 }
 
@@ -338,11 +354,11 @@ static  void    local_initialiseYUY2(uint8_t *output, uint32_t w, uint32_t h) {
 static  void    local_convertToYUY2(const uint8_t *input, uint8_t *output, uint32_t w, uint32_t h) {
     uint32_t    i;
 
-    for (i = 0U; i < (w * h); i += 2U) {
+    for (i = 0u; i < (w * h); i += 2u) {
 
 // Conversion Gray scale to YUY2
 
-        output[i * 2U]        = input[i];
-        output[(i * 2U) + 2U] = input[i + 1];
+        output[i * 2u]        = input[i];
+        output[(i * 2u) + 2u] = input[i + 1];
     }
 }

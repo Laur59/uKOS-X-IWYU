@@ -73,11 +73,10 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
                                 }
 #endif
 
-#ifndef CHECK_STACK_SANITY
-extern              proc_t  *vKern_runProc[KNB_CORES];
+#if (!defined(CHECK_STACK_SANITY))
 #define CHECK_STACK_SANITY(core)                                                                                                \
-                                if ((vKern_runProc[core]->oInternal.oState != 0U) &&                                            \
-                                    ((vKern_runProc[core]->oInternal.oState & (1U<<BPROC_FIRST)) == 0U)) {                      \
+                                if ((vKern_runProc[core]->oInternal.oState != 0u) &&                                            \
+                                    ((vKern_runProc[core]->oInternal.oState & (1u<<BPROC_FIRST)) == 0u)) {                      \
                                     if ((vKern_runProc[core]->oSpecification.oStackStart > vKern_stackProc[core]) ||            \
                                         (vKern_runProc[core]->oSpecification.oStackStart[core] != KMAGICSTACK)) {               \
                                         LOG(KFATAL_KERNEL, "kern: stack underflow");                                            \
@@ -89,40 +88,40 @@ extern              proc_t  *vKern_runProc[KNB_CORES];
 
 // Stack alignment (see processes.h)
 
-#ifndef KSTACK_ALIGNMENT
-#define KSTACK_ALIGNMENT        (8U)
-#define KSTACK_ALIGNMENT_MASK   (~(KSTACK_ALIGNMENT - 1U))
+#if (!defined(KSTACK_ALIGNMENT))
+#define KSTACK_ALIGNMENT        (8u)
+#define KSTACK_ALIGNMENT_MASK   (~(KSTACK_ALIGNMENT - 1u))
 #define KSTACK_ALIGNMENT_MEMO   (KMEMO_ALIGN_8)
 #endif
 
 // Critical stack size when < (51+10) 32-bit words (stack frame + reserve)
 
-#ifndef KKERN_CRITICAL_SZ_STACK
-#define KKERN_CRITICAL_SZ_STACK     (51U + 10U)
+#if (!defined(KKERN_CRITICAL_SZ_STACK))
+#define KKERN_CRITICAL_SZ_STACK     (51u + 10u)
 #endif
 
 // Stack sizes (in machine words of 32-bit)
 
-#ifndef KKERN_SZ_STACK_SS
-#define KKERN_SZ_STACK_SS           200U
+#if (!defined(KKERN_SZ_STACK_SS))
+#define KKERN_SZ_STACK_SS           200u
 #endif
-#ifndef KKERN_SZ_STACK_MM
-#define KKERN_SZ_STACK_MM           400U
+#if (!defined(KKERN_SZ_STACK_MM))
+#define KKERN_SZ_STACK_MM           400u
 #endif
-#ifndef KKERN_SZ_STACK_LL
-#define KKERN_SZ_STACK_LL           600U
+#if (!defined(KKERN_SZ_STACK_LL))
+#define KKERN_SZ_STACK_LL           600u
 #endif
-#ifndef KKERN_SZ_STACK_XL
-#define KKERN_SZ_STACK_XL           1000U
+#if (!defined(KKERN_SZ_STACK_XL))
+#define KKERN_SZ_STACK_XL           1000u
 #endif
-#ifndef KKERN_SZ_STACK_MIN
-#define KKERN_SZ_STACK_MIN          300U
+#if (!defined(KKERN_SZ_STACK_MIN))
+#define KKERN_SZ_STACK_MIN          300u
 #endif
-#ifndef KKERN_SZ_STACK_XLIB
-#define KKERN_SZ_STACK_XLIB         (400U + 1000U)
+#if (!defined(KKERN_SZ_STACK_XLIB))
+#define KKERN_SZ_STACK_XLIB         (400u + 1000u)
 #endif
-#ifndef KKERN_SZ_STACK_MPY
-#define KKERN_SZ_STACK_MPY          (400U + 1000U)
+#if (!defined(KKERN_SZ_STACK_MPY))
+#define KKERN_SZ_STACK_MPY          (400u + 1000u)
 #endif
 
 // Stack frame macros
@@ -152,27 +151,27 @@ extern              proc_t  *vKern_runProc[KNB_CORES];
 //  +4  basepri     = NVIC priority
 //  +0  0xFFFFFFFD  = Initial exception return (Thread mode without FPU, SP = PSP)
 
-#ifndef KERN_PREPARE_FRAME
+#if (!defined(KERN_PREPARE_FRAME))
 #define KERN_PREPARE_FRAME(stack, code, core, argument, priority)                                                               \
-                                *(--stack) = 0x01000000U;                                                                       \
+                                *(--stack) = 0x01000000u;                                                                       \
                                 *(--stack) = (uintptr_t)code;                                                                   \
                                 *(--stack) = (uintptr_t)exit_terminate;                                                         \
-                                *(--stack) = 0x12121212U;                                                                       \
-                                *(--stack) = 0x03030303U;                                                                       \
-                                *(--stack) = 0x02020202U;                                                                       \
-                                *(--stack) = 0x01010101U;                                                                       \
+                                *(--stack) = 0x12121212u;                                                                       \
+                                *(--stack) = 0x03030303u;                                                                       \
+                                *(--stack) = 0x02020202u;                                                                       \
+                                *(--stack) = 0x01010101u;                                                                       \
                                 *(--stack) = (uintptr_t)argument;                                                               \
-                                *(--stack) = 0x11111111U;                                                                       \
-                                *(--stack) = 0x10101010U;                                                                       \
-                                *(--stack) = 0x09090909U;                                                                       \
-                                *(--stack) = 0x08080808U;                                                                       \
-                                *(--stack) = 0x07070707U;                                                                       \
-                                *(--stack) = 0x06060606U;                                                                       \
-                                *(--stack) = 0x05050505U;                                                                       \
-                                *(--stack) = 0x04040404U;                                                                       \
+                                *(--stack) = 0x11111111u;                                                                       \
+                                *(--stack) = 0x10101010u;                                                                       \
+                                *(--stack) = 0x09090909u;                                                                       \
+                                *(--stack) = 0x08080808u;                                                                       \
+                                *(--stack) = 0x07070707u;                                                                       \
+                                *(--stack) = 0x06060606u;                                                                       \
+                                *(--stack) = 0x05050505u;                                                                       \
+                                *(--stack) = 0x04040404u;                                                                       \
                                 *(--stack) = ((uintptr_t)priority<<(uintptr_t)KNVIC_PRIORITY_SHIFT);                            \
-                                *(--stack) = 0xFFFFFFFDU;                                                                       \
-                                (void)(core)
+                                *(--stack) = 0xFFFFFFFDu;                                                                       \
+                                UNUSED(core)
 #endif
 
 // Recover the message & save the frame message
@@ -200,7 +199,7 @@ extern              proc_t  *vKern_runProc[KNB_CORES];
 // r0 -> *stack
 // r1 -> message
 
-#ifndef KERN_RECOVER_MESSAGE
+#if (!defined(KERN_RECOVER_MESSAGE))
 #define KERN_RECOVER_MESSAGE    __asm volatile ("                                                                            \n \
                                 tst         lr,#0x4                                                                          \n \
                                 ite         eq                                                                               \n \
@@ -214,7 +213,7 @@ extern              proc_t  *vKern_runProc[KNB_CORES];
                                 )
 #endif
 
-#ifndef KERN_SAVE_FRAME_MESSAGE
+#if (!defined(KERN_SAVE_FRAME_MESSAGE))
 #define KERN_SAVE_FRAME_MESSAGE __asm volatile ("                                                                            \n \
                                 mrs         r2,basepri                                                                       \n \
                                 stmdb       r0!,{r2,r4-r11}                                                                  \n \
@@ -250,7 +249,7 @@ extern              proc_t  *vKern_runProc[KNB_CORES];
 //
 // r0 -> *stack
 
-#ifndef KERN_SAVE_FRAME_NORMAL
+#if (!defined(KERN_SAVE_FRAME_NORMAL))
 #define KERN_SAVE_FRAME_NORMAL  __asm volatile ("                                                                            \n \
                                 tst         lr,#0x4                                                                          \n \
                                 ite         eq                                                                               \n \
@@ -290,7 +289,7 @@ extern              proc_t  *vKern_runProc[KNB_CORES];
 //
 // r0 -> *stack of the new process
 
-#ifndef KERN_NEW_FRAME
+#if (!defined(KERN_NEW_FRAME))
 #define KERN_NEW_FRAME          __asm volatile ("                                                                            \n \
                                 ldmia       r0!,{lr}                                                                         \n \
                                 tst         lr,#0x10                                                                         \n \
@@ -307,7 +306,7 @@ extern              proc_t  *vKern_runProc[KNB_CORES];
 
 // Return to a new context
 
-#ifndef KERN_RETURN
+#if (!defined(KERN_RETURN))
 #define KERN_RETURN             __asm volatile ("                                                                            \n \
                                 dmb                                                                                          \n \
                                 dsb                                                                                          \n \
@@ -318,7 +317,7 @@ extern              proc_t  *vKern_runProc[KNB_CORES];
 
 // Messages: _I (immediate) _M (memory)
 
-#ifndef GOTO_KERN_I
+#if (!defined(GOTO_KERN_I))
 #define GOTO_KERN_I(msg)        stub_kern_stopProcessTimeout();                                                                 \
                                 __asm volatile ("                                                                            \n \
                                 movw        r0,%0                                                                            \n \
@@ -326,7 +325,7 @@ extern              proc_t  *vKern_runProc[KNB_CORES];
                                 push        {r0}                                                                             \n \
                                 push        {r0}"                                                                               \
                                 :                                                                                               \
-                                : "i" ((msg) & 0x0000FFFFU), "i" ((msg)>>16U)                                                   \
+                                : "i" ((msg) & 0x0000FFFFu), "i" ((msg)>>16u)                                                   \
                                 : "r0"                                                                                          \
                                 );                                                                                              \
                                 __asm volatile ("                                                                            \n \
@@ -343,7 +342,7 @@ extern              proc_t  *vKern_runProc[KNB_CORES];
                                 )
 #endif
 
-#ifndef GOTO_KERN_M
+#if (!defined(GOTO_KERN_M))
 #define GOTO_KERN_M(msg)        stub_kern_stopProcessTimeout();                                                                 \
                                 __asm volatile ("                                                                            \n \
                                 push        {%0}                                                                             \n \
@@ -384,8 +383,8 @@ extern              proc_t  *vKern_runProc[KNB_CORES];
 // If svc #0 ---> kernel_message
 // If svc #1 ---> kern_privilegeElevate
 
-#ifndef SVC_DISPATCHER_C0
-#ifdef PRIVILEGED_USER_S
+#if (!defined(SVC_DISPATCHER_C0))
+#if (defined(PRIVILEGED_USER_S))
 #define SVC_DISPATCHER_C0       __asm volatile ("                                                                            \n \
                                 tst         lr,#0x4                                                                          \n \
                                 ite         eq                                                                               \n \
@@ -457,7 +456,7 @@ extern              proc_t  *vKern_runProc[KNB_CORES];
 // r1 -> *stackAfter having saved the frame
 
 enum {
-        SPP = 0U,                                                                           // spp + 0
+        SPP = 0u,                                                                           // spp + 0
         PSP, MSP,                                                                           // spp + 1..2
         LR,                                                                                 // spp + 3
         s16, s17, s18, s19, s20, s21, s22, s23, s24, s25, s26, s27, s28, s29, s30, s31,     // spp + 4..19
@@ -469,11 +468,24 @@ enum {
         ENDREG                                                                              // spp + 54
 };
 
-// IMPORTANT! This macro HAS to prepare r0 & r1 with
-// the value of the stack before and after the stacking
-// to comply with the ABI of local_processException(uintptr_t *stackBefore, uintptr_t *stackAfter)
+// IMPORTANT!
+// On exception entry, Cortex-M automatically stacks the basic CPU context.
+// model_coreDump_displayExceptions(lr, msp) receives:
+//   - r0 = lr  : EXC_RETURN value
+//   - r1 = msp : Main Stack Pointer value at handler entry
+//
+// This macro reconstructs the interrupted stack context, detects whether
+// MSP or PSP was active before the exception, then saves the additional
+// registers required for core dump analysis.
+//
+// Output:
+//   - r0 = pointer to the original stacked context (stackBefore)
+//   - r1 = pointer to the extended saved context (stackAfter)
+//
+// These outputs match the ABI expected by:
+//   local_processException(uintptr_t *stackBefore, uintptr_t *stackAfter)
 
-#ifndef CORE_DUMP_SAVE_STACK_FRAME
+#if (!defined(CORE_DUMP_SAVE_STACK_FRAME))
 #define CORE_DUMP_SAVE_STACK_FRAME                                                                                              \
                                 __asm volatile ("                                                                            \n \
                                 cpsid       i                                                                                \n \

@@ -101,6 +101,25 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
+#if (defined(ROMABLE_S))
+
+// Prototypes
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+
+MODULE(
+    TimerQueue,                         // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_ROMABLE_0,                     // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
+);
+
+#else
 MODULE(
     UserAppl,                           // Module name (the first letter has to be upper case)
     KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
@@ -109,9 +128,10 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
+#endif
 
 // Application specific
 // ====================
@@ -130,14 +150,13 @@ extern  void    stub_intr_timer_init(void);
  *
  */
 static void __attribute__ ((noreturn)) aProcess(const void *argument) {
-    uintptr_t   counter = 0U, expectedCounter = 0U;
+    uintptr_t   counter = 0u, expectedCounter = 0u;
     int32_t     status;
     mbox_t      *queue;
     mcnf_t      configure = {
-                    .oNbMaxPacks = 10U,
-                    .oDataEntrySize = 0U
+                    .oNbMaxPacks = 10u,
+                    .oDataEntrySize = 0u
                 };
-    uint32_t ledDecimationCounter = 0U;
 
     UNUSED(argument);
 
@@ -165,7 +184,7 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
     }
 
     while (true) {
-        status = kern_readQueue(queue, &counter, 1000U);
+        status = kern_readQueue(queue, &counter, 1000u);
         if (status == KERR_KERN_TIMEO) {
             (void)dprintf(KSYST, "Timeout Error Mailbox\n");
         }
@@ -181,11 +200,8 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
             }
 
         }
-        record_trace("Test 2", 1);
-        if (ledDecimationCounter++ == 100U) {
-            led_toggle(KLED_1);
-            ledDecimationCounter = 0U;
-        }
+        record_trace("Test 2", 1u);
+        led_toggle(KLED_1);
     }
 }
 
@@ -197,7 +213,7 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int     main(int argc, const char *argv[]) {
+MAIN_ENTRY(argc, argv[]) {
     proc_t  *process;
 
 // -------------------------------I-----------------------------------------I--------------I

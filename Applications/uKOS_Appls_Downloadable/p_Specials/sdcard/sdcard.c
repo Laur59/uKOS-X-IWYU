@@ -106,17 +106,37 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
+#if (defined(ROMABLE_S))
+
+// Prototypes
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+
 MODULE(
-    UserAppl,                                   // Module name (the first letter has to be upper case)
-    KID_FAM_APPLICATIONS,                       // Family (defined in the module.h)
-    KNUM_APPLICATION,                           // Module identifier (defined in the module.h)
-    nullptr,                                    // Address of the initialisation code (early pre-init)
-    aStart,                                     // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
-    nullptr,                                    // Address of the clean code (clean the module)
-    " 1.0",                                     // Revision string (major . minor)
-    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),         // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-    0                                           // Execution cores
+    Sdcard,                             // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_ROMABLE_0,                     // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
 );
+
+#else
+MODULE(
+    UserAppl,                           // Module name (the first letter has to be upper case)
+    KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
+    KNUM_APPLICATION,                   // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
+);
+#endif
 
 // Application specific
 // ====================
@@ -150,7 +170,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
     UNUSED(argument);
 
     while (true) {
-        kern_suspendProcess(1000U);
+        kern_suspendProcess(1000u);
         led_toggle(KLED_1);
     }
 }
@@ -185,7 +205,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
         exit(EXIT_OS_FAILURE);
     }
 
-    testNumber = (int32_t)strtoul(argv[2], &dummy, 10U);
+    testNumber = (int32_t)strtoul(argv[2], &dummy, 10u);
 
 // Reserve the sdcard
 
@@ -221,8 +241,8 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  *
  */
 static  void    aTest_0(void) {
-    #define     KT0_INIT_SECTOR 0U
-    #define     KT0_NB_SECTORS  3U
+    #define     KT0_INIT_SECTOR 0u
+    #define     KT0_NB_SECTORS  3u
     int32_t     status;
     uint32_t    i, j, n;
     uint8_t     *buffer;
@@ -233,12 +253,12 @@ static  void    aTest_0(void) {
         exit(EXIT_OS_FAILURE);
     }
 
-    for (n = 0U; n < KT0_NB_SECTORS; n++) {
+    for (n = 0u; n < KT0_NB_SECTORS; n++) {
         led_toggle(KLED_1);
 
 // Read the sector 0 to ...
 
-        kern_suspendProcess(1000U);
+        kern_suspendProcess(1000u);
 
         status = sdcard_read(buffer, KSDCARD_SZ_SECTOR, (KT0_INIT_SECTOR + n));
         if (status != KERR_STORAGE_NOERR) {
@@ -249,8 +269,8 @@ static  void    aTest_0(void) {
 
         (void)dprintf(KSYST, "Sector = %"PRIu32"\n", (KT0_INIT_SECTOR + n));
 
-        for (j = 0U; j < KSDCARD_SZ_SECTOR; j += 16U) {
-            for (i = 0U; i < 16U; i++) {
+        for (j = 0u; j < KSDCARD_SZ_SECTOR; j += 16u) {
+            for (i = 0u; i < 16u; i++) {
                 (void)dprintf(KSYST, "0x%02X ", *(buffer + i + j));
             }
             (void)dprintf(KSYST, "\n");
@@ -584,7 +604,7 @@ static  void    aTest_5(void) {
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int     main(int argc, const char *argv[]) {
+MAIN_ENTRY(argc, argv[]) {
     myPack_t    pack;
     bool        releasePack = false;
     proc_t      *process_0, *process_1;
@@ -632,7 +652,7 @@ int     main(int argc, const char *argv[]) {
 
 // Let the time to the process "aProcess_1" to run
 
-    do { kern_suspendProcess(1U); } while (releasePack == false);
+    do { kern_suspendProcess(1u); } while (releasePack == false);
 
     LOG(KINFO_USER, "Application launched");
     return (EXIT_OS_SUCCESS_CLI);

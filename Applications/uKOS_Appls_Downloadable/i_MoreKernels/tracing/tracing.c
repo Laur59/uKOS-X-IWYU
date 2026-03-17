@@ -90,6 +90,25 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
+#if (defined(ROMABLE_S))
+
+// Prototypes
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+
+MODULE(
+    Tracing,                            // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_ROMABLE_0,                     // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
+);
+
+#else
 MODULE(
     UserAppl,                           // Module name (the first letter has to be upper case)
     KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
@@ -98,9 +117,10 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
+#endif
 
 // Application specific
 // ====================
@@ -116,7 +136,7 @@ MODULE(
  *
  */
 static void __attribute__ ((noreturn)) aProcess(const void *argument) {
-    uint32_t    time = 20U;
+    uint32_t    time = 20u;
     uintptr_t   i;
 
     UNUSED(argument);
@@ -126,16 +146,16 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
 
     record_trace("--> Process 0: trace2 example", 0x02020202u);
 
-    for (i = 0U; i < 20U; i++) {
+    for (i = 0u; i < 20u; i++) {
         record_trace("--> Process 0: value", i);
 
-        kern_suspendProcess(1000U);
+        kern_suspendProcess(1000u);
         (void)dprintf(KSYST,"The machine will crash in %"PRIu32" seconds!!\n", time--);
     }
 
     record_trace("--> Process 0: Out loop", 0x01010101u);
 
-    kern_suspendProcess(1000U);
+    kern_suspendProcess(1000u);
 
 // Load the registers
 
@@ -156,7 +176,7 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int     main(int argc, const char *argv[]) {
+MAIN_ENTRY(argc, argv[]) {
     proc_t  *process;
 
 // -------------------------------I-----------------------------------------I--------------I

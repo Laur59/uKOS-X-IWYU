@@ -108,6 +108,25 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
+#if (defined(ROMABLE_S))
+
+// Prototypes
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+
+MODULE(
+    Basic,                              // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_ROMABLE_0,                     // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
+);
+
+#else
 MODULE(
     UserAppl,                           // Module name (the first letter has to be upper case)
     KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
@@ -116,9 +135,10 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
+#endif
 
 // Application specific
 // ====================
@@ -156,13 +176,13 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 
 // Get the mutex handle
 
-    while (kern_getMutexById("Critical", &mutex) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
+    while (kern_getMutexById("Critical", &mutex) != KERR_KERN_NOERR) { kern_suspendProcess(1u); }
 
     while (true) {
         kern_suspendProcess(10);
 
         led_toggle(KLED_1);
-        status = kern_lockMutex(mutex, 10000U);
+        status = kern_lockMutex(mutex, 10000u);
         if (status != KERR_KERN_NOERR) {
             exit(EXIT_OS_PANIC);
         }
@@ -201,13 +221,13 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 
 // Get the mutex handle
 
-    while (kern_getMutexById("Critical", &mutex) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
+    while (kern_getMutexById("Critical", &mutex) != KERR_KERN_NOERR) { kern_suspendProcess(1u); }
 
     while (true) {
-        kern_suspendProcess(100U);
+        kern_suspendProcess(100u);
 
         led_toggle(KLED_2);
-        status = kern_lockMutex(mutex, 10000U);
+        status = kern_lockMutex(mutex, 10000u);
         if (status != KERR_KERN_NOERR) {
             exit(EXIT_OS_PANIC);
         }
@@ -246,13 +266,13 @@ static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
 
 // Get the mutex handle
 
-    while (kern_getMutexById("Critical", &mutex) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
+    while (kern_getMutexById("Critical", &mutex) != KERR_KERN_NOERR) { kern_suspendProcess(1u); }
 
     while (true) {
-        kern_suspendProcess(1000U);
+        kern_suspendProcess(1000u);
 
         led_toggle(KLED_3);
-        status = kern_lockMutex(mutex, 10000U);
+        status = kern_lockMutex(mutex, 10000u);
         if (status != KERR_KERN_NOERR) {
             exit(EXIT_OS_PANIC);
         }
@@ -326,7 +346,7 @@ static  void    local_printStruct(mutx_t *mutex, strt_t data) {
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int     main(int argc, const char *argv[]) {
+MAIN_ENTRY(argc, argv[]) {
     mutx_t  *mutex;
     proc_t  *process_0, *process_1, *process_2;
 

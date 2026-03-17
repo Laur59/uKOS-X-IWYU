@@ -107,16 +107,16 @@ static  void    local_cpyLEDs(uint8_t value);
 void    exce_init(void) {
     uint8_t     nbExceptions, nbInterruptions;
 
-    for (nbExceptions = 0U; nbExceptions < KNB_EXCEPTIONS; nbExceptions++) {
+    for (nbExceptions = 0u; nbExceptions < KNB_EXCEPTIONS; nbExceptions++) {
         vExce_indExcVectors[GET_RUNNING_CORE][nbExceptions] = nullptr;
     }
 
-    for (nbInterruptions = 0U; nbInterruptions < KNB_INTERRUPTIONS; nbInterruptions++) {
+    for (nbInterruptions = 0u; nbInterruptions < KNB_INTERRUPTIONS; nbInterruptions++) {
         vExce_indIntVectors[GET_RUNNING_CORE][nbInterruptions] = nullptr;
     }
 
     core_setBASEPRI((uint32_t)KINT_LEVEL_PERIPHERALS<<(uint32_t)KNVIC_PRIORITY_SHIFT);
-    SCB->AIRCR = SCB_AIRCR_VECTKEY_MASK | 0x0300U;
+    SCB->AIRCR = SCB_AIRCR_VECTKEY_MASK | 0x0300u;
 }
 
 // Model callbacks
@@ -135,21 +135,21 @@ static void __attribute__ ((noreturn)) cb_signal(uint8_t mode) {
     switch (mode) {
         default:
         case KEXCEPTION: {
-            local_cpyLEDs(0xFFU);
+            local_cpyLEDs(0xFFu);
             while (true) {
-                cmns_wait(1000000U);
-                local_setLEDs(0U);
-                cmns_wait(1000000U);
-                local_clrLEDs(0U);
+                cmns_wait(1000000u);
+                local_setLEDs(0u);
+                cmns_wait(1000000u);
+                local_clrLEDs(0u);
             }
         }
         case KINTERRUPTION: {
-            local_cpyLEDs(0xFFU);
+            local_cpyLEDs(0xFFu);
             while (true) {
-                cmns_wait(1000000U);
-                local_setLEDs(1U);
-                cmns_wait(1000000U);
-                local_clrLEDs(1U);
+                cmns_wait(1000000u);
+                local_setLEDs(1u);
+                cmns_wait(1000000u);
+                local_clrLEDs(1u);
             }
         }
     }
@@ -167,8 +167,8 @@ static void __attribute__ ((noreturn)) cb_signal(uint8_t mode) {
 static  void    local_setLEDs(uint8_t ledNb) {
 
     switch (ledNb) {
-        case 0U: { GPIOB->ODR |= (1U<<BLED_0); break; }
-        case 1U: { GPIOB->ODR |= (1U<<BLED_1); break; }
+        case 0u: { GPIOB->ODR |= (1u<<BLED_0); break; }
+        case 1u: { GPIOB->ODR |= (1u<<BLED_1); break; }
         default: {
 
 // Make MISRA happy :-)
@@ -187,8 +187,8 @@ static  void    local_setLEDs(uint8_t ledNb) {
 static  void    local_clrLEDs(uint8_t ledNb) {
 
     switch (ledNb) {
-        case 0U: { GPIOB->ODR &= (uint32_t)~(1U<<BLED_0); break; }
-        case 1U: { GPIOB->ODR &= (uint32_t)~(1U<<BLED_1); break; }
+        case 0u: { GPIOB->ODR &= (uint32_t)~(1u<<BLED_0); break; }
+        case 1u: { GPIOB->ODR &= (uint32_t)~(1u<<BLED_1); break; }
         default: {
 
 // Make MISRA happy :-)
@@ -207,10 +207,10 @@ static  void    local_clrLEDs(uint8_t ledNb) {
 static  void    local_cpyLEDs(uint8_t value) {
     uint8_t     led, mask;
 
-    mask = 0x01U;
-    for (led = 0U; led < 2U; led++) {
+    mask = 0x01u;
+    for (led = 0u; led < 2u; led++) {
         (value & mask) ? (local_setLEDs(led)) : (local_clrLEDs(led));
-        mask = (uint8_t)(mask<<1U);
+        mask = (uint8_t)(mask<<1u);
     }
 }
 

@@ -404,3 +404,8 @@ extern  void    __attribute__ ((noreturn)) model_coreDump_displayInterruptions(u
                                 : "lr"                                                                                          \
                                 )
 #endif
+
+// Stack frame macros
+// ------------------
+
+#include    "macros_core_stackFrame.h"

@@ -99,7 +99,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 #include    "tensorflow/lite/micro/system_setup.h"
 #include    "tensorflow/lite/schema/schema_generated.h"
 
-#ifdef CORTEX
+#if (defined(CORTEX))
 #include    "tensorflow/lite/micro/cortex_m_generic/debug_log_callback.h"
 #endif
 
@@ -123,6 +123,25 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
                                     "Input format:  cluster_TFL\n"
                                     "Output format: [result]\n\n";
 
+#if (defined(ROMABLE_S))
+
+// Prototypes
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+
+MODULE(
+    Cluster_TFL,                        // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_ROMABLE_0,                     // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
+);
+
+#else
 MODULE(
     UserAppl,                           // Module name (the first letter has to be upper case)
     KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
@@ -131,9 +150,10 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
+#endif
 
 // Suggested memory allocation
 
@@ -153,7 +173,7 @@ namespace {
     }
 }
 
-#ifdef RISCV
+#if (defined(RISCV))
 extern "C"  char_t  putchar_(char_t ch) {
 
     UNUSED(ch);
@@ -197,7 +217,7 @@ namespace {
         #endif
 
         while (true) {
-            kern_suspendProcess(1000U);
+            kern_suspendProcess(1000u);
             led_toggle(KLED_1);
 
 // Load the TFLite model
@@ -224,7 +244,7 @@ namespace {
 
 // Prepare the inputs
 
-        random_read(KRANDOM_SOFT, &random[0], 2U);
+        random_read(KRANDOM_SOFT, &random[0], 2u);
         x = (((float32_t)random[0] / (float32_t)(KRAND_MAX)) - 0.5f) * gain;
         y = (((float32_t)random[1] / (float32_t)(KRAND_MAX)) - 0.5f) * gain;
 
@@ -274,7 +294,7 @@ namespace {
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int     main(int argc, const char *argv[]) {
+MAIN_ENTRY(argc, argv[]) {
     proc_t  *process_0;
 
 // ------------------------------------I-----------------------------------------I--------------I

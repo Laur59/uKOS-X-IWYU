@@ -122,9 +122,9 @@ int32_t stub_asmp_init(void) {
     identifierRX = (core == KCORE_0) ? (KASMP_SEMA_RX_CORE_0_FULL)  : (KASMP_SEMA_RX_CORE_1_FULL);
     identifierTX = (core == KCORE_0) ? (KASMP_SEMA_TX_CORE_0_EMPTY) : (KASMP_SEMA_TX_CORE_1_EMPTY);
 
-    INTERRUPT_VECTOR(SIO_IRQ_BELL_IRQn, local_doorBell_IRQHandler);
-    NVIC_SetPriority(SIO_IRQ_BELL_IRQn, KINT_LEVEL_PERIPHERALS);
-    NVIC_EnableIRQ(SIO_IRQ_BELL_IRQn);
+    INTERRUPT_VECTOR(SIO_IRQ_BELL_C0_IRQn, local_doorBell_IRQHandler);
+    NVIC_SetPriority(SIO_IRQ_BELL_C0_IRQn, KINT_LEVEL_PERIPHERALS);
+    NVIC_EnableIRQ(SIO_IRQ_BELL_C0_IRQn);
 
     local_initInterCore(core);
 
@@ -138,7 +138,7 @@ int32_t stub_asmp_init(void) {
     kern_signalSemaphore(semaphoreTX);
 
     INTERRUPTION_OFF;
-    vAsmp_InterCore->oASMPReady |= (core == KASMP_CORE_0) ? (1U<<(uint8_t)KASMP_CORE_0) : (1U<<(uint8_t)KASMP_CORE_1);
+    vAsmp_InterCore->oASMPReady |= (core == KASMP_CORE_0) ? (1u<<(uint8_t)KASMP_CORE_0) : (1u<<(uint8_t)KASMP_CORE_1);
     RETURN_INT_RESTORE(KERR_ASMP_NOERR);
 }
 
@@ -151,7 +151,7 @@ int32_t stub_asmp_init(void) {
 int32_t stub_asmp_getRunningCore(uint32_t *core) {
 
     *core = (GET_RUNNING_CORE == KCORE_0) ? ((uint32_t)KASMP_CORE_0) : ((uint32_t)KASMP_CORE_1);
-    return KERR_ASMP_NOERR;
+    return (KERR_ASMP_NOERR);
 }
 
 /*
@@ -162,8 +162,8 @@ int32_t stub_asmp_getRunningCore(uint32_t *core) {
  */
 int32_t stub_asmp_getNumberOfCore(uint8_t *nbCore) {
 
-    *nbCore = ((uint8_t)KASMP_CORE_1 + 1U);
-    return KERR_ASMP_NOERR;
+    *nbCore = ((uint8_t)KASMP_CORE_1 + 1u);
+    return (KERR_ASMP_NOERR);
 }
 
 /*
@@ -179,7 +179,7 @@ int32_t stub_asmp_getReferenceCore(uint32_t core, const char_t **coreReference) 
         case KASMP_CORE_1: { *coreReference = tableCoreReference[KASMP_CORE_1]; break; }
         default:           { *coreReference = nullptr;                          break; }
     }
-    return KERR_ASMP_NOERR;
+    return (KERR_ASMP_NOERR);
 }
 
 /*
@@ -208,7 +208,7 @@ int32_t stub_asmp_signal(uint32_t message) {
             break;
         }
     }
-    return KERR_ASMP_NOERR;
+    return (KERR_ASMP_NOERR);
 }
 
 /*
@@ -221,10 +221,10 @@ int32_t stub_asmp_waitingForReady(void) {
     uint8_t     maskNbCore;
     int32_t     status;
 
-    maskNbCore = (1U<<(uint8_t)KASMP_CORE_1) | (1U<<(uint8_t)KASMP_CORE_0);
+    maskNbCore = (1u<<(uint8_t)KASMP_CORE_1) | (1u<<(uint8_t)KASMP_CORE_0);
 
-    status = ((vAsmp_InterCore->oASMPReady & maskNbCore) == maskNbCore) ? KERR_ASMP_NOERR : KERR_ASMP_NORDY;
-    return status;
+    status = ((vAsmp_InterCore->oASMPReady & maskNbCore) == maskNbCore) ? (KERR_ASMP_NOERR) : (KERR_ASMP_NORDY);
+    return (status);
 }
 
 // Local routines
@@ -242,10 +242,10 @@ static  void    local_initInterCore(uint32_t core) {
     INTERRUPTION_OFF;
     vAsmp_InterCore->oStatusRX[core] = KASMP_FREE;
     vAsmp_InterCore->oStatusTX[core] = KASMP_FREE;
-    vAsmp_InterCore->oSender[core]   = 0U;
-    vAsmp_InterCore->oOrder[core]    = 0U;
-    vAsmp_InterCore->oSize[core]     = 0U;
-    for (i = 0U; i < KASMP_SZ_BUFFER; i++) { vAsmp_InterCore->oBuffer[core][i] = 0U; }
+    vAsmp_InterCore->oSender[core]   = 0u;
+    vAsmp_InterCore->oOrder[core]    = 0u;
+    vAsmp_InterCore->oSize[core]     = 0u;
+    for (i = 0u; i < KASMP_SZ_BUFFER; i++) { vAsmp_InterCore->oBuffer[core][i] = 0u; }
     INTERRUPTION_RESTORE;
 }
 
@@ -275,16 +275,16 @@ static  void    local_doorBell_IRQHandler(void) {
 // core1 indicates to the core0 that there is a valid message in the buffer
 // core1 acknowledge the core0, get free the statusTX of the core1
 
-        if ((REG(SIO)->DOORBELL_IN_CLR & KMESSAGE_SENT) != 0U) { REG(SIO)->DOORBELL_IN_CLR = KMESSAGE_SENT; vAsmp_InterCore->oStatusRX[KASMP_CORE_0] = KASMP_LOCK; kern_signalSemaphore(semaphoreRX); }
-        if ((REG(SIO)->DOORBELL_IN_CLR & KMESSAGE_ACK)  != 0U) { REG(SIO)->DOORBELL_IN_CLR = KMESSAGE_ACK;  vAsmp_InterCore->oStatusTX[KASMP_CORE_1] = KASMP_FREE; kern_signalSemaphore(semaphoreTX); }
+        if ((REG(SIO)->DOORBELL_IN_CLR & KMESSAGE_SENT) != 0u) { REG(SIO)->DOORBELL_IN_CLR = KMESSAGE_SENT; vAsmp_InterCore->oStatusRX[KASMP_CORE_0] = KASMP_LOCK; kern_signalSemaphore(semaphoreRX); }
+        if ((REG(SIO)->DOORBELL_IN_CLR & KMESSAGE_ACK)  != 0u) { REG(SIO)->DOORBELL_IN_CLR = KMESSAGE_ACK;  vAsmp_InterCore->oStatusTX[KASMP_CORE_1] = KASMP_FREE; kern_signalSemaphore(semaphoreTX); }
     }
     else {
 
 // core0 indicates to the core1 that there is a valid message in the buffer
 // core0 acknowledge the core1, get free the statusTX of the core0
 
-        if ((REG(SIO)->DOORBELL_IN_CLR & KMESSAGE_SENT) != 0U) { REG(SIO)->DOORBELL_IN_CLR = KMESSAGE_SENT; vAsmp_InterCore->oStatusRX[KASMP_CORE_1] = KASMP_LOCK; kern_signalSemaphore(semaphoreRX); }
-        if ((REG(SIO)->DOORBELL_IN_CLR & KMESSAGE_ACK)  != 0U) { REG(SIO)->DOORBELL_IN_CLR = KMESSAGE_ACK;  vAsmp_InterCore->oStatusTX[KASMP_CORE_0] = KASMP_FREE; kern_signalSemaphore(semaphoreTX); }
+        if ((REG(SIO)->DOORBELL_IN_CLR & KMESSAGE_SENT) != 0u) { REG(SIO)->DOORBELL_IN_CLR = KMESSAGE_SENT; vAsmp_InterCore->oStatusRX[KASMP_CORE_1] = KASMP_LOCK; kern_signalSemaphore(semaphoreRX); }
+        if ((REG(SIO)->DOORBELL_IN_CLR & KMESSAGE_ACK)  != 0u) { REG(SIO)->DOORBELL_IN_CLR = KMESSAGE_ACK;  vAsmp_InterCore->oStatusTX[KASMP_CORE_0] = KASMP_FREE; kern_signalSemaphore(semaphoreTX); }
     }
 
     PREEMPTION_THRESHOLD(core);

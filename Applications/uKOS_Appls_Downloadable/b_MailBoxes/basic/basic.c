@@ -106,6 +106,25 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
+#if (defined(ROMABLE_S))
+
+// Prototypes
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+
+MODULE(
+    Basic,                              // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_ROMABLE_0,                     // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
+);
+
+#else
 MODULE(
     UserAppl,                           // Module name (the first letter has to be upper case)
     KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
@@ -114,9 +133,10 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
+#endif
 
 /*
  * \brief aProcess 0
@@ -133,13 +153,13 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
     uint8_t     *bufRec;
     mbox_t      *mailBox;
     mcnf_t      configure = {
-                    .oNbMaxPacks    = 10U,
-                    .oDataEntrySize = 0U
+                    .oNbMaxPacks    = 10u,
+                    .oDataEntrySize = 0u
                 };
 
     UNUSED(argument);
 
-    sizeRec = 256U;
+    sizeRec = 256u;
     bufPtr  = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (sizeRec * sizeof(uint8_t)), "basic");
     if (bufPtr == nullptr) {
         LOG(KFATAL_USER, "Out of memory");
@@ -153,7 +173,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 
 // Receive the message (wait until the FIFO is not empty)
 
-        if (kern_readMailbox(mailBox, (void **)&bufRec, &sizeRec, 1000U) == KERR_KERN_TIMEO) {
+        if (kern_readMailbox(mailBox, (void **)&bufRec, &sizeRec, 1000u) == KERR_KERN_TIMEO) {
             LOG(KFATAL_USER, "Timeout read mbox");
             exit(EXIT_OS_FAILURE);
         }
@@ -185,15 +205,15 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 
 // Waiting for the creation of the "Mailbox receive status"
 
-    while (kern_getMailboxById("Mailbox receive text", &mailBox) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
+    while (kern_getMailboxById("Mailbox receive text", &mailBox) != KERR_KERN_NOERR) { kern_suspendProcess(1u); }
 
     while (true) {
-        kern_suspendProcess(100U);
+        kern_suspendProcess(100u);
 
 // Send the message
 
         sizeSnd = strlen(message);
-        bufSnd  = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (uint32_t)((sizeSnd + 1U) * sizeof(uint8_t)), "basic");
+        bufSnd  = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (uint32_t)((sizeSnd + 1u) * sizeof(uint8_t)), "basic");
         if (bufSnd == nullptr) {
             LOG(KFATAL_USER, "Out of memory");
             exit(EXIT_OS_FAILURE);
@@ -203,7 +223,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 
 // Send a the message (wait until the FIFO is not full)
 
-        if (kern_writeMailbox(mailBox, bufSnd, (uint32_t)sizeSnd, 1000U) == KERR_KERN_TIMEO) {
+        if (kern_writeMailbox(mailBox, bufSnd, (uint32_t)sizeSnd, 1000u) == KERR_KERN_TIMEO) {
             (void)dprintf(KSYST, "mbox full\n");
             LOG(KFATAL_USER, "mbox full");
             exit(EXIT_OS_FAILURE);
@@ -230,15 +250,15 @@ static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
 
 // Waiting for the creation of the "Mailbox receive status"
 
-    while (kern_getMailboxById("Mailbox receive text", &mailBox) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
+    while (kern_getMailboxById("Mailbox receive text", &mailBox) != KERR_KERN_NOERR) { kern_suspendProcess(1u); }
 
     while (true) {
-        kern_suspendProcess(200U);
+        kern_suspendProcess(200u);
 
 // Send the message
 
         sizeSnd = strlen(message);
-        bufSnd  = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (uint32_t)((sizeSnd + 1U) * sizeof(uint8_t)), "basic");
+        bufSnd  = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (uint32_t)((sizeSnd + 1u) * sizeof(uint8_t)), "basic");
         if (bufSnd == nullptr) {
             (void)dprintf(KSYST, "Out of memory %zu\n", sizeSnd);
             LOG(KFATAL_USER, "Out of memory");
@@ -249,7 +269,7 @@ static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
 
 // Send a the message (wait until the FIFO is not full)
 
-        while (kern_writeMailbox(mailBox, bufSnd, (uint32_t)sizeSnd, 1000U) == KERR_KERN_TIMEO) {
+        while (kern_writeMailbox(mailBox, bufSnd, (uint32_t)sizeSnd, 1000u) == KERR_KERN_TIMEO) {
             (void)dprintf(KSYST, "mbox full\n");
             LOG(KFATAL_USER, "mbox full");
             exit(EXIT_OS_FAILURE);
@@ -276,15 +296,15 @@ static void __attribute__ ((noreturn)) aProcess_3(const void *argument) {
 
 // Waiting for the creation of the "Mailbox receive status"
 
-    while (kern_getMailboxById("Mailbox receive text", &mailBox) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
+    while (kern_getMailboxById("Mailbox receive text", &mailBox) != KERR_KERN_NOERR) { kern_suspendProcess(1u); }
 
     while (true) {
-        kern_suspendProcess(200U);
+        kern_suspendProcess(200u);
 
 // Send the message
 
         sizeSnd = strlen(message);
-        bufSnd  = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (uint32_t)((sizeSnd + 1U) * sizeof(uint8_t)), "basic");
+        bufSnd  = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (uint32_t)((sizeSnd + 1u) * sizeof(uint8_t)), "basic");
         if (bufSnd == nullptr) {
             (void)dprintf(KSYST, "Out of memory %zu\n", sizeSnd);
             LOG(KFATAL_USER, "Out of memory");
@@ -295,7 +315,7 @@ static void __attribute__ ((noreturn)) aProcess_3(const void *argument) {
 
 // Send a the message (wait until the FIFO is not full)
 
-        while (kern_writeMailbox(mailBox, bufSnd, (uint32_t)sizeSnd, 1000U) == KERR_KERN_TIMEO) {
+        while (kern_writeMailbox(mailBox, bufSnd, (uint32_t)sizeSnd, 1000u) == KERR_KERN_TIMEO) {
             (void)dprintf(KSYST, "mbox full\n");
             LOG(KFATAL_USER, "mbox full");
             exit(EXIT_OS_FAILURE);
@@ -312,7 +332,7 @@ static void __attribute__ ((noreturn)) aProcess_3(const void *argument) {
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int     main(int argc, const char *argv[]) {
+MAIN_ENTRY(argc, argv[]) {
     proc_t  *process_0, *process_1, *process_2, *process_3;
 
 // ---------------------------------I-----------------------------------------I--------------I

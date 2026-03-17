@@ -106,6 +106,25 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
+#if (defined(ROMABLE_S))
+
+// Prototypes
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+
+MODULE(
+    Basic,                              // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_ROMABLE_0,                     // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
+);
+
+#else
 MODULE(
     UserAppl,                           // Module name (the first letter has to be upper case)
     KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
@@ -114,9 +133,10 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
+#endif
 
 // Application specific
 // ====================
@@ -141,7 +161,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
     if (kern_createSignalGroup("Group 0", &group) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create sigr"); exit(EXIT_OS_FAILURE); }
 
     while (true) {
-        kern_suspendProcess(1000U);
+        kern_suspendProcess(1000u);
         kern_signalSignal(group, KPROCESS_0, KKERN_HANDLE_BROADCAST, KSIGN_SIGNALE_WITH_CONTEXT_SWITCH);
         led_toggle(KLED_1);
     }
@@ -164,7 +184,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
     if (kern_createSignalGroup("Group 1", &group) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create sigr"); exit(EXIT_OS_FAILURE); }
 
     while (true) {
-        kern_suspendProcess(1234U);
+        kern_suspendProcess(1234u);
         kern_signalSignal(group, KPROCESS_1, KKERN_HANDLE_BROADCAST, KSIGN_SIGNALE_WITH_CONTEXT_SWITCH);
         led_toggle(KLED_2);
     }
@@ -186,7 +206,7 @@ static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
 
 // Get the events
 
-    while (kern_getSignalGroupById("Group 0", &group) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
+    while (kern_getSignalGroupById("Group 0", &group) != KERR_KERN_NOERR) { kern_suspendProcess(1u); }
 
     while (true) {
         signal = KPROCESS_0;
@@ -210,7 +230,7 @@ static void __attribute__ ((noreturn)) aProcess_3(const void *argument) {
 
     UNUSED(argument);
 
-    while (kern_getSignalGroupById("Group 1", &group) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
+    while (kern_getSignalGroupById("Group 1", &group) != KERR_KERN_NOERR) { kern_suspendProcess(1u); }
 
     while (true) {
         signal = KPROCESS_1;
@@ -228,7 +248,7 @@ static void __attribute__ ((noreturn)) aProcess_3(const void *argument) {
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int     main(int argc, const char *argv[]) {
+MAIN_ENTRY(argc, argv[]) {
     proc_t  *process_0, *process_1, *process_2, *process_3;
 
 // ---------------------------------I-----------------------------------------I--------------I

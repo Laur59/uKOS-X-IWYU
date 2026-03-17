@@ -100,6 +100,25 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
+#if (defined(ROMABLE_S))
+
+// Prototypes
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+
+MODULE(
+    Concurrent,                         // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_ROMABLE_0,                     // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
+);
+
+#else
 MODULE(
     UserAppl,                           // Module name (the first letter has to be upper case)
     KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
@@ -108,9 +127,10 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
+#endif
 
 
 // Application specific
@@ -126,12 +146,12 @@ struct  myPack {
         };
 
 static  const   myPack_t    aParameter[6] = {
-                                { "Process: Aladin          0 ", 0U,         100U, 0U },
-                                { "Process: Marsupilami     1 ", 10000U,     200U, 1U },
-                                { "Process: Fraggle Rock    2 ", 100000U,    300U, 2U },
-                                { "Process: Lupo de Lupis   3 ", 1000000U,   400U, 3U },
-                                { "Process: Muppet show     4 ", 10000000U,  500U, 4U },
-                                { "Process: Max le voyageur 5 ", 100000000U, 600U, 5U }
+                                { "Process: Aladin          0 ", 0u,         100u, 0u },
+                                { "Process: Marsupilami     1 ", 10000u,     200u, 1u },
+                                { "Process: Fraggle Rock    2 ", 100000u,    300u, 2u },
+                                { "Process: Lupo de Lupis   3 ", 1000000u,   400u, 3u },
+                                { "Process: Muppet show     4 ", 10000000u,  500u, 4u },
+                                { "Process: Max le voyageur 5 ", 100000000u, 600u, 5u }
                             };
 
 /*
@@ -176,7 +196,7 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int     main(int argc, const char *argv[]) {
+MAIN_ENTRY(argc, argv[]) {
     proc_t  *process_0, *process_1;
     proc_t  *process_2, *process_3;
     proc_t  *process_4, *process_5;

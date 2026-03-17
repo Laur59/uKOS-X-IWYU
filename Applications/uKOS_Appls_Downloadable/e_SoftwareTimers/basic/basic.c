@@ -94,6 +94,25 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
+#if (defined(ROMABLE_S))
+
+// Prototypes
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+
+MODULE(
+    Basic,                              // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_ROMABLE_0,                     // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
+);
+
+#else
 MODULE(
     UserAppl,                           // Module name (the first letter has to be upper case)
     KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
@@ -102,9 +121,10 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
+#endif
 
 // Application specific
 // ====================
@@ -126,20 +146,20 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
                     uint32_t    time;
                     tspc_t      configure_0, configure_1;
                     stim_t      *softwareTimer_0, *softwareTimer_1;
-    static  const   uint32_t    argument_0[2] = { 0U }, argument_1[2] = { 1U };
+    static  const   uint32_t    argument_0[2] = { 0u }, argument_1[2] = { 1u };
 
     UNUSED(argument);
 
 
     configure_0.oMode        = KSTIM_SINGLE_SHOT;
-    configure_0.oInitialTime = 200U;
-    configure_0.oTime        = 1234U;
+    configure_0.oInitialTime = 200u;
+    configure_0.oTime        = 1234u;
     configure_0.oCode        = local_changeStateLed;
     configure_0.oArgument    = &argument_0[0];
 
     configure_1.oMode        = KSTIM_CONTINUOUS;
-    configure_1.oInitialTime = 1345U;
-    configure_1.oTime        = 34U;
+    configure_1.oInitialTime = 1345u;
+    configure_1.oTime        = 34u;
     configure_1.oCode        = local_changeStateLed;
     configure_1.oArgument    = &argument_1[0];
 
@@ -153,7 +173,7 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
         exit(EXIT_OS_FAILURE);
     }
 
-    kern_suspendProcess(3900U);
+    kern_suspendProcess(3900u);
 
 // Start the timer 1 in one shot mode
 
@@ -165,8 +185,8 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
 // Restart the timer 0 in continue mode
 
     configure_0.oMode        = KSTIM_CONTINUOUS;
-    configure_0.oInitialTime = 200U;
-    configure_0.oTime        = 56U;
+    configure_0.oInitialTime = 200u;
+    configure_0.oTime        = 56u;
     configure_0.oCode        = local_changeStateLed;
     configure_0.oArgument    = &argument_0[0];
     if (kern_setSoftwareTimer(softwareTimer_0, &configure_0) != KERR_KERN_NOERR) {
@@ -176,14 +196,14 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
 
 // Forever
 
-    time = 50U;
-    kern_suspendProcess(1000U);
+    time = 50u;
+    kern_suspendProcess(1000u);
     while (true) {
-        kern_suspendProcess(2000U);
+        kern_suspendProcess(2000u);
 
-        time = (time > 5000U) ? (50U) : (time + 200U);
+        time = (time > 5000u) ? (50u) : (time + 200u);
         configure_0.oMode        = KSTIM_CONTINUOUS;
-        configure_0.oInitialTime = 0U;
+        configure_0.oInitialTime = 0u;
         configure_0.oTime        = time;
         configure_0.oCode        = local_changeStateLed;
         configure_0.oArgument    = &argument_0[0];
@@ -203,7 +223,7 @@ static  void    local_changeStateLed(const void *argument) {
     const   uint32_t    *pack;
 
     pack = (const uint32_t *)argument;
-    led = *pack + 1;
+    led = *pack;
     led_toggle((uint8_t)led);
 }
 
@@ -215,7 +235,7 @@ static  void    local_changeStateLed(const void *argument) {
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int     main(int argc, const char *argv[]) {
+MAIN_ENTRY(argc, argv[]) {
     proc_t  *process;
 
 // -------------------------------I-----------------------------------------I--------------I

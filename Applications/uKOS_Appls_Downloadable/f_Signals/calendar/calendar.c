@@ -103,6 +103,25 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
+#if (defined(ROMABLE_S))
+
+// Prototypes
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+
+MODULE(
+    Calendar,                           // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_ROMABLE_0,                     // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
+);
+
+#else
 MODULE(
     UserAppl,                           // Module name (the first letter has to be upper case)
     KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
@@ -111,9 +130,10 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
+#endif
 
 // Application specific
 // ====================
@@ -131,7 +151,7 @@ MODULE(
  *
  */
 static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
-    uint8_t     mSeconds = 0U;
+    uint8_t     mSeconds = 0u;
     sign_t      *group;
 
     UNUSED(argument);
@@ -139,9 +159,9 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
     if (kern_createSignalGroup("Calendar", &group) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create sigr"); exit(EXIT_OS_FAILURE); }
 
     while (true) {
-        kern_suspendProcess(100U);
-        if (mSeconds++ >= 9U) {
-            mSeconds = 0U;
+        kern_suspendProcess(100u);
+        if (mSeconds++ >= 9u) {
+            mSeconds = 0u;
             kern_signalSignal(group, KCALENDAR, KKERN_HANDLE_BROADCAST, KSIGN_SIGNALE_WITH_CONTEXT_SWITCH);
         }
     }
@@ -166,13 +186,13 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 
 // Get the synchro handles
 
-    while (kern_getSignalGroupById("Calendar", &group) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
+    while (kern_getSignalGroupById("Calendar", &group) != KERR_KERN_NOERR) { kern_suspendProcess(1u); }
 
     while (true) {
         signal = KCALENDAR | KALARME;
         kern_waitSignal(group, &signal, KKERN_HANDLE_BROADCAST, KWAIT_INFINITY);
 
-        if ((signal & KCALENDAR) != 0U) {
+        if ((signal & KCALENDAR) != 0u) {
             now = time(nullptr);
             localtime_r(&now, &localTime);
 
@@ -180,7 +200,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
             (void)dprintf(KSYST, "Signal: %08"PRIX32", Epoch = %"PRIu64", Local time: %s",
                            signal, unixTime, asctime(&localTime));
         }
-        if ((signal & KALARME) != 0U) {
+        if ((signal & KALARME) != 0u) {
             (void)dprintf(KSYST, "Signal: %08"PRIX32", Alarme\n", signal);
         }
     }
@@ -199,10 +219,10 @@ static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
 
     UNUSED(argument);
 
-    while (kern_getSignalGroupById("Calendar", &group) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
+    while (kern_getSignalGroupById("Calendar", &group) != KERR_KERN_NOERR) { kern_suspendProcess(1u); }
 
     while (true) {
-        kern_suspendProcess(100U);
+        kern_suspendProcess(100u);
         kern_signalSignal(group, KALARME, KKERN_HANDLE_BROADCAST, KSIGN_SIGNALE_WITH_CONTEXT_SWITCH);
     }
 }
@@ -215,7 +235,7 @@ static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int     main(int argc, const char *argv[]) {
+MAIN_ENTRY(argc, argv[]) {
     proc_t  *process_0, *process_1, *process_2;
 
 // ---------------------------------I-----------------------------------------I--------------I

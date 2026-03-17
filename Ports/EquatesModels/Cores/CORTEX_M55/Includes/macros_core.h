@@ -64,7 +64,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 // For selecting Secure/NSecure
 
-#ifdef SECURE_S
+#if (defined(SECURE_S))
 #define REG(x)                  (x ## _S)
 #elif (defined(SECURE_NS))
 #define REG(x)                  (x ## _NS)
@@ -77,13 +77,13 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 // Core machine in bits
 
-#define KMACHINE_BITS           (32U)
+#define KMACHINE_BITS           (32u)
 
 // Preemptions
 
-#ifndef PREEMPTION
+#if (!defined(PREEMPTION))
 #define PREEMPTION              stub_kern_stopProcessTimeout();                                                                 \
-                                REG(SCB)->ICSR = (1U<<BKERN_PREEMPTION);                                                        \
+                                REG(SCB)->ICSR = (1u<<BKERN_PREEMPTION);                                                        \
                                 __asm volatile ("                                                                            \n \
                                 sev"                                                                                            \
                                 );                                                                                              \
@@ -92,7 +92,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
                                 INST_SYNC_BARRIER;
 #endif
 
-#ifndef PREEMPTION_THRESHOLD
+#if (!defined(PREEMPTION_THRESHOLD))
 #define PREEMPTION_THRESHOLD(core)                                                                                              \
                                 do {                                                                                            \
                                     extern  proc_t  *vKern_runProc[KNB_CORES];                                                  \
@@ -106,8 +106,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 // Elevation macros
 // ----------------
 
-#ifndef PRIVILEGE_ELEVATE
-#ifdef PRIVILEGED_USER_S
+#if (!defined(PRIVILEGE_ELEVATE))
+#if (defined(PRIVILEGED_USER_S))
 #define PRIVILEGE_ELEVATE       kern_setPrivilegeMode(KPROC_PRIVILEGED)
 
 #else
@@ -115,8 +115,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #endif
 #endif
 
-#ifndef PRIVILEGE_RESTORE
-#ifdef PRIVILEGED_USER_S
+#if (!defined(PRIVILEGE_RESTORE))
+#if (defined(PRIVILEGED_USER_S))
 #define PRIVILEGE_RESTORE       kern_setPrivilegeMode(KPROC_USER)
 
 #else
@@ -124,7 +124,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #endif
 #endif
 
-#ifndef RIGHTS_ELEVATION
+#if (!defined(RIGHTS_ELEVATION))
 #define RIGHTS_ELEVATION        __asm volatile ("                                                                            \n \
                                 .global     priv_returnElevation                                                             \n \
                                 svc         %0                                                                               \n \
@@ -138,17 +138,17 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
                                 INST_SYNC_BARRIER;
 #endif
 
-#ifndef SET_USER_MODE
+#if (!defined(SET_USER_MODE))
 #define SET_USER_MODE           core_setCONTROL(core_getCONTROL() | CONTROL_SET_USER_MODE);                                     \
                                 INST_SYNC_BARRIER
 #endif
 
-#ifndef SET_PRIVILEGED_MODE
+#if (!defined(SET_PRIVILEGED_MODE))
 #define SET_PRIVILEGED_MODE     core_setCONTROL(core_getCONTROL() & ~CONTROL_SET_USER_MODE);                                    \
                                 INST_SYNC_BARRIER
 #endif
 
-#ifndef GET_ADDRESS_ELEVATION_CALLER
+#if (!defined(GET_ADDRESS_ELEVATION_CALLER))
 #define GET_ADDRESS_ELEVATION_CALLER                                                                                            \
                                 __asm volatile ("                                                                            \n \
                                 tst         lr,#0x4                                                                          \n \
@@ -159,12 +159,12 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
                                 )
 #endif
 
-#ifndef GET_ADDRESS_CALLER
+#if (!defined(GET_ADDRESS_CALLER))
 #define GET_ADDRESS_CALLER(address)                                                                                             \
                                 address = core_getLR()
 #endif
 
-#ifndef CALL_FNCT_ELEVATION
+#if (!defined(CALL_FNCT_ELEVATION))
 #define CALL_FNCT_ELEVATION(function)                                                                                           \
                                 __asm volatile ("                                                                            \n \
                                 push        {lr}                                                                             \n \
@@ -177,7 +177,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
                                 )
 #endif
 
-#ifndef KERN_RETURN_ELEVATION
+#if (!defined(KERN_RETURN_ELEVATION))
 #define KERN_RETURN_ELEVATION   __asm volatile ("                                                                            \n \
                                 bx          lr"                                                                                 \
                                 )
@@ -186,15 +186,15 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 // Interruption macros
 // -------------------
 
-#ifndef INTERRUPTION_SET
+#if (!defined(INTERRUPTION_SET))
 #define INTERRUPTION_SET        core_setBASEPRI((uint32_t)KINT_IMASK_ALL<<(uint32_t)KNVIC_PRIORITY_SHIFT)
 #endif
 
-#ifndef INTERRUPTION_SET_PERIPH
+#if (!defined(INTERRUPTION_SET_PERIPH))
 #define INTERRUPTION_SET_PERIPH core_setBASEPRI((uint32_t)KINT_IMASK_PERIPHERALS<<(uint32_t)KNVIC_PRIORITY_SHIFT)
 #endif
 
-#ifndef INTERRUPTION_OFF_HARD
+#if (!defined(INTERRUPTION_OFF_HARD))
 #define INTERRUPTION_OFF_HARD   __asm volatile ("                                                                            \n \
                                 cpsid       i                                                                                \n \
                                 isb         0xF"                                                                                \
@@ -204,7 +204,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
                                 )
 #endif
 
-#ifndef INTERRUPTION_ON_HARD
+#if (!defined(INTERRUPTION_ON_HARD))
 #define INTERRUPTION_ON_HARD    __asm volatile ("                                                                            \n \
                                 cpsie       i                                                                                \n \
                                 isb         0xF"                                                                                \
@@ -214,7 +214,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
                                 )
 #endif
 
-#ifndef INTERRUPTION_OFF
+#if (!defined(INTERRUPTION_OFF))
 #define INTERRUPTION_OFF        volatile    uint32_t    saveBASEPRI __attribute__ ((unused));                                   \
                                                                                                                                 \
                                 saveBASEPRI = core_getBASEPRI();                                                                \
@@ -222,28 +222,28 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
                                 core_setBASEPRI((uint32_t)KINT_IMASK_OFF<<(uint32_t)KNVIC_PRIORITY_SHIFT)
 #endif
 
-#ifndef INTERRUPTION_RESTORE
+#if (!defined(INTERRUPTION_RESTORE))
 #define INTERRUPTION_RESTORE    core_setBASEPRI(saveBASEPRI)
 #endif
 
-#ifndef RETURN_INT_RESTORE
+#if (!defined(RETURN_INT_RESTORE))
 #define RETURN_INT_RESTORE(status)                                                                                              \
                                 INTERRUPTION_RESTORE;                                                                           \
                                 return (status)
 #endif
 
-#ifndef INTERRUPTION_OFF_CRITICAL
+#if (!defined(INTERRUPTION_OFF_CRITICAL))
 #define INTERRUPTION_OFF_CRITICAL(savemMask)                                                                                    \
                                 savemMask = core_getBASEPRI();                                                                  \
                                 core_setBASEPRI((uint32_t)KINT_IMASK_OFF<<(uint32_t)KNVIC_PRIORITY_SHIFT)
 #endif
 
-#ifndef INTERRUPTION_RESTORE_CRITICAL
+#if (!defined(INTERRUPTION_RESTORE_CRITICAL))
 #define INTERRUPTION_RESTORE_CRITICAL(savemMask)                                                                                \
                                 core_setBASEPRI(savemMask)
 #endif
 
-#ifndef WAITING_INTERRUPTION
+#if (!defined(WAITING_INTERRUPTION))
 #define WAITING_INTERRUPTION    DATA_SYNC_BARRIER;                                                                              \
                                 __asm volatile ("                                                                            \n \
                                 wfi"                                                                                            \
@@ -251,17 +251,17 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
                                 INST_SYNC_BARRIER;
 #endif
 
-#ifndef IS_EXCEPTION
-#define IS_EXCEPTION            ((REG(SCB)->ICSR & 0x000001FFU) != 0U)
+#if (!defined(IS_EXCEPTION))
+#define IS_EXCEPTION            ((REG(SCB)->ICSR & 0x000001FFu) != 0u)
 #endif
 
-#ifndef GET_CURRENT_PROCESS_STACK
+#if (!defined(GET_CURRENT_PROCESS_STACK))
 #define GET_CURRENT_PROCESS_STACK(stack)                                                                                        \
                                 stack = core_getPSP()
 #endif
 
-#ifndef EXCEPTION_SPECIFIC_HANDLER
-#define KEXCEPTION              0U
+#if (!defined(EXCEPTION_SPECIFIC_HANDLER))
+#define KEXCEPTION              0u
 
 extern  volatile    bool    vPriv_insideException[KNB_CORES];
 extern              void    (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
@@ -292,8 +292,8 @@ extern              void    __attribute__ ((noreturn)) model_coreDump_displayExc
                                 }
 #endif
 
-#ifndef INTERRUPT_SPECIFIC_HANDLER
-#define KINTERRUPTION           1U
+#if (!defined(INTERRUPT_SPECIFIC_HANDLER))
+#define KINTERRUPTION           1u
 
 extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 extern  void    __attribute__ ((noreturn)) model_coreDump_displayInterruptions(uintptr_t lr, uintptr_t *msp);
@@ -323,28 +323,18 @@ extern  void    __attribute__ ((noreturn)) model_coreDump_displayInterruptions(u
                                 }
 #endif
 
-// Vector registration macros
-// --------------------------
-// Moved from macros_soc.h for IWYU compliance (eliminates circular dependency)
-
-#define EXCEPTION_VECTOR(vectorNb, address)                                                                                     \
-                                vExce_indExcVectors[GET_RUNNING_CORE][(int32_t)vectorNb + (int32_t)KNB_EXCEPTIONS] = address
-
-#define INTERRUPT_VECTOR(vectorNb, address)                                                                                     \
-                                vExce_indIntVectors[GET_RUNNING_CORE][vectorNb] = address
-
 // Misc assembler macro
 // --------------------
 
-#ifndef SET_PSP_STACK
+#if (!defined(SET_PSP_STACK))
 #define SET_PSP_STACK(stack)    core_setPSP((uintptr_t)stack)
 #endif
 
-#ifndef SET_MSP_STACK
+#if (!defined(SET_MSP_STACK))
 #define SET_MSP_STACK(stack)    core_setMSP((uintptr_t)stack)
 #endif
 
-#ifndef SET_THREAD_STACK
+#if (!defined(SET_THREAD_STACK))
 #define SET_THREAD_STACK(stack) __asm volatile ("                                                                            \n \
                                 msr         psp,%0"                                                                             \
                                 :                                                                                               \
@@ -360,21 +350,21 @@ extern  void    __attribute__ ((noreturn)) model_coreDump_displayInterruptions(u
 // - Copy the MSP to the PSP
 // - Set the PSP as the active stack
 
-#ifndef CHECKSET_THREAD_STACK
-#define CHECKSET_THREAD_STACK   if (core_getPSP() == 0U) {                                                                      \
+#if (!defined(CHECKSET_THREAD_STACK))
+#define CHECKSET_THREAD_STACK   if (core_getPSP() == 0u) {                                                                      \
                                     core_setPSP(core_getMSP());                                                                 \
                                     core_setCONTROL(core_getCONTROL() | CONTROL_SET_PSP_STACK);                                 \
                                     INST_SYNC_BARRIER;                                                                          \
                                 }
 #endif
 
-#ifndef NOP
+#if (!defined(NOP))
 #define NOP                     __asm volatile ("                                                                            \n \
                                 nop"                                                                                            \
                                 )
 #endif
 
-#ifndef DATA_SYNC_BARRIER
+#if (!defined(DATA_SYNC_BARRIER))
 #define DATA_SYNC_BARRIER       __asm volatile ("                                                                            \n \
                                 dsb         0xF"                                                                                \
                                 :                                                                                               \
@@ -383,7 +373,7 @@ extern  void    __attribute__ ((noreturn)) model_coreDump_displayInterruptions(u
                                 )
 #endif
 
-#ifndef INST_SYNC_BARRIER
+#if (!defined(INST_SYNC_BARRIER))
 #define INST_SYNC_BARRIER       __asm volatile ("                                                                            \n \
                                 isb         0xF"                                                                                \
                                 :                                                                                               \
@@ -392,7 +382,7 @@ extern  void    __attribute__ ((noreturn)) model_coreDump_displayInterruptions(u
                                 )
 #endif
 
-#ifndef MEMO_SYNC_BARRIER
+#if (!defined(MEMO_SYNC_BARRIER))
 #define MEMO_SYNC_BARRIER       __asm volatile ("                                                                            \n \
                                 dmb         0xF"                                                                                \
                                 :                                                                                               \
@@ -401,20 +391,20 @@ extern  void    __attribute__ ((noreturn)) model_coreDump_displayInterruptions(u
                                 )
 #endif
 
-#ifndef STRONG_BARRIER
+#if (!defined(STRONG_BARRIER))
 #define STRONG_BARRIER          MEMO_SYNC_BARRIER;                                                                              \
                                 DATA_SYNC_BARRIER;                                                                              \
                                 INST_SYNC_BARRIER
 #endif
 
-#ifndef JUMP_FNCT
+#if (!defined(JUMP_FNCT))
 #define JUMP_FNCT(function)                                                                                                     \
                                 __asm volatile ("                                                                            \n \
                                 b           "#function                                                                          \
                                 )
 #endif
 
-#ifndef CALL_FNCT
+#if (!defined(CALL_FNCT))
 #define CALL_FNCT(function)                                                                                                     \
                                 __asm volatile ("                                                                            \n \
                                 bl          "#function                                                                          \
@@ -423,3 +413,8 @@ extern  void    __attribute__ ((noreturn)) model_coreDump_displayInterruptions(u
                                 : "lr"                                                                                          \
                                 )
 #endif
+
+// Stack frame macros
+// ------------------
+
+#include    "macros_core_stackFrame.h"

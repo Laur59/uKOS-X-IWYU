@@ -117,6 +117,25 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
+#if (defined(ROMABLE_S))
+
+// Prototypes
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+
+MODULE(
+    ReadIMU,                            // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                        // Family (defined in the module.h)
+    KNUM_ROMABLE_0,                     // Module identifier (defined in the module.h)
+    nullptr,                            // Address of the initialisation code (early pre-init)
+    prgm,                               // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                            // Address of the clean code (clean the module)
+    " 1.0",                             // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                   // Execution cores
+);
+
+#else
 MODULE(
     UserAppl,                           // Module name (the first letter has to be upper case)
     KID_FAM_APPLICATIONS,               // Family (defined in the module.h)
@@ -125,20 +144,21 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
+#endif
 
 enum {
-        KX_AXIS = 0U,
+        KX_AXIS = 0u,
         KY_AXIS,
         KZ_AXIS,
         KNB_AXIS
 };
 
-#define KDISPLAY_ACC        0U          // Display the acceleration
-#define KDISPLAY_GYRO       1U          // Display the gyroscope
-#define KDISPLAY_MAGNETO    2U          // Display the magetometer
+#define KDISPLAY_ACC        0u          // Display the acceleration
+#define KDISPLAY_GYRO       1u          // Display the gyroscope
+#define KDISPLAY_MAGNETO    2u          // Display the magetometer
 
 
 // Prototypes
@@ -168,7 +188,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
     UNUSED(argument);
 
     while (true) {
-        kern_suspendProcess(1000U);
+        kern_suspendProcess(1000u);
         led_toggle(KLED_1);
     }
 }
@@ -202,7 +222,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
     imu_configure(&configureIMU0);
 
     while (true) {
-        kern_suspendProcess(10U);
+        kern_suspendProcess(10u);
 
         imu_read(&accelerometer, &gyroscope, &magnetometer);
 
@@ -229,7 +249,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  * - Kill the "main". At this moment only the launched processes are executed
  *
  */
-int     main(int argc, const char *argv[]) {
+MAIN_ENTRY(argc, argv[]) {
     proc_t  *process_0, *process_1;
 
 // ---------------------------------I-----------------------------------------I--------------I
@@ -282,7 +302,7 @@ int     main(int argc, const char *argv[]) {
  * - Window filtering for the acceleration, the gyro and the magnetometer
  *
  */
-#define KFILTER     16U
+#define KFILTER     16u
 
 static  void    local_filter(float64_t ax,   float64_t ay,    float64_t az,
                              float64_t gx,   float64_t gy,    float64_t gz,
@@ -291,7 +311,7 @@ static  void    local_filter(float64_t ax,   float64_t ay,    float64_t az,
                              float64_t *mGx, float64_t *mGy,  float64_t *mGz,
                              float64_t *mMx, float64_t *mMy,  float64_t *mMz) {
 
-    static  uint8_t     i, k = 0U;
+    static  uint8_t     i, k = 0u;
     static  float64_t   aFilter[KNB_AXIS][KFILTER];
     static  float64_t   gFilter[KNB_AXIS][KFILTER];
     static  float64_t   mFilter[KNB_AXIS][KFILTER];
@@ -306,7 +326,7 @@ static  void    local_filter(float64_t ax,   float64_t ay,    float64_t az,
     *mGx = *mGy = *mGz = 0.0;
     *mMx = *mMy = *mMz = 0.0;
 
-    for (i = 0U; i < KFILTER; i++) {
+    for (i = 0u; i < KFILTER; i++) {
         *mAx += aFilter[KX_AXIS][i]; *mAy += aFilter[KY_AXIS][i]; *mAz += aFilter[KZ_AXIS][i];
         *mGx += gFilter[KX_AXIS][i]; *mGy += gFilter[KY_AXIS][i]; *mGz += gFilter[KZ_AXIS][i];
         *mMx += mFilter[KX_AXIS][i]; *mMy += mFilter[KY_AXIS][i]; *mMz += mFilter[KZ_AXIS][i];
@@ -315,7 +335,7 @@ static  void    local_filter(float64_t ax,   float64_t ay,    float64_t az,
     *mGx = *mGx / KFILTER; *mGy = *mGy / KFILTER; *mGz = *mGz / KFILTER;
     *mMx = *mMx / KFILTER; *mMy = *mMy / KFILTER; *mMz = *mMz / KFILTER;
 
-    k++; if (k == KFILTER) { k = 0U; };
+    k++; if (k == KFILTER) { k = 0u; };
 }
 
 /*
@@ -345,7 +365,7 @@ static  void    local_display(int32_t fpPrint,
     (void)dprintf(fpPrint, "%f\t%f\t%f\n", x, y, z);
     #else
 
-    uint32_t    sample = 0U;
+    uint32_t    sample = 0u;
     (void)dprintf(fpPrint, "%"PRIu32" %f %f %f\n", ++sample, x, y, z);
     #endif
 }
