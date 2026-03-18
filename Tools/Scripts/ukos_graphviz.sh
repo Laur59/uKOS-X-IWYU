@@ -6,18 +6,18 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:   Edo. Franzi     The 2025-01-01
+# Author:	Edo. Franzi		The 2025-01-01
 # Modifs:
 #
-# Project:  uKOS-X
-# Goal:     Toolchain for generating the doxygen documenting tool.
+# Project:	uKOS-X
+# Goal:		Toolchain for generating the doxygen documenting tool.
 #
-#           Usage:
-#           ./ukos_graphviz.sh
+#			Usage:
+#			./ukos_graphviz.sh
 #
-#           OS:
-#           OSX 26.xx           yes
-#           Ubuntu 24.04 LTS    yes
+#			OS:
+#			OSX 26.xx			yes
+#			Ubuntu 24.04 LTS	yes
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -71,11 +71,11 @@ readonly LOG_FILE="${BUILD}"/graphviz_temp.txt
 # -------------------
 
 if [[ ! -d "${PACKS}" ]]; then
-    echo Cloning graphviz-${GRAPHVIZ_VER}
-    git clone https://gitlab.com/graphviz/graphviz.git "${PACKS}"
+	echo Cloning graphviz-${GRAPHVIZ_VER}
+	git clone https://gitlab.com/graphviz/graphviz.git "${PACKS}"
 else
-    echo Fetching graphviz-${GRAPHVIZ_VER}
-    git -C "${PACKS}" fetch --quiet
+	echo Fetching graphviz-${GRAPHVIZ_VER}
+	git -C "${PACKS}" fetch --quiet
 fi
 git -C "${PACKS}" checkout ${GRAPHVIZ_VER}
 
@@ -99,23 +99,23 @@ cd "${PACKS}"
 ./autogen.sh
 cd "${BUILD}"
 "${PACKS}"/configure --prefix="${prefix}" \
-    --disable-debug \
-    --disable-dependency-tracking \
-    --disable-php \
-    --disable-swig \
-    --disable-tcl \
-    --with-quartz \
-    --without-gdk \
-    --without-gtk \
-    --without-poppler \
-    --without-qt \
-    --without-x \
-    --with-freetype2 \
-    --with-gdk-pixbuf \
-    --with-gts                      || { echo "Error configuring Graphviz"; exit 1; }
-make CPPFLAGS=-I/opt/X11/include    || { echo "Error building Graphviz";    exit 1; }
-make install                        || { echo "Error installing Graphviz";  exit 1; }
-make clean                          || { echo "Error cleaning Graphviz";    exit 1; }
+	--disable-debug \
+	--disable-dependency-tracking \
+	--disable-php \
+	--disable-swig \
+	--disable-tcl \
+	--with-quartz \
+	--without-gdk \
+	--without-gtk \
+	--without-poppler \
+	--without-qt \
+	--without-x \
+	--with-freetype2 \
+	--with-gdk-pixbuf \
+	--with-gts						|| { echo "Error configuring Graphviz"; exit 1; }
+make CPPFLAGS=-I/opt/X11/include	|| { echo "Error building Graphviz";	exit 1; }
+make install						|| { echo "Error installing Graphviz";	exit 1; }
+make clean							|| { echo "Error cleaning Graphviz";	exit 1; }
 
 # Update path links
 
@@ -123,5 +123,5 @@ cd "${PATH_TOOLS_GCC}"/cross
 rm -f graphviz-current
 ln -s graphviz-"${GRAPHVIZ_VER}" graphviz-current
 
-echo "End of build:   $(date)" >> "${LOG_FILE}"
+echo "End of build:	  $(date)" >> "${LOG_FILE}"
 mv "${LOG_FILE}" "${BUILD}"/graphviz_ready.txt

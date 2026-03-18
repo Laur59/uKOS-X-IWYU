@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:   Edo. Franzi     The 2025-01-01
+; Author:	Edo. Franzi		The 2025-01-01
 ; Modifs:
 ;
-; Project:  uKOS-X
-; Goal:     Test of the USART1 Rx interruption.
+; Project:	uKOS-X
+; Goal:		Test of the USART1 Rx interruption.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +46,7 @@
 ;------------------------------------------------------------------------
 */
 
-#include    "tests.h"
+#include	"tests.h"
 
 #if (defined(TEST_04_S))
 
@@ -54,7 +54,7 @@
 
 // Prototypes
 
-void    local_USART1_IRQHandler(void);
+void	local_USART1_IRQHandler(void);
 
 /*
  * \brief test_04
@@ -62,24 +62,24 @@ void    local_USART1_IRQHandler(void);
  * - Test of the USART1 Rx interruption
  *
  */
-void    test_04(void) {
+void	test_04(void) {
 
-    INTERRUPT_VECTOR(USART1_C0_IRQn, local_USART1_IRQHandler);
-    NVIC_SetPriority(USART1_C0_IRQn, KINT_LEVEL_COMMUNICATIONS);
-    NVIC_EnableIRQ(USART1_C0_IRQn);
-    STRONG_BARRIER;
+	INTERRUPT_VECTOR(USART1_C0_IRQn, local_USART1_IRQHandler);
+	NVIC_SetPriority(USART1_C0_IRQn, KINT_LEVEL_COMMUNICATIONS);
+	NVIC_EnableIRQ(USART1_C0_IRQn);
+	STRONG_BARRIER;
 
-    cmns_init();
-    REG(USART1)->CR1_FIFO |= USART_CR1_FIFO_RXFNEIE;
+	cmns_init();
+	REG(USART1)->CR1_FIFO |= USART_CR1_FIFO_RXFNEIE;
 
 // Waiting for the USART3 interruption
 
-    INTERRUPTION_ON_HARD;
+	INTERRUPTION_ON_HARD;
 
-    while (true) {
-        cmns_wait(BLINK_PAUSE);
-        LED_RED_TOGGLE;
-    }
+	while (true) {
+		cmns_wait(BLINK_PAUSE);
+		LED_RED_TOGGLE;
+	}
 }
 
 /*
@@ -88,14 +88,14 @@ void    test_04(void) {
  * - Blink the BLUE Led
  *
  */
-void    local_USART1_IRQHandler(void) {
+void	local_USART1_IRQHandler(void) {
 
 // Acknowledge the USART1 interruption
 
-    REG(USART1)->RDR;
+	REG(USART1)->RDR;
 
-    cmns_send(KURT0, "OK interruptions\n");
-    LED_BLUE_TOGGLE;
+	cmns_send(KURT0, "OK interruptions\n");
+	LED_BLUE_TOGGLE;
 }
 
 #endif

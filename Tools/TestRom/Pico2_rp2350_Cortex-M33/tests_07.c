@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:   Edo. Franzi     The 2025-01-01
+; Author:	Edo. Franzi		The 2025-01-01
 ; Modifs:
 ;
-; Project:  uKOS-X
-; Goal:     Test of the UART0 Tx interruption.
+; Project:	uKOS-X
+; Goal:		Test of the UART0 Tx interruption.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,15 +46,15 @@
 ;------------------------------------------------------------------------
 */
 
-#include    "tests.h"
+#include	"tests.h"
 
 #if (defined(TEST_07_S))
-            bool        vTransmitted = false;
-volatile    uint8_t     vString[] = ".. but we are not afraid, we are alway firsts ...\n";
+			bool		vTransmitted = false;
+volatile	uint8_t		vString[] = ".. but we are not afraid, we are alway firsts ...\n";
 
 // Prototypes
 
-void    local_UART0_IRQHandler(void);
+void	local_UART0_IRQHandler(void);
 
 /*
  * \brief test_07
@@ -62,30 +62,30 @@ void    local_UART0_IRQHandler(void);
  * - Test of the UART0 Tx interruption
  *
  */
-void    test_07(void) {
+void	test_07(void) {
 
 // Initialise the UART0 to generate Tx interruptions
 
-    INTERRUPT_VECTOR(UART0_IRQ_C0_IRQn, local_UART0_IRQHandler);
-    NVIC_SetPriority(UART0_IRQ_C0_IRQn, KINT_LEVEL_COMMUNICATIONS);
-    NVIC_EnableIRQ(UART0_IRQ_C0_IRQn);
+	INTERRUPT_VECTOR(UART0_IRQ_C0_IRQn, local_UART0_IRQHandler);
+	NVIC_SetPriority(UART0_IRQ_C0_IRQn, KINT_LEVEL_COMMUNICATIONS);
+	NVIC_EnableIRQ(UART0_IRQ_C0_IRQn);
 
-    cmns_init();
+	cmns_init();
 
-    INTERRUPTION_ON_HARD;
+	INTERRUPTION_ON_HARD;
 
-    while (true) {
-        REG(UART0)->UARTIMSC |= UART_UARTIMSC_TXIM;
-        NVIC_SetPendingIRQ(UART0_IRQ_C0_IRQn);
+	while (true) {
+		REG(UART0)->UARTIMSC |= UART_UARTIMSC_TXIM;
+		NVIC_SetPendingIRQ(UART0_IRQ_C0_IRQn);
 
 // Let terminate the buffer transfer
 
-        cmns_wait(1000000);
-        do { } while (vTransmitted == false);
+		cmns_wait(1000000);
+		do { } while (vTransmitted == false);
 
-        vTransmitted = false;
-        LED_RED_TOGGLE;
-    }
+		vTransmitted = false;
+		LED_RED_TOGGLE;
+	}
 }
 
 /*
@@ -94,27 +94,27 @@ void    test_07(void) {
  * - Blink the GREEN Led on the end of the Tx
  *
  */
-void    local_UART0_IRQHandler(void) {
-            volatile    uint32_t    data;
-    static  volatile    uint8_t     index = 0u;
+void	local_UART0_IRQHandler(void) {
+			volatile	uint32_t	data;
+	static	volatile	uint8_t		index = 0u;
 
 // Tx interruption
 
-    REG(UART0)->UARTICR = UART_UARTICR_TXIC;
+	REG(UART0)->UARTICR = UART_UARTICR_TXIC;
 
-    data = (uint32_t)vString[index];
-    REG(UART0)->UARTDR = data;
-    index++;
-    if (vString[index] == 0u) {
+ 	data = (uint32_t)vString[index];
+	REG(UART0)->UARTDR = data;
+	index++;
+	if (vString[index] == 0u) {
 
 
 // Terminated
 
-        LED_GREEN_TOGGLE;
+		LED_GREEN_TOGGLE;
 
-        index = 0u;
-        vTransmitted = true;
-        REG(UART0)->UARTIMSC &= ~UART_UARTIMSC_TXIM;
-    }
+		index = 0u;
+		vTransmitted = true;
+		REG(UART0)->UARTIMSC &= ~UART_UARTIMSC_TXIM;
+	}
 }
 #endif

@@ -5,11 +5,11 @@
 # CMakeLists.
 # ===========
 #
-# Author:   Laurent von Allmen  The 2026-02-13
+# Author:	Laurent von Allmen	The 2026-02-13
 # Modifs:
 #
-# Project:  uKOS-X
-# Goal:     CMake file to set up the building for uKOS-X the testROM.
+# Project:	uKOS-X
+# Goal:		CMake file to set up the building for uKOS-X the testROM.
 #
 #   (c) 2025-2026, Laurent von Allmen
 #   ---------------------------------
@@ -56,9 +56,9 @@ cmake_path(GET PATH_TOOLS PARENT_PATH PATH_UKOS)
 include(${PATH_UKOS}/Ports/cmake/select-riscv-toolchain.cmake)
 
 project(
-    RP2350_RISCV-TestRom
-    VERSION 1.0
-    LANGUAGES C ASM
+	RP2350_RISCV-TestRom
+	VERSION 1.0
+	LANGUAGES C ASM
 )
 
 set(TARGET_NAME testROM)
@@ -159,15 +159,15 @@ target_link_options(${TARGET_NAME}.elf PRIVATE
 # Add map file, and ck file in the list of files removed by make clean
 # Clean files
 set_property(TARGET ${TARGET_NAME}.elf APPEND
-    PROPERTY ADDITIONAL_CLEAN_FILES
-        ${TARGET_NAME}.map
+	PROPERTY ADDITIONAL_CLEAN_FILES
+		${TARGET_NAME}.map
 )
 
 # Create hex and bin files (utils)
 add_custom_command(TARGET ${TARGET_NAME}.elf
-    POST_BUILD
-    COMMAND ${CMAKE_OBJCOPY} -O ihex --strip-all ${TARGET_NAME}.elf ${TARGET_NAME}.hex
-    COMMAND ${CMAKE_OBJCOPY} -O binary --strip-all ${TARGET_NAME}.elf ${TARGET_NAME}.bin
-    VERBATIM
-    BYPRODUCTS ${TARGET_NAME}.hex ${TARGET_NAME}.bin
+	POST_BUILD
+	COMMAND ${CMAKE_OBJCOPY} -O ihex --strip-all ${TARGET_NAME}.elf ${TARGET_NAME}.hex
+	COMMAND ${CMAKE_OBJCOPY} -O binary --strip-all ${TARGET_NAME}.elf ${TARGET_NAME}.bin
+	VERBATIM
+	BYPRODUCTS ${TARGET_NAME}.hex ${TARGET_NAME}.bin
 )

@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:   Edo. Franzi     The 2025-01-01
+; Author:	Edo. Franzi		The 2025-01-01
 ; Modifs:
 ;
-; Project:  uKOS-X
-; Goal:     Test of the TIM5 interruption.
+; Project:	uKOS-X
+; Goal:		Test of the TIM5 interruption.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,16 +46,16 @@
 ;------------------------------------------------------------------------
 */
 
-#include    "tests.h"
+#include	"tests.h"
 
 #if (defined(TEST_11_S))
-#define KTTIMESAMPLING  ((float64_t)(0.5))                                      // 500-ms
-#define KPSCT5          ((KFREQUENCY_TIM / (KFREQUENCY_1MHz)) - 1)              // Prescaler for 1'000'000-Hz
-#define KARRT5          ((uint32_t)((KFREQUENCY_1MHz * KTTIMESAMPLING) - 1))    // Autoreload
+#define	KTTIMESAMPLING	((float64_t)(0.5))										// 500-ms
+#define KPSCT5			((KFREQUENCY_TIM / (KFREQUENCY_1MHz)) - 1)				// Prescaler for 1'000'000-Hz
+#define KARRT5			((uint32_t)((KFREQUENCY_1MHz * KTTIMESAMPLING) - 1))	// Autoreload
 
 // Prototypes
 
-void    local_TIM5_IRQHandler(void);
+void	local_TIM5_IRQHandler(void);
 
 /*
  * \brief test_11
@@ -63,32 +63,32 @@ void    local_TIM5_IRQHandler(void);
  * - Test of the TIM5 interruption
  *
  */
-void    test_11(void) {
+void	test_11(void) {
 
-    REG(RCC)->APB1LENR |= RCC_APB1LENR_TIM5EN;
-    STRONG_BARRIER;
+	REG(RCC)->APB1LENR |= RCC_APB1LENR_TIM5EN;
+	STRONG_BARRIER;
 
 // Initialise the TIM5 to generate an interruption every 500-ms
 
-    INTERRUPT_VECTOR(TIM5_C0_IRQn, local_TIM5_IRQHandler);
-    NVIC_SetPriority(TIM5_C0_IRQn, KINT_LEVEL_KERNEL_TIMERS);
-    NVIC_EnableIRQ(TIM5_C0_IRQn);
+	INTERRUPT_VECTOR(TIM5_C0_IRQn, local_TIM5_IRQHandler);
+	NVIC_SetPriority(TIM5_C0_IRQn, KINT_LEVEL_KERNEL_TIMERS);
+	NVIC_EnableIRQ(TIM5_C0_IRQn);
 
-    REG(TIM5)->CR1 &= ~TIM5_CR1_CEN;
-    REG(TIM5)->PSC  = KPSCT5;
-    REG(TIM5)->ARR  = KARRT5;
-    REG(TIM5)->CNT  = 0;
-    REG(TIM5)->DIER = TIM5_DIER_UIE;
-    REG(TIM5)->CR1 |= TIM5_CR1_CEN;
+	REG(TIM5)->CR1 &= ~TIM5_CR1_CEN;
+	REG(TIM5)->PSC  = KPSCT5;
+	REG(TIM5)->ARR  = KARRT5;
+	REG(TIM5)->CNT  = 0;
+	REG(TIM5)->DIER = TIM5_DIER_UIE;
+	REG(TIM5)->CR1 |= TIM5_CR1_CEN;
 
 // Waiting for the TIM5 interruption
 
-    INTERRUPTION_ON_HARD;
+	INTERRUPTION_ON_HARD;
 
-    while (true) {
-        cmns_wait(100000);
-        LED_RED_TOGGLE;
-    }
+	while (true) {
+		cmns_wait(100000);
+		LED_RED_TOGGLE;
+	}
 }
 
 /*
@@ -97,13 +97,13 @@ void    test_11(void) {
  * - Blink the BLUE Led
  *
  */
-void    local_TIM5_IRQHandler(void) {
+void	local_TIM5_IRQHandler(void) {
 
 // Acknowledge the TIM5 interruption
 
-    REG(TIM5)->SR &= ~TIM5_SR_UIF;
-    (void)REG(TIM5)->SR;
+	REG(TIM5)->SR &= ~TIM5_SR_UIF;
+	(void)REG(TIM5)->SR;
 
-    LED_BLUE_TOGGLE;
+	LED_BLUE_TOGGLE;
 }
 #endif

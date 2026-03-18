@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:   Generated using the .svd description    The 2025-01-01
+; Author:	Generated using the .svd description	The 2025-01-01
 ; Modifs:
 ;
-; Project:  uKOS-X
-; Goal:     RP2350_hstx_fifo equates.
+; Project:	uKOS-X
+; Goal:		RP2350_hstx_fifo equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,35 +46,35 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma once
+#pragma	once
 
-#include    <stdint.h>
+#include	<stdint.h>
 
 // HSTX_FIFO address definitions
 // -----------------------------
 
 typedef struct {
-    volatile    uint32_t    STAT;
-    volatile    uint32_t    FIFO;
+	volatile	uint32_t	STAT;
+	volatile	uint32_t	FIFO;
 } HSTX_FIFO_TypeDef;
 
 #ifdef __cplusplus
-#define HSTX_FIFO_NS    reinterpret_cast<HSTX_FIFO_TypeDef *>(0x50600000u)
-#define HSTX_FIFO_S     reinterpret_cast<HSTX_FIFO_TypeDef *>(0x50600000u)
+#define	HSTX_FIFO_NS	reinterpret_cast<HSTX_FIFO_TypeDef *>(0x50600000u)
+#define	HSTX_FIFO_S		reinterpret_cast<HSTX_FIFO_TypeDef *>(0x50600000u)
 #else
-#define HSTX_FIFO_NS    ((HSTX_FIFO_TypeDef *)0x50600000u)
-#define HSTX_FIFO_S     ((HSTX_FIFO_TypeDef *)0x50600000u)
+#define	HSTX_FIFO_NS	((HSTX_FIFO_TypeDef *)0x50600000u)
+#define	HSTX_FIFO_S		((HSTX_FIFO_TypeDef *)0x50600000u)
 #endif
 
 // STAT Configuration
 
-#define HSTX_FIFO_STAT_LEVEL    (0xFFu<<0)
-#define HSTX_FIFO_STAT_LEVEL_0  (0x1u<<0)
-#define HSTX_FIFO_STAT_FULL     (0x1u<<8)
-#define HSTX_FIFO_STAT_EMPTY    (0x1u<<9)
-#define HSTX_FIFO_STAT_WOF      (0x1u<<10)
+#define	HSTX_FIFO_STAT_LEVEL	(0xFFu<<0)
+#define	HSTX_FIFO_STAT_LEVEL_0	(0x1u<<0)
+#define	HSTX_FIFO_STAT_FULL		(0x1u<<8)
+#define	HSTX_FIFO_STAT_EMPTY	(0x1u<<9)
+#define	HSTX_FIFO_STAT_WOF		(0x1u<<10)
 
 // FIFO Configuration
 
-#define HSTX_FIFO_FIFO_FIFO     (0xFFFFFFFFu<<0)
-#define HSTX_FIFO_FIFO_FIFO_0   (0x1u<<0)
+#define	HSTX_FIFO_FIFO_FIFO		(0xFFFFFFFFu<<0)
+#define	HSTX_FIFO_FIFO_FIFO_0	(0x1u<<0)

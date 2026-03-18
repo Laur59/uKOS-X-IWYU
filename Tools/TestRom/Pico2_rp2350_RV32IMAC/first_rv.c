@@ -6,11 +6,11 @@
 ; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 ;------------------------------------------------------------------------
-; Author:   Laurent von Allmen  The 2026-02-13
+; Author:	Laurent von Allmen	The 2026-02-13
 ; Modifs:
 ;
-; Project:  uKOS-X
-; Goal:     Vectors for the uKOS-X system (first) - RISC-V variant.
+; Project:	uKOS-X
+; Goal:		Vectors for the uKOS-X system (first) - RISC-V variant.
 ;
 ;   (c) 2025-2026, Laurent von Allmen
 ;   ---------------------------------
@@ -47,23 +47,23 @@
 ;------------------------------------------------------------------------
 */
 
-#include    <stdint.h>
+#include	<stdint.h>
 
-#include    "core.h"
-#include    "soc_reg.h"
-#include    "macros_soc.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"  // IWYU pragma: keep (for INTERRUPTION_IN INTERRUPTION_OUT)
+#include	"core.h"
+#include	"soc_reg.h"
+#include	"macros_soc.h"
+#include	"macros_core.h"
+#include	"macros_core_stackFrame.h"	// IWYU pragma: keep (for INTERRUPTION_IN INTERRUPTION_OUT)
 
-extern  void    (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
-extern  bool    vExce_isException[KNB_CORES];
+extern	void	(*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
+extern	void	(*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
+extern	bool	vExce_isException[KNB_CORES];
 
 // Ecall context-switch support
 // These are used by the trap handler to pass the message and save/restore sp
 
-volatile    uintptr_t   vSaveStack;
-volatile    uint32_t    vMessage;
+volatile	uintptr_t	vSaveStack;
+volatile	uint32_t	vMessage;
 
 // Vector table for RISC-V
 // RISC-V uses a different interrupt model than ARM - interrupts are routed through
@@ -83,27 +83,27 @@ void __attribute__ ((naked, section(".text_vectors"))) Reset_C0_Handler(void) {
 
 // Initialise the RISC-V global pointer (required for small data access)
 
-    __asm volatile (
-        ".option push                   \n"
-        ".option norelax                \n"
-        "la     gp,__global_pointer$    \n"
-        ".option pop                    \n"
-    );
+	__asm volatile (
+		".option push					\n"
+		".option norelax				\n"
+		"la		gp,__global_pointer$	\n"
+		".option pop					\n"
+	);
 
 // Install trap handler
 
-    __asm volatile (
-        "la     t0,first_handle_trap    \n"
-        "csrw   mtvec,t0                \n"
-    );
+	__asm volatile (
+		"la		t0,first_handle_trap	\n"
+		"csrw   mtvec,t0				\n"
+	);
 
 // Initialise the first stack
 
-    __asm volatile ("la sp,linker_topStackFirst_C0");
+	__asm volatile ("la	sp,linker_topStackFirst_C0");
 
 // Continue with the crt0
 
-    CALL_FNCT(crt0);
+	CALL_FNCT(crt0);
 }
 
 /*
@@ -119,9 +119,9 @@ void __attribute__ ((naked)) Reset_C1_Handler(void) {
 // Initialise the first stack
 // Continue with the crt0
 
-    __asm volatile ("la sp,linker_topStackFirst_C1");
+	__asm volatile ("la	sp,linker_topStackFirst_C1");
 
-    CALL_FNCT(crt0);
+	CALL_FNCT(crt0);
 }
 
 // RISC-V exception handlers (per core)
@@ -158,8 +158,8 @@ EXCEPTION_SPECIFIC_HANDLER(LoadPageFault_C1)
 EXCEPTION_SPECIFIC_HANDLER(StorePageFault_C1)
 
 // RISC-V machine-mode timer and software interrupts (per core)
-EXCEPTION_SPECIFIC_HANDLER(MSIP_C0)     // Machine Software Interrupt
-EXCEPTION_SPECIFIC_HANDLER(MTIP_C0)     // Machine Timer Interrupt
+EXCEPTION_SPECIFIC_HANDLER(MSIP_C0)		// Machine Software Interrupt
+EXCEPTION_SPECIFIC_HANDLER(MTIP_C0)		// Machine Timer Interrupt
 
 EXCEPTION_SPECIFIC_HANDLER(MSIP_C1)
 EXCEPTION_SPECIFIC_HANDLER(MTIP_C1)
@@ -269,118 +269,118 @@ INTERRUPT_SPECIFIC_HANDLER(POWMAN_IRQ_TIMER_C1)
  * It reads mcause to determine the cause and dispatches to the appropriate handler
  */
 void __attribute__ ((naked)) first_handle_trap(void) {
-    // Save context (basic registers)
-    __asm volatile (
-        "   addi    sp,sp,-16*4                     \n"     // Allocate stack space
-        "   sw      ra,0*4(sp)                      \n"     // Save return address
-        "   sw      t0,1*4(sp)                      \n"     // Save t0
-        "   sw      t1,2*4(sp)                      \n"     // Save t1
-        "   sw      t2,3*4(sp)                      \n"     // Save t2
-        "   sw      a0,4*4(sp)                      \n"     // Save a0
-        "   sw      a1,5*4(sp)                      \n"     // Save a1
-        "   sw      a2,6*4(sp)                      \n"     // Save a2
-        "   sw      a3,7*4(sp)                      \n"     // Save a3
-        "   sw      a4,8*4(sp)                      \n"     // Save a4
-        "   sw      a5,9*4(sp)                      \n"     // Save a5
-        "   sw      a6,10*4(sp)                     \n"     // Save a6
-        "   sw      a7,11*4(sp)                     \n"     // Save a7
-        "   csrr    t0,mcause                       \n"     // Read mcause
-        "   sw      t0,12*4(sp)                     \n"     // Save mcause
-        "   csrr    t1,mepc                         \n"     // Read mepc
-        "   sw      t1,13*4(sp)                     \n"     // Save mepc
+	// Save context (basic registers)
+	__asm volatile (
+		"	addi	sp,sp,-16*4						\n"		// Allocate stack space
+		"	sw		ra,0*4(sp)						\n"		// Save return address
+		"	sw		t0,1*4(sp)						\n"		// Save t0
+		"	sw		t1,2*4(sp)						\n"		// Save t1
+		"	sw		t2,3*4(sp)						\n"		// Save t2
+		"	sw		a0,4*4(sp)						\n"		// Save a0
+		"	sw		a1,5*4(sp)						\n"		// Save a1
+		"	sw		a2,6*4(sp)						\n"		// Save a2
+		"	sw		a3,7*4(sp)						\n"		// Save a3
+		"	sw		a4,8*4(sp)						\n"		// Save a4
+		"	sw		a5,9*4(sp)						\n"		// Save a5
+		"	sw		a6,10*4(sp)						\n"		// Save a6
+		"	sw		a7,11*4(sp)						\n"		// Save a7
+		"	csrr	t0,mcause						\n"		// Read mcause
+		"	sw		t0,12*4(sp)						\n"		// Save mcause
+		"	csrr	t1,mepc							\n"		// Read mepc
+		"	sw		t1,13*4(sp)						\n"		// Save mepc
 
-        // Determine exception vs interrupt
-        "   bltz    t0,1f                           \n"     // If MSB set, it's an interrupt
+		// Determine exception vs interrupt
+		"	bltz	t0,1f							\n"		// If MSB set, it's an interrupt
 
-        // Exception handling
-        "   andi    t0,t0,0x1F                      \n"     // Extract exception code (bits 0-4)
-        "   li      t1,11                           \n"     // Ecall from M-mode?
-        "   beq     t0,t1,3f                        \n"     // Yes, branch to ecall path
-        "   call    first_dispatch_exception        \n"     // Call exception dispatcher
-        "   j       2f                              \n"
+		// Exception handling
+		"	andi	t0,t0,0x1F						\n"		// Extract exception code (bits 0-4)
+		"	li		t1,11							\n"		// Ecall from M-mode?
+		"	beq		t0,t1,3f						\n"		// Yes, branch to ecall path
+		"	call	first_dispatch_exception		\n"		// Call exception dispatcher
+		"	j		2f								\n"
 
-        // Ecall context-switch path
-        "3:                                         \n"
+		// Ecall context-switch path
+		"3:											\n"
 
-        // Advance mepc past the ecall instruction (4 bytes)
-        "   lw      t1,13*4(sp)                     \n"
-        "   addi    t1,t1,4                         \n"
-        "   sw      t1,13*4(sp)                     \n"
+		// Advance mepc past the ecall instruction (4 bytes)
+		"	lw		t1,13*4(sp)						\n"
+		"	addi	t1,t1,4							\n"
+		"	sw		t1,13*4(sp)						\n"
 
-        // Save callee-saved registers
-        "   addi    sp,sp,-12*4                     \n"
-        "   sw      s0,0*4(sp)                      \n"
-        "   sw      s1,1*4(sp)                      \n"
-        "   sw      s2,2*4(sp)                      \n"
-        "   sw      s3,3*4(sp)                      \n"
-        "   sw      s4,4*4(sp)                      \n"
-        "   sw      s5,5*4(sp)                      \n"
-        "   sw      s6,6*4(sp)                      \n"
-        "   sw      s7,7*4(sp)                      \n"
-        "   sw      s8,8*4(sp)                      \n"
-        "   sw      s9,9*4(sp)                      \n"
-        "   sw      s10,10*4(sp)                    \n"
-        "   sw      s11,11*4(sp)                    \n"
+		// Save callee-saved registers
+		"	addi	sp,sp,-12*4						\n"
+		"	sw		s0,0*4(sp)						\n"
+		"	sw		s1,1*4(sp)						\n"
+		"	sw		s2,2*4(sp)						\n"
+		"	sw		s3,3*4(sp)						\n"
+		"	sw		s4,4*4(sp)						\n"
+		"	sw		s5,5*4(sp)						\n"
+		"	sw		s6,6*4(sp)						\n"
+		"	sw		s7,7*4(sp)						\n"
+		"	sw		s8,8*4(sp)						\n"
+		"	sw		s9,9*4(sp)						\n"
+		"	sw		s10,10*4(sp)					\n"
+		"	sw		s11,11*4(sp)					\n"
 
-        // Extract message from saved a0 (at (12+4)*4(sp) = 16*4(sp))
-        "   lw      t1,16*4(sp)                     \n"
-        "   la      t2,vMessage                     \n"
-        "   sw      t1,0(t2)                        \n"
+		// Extract message from saved a0 (at (12+4)*4(sp) = 16*4(sp))
+		"	lw		t1,16*4(sp)						\n"
+		"	la		t2,vMessage						\n"
+		"	sw		t1,0(t2)						\n"
 
-        // Save sp to vSaveStack
-        "   la      t2,vSaveStack                   \n"
-        "   sw      sp,0(t2)                        \n"
+		// Save sp to vSaveStack
+		"	la		t2,vSaveStack					\n"
+		"	sw		sp,0(t2)						\n"
 
-        // Call ecall dispatcher (may switch vSaveStack)
-        "   call    first_dispatch_ecall            \n"
+		// Call ecall dispatcher (may switch vSaveStack)
+		"	call	first_dispatch_ecall			\n"
 
-        // Restore sp from vSaveStack (may have been switched)
-        "   la      t2,vSaveStack                   \n"
-        "   lw      sp,0(t2)                        \n"
+		// Restore sp from vSaveStack (may have been switched)
+		"	la		t2,vSaveStack					\n"
+		"	lw		sp,0(t2)						\n"
 
-        // Restore callee-saved registers
-        "   lw      s0,0*4(sp)                      \n"
-        "   lw      s1,1*4(sp)                      \n"
-        "   lw      s2,2*4(sp)                      \n"
-        "   lw      s3,3*4(sp)                      \n"
-        "   lw      s4,4*4(sp)                      \n"
-        "   lw      s5,5*4(sp)                      \n"
-        "   lw      s6,6*4(sp)                      \n"
-        "   lw      s7,7*4(sp)                      \n"
-        "   lw      s8,8*4(sp)                      \n"
-        "   lw      s9,9*4(sp)                      \n"
-        "   lw      s10,10*4(sp)                    \n"
-        "   lw      s11,11*4(sp)                    \n"
-        "   addi    sp,sp,12*4                      \n"
+		// Restore callee-saved registers
+		"	lw		s0,0*4(sp)						\n"
+		"	lw		s1,1*4(sp)						\n"
+		"	lw		s2,2*4(sp)						\n"
+		"	lw		s3,3*4(sp)						\n"
+		"	lw		s4,4*4(sp)						\n"
+		"	lw		s5,5*4(sp)						\n"
+		"	lw		s6,6*4(sp)						\n"
+		"	lw		s7,7*4(sp)						\n"
+		"	lw		s8,8*4(sp)						\n"
+		"	lw		s9,9*4(sp)						\n"
+		"	lw		s10,10*4(sp)					\n"
+		"	lw		s11,11*4(sp)					\n"
+		"	addi	sp,sp,12*4						\n"
 
-        "   j       2f                              \n"
+		"	j		2f								\n"
 
-        // Interrupt handling
-        "1:                                         \n"
-        "   li      t1,0x7FFFFFFF                   \n"     // Mask for interrupt number
-        "   and     t0,t0,t1                        \n"     // Extract interrupt number
-        "   call    first_dispatch_interrupt        \n"     // Call interrupt dispatcher
+		// Interrupt handling
+		"1:											\n"
+		"	li		t1,0x7FFFFFFF					\n"		// Mask for interrupt number
+		"	and		t0,t0,t1						\n"		// Extract interrupt number
+		"	call	first_dispatch_interrupt		\n"		// Call interrupt dispatcher
 
-        // Restore context
-        "2:                                         \n"
-        "   lw      t1,13*4(sp)                     \n"     // Restore mepc
-        "   csrw    mepc,t1                         \n"
-        "   lw      a7,11*4(sp)                     \n"     // Restore a7
-        "   lw      a6,10*4(sp)                     \n"     // Restore a6
-        "   lw      a5,9*4(sp)                      \n"     // Restore a5
-        "   lw      a4,8*4(sp)                      \n"     // Restore a4
-        "   lw      a3,7*4(sp)                      \n"     // Restore a3
-        "   lw      a2,6*4(sp)                      \n"     // Restore a2
-        "   lw      a1,5*4(sp)                      \n"     // Restore a1
-        "   lw      a0,4*4(sp)                      \n"     // Restore a0
-        "   lw      t2,3*4(sp)                      \n"     // Restore t2
-        "   lw      t1,2*4(sp)                      \n"     // Restore t1
-        "   lw      t0,1*4(sp)                      \n"     // Restore t0
-        "   lw      ra,0*4(sp)                      \n"     // Restore ra
-        "   addi    sp,sp,16*4                      \n"     // Deallocate stack space
-        "   mret                                    \n"     // Return from trap
-        :::
-    );
+		// Restore context
+		"2:											\n"
+		"	lw		t1,13*4(sp)						\n"		// Restore mepc
+		"	csrw	mepc,t1							\n"
+		"	lw		a7,11*4(sp)						\n"		// Restore a7
+		"	lw		a6,10*4(sp)						\n"		// Restore a6
+		"	lw		a5,9*4(sp)						\n"		// Restore a5
+		"	lw		a4,8*4(sp)						\n"		// Restore a4
+		"	lw		a3,7*4(sp)						\n"		// Restore a3
+		"	lw		a2,6*4(sp)						\n"		// Restore a2
+		"	lw		a1,5*4(sp)						\n"		// Restore a1
+		"	lw		a0,4*4(sp)						\n"		// Restore a0
+		"	lw		t2,3*4(sp)						\n"		// Restore t2
+		"	lw		t1,2*4(sp)						\n"		// Restore t1
+		"	lw		t0,1*4(sp)						\n"		// Restore t0
+		"	lw		ra,0*4(sp)						\n"		// Restore ra
+		"	addi	sp,sp,16*4						\n"		// Deallocate stack space
+		"	mret									\n"		// Return from trap
+		:::
+	);
 }
 
 /*
@@ -389,13 +389,13 @@ void __attribute__ ((naked)) first_handle_trap(void) {
  * - Dispatches to exception handler based on exception code in t0
  */
 void first_dispatch_exception(void) {
-    uint32_t core = GET_RUNNING_CORE;
-    uint32_t exception;
-    __asm volatile ("mv %0,t0" : "=r"(exception));
+	uint32_t core = GET_RUNNING_CORE;
+	uint32_t exception;
+	__asm volatile ("mv %0,t0" : "=r"(exception));
 
-    if (exception < KNB_EXCEPTIONS && vExce_indExcVectors[core][exception] != NULL) {
-        vExce_indExcVectors[core][exception]();
-    }
+	if (exception < KNB_EXCEPTIONS && vExce_indExcVectors[core][exception] != NULL) {
+		vExce_indExcVectors[core][exception]();
+	}
 }
 
 /*
@@ -406,26 +406,26 @@ void first_dispatch_exception(void) {
  *   meinext CSR to determine the actual peripheral IRQ number
  */
 void first_dispatch_interrupt(void) {
-    uint32_t    core = GET_RUNNING_CORE;
-    uint32_t    interrupt;
-    __asm volatile ("mv %0,t0" : "=r"(interrupt));
+	uint32_t	core = GET_RUNNING_CORE;
+	uint32_t	interrupt;
+	__asm volatile ("mv %0,t0" : "=r"(interrupt));
 
-    if (interrupt == 11u) {
+	if (interrupt == 11u) {
 
-        // Machine External Interrupt (MEIP)
-        // Read meinext to get the pending peripheral IRQ number
+		// Machine External Interrupt (MEIP)
+		// Read meinext to get the pending peripheral IRQ number
 
-        uint32_t    meinext = core_getNextExternalIRQ();
-        if ((meinext & MEINEXT_NOIRQ) == 0u) {
-            uint32_t    irqNum = meinext >> MEINEXT_IRQ_SHIFT;
-            if (irqNum < KNB_INTERRUPTIONS && vExce_indIntVectors[core][irqNum] != NULL) {
-                vExce_indIntVectors[core][irqNum]();
-            }
-        }
-    }
-    else if (interrupt < KNB_INTERRUPTIONS && vExce_indIntVectors[core][interrupt] != NULL) {
-        vExce_indIntVectors[core][interrupt]();
-    }
+		uint32_t	meinext = core_getNextExternalIRQ();
+		if ((meinext & MEINEXT_NOIRQ) == 0u) {
+			uint32_t	irqNum = meinext >> MEINEXT_IRQ_SHIFT;
+			if (irqNum < KNB_INTERRUPTIONS && vExce_indIntVectors[core][irqNum] != NULL) {
+				vExce_indIntVectors[core][irqNum]();
+			}
+		}
+	}
+	else if (interrupt < KNB_INTERRUPTIONS && vExce_indIntVectors[core][interrupt] != NULL) {
+		vExce_indIntVectors[core][interrupt]();
+	}
 }
 
 /*
@@ -436,9 +436,9 @@ void first_dispatch_interrupt(void) {
  *   the full process context and setting vMessage/vSaveStack
  */
 void first_dispatch_ecall(void) {
-    uint32_t    core = GET_RUNNING_CORE;
+	uint32_t	core = GET_RUNNING_CORE;
 
-    if (vExce_indExcVectors[core][11u] != NULL) {
-        vExce_indExcVectors[core][11u]();
-    }
+	if (vExce_indExcVectors[core][11u] != NULL) {
+		vExce_indExcVectors[core][11u]();
+	}
 }

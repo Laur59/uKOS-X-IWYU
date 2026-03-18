@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:   Edo. Franzi     The 2025-01-01
+; Author:	Edo. Franzi		The 2025-01-01
 ; Modifs:
 ;
-; Project:  uKOS-X
-; Goal:     Test of the USART3 Rx interruption.
+; Project:	uKOS-X
+; Goal:		Test of the USART3 Rx interruption.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,13 +46,13 @@
 ;------------------------------------------------------------------------
 */
 
-#include    "tests.h"
+#include	"tests.h"
 
 #if (defined(TEST_04_S))
 
 // Prototypes
 
-void    local_USART3_IRQHandler(void);
+void	local_USART3_IRQHandler(void);
 
 /*
  * \brief test_04
@@ -60,25 +60,25 @@ void    local_USART3_IRQHandler(void);
  * - Test of the USART3 Rx interruption
  *
  */
-void    test_04(void) {
+void	test_04(void) {
 
 // Initialise the USART3 to generate Rx interruptions
 
-    INTERRUPT_VECTOR(USART3_C0_IRQn, local_USART3_IRQHandler);
-    NVIC_SetPriority(USART3_C0_IRQn, KINT_LEVEL_COMMUNICATIONS);
-    NVIC_EnableIRQ(USART3_C0_IRQn);
+	INTERRUPT_VECTOR(USART3_C0_IRQn, local_USART3_IRQHandler);
+	NVIC_SetPriority(USART3_C0_IRQn, KINT_LEVEL_COMMUNICATIONS);
+	NVIC_EnableIRQ(USART3_C0_IRQn);
 
-    cmns_init();
-    USART3->CR1 |= USART_CR1_RXNEIE;
+	cmns_init();
+	USART3->CR1 |= USART_CR1_RXNEIE;
 
 // Waiting for the USART3 interruption
 
-    INTERRUPTION_ON_HARD;
+	INTERRUPTION_ON_HARD;
 
-    while (true) {
-        cmns_wait(1000000);
-        LED_RED_TOGGLE;
-    }
+	while (true) {
+		cmns_wait(1000000);
+		LED_RED_TOGGLE;
+	}
 }
 
 /*
@@ -87,13 +87,13 @@ void    test_04(void) {
  * - Blink the YELLOW Led
  *
  */
-void    local_USART3_IRQHandler(void) {
+void	local_USART3_IRQHandler(void) {
 
 // Acknowledge the USART3 interruption
 
-    USART3->RDR;
+	USART3->RDR;
 
-    cmns_send(KURT0, "OK interruptions\n");
-    LED_YELLOW_TOGGLE;
+	cmns_send(KURT0, "OK interruptions\n");
+	LED_YELLOW_TOGGLE;
 }
 #endif

@@ -6,11 +6,11 @@
 ; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 ;------------------------------------------------------------------------
-; Author:   Laurent von Allmen  The 2026-02-13
+; Author:	Laurent von Allmen	The 2026-02-13
 ; Modifs:
 ;
-; Project:  uKOS-X
-; Goal:     addendum equates.
+; Project:	uKOS-X
+; Goal:		addendum equates.
 ;
 ;   (c) 2025-2026, Laurent von Allmen
 ;   ---------------------------------
@@ -47,4 +47,4 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma once
+#pragma	once

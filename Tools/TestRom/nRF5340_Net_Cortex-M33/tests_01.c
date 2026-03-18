@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:   Edo. Franzi     The 2025-01-01
+; Author:	Edo. Franzi		The 2025-01-01
 ; Modifs:
 ;
-; Project:  uKOS-X
-; Goal:     Test of the TIM0 interruption.
+; Project:	uKOS-X
+; Goal:		Test of the TIM0 interruption.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,15 +46,15 @@
 ;------------------------------------------------------------------------
 */
 
-#include    "tests.h"
+#include	"tests.h"
 
 #if (defined(TEST_01_S))
-#define KTIMPRESC0      4                                   // For 1'000'000-Hz, 16'000'000 / (2^4)
-#define KTTIMESAMPLING  500000                              // 2-Hz
+#define KTIMPRESC0		4									// For 1'000'000-Hz, 16'000'000 / (2^4)
+#define	KTTIMESAMPLING	500000								// 2-Hz
 
 // Prototypes
 
-void    local_TIM0_IRQHandler(void);
+void	local_TIM0_IRQHandler(void);
 
 /*
  * \brief test_01
@@ -62,37 +62,37 @@ void    local_TIM0_IRQHandler(void);
  * - Test of the TIM0 interruption
  *
  */
-void    test_01(void) {
+void	test_01(void) {
 
 // Clock frequency of 1'000'000-Hz
 // Mode timer
 // 32-bit counter
 
-    REG(TIMER0)->PRESCALER = KTIMPRESC0;
-    REG(TIMER0)->MODE        = 0;
-    REG(TIMER0)->BITMODE     = (3u<<0);
+	REG(TIMER0)->PRESCALER = KTIMPRESC0;
+	REG(TIMER0)->MODE		 = 0;
+	REG(TIMER0)->BITMODE	 = (3u<<0);
 
-    REG(TIMER0)->CC[0]       = KTTIMESAMPLING;
-    REG(TIMER0)->TASKS_CLEAR = 1u;
-    REG(TIMER0)->TASKS_COUNT = 1u;
-    REG(TIMER0)->TASKS_START = 1u;
+	REG(TIMER0)->CC[0]		 = KTTIMESAMPLING;
+	REG(TIMER0)->TASKS_CLEAR = 1u;
+	REG(TIMER0)->TASKS_COUNT = 1u;
+	REG(TIMER0)->TASKS_START = 1u;
 
 // Initialise the TIM0 to generate an interruption every 500-ms
 
-    INTERRUPT_VECTOR(TIMER0_C0_IRQn, local_TIM0_IRQHandler);
-    NVIC_SetPriority(TIMER0_C0_IRQn, KINT_LEVEL_KERNEL_TIMERS);
-    NVIC_EnableIRQ(TIMER0_C0_IRQn);
+	INTERRUPT_VECTOR(TIMER0_C0_IRQn, local_TIM0_IRQHandler);
+	NVIC_SetPriority(TIMER0_C0_IRQn, KINT_LEVEL_KERNEL_TIMERS);
+	NVIC_EnableIRQ(TIMER0_C0_IRQn);
 
-    REG(TIMER0)->INTENSET = (1u<<16);
+	REG(TIMER0)->INTENSET = (1u<<16);
 
 // Waiting for the TIM1 interruption
 
-    INTERRUPTION_ON_HARD;
+	INTERRUPTION_ON_HARD;
 
-    while (true) {
-        cmns_wait(1000000);
-        LED_0_TOGGLE;
-    }
+	while (true) {
+		cmns_wait(1000000);
+		LED_0_TOGGLE;
+	}
 }
 
 /*
@@ -101,12 +101,12 @@ void    test_01(void) {
  * - Blink the 1 Led
  *
  */
-void    local_TIM0_IRQHandler(void) {
+void	local_TIM0_IRQHandler(void) {
 
 // Acknowledge the TIM0 interruption
 
-    REG(TIMER0)->CC[0] += KTTIMESAMPLING;
-    REG(TIMER0)->EVENTS_COMPARE[0] = 0;
-    LED_1_TOGGLE;
+	REG(TIMER0)->CC[0] += KTTIMESAMPLING;
+	REG(TIMER0)->EVENTS_COMPARE[0] = 0;
+	LED_1_TOGGLE;
 }
 #endif

@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:   Edo. Franzi     The 2025-01-01
+; Author:	Edo. Franzi		The 2025-01-01
 ; Modifs:
 ;
-; Project:  uKOS-X
-; Goal:     Test of the USART3 Tx interruption.
+; Project:	uKOS-X
+; Goal:		Test of the USART3 Tx interruption.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,15 +46,15 @@
 ;------------------------------------------------------------------------
 */
 
-#include    "tests.h"
+#include	"tests.h"
 
 #if (defined(TEST_05_S))
-bool        vTransmitted = false;
-uint8_t     vString[] = ".. but we are not afraid, we are alway firsts ...\n";
+bool		vTransmitted = false;
+uint8_t		vString[] = ".. but we are not afraid, we are alway firsts ...\n";
 
 // Prototypes
 
-void    local_USART3_IRQHandler(void);
+void	local_USART3_IRQHandler(void);
 
 /*
  * \brief test_05
@@ -62,31 +62,31 @@ void    local_USART3_IRQHandler(void);
  * - Test of the USART3 Tx interruption
  *
  */
-void    test_05(void) {
+void	test_05(void) {
 
 // Initialise the USART3 to generate Tx interruptions
 
-    INTERRUPT_VECTOR(USART3_C0_IRQn, local_USART3_IRQHandler);
-    NVIC_SetPriority(USART3_C0_IRQn, KINT_LEVEL_COMMUNICATIONS);
-    NVIC_EnableIRQ(USART3_C0_IRQn);
+	INTERRUPT_VECTOR(USART3_C0_IRQn, local_USART3_IRQHandler);
+	NVIC_SetPriority(USART3_C0_IRQn, KINT_LEVEL_COMMUNICATIONS);
+	NVIC_EnableIRQ(USART3_C0_IRQn);
 
-    cmns_init();
+	cmns_init();
 
 // Waiting for the USART3 interruption
 
-    INTERRUPTION_ON_HARD;
+	INTERRUPTION_ON_HARD;
 
-    while (true) {
-        USART3->CR1 |= USART_CR1_TXEIE;
+	while (true) {
+		USART3->CR1 |= USART_CR1_TXEIE;
 
 // Let terminate the buffer transfer
 
-        cmns_wait(1000000);
-        do { } while (vTransmitted == false);
+		cmns_wait(1000000);
+		do { } while (vTransmitted == false);
 
-        vTransmitted = false;
-        LED_RED_TOGGLE;
-    }
+		vTransmitted = false;
+		LED_RED_TOGGLE;
+	}
 }
 
 /*
@@ -95,35 +95,35 @@ void    test_05(void) {
  * - Blink the YELLOW Led
  *
  */
-void    local_USART3_IRQHandler(void) {
-            volatile    uint16_t    data;
-            volatile    uint32_t    iir;
-    static  volatile    uint8_t     index = 0;
-    static  const       uint8_t     aSendText[] = "This is a text ...\n";
+void	local_USART3_IRQHandler(void) {
+			volatile	uint16_t	data;
+			volatile	uint32_t	iir;
+	static	volatile	uint8_t		index = 0;
+	static	const		uint8_t		aSendText[] = "This is a text ...\n";
 
-    iir = USART3->ISR;
-    if ((iir & USART_ISR_RXNE) != 0) {
+	iir = USART3->ISR;
+	if ((iir & USART_ISR_RXNE) != 0) {
 
 // Rx interruption
 
-        data = USART3->RDR;
-        LED_YELLOW_TOGGLE;
-    }
+		data = USART3->RDR;
+		LED_YELLOW_TOGGLE;
+	}
 
-    if (((iir & USART_ISR_TXE) && (USART3->CR1 & USART_CR1_TXEIE)) != 0) {
-        data = (uint16_t)aSendText[index];
-        if (data == 0) {
+	if (((iir & USART_ISR_TXE) && (USART3->CR1 & USART_CR1_TXEIE)) != 0) {
+		data = (uint16_t)aSendText[index];
+		if (data == 0) {
 
 // Terminated
 
-            index = 0;
-            vTransmitted = true;
-            USART3->CR1 &= ~USART_CR1_TXEIE;
-        }
-        else {
-            USART3->TDR = data;
-            index++;
-        }
-    }
+			index = 0;
+			vTransmitted = true;
+			USART3->CR1 &= ~USART_CR1_TXEIE;
+		}
+		else {
+			USART3->TDR = data;
+			index++;
+		}
+	}
 }
 #endif

@@ -6,11 +6,11 @@
 ; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 ;------------------------------------------------------------------------
-; Author:   Laurent von Allmen  The 2026-02-13
+; Author:	Laurent von Allmen	The 2026-02-13
 ; Modifs:
 ;
-; Project:  uKOS-X
-; Goal:     Important macros.
+; Project:	uKOS-X
+; Goal:		Important macros.
 ;
 ;   (c) 2025-2026, Laurent von Allmen
 ;   ---------------------------------
@@ -47,62 +47,62 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma once
+#pragma	once
 
-#include    <stdint.h>
+#include	<stdint.h>
 
-#include    "Registers/RP2350_sio.h"
+#include	"Registers/RP2350_sio.h"
 
 // Multicore macro
 // ---------------
 
-#define KNB_CORES               2U
-#define KCORE_0                 0U
-#define KCORE_1                 1U
+#define	KNB_CORES				2U
+#define	KCORE_0					0U
+#define	KCORE_1					1U
 
 #ifndef GET_RUNNING_CORE
 #if defined(__riscv)
-    // RISC-V: Use mhartid CSR to get the hardware thread ID (core ID)
-    #define GET_RUNNING_CORE    ({ \
-        uint32_t _hartid; \
-        __asm volatile ("csrr %0, mhartid" : "=r"(_hartid)); \
-        (_hartid & 1U); \
-    })
+	// RISC-V: Use mhartid CSR to get the hardware thread ID (core ID)
+	#define GET_RUNNING_CORE	({ \
+		uint32_t _hartid; \
+		__asm volatile ("csrr %0, mhartid" : "=r"(_hartid)); \
+		(_hartid & 1U); \
+	})
 #else
-    // ARM: Use SIO CPUID register
-    #ifdef SECURE_S
-    #define GET_RUNNING_CORE        (SIO_S->CPUID & 1U)
-    #elif (defined(SECURE_NS))
-    #define GET_RUNNING_CORE        (SIO_NS->CPUID & 1U)
-    #else
-    #define GET_RUNNING_CORE        (SIO_S->CPUID & 1U)
-    #endif
+	// ARM: Use SIO CPUID register
+	#ifdef SECURE_S
+	#define	GET_RUNNING_CORE		(SIO_S->CPUID & 1U)
+	#elif (defined(SECURE_NS))
+	#define	GET_RUNNING_CORE		(SIO_NS->CPUID & 1U)
+	#else
+	#define	GET_RUNNING_CORE		(SIO_S->CPUID & 1U)
+	#endif
 #endif
 #endif
 
 #ifndef MCSET
-#if     (KNB_CORES == 1)
-#define MCSET(v)                { (v) }
-#elif   (KNB_CORES == 2)
-#define MCSET(v)                { (v), (v) }
+#if		(KNB_CORES == 1)
+#define MCSET(v)				{ (v) }
+#elif	(KNB_CORES == 2)
+#define	MCSET(v)				{ (v), (v) }
 #else
-#error  "*** The number of cores (KNB_CORES) exceed 2"
+#error	"*** The number of cores (KNB_CORES) exceed 2"
 #endif
 #endif
 
 // Baudrate macro
 // --------------
 
-#define BAUDRATE(UART, ck, baudrate)                                                                                            \
-    do {                                                                                                                        \
-        const uint32_t _den  = 16U * (uint32_t)(baudrate);                                                                      \
-        const uint32_t _ibrd = (uint32_t)((uint32_t)(ck) / _den);                                                               \
-        const uint32_t _rem  = (uint32_t)((uint32_t)(ck) % _den);                                                               \
-                                                                                                                                \
-        const uint32_t _fbrd = (uint32_t)((((uint64_t)_rem * (uint64_t)64U) + ((uint64_t)_den / 2U)) / (uint64_t)_den);         \
-        REG(UART)->UARTIBRD = _ibrd;                                                                                            \
-        REG(UART)->UARTFBRD = _fbrd;                                                                                            \
-    } while (0)
+#define	BAUDRATE(UART, ck, baudrate)																							\
+	do {																														\
+		const uint32_t _den  = 16U * (uint32_t)(baudrate);																		\
+		const uint32_t _ibrd = (uint32_t)((uint32_t)(ck) / _den);																\
+		const uint32_t _rem  = (uint32_t)((uint32_t)(ck) % _den);																\
+																																\
+		const uint32_t _fbrd = (uint32_t)((((uint64_t)_rem * (uint64_t)64U) + ((uint64_t)_den / 2U)) / (uint64_t)_den);			\
+		REG(UART)->UARTIBRD = _ibrd;																							\
+		REG(UART)->UARTFBRD = _fbrd;																							\
+	} while (0)
 
 // Interruption macros
 // -------------------
@@ -113,44 +113,44 @@ enum {
 // Priorities used to set the NVIC. levels indicated with _KERNEL_
 // are reserved for the uKernel (!!! do not change those values)
 
-        KINT_LEVEL_KERNEL_SWI = 1U,
-        KINT_LEVEL_COMMUNICATIONS,
-        KINT_LEVEL_PERIPHERALS,
-        KINT_LEVEL_KERNEL_TIMERS,
-        KINT_LEVEL_KERNEL_PREEMPTION,
-        KINT_LEVEL_ALL
+		KINT_LEVEL_KERNEL_SWI = 1U,
+		KINT_LEVEL_COMMUNICATIONS,
+		KINT_LEVEL_PERIPHERALS,
+		KINT_LEVEL_KERNEL_TIMERS,
+		KINT_LEVEL_KERNEL_PREEMPTION,
+		KINT_LEVEL_ALL
 };
 
 // Reserved names: all the possible masks
 // Masks used to filter some priorities
-// KINT_IMASK_OFF               Allows only NMI, SWI
-// KINT_IMASK_KERNEL_SWI        Allows only NMI, SWI
-// KINT_IMASK_COMMUNICATIONS    Allows only NMI, SWI, communications
-// KINT_IMASK_PERIPHERALS       Allows only NMI, SWI, communications, peripherals
-// KINT_IMASK_KERNEL_TIMERS     Allows only NMI, SWI, communications, peripherals, kernel timers
-// KINT_IMASK_KERNEL_PREEMPTION Allows only NMI, SWI, communications, peripherals, kernel timers, kernel preemptions
-// KINT_IMASK_ALL               Allows all
+// KINT_IMASK_OFF				Allows only NMI, SWI
+// KINT_IMASK_KERNEL_SWI		Allows only NMI, SWI
+// KINT_IMASK_COMMUNICATIONS	Allows only NMI, SWI, communications
+// KINT_IMASK_PERIPHERALS		Allows only NMI, SWI, communications, peripherals
+// KINT_IMASK_KERNEL_TIMERS		Allows only NMI, SWI, communications, peripherals, kernel timers
+// KINT_IMASK_KERNEL_PREEMPTION	Allows only NMI, SWI, communications, peripherals, kernel timers, kernel preemptions
+// KINT_IMASK_ALL				Allows all
 
-#define KINT_IMASK_OFF                  (KINT_LEVEL_KERNEL_SWI + 1U)
-#define KINT_IMASK_KERNEL_SWI           (KINT_LEVEL_KERNEL_SWI + 1U)
-#define KINT_IMASK_COMMUNICATIONS       (KINT_LEVEL_COMMUNICATIONS + 1U)
-#define KINT_IMASK_PERIPHERALS          (KINT_LEVEL_PERIPHERALS + 1U)
-#define KINT_IMASK_KERNEL_TIMERS        (KINT_LEVEL_KERNEL_TIMERS + 1U)
-#define KINT_IMASK_KERNEL_PREEMPTION    (KINT_LEVEL_KERNEL_PREEMPTION + 1U)
-#define KINT_IMASK_ALL                  (KINT_LEVEL_ALL + 1U)
+#define	KINT_IMASK_OFF					(KINT_LEVEL_KERNEL_SWI + 1U)
+#define	KINT_IMASK_KERNEL_SWI			(KINT_LEVEL_KERNEL_SWI + 1U)
+#define	KINT_IMASK_COMMUNICATIONS		(KINT_LEVEL_COMMUNICATIONS + 1U)
+#define	KINT_IMASK_PERIPHERALS			(KINT_LEVEL_PERIPHERALS + 1U)
+#define	KINT_IMASK_KERNEL_TIMERS		(KINT_LEVEL_KERNEL_TIMERS + 1U)
+#define	KINT_IMASK_KERNEL_PREEMPTION	(KINT_LEVEL_KERNEL_PREEMPTION + 1U)
+#define	KINT_IMASK_ALL					(KINT_LEVEL_ALL + 1U)
 
 // Names for the user applications
 
-#define KHW_PRIORITY_LOW                KINT_LEVEL_KERNEL_PREEMPTION
-#define KHW_PRIORITY_MODERATE           KINT_LEVEL_KERNEL_TIMERS
-#define KHW_PRIORITY_HIGH               KINT_LEVEL_PERIPHERALS
-#define KHW_PRIORITY_VERY_HIGH          KINT_LEVEL_COMMUNICATIONS
+#define	KHW_PRIORITY_LOW				KINT_LEVEL_KERNEL_PREEMPTION
+#define	KHW_PRIORITY_MODERATE			KINT_LEVEL_KERNEL_TIMERS
+#define	KHW_PRIORITY_HIGH				KINT_LEVEL_PERIPHERALS
+#define	KHW_PRIORITY_VERY_HIGH			KINT_LEVEL_COMMUNICATIONS
 
 // 2^4 priority levels
 // Priority shift inside the NVIC->PR (P3 P2 P1 P0 x x x x) !!! Vendor specific
 
-#define KNVIC_PRIORITY_BITS     4U
-#define KNVIC_PRIORITY_SHIFT    (8U - KNVIC_PRIORITY_BITS)
+#define	KNVIC_PRIORITY_BITS		4U
+#define	KNVIC_PRIORITY_SHIFT	(8U - KNVIC_PRIORITY_BITS)
 
 // Preemption mechanism
 // ---------------------
@@ -158,14 +158,14 @@ enum {
 #if defined(__riscv)
 // RISC-V: Use machine software interrupt for preemption and messaging
 // Trigger via SIO RISCV_SOFTIRQ register
-#define BKERN_PREEMPTION        0U  // MSIP - Machine Software Interrupt
-#define BKERN_MESSAGES          0U  // Same as preemption - handled in software interrupt
-#define PREEMPTION              REG(SIO)->RISCV_SOFTIRQ = (1U << GET_RUNNING_CORE)
-#define SET_MESSAGE             REG(SIO)->RISCV_SOFTIRQ = (1U << GET_RUNNING_CORE)
+#define	BKERN_PREEMPTION		0U	// MSIP - Machine Software Interrupt
+#define	BKERN_MESSAGES			0U	// Same as preemption - handled in software interrupt
+#define	PREEMPTION				REG(SIO)->RISCV_SOFTIRQ = (1U << GET_RUNNING_CORE)
+#define	SET_MESSAGE				REG(SIO)->RISCV_SOFTIRQ = (1U << GET_RUNNING_CORE)
 #else
 // ARM: PENDSVSET used for preemption (change the context)
-#define BKERN_PREEMPTION        28U
-#define PREEMPTION              do { SCB->ICSR = SCB_ICSR_PENDSVSET_Msk; } while (0)
+#define	BKERN_PREEMPTION		28U
+#define	PREEMPTION				do { SCB->ICSR = SCB_ICSR_PENDSVSET_Msk; } while (0)
 #endif
 
 // EXCEPTION_VECTOR and INTERRUPT_VECTOR macros moved to macros_core.h for IWYU compliance
@@ -180,56 +180,56 @@ enum {
 // Using inline assembly to avoid circular dependency with core.h
 
 #ifndef INTERRUPTION_OFF
-#define INTERRUPTION_OFF            volatile    uint32_t    __saveMIE_msk __attribute__ ((unused));                         \
-                                        __asm volatile ("csrr %0, mstatus" : "=r"(__saveMIE_msk));                                      \
-                                        __asm volatile ("csrci mstatus, 0x8")   // Clear MIE bit (bit 3)
+#define	INTERRUPTION_OFF			volatile	uint32_t	__saveMIE_msk __attribute__ ((unused));							\
+										__asm volatile ("csrr %0, mstatus" : "=r"(__saveMIE_msk));										\
+										__asm volatile ("csrci mstatus, 0x8")	// Clear MIE bit (bit 3)
 #endif
 
 #ifndef INTERRUPTION_RESTORE
-#define INTERRUPTION_RESTORE        __asm volatile ("csrw mstatus, %0" :: "r"(__saveMIE_msk) : "memory")
+#define	INTERRUPTION_RESTORE		__asm volatile ("csrw mstatus, %0" :: "r"(__saveMIE_msk) : "memory")
 #endif
 
 #ifndef INTERRUPTION_SET
-#define INTERRUPTION_SET            __asm volatile ("csrsi mstatus, 0x8")   // Set MIE bit (bit 3)
+#define	INTERRUPTION_SET			__asm volatile ("csrsi mstatus, 0x8")	// Set MIE bit (bit 3)
 #endif
 
 #ifndef INTERRUPTION_OFF_HARD
-#define INTERRUPTION_OFF_HARD       __asm volatile ("csrci mstatus, 0x8")   // Clear MIE bit (bit 3)
+#define	INTERRUPTION_OFF_HARD		__asm volatile ("csrci mstatus, 0x8")	// Clear MIE bit (bit 3)
 #endif
 
 #ifndef INTERRUPTION_ON_HARD
-#define INTERRUPTION_ON_HARD        __asm volatile ("csrsi mstatus, 0x8")   // Set MIE bit (bit 3)
+#define	INTERRUPTION_ON_HARD		__asm volatile ("csrsi mstatus, 0x8")	// Set MIE bit (bit 3)
 #endif
 
 #ifndef INTERRUPTION_OFF_CRITICAL
-#define INTERRUPTION_OFF_CRITICAL(savemMask)                                                            \
-                                    __asm volatile ("csrr %0, mstatus" : "=r"(savemMask));              \
-                                    __asm volatile ("csrci mstatus, 0x8")
+#define	INTERRUPTION_OFF_CRITICAL(savemMask)															\
+									__asm volatile ("csrr %0, mstatus" : "=r"(savemMask));				\
+									__asm volatile ("csrci mstatus, 0x8")
 #endif
 
 #ifndef INTERRUPTION_RESTORE_CRITICAL
-#define INTERRUPTION_RESTORE_CRITICAL(savemMask)                                                        \
-                                    __asm volatile ("csrw mstatus, %0" :: "r"(savemMask) : "memory")
+#define	INTERRUPTION_RESTORE_CRITICAL(savemMask)														\
+									__asm volatile ("csrw mstatus, %0" :: "r"(savemMask) : "memory")
 #endif
 
 #ifndef IS_EXCEPTION
-#define IS_EXCEPTION                (vExce_isException[GET_RUNNING_CORE])
+#define	IS_EXCEPTION				(vExce_isException[GET_RUNNING_CORE])
 #endif
 
 #ifndef INTERRUPTION_SET_PERIPH
 // RP2350 RISC-V doesn't have ECLIC interrupt threshold like GD32VF103
 // Just enable interrupts (peripherals already configured via individual enable bits)
-#define INTERRUPTION_SET_PERIPH     do { } while (0)
+#define	INTERRUPTION_SET_PERIPH		do { } while (0)
 #endif
 
 #ifndef INST_SYNC_BARRIER
 // RISC-V instruction synchronization barrier
-#define INST_SYNC_BARRIER       __asm volatile ("fence.i" ::: "memory")
+#define	INST_SYNC_BARRIER		__asm volatile ("fence.i" ::: "memory")
 #endif
 
 #ifndef DATA_SYNC_BARRIER
 // RISC-V data synchronization barrier
-#define DATA_SYNC_BARRIER       __asm volatile ("fence" ::: "memory")
+#define	DATA_SYNC_BARRIER		__asm volatile ("fence" ::: "memory")
 #endif
 
 #endif // __riscv

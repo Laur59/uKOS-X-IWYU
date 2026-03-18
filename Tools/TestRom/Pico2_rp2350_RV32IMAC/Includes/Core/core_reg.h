@@ -6,11 +6,11 @@
 ; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 ;------------------------------------------------------------------------
-; Author:   Laurent von Allmen  The 2026-02-13
+; Author:	Laurent von Allmen	The 2026-02-13
 ; Modifs:
 ;
-; Project:  uKOS-X
-; Goal:     riscv_rv32_core equates.
+; Project:	uKOS-X
+; Goal:		riscv_rv32_core equates.
 ;
 ;   (c) 2025-2026, Laurent von Allmen
 ;   ---------------------------------
@@ -47,13 +47,13 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma once
+#pragma	once
 
 // IWYU pragma: begin_exports
 
-#include    "Registers/n200_timer.h"
-#include    "Registers/rv32_bumblebee.h"
-#include    "Registers/rv32_csr.h"
-#include    "Registers/core_addendum.h"
+#include	"Registers/n200_timer.h"
+#include	"Registers/rv32_bumblebee.h"
+#include	"Registers/rv32_csr.h"
+#include	"Registers/core_addendum.h"
 
 // IWYU pragma: end_exports

@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:   Generated using the .svd description    The 2025-01-01
+; Author:	Generated using the .svd description	The 2025-01-01
 ; Modifs:
 ;
-; Project:  uKOS-X
-; Goal:     RP2350_eppb equates.
+; Project:	uKOS-X
+; Goal:		RP2350_eppb equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,39 +46,39 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma once
+#pragma	once
 
-#include    <stdint.h>
+#include	<stdint.h>
 
 // EPPB address definitions
 // ------------------------
 
 typedef struct {
-    volatile    uint32_t    NMI_MASK0;
-    volatile    uint32_t    NMI_MASK1;
-    volatile    uint32_t    SLEEPCTRL;
+	volatile	uint32_t	NMI_MASK0;
+	volatile	uint32_t	NMI_MASK1;
+	volatile	uint32_t	SLEEPCTRL;
 } EPPB_TypeDef;
 
 #ifdef __cplusplus
-#define EPPB_NS reinterpret_cast<EPPB_TypeDef *>(0xE0080000u)
-#define EPPB_S  reinterpret_cast<EPPB_TypeDef *>(0xE0080000u)
+#define	EPPB_NS	reinterpret_cast<EPPB_TypeDef *>(0xE0080000u)
+#define	EPPB_S	reinterpret_cast<EPPB_TypeDef *>(0xE0080000u)
 #else
-#define EPPB_NS ((EPPB_TypeDef *)0xE0080000u)
-#define EPPB_S  ((EPPB_TypeDef *)0xE0080000u)
+#define	EPPB_NS	((EPPB_TypeDef *)0xE0080000u)
+#define	EPPB_S	((EPPB_TypeDef *)0xE0080000u)
 #endif
 
 // NMI_MASK0 Configuration
 
-#define EPPB_NMI_MASK0_NMI_MASK0    (0xFFFFFFFFu<<0)
-#define EPPB_NMI_MASK0_NMI_MASK0_0  (0x1u<<0)
+#define	EPPB_NMI_MASK0_NMI_MASK0	(0xFFFFFFFFu<<0)
+#define	EPPB_NMI_MASK0_NMI_MASK0_0	(0x1u<<0)
 
 // NMI_MASK1 Configuration
 
-#define EPPB_NMI_MASK1_NMI_MASK1    (0xFFFFFu<<0)
-#define EPPB_NMI_MASK1_NMI_MASK1_0  (0x1u<<0)
+#define	EPPB_NMI_MASK1_NMI_MASK1	(0xFFFFFu<<0)
+#define	EPPB_NMI_MASK1_NMI_MASK1_0	(0x1u<<0)
 
 // SLEEPCTRL Configuration
 
-#define EPPB_SLEEPCTRL_LIGHT_SLEEP  (0x1u<<0)
-#define EPPB_SLEEPCTRL_WICENREQ     (0x1u<<1)
-#define EPPB_SLEEPCTRL_WICENACK     (0x1u<<2)
+#define	EPPB_SLEEPCTRL_LIGHT_SLEEP	(0x1u<<0)
+#define	EPPB_SLEEPCTRL_WICENREQ		(0x1u<<1)
+#define	EPPB_SLEEPCTRL_WICENACK		(0x1u<<2)

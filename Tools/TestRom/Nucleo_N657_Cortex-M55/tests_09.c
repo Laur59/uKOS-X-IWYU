@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:   Edo. Franzi     The 2025-01-01
+; Author:	Edo. Franzi		The 2025-01-01
 ; Modifs:
 ;
-; Project:  uKOS-X
-; Goal:     Test of the TIM3 interruption.
+; Project:	uKOS-X
+; Goal:		Test of the TIM3 interruption.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,19 +46,19 @@
 ;------------------------------------------------------------------------
 */
 
-#include    "tests.h"
+#include	"tests.h"
 
 #if (defined(TEST_09_S))
 
 #define BLINK_PAUSE 100000
 
-#define KTTIMESAMPLING  ((float64_t)(0.5))                                      // 500-ms
-#define KPSCT3          ((KFREQUENCY_TIM / (KFREQUENCY_1MHz)) - 1)              // Prescaler for 1'000'000-Hz
-#define KARRT3          ((uint32_t)((KFREQUENCY_1MHz * KTTIMESAMPLING) - 1))    // Autoreload
+#define	KTTIMESAMPLING	((float64_t)(0.5))										// 500-ms
+#define KPSCT3			((KFREQUENCY_TIM / (KFREQUENCY_1MHz)) - 1)				// Prescaler for 1'000'000-Hz
+#define KARRT3			((uint32_t)((KFREQUENCY_1MHz * KTTIMESAMPLING) - 1))	// Autoreload
 
 // Prototypes
 
-void    local_TIM3_IRQHandler(void);
+void	local_TIM3_IRQHandler(void);
 
 /*
  * \brief test_09
@@ -66,32 +66,32 @@ void    local_TIM3_IRQHandler(void);
  * - Test of the TIM3 interruption
  *
  */
-void    test_09(void) {
+void	test_09(void) {
 
-    REG(RCC)->APB1LENR |= RCC_APB1LENR_TIM3EN;
-    STRONG_BARRIER;
+	REG(RCC)->APB1LENR |= RCC_APB1LENR_TIM3EN;
+	STRONG_BARRIER;
 
 // Initialise the TIM3 to generate an interruption every 500-ms
 
-    INTERRUPT_VECTOR(TIM3_C0_IRQn, local_TIM3_IRQHandler);
-    NVIC_SetPriority(TIM3_C0_IRQn, KINT_LEVEL_KERNEL_TIMERS);
-    NVIC_EnableIRQ(TIM3_C0_IRQn);
+	INTERRUPT_VECTOR(TIM3_C0_IRQn, local_TIM3_IRQHandler);
+	NVIC_SetPriority(TIM3_C0_IRQn, KINT_LEVEL_KERNEL_TIMERS);
+	NVIC_EnableIRQ(TIM3_C0_IRQn);
 
-    REG(TIM3)->CR1 &= ~TIM3_CR1_CEN;
-    REG(TIM3)->PSC  = KPSCT3;
-    REG(TIM3)->ARR  = KARRT3;
-    REG(TIM3)->CNT  = 0;
-    REG(TIM3)->DIER = TIM3_DIER_UIE;
-    REG(TIM3)->CR1 |= TIM3_CR1_CEN;
+	REG(TIM3)->CR1 &= ~TIM3_CR1_CEN;
+	REG(TIM3)->PSC  = KPSCT3;
+	REG(TIM3)->ARR  = KARRT3;
+	REG(TIM3)->CNT  = 0;
+	REG(TIM3)->DIER = TIM3_DIER_UIE;
+	REG(TIM3)->CR1 |= TIM3_CR1_CEN;
 
 // Waiting for the TIM3 interruption
 
-    INTERRUPTION_ON_HARD;
+	INTERRUPTION_ON_HARD;
 
-    while (true) {
-        cmns_wait(BLINK_PAUSE);
-        LED_RED_TOGGLE;
-    }
+	while (true) {
+		cmns_wait(BLINK_PAUSE);
+		LED_RED_TOGGLE;
+	}
 }
 
 /*
@@ -100,13 +100,13 @@ void    test_09(void) {
  * - Blink the BLUE Led
  *
  */
-void    local_TIM3_IRQHandler(void) {
+void	local_TIM3_IRQHandler(void) {
 
 // Acknowledge the TIM3 interruption
 
-    REG(TIM3)->SR &= ~TIM3_SR_UIF;
-    (void)REG(TIM3)->SR;
+	REG(TIM3)->SR &= ~TIM3_SR_UIF;
+	(void)REG(TIM3)->SR;
 
-    LED_BLUE_TOGGLE;
+	LED_BLUE_TOGGLE;
 }
 #endif

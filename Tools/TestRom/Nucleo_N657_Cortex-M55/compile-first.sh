@@ -23,71 +23,71 @@ local_red='\033[0;31m'
 local_reset='\033[0m'
 
 compare_objects() {
-    local ref=$1
-    local other=$2
+	local ref=$1
+	local other=$2
 
-    if cmp -s "$ref" "$other"; then
-        echo "${local_green}$ref and $other are byte-identical${local_reset}"
-        return
-    fi
+	if cmp -s "$ref" "$other"; then
+		echo "${local_green}$ref and $other are byte-identical${local_reset}"
+		return
+	fi
 
-    local size_ref=$(stat -f%z "$ref")
-    local size_other=$(stat -f%z "$other")
+	local size_ref=$(stat -f%z "$ref")
+	local size_other=$(stat -f%z "$other")
 
-    if [[ $size_ref -ne $size_other ]]; then
-        echo "$ref and $other differ in size: $size_ref vs $size_other bytes (delta: $((size_other - size_ref)))"
-    else
-        echo "$ref and $other differ (same size: $size_ref bytes)"
-    fi
+	if [[ $size_ref -ne $size_other ]]; then
+		echo "$ref and $other differ in size: $size_ref vs $size_other bytes (delta: $((size_other - size_ref)))"
+	else
+		echo "$ref and $other differ (same size: $size_ref bytes)"
+	fi
 
-    # Check if code (.text) differs
-    local text_diff=$(diff <($local_objdump -d "$ref" | tail -n +3) <($local_objdump -d "$other" | tail -n +3))
-    if [[ -n "$text_diff" ]]; then
-        echo "  ${local_red}.text (code) DIFFERS${local_reset}"
-        echo "$text_diff"
-    else
-        echo "  ${local_green}.text (code) is identical${local_reset}"
-    fi
+	# Check if code (.text) differs
+	local text_diff=$(diff <($local_objdump -d "$ref" | tail -n +3) <($local_objdump -d "$other" | tail -n +3))
+	if [[ -n "$text_diff" ]]; then
+		echo "  ${local_red}.text (code) DIFFERS${local_reset}"
+		echo "$text_diff"
+	else
+		echo "  ${local_green}.text (code) is identical${local_reset}"
+	fi
 
-    # Check functional sections (.rodata, .data, .bss)
-    local func_sections_differ=0
-    for section in .rodata .data .bss; do
-        local sec_diff=$(diff \
-            <($local_objdump -s -j "$section" "$ref" 2>/dev/null | tail -n +5) \
-            <($local_objdump -s -j "$section" "$other" 2>/dev/null | tail -n +5))
-        if [[ -n "$sec_diff" ]]; then
-            echo "  ${local_red}$section DIFFERS${local_reset}"
-            func_sections_differ=1
-        fi
-    done
+	# Check functional sections (.rodata, .data, .bss)
+	local func_sections_differ=0
+	for section in .rodata .data .bss; do
+		local sec_diff=$(diff \
+			<($local_objdump -s -j "$section" "$ref" 2>/dev/null | tail -n +5) \
+			<($local_objdump -s -j "$section" "$other" 2>/dev/null | tail -n +5))
+		if [[ -n "$sec_diff" ]]; then
+			echo "  ${local_red}$section DIFFERS${local_reset}"
+			func_sections_differ=1
+		fi
+	done
 
-    if [[ -z "$text_diff" && $func_sections_differ -eq 0 ]]; then
-        echo "  ${local_green}Functionally identical (same .text, .rodata, .data, .bss)${local_reset}"
-    fi
+	if [[ -z "$text_diff" && $func_sections_differ -eq 0 ]]; then
+		echo "  ${local_green}Functionally identical (same .text, .rodata, .data, .bss)${local_reset}"
+	fi
 
-    # Identify which other sections differ
-    local sections=$($local_objdump -h "$ref" | awk 'NR>5 && NF>=2 {print $2}')
-    for section in ${(f)sections}; do
-        [[ "$section" == .text || "$section" == .rodata || "$section" == .data || "$section" == .bss ]] && continue
-        local sec_diff=$(diff \
-            <($local_objdump -s -j "$section" "$ref" 2>/dev/null | tail -n +5) \
-            <($local_objdump -s -j "$section" "$other" 2>/dev/null | tail -n +5))
-        if [[ -n "$sec_diff" ]]; then
-            echo "  $section differs"
-        fi
-    done
+	# Identify which other sections differ
+	local sections=$($local_objdump -h "$ref" | awk 'NR>5 && NF>=2 {print $2}')
+	for section in ${(f)sections}; do
+		[[ "$section" == .text || "$section" == .rodata || "$section" == .data || "$section" == .bss ]] && continue
+		local sec_diff=$(diff \
+			<($local_objdump -s -j "$section" "$ref" 2>/dev/null | tail -n +5) \
+			<($local_objdump -s -j "$section" "$other" 2>/dev/null | tail -n +5))
+		if [[ -n "$sec_diff" ]]; then
+			echo "  $section differs"
+		fi
+	done
 
-    # Show ARM attributes diff if .ARM.attributes differs
-    local attr_diff=$(diff \
-        <($local_readelf -A "$ref" 2>/dev/null | sed '/^File:/d;/^Attribute Section:/d') \
-        <($local_readelf -A "$other" 2>/dev/null | sed '/^File:/d;/^Attribute Section:/d'))
-    if [[ -n "$attr_diff" ]]; then
-        echo "  --- ARM attributes diff ---"
-        echo "$attr_diff"
-    fi
+	# Show ARM attributes diff if .ARM.attributes differs
+	local attr_diff=$(diff \
+		<($local_readelf -A "$ref" 2>/dev/null | sed '/^File:/d;/^Attribute Section:/d') \
+		<($local_readelf -A "$other" 2>/dev/null | sed '/^File:/d;/^Attribute Section:/d'))
+	if [[ -n "$attr_diff" ]]; then
+		echo "  --- ARM attributes diff ---"
+		echo "$attr_diff"
+	fi
 
-    $local_size "$ref" "$other"
-    echo ""
+	$local_size "$ref" "$other"
+	echo ""
 }
 
 # Purpose:

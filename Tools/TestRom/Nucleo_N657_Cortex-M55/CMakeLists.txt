@@ -4,11 +4,11 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:   Laurent von Allmen  The 2025-07-31
+# Author:	Laurent von Allmen	The 2025-07-31
 # Modifs:
 #
-# Project:  uKOS-X
-# Goal:     Cmake file for building the testROM.
+# Project:	uKOS-X
+# Goal:		Cmake file for building the testROM.
 #
 #   (c) 2025-2026, Laurent von Allmen
 #   ---------------------------------
@@ -57,9 +57,9 @@ cmake_path(GET CMAKE_SOURCE_DIR PARENT_PATH PATH_TEST_ROM)
 include(select-arm-toolchain)
 
 project(
-    Nucleo_N657_Cortex-M55_testROM
-    VERSION 1.0
-    LANGUAGES C
+	Nucleo_N657_Cortex-M55_testROM
+	VERSION 1.0
+	LANGUAGES C
 )
 
 set(TARGET_NAME testROM)
@@ -80,23 +80,23 @@ endif()
 message(STATUS "Configured to use test number ${TEST_NUMBER}" )
 
 if(TEST_NUMBER STREQUAL "13")
-    # MVE/Helium requires -march with +mve.fp, no -mfpu
-    set(FLAGS_FP -mfloat-abi=hard)
-    set(CPU_SPEC -march=armv8.1-m.main+mve.fp+fp.dp -mthumb)
+	# MVE/Helium requires -march with +mve.fp, no -mfpu
+	set(FLAGS_FP -mfloat-abi=hard)
+	set(CPU_SPEC -march=armv8.1-m.main+mve.fp+fp.dp -mthumb)
 else()
-    set(FLAGS_FP -mfloat-abi=hard -mfpu=fpv5-sp-d16)
-    set(CPU_SPEC -mcpu=cortex-m55 -mthumb)
+	set(FLAGS_FP -mfloat-abi=hard -mfpu=fpv5-sp-d16)
+	set(CPU_SPEC -mcpu=cortex-m55 -mthumb)
 endif()
 
 list(APPEND PATH_INCLUDES
-    ${PATH_TEST_ROM}/_Commun
-    ${PATH_TEST_ROM}/_Commun/Includes
-    ${PATH_TEST_ROM}/_Commun/Runtime
-    ${CMAKE_SOURCE_DIR}
-    ${CMAKE_SOURCE_DIR}/Includes
-    ${CMAKE_SOURCE_DIR}/Includes/SOC
-    ${CMAKE_SOURCE_DIR}/Includes/Core
-    ${CMAKE_SOURCE_DIR}/Runtime
+	${PATH_TEST_ROM}/_Commun
+	${PATH_TEST_ROM}/_Commun/Includes
+	${PATH_TEST_ROM}/_Commun/Runtime
+	${CMAKE_SOURCE_DIR}
+	${CMAKE_SOURCE_DIR}/Includes
+	${CMAKE_SOURCE_DIR}/Includes/SOC
+	${CMAKE_SOURCE_DIR}/Includes/Core
+	${CMAKE_SOURCE_DIR}/Runtime
 )
 include_directories(${PATH_INCLUDES})
 
@@ -150,22 +150,22 @@ target_link_libraries(${TARGET_NAME}.elf PRIVATE m)
 
 # Add map file in the list of files removed by make clean
 set_property(TARGET ${TARGET_NAME}.elf APPEND
-    PROPERTY ADDITIONAL_CLEAN_FILES
-        ${TARGET_NAME}.map
+	PROPERTY ADDITIONAL_CLEAN_FILES
+		${TARGET_NAME}.map
 )
 
 # Create hex and bin files (utils)
 add_custom_command(TARGET ${TARGET_NAME}.elf
-    POST_BUILD
-    COMMAND ${CMAKE_OBJCOPY} -O ihex --strip-all ${TARGET_NAME}.elf ${TARGET_NAME}.hex
-    COMMAND ${CMAKE_OBJCOPY} -O binary --strip-all ${TARGET_NAME}.elf ${TARGET_NAME}.bin
-    VERBATIM
-    BYPRODUCTS ${TARGET_NAME}.hex ${TARGET_NAME}.bin
+	POST_BUILD
+	COMMAND ${CMAKE_OBJCOPY} -O ihex --strip-all ${TARGET_NAME}.elf ${TARGET_NAME}.hex
+	COMMAND ${CMAKE_OBJCOPY} -O binary --strip-all ${TARGET_NAME}.elf ${TARGET_NAME}.bin
+	VERBATIM
+	BYPRODUCTS ${TARGET_NAME}.hex ${TARGET_NAME}.bin
 )
 
 # Program the SOC with binary
 add_custom_target(burn
-    DEPENDS ${TARGET_NAME}.elf
-    COMMAND ${CMAKE_SOURCE_DIR}/burn.sh
-    VERBATIM
+	DEPENDS ${TARGET_NAME}.elf
+	COMMAND ${CMAKE_SOURCE_DIR}/burn.sh
+	VERBATIM
 )

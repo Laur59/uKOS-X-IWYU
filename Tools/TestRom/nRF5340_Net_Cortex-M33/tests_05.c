@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:   Edo. Franzi     The 2025-01-01
+; Author:	Edo. Franzi		The 2025-01-01
 ; Modifs:
 ;
-; Project:  uKOS-X
-; Goal:     Test of the UARTE_0 Rx interruption.
+; Project:	uKOS-X
+; Goal:		Test of the UARTE_0 Rx interruption.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,14 +46,14 @@
 ;------------------------------------------------------------------------
 */
 
-#include    "tests.h"
-#include    <string.h>
+#include	"tests.h"
+#include	<string.h>
 
 #if (defined(TEST_05_S))
 
 // Prototypes
 
-void    local_SERIAL0_IRQHandler(void);
+void	local_SERIAL0_IRQHandler(void);
 
 /*
  * \brief test_05
@@ -61,32 +61,32 @@ void    local_SERIAL0_IRQHandler(void);
  * - Test of the UARTE_1 Rx interruption
  *
  */
-void    test_05(void) {
-    uint32_t    data;
+void	test_05(void) {
+	uint32_t	data;
 
 // Initialise the LPUART1 to generate Rx interruptions
 
-    INTERRUPT_VECTOR(SERIAL0_C0_IRQn, local_SERIAL0_IRQHandler);
-    NVIC_SetPriority(SERIAL0_C0_IRQn, KINT_LEVEL_COMMUNICATIONS);
-    NVIC_EnableIRQ(SERIAL0_C0_IRQn);
+	INTERRUPT_VECTOR(SERIAL0_C0_IRQn, local_SERIAL0_IRQHandler);
+	NVIC_SetPriority(SERIAL0_C0_IRQn, KINT_LEVEL_COMMUNICATIONS);
+	NVIC_EnableIRQ(SERIAL0_C0_IRQn);
 
-    cmns_init();
+	cmns_init();
 
 // Waiting for the UARTE_1 interruption
 
-    INTERRUPTION_ON_HARD;
+	INTERRUPTION_ON_HARD;
 
-    REG(UARTE0)->RXD_PTR       = (uint32_t)&data;
-    REG(UARTE0)->RXD_MAXCNT    = 1u;
-    REG(UARTE0)->INTENSET      = (1u<<2);
-    REG(UARTE0)->TASKS_STARTRX = 1u;
-    while (true) {
+	REG(UARTE0)->RXD_PTR	   = (uint32_t)&data;
+	REG(UARTE0)->RXD_MAXCNT	   = 1u;
+	REG(UARTE0)->INTENSET	   = (1u<<2);
+	REG(UARTE0)->TASKS_STARTRX = 1u;
+	while (true) {
 
 // Let terminate the buffer transfer
 
-        cmns_wait(1000000);
-        LED_0_TOGGLE;
-    }
+		cmns_wait(1000000);
+		LED_0_TOGGLE;
+	}
 }
 
 /*
@@ -95,10 +95,10 @@ void    test_05(void) {
  * - Blink the Led 1
  *
  */
-void    local_SERIAL0_IRQHandler(void) {
+void	local_SERIAL0_IRQHandler(void) {
 
-    REG(UARTE0)->EVENTS_RXDRDY = 0u;
-    REG(UARTE0)->TASKS_STARTRX = 1u;
-    LED_1_TOGGLE;
+	REG(UARTE0)->EVENTS_RXDRDY = 0u;
+	REG(UARTE0)->TASKS_STARTRX = 1u;
+	LED_1_TOGGLE;
 }
 #endif
