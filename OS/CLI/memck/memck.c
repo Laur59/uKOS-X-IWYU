@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; memck.
-; ======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     This tool cyclically verify the memory integrity.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     This tool cyclically verify the memory integrity.
+ */
 
 #include    <inttypes.h>
 #include    <stdio.h>

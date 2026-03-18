@@ -1,21 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; K210_plic.
-; ==========
-
-;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   K210_plic equates.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ *   K210_plic equates.
+ */
 
 #pragma once
 

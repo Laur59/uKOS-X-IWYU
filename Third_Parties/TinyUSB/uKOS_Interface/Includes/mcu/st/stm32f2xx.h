@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; stm32f2xx.
-; ==========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Import the uKOS definition (specially mcu) to provide
-;           the file stm32f2xx.h.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Import the uKOS definition (specially mcu) to provide
+ *           the file stm32f2xx.h.
+ */
 
 #pragma once
 

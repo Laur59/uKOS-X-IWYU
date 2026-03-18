@@ -1,99 +1,89 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; lists.
-; ======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Kern - List management.
-;
-;           This module manages the list primitives.
-;
-;           List system calls
-;           -----------------
-;
-;           void    chls_init(void);
-;           void    lists_initialise(list_t *list);
-;           void    lists_connect(list_t *list, proc_t *handle);
-;           void    lists_disconnectConnect(list_t *list_d, list_t *list_c, proc_t *handle);
-;
-;           A process descriptor
-;           --------------------
-;
-;           31                              0
-;           +-------------------------------+
-;           | Ptr on proper list            +
-;           +-------------------------------+
-;           | Ptr on the back process       +
-;           +-------------------------------+
-;           | Ptr on the forward process    +
-;           +-------------------------------+
-;           | Specifications                +
-;           +-------------------------------+
-;           | Internal                      +
-;           +-------------------------------+
-;           | Statistic                     +
-;           +-------------------------------+
-;           | Synchro                       +
-;           +-------------------------------+
-;
-;           A list ...
-;           ----------
-;
-;           31                              0
-;           +-------------------------------+
-;           | Ptr on the first process      +
-;           +-------------------------------+
-;           | Ptr on the last process       +
-;           +-------------------------------+
-;           | Ptr on the current process    +
-;           +-------------------------------+
-;           | Number of processes linked    +
-;           +-------------------------------+
-;
-;           Example of linked list ...
-;           --------------------------
-;
-;           31                                  0
-;           +-----------------------------------+ X
-;           | Ptr on the first process   = A    + ------+
-;           +-----------------------------------+       |
-;           | Ptr on the last process    = B    + ------|-------+
-;           +-----------------------------------+       |       |
-;           | Number of processes linked = 3    +       |       |
-;           +-----------------------------------+       |       |
-;                                                   <---+       |
-; Desc 1    +-----------------------------------+ A <-------+   |
-;           | Ptr on proper list         = X    +           |   |
-;           +-----------------------------------+           |   |
-;           | Ptr on the back process    = 0    +           |   |
-;           +-----------------------------------+           |   |
-;           | Ptr on the forward process = C    + ------+   |   |
-;           +-----------------------------------+       |   |   |
-;                                                   <---|---|---+
-; Desc 3    +-----------------------------------+ B <---|---|---+
-;           | Ptr on proper list         = X    +       |   |   |
-;           +-----------------------------------+       |   |   |
-;           | Ptr on the back process    = C    + ------|---|---|---+
-;           +-----------------------------------+       |   |   |   |
-;           | Ptr on the forward process = 0    +       |   |   |   |
-;           +-----------------------------------+       |   |   |   |
-;                                                   <---|   |   |   |
-; Desc 2    +-----------------------------------+ C <-------|---|---+
-;           | Ptr on proper list         = X    +           |   |
-;           +-----------------------------------+           |   |
-;           | Ptr on the back process    = A    + ----------+   |
-;           +-----------------------------------+               |
-;           | Ptr on the forward process = B    + --------------+
-;           +-----------------------------------+
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Kern - List management.
+ *
+ *           This module manages the list primitives.
+ *
+ *           List system calls
+ *           -----------------
+ *
+ *           void    chls_init(void) *
+ *           void    lists_initialise(list_t *list) *
+ *           void    lists_connect(list_t *list, proc_t *handle) *
+ *           void    lists_disconnectConnect(list_t *list_d, list_t *list_c, proc_t *handle) *
+ *
+ *           A process descriptor
+ *           --------------------
+ *
+ *           31                              0
+ *           +-------------------------------+
+ *           | Ptr on proper list            +
+ *           +-------------------------------+
+ *           | Ptr on the back process       +
+ *           +-------------------------------+
+ *           | Ptr on the forward process    +
+ *           +-------------------------------+
+ *           | Specifications                +
+ *           +-------------------------------+
+ *           | Internal                      +
+ *           +-------------------------------+
+ *           | Statistic                     +
+ *           +-------------------------------+
+ *           | Synchro                       +
+ *           +-------------------------------+
+ *
+ *           A list ...
+ *           ----------
+ *
+ *           31                              0
+ *           +-------------------------------+
+ *           | Ptr on the first process      +
+ *           +-------------------------------+
+ *           | Ptr on the last process       +
+ *           +-------------------------------+
+ *           | Ptr on the current process    +
+ *           +-------------------------------+
+ *           | Number of processes linked    +
+ *           +-------------------------------+
+ *
+ *           Example of linked list ...
+ *           --------------------------
+ *
+ *           31                                  0
+ *           +-----------------------------------+ X
+ *           | Ptr on the first process   = A    + ------+
+ *           +-----------------------------------+       |
+ *           | Ptr on the last process    = B    + ------|-------+
+ *           +-----------------------------------+       |       |
+ *           | Number of processes linked = 3    +       |       |
+ *           +-----------------------------------+       |       |
+ *                                                   <---+       |
+ * Desc 1    +-----------------------------------+ A <-------+   |
+ *           | Ptr on proper list         = X    +           |   |
+ *           +-----------------------------------+           |   |
+ *           | Ptr on the back process    = 0    +           |   |
+ *           +-----------------------------------+           |   |
+ *           | Ptr on the forward process = C    + ------+   |   |
+ *           +-----------------------------------+       |   |   |
+ *                                                   <---|---|---+
+ * Desc 3    +-----------------------------------+ B <---|---|---+
+ *           | Ptr on proper list         = X    +       |   |   |
+ *           +-----------------------------------+       |   |   |
+ *           | Ptr on the back process    = C    + ------|---|---|---+
+ *           +-----------------------------------+       |   |   |   |
+ *           | Ptr on the forward process = 0    +       |   |   |   |
+ *           +-----------------------------------+       |   |   |   |
+ *                                                   <---|   |   |   |
+ * Desc 2    +-----------------------------------+ C <-------|---|---+
+ *           | Ptr on proper list         = X    +           |   |
+ *           +-----------------------------------+           |   |
+ *           | Ptr on the back process    = A    + ----------+   |
+ *           +-----------------------------------+               |
+ *           | Ptr on the forward process = B    + --------------+
+ *           +-----------------------------------+
+ */
 
 #include    <stdint.h>
 #include    <stdlib.h>

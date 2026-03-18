@@ -1,35 +1,25 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
-
-/*
-; model_kernel_tim_1_a0_a1_svc_C1.
-; ================================
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Model for controlling the "model_kernel_tim_1_a0_a1_svc_C1" device.
-;
-;           Tim 0   - 1-us free running timer
-;           Ala 0   - 20-ms process timeout
-;           Ala 1   - 1-ms reference time
-;           svc     - software interruption for message passing
-;           PendSV  - software interruption for the preemption
-;
-;           This code has to support the following routines:
-;           - model_kernel_init_C1
-;           - model_kernel_runKernel_C1
-;           - model_kernel_setLowPower_C1
-;           - model_kernel_setPreciseSignal_C1
-;           - model_kernel_readTickCount_C1
-;           - model_kernel_newProcessTimeout_C1
-;           - model_kernel_stopProcessTimeout_C1
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Goal:     Model for controlling the "model_kernel_tim_1_a0_a1_svc_C1" device.
+ *
+ *           Tim 0   - 1-us free running timer
+ *           Ala 0   - 20-ms process timeout
+ *           Ala 1   - 1-ms reference time
+ *           svc     - software interruption for message passing
+ *           PendSV  - software interruption for the preemption
+ *
+ *           This code has to support the following routines:
+ *           - model_kernel_init_C1
+ *           - model_kernel_runKernel_C1
+ *           - model_kernel_setLowPower_C1
+ *           - model_kernel_setPreciseSignal_C1
+ *           - model_kernel_readTickCount_C1
+ *           - model_kernel_newProcessTimeout_C1
+ *           - model_kernel_stopProcessTimeout_C1
+ */
 
 #include    "Registers/RP2350_resets.h"
 #include    "Registers/RP2350_timer.h"

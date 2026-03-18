@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
-
-/*
-; tft0.
-; =====
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     tft0 manager (for nt35310).
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Goal:     tft0 manager (for nt35310).
+ */
 
 #pragma once
 

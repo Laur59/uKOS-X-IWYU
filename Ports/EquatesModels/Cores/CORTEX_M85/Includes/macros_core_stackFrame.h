@@ -1,22 +1,12 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
-
-/*
-; macros_core_stackFrame.
-; =======================
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Stack frame management macros.
-;           This file conains the most sensitive macros
-;           for the uKernel management
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Goal:     Stack frame management macros.
+ *           This file conains the most sensitive macros
+ *           for the uKernel management
+ */
 
 #pragma once
 
@@ -112,24 +102,24 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #if (!defined(KERN_PREPARE_FRAME))
 #define KERN_PREPARE_FRAME(stack, code, core, argument, priority)                                                               \
-                                *(--stack) = 0x01000000u;                                                                       \
+                                *(--stack) = 0x01000000U;                                                                       \
                                 *(--stack) = (uintptr_t)code;                                                                   \
                                 *(--stack) = (uintptr_t)exit_terminate;                                                         \
-                                *(--stack) = 0x12121212u;                                                                       \
-                                *(--stack) = 0x03030303u;                                                                       \
-                                *(--stack) = 0x02020202u;                                                                       \
-                                *(--stack) = 0x01010101u;                                                                       \
+                                *(--stack) = 0x12121212U;                                                                       \
+                                *(--stack) = 0x03030303U;                                                                       \
+                                *(--stack) = 0x02020202U;                                                                       \
+                                *(--stack) = 0x01010101U;                                                                       \
                                 *(--stack) = (uintptr_t)argument;                                                               \
-                                *(--stack) = 0x11111111u;                                                                       \
-                                *(--stack) = 0x10101010u;                                                                       \
-                                *(--stack) = 0x09090909u;                                                                       \
-                                *(--stack) = 0x08080808u;                                                                       \
-                                *(--stack) = 0x07070707u;                                                                       \
-                                *(--stack) = 0x06060606u;                                                                       \
-                                *(--stack) = 0x05050505u;                                                                       \
-                                *(--stack) = 0x04040404u;                                                                       \
+                                *(--stack) = 0x11111111U;                                                                       \
+                                *(--stack) = 0x10101010U;                                                                       \
+                                *(--stack) = 0x09090909U;                                                                       \
+                                *(--stack) = 0x08080808U;                                                                       \
+                                *(--stack) = 0x07070707U;                                                                       \
+                                *(--stack) = 0x06060606U;                                                                       \
+                                *(--stack) = 0x05050505U;                                                                       \
+                                *(--stack) = 0x04040404U;                                                                       \
                                 *(--stack) = ((uintptr_t)priority<<(uintptr_t)KNVIC_PRIORITY_SHIFT);                            \
-                                *(--stack) = 0xFFFFFFFDu;                                                                       \
+                                *(--stack) = 0xFFFFFFFDU;                                                                       \
                                 UNUSED(core)
 #endif
 
@@ -284,7 +274,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
                                 push        {r0}                                                                             \n \
                                 push        {r0}"                                                                               \
                                 :                                                                                               \
-                                : "i" ((msg) & 0x0000FFFFu), "i" ((msg)>>16u)                                                   \
+                                : "i" ((msg) & 0x0000FFFFU), "i" ((msg)>>16U)                                                   \
                                 : "r0"                                                                                          \
                                 );                                                                                              \
                                 __asm volatile ("                                                                            \n \

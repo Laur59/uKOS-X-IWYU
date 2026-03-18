@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; viewer_uvc0_imager.
-; ===================
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Image viewer.
-;           This tool allows to send an image via the uvc0 manager.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Image viewer.
+ *           This tool allows to send an image via the uvc0 manager.
+ */
 
 #include    "viewer/viewer_uvc0.h"
 

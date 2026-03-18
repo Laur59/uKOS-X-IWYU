@@ -1,23 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; RP2350_syscfg.
-; ==============
-
-;------------------------------------------------------------------------
-; Author:   Generated using the .svd description    The 2025-01-01
-; Modifs:
-;
-; Project:  uKOS-X
-; Goal:     RP2350_syscfg equates.
-;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Generated using the .svd description
+ * Goal:     RP2350_syscfg equates.
+ */
 
 #pragma once
 

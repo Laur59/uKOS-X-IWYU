@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; image.
-; ======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           This application shows how to operate with the uKOS-X uKernel.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Demo of a C application.
+ * This application shows how to operate with the uKOS-X uKernel.
+ */
 
 /*!
  * \file
@@ -91,7 +81,7 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 #endif
@@ -135,11 +125,11 @@ static void __attribute__ ((noreturn)) aProcess_acquisition(const void *argument
     configureIMG0.oAcqMode  = KIMAGER_SNAP;
     configureIMG0.oImgCnf   = nullptr;
     configureIMG0.oPixMode  = KIMAGER_PIX_8_BITS;
-    configureIMG0.oStRows   = 0u;
-    configureIMG0.oStCols   = 0u;
+    configureIMG0.oStRows   = 0U;
+    configureIMG0.oStCols   = 0U;
     configureIMG0.oNbRows   = (uint16_t)vH;
     configureIMG0.oNbCols   = (uint16_t)vW;
-    configureIMG0.oKernSync = 0u;
+    configureIMG0.oKernSync = 0U;
     configureIMG0.oHSync    = nullptr;
     configureIMG0.oFrame    = nullptr;
     configureIMG0.oVSync    = local_transfer;
@@ -153,7 +143,7 @@ static void __attribute__ ((noreturn)) aProcess_acquisition(const void *argument
 // Just after the SNAP initialisation it is necessary waiting for the end of the
 // current transfer (~ 40-ms) before starting.
 
-    kern_suspendProcess(40u);
+    kern_suspendProcess(40U);
     imager_acquisition();
 
 // Get the mutex "Share_Buffer" ID
@@ -167,7 +157,11 @@ static void __attribute__ ((noreturn)) aProcess_acquisition(const void *argument
         kern_waitSemaphore(vSemaImgAcqu, KWAIT_INFINITY);
 
         kern_lockMutex(mutex, KWAIT_INFINITY);
-        imager_read((volatile void **)&vImage);
+        {
+            volatile void *imagePtr = vImage;
+            imager_read(&imagePtr);
+            vImage = (uint8_t *)(uintptr_t)imagePtr;
+        }
         kern_unlockMutex(mutex);
 
         imager_acquisition();
@@ -213,7 +207,7 @@ static void __attribute__ ((noreturn)) aProcess_send(const void *argument) {
             led_toggle(KLED_1);
         }
         else {
-            kern_suspendProcess(1u);
+            kern_suspendProcess(1U);
         }
     }
 }
@@ -267,9 +261,9 @@ MAIN_ENTRY(argc, argv[]) {
     TinyUSB_video_init();
     TinyUSB_video_getImageSize(&vW, &vH);
 
-    if (kern_createMutex(aStrShareBuffer, &mutex)                                  != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create mutx"); return (EXIT_OS_FAILURE); }
-    if (kern_createProcess(&specification_acquisition, nullptr, &process_acquisition) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
-    if (kern_createProcess(&specification_send,        nullptr, &process_send)         != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
+    if (kern_createMutex(aStrShareBuffer, &mutex)                                     != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create mutx"); return EXIT_OS_FAILURE; }
+    if (kern_createProcess(&specification_acquisition, nullptr, &process_acquisition) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return EXIT_OS_FAILURE; }
+    if (kern_createProcess(&specification_send,        nullptr, &process_send)        != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return EXIT_OS_FAILURE; }
 
     LOG(KINFO_USER, "Application launched");
     return (EXIT_OS_SUCCESS_CLI);
@@ -305,9 +299,9 @@ static  void    local_transfer(void) {
 static  void    local_initialiseYUY2(uint8_t *output, uint32_t w, uint32_t h) {
     uint32_t    i;
 
-    for (i = 0u; i < (w * h); i += 2u) {
-        output[(i * 2u) + 1u] = 128u;
-        output[(i * 2u) + 3u] = 128u;
+    for (i = 0U; i < (w * h); i += 2U) {
+        output[(i * 2U) + 1U] = 128U;
+        output[(i * 2U) + 3U] = 128U;
     }
 }
 
@@ -324,11 +318,11 @@ static  void    local_initialiseYUY2(uint8_t *output, uint32_t w, uint32_t h) {
 static  void    local_convertToYUY2(const uint8_t *input, uint8_t *output, uint32_t w, uint32_t h) {
     uint32_t    i;
 
-    for (i = 0u; i < (w * h); i += 2u) {
+    for (i = 0U; i < (w * h); i += 2U) {
 
 // Conversion Gray scale to YUY2
 
-        output[i * 2u]        = input[i];
-        output[(i * 2u) + 2u] = input[i + 1];
+        output[i * 2U]        = input[i];
+        output[(i * 2U) + 2U] = input[i + 1];
     }
 }

@@ -1,14 +1,7 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-
-# CMakeLists.
-# ===========
-
-#------------------------------------------------------------------------
-# Project:  uKOS-X
-# Goal:     CMake file to set up the building for uKOS-X system.
 #
-#------------------------------------------------------------------------
+# CMake file to set up the building for uKOS-X system.
 
 cmake_minimum_required(VERSION 3.26)
 
@@ -37,7 +30,7 @@ set(CORE CORTEX_M7)
 # Customisation of firmware copyright text
 add_compile_definitions(
     "uKOS_NAME="
-    "uKOS_OWNER=(c) LvA"
+    "uKOS_OWNER=(c) Edo. Franzi"
 )
 
 # Flash programming script selection

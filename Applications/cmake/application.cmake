@@ -1,14 +1,7 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-
-# application.
-# ============
-
-#------------------------------------------------------------------------
-# Project:  uKOS-X
-# Goal:     CMake for uKOS-X applications (generic part).
 #
-#------------------------------------------------------------------------
+# CMake for uKOS-X applications (generic part).
 
 # Target Names
 set(LOCAL_TARGET ${CMAKE_PROJECT_NAME})

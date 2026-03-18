@@ -1,30 +1,20 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; softwareTimers.
-; ===============
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Kern - Software timers.
-;
-;           This module implements the software primitives.
-;
-;           Software timer system calls
-;           ---------------------------
-;
-;           void    softwareTimers_init(void);
-;           int32_t kern_createSoftwareTimer(const char_t *identifier, stim_t **handle);
-;           int32_t kern_setSoftwareTimer(stim_t *handle, const tspc_t *configure);
-;           int32_t kern_killSoftwareTimer(stim_t *handle);
-;           int32_t kern_getSoftwareTimerById(const char_t *identifier, stim_t **handle);
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Kern - Software timers.
+ *
+ *           This module implements the software primitives.
+ *
+ *           Software timer system calls
+ *           ---------------------------
+ *
+ *           void    softwareTimers_init(void) *
+ *           int32_t kern_createSoftwareTimer(const char_t *identifier, stim_t **handle) *
+ *           int32_t kern_setSoftwareTimer(stim_t *handle, const tspc_t *configure) *
+ *           int32_t kern_killSoftwareTimer(stim_t *handle) *
+ *           int32_t kern_getSoftwareTimerById(const char_t *identifier, stim_t **handle) *
+ */
 
 #include    "softwareTimers.h"
 #include    "kern/private/private_softwareTimer.h"

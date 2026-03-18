@@ -1,21 +1,8 @@
 /*
-; K210_rtc.
-; =========
-
-; SPDX-License-Identifier: MIT
-
-;------------------------------------------------------------------------
-; Author:   Laurent von Allmen      The 2026-02-13
-; Author:   Claude Code (Anthropic) The 2026-02-13
-; Modifs:
-;
-; Project:  uKOS-X
-; Goal:     K210_rtc equates.
-;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2026 Laurent von Allmen
+ *      K210_rtc equates.
+ */
 
 #pragma once
 

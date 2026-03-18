@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; BaNgLa.
-; =======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Display the purpose of the Bangla team.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Display the purpose of the Bangla team.
+ */
 
 #include    <stdint.h>
 #include    <stdio.h>

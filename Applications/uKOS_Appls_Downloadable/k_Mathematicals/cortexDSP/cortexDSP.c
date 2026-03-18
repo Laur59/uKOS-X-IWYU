@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; cortexDSP.
-; ==========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           This application shows how to operate with the uKOS-X uKernel.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Demo of a C application.
+ * This application shows how to operate with the uKOS-X uKernel.
+ */
 
 /*!
  * \file
@@ -93,7 +83,7 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 #endif
@@ -118,7 +108,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
     UNUSED(argument);
 
     while (true) {
-        kern_suspendProcess(1000u);
+        kern_suspendProcess(1000U);
         led_toggle(KLED_1);
     }
 }
@@ -151,24 +141,24 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
     UNUSED(argument);
 
     while (true) {
-        kern_suspendProcess(1000u);
+        kern_suspendProcess(1000U);
 
 // Compute the vector rows & cols
 
-        for (i = 0u; i < 10u; i++) {
-            for (j = 0u; j < 10u; j++) {
+        for (i = 0U; i < 10U; i++) {
+            for (j = 0U; j < 10U; j++) {
                 local_cumulate32(&projections_x[i], image[i][j], 1);
                 local_cumulate32(&projections_y[i], image[j][i], 1);
             }
         }
 
         (void)dprintf(KSYST, "\nRows\n\n");
-        for (i = 0u; i < 10u; i++) {
+        for (i = 0U; i < 10U; i++) {
             (void)dprintf(KSYST, "%"PRId32"\n", projections_x[i]);
         }
 
         (void)dprintf(KSYST, "\nCols\n\n");
-        for (i = 0u; i < 10u; i++) {
+        for (i = 0U; i < 10U; i++) {
             (void)dprintf(KSYST, "%"PRId32"\n", projections_y[i]);
         }
 
@@ -191,12 +181,12 @@ static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
     UNUSED(argument);
 
     while (true) {
-        kern_suspendProcess(1000u);
+        kern_suspendProcess(1000U);
 
 // Compute the vector product
 
         result = 0;
-        for (i = 0u; i < 10u; i++) {
+        for (i = 0U; i < 10U; i++) {
             local_cumulate64(&result, vector_1[i], vector_2[i]);
         }
 
@@ -301,7 +291,7 @@ __attribute__ ((always_inline)) static __inline void local_cumulate64(int64_t *v
     h = (uint32_t)(*value>>32); l = (uint32_t)(*value & 0xFFFFFFFFul);
 
     __asm volatile ("smlal %0, %1, %2, %3" : "=r" (l), "=r" (h) : "r" (a), "r" (b), "0" (l), "1" (h));
-    *value = (int64_t)(((uint64_t)h<<32u) | l);
+    *value = (int64_t)(((uint64_t)h<<32U) | l);
 }
 
 // NOLINTEND(readability-non-const-parameter)

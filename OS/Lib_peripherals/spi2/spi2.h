@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; spi2.
-; =====
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     spi2 manager.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     spi2 manager.
+ */
 
 #pragma once
 

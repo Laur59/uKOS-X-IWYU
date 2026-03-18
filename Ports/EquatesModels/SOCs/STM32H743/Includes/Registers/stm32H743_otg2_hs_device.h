@@ -1,23 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; stm32H743_otg2_hs_device.
-; =========================
-
-;------------------------------------------------------------------------
-; Author:   Generated using the .svd description    The 2025-01-01
-; Modifs:
-;
-; Project:  uKOS-X
-; Goal:     stm32H743_otg2_hs_device equates.
-;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Generated using the .svd description
+ * Goal:     stm32H743_otg2_hs_device equates.
+ */
 
 #pragma once
 

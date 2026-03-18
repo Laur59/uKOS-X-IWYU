@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
-
-/*
-; core_addendum.
-; ==============
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     addendum equates.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Goal:     addendum equates.
+ */
 
 #pragma once
 

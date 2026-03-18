@@ -1,30 +1,20 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; wkserial.
-; =========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     wkserial tool.
-;           This tool allows to operate with a communication device.
-;
-;           Possible actions:
-;           wkserial {serialManager} -set {baudrate}
-;           wkserial {serialManager} -write {byte}
-;           wkserial {serialManager} -read
-;
-;           Examples:
-;           wkserial urt0 -set 115200
-;           wkserial urt1 -W 55
-;           wkserial cdc0 -read
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     wkserial tool.
+ *           This tool allows to operate with a communication device.
+ *
+ *           Possible actions:
+ *           wkserial {serialManager} -set {baudrate}
+ *           wkserial {serialManager} -write {byte}
+ *           wkserial {serialManager} -read
+ *
+ *           Examples:
+ *           wkserial urt0 -set 115200
+ *           wkserial urt1 -W 55
+ *           wkserial cdc0 -read
+ */
 
 #include    <inttypes.h>
 #include    <stdio.h>

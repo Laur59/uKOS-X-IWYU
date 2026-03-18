@@ -1,20 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Luent von Allmen
-*/
-
-/*
-; model_TinyUSB_cdc.
-; ==================
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Model for the interface for "TinyUSB cdc" device.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Model for the interface for "TinyUSB cdc" device.
+ */
 
 #define KCONNECTED      true
 #define KDISCONNECTED   false

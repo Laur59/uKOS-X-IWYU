@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; calendar.
-; =========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     calendar manager.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     calendar manager.
+ */
 
 #include    "calendar.h"
 

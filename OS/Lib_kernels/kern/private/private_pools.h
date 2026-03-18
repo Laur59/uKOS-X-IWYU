@@ -1,21 +1,11 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; private_pools.
-; ==============
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Kern - Memory pools.
-;
-;           Private uKernel variables.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Kern - Memory pools.
+ *
+ *           Private uKernel variables.
+ */
 
 #pragma once
 

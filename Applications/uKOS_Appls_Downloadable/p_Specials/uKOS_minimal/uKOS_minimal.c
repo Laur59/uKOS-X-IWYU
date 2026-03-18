@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; uKOS_minimal.
-; =============
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Demo of a minimal application using the uKOS-X uKernel.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Demo of a minimal application using the uKOS-X uKernel.
+ */
 
 /*!
  * \file
@@ -110,7 +100,7 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 #endif
@@ -126,13 +116,13 @@ MODULE(
 MAIN_ENTRY(argc, argv[]) {
     stim_t  *softwareTimer;
     mcnf_t  configure_mbox = {
-                .oNbMaxPacks    = 10u,
-                .oDataEntrySize = 0u
+                .oNbMaxPacks    = 10U,
+                .oDataEntrySize = 0U
             };
     tspc_t  configure_stim = {
                 .oMode        = KSTIM_CONTINUOUS,
-                .oInitialTime = 2000u,
-                .oTime        = 30u,
+                .oInitialTime = 2000U,
+                .oTime        = 30U,
                 .oCode        = local_changeStateLed,
                 .oArgument    = nullptr
             };
@@ -164,10 +154,10 @@ MAIN_ENTRY(argc, argv[]) {
  *
  */
 static  void    local_changeStateLed(const void *argument) {
-    static  uint8_t     vCptBlink = 0u;
+    static  uint8_t     vCptBlink = 0U;
 
     UNUSED(argument);
 
-    ((vCptBlink & 0x1Fu) > 8u) ? (led_off(KLED_1)) : (led_toggle(KLED_1));
+    ((vCptBlink & 0x1FU) > 8U) ? (led_off(KLED_1)) : (led_toggle(KLED_1));
     vCptBlink++;
 }

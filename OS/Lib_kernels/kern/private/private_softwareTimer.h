@@ -1,21 +1,11 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; private_softwareTimer.
-; ======================
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Kern - Software timers.
-;
-;           Private uKernel variables.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Kern - Software timers.
+ *
+ *           Private uKernel variables.
+ */
 
 #pragma once
 

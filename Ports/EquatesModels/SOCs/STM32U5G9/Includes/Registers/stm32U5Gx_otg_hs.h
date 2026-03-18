@@ -1,23 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; stm32U5Gx_otg_hs.
-; =================
-
-;------------------------------------------------------------------------
-; Author:   Generated using the .svd description    The 2025-01-01
-; Modifs:
-;
-; Project:  uKOS-X
-; Goal:     stm32U5Gx_otg_hs equates.
-;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Generated using the .svd description
+ * Goal:     stm32U5Gx_otg_hs equates.
+ */
 
 #pragma once
 

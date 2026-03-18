@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
-
-/*
-; imgk.
-; =====
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     imgk manager.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Goal:     imgk manager.
+ */
 
 #include    "imgk.h"
 #include    "OV2640.h"

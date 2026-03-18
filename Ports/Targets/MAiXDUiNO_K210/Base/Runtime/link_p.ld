@@ -1,42 +1,33 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
-
-/*
-; link_p.
-; =======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Linker description for the uKOS-X system.
-;           Privileged only support
-;
-;                       CODE
-; linker_stTEXT         +-----------------+
-;                       |                 |
-;                       | .text           |
-; linker_enTEXT         |                 |
-; linker_stRODATA       +-----------------+
-;                       |                 |
-;                       | .rodata         |
-; linker_enRODATA       |                 |
-; linker_stDATA         +-----------------+
-;                       |                 |
-;                       | .data           |
-; linker_enDATA         |                 |
-;                       +-----------------+
-; linker_stSignature    |                 |
-; linker_stBSS          +-----------------+
-;                       |                 |
-;                       | .bss            |
-; linker_enBSS          | COMMON          |
-;                       |                 |
-; _end                  +-----------------+
-;
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * MAiXDUiNO_K210 – Linker memory regions, privileged-only mode.
+ *
+ *                       CODE
+ * linker_stTEXT         +-----------------+
+ *                       |                 |
+ *                       | .text           |
+ * linker_enTEXT         |                 |
+ * linker_stRODATA       +-----------------+
+ *                       |                 |
+ *                       | .rodata         |
+ * linker_enRODATA       |                 |
+ * linker_stDATA         +-----------------+
+ *                       |                 |
+ *                       | .data           |
+ * linker_enDATA         |                 |
+ *                       +-----------------+
+ * linker_stSignature    |                 |
+ * linker_stBSS          +-----------------+
+ *                       |                 |
+ *                       | .bss            |
+ * linker_enBSS          | COMMON          |
+ *                       |                 |
+ * _end                  +-----------------+
+ *
+ */
 
 OUTPUT_ARCH( "riscv" )
 ENTRY(Reset_Handler)

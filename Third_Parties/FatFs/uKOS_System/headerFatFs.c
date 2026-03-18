@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; headerFatFs.
-; ============
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     header for FatFs library.
-;           uKOS-X interface for FatFs (www.elm-chan.org).
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     header for FatFs library.
+ *           uKOS-X interface for FatFs (www.elm-chan.org).
+ */
 
 #include    "macros.h"
 #include    "types.h"

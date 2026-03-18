@@ -1,21 +1,11 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; private_preciseSignals.
-; =======================
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Kern - Precise signals.
-;
-;           Private uKernel variables.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Kern - Precise signals.
+ *
+ *           Private uKernel variables.
+ */
 
 #pragma once
 

@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; cdc0.
-; =====
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     cdc0 manager.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     cdc0 manager.
+ */
 
 #pragma once
 

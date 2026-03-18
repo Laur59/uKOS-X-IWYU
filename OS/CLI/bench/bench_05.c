@@ -1,32 +1,22 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; bench_05.
-; =========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Bench 05:   Compute a simple loop. 1000000 iterations.
-;
-;           Target used: Nucleo_H743 @ 480-MHz
-;           Target used: Nucleo_N657 @ 600-MHz
-;           Target used: MAiXDUiNO_K210 @ 400-MHz
-;           Target used: Discovery_U5G9 @ 160-MHz
-;
-;           Bench results in [us]:
-;
-;                                       _loop
-;           Nucleo_H743 @ 480-MHz       10400
-;           Nucleo_N657 @ 600-MHz       13240
-;           MAiXDUiNO_K210 @ 400-MHz    -
-;           Discovery_U5G9 @ 160-MHz    -
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Bench 05:   Compute a simple loop. 1000000 iterations.
+ *
+ *           Target used: Nucleo_H743 @ 480-MHz
+ *           Target used: Nucleo_N657 @ 600-MHz
+ *           Target used: MAiXDUiNO_K210 @ 400-MHz
+ *           Target used: Discovery_U5G9 @ 160-MHz
+ *
+ *           Bench results in [us]:
+ *
+ *                                       _loop
+ *           Nucleo_H743 @ 480-MHz       10400
+ *           Nucleo_N657 @ 600-MHz       13240
+ *           MAiXDUiNO_K210 @ 400-MHz    -
+ *           Discovery_U5G9 @ 160-MHz    -
+ */
 
 #include    "bench.h"
 

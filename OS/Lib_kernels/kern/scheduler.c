@@ -1,21 +1,11 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; scheduler.
-; ==========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Kern - Scheduler management.
-;
-;           This module is responsible for controlling the logic of the uKernel.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Kern - Scheduler management.
+ *
+ *           This module is responsible for controlling the logic of the uKernel.
+ */
 
 #include    "kern/private/private_scheduler.h"
 

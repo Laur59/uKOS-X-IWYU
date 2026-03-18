@@ -1,26 +1,16 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; cluster_Py.
-; ===========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           This application shows how to operate with the uKOS-X uKernel.
-;
-;           Launch 1 processes in C++:
-;
-;           - P0: Every 1000-ms
-;                 Compute the inference
-;                 Display the classes
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Demo of a C application.
+ * This application shows how to operate with the uKOS-X uKernel.
+ *
+ *           Launch 1 processes in C++:
+ *
+ *           - P0: Every 1000-ms
+ *                 Compute the inference
+ *                 Display the classes
+ */
 
 /*!
  * \file

@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; man.
-; ====
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Show the help of the module.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Show the help of the module.
+ */
 
 #include    <stdint.h>
 #include    <stdio.h>

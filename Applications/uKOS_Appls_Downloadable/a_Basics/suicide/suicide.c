@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; suicide.
-; ========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           This application shows how to operate with the uKOS-X uKernel.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Demo of a C application.
+ * This application shows how to operate with the uKOS-X uKernel.
+ */
 
 /*!
  * \file
@@ -91,7 +81,7 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 #endif
@@ -108,7 +98,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
     UNUSED(argument);
 
     while (true) {
-        kern_suspendProcess(1000u);
+        kern_suspendProcess(1000U);
         led_toggle(KLED_1);
     }
 }
@@ -121,7 +111,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *       P1 will commit a suicide
  *
  */
-#define KIDMODULE   ((KID_FAM_CLI<<24u) | (KNUM_LIST<<8u) | '_')
+#define KIDMODULE   ((KID_FAM_CLI<<24U) | (KNUM_LIST<<8U) | '_')
 
 static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
             uint16_t        index;
@@ -132,7 +122,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 // looking for the cmdLine module ...
 
     if (system_getModuleId(KIDMODULE, &index, &module) == KERR_SYSTEM_NOERR) {
-        module->oExecution(0u, nullptr);
+        module->oExecution(0U, nullptr);
     }
     exit(EXIT_OS_SUCCESS);
 }

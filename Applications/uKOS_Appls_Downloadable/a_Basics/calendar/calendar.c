@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; calendar.
-; =========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           This application shows how to operate with the uKOS-X uKernel.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Demo of a C application.
+ * This application shows how to operate with the uKOS-X uKernel.
+ */
 
 /*!
  * \file
@@ -103,7 +93,7 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 #endif
@@ -156,7 +146,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 // !!! This is the measure of the time used by the cpu
 
     tic1 = clock();
-    kern_suspendProcess(1234u);
+    kern_suspendProcess(1234U);
     toc1 = clock();
 
     totalTime = (float64_t)(toc1 - tic1) / CLOCKS_PER_SEC;
@@ -166,7 +156,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 // !!! This is the measure of the real time
 
     gettimeofday(&tic2, nullptr);
-    kern_suspendProcess(1234u);
+    kern_suspendProcess(1234U);
     gettimeofday(&toc2, nullptr);
 
     totalTime = (double)(toc2.tv_sec - tic2.tv_sec) + ((double)(toc2.tv_usec - tic2.tv_usec) / 1e6);
@@ -174,13 +164,13 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 
 // Generate the new Unix time 64-bits with 1us
 
-    currentTime.tm_year  = 2025u - 1900u;
-    currentTime.tm_mon   = 3u - 1u;
-    currentTime.tm_mday  = 31u;
-    currentTime.tm_hour  = 16u;
-    currentTime.tm_min   = 07u;
-    currentTime.tm_sec   = 0u;
-    currentTime.tm_isdst = 1u;
+    currentTime.tm_year  = 2025U - 1900U;
+    currentTime.tm_mon   = 3U - 1U;
+    currentTime.tm_mday  = 31U;
+    currentTime.tm_hour  = 16U;
+    currentTime.tm_min   = 07U;
+    currentTime.tm_sec   = 0U;
+    currentTime.tm_isdst = 1U;
 
     now = mktime(&currentTime);
     if (now == -1 ) { (void)dprintf(KSYST, "Error: unable to make time using mktime\n\n"); }
@@ -191,7 +181,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
     }
 
     while (true) {
-        kern_suspendProcess(1000u);
+        kern_suspendProcess(1000U);
 
         now = time(nullptr);
         localtime_r(&now, &localTime);

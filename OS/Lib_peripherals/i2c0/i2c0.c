@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; i2c0.
-; =====
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     i2c0 manager.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     i2c0 manager.
+ */
 
 #include    "i2c0.h"
 

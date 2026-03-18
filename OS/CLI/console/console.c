@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; console.
-; ========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Open a console prompt (multi-user).
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Open a console prompt (multi-user).
+ */
 
 #include    <inttypes.h>
 #include    <stdio.h>

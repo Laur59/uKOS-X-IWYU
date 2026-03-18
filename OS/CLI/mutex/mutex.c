@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; mutex.
-; ======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     List the mutexes.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     List the mutexes.
+ */
 
 #include    <inttypes.h>
 #include    <stdio.h>

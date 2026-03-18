@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; LSM9DS1.
-; ========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     ST LSM9DS1 iNEMO equates.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     ST LSM9DS1 iNEMO equates.
+ */
 
 #pragma once
 

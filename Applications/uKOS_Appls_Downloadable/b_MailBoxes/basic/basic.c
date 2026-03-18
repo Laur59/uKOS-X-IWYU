@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; basic.
-; ======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           This application shows how to operate with the uKOS-X uKernel.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Demo of a C application.
+ * This application shows how to operate with the uKOS-X uKernel.
+ */
 
 /*!
  * \file
@@ -103,7 +93,7 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 #endif
@@ -123,13 +113,13 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
     uint8_t     *bufRec;
     mbox_t      *mailBox;
     mcnf_t      configure = {
-                    .oNbMaxPacks    = 10u,
-                    .oDataEntrySize = 0u
+                    .oNbMaxPacks    = 10U,
+                    .oDataEntrySize = 0U
                 };
 
     UNUSED(argument);
 
-    sizeRec = 256u;
+    sizeRec = 256U;
     bufPtr  = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (sizeRec * sizeof(uint8_t)), "basic");
     if (bufPtr == nullptr) {
         LOG(KFATAL_USER, "Out of memory");
@@ -143,7 +133,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 
 // Receive the message (wait until the FIFO is not empty)
 
-        if (kern_readMailbox(mailBox, (void **)&bufRec, &sizeRec, 1000u) == KERR_KERN_TIMEO) {
+        if (kern_readMailbox(mailBox, (void **)&bufRec, &sizeRec, 1000U) == KERR_KERN_TIMEO) {
             LOG(KFATAL_USER, "Timeout read mbox");
             exit(EXIT_OS_FAILURE);
         }
@@ -175,15 +165,15 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 
 // Waiting for the creation of the "Mailbox receive status"
 
-    while (kern_getMailboxById("Mailbox receive text", &mailBox) != KERR_KERN_NOERR) { kern_suspendProcess(1u); }
+    while (kern_getMailboxById("Mailbox receive text", &mailBox) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
 
     while (true) {
-        kern_suspendProcess(100u);
+        kern_suspendProcess(100U);
 
 // Send the message
 
         sizeSnd = strlen(message);
-        bufSnd  = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (uint32_t)((sizeSnd + 1u) * sizeof(uint8_t)), "basic");
+        bufSnd  = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (uint32_t)((sizeSnd + 1U) * sizeof(uint8_t)), "basic");
         if (bufSnd == nullptr) {
             LOG(KFATAL_USER, "Out of memory");
             exit(EXIT_OS_FAILURE);
@@ -193,7 +183,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 
 // Send a the message (wait until the FIFO is not full)
 
-        if (kern_writeMailbox(mailBox, bufSnd, (uint32_t)sizeSnd, 1000u) == KERR_KERN_TIMEO) {
+        if (kern_writeMailbox(mailBox, bufSnd, (uint32_t)sizeSnd, 1000U) == KERR_KERN_TIMEO) {
             (void)dprintf(KSYST, "mbox full\n");
             LOG(KFATAL_USER, "mbox full");
             exit(EXIT_OS_FAILURE);
@@ -220,15 +210,15 @@ static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
 
 // Waiting for the creation of the "Mailbox receive status"
 
-    while (kern_getMailboxById("Mailbox receive text", &mailBox) != KERR_KERN_NOERR) { kern_suspendProcess(1u); }
+    while (kern_getMailboxById("Mailbox receive text", &mailBox) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
 
     while (true) {
-        kern_suspendProcess(200u);
+        kern_suspendProcess(200U);
 
 // Send the message
 
         sizeSnd = strlen(message);
-        bufSnd  = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (uint32_t)((sizeSnd + 1u) * sizeof(uint8_t)), "basic");
+        bufSnd  = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (uint32_t)((sizeSnd + 1U) * sizeof(uint8_t)), "basic");
         if (bufSnd == nullptr) {
             (void)dprintf(KSYST, "Out of memory %zu\n", sizeSnd);
             LOG(KFATAL_USER, "Out of memory");
@@ -239,7 +229,7 @@ static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
 
 // Send a the message (wait until the FIFO is not full)
 
-        while (kern_writeMailbox(mailBox, bufSnd, (uint32_t)sizeSnd, 1000u) == KERR_KERN_TIMEO) {
+        while (kern_writeMailbox(mailBox, bufSnd, (uint32_t)sizeSnd, 1000U) == KERR_KERN_TIMEO) {
             (void)dprintf(KSYST, "mbox full\n");
             LOG(KFATAL_USER, "mbox full");
             exit(EXIT_OS_FAILURE);
@@ -266,15 +256,15 @@ static void __attribute__ ((noreturn)) aProcess_3(const void *argument) {
 
 // Waiting for the creation of the "Mailbox receive status"
 
-    while (kern_getMailboxById("Mailbox receive text", &mailBox) != KERR_KERN_NOERR) { kern_suspendProcess(1u); }
+    while (kern_getMailboxById("Mailbox receive text", &mailBox) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
 
     while (true) {
-        kern_suspendProcess(200u);
+        kern_suspendProcess(200U);
 
 // Send the message
 
         sizeSnd = strlen(message);
-        bufSnd  = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (uint32_t)((sizeSnd + 1u) * sizeof(uint8_t)), "basic");
+        bufSnd  = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (uint32_t)((sizeSnd + 1U) * sizeof(uint8_t)), "basic");
         if (bufSnd == nullptr) {
             (void)dprintf(KSYST, "Out of memory %zu\n", sizeSnd);
             LOG(KFATAL_USER, "Out of memory");
@@ -285,7 +275,7 @@ static void __attribute__ ((noreturn)) aProcess_3(const void *argument) {
 
 // Send a the message (wait until the FIFO is not full)
 
-        while (kern_writeMailbox(mailBox, bufSnd, (uint32_t)sizeSnd, 1000u) == KERR_KERN_TIMEO) {
+        while (kern_writeMailbox(mailBox, bufSnd, (uint32_t)sizeSnd, 1000U) == KERR_KERN_TIMEO) {
             (void)dprintf(KSYST, "mbox full\n");
             LOG(KFATAL_USER, "mbox full");
             exit(EXIT_OS_FAILURE);

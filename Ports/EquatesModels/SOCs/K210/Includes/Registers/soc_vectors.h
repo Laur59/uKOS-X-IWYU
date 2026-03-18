@@ -1,21 +1,11 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; soc_vectors.
-; ============
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Indirect Exception Vectors for RISC-V.
-;           The "reset" exception is not considered. The indirect table
-;           is reserved in the first.s file.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Indirect Exception Vectors for RISC-V.
+ *           The "reset" exception is not considered. The indirect table
+ *           is reserved in the first.s file.
+ */
 
 #pragma once
 

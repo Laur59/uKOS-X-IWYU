@@ -1,22 +1,12 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; soc_vectors.
-; ============
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Indirect Exception Vectors for Cortex_M4.
-;           The "reset" exception is not considered. The indirect table
-;           is reserved in the first.c file.
-;           Generated using the .svd description
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Indirect Exception Vectors for Cortex_M4.
+ *           The "reset" exception is not considered. The indirect table
+ *           is reserved in the first.c file.
+ *           Generated using the .svd description
+ */
 
 #pragma once
 

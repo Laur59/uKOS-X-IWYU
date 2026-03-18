@@ -1,22 +1,12 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
-
-/*
-; model_random_hard.
-; ==================
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Model for generating random numbers.
-;           This takes advantages from the available
-;           hardware.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Goal:     Model for generating random numbers.
+ *           This takes advantages from the available
+ *           hardware.
+ */
 
 #include    "Registers/nvic.h"
 #include    "kern/kern.h"
@@ -27,6 +17,8 @@ static              bool        vTerminated = false;
 static  volatile    uint32_t    *vNumber;
 
 // Prototypes
+
+extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 static  void    local_RNG_IRQHandler(void);
 
@@ -62,7 +54,7 @@ void    model_random_hard_read(uint32_t *number) {
     vTerminated = false;
     RNG->CR |= (RNG_CR_RNGEN | RNG_CR_IE);
 
-    while (vTerminated == false) {
+    while (!vTerminated) {
         kern_switchFast();
     }
 }
@@ -81,7 +73,7 @@ static  void    local_RNG_IRQHandler(void) {
 
 // Is data ready, no seed error, no clock error
 
-    if (((RNG->SR & RNG_SR_DRDY) != 0u) && ((RNG->SR & RNG_SR_SEIS) == 0u) && ((RNG->SR & RNG_SR_CEIS) == 0u)) {
+    if (((RNG->SR & RNG_SR_DRDY) != 0U) && ((RNG->SR & RNG_SR_SEIS) == 0U) && ((RNG->SR & RNG_SR_CEIS) == 0U)) {
         *vNumber = RNG->DR & KRAND_MAX;
         vTerminated = true;
         RNG->CR &= ~(RNG_CR_RNGEN | RNG_CR_IE);
@@ -93,7 +85,7 @@ static  void    local_RNG_IRQHandler(void) {
 
     if ((RNG->SR & RNG_SR_SEIS) == RNG_SR_SEIS) {
         RNG->SR &= (uint32_t)~RNG_SR_SEIS;
-        for (i = 0u; i < 12u; i++) {
+        for (i = 0U; i < 12U; i++) {
             RNG->DR;
         }
     }

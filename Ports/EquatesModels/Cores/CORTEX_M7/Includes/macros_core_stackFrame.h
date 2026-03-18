@@ -1,22 +1,12 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
-
-/*
-; macros_core_stackFrame.
-; =======================
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Stack frame management macros.
-;           This file conains the most sensitive macros
-;           for the uKernel management
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Goal:     Stack frame management macros.
+ *           This file conains the most sensitive macros
+ *           for the uKernel management
+ */
 
 #pragma once
 
@@ -41,10 +31,11 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
                                 }
 #endif
 
-#if (!defined(CHECK_STACK_SANITY))
+#ifndef CHECK_STACK_SANITY
+extern              proc_t  *vKern_runProc[KNB_CORES];
 #define CHECK_STACK_SANITY(core)                                                                                                \
-                                if ((vKern_runProc[core]->oInternal.oState != 0u) &&                                            \
-                                    ((vKern_runProc[core]->oInternal.oState & (1u<<BPROC_FIRST)) == 0u)) {                      \
+                                if ((vKern_runProc[core]->oInternal.oState != 0U) &&                                            \
+                                    ((vKern_runProc[core]->oInternal.oState & (1U<<BPROC_FIRST)) == 0U)) {                      \
                                     if ((vKern_runProc[core]->oSpecification.oStackStart > vKern_stackProc[core]) ||            \
                                         (vKern_runProc[core]->oSpecification.oStackStart[core] != KMAGICSTACK)) {               \
                                         LOG(KFATAL_KERNEL, "kern: stack underflow");                                            \
@@ -56,40 +47,40 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 // Stack alignment (see processes.h)
 
-#if (!defined(KSTACK_ALIGNMENT))
-#define KSTACK_ALIGNMENT        (8u)
-#define KSTACK_ALIGNMENT_MASK   (~(KSTACK_ALIGNMENT - 1u))
+#ifndef KSTACK_ALIGNMENT
+#define KSTACK_ALIGNMENT        (8U)
+#define KSTACK_ALIGNMENT_MASK   (~(KSTACK_ALIGNMENT - 1U))
 #define KSTACK_ALIGNMENT_MEMO   (KMEMO_ALIGN_8)
 #endif
 
 // Critical stack size when < (51+10) 32-bit words (stack frame + reserve)
 
-#if (!defined(KKERN_CRITICAL_SZ_STACK))
-#define KKERN_CRITICAL_SZ_STACK     (51u + 10u)
+#ifndef KKERN_CRITICAL_SZ_STACK
+#define KKERN_CRITICAL_SZ_STACK     (51U + 10U)
 #endif
 
 // Stack sizes (in machine words of 32-bit)
 
-#if (!defined(KKERN_SZ_STACK_SS))
-#define KKERN_SZ_STACK_SS           200u
+#ifndef KKERN_SZ_STACK_SS
+#define KKERN_SZ_STACK_SS           200U
 #endif
-#if (!defined(KKERN_SZ_STACK_MM))
-#define KKERN_SZ_STACK_MM           400u
+#ifndef KKERN_SZ_STACK_MM
+#define KKERN_SZ_STACK_MM           400U
 #endif
-#if (!defined(KKERN_SZ_STACK_LL))
-#define KKERN_SZ_STACK_LL           600u
+#ifndef KKERN_SZ_STACK_LL
+#define KKERN_SZ_STACK_LL           600U
 #endif
-#if (!defined(KKERN_SZ_STACK_XL))
-#define KKERN_SZ_STACK_XL           1000u
+#ifndef KKERN_SZ_STACK_XL
+#define KKERN_SZ_STACK_XL           1000U
 #endif
-#if (!defined(KKERN_SZ_STACK_MIN))
-#define KKERN_SZ_STACK_MIN          300u
+#ifndef KKERN_SZ_STACK_MIN
+#define KKERN_SZ_STACK_MIN          300U
 #endif
-#if (!defined(KKERN_SZ_STACK_XLIB))
-#define KKERN_SZ_STACK_XLIB         (400u + 1000u)
+#ifndef KKERN_SZ_STACK_XLIB
+#define KKERN_SZ_STACK_XLIB         (400U + 1000U)
 #endif
-#if (!defined(KKERN_SZ_STACK_MPY))
-#define KKERN_SZ_STACK_MPY          (400u + 1000u)
+#ifndef KKERN_SZ_STACK_MPY
+#define KKERN_SZ_STACK_MPY          (400U + 1000U)
 #endif
 
 // Stack frame macros
@@ -119,27 +110,27 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 //  +4  basepri     = NVIC priority
 //  +0  0xFFFFFFFD  = Initial exception return (Thread mode without FPU, SP = PSP)
 
-#if (!defined(KERN_PREPARE_FRAME))
+#ifndef KERN_PREPARE_FRAME
 #define KERN_PREPARE_FRAME(stack, code, core, argument, priority)                                                               \
-                                *(--stack) = 0x01000000u;                                                                       \
+                                *(--stack) = 0x01000000U;                                                                       \
                                 *(--stack) = (uintptr_t)code;                                                                   \
                                 *(--stack) = (uintptr_t)exit_terminate;                                                         \
-                                *(--stack) = 0x12121212u;                                                                       \
-                                *(--stack) = 0x03030303u;                                                                       \
-                                *(--stack) = 0x02020202u;                                                                       \
-                                *(--stack) = 0x01010101u;                                                                       \
+                                *(--stack) = 0x12121212U;                                                                       \
+                                *(--stack) = 0x03030303U;                                                                       \
+                                *(--stack) = 0x02020202U;                                                                       \
+                                *(--stack) = 0x01010101U;                                                                       \
                                 *(--stack) = (uintptr_t)argument;                                                               \
-                                *(--stack) = 0x11111111u;                                                                       \
-                                *(--stack) = 0x10101010u;                                                                       \
-                                *(--stack) = 0x09090909u;                                                                       \
-                                *(--stack) = 0x08080808u;                                                                       \
-                                *(--stack) = 0x07070707u;                                                                       \
-                                *(--stack) = 0x06060606u;                                                                       \
-                                *(--stack) = 0x05050505u;                                                                       \
-                                *(--stack) = 0x04040404u;                                                                       \
+                                *(--stack) = 0x11111111U;                                                                       \
+                                *(--stack) = 0x10101010U;                                                                       \
+                                *(--stack) = 0x09090909U;                                                                       \
+                                *(--stack) = 0x08080808U;                                                                       \
+                                *(--stack) = 0x07070707U;                                                                       \
+                                *(--stack) = 0x06060606U;                                                                       \
+                                *(--stack) = 0x05050505U;                                                                       \
+                                *(--stack) = 0x04040404U;                                                                       \
                                 *(--stack) = ((uintptr_t)priority<<(uintptr_t)KNVIC_PRIORITY_SHIFT);                            \
-                                *(--stack) = 0xFFFFFFFDu;                                                                       \
-                                UNUSED(core)
+                                *(--stack) = 0xFFFFFFFDU;                                                                       \
+                                (void)(core)
 #endif
 
 // Recover the message & save the frame message
@@ -186,8 +177,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 // r0 -> *stack
 // r1 -> message
 
-#if (defined(NOFPU_S))
-#if (!defined(KERN_RECOVER_MESSAGE))
+#ifdef NOFPU_S
+#ifndef KERN_RECOVER_MESSAGE
 #define KERN_RECOVER_MESSAGE    __asm volatile ("                                                                            \n \
                                 tst         lr,#0x4                                                                          \n \
                                 ite         eq                                                                               \n \
@@ -198,7 +189,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
                                 )
 #endif
 
-#if (!defined(KERN_SAVE_FRAME_MESSAGE))
+#ifndef KERN_SAVE_FRAME_MESSAGE
 #define KERN_SAVE_FRAME_MESSAGE __asm volatile ("                                                                            \n \
                                 mrs         r2,basepri                                                                       \n \
                                 stmdb       r0!,{r2,r4-r11}                                                                  \n \
@@ -211,7 +202,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #endif
 
 #else
-#if (!defined(KERN_RECOVER_MESSAGE))
+#ifndef KERN_RECOVER_MESSAGE
 #define KERN_RECOVER_MESSAGE    __asm volatile ("                                                                            \n \
                                 tst         lr,#0x4                                                                          \n \
                                 ite         eq                                                                               \n \
@@ -225,7 +216,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
                                 )
 #endif
 
-#if (!defined(KERN_SAVE_FRAME_MESSAGE))
+#ifndef KERN_SAVE_FRAME_MESSAGE
 #define KERN_SAVE_FRAME_MESSAGE __asm volatile ("                                                                            \n \
                                 mrs         r2,basepri                                                                       \n \
                                 stmdb       r0!,{r2,r4-r11}                                                                  \n \
@@ -278,8 +269,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 //
 // r0 -> *stack
 
-#if (defined(NOFPU_S))
-#if (!defined(KERN_SAVE_FRAME_NORMAL))
+#ifdef NOFPU_S
+#ifndef KERN_SAVE_FRAME_NORMAL
 #define KERN_SAVE_FRAME_NORMAL  __asm volatile ("                                                                            \n \
                                 tst         lr,#0x4                                                                          \n \
                                 ite         eq                                                                               \n \
@@ -296,7 +287,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #endif
 
 #else
-#if (!defined(KERN_SAVE_FRAME_NORMAL))
+#ifndef KERN_SAVE_FRAME_NORMAL
 #define KERN_SAVE_FRAME_NORMAL  __asm volatile ("                                                                            \n \
                                 tst         lr,#0x4                                                                          \n \
                                 ite         eq                                                                               \n \
@@ -353,8 +344,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 //
 // r0 -> *stack of the new process
 
-#if (defined(NOFPU_S))
-#if (!defined(KERN_NEW_FRAME))
+#ifdef NOFPU_S
+#ifndef KERN_NEW_FRAME
 #define KERN_NEW_FRAME          __asm volatile ("                                                                            \n \
                                 ldmia       r0!,{lr}                                                                         \n \
                                 ldmia       r0!,{r1,r4-r11}                                                                  \n \
@@ -367,7 +358,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #endif
 
 #else
-#if (!defined(KERN_NEW_FRAME))
+#ifndef KERN_NEW_FRAME
 #define KERN_NEW_FRAME          __asm volatile ("                                                                            \n \
                                 ldmia       r0!,{lr}                                                                         \n \
                                 tst         lr,#0x10                                                                         \n \
@@ -385,7 +376,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 // Return to a new context
 
-#if (!defined(KERN_RETURN))
+#ifndef KERN_RETURN
 #define KERN_RETURN             __asm volatile ("                                                                            \n \
                                 dmb                                                                                          \n \
                                 dsb                                                                                          \n \
@@ -396,7 +387,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 // Messages: _I (immediate) _M (memory)
 
-#if (!defined(GOTO_KERN_I))
+#ifndef GOTO_KERN_I
 #define GOTO_KERN_I(msg)        stub_kern_stopProcessTimeout();                                                                 \
                                 __asm volatile ("                                                                            \n \
                                 movw        r0,%0                                                                            \n \
@@ -404,7 +395,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
                                 push        {r0}                                                                             \n \
                                 push        {r0}"                                                                               \
                                 :                                                                                               \
-                                : "i" ((msg) & 0x0000FFFFu), "i" ((msg)>>16u)                                                   \
+                                : "i" ((msg) & 0x0000FFFFU), "i" ((msg)>>16U)                                                   \
                                 : "r0"                                                                                          \
                                 );                                                                                              \
                                 __asm volatile ("                                                                            \n \
@@ -421,7 +412,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
                                 )
 #endif
 
-#if (!defined(GOTO_KERN_M))
+#ifndef GOTO_KERN_M
 #define GOTO_KERN_M(msg)        stub_kern_stopProcessTimeout();                                                                 \
                                 __asm volatile ("                                                                            \n \
                                 push        {%0}                                                                             \n \
@@ -462,8 +453,8 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 // If svc #0 ---> kernel_message
 // If svc #1 ---> kern_privilegeElevate
 
-#if (!defined(SVC_DISPATCHER_C0))
-#if (defined(PRIVILEGED_USER_S))
+#ifndef SVC_DISPATCHER_C0
+#ifdef PRIVILEGED_USER_S
 #define SVC_DISPATCHER_C0       __asm volatile ("                                                                            \n \
                                 tst         lr,#0x4                                                                          \n \
                                 ite         eq                                                                               \n \
@@ -558,7 +549,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 // Stack frame without FPU
 
 enum {
-        SPP = 0u,                                                                           // spp + 0
+        SPP = 0U,                                                                           // spp + 0
         PSP, MSP,                                                                           // spp + 1..2
         LR,                                                                                 // spp + 3
         BASEPRI,                                                                            // spp + 4
@@ -572,7 +563,7 @@ enum {
 // Stack frame with FPU
 
 enum {
-        SPP = 0u,                                                                           // spp + 0
+        SPP = 0U,                                                                           // spp + 0
         PSP, MSP,                                                                           // spp + 1..2
         LR,                                                                                 // spp + 3
         s16, s17, s18, s19, s20, s21, s22, s23, s24, s25, s26, s27, s28, s29, s30, s31,     // spp + 4..19
@@ -602,8 +593,8 @@ enum {
 // These outputs match the ABI expected by:
 //   local_processException(uintptr_t *stackBefore, uintptr_t *stackAfter)
 
-#if (defined(NOFPU_S))
-#if (!defined(CORE_DUMP_SAVE_STACK_FRAME))
+#ifdef NOFPU_S
+#ifndef CORE_DUMP_SAVE_STACK_FRAME
 #define CORE_DUMP_SAVE_STACK_FRAME                                                                                              \
                                 __asm volatile ("                                                                            \n \
                                 cpsid       i                                                                                \n \
@@ -626,7 +617,7 @@ enum {
 #endif
 
 #else
-#if (!defined(CORE_DUMP_SAVE_STACK_FRAME))
+#ifndef CORE_DUMP_SAVE_STACK_FRAME
 #define CORE_DUMP_SAVE_STACK_FRAME                                                                                              \
                                 __asm volatile ("                                                                            \n \
                                 cpsid       i                                                                                \n \

@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; headerLVGL.
-; ===========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     header for LVGL library.
-;           uKOS-X interface for LVGL (www.lvgl.io).
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     header for LVGL library.
+ *           uKOS-X interface for LVGL (www.lvgl.io).
+ */
 
 #include    "macros.h"
 #include    "types.h"

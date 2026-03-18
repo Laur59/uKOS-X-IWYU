@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; stm32L4R5.
-; ==========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     stm32L4R5 equates.
-;           Generated using the .svd description
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     stm32L4R5 equates.
+ *           Generated using the .svd description
+ */
 
 #pragma once
 

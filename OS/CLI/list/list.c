@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; list.
-; =====
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     List the system modules.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     List the system modules.
+ */
 
 #include    <stdint.h>
 #include    <stdio.h>

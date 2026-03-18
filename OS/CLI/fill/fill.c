@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; fill.
-; =====
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     This tool allows to fill a memory with a pattern.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     This tool allows to fill a memory with a pattern.
+ */
 
 #include    <stdint.h>
 #include    <stdio.h>

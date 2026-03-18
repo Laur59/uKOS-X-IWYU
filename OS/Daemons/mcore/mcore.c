@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; mcore.
-; ======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     mcore process; multi-core layer via mbox & asmp.
-;           For the moment, this layer is limited to 2 cores.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     mcore process; multi-core layer via mbox & asmp.
+ *           For the moment, this layer is limited to 2 cores.
+ */
 
 #include    <stdint.h>
 #include    <stdlib.h>

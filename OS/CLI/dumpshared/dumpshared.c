@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; dumpshared.
-; ===========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Display the shared area of the multicore system.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Display the shared area of the multicore system.
+ */
 
 #include    <inttypes.h>
 #include    <stdio.h>

@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; urt0.
-; =====
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     urt0 manager.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     urt0 manager.
+ */
 
 #include    "urt0.h"
 

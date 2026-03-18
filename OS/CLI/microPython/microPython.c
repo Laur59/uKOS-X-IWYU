@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; microPython.
-; ============
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-;           uKOS-X interface for MicroPython (www.micropython.com).
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * uKOS-X interface for MicroPython (www.micropython.com).
+ */
 
 #ifdef CONFIG_MAN_MICROPYTHON_S
 

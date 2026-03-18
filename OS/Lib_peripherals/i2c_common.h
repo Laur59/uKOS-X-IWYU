@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; i2c_commun.
-; ===========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     i2c_commun equates.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     i2c_commun equates.
+ */
 
 #pragma once
 

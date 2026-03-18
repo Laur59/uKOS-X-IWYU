@@ -1,21 +1,11 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Luent von Allmen
-*/
-
-/*
-; model_TinyUSB_msc.
-; ==================
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Model for the interface for "TinyUSB msc" device.
-;           !! This is only for tests.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Project:  uKOS-X
+ * Goal:     Model for the interface for "TinyUSB msc" device.
+ *           !! This is only for tests.
+ */
 
 #include    <stddef.h>
 #include    <string.h>

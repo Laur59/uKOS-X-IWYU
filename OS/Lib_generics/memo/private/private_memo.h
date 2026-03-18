@@ -1,21 +1,11 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; private_memo.
-; =============
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     memo manager.
-;
-;           Private uKernel variables.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     memo manager.
+ *
+ *           Private uKernel variables.
+ */
 
 #pragma once
 

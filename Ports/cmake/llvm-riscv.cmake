@@ -1,15 +1,8 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-
-# llvm-riscv.
-# ===========
-
-#------------------------------------------------------------------------
-# Project:  uKOS-X
-# Goal:     Toolchain file for configuring Cmake to build cross-compiling
-#           projects based on RISC-V core using clang(LLVM).
 #
-#------------------------------------------------------------------------
+# Toolchain file for configuring Cmake to build cross-compiling
+# projects based on RISC-V core using clang(LLVM).
 
 set(CMAKE_SYSTEM_NAME Linux)
 set(CMAKE_SYSTEM_PROCESSOR RISCV)

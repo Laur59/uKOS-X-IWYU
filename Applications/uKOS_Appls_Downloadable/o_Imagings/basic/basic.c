@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; basic.
-; ======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           This application shows how to operate with the uKOS-X uKernel.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Demo of a C application.
+ * This application shows how to operate with the uKOS-X uKernel.
+ */
 
 /*!
  * \file
@@ -93,7 +83,7 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 #endif
@@ -101,8 +91,8 @@ MODULE(
 // Application specific
 // ====================
 
-#define KAPP_NB_COLUMNS     752u        // 752
-#define KAPP_NB_ROWS        480u        // 480
+#define KAPP_NB_COLUMNS     752U        // 752
+#define KAPP_NB_ROWS        480U        // 480
 
 STRG_LOC_CONST(aStrAcqu[]) = "imgx - Acquisition";
 
@@ -124,7 +114,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
     UNUSED(argument);
 
     while (true) {
-        kern_suspendProcess(1000u);
+        kern_suspendProcess(1000U);
         led_toggle(KLED_1);
     }
 }
@@ -161,7 +151,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
                                         .oStopBits = KSERIAL_STOPBITS_1,
                                         .oParity   = KSERIAL_PARITY_NONE,
                                         .oBaudRate = KSERIAL_BAUDRATE_3000000,
-                                        .oKernSync = ((uint32_t)1u<<(uint32_t)BSERIAL_SEMAPHORE_RX)
+                                        .oKernSync = ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_RX)
                                     };
 
     if (kern_createSemaphore(aStrAcqu, 0, 1, &vSemaImgAcqu) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create sema G"); exit(EXIT_OS_FAILURE); }
@@ -179,7 +169,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 // Just after the SNAP initialisation it is necessary waiting for the end of the
 // current transfer (~ 40-ms) before starting.
 
-    kern_suspendProcess(40u);
+    kern_suspendProcess(40U);
     imager_acquisition();
 
     while (true) {
@@ -263,7 +253,7 @@ MAIN_ENTRY(argc, argv[]) {
 static  void    local_transfer(void) {
 
     #if (defined(Alastor_H743_S))
-    led_toggle(3u);
+    led_toggle(3U);
     #endif
 
     kern_signalSemaphore(vSemaImgAcqu);

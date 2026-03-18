@@ -1,28 +1,18 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; privileges.
-; ===========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Kern - Privilege management.
-;
-;           This module implements the software primitives.
-;
-;           Privilege system calls
-;           ---------------------------
-;
-;           void    privileges_init(void);
-;           int32_t kern_setPrivilegeMode(uint8_t mode);
-;           void    kern_privilegeElevate(void); !!! Not for user applications
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Kern - Privilege management.
+ *
+ *           This module implements the software primitives.
+ *
+ *           Privilege system calls
+ *           ---------------------------
+ *
+ *           void    privileges_init(void) *
+ *           int32_t kern_setPrivilegeMode(uint8_t mode) *
+ *           void    kern_privilegeElevate(void) * !!! Not for user applications
+ */
 
 #pragma once
 

@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; concurrent.
-; ===========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           This application shows how to operate with the uKOS-X uKernel.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Demo of a C application.
+ * This application shows how to operate with the uKOS-X uKernel.
+ */
 
 /*!
  * \file
@@ -97,7 +87,7 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 #endif
@@ -116,12 +106,12 @@ struct  myPack {
         };
 
 static  const   myPack_t    aParameter[6] = {
-                                { "Process: Aladin          0 ", 0u,         100u, 0u },
-                                { "Process: Marsupilami     1 ", 10000u,     200u, 1u },
-                                { "Process: Fraggle Rock    2 ", 100000u,    300u, 2u },
-                                { "Process: Lupo de Lupis   3 ", 1000000u,   400u, 3u },
-                                { "Process: Muppet show     4 ", 10000000u,  500u, 4u },
-                                { "Process: Max le voyageur 5 ", 100000000u, 600u, 5u }
+                                { "Process: Aladin          0 ", 0U,         100U, 0U },
+                                { "Process: Marsupilami     1 ", 10000U,     200U, 1U },
+                                { "Process: Fraggle Rock    2 ", 100000U,    300U, 2U },
+                                { "Process: Lupo de Lupis   3 ", 1000000U,   400U, 3U },
+                                { "Process: Muppet show     4 ", 10000000U,  500U, 4U },
+                                { "Process: Max le voyageur 5 ", 100000000U, 600U, 5U }
                             };
 
 /*

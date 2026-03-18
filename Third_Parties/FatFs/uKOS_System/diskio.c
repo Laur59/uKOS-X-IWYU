@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; diskio.
-; =======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     uKOS diskio interface to the uKOS-X devices
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     uKOS diskio interface to the uKOS-X devices
+ */
 
 #include    "types.h"
 #include    "os_errors.h"

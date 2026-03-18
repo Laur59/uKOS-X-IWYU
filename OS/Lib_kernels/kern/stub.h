@@ -1,32 +1,22 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; stub.
-; =====
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Kern - Stub management.
-;
-;           This module implements the interface with the model_kern_xyz.c_inc.
-;
-;           stub system calls
-;           -----------------
-;
-;           void    stub_kern_init(void);
-;           void    stub_kern_runKernel(void);
-;           void    stub_kern_setLowPower(uint8_t mode);
-;           void    stub_kern_setPreciseSignal(prcs_t *handle);
-;           void    stub_kern_readTickCount(uint64_t *tickCount);
-;           void    stub_kern_newProcessTimeout(void);
-;           void    stub_kern_stopProcessTimeout(void);
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Kern - Stub management.
+ *
+ *           This module implements the interface with the model_kern_xyz.c_inc.
+ *
+ *           stub system calls
+ *           -----------------
+ *
+ *           void    stub_kern_init(void) *
+ *           void    stub_kern_runKernel(void) *
+ *           void    stub_kern_setLowPower(uint8_t mode) *
+ *           void    stub_kern_setPreciseSignal(prcs_t *handle) *
+ *           void    stub_kern_readTickCount(uint64_t *tickCount) *
+ *           void    stub_kern_newProcessTimeout(void) *
+ *           void    stub_kern_stopProcessTimeout(void) *
+ */
 
 #pragma once
 

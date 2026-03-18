@@ -1,23 +1,13 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; bench.
-; ======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     System benches.
-;
-;           Launch 1 processes:
-;
-;           - P0: bench performance
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     System benches.
+ *
+ *           Launch 1 processes:
+ *
+ *           - P0: bench performance
+ */
 
 #include    "bench.h"
 

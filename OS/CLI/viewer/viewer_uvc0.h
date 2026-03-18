@@ -1,21 +1,10 @@
 /*
-; viewer_uvc0.
-; ============
-
-; SPDX-License-Identifier: MIT
-
-;------------------------------------------------------------------------
-; Author:   Laurent von Allmen      The 2026-02-04
-; Modifs:
-;
-; Project:  uKOS-X
-; Goal:     Image viewer.
-;           This tool allows to send a simulated image via the uvc0 manager.
-;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Goal:     Image viewer.
+ *           This tool allows to send a simulated image via the uvc0 manager.
+ */
 
 #pragma once
 

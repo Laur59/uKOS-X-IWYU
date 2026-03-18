@@ -1,35 +1,25 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; bench_03.
-; =========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Bench 03:   Searching for the min / max of a big square array
-;                       (50000 uint32_t) elements.
-;                       The data is located in the internal memory.
-;                       100 iteractions.
-;
-;           Target used: Nucleo_H743 @ 480-MHz
-;           Target used: Nucleo_N657 @ 600-MHz
-;           Target used: MAiXDUiNO_K210 @ 400-MHz
-;           Target used: Discovery_U5G9 @ 160-MHz
-;
-;           Bench results in [us]:
-;
-;                                       _minMax
-;           Nucleo_H743 @ 480-MHz       117
-;           Nucleo_N657 @ 600-MHz       85
-;           MAiXDUiNO_K210 @ 400-MHz    62
-;           Discovery_U5G9 @ 160-MHz    203
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Bench 03:   Searching for the min / max of a big square array
+ *                       (50000 uint32_t) elements.
+ *                       The data is located in the internal memory.
+ *                       100 iteractions.
+ *
+ *           Target used: Nucleo_H743 @ 480-MHz
+ *           Target used: Nucleo_N657 @ 600-MHz
+ *           Target used: MAiXDUiNO_K210 @ 400-MHz
+ *           Target used: Discovery_U5G9 @ 160-MHz
+ *
+ *           Bench results in [us]:
+ *
+ *                                       _minMax
+ *           Nucleo_H743 @ 480-MHz       117
+ *           Nucleo_N657 @ 600-MHz       85
+ *           MAiXDUiNO_K210 @ 400-MHz    62
+ *           Discovery_U5G9 @ 160-MHz    203
+ */
 
 #include    "bench.h"
 

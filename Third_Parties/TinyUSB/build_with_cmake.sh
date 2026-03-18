@@ -1,17 +1,9 @@
 #!/usr/bin/env zsh
-
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-
-#------------------------------------------------------------------------
-# build_with_cmake.
-# =================
-#
-# Project: uKOS-X
 #
 # Purpose:
 #   Build the TinyUSB package using CMake
-#------------------------------------------------------------------------
 
 emulate -L zsh
 setopt ERR_EXIT NO_UNSET PIPE_FAIL
@@ -35,7 +27,7 @@ readonly NC=$'\033[0m' # No Colour
 # --------
 
 readonly package=0.20.0
-readonly hash=8b59e62
+readonly hash=c1cf1ec
 
 TinyUSB_PACK="TinyUSB-current"
 

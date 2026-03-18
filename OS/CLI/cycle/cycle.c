@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; cycle.
-; ======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     cycle tool; launch a program cyclically.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     cycle tool; launch a program cyclically.
+ */
 
 #include    <stdint.h>
 #include    <stdio.h>

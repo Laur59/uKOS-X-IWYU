@@ -1,23 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; nrf5340_network_wdt.
-; ====================
-
-;------------------------------------------------------------------------
-; Author:   Generated using the .svd description    The 2025-01-01
-; Modifs:
-;
-; Project:  uKOS-X
-; Goal:     nrf5340_network_wdt equates.
-;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Generated using the .svd description
+ * Goal:     nrf5340_network_wdt equates.
+ */
 
 #pragma once
 

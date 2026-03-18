@@ -1,23 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; nrf5340_application_tad.
-; ========================
-
-;------------------------------------------------------------------------
-; Author:   Generated using the .svd description    The 2025-01-01
-; Modifs:
-;
-; Project:  uKOS-X
-; Goal:     nrf5340_application_tad equates.
-;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Generated using the .svd description
+ * Goal:     nrf5340_application_tad equates.
+ */
 
 #pragma once
 

@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
-
-/*
-; model_coredump_generic.
-; =======================
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Model for the core dump (generic).
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Goal:     Model for the core dump (generic).
+ */
 
 #include    <stdint.h>
 
@@ -79,7 +69,7 @@ static  void    __attribute__ ((noinline)) local_printFunction(uintptr_t pc, con
         cmns_send(KDEF0, "Routine:      "); cmns_send(KDEF0, functionName); cmns_send(KDEF0, "\n");
     }
 
-    #if (defined(NO_KERNEL_S))
+    #ifdef NO_KERNEL_S
     cmns_send(KDEF0, "No uKOS-X uKernel\n");
 
     #else

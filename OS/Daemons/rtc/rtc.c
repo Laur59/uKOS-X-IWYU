@@ -1,21 +1,11 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; rtc.
-; ====
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     rtc daemon; Update the Unix time Timer value
-;           with a precise RTC one
-;           every 2h the Unix time Timer is updated from the RTC.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     rtc daemon; Update the Unix time Timer value
+ *           with a precise RTC one
+ *           every 2h the Unix time Timer is updated from the RTC.
+ */
 
 #include    <stdint.h>
 #include    <stdlib.h>

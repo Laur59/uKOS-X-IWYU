@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; viewer.
-; =======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Image viewer.
-;           This tool allows to send an image via the xfer manager.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Image viewer.
+ *           This tool allows to send an image via the xfer manager.
+ */
 
 #include    <stdint.h>
 #include    <stdio.h>

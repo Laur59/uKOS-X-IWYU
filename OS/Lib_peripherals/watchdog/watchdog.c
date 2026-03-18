@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; watchdog.
-; =========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     watchdog manager.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     watchdog manager.
+ */
 
 #include    "watchdog.h"
 

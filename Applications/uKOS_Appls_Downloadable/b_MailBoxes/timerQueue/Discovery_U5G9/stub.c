@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; stub.
-; =====
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Hardware specific stub.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Hardware specific stub.
+ */
 
 #include    <stdint.h>
 

@@ -1,28 +1,18 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; debug.
-; ======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Kern - Debug list management.
-;
-;           This module implements the stop list primitives.
-;
-;           Software debug system calls
-;           ---------------------------
-;
-;           void    debug_init(void);
-;           int32_t kern_stopProcess(proc_t *handle);
-;           int32_t kern_reactivateProcess(proc_t *handle);
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Kern - Debug list management.
+ *
+ *           This module implements the stop list primitives.
+ *
+ *           Software debug system calls
+ *           ---------------------------
+ *
+ *           void    debug_init(void) *
+ *           int32_t kern_stopProcess(proc_t *handle) *
+ *           int32_t kern_reactivateProcess(proc_t *handle) *
+ */
 
 #include    <stdint.h>
 

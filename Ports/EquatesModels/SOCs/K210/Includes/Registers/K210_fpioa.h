@@ -1,21 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; K210_fpioa.
-; ===========
-
-;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   K210_fpioa equates.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ *   K210_fpioa equates.
+ */
 
 #pragma once
 

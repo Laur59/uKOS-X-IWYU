@@ -3,8 +3,8 @@
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
- * uKOS-X systems – Common Linker part for Cortex-M4
- * Privileged/User support
+ * Goal:     Commun Linker description for uKOS-X systems.
+ *           Privileged / user support
  *
  *                       CODE
  * linker_stTEXT         +-----------------+

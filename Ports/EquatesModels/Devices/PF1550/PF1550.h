@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; PF1550.
-; =======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     NXP PF1550 equates.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     NXP PF1550 equates.
+ */
 
 #pragma once
 

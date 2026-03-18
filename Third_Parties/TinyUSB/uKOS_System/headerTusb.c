@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; headerTusb.
-; ===========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     header for TinyUSB library.
-;           uKOS-X interface for TibyUSB (www.tinyusb.com).
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     header for TinyUSB library.
+ *           uKOS-X interface for TibyUSB (www.tinyusb.com).
+ */
 
 #include    "macros.h"
 #include    "types.h"

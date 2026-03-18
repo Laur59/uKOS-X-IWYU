@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; headerMicroPython.
-; ==================
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     header for MicroPython library.
-;           uKOS-X interface for MicroPython (www.micropython.com).
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     header for MicroPython library.
+ *           uKOS-X interface for MicroPython (www.micropython.com).
+ */
 
 #include    "macros.h"
 #include    "types.h"

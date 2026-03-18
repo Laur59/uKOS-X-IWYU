@@ -1,40 +1,30 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; sloader.
-; ========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Motorola S1-9, S2-8, S3-7 loader.
-;           This tool allows to download a S format binary to the memory
-;           and to execute it.
-;           Here are the S format definitions:
-;
-;           - Everything is represented in ASCII.
-;
-;           - Block format:
-;               Block type:             2 chars.
-;               Length of the block:    an hex. number of 2 chars.
-;               Address:                an hex. number of 4, 6 or 8 chars.
-;               Data:                   an hex. 2n chars.
-;               Checksum:               an hex. number of 2 chars.
-;
-;           - Block type:
-;               "S1" data block for addresses coded over 16-bits
-;               "S2" data block for addresses coded over 24-bits
-;               "S3" data block for addresses coded over 32-bits
-;               "S7" end block for addresses coded over 32-bits
-;               "S8" end block for addresses coded over 24-bits
-;               "S9" end block for addresses coded over 16-bits
-;               !!! S0 & S5 are not supported but tolerated.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Motorola S1-9, S2-8, S3-7 loader.
+ *           This tool allows to download a S format binary to the memory
+ *           and to execute it.
+ *           Here are the S format definitions:
+ *
+ *           - Everything is represented in ASCII.
+ *
+ *           - Block format:
+ *               Block type:             2 chars.
+ *               Length of the block:    an hex. number of 2 chars.
+ *               Address:                an hex. number of 4, 6 or 8 chars.
+ *               Data:                   an hex. 2n chars.
+ *               Checksum:               an hex. number of 2 chars.
+ *
+ *           - Block type:
+ *               "S1" data block for addresses coded over 16-bits
+ *               "S2" data block for addresses coded over 24-bits
+ *               "S3" data block for addresses coded over 32-bits
+ *               "S7" end block for addresses coded over 32-bits
+ *               "S8" end block for addresses coded over 24-bits
+ *               "S9" end block for addresses coded over 16-bits
+ *               !!! S0 & S5 are not supported but tolerated.
+ */
 
 #include    <stdint.h>
 #include    <stdio.h>

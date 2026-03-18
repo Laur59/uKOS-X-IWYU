@@ -1,29 +1,20 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; pi.
-; ===
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           This application shows how to operate with the uKOS-X uKernel.
-;
-;           Compute Pi with the Lambert & Spigot series:
-;
-;           - Lambert algorithm:
-;           - Pi = sqrt(6 * (1/1^2 + 1/2^2 + 1/3^2 +...)
-;
-;           - Spigot algorithm:
-;           - Pi = Sum 1/16^^n * (4/(8n + 1) - 2/(8n + 4) - 1/(8n + 5) - 1/(8n + 6))
-;     - Pi = Sum 1/16^^n * (4/(8n + 1) - 2/(8n + 4) - 1/(8n + 5) - 1/(8n + 6))
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Demo of a C application.
+ * This application shows how to operate with the uKOS-X uKernel.
+ *
+ *           Compute Pi with the Lambert & Spigot series:
+ *
+ *           - Lambert algorithm:
+ *           - Pi = sqrt(6 * (1/1^2 + 1/2^2 + 1/3^2 +...)
+ *
+ *           - Spigot algorithm:
+ *           - Pi = Sum 1/16^^n * (4/(8n + 1) - 2/(8n + 4) - 1/(8n + 5) - 1/(8n + 6))
+ *     - Pi = Sum 1/16^^n * (4/(8n + 1) - 2/(8n + 4) - 1/(8n + 5) - 1/(8n + 6))
+ *
+ */
 
 #include    <math.h>
 

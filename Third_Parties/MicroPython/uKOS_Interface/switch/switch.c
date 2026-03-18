@@ -1,24 +1,14 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; switch.
-; =======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     uKOS switch interface
-;
-;           Usage:
-;           import switch
-;           mode = bytearray(1)
-;           status = switch.mode(mode)
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     uKOS switch interface
+ *
+ *           Usage:
+ *           import switch
+ *           mode = bytearray(1)
+ *           status = switch.mode(mode)
+ */
 
 #include    "types.h"
 #include    "switch/switch.h"

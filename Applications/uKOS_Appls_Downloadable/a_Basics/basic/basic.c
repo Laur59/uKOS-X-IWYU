@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; basic.
-; ======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           This application shows how to operate with the uKOS-X uKernel.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Demo of a C application.
+ * This application shows how to operate with the uKOS-X uKernel.
+ */
 
 #define P0_PERIOD 1000U
 #define P1_PERIOD 1000U
@@ -97,7 +87,7 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 #endif
@@ -110,7 +100,7 @@ MODULE(
  *
  */
 static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
-    int32_t     cpt = 0u;
+    int32_t     cpt = 0U;
 
     UNUSED(argument);
 
@@ -130,7 +120,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
-    int32_t     cpt = 0u;
+    int32_t     cpt = 0U;
 
     UNUSED(argument);
 

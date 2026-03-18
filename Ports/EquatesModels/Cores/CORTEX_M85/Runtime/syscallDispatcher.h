@@ -1,21 +1,10 @@
 /*
-; syscallDispatcher.
-; ==================
-
-; SPDX-License-Identifier: MIT
-
-;------------------------------------------------------------------------
-; Author:   Edo. Franzi     The 2025-01-01
-; Modifs:
-;
-; Project:  uKOS-X
-; Goal:     Syscall dispatcher.
-;               - uKernel messages
-;               - privilege elevation
-;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
-;------------------------------------------------------------------------
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Syscall dispatcher.
+ *               - uKernel messages
+ *               - manager system calls
 */
 
 #pragma once

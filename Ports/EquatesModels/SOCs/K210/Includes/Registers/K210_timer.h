@@ -1,21 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; K210_timer.
-; ===========
-
-;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   K210_timer equates.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ *   K210_timer equates.
+ */
 
 #pragma once
 

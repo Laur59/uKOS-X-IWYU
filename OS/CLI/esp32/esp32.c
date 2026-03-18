@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; esp32.
-; ======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     This tool allows to control the ESP32 Alastor chip.
-;           !!! This tool is Alastor specific.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     This tool allows to control the ESP32 Alastor chip.
+ *           !!! This tool is Alastor specific.
+ */
 
 #include    <stdint.h>
 #include    <stdio.h>

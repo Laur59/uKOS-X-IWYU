@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; i2c2.
-; =====
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     i2c2 manager.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     i2c2 manager.
+ */
 
 #pragma once
 

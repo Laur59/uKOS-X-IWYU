@@ -1,21 +1,11 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; private_xLibrary.
-; =================
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Kern - impure data for xLibrary (newlib, picolib, etc.) management.
-;
-;           Private uKernel variables.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Kern - C library integration for xLibrary (newlib, picolib, etc.) management.
+ *
+ *           Private uKernel variables.
+ */
 
 #pragma once
 

@@ -1,21 +1,11 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; private_record.
-; ===============
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     record manager.
-;
-;           Private record variables.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     record manager.
+ *
+ *           Private record variables.
+ */
 
 #pragma once
 

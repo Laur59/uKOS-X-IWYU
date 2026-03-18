@@ -1,21 +1,11 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
-
-/*
-; stub_startUp.
-; =============
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     startUp process; execute some important initialisations
-;           before jumping to the selected function.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Goal:     startUp process; execute some important initialisations
+ *           before jumping to the selected function.
+ */
 
 #include    "startUp/startUp.h"
 

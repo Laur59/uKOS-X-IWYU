@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; queue.
-; ======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           This application shows how to operate with the uKOS-X uKernel.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Demo of a C application.
+ * This application shows how to operate with the uKOS-X uKernel.
+ */
 
 /*!
  * \file
@@ -25,7 +15,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  *
  *          - P0: Create a mailbox "Queue 1-to-0"
  *                Read and display the messages coming from the queue
- *                Toggle LED 1
+ *                Toggle LED 1 with decimation
  *
  *          - P1: Get the mailbox "Queue 1-to-0" handle
  *                Every 10-ms
@@ -93,7 +83,7 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 #endif
@@ -107,12 +97,13 @@ MODULE(
  *
  */
 static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
-    uintptr_t   message_1_to_0, expected_1_to_0 = 0u;
+    uintptr_t   message_1_to_0, expected_1_to_0 = 0U;
     mbox_t      *queue_1_to_0;
     mcnf_t      configure = {
-                    .oNbMaxPacks = 10u,
-                    .oDataEntrySize = 0u
+                    .oNbMaxPacks = 10U,
+                    .oDataEntrySize = 0U
             };
+    uint32_t ledDecimationCounter = 0U;
 
     UNUSED(argument);
 
@@ -124,7 +115,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 // Receive the message (if FIFO is not empty)
 // Display the message
 
-        if (kern_readQueue(queue_1_to_0, &message_1_to_0, 100u) == KERR_KERN_TIMEO) {
+        if (kern_readQueue(queue_1_to_0, &message_1_to_0, 100U) == KERR_KERN_TIMEO) {
             LOG(KFATAL_USER, "Timeout read mbox");
             exit(EXIT_OS_FAILURE);
         }
@@ -136,7 +127,11 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 
         expected_1_to_0++;
         (void)dprintf(KSYST, "Message = %"PRIu32"\n", (uint32_t)message_1_to_0);
-        led_toggle(KLED_1);
+        ledDecimationCounter++;
+        if (ledDecimationCounter == 100U) {
+            led_toggle(KLED_1);
+            ledDecimationCounter = 0U;
+        }
     }
 }
 
@@ -156,14 +151,14 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 
 // Waiting for the queue 1-to-0
 
-    while (kern_getMailboxById("Queue 1-to-0", &queue_1_to_0) != KERR_KERN_NOERR) { kern_suspendProcess(1u); }
+    while (kern_getMailboxById("Queue 1-to-0", &queue_1_to_0) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
 
     while (true) {
-        kern_suspendProcess(10u);
+        kern_suspendProcess(10U);
 
 // Send a the message (if FIFO is not full)
 
-        if (kern_writeQueue(queue_1_to_0, message_1_to_0, 100u) == KERR_KERN_TIMEO) {
+        if (kern_writeQueue(queue_1_to_0, message_1_to_0, 100U) == KERR_KERN_TIMEO) {
             LOG(KFATAL_USER, "mbox full");
             exit(EXIT_OS_FAILURE);
         }

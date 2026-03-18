@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; ticTac.
-; =======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           This application shows how to operate with the uKOS-X uKernel.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Demo of a C application.
+ * This application shows how to operate with the uKOS-X uKernel.
+ */
 
 /*!
  * \file
@@ -97,7 +87,7 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 #endif
@@ -117,7 +107,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
     UNUSED(argument);
 
     while (true) {
-        kern_suspendProcess(1000u);
+        kern_suspendProcess(1000U);
         kern_readTickCount(&time[0]);
         led_toggle(KLED_1);
         kern_readTickCount(&time[1]);
@@ -137,12 +127,12 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  */
 static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
     uint64_t    time[2];
-    uint32_t    delta = 0u;
+    uint32_t    delta = 0U;
 
     UNUSED(argument);
 
     while (true) {
-        kern_suspendProcess(200u);
+        kern_suspendProcess(200U);
 
         kern_readTickCount(&time[0]);
         (void)dprintf(KSYST, "dprintf time_1 %"PRIu32" [us]\n", delta);
@@ -170,7 +160,7 @@ static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
     system_getFamilyId(&family);
 
     while (true) {
-        kern_suspendProcess(350u);
+        kern_suspendProcess(350U);
 
         (void)dprintf(KSYST, "Machine = %s cpt = %"PRIu32"  %s\n", family, cpt++, identifier);
     }

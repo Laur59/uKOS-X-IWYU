@@ -1,22 +1,12 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
-
-/*
-; macros_core_stackFrame.
-; =======================
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Stack frame management macros.
-;           This file conains the most sensitive macros
-;           for the uKernel management
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Goal:     Stack frame management macros.
+ *           This file conains the most sensitive macros
+ *           for the uKernel management
+ */
 
 #pragma once
 
@@ -42,6 +32,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #endif
 
 #ifndef CHECK_STACK_SANITY
+extern              proc_t  *vKern_runProc[KNB_CORES];
 #define CHECK_STACK_SANITY(core)                                                                                                \
                                 if ((vKern_runProc[core]->oInternal.oState != 0U) &&                                            \
                                     ((vKern_runProc[core]->oInternal.oState & (1U<<BPROC_FIRST)) == 0U)) {                      \

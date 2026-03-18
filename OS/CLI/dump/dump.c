@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; dump.
-; =====
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     This tool allows to dump a memory area.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     This tool allows to dump a memory area.
+ */
 
 #include    <stdint.h>
 #include    <stdio.h>

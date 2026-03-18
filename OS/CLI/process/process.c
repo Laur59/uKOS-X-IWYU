@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; process.
-; ========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     List the installed processes.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     List the installed processes.
+ */
 
 #include    <inttypes.h>
 #include    <stdio.h>

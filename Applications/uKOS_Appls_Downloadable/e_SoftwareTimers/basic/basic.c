@@ -1,22 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; basic.
-; ======
-
-;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           This application shows how to operate with the uKOS-X uKernel.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Demo of a C application.
+ * This application shows how to operate with the uKOS-X uKernel.
+ */
 
 /*!
  * \file
@@ -91,7 +79,7 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 #endif
@@ -116,20 +104,20 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
                     uint32_t    time;
                     tspc_t      configure_0, configure_1;
                     stim_t      *softwareTimer_0, *softwareTimer_1;
-    static  const   uint32_t    argument_0[2] = { 0u }, argument_1[2] = { 1u };
+    static  const   uint32_t    argument_0[2] = { 0U }, argument_1[2] = { 1U };
 
     UNUSED(argument);
 
 
     configure_0.oMode        = KSTIM_SINGLE_SHOT;
-    configure_0.oInitialTime = 200u;
-    configure_0.oTime        = 1234u;
+    configure_0.oInitialTime = 200U;
+    configure_0.oTime        = 1234U;
     configure_0.oCode        = local_changeStateLed;
     configure_0.oArgument    = &argument_0[0];
 
     configure_1.oMode        = KSTIM_CONTINUOUS;
-    configure_1.oInitialTime = 1345u;
-    configure_1.oTime        = 34u;
+    configure_1.oInitialTime = 1345U;
+    configure_1.oTime        = 34U;
     configure_1.oCode        = local_changeStateLed;
     configure_1.oArgument    = &argument_1[0];
 
@@ -143,7 +131,7 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
         exit(EXIT_OS_FAILURE);
     }
 
-    kern_suspendProcess(3900u);
+    kern_suspendProcess(3900U);
 
 // Start the timer 1 in one shot mode
 
@@ -155,8 +143,8 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
 // Restart the timer 0 in continue mode
 
     configure_0.oMode        = KSTIM_CONTINUOUS;
-    configure_0.oInitialTime = 200u;
-    configure_0.oTime        = 56u;
+    configure_0.oInitialTime = 200U;
+    configure_0.oTime        = 56U;
     configure_0.oCode        = local_changeStateLed;
     configure_0.oArgument    = &argument_0[0];
     if (kern_setSoftwareTimer(softwareTimer_0, &configure_0) != KERR_KERN_NOERR) {
@@ -166,14 +154,14 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
 
 // Forever
 
-    time = 50u;
-    kern_suspendProcess(1000u);
+    time = 50U;
+    kern_suspendProcess(1000U);
     while (true) {
-        kern_suspendProcess(2000u);
+        kern_suspendProcess(2000U);
 
-        time = (time > 5000u) ? (50u) : (time + 200u);
+        time = (time > 5000U) ? (50U) : (time + 200U);
         configure_0.oMode        = KSTIM_CONTINUOUS;
-        configure_0.oInitialTime = 0u;
+        configure_0.oInitialTime = 0U;
         configure_0.oTime        = time;
         configure_0.oCode        = local_changeStateLed;
         configure_0.oArgument    = &argument_0[0];
@@ -193,7 +181,7 @@ static  void    local_changeStateLed(const void *argument) {
     const   uint32_t    *pack;
 
     pack = (const uint32_t *)argument;
-    led = *pack;
+    led = *pack + 1;
     led_toggle((uint8_t)led);
 }
 

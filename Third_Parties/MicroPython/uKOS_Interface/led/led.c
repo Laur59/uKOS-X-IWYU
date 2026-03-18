@@ -1,23 +1,13 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; led.
-; ====
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     uKOS led interface
-;
-;           Usage:
-;           import led
-;           status = led.led(led_number, led_state)
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     uKOS led interface
+ *
+ *           Usage:
+ *           import led
+ *           status = led.led(led_number, led_state)
+ */
 
 #include    "types.h"
 #include    "led/led.h"

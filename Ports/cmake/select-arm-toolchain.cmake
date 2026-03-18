@@ -1,14 +1,7 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-
-# select-arm-toolchain.
-# =====================
-
-#------------------------------------------------------------------------
-# Project:  uKOS-X
-# Goal:     Selecting toolchain to build kernel and os
 #
-#------------------------------------------------------------------------
+# Selecting toolchain to build kernel and os
 
 # Get the parent directory of the current file
 cmake_path(GET CMAKE_CURRENT_LIST_FILE PARENT_PATH mkfiles_cmake_path)

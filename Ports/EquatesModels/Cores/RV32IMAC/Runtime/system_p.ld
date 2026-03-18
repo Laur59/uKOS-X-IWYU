@@ -1,40 +1,32 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
-
-/*
-; system_p.
-; =========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Commun Linker description for uKOS-X systems.
-;           Privileged only support
-;
-;                       CODE
-; linker_stTEXT         +-----------------+
-;                       |                 |
-;                       | .restart        |
-;                       | .vectors        |
-;                       | .text           |
-;                       | .rodata         |
-; linker_enRODATA       |                 |
-;                       +-----------------+
-; linker_stSignature    |                 |             DATA
-;                       +-----------------+ ........... +-----------------+ linker_stDATA
-; linker_stINDATA       |                 |             |                 |
-;                       | .data           |             | .data           |
-;                       |                 |             |                 | linker_enDATA
-;                       +-----------------+ ........... +-----------------+
-;                                                       |                 | linker_stBSS
-;                                                       | .bss            |
-;                                                       | COMMON          |
-;                                                       |                 | linker_enBSS
-;                                                       +-----------------+
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Goal:     Commun Linker description for uKOS-X systems.
+ *           Privileged only support
+ *
+ *                       CODE
+ * linker_stTEXT         +-----------------+
+ *                       |                 |
+ *                       | .restart        |
+ *                       | .vectors        |
+ *                       | .text           |
+ *                       | .rodata         |
+ * linker_enRODATA       |                 |
+ *                       +-----------------+
+ * linker_stSignature    |                 |             DATA
+ *                       +-----------------+ ........... +-----------------+ linker_stDATA
+ * linker_stINDATA       |                 |             |                 |
+ *                       | .data           |             | .data           |
+ *                       |                 |             |                 | linker_enDATA
+ *                       +-----------------+ ........... +-----------------+
+ *                                                       |                 | linker_stBSS
+ *                                                       | .bss            |
+ *                                                       | COMMON          |
+ *                                                       |                 | linker_enBSS
+ *                                                       +-----------------+
+ */
 
 SECTIONS {
     .text : {

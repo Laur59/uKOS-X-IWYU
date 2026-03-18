@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; test_sdcard.
-; ============
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     sdcard R/W tests.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     sdcard R/W tests.
+ */
 
 #include    <inttypes.h>
 #include    <stdio.h>

@@ -1,39 +1,29 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
-
-/*
-; crt0.
-; =====
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     crt0 for the uKOS-X system.
-;           Privileged only support
-;
-;                       CODE
-; linker_stTEXT         +-----------------+
-;                       |                 |
-;                       | .isr_vector     |
-;                       | .text           |
-;                       | .rodata         |
-; linker_enRODATA       |                 |                   DATA
-;                       +-----------------+ ........... +-----------------+ linker_stDATA
-; linker_stINDATA       |                 |             |                 |
-;                       | .data           |             | .data           |
-;                       |                 |             |                 | linker_enDATA
-;                       +-----------------+ ........... +-----------------+
-; linker_stSignature    |                 |             |                 | linker_stBSS
-;                       +-----------------+             | .bss            |
-;                                                       | COMMON          |
-;                                                       |                 | linker_enBSS
-;                                                       +-----------------+
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Goal:     crt0 for the uKOS-X system.
+ *           Privileged only support
+ *
+ *                       CODE
+ * linker_stTEXT         +-----------------+
+ *                       |                 |
+ *                       | .isr_vector     |
+ *                       | .text           |
+ *                       | .rodata         |
+ * linker_enRODATA       |                 |                   DATA
+ *                       +-----------------+ ........... +-----------------+ linker_stDATA
+ * linker_stINDATA       |                 |             |                 |
+ *                       | .data           |             | .data           |
+ *                       |                 |             |                 | linker_enDATA
+ *                       +-----------------+ ........... +-----------------+
+ * linker_stSignature    |                 |             |                 | linker_stBSS
+ *                       +-----------------+             | .bss            |
+ *                                                       | COMMON          |
+ *                                                       |                 | linker_enBSS
+ *                                                       +-----------------+
+ */
 
 #include    "crt0.h"
 

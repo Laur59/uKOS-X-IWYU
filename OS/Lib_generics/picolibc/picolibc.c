@@ -1,28 +1,16 @@
 /*
-; picolibc.
-; =========
-
-; SPDX-License-Identifier: MIT
-; SPDX-FileCopyrightText: 2026 Laurent von Allmen
-
-;------------------------------------------------------------------------
-; Author:   Laurent von Allmen  The 2026-01-18
-; Modifs:
-;
-; Project:  uKOS-X
-; Goal:     picolibc interface for modern C compilers (GCC 14+, Clang 21+).
-;
-;           This module provides the integration layer between picolibc
-;           and uKOS-X kernel services. It implements:
-;           - Custom per-process errno mechanism
-;           - I/O redirection to serial device managers
-;           - Memory allocation wrapping to uKOS-X memo_malloc
-;           - System call implementations
-;
-;   (c) 2026, Laurent von Allmen
-;   ----------------------------
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2026 Laurent von Allmen
+ *
+ * Goal:     picolibc interface for modern C compilers (GCC 14+, Clang 21+).
+ *
+ *           This module provides the integration layer between picolibc
+ *           and uKOS-X kernel services. It implements:
+ *           - Custom per-process errno mechanism
+ *           - I/O redirection to serial device managers
+ *           - Memory allocation wrapping to uKOS-X memo_malloc
+ *           - System call implementations
+ */
 
 /*
  * CRITICAL: Include picolibc.h FIRST to define custom errno function

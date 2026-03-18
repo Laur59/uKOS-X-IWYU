@@ -1,24 +1,14 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
-
-/*
-; init.
-; =====
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Low level init for the uKOS-X Asmodee_H747 module.
-;
-;           !!! This code HAS not to contain static data.
-;           !!! It is called before to copy and to initialise
-;           !!! the variable into the RAM.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Goal:     Low level init for the uKOS-X Asmodee_H747 module.
+ *
+ *           !!! This code HAS not to contain static data.
+ *           !!! It is called before to copy and to initialise
+ *           !!! the variable into the RAM.
+ */
 
 #include    "init.h"
 

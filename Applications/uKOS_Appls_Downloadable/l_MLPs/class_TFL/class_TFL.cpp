@@ -1,56 +1,16 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; class_TFL.
-; ==========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           This application shows how to operate with the uKOS-X uKernel.
-;
-;           Launch 1 processes in C++:
-;
-;           - P0: Every 1000-ms
-;                 Compute the inference
-;                 Display the classes
-;
-;-----
-;                                              __ ______  _____
-;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
-;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
-;   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
-;                                     \__,_/_/ |_\____//____/
-;   edo.franzi@ukos.ch
-;
-;   Description: Lightweight, real-time multitasking operating
-;   system for embedded microcontroller and DSP-based systems.
-;
-;   Permission is hereby granted, free of charge, to any person
-;   obtaining a copy of this software and associated documentation
-;   files (the "Software"), to deal in the Software without restriction,
-;   including without limitation the rights to use, copy, modify,
-;   merge, publish, distribute, sublicense, and/or sell copies of the
-;   Software, and to permit persons to whom the Software is furnished
-;   to do so, subject to the following conditions:
-;
-;   The above copyright notice and this permission notice shall be
-;   included in all copies or substantial portions of the Software.
-;
-;   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-;   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-;   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-;   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
-;   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-;   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-;   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-;   SOFTWARE.
-;
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Demo of a C application.
+ * This application shows how to operate with the uKOS-X uKernel.
+ *
+ *           Launch 1 processes in C++:
+ *
+ *           - P0: Every 1000-ms
+ *                 Compute the inference
+ *                 Display the classes
+ */
 
 /*!
  * \file
@@ -99,7 +59,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 #include    "tensorflow/lite/micro/system_setup.h"
 #include    "tensorflow/lite/schema/schema_generated.h"
 
-#if (defined(CORTEX))
+#ifdef CORTEX
 #include    "tensorflow/lite/micro/cortex_m_generic/debug_log_callback.h"
 #endif
 
@@ -150,7 +110,7 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 #endif
@@ -173,7 +133,7 @@ namespace {
     }
 }
 
-#if (defined(RISCV))
+#ifdef RISCV
 extern "C"  char_t  putchar_(char_t ch) {
 
     UNUSED(ch);
@@ -205,7 +165,7 @@ namespace {
                 TfLiteTensor    *input;
                 TfLiteTensor    *output;
                 uint64_t        time[2];
-                uint32_t        random[2], delta = 0u;
+                uint32_t        random[2], delta = 0U;
                 float32_t       x, y;
         const   float32_t       gain = 2.0f;
         const   char_t          *result;
@@ -217,7 +177,7 @@ namespace {
         #endif
 
         while (true) {
-            kern_suspendProcess(1000u);
+            kern_suspendProcess(1000U);
             led_toggle(KLED_1);
 
 // Load the TFLite model

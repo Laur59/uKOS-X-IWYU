@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; help.
-; =====
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     uKOS help
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     uKOS help
+ */
 
 #include    "py/builtin.h"
 

@@ -1,17 +1,9 @@
 #!/usr/bin/env bash
-
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-
-#------------------------------------------------------------------------
-# build.
-# ======
-#
-# Project: uKOS-X
 #
 # Purpose:
 #   Build the MicroPython package and the libMicroPython.a (including the uKOS interface)
-#------------------------------------------------------------------------
 
 emulate -L zsh
 setopt ERR_EXIT NO_UNSET PIPE_FAIL

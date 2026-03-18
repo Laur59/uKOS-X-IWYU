@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; macros_runtime.
-; ===============
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Important runtime macros.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Important runtime macros.
+ */
 
 #pragma once
 

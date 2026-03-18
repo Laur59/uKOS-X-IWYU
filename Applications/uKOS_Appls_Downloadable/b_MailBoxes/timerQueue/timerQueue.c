@@ -1,22 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; timerQueue.
-; ===========
-
-;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           This application shows how to operate with the uKOS-X uKernel.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Demo of a C application.
+ * This application shows how to operate with the uKOS-X uKernel.
+ */
 
 /*!
  * \file
@@ -98,7 +86,7 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 #endif
@@ -120,13 +108,14 @@ extern  void    stub_intr_timer_init(void);
  *
  */
 static void __attribute__ ((noreturn)) aProcess(const void *argument) {
-    uintptr_t   counter = 0u, expectedCounter = 0u;
+    uintptr_t   counter = 0U, expectedCounter = 0U;
     int32_t     status;
     mbox_t      *queue;
     mcnf_t      configure = {
-                    .oNbMaxPacks = 10u,
-                    .oDataEntrySize = 0u
+                    .oNbMaxPacks = 10U,
+                    .oDataEntrySize = 0U
                 };
+    uint32_t ledDecimationCounter = 0U;
 
     UNUSED(argument);
 
@@ -154,7 +143,7 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
     }
 
     while (true) {
-        status = kern_readQueue(queue, &counter, 1000u);
+        status = kern_readQueue(queue, &counter, 1000U);
         if (status == KERR_KERN_TIMEO) {
             (void)dprintf(KSYST, "Timeout Error Mailbox\n");
         }
@@ -170,8 +159,11 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
             }
 
         }
-        record_trace("Test 2", 1u);
-        led_toggle(KLED_1);
+        record_trace("Test 2", 1);
+        if (ledDecimationCounter++ == 100U) {
+            led_toggle(KLED_1);
+            ledDecimationCounter = 0U;
+        }
     }
 }
 

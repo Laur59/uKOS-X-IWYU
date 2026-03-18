@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; headerIntelRDFPMath.
-; ====================
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     header for IntelRDFPMath library.
-;           uKOS-X interface for IntelRDFPMath.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     header for IntelRDFPMath library.
+ *           uKOS-X interface for IntelRDFPMath.
+ */
 
 #include    "macros.h"
 #include    "types.h"

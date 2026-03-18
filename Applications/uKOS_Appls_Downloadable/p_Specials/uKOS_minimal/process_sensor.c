@@ -1,21 +1,11 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; process_sensor.
-; ===============
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Process: sensor.
-;           - Every 100-ms
-;               Send a new value to the dispatcher
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ *     Process: sensor.
+ *     - Every 100-ms
+ *         Send a new value to the dispatcher
+ */
 
 #include    <stdint.h>
 #include    <stdlib.h>

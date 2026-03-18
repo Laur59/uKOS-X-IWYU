@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; serial_commun.
-; ==============
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     serial_commun equates.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     serial_commun equates.
+ */
 
 #pragma once
 

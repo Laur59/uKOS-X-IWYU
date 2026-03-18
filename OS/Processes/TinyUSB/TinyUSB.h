@@ -1,20 +1,9 @@
 /*
-; TinyUSB.
-; ========
-
-; SPDX-License-Identifier: MIT
-
-;------------------------------------------------------------------------
-; Author:   Laurent von Allmen      The 2026-02-02
-; Modifs:
-;
-; Project:  uKOS-X
-; Goal:     "TinyUSB" management.
-;
-;   (c) 2025-2026, Laurent von Allmen
-;   ---------------------------------
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Goal:     "TinyUSB" management.
+ */
 
 #pragma once
 

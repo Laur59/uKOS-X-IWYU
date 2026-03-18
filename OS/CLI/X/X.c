@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; X.
-; ==
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Control the temperature.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Control the temperature.
+ */
 
 #include    <stdint.h>
 #include    <stdio.h>
