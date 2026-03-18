@@ -1,21 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; K210_dmac.
-; ==========
-
-;------------------------------------------------------------------------
-; Project: uKOS-X
-;
-; Purpose:
-;   K210_dmac equates.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ *   K210_dmac equates.
+ */
 
 #pragma once
 
@@ -174,7 +162,7 @@ typedef struct  _damc_chen {
     uint64_t    rsvd7        : 16;                                  //
 } __attribute__ ((packed, aligned (8))) damc_chen_t;
 
-typedef union   _dmac_chen_U {
+typedef union   _dmac_chen_u {
     damc_chen_t     dmac_chen;                                      //
     uint64_t        data;                                           //
 } dmac_chen_u_t;
@@ -188,7 +176,7 @@ typedef struct  _dmac_cfg {
     uint64_t    rsvd    : 62;                                       //
 } __attribute__ ((packed, aligned (8))) dmac_cfg_t;
 
-typedef union   _dmac_cfg_U {
+typedef union   _dmac_cfg_u {
     dmac_cfg_t  cfg;                                                //
     uint64_t    data;                                               //
 } dmac_cfg_u_t;
@@ -227,7 +215,7 @@ typedef struct  _dmac_ch_ctl {
     uint64_t    shadowreg_or_lli_valid : 1;                         //
 } __attribute__ ((packed, aligned (8))) dmac_ch_ctl_t;
 
-typedef union   _dmac_ch_ctl_U {
+typedef union   _dmac_ch_ctl_u {
     dmac_ch_ctl_t   ch_ctl;                                         //
     uint64_t        data;                                           //
 } dmac_ch_ctl_u_t;
@@ -255,7 +243,7 @@ typedef struct  _dmac_ch_cfg {
     uint64_t    dst_osr_lmt      : 4;                               //
 } __attribute__ ((packed, aligned (8))) dmac_ch_cfg_t;
 
-typedef union   _dmac_ch_cfg_U {
+typedef union   _dmac_ch_cfg_u {
     dmac_ch_cfg_t   ch_cfg;                                         //
     uint64_t        data;                                           //
 } dmac_ch_cfg_u_t;

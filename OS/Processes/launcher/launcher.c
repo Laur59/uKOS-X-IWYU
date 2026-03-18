@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; launcher.
-; =========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     launcher process; launch all the defined daemon & processes.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     launcher process; launch all the defined daemon & processes.
+ */
 
 #include    <stdint.h>
 #include    <stdlib.h>

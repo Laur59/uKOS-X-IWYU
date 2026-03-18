@@ -1,40 +1,31 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
-
-/*
-; link_p.
-; =======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Linker description for the uKOS-X system.
-;           Privileged only support
-;
-;                       CODE
-; linker_stTEXT         +-----------------+
-;                       |                 |
-;                       | .restart        |
-;                       | .vectors        |
-;                       | .text           |
-;                       | .rodata         |
-; linker_enRODATA       |                 |
-;                       +-----------------+
-; linker_stSignature    |                 |             DATA
-;                       +-----------------+ ........... +-----------------+ linker_stDATA
-; linker_stINDATA       |                 |             |                 |
-;                       | .data           |             | .data           |
-;                       |                 |             |                 | linker_enDATA
-;                       +-----------------+ ........... +-----------------+
-;                                                       |                 | linker_stBSS
-;                                                       | .bss            |
-;                                                       | COMMON          |
-;                                                       |                 | linker_enBSS
-;                                                       +-----------------+
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Longan_Nano_F103 – Linker memory regions, privileged-only mode.
+ *
+ *                       CODE
+ * linker_stTEXT         +-----------------+
+ *                       |                 |
+ *                       | .restart        |
+ *                       | .vectors        |
+ *                       | .text           |
+ *                       | .rodata         |
+ * linker_enRODATA       |                 |
+ *                       +-----------------+
+ * linker_stSignature    |                 |             DATA
+ *                       +-----------------+ ........... +-----------------+ linker_stDATA
+ * linker_stINDATA       |                 |             |                 |
+ *                       | .data           |             | .data           |
+ *                       |                 |             |                 | linker_enDATA
+ *                       +-----------------+ ........... +-----------------+
+ *                                                       |                 | linker_stBSS
+ *                                                       | .bss            |
+ *                                                       | COMMON          |
+ *                                                       |                 | linker_enBSS
+ *                                                       +-----------------+
+ */
 
 OUTPUT_ARCH( "riscv" )
 ENTRY(Reset_C0_Handler)

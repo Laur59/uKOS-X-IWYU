@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; MT9V03x.
-; ========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Aptina MT9V03x imager equates.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Aptina MT9V03x imager equates.
+ */
 
 #pragma once
 

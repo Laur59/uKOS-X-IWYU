@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
-
-/*
-; stub_urt0_uarte1.
-; =================
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     stub for the connection of the "urt0" manager to the uarte1 device.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Goal:     stub for the connection of the "urt0" manager to the uarte1 device.
+ */
 
 #include    "Registers/soc_vectors_application.h"  // for SERIAL1_C0_IRQn
 #include    "macros_core.h"                        // for REG

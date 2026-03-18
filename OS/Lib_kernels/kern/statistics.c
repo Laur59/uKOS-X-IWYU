@@ -1,22 +1,12 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; statistics.
-; ===========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Kern - Statistic management.
-;
-;           This module is responsible for computing the statistic of
-;           the uKernel.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Kern - Statistic management.
+ *
+ *           This module is responsible for computing the statistic of
+ *           the uKernel.
+ */
 
 #include    "statistics.h"
 

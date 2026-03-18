@@ -1,60 +1,48 @@
 /*
-; picolibc.
-; =========
-
-; SPDX-License-Identifier: MIT
-; SPDX-FileCopyrightText: 2026 Laurent von Allmen
-
-;------------------------------------------------------------------------
-; Author:   Laurent von Allmen  The 2026-01-18
-; Modifs:
-;
-; Project:  uKOS-X
-; Goal:     picolibc interface for modern C compilers (GCC 14+, Clang 21+).
-;
-;           See: https://github.com/picolibc/picolibc
-;
-;           Fully or partially supported functions to support
-;
-;           Open - close - read - write functions (non-reentrant)
-;           _open
-;           _close
-;           _write
-;           _read
-;
-;           time/calendar functions
-;           _gettimeofday
-;           _times
-;
-;           Generic functions
-;           _isatty
-;           _exit
-;           _fstat
-;           _lseek
-;           _getpid
-;           _kill
-;
-;           Allocator functions (wrapped via linker)
-;           __wrap_malloc
-;           __wrap_free
-;           __wrap_realloc
-;           __wrap_calloc
-;
-;           Custom errno function
-;           __ukos_get_errno
-;
-;           Supported devices controlled by open - close - read - write functions
-;           urt0 - urt4: UART serial devices
-;           cdc0 - cdc1: USB CDC devices
-;           wfi0: WiFi device
-;           syst: System device
-;           def0: Default device
-;           stdin, stdout, stderr: Standard I/O streams
-;
-;   (c) 2026, Laurent von Allmen
-;   ----------------------------
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2026 Laurent von Allmen
+ *
+ * Goal:     picolibc interface for modern C compilers (GCC 14+, Clang 21+).
+ *
+ *           See: https://github.com/picolibc/picolibc
+ *
+ *           Fully or partially supported functions to support
+ *
+ *           Open - close - read - write functions (non-reentrant)
+ *           _open
+ *           _close
+ *           _write
+ *           _read
+ *
+ *           time/calendar functions
+ *           _gettimeofday
+ *           _times
+ *
+ *           Generic functions
+ *           _isatty
+ *           _exit
+ *           _fstat
+ *           _lseek
+ *           _getpid
+ *           _kill
+ *
+ *           Allocator functions (wrapped via linker)
+ *           __wrap_malloc
+ *           __wrap_free
+ *           __wrap_realloc
+ *           __wrap_calloc
+ *
+ *           Custom errno function
+ *           __ukos_get_errno
+ *
+ *           Supported devices controlled by open - close - read - write functions
+ *           urt0 - urt4: UART serial devices
+ *           cdc0 - cdc1: USB CDC devices
+ *           wfi0: WiFi device
+ *           syst: System device
+ *           def0: Default device
+ *           stdin, stdout, stderr: Standard I/O streams
+ */
 
 #ifndef PICOLIBC_H_
 #define PICOLIBC_H_

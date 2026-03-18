@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; date.
-; =====
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     This tool allows to display the date based on the
-;           system Unix time.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     This tool allows to display the date based on the
+ *           system Unix time.
+ */
 
 #include    <inttypes.h>
 #include    <stdio.h>

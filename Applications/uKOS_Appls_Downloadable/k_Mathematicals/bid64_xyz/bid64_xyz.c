@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; bid64_xyz.
-; ==========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           This application shows how to operate with the uKOS-X uKernel.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Demo of a C application.
+ * This application shows how to operate with the uKOS-X uKernel.
+ */
 
 /*!
  * \file
@@ -94,7 +84,7 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 #endif
@@ -108,8 +98,8 @@ static  char_t      *vN2 = "1.747470e+4";
 static  char_t      *vZe = "00000000000";
 static  decContext  vSet;
 
-#define KDIGIT_PRECISION    16u         // 16 digits for decimal 64-bits
-#define KNO_TRAP            0u          // No trap
+#define KDIGIT_PRECISION    16U         // 16 digits for decimal 64-bits
+#define KNO_TRAP            0U          // No trap
 
 // Prototypes
 
@@ -130,7 +120,7 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
 
     UNUSED(argument);
 
-    kern_suspendProcess(1000u);
+    kern_suspendProcess(1000U);
     (void)dprintf(KSYST, "\n");
 
     decContextDefault(&vSet, DEC_INIT_DECIMAL64);
@@ -170,7 +160,7 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
 
     (void)dprintf(KSYST, "%s div %s = %s\n\n", vN1, vZe, vResult);
 
-    kern_suspendProcess(1000u);
+    kern_suspendProcess(1000U);
     exit(EXIT_OS_SUCCESS);
 }
 
@@ -223,7 +213,7 @@ MAIN_ENTRY(argc, argv[]) {
  */
 static  void    local_printStatus(decContext set) {
 
-    if ((set.status & DEC_Errors) == 0u) { return; }
+    if ((set.status & DEC_Errors) == 0U) { return; }
 
     set.status &= DEC_Errors;
 

@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; soc_addendum_CM7.
-; =================
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     addendum equates.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     addendum equates.
+ */
 
 #pragma once
 

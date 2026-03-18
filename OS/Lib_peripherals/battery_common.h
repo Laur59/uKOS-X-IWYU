@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; battery_common.
-; ===============
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     battery_common equates.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     battery_common equates.
+ */
 
 #pragma once
 

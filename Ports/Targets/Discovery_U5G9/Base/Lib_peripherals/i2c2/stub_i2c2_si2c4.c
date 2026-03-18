@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
-
-/*
-; stub_i2c2_si2c4.
-; ================
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     stub for the connection of the "i2c2" manager to the si2c4 device.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Goal:     stub for the connection of the "i2c2" manager to the si2c4 device.
+ */
 
 #include    "clockTree.h"
 #include    "macros_core.h"

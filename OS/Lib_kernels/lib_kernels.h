@@ -1,19 +1,7 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; lib_kernels.
-; ============
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     lib_kernels system call interface module.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ */
 
 #pragma once
 

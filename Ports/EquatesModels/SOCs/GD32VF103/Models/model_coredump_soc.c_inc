@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; model_coredump_soc.
-; ===================
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Model for the core dump (SOC specific).
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Model for the core dump (SOC specific).
+ */
 
 // Prototypes
 

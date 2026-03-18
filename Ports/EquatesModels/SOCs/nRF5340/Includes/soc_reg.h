@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; nrf5340.
-; ========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     nrf5340 equates.
-;           Generated using the .svd description
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     nrf5340 equates.
+ *           Generated using the .svd description
+ */
 
 #pragma once
 

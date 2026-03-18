@@ -1,9 +1,6 @@
 #!/usr/bin/env zsh
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-
-#------------------------------------------------------------------------
-# Project: uKOS-X
 #
 # Purpose:
 #   Building all the uKOS downloadable applications using CMake.
@@ -11,7 +8,6 @@
 # Usage:
 #    cd cloned_directory/Applications/uKOS_Appls_Downloadable
 #    ./_build_cmake.sh [-L] [-U] [-Y] [-v|-w]
-#------------------------------------------------------------------------
 
 emulate -L zsh
 setopt ERR_EXIT NO_UNSET PIPE_FAIL EXTENDED_GLOB

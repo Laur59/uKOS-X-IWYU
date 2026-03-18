@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; cortexFPU.
-; ==========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           This application shows how to operate with the uKOS-X uKernel.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Demo of a C application.
+ * This application shows how to operate with the uKOS-X uKernel.
+ */
 
 /*!
  * \file
@@ -94,7 +84,7 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 #endif
@@ -102,7 +92,7 @@ MODULE(
 // Application specific
 // ====================
 
-#if (defined(Alastor_H743))
+#ifdef Alastor_H743
 #define CHANNEL     KURT1
 
 #else
@@ -129,7 +119,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 
     (void)dprintf(KSYST, "\n\n");
     while (true) {
-        kern_suspendProcess(1000u);
+        kern_suspendProcess(1000U);
 
         kern_readTickCount(&time[0]);
         pi = pi_spigot(n, pi);
@@ -160,7 +150,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 
     (void)dprintf(KSYST, "\n\n");
     while (true) {
-        kern_suspendProcess(1000u);
+        kern_suspendProcess(1000U);
 
         pi = pi_lambert(n, pi);
 

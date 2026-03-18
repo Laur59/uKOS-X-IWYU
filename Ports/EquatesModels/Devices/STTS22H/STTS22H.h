@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileContributor: Florence Lorenzin
-*/
-
-/*
-; STTS22H.
-; ========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     ST STTS22H equates.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileContributor: Florence Lorenzin
+ *
+ * Goal:     ST STTS22H equates.
+ */
 
 #pragma once
 

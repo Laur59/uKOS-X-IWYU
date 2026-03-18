@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; imager_commun.
-; ==============
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     imager_commun equates.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     imager_commun equates.
+ */
 
 #pragma once
 

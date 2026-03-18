@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; sdcard.
-; =======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           This application shows how to operate with the uKOS-X uKernel.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Demo of a C application.
+ * This application shows how to operate with the uKOS-X uKernel.
+ */
 
 /*!
  * \file
@@ -90,7 +80,7 @@ MODULE(
     prgm,                               // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 
@@ -140,7 +130,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
     UNUSED(argument);
 
     while (true) {
-        kern_suspendProcess(1000u);
+        kern_suspendProcess(1000U);
         led_toggle(KLED_1);
     }
 }
@@ -175,7 +165,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
         exit(EXIT_OS_FAILURE);
     }
 
-    testNumber = (int32_t)strtoul(argv[2], &dummy, 10u);
+    testNumber = (int32_t)strtoul(argv[2], &dummy, 10U);
 
 // Reserve the sdcard
 
@@ -211,8 +201,8 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  *
  */
 static  void    aTest_0(void) {
-    #define     KT0_INIT_SECTOR 0u
-    #define     KT0_NB_SECTORS  3u
+    #define     KT0_INIT_SECTOR 0U
+    #define     KT0_NB_SECTORS  3U
     int32_t     status;
     uint32_t    i, j, n;
     uint8_t     *buffer;
@@ -223,12 +213,12 @@ static  void    aTest_0(void) {
         exit(EXIT_OS_FAILURE);
     }
 
-    for (n = 0u; n < KT0_NB_SECTORS; n++) {
+    for (n = 0U; n < KT0_NB_SECTORS; n++) {
         led_toggle(KLED_1);
 
 // Read the sector 0 to ...
 
-        kern_suspendProcess(1000u);
+        kern_suspendProcess(1000U);
 
         status = sdcard_read(buffer, KSDCARD_SZ_SECTOR, (KT0_INIT_SECTOR + n));
         if (status != KERR_STORAGE_NOERR) {
@@ -239,8 +229,8 @@ static  void    aTest_0(void) {
 
         (void)dprintf(KSYST, "Sector = %"PRIu32"\n", (KT0_INIT_SECTOR + n));
 
-        for (j = 0u; j < KSDCARD_SZ_SECTOR; j += 16u) {
-            for (i = 0u; i < 16u; i++) {
+        for (j = 0U; j < KSDCARD_SZ_SECTOR; j += 16U) {
+            for (i = 0U; i < 16U; i++) {
                 (void)dprintf(KSYST, "0x%02X ", *(buffer + i + j));
             }
             (void)dprintf(KSYST, "\n");
@@ -622,7 +612,7 @@ MAIN_ENTRY(argc, argv[]) {
 
 // Let the time to the process "aProcess_1" to run
 
-    do { kern_suspendProcess(1u); } while (releasePack == false);
+    do { kern_suspendProcess(1U); } while (!releasePack);
 
     LOG(KINFO_USER, "Application launched");
     return (EXIT_OS_SUCCESS_CLI);

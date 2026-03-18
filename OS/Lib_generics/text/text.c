@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; text.
-; =====
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     text manager.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     text manager.
+ */
 
 #ifdef CONFIG_MAN_TEXT_S
 

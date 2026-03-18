@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; intTimer.
-; =========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           This application shows how to operate with the uKOS-X uKernel.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Demo of a C application.
+ * This application shows how to operate with the uKOS-X uKernel.
+ */
 
 /*!
  * \file
@@ -97,7 +87,7 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 #endif
@@ -105,7 +95,7 @@ MODULE(
 // Application specific
 // ====================
 
-volatile    uint32_t    vTimer = 0u;
+volatile    uint32_t    vTimer = 0U;
 
 // Prototypes
 
@@ -143,7 +133,7 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
     #endif
 
     while (true) {
-        status = kern_waitSemaphore(semaphore, 1000u);
+        status = kern_waitSemaphore(semaphore, 1000U);
         (status == KERR_KERN_TIMEO) ? ((void)dprintf(KSYST, "Timeout Error Semaphore\n")) : ((void)dprintf(KSYST, "Timer = %"PRIu32"\n", vTimer));
 
         led_toggle(KLED_1);
@@ -196,8 +186,8 @@ MAIN_ENTRY(argc, argv[]) {
         KKERN_PRIORITY_LOW_14               // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
     );
 
-    if (kern_createSemaphore("Semaphore tim", 0, 1, &semaphore) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
-    if (kern_createProcess(&specification, nullptr, &process)       != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
+    if (kern_createSemaphore("Semaphore tim", 0, 1, &semaphore) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return EXIT_OS_FAILURE; }
+    if (kern_createProcess(&specification, nullptr, &process)   != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return EXIT_OS_FAILURE; }
 
     LOG(KINFO_USER, "Application launched");
     return (EXIT_OS_SUCCESS_CLI);

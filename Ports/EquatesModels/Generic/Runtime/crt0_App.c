@@ -1,40 +1,30 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
-
-/*
-; crt0_App.
-; =========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     crt0 for the uKOS-X applications.
-;           User only support
-;
-;                       CODE
-; linker_stTEXT         +-----------------+
-;                       |                 |
-;                       | .text           |
-; linker_enTEXT         |                 |
-; linker_stRODATA       +-----------------+
-;                       |                 |
-;                       | .rodata         |
-; linker_enRODATA       |                 |
-; linker_stDATA         +-----------------+
-;                       |                 |
-;                       | .data           |
-; linker_enDATA         |                 |
-; linker_stBSS          +-----------------+
-;                       |                 |
-;                       | .bss            |
-; linker_enBSS          |                 |
-; _end                  +-----------------+
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Goal:     crt0 for the uKOS-X applications.
+ *           User only support
+ *
+ *                       CODE
+ * linker_stTEXT         +-----------------+
+ *                       |                 |
+ *                       | .text           |
+ * linker_enTEXT         |                 |
+ * linker_stRODATA       +-----------------+
+ *                       |                 |
+ *                       | .rodata         |
+ * linker_enRODATA       |                 |
+ * linker_stDATA         +-----------------+
+ *                       |                 |
+ *                       | .data           |
+ * linker_enDATA         |                 |
+ * linker_stBSS          +-----------------+
+ *                       |                 |
+ *                       | .bss            |
+ * linker_enBSS          |                 |
+ * _end                  +-----------------+
+ */
 
 #include    <stddef.h>
 #include    <stdint.h>

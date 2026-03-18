@@ -1,36 +1,26 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
-
-/*
-; model_kernel_tickless_tim_2_3_4_5_svc.
-; ======================================
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Model for controlling the "model_kernel_tickless_tim_2_3_4_5_svc" device.
-;
-;           Tim 2   - 1-us free running timer
-;           Tim 3   - 20-ms process timeout
-;           Tim 4   - user defined intervals for precise signals
-;           Tim 5   - Nx1-ms reference time for tickless
-;           svc     - software interruption for message passing
-;           PendSV  - software interruption for the preemption
-;
-;           This code has to support the following routines:
-;           - model_kernel_init
-;           - model_kernel_runKernel
-;           - model_kernel_setLowPower
-;           - model_kernel_setPreciseSignal
-;           - model_kernel_readTickCount
-;           - model_kernel_newProcessTimeout
-;           - model_kernel_stopProcessTimeout
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Goal:     Model for controlling the "model_kernel_tickless_tim_2_3_4_5_svc" device.
+ *
+ *           Tim 2   - 1-us free running timer
+ *           Tim 3   - 20-ms process timeout
+ *           Tim 4   - user defined intervals for precise signals
+ *           Tim 5   - Nx1-ms reference time for tickless
+ *           svc     - software interruption for message passing
+ *           PendSV  - software interruption for the preemption
+ *
+ *           This code has to support the following routines:
+ *           - model_kernel_init
+ *           - model_kernel_runKernel
+ *           - model_kernel_setLowPower
+ *           - model_kernel_setPreciseSignal
+ *           - model_kernel_readTickCount
+ *           - model_kernel_newProcessTimeout
+ *           - model_kernel_stopProcessTimeout
+ */
 
 #include    <stdint.h>
 #include    <stdlib.h>

@@ -1,45 +1,36 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
-
-/*
-; link_pu.
-; ========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Linker description for the uKOS-X system.
-;           Privileged / user support
-;
-;                       CODE
-; linker_stTEXT         +-----------------+
-;                       |                 |
-;                       | .isr_vector     |
-;                       | .text           |
-;                       | .rodata         |
-; linker_enRODATA       |                 |
-;                       +-----------------+
-; linker_stSignature    |                 |             DATA
-;                       +-----------------+ ........... +-----------------+ linker_stDATA_p
-; linker_stINDATA_p     |                 |             |                 |
-;                       | .data_p         |             | .data_p         |
-;                       |                 |             |                 | linker_enDATA_p
-; linker_stINDATA_u     |                 |             |                 | linker_stDATA_u
-;                       | .data_u         |             | .data_u         |
-;                       |                 |             |                 | linker_enDATA_u
-;                       +-----------------+ ........... +-----------------+
-;                                                       |                 | linker_stBSS_p
-;                                                       | .bss_p          |
-;                                                       | COMMON          |
-;                                                       |                 | linker_enBSS_p
-;                                                       |                 | linker_stBSS_u
-;                                                       | .bss_u          |
-;                                                       |                 | linker_enBSS_u
-;                                                       +-----------------+
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Nucleo_F207 – Linker memory regions, privileged/user mode.
+ *
+ *                       CODE
+ * linker_stTEXT         +-----------------+
+ *                       |                 |
+ *                       | .isr_vector     |
+ *                       | .text           |
+ *                       | .rodata         |
+ * linker_enRODATA       |                 |
+ *                       +-----------------+
+ * linker_stSignature    |                 |             DATA
+ *                       +-----------------+ ........... +-----------------+ linker_stDATA_p
+ * linker_stINDATA_p     |                 |             |                 |
+ *                       | .data_p         |             | .data_p         |
+ *                       |                 |             |                 | linker_enDATA_p
+ * linker_stINDATA_u     |                 |             |                 | linker_stDATA_u
+ *                       | .data_u         |             | .data_u         |
+ *                       |                 |             |                 | linker_enDATA_u
+ *                       +-----------------+ ........... +-----------------+
+ *                                                       |                 | linker_stBSS_p
+ *                                                       | .bss_p          |
+ *                                                       | COMMON          |
+ *                                                       |                 | linker_enBSS_p
+ *                                                       |                 | linker_stBSS_u
+ *                                                       | .bss_u          |
+ *                                                       |                 | linker_enBSS_u
+ *                                                       +-----------------+
+ */
 
 ENTRY(Reset_C0_Handler)
 

@@ -1,21 +1,11 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
-
-/*
-; basic.
-; ======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           This application shows how to operate with the uKOS-X uKernel.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Demo of a C application.
+ * This application shows how to operate with the uKOS-X uKernel.
+ */
 
 /*!
  * \file
@@ -35,8 +25,6 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *                  - Draw up to 20 squares (continuously)
  *
  */
-
-#include    <stdint.h>
 
 #include    <stdint.h>
 
@@ -95,7 +83,7 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 #endif
@@ -122,17 +110,17 @@ static void __attribute__ ((noreturn)) aProcess_tick(const void *argument) {
 
     UNUSED(argument);
 
-    do { kern_suspendProcess(1u); } while (vLVGLReady == false);
+    do { kern_suspendProcess(1U); } while (!vLVGLReady);
 
     kern_readTickCount(&last);
 
     while (true) {
         kern_readTickCount(&now);
 
-        delta = (uint32_t)((now - last) / 1000u);
-        if (delta > 0u) {
+        delta = (uint32_t)((now - last) / 1000U);
+        if (delta > 0U) {
             lv_tick_inc(delta);
-            last += (uint64_t)delta * 1000u;
+            last += (uint64_t)delta * 1000U;
         }
 
         lv_timer_handler();
@@ -183,7 +171,7 @@ static void __attribute__ ((noreturn)) aProcess_lvgl(const void *argument) {
 
 // Remain in the lvgl process space
 
-    while (true) { kern_suspendProcess(1000u); }
+    while (true) { kern_suspendProcess(100U); }
 }
 
 /*

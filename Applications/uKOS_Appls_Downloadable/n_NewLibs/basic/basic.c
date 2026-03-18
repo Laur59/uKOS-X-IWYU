@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; basic.
-; ======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           This application shows how to operate with the uKOS-X uKernel.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Demo of a C application.
+ * This application shows how to operate with the uKOS-X uKernel.
+ */
 
 /*!
  * \file
@@ -103,7 +93,7 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 #endif
@@ -126,7 +116,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
     UNUSED(argument);
 
     while (true) {
-        kern_suspendProcess(100u);
+        kern_suspendProcess(100U);
         led_toggle(KLED_1);
 
         kern_readTickCount(&time[0]);
@@ -150,7 +140,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  * - P1: Every 100-ms
  *          - Read 4 integers on the uart0
  *          - Print the read values (with the newlib dprintf) on the uart1
- *          - Toggle LED 1
+ *          - Toggle LED 2
  *
  */
 static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
@@ -159,7 +149,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
     UNUSED(argument);
 
     while (true) {
-        kern_suspendProcess(100u);
+        kern_suspendProcess(100U);
         led_toggle(KLED_2);
 
 // Waiting for 4 integers
@@ -195,7 +185,7 @@ static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
     UNUSED(argument);
 
     while (true) {
-        kern_suspendProcess(100u);
+        kern_suspendProcess(100U);
 
         (void)printf("%s", myBigText);
     }

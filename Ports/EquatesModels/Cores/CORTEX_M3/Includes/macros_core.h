@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
-
-/*
-; macros_core.
-; ============
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Important macros.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Goal:     Important macros.
+ */
 
 #pragma once
 
@@ -374,8 +364,3 @@ extern  void    __attribute__ ((noreturn)) model_coreDump_displayInterruptions(u
                                 : "lr"                                                                                          \
                                 )
 #endif
-
-// Stack frame macros
-// ------------------
-
-#include    "macros_core_stackFrame.h"

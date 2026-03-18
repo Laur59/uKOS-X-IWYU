@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; machine.
-; ========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     machine manager.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     machine manager.
+ */
 
 #ifdef CONFIG_MAN_MACHINE_S
 

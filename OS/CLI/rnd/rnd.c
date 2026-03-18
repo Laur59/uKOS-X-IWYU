@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; rnd.
-; ====
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Give a random (eventually pseudo-random) number.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Give a random (eventually pseudo-random) number.
+ */
 
 #include    <inttypes.h>
 #include    <stdio.h>

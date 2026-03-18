@@ -1,14 +1,7 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-
-# set-project-paths.
-# ==================
-
-#------------------------------------------------------------------------
-# Project:  uKOS-X
-# Goal:     Define directory paths required to build the system
 #
-#------------------------------------------------------------------------
+# Define directory paths required to build the system
 
 # Project paths
 

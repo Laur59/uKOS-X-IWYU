@@ -1,21 +1,11 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
-
-/*
-; stub_temperature_stts22h.
-; =========================
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     stub for the connection of the "temperature" manager to the stts22h
-;           via the i2c1 device.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Goal:     stub for the connection of the "temperature" manager to the stts22h
+ *           via the i2c1 device.
+ */
 
 #include    <stdint.h>
 

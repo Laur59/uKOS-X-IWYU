@@ -1,21 +1,11 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; process_actuator.
-; =================
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Process: actuator.
-;           - Every 1000-ms
-;               Send a new value to the dispatcher
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ *     Process: actuator.
+ *     - Every 1000-ms
+ *         Send a new value to the dispatcher
+ */
 
 #include    <stdint.h>
 #include    <stdlib.h>

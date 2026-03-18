@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; serialFlash.
-; ============
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     serialFlash manager.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     serialFlash manager.
+ */
 
 #pragma once
 

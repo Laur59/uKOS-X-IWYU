@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; basic.
-; ======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           This application shows how to operate with the uKOS-X uKernel.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Demo of a C application.
+ * This application shows how to operate with the uKOS-X uKernel.
+ */
 
 /*!
  * \file
@@ -105,7 +95,7 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 #endif
@@ -146,13 +136,13 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 
 // Get the mutex handle
 
-    while (kern_getMutexById("Critical", &mutex) != KERR_KERN_NOERR) { kern_suspendProcess(1u); }
+    while (kern_getMutexById("Critical", &mutex) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
 
     while (true) {
         kern_suspendProcess(10);
 
         led_toggle(KLED_1);
-        status = kern_lockMutex(mutex, 10000u);
+        status = kern_lockMutex(mutex, 10000U);
         if (status != KERR_KERN_NOERR) {
             exit(EXIT_OS_PANIC);
         }
@@ -191,13 +181,15 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 
 // Get the mutex handle
 
-    while (kern_getMutexById("Critical", &mutex) != KERR_KERN_NOERR) { kern_suspendProcess(1u); }
+    while (kern_getMutexById("Critical", &mutex) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
 
     while (true) {
-        kern_suspendProcess(100u);
+        kern_suspendProcess(100U);
+
+        kern_suspendProcess(100U);
 
         led_toggle(KLED_2);
-        status = kern_lockMutex(mutex, 10000u);
+        status = kern_lockMutex(mutex, 10000U);
         if (status != KERR_KERN_NOERR) {
             exit(EXIT_OS_PANIC);
         }
@@ -236,13 +228,15 @@ static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
 
 // Get the mutex handle
 
-    while (kern_getMutexById("Critical", &mutex) != KERR_KERN_NOERR) { kern_suspendProcess(1u); }
+    while (kern_getMutexById("Critical", &mutex) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
 
     while (true) {
+        kern_suspendProcess(1000U);
+
         kern_suspendProcess(1000u);
 
         led_toggle(KLED_3);
-        status = kern_lockMutex(mutex, 10000u);
+        status = kern_lockMutex(mutex, 10000U);
         if (status != KERR_KERN_NOERR) {
             exit(EXIT_OS_PANIC);
         }

@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; sdcard.
-; =======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     sdcard manager.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     sdcard manager.
+ */
 
 #ifdef CONFIG_MAN_SDCARD_S
 

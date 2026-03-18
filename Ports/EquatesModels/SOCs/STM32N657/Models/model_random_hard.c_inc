@@ -1,22 +1,12 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
-
-/*
-; model_random_hard.
-; ==================
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Model for generating random numbers.
-;           This takes advantages from the available
-;           hardware.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Goal:     Model for generating random numbers.
+ *           This takes advantages from the available
+ *           hardware.
+ */
 
 #include    <stdint.h>
 
@@ -67,7 +57,7 @@ void    model_random_hard_read(uint32_t *number) {
     vTerminated = false;
     REG(RNG)->CR |= (RNG_CR_RNGEN | RNG_CR_IE);
 
-    while (vTerminated == false) {
+    while (!vTerminated) {
         kern_switchFast();
     }
 }
@@ -85,7 +75,7 @@ static  void    local_RNG_IRQHandler(void) {
 
 // Is data ready, no seed error, no clock error
 
-    if (((REG(RNG)->SR & RNG_SR_DRDY) != 0u) && ((REG(RNG)->SR & RNG_SR_SEIS) == 0u) && ((REG(RNG)->SR & RNG_SR_CEIS) == 0u)) {
+    if (((REG(RNG)->SR & RNG_SR_DRDY) != 0U) && ((REG(RNG)->SR & RNG_SR_SEIS) == 0U) && ((REG(RNG)->SR & RNG_SR_CEIS) == 0U)) {
         *vNumber = REG(RNG)->DR & KRAND_MAX;
         vTerminated = true;
         REG(RNG)->CR &= ~(RNG_CR_RNGEN | RNG_CR_IE);

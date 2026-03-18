@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; idle.
-; =====
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     idle daemon; run when all the others processes are suspended.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     idle daemon; run when all the others processes are suspended.
+ */
 
 #include    <stdint.h>
 #include    <stdlib.h>

@@ -1,30 +1,20 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; rpn.
-; ====
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           This application shows how to operate with the uKOS-X uKernel.
-;
-;           Preliminary rpn hp25 calculator.
-;           Usage:
-;
-;           35
-;           ENTER
-;           5
-;           +
-;           10
-;           /
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Demo of a C application.
+ * This application shows how to operate with the uKOS-X uKernel.
+ *
+ *           Preliminary rpn hp25 calculator.
+ *           Usage:
+ *
+ *           35
+ *           ENTER
+ *           5
+ *           +
+ *           10
+ *           /
+ */
 
 /*!
  * \file
@@ -99,7 +89,7 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 #endif
@@ -107,10 +97,10 @@ MODULE(
 // Application specific
 // ====================
 
-#define KLN_CMD_LINE_BUF    256u        // Length of the command line
-#define KNB_PARAMETERS      10u         // Nb of parameters
-#define KDIGIT_PRECISION    16u         // 16 digits for decimal 64-bits
-#define KNO_TRAP            0u          // No trap
+#define KLN_CMD_LINE_BUF    256U        // Length of the command line
+#define KNB_PARAMETERS      10U         // Nb of parameters
+#define KDIGIT_PRECISION    16U         // 16 digits for decimal 64-bits
+#define KNO_TRAP            0U          // No trap
 
 typedef struct  command         command_t;
 typedef struct  machineStack    machineStack_t;
@@ -159,11 +149,11 @@ static  void    local_pow(uint32_t argc, const char_t *argv[]);
  */
 static void __attribute__ ((noreturn)) aProcess(const void *argument) {
     decNumber       x;
-    uint32_t        argc = 0u;
+    uint32_t        argc = 0U;
 
 // Reserve the memory for the command line
 
-          char_t *commandLine = (char_t *)memo_malloc(KMEMO_ALIGN_8, ((KLN_CMD_LINE_BUF + 1u) * sizeof(char_t)), "cmd_line");
+          char_t *commandLine = (char_t *)memo_malloc(KMEMO_ALIGN_8, ((KLN_CMD_LINE_BUF + 1U) * sizeof(char_t)), "cmd_line");
           char_t **parameters = (char_t **)memo_malloc(KMEMO_ALIGN_8, (KNB_PARAMETERS * sizeof(char_t *)), "parameters");
     const char_t **argv       = (const char_t **)memo_malloc(KMEMO_ALIGN_8, (KNB_PARAMETERS * sizeof(char_t *)), "argv");
 
@@ -190,14 +180,14 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
 
         memcpy((void *)parameters, (const void *)argv, KNB_PARAMETERS);
 
-        vSet.status = 0u;
+        vSet.status = 0U;
         decNumberFromString(&x, parameters[0], &vSet);
 
 // The commandLine could be a decimal number or an order.
 // If decNumberFromString returns a problem, the command line
 // could be a command. If no, indicate a syntax error.
 
-        if ((vSet.status & DEC_Errors) == 0u)  {
+        if ((vSet.status & DEC_Errors) == 0U)  {
             if (vEnter == true) {               vRpnStack.oX = x; local_printStack(); vEnter = false; }
             else                { local_push(); vRpnStack.oX = x; local_printStack(); vEnter = false; }
         }
@@ -210,7 +200,7 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
     memo_free((void *)parameters);
     memo_free((void *)argv);
 
-    kern_suspendProcess(1000u);
+    kern_suspendProcess(1000U);
     exit(EXIT_OS_SUCCESS);
 }
 
@@ -266,19 +256,19 @@ MAIN_ENTRY(argc, argv[]) {
                 (x) = vRpnStack.oX;                                                             \
                 (y) = vRpnStack.oY;                                                             \
                                                                                                 \
-                vSet.status = 0u;                                                               \
+                vSet.status = 0U;                                                               \
                 decNumber##op(&(r), &(y), &(x), &(vSet));                                       \
-                local_printStatus(1u, &(vSet));                                                 \
-                vSet.status = 0u;                                                               \
+                local_printStatus(1U, &(vSet));                                                 \
+                vSet.status = 0U;                                                               \
                 decimal64FromNumber(&(rd64), &(r), &(vSet));                                    \
-                local_printStatus(2u, &(vSet));                                                 \
-                vSet.status = 0u;                                                               \
+                local_printStatus(2U, &(vSet));                                                 \
+                vSet.status = 0U;                                                               \
                 decimal64ToString(&(rd64), (vResult));                                          \
-                local_printStatus(3u, &(vSet));                                                 \
+                local_printStatus(3U, &(vSet));                                                 \
                                                                                                 \
                 (void)dprintf(KSYST, "Result = %s\n\n", (vResult));                             \
                                                                                                 \
-                if (((vSet.status) & DEC_Errors) == 0u) { local_pop(); vRpnStack.oX = (r); }    \
+                if (((vSet.status) & DEC_Errors) == 0U) { local_pop(); vRpnStack.oX = (r); }    \
             } while (0)
 
 /*
@@ -289,7 +279,7 @@ MAIN_ENTRY(argc, argv[]) {
  */
 static  void    local_printStatus(uint8_t n, decContext *set) {
 
-    if ((set->status & DEC_Errors) == 0u) { return; }
+    if ((set->status & DEC_Errors) == 0U) { return; }
 
     set->status &= DEC_Errors;
 

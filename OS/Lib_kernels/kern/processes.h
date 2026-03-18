@@ -1,33 +1,23 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; processes.
-; ==========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Kern - Process management.
-;
-;           This module manages the processes.
-;
-;           Service system calls
-;           --------------------
-;
-;           void    processes_init(void);
-;           int32_t kern_createProcess(const spec_t *specification, const void *argument, proc_t **handle);
-;           int32_t kern_killProcess(proc_t *handle);
-;           int32_t kern_setPriority(proc_t *handle, priority_t priority);
-;           int32_t kern_getPriority(proc_t *handle, priority_t *priority);
-;           int32_t kern_getProcessById(const char_t *identifier, proc_t **handle);
-;           int32_t kern_getProcessRun(proc_t **handle);
-;           int32_t kern_installCallBack(void (*code)(uint8_t state));
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Kern - Process management.
+ *
+ *           This module manages the processes.
+ *
+ *           Service system calls
+ *           --------------------
+ *
+ *           void    processes_init(void) *
+ *           int32_t kern_createProcess(const spec_t *specification, const void *argument, proc_t **handle) *
+ *           int32_t kern_killProcess(proc_t *handle) *
+ *           int32_t kern_setPriority(proc_t *handle, priority_t priority) *
+ *           int32_t kern_getPriority(proc_t *handle, priority_t *priority) *
+ *           int32_t kern_getProcessById(const char_t *identifier, proc_t **handle) *
+ *           int32_t kern_getProcessRun(proc_t **handle) *
+ *           int32_t kern_installCallBack(void (*code)(uint8_t state)) *
+ */
 
 #pragma once
 

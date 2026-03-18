@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; multiKill.
-; ==========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           This application shows how to operate with the uKOS-X uKernel.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Demo of a C application.
+ * This application shows how to operate with the uKOS-X uKernel.
+ */
 
 /*!
  * \file
@@ -90,7 +80,7 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 #endif
@@ -128,20 +118,20 @@ struct  myPack {
         };
 
 static  myPack_t    aParameter[10] = {
-                        { 0u },
-                        { 1u },
-                        { 2u },
-                        { 3u },
-                        { 4u },
-                        { 5u },
-                        { 6u },
-                        { 7u },
-                        { 8u },
-                        { 9u }
+                        { 0U },
+                        { 1U },
+                        { 2U },
+                        { 3U },
+                        { 4U },
+                        { 5U },
+                        { 6U },
+                        { 7U },
+                        { 8U },
+                        { 9U }
                     };
 
 static              proc_t      *vProcess[10];
-static  volatile    uint32_t    vCounter = 0u;
+static  volatile    uint32_t    vCounter = 0U;
 
 /*
  * \brief aProcess x
@@ -175,7 +165,7 @@ static void __attribute__ ((noreturn)) aProcess_a(const void *argument) {
 
     UNUSED(argument);
 
-    for (i = 0u; i < 1000000000u; i++) {
+    for (i = 0U; i < 1000000000U; i++) {
 
 // Specifications for the processes
 
@@ -345,14 +335,14 @@ static void __attribute__ ((noreturn)) aProcess_a(const void *argument) {
             exit(EXIT_OS_FAILURE);
         }
 
-        if ((i % 1000u) == 0u) {
+        if ((i % 1000U) == 0U) {
             (void)dprintf(KSYST, "Iteration = %"PRIu32"\n", i);
         }
-        kern_suspendProcess(1u);
+        kern_suspendProcess(1U);
     }
 
     (void)dprintf(KSYST, "Counter = %"PRIu32"\n", vCounter);
-    kern_suspendProcess(1000u);
+    kern_suspendProcess(1000U);
     exit(EXIT_OS_SUCCESS);
 }
 

@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; stack.
-; ======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     idle daemon; run when all the other processes are suspended.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     idle daemon; run when all the other processes are suspended.
+ */
 
 #include    <stdint.h>
 #if ((KKERN_WITH_STATISTICS_S == true) && (KDAEMONS_WITH_STACK_INT_S == true))

@@ -1,21 +1,11 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; wkspi.
-; ======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     wkspi tool.
-;           This tool allows to operate with an spi device.
-;           For the moment this tool reserved for STM CPU32 SoCs!!
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     wkspi tool.
+ *           This tool allows to operate with an spi device.
+ *           For the moment this tool reserved for STM CPU32 SoCs!!
+ */
 
 #include    <inttypes.h>
 #include    <stdio.h>

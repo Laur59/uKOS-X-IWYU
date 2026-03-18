@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; getImage.
-; =========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     imager process; continuous acquisition of an image.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     imager process; continuous acquisition of an image.
+ */
 
 #include    <stdint.h>
 #include    <stdlib.h>

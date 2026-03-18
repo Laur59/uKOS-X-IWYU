@@ -1,32 +1,22 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; mutexes.
-; ========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Kern - Mutex management.
-;
-;           This module implements the mutex primitives.
-;
-;           Mutex system calls
-;           ------------------
-;
-;           void    mutexes_init(void);
-;           int32_t kern_createMutex(const char_t *identifier, mutx_t **handle);
-;           int32_t kern_unlockMutex(mutx_t *handle);
-;           int32_t kern_lockMutex(mutx_t *handle, uint32_t timeout);
-;           int32_t kern_killMutex(mutx_t *handle);
-;           int32_t kern_restartMutex(mutx_t *handle);
-;           int32_t kern_getMutexById(const char_t identifier, mutx_t **handle);
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Kern - Mutex management.
+ *
+ *           This module implements the mutex primitives.
+ *
+ *           Mutex system calls
+ *           ------------------
+ *
+ *           void    mutexes_init(void) *
+ *           int32_t kern_createMutex(const char_t *identifier, mutx_t **handle) *
+ *           int32_t kern_unlockMutex(mutx_t *handle) *
+ *           int32_t kern_lockMutex(mutx_t *handle, uint32_t timeout) *
+ *           int32_t kern_killMutex(mutx_t *handle) *
+ *           int32_t kern_restartMutex(mutx_t *handle) *
+ *           int32_t kern_getMutexById(const char_t identifier, mutx_t **handle) *
+ */
 
 #pragma once
 

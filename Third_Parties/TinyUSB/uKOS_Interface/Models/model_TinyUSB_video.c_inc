@@ -1,21 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Luent von Allmen
-*/
-
-/*
-; model_TinyUSB_video.
-; ====================
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Interface for "TinyUSB video" device.
-;           !! This is only for tests.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Interface for "TinyUSB video" device.
+ *           !! This is only for tests.
+ */
 
 #define FRAME_WIDTH         752U
 #define FRAME_HEIGHT        480U

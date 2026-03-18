@@ -1,20 +1,7 @@
 /*
-; bench.
-; ======
-
-; SPDX-License-Identifier: MIT
-
-;------------------------------------------------------------------------
-; Author:   Edo. Franzi     The 2025-01-01
-; Modifs:
-;
-; Project:  uKOS-X
-; Goal:     System benches.
-;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ */
 
 #pragma once
 

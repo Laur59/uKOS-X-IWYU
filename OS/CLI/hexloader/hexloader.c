@@ -1,42 +1,32 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; hexloader.
-; ==========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Intel hex+ loader.
-;           This tool allows to download a Intel hex+ format binary
-;           to the memory and to execute it.
-;           Here are the Intel hex+ format definitions:
-;
-;           - Everything is represented in ASCII.
-;
-;           - Block format:
-;               Mark:                   1 char
-;               Length of the block:    an hex. number of 2 chars.
-;               Address:                an hex. number of 4 chars.
-;               Block type:             2 chars.
-;               Data:                   an hex. 2n chars.
-;               Checksum:               an hex. number of 2 chars.
-;
-;           - Mark:
-;               ":"
-;           - Block type:
-;               "00" normal data record
-;               "01" end of file record
-;               "02" not supported
-;               "03" not supported
-;               "04" extended linear address (for 32-bit CPU)
-;               "05" execution address
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Intel hex+ loader.
+ *           This tool allows to download a Intel hex+ format binary
+ *           to the memory and to execute it.
+ *           Here are the Intel hex+ format definitions:
+ *
+ *           - Everything is represented in ASCII.
+ *
+ *           - Block format:
+ *               Mark:                   1 char
+ *               Length of the block:    an hex. number of 2 chars.
+ *               Address:                an hex. number of 4 chars.
+ *               Block type:             2 chars.
+ *               Data:                   an hex. 2n chars.
+ *               Checksum:               an hex. number of 2 chars.
+ *
+ *           - Mark:
+ *               ":"
+ *           - Block type:
+ *               "00" normal data record
+ *               "01" end of file record
+ *               "02" not supported
+ *               "03" not supported
+ *               "04" extended linear address (for 32-bit CPU)
+ *               "05" execution address
+ */
 
 #include    <stdint.h>
 #include    <stdio.h>

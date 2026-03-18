@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; W25X80L.
-; ========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     EEPROM W25X80L equates.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     EEPROM W25X80L equates.
+ */
 
 #pragma once
 

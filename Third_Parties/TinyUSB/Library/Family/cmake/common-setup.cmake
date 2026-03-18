@@ -1,8 +1,6 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #
-# Project: uKOS-X
-#
 # Purpose:
 #   Common CMake setup for all TinyUSB core builds.
 #
@@ -32,7 +30,6 @@ if(NOT EXISTS "${PATH_UKOS}/OS/Includes")
                         "Consider setting PATH_UKOS explicitly or check directory structure.")
 endif()
 
-set(USE_LLVM OFF)
 # Include toolchain
 include(${PATH_UKOS}/Ports/cmake/select-arm-toolchain.cmake)
 

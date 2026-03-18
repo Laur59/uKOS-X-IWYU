@@ -1,20 +1,9 @@
 /*
-; init.
-; =====
-
-; SPDX-License-Identifier: MIT
-
-;------------------------------------------------------------------------
-; Author:   Edo. Franzi     The 2025-01-01
-; Modifs:
-;
-; Project:  uKOS-X
-; Goal:     Low level init interface for target-specific initialization.
-;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Goal:     Low level init interface for target-specific initialization.
+ */
 
 #pragma once
 

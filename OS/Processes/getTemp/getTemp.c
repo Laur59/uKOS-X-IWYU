@@ -1,28 +1,18 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; getTemp.
-; ========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     getTemp process; continuous acquisition of the temperature.
-;           The result is pushed in a mailbox.
-;
-;           Process                             Tool
-;           temperature                         X
-;           while
-;               - malloc of a buffer k
-;               - send the buffer k             - receive the buffer k
-;               - k++                           - copy it
-;                                               - free the buffer k
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     getTemp process; continuous acquisition of the temperature.
+ *           The result is pushed in a mailbox.
+ *
+ *           Process                             Tool
+ *           temperature                         X
+ *           while
+ *               - malloc of a buffer k
+ *               - send the buffer k             - receive the buffer k
+ *               - k++                           - copy it
+ *                                               - free the buffer k
+ */
 
 #include    <stdint.h>
 #include    <stdio.h>

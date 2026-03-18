@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; readIMU.
-; ========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           This application shows how to operate with the uKOS-X uKernel.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Demo of a C application.
+ * This application shows how to operate with the uKOS-X uKernel.
+ */
 
 /*!
  * \file
@@ -114,21 +104,21 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 #endif
 
 enum {
-        KX_AXIS = 0u,
+        KX_AXIS = 0U,
         KY_AXIS,
         KZ_AXIS,
         KNB_AXIS
 };
 
-#define KDISPLAY_ACC        0u          // Display the acceleration
-#define KDISPLAY_GYRO       1u          // Display the gyroscope
-#define KDISPLAY_MAGNETO    2u          // Display the magetometer
+#define KDISPLAY_ACC        0U          // Display the acceleration
+#define KDISPLAY_GYRO       1U          // Display the gyroscope
+#define KDISPLAY_MAGNETO    2U          // Display the magetometer
 
 
 // Prototypes
@@ -158,7 +148,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
     UNUSED(argument);
 
     while (true) {
-        kern_suspendProcess(1000u);
+        kern_suspendProcess(1000U);
         led_toggle(KLED_1);
     }
 }
@@ -192,7 +182,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
     imu_configure(&configureIMU0);
 
     while (true) {
-        kern_suspendProcess(10u);
+        kern_suspendProcess(10U);
 
         imu_read(&accelerometer, &gyroscope, &magnetometer);
 
@@ -272,7 +262,7 @@ MAIN_ENTRY(argc, argv[]) {
  * - Window filtering for the acceleration, the gyro and the magnetometer
  *
  */
-#define KFILTER     16u
+#define KFILTER     16U
 
 static  void    local_filter(float64_t ax,   float64_t ay,    float64_t az,
                              float64_t gx,   float64_t gy,    float64_t gz,
@@ -281,7 +271,7 @@ static  void    local_filter(float64_t ax,   float64_t ay,    float64_t az,
                              float64_t *mGx, float64_t *mGy,  float64_t *mGz,
                              float64_t *mMx, float64_t *mMy,  float64_t *mMz) {
 
-    static  uint8_t     i, k = 0u;
+    static  uint8_t     i, k = 0U;
     static  float64_t   aFilter[KNB_AXIS][KFILTER];
     static  float64_t   gFilter[KNB_AXIS][KFILTER];
     static  float64_t   mFilter[KNB_AXIS][KFILTER];
@@ -296,7 +286,7 @@ static  void    local_filter(float64_t ax,   float64_t ay,    float64_t az,
     *mGx = *mGy = *mGz = 0.0;
     *mMx = *mMy = *mMz = 0.0;
 
-    for (i = 0u; i < KFILTER; i++) {
+    for (i = 0U; i < KFILTER; i++) {
         *mAx += aFilter[KX_AXIS][i]; *mAy += aFilter[KY_AXIS][i]; *mAz += aFilter[KZ_AXIS][i];
         *mGx += gFilter[KX_AXIS][i]; *mGy += gFilter[KY_AXIS][i]; *mGz += gFilter[KZ_AXIS][i];
         *mMx += mFilter[KX_AXIS][i]; *mMy += mFilter[KY_AXIS][i]; *mMz += mFilter[KZ_AXIS][i];
@@ -305,7 +295,7 @@ static  void    local_filter(float64_t ax,   float64_t ay,    float64_t az,
     *mGx = *mGx / KFILTER; *mGy = *mGy / KFILTER; *mGz = *mGz / KFILTER;
     *mMx = *mMx / KFILTER; *mMy = *mMy / KFILTER; *mMz = *mMz / KFILTER;
 
-    k++; if (k == KFILTER) { k = 0u; };
+    k++; if (k == KFILTER) { k = 0U; };
 }
 
 /*
@@ -335,7 +325,7 @@ static  void    local_display(int32_t fpPrint,
     (void)dprintf(fpPrint, "%f\t%f\t%f\n", x, y, z);
     #else
 
-    uint32_t    sample = 0u;
+    uint32_t    sample = 0U;
     (void)dprintf(fpPrint, "%"PRIu32" %f %f %f\n", ++sample, x, y, z);
     #endif
 }

@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; calendar.
-; =========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           This application shows how to operate with the uKOS-X uKernel.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Demo of a C application.
+ * This application shows how to operate with the uKOS-X uKernel.
+ */
 
 /*!
  * \file
@@ -100,7 +90,7 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 #endif
@@ -121,7 +111,7 @@ MODULE(
  *
  */
 static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
-    uint8_t     mSeconds = 0u;
+    uint8_t     mSeconds = 0U;
     sign_t      *group;
 
     UNUSED(argument);
@@ -129,9 +119,9 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
     if (kern_createSignalGroup("Calendar", &group) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create sigr"); exit(EXIT_OS_FAILURE); }
 
     while (true) {
-        kern_suspendProcess(100u);
-        if (mSeconds++ >= 9u) {
-            mSeconds = 0u;
+        kern_suspendProcess(100U);
+        if (mSeconds++ >= 9U) {
+            mSeconds = 0U;
             kern_signalSignal(group, KCALENDAR, KKERN_HANDLE_BROADCAST, KSIGN_SIGNALE_WITH_CONTEXT_SWITCH);
         }
     }
@@ -156,13 +146,13 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 
 // Get the synchro handles
 
-    while (kern_getSignalGroupById("Calendar", &group) != KERR_KERN_NOERR) { kern_suspendProcess(1u); }
+    while (kern_getSignalGroupById("Calendar", &group) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
 
     while (true) {
         signal = KCALENDAR | KALARME;
         kern_waitSignal(group, &signal, KKERN_HANDLE_BROADCAST, KWAIT_INFINITY);
 
-        if ((signal & KCALENDAR) != 0u) {
+        if ((signal & KCALENDAR) != 0U) {
             now = time(nullptr);
             localtime_r(&now, &localTime);
 
@@ -170,7 +160,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
             (void)dprintf(KSYST, "Signal: %08"PRIX32", Epoch = %"PRIu64", Local time: %s",
                            signal, unixTime, asctime(&localTime));
         }
-        if ((signal & KALARME) != 0u) {
+        if ((signal & KALARME) != 0U) {
             (void)dprintf(KSYST, "Signal: %08"PRIX32", Alarme\n", signal);
         }
     }
@@ -189,10 +179,10 @@ static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
 
     UNUSED(argument);
 
-    while (kern_getSignalGroupById("Calendar", &group) != KERR_KERN_NOERR) { kern_suspendProcess(1u); }
+    while (kern_getSignalGroupById("Calendar", &group) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
 
     while (true) {
-        kern_suspendProcess(100u);
+        kern_suspendProcess(100U);
         kern_signalSignal(group, KALARME, KKERN_HANDLE_BROADCAST, KSIGN_SIGNALE_WITH_CONTEXT_SWITCH);
     }
 }

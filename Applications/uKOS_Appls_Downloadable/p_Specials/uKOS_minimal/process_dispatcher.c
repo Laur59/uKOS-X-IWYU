@@ -1,21 +1,11 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; process_dispatcher.
-; ===================
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Process: dispatcher.
-;           - As soon as a new data is available on the queue
-;               process it
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ *     Process: dispatcher.
+ *     - As soon as a new data is available on the queue
+ *         process it
+ */
 
 #include    <stdio.h>
 #include    <stdlib.h>

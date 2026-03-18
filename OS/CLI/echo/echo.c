@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; echo.
-; =====
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     echo tool; echo from a Serial Communication Manager.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     echo tool; echo from a Serial Communication Manager.
+ */
 
 #include    <stdint.h>
 #include    <stdio.h>

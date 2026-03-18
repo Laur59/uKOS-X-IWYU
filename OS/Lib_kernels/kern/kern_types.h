@@ -1,26 +1,17 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
-
-/*
-;------------------------------------------------------------------------
-; kern_types.
-; ===========
-;
-; Project: uKOS-X
-; Purpose:
-;    Kernel shared types and forward declarations.
-;
-;   This header contains configuration macros, enums, type
-;   definitions, and forward declarations shared across
-;   kernel modules. It was created to break circular
-;   dependencies between kern.h and module headers.
-;
-;   Module headers include this file directly, while
-;   kern.h remains the public API for external code.
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2026 Laurent von Allmen
+ *
+ *   Kernel shared types and forward declarations.
+ *
+ *   This header contains configuration macros, enums, type
+ *   definitions, and forward declarations shared across
+ *   kernel modules. It was created to break circular
+ *   dependencies between kern.h and module headers.
+ *
+ *   Module headers include this file directly, while
+ *   kern.h remains the public API for external code.
+ */
 
 #pragma once
 

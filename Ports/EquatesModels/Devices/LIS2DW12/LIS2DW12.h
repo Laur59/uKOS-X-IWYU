@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; LIS2DW12.
-; =========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     ST LIS2DW12 accelerometer equates.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     ST LIS2DW12 accelerometer equates.
+ */
 
 #pragma once
 

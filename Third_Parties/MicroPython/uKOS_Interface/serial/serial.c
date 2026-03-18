@@ -1,23 +1,13 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; serial.
-; =======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     uKOS serial interface
-;
-;           Usage:
-;           import serial
-;           status = serial.send(0, '1234')
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     uKOS serial interface
+ *
+ *           Usage:
+ *           import serial
+ *           status = serial.send(0, '1234')
+ */
 
 #include    "types.h"
 #include    "macros.h"

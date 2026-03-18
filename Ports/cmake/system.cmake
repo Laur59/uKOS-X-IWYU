@@ -1,14 +1,7 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-
-# system.
-# =======
-
-#------------------------------------------------------------------------
-# Project:  uKOS-X
-# Goal:     CMake for uKOS-X systems (generic part).
 #
-#------------------------------------------------------------------------
+# CMake for uKOS-X systems (generic part).
 
 # Versioning Detection
 if(NOT DEFINED VERSIONING)

@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; switch.
-; =======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     switch manager.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     switch manager.
+ */
 
 #ifdef CONFIG_MAN_SWITCH_S
 

@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
-
-/*
-; stub_kern_kernel.
-; =================
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     stub for the connection of the "kern" manager to the uKernel device.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Goal:     stub for the connection of the "kern" manager to the uKernel device.
+ */
 
 #include    <stdint.h>
 

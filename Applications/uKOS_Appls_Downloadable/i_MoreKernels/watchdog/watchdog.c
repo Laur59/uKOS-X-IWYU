@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; watchdog.
-; =========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           This application shows how to operate with the uKOS-X uKernel.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Demo of a C application.
+ * This application shows how to operate with the uKOS-X uKernel.
+ */
 
 /*!
  * \file
@@ -91,7 +81,7 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 #endif
@@ -111,32 +101,32 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 
     UNUSED(argument);
 
-    kern_suspendProcess(1000u);
+    kern_suspendProcess(1000U);
 
 // Watchdog in automatic mode
 
     (void)dprintf(KSYST, "\nWatchdog in automatic mode (trying for 10'000-ms)\n");
-    watchdog_arm(1000u, KWATCHDOG_AUTO);
+    watchdog_arm(1000U, KWATCHDOG_AUTO);
 
-    kern_suspendProcess(10000u);
+    kern_suspendProcess(10000U);
 
 // Watchdog in manual mode
 
     (void)dprintf(KSYST, "Watchdog in manual mode    (trying for 10'000-ms)\n");
-    for (i = 0u; i < 100u; i++) {
-        kern_suspendProcess(60u);
-        watchdog_arm(100u, KWATCHDOG_MANUAL);
+    for (i = 0U; i < 100U; i++) {
+        kern_suspendProcess(60U);
+        watchdog_arm(100U, KWATCHDOG_MANUAL);
     }
 
 // Now relaunch the watchdog for 20-s and waiting for the restart
 
-    watchdog_arm(20000u, KWATCHDOG_MANUAL);
+    watchdog_arm(20000U, KWATCHDOG_MANUAL);
     (void)dprintf(KSYST, "\nNow waiting 20-s for the watchdog restart\n");
 
     i = 0;
     while (true) {
         (void)dprintf(KSYST, "Elapsed %"PRIu16"-s!\n", i++);
-        kern_suspendProcess(1000u);
+        kern_suspendProcess(1000U);
     }
 }
 

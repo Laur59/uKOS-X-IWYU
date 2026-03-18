@@ -1,35 +1,25 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; signals.
-; ========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Kern - Signal management.
-;
-;           This module implements the signals primitives.
-;
-;           Software signal system calls
-;           ----------------------------
-;
-;           void    signals_init(void);
-;           int32_t kern_createSignalGroup(const char_t *identifier, sign_t **handle);
-;           int32_t kern_createBitSignal(sign_t *handle, uint8_t *bit);
-;           int32_t kern_signalSignal(sign_t *handle, uint32_t signals, proc_t *toProcess, uint32_t mode);
-;           int32_t kern_waitSignal(sign_t *handle, uint32_t *signals, proc_t *fromProcess, uint32_t timeout);
-;           int32_t kern_getWaitingSignalMask(sign_t *handle, uint32_t *waitingSignals);
-;           int32_t kern_clearPendingSignal(sign_t *handle, uint32_t toClearMask);
-;           int32_t kern_killSignalGroup(sign_t *handle);
-;           int32_t kern_killBitSignal(sign_t *handle, uint8_t bitSignal);
-;           int32_t kern_getSignalGroupById(char_t *identifier, sign_t **handle);
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Kern - Signal management.
+ *
+ *           This module implements the signals primitives.
+ *
+ *           Software signal system calls
+ *           ----------------------------
+ *
+ *           void    signals_init(void) *
+ *           int32_t kern_createSignalGroup(const char_t *identifier, sign_t **handle) *
+ *           int32_t kern_createBitSignal(sign_t *handle, uint8_t *bit) *
+ *           int32_t kern_signalSignal(sign_t *handle, uint32_t signals, proc_t *toProcess, uint32_t mode) *
+ *           int32_t kern_waitSignal(sign_t *handle, uint32_t *signals, proc_t *fromProcess, uint32_t timeout) *
+ *           int32_t kern_getWaitingSignalMask(sign_t *handle, uint32_t *waitingSignals) *
+ *           int32_t kern_clearPendingSignal(sign_t *handle, uint32_t toClearMask) *
+ *           int32_t kern_killSignalGroup(sign_t *handle) *
+ *           int32_t kern_killBitSignal(sign_t *handle, uint8_t bitSignal) *
+ *           int32_t kern_getSignalGroupById(char_t *identifier, sign_t **handle) *
+ */
 
 #include    "signals.h"
 #include    "kern/private/private_signals.h"
@@ -644,7 +634,7 @@ int32_t kern_killBitSignal(sign_t *handle, uint8_t bitSignal) {
     PRIVILEGE_ELEVATE;
     INTERRUPTION_OFF;
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
-    if (handle == NULL)                                 { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOGRO; }
+    if (handle == nullptr)                              { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOGRO; }
     if ((handle->oState & (1U<<BSIGN_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOGRO; }
 
     maskBit = (uint32_t)(1U<<bitSignal);

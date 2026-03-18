@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; plotSin.
-; ========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           This application shows how to operate with the uKOS-X uKernel.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Demo of a C application.
+ * This application shows how to operate with the uKOS-X uKernel.
+ */
 
 /*!
  * \file
@@ -26,7 +16,7 @@ SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  *          - P0: Every 10-ms
  *                  - Compute a noisy sinus
  *                  - Send it on the serial comm (using the Arduino format)
- *                  - Toggle LED 1
+ *                  - Toggle LED 1 with decimation of 10
  *
  *          Used for the scope observation.
  *
@@ -97,7 +87,7 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 #endif
@@ -126,15 +116,16 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
     uint16_t    x;
     uint32_t    random;
     float64_t   y;
+    uint32_t ledDecimationCounter = 0;
 
     UNUSED(argument);
 
 // Wait a bit (to allow to switch CoolTerm2 in the right mode)
 
-    kern_suspendProcess(10000u);
+    kern_suspendProcess(10000U);
 
     while (true) {
-        for (x = 0u; x < 360u; x += 1) {
+        for (x = 0U; x < 360U; x += 1) {
 
 // Compute the genuine sin
 // Add a random noise
@@ -149,9 +140,13 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 // Print the data using the Arduino format in CoolTerm2
 
             (void)dprintf(KSYST, "%"PRIu16"\t%5.2f\n", x, y);
-            kern_suspendProcess(10u);
+            kern_suspendProcess(10U);
         }
-        led_toggle(KLED_1);
+        ledDecimationCounter++;
+        if (ledDecimationCounter == 10U) {
+            led_toggle(KLED_1);
+            ledDecimationCounter = 0U;
+        }
     }
 }
 

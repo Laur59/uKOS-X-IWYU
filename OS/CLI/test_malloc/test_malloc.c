@@ -1,27 +1,17 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; test_malloc.
-; ============
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Randomly test the memo_maloc.
-;
-;           Launch 10 processes:
-;
-;           - P0..P9
-;                 Randomly test the memo_malloc
-;                 Ask for random quantity of memory
-;                 Each bloc is filled with a pattern
-;                 When the heap is full, check of the coherence of the blocs & release them
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Randomly test the memo_maloc.
+ *
+ *           Launch 10 processes:
+ *
+ *           - P0..P9
+ *                 Randomly test the memo_malloc
+ *                 Ask for random quantity of memory
+ *                 Each bloc is filled with a pattern
+ *                 When the heap is full, check of the coherence of the blocs & release them
+ */
 
 #include    <inttypes.h>
 #include    <stdio.h>

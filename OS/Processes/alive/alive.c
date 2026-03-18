@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; alive.
-; ======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     alive process; blink the LED 0.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     alive process; blink the LED 0.
+ */
 
 #include    "alive.h"
 

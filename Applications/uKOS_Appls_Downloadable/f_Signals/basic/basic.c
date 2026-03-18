@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; basic.
-; ======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           This application shows how to operate with the uKOS-X uKernel.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Demo of a C application.
+ * This application shows how to operate with the uKOS-X uKernel.
+ */
 
 /*!
  * \file
@@ -103,7 +93,7 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 #endif
@@ -131,7 +121,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
     if (kern_createSignalGroup("Group 0", &group) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create sigr"); exit(EXIT_OS_FAILURE); }
 
     while (true) {
-        kern_suspendProcess(1000u);
+        kern_suspendProcess(1000U);
         kern_signalSignal(group, KPROCESS_0, KKERN_HANDLE_BROADCAST, KSIGN_SIGNALE_WITH_CONTEXT_SWITCH);
         led_toggle(KLED_1);
     }
@@ -154,7 +144,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
     if (kern_createSignalGroup("Group 1", &group) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create sigr"); exit(EXIT_OS_FAILURE); }
 
     while (true) {
-        kern_suspendProcess(1234u);
+        kern_suspendProcess(1234U);
         kern_signalSignal(group, KPROCESS_1, KKERN_HANDLE_BROADCAST, KSIGN_SIGNALE_WITH_CONTEXT_SWITCH);
         led_toggle(KLED_2);
     }
@@ -176,7 +166,7 @@ static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
 
 // Get the events
 
-    while (kern_getSignalGroupById("Group 0", &group) != KERR_KERN_NOERR) { kern_suspendProcess(1u); }
+    while (kern_getSignalGroupById("Group 0", &group) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
 
     while (true) {
         signal = KPROCESS_0;
@@ -200,7 +190,7 @@ static void __attribute__ ((noreturn)) aProcess_3(const void *argument) {
 
     UNUSED(argument);
 
-    while (kern_getSignalGroupById("Group 1", &group) != KERR_KERN_NOERR) { kern_suspendProcess(1u); }
+    while (kern_getSignalGroupById("Group 1", &group) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
 
     while (true) {
         signal = KPROCESS_1;

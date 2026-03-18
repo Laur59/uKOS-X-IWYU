@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
-
-/*
-; model_cache.
-; ============
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Cortex M7 L1 cache management.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Goal:     Cortex M7 L1 cache management.
+ */
 
 #define DCACHE_LINE_SIZE    32      // Cortex M7 cache line size of 32-bytes
 #define ICACHE_LINE_SIZE    32      // Cortex M7 cache line size of 32-bytes

@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; led.
-; ====
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     led manager.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     led manager.
+ */
 
 #ifdef CONFIG_MAN_LED_S
 

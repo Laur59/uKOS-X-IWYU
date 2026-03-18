@@ -1,21 +1,11 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; identifier.
-; ===========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Kern - Identifier management (compare the object IDs)
-;
-;           This module is responsible for manipulating the identifiers of the uKernel.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Kern - Identifier management (compare the object IDs)
+ *
+ *           This module is responsible for manipulating the identifiers of the uKernel.
+ */
 
 #include    <stdint.h>
 

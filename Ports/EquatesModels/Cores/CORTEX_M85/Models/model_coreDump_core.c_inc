@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
-
-/*
-; model_coreDump_core.
-; ====================
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Model for the core dump (Core specific).
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Goal:     Model for the core dump (Core specific).
+ */
 
 #include    "record/private/private_record.h"
 #include    "kern/private/private_processes.h"
@@ -89,7 +79,8 @@ static  void    local_printStackFrame(void);
  * FPSCR    = 0x00000000
  *
  */
-void    __attribute__ ((naked, noreturn)) model_coreDump_displayExceptions(uintptr_t lr __attribute__ ((unused)), uintptr_t *msp __attribute__ ((unused))) {
+[[gnu::naked]] [[noreturn]]
+void    model_coreDump_displayExceptions([[maybe_unused]] uintptr_t lr, [[maybe_unused]] uintptr_t *msp) {
 
     CORE_DUMP_SAVE_STACK_FRAME;
 
@@ -106,7 +97,8 @@ void    __attribute__ ((naked, noreturn)) model_coreDump_displayExceptions(uintp
  * - Display the stack frame
  *
  */
-static  void    __attribute__ ((noinline, used, noreturn)) local_processException(uintptr_t *stackBefore, uintptr_t *stackAfter) {
+[[gnu::noinline, gnu::used]] [[noreturn]]
+static  void    local_processException(uintptr_t *stackBefore, uintptr_t *stackAfter) {
             uint32_t    core, i;
     const   uintptr_t   *ptr;
     const   char_t      *vectorName;
@@ -141,7 +133,8 @@ static  void    __attribute__ ((noinline, used, noreturn)) local_processExceptio
  * - Display the exception name
  *
  */
-static  void    __attribute__ ((noinline)) local_printException(const char_t **vectorName) {
+[[gnu::noinline]]
+static  void    local_printException(const char_t **vectorName) {
             uint32_t    core, i;
     const   int32_t     cfsr  = (int32_t)REG(SCB)->CFSR;
 
@@ -187,7 +180,8 @@ static  void    __attribute__ ((noinline)) local_printException(const char_t **v
  * - Display the core information
  *
  */
-static  void    __attribute__ ((noinline)) local_printCore(void) {
+[[gnu::noinline]]
+static  void    local_printCore(void) {
             char_t      string[80 + 1];
     const   int32_t     cfsr  = (int32_t)REG(SCB)->CFSR;
     const   int32_t     hfsr  = (int32_t)REG(SCB)->HFSR;
@@ -288,38 +282,38 @@ static  void    local_printStackFrame(void) {
     stack = &vStackBefore[core][SPP];
 
     (void)snprintf(&string[0], 80u, "Stack content before the fault: offset = 0x%08"PRIXPTR"\n", offset);                                               cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+31] = 0x%08"PRIXPTR"\n",   stack[offset + 31u]);                                                            cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+30] = 0x%08"PRIXPTR"\n",   stack[offset + 30u]);                                                            cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+29] = 0x%08"PRIXPTR"\n",   stack[offset + 29u]);                                                            cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+28] = 0x%08"PRIXPTR"\n",   stack[offset + 28u]);                                                            cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+27] = 0x%08"PRIXPTR"\n",   stack[offset + 27u]);                                                            cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+26] = 0x%08"PRIXPTR"\n",   stack[offset + 26u]);                                                            cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+25] = 0x%08"PRIXPTR"\n",   stack[offset + 25u]);                                                            cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+24] = 0x%08"PRIXPTR"\n",   stack[offset + 24u]);                                                            cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+23] = 0x%08"PRIXPTR"\n",   stack[offset + 23u]);                                                            cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+22] = 0x%08"PRIXPTR"\n",   stack[offset + 22u]);                                                            cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+21] = 0x%08"PRIXPTR"\n",   stack[offset + 21u]);                                                            cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+20] = 0x%08"PRIXPTR"\n",   stack[offset + 20u]);                                                            cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+19] = 0x%08"PRIXPTR"\n",   stack[offset + 19u]);                                                            cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+18] = 0x%08"PRIXPTR"\n",   stack[offset + 18u]);                                                            cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+17] = 0x%08"PRIXPTR"\n",   stack[offset + 17u]);                                                            cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+16] = 0x%08"PRIXPTR"\n",   stack[offset + 16u]);                                                            cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+15] = 0x%08"PRIXPTR"\n",   stack[offset + 15u]);                                                            cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+14] = 0x%08"PRIXPTR"\n",   stack[offset + 14u]);                                                            cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+13] = 0x%08"PRIXPTR"\n",   stack[offset + 13u]);                                                            cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+12] = 0x%08"PRIXPTR"\n",   stack[offset + 12u]);                                                            cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+11] = 0x%08"PRIXPTR"\n",   stack[offset + 11u]);                                                            cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+10] = 0x%08"PRIXPTR"\n",   stack[offset + 10u]);                                                            cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+09] = 0x%08"PRIXPTR"\n",   stack[offset + 9u]);                                                             cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+08] = 0x%08"PRIXPTR"\n",   stack[offset + 8u]);                                                             cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+07] = 0x%08"PRIXPTR"\n",   stack[offset + 7u]);                                                             cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+06] = 0x%08"PRIXPTR"\n",   stack[offset + 6u]);                                                             cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+05] = 0x%08"PRIXPTR"\n",   stack[offset + 5u]);                                                             cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+04] = 0x%08"PRIXPTR"\n",   stack[offset + 4u]);                                                             cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+03] = 0x%08"PRIXPTR"\n",   stack[offset + 3u]);                                                             cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+02] = 0x%08"PRIXPTR"\n",   stack[offset + 2u]);                                                             cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+01] = 0x%08"PRIXPTR"\n",   stack[offset + 1u]);                                                             cmns_send(KDEF0, string);
-    (void)snprintf(&string[0], 80u, "stack[+00] = 0x%08"PRIXPTR"\n\n", stack[offset + 0u]);                                                             cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+31] = 0x%08"PRIXPTR"\n",   stack[offset + 31U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+30] = 0x%08"PRIXPTR"\n",   stack[offset + 30U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+29] = 0x%08"PRIXPTR"\n",   stack[offset + 29U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+28] = 0x%08"PRIXPTR"\n",   stack[offset + 28U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+27] = 0x%08"PRIXPTR"\n",   stack[offset + 27U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+26] = 0x%08"PRIXPTR"\n",   stack[offset + 26U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+25] = 0x%08"PRIXPTR"\n",   stack[offset + 25U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+24] = 0x%08"PRIXPTR"\n",   stack[offset + 24U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+23] = 0x%08"PRIXPTR"\n",   stack[offset + 23U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+22] = 0x%08"PRIXPTR"\n",   stack[offset + 22U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+21] = 0x%08"PRIXPTR"\n",   stack[offset + 21U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+20] = 0x%08"PRIXPTR"\n",   stack[offset + 20U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+19] = 0x%08"PRIXPTR"\n",   stack[offset + 19U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+18] = 0x%08"PRIXPTR"\n",   stack[offset + 18U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+17] = 0x%08"PRIXPTR"\n",   stack[offset + 17U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+16] = 0x%08"PRIXPTR"\n",   stack[offset + 16U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+15] = 0x%08"PRIXPTR"\n",   stack[offset + 15U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+14] = 0x%08"PRIXPTR"\n",   stack[offset + 14U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+13] = 0x%08"PRIXPTR"\n",   stack[offset + 13U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+12] = 0x%08"PRIXPTR"\n",   stack[offset + 12U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+11] = 0x%08"PRIXPTR"\n",   stack[offset + 11U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+10] = 0x%08"PRIXPTR"\n",   stack[offset + 10U]);                                                            cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+09] = 0x%08"PRIXPTR"\n",   stack[offset + 9U]);                                                             cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+08] = 0x%08"PRIXPTR"\n",   stack[offset + 8U]);                                                             cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+07] = 0x%08"PRIXPTR"\n",   stack[offset + 7U]);                                                             cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+06] = 0x%08"PRIXPTR"\n",   stack[offset + 6U]);                                                             cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+05] = 0x%08"PRIXPTR"\n",   stack[offset + 5U]);                                                             cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+04] = 0x%08"PRIXPTR"\n",   stack[offset + 4U]);                                                             cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+03] = 0x%08"PRIXPTR"\n",   stack[offset + 3U]);                                                             cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+02] = 0x%08"PRIXPTR"\n",   stack[offset + 2U]);                                                             cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+01] = 0x%08"PRIXPTR"\n",   stack[offset + 1U]);                                                             cmns_send(KDEF0, string);
+    (void)snprintf(&string[0], 80u, "stack[+00] = 0x%08"PRIXPTR"\n\n", stack[offset + 0U]);                                                             cmns_send(KDEF0, string);
 
 // Display the CPU registers
 

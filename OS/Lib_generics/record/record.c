@@ -1,21 +1,11 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; record.
-; =======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     record manager.
-;
-;           Management of the tracing & log
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     record manager.
+ *
+ *           Management of the tracing & log
+ */
 
 #ifdef CONFIG_MAN_RECORD_S
 

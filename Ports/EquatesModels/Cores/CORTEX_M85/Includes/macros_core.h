@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-*/
-
-/*
-; macros_core.
-; ============
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Important macros.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Goal:     Important macros.
+ */
 
 #pragma once
 
@@ -214,7 +204,7 @@ SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #endif
 
 #if (!defined(IS_EXCEPTION))
-#define IS_EXCEPTION            ((REG(SCB)->ICSR & 0x000001FFu) != 0u)
+#define IS_EXCEPTION            ((REG(SCB)->ICSR & 0x000001FFU) != 0U)
 #endif
 
 #if (!defined(GET_CURRENT_PROCESS_STACK))

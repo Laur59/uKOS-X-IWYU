@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; run.
-; ====
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Launch a function module.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Launch a function module.
+ */
 
 #include    <stdint.h>
 #include    <stdio.h>

@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; microPython.
-; ============
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     mpyt library.
-;           uKOS-X interface for MicroPython (www.MicroPython.com).
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     mpyt library.
+ *           uKOS-X interface for MicroPython (www.MicroPython.com).
+ */
 
 // Needed to support dprintf
 

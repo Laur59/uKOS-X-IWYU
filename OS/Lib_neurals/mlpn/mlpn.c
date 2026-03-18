@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; mlpn.
-; =====
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     mlpn manager.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     mlpn manager.
+ */
 
 #include    "mlpn.h"
 

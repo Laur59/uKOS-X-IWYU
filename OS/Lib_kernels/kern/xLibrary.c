@@ -1,23 +1,13 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; xLibrary.
-; =========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Kern - impure data for xlib management.
-;
-;           This module is responsible for C library integration with uKOS-X.
-;           For newlib: creating and swapping the impure data (_impure_ptr).
-;           For picolibc: initialising per-process errno (no context switch overhead).
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Kern - C library integration for xlib management.
+ *
+ *           This module is responsible for C library integration with uKOS-X.
+ *           For newlib: creating and swapping the impure data (_impure_ptr).
+ *           For picolibc: initialising per-process errno (no context switch overhead).
+ */
 
 #include    "kern/private/private_xLibrary.h"
 

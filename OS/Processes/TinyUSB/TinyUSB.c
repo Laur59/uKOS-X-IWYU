@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; TinyUSB.
-; ========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     "TinyUSB" management.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     "TinyUSB" management.
+ */
 
 #include    "TinyUSB.h"
 

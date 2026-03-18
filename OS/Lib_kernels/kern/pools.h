@@ -1,32 +1,22 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; pools.
-; ======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Kern - Memory pools.
-;
-;           This module implements the software primitives.
-;
-;           Memory pool system calls
-;           ------------------------
-;
-;           void    pools_init(void);
-;           int32_t kern_createPool(const char_t *identifier, pool_t **handle);
-;           int32_t kern_setPool(pool_t *handle, const pcnf_t *configure);
-;           int32_t kern_allocateBlock(pool_t *handle, void **address, uint32_t timeout);
-;           int32_t kern_deAllocateBlock(pool_t *handle, const void *address);
-;           int32_t kern_killPool(pool_t *handle);
-;           int32_t kern_getPoolById(const char_t *identifier, pool_t **handle);
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Kern - Memory pools.
+ *
+ *           This module implements the software primitives.
+ *
+ *           Memory pool system calls
+ *           ------------------------
+ *
+ *           void    pools_init(void) *
+ *           int32_t kern_createPool(const char_t *identifier, pool_t **handle) *
+ *           int32_t kern_setPool(pool_t *handle, const pcnf_t *configure) *
+ *           int32_t kern_allocateBlock(pool_t *handle, void **address, uint32_t timeout) *
+ *           int32_t kern_deAllocateBlock(pool_t *handle, const void *address) *
+ *           int32_t kern_killPool(pool_t *handle) *
+ *           int32_t kern_getPoolById(const char_t *identifier, pool_t **handle) *
+ */
 
 #pragma once
 

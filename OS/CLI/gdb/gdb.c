@@ -1,21 +1,11 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; gdb.
-; ====
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Freeze the µKernel for gdb.
-;           - Freeze the uKernel in order to support gdb sessions
-;           - The gdb loaded application has to start with SET_INTERRUPTION
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Freeze the µKernel for gdb.
+ *           - Freeze the uKernel in order to support gdb sessions
+ *           - The gdb loaded application has to start with SET_INTERRUPTION
+ */
 
 #include    <stdint.h>
 #include    <stdio.h>

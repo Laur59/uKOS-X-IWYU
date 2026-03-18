@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; wki2c.
-; ====
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     wki2c tool.
-;           This tool allows to operate with an i2c device.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     wki2c tool.
+ *           This tool allows to operate with an i2c device.
+ */
 
 #include    <stdint.h>
 #include    <stdio.h>

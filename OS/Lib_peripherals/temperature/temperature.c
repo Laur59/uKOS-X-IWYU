@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; temperature.
-; ============
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     temperature manager.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     temperature manager.
+ */
 
 #include    "temperature.h"
 

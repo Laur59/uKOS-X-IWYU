@@ -1,24 +1,14 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; lv_conf.
-; ========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Basic LVGL configuration
-;           Set 16 & 26 pixel fonts.
-;           Internal memory allocator
-;
-;           Configuration file for LVGL v9.5.x
-;           (based on lv_conf_template.h v9.5.0)
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Basic LVGL configuration
+ *           Set 16 & 26 pixel fonts.
+ *           Internal memory allocator
+ *
+ *           Configuration file for LVGL v9.5.x
+ *           (based on lv_conf_template.h v9.5.0)
+ */
 
 #if 1
 

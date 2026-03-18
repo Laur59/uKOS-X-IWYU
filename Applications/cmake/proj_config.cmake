@@ -1,14 +1,7 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-
-# proj_config.
-# ============
-
-#------------------------------------------------------------------------
-# Project:  uKOS-X
-# Goal:     Configuring options to build kernel and os
 #
-#------------------------------------------------------------------------
+# Configuring options to build applications
 
 # Function to derive SoC properties from SoC name
 #

@@ -1,23 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; stm32H743_usb.
-; ==============
-
-;------------------------------------------------------------------------
-; Author:   Edo. Franzi
-; Modifs:   Laurent von Allmen
-;
-; Project:  uKOS-X
-; Goal:     stm32H743_usb equates.
-;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     stm32H743_usb equates.
+ */
 
 #pragma once
 

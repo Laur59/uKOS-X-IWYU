@@ -1,20 +1,10 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; basic.
-; ======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     Demo of a C application.
-;           This application shows how to operate with the uKOS-X uKernel.
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Demo of a C application.
+ * This application shows how to operate with the uKOS-X uKernel.
+ */
 
 /*!
  * \file
@@ -93,7 +83,7 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 #endif
@@ -117,10 +107,10 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 
     UNUSED(argument);
 
-    while (kern_getSemaphoreById(KURT0_SEMAPHORE_RX, &semaphore) != KERR_KERN_NOERR) { kern_suspendProcess(1u); }
+    while (kern_getSemaphoreById(KURT0_SEMAPHORE_RX, &semaphore) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
 
     while (true) {
-        status = kern_waitSemaphore(semaphore, 500u);
+        status = kern_waitSemaphore(semaphore, 500U);
 
 // Maintains the sampling rate always @ 500-ms
 // Thanks to the kern_suspendProcess(KWAIT_REMAINING_TIMEOUT);
@@ -134,7 +124,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
             kern_suspendProcess(KWAIT_REMAINING_TIMEOUT);
             led_on(KLED_1);
             led_on(KLED_2);
-            kern_suspendProcess(50u);
+            kern_suspendProcess(50U);
             led_off(KLED_1);
             led_off(KLED_2);
 
@@ -144,7 +134,7 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 // Timeout of 500-ms (stable)
 
             led_on(KLED_1);
-            kern_suspendProcess(50u);
+            kern_suspendProcess(50U);
             led_off(KLED_1);
         }
     }
@@ -165,10 +155,10 @@ MAIN_ENTRY(argc, argv[]) {
                                     .oStopBits = KSERIAL_STOPBITS_1,
                                     .oParity   = KSERIAL_PARITY_NONE,
                                     .oBaudRate = KSERIAL_BAUDRATE_DEFAULT,
-                                    .oKernSync = ((uint32_t)1u<<(uint32_t)BSERIAL_SEMAPHORE_RX)
+                                    .oKernSync = ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_RX)
                                 };
 
-    kern_suspendProcess(100u);
+    kern_suspendProcess(100U);
     serial_configure(KURT0, &configureURTx);
     serial_flush(KURT0);
 

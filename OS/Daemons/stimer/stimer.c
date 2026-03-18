@@ -1,19 +1,9 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; stimer.
-; =======
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     stim daemon; software timer management
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     stim daemon; software timer management
+ */
 
 #include    <stdint.h>
 #include    <stdlib.h>

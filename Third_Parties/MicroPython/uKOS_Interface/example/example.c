@@ -1,24 +1,14 @@
 /*
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-*/
-
-/*
-; example.
-; ========
-
-;------------------------------------------------------------------------
-; Project:  uKOS-X
-; Goal:     uKOS example interface
-;
-;           Usage:
-;           import example
-;           example.add_ints(1, 3)
-;               should return 4
-;
-;-----
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     uKOS example interface
+ *
+ *           Usage:
+ *           import example
+ *           example.add_ints(1, 3)
+ *               should return 4
+ */
 
 #include    "py/obj.h"
 #include    "py/runtime.h"

@@ -1,15 +1,12 @@
 #!/usr/bin/env zsh
-
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-
-#------------------------------------------------------------------------
+#
 # Purpose: Build all the projects.
 #
 # Usage:
 #       cd cloned_directory/Ports/Targets
 #       ./_build.sh [-L] [-U] [-Y] [-v|-w]
-#------------------------------------------------------------------------
 
 emulate -L zsh
 setopt ERR_EXIT NO_UNSET PIPE_FAIL EXTENDED_GLOB
