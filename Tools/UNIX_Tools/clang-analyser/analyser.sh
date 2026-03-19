@@ -1,12 +1,14 @@
 #!/usr/bin/env zsh
 
-# SPDX-License-Identifier: MIT
-# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-
 # analyser.
 # =========
 
+# SPDX-License-Identifier: MIT
+
 #------------------------------------------------------------------------
+# Author:   Laurent von Allmen  The 2025-11-13
+# Modifs:
+#
 # Project:  uKOS-X
 # Goal:     Run clang analyser; replace scan-build not working with CMake
 #           and use clang-tidy as linter tool.
@@ -16,7 +18,8 @@
 #               cd variant
 #               run-analyser
 #
-#-----
+#   (c) 2025-2026, Laurent von Allmen
+#   ---------------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \
