@@ -56,9 +56,6 @@
 // Runtime specific
 // ================
 
-#undef  CACHE_I_S                   // With the instruction cache
-#undef  CACHE_D_S                   // With the data cache
-
 // Prototypes
 
 static          void    local_EnableSRAM(void);
@@ -516,22 +513,18 @@ static  void    local_MPU_Configuration(void) {
 /*
  * \brief local_CACHE_Enable
  *
- * - Enable the instruction cache
+ * - Enable the L1 instruction & the data caches
  *
  */
 static  void    local_CACHE_Enable(void) {
 
     REG(MEMSYSCTL)->MSCR |= MEMSYSCTL_MSCR_DCACTIVE | MEMSYSCTL_MSCR_ICACTIVE;
 
-    #if (defined(CACHE_I_S))
     cache_I_Invalidate();
     cache_I_Enable();
-    #endif
 
-    #if (defined(CACHE_D_S))
     cache_D_Invalidate();
     cache_D_Enable();
-    #endif
 }
 
-#include    "model_cache.c_inc"
+#include    "model_I_D_cache.c_inc"

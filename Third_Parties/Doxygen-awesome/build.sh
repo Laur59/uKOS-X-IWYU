@@ -6,11 +6,11 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Build the Doxygen-awesome package
+# Project:  uKOS-X
+# Goal:     Build the Doxygen-awesome package
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -49,8 +49,8 @@
 set -euo pipefail
 
 if [[ -z "${PATH_UKOS_X_PACKAGE:-}" ]]; then
-	echo 'Variable PATH_UKOS_X_PACKAGE is not set!'
-	exit 1
+    echo 'Variable PATH_UKOS_X_PACKAGE is not set!'
+    exit 1
 fi
 
 # Colours for messages
@@ -75,7 +75,7 @@ printf '%b%s%b' "${GREEN}" "${splash}" "${NC}"
 # Packages
 # --------
 
-readonly package=2.4.1
+readonly package=2.4.2
 
 # Clone the right package
 

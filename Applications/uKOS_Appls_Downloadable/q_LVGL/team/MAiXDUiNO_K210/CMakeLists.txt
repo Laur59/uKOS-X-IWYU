@@ -4,11 +4,11 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Laurent von Allmen	The 2025-01-01
+# Author:   Laurent von Allmen  The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		CMake file to set up the building for uKOS-X system.
+# Project:  uKOS-X
+# Goal:     CMake file to set up the building for uKOS-X system.
 #
 #   (c) 2025-20xx, Laurent von Allmen
 #   ---------------------------------
@@ -54,9 +54,9 @@ include(set-project-paths)
 include(${PATH_UKOS}/Ports/Mkfiles/cmake/select-riscv-toolchain.cmake)
 
 project(
-	team
-	VERSION 1.0
-	LANGUAGES C
+    team
+    VERSION 1.0
+    LANGUAGES C
 )
 
 set(DISPLAY TFT_2_4_Inches)
@@ -66,21 +66,24 @@ set(PATH_LVGL ${PATH_UKOS}/Third_Parties/LVGL)
 set(SOC K210)
 set(CORE RV64IMAFDC)
 
+# SOC has cache
+add_compile_definitions(CACHE_D_S)
+
 # Target
 set(BOARD MAiXDUiNO_K210)
 set(VARIANT Variant_Test)
 
 # Extra compilation options
 add_compile_options(
-	-g3 # include extra information for debugger
-	-Os # optimisation
-	-Wno-sign-conversion
+    -g3 # include extra information for debugger
+    -Os # optimisation
+    -Wno-sign-conversion
 )
 
 set(PATH_INCLUDES
-	${PATH_LVGL}/Library/${CORE}/${DISPLAY}
-	${PATH_LVGL}/LVGL-current
-	${PATH_LVGL}/LVGL-current/src
+    ${PATH_LVGL}/Library/${CORE}/${DISPLAY}
+    ${PATH_LVGL}/LVGL-current
+    ${PATH_LVGL}/LVGL-current/src
 )
 
 set(OBJ

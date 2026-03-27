@@ -3,15 +3,15 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Laurent von Allmen		The 2025-01-01
+# Author:   Laurent von Allmen      The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Building all the uKOS downloadable applications using make and clang.
+# Project:  uKOS-X
+# Goal:     Building all the uKOS downloadable applications using make and clang.
 #
-#			usage:
-#			cd ${PATH_UKOS_X_PACKAGE}/Applications/uKOS_Appls_Downloadable
-#			./_build_llvm.sh [-U] [-Y] [-v|-w]
+#           usage:
+#           cd ${PATH_UKOS_X_PACKAGE}/Applications/uKOS_Appls_Downloadable
+#           ./_build_llvm.sh [-U] [-Y] [-v|-w]
 #
 #   (c) 2025-2026, Laurent von Allmen
 #   ---------------------------------
@@ -55,11 +55,11 @@ setopt KSH_ARRAYS  # Use 0-indexed arrays like bash
 readonly PATH_PRG="${0:a:h}"
 
 if [[ -z "${PATH_LLVM_ARM:-}" ]]; then
-	printf 'Variable PATH_LLVM_ARM is not set! ARM targets will not build!\n' >&2
+    printf 'Variable PATH_LLVM_ARM is not set! ARM targets will not build!\n' >&2
 fi
 
 if [[ -z "${PATH_LLVM_RVXX:-}" ]]; then
-	printf 'Variable PATH_LLVM_RVXX is not set! RISC-V targets will not build!\n' >&2
+    printf 'Variable PATH_LLVM_RVXX is not set! RISC-V targets will not build!\n' >&2
 fi
 
 # Colours for messages
@@ -86,7 +86,7 @@ USER_MODE=''
 VERBOSITY=''
 
 usage() {
-	cat <<'EOF'
+    cat <<'EOF'
 Usage: ./_build_llvm.sh [-U] [-Y] [-v|-w]
 
 Options:
@@ -101,54 +101,54 @@ EOF
 readonly OPTSTRING=':UYvwh'
 
 while getopts "${OPTSTRING}" option; do
-	case "${option}" in
-		h)
-			usage
-			exit 0
-			;;
-		U)
-			USER_MODE='USER_MODE=0'
-			;;
-		Y)
-			CANARY_MODE='CANARY=0'
-			;;
-		v)
-			VERBOSITY='-v'
-			;;
-		w)
-			# -v (verbose) takes precedence over -w (write log)
-			if [[ "${VERBOSITY}" != '-v' ]]
-			then
-				VERBOSITY='-w'
-			fi
-			;;
-		?)
-			printf 'Invalid option: -%s\n' "${OPTARG}" >&2
-			exit 1
-			;;
-	esac
+    case "${option}" in
+        h)
+            usage
+            exit 0
+            ;;
+        U)
+            USER_MODE='USER_MODE=0'
+            ;;
+        Y)
+            CANARY_MODE='CANARY=0'
+            ;;
+        v)
+            VERBOSITY='-v'
+            ;;
+        w)
+            # -v (verbose) takes precedence over -w (write log)
+            if [[ "${VERBOSITY}" != '-v' ]]
+            then
+                VERBOSITY='-w'
+            fi
+            ;;
+        ?)
+            printf 'Invalid option: -%s\n' "${OPTARG}" >&2
+            exit 1
+            ;;
+    esac
 done
 
 process_option() {
-	case "${VERBOSITY}" in
-		'-v')
-			cat "${1}"
-			rm -f "${1}"
-			;;
-		'-w')
-			;;
-		*)
-			rm -f "${1}"
-			;;
-	esac
+    case "${VERBOSITY}" in
+        '-v')
+            cat "${1}"
+            rm -f "${1}"
+            ;;
+        '-w')
+            ;;
+        *)
+            rm -f "${1}"
+            ;;
+    esac
 }
 
 # Parse apps.yaml file using yq
 parse_apps_yaml() {
-	local yaml_file="${PATH_PRG}/apps.yaml"
+    local yaml_file="${PATH_PRG}/apps.yaml"
 
-	# Parse YAML: iterate through families, projects, and targets
-	yq eval 'to_entries[] | .key as $family | .value | to_entries[] | .key as $project | .value[] | "\($family)/\($project)/\(.)"' "${yaml_file}"
+    # Parse YAML: iterate through families, projects, and targets
+    yq eval 'to_entries[] | .key as $family | .value | to_entries[] | .key as $project | .value[] | "\($family)/\($project)/\(.)"' "${yaml_file}"
 }
 
 build_failure=''
@@ -160,41 +160,41 @@ PREFIX_VAR='PREFIX=llvm- COMPILER_FAMILY=llvm'
 printf "%bBuilding all the downloadable applications with '%s make %s %s'%b\n" "${BOLD}" "${PREFIX_VAR}" "${USER_MODE}" "${CANARY_MODE}" "${NC}"
 while IFS= read -r CURRENT_TARGET
 do
-	printf '%s ' "${CURRENT_TARGET}"
-	cd "${PATH_PRG}/${CURRENT_TARGET}"
-	make clean_all >/dev/null;
+    printf '%-40s ' "${CURRENT_TARGET}"
+    cd "${PATH_PRG}/${CURRENT_TARGET}"
+    make clean_all >/dev/null;
 
 # Normal output on the stdout, error/warnings on comp.log
-# If comp.log empty		-> "PASS"
+# If comp.log empty     -> "PASS"
 # If comp.log not empty -> "WARNING"
-# If make error			-> "FAIL"
+# If make error         -> "FAIL"
 
-	if make -j ${=PREFIX_VAR} ${CANARY_MODE} ${USER_MODE} >/dev/null 2>"${LOG_FILE}"; then
-		if [[ ! -s "comp.log" ]]; then
-			build_success+=$'\n'"${CURRENT_TARGET}"
-			printf '%bPASS%b\n' "${GREEN}" "${NC}"
-			rm -f "${LOG_FILE}"
-		else
-			build_warning+=$'\n'"${CURRENT_TARGET}"
-			printf '%bWARNING%b\n' "${YELLOW}" "${NC}"
-			process_option "${LOG_FILE}"
-		fi
-	else
-		build_failure+=$'\n'"${CURRENT_TARGET}"
-		printf '%bFAIL%b\n' "${RED}" "${NC}"
-		process_option "${LOG_FILE}"
-	fi
+    if make -j ${=PREFIX_VAR} ${CANARY_MODE} ${USER_MODE} >/dev/null 2>"${LOG_FILE}"; then
+        if [[ ! -s "comp.log" ]]; then
+            build_success+=$'\n'"${CURRENT_TARGET}"
+            printf '%bPASS%b\n' "${GREEN}" "${NC}"
+            rm -f "${LOG_FILE}"
+        else
+            build_warning+=$'\n'"${CURRENT_TARGET}"
+            printf '%bWARNING%b\n' "${YELLOW}" "${NC}"
+            process_option "${LOG_FILE}"
+        fi
+    else
+        build_failure+=$'\n'"${CURRENT_TARGET}"
+        printf '%bFAIL%b\n' "${RED}" "${NC}"
+        process_option "${LOG_FILE}"
+    fi
 done < <(parse_apps_yaml)
 
 # Display the target list that with warnings
 
 if [[ -n "${build_warning}" ]]; then
-	printf '%bBuild with warning:%b%s\n' "${YELLOW}" "${NC}" "${build_warning}"
+    printf '%bBuild with warning:%b%s\n' "${YELLOW}" "${NC}" "${build_warning}"
 fi
 
 # Display the target list that have failed
 
 if [[ -n "${build_failure}" ]]; then
-	printf '%bFailed builds:%b%s\n' "${RED}" "${NC}" "${build_failure}"
+    printf '%bFailed builds:%b%s\n' "${RED}" "${NC}" "${build_failure}"
 fi
 printf '%bTerminated!%b\n' "${BOLD}" "${NC}"

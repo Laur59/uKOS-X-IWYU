@@ -3,15 +3,15 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Laurent von Allmen	The 2025-01-01
+# Author:   Laurent von Allmen  The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Build all the projects using make and gcc.
+# Project:  uKOS-X
+# Goal:     Build all the projects using make and gcc.
 #
-#			usage:
-#			cd ${PATH_UKOS_X_PACKAGE}/Ports/Targets
-#			./_build_gcc.sh [-U] [-Y] [-v|-w]
+#           usage:
+#           cd ${PATH_UKOS_X_PACKAGE}/Ports/Targets
+#           ./_build_gcc.sh [-U] [-Y] [-v|-w]
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -54,11 +54,11 @@ set -euo pipefail
 readonly PATH_PRG="${0:a:h}"
 
 if [[ -z "${PATH_GCC_ARM}" ]]; then
-	printf "Variable PATH_GCC_ARM is not set! ARM targets will not build!\n" >&2
+    printf "Variable PATH_GCC_ARM is not set! ARM targets will not build!\n" >&2
 fi
 
 if [[ -z "${PATH_GCC_RVXX}" ]]; then
-	printf "Variable PATH_GCC_RVXX is not set! RISC-V targets will not build!\n" >&2
+    printf "Variable PATH_GCC_RVXX is not set! RISC-V targets will not build!\n" >&2
 fi
 
 # Colours for messages
@@ -85,7 +85,7 @@ USER_MODE=""
 VERBOSITY=""
 
 usage() {
-	cat <<'EOF'
+    cat <<'EOF'
 Usage: ./_build_gcc.sh [-U] [-Y] [-v|-w]
 
 Options:
@@ -100,65 +100,65 @@ EOF
 readonly OPTSTRING=":UYvwh"
 
 while getopts "${OPTSTRING}" option; do
-	case "${option}" in
-		h)
-			usage
-			exit 0
-			;;
-		U)
-			USER_MODE="USER_MODE=0"
-			;;
-		Y)
-			CANARY_MODE="CANARY=0"
-			;;
-		v)
-			VERBOSITY="-v"
-			;;
-		w)
-			# -v (verbose) takes precedence over -w (write log)
-			if [[ "${VERBOSITY}" != "-v" ]]
-			then
-				VERBOSITY="-w"
-			fi
-			;;
-		?)
-			printf "Invalid option: -%s\n" "${OPTARG}" >&2
-			exit 1
-			;;
-	esac
+    case "${option}" in
+        h)
+            usage
+            exit 0
+            ;;
+        U)
+            USER_MODE="USER_MODE=0"
+            ;;
+        Y)
+            CANARY_MODE="CANARY=0"
+            ;;
+        v)
+            VERBOSITY="-v"
+            ;;
+        w)
+            # -v (verbose) takes precedence over -w (write log)
+            if [[ "${VERBOSITY}" != "-v" ]]
+            then
+                VERBOSITY="-w"
+            fi
+            ;;
+        ?)
+            printf "Invalid option: -%s\n" "${OPTARG}" >&2
+            exit 1
+            ;;
+    esac
 done
 
 process_option()
 {
-	case "${VERBOSITY}" in
-		"-v")
-			cat ${1}
-			rm -f ${1}
-			;;
-		"-w")
-			;;
-		*)
-			rm -f ${1}
-			;;
-	esac
+    case "${VERBOSITY}" in
+        "-v")
+            cat ${1}
+            rm -f ${1}
+            ;;
+        "-w")
+            ;;
+        *)
+            rm -f ${1}
+            ;;
+    esac
 }
 
 # Parse variants.yaml file using yq
 parse_variants_yaml() {
-	local yaml_file="${PATH_PRG}/variants.yaml"
+    local yaml_file="${PATH_PRG}/variants.yaml"
 
-	if ! [[ -f "${yaml_file}" ]]; then
-		printf "%bError: YAML file not found: %s%b\n" "${RED}" "${yaml_file}" "${NC}" >&2
-		exit 1
-	fi
+    if ! [[ -f "${yaml_file}" ]]; then
+        printf "%bError: YAML file not found: %s%b\n" "${RED}" "${yaml_file}" "${NC}" >&2
+        exit 1
+    fi
 
-	if ! command -v yq >/dev/null 2>&1; then
-		printf "%bError: yq is not installed%b\n" "${RED}" "${NC}" >&2
-		exit 1
-	fi
+    if ! command -v yq >/dev/null 2>&1; then
+        printf "%bError: yq is not installed%b\n" "${RED}" "${NC}" >&2
+        exit 1
+    fi
 
-	# Parse YAML: iterate through families and their variants
-	yq eval 'to_entries[] | .key as $family | .value[] | "\($family)\t\(.name)"' "${yaml_file}"
+    # Parse YAML: iterate through families and their variants
+    yq eval 'to_entries[] | .key as $family | .value[] | "\($family)\t\(.name)"' "${yaml_file}"
 }
 
 build_failure=""
@@ -168,37 +168,37 @@ readonly LOG_FILE="compilation.log"
 printf "%bBuilding all the systems with 'make %s %s'%b\n" "${BOLD}" "${USER_MODE}" "${CANARY_MODE}" "${NC}"
 # Parse YAML and iterate through all build targets
 while IFS=$'\t' read -r family variant_name; do
-	CURRENT_VARIANT="${family}/Variant_${variant_name}"
-	printf "%s " "${CURRENT_VARIANT}"
-	cd "${PATH_PRG}"/"${CURRENT_VARIANT}"/System
+    CURRENT_VARIANT="${family}/Variant_${variant_name}"
+    printf "%-40s " "${CURRENT_VARIANT}"
+    cd "${PATH_PRG}"/"${CURRENT_VARIANT}"/System
 
 # Normal output on the stdout, error/warnings on comp.log
-# If comp.log empty		-> "PASS"
+# If comp.log empty     -> "PASS"
 # If comp.log not empty -> "WARNING"
-# If make error			-> "FAIL"
+# If make error         -> "FAIL"
 
-	was_error=0
-	make -j ${USER_MODE} ${CANARY_MODE} >/dev/null 2>"${LOG_FILE}" || was_error=1
-	if (( was_error == 0 )); then
-		build_success+=$'\n'"${CURRENT_VARIANT}"
-		# Check if the file is empty
-		if [ ! -s "${LOG_FILE}" ]; then
-			printf "%bPASS%b\n" "${GREEN}" "${NC}"
-			rm -f "${LOG_FILE}"
-		else
-			printf "%bWARNING%b\n" "${YELLOW}" "${NC}"
-			process_option "${LOG_FILE}"
-		fi
-	else
-		build_failure+=$'\n'"${CURRENT_VARIANT}"
-		printf "%bFAIL%b\n" "${RED}" "${NC}"
-		process_option "${LOG_FILE}"
-	fi
+    was_error=0
+    make -j ${USER_MODE} ${CANARY_MODE} >/dev/null 2>"${LOG_FILE}" || was_error=1
+    if (( was_error == 0 )); then
+        build_success+=$'\n'"${CURRENT_VARIANT}"
+        # Check if the file is empty
+        if [ ! -s "${LOG_FILE}" ]; then
+            printf "%bPASS%b\n" "${GREEN}" "${NC}"
+            rm -f "${LOG_FILE}"
+        else
+            printf "%bWARNING%b\n" "${YELLOW}" "${NC}"
+            process_option "${LOG_FILE}"
+        fi
+    else
+        build_failure+=$'\n'"${CURRENT_VARIANT}"
+        printf "%bFAIL%b\n" "${RED}" "${NC}"
+        process_option "${LOG_FILE}"
+    fi
 done < <(parse_variants_yaml)
 
 # Display the target list that have failed
 
 if [[ -n "${build_failure}" ]]; then
-	printf "%bFailed builds:%b%s\n" "${RED}" "${NC}" "${build_failure}"
+    printf "%bFailed builds:%b%s\n" "${RED}" "${NC}" "${build_failure}"
 fi
 printf "%bTerminated!%b\n" "${BOLD}" "${NC}"

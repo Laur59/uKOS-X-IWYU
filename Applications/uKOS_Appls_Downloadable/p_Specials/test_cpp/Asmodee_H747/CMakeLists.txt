@@ -4,11 +4,11 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Laurent von Allmen	The 2025-01-01
+# Author:   Laurent von Allmen  The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		CMake file to set up the building for uKOS-X system.
+# Project:  uKOS-X
+# Goal:     CMake file to set up the building for uKOS-X system.
 #
 #   (c) 2025-2026, Laurent von Allmen
 #   ---------------------------------
@@ -54,7 +54,7 @@ include(set-project-paths)
 include(${PATH_UKOS}/Ports/Mkfiles/cmake/select-arm-toolchain.cmake)
 
 project(
-	test_cpp
+    test_cpp
     VERSION 1.0
     LANGUAGES C CXX
 )
@@ -62,6 +62,9 @@ project(
 # Microcontroller description (mandatory variables)
 set(SOC STM32H747)
 set(CORE CORTEX_M7)
+
+# SOC has cache
+add_compile_definitions(CACHE_D_S)
 
 # Target
 set(BOARD Asmodee_H747)

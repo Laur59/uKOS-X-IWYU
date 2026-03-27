@@ -5,31 +5,31 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		crt0 for the uKOS-X applications.
-;			User only support
+; Project:  uKOS-X
+; Goal:     crt0 for the uKOS-X applications.
+;           User only support
 ;
 ;                       CODE
-; linker_stTEXT			+-----------------+
-;						|                 |
-;						| .text           |
-; linker_enTEXT			|                 |
-; linker_stRODATA		+-----------------+
-;						|                 |
-;						| .rodata         |
-; linker_enRODATA		|                 |
-; linker_stDATA			+-----------------+
-;						|                 |
-;						| .data           |
-; linker_enDATA			|                 |
-; linker_stBSS			+-----------------+
-;						|                 |
-;						| .bss            |
-; linker_enBSS			|                 |
-; _end					+-----------------+
+; linker_stTEXT         +-----------------+
+;                       |                 |
+;                       | .text           |
+; linker_enTEXT         |                 |
+; linker_stRODATA       +-----------------+
+;                       |                 |
+;                       | .rodata         |
+; linker_enRODATA       |                 |
+; linker_stDATA         +-----------------+
+;                       |                 |
+;                       | .data           |
+; linker_enDATA         |                 |
+; linker_stBSS          +-----------------+
+;                       |                 |
+;                       | .bss            |
+; linker_enBSS          |                 |
+; _end                  +-----------------+
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -66,127 +66,127 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"FLASH.ck"
+#include    "uKOS.h"
+#include    "FLASH.ck"
 
-#ifndef	KSYSTEM_CRT0_CHECK_OS_VERSION_S
-#define	KSYSTEM_CRT0_CHECK_OS_VERSION_S		true
+#ifndef KSYSTEM_CRT0_CHECK_OS_VERSION_S
+#define KSYSTEM_CRT0_CHECK_OS_VERSION_S     true
 #endif
 
-#define	DO_NOT_DESTROY_S		// Do not destroy the C++ destructor;
-								// Some processes can still be in execution
-								// at the output of the main
+#define SKIP_CXX_DESTRUCTORS_S  // Do not call the C++ destructor;
+                                // Some processes can still be in execution
+                                // at the output of the main
 
 // Runtime specific
 // ================
 
-extern	uint8_t		linker_stBSS[];
-extern	uint8_t		linker_enBSS[];
-extern	uint8_t		linker_stInitArray[];
-extern	uint8_t		linker_enInitArray[];
-extern	uint8_t		linker_stFiniArray[];
-extern	uint8_t		linker_enFiniArray[];
+extern  uint8_t     linker_stBSS[];
+extern  uint8_t     linker_enBSS[];
+extern  uint8_t     linker_stInitArray[];
+extern  uint8_t     linker_enInitArray[];
+extern  uint8_t     linker_stFiniArray[];
+extern  uint8_t     linker_enFiniArray[];
 
-		uintptr_t	*ptrInitArray;
-		uintptr_t	*ptrFiniArray;
-
-extern	char_t		aFLASH_signature[];
-extern	uint32_t	vKern_nbIntImbrications;
+extern  char_t      aFLASH_signature[];
+extern  uint32_t    vKern_nbIntImbrications;
 
 // For the stack guard, only 32 and 64-bit machines are considered
 
-extern	uintptr_t	__stack_chk_guard;
+extern  uintptr_t   __stack_chk_guard;
 
 #if (UINTPTR_MAX == 0xFFFFFFFFu)
-#define	KSTACK_GARD_VALUE	0xDeadBeefu
+#define KSTACK_GUARD_VALUE  0xDeadBeefu
 
 #else
-#define	KSTACK_GARD_VALUE	0xDeadBeeffeeBdaeDu;
+#define KSTACK_GUARD_VALUE  0xDeadBeeffeeBdaeDu
 #endif
 
 /*
  * \brief aStart
  *
- * - Copy the initialised data from the CODE to the DATA region
  * - Initialise the BSS region
- * - Call the main
+ * - Call C/C++ constructors
+ * - Call main
+ * - Optionally call C++ destructors
  *
  */
-int32_t		aStart(uint32_t argc, const char_t *argv[]) {
-	int32_t		status;
-	bool		gdb;
-	uintptr_t	*ptrStInitArray;
-	uintptr_t	*ptrEnInitArray;
-	uintptr_t	*ptrStFiniArray;
-	uintptr_t	*ptrEnFiniArray;
+int32_t     aStart(uint32_t argc, const char_t *argv[]) {
+    int32_t     status;
+    bool        gdb;
+    uintptr_t   *ptrStInitArray;
+    uintptr_t   *ptrEnInitArray;
 
+    #if (!defined(SKIP_CXX_DESTRUCTORS_S))
+    uintptr_t   *ptrStFiniArray;
+    uintptr_t   *ptrEnFiniArray;
+    #endif
 
-	PRIVILEGE_ELEVATE;
-	gdb = (vKern_nbIntImbrications != 0u) ? (true) : (false);
-	if (gdb == true) {
-		kern_criticalSection(KEXIT_CRITICAL);
-	}
+    PRIVILEGE_ELEVATE;
+    gdb = (vKern_nbIntImbrications != 0u) ? (true) : (false);
+    if (gdb == true) {
+        kern_criticalSection(KEXIT_CRITICAL);
+    }
 
 // Initialise the BSS region
 
-	memset(linker_stBSS, 0x00u, (size_t)((uintptr_t)linker_enBSS - (uintptr_t)linker_stBSS));
+    memset(linker_stBSS, 0x00u, (size_t)((uintptr_t)linker_enBSS - (uintptr_t)linker_stBSS));
 
 // Verify if the application is compatible with the burned OS
 
-	#if (KSYSTEM_CRT0_CHECK_OS_VERSION_S == true)
-	uint32_t	i;
+    #if (KSYSTEM_CRT0_CHECK_OS_VERSION_S == true)
+    uint32_t    i;
 
-	for (i = 0u; i < 64u; i++) {
-		if (aFLASH_signature[i] != aSignature[i]) {
+    for (i = 0u; i < 64u; i++) {
+        if (aFLASH_signature[i] != aSignature[i]) {
 
-			PRIVILEGE_RESTORE;
-			return (EXIT_OS_FAILURE_CRT0);
-		}
+            PRIVILEGE_RESTORE;
+            return (EXIT_OS_FAILURE_CRT0);
+        }
 
-	}
-	#endif
+    }
+    #endif
 
-// Call all the init array
+// Call all constructors from .init_array
 
-	ptrStInitArray = ALIGNED_PTR(uintptr_t, linker_stInitArray);
-	ptrEnInitArray = ALIGNED_PTR(uintptr_t, linker_enInitArray);
+    ptrStInitArray = ALIGNED_PTR(uintptr_t, linker_stInitArray);
+    ptrEnInitArray = ALIGNED_PTR(uintptr_t, linker_enInitArray);
 
-	while (ptrStInitArray < ptrEnInitArray) {
-		((void (*)(void))*ptrStInitArray)();
-		ptrStInitArray++;
-	}
+    while (ptrStInitArray < ptrEnInitArray) {
+        ((void (*)(void))*ptrStInitArray)();
+        ptrStInitArray++;
+    }
 
-	__stack_chk_guard = KSTACK_GARD_VALUE;
+    __stack_chk_guard = KSTACK_GUARD_VALUE;
 
-	PRIVILEGE_RESTORE;
+    PRIVILEGE_RESTORE;
 
-	RESERVE(SYSTEM, KMODE_READ_WRITE);
-	status = (int32_t)main((int)argc, (const char **)argv);
+    RESERVE(SYSTEM, KMODE_READ_WRITE);
+    status = (int32_t)main((int)argc, (const char **)argv);
 
-// Call all the finit array
+// Call all destructors from .fini_array
 
-	#if (defined(DO_NOT_DESTROY_S))
-	ptrStFiniArray = ALIGNED_PTR(uintptr_t, linker_stFiniArray);
-	ptrEnFiniArray = ALIGNED_PTR(uintptr_t, linker_enFiniArray);
+    #if (!defined(SKIP_CXX_DESTRUCTORS_S))
+    ptrStFiniArray = ALIGNED_PTR(uintptr_t, linker_stFiniArray);
+    ptrEnFiniArray = ALIGNED_PTR(uintptr_t, linker_enFiniArray);
 
-	while (ptrStFiniArray < ptrEnFiniArray) {
-		((void (*)(void))*ptrFiniArray)();
-		ptrEnFiniArray++;
-	}
-	#endif
+    while (ptrStFiniArray < ptrEnFiniArray) {
+        ((void (*)(void))*ptrStFiniArray)();
+        ptrStFiniArray++;
+    }
+    #endif
 
-	if (gdb == true) {
-		exit(EXIT_OS_SUCCESS);
-	}
+    if (gdb == true) {
+        exit(EXIT_OS_SUCCESS);
+    }
 
-	return (status);
+    return (status);
 }
 
 /*
  * \brief __wrap___stack_chk_fail
  *
  * - Stack smashing detection
- *	 - Stop the system & display a message
+ *   - Stop the system & display a message
  *
  * in the makefile add the following lines
  *
@@ -195,11 +195,11 @@ int32_t		aStart(uint32_t argc, const char_t *argv[]) {
  *
  */
 #if (!defined(__clang__))
-void	__attribute__ ((noreturn)) __wrap___stack_chk_fail(void) {
+void    __attribute__ ((noreturn)) __wrap___stack_chk_fail(void) {
 
-	PRIVILEGE_ELEVATE;
-	INTERRUPTION_OFF;
-	cmns_send(KSYST, "\nStack smashing!");
-	exit(EXIT_OS_PANIC);
+    PRIVILEGE_ELEVATE;
+    INTERRUPTION_OFF;
+    cmns_send(KSYST, "\nStack smashing!");
+    exit(EXIT_OS_PANIC);
 }
 #endif

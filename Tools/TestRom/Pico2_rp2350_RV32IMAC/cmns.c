@@ -6,11 +6,11 @@
 ; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 ;------------------------------------------------------------------------
-; Author:	Laurent von Allmen	The 2026-02-13
+; Author:   Laurent von Allmen  The 2026-02-13
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Common routines for RISC-V TestROM.
+; Project:  uKOS-X
+; Goal:     Common routines for RISC-V TestROM.
 ;
 ;   (c) 2025-2026, Laurent von Allmen
 ;   ---------------------------------
@@ -27,47 +27,47 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
+#include    "tests.h"
 
 /*
  * \brief cmns_init
  *
  * - Initialise the UART0 and UART1 peripherals
  *
- * \param[in]	-
+ * \param[in]   -
  *
  * \note This function does not return a value (None).
  *
  */
-void	cmns_init(void) {
+void    cmns_init(void) {
 
 // Reset of the devices
 
-	REG(RESETS)->RESET &= ~RESETS_RESET_UART0;
-	while ((REG(RESETS)->RESET_DONE & RESETS_RESET_UART0) != RESETS_RESET_UART0) { }
+    REG(RESETS)->RESET &= ~RESETS_RESET_UART0;
+    while ((REG(RESETS)->RESET_DONE & RESETS_RESET_UART0) != RESETS_RESET_UART0) { }
 
-	REG(RESETS)->RESET &= ~RESETS_RESET_UART1;
-	while ((REG(RESETS)->RESET_DONE & RESETS_RESET_UART1) != RESETS_RESET_UART1) { }
+    REG(RESETS)->RESET &= ~RESETS_RESET_UART1;
+    while ((REG(RESETS)->RESET_DONE & RESETS_RESET_UART1) != RESETS_RESET_UART1) { }
 
 // Disable the UARTx
 
-	REG(UART0)->UARTCR = 0;
-	REG(UART1)->UARTCR = 0;
+    REG(UART0)->UARTCR = 0;
+    REG(UART1)->UARTCR = 0;
 
 // Bauds:
 // Div = UARTCLK / (16 * BAUD) = IBRD + FBRD / 64
 // For 150 MHz et 460800 b/s: IBRD = 20, FBRD = 22 (≈460830 b/s)
 // Format 8N1
 
-	BAUDRATE(UART0, 150000000, 460800);
-	BAUDRATE(UART1, 150000000, 460800);
-	REG(UART0)->UARTLCR_H = (3u * UART_UARTLCR_H_WLEN_0);
-	REG(UART1)->UARTLCR_H = (3u * UART_UARTLCR_H_WLEN_0);
+    BAUDRATE(UART0, 150000000, 460800);
+    BAUDRATE(UART1, 150000000, 460800);
+    REG(UART0)->UARTLCR_H = (3u * UART_UARTLCR_H_WLEN_0);
+    REG(UART1)->UARTLCR_H = (3u * UART_UARTLCR_H_WLEN_0);
 
 // Enable the UARTx
 
-	REG(UART0)->UARTCR = UART_UARTCR_UARTEN | UART_UARTCR_RXE | UART_UARTCR_TXE;
-	REG(UART1)->UARTCR = UART_UARTCR_UARTEN | UART_UARTCR_RXE | UART_UARTCR_TXE;
+    REG(UART0)->UARTCR = UART_UARTCR_UARTEN | UART_UARTCR_RXE | UART_UARTCR_TXE;
+    REG(UART1)->UARTCR = UART_UARTCR_UARTEN | UART_UARTCR_RXE | UART_UARTCR_TXE;
 }
 
 /*
@@ -75,62 +75,62 @@ void	cmns_init(void) {
  *
  * - Send ASCII string via UART
  *
- * \param[in]	serialManager	Serial Communication Manager
- * \param[in]	*ascii			Ptr on the ascii buffer
+ * \param[in]   serialManager   Serial Communication Manager
+ * \param[in]   *ascii          Ptr on the ascii buffer
  *
  * \note This function does not return a value (None).
  *
  */
-void	cmns_send(serialManager_t serialManager, const char_t *ascii) {
-			uint8_t		data;
-			uint32_t	core;
-	const	char_t		*wkAscii = ascii;
+void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
+            uint8_t     data;
+            uint32_t    core;
+    const   char_t      *wkAscii = ascii;
 
-	UNUSED(serialManager);
+    UNUSED(serialManager);
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	if (ascii == nullptr) { return; }
+    if (ascii == nullptr) { return; }
 
-	switch (core) {
+    switch (core) {
 
 // Core 0
 
-		default:
-		case KCORE_0: {
-			while (true) {
-				while ((REG(UART0)->UARTFR & UART_UARTFR_TXFF) != 0u) { }
+        default:
+        case KCORE_0: {
+            while (true) {
+                while ((REG(UART0)->UARTFR & UART_UARTFR_TXFF) != 0u) { }
 
-				data = (uint8_t)*wkAscii;
-				wkAscii++;
-				if (data == '\0') {
-					return;
-				}
+                data = (uint8_t)*wkAscii;
+                wkAscii++;
+                if (data == '\0') {
+                    return;
+                }
 
-				cmns_wait(100);
-				REG(UART0)->UARTDR = (uint32_t)data;
-			}
-			break;
-		}
+                cmns_wait(100);
+                REG(UART0)->UARTDR = (uint32_t)data;
+            }
+            break;
+        }
 
 // Core 1
 
-		case KCORE_1: {
-			while (true) {
-				while ((REG(UART1)->UARTFR & UART_UARTFR_TXFF) != 0u) { }
+        case KCORE_1: {
+            while (true) {
+                while ((REG(UART1)->UARTFR & UART_UARTFR_TXFF) != 0u) { }
 
-				data = (uint8_t)*wkAscii;
-				wkAscii++;
-				if (data == '\0') {
-					return;
-				}
+                data = (uint8_t)*wkAscii;
+                wkAscii++;
+                if (data == '\0') {
+                    return;
+                }
 
-				cmns_wait(100);
-				REG(UART1)->UARTDR = (uint32_t)data;
-			}
-			break;
-		}
-	}
+                cmns_wait(100);
+                REG(UART1)->UARTDR = (uint32_t)data;
+            }
+            break;
+        }
+    }
 }
 
 /*
@@ -138,43 +138,43 @@ void	cmns_send(serialManager_t serialManager, const char_t *ascii) {
  *
  * - Receive a character from UART
  *
- * \param[in]	serialManager	Serial Communication Manager
- * \param[out]	*data			Data received
+ * \param[in]   serialManager   Serial Communication Manager
+ * \param[out]  *data           Data received
  *
  * \note This function does not return a value (None).
  *
  */
-void	cmns_receive(serialManager_t serialManager, char_t *data) {
-	uint32_t	core;
-	uint32_t	dr;
+void    cmns_receive(serialManager_t serialManager, char_t *data) {
+    uint32_t    core;
+    uint32_t    dr;
 
-	UNUSED(serialManager);
+    UNUSED(serialManager);
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	switch (core) {
+    switch (core) {
 
 // Core 0
 
-		default:
-		case KCORE_0: {
-			while ((REG(UART0)->UARTFR & UART_UARTFR_RXFE) != 0u) { }
+        default:
+        case KCORE_0: {
+            while ((REG(UART0)->UARTFR & UART_UARTFR_RXFE) != 0u) { }
 
-			dr = REG(UART0)->UARTDR;
-			*data = (uint8_t)dr;
-			break;
-		}
+            dr = REG(UART0)->UARTDR;
+            *data = (uint8_t)dr;
+            break;
+        }
 
 // Core 1
 
-		case KCORE_1: {
-			while ((REG(UART1)->UARTFR & UART_UARTFR_RXFE) != 0u) { }
+        case KCORE_1: {
+            while ((REG(UART1)->UARTFR & UART_UARTFR_RXFE) != 0u) { }
 
-			dr = REG(UART1)->UARTDR;
-			*data = (uint8_t)dr;
-			break;
-		}
-	}
+            dr = REG(UART1)->UARTDR;
+            *data = (uint8_t)dr;
+            break;
+        }
+    }
 }
 
 /*
@@ -182,24 +182,21 @@ void	cmns_receive(serialManager_t serialManager, char_t *data) {
  *
  * - Simple delay loop for RISC-V
  *
- * \param[in]	us		Delay in microseconds (approximate)
+ * \param[in]   us      Delay in microseconds (approximate)
  *
  * \note This function does not return a value (None).
  *
  */
-void	cmns_wait(uint32_t us) {
-	uint32_t	wkUs = us, time;
+void    cmns_wait(uint32_t us) {
+    uint32_t    wkUs = us, time;
 
-	// Calibrated for ~150 MHz RISC-V with cache
-	// Adjust divisor based on actual timing measurements
-	#if (defined(CACHE_S))
-	wkUs = (wkUs / 7u) * (KFREQUENCY_CORE / 1000000u);
-	#else
-	wkUs = (wkUs / 12u) * (KFREQUENCY_CORE / 1000000u);
-	#endif
+    // Calibrated for ~150 MHz RISC-V with cache
+    // Adjust divisor based on actual timing measurements
 
-	// Simple delay loop
-	for (time = 0; time < wkUs; time++) {
-		__asm volatile ("nop");
-	}
+    wkUs = (wkUs / 7u) * (KFREQUENCY_CORE / 1000000u);
+
+    wkUs = (wkUs == 0u) ? (1u) : (wkUs);
+    for (time = 0; time < wkUs; time++) {
+        __asm volatile ("nop");
+    }
 }

@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		TinyUSB configuration file.
+; Project:  uKOS-X
+; Goal:     TinyUSB configuration file.
 ;
 ;   (c) 2019 Ha Thach (tinyusb.org)
 ;   -------------------------------
@@ -69,42 +69,42 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 #if (defined(__cplusplus))
-extern	"C" {
+extern  "C" {
 #endif
 
 // Board Specific Configuration
 // ============================
 
-#define	CFG_TUSB_MCU			OPT_MCU_STM32U5
-#define	STM32U5G9xx				1
-#define	CFG_TUSB_OS				OPT_OS_CUSTOM
+#define CFG_TUSB_MCU            OPT_MCU_STM32U5
+#define STM32U5G9xx             1
+#define CFG_TUSB_OS             OPT_OS_CUSTOM
 
-#define	BOARD_TUD_RHPORT		0
-#define	CFG_TUD_MAX_SPEED		OPT_MODE_HIGH_SPEED
+#define BOARD_TUD_RHPORT        0
+#define CFG_TUD_MAX_SPEED       OPT_MODE_HIGH_SPEED
 
 // Common Configuration
 // ====================
 
-#define	CFG_TUSB_DEBUG			0
-#define	CFG_TUD_ENABLED			1
+#define CFG_TUSB_DEBUG          0
+#define CFG_TUD_ENABLED         1
 
-#define	CFG_TUD_VIDEO_STREAMING	1
+#define CFG_TUD_VIDEO_STREAMING 1
 
 // cdc & video streaming endpoint buffer size
 // use bulk endpoint for streaming interface
 
-#define	CFG_TUD_CDC_RX_BUFSIZE				4096
-#define	CFG_TUD_CDC_TX_BUFSIZE				4096
-#define	CFG_TUD_CDC_EP_BUFSIZE				512
+#define CFG_TUD_CDC_RX_BUFSIZE              4096
+#define CFG_TUD_CDC_TX_BUFSIZE              4096
+#define CFG_TUD_CDC_EP_BUFSIZE              512
 
-#define	CFG_TUD_VIDEO_STREAMING_EP_BUFSIZE	8192
-#define	CFG_TUD_VIDEO_STREAMING_BULK		1
+#define CFG_TUD_VIDEO_STREAMING_EP_BUFSIZE  8192
+#define CFG_TUD_VIDEO_STREAMING_BULK        1
 
-#define	CFG_EXAMPLE_VIDEO_READONLY
-#define	CFG_EXAMPLE_VIDEO_DISABLE_MJPEG
+#define CFG_EXAMPLE_VIDEO_READONLY
+#define CFG_EXAMPLE_VIDEO_DISABLE_MJPEG
 
 // USB DMA on some MCUs can only access a specific SRAM region with restriction on alignment.
 // TinyUSB use follows macros to declare transferring memory so that they can be put
@@ -114,28 +114,28 @@ extern	"C" {
 // - CFG_TUSB_MEM_ALIGN   : __attribute__ ((aligned(4)))
 
 #if (!defined(CFG_TUSB_MEM_SECTION))
-#define	CFG_TUSB_MEM_SECTION
+#define CFG_TUSB_MEM_SECTION
 #endif
 
 #if (!defined(CFG_TUSB_MEM_ALIGN))
-#define	CFG_TUSB_MEM_ALIGN		__attribute__ ((aligned(4)))
+#define CFG_TUSB_MEM_ALIGN      __attribute__ ((aligned(32)))
 #endif
 
 // Device Configuration
 // ====================
 
 #if (!defined(CFG_TUD_ENDPOINT0_SIZE))
-#define	CFG_TUD_ENDPOINT0_SIZE	64
+#define CFG_TUD_ENDPOINT0_SIZE  64
 #endif
 
 // Class
 
-#define	CFG_TUD_CDC				1
-#define	CFG_TUD_MSC				0
-#define	CFG_TUD_HID				0
-#define	CFG_TUD_MIDI			0
-#define	CFG_TUD_VENDOR			0
-#define	CFG_TUD_VIDEO			1
+#define CFG_TUD_CDC             1
+#define CFG_TUD_MSC             0
+#define CFG_TUD_HID             0
+#define CFG_TUD_MIDI            0
+#define CFG_TUD_VENDOR          0
+#define CFG_TUD_VIDEO           1
 
 #if (defined(__cplusplus))
 }

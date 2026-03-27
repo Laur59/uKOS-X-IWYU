@@ -4,11 +4,11 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Laurent von Allmen	The 2025-01-01
+# Author:   Laurent von Allmen  The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		CMake file to set up the building for uKOS-X system.
+# Project:  uKOS-X
+# Goal:     CMake file to set up the building for uKOS-X system.
 #
 #   (c) 2025-2026, Laurent von Allmen
 #   ---------------------------------
@@ -54,14 +54,17 @@ include(set-project-paths)
 include(${PATH_UKOS}/Ports/Mkfiles/cmake/select-arm-toolchain.cmake)
 
 project(
-	class_TFL
-	VERSION 1.0
-	LANGUAGES CXX C
+    class_TFL
+    VERSION 1.0
+    LANGUAGES CXX C
 )
 
 # Microcontroller description (mandatory variables)
 set(SOC STM32H743)
 set(CORE CORTEX_M7)
+
+# SOC has cache
+add_compile_definitions(CACHE_D_S)
 
 # Target
 set(BOARD Alastor_H743)
@@ -69,9 +72,9 @@ set(VARIANT Variant_Test)
 
 # Extra compilation options
 add_compile_options(-g3 # includes extra information for debugger
-	$<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
-	$<$<COMPILE_LANGUAGE:CXX>:-fno-exceptions>
-	-Os # optimisation
+    $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
+    $<$<COMPILE_LANGUAGE:CXX>:-fno-exceptions>
+    -Os # optimisation
 )
 add_compile_definitions(
     $<$<COMPILE_LANGUAGE:CXX>:TF_LITE_STATIC_MEMORY=1>
@@ -79,9 +82,9 @@ add_compile_definitions(
 )
 
 set(PATH_INCLUDES
-	${PATH_UKOS}/Third_Parties/Tflite-micro/uKOS_Interface/CORTEX_M_generic
-	${PATH_UKOS}/Third_Parties/Tflite-micro/uKOS_Interface/CORTEX_M_generic/third_party/flatbuffers/include
-	${PATH_UKOS}/Third_Parties/Tflite-micro/uKOS_Interface/CORTEX_M_generic/third_party/gemmlowp
+    ${PATH_UKOS}/Third_Parties/Tflite-micro/uKOS_Interface/CORTEX_M_generic
+    ${PATH_UKOS}/Third_Parties/Tflite-micro/uKOS_Interface/CORTEX_M_generic/third_party/flatbuffers/include
+    ${PATH_UKOS}/Third_Parties/Tflite-micro/uKOS_Interface/CORTEX_M_generic/third_party/gemmlowp
 )
 find_library(MYLIB TFLite ${PATH_UKOS}/Third_Parties/Tflite-micro/Library/${CORE})
 

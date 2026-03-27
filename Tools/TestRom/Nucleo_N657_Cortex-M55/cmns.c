@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:	Edo. Franzi		The 2025-01-01	Correct for matching some MISRA recommendations
+; Author:   Edo. Franzi     The 2025-01-01
+; Modifs:   Edo. Franzi     The 2025-01-01  Correct for matching some MISRA recommendations
 ;
-; Project:	uKOS-X
-; Goal:		Some common routines used in many modules.
+; Project:  uKOS-X
+; Goal:     Some common routines used in many modules.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,107 +46,103 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
+#include    "tests.h"
 
-#define	CONFIG_DEFAULT_BAUDRATE		460800
+#define CONFIG_DEFAULT_BAUDRATE     460800
 
 /*
  * \brief cmns_init
  *
- * \param[in]	-
+ * \param[in]   -
  *
  * \note This function does not return a value (None).
  *
  */
-void	cmns_init(void) {
+void    cmns_init(void) {
 
-	REG(RCC)->APB2ENR |= RCC_APB2ENR_USART1EN;
-	STRONG_BARRIER;
+    REG(RCC)->APB2ENR |= RCC_APB2ENR_USART1EN;
+    STRONG_BARRIER;
 
-	REG(USART1)->BRR	   = BAUDRATE(KFREQUENCY_APB2, CONFIG_DEFAULT_BAUDRATE);
-	REG(USART1)->CR1_FIFO  = (USART_CR1_FIFO_TE | USART_CR1_FIFO_RE | USART_CR1_FIFO_FIFOEN);
-	REG(USART1)->CR1_FIFO |= USART_CR1_FIFO_UE;
+    REG(USART1)->BRR       = BAUDRATE(KFREQUENCY_APB2, CONFIG_DEFAULT_BAUDRATE);
+    REG(USART1)->CR1_FIFO  = (USART_CR1_FIFO_TE | USART_CR1_FIFO_RE | USART_CR1_FIFO_FIFOEN);
+    REG(USART1)->CR1_FIFO |= USART_CR1_FIFO_UE;
 }
 
 /*
  * \brief cmns_send
  *
- * \param[in]	serialManager	Serial Communication Manager
- * \param[in]	*ascii			Ptr on the ascii buffer
+ * \param[in]   serialManager   Serial Communication Manager
+ * \param[in]   *ascii          Ptr on the ascii buffer
  *
  * \note This function does not return a value (None).
  *
  */
-void	cmns_send(serialManager_t serialManager, const char_t *ascii) {
-			uint8_t		data;
-	const	char_t		*wkAscii = ascii;
+void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
+            uint8_t     data;
+    const   char_t      *wkAscii = ascii;
 
-	if (ascii == nullptr) { return; }
+    if (ascii == nullptr) { return; }
 
-	switch (serialManager) {
+    switch (serialManager) {
 
 // UART 0 device
 
-		default:
-		case KURT0: {
-			while (true) {
-				while ((REG(USART1)->ISR_FIFO & USART_ISR_FIFO_TXFNF) == 0u) { ; }
+        default:
+        case KURT0: {
+            while (true) {
+                while ((REG(USART1)->ISR_FIFO & USART_ISR_FIFO_TXFNF) == 0u) { ; }
 
-				data = (uint8_t)*wkAscii;
-				wkAscii++;
-				if (data == '\0') {
-					return;
-				}
+                data = (uint8_t)*wkAscii;
+                wkAscii++;
+                if (data == '\0') {
+                    return;
+                }
 
-				REG(USART1)->TDR = (uint16_t)data;
-			}
-		}
-	}
+                REG(USART1)->TDR = (uint16_t)data;
+            }
+        }
+    }
 }
 
 /*
  * \brief cmns_receive
  *
- * \param[in]	serialManager	Serial Communication Manager
- * \param[out]	*data			Data received
+ * \param[in]   serialManager   Serial Communication Manager
+ * \param[out]  *data           Data received
  *
  * \note This function does not return a value (None).
  *
  */
-void	cmns_receive(serialManager_t serialManager, char_t *data) {
+void    cmns_receive(serialManager_t serialManager, char_t *data) {
 
-	switch (serialManager) {
+    switch (serialManager) {
 
 // UART 0 device
 
-		default:
-		case KURT0: {
-			while ((REG(USART1)->ISR_FIFO & USART_ISR_FIFO_RXFNE) == 0u) { ; }
+        default:
+        case KURT0: {
+            while ((REG(USART1)->ISR_FIFO & USART_ISR_FIFO_RXFNE) == 0u) { ; }
 
-			*data = (uint8_t)REG(USART1)->RDR;
-			break;
-		}
-	}
+            *data = (uint8_t)REG(USART1)->RDR;
+            break;
+        }
+    }
 }
 
 /*
  * \brief cmns_wait
  *
- * \param[in]	us		Delay in us
+ * \param[in]   us      Delay in us
  *
  * \note This function does not return a value (None).
  *
  */
-void	cmns_wait(uint32_t us) {
-	uint32_t	wkUs = us;
+void    cmns_wait(uint32_t us) {
+    uint32_t    wkUs = us;
 
-	#if (defined(CACHE_S))
-	wkUs = (wkUs / 7u) * (KFREQUENCY_CORE / 1000000u);
+    wkUs = (wkUs / 7u) * (KFREQUENCY_CORE / 1000000u);
 
-	#else
-	wkUs = (wkUs / 12u) * (KFREQUENCY_CORE / 1000000u);
-	#endif
-
-	for (uint32_t time = 0u; time < wkUs; time++) { NOP; }
-	__asm volatile ("" ::: "memory");
+    wkUs = (wkUs == 0u) ? (1u) : (wkUs);
+    for (uint32_t time = 0u; time < wkUs; time++) { NOP; }
+    __asm volatile ("" ::: "memory");
 }

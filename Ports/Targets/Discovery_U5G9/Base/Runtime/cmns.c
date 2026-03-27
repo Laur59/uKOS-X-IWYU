@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:	Edo. Franzi		The 2025-01-01	Correct for matching some MISRA recommendations
+; Author:   Edo. Franzi     The 2025-01-01
+; Modifs:   Edo. Franzi     The 2025-01-01  Correct for matching some MISRA recommendations
 ;
-; Project:	uKOS-X
-; Goal:		Some common routines used in many modules.
+; Project:  uKOS-X
+; Goal:     Some common routines used in many modules.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,127 +46,123 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include    "uKOS.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"cmns         Minimal I/O (not under uKOS-X).           (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "Cmns\n"
-									"====\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "cmns         Minimal I/O (not under uKOS-X).           (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "Cmns\n"
+                                    "====\n\n"
 
-									"This code provides some minimal I/O.\n\n"
+                                    "This code provides some minimal I/O.\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
-	Cmns,							// Module name (the first letter has to be upper case)
-	KID_FAM_STARTUPS,				// Family (defined in the module.h)
-	KNUM_CMNS,						// Module identifier (defined in the module.h)
-	nullptr,						// Address of the initialisation code (early pre-init)
-	nullptr,						// Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
-	nullptr,						// Address of the clean code (clean the module)
-	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0								// Execution cores
+    Cmns,                           // Module name (the first letter has to be upper case)
+    KID_FAM_STARTUPS,               // Family (defined in the module.h)
+    KNUM_CMNS,                      // Module identifier (defined in the module.h)
+    nullptr,                        // Address of the initialisation code (early pre-init)
+    nullptr,                        // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                        // Address of the clean code (clean the module)
+    " 1.0",                         // Revision string (major . minor)
+    (1u<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                               // Execution cores
 );
 
 /*
  * \brief cmns_init
  *
- * \param[in]	-
+ * \param[in]   -
  *
  * \note This function does not return a value (None).
  *
  */
-void	cmns_init(void) {
+void    cmns_init(void) {
 
-	REG(RCC)->APB2ENR |= RCC_APB2ENR_USART1EN;
+    REG(RCC)->APB2ENR |= RCC_APB2ENR_USART1EN;
 
-	REG(USART1)->BRR = BAUDRATE(KFREQUENCY_APB2, KSERIAL_DEFAULT_BAUDRATE);
-	REG(USART1)->CR1 = (USART_CR1_UE | USART_CR1_TE | USART_CR1_RE);
+    REG(USART1)->BRR = BAUDRATE(KFREQUENCY_APB2, KSERIAL_DEFAULT_BAUDRATE);
+    REG(USART1)->CR1 = (USART_CR1_UE | USART_CR1_TE | USART_CR1_RE);
 }
 
 /*
  * \brief cmns_send
  *
- * \param[in]	serialManager	Serial Communication Manager
- * \param[in]	*ascii			Ptr on the ascii buffer
+ * \param[in]   serialManager   Serial Communication Manager
+ * \param[in]   *ascii          Ptr on the ascii buffer
  *
  * \note This function does not return a value (None).
  *
  */
-void	cmns_send(serialManager_t serialManager, const char_t *ascii) {
-			uint8_t		data;
-	const	char_t		*wkAscii = ascii;
+void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
+            uint8_t     data;
+    const   char_t      *wkAscii = ascii;
 
-	if (ascii == nullptr) { return; }
+    if (ascii == nullptr) { return; }
 
-	switch (serialManager) {
+    switch (serialManager) {
 
 // UART 0 device
 
-		default:
-		case KURT0: {
-			while (true) {
-				while ((REG(USART1)->ISR & USART_ISR_TXFNF) == 0u) { ; }
+        default:
+        case KURT0: {
+            while (true) {
+                while ((REG(USART1)->ISR & USART_ISR_TXFNF) == 0u) { ; }
 
-				data = (uint8_t)*wkAscii;
-				wkAscii++;
-				if (data == '\0') {
-					return;
-				}
+                data = (uint8_t)*wkAscii;
+                wkAscii++;
+                if (data == '\0') {
+                    return;
+                }
 
-				REG(USART1)->TDR = (uint16_t)data;
-			}
-		}
-	}
+                REG(USART1)->TDR = (uint16_t)data;
+            }
+        }
+    }
 }
 
 /*
  * \brief cmns_receive
  *
- * \param[in]	serialManager	Serial Communication Manager
- * \param[out]	*data			Data received
+ * \param[in]   serialManager   Serial Communication Manager
+ * \param[out]  *data           Data received
  *
  * \note This function does not return a value (None).
  *
  */
-void	cmns_receive(serialManager_t serialManager, char_t *data) {
+void    cmns_receive(serialManager_t serialManager, char_t *data) {
 
-	switch (serialManager) {
+    switch (serialManager) {
 
 // UART 0 device
 
-		default:
-		case KURT0: {
-			while ((REG(USART1)->ISR & USART_ISR_RXFNE) == 0u) { ; }
+        default:
+        case KURT0: {
+            while ((REG(USART1)->ISR & USART_ISR_RXFNE) == 0u) { ; }
 
-			*data = (uint8_t)REG(USART1)->RDR;
-			break;
-		}
-	}
+            *data = (uint8_t)REG(USART1)->RDR;
+            break;
+        }
+    }
 }
 
 /*
  * \brief cmns_wait
  *
- * \param[in]	us		Delay in us
+ * \param[in]   us      Delay in us
  *
  * \note This function does not return a value (None).
  *
  */
-void	cmns_wait(uint32_t us) {
-	uint32_t	wkUs = us, time;
+void    cmns_wait(uint32_t us) {
+    uint32_t    wkUs = us, time;
 
-	#if (defined(CACHE_S))
-	wkUs = (wkUs / 7u) * (KFREQUENCY_CORE / 1000000u);
+    wkUs = (wkUs / 7u) * (KFREQUENCY_CORE / 1000000u);
 
-	#else
-	wkUs = (wkUs / 12u) * (KFREQUENCY_CORE / 1000000u);
-	#endif
-
-	for (time = 0u; time < wkUs; time++) { NOP; }
+    wkUs = (wkUs == 0u) ? (1u) : (wkUs);
+    for (time = 0u; time < wkUs; time++) { NOP; }
 }

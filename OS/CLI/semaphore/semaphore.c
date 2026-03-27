@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		List the semaphores.
+; Project:  uKOS-X
+; Goal:     List the semaphores.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,129 +46,130 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"kern/private/private_semaphores.h"
+#include    "uKOS.h"
+#include    "kern/private/private_semaphores.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"semaphore    Show all created semaphores.              (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "Show all created semaphores\n"
-									"===========================\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "semaphore    Show all created semaphores.              (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "Show all created semaphores\n"
+                                    "===========================\n\n"
 
-									"This tool displays the name of all the used semaphores\n"
-									"with the associated process.\n\n"
+                                    "This tool displays the name of all the used semaphores\n"
+                                    "with the associated process.\n\n"
 
-									"Input format:  semaphore\n"
-									"Output format: semaphore information\n\n"
+                                    "Input format:  semaphore\n"
+                                    "Output format: semaphore information\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
-// Prototypes
-
-static	int32_t		prgm(uint32_t argc, const char_t *argv[]);
-static	void		local_compose(const char_t *identifier, const char_t **idSpacer);
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 
 MODULE(
-	Semaphore,									// Module name (the first letter has to be upper case)
-	KID_FAM_CLI,								// Family (defined in the module.h)
-	KNUM_SEMAPHORE,								// Module identifier (defined in the module.h)
-	nullptr,									// Address of the initialisation code (early pre-init)
-	prgm,										// Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
-	nullptr,									// Address of the clean code (clean the module)
-	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0											// Execution cores
+    Semaphore,                                  // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                                // Family (defined in the module.h)
+    KNUM_SEMAPHORE,                             // Module identifier (defined in the module.h)
+    nullptr,                                    // Address of the initialisation code (early pre-init)
+    prgm,                                       // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                                    // Address of the clean code (clean the module)
+    " 1.0",                                     // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),         // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                           // Execution cores
 );
 
 // CLI tool specific
 // =================
 
+// Prototypes
+
+static  void    local_compose(const char_t *identifier, const char_t **idSpacer);
+
 /*
  * \brief Main entry point
  *
  */
-static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
-			int32_t		status, counter;
-			uint32_t	core;
-			uint16_t	i, j, k, nbAttached;
-			enum		{ KERR_NOT, KERR_MEM } error = KERR_NOT;
-			proc_t		*process;
-	const	char_t		*idBuffer[KNB_CORES][KKERN_NB_PROCESSES], *identifier, *idSpacerI, *syncProcess, *idSpacerS;
+static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
+            int32_t     status, counter;
+            uint32_t    core;
+            uint16_t    i, j, k, nbAttached;
+            enum        { KERR_NOT, KERR_MEM } error = KERR_NOT;
+            proc_t      *process;
+    const   char_t      *idBuffer[KNB_CORES][KKERN_NB_PROCESSES], *identifier, *idSpacerI, *syncProcess, *idSpacerS;
 
-	UNUSED(argc);
-	UNUSED(argv);
+    UNUSED(argc);
+    UNUSED(argv);
 
-	(void)dprintf(KSYST, "List of the system semaphores.\n");
+    (void)dprintf(KSYST, "List of the system semaphores.\n");
 
-	PRIVILEGE_ELEVATE;
+    PRIVILEGE_ELEVATE;
 
-	(void)dprintf(KSYST, " #  Semaphore identifier              Counter  Synchro process identifier        Waiting process\n\n");
+    (void)dprintf(KSYST, " #  Semaphore identifier              Counter  Synchro process identifier        Waiting process\n\n");
 
-	for (core = 0u; core < KNB_CORES; core++) {
-		(void)dprintf(KSYST, "Semaphores used by the core %"PRIu32"\n\n", core);
-		for (i = 0u; i < KKERN_NB_SEMAPHORES; i++) {
-			if (vKern_sema[core][i].oIdentifier != nullptr) {
+    for (core = 0u; core < KNB_CORES; core++) {
+        (void)dprintf(KSYST, "Semaphores used by the core %"PRIu32"\n\n", core);
+        for (i = 0u; i < KKERN_NB_SEMAPHORES; i++) {
+            if (vKern_sema[core][i].oIdentifier != nullptr) {
 
 // Prepare the generic printing characteristics
 // for all the semaphores (identifier, spacer, kind, counter & syncProcess)
 
-				kern_criticalSection(KENTER_CRITICAL);
-				identifier = vKern_sema[core][i].oIdentifier;
-				local_compose(identifier, &idSpacerI);
+                kern_criticalSection(KENTER_CRITICAL);
+                identifier = vKern_sema[core][i].oIdentifier;
+                local_compose(identifier, &idSpacerI);
 
-				counter = vKern_sema[core][i].oCounter;
+                counter = vKern_sema[core][i].oCounter;
 
-				if (vKern_sema[core][i].oOwner == nullptr) { syncProcess = "";																															    }
-				else									   { syncProcess = (vKern_sema[core][i].oOwner == KKERN_HANDLE_FROM_ISR) ? ("From ISR") : (vKern_sema[core][i].oOwner->oSpecification.oIdentifier); }
-				local_compose(syncProcess, &idSpacerS);
+                if (vKern_sema[core][i].oOwner == nullptr) { syncProcess = "";                                                                                                                              }
+                else                                       { syncProcess = (vKern_sema[core][i].oOwner == KKERN_HANDLE_FROM_ISR) ? ("From ISR") : (vKern_sema[core][i].oOwner->oSpecification.oIdentifier); }
+                local_compose(syncProcess, &idSpacerS);
 
 // Scann the semaphore list and collect
 // the name of all the attached processes
 
-				nbAttached = 0u;
-				if (vKern_sema[core][i].oList.oNbElements > 0u) {
-					process = vKern_sema[core][i].oList.oFirst;
-					k = vKern_sema[core][i].oList.oNbElements;
-					for (j = 0u; j < k; j++) {
+                nbAttached = 0u;
+                if (vKern_sema[core][i].oList.oNbElements > 0u) {
+                    process = vKern_sema[core][i].oList.oFirst;
+                    k = vKern_sema[core][i].oList.oNbElements;
+                    for (j = 0u; j < k; j++) {
 
 // Save the names of all the attached
 // processes
 
-						idBuffer[core][j] = process->oSpecification.oIdentifier;
-						process = process->oObject.oForward;
-					}
-					nbAttached = j;
-				}
-				kern_criticalSection(KEXIT_CRITICAL);
+                        idBuffer[core][j] = process->oSpecification.oIdentifier;
+                        process = process->oObject.oForward;
+                    }
+                    nbAttached = j;
+                }
+                kern_criticalSection(KEXIT_CRITICAL);
 
-				(void)dprintf(KSYST, "%2d  %s%s   %3"PRId32"", i, identifier, idSpacerI, counter);
+                (void)dprintf(KSYST, "%2d  %s%s   %3"PRId32"", i, identifier, idSpacerI, counter);
 
 // Display all the suspended processes
 
-				if (nbAttached > 0u) {
-					(void)dprintf(KSYST, "     %s%s  %s\n", syncProcess, idSpacerS, idBuffer[core][0]);
-					for (j = 1u; j < nbAttached; j++) {
-						(void)dprintf(KSYST, "                                                                                 %s\n", idBuffer[core][j]);
-					}
-				}
-				else {
-					(void)dprintf(KSYST, "     %s\n", syncProcess);
-				}
-			}
-		}
-	}
+                if (nbAttached > 0u) {
+                    (void)dprintf(KSYST, "     %s%s  %s\n", syncProcess, idSpacerS, idBuffer[core][0]);
+                    for (j = 1u; j < nbAttached; j++) {
+                        (void)dprintf(KSYST, "                                                                                 %s\n", idBuffer[core][j]);
+                    }
+                }
+                else {
+                    (void)dprintf(KSYST, "     %s\n", syncProcess);
+                }
+            }
+        }
+    }
 
-	switch (error) {
-		case KERR_NOT: { (void)dprintf(KSYST, "\n");					 status = EXIT_OS_SUCCESS_CLI; break; }
-		case KERR_MEM: { (void)dprintf(KSYST, "Not enough memory.\n\n"); status = EXIT_OS_FAILURE;     break; }
-		default:	   {												 status = EXIT_OS_FAILURE;     break; }
-	}
+    switch (error) {
+        case KERR_NOT: { (void)dprintf(KSYST, "\n");                     status = EXIT_OS_SUCCESS_CLI; break; }
+        case KERR_MEM: { (void)dprintf(KSYST, "Not enough memory.\n\n"); status = EXIT_OS_FAILURE;     break; }
+        default:       {                                                 status = EXIT_OS_FAILURE;     break; }
+    }
 
-	PRIVILEGE_RESTORE;
-	return (status);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 // Local routines
@@ -182,19 +183,19 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
  * - to accommodate "1234567     "
  * -                "            "
  *
- * \param[in]	*string		Ptr on a string
- * \param[out]	**spacer	Ptr on the final space
+ * \param[in]   *string     Ptr on a string
+ * \param[out]  **spacer    Ptr on the final space
  *
  * \note This function does not return a value (None).
  *
  */
-static	void	local_compose(const char_t *identifier, const char_t **idSpacer) {
-	size_t	len;
+static  void    local_compose(const char_t *identifier, const char_t **idSpacer) {
+    size_t  len;
 
 // --------------------------------------|------------------------------|---
 //                                      "Semaphore_to_count_the_number_xy";
-	static	const	char_t	aSpacer[] = "                                ";
+    static  const   char_t  aSpacer[] = "                                ";
 
-	len = strlen(identifier);
-	*idSpacer = (len <= (sizeof(aSpacer) - 1u)) ? (&aSpacer[len]) : (&aSpacer[0]);
+    len = strlen(identifier);
+    *idSpacer = (len <= (sizeof(aSpacer) - 1u)) ? (&aSpacer[len]) : (&aSpacer[0]);
 }

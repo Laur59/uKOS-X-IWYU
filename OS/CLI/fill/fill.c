@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		This tool allows to fill a memory with a pattern.
+; Project:  uKOS-X
+; Goal:     This tool allows to fill a memory with a pattern.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,59 +46,54 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include    "uKOS.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"fill         Fill a memory area with a pattern.        (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "Fill a memory area with a pattern\n"
-									"=================================\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "fill         Fill a memory area with a pattern.        (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "Fill a memory area with a pattern\n"
+                                    "=================================\n\n"
 
-									"This tool fills a memory area with a\n"
-									"pattern.\n"
-									"The memory space is accessed in user mode;\n"
-									"to avoid privilege violations, -S should be used.\n\n"
+                                    "This tool fills a memory area with a\n"
+                                    "pattern.\n"
+                                    "The memory space is accessed in user mode;\n"
+                                    "to avoid privilege violations, -S should be used.\n\n"
 
-									"Input format:  fill [-S] {hex_startAdd hex_endAdd data}\n"
-									"Output format: [result]\n\n"
+                                    "Input format:  fill [-S] {hex_startAdd hex_endAdd data}\n"
+                                    "Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
-// Prototypes
-
-static	int32_t		prgm(uint32_t argc, const char_t *argv[]);
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 
 MODULE(
-	Fill,										// Module name (the first letter has to be upper case)
-	KID_FAM_CLI,								// Family (defined in the module.h)
-	KNUM_FILL,									// Module identifier (defined in the module.h)
-	nullptr,									// Address of the initialisation code (early pre-init)
-	prgm,										// Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
-	nullptr,									// Address of the clean code (clean the module)
-	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0											// Execution cores
+    Fill,                                       // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                                // Family (defined in the module.h)
+    KNUM_FILL,                                  // Module identifier (defined in the module.h)
+    nullptr,                                    // Address of the initialisation code (early pre-init)
+    prgm,                                       // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                                    // Address of the clean code (clean the module)
+    " 1.0",                                     // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),         // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                           // Execution cores
 );
-
-// CLI tool specific
-// =================
 
 /*
  * \brief Main entry point
  *
  */
-static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
-	char_t		*dummy;
-	uint8_t		*firstAdd;
-	uint32_t	i, nbBytes;
-	int32_t		status, value;
-	uintptr_t	startAdd, endAdd;
-	bool		error = false, equals;
+static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
+    char_t      *dummy;
+    uint8_t     *firstAdd;
+    uint32_t    i, nbBytes;
+    int32_t     status, value;
+    uintptr_t   startAdd, endAdd;
+    bool        error = false, equals;
 
-	(void)dprintf(KSYST, "Memory fill.\n");
+    (void)dprintf(KSYST, "Memory fill.\n");
 
 // Analyse the command line
 // ------------------------
@@ -108,53 +103,53 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
 // fill A0001234 A0011234 34
 // fill -S A0001234 A0011234 34
 
-	if ((argc < 4u) || (argc > 5u)) {
-		error = true;
-	}
-	else {
-		if (argc == 4u) {
+    if ((argc < 4u) || (argc > 5u)) {
+        error = true;
+    }
+    else {
+        if (argc == 4u) {
 
 // User access
 
-			startAdd = (uintptr_t)strtoul(argv[1], &dummy, 16u);
-			endAdd	 = (uintptr_t)strtoul(argv[2], &dummy, 16u);
-			value	 = (int32_t)  strtoul(argv[3], &dummy, 16u);
+            startAdd = (uintptr_t)strtoul(argv[1], &dummy, 16u);
+            endAdd   = (uintptr_t)strtoul(argv[2], &dummy, 16u);
+            value    = (int32_t)  strtoul(argv[3], &dummy, 16u);
 
-			nbBytes = (uint32_t)(endAdd - startAdd);
-			firstAdd = (uint8_t *)startAdd;
-			for (i = 0u; i < nbBytes; i++) {
-				*firstAdd = (uint8_t)value;
-				firstAdd++;
-			}
-		}
-		else {
-			text_checkAsciiBuffer(argv[1], "-S", &equals);
-			if (equals == true) {
+            nbBytes = (uint32_t)(endAdd - startAdd);
+            firstAdd = (uint8_t *)startAdd;
+            for (i = 0u; i < nbBytes; i++) {
+                *firstAdd = (uint8_t)value;
+                firstAdd++;
+            }
+        }
+        else {
+            text_checkAsciiBuffer(argv[1], "-S", &equals);
+            if (equals == true) {
 
 // Privileged access
 
-				PRIVILEGE_ELEVATE;
+                PRIVILEGE_ELEVATE;
 
-				startAdd = (uintptr_t)strtoul(argv[2], &dummy, 16u);
-				endAdd	 = (uintptr_t)strtoul(argv[3], &dummy, 16u);
-				value	 = (int32_t)  strtoul(argv[4], &dummy, 16u);
+                startAdd = (uintptr_t)strtoul(argv[2], &dummy, 16u);
+                endAdd   = (uintptr_t)strtoul(argv[3], &dummy, 16u);
+                value    = (int32_t)  strtoul(argv[4], &dummy, 16u);
 
-				nbBytes = (uint32_t)(endAdd - startAdd);
-				firstAdd = (uint8_t *)startAdd;
-				for (i = 0u; i < nbBytes; i++) {
-					*firstAdd = (uint8_t)value;
-					firstAdd++;
-				}
+                nbBytes = (uint32_t)(endAdd - startAdd);
+                firstAdd = (uint8_t *)startAdd;
+                for (i = 0u; i < nbBytes; i++) {
+                    *firstAdd = (uint8_t)value;
+                    firstAdd++;
+                }
 
-				PRIVILEGE_RESTORE;
-			}
-			else {
-				error = true;
-			}
-		}
-	}
+                PRIVILEGE_RESTORE;
+            }
+            else {
+                error = true;
+            }
+        }
+    }
 
-	if (error == false) { (void)dprintf(KSYST, "\n");				   status = EXIT_OS_SUCCESS_CLI; }
-	else				{ (void)dprintf(KSYST, "Protocol error.\n\n"); status = EXIT_OS_FAILURE;     }
-	return (status);
+    if (error == false) { (void)dprintf(KSYST, "\n");                  status = EXIT_OS_SUCCESS_CLI; }
+    else                { (void)dprintf(KSYST, "Protocol error.\n\n"); status = EXIT_OS_FAILURE;     }
+    return (status);
 }

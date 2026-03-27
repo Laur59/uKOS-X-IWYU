@@ -5,24 +5,24 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Bench 05: 	Compute a simple loop. 1000000 iterations.
+; Project:  uKOS-X
+; Goal:     Bench 05:   Compute a simple loop. 1000000 iterations.
 ;
-;			Target used: Nucleo_H743 @ 480-MHz
-;			Target used: Nucleo_N657 @ 600-MHz
-;			Target used: MAiXDUiNO_K210 @ 400-MHz
-;			Target used: Discovery_U5G9 @ 160-MHz
+;           Target used: Nucleo_H743 @ 480-MHz
+;           Target used: Nucleo_N657 @ 600-MHz
+;           Target used: MAiXDUiNO_K210 @ 400-MHz
+;           Target used: Discovery_U5G9 @ 160-MHz
 ;
-;			Bench results in [us]:
+;           Bench results in [us]:
 ;
-;										_loop
-;			Nucleo_H743 @ 480-MHz		10400
-;			Nucleo_N657 @ 600-MHz		13240
-;			MAiXDUiNO_K210 @ 400-MHz	-
-;			Discovery_U5G9 @ 160-MHz	-
+;                                       _loop
+;           Nucleo_H743 @ 480-MHz       10400
+;           Nucleo_N657 @ 600-MHz       13240
+;           MAiXDUiNO_K210 @ 400-MHz    -
+;           Discovery_U5G9 @ 160-MHz    -
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -59,12 +59,12 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-
-#define	KNB_TESTS			1000000u
+#include    "uKOS.h"
 
 // CLI tool specific
 // =================
+
+#define KNB_TESTS   1000000u
 
 /*
  * \brief bench_05
@@ -74,29 +74,29 @@
  */
 #if (!defined(Nucleo_H743_S) && !defined(Nucleo_N657_S))
 
-bool	bench_05(void) {
+bool    bench_05(void) {
 
-	(void)dprintf(KSYST, "Bench 05: not available for this target\n");
-	return true;
+    (void)dprintf(KSYST, "Bench 05: not available for this target\n");
+    return true;
 }
 
 #else
-static	void	 local_loop(uint32_t nb);
+static  void     local_loop(uint32_t nb);
 
-bool	bench_05(void) {
+bool    bench_05(void) {
 
-	(void)dprintf(KSYST, "Bench 05: For scope tests!\n");
+    (void)dprintf(KSYST, "Bench 05: For scope tests!\n");
 
-	kern_suspendProcess(1000u);
+    kern_suspendProcess(1000u);
 
-	INTERRUPTION_OFF_HARD;
-	while (true) {
+    INTERRUPTION_OFF_HARD;
+    while (true) {
 
-		ANALYSER_TOGGLE;
-		local_loop(KNB_TESTS);
-	}
+        ANALYSER_TOGGLE;
+        local_loop(KNB_TESTS);
+    }
 
-	return (true);
+    return (true);
 }
 
 // Local routines
@@ -108,12 +108,12 @@ bool	bench_05(void) {
  * - Execute the nop
  *
  */
-static	void local_loop(uint32_t nb) {
-	volatile	uint32_t	i;
+static  void local_loop(uint32_t nb) {
+    volatile    uint32_t    i;
 
-	for (i = 0u; i < nb; i++) {
-		NOP;
-	}
+    for (i = 0u; i < nb; i++) {
+        NOP;
+    }
 }
 
 #endif
