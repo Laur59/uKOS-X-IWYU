@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
-; Modifs:	Edo. Franzi		The 2025-01-01	Correct for matching some MISRA recommendations
+; Author:   Edo. Franzi     The 2025-01-01
+; Modifs:   Edo. Franzi     The 2025-01-01  Correct for matching some MISRA recommendations
 ;
-; Project:	uKOS-X
-; Goal:		Some common routines used in many modules.
+; Project:  uKOS-X
+; Goal:     Some common routines used in many modules.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,110 +46,106 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
-#include	<string.h>
+#include    "tests.h"
+#include    <string.h>
 
-#define	CONFIG_DEFAULT_BAUDRATE		460800
+#define CONFIG_DEFAULT_BAUDRATE     460800
 
-#define	KCMNS_SZ_TX_BUF				128
+#define KCMNS_SZ_TX_BUF             128
 
-static	char_t	vTxBuffer_0[KCMNS_SZ_TX_BUF];
+static  char_t  vTxBuffer_0[KCMNS_SZ_TX_BUF];
 
 /*
  * \brief cmns_init
  *
- * \param[in]	-
+ * \param[in]   -
  *
  * \note This function does not return a value (None).
  *
  */
-void	cmns_init(void) {
+void    cmns_init(void) {
 
-	REG(UARTE0)->ENABLE   = 0x8u;
-	REG(UARTE0)->BAUDRATE = BAUDRATE_NRF(CONFIG_DEFAULT_BAUDRATE);
-	REG(UARTE0)->CONFIG   = 0;
+    REG(UARTE0)->ENABLE   = 0x8u;
+    REG(UARTE0)->BAUDRATE = BAUDRATE_NRF(CONFIG_DEFAULT_BAUDRATE);
+    REG(UARTE0)->CONFIG   = 0;
 }
 
 /*
  * \brief cmns_send
  *
- * \param[in]	serialManager	Serial Communication Manager
- * \param[in]	*ascii			Ptr on the ascii buffer
+ * \param[in]   serialManager   Serial Communication Manager
+ * \param[in]   *ascii          Ptr on the ascii buffer
  *
  * \note This function does not return a value (None).
  *
  */
-void	cmns_send(serialManager_t serialManager, const char_t *ascii) {
-	size_t	length;
+void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
+    size_t  length;
 
-	if (ascii == nullptr) { return; }
+    if (ascii == nullptr) { return; }
 
-	switch (serialManager) {
+    switch (serialManager) {
 
 // UART 0 device
 
-		default:
-		case KURT0: {
-			length = strlen(ascii);
-			length = (length >= KCMNS_SZ_TX_BUF) ? (KCMNS_SZ_TX_BUF) : (length);
-			memcpy(vTxBuffer_0, ascii, length);
+        default:
+        case KURT0: {
+            length = strlen(ascii);
+            length = (length >= KCMNS_SZ_TX_BUF) ? (KCMNS_SZ_TX_BUF) : (length);
+            memcpy(vTxBuffer_0, ascii, length);
 
-			REG(UARTE0)->TXD_PTR	   = (uint32_t)vTxBuffer_0;
-			REG(UARTE0)->TXD_MAXCNT	   = (uint32_t)length;
-			REG(UARTE0)->TASKS_STARTTX = 1u;
+            REG(UARTE0)->TXD_PTR       = (uint32_t)vTxBuffer_0;
+            REG(UARTE0)->TXD_MAXCNT    = (uint32_t)length;
+            REG(UARTE0)->TASKS_STARTTX = 1u;
 
-			while ((REG(UARTE0)->EVENTS_ENDTX & 1u) == 0) { ; }
-			REG(UARTE0)->EVENTS_ENDTX  = 0u;
-			break;
-		}
-	}
+            while ((REG(UARTE0)->EVENTS_ENDTX & 1u) == 0) { ; }
+            REG(UARTE0)->EVENTS_ENDTX  = 0u;
+            break;
+        }
+    }
 }
 
 /*
  * \brief cmns_receive
  *
- * \param[in]	serialManager	Serial Communication Manager
- * \param[out]	*data			Data received
+ * \param[in]   serialManager   Serial Communication Manager
+ * \param[out]  *data           Data received
  *
  * \note This function does not return a value (None).
  *
  */
-void	cmns_receive(serialManager_t serialManager, char_t *data) {
+void    cmns_receive(serialManager_t serialManager, char_t *data) {
 
-	switch (serialManager) {
+    switch (serialManager) {
 
 // UART 0 device
 
-		default:
-		case KURT0: {
-			REG(UARTE0)->RXD_PTR	   = (uint32_t)data;
-			REG(UARTE0)->RXD_MAXCNT	   = 1u;
-			REG(UARTE0)->TASKS_STARTRX = 1u;
+        default:
+        case KURT0: {
+            REG(UARTE0)->RXD_PTR       = (uint32_t)data;
+            REG(UARTE0)->RXD_MAXCNT    = 1u;
+            REG(UARTE0)->TASKS_STARTRX = 1u;
 
-			while ((REG(UARTE0)->EVENTS_ENDRX & 1u) == 0) { ; }
-			REG(UARTE0)->EVENTS_ENDRX  = 0u;
-			break;
-		}
-	}
+            while ((REG(UARTE0)->EVENTS_ENDRX & 1u) == 0) { ; }
+            REG(UARTE0)->EVENTS_ENDRX  = 0u;
+            break;
+        }
+    }
 }
 
 /*
  * \brief cmns_wait
  *
- * \param[in]	us		Delay in us
+ * \param[in]   us      Delay in us
  *
  * \note This function does not return a value (None).
  *
  */
-void	cmns_wait(uint32_t us) {
-	uint32_t	wkUs = us, time;
+void    cmns_wait(uint32_t us) {
+    uint32_t    wkUs = us, time;
 
-	#if (defined(CACHE_S))
-	wkUs = (wkUs / 6u) * (KFREQUENCY_CORE / 1000000u);
+    wkUs = (wkUs / 6u) * (KFREQUENCY_CORE / 1000000u);
 
-	#else
-	wkUs = (wkUs / 12u) * (KFREQUENCY_CORE / 1000000u);
-	#endif
-
-	for (time = 0; time < wkUs; time++) { NOP; }
+    wkUs = (wkUs == 0u) ? (1u) : (wkUs);
+    for (time = 0; time < wkUs; time++) { NOP; }
 }

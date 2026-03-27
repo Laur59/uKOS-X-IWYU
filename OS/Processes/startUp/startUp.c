@@ -28,17 +28,13 @@
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
 STRG_LOC_CONST(aStrApplication[]) = "startUp      StartUp process of the system.            (c) EFr-2026";
-
-// Prototypes
-
-static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
-static  void        local_process(const void *argument);
-
 #define aStrHelp    aStartUp_StrHelp
 
 // This process has to run on the following cores:
 
 #define KEXECUTION_CORE     ((1U<<BCORE_1) | (1U<<BCORE_0))
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 
 MODULE(
     StartUp,                        // Module name (the first letter has to be upper case)
@@ -59,6 +55,10 @@ MODULE(
 
 STRG_LOC_CONST(aStrIden[]) = "Process_startUp";
 STRG_LOC_CONST(aStrText[]) = "Process startUp: start of the system.     (c) EFr-2026";
+
+// Prototypes
+
+static  void    local_process(const void *argument);
 
 /*
  * \brief Main entry point

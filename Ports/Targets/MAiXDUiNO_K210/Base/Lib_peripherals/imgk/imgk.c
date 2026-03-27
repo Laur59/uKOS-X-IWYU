@@ -280,9 +280,9 @@ static  void    local_DVP_IRQHandler(uint32_t core, uint64_t parameter);
  *
  */
 int32_t imgk_reserve(reserveMode_t reserveMode, uint32_t timeout) {
-    UNUSED(reserveMode);
-
     int32_t     status;
+
+    UNUSED(reserveMode);
 
     status = local_init();
     if (status != KERR_IMGK_NOERR) { return status; }
@@ -312,9 +312,9 @@ int32_t imgk_reserve(reserveMode_t reserveMode, uint32_t timeout) {
  *
  */
 int32_t imgk_release(reserveMode_t reserveMode) {
-    UNUSED(reserveMode);
-
     int32_t     status;
+
+    UNUSED(reserveMode);
 
     status = local_init();
     if (status != KERR_IMGK_NOERR) { return status; }
@@ -386,10 +386,10 @@ int32_t imgk_release(reserveMode_t reserveMode) {
  *
  */
 int32_t imgk_configure(const cnfImgk_t *configure) {
-    UNUSED(configure);
-
     uint32_t    current;
     int32_t     status = KERR_IMGK_NOERR;
+
+    UNUSED(configure);
 
     status = local_init();
     if (status != KERR_IMGK_NOERR) { return status; }
@@ -445,7 +445,7 @@ int32_t imgk_acquisition(void) {
     status = local_init();
     if (status != KERR_IMGK_NOERR) { return status; }
 
-    kern_signalSemaphore(vSeHandleAQ);
+    kern_signalSemaphore(vSemaphore_AQ);
     return KERR_IMGK_NOERR;
 }
 
@@ -493,7 +493,7 @@ void    local_DVP_IRQHandler(uint32_t core, uint64_t parameter) {
         if (vPage == 0U) { dvp->rgb_addr = (uint32_t)((uintptr_t)vImageE0); vPage = 1U; }
         else             { dvp->rgb_addr = (uint32_t)((uintptr_t)vImageE1); vPage = 0U; }
 
-        kern_signalSemaphore(vSeHandleIM);
+        kern_signalSemaphore(vSemaphore_IM);
         dvp->sts = DVP_STS_FRAME_FINISH | DVP_STS_FRAME_FINISH_WE;
     }
 
@@ -502,7 +502,7 @@ void    local_DVP_IRQHandler(uint32_t core, uint64_t parameter) {
 // interruption End-of-Start
 
     if ((dvp->sts & DVP_STS_FRAME_START) != 0U) {
-        if (kern_waitSemaphore(vSeHandleAQ, 0U) == KERR_KERN_NOERR) {
+        if (kern_waitSemaphore(vSemaphore_AQ, 0U) == KERR_KERN_NOERR) {
             dvp->sts = DVP_STS_DVP_EN | DVP_STS_DVP_EN_WE;
         }
         dvp->sts = DVP_STS_FRAME_START | DVP_STS_FRAME_START_WE;
@@ -526,9 +526,9 @@ static  int32_t local_init(void) {
     if (!vInit) {
         vInit = true;
 
-        if (kern_createMutex(KIMGK_MUTEX_RESERVE, &vMutex)               != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "imgk: create mutx"); exit(EXIT_OS_PANIC); }
-        if (kern_createSemaphore(KIMGK_SEMAPHORE_IM, 0, 1, &vSeHandleIM) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "imgk: create sema"); exit(EXIT_OS_PANIC); }
-        if (kern_createSemaphore(KIMGK_SEMAPHORE_AQ, 0, 1, &vSeHandleAQ) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "imgk: create sema"); exit(EXIT_OS_PANIC); }
+        if (kern_createMutex(KIMGK_MUTEX_RESERVE, &vMutex)                 != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "imgk: create mutx"); exit(EXIT_OS_PANIC); }
+        if (kern_createSemaphore(KIMGK_SEMAPHORE_IM, 0, 1, &vSemaphore_IM) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "imgk: create sema"); exit(EXIT_OS_PANIC); }
+        if (kern_createSemaphore(KIMGK_SEMAPHORE_AQ, 0, 1, &vSemaphore_AQ) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "imgk: create sema"); exit(EXIT_OS_PANIC); }
 
 // Set the priority
 // Get current enable bit array by IRQ number
@@ -564,10 +564,10 @@ static  int32_t local_init(void) {
  *
  */
 static  void    local_initCKRate(const cnfImgk_t *configure) {
-    UNUSED(configure);
-
     uint32_t    period;
     uint32_t    current;
+
+    UNUSED(configure);
 
 // Clock devided by 16, and clock enable
 
@@ -618,9 +618,9 @@ static  void    local_initCKRate(const cnfImgk_t *configure) {
  *
  */
 static  void    local_initImages(const cnfImgk_t *configure) {
-    UNUSED(configure);
-
     uint32_t    current;
+
+    UNUSED(configure);
 
 // Set the format
 
@@ -659,9 +659,9 @@ static  void    local_sendData(uint8_t address, uint16_t location, uint8_t data)
 }
 
 static  void    local_initOV2640(const cnfImgk_t *configure) {
-    UNUSED(configure);
-
     uint16_t    i;
+
+    UNUSED(configure);
 
     for (i = 0U; i < (uint16_t)KNBCNF; i++) {
         local_sendData(KOV2640A, aOV2640_Cnf[i].oRegNumber, aOV2640_Cnf[i].oValue);

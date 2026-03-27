@@ -35,16 +35,17 @@
 #include    "serial/serial.h"
 #include    "types.h"
 
-#define KNB_TESTS           1000U
+// CLI tool specific
+// =================
 
+#define KNB_TESTS           1000U
 #define KMAX_ITERATIONS     32U
 
 #define KPI                 (float64_t)(3.14159265358979F)
 #define K180                (float64_t)(180.0F)
 #define KRAD_TO_DEG         (K180 / KPI)
 
-// CLI tool specific
-// =================
+// Prototypes
 
 static  void     local_atan2(uint64_t *time, float64_t *angle, int32_t y, int32_t x);
 

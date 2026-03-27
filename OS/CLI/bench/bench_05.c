@@ -25,10 +25,10 @@
 #include    "board.h"       // IWYU pragma: keep (for board_S)
 #include    "serial/serial.h"
 
-#define KNB_TESTS           1000000U
-
 // CLI tool specific
 // =================
+
+#define KNB_TESTS   1000000u
 
 /*
  * \brief bench_05

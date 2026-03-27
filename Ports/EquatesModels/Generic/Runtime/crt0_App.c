@@ -47,7 +47,7 @@
 #define KSYSTEM_CRT0_CHECK_OS_VERSION_S     true
 #endif
 
-#define DO_NOT_DESTROY_S        // Do not destroy the C++ destructor;
+#define SKIP_CXX_DESTRUCTORS_S  // Do not call the C++ destructor;
                                 // Some processes can still be in execution
                                 // at the output of the main
 
@@ -61,9 +61,6 @@ extern  uint8_t     linker_enInitArray[];
 extern  uint8_t     linker_stFiniArray[];
 extern  uint8_t     linker_enFiniArray[];
 
-        uintptr_t   *ptrInitArray;
-        uintptr_t   *ptrFiniArray;
-
 extern  char_t      aFLASH_signature[];
 extern  uint32_t    vKern_nbIntImbrications;
 
@@ -72,18 +69,19 @@ extern  uint32_t    vKern_nbIntImbrications;
 extern  uintptr_t   __stack_chk_guard;
 
 #if (UINTPTR_MAX == 0xFFFFFFFFU)
-#define KSTACK_GARD_VALUE   0xDeadBeefu
+#define KSTACK_GUARD_VALUE  0xDeadBeefU
 
 #else
-#define KSTACK_GARD_VALUE   0xDeadBeeffeeBdaeDU;
+#define KSTACK_GUARD_VALUE  0xDeadBeeffeeBdaeDU
 #endif
 
 /*
  * \brief aStart
  *
- * - Copy the initialised data from the CODE to the DATA region
  * - Initialise the BSS region
- * - Call the main
+ * - Call C/C++ constructors
+ * - Call main
+ * - Optionally call C++ destructors
  *
  */
 int32_t     aStart(uint32_t argc, const char_t *argv[]) {
@@ -91,12 +89,14 @@ int32_t     aStart(uint32_t argc, const char_t *argv[]) {
     bool        gdb;
     uintptr_t   *ptrStInitArray;
     uintptr_t   *ptrEnInitArray;
+
+    #if (!defined(SKIP_CXX_DESTRUCTORS_S))
     uintptr_t   *ptrStFiniArray;
     uintptr_t   *ptrEnFiniArray;
-
+    #endif
 
     PRIVILEGE_ELEVATE;
-    gdb = (vKern_nbIntImbrications != 0U) ? (true) : (false);
+    gdb = (vKern_nbIntImbrications != 0U) ? true : false;
     if (gdb) {
         kern_criticalSection(KEXIT_CRITICAL);
     }
@@ -120,7 +120,7 @@ int32_t     aStart(uint32_t argc, const char_t *argv[]) {
     }
     #endif
 
-// Call all the init array
+// Call all constructors from .init_array
 
     ptrStInitArray = ALIGNED_PTR(uintptr_t, linker_stInitArray);
     ptrEnInitArray = ALIGNED_PTR(uintptr_t, linker_enInitArray);
@@ -130,22 +130,22 @@ int32_t     aStart(uint32_t argc, const char_t *argv[]) {
         ptrStInitArray++;
     }
 
-    __stack_chk_guard = KSTACK_GARD_VALUE;
+    __stack_chk_guard = KSTACK_GUARD_VALUE;
 
     PRIVILEGE_RESTORE;
 
     RESERVE(SYSTEM, KMODE_READ_WRITE);
     status = (int32_t)main((int)argc, (const char **)argv);
 
-// Call all the finit array
+// Call all destructors from .fini_array
 
-    #if (defined(DO_NOT_DESTROY_S))
+    #ifndef SKIP_CXX_DESTRUCTORS_S
     ptrStFiniArray = ALIGNED_PTR(uintptr_t, linker_stFiniArray);
     ptrEnFiniArray = ALIGNED_PTR(uintptr_t, linker_enFiniArray);
 
     while (ptrStFiniArray < ptrEnFiniArray) {
-        ((void (*)(void))*ptrFiniArray)();
-        ptrEnFiniArray++;
+        ((void (*)(void))*ptrStFiniArray)();
+        ptrStFiniArray++;
     }
     #endif
 
@@ -153,7 +153,7 @@ int32_t     aStart(uint32_t argc, const char_t *argv[]) {
         exit(EXIT_OS_SUCCESS);
     }
 
-    return (status);
+    return status;
 }
 
 /*

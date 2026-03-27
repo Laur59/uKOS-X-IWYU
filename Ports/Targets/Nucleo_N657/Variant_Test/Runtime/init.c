@@ -51,9 +51,6 @@ MODULE(
 // Runtime specific
 // ================
 
-#define CACHE_I_S                   // With the instruction cache
-#define CACHE_D_S                   // With the data cache
-
 // Prototypes
 
 static          void    local_StackLimit_Configuration(void);
@@ -772,22 +769,18 @@ static  void    local_MCO2_Configuration(void) {
 /*
  * \brief local_CACHE_Enable
  *
- * - Enable the instruction cache
+ * - Enable the L1 instruction & the data caches
  *
  */
 static  void    local_CACHE_Enable(void) {
 
     REG(MEMSYSCTL)->MSCR |= MEMSYSCTL_MSCR_DCACTIVE | MEMSYSCTL_MSCR_ICACTIVE;
 
-    #ifdef CACHE_I_S
     cache_I_Invalidate();
     cache_I_Enable();
-    #endif
 
-    #ifdef CACHE_D_S
     cache_D_Invalidate();
     cache_D_Enable();
-    #endif
 }
 
 /*
@@ -889,4 +882,4 @@ static  void    local_wait_us(uint32_t us) {
     for (time = 0; time < us; time++) { NOP; }
 }
 
-#include    "model_cache.c_inc"     // IWYU pragma: keep
+#include    "model_I_D_cache.c_inc"     // IWYU pragma: keep

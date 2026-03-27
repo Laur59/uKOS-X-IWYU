@@ -36,16 +36,12 @@ STRG_LOC_CONST(aStrHelp[])        = "getImage process\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
-// Prototypes
-
-static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
-static  int32_t     imager_clean(uint32_t argc, const char_t *argv[]);
-static  void        local_process(const void *argument);
-static  void        local_transfer(void);
-
 // This process has to run on the following cores:
 
 #define KEXECUTION_CORE     (1U<<BCORE_0)
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+static  int32_t     imager_clean(uint32_t argc, const char_t *argv[]);
 
 MODULE(
     GetImage,                       // Module name (the first letter has to be upper case)
@@ -64,8 +60,6 @@ MODULE(
 
 #define KTIME_ACQ   100U
 #define KLED_XFER   KLED_3
-
-static  bool    vKillRequest[KNB_CORES] = MCSET(false);
 
 // ---------------------------I-----------------------------------------I--------------I
 
@@ -87,6 +81,13 @@ static  const   mt9v03x_t   aTab328248F[] = {
                                 { 162U, 0x01E0U }, { 163U,  0x01E0U }, { 165U,  0x0020U }, { 166U,  0x0008U }, { 168U,  0x0001U }, { 169U,  0x0008U }, { 171U,  0x0001U }, { 175U,  0x0001U },
                                 { 176U, 0x2400U }, { 189U,  0x0120U }, { 194U,  0x0850U }, { 0U,    0x0000U }
                             };
+
+static  bool    vKillRequest[KNB_CORES] = MCSET(false);
+
+// Prototypes
+
+static  void    local_process(const void *argument);
+static  void    local_transfer(void);
 
 /*
  * \brief Main entry point

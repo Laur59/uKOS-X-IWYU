@@ -64,17 +64,7 @@ STRG_LOC_CONST(aStrHelp[])        = "Intel hex+ (32-bit) loader\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
-// Prototypes
-
 static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
-static  int32_t     local_getCounter(uint8_t *counter, uint8_t *checksum);
-static  int32_t     local_getType(uint8_t *type, uint8_t *checksum);
-static  int32_t     local_getOffset(uintptr_t *offset, uint8_t *checksum);
-static  int32_t     local_getExecAddress(uint8_t **address, uint8_t *checksum);
-static  int32_t     local_getData(const uint8_t *counter, uint8_t *checksum, uint8_t *address);
-static  int32_t     local_getHexValue(uint8_t *value);
-static  int32_t     local_getByte(uint8_t *byte);
-static  bool        local_checkSignature(void);
 
 MODULE(
     Hexloader,                                  // Module name (the first letter has to be upper case)
@@ -106,6 +96,17 @@ enum {
         KRUN = 0U,
         KRUN_NO
 };
+
+// Prototypes
+
+static  int32_t     local_getCounter(uint8_t *counter, uint8_t *checksum);
+static  int32_t     local_getType(uint8_t *type, uint8_t *checksum);
+static  int32_t     local_getOffset(uintptr_t *offset, uint8_t *checksum);
+static  int32_t     local_getExecAddress(uint8_t **address, uint8_t *checksum);
+static  int32_t     local_getData(const uint8_t *counter, uint8_t *checksum, uint8_t *address);
+static  int32_t     local_getHexValue(uint8_t *value);
+static  int32_t     local_getByte(uint8_t *byte);
+static  bool        local_checkSignature(void);
 
 /*
  * \brief Main entry point
@@ -331,22 +332,22 @@ static  int32_t local_getHexValue(uint8_t *value) {
                                    13U,  14U, 15U           // 'D' 'E' 'F'
                                 };
 
-    *value = 0U;
+    *value = 0u;
     status = local_getByte(&byte);
     if (status != KERR_H_LOADER_NOT) {
-        return status;
+        return (status);
     }
 
-    if       ((byte >= '0') && (byte <= '9'))                                      { *value  = (uint8_t)(aTabAB[byte - (uint8_t)'0']<<4U);                       }
-    else if (((byte >= 'A') && (byte <= 'F')) || ((byte >= 'a') && (byte <= 'f'))) { *value  = (uint8_t)(aTabAB[(byte & (uint8_t)(~0x20U)) - (uint8_t)'0']<<4U); }
+    if       ((byte >= '0') && (byte <= '9'))                                      { *value  = (uint8_t)(aTabAB[byte - (uint8_t)'0']<<4u);                       }
+    else if (((byte >= 'A') && (byte <= 'F')) || ((byte >= 'a') && (byte <= 'f'))) { *value  = (uint8_t)(aTabAB[(byte & (uint8_t)(~0x20u)) - (uint8_t)'0']<<4u); }
     else { ; }
 
-    status = local_getByte(&byte);  if (status != KERR_H_LOADER_NOT) { return status; }
+    status = local_getByte(&byte);  if (status != KERR_H_LOADER_NOT) { return (status); }
     if       ((byte >= '0') && (byte <= '9'))                                      { *value += (uint8_t)(aTabAB[byte - (uint8_t)'0']);                           }
-    else if (((byte >= 'A') && (byte <= 'F')) || ((byte >= 'a') && (byte <= 'f'))) { *value += (uint8_t)(aTabAB[(byte & (uint8_t)(~0x20U)) - (uint8_t)'0']);     }
+    else if (((byte >= 'A') && (byte <= 'F')) || ((byte >= 'a') && (byte <= 'f'))) { *value += (uint8_t)(aTabAB[(byte & (uint8_t)(~0x20u)) - (uint8_t)'0']);     }
     else { ; }
 
-    return KERR_H_LOADER_NOT;
+    return (KERR_H_LOADER_NOT);
 }
 
 /*

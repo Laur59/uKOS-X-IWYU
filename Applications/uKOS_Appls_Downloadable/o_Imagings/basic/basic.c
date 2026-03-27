@@ -96,7 +96,7 @@ MODULE(
 
 STRG_LOC_CONST(aStrAcqu[]) = "imgx - Acquisition";
 
-static  sema_t  *vSemaImgAcqu;
+static  sema_t  *vSemaphore_IM;
 
 // Prototypes
 
@@ -154,7 +154,7 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
                                         .oKernSync = ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_RX)
                                     };
 
-    if (kern_createSemaphore(aStrAcqu, 0, 1, &vSemaImgAcqu) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create sema G"); exit(EXIT_OS_FAILURE); }
+    if (kern_createSemaphore(aStrAcqu, 0, 1, &vSemaphore_IM) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create sema G"); exit(EXIT_OS_FAILURE); }
 
 // Configurations the communications channels
 // Configurations for an imager APTINA
@@ -174,9 +174,9 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
 
     while (true) {
 
-// Waiting for the semaphore "vSemaImgAcqu"
+// Waiting for the semaphore "vSemaphore_IM"
 
-        kern_waitSemaphore(vSemaImgAcqu, KWAIT_INFINITY);
+        kern_waitSemaphore(vSemaphore_IM, KWAIT_INFINITY);
 
         imager_read((volatile void **)&image);
         serial_write(KURT0, (const uint8_t *)(uintptr_t)image, (KAPP_NB_ROWS * KAPP_NB_COLUMNS));
@@ -242,7 +242,7 @@ MAIN_ENTRY(argc, argv[]) {
 /*
  * \brief local_transfer
  *
- * - waiting for the semaphore "vSemaImgAcqu"
+ * - waiting for the semaphore "vSemaphore_IM"
  *      - trigger an acquisition
  *      - return
  *
@@ -256,5 +256,5 @@ static  void    local_transfer(void) {
     led_toggle(3U);
     #endif
 
-    kern_signalSemaphore(vSemaImgAcqu);
+    kern_signalSemaphore(vSemaphore_IM);
 }

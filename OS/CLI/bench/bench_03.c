@@ -37,11 +37,13 @@
 #include    "random/random.h"
 #include    "serial/serial.h"
 
+// CLI tool specific
+// =================
+
 #define KNB_TESTS       100U
 #define KNB_ELEMENTS    50000U
 
-// CLI tool specific
-// =================
+// Prototypes
 
 static  void    local_minMax(const uint32_t *array, uint64_t *time, uint32_t *min, uint32_t *max);
 

@@ -27,6 +27,9 @@ project(
 set(SOC STM32H747)
 set(CORE CORTEX_M7)
 
+# SOC has cache
+add_compile_definitions(CACHE_D_S)
+
 # Customisation of firmware copyright text
 add_compile_definitions(
     "uKOS_NAME="
@@ -143,13 +146,13 @@ list(APPEND LIBX_P
     ${PATH_BASE}/Lib_peripherals/i2c0/stub_i2c0_si2c3.c
     ${PATH_BASE}/Lib_peripherals/spi0/stub_spi0_sspi2.c
     ${PATH_BASE}/Lib_peripherals/watchdog/stub_watchdog.c
-    ${PATH_BASE}/Lib_serials/urt0/stub_urt0_usart6.c
     ${PATH_COMX}/Lib_generics/asmp/stub_asmp_hsem.c
     ${PATH_VARI}/Lib_peripherals/imager/stub_imager_mt9v03x.c
     ${PATH_VARI}/Lib_peripherals/imu/stub_imu_lsm9ds1.c
     ${PATH_VARI}/Lib_peripherals/led/stub_led.c
     ${PATH_VARI}/Lib_peripherals/switch/stub_switch.c
     ${PATH_VARI}/Lib_peripherals/temperature/stub_temperature_lsm9ds1.c
+    ${PATH_VARI}/Lib_serials/urt0/stub_urt0_usart6.c
 )
 add_library(libx_p ${LIBX_P})
 target_link_libraries(libx_p PUBLIC system_compiler_flags ${TINYUSB})
@@ -191,8 +194,8 @@ list(APPEND PROC_U
     ${PATH_UKOS}/OS/Processes/startUp/startUp.c
     ${PATH_UKOS}/OS/Processes/TinyUSB/TinyUSB.c
     ${PATH_BASE}/Processes/alive/stub_alive.c
+    ${PATH_BASE}/Processes/TinyUSB/stub_TinyUSB.c
     ${PATH_VARI}/Processes/startUp/stub_startUp.c
-    ${PATH_VARI}/Processes/TinyUSB/stub_TinyUSB.c
 )
 add_library(proc_u ${PROC_U})
 target_link_libraries(proc_u PUBLIC system_compiler_flags ${TINYUSB})

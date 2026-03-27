@@ -27,6 +27,9 @@ project(
 set(SOC STM32N657)
 set(CORE CORTEX_M55)
 
+# SOC has cache
+add_compile_definitions(CACHE_D_S)
+
 # Customisation of firmware copyright text
 add_compile_definitions(
     "uKOS_NAME="
@@ -183,8 +186,8 @@ list(APPEND PROC_U
     ${PATH_UKOS}/OS/Processes/startUp/startUp.c
     ${PATH_UKOS}/OS/Processes/TinyUSB/TinyUSB.c
     ${PATH_BASE}/Processes/alive/stub_alive.c
+    ${PATH_BASE}/Processes/TinyUSB/stub_TinyUSB.c
     ${PATH_VARI}/Processes/startUp/stub_startUp.c
-    ${PATH_VARI}/Processes/TinyUSB/stub_TinyUSB.c
 )
 add_library(proc_u ${PROC_U})
 target_link_libraries(proc_u PUBLIC system_compiler_flags ${TINYUSB})

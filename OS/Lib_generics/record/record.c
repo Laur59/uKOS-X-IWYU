@@ -49,6 +49,9 @@ MODULE(
     0                               // Execution cores
 );
 
+// Library specific
+// ================
+
 typedef enum {
             KCUMULATE = 0U,
             KSCANN
@@ -64,9 +67,6 @@ uint32_t            vRecord_NbLogWrites[KNB_CORES]   = MCSET(0U);               
 // Prototypes
 
 static  int32_t local_init(void);
-
-// Library specific
-// ================
 
 /*
  * \brief Trace the code with a parameter

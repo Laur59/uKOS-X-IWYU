@@ -44,15 +44,12 @@ STRG_LOC_CONST(aStrHelp[])        = "temperature process\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
-// Prototypes
+// This process has to run on the following cores:
+
+#define KEXECUTION_CORE     (1u<<BCORE_0)
 
 static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 static  int32_t     temperature_clean(uint32_t argc, const char_t *argv[]);
-static  void        local_process(const void *argument);
-
-// This process has to run on the following cores:
-
-#define KEXECUTION_CORE     (1U<<BCORE_0)
 
 MODULE(
     GetTemp,                        // Module name (the first letter has to be upper case)
@@ -69,8 +66,6 @@ MODULE(
 // Process specific
 // ================
 
-static  bool    vKillRequest[KNB_CORES] = MCSET(false);
-
 #define KTIME_ACQ           200U    // 200-ms
 #define KNB_SAMPLES         128U    // Nb. of samples
 
@@ -78,6 +73,12 @@ static  bool    vKillRequest[KNB_CORES] = MCSET(false);
 
 STRG_LOC_CONST(aStrIden[]) = "Process_getTemp";
 STRG_LOC_CONST(aStrText[]) = "Process get temp: temp acquisition.       (c) EFr-2026";
+
+static  bool    vKillRequest[KNB_CORES] = MCSET(false);
+
+// Prototypes
+
+static  void    local_process(const void *argument);
 
 /*
  * \brief Main entry point

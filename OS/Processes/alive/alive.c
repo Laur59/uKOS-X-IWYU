@@ -34,14 +34,12 @@ STRG_LOC_CONST(aStrHelp[])        = "alive process\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
-// Prototypes
+// This process has to run on the following cores:
+
+#define KEXECUTION_CORE     ((1u<<BCORE_0) | (1u<<BCORE_1) | (1u<<BCORE_2) | (1u<<BCORE_3))
 
 static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 static  int32_t     alive_clean(uint32_t argc, const char_t *argv[]);
-
-// This process has to run on the following cores:
-
-#define KEXECUTION_CORE     ((1U<<BCORE_0) | (1U<<BCORE_1) | (1U<<BCORE_2) | (1U<<BCORE_3))
 
 MODULE(
     Alive,                          // Module name (the first letter has to be upper case)
@@ -58,13 +56,13 @@ MODULE(
 // Process specific
 // ================
 
-static  proc_t  *vProcess[KNB_CORES];
-static  bool    vKillRequest[KNB_CORES] = MCSET(false);
-
 // ---------------------------I-----------------------------------------I--------------I
 
 STRG_LOC_CONST(aStrIden[]) = "Process_alive";
 STRG_LOC_CONST(aStrText[]) = "Process alive: the system is living.      (c) EFr-2026";
+
+static  proc_t  *vProcess[KNB_CORES];
+static  bool    vKillRequest[KNB_CORES] = MCSET(false);
 
 /*
  * \brief Main entry point

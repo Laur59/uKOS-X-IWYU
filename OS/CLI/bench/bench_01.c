@@ -35,12 +35,12 @@
 #include    "memo/memo.h"
 #include    "serial/serial.h"
 
+// CLI tool specific
+// =================
+
 #define KNB_X       200U
 #define KNB_Y       200U
 #define KMAX_BIT    256U
-
-// CLI tool specific
-// =================
 
 static  void    local_fill(uint8_t *array, uint64_t *time);
 static  void    local_prjX(const uint8_t *array, uint64_t *time, uint32_t *x);
