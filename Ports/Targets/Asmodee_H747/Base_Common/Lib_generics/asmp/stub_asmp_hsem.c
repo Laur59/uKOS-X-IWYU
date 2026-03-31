@@ -42,7 +42,6 @@
  *           In a homogeneous configuration: PREEMPTION_THRESHOLD(core)
  */
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "asmp/asmp.h"
@@ -290,16 +289,16 @@ static  void    local_hsem_interruptionChannel(void) {
 // core1 indicates to the core0 that there is a valid message in the buffer
 // core1 acknowledge the core0, get free the statusTX of the core1
 
-        if ((HSEM->C2ISR & (1U<<KHSEM_PROCESS_0)) != 0U) { HSEM->C2ICR = (1U<<KHSEM_PROCESS_0); vAsmp_InterCore->oStatusRX[KASMP_CORE_0] = KASMP_LOCK; kern_signalSemaphore(semaphoreRX); }
-        if ((HSEM->C2ISR & (1U<<KHSEM_PROCESS_4)) != 0U) { HSEM->C2ICR = (1U<<KHSEM_PROCESS_4); vAsmp_InterCore->oStatusTX[KASMP_CORE_1] = KASMP_FREE; kern_signalSemaphore(semaphoreTX); }
+        if ((HSEM->C2ISR & (1U<<KHSEM_PROCESS_0)) != 0U) { HSEM->C2ICR = (1U<<KHSEM_PROCESS_0); vAsmp_InterCore->oStatusRX[KASMP_CORE_0] = KASMP_LOCK; kern_signalSemaphore(semaphore_RX); }
+        if ((HSEM->C2ISR & (1U<<KHSEM_PROCESS_4)) != 0U) { HSEM->C2ICR = (1U<<KHSEM_PROCESS_4); vAsmp_InterCore->oStatusTX[KASMP_CORE_1] = KASMP_FREE; kern_signalSemaphore(semaphore_TX); }
     }
     else {
 
 // core0 indicates to the core1 that there is a valid message in the buffer
 // core0 acknowledge the core1, get free the statusTX of the core0
 
-        if ((HSEM->C1ISR & (1U<<KHSEM_PROCESS_1)) != 0U) { HSEM->C1ICR = (1U<<KHSEM_PROCESS_1); vAsmp_InterCore->oStatusRX[KASMP_CORE_1] = KASMP_LOCK; kern_signalSemaphore(semaphoreRX); }
-        if ((HSEM->C1ISR & (1U<<KHSEM_PROCESS_5)) != 0U) { HSEM->C1ICR = (1U<<KHSEM_PROCESS_5); vAsmp_InterCore->oStatusTX[KASMP_CORE_0] = KASMP_FREE; kern_signalSemaphore(semaphoreTX); }
+        if ((HSEM->C1ISR & (1U<<KHSEM_PROCESS_1)) != 0U) { HSEM->C1ICR = (1U<<KHSEM_PROCESS_1); vAsmp_InterCore->oStatusRX[KASMP_CORE_1] = KASMP_LOCK; kern_signalSemaphore(semaphore_RX); }
+        if ((HSEM->C1ISR & (1U<<KHSEM_PROCESS_5)) != 0U) { HSEM->C1ICR = (1U<<KHSEM_PROCESS_5); vAsmp_InterCore->oStatusTX[KASMP_CORE_0] = KASMP_FREE; kern_signalSemaphore(semaphore_TX); }
     }
 
     PREEMPTION_THRESHOLD(KCORE_0);

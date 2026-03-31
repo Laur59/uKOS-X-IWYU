@@ -53,3 +53,11 @@ n6:
       - cdc_cdc
       - cdc_msc
       - cdc_video
+
+v8:
+  - dependency: null
+    soc: STM32V873
+    profiles:
+      - cdc_cdc
+      - cdc_msc
+      - cdc_video

@@ -8,7 +8,6 @@
 
 #include    "cmns.h"
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "clockTree.h"
@@ -171,6 +170,6 @@ void    cmns_wait(uint32_t us) {
 
     wkUs = (wkUs / 7U) * (KFREQUENCY_CORE / 1000000U);
 
-    wkUs = (wkUs == 0U) ? (1U) : (wkUs);
+    wkUs = (wkUs == 0U) ? 1U : wkUs;
     for (time = 0U; time < wkUs; time++) { NOP; }
 }

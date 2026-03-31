@@ -81,15 +81,15 @@ uint32_t    vCrt0_randomSeed;
 extern  uintptr_t   __stack_chk_guard;
 
 #if (UINTPTR_MAX == 0xFFFFFFFFU)
-#define KSTACK_GARD_VALUE   0xDeadBeefU
+#define KSTACK_GUARD_VALUE  0xDeadBeefU
 
 #else
-#define KSTACK_GARD_VALUE   0xDeadBeeffeeBdaeDU;
+#define KSTACK_GUARD_VALUE  0xDeadBeeffeeBdaeDU
 #endif
 
 // Prototypes
 
-extern  void    init_relocate(void);      // NOLINT(misc-use-internal-linkage): weak symbol must have external linkage
+void    init_relocate(void) __attribute__((weak));      // NOLINT(misc-use-internal-linkage): weak symbol must have external linkage
 static  void    local_killProcess(void);
 static  void    local_panicMallocBroken(void);
 static  void    local_panicStackUnderflow(void);
@@ -132,7 +132,7 @@ void    crt0(void) {
         #ifdef PRIVILEGED_USER_S
         regionSeed = ALIGNED_PTR(const uint32_t, linker_stPrgmData_u);
 
-        nbWords    = (intptr_t)(((uintptr_t)linker_lnPrgmData_u) / 4U);
+        nbWords    = (intptr_t)(((uintptr_t)linker_lnPrgmData_u) / 4u);
         seed       = 0U;
         while (nbWords-- > 0) {
             seed += *regionSeed;
@@ -176,7 +176,7 @@ void    crt0(void) {
 
         vCrt0_randomSeed = seed;
 
-        __stack_chk_guard = KSTACK_GARD_VALUE;
+        __stack_chk_guard = KSTACK_GUARD_VALUE;
     }
 
 // Initialise the interruption and exception vectors
@@ -314,14 +314,6 @@ static  void    __attribute__ ((noinline)) local_panicMallocBroken(void) {
 static  void    __attribute__ ((noinline)) local_panicStackUnderflow(void) {
             uint32_t    core;
             char_t      string[200 + 1];
-    const   char_t      *identifier;
-
-    core = GET_RUNNING_CORE;
-
-    PRIVILEGE_ELEVATE;
-    INTERRUPTION_OFF;
-
-    cmns_send(KDEF0, "\nPanic: process stack underflow detected!\n");
 
     identifier = (vKern_runProc[core]->oSpecification.oIdentifier == nullptr) ? "Anonymous" : (vKern_runProc[core]->oSpecification.oIdentifier);
     (void)snprintf(&string[0], 200U, "Current process:    %s\n", identifier);
@@ -332,6 +324,14 @@ static  void    __attribute__ ((noinline)) local_panicStackUnderflow(void) {
 
     (void)snprintf(&string[0], 200U, "Start of Stack:     0x%016"PRIXPTR"\n", (uintptr_t)vKern_runProc[core]->oSpecification.oStackStart);
     cmns_send(KDEF0, &string[0]);
+
+    #ifndef RV32IMAC_S
+    uintptr_t   value;
+
+    value = core_getPSP();
+    (void)snprintf(&string[0], 200U, "Current Stack PSP:  0x%016"PRIXPTR"\n", value);
+    cmns_send(KDEF0, &string[0]);
+
 
     #ifndef RV32IMAC_S
     uintptr_t   value;

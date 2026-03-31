@@ -186,7 +186,7 @@ bool    tud_msc_test_unit_ready_cb(uint8_t lun) {
     }
 
     kern_unlockMutex(vTinyUSB_API[core]);
-    return status;
+    return (status);
 }
 
 /*
@@ -224,8 +224,8 @@ bool    tud_msc_start_stop_cb(uint8_t lun, uint8_t power_condition, bool start, 
     core = GET_RUNNING_CORE;
 
     kern_lockMutex(vTinyUSB_API[core], KWAIT_INFINITY);
-    if (load_eject) {
-        if (start) {
+    if (load_eject == true ) {
+        if (start == true) {
 
 // load disk storage
 
@@ -238,7 +238,7 @@ bool    tud_msc_start_stop_cb(uint8_t lun, uint8_t power_condition, bool start, 
         }
     }
     kern_unlockMutex(vTinyUSB_API[core]);
-    return true;
+    return (true);
 }
 
 /*

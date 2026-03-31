@@ -41,7 +41,6 @@
 
 #include    "asmp/asmp.h"
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "Registers/rv64_csr.h"

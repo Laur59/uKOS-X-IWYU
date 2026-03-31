@@ -81,7 +81,9 @@ MODULE(
 // CLI tool specific
 // =================
 
+#if (KNB_CORES > 1)
 extern  spinlock_t      vMemo;
+#endif
 
 #if (KNB_CORES == 1)
 size_t  size_first      = (size_t)linker_sizeStackFirst_C0;
@@ -94,10 +96,10 @@ size_t  size_system_C0  = (size_t)linker_sizeStackSystem_C0;
 size_t  size_first_C1   = (size_t)linker_sizeStackFirst_C1;
 size_t  size_system_C1  = (size_t)linker_sizeStackSystem_C1;
 #else
-static  size_t  size_first_C0   = (size_t)linker_sizeStackFirst_C0;
-static  size_t  size_system_C0  = (size_t)linker_sizeStackSystem_C0;
-static  size_t  size_first_C1   = (size_t)linker_sizeStackFirst_C1;
-static  size_t  size_system_C1  = (size_t)linker_sizeStackSystem_C1;
+size_t  size_first_C0   = (size_t)linker_sizeStackFirst_C0;
+size_t  size_system_C0  = (size_t)linker_sizeStackSystem_C0;
+size_t  size_first_C1   = (size_t)linker_sizeStackFirst_C1;
+size_t  size_system_C1  = (size_t)linker_sizeStackSystem_C1;
 #endif
 
 #else
@@ -118,6 +120,8 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
     UNUSED(argc);
     UNUSED(argv);
+
+    PRIVILEGE_ELEVATE;
 
     (void)dprintf(KSYST, "Memory information.\n");
 
@@ -220,6 +224,8 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     #endif
 
     local_displayHeap(linker_stHeap, nbBlocks, usdMemory, length);
+
+    PRIVILEGE_RESTORE;
     return EXIT_OS_SUCCESS_CLI;
 }
 

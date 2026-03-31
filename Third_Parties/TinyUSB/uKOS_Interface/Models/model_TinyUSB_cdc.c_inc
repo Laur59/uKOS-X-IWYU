@@ -14,6 +14,7 @@
 #include    "record/record.h"
 
 static  bool    vConnected[CFG_TUD_CDC] = MCSET(KDISCONNECTED);
+extern  mutx_t  *vTinyUSB_API[KNB_CORES];
 
 /*
  * \brief TinyUSB_cdc_init
@@ -42,7 +43,7 @@ void    TinyUSB_cdc_clean(void) {
  *
  */
 void    TinyUSB_cdc_write(uint8_t itf, const uint8_t *buffer, uint32_t size) {
-    uint32_t    core, available, remaining, chunk, written, retry = 0U, offset = 0U;
+    uint32_t    core, available, remaining, chunk, written, retry = 0U, offset = 0U;;
 
     core = GET_RUNNING_CORE;
 

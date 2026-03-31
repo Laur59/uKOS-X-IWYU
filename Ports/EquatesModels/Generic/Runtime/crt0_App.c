@@ -96,7 +96,7 @@ int32_t     aStart(uint32_t argc, const char_t *argv[]) {
     #endif
 
     PRIVILEGE_ELEVATE;
-    gdb = (vKern_nbIntImbrications != 0U) ? true : false;
+    gdb = (vKern_nbIntImbrications != 0U) ? (true) : (false);
     if (gdb) {
         kern_criticalSection(KEXIT_CRITICAL);
     }
@@ -139,7 +139,7 @@ int32_t     aStart(uint32_t argc, const char_t *argv[]) {
 
 // Call all destructors from .fini_array
 
-    #ifndef SKIP_CXX_DESTRUCTORS_S
+    #if (!defined(SKIP_CXX_DESTRUCTORS_S))
     ptrStFiniArray = ALIGNED_PTR(uintptr_t, linker_stFiniArray);
     ptrEnFiniArray = ALIGNED_PTR(uintptr_t, linker_enFiniArray);
 
@@ -153,7 +153,7 @@ int32_t     aStart(uint32_t argc, const char_t *argv[]) {
         exit(EXIT_OS_SUCCESS);
     }
 
-    return status;
+    return (status);
 }
 
 /*

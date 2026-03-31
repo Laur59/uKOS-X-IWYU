@@ -8,8 +8,6 @@
 
 #include    "cmns.h"
 
-#include    <stddef.h>
-
 #include    "clockTree.h"
 #include    "macros.h"
 #include    "macros_core.h"

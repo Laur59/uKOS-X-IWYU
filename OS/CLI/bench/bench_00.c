@@ -42,6 +42,8 @@
 #define KNB_Y       50U
 #define KMAX_BIT    256U
 
+// Prototypes
+
 static  void    local_fill(uint8_t *array, uint64_t *time);
 static  void    local_prjX(const uint8_t *array, uint64_t *time, uint32_t *x);
 static  void    local_prjY(const uint8_t *array, uint64_t *time, uint32_t *y);

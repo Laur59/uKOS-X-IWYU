@@ -80,10 +80,10 @@ uint32_t    vCrt0_randomSeed;
 extern  uintptr_t   __stack_chk_guard;
 
 #if (UINTPTR_MAX == 0xFFFFFFFFU)
-#define KSTACK_GARD_VALUE   0xDeadBeefU
+#define KSTACK_GUARD_VALUE  0xDeadBeefU
 
 #else
-#define KSTACK_GARD_VALUE   0xDeadBeeffeeBdaeDU
+#define KSTACK_GUARD_VALUE  0xDeadBeeffeeBdaeDU
 #endif
 
 // Prototypes
@@ -149,7 +149,7 @@ void    crt0(void) {
         vCrt0_randomSeed = seed;
     }
 
-    __stack_chk_guard = KSTACK_GARD_VALUE;
+    __stack_chk_guard = KSTACK_GUARD_VALUE;
 
 // Initialise the interruption and exception vectors
 // Go to the main
@@ -280,16 +280,16 @@ static  void    __attribute__ ((noinline)) local_panicStackUnderflow(void) {
             uintptr_t   value;
     const   char_t      *identifier;
 
-    core = GET_RUNNING_CORE;
-
-    PRIVILEGE_ELEVATE;
-    INTERRUPTION_OFF;
-
-    cmns_send(KDEF0, "\nPanic: process stack underflow detected!\n");
-
     identifier = (vKern_runProc[core]->oSpecification.oIdentifier == nullptr) ? "Anonymous" : (vKern_runProc[core]->oSpecification.oIdentifier);
     (void)snprintf(&string[0], 200U, "Current process:    %s\n", identifier);
     cmns_send(KDEF0, &string[0]);
+
+    (void)snprintf(&string[0], 200U, "Process code entry: 0x%016"PRIXPTR"\n", (uintptr_t)vKern_runProc[core]->oSpecification.oCode);
+    cmns_send(KDEF0, &string[0]);
+
+    (void)snprintf(&string[0], 200U, "Start of Stack:     0x%016"PRIXPTR"\n", (uintptr_t)vKern_runProc[core]->oSpecification.oStackStart);
+    cmns_send(KDEF0, &string[0]);
+
 
     (void)snprintf(&string[0], 200U, "Process code entry: 0x%016"PRIXPTR"\n", (uintptr_t)vKern_runProc[core]->oSpecification.oCode);
     cmns_send(KDEF0, &string[0]);

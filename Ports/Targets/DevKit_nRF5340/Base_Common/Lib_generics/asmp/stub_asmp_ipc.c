@@ -41,7 +41,6 @@
 
 #include    "asmp/asmp.h"
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "core_reg.h"
@@ -269,16 +268,16 @@ static  void    local_IPC_interruptionChannel(void) {
 // core1 indicates to the core0 that there is a valid message in the buffer
 // core1 acknowledge the core0, get free the statusTX of the core1
 
-        if (REG(IPC)->EVENTS_RECEIVE[0] != 0U) { REG(IPC)->EVENTS_RECEIVE[0] = 0U; vAsmp_InterCore->oStatusRX[KASMP_CORE_0] = KASMP_LOCK; kern_signalSemaphore(semaphoreRX); }
-        if (REG(IPC)->EVENTS_RECEIVE[2] != 0U) { REG(IPC)->EVENTS_RECEIVE[2] = 0U; vAsmp_InterCore->oStatusTX[KASMP_CORE_1] = KASMP_FREE; kern_signalSemaphore(semaphoreTX); }
+        if (REG(IPC)->EVENTS_RECEIVE[0] != 0U) { REG(IPC)->EVENTS_RECEIVE[0] = 0U; vAsmp_InterCore->oStatusRX[KASMP_CORE_0] = KASMP_LOCK; kern_signalSemaphore(semaphore_RX); }
+        if (REG(IPC)->EVENTS_RECEIVE[2] != 0U) { REG(IPC)->EVENTS_RECEIVE[2] = 0U; vAsmp_InterCore->oStatusTX[KASMP_CORE_1] = KASMP_FREE; kern_signalSemaphore(semaphore_TX); }
     }
     else {
 
 // core0 indicates to the core1 that there is a valid message in the buffer
 // core0 acknowledge the core1, get free the statusTX of the core0
 
-        if (REG(IPC)->EVENTS_RECEIVE[1] != 0U) { REG(IPC)->EVENTS_RECEIVE[1] = 0U; vAsmp_InterCore->oStatusRX[KASMP_CORE_1] = KASMP_LOCK; kern_signalSemaphore(semaphoreRX); }
-        if (REG(IPC)->EVENTS_RECEIVE[3] != 0U) { REG(IPC)->EVENTS_RECEIVE[3] = 0U; vAsmp_InterCore->oStatusTX[KASMP_CORE_0] = KASMP_FREE; kern_signalSemaphore(semaphoreTX); }
+        if (REG(IPC)->EVENTS_RECEIVE[1] != 0U) { REG(IPC)->EVENTS_RECEIVE[1] = 0U; vAsmp_InterCore->oStatusRX[KASMP_CORE_1] = KASMP_LOCK; kern_signalSemaphore(semaphore_RX); }
+        if (REG(IPC)->EVENTS_RECEIVE[3] != 0U) { REG(IPC)->EVENTS_RECEIVE[3] = 0U; vAsmp_InterCore->oStatusTX[KASMP_CORE_0] = KASMP_FREE; kern_signalSemaphore(semaphore_TX); }
     }
 
     PREEMPTION_THRESHOLD(KCORE_0);

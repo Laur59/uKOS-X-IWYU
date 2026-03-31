@@ -92,7 +92,7 @@ osal_semaphore_t    osal_semaphore_create(osal_semaphore_def_t *semdef) {
         return ((osal_semaphore_t)(semaphore));
     }
 
-    return (nullptr);
+    return nullptr;
 }
 
 /*
@@ -106,7 +106,7 @@ bool    osal_semaphore_post(osal_semaphore_t sem_hdl, bool in_isr) {
 
     UNUSED(in_isr);
 
-    status = (kern_signalSemaphore((sema_t *)sem_hdl) == KERR_KERN_NOERR) ? true : false;
+    status = (kern_signalSemaphore((sema_t *)sem_hdl) == KERR_KERN_NOERR) ? (true) : (false);
     return status;
 }
 
@@ -121,7 +121,7 @@ bool    osal_semaphore_wait(osal_semaphore_t sem_hdl, uint32_t msec) {
 
     UNUSED(msec);
 
-    status = (kern_waitSemaphore((sema_t *)sem_hdl, 0U) == KERR_KERN_NOERR) ? true : false;
+    status = (kern_waitSemaphore((sema_t *)sem_hdl, 0U) == KERR_KERN_NOERR) ? (true) : (false);
     return status;
 }
 
@@ -151,7 +151,7 @@ osal_mutex_t osal_mutex_create(osal_mutex_def_t *mdef) {
         return ((osal_mutex_t)(mutex));
     }
 
-    return (nullptr);
+    return nullptr;
 }
 
 /*
@@ -252,7 +252,7 @@ bool    osal_queue_send(osal_queue_t qhdl, void const *data, bool in_isr) {
 
     UNUSED(in_isr);
 
-    status = (kern_writeMailbox((mbox_t *)qhdl, data, mailBox->oDataEntrySize, 0U) == KERR_KERN_NOERR) ? true : false;
+    status = (kern_writeMailbox((mbox_t *)qhdl, data, mailBox->oDataEntrySize, 0u) == KERR_KERN_NOERR) ? (true) : (false);
     return (status);
 }
 #pragma GCC diagnostic  pop
@@ -267,8 +267,8 @@ bool    osal_queue_empty(osal_queue_t qhdl) {
     bool    status;
     mbox_t  *mailBox = (mbox_t *)qhdl;
 
-    status = ((mailBox->oState & (1U<<BMBOX_EMPTY)) != 0U) ? true : false;
-    return (status);
+    status = ((mailBox->oState & (1U<<BMBOX_EMPTY)) != 0U);
+    return status;
 }
 
 /*

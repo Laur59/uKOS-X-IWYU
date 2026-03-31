@@ -133,16 +133,16 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
             }
 
-            for (add = KSTART; add < (KEND / 1u); add++) {
-                *(memory_08 + add) = 0x55u;
+            for (add = KSTART; add < (KEND / 1U); add++) {
+                *(memory_08 + add) = 0x55U;
             }
 
-            for (add = KSTART; add < (KEND / 1u); add++) {
-                if (*(memory_08 + add) != 0x55u) {
-                    expe_08 = 0x55u;
+            for (add = KSTART; add < (KEND / 1U); add++) {
+                if (*(memory_08 + add) != 0x55U) {
+                    expe_08 = 0x55U;
                     read_08 = *(memory_08 + add);
                     local_display(KERR_008, (memory_08 + add), (uint32_t)expe_08, (uint32_t)read_08);
-                    return (EXIT_OS_FAILURE);
+                    return EXIT_OS_FAILURE;
                 }
 
             }

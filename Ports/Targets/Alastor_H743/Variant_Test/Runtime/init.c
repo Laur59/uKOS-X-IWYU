@@ -12,7 +12,6 @@
 
 #include    "init.h"
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "core_reg.h"

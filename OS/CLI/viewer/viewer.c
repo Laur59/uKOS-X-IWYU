@@ -14,8 +14,6 @@
 #include    "types.h"
 #include    "viewer/viewer_uvc0.h"
 
-// Prototypes
-
 static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 
 MODULE(

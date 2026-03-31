@@ -38,7 +38,6 @@ SECTIONS {
         linker_stTEXT = ABSOLUTE(.);
         KEEP(*(.header))
         *(.text .text.*)
-        *(.gnu.linkonce.t.*)
         linker_enTEXT = ABSOLUTE(.);
     } > prgm_code
 
@@ -64,7 +63,6 @@ SECTIONS {
         *(.rodata .rodata.*)
         *(.rdata .rdata.*)
         *(.srodata .srodata.*)
-        *(.gnu.linkonce.r.*)
         . = ALIGN(8);
         linker_enRODATA = ABSOLUTE(.);
     } > prgm_code
@@ -97,7 +95,6 @@ SECTIONS {
         linker_stDATA = ABSOLUTE(.);
         *(.data .data.*)
         *(.sdata .sdata.*)
-        *(.gnu.linkonce.d.*)
         . = ALIGN(8);
         linker_enDATA = ABSOLUTE(.);
     } > prgm_code

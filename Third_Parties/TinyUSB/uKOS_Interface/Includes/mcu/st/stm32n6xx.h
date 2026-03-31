@@ -25,6 +25,25 @@
 
 #include    "core_reg.h"
 #include    "soc_reg.h"
+
+#ifndef DATA_SYNC_BARRIER
+#define DATA_SYNC_BARRIER       __asm volatile ("                                                                            \n \
+                                dsb         0xF"                                                                                \
+                                :                                                                                               \
+                                :                                                                                               \
+                                : "memory"                                                                                      \
+                                )
+#endif
+
+#ifndef INST_SYNC_BARRIER
+#define INST_SYNC_BARRIER       __asm volatile ("                                                                            \n \
+                                isb         0xF"                                                                                \
+                                :                                                                                               \
+                                :                                                                                               \
+                                : "memory"                                                                                      \
+                                )
+#endif
+
 #include    "model_I_D_cache.c_inc"
 
 // For dwc2_stm32 working in DMA

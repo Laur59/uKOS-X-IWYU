@@ -6,7 +6,6 @@
  * Goal:     Exceptions for the MAiXDUiNO_K210 module.
  */
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "board.h"

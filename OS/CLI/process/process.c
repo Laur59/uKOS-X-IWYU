@@ -66,7 +66,7 @@ struct  process {
             uintptr_t   oPC;                    // Process PC
         };
 
-static  uint64_t    vTotalTimeCPU[KNB_CORES] = MCSET(0U);
+static  uint64_t    vTotalTimeCPU[KNB_CORES] = MCSET(0u);
 
 #if (KNB_CORES > 1)
 static  spinlock_t  vProcess = SPIN_LOCK_INIT;

@@ -22,8 +22,6 @@
 
 #if (KKERN_NB_SOFTWARE_TIMERS > 0)
 
-proc_t  *vStimer_handle[KNB_CORES];
-
 // uKOS-X specific (see the module.h)
 // ==================================
 
@@ -39,7 +37,7 @@ STRG_LOC_CONST(aStrHelp[])        = "stim deamon\n"
 
 // This process has to run on the following cores:
 
-#define KEXECUTION_CORE     ((1u<<BCORE_0) | (1u<<BCORE_1) | (1u<<BCORE_2) | (1u<<BCORE_3))
+#define KEXECUTION_CORE     ((1U<<BCORE_0) | (1U<<BCORE_1) | (1U<<BCORE_2) | (1U<<BCORE_3))
 
 static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 

@@ -45,18 +45,18 @@ INCLUDE     STM32H743xI.ld
 /*          Program Data        0x38001800                  */
 /*          58K                                             */
 
-linker_sizeStackSystem_C0   = (4K);                                                 /* Length of the System stack                               */
-linker_sizeStackFirst_C0    = (2K);                                                 /* Length of the First stack                                */
+linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
+linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */
 
 /* IMPORTANT:                                               */
 /* all the stacks have to be maintained aligned             */
 /* on a boundary of 8-bytes                                 */
 
-linker_lowStackFirst_C0     = stm_stSRAM4;                                          /* 0x38000000: start of the First stack                     */
-linker_topStackFirst_C0     = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0 - 8;
+linker_lowStackFirst_C0     = stm_stSRAM4;                                                  /* 0x38000000: start of the First stack                     */
+linker_topStackFirst_C0     = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0 - 8;       /* 0x380007F8                                               */
 
-linker_lowStackSystem_C0    = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;   /* 0x38000800: start of the System stack                    */
-linker_topStackSystem_C0    = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 - 8;
+linker_lowStackSystem_C0    = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;           /* 0x38000800: start of the System stack                    */
+linker_topStackSystem_C0    = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 - 8;     /* 0x380017F8                                               */
 
 ASSERT((linker_lowStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
 ASSERT((linker_topStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
@@ -66,45 +66,45 @@ ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
 /* IMPORTANT:                                               */
 /* External memory, User (download application) and shared  */
 
-linker_stEXRAM              = 0;                                                    /* 0x00000000: EXRAM, start of the external memory          */
-linker_lnEXRAM              = (0);                                                  /* Length of the external memory                            */
+linker_stEXRAM              = 0;                                                            /* 0x00000000: EXRAM, start of the external memory          */
+linker_lnEXRAM              = (0);                                                          /* Length of the external memory                            */
 
-linker_stUMemo              = stm_stAXISRAM;                                        /* 0x24000000: UMemo, start of the user memory              */
-linker_lnUMemo              = stm_lnAXISRAM;                                        /* Length of the user memory                                */
+linker_stUMemo              = stm_stAXISRAM;                                                /* 0x24000000: UMemo, start of the user memory              */
+linker_lnUMemo              = stm_lnAXISRAM;                                                /* Length of the user memory                                */
 
 /* IMPORTANT:                                               */
 /* The heap has to be maintained aligned                    */
 /* on a boundary of 8-bytes                                 */
 
-linker_stHeap               = stm_stSRAM1;                                          /* 0x30000000: start of the heap                            */
-linker_lnHeap               = stm_lnSRAM123;                                        /* Length of the heap                                       */
-
+linker_stHeap               = stm_stSRAM1;                                                  /* 0x30000000: start of the heap                            */
+linker_lnHeap               = stm_lnSRAM123;                                                /* Length of the heap                                       */
+ASSERT((linker_stHeap & 7) == 0, "Heap must be 8-byte aligned")
 
 /* IMPORTANT:                                               */
 /* uKOS OS Flash + memory                                   */
 
-linker_stPrgmCode           = stm_stINTFLASH;                                       /* 0x08000000: PrgmCode, start of the Flash                 */
-linker_lnPrgmCode           = stm_lnINTFLASH;                                       /* Length of the the Flash                                  */
+linker_stPrgmCode           = stm_stINTFLASH;                                               /* 0x08000000: PrgmCode, start of the Flash                 */
+linker_lnPrgmCode           = stm_lnINTFLASH;                                               /* Length of the the Flash                                  */
 
-linker_stPrgmData           = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0; /* 0x38001800: start of program data                        */
+linker_stPrgmData           = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;         /* 0x38001800: start of program data                        */
 linker_lnPrgmData           = stm_lnSRAM4 - linker_sizeStackSystem_C0
-                                - linker_sizeStackFirst_C0;                         /* Length of program data                                   */
+                                - linker_sizeStackFirst_C0;                                 /* (58K) Length of program data                                 */
 
 /* IMPORTANT:                                               */
 /* equates necessary for the arm_v7 MPU regions             */
 /* for the arm_v7 MPU the regions have to be 32-B aligned   */
 
-linker_ST_FLASH_INT_0       = stm_stINTFLASH;                                       /* 0x08000000: Privileged/User FLASH                        */
-linker_SZ_FLASH_INT_0       = 20;                                                   /* 2-M = 2^(SZ + 1), SZ = log2(2-M) - 1                     */
+linker_ST_FLASH_INT_0       = stm_stINTFLASH;                                               /* 0x08000000: Privileged/User FLASH                        */
+linker_SZ_FLASH_INT_0       = 20;                                                           /* 2-M = 2^(SZ + 1), SZ = log2(2-M) - 1                     */
 
-linker_ST_RAM_INT_0         = stm_stAXISRAM;                                        /* 0x24000000: Privileged/User RAM                          */
-linker_SZ_RAM_INT_0         = 18;                                                   /* 512-K = 2^(SZ + 1), SZ = log2(512-K) - 1                 */
+linker_ST_RAM_INT_0         = stm_stAXISRAM;                                                /* 0x24000000: Privileged/User RAM                          */
+linker_SZ_RAM_INT_0         = 18;                                                           /* 512-K = 2^(SZ + 1), SZ = log2(512-K) - 1                 */
 
-linker_ST_RAM_INT_1         = stm_stSRAM1;                                          /* 0x30000000: Privileged/User RAM                          */
-linker_SZ_RAM_INT_1         = 18;                                                   /* 512-K = 2^(SZ + 1), SZ = log2(512-K) - 1                 */
+linker_ST_RAM_INT_1         = stm_stSRAM1;                                                  /* 0x30000000: Privileged/User RAM                          */
+linker_SZ_RAM_INT_1         = 18;                                                           /* 512-K = 2^(SZ + 1), SZ = log2(512-K) - 1                 */
 
-linker_ST_RAM_INT_2         = stm_stSRAM4;                                          /* 0x38000000: Privileged/User RAM                          */
-linker_SZ_RAM_INT_2         = 15;                                                   /* 64-K = 2^(SZ + 1), SZ = log2(64-K) - 1                   */
+linker_ST_RAM_INT_2         = stm_stSRAM4;                                                  /* 0x38000000: Privileged/User RAM                          */
+linker_SZ_RAM_INT_2         = 15;                                                           /* 64-K = 2^(SZ + 1), SZ = log2(64-K) - 1                   */
 
 MEMORY {
     prgm_code (rx)  : ORIGIN = linker_stPrgmCode, LENGTH = linker_lnPrgmCode

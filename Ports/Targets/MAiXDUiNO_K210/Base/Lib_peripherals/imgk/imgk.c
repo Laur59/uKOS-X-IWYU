@@ -29,8 +29,8 @@
 
 static              uint16_t    *vImageE0 = nullptr;
 static              uint16_t    *vImageE1 = nullptr;
-static              sema_t      *vSeHandleAQ;
-static              sema_t      *vSeHandleIM;
+static              sema_t      *vSemaphore_AQ;
+static              sema_t      *vSemaphore_IM;
 static              mutx_t      *vMutex;
 static  volatile    uint8_t     vPage = 1U;
 
@@ -280,9 +280,9 @@ static  void    local_DVP_IRQHandler(uint32_t core, uint64_t parameter);
  *
  */
 int32_t imgk_reserve(reserveMode_t reserveMode, uint32_t timeout) {
-    int32_t     status;
-
     UNUSED(reserveMode);
+
+    int32_t     status;
 
     status = local_init();
     if (status != KERR_IMGK_NOERR) { return status; }
@@ -312,9 +312,9 @@ int32_t imgk_reserve(reserveMode_t reserveMode, uint32_t timeout) {
  *
  */
 int32_t imgk_release(reserveMode_t reserveMode) {
-    int32_t     status;
-
     UNUSED(reserveMode);
+
+    int32_t     status;
 
     status = local_init();
     if (status != KERR_IMGK_NOERR) { return status; }
@@ -386,10 +386,10 @@ int32_t imgk_release(reserveMode_t reserveMode) {
  *
  */
 int32_t imgk_configure(const cnfImgk_t *configure) {
+    UNUSED(configure);
+
     uint32_t    current;
     int32_t     status = KERR_IMGK_NOERR;
-
-    UNUSED(configure);
 
     status = local_init();
     if (status != KERR_IMGK_NOERR) { return status; }
@@ -564,10 +564,10 @@ static  int32_t local_init(void) {
  *
  */
 static  void    local_initCKRate(const cnfImgk_t *configure) {
+    UNUSED(configure);
+
     uint32_t    period;
     uint32_t    current;
-
-    UNUSED(configure);
 
 // Clock devided by 16, and clock enable
 
@@ -618,9 +618,9 @@ static  void    local_initCKRate(const cnfImgk_t *configure) {
  *
  */
 static  void    local_initImages(const cnfImgk_t *configure) {
-    uint32_t    current;
-
     UNUSED(configure);
+
+    uint32_t    current;
 
 // Set the format
 
@@ -659,9 +659,9 @@ static  void    local_sendData(uint8_t address, uint16_t location, uint8_t data)
 }
 
 static  void    local_initOV2640(const cnfImgk_t *configure) {
-    uint16_t    i;
-
     UNUSED(configure);
+
+    uint16_t    i;
 
     for (i = 0U; i < (uint16_t)KNBCNF; i++) {
         local_sendData(KOV2640A, aOV2640_Cnf[i].oRegNumber, aOV2640_Cnf[i].oValue);

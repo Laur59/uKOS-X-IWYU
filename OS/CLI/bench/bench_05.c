@@ -28,7 +28,7 @@
 // CLI tool specific
 // =================
 
-#define KNB_TESTS   1000000u
+#define KNB_TESTS   1000000U
 
 /*
  * \brief bench_05

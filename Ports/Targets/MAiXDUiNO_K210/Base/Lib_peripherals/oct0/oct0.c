@@ -8,7 +8,6 @@
 
 #include    "oct0.h"
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "Registers/K210_spi.h"

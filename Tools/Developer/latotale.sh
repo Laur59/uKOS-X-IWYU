@@ -30,7 +30,7 @@ do_picolibc=1
 do_U=1
 do_Y=1
 
-OPTSTRING=":LGNPUYh"
+OPTSTRING=":CGLMNPUYh"
 while getopts ${OPTSTRING} option; do
     case ${option} in
         h)
@@ -102,41 +102,41 @@ print "\nVersion of clang for RISC-V"
 print
 #
 if [[ $do_newlib ]]; then
-    [[ $do_gcc ]] && ./_build.sh -G
-    [[ $do_clang ]] && ./_build.sh
+    [[ $do_gcc ]] && ./_build_cmake.sh
+    [[ $do_clang ]] && ./_build_cmake.sh -L
 
     if [[ $do_Y ]]; then
-        [[ $do_gcc ]] && ./_build.sh -GY
-        [[ $do_clang ]] && ./_build.sh -Y
+        [[ $do_gcc ]] && ./_build_cmake.sh -Y
+        [[ $do_clang ]] && ./_build_cmake.sh -LY
     fi
 
     if [[ $do_U ]]; then
-        [[ $do_gcc ]] && ./_build.sh -GU
-        [[ $do_clang ]] && ./_build.sh -U
+        [[ $do_gcc ]] && ./_build_cmake.sh -U
+        [[ $do_clang ]] && ./_build_cmake.sh -LU
 
         if [[ $do_Y ]]; then
-            [[ $do_gcc ]] && ./_build.sh -GUY
-            [[ $do_clang ]] && ./_build.sh -UY
+            [[ $do_gcc ]] && ./_build_cmake.sh -UY
+            [[ $do_clang ]] && ./_build_cmake.sh -LUY
         fi
     fi
 fi
 #
 if [[ $do_picolibc ]]; then
-    [[ $do_gcc ]] && ./_build.sh -P
-    [[ $do_clang ]] && ./_build.sh -PL
+    [[ $do_gcc ]] && ./_build_cmake.sh -P
+    [[ $do_clang ]] && ./_build_cmake.sh -PL
 
     if [[ $do_Y ]]; then
-        [[ $do_gcc ]] && ./_build.sh -PY
-        [[ $do_clang ]] && ./_build.sh -PLY
+        [[ $do_gcc ]] && ./_build_cmake.sh -PY
+        [[ $do_clang ]] && ./_build_cmake.sh -PLY
     fi
 
     if [[ $do_U ]]; then
-        [[ $do_gcc ]] && ./_build.sh -PU
-        [[ $do_clang ]] && ./_build.sh -PLU
+        [[ $do_gcc ]] && ./_build_cmake.sh -PU
+        [[ $do_clang ]] && ./_build_cmake.sh -PLU
 
         if [[ $do_Y ]]; then
-            [[ $do_gcc ]] && ./_build.sh -PUY
-            [[ $do_clang ]] && ./_build.sh -PLUY
+            [[ $do_gcc ]] && ./_build_cmake.sh -PUY
+            [[ $do_clang ]] && ./_build_cmake.sh -PLUY
         fi
     fi
 fi

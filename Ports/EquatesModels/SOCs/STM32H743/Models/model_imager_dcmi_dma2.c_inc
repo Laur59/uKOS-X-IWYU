@@ -22,7 +22,7 @@
 #include    "macros_soc.h"
 #include    "memo/memo.h"
 #include    "soc_reg.h"
-#include    "model_cache.c_inc"
+#include    "model_I_D_cache.c_inc"
 
 static              void        (*vHSyncCodeRoutine)(void) = nullptr;
 static              void        (*vFrameCodeRoutine)(void) = nullptr;

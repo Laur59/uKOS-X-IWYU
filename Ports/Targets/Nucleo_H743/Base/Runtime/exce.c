@@ -6,7 +6,6 @@
  * Nucleo_H743 – Spurious exception and interrupt handler.
  */
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "board.h"

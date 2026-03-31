@@ -46,7 +46,7 @@ STRG_LOC_CONST(aStrHelp[])        = "temperature process\n"
 
 // This process has to run on the following cores:
 
-#define KEXECUTION_CORE     (1u<<BCORE_0)
+#define KEXECUTION_CORE     (1U<<BCORE_0)
 
 static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 static  int32_t     temperature_clean(uint32_t argc, const char_t *argv[]);

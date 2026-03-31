@@ -173,7 +173,7 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
 
     local_prepareImage(image_0, w, h, 0U);
 
-    while (*killRequest == false) {
+    while (!*killRequest) {
 
 // Send it over usb
 // Prepare the next image

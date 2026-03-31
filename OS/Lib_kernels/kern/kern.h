@@ -163,7 +163,6 @@
 
 #include    <stdint.h>
 
-#include    "serial/serial.h"
 #include    "types.h"       // IWYU pragma: keep
 
 // Include Strategy (Hybrid Approach)

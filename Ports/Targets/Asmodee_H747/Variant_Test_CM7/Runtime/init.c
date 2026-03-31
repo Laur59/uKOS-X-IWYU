@@ -12,7 +12,6 @@
 
 #include    "init.h"
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "PF1550/PF1550.h"

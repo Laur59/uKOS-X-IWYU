@@ -6,7 +6,6 @@
  * Goal:     stub for the connection of the "sdcard" manager with the spi1 device.
  */
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "board.h"

@@ -6,7 +6,6 @@
  * Goal:     Exceptions for the Nucleo_F207 module.
  */
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "board.h"

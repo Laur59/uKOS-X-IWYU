@@ -29,42 +29,54 @@
 
 SECTIONS {
     .text : {
+        linker_stCODE = ABSOLUTE(.);
         linker_stVECTORS = ABSOLUTE(.);
         KEEP(*(.isr_vector))
         linker_enVECTORS = ABSOLUTE(.);
 
         linker_stTEXT = ABSOLUTE(.);
         linker_stTEXT_KERN_p = ABSOLUTE(.);
-        libkern_p.a(.text .text.* .text*)
+        libkern_p.a:*(.text .text.*)
         linker_enTEXT_KERN_p = ABSOLUTE(.);
         *(.text .text.*)
         linker_enTEXT = ABSOLUTE(.);
     } > prgm_code
 
     .directory : {
+        . = ALIGN(4);
         linker_stDirectory = ABSOLUTE(.);
         KEEP(*(.directory))
         LONG(0x00000000)
         LONG(0x00000000)
+        . = ALIGN(4);
+        linker_enDirectory = ABSOLUTE(.);
     } > prgm_code
 
     .init_array : {
         . = ALIGN(4);
         linker_stInitArray = ABSOLUTE(.);
-        KEEP(*(.init .init.* .init*))
+        KEEP(*(SORT_BY_INIT_PRIORITY(.init_array.*)))
+        KEEP(*(.init_array))
         linker_enInitArray = ABSOLUTE(.);
     } > prgm_code
 
     .fini_array : {
         . = ALIGN(4);
         linker_stFiniArray = ABSOLUTE(.);
-        KEEP(*(.fini .fini.* .fini*))
+        KEEP(*(SORT_BY_INIT_PRIORITY(.fini_array.*)))
+        KEEP(*(.fini_array))
         linker_enFiniArray = ABSOLUTE(.);
     } > prgm_code
 
+    .ARM.extab : {
+        . = ALIGN(4);
+        *(.ARM.extab*)
+    } > prgm_code
+
     .ARM.exidx : {
+        . = ALIGN(4);
         __exidx_start = ABSOLUTE(.);
-        *(.ARM.exidx* .gnu.linkonce.armexidx.*)
+        *(.ARM.exidx*)
         __exidx_end = ABSOLUTE(.);
     } > prgm_code
 
@@ -72,52 +84,49 @@ SECTIONS {
         . = ALIGN(4);
         linker_stRODATA = ABSOLUTE(.);
         linker_stRODATA_KERN_p = ABSOLUTE(.);
-        libkern_p.a(.rodata .rodata.* .rodata*)
+        libkern_p.a:*(.rodata .rodata.*)
         linker_enRODATA_KERN_p = ABSOLUTE(.);
         *(.rodata .rodata.*)
         . = ALIGN(4);
         linker_enRODATA = ABSOLUTE(.);
     } > prgm_code
 
+    .signature : {
+        . = ALIGN(4);
+        linker_stSignature = ABSOLUTE(.);
+        KEEP(*(.signature))
+        . = ALIGN(4);
+        linker_enCODE = ABSOLUTE(.);
+    } > prgm_code
+
     . = ALIGN(4);
     linker_stINDATA = ABSOLUTE(.);
+
     .data : AT (linker_stINDATA) {
+        . = ALIGN(4);
         linker_stDATA = ABSOLUTE(.);
         linker_stDATA_KERN_p = ABSOLUTE(.);
-        libkern_p.a(.data .data.* .data*)
+        libkern_p.a:*(.data .data.*)
         linker_enDATA_KERN_p = ABSOLUTE(.);
         *(.data .data.*)
+        *(.tdata .tdata.*)
         . = ALIGN(4);
         *(vtable)
         . = ALIGN(4);
-        KEEP(*(.eh_frame))
-        . = ALIGN(4);
-        *(.ARM.extab*)
-        . = ALIGN(4);
-        *(.ARM.exidx*)
         linker_enDATA = ABSOLUTE(.);
     } > prgm_data
-
-    .signature (linker_enRODATA + (linker_enDATA - linker_stDATA)) : {
-    . = ALIGN(4);
-        linker_stSignature = ABSOLUTE(.);
-        KEEP(*(.signature))
-    } > prgm_code
 
     .bss (NOLOAD) : {
         . = ALIGN(4);
         linker_stBSS = ABSOLUTE(.);
         KEEP(*(.user))
         linker_stBSS_KERN_p = ABSOLUTE(.);
-        libkern_p.a(.bss .bss.* COMMON)
+        libkern_p.a:*(.bss .bss.*)
         linker_enBSS_KERN_p = ABSOLUTE(.);
         *(.bss .bss.*)
-        . = ALIGN(4);
         *(COMMON)
+        . = ALIGN(4);
         linker_enBSS = ABSOLUTE(.);
-        /* Standard symbol used by C library for heap start */
-        end = ABSOLUTE(.);
-        _end = ABSOLUTE(.);
     } > prgm_data
 
     /* Thread-local storage BSS section - treated as regular BSS for bare-metal */

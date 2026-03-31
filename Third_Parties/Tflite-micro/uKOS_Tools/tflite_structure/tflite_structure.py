@@ -9,7 +9,7 @@
 #			python3 -m pip install --user numpy flatbuffers tflite
 #
 #			Usage:
-#			python3 tflite_structure.py mlp_model.tflite > structure.c
+#			python3 tflite_structure.py mlp_model.tflite -o structure.c
 
 import	argparse
 import	sys
@@ -112,7 +112,7 @@ def main() -> int:
 		print(f"[Error] Impossible to open {args.model}: {e}", file=sys.stderr)
 		return 1
 
-    # Open the output
+	# Open the output
 	if args.out == "-" or args.out.strip() == "":
 		out = sys.stdout
 	else:
@@ -166,7 +166,7 @@ def main() -> int:
 					raise ValueError("Bias absent et W non 2D: impossible de déduire nb_out.")
 				b = np.zeros((W.shape[0],), dtype=np.float32)
 
-			# Activation fused (si disponible)
+			# Activation fused (if disponible)
 			act = "LINEAR"
 
 			if int(op.BuiltinOptionsType()) == int(BuiltinOptions.FullyConnectedOptions):
@@ -176,7 +176,7 @@ def main() -> int:
 				act_enum = enum_to_name(ActivationFunctionType, act_id)
 				act = act_name_from_enum(act_enum)
 
-			# Si activation non fused -> vérifier l'op suivante
+			# If activation non fused -> verify the next l'op
 			if act == "LINEAR" and i + 1 < sg.OperatorsLength():
 				next_op = sg.Operators(i + 1)
 				next_opcode = builtin_ops[int(next_op.OpcodeIndex())]

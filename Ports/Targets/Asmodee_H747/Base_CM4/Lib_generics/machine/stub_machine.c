@@ -8,7 +8,6 @@
 
 #include    "machine/machine.h"
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "Registers/scb.h"

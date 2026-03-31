@@ -332,22 +332,22 @@ static  int32_t local_getHexValue(uint8_t *value) {
                                    13U,  14U, 15U           // 'D' 'E' 'F'
                                 };
 
-    *value = 0u;
+    *value = 0U;
     status = local_getByte(&byte);
     if (status != KERR_H_LOADER_NOT) {
-        return (status);
+        return status;
     }
 
-    if       ((byte >= '0') && (byte <= '9'))                                      { *value  = (uint8_t)(aTabAB[byte - (uint8_t)'0']<<4u);                       }
-    else if (((byte >= 'A') && (byte <= 'F')) || ((byte >= 'a') && (byte <= 'f'))) { *value  = (uint8_t)(aTabAB[(byte & (uint8_t)(~0x20u)) - (uint8_t)'0']<<4u); }
+    if       ((byte >= '0') && (byte <= '9'))                                      { *value  = (uint8_t)(aTabAB[byte - (uint8_t)'0']<<4U);                       }
+    else if (((byte >= 'A') && (byte <= 'F')) || ((byte >= 'a') && (byte <= 'f'))) { *value  = (uint8_t)(aTabAB[(byte & (uint8_t)(~0x20U)) - (uint8_t)'0']<<4U); }
     else { ; }
 
-    status = local_getByte(&byte);  if (status != KERR_H_LOADER_NOT) { return (status); }
+    status = local_getByte(&byte);  if (status != KERR_H_LOADER_NOT) { return status; }
     if       ((byte >= '0') && (byte <= '9'))                                      { *value += (uint8_t)(aTabAB[byte - (uint8_t)'0']);                           }
-    else if (((byte >= 'A') && (byte <= 'F')) || ((byte >= 'a') && (byte <= 'f'))) { *value += (uint8_t)(aTabAB[(byte & (uint8_t)(~0x20u)) - (uint8_t)'0']);     }
+    else if (((byte >= 'A') && (byte <= 'F')) || ((byte >= 'a') && (byte <= 'f'))) { *value += (uint8_t)(aTabAB[(byte & (uint8_t)(~0x20U)) - (uint8_t)'0']);     }
     else { ; }
 
-    return (KERR_H_LOADER_NOT);
+    return KERR_H_LOADER_NOT;
 }
 
 /*

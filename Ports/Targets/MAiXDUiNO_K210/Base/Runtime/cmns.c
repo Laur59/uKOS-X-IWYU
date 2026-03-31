@@ -7,7 +7,6 @@
 
 #include    "cmns.h"
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "Registers/K210_sysctl.h"

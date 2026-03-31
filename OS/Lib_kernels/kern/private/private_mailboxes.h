@@ -29,7 +29,6 @@
  * @{
  */
 
-
 #include    <stdint.h>
 
 #include    "kern/kern.h"

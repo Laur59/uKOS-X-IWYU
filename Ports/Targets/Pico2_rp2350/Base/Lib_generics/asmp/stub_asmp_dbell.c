@@ -41,7 +41,6 @@
 
 #include    "asmp/asmp.h"
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "Registers/RP2350_sio.h"

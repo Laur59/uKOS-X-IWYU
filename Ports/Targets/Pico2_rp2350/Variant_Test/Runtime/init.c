@@ -12,8 +12,6 @@
 
 #include    "init.h"
 
-#include    <stddef.h>
-
 #include    "board.h"
 #include    "clockTree.h"
 #include    "core_reg.h"

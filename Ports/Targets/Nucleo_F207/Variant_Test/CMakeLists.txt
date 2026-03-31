@@ -27,6 +27,9 @@ project(
 set(SOC STM32F207)
 set(CORE CORTEX_M3)
 
+# Apply project settings
+include(proj_config)
+
 # Customisation of firmware copyright text
 add_compile_definitions(
     "uKOS_NAME="
@@ -35,9 +38,6 @@ add_compile_definitions(
 
 # Flash programming script selection
 set(BURN stlink)
-
-# Apply project settings
-include(proj_config)
 
 # Derive PROVIDER and FAMILY from SOC (eliminates redundant information)
 derive_soc_properties(${SOC})
@@ -167,8 +167,8 @@ list(APPEND PROC_U
     ${PATH_UKOS}/OS/Processes/startUp/startUp.c
     ${PATH_UKOS}/OS/Processes/TinyUSB/TinyUSB.c
     ${PATH_BASE}/Processes/alive/stub_alive.c
-    ${PATH_BASE}/Processes/TinyUSB/stub_TinyUSB.c
     ${PATH_VARI}/Processes/startUp/stub_startUp.c
+    ${PATH_BASE}/Processes/TinyUSB/stub_TinyUSB.c
 )
 add_library(proc_u ${PROC_U})
 target_link_libraries(proc_u PUBLIC system_compiler_flags ${TINYUSB})
