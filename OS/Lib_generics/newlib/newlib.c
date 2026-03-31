@@ -514,9 +514,6 @@ void    __attribute__ ((noreturn)) _exit(int number) {
 // Newlib allocator functions
 // --------------------------
 
-// Make happy the linker.
-// sbrk is not used
-
 /*
  * \brief _sbrk_r
  *

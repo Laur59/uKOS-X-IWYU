@@ -31,6 +31,9 @@ project(
 set(SOC GD32VF103)
 set(CORE RV32IMAC)
 
+# Apply project settings
+include(proj_config)
+
 # Customisation of firmware copyright text
 add_compile_definitions(
     "uKOS_NAME="
@@ -39,9 +42,6 @@ add_compile_definitions(
 
 # Flash programming script selection
 set(BURN dfu-util)
-
-# Apply project settings
-include(proj_config)
 
 # Extra compilation options
 add_compile_options(

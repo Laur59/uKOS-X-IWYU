@@ -27,6 +27,9 @@ project(
 set(SOC STM32H747)
 set(CORE CORTEX_M4)
 
+# Apply project settings
+include(proj_config)
+
 # Customisation of firmware copyright text
 add_compile_definitions(
     "uKOS_NAME="
@@ -35,9 +38,6 @@ add_compile_definitions(
 
 # Flash programming script selection
 set(BURN jlinkexe)
-
-# Apply project settings
-include(proj_config)
 
 # Extra compilation options
 add_compile_options(
@@ -111,10 +111,10 @@ add_source_with_define(LIBX_P ${PATH_UKOS}/OS/Lib_serials/urt0/urt0.c CONFIG_MAN
 list(APPEND LIBX_P
     ${PATH_BASE}/Lib_cryptographics/random/stub_random.c
     ${PATH_BASE}/Lib_generics/machine/stub_machine.c
-    ${PATH_BASE}/Lib_serials/urt0/stub_urt0_uart8.c
     ${PATH_COMX}/Lib_generics/asmp/stub_asmp_hsem.c
     ${PATH_VARI}/Lib_peripherals/led/stub_led.c
     ${PATH_VARI}/Lib_peripherals/switch/stub_switch.c
+    ${PATH_VARI}/Lib_serials/urt0/stub_urt0_uart8.c
 )
 add_library(libx_p ${LIBX_P})
 target_link_libraries(libx_p PUBLIC system_compiler_flags)

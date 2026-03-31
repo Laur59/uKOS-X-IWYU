@@ -51,14 +51,11 @@ STRG_LOC_CONST(aStrHelp[])        = "TinyUSB process\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
-// Prototypes
-
-static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
-static  void        local_process(const void *argument);
-
 // This process has to run on the following cores:
 
 #define KEXECUTION_CORE     (1U<<BCORE_0)
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 
 MODULE(
     TinyUSB,                        // Module name (the first letter has to be upper case)
@@ -75,10 +72,18 @@ MODULE(
 // Process specific
 // ================
 
+#define KTINYUSB_MUTEX_API  "Protect_TinyUSB_API"
+
 // ---------------------------I-----------------------------------------I--------------I
 
 STRG_LOC_CONST(aStrIden[]) = "Process_tinyusb";
 STRG_LOC_CONST(aStrText[]) = "Process TinyUSB: USB management.          (c) EFr-2026";
+
+mutx_t  *vTinyUSB_API[KNB_CORES];
+
+// Prototypes
+
+static  void    local_process(const void *argument);
 
 /*
  * \brief Main entry point
@@ -98,7 +103,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
         local_process,                      // Code of the process
         aStrIden,                           // Identifier (nullptr if anonymous)
         KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
-        KKERN_PRIORITY_HIGH_14              // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
+        KKERN_PRIORITY_HIGH_01              // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
     );
 
     if (kern_createProcess(&specification, nullptr, &process) != KERR_KERN_NOERR) { LOG(KFATAL_SYSTEM, "TinyUSB: create proc"); exit(EXIT_OS_PANIC); }
@@ -117,12 +122,17 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
  *
  */
 static void __attribute__ ((noreturn)) local_process(const void *argument) {
+    uint32_t    core;
 
     UNUSED(argument);
 
 // Initialise the device stack on configured roothub port
 
+    core = GET_RUNNING_CORE;
+    if (kern_createMutex(KTINYUSB_MUTEX_API, &vTinyUSB_API[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "cdc0: create mutx"); exit(EXIT_OS_PANIC); }
+
     PRIVILEGE_ELEVATE;
+
     stub_TinyUSB_init();
 
     while (true) {

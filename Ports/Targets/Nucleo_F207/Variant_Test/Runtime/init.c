@@ -12,8 +12,6 @@
 
 #include    "init.h"
 
-#include    <stddef.h>
-
 #include    "core_reg.h"
 #include    "macros.h"
 #include    "macros_core.h"

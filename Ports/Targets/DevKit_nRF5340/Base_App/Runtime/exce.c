@@ -6,7 +6,6 @@
  * Goal:     Exceptions for the DevKit_nRF5340 module.
  */
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "board.h"

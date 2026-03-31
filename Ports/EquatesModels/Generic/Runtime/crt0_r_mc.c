@@ -80,10 +80,10 @@ uint32_t    vCrt0_randomSeed;
 extern  uintptr_t   __stack_chk_guard;
 
 #if (UINTPTR_MAX == 0xFFFFFFFFU)
-#define KSTACK_GARD_VALUE   0xDeadBeefu
+#define KSTACK_GUARD_VALUE  0xDeadBeefU
 
 #else
-#define KSTACK_GARD_VALUE   0xDeadBeeffeeBdaeDU;
+#define KSTACK_GUARD_VALUE  0xDeadBeeffeeBdaeDU
 #endif
 
 // Prototypes
@@ -136,10 +136,7 @@ void    crt0(void) {
 // Initialise the LOW level (!!! No static variables !!!)
 
         init_init();
-
-        #ifdef CONFIG_MAN_SERIAL_S
         cmns_init();
-        #endif
 
 // Initialise the Heap regions
 
@@ -152,7 +149,7 @@ void    crt0(void) {
         vCrt0_randomSeed = seed;
     }
 
-    __stack_chk_guard = KSTACK_GARD_VALUE;
+    __stack_chk_guard = KSTACK_GUARD_VALUE;
 
 // Initialise the interruption and exception vectors
 // Go to the main
@@ -260,21 +257,17 @@ static  void    __attribute__ ((noinline, noreturn)) local_killProcess(void) {
  *
  */
 static  void    __attribute__ ((noinline)) local_panicMallocBroken(void) {
-    #ifdef CONFIG_MAN_SERIAL_S
             uint32_t    core;
     const   char_t      *identifier;
 
     core = GET_RUNNING_CORE;
-    #endif
 
     PRIVILEGE_ELEVATE;
     INTERRUPTION_OFF;
 
-    #ifdef CONFIG_MAN_SERIAL_S
     cmns_send(KSYST, "\nPanic: memo_malloc descriptor broken!\nCurrent process: ");
     identifier = (vKern_runProc[core]->oSpecification.oIdentifier == nullptr) ? "Anonymous" : (vKern_runProc[core]->oSpecification.oIdentifier);
     cmns_send(KSYST, identifier); cmns_send(KSYST, "\n");
-    #endif
 }
 
 /*
@@ -282,20 +275,10 @@ static  void    __attribute__ ((noinline)) local_panicMallocBroken(void) {
  *
  */
 static  void    __attribute__ ((noinline)) local_panicStackUnderflow(void) {
-    #ifdef CONFIG_MAN_SERIAL_S
             uint32_t    core;
             char_t      string[200 + 1];
             uintptr_t   value;
     const   char_t      *identifier;
-
-    core = GET_RUNNING_CORE;
-    #endif
-
-    PRIVILEGE_ELEVATE;
-    INTERRUPTION_OFF;
-
-    #ifdef CONFIG_MAN_SERIAL_S
-    cmns_send(KDEF0, "\nPanic: process stack underflow detected!\n");
 
     identifier = (vKern_runProc[core]->oSpecification.oIdentifier == nullptr) ? "Anonymous" : (vKern_runProc[core]->oSpecification.oIdentifier);
     (void)snprintf(&string[0], 200U, "Current process:    %s\n", identifier);
@@ -307,10 +290,16 @@ static  void    __attribute__ ((noinline)) local_panicStackUnderflow(void) {
     (void)snprintf(&string[0], 200U, "Start of Stack:     0x%016"PRIXPTR"\n", (uintptr_t)vKern_runProc[core]->oSpecification.oStackStart);
     cmns_send(KDEF0, &string[0]);
 
+
+    (void)snprintf(&string[0], 200U, "Process code entry: 0x%016"PRIXPTR"\n", (uintptr_t)vKern_runProc[core]->oSpecification.oCode);
+    cmns_send(KDEF0, &string[0]);
+
+    (void)snprintf(&string[0], 200U, "Start of Stack:     0x%016"PRIXPTR"\n", (uintptr_t)vKern_runProc[core]->oSpecification.oStackStart);
+    cmns_send(KDEF0, &string[0]);
+
     GET_CURRENT_PROCESS_STACK(value);
     (void)snprintf(&string[0], 200U, "Current Stack:      0x%016"PRIXPTR"\n", value);
     cmns_send(KDEF0, &string[0]);
-    #endif
 }
 
 /*
@@ -318,21 +307,17 @@ static  void    __attribute__ ((noinline)) local_panicStackUnderflow(void) {
  *
  */
 static  void    __attribute__ ((noinline)) local_panicNoSystemCall(void) {
-    #ifdef CONFIG_MAN_SERIAL_S
             uint32_t    core;
     const   char_t      *identifier;
 
     core = GET_RUNNING_CORE;
-    #endif
 
     PRIVILEGE_ELEVATE;
     INTERRUPTION_OFF;
 
-    #ifdef CONFIG_MAN_SERIAL_S
     cmns_send(KSYST, "\nPanic: The system call does not exist!\nCurrent process: ");
     identifier = (vKern_runProc[core]->oSpecification.oIdentifier == nullptr) ? "Anonymous" : (vKern_runProc[core]->oSpecification.oIdentifier);
     cmns_send(KSYST, identifier); cmns_send(KSYST, "\n");
-    #endif
 }
 
 /*
@@ -344,9 +329,7 @@ static  void    __attribute__ ((noinline)) local_panicGeneral(void) {
     PRIVILEGE_ELEVATE;
     INTERRUPTION_OFF;
 
-    #ifdef CONFIG_MAN_SERIAL_S
     cmns_send(KSYST, "\nPanic: system stopped!\n");
-    #endif
 }
 
 #include    "model_coreDump_tracing.c_inc"      // IWYU pragma: keep

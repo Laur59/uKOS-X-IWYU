@@ -103,7 +103,7 @@ function(configure_arm_core)
         set(MCPU "cortex-m7")
         set(MFLOAT_ABI "hard")
         set(MFPU "fpv5-sp-d16")
-        set(HAS_CACHE TRUE)
+
     elseif(${CORE} STREQUAL "CORTEX_M33")
         # M33 uses CPU_SPEC variable, handle separately
         if(NOT DEFINED CPU_SPEC)
@@ -112,9 +112,7 @@ function(configure_arm_core)
         else()
             set(LLVM_TARGET "thumbv8m.main-${TARGET_TRIPLE_MIDDLE}-eabi")
         endif()
-        set(HAS_CACHE TRUE)
         target_compile_options(core_compiler_flags INTERFACE ${CPU_SPEC})
-        target_compile_definitions(core_compiler_flags INTERFACE CACHE_S)
         add_link_options(${CPU_SPEC})
         return()
     elseif(${CORE} STREQUAL "CORTEX_M55")
@@ -122,22 +120,12 @@ function(configure_arm_core)
         set(MCPU "cortex-m55")
         set(MFLOAT_ABI "hard")
         set(MFPU "fpv5-sp-d16")
-        set(HAS_CACHE TRUE)
     elseif(${CORE} STREQUAL "CORTEX_A7")
         if(${COMPILER_FAMILY} STREQUAL "llvm")
             message(WARNING "LLVM target not defined for CORTEX_A7")
         endif()
         set(MCPU "cortex-a7")
         set(MARCH "armv7ve")
-        set(HAS_CACHE TRUE)
-        # A7 uses different flags, handle separately
-        target_compile_options(core_compiler_flags INTERFACE -mcpu=${MCPU} -march=${MARCH})
-        target_compile_definitions(core_compiler_flags INTERFACE CACHE_S)
-        add_link_options(-mcpu=${MCPU} -march=${MARCH})
-        return()
-    else()
-        message(FATAL_ERROR "Unsupported ARM core: ${CORE}")
-    endif()
 
     # Apply LLVM target if using LLVM
     if(${COMPILER_FAMILY} STREQUAL "llvm" AND DEFINED LLVM_TARGET)
@@ -160,10 +148,13 @@ function(configure_arm_core)
     target_compile_options(core_compiler_flags INTERFACE ${COMPILE_FLAGS})
     add_link_options(${COMPILE_FLAGS})
 
-    # Add cache definition if core has cache
-    if(HAS_CACHE)
-        target_compile_definitions(core_compiler_flags INTERFACE CACHE_S)
+        list(APPEND COMPILE_FLAGS ${EXTRA_COMPILE_FLAGS})
     endif()
+
+    # Apply compile and link flags
+    target_compile_options(core_compiler_flags INTERFACE ${COMPILE_FLAGS})
+    add_link_options(${COMPILE_FLAGS})
+
 endfunction()
 
 function(configure_riscv_core)

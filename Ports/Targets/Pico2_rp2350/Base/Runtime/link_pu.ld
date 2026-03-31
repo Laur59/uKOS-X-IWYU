@@ -42,12 +42,12 @@ INCLUDE     rp2350.ld
 /*            Stack System      0x20000000                  */
 /*            8K                                            */
 /*            Program Data (P)  0x20002000                  */
-/*            56K                                           */
+/*            88K                                           */
 /*          Unprotected         0x20010000                  */
 /*            Stack First       0x20010000                  */
 /*            4K                                            */
 /*            Program Data (U)  0x20011000                  */
-/*            124K                                          */
+/*            92K                                           */
 /*            Heap              0x20030000                  */
 /*            128K                                          */
 /*            User Memory       0x20050000                  */
@@ -55,12 +55,12 @@ INCLUDE     rp2350.ld
 /*            Share             0x20072000                  */
 /*            64K                                           */
 
-linker_sizeStackSystem_C0   = (4K);                                                                                 /* Length of the System stack                               */
-linker_sizeStackFirst_C0    = (2K);                                                                                 /* Length of the First stack                                */
-linker_sizeStackSystem_C1   = (4K);                                                                                 /* Length of the System stack                               */
-linker_sizeStackFirst_C1    = (2K);                                                                                 /* Length of the First stack                                */
-config_sizeData_p           = (56K);
-config_sizeData_u           = (124K);
+linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
+linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */
+linker_sizeStackSystem_C1   = (4K);                                                         /* Length of the System stack                               */
+linker_sizeStackFirst_C1    = (2K);                                                         /* Length of the First stack                                */
+config_sizeData_p           = (88K);
+config_sizeData_u           = (92K);
 config_sizeHeap             = (128K);
 config_sizeUserMemory       = (136K);
 config_sizeShare            = (64K);
@@ -69,17 +69,18 @@ config_sizeShare            = (64K);
 /* all the stacks have to be maintained aligned             */
 /* on a boundary of 8-bytes                                 */
 
-linker_lowStackSystem_C0    = rp_stSRAM;                                                                            /* 0x20000000: start of the System stack                    */
-linker_topStackSystem_C0    = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 - 8;                             /* 0x20000ff8                                               */
+linker_lowStackSystem_C0    = rp_stSRAM;                                                    /* 0x20000000: start of the System stack                    */
+linker_topStackSystem_C0    = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 - 8;     /* 0x20000ff8                                               */
 
-linker_lowStackSystem_C1    = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;                                 /* 0x20001000: start of the System stack                    */
-linker_topStackSystem_C1    = linker_lowStackSystem_C1 + linker_sizeStackSystem_C1 - 8;                             /* 0x20001ff8                                               */
+linker_lowStackSystem_C1    = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;         /* 0x20001000: start of the System stack                    */
+linker_topStackSystem_C1    = linker_lowStackSystem_C1 + linker_sizeStackSystem_C1 - 8;     /* 0x20001ff8                                               */
 
-linker_lowStackFirst_C0     = linker_lowStackSystem_C1 + linker_sizeStackSystem_C1 + config_sizeData_p;             /* 0x20010000: start of the First stack                     */
-linker_topStackFirst_C0     = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0 - 8;                               /* 0x200107f8                                               */
+linker_lowStackFirst_C0     = linker_lowStackSystem_C1 + linker_sizeStackSystem_C1
+                                + config_sizeData_p;                                        /* 0x20018000: start of the First stack                     */
+linker_topStackFirst_C0     = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0 - 8;       /* 0x200107f8                                               */
 
-linker_lowStackFirst_C1     = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;                                   /* 0x20010800: start of the First stack                     */
-linker_topStackFirst_C1     = linker_lowStackFirst_C1 + linker_sizeStackFirst_C1 - 8;                               /* 0x20010ff8                                               */
+linker_lowStackFirst_C1     = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;           /* 0x20018800: start of the First stack                     */
+linker_topStackFirst_C1     = linker_lowStackFirst_C1 + linker_sizeStackFirst_C1 - 8;       /* 0x20018FF8                                               */
 
 ASSERT((linker_lowStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
 ASSERT((linker_topStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
@@ -93,61 +94,63 @@ ASSERT((linker_topStackFirst_C1 & 7)  == 0, "Stack user must be 8-byte aligned")
 /* IMPORTANT:                                               */
 /* External memory, User (download application) and shared  */
 
-linker_stEXRAM              = 0;                                                                                    /* 0x00000000: EXRAM, start of the external memory          */
-linker_lnEXRAM              = (0);                                                                                  /* Length of the external memory                            */
+linker_stEXRAM              = 0;                                                            /* 0x00000000: EXRAM, start of the external memory          */
+linker_lnEXRAM              = (0);                                                          /* Length of the external memory                            */
 
-linker_stUMemo              = (linker_stHeap + linker_lnHeap);                                                      /* 0x20050000: UMemo, start of the user memory              */
-linker_lnUMemo              = config_sizeUserMemory;                                                                /* 0x00022000: Length of the user memory                    */
+linker_stUMemo              = (linker_stHeap + linker_lnHeap);                              /* 0x20050000: UMemo, start of the user memory              */
+linker_lnUMemo              = config_sizeUserMemory;                                        /* 0x00022000: Length of the user memory                    */
 
-linker_stShare              = (linker_stUMemo + linker_lnUMemo);                                                    /* 0x20072000: Share, start of the multicore shared memory  */
-linker_lnShare              = config_sizeShare;                                                                     /* 0x00010000: Length of the user multicore shared memory   */
+linker_stShare              = (linker_stUMemo + linker_lnUMemo);                            /* 0x20072000: Share, start of the multicore shared memory  */
+linker_lnShare              = config_sizeShare;                                             /* 0x00010000: Length of the user multicore shared memory   */
 
 /* IMPORTANT:                                               */
 /* The heap has to be maintained aligned                    */
 /* on a boundary of 8-bytes                                 */
 
-linker_stHeap               = (linker_stPrgmData_u + linker_lnPrgmData_u);                                          /* 0x20030000: start of the heap                            */
-linker_lnHeap               = config_sizeHeap;                                                                      /* 0x00020000: Length of the heap                           */
+linker_stHeap               = (linker_stPrgmData_u + linker_lnPrgmData_u);                  /* 0x20030000: start of the heap                            */
+linker_lnHeap               = config_sizeHeap;                                              /* 0x00020000: Length of the heap                           */
 
 /* IMPORTANT:                                               */
 /* uKOS OS Flash + memory                                   */
 
-linker_stPrgmCode           = rp_stINTFLASH;                                                                        /* 0x10000000: PrgmCode, start of the Flash                 */
-linker_lnPrgmCode           = rp_lnINTFLASH;                                                                        /* 0x00400000: Length of the the Flash                      */
+linker_stPrgmCode           = rp_stINTFLASH;                                                /* 0x10000000: PrgmCode, start of the Flash                 */
+linker_lnPrgmCode           = rp_lnINTFLASH;                                                /* 0x00400000: Length of the the Flash                      */
 
-linker_stPrgmData_p         = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 + linker_sizeStackSystem_C1;     /* 0x20002000: start of protected program data              */
-linker_lnPrgmData_p         = config_sizeData_p;                                                                    /* 0x0000E000: (56K) Length of protected program data       */
+linker_stPrgmData_p         = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0
+                                + linker_sizeStackSystem_C1;                                /* 0x20002000: start of protected program data              */
+linker_lnPrgmData_p         = config_sizeData_p;                                            /* 0x00016000: (88K) Length of protected program data       */
 
-linker_stPrgmData_u         = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0 + linker_sizeStackFirst_C1;        /* 0x20011000: start of unprotected program data            */
-linker_lnPrgmData_u         = config_sizeData_u;                                                                    /* 0x0001F000: (124K) Length of unprotected program data    */
+linker_stPrgmData_u         = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0
+                                + linker_sizeStackFirst_C1;                                 /* 0x20019000: start of unprotected program data            */
+linker_lnPrgmData_u         = config_sizeData_u;                                            /* 0x00017000: (92k) Length of unprotected program data */
 
 /* IMPORTANT:                                               */
 /* equates necessary for the arm_v8 MPU regions             */
 /* for the arm_v8 MPU the regions have to be 32-B aligned   */
 
-linker_ST_FLASH_INT_0       = rp_stINTFLASH;                                                                        /* 0x10000000: Privileged/User FLASH                        */
-linker_EN_FLASH_INT_0       = (rp_stINTFLASH + rp_lnINTFLASH - 1);                                                  /* 0x103FFFFF: 4-M                                          */
+linker_ST_FLASH_INT_0       = rp_stINTFLASH;                                                /* 0x10000000: Privileged/User FLASH                        */
+linker_EN_FLASH_INT_0       = (rp_stINTFLASH + rp_lnINTFLASH - 1);                          /* 0x103FFFFF: 4-M                                          */
 
-linker_ST_RAM_INT_0_OS      = rp_stSRAM;                                                                            /* 0x20000000: Privileged RAM                               */
+linker_ST_RAM_INT_0_OS      = rp_stSRAM;                                                    /* 0x20000000: Privileged RAM                               */
 linker_EN_RAM_INT_0_OS      = (rp_stSRAM + config_sizeData_p + linker_sizeStackSystem_C0
-                                + linker_sizeStackSystem_C1 - 1);                                                   /* 0x2000FFFF: 64-K                                         */
+                                + linker_sizeStackSystem_C1 - 1);                           /* 0x2000FFFF: 64-K                                         */
 
-linker_ST_RAM_INT_0         = (linker_lowStackFirst_C0);                                                            /* 0x20010000: Privileged/User RAM                          */
+linker_ST_RAM_INT_0         = (linker_lowStackFirst_C0);                                    /* 0x20010000: Privileged/User RAM                          */
 local_sizeRAM_INT_0         = config_sizeData_u + linker_sizeStackFirst_C0 + linker_sizeStackFirst_C1
                                 + config_sizeHeap + config_sizeUserMemory;
-linker_EN_RAM_INT_0         = (linker_lowStackFirst_C0 + local_sizeRAM_INT_0 - 1);                                  /* 0x20071FFF: 392-K                                        */
+linker_EN_RAM_INT_0         = (linker_lowStackFirst_C0 + local_sizeRAM_INT_0 - 1);          /* 0x20071FFF: 392-K                                        */
 
-linker_ST_RAM_INT_0_SHARED  = linker_stShare;                                                                       /* 0x20072000: Privileged/User RAM                          */
-linker_EN_RAM_INT_0_SHARED  = (linker_stShare + config_sizeShare - 1);                                              /* 0x20081FFF: 64-K                                         */
+linker_ST_RAM_INT_0_SHARED  = linker_stShare;                                               /* 0x20072000: Privileged/User RAM                          */
+linker_EN_RAM_INT_0_SHARED  = (linker_stShare + config_sizeShare - 1);                      /* 0x20081FFF: 64-K                                         */
 
-linker_ST_PERIPH_SOC        = rp_stPERIPH_NS;                                                                       /* 0x40000000: Privileged PERIPHERALS                       */
-linker_EN_PERIPH_SOC        = (rp_stPERIPH_NS + 524288K - 1);                                                       /* 0x5FFFFFFF: 2 x 256-M (_S & _NS)                         */
+linker_ST_PERIPH_SOC        = rp_stPERIPH_NS;                                               /* 0x40000000: Privileged PERIPHERALS                       */
+linker_EN_PERIPH_SOC        = (rp_stPERIPH_NS + 524288K - 1);                               /* 0x5FFFFFFF: 2 x 256-M (_S & _NS)                         */
 
-linker_ST_EXTERNAL          = rp_stEXTERNAL;                                                                        /* 0x60000000: EXTERNAL                                     */
-linker_EN_EXTERNAL          = (rp_stEXTERNAL + 2097152K - 1);                                                       /* 0xDFFFFFFF: 1 x 2048-M (_S & _NS)                        */
+linker_ST_EXTERNAL          = rp_stEXTERNAL;                                                /* 0x60000000: EXTERNAL                                     */
+linker_EN_EXTERNAL          = (rp_stEXTERNAL + 2097152K - 1);                               /* 0xDFFFFFFF: 1 x 2048-M (_S & _NS)                        */
 
-linker_ST_PERIPH_CORE       = rp_stCORE;                                                                            /* 0xE0000000: Privileged core PERIPHERALS                  */
-linker_EN_PERIPH_CORE       = (rp_stCORE + 262144K - 1);                                                            /* 0xEFFFFFFF: 256-M                                        */
+linker_ST_PERIPH_CORE       = rp_stCORE;                                                    /* 0xE0000000: Privileged core PERIPHERALS                  */
+linker_EN_PERIPH_CORE       = (rp_stCORE + 262144K - 1);                                    /* 0xEFFFFFFF: 256-M                                        */
 
 MEMORY {
     prgm_code (rx)      : ORIGIN = linker_stPrgmCode,   LENGTH = linker_lnPrgmCode

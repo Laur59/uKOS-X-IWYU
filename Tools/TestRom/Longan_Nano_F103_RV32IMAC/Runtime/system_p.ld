@@ -5,33 +5,33 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi			The 2025-01-01
-; Modifs:	Laurent von Allmen	The 2025-01-01	libkern_p.a*(...) to libkern_p.a(...)
+; Author:   Edo. Franzi         The 2025-01-01
+; Modifs:   Laurent von Allmen  The 2025-01-01  libkern_p.a*(...) to libkern_p.a(...)
 ;
-; Project:	uKOS-X
-; Goal:		Commun Linker description for uKOS-X systems.
-;			Privileged only support
+; Project:  uKOS-X
+; Goal:     Common Linker description for uKOS-X systems.
+;           Privileged only support
 ;
 ;                       CODE
-; linker_stTEXT			+-----------------+
-;						|                 |
-;						| .restart        |
-;						| .vectors        |
-;						| .text           |
-;						| .rodata         |
-; linker_enRODATA		|                 |
-;						+-----------------+
-; linker_stSignature	|				  |             DATA
-;						+-----------------+ ........... +-----------------+ linker_stDATA
-; linker_stINDATA		|                 |				|                 |
-;						| .data           |				| .data           |
-;						|                 |				|                 | linker_enDATA
-;						+-----------------+ ........... +-----------------+
-;														|                 | linker_stBSS
-; 														| .bss            |
-;														| COMMON          |
-;														|                 | linker_enBSS
-;														+-----------------+
+; linker_stTEXT         +-----------------+
+;                       |                 |
+;                       | .restart        |
+;                       | .vectors        |
+;                       | .text           |
+;                       | .rodata         |
+; linker_enRODATA       |                 |
+;                       +-----------------+
+; linker_stSignature    |                 |             DATA
+;                       +-----------------+ ........... +-----------------+ linker_stDATA
+; linker_stINDATA       |                 |             |                 |
+;                       | .data           |             | .data           |
+;                       |                 |             |                 | linker_enDATA
+;                       +-----------------+ ........... +-----------------+
+;                                                       |                 | linker_stBSS
+;                                                       | .bss            |
+;                                                       | COMMON          |
+;                                                       |                 | linker_enBSS
+;                                                       +-----------------+
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -69,72 +69,72 @@
 */
 
 SECTIONS {
-	.text : {
-		KEEP(*(.restart))
-		linker_stVECTORS = ABSOLUTE(.);
-		KEEP(*(.vectors))
-		linker_enVECTORS = ABSOLUTE(.);
+    .text : {
+        KEEP(*(.restart))
+        linker_stVECTORS = ABSOLUTE(.);
+        KEEP(*(.vectors))
+        linker_enVECTORS = ABSOLUTE(.);
 
-		linker_stTEXT = ABSOLUTE(.);
-		*(.text .text.*)
-		linker_enTEXT = ABSOLUTE(.);
-	} > prgm_code
+        linker_stTEXT = ABSOLUTE(.);
+        *(.text .text.*)
+        linker_enTEXT = ABSOLUTE(.);
+    } > prgm_code
 
-	.init_array : {
-		. = ALIGN(8);
-		linker_stInitArray = ABSOLUTE(.);
-		KEEP(*(.init .init.* .init*))
-		linker_enInitArray = ABSOLUTE(.);
-	} > prgm_code
+    .init_array : {
+        . = ALIGN(8);
+        linker_stInitArray = ABSOLUTE(.);
+        KEEP(*(.init .init.* .init*))
+        linker_enInitArray = ABSOLUTE(.);
+    } > prgm_code
 
-	.fini_array : {
-		. = ALIGN(8);
-		linker_stFiniArray = ABSOLUTE(.);
-		KEEP(*(.fini .fini.* .fini*))
-		linker_enFiniArray = ABSOLUTE(.);
-	} > prgm_code
+    .fini_array : {
+        . = ALIGN(8);
+        linker_stFiniArray = ABSOLUTE(.);
+        KEEP(*(.fini .fini.* .fini*))
+        linker_enFiniArray = ABSOLUTE(.);
+    } > prgm_code
 
-	.rodata : {
-		. = ALIGN(8);
-		linker_stRODATA = ABSOLUTE(.);
-		*(.rodata .rodata.*)
-		*(.srodata .srodata.*)
-		. = ALIGN(8);
-		linker_enRODATA = ABSOLUTE(.);
-	} > prgm_code
+    .rodata : {
+        . = ALIGN(8);
+        linker_stRODATA = ABSOLUTE(.);
+        *(.rodata .rodata.*)
+        *(.srodata .srodata.*)
+        . = ALIGN(8);
+        linker_enRODATA = ABSOLUTE(.);
+    } > prgm_code
 
-	. = ALIGN(8);
-	linker_stINDATA = ABSOLUTE(.);
-	.data : AT (linker_stINDATA) {
-		linker_stDATA = ABSOLUTE(.);
-		*(.rdata)
-		*(.sdata .sdata.*)
-		*(.data .data.*)
-		. = ALIGN(8);
-		KEEP(*(.eh_frame))
-		linker_enDATA = ABSOLUTE(.);
-	} > prgm_data
+    . = ALIGN(8);
+    linker_stINDATA = ABSOLUTE(.);
+    .data : AT (linker_stINDATA) {
+        linker_stDATA = ABSOLUTE(.);
+        *(.rdata)
+        *(.sdata .sdata.*)
+        *(.data .data.*)
+        . = ALIGN(8);
+        KEEP(*(.eh_frame))
+        linker_enDATA = ABSOLUTE(.);
+    } > prgm_data
 
-	.signature (linker_enRODATA + (linker_enDATA - linker_stDATA)) : {
-		. = ALIGN(8);
-		linker_stSignature = ABSOLUTE(.);
-		KEEP(*(.signature))
-	} > prgm_code
+    .signature (linker_enRODATA + (linker_enDATA - linker_stDATA)) : {
+        . = ALIGN(8);
+        linker_stSignature = ABSOLUTE(.);
+        KEEP(*(.signature))
+    } > prgm_code
 
-	.bss (NOLOAD) : {
-		. = ALIGN(8);
-		linker_stBSS = ABSOLUTE(.);
-		*(.sbss*)
-		*(.bss .bss.*)
-		*(COMMON)
-		linker_enBSS = ABSOLUTE(.);
-	} > prgm_data
+    .bss (NOLOAD) : {
+        . = ALIGN(8);
+        linker_stBSS = ABSOLUTE(.);
+        *(.sbss*)
+        *(.bss .bss.*)
+        *(COMMON)
+        linker_enBSS = ABSOLUTE(.);
+    } > prgm_data
 
-	.stacks (NOLOAD) : {
-		. = ALIGN(16);
-		linker_lowStackFirst_C0 = ABSOLUTE(.);
-		. += linker_sizeStackFirst_C0;
-		. = ALIGN(16);
-		linker_topStackFirst_C0 = ABSOLUTE(.) - 16;
-	} > prgm_data
+    .stacks (NOLOAD) : {
+        . = ALIGN(16);
+        linker_lowStackFirst_C0 = ABSOLUTE(.);
+        . += linker_sizeStackFirst_C0;
+        . = ALIGN(16);
+        linker_topStackFirst_C0 = ABSOLUTE(.) - 16;
+    } > prgm_data
 }

@@ -349,6 +349,12 @@ extern  void    __attribute__ ((noreturn)) model_coreDump_displayInterruptions(u
                                 )
 #endif
 
+#ifndef STRONG_BARRIER
+#define STRONG_BARRIER          MEMO_SYNC_BARRIER;                                                                              \
+                                DATA_SYNC_BARRIER;                                                                              \
+                                INST_SYNC_BARRIER
+#endif
+
 #ifndef JUMP_FNCT
 #define JUMP_FNCT(function)                                                                                                     \
                                 __asm volatile ("                                                                            \n \

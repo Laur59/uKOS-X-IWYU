@@ -5,9 +5,9 @@
  * Goal:     storage manager.
  */
 
+
 #include    "storage.h"
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "macros.h"

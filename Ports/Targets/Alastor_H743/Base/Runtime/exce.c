@@ -6,7 +6,6 @@
  * Goal:     Exceptions for the Alastor_H743 module.
  */
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "board.h"

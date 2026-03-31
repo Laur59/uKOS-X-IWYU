@@ -22,8 +22,6 @@
 
 #if (KKERN_NB_SOFTWARE_TIMERS > 0)
 
-proc_t  *vStimer_handle[KNB_CORES];
-
 // uKOS-X specific (see the module.h)
 // ==================================
 
@@ -37,14 +35,11 @@ STRG_LOC_CONST(aStrHelp[])        = "stim deamon\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
-// Prototypes
-
-static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
-static  void        local_process(const void *argument);
-
 // This process has to run on the following cores:
 
 #define KEXECUTION_CORE     ((1U<<BCORE_0) | (1U<<BCORE_1) | (1U<<BCORE_2) | (1U<<BCORE_3))
+
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 
 MODULE(
     Stimer,                                 // Module name (the first letter has to be upper case)
@@ -65,6 +60,12 @@ MODULE(
 
 STRG_LOC_CONST(aStrIden[]) = "Deamon_stimer";
 STRG_LOC_CONST(aStrText[]) = "Daemon stimer: software timer management. (c) EFr-2026";
+
+proc_t  *vStimer_handle[KNB_CORES];
+
+// Prototypes
+
+static  void    local_process(const void *argument);
 
 /*
  * \brief Main entry point

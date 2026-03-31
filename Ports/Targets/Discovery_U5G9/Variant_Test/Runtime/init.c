@@ -12,7 +12,6 @@
 
 #include    "init.h"
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "core.h"
@@ -51,8 +50,6 @@ MODULE(
 // Runtime specific
 // ================
 
-#define CACHE_I_S                   // With the instruction cache
-
 // Prototypes
 
 static          void    local_StackLimit_Configuration(void);
@@ -63,6 +60,9 @@ static          void    local_MPU_Configuration(void);
 static          void    local_FPE_Configuration(void);
 static          void    local_USB_Configuration(void);
 static          void    local_CACHE_Enable(void);
+static  inline  void    cache_D_Enable(uint8_t unit);
+static  inline  void    cache_D_Disable(uint8_t unit);
+static  inline  void    cache_D_Invalidate(uint8_t unit);
 static  inline  void    cache_I_Enable(void);
 static  inline  void    cache_I_Disable(void);
 static  inline  void    cache_I_Invalidate(void);
@@ -654,15 +654,16 @@ static  void    local_MPU_Configuration(void) {
 /*
  * \brief local_CACHE_Enable
  *
- * - Enable the instruction cache
+ * - Enable the L1 instruction & the data caches
  *
  */
 static  void    local_CACHE_Enable(void) {
 
-    #ifdef CACHE_I_S
     cache_I_Invalidate();
     cache_I_Enable();
-    #endif
+
+    cache_D_Invalidate(0);
+    cache_D_Enable(0);
 }
 
-#include    "model_cache.c_inc"     // IWYU pragma: keep
+#include    "model_I_D_cache.c_inc"     // IWYU pragma: keep

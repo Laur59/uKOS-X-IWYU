@@ -6,8 +6,6 @@
  * Goal:     Exceptions for the Pico2_rp2350 module.
  */
 
-#include    <stddef.h>
-
 #include    "board.h"
 #include    "cmns.h"
 #include    "core.h"

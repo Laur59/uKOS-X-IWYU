@@ -475,10 +475,10 @@ extern uint32_t     vKern_nbIntImbrications;
 extern uintptr_t    __stack_chk_guard;
 
 #if (UINTPTR_MAX == 0xFFFFFFFFu)
-#define KSTACK_GARD_VALUE    0xDeadBeefu
+#define KSTACK_GUARD_VALUE    0xDeadBeefu
 
 #else
-#define KSTACK_GARD_VALUE    0xDeadBeeffeeBdaeDu;
+#define KSTACK_GUARD_VALUE    0xDeadBeeffeeBdaeDu
 #endif
 
 /*
@@ -533,7 +533,7 @@ int32_t aStart(uint32_t argc, const char_t *argv[]) {
     ptrStInitArray++;
     }
 
-    __stack_chk_guard = KSTACK_GARD_VALUE;
+    __stack_chk_guard = KSTACK_GUARD_VALUE;
     PRIVILEGE_RESTORE;
 
     RESERVE(SYSTEM, KMODE_READ_WRITE);
@@ -775,30 +775,26 @@ SECTIONS {
         KEEP(*(.header))
         *(.text .text.*)
         linker_enTEXT = ABSOLUTE(.);
-
-        _stCTOR = ABSOLUTE(.);
-        KEEP(*(SORT(.init_array.*)))
-        KEEP(*(.init_array))
-        linker_enCTOR = ABSOLUTE(.);
-
-        _stDTOR = ABSOLUTE(.);
-        KEEP(*(SORT(.fini_array.*)))
-        KEEP(*(.fini_array))
-        linker_enDTOR = ABSOLUTE(.);
     } > prgm_code
 
     .init_array : {
         . = ALIGN(4);
         linker_stInitArray = ABSOLUTE(.);
-        KEEP(*(.init .init.* .init*))
+        KEEP(*(SORT_BY_INIT_PRIORITY(.init_array.*)))
+        KEEP(*(.init_array))
         linker_enInitArray = ABSOLUTE(.);
     } > prgm_code
 
     .fini_array : {
         . = ALIGN(4);
         linker_stFiniArray = ABSOLUTE(.);
-        KEEP(*(.fini .fini.* .fini*))
+        KEEP(*(SORT_BY_INIT_PRIORITY(.fini_array.*)))
+        KEEP(*(.fini_array))
         linker_enFiniArray = ABSOLUTE(.);
+    } > prgm_code
+
+    .ARM.extab : {
+        *(.ARM.extab* .gnu.linkonce.armextab.*)
     } > prgm_code
 
     .ARM.exidx : {
@@ -806,29 +802,26 @@ SECTIONS {
     } > prgm_code
 
     .rodata : {
+        . = ALIGN(4);
         linker_stRODATA = ABSOLUTE(.);
         *(.rodata .rodata.*)
         *(.srodata .srodata.*)
-        . = ALIGN(8);
+        . = ALIGN(4);
         linker_enRODATA = ABSOLUTE(.);
     } > prgm_code
 
     .data : {
+        . = ALIGN(4);
         linker_stDATA = ABSOLUTE(.);
         *(.data .data.*)
         . = ALIGN(4);
-        *(vtable)
-        . = ALIGN(4);
-        KEEP (*(.eh_frame))
-        . = ALIGN(4);
-        *(.ARM.extab*)
-        . = ALIGN(4);
-        *(.ARM.exidx*)
         linker_enDATA = ABSOLUTE(.);
     } > prgm_code
 
     .bss (NOLOAD) : {
+        . = ALIGN(4);
         linker_stBSS = ABSOLUTE(.);
+        KEEP(*(.user))
         *(.bss .bss.*)
         . = ALIGN(4);
         *(COMMON)
@@ -838,10 +831,8 @@ SECTIONS {
 
     /DISCARD/ : {
         *(.note .note.*)
-        *(.eh_frame .eh_frame.*)
-        *(.ARM.extab* .gnu.linkonce.armextab.*)
-        *(.ARM.exidx*)
     }
+
 }
 ```
 

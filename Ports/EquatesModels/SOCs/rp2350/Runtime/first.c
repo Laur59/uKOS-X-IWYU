@@ -6,8 +6,6 @@
  * Goal:     Vectors for the uKOS-X system (first).
  */
 
-#include    <stddef.h>
-
 #include    "crt0.h"
 #include    "kern/private/private_temporal.h"   // IWYU pragma: keep (for vKern_TimeException)
 #include    "linker.h"

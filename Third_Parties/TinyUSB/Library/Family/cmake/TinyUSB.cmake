@@ -63,6 +63,7 @@ function(add_tinyusb_libraries)
         ${PATH_UKOS}/OS/Lib_kernels
         ${PATH_UKOS}/OS/Lib_kernels/kern
         ${PATH_UKOS}/OS/Lib_kernels/kern/private
+        ${PATH_UKOS}/OS/Lib_serials
         ${PATH_TINYUSB}/uKOS_Interface/OSAL
         ${PATH_TINYUSB}/TinyUSB-current/hw
         ${PATH_TINYUSB}/TinyUSB-current/src
@@ -77,6 +78,7 @@ function(add_tinyusb_libraries)
             ${PATH_TINYUSB}/TinyUSB-current/lib/CMSIS_5/CMSIS/Core/Include
             ${PATH_UKOS}/Ports/EquatesModels/Generic/Runtime
             ${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC}/Includes
+            ${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC}/Models
             ${PATH_UKOS}/Ports/EquatesModels/Cores/${CORE}/Includes
             ${PATH_TINYUSB}/uKOS_Interface/Includes/mcu/st
             # Note: ST CMSIS device headers come from uKOS Ports/EquatesModels above,

@@ -7,7 +7,6 @@
  *           MT9V03x device.
  */
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "Lib_peripherals/imager_common.h"

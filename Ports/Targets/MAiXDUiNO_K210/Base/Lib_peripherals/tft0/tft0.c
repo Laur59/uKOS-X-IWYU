@@ -8,7 +8,6 @@
 
 #include    "tft0.h"
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "../oct0/oct0.h"

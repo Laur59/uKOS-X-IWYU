@@ -6,7 +6,6 @@
  * Goal:     Exceptions for the Asmodee_H747 module.
  */
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "board.h"

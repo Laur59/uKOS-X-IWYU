@@ -51,8 +51,6 @@ STRG_LOC_CONST(aStrHelp[])        = "Read/write on the i2c x device\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
-// Prototypes
-
 static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 
 MODULE(
@@ -122,7 +120,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     if (i2c_reserve(i2cManager, KMODE_READ_WRITE, 2000U) == KERR_I2C_NOERR) {
         i2c_configure(i2cManager, &aConfigure);
 
-        if (argc > 4U) {
+        if (argc > 5U) {
             address = (uint8_t)strtoul(argv[3], &dummy, 16U);
 
             text_checkAsciiBuffer(argv[2], "-W", &equals); if (equals) { mode = KWRITE; }

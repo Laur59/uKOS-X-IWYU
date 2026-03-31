@@ -6,7 +6,6 @@
  * Goal:     Exceptions for the Longan_Nano_F103 module.
  */
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "board.h"

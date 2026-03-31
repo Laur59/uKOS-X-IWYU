@@ -38,15 +38,29 @@ STRG_GLB_CONST(aStrHelp[])        = "Send a simulated image to the computer\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
+// CLI tool specific
+// =================
+
+typedef struct  graphic     graphic_t;
+
+struct  graphic {
+            uint32_t    oW;                 // Image width
+            uint32_t    oH;                 // Image heigh
+            uint8_t     *oImage;            // Ptr on the image
+        };
+
+extern  uint8_t     linker_stUSB_V_BUFFER_0[] __attribute__((weak));
+extern  uint8_t     linker_stUSB_V_BUFFER_1[] __attribute__((weak));
+static  bool        vKillRequest[KNB_CORES] = MCSET(false);
+
 // Prototypes
 
         void    TinyUSB_video_init(void);
         void    TinyUSB_video_getImageSize(uint32_t *w, uint32_t *h);
-        void    TinyUSB_video_sendImage(uint8_t *image, uint32_t w, uint32_t h);
+        void    TinyUSB_video_sendImage(uint8_t *image, uint32_t w, uint32_t h, void (*callBack)(const void *argument), const void *argument);
 static  void    aProcess(const void *argument);
-static  void    local_prepareImage(uint8_t *image, uint32_t w, uint32_t h, uint32_t startPosition);
-
-static  bool    vKillRequest[KNB_CORES] = MCSET(false);
+static  void    local_callBack(const void *argument);
+static  void    local_prepareImage(uint8_t *image, uint32_t w, uint32_t h, uint32_t position);
 
 /*
  * \brief viewer_uvc0
@@ -121,10 +135,11 @@ int32_t viewer_uvc0_clean(uint32_t argc, const char_t *argv[]) {
  *
  */
 static void __attribute__ ((noreturn)) aProcess(const void *argument) {
-            uint32_t    w, h, frame = 0U;
+            uint32_t    w, h;
             float64_t   frameRate;
             uint8_t     *image_0, *image_1;
             uint64_t    time[2];
+            graphic_t   pack_0, pack_1;
     const   bool        *killRequest;
 
     killRequest = (const bool *)argument;
@@ -134,30 +149,42 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
     TinyUSB_video_init();
     TinyUSB_video_getImageSize(&w, &h);
 
-    image_0 = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (w * h * 2U), "video");
-    image_1 = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (w * h * 2U), "video");
+    image_0 = (uint8_t *)memo_malloc(KMEMO_ALIGN_32, (w * h * 2U), "video");
+    image_1 = (uint8_t *)memo_malloc(KMEMO_ALIGN_32, (w * h * 2U), "video");
     if ((image_0 == nullptr) || (image_1 == nullptr)) {
-        LOG(KFATAL_USER, "viewer: out of memory");
-        exit(EXIT_OS_FAILURE);
+
+        memo_free(image_0);
+        memo_free(image_1);
+
+        if ((linker_stUSB_V_BUFFER_0 != nullptr) && (linker_stUSB_V_BUFFER_1 != nullptr)) {
+            image_0 = (uint8_t *)linker_stUSB_V_BUFFER_0;
+            image_1 = (uint8_t *)linker_stUSB_V_BUFFER_1;
+
+            LOG(KINFO_USER, "viewer: video buffers in PSRAm");
+        }
+        else {
+            LOG(KFATAL_USER, "viewer: out of memory");
+            exit(EXIT_OS_FAILURE);
+        }
     }
 
-    kern_readTickCount(&time[1]);
-    while (!*killRequest) {
-        time[0] = time[1];
-        kern_readTickCount(&time[1]);
+    pack_0.oW = w; pack_0.oH = h; pack_0.oImage = image_0;
+    pack_1.oW = w; pack_1.oH = h; pack_1.oImage = image_1;
 
-        frameRate = (1000000.0 / (float64_t)(time[1] - time[0])) * 2.0;
+    local_prepareImage(image_0, w, h, 0U);
+
+    while (!*killRequest) {
 
 // Send it over usb
 // Prepare the next image
+// During the waiting for the transfer acknowledge, the callback prepares the next image
 
-        local_prepareImage(image_0, w, h, frame);
-        TinyUSB_video_sendImage(image_0, w, h);
-        frame++;
+        kern_readTickCount(&time[0]);
+        TinyUSB_video_sendImage(image_0, w, h, local_callBack, (const void *)&pack_1);
+        TinyUSB_video_sendImage(image_1, w, h, local_callBack, (const void *)&pack_0);
+        kern_readTickCount(&time[1]);
 
-        local_prepareImage(image_1, w, h, frame);
-        TinyUSB_video_sendImage(image_1, w, h);
-        frame++;
+        frameRate = (1000000.0 / (float64_t)(time[1] - time[0])) * 2.0;
 
         (void)dprintf(KSYST, "Image size: %"PRIu32" x %"PRIu32", Frame rate = %5.2f-fps\n", w, h, frameRate);
     }
@@ -174,12 +201,27 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
 }
 
 /*
+ * \brief local_callBack
+ *
+ * - Prepare an image (called by TinyUSB_video_sendImage)
+ *
+ */
+static  void    local_callBack(const void *argument) {
+    const   graphic_t   *pack;
+    static  uint32_t    position = 0U;
+
+    pack = (const graphic_t *)argument;
+
+    local_prepareImage(pack->oImage, pack->oW, pack->oH, position++);
+}
+
+/*
  * \brief local_prepareImage
  *
  * - Prepare an image (vertical bars)
  *
  */
-static  void    local_prepareImage(uint8_t *image, uint32_t w, uint32_t h, uint32_t startPosition) {
+static  void    local_prepareImage(uint8_t *image, uint32_t w, uint32_t h, uint32_t position) {
             size_t      i, j, idx;
             uint8_t     *p;
     const   size_t      half = (size_t)w / 2U;
@@ -206,7 +248,7 @@ static  void    local_prepareImage(uint8_t *image, uint32_t w, uint32_t h, uint3
 // Generate the 1st line
 
     end = &image[rowBytes];
-    idx = (half - 1U) - ((size_t)startPosition % half);
+    idx = (half - 1U) - ((size_t)position % half);
     p = &image[idx * 4U];
 
     for (i = 0U; i < 8U; i++) {

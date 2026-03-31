@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Some common routines used in many modules.
+; Project:  uKOS-X
+; Goal:     Some common routines used in many modules.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,107 +46,103 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
+#include    "tests.h"
 
-#define	CONFIG_DEFAULT_BAUDRATE		460800
+#define CONFIG_DEFAULT_BAUDRATE     460800
 
 /*
  * \brief cmns_init
  *
- * \param[in]	-
+ * \param[in]   -
  *
  * \note This function does not return a value (None).
  *
  */
-void	cmns_init(void) {
+void    cmns_init(void) {
 
-	RCU->APB2EN |= RCU_APB2EN_USART0EN;
+    RCU->APB2EN |= RCU_APB2EN_USART0EN;
 
-	USART0->BAUD  = BAUDRATE(KFREQUENCY_APB1, CONFIG_DEFAULT_BAUDRATE);
-	USART0->CTL1  = (2<<12);
-	USART0->CTL0  = (USART_CTL0_UEN | USART_CTL0_TEN | USART_CTL0_REN);
-	USART0->STAT &= (uint32_t)~USART_STAT_RBNE;
-	USART0->STAT &= (uint32_t)~USART_STAT_TC;
+    USART0->BAUD  = BAUDRATE(KFREQUENCY_APB1, CONFIG_DEFAULT_BAUDRATE);
+    USART0->CTL1  = (2<<12);
+    USART0->CTL0  = (USART_CTL0_UEN | USART_CTL0_TEN | USART_CTL0_REN);
+    USART0->STAT &= (uint32_t)~USART_STAT_RBNE;
+    USART0->STAT &= (uint32_t)~USART_STAT_TC;
 }
 
 /*
  * \brief cmns_send
  *
- * \param[in]	serialManager	Serial Communication Manager
- * \param[in]	*ascii			Ptr on the ascii buffer
+ * \param[in]   serialManager   Serial Communication Manager
+ * \param[in]   *ascii          Ptr on the ascii buffer
  *
  * \note This function does not return a value (None).
  *
  */
-void	cmns_send(serialManager_t serialManager, const char_t *ascii) {
-			uint8_t		data;
-	const	char_t		*wkAscii = ascii;
+void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
+            uint8_t     data;
+    const   char_t      *wkAscii = ascii;
 
-	if (ascii == nullptr) { return; }
+    if (ascii == nullptr) { return; }
 
-	switch (serialManager) {
+    switch (serialManager) {
 
 // UART 0 device
 
-		default:
-		case KURT0: {
-			while (true) {
-				while ((USART0->STAT & USART_STAT_TBE) == 0) { ; }
+        default:
+        case KURT0: {
+            while (true) {
+                while ((USART0->STAT & USART_STAT_TBE) == 0) { ; }
 
-				data = (uint8_t)*wkAscii;
-				wkAscii++;
-				if (data == '\0') {
-					return;
-				}
+                data = (uint8_t)*wkAscii;
+                wkAscii++;
+                if (data == '\0') {
+                    return;
+                }
 
-				USART0->DATA = (uint16_t)data;
-			}
-		}
-	}
+                USART0->DATA = (uint16_t)data;
+            }
+        }
+    }
 }
 
 /*
  * \brief cmns_receive
  *
- * \param[in]	serialManager	Serial Communication Manager
- * \param[out]	*data			Data received
+ * \param[in]   serialManager   Serial Communication Manager
+ * \param[out]  *data           Data received
  *
  * \note This function does not return a value (None).
  *
  */
-void	cmns_receive(serialManager_t serialManager, char_t *data) {
+void    cmns_receive(serialManager_t serialManager, char_t *data) {
 
-	switch (serialManager) {
+    switch (serialManager) {
 
 // UART 0 device
 
-		default:
-		case KURT0: {
-			while ((USART0->STAT & USART_STAT_RBNE) == 0) { ; }
+        default:
+        case KURT0: {
+            while ((USART0->STAT & USART_STAT_RBNE) == 0) { ; }
 
-			*data = (char_t)USART0->DATA;
-			break;
-		}
-	}
+            *data = (char_t)USART0->DATA;
+            break;
+        }
+    }
 }
 
 /*
  * \brief cmns_wait
  *
- * \param[in]	us		Delay in us
+ * \param[in]   us      Delay in us
  *
  * \note This function does not return a value (None).
  *
  */
-void	cmns_wait(uint32_t us) {
-	uint32_t	wkUs = us, time;
+void    cmns_wait(uint32_t us) {
+    uint32_t    wkUs = us, time;
 
-	#if (defined(CACHE_S))
-	wkUs = (wkUs / 7u) * (KFREQUENCY_CORE / 1000000u);
+    wkUs = (wkUs / 7u) * (KFREQUENCY_CORE / 1000000u);
 
-	#else
-	wkUs = (wkUs / 12u) * (KFREQUENCY_CORE / 1000000u);
-	#endif
-
-	for (time = 0; time < wkUs; time++) { NOP; }
+    wkUs = (wkUs == 0u) ? (1u) : (wkUs);
+    for (time = 0; time < wkUs; time++) { NOP; }
 }

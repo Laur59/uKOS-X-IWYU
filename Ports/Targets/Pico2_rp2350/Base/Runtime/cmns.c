@@ -8,8 +8,6 @@
 
 #include    "cmns.h"
 
-#include    <stddef.h>
-
 #include    "clockTree.h"
 #include    "macros.h"
 #include    "macros_core.h"
@@ -196,12 +194,8 @@ void    cmns_receive(serialManager_t serialManager, char_t *data) {
 void    cmns_wait(uint32_t us) {
     uint32_t    wkUs = us, time;
 
-    #ifdef CACHE_S
     wkUs = (wkUs / 7U) * (KFREQUENCY_CORE / 1000000U);
 
-    #else
-    wkUs = (wkUs / 12U) * (KFREQUENCY_CORE / 1000000U);
-    #endif
-
+    wkUs = (wkUs == 0U) ? 1U : wkUs;
     for (time = 0; time < wkUs; time++) { NOP; }
 }

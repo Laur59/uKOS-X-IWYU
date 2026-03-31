@@ -33,7 +33,7 @@ printf '%b%s%b' "${BLUE}" "${splash}" "${NC}"
 # Packages
 # --------
 
-readonly package=2.4.1
+readonly package=2.4.2
 
 # Clone the right package
 

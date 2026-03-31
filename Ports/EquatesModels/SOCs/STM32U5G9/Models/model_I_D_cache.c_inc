@@ -6,6 +6,8 @@
  * Goal:     Cortex M33 cache management.
  */
 
+#include    "macros_core.h"
+
 // Prototypes
 
 static  inline  void local_init(DCACHE_TypeDef *cache);

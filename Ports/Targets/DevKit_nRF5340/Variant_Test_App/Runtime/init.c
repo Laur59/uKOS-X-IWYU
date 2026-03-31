@@ -12,7 +12,6 @@
 
 #include    "init.h"
 
-#include    <stddef.h>
 #include    <stdint.h>
 
 #include    "core.h"
@@ -61,14 +60,15 @@ struct  gpio {
 
 // Prototypes
 
-static  void    local_StackLimit_Configuration(void);
-static  void    local_SECU_Configuration(void);
-static  void    local_GPIO_Configuration(void);
-static  void    local_MPU_Configuration(void);
-static  void    local_FPE_Configuration(void);
-static  void    local_CLOCK_Configuration(void);
-static  void    local_RAM_SHARED_Configuration(void);
-static  void    local_CACHE_Enable(void);
+static          void    local_StackLimit_Configuration(void);
+static          void    local_SECU_Configuration(void);
+static          void    local_GPIO_Configuration(void);
+static          void    local_MPU_Configuration(void);
+static          void    local_FPE_Configuration(void);
+static          void    local_CLOCK_Configuration(void);
+static          void    local_RAM_SHARED_Configuration(void);
+static          void    local_CACHE_Enable(void);
+static  inline  void    cache_I_Enable(void);
 
 /*
  * \brief init_init
@@ -304,10 +304,12 @@ static  void    local_MPU_Configuration(void) {
 /*
  * \brief local_CACHE_Enable
  *
- * - Enable the L1 instruction & the data caches
+ * - Enable the instruction caches
  *
  */
 static  void    local_CACHE_Enable(void) {
 
-    REG(NCACHE)->ENABLE = CACHE_ENABLE_ENABLE;
+    cache_I_Enable();
 }
+
+#include    "model_I_cache.c_inc"

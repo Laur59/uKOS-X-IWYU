@@ -91,12 +91,13 @@ static  void    cb_init_C1(void) {
 
 int32_t stub_urt0_init(void) {
     uint32_t    core;
+    int32_t     status;
 
     core = GET_RUNNING_CORE;
 
-    if (core == KCORE_0) { model_uart_init_C0(); }
-    else                 { model_uart_init_C1(); }
-    return KERR_SERIAL_NOERR;
+    if (core == KCORE_0) { status = model_uart_init_C0(); }
+    else                 { status = model_uart_init_C1(); }
+    return (status);
 }
 
 int32_t stub_urt0_configure(const urtxCnf_t *configure) {
