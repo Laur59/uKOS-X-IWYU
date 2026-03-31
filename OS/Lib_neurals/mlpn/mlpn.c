@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		mlpn manager.
+; Project:  uKOS-X
+; Goal:     mlpn manager.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,9 +46,10 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	<math.h>
-#include	<stdint.h>
+#include    "uKOS.h"
+#include    <math.h>
+#include    <stdint.h>
+#include    <float.h>
 
 // __ARM_FEATURE_MVE Bit 0 indicates whether Helium integer instructions are available
 // __ARM_FEATURE_MVE Bit 1 indicates whether Helium floating-point instructions are available
@@ -57,8 +58,8 @@
 // 1 indicates that only the Helium integer intrinsics are available
 // 3 indicates that both the Helium integer and floating-point intrinsics are available
 
-#if	(defined(__ARM_FEATURE_MVE) && (__ARM_FEATURE_MVE >= 3))
-#include	<arm_mve.h>
+#if (defined(__ARM_FEATURE_MVE) && (__ARM_FEATURE_MVE >= 3))
+#include    <arm_mve.h>
 #endif
 
 #if (defined(CONFIG_MAN_MLPN_S))
@@ -68,41 +69,42 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"mlpn         mlpn manager.                             (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "mlpn manager\n"
-									"============\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "mlpn         mlpn manager.                             (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "mlpn manager\n"
+                                    "============\n\n"
 
-									"This manager ...\n\n"
+                                    "This manager ...\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
-	Mlpn,							// Module name (the first letter has to be upper case)
-	KID_FAM_NEURALS,				// Family (defined in the module.h)
-	KNUM_MLPN,						// Module identifier (defined in the module.h)
-	nullptr,						// Address of the initialisation code (early pre-init)
-	nullptr,						// Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
-	nullptr,						// Address of the clean code (clean the module)
-	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0								// Execution cores
+    Mlpn,                           // Module name (the first letter has to be upper case)
+    KID_FAM_NEURALS,                // Family (defined in the module.h)
+    KNUM_MLPN,                      // Module identifier (defined in the module.h)
+    nullptr,                        // Address of the initialisation code (early pre-init)
+    nullptr,                        // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                        // Address of the clean code (clean the module)
+    " 1.0",                         // Revision string (major . minor)
+    (1u<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                               // Execution cores
 );
 
 // Library specific
 // ================
 
-#define	KMLPN_BIAS	1.0f			// bias
+#define KMLPN_BIAS  1.0f            // bias
 
 // Prototypes
 
-static	float32_t	local_nonLinear_tan0(float32_t p);
-static	float32_t	local_nonLinear_tan1(float32_t p);
-static	float32_t	local_nonLinear_tan2(float32_t p);
-static	float32_t	local_nonLinear_relu(float32_t p);
-static	float32_t	local_nonLinear_line(float32_t p);
-static	int32_t		local_init(void);
-static	int32_t		local_computeLayer(mlpnLayer_t *layer);
-static	int32_t		local_initialiseLayer(mlpnLayer_t *layer);
+static  void    local_init(void);
+static  void    local_initialiseLayer(mlpnLayer_t *layer);
+static  void    local_computeLayer(mlpnLayer_t *layer);
+static  void    local_nonLinear_tan0(const float32_t *w, const float32_t *x, float32_t *a, float32_t *y, uint32_t nbInput, uint32_t nbOutput);
+static  void    local_nonLinear_tan1(const float32_t *w, const float32_t *x, float32_t *a, float32_t *y, uint32_t nbInput, uint32_t nbOutput);
+static  void    local_nonLinear_tan2(const float32_t *w, const float32_t *x, float32_t *a, float32_t *y, uint32_t nbInput, uint32_t nbOutput);
+static  void    local_nonLinear_relu(const float32_t *w, const float32_t *x, float32_t *a, float32_t *y, uint32_t nbInput, uint32_t nbOutput);
+static  void    local_nonLinear_line(const float32_t *w, const float32_t *x, float32_t *a, float32_t *y, uint32_t nbInput, uint32_t nbOutput);
+static  void    local_nonLinear_smax(const float32_t *w, const float32_t *x, float32_t *a, float32_t *y, uint32_t nbInput, uint32_t nbOutput);
 
 /*
  * \brief Configure the mlpn manager
@@ -180,70 +182,68 @@ static	int32_t		local_initialiseLayer(mlpnLayer_t *layer);
  * }
  * \endcode
  *
- * \param[in]	*network		Ptr on the network description
- * \return		KERR_MLPN_NOERR	OK
- * \return		KERR_MLPN_GEERR	General error
- * \return		KERR_MLPN_NOMEM	Not enough memory
+ * \param[in]   *network        Ptr on the network description
+ * \return      KERR_MLPN_NOERR OK
+ * \return      KERR_MLPN_GEERR General error
+ * \return      KERR_MLPN_NOMEM Not enough memory
  *
  */
-int32_t	mlpn_configure(const mlpnNetwork_t *network) {
-	int32_t		status;
+int32_t mlpn_configure(const mlpnNetwork_t *network) {
 
-	status = local_init();
-	if (status != KERR_MLPN_NOERR) { return (status); }
+    local_init();
 
 // Initialise all the layers
 
-	switch (network->oNBLayer) {
-		case 1u: {
-			if (network->oLayer_L1 == nullptr) { return (KERR_MLPN_GEERR); }
-			local_initialiseLayer(network->oLayer_L1);
-			break;
-		}
-		case 2u: {
-			if (network->oLayer_L1 == nullptr) { return (KERR_MLPN_GEERR); }
-			if (network->oLayer_L2 == nullptr) { return (KERR_MLPN_GEERR); }
-			local_initialiseLayer(network->oLayer_L1);
-			local_initialiseLayer(network->oLayer_L2);
-			break;
-		}
-		case 3u: {
-			if (network->oLayer_L1 == nullptr) { return (KERR_MLPN_GEERR); }
-			if (network->oLayer_L2 == nullptr) { return (KERR_MLPN_GEERR); }
-			if (network->oLayer_L3 == nullptr) { return (KERR_MLPN_GEERR); }
-			local_initialiseLayer(network->oLayer_L1);
-			local_initialiseLayer(network->oLayer_L2);
-			local_initialiseLayer(network->oLayer_L3);
-			break;
-		}
-		case 4u: {
-			if (network->oLayer_L1 == nullptr) { return (KERR_MLPN_GEERR); }
-			if (network->oLayer_L2 == nullptr) { return (KERR_MLPN_GEERR); }
-			if (network->oLayer_L3 == nullptr) { return (KERR_MLPN_GEERR); }
-			if (network->oLayer_L4 == nullptr) { return (KERR_MLPN_GEERR); }
-			local_initialiseLayer(network->oLayer_L1);
-			local_initialiseLayer(network->oLayer_L2);
-			local_initialiseLayer(network->oLayer_L3);
-			local_initialiseLayer(network->oLayer_L4);
-			break;
-		}
-		case 5u: {
-			if (network->oLayer_L1 == nullptr) { return (KERR_MLPN_GEERR); }
-			if (network->oLayer_L2 == nullptr) { return (KERR_MLPN_GEERR); }
-			if (network->oLayer_L3 == nullptr) { return (KERR_MLPN_GEERR); }
-			if (network->oLayer_L4 == nullptr) { return (KERR_MLPN_GEERR); }
-			if (network->oLayer_L5 == nullptr) { return (KERR_MLPN_GEERR); }
-			local_initialiseLayer(network->oLayer_L1);
-			local_initialiseLayer(network->oLayer_L2);
-			local_initialiseLayer(network->oLayer_L3);
-			local_initialiseLayer(network->oLayer_L4);
-			local_initialiseLayer(network->oLayer_L5);
-			break;
-		}
-		default: { return (KERR_MLPN_GEERR); }
-	}
+    switch (network->oNBLayer) {
+        case 1u: {
+            if (network->oLayer_L1 == nullptr) { return (KERR_MLPN_GEERR); }
+            local_initialiseLayer(network->oLayer_L1);
+            break;
+        }
+        case 2u: {
+            if (network->oLayer_L1 == nullptr) { return (KERR_MLPN_GEERR); }
+            if (network->oLayer_L2 == nullptr) { return (KERR_MLPN_GEERR); }
+            local_initialiseLayer(network->oLayer_L1);
+            local_initialiseLayer(network->oLayer_L2);
+            break;
+        }
+        case 3u: {
+            if (network->oLayer_L1 == nullptr) { return (KERR_MLPN_GEERR); }
+            if (network->oLayer_L2 == nullptr) { return (KERR_MLPN_GEERR); }
+            if (network->oLayer_L3 == nullptr) { return (KERR_MLPN_GEERR); }
+            local_initialiseLayer(network->oLayer_L1);
+            local_initialiseLayer(network->oLayer_L2);
+            local_initialiseLayer(network->oLayer_L3);
+            break;
+        }
+        case 4u: {
+            if (network->oLayer_L1 == nullptr) { return (KERR_MLPN_GEERR); }
+            if (network->oLayer_L2 == nullptr) { return (KERR_MLPN_GEERR); }
+            if (network->oLayer_L3 == nullptr) { return (KERR_MLPN_GEERR); }
+            if (network->oLayer_L4 == nullptr) { return (KERR_MLPN_GEERR); }
+            local_initialiseLayer(network->oLayer_L1);
+            local_initialiseLayer(network->oLayer_L2);
+            local_initialiseLayer(network->oLayer_L3);
+            local_initialiseLayer(network->oLayer_L4);
+            break;
+        }
+        case 5u: {
+            if (network->oLayer_L1 == nullptr) { return (KERR_MLPN_GEERR); }
+            if (network->oLayer_L2 == nullptr) { return (KERR_MLPN_GEERR); }
+            if (network->oLayer_L3 == nullptr) { return (KERR_MLPN_GEERR); }
+            if (network->oLayer_L4 == nullptr) { return (KERR_MLPN_GEERR); }
+            if (network->oLayer_L5 == nullptr) { return (KERR_MLPN_GEERR); }
+            local_initialiseLayer(network->oLayer_L1);
+            local_initialiseLayer(network->oLayer_L2);
+            local_initialiseLayer(network->oLayer_L3);
+            local_initialiseLayer(network->oLayer_L4);
+            local_initialiseLayer(network->oLayer_L5);
+            break;
+        }
+        default: { return (KERR_MLPN_GEERR); }
+    }
 
-	return (status);
+    return (KERR_MLPN_NOERR);
 }
 
 /*
@@ -268,68 +268,66 @@ int32_t	mlpn_configure(const mlpnNetwork_t *network) {
  * }
  * \endcode
  *
- * \param[in]	*network		Ptr on the network description
- * \return		KERR_MLPN_NOERR	OK
- * \return		KERR_MLPN_GEERR	General error
+ * \param[in]   *network        Ptr on the network description
+ * \return      KERR_MLPN_NOERR OK
+ * \return      KERR_MLPN_GEERR General error
  *
  */
-int32_t	mlpn_compute(const mlpnNetwork_t *network) {
-	int32_t		status;
+int32_t mlpn_compute(const mlpnNetwork_t *network) {
 
-	status = local_init();
-	if (status != KERR_MLPN_NOERR) { return (status); }
+    local_init();
 
 // Compute all the layers
 
-	switch (network->oNBLayer) {
-		case 1u: {
-			if (network->oLayer_L1 == nullptr) { return (KERR_MLPN_GEERR); }
-			local_computeLayer(network->oLayer_L1);
-			break;
-		}
-		case 2u: {
-			if (network->oLayer_L1 == nullptr) { return (KERR_MLPN_GEERR); }
-			if (network->oLayer_L2 == nullptr) { return (KERR_MLPN_GEERR); }
-			local_computeLayer(network->oLayer_L1);
-			local_computeLayer(network->oLayer_L2);
-			break;
-		}
-		case 3u: {
-			if (network->oLayer_L1 == nullptr) { return (KERR_MLPN_GEERR); }
-			if (network->oLayer_L2 == nullptr) { return (KERR_MLPN_GEERR); }
-			if (network->oLayer_L3 == nullptr) { return (KERR_MLPN_GEERR); }
-			local_computeLayer(network->oLayer_L1);
-			local_computeLayer(network->oLayer_L2);
-			local_computeLayer(network->oLayer_L3);
-			break;
-		}
-		case 4u: {
-			if (network->oLayer_L1 == nullptr) { return (KERR_MLPN_GEERR); }
-			if (network->oLayer_L2 == nullptr) { return (KERR_MLPN_GEERR); }
-			if (network->oLayer_L3 == nullptr) { return (KERR_MLPN_GEERR); }
-			if (network->oLayer_L4 == nullptr) { return (KERR_MLPN_GEERR); }
-			local_computeLayer(network->oLayer_L1);
-			local_computeLayer(network->oLayer_L2);
-			local_computeLayer(network->oLayer_L3);
-			local_computeLayer(network->oLayer_L4);
-			break;
-		}
-		case 5u: {
-			if (network->oLayer_L1 == nullptr) { return (KERR_MLPN_GEERR); }
-			if (network->oLayer_L2 == nullptr) { return (KERR_MLPN_GEERR); }
-			if (network->oLayer_L3 == nullptr) { return (KERR_MLPN_GEERR); }
-			if (network->oLayer_L4 == nullptr) { return (KERR_MLPN_GEERR); }
-			if (network->oLayer_L5 == nullptr) { return (KERR_MLPN_GEERR); }
-			local_computeLayer(network->oLayer_L1);
-			local_computeLayer(network->oLayer_L2);
-			local_computeLayer(network->oLayer_L3);
-			local_computeLayer(network->oLayer_L4);
-			local_computeLayer(network->oLayer_L5);
-			break;
-		}
-		default: { return (KERR_MLPN_GEERR); }
-	}
-	return (KERR_MLPN_NOERR);
+    switch (network->oNBLayer) {
+        case 1u: {
+            if (network->oLayer_L1 == nullptr) { return (KERR_MLPN_GEERR); }
+            local_computeLayer(network->oLayer_L1);
+            break;
+        }
+        case 2u: {
+            if (network->oLayer_L1 == nullptr) { return (KERR_MLPN_GEERR); }
+            if (network->oLayer_L2 == nullptr) { return (KERR_MLPN_GEERR); }
+            local_computeLayer(network->oLayer_L1);
+            local_computeLayer(network->oLayer_L2);
+            break;
+        }
+        case 3u: {
+            if (network->oLayer_L1 == nullptr) { return (KERR_MLPN_GEERR); }
+            if (network->oLayer_L2 == nullptr) { return (KERR_MLPN_GEERR); }
+            if (network->oLayer_L3 == nullptr) { return (KERR_MLPN_GEERR); }
+            local_computeLayer(network->oLayer_L1);
+            local_computeLayer(network->oLayer_L2);
+            local_computeLayer(network->oLayer_L3);
+            break;
+        }
+        case 4u: {
+            if (network->oLayer_L1 == nullptr) { return (KERR_MLPN_GEERR); }
+            if (network->oLayer_L2 == nullptr) { return (KERR_MLPN_GEERR); }
+            if (network->oLayer_L3 == nullptr) { return (KERR_MLPN_GEERR); }
+            if (network->oLayer_L4 == nullptr) { return (KERR_MLPN_GEERR); }
+            local_computeLayer(network->oLayer_L1);
+            local_computeLayer(network->oLayer_L2);
+            local_computeLayer(network->oLayer_L3);
+            local_computeLayer(network->oLayer_L4);
+            break;
+        }
+        case 5u: {
+            if (network->oLayer_L1 == nullptr) { return (KERR_MLPN_GEERR); }
+            if (network->oLayer_L2 == nullptr) { return (KERR_MLPN_GEERR); }
+            if (network->oLayer_L3 == nullptr) { return (KERR_MLPN_GEERR); }
+            if (network->oLayer_L4 == nullptr) { return (KERR_MLPN_GEERR); }
+            if (network->oLayer_L5 == nullptr) { return (KERR_MLPN_GEERR); }
+            local_computeLayer(network->oLayer_L1);
+            local_computeLayer(network->oLayer_L2);
+            local_computeLayer(network->oLayer_L3);
+            local_computeLayer(network->oLayer_L4);
+            local_computeLayer(network->oLayer_L5);
+            break;
+        }
+        default: { return (KERR_MLPN_GEERR); }
+    }
+    return (KERR_MLPN_NOERR);
 }
 
 // Local routines
@@ -342,19 +340,8 @@ int32_t	mlpn_compute(const mlpnNetwork_t *network) {
  *   has to be called at least once
  *
  */
-static	int32_t	local_init(void) {
-			int32_t		status = KERR_MLPN_NOERR;
-			uint32_t	core;
-	static	bool		vInit[KNB_CORES] = MCSET(false);
+static  void    local_init(void) {
 
-	core = GET_RUNNING_CORE;
-
-	INTERRUPTION_OFF;
-	if (vInit[core] == false) {
-		vInit[core] = true;
-
-	}
-	RETURN_INT_RESTORE(status);
 }
 
 /*
@@ -363,10 +350,9 @@ static	int32_t	local_init(void) {
  * - This function initialise a full NN layer
  *
  */
-static	int32_t	local_initialiseLayer(mlpnLayer_t *layer) {
+static  void    local_initialiseLayer(mlpnLayer_t *layer) {
 
-	layer->oInput[layer->oNBInput - 1u] = KMLPN_BIAS;
-	return (KERR_MLPN_NOERR);
+    layer->oInput[layer->oNBInput - 1u] = KMLPN_BIAS;
 }
 
 /*
@@ -374,8 +360,8 @@ static	int32_t	local_initialiseLayer(mlpnLayer_t *layer) {
  *
  * - This function compute a full NN layer
  *   !!! The layer computing is limited to :
- *   	 16536 number of inputs
- *   	 16536 number of outputs
+ *       16536 number of inputs
+ *       16536 number of outputs
  *
  *   y = f(W . x)
  *
@@ -383,135 +369,88 @@ static	int32_t	local_initialiseLayer(mlpnLayer_t *layer) {
 
 // Dot product: Helium FP (MVE) if available (with unroll x2 (8 floats per iteration))
 
-#if	(defined(__ARM_FEATURE_MVE) && (__ARM_FEATURE_MVE >= 3))
-static	inline	float32_t	local_hadd_f32x4(float32x4_t v) {
-	float32_t	tmp[4];
+#if (defined(__ARM_FEATURE_MVE) && (__ARM_FEATURE_MVE >= 3))
+__attribute__ ((always_inline)) static inline   float32_t   local_hadd_f32x4(float32x4_t v) {
+    float32_t   tmp[4];
 
-	vstrwq_f32(tmp, v);
-	return (tmp[0] + tmp[1] + tmp[2] + tmp[3]);
+    vstrwq_f32(tmp, v);
+    return (tmp[0] + tmp[1] + tmp[2] + tmp[3]);
 }
 #endif
 
-static	inline	float32_t	local_dot_f32(const float32_t * __restrict w, const float32_t * __restrict x, uint16_t n) {
+__attribute__ ((always_inline)) static inline   float32_t   local_dot_f32(const float32_t * __restrict w, const float32_t * __restrict x, uint16_t n) {
 
-	#if	(defined(__ARM_FEATURE_MVE) && (__ARM_FEATURE_MVE >= 3))
-    float32x4_t		acc0 = vdupq_n_f32(0.0f);
-    float32x4_t		acc1 = vdupq_n_f32(0.0f);
-    uint16_t		i = 0u, rem;
+    #if (defined(__ARM_FEATURE_MVE) && (__ARM_FEATURE_MVE >= 3))
+    float32x4_t     acc0 = vdupq_n_f32(0.0f);
+    float32x4_t     acc1 = vdupq_n_f32(0.0f);
+    uint16_t        i = 0u, rem;
 
-	w = (const float32_t *)__builtin_assume_aligned(w, 16);
-	x = (const float32_t *)__builtin_assume_aligned(x, 16);
+    w = (const float32_t *)__builtin_assume_aligned(w, 16);
+    x = (const float32_t *)__builtin_assume_aligned(x, 16);
 
 // 8 floats per iteration
 
-	for (i = 0u; (uint16_t)(i + 8u) <= n; i = (uint16_t)(i + 8u)) {
-		float32x4_t		w0 = vldrwq_f32(&w[i + 0u]);
-		float32x4_t		x0 = vldrwq_f32(&x[i + 0u]);
-		acc0 = vfmaq_f32(acc0, w0, x0);
+    for (i = 0u; (uint16_t)(i + 8u) <= n; i = (uint16_t)(i + 8u)) {
+        float32x4_t     w0 = vldrwq_f32(&w[i + 0u]);
+        float32x4_t     x0 = vldrwq_f32(&x[i + 0u]);
+        acc0 = vfmaq_f32(acc0, w0, x0);
 
-		float32x4_t		w1 = vldrwq_f32(&w[i + 4u]);
-		float32x4_t		x1 = vldrwq_f32(&x[i + 4u]);
-		acc1 = vfmaq_f32(acc1, w1, x1);
+        float32x4_t     w1 = vldrwq_f32(&w[i + 4u]);
+        float32x4_t     x1 = vldrwq_f32(&x[i + 4u]);
+        acc1 = vfmaq_f32(acc1, w1, x1);
     }
 
 // Remaining: 0..7 floats, managed in 2 predictive blocs of 4
 
-	rem = (uint16_t)(n - i);
+    rem = (uint16_t)(n - i);
     if (rem != 0u) {
 
 // bloc 0..3
 
-		mve_pred16_t	p0 = vctp32q((uint32_t)rem);
-		float32x4_t		wR0 = vldrwq_z_f32(&w[i], p0);
-		float32x4_t		xR0 = vldrwq_z_f32(&x[i], p0);
+        mve_pred16_t    p0 = vctp32q((uint32_t)rem);
+        float32x4_t     wR0 = vldrwq_z_f32(&w[i], p0);
+        float32x4_t     xR0 = vldrwq_z_f32(&x[i], p0);
 
-		acc0 = vfmaq_m_f32(acc0, wR0, xR0, p0);
+        acc0 = vfmaq_m_f32(acc0, wR0, xR0, p0);
 
 // bloc 4..7 (if rem > 4)
 
-		if (rem > 4u) {
-			mve_pred16_t	p1 = vctp32q((uint32_t)(rem - 4u));
-			float32x4_t		wR1 = vldrwq_z_f32(&w[i + 4u], p1);
-			float32x4_t		xR1 = vldrwq_z_f32(&x[i + 4u], p1);
+        if (rem > 4u) {
+            mve_pred16_t    p1 = vctp32q((uint32_t)(rem - 4u));
+            float32x4_t     wR1 = vldrwq_z_f32(&w[i + 4u], p1);
+            float32x4_t     xR1 = vldrwq_z_f32(&x[i + 4u], p1);
 
-			acc1 = vfmaq_m_f32(acc1, wR1, xR1, p1);
-		}
-	}
+            acc1 = vfmaq_m_f32(acc1, wR1, xR1, p1);
+        }
+    }
 
 // Reduction
 
-	return (local_hadd_f32x4(vaddq_f32(acc0, acc1)));
+    return (local_hadd_f32x4(vaddq_f32(acc0, acc1)));
 
-	#else
-	float32_t	p = 0.0f;
-	uint16_t	i;
+    #else
+    float32_t   p = 0.0f;
+    uint16_t    i;
 
-	for (i = 0u; i < n; i++) {
-		p += w[i] * x[i];
-	}
+    for (i = 0u; i < n; i++) {
+        p += w[i] * x[i];
+    }
     return (p);
-	#endif
+    #endif
 
 }
 
-#if (defined(__clang__))
-static int32_t local_computeLayer(mlpnLayer_t *layer) {
+static  void    local_computeLayer(mlpnLayer_t *layer) {
 
-#else
-static __attribute__ ((optimize("O3,inline,aggressive-loop-optimizations,unroll-loops"))) int32_t local_computeLayer(mlpnLayer_t *layer) {
-#endif
-			uint16_t	j, nbInput, nbOutput;
-			float32_t	p, *y;
-			float32_t	(*nonLinear)(float32_t p);
-	const	float32_t	*x, *w;
-
-
-	x		  = &layer->oInput[0];
-	w		  = &layer->oWeight[0];
-	y		  = &layer->oOutput[0];
-	nbInput	  = (uint16_t)layer->oNBInput;
-	nbOutput  = (uint16_t)layer->oNBOutput;
-
-	switch (layer->oNonLinear) {
-		default:
-		case KMLPN_TAN0: {
-			nonLinear = local_nonLinear_tan0;
-			break;
-		}
-		case KMLPN_TAN1: {
-			nonLinear = local_nonLinear_tan1;
-			break;
-		}
-		case KMLPN_TAN2: {
-			nonLinear = local_nonLinear_tan2;
-			break;
-		}
-		case KMLPN_RELU: {
-			nonLinear = local_nonLinear_relu;
-			break;
-		}
-		case KMLPN_LINE: {
-			nonLinear = local_nonLinear_line;
-			break;
-		}
-	}
-
-// For all the neurons
-
-	for (j = 0u; j < nbOutput; j++) {
-
-// For one neuron compute the activation
-// Activation = Matrix - vector multiplication (Wi . xi)
-// Output = non-linear f(Activation)
-
-		p = local_dot_f32(w, x, nbInput);
-		y[j] = nonLinear(p);
-
-// Next neuron, next weight set
-
-		w = &w[nbInput];
-	}
-	return (KERR_MLPN_NOERR);
+    switch (layer->oNonLinear) {
+        default:
+        case KMLPN_TAN0: { local_nonLinear_tan0(&layer->oWeight[0], &layer->oInput[0], &layer->oActivation[0], &layer->oOutput[0], layer->oNBInput, layer->oNBOutput); break; }
+        case KMLPN_TAN1: { local_nonLinear_tan1(&layer->oWeight[0], &layer->oInput[0], &layer->oActivation[0], &layer->oOutput[0], layer->oNBInput, layer->oNBOutput); break; }
+        case KMLPN_TAN2: { local_nonLinear_tan2(&layer->oWeight[0], &layer->oInput[0], &layer->oActivation[0], &layer->oOutput[0], layer->oNBInput, layer->oNBOutput); break; }
+        case KMLPN_RELU: { local_nonLinear_relu(&layer->oWeight[0], &layer->oInput[0], &layer->oActivation[0], &layer->oOutput[0], layer->oNBInput, layer->oNBOutput); break; }
+        case KMLPN_LINE: { local_nonLinear_line(&layer->oWeight[0], &layer->oInput[0], &layer->oActivation[0], &layer->oOutput[0], layer->oNBInput, layer->oNBOutput); break; }
+        case KMLPN_SMAX: { local_nonLinear_smax(&layer->oWeight[0], &layer->oInput[0], &layer->oActivation[0], &layer->oOutput[0], layer->oNBInput, layer->oNBOutput); break; }
+    }
 }
 
 /*
@@ -520,9 +459,27 @@ static __attribute__ ((optimize("O3,inline,aggressive-loop-optimizations,unroll-
  * - This is the libm tanh function
  *
  */
-static	float32_t	local_nonLinear_tan0(float32_t p) {
+#if (defined(__clang__))
+__attribute__ ((always_inline)) static inline void  local_nonLinear_tan0(const float32_t *w, const float32_t *x, float32_t *a, float32_t *y, uint32_t nbInput, uint32_t nbOutput) {
 
-	return (tanhf(p));
+#else
+__attribute__ ((optimize("O3,inline,aggressive-loop-optimizations,unroll-loops"))) static void  local_nonLinear_tan0(const float32_t *w, const float32_t *x, float32_t *a, float32_t *y, uint32_t nbInput, uint32_t nbOutput) {
+#endif
+
+    uint32_t    j;
+
+// For one neuron compute the activation
+// Activation = Matrix - vector multiplication (Wi . xi)
+// Output = non-linear f(Activation)
+
+    for (j = 0u; j < nbOutput; j++) {
+        a[j] = local_dot_f32(w, x, (uint16_t)nbInput);
+        y[j] = tanhf(a[j]);
+
+// Next neuron, next weight set
+
+        w = &w[nbInput];
+    }
 }
 
 /*
@@ -554,15 +511,38 @@ static	float32_t	local_nonLinear_tan0(float32_t p) {
  *      b  = ((28 x^2 + 3150) x^2 + 62370) x^2 + 135135
  *
  */
-static	float32_t	local_nonLinear_tan1(float32_t p) {
-	float32_t	s, a, b;
+__attribute__ ((always_inline)) static inline   float32_t   local_tan1(float32_t p) {
+    float32_t   s, a, b;
 
-	if (p < -3.0f) { return (-1.0f); }
-	if (p > +3.0f) { return (+1.0f); }
-	s = p * p;
-	a = (((((s + 378.0f) * s) + 17325.0f) * s) + 135135.0f) * p;
-	b = (((((28.0f * s) + 3150.0f) * s) + 62370.0f) * s) + 135135.0f;
-	return (a / b);
+    if (p < -3.0f) { return (-1.0f); }
+    if (p > +3.0f) { return (+1.0f); }
+    s = p * p;
+    a = (((((s + 378.0f) * s) + 17325.0f) * s) + 135135.0f) * p;
+    b = (((((28.0f * s) + 3150.0f) * s) + 62370.0f) * s) + 135135.0f;
+    return (a / b);
+}
+
+#if (defined(__clang__))
+static  void    local_nonLinear_tan1(const float32_t *w, const float32_t *x, float32_t *a, float32_t *y, uint32_t nbInput, uint32_t nbOutput) {
+
+#else
+__attribute__ ((optimize("O3,inline,aggressive-loop-optimizations,unroll-loops"))) static void  local_nonLinear_tan1(const float32_t *w, const float32_t *x, float32_t *a, float32_t *y, uint32_t nbInput, uint32_t nbOutput) {
+#endif
+
+    uint32_t    j;
+
+// For one neuron compute the activation
+// Activation = Matrix - vector multiplication (Wi . xi)
+// Output = non-linear f(Activation)
+
+    for (j = 0u; j < nbOutput; j++) {
+        a[j] = local_dot_f32(w, x, (uint16_t)nbInput);
+        y[j] = local_tan1(a[j]);
+
+// Next neuron, next weight set
+
+        w = &w[nbInput];
+    }
 }
 
 /*
@@ -575,11 +555,34 @@ static	float32_t	local_nonLinear_tan1(float32_t p) {
  *   tanh(p) =  p, if (p > -1) && (p < +1)
  *
  */
-static	float32_t	local_nonLinear_tan2(float32_t p) {
+__attribute__ ((always_inline)) static inline   float32_t   local_tan2(float32_t p) {
 
-	if (p <= -1.0f) { return (-1.0f); }
-	if (p >= +1.0f) { return (+1.0f); }
-	return (p);
+    if (p <= -1.0f) { return (-1.0f); }
+    if (p >= +1.0f) { return (+1.0f); }
+    return (p);
+}
+
+#if (defined(__clang__))
+static  void    local_nonLinear_tan2(const float32_t *w, const float32_t *x, float32_t *a, float32_t *y, uint32_t nbInput, uint32_t nbOutput) {
+
+#else
+__attribute__ ((optimize("O3,inline,aggressive-loop-optimizations,unroll-loops"))) static void  local_nonLinear_tan2(const float32_t *w, const float32_t *x, float32_t *a, float32_t *y, uint32_t nbInput, uint32_t nbOutput) {
+#endif
+
+    uint32_t    j;
+
+// For one neuron compute the activation
+// Activation = Matrix - vector multiplication (Wi . xi)
+// Output = non-linear f(Activation)
+
+    for (j = 0u; j < nbOutput; j++) {
+        a[j] = local_dot_f32(w, x, (uint16_t)nbInput);
+        y[j] = local_tan2(a[j]);
+
+// Next neuron, next weight set
+
+        w = &w[nbInput];
+    }
 }
 
 /*
@@ -591,11 +594,34 @@ static	float32_t	local_nonLinear_tan2(float32_t p) {
  *   relu(p) = p, if p > 0
  *
  */
-static	float32_t	local_nonLinear_relu(float32_t p) {
+__attribute__ ((always_inline)) static inline   float32_t   local_relu(float32_t p) {
 
-	if (p <= 0.0f) { return (0.0f); }
-	if (p > +1.0f) { return (p);	}
-	return (p);
+    if (p <= 0.0f) { return (0.0f); }
+    if (p > +1.0f) { return (p);    }
+    return (p);
+}
+
+#if (defined(__clang__))
+static  void    local_nonLinear_relu(const float32_t *w, const float32_t *x, float32_t *a, float32_t *y, uint32_t nbInput, uint32_t nbOutput) {
+
+#else
+__attribute__ ((optimize("O3,inline,aggressive-loop-optimizations,unroll-loops"))) static void  local_nonLinear_relu(const float32_t *w, const float32_t *x, float32_t *a, float32_t *y, uint32_t nbInput, uint32_t nbOutput) {
+#endif
+
+    uint32_t    j;
+
+// For one neuron compute the activation
+// Activation = Matrix - vector multiplication (Wi . xi)
+// Output = non-linear f(Activation)
+
+    for (j = 0u; j < nbOutput; j++) {
+        a[j] = local_dot_f32(w, x, (uint16_t)nbInput);
+        y[j] = local_relu(a[j]);
+
+// Next neuron, next weight set
+
+        w = &w[nbInput];
+    }
 }
 
 /*
@@ -606,9 +632,90 @@ static	float32_t	local_nonLinear_relu(float32_t p) {
  *   line(p) = p
  *
  */
-static	float32_t	local_nonLinear_line(float32_t p) {
+#if (defined(__clang__))
+static  void    local_nonLinear_line(const float32_t *w, const float32_t *x, float32_t *a, float32_t *y, uint32_t nbInput, uint32_t nbOutput) {
 
-	return (p);
+#else
+__attribute__ ((optimize("O3,inline,aggressive-loop-optimizations,unroll-loops"))) static void  local_nonLinear_line(const float32_t *w, const float32_t *x, float32_t *a, float32_t *y, uint32_t nbInput, uint32_t nbOutput) {
+#endif
+
+    uint32_t    j;
+
+// For one neuron compute the activation
+// Activation = Matrix - vector multiplication (Wi . xi)
+// Output = non-linear f(Activation)
+
+    for (j = 0u; j < nbOutput; j++) {
+        a[j] = local_dot_f32(w, x, (uint16_t)nbInput);
+        y[j] = a[j];
+
+// Next neuron, next weight set
+
+        w = &w[nbInput];
+    }
+}
+
+/*
+ * \brief local_nonLinear_smax
+ *
+ * - This is a very fast softmax function
+ *
+ *               e^(pj-max(p))
+ *   smax(p) = ----------------
+ *             Sum(e^(pj-max(pj)))
+ *
+ *   e^x can be replaced by 2^(x.(log2(e)))
+ *
+ *   an IEEE-754 (32 bits) number is represented by:
+ *
+ *   [ sign | exponent (8 bits) | mantissa (23 bits) ]
+ *   float ~ 2^exponent x (1 + mantissa)
+ *
+ *   So, exponent = x.log2(e)
+ *   Now we need to scale log2(e) @ the bit 23-position.
+ *   First constant: log2(e).2^23 = 12102203
+ *
+ *   The exponent bias: 127.2^23 = 1064866805
+ *
+ */
+__attribute__ ((always_inline)) static inline   float32_t   local_exp(float32_t p) {
+    union { float f; int32_t i; } u;
+
+    u.i = (int32_t)(12102203.0f * p) + 1064866805;
+    return (u.f);
+}
+
+#if (defined(__clang__))
+static  void    local_nonLinear_smax(const float32_t *w, const float32_t *x, float32_t *a, float32_t *y, uint32_t nbInput, uint32_t nbOutput) {
+
+#else
+__attribute__ ((optimize("O3,inline,aggressive-loop-optimizations,unroll-loops"))) static void  local_nonLinear_smax(const float32_t *w, const float32_t *x, float32_t *a, float32_t *y, uint32_t nbInput, uint32_t nbOutput) {
+#endif
+
+    uint32_t    j;
+    float32_t   max = -FLT_MAX, sum = 0.0f;
+
+// First compute the max and the activation vector
+
+    for (j = 0u; j < nbOutput; j++) {
+        a[j] = local_dot_f32(w, x, (uint16_t)nbInput);
+        if (a[j] > max) { max = a[j]; }
+
+        w = &w[nbInput];
+    }
+
+// Second compute the new activation vector e^(pj-max(p)) & the um(e^(pj-max(pj)))
+
+    for (j = 0u; j < nbOutput; j++) {
+        a[j] = local_exp(a[j] - max);
+        sum = sum + a[j];
+    }
+
+// third normalise
+
+    for (j = 0u; j < nbOutput; j++) {
+        y[j] = a[j] / sum;
+    }
 }
 
 #endif

@@ -5,62 +5,62 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		newLib interface for gcc C compiler (reentrant version).
+; Project:  uKOS-X
+; Goal:     newLib interface for gcc C compiler (reentrant version).
 ;
-;			See: https://linux.die.net/man/
+;           See: https://linux.die.net/man/
 ;
-;			Fully or partially supported functions to support
+;           Fully or partially supported functions to support
 ;
-;			Open - close - read - write newlib functions
-;			_open_r
-;			_close_r
-;			_write_r
-;			_read_r
+;           Open - close - read - write newlib functions
+;           _open_r
+;           _close_r
+;           _write_r
+;           _read_r
 ;
-;			time/calendat functions
-;			_gettimeofday_r
-;			_times_r
+;           time/calendat functions
+;           _gettimeofday_r
+;           _times_r
 ;
-;			Generic newlib functions
-;			_isatty_r
-;			_wait_r
-;			__errno
-;			_fork_r
-;			_stat_r
-;			_fstat_r
-;			_link_r
-;			_unlink_r
-;			_lseek_r
-;			_getpid_r
-;			_kill_r
-;			_exit
+;           Generic newlib functions
+;           _isatty_r
+;           _wait_r
+;           __errno
+;           _fork_r
+;           _stat_r
+;           _fstat_r
+;           _link_r
+;           _unlink_r
+;           _lseek_r
+;           _getpid_r
+;           _kill_r
+;           _exit
 ;
-;			Allocator newlib functions
-;			_sbrk_r
-;			__wrap__malloc_r
-;			__wrap__free_r
-;			__wrap__realloc_r
-;			__wrap__calloc_r
+;           Allocator newlib functions
+;           _sbrk_r
+;           __wrap__malloc_r
+;           __wrap__free_r
+;           __wrap__realloc_r
+;           __wrap__calloc_r
 ;
-;			Suported devices controlled by the open - close - read - write newlib functions
-;			urt0
-;			urt1
-;			urt2
-;			urt3
-;			urt4
-;			cdc0
-;			cdc1
-;			wfi0
+;           Suported devices controlled by the open - close - read - write newlib functions
+;           urt0
+;           urt1
+;           urt2
+;           urt3
+;           urt4
+;           cdc0
+;           cdc1
+;           wfi0
 ;
-;			syst
-;			def0
-;			stdin
-;			stdout
-;			stderr
+;           syst
+;           def0
+;           stdin
+;           stdout
+;           stderr
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -97,15 +97,15 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"kern/private/private_processes.h"
-#include	<unistd.h>
-#include	<errno.h>
-#include	<malloc.h>
-#include	<fcntl.h>
-#include	<sys/types.h>
-#include	<sys/time.h>
-#include	<sys/times.h>
+#include    "uKOS.h"
+#include    "kern/private/private_processes.h"
+#include    <unistd.h>
+#include    <errno.h>
+#include    <malloc.h>
+#include    <fcntl.h>
+#include    <sys/types.h>
+#include    <sys/time.h>
+#include    <sys/times.h>
 
 #if (defined(CONFIG_MAN_NEWLIB_S))
 
@@ -114,43 +114,43 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"newlib       newlib manager.                           (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "newlib manager\n"
-									"==============\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "newlib       newlib manager.                           (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "newlib manager\n"
+                                    "==============\n\n"
 
-									"This manager ...\n\n"
+                                    "This manager ...\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
-	Newlib,									// Module name (the first letter has to be upper case)
-	KID_FAM_GENERICS,						// Family (defined in the module.h)
-	KNUM_NEWLIB,							// Module identifier (defined in the module.h)
-	nullptr,								// Address of the initialisation code (early pre-init)
-	nullptr,								// Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
-	nullptr,								// Address of the clean code (clean the module)
-	" 1.0",									// Revision string (major . minor)
-	(1u<<BSHOW),							// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0										// Execution cores
+    Newlib,                                 // Module name (the first letter has to be upper case)
+    KID_FAM_GENERICS,                       // Family (defined in the module.h)
+    KNUM_NEWLIB,                            // Module identifier (defined in the module.h)
+    nullptr,                                // Address of the initialisation code (early pre-init)
+    nullptr,                                // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                                // Address of the clean code (clean the module)
+    " 1.0",                                 // Revision string (major . minor)
+    (1u<<BSHOW),                            // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                       // Execution cores
 );
 
 // Library specific
 // ================
 
-typedef	struct	tzinfo		tzinfo_t;
-typedef	struct	devOptTab	devOptTab_t;
-typedef			_CLOCK_T_	clock_t;
-typedef			_off_t		off_t;
+typedef struct  tzinfo      tzinfo_t;
+typedef struct  devOptTab   devOptTab_t;
+typedef         _CLOCK_T_   clock_t;
+typedef         _off_t      off_t;
 
-#define	KNEWLIB_LN_OUTPUT_BUFFER	128u	// Size of the send buffer
+#define KNEWLIB_LN_OUTPUT_BUFFER    128u    // Size of the send buffer
 
 // Prototypes
 
-static	void		local_outLine(serialManager_t serialManager, const uint8_t *output, uint32_t size);
-static	uint8_t		local_inbyte(serialManager_t serialManager);
-static	_ssize_t	local_write(serialManager_t serialManager, const void *buf, size_t count);
-static	_ssize_t	local_read(serialManager_t serialManager, void *buf, size_t count);
-extern	void		crt0_exit(int number);
+static  void        local_outLine(serialManager_t serialManager, const uint8_t *output, uint32_t size);
+static  uint8_t     local_inbyte(serialManager_t serialManager);
+static  _ssize_t    local_write(serialManager_t serialManager, const void *buf, size_t count);
+static  _ssize_t    local_read(serialManager_t serialManager, void *buf, size_t count);
+extern  void        crt0_exit(int number);
 
 // NOLINTBEGIN(bugprone-reserved-identifier,cert-dcl37-c,cert-dcl51-cpp)
 //
@@ -163,14 +163,14 @@ extern	void		crt0_exit(int number);
  * - open - Open a file
  *
  */
-int		_open_r(reent_t *reent, const char_t *path, int oflag, int mode) {
+int     _open_r(reent_t *reent, const char_t *path, int oflag, int mode) {
 
-	UNUSED(path);
-	UNUSED(oflag);
-	UNUSED(mode);
+    UNUSED(path);
+    UNUSED(oflag);
+    UNUSED(mode);
 
-	reent->_errno = ENODEV;
-	return (-1);
+    reent->_errno = ENODEV;
+    return (-1);
 }
 
 /*
@@ -179,12 +179,12 @@ int		_open_r(reent_t *reent, const char_t *path, int oflag, int mode) {
  * - close - Close a file descriptor
  *
  */
-int		_close_r(reent_t *reent, int fd) {
+int     _close_r(reent_t *reent, int fd) {
 
-	UNUSED(fd);
+    UNUSED(fd);
 
-	reent->_errno = EBADF;
-	return (-1);
+    reent->_errno = EBADF;
+    return (-1);
 }
 
 /*
@@ -193,52 +193,52 @@ int		_close_r(reent_t *reent, int fd) {
  * - write - Write to a file descriptor
  *
  */
-_ssize_t	_write_r(reent_t *reent, int fd, const void *buf, size_t count) {
-	_ssize_t			nbPrintChars;
-	serialManager_t		serialManager;
-	uint32_t			stdio = (uint32_t)fd;
-	proc_t				*process;
+_ssize_t    _write_r(reent_t *reent, int fd, const void *buf, size_t count) {
+    _ssize_t            nbPrintChars;
+    serialManager_t     serialManager;
+    uint32_t            stdio = (uint32_t)fd;
+    proc_t              *process;
 
-	UNUSED(reent);
+    UNUSED(reent);
 
-	switch (stdio) {
+    switch (stdio) {
 
 // KNOTR and KSTDERR: use the default Serial Communication Manager without to reserve it
 
-		case KSTDERR:
-		case KNOTR: {
-			nbPrintChars = local_write(KDEF0, buf, count);
-			break;
-		}
+        case KSTDERR:
+        case KNOTR: {
+            nbPrintChars = local_write(KDEF0, buf, count);
+            break;
+        }
 
 // KSYST and KSTDIN and KSTDOUT: use the process specified Serial Communication Manager with its reservation
 
-		case KSTDIN:
-		case KSTDOUT:
-		case KSYST: {
-			kern_getProcessRun(&process);
-			kern_getSerialForProcess(process, &serialManager);
+        case KSTDIN:
+        case KSTDOUT:
+        case KSYST: {
+            kern_getProcessRun(&process);
+            kern_getSerialForProcess(process, &serialManager);
 
-			RESERVE_SERIAL(serialManager, KMODE_WRITE);
-			nbPrintChars = local_write(serialManager, buf, count);
-			RELEASE_SERIAL(serialManager, KMODE_WRITE);
+            RESERVE_SERIAL(serialManager, KMODE_WRITE);
+            nbPrintChars = local_write(serialManager, buf, count);
+            RELEASE_SERIAL(serialManager, KMODE_WRITE);
 
-			break;
-		}
+            break;
+        }
 
 // KXXX: use the specified Serial Communication Manager with its reservation
 
-		default: {
-			serialManager = (serialManager_t)stdio;
+        default: {
+            serialManager = (serialManager_t)stdio;
 
-			RESERVE_SERIAL(serialManager, KMODE_WRITE);
-			nbPrintChars = local_write(serialManager, buf, count);
-			RELEASE_SERIAL(serialManager, KMODE_WRITE);
+            RESERVE_SERIAL(serialManager, KMODE_WRITE);
+            nbPrintChars = local_write(serialManager, buf, count);
+            RELEASE_SERIAL(serialManager, KMODE_WRITE);
 
-			break;
-		}
-	}
-	return (nbPrintChars);
+            break;
+        }
+    }
+    return (nbPrintChars);
 }
 
 /*
@@ -247,52 +247,52 @@ _ssize_t	_write_r(reent_t *reent, int fd, const void *buf, size_t count) {
  * - read - Read from a file descriptor
  *
  */
-_ssize_t	_read_r(reent_t *reent, int fd, void *buf, size_t count) {
-	_ssize_t			nbReadChars;
-	serialManager_t		serialManager;
-	uint32_t			stdio = (uint32_t)fd;
-	proc_t				*process;
+_ssize_t    _read_r(reent_t *reent, int fd, void *buf, size_t count) {
+    _ssize_t            nbReadChars;
+    serialManager_t     serialManager;
+    uint32_t            stdio = (uint32_t)fd;
+    proc_t              *process;
 
-	UNUSED(reent);
+    UNUSED(reent);
 
-	switch (stdio) {
+    switch (stdio) {
 
 // KNOTR and KSTDERR: use the default Serial Communication Manager without to reserve it
 
-		case KSTDERR:
-		case KNOTR: {
-			nbReadChars = local_read(KDEF0, buf, count);
-			break;
-		}
+        case KSTDERR:
+        case KNOTR: {
+            nbReadChars = local_read(KDEF0, buf, count);
+            break;
+        }
 
 // KSYST and KSTDIN and KSTDOUT: use the process specified Serial Communication Manager with its reservation
 
-		case KSTDIN:
-		case KSTDOUT:
-		case KSYST: {
-			kern_getProcessRun(&process);
-			kern_getSerialForProcess(process, &serialManager);
+        case KSTDIN:
+        case KSTDOUT:
+        case KSYST: {
+            kern_getProcessRun(&process);
+            kern_getSerialForProcess(process, &serialManager);
 
-			RESERVE_SERIAL(serialManager, KMODE_READ);
-			nbReadChars = local_read(serialManager, buf, count);
-			RELEASE_SERIAL(serialManager, KMODE_READ);
+            RESERVE_SERIAL(serialManager, KMODE_READ);
+            nbReadChars = local_read(serialManager, buf, count);
+            RELEASE_SERIAL(serialManager, KMODE_READ);
 
-			break;
-		}
+            break;
+        }
 
 // KXXX: use the specified Serial Communication Manager with its reservation
 
-		default: {
-			serialManager = (serialManager_t)stdio;
+        default: {
+            serialManager = (serialManager_t)stdio;
 
-			RESERVE_SERIAL(serialManager, KMODE_READ);
-			nbReadChars = local_read(serialManager, buf, count);
-			RELEASE_SERIAL(serialManager, KMODE_READ);
+            RESERVE_SERIAL(serialManager, KMODE_READ);
+            nbReadChars = local_read(serialManager, buf, count);
+            RELEASE_SERIAL(serialManager, KMODE_READ);
 
-			break;
-		}
-	}
-	return (nbReadChars);
+            break;
+        }
+    }
+    return (nbReadChars);
 }
 
 // Newlib time/calendat functions
@@ -304,20 +304,20 @@ _ssize_t	_read_r(reent_t *reent, int fd, void *buf, size_t count) {
  * - gettimeofday_r - Get the date and time
  *
  */
-int		_gettimeofday_r(reent_t *reent, struct timeval *tv, void *tzvp) {
-	uint64_t	unixTime;
+int     _gettimeofday_r(reent_t *reent, struct timeval *tv, void *tzvp) {
+    uint64_t    unixTime;
 
-	UNUSED(reent);
-	UNUSED(tzvp);
+    UNUSED(reent);
+    UNUSED(tzvp);
 
 // Read the 64-bit time @ 1-us resolution
 // Extract the seconds and the micro-seconds
 
-	calendar_readUnixTime(KFROM_TIMER, &unixTime);
+    calendar_readUnixTime(KFROM_TIMER, &unixTime);
 
-	tv->tv_sec  = (time_t)(unixTime / CLOCKS_PER_SEC);
-	tv->tv_usec = (suseconds_t)(unixTime % CLOCKS_PER_SEC);
-	return (0);
+    tv->tv_sec  = (time_t)(unixTime / CLOCKS_PER_SEC);
+    tv->tv_usec = (suseconds_t)(unixTime % CLOCKS_PER_SEC);
+    return (0);
 }
 
 /*
@@ -326,27 +326,27 @@ int		_gettimeofday_r(reent_t *reent, struct timeval *tv, void *tzvp) {
  * - times - Get process times
  *
  */
-clock_t		_times_r(reent_t *reent, struct tms *buf) {
-	struct timeval	tv = { 0, 0 };
+clock_t     _times_r(reent_t *reent, struct tms *buf) {
+    struct timeval  tv = { 0, 0 };
 
-	#if (KKERN_WITH_STATISTICS_S == true)
-	proc_t	*process;
+    #if (KKERN_WITH_STATISTICS_S == true)
+    proc_t  *process;
 
-	kern_getProcessRun(&process);
+    kern_getProcessRun(&process);
 
-	PRIVILEGE_ELEVATE;
-	buf->tms_utime	= (clock_t) process->oStatistic.oTimePAvg;
-	buf->tms_stime	= (clock_t)(process->oStatistic.oTimeKAvg + process->oStatistic.oTimeEAvg);
-	buf->tms_cutime	= (clock_t) process->oStatistic.oTimePCum;
-	buf->tms_cstime	= (clock_t)(process->oStatistic.oTimeKCum + process->oStatistic.oTimeECum);
-	PRIVILEGE_RESTORE;
+    PRIVILEGE_ELEVATE;
+    buf->tms_utime  = (clock_t) process->oStatistic.oTimePAvg;
+    buf->tms_stime  = (clock_t)(process->oStatistic.oTimeKAvg + process->oStatistic.oTimeEAvg);
+    buf->tms_cutime = (clock_t) process->oStatistic.oTimePCum;
+    buf->tms_cstime = (clock_t)(process->oStatistic.oTimeKCum + process->oStatistic.oTimeECum);
+    PRIVILEGE_RESTORE;
 
-	#else
-	*buf = (struct tms){ 0 };
-	#endif
+    #else
+    *buf = (struct tms){ 0 };
+    #endif
 
-	_gettimeofday_r(reent, &tv, nullptr);
-	return ((clock_t)tv.tv_usec);
+    _gettimeofday_r(reent, &tv, nullptr);
+    return ((clock_t)tv.tv_usec);
 }
 
 // Newlib generic functions
@@ -358,11 +358,11 @@ clock_t		_times_r(reent_t *reent, struct tms *buf) {
  * - isatty - Test whether a file descriptor refers to a terminal
  *
  */
-int		_isatty_r(reent_t *reent, int fd) {
+int     _isatty_r(reent_t *reent, int fd) {
 
-	UNUSED(reent);
+    UNUSED(reent);
 
-	return ((fd <= 2) ? (1) : (0));
+    return ((fd <= 2) ? (1) : (0));
 }
 
 /*
@@ -371,12 +371,12 @@ int		_isatty_r(reent_t *reent, int fd) {
  * - wait - Wait for a child process to stop or terminate
  *
  */
-int		_wait_r(reent_t *reent, const int *stat_loc) {
+int     _wait_r(reent_t *reent, const int *stat_loc) {
 
-	UNUSED(stat_loc);
+    UNUSED(stat_loc);
 
-	reent->_errno = ECHILD;
-	return (-1);
+    reent->_errno = ECHILD;
+    return (-1);
 }
 
 /*
@@ -385,9 +385,9 @@ int		_wait_r(reent_t *reent, const int *stat_loc) {
  * - errno - Number of last error
  *
  */
-int		*__errno(void) {
+int     *__errno(void) {
 
-	return (&_impure_ptr->_errno);
+    return (&_impure_ptr->_errno);
 }
 
 /*
@@ -396,10 +396,10 @@ int		*__errno(void) {
  * - fork - Create a new process
  *
  */
-int		_fork_r(reent_t *reent) {
+int     _fork_r(reent_t *reent) {
 
-	reent->_errno = ENOTSUP;
-	return (-1);
+    reent->_errno = ENOTSUP;
+    return (-1);
 }
 
 /*
@@ -408,13 +408,13 @@ int		_fork_r(reent_t *reent) {
  * - stat - Get file status
  *
  */
-int		_stat_r(reent_t *reent, const char_t *path, struct stat *pstat) {
+int     _stat_r(reent_t *reent, const char_t *path, struct stat *pstat) {
 
-	UNUSED(reent);
-	UNUSED(path);
+    UNUSED(reent);
+    UNUSED(path);
 
-	pstat->st_mode = S_IFCHR;
-	return (0);
+    pstat->st_mode = S_IFCHR;
+    return (0);
 }
 
 /*
@@ -423,13 +423,13 @@ int		_stat_r(reent_t *reent, const char_t *path, struct stat *pstat) {
  * - fstat - Get file status
  *
  */
-int		_fstat_r(reent_t *reent, int fd, struct stat *pstat) {
+int     _fstat_r(reent_t *reent, int fd, struct stat *pstat) {
 
-	UNUSED(reent);
-	UNUSED(fd);
+    UNUSED(reent);
+    UNUSED(fd);
 
-	pstat->st_mode = S_IFCHR;
-	return (0);
+    pstat->st_mode = S_IFCHR;
+    return (0);
 }
 
 /*
@@ -438,13 +438,13 @@ int		_fstat_r(reent_t *reent, int fd, struct stat *pstat) {
  * - link - Call the link function to create a link to a file
  *
  */
-int		_link_r(reent_t *reent, const char_t *oldpath, const char_t *newpath) {
+int     _link_r(reent_t *reent, const char_t *oldpath, const char_t *newpath) {
 
-	UNUSED(oldpath);
-	UNUSED(newpath);
+    UNUSED(oldpath);
+    UNUSED(newpath);
 
-	reent->_errno = EMLINK;
-	return (-1);
+    reent->_errno = EMLINK;
+    return (-1);
 }
 
 /*
@@ -453,12 +453,12 @@ int		_link_r(reent_t *reent, const char_t *oldpath, const char_t *newpath) {
  * - unlink - Delete a name and possibly the file it refers to
  *
  */
-int		_unlink_r(reent_t *reent, const char_t *pathname) {
+int     _unlink_r(reent_t *reent, const char_t *pathname) {
 
-	UNUSED(pathname);
+    UNUSED(pathname);
 
-	reent->_errno = EMLINK;
-	return (-1);
+    reent->_errno = EMLINK;
+    return (-1);
 }
 
 /*
@@ -467,14 +467,14 @@ int		_unlink_r(reent_t *reent, const char_t *pathname) {
  * - lseek - Reposition read/write file offset
  *
  */
-off_t	_lseek_r(reent_t *reent, int filedes, off_t offset, int whence) {
+off_t   _lseek_r(reent_t *reent, int filedes, off_t offset, int whence) {
 
-	UNUSED(reent);
-	UNUSED(filedes);
-	UNUSED(offset);
-	UNUSED(whence);
+    UNUSED(reent);
+    UNUSED(filedes);
+    UNUSED(offset);
+    UNUSED(whence);
 
-	return (0);
+    return (0);
 }
 
 /*
@@ -483,18 +483,18 @@ off_t	_lseek_r(reent_t *reent, int filedes, off_t offset, int whence) {
  * - getpid - Get the process ID
  *
  */
-int		_getpid_r(reent_t *reent) {
-	int			id;
-	uint32_t	core;
-	proc_t		*process;
+int     _getpid_r(reent_t *reent) {
+    int         id;
+    uint32_t    core;
+    proc_t      *process;
 
-	UNUSED(reent);
+    UNUSED(reent);
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	kern_getProcessRun(&process);
-	id = (int)(((uintptr_t)process - (uintptr_t)&vKern_proc[core][0]) / sizeof(proc_t));
-	return (id);
+    kern_getProcessRun(&process);
+    id = (int)(((uintptr_t)process - (uintptr_t)&vKern_proc[core][0]) / sizeof(proc_t));
+    return (id);
 }
 
 /*
@@ -503,18 +503,18 @@ int		_getpid_r(reent_t *reent) {
  * - kill - Send signal to a process
  *
  */
-int		_kill_r(reent_t *reent, int pid, int sig) {
-	proc_t		*process;
-	uint32_t	core;
+int     _kill_r(reent_t *reent, int pid, int sig) {
+    proc_t      *process;
+    uint32_t    core;
 
-	UNUSED(reent);
-	UNUSED(sig);
+    UNUSED(reent);
+    UNUSED(sig);
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	process = (proc_t *)(((uintptr_t)pid * (uintptr_t)sizeof(proc_t)) + (uintptr_t)&vKern_proc[core][0]);
-	kern_killProcess(process);
-	return (0);
+    process = (proc_t *)(((uintptr_t)pid * (uintptr_t)sizeof(proc_t)) + (uintptr_t)&vKern_proc[core][0]);
+    kern_killProcess(process);
+    return (0);
 }
 
 /*
@@ -523,19 +523,14 @@ int		_kill_r(reent_t *reent, int pid, int sig) {
  * - exit - Call the crt0 exit
  *
  */
-void	__attribute__ ((noreturn)) _exit(int number) {
+void    __attribute__ ((noreturn)) _exit(int number) {
 
-	crt0_exit(number);
-	while (true) { ; }
+    crt0_exit(number);
+    while (true) { ; }
 }
 
 // Newlib allocator functions
 // --------------------------
-
-// Make happy the linker.
-// sbrk is not used but "end" sometimes need to be defined
-
-uint32_t	end;
 
 /*
  * \brief _sbrk_r
@@ -543,15 +538,15 @@ uint32_t	end;
  * - sbrk - Change data segment size
  *
  */
-void	*_sbrk_r(reent_t *reent, ptrdiff_t increment) {
+void    *_sbrk_r(reent_t *reent, ptrdiff_t increment) {
 
-	UNUSED(increment);
+    UNUSED(increment);
 
-	reent->_errno = ENOMEM;
+    reent->_errno = ENOMEM;
 
 // cppcheck-suppress premium-invalidPointerCast
 //
-	return (void *)(uintptr_t)-1;
+    return (void *)(uintptr_t)-1;
 }
 
 /*
@@ -560,18 +555,18 @@ void	*_sbrk_r(reent_t *reent, ptrdiff_t increment) {
  * - malloc - Allocate a memory block
  *
  */
-void	*__wrap__malloc_r(reent_t *reent, size_t size) {
-	void	*address;
+void    *__wrap__malloc_r(reent_t *reent, size_t size) {
+    void    *address;
 
-	UNUSED(reent);
+    UNUSED(reent);
 
-	address = memo_malloc(KMEMO_ALIGN_8, ((uint32_t)size * sizeof(uint8_t)), "__wrap__malloc_r");
-	if (address == nullptr) {
-		reent->_errno = ENOMEM;
-		return (nullptr);
-	}
+    address = memo_malloc(KMEMO_ALIGN_8, ((uint32_t)size * sizeof(uint8_t)), "__wrap__malloc_r");
+    if (address == nullptr) {
+        reent->_errno = ENOMEM;
+        return (nullptr);
+    }
 
-	return (address);
+    return (address);
 }
 
 /*
@@ -580,11 +575,11 @@ void	*__wrap__malloc_r(reent_t *reent, size_t size) {
  * - free - Release a memory block
  *
  */
-void	__wrap__free_r(reent_t *reent, void *address) {
+void    __wrap__free_r(reent_t *reent, void *address) {
 
-	UNUSED(reent);
+    UNUSED(reent);
 
-	memo_free(address);
+    memo_free(address);
 }
 
 /*
@@ -593,18 +588,18 @@ void	__wrap__free_r(reent_t *reent, void *address) {
  * - realloc - Realloc a memory block
  *
  */
-void	*__wrap__realloc_r(reent_t *reent, void *address, size_t size) {
-	void	*newAddress;
+void    *__wrap__realloc_r(reent_t *reent, void *address, size_t size) {
+    void    *newAddress;
 
-	UNUSED(reent);
+    UNUSED(reent);
 
-	newAddress = memo_realloc(KMEMO_ALIGN_8, address, (uint32_t)size, "__wrap__realloc_r");
-	if (newAddress == nullptr) {
-		reent->_errno = ENOMEM;
-		return (nullptr);
-	}
+    newAddress = memo_realloc(KMEMO_ALIGN_8, address, (uint32_t)size, "__wrap__realloc_r");
+    if (newAddress == nullptr) {
+        reent->_errno = ENOMEM;
+        return (nullptr);
+    }
 
-	return (newAddress);
+    return (newAddress);
 }
 
 /*
@@ -613,32 +608,32 @@ void	*__wrap__realloc_r(reent_t *reent, void *address, size_t size) {
  * - calloc - Allocate a memory block and set the block to 0
  *
  */
-void	*__wrap__calloc_r(reent_t *reent, size_t num, size_t size) {
-	void	*address;
+void    *__wrap__calloc_r(reent_t *reent, size_t num, size_t size) {
+    void    *address;
 
-	UNUSED(reent);
+    UNUSED(reent);
 
-	address = memo_malloc(KMEMO_ALIGN_8, ((uint32_t)((num * size) * sizeof(uint8_t))), "__wrap__calloc_r");
-	if (address == nullptr) {
-		reent->_errno = ENOMEM;
-		return (nullptr);
-	}
+    address = memo_malloc(KMEMO_ALIGN_8, ((uint32_t)((num * size) * sizeof(uint8_t))), "__wrap__calloc_r");
+    if (address == nullptr) {
+        reent->_errno = ENOMEM;
+        return (nullptr);
+    }
 
-	memset(address, 0u, (num * size));
-	return (address);
+    memset(address, 0u, (num * size));
+    return (address);
 }
 
 // This variable is supposed to only be used in relation to shared libraries.
 // However, some standard library C++ functions related to construction and
 // destruction seem to require it
 
-const void	*const	__dso_handle = nullptr;
+const void  *const  __dso_handle = nullptr;
 
 // Called in relation to global C++ destructors.
 // This will never be used, as the system will never exit properly.
 // However, some standard libraries still require an implementation of this function
 
-void	_fini(void) {
+void    _fini(void) {
 
 }
 
@@ -651,27 +646,27 @@ void	_fini(void) {
  * - Write a string to the comm device
  *
  */
-static	_ssize_t	local_write(serialManager_t serialManager, const void *buf, size_t count) {
-			uint8_t		output[KNEWLIB_LN_OUTPUT_BUFFER + 2];
-			uint32_t	i, j = 0u;
-	const	uint8_t		*wkAscii;
+static  _ssize_t    local_write(serialManager_t serialManager, const void *buf, size_t count) {
+            uint8_t     output[KNEWLIB_LN_OUTPUT_BUFFER + 2];
+            uint32_t    i, j = 0u;
+    const   uint8_t     *wkAscii;
 
-	wkAscii = (const uint8_t *)buf;
+    wkAscii = (const uint8_t *)buf;
 
-	for (i = 0u; i < count; i++) {
-		output[j] = wkAscii[i];
+    for (i = 0u; i < count; i++) {
+        output[j] = wkAscii[i];
 
-		j++;
-		if (j >= KNEWLIB_LN_OUTPUT_BUFFER) {
-			local_outLine(serialManager, output, j);
-			j = 0u;
-		}
-	}
+        j++;
+        if (j >= KNEWLIB_LN_OUTPUT_BUFFER) {
+            local_outLine(serialManager, output, j);
+            j = 0u;
+        }
+    }
 
-	if (j > 0u) {
-		local_outLine(serialManager, output, j);
-	}
-	return ((_ssize_t)count);
+    if (j > 0u) {
+        local_outLine(serialManager, output, j);
+    }
+    return ((_ssize_t)count);
 }
 
 /*
@@ -680,23 +675,23 @@ static	_ssize_t	local_write(serialManager_t serialManager, const void *buf, size
  * - Write a string to the comm device
  *
  */
-static	void	local_outLine(serialManager_t serialManager, const uint8_t *output, uint32_t size) {
-	int32_t		status;
+static  void    local_outLine(serialManager_t serialManager, const uint8_t *output, uint32_t size) {
+    int32_t     status;
 
-	while (true) {
-		status = serial_write(serialManager, output, size);
-		if (status != KERR_SERIAL_NOERR) {
-			kern_suspendProcess(1u);
-		}
-		else {
+    while (true) {
+        status = serial_write(serialManager, output, size);
+        if (status != KERR_SERIAL_NOERR) {
+            kern_suspendProcess(1u);
+        }
+        else {
 
 // Give some time to allow the manager to send the data
 // before sending another bloc
 
-			kern_suspendProcess(1u);
-			return;
-		}
-	}
+            kern_suspendProcess(1u);
+            return;
+        }
+    }
 }
 
 /*
@@ -705,25 +700,25 @@ static	void	local_outLine(serialManager_t serialManager, const uint8_t *output, 
  * - Read a string to the comm device
  *
  */
-static	_ssize_t	local_read(serialManager_t serialManager, void *buf, size_t count) {
-	uint8_t		*ascii;
-	uint32_t	i;
-	bool		terminate = false;
+static  _ssize_t    local_read(serialManager_t serialManager, void *buf, size_t count) {
+    uint8_t     *ascii;
+    uint32_t    i;
+    bool        terminate = false;
 
-	i = (uint32_t)count;
-	if (count > 0u) {
-		ascii = (uint8_t *)buf;
+    i = (uint32_t)count;
+    if (count > 0u) {
+        ascii = (uint8_t *)buf;
 
-		i = 0u;
-		do {
-			*(ascii + i) = local_inbyte(serialManager);
-			if ((*(ascii + i) == '\n') || (*(ascii + i) == '\r')) {
-				terminate = true;
-			}
-			i++;
-		} while ((i < (uint32_t)count) && (terminate == false));
-	}
-	return ((_ssize_t)i);
+        i = 0u;
+        do {
+            *(ascii + i) = local_inbyte(serialManager);
+            if ((*(ascii + i) == '\n') || (*(ascii + i) == '\r')) {
+                terminate = true;
+            }
+            i++;
+        } while ((i < (uint32_t)count) && (terminate == false));
+    }
+    return ((_ssize_t)i);
 }
 
 /*
@@ -732,20 +727,20 @@ static	_ssize_t	local_read(serialManager_t serialManager, void *buf, size_t coun
  * - Read a byte from the comm device
  *
  */
-static	uint8_t	local_inbyte(serialManager_t serialManager) {
-	int32_t		status;
-	uint32_t	size;
-    uint8_t		byte = 0u;
+static  uint8_t local_inbyte(serialManager_t serialManager) {
+    int32_t     status;
+    uint32_t    size;
+    uint8_t     byte = 0u;
 
-	do {
-		kern_suspendProcess(1u);
-		size = 1u;
-		status = serial_read(serialManager, &byte, &size);
-	} while (status != KERR_SERIAL_NOERR);
+    do {
+        kern_suspendProcess(1u);
+        size = 1u;
+        status = serial_read(serialManager, &byte, &size);
+    } while (status != KERR_SERIAL_NOERR);
 
-	if (byte > 0x7Fu) { byte = (uint8_t)'?'; }
+    if (byte > 0x7Fu) { byte = (uint8_t)'?'; }
 
-	return (byte);
+    return (byte);
 }
 // NOLINTEND(bugprone-reserved-identifier,cert-dcl37-c,cert-dcl51-cpp)
 

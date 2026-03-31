@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		stub for the connection of the "urt0" manager to the uart device.
+; Project:  uKOS-X
+; Goal:     stub for the connection of the "urt0" manager to the uart device.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +46,7 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include    "uKOS.h"
 
 // Model callbacks
 // ---------------
@@ -57,11 +57,11 @@
  * - Enable the device (clock)
  *
  */
-static	void	cb_enable_C0(void) {
+static  void    cb_enable_C0(void) {
 
 }
 
-static	void	cb_enable_C1(void) {
+static  void    cb_enable_C1(void) {
 
 }
 
@@ -72,14 +72,14 @@ static	void	cb_enable_C1(void) {
  *   If CTS =  1, then disable the uart TX interruptions
  *
  */
-static	bool	cb_CTSCheck_C0(void) {
+static  bool    cb_CTSCheck_C0(void) {
 
-	return (true);
+    return (true);
 }
 
-static	bool	cb_CTSCheck_C1(void) {
+static  bool    cb_CTSCheck_C1(void) {
 
-	return (true);
+    return (true);
 }
 
 /*
@@ -89,90 +89,92 @@ static	bool	cb_CTSCheck_C1(void) {
  *   i.e the hardware CTS interruption   \__
  *
  */
-static	void	cb_init_C0(void) {
+static  void    cb_init_C0(void) {
 
 }
 
-static	void	cb_init_C1(void) {
+static  void    cb_init_C1(void) {
 
 }
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
 
-#define	UART_C0					REG(UART0)
-#define	UART_C1					REG(UART1)
-#define	UART_VECTOR_NUMBER_C0	UART0_IRQ_C0_IRQn
-#define	UART_VECTOR_NUMBER_C1	UART1_IRQ_C1_IRQn
-#define	UART_FREQUENCY_C0		KFREQUENCY_AHB
-#define	UART_FREQUENCY_C1		KFREQUENCY_AHB
-#define	KUART_SEMAPHORE_RX_C0	KURT0_SEMAPHORE_RX
-#define	KUART_SEMAPHORE_RX_C1	KURT0_SEMAPHORE_RX
-#define	KUART_SEMAPHORE_TX_C0	KURT0_SEMAPHORE_TX
-#define	KUART_SEMAPHORE_TX_C1	KURT0_SEMAPHORE_TX
+#define UART_C0                 REG(UART0)
+#define UART_C1                 REG(UART1)
+#define UART_VECTOR_NUMBER_C0   UART0_IRQ_C0_IRQn
+#define UART_VECTOR_NUMBER_C1   UART1_IRQ_C1_IRQn
+#define UART_FREQUENCY_C0       KFREQUENCY_AHB
+#define UART_FREQUENCY_C1       KFREQUENCY_AHB
+#define KUART_SEMAPHORE_RX_C0   KURT0_SEMAPHORE_RX
+#define KUART_SEMAPHORE_RX_C1   KURT0_SEMAPHORE_RX
+#define KUART_SEMAPHORE_TX_C0   KURT0_SEMAPHORE_TX
+#define KUART_SEMAPHORE_TX_C1   KURT0_SEMAPHORE_TX
 
-#define	KUART_SZ_TX_BUF_C0		64u
-#define	KUART_SZ_TX_BUF_C1		64u
-#define	KUART_SZ_RX_BUF_C0		128u
-#define	KUART_SZ_RX_BUF_C1		128u
+#define KUART_SZ_TX_BUF_C0      64u
+#define KUART_SZ_TX_BUF_C1      64u
+#define KUART_SZ_RX_BUF_C0      128u
+#define KUART_SZ_RX_BUF_C1      128u
 
-#define	KUART_SEMA_RX_C0_S
-#define	KUART_SEMA_RX_C1_S
-#define	KUART_SEMA_TX_C0_S
-#define	KUART_SEMA_TX_C1_S
+#define KUART_SEMA_RX_C0_S
+#define KUART_SEMA_RX_C1_S
+#define KUART_SEMA_TX_C0_S
+#define KUART_SEMA_TX_C1_S
 
-#include	"model_uart_C0.c_inc"
-#include	"model_uart_C1.c_inc"
+#include    "model_uart_C0.c_inc"
+#include    "model_uart_C1.c_inc"
 
-void	stub_urt0_init(void) {
-	uint32_t	core;
+int32_t stub_urt0_init(void) {
+    uint32_t    core;
+    int32_t     status;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	if (core == KCORE_0) { model_uart_init_C0(); }
-	else				 { model_uart_init_C1(); }
+    if (core == KCORE_0) { status = model_uart_init_C0(); }
+    else                 { status = model_uart_init_C1(); }
+    return (status);
 }
 
-int32_t	stub_urt0_configure(const urtxCnf_t *configure) {
-	uint32_t	core;
-	int32_t		status;
+int32_t stub_urt0_configure(const urtxCnf_t *configure) {
+    uint32_t    core;
+    int32_t     status;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	if (core == KCORE_0) { status = model_uart_configure_C0(configure); }
-	else				 { status = model_uart_configure_C1(configure); }
-	return (status);
+    if (core == KCORE_0) { status = model_uart_configure_C0(configure); }
+    else                 { status = model_uart_configure_C1(configure); }
+    return (status);
 }
 
-int32_t	stub_urt0_write(const uint8_t *buffer, uint32_t size) {
-	uint32_t	core;
-	int32_t		status;
+int32_t stub_urt0_write(const uint8_t *buffer, uint32_t size) {
+    uint32_t    core;
+    int32_t     status;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	if (core == KCORE_0) { status = model_uart_write_C0(buffer, size); }
-	else				 { status = model_uart_write_C1(buffer, size); }
-	return (status);
+    if (core == KCORE_0) { status = model_uart_write_C0(buffer, size); }
+    else                 { status = model_uart_write_C1(buffer, size); }
+    return (status);
 }
 
-int32_t	stub_urt0_read(uint8_t *buffer, uint32_t *size) {
-	uint32_t	core;
-	int32_t		status;
+int32_t stub_urt0_read(uint8_t *buffer, uint32_t *size) {
+    uint32_t    core;
+    int32_t     status;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	if (core == KCORE_0) { status = model_uart_read_C0(buffer, size); }
-	else				 { status = model_uart_read_C1(buffer, size); }
-	return (status);
+    if (core == KCORE_0) { status = model_uart_read_C0(buffer, size); }
+    else                 { status = model_uart_read_C1(buffer, size); }
+    return (status);
 }
 
-int32_t	stub_urt0_flush(void) {
-	uint32_t	core;
-	int32_t		status;
+int32_t stub_urt0_flush(void) {
+    uint32_t    core;
+    int32_t     status;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	if (core == KCORE_0) { status = model_uart_flush_C0(); }
-	else				 { status = model_uart_flush_C1(); }
-	return (status);
+    if (core == KCORE_0) { status = model_uart_flush_C0(); }
+    else                 { status = model_uart_flush_C1(); }
+    return (status);
 }

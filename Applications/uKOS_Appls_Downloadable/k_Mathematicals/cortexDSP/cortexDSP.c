@@ -120,8 +120,8 @@ MODULE(
 
 // Prototypes
 
-__attribute__ ((always_inline)) static __inline void local_cumulate32(int32_t *value, int16_t a, int16_t b);
-__attribute__ ((always_inline)) static __inline void local_cumulate64(int64_t *value, int32_t a, int32_t b);
+__attribute__ ((always_inline)) static inline void local_cumulate32(int32_t *value, int16_t a, int16_t b);
+__attribute__ ((always_inline)) static inline void local_cumulate64(int64_t *value, int32_t a, int32_t b);
 
 /*
  * \brief aProcess 0
@@ -300,7 +300,7 @@ MAIN_ENTRY(argc, argv[]) {
 
 // NOLINTBEGIN(readability-non-const-parameter)
 //
-__attribute__ ((always_inline)) static __inline void local_cumulate32(int32_t *value, int16_t a, int16_t b) {
+__attribute__ ((always_inline)) static inline void local_cumulate32(int32_t *value, int16_t a, int16_t b) {
 
     __asm volatile ("smlabb %0, %1, %2, %3" : "=r" (*value) : "r" (a), "r" (b), "r" (*value));
 }
@@ -312,10 +312,10 @@ __attribute__ ((always_inline)) static __inline void local_cumulate32(int32_t *v
  *   - value.64 = value.64 + (a.32 * b.32).
  *
  */
-__attribute__ ((always_inline)) static __inline void local_cumulate64(int64_t *value, int32_t a, int32_t b) {
+__attribute__ ((always_inline)) static inline void local_cumulate64(int64_t *value, int32_t a, int32_t b) {
     uint32_t    h, l;
 
-    h = (uint32_t)(*value>>32); l = (uint32_t)(*value & 0xFFFFFFFFul);
+    h = (uint32_t)(*value>>32); l = (uint32_t)(*value & 0xFFFFFFFFUl);
 
     __asm volatile ("smlal %0, %1, %2, %3" : "=r" (l), "=r" (h) : "r" (a), "r" (b), "0" (l), "1" (h));
     *value = (int64_t)(((uint64_t)h<<32u) | l);

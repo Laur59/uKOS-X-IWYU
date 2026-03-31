@@ -144,6 +144,8 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     UNUSED(argc);
     UNUSED(argv);
 
+    PRIVILEGE_ELEVATE;
+
     (void)dprintf(KSYST, "Memory information.\n");
 
 // This because of a gcc bug
@@ -236,7 +238,14 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     (void)dprintf(KSYST, "Section bss:       addr = 0x%016"PRIXPTR", used = 0x%016"PRIXPTR" [Bytes]\n\n", (uintptr_t)linker_stBSS,    ((uintptr_t)linker_enBSS    - (uintptr_t)linker_stBSS));
     #endif
 
+    (void)dprintf(KSYST, "Section rodata:    addr = 0x%016"PRIXPTR", used = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_stRODATA, ((uintptr_t)linker_enRODATA - (uintptr_t)linker_stRODATA));
+    (void)dprintf(KSYST, "Section data:      addr = 0x%016"PRIXPTR", used = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_stDATA,   ((uintptr_t)linker_enDATA   - (uintptr_t)linker_stDATA));
+    (void)dprintf(KSYST, "Section bss:       addr = 0x%016"PRIXPTR", used = 0x%016"PRIXPTR" [Bytes]\n\n", (uintptr_t)linker_stBSS,    ((uintptr_t)linker_enBSS    - (uintptr_t)linker_stBSS));
+    #endif
+
     local_displayHeap(linker_stHeap, nbBlocks, usdMemory, length);
+
+    PRIVILEGE_RESTORE;
     return (EXIT_OS_SUCCESS_CLI);
 }
 

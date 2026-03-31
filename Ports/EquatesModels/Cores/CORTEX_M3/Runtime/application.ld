@@ -9,7 +9,7 @@
 ; Modifs:
 ;
 ; Project:  uKOS-X
-; Goal:     Commun Linker description for uKOS-X applications.
+; Goal:     Common Linker description for uKOS-X applications.
 ;           User only support
 ;
 ;                       CODE
@@ -100,11 +100,11 @@ SECTIONS {
     } > prgm_code
 
     .ARM.extab : {
-        *(.ARM.extab* .gnu.linkonce.armextab.*)
+        *(.ARM.extab*)
     } > prgm_code
 
     .ARM.exidx : {
-        *(.ARM.exidx* .gnu.linkonce.armexidx.*)
+        *(.ARM.exidx*)
     } > prgm_code
 
     .rodata : {
