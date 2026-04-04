@@ -75,7 +75,7 @@ int32_t model_usart_init(void) {
     USART->CR1_FIFO |= USART_CR1_FIFO_UE;
 
     cb_init();
-    return (KERR_SERIAL_NOERR);
+    return KERR_SERIAL_NOERR;
 }
 
 /*
@@ -184,7 +184,7 @@ int32_t model_usart_write(const uint8_t *buffer, uint32_t size) {
     }
     busy = false;
     terminate = false;
-    return (KERR_SERIAL_NOERR);
+    return KERR_SERIAL_NOERR;
 }
 
 /*

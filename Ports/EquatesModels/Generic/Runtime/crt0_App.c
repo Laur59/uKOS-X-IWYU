@@ -114,7 +114,7 @@ int32_t     aStart(uint32_t argc, const char_t *argv[]) {
         if (aFLASH_signature[i] != aSignature[i]) {
 
             PRIVILEGE_RESTORE;
-            return (EXIT_OS_FAILURE_CRT0);
+            return EXIT_OS_FAILURE_CRT0;
         }
 
     }
@@ -153,7 +153,7 @@ int32_t     aStart(uint32_t argc, const char_t *argv[]) {
         exit(EXIT_OS_SUCCESS);
     }
 
-    return (status);
+    return status;
 }
 
 /*

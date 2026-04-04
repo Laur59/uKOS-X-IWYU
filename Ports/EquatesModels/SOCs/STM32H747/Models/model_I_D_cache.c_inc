@@ -358,5 +358,5 @@ static  inline  uint32_t local_clz(uint32_t data) {
         count++;
         mask >>= 1U;
     }
-    return (count);
+    return count;
   }

@@ -3,56 +3,8 @@
 #
 # Configuring options to build kernel and os
 
-# Function to derive SoC properties from SoC name
-#
-# This function automatically determines the PROVIDER and FAMILY from a SoC name,
-# eliminating redundant information in project CMakeLists.txt files.
-#
-# Arguments:
-#   SOC_NAME - Name of the SoC (e.g., STM32L4R5, STM32H743, nRF5340)
-#
-# Sets in parent scope:
-#   PROVIDER - Hardware provider (e.g., "st", "nordic")
-#   FAMILY   - Processor family (e.g., "l4", "h7", "nrf")
-#
-# Usage example:
-#   set(SOC STM32L4R5)
-#   derive_soc_properties(${SOC})
-#   # Now PROVIDER="st" and FAMILY="l4" are available
-function(derive_soc_properties SOC_NAME)
-    # STMicroelectronics processors
-    # Pattern: STM32[FGHLUWP][0-9]...
-    if(SOC_NAME MATCHES "^STM32([FGHLNUVWP][0-9])")
-        set(PROVIDER "st" PARENT_SCOPE)
-        # Extract family letter and first digit (e.g., "L4" -> "l4")
-        string(TOLOWER "${CMAKE_MATCH_1}" FAMILY_LOWER)
-        set(FAMILY "${FAMILY_LOWER}" PARENT_SCOPE)
-        message(STATUS "Derived properties for ${SOC_NAME}: PROVIDER=st, FAMILY=${FAMILY_LOWER}")
-        return()
-    endif()
-
-    # Nordic Semiconductor processors
-    # Pattern: nRF[0-9]...
-    if(SOC_NAME MATCHES "^nRF([0-9]+)")
-        set(PROVIDER "nordic" PARENT_SCOPE)
-        set(FAMILY "nrf" PARENT_SCOPE)
-        message(STATUS "Derived properties for ${SOC_NAME}: PROVIDER=nordic, FAMILY=nrf")
-        return()
-    endif()
-
-    # Raspberry Pi
-    # Pattern: rp[0-9]...
-    if(SOC_NAME MATCHES "^rp([0-9]+)")
-        set(PROVIDER "raspberrypi" PARENT_SCOPE)
-        set(FAMILY "pico2" PARENT_SCOPE)
-        message(STATUS "Derived properties for ${SOC_NAME}: PROVIDER=raspberrypi, FAMILY=pico2")
-        return()
-    endif()
-
-    # If no match found, issue a warning
-    message(WARNING "Could not derive PROVIDER and FAMILY from SOC name: ${SOC_NAME}")
-    message(WARNING "Please set PROVIDER and FAMILY manually, or extend derive_soc_properties()")
-endfunction()
+# TinyUSB integration (derive_soc_properties, add_TinyUSB)
+include(tinyusb)
 
 set(CMAKE_C_OUTPUT_EXTENSION_REPLACE 1)
 set(CMAKE_ASM_OUTPUT_EXTENSION_REPLACE 1)
@@ -113,6 +65,13 @@ set(TARGET_TRIPLE_MIDDLE unknown-none)
 #                       (integer and floating-point vector processing)
 #     mve.fp          - Enable Helium with explicit FP support
 #     nofp            - Disable floating point unit
+#
+#   CORTEX_M85:
+#     mve             - Enable Arm Helium M-Profile Vector Extension
+#                       (integer and floating-point vector processing)
+#     mve.fp          - Enable Helium with explicit FP support
+#     nofp            - Disable floating point unit
+#     pacbti          - Enable Pointer Authentication, Branch Target Identification
 #
 #   CORTEX_A7:
 #     (No optional features)
@@ -192,7 +151,7 @@ function(configure_arm_core)
         set(MCPU "cortex-m4")
         if(DEFINED CPU_FEATURES AND NOT "${CPU_FEATURES}" STREQUAL "")
             # CORTEX_M4_VALID_FEATURES
-            #   "nofp|Disable floating point unit|||"
+            #   "nofp|Disable floating point unit||"
             foreach(feature IN LISTS CPU_FEATURES)
                 if(${feature} STREQUAL "nofp")
                     set(MCPU "${MCPU}+nofp")
@@ -213,8 +172,8 @@ function(configure_arm_core)
         # Check for feature-based configuration
         if(DEFINED CPU_FEATURES AND NOT "${CPU_FEATURES}" STREQUAL "")
             # CORTEX_M7_VALID_FEATURES
-            #   "Double|Double-precision FPU|||"
-            #   "nofp|Disable floating point unit|||"
+            #   "Double|Double-precision FPU||"
+            #   "nofp|Disable floating point unit||"
             foreach(feature IN LISTS CPU_FEATURES)
                 if(${feature} STREQUAL "Double")
                     set(has_dp TRUE)
@@ -250,8 +209,8 @@ function(configure_arm_core)
         # Check for feature-based configuration
         if(DEFINED CPU_FEATURES AND NOT "${CPU_FEATURES}" STREQUAL "")
             # CORTEX_M33_VALID_FEATURES
-            #   "nodsp|Disable DSP instructions|||+nodsp"
-            #   "nofp|Disable floating point unit|||+nofp"
+            #   "nodsp|Disable DSP instructions||+nodsp"
+            #   "nofp|Disable floating point unit||+nofp"
             foreach(feature IN LISTS CPU_FEATURES)
                 if(${feature} STREQUAL "nodsp")
                     set(MCPU "${MCPU}+nodsp")
@@ -272,9 +231,9 @@ function(configure_arm_core)
         # Check for feature-based configuration
         if(DEFINED CPU_FEATURES AND NOT "${CPU_FEATURES}" STREQUAL "")
             # CORTEX_M55_VALID_FEATURES
-            #   "Helium|Helium M-Profile Vector Extension||MLPN_HAVE_HELIUM_FP_S|+mve"
-            #   "Double|Double precision FP support||MLPN_HAVE_HELIUM_FP_S|+mve.fp"
-            #   "nofp|Disable floating point unit|||+nofp"
+            #   "Helium|Helium M-Profile Vector Extension|MLPN_HAVE_HELIUM_FP_S|+mve"
+            #   "Double|Double precision FP support|MLPN_HAVE_HELIUM_FP_S|+mve.fp"
+            #   "nofp|Disable floating point unit||+nofp"
             foreach(feature IN LISTS CPU_FEATURES)
                 if(${feature} STREQUAL "Helium")
                     set(has_mve TRUE)
@@ -310,9 +269,9 @@ function(configure_arm_core)
         if(DEFINED CPU_FEATURES AND NOT "${CPU_FEATURES}" STREQUAL "")
             # CORTEX_M85_VALID_FEATURES
             #   "Helium|Helium M-Profile Vector Extension||MLPN_HAVE_HELIUM_FP_S|+mve"
-            #   "PACBTI|Pointer Authentication, Branch Target Identification|||+pacbti"
-            #   "Double|Double precision FP support||MLPN_HAVE_HELIUM_FP_S|+mve.fp"
-            #   "nofp|Disable floating point unit|||+nofp"
+            #   "PACBTI|Pointer Authentication, Branch Target Identification||+pacbti"
+            #   "Double|Double precision FP support|MLPN_HAVE_HELIUM_FP_S|+mve.fp"
+            #   "nofp|Disable floating point unit||+nofp"
             foreach(feature IN LISTS CPU_FEATURES)
                 if(${feature} STREQUAL "Helium")
                     set(has_mve TRUE)
@@ -492,4 +451,28 @@ macro(add_source_with_define the_list source_file)
         add_compile_definitions(${definition})
         file(APPEND "${ARTEFACTS_DIR}/FLASH.cnf" "-D${definition} ")
     endforeach()
+endmacro()
+
+# MicroPython Engine integration (MicroPython manager)
+macro(add_MicroPython)
+    add_compile_definitions(CONFIG_MAN_MICROPYTHON_S)
+    find_library(MICROPYTHON MicroPython ${PATH_UKOS}/Third_Parties/MicroPython/Library/${CORE})
+    file(APPEND "${ARTEFACTS_DIR}/FLASH.cnf" "-DCONFIG_MAN_MICROPYTHON_S ")
+    list(APPEND UKOS_COMPONENTS ${MICROPYTHON})
+endmacro()
+
+# FATFS (File system) integration
+macro(add_FatFs)
+    add_compile_definitions(CONFIG_MAN_FATFS_S)
+    find_library(FATFS FatFs ${PATH_UKOS}/Third_Parties/FatFs/Library/${CORE})
+    file(APPEND "${ARTEFACTS_DIR}/FLASH.cnf" "-DCONFIG_MAN_FATFS_S ")
+    list(APPEND UKOS_COMPONENTS ${FATFS})
+endmacro()
+
+# Graphic library integration (LVGL)
+macro(add_LVGL)
+    add_compile_definitions(SYSTEM_LVGL_S)
+    find_library(LVGL LVGL ${PATH_UKOS}/Third_Parties/LVGL/Library/${CORE}/${DISPLAY})
+    file(APPEND "${ARTEFACTS_DIR}/FLASH.cnf" "-DSYSTEM_LVGL_S ")
+    list(APPEND UKOS_COMPONENTS ${LVGL})
 endmacro()

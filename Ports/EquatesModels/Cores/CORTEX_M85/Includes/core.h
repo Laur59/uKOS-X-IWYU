@@ -42,7 +42,7 @@ __attribute__ ((always_inline)) static  inline  uint32_t    core_getBASEPRI_S(vo
     : "=r" (valBASEPRI)
     );
 
-    return (valBASEPRI);
+    return valBASEPRI;
 }
 
 /*
@@ -62,7 +62,7 @@ __attribute__ ((always_inline)) static  inline  uint32_t    core_getBASEPRI_NS(v
     : "=r" (valBASEPRI)
     );
 
-    return (valBASEPRI);
+    return valBASEPRI;
 }
 
 /*
@@ -120,7 +120,7 @@ __attribute__ ((always_inline)) static  inline  uintptr_t   core_getPSP_S(void) 
     : "=r" (stackPSP)
     );
 
-    return (stackPSP);
+    return stackPSP;
 }
 
 /*
@@ -140,7 +140,7 @@ __attribute__ ((always_inline)) static  inline  uintptr_t   core_getPSP_NS(void)
     : "=r" (stackPSP)
     );
 
-    return (stackPSP);
+    return stackPSP;
 }
 
 /*
@@ -198,7 +198,7 @@ __attribute__ ((always_inline)) static  inline  uintptr_t   core_getMSP_S(void) 
     : "=r" (stackMSP)
     );
 
-    return (stackMSP);
+    return stackMSP;
 }
 
 /*
@@ -218,7 +218,7 @@ __attribute__ ((always_inline)) static  inline  uintptr_t   core_getMSP_NS(void)
     : "=r" (stackMSP)
     );
 
-    return (stackMSP);
+    return stackMSP;
 }
 
 /*
@@ -276,7 +276,7 @@ __attribute__ ((always_inline)) static  inline  uint32_t    core_getCONTROL_S(vo
     : "=r" (valCONTROL)
     );
 
-    return (valCONTROL);
+    return valCONTROL;
 }
 
 /*
@@ -296,7 +296,7 @@ __attribute__ ((always_inline)) static  inline  uint32_t    core_getCONTROL_NS(v
     : "=r" (valCONTROL)
     );
 
-    return (valCONTROL);
+    return valCONTROL;
 }
 
 /*
@@ -354,7 +354,7 @@ __attribute__ ((always_inline)) static  inline  uintptr_t   core_getPSPLIM_S(voi
     : "=r" (valPSPLim)
     );
 
-    return (valPSPLim);
+    return valPSPLim;
 }
 
 /*
@@ -374,7 +374,7 @@ __attribute__ ((always_inline)) static  inline  uintptr_t   core_getPSPLIM_NS(vo
     : "=r" (valPSPLim)
     );
 
-    return (valPSPLim);
+    return valPSPLim;
 }
 
 /*
@@ -432,7 +432,7 @@ __attribute__ ((always_inline)) static  inline  uintptr_t   core_getMSPLIM_S(voi
     : "=r" (valMSPLim)
     );
 
-    return (valMSPLim);
+    return valMSPLim;
 }
 
 /*
@@ -452,7 +452,7 @@ __attribute__ ((always_inline)) static  inline  uintptr_t   core_getMSPLIM_NS(vo
     : "=r" (valMSPLim)
     );
 
-    return (valMSPLim);
+    return valMSPLim;
 }
 
 /*
@@ -510,7 +510,7 @@ __attribute__ ((always_inline)) static  inline  uintptr_t   core_getLR(void) {
     : "=r" (valLR)
     );
 
-    return (valLR);
+    return valLR;
 }
 
 /*
@@ -530,7 +530,7 @@ __attribute__ ((always_inline)) static  inline  uint32_t    core_getIPSR_S(void)
     : "=r" (valIPSR)
     );
 
-    return (valIPSR);
+    return valIPSR;
 }
 
 /*
@@ -550,5 +550,5 @@ __attribute__ ((always_inline)) static  inline  uint32_t    core_getIPSR_NS(void
     : "=r" (valIPSR)
     );
 
-    return (valIPSR);
+    return valIPSR;
 }

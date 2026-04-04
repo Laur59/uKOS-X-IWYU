@@ -152,7 +152,7 @@ __attribute__ ((always_inline)) static  inline  bool    spin_tryLockCore(coreloc
     core = GET_RUNNING_CORE;
 
     if (spin_tryLock(&lock->oLock)) {
-        return (true);
+        return true;
     }
 
     if (lock->oCount == 0) {
@@ -168,7 +168,7 @@ __attribute__ ((always_inline)) static  inline  bool    spin_tryLockCore(coreloc
         busy = true;
     }
     spin_unLock(&lock->oLock);
-    return (busy);
+    return busy;
 }
 
 /*
@@ -223,5 +223,5 @@ __attribute__ ((always_inline)) static  inline  bool    spin_tryLock(spinlock_t 
 // MISRA: no specific order
 
     state = atomic_flag_test_and_set(&lock->oFlag);
-    return (state);
+    return state;
 }

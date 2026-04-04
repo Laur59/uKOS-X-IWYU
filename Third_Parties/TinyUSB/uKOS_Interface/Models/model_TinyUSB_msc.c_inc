@@ -186,7 +186,7 @@ bool    tud_msc_test_unit_ready_cb(uint8_t lun) {
     }
 
     kern_unlockMutex(vTinyUSB_API[core]);
-    return (status);
+    return status;
 }
 
 /*

@@ -52,8 +52,6 @@ SECTIONS {
         linker_stTEXT_KERN_p = ABSOLUTE(.);
         libkern_p.a:*(.text .text.*)
         linker_enTEXT_KERN_p = ABSOLUTE(.);
-        lib*_p.a:*(EXCLUDE_FILE(libkern_p.a:*) .text .text.*)
-        linker_enPRIV = ABSOLUTE(.);
         *(.text .text.*)
         . = ALIGN(4);
         linker_enTEXT = ABSOLUTE(.);
@@ -86,6 +84,7 @@ SECTIONS {
     } > prgm_code
 
     .ARM.extab : {
+        . = ALIGN(4);
         *(.ARM.extab*)
     } > prgm_code
 
@@ -103,8 +102,7 @@ SECTIONS {
         linker_stRODATA_KERN_p = ABSOLUTE(.);
         libkern_p.a:*(.rodata .rodata.*)
         linker_enRODATA_KERN_p = ABSOLUTE(.);
-        lib*_p.a:*(EXCLUDE_FILE(libkern_p.a:*) .rodata .rodata.*)
-        *(.rodata*) /* User constants */
+        *(.rodata .rodata.*)
         . = ALIGN(4);
         linker_enRODATA = ABSOLUTE(.);
     } > prgm_code
@@ -127,11 +125,13 @@ SECTIONS {
     linker_stINDATA_p = ABSOLUTE(.);
 
     .data_p : AT (linker_stINDATA_p) {
+        . = ALIGN(4);
         linker_stDATA_p = ABSOLUTE(.);
         linker_stDATA_KERN_p = ABSOLUTE(.);
-        libkern_p.a:*(.data .data.* .data*)               /* Regular kernel data */
+        libkern_p.a:*(.data .data.*)
         linker_enDATA_KERN_p = ABSOLUTE(.);
-        lib*_p.a:*(EXCLUDE_FILE(libkern_p.a:*) .data .data.* .data*)
+        lib*_p.a:*(.data .data.*)
+        . = ALIGN(4);
         linker_enDATA_p = ABSOLUTE(.);
     } > prgm_data_p
 

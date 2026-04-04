@@ -77,16 +77,16 @@ int32_t model_imager_init(void) {
 
 // Initialise the used interfaces
 
-    status = cb_control(KIMG_INIT, 0U); if (status != KERR_IMAGER_NOERR) { return (status); }
-    status = local_initDCMI();          if (status != KERR_IMAGER_NOERR) { return (status); }
-    status = local_initDMA2();          if (status != KERR_IMAGER_NOERR) { return (status); }
+    status = cb_control(KIMG_INIT, 0U); if (status != KERR_IMAGER_NOERR) { return status; }
+    status = local_initDCMI();          if (status != KERR_IMAGER_NOERR) { return status; }
+    status = local_initDMA2();          if (status != KERR_IMAGER_NOERR) { return status; }
 
 // Create the semaphores
 
     kern_createSemaphore(aStrSemaphore_IM, 0, 1, &vSemaphore_IM);
     kern_createSemaphore(aStrSemaphore_VS, 0, 1, &vSemaphore_VS);
 
-    return (KERR_IMAGER_NOERR);
+    return KERR_IMAGER_NOERR;
 }
 
 /*
@@ -112,10 +112,10 @@ int32_t model_imager_configure(const imagerCnf_t *configure) {
 
 // Configure the manager
 
-    status = local_confMode(configure); if (status != KERR_IMAGER_NOERR) { return (status); }
-    status = local_confPixe(configure); if (status != KERR_IMAGER_NOERR) { return (status); }
-    status = local_confMemo(configure); if (status != KERR_IMAGER_NOERR) { return (status); }
-    status = local_confImag(configure); if (status != KERR_IMAGER_NOERR) { return (status); }
+    status = local_confMode(configure); if (status != KERR_IMAGER_NOERR) { return status; }
+    status = local_confPixe(configure); if (status != KERR_IMAGER_NOERR) { return status; }
+    status = local_confMemo(configure); if (status != KERR_IMAGER_NOERR) { return status; }
+    status = local_confImag(configure); if (status != KERR_IMAGER_NOERR) { return status; }
 
     DMA2->LIFCR = DMA_LIFCR_CTCIF1
                 | DMA_LIFCR_CHTIF1
@@ -130,7 +130,7 @@ int32_t model_imager_configure(const imagerCnf_t *configure) {
     if ((configure->oAcqMode & (uint8_t)~KIMAGER_SINGLE_BUFFER) == KIMAGER_SNAP) {
         kern_suspendProcess(10U);
     }
-    return (KERR_IMAGER_NOERR);
+    return KERR_IMAGER_NOERR;
 }
 
 /*
@@ -192,8 +192,8 @@ int32_t model_imager_acquisition(void) {
  */
 int32_t model_imager_read(volatile void **image) {
 
-    if (vPage == 0U) { *image = vImageE0; return (KERR_IMAGER_NOERR); }
-    else             { *image = vImageE1; return (KERR_IMAGER_NOERR); }
+    if (vPage == 0U) { *image = vImageE0; return KERR_IMAGER_NOERR; }
+    else             { *image = vImageE1; return KERR_IMAGER_NOERR; }
 }
 
 /*
@@ -227,12 +227,12 @@ int32_t model_imager_writeRegister(uint8_t registerNb, uint16_t value) {
 int32_t model_imager_standby(uint8_t mode) {
 
     if (vAcqMode != KIMAGER_SNAP) {
-        return (KERR_IMAGER_BDMOD);
+        return KERR_IMAGER_BDMOD;
     }
 
     if (mode == KIMAGER_STANDBY) { cb_control(KIMG_STANDBY, 0U); }
     else                         { cb_control(KIMG_NORMAL,  0U); }
-    return (KERR_IMAGER_NOERR);
+    return KERR_IMAGER_NOERR;
 }
 
 /*
@@ -265,7 +265,7 @@ static  int32_t local_initDCMI(void) {
     DCMI->IER    = 0x00000000U;
     DCMI->CWSTRT = (0U * DCMI_CWSTRT_VST_0)
                  | (0U * DCMI_CWSTRT_HOFFCNT_0);
-    return (KERR_IMAGER_NOERR);
+    return KERR_IMAGER_NOERR;
 }
 
 /*
@@ -310,7 +310,7 @@ static  int32_t local_initDMA2(void) {
     DMAMUX1->C9CR = 0x00000000U;
     DMAMUX1->C9CR = (75U * DMAMUX1_C9CR_DMAREQ_ID_0);
 
-    return (KERR_IMAGER_NOERR);
+    return KERR_IMAGER_NOERR;
 }
 
 /*
@@ -369,7 +369,7 @@ static  int32_t local_confMode(const imagerCnf_t *configure) {
             break;
         }
     }
-    return (KERR_IMAGER_NOERR);
+    return KERR_IMAGER_NOERR;
 }
 
 /*
@@ -409,7 +409,7 @@ static  int32_t local_confPixe(const imagerCnf_t *configure) {
             break;
         }
     }
-    return (KERR_IMAGER_NOERR);
+    return KERR_IMAGER_NOERR;
 }
 
 /*
@@ -448,7 +448,7 @@ static  int32_t local_confMemo(const imagerCnf_t *configure) {
         if (vImageE1 == nullptr) { status = KERR_IMAGER_NOMEM; }
     }
     DMA2->S1M0AR = (uint32_t)vRowXX;
-    return (status);
+    return status;
 }
 
 /*
@@ -462,14 +462,14 @@ static  int32_t local_confImag(const imagerCnf_t *configure) {
 
 // The crop window area
 
-    if ((configure->oNbRows + configure->oStRows) > KNB_ROWS) { return (KERR_IMAGER_CNERR); }
-    if ((configure->oNbCols + configure->oStCols) > KNB_COLS) { return (KERR_IMAGER_CNERR); }
+    if ((configure->oNbRows + configure->oStRows) > KNB_ROWS) { return KERR_IMAGER_CNERR; }
+    if ((configure->oNbCols + configure->oStCols) > KNB_COLS) { return KERR_IMAGER_CNERR; }
     DCMI->CWSIZE = (uint32_t)((configure->oNbRows - 1U)<<16U) | (configure->oNbCols - 1U);
     DCMI->CWSTRT = (uint32_t)( configure->oStRows      <<16U) | (configure->oStCols);
 
 // Configure the imager
 
-    status = cb_configure(configure); if (status != KERR_IMAGER_NOERR) { return (status); }
+    status = cb_configure(configure); if (status != KERR_IMAGER_NOERR) { return status; }
 
 // The semaphore mode
 
@@ -487,7 +487,7 @@ static  int32_t local_confImag(const imagerCnf_t *configure) {
     if (vHSyncCodeRoutine != nullptr) { DCMI->IER |= DCMI_IER_LINE_IE;  }
     if (vFrameCodeRoutine != nullptr) { DCMI->IER |= DCMI_IER_FRAME_IE; }
     if (vVSyncCodeRoutine != nullptr) { DCMI->IER |= DCMI_IER_VSYNC_IE; }
-    return (status);
+    return status;
 }
 
 /*

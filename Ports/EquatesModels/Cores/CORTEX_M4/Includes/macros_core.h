@@ -177,7 +177,7 @@
 #ifndef RETURN_INT_RESTORE
 #define RETURN_INT_RESTORE(status)                                                                                              \
                                 INTERRUPTION_RESTORE;                                                                           \
-                                return (status)
+                                return status
 #endif
 
 #ifndef INTERRUPTION_OFF_CRITICAL

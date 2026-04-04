@@ -10,6 +10,7 @@
 
 #include    "LSM9DS1/LSM9DS1.h"
 #include    "kern/kern.h"
+#include    "imu/imu.h"
 // os_errors.h is required for KERR_IMU0_NOERR
 #include    "os_errors.h"       // IWYU pragma: keep
 #include    "shared_spi0/shared_spi0.h"

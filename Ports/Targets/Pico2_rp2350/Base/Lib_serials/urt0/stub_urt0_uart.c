@@ -97,7 +97,7 @@ int32_t stub_urt0_init(void) {
 
     if (core == KCORE_0) { status = model_uart_init_C0(); }
     else                 { status = model_uart_init_C1(); }
-    return (status);
+    return status;
 }
 
 int32_t stub_urt0_configure(const urtxCnf_t *configure) {

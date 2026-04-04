@@ -81,7 +81,7 @@ int32_t model_uart_init_C0(void) {
     UART_C0->UARTCR    = UART_UARTCR_UARTEN | UART_UARTCR_RXE | UART_UARTCR_TXE;
 
     cb_init_C0();
-    return (KERR_SERIAL_NOERR);
+    return KERR_SERIAL_NOERR;
 }
 
 /*
@@ -196,7 +196,7 @@ int32_t model_uart_write_C0(const uint8_t *buffer, uint32_t size) {
     }
     busy = false;
     terminate = false;
-    return (KERR_SERIAL_NOERR);
+    return KERR_SERIAL_NOERR;
 }
 
 /*

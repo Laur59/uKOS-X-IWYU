@@ -54,7 +54,7 @@ int32_t model_lsM9ds1imu_init(void) {
     local_initImu();
     local_caliImu();
     cb_control(KIMU_RELEASE);
-    return (KERR_IMU_NOERR);
+    return KERR_IMU_NOERR;
 }
 
 /*
@@ -116,7 +116,7 @@ int32_t model_lsM9ds1imu_configure(const imuCnf_t *configure) {
 
     local_caliImu();
     cb_control(KIMU_RELEASE);
-    return (KERR_IMU_NOERR);
+    return KERR_IMU_NOERR;
 }
 
 /*
@@ -141,7 +141,7 @@ int32_t model_lsM9ds1imu_read(imuAccePack_t *accelerometer, imuGyroPack_t *gyros
     cb_readMagn(LSM9DS1_OUT_Y_L_M, xsb, 2U);      magnetometer->oMagn_Y =  (float64_t)((int16_t)(xsb[1]<<8U | xsb[0]) - vBiasMagn[1]) * vSensMagn;
     cb_readMagn(LSM9DS1_OUT_Z_L_M, xsb, 2U);      magnetometer->oMagn_Z =  (float64_t)((int16_t)(xsb[1]<<8U | xsb[0]) - vBiasMagn[2]) * vSensMagn;
     cb_control(KIMU_RELEASE);
-    return (KERR_IMU_NOERR);
+    return KERR_IMU_NOERR;
 }
 
 // Local routines

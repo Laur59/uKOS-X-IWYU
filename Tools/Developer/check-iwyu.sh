@@ -28,6 +28,12 @@ fi
 # Determine project directory
 readonly workspace="${0:A:h:h:h}"
 
+readonly mapping_file="${0:A:h}/iwyu-ukosx.imp"
+if [[ ! -f "$mapping_file" ]]; then
+    print -u2 "${RED}Error: IWYU mapping file not found: ${mapping_file}${NC}"
+    exit 1
+fi
+
 # Colours for messages
 readonly RED=$'\033[0;31m'
 readonly GREEN=$'\033[0;32m'
@@ -95,7 +101,7 @@ while IFS= read -r entry; do
     fi
 
     # Transform the command
-    transformed_cmd=$(sed -e "s|[^ ]*/clang --target=[^ ]*|include-what-you-use --target=${iwyu_target} -isystem${isystem_path}|" \
+    transformed_cmd=$(sed -e "s|[^ ]*/clang --target=[^ ]*|include-what-you-use -Xiwyu --mapping_file=${mapping_file} --target=${iwyu_target} -isystem${isystem_path}|" \
         -e 's/ -mcpu=[^ ]*//g' \
         -e 's/ -march=[^ ]*//g' \
         -e 's/ -mfloat-abi=[^ ]*//g' \

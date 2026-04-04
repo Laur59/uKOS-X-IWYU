@@ -41,9 +41,6 @@ add_compile_definitions(
 # Flash programming script selection
 set(BURN jlinkexe)
 
-# Derive PROVIDER and FAMILY from SOC (eliminates redundant information)
-derive_soc_properties(${SOC})
-
 # Extra compilation options
 add_compile_options(
     -g3 # include extra information for debugger
@@ -51,21 +48,10 @@ add_compile_options(
 )
 
 # TinyUSB integration (must be before library definitions)
-# Note: PROVIDER and FAMILY are automatically derived from SOC via derive_soc_properties()
-set(SPEED FS)
-set(PROFILE cdc_cdc)
-
-set(PATH_TINYUSB ${PATH_UKOS}/Third_Parties/TinyUSB)
-
-# Find TinyUSB package config (automatically provides include paths and definitions)
-find_package(TinyUSB REQUIRED
-    PATHS ${PATH_TINYUSB}/Library/Family/${FAMILY}/${SOC}/${PROFILE}
-    NO_DEFAULT_PATH
+add_TinyUSB(
+    SPEED FS
+    PROFILE cdc_cdc
 )
-
-# Link against the appropriate speed variant
-# This automatically adds include paths and compile definitions
-set(TINYUSB TinyUSB::${SPEED})
 
 # Sources
 # -------
@@ -211,13 +197,11 @@ list(APPEND CLI_U
 add_library(tool_u ${CLI_U})
 target_link_libraries(tool_u PUBLIC system_compiler_flags)
 
-# MicroPython Engine integration (MicroPython manager)
-add_compile_definitions(CONFIG_MAN_MICROPYTHON_S)
-find_library(MICROPYTHON MicroPython ${PATH_UKOS}/Third_Parties/MicroPython/Library/${CORE})
-file(APPEND "${ARTEFACTS_DIR}/FLASH.cnf" "-DCONFIG_MAN_MICROPYTHON_S ")
-
 # All library components
-set(UKOS_COMPONENTS rtcb_p kern_p kern_u libx_p libx_u proc_p proc_u tool_u ${MICROPYTHON} ${TINYUSB})
+set(UKOS_COMPONENTS rtcb_p kern_p kern_u libx_p libx_u proc_p proc_u tool_u ${TINYUSB})
+
+# Optional manager
+add_MicroPython()
 
 # System configuration flags
 

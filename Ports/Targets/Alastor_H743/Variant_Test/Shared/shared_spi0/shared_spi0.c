@@ -152,7 +152,7 @@ int32_t shared_spi0_select(uint32_t manager) {
         }
     }
     PRIVILEGE_RESTORE;
-    return (KSHARED_SPI0_NOERR);
+    return KSHARED_SPI0_NOERR;
 }
 
 /*
@@ -179,7 +179,7 @@ int32_t shared_spi0_deselect(uint32_t manager) {
         }
     }
     PRIVILEGE_RESTORE;
-    return (KSHARED_SPI0_NOERR);
+    return KSHARED_SPI0_NOERR;
 }
 
 /*
@@ -193,7 +193,7 @@ int32_t shared_spi0_deselect(uint32_t manager) {
 int32_t shared_spi0_writeRead(uint8_t *data) {
 
     spi_writeRead(KSPI0, data);
-    return (KSHARED_SPI0_NOERR);
+    return KSHARED_SPI0_NOERR;
 }
 
 // Local routines

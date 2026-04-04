@@ -46,6 +46,7 @@ bool    bench_05(void) {
 
 #else
 
+#include    <stdint.h>
 #include    "kern/kern.h"
 #include    "macros_core.h"
 

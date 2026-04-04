@@ -55,7 +55,7 @@ bool    installaProcess_dispatcher(void) {
     );
 
     status = (kern_createProcess(&specification, nullptr, &process) == KERR_KERN_NOERR) ? (true) : (false);
-    return (status);
+    return status;
 }
 
 /*
