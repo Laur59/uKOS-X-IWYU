@@ -1,19 +1,17 @@
 #!/usr/bin/env python3
-
-# make-reports-table.
-# ===================
-
 # SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #------------------------------------------------------------------------
-# Author:	Laurent von Allmen	The 2025-11-01
-# Modifs:
+# make-reports-table.
+# ===================
 #
-# Project:	uKOS-X
-# Goal:		Generate HTML table for static analysis reports
+# Project: uKOS-X
 #
-#   (c) 2025-2026, Laurent von Allmen
-#   ---------------------------------
+# Purpose:
+#   Generate HTML table for static analysis reports
+#
+#-----
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \

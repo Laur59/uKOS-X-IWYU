@@ -41,6 +41,7 @@ set(PATH_INCLUDES
 )
 
 set(OBJ
+    ${PROJECT_SOURCE_DIR}/../lvgl.c
     ${PROJECT_SOURCE_DIR}/../ui.c
     ${PROJECT_SOURCE_DIR}/stub.c
 )

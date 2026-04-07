@@ -23,7 +23,7 @@
 extern  void    kernel_message_C0(void);
 
 /*
- * \brief SVCall_IRQHandler_Cx
+ * \brief SVCall_Cx_IRQHandler
  *
  * Stack frame after the SVC(x) instruction
  *
@@ -40,7 +40,7 @@ extern  void    kernel_message_C0(void);
 [[gnu::naked]]
 void    SVCall_C0_IRQHandler(void) {
 
-// Branch to     --> kernel_message
+// Branch to     --> kernel_message_C0
 // Branch to     --> kern_privilegeElevate
 
     SVC_DISPATCHER_C0;

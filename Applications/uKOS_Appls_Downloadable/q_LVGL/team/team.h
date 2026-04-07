@@ -112,5 +112,5 @@ const   lv_image_dsc_t Team = {
     .header.w       = 220,
     .header.h       = 86,
     .data_size      = (18920 * 2),
-    .data = Team_map,
+    .data           = Team_map,
 };

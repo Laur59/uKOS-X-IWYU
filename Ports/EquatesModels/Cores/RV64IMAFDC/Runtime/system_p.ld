@@ -31,8 +31,7 @@
 
 SECTIONS {
     .text : {
-        linker_stTEXT = ABSOLUTE(.);
-        *(.text_vectors)
+        INCLUDE     vectors.ld
 
         linker_stTEXT_KERN_p = ABSOLUTE(.);
         libkern_p.a:*(.text .text.*)
@@ -57,6 +56,7 @@ SECTIONS {
         linker_stInitArray = ABSOLUTE(.);
         KEEP(*(SORT_BY_INIT_PRIORITY(.init_array.*)))
         KEEP(*(.init_array))
+        . = ALIGN(8);
         linker_enInitArray = ABSOLUTE(.);
     } > prgm_code
 
@@ -65,6 +65,7 @@ SECTIONS {
         linker_stFiniArray = ABSOLUTE(.);
         KEEP(*(SORT_BY_INIT_PRIORITY(.fini_array.*)))
         KEEP(*(.fini_array))
+        . = ALIGN(8);
         linker_enFiniArray = ABSOLUTE(.);
     } > prgm_code
 
@@ -79,6 +80,14 @@ SECTIONS {
         *(.rdata .rdata.*)
         . = ALIGN(8);
         linker_enRODATA = ABSOLUTE(.);
+    } > prgm_code
+
+    .widget : {
+        . = ALIGN(8);
+        linker_stWIDGET = ABSOLUTE(.);
+        KEEP(*(.widget))
+        . = ALIGN(8);
+        linker_enWIDGET = ABSOLUTE(.);
     } > prgm_code
 
     .data : {

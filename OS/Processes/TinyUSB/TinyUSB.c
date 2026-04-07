@@ -9,12 +9,14 @@
 
 #include    <stdint.h>
 #include    <stdlib.h>
+#include    <usbd.h>                    // for tud_mount_cb, tud_resume_cb, tud...
 
 #include    "serial/serial.h"
 #include    "kern/kern.h"
 #include    "macros.h"
 #include    "macros_core.h"
 #include    "macros_core_stackFrame.h"
+#include    "macros_soc.h"              // for GET_RUNNING_CORE, KNB_CORES
 // memo/memo.h is required for PROCESS_STACKMALLOC
 #include    "memo/memo.h"       // IWYU pragma: keep
 #include    "modules.h"

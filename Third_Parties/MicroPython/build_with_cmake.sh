@@ -47,7 +47,7 @@ readonly NC=$'\033[0m' # No Color
 
 # Package version / commit / tag and directories
 
-MICROPY_REF="${1:-v1.27.0}"   # default tag v1.27.0 if none passed
+MICROPY_REF="${1:-v1.28.0}"   # default tag v1.27.0 if none passed
 MICROPY_DIR="${PATH_PRG}/MicroPython-current"
 MICROPY_LIBRARY_DIR="${PATH_PRG}/Library"
 MICROPY_URL="https://github.com/micropython/micropython.git"
