@@ -10,7 +10,7 @@
 
 // Display size
 
-#define KBUF_LINES          10U                                         // Limited buffer (10 * KLCD_WIDTH * 2) to force partial rendering
+#define KLCD_BUF_LINES      10U                                         // Limited buffer (10 * KLCD_WIDTH * 2) to force partial rendering
 #define KLCD_WIDTH          320U                                        // LCD width
 #define KLCD_HEIGHT         240U                                        // LCD height
 
@@ -37,5 +37,5 @@
 
 // Square dimension & positions
 
-#define KSQUARES_NB_MAX     20                                          // 20 square
+#define KSQUARES_NB_MAX     20U                                         // 20 square
 #define KSQUARE_SIZE        30U                                         // Square size

@@ -83,7 +83,7 @@ static  sdcard_specification_t  vSdCard;
 int32_t model_sdcard_init(void) {
 
     cb_control(KSDCARD_INIT);
-    return (KERR_STORAGE_NOERR);
+    return KERR_STORAGE_NOERR;
 }
 
 /*
@@ -96,7 +96,7 @@ int32_t model_sdcard_readStatus(void) {
     int32_t     status;
 
     status = (cb_cardInserted() == true) ? (KERR_STORAGE_NOERR) : (KERR_STORAGE_NODEV);
-    return (status);
+    return status;
 }
 
 /*
@@ -130,7 +130,7 @@ int32_t model_sdcard_initialise(sdcard_specification_t *specification) {
     cb_speed(speed);
     if (!cb_cardInserted()) {
         local_deselectRelease();
-        return (KERR_STORAGE_NODEV);
+        return KERR_STORAGE_NODEV;
     }
 
 // Waiting for > than 1-ms after the power-on
@@ -147,7 +147,7 @@ int32_t model_sdcard_initialise(sdcard_specification_t *specification) {
     }
     if (local_writeCommand(KGO_IDLE_STATE, 0U) != (1U<<BIDLE)) {
         local_deselectRelease();
-        return (KERR_STORAGE_CANRE);
+        return KERR_STORAGE_CANRE;
     }
 
 // Try to determine the card model
@@ -158,13 +158,13 @@ int32_t model_sdcard_initialise(sdcard_specification_t *specification) {
 
     if (local_writeCommand(KSEND_IF_COND, 0x000001AAU) != (1U<<BIDLE)) {
         local_deselectRelease();
-        return (KERR_STORAGE_CANRE);
+        return KERR_STORAGE_CANRE;
     }
 
     for (i = 0U; i < 4U; i++) { ans[i] = cb_writeRead(0xFFU); }
     if ((ans[2] != 0x01u) || (ans[3] != 0xAAU)) {
         local_deselectRelease();
-        return (KERR_STORAGE_CANRE);
+        return KERR_STORAGE_CANRE;
     }
 
     while (local_writeCommand(KSEND_OP_COND_SDC, 0x40000000U) == (1U<<BIDLE)) {
@@ -175,7 +175,7 @@ int32_t model_sdcard_initialise(sdcard_specification_t *specification) {
 
     if (local_writeCommand(KREAD_OCR, 0U) != KR1_OK) {
         local_deselectRelease();
-        return (KERR_STORAGE_CANRE);
+        return KERR_STORAGE_CANRE;
     }
 
     for (i = 0U; i < 1U; i++) {    (void)cb_writeRead(0xFFU); }
@@ -187,7 +187,7 @@ int32_t model_sdcard_initialise(sdcard_specification_t *specification) {
 
     if (local_writeCommand(KSEND_CID, 0U) != KR1_OK) {
         local_deselectRelease();
-        return (KERR_STORAGE_CANRE);
+        return KERR_STORAGE_CANRE;
     }
 
     while (cb_writeRead(0xFFU) != KDATA_TOKEN_FE) { ; }
@@ -201,7 +201,7 @@ int32_t model_sdcard_initialise(sdcard_specification_t *specification) {
 
     if (local_writeCommand(KSEND_CSD, 0) != KR1_OK) {
         local_deselectRelease();
-        return (KERR_STORAGE_CANRE);
+        return KERR_STORAGE_CANRE;
     }
 
     while (cb_writeRead(0xFFU) != KDATA_TOKEN_FE) { ; }
@@ -241,7 +241,7 @@ int32_t model_sdcard_initialise(sdcard_specification_t *specification) {
 
     if (local_writeCommand(KSET_BLOCKLEN, KSDCARD_SZ_SECTOR) != KR1_OK) {
         local_deselectRelease();
-        return (KERR_STORAGE_CANRE);
+        return KERR_STORAGE_CANRE;
     }
 
 // Initialization terminated
@@ -251,7 +251,7 @@ int32_t model_sdcard_initialise(sdcard_specification_t *specification) {
 
     local_waitReady();
     local_deselectRelease();
-    return (KERR_STORAGE_NOERR);
+    return KERR_STORAGE_NOERR;
 }
 
 /*
@@ -273,12 +273,12 @@ int32_t model_sdcard_read(const sdcard_specification_t *specification, uint8_t *
     cb_speed(specification->oSpeed);
     if (!cb_cardInserted()) {
         local_deselectRelease();
-        return (KERR_STORAGE_NODEV);
+        return KERR_STORAGE_NODEV;
     }
 
     if (wkNbSectors == 0U) {
         local_deselectRelease();
-        return (KERR_STORAGE_LNBU0);
+        return KERR_STORAGE_LNBU0;
     }
 
 // Convert to byte address if needed
@@ -312,12 +312,12 @@ int32_t model_sdcard_read(const sdcard_specification_t *specification, uint8_t *
     cb_speed(specification->oSpeed);
     if (!cb_cardInserted()) {
         local_deselectRelease();
-        return (KERR_STORAGE_NODEV);
+        return KERR_STORAGE_NODEV;
     }
 
     if (nbSectors == 0U) {
         local_deselectRelease();
-        return (KERR_STORAGE_LNBU0);
+        return KERR_STORAGE_LNBU0;
     }
 
 // Convert to byte address if needed
@@ -341,7 +341,7 @@ int32_t model_sdcard_read(const sdcard_specification_t *specification, uint8_t *
 
     local_deselectRelease();
     status = (error) ? (KERR_STORAGE_TRANT) : (KERR_STORAGE_NOERR);
-    return (status);
+    return status;
 }
 
 /*
@@ -360,12 +360,12 @@ int32_t model_sdcard_write(const sdcard_specification_t *specification, const ui
     cb_speed(specification->oSpeed);
     if (!cb_cardInserted()) {
         local_deselectRelease();
-        return (KERR_STORAGE_NODEV);
+        return KERR_STORAGE_NODEV;
     }
 
     if (wkNbSectors == 0U) {
         local_deselectRelease();
-        return (KERR_STORAGE_LNBU0);
+        return KERR_STORAGE_LNBU0;
     }
 
 // Convert to byte address if needed
@@ -403,7 +403,7 @@ int32_t model_sdcard_write(const sdcard_specification_t *specification, const ui
 
     local_deselectRelease();
     status = (error) ? (KERR_STORAGE_TRANT) : (KERR_STORAGE_NOERR);
-    return (status);
+    return status;
 }
 
 /*
@@ -434,7 +434,7 @@ int32_t model_sdcard_ioctl(storageIoctl_t command, void *buffer) {
             break;
         }
     }
-    return (KERR_STORAGE_NOERR);
+    return KERR_STORAGE_NOERR;
 }
 
 // Local routines
@@ -472,7 +472,7 @@ static  uint8_t local_writeCommand(uint8_t command, uint32_t argument) {
         wkCommand &= 0x7FU;
         R1 = local_writeCommand(KAPP_CMD, 0U);
         if ((R1 & ~(1U<<BIDLE)) != 0U) {
-            return (R1);
+            return R1;
         }
 
     }
@@ -484,7 +484,7 @@ static  uint8_t local_writeCommand(uint8_t command, uint32_t argument) {
         kern_waitAtLeast(1U);
         cb_control(KSDCARD_SELECT);
         if (!local_waitReady()) {
-            return (0xFFU);
+            return 0xFFU;
         }
 
     }
@@ -515,7 +515,7 @@ static  uint8_t local_writeCommand(uint8_t command, uint32_t argument) {
         R1 = cb_writeRead(0xFFU);
         i--;
     } while (((R1 & 0x80U) != 0U) && (i > 0));
-    return (R1);
+    return R1;
 }
 
 /*
@@ -539,7 +539,7 @@ static  bool    local_readSector(uint8_t *destination, uint32_t size) {
         if (cb_writeRead(0xFFU) == KDATA_TOKEN_FE) { break; }
         kern_readTickCount(&time[1]);
         if ((time[1] - time[0]) >= 1000000U) {
-            return (false);
+            return false;
         }
 
     } while (true);
@@ -551,7 +551,7 @@ static  bool    local_readSector(uint8_t *destination, uint32_t size) {
 
     (void)cb_writeRead(0xFFU);
     (void)cb_writeRead(0xFFU);
-    return (true);
+    return true;
 }
 
 /*
@@ -571,7 +571,7 @@ static  bool    local_readSector(uint8_t *destination, uint32_t size) {
 static  bool    local_writeSector(const uint8_t *source, uint8_t token) {
 
     if (!local_waitReady()) {
-        return (false);
+        return false;
     }
 
 // Transmit the data token 0xFD
@@ -588,11 +588,11 @@ static  bool    local_writeSector(const uint8_t *source, uint8_t token) {
         (void)cb_writeRead(0xFFU);
 
         if ((cb_writeRead(0xFFU) & KMSK_ANSWER) != KDATA_ACCEPTED) {
-            return (false);
+            return false;
         }
 
     }
-    return (true);
+    return true;
 }
 
 /*
@@ -608,12 +608,12 @@ static  bool    local_waitReady(void) {
         if (cb_writeRead(0xFFu) == 0xFFU) { break; }
         kern_readTickCount(&time[1]);
         if ((time[1] - time[0]) >= 1000000U) {
-            return (false);
+            return false;
         }
 
         kern_switchFast();
     } while (true);
-    return (true);
+    return true;
 }
 
 /*

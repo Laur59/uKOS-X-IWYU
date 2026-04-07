@@ -77,7 +77,7 @@ the third-party components shipped in this repository.
 ### 2.7) MicroPython
 - Location: `Third_Parties/MicroPython/`
 - Upstream: https://github.com/micropython/micropython.git
-- Version: 1.27.0
+- Version: 1.28.0
 - License: MIT
 - Copyright:
   -  Copyright (c) 2013-2019 Damien P. George
@@ -85,7 +85,7 @@ the third-party components shipped in this repository.
 ### 2.8) Tflite-micro
 - Location: `Third_Parties/Tflite-micro/`
 - Upstream: https://github.com/tensorflow/tflite-micro.git
-- Version: commit f5302ed
+- Version: commit f97216c
 - License: Apache-2.0
 - Copyright:
   -  Copyright (c) 2020 The TensorFlow Authors. All rights reserved.
@@ -93,7 +93,7 @@ the third-party components shipped in this repository.
 ### 2.9) TinyUSB-micro
 - Location: `Third_Parties/TinyUSB/`
 - Upstream: https://github.com/hathach/tinyusb.git
-- Version: 0.20.0 / commit c64452c
+- Version: 0.20.0 / commit 7c3f597
 - License: MIT
 - Copyright:
   -  Copyright (c) 2018, hathach (tinyusb.org)

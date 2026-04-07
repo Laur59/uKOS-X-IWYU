@@ -11,7 +11,6 @@
 
 #include    "kern/kern.h"
 #include    "macros.h"
-#include    "macros_core.h"
 #include    "macros_core_stackFrame.h"
 #include    "macros_soc.h"
 #include    "memo/memo.h"  // IWYU pragma: keep (for KMEMO_ALIGN8)

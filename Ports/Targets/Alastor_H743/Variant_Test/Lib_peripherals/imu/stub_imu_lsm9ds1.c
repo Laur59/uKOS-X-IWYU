@@ -10,6 +10,7 @@
 
 #include    "LSM9DS1/LSM9DS1.h"
 #include    "kern/kern.h"
+#include    "imu/imu.h"
 #include    "shared_spi0/shared_spi0.h"
 
 // Connect the physical device to the logical manager

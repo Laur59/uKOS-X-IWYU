@@ -31,7 +31,7 @@ __attribute__ ((always_inline)) static  inline  uint32_t    core_getBASEPRI(void
     : "=r" (valBASEPRI)
     );
 
-    return (valBASEPRI);
+    return valBASEPRI;
 }
 
 /*
@@ -70,7 +70,7 @@ __attribute__ ((always_inline)) static  inline  uintptr_t   core_getPSP(void) {
     : "=r" (stackPSP)
     );
 
-    return (stackPSP);
+    return stackPSP;
 }
 
 /*
@@ -109,7 +109,7 @@ __attribute__ ((always_inline)) static  inline  uintptr_t   core_getMSP(void) {
     : "=r" (stackMSP)
     );
 
-    return (stackMSP);
+    return stackMSP;
 }
 
 /*
@@ -148,7 +148,7 @@ __attribute__ ((always_inline)) static  inline  uint32_t    core_getCONTROL(void
     : "=r" (valCONTROL)
     );
 
-    return (valCONTROL);
+    return valCONTROL;
 }
 
 /*
@@ -187,7 +187,7 @@ __attribute__ ((always_inline)) static  inline  uintptr_t   core_getLR(void) {
     : "=r" (valLR)
     );
 
-    return (valLR);
+    return valLR;
 }
 
 /*
@@ -207,5 +207,5 @@ __attribute__ ((always_inline)) static  inline  uint32_t    core_getIPSR(void) {
     : "=r" (valIPSR)
     );
 
-    return (valIPSR);
+    return valIPSR;
 }

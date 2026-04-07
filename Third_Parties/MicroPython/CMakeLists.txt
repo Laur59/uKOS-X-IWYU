@@ -28,7 +28,7 @@
 cmake_minimum_required(VERSION 3.26)
 
 project(MicroPython_Package
-    VERSION 1.27.0
+    VERSION 1.28.0
     DESCRIPTION "MicroPython library package for all supported Cortex-M cores"
     LANGUAGES NONE
 )
@@ -49,7 +49,7 @@ message("")
 #------------------------------------------------------------------------
 
 # Package version and tag (matching build_with_cmake.sh default)
-set(MICROPYTHON_VERSION "1.27.0")
+set(MICROPYTHON_VERSION "1.28.0")
 set(MICROPYTHON_TAG "v${MICROPYTHON_VERSION}")
 
 message(STATUS "Fetching MicroPython version ${MICROPYTHON_VERSION} (tag ${MICROPYTHON_TAG})")

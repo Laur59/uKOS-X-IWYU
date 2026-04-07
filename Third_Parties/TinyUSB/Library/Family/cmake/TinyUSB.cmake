@@ -233,10 +233,12 @@ function(add_tinyusb_libraries)
     if(TINYUSB_PROVIDER STREQUAL "raspberrypi")
         list(APPEND COMMON_SOURCES
             ${PATH_TINYUSB}/TinyUSB-current/lib/pico-sdk/src/common/hardware_claim/claim.c
+            ${PATH_TINYUSB}/TinyUSB-current/lib/pico-sdk/src/common/pico_sync/critical_section.c
             ${PATH_TINYUSB}/TinyUSB-current/lib/pico-sdk/src/rp2_common/hardware_irq/irq_handler_chain.S
             ${PATH_TINYUSB}/TinyUSB-current/lib/pico-sdk/src/rp2_common/hardware_irq/irq.c
-            ${PATH_TINYUSB}/TinyUSB-current/lib/pico-sdk/src/rp2_common/pico_platform_panic/panic.c
+            ${PATH_TINYUSB}/TinyUSB-current/lib/pico-sdk/src/rp2_common/hardware_sync/sync.c
             ${PATH_TINYUSB}/TinyUSB-current/lib/pico-sdk/src/rp2_common/hardware_sync_spin_lock/sync_spin_lock.c
+            ${PATH_TINYUSB}/TinyUSB-current/lib/pico-sdk/src/rp2_common/pico_platform_panic/panic.c
             ${PATH_TINYUSB}/Library/Family/${TINYUSB_FAMILY}/${SOC}/init.c
         )
     endif()

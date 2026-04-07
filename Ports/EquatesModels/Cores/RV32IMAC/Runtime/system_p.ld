@@ -30,10 +30,7 @@
 
 SECTIONS {
     .text : {
-        KEEP(*(.restart))
-        linker_stVECTORS = ABSOLUTE(.);
-        KEEP(*(.vectors))
-        linker_enVECTORS = ABSOLUTE(.);
+        INCLUDE     vectors.ld
 
         linker_stTEXT = ABSOLUTE(.);
         linker_stTEXT_KERN_p = ABSOLUTE(.);
@@ -50,6 +47,8 @@ SECTIONS {
         KEEP(*(.directory))
         LONG(0x00000000)
         LONG(0x00000000)
+        . = ALIGN(4);
+        linker_enDirectory = ABSOLUTE(.);
     } > prgm_code
 
     .init_array : {
@@ -57,6 +56,7 @@ SECTIONS {
         linker_stInitArray = ABSOLUTE(.);
         KEEP(*(SORT_BY_INIT_PRIORITY(.init_array.*)))
         KEEP(*(.init_array))
+        . = ALIGN(4);
         linker_enInitArray = ABSOLUTE(.);
     } > prgm_code
 
@@ -65,6 +65,7 @@ SECTIONS {
         linker_stFiniArray = ABSOLUTE(.);
         KEEP(*(SORT_BY_INIT_PRIORITY(.fini_array.*)))
         KEEP(*(.fini_array))
+        . = ALIGN(4);
         linker_enFiniArray = ABSOLUTE(.);
     } > prgm_code
 
@@ -79,6 +80,14 @@ SECTIONS {
         *(.rdata .rdata.*)
         . = ALIGN(4);
         linker_enRODATA = ABSOLUTE(.);
+    } > prgm_code
+
+    .widget : {
+        . = ALIGN(4);
+        linker_stWIDGET = ABSOLUTE(.);
+        KEEP(*(.widget))
+        . = ALIGN(4);
+        linker_enWIDGET = ABSOLUTE(.);
     } > prgm_code
 
     .signature : {

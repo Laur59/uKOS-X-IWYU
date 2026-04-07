@@ -365,6 +365,6 @@ int32_t     oct0_write(uint32_t chipSelect, const void *buffer, uint32_t szBuffe
 
     octoSpi0->ser    = 0x00U;
     octoSpi0->ssienr = 0x00U;
-    return (KERR_OCT0_NOERR);
+    return KERR_OCT0_NOERR;
 }
 #endif

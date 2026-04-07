@@ -21,7 +21,7 @@
 int32_t model_bq27510g3_init(void) {
 
     cb_configure();
-    return (KERR_BATTERY_NOERR);
+    return KERR_BATTERY_NOERR;
 }
 
 /*
@@ -53,7 +53,7 @@ int32_t model_bq27510g3_read(batteryInfo_t *infoBattery) {
     error |= cb_getValue(KBAT_TIME_TO_EMPTY,      &timeToEmpty);
     error |= cb_getValue(KBAT_CYCLE_COUNT,        &cycles);
 
-    if (error) { return (KERR_BATTERY_GEERR); }
+    if (error) { return KERR_BATTERY_GEERR; }
 
     infoBattery->oVoltage             = (float64_t)voltage / 1000.0;
     infoBattery->oCurrent             = (float64_t)current;
@@ -62,5 +62,5 @@ int32_t model_bq27510g3_read(batteryInfo_t *infoBattery) {
     infoBattery->oRemainingCapacity   = (float64_t)remainingCapacity;
     infoBattery->oTimeToEmpty         = timeToEmpty;
     infoBattery->oCycles              = cycles;
-    return (KERR_BATTERY_NOERR);
+    return KERR_BATTERY_NOERR;
 }

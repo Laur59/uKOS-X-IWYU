@@ -96,7 +96,7 @@ int32_t model_usart_init(void) {
     USART->CR1 |= USART_CR1_UE;
 
     cb_init();
-    return (KERR_SERIAL_NOERR);
+    return KERR_SERIAL_NOERR;
 }
 
 /*
@@ -217,7 +217,7 @@ int32_t model_usart_write(const uint8_t *buffer, uint32_t size) {
     }
     busy = false;
     terminate = false;
-    return (KERR_SERIAL_NOERR);
+    return KERR_SERIAL_NOERR;
 }
 
 /*
@@ -246,7 +246,7 @@ int32_t model_usart_writeTransparent(const uint8_t *buffer, uint32_t size) {
     vWSndBuffer  = (volatile uint8_t *)((uintptr_t)vSndBuffer + (uintptr_t)size);
     vRSndBuffer  = vSndBuffer;
     USART->CR1 |= USART_CR1_TXEIE;
-    return (KERR_SERIAL_NOERR);
+    return KERR_SERIAL_NOERR;
 }
 
 /*
@@ -398,11 +398,11 @@ static  bool    local_timeout(volatile bool *flag, uint32_t timeout) {
     while (!*flag) {
         kern_readTickCount(&time[1]);
         if ((time[1] - time[0]) >= (uint64_t)timeout) {
-            return (false);
+            return false;
         }
 
         kern_switchFast();
     }
     *flag = false;
-    return (true);
+    return true;
 }

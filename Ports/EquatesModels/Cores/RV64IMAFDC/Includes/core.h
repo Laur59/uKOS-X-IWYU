@@ -33,7 +33,7 @@ __attribute__ ((always_inline)) static  inline  uint64_t    core_getCSR(uint64_t
     : "i" (reg)
     );
 
-    return (value);
+    return value;
 }
 
 /*

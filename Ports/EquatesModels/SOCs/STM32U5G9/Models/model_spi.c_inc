@@ -57,7 +57,7 @@ int32_t model_spi_init(void) {
     INTERRUPT_VECTOR(SPI_VECTOR_NUMBER, local_SPI_IRQHandler);
     NVIC_SetPriority(SPI_VECTOR_NUMBER, KHW_PRIORITY_MODERATE);
     NVIC_EnableIRQ(SPI_VECTOR_NUMBER);
-    return (KERR_SPI_NOERR);
+    return KERR_SPI_NOERR;
 }
 
 /*
@@ -135,7 +135,7 @@ int32_t model_spi_multipleWriteRead(const uint8_t *wData, uint16_t wSize, uint8_
     NVIC_SetPendingIRQ(SPI_VECTOR_NUMBER);
 
     status = (kern_waitSemaphore(vSemaphore_TR, timeout) != KERR_SPI_NOERR) ? (KERR_SPI_TIMEO) : (KERR_SPI_NOERR);
-    return (status);
+    return status;
 }
 
 /*

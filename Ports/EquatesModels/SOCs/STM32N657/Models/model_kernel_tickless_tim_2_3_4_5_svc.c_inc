@@ -65,7 +65,7 @@ enum {
         KWUINTPR                                                                        // Tickless wake-up by a preemption interruption
 };
 
-extern              uintptr_t   vVectors[];                                             // Relocated VTOR
+extern              uintptr_t   *vVectors;                                              // Relocated VTOR
 
 #if (KKERN_NB_PRECISE_SIGNALS > 0)
 static              uint64_t    vPrcsAbsCount  = 0U;                                    // 64-bit timer (1-us) for signal precise

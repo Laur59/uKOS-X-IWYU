@@ -10,6 +10,7 @@
 
 #include    "board.h"
 #include    "kern/kern.h"
+#include    "sdcard/sdcard.h"
 #include    "soc_reg.h"
 #include    "spi/spi.h"
 #include    "spi_common.h"

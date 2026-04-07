@@ -222,8 +222,6 @@ typedef enum IRQn {
 
 // Relocated interrupt vector table (aligned for VTOR)
 
-extern  uintptr_t   vVectors[KNB_EXCEPTIONS + KNB_INTERRUPTIONS];
-
 // For the core 0
 // --------------
 

@@ -176,7 +176,7 @@ bool osal_mutex_lock(osal_mutex_t mutex_hdl, uint32_t msec) {
     bool    status;
 
     status = (kern_lockMutex((mutx_t *)mutex_hdl, msec) == KERR_KERN_NOERR) ? (true) : (false);
-    return (status);
+    return status;
 }
 
 /*
@@ -189,7 +189,7 @@ bool osal_mutex_unlock(osal_mutex_t mutex_hdl) {
     bool    status;
 
     status = (kern_unlockMutex((mutx_t *)mutex_hdl) == KERR_KERN_NOERR) ? (true) : (false);
-    return (status);
+    return status;
 }
 
 /*
@@ -230,7 +230,7 @@ bool    osal_queue_receive(osal_queue_t qhdl, void *data, uint32_t msec) {
 
     size = handle->oDataEntrySize;
     status = (kern_readMailbox(handle, &data, &size, timeout) == KERR_KERN_NOERR) ? (true) : (false);
-    return (status);
+    return status;
 }
 
 /*
@@ -253,7 +253,7 @@ bool    osal_queue_send(osal_queue_t qhdl, void const *data, bool in_isr) {
     UNUSED(in_isr);
 
     status = (kern_writeMailbox((mbox_t *)qhdl, data, mailBox->oDataEntrySize, 0u) == KERR_KERN_NOERR) ? (true) : (false);
-    return (status);
+    return status;
 }
 #pragma GCC diagnostic  pop
 
@@ -281,5 +281,5 @@ bool    osal_queue_delete(osal_queue_t qhdl) {
     bool    status;
 
     status = (kern_killMailbox((mbox_t *)qhdl) == KERR_KERN_NOERR) ? (true) : (false);
-    return (status);
+    return status;
 }

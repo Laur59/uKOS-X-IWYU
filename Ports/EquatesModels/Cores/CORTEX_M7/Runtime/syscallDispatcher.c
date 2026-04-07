@@ -22,7 +22,7 @@
 extern  void    kernel_message_C0(void);
 
 /*
- * \brief SVCall_IRQHandler
+ * \brief SVCall_Cx_IRQHandler
  *
  * Stack frame after the SVC(x) instruction
  *

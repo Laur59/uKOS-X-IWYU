@@ -84,7 +84,7 @@ int32_t model_usart_init_C1(void) {
     USART_C1->IER |= UART_IER_ERBFI;
 
     cb_init_C1();
-    return (KERR_SERIAL_NOERR);
+    return KERR_SERIAL_NOERR;
 }
 
 /*
@@ -186,7 +186,7 @@ int32_t model_usart_write_C1(const uint8_t *buffer, uint32_t size) {
     }
     busy = false;
     terminate = false;
-    return (KERR_SERIAL_NOERR);
+    return KERR_SERIAL_NOERR;
 }
 
 /*
