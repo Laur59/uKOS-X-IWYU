@@ -5,12 +5,12 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Laurent von Allmen		The 2026-02-01
+; Author:   Laurent von Allmen      The 2026-02-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Wrapper for LVGL header file
-;			Suppress clang warnings.
+; Project:  uKOS-X
+; Goal:     Wrapper for LVGL header file
+;           Suppress clang warnings.
 ;
 ;   (c) 2025-2026, Laurent von Allmen
 ;   ---------------------------------
@@ -47,14 +47,31 @@
 ;------------------------------------------------------------------------
 */
 
-#ifdef	__clang__
-#pragma	clang diagnostic push
-#pragma	clang diagnostic ignored "-Wsign-conversion"
-#pragma	clang diagnostic ignored "-Wimplicit-int-conversion"
+#if (defined(__clang__))
+// Ignore the clang diagnostic
+//
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wsign-conversion"
+#pragma clang diagnostic ignored "-Wimplicit-int-conversion"
 #endif
 
-#include	"lvgl.h"
+#if (defined(__GNUC__))
+// Ignore the GCC diagnostic
+//
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
 
-#ifdef	__clang__
-#pragma	clang diagnostic pop
+#include    "lvgl.h"
+
+#if (defined(__clang__))
+// Restore the clang diagnostic
+//
+#pragma clang diagnostic pop
+#endif
+
+#if (defined(__GNUC__))
+// Restore the GCC diagnostic
+//
+#pragma GCC diagnostic pop
 #endif
