@@ -1,9 +1,7 @@
 #!/usr/bin/env zsh
-
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-
-#------------------------------------------------------------------------
+#
 # Goal:     Execute IWYU check for all files in a module across all targets
 #
 #           Usage:
@@ -12,7 +10,6 @@
 #           Example:
 #               ./module-check-iwyu.sh OS/CLI
 #
-#------------------------------------------------------------------------
 
 emulate -L zsh
 setopt ERR_EXIT NO_UNSET PIPE_FAIL EXTENDED_GLOB

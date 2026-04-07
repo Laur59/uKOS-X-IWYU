@@ -1,11 +1,6 @@
 #!/usr/bin/env zsh
-
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-
-#------------------------------------------------------------------------
-# compare_lib_a.
-# ==============
 #
 # Purpose:
 #   Compare two static libraries (.a files)
@@ -25,7 +20,6 @@
 #
 # Usage:
 #   ./compare_lib_a.sh path1/libAbc.a path2/libDef.a
-#------------------------------------------------------------------------
 
 emulate -L zsh
 setopt ERR_EXIT NO_UNSET PIPE_FAIL EXTENDED_GLOB

@@ -1,13 +1,6 @@
 #!/usr/bin/env zsh
-
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-
-#------------------------------------------------------------------------
-# run-regression.sh
-# =================
-#
-# Project:  uKOS-X
 #
 # Description:
 #   Full regression build script using CMake out-of-source builds.
@@ -24,7 +17,6 @@
 #   -v  Verbose: display full build output
 #   -t  Filter by target name (e.g. Nucleo_H743)
 #
-#------------------------------------------------------------------------
 
 emulate -L zsh
 setopt NO_UNSET PIPE_FAIL EXTENDED_GLOB NULL_GLOB
