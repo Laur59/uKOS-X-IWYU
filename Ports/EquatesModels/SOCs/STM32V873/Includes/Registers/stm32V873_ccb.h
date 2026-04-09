@@ -1,0 +1,281 @@
+/*
+; stm32V873_ccb.
+; ==============
+
+; SPDX-License-Identifier: MIT
+
+;------------------------------------------------------------------------
+; Author:   Generated using the .svd description    The 2025-01-01
+; Modifs:
+;
+; Project:  uKOS-X
+; Goal:     stm32V873_ccb equates.
+;
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
+;                                              __ ______  _____
+;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
+;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
+;   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
+;                                     \__,_/_/ |_\____//____/
+;   edo.franzi@ukos.ch
+;
+;   Description: Lightweight, real-time multitasking operating
+;   system for embedded microcontroller and DSP-based systems.
+;
+;   Permission is hereby granted, free of charge, to any person
+;   obtaining a copy of this software and associated documentation
+;   files (the "Software"), to deal in the Software without restriction,
+;   including without limitation the rights to use, copy, modify,
+;   merge, publish, distribute, sublicense, and/or sell copies of the
+;   Software, and to permit persons to whom the Software is furnished
+;   to do so, subject to the following conditions:
+;
+;   The above copyright notice and this permission notice shall be
+;   included in all copies or substantial portions of the Software.
+;
+;   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+;   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+;   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+;   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+;   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+;   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+;   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+;   SOFTWARE.
+;
+;------------------------------------------------------------------------
+*/
+
+#pragma once
+
+#include    <stdint.h>
+
+// CCB address definitions
+// -----------------------
+
+typedef struct {
+    volatile    uint32_t    CR;
+    volatile    uint32_t    SR;
+    volatile    uint32_t    RESERVED0[2];
+    volatile    uint32_t    REFTAGR0;
+    volatile    uint32_t    REFTAGR1;
+    volatile    uint32_t    REFTAGR2;
+    volatile    uint32_t    REFTAGR3;
+} CCB_TypeDef;
+
+#if (defined(__cplusplus))
+#define CCB_NS  reinterpret_cast<CCB_TypeDef *>(0x44027C00u)
+#define CCB_S   reinterpret_cast<CCB_TypeDef *>(0x54027C00u)
+
+#else
+#define CCB_NS  ((CCB_TypeDef *)0x44027C00u)
+#define CCB_S   ((CCB_TypeDef *)0x54027C00u)
+#endif
+
+// CR Configuration
+
+#define CCB_CR_IPRST            (0x1u<<31)
+#define CCB_CR_CCOP             (0xFFu<<0)
+#define CCB_CR_CCOP_0           (0x1u<<0)
+
+#define CCB_CR_CCOP_B_0X044     (0x44u<<0)
+#define CCB_CR_CCOP_B_0X045     (0x45u<<0)
+#define CCB_CR_CCOP_B_0X080     (0x80u<<0)
+#define CCB_CR_CCOP_B_0X082     (0x82u<<0)
+#define CCB_CR_CCOP_B_0X081     (0x81u<<0)
+#define CCB_CR_CCOP_B_0X0C0     (0xC0u<<0)
+#define CCB_CR_CCOP_B_0X0C2     (0xC2u<<0)
+#define CCB_CR_CCOP_B_0X0C3     (0xC3u<<0)
+
+// SR Configuration
+
+#define CCB_SR_TAMP_EVT4        (0x1u<<28)
+#define CCB_SR_TAMP_EVT3        (0x1u<<27)
+#define CCB_SR_TAMP_EVT2        (0x1u<<26)
+#define CCB_SR_TAMP_EVT1        (0x1u<<25)
+#define CCB_SR_TAMP_EVT0        (0x1u<<24)
+#define CCB_SR_CCB_BUSY         (0x1u<<16)
+#define CCB_SR_OPERR            (0x1Fu<<8)
+#define CCB_SR_OPERR_0          (0x1u<<8)
+#define CCB_SR_OPSTEP           (0x1Fu<<0)
+#define CCB_SR_OPSTEP_0         (0x1u<<0)
+
+#define CCB_SR_TAMP_EVT4_B_0X0  (0x0u<<28)
+#define CCB_SR_TAMP_EVT4_B_0X1  (0x1u<<28)
+#define CCB_SR_TAMP_EVT3_B_0X0  (0x0u<<27)
+#define CCB_SR_TAMP_EVT3_B_0X1  (0x1u<<27)
+#define CCB_SR_TAMP_EVT2_B_0X0  (0x0u<<26)
+#define CCB_SR_TAMP_EVT2_B_0X1  (0x1u<<26)
+#define CCB_SR_TAMP_EVT1_B_0X0  (0x0u<<25)
+#define CCB_SR_TAMP_EVT1_B_0X1  (0x1u<<25)
+#define CCB_SR_TAMP_EVT0_B_0X0  (0x0u<<24)
+#define CCB_SR_TAMP_EVT0_B_0X1  (0x1u<<24)
+#define CCB_SR_CCB_BUSY_B_0X0   (0x0u<<16)
+#define CCB_SR_CCB_BUSY_B_0X1   (0x1u<<16)
+#define CCB_SR_OPERR_B_0X0      (0x0u<<8)
+#define CCB_SR_OPERR_B_0X1      (0x1u<<8)
+#define CCB_SR_OPERR_B_0X2      (0x2u<<8)
+#define CCB_SR_OPERR_B_0X3      (0x3u<<8)
+#define CCB_SR_OPERR_B_0X4      (0x4u<<8)
+#define CCB_SR_OPERR_B_0X5      (0x5u<<8)
+#define CCB_SR_OPERR_B_0X6      (0x6u<<8)
+#define CCB_SR_OPERR_B_0X7      (0x7u<<8)
+#define CCB_SR_OPERR_B_0X8      (0x8u<<8)
+#define CCB_SR_OPERR_B_0X9      (0x9u<<8)
+#define CCB_SR_OPERR_B_0XA      (0xAu<<8)
+#define CCB_SR_OPERR_B_0XB      (0xBu<<8)
+#define CCB_SR_OPERR_B_0XC      (0xCu<<8)
+#define CCB_SR_OPERR_B_0XD      (0xDu<<8)
+#define CCB_SR_OPERR_B_0XE      (0xEu<<8)
+#define CCB_SR_OPERR_B_0XF      (0xFu<<8)
+#define CCB_SR_OPERR_B_0X10     (0x10u<<8)
+#define CCB_SR_OPERR_B_0X11     (0x11u<<8)
+#define CCB_SR_OPERR_B_0X12     (0x12u<<8)
+#define CCB_SR_OPERR_B_0X13     (0x13u<<8)
+#define CCB_SR_OPERR_B_0X14     (0x14u<<8)
+#define CCB_SR_OPERR_B_0X15     (0x15u<<8)
+#define CCB_SR_OPERR_B_0X16     (0x16u<<8)
+#define CCB_SR_OPERR_B_0X17     (0x17u<<8)
+#define CCB_SR_OPERR_B_0X18     (0x18u<<8)
+#define CCB_SR_OPERR_B_0X19     (0x19u<<8)
+#define CCB_SR_OPERR_B_0X1A     (0x1Au<<8)
+
+// REFTAGR0 Configuration
+
+#define CCB_REFTAGR0_REFTAG31   (0x1u<<31)
+#define CCB_REFTAGR0_REFTAG30   (0x1u<<30)
+#define CCB_REFTAGR0_REFTAG29   (0x1u<<29)
+#define CCB_REFTAGR0_REFTAG28   (0x1u<<28)
+#define CCB_REFTAGR0_REFTAG27   (0x1u<<27)
+#define CCB_REFTAGR0_REFTAG26   (0x1u<<26)
+#define CCB_REFTAGR0_REFTAG25   (0x1u<<25)
+#define CCB_REFTAGR0_REFTAG24   (0x1u<<24)
+#define CCB_REFTAGR0_REFTAG23   (0x1u<<23)
+#define CCB_REFTAGR0_REFTAG22   (0x1u<<22)
+#define CCB_REFTAGR0_REFTAG21   (0x1u<<21)
+#define CCB_REFTAGR0_REFTAG20   (0x1u<<20)
+#define CCB_REFTAGR0_REFTAG19   (0x1u<<19)
+#define CCB_REFTAGR0_REFTAG18   (0x1u<<18)
+#define CCB_REFTAGR0_REFTAG17   (0x1u<<17)
+#define CCB_REFTAGR0_REFTAG16   (0x1u<<16)
+#define CCB_REFTAGR0_REFTAG15   (0x1u<<15)
+#define CCB_REFTAGR0_REFTAG14   (0x1u<<14)
+#define CCB_REFTAGR0_REFTAG13   (0x1u<<13)
+#define CCB_REFTAGR0_REFTAG12   (0x1u<<12)
+#define CCB_REFTAGR0_REFTAG11   (0x1u<<11)
+#define CCB_REFTAGR0_REFTAG10   (0x1u<<10)
+#define CCB_REFTAGR0_REFTAG9    (0x1u<<9)
+#define CCB_REFTAGR0_REFTAG8    (0x1u<<8)
+#define CCB_REFTAGR0_REFTAG7    (0x1u<<7)
+#define CCB_REFTAGR0_REFTAG6    (0x1u<<6)
+#define CCB_REFTAGR0_REFTAG5    (0x1u<<5)
+#define CCB_REFTAGR0_REFTAG4    (0x1u<<4)
+#define CCB_REFTAGR0_REFTAG3    (0x1u<<3)
+#define CCB_REFTAGR0_REFTAG2    (0x1u<<2)
+#define CCB_REFTAGR0_REFTAG1    (0x1u<<1)
+#define CCB_REFTAGR0_REFTAG0    (0x1u<<0)
+
+// REFTAGR1 Configuration
+
+#define CCB_REFTAGR1_REFTAG63   (0x1u<<31)
+#define CCB_REFTAGR1_REFTAG62   (0x1u<<30)
+#define CCB_REFTAGR1_REFTAG61   (0x1u<<29)
+#define CCB_REFTAGR1_REFTAG60   (0x1u<<28)
+#define CCB_REFTAGR1_REFTAG59   (0x1u<<27)
+#define CCB_REFTAGR1_REFTAG58   (0x1u<<26)
+#define CCB_REFTAGR1_REFTAG57   (0x1u<<25)
+#define CCB_REFTAGR1_REFTAG56   (0x1u<<24)
+#define CCB_REFTAGR1_REFTAG55   (0x1u<<23)
+#define CCB_REFTAGR1_REFTAG54   (0x1u<<22)
+#define CCB_REFTAGR1_REFTAG53   (0x1u<<21)
+#define CCB_REFTAGR1_REFTAG52   (0x1u<<20)
+#define CCB_REFTAGR1_REFTAG51   (0x1u<<19)
+#define CCB_REFTAGR1_REFTAG50   (0x1u<<18)
+#define CCB_REFTAGR1_REFTAG49   (0x1u<<17)
+#define CCB_REFTAGR1_REFTAG48   (0x1u<<16)
+#define CCB_REFTAGR1_REFTAG47   (0x1u<<15)
+#define CCB_REFTAGR1_REFTAG46   (0x1u<<14)
+#define CCB_REFTAGR1_REFTAG45   (0x1u<<13)
+#define CCB_REFTAGR1_REFTAG44   (0x1u<<12)
+#define CCB_REFTAGR1_REFTAG43   (0x1u<<11)
+#define CCB_REFTAGR1_REFTAG42   (0x1u<<10)
+#define CCB_REFTAGR1_REFTAG41   (0x1u<<9)
+#define CCB_REFTAGR1_REFTAG40   (0x1u<<8)
+#define CCB_REFTAGR1_REFTAG39   (0x1u<<7)
+#define CCB_REFTAGR1_REFTAG38   (0x1u<<6)
+#define CCB_REFTAGR1_REFTAG37   (0x1u<<5)
+#define CCB_REFTAGR1_REFTAG36   (0x1u<<4)
+#define CCB_REFTAGR1_REFTAG35   (0x1u<<3)
+#define CCB_REFTAGR1_REFTAG34   (0x1u<<2)
+#define CCB_REFTAGR1_REFTAG33   (0x1u<<1)
+#define CCB_REFTAGR1_REFTAG32   (0x1u<<0)
+
+// REFTAGR2 Configuration
+
+#define CCB_REFTAGR2_REFTAG95   (0x1u<<31)
+#define CCB_REFTAGR2_REFTAG94   (0x1u<<30)
+#define CCB_REFTAGR2_REFTAG93   (0x1u<<29)
+#define CCB_REFTAGR2_REFTAG92   (0x1u<<28)
+#define CCB_REFTAGR2_REFTAG91   (0x1u<<27)
+#define CCB_REFTAGR2_REFTAG90   (0x1u<<26)
+#define CCB_REFTAGR2_REFTAG89   (0x1u<<25)
+#define CCB_REFTAGR2_REFTAG88   (0x1u<<24)
+#define CCB_REFTAGR2_REFTAG87   (0x1u<<23)
+#define CCB_REFTAGR2_REFTAG86   (0x1u<<22)
+#define CCB_REFTAGR2_REFTAG85   (0x1u<<21)
+#define CCB_REFTAGR2_REFTAG84   (0x1u<<20)
+#define CCB_REFTAGR2_REFTAG83   (0x1u<<19)
+#define CCB_REFTAGR2_REFTAG82   (0x1u<<18)
+#define CCB_REFTAGR2_REFTAG81   (0x1u<<17)
+#define CCB_REFTAGR2_REFTAG80   (0x1u<<16)
+#define CCB_REFTAGR2_REFTAG79   (0x1u<<15)
+#define CCB_REFTAGR2_REFTAG78   (0x1u<<14)
+#define CCB_REFTAGR2_REFTAG77   (0x1u<<13)
+#define CCB_REFTAGR2_REFTAG76   (0x1u<<12)
+#define CCB_REFTAGR2_REFTAG75   (0x1u<<11)
+#define CCB_REFTAGR2_REFTAG74   (0x1u<<10)
+#define CCB_REFTAGR2_REFTAG73   (0x1u<<9)
+#define CCB_REFTAGR2_REFTAG72   (0x1u<<8)
+#define CCB_REFTAGR2_REFTAG71   (0x1u<<7)
+#define CCB_REFTAGR2_REFTAG70   (0x1u<<6)
+#define CCB_REFTAGR2_REFTAG69   (0x1u<<5)
+#define CCB_REFTAGR2_REFTAG68   (0x1u<<4)
+#define CCB_REFTAGR2_REFTAG67   (0x1u<<3)
+#define CCB_REFTAGR2_REFTAG66   (0x1u<<2)
+#define CCB_REFTAGR2_REFTAG65   (0x1u<<1)
+#define CCB_REFTAGR2_REFTAG64   (0x1u<<0)
+
+// REFTAGR3 Configuration
+
+#define CCB_REFTAGR3_REFTAG127  (0x1u<<31)
+#define CCB_REFTAGR3_REFTAG126  (0x1u<<30)
+#define CCB_REFTAGR3_REFTAG125  (0x1u<<29)
+#define CCB_REFTAGR3_REFTAG124  (0x1u<<28)
+#define CCB_REFTAGR3_REFTAG123  (0x1u<<27)
+#define CCB_REFTAGR3_REFTAG122  (0x1u<<26)
+#define CCB_REFTAGR3_REFTAG121  (0x1u<<25)
+#define CCB_REFTAGR3_REFTAG120  (0x1u<<24)
+#define CCB_REFTAGR3_REFTAG119  (0x1u<<23)
+#define CCB_REFTAGR3_REFTAG118  (0x1u<<22)
+#define CCB_REFTAGR3_REFTAG117  (0x1u<<21)
+#define CCB_REFTAGR3_REFTAG116  (0x1u<<20)
+#define CCB_REFTAGR3_REFTAG115  (0x1u<<19)
+#define CCB_REFTAGR3_REFTAG114  (0x1u<<18)
+#define CCB_REFTAGR3_REFTAG113  (0x1u<<17)
+#define CCB_REFTAGR3_REFTAG112  (0x1u<<16)
+#define CCB_REFTAGR3_REFTAG111  (0x1u<<15)
+#define CCB_REFTAGR3_REFTAG110  (0x1u<<14)
+#define CCB_REFTAGR3_REFTAG109  (0x1u<<13)
+#define CCB_REFTAGR3_REFTAG108  (0x1u<<12)
+#define CCB_REFTAGR3_REFTAG107  (0x1u<<11)
+#define CCB_REFTAGR3_REFTAG106  (0x1u<<10)
+#define CCB_REFTAGR3_REFTAG105  (0x1u<<9)
+#define CCB_REFTAGR3_REFTAG104  (0x1u<<8)
+#define CCB_REFTAGR3_REFTAG103  (0x1u<<7)
+#define CCB_REFTAGR3_REFTAG102  (0x1u<<6)
+#define CCB_REFTAGR3_REFTAG101  (0x1u<<5)
+#define CCB_REFTAGR3_REFTAG100  (0x1u<<4)
+#define CCB_REFTAGR3_REFTAG99   (0x1u<<3)
+#define CCB_REFTAGR3_REFTAG98   (0x1u<<2)
+#define CCB_REFTAGR3_REFTAG97   (0x1u<<1)
+#define CCB_REFTAGR3_REFTAG96   (0x1u<<0)

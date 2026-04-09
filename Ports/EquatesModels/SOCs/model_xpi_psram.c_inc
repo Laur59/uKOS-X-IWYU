@@ -1,0 +1,343 @@
+/*
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:        Model for controlling the "PSRam" device via an XSPI.
+ */
+
+#define KAPS_OP_LIN_BURST_READ  0x20U       // PSRam Burst Read
+#define KAPS_OP_LIN_BURST_WRITE 0xA0U       // PSRam Burst Write
+#define KAPS_OP_MR_READ         0x40U       // PSRam MR Read
+#define KAPS_OP_MR_WRITE        0xC0U       // PSRam MR Write
+#define KAPS_OP_GLOBAL_RESET    0xFFU       // PSRam Global Reset
+
+#define KAPS_DEV_SIZE_VALUE     24U         // 32-MB
+
+// Prototypes
+
+static  void    local_PSRamReset(void);
+static  void    local_PSRamInitialise(void);
+static  void    local_PSRamMappedMode(void);
+
+#if (defined(PSRAM_WRITE_REGISTER))
+static  void    local_PSRamWriteRegistar(uint8_t address, uint8_t data);
+#endif
+
+#if (defined(PSRAM_READ_REGISTER))
+static  void    local_PSRamReadRegistar(uint8_t address, uint8_t *data);
+#endif
+
+/*
+ * \brief model_xspi_psram_init
+ *
+ * - Initialise the manager
+ *
+ */
+void    model_xspi_psram_init(void) {
+
+    cb_enable();
+
+    local_PSRamReset();
+    local_PSRamInitialise();
+    local_PSRamMappedMode();
+}
+
+// Local routines
+// ==============
+
+/*
+ * \brief local_PSRamReset
+ *
+ * - PSRam reset
+ *
+ */
+static  void    local_PSRamReset(void) {
+
+// Enable the XSPI1 and waiting for not busy
+
+    XSPI_UNIT->CR |= XSPI_CR_EN;
+    while ((XSPI_UNIT->SR & XSPI_SR_BUSY) != 0u);
+
+// Indirect write mode
+// NCS2 active
+// XSPI1 enable
+
+    XSPI_UNIT->CR = (0u * XSPI_CR_FMODE_0) | XSPI_CR_CSSEL | XSPI_CR_EN;
+
+// Nb byte of data to write
+// Nb dummy cycles
+// Frame Format
+// Clear the flags
+
+    XSPI_UNIT->DLR = (1u - 1u);
+    XSPI_UNIT->TCR = (0u * XSPI_TCR_DCYC_0);
+
+    XSPI_UNIT->CCR  = XSPI_CCR_DQSE
+                    | XSPI_CCR_DDTR  |                            (4u * XSPI_CCR_DMODE_0)
+                    | XSPI_CCR_ADDTR | (3u * XSPI_CCR_ADSIZE_0) | (4u * XSPI_CCR_ADMODE_0)
+                    | XSPI_CCR_IDTR  | (1u * XSPI_CCR_ISIZE_0)  | (4u * XSPI_CCR_IMODE_0);
+
+    XSPI_UNIT->FCR |= XSPI_FCR_CTOF | XSPI_FCR_CSMF | XSPI_FCR_CTCF | XSPI_FCR_CTEF;
+
+// Standard type
+// 32-MBytes = 2^(24 + 1)
+// CSH of 5 clocks
+
+    XSPI_UNIT->DCR1 = (2u * XSPI_DCR1_MTYP_0)
+                    | (KAPS_DEV_SIZE_VALUE * XSPI_DCR1_DEVSIZE_0)
+                    | (5u * XSPI_DCR1_CSHT_0);
+
+// Prescaler = 300-MHz / 8 = 37-MHz
+
+    XSPI_UNIT->DCR2 = (8u - 1u);
+
+// Reset command
+// Address = 0
+
+    XSPI_UNIT->IR = KAPS_OP_GLOBAL_RESET<<8u;
+    XSPI_UNIT->AR = 0u;
+
+// Waiting for not fifo threshold
+// Send 0u to generate 4 clock cycles
+
+    while ((XSPI_UNIT->SR & XSPI_SR_FTF) == 0u);
+    XSPI_UNIT->DR = 0u;
+
+// Waiting for Transfer complete
+
+    while ((XSPI_UNIT->SR & XSPI_SR_TCF)  == 0u);
+    while ((XSPI_UNIT->SR & XSPI_SR_BUSY) != 0u);
+
+    XSPI_UNIT->FCR |= XSPI_FCR_CTOF | XSPI_FCR_CSMF | XSPI_FCR_CTCF | XSPI_FCR_CTEF;
+}
+
+/*
+ * \brief local_PSRamInitialise
+ *
+ * - PSRam initialisation
+ *
+ */
+static  void    local_PSRamInitialise(void) {
+
+// APmemory type
+// 32-MBytes = 2^(24 + 1)
+
+    XSPI_UNIT->DCR1 = (6u * XSPI_DCR1_MTYP_0)
+                    | (KAPS_DEV_SIZE_VALUE * XSPI_DCR1_DEVSIZE_0)
+                    | (5u * XSPI_DCR1_CSHT_0);
+
+// Prescaler = 300-MHz / 8 = 37-MHz
+
+    XSPI_UNIT->DCR2 = (8u - 1u);
+
+// Chip select boundary: Set to memory page size
+// Bound of 204Byte = 2^(11)
+// Refresh 96
+
+    XSPI_UNIT->DCR3 = (11u * XSPI_DCR3_CSBOUND_0);
+    XSPI_UNIT->DCR4 = (96u * XSPI_DCR4_REFRESH_0);
+
+// Nb dummy cycles
+// Frame Format
+// Clear the flags
+
+    XSPI_UNIT->TCR  = (4u * XSPI_TCR_DCYC_0);
+    XSPI_UNIT->WTCR = (4u * XSPI_WTCR_DCYC_0);
+
+    XSPI_UNIT->CCR  = XSPI_CCR_DQSE
+                    | XSPI_CCR_DDTR   |                             (4u * XSPI_CCR_DMODE_0)
+                    | XSPI_CCR_ADDTR  | (3u * XSPI_CCR_ADSIZE_0)  | (4u * XSPI_CCR_ADMODE_0)
+                    | XSPI_CCR_IDTR   | (1u * XSPI_CCR_ISIZE_0)   | (4u * XSPI_CCR_IMODE_0);
+
+    XSPI_UNIT->WCCR = XSPI_WCCR_DQSE
+                    | XSPI_WCCR_DDTR  |                             (4u * XSPI_WCCR_DMODE_0)
+                    | XSPI_WCCR_ADDTR | (3u * XSPI_WCCR_ADSIZE_0) | (4u * XSPI_WCCR_ADMODE_0)
+                    | XSPI_WCCR_IDTR  | (1u * XSPI_WCCR_ISIZE_0)  | (4u * XSPI_WCCR_IMODE_0);
+
+    XSPI_UNIT->FCR |= XSPI_FCR_CTOF | XSPI_FCR_CSMF | XSPI_FCR_CTCF | XSPI_FCR_CTEF;
+}
+
+/*
+ * \brief local_PSRamReadRegistar
+ *
+ * - PSRam read register
+ *
+ */
+#if (defined(PSRAM_READ_REGISTER))
+static  void    local_PSRamReadRegistar(uint8_t address, uint8_t *data) {
+    uint32_t    value;
+
+    while ((XSPI_UNIT->SR & XSPI_SR_BUSY) != 0u);
+
+// Indirect read mode
+// NCS2 active
+// XSPI1 enable
+
+    XSPI_UNIT->CR = (1u * XSPI_CR_FMODE_0) | XSPI_CR_CSSEL | XSPI_CR_EN;
+
+// Nb byte of data to read
+// Nb dummy cycles
+// Frame Format
+// Clear the flags
+
+    XSPI_UNIT->DLR  = (4u - 1u);
+    XSPI_UNIT->TCR  = (0u * XSPI_TCR_DCYC_0);
+    XSPI_UNIT->WTCR = (0u * XSPI_WTCR_DCYC_0);
+    XSPI_UNIT->FCR |= XSPI_FCR_CTOF | XSPI_FCR_CSMF | XSPI_FCR_CTCF | XSPI_FCR_CTEF;
+
+// Read register command
+// Address = register
+
+    XSPI_UNIT->IR = KAPS_OP_MR_READ<<8u;
+    XSPI_UNIT->AR = address;
+
+// Waiting for Transfer complete
+
+    while ((XSPI_UNIT->SR & XSPI_SR_TCF) == 0u);
+    while ((XSPI_UNIT->SR & XSPI_SR_FTF) == 0u);
+
+// Read the register value
+
+    value = (uint32_t)XSPI_UNIT->DR;
+
+    while ((XSPI_UNIT->SR & XSPI_SR_BUSY) != 0u);
+
+    XSPI_UNIT->FCR |= XSPI_FCR_CTOF | XSPI_FCR_CSMF | XSPI_FCR_CTCF | XSPI_FCR_CTEF;
+
+    switch (address) {
+        default:
+        case 0: { *data = (uint8_t)((value>>16u) & 0xFFU); break; }
+        case 1: { *data = (uint8_t)((value>>24u) & 0xFFU); break; }
+        case 2: { *data = (uint8_t)((value>>16u) & 0xFFU); break; }
+        case 3: { *data = (uint8_t)((value>>24u) & 0xFFU); break; }
+        case 4: { *data = (uint8_t)((value>>16u) & 0xFFU); break; }
+        case 8: { *data = (uint8_t)((value>>16u) & 0xFFU); break; }
+    }
+}
+#endif
+
+/*
+ * \brief local_PSRamWriteRegistar
+ *
+ * - PSRam write register
+ *
+ */
+#if (defined(PSRAM_WRITE_REGISTER))
+static  void    local_PSRamWriteRegistar(uint8_t address, uint8_t data) {
+
+    while ((XSPI_UNIT->SR & XSPI_SR_BUSY) != 0u);
+
+// Indirect write mode
+// NCS2 active
+// XSPI1 enable
+
+    XSPI_UNIT->CR = (0u * XSPI_CR_FMODE_0) | XSPI_CR_CSSEL | XSPI_CR_EN;
+
+// Nb byte of data to read
+// Nb dummy cycles
+// Frame Format
+// Clear the flags
+
+    XSPI_UNIT->DLR  = (1u - 1u);
+    XSPI_UNIT->TCR  = (0u * XSPI_TCR_DCYC_0);
+    XSPI_UNIT->WTCR = (0u * XSPI_WTCR_DCYC_0);
+    XSPI_UNIT->FCR |= XSPI_FCR_CTOF | XSPI_FCR_CSMF | XSPI_FCR_CTCF | XSPI_FCR_CTEF;
+
+// Write register command
+// Address = register
+
+    XSPI_UNIT->IR = KAPS_OP_MR_WRITE<<8;
+    XSPI_UNIT->AR = address;
+
+// Waiting for not fifo threshold
+
+    while ((XSPI_UNIT->SR & XSPI_SR_FTF) == 0u);
+
+// Write the register
+
+    XSPI_UNIT->DR = data;
+
+// Waiting for Transfer complete
+
+    while ((XSPI_UNIT->SR & XSPI_SR_TCF)  == 0u);
+    while ((XSPI_UNIT->SR & XSPI_SR_BUSY) != 0u);
+
+    XSPI_UNIT->FCR |= XSPI_FCR_CTOF | XSPI_FCR_CSMF | XSPI_FCR_CTCF | XSPI_FCR_CTEF;
+}
+#endif
+
+/*
+ * \brief local_PSRamMappedMode
+ *
+ * - PSRam in a mapped mode
+ *   For this XSPI + PSRAm 75-MHz seems to be the limit
+ *
+ */
+static  void    local_PSRamMappedMode(void) {
+
+    while ((XSPI_UNIT->SR & XSPI_SR_BUSY) != 0u);
+    XSPI_UNIT->CR = 0u;
+    while ((XSPI_UNIT->SR & XSPI_SR_BUSY) != 0u);
+
+// Set the read latency fro 4 to 8 (109-MHz)
+// Set the write latency to 4 (109-MHz)
+// Switch to x16 mode
+
+    local_PSRamWriteRegistar(0x0, 0x24);
+    local_PSRamWriteRegistar(0x4, 0x80);
+    local_PSRamWriteRegistar(0x8, 0x40);
+
+    while ((XSPI_UNIT->SR & XSPI_SR_BUSY) != 0u);
+
+// Clear the flags
+
+    XSPI_UNIT->FCR |= XSPI_FCR_CTOF | XSPI_FCR_CSMF | XSPI_FCR_CTCF | XSPI_FCR_CTEF;
+
+// AP memory mode
+// 32-MBytes = 2^(24 + 1)
+// CSH of 4 clocks
+
+    XSPI_UNIT->DCR1 = (6u * XSPI_DCR1_MTYP_0)
+                    | (KAPS_DEV_SIZE_VALUE * XSPI_DCR1_DEVSIZE_0)
+                    | (4u * XSPI_DCR1_CSHT_0);
+
+// Bound of 204Byte = 2^(11)
+
+    XSPI_UNIT->DCR3 = (11u * XSPI_DCR3_CSBOUND_0);
+
+// Prescaler = 300-MHz / 4 = 75-MHz
+// Refresh 396, Trefresh = (REFRESH+1)/f_xspi
+//              4-us     = (REFRESH+1) / 75-MHz, REFRESH = 299
+
+    XSPI_UNIT->DCR2 = (4u - 1u);
+    XSPI_UNIT->DCR4 = (299u * XSPI_DCR4_REFRESH_0);
+
+// Nb dummy cycles has to be -1 in respect to the latency value
+
+    XSPI_UNIT->TCR  = (7u * XSPI_TCR_DCYC_0);
+    XSPI_UNIT->WTCR = (3u * XSPI_WTCR_DCYC_0);
+
+// Nb byte of data to write
+
+    XSPI_UNIT->DLR = (2u - 1u);
+
+// Linear Burst Read instruction
+// Linear Burst wite instruction
+
+    XSPI_UNIT->IR   = KAPS_OP_LIN_BURST_READ<<8  | KAPS_OP_LIN_BURST_READ;
+    XSPI_UNIT->WIR = KAPS_OP_LIN_BURST_WRITE<<8 | KAPS_OP_LIN_BURST_WRITE;
+
+// Memory-mapped mode
+
+    XSPI_UNIT->CCR  = XSPI_CCR_DQSE
+                    | XSPI_CCR_DDTR   |                             (5u * XSPI_CCR_DMODE_0)
+                    | XSPI_CCR_ADDTR  | (3u * XSPI_CCR_ADSIZE_0)  | (4u * XSPI_CCR_ADMODE_0)
+                    | XSPI_CCR_IDTR   | (1u * XSPI_CCR_ISIZE_0)   | (4u * XSPI_CCR_IMODE_0);
+
+    XSPI_UNIT->WCCR = XSPI_WCCR_DQSE
+                    | XSPI_WCCR_DDTR  |                             (5u * XSPI_WCCR_DMODE_0)
+                    | XSPI_WCCR_ADDTR | (3u * XSPI_WCCR_ADSIZE_0) | (4u * XSPI_WCCR_ADMODE_0)
+                    | XSPI_WCCR_IDTR  | (1u * XSPI_WCCR_ISIZE_0)  | (4u * XSPI_WCCR_IMODE_0);
+
+    XSPI_UNIT->CR = (3u * XSPI_CR_FMODE_0) | XSPI_CR_CSSEL | XSPI_CR_EN;
+}

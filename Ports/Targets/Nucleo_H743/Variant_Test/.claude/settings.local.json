@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash($PATH_LLVM_ARM/bin/llvm-objdump -d artefacts_cmake/BaNgLa.o)",
+      "Bash($PATH_LLVM_ARM/bin/llvm-objdump -d artefacts_make/BaNgLa.o)",
+      "Read(//tmp/**)",
+      "Bash($PATH_GCC_ARM/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -march=armv8.1-m.main+mve.fp+fp.dp -mthumb -mfloat-abi=hard -E -x c /dev/null -o /dev/null -v 2>&1)",
+      "Bash($PATH_LLVM_ARM/bin/clang --target=thumbv8.1m.main-unknown-none-eabihf -mcpu=cortex-m55 -march=armv8.1-m.main+mve.fp+fp.dp -mthumb -mfloat-abi=hard -E -x c /dev/null -o /dev/null -v 2>&1)",
+      "Bash($PATH_GCC_ARM/bin/arm-none-eabi-gcc -mcpu=cortex-m7 -march=armv7e-m -mthumb -mfloat-abi=hard -mfpu=fpv5-sp-d16 -E -x c /dev/null -o /dev/null -v 2>&1)",
+      "Bash($PATH_LLVM_ARM/bin/clang --target=thumbv7em-unknown-none-eabihf -mcpu=cortex-m7 -march=armv7e-m -mthumb -mfloat-abi=hard -mfpu=fpv5-sp-d16 -E -x c /dev/null -o /dev/null -v 2>&1)",
+      "Bash($PATH_GCC_ARM/bin/arm-none-eabi-gcc -mcpu=cortex-m33 -march=armv8-m.main+nodsp+nofp -mthumb -mfloat-abi=soft -E -x c /dev/null -o /dev/null -v 2>&1)",
+      "Bash($PATH_GCC_ARM/bin/arm-none-eabi-gcc -mcpu=cortex-m3 -march=armv7-m -mthumb -mfloat-abi=soft -E -x c /dev/null -o /dev/null -v 2>&1)",
+      "Bash($PATH_GCC_ARM/bin/arm-none-eabi-gcc -mcpu=cortex-m4 -march=armv7e-m -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -E -x c /dev/null -o /dev/null -v 2>&1)"
+    ]
+  }
+}

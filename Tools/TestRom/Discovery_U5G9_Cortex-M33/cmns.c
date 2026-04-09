@@ -138,8 +138,8 @@ void    cmns_receive(serialManager_t serialManager, char_t *data) {
 void    cmns_wait(uint32_t us) {
     uint32_t    wkUs = us, time;
 
-    wkUs = (wkUs / 7U) * (KFREQUENCY_CORE / 1000000U);
+    wkUs = (wkUs / 7u) * (KFREQUENCY_CORE / 1000000u);
 
-    wkUs = (wkUs == 0U) ? 1U : wkUs;
+    wkUs = (wkUs == 0u) ? (1u) : (wkUs);
     for (time = 0; time < wkUs; time++) { NOP; }
 }

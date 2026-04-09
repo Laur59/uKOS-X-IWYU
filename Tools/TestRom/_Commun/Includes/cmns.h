@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Some common routines used in many modules.
+; Project:  uKOS-X
+; Goal:     Some common routines used in many modules.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,61 +46,61 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 // Supported managers
 
-typedef	enum {
-			KNOTR = (((uint32_t)'n'<<24u) | ((uint32_t)'o'<<16u) | ((uint32_t)'t'<<8u) | (uint32_t)'R'),	// notr manager
-			KSYST = (((uint32_t)'s'<<24u) | ((uint32_t)'y'<<16u) | ((uint32_t)'s'<<8u) | (uint32_t)'t'),	// syst manager
-			KDEF0 = (((uint32_t)'d'<<24u) | ((uint32_t)'e'<<16u) | ((uint32_t)'f'<<8u) | (uint32_t)'0'),	// def0 manager
-			KURT0 = (((uint32_t)'u'<<24u) | ((uint32_t)'r'<<16u) | ((uint32_t)'t'<<8u) | (uint32_t)'0'),	// urt0 manager
-			KURT1 = (((uint32_t)'u'<<24u) | ((uint32_t)'r'<<16u) | ((uint32_t)'t'<<8u) | (uint32_t)'1'),	// urt1 manager
-			KURT2 = (((uint32_t)'u'<<24u) | ((uint32_t)'r'<<16u) | ((uint32_t)'t'<<8u) | (uint32_t)'2'),	// urt2 manager
-			KURT3 = (((uint32_t)'u'<<24u) | ((uint32_t)'r'<<16u) | ((uint32_t)'t'<<8u) | (uint32_t)'3'),	// urt3 manager
-			KURT4 = (((uint32_t)'u'<<24u) | ((uint32_t)'r'<<16u) | ((uint32_t)'t'<<8u) | (uint32_t)'4'),	// urt4 manager
-			KCDC0 = (((uint32_t)'c'<<24u) | ((uint32_t)'d'<<16u) | ((uint32_t)'c'<<8u) | (uint32_t)'0'),	// cdc0 manager
-			KCDC1 = (((uint32_t)'c'<<24u) | ((uint32_t)'d'<<16u) | ((uint32_t)'c'<<8u) | (uint32_t)'1'),	// cdc1 manager
-			KWFI0 = (((uint32_t)'w'<<24u) | ((uint32_t)'f'<<16u) | ((uint32_t)'i'<<8u) | (uint32_t)'0')		// wfi0 manager
+typedef enum {
+            KNOTR = (((uint32_t)'n'<<24u) | ((uint32_t)'o'<<16u) | ((uint32_t)'t'<<8u) | (uint32_t)'R'),    // notr manager
+            KSYST = (((uint32_t)'s'<<24u) | ((uint32_t)'y'<<16u) | ((uint32_t)'s'<<8u) | (uint32_t)'t'),    // syst manager
+            KDEF0 = (((uint32_t)'d'<<24u) | ((uint32_t)'e'<<16u) | ((uint32_t)'f'<<8u) | (uint32_t)'0'),    // def0 manager
+            KURT0 = (((uint32_t)'u'<<24u) | ((uint32_t)'r'<<16u) | ((uint32_t)'t'<<8u) | (uint32_t)'0'),    // urt0 manager
+            KURT1 = (((uint32_t)'u'<<24u) | ((uint32_t)'r'<<16u) | ((uint32_t)'t'<<8u) | (uint32_t)'1'),    // urt1 manager
+            KURT2 = (((uint32_t)'u'<<24u) | ((uint32_t)'r'<<16u) | ((uint32_t)'t'<<8u) | (uint32_t)'2'),    // urt2 manager
+            KURT3 = (((uint32_t)'u'<<24u) | ((uint32_t)'r'<<16u) | ((uint32_t)'t'<<8u) | (uint32_t)'3'),    // urt3 manager
+            KURT4 = (((uint32_t)'u'<<24u) | ((uint32_t)'r'<<16u) | ((uint32_t)'t'<<8u) | (uint32_t)'4'),    // urt4 manager
+            KCDC0 = (((uint32_t)'c'<<24u) | ((uint32_t)'d'<<16u) | ((uint32_t)'c'<<8u) | (uint32_t)'0'),    // cdc0 manager
+            KCDC1 = (((uint32_t)'c'<<24u) | ((uint32_t)'d'<<16u) | ((uint32_t)'c'<<8u) | (uint32_t)'1'),    // cdc1 manager
+            KWFI0 = (((uint32_t)'w'<<24u) | ((uint32_t)'f'<<16u) | ((uint32_t)'i'<<8u) | (uint32_t)'0')     // wfi0 manager
 } serialManager_t;
 
 /*
  * \brief cmns_init
  *
- * \param[in]	-
+ * \param[in]   -
  *
  * \note This function does not return a value (None).
  *
  */
-extern	void	cmns_init(void);
+extern  void    cmns_init(void);
 
 /*
  * \brief cmns_send
  *
- * \param[in]	serialManager	Serial Communication Manager
- * \param[in]	*ascii			Ptr on the ascii buffer
+ * \param[in]   serialManager   Serial Communication Manager
+ * \param[in]   *ascii          Ptr on the ascii buffer
  *
  * \note This function does not return a value (None).
  *
  */
-extern	void	cmns_send(serialManager_t serialManager, const char_t *ascii);
+extern  void    cmns_send(serialManager_t serialManager, const char_t *ascii);
 
 /*
  * \brief cmns_receive
  *
- * \param[out]	*data		Data received
+ * \param[out]  *data       Data received
  *
  * \note This function does not return a value (None).
  *
  */
-extern	void	cmns_receive(serialManager_t serialManager, char_t *data);
+extern  void    cmns_receive(serialManager_t serialManager, char_t *data);
 
 /*
  * \brief cmns_wait
  *
- * \param[in]	us		Delay in us
+ * \param[in]   us      Delay in us
  *
  * \note This function does not return a value (None).
  *
  */
-extern	void	cmns_wait(uint32_t us);
+extern  void    cmns_wait(uint32_t us);

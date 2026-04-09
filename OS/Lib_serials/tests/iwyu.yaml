@@ -1,0 +1,116 @@
+# SPDX-License-Identifier: MIT
+#
+# IWYU (Include What You Use) configuration for uKOS-X
+#
+# This file defines which files to check and which boards/configurations
+# to use for each file.
+#
+# © 2025-20xx, Laurent von Allmen
+
+files:
+  - path: OS/Lib_serials/serial/serial.c
+    boards:
+      - name: Alastor_H743
+        iwyu_flag: AlastorFLAG
+      - name: Asmodee_H747 (CM4)
+        iwyu_flag: AsmodeeCM4FLAGS
+      - name: Asmodee_H747 (CM7)
+        iwyu_flag: Asmode_CM7FLAGS_B
+      - name: DevKit_nRF5340 (App)
+        iwyu_flag: nRF_AppFLAGS_B
+      - name: DevKit_nRF5340 (Net)
+        iwyu_flag: nRF_NetFLAGS
+      - name: Discovery_U5G9
+        iwyu_flag: Discovery_U5G9FLAGS_B
+      - name: Longan_Nano_F103
+        iwyu_flag: LonganFLAGS
+      - name: MAiXDUiNO_K210
+        iwyu_flag: MaixduinoFLAGS
+      - name: Nucleo_F207
+        iwyu_flag: Nucleo_F207FLAGS_B
+      - name: Nucleo_H743
+        iwyu_flag: Nucleo_H743FLAGS_B
+      - name: Nucleo_L4R5
+        iwyu_flag: Nucleo_L4R5FLAGS_B
+      - name: Nucleo_N657
+        iwyu_flag: Nucleo_N657FLAGS_B
+      - name: Pico2_rp2350
+        iwyu_flag: Pico2FLAGS_B
+  - path: OS/Lib_serials/urt0/urt0.c
+    boards:
+      - name: Alastor_H743
+        iwyu_flag: AlastorFLAG
+      - name: Asmodee_H747 (CM4)
+        iwyu_flag: AsmodeeCM4FLAGS
+      - name: Asmodee_H747 (CM7)
+        iwyu_flag: Asmode_CM7FLAGS_B
+      - name: DevKit_nRF5340 (App)
+        iwyu_flag: nRF_AppFLAGS_B
+      - name: DevKit_nRF5340 (Net)
+        iwyu_flag: nRF_NetFLAGS
+      - name: Discovery_U5G9
+        iwyu_flag: Discovery_U5G9FLAGS_B
+      - name: Longan_Nano_F103
+        iwyu_flag: LonganFLAGS
+      - name: MAiXDUiNO_K210
+        iwyu_flag: MaixduinoFLAGS
+      - name: Nucleo_F207
+        iwyu_flag: Nucleo_F207FLAGS_B
+      - name: Nucleo_H743
+        iwyu_flag: Nucleo_H743FLAGS_B
+      - name: Nucleo_L4R5
+        iwyu_flag: Nucleo_L4R5FLAGS_B
+      - name: Nucleo_N657
+        iwyu_flag: Nucleo_N657FLAGS_B
+      - name: Pico2_rp2350
+        iwyu_flag: Pico2FLAGS_B
+  - path: OS/Lib_serials/urt1/urt1.c
+    boards:
+      - name: Alastor_H743
+        iwyu_flag: AlastorFLAG
+      - name: Nucleo_H743
+        iwyu_flag: Nucleo_H743FLAGS_B
+      - name: Nucleo_L4R5
+        iwyu_flag: Nucleo_L4R5FLAGS_B
+  - path: OS/Lib_serials/urt2/urt2.c
+    boards:
+      - name: Alastor_H743
+        iwyu_flag: AlastorFLAG
+      - name: Nucleo_L4R5
+        iwyu_flag: Nucleo_L4R5FLAGS_B
+  - path: OS/Lib_serials/urt3/urt3.c
+    boards:
+      - name: Alastor_H743
+        iwyu_flag: AlastorFLAG
+  - path: OS/Lib_serials/wfi0/wfi0.c
+    boards:
+      - name: Alastor_H743
+        iwyu_flag: AlastorFLAG
+  - path: OS/Lib_serials/cdc0/cdc0.c
+    boards:
+      - name: Asmodee_H747 (CM7)
+        iwyu_flag: Asmode_CM7FLAGS_B
+      - name: DevKit_nRF5340 (App)
+        iwyu_flag: nRF_AppFLAGS_B
+      - name: Discovery_U5G9
+        iwyu_flag: Discovery_U5G9FLAGS_B
+      - name: Nucleo_F207
+        iwyu_flag: Nucleo_F207FLAGS_B
+      - name: Nucleo_H743
+        iwyu_flag: Nucleo_H743FLAGS_B
+      - name: Nucleo_L4R5
+        iwyu_flag: Nucleo_L4R5FLAGS_B
+      - name: Nucleo_N657
+        iwyu_flag: Nucleo_N657FLAGS_B
+      - name: Pico2_rp2350
+        iwyu_flag: Pico2FLAGS_B
+  - path: OS/Lib_serials/cdc1/cdc1.c
+    boards:
+      - name: DevKit_nRF5340 (App)
+        iwyu_flag: nRF_AppFLAGS_B
+      - name: Nucleo_H743
+        iwyu_flag: Nucleo_H743FLAGS_B
+      - name: Nucleo_L4R5
+        iwyu_flag: Nucleo_L4R5FLAGS_B
+      - name: Pico2_rp2350
+        iwyu_flag: Pico2FLAGS_B

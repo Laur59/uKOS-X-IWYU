@@ -1,0 +1,3620 @@
+/*
+; stm32V873_risab.
+; ================
+
+; SPDX-License-Identifier: MIT
+
+;------------------------------------------------------------------------
+; Author:   Generated using the .svd description    The 2025-01-01
+; Modifs:
+;
+; Project:  uKOS-X
+; Goal:     stm32V873_risab equates.
+;
+;   (c) 2025-2026, Edo. Franzi
+;   --------------------------
+;                                              __ ______  _____
+;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
+;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
+;   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
+;                                     \__,_/_/ |_\____//____/
+;   edo.franzi@ukos.ch
+;
+;   Description: Lightweight, real-time multitasking operating
+;   system for embedded microcontroller and DSP-based systems.
+;
+;   Permission is hereby granted, free of charge, to any person
+;   obtaining a copy of this software and associated documentation
+;   files (the "Software"), to deal in the Software without restriction,
+;   including without limitation the rights to use, copy, modify,
+;   merge, publish, distribute, sublicense, and/or sell copies of the
+;   Software, and to permit persons to whom the Software is furnished
+;   to do so, subject to the following conditions:
+;
+;   The above copyright notice and this permission notice shall be
+;   included in all copies or substantial portions of the Software.
+;
+;   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+;   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+;   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+;   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+;   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+;   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+;   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+;   SOFTWARE.
+;
+;------------------------------------------------------------------------
+*/
+
+#pragma once
+
+#include    <stdint.h>
+
+// RISAB address definitions
+// -------------------------
+
+typedef struct {
+    volatile    uint32_t    CR;
+    volatile    uint32_t    RESERVED0;
+    volatile    uint32_t    IASR;
+    volatile    uint32_t    IACR;
+    volatile    uint32_t    RCFGLOCKR;
+    volatile    uint32_t    RESERVED1[3];
+    volatile    uint32_t    IAESR;
+    volatile    uint32_t    IADDR;
+    volatile    uint32_t    RESERVED2[54];
+    volatile    uint32_t    PG0_SECCFGR;
+    volatile    uint32_t    PG1_SECCFGR;
+    volatile    uint32_t    PG2_SECCFGR;
+    volatile    uint32_t    PG3_SECCFGR;
+    volatile    uint32_t    PG4_SECCFGR;
+    volatile    uint32_t    PG5_SECCFGR;
+    volatile    uint32_t    PG6_SECCFGR;
+    volatile    uint32_t    PG7_SECCFGR;
+    volatile    uint32_t    PG8_SECCFGR;
+    volatile    uint32_t    PG9_SECCFGR;
+    volatile    uint32_t    PG10_SECCFGR;
+    volatile    uint32_t    PG11_SECCFGR;
+    volatile    uint32_t    PG12_SECCFGR;
+    volatile    uint32_t    PG13_SECCFGR;
+    volatile    uint32_t    PG14_SECCFGR;
+    volatile    uint32_t    PG15_SECCFGR;
+    volatile    uint32_t    PG16_SECCFGR;
+    volatile    uint32_t    PG17_SECCFGR;
+    volatile    uint32_t    PG18_SECCFGR;
+    volatile    uint32_t    PG19_SECCFGR;
+    volatile    uint32_t    PG20_SECCFGR;
+    volatile    uint32_t    PG21_SECCFGR;
+    volatile    uint32_t    PG22_SECCFGR;
+    volatile    uint32_t    PG23_SECCFGR;
+    volatile    uint32_t    PG24_SECCFGR;
+    volatile    uint32_t    PG25_SECCFGR;
+    volatile    uint32_t    PG26_SECCFGR;
+    volatile    uint32_t    PG27_SECCFGR;
+    volatile    uint32_t    PG28_SECCFGR;
+    volatile    uint32_t    PG29_SECCFGR;
+    volatile    uint32_t    PG30_SECCFGR;
+    volatile    uint32_t    PG31_SECCFGR;
+    volatile    uint32_t    RESERVED3[32];
+    volatile    uint32_t    PG0_PRIVCFGR;
+    volatile    uint32_t    PG1_PRIVCFGR;
+    volatile    uint32_t    PG2_PRIVCFGR;
+    volatile    uint32_t    PG3_PRIVCFGR;
+    volatile    uint32_t    PG4_PRIVCFGR;
+    volatile    uint32_t    PG5_PRIVCFGR;
+    volatile    uint32_t    PG6_PRIVCFGR;
+    volatile    uint32_t    PG7_PRIVCFGR;
+    volatile    uint32_t    PG8_PRIVCFGR;
+    volatile    uint32_t    PG9_PRIVCFGR;
+    volatile    uint32_t    PG10_PRIVCFGR;
+    volatile    uint32_t    PG11_PRIVCFGR;
+    volatile    uint32_t    PG12_PRIVCFGR;
+    volatile    uint32_t    PG13_PRIVCFGR;
+    volatile    uint32_t    PG14_PRIVCFGR;
+    volatile    uint32_t    PG15_PRIVCFGR;
+    volatile    uint32_t    PG16_PRIVCFGR;
+    volatile    uint32_t    PG17_PRIVCFGR;
+    volatile    uint32_t    PG18_PRIVCFGR;
+    volatile    uint32_t    PG19_PRIVCFGR;
+    volatile    uint32_t    PG20_PRIVCFGR;
+    volatile    uint32_t    PG21_PRIVCFGR;
+    volatile    uint32_t    PG22_PRIVCFGR;
+    volatile    uint32_t    PG23_PRIVCFGR;
+    volatile    uint32_t    PG24_PRIVCFGR;
+    volatile    uint32_t    PG25_PRIVCFGR;
+    volatile    uint32_t    PG26_PRIVCFGR;
+    volatile    uint32_t    PG27_PRIVCFGR;
+    volatile    uint32_t    PG28_PRIVCFGR;
+    volatile    uint32_t    PG29_PRIVCFGR;
+    volatile    uint32_t    PG30_PRIVCFGR;
+    volatile    uint32_t    PG31_PRIVCFGR;
+    volatile    uint32_t    RESERVED4[224];
+    volatile    uint32_t    PG0_C2PRIVCFGR;
+    volatile    uint32_t    PG1_C2PRIVCFGR;
+    volatile    uint32_t    PG2_C2PRIVCFGR;
+    volatile    uint32_t    PG3_C2PRIVCFGR;
+    volatile    uint32_t    PG4_C2PRIVCFGR;
+    volatile    uint32_t    PG5_C2PRIVCFGR;
+    volatile    uint32_t    PG6_C2PRIVCFGR;
+    volatile    uint32_t    PG7_C2PRIVCFGR;
+    volatile    uint32_t    PG8_C2PRIVCFGR;
+    volatile    uint32_t    PG9_C2PRIVCFGR;
+    volatile    uint32_t    PG10_C2PRIVCFGR;
+    volatile    uint32_t    PG11_C2PRIVCFGR;
+    volatile    uint32_t    PG12_C2PRIVCFGR;
+    volatile    uint32_t    PG13_C2PRIVCFGR;
+    volatile    uint32_t    PG14_C2PRIVCFGR;
+    volatile    uint32_t    PG15_C2PRIVCFGR;
+    volatile    uint32_t    PG16_C2PRIVCFGR;
+    volatile    uint32_t    PG17_C2PRIVCFGR;
+    volatile    uint32_t    PG18_C2PRIVCFGR;
+    volatile    uint32_t    PG19_C2PRIVCFGR;
+    volatile    uint32_t    PG20_C2PRIVCFGR;
+    volatile    uint32_t    PG21_C2PRIVCFGR;
+    volatile    uint32_t    PG22_C2PRIVCFGR;
+    volatile    uint32_t    PG23_C2PRIVCFGR;
+    volatile    uint32_t    PG24_C2PRIVCFGR;
+    volatile    uint32_t    PG25_C2PRIVCFGR;
+    volatile    uint32_t    PG26_C2PRIVCFGR;
+    volatile    uint32_t    PG27_C2PRIVCFGR;
+    volatile    uint32_t    PG28_C2PRIVCFGR;
+    volatile    uint32_t    PG29_C2PRIVCFGR;
+    volatile    uint32_t    PG30_C2PRIVCFGR;
+    volatile    uint32_t    PG31_C2PRIVCFGR;
+    volatile    uint32_t    RESERVED5[114];
+    volatile    uint32_t    RDCFGR;
+    volatile    uint32_t    RESERVED6;
+    volatile    uint32_t    WRCFGR;
+    volatile    uint32_t    RESERVED7[107];
+    volatile    uint32_t    PG0_CIDCFGR;
+    volatile    uint32_t    PG1_CIDCFGR;
+    volatile    uint32_t    PG2_CIDCFGR;
+    volatile    uint32_t    PG3_CIDCFGR;
+    volatile    uint32_t    PG4_CIDCFGR;
+    volatile    uint32_t    PG5_CIDCFGR;
+    volatile    uint32_t    PG6_CIDCFGR;
+    volatile    uint32_t    PG7_CIDCFGR;
+    volatile    uint32_t    PG8_CIDCFGR;
+    volatile    uint32_t    PG9_CIDCFGR;
+    volatile    uint32_t    PG10_CIDCFGR;
+    volatile    uint32_t    PG11_CIDCFGR;
+    volatile    uint32_t    PG12_CIDCFGR;
+    volatile    uint32_t    PG13_CIDCFGR;
+    volatile    uint32_t    PG14_CIDCFGR;
+    volatile    uint32_t    PG15_CIDCFGR;
+    volatile    uint32_t    PG16_CIDCFGR;
+    volatile    uint32_t    PG17_CIDCFGR;
+    volatile    uint32_t    PG18_CIDCFGR;
+    volatile    uint32_t    PG19_CIDCFGR;
+    volatile    uint32_t    PG20_CIDCFGR;
+    volatile    uint32_t    PG21_CIDCFGR;
+    volatile    uint32_t    PG22_CIDCFGR;
+    volatile    uint32_t    PG23_CIDCFGR;
+    volatile    uint32_t    PG24_CIDCFGR;
+    volatile    uint32_t    PG25_CIDCFGR;
+    volatile    uint32_t    PG26_CIDCFGR;
+    volatile    uint32_t    PG27_CIDCFGR;
+    volatile    uint32_t    PG28_CIDCFGR;
+    volatile    uint32_t    PG29_CIDCFGR;
+    volatile    uint32_t    PG30_CIDCFGR;
+    volatile    uint32_t    PG31_CIDCFGR;
+} RISAB_TypeDef;
+
+#if (defined(__cplusplus))
+#define RISAB_NS    reinterpret_cast<RISAB_TypeDef *>(0x48102000u)
+#define RISAB_S     reinterpret_cast<RISAB_TypeDef *>(0x58102000u)
+
+#else
+#define RISAB_NS    ((RISAB_TypeDef *)0x48102000u)
+#define RISAB_S     ((RISAB_TypeDef *)0x58102000u)
+#endif
+
+// CR Configuration
+
+#define RISAB_CR_SRWIAD                     (0x1u<<31)
+#define RISAB_CR_GLOCK                      (0x1u<<0)
+
+#define RISAB_CR_SRWIAD_B_0X0               (0x0u<<31)
+#define RISAB_CR_SRWIAD_B_0X1               (0x1u<<31)
+#define RISAB_CR_GLOCK_B_0X0                (0x0u<<0)
+#define RISAB_CR_GLOCK_B_0X1                (0x1u<<0)
+
+// IASR Configuration
+
+#define RISAB_IASR_IAEF                     (0x1u<<1)
+#define RISAB_IASR_CAEF                     (0x1u<<0)
+
+// IACR Configuration
+
+#define RISAB_IACR_IAEF                     (0x1u<<1)
+#define RISAB_IACR_CAEF                     (0x1u<<0)
+
+// RCFGLOCKR Configuration
+
+#define RISAB_RCFGLOCKR_RLOCK31             (0x1u<<31)
+#define RISAB_RCFGLOCKR_RLOCK30             (0x1u<<30)
+#define RISAB_RCFGLOCKR_RLOCK29             (0x1u<<29)
+#define RISAB_RCFGLOCKR_RLOCK28             (0x1u<<28)
+#define RISAB_RCFGLOCKR_RLOCK27             (0x1u<<27)
+#define RISAB_RCFGLOCKR_RLOCK26             (0x1u<<26)
+#define RISAB_RCFGLOCKR_RLOCK25             (0x1u<<25)
+#define RISAB_RCFGLOCKR_RLOCK24             (0x1u<<24)
+#define RISAB_RCFGLOCKR_RLOCK23             (0x1u<<23)
+#define RISAB_RCFGLOCKR_RLOCK22             (0x1u<<22)
+#define RISAB_RCFGLOCKR_RLOCK21             (0x1u<<21)
+#define RISAB_RCFGLOCKR_RLOCK20             (0x1u<<20)
+#define RISAB_RCFGLOCKR_RLOCK19             (0x1u<<19)
+#define RISAB_RCFGLOCKR_RLOCK18             (0x1u<<18)
+#define RISAB_RCFGLOCKR_RLOCK17             (0x1u<<17)
+#define RISAB_RCFGLOCKR_RLOCK16             (0x1u<<16)
+#define RISAB_RCFGLOCKR_RLOCK15             (0x1u<<15)
+#define RISAB_RCFGLOCKR_RLOCK14             (0x1u<<14)
+#define RISAB_RCFGLOCKR_RLOCK13             (0x1u<<13)
+#define RISAB_RCFGLOCKR_RLOCK12             (0x1u<<12)
+#define RISAB_RCFGLOCKR_RLOCK11             (0x1u<<11)
+#define RISAB_RCFGLOCKR_RLOCK10             (0x1u<<10)
+#define RISAB_RCFGLOCKR_RLOCK9              (0x1u<<9)
+#define RISAB_RCFGLOCKR_RLOCK8              (0x1u<<8)
+#define RISAB_RCFGLOCKR_RLOCK7              (0x1u<<7)
+#define RISAB_RCFGLOCKR_RLOCK6              (0x1u<<6)
+#define RISAB_RCFGLOCKR_RLOCK5              (0x1u<<5)
+#define RISAB_RCFGLOCKR_RLOCK4              (0x1u<<4)
+#define RISAB_RCFGLOCKR_RLOCK3              (0x1u<<3)
+#define RISAB_RCFGLOCKR_RLOCK2              (0x1u<<2)
+#define RISAB_RCFGLOCKR_RLOCK1              (0x1u<<1)
+#define RISAB_RCFGLOCKR_RLOCK0              (0x1u<<0)
+
+#define RISAB_RCFGLOCKR_RLOCK31_B_0X0       (0x0u<<31)
+#define RISAB_RCFGLOCKR_RLOCK31_B_0X1       (0x1u<<31)
+#define RISAB_RCFGLOCKR_RLOCK30_B_0X0       (0x0u<<30)
+#define RISAB_RCFGLOCKR_RLOCK30_B_0X1       (0x1u<<30)
+#define RISAB_RCFGLOCKR_RLOCK29_B_0X0       (0x0u<<29)
+#define RISAB_RCFGLOCKR_RLOCK29_B_0X1       (0x1u<<29)
+#define RISAB_RCFGLOCKR_RLOCK28_B_0X0       (0x0u<<28)
+#define RISAB_RCFGLOCKR_RLOCK28_B_0X1       (0x1u<<28)
+#define RISAB_RCFGLOCKR_RLOCK27_B_0X0       (0x0u<<27)
+#define RISAB_RCFGLOCKR_RLOCK27_B_0X1       (0x1u<<27)
+#define RISAB_RCFGLOCKR_RLOCK26_B_0X0       (0x0u<<26)
+#define RISAB_RCFGLOCKR_RLOCK26_B_0X1       (0x1u<<26)
+#define RISAB_RCFGLOCKR_RLOCK25_B_0X0       (0x0u<<25)
+#define RISAB_RCFGLOCKR_RLOCK25_B_0X1       (0x1u<<25)
+#define RISAB_RCFGLOCKR_RLOCK24_B_0X0       (0x0u<<24)
+#define RISAB_RCFGLOCKR_RLOCK24_B_0X1       (0x1u<<24)
+#define RISAB_RCFGLOCKR_RLOCK23_B_0X0       (0x0u<<23)
+#define RISAB_RCFGLOCKR_RLOCK23_B_0X1       (0x1u<<23)
+#define RISAB_RCFGLOCKR_RLOCK22_B_0X0       (0x0u<<22)
+#define RISAB_RCFGLOCKR_RLOCK22_B_0X1       (0x1u<<22)
+#define RISAB_RCFGLOCKR_RLOCK21_B_0X0       (0x0u<<21)
+#define RISAB_RCFGLOCKR_RLOCK21_B_0X1       (0x1u<<21)
+#define RISAB_RCFGLOCKR_RLOCK20_B_0X0       (0x0u<<20)
+#define RISAB_RCFGLOCKR_RLOCK20_B_0X1       (0x1u<<20)
+#define RISAB_RCFGLOCKR_RLOCK19_B_0X0       (0x0u<<19)
+#define RISAB_RCFGLOCKR_RLOCK19_B_0X1       (0x1u<<19)
+#define RISAB_RCFGLOCKR_RLOCK18_B_0X0       (0x0u<<18)
+#define RISAB_RCFGLOCKR_RLOCK18_B_0X1       (0x1u<<18)
+#define RISAB_RCFGLOCKR_RLOCK17_B_0X0       (0x0u<<17)
+#define RISAB_RCFGLOCKR_RLOCK17_B_0X1       (0x1u<<17)
+#define RISAB_RCFGLOCKR_RLOCK16_B_0X0       (0x0u<<16)
+#define RISAB_RCFGLOCKR_RLOCK16_B_0X1       (0x1u<<16)
+#define RISAB_RCFGLOCKR_RLOCK15_B_0X0       (0x0u<<15)
+#define RISAB_RCFGLOCKR_RLOCK15_B_0X1       (0x1u<<15)
+#define RISAB_RCFGLOCKR_RLOCK14_B_0X0       (0x0u<<14)
+#define RISAB_RCFGLOCKR_RLOCK14_B_0X1       (0x1u<<14)
+#define RISAB_RCFGLOCKR_RLOCK13_B_0X0       (0x0u<<13)
+#define RISAB_RCFGLOCKR_RLOCK13_B_0X1       (0x1u<<13)
+#define RISAB_RCFGLOCKR_RLOCK12_B_0X0       (0x0u<<12)
+#define RISAB_RCFGLOCKR_RLOCK12_B_0X1       (0x1u<<12)
+#define RISAB_RCFGLOCKR_RLOCK11_B_0X0       (0x0u<<11)
+#define RISAB_RCFGLOCKR_RLOCK11_B_0X1       (0x1u<<11)
+#define RISAB_RCFGLOCKR_RLOCK10_B_0X0       (0x0u<<10)
+#define RISAB_RCFGLOCKR_RLOCK10_B_0X1       (0x1u<<10)
+#define RISAB_RCFGLOCKR_RLOCK9_B_0X0        (0x0u<<9)
+#define RISAB_RCFGLOCKR_RLOCK9_B_0X1        (0x1u<<9)
+#define RISAB_RCFGLOCKR_RLOCK8_B_0X0        (0x0u<<8)
+#define RISAB_RCFGLOCKR_RLOCK8_B_0X1        (0x1u<<8)
+#define RISAB_RCFGLOCKR_RLOCK7_B_0X0        (0x0u<<7)
+#define RISAB_RCFGLOCKR_RLOCK7_B_0X1        (0x1u<<7)
+#define RISAB_RCFGLOCKR_RLOCK6_B_0X0        (0x0u<<6)
+#define RISAB_RCFGLOCKR_RLOCK6_B_0X1        (0x1u<<6)
+#define RISAB_RCFGLOCKR_RLOCK5_B_0X0        (0x0u<<5)
+#define RISAB_RCFGLOCKR_RLOCK5_B_0X1        (0x1u<<5)
+#define RISAB_RCFGLOCKR_RLOCK4_B_0X0        (0x0u<<4)
+#define RISAB_RCFGLOCKR_RLOCK4_B_0X1        (0x1u<<4)
+#define RISAB_RCFGLOCKR_RLOCK3_B_0X0        (0x0u<<3)
+#define RISAB_RCFGLOCKR_RLOCK3_B_0X1        (0x1u<<3)
+#define RISAB_RCFGLOCKR_RLOCK2_B_0X0        (0x0u<<2)
+#define RISAB_RCFGLOCKR_RLOCK2_B_0X1        (0x1u<<2)
+#define RISAB_RCFGLOCKR_RLOCK1_B_0X0        (0x0u<<1)
+#define RISAB_RCFGLOCKR_RLOCK1_B_0X1        (0x1u<<1)
+#define RISAB_RCFGLOCKR_RLOCK0_B_0X0        (0x0u<<0)
+#define RISAB_RCFGLOCKR_RLOCK0_B_0X1        (0x1u<<0)
+
+// IAESR Configuration
+
+#define RISAB_IAESR_IANRW                   (0x1u<<7)
+#define RISAB_IAESR_IASEC                   (0x1u<<5)
+#define RISAB_IAESR_IAPRIV                  (0x1u<<4)
+
+#define RISAB_IAESR_IANRW_B_0X0             (0x0u<<7)
+#define RISAB_IAESR_IANRW_B_0X1             (0x1u<<7)
+#define RISAB_IAESR_IASEC_B_0X0             (0x0u<<5)
+#define RISAB_IAESR_IASEC_B_0X1             (0x1u<<5)
+#define RISAB_IAESR_IAPRIV_B_0X0            (0x0u<<4)
+#define RISAB_IAESR_IAPRIV_B_0X1            (0x1u<<4)
+
+// IADDR Configuration
+
+#define RISAB_IADDR_IADD                    (0xFFFFFFFFu<<0)
+#define RISAB_IADDR_IADD_0                  (0x1u<<0)
+
+// PG0_SECCFGR Configuration
+
+#define RISAB_PG0_SECCFGR_SEC7              (0x1u<<7)
+#define RISAB_PG0_SECCFGR_SEC6              (0x1u<<6)
+#define RISAB_PG0_SECCFGR_SEC5              (0x1u<<5)
+#define RISAB_PG0_SECCFGR_SEC4              (0x1u<<4)
+#define RISAB_PG0_SECCFGR_SEC3              (0x1u<<3)
+#define RISAB_PG0_SECCFGR_SEC2              (0x1u<<2)
+#define RISAB_PG0_SECCFGR_SEC1              (0x1u<<1)
+#define RISAB_PG0_SECCFGR_SEC0              (0x1u<<0)
+
+#define RISAB_PG0_SECCFGR_SEC7_B_0X0        (0x0u<<7)
+#define RISAB_PG0_SECCFGR_SEC7_B_0X1        (0x1u<<7)
+#define RISAB_PG0_SECCFGR_SEC6_B_0X0        (0x0u<<6)
+#define RISAB_PG0_SECCFGR_SEC6_B_0X1        (0x1u<<6)
+#define RISAB_PG0_SECCFGR_SEC5_B_0X0        (0x0u<<5)
+#define RISAB_PG0_SECCFGR_SEC5_B_0X1        (0x1u<<5)
+#define RISAB_PG0_SECCFGR_SEC4_B_0X0        (0x0u<<4)
+#define RISAB_PG0_SECCFGR_SEC4_B_0X1        (0x1u<<4)
+#define RISAB_PG0_SECCFGR_SEC3_B_0X0        (0x0u<<3)
+#define RISAB_PG0_SECCFGR_SEC3_B_0X1        (0x1u<<3)
+#define RISAB_PG0_SECCFGR_SEC2_B_0X0        (0x0u<<2)
+#define RISAB_PG0_SECCFGR_SEC2_B_0X1        (0x1u<<2)
+#define RISAB_PG0_SECCFGR_SEC1_B_0X0        (0x0u<<1)
+#define RISAB_PG0_SECCFGR_SEC1_B_0X1        (0x1u<<1)
+#define RISAB_PG0_SECCFGR_SEC0_B_0X0        (0x0u<<0)
+#define RISAB_PG0_SECCFGR_SEC0_B_0X1        (0x1u<<0)
+
+// PG1_SECCFGR Configuration
+
+#define RISAB_PG1_SECCFGR_SEC7              (0x1u<<7)
+#define RISAB_PG1_SECCFGR_SEC6              (0x1u<<6)
+#define RISAB_PG1_SECCFGR_SEC5              (0x1u<<5)
+#define RISAB_PG1_SECCFGR_SEC4              (0x1u<<4)
+#define RISAB_PG1_SECCFGR_SEC3              (0x1u<<3)
+#define RISAB_PG1_SECCFGR_SEC2              (0x1u<<2)
+#define RISAB_PG1_SECCFGR_SEC1              (0x1u<<1)
+#define RISAB_PG1_SECCFGR_SEC0              (0x1u<<0)
+
+#define RISAB_PG1_SECCFGR_SEC7_B_0X0        (0x0u<<7)
+#define RISAB_PG1_SECCFGR_SEC7_B_0X1        (0x1u<<7)
+#define RISAB_PG1_SECCFGR_SEC6_B_0X0        (0x0u<<6)
+#define RISAB_PG1_SECCFGR_SEC6_B_0X1        (0x1u<<6)
+#define RISAB_PG1_SECCFGR_SEC5_B_0X0        (0x0u<<5)
+#define RISAB_PG1_SECCFGR_SEC5_B_0X1        (0x1u<<5)
+#define RISAB_PG1_SECCFGR_SEC4_B_0X0        (0x0u<<4)
+#define RISAB_PG1_SECCFGR_SEC4_B_0X1        (0x1u<<4)
+#define RISAB_PG1_SECCFGR_SEC3_B_0X0        (0x0u<<3)
+#define RISAB_PG1_SECCFGR_SEC3_B_0X1        (0x1u<<3)
+#define RISAB_PG1_SECCFGR_SEC2_B_0X0        (0x0u<<2)
+#define RISAB_PG1_SECCFGR_SEC2_B_0X1        (0x1u<<2)
+#define RISAB_PG1_SECCFGR_SEC1_B_0X0        (0x0u<<1)
+#define RISAB_PG1_SECCFGR_SEC1_B_0X1        (0x1u<<1)
+#define RISAB_PG1_SECCFGR_SEC0_B_0X0        (0x0u<<0)
+#define RISAB_PG1_SECCFGR_SEC0_B_0X1        (0x1u<<0)
+
+// PG2_SECCFGR Configuration
+
+#define RISAB_PG2_SECCFGR_SEC7              (0x1u<<7)
+#define RISAB_PG2_SECCFGR_SEC6              (0x1u<<6)
+#define RISAB_PG2_SECCFGR_SEC5              (0x1u<<5)
+#define RISAB_PG2_SECCFGR_SEC4              (0x1u<<4)
+#define RISAB_PG2_SECCFGR_SEC3              (0x1u<<3)
+#define RISAB_PG2_SECCFGR_SEC2              (0x1u<<2)
+#define RISAB_PG2_SECCFGR_SEC1              (0x1u<<1)
+#define RISAB_PG2_SECCFGR_SEC0              (0x1u<<0)
+
+#define RISAB_PG2_SECCFGR_SEC7_B_0X0        (0x0u<<7)
+#define RISAB_PG2_SECCFGR_SEC7_B_0X1        (0x1u<<7)
+#define RISAB_PG2_SECCFGR_SEC6_B_0X0        (0x0u<<6)
+#define RISAB_PG2_SECCFGR_SEC6_B_0X1        (0x1u<<6)
+#define RISAB_PG2_SECCFGR_SEC5_B_0X0        (0x0u<<5)
+#define RISAB_PG2_SECCFGR_SEC5_B_0X1        (0x1u<<5)
+#define RISAB_PG2_SECCFGR_SEC4_B_0X0        (0x0u<<4)
+#define RISAB_PG2_SECCFGR_SEC4_B_0X1        (0x1u<<4)
+#define RISAB_PG2_SECCFGR_SEC3_B_0X0        (0x0u<<3)
+#define RISAB_PG2_SECCFGR_SEC3_B_0X1        (0x1u<<3)
+#define RISAB_PG2_SECCFGR_SEC2_B_0X0        (0x0u<<2)
+#define RISAB_PG2_SECCFGR_SEC2_B_0X1        (0x1u<<2)
+#define RISAB_PG2_SECCFGR_SEC1_B_0X0        (0x0u<<1)
+#define RISAB_PG2_SECCFGR_SEC1_B_0X1        (0x1u<<1)
+#define RISAB_PG2_SECCFGR_SEC0_B_0X0        (0x0u<<0)
+#define RISAB_PG2_SECCFGR_SEC0_B_0X1        (0x1u<<0)
+
+// PG3_SECCFGR Configuration
+
+#define RISAB_PG3_SECCFGR_SEC7              (0x1u<<7)
+#define RISAB_PG3_SECCFGR_SEC6              (0x1u<<6)
+#define RISAB_PG3_SECCFGR_SEC5              (0x1u<<5)
+#define RISAB_PG3_SECCFGR_SEC4              (0x1u<<4)
+#define RISAB_PG3_SECCFGR_SEC3              (0x1u<<3)
+#define RISAB_PG3_SECCFGR_SEC2              (0x1u<<2)
+#define RISAB_PG3_SECCFGR_SEC1              (0x1u<<1)
+#define RISAB_PG3_SECCFGR_SEC0              (0x1u<<0)
+
+#define RISAB_PG3_SECCFGR_SEC7_B_0X0        (0x0u<<7)
+#define RISAB_PG3_SECCFGR_SEC7_B_0X1        (0x1u<<7)
+#define RISAB_PG3_SECCFGR_SEC6_B_0X0        (0x0u<<6)
+#define RISAB_PG3_SECCFGR_SEC6_B_0X1        (0x1u<<6)
+#define RISAB_PG3_SECCFGR_SEC5_B_0X0        (0x0u<<5)
+#define RISAB_PG3_SECCFGR_SEC5_B_0X1        (0x1u<<5)
+#define RISAB_PG3_SECCFGR_SEC4_B_0X0        (0x0u<<4)
+#define RISAB_PG3_SECCFGR_SEC4_B_0X1        (0x1u<<4)
+#define RISAB_PG3_SECCFGR_SEC3_B_0X0        (0x0u<<3)
+#define RISAB_PG3_SECCFGR_SEC3_B_0X1        (0x1u<<3)
+#define RISAB_PG3_SECCFGR_SEC2_B_0X0        (0x0u<<2)
+#define RISAB_PG3_SECCFGR_SEC2_B_0X1        (0x1u<<2)
+#define RISAB_PG3_SECCFGR_SEC1_B_0X0        (0x0u<<1)
+#define RISAB_PG3_SECCFGR_SEC1_B_0X1        (0x1u<<1)
+#define RISAB_PG3_SECCFGR_SEC0_B_0X0        (0x0u<<0)
+#define RISAB_PG3_SECCFGR_SEC0_B_0X1        (0x1u<<0)
+
+// PG4_SECCFGR Configuration
+
+#define RISAB_PG4_SECCFGR_SEC7              (0x1u<<7)
+#define RISAB_PG4_SECCFGR_SEC6              (0x1u<<6)
+#define RISAB_PG4_SECCFGR_SEC5              (0x1u<<5)
+#define RISAB_PG4_SECCFGR_SEC4              (0x1u<<4)
+#define RISAB_PG4_SECCFGR_SEC3              (0x1u<<3)
+#define RISAB_PG4_SECCFGR_SEC2              (0x1u<<2)
+#define RISAB_PG4_SECCFGR_SEC1              (0x1u<<1)
+#define RISAB_PG4_SECCFGR_SEC0              (0x1u<<0)
+
+#define RISAB_PG4_SECCFGR_SEC7_B_0X0        (0x0u<<7)
+#define RISAB_PG4_SECCFGR_SEC7_B_0X1        (0x1u<<7)
+#define RISAB_PG4_SECCFGR_SEC6_B_0X0        (0x0u<<6)
+#define RISAB_PG4_SECCFGR_SEC6_B_0X1        (0x1u<<6)
+#define RISAB_PG4_SECCFGR_SEC5_B_0X0        (0x0u<<5)
+#define RISAB_PG4_SECCFGR_SEC5_B_0X1        (0x1u<<5)
+#define RISAB_PG4_SECCFGR_SEC4_B_0X0        (0x0u<<4)
+#define RISAB_PG4_SECCFGR_SEC4_B_0X1        (0x1u<<4)
+#define RISAB_PG4_SECCFGR_SEC3_B_0X0        (0x0u<<3)
+#define RISAB_PG4_SECCFGR_SEC3_B_0X1        (0x1u<<3)
+#define RISAB_PG4_SECCFGR_SEC2_B_0X0        (0x0u<<2)
+#define RISAB_PG4_SECCFGR_SEC2_B_0X1        (0x1u<<2)
+#define RISAB_PG4_SECCFGR_SEC1_B_0X0        (0x0u<<1)
+#define RISAB_PG4_SECCFGR_SEC1_B_0X1        (0x1u<<1)
+#define RISAB_PG4_SECCFGR_SEC0_B_0X0        (0x0u<<0)
+#define RISAB_PG4_SECCFGR_SEC0_B_0X1        (0x1u<<0)
+
+// PG5_SECCFGR Configuration
+
+#define RISAB_PG5_SECCFGR_SEC7              (0x1u<<7)
+#define RISAB_PG5_SECCFGR_SEC6              (0x1u<<6)
+#define RISAB_PG5_SECCFGR_SEC5              (0x1u<<5)
+#define RISAB_PG5_SECCFGR_SEC4              (0x1u<<4)
+#define RISAB_PG5_SECCFGR_SEC3              (0x1u<<3)
+#define RISAB_PG5_SECCFGR_SEC2              (0x1u<<2)
+#define RISAB_PG5_SECCFGR_SEC1              (0x1u<<1)
+#define RISAB_PG5_SECCFGR_SEC0              (0x1u<<0)
+
+#define RISAB_PG5_SECCFGR_SEC7_B_0X0        (0x0u<<7)
+#define RISAB_PG5_SECCFGR_SEC7_B_0X1        (0x1u<<7)
+#define RISAB_PG5_SECCFGR_SEC6_B_0X0        (0x0u<<6)
+#define RISAB_PG5_SECCFGR_SEC6_B_0X1        (0x1u<<6)
+#define RISAB_PG5_SECCFGR_SEC5_B_0X0        (0x0u<<5)
+#define RISAB_PG5_SECCFGR_SEC5_B_0X1        (0x1u<<5)
+#define RISAB_PG5_SECCFGR_SEC4_B_0X0        (0x0u<<4)
+#define RISAB_PG5_SECCFGR_SEC4_B_0X1        (0x1u<<4)
+#define RISAB_PG5_SECCFGR_SEC3_B_0X0        (0x0u<<3)
+#define RISAB_PG5_SECCFGR_SEC3_B_0X1        (0x1u<<3)
+#define RISAB_PG5_SECCFGR_SEC2_B_0X0        (0x0u<<2)
+#define RISAB_PG5_SECCFGR_SEC2_B_0X1        (0x1u<<2)
+#define RISAB_PG5_SECCFGR_SEC1_B_0X0        (0x0u<<1)
+#define RISAB_PG5_SECCFGR_SEC1_B_0X1        (0x1u<<1)
+#define RISAB_PG5_SECCFGR_SEC0_B_0X0        (0x0u<<0)
+#define RISAB_PG5_SECCFGR_SEC0_B_0X1        (0x1u<<0)
+
+// PG6_SECCFGR Configuration
+
+#define RISAB_PG6_SECCFGR_SEC7              (0x1u<<7)
+#define RISAB_PG6_SECCFGR_SEC6              (0x1u<<6)
+#define RISAB_PG6_SECCFGR_SEC5              (0x1u<<5)
+#define RISAB_PG6_SECCFGR_SEC4              (0x1u<<4)
+#define RISAB_PG6_SECCFGR_SEC3              (0x1u<<3)
+#define RISAB_PG6_SECCFGR_SEC2              (0x1u<<2)
+#define RISAB_PG6_SECCFGR_SEC1              (0x1u<<1)
+#define RISAB_PG6_SECCFGR_SEC0              (0x1u<<0)
+
+#define RISAB_PG6_SECCFGR_SEC7_B_0X0        (0x0u<<7)
+#define RISAB_PG6_SECCFGR_SEC7_B_0X1        (0x1u<<7)
+#define RISAB_PG6_SECCFGR_SEC6_B_0X0        (0x0u<<6)
+#define RISAB_PG6_SECCFGR_SEC6_B_0X1        (0x1u<<6)
+#define RISAB_PG6_SECCFGR_SEC5_B_0X0        (0x0u<<5)
+#define RISAB_PG6_SECCFGR_SEC5_B_0X1        (0x1u<<5)
+#define RISAB_PG6_SECCFGR_SEC4_B_0X0        (0x0u<<4)
+#define RISAB_PG6_SECCFGR_SEC4_B_0X1        (0x1u<<4)
+#define RISAB_PG6_SECCFGR_SEC3_B_0X0        (0x0u<<3)
+#define RISAB_PG6_SECCFGR_SEC3_B_0X1        (0x1u<<3)
+#define RISAB_PG6_SECCFGR_SEC2_B_0X0        (0x0u<<2)
+#define RISAB_PG6_SECCFGR_SEC2_B_0X1        (0x1u<<2)
+#define RISAB_PG6_SECCFGR_SEC1_B_0X0        (0x0u<<1)
+#define RISAB_PG6_SECCFGR_SEC1_B_0X1        (0x1u<<1)
+#define RISAB_PG6_SECCFGR_SEC0_B_0X0        (0x0u<<0)
+#define RISAB_PG6_SECCFGR_SEC0_B_0X1        (0x1u<<0)
+
+// PG7_SECCFGR Configuration
+
+#define RISAB_PG7_SECCFGR_SEC7              (0x1u<<7)
+#define RISAB_PG7_SECCFGR_SEC6              (0x1u<<6)
+#define RISAB_PG7_SECCFGR_SEC5              (0x1u<<5)
+#define RISAB_PG7_SECCFGR_SEC4              (0x1u<<4)
+#define RISAB_PG7_SECCFGR_SEC3              (0x1u<<3)
+#define RISAB_PG7_SECCFGR_SEC2              (0x1u<<2)
+#define RISAB_PG7_SECCFGR_SEC1              (0x1u<<1)
+#define RISAB_PG7_SECCFGR_SEC0              (0x1u<<0)
+
+#define RISAB_PG7_SECCFGR_SEC7_B_0X0        (0x0u<<7)
+#define RISAB_PG7_SECCFGR_SEC7_B_0X1        (0x1u<<7)
+#define RISAB_PG7_SECCFGR_SEC6_B_0X0        (0x0u<<6)
+#define RISAB_PG7_SECCFGR_SEC6_B_0X1        (0x1u<<6)
+#define RISAB_PG7_SECCFGR_SEC5_B_0X0        (0x0u<<5)
+#define RISAB_PG7_SECCFGR_SEC5_B_0X1        (0x1u<<5)
+#define RISAB_PG7_SECCFGR_SEC4_B_0X0        (0x0u<<4)
+#define RISAB_PG7_SECCFGR_SEC4_B_0X1        (0x1u<<4)
+#define RISAB_PG7_SECCFGR_SEC3_B_0X0        (0x0u<<3)
+#define RISAB_PG7_SECCFGR_SEC3_B_0X1        (0x1u<<3)
+#define RISAB_PG7_SECCFGR_SEC2_B_0X0        (0x0u<<2)
+#define RISAB_PG7_SECCFGR_SEC2_B_0X1        (0x1u<<2)
+#define RISAB_PG7_SECCFGR_SEC1_B_0X0        (0x0u<<1)
+#define RISAB_PG7_SECCFGR_SEC1_B_0X1        (0x1u<<1)
+#define RISAB_PG7_SECCFGR_SEC0_B_0X0        (0x0u<<0)
+#define RISAB_PG7_SECCFGR_SEC0_B_0X1        (0x1u<<0)
+
+// PG8_SECCFGR Configuration
+
+#define RISAB_PG8_SECCFGR_SEC7              (0x1u<<7)
+#define RISAB_PG8_SECCFGR_SEC6              (0x1u<<6)
+#define RISAB_PG8_SECCFGR_SEC5              (0x1u<<5)
+#define RISAB_PG8_SECCFGR_SEC4              (0x1u<<4)
+#define RISAB_PG8_SECCFGR_SEC3              (0x1u<<3)
+#define RISAB_PG8_SECCFGR_SEC2              (0x1u<<2)
+#define RISAB_PG8_SECCFGR_SEC1              (0x1u<<1)
+#define RISAB_PG8_SECCFGR_SEC0              (0x1u<<0)
+
+#define RISAB_PG8_SECCFGR_SEC7_B_0X0        (0x0u<<7)
+#define RISAB_PG8_SECCFGR_SEC7_B_0X1        (0x1u<<7)
+#define RISAB_PG8_SECCFGR_SEC6_B_0X0        (0x0u<<6)
+#define RISAB_PG8_SECCFGR_SEC6_B_0X1        (0x1u<<6)
+#define RISAB_PG8_SECCFGR_SEC5_B_0X0        (0x0u<<5)
+#define RISAB_PG8_SECCFGR_SEC5_B_0X1        (0x1u<<5)
+#define RISAB_PG8_SECCFGR_SEC4_B_0X0        (0x0u<<4)
+#define RISAB_PG8_SECCFGR_SEC4_B_0X1        (0x1u<<4)
+#define RISAB_PG8_SECCFGR_SEC3_B_0X0        (0x0u<<3)
+#define RISAB_PG8_SECCFGR_SEC3_B_0X1        (0x1u<<3)
+#define RISAB_PG8_SECCFGR_SEC2_B_0X0        (0x0u<<2)
+#define RISAB_PG8_SECCFGR_SEC2_B_0X1        (0x1u<<2)
+#define RISAB_PG8_SECCFGR_SEC1_B_0X0        (0x0u<<1)
+#define RISAB_PG8_SECCFGR_SEC1_B_0X1        (0x1u<<1)
+#define RISAB_PG8_SECCFGR_SEC0_B_0X0        (0x0u<<0)
+#define RISAB_PG8_SECCFGR_SEC0_B_0X1        (0x1u<<0)
+
+// PG9_SECCFGR Configuration
+
+#define RISAB_PG9_SECCFGR_SEC7              (0x1u<<7)
+#define RISAB_PG9_SECCFGR_SEC6              (0x1u<<6)
+#define RISAB_PG9_SECCFGR_SEC5              (0x1u<<5)
+#define RISAB_PG9_SECCFGR_SEC4              (0x1u<<4)
+#define RISAB_PG9_SECCFGR_SEC3              (0x1u<<3)
+#define RISAB_PG9_SECCFGR_SEC2              (0x1u<<2)
+#define RISAB_PG9_SECCFGR_SEC1              (0x1u<<1)
+#define RISAB_PG9_SECCFGR_SEC0              (0x1u<<0)
+
+#define RISAB_PG9_SECCFGR_SEC7_B_0X0        (0x0u<<7)
+#define RISAB_PG9_SECCFGR_SEC7_B_0X1        (0x1u<<7)
+#define RISAB_PG9_SECCFGR_SEC6_B_0X0        (0x0u<<6)
+#define RISAB_PG9_SECCFGR_SEC6_B_0X1        (0x1u<<6)
+#define RISAB_PG9_SECCFGR_SEC5_B_0X0        (0x0u<<5)
+#define RISAB_PG9_SECCFGR_SEC5_B_0X1        (0x1u<<5)
+#define RISAB_PG9_SECCFGR_SEC4_B_0X0        (0x0u<<4)
+#define RISAB_PG9_SECCFGR_SEC4_B_0X1        (0x1u<<4)
+#define RISAB_PG9_SECCFGR_SEC3_B_0X0        (0x0u<<3)
+#define RISAB_PG9_SECCFGR_SEC3_B_0X1        (0x1u<<3)
+#define RISAB_PG9_SECCFGR_SEC2_B_0X0        (0x0u<<2)
+#define RISAB_PG9_SECCFGR_SEC2_B_0X1        (0x1u<<2)
+#define RISAB_PG9_SECCFGR_SEC1_B_0X0        (0x0u<<1)
+#define RISAB_PG9_SECCFGR_SEC1_B_0X1        (0x1u<<1)
+#define RISAB_PG9_SECCFGR_SEC0_B_0X0        (0x0u<<0)
+#define RISAB_PG9_SECCFGR_SEC0_B_0X1        (0x1u<<0)
+
+// PG10_SECCFGR Configuration
+
+#define RISAB_PG10_SECCFGR_SEC7             (0x1u<<7)
+#define RISAB_PG10_SECCFGR_SEC6             (0x1u<<6)
+#define RISAB_PG10_SECCFGR_SEC5             (0x1u<<5)
+#define RISAB_PG10_SECCFGR_SEC4             (0x1u<<4)
+#define RISAB_PG10_SECCFGR_SEC3             (0x1u<<3)
+#define RISAB_PG10_SECCFGR_SEC2             (0x1u<<2)
+#define RISAB_PG10_SECCFGR_SEC1             (0x1u<<1)
+#define RISAB_PG10_SECCFGR_SEC0             (0x1u<<0)
+
+#define RISAB_PG10_SECCFGR_SEC7_B_0X0       (0x0u<<7)
+#define RISAB_PG10_SECCFGR_SEC7_B_0X1       (0x1u<<7)
+#define RISAB_PG10_SECCFGR_SEC6_B_0X0       (0x0u<<6)
+#define RISAB_PG10_SECCFGR_SEC6_B_0X1       (0x1u<<6)
+#define RISAB_PG10_SECCFGR_SEC5_B_0X0       (0x0u<<5)
+#define RISAB_PG10_SECCFGR_SEC5_B_0X1       (0x1u<<5)
+#define RISAB_PG10_SECCFGR_SEC4_B_0X0       (0x0u<<4)
+#define RISAB_PG10_SECCFGR_SEC4_B_0X1       (0x1u<<4)
+#define RISAB_PG10_SECCFGR_SEC3_B_0X0       (0x0u<<3)
+#define RISAB_PG10_SECCFGR_SEC3_B_0X1       (0x1u<<3)
+#define RISAB_PG10_SECCFGR_SEC2_B_0X0       (0x0u<<2)
+#define RISAB_PG10_SECCFGR_SEC2_B_0X1       (0x1u<<2)
+#define RISAB_PG10_SECCFGR_SEC1_B_0X0       (0x0u<<1)
+#define RISAB_PG10_SECCFGR_SEC1_B_0X1       (0x1u<<1)
+#define RISAB_PG10_SECCFGR_SEC0_B_0X0       (0x0u<<0)
+#define RISAB_PG10_SECCFGR_SEC0_B_0X1       (0x1u<<0)
+
+// PG11_SECCFGR Configuration
+
+#define RISAB_PG11_SECCFGR_SEC7             (0x1u<<7)
+#define RISAB_PG11_SECCFGR_SEC6             (0x1u<<6)
+#define RISAB_PG11_SECCFGR_SEC5             (0x1u<<5)
+#define RISAB_PG11_SECCFGR_SEC4             (0x1u<<4)
+#define RISAB_PG11_SECCFGR_SEC3             (0x1u<<3)
+#define RISAB_PG11_SECCFGR_SEC2             (0x1u<<2)
+#define RISAB_PG11_SECCFGR_SEC1             (0x1u<<1)
+#define RISAB_PG11_SECCFGR_SEC0             (0x1u<<0)
+
+#define RISAB_PG11_SECCFGR_SEC7_B_0X0       (0x0u<<7)
+#define RISAB_PG11_SECCFGR_SEC7_B_0X1       (0x1u<<7)
+#define RISAB_PG11_SECCFGR_SEC6_B_0X0       (0x0u<<6)
+#define RISAB_PG11_SECCFGR_SEC6_B_0X1       (0x1u<<6)
+#define RISAB_PG11_SECCFGR_SEC5_B_0X0       (0x0u<<5)
+#define RISAB_PG11_SECCFGR_SEC5_B_0X1       (0x1u<<5)
+#define RISAB_PG11_SECCFGR_SEC4_B_0X0       (0x0u<<4)
+#define RISAB_PG11_SECCFGR_SEC4_B_0X1       (0x1u<<4)
+#define RISAB_PG11_SECCFGR_SEC3_B_0X0       (0x0u<<3)
+#define RISAB_PG11_SECCFGR_SEC3_B_0X1       (0x1u<<3)
+#define RISAB_PG11_SECCFGR_SEC2_B_0X0       (0x0u<<2)
+#define RISAB_PG11_SECCFGR_SEC2_B_0X1       (0x1u<<2)
+#define RISAB_PG11_SECCFGR_SEC1_B_0X0       (0x0u<<1)
+#define RISAB_PG11_SECCFGR_SEC1_B_0X1       (0x1u<<1)
+#define RISAB_PG11_SECCFGR_SEC0_B_0X0       (0x0u<<0)
+#define RISAB_PG11_SECCFGR_SEC0_B_0X1       (0x1u<<0)
+
+// PG12_SECCFGR Configuration
+
+#define RISAB_PG12_SECCFGR_SEC7             (0x1u<<7)
+#define RISAB_PG12_SECCFGR_SEC6             (0x1u<<6)
+#define RISAB_PG12_SECCFGR_SEC5             (0x1u<<5)
+#define RISAB_PG12_SECCFGR_SEC4             (0x1u<<4)
+#define RISAB_PG12_SECCFGR_SEC3             (0x1u<<3)
+#define RISAB_PG12_SECCFGR_SEC2             (0x1u<<2)
+#define RISAB_PG12_SECCFGR_SEC1             (0x1u<<1)
+#define RISAB_PG12_SECCFGR_SEC0             (0x1u<<0)
+
+#define RISAB_PG12_SECCFGR_SEC7_B_0X0       (0x0u<<7)
+#define RISAB_PG12_SECCFGR_SEC7_B_0X1       (0x1u<<7)
+#define RISAB_PG12_SECCFGR_SEC6_B_0X0       (0x0u<<6)
+#define RISAB_PG12_SECCFGR_SEC6_B_0X1       (0x1u<<6)
+#define RISAB_PG12_SECCFGR_SEC5_B_0X0       (0x0u<<5)
+#define RISAB_PG12_SECCFGR_SEC5_B_0X1       (0x1u<<5)
+#define RISAB_PG12_SECCFGR_SEC4_B_0X0       (0x0u<<4)
+#define RISAB_PG12_SECCFGR_SEC4_B_0X1       (0x1u<<4)
+#define RISAB_PG12_SECCFGR_SEC3_B_0X0       (0x0u<<3)
+#define RISAB_PG12_SECCFGR_SEC3_B_0X1       (0x1u<<3)
+#define RISAB_PG12_SECCFGR_SEC2_B_0X0       (0x0u<<2)
+#define RISAB_PG12_SECCFGR_SEC2_B_0X1       (0x1u<<2)
+#define RISAB_PG12_SECCFGR_SEC1_B_0X0       (0x0u<<1)
+#define RISAB_PG12_SECCFGR_SEC1_B_0X1       (0x1u<<1)
+#define RISAB_PG12_SECCFGR_SEC0_B_0X0       (0x0u<<0)
+#define RISAB_PG12_SECCFGR_SEC0_B_0X1       (0x1u<<0)
+
+// PG13_SECCFGR Configuration
+
+#define RISAB_PG13_SECCFGR_SEC7             (0x1u<<7)
+#define RISAB_PG13_SECCFGR_SEC6             (0x1u<<6)
+#define RISAB_PG13_SECCFGR_SEC5             (0x1u<<5)
+#define RISAB_PG13_SECCFGR_SEC4             (0x1u<<4)
+#define RISAB_PG13_SECCFGR_SEC3             (0x1u<<3)
+#define RISAB_PG13_SECCFGR_SEC2             (0x1u<<2)
+#define RISAB_PG13_SECCFGR_SEC1             (0x1u<<1)
+#define RISAB_PG13_SECCFGR_SEC0             (0x1u<<0)
+
+#define RISAB_PG13_SECCFGR_SEC7_B_0X0       (0x0u<<7)
+#define RISAB_PG13_SECCFGR_SEC7_B_0X1       (0x1u<<7)
+#define RISAB_PG13_SECCFGR_SEC6_B_0X0       (0x0u<<6)
+#define RISAB_PG13_SECCFGR_SEC6_B_0X1       (0x1u<<6)
+#define RISAB_PG13_SECCFGR_SEC5_B_0X0       (0x0u<<5)
+#define RISAB_PG13_SECCFGR_SEC5_B_0X1       (0x1u<<5)
+#define RISAB_PG13_SECCFGR_SEC4_B_0X0       (0x0u<<4)
+#define RISAB_PG13_SECCFGR_SEC4_B_0X1       (0x1u<<4)
+#define RISAB_PG13_SECCFGR_SEC3_B_0X0       (0x0u<<3)
+#define RISAB_PG13_SECCFGR_SEC3_B_0X1       (0x1u<<3)
+#define RISAB_PG13_SECCFGR_SEC2_B_0X0       (0x0u<<2)
+#define RISAB_PG13_SECCFGR_SEC2_B_0X1       (0x1u<<2)
+#define RISAB_PG13_SECCFGR_SEC1_B_0X0       (0x0u<<1)
+#define RISAB_PG13_SECCFGR_SEC1_B_0X1       (0x1u<<1)
+#define RISAB_PG13_SECCFGR_SEC0_B_0X0       (0x0u<<0)
+#define RISAB_PG13_SECCFGR_SEC0_B_0X1       (0x1u<<0)
+
+// PG14_SECCFGR Configuration
+
+#define RISAB_PG14_SECCFGR_SEC7             (0x1u<<7)
+#define RISAB_PG14_SECCFGR_SEC6             (0x1u<<6)
+#define RISAB_PG14_SECCFGR_SEC5             (0x1u<<5)
+#define RISAB_PG14_SECCFGR_SEC4             (0x1u<<4)
+#define RISAB_PG14_SECCFGR_SEC3             (0x1u<<3)
+#define RISAB_PG14_SECCFGR_SEC2             (0x1u<<2)
+#define RISAB_PG14_SECCFGR_SEC1             (0x1u<<1)
+#define RISAB_PG14_SECCFGR_SEC0             (0x1u<<0)
+
+#define RISAB_PG14_SECCFGR_SEC7_B_0X0       (0x0u<<7)
+#define RISAB_PG14_SECCFGR_SEC7_B_0X1       (0x1u<<7)
+#define RISAB_PG14_SECCFGR_SEC6_B_0X0       (0x0u<<6)
+#define RISAB_PG14_SECCFGR_SEC6_B_0X1       (0x1u<<6)
+#define RISAB_PG14_SECCFGR_SEC5_B_0X0       (0x0u<<5)
+#define RISAB_PG14_SECCFGR_SEC5_B_0X1       (0x1u<<5)
+#define RISAB_PG14_SECCFGR_SEC4_B_0X0       (0x0u<<4)
+#define RISAB_PG14_SECCFGR_SEC4_B_0X1       (0x1u<<4)
+#define RISAB_PG14_SECCFGR_SEC3_B_0X0       (0x0u<<3)
+#define RISAB_PG14_SECCFGR_SEC3_B_0X1       (0x1u<<3)
+#define RISAB_PG14_SECCFGR_SEC2_B_0X0       (0x0u<<2)
+#define RISAB_PG14_SECCFGR_SEC2_B_0X1       (0x1u<<2)
+#define RISAB_PG14_SECCFGR_SEC1_B_0X0       (0x0u<<1)
+#define RISAB_PG14_SECCFGR_SEC1_B_0X1       (0x1u<<1)
+#define RISAB_PG14_SECCFGR_SEC0_B_0X0       (0x0u<<0)
+#define RISAB_PG14_SECCFGR_SEC0_B_0X1       (0x1u<<0)
+
+// PG15_SECCFGR Configuration
+
+#define RISAB_PG15_SECCFGR_SEC7             (0x1u<<7)
+#define RISAB_PG15_SECCFGR_SEC6             (0x1u<<6)
+#define RISAB_PG15_SECCFGR_SEC5             (0x1u<<5)
+#define RISAB_PG15_SECCFGR_SEC4             (0x1u<<4)
+#define RISAB_PG15_SECCFGR_SEC3             (0x1u<<3)
+#define RISAB_PG15_SECCFGR_SEC2             (0x1u<<2)
+#define RISAB_PG15_SECCFGR_SEC1             (0x1u<<1)
+#define RISAB_PG15_SECCFGR_SEC0             (0x1u<<0)
+
+#define RISAB_PG15_SECCFGR_SEC7_B_0X0       (0x0u<<7)
+#define RISAB_PG15_SECCFGR_SEC7_B_0X1       (0x1u<<7)
+#define RISAB_PG15_SECCFGR_SEC6_B_0X0       (0x0u<<6)
+#define RISAB_PG15_SECCFGR_SEC6_B_0X1       (0x1u<<6)
+#define RISAB_PG15_SECCFGR_SEC5_B_0X0       (0x0u<<5)
+#define RISAB_PG15_SECCFGR_SEC5_B_0X1       (0x1u<<5)
+#define RISAB_PG15_SECCFGR_SEC4_B_0X0       (0x0u<<4)
+#define RISAB_PG15_SECCFGR_SEC4_B_0X1       (0x1u<<4)
+#define RISAB_PG15_SECCFGR_SEC3_B_0X0       (0x0u<<3)
+#define RISAB_PG15_SECCFGR_SEC3_B_0X1       (0x1u<<3)
+#define RISAB_PG15_SECCFGR_SEC2_B_0X0       (0x0u<<2)
+#define RISAB_PG15_SECCFGR_SEC2_B_0X1       (0x1u<<2)
+#define RISAB_PG15_SECCFGR_SEC1_B_0X0       (0x0u<<1)
+#define RISAB_PG15_SECCFGR_SEC1_B_0X1       (0x1u<<1)
+#define RISAB_PG15_SECCFGR_SEC0_B_0X0       (0x0u<<0)
+#define RISAB_PG15_SECCFGR_SEC0_B_0X1       (0x1u<<0)
+
+// PG16_SECCFGR Configuration
+
+#define RISAB_PG16_SECCFGR_SEC7             (0x1u<<7)
+#define RISAB_PG16_SECCFGR_SEC6             (0x1u<<6)
+#define RISAB_PG16_SECCFGR_SEC5             (0x1u<<5)
+#define RISAB_PG16_SECCFGR_SEC4             (0x1u<<4)
+#define RISAB_PG16_SECCFGR_SEC3             (0x1u<<3)
+#define RISAB_PG16_SECCFGR_SEC2             (0x1u<<2)
+#define RISAB_PG16_SECCFGR_SEC1             (0x1u<<1)
+#define RISAB_PG16_SECCFGR_SEC0             (0x1u<<0)
+
+#define RISAB_PG16_SECCFGR_SEC7_B_0X0       (0x0u<<7)
+#define RISAB_PG16_SECCFGR_SEC7_B_0X1       (0x1u<<7)
+#define RISAB_PG16_SECCFGR_SEC6_B_0X0       (0x0u<<6)
+#define RISAB_PG16_SECCFGR_SEC6_B_0X1       (0x1u<<6)
+#define RISAB_PG16_SECCFGR_SEC5_B_0X0       (0x0u<<5)
+#define RISAB_PG16_SECCFGR_SEC5_B_0X1       (0x1u<<5)
+#define RISAB_PG16_SECCFGR_SEC4_B_0X0       (0x0u<<4)
+#define RISAB_PG16_SECCFGR_SEC4_B_0X1       (0x1u<<4)
+#define RISAB_PG16_SECCFGR_SEC3_B_0X0       (0x0u<<3)
+#define RISAB_PG16_SECCFGR_SEC3_B_0X1       (0x1u<<3)
+#define RISAB_PG16_SECCFGR_SEC2_B_0X0       (0x0u<<2)
+#define RISAB_PG16_SECCFGR_SEC2_B_0X1       (0x1u<<2)
+#define RISAB_PG16_SECCFGR_SEC1_B_0X0       (0x0u<<1)
+#define RISAB_PG16_SECCFGR_SEC1_B_0X1       (0x1u<<1)
+#define RISAB_PG16_SECCFGR_SEC0_B_0X0       (0x0u<<0)
+#define RISAB_PG16_SECCFGR_SEC0_B_0X1       (0x1u<<0)
+
+// PG17_SECCFGR Configuration
+
+#define RISAB_PG17_SECCFGR_SEC7             (0x1u<<7)
+#define RISAB_PG17_SECCFGR_SEC6             (0x1u<<6)
+#define RISAB_PG17_SECCFGR_SEC5             (0x1u<<5)
+#define RISAB_PG17_SECCFGR_SEC4             (0x1u<<4)
+#define RISAB_PG17_SECCFGR_SEC3             (0x1u<<3)
+#define RISAB_PG17_SECCFGR_SEC2             (0x1u<<2)
+#define RISAB_PG17_SECCFGR_SEC1             (0x1u<<1)
+#define RISAB_PG17_SECCFGR_SEC0             (0x1u<<0)
+
+#define RISAB_PG17_SECCFGR_SEC7_B_0X0       (0x0u<<7)
+#define RISAB_PG17_SECCFGR_SEC7_B_0X1       (0x1u<<7)
+#define RISAB_PG17_SECCFGR_SEC6_B_0X0       (0x0u<<6)
+#define RISAB_PG17_SECCFGR_SEC6_B_0X1       (0x1u<<6)
+#define RISAB_PG17_SECCFGR_SEC5_B_0X0       (0x0u<<5)
+#define RISAB_PG17_SECCFGR_SEC5_B_0X1       (0x1u<<5)
+#define RISAB_PG17_SECCFGR_SEC4_B_0X0       (0x0u<<4)
+#define RISAB_PG17_SECCFGR_SEC4_B_0X1       (0x1u<<4)
+#define RISAB_PG17_SECCFGR_SEC3_B_0X0       (0x0u<<3)
+#define RISAB_PG17_SECCFGR_SEC3_B_0X1       (0x1u<<3)
+#define RISAB_PG17_SECCFGR_SEC2_B_0X0       (0x0u<<2)
+#define RISAB_PG17_SECCFGR_SEC2_B_0X1       (0x1u<<2)
+#define RISAB_PG17_SECCFGR_SEC1_B_0X0       (0x0u<<1)
+#define RISAB_PG17_SECCFGR_SEC1_B_0X1       (0x1u<<1)
+#define RISAB_PG17_SECCFGR_SEC0_B_0X0       (0x0u<<0)
+#define RISAB_PG17_SECCFGR_SEC0_B_0X1       (0x1u<<0)
+
+// PG18_SECCFGR Configuration
+
+#define RISAB_PG18_SECCFGR_SEC7             (0x1u<<7)
+#define RISAB_PG18_SECCFGR_SEC6             (0x1u<<6)
+#define RISAB_PG18_SECCFGR_SEC5             (0x1u<<5)
+#define RISAB_PG18_SECCFGR_SEC4             (0x1u<<4)
+#define RISAB_PG18_SECCFGR_SEC3             (0x1u<<3)
+#define RISAB_PG18_SECCFGR_SEC2             (0x1u<<2)
+#define RISAB_PG18_SECCFGR_SEC1             (0x1u<<1)
+#define RISAB_PG18_SECCFGR_SEC0             (0x1u<<0)
+
+#define RISAB_PG18_SECCFGR_SEC7_B_0X0       (0x0u<<7)
+#define RISAB_PG18_SECCFGR_SEC7_B_0X1       (0x1u<<7)
+#define RISAB_PG18_SECCFGR_SEC6_B_0X0       (0x0u<<6)
+#define RISAB_PG18_SECCFGR_SEC6_B_0X1       (0x1u<<6)
+#define RISAB_PG18_SECCFGR_SEC5_B_0X0       (0x0u<<5)
+#define RISAB_PG18_SECCFGR_SEC5_B_0X1       (0x1u<<5)
+#define RISAB_PG18_SECCFGR_SEC4_B_0X0       (0x0u<<4)
+#define RISAB_PG18_SECCFGR_SEC4_B_0X1       (0x1u<<4)
+#define RISAB_PG18_SECCFGR_SEC3_B_0X0       (0x0u<<3)
+#define RISAB_PG18_SECCFGR_SEC3_B_0X1       (0x1u<<3)
+#define RISAB_PG18_SECCFGR_SEC2_B_0X0       (0x0u<<2)
+#define RISAB_PG18_SECCFGR_SEC2_B_0X1       (0x1u<<2)
+#define RISAB_PG18_SECCFGR_SEC1_B_0X0       (0x0u<<1)
+#define RISAB_PG18_SECCFGR_SEC1_B_0X1       (0x1u<<1)
+#define RISAB_PG18_SECCFGR_SEC0_B_0X0       (0x0u<<0)
+#define RISAB_PG18_SECCFGR_SEC0_B_0X1       (0x1u<<0)
+
+// PG19_SECCFGR Configuration
+
+#define RISAB_PG19_SECCFGR_SEC7             (0x1u<<7)
+#define RISAB_PG19_SECCFGR_SEC6             (0x1u<<6)
+#define RISAB_PG19_SECCFGR_SEC5             (0x1u<<5)
+#define RISAB_PG19_SECCFGR_SEC4             (0x1u<<4)
+#define RISAB_PG19_SECCFGR_SEC3             (0x1u<<3)
+#define RISAB_PG19_SECCFGR_SEC2             (0x1u<<2)
+#define RISAB_PG19_SECCFGR_SEC1             (0x1u<<1)
+#define RISAB_PG19_SECCFGR_SEC0             (0x1u<<0)
+
+#define RISAB_PG19_SECCFGR_SEC7_B_0X0       (0x0u<<7)
+#define RISAB_PG19_SECCFGR_SEC7_B_0X1       (0x1u<<7)
+#define RISAB_PG19_SECCFGR_SEC6_B_0X0       (0x0u<<6)
+#define RISAB_PG19_SECCFGR_SEC6_B_0X1       (0x1u<<6)
+#define RISAB_PG19_SECCFGR_SEC5_B_0X0       (0x0u<<5)
+#define RISAB_PG19_SECCFGR_SEC5_B_0X1       (0x1u<<5)
+#define RISAB_PG19_SECCFGR_SEC4_B_0X0       (0x0u<<4)
+#define RISAB_PG19_SECCFGR_SEC4_B_0X1       (0x1u<<4)
+#define RISAB_PG19_SECCFGR_SEC3_B_0X0       (0x0u<<3)
+#define RISAB_PG19_SECCFGR_SEC3_B_0X1       (0x1u<<3)
+#define RISAB_PG19_SECCFGR_SEC2_B_0X0       (0x0u<<2)
+#define RISAB_PG19_SECCFGR_SEC2_B_0X1       (0x1u<<2)
+#define RISAB_PG19_SECCFGR_SEC1_B_0X0       (0x0u<<1)
+#define RISAB_PG19_SECCFGR_SEC1_B_0X1       (0x1u<<1)
+#define RISAB_PG19_SECCFGR_SEC0_B_0X0       (0x0u<<0)
+#define RISAB_PG19_SECCFGR_SEC0_B_0X1       (0x1u<<0)
+
+// PG20_SECCFGR Configuration
+
+#define RISAB_PG20_SECCFGR_SEC7             (0x1u<<7)
+#define RISAB_PG20_SECCFGR_SEC6             (0x1u<<6)
+#define RISAB_PG20_SECCFGR_SEC5             (0x1u<<5)
+#define RISAB_PG20_SECCFGR_SEC4             (0x1u<<4)
+#define RISAB_PG20_SECCFGR_SEC3             (0x1u<<3)
+#define RISAB_PG20_SECCFGR_SEC2             (0x1u<<2)
+#define RISAB_PG20_SECCFGR_SEC1             (0x1u<<1)
+#define RISAB_PG20_SECCFGR_SEC0             (0x1u<<0)
+
+#define RISAB_PG20_SECCFGR_SEC7_B_0X0       (0x0u<<7)
+#define RISAB_PG20_SECCFGR_SEC7_B_0X1       (0x1u<<7)
+#define RISAB_PG20_SECCFGR_SEC6_B_0X0       (0x0u<<6)
+#define RISAB_PG20_SECCFGR_SEC6_B_0X1       (0x1u<<6)
+#define RISAB_PG20_SECCFGR_SEC5_B_0X0       (0x0u<<5)
+#define RISAB_PG20_SECCFGR_SEC5_B_0X1       (0x1u<<5)
+#define RISAB_PG20_SECCFGR_SEC4_B_0X0       (0x0u<<4)
+#define RISAB_PG20_SECCFGR_SEC4_B_0X1       (0x1u<<4)
+#define RISAB_PG20_SECCFGR_SEC3_B_0X0       (0x0u<<3)
+#define RISAB_PG20_SECCFGR_SEC3_B_0X1       (0x1u<<3)
+#define RISAB_PG20_SECCFGR_SEC2_B_0X0       (0x0u<<2)
+#define RISAB_PG20_SECCFGR_SEC2_B_0X1       (0x1u<<2)
+#define RISAB_PG20_SECCFGR_SEC1_B_0X0       (0x0u<<1)
+#define RISAB_PG20_SECCFGR_SEC1_B_0X1       (0x1u<<1)
+#define RISAB_PG20_SECCFGR_SEC0_B_0X0       (0x0u<<0)
+#define RISAB_PG20_SECCFGR_SEC0_B_0X1       (0x1u<<0)
+
+// PG21_SECCFGR Configuration
+
+#define RISAB_PG21_SECCFGR_SEC7             (0x1u<<7)
+#define RISAB_PG21_SECCFGR_SEC6             (0x1u<<6)
+#define RISAB_PG21_SECCFGR_SEC5             (0x1u<<5)
+#define RISAB_PG21_SECCFGR_SEC4             (0x1u<<4)
+#define RISAB_PG21_SECCFGR_SEC3             (0x1u<<3)
+#define RISAB_PG21_SECCFGR_SEC2             (0x1u<<2)
+#define RISAB_PG21_SECCFGR_SEC1             (0x1u<<1)
+#define RISAB_PG21_SECCFGR_SEC0             (0x1u<<0)
+
+#define RISAB_PG21_SECCFGR_SEC7_B_0X0       (0x0u<<7)
+#define RISAB_PG21_SECCFGR_SEC7_B_0X1       (0x1u<<7)
+#define RISAB_PG21_SECCFGR_SEC6_B_0X0       (0x0u<<6)
+#define RISAB_PG21_SECCFGR_SEC6_B_0X1       (0x1u<<6)
+#define RISAB_PG21_SECCFGR_SEC5_B_0X0       (0x0u<<5)
+#define RISAB_PG21_SECCFGR_SEC5_B_0X1       (0x1u<<5)
+#define RISAB_PG21_SECCFGR_SEC4_B_0X0       (0x0u<<4)
+#define RISAB_PG21_SECCFGR_SEC4_B_0X1       (0x1u<<4)
+#define RISAB_PG21_SECCFGR_SEC3_B_0X0       (0x0u<<3)
+#define RISAB_PG21_SECCFGR_SEC3_B_0X1       (0x1u<<3)
+#define RISAB_PG21_SECCFGR_SEC2_B_0X0       (0x0u<<2)
+#define RISAB_PG21_SECCFGR_SEC2_B_0X1       (0x1u<<2)
+#define RISAB_PG21_SECCFGR_SEC1_B_0X0       (0x0u<<1)
+#define RISAB_PG21_SECCFGR_SEC1_B_0X1       (0x1u<<1)
+#define RISAB_PG21_SECCFGR_SEC0_B_0X0       (0x0u<<0)
+#define RISAB_PG21_SECCFGR_SEC0_B_0X1       (0x1u<<0)
+
+// PG22_SECCFGR Configuration
+
+#define RISAB_PG22_SECCFGR_SEC7             (0x1u<<7)
+#define RISAB_PG22_SECCFGR_SEC6             (0x1u<<6)
+#define RISAB_PG22_SECCFGR_SEC5             (0x1u<<5)
+#define RISAB_PG22_SECCFGR_SEC4             (0x1u<<4)
+#define RISAB_PG22_SECCFGR_SEC3             (0x1u<<3)
+#define RISAB_PG22_SECCFGR_SEC2             (0x1u<<2)
+#define RISAB_PG22_SECCFGR_SEC1             (0x1u<<1)
+#define RISAB_PG22_SECCFGR_SEC0             (0x1u<<0)
+
+#define RISAB_PG22_SECCFGR_SEC7_B_0X0       (0x0u<<7)
+#define RISAB_PG22_SECCFGR_SEC7_B_0X1       (0x1u<<7)
+#define RISAB_PG22_SECCFGR_SEC6_B_0X0       (0x0u<<6)
+#define RISAB_PG22_SECCFGR_SEC6_B_0X1       (0x1u<<6)
+#define RISAB_PG22_SECCFGR_SEC5_B_0X0       (0x0u<<5)
+#define RISAB_PG22_SECCFGR_SEC5_B_0X1       (0x1u<<5)
+#define RISAB_PG22_SECCFGR_SEC4_B_0X0       (0x0u<<4)
+#define RISAB_PG22_SECCFGR_SEC4_B_0X1       (0x1u<<4)
+#define RISAB_PG22_SECCFGR_SEC3_B_0X0       (0x0u<<3)
+#define RISAB_PG22_SECCFGR_SEC3_B_0X1       (0x1u<<3)
+#define RISAB_PG22_SECCFGR_SEC2_B_0X0       (0x0u<<2)
+#define RISAB_PG22_SECCFGR_SEC2_B_0X1       (0x1u<<2)
+#define RISAB_PG22_SECCFGR_SEC1_B_0X0       (0x0u<<1)
+#define RISAB_PG22_SECCFGR_SEC1_B_0X1       (0x1u<<1)
+#define RISAB_PG22_SECCFGR_SEC0_B_0X0       (0x0u<<0)
+#define RISAB_PG22_SECCFGR_SEC0_B_0X1       (0x1u<<0)
+
+// PG23_SECCFGR Configuration
+
+#define RISAB_PG23_SECCFGR_SEC7             (0x1u<<7)
+#define RISAB_PG23_SECCFGR_SEC6             (0x1u<<6)
+#define RISAB_PG23_SECCFGR_SEC5             (0x1u<<5)
+#define RISAB_PG23_SECCFGR_SEC4             (0x1u<<4)
+#define RISAB_PG23_SECCFGR_SEC3             (0x1u<<3)
+#define RISAB_PG23_SECCFGR_SEC2             (0x1u<<2)
+#define RISAB_PG23_SECCFGR_SEC1             (0x1u<<1)
+#define RISAB_PG23_SECCFGR_SEC0             (0x1u<<0)
+
+#define RISAB_PG23_SECCFGR_SEC7_B_0X0       (0x0u<<7)
+#define RISAB_PG23_SECCFGR_SEC7_B_0X1       (0x1u<<7)
+#define RISAB_PG23_SECCFGR_SEC6_B_0X0       (0x0u<<6)
+#define RISAB_PG23_SECCFGR_SEC6_B_0X1       (0x1u<<6)
+#define RISAB_PG23_SECCFGR_SEC5_B_0X0       (0x0u<<5)
+#define RISAB_PG23_SECCFGR_SEC5_B_0X1       (0x1u<<5)
+#define RISAB_PG23_SECCFGR_SEC4_B_0X0       (0x0u<<4)
+#define RISAB_PG23_SECCFGR_SEC4_B_0X1       (0x1u<<4)
+#define RISAB_PG23_SECCFGR_SEC3_B_0X0       (0x0u<<3)
+#define RISAB_PG23_SECCFGR_SEC3_B_0X1       (0x1u<<3)
+#define RISAB_PG23_SECCFGR_SEC2_B_0X0       (0x0u<<2)
+#define RISAB_PG23_SECCFGR_SEC2_B_0X1       (0x1u<<2)
+#define RISAB_PG23_SECCFGR_SEC1_B_0X0       (0x0u<<1)
+#define RISAB_PG23_SECCFGR_SEC1_B_0X1       (0x1u<<1)
+#define RISAB_PG23_SECCFGR_SEC0_B_0X0       (0x0u<<0)
+#define RISAB_PG23_SECCFGR_SEC0_B_0X1       (0x1u<<0)
+
+// PG24_SECCFGR Configuration
+
+#define RISAB_PG24_SECCFGR_SEC7             (0x1u<<7)
+#define RISAB_PG24_SECCFGR_SEC6             (0x1u<<6)
+#define RISAB_PG24_SECCFGR_SEC5             (0x1u<<5)
+#define RISAB_PG24_SECCFGR_SEC4             (0x1u<<4)
+#define RISAB_PG24_SECCFGR_SEC3             (0x1u<<3)
+#define RISAB_PG24_SECCFGR_SEC2             (0x1u<<2)
+#define RISAB_PG24_SECCFGR_SEC1             (0x1u<<1)
+#define RISAB_PG24_SECCFGR_SEC0             (0x1u<<0)
+
+#define RISAB_PG24_SECCFGR_SEC7_B_0X0       (0x0u<<7)
+#define RISAB_PG24_SECCFGR_SEC7_B_0X1       (0x1u<<7)
+#define RISAB_PG24_SECCFGR_SEC6_B_0X0       (0x0u<<6)
+#define RISAB_PG24_SECCFGR_SEC6_B_0X1       (0x1u<<6)
+#define RISAB_PG24_SECCFGR_SEC5_B_0X0       (0x0u<<5)
+#define RISAB_PG24_SECCFGR_SEC5_B_0X1       (0x1u<<5)
+#define RISAB_PG24_SECCFGR_SEC4_B_0X0       (0x0u<<4)
+#define RISAB_PG24_SECCFGR_SEC4_B_0X1       (0x1u<<4)
+#define RISAB_PG24_SECCFGR_SEC3_B_0X0       (0x0u<<3)
+#define RISAB_PG24_SECCFGR_SEC3_B_0X1       (0x1u<<3)
+#define RISAB_PG24_SECCFGR_SEC2_B_0X0       (0x0u<<2)
+#define RISAB_PG24_SECCFGR_SEC2_B_0X1       (0x1u<<2)
+#define RISAB_PG24_SECCFGR_SEC1_B_0X0       (0x0u<<1)
+#define RISAB_PG24_SECCFGR_SEC1_B_0X1       (0x1u<<1)
+#define RISAB_PG24_SECCFGR_SEC0_B_0X0       (0x0u<<0)
+#define RISAB_PG24_SECCFGR_SEC0_B_0X1       (0x1u<<0)
+
+// PG25_SECCFGR Configuration
+
+#define RISAB_PG25_SECCFGR_SEC7             (0x1u<<7)
+#define RISAB_PG25_SECCFGR_SEC6             (0x1u<<6)
+#define RISAB_PG25_SECCFGR_SEC5             (0x1u<<5)
+#define RISAB_PG25_SECCFGR_SEC4             (0x1u<<4)
+#define RISAB_PG25_SECCFGR_SEC3             (0x1u<<3)
+#define RISAB_PG25_SECCFGR_SEC2             (0x1u<<2)
+#define RISAB_PG25_SECCFGR_SEC1             (0x1u<<1)
+#define RISAB_PG25_SECCFGR_SEC0             (0x1u<<0)
+
+#define RISAB_PG25_SECCFGR_SEC7_B_0X0       (0x0u<<7)
+#define RISAB_PG25_SECCFGR_SEC7_B_0X1       (0x1u<<7)
+#define RISAB_PG25_SECCFGR_SEC6_B_0X0       (0x0u<<6)
+#define RISAB_PG25_SECCFGR_SEC6_B_0X1       (0x1u<<6)
+#define RISAB_PG25_SECCFGR_SEC5_B_0X0       (0x0u<<5)
+#define RISAB_PG25_SECCFGR_SEC5_B_0X1       (0x1u<<5)
+#define RISAB_PG25_SECCFGR_SEC4_B_0X0       (0x0u<<4)
+#define RISAB_PG25_SECCFGR_SEC4_B_0X1       (0x1u<<4)
+#define RISAB_PG25_SECCFGR_SEC3_B_0X0       (0x0u<<3)
+#define RISAB_PG25_SECCFGR_SEC3_B_0X1       (0x1u<<3)
+#define RISAB_PG25_SECCFGR_SEC2_B_0X0       (0x0u<<2)
+#define RISAB_PG25_SECCFGR_SEC2_B_0X1       (0x1u<<2)
+#define RISAB_PG25_SECCFGR_SEC1_B_0X0       (0x0u<<1)
+#define RISAB_PG25_SECCFGR_SEC1_B_0X1       (0x1u<<1)
+#define RISAB_PG25_SECCFGR_SEC0_B_0X0       (0x0u<<0)
+#define RISAB_PG25_SECCFGR_SEC0_B_0X1       (0x1u<<0)
+
+// PG26_SECCFGR Configuration
+
+#define RISAB_PG26_SECCFGR_SEC7             (0x1u<<7)
+#define RISAB_PG26_SECCFGR_SEC6             (0x1u<<6)
+#define RISAB_PG26_SECCFGR_SEC5             (0x1u<<5)
+#define RISAB_PG26_SECCFGR_SEC4             (0x1u<<4)
+#define RISAB_PG26_SECCFGR_SEC3             (0x1u<<3)
+#define RISAB_PG26_SECCFGR_SEC2             (0x1u<<2)
+#define RISAB_PG26_SECCFGR_SEC1             (0x1u<<1)
+#define RISAB_PG26_SECCFGR_SEC0             (0x1u<<0)
+
+#define RISAB_PG26_SECCFGR_SEC7_B_0X0       (0x0u<<7)
+#define RISAB_PG26_SECCFGR_SEC7_B_0X1       (0x1u<<7)
+#define RISAB_PG26_SECCFGR_SEC6_B_0X0       (0x0u<<6)
+#define RISAB_PG26_SECCFGR_SEC6_B_0X1       (0x1u<<6)
+#define RISAB_PG26_SECCFGR_SEC5_B_0X0       (0x0u<<5)
+#define RISAB_PG26_SECCFGR_SEC5_B_0X1       (0x1u<<5)
+#define RISAB_PG26_SECCFGR_SEC4_B_0X0       (0x0u<<4)
+#define RISAB_PG26_SECCFGR_SEC4_B_0X1       (0x1u<<4)
+#define RISAB_PG26_SECCFGR_SEC3_B_0X0       (0x0u<<3)
+#define RISAB_PG26_SECCFGR_SEC3_B_0X1       (0x1u<<3)
+#define RISAB_PG26_SECCFGR_SEC2_B_0X0       (0x0u<<2)
+#define RISAB_PG26_SECCFGR_SEC2_B_0X1       (0x1u<<2)
+#define RISAB_PG26_SECCFGR_SEC1_B_0X0       (0x0u<<1)
+#define RISAB_PG26_SECCFGR_SEC1_B_0X1       (0x1u<<1)
+#define RISAB_PG26_SECCFGR_SEC0_B_0X0       (0x0u<<0)
+#define RISAB_PG26_SECCFGR_SEC0_B_0X1       (0x1u<<0)
+
+// PG27_SECCFGR Configuration
+
+#define RISAB_PG27_SECCFGR_SEC7             (0x1u<<7)
+#define RISAB_PG27_SECCFGR_SEC6             (0x1u<<6)
+#define RISAB_PG27_SECCFGR_SEC5             (0x1u<<5)
+#define RISAB_PG27_SECCFGR_SEC4             (0x1u<<4)
+#define RISAB_PG27_SECCFGR_SEC3             (0x1u<<3)
+#define RISAB_PG27_SECCFGR_SEC2             (0x1u<<2)
+#define RISAB_PG27_SECCFGR_SEC1             (0x1u<<1)
+#define RISAB_PG27_SECCFGR_SEC0             (0x1u<<0)
+
+#define RISAB_PG27_SECCFGR_SEC7_B_0X0       (0x0u<<7)
+#define RISAB_PG27_SECCFGR_SEC7_B_0X1       (0x1u<<7)
+#define RISAB_PG27_SECCFGR_SEC6_B_0X0       (0x0u<<6)
+#define RISAB_PG27_SECCFGR_SEC6_B_0X1       (0x1u<<6)
+#define RISAB_PG27_SECCFGR_SEC5_B_0X0       (0x0u<<5)
+#define RISAB_PG27_SECCFGR_SEC5_B_0X1       (0x1u<<5)
+#define RISAB_PG27_SECCFGR_SEC4_B_0X0       (0x0u<<4)
+#define RISAB_PG27_SECCFGR_SEC4_B_0X1       (0x1u<<4)
+#define RISAB_PG27_SECCFGR_SEC3_B_0X0       (0x0u<<3)
+#define RISAB_PG27_SECCFGR_SEC3_B_0X1       (0x1u<<3)
+#define RISAB_PG27_SECCFGR_SEC2_B_0X0       (0x0u<<2)
+#define RISAB_PG27_SECCFGR_SEC2_B_0X1       (0x1u<<2)
+#define RISAB_PG27_SECCFGR_SEC1_B_0X0       (0x0u<<1)
+#define RISAB_PG27_SECCFGR_SEC1_B_0X1       (0x1u<<1)
+#define RISAB_PG27_SECCFGR_SEC0_B_0X0       (0x0u<<0)
+#define RISAB_PG27_SECCFGR_SEC0_B_0X1       (0x1u<<0)
+
+// PG28_SECCFGR Configuration
+
+#define RISAB_PG28_SECCFGR_SEC7             (0x1u<<7)
+#define RISAB_PG28_SECCFGR_SEC6             (0x1u<<6)
+#define RISAB_PG28_SECCFGR_SEC5             (0x1u<<5)
+#define RISAB_PG28_SECCFGR_SEC4             (0x1u<<4)
+#define RISAB_PG28_SECCFGR_SEC3             (0x1u<<3)
+#define RISAB_PG28_SECCFGR_SEC2             (0x1u<<2)
+#define RISAB_PG28_SECCFGR_SEC1             (0x1u<<1)
+#define RISAB_PG28_SECCFGR_SEC0             (0x1u<<0)
+
+#define RISAB_PG28_SECCFGR_SEC7_B_0X0       (0x0u<<7)
+#define RISAB_PG28_SECCFGR_SEC7_B_0X1       (0x1u<<7)
+#define RISAB_PG28_SECCFGR_SEC6_B_0X0       (0x0u<<6)
+#define RISAB_PG28_SECCFGR_SEC6_B_0X1       (0x1u<<6)
+#define RISAB_PG28_SECCFGR_SEC5_B_0X0       (0x0u<<5)
+#define RISAB_PG28_SECCFGR_SEC5_B_0X1       (0x1u<<5)
+#define RISAB_PG28_SECCFGR_SEC4_B_0X0       (0x0u<<4)
+#define RISAB_PG28_SECCFGR_SEC4_B_0X1       (0x1u<<4)
+#define RISAB_PG28_SECCFGR_SEC3_B_0X0       (0x0u<<3)
+#define RISAB_PG28_SECCFGR_SEC3_B_0X1       (0x1u<<3)
+#define RISAB_PG28_SECCFGR_SEC2_B_0X0       (0x0u<<2)
+#define RISAB_PG28_SECCFGR_SEC2_B_0X1       (0x1u<<2)
+#define RISAB_PG28_SECCFGR_SEC1_B_0X0       (0x0u<<1)
+#define RISAB_PG28_SECCFGR_SEC1_B_0X1       (0x1u<<1)
+#define RISAB_PG28_SECCFGR_SEC0_B_0X0       (0x0u<<0)
+#define RISAB_PG28_SECCFGR_SEC0_B_0X1       (0x1u<<0)
+
+// PG29_SECCFGR Configuration
+
+#define RISAB_PG29_SECCFGR_SEC7             (0x1u<<7)
+#define RISAB_PG29_SECCFGR_SEC6             (0x1u<<6)
+#define RISAB_PG29_SECCFGR_SEC5             (0x1u<<5)
+#define RISAB_PG29_SECCFGR_SEC4             (0x1u<<4)
+#define RISAB_PG29_SECCFGR_SEC3             (0x1u<<3)
+#define RISAB_PG29_SECCFGR_SEC2             (0x1u<<2)
+#define RISAB_PG29_SECCFGR_SEC1             (0x1u<<1)
+#define RISAB_PG29_SECCFGR_SEC0             (0x1u<<0)
+
+#define RISAB_PG29_SECCFGR_SEC7_B_0X0       (0x0u<<7)
+#define RISAB_PG29_SECCFGR_SEC7_B_0X1       (0x1u<<7)
+#define RISAB_PG29_SECCFGR_SEC6_B_0X0       (0x0u<<6)
+#define RISAB_PG29_SECCFGR_SEC6_B_0X1       (0x1u<<6)
+#define RISAB_PG29_SECCFGR_SEC5_B_0X0       (0x0u<<5)
+#define RISAB_PG29_SECCFGR_SEC5_B_0X1       (0x1u<<5)
+#define RISAB_PG29_SECCFGR_SEC4_B_0X0       (0x0u<<4)
+#define RISAB_PG29_SECCFGR_SEC4_B_0X1       (0x1u<<4)
+#define RISAB_PG29_SECCFGR_SEC3_B_0X0       (0x0u<<3)
+#define RISAB_PG29_SECCFGR_SEC3_B_0X1       (0x1u<<3)
+#define RISAB_PG29_SECCFGR_SEC2_B_0X0       (0x0u<<2)
+#define RISAB_PG29_SECCFGR_SEC2_B_0X1       (0x1u<<2)
+#define RISAB_PG29_SECCFGR_SEC1_B_0X0       (0x0u<<1)
+#define RISAB_PG29_SECCFGR_SEC1_B_0X1       (0x1u<<1)
+#define RISAB_PG29_SECCFGR_SEC0_B_0X0       (0x0u<<0)
+#define RISAB_PG29_SECCFGR_SEC0_B_0X1       (0x1u<<0)
+
+// PG30_SECCFGR Configuration
+
+#define RISAB_PG30_SECCFGR_SEC7             (0x1u<<7)
+#define RISAB_PG30_SECCFGR_SEC6             (0x1u<<6)
+#define RISAB_PG30_SECCFGR_SEC5             (0x1u<<5)
+#define RISAB_PG30_SECCFGR_SEC4             (0x1u<<4)
+#define RISAB_PG30_SECCFGR_SEC3             (0x1u<<3)
+#define RISAB_PG30_SECCFGR_SEC2             (0x1u<<2)
+#define RISAB_PG30_SECCFGR_SEC1             (0x1u<<1)
+#define RISAB_PG30_SECCFGR_SEC0             (0x1u<<0)
+
+#define RISAB_PG30_SECCFGR_SEC7_B_0X0       (0x0u<<7)
+#define RISAB_PG30_SECCFGR_SEC7_B_0X1       (0x1u<<7)
+#define RISAB_PG30_SECCFGR_SEC6_B_0X0       (0x0u<<6)
+#define RISAB_PG30_SECCFGR_SEC6_B_0X1       (0x1u<<6)
+#define RISAB_PG30_SECCFGR_SEC5_B_0X0       (0x0u<<5)
+#define RISAB_PG30_SECCFGR_SEC5_B_0X1       (0x1u<<5)
+#define RISAB_PG30_SECCFGR_SEC4_B_0X0       (0x0u<<4)
+#define RISAB_PG30_SECCFGR_SEC4_B_0X1       (0x1u<<4)
+#define RISAB_PG30_SECCFGR_SEC3_B_0X0       (0x0u<<3)
+#define RISAB_PG30_SECCFGR_SEC3_B_0X1       (0x1u<<3)
+#define RISAB_PG30_SECCFGR_SEC2_B_0X0       (0x0u<<2)
+#define RISAB_PG30_SECCFGR_SEC2_B_0X1       (0x1u<<2)
+#define RISAB_PG30_SECCFGR_SEC1_B_0X0       (0x0u<<1)
+#define RISAB_PG30_SECCFGR_SEC1_B_0X1       (0x1u<<1)
+#define RISAB_PG30_SECCFGR_SEC0_B_0X0       (0x0u<<0)
+#define RISAB_PG30_SECCFGR_SEC0_B_0X1       (0x1u<<0)
+
+// PG31_SECCFGR Configuration
+
+#define RISAB_PG31_SECCFGR_SEC7             (0x1u<<7)
+#define RISAB_PG31_SECCFGR_SEC6             (0x1u<<6)
+#define RISAB_PG31_SECCFGR_SEC5             (0x1u<<5)
+#define RISAB_PG31_SECCFGR_SEC4             (0x1u<<4)
+#define RISAB_PG31_SECCFGR_SEC3             (0x1u<<3)
+#define RISAB_PG31_SECCFGR_SEC2             (0x1u<<2)
+#define RISAB_PG31_SECCFGR_SEC1             (0x1u<<1)
+#define RISAB_PG31_SECCFGR_SEC0             (0x1u<<0)
+
+#define RISAB_PG31_SECCFGR_SEC7_B_0X0       (0x0u<<7)
+#define RISAB_PG31_SECCFGR_SEC7_B_0X1       (0x1u<<7)
+#define RISAB_PG31_SECCFGR_SEC6_B_0X0       (0x0u<<6)
+#define RISAB_PG31_SECCFGR_SEC6_B_0X1       (0x1u<<6)
+#define RISAB_PG31_SECCFGR_SEC5_B_0X0       (0x0u<<5)
+#define RISAB_PG31_SECCFGR_SEC5_B_0X1       (0x1u<<5)
+#define RISAB_PG31_SECCFGR_SEC4_B_0X0       (0x0u<<4)
+#define RISAB_PG31_SECCFGR_SEC4_B_0X1       (0x1u<<4)
+#define RISAB_PG31_SECCFGR_SEC3_B_0X0       (0x0u<<3)
+#define RISAB_PG31_SECCFGR_SEC3_B_0X1       (0x1u<<3)
+#define RISAB_PG31_SECCFGR_SEC2_B_0X0       (0x0u<<2)
+#define RISAB_PG31_SECCFGR_SEC2_B_0X1       (0x1u<<2)
+#define RISAB_PG31_SECCFGR_SEC1_B_0X0       (0x0u<<1)
+#define RISAB_PG31_SECCFGR_SEC1_B_0X1       (0x1u<<1)
+#define RISAB_PG31_SECCFGR_SEC0_B_0X0       (0x0u<<0)
+#define RISAB_PG31_SECCFGR_SEC0_B_0X1       (0x1u<<0)
+
+// PG0_PRIVCFGR Configuration
+
+#define RISAB_PG0_PRIVCFGR_PRIV7            (0x1u<<7)
+#define RISAB_PG0_PRIVCFGR_PRIV6            (0x1u<<6)
+#define RISAB_PG0_PRIVCFGR_PRIV5            (0x1u<<5)
+#define RISAB_PG0_PRIVCFGR_PRIV4            (0x1u<<4)
+#define RISAB_PG0_PRIVCFGR_PRIV3            (0x1u<<3)
+#define RISAB_PG0_PRIVCFGR_PRIV2            (0x1u<<2)
+#define RISAB_PG0_PRIVCFGR_PRIV1            (0x1u<<1)
+#define RISAB_PG0_PRIVCFGR_PRIV0            (0x1u<<0)
+
+#define RISAB_PG0_PRIVCFGR_PRIV7_B_0X0      (0x0u<<7)
+#define RISAB_PG0_PRIVCFGR_PRIV7_B_0X1      (0x1u<<7)
+#define RISAB_PG0_PRIVCFGR_PRIV6_B_0X0      (0x0u<<6)
+#define RISAB_PG0_PRIVCFGR_PRIV6_B_0X1      (0x1u<<6)
+#define RISAB_PG0_PRIVCFGR_PRIV5_B_0X0      (0x0u<<5)
+#define RISAB_PG0_PRIVCFGR_PRIV5_B_0X1      (0x1u<<5)
+#define RISAB_PG0_PRIVCFGR_PRIV4_B_0X0      (0x0u<<4)
+#define RISAB_PG0_PRIVCFGR_PRIV4_B_0X1      (0x1u<<4)
+#define RISAB_PG0_PRIVCFGR_PRIV3_B_0X0      (0x0u<<3)
+#define RISAB_PG0_PRIVCFGR_PRIV3_B_0X1      (0x1u<<3)
+#define RISAB_PG0_PRIVCFGR_PRIV2_B_0X0      (0x0u<<2)
+#define RISAB_PG0_PRIVCFGR_PRIV2_B_0X1      (0x1u<<2)
+#define RISAB_PG0_PRIVCFGR_PRIV1_B_0X0      (0x0u<<1)
+#define RISAB_PG0_PRIVCFGR_PRIV1_B_0X1      (0x1u<<1)
+#define RISAB_PG0_PRIVCFGR_PRIV0_B_0X0      (0x0u<<0)
+#define RISAB_PG0_PRIVCFGR_PRIV0_B_0X1      (0x1u<<0)
+
+// PG1_PRIVCFGR Configuration
+
+#define RISAB_PG1_PRIVCFGR_PRIV7            (0x1u<<7)
+#define RISAB_PG1_PRIVCFGR_PRIV6            (0x1u<<6)
+#define RISAB_PG1_PRIVCFGR_PRIV5            (0x1u<<5)
+#define RISAB_PG1_PRIVCFGR_PRIV4            (0x1u<<4)
+#define RISAB_PG1_PRIVCFGR_PRIV3            (0x1u<<3)
+#define RISAB_PG1_PRIVCFGR_PRIV2            (0x1u<<2)
+#define RISAB_PG1_PRIVCFGR_PRIV1            (0x1u<<1)
+#define RISAB_PG1_PRIVCFGR_PRIV0            (0x1u<<0)
+
+#define RISAB_PG1_PRIVCFGR_PRIV7_B_0X0      (0x0u<<7)
+#define RISAB_PG1_PRIVCFGR_PRIV7_B_0X1      (0x1u<<7)
+#define RISAB_PG1_PRIVCFGR_PRIV6_B_0X0      (0x0u<<6)
+#define RISAB_PG1_PRIVCFGR_PRIV6_B_0X1      (0x1u<<6)
+#define RISAB_PG1_PRIVCFGR_PRIV5_B_0X0      (0x0u<<5)
+#define RISAB_PG1_PRIVCFGR_PRIV5_B_0X1      (0x1u<<5)
+#define RISAB_PG1_PRIVCFGR_PRIV4_B_0X0      (0x0u<<4)
+#define RISAB_PG1_PRIVCFGR_PRIV4_B_0X1      (0x1u<<4)
+#define RISAB_PG1_PRIVCFGR_PRIV3_B_0X0      (0x0u<<3)
+#define RISAB_PG1_PRIVCFGR_PRIV3_B_0X1      (0x1u<<3)
+#define RISAB_PG1_PRIVCFGR_PRIV2_B_0X0      (0x0u<<2)
+#define RISAB_PG1_PRIVCFGR_PRIV2_B_0X1      (0x1u<<2)
+#define RISAB_PG1_PRIVCFGR_PRIV1_B_0X0      (0x0u<<1)
+#define RISAB_PG1_PRIVCFGR_PRIV1_B_0X1      (0x1u<<1)
+#define RISAB_PG1_PRIVCFGR_PRIV0_B_0X0      (0x0u<<0)
+#define RISAB_PG1_PRIVCFGR_PRIV0_B_0X1      (0x1u<<0)
+
+// PG2_PRIVCFGR Configuration
+
+#define RISAB_PG2_PRIVCFGR_PRIV7            (0x1u<<7)
+#define RISAB_PG2_PRIVCFGR_PRIV6            (0x1u<<6)
+#define RISAB_PG2_PRIVCFGR_PRIV5            (0x1u<<5)
+#define RISAB_PG2_PRIVCFGR_PRIV4            (0x1u<<4)
+#define RISAB_PG2_PRIVCFGR_PRIV3            (0x1u<<3)
+#define RISAB_PG2_PRIVCFGR_PRIV2            (0x1u<<2)
+#define RISAB_PG2_PRIVCFGR_PRIV1            (0x1u<<1)
+#define RISAB_PG2_PRIVCFGR_PRIV0            (0x1u<<0)
+
+#define RISAB_PG2_PRIVCFGR_PRIV7_B_0X0      (0x0u<<7)
+#define RISAB_PG2_PRIVCFGR_PRIV7_B_0X1      (0x1u<<7)
+#define RISAB_PG2_PRIVCFGR_PRIV6_B_0X0      (0x0u<<6)
+#define RISAB_PG2_PRIVCFGR_PRIV6_B_0X1      (0x1u<<6)
+#define RISAB_PG2_PRIVCFGR_PRIV5_B_0X0      (0x0u<<5)
+#define RISAB_PG2_PRIVCFGR_PRIV5_B_0X1      (0x1u<<5)
+#define RISAB_PG2_PRIVCFGR_PRIV4_B_0X0      (0x0u<<4)
+#define RISAB_PG2_PRIVCFGR_PRIV4_B_0X1      (0x1u<<4)
+#define RISAB_PG2_PRIVCFGR_PRIV3_B_0X0      (0x0u<<3)
+#define RISAB_PG2_PRIVCFGR_PRIV3_B_0X1      (0x1u<<3)
+#define RISAB_PG2_PRIVCFGR_PRIV2_B_0X0      (0x0u<<2)
+#define RISAB_PG2_PRIVCFGR_PRIV2_B_0X1      (0x1u<<2)
+#define RISAB_PG2_PRIVCFGR_PRIV1_B_0X0      (0x0u<<1)
+#define RISAB_PG2_PRIVCFGR_PRIV1_B_0X1      (0x1u<<1)
+#define RISAB_PG2_PRIVCFGR_PRIV0_B_0X0      (0x0u<<0)
+#define RISAB_PG2_PRIVCFGR_PRIV0_B_0X1      (0x1u<<0)
+
+// PG3_PRIVCFGR Configuration
+
+#define RISAB_PG3_PRIVCFGR_PRIV7            (0x1u<<7)
+#define RISAB_PG3_PRIVCFGR_PRIV6            (0x1u<<6)
+#define RISAB_PG3_PRIVCFGR_PRIV5            (0x1u<<5)
+#define RISAB_PG3_PRIVCFGR_PRIV4            (0x1u<<4)
+#define RISAB_PG3_PRIVCFGR_PRIV3            (0x1u<<3)
+#define RISAB_PG3_PRIVCFGR_PRIV2            (0x1u<<2)
+#define RISAB_PG3_PRIVCFGR_PRIV1            (0x1u<<1)
+#define RISAB_PG3_PRIVCFGR_PRIV0            (0x1u<<0)
+
+#define RISAB_PG3_PRIVCFGR_PRIV7_B_0X0      (0x0u<<7)
+#define RISAB_PG3_PRIVCFGR_PRIV7_B_0X1      (0x1u<<7)
+#define RISAB_PG3_PRIVCFGR_PRIV6_B_0X0      (0x0u<<6)
+#define RISAB_PG3_PRIVCFGR_PRIV6_B_0X1      (0x1u<<6)
+#define RISAB_PG3_PRIVCFGR_PRIV5_B_0X0      (0x0u<<5)
+#define RISAB_PG3_PRIVCFGR_PRIV5_B_0X1      (0x1u<<5)
+#define RISAB_PG3_PRIVCFGR_PRIV4_B_0X0      (0x0u<<4)
+#define RISAB_PG3_PRIVCFGR_PRIV4_B_0X1      (0x1u<<4)
+#define RISAB_PG3_PRIVCFGR_PRIV3_B_0X0      (0x0u<<3)
+#define RISAB_PG3_PRIVCFGR_PRIV3_B_0X1      (0x1u<<3)
+#define RISAB_PG3_PRIVCFGR_PRIV2_B_0X0      (0x0u<<2)
+#define RISAB_PG3_PRIVCFGR_PRIV2_B_0X1      (0x1u<<2)
+#define RISAB_PG3_PRIVCFGR_PRIV1_B_0X0      (0x0u<<1)
+#define RISAB_PG3_PRIVCFGR_PRIV1_B_0X1      (0x1u<<1)
+#define RISAB_PG3_PRIVCFGR_PRIV0_B_0X0      (0x0u<<0)
+#define RISAB_PG3_PRIVCFGR_PRIV0_B_0X1      (0x1u<<0)
+
+// PG4_PRIVCFGR Configuration
+
+#define RISAB_PG4_PRIVCFGR_PRIV7            (0x1u<<7)
+#define RISAB_PG4_PRIVCFGR_PRIV6            (0x1u<<6)
+#define RISAB_PG4_PRIVCFGR_PRIV5            (0x1u<<5)
+#define RISAB_PG4_PRIVCFGR_PRIV4            (0x1u<<4)
+#define RISAB_PG4_PRIVCFGR_PRIV3            (0x1u<<3)
+#define RISAB_PG4_PRIVCFGR_PRIV2            (0x1u<<2)
+#define RISAB_PG4_PRIVCFGR_PRIV1            (0x1u<<1)
+#define RISAB_PG4_PRIVCFGR_PRIV0            (0x1u<<0)
+
+#define RISAB_PG4_PRIVCFGR_PRIV7_B_0X0      (0x0u<<7)
+#define RISAB_PG4_PRIVCFGR_PRIV7_B_0X1      (0x1u<<7)
+#define RISAB_PG4_PRIVCFGR_PRIV6_B_0X0      (0x0u<<6)
+#define RISAB_PG4_PRIVCFGR_PRIV6_B_0X1      (0x1u<<6)
+#define RISAB_PG4_PRIVCFGR_PRIV5_B_0X0      (0x0u<<5)
+#define RISAB_PG4_PRIVCFGR_PRIV5_B_0X1      (0x1u<<5)
+#define RISAB_PG4_PRIVCFGR_PRIV4_B_0X0      (0x0u<<4)
+#define RISAB_PG4_PRIVCFGR_PRIV4_B_0X1      (0x1u<<4)
+#define RISAB_PG4_PRIVCFGR_PRIV3_B_0X0      (0x0u<<3)
+#define RISAB_PG4_PRIVCFGR_PRIV3_B_0X1      (0x1u<<3)
+#define RISAB_PG4_PRIVCFGR_PRIV2_B_0X0      (0x0u<<2)
+#define RISAB_PG4_PRIVCFGR_PRIV2_B_0X1      (0x1u<<2)
+#define RISAB_PG4_PRIVCFGR_PRIV1_B_0X0      (0x0u<<1)
+#define RISAB_PG4_PRIVCFGR_PRIV1_B_0X1      (0x1u<<1)
+#define RISAB_PG4_PRIVCFGR_PRIV0_B_0X0      (0x0u<<0)
+#define RISAB_PG4_PRIVCFGR_PRIV0_B_0X1      (0x1u<<0)
+
+// PG5_PRIVCFGR Configuration
+
+#define RISAB_PG5_PRIVCFGR_PRIV7            (0x1u<<7)
+#define RISAB_PG5_PRIVCFGR_PRIV6            (0x1u<<6)
+#define RISAB_PG5_PRIVCFGR_PRIV5            (0x1u<<5)
+#define RISAB_PG5_PRIVCFGR_PRIV4            (0x1u<<4)
+#define RISAB_PG5_PRIVCFGR_PRIV3            (0x1u<<3)
+#define RISAB_PG5_PRIVCFGR_PRIV2            (0x1u<<2)
+#define RISAB_PG5_PRIVCFGR_PRIV1            (0x1u<<1)
+#define RISAB_PG5_PRIVCFGR_PRIV0            (0x1u<<0)
+
+#define RISAB_PG5_PRIVCFGR_PRIV7_B_0X0      (0x0u<<7)
+#define RISAB_PG5_PRIVCFGR_PRIV7_B_0X1      (0x1u<<7)
+#define RISAB_PG5_PRIVCFGR_PRIV6_B_0X0      (0x0u<<6)
+#define RISAB_PG5_PRIVCFGR_PRIV6_B_0X1      (0x1u<<6)
+#define RISAB_PG5_PRIVCFGR_PRIV5_B_0X0      (0x0u<<5)
+#define RISAB_PG5_PRIVCFGR_PRIV5_B_0X1      (0x1u<<5)
+#define RISAB_PG5_PRIVCFGR_PRIV4_B_0X0      (0x0u<<4)
+#define RISAB_PG5_PRIVCFGR_PRIV4_B_0X1      (0x1u<<4)
+#define RISAB_PG5_PRIVCFGR_PRIV3_B_0X0      (0x0u<<3)
+#define RISAB_PG5_PRIVCFGR_PRIV3_B_0X1      (0x1u<<3)
+#define RISAB_PG5_PRIVCFGR_PRIV2_B_0X0      (0x0u<<2)
+#define RISAB_PG5_PRIVCFGR_PRIV2_B_0X1      (0x1u<<2)
+#define RISAB_PG5_PRIVCFGR_PRIV1_B_0X0      (0x0u<<1)
+#define RISAB_PG5_PRIVCFGR_PRIV1_B_0X1      (0x1u<<1)
+#define RISAB_PG5_PRIVCFGR_PRIV0_B_0X0      (0x0u<<0)
+#define RISAB_PG5_PRIVCFGR_PRIV0_B_0X1      (0x1u<<0)
+
+// PG6_PRIVCFGR Configuration
+
+#define RISAB_PG6_PRIVCFGR_PRIV7            (0x1u<<7)
+#define RISAB_PG6_PRIVCFGR_PRIV6            (0x1u<<6)
+#define RISAB_PG6_PRIVCFGR_PRIV5            (0x1u<<5)
+#define RISAB_PG6_PRIVCFGR_PRIV4            (0x1u<<4)
+#define RISAB_PG6_PRIVCFGR_PRIV3            (0x1u<<3)
+#define RISAB_PG6_PRIVCFGR_PRIV2            (0x1u<<2)
+#define RISAB_PG6_PRIVCFGR_PRIV1            (0x1u<<1)
+#define RISAB_PG6_PRIVCFGR_PRIV0            (0x1u<<0)
+
+#define RISAB_PG6_PRIVCFGR_PRIV7_B_0X0      (0x0u<<7)
+#define RISAB_PG6_PRIVCFGR_PRIV7_B_0X1      (0x1u<<7)
+#define RISAB_PG6_PRIVCFGR_PRIV6_B_0X0      (0x0u<<6)
+#define RISAB_PG6_PRIVCFGR_PRIV6_B_0X1      (0x1u<<6)
+#define RISAB_PG6_PRIVCFGR_PRIV5_B_0X0      (0x0u<<5)
+#define RISAB_PG6_PRIVCFGR_PRIV5_B_0X1      (0x1u<<5)
+#define RISAB_PG6_PRIVCFGR_PRIV4_B_0X0      (0x0u<<4)
+#define RISAB_PG6_PRIVCFGR_PRIV4_B_0X1      (0x1u<<4)
+#define RISAB_PG6_PRIVCFGR_PRIV3_B_0X0      (0x0u<<3)
+#define RISAB_PG6_PRIVCFGR_PRIV3_B_0X1      (0x1u<<3)
+#define RISAB_PG6_PRIVCFGR_PRIV2_B_0X0      (0x0u<<2)
+#define RISAB_PG6_PRIVCFGR_PRIV2_B_0X1      (0x1u<<2)
+#define RISAB_PG6_PRIVCFGR_PRIV1_B_0X0      (0x0u<<1)
+#define RISAB_PG6_PRIVCFGR_PRIV1_B_0X1      (0x1u<<1)
+#define RISAB_PG6_PRIVCFGR_PRIV0_B_0X0      (0x0u<<0)
+#define RISAB_PG6_PRIVCFGR_PRIV0_B_0X1      (0x1u<<0)
+
+// PG7_PRIVCFGR Configuration
+
+#define RISAB_PG7_PRIVCFGR_PRIV7            (0x1u<<7)
+#define RISAB_PG7_PRIVCFGR_PRIV6            (0x1u<<6)
+#define RISAB_PG7_PRIVCFGR_PRIV5            (0x1u<<5)
+#define RISAB_PG7_PRIVCFGR_PRIV4            (0x1u<<4)
+#define RISAB_PG7_PRIVCFGR_PRIV3            (0x1u<<3)
+#define RISAB_PG7_PRIVCFGR_PRIV2            (0x1u<<2)
+#define RISAB_PG7_PRIVCFGR_PRIV1            (0x1u<<1)
+#define RISAB_PG7_PRIVCFGR_PRIV0            (0x1u<<0)
+
+#define RISAB_PG7_PRIVCFGR_PRIV7_B_0X0      (0x0u<<7)
+#define RISAB_PG7_PRIVCFGR_PRIV7_B_0X1      (0x1u<<7)
+#define RISAB_PG7_PRIVCFGR_PRIV6_B_0X0      (0x0u<<6)
+#define RISAB_PG7_PRIVCFGR_PRIV6_B_0X1      (0x1u<<6)
+#define RISAB_PG7_PRIVCFGR_PRIV5_B_0X0      (0x0u<<5)
+#define RISAB_PG7_PRIVCFGR_PRIV5_B_0X1      (0x1u<<5)
+#define RISAB_PG7_PRIVCFGR_PRIV4_B_0X0      (0x0u<<4)
+#define RISAB_PG7_PRIVCFGR_PRIV4_B_0X1      (0x1u<<4)
+#define RISAB_PG7_PRIVCFGR_PRIV3_B_0X0      (0x0u<<3)
+#define RISAB_PG7_PRIVCFGR_PRIV3_B_0X1      (0x1u<<3)
+#define RISAB_PG7_PRIVCFGR_PRIV2_B_0X0      (0x0u<<2)
+#define RISAB_PG7_PRIVCFGR_PRIV2_B_0X1      (0x1u<<2)
+#define RISAB_PG7_PRIVCFGR_PRIV1_B_0X0      (0x0u<<1)
+#define RISAB_PG7_PRIVCFGR_PRIV1_B_0X1      (0x1u<<1)
+#define RISAB_PG7_PRIVCFGR_PRIV0_B_0X0      (0x0u<<0)
+#define RISAB_PG7_PRIVCFGR_PRIV0_B_0X1      (0x1u<<0)
+
+// PG8_PRIVCFGR Configuration
+
+#define RISAB_PG8_PRIVCFGR_PRIV7            (0x1u<<7)
+#define RISAB_PG8_PRIVCFGR_PRIV6            (0x1u<<6)
+#define RISAB_PG8_PRIVCFGR_PRIV5            (0x1u<<5)
+#define RISAB_PG8_PRIVCFGR_PRIV4            (0x1u<<4)
+#define RISAB_PG8_PRIVCFGR_PRIV3            (0x1u<<3)
+#define RISAB_PG8_PRIVCFGR_PRIV2            (0x1u<<2)
+#define RISAB_PG8_PRIVCFGR_PRIV1            (0x1u<<1)
+#define RISAB_PG8_PRIVCFGR_PRIV0            (0x1u<<0)
+
+#define RISAB_PG8_PRIVCFGR_PRIV7_B_0X0      (0x0u<<7)
+#define RISAB_PG8_PRIVCFGR_PRIV7_B_0X1      (0x1u<<7)
+#define RISAB_PG8_PRIVCFGR_PRIV6_B_0X0      (0x0u<<6)
+#define RISAB_PG8_PRIVCFGR_PRIV6_B_0X1      (0x1u<<6)
+#define RISAB_PG8_PRIVCFGR_PRIV5_B_0X0      (0x0u<<5)
+#define RISAB_PG8_PRIVCFGR_PRIV5_B_0X1      (0x1u<<5)
+#define RISAB_PG8_PRIVCFGR_PRIV4_B_0X0      (0x0u<<4)
+#define RISAB_PG8_PRIVCFGR_PRIV4_B_0X1      (0x1u<<4)
+#define RISAB_PG8_PRIVCFGR_PRIV3_B_0X0      (0x0u<<3)
+#define RISAB_PG8_PRIVCFGR_PRIV3_B_0X1      (0x1u<<3)
+#define RISAB_PG8_PRIVCFGR_PRIV2_B_0X0      (0x0u<<2)
+#define RISAB_PG8_PRIVCFGR_PRIV2_B_0X1      (0x1u<<2)
+#define RISAB_PG8_PRIVCFGR_PRIV1_B_0X0      (0x0u<<1)
+#define RISAB_PG8_PRIVCFGR_PRIV1_B_0X1      (0x1u<<1)
+#define RISAB_PG8_PRIVCFGR_PRIV0_B_0X0      (0x0u<<0)
+#define RISAB_PG8_PRIVCFGR_PRIV0_B_0X1      (0x1u<<0)
+
+// PG9_PRIVCFGR Configuration
+
+#define RISAB_PG9_PRIVCFGR_PRIV7            (0x1u<<7)
+#define RISAB_PG9_PRIVCFGR_PRIV6            (0x1u<<6)
+#define RISAB_PG9_PRIVCFGR_PRIV5            (0x1u<<5)
+#define RISAB_PG9_PRIVCFGR_PRIV4            (0x1u<<4)
+#define RISAB_PG9_PRIVCFGR_PRIV3            (0x1u<<3)
+#define RISAB_PG9_PRIVCFGR_PRIV2            (0x1u<<2)
+#define RISAB_PG9_PRIVCFGR_PRIV1            (0x1u<<1)
+#define RISAB_PG9_PRIVCFGR_PRIV0            (0x1u<<0)
+
+#define RISAB_PG9_PRIVCFGR_PRIV7_B_0X0      (0x0u<<7)
+#define RISAB_PG9_PRIVCFGR_PRIV7_B_0X1      (0x1u<<7)
+#define RISAB_PG9_PRIVCFGR_PRIV6_B_0X0      (0x0u<<6)
+#define RISAB_PG9_PRIVCFGR_PRIV6_B_0X1      (0x1u<<6)
+#define RISAB_PG9_PRIVCFGR_PRIV5_B_0X0      (0x0u<<5)
+#define RISAB_PG9_PRIVCFGR_PRIV5_B_0X1      (0x1u<<5)
+#define RISAB_PG9_PRIVCFGR_PRIV4_B_0X0      (0x0u<<4)
+#define RISAB_PG9_PRIVCFGR_PRIV4_B_0X1      (0x1u<<4)
+#define RISAB_PG9_PRIVCFGR_PRIV3_B_0X0      (0x0u<<3)
+#define RISAB_PG9_PRIVCFGR_PRIV3_B_0X1      (0x1u<<3)
+#define RISAB_PG9_PRIVCFGR_PRIV2_B_0X0      (0x0u<<2)
+#define RISAB_PG9_PRIVCFGR_PRIV2_B_0X1      (0x1u<<2)
+#define RISAB_PG9_PRIVCFGR_PRIV1_B_0X0      (0x0u<<1)
+#define RISAB_PG9_PRIVCFGR_PRIV1_B_0X1      (0x1u<<1)
+#define RISAB_PG9_PRIVCFGR_PRIV0_B_0X0      (0x0u<<0)
+#define RISAB_PG9_PRIVCFGR_PRIV0_B_0X1      (0x1u<<0)
+
+// PG10_PRIVCFGR Configuration
+
+#define RISAB_PG10_PRIVCFGR_PRIV7           (0x1u<<7)
+#define RISAB_PG10_PRIVCFGR_PRIV6           (0x1u<<6)
+#define RISAB_PG10_PRIVCFGR_PRIV5           (0x1u<<5)
+#define RISAB_PG10_PRIVCFGR_PRIV4           (0x1u<<4)
+#define RISAB_PG10_PRIVCFGR_PRIV3           (0x1u<<3)
+#define RISAB_PG10_PRIVCFGR_PRIV2           (0x1u<<2)
+#define RISAB_PG10_PRIVCFGR_PRIV1           (0x1u<<1)
+#define RISAB_PG10_PRIVCFGR_PRIV0           (0x1u<<0)
+
+#define RISAB_PG10_PRIVCFGR_PRIV7_B_0X0     (0x0u<<7)
+#define RISAB_PG10_PRIVCFGR_PRIV7_B_0X1     (0x1u<<7)
+#define RISAB_PG10_PRIVCFGR_PRIV6_B_0X0     (0x0u<<6)
+#define RISAB_PG10_PRIVCFGR_PRIV6_B_0X1     (0x1u<<6)
+#define RISAB_PG10_PRIVCFGR_PRIV5_B_0X0     (0x0u<<5)
+#define RISAB_PG10_PRIVCFGR_PRIV5_B_0X1     (0x1u<<5)
+#define RISAB_PG10_PRIVCFGR_PRIV4_B_0X0     (0x0u<<4)
+#define RISAB_PG10_PRIVCFGR_PRIV4_B_0X1     (0x1u<<4)
+#define RISAB_PG10_PRIVCFGR_PRIV3_B_0X0     (0x0u<<3)
+#define RISAB_PG10_PRIVCFGR_PRIV3_B_0X1     (0x1u<<3)
+#define RISAB_PG10_PRIVCFGR_PRIV2_B_0X0     (0x0u<<2)
+#define RISAB_PG10_PRIVCFGR_PRIV2_B_0X1     (0x1u<<2)
+#define RISAB_PG10_PRIVCFGR_PRIV1_B_0X0     (0x0u<<1)
+#define RISAB_PG10_PRIVCFGR_PRIV1_B_0X1     (0x1u<<1)
+#define RISAB_PG10_PRIVCFGR_PRIV0_B_0X0     (0x0u<<0)
+#define RISAB_PG10_PRIVCFGR_PRIV0_B_0X1     (0x1u<<0)
+
+// PG11_PRIVCFGR Configuration
+
+#define RISAB_PG11_PRIVCFGR_PRIV7           (0x1u<<7)
+#define RISAB_PG11_PRIVCFGR_PRIV6           (0x1u<<6)
+#define RISAB_PG11_PRIVCFGR_PRIV5           (0x1u<<5)
+#define RISAB_PG11_PRIVCFGR_PRIV4           (0x1u<<4)
+#define RISAB_PG11_PRIVCFGR_PRIV3           (0x1u<<3)
+#define RISAB_PG11_PRIVCFGR_PRIV2           (0x1u<<2)
+#define RISAB_PG11_PRIVCFGR_PRIV1           (0x1u<<1)
+#define RISAB_PG11_PRIVCFGR_PRIV0           (0x1u<<0)
+
+#define RISAB_PG11_PRIVCFGR_PRIV7_B_0X0     (0x0u<<7)
+#define RISAB_PG11_PRIVCFGR_PRIV7_B_0X1     (0x1u<<7)
+#define RISAB_PG11_PRIVCFGR_PRIV6_B_0X0     (0x0u<<6)
+#define RISAB_PG11_PRIVCFGR_PRIV6_B_0X1     (0x1u<<6)
+#define RISAB_PG11_PRIVCFGR_PRIV5_B_0X0     (0x0u<<5)
+#define RISAB_PG11_PRIVCFGR_PRIV5_B_0X1     (0x1u<<5)
+#define RISAB_PG11_PRIVCFGR_PRIV4_B_0X0     (0x0u<<4)
+#define RISAB_PG11_PRIVCFGR_PRIV4_B_0X1     (0x1u<<4)
+#define RISAB_PG11_PRIVCFGR_PRIV3_B_0X0     (0x0u<<3)
+#define RISAB_PG11_PRIVCFGR_PRIV3_B_0X1     (0x1u<<3)
+#define RISAB_PG11_PRIVCFGR_PRIV2_B_0X0     (0x0u<<2)
+#define RISAB_PG11_PRIVCFGR_PRIV2_B_0X1     (0x1u<<2)
+#define RISAB_PG11_PRIVCFGR_PRIV1_B_0X0     (0x0u<<1)
+#define RISAB_PG11_PRIVCFGR_PRIV1_B_0X1     (0x1u<<1)
+#define RISAB_PG11_PRIVCFGR_PRIV0_B_0X0     (0x0u<<0)
+#define RISAB_PG11_PRIVCFGR_PRIV0_B_0X1     (0x1u<<0)
+
+// PG12_PRIVCFGR Configuration
+
+#define RISAB_PG12_PRIVCFGR_PRIV7           (0x1u<<7)
+#define RISAB_PG12_PRIVCFGR_PRIV6           (0x1u<<6)
+#define RISAB_PG12_PRIVCFGR_PRIV5           (0x1u<<5)
+#define RISAB_PG12_PRIVCFGR_PRIV4           (0x1u<<4)
+#define RISAB_PG12_PRIVCFGR_PRIV3           (0x1u<<3)
+#define RISAB_PG12_PRIVCFGR_PRIV2           (0x1u<<2)
+#define RISAB_PG12_PRIVCFGR_PRIV1           (0x1u<<1)
+#define RISAB_PG12_PRIVCFGR_PRIV0           (0x1u<<0)
+
+#define RISAB_PG12_PRIVCFGR_PRIV7_B_0X0     (0x0u<<7)
+#define RISAB_PG12_PRIVCFGR_PRIV7_B_0X1     (0x1u<<7)
+#define RISAB_PG12_PRIVCFGR_PRIV6_B_0X0     (0x0u<<6)
+#define RISAB_PG12_PRIVCFGR_PRIV6_B_0X1     (0x1u<<6)
+#define RISAB_PG12_PRIVCFGR_PRIV5_B_0X0     (0x0u<<5)
+#define RISAB_PG12_PRIVCFGR_PRIV5_B_0X1     (0x1u<<5)
+#define RISAB_PG12_PRIVCFGR_PRIV4_B_0X0     (0x0u<<4)
+#define RISAB_PG12_PRIVCFGR_PRIV4_B_0X1     (0x1u<<4)
+#define RISAB_PG12_PRIVCFGR_PRIV3_B_0X0     (0x0u<<3)
+#define RISAB_PG12_PRIVCFGR_PRIV3_B_0X1     (0x1u<<3)
+#define RISAB_PG12_PRIVCFGR_PRIV2_B_0X0     (0x0u<<2)
+#define RISAB_PG12_PRIVCFGR_PRIV2_B_0X1     (0x1u<<2)
+#define RISAB_PG12_PRIVCFGR_PRIV1_B_0X0     (0x0u<<1)
+#define RISAB_PG12_PRIVCFGR_PRIV1_B_0X1     (0x1u<<1)
+#define RISAB_PG12_PRIVCFGR_PRIV0_B_0X0     (0x0u<<0)
+#define RISAB_PG12_PRIVCFGR_PRIV0_B_0X1     (0x1u<<0)
+
+// PG13_PRIVCFGR Configuration
+
+#define RISAB_PG13_PRIVCFGR_PRIV7           (0x1u<<7)
+#define RISAB_PG13_PRIVCFGR_PRIV6           (0x1u<<6)
+#define RISAB_PG13_PRIVCFGR_PRIV5           (0x1u<<5)
+#define RISAB_PG13_PRIVCFGR_PRIV4           (0x1u<<4)
+#define RISAB_PG13_PRIVCFGR_PRIV3           (0x1u<<3)
+#define RISAB_PG13_PRIVCFGR_PRIV2           (0x1u<<2)
+#define RISAB_PG13_PRIVCFGR_PRIV1           (0x1u<<1)
+#define RISAB_PG13_PRIVCFGR_PRIV0           (0x1u<<0)
+
+#define RISAB_PG13_PRIVCFGR_PRIV7_B_0X0     (0x0u<<7)
+#define RISAB_PG13_PRIVCFGR_PRIV7_B_0X1     (0x1u<<7)
+#define RISAB_PG13_PRIVCFGR_PRIV6_B_0X0     (0x0u<<6)
+#define RISAB_PG13_PRIVCFGR_PRIV6_B_0X1     (0x1u<<6)
+#define RISAB_PG13_PRIVCFGR_PRIV5_B_0X0     (0x0u<<5)
+#define RISAB_PG13_PRIVCFGR_PRIV5_B_0X1     (0x1u<<5)
+#define RISAB_PG13_PRIVCFGR_PRIV4_B_0X0     (0x0u<<4)
+#define RISAB_PG13_PRIVCFGR_PRIV4_B_0X1     (0x1u<<4)
+#define RISAB_PG13_PRIVCFGR_PRIV3_B_0X0     (0x0u<<3)
+#define RISAB_PG13_PRIVCFGR_PRIV3_B_0X1     (0x1u<<3)
+#define RISAB_PG13_PRIVCFGR_PRIV2_B_0X0     (0x0u<<2)
+#define RISAB_PG13_PRIVCFGR_PRIV2_B_0X1     (0x1u<<2)
+#define RISAB_PG13_PRIVCFGR_PRIV1_B_0X0     (0x0u<<1)
+#define RISAB_PG13_PRIVCFGR_PRIV1_B_0X1     (0x1u<<1)
+#define RISAB_PG13_PRIVCFGR_PRIV0_B_0X0     (0x0u<<0)
+#define RISAB_PG13_PRIVCFGR_PRIV0_B_0X1     (0x1u<<0)
+
+// PG14_PRIVCFGR Configuration
+
+#define RISAB_PG14_PRIVCFGR_PRIV7           (0x1u<<7)
+#define RISAB_PG14_PRIVCFGR_PRIV6           (0x1u<<6)
+#define RISAB_PG14_PRIVCFGR_PRIV5           (0x1u<<5)
+#define RISAB_PG14_PRIVCFGR_PRIV4           (0x1u<<4)
+#define RISAB_PG14_PRIVCFGR_PRIV3           (0x1u<<3)
+#define RISAB_PG14_PRIVCFGR_PRIV2           (0x1u<<2)
+#define RISAB_PG14_PRIVCFGR_PRIV1           (0x1u<<1)
+#define RISAB_PG14_PRIVCFGR_PRIV0           (0x1u<<0)
+
+#define RISAB_PG14_PRIVCFGR_PRIV7_B_0X0     (0x0u<<7)
+#define RISAB_PG14_PRIVCFGR_PRIV7_B_0X1     (0x1u<<7)
+#define RISAB_PG14_PRIVCFGR_PRIV6_B_0X0     (0x0u<<6)
+#define RISAB_PG14_PRIVCFGR_PRIV6_B_0X1     (0x1u<<6)
+#define RISAB_PG14_PRIVCFGR_PRIV5_B_0X0     (0x0u<<5)
+#define RISAB_PG14_PRIVCFGR_PRIV5_B_0X1     (0x1u<<5)
+#define RISAB_PG14_PRIVCFGR_PRIV4_B_0X0     (0x0u<<4)
+#define RISAB_PG14_PRIVCFGR_PRIV4_B_0X1     (0x1u<<4)
+#define RISAB_PG14_PRIVCFGR_PRIV3_B_0X0     (0x0u<<3)
+#define RISAB_PG14_PRIVCFGR_PRIV3_B_0X1     (0x1u<<3)
+#define RISAB_PG14_PRIVCFGR_PRIV2_B_0X0     (0x0u<<2)
+#define RISAB_PG14_PRIVCFGR_PRIV2_B_0X1     (0x1u<<2)
+#define RISAB_PG14_PRIVCFGR_PRIV1_B_0X0     (0x0u<<1)
+#define RISAB_PG14_PRIVCFGR_PRIV1_B_0X1     (0x1u<<1)
+#define RISAB_PG14_PRIVCFGR_PRIV0_B_0X0     (0x0u<<0)
+#define RISAB_PG14_PRIVCFGR_PRIV0_B_0X1     (0x1u<<0)
+
+// PG15_PRIVCFGR Configuration
+
+#define RISAB_PG15_PRIVCFGR_PRIV7           (0x1u<<7)
+#define RISAB_PG15_PRIVCFGR_PRIV6           (0x1u<<6)
+#define RISAB_PG15_PRIVCFGR_PRIV5           (0x1u<<5)
+#define RISAB_PG15_PRIVCFGR_PRIV4           (0x1u<<4)
+#define RISAB_PG15_PRIVCFGR_PRIV3           (0x1u<<3)
+#define RISAB_PG15_PRIVCFGR_PRIV2           (0x1u<<2)
+#define RISAB_PG15_PRIVCFGR_PRIV1           (0x1u<<1)
+#define RISAB_PG15_PRIVCFGR_PRIV0           (0x1u<<0)
+
+#define RISAB_PG15_PRIVCFGR_PRIV7_B_0X0     (0x0u<<7)
+#define RISAB_PG15_PRIVCFGR_PRIV7_B_0X1     (0x1u<<7)
+#define RISAB_PG15_PRIVCFGR_PRIV6_B_0X0     (0x0u<<6)
+#define RISAB_PG15_PRIVCFGR_PRIV6_B_0X1     (0x1u<<6)
+#define RISAB_PG15_PRIVCFGR_PRIV5_B_0X0     (0x0u<<5)
+#define RISAB_PG15_PRIVCFGR_PRIV5_B_0X1     (0x1u<<5)
+#define RISAB_PG15_PRIVCFGR_PRIV4_B_0X0     (0x0u<<4)
+#define RISAB_PG15_PRIVCFGR_PRIV4_B_0X1     (0x1u<<4)
+#define RISAB_PG15_PRIVCFGR_PRIV3_B_0X0     (0x0u<<3)
+#define RISAB_PG15_PRIVCFGR_PRIV3_B_0X1     (0x1u<<3)
+#define RISAB_PG15_PRIVCFGR_PRIV2_B_0X0     (0x0u<<2)
+#define RISAB_PG15_PRIVCFGR_PRIV2_B_0X1     (0x1u<<2)
+#define RISAB_PG15_PRIVCFGR_PRIV1_B_0X0     (0x0u<<1)
+#define RISAB_PG15_PRIVCFGR_PRIV1_B_0X1     (0x1u<<1)
+#define RISAB_PG15_PRIVCFGR_PRIV0_B_0X0     (0x0u<<0)
+#define RISAB_PG15_PRIVCFGR_PRIV0_B_0X1     (0x1u<<0)
+
+// PG16_PRIVCFGR Configuration
+
+#define RISAB_PG16_PRIVCFGR_PRIV7           (0x1u<<7)
+#define RISAB_PG16_PRIVCFGR_PRIV6           (0x1u<<6)
+#define RISAB_PG16_PRIVCFGR_PRIV5           (0x1u<<5)
+#define RISAB_PG16_PRIVCFGR_PRIV4           (0x1u<<4)
+#define RISAB_PG16_PRIVCFGR_PRIV3           (0x1u<<3)
+#define RISAB_PG16_PRIVCFGR_PRIV2           (0x1u<<2)
+#define RISAB_PG16_PRIVCFGR_PRIV1           (0x1u<<1)
+#define RISAB_PG16_PRIVCFGR_PRIV0           (0x1u<<0)
+
+#define RISAB_PG16_PRIVCFGR_PRIV7_B_0X0     (0x0u<<7)
+#define RISAB_PG16_PRIVCFGR_PRIV7_B_0X1     (0x1u<<7)
+#define RISAB_PG16_PRIVCFGR_PRIV6_B_0X0     (0x0u<<6)
+#define RISAB_PG16_PRIVCFGR_PRIV6_B_0X1     (0x1u<<6)
+#define RISAB_PG16_PRIVCFGR_PRIV5_B_0X0     (0x0u<<5)
+#define RISAB_PG16_PRIVCFGR_PRIV5_B_0X1     (0x1u<<5)
+#define RISAB_PG16_PRIVCFGR_PRIV4_B_0X0     (0x0u<<4)
+#define RISAB_PG16_PRIVCFGR_PRIV4_B_0X1     (0x1u<<4)
+#define RISAB_PG16_PRIVCFGR_PRIV3_B_0X0     (0x0u<<3)
+#define RISAB_PG16_PRIVCFGR_PRIV3_B_0X1     (0x1u<<3)
+#define RISAB_PG16_PRIVCFGR_PRIV2_B_0X0     (0x0u<<2)
+#define RISAB_PG16_PRIVCFGR_PRIV2_B_0X1     (0x1u<<2)
+#define RISAB_PG16_PRIVCFGR_PRIV1_B_0X0     (0x0u<<1)
+#define RISAB_PG16_PRIVCFGR_PRIV1_B_0X1     (0x1u<<1)
+#define RISAB_PG16_PRIVCFGR_PRIV0_B_0X0     (0x0u<<0)
+#define RISAB_PG16_PRIVCFGR_PRIV0_B_0X1     (0x1u<<0)
+
+// PG17_PRIVCFGR Configuration
+
+#define RISAB_PG17_PRIVCFGR_PRIV7           (0x1u<<7)
+#define RISAB_PG17_PRIVCFGR_PRIV6           (0x1u<<6)
+#define RISAB_PG17_PRIVCFGR_PRIV5           (0x1u<<5)
+#define RISAB_PG17_PRIVCFGR_PRIV4           (0x1u<<4)
+#define RISAB_PG17_PRIVCFGR_PRIV3           (0x1u<<3)
+#define RISAB_PG17_PRIVCFGR_PRIV2           (0x1u<<2)
+#define RISAB_PG17_PRIVCFGR_PRIV1           (0x1u<<1)
+#define RISAB_PG17_PRIVCFGR_PRIV0           (0x1u<<0)
+
+#define RISAB_PG17_PRIVCFGR_PRIV7_B_0X0     (0x0u<<7)
+#define RISAB_PG17_PRIVCFGR_PRIV7_B_0X1     (0x1u<<7)
+#define RISAB_PG17_PRIVCFGR_PRIV6_B_0X0     (0x0u<<6)
+#define RISAB_PG17_PRIVCFGR_PRIV6_B_0X1     (0x1u<<6)
+#define RISAB_PG17_PRIVCFGR_PRIV5_B_0X0     (0x0u<<5)
+#define RISAB_PG17_PRIVCFGR_PRIV5_B_0X1     (0x1u<<5)
+#define RISAB_PG17_PRIVCFGR_PRIV4_B_0X0     (0x0u<<4)
+#define RISAB_PG17_PRIVCFGR_PRIV4_B_0X1     (0x1u<<4)
+#define RISAB_PG17_PRIVCFGR_PRIV3_B_0X0     (0x0u<<3)
+#define RISAB_PG17_PRIVCFGR_PRIV3_B_0X1     (0x1u<<3)
+#define RISAB_PG17_PRIVCFGR_PRIV2_B_0X0     (0x0u<<2)
+#define RISAB_PG17_PRIVCFGR_PRIV2_B_0X1     (0x1u<<2)
+#define RISAB_PG17_PRIVCFGR_PRIV1_B_0X0     (0x0u<<1)
+#define RISAB_PG17_PRIVCFGR_PRIV1_B_0X1     (0x1u<<1)
+#define RISAB_PG17_PRIVCFGR_PRIV0_B_0X0     (0x0u<<0)
+#define RISAB_PG17_PRIVCFGR_PRIV0_B_0X1     (0x1u<<0)
+
+// PG18_PRIVCFGR Configuration
+
+#define RISAB_PG18_PRIVCFGR_PRIV7           (0x1u<<7)
+#define RISAB_PG18_PRIVCFGR_PRIV6           (0x1u<<6)
+#define RISAB_PG18_PRIVCFGR_PRIV5           (0x1u<<5)
+#define RISAB_PG18_PRIVCFGR_PRIV4           (0x1u<<4)
+#define RISAB_PG18_PRIVCFGR_PRIV3           (0x1u<<3)
+#define RISAB_PG18_PRIVCFGR_PRIV2           (0x1u<<2)
+#define RISAB_PG18_PRIVCFGR_PRIV1           (0x1u<<1)
+#define RISAB_PG18_PRIVCFGR_PRIV0           (0x1u<<0)
+
+#define RISAB_PG18_PRIVCFGR_PRIV7_B_0X0     (0x0u<<7)
+#define RISAB_PG18_PRIVCFGR_PRIV7_B_0X1     (0x1u<<7)
+#define RISAB_PG18_PRIVCFGR_PRIV6_B_0X0     (0x0u<<6)
+#define RISAB_PG18_PRIVCFGR_PRIV6_B_0X1     (0x1u<<6)
+#define RISAB_PG18_PRIVCFGR_PRIV5_B_0X0     (0x0u<<5)
+#define RISAB_PG18_PRIVCFGR_PRIV5_B_0X1     (0x1u<<5)
+#define RISAB_PG18_PRIVCFGR_PRIV4_B_0X0     (0x0u<<4)
+#define RISAB_PG18_PRIVCFGR_PRIV4_B_0X1     (0x1u<<4)
+#define RISAB_PG18_PRIVCFGR_PRIV3_B_0X0     (0x0u<<3)
+#define RISAB_PG18_PRIVCFGR_PRIV3_B_0X1     (0x1u<<3)
+#define RISAB_PG18_PRIVCFGR_PRIV2_B_0X0     (0x0u<<2)
+#define RISAB_PG18_PRIVCFGR_PRIV2_B_0X1     (0x1u<<2)
+#define RISAB_PG18_PRIVCFGR_PRIV1_B_0X0     (0x0u<<1)
+#define RISAB_PG18_PRIVCFGR_PRIV1_B_0X1     (0x1u<<1)
+#define RISAB_PG18_PRIVCFGR_PRIV0_B_0X0     (0x0u<<0)
+#define RISAB_PG18_PRIVCFGR_PRIV0_B_0X1     (0x1u<<0)
+
+// PG19_PRIVCFGR Configuration
+
+#define RISAB_PG19_PRIVCFGR_PRIV7           (0x1u<<7)
+#define RISAB_PG19_PRIVCFGR_PRIV6           (0x1u<<6)
+#define RISAB_PG19_PRIVCFGR_PRIV5           (0x1u<<5)
+#define RISAB_PG19_PRIVCFGR_PRIV4           (0x1u<<4)
+#define RISAB_PG19_PRIVCFGR_PRIV3           (0x1u<<3)
+#define RISAB_PG19_PRIVCFGR_PRIV2           (0x1u<<2)
+#define RISAB_PG19_PRIVCFGR_PRIV1           (0x1u<<1)
+#define RISAB_PG19_PRIVCFGR_PRIV0           (0x1u<<0)
+
+#define RISAB_PG19_PRIVCFGR_PRIV7_B_0X0     (0x0u<<7)
+#define RISAB_PG19_PRIVCFGR_PRIV7_B_0X1     (0x1u<<7)
+#define RISAB_PG19_PRIVCFGR_PRIV6_B_0X0     (0x0u<<6)
+#define RISAB_PG19_PRIVCFGR_PRIV6_B_0X1     (0x1u<<6)
+#define RISAB_PG19_PRIVCFGR_PRIV5_B_0X0     (0x0u<<5)
+#define RISAB_PG19_PRIVCFGR_PRIV5_B_0X1     (0x1u<<5)
+#define RISAB_PG19_PRIVCFGR_PRIV4_B_0X0     (0x0u<<4)
+#define RISAB_PG19_PRIVCFGR_PRIV4_B_0X1     (0x1u<<4)
+#define RISAB_PG19_PRIVCFGR_PRIV3_B_0X0     (0x0u<<3)
+#define RISAB_PG19_PRIVCFGR_PRIV3_B_0X1     (0x1u<<3)
+#define RISAB_PG19_PRIVCFGR_PRIV2_B_0X0     (0x0u<<2)
+#define RISAB_PG19_PRIVCFGR_PRIV2_B_0X1     (0x1u<<2)
+#define RISAB_PG19_PRIVCFGR_PRIV1_B_0X0     (0x0u<<1)
+#define RISAB_PG19_PRIVCFGR_PRIV1_B_0X1     (0x1u<<1)
+#define RISAB_PG19_PRIVCFGR_PRIV0_B_0X0     (0x0u<<0)
+#define RISAB_PG19_PRIVCFGR_PRIV0_B_0X1     (0x1u<<0)
+
+// PG20_PRIVCFGR Configuration
+
+#define RISAB_PG20_PRIVCFGR_PRIV7           (0x1u<<7)
+#define RISAB_PG20_PRIVCFGR_PRIV6           (0x1u<<6)
+#define RISAB_PG20_PRIVCFGR_PRIV5           (0x1u<<5)
+#define RISAB_PG20_PRIVCFGR_PRIV4           (0x1u<<4)
+#define RISAB_PG20_PRIVCFGR_PRIV3           (0x1u<<3)
+#define RISAB_PG20_PRIVCFGR_PRIV2           (0x1u<<2)
+#define RISAB_PG20_PRIVCFGR_PRIV1           (0x1u<<1)
+#define RISAB_PG20_PRIVCFGR_PRIV0           (0x1u<<0)
+
+#define RISAB_PG20_PRIVCFGR_PRIV7_B_0X0     (0x0u<<7)
+#define RISAB_PG20_PRIVCFGR_PRIV7_B_0X1     (0x1u<<7)
+#define RISAB_PG20_PRIVCFGR_PRIV6_B_0X0     (0x0u<<6)
+#define RISAB_PG20_PRIVCFGR_PRIV6_B_0X1     (0x1u<<6)
+#define RISAB_PG20_PRIVCFGR_PRIV5_B_0X0     (0x0u<<5)
+#define RISAB_PG20_PRIVCFGR_PRIV5_B_0X1     (0x1u<<5)
+#define RISAB_PG20_PRIVCFGR_PRIV4_B_0X0     (0x0u<<4)
+#define RISAB_PG20_PRIVCFGR_PRIV4_B_0X1     (0x1u<<4)
+#define RISAB_PG20_PRIVCFGR_PRIV3_B_0X0     (0x0u<<3)
+#define RISAB_PG20_PRIVCFGR_PRIV3_B_0X1     (0x1u<<3)
+#define RISAB_PG20_PRIVCFGR_PRIV2_B_0X0     (0x0u<<2)
+#define RISAB_PG20_PRIVCFGR_PRIV2_B_0X1     (0x1u<<2)
+#define RISAB_PG20_PRIVCFGR_PRIV1_B_0X0     (0x0u<<1)
+#define RISAB_PG20_PRIVCFGR_PRIV1_B_0X1     (0x1u<<1)
+#define RISAB_PG20_PRIVCFGR_PRIV0_B_0X0     (0x0u<<0)
+#define RISAB_PG20_PRIVCFGR_PRIV0_B_0X1     (0x1u<<0)
+
+// PG21_PRIVCFGR Configuration
+
+#define RISAB_PG21_PRIVCFGR_PRIV7           (0x1u<<7)
+#define RISAB_PG21_PRIVCFGR_PRIV6           (0x1u<<6)
+#define RISAB_PG21_PRIVCFGR_PRIV5           (0x1u<<5)
+#define RISAB_PG21_PRIVCFGR_PRIV4           (0x1u<<4)
+#define RISAB_PG21_PRIVCFGR_PRIV3           (0x1u<<3)
+#define RISAB_PG21_PRIVCFGR_PRIV2           (0x1u<<2)
+#define RISAB_PG21_PRIVCFGR_PRIV1           (0x1u<<1)
+#define RISAB_PG21_PRIVCFGR_PRIV0           (0x1u<<0)
+
+#define RISAB_PG21_PRIVCFGR_PRIV7_B_0X0     (0x0u<<7)
+#define RISAB_PG21_PRIVCFGR_PRIV7_B_0X1     (0x1u<<7)
+#define RISAB_PG21_PRIVCFGR_PRIV6_B_0X0     (0x0u<<6)
+#define RISAB_PG21_PRIVCFGR_PRIV6_B_0X1     (0x1u<<6)
+#define RISAB_PG21_PRIVCFGR_PRIV5_B_0X0     (0x0u<<5)
+#define RISAB_PG21_PRIVCFGR_PRIV5_B_0X1     (0x1u<<5)
+#define RISAB_PG21_PRIVCFGR_PRIV4_B_0X0     (0x0u<<4)
+#define RISAB_PG21_PRIVCFGR_PRIV4_B_0X1     (0x1u<<4)
+#define RISAB_PG21_PRIVCFGR_PRIV3_B_0X0     (0x0u<<3)
+#define RISAB_PG21_PRIVCFGR_PRIV3_B_0X1     (0x1u<<3)
+#define RISAB_PG21_PRIVCFGR_PRIV2_B_0X0     (0x0u<<2)
+#define RISAB_PG21_PRIVCFGR_PRIV2_B_0X1     (0x1u<<2)
+#define RISAB_PG21_PRIVCFGR_PRIV1_B_0X0     (0x0u<<1)
+#define RISAB_PG21_PRIVCFGR_PRIV1_B_0X1     (0x1u<<1)
+#define RISAB_PG21_PRIVCFGR_PRIV0_B_0X0     (0x0u<<0)
+#define RISAB_PG21_PRIVCFGR_PRIV0_B_0X1     (0x1u<<0)
+
+// PG22_PRIVCFGR Configuration
+
+#define RISAB_PG22_PRIVCFGR_PRIV7           (0x1u<<7)
+#define RISAB_PG22_PRIVCFGR_PRIV6           (0x1u<<6)
+#define RISAB_PG22_PRIVCFGR_PRIV5           (0x1u<<5)
+#define RISAB_PG22_PRIVCFGR_PRIV4           (0x1u<<4)
+#define RISAB_PG22_PRIVCFGR_PRIV3           (0x1u<<3)
+#define RISAB_PG22_PRIVCFGR_PRIV2           (0x1u<<2)
+#define RISAB_PG22_PRIVCFGR_PRIV1           (0x1u<<1)
+#define RISAB_PG22_PRIVCFGR_PRIV0           (0x1u<<0)
+
+#define RISAB_PG22_PRIVCFGR_PRIV7_B_0X0     (0x0u<<7)
+#define RISAB_PG22_PRIVCFGR_PRIV7_B_0X1     (0x1u<<7)
+#define RISAB_PG22_PRIVCFGR_PRIV6_B_0X0     (0x0u<<6)
+#define RISAB_PG22_PRIVCFGR_PRIV6_B_0X1     (0x1u<<6)
+#define RISAB_PG22_PRIVCFGR_PRIV5_B_0X0     (0x0u<<5)
+#define RISAB_PG22_PRIVCFGR_PRIV5_B_0X1     (0x1u<<5)
+#define RISAB_PG22_PRIVCFGR_PRIV4_B_0X0     (0x0u<<4)
+#define RISAB_PG22_PRIVCFGR_PRIV4_B_0X1     (0x1u<<4)
+#define RISAB_PG22_PRIVCFGR_PRIV3_B_0X0     (0x0u<<3)
+#define RISAB_PG22_PRIVCFGR_PRIV3_B_0X1     (0x1u<<3)
+#define RISAB_PG22_PRIVCFGR_PRIV2_B_0X0     (0x0u<<2)
+#define RISAB_PG22_PRIVCFGR_PRIV2_B_0X1     (0x1u<<2)
+#define RISAB_PG22_PRIVCFGR_PRIV1_B_0X0     (0x0u<<1)
+#define RISAB_PG22_PRIVCFGR_PRIV1_B_0X1     (0x1u<<1)
+#define RISAB_PG22_PRIVCFGR_PRIV0_B_0X0     (0x0u<<0)
+#define RISAB_PG22_PRIVCFGR_PRIV0_B_0X1     (0x1u<<0)
+
+// PG23_PRIVCFGR Configuration
+
+#define RISAB_PG23_PRIVCFGR_PRIV7           (0x1u<<7)
+#define RISAB_PG23_PRIVCFGR_PRIV6           (0x1u<<6)
+#define RISAB_PG23_PRIVCFGR_PRIV5           (0x1u<<5)
+#define RISAB_PG23_PRIVCFGR_PRIV4           (0x1u<<4)
+#define RISAB_PG23_PRIVCFGR_PRIV3           (0x1u<<3)
+#define RISAB_PG23_PRIVCFGR_PRIV2           (0x1u<<2)
+#define RISAB_PG23_PRIVCFGR_PRIV1           (0x1u<<1)
+#define RISAB_PG23_PRIVCFGR_PRIV0           (0x1u<<0)
+
+#define RISAB_PG23_PRIVCFGR_PRIV7_B_0X0     (0x0u<<7)
+#define RISAB_PG23_PRIVCFGR_PRIV7_B_0X1     (0x1u<<7)
+#define RISAB_PG23_PRIVCFGR_PRIV6_B_0X0     (0x0u<<6)
+#define RISAB_PG23_PRIVCFGR_PRIV6_B_0X1     (0x1u<<6)
+#define RISAB_PG23_PRIVCFGR_PRIV5_B_0X0     (0x0u<<5)
+#define RISAB_PG23_PRIVCFGR_PRIV5_B_0X1     (0x1u<<5)
+#define RISAB_PG23_PRIVCFGR_PRIV4_B_0X0     (0x0u<<4)
+#define RISAB_PG23_PRIVCFGR_PRIV4_B_0X1     (0x1u<<4)
+#define RISAB_PG23_PRIVCFGR_PRIV3_B_0X0     (0x0u<<3)
+#define RISAB_PG23_PRIVCFGR_PRIV3_B_0X1     (0x1u<<3)
+#define RISAB_PG23_PRIVCFGR_PRIV2_B_0X0     (0x0u<<2)
+#define RISAB_PG23_PRIVCFGR_PRIV2_B_0X1     (0x1u<<2)
+#define RISAB_PG23_PRIVCFGR_PRIV1_B_0X0     (0x0u<<1)
+#define RISAB_PG23_PRIVCFGR_PRIV1_B_0X1     (0x1u<<1)
+#define RISAB_PG23_PRIVCFGR_PRIV0_B_0X0     (0x0u<<0)
+#define RISAB_PG23_PRIVCFGR_PRIV0_B_0X1     (0x1u<<0)
+
+// PG24_PRIVCFGR Configuration
+
+#define RISAB_PG24_PRIVCFGR_PRIV7           (0x1u<<7)
+#define RISAB_PG24_PRIVCFGR_PRIV6           (0x1u<<6)
+#define RISAB_PG24_PRIVCFGR_PRIV5           (0x1u<<5)
+#define RISAB_PG24_PRIVCFGR_PRIV4           (0x1u<<4)
+#define RISAB_PG24_PRIVCFGR_PRIV3           (0x1u<<3)
+#define RISAB_PG24_PRIVCFGR_PRIV2           (0x1u<<2)
+#define RISAB_PG24_PRIVCFGR_PRIV1           (0x1u<<1)
+#define RISAB_PG24_PRIVCFGR_PRIV0           (0x1u<<0)
+
+#define RISAB_PG24_PRIVCFGR_PRIV7_B_0X0     (0x0u<<7)
+#define RISAB_PG24_PRIVCFGR_PRIV7_B_0X1     (0x1u<<7)
+#define RISAB_PG24_PRIVCFGR_PRIV6_B_0X0     (0x0u<<6)
+#define RISAB_PG24_PRIVCFGR_PRIV6_B_0X1     (0x1u<<6)
+#define RISAB_PG24_PRIVCFGR_PRIV5_B_0X0     (0x0u<<5)
+#define RISAB_PG24_PRIVCFGR_PRIV5_B_0X1     (0x1u<<5)
+#define RISAB_PG24_PRIVCFGR_PRIV4_B_0X0     (0x0u<<4)
+#define RISAB_PG24_PRIVCFGR_PRIV4_B_0X1     (0x1u<<4)
+#define RISAB_PG24_PRIVCFGR_PRIV3_B_0X0     (0x0u<<3)
+#define RISAB_PG24_PRIVCFGR_PRIV3_B_0X1     (0x1u<<3)
+#define RISAB_PG24_PRIVCFGR_PRIV2_B_0X0     (0x0u<<2)
+#define RISAB_PG24_PRIVCFGR_PRIV2_B_0X1     (0x1u<<2)
+#define RISAB_PG24_PRIVCFGR_PRIV1_B_0X0     (0x0u<<1)
+#define RISAB_PG24_PRIVCFGR_PRIV1_B_0X1     (0x1u<<1)
+#define RISAB_PG24_PRIVCFGR_PRIV0_B_0X0     (0x0u<<0)
+#define RISAB_PG24_PRIVCFGR_PRIV0_B_0X1     (0x1u<<0)
+
+// PG25_PRIVCFGR Configuration
+
+#define RISAB_PG25_PRIVCFGR_PRIV7           (0x1u<<7)
+#define RISAB_PG25_PRIVCFGR_PRIV6           (0x1u<<6)
+#define RISAB_PG25_PRIVCFGR_PRIV5           (0x1u<<5)
+#define RISAB_PG25_PRIVCFGR_PRIV4           (0x1u<<4)
+#define RISAB_PG25_PRIVCFGR_PRIV3           (0x1u<<3)
+#define RISAB_PG25_PRIVCFGR_PRIV2           (0x1u<<2)
+#define RISAB_PG25_PRIVCFGR_PRIV1           (0x1u<<1)
+#define RISAB_PG25_PRIVCFGR_PRIV0           (0x1u<<0)
+
+#define RISAB_PG25_PRIVCFGR_PRIV7_B_0X0     (0x0u<<7)
+#define RISAB_PG25_PRIVCFGR_PRIV7_B_0X1     (0x1u<<7)
+#define RISAB_PG25_PRIVCFGR_PRIV6_B_0X0     (0x0u<<6)
+#define RISAB_PG25_PRIVCFGR_PRIV6_B_0X1     (0x1u<<6)
+#define RISAB_PG25_PRIVCFGR_PRIV5_B_0X0     (0x0u<<5)
+#define RISAB_PG25_PRIVCFGR_PRIV5_B_0X1     (0x1u<<5)
+#define RISAB_PG25_PRIVCFGR_PRIV4_B_0X0     (0x0u<<4)
+#define RISAB_PG25_PRIVCFGR_PRIV4_B_0X1     (0x1u<<4)
+#define RISAB_PG25_PRIVCFGR_PRIV3_B_0X0     (0x0u<<3)
+#define RISAB_PG25_PRIVCFGR_PRIV3_B_0X1     (0x1u<<3)
+#define RISAB_PG25_PRIVCFGR_PRIV2_B_0X0     (0x0u<<2)
+#define RISAB_PG25_PRIVCFGR_PRIV2_B_0X1     (0x1u<<2)
+#define RISAB_PG25_PRIVCFGR_PRIV1_B_0X0     (0x0u<<1)
+#define RISAB_PG25_PRIVCFGR_PRIV1_B_0X1     (0x1u<<1)
+#define RISAB_PG25_PRIVCFGR_PRIV0_B_0X0     (0x0u<<0)
+#define RISAB_PG25_PRIVCFGR_PRIV0_B_0X1     (0x1u<<0)
+
+// PG26_PRIVCFGR Configuration
+
+#define RISAB_PG26_PRIVCFGR_PRIV7           (0x1u<<7)
+#define RISAB_PG26_PRIVCFGR_PRIV6           (0x1u<<6)
+#define RISAB_PG26_PRIVCFGR_PRIV5           (0x1u<<5)
+#define RISAB_PG26_PRIVCFGR_PRIV4           (0x1u<<4)
+#define RISAB_PG26_PRIVCFGR_PRIV3           (0x1u<<3)
+#define RISAB_PG26_PRIVCFGR_PRIV2           (0x1u<<2)
+#define RISAB_PG26_PRIVCFGR_PRIV1           (0x1u<<1)
+#define RISAB_PG26_PRIVCFGR_PRIV0           (0x1u<<0)
+
+#define RISAB_PG26_PRIVCFGR_PRIV7_B_0X0     (0x0u<<7)
+#define RISAB_PG26_PRIVCFGR_PRIV7_B_0X1     (0x1u<<7)
+#define RISAB_PG26_PRIVCFGR_PRIV6_B_0X0     (0x0u<<6)
+#define RISAB_PG26_PRIVCFGR_PRIV6_B_0X1     (0x1u<<6)
+#define RISAB_PG26_PRIVCFGR_PRIV5_B_0X0     (0x0u<<5)
+#define RISAB_PG26_PRIVCFGR_PRIV5_B_0X1     (0x1u<<5)
+#define RISAB_PG26_PRIVCFGR_PRIV4_B_0X0     (0x0u<<4)
+#define RISAB_PG26_PRIVCFGR_PRIV4_B_0X1     (0x1u<<4)
+#define RISAB_PG26_PRIVCFGR_PRIV3_B_0X0     (0x0u<<3)
+#define RISAB_PG26_PRIVCFGR_PRIV3_B_0X1     (0x1u<<3)
+#define RISAB_PG26_PRIVCFGR_PRIV2_B_0X0     (0x0u<<2)
+#define RISAB_PG26_PRIVCFGR_PRIV2_B_0X1     (0x1u<<2)
+#define RISAB_PG26_PRIVCFGR_PRIV1_B_0X0     (0x0u<<1)
+#define RISAB_PG26_PRIVCFGR_PRIV1_B_0X1     (0x1u<<1)
+#define RISAB_PG26_PRIVCFGR_PRIV0_B_0X0     (0x0u<<0)
+#define RISAB_PG26_PRIVCFGR_PRIV0_B_0X1     (0x1u<<0)
+
+// PG27_PRIVCFGR Configuration
+
+#define RISAB_PG27_PRIVCFGR_PRIV7           (0x1u<<7)
+#define RISAB_PG27_PRIVCFGR_PRIV6           (0x1u<<6)
+#define RISAB_PG27_PRIVCFGR_PRIV5           (0x1u<<5)
+#define RISAB_PG27_PRIVCFGR_PRIV4           (0x1u<<4)
+#define RISAB_PG27_PRIVCFGR_PRIV3           (0x1u<<3)
+#define RISAB_PG27_PRIVCFGR_PRIV2           (0x1u<<2)
+#define RISAB_PG27_PRIVCFGR_PRIV1           (0x1u<<1)
+#define RISAB_PG27_PRIVCFGR_PRIV0           (0x1u<<0)
+
+#define RISAB_PG27_PRIVCFGR_PRIV7_B_0X0     (0x0u<<7)
+#define RISAB_PG27_PRIVCFGR_PRIV7_B_0X1     (0x1u<<7)
+#define RISAB_PG27_PRIVCFGR_PRIV6_B_0X0     (0x0u<<6)
+#define RISAB_PG27_PRIVCFGR_PRIV6_B_0X1     (0x1u<<6)
+#define RISAB_PG27_PRIVCFGR_PRIV5_B_0X0     (0x0u<<5)
+#define RISAB_PG27_PRIVCFGR_PRIV5_B_0X1     (0x1u<<5)
+#define RISAB_PG27_PRIVCFGR_PRIV4_B_0X0     (0x0u<<4)
+#define RISAB_PG27_PRIVCFGR_PRIV4_B_0X1     (0x1u<<4)
+#define RISAB_PG27_PRIVCFGR_PRIV3_B_0X0     (0x0u<<3)
+#define RISAB_PG27_PRIVCFGR_PRIV3_B_0X1     (0x1u<<3)
+#define RISAB_PG27_PRIVCFGR_PRIV2_B_0X0     (0x0u<<2)
+#define RISAB_PG27_PRIVCFGR_PRIV2_B_0X1     (0x1u<<2)
+#define RISAB_PG27_PRIVCFGR_PRIV1_B_0X0     (0x0u<<1)
+#define RISAB_PG27_PRIVCFGR_PRIV1_B_0X1     (0x1u<<1)
+#define RISAB_PG27_PRIVCFGR_PRIV0_B_0X0     (0x0u<<0)
+#define RISAB_PG27_PRIVCFGR_PRIV0_B_0X1     (0x1u<<0)
+
+// PG28_PRIVCFGR Configuration
+
+#define RISAB_PG28_PRIVCFGR_PRIV7           (0x1u<<7)
+#define RISAB_PG28_PRIVCFGR_PRIV6           (0x1u<<6)
+#define RISAB_PG28_PRIVCFGR_PRIV5           (0x1u<<5)
+#define RISAB_PG28_PRIVCFGR_PRIV4           (0x1u<<4)
+#define RISAB_PG28_PRIVCFGR_PRIV3           (0x1u<<3)
+#define RISAB_PG28_PRIVCFGR_PRIV2           (0x1u<<2)
+#define RISAB_PG28_PRIVCFGR_PRIV1           (0x1u<<1)
+#define RISAB_PG28_PRIVCFGR_PRIV0           (0x1u<<0)
+
+#define RISAB_PG28_PRIVCFGR_PRIV7_B_0X0     (0x0u<<7)
+#define RISAB_PG28_PRIVCFGR_PRIV7_B_0X1     (0x1u<<7)
+#define RISAB_PG28_PRIVCFGR_PRIV6_B_0X0     (0x0u<<6)
+#define RISAB_PG28_PRIVCFGR_PRIV6_B_0X1     (0x1u<<6)
+#define RISAB_PG28_PRIVCFGR_PRIV5_B_0X0     (0x0u<<5)
+#define RISAB_PG28_PRIVCFGR_PRIV5_B_0X1     (0x1u<<5)
+#define RISAB_PG28_PRIVCFGR_PRIV4_B_0X0     (0x0u<<4)
+#define RISAB_PG28_PRIVCFGR_PRIV4_B_0X1     (0x1u<<4)
+#define RISAB_PG28_PRIVCFGR_PRIV3_B_0X0     (0x0u<<3)
+#define RISAB_PG28_PRIVCFGR_PRIV3_B_0X1     (0x1u<<3)
+#define RISAB_PG28_PRIVCFGR_PRIV2_B_0X0     (0x0u<<2)
+#define RISAB_PG28_PRIVCFGR_PRIV2_B_0X1     (0x1u<<2)
+#define RISAB_PG28_PRIVCFGR_PRIV1_B_0X0     (0x0u<<1)
+#define RISAB_PG28_PRIVCFGR_PRIV1_B_0X1     (0x1u<<1)
+#define RISAB_PG28_PRIVCFGR_PRIV0_B_0X0     (0x0u<<0)
+#define RISAB_PG28_PRIVCFGR_PRIV0_B_0X1     (0x1u<<0)
+
+// PG29_PRIVCFGR Configuration
+
+#define RISAB_PG29_PRIVCFGR_PRIV7           (0x1u<<7)
+#define RISAB_PG29_PRIVCFGR_PRIV6           (0x1u<<6)
+#define RISAB_PG29_PRIVCFGR_PRIV5           (0x1u<<5)
+#define RISAB_PG29_PRIVCFGR_PRIV4           (0x1u<<4)
+#define RISAB_PG29_PRIVCFGR_PRIV3           (0x1u<<3)
+#define RISAB_PG29_PRIVCFGR_PRIV2           (0x1u<<2)
+#define RISAB_PG29_PRIVCFGR_PRIV1           (0x1u<<1)
+#define RISAB_PG29_PRIVCFGR_PRIV0           (0x1u<<0)
+
+#define RISAB_PG29_PRIVCFGR_PRIV7_B_0X0     (0x0u<<7)
+#define RISAB_PG29_PRIVCFGR_PRIV7_B_0X1     (0x1u<<7)
+#define RISAB_PG29_PRIVCFGR_PRIV6_B_0X0     (0x0u<<6)
+#define RISAB_PG29_PRIVCFGR_PRIV6_B_0X1     (0x1u<<6)
+#define RISAB_PG29_PRIVCFGR_PRIV5_B_0X0     (0x0u<<5)
+#define RISAB_PG29_PRIVCFGR_PRIV5_B_0X1     (0x1u<<5)
+#define RISAB_PG29_PRIVCFGR_PRIV4_B_0X0     (0x0u<<4)
+#define RISAB_PG29_PRIVCFGR_PRIV4_B_0X1     (0x1u<<4)
+#define RISAB_PG29_PRIVCFGR_PRIV3_B_0X0     (0x0u<<3)
+#define RISAB_PG29_PRIVCFGR_PRIV3_B_0X1     (0x1u<<3)
+#define RISAB_PG29_PRIVCFGR_PRIV2_B_0X0     (0x0u<<2)
+#define RISAB_PG29_PRIVCFGR_PRIV2_B_0X1     (0x1u<<2)
+#define RISAB_PG29_PRIVCFGR_PRIV1_B_0X0     (0x0u<<1)
+#define RISAB_PG29_PRIVCFGR_PRIV1_B_0X1     (0x1u<<1)
+#define RISAB_PG29_PRIVCFGR_PRIV0_B_0X0     (0x0u<<0)
+#define RISAB_PG29_PRIVCFGR_PRIV0_B_0X1     (0x1u<<0)
+
+// PG30_PRIVCFGR Configuration
+
+#define RISAB_PG30_PRIVCFGR_PRIV7           (0x1u<<7)
+#define RISAB_PG30_PRIVCFGR_PRIV6           (0x1u<<6)
+#define RISAB_PG30_PRIVCFGR_PRIV5           (0x1u<<5)
+#define RISAB_PG30_PRIVCFGR_PRIV4           (0x1u<<4)
+#define RISAB_PG30_PRIVCFGR_PRIV3           (0x1u<<3)
+#define RISAB_PG30_PRIVCFGR_PRIV2           (0x1u<<2)
+#define RISAB_PG30_PRIVCFGR_PRIV1           (0x1u<<1)
+#define RISAB_PG30_PRIVCFGR_PRIV0           (0x1u<<0)
+
+#define RISAB_PG30_PRIVCFGR_PRIV7_B_0X0     (0x0u<<7)
+#define RISAB_PG30_PRIVCFGR_PRIV7_B_0X1     (0x1u<<7)
+#define RISAB_PG30_PRIVCFGR_PRIV6_B_0X0     (0x0u<<6)
+#define RISAB_PG30_PRIVCFGR_PRIV6_B_0X1     (0x1u<<6)
+#define RISAB_PG30_PRIVCFGR_PRIV5_B_0X0     (0x0u<<5)
+#define RISAB_PG30_PRIVCFGR_PRIV5_B_0X1     (0x1u<<5)
+#define RISAB_PG30_PRIVCFGR_PRIV4_B_0X0     (0x0u<<4)
+#define RISAB_PG30_PRIVCFGR_PRIV4_B_0X1     (0x1u<<4)
+#define RISAB_PG30_PRIVCFGR_PRIV3_B_0X0     (0x0u<<3)
+#define RISAB_PG30_PRIVCFGR_PRIV3_B_0X1     (0x1u<<3)
+#define RISAB_PG30_PRIVCFGR_PRIV2_B_0X0     (0x0u<<2)
+#define RISAB_PG30_PRIVCFGR_PRIV2_B_0X1     (0x1u<<2)
+#define RISAB_PG30_PRIVCFGR_PRIV1_B_0X0     (0x0u<<1)
+#define RISAB_PG30_PRIVCFGR_PRIV1_B_0X1     (0x1u<<1)
+#define RISAB_PG30_PRIVCFGR_PRIV0_B_0X0     (0x0u<<0)
+#define RISAB_PG30_PRIVCFGR_PRIV0_B_0X1     (0x1u<<0)
+
+// PG31_PRIVCFGR Configuration
+
+#define RISAB_PG31_PRIVCFGR_PRIV7           (0x1u<<7)
+#define RISAB_PG31_PRIVCFGR_PRIV6           (0x1u<<6)
+#define RISAB_PG31_PRIVCFGR_PRIV5           (0x1u<<5)
+#define RISAB_PG31_PRIVCFGR_PRIV4           (0x1u<<4)
+#define RISAB_PG31_PRIVCFGR_PRIV3           (0x1u<<3)
+#define RISAB_PG31_PRIVCFGR_PRIV2           (0x1u<<2)
+#define RISAB_PG31_PRIVCFGR_PRIV1           (0x1u<<1)
+#define RISAB_PG31_PRIVCFGR_PRIV0           (0x1u<<0)
+
+#define RISAB_PG31_PRIVCFGR_PRIV7_B_0X0     (0x0u<<7)
+#define RISAB_PG31_PRIVCFGR_PRIV7_B_0X1     (0x1u<<7)
+#define RISAB_PG31_PRIVCFGR_PRIV6_B_0X0     (0x0u<<6)
+#define RISAB_PG31_PRIVCFGR_PRIV6_B_0X1     (0x1u<<6)
+#define RISAB_PG31_PRIVCFGR_PRIV5_B_0X0     (0x0u<<5)
+#define RISAB_PG31_PRIVCFGR_PRIV5_B_0X1     (0x1u<<5)
+#define RISAB_PG31_PRIVCFGR_PRIV4_B_0X0     (0x0u<<4)
+#define RISAB_PG31_PRIVCFGR_PRIV4_B_0X1     (0x1u<<4)
+#define RISAB_PG31_PRIVCFGR_PRIV3_B_0X0     (0x0u<<3)
+#define RISAB_PG31_PRIVCFGR_PRIV3_B_0X1     (0x1u<<3)
+#define RISAB_PG31_PRIVCFGR_PRIV2_B_0X0     (0x0u<<2)
+#define RISAB_PG31_PRIVCFGR_PRIV2_B_0X1     (0x1u<<2)
+#define RISAB_PG31_PRIVCFGR_PRIV1_B_0X0     (0x0u<<1)
+#define RISAB_PG31_PRIVCFGR_PRIV1_B_0X1     (0x1u<<1)
+#define RISAB_PG31_PRIVCFGR_PRIV0_B_0X0     (0x0u<<0)
+#define RISAB_PG31_PRIVCFGR_PRIV0_B_0X1     (0x1u<<0)
+
+// PG0_C2PRIVCFGR Configuration
+
+#define RISAB_PG0_C2PRIVCFGR_PRIV7          (0x1u<<7)
+#define RISAB_PG0_C2PRIVCFGR_PRIV6          (0x1u<<6)
+#define RISAB_PG0_C2PRIVCFGR_PRIV5          (0x1u<<5)
+#define RISAB_PG0_C2PRIVCFGR_PRIV4          (0x1u<<4)
+#define RISAB_PG0_C2PRIVCFGR_PRIV3          (0x1u<<3)
+#define RISAB_PG0_C2PRIVCFGR_PRIV2          (0x1u<<2)
+#define RISAB_PG0_C2PRIVCFGR_PRIV1          (0x1u<<1)
+#define RISAB_PG0_C2PRIVCFGR_PRIV0          (0x1u<<0)
+
+#define RISAB_PG0_C2PRIVCFGR_PRIV7_B_0X0    (0x0u<<7)
+#define RISAB_PG0_C2PRIVCFGR_PRIV7_B_0X1    (0x1u<<7)
+#define RISAB_PG0_C2PRIVCFGR_PRIV6_B_0X0    (0x0u<<6)
+#define RISAB_PG0_C2PRIVCFGR_PRIV6_B_0X1    (0x1u<<6)
+#define RISAB_PG0_C2PRIVCFGR_PRIV5_B_0X0    (0x0u<<5)
+#define RISAB_PG0_C2PRIVCFGR_PRIV5_B_0X1    (0x1u<<5)
+#define RISAB_PG0_C2PRIVCFGR_PRIV4_B_0X0    (0x0u<<4)
+#define RISAB_PG0_C2PRIVCFGR_PRIV4_B_0X1    (0x1u<<4)
+#define RISAB_PG0_C2PRIVCFGR_PRIV3_B_0X0    (0x0u<<3)
+#define RISAB_PG0_C2PRIVCFGR_PRIV3_B_0X1    (0x1u<<3)
+#define RISAB_PG0_C2PRIVCFGR_PRIV2_B_0X0    (0x0u<<2)
+#define RISAB_PG0_C2PRIVCFGR_PRIV2_B_0X1    (0x1u<<2)
+#define RISAB_PG0_C2PRIVCFGR_PRIV1_B_0X0    (0x0u<<1)
+#define RISAB_PG0_C2PRIVCFGR_PRIV1_B_0X1    (0x1u<<1)
+#define RISAB_PG0_C2PRIVCFGR_PRIV0_B_0X0    (0x0u<<0)
+#define RISAB_PG0_C2PRIVCFGR_PRIV0_B_0X1    (0x1u<<0)
+
+// PG1_C2PRIVCFGR Configuration
+
+#define RISAB_PG1_C2PRIVCFGR_PRIV7          (0x1u<<7)
+#define RISAB_PG1_C2PRIVCFGR_PRIV6          (0x1u<<6)
+#define RISAB_PG1_C2PRIVCFGR_PRIV5          (0x1u<<5)
+#define RISAB_PG1_C2PRIVCFGR_PRIV4          (0x1u<<4)
+#define RISAB_PG1_C2PRIVCFGR_PRIV3          (0x1u<<3)
+#define RISAB_PG1_C2PRIVCFGR_PRIV2          (0x1u<<2)
+#define RISAB_PG1_C2PRIVCFGR_PRIV1          (0x1u<<1)
+#define RISAB_PG1_C2PRIVCFGR_PRIV0          (0x1u<<0)
+
+#define RISAB_PG1_C2PRIVCFGR_PRIV7_B_0X0    (0x0u<<7)
+#define RISAB_PG1_C2PRIVCFGR_PRIV7_B_0X1    (0x1u<<7)
+#define RISAB_PG1_C2PRIVCFGR_PRIV6_B_0X0    (0x0u<<6)
+#define RISAB_PG1_C2PRIVCFGR_PRIV6_B_0X1    (0x1u<<6)
+#define RISAB_PG1_C2PRIVCFGR_PRIV5_B_0X0    (0x0u<<5)
+#define RISAB_PG1_C2PRIVCFGR_PRIV5_B_0X1    (0x1u<<5)
+#define RISAB_PG1_C2PRIVCFGR_PRIV4_B_0X0    (0x0u<<4)
+#define RISAB_PG1_C2PRIVCFGR_PRIV4_B_0X1    (0x1u<<4)
+#define RISAB_PG1_C2PRIVCFGR_PRIV3_B_0X0    (0x0u<<3)
+#define RISAB_PG1_C2PRIVCFGR_PRIV3_B_0X1    (0x1u<<3)
+#define RISAB_PG1_C2PRIVCFGR_PRIV2_B_0X0    (0x0u<<2)
+#define RISAB_PG1_C2PRIVCFGR_PRIV2_B_0X1    (0x1u<<2)
+#define RISAB_PG1_C2PRIVCFGR_PRIV1_B_0X0    (0x0u<<1)
+#define RISAB_PG1_C2PRIVCFGR_PRIV1_B_0X1    (0x1u<<1)
+#define RISAB_PG1_C2PRIVCFGR_PRIV0_B_0X0    (0x0u<<0)
+#define RISAB_PG1_C2PRIVCFGR_PRIV0_B_0X1    (0x1u<<0)
+
+// PG2_C2PRIVCFGR Configuration
+
+#define RISAB_PG2_C2PRIVCFGR_PRIV7          (0x1u<<7)
+#define RISAB_PG2_C2PRIVCFGR_PRIV6          (0x1u<<6)
+#define RISAB_PG2_C2PRIVCFGR_PRIV5          (0x1u<<5)
+#define RISAB_PG2_C2PRIVCFGR_PRIV4          (0x1u<<4)
+#define RISAB_PG2_C2PRIVCFGR_PRIV3          (0x1u<<3)
+#define RISAB_PG2_C2PRIVCFGR_PRIV2          (0x1u<<2)
+#define RISAB_PG2_C2PRIVCFGR_PRIV1          (0x1u<<1)
+#define RISAB_PG2_C2PRIVCFGR_PRIV0          (0x1u<<0)
+
+#define RISAB_PG2_C2PRIVCFGR_PRIV7_B_0X0    (0x0u<<7)
+#define RISAB_PG2_C2PRIVCFGR_PRIV7_B_0X1    (0x1u<<7)
+#define RISAB_PG2_C2PRIVCFGR_PRIV6_B_0X0    (0x0u<<6)
+#define RISAB_PG2_C2PRIVCFGR_PRIV6_B_0X1    (0x1u<<6)
+#define RISAB_PG2_C2PRIVCFGR_PRIV5_B_0X0    (0x0u<<5)
+#define RISAB_PG2_C2PRIVCFGR_PRIV5_B_0X1    (0x1u<<5)
+#define RISAB_PG2_C2PRIVCFGR_PRIV4_B_0X0    (0x0u<<4)
+#define RISAB_PG2_C2PRIVCFGR_PRIV4_B_0X1    (0x1u<<4)
+#define RISAB_PG2_C2PRIVCFGR_PRIV3_B_0X0    (0x0u<<3)
+#define RISAB_PG2_C2PRIVCFGR_PRIV3_B_0X1    (0x1u<<3)
+#define RISAB_PG2_C2PRIVCFGR_PRIV2_B_0X0    (0x0u<<2)
+#define RISAB_PG2_C2PRIVCFGR_PRIV2_B_0X1    (0x1u<<2)
+#define RISAB_PG2_C2PRIVCFGR_PRIV1_B_0X0    (0x0u<<1)
+#define RISAB_PG2_C2PRIVCFGR_PRIV1_B_0X1    (0x1u<<1)
+#define RISAB_PG2_C2PRIVCFGR_PRIV0_B_0X0    (0x0u<<0)
+#define RISAB_PG2_C2PRIVCFGR_PRIV0_B_0X1    (0x1u<<0)
+
+// PG3_C2PRIVCFGR Configuration
+
+#define RISAB_PG3_C2PRIVCFGR_PRIV7          (0x1u<<7)
+#define RISAB_PG3_C2PRIVCFGR_PRIV6          (0x1u<<6)
+#define RISAB_PG3_C2PRIVCFGR_PRIV5          (0x1u<<5)
+#define RISAB_PG3_C2PRIVCFGR_PRIV4          (0x1u<<4)
+#define RISAB_PG3_C2PRIVCFGR_PRIV3          (0x1u<<3)
+#define RISAB_PG3_C2PRIVCFGR_PRIV2          (0x1u<<2)
+#define RISAB_PG3_C2PRIVCFGR_PRIV1          (0x1u<<1)
+#define RISAB_PG3_C2PRIVCFGR_PRIV0          (0x1u<<0)
+
+#define RISAB_PG3_C2PRIVCFGR_PRIV7_B_0X0    (0x0u<<7)
+#define RISAB_PG3_C2PRIVCFGR_PRIV7_B_0X1    (0x1u<<7)
+#define RISAB_PG3_C2PRIVCFGR_PRIV6_B_0X0    (0x0u<<6)
+#define RISAB_PG3_C2PRIVCFGR_PRIV6_B_0X1    (0x1u<<6)
+#define RISAB_PG3_C2PRIVCFGR_PRIV5_B_0X0    (0x0u<<5)
+#define RISAB_PG3_C2PRIVCFGR_PRIV5_B_0X1    (0x1u<<5)
+#define RISAB_PG3_C2PRIVCFGR_PRIV4_B_0X0    (0x0u<<4)
+#define RISAB_PG3_C2PRIVCFGR_PRIV4_B_0X1    (0x1u<<4)
+#define RISAB_PG3_C2PRIVCFGR_PRIV3_B_0X0    (0x0u<<3)
+#define RISAB_PG3_C2PRIVCFGR_PRIV3_B_0X1    (0x1u<<3)
+#define RISAB_PG3_C2PRIVCFGR_PRIV2_B_0X0    (0x0u<<2)
+#define RISAB_PG3_C2PRIVCFGR_PRIV2_B_0X1    (0x1u<<2)
+#define RISAB_PG3_C2PRIVCFGR_PRIV1_B_0X0    (0x0u<<1)
+#define RISAB_PG3_C2PRIVCFGR_PRIV1_B_0X1    (0x1u<<1)
+#define RISAB_PG3_C2PRIVCFGR_PRIV0_B_0X0    (0x0u<<0)
+#define RISAB_PG3_C2PRIVCFGR_PRIV0_B_0X1    (0x1u<<0)
+
+// PG4_C2PRIVCFGR Configuration
+
+#define RISAB_PG4_C2PRIVCFGR_PRIV7          (0x1u<<7)
+#define RISAB_PG4_C2PRIVCFGR_PRIV6          (0x1u<<6)
+#define RISAB_PG4_C2PRIVCFGR_PRIV5          (0x1u<<5)
+#define RISAB_PG4_C2PRIVCFGR_PRIV4          (0x1u<<4)
+#define RISAB_PG4_C2PRIVCFGR_PRIV3          (0x1u<<3)
+#define RISAB_PG4_C2PRIVCFGR_PRIV2          (0x1u<<2)
+#define RISAB_PG4_C2PRIVCFGR_PRIV1          (0x1u<<1)
+#define RISAB_PG4_C2PRIVCFGR_PRIV0          (0x1u<<0)
+
+#define RISAB_PG4_C2PRIVCFGR_PRIV7_B_0X0    (0x0u<<7)
+#define RISAB_PG4_C2PRIVCFGR_PRIV7_B_0X1    (0x1u<<7)
+#define RISAB_PG4_C2PRIVCFGR_PRIV6_B_0X0    (0x0u<<6)
+#define RISAB_PG4_C2PRIVCFGR_PRIV6_B_0X1    (0x1u<<6)
+#define RISAB_PG4_C2PRIVCFGR_PRIV5_B_0X0    (0x0u<<5)
+#define RISAB_PG4_C2PRIVCFGR_PRIV5_B_0X1    (0x1u<<5)
+#define RISAB_PG4_C2PRIVCFGR_PRIV4_B_0X0    (0x0u<<4)
+#define RISAB_PG4_C2PRIVCFGR_PRIV4_B_0X1    (0x1u<<4)
+#define RISAB_PG4_C2PRIVCFGR_PRIV3_B_0X0    (0x0u<<3)
+#define RISAB_PG4_C2PRIVCFGR_PRIV3_B_0X1    (0x1u<<3)
+#define RISAB_PG4_C2PRIVCFGR_PRIV2_B_0X0    (0x0u<<2)
+#define RISAB_PG4_C2PRIVCFGR_PRIV2_B_0X1    (0x1u<<2)
+#define RISAB_PG4_C2PRIVCFGR_PRIV1_B_0X0    (0x0u<<1)
+#define RISAB_PG4_C2PRIVCFGR_PRIV1_B_0X1    (0x1u<<1)
+#define RISAB_PG4_C2PRIVCFGR_PRIV0_B_0X0    (0x0u<<0)
+#define RISAB_PG4_C2PRIVCFGR_PRIV0_B_0X1    (0x1u<<0)
+
+// PG5_C2PRIVCFGR Configuration
+
+#define RISAB_PG5_C2PRIVCFGR_PRIV7          (0x1u<<7)
+#define RISAB_PG5_C2PRIVCFGR_PRIV6          (0x1u<<6)
+#define RISAB_PG5_C2PRIVCFGR_PRIV5          (0x1u<<5)
+#define RISAB_PG5_C2PRIVCFGR_PRIV4          (0x1u<<4)
+#define RISAB_PG5_C2PRIVCFGR_PRIV3          (0x1u<<3)
+#define RISAB_PG5_C2PRIVCFGR_PRIV2          (0x1u<<2)
+#define RISAB_PG5_C2PRIVCFGR_PRIV1          (0x1u<<1)
+#define RISAB_PG5_C2PRIVCFGR_PRIV0          (0x1u<<0)
+
+#define RISAB_PG5_C2PRIVCFGR_PRIV7_B_0X0    (0x0u<<7)
+#define RISAB_PG5_C2PRIVCFGR_PRIV7_B_0X1    (0x1u<<7)
+#define RISAB_PG5_C2PRIVCFGR_PRIV6_B_0X0    (0x0u<<6)
+#define RISAB_PG5_C2PRIVCFGR_PRIV6_B_0X1    (0x1u<<6)
+#define RISAB_PG5_C2PRIVCFGR_PRIV5_B_0X0    (0x0u<<5)
+#define RISAB_PG5_C2PRIVCFGR_PRIV5_B_0X1    (0x1u<<5)
+#define RISAB_PG5_C2PRIVCFGR_PRIV4_B_0X0    (0x0u<<4)
+#define RISAB_PG5_C2PRIVCFGR_PRIV4_B_0X1    (0x1u<<4)
+#define RISAB_PG5_C2PRIVCFGR_PRIV3_B_0X0    (0x0u<<3)
+#define RISAB_PG5_C2PRIVCFGR_PRIV3_B_0X1    (0x1u<<3)
+#define RISAB_PG5_C2PRIVCFGR_PRIV2_B_0X0    (0x0u<<2)
+#define RISAB_PG5_C2PRIVCFGR_PRIV2_B_0X1    (0x1u<<2)
+#define RISAB_PG5_C2PRIVCFGR_PRIV1_B_0X0    (0x0u<<1)
+#define RISAB_PG5_C2PRIVCFGR_PRIV1_B_0X1    (0x1u<<1)
+#define RISAB_PG5_C2PRIVCFGR_PRIV0_B_0X0    (0x0u<<0)
+#define RISAB_PG5_C2PRIVCFGR_PRIV0_B_0X1    (0x1u<<0)
+
+// PG6_C2PRIVCFGR Configuration
+
+#define RISAB_PG6_C2PRIVCFGR_PRIV7          (0x1u<<7)
+#define RISAB_PG6_C2PRIVCFGR_PRIV6          (0x1u<<6)
+#define RISAB_PG6_C2PRIVCFGR_PRIV5          (0x1u<<5)
+#define RISAB_PG6_C2PRIVCFGR_PRIV4          (0x1u<<4)
+#define RISAB_PG6_C2PRIVCFGR_PRIV3          (0x1u<<3)
+#define RISAB_PG6_C2PRIVCFGR_PRIV2          (0x1u<<2)
+#define RISAB_PG6_C2PRIVCFGR_PRIV1          (0x1u<<1)
+#define RISAB_PG6_C2PRIVCFGR_PRIV0          (0x1u<<0)
+
+#define RISAB_PG6_C2PRIVCFGR_PRIV7_B_0X0    (0x0u<<7)
+#define RISAB_PG6_C2PRIVCFGR_PRIV7_B_0X1    (0x1u<<7)
+#define RISAB_PG6_C2PRIVCFGR_PRIV6_B_0X0    (0x0u<<6)
+#define RISAB_PG6_C2PRIVCFGR_PRIV6_B_0X1    (0x1u<<6)
+#define RISAB_PG6_C2PRIVCFGR_PRIV5_B_0X0    (0x0u<<5)
+#define RISAB_PG6_C2PRIVCFGR_PRIV5_B_0X1    (0x1u<<5)
+#define RISAB_PG6_C2PRIVCFGR_PRIV4_B_0X0    (0x0u<<4)
+#define RISAB_PG6_C2PRIVCFGR_PRIV4_B_0X1    (0x1u<<4)
+#define RISAB_PG6_C2PRIVCFGR_PRIV3_B_0X0    (0x0u<<3)
+#define RISAB_PG6_C2PRIVCFGR_PRIV3_B_0X1    (0x1u<<3)
+#define RISAB_PG6_C2PRIVCFGR_PRIV2_B_0X0    (0x0u<<2)
+#define RISAB_PG6_C2PRIVCFGR_PRIV2_B_0X1    (0x1u<<2)
+#define RISAB_PG6_C2PRIVCFGR_PRIV1_B_0X0    (0x0u<<1)
+#define RISAB_PG6_C2PRIVCFGR_PRIV1_B_0X1    (0x1u<<1)
+#define RISAB_PG6_C2PRIVCFGR_PRIV0_B_0X0    (0x0u<<0)
+#define RISAB_PG6_C2PRIVCFGR_PRIV0_B_0X1    (0x1u<<0)
+
+// PG7_C2PRIVCFGR Configuration
+
+#define RISAB_PG7_C2PRIVCFGR_PRIV7          (0x1u<<7)
+#define RISAB_PG7_C2PRIVCFGR_PRIV6          (0x1u<<6)
+#define RISAB_PG7_C2PRIVCFGR_PRIV5          (0x1u<<5)
+#define RISAB_PG7_C2PRIVCFGR_PRIV4          (0x1u<<4)
+#define RISAB_PG7_C2PRIVCFGR_PRIV3          (0x1u<<3)
+#define RISAB_PG7_C2PRIVCFGR_PRIV2          (0x1u<<2)
+#define RISAB_PG7_C2PRIVCFGR_PRIV1          (0x1u<<1)
+#define RISAB_PG7_C2PRIVCFGR_PRIV0          (0x1u<<0)
+
+#define RISAB_PG7_C2PRIVCFGR_PRIV7_B_0X0    (0x0u<<7)
+#define RISAB_PG7_C2PRIVCFGR_PRIV7_B_0X1    (0x1u<<7)
+#define RISAB_PG7_C2PRIVCFGR_PRIV6_B_0X0    (0x0u<<6)
+#define RISAB_PG7_C2PRIVCFGR_PRIV6_B_0X1    (0x1u<<6)
+#define RISAB_PG7_C2PRIVCFGR_PRIV5_B_0X0    (0x0u<<5)
+#define RISAB_PG7_C2PRIVCFGR_PRIV5_B_0X1    (0x1u<<5)
+#define RISAB_PG7_C2PRIVCFGR_PRIV4_B_0X0    (0x0u<<4)
+#define RISAB_PG7_C2PRIVCFGR_PRIV4_B_0X1    (0x1u<<4)
+#define RISAB_PG7_C2PRIVCFGR_PRIV3_B_0X0    (0x0u<<3)
+#define RISAB_PG7_C2PRIVCFGR_PRIV3_B_0X1    (0x1u<<3)
+#define RISAB_PG7_C2PRIVCFGR_PRIV2_B_0X0    (0x0u<<2)
+#define RISAB_PG7_C2PRIVCFGR_PRIV2_B_0X1    (0x1u<<2)
+#define RISAB_PG7_C2PRIVCFGR_PRIV1_B_0X0    (0x0u<<1)
+#define RISAB_PG7_C2PRIVCFGR_PRIV1_B_0X1    (0x1u<<1)
+#define RISAB_PG7_C2PRIVCFGR_PRIV0_B_0X0    (0x0u<<0)
+#define RISAB_PG7_C2PRIVCFGR_PRIV0_B_0X1    (0x1u<<0)
+
+// PG8_C2PRIVCFGR Configuration
+
+#define RISAB_PG8_C2PRIVCFGR_PRIV7          (0x1u<<7)
+#define RISAB_PG8_C2PRIVCFGR_PRIV6          (0x1u<<6)
+#define RISAB_PG8_C2PRIVCFGR_PRIV5          (0x1u<<5)
+#define RISAB_PG8_C2PRIVCFGR_PRIV4          (0x1u<<4)
+#define RISAB_PG8_C2PRIVCFGR_PRIV3          (0x1u<<3)
+#define RISAB_PG8_C2PRIVCFGR_PRIV2          (0x1u<<2)
+#define RISAB_PG8_C2PRIVCFGR_PRIV1          (0x1u<<1)
+#define RISAB_PG8_C2PRIVCFGR_PRIV0          (0x1u<<0)
+
+#define RISAB_PG8_C2PRIVCFGR_PRIV7_B_0X0    (0x0u<<7)
+#define RISAB_PG8_C2PRIVCFGR_PRIV7_B_0X1    (0x1u<<7)
+#define RISAB_PG8_C2PRIVCFGR_PRIV6_B_0X0    (0x0u<<6)
+#define RISAB_PG8_C2PRIVCFGR_PRIV6_B_0X1    (0x1u<<6)
+#define RISAB_PG8_C2PRIVCFGR_PRIV5_B_0X0    (0x0u<<5)
+#define RISAB_PG8_C2PRIVCFGR_PRIV5_B_0X1    (0x1u<<5)
+#define RISAB_PG8_C2PRIVCFGR_PRIV4_B_0X0    (0x0u<<4)
+#define RISAB_PG8_C2PRIVCFGR_PRIV4_B_0X1    (0x1u<<4)
+#define RISAB_PG8_C2PRIVCFGR_PRIV3_B_0X0    (0x0u<<3)
+#define RISAB_PG8_C2PRIVCFGR_PRIV3_B_0X1    (0x1u<<3)
+#define RISAB_PG8_C2PRIVCFGR_PRIV2_B_0X0    (0x0u<<2)
+#define RISAB_PG8_C2PRIVCFGR_PRIV2_B_0X1    (0x1u<<2)
+#define RISAB_PG8_C2PRIVCFGR_PRIV1_B_0X0    (0x0u<<1)
+#define RISAB_PG8_C2PRIVCFGR_PRIV1_B_0X1    (0x1u<<1)
+#define RISAB_PG8_C2PRIVCFGR_PRIV0_B_0X0    (0x0u<<0)
+#define RISAB_PG8_C2PRIVCFGR_PRIV0_B_0X1    (0x1u<<0)
+
+// PG9_C2PRIVCFGR Configuration
+
+#define RISAB_PG9_C2PRIVCFGR_PRIV7          (0x1u<<7)
+#define RISAB_PG9_C2PRIVCFGR_PRIV6          (0x1u<<6)
+#define RISAB_PG9_C2PRIVCFGR_PRIV5          (0x1u<<5)
+#define RISAB_PG9_C2PRIVCFGR_PRIV4          (0x1u<<4)
+#define RISAB_PG9_C2PRIVCFGR_PRIV3          (0x1u<<3)
+#define RISAB_PG9_C2PRIVCFGR_PRIV2          (0x1u<<2)
+#define RISAB_PG9_C2PRIVCFGR_PRIV1          (0x1u<<1)
+#define RISAB_PG9_C2PRIVCFGR_PRIV0          (0x1u<<0)
+
+#define RISAB_PG9_C2PRIVCFGR_PRIV7_B_0X0    (0x0u<<7)
+#define RISAB_PG9_C2PRIVCFGR_PRIV7_B_0X1    (0x1u<<7)
+#define RISAB_PG9_C2PRIVCFGR_PRIV6_B_0X0    (0x0u<<6)
+#define RISAB_PG9_C2PRIVCFGR_PRIV6_B_0X1    (0x1u<<6)
+#define RISAB_PG9_C2PRIVCFGR_PRIV5_B_0X0    (0x0u<<5)
+#define RISAB_PG9_C2PRIVCFGR_PRIV5_B_0X1    (0x1u<<5)
+#define RISAB_PG9_C2PRIVCFGR_PRIV4_B_0X0    (0x0u<<4)
+#define RISAB_PG9_C2PRIVCFGR_PRIV4_B_0X1    (0x1u<<4)
+#define RISAB_PG9_C2PRIVCFGR_PRIV3_B_0X0    (0x0u<<3)
+#define RISAB_PG9_C2PRIVCFGR_PRIV3_B_0X1    (0x1u<<3)
+#define RISAB_PG9_C2PRIVCFGR_PRIV2_B_0X0    (0x0u<<2)
+#define RISAB_PG9_C2PRIVCFGR_PRIV2_B_0X1    (0x1u<<2)
+#define RISAB_PG9_C2PRIVCFGR_PRIV1_B_0X0    (0x0u<<1)
+#define RISAB_PG9_C2PRIVCFGR_PRIV1_B_0X1    (0x1u<<1)
+#define RISAB_PG9_C2PRIVCFGR_PRIV0_B_0X0    (0x0u<<0)
+#define RISAB_PG9_C2PRIVCFGR_PRIV0_B_0X1    (0x1u<<0)
+
+// PG10_C2PRIVCFGR Configuration
+
+#define RISAB_PG10_C2PRIVCFGR_PRIV7         (0x1u<<7)
+#define RISAB_PG10_C2PRIVCFGR_PRIV6         (0x1u<<6)
+#define RISAB_PG10_C2PRIVCFGR_PRIV5         (0x1u<<5)
+#define RISAB_PG10_C2PRIVCFGR_PRIV4         (0x1u<<4)
+#define RISAB_PG10_C2PRIVCFGR_PRIV3         (0x1u<<3)
+#define RISAB_PG10_C2PRIVCFGR_PRIV2         (0x1u<<2)
+#define RISAB_PG10_C2PRIVCFGR_PRIV1         (0x1u<<1)
+#define RISAB_PG10_C2PRIVCFGR_PRIV0         (0x1u<<0)
+
+#define RISAB_PG10_C2PRIVCFGR_PRIV7_B_0X0   (0x0u<<7)
+#define RISAB_PG10_C2PRIVCFGR_PRIV7_B_0X1   (0x1u<<7)
+#define RISAB_PG10_C2PRIVCFGR_PRIV6_B_0X0   (0x0u<<6)
+#define RISAB_PG10_C2PRIVCFGR_PRIV6_B_0X1   (0x1u<<6)
+#define RISAB_PG10_C2PRIVCFGR_PRIV5_B_0X0   (0x0u<<5)
+#define RISAB_PG10_C2PRIVCFGR_PRIV5_B_0X1   (0x1u<<5)
+#define RISAB_PG10_C2PRIVCFGR_PRIV4_B_0X0   (0x0u<<4)
+#define RISAB_PG10_C2PRIVCFGR_PRIV4_B_0X1   (0x1u<<4)
+#define RISAB_PG10_C2PRIVCFGR_PRIV3_B_0X0   (0x0u<<3)
+#define RISAB_PG10_C2PRIVCFGR_PRIV3_B_0X1   (0x1u<<3)
+#define RISAB_PG10_C2PRIVCFGR_PRIV2_B_0X0   (0x0u<<2)
+#define RISAB_PG10_C2PRIVCFGR_PRIV2_B_0X1   (0x1u<<2)
+#define RISAB_PG10_C2PRIVCFGR_PRIV1_B_0X0   (0x0u<<1)
+#define RISAB_PG10_C2PRIVCFGR_PRIV1_B_0X1   (0x1u<<1)
+#define RISAB_PG10_C2PRIVCFGR_PRIV0_B_0X0   (0x0u<<0)
+#define RISAB_PG10_C2PRIVCFGR_PRIV0_B_0X1   (0x1u<<0)
+
+// PG11_C2PRIVCFGR Configuration
+
+#define RISAB_PG11_C2PRIVCFGR_PRIV7         (0x1u<<7)
+#define RISAB_PG11_C2PRIVCFGR_PRIV6         (0x1u<<6)
+#define RISAB_PG11_C2PRIVCFGR_PRIV5         (0x1u<<5)
+#define RISAB_PG11_C2PRIVCFGR_PRIV4         (0x1u<<4)
+#define RISAB_PG11_C2PRIVCFGR_PRIV3         (0x1u<<3)
+#define RISAB_PG11_C2PRIVCFGR_PRIV2         (0x1u<<2)
+#define RISAB_PG11_C2PRIVCFGR_PRIV1         (0x1u<<1)
+#define RISAB_PG11_C2PRIVCFGR_PRIV0         (0x1u<<0)
+
+#define RISAB_PG11_C2PRIVCFGR_PRIV7_B_0X0   (0x0u<<7)
+#define RISAB_PG11_C2PRIVCFGR_PRIV7_B_0X1   (0x1u<<7)
+#define RISAB_PG11_C2PRIVCFGR_PRIV6_B_0X0   (0x0u<<6)
+#define RISAB_PG11_C2PRIVCFGR_PRIV6_B_0X1   (0x1u<<6)
+#define RISAB_PG11_C2PRIVCFGR_PRIV5_B_0X0   (0x0u<<5)
+#define RISAB_PG11_C2PRIVCFGR_PRIV5_B_0X1   (0x1u<<5)
+#define RISAB_PG11_C2PRIVCFGR_PRIV4_B_0X0   (0x0u<<4)
+#define RISAB_PG11_C2PRIVCFGR_PRIV4_B_0X1   (0x1u<<4)
+#define RISAB_PG11_C2PRIVCFGR_PRIV3_B_0X0   (0x0u<<3)
+#define RISAB_PG11_C2PRIVCFGR_PRIV3_B_0X1   (0x1u<<3)
+#define RISAB_PG11_C2PRIVCFGR_PRIV2_B_0X0   (0x0u<<2)
+#define RISAB_PG11_C2PRIVCFGR_PRIV2_B_0X1   (0x1u<<2)
+#define RISAB_PG11_C2PRIVCFGR_PRIV1_B_0X0   (0x0u<<1)
+#define RISAB_PG11_C2PRIVCFGR_PRIV1_B_0X1   (0x1u<<1)
+#define RISAB_PG11_C2PRIVCFGR_PRIV0_B_0X0   (0x0u<<0)
+#define RISAB_PG11_C2PRIVCFGR_PRIV0_B_0X1   (0x1u<<0)
+
+// PG12_C2PRIVCFGR Configuration
+
+#define RISAB_PG12_C2PRIVCFGR_PRIV7         (0x1u<<7)
+#define RISAB_PG12_C2PRIVCFGR_PRIV6         (0x1u<<6)
+#define RISAB_PG12_C2PRIVCFGR_PRIV5         (0x1u<<5)
+#define RISAB_PG12_C2PRIVCFGR_PRIV4         (0x1u<<4)
+#define RISAB_PG12_C2PRIVCFGR_PRIV3         (0x1u<<3)
+#define RISAB_PG12_C2PRIVCFGR_PRIV2         (0x1u<<2)
+#define RISAB_PG12_C2PRIVCFGR_PRIV1         (0x1u<<1)
+#define RISAB_PG12_C2PRIVCFGR_PRIV0         (0x1u<<0)
+
+#define RISAB_PG12_C2PRIVCFGR_PRIV7_B_0X0   (0x0u<<7)
+#define RISAB_PG12_C2PRIVCFGR_PRIV7_B_0X1   (0x1u<<7)
+#define RISAB_PG12_C2PRIVCFGR_PRIV6_B_0X0   (0x0u<<6)
+#define RISAB_PG12_C2PRIVCFGR_PRIV6_B_0X1   (0x1u<<6)
+#define RISAB_PG12_C2PRIVCFGR_PRIV5_B_0X0   (0x0u<<5)
+#define RISAB_PG12_C2PRIVCFGR_PRIV5_B_0X1   (0x1u<<5)
+#define RISAB_PG12_C2PRIVCFGR_PRIV4_B_0X0   (0x0u<<4)
+#define RISAB_PG12_C2PRIVCFGR_PRIV4_B_0X1   (0x1u<<4)
+#define RISAB_PG12_C2PRIVCFGR_PRIV3_B_0X0   (0x0u<<3)
+#define RISAB_PG12_C2PRIVCFGR_PRIV3_B_0X1   (0x1u<<3)
+#define RISAB_PG12_C2PRIVCFGR_PRIV2_B_0X0   (0x0u<<2)
+#define RISAB_PG12_C2PRIVCFGR_PRIV2_B_0X1   (0x1u<<2)
+#define RISAB_PG12_C2PRIVCFGR_PRIV1_B_0X0   (0x0u<<1)
+#define RISAB_PG12_C2PRIVCFGR_PRIV1_B_0X1   (0x1u<<1)
+#define RISAB_PG12_C2PRIVCFGR_PRIV0_B_0X0   (0x0u<<0)
+#define RISAB_PG12_C2PRIVCFGR_PRIV0_B_0X1   (0x1u<<0)
+
+// PG13_C2PRIVCFGR Configuration
+
+#define RISAB_PG13_C2PRIVCFGR_PRIV7         (0x1u<<7)
+#define RISAB_PG13_C2PRIVCFGR_PRIV6         (0x1u<<6)
+#define RISAB_PG13_C2PRIVCFGR_PRIV5         (0x1u<<5)
+#define RISAB_PG13_C2PRIVCFGR_PRIV4         (0x1u<<4)
+#define RISAB_PG13_C2PRIVCFGR_PRIV3         (0x1u<<3)
+#define RISAB_PG13_C2PRIVCFGR_PRIV2         (0x1u<<2)
+#define RISAB_PG13_C2PRIVCFGR_PRIV1         (0x1u<<1)
+#define RISAB_PG13_C2PRIVCFGR_PRIV0         (0x1u<<0)
+
+#define RISAB_PG13_C2PRIVCFGR_PRIV7_B_0X0   (0x0u<<7)
+#define RISAB_PG13_C2PRIVCFGR_PRIV7_B_0X1   (0x1u<<7)
+#define RISAB_PG13_C2PRIVCFGR_PRIV6_B_0X0   (0x0u<<6)
+#define RISAB_PG13_C2PRIVCFGR_PRIV6_B_0X1   (0x1u<<6)
+#define RISAB_PG13_C2PRIVCFGR_PRIV5_B_0X0   (0x0u<<5)
+#define RISAB_PG13_C2PRIVCFGR_PRIV5_B_0X1   (0x1u<<5)
+#define RISAB_PG13_C2PRIVCFGR_PRIV4_B_0X0   (0x0u<<4)
+#define RISAB_PG13_C2PRIVCFGR_PRIV4_B_0X1   (0x1u<<4)
+#define RISAB_PG13_C2PRIVCFGR_PRIV3_B_0X0   (0x0u<<3)
+#define RISAB_PG13_C2PRIVCFGR_PRIV3_B_0X1   (0x1u<<3)
+#define RISAB_PG13_C2PRIVCFGR_PRIV2_B_0X0   (0x0u<<2)
+#define RISAB_PG13_C2PRIVCFGR_PRIV2_B_0X1   (0x1u<<2)
+#define RISAB_PG13_C2PRIVCFGR_PRIV1_B_0X0   (0x0u<<1)
+#define RISAB_PG13_C2PRIVCFGR_PRIV1_B_0X1   (0x1u<<1)
+#define RISAB_PG13_C2PRIVCFGR_PRIV0_B_0X0   (0x0u<<0)
+#define RISAB_PG13_C2PRIVCFGR_PRIV0_B_0X1   (0x1u<<0)
+
+// PG14_C2PRIVCFGR Configuration
+
+#define RISAB_PG14_C2PRIVCFGR_PRIV7         (0x1u<<7)
+#define RISAB_PG14_C2PRIVCFGR_PRIV6         (0x1u<<6)
+#define RISAB_PG14_C2PRIVCFGR_PRIV5         (0x1u<<5)
+#define RISAB_PG14_C2PRIVCFGR_PRIV4         (0x1u<<4)
+#define RISAB_PG14_C2PRIVCFGR_PRIV3         (0x1u<<3)
+#define RISAB_PG14_C2PRIVCFGR_PRIV2         (0x1u<<2)
+#define RISAB_PG14_C2PRIVCFGR_PRIV1         (0x1u<<1)
+#define RISAB_PG14_C2PRIVCFGR_PRIV0         (0x1u<<0)
+
+#define RISAB_PG14_C2PRIVCFGR_PRIV7_B_0X0   (0x0u<<7)
+#define RISAB_PG14_C2PRIVCFGR_PRIV7_B_0X1   (0x1u<<7)
+#define RISAB_PG14_C2PRIVCFGR_PRIV6_B_0X0   (0x0u<<6)
+#define RISAB_PG14_C2PRIVCFGR_PRIV6_B_0X1   (0x1u<<6)
+#define RISAB_PG14_C2PRIVCFGR_PRIV5_B_0X0   (0x0u<<5)
+#define RISAB_PG14_C2PRIVCFGR_PRIV5_B_0X1   (0x1u<<5)
+#define RISAB_PG14_C2PRIVCFGR_PRIV4_B_0X0   (0x0u<<4)
+#define RISAB_PG14_C2PRIVCFGR_PRIV4_B_0X1   (0x1u<<4)
+#define RISAB_PG14_C2PRIVCFGR_PRIV3_B_0X0   (0x0u<<3)
+#define RISAB_PG14_C2PRIVCFGR_PRIV3_B_0X1   (0x1u<<3)
+#define RISAB_PG14_C2PRIVCFGR_PRIV2_B_0X0   (0x0u<<2)
+#define RISAB_PG14_C2PRIVCFGR_PRIV2_B_0X1   (0x1u<<2)
+#define RISAB_PG14_C2PRIVCFGR_PRIV1_B_0X0   (0x0u<<1)
+#define RISAB_PG14_C2PRIVCFGR_PRIV1_B_0X1   (0x1u<<1)
+#define RISAB_PG14_C2PRIVCFGR_PRIV0_B_0X0   (0x0u<<0)
+#define RISAB_PG14_C2PRIVCFGR_PRIV0_B_0X1   (0x1u<<0)
+
+// PG15_C2PRIVCFGR Configuration
+
+#define RISAB_PG15_C2PRIVCFGR_PRIV7         (0x1u<<7)
+#define RISAB_PG15_C2PRIVCFGR_PRIV6         (0x1u<<6)
+#define RISAB_PG15_C2PRIVCFGR_PRIV5         (0x1u<<5)
+#define RISAB_PG15_C2PRIVCFGR_PRIV4         (0x1u<<4)
+#define RISAB_PG15_C2PRIVCFGR_PRIV3         (0x1u<<3)
+#define RISAB_PG15_C2PRIVCFGR_PRIV2         (0x1u<<2)
+#define RISAB_PG15_C2PRIVCFGR_PRIV1         (0x1u<<1)
+#define RISAB_PG15_C2PRIVCFGR_PRIV0         (0x1u<<0)
+
+#define RISAB_PG15_C2PRIVCFGR_PRIV7_B_0X0   (0x0u<<7)
+#define RISAB_PG15_C2PRIVCFGR_PRIV7_B_0X1   (0x1u<<7)
+#define RISAB_PG15_C2PRIVCFGR_PRIV6_B_0X0   (0x0u<<6)
+#define RISAB_PG15_C2PRIVCFGR_PRIV6_B_0X1   (0x1u<<6)
+#define RISAB_PG15_C2PRIVCFGR_PRIV5_B_0X0   (0x0u<<5)
+#define RISAB_PG15_C2PRIVCFGR_PRIV5_B_0X1   (0x1u<<5)
+#define RISAB_PG15_C2PRIVCFGR_PRIV4_B_0X0   (0x0u<<4)
+#define RISAB_PG15_C2PRIVCFGR_PRIV4_B_0X1   (0x1u<<4)
+#define RISAB_PG15_C2PRIVCFGR_PRIV3_B_0X0   (0x0u<<3)
+#define RISAB_PG15_C2PRIVCFGR_PRIV3_B_0X1   (0x1u<<3)
+#define RISAB_PG15_C2PRIVCFGR_PRIV2_B_0X0   (0x0u<<2)
+#define RISAB_PG15_C2PRIVCFGR_PRIV2_B_0X1   (0x1u<<2)
+#define RISAB_PG15_C2PRIVCFGR_PRIV1_B_0X0   (0x0u<<1)
+#define RISAB_PG15_C2PRIVCFGR_PRIV1_B_0X1   (0x1u<<1)
+#define RISAB_PG15_C2PRIVCFGR_PRIV0_B_0X0   (0x0u<<0)
+#define RISAB_PG15_C2PRIVCFGR_PRIV0_B_0X1   (0x1u<<0)
+
+// PG16_C2PRIVCFGR Configuration
+
+#define RISAB_PG16_C2PRIVCFGR_PRIV7         (0x1u<<7)
+#define RISAB_PG16_C2PRIVCFGR_PRIV6         (0x1u<<6)
+#define RISAB_PG16_C2PRIVCFGR_PRIV5         (0x1u<<5)
+#define RISAB_PG16_C2PRIVCFGR_PRIV4         (0x1u<<4)
+#define RISAB_PG16_C2PRIVCFGR_PRIV3         (0x1u<<3)
+#define RISAB_PG16_C2PRIVCFGR_PRIV2         (0x1u<<2)
+#define RISAB_PG16_C2PRIVCFGR_PRIV1         (0x1u<<1)
+#define RISAB_PG16_C2PRIVCFGR_PRIV0         (0x1u<<0)
+
+#define RISAB_PG16_C2PRIVCFGR_PRIV7_B_0X0   (0x0u<<7)
+#define RISAB_PG16_C2PRIVCFGR_PRIV7_B_0X1   (0x1u<<7)
+#define RISAB_PG16_C2PRIVCFGR_PRIV6_B_0X0   (0x0u<<6)
+#define RISAB_PG16_C2PRIVCFGR_PRIV6_B_0X1   (0x1u<<6)
+#define RISAB_PG16_C2PRIVCFGR_PRIV5_B_0X0   (0x0u<<5)
+#define RISAB_PG16_C2PRIVCFGR_PRIV5_B_0X1   (0x1u<<5)
+#define RISAB_PG16_C2PRIVCFGR_PRIV4_B_0X0   (0x0u<<4)
+#define RISAB_PG16_C2PRIVCFGR_PRIV4_B_0X1   (0x1u<<4)
+#define RISAB_PG16_C2PRIVCFGR_PRIV3_B_0X0   (0x0u<<3)
+#define RISAB_PG16_C2PRIVCFGR_PRIV3_B_0X1   (0x1u<<3)
+#define RISAB_PG16_C2PRIVCFGR_PRIV2_B_0X0   (0x0u<<2)
+#define RISAB_PG16_C2PRIVCFGR_PRIV2_B_0X1   (0x1u<<2)
+#define RISAB_PG16_C2PRIVCFGR_PRIV1_B_0X0   (0x0u<<1)
+#define RISAB_PG16_C2PRIVCFGR_PRIV1_B_0X1   (0x1u<<1)
+#define RISAB_PG16_C2PRIVCFGR_PRIV0_B_0X0   (0x0u<<0)
+#define RISAB_PG16_C2PRIVCFGR_PRIV0_B_0X1   (0x1u<<0)
+
+// PG17_C2PRIVCFGR Configuration
+
+#define RISAB_PG17_C2PRIVCFGR_PRIV7         (0x1u<<7)
+#define RISAB_PG17_C2PRIVCFGR_PRIV6         (0x1u<<6)
+#define RISAB_PG17_C2PRIVCFGR_PRIV5         (0x1u<<5)
+#define RISAB_PG17_C2PRIVCFGR_PRIV4         (0x1u<<4)
+#define RISAB_PG17_C2PRIVCFGR_PRIV3         (0x1u<<3)
+#define RISAB_PG17_C2PRIVCFGR_PRIV2         (0x1u<<2)
+#define RISAB_PG17_C2PRIVCFGR_PRIV1         (0x1u<<1)
+#define RISAB_PG17_C2PRIVCFGR_PRIV0         (0x1u<<0)
+
+#define RISAB_PG17_C2PRIVCFGR_PRIV7_B_0X0   (0x0u<<7)
+#define RISAB_PG17_C2PRIVCFGR_PRIV7_B_0X1   (0x1u<<7)
+#define RISAB_PG17_C2PRIVCFGR_PRIV6_B_0X0   (0x0u<<6)
+#define RISAB_PG17_C2PRIVCFGR_PRIV6_B_0X1   (0x1u<<6)
+#define RISAB_PG17_C2PRIVCFGR_PRIV5_B_0X0   (0x0u<<5)
+#define RISAB_PG17_C2PRIVCFGR_PRIV5_B_0X1   (0x1u<<5)
+#define RISAB_PG17_C2PRIVCFGR_PRIV4_B_0X0   (0x0u<<4)
+#define RISAB_PG17_C2PRIVCFGR_PRIV4_B_0X1   (0x1u<<4)
+#define RISAB_PG17_C2PRIVCFGR_PRIV3_B_0X0   (0x0u<<3)
+#define RISAB_PG17_C2PRIVCFGR_PRIV3_B_0X1   (0x1u<<3)
+#define RISAB_PG17_C2PRIVCFGR_PRIV2_B_0X0   (0x0u<<2)
+#define RISAB_PG17_C2PRIVCFGR_PRIV2_B_0X1   (0x1u<<2)
+#define RISAB_PG17_C2PRIVCFGR_PRIV1_B_0X0   (0x0u<<1)
+#define RISAB_PG17_C2PRIVCFGR_PRIV1_B_0X1   (0x1u<<1)
+#define RISAB_PG17_C2PRIVCFGR_PRIV0_B_0X0   (0x0u<<0)
+#define RISAB_PG17_C2PRIVCFGR_PRIV0_B_0X1   (0x1u<<0)
+
+// PG18_C2PRIVCFGR Configuration
+
+#define RISAB_PG18_C2PRIVCFGR_PRIV7         (0x1u<<7)
+#define RISAB_PG18_C2PRIVCFGR_PRIV6         (0x1u<<6)
+#define RISAB_PG18_C2PRIVCFGR_PRIV5         (0x1u<<5)
+#define RISAB_PG18_C2PRIVCFGR_PRIV4         (0x1u<<4)
+#define RISAB_PG18_C2PRIVCFGR_PRIV3         (0x1u<<3)
+#define RISAB_PG18_C2PRIVCFGR_PRIV2         (0x1u<<2)
+#define RISAB_PG18_C2PRIVCFGR_PRIV1         (0x1u<<1)
+#define RISAB_PG18_C2PRIVCFGR_PRIV0         (0x1u<<0)
+
+#define RISAB_PG18_C2PRIVCFGR_PRIV7_B_0X0   (0x0u<<7)
+#define RISAB_PG18_C2PRIVCFGR_PRIV7_B_0X1   (0x1u<<7)
+#define RISAB_PG18_C2PRIVCFGR_PRIV6_B_0X0   (0x0u<<6)
+#define RISAB_PG18_C2PRIVCFGR_PRIV6_B_0X1   (0x1u<<6)
+#define RISAB_PG18_C2PRIVCFGR_PRIV5_B_0X0   (0x0u<<5)
+#define RISAB_PG18_C2PRIVCFGR_PRIV5_B_0X1   (0x1u<<5)
+#define RISAB_PG18_C2PRIVCFGR_PRIV4_B_0X0   (0x0u<<4)
+#define RISAB_PG18_C2PRIVCFGR_PRIV4_B_0X1   (0x1u<<4)
+#define RISAB_PG18_C2PRIVCFGR_PRIV3_B_0X0   (0x0u<<3)
+#define RISAB_PG18_C2PRIVCFGR_PRIV3_B_0X1   (0x1u<<3)
+#define RISAB_PG18_C2PRIVCFGR_PRIV2_B_0X0   (0x0u<<2)
+#define RISAB_PG18_C2PRIVCFGR_PRIV2_B_0X1   (0x1u<<2)
+#define RISAB_PG18_C2PRIVCFGR_PRIV1_B_0X0   (0x0u<<1)
+#define RISAB_PG18_C2PRIVCFGR_PRIV1_B_0X1   (0x1u<<1)
+#define RISAB_PG18_C2PRIVCFGR_PRIV0_B_0X0   (0x0u<<0)
+#define RISAB_PG18_C2PRIVCFGR_PRIV0_B_0X1   (0x1u<<0)
+
+// PG19_C2PRIVCFGR Configuration
+
+#define RISAB_PG19_C2PRIVCFGR_PRIV7         (0x1u<<7)
+#define RISAB_PG19_C2PRIVCFGR_PRIV6         (0x1u<<6)
+#define RISAB_PG19_C2PRIVCFGR_PRIV5         (0x1u<<5)
+#define RISAB_PG19_C2PRIVCFGR_PRIV4         (0x1u<<4)
+#define RISAB_PG19_C2PRIVCFGR_PRIV3         (0x1u<<3)
+#define RISAB_PG19_C2PRIVCFGR_PRIV2         (0x1u<<2)
+#define RISAB_PG19_C2PRIVCFGR_PRIV1         (0x1u<<1)
+#define RISAB_PG19_C2PRIVCFGR_PRIV0         (0x1u<<0)
+
+#define RISAB_PG19_C2PRIVCFGR_PRIV7_B_0X0   (0x0u<<7)
+#define RISAB_PG19_C2PRIVCFGR_PRIV7_B_0X1   (0x1u<<7)
+#define RISAB_PG19_C2PRIVCFGR_PRIV6_B_0X0   (0x0u<<6)
+#define RISAB_PG19_C2PRIVCFGR_PRIV6_B_0X1   (0x1u<<6)
+#define RISAB_PG19_C2PRIVCFGR_PRIV5_B_0X0   (0x0u<<5)
+#define RISAB_PG19_C2PRIVCFGR_PRIV5_B_0X1   (0x1u<<5)
+#define RISAB_PG19_C2PRIVCFGR_PRIV4_B_0X0   (0x0u<<4)
+#define RISAB_PG19_C2PRIVCFGR_PRIV4_B_0X1   (0x1u<<4)
+#define RISAB_PG19_C2PRIVCFGR_PRIV3_B_0X0   (0x0u<<3)
+#define RISAB_PG19_C2PRIVCFGR_PRIV3_B_0X1   (0x1u<<3)
+#define RISAB_PG19_C2PRIVCFGR_PRIV2_B_0X0   (0x0u<<2)
+#define RISAB_PG19_C2PRIVCFGR_PRIV2_B_0X1   (0x1u<<2)
+#define RISAB_PG19_C2PRIVCFGR_PRIV1_B_0X0   (0x0u<<1)
+#define RISAB_PG19_C2PRIVCFGR_PRIV1_B_0X1   (0x1u<<1)
+#define RISAB_PG19_C2PRIVCFGR_PRIV0_B_0X0   (0x0u<<0)
+#define RISAB_PG19_C2PRIVCFGR_PRIV0_B_0X1   (0x1u<<0)
+
+// PG20_C2PRIVCFGR Configuration
+
+#define RISAB_PG20_C2PRIVCFGR_PRIV7         (0x1u<<7)
+#define RISAB_PG20_C2PRIVCFGR_PRIV6         (0x1u<<6)
+#define RISAB_PG20_C2PRIVCFGR_PRIV5         (0x1u<<5)
+#define RISAB_PG20_C2PRIVCFGR_PRIV4         (0x1u<<4)
+#define RISAB_PG20_C2PRIVCFGR_PRIV3         (0x1u<<3)
+#define RISAB_PG20_C2PRIVCFGR_PRIV2         (0x1u<<2)
+#define RISAB_PG20_C2PRIVCFGR_PRIV1         (0x1u<<1)
+#define RISAB_PG20_C2PRIVCFGR_PRIV0         (0x1u<<0)
+
+#define RISAB_PG20_C2PRIVCFGR_PRIV7_B_0X0   (0x0u<<7)
+#define RISAB_PG20_C2PRIVCFGR_PRIV7_B_0X1   (0x1u<<7)
+#define RISAB_PG20_C2PRIVCFGR_PRIV6_B_0X0   (0x0u<<6)
+#define RISAB_PG20_C2PRIVCFGR_PRIV6_B_0X1   (0x1u<<6)
+#define RISAB_PG20_C2PRIVCFGR_PRIV5_B_0X0   (0x0u<<5)
+#define RISAB_PG20_C2PRIVCFGR_PRIV5_B_0X1   (0x1u<<5)
+#define RISAB_PG20_C2PRIVCFGR_PRIV4_B_0X0   (0x0u<<4)
+#define RISAB_PG20_C2PRIVCFGR_PRIV4_B_0X1   (0x1u<<4)
+#define RISAB_PG20_C2PRIVCFGR_PRIV3_B_0X0   (0x0u<<3)
+#define RISAB_PG20_C2PRIVCFGR_PRIV3_B_0X1   (0x1u<<3)
+#define RISAB_PG20_C2PRIVCFGR_PRIV2_B_0X0   (0x0u<<2)
+#define RISAB_PG20_C2PRIVCFGR_PRIV2_B_0X1   (0x1u<<2)
+#define RISAB_PG20_C2PRIVCFGR_PRIV1_B_0X0   (0x0u<<1)
+#define RISAB_PG20_C2PRIVCFGR_PRIV1_B_0X1   (0x1u<<1)
+#define RISAB_PG20_C2PRIVCFGR_PRIV0_B_0X0   (0x0u<<0)
+#define RISAB_PG20_C2PRIVCFGR_PRIV0_B_0X1   (0x1u<<0)
+
+// PG21_C2PRIVCFGR Configuration
+
+#define RISAB_PG21_C2PRIVCFGR_PRIV7         (0x1u<<7)
+#define RISAB_PG21_C2PRIVCFGR_PRIV6         (0x1u<<6)
+#define RISAB_PG21_C2PRIVCFGR_PRIV5         (0x1u<<5)
+#define RISAB_PG21_C2PRIVCFGR_PRIV4         (0x1u<<4)
+#define RISAB_PG21_C2PRIVCFGR_PRIV3         (0x1u<<3)
+#define RISAB_PG21_C2PRIVCFGR_PRIV2         (0x1u<<2)
+#define RISAB_PG21_C2PRIVCFGR_PRIV1         (0x1u<<1)
+#define RISAB_PG21_C2PRIVCFGR_PRIV0         (0x1u<<0)
+
+#define RISAB_PG21_C2PRIVCFGR_PRIV7_B_0X0   (0x0u<<7)
+#define RISAB_PG21_C2PRIVCFGR_PRIV7_B_0X1   (0x1u<<7)
+#define RISAB_PG21_C2PRIVCFGR_PRIV6_B_0X0   (0x0u<<6)
+#define RISAB_PG21_C2PRIVCFGR_PRIV6_B_0X1   (0x1u<<6)
+#define RISAB_PG21_C2PRIVCFGR_PRIV5_B_0X0   (0x0u<<5)
+#define RISAB_PG21_C2PRIVCFGR_PRIV5_B_0X1   (0x1u<<5)
+#define RISAB_PG21_C2PRIVCFGR_PRIV4_B_0X0   (0x0u<<4)
+#define RISAB_PG21_C2PRIVCFGR_PRIV4_B_0X1   (0x1u<<4)
+#define RISAB_PG21_C2PRIVCFGR_PRIV3_B_0X0   (0x0u<<3)
+#define RISAB_PG21_C2PRIVCFGR_PRIV3_B_0X1   (0x1u<<3)
+#define RISAB_PG21_C2PRIVCFGR_PRIV2_B_0X0   (0x0u<<2)
+#define RISAB_PG21_C2PRIVCFGR_PRIV2_B_0X1   (0x1u<<2)
+#define RISAB_PG21_C2PRIVCFGR_PRIV1_B_0X0   (0x0u<<1)
+#define RISAB_PG21_C2PRIVCFGR_PRIV1_B_0X1   (0x1u<<1)
+#define RISAB_PG21_C2PRIVCFGR_PRIV0_B_0X0   (0x0u<<0)
+#define RISAB_PG21_C2PRIVCFGR_PRIV0_B_0X1   (0x1u<<0)
+
+// PG22_C2PRIVCFGR Configuration
+
+#define RISAB_PG22_C2PRIVCFGR_PRIV7         (0x1u<<7)
+#define RISAB_PG22_C2PRIVCFGR_PRIV6         (0x1u<<6)
+#define RISAB_PG22_C2PRIVCFGR_PRIV5         (0x1u<<5)
+#define RISAB_PG22_C2PRIVCFGR_PRIV4         (0x1u<<4)
+#define RISAB_PG22_C2PRIVCFGR_PRIV3         (0x1u<<3)
+#define RISAB_PG22_C2PRIVCFGR_PRIV2         (0x1u<<2)
+#define RISAB_PG22_C2PRIVCFGR_PRIV1         (0x1u<<1)
+#define RISAB_PG22_C2PRIVCFGR_PRIV0         (0x1u<<0)
+
+#define RISAB_PG22_C2PRIVCFGR_PRIV7_B_0X0   (0x0u<<7)
+#define RISAB_PG22_C2PRIVCFGR_PRIV7_B_0X1   (0x1u<<7)
+#define RISAB_PG22_C2PRIVCFGR_PRIV6_B_0X0   (0x0u<<6)
+#define RISAB_PG22_C2PRIVCFGR_PRIV6_B_0X1   (0x1u<<6)
+#define RISAB_PG22_C2PRIVCFGR_PRIV5_B_0X0   (0x0u<<5)
+#define RISAB_PG22_C2PRIVCFGR_PRIV5_B_0X1   (0x1u<<5)
+#define RISAB_PG22_C2PRIVCFGR_PRIV4_B_0X0   (0x0u<<4)
+#define RISAB_PG22_C2PRIVCFGR_PRIV4_B_0X1   (0x1u<<4)
+#define RISAB_PG22_C2PRIVCFGR_PRIV3_B_0X0   (0x0u<<3)
+#define RISAB_PG22_C2PRIVCFGR_PRIV3_B_0X1   (0x1u<<3)
+#define RISAB_PG22_C2PRIVCFGR_PRIV2_B_0X0   (0x0u<<2)
+#define RISAB_PG22_C2PRIVCFGR_PRIV2_B_0X1   (0x1u<<2)
+#define RISAB_PG22_C2PRIVCFGR_PRIV1_B_0X0   (0x0u<<1)
+#define RISAB_PG22_C2PRIVCFGR_PRIV1_B_0X1   (0x1u<<1)
+#define RISAB_PG22_C2PRIVCFGR_PRIV0_B_0X0   (0x0u<<0)
+#define RISAB_PG22_C2PRIVCFGR_PRIV0_B_0X1   (0x1u<<0)
+
+// PG23_C2PRIVCFGR Configuration
+
+#define RISAB_PG23_C2PRIVCFGR_PRIV7         (0x1u<<7)
+#define RISAB_PG23_C2PRIVCFGR_PRIV6         (0x1u<<6)
+#define RISAB_PG23_C2PRIVCFGR_PRIV5         (0x1u<<5)
+#define RISAB_PG23_C2PRIVCFGR_PRIV4         (0x1u<<4)
+#define RISAB_PG23_C2PRIVCFGR_PRIV3         (0x1u<<3)
+#define RISAB_PG23_C2PRIVCFGR_PRIV2         (0x1u<<2)
+#define RISAB_PG23_C2PRIVCFGR_PRIV1         (0x1u<<1)
+#define RISAB_PG23_C2PRIVCFGR_PRIV0         (0x1u<<0)
+
+#define RISAB_PG23_C2PRIVCFGR_PRIV7_B_0X0   (0x0u<<7)
+#define RISAB_PG23_C2PRIVCFGR_PRIV7_B_0X1   (0x1u<<7)
+#define RISAB_PG23_C2PRIVCFGR_PRIV6_B_0X0   (0x0u<<6)
+#define RISAB_PG23_C2PRIVCFGR_PRIV6_B_0X1   (0x1u<<6)
+#define RISAB_PG23_C2PRIVCFGR_PRIV5_B_0X0   (0x0u<<5)
+#define RISAB_PG23_C2PRIVCFGR_PRIV5_B_0X1   (0x1u<<5)
+#define RISAB_PG23_C2PRIVCFGR_PRIV4_B_0X0   (0x0u<<4)
+#define RISAB_PG23_C2PRIVCFGR_PRIV4_B_0X1   (0x1u<<4)
+#define RISAB_PG23_C2PRIVCFGR_PRIV3_B_0X0   (0x0u<<3)
+#define RISAB_PG23_C2PRIVCFGR_PRIV3_B_0X1   (0x1u<<3)
+#define RISAB_PG23_C2PRIVCFGR_PRIV2_B_0X0   (0x0u<<2)
+#define RISAB_PG23_C2PRIVCFGR_PRIV2_B_0X1   (0x1u<<2)
+#define RISAB_PG23_C2PRIVCFGR_PRIV1_B_0X0   (0x0u<<1)
+#define RISAB_PG23_C2PRIVCFGR_PRIV1_B_0X1   (0x1u<<1)
+#define RISAB_PG23_C2PRIVCFGR_PRIV0_B_0X0   (0x0u<<0)
+#define RISAB_PG23_C2PRIVCFGR_PRIV0_B_0X1   (0x1u<<0)
+
+// PG24_C2PRIVCFGR Configuration
+
+#define RISAB_PG24_C2PRIVCFGR_PRIV7         (0x1u<<7)
+#define RISAB_PG24_C2PRIVCFGR_PRIV6         (0x1u<<6)
+#define RISAB_PG24_C2PRIVCFGR_PRIV5         (0x1u<<5)
+#define RISAB_PG24_C2PRIVCFGR_PRIV4         (0x1u<<4)
+#define RISAB_PG24_C2PRIVCFGR_PRIV3         (0x1u<<3)
+#define RISAB_PG24_C2PRIVCFGR_PRIV2         (0x1u<<2)
+#define RISAB_PG24_C2PRIVCFGR_PRIV1         (0x1u<<1)
+#define RISAB_PG24_C2PRIVCFGR_PRIV0         (0x1u<<0)
+
+#define RISAB_PG24_C2PRIVCFGR_PRIV7_B_0X0   (0x0u<<7)
+#define RISAB_PG24_C2PRIVCFGR_PRIV7_B_0X1   (0x1u<<7)
+#define RISAB_PG24_C2PRIVCFGR_PRIV6_B_0X0   (0x0u<<6)
+#define RISAB_PG24_C2PRIVCFGR_PRIV6_B_0X1   (0x1u<<6)
+#define RISAB_PG24_C2PRIVCFGR_PRIV5_B_0X0   (0x0u<<5)
+#define RISAB_PG24_C2PRIVCFGR_PRIV5_B_0X1   (0x1u<<5)
+#define RISAB_PG24_C2PRIVCFGR_PRIV4_B_0X0   (0x0u<<4)
+#define RISAB_PG24_C2PRIVCFGR_PRIV4_B_0X1   (0x1u<<4)
+#define RISAB_PG24_C2PRIVCFGR_PRIV3_B_0X0   (0x0u<<3)
+#define RISAB_PG24_C2PRIVCFGR_PRIV3_B_0X1   (0x1u<<3)
+#define RISAB_PG24_C2PRIVCFGR_PRIV2_B_0X0   (0x0u<<2)
+#define RISAB_PG24_C2PRIVCFGR_PRIV2_B_0X1   (0x1u<<2)
+#define RISAB_PG24_C2PRIVCFGR_PRIV1_B_0X0   (0x0u<<1)
+#define RISAB_PG24_C2PRIVCFGR_PRIV1_B_0X1   (0x1u<<1)
+#define RISAB_PG24_C2PRIVCFGR_PRIV0_B_0X0   (0x0u<<0)
+#define RISAB_PG24_C2PRIVCFGR_PRIV0_B_0X1   (0x1u<<0)
+
+// PG25_C2PRIVCFGR Configuration
+
+#define RISAB_PG25_C2PRIVCFGR_PRIV7         (0x1u<<7)
+#define RISAB_PG25_C2PRIVCFGR_PRIV6         (0x1u<<6)
+#define RISAB_PG25_C2PRIVCFGR_PRIV5         (0x1u<<5)
+#define RISAB_PG25_C2PRIVCFGR_PRIV4         (0x1u<<4)
+#define RISAB_PG25_C2PRIVCFGR_PRIV3         (0x1u<<3)
+#define RISAB_PG25_C2PRIVCFGR_PRIV2         (0x1u<<2)
+#define RISAB_PG25_C2PRIVCFGR_PRIV1         (0x1u<<1)
+#define RISAB_PG25_C2PRIVCFGR_PRIV0         (0x1u<<0)
+
+#define RISAB_PG25_C2PRIVCFGR_PRIV7_B_0X0   (0x0u<<7)
+#define RISAB_PG25_C2PRIVCFGR_PRIV7_B_0X1   (0x1u<<7)
+#define RISAB_PG25_C2PRIVCFGR_PRIV6_B_0X0   (0x0u<<6)
+#define RISAB_PG25_C2PRIVCFGR_PRIV6_B_0X1   (0x1u<<6)
+#define RISAB_PG25_C2PRIVCFGR_PRIV5_B_0X0   (0x0u<<5)
+#define RISAB_PG25_C2PRIVCFGR_PRIV5_B_0X1   (0x1u<<5)
+#define RISAB_PG25_C2PRIVCFGR_PRIV4_B_0X0   (0x0u<<4)
+#define RISAB_PG25_C2PRIVCFGR_PRIV4_B_0X1   (0x1u<<4)
+#define RISAB_PG25_C2PRIVCFGR_PRIV3_B_0X0   (0x0u<<3)
+#define RISAB_PG25_C2PRIVCFGR_PRIV3_B_0X1   (0x1u<<3)
+#define RISAB_PG25_C2PRIVCFGR_PRIV2_B_0X0   (0x0u<<2)
+#define RISAB_PG25_C2PRIVCFGR_PRIV2_B_0X1   (0x1u<<2)
+#define RISAB_PG25_C2PRIVCFGR_PRIV1_B_0X0   (0x0u<<1)
+#define RISAB_PG25_C2PRIVCFGR_PRIV1_B_0X1   (0x1u<<1)
+#define RISAB_PG25_C2PRIVCFGR_PRIV0_B_0X0   (0x0u<<0)
+#define RISAB_PG25_C2PRIVCFGR_PRIV0_B_0X1   (0x1u<<0)
+
+// PG26_C2PRIVCFGR Configuration
+
+#define RISAB_PG26_C2PRIVCFGR_PRIV7         (0x1u<<7)
+#define RISAB_PG26_C2PRIVCFGR_PRIV6         (0x1u<<6)
+#define RISAB_PG26_C2PRIVCFGR_PRIV5         (0x1u<<5)
+#define RISAB_PG26_C2PRIVCFGR_PRIV4         (0x1u<<4)
+#define RISAB_PG26_C2PRIVCFGR_PRIV3         (0x1u<<3)
+#define RISAB_PG26_C2PRIVCFGR_PRIV2         (0x1u<<2)
+#define RISAB_PG26_C2PRIVCFGR_PRIV1         (0x1u<<1)
+#define RISAB_PG26_C2PRIVCFGR_PRIV0         (0x1u<<0)
+
+#define RISAB_PG26_C2PRIVCFGR_PRIV7_B_0X0   (0x0u<<7)
+#define RISAB_PG26_C2PRIVCFGR_PRIV7_B_0X1   (0x1u<<7)
+#define RISAB_PG26_C2PRIVCFGR_PRIV6_B_0X0   (0x0u<<6)
+#define RISAB_PG26_C2PRIVCFGR_PRIV6_B_0X1   (0x1u<<6)
+#define RISAB_PG26_C2PRIVCFGR_PRIV5_B_0X0   (0x0u<<5)
+#define RISAB_PG26_C2PRIVCFGR_PRIV5_B_0X1   (0x1u<<5)
+#define RISAB_PG26_C2PRIVCFGR_PRIV4_B_0X0   (0x0u<<4)
+#define RISAB_PG26_C2PRIVCFGR_PRIV4_B_0X1   (0x1u<<4)
+#define RISAB_PG26_C2PRIVCFGR_PRIV3_B_0X0   (0x0u<<3)
+#define RISAB_PG26_C2PRIVCFGR_PRIV3_B_0X1   (0x1u<<3)
+#define RISAB_PG26_C2PRIVCFGR_PRIV2_B_0X0   (0x0u<<2)
+#define RISAB_PG26_C2PRIVCFGR_PRIV2_B_0X1   (0x1u<<2)
+#define RISAB_PG26_C2PRIVCFGR_PRIV1_B_0X0   (0x0u<<1)
+#define RISAB_PG26_C2PRIVCFGR_PRIV1_B_0X1   (0x1u<<1)
+#define RISAB_PG26_C2PRIVCFGR_PRIV0_B_0X0   (0x0u<<0)
+#define RISAB_PG26_C2PRIVCFGR_PRIV0_B_0X1   (0x1u<<0)
+
+// PG27_C2PRIVCFGR Configuration
+
+#define RISAB_PG27_C2PRIVCFGR_PRIV7         (0x1u<<7)
+#define RISAB_PG27_C2PRIVCFGR_PRIV6         (0x1u<<6)
+#define RISAB_PG27_C2PRIVCFGR_PRIV5         (0x1u<<5)
+#define RISAB_PG27_C2PRIVCFGR_PRIV4         (0x1u<<4)
+#define RISAB_PG27_C2PRIVCFGR_PRIV3         (0x1u<<3)
+#define RISAB_PG27_C2PRIVCFGR_PRIV2         (0x1u<<2)
+#define RISAB_PG27_C2PRIVCFGR_PRIV1         (0x1u<<1)
+#define RISAB_PG27_C2PRIVCFGR_PRIV0         (0x1u<<0)
+
+#define RISAB_PG27_C2PRIVCFGR_PRIV7_B_0X0   (0x0u<<7)
+#define RISAB_PG27_C2PRIVCFGR_PRIV7_B_0X1   (0x1u<<7)
+#define RISAB_PG27_C2PRIVCFGR_PRIV6_B_0X0   (0x0u<<6)
+#define RISAB_PG27_C2PRIVCFGR_PRIV6_B_0X1   (0x1u<<6)
+#define RISAB_PG27_C2PRIVCFGR_PRIV5_B_0X0   (0x0u<<5)
+#define RISAB_PG27_C2PRIVCFGR_PRIV5_B_0X1   (0x1u<<5)
+#define RISAB_PG27_C2PRIVCFGR_PRIV4_B_0X0   (0x0u<<4)
+#define RISAB_PG27_C2PRIVCFGR_PRIV4_B_0X1   (0x1u<<4)
+#define RISAB_PG27_C2PRIVCFGR_PRIV3_B_0X0   (0x0u<<3)
+#define RISAB_PG27_C2PRIVCFGR_PRIV3_B_0X1   (0x1u<<3)
+#define RISAB_PG27_C2PRIVCFGR_PRIV2_B_0X0   (0x0u<<2)
+#define RISAB_PG27_C2PRIVCFGR_PRIV2_B_0X1   (0x1u<<2)
+#define RISAB_PG27_C2PRIVCFGR_PRIV1_B_0X0   (0x0u<<1)
+#define RISAB_PG27_C2PRIVCFGR_PRIV1_B_0X1   (0x1u<<1)
+#define RISAB_PG27_C2PRIVCFGR_PRIV0_B_0X0   (0x0u<<0)
+#define RISAB_PG27_C2PRIVCFGR_PRIV0_B_0X1   (0x1u<<0)
+
+// PG28_C2PRIVCFGR Configuration
+
+#define RISAB_PG28_C2PRIVCFGR_PRIV7         (0x1u<<7)
+#define RISAB_PG28_C2PRIVCFGR_PRIV6         (0x1u<<6)
+#define RISAB_PG28_C2PRIVCFGR_PRIV5         (0x1u<<5)
+#define RISAB_PG28_C2PRIVCFGR_PRIV4         (0x1u<<4)
+#define RISAB_PG28_C2PRIVCFGR_PRIV3         (0x1u<<3)
+#define RISAB_PG28_C2PRIVCFGR_PRIV2         (0x1u<<2)
+#define RISAB_PG28_C2PRIVCFGR_PRIV1         (0x1u<<1)
+#define RISAB_PG28_C2PRIVCFGR_PRIV0         (0x1u<<0)
+
+#define RISAB_PG28_C2PRIVCFGR_PRIV7_B_0X0   (0x0u<<7)
+#define RISAB_PG28_C2PRIVCFGR_PRIV7_B_0X1   (0x1u<<7)
+#define RISAB_PG28_C2PRIVCFGR_PRIV6_B_0X0   (0x0u<<6)
+#define RISAB_PG28_C2PRIVCFGR_PRIV6_B_0X1   (0x1u<<6)
+#define RISAB_PG28_C2PRIVCFGR_PRIV5_B_0X0   (0x0u<<5)
+#define RISAB_PG28_C2PRIVCFGR_PRIV5_B_0X1   (0x1u<<5)
+#define RISAB_PG28_C2PRIVCFGR_PRIV4_B_0X0   (0x0u<<4)
+#define RISAB_PG28_C2PRIVCFGR_PRIV4_B_0X1   (0x1u<<4)
+#define RISAB_PG28_C2PRIVCFGR_PRIV3_B_0X0   (0x0u<<3)
+#define RISAB_PG28_C2PRIVCFGR_PRIV3_B_0X1   (0x1u<<3)
+#define RISAB_PG28_C2PRIVCFGR_PRIV2_B_0X0   (0x0u<<2)
+#define RISAB_PG28_C2PRIVCFGR_PRIV2_B_0X1   (0x1u<<2)
+#define RISAB_PG28_C2PRIVCFGR_PRIV1_B_0X0   (0x0u<<1)
+#define RISAB_PG28_C2PRIVCFGR_PRIV1_B_0X1   (0x1u<<1)
+#define RISAB_PG28_C2PRIVCFGR_PRIV0_B_0X0   (0x0u<<0)
+#define RISAB_PG28_C2PRIVCFGR_PRIV0_B_0X1   (0x1u<<0)
+
+// PG29_C2PRIVCFGR Configuration
+
+#define RISAB_PG29_C2PRIVCFGR_PRIV7         (0x1u<<7)
+#define RISAB_PG29_C2PRIVCFGR_PRIV6         (0x1u<<6)
+#define RISAB_PG29_C2PRIVCFGR_PRIV5         (0x1u<<5)
+#define RISAB_PG29_C2PRIVCFGR_PRIV4         (0x1u<<4)
+#define RISAB_PG29_C2PRIVCFGR_PRIV3         (0x1u<<3)
+#define RISAB_PG29_C2PRIVCFGR_PRIV2         (0x1u<<2)
+#define RISAB_PG29_C2PRIVCFGR_PRIV1         (0x1u<<1)
+#define RISAB_PG29_C2PRIVCFGR_PRIV0         (0x1u<<0)
+
+#define RISAB_PG29_C2PRIVCFGR_PRIV7_B_0X0   (0x0u<<7)
+#define RISAB_PG29_C2PRIVCFGR_PRIV7_B_0X1   (0x1u<<7)
+#define RISAB_PG29_C2PRIVCFGR_PRIV6_B_0X0   (0x0u<<6)
+#define RISAB_PG29_C2PRIVCFGR_PRIV6_B_0X1   (0x1u<<6)
+#define RISAB_PG29_C2PRIVCFGR_PRIV5_B_0X0   (0x0u<<5)
+#define RISAB_PG29_C2PRIVCFGR_PRIV5_B_0X1   (0x1u<<5)
+#define RISAB_PG29_C2PRIVCFGR_PRIV4_B_0X0   (0x0u<<4)
+#define RISAB_PG29_C2PRIVCFGR_PRIV4_B_0X1   (0x1u<<4)
+#define RISAB_PG29_C2PRIVCFGR_PRIV3_B_0X0   (0x0u<<3)
+#define RISAB_PG29_C2PRIVCFGR_PRIV3_B_0X1   (0x1u<<3)
+#define RISAB_PG29_C2PRIVCFGR_PRIV2_B_0X0   (0x0u<<2)
+#define RISAB_PG29_C2PRIVCFGR_PRIV2_B_0X1   (0x1u<<2)
+#define RISAB_PG29_C2PRIVCFGR_PRIV1_B_0X0   (0x0u<<1)
+#define RISAB_PG29_C2PRIVCFGR_PRIV1_B_0X1   (0x1u<<1)
+#define RISAB_PG29_C2PRIVCFGR_PRIV0_B_0X0   (0x0u<<0)
+#define RISAB_PG29_C2PRIVCFGR_PRIV0_B_0X1   (0x1u<<0)
+
+// PG30_C2PRIVCFGR Configuration
+
+#define RISAB_PG30_C2PRIVCFGR_PRIV7         (0x1u<<7)
+#define RISAB_PG30_C2PRIVCFGR_PRIV6         (0x1u<<6)
+#define RISAB_PG30_C2PRIVCFGR_PRIV5         (0x1u<<5)
+#define RISAB_PG30_C2PRIVCFGR_PRIV4         (0x1u<<4)
+#define RISAB_PG30_C2PRIVCFGR_PRIV3         (0x1u<<3)
+#define RISAB_PG30_C2PRIVCFGR_PRIV2         (0x1u<<2)
+#define RISAB_PG30_C2PRIVCFGR_PRIV1         (0x1u<<1)
+#define RISAB_PG30_C2PRIVCFGR_PRIV0         (0x1u<<0)
+
+#define RISAB_PG30_C2PRIVCFGR_PRIV7_B_0X0   (0x0u<<7)
+#define RISAB_PG30_C2PRIVCFGR_PRIV7_B_0X1   (0x1u<<7)
+#define RISAB_PG30_C2PRIVCFGR_PRIV6_B_0X0   (0x0u<<6)
+#define RISAB_PG30_C2PRIVCFGR_PRIV6_B_0X1   (0x1u<<6)
+#define RISAB_PG30_C2PRIVCFGR_PRIV5_B_0X0   (0x0u<<5)
+#define RISAB_PG30_C2PRIVCFGR_PRIV5_B_0X1   (0x1u<<5)
+#define RISAB_PG30_C2PRIVCFGR_PRIV4_B_0X0   (0x0u<<4)
+#define RISAB_PG30_C2PRIVCFGR_PRIV4_B_0X1   (0x1u<<4)
+#define RISAB_PG30_C2PRIVCFGR_PRIV3_B_0X0   (0x0u<<3)
+#define RISAB_PG30_C2PRIVCFGR_PRIV3_B_0X1   (0x1u<<3)
+#define RISAB_PG30_C2PRIVCFGR_PRIV2_B_0X0   (0x0u<<2)
+#define RISAB_PG30_C2PRIVCFGR_PRIV2_B_0X1   (0x1u<<2)
+#define RISAB_PG30_C2PRIVCFGR_PRIV1_B_0X0   (0x0u<<1)
+#define RISAB_PG30_C2PRIVCFGR_PRIV1_B_0X1   (0x1u<<1)
+#define RISAB_PG30_C2PRIVCFGR_PRIV0_B_0X0   (0x0u<<0)
+#define RISAB_PG30_C2PRIVCFGR_PRIV0_B_0X1   (0x1u<<0)
+
+// PG31_C2PRIVCFGR Configuration
+
+#define RISAB_PG31_C2PRIVCFGR_PRIV7         (0x1u<<7)
+#define RISAB_PG31_C2PRIVCFGR_PRIV6         (0x1u<<6)
+#define RISAB_PG31_C2PRIVCFGR_PRIV5         (0x1u<<5)
+#define RISAB_PG31_C2PRIVCFGR_PRIV4         (0x1u<<4)
+#define RISAB_PG31_C2PRIVCFGR_PRIV3         (0x1u<<3)
+#define RISAB_PG31_C2PRIVCFGR_PRIV2         (0x1u<<2)
+#define RISAB_PG31_C2PRIVCFGR_PRIV1         (0x1u<<1)
+#define RISAB_PG31_C2PRIVCFGR_PRIV0         (0x1u<<0)
+
+#define RISAB_PG31_C2PRIVCFGR_PRIV7_B_0X0   (0x0u<<7)
+#define RISAB_PG31_C2PRIVCFGR_PRIV7_B_0X1   (0x1u<<7)
+#define RISAB_PG31_C2PRIVCFGR_PRIV6_B_0X0   (0x0u<<6)
+#define RISAB_PG31_C2PRIVCFGR_PRIV6_B_0X1   (0x1u<<6)
+#define RISAB_PG31_C2PRIVCFGR_PRIV5_B_0X0   (0x0u<<5)
+#define RISAB_PG31_C2PRIVCFGR_PRIV5_B_0X1   (0x1u<<5)
+#define RISAB_PG31_C2PRIVCFGR_PRIV4_B_0X0   (0x0u<<4)
+#define RISAB_PG31_C2PRIVCFGR_PRIV4_B_0X1   (0x1u<<4)
+#define RISAB_PG31_C2PRIVCFGR_PRIV3_B_0X0   (0x0u<<3)
+#define RISAB_PG31_C2PRIVCFGR_PRIV3_B_0X1   (0x1u<<3)
+#define RISAB_PG31_C2PRIVCFGR_PRIV2_B_0X0   (0x0u<<2)
+#define RISAB_PG31_C2PRIVCFGR_PRIV2_B_0X1   (0x1u<<2)
+#define RISAB_PG31_C2PRIVCFGR_PRIV1_B_0X0   (0x0u<<1)
+#define RISAB_PG31_C2PRIVCFGR_PRIV1_B_0X1   (0x1u<<1)
+#define RISAB_PG31_C2PRIVCFGR_PRIV0_B_0X0   (0x0u<<0)
+#define RISAB_PG31_C2PRIVCFGR_PRIV0_B_0X1   (0x1u<<0)
+
+// RDCFGR Configuration
+
+#define RISAB_RDCFGR_PRDEN31                (0x1u<<31)
+#define RISAB_RDCFGR_PRDEN30                (0x1u<<30)
+#define RISAB_RDCFGR_PRDEN29                (0x1u<<29)
+#define RISAB_RDCFGR_PRDEN28                (0x1u<<28)
+#define RISAB_RDCFGR_PRDEN27                (0x1u<<27)
+#define RISAB_RDCFGR_PRDEN26                (0x1u<<26)
+#define RISAB_RDCFGR_PRDEN25                (0x1u<<25)
+#define RISAB_RDCFGR_PRDEN24                (0x1u<<24)
+#define RISAB_RDCFGR_PRDEN23                (0x1u<<23)
+#define RISAB_RDCFGR_PRDEN22                (0x1u<<22)
+#define RISAB_RDCFGR_PRDEN21                (0x1u<<21)
+#define RISAB_RDCFGR_PRDEN20                (0x1u<<20)
+#define RISAB_RDCFGR_PRDEN19                (0x1u<<19)
+#define RISAB_RDCFGR_PRDEN18                (0x1u<<18)
+#define RISAB_RDCFGR_PRDEN17                (0x1u<<17)
+#define RISAB_RDCFGR_PRDEN16                (0x1u<<16)
+#define RISAB_RDCFGR_PRDEN15                (0x1u<<15)
+#define RISAB_RDCFGR_PRDEN14                (0x1u<<14)
+#define RISAB_RDCFGR_PRDEN13                (0x1u<<13)
+#define RISAB_RDCFGR_PRDEN12                (0x1u<<12)
+#define RISAB_RDCFGR_PRDEN11                (0x1u<<11)
+#define RISAB_RDCFGR_PRDEN10                (0x1u<<10)
+#define RISAB_RDCFGR_PRDEN9                 (0x1u<<9)
+#define RISAB_RDCFGR_PRDEN8                 (0x1u<<8)
+#define RISAB_RDCFGR_PRDEN7                 (0x1u<<7)
+#define RISAB_RDCFGR_PRDEN6                 (0x1u<<6)
+#define RISAB_RDCFGR_PRDEN5                 (0x1u<<5)
+#define RISAB_RDCFGR_PRDEN4                 (0x1u<<4)
+#define RISAB_RDCFGR_PRDEN3                 (0x1u<<3)
+#define RISAB_RDCFGR_PRDEN2                 (0x1u<<2)
+#define RISAB_RDCFGR_PRDEN1                 (0x1u<<1)
+#define RISAB_RDCFGR_PRDEN0                 (0x1u<<0)
+
+#define RISAB_RDCFGR_PRDEN31_B_0X0          (0x0u<<31)
+#define RISAB_RDCFGR_PRDEN31_B_0X1          (0x1u<<31)
+#define RISAB_RDCFGR_PRDEN30_B_0X0          (0x0u<<30)
+#define RISAB_RDCFGR_PRDEN30_B_0X1          (0x1u<<30)
+#define RISAB_RDCFGR_PRDEN29_B_0X0          (0x0u<<29)
+#define RISAB_RDCFGR_PRDEN29_B_0X1          (0x1u<<29)
+#define RISAB_RDCFGR_PRDEN28_B_0X0          (0x0u<<28)
+#define RISAB_RDCFGR_PRDEN28_B_0X1          (0x1u<<28)
+#define RISAB_RDCFGR_PRDEN27_B_0X0          (0x0u<<27)
+#define RISAB_RDCFGR_PRDEN27_B_0X1          (0x1u<<27)
+#define RISAB_RDCFGR_PRDEN26_B_0X0          (0x0u<<26)
+#define RISAB_RDCFGR_PRDEN26_B_0X1          (0x1u<<26)
+#define RISAB_RDCFGR_PRDEN25_B_0X0          (0x0u<<25)
+#define RISAB_RDCFGR_PRDEN25_B_0X1          (0x1u<<25)
+#define RISAB_RDCFGR_PRDEN24_B_0X0          (0x0u<<24)
+#define RISAB_RDCFGR_PRDEN24_B_0X1          (0x1u<<24)
+#define RISAB_RDCFGR_PRDEN23_B_0X0          (0x0u<<23)
+#define RISAB_RDCFGR_PRDEN23_B_0X1          (0x1u<<23)
+#define RISAB_RDCFGR_PRDEN22_B_0X0          (0x0u<<22)
+#define RISAB_RDCFGR_PRDEN22_B_0X1          (0x1u<<22)
+#define RISAB_RDCFGR_PRDEN21_B_0X0          (0x0u<<21)
+#define RISAB_RDCFGR_PRDEN21_B_0X1          (0x1u<<21)
+#define RISAB_RDCFGR_PRDEN20_B_0X0          (0x0u<<20)
+#define RISAB_RDCFGR_PRDEN20_B_0X1          (0x1u<<20)
+#define RISAB_RDCFGR_PRDEN19_B_0X0          (0x0u<<19)
+#define RISAB_RDCFGR_PRDEN19_B_0X1          (0x1u<<19)
+#define RISAB_RDCFGR_PRDEN18_B_0X0          (0x0u<<18)
+#define RISAB_RDCFGR_PRDEN18_B_0X1          (0x1u<<18)
+#define RISAB_RDCFGR_PRDEN17_B_0X0          (0x0u<<17)
+#define RISAB_RDCFGR_PRDEN17_B_0X1          (0x1u<<17)
+#define RISAB_RDCFGR_PRDEN16_B_0X0          (0x0u<<16)
+#define RISAB_RDCFGR_PRDEN16_B_0X1          (0x1u<<16)
+#define RISAB_RDCFGR_PRDEN15_B_0X0          (0x0u<<15)
+#define RISAB_RDCFGR_PRDEN15_B_0X1          (0x1u<<15)
+#define RISAB_RDCFGR_PRDEN14_B_0X0          (0x0u<<14)
+#define RISAB_RDCFGR_PRDEN14_B_0X1          (0x1u<<14)
+#define RISAB_RDCFGR_PRDEN13_B_0X0          (0x0u<<13)
+#define RISAB_RDCFGR_PRDEN13_B_0X1          (0x1u<<13)
+#define RISAB_RDCFGR_PRDEN12_B_0X0          (0x0u<<12)
+#define RISAB_RDCFGR_PRDEN12_B_0X1          (0x1u<<12)
+#define RISAB_RDCFGR_PRDEN11_B_0X0          (0x0u<<11)
+#define RISAB_RDCFGR_PRDEN11_B_0X1          (0x1u<<11)
+#define RISAB_RDCFGR_PRDEN10_B_0X0          (0x0u<<10)
+#define RISAB_RDCFGR_PRDEN10_B_0X1          (0x1u<<10)
+#define RISAB_RDCFGR_PRDEN9_B_0X0           (0x0u<<9)
+#define RISAB_RDCFGR_PRDEN9_B_0X1           (0x1u<<9)
+#define RISAB_RDCFGR_PRDEN8_B_0X0           (0x0u<<8)
+#define RISAB_RDCFGR_PRDEN8_B_0X1           (0x1u<<8)
+#define RISAB_RDCFGR_PRDEN7_B_0X0           (0x0u<<7)
+#define RISAB_RDCFGR_PRDEN7_B_0X1           (0x1u<<7)
+#define RISAB_RDCFGR_PRDEN6_B_0X0           (0x0u<<6)
+#define RISAB_RDCFGR_PRDEN6_B_0X1           (0x1u<<6)
+#define RISAB_RDCFGR_PRDEN5_B_0X0           (0x0u<<5)
+#define RISAB_RDCFGR_PRDEN5_B_0X1           (0x1u<<5)
+#define RISAB_RDCFGR_PRDEN4_B_0X0           (0x0u<<4)
+#define RISAB_RDCFGR_PRDEN4_B_0X1           (0x1u<<4)
+#define RISAB_RDCFGR_PRDEN3_B_0X0           (0x0u<<3)
+#define RISAB_RDCFGR_PRDEN3_B_0X1           (0x1u<<3)
+#define RISAB_RDCFGR_PRDEN2_B_0X0           (0x0u<<2)
+#define RISAB_RDCFGR_PRDEN2_B_0X1           (0x1u<<2)
+#define RISAB_RDCFGR_PRDEN1_B_0X0           (0x0u<<1)
+#define RISAB_RDCFGR_PRDEN1_B_0X1           (0x1u<<1)
+#define RISAB_RDCFGR_PRDEN0_B_0X0           (0x0u<<0)
+#define RISAB_RDCFGR_PRDEN0_B_0X1           (0x1u<<0)
+
+// WRCFGR Configuration
+
+#define RISAB_WRCFGR_PWREN31                (0x1u<<31)
+#define RISAB_WRCFGR_PWREN30                (0x1u<<30)
+#define RISAB_WRCFGR_PWREN29                (0x1u<<29)
+#define RISAB_WRCFGR_PWREN28                (0x1u<<28)
+#define RISAB_WRCFGR_PWREN27                (0x1u<<27)
+#define RISAB_WRCFGR_PWREN26                (0x1u<<26)
+#define RISAB_WRCFGR_PWREN25                (0x1u<<25)
+#define RISAB_WRCFGR_PWREN24                (0x1u<<24)
+#define RISAB_WRCFGR_PWREN23                (0x1u<<23)
+#define RISAB_WRCFGR_PWREN22                (0x1u<<22)
+#define RISAB_WRCFGR_PWREN21                (0x1u<<21)
+#define RISAB_WRCFGR_PWREN20                (0x1u<<20)
+#define RISAB_WRCFGR_PWREN19                (0x1u<<19)
+#define RISAB_WRCFGR_PWREN18                (0x1u<<18)
+#define RISAB_WRCFGR_PWREN17                (0x1u<<17)
+#define RISAB_WRCFGR_PWREN16                (0x1u<<16)
+#define RISAB_WRCFGR_PWREN15                (0x1u<<15)
+#define RISAB_WRCFGR_PWREN14                (0x1u<<14)
+#define RISAB_WRCFGR_PWREN13                (0x1u<<13)
+#define RISAB_WRCFGR_PWREN12                (0x1u<<12)
+#define RISAB_WRCFGR_PWREN11                (0x1u<<11)
+#define RISAB_WRCFGR_PWREN10                (0x1u<<10)
+#define RISAB_WRCFGR_PWREN9                 (0x1u<<9)
+#define RISAB_WRCFGR_PWREN8                 (0x1u<<8)
+#define RISAB_WRCFGR_PWREN7                 (0x1u<<7)
+#define RISAB_WRCFGR_PWREN6                 (0x1u<<6)
+#define RISAB_WRCFGR_PWREN5                 (0x1u<<5)
+#define RISAB_WRCFGR_PWREN4                 (0x1u<<4)
+#define RISAB_WRCFGR_PWREN3                 (0x1u<<3)
+#define RISAB_WRCFGR_PWREN2                 (0x1u<<2)
+#define RISAB_WRCFGR_PWREN1                 (0x1u<<1)
+#define RISAB_WRCFGR_PWREN0                 (0x1u<<0)
+
+#define RISAB_WRCFGR_PWREN31_B_0X0          (0x0u<<31)
+#define RISAB_WRCFGR_PWREN31_B_0X1          (0x1u<<31)
+#define RISAB_WRCFGR_PWREN30_B_0X0          (0x0u<<30)
+#define RISAB_WRCFGR_PWREN30_B_0X1          (0x1u<<30)
+#define RISAB_WRCFGR_PWREN29_B_0X0          (0x0u<<29)
+#define RISAB_WRCFGR_PWREN29_B_0X1          (0x1u<<29)
+#define RISAB_WRCFGR_PWREN28_B_0X0          (0x0u<<28)
+#define RISAB_WRCFGR_PWREN28_B_0X1          (0x1u<<28)
+#define RISAB_WRCFGR_PWREN27_B_0X0          (0x0u<<27)
+#define RISAB_WRCFGR_PWREN27_B_0X1          (0x1u<<27)
+#define RISAB_WRCFGR_PWREN26_B_0X0          (0x0u<<26)
+#define RISAB_WRCFGR_PWREN26_B_0X1          (0x1u<<26)
+#define RISAB_WRCFGR_PWREN25_B_0X0          (0x0u<<25)
+#define RISAB_WRCFGR_PWREN25_B_0X1          (0x1u<<25)
+#define RISAB_WRCFGR_PWREN24_B_0X0          (0x0u<<24)
+#define RISAB_WRCFGR_PWREN24_B_0X1          (0x1u<<24)
+#define RISAB_WRCFGR_PWREN23_B_0X0          (0x0u<<23)
+#define RISAB_WRCFGR_PWREN23_B_0X1          (0x1u<<23)
+#define RISAB_WRCFGR_PWREN22_B_0X0          (0x0u<<22)
+#define RISAB_WRCFGR_PWREN22_B_0X1          (0x1u<<22)
+#define RISAB_WRCFGR_PWREN21_B_0X0          (0x0u<<21)
+#define RISAB_WRCFGR_PWREN21_B_0X1          (0x1u<<21)
+#define RISAB_WRCFGR_PWREN20_B_0X0          (0x0u<<20)
+#define RISAB_WRCFGR_PWREN20_B_0X1          (0x1u<<20)
+#define RISAB_WRCFGR_PWREN19_B_0X0          (0x0u<<19)
+#define RISAB_WRCFGR_PWREN19_B_0X1          (0x1u<<19)
+#define RISAB_WRCFGR_PWREN18_B_0X0          (0x0u<<18)
+#define RISAB_WRCFGR_PWREN18_B_0X1          (0x1u<<18)
+#define RISAB_WRCFGR_PWREN17_B_0X0          (0x0u<<17)
+#define RISAB_WRCFGR_PWREN17_B_0X1          (0x1u<<17)
+#define RISAB_WRCFGR_PWREN16_B_0X0          (0x0u<<16)
+#define RISAB_WRCFGR_PWREN16_B_0X1          (0x1u<<16)
+#define RISAB_WRCFGR_PWREN15_B_0X0          (0x0u<<15)
+#define RISAB_WRCFGR_PWREN15_B_0X1          (0x1u<<15)
+#define RISAB_WRCFGR_PWREN14_B_0X0          (0x0u<<14)
+#define RISAB_WRCFGR_PWREN14_B_0X1          (0x1u<<14)
+#define RISAB_WRCFGR_PWREN13_B_0X0          (0x0u<<13)
+#define RISAB_WRCFGR_PWREN13_B_0X1          (0x1u<<13)
+#define RISAB_WRCFGR_PWREN12_B_0X0          (0x0u<<12)
+#define RISAB_WRCFGR_PWREN12_B_0X1          (0x1u<<12)
+#define RISAB_WRCFGR_PWREN11_B_0X0          (0x0u<<11)
+#define RISAB_WRCFGR_PWREN11_B_0X1          (0x1u<<11)
+#define RISAB_WRCFGR_PWREN10_B_0X0          (0x0u<<10)
+#define RISAB_WRCFGR_PWREN10_B_0X1          (0x1u<<10)
+#define RISAB_WRCFGR_PWREN9_B_0X0           (0x0u<<9)
+#define RISAB_WRCFGR_PWREN9_B_0X1           (0x1u<<9)
+#define RISAB_WRCFGR_PWREN8_B_0X0           (0x0u<<8)
+#define RISAB_WRCFGR_PWREN8_B_0X1           (0x1u<<8)
+#define RISAB_WRCFGR_PWREN7_B_0X0           (0x0u<<7)
+#define RISAB_WRCFGR_PWREN7_B_0X1           (0x1u<<7)
+#define RISAB_WRCFGR_PWREN6_B_0X0           (0x0u<<6)
+#define RISAB_WRCFGR_PWREN6_B_0X1           (0x1u<<6)
+#define RISAB_WRCFGR_PWREN5_B_0X0           (0x0u<<5)
+#define RISAB_WRCFGR_PWREN5_B_0X1           (0x1u<<5)
+#define RISAB_WRCFGR_PWREN4_B_0X0           (0x0u<<4)
+#define RISAB_WRCFGR_PWREN4_B_0X1           (0x1u<<4)
+#define RISAB_WRCFGR_PWREN3_B_0X0           (0x0u<<3)
+#define RISAB_WRCFGR_PWREN3_B_0X1           (0x1u<<3)
+#define RISAB_WRCFGR_PWREN2_B_0X0           (0x0u<<2)
+#define RISAB_WRCFGR_PWREN2_B_0X1           (0x1u<<2)
+#define RISAB_WRCFGR_PWREN1_B_0X0           (0x0u<<1)
+#define RISAB_WRCFGR_PWREN1_B_0X1           (0x1u<<1)
+#define RISAB_WRCFGR_PWREN0_B_0X0           (0x0u<<0)
+#define RISAB_WRCFGR_PWREN0_B_0X1           (0x1u<<0)
+
+// PG0_CIDCFGR Configuration
+
+#define RISAB_PG0_CIDCFGR_DCCID             (0x7u<<4)
+#define RISAB_PG0_CIDCFGR_DCCID_0           (0x1u<<4)
+#define RISAB_PG0_CIDCFGR_DCEN              (0x1u<<2)
+#define RISAB_PG0_CIDCFGR_CFEN              (0x1u<<0)
+
+#define RISAB_PG0_CIDCFGR_DCEN_B_0X0        (0x0u<<2)
+#define RISAB_PG0_CIDCFGR_DCEN_B_0X1        (0x1u<<2)
+#define RISAB_PG0_CIDCFGR_CFEN_B_0X0        (0x0u<<0)
+#define RISAB_PG0_CIDCFGR_CFEN_B_0X1        (0x1u<<0)
+
+// PG1_CIDCFGR Configuration
+
+#define RISAB_PG1_CIDCFGR_DCCID             (0x7u<<4)
+#define RISAB_PG1_CIDCFGR_DCCID_0           (0x1u<<4)
+#define RISAB_PG1_CIDCFGR_DCEN              (0x1u<<2)
+#define RISAB_PG1_CIDCFGR_CFEN              (0x1u<<0)
+
+#define RISAB_PG1_CIDCFGR_DCEN_B_0X0        (0x0u<<2)
+#define RISAB_PG1_CIDCFGR_DCEN_B_0X1        (0x1u<<2)
+#define RISAB_PG1_CIDCFGR_CFEN_B_0X0        (0x0u<<0)
+#define RISAB_PG1_CIDCFGR_CFEN_B_0X1        (0x1u<<0)
+
+// PG2_CIDCFGR Configuration
+
+#define RISAB_PG2_CIDCFGR_DCCID             (0x7u<<4)
+#define RISAB_PG2_CIDCFGR_DCCID_0           (0x1u<<4)
+#define RISAB_PG2_CIDCFGR_DCEN              (0x1u<<2)
+#define RISAB_PG2_CIDCFGR_CFEN              (0x1u<<0)
+
+#define RISAB_PG2_CIDCFGR_DCEN_B_0X0        (0x0u<<2)
+#define RISAB_PG2_CIDCFGR_DCEN_B_0X1        (0x1u<<2)
+#define RISAB_PG2_CIDCFGR_CFEN_B_0X0        (0x0u<<0)
+#define RISAB_PG2_CIDCFGR_CFEN_B_0X1        (0x1u<<0)
+
+// PG3_CIDCFGR Configuration
+
+#define RISAB_PG3_CIDCFGR_DCCID             (0x7u<<4)
+#define RISAB_PG3_CIDCFGR_DCCID_0           (0x1u<<4)
+#define RISAB_PG3_CIDCFGR_DCEN              (0x1u<<2)
+#define RISAB_PG3_CIDCFGR_CFEN              (0x1u<<0)
+
+#define RISAB_PG3_CIDCFGR_DCEN_B_0X0        (0x0u<<2)
+#define RISAB_PG3_CIDCFGR_DCEN_B_0X1        (0x1u<<2)
+#define RISAB_PG3_CIDCFGR_CFEN_B_0X0        (0x0u<<0)
+#define RISAB_PG3_CIDCFGR_CFEN_B_0X1        (0x1u<<0)
+
+// PG4_CIDCFGR Configuration
+
+#define RISAB_PG4_CIDCFGR_DCCID             (0x7u<<4)
+#define RISAB_PG4_CIDCFGR_DCCID_0           (0x1u<<4)
+#define RISAB_PG4_CIDCFGR_DCEN              (0x1u<<2)
+#define RISAB_PG4_CIDCFGR_CFEN              (0x1u<<0)
+
+#define RISAB_PG4_CIDCFGR_DCEN_B_0X0        (0x0u<<2)
+#define RISAB_PG4_CIDCFGR_DCEN_B_0X1        (0x1u<<2)
+#define RISAB_PG4_CIDCFGR_CFEN_B_0X0        (0x0u<<0)
+#define RISAB_PG4_CIDCFGR_CFEN_B_0X1        (0x1u<<0)
+
+// PG5_CIDCFGR Configuration
+
+#define RISAB_PG5_CIDCFGR_DCCID             (0x7u<<4)
+#define RISAB_PG5_CIDCFGR_DCCID_0           (0x1u<<4)
+#define RISAB_PG5_CIDCFGR_DCEN              (0x1u<<2)
+#define RISAB_PG5_CIDCFGR_CFEN              (0x1u<<0)
+
+#define RISAB_PG5_CIDCFGR_DCEN_B_0X0        (0x0u<<2)
+#define RISAB_PG5_CIDCFGR_DCEN_B_0X1        (0x1u<<2)
+#define RISAB_PG5_CIDCFGR_CFEN_B_0X0        (0x0u<<0)
+#define RISAB_PG5_CIDCFGR_CFEN_B_0X1        (0x1u<<0)
+
+// PG6_CIDCFGR Configuration
+
+#define RISAB_PG6_CIDCFGR_DCCID             (0x7u<<4)
+#define RISAB_PG6_CIDCFGR_DCCID_0           (0x1u<<4)
+#define RISAB_PG6_CIDCFGR_DCEN              (0x1u<<2)
+#define RISAB_PG6_CIDCFGR_CFEN              (0x1u<<0)
+
+#define RISAB_PG6_CIDCFGR_DCEN_B_0X0        (0x0u<<2)
+#define RISAB_PG6_CIDCFGR_DCEN_B_0X1        (0x1u<<2)
+#define RISAB_PG6_CIDCFGR_CFEN_B_0X0        (0x0u<<0)
+#define RISAB_PG6_CIDCFGR_CFEN_B_0X1        (0x1u<<0)
+
+// PG7_CIDCFGR Configuration
+
+#define RISAB_PG7_CIDCFGR_DCCID             (0x7u<<4)
+#define RISAB_PG7_CIDCFGR_DCCID_0           (0x1u<<4)
+#define RISAB_PG7_CIDCFGR_DCEN              (0x1u<<2)
+#define RISAB_PG7_CIDCFGR_CFEN              (0x1u<<0)
+
+#define RISAB_PG7_CIDCFGR_DCEN_B_0X0        (0x0u<<2)
+#define RISAB_PG7_CIDCFGR_DCEN_B_0X1        (0x1u<<2)
+#define RISAB_PG7_CIDCFGR_CFEN_B_0X0        (0x0u<<0)
+#define RISAB_PG7_CIDCFGR_CFEN_B_0X1        (0x1u<<0)
+
+// PG8_CIDCFGR Configuration
+
+#define RISAB_PG8_CIDCFGR_DCCID             (0x7u<<4)
+#define RISAB_PG8_CIDCFGR_DCCID_0           (0x1u<<4)
+#define RISAB_PG8_CIDCFGR_DCEN              (0x1u<<2)
+#define RISAB_PG8_CIDCFGR_CFEN              (0x1u<<0)
+
+#define RISAB_PG8_CIDCFGR_DCEN_B_0X0        (0x0u<<2)
+#define RISAB_PG8_CIDCFGR_DCEN_B_0X1        (0x1u<<2)
+#define RISAB_PG8_CIDCFGR_CFEN_B_0X0        (0x0u<<0)
+#define RISAB_PG8_CIDCFGR_CFEN_B_0X1        (0x1u<<0)
+
+// PG9_CIDCFGR Configuration
+
+#define RISAB_PG9_CIDCFGR_DCCID             (0x7u<<4)
+#define RISAB_PG9_CIDCFGR_DCCID_0           (0x1u<<4)
+#define RISAB_PG9_CIDCFGR_DCEN              (0x1u<<2)
+#define RISAB_PG9_CIDCFGR_CFEN              (0x1u<<0)
+
+#define RISAB_PG9_CIDCFGR_DCEN_B_0X0        (0x0u<<2)
+#define RISAB_PG9_CIDCFGR_DCEN_B_0X1        (0x1u<<2)
+#define RISAB_PG9_CIDCFGR_CFEN_B_0X0        (0x0u<<0)
+#define RISAB_PG9_CIDCFGR_CFEN_B_0X1        (0x1u<<0)
+
+// PG10_CIDCFGR Configuration
+
+#define RISAB_PG10_CIDCFGR_DCCID            (0x7u<<4)
+#define RISAB_PG10_CIDCFGR_DCCID_0          (0x1u<<4)
+#define RISAB_PG10_CIDCFGR_DCEN             (0x1u<<2)
+#define RISAB_PG10_CIDCFGR_CFEN             (0x1u<<0)
+
+#define RISAB_PG10_CIDCFGR_DCEN_B_0X0       (0x0u<<2)
+#define RISAB_PG10_CIDCFGR_DCEN_B_0X1       (0x1u<<2)
+#define RISAB_PG10_CIDCFGR_CFEN_B_0X0       (0x0u<<0)
+#define RISAB_PG10_CIDCFGR_CFEN_B_0X1       (0x1u<<0)
+
+// PG11_CIDCFGR Configuration
+
+#define RISAB_PG11_CIDCFGR_DCCID            (0x7u<<4)
+#define RISAB_PG11_CIDCFGR_DCCID_0          (0x1u<<4)
+#define RISAB_PG11_CIDCFGR_DCEN             (0x1u<<2)
+#define RISAB_PG11_CIDCFGR_CFEN             (0x1u<<0)
+
+#define RISAB_PG11_CIDCFGR_DCEN_B_0X0       (0x0u<<2)
+#define RISAB_PG11_CIDCFGR_DCEN_B_0X1       (0x1u<<2)
+#define RISAB_PG11_CIDCFGR_CFEN_B_0X0       (0x0u<<0)
+#define RISAB_PG11_CIDCFGR_CFEN_B_0X1       (0x1u<<0)
+
+// PG12_CIDCFGR Configuration
+
+#define RISAB_PG12_CIDCFGR_DCCID            (0x7u<<4)
+#define RISAB_PG12_CIDCFGR_DCCID_0          (0x1u<<4)
+#define RISAB_PG12_CIDCFGR_DCEN             (0x1u<<2)
+#define RISAB_PG12_CIDCFGR_CFEN             (0x1u<<0)
+
+#define RISAB_PG12_CIDCFGR_DCEN_B_0X0       (0x0u<<2)
+#define RISAB_PG12_CIDCFGR_DCEN_B_0X1       (0x1u<<2)
+#define RISAB_PG12_CIDCFGR_CFEN_B_0X0       (0x0u<<0)
+#define RISAB_PG12_CIDCFGR_CFEN_B_0X1       (0x1u<<0)
+
+// PG13_CIDCFGR Configuration
+
+#define RISAB_PG13_CIDCFGR_DCCID            (0x7u<<4)
+#define RISAB_PG13_CIDCFGR_DCCID_0          (0x1u<<4)
+#define RISAB_PG13_CIDCFGR_DCEN             (0x1u<<2)
+#define RISAB_PG13_CIDCFGR_CFEN             (0x1u<<0)
+
+#define RISAB_PG13_CIDCFGR_DCEN_B_0X0       (0x0u<<2)
+#define RISAB_PG13_CIDCFGR_DCEN_B_0X1       (0x1u<<2)
+#define RISAB_PG13_CIDCFGR_CFEN_B_0X0       (0x0u<<0)
+#define RISAB_PG13_CIDCFGR_CFEN_B_0X1       (0x1u<<0)
+
+// PG14_CIDCFGR Configuration
+
+#define RISAB_PG14_CIDCFGR_DCCID            (0x7u<<4)
+#define RISAB_PG14_CIDCFGR_DCCID_0          (0x1u<<4)
+#define RISAB_PG14_CIDCFGR_DCEN             (0x1u<<2)
+#define RISAB_PG14_CIDCFGR_CFEN             (0x1u<<0)
+
+#define RISAB_PG14_CIDCFGR_DCEN_B_0X0       (0x0u<<2)
+#define RISAB_PG14_CIDCFGR_DCEN_B_0X1       (0x1u<<2)
+#define RISAB_PG14_CIDCFGR_CFEN_B_0X0       (0x0u<<0)
+#define RISAB_PG14_CIDCFGR_CFEN_B_0X1       (0x1u<<0)
+
+// PG15_CIDCFGR Configuration
+
+#define RISAB_PG15_CIDCFGR_DCCID            (0x7u<<4)
+#define RISAB_PG15_CIDCFGR_DCCID_0          (0x1u<<4)
+#define RISAB_PG15_CIDCFGR_DCEN             (0x1u<<2)
+#define RISAB_PG15_CIDCFGR_CFEN             (0x1u<<0)
+
+#define RISAB_PG15_CIDCFGR_DCEN_B_0X0       (0x0u<<2)
+#define RISAB_PG15_CIDCFGR_DCEN_B_0X1       (0x1u<<2)
+#define RISAB_PG15_CIDCFGR_CFEN_B_0X0       (0x0u<<0)
+#define RISAB_PG15_CIDCFGR_CFEN_B_0X1       (0x1u<<0)
+
+// PG16_CIDCFGR Configuration
+
+#define RISAB_PG16_CIDCFGR_DCCID            (0x7u<<4)
+#define RISAB_PG16_CIDCFGR_DCCID_0          (0x1u<<4)
+#define RISAB_PG16_CIDCFGR_DCEN             (0x1u<<2)
+#define RISAB_PG16_CIDCFGR_CFEN             (0x1u<<0)
+
+#define RISAB_PG16_CIDCFGR_DCEN_B_0X0       (0x0u<<2)
+#define RISAB_PG16_CIDCFGR_DCEN_B_0X1       (0x1u<<2)
+#define RISAB_PG16_CIDCFGR_CFEN_B_0X0       (0x0u<<0)
+#define RISAB_PG16_CIDCFGR_CFEN_B_0X1       (0x1u<<0)
+
+// PG17_CIDCFGR Configuration
+
+#define RISAB_PG17_CIDCFGR_DCCID            (0x7u<<4)
+#define RISAB_PG17_CIDCFGR_DCCID_0          (0x1u<<4)
+#define RISAB_PG17_CIDCFGR_DCEN             (0x1u<<2)
+#define RISAB_PG17_CIDCFGR_CFEN             (0x1u<<0)
+
+#define RISAB_PG17_CIDCFGR_DCEN_B_0X0       (0x0u<<2)
+#define RISAB_PG17_CIDCFGR_DCEN_B_0X1       (0x1u<<2)
+#define RISAB_PG17_CIDCFGR_CFEN_B_0X0       (0x0u<<0)
+#define RISAB_PG17_CIDCFGR_CFEN_B_0X1       (0x1u<<0)
+
+// PG18_CIDCFGR Configuration
+
+#define RISAB_PG18_CIDCFGR_DCCID            (0x7u<<4)
+#define RISAB_PG18_CIDCFGR_DCCID_0          (0x1u<<4)
+#define RISAB_PG18_CIDCFGR_DCEN             (0x1u<<2)
+#define RISAB_PG18_CIDCFGR_CFEN             (0x1u<<0)
+
+#define RISAB_PG18_CIDCFGR_DCEN_B_0X0       (0x0u<<2)
+#define RISAB_PG18_CIDCFGR_DCEN_B_0X1       (0x1u<<2)
+#define RISAB_PG18_CIDCFGR_CFEN_B_0X0       (0x0u<<0)
+#define RISAB_PG18_CIDCFGR_CFEN_B_0X1       (0x1u<<0)
+
+// PG19_CIDCFGR Configuration
+
+#define RISAB_PG19_CIDCFGR_DCCID            (0x7u<<4)
+#define RISAB_PG19_CIDCFGR_DCCID_0          (0x1u<<4)
+#define RISAB_PG19_CIDCFGR_DCEN             (0x1u<<2)
+#define RISAB_PG19_CIDCFGR_CFEN             (0x1u<<0)
+
+#define RISAB_PG19_CIDCFGR_DCEN_B_0X0       (0x0u<<2)
+#define RISAB_PG19_CIDCFGR_DCEN_B_0X1       (0x1u<<2)
+#define RISAB_PG19_CIDCFGR_CFEN_B_0X0       (0x0u<<0)
+#define RISAB_PG19_CIDCFGR_CFEN_B_0X1       (0x1u<<0)
+
+// PG20_CIDCFGR Configuration
+
+#define RISAB_PG20_CIDCFGR_DCCID            (0x7u<<4)
+#define RISAB_PG20_CIDCFGR_DCCID_0          (0x1u<<4)
+#define RISAB_PG20_CIDCFGR_DCEN             (0x1u<<2)
+#define RISAB_PG20_CIDCFGR_CFEN             (0x1u<<0)
+
+#define RISAB_PG20_CIDCFGR_DCEN_B_0X0       (0x0u<<2)
+#define RISAB_PG20_CIDCFGR_DCEN_B_0X1       (0x1u<<2)
+#define RISAB_PG20_CIDCFGR_CFEN_B_0X0       (0x0u<<0)
+#define RISAB_PG20_CIDCFGR_CFEN_B_0X1       (0x1u<<0)
+
+// PG21_CIDCFGR Configuration
+
+#define RISAB_PG21_CIDCFGR_DCCID            (0x7u<<4)
+#define RISAB_PG21_CIDCFGR_DCCID_0          (0x1u<<4)
+#define RISAB_PG21_CIDCFGR_DCEN             (0x1u<<2)
+#define RISAB_PG21_CIDCFGR_CFEN             (0x1u<<0)
+
+#define RISAB_PG21_CIDCFGR_DCEN_B_0X0       (0x0u<<2)
+#define RISAB_PG21_CIDCFGR_DCEN_B_0X1       (0x1u<<2)
+#define RISAB_PG21_CIDCFGR_CFEN_B_0X0       (0x0u<<0)
+#define RISAB_PG21_CIDCFGR_CFEN_B_0X1       (0x1u<<0)
+
+// PG22_CIDCFGR Configuration
+
+#define RISAB_PG22_CIDCFGR_DCCID            (0x7u<<4)
+#define RISAB_PG22_CIDCFGR_DCCID_0          (0x1u<<4)
+#define RISAB_PG22_CIDCFGR_DCEN             (0x1u<<2)
+#define RISAB_PG22_CIDCFGR_CFEN             (0x1u<<0)
+
+#define RISAB_PG22_CIDCFGR_DCEN_B_0X0       (0x0u<<2)
+#define RISAB_PG22_CIDCFGR_DCEN_B_0X1       (0x1u<<2)
+#define RISAB_PG22_CIDCFGR_CFEN_B_0X0       (0x0u<<0)
+#define RISAB_PG22_CIDCFGR_CFEN_B_0X1       (0x1u<<0)
+
+// PG23_CIDCFGR Configuration
+
+#define RISAB_PG23_CIDCFGR_DCCID            (0x7u<<4)
+#define RISAB_PG23_CIDCFGR_DCCID_0          (0x1u<<4)
+#define RISAB_PG23_CIDCFGR_DCEN             (0x1u<<2)
+#define RISAB_PG23_CIDCFGR_CFEN             (0x1u<<0)
+
+#define RISAB_PG23_CIDCFGR_DCEN_B_0X0       (0x0u<<2)
+#define RISAB_PG23_CIDCFGR_DCEN_B_0X1       (0x1u<<2)
+#define RISAB_PG23_CIDCFGR_CFEN_B_0X0       (0x0u<<0)
+#define RISAB_PG23_CIDCFGR_CFEN_B_0X1       (0x1u<<0)
+
+// PG24_CIDCFGR Configuration
+
+#define RISAB_PG24_CIDCFGR_DCCID            (0x7u<<4)
+#define RISAB_PG24_CIDCFGR_DCCID_0          (0x1u<<4)
+#define RISAB_PG24_CIDCFGR_DCEN             (0x1u<<2)
+#define RISAB_PG24_CIDCFGR_CFEN             (0x1u<<0)
+
+#define RISAB_PG24_CIDCFGR_DCEN_B_0X0       (0x0u<<2)
+#define RISAB_PG24_CIDCFGR_DCEN_B_0X1       (0x1u<<2)
+#define RISAB_PG24_CIDCFGR_CFEN_B_0X0       (0x0u<<0)
+#define RISAB_PG24_CIDCFGR_CFEN_B_0X1       (0x1u<<0)
+
+// PG25_CIDCFGR Configuration
+
+#define RISAB_PG25_CIDCFGR_DCCID            (0x7u<<4)
+#define RISAB_PG25_CIDCFGR_DCCID_0          (0x1u<<4)
+#define RISAB_PG25_CIDCFGR_DCEN             (0x1u<<2)
+#define RISAB_PG25_CIDCFGR_CFEN             (0x1u<<0)
+
+#define RISAB_PG25_CIDCFGR_DCEN_B_0X0       (0x0u<<2)
+#define RISAB_PG25_CIDCFGR_DCEN_B_0X1       (0x1u<<2)
+#define RISAB_PG25_CIDCFGR_CFEN_B_0X0       (0x0u<<0)
+#define RISAB_PG25_CIDCFGR_CFEN_B_0X1       (0x1u<<0)
+
+// PG26_CIDCFGR Configuration
+
+#define RISAB_PG26_CIDCFGR_DCCID            (0x7u<<4)
+#define RISAB_PG26_CIDCFGR_DCCID_0          (0x1u<<4)
+#define RISAB_PG26_CIDCFGR_DCEN             (0x1u<<2)
+#define RISAB_PG26_CIDCFGR_CFEN             (0x1u<<0)
+
+#define RISAB_PG26_CIDCFGR_DCEN_B_0X0       (0x0u<<2)
+#define RISAB_PG26_CIDCFGR_DCEN_B_0X1       (0x1u<<2)
+#define RISAB_PG26_CIDCFGR_CFEN_B_0X0       (0x0u<<0)
+#define RISAB_PG26_CIDCFGR_CFEN_B_0X1       (0x1u<<0)
+
+// PG27_CIDCFGR Configuration
+
+#define RISAB_PG27_CIDCFGR_DCCID            (0x7u<<4)
+#define RISAB_PG27_CIDCFGR_DCCID_0          (0x1u<<4)
+#define RISAB_PG27_CIDCFGR_DCEN             (0x1u<<2)
+#define RISAB_PG27_CIDCFGR_CFEN             (0x1u<<0)
+
+#define RISAB_PG27_CIDCFGR_DCEN_B_0X0       (0x0u<<2)
+#define RISAB_PG27_CIDCFGR_DCEN_B_0X1       (0x1u<<2)
+#define RISAB_PG27_CIDCFGR_CFEN_B_0X0       (0x0u<<0)
+#define RISAB_PG27_CIDCFGR_CFEN_B_0X1       (0x1u<<0)
+
+// PG28_CIDCFGR Configuration
+
+#define RISAB_PG28_CIDCFGR_DCCID            (0x7u<<4)
+#define RISAB_PG28_CIDCFGR_DCCID_0          (0x1u<<4)
+#define RISAB_PG28_CIDCFGR_DCEN             (0x1u<<2)
+#define RISAB_PG28_CIDCFGR_CFEN             (0x1u<<0)
+
+#define RISAB_PG28_CIDCFGR_DCEN_B_0X0       (0x0u<<2)
+#define RISAB_PG28_CIDCFGR_DCEN_B_0X1       (0x1u<<2)
+#define RISAB_PG28_CIDCFGR_CFEN_B_0X0       (0x0u<<0)
+#define RISAB_PG28_CIDCFGR_CFEN_B_0X1       (0x1u<<0)
+
+// PG29_CIDCFGR Configuration
+
+#define RISAB_PG29_CIDCFGR_DCCID            (0x7u<<4)
+#define RISAB_PG29_CIDCFGR_DCCID_0          (0x1u<<4)
+#define RISAB_PG29_CIDCFGR_DCEN             (0x1u<<2)
+#define RISAB_PG29_CIDCFGR_CFEN             (0x1u<<0)
+
+#define RISAB_PG29_CIDCFGR_DCEN_B_0X0       (0x0u<<2)
+#define RISAB_PG29_CIDCFGR_DCEN_B_0X1       (0x1u<<2)
+#define RISAB_PG29_CIDCFGR_CFEN_B_0X0       (0x0u<<0)
+#define RISAB_PG29_CIDCFGR_CFEN_B_0X1       (0x1u<<0)
+
+// PG30_CIDCFGR Configuration
+
+#define RISAB_PG30_CIDCFGR_DCCID            (0x7u<<4)
+#define RISAB_PG30_CIDCFGR_DCCID_0          (0x1u<<4)
+#define RISAB_PG30_CIDCFGR_DCEN             (0x1u<<2)
+#define RISAB_PG30_CIDCFGR_CFEN             (0x1u<<0)
+
+#define RISAB_PG30_CIDCFGR_DCEN_B_0X0       (0x0u<<2)
+#define RISAB_PG30_CIDCFGR_DCEN_B_0X1       (0x1u<<2)
+#define RISAB_PG30_CIDCFGR_CFEN_B_0X0       (0x0u<<0)
+#define RISAB_PG30_CIDCFGR_CFEN_B_0X1       (0x1u<<0)
+
+// PG31_CIDCFGR Configuration
+
+#define RISAB_PG31_CIDCFGR_DCCID            (0x7u<<4)
+#define RISAB_PG31_CIDCFGR_DCCID_0          (0x1u<<4)
+#define RISAB_PG31_CIDCFGR_DCEN             (0x1u<<2)
+#define RISAB_PG31_CIDCFGR_CFEN             (0x1u<<0)
+
+#define RISAB_PG31_CIDCFGR_DCEN_B_0X0       (0x0u<<2)
+#define RISAB_PG31_CIDCFGR_DCEN_B_0X1       (0x1u<<2)
+#define RISAB_PG31_CIDCFGR_CFEN_B_0X0       (0x0u<<0)
+#define RISAB_PG31_CIDCFGR_CFEN_B_0X1       (0x1u<<0)
