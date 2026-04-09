@@ -96,14 +96,12 @@ SECTIONS {
     {
         __exidx_start = .;
         *(.ARM.exidx*)
-        *(.gnu.linkonce.armexidx.*)
         __exidx_end = .;
     } > prgm_code
 
     .ARM.extab :
     {
         *(.ARM.extab*)
-        *(.gnu.linkonce.armextab.*)
     } > prgm_code
 
     .rodata : {

@@ -3,14 +3,14 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Cleaning all the uKOS TestRom.
+# Project:  uKOS-X
+# Goal:     Cleaning all the uKOS TestRom.
 #
-#			usage:
-#			./clean.sh
+#           usage:
+#           ./clean.sh
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -50,25 +50,25 @@ set -euo pipefail
 setopt KSH_ARRAYS  # Use 0-indexed arrays like bash
 
 if [[ -z "${PATH_UKOS_X_PACKAGE:-}" ]]; then
-	echo "Variable PATH_UKOS_X_PACKAGE is not set!"
-	exit 1
+    echo "Variable PATH_UKOS_X_PACKAGE is not set!"
+    exit 1
 fi
 
 PATH_PRG="${PATH_UKOS_X_PACKAGE}/Tools/TestRom"
 
 # Parse apps.yaml file using yq
 parse_apps_yaml() {
-	local yaml_file="${PATH_PRG}/apps.yaml"
+    local yaml_file="${PATH_PRG}/apps.yaml"
 
-	# Parse YAML: iterate through targets
-	yq eval '.targets[]' "${yaml_file}"
+    # Parse YAML: iterate through targets
+    yq eval '.targets[]' "${yaml_file}"
 }
 
 print -P "%BCleaning all ...%b"
 # Parse YAML and iterate through all targets
 while read -r target; do
-	echo -n .
-	cd "${PATH_PRG}/${target}"
-	make --silent clean_all
+    echo -n .
+    cd "${PATH_PRG}/${target}"
+    make --silent clean_all
 done < <(parse_apps_yaml)
 print -P "%BTerminated!%b"

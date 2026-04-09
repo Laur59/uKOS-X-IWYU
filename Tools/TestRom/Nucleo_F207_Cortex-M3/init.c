@@ -341,7 +341,7 @@ static  void    local_RCC_Configuration(void) {
 // Set-up the MCO
 
     RCC->CR |= RCC_CR_PLLON;
-    while ((RCC->CR & RCC_CR_PLLRDY) == 0u) { ; }
+    while ((RCC->CR & RCC_CR_PLLRDY) == 0U) { ; }
 
     RCC->CFGR = (0u * RCC_CFGR_MCO20)                   // MCO2 (system clock)
               | (0u * RCC_CFGR_MCO2PRE0)                // MCO2 (no division)
