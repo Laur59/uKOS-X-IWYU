@@ -48,7 +48,7 @@ static void __attribute__ ((noreturn)) aProcess_lvgl_tick(const void *argument) 
 
     core = GET_RUNNING_CORE;
 
-    do { kern_suspendProcess(1u); } while (vLVGLReady[core] == false);
+    do { kern_suspendProcess(1u); } while (!vLVGLReady[core]);
 
     kern_readTickCount(&last);
 

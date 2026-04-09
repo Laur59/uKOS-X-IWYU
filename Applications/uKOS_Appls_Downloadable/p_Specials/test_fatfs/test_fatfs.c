@@ -170,12 +170,12 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 // Format the devices
 // ------------------
 
-    #if (defined(KWITH_FORMAT_S))
-    #if (defined(KWITH_SDCARD_S))
+    #ifdef KWITH_FORMAT_S
+    #ifdef KWITH_SDCARD_S
     test_format(DRIVE_SDCARD);
     #endif
 
-    #if (defined(KWITH_FLASH_S))
+    #ifdef KWITH_FLASH_S
     test_format(DRIVE_FLASH);
     #endif
     #endif
@@ -183,24 +183,24 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 // Mount the devices
 // -----------------
 
-    #if (defined(KWITH_SDCARD_S))
+    #ifdef KWITH_SDCARD_S
     test_mount(&fs_sdcard, DRIVE_SDCARD);
     #endif
 
-    #if (defined(KWITH_FLASH_S))
+    #ifdef KWITH_FLASH_S
     test_mount(&fs_serialFlash, DRIVE_FLASH);
     #endif
 
 // Create the folders
 // ------------------
 
-    #if (defined(KWITH_SDCARD_S))
+    #ifdef KWITH_SDCARD_S
     test_folder(DRIVE_SDCARD    "/Poppett");
     test_folder(DRIVE_SDCARD    "/Muppett");
     test_folder(DRIVE_SDCARD    "/Floppet");
     #endif
 
-    #if (defined(KWITH_FLASH_S))
+    #ifdef KWITH_FLASH_S
     test_folder(DRIVE_FLASH     "/Snuppet");
     test_folder(DRIVE_FLASH     "/Bloopet");
     test_folder(DRIVE_FLASH     "/Truppet");
@@ -209,13 +209,13 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 // Create the files
 // ----------------
 
-    #if (defined(KWITH_SDCARD_S))
+    #ifdef KWITH_SDCARD_S
     test_create(&fp_sdcard_1,       DRIVE_SDCARD    "/Poppett/test_1.txt", FA_CREATE_ALWAYS | FA_WRITE);
     test_create(&fp_sdcard_2,       DRIVE_SDCARD    "/Muppett/test_2.txt", FA_CREATE_ALWAYS | FA_WRITE);
     test_create(&fp_sdcard_3,       DRIVE_SDCARD    "/Floppet/test_3.txt", FA_CREATE_ALWAYS | FA_WRITE);
     #endif
 
-    #if (defined(KWITH_FLASH_S))
+    #ifdef KWITH_FLASH_S
     test_create(&fp_serialFlash_1,  DRIVE_FLASH     "/Snuppet/test_1.txt", FA_CREATE_ALWAYS | FA_WRITE);
     test_create(&fp_serialFlash_2,  DRIVE_FLASH     "/Bloopet/test_2.txt", FA_CREATE_ALWAYS | FA_WRITE);
     test_create(&fp_serialFlash_3,  DRIVE_FLASH     "/Truppet/test_3.txt", FA_CREATE_ALWAYS | FA_WRITE);
@@ -224,13 +224,13 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 // Write into the files
 // --------------------
 
-    #if (defined(KWITH_SDCARD_S))
+    #ifdef KWITH_SDCARD_S
     test_write(&fp_sdcard_1,        aTest_sdcard_1,         sizeof(aTest_sdcard_1),         &bytesWrote_sdcard_1);
     test_write(&fp_sdcard_2,        aTest_sdcard_2,         sizeof(aTest_sdcard_2),         &bytesWrote_sdcard_2);
     test_write(&fp_sdcard_3,        aTest_sdcard_3,         sizeof(aTest_sdcard_3),         &bytesWrote_sdcard_3);
     #endif
 
-    #if (defined(KWITH_FLASH_S))
+    #ifdef KWITH_FLASH_S
     test_write(&fp_serialFlash_1,   aTest_serialFlash_1,    sizeof(aTest_serialFlash_1),    &bytesWrote_serialFlash_1);
     test_write(&fp_serialFlash_2,   aTest_serialFlash_2,    sizeof(aTest_serialFlash_2),    &bytesWrote_serialFlash_2);
     test_write(&fp_serialFlash_3,   aTest_serialFlash_3,    sizeof(aTest_serialFlash_3),    &bytesWrote_serialFlash_3);
@@ -239,13 +239,13 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 // Close the files
 // ---------------
 
-    #if (defined(KWITH_SDCARD_S))
+    #ifdef KWITH_SDCARD_S
     test_close(&fp_sdcard_1);
     test_close(&fp_sdcard_2);
     test_close(&fp_sdcard_3);
     #endif
 
-    #if (defined(KWITH_FLASH_S))
+    #ifdef KWITH_FLASH_S
     test_close(&fp_serialFlash_1);
     test_close(&fp_serialFlash_2);
     test_close(&fp_serialFlash_3);
@@ -254,13 +254,13 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 // Open the files
 // --------------
 
-    #if (defined(KWITH_SDCARD_S))
+    #ifdef KWITH_SDCARD_S
     test_open(&fp_sdcard_1,         DRIVE_SDCARD    "/Poppett/test_1.txt", FA_READ);
     test_open(&fp_sdcard_2,         DRIVE_SDCARD    "/Muppett/test_2.txt", FA_READ);
     test_open(&fp_sdcard_3,         DRIVE_SDCARD    "/Floppet/test_3.txt", FA_READ);
     #endif
 
-    #if (defined(KWITH_FLASH_S))
+    #ifdef KWITH_FLASH_S
     test_open(&fp_serialFlash_1,    DRIVE_FLASH     "/Snuppet/test_1.txt", FA_READ);
     test_open(&fp_serialFlash_2,    DRIVE_FLASH     "/Bloopet/test_2.txt", FA_READ);
     test_open(&fp_serialFlash_3,    DRIVE_FLASH     "/Truppet/test_3.txt", FA_READ);
@@ -269,13 +269,13 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 // Read from the files
 // -------------------
 
-    #if (defined(KWITH_SDCARD_S))
+    #ifdef KWITH_SDCARD_S
     test_read(&fp_sdcard_1,         buffer_sdcard_1,        sizeof(buffer_sdcard_1),        &bytesRead_sdcard_1);
     test_read(&fp_sdcard_2,         buffer_sdcard_2,        sizeof(buffer_sdcard_2),        &bytesRead_sdcard_2);
     test_read(&fp_sdcard_3,         buffer_sdcard_3,        sizeof(buffer_sdcard_3),        &bytesRead_sdcard_3);
     #endif
 
-    #if (defined(KWITH_FLASH_S))
+    #ifdef KWITH_FLASH_S
     test_read(&fp_serialFlash_1,    buffer_serialFlash_1,   sizeof(buffer_serialFlash_1),   &bytesRead_serialFlash_1);
     test_read(&fp_serialFlash_2,    buffer_serialFlash_2,   sizeof(buffer_serialFlash_2),   &bytesRead_serialFlash_2);
     test_read(&fp_serialFlash_3,    buffer_serialFlash_3,   sizeof(buffer_serialFlash_3),   &bytesRead_serialFlash_3);
@@ -284,13 +284,13 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 // Close the files
 // ---------------
 
-    #if (defined(KWITH_SDCARD_S))
+    #ifdef KWITH_SDCARD_S
     test_close(&fp_sdcard_1);
     test_close(&fp_sdcard_2);
     test_close(&fp_sdcard_3);
     #endif
 
-    #if (defined(KWITH_FLASH_S))
+    #ifdef KWITH_FLASH_S
     test_close(&fp_serialFlash_1);
     test_close(&fp_serialFlash_2);
     test_close(&fp_serialFlash_3);
@@ -299,13 +299,13 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 // Display the files
 // -----------------
 
-    #if (defined(KWITH_SDCARD_S))
+    #ifdef KWITH_SDCARD_S
     test_display(buffer_sdcard_1,       bytesRead_sdcard_1);
     test_display(buffer_sdcard_2,       bytesRead_sdcard_2);
     test_display(buffer_sdcard_3,       bytesRead_sdcard_3);
     #endif
 
-    #if (defined(KWITH_FLASH_S))
+    #ifdef KWITH_FLASH_S
     test_display(buffer_serialFlash_1,  bytesRead_serialFlash_1);
     test_display(buffer_serialFlash_2,  bytesRead_serialFlash_2);
     test_display(buffer_serialFlash_3,  bytesRead_serialFlash_3);
@@ -314,19 +314,19 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 // List the directory
 // ------------------
 
-    #if (defined(KWITH_SDCARD_S))
+    #ifdef KWITH_SDCARD_S
     test_listDirectory(DRIVE_SDCARD "/");
     #endif
 
-    #if (defined(KWITH_FLASH_S))
+    #ifdef KWITH_FLASH_S
     test_listDirectory(DRIVE_FLASH "/");
     #endif
 
-    #if (defined(KWITH_SDCARD_S))
+    #ifdef KWITH_SDCARD_S
     test_listDirectoryTree(DRIVE_SDCARD "/", 0U);
     #endif
 
-    #if (defined(KWITH_FLASH_S))
+    #ifdef KWITH_FLASH_S
     test_listDirectoryTree(DRIVE_FLASH "/", 0U);
     #endif
 
@@ -365,10 +365,10 @@ MAIN_ENTRY(argc, argv[]) {
         KKERN_PRIORITY_LOW_14               // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
     );
 
-    if (kern_createProcess(&specification_0, nullptr,  &process_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
+    if (kern_createProcess(&specification_0, nullptr,  &process_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return EXIT_OS_FAILURE; }
 
     LOG(KINFO_USER, "Application launched");
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }
 
 // Local routines

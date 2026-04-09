@@ -56,7 +56,7 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
-#if (defined(ROMABLE_S))
+#ifdef ROMABLE_S
 
 // Prototypes
 
@@ -183,10 +183,10 @@ MAIN_ENTRY(argc, argv[]) {
         KKERN_PRIORITY_LOW_01               // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
     );
 
-    if (kern_createProcess(&specification_0, nullptr, &process_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
+    if (kern_createProcess(&specification_0, nullptr, &process_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return EXIT_OS_FAILURE; }
 
 // Do not return with "EXIT_OS_SUCCESS_CLI" because the "console" uses the KURT0
 
     LOG(KINFO_USER, "Application launched, kill the console");
-    return (EXIT_OS_SUCCESS);
+    return EXIT_OS_SUCCESS;
 }

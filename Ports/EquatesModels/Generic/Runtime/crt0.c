@@ -314,6 +314,14 @@ static  void    __attribute__ ((noinline)) local_panicMallocBroken(void) {
 static  void    __attribute__ ((noinline)) local_panicStackUnderflow(void) {
             uint32_t    core;
             char_t      string[200 + 1];
+    const   char_t      *identifier;
+
+    core = GET_RUNNING_CORE;
+
+    PRIVILEGE_ELEVATE;
+    INTERRUPTION_OFF;
+
+    cmns_send(KDEF0, "\nPanic: process stack underflow detected!\n");
 
     identifier = (vKern_runProc[core]->oSpecification.oIdentifier == nullptr) ? "Anonymous" : (vKern_runProc[core]->oSpecification.oIdentifier);
     (void)snprintf(&string[0], 200U, "Current process:    %s\n", identifier);
@@ -324,14 +332,6 @@ static  void    __attribute__ ((noinline)) local_panicStackUnderflow(void) {
 
     (void)snprintf(&string[0], 200U, "Start of Stack:     0x%016"PRIXPTR"\n", (uintptr_t)vKern_runProc[core]->oSpecification.oStackStart);
     cmns_send(KDEF0, &string[0]);
-
-    #ifndef RV32IMAC_S
-    uintptr_t   value;
-
-    value = core_getPSP();
-    (void)snprintf(&string[0], 200U, "Current Stack PSP:  0x%016"PRIXPTR"\n", value);
-    cmns_send(KDEF0, &string[0]);
-
 
     #ifndef RV32IMAC_S
     uintptr_t   value;

@@ -3,7 +3,7 @@
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
- * Goal:     Some core tests.
+ * Goal:     Some img tests.
  */
 
 #define     _POSIX_C_SOURCE     200809L

@@ -63,7 +63,7 @@
 #include    "tensorflow/lite/micro/system_setup.h"
 #include    "tensorflow/lite/schema/schema_generated.h"
 
-#if (defined(CORTEX))
+#ifdef CORTEX
 #include    "tensorflow/lite/micro/cortex_m_generic/debug_log_callback.h"
 #endif
 
@@ -88,7 +88,7 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
                                     "Input format:  tfl_vs_ukos\n"
                                     "Output format: [result]\n\n";
 
-#if (defined(ROMABLE_S))
+#ifdef ROMABLE_S
 
 // Prototypes
 
@@ -138,16 +138,16 @@ namespace {
     }
 }
 
-#if (defined(RISCV))
+#ifdef RISCV
 extern "C"  char_t  putchar_(char_t ch) {
 
     UNUSED(ch);
 
-    return (ch);
+    return ch;
 }
 #endif
 
-#if (defined(CORTEX))
+#ifdef CORTEX
 namespace {
     void    debuglog(const char *s) {
 
@@ -172,7 +172,7 @@ namespace {
 
         UNUSED(argument);
 
-        #if (defined(CORTEX))
+        #ifdef CORTEX
         RegisterDebugLogCallback(debuglog);
         #endif
 
@@ -268,5 +268,5 @@ MAIN_ENTRY(argc, argv[]) {
     if (kern_createProcess(&specification_0, nullptr, &process_0) != KERR_KERN_NOERR) { exit(EXIT_OS_FAILURE); }
 
     LOG(KINFO_USER, "Application launched");
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }

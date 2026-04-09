@@ -58,8 +58,6 @@
 // NOLINTBEGIN
 #include    "newlib.h"
 
-#include    "newlib.h"
-
 #include    <errno.h>       // NOLINT(misc-include-cleaner): provides ENODEV, EBADF, ECHILD, etc.
 #include    <stddef.h>
 #include    <stdint.h>
