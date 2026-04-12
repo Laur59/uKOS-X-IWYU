@@ -1,8 +1,7 @@
+<!-- SPDX-License-Identifier: MIT -->
+<!-- SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen -->
+
 # System customisation
-
-(c) 2025-2026, Edo. Franzi, 2025-01-01
-
-
 
 The system offers extensive customization capabilities to achieve the desired behaviour, with fine-tuning accomplished by strategically modifying the behavioural descriptions within CMakeLists.txt.
 
@@ -29,82 +28,30 @@ add_source_with_define(LIBX_P ${PATH_UKOS}/OS/Lib_serials/urt0/urt0.c CONFIG_MAN
 ### Adding third party MicroPython library
 
 ```cmake
-# Adding the MicroPython support
-add_compile_definitions(CONFIG_MAN_MICROPYTHON_S)
-find_library(MICROPYTHON MicroPython ${PATH_UKOS}/Third_Parties/MicroPython/Library/${CORE})
-file(APPEND "${ARTIFACTS_DIR}/FLASH.cnf" "-DCONFIG_MAN_MICROPYTHON_S ")
-...
 # Example: adding the MicroPython tool
 list(APPEND CLI_U ${PATH_UKOS}/OS/CLI/microPython/microPython.c)
 ...
-# With the MicroPython manager (MicroPython Engine)
-UKOS_COMPONENTS += $(MICROPYTHON).a
+# All library components
+set(UKOS_COMPONENTS rtcb_p kern_p kern_u libx_p libx_u proc_p proc_u tool_u ${TINYUSB})
+
+# Optional manager
+add_MicroPython()
 ```
 
-### Adding third party TinyUSB (FS) library
+### Adding third party TinyUSB library
 
 ```cmake
-# Adding the TinyUSB support
-# - Provider (st)
-# - Family (nrf)
-# - Speed (FS)
-# - Profile (cdc_cdc)
-set(SPEED FS)
-set(PROFILE cdc_cdc)
-
-set(PATH_TINYUSB ${PATH_UKOS}/Third_Parties/TinyUSB)
-
-# Find TinyUSB package config (automatically provides include paths and definitions)
-find_package(TinyUSB REQUIRED
-    PATHS ${PATH_TINYUSB}/Library/Family/${FAMILY}/${SOC}/${PROFILE}
-    NO_DEFAULT_PATH
+# TinyUSB integration (must be before library definitions)
+add_TinyUSB(
+    SPEED FS
+    PROFILE cdc_cdc
 )
-
-# Link against the appropriate speed variant
-# This automatically adds include paths and compile definitions
-set(TINYUSB TinyUSB::${SPEED})
 ...
 # With the TinyUSB process
 list(APPEND PROC_U
     ${PATH_UKOS}/OS/Processes/TinyUSB/TinyUSB.c
     ${PATH_VARI}/Processes/TinyUSB/stub_TinyUSB.c
 )
-...
-# With the TinyUSB library
-UKOS_COMPONENTS += $(TINYUSB).a
-```
-
-### Adding third party TinyUSB (HS) library
-
-```cmake
-# Adding the TinyUSB support
-# - Provider (st)
-# - Family (u5)
-# - Speed (HS)
-# - Profile (cdc_video)
-set(SPEED HS)
-set(PROFILE cdc_video)
-
-set(PATH_TINYUSB ${PATH_UKOS}/Third_Parties/TinyUSB)
-
-# Find TinyUSB package config (automatically provides include paths and definitions)
-find_package(TinyUSB REQUIRED
-    PATHS ${PATH_TINYUSB}/Library/Family/${FAMILY}/${SOC}/${PROFILE}
-    NO_DEFAULT_PATH
-)
-
-# Link against the appropriate speed variant
-# This automatically adds include paths and compile definitions
-set(TINYUSB TinyUSB::${SPEED})
-...
-# With the TinyUSB process
-list(APPEND PROC_U
-    ${PATH_UKOS}/OS/Processes/TinyUSB/TinyUSB.c
-    ${PATH_VARI}/Processes/TinyUSB/stub_TinyUSB.c
-)
-...
-# With the TinyUSB library
-UKOS_COMPONENTS += $(TINYUSB).a
 ```
 
 ### Adding third party FatFs library
