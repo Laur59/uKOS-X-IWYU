@@ -102,53 +102,20 @@ MAIN_ENTRY(argc, const char_t *argv[]) {
 
 ### Adaptation of the main µKOS-X makefile
 
-Adaptation of the file /Target/Alastor_H743/Variant_Test/System/makefile.
+Add the file /Target/Alastor_H743/Variant_Test/System/app.mk.
 
 ```makefile
-...
+FLAGS_UKOS  += -DWITHAPP_S
 
-SHELL                =  /bin/sh
-PATH_UKOS_X_PACKAGE  ?= $(abspath ../../../../..)
+PATH_APPL		=  $(PATH_UKOS)/Applications/uKOS_Appls_Downloadable
 
-ifndef PATH_UKOS_X_PACKAGE
-    $(error PATH_UKOS_X_PACKAGE is not defined)
-endif
-
-# Project paths
-...
-
-PATH_MKFILE          := $(abspath $(lastword $(MAKEFILE_LIST)))
-PATH_PORT            =  $(PATH_UKOS_X_PACKAGE)/Ports
-
-...
-
-# Target & Infrastructure
-
-# - VERSIONING    --> SVN
-# - VERSIONING    --> GIT
-# - VERSIONING    --> NONE
-
-PREFIX              ?=  arm-none-eabi-
-COMPILER_FAMILY     ?=  gcc
-
-BOARD                =  Alastor_H743
-V                    =  Variant_Test
-SOC                  =  STM32H743
-CORE                 =  CORTEX_M7
-OPTIMISATION         =  -Os
-VERSIONING           =  GIT
-FLAGS_USER          += -DuKOS_NAME=''
-FLAGS_USER          += -DuKOS_OWNER='(c) Edo. Franzi'
-
-BURN                 =  jtag_FT4232_b
-
-...
-CLI_U                =  $(PATH_UKOS)/OS/CLI/bangla/BaNgLa.c
-CLI_U               += $(PATH_UKOS)/OS/CLI/battery/battery.c
-CLI_U               += $(PATH_UKOS)/OS/CLI/console/console.c
-...
-CLI_U               += $(PATH_UKOS)/OS/CLI/uKOS/uKOS.c
-CLI_U               += $(PATH_UKOS)/Applications/uKOS_Appls_Downloadable/ \
-                       l_Neural/class_Py/class_Py.c
-...
+CLI_U				+= $(PATH_UKOS)/Applications/uKOS_Appls_Downloadable/ \
+               l_MLPs/class_Py/class_Py.c
 ```
+
+Build the system to include the app.
+
+```bash
+make -j USER_MODE=1 WITHAPP=1
+```
+

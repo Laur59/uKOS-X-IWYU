@@ -47,6 +47,9 @@
 # TinyUSB integration (derive_soc_properties, add_TinyUSB)
 include(tinyusb)
 
+# TensorFlow Lite Micro integration (add_Tflite)
+include(tflite)
+
 set(CMAKE_C_OUTPUT_EXTENSION_REPLACE 1)
 set(CMAKE_ASM_OUTPUT_EXTENSION_REPLACE 1)
 
@@ -58,6 +61,8 @@ option(CANARY "Canary stack protection" ON)
 
 # Set default mode to privileged
 option(USER_MODE "User mode activated" ON)
+
+option(WITHAPP "Integrate a user application into the system" OFF)
 
 add_library(core_compiler_flags INTERFACE)
 if(${USER_MODE} AND (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "ARM"))
