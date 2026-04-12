@@ -25,38 +25,26 @@ emulate -L zsh
 setopt ERR_EXIT NO_UNSET PIPE_FAIL EXTENDED_GLOB
 
 # Colours for messages
-readonly RED='\033[0;31m'
-readonly GREEN='\033[0;32m'
-readonly YELLOW='\033[0;33m'
-readonly BLUE='\033[0;34m'
-readonly BOLD='\033[1m'
-readonly FAINT='\033[2m'
-readonly ITALIC='\033[3m'
-readonly NC='\033[0m' # No Color
+readonly RED=$'\033[0;31m'
+readonly GREEN=$'\033[0;32m'
+readonly YELLOW=$'\033[0;33m'
+readonly BLUE=$'\033[0;34m'
+readonly BOLD=$'\033[1m'
+readonly FAINT=$'\033[2m'
+readonly ITALIC=$'\033[3m'
+readonly NC=$'\033[0m' # No Color
 
-# Toolchain binaries
-# Prefer LLVM tools if available, otherwise try GNU embedded tools, then system tools
-if [[ -n "${PATH_LLVM_ARM:-}" ]] && [[ -x "${PATH_LLVM_ARM}"/bin/llvm-nm ]]; then
-   NM_TOOL="${PATH_LLVM_ARM}"/bin/llvm-nm
-   SIZE_TOOL="${PATH_LLVM_ARM}"/bin/llvm-size
-   TOOLCHAIN_NAME="LLVM (ARM)"
+# Toolchain discovery
+# llvm-nm/llvm-size are architecture-agnostic: either the ARM or RISC-V flavour
+# can read any ELF archive.  GNU nm tools are target-specific (arm-none-eabi-nm
+# rejects RISC-V objects and vice versa), so the final selection is deferred
+# until the library architecture is known (after argument validation below).
+_llvm_nm=""
+_llvm_size=""
+if   [[ -n "${PATH_LLVM_ARM:-}"  ]] && [[ -x "${PATH_LLVM_ARM}/bin/llvm-nm"  ]]; then
+   _llvm_nm="${PATH_LLVM_ARM}/bin/llvm-nm";   _llvm_size="${PATH_LLVM_ARM}/bin/llvm-size"
 elif [[ -n "${PATH_LLVM_RVXX:-}" ]] && [[ -x "${PATH_LLVM_RVXX}/bin/llvm-nm" ]]; then
-   NM_TOOL="${PATH_LLVM_RVXX}"/bin/llvm-nm
-   SIZE_TOOL="${PATH_LLVM_RVXX}"/bin/llvm-size
-   TOOLCHAIN_NAME="LLVM (RISC-V)"
-elif [ -n "${PATH_GCC_ARM:-}" ] && [ -x "${PATH_GCC_ARM}"/bin/arm-none-eabi-nm ]; then
-   NM_TOOL="${PATH_GCC_ARM}"/bin/arm-none-eabi-nm
-   SIZE_TOOL="${PATH_GCC_ARM}"/bin/arm-none-eabi-size
-   TOOLCHAIN_NAME="GNU (ARM)"
-elif [[ -n "${PATH_GCC_RVXX:-}" ]] && [[ -x "${PATH_GCC_RVXX}"/bin/riscv64-unknown-elf-nm ]]; then
-   NM_TOOL="${PATH_GCC_RVXX}"/bin/riscv64-unknown-elf-nm
-   SIZE_TOOL="${PATH_GCC_RVXX}"/bin/riscv64-unknown-elf-size
-   TOOLCHAIN_NAME="GNU (RISC-V)"
-else
-   # Try to use system tools as fallback
-   NM_TOOL=$(command -v nm || echo "nm")
-   SIZE_TOOL=$(command -v size || echo "size")
-   TOOLCHAIN_NAME="System"
+   _llvm_nm="${PATH_LLVM_RVXX}/bin/llvm-nm";  _llvm_size="${PATH_LLVM_RVXX}/bin/llvm-size"
 fi
 
 print "${BOLD}${BLUE}"
@@ -103,6 +91,36 @@ fi
 if ! file "${LIB2}" | grep -q "ar archive\|current ar archive"; then
    print "${RED}Error: ${LIB2} is not a valid ar archive${NC}"
    exit 1
+fi
+
+# Toolchain selection: libraries are validated; detect architecture from the first
+# object member so the correct GNU tool is chosen when LLVM is not available.
+if [[ -n "${_llvm_nm}" ]]; then
+   NM_TOOL="${_llvm_nm}"
+   SIZE_TOOL="${_llvm_size}"
+   TOOLCHAIN_NAME="LLVM"
+else
+   _first_obj=$(ar t "${LIB1}" 2>/dev/null | grep -m1 '\.o' | sed 's|/$||' || true)
+   _arch_str=""
+   if [[ -n "${_first_obj}" ]]; then
+      _arch_str=$(ar p "${LIB1}" "${_first_obj}" 2>/dev/null | file - 2>/dev/null || true)
+   fi
+
+   if echo "${_arch_str}" | grep -qi "arm\|thumb" \
+      && [[ -n "${PATH_GCC_ARM:-}" ]] && [[ -x "${PATH_GCC_ARM}/bin/arm-none-eabi-nm" ]]; then
+      NM_TOOL="${PATH_GCC_ARM}/bin/arm-none-eabi-nm"
+      SIZE_TOOL="${PATH_GCC_ARM}/bin/arm-none-eabi-size"
+      TOOLCHAIN_NAME="GNU (ARM)"
+   elif echo "${_arch_str}" | grep -qi "risc-v\|riscv" \
+      && [[ -n "${PATH_GCC_RVXX:-}" ]] && [[ -x "${PATH_GCC_RVXX}/bin/riscv64-unknown-elf-nm" ]]; then
+      NM_TOOL="${PATH_GCC_RVXX}/bin/riscv64-unknown-elf-nm"
+      SIZE_TOOL="${PATH_GCC_RVXX}/bin/riscv64-unknown-elf-size"
+      TOOLCHAIN_NAME="GNU (RISC-V)"
+   else
+      NM_TOOL=$(command -v nm || echo "nm")
+      SIZE_TOOL=$(command -v size || echo "size")
+      TOOLCHAIN_NAME="System"
+   fi
 fi
 
 print "Using toolchain: ${BOLD}${TOOLCHAIN_NAME}${NC}"
@@ -156,40 +174,14 @@ if [[ ${strtab_diff} -ne 0 ]]; then
     fi
 fi
 
-# Long filename string table (//) size
-# The ar archive stores long member names in a dedicated // entry.
-# Different naming conventions (e.g. .c.o vs .fs.o) affect this table.
-lib1_strtab=$(ar -tv "${LIB1}" 2>/dev/null | awk '$NF == "//" {print $3}')
-lib2_strtab=$(ar -tv "${LIB2}" 2>/dev/null | awk '$NF == "//" {print $3}')
-lib1_strtab=${lib1_strtab:-0}
-lib2_strtab=${lib2_strtab:-0}
-strtab_diff=$((lib2_strtab - lib1_strtab))
-
-print ""
-printf "String table (//): %6d vs %6d bytes (diff: %d)\n" ${lib1_strtab} ${lib2_strtab} ${strtab_diff}
-if [[ ${strtab_diff} -ne 0 ]]; then
-    print "${FAINT}  Object naming conventions differ (e.g. .c.o vs .fs.o)${NC}"
-    if [[ ${size_diff} -ne 0 ]] && [[ ${size_diff} -eq ${strtab_diff} ]]; then
-        print "${FAINT}  This accounts for the entire file size difference${NC}"
-    fi
-fi
-
 # 2. Compare section sizes
 echo ""
 print "${BOLD}${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 print "${BOLD}Section Sizes${NC}"
 print "${BOLD}${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
-# Get section sizes (handle both GNU and LLVM output formats)
-if [[ "${TOOLCHAIN_NAME}" == "LLVM" ]]; then
-   # LLVM size output format
-   lib1_sections=$(${SIZE_TOOL} -B -t "${LIB1}" 2>/dev/null | grep "TOTALS" || echo "0 0 0 0")
-   lib2_sections=$(${SIZE_TOOL} -B -t "${LIB2}" 2>/dev/null | grep "TOTALS" || echo "0 0 0 0")
-else
-   # GNU size output format
-   lib1_sections=$(${SIZE_TOOL} -B -t "${LIB1}" 2>/dev/null | grep "TOTALS" || echo "0 0 0 0")
-   lib2_sections=$(${SIZE_TOOL} -B -t "${LIB2}" 2>/dev/null | grep "TOTALS" || echo "0 0 0 0")
-fi
+lib1_sections=$(${SIZE_TOOL} -B -t "${LIB1}" 2>/dev/null | grep "TOTALS" || echo "0 0 0 0")
+lib2_sections=$(${SIZE_TOOL} -B -t "${LIB2}" 2>/dev/null | grep "TOTALS" || echo "0 0 0 0")
 
 read -r text1 data1 bss1 total1 rest <<< "${lib1_sections}"
 read -r text2 data2 bss2 total2 rest <<< "${lib2_sections}"
