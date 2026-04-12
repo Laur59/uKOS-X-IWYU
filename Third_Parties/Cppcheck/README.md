@@ -25,8 +25,6 @@ deactivate
 # Enter in the Variant_Test of the Discovery_U5G9 target
 cd Ports/Targets/Discovery_U5G9/Variant_Test
 
-cd ${PATH_UKOS_X_PACKAGE}/Ports/Targets/Discovery_U5G9/Variant_Test
-
 # Open source version
 ${PATH_UKOS_X_PACKAGE}/Third_Parties/Cppcheck/code_analysis.sh
 

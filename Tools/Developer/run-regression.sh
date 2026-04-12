@@ -67,6 +67,8 @@ printf "Options:   USER_MODE=%s, CANARY=%s\n" "${USER_MODE}" "${CANARY}"
 [[ -n "${TARGET_FILTER}" ]] && printf "Filter:    Target = %s\n" "${TARGET_FILTER}"
 printf "\n"
 
+rm -fr ${PATH_ARTEFACTS}
+
 # Statistics
 integer total_builds=0
 integer success_count=0

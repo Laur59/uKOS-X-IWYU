@@ -126,6 +126,13 @@ function(configure_arm_core)
         endif()
         set(MCPU "cortex-a7")
         set(MARCH "armv7ve")
+        # A7 uses different flags, handle separately
+        target_compile_options(core_compiler_flags INTERFACE -mcpu=${MCPU} -march=${MARCH})
+        add_link_options(-mcpu=${MCPU} -march=${MARCH})
+        return()
+    else()
+        message(FATAL_ERROR "Unsupported ARM core: ${CORE}")
+    endif()
 
     # Apply LLVM target if using LLVM
     if(${COMPILER_FAMILY} STREQUAL "llvm" AND DEFINED LLVM_TARGET)
@@ -141,13 +148,6 @@ function(configure_arm_core)
         list(APPEND COMPILE_FLAGS "-mfpu=${MFPU}")
     endif()
     if(DEFINED EXTRA_COMPILE_FLAGS)
-        list(APPEND COMPILE_FLAGS ${EXTRA_COMPILE_FLAGS})
-    endif()
-
-    # Apply compile and link flags
-    target_compile_options(core_compiler_flags INTERFACE ${COMPILE_FLAGS})
-    add_link_options(${COMPILE_FLAGS})
-
         list(APPEND COMPILE_FLAGS ${EXTRA_COMPILE_FLAGS})
     endif()
 

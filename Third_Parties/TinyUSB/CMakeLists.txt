@@ -63,7 +63,7 @@ message("")
 
 # Package version and commit hash (matching build_with_cmake.sh)
 set(TINYUSB_VERSION "0.20.0")
-set(TINYUSB_HASH "7c3f597")
+set(TINYUSB_HASH "470715a")
 
 message(STATUS "Fetching TinyUSB version ${TINYUSB_VERSION} (commit ${TINYUSB_HASH})")
 
@@ -272,6 +272,7 @@ foreach(SOC_CONFIG ${SUPPORTED_SOCS})
             # Pass build type explicitly to ensure optimization
             CMAKE_ARGS        -DCMAKE_BUILD_TYPE=${SUBPROJECT_BUILD_TYPE}
                               -G ${CMAKE_GENERATOR}
+                              -DUSE_LLVM=OFF
             CMAKE_CACHE_ARGS  ""
 
             # Build step

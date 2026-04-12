@@ -12,14 +12,6 @@
 #include    <stdint.h>
 
 #include    "../ulvgl.h"
-#include    "macros.h"
-#include    "random/random.h"
-
-#include    "ui.h"
-
-#include    <stdint.h>
-
-#include    "../ulvgl.h"
 #include    "kern/kern.h"
 #include    "kern/kern_types.h"
 #include    "macros.h"
@@ -83,8 +75,8 @@ static  void    local_DrawText_1(void) {
 // Install a timer callback (every 200-ms)
 
     lv_timer_create(local_colorL1_cb, 200, vL1[core]);
-
-    UNUSED(time);
+    kern_unlockMutex(vLVGL_API[core]);
+}
 
 static  void    local_colorL1_cb(lv_timer_t *time) {
     uint32_t    core, color;

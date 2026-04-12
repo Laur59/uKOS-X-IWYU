@@ -127,6 +127,7 @@ foreach(CORE ${SUPPORTED_CORES})
             # Pass build type explicitly to ensure optimisation
             CMAKE_ARGS        -DCMAKE_BUILD_TYPE=${SUBPROJECT_BUILD_TYPE}
                               -G ${CMAKE_GENERATOR}
+                              -DUSE_LLVM=OFF
             CMAKE_CACHE_ARGS  ""
 
             # Build step
