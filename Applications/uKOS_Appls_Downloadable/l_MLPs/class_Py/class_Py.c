@@ -188,8 +188,8 @@ MAIN_ENTRY(argc, argv[]) {
 
 // Create the user processes
 
-    if (kern_createProcess(&specification_0, nullptr, &process_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
+    if (kern_createProcess(&specification_0, nullptr, &process_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return EXIT_OS_FAILURE; }
 
     LOG(KINFO_USER, "Application launched, kill the console");
-    return (EXIT_OS_SUCCESS);
+    return EXIT_OS_SUCCESS;
 }

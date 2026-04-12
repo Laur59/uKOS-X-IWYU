@@ -52,19 +52,27 @@ else()
     set(COMPILER_FAMILY gcc)
     set(PREFIX arm-none-eabi-)
 
-    if(DEFINED ENV{PATH_GCC_ARM})
-        set(PATH_GCC_ARM $ENV{PATH_GCC_ARM})
-    else()
-        # Search GCC for ARM in PATH
-        find_program(ARM_GCC_COMPILER
-            NAMES ${PREFIX}gcc
-            DOC "ARM GCC Compiler"
-        )
-        if(NOT ARM_GCC_COMPILER)
-            message(FATAL_ERROR "Environment variable PATH_GCC_ARM is not defined")
+    if(DEFINED C_LIBRARY AND C_LIBRARY STREQUAL "picolibc")
+        if(DEFINED ENV{PATH_GCC_ARMP})
+            set(PATH_GCC_ARM $ENV{PATH_GCC_ARMP})
         else()
-            get_filename_component(ARM_GCC_BIN_DIR ${ARM_GCC_COMPILER} DIRECTORY)
-            cmake_path(GET ARM_GCC_BIN_DIR PARENT_PATH PATH_GCC_ARM)
+            message(FATAL_ERROR "Environment variable PATH_GCC_ARMP is not defined")
+        endif()
+    else()
+        if(DEFINED ENV{PATH_GCC_ARM})
+            set(PATH_GCC_ARM $ENV{PATH_GCC_ARM})
+        else()
+            # Search GCC for ARM in PATH
+            find_program(ARM_GCC_COMPILER
+                NAMES ${PREFIX}gcc
+                DOC "ARM GCC Compiler"
+            )
+            if(NOT ARM_GCC_COMPILER)
+                message(FATAL_ERROR "Environment variable PATH_GCC_ARM is not defined")
+            else()
+                get_filename_component(ARM_GCC_BIN_DIR ${ARM_GCC_COMPILER} DIRECTORY)
+                cmake_path(GET ARM_GCC_BIN_DIR PARENT_PATH PATH_GCC_ARM)
+            endif()
         endif()
     endif()
 

@@ -90,11 +90,13 @@ message("───────────────────────�
 set(SUPPORTED_CORES
     CORTEX_M55
     RV64IMAFDC
+    CORTEX_M85
 )
 # and their display
 set(CORE_DISPLAY
     WaveShare_2_Inches
     TFT_2_4_Inches
+    RK050HR18_5_Inches
 )
 
 # Determine build type to pass to ExternalProjects
@@ -128,6 +130,7 @@ foreach(CORE_INDEX RANGE 0 ${LAST_INDEX})
             # Configure step - pass build type explicitly for optimization
             CMAKE_ARGS        -DCMAKE_BUILD_TYPE=${SUBPROJECT_BUILD_TYPE}
                               -G ${CMAKE_GENERATOR}
+                              -DUSE_LLVM=OFF
             CMAKE_CACHE_ARGS  ""
 
             # Build step

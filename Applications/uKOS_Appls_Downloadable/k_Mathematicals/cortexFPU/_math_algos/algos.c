@@ -37,7 +37,7 @@ float64_t   pi_lambert(float64_t index, float32_t oldPi) {
 
     v = v + (1.0 / pow(index, 2));
     pi = sqrt(v * 6);
-    return (pi);
+    return pi;
 }
 
 /*
@@ -55,5 +55,5 @@ float64_t   pi_spigot(float64_t index, float64_t oldPi) {
                - (1.0 / ((8.0 * index) + 5.0))
                - (1.0 / ((8.0 * index) + 6.0)));
 
-    return (pi);
+    return pi;
 }

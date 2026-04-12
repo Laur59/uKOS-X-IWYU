@@ -1,14 +1,11 @@
 #!/usr/bin/env zsh
-
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-
-#------------------------------------------------------------------------
+#
 # Goal: Build all systems for each configuration and all toolchains
 #
 # Usage:
 #       ./latotale.sh
-#------------------------------------------------------------------------
 
 emulate -L zsh
 setopt ERR_EXIT NO_UNSET PIPE_FAIL
@@ -30,7 +27,7 @@ do_picolibc=1
 do_U=1
 do_Y=1
 
-OPTSTRING=":CGLMNPUYh"
+OPTSTRING=":GLNPUYh"
 while getopts ${OPTSTRING} option; do
     case ${option} in
         h)
@@ -102,46 +99,46 @@ print "\nVersion of clang for RISC-V"
 print
 #
 if [[ $do_newlib ]]; then
-    [[ $do_gcc ]] && ./_build_cmake.sh
-    [[ $do_clang ]] && ./_build_cmake.sh -L
+    [[ $do_gcc ]] && ./_build.sh -G
+    [[ $do_clang ]] && ./_build.sh
 
     if [[ $do_Y ]]; then
-        [[ $do_gcc ]] && ./_build_cmake.sh -Y
-        [[ $do_clang ]] && ./_build_cmake.sh -LY
+        [[ $do_gcc ]] && ./_build.sh -GY
+        [[ $do_clang ]] && ./_build.sh -Y
     fi
 
     if [[ $do_U ]]; then
-        [[ $do_gcc ]] && ./_build_cmake.sh -U
-        [[ $do_clang ]] && ./_build_cmake.sh -LU
+        [[ $do_gcc ]] && ./_build.sh -GU
+        [[ $do_clang ]] && ./_build.sh -U
 
         if [[ $do_Y ]]; then
-            [[ $do_gcc ]] && ./_build_cmake.sh -UY
-            [[ $do_clang ]] && ./_build_cmake.sh -LUY
+            [[ $do_gcc ]] && ./_build.sh -GUY
+            [[ $do_clang ]] && ./_build.sh -UY
         fi
     fi
 fi
 #
 if [[ $do_picolibc ]]; then
-    [[ $do_gcc ]] && ./_build_cmake.sh -P
-    [[ $do_clang ]] && ./_build_cmake.sh -PL
+    [[ $do_gcc ]] && ./_build.sh -GP
+    [[ $do_clang ]] && ./_build.sh -P
 
     if [[ $do_Y ]]; then
-        [[ $do_gcc ]] && ./_build_cmake.sh -PY
-        [[ $do_clang ]] && ./_build_cmake.sh -PLY
+        [[ $do_gcc ]] && ./_build.sh -GPY
+        [[ $do_clang ]] && ./_build.sh -PY
     fi
 
     if [[ $do_U ]]; then
-        [[ $do_gcc ]] && ./_build_cmake.sh -PU
-        [[ $do_clang ]] && ./_build_cmake.sh -PLU
+        [[ $do_gcc ]] && ./_build.sh -GPU
+        [[ $do_clang ]] && ./_build.sh -PU
 
         if [[ $do_Y ]]; then
-            [[ $do_gcc ]] && ./_build_cmake.sh -PUY
-            [[ $do_clang ]] && ./_build_cmake.sh -PLUY
+            [[ $do_gcc ]] && ./_build.sh -GPUY
+            [[ $do_clang ]] && ./_build.sh -PUY
         fi
     fi
 fi
 
-./clean.sh > /dev/null 2>&1
+./_clean.sh > /dev/null 2>&1
 tac=$(date +%s)
 print "$(date -r $tac)"
 elapsed=$(( tac - tic ))

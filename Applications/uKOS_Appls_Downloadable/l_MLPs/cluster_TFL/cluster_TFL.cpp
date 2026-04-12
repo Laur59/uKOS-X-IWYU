@@ -83,7 +83,7 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
                                     "Input format:  cluster_TFL\n"
                                     "Output format: [result]\n\n";
 
-#if (defined(ROMABLE_S))
+#ifdef ROMABLE_S
 
 // Prototypes
 
@@ -138,7 +138,7 @@ extern "C"  char_t  putchar_(char_t ch) {
 
     UNUSED(ch);
 
-    return (ch);
+    return ch;
 }
 #endif
 
@@ -172,7 +172,7 @@ namespace {
 
         UNUSED(argument);
 
-        #if (defined(CORTEX))
+        #ifdef CORTEX
         RegisterDebugLogCallback(debuglog);
         #endif
 
@@ -290,5 +290,5 @@ MAIN_ENTRY(argc, argv[]) {
     if (kern_createProcess(&specification_0, nullptr, &process_0) != KERR_KERN_NOERR) { exit(EXIT_OS_FAILURE); }
 
     LOG(KINFO_USER, "Application launched");
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }

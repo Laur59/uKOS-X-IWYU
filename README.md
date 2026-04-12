@@ -2,8 +2,8 @@
 
 This fork does not introduce new functional features. Its purpose is to apply
 **IWYU (Include What You Use)** principles and related code hygiene practices to
-the existing codebase, while remaining as close as possible to the upstream
-project in terms of structure and behavior.
+the existing codebase, whilst remaining as close as possible to the upstream
+project in terms of structure and behaviour.
 
 The main differences compared to the upstream repository are:
 
@@ -19,45 +19,15 @@ extend or modify functionality.
 
 For project history, heritage, and credits, see [ABOUT.md](ABOUT.md).
 
-## Unsupported components in this fork
+## Components not included in this fork
 
 This fork is based on the upstream repository:
 https://github.com/Edo-Franzi/uKOS-X.git
 
-The following directories are present for compatibility with the upstream
-repository but are **out of scope for this fork** and are **not supported or
-maintained** here.
-
-Issues, questions, or pull requests related to these components should be
-reported to the **upstream project**, not to this fork.
-
-In particular:
-
-- These components are **not covered by CI or regular testing** in this fork
-- Build failures or IWYU violations in these paths are **not considered bugs**
-  in the context of this fork
-- Changes in these directories may lag behind upstream or be unreviewed
-
-Unsupported directories include:
-
-```
-Tools
-├── FTDI_eeproms
-├── Ozone_Plugin
-├── SQE_Viewer
-├── Scripts
-├── TestRom
-└── UNIX_Tools
-    ├── _Comm_FTDI
-    ├── bin2s
-    ├── concat_proto
-    └── dump
-Documentation
-└── Doxygen
-```
-
-For toolchain generation, auxiliary tools, and related documentation, please
-refer directly to the upstream repository.
+Several directories present in the upstream repository — notably `Tools/` and
+`Documentation/Doxygen/` — are not included in this fork, as they fall outside
+its scope. For toolchain generation, auxiliary tools, and related documentation,
+please refer directly to the upstream repository.
 
 ---
 

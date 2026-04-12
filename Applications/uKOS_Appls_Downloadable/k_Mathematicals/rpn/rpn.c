@@ -62,7 +62,7 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
-#if (defined(ROMABLE_S))
+#ifdef ROMABLE_S
 
 // Prototypes
 
@@ -174,7 +174,7 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
     decNumberFromString(&vRpnStack.oZ, "0", &vSet);
     decNumberFromString(&vRpnStack.oT, "0", &vSet);
 
-    while (vTerminate == false) {
+    while (!vTerminate) {
         text_waitString(KSYST, commandLine, KLN_CMD_LINE_BUF);
         text_readArgs(commandLine, KLN_CMD_LINE_BUF, argv, &argc);
 
@@ -188,7 +188,7 @@ static void __attribute__ ((noreturn)) aProcess(const void *argument) {
 // could be a command. If no, indicate a syntax error.
 
         if ((vSet.status & DEC_Errors) == 0U)  {
-            if (vEnter == true) {               vRpnStack.oX = x; local_printStack(); vEnter = false; }
+            if (vEnter) {               vRpnStack.oX = x; local_printStack(); vEnter = false; }
             else                { local_push(); vRpnStack.oX = x; local_printStack(); vEnter = false; }
         }
         else {
@@ -236,10 +236,10 @@ MAIN_ENTRY(argc, argv[]) {
         KKERN_PRIORITY_MEDIUM_01            // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
     );
 
-    if (kern_createProcess(&specification, nullptr, &process) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
+    if (kern_createProcess(&specification, nullptr, &process) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return EXIT_OS_FAILURE; }
 
     LOG(KINFO_USER, "Application launched");
-    return (EXIT_OS_SUCCESS);
+    return EXIT_OS_SUCCESS;
 }
 
 // Local routines
@@ -308,7 +308,7 @@ static  void    local_getCommand(uint32_t argc, const char_t *argv[]) {
 
     while (table->oCommand != nullptr) {
         text_checkAsciiBuffer(argv[0], table->oCommand, &equal);
-        if (equal == true) {
+        if (equal) {
             table->oOrder(argc, argv);
             local_printStack();
             break;

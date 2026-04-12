@@ -57,7 +57,7 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
                                     "Input format:  test_cpp\n"
                                     "Output format: [result]\n\n";
 
-#if (defined(ROMABLE_S))
+#ifdef ROMABLE_S
 
 // Prototypes
 
@@ -161,5 +161,5 @@ MAIN_ENTRY(argc, argv[]) {
 //
 
     if (kern_createProcess(&specification_0, nullptr, &process_0) != KERR_KERN_NOERR) { exit(EXIT_OS_FAILURE); }
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }

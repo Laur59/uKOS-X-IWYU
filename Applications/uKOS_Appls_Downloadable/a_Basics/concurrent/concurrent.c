@@ -60,7 +60,7 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
-#if (defined(ROMABLE_S))
+#ifdef ROMABLE_S
 
 // Prototypes
 
@@ -247,13 +247,13 @@ MAIN_ENTRY(argc, argv[]) {
         KKERN_PRIORITY_HIGH_06              // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
     );
 
-    if (kern_createProcess(&specification_0, &aParameter[0], &process_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
-    if (kern_createProcess(&specification_1, &aParameter[1], &process_1) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
-    if (kern_createProcess(&specification_2, &aParameter[2], &process_2) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
-    if (kern_createProcess(&specification_3, &aParameter[3], &process_3) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
-    if (kern_createProcess(&specification_4, &aParameter[4], &process_4) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
-    if (kern_createProcess(&specification_5, &aParameter[5], &process_5) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
+    if (kern_createProcess(&specification_0, &aParameter[0], &process_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return EXIT_OS_FAILURE; }
+    if (kern_createProcess(&specification_1, &aParameter[1], &process_1) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return EXIT_OS_FAILURE; }
+    if (kern_createProcess(&specification_2, &aParameter[2], &process_2) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return EXIT_OS_FAILURE; }
+    if (kern_createProcess(&specification_3, &aParameter[3], &process_3) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return EXIT_OS_FAILURE; }
+    if (kern_createProcess(&specification_4, &aParameter[4], &process_4) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return EXIT_OS_FAILURE; }
+    if (kern_createProcess(&specification_5, &aParameter[5], &process_5) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return EXIT_OS_FAILURE; }
 
     LOG(KINFO_USER, "Application launched");
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }

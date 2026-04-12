@@ -73,7 +73,7 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
-#if (defined(ROMABLE_S))
+#ifdef ROMABLE_S
 
 // Prototypes
 
@@ -139,12 +139,12 @@ MAIN_ENTRY(argc, argv[]) {
     if (kern_createSoftwareTimer("Blink Led 2", &softwareTimer)    != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create stim");    exit(EXIT_OS_FAILURE); }
     if (kern_setSoftwareTimer(softwareTimer, &configure_stim)      != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Configure stim"); exit(EXIT_OS_FAILURE); }
 
-    if (installaProcess_sensor()     == false)                                         { LOG(KFATAL_USER, "Create proc");    exit(EXIT_OS_FAILURE); }
-    if (installaProcess_actuator()   == false)                                         { LOG(KFATAL_USER, "Create proc");    exit(EXIT_OS_FAILURE); }
-    if (installaProcess_dispatcher() == false)                                         { LOG(KFATAL_USER, "Create proc");    exit(EXIT_OS_FAILURE); }
+    if (!installaProcess_sensor())                                                      { LOG(KFATAL_USER, "Create proc");   exit(EXIT_OS_FAILURE); }
+    if (!installaProcess_actuator())                                                    { LOG(KFATAL_USER, "Create proc");   exit(EXIT_OS_FAILURE); }
+    if (!installaProcess_dispatcher())                                                  { LOG(KFATAL_USER, "Create proc");   exit(EXIT_OS_FAILURE); }
 
     LOG(KINFO_USER, "Application launched");
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }
 
 /*

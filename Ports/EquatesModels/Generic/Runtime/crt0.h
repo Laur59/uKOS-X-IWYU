@@ -35,7 +35,7 @@ extern  void        exce_init(void);        // NOLINT(readability-redundant-decl
 // Do not declare main in c++
 
 #else
-#if !(defined(__NO_EXTERN_MAIN))
+#if (!defined(__NO_EXTERN_MAIN))
 extern  int         main(int argc, const char *argv[]);
 #endif
 #endif

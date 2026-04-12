@@ -13,7 +13,7 @@
 #pragma clang diagnostic ignored "-Wimplicit-int-conversion"
 #endif
 
-#if (defined(__GNUC__))
+#ifdef __GNUC__
 // Ignore the GCC diagnostic
 //
 #pragma GCC diagnostic push
@@ -22,13 +22,13 @@
 
 #include    "lvgl.h"
 
-#if (defined(__clang__))
+#ifdef __clang__
 // Restore the clang diagnostic
 //
 #pragma clang diagnostic pop
 #endif
 
-#if (defined(__GNUC__))
+#ifdef __GNUC__
 // Restore the GCC diagnostic
 //
 #pragma GCC diagnostic pop

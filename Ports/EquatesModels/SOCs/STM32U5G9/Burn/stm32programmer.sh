@@ -37,7 +37,7 @@ detect_cli() {
 
     # macOS (Spotlight via mdfind)
     if [[ "${OSTYPE}" == 'darwin'* ]]; then
-        STM32_PROGRAMMER_CLI="${STM32_PROGRAMMER_CLI:-/Applications/STMicroelectronics/STM32Cube/STM32CubeProgrammer/STM32CubeProgrammer.app/Contents/Resources/bin/STM32_Programmer_CLI}"
+        STM32_PROGRAMMER_CLI="${STM32_PROGRAMMER_CLI:-$(find /Applications -type f -name 'STM32_Programmer_CLI' | sort | head -n 1)}"
 
         # Verify if executable
         if [[ -x "${STM32_PROGRAMMER_CLI}" ]]; then

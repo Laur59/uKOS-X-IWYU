@@ -8,7 +8,16 @@
  *               - manager system calls
  */
 
-#include    "uKOS.h"
+#include    "syscallDispatcher.h"
+
+#include    <stdint.h>
+#include    <stdlib.h>
+
+#include    "Lib_generics/record/record.h"
+#include    "Registers/soc_vectors.h"
+#include    "macros.h"
+#include    "macros_core_stackFrame.h"
+#include    "types.h"
 
 extern  void    kernel_message_C0(void);
 extern  void    kern_privilegeElevate(void);

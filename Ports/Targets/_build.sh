@@ -6,7 +6,7 @@
 #
 # Usage:
 #       cd cloned_directory/Ports/Targets
-#       ./_build.sh [-L] [-U] [-Y] [-v|-w]
+#       ./_build.sh [-G] [-P] [-U] [-Y] [-v|-w]
 
 emulate -L zsh
 setopt ERR_EXIT NO_UNSET PIPE_FAIL EXTENDED_GLOB
@@ -56,7 +56,7 @@ trap cleanup INT TERM
 
 usage() {
     cat <<'EOF'
-Usage: ./_build_cmake.sh [-G] [-P] [-U] [-Y] [-v|-w]
+Usage: ./_build.sh [-G] [-P] [-U] [-Y] [-v|-w]
 
 Options:
   -G  Use gcc compiler
@@ -202,7 +202,7 @@ printf "%bBuilding all the systems with --preset %s -DC_LIBRARY=%s%b (USER_MODE=
 # Parse YAML and iterate through all build targets
 while IFS=$'\t' read -r family variant_name; do
     CURRENT_VARIANT="${family}/Variant_${variant_name}"
-    printf "%s " "${CURRENT_VARIANT}"
+    printf "%-40s " "${CURRENT_VARIANT}"
     cd "${PATH_PRG}/${CURRENT_VARIANT}"
 
     # Normal output on the stdout, error/warnings on comp.log

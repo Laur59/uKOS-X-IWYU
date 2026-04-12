@@ -34,6 +34,7 @@
 
 #include    <fcntl.h>
 
+#include    "board.h"
 #include    "crt0.h"
 #include    "serial/serial.h"
 #include    "imu/imu.h"
@@ -77,7 +78,7 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
-#if (defined(ROMABLE_S))
+#ifdef ROMABLE_S
 
 // Prototypes
 
@@ -246,11 +247,11 @@ MAIN_ENTRY(argc, argv[]) {
         KKERN_PRIORITY_MEDIUM_01            // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
     );
 
-    if (kern_createProcess(&specification_0, nullptr, &process_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
-    if (kern_createProcess(&specification_1, nullptr, &process_1) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
+    if (kern_createProcess(&specification_0, nullptr, &process_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return EXIT_OS_FAILURE; }
+    if (kern_createProcess(&specification_1, nullptr, &process_1) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return EXIT_OS_FAILURE; }
 
     LOG(KINFO_USER, "Application launched");
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }
 
 // Local routines
@@ -321,7 +322,7 @@ static  void    local_display(int32_t fpPrint,
 
 // Print the results
 
-    #if (defined(DISP_COOLTERM_S))
+    #ifdef DISP_COOLTERM_S
     (void)dprintf(fpPrint, "%f\t%f\t%f\n", x, y, z);
     #else
 

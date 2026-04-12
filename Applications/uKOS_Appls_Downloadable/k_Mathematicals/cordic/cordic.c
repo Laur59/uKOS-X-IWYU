@@ -54,7 +54,7 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
-#if (defined(ROMABLE_S))
+#ifdef ROMABLE_S
 
 // Prototypes
 
@@ -175,7 +175,7 @@ static  float64_t local_atan2(int32_t y, int32_t x) {
                             };
 
     if ((x == 0) && (y == 0)) {
-        return (0.0);
+        return 0.0;
     }
 
     lx = x; ly = y;
@@ -203,7 +203,7 @@ static  float64_t local_atan2(int32_t y, int32_t x) {
             angle += tabAtan[i];
         }
     }
-    return (angle);
+    return angle;
 }
 
 /*
@@ -251,9 +251,9 @@ MAIN_ENTRY(argc, argv[]) {
         KKERN_PRIORITY_HIGH_01              // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
     );
 
-    if (kern_createProcess(&specification_0, nullptr, &process_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
-    if (kern_createProcess(&specification_1, nullptr, &process_1) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return (EXIT_OS_FAILURE); }
+    if (kern_createProcess(&specification_0, nullptr, &process_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return EXIT_OS_FAILURE; }
+    if (kern_createProcess(&specification_1, nullptr, &process_1) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return EXIT_OS_FAILURE; }
 
     LOG(KINFO_USER, "Application launched");
-    return (EXIT_OS_SUCCESS_CLI);
+    return EXIT_OS_SUCCESS_CLI;
 }

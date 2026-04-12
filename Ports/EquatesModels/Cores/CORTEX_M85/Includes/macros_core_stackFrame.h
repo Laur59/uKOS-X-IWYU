@@ -10,6 +10,15 @@
 
 #pragma once
 
+#include    <stdlib.h>      // IWYU pragma: keep (for exit)
+
+#include    "Registers/core_debug.h"
+#include    "crt0.h"        // IWYU pragma: keep (for exit_terminate)
+#include    "kern/kern.h"
+#include    "macros_soc.h"
+#include    "record/record.h"
+#include    "types.h"       // IWYU pragma: keep (for EXIT_OS_PANIC_STACK_UNDERFLOW)
+
 // For the stack sanity
 
 #if (!defined(KMAGICSTACK))
@@ -23,6 +32,7 @@
 #endif
 
 #if (!defined(CHECK_STACK_SANITY))
+extern              proc_t  *vKern_runProc[KNB_CORES];
 #define CHECK_STACK_SANITY(core)                                                                                                \
                                 if ((vKern_runProc[core]->oInternal.oState != 0u) &&                                            \
                                     ((vKern_runProc[core]->oInternal.oState & (1u<<BPROC_FIRST)) == 0u)) {                      \
