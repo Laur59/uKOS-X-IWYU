@@ -1,13 +1,22 @@
 /*
-; model_watchdog.
-; ===============
+; vectors.
+; ========
+
+; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:   Edo. Franzi     The 2025-01-01
-; Modifs:
+; Author:   Laurent von Allmen  The 2026-04-05
+; Modifs:   Laurent von Allmen
 ;
 ; Project:  uKOS-X
-; Goal:     Model for controlling the watchdog device.
+; Goal:     Common Linker description for uKOS-X systems.
+;
+;                       CODE
+; linker_stVECTORS      +-----------------+
+;                       |                 |
+;                       | .isr_vector     |
+;                       |                 |
+; linker_enVECTORS      +-----------------+
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -44,51 +53,6 @@
 ;------------------------------------------------------------------------
 */
 
-#include    <stdint.h>
-
-#include    "soc_reg.h"
-#include    "macros_core.h"
-
-/*
- * \brief Arm the watchdog
- *
- * - Generate a reset if the timer is not reactivated
- *   The min-max time is hardware dependent (0 < time < 4294967296-ms)
- *   I.e for the stm32 series the min-max time is 8-ms < time < 32768-ms
- *
- */
-#define KTIME_WATCHDOG_RES  (256U / 32U)                                        // Resolution of 8-ms; 1 / (32000 / 256)
-#define KTIME_WATCHDOG_GAIN 4096U                                               //
-#define KTIME_WATCHDOG_MAX  ((KTIME_WATCHDOG_GAIN * KTIME_WATCHDOG_RES) - 1U)   // ms
-#define KTIME_WATCHDOG_MIN  0U                                                  // ms
-
-void    model_watchdog_arm(uint32_t time) {
-            uint32_t    timeout;
-    static  uint32_t    lastTime = UINT32_MAX;
-
-// timeout = (4096 / (8 * 4096)) x time
-
-    timeout = (KTIME_WATCHDOG_GAIN * time) / (KTIME_WATCHDOG_RES * KTIME_WATCHDOG_GAIN);
-
-    timeout = (timeout < KTIME_WATCHDOG_RES) ? (KTIME_WATCHDOG_RES) : (timeout);
-    timeout = (timeout > KTIME_WATCHDOG_MAX) ? (KTIME_WATCHDOG_MAX) : (timeout);
-
-// Unlock the watchdog (to make possible writing PSC & RLD registers)
-// Initialise the prescaler / 256; 8 < time < 32768-ms
-// Start the watchdog
-
-    if (lastTime != timeout) {
-        lastTime = timeout;
-
-        REG(IWDG)->KR  = IWDG_KR_START;
-        REG(IWDG)->KR  = IWDG_KR_DISABLE;
-
-        REG(IWDG)->PR  = IWDG_PR_1_256;
-        REG(IWDG)->RLR = timeout;
-        do { ; } while ((REG(IWDG)->SR & 0x7U) != 0U);
-    }
-
-// Arm the watchdog
-
-    REG(IWDG)->KR = IWDG_KR_RELOAD;
-}
+        linker_stVECTORS = ABSOLUTE(.);
+        KEEP(*(.isr_vector))
+        linker_enVECTORS = ABSOLUTE(.);

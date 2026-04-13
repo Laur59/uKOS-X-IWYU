@@ -52,46 +52,22 @@ target_compile_definitions(system_compiler_flags INTERFACE
 )
 
 # C library specific compile definitions
+target_compile_definitions(system_compiler_flags INTERFACE
+    _GNU_SOURCE
+)
 if(C_LIBRARY STREQUAL "picolibc")
     target_compile_definitions(system_compiler_flags INTERFACE
         CONFIG_MAN_PICOLIBC_S
-        _GNU_SOURCE
         _REENT_GLOBAL_ERRNO
     )
-    message(STATUS "C library compile definitions: CONFIG_MAN_PICOLIBC_S, _GNU_SOURCE, _REENT_GLOBAL_ERRNO")
+    message(STATUS "C library compile definitions (picolibc): CONFIG_MAN_PICOLIBC_S, _REENT_GLOBAL_ERRNO")
 else()
     # newlib (default)
     target_compile_definitions(system_compiler_flags INTERFACE
         CONFIG_MAN_NEWLIB_S
         __DYNAMIC_REENT__
-        _POSIX_C_SOURCE=200809L
     )
-    message(STATUS "C library compile definitions: CONFIG_MAN_NEWLIB_S, __DYNAMIC_REENT__, _POSIX_C_SOURCE=200809L")
-endif()
-
-# C library specific specs for GCC (compiler and linker)
-# Note: Clang/LLVM uses picolibc by default, no specs needed
-if(COMPILER_FAMILY STREQUAL "gcc")
-    if(C_LIBRARY STREQUAL "picolibc")
-        # GCC with picolibc: Use specs for both compilation and linking
-        # The picolibc.specs file provides:
-        # - Include paths to picolibc headers
-        # - Library paths to picolibc libraries
-        # - Automatic --gc-sections for linker (reduces binary size)
-        # - Default picolibc.ld linker script (overridden by our -T flag)
-        # Note: Our custom linker scripts override picolibc's default via -T flag
-        target_compile_options(system_compiler_flags INTERFACE
-            -specs=picolibc.specs
-        )
-        target_link_options(system_compiler_flags INTERFACE
-            -specs=picolibc.specs
-        )
-        message(STATUS "C library specs (GCC): -specs=picolibc.specs for compilation and linking")
-    else()
-        # GCC with newlib (default)
-        # Note: -specs=nano.specs is typically added in target-specific CMakeLists.txt
-        message(STATUS "C library specs (GCC): newlib (no additional specs at system level)")
-    endif()
+    message(STATUS "C library compile definitions (newlib): CONFIG_MAN_NEWLIB_S, __DYNAMIC_REENT__")
 endif()
 
 # Common flags from *_system_CORTEX_M3.mk, *_system_CORTEX_M4.mk,

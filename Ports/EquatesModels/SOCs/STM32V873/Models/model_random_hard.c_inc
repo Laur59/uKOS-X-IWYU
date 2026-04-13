@@ -46,6 +46,15 @@
 ;------------------------------------------------------------------------
 */
 
+#include    <stdint.h>
+
+#include    "Registers/nvic.h"
+#include    "Registers/scb.h"
+#include    "kern/kern.h"
+#include    "macros.h"
+#include    "macros_soc.h"
+#include    "soc_reg.h"
+
 static              bool        vTerminated = false;
 static  volatile    uint32_t    *vNumber;
 

@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include    <stdint.h>
+
 // I2c interface
 
 #define KI2C_ADD_PF1550                     0x08U                           // I2C PF1550 address

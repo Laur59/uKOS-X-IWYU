@@ -44,6 +44,18 @@
 ;------------------------------------------------------------------------
 */
 
+#include    <stdint.h>
+#include    <stdlib.h>
+
+#include    "Registers/nvic.h"
+#include    "Registers/scb.h"
+#include    "serial/serial.h"
+#include    "kern/kern.h"
+#include    "macros.h"
+#include    "macros_soc.h"
+#include    "os_errors.h"
+#include    "record/record.h"
+
 static  volatile    bool        vSending = false;
 static  volatile    bool        vWithSemaphore_RX = false;
 static  volatile    bool        vWithSemaphore_TX = false;
