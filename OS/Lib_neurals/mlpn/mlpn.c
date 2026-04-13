@@ -522,11 +522,15 @@ static void local_nonLinear_tan1(const float32_t *w, const float32_t *x, float32
  *
  */
 __attribute__ ((always_inline)) static  inline  float32_t   local_tan2(float32_t p) {
+    float32_t   p2, num, den;
+
     if (p <= -3.0F) { return (-1.0F); }
     if (p >= +3.0F) { return (+1.0F); }
 
-    float32_t   p2 = p * p;
-    return (p * (27.0F + p2) / (27.0F + (9.0F * p2)));
+    p2 = p * p;
+    num = p * (27.0F + p2);
+    den = 27.0F + (9.0F * p2);
+    return (num / den);
 }
 
 NEURAL_OPTIMIZE
