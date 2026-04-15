@@ -6,15 +6,15 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Build the binutils
+# Project:  uKOS-X
+# Goal:     Build the binutils
 #
-#			OS:
-#			OSX 26.xx			yes
-#			Ubuntu 24.04 LTS	yes
+#           OS:
+#           OSX 26.xx           yes
+#           Ubuntu 26.04 LTS    yes
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -59,17 +59,17 @@ mkdir -p "${build_machine}/binutils-${BIN_VER}"
 cd "${build_machine}/binutils-${BIN_VER}"
 
 "${PACKS_BIN}/configure" \
-	--target="${TARGET}" \
-	--prefix="${prefix}" \
-	--enable-multilib \
-	--disable-werror \
-	--disable-nls \
-	--disable-libssp \
-	--with-system-zlib \
-	${=BIN_CONFIG}			|| { echo "Error configuring binutils";	exit 1; }
-make -j "${PARALLEL_JOBS}"	|| { echo "Error building binutils";	exit 1; }
-make install-strip			|| { echo "Error installing binutils";	exit 1; }
-make clean					|| { echo "Error cleaning binutils";	exit 1; }
+    --target="${TARGET}" \
+    --prefix="${prefix}" \
+    --enable-multilib \
+    --disable-werror \
+    --disable-nls \
+    --disable-libssp \
+    --with-system-zlib \
+    ${=BIN_CONFIG}          || { echo "Error configuring binutils"; exit 1; }
+make -j "${PARALLEL_JOBS}"  || { echo "Error building binutils";    exit 1; }
+make install-strip          || { echo "Error installing binutils";  exit 1; }
+make clean                  || { echo "Error cleaning binutils";    exit 1; }
 
 echo "End building binutils:   $(date)" >> "${log_file}"
 mv "${log_file}" "${build_machine}/gnu_binutils_ready.txt"

@@ -6,18 +6,18 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Toolchain for installing the ftdi D2XX driver.
+# Project:  uKOS-X
+# Goal:     Toolchain for installing the ftdi D2XX driver.
 #
-#			Usage:
-#			./ukos_D2XX.sh
+#           Usage:
+#           ./ukos_D2XX.sh
 #
-#			OS:
-#			OSX 26.xx			yes
-#			Ubuntu 24.04 LTS	yes
+#           OS:
+#           OSX 26.xx           yes
+#           Ubuntu 26.04 LTS    yes
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -72,28 +72,28 @@ readonly DIRLOCAL="${PATH_TOOLS_ROOT}"/local
 
 cd "${PATH_TOOLS_ROOT}"/Packages/,Sources
 
-echo Downloading FTDI D2xx
+echo "Downloading FTDI D2xx"
 case "$(uname)" in
-	"Darwin")
-		if [[ ! -f "D2XX${D2XX_OSX_VER}.zip" ]]; then
-			echo Downloading FTDI D2xx
-			rm -fr ../D2XX
-			move_to_archive 'D2XX*'
-			curl -OL https://ftdichip.com/wp-content/uploads/2024/04/D2XX"${D2XX_OSX_VER}".dmg
-			hdiutil attach "D2XX${D2XX_OSX_VER}.dmg"
-			cp -r /Volumes/dmg/release ../D2XX
-			umount /Volumes/dmg
-			rm "D2XX${D2XX_OSX_VER}.dmg"
-		fi
-		;;
-	*)
-		echo Downloading FTDI D2xx
-		rm -fr ../D2XX
-		move_to_archive 'D2XX*'
-		wget "https://ftdichip.com/wp-content/uploads/2025/11/libftd2xx-linux-arm-v8-${D2XX_LINUX_VER}.tgz"
-		tar xf "libftd2xx-linux-arm-v8-${D2XX_LINUX_VER}.tgz"
-		mv linux-arm-v8 ../D2XX
-		;;
+    "Darwin")
+        if [[ ! -f "D2XX${D2XX_OSX_VER}.zip" ]]; then
+            echo "Downloading FTDI D2xx"
+            rm -fr ../D2XX
+            move_to_archive 'D2XX*'
+            curl -OL https://ftdichip.com/wp-content/uploads/2024/04/D2XX"${D2XX_OSX_VER}".dmg
+            hdiutil attach "D2XX${D2XX_OSX_VER}.dmg"
+            cp -r /Volumes/dmg/release ../D2XX
+            umount /Volumes/dmg
+            rm "D2XX${D2XX_OSX_VER}.dmg"
+        fi
+        ;;
+    *)
+        echo "Downloading FTDI D2xx"
+        rm -fr ../D2XX
+        move_to_archive 'D2XX*'
+        wget "https://ftdichip.com/wp-content/uploads/2025/11/libftd2xx-linux-arm-v8-${D2XX_LINUX_VER}.tgz"
+        tar xf "libftd2xx-linux-arm-v8-${D2XX_LINUX_VER}.tgz"
+        mv linux-arm-v8 ../D2XX
+        ;;
 esac
 
 # Install the FTDI D2XX driver
@@ -106,21 +106,21 @@ echo "Start of build: $(date)" > "${LOG_FILE}"
 
 cd "${PACKS}"
 case "$(uname)" in
-	"Darwin")
-		mkdir -p "${DIRLOCAL}"/lib "${DIRLOCAL}"/include
-		cp build/libftd2xx."${D2XX_OSX_VER}".dylib "${DIRLOCAL}"/lib/
-		ln -sf "${DIRLOCAL}"/lib/libftd2xx."${D2XX_OSX_VER}".dylib "${DIRLOCAL}"/lib/libftd2xx.dylib
-		cp ftd2xx.h "${DIRLOCAL}"/include/
-		cp WinTypes.h "${DIRLOCAL}"/include/
-		;;
-	"Linux")
-		mkdir -p "${DIRLOCAL}"/lib "${DIRLOCAL}"/include
-		cp libftd2xx.so."${D2XX_LINUX_VER}" "${DIRLOCAL}"/lib/
-		ln -sf "${DIRLOCAL}"/lib/libftd2xx.so."${D2XX_LINUX_VER}" "${DIRLOCAL}"/lib/libftd2xx.so
-		cp ftd2xx.h "${DIRLOCAL}"/include/
-		cp WinTypes.h "${DIRLOCAL}"/include/
-		;;
+    "Darwin")
+        mkdir -p "${DIRLOCAL}"/lib "${DIRLOCAL}"/include
+        cp build/libftd2xx."${D2XX_OSX_VER}".dylib "${DIRLOCAL}"/lib/
+        ln -sf "${DIRLOCAL}"/lib/libftd2xx."${D2XX_OSX_VER}".dylib "${DIRLOCAL}"/lib/libftd2xx.dylib
+        cp ftd2xx.h "${DIRLOCAL}"/include/
+        cp WinTypes.h "${DIRLOCAL}"/include/
+        ;;
+    "Linux")
+        mkdir -p "${DIRLOCAL}"/lib "${DIRLOCAL}"/include
+        cp libftd2xx.so."${D2XX_LINUX_VER}" "${DIRLOCAL}"/lib/
+        ln -sf "${DIRLOCAL}"/lib/libftd2xx.so."${D2XX_LINUX_VER}" "${DIRLOCAL}"/lib/libftd2xx.so
+        cp ftd2xx.h "${DIRLOCAL}"/include/
+        cp WinTypes.h "${DIRLOCAL}"/include/
+        ;;
 esac
 
-echo "End of build:	  $(date)" >> "${LOG_FILE}"
+echo "End of build:   $(date)" >> "${LOG_FILE}"
 mv "${LOG_FILE}" "${BUILD}"/ftdi_ready.txt

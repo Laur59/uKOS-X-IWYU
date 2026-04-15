@@ -6,19 +6,19 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Toolchain for generating the sdcc cross compiler
-#			for Unix like machines (small 8-bit cpus).
+# Project:  uKOS-X
+# Goal:     Toolchain for generating the sdcc cross compiler
+#           for Unix like machines (small 8-bit cpus).
 #
-#			Usage:
-#			./ukos_sdcc.sh
+#           Usage:
+#           ./ukos_sdcc.sh
 #
-#			OS:
-#			OSX 26.xx			yes
-#			Ubuntu 24.04 LTS	yes
+#           OS:
+#           OSX 26.xx           yes
+#           Ubuntu 26.04 LTS    yes
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -74,8 +74,8 @@ readonly executables="${prefix}"/bin
 readonly CPPFLAGS=-I"${LIB_BOOST}"/include
 readonly LDFLAGS="-L${LIB_BOOST}/lib"
 
-export	CPPFLAGS
-export	LDFLAGS
+export  CPPFLAGS
+export  LDFLAGS
 
 # Downloading sources
 # -------------------
@@ -83,13 +83,13 @@ export	LDFLAGS
 cd "${PATH_TOOLS_ROOT}"/Packages/,Sources
 
 if [[ ! -f "sdcc-${SDCC_VER}.tar.gz" ]]; then
-	echo Downloading sdcc
-	move_to_archive 'sdcc-*'
-	"${WGET[@]}" https://sourceforge.net/projects/sdcc/files/sdcc/"${SDCC_VER}"/sdcc-src-"${SDCC_VER}".tar.bz2
+    echo "Downloading sdcc"
+    move_to_archive 'sdcc-*'
+    "${WGET[@]}" https://sourceforge.net/projects/sdcc/files/sdcc/"${SDCC_VER}"/sdcc-src-"${SDCC_VER}".tar.bz2
 fi
 
 cd ..
-echo Extracting sdcc sources
+echo "Extracting sdcc sources"
 tar xjf ,Sources/sdcc-src-"${SDCC_VER}".tar.bz2
 
 # Building the toolchain
@@ -106,10 +106,10 @@ echo "Start of build: $(date)" > "${LOG_FILE}"
 
 cd "${BUILD}"
 "${PACKS}"/configure --prefix="${prefix}" --disable-werror --disable-ucsim \
-				|| { echo "Error configuring sdcc"; exit 1; }
-make			|| { echo "Error building sdcc";	exit 1; }
-make install	|| { echo "Error installing sdcc";	exit 1; }
-make clean		|| { echo "Error cleaning sdcc";	exit 1; }
+                || { echo "Error configuring sdcc"; exit 1; }
+make            || { echo "Error building sdcc";    exit 1; }
+make install    || { echo "Error installing sdcc";  exit 1; }
+make clean      || { echo "Error cleaning sdcc";    exit 1; }
 
 # Update path links
 
@@ -117,5 +117,5 @@ cd "${PATH_TOOLS_GCC}"/cross
 rm -f sdcc-current
 ln -s sdcc-"${SDCC_VER}" sdcc-current
 
-echo "End of build:	  $(date)" >> "${LOG_FILE}"
+echo "End of build:   $(date)" >> "${LOG_FILE}"
 mv "${LOG_FILE}" "${BUILD}"/sdcc_ready.txt

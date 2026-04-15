@@ -63,7 +63,7 @@ message("")
 
 # Package version and commit hash (matching build_with_cmake.sh)
 set(TINYUSB_VERSION "0.20.0")
-set(TINYUSB_HASH "7c3f597")
+set(TINYUSB_HASH "3cfe7a0")
 
 message(STATUS "Fetching TinyUSB version ${TINYUSB_VERSION} (commit ${TINYUSB_HASH})")
 
@@ -213,7 +213,7 @@ set(SUPPORTED_SOCS
     "u5|STM32U5G9|cdc_cdc,cdc_msc,cdc_video"
     "n6|STM32N657|cdc_cdc,cdc_msc,cdc_video"
     "pico2|rp2350|cdc_cdc"
-#     "v8|STM32V873|cdc_cdc,cdc_msc,cdc_video"
+    "v8|STM32V873|cdc_cdc,cdc_msc,cdc_video"
 )
 
 #------------------------------------------------------------------------
@@ -314,6 +314,28 @@ add_custom_target(build_all_tinyusb ALL
 add_dependencies(build_all_tinyusb TinyUSB_Fetch_Complete)
 
 #------------------------------------------------------------------------
+# Step 5: Install public headers into Library/Include/TinyUSB-current/
+#
+# This makes Library/ self-contained: consumers can use find_package(TinyUSB)
+# without retaining TinyUSB-current/ in the source tree.
+#------------------------------------------------------------------------
+
+set(TINYUSB_HEADERS_SRC "${CMAKE_CURRENT_SOURCE_DIR}/TinyUSB-current")
+set(TINYUSB_HEADERS_DST "${CMAKE_CURRENT_SOURCE_DIR}/Library/Include/TinyUSB-current")
+
+add_custom_target(install_tinyusb_headers
+    COMMAND ${CMAKE_COMMAND}
+        -DSRC=${TINYUSB_HEADERS_SRC}
+        -DDST=${TINYUSB_HEADERS_DST}
+        -P "${CMAKE_CURRENT_SOURCE_DIR}/Library/Family/cmake/install_headers.cmake"
+    DEPENDS TinyUSB_Fetch_Complete
+    COMMENT "Installing TinyUSB public headers to Library/Include/TinyUSB-current"
+)
+
+# Header installation runs as part of the default build target
+add_dependencies(build_all_tinyusb install_tinyusb_headers)
+
+#------------------------------------------------------------------------
 # Summary
 #------------------------------------------------------------------------
 
@@ -338,4 +360,8 @@ message("")
 message("Output libraries will be in:")
 message("  Library/Family/<FAMILY>/<SOC>/<PROFILE>/libTinyUSB_FS.a")
 message("  Library/Family/<FAMILY>/<SOC>/<PROFILE>/libTinyUSB_HS.a")
+message("")
+message("Public headers installed to (source tree no longer required):")
+message("  Library/Include/TinyUSB-current/src/")
+message("  Library/Include/TinyUSB-current/hw/")
 message("══════════════════════════════════════════════════════════════")

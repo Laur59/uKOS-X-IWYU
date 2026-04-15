@@ -6,15 +6,15 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Build the newlib
+# Project:  uKOS-X
+# Goal:     Build the newlib
 #
-#			OS:
-#			OSX 26.xx			yes
-#			Ubuntu 24.04 LTS	yes
+#           OS:
+#           OSX 26.xx           yes
+#           Ubuntu 26.04 LTS    yes
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -59,16 +59,16 @@ mkdir -p "${build_machine}/newlib-${NLB_VER}"
 cd "${build_machine}/newlib-${NLB_VER}"
 
 "${PACKS_NBL}/configure" \
-	--target="${TARGET}" \
-	--prefix="${prefix}" \
-	--enable-multilib \
-	--disable-werror \
-	--disable-nls \
-	--disable-libssp \
-	${=NLB_CONFIG}			|| { echo "Error configuring newlib";	exit 1; }
-make -j "${PARALLEL_JOBS}"	|| { echo "Error building newlib";		exit 1; }
-make install				|| { echo "Error installing newlib";	exit 1; }
-make clean					|| { echo "Error cleaning newlib";		exit 1; }
+    --target="${TARGET}" \
+    --prefix="${prefix}" \
+    --enable-multilib \
+    --disable-werror \
+    --disable-nls \
+    --disable-libssp \
+    ${=NLB_CONFIG}          || { echo "Error configuring newlib";   exit 1; }
+make -j "${PARALLEL_JOBS}"  || { echo "Error building newlib";      exit 1; }
+make install                || { echo "Error installing newlib";    exit 1; }
+make clean                  || { echo "Error cleaning newlib";      exit 1; }
 
-echo "End building newlib:	 $(date)" >> "${log_file}"
+echo "End building newlib:   $(date)" >> "${log_file}"
 mv "${log_file}" "${build_machine}/newlib_ready.txt"

@@ -90,11 +90,13 @@ message("───────────────────────�
 set(SUPPORTED_CORES
     CORTEX_M55
     RV64IMAFDC
+    CORTEX_M85
 )
 # and their display
 set(CORE_DISPLAY
     WaveShare_2_Inches
     TFT_2_4_Inches
+    RK050HR18_5_Inches
 )
 
 # Determine build type to pass to ExternalProjects

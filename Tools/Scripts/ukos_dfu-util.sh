@@ -6,20 +6,20 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Toolchain for generating the dfu-util (i.e. for the RISC-V gd32 cpu).
+# Project:  uKOS-X
+# Goal:     Toolchain for generating the dfu-util (i.e. for the RISC-V gd32 cpu).
 #
-#			Usage:
-#			./ukos_dfu-util.sh
+#           Usage:
+#           ./ukos_dfu-util.sh
 #
-#			git clone --recurse-submodules git://git.code.sf.net/p/dfu-util/dfu-util dfu-util-${DFUUTIL_VER}
+#           git clone --recurse-submodules git://git.code.sf.net/p/dfu-util/dfu-util dfu-util-${DFUUTIL_VER}
 #
-#			OS:
-#			OSX 26.xx			yes
-#			Ubuntu 24.04 LTS	yes
+#           OS:
+#           OSX 26.xx           yes
+#           Ubuntu 26.04 LTS    yes
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -76,11 +76,11 @@ readonly DIRLOCAL="${PATH_TOOLS_ROOT}"/local
 # -------------------
 
 if [[ ! -d "${PACKS}" ]]; then
-	echo Cloning dfu-util-${DFUUTIL_VER}
-	git clone --recurse-submodules git://git.code.sf.net/p/dfu-util/dfu-util "${PACKS}"
+    echo "Cloning dfu-util-${DFUUTIL_VER}"
+    git clone --recurse-submodules git://git.code.sf.net/p/dfu-util/dfu-util "${PACKS}"
 else
-	echo Fetching dfu-util-${DFUUTIL_VER}
-	git -C "${PACKS}" fetch --quiet
+    echo "Fetching dfu-util-${DFUUTIL_VER}"
+    git -C "${PACKS}" fetch --quiet
 fi
 git -C "${PACKS}" checkout master
 
@@ -100,11 +100,11 @@ cd "${PACKS}"
 
 cd "${BUILD}"
 env USB_CFLAGS=-I"${DIRLOCAL}"/include/libusb-1.0 \
-	USB_LIBS=-L"${DIRLOCAL}/lib -lusb-1.0" \
-	"${PACKS}"/configure --prefix="${prefix}" || { echo "Error configuring DFUUTIL"; exit 1; }
-make										  || { echo "Error building DFUUTIL";	 exit 1; }
-make install								  || { echo "Error installing DFUUTIL";	 exit 1; }
-make clean									  || { echo "Error cleaning DFUUTIL";	 exit 1; }
+    USB_LIBS=-L"${DIRLOCAL}/lib -lusb-1.0" \
+    "${PACKS}"/configure --prefix="${prefix}" || { echo "Error configuring DFUUTIL"; exit 1; }
+make                                          || { echo "Error building DFUUTIL";    exit 1; }
+make install                                  || { echo "Error installing DFUUTIL";  exit 1; }
+make clean                                    || { echo "Error cleaning DFUUTIL";    exit 1; }
 
 # Update path links
 
@@ -112,6 +112,6 @@ cd "${PATH_TOOLS_GCC}"/cross
 rm -f dfu-util-current
 ln -s dfu-util-"${DFUUTIL_VER}" dfu-util-current
 
-echo "End of build:	  $(date)" >> "${LOG_FILE}"
+echo "End of build:   $(date)" >> "${LOG_FILE}"
 mv "${LOG_FILE}" "${BUILD}"/dfu-util_ready.txt
 

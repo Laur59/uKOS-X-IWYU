@@ -6,21 +6,21 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Toolchain for generating the ImageMagick graphic tool.
-#			git clone https://github.com/ImageMagick/ImageMagick.git ImageMagick
-#			git submodule init
-#			git submodule update
+# Project:  uKOS-X
+# Goal:     Toolchain for generating the ImageMagick graphic tool.
+#           git clone https://github.com/ImageMagick/ImageMagick.git ImageMagick
+#           git submodule init
+#           git submodule update
 #
-#			Usage:
-#			./ukos_imagemagick.sh
+#           Usage:
+#           ./ukos_imagemagick.sh
 #
-#			OS:
-#			OSX 26.xx			yes
-#			Ubuntu 24.04 LTS	yes
+#           OS:
+#           OSX 26.xx           yes
+#           Ubuntu 26.04 LTS    yes
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -74,11 +74,11 @@ readonly LOG_FILE="${BUILD}"/ImageMagick_temp.txt
 # -------------------
 
 if [[ ! -d "${PACKS}" ]]; then
-	echo Cloning ImageMagick-${IMAGEMAGICK_VER}
-	git clone https://github.com/ImageMagick/ImageMagick.git "${PACKS}"
+    echo "Cloning ImageMagick-${IMAGEMAGICK_VER}"
+    git clone https://github.com/ImageMagick/ImageMagick.git "${PACKS}"
 else
-	echo Fetching ImageMagick-${IMAGEMAGICK_VER}
-	git -C "${PACKS}" fetch --quiet
+    echo "Fetching ImageMagick-${IMAGEMAGICK_VER}"
+    git -C "${PACKS}" fetch --quiet
 fi
 git -C "${PACKS}" checkout ${IMAGEMAGICK_VER}
 
@@ -98,10 +98,10 @@ PATH="${executables}":"${PATH}"
 
 cd "${BUILD}"
 "${PACKS}"/configure --prefix="${prefix}" --with-modules \
-				|| { echo "Error configuring ImageMagick"; exit 1; }
-make			|| { echo "Error building ImageMagick";	   exit 1; }
-make install	|| { echo "Error installing ImageMagick";  exit 1; }
-make clean		|| { echo "Error cleaning ImageMagick";	   exit 1; }
+                || { echo "Error configuring ImageMagick"; exit 1; }
+make            || { echo "Error building ImageMagick";    exit 1; }
+make install    || { echo "Error installing ImageMagick";  exit 1; }
+make clean      || { echo "Error cleaning ImageMagick";    exit 1; }
 
 # Update path links
 
@@ -109,5 +109,5 @@ cd "${PATH_TOOLS_GCC}"/cross
 rm -f ImageMagick-current
 ln -s ImageMagick-"${IMAGEMAGICK_VER}" ImageMagick-current
 
-echo "End of build:	  $(date)" >> "${LOG_FILE}"
+echo "End of build:   $(date)" >> "${LOG_FILE}"
 mv "${LOG_FILE}" "${BUILD}"/ImageMagick_ready.txt

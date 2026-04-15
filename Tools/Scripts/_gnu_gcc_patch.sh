@@ -6,16 +6,16 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Patch gcc for all the gcc versions build with XCode 15.3
-#			https://gcc.gnu.org/bugzilla/show_bug.cgi?id=111632
+# Project:  uKOS-X
+# Goal:     Patch gcc for all the gcc versions build with XCode 15.3
+#           https://gcc.gnu.org/bugzilla/show_bug.cgi?id=111632
 #
-#			OS:
-#			OSX 26.xx			yes
-#			Ubuntu 24.04 LTS	yes
+#           OS:
+#           OSX 26.xx           yes
+#           Ubuntu 26.04 LTS    yes
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -56,9 +56,9 @@ readonly log_file="${BUILD}/${MACHINE}/gnu_gcc_patch_temp.txt"
 echo "Start patch gcc: $(date)" > "${log_file}"
 
 if [[ -d "${PATH_SCRIPTS}/Patches/gcc/${GCC_VER}" ]]; then
-	for file in "${PATH_SCRIPTS}/Patches/gcc/${GCC_VER}"/*; do
-		patch -Np1 < "$file"
-	done
+    for file in "${PATH_SCRIPTS}/Patches/gcc/${GCC_VER}"/*; do
+        patch -Np1 < "$file"
+    done
 fi
 
 echo "End patch gcc:   $(date)" >> "${log_file}"
