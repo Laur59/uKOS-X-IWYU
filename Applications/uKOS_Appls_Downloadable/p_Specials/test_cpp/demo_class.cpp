@@ -13,7 +13,7 @@
 
 
 // Constructor implementation
-TestClass::TestClass() {
+TestClass::TestClass() : counter_(0) {
     (void)dprintf(KSYST, "Construction\n");
 }
 
@@ -24,5 +24,5 @@ TestClass::~TestClass() {
 
 // doit method implementation
 void TestClass::doit() const {
-    (void)dprintf(KSYST, "in the middle\n");
+    (void)dprintf(KSYST, "in the middle (counter = %" PRIu32 ")\n", counter_);
 }

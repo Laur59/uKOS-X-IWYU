@@ -7,6 +7,9 @@
 
 #pragma once
 
+#include	<cstdint>
+#include	<cinttypes>
+
 /**
  * \brief TestClass - A simple test class for demonstrating C++ in uKOS-X
  *
@@ -29,4 +32,7 @@ public:
 	 * \brief Test method - outputs a message
 	 */
 	void doit() const;
+
+private:
+	uint32_t	counter_;
 };

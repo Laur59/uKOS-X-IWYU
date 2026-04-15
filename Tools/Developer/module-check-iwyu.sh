@@ -9,7 +9,6 @@
 #
 #           Example:
 #               ./module-check-iwyu.sh OS/CLI
-#
 
 emulate -L zsh
 setopt ERR_EXIT NO_UNSET PIPE_FAIL EXTENDED_GLOB
