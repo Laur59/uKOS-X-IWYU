@@ -6,21 +6,21 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Toolchain for generating generic gcc cross compilers
-#			for Unix like machines (for the uKOS-X project)
+# Project:  uKOS-X
+# Goal:     Toolchain for generating generic gcc cross compilers
+#           for Unix like machines (for the uKOS-X project)
 #
-#			Arc family
+#           Arc family
 #
-#			Usage:
-#			./ukos_gnu_gcc_arc_elf.sh
+#           Usage:
+#           ./ukos_gnu_gcc_arc_elf.sh
 #
-#			OS:
-#			OSX 26.xx			yes
-#			Ubuntu 24.04 LTS	yes
+#           OS:
+#           OSX 26.xx           yes
+#           Ubuntu 26.04 LTS    yes
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -68,16 +68,16 @@ set -euo pipefail
 # For Ubuntu, the native compiler is gcc
 
 case "$(uname)" in
-	"Darwin")
-		echo "Target OSX clang"
-		export CC="clang"
-		export CXX="clang++"
-		export PARALLEL_JOBS="$(( $(sysctl -n hw.ncpu) - 1 ))"
-		;;
-	"Linux")
-		echo "Target Linux"
-		export PARALLEL_JOBS="4"
-		;;
+    "Darwin")
+        echo "Target OSX clang"
+        export CC="clang"
+        export CXX="clang++"
+        export PARALLEL_JOBS="$(( $(sysctl -n hw.ncpu) - 1 ))"
+        ;;
+    "Linux")
+        echo "Target Linux"
+        export PARALLEL_JOBS="4"
+        ;;
 esac
 
 # Target
@@ -113,15 +113,15 @@ export PATH="${executables}:${PATH}"
 cd "${PATH_TOOLS_ROOT}/Packages/,Sources"
 
 if [[ ! -f "binutils-${BIN_VER}.tar.bz2" ]]; then
-	echo "Downloading binutils-${BIN_VER}"
-	move_to_archive "binutils-*"
-	"${WGET[@]}" "http://gnu.mirror.constant.com/binutils/binutils-${BIN_VER}.tar.bz2"
+    echo "Downloading binutils-${BIN_VER}"
+    move_to_archive "binutils-*"
+    "${WGET[@]}" "http://gnu.mirror.constant.com/binutils/binutils-${BIN_VER}.tar.bz2"
 fi
 
 if [[ ! -f "gdb-${GDB_VER}.tar.gz" ]]; then
-	echo "Downloading gdb-${GDB_VER}"
-	move_to_archive "gdb-*"
-	"${WGET[@]}" "ftp://ftp.gnu.org/pub/gnu/gdb/gdb-${GDB_VER}.tar.gz"
+    echo "Downloading gdb-${GDB_VER}"
+    move_to_archive "gdb-*"
+    "${WGET[@]}" "ftp://ftp.gnu.org/pub/gnu/gdb/gdb-${GDB_VER}.tar.gz"
 fi
 
 cd ..
@@ -132,50 +132,50 @@ echo "Extracting gdb sources"
 tar xzf ",Sources/gdb-${GDB_VER}.tar.gz"
 
 if [[ ! -d "gcc-${GCC_VER}" ]]; then
-	echo "Downloading gcc-${GCC_VER}"
-	git clone "git://gcc.gnu.org/git/gcc.git" "gcc-${GCC_VER}"
-	git -C "gcc-${GCC_VER}" fetch --tags
-	git -C "gcc-${GCC_VER}" checkout "tags/releases/gcc-${GCC_VER}"
-	cd "gcc-${GCC_VER}"
-	./contrib/download_prerequisites
-	setopt NULL_GLOB
-	for file in "${PATH_SCRIPTS}/Patches/gcc/${GCC_VER}"/*; do
-		[[ -f "$file" ]] && patch -p1 -t < "$file"
-	done
-	unsetopt NULL_GLOB
-	cd ..
+    echo "Downloading gcc-${GCC_VER}"
+    git clone "git://gcc.gnu.org/git/gcc.git" "gcc-${GCC_VER}"
+    git -C "gcc-${GCC_VER}" fetch --tags
+    git -C "gcc-${GCC_VER}" checkout "tags/releases/gcc-${GCC_VER}"
+    cd "gcc-${GCC_VER}"
+    ./contrib/download_prerequisites
+    setopt NULL_GLOB
+    for file in "${PATH_SCRIPTS}/Patches/gcc/${GCC_VER}"/*; do
+        [[ -f "$file" ]] && patch -p1 -t < "$file"
+    done
+    unsetopt NULL_GLOB
+    cd ..
 fi
 
 if [[ ! -d "newlib-${NLB_VER}" ]]; then
-	echo "Downloading newlib-${NLB_VER}"
-	git clone "https://sourceware.org/git/newlib-cygwin.git" "newlib-${NLB_VER}"
-	git -C "newlib-${NLB_VER}" fetch --tags
-	git -C "newlib-${NLB_VER}" checkout "tags/newlib-${NLB_VER}"
+    echo "Downloading newlib-${NLB_VER}"
+    git clone "https://sourceware.org/git/newlib-cygwin.git" "newlib-${NLB_VER}"
+    git -C "newlib-${NLB_VER}" fetch --tags
+    git -C "newlib-${NLB_VER}" checkout "tags/newlib-${NLB_VER}"
 fi
 
 # Configurations
 # --------------
 
 export BIN_CONFIG=" \
-	--with-endian=little \
-	--enable-fast-install=N/A"
+    --with-endian=little \
+    --enable-fast-install=N/A"
 GCC1_CONFIG=" \
-	--enable-languages=c \
-	--with-endian=little \
-	--enable-fast-install=N/A \
-	--with-newlib"
+    --enable-languages=c \
+    --with-endian=little \
+    --enable-fast-install=N/A \
+    --with-newlib"
 export GCC1_CONFIG
 GCC2_CONFIG=" \
-	--enable-languages=c,c++ \
-	--with-endian=little \
-	--enable-fast-install=N/A \
-	--with-newlib"
+    --enable-languages=c,c++ \
+    --with-endian=little \
+    --enable-fast-install=N/A \
+    --with-newlib"
 export GCC2_CONFIG
 export NLB_CONFIG=" \
-	--enable-newlib-io-long-long \
-	--enable-newlib-io-float \
-	--with-endian=little \
-	--enable-fast-install=N/A"
+    --enable-newlib-io-long-long \
+    --enable-newlib-io-float \
+    --with-endian=little \
+    --enable-fast-install=N/A"
 export GDB_CONFIG=""
 
 # Building the toolchain
@@ -191,53 +191,53 @@ cd "${PACKS_GCC}"
 
 "${PATH_SCRIPTS}/_gnu_binutils_build.sh"
 if [[ ! -f "${build_machine}/gnu_binutils_ready.txt" ]]; then
-	echo "Failed to build binutils"
-	exit 1
+    echo "Failed to build binutils"
+    exit 1
 fi
 cat "${build_machine}/gnu_binutils_ready.txt" >> "${LOG_FILE}"
 
 "${PATH_SCRIPTS}/_gnu_gcc_pass1_build.sh"
 if [[ ! -f "${build_machine}/gnu_gcc_pass1_ready.txt" ]]; then
-	echo "Failed to complete pass 1 for gcc"
-	exit 1
+    echo "Failed to complete pass 1 for gcc"
+    exit 1
 fi
 cat "${build_machine}/gnu_gcc_pass1_ready.txt" >> "${LOG_FILE}"
 
 "${PATH_SCRIPTS}/_newlib_build.sh"
 if [[ ! -f "${build_machine}/newlib_ready.txt" ]]; then
-	echo "Failed to build newlib"
-	exit 1
+    echo "Failed to build newlib"
+    exit 1
 fi
 cat "${build_machine}/newlib_ready.txt" >> "${LOG_FILE}"
 
 "${PATH_SCRIPTS}/_gnu_gcc_pass2_build.sh"
 if [[ ! -f "${build_machine}/gnu_gcc_pass2_ready.txt" ]]; then
-	echo "Failed to complete pass 2 for gcc"
-	exit 1
+    echo "Failed to complete pass 2 for gcc"
+    exit 1
 fi
 cat "${build_machine}/gnu_gcc_pass2_ready.txt" >> "${LOG_FILE}"
 
 "${PATH_SCRIPTS}/_gnu_gdb_build.sh"
 if [[ ! -f "${build_machine}/gnu_gdb_ready.txt" ]]; then
-	echo "Failed to build gdb"
-	exit 1
+    echo "Failed to build gdb"
+    exit 1
 fi
 cat "${build_machine}/gnu_gdb_ready.txt" >> "${LOG_FILE}"
 
 # Strip the binaries
 
 find "${CROSS}/${MACHINE}/arc-none-eabi" -name "lib*.a" \
-	-exec "${CROSS}/${MACHINE}/bin/arc-none-eabi-strip" --strip-unneeded {} \;
+    -exec "${CROSS}/${MACHINE}/bin/arc-none-eabi-strip" --strip-unneeded {} \;
 
 # Update path links
 
 current_dir="${PATH_TOOLS_ROOT}/cross/gcc-current"
 if [[ ! -d "${current_dir}" ]]; then
-	mkdir "${current_dir}"
+    mkdir "${current_dir}"
 fi
 cd "${current_dir}"
 rm -f "${MACHINE}"
 ln -s "../gcc-${GCC_VER}/${MACHINE}" "${MACHINE}"
 
-echo "End of build:	  $(date)" >> "${LOG_FILE}"
+echo "End of build:   $(date)" >> "${LOG_FILE}"
 mv "${LOG_FILE}" "${build_machine}/gnu_gcc_arc_ready.txt"

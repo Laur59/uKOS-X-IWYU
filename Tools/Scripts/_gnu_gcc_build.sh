@@ -6,15 +6,15 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Build gcc
+# Project:  uKOS-X
+# Goal:     Build gcc
 #
-#			OS:
-#			OSX 26.xx			yes
-#			Ubuntu 24.04 LTS	yes
+#           OS:
+#           OSX 26.xx           yes
+#           Ubuntu 26.04 LTS    yes
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -59,19 +59,19 @@ mkdir -p "${BUILD}/${MACHINE}/gcc-${GCC_VER}"
 cd "${BUILD}/${MACHINE}/gcc-${GCC_VER}"
 
 "${PACKS_GCC}/configure" \
-	--target="${TARGET}" \
-	--prefix="${prefix}" \
-	--enable-shared \
-	--enable-multilib \
-	--enable-target-optspace \
-	--disable-nls \
-	--disable-libssp \
-	--with-gnu-as \
-	--with-gnu-ld \
-	"${GCC_CONFIG}"			|| { echo "Error configuring gcc";	exit 1; }
-make -j "${PARALLEL_JOBS}"	|| { echo "Error building gcc";		exit 1; }
-make install-strip			|| { echo "Error installing gcc";	exit 1; }
-make clean					|| { echo "Error cleaning gcc";		exit 1; }
+    --target="${TARGET}" \
+    --prefix="${prefix}" \
+    --enable-shared \
+    --enable-multilib \
+    --enable-target-optspace \
+    --disable-nls \
+    --disable-libssp \
+    --with-gnu-as \
+    --with-gnu-ld \
+    "${GCC_CONFIG}"         || { echo "Error configuring gcc";  exit 1; }
+make -j "${PARALLEL_JOBS}"  || { echo "Error building gcc";     exit 1; }
+make install-strip          || { echo "Error installing gcc";   exit 1; }
+make clean                  || { echo "Error cleaning gcc";     exit 1; }
 
 echo "End building gcc:   $(date)" >> "${log_file}"
 mv "${log_file}" "${build_machine}/gnu_gcc_ready.txt"

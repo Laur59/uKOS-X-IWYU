@@ -6,19 +6,19 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Toolchain for building the math gmp librarie
-#			for building the versions of gdb greater than 11.x.x.
+# Project:  uKOS-X
+# Goal:     Toolchain for building the math gmp librarie
+#           for building the versions of gdb greater than 11.x.x.
 #
-#			Usage:
-#			./ukos_gmp.sh
+#           Usage:
+#           ./ukos_gmp.sh
 #
-#			OS:
-#			OSX 26.xx			yes
-#			Ubuntu 24.04 LTS	yes
+#           OS:
+#           OSX 26.xx           yes
+#           Ubuntu 26.04 LTS    yes
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -75,13 +75,13 @@ readonly DIRLOCAL="${PATH_TOOLS_ROOT}"/local
 cd "${PATH_TOOLS_ROOT}"/Packages/,Sources
 
 if [[ ! -f "gmp-${GMP_VER}.tar.lz" ]]; then
-	echo Downloading gmp-${GMP_VER}
-	move_to_archive 'gmp-*'
-	"${WGET[@]}" https://ftp.gnu.org/gnu/gmp/gmp-"${GMP_VER}".tar.lz
+    echo "Downloading gmp-${GMP_VER}"
+    move_to_archive 'gmp-*'
+    "${WGET[@]}" https://ftp.gnu.org/gnu/gmp/gmp-"${GMP_VER}".tar.lz
 fi
 
 cd ..
-echo Extracting gmp sources
+echo "Extracting gmp sources"
 tar --lzip -xf ,Sources/gmp-"${GMP_VER}".tar.lz
 
 # Building the library
@@ -97,11 +97,11 @@ autoreconf -i -s
 
 cd "${BUILD}"
 "${PACKS}"/configure --prefix=${DIRLOCAL} --enable-cxx --with-pic CC="gcc" CFLAGS="-O2 -std=gnu99" CXX="g++" CXXFLAGS="-O2 -std=gnu++11" \
-				|| { echo "Error configuring GMP"; exit 1; }
-make			|| { echo "Error building GMP";	   exit 1; }
-make check		|| { echo "Error checking GMP";	   exit 1; }
-make install	|| { echo "Error installing GMP";  exit 1; }
-make clean		|| { echo "Error cleaning GMP";	   exit 1; }
+                || { echo "Error configuring GMP"; exit 1; }
+make            || { echo "Error building GMP";    exit 1; }
+make check      || { echo "Error checking GMP";    exit 1; }
+make install    || { echo "Error installing GMP";  exit 1; }
+make clean      || { echo "Error cleaning GMP";    exit 1; }
 
-echo "End of build:	  $(date)" >> "${LOG_FILE}"
+echo "End of build:   $(date)" >> "${LOG_FILE}"
 mv "${LOG_FILE}" "${BUILD}"/gmp_ready.txt

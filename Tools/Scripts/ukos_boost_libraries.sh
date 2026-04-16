@@ -6,19 +6,19 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Toolchain for generating the Boost libraries necessary
-#			for building the versions of sdcc.
+# Project:  uKOS-X
+# Goal:     Toolchain for generating the Boost libraries necessary
+#           for building the versions of sdcc.
 #
-#			Usage:
-#			./ukos_boost_libraries.sh
+#           Usage:
+#           ./ukos_boost_libraries.sh
 #
-#			OS:
-#			OSX 26.xx			yes
-#			Ubuntu 24.04 LTS	yes
+#           OS:
+#           OSX 26.xx           yes
+#           Ubuntu 26.04 LTS    yes
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -76,11 +76,11 @@ PATH="${executables}":"${PATH}"
 # -------------------
 
 if [[ ! -d "${PACKS}" ]]; then
-	echo Cloning boost-${BOOST_VER}
-	git clone --recursive https://github.com/boostorg/boost.git "${PACKS}"
+    echo "Cloning boost-${BOOST_VER}"
+    git clone --recursive https://github.com/boostorg/boost.git "${PACKS}"
 else
-	echo Fetching boost-${BOOST_VER}
-	git -C "${PACKS}" fetch --quiet
+    echo "Fetching boost-${BOOST_VER}"
+    git -C "${PACKS}" fetch --quiet
 fi
 git -C "${PACKS}" checkout boost-"${BOOST_VER}"
 
@@ -103,5 +103,5 @@ cd "${PATH_TOOLS_ROOT}"/cross
 rm -f boost-current
 ln -s boost-"${BOOST_VER}" boost-current
 
-echo "End of build:	  $(date)" >> "${LOG_FILE}"
+echo "End of build:   $(date)" >> "${LOG_FILE}"
 mv "${LOG_FILE}" "${BUILD}"/boost_ready.txt

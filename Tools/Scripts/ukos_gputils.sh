@@ -6,19 +6,19 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Toolchain for generating the gputils cross assembler
-#			for Unix like machines (small 8-bit cpus).
+# Project:  uKOS-X
+# Goal:     Toolchain for generating the gputils cross assembler
+#           for Unix like machines (small 8-bit cpus).
 #
-#			Usage:
-#			./ukos_gputils.sh
+#           Usage:
+#           ./ukos_gputils.sh
 #
-#			OS:
-#			OSX 26.xx			yes
-#			Ubuntu 24.04 LTS	yes
+#           OS:
+#           OSX 26.xx           yes
+#           Ubuntu 26.04 LTS    yes
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -74,13 +74,13 @@ readonly LOG_FILE="${BUILD}"/gputils_temp.txt
 cd "${PATH_TOOLS_ROOT}"/Packages/,Sources
 
 if [[ ! -f "gputils-${GPUTILS_VER}.tar.gz" ]]; then
-	echo Downloading gputils
-	move_to_archive 'gputils-*'
-	"${WGET[@]}" https://sourceforge.net/projects/gputils/files/gputils/1.5.0/gputils-"${GPUTILS_VER}".tar.gz
+    echo "Downloading gputils"
+    move_to_archive 'gputils-*'
+    "${WGET[@]}" https://sourceforge.net/projects/gputils/files/gputils/1.5.0/gputils-"${GPUTILS_VER}".tar.gz
 fi
 
 cd ..
-echo Extracting gputils sources
+echo "Extracting gputils sources"
 tar xzf ,Sources/gputils-"${GPUTILS_VER}".tar.gz
 
 # Building the tool
@@ -99,10 +99,10 @@ PATH="${executables}":"${PATH}"
 
 cd "${BUILD}"
 ${PACKS}/configure --prefix="${prefix}" \
-				|| { echo "Error configuring GPUTILS"; exit 1; }
-make			|| { echo "Error building GPUTILS";	exit 1; }
-make install	|| { echo "Error installing GPUTILS";	exit 1; }
-make clean		|| { echo "Error cleaning GPUTILS";	exit 1; }
+                || { echo "Error configuring GPUTILS"; exit 1; }
+make            || { echo "Error building GPUTILS"; exit 1; }
+make install    || { echo "Error installing GPUTILS";   exit 1; }
+make clean      || { echo "Error cleaning GPUTILS"; exit 1; }
 
 # Update path links
 
@@ -110,5 +110,5 @@ cd "${PATH_TOOLS_GCC}"/cross
 rm -f gputils-current
 ln -s gputils-"${GPUTILS_VER}" gputils-current
 
-echo "End of build:	  $(date)" >> "${LOG_FILE}"
+echo "End of build:   $(date)" >> "${LOG_FILE}"
 mv "${LOG_FILE}" "${BUILD}"/gputils_ready.txt

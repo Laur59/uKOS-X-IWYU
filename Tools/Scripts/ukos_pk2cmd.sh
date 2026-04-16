@@ -6,18 +6,18 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Toolchain for building the PIC pk2cmd probe control.
+# Project:  uKOS-X
+# Goal:     Toolchain for building the PIC pk2cmd probe control.
 #
-#			Usage:
-#			./ukos_pk2cmd.sh
+#           Usage:
+#           ./ukos_pk2cmd.sh
 #
-#			OS:
-#			OSX 26.xx			yes
-#			Ubuntu 24.04 LTS	yes
+#           OS:
+#           OSX 26.xx           yes
+#           Ubuntu 26.04 LTS    yes
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -59,8 +59,8 @@ source "$(dirname "$0")"/config_install.sh
 set -e
 
 if [[ -z "${PATH_TOOLS_GCC:-}" ]]; then
-	echo "Variable PATH_TOOLS_GCC is not set!"
-	exit 1
+    echo "Variable PATH_TOOLS_GCC is not set!"
+    exit 1
 fi
 
 # Environment
@@ -76,11 +76,11 @@ readonly LOG_FILE="${BUILD}"/pk2cmd.txt
 # -------------------
 
 if [[ ! -d "${PACKS}" ]]; then
-	echo Cloning cpk2cmd-${PK2CMD_VER}
-	git clone https://github.com/jaka-fi/pk2cmd.git "${PACKS}"
+    echo "Cloning cpk2cmd-${PK2CMD_VER}"
+    git clone https://github.com/jaka-fi/pk2cmd.git "${PACKS}"
 else
-	echo Fetching cpk2cmd-${PK2CMD_VER}
-	git -C "${PACKS}" fetch --quiet
+    echo "Fetching cpk2cmd-${PK2CMD_VER}"
+    git -C "${PACKS}" fetch --quiet
 fi
 git -C "${PACKS}" checkout "v${PK2CMD_VER}"
 
@@ -95,12 +95,12 @@ echo "Start of build: $(date)" > "${LOG_FILE}"
 
 cd "${PACKS}"/pk2cmd
 case "$(uname)" in
-	"Darwin")
-		make mac105
-		;;
-	"Linux")
-		make linux
-		;;
+    "Darwin")
+        make mac105
+        ;;
+    "Linux")
+        make linux
+        ;;
 esac
 
 mkdir -p "${CROSS}"/bin
@@ -114,5 +114,5 @@ cd "${PATH_TOOLS_GCC}"/cross
 rm -f pk2cmd-current
 ln -s pk2cmd-"${PK2CMD_VER}" pk2cmd-current
 
-echo "End of build:	  $(date)" >> "${LOG_FILE}"
+echo "End of build:   $(date)" >> "${LOG_FILE}"
 mv "${LOG_FILE}" "${BUILD}"/pk2cmd_ready.txt

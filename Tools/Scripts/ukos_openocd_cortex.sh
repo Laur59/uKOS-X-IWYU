@@ -6,25 +6,25 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Toolchain for generating the openocd support via
-#			an FTDI chip and via the STLinkV2.
-#			git clone --recurse-submodules --branch v0.12.0 git://git.code.sf.net/p/openocd/code openocd-0.12.0-cortex
-#			git submodule init
-#			git submodule update
+# Project:  uKOS-X
+# Goal:     Toolchain for generating the openocd support via
+#           an FTDI chip and via the STLinkV2.
+#           git clone --recurse-submodules --branch v0.12.0 git://git.code.sf.net/p/openocd/code openocd-0.12.0-cortex
+#           git submodule init
+#           git submodule update
 #
-#			With macport it is mandatory to install the package hidapi
-#			before the construction of openocd.
+#           With macport it is mandatory to install the package hidapi
+#           before the construction of openocd.
 #
-#			Usage:
-#			./ukos_openocd_cortex.sh
+#           Usage:
+#           ./ukos_openocd_cortex.sh
 #
-#			OS:
-#			OSX 26.xx			yes
-#			Ubuntu 24.04 LTS	yes
+#           OS:
+#           OSX 26.xx           yes
+#           Ubuntu 26.04 LTS    yes
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -72,14 +72,14 @@ set -euo pipefail
 # For Ubuntu, the native compiler is gcc
 
 case "$(uname)" in
-	"Darwin")
-		echo "Target OSX clang"
-		export CC=clang
-		export CXX=clang++
-		;;
-	"Linux")
-		echo "Target Linux"
-		;;
+    "Darwin")
+        echo "Target OSX clang"
+        export CC=clang
+        export CXX=clang++
+        ;;
+    "Linux")
+        echo "Target Linux"
+        ;;
 esac
 
 # Target
@@ -104,22 +104,22 @@ readonly DIRLOCAL="${PATH_TOOLS_ROOT}"/local
 
 cd "${PATH_TOOLS_ROOT}"/Packages
 if [[ ! -d openocd-"${OPENOCD_VER}"-cortex ]]; then
-	echo Cloning openocd-${OPENOCD_VER} for cortex
-	git clone --recurse-submodules --branch v"${OPENOCD_VER}" git://git.code.sf.net/p/openocd/code openocd-"${OPENOCD_VER}"-cortex
+    echo "Cloning openocd-${OPENOCD_VER} for cortex"
+    git clone --recurse-submodules --branch v"${OPENOCD_VER}" git://git.code.sf.net/p/openocd/code openocd-"${OPENOCD_VER}"-cortex
 fi
 
 # Configurations
 # --------------
 
 export OPENOCD_CONFIG=(
-	--disable-option-checking
-	--disable-werror
-	--enable-stlink
-	--enable-jlink
-	--enable-cmsis-dap
-	--enable-remote-bitbang
-	--enable-dummy
-	--enable-ftdi
+    --disable-option-checking
+    --disable-werror
+    --enable-stlink
+    --enable-jlink
+    --enable-cmsis-dap
+    --enable-remote-bitbang
+    --enable-dummy
+    --enable-ftdi
 )
 
 # Building the tool
@@ -136,52 +136,52 @@ cd "${PACKS}"
 
 cd "${BUILD}"/"${MACHINE}"
 case "$(uname)" in
-	"Darwin")
-		export PKG_CONFIG_PATH="${DIRLOCAL}"/lib/pkgconfig
-		export CFLAGS="-I${DIRLOCAL}/include/libusb-1.0"
-		"${PACKS}"/configure \
-			"${OPENOCD_CONFIG[@]}" \
-			CC=clang \
-			--program-suffix=-${MACHINE} \
-			--prefix="${prefix}" --with-sysroot="${DIRLOCAL}" \
-			--libdir="${DIRLOCAL}"/lib		|| { echo "Error configuring openocd"; exit 1; }
-		make "LDFLAGS = -L${DIRLOCAL}/lib"	|| { echo "Error building openocd";	   exit 1; }
-		;;
-	"Linux")
-		export LDFLAGS="-pthread"
-		"${PACKS}"/configure \
-			"${OPENOCD_CONFIG[@]}" \
-			CC=cc \
-			--program-suffix=-${MACHINE} \
-			--libdir="${DIRLOCAL}"/lib \
-			--prefix="${prefix}" \
-			--with-ftd2xx-lib=static \
-			--with-ftd2xx-linux-tardir="${PATH_TOOLS_GCC}"/Packages/libftd2xx-"${D2XX_LINUX_VER}" \
-											|| { echo "Error configuring openocd"; exit 1; }
-		make								|| { echo "Error building openocd";	   exit 1; }
-		sudo cp "${PACKS}"/contrib/60-openocd.rules /etc/udev/rules.d/
-		;;
+    "Darwin")
+        export PKG_CONFIG_PATH="${DIRLOCAL}"/lib/pkgconfig
+        export CFLAGS="-I${DIRLOCAL}/include/libusb-1.0"
+        "${PACKS}"/configure \
+            "${OPENOCD_CONFIG[@]}" \
+            CC=clang \
+            --program-suffix=-${MACHINE} \
+            --prefix="${prefix}" --with-sysroot="${DIRLOCAL}" \
+            --libdir="${DIRLOCAL}"/lib      || { echo "Error configuring openocd"; exit 1; }
+        make "LDFLAGS = -L${DIRLOCAL}/lib"  || { echo "Error building openocd";    exit 1; }
+        ;;
+    "Linux")
+        export LDFLAGS="-pthread"
+        "${PACKS}"/configure \
+            "${OPENOCD_CONFIG[@]}" \
+            CC=cc \
+            --program-suffix=-${MACHINE} \
+            --libdir="${DIRLOCAL}"/lib \
+            --prefix="${prefix}" \
+            --with-ftd2xx-lib=static \
+            --with-ftd2xx-linux-tardir="${PATH_TOOLS_GCC}"/Packages/libftd2xx-"${D2XX_LINUX_VER}" \
+                                            || { echo "Error configuring openocd"; exit 1; }
+        make                                || { echo "Error building openocd";    exit 1; }
+        sudo cp "${PACKS}"/contrib/60-openocd.rules /etc/udev/rules.d/
+        ;;
 esac
 
 make install || { echo "Error installing openocd"; exit 1; }
-make clean	 || { echo "Error cleaning openocd";   exit 1; }
+make clean   || { echo "Error cleaning openocd";   exit 1; }
 
 case "$(uname)" in
-	"Darwin")
-		install_name_tool -add_rpath "${DIRLOCAL}"/lib "${CROSS}"/"${MACHINE}"/bin/openocd-"${MACHINE}"
-		;;
-	"Linux")
-		;;
+    "Darwin")
+        install_name_tool -add_rpath "${DIRLOCAL}"/lib "${CROSS}"/"${MACHINE}"/bin/openocd-"${MACHINE}"
+        ;;
+    "Linux")
+        ;;
 esac
 
 # Update path links
 
 if [[ ! -d "${PATH_TOOLS_GCC}"/cross/openocd-current ]]; then
-	mkdir "${PATH_TOOLS_GCC}"/cross/openocd-current
+    mkdir "${PATH_TOOLS_GCC}"/cross/openocd-current
 fi
 cd "${PATH_TOOLS_GCC}"/cross/openocd-current
 rm -f "${MACHINE}"
 ln -s ../openocd-"${OPENOCD_VER}"/"${MACHINE}" "${MACHINE}"
 
-echo "End of build:	  $(date)" >> "${LOG_FILE}"
+echo "End of build:   $(date)" >> "${LOG_FILE}"
 mv "${LOG_FILE}" "${BUILD}"/"${MACHINE}"/openocd_ready.txt

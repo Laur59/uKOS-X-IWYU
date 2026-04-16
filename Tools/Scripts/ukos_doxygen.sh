@@ -6,18 +6,18 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Toolchain for generating the doxygen documenting tool.
+# Project:  uKOS-X
+# Goal:     Toolchain for generating the doxygen documenting tool.
 #
-#			Usage:
-#			./ukos_doxygen.sh
+#           Usage:
+#           ./ukos_doxygen.sh
 #
-#			OS:
-#			OSX 26.xx			yes
-#			Ubuntu 24.04 LTS	yes
+#           OS:
+#           OSX 26.xx           yes
+#           Ubuntu 26.04 LTS    yes
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -73,13 +73,13 @@ readonly LOG_FILE="${BUILD}"/doxygen_temp.txt
 cd "${PATH_TOOLS_ROOT}"/Packages/,Sources
 
 if [[ ! -f "doxygen-${DOXYGEN_VER}.tar.gz" ]]; then
-	echo Downloading doxygen
-	move_to_archive "doxygen-*"
-	"${WGET[@]}" https://www.doxygen.nl/files/doxygen-"${DOXYGEN_VER}".src.tar.gz
+    echo "Downloading doxygen"
+    move_to_archive "doxygen-*"
+    "${WGET[@]}" https://www.doxygen.nl/files/doxygen-"${DOXYGEN_VER}".src.tar.gz
 fi
 
 cd ..
-echo Extracting doxygen sources
+echo "Extracting doxygen sources"
 tar xzf ,Sources/doxygen-"${DOXYGEN_VER}".src.tar.gz
 
 # Building the tool
@@ -106,5 +106,5 @@ cd "${PATH_TOOLS_GCC}"/cross
 rm -f doxygen-current
 ln -s doxygen-"${DOXYGEN_VER}" doxygen-current
 
-echo "End of build:	  $(date)" >> "${LOG_FILE}"
+echo "End of build:   $(date)" >> "${LOG_FILE}"
 mv "${LOG_FILE}" "${BUILD}"/doxygen_ready.txt

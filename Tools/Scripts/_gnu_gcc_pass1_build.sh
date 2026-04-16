@@ -6,15 +6,15 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Build gcc (pass 1)
+# Project:  uKOS-X
+# Goal:     Build gcc (pass 1)
 #
-#			OS:
-#			OSX 26.xx			yes
-#			Ubuntu 24.04 LTS	yes
+#           OS:
+#           OSX 26.xx           yes
+#           Ubuntu 26.04 LTS    yes
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -59,38 +59,38 @@ mkdir -p "${build_machine}/gcc-${GCC_VER}"
 cd "${build_machine}/gcc-${GCC_VER}"
 
 case "$(uname)" in
-	"Darwin")
-		CFLAGS="-O2 -fbracket-depth=1024 -pipe"
-		CXXFLAGS="-O2 -fbracket-depth=1024 -pipe"
-		"${PACKS_GCC}/configure" \
-			--target="${TARGET}" \
-			--prefix="${prefix}" \
-			--with-native-system-header-dir="${CROSS}/${MACHINE}/${TARGET}/include" \
-			--with-sysroot \
-			--with-headers="${PACKS_NBL}/newlib/libc/include" \
-			--with-system-zlib \
-			--disable-werror \
-			--disable-libgloss \
-			--disable-libssp \
-			${=GCC1_CONFIG}													|| { echo "Error configuring gcc pass 1";	exit 1; }
-		make CXXFLAGS="-fbracket-depth=1024" all-gcc -j "${PARALLEL_JOBS}"	|| { echo "Error building gcc pass 1";		exit 1; }
-		make install-gcc													|| { echo "Error installing gcc pass 1";	exit 1; }
-		;;
-	"Linux")
-		"${PACKS_GCC}/configure" \
-			--target="${TARGET}" \
-			--prefix="${prefix}" \
-			--with-native-system-header-dir="${CROSS}/${MACHINE}/${TARGET}/include" \
-			--with-sysroot= \
-			--with-system-zlib \
-			--disable-werror \
-			--disable-libgloss \
-			--disable-libssp \
-			${=GCC1_CONFIG}													|| { echo "Error configuring gcc pass 1";	exit 1; }
-		make all-gcc -j "${PARALLEL_JOBS}"									|| { echo "Error building gcc pass 1";		exit 1; }
-		make install-gcc													|| { echo "Error installing gcc pass 1";	exit 1; }
-		;;
+    "Darwin")
+        CFLAGS="-O2 -fbracket-depth=1024 -pipe"
+        CXXFLAGS="-O2 -fbracket-depth=1024 -pipe"
+        "${PACKS_GCC}/configure" \
+            --target="${TARGET}" \
+            --prefix="${prefix}" \
+            --with-native-system-header-dir="${CROSS}/${MACHINE}/${TARGET}/include" \
+            --with-sysroot \
+            --with-headers="${PACKS_NBL}/newlib/libc/include" \
+            --with-system-zlib \
+            --disable-werror \
+            --disable-libgloss \
+            --disable-libssp \
+            ${=GCC1_CONFIG}                                                 || { echo "Error configuring gcc pass 1";   exit 1; }
+        make CXXFLAGS="-fbracket-depth=1024" all-gcc -j "${PARALLEL_JOBS}"  || { echo "Error building gcc pass 1";      exit 1; }
+        make install-gcc                                                    || { echo "Error installing gcc pass 1";    exit 1; }
+        ;;
+    "Linux")
+        "${PACKS_GCC}/configure" \
+            --target="${TARGET}" \
+            --prefix="${prefix}" \
+            --with-native-system-header-dir="${CROSS}/${MACHINE}/${TARGET}/include" \
+            --with-sysroot= \
+            --with-system-zlib \
+            --disable-werror \
+            --disable-libgloss \
+            --disable-libssp \
+            ${=GCC1_CONFIG}                                                 || { echo "Error configuring gcc pass 1";   exit 1; }
+        make all-gcc -j "${PARALLEL_JOBS}"                                  || { echo "Error building gcc pass 1";      exit 1; }
+        make install-gcc                                                    || { echo "Error installing gcc pass 1";    exit 1; }
+        ;;
 esac
 
-echo "End gcc pass 1:	$(date)" >> "${log_file}"
+echo "End gcc pass 1:   $(date)" >> "${log_file}"
 mv "${log_file}" "${build_machine}/gnu_gcc_pass1_ready.txt"

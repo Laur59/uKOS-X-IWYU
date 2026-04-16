@@ -9,16 +9,16 @@
 # Author:   Laurent von Allmen  The  2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Toolchain for generating LLVM clang cross compilers
-#			for Unix like machines
+# Project:  uKOS-X
+# Goal:     Toolchain for generating LLVM clang cross compilers
+#           for Unix like machines
 #
-#			Usage:
-#			./ukos_clang_llvm_riscv_elf.sh
+#           Usage:
+#           ./ukos_clang_llvm_riscv_elf.sh
 #
-#			OS:
-#			OSX 26.xx			yes
-#			Ubuntu 24.04 LTS	yes
+#           OS:
+#           OSX 26.xx           yes
+#           Ubuntu 26.04 LTS    yes
 #
 #   (c) 2025-2026, Laurent von Allmen
 #   ---------------------------------
@@ -70,7 +70,7 @@ readonly PACKS_LLVM="${PATH_TOOLS_ROOT}"/Packages/llvm-"${LLVM_RVXX_VER}"/riscv
 # Allow environment to control parallelism
 
 if [[ "x${PARALLEL_JOBS:-}" == "x" ]]; then
-	PARALLEL_JOBS=6
+    PARALLEL_JOBS=6
 fi
 
 readonly BUILD="${PATH_TOOLS_ROOT}"/builds/llvm-"${LLVM_RVXX_VER}"/riscv
@@ -83,9 +83,9 @@ readonly LOG_FILE="${BUILD}"/clang_llvm_riscv_temp.txt
 cd "${PATH_TOOLS_ROOT}"/Packages
 
 if [[ ! -d llvm-"${LLVM_RVXX_VER}"/riscv ]]; then
-	echo Downloading LLVM-${LLVM_RVXX_VER} for RISC-V
-	git clone https://github.com/Laur59/RTfE.git "llvm-${LLVM_RVXX_VER}/riscv"
-	git -C llvm-"${LLVM_RVXX_VER}"/riscv checkout ${LLVM_RVXX_COMMIT}
+    echo "Downloading LLVM-${LLVM_RVXX_VER} for RISC-V"
+    git clone https://github.com/Laur59/RTfE.git "llvm-${LLVM_RVXX_VER}/riscv"
+    git -C llvm-"${LLVM_RVXX_VER}"/riscv checkout ${LLVM_RVXX_COMMIT}
 fi
 
 # Building the toolchain
@@ -96,29 +96,29 @@ mkdir -p "${BUILD}"
 rm -rf "${CROSS}"
 mkdir -p "${CROSS}"
 
-echo "$(date) Start of build" > "${LOG_FILE}"
+echo "Start of build: $(date)" > "${LOG_FILE}"
 
 cmake -S "${PACKS_LLVM}"/riscv-software/embedded -B "${BUILD}" -GNinja \
-	-DCMAKE_BUILD_TYPE=Release \
-	-DCMAKE_INSTALL_PREFIX="${CROSS}" -Wno-dev
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX="${CROSS}" -Wno-dev
 cmake --build "${BUILD}" --parallel ${PARALLEL_JOBS} --target llvm-toolchain 2>/dev/null
 ninja -C "${BUILD}" install-llvm-toolchain
 
 # Remove debug info from libraries
-echo "$(date)	Start stripping libraries" >> "${LOG_FILE}"
+echo "$(date)   Start stripping libraries" >> "${LOG_FILE}"
 find "${CROSS}"/lib/clang-runtimes/ -name "lib*.a" -exec "${CROSS}"/bin/llvm-strip --strip-unneeded "{}" +
-echo "$(date)	End stripping libraries" >> "${LOG_FILE}"
+echo "$(date)   End stripping libraries" >> "${LOG_FILE}"
 
 # Update path links
 
 current_dir="${PATH_TOOLS_ROOT}"/cross/llvm-current
 if [[ ! -d "${current_dir}" ]]; then
-	mkdir "${current_dir}"
+    mkdir "${current_dir}"
 fi
 cd "${current_dir}"
 rm -f riscv
 ln -s ../llvm-"${LLVM_RVXX_VER}"/riscv riscv
 
-echo "End of build:	  $(date)" >> "${LOG_FILE}"
+echo "End of build:   $(date)" >> "${LOG_FILE}"
 mv "${LOG_FILE}" "${CROSS}"/clang_llvm_riscv_ready"$(date -I)".txt
 rm -fr "${BUILD}"

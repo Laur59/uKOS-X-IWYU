@@ -6,18 +6,18 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Laurent von Allmen	The 2025-10-02
-# Modifs:	Edo. Franzi			The 2025-10-03, fix Ubuntu install
+# Author:   Laurent von Allmen  The 2025-10-02
+# Modifs:   Edo. Franzi         The 2025-10-03, fix Ubuntu install
 #
-# Project:	uKOS-X
-# Goal:		Installation of Cppcheck tool.
+# Project:  uKOS-X
+# Goal:     Installation of Cppcheck tool.
 #
-#			Usage:
-#			./ukos_cppcheck.sh
+#           Usage:
+#           ./ukos_cppcheck.sh
 #
-#			OS:
-#			OSX 26.xx			yes
-#			Ubuntu 24.04 LTS	yes
+#           OS:
+#           OSX 26.xx           yes
+#           Ubuntu 26.04 LTS    yes
 #
 #   (c) 2025-2026, Laurent von Allmen
 #   ---------------------------------
@@ -71,11 +71,11 @@ readonly LOG_FILE="${BUILD}"/cppcheck_temp.txt
 # -------------------
 
 if [[ ! -d "${PACKS}" ]]; then
-	echo Cloning cppcheck-${CPPCHECK_VER}
-	git clone https://github.com/danmar/cppcheck.git "${PACKS}"
+    echo "Cloning cppcheck-${CPPCHECK_VER}"
+    git clone https://github.com/danmar/cppcheck.git "${PACKS}"
 else
-	echo Fetching cppcheck-${CPPCHECK_VER}
-	git -C "${PACKS}" fetch --quiet
+    echo "Fetching cppcheck-${CPPCHECK_VER}"
+    git -C "${PACKS}" fetch --quiet
 fi
 git -C "${PACKS}" checkout "${CPPCHECK_VER}"
 
@@ -89,9 +89,9 @@ mkdir -p "${BUILD}"
 echo "Start of build: $(date)" > "${LOG_FILE}"
 
 cmake -S "${PACKS}" -B "${BUILD}" \
-	-DCMAKE_BUILD_TYPE=Release \
-	-DUSE_MATCHCOMPILER=ON \
-	-DCMAKE_INSTALL_PREFIX="${CROSS}"
+    -DCMAKE_BUILD_TYPE=Release \
+    -DUSE_MATCHCOMPILER=ON \
+    -DCMAKE_INSTALL_PREFIX="${CROSS}"
 
 cmake --build "${BUILD}"
 cmake --install "${BUILD}"
@@ -102,5 +102,5 @@ cd "${PATH_TOOLS_ROOT}"/cross
 rm -f cppcheck-current
 ln -s cppcheck-"${CPPCHECK_VER}" cppcheck-current
 
-echo "End of build:	  $(date)" >> "${LOG_FILE}"
+echo "End of build:   $(date)" >> "${LOG_FILE}"
 mv "${LOG_FILE}" "${BUILD}"/cppcheck_ready.txt

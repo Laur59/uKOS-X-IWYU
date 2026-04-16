@@ -6,18 +6,18 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Toolchain for generating the picotool for Pico2 cpu.
+# Project:  uKOS-X
+# Goal:     Toolchain for generating the picotool for Pico2 cpu.
 #
-#			Usage:
-#			./ukos_picotool.sh
+#           Usage:
+#           ./ukos_picotool.sh
 #
-#			OS:
-#			OSX 26.xx			yes
-#			Ubuntu 24.04 LTS	yes
+#           OS:
+#           OSX 26.xx           yes
+#           Ubuntu 26.04 LTS    yes
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -70,28 +70,28 @@ readonly LOG_FILE="${BUILD}"/picotool_temp.txt
 readonly prefix="${CROSS}"
 readonly executables="${prefix}"/bin
 
-export	DIRLOCAL="${PATH_TOOLS_ROOT}"/local
-export	PKG_CONFIG_PATH="${DIRLOCAL}/lib/pkgconfig${PKG_CONFIG_PATH:+:${PKG_CONFIG_PATH}}"
-export	CMAKE_PREFIX_PATH="${DIRLOCAL}${CMAKE_PREFIX_PATH:+:${CMAKE_PREFIX_PATH}}"
+export  DIRLOCAL="${PATH_TOOLS_ROOT}"/local
+export  PKG_CONFIG_PATH="${DIRLOCAL}/lib/pkgconfig${PKG_CONFIG_PATH:+:${PKG_CONFIG_PATH}}"
+export  CMAKE_PREFIX_PATH="${DIRLOCAL}${CMAKE_PREFIX_PATH:+:${CMAKE_PREFIX_PATH}}"
 
 # Downloading sources
 # -------------------
 
 if [[ ! -d "${PACKS}" ]]; then
-	echo Cloning picotool
-	git clone --recurse-submodules --branch ${PICOTOOL_VER} https://github.com/raspberrypi/picotool.git "${PACKS}"
+    echo "Cloning picotool"
+    git clone --recurse-submodules --branch ${PICOTOOL_VER} https://github.com/raspberrypi/picotool.git "${PACKS}"
 else
-	echo Fetching picotool
-	git -C "${PACKS}" fetch --quiet
+    echo "Fetching picotool"
+    git -C "${PACKS}" fetch --quiet
 fi
 git -C "${PACKS}" checkout master
 
 if [[ ! -d "${PACKS_PICO_SDK}" ]]; then
-	echo Cloning pico_sdk
-	git clone --recurse-submodules --branch ${PICO_SDK_VER} https://github.com/raspberrypi/pico-sdk.git "${PACKS_PICO_SDK}"
+    echo "Cloning pico_sdk"
+    git clone --recurse-submodules --branch ${PICO_SDK_VER} https://github.com/raspberrypi/pico-sdk.git "${PACKS_PICO_SDK}"
 else
-	echo Fetching pico_sdk
-	git -C "${PACKS_PICO_SDK}" fetch --quiet
+    echo "Fetching pico_sdk"
+    git -C "${PACKS_PICO_SDK}" fetch --quiet
 fi
 git -C "${PACKS_PICO_SDK}" checkout master
 
@@ -106,13 +106,13 @@ echo "Start of build: $(date)" > "${LOG_FILE}"
 
 cd "${BUILD}"
 cmake -G "Unix Makefiles" \
-	-S "${PACKS}" \
-	-B "${BUILD}" \
-	-DCMAKE_INSTALL_PREFIX="${CROSS}" \
-	-DPICO_SDK_PATH="${PACKS_PICO_SDK}" \
-	-DPICOTOOL_NO_LIBUSB=0 \
-	-DCMAKE_OSX_ARCHITECTURES=arm64 \
-	-DCMAKE_IGNORE_PATH="/usr/local"
+    -S "${PACKS}" \
+    -B "${BUILD}" \
+    -DCMAKE_INSTALL_PREFIX="${CROSS}" \
+    -DPICO_SDK_PATH="${PACKS_PICO_SDK}" \
+    -DPICOTOOL_NO_LIBUSB=0 \
+    -DCMAKE_OSX_ARCHITECTURES=arm64 \
+    -DCMAKE_IGNORE_PATH="/usr/local"
 
 cmake --build "${BUILD}" --parallel
 cmake --install "${BUILD}" --prefix "${CROSS}"
@@ -123,5 +123,5 @@ cd "${PATH_TOOLS_GCC}"/cross
 rm -f picotool-current
 ln -s picotool-"${PICOTOOL_VER}" picotool-current
 
-echo "End of build:	  $(date)" >> "${LOG_FILE}"
+echo "End of build:   $(date)" >> "${LOG_FILE}"
 mv "${LOG_FILE}" "${BUILD}"/picotool_ready.txt

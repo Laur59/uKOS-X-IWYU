@@ -6,15 +6,15 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Build gcc (pass 2)
+# Project:  uKOS-X
+# Goal:     Build gcc (pass 2)
 #
-#			OS:
-#			OSX 26.xx			yes
-#			Ubuntu 24.04 LTS	yes
+#           OS:
+#           OSX 26.xx           yes
+#           Ubuntu 26.04 LTS    yes
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -57,39 +57,39 @@ echo "Start gcc pass 2: $(date)" > "${log_file}"
 cd "${BUILD}/${MACHINE}/gcc-${GCC_VER}"
 
 case "$(uname)" in
-	"Darwin")
-		"${PACKS_GCC}/configure" \
-			--target="${TARGET}" \
-			--prefix="${prefix}" \
-			--with-native-system-header-dir="${CROSS}/${MACHINE}/${TARGET}/include" \
-			--with-sysroot \
-			--with-system-zlib \
-			--enable-multilib \
-			--disable-werror \
-			--disable-libgloss \
-			--disable-libssp \
-			${=GCC2_CONFIG} || { echo "Error configuring gcc pass 2"; exit 1; }
-		make CXXFLAGS="-fbracket-depth=1024" -j "${PARALLEL_JOBS}"	|| { echo "Error building gcc pass 2";		exit 1; }
-		make install-strip											|| { echo "Error installing gcc pass 2";	exit 1; }
-		make clean													|| { echo "Error cleaning gcc pass 2";		exit 1; }
-		;;
-	"Linux")
-		"${PACKS_GCC}/configure" \
-			--target="${TARGET}" \
-			--prefix="${prefix}" \
-			--with-native-system-header-dir="${CROSS}/${MACHINE}/${TARGET}/include" \
-			--with-sysroot \
-			--with-system-zlib \
-			--enable-multilib \
-			--disable-werror \
-			--disable-libgloss \
-			--disable-libssp \
-			${=GCC2_CONFIG}											|| { echo "Error configuring gcc pass 2";	exit 1; }
-		make -j "${PARALLEL_JOBS}"									|| { echo "Error building gcc pass 2";		exit 1; }
-		make install-strip											|| { echo "Error installing gcc pass 2";	exit 1; }
-		make clean													|| { echo "Error cleaning gcc pass 2";		exit 1; }
-		;;
+    "Darwin")
+        "${PACKS_GCC}/configure" \
+            --target="${TARGET}" \
+            --prefix="${prefix}" \
+            --with-native-system-header-dir="${CROSS}/${MACHINE}/${TARGET}/include" \
+            --with-sysroot \
+            --with-system-zlib \
+            --enable-multilib \
+            --disable-werror \
+            --disable-libgloss \
+            --disable-libssp \
+            ${=GCC2_CONFIG} || { echo "Error configuring gcc pass 2"; exit 1; }
+        make CXXFLAGS="-fbracket-depth=1024" -j "${PARALLEL_JOBS}"  || { echo "Error building gcc pass 2";      exit 1; }
+        make install-strip                                          || { echo "Error installing gcc pass 2";    exit 1; }
+        make clean                                                  || { echo "Error cleaning gcc pass 2";      exit 1; }
+        ;;
+    "Linux")
+        "${PACKS_GCC}/configure" \
+            --target="${TARGET}" \
+            --prefix="${prefix}" \
+            --with-native-system-header-dir="${CROSS}/${MACHINE}/${TARGET}/include" \
+            --with-sysroot \
+            --with-system-zlib \
+            --enable-multilib \
+            --disable-werror \
+            --disable-libgloss \
+            --disable-libssp \
+            ${=GCC2_CONFIG}                                         || { echo "Error configuring gcc pass 2";   exit 1; }
+        make -j "${PARALLEL_JOBS}"                                  || { echo "Error building gcc pass 2";      exit 1; }
+        make install-strip                                          || { echo "Error installing gcc pass 2";    exit 1; }
+        make clean                                                  || { echo "Error cleaning gcc pass 2";      exit 1; }
+        ;;
 esac
 
-echo "End gcc pass 2:	$(date)" >> "${log_file}"
+echo "End gcc pass 2:   $(date)" >> "${log_file}"
 mv "${log_file}" "${BUILD}/${MACHINE}/gnu_gcc_pass2_ready.txt"

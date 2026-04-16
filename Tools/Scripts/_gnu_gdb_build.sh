@@ -6,17 +6,17 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Build gdb
+# Project:  uKOS-X
+# Goal:     Build gdb
 #
-#			mpfr and gmp are needed for building gdb
+#           mpfr and gmp are needed for building gdb
 #
-#			OS:
-#			OSX 26.xx			yes
-#			Ubuntu 24.04 LTS	yes
+#           OS:
+#           OSX 26.xx           yes
+#           Ubuntu 26.04 LTS    yes
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -63,19 +63,19 @@ mkdir -p "${build_machine}/gdb-${GDB_VER}"
 cd "${build_machine}/gdb-${GDB_VER}"
 
 "${PACKS_GDB}/configure" \
-	CFLAGS="-I${DIRLOCAL}/include -L${DIRLOCAL}/lib" \
-	CXXFLAGS="-I${DIRLOCAL}/include -L${DIRLOCAL}/lib" \
-	--target="${TARGET}" \
-	--prefix="${prefix}" \
-	--enable-multilib \
-	--with-system-zlib \
-	--disable-werror \
-	--disable-nls \
-	--disable-libssp \
-	${=GDB_CONFIG}			|| { echo "Error configuring gdb";	exit 1; }
-make -j "${PARALLEL_JOBS}"	|| { echo "Error building gdb";		exit 1; }
-make install				|| { echo "Error installing gdb";	exit 1; }
-make clean					|| { echo "Error cleaning gdb";		exit 1; }
+    CFLAGS="-I${DIRLOCAL}/include -L${DIRLOCAL}/lib" \
+    CXXFLAGS="-I${DIRLOCAL}/include -L${DIRLOCAL}/lib" \
+    --target="${TARGET}" \
+    --prefix="${prefix}" \
+    --enable-multilib \
+    --with-system-zlib \
+    --disable-werror \
+    --disable-nls \
+    --disable-libssp \
+    ${=GDB_CONFIG}          || { echo "Error configuring gdb";  exit 1; }
+make -j "${PARALLEL_JOBS}"  || { echo "Error building gdb";     exit 1; }
+make install                || { echo "Error installing gdb";   exit 1; }
+make clean                  || { echo "Error cleaning gdb";     exit 1; }
 
-echo "End building gdb:	  $(date)" >> "${log_file}"
+echo "End building gdb:   $(date)" >> "${log_file}"
 mv "${log_file}" "${build_machine}/gnu_gdb_ready.txt"

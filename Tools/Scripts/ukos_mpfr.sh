@@ -6,21 +6,21 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Toolchain for building the math mpfr librarie
-#			for building the versions of gdb greater than 11.x.x.
+# Project:  uKOS-X
+# Goal:     Toolchain for building the math mpfr librarie
+#           for building the versions of gdb greater than 11.x.x.
 #
-#			Usage:
-#			./ukos_mpfr.sh
+#           Usage:
+#           ./ukos_mpfr.sh
 #
-#			mpfr need gmp; so, first install gmp
+#           mpfr need gmp; so, first install gmp
 #
-#			OS:
-#			OSX 26.xx			yes
-#			Ubuntu 24.04 LTS	yes
+#           OS:
+#           OSX 26.xx           yes
+#           Ubuntu 26.04 LTS    yes
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -77,13 +77,13 @@ readonly DIRLOCAL="${PATH_TOOLS_ROOT}"/local
 cd "${PATH_TOOLS_ROOT}"/Packages/,Sources
 
 if [[ ! -f "mpfr-${MPFR_VER}.tar.bz2" ]]; then
-	echo Downloading mpfr-${MPFR_VER}
-	move_to_archive 'mpfr-*'
-	"${WGET[@]}" https://www.mpfr.org/mpfr-current/mpfr-"${MPFR_VER}".tar.bz2
+    echo "Downloading mpfr-${MPFR_VER}"
+    move_to_archive 'mpfr-*'
+    "${WGET[@]}" https://www.mpfr.org/mpfr-current/mpfr-"${MPFR_VER}".tar.bz2
 fi
 
 cd ..
-echo Extracting mpfr sources
+echo "Extracting mpfr sources"
 tar xjf ,Sources/mpfr-"${MPFR_VER}".tar.bz2
 
 # Building the library
@@ -96,12 +96,12 @@ echo "Start of build: $(date)" > "${LOG_FILE}"
 
 cd "${BUILD}"
 env CPPFLAGS=-I"${DIRLOCAL}"/include \
-	LDFLAGS=-L"${DIRLOCAL}"/lib \
-	PKG_CONFIG_PATH="${DIRLOCAL}"/lib/pkgconfig \
-	"${PACKS}"/configure --prefix="${DIRLOCAL}"	|| { echo "Error configuring MPFR"; exit 1; }
-make											|| { echo "Error building MPFR";	exit 1; }
-make install									|| { echo "Error installing MPFR";  exit 1; }
-make clean										|| { echo "Error cleaning MPFR";	exit 1; }
+    LDFLAGS=-L"${DIRLOCAL}"/lib \
+    PKG_CONFIG_PATH="${DIRLOCAL}"/lib/pkgconfig \
+    "${PACKS}"/configure --prefix="${DIRLOCAL}" || { echo "Error configuring MPFR"; exit 1; }
+make                                            || { echo "Error building MPFR";    exit 1; }
+make install                                    || { echo "Error installing MPFR";  exit 1; }
+make clean                                      || { echo "Error cleaning MPFR";    exit 1; }
 
-echo "End of build:	  $(date)" >> "${LOG_FILE}"
+echo "End of build:   $(date)" >> "${LOG_FILE}"
 mv "${LOG_FILE}" "${BUILD}"/mpfr_ready.txt
