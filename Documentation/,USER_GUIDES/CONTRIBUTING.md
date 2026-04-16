@@ -1,180 +1,227 @@
+<!-- SPDX-License-Identifier: MIT -->
+<!-- SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen -->
+
 # Typography
 
-(c) 2025-2026, Laurent von Allmen, 2025-01-01
-
-
-
 1. Files shall be encoded in UTF-8 and employ UNIX-style line endings (LF).
-
 2. Lines shall terminate without trailing whitespace.
-
-3. Code indentation shall employ TAB characters, configured to represent 4 spaces.
+3. Code indentation shall employ 4 spaces.
 
 
 ## File header
 
-Files shall start with a header in comment style of the source.
+All source files in this repository should use a short, modern header based on SPDX identifiers.
 
-Exemple for C source file:
+### General rules
 
-```
+Use a minimal file header that contains:
+
+1. `SPDX-License-Identifier`
+2. One or more `SPDX-FileCopyrightText` lines
+3. An optional short description when it adds useful context
+
+Do not include:
+
+- the file name
+- author or modification history
+- the full licence text
+- decorative separator lines
+- ASCII art
+- personal postal addresses or email addresses
+
+Keep headers short and consistent across the project.
+
+### Required order
+
+Use the following order in all file headers:
+
+1. `SPDX-License-Identifier`
+2. `SPDX-FileCopyrightText` line(s)
+3. one blank line
+4. optional short description
+
+Example:
+
+```c
 /*
-; uKOS.
-; =====
-
-;------------------------------------------------------------------------
-; Author:    Edo. Franzi			     The 2025-01-01
-; Modifs:    Laurent von Allmen    The 2025-01-01
-;
-; Project:   uKOS-X
-; Goal:      Universal h file for uKOS-X systems.
-;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
-;                                              __ ______  _____
-;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
-;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
-;   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
-;                                     \__,_/_/ |_\____//____/
-;   edo.franzi@ukos.ch
-;
-;   Description: Lightweight, real-time multitasking operating
-;   system for embedded microcontroller and DSP-based systems.
-;
-;   Permission is hereby granted, free of charge, to any person
-;   obtaining a copy of this software and associated documentation
-;   files (the "Software"), to deal in the Software without restriction,
-;   including without limitation the rights to use, copy, modify,
-;   merge, publish, distribute, sublicense, and/or sell copies of the
-;   Software, and to permit persons to whom the Software is furnished
-;   to do so, subject to the following conditions:
-;
-;   The above copyright notice and this permission notice shall be
-;   included in all copies or substantial portions of the Software.
-;
-;   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-;   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-;   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-;   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
-;   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-;   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-;   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-;   SOFTWARE.
-;
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Short file description.
+ */
 ```
 
-## Rules
+### Copyright lines
 
-### Section 1
+Use one `SPDX-FileCopyrightText` line per copyright holder.
 
-This section gives the name of the source file without its extension.
+Do not add a new copyright line for trivial edits such as:
 
-```
+- formatting changes
+- small fixes
+- renaming
+- minor refactoring
+- comment-only updates
+
+Add a new copyright line only for substantial authorship, according to the project’s copyright policy.
+
+### Years
+
+Use:
+
+- `2026 Name` for work limited to a single year
+- `2025-2026 Name` for work spanning multiple years
+
+Do not update years for every minor change.
+
+### Descriptions
+
+Descriptions are optional.
+
+If used, they should be:
+
+- short
+- factual
+- written in English
+- limited to a single sentence
+
+Good examples:
+
+- `Umbrella header for uKOS-X public includes.`
+- `Kernel memory allocation helpers.`
+- `Linker script for privileged/user-mode systems.`
+
+Avoid long descriptions, historical notes, and marketing language.
+
+## Language-specific templates
+
+### C and C++ source/header files
+
+Use block comments:
+
+```c
 /*
-; fileName.
-; =========
-
-;------------------------------------------------------------------------
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Short file description.
+ */
 ```
 
-Line 1 : contains the name of the file
+Applies to files such as:
 
-Line 2 : underlying of line 1 with character '='
+- `.c`
+- `.h`
+- `.cpp`
+- `.hpp`
+- `.cc`
+- `.hh`
 
-Line 3 : blank line
+### Shell scripts
 
-Line 4 : separator line (72 '-')
+Keep the shebang on the first line, then add SPDX comment lines:
 
-### Section 2
-
+```sh
+#!/usr/bin/env sh
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+#
+# Short file description.
 ```
-; Author:	Edo. Franzi    The 2025-01-01
+
+### CMake files
+
+Use CMake comments:
+
+```cmake
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+#
+# Short file description.
 ```
 
-### Section 3
+Applies to:
 
+- `CMakeLists.txt`
+- `.cmake`
+
+### Linker scripts
+
+Use block comments:
+
+```c
+/*
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Short file description.
+ */
 ```
-; Modifs: Laurent von Allmen    The 2025-01-01
+
+Applies to:
+
+- `.ld`
+- `.lld`
+
+### Assembly files
+
+Use the native comment style of the assembler syntax used by the file.
+
+Example:
+
+```asm
+; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 ;
+; Short file description.
 ```
 
-Can contain several instances of line 'Modifs'.
+Do not reuse assembly-style comment prefixes in C or C++ files.
 
-Last line of section is blank.
+### Makefiles
 
-### Section 4
+Use `#` comments:
 
-```
-; Project:   uKOS-X
-; Goal:      Universal h file for uKOS-X systems.
-;
-```
-
-Line 1 of this section is a constant
-
-Goal description can extend to more lines, e.g.
-
-```
-; Goal:      kern manager (uKernel core).
-;
-;            The KERN manager operates on a series of linked lists
-;            where the processes are located.
-;
-;            Service system calls
-;            --------------------
-;
-;            int32_t	kern_init(void);
+```python
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+#
+# Short file description.
 ```
 
-Last line of section is blank.
+### Python
 
-### Section 5
-
-```
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
-```
-
-Author names
-
-### Section 6
-
-Constant section.
+1. shebang (if script)
+2. encoding line (only if needed)
+3. SPDX / copyright comments
+4. blank line
+5. module docstring (optional)
+6. code
 
 ```
-;                                              __ ______  _____
-;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
-;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
-;   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
-;                                     \__,_/_/ |_\____//____/
-;   edo.franzi@ukos.ch
-;
-;   Description: Lightweight, real-time multitasking operating
-;   system for embedded microcontroller and DSP-based systems.
-;
-;   Permission is hereby granted, free of charge, to any person
-;   obtaining a copy of this software and associated documentation
-;   files (the "Software"), to deal in the Software without restriction,
-;   including without limitation the rights to use, copy, modify,
-;   merge, publish, distribute, sublicense, and/or sell copies of the
-;   Software, and to permit persons to whom the Software is furnished
-;   to do so, subject to the following conditions:
-;
-;   The above copyright notice and this permission notice shall be
-;   included in all copies or substantial portions of the Software.
-;
-;   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-;   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-;   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-;   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
-;   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-;   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-;   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-;   SOFTWARE.
-;
-;------------------------------------------------------------------------
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Edo Franzi
+
+"""
+uKOS-X — Generate database files for learning and validation.
+Displays both datasets.
+"""
 ```
 
-The last line is a copy of the separator line (72 '-') previously mentioned.
+
+## Preferred project template
+
+Unless there is a good reason to do otherwise, use this template:
+
+```c
+/*
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Short file description.
+ */
+```

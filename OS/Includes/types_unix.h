@@ -8,6 +8,7 @@
 #pragma once
 
 #include    <stddef.h>
+#include    <stdint.h>
 
 // uKOS-X program returns / exits
 //
