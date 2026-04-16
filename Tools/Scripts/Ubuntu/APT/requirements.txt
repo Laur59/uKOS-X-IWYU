@@ -38,9 +38,9 @@ meson
 clang
 cmake
 git
-gtkterm
 curl
 pandoc
 lzip
 zsh
 ghostwriter
+moserial
