@@ -35,13 +35,16 @@ if(NOT EXISTS "${CMAKE_CURRENT_LIST_DIR}/libTinyUSB_HS.a")
     message(FATAL_ERROR "TinyUSB HS library not found: ${CMAKE_CURRENT_LIST_DIR}/libTinyUSB_HS.a")
 endif()
 
-# Build the list of interface include directories
+# Build the list of interface include directories.
+# These point to Library/Include/TinyUSB-current/ which is populated by
+# the install_tinyusb_headers build target, so TinyUSB-current/ (the
+# cloned source tree) is not required after the build completes.
 set(TINYUSB_INTERFACE_INCLUDES
     ${PATH_TINYUSB}/uKOS_Interface/OSAL
-    ${PATH_TINYUSB}/TinyUSB-current/src
-    ${PATH_TINYUSB}/TinyUSB-current/src/common
-    ${PATH_TINYUSB}/TinyUSB-current/src/device
-    ${PATH_TINYUSB}/TinyUSB-current/src/class
+    ${PATH_TINYUSB}/Library/Include/TinyUSB-current/src
+    ${PATH_TINYUSB}/Library/Include/TinyUSB-current/src/common
+    ${PATH_TINYUSB}/Library/Include/TinyUSB-current/src/device
+    ${PATH_TINYUSB}/Library/Include/TinyUSB-current/src/class
     ${CMAKE_CURRENT_LIST_DIR}
 )
 list(APPEND TINYUSB_INTERFACE_INCLUDES
