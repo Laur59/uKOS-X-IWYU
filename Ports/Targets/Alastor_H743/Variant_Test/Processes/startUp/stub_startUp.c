@@ -31,12 +31,12 @@
 typedef struct  boot    boot_t;
 
 struct  boot {
-        const   char_t              *oFunction;         // Ptr on the function
-                serialManager_t     oSerialManager;     // Default Serial Communication Manager
-        const   char_t              **oArgV;            // Ptr on the arguments
                 uint8_t             oSW;                // Switch value
+        const   char_t              *oFunction;         // Ptr on the function
                 uint8_t             oBaudrate;          // Baudrate
+                serialManager_t     oSerialManager;     // Default Serial Communication Manager
                 uint8_t             oArgC;              // Number of arguments
+        const   char_t              **oArgV;            // Ptr on the arguments
         };
 
 static  const   char_t  *argv_cnsUrt0[] = { "console", "urt0" };
@@ -46,12 +46,12 @@ static  const   char_t  *argv_sloader[] = { "sloader", "-run" };
 static  const   char_t  *argv_userApp[] = { "userapp", "1234" };
 
 static  const   boot_t  aFunction[] = {
-                            { "console", KURT0, argv_cnsUrt0, 0x00U, KSERIAL_BAUDRATE_460800,  2U },
-                            { "sloader", KURT0, argv_sloader, 0x01U, KSERIAL_BAUDRATE_460800,  2U },
-                            { "console", KURT1, argv_cnsUrt1, 0x02U, KSERIAL_BAUDRATE_460800,  2U },
-                            { "sloader", KURT1, argv_sloader, 0x03U, KSERIAL_BAUDRATE_460800,  2U },
-                            { "userapp", KURT0, argv_userApp, 0x04U, KSERIAL_BAUDRATE_460800,  2U },
-                            { "console", KWFI0, argv_cnsWfi0, 0x05U, KSERIAL_BAUDRATE_2000000, 2U }
+                            { 0x00U, "console", KSERIAL_BAUDRATE_460800,  KURT0, 2u, argv_cnsUrt0 },
+                            { 0x01U, "sloader", KSERIAL_BAUDRATE_460800,  KURT0, 2u, argv_sloader },
+                            { 0x02U, "console", KSERIAL_BAUDRATE_460800,  KURT1, 2u, argv_cnsUrt1 },
+                            { 0x03U, "sloader", KSERIAL_BAUDRATE_460800,  KURT1, 2u, argv_sloader },
+                            { 0x04U, "userapp", KSERIAL_BAUDRATE_460800,  KURT0, 2u, argv_userApp },
+                            { 0x05U, "console", KSERIAL_BAUDRATE_2000000, KWFI0, 2u, argv_cnsWfi0 }
                         };
 
 #define KDEF_COMM       KURT0
@@ -147,10 +147,15 @@ void    stub_startUp_launch(void) {
 // The communication
 
             switch (aFunction[i].oSerialManager) {
-                case KURT0: { configureURTx.oBaudRate = aFunction[i].oBaudrate; serial_configure(KURT0, &configureURTx); break; }
-                case KURT1: { configureURTx.oBaudRate = aFunction[i].oBaudrate; serial_configure(KURT1, &configureURTx); break; }
-                case KURT2: { configureURTx.oBaudRate = aFunction[i].oBaudrate; serial_configure(KURT2, &configureURTx); break; }
-                case KURT3: { configureURTx.oBaudRate = aFunction[i].oBaudrate; serial_configure(KURT3, &configureURTx); break; }
+
+// If the serial device is already configured,
+// do not reconfigure it again.
+// This avoids corrupting ongoing transfers.
+//
+//              case KURT0: { configureURTx.oBaudRate = aFunction[i].oBaudrate; serial_configure(KURT0, &configureURTx); break; }
+//              case KURT1: { configureURTx.oBaudRate = aFunction[i].oBaudrate; serial_configure(KURT1, &configureURTx); break; }
+//              case KURT2: { configureURTx.oBaudRate = aFunction[i].oBaudrate; serial_configure(KURT2, &configureURTx); break; }
+//              case KURT3: { configureURTx.oBaudRate = aFunction[i].oBaudrate; serial_configure(KURT3, &configureURTx); break; }
                 case KWFI0: { configureURTx.oBaudRate = aFunction[i].oBaudrate; serial_configure(KWFI0, &configureURTx); break; }
                 default: {
 

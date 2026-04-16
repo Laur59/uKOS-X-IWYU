@@ -106,19 +106,19 @@ void    __attribute__ ((noreturn)) aProcess_0(const void *argument) {
 
 // Waiting from the uKOS-X prompt
 
-        kern_suspendProcess(100U);
-        (void)dprintf(KSYST, "\n");
+    kern_suspendProcess(100U);
+    (void)dprintf(KSYST, "\n");
 
-        {
-        const   TestClass titi;
-        titi.doit();
-        }
-
-        while (true) {
-            kern_suspendProcess(100U);
-            led_toggle(KLED_1);
-        }
+    {
+    const   TestClass titi;
+    titi.doit();
     }
+
+    while (true) {
+        kern_suspendProcess(100U);
+        led_toggle(KLED_1);
+    }
+}
 }
 
 /*
@@ -160,8 +160,13 @@ MAIN_ENTRY(argc, argv[]) {
         KKERN_PRIORITY_HIGH_02              // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
     );
 
-// NOLINTEND(misc-const-correctness)
-//
+        aStrText_0,                         // Info string (nullptr if anonymous)
+        KKERN_SZ_STACK_MM,                  // KSZSTACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
+        aProcess_0,                         // Code of the process
+        aStrIden_0,                         // Identifier (nullptr if anonymous)
+        KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
+        KKERN_PRIORITY_HIGH_02              // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
+    );
 
     if (kern_createProcess(&specification_0, nullptr, &process_0) != KERR_KERN_NOERR) { exit(EXIT_OS_FAILURE); }
     return EXIT_OS_SUCCESS_CLI;
