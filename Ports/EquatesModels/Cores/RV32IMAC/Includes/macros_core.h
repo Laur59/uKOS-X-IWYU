@@ -118,7 +118,7 @@ extern  bool    vExce_isException[KNB_CORES];
 #ifdef EXCLUDE_CPPCHECK
 
 #define EXCEPTION_SPECIFIC_HANDLER(exc)                                                                                         \
-                                void exc##_local_IRQHandler(void) {                                                             \
+                                __attribute__((used)) static void exc##_local_IRQHandler(void) {                                \
                                     uint32_t    core;                                                                           \
                                     void        (*go)(void);                                                                    \
                                                                                                                                 \
@@ -155,7 +155,7 @@ extern  bool    vExce_isException[KNB_CORES];
 #ifdef EXCLUDE_CPPCHECK
 
 #define INTERRUPT_SPECIFIC_HANDLER(irq)                                                                                         \
-                                void irq##_local_IRQHandler(void) {                                                             \
+                                __attribute__((used)) static void irq##_local_IRQHandler(void) {                                \
                                     uint32_t    core;                                                                           \
                                     void        (*go)(void);                                                                    \
                                                                                                                                 \

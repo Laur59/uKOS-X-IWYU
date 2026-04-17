@@ -228,7 +228,7 @@ extern              void    (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(vo
 extern              void    __attribute__ ((noreturn)) model_coreDump_displayExceptions(uintptr_t lr, uintptr_t *msp);
 
 #define EXCEPTION_SPECIFIC_HANDLER(exc)                                                                                         \
-                                void exc##_local_IRQHandler(uintptr_t lr, uintptr_t *msp) {                                     \
+                                __attribute__((used)) static void exc##_local_IRQHandler(uintptr_t lr, uintptr_t *msp) {        \
                                     uint32_t    core = GET_RUNNING_CORE;                                                        \
                                     void        (*go)(void);                                                                    \
                                                                                                                                 \
@@ -259,7 +259,7 @@ extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 extern  void    __attribute__ ((noreturn)) model_coreDump_displayInterruptions(uintptr_t lr, uintptr_t *msp);
 
 #define INTERRUPT_SPECIFIC_HANDLER(irq)                                                                                         \
-                                void irq##_local_IRQHandler(uintptr_t lr, uintptr_t *msp) {                                     \
+                                __attribute__((used)) static void irq##_local_IRQHandler(uintptr_t lr, uintptr_t *msp) {        \
                                     uint32_t    core = GET_RUNNING_CORE;                                                        \
                                     void        (*go)(void);                                                                    \
                                                                                                                                 \
@@ -282,6 +282,16 @@ extern  void    __attribute__ ((noreturn)) model_coreDump_displayInterruptions(u
                                     JUMP_FNCT(irq##_local_IRQHandler);                                                          \
                                 }
 #endif
+
+// Vector registration macros
+// --------------------------
+// Moved from macros_soc.h for IWYU compliance (eliminates circular dependency)
+
+#define EXCEPTION_VECTOR(vectorNb, address)                                                                                     \
+                                vExce_indExcVectors[GET_RUNNING_CORE][(int32_t)vectorNb + (int32_t)KNB_EXCEPTIONS] = address
+
+#define INTERRUPT_VECTOR(vectorNb, address)                                                                                     \
+                                vExce_indIntVectors[GET_RUNNING_CORE][vectorNb] = address
 
 // Misc assembler macro
 // --------------------

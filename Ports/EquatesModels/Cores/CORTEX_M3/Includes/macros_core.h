@@ -215,7 +215,7 @@ extern              void    (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(vo
 extern              void    __attribute__ ((noreturn)) model_coreDump_displayExceptions(uintptr_t lr, uintptr_t *msp);
 
 #define EXCEPTION_SPECIFIC_HANDLER(exc)                                                                                         \
-                                void exc##_local_IRQHandler(uintptr_t lr, uintptr_t *msp) {                                     \
+                                __attribute__((used)) static void exc##_local_IRQHandler(uintptr_t lr, uintptr_t *msp) {        \
                                     uint32_t    core = GET_RUNNING_CORE;                                                        \
                                     void        (*go)(void);                                                                    \
                                                                                                                                 \
@@ -246,7 +246,7 @@ extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 extern  void    __attribute__ ((noreturn)) model_coreDump_displayInterruptions(uintptr_t lr, uintptr_t *msp);
 
 #define INTERRUPT_SPECIFIC_HANDLER(irq)                                                                                         \
-                                void irq##_local_IRQHandler(uintptr_t lr, uintptr_t *msp) {                                     \
+                                __attribute__((used)) static void irq##_local_IRQHandler(uintptr_t lr, uintptr_t *msp) {        \
                                     uint32_t    core = GET_RUNNING_CORE;                                                        \
                                     void        (*go)(void);                                                                    \
                                                                                                                                 \
