@@ -59,6 +59,8 @@ PRESET="${COMPILER}"
 [[ "${USER_MODE}" == "OFF" ]] && PRESET+="-nouser"
 [[ "${CANARY}" == "OFF" ]] && PRESET+="-nocanary"
 
+rm -fr ${PATH_ARTEFACTS}
+
 printf "%bStarting Regression Test%b\n" "${BOLD}${BLUE}" "${NC}"
 printf "Source:    %s\n" "${PATH_ROOT}"
 printf "Artefacts: %s\n" "${PATH_ARTEFACTS}"

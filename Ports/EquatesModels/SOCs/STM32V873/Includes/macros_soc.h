@@ -126,9 +126,3 @@ enum {
 // PENDSVSET used for preemption (change the context)
 
 #define BKERN_PREEMPTION        28U
-
-#define EXCEPTION_VECTOR(vectorNb, address)                                                                                     \
-                                vExce_indExcVectors[GET_RUNNING_CORE][(int32_t)vectorNb + (int32_t)KNB_EXCEPTIONS] = address
-
-#define INTERRUPT_VECTOR(vectorNb, address)                                                                                     \
-                                vExce_indIntVectors[GET_RUNNING_CORE][vectorNb] = address

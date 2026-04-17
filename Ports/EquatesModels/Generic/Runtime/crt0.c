@@ -132,7 +132,7 @@ void    crt0(void) {
         #ifdef PRIVILEGED_USER_S
         regionSeed = ALIGNED_PTR(const uint32_t, linker_stPrgmData_u);
 
-        nbWords    = (intptr_t)(((uintptr_t)linker_lnPrgmData_u) / 4u);
+        nbWords    = (intptr_t)(((uintptr_t)linker_lnPrgmData_u) / 4U);
         seed       = 0U;
         while (nbWords-- > 0) {
             seed += *regionSeed;

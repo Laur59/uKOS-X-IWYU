@@ -22,7 +22,7 @@
 function(derive_soc_properties SOC_NAME)
     # STMicroelectronics processors
     # Pattern: STM32[FGHLUWP][0-9]...
-    if(SOC_NAME MATCHES "^STM32([FGHLNUWP][0-9])")
+    if(SOC_NAME MATCHES "^STM32([FGHLNUVWP][0-9])")
         set(PROVIDER "st" PARENT_SCOPE)
         # Extract family letter and first digit (e.g., "L4" -> "l4")
         string(TOLOWER "${CMAKE_MATCH_1}" FAMILY_LOWER)
@@ -120,12 +120,24 @@ function(configure_arm_core)
         set(MCPU "cortex-m55")
         set(MFLOAT_ABI "hard")
         set(MFPU "fpv5-sp-d16")
+    elseif(${CORE} STREQUAL "CORTEX_M85")
+        set(LLVM_TARGET "thumbv8.1m.main-${TARGET_TRIPLE_MIDDLE}-eabihf")
+        set(MCPU "cortex-m85")
+        set(MFLOAT_ABI "hard")
+        set(MFPU "fpv5-sp-d16")
     elseif(${CORE} STREQUAL "CORTEX_A7")
         if(${COMPILER_FAMILY} STREQUAL "llvm")
             message(WARNING "LLVM target not defined for CORTEX_A7")
         endif()
         set(MCPU "cortex-a7")
         set(MARCH "armv7ve")
+        # A7 uses different flags, handle separately
+        target_compile_options(core_compiler_flags INTERFACE -mcpu=${MCPU} -march=${MARCH})
+        add_link_options(-mcpu=${MCPU} -march=${MARCH})
+        return()
+    else()
+        message(FATAL_ERROR "Unsupported ARM core: ${CORE}")
+    endif()
 
     # Apply LLVM target if using LLVM
     if(${COMPILER_FAMILY} STREQUAL "llvm" AND DEFINED LLVM_TARGET)
@@ -141,13 +153,6 @@ function(configure_arm_core)
         list(APPEND COMPILE_FLAGS "-mfpu=${MFPU}")
     endif()
     if(DEFINED EXTRA_COMPILE_FLAGS)
-        list(APPEND COMPILE_FLAGS ${EXTRA_COMPILE_FLAGS})
-    endif()
-
-    # Apply compile and link flags
-    target_compile_options(core_compiler_flags INTERFACE ${COMPILE_FLAGS})
-    add_link_options(${COMPILE_FLAGS})
-
         list(APPEND COMPILE_FLAGS ${EXTRA_COMPILE_FLAGS})
     endif()
 
