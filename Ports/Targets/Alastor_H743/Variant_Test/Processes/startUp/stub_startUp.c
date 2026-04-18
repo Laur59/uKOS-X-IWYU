@@ -31,12 +31,12 @@
 typedef struct  boot    boot_t;
 
 struct  boot {
-        const   char_t              *oFunction;         // Ptr on the function
-                serialManager_t     oSerialManager;     // Default Serial Communication Manager
-        const   char_t              **oArgV;            // Ptr on the arguments
                 uint8_t             oSW;                // Switch value
+        const   char_t              *oFunction;         // Ptr on the function
                 uint8_t             oBaudrate;          // Baudrate
+                serialManager_t     oSerialManager;     // Default Serial Communication Manager
                 uint8_t             oArgC;              // Number of arguments
+        const   char_t              **oArgV;            // Ptr on the arguments
         };
 
 static  const   char_t  *argv_cnsUrt0[] = { "console", "urt0" };
@@ -46,12 +46,12 @@ static  const   char_t  *argv_sloader[] = { "sloader", "-run" };
 static  const   char_t  *argv_userApp[] = { "userapp", "1234" };
 
 static  const   boot_t  aFunction[] = {
-                            { "console", KURT0, argv_cnsUrt0, 0x00U, KSERIAL_BAUDRATE_460800,  2U },
-                            { "sloader", KURT0, argv_sloader, 0x01U, KSERIAL_BAUDRATE_460800,  2U },
-                            { "console", KURT1, argv_cnsUrt1, 0x02U, KSERIAL_BAUDRATE_460800,  2U },
-                            { "sloader", KURT1, argv_sloader, 0x03U, KSERIAL_BAUDRATE_460800,  2U },
-                            { "userapp", KURT0, argv_userApp, 0x04U, KSERIAL_BAUDRATE_460800,  2U },
-                            { "console", KWFI0, argv_cnsWfi0, 0x05U, KSERIAL_BAUDRATE_2000000, 2U }
+                            { 0x00U, "console", KSERIAL_BAUDRATE_460800, KURT0, 2U, argv_cnsUrt0 },
+                            { 0x01U, "sloader", KSERIAL_BAUDRATE_460800, KURT0, 2U, argv_sloader },
+                            { 0x02U, "console", KSERIAL_BAUDRATE_460800, KURT1, 2U, argv_cnsUrt1 },
+                            { 0x03U, "sloader", KSERIAL_BAUDRATE_460800, KURT1, 2U, argv_sloader },
+                            { 0x04U, "userapp", KSERIAL_BAUDRATE_460800, KURT0, 2U, argv_userApp },
+                            { 0x05U, "console", KSERIAL_BAUDRATE_921600, KWFI0, 2U, argv_cnsWfi0 }
                         };
 
 #define KDEF_COMM       KURT0
@@ -72,7 +72,7 @@ STRG_GLB_CONST(aStartUp_StrHelp[]) = "StartUp process\n"
                                      "    2   KURT1, console (460800-bit/s).\n"
                                      "    3   KURT1, sloader (460800-bit/s).\n"
                                      "    4   KURT0, userapp (460800-bit/s).\n"
-                                     "    5   KWFI0, console (2000000-bit/s).\n\n";
+                                     "    5   KWFI0, console (921600-bit/s).\n\n";
 
 STRG_LOC_CONST(aStrLogo[]) = STRG_LOGO;
 

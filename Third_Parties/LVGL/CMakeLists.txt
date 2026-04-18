@@ -113,7 +113,7 @@ math(EXPR LAST_INDEX "${NUM_CORES} - 1")
 foreach(CORE_INDEX RANGE 0 ${LAST_INDEX})
     list(GET SUPPORTED_CORES ${CORE_INDEX} CORE)
     list(GET CORE_DISPLAY ${CORE_INDEX} DISPLAY)
-    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/LibraryBuild/${CORE}/${DISPLAY}/CMakeLists.txt")
+    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${CORE}/${DISPLAY}/CMakeLists.txt")
         message(STATUS "Configuring build for core: ${CORE} and display ${DISPLAY}")
 
         ExternalProject_Add(LVGL_${CORE}
@@ -124,8 +124,8 @@ foreach(CORE_INDEX RANGE 0 ${LAST_INDEX})
             DEPENDS           LVGL_Download
 
             # Source configuration
-            SOURCE_DIR        "${CMAKE_CURRENT_SOURCE_DIR}/LibraryBuild/${CORE}/${DISPLAY}"
-            BINARY_DIR        "${CMAKE_CURRENT_SOURCE_DIR}/LibraryBuild/${CORE}/${DISPLAY}/build"
+            SOURCE_DIR        "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${CORE}/${DISPLAY}"
+            BINARY_DIR        "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${CORE}/${DISPLAY}/build"
 
             # Configure step - pass build type explicitly for optimization
             CMAKE_ARGS        -DCMAKE_BUILD_TYPE=${SUBPROJECT_BUILD_TYPE}
@@ -155,7 +155,7 @@ foreach(CORE_INDEX RANGE 0 ${LAST_INDEX})
 
         list(APPEND ALL_CORE_PROJECTS LVGL_${CORE})
     else()
-        message(WARNING "Skipping ${CORE}: CMakeLists.txt not found at LibraryBuild/${CORE}/${DISPLAY}")
+        message(WARNING "Skipping ${CORE}: CMakeLists.txt not found at Construction/${CORE}/${DISPLAY}")
     endif()
 endforeach()
 

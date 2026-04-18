@@ -112,7 +112,7 @@ endif()
 
 # Create an ExternalProject for each core
 foreach(CORE ${SUPPORTED_CORES})
-    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/LibraryBuild/${CORE}/CMakeLists.txt")
+    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${CORE}/CMakeLists.txt")
         message(STATUS "Configuring build for core: ${CORE}")
 
         ExternalProject_Add(decnumber_${CORE}
@@ -120,8 +120,8 @@ foreach(CORE ${SUPPORTED_CORES})
             PREFIX            "${CMAKE_CURRENT_BINARY_DIR}/ep-${CORE}"
 
             # Source configuration
-            SOURCE_DIR        "${CMAKE_CURRENT_SOURCE_DIR}/LibraryBuild/${CORE}"
-            BINARY_DIR        "${CMAKE_CURRENT_SOURCE_DIR}/LibraryBuild/${CORE}/build"
+            SOURCE_DIR        "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${CORE}"
+            BINARY_DIR        "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${CORE}/build"
 
             # Configure step - pass build type explicitly for optimization
             CMAKE_ARGS        -DCMAKE_BUILD_TYPE=${SUBPROJECT_BUILD_TYPE}
@@ -151,7 +151,7 @@ foreach(CORE ${SUPPORTED_CORES})
 
         list(APPEND ALL_CORE_PROJECTS decnumber_${CORE})
     else()
-        message(WARNING "Skipping ${CORE}: CMakeLists.txt not found at LibraryBuild/${CORE}")
+        message(WARNING "Skipping ${CORE}: CMakeLists.txt not found at Construction/${CORE}")
     endif()
 endforeach()
 

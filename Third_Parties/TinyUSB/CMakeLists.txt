@@ -70,7 +70,7 @@ message("")
 
 # Package version and commit hash (matching build_with_cmake.sh)
 set(TINYUSB_VERSION "0.20.0")
-set(TINYUSB_HASH "81641e3")
+set(TINYUSB_HASH "723e016")
 
 message(STATUS "Fetching TinyUSB version ${TINYUSB_VERSION} (commit ${TINYUSB_HASH})")
 
@@ -205,9 +205,23 @@ add_custom_target(TinyUSB_Fetch_Complete
     COMMENT "TinyUSB upstream source fetched and ready"
 )
 
-# Install headers from src/ only (populated by 'cmake --install build')
+# Install TinyUSB stack headers from src/ only
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/TinyUSB-current/src/"
         DESTINATION "Library/Include/TinyUSB-current/src"
+        FILES_MATCHING PATTERN "*.h"
+)
+
+# Install uKOS interface files from the three designated subdirectories
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/Construction/Interface/Includes/"
+        DESTINATION "Library/Include/Interface/Includes"
+        FILES_MATCHING PATTERN "*.h"
+)
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/Construction/Interface/Models/"
+        DESTINATION "Library/Include/Interface/Models"
+        FILES_MATCHING PATTERN "*.c_inc"
+)
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/Construction/Interface/OSAL/"
+        DESTINATION "Library/Include/Interface/OSAL"
         FILES_MATCHING PATTERN "*.h"
 )
 

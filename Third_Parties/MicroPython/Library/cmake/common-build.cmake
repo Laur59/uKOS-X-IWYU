@@ -68,9 +68,9 @@ target_sources(${MICROPY_TARGET} PRIVATE
     ${MICROPY_MPVERSION}
     ${MICROPY_SOURCE_QSTR}
     ${MICROPY_SOURCE_LIB_LIBM}
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../uKOS_System/help.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../uKOS_System/headerMicroPython.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../uKOS_System/microPython.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../Construction/System/help.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../Construction/System/headerMicroPython.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../Construction/System/microPython.c
 )
 
 # Super-optimisation flag for performance-critical files (following py.mk line 22)

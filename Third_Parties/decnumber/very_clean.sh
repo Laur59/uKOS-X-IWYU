@@ -5,5 +5,5 @@ readonly library_name=libdecnumber
 
 rm -rf build
 rm -fr Library
-find LibraryBuild -type d -name "build*" -prune -exec rm -r "{}" +
-rm -f LibraryBuild/*/${library_name}_ready.txt(N)
+find Construction -type d -name "build*" -prune -exec rm -r "{}" +
+rm -f Construction/*/${library_name}_ready.txt(N)
