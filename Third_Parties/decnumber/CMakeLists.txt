@@ -112,7 +112,7 @@ endif()
 
 # Create an ExternalProject for each core
 foreach(CORE ${SUPPORTED_CORES})
-    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Library/${CORE}/CMakeLists.txt")
+    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/LibraryBuild/${CORE}/CMakeLists.txt")
         message(STATUS "Configuring build for core: ${CORE}")
 
         ExternalProject_Add(decnumber_${CORE}
@@ -120,8 +120,8 @@ foreach(CORE ${SUPPORTED_CORES})
             PREFIX            "${CMAKE_CURRENT_BINARY_DIR}/ep-${CORE}"
 
             # Source configuration
-            SOURCE_DIR        "${CMAKE_CURRENT_SOURCE_DIR}/Library/${CORE}"
-            BINARY_DIR        "${CMAKE_CURRENT_SOURCE_DIR}/Library/${CORE}/build"
+            SOURCE_DIR        "${CMAKE_CURRENT_SOURCE_DIR}/LibraryBuild/${CORE}"
+            BINARY_DIR        "${CMAKE_CURRENT_SOURCE_DIR}/LibraryBuild/${CORE}/build"
 
             # Configure step - pass build type explicitly for optimization
             CMAKE_ARGS        -DCMAKE_BUILD_TYPE=${SUBPROJECT_BUILD_TYPE}
@@ -152,17 +152,31 @@ foreach(CORE ${SUPPORTED_CORES})
 
         list(APPEND ALL_CORE_PROJECTS decnumber_${CORE})
     else()
-        message(WARNING "Skipping ${CORE}: CMakeLists.txt not found at Library/${CORE}")
+        message(WARNING "Skipping ${CORE}: CMakeLists.txt not found at LibraryBuild/${CORE}")
     endif()
 endforeach()
 
 #------------------------------------------------------------------------
-# Step 3: Create convenience targets
+# Step 3: Install headers from upstream source to Library/include
+#------------------------------------------------------------------------
+
+set(DECNUMBER_INCLUDE_SRC "${CMAKE_CURRENT_SOURCE_DIR}/decnumber-current/include")
+set(DECNUMBER_INCLUDE_DST "${CMAKE_CURRENT_SOURCE_DIR}/Library/include")
+
+add_custom_target(decnumber_Install_Headers ALL
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${DECNUMBER_INCLUDE_DST}"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${DECNUMBER_INCLUDE_SRC}" "${DECNUMBER_INCLUDE_DST}"
+    DEPENDS decnumber_Fetch_Complete
+    COMMENT "Installing decnumber headers to Library/include"
+)
+
+#------------------------------------------------------------------------
+# Step 4: Create convenience targets
 #------------------------------------------------------------------------
 
 # Create a custom target that depends on all external projects
 add_custom_target(build_all_decnumber ALL
-    DEPENDS ${ALL_CORE_PROJECTS}
+    DEPENDS ${ALL_CORE_PROJECTS} decnumber_Install_Headers
     COMMENT "Building decnumber for all architectures"
 )
 
@@ -191,4 +205,7 @@ endforeach()
 message("")
 message("Output libraries will be in:")
 message("  Library/<CORE>/libdecnumber.a")
+message("")
+message("Installed headers will be in:")
+message("  Library/include/")
 message("══════════════════════════════════════════════════════════════")

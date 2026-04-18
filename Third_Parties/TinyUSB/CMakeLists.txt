@@ -24,6 +24,7 @@
 #   cd Third_Parties/TinyUSB
 #   cmake -S . -B build -GNinja
 #   cmake --build build
+#   cmake --install build
 #
 # Build outputs:
 #   - Family/*/SOC/profile/libTinyUSB_FS.a
@@ -44,6 +45,12 @@ project(TinyUSB_Package
 # to all sub-projects (see Step 3 below).
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE MinSizeRel CACHE STRING "Build type")
+endif()
+
+# Default install prefix: keep Library/ adjacent to Construction/ inside the source tree.
+# Override with cmake --install build --prefix /other/path if needed.
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}" CACHE PATH "Install prefix" FORCE)
 endif()
 
 # Include FetchContent module for downloading upstream TinyUSB
@@ -198,6 +205,12 @@ add_custom_target(TinyUSB_Fetch_Complete
     COMMENT "TinyUSB upstream source fetched and ready"
 )
 
+# Install headers from src/ only (populated by 'cmake --install build')
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/TinyUSB-current/src/"
+        DESTINATION "Library/Include/TinyUSB-current/src"
+        FILES_MATCHING PATTERN "*.h"
+)
+
 #------------------------------------------------------------------------
 # Step 2: Configuration - SOCs and Profiles
 #------------------------------------------------------------------------
@@ -213,7 +226,7 @@ set(SUPPORTED_SOCS
     "u5|STM32U5G9|cdc_cdc,cdc_msc,cdc_video"
     "n6|STM32N657|cdc_cdc,cdc_msc,cdc_video"
     "pico2|rp2350|cdc_cdc"
-    "v8|STM32V873|cdc_cdc,cdc_msc,cdc_video"
+#     "v8|STM32V873|cdc_cdc,cdc_msc,cdc_video"
 )
 
 #------------------------------------------------------------------------
@@ -241,7 +254,7 @@ foreach(SOC_CONFIG ${SUPPORTED_SOCS})
     string(REPLACE ";" ", " PROFILES_DISPLAY "${PROFILES}")
 
     # Path to SOC CMakeLists.txt
-    set(SOC_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Library/Family/${FAMILY}/${SOC}")
+    set(SOC_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Construction/Family/${FAMILY}/${SOC}")
 
     if(EXISTS "${SOC_SOURCE_DIR}/CMakeLists.txt")
         message(STATUS "Configuring: ${SOC} (${FAMILY}) - Profiles: ${PROFILES_DISPLAY}")
@@ -302,7 +315,39 @@ foreach(SOC_CONFIG ${SUPPORTED_SOCS})
 endforeach()
 
 #------------------------------------------------------------------------
-# Step 4: Create convenience targets
+# Step 4: Install rules — libraries and config files
+#
+# cmake --install build gathers .a files and TinyUSBConfig.cmake from the
+# per-SOC build trees (build_cmake/) and deploys them to Library/Family/.
+# Headers are installed from TinyUSB-current/ to Library/Include/.
+#------------------------------------------------------------------------
+
+foreach(SOC_CONFIG ${SUPPORTED_SOCS})
+    string(REPLACE "|" ";" CONFIG_LIST "${SOC_CONFIG}")
+    list(GET CONFIG_LIST 0 FAMILY)
+    list(GET CONFIG_LIST 1 SOC)
+    list(GET CONFIG_LIST 2 PROFILES_STR)
+    string(REPLACE "," ";" PROFILES "${PROFILES_STR}")
+
+    set(SOC_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Construction/Family/${FAMILY}/${SOC}")
+    set(SOC_BUILD_DIR  "${SOC_SOURCE_DIR}/build_cmake")
+
+    if(EXISTS "${SOC_SOURCE_DIR}/CMakeLists.txt")
+        foreach(PROFILE ${PROFILES})
+            install(FILES
+                "${SOC_BUILD_DIR}/${PROFILE}/libTinyUSB_FS.a"
+                "${SOC_BUILD_DIR}/${PROFILE}/libTinyUSB_HS.a"
+                "${SOC_BUILD_DIR}/${PROFILE}/TinyUSBConfig.cmake"
+                "${SOC_SOURCE_DIR}/${PROFILE}/tusb_config.h"
+                DESTINATION "Library/Family/${FAMILY}/${SOC}/${PROFILE}"
+                OPTIONAL
+            )
+        endforeach()
+    endif()
+endforeach()
+
+#------------------------------------------------------------------------
+# Step 5: Create convenience targets
 #------------------------------------------------------------------------
 
 # Create a custom target that depends on all external projects
@@ -315,29 +360,7 @@ add_custom_target(build_all_tinyusb ALL
 add_dependencies(build_all_tinyusb TinyUSB_Fetch_Complete)
 
 #------------------------------------------------------------------------
-# Step 5: Install public headers into Library/Include/TinyUSB-current/
-#
-# This makes Library/ self-contained: consumers can use find_package(TinyUSB)
-# without retaining TinyUSB-current/ in the source tree.
-#------------------------------------------------------------------------
-
-set(TINYUSB_HEADERS_SRC "${CMAKE_CURRENT_SOURCE_DIR}/TinyUSB-current")
-set(TINYUSB_HEADERS_DST "${CMAKE_CURRENT_SOURCE_DIR}/Library/Include/TinyUSB-current")
-
-add_custom_target(install_tinyusb_headers
-    COMMAND ${CMAKE_COMMAND}
-        -DSRC=${TINYUSB_HEADERS_SRC}
-        -DDST=${TINYUSB_HEADERS_DST}
-        -P "${CMAKE_CURRENT_SOURCE_DIR}/Library/Family/cmake/install_headers.cmake"
-    DEPENDS TinyUSB_Fetch_Complete
-    COMMENT "Installing TinyUSB public headers to Library/Include/TinyUSB-current"
-)
-
-# Header installation runs as part of the default build target
-add_dependencies(build_all_tinyusb install_tinyusb_headers)
-
-#------------------------------------------------------------------------
-# Summary
+# Step 6: Summary
 #------------------------------------------------------------------------
 
 message("")
@@ -350,6 +373,7 @@ message("Source location:   ${CMAKE_CURRENT_SOURCE_DIR}/TinyUSB-current")
 message("")
 message("To build all TinyUSB libraries, run:")
 message("  cmake --build build")
+message("  cmake --install build")
 message("")
 message("Individual SOC targets:")
 foreach(SOC_CONFIG ${SUPPORTED_SOCS})
@@ -361,8 +385,4 @@ message("")
 message("Output libraries will be in:")
 message("  Library/Family/<FAMILY>/<SOC>/<PROFILE>/libTinyUSB_FS.a")
 message("  Library/Family/<FAMILY>/<SOC>/<PROFILE>/libTinyUSB_HS.a")
-message("")
-message("Public headers installed to (source tree no longer required):")
-message("  Library/Include/TinyUSB-current/src/")
-message("  Library/Include/TinyUSB-current/hw/")
 message("══════════════════════════════════════════════════════════════")
