@@ -36,6 +36,7 @@ if(NOT EXISTS "${PATH_UKOS}/OS/Includes")
 endif()
 
 # Include toolchain
+set(USE_LLVM OFF)
 include(${PATH_UKOS}/Ports/cmake/select-arm-toolchain.cmake)
 
 # Prevent multiple inclusion

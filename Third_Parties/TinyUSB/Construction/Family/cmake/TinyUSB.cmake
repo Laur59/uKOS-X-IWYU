@@ -400,7 +400,7 @@ function(generate_tinyusb_config)
     # Build the list of interface include directories
     # These paths will be exposed to consuming targets
     set(CONFIG_INCLUDES
-        "\${PATH_TINYUSB}/Construction/Interface/OSAL"
+        "\${PATH_TINYUSB}/Library/Include/Interface/OSAL"
         "\${PATH_TINYUSB}/TinyUSB-current/src"
         "\${PATH_TINYUSB}/TinyUSB-current/src/common"
         "\${PATH_TINYUSB}/TinyUSB-current/src/device"
@@ -413,7 +413,7 @@ function(generate_tinyusb_config)
     # Add provider-specific includes
     if(CFG_PROVIDER STREQUAL "st")
         list(APPEND CONFIG_INCLUDES
-            "\${PATH_TINYUSB}/Construction/Interface/Includes/mcu/st"
+            "\${PATH_TINYUSB}/Library/Include/Interface/Includes/mcu/st"
             "\${PATH_TINYUSB}/TinyUSB-current/hw/mcu/st/cmsis_device_${CFG_FAMILY}/Include"
         )
     elseif(CFG_PROVIDER STREQUAL "nordic")
@@ -426,7 +426,7 @@ function(generate_tinyusb_config)
         )
     elseif(CFG_PROVIDER STREQUAL "raspberrypi")
         list(APPEND CONFIG_INCLUDES
-            "\${PATH_TINYUSB}/Construction/Interface/Includes/mcu/raspberrypi"
+            "\${PATH_TINYUSB}/Library/Include/Interface/Includes/mcu/raspberrypi"
             "\${PATH_TINYUSB}/TinyUSB-current/src/portable/raspberrypi/rp2040"
         )
     endif()
@@ -477,7 +477,8 @@ endif()
 
 # Build the list of interface include directories
 set(TINYUSB_INTERFACE_INCLUDES
-    \${PATH_TINYUSB}/Construction/Interface/OSAL
+    \${PATH_TINYUSB}/Library/Include
+    \${PATH_TINYUSB}/Library/Include/Interface/OSAL
     \${PATH_TINYUSB}/Library/Include/TinyUSB-current/src
     \${PATH_TINYUSB}/Library/Include/TinyUSB-current/src/common
     \${PATH_TINYUSB}/Library/Include/TinyUSB-current/src/device
@@ -490,7 +491,7 @@ set(TINYUSB_INTERFACE_INCLUDES
     if(CFG_PROVIDER STREQUAL "st")
         file(APPEND "${CONFIG_FILE}" "\
 list(APPEND TINYUSB_INTERFACE_INCLUDES
-    \${PATH_TINYUSB}/Construction/Interface/Includes/mcu/st
+    \${PATH_TINYUSB}/Library/Include/Interface/Includes/mcu/st
 )
 ")
         # Note: ST CMSIS device headers are provided by the uKOS-X Ports/EquatesModels
@@ -509,7 +510,7 @@ list(APPEND TINYUSB_INTERFACE_INCLUDES
     elseif(CFG_PROVIDER STREQUAL "raspberrypi")
         file(APPEND "${CONFIG_FILE}" "\
 list(APPEND TINYUSB_INTERFACE_INCLUDES
-    \${PATH_TINYUSB}/Construction/Interface/Includes/mcu/raspberrypi
+    \${PATH_TINYUSB}/Library/Include/Interface/Includes/mcu/raspberrypi
     \${PATH_TINYUSB}/Library/Include/TinyUSB-current/src/portable/raspberrypi/rp2040
 )
 ")

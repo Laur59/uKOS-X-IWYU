@@ -39,7 +39,7 @@ endif()
 
 # Default user modules include (allow override)
 if(NOT DEFINED USER_C_MODULES)
-    set(USER_C_MODULES ${PATH_UKOS}/Third_Parties/MicroPython/uKOS_Interface/user_modules.cmake)
+    set(USER_C_MODULES ${PATH_UKOS}/Third_Parties/MicroPython/Construction/Interface/user_modules.cmake)
 endif()
 
 # MicroPython source directory
