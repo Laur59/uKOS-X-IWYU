@@ -1,5 +1,5 @@
 TinyUSB-*/
 TinyUSB-current
-*.a
+Library/
 *_ready.txt
 TinyUSBConfig.cmake

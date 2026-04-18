@@ -11,7 +11,7 @@
 #include    <stdio.h>
 #include    <stdlib.h>
 
-#include    "MicroPython/uKOS_System/microPython.h"
+#include    "MicroPython/Construction/System/microPython.h"
 #include    "kern/kern.h"
 #include    "macros.h"
 #include    "macros_core_stackFrame.h"

@@ -10,10 +10,14 @@ set -euo pipefail
 readonly PATH_PRG="${0:a:h}"
 readonly PATH_UKOS="$(cd "$PATH_PRG/../../../../.." && pwd)"
 
-TFL_PYTHON_ENV="${PATH_UKOS}/Third_Parties/Tflite-micro/Tflite-env"
+    echo "Variable PATH_UKOS_X_PACKAGE is not set!"
+    exit 1
+fi
 
-if [[ -d "${TFL_PYTHON_ENV:-}" ]]; then
-    source "${TFL_PYTHON_ENV}/bin/activate"
+TFLITE_PYENV="${PATH_UKOS_X_PACKAGE}/Third_Parties/Tflite-micro/Construction/Pyenv/Tflite_Pyenv"
+
+if [[ -d "${TFLITE_PYENV:-}" ]]; then
+    source "${TFLITE_PYENV}/bin/activate"
 fi
 
 MODEL_FILE="mlp_model.tflite"

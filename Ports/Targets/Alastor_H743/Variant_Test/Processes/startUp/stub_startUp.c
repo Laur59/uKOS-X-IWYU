@@ -46,12 +46,12 @@ static  const   char_t  *argv_sloader[] = { "sloader", "-run" };
 static  const   char_t  *argv_userApp[] = { "userapp", "1234" };
 
 static  const   boot_t  aFunction[] = {
-                            { 0x00U, "console", KSERIAL_BAUDRATE_460800,  KURT0, 2u, argv_cnsUrt0 },
-                            { 0x01U, "sloader", KSERIAL_BAUDRATE_460800,  KURT0, 2u, argv_sloader },
-                            { 0x02U, "console", KSERIAL_BAUDRATE_460800,  KURT1, 2u, argv_cnsUrt1 },
-                            { 0x03U, "sloader", KSERIAL_BAUDRATE_460800,  KURT1, 2u, argv_sloader },
-                            { 0x04U, "userapp", KSERIAL_BAUDRATE_460800,  KURT0, 2u, argv_userApp },
-                            { 0x05U, "console", KSERIAL_BAUDRATE_2000000, KWFI0, 2u, argv_cnsWfi0 }
+                            { 0x00U, "console", KSERIAL_BAUDRATE_460800, KURT0, 2U, argv_cnsUrt0 },
+                            { 0x01U, "sloader", KSERIAL_BAUDRATE_460800, KURT0, 2U, argv_sloader },
+                            { 0x02U, "console", KSERIAL_BAUDRATE_460800, KURT1, 2U, argv_cnsUrt1 },
+                            { 0x03U, "sloader", KSERIAL_BAUDRATE_460800, KURT1, 2U, argv_sloader },
+                            { 0x04U, "userapp", KSERIAL_BAUDRATE_460800, KURT0, 2U, argv_userApp },
+                            { 0x05U, "console", KSERIAL_BAUDRATE_921600, KWFI0, 2U, argv_cnsWfi0 }
                         };
 
 #define KDEF_COMM       KURT0
@@ -72,7 +72,7 @@ STRG_GLB_CONST(aStartUp_StrHelp[]) = "StartUp process\n"
                                      "    2   KURT1, console (460800-bit/s).\n"
                                      "    3   KURT1, sloader (460800-bit/s).\n"
                                      "    4   KURT0, userapp (460800-bit/s).\n"
-                                     "    5   KWFI0, console (2000000-bit/s).\n\n";
+                                     "    5   KWFI0, console (921600-bit/s).\n\n";
 
 STRG_LOC_CONST(aStrLogo[]) = STRG_LOGO;
 

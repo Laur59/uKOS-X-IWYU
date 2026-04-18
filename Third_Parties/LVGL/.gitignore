@@ -1,4 +1,4 @@
 LVGL-*/
 LVGL-current
-*.a
+Library/
 *_ready.txt

@@ -26,7 +26,7 @@
 #include    <stdint.h>
 #include    <stdlib.h>
 
-#include    "MicroPython/uKOS_System/microPython.h"
+#include    "MicroPython/Construction/System/microPython.h"
 #include    "crt0.h"
 #include    "serial/serial.h"
 #include    "kern/kern.h"
