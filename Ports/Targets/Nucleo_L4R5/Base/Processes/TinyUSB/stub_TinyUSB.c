@@ -36,15 +36,15 @@
 #pragma GCC diagnostic  pop
 
 #if (CFG_TUD_CDC > 0)
-#include    "TinyUSB/uKOS_Interface/Models/model_TinyUSB_cdc.c_inc"   // IWYU pragma: keep (workaround for app)
+#include    "TinyUSB/Construction/Interface/Models/model_TinyUSB_cdc.c_inc"   // IWYU pragma: keep (workaround for app)
 #endif
 
 #if (CFG_TUD_MSC > 0)
-#include    "TinyUSB/uKOS_Interface/Models/model_TinyUSB_msc.c_inc"   // IWYU pragma: keep (workaround for app)
+#include    "TinyUSB/Construction/Interface/Models/model_TinyUSB_msc.c_inc"   // IWYU pragma: keep (workaround for app)
 #endif
 
 #if (CFG_TUD_VIDEO > 0)
-#include    "TinyUSB/uKOS_Interface/Models/model_TinyUSB_video.c_inc" // IWYU pragma: keep (workaround for app)
+#include    "TinyUSB/Construction/Interface/Models/model_TinyUSB_video.c_inc"     // IWYU pragma: keep (workaround for app)
 #endif
 
 uint32_t    SystemCoreClock = KFREQUENCY_CORE;

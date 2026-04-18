@@ -4,6 +4,6 @@ set -euo pipefail
 readonly library_name=libdecnumber
 
 rm -rf build
-find Library -type d -name "build*" -prune -exec rm -r "{}" +
-rm -f Library/*/${library_name}.a(N)
-rm -f Library/*/${library_name}_ready.txt(N)
+rm -fr Library
+find LibraryBuild -type d -name "build*" -prune -exec rm -r "{}" +
+rm -f LibraryBuild/*/${library_name}_ready.txt(N)

@@ -1,5 +1,5 @@
 FatFs-*/
 FatFs-current
-*.a
+Library/
 *_ready.txt
 
