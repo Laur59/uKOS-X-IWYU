@@ -25,7 +25,6 @@
 // Ignore the GCC diagnostic
 //
 #pragma GCC diagnostic  ignored "-Wpedantic"
-#include    "tusb.h"        // IWYU pragma: keep
 #include    "tusb_types.h"
 #include    "usbd.h"
 
