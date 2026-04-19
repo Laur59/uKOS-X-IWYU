@@ -24,8 +24,8 @@
 #include    "Registers/core_addendum.h" // IWYU pragma: keep
 #include    "core.h"                    // IWYU pragma: keep
 #include    "debug.h"
-#include    "kern/kern.h"
 #ifdef  __arm__
+#include    "kern/kern.h"
 #include    "kern/private/private_processes.h"
 #include    "macros_core.h"
 #endif

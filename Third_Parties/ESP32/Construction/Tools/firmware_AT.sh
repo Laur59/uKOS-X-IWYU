@@ -52,38 +52,38 @@ export BAUDRATE=115200
 export FIRMWARE=V4.1.1.0
 export COMMAND="${1:-}"
 
-cd "${PATH_UKOS_X_PACKAGE}/Third_Parties/ESP32/ESP32-WROOM-32-AT-${FIRMWARE}"
+cd "${PATH_UKOS_X_PACKAGE}/Third_Parties/esp32/esp-idf-current/AT_firmware/ESP32-WROOM-32-AT-${FIRMWARE}"
 echo 'Start of burning:' > esp32_temp.txt
 date >> esp32_temp.txt
 
 # To fully erase/burn the flash
 
 if [[ "${COMMAND}" = '-erase' ]]; then
-	python -m esptool \
-		--chip "${CHIP}" \
-		--port "${SERIAL}" \
-		--baud "${BAUDRATE}" \
-		--before 'default-reset' \
-		--after 'hard-reset' \
-		erase-flash
+    python -m esptool \
+        --chip "${CHIP}" \
+        --port "${SERIAL}" \
+        --baud "${BAUDRATE}" \
+        --before 'default-reset' \
+        --after 'hard-reset' \
+        erase-flash
 
 elif [[ "${COMMAND}" = '-burn' ]]; then
-	python -m esptool \
-		--chip "${CHIP}" \
-		--port "${SERIAL}" \
-		--baud "${BAUDRATE}" \
-		--before 'default-reset' \
-		--after 'hard-reset' \
-		write-flash -z --flash-mode dio --flash-freq 40m --flash-size 4MB \
-			0x1000 bootloader/bootloader.bin \
-			0x100000 esp-at.bin \
-			0x8000 partition_table/partition-table.bin \
-			0x10000 ota_data_initial.bin \
-			0x20000 at_customize.bin \
-			0x21000 customized_partitions/mfg_nvs.bin
+    python -m esptool \
+        --chip "${CHIP}" \
+        --port "${SERIAL}" \
+        --baud "${BAUDRATE}" \
+        --before 'default-reset' \
+        --after 'hard-reset' \
+        write-flash -z --flash-mode dio --flash-freq 40m --flash-size 4MB \
+            0x1000 bootloader/bootloader.bin \
+            0x100000 esp-at.bin \
+            0x8000 partition_table/partition-table.bin \
+            0x10000 ota_data_initial.bin \
+            0x20000 at_customize.bin \
+            0x21000 customized_partitions/mfg_nvs.bin
 
 else
-	echo 'Usage: ./firmware_AT.sh {-erase | -burn}'
+    echo 'Usage: ./firmware_AT.sh {-erase | -burn}'
 fi
 
 echo 'End of burning:' >> esp32_temp.txt
