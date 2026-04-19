@@ -55,6 +55,7 @@ elif [[ $# -gt 1 ]]; then
 fi
 
 print "${BLUE}Running CMake with preset: ${cmake_preset}${NC}"
+rm -fr build
 cmake --preset "$cmake_preset" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON > /dev/null
 
 if [[ ! -f build/compile_commands.json ]]; then

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #
@@ -8,10 +8,9 @@
 emulate -L zsh
 setopt ERR_EXIT NO_UNSET PIPE_FAIL
 
-# Determine script directory
+# Determine script directory (works if executed via ./script.sh or zsh script.sh)
 
-# Script runs under bash (see shebang), so use BASH_SOURCE
-PATH_PRG="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly PATH_PRG="${0:a:h}"
 
 use_clang=0
 while getopts ":Lh" option; do
@@ -49,7 +48,7 @@ readonly NC=$'\033[0m' # No Color
 
 MICROPY_REF="${1:-v1.28.0}"   # default tag v1.27.0 if none passed
 MICROPY_DIR="${PATH_PRG}/MicroPython-current"
-MICROPY_LIBRARY_DIR="${PATH_PRG}/Library"
+MICROPY_LIBRARY_DIR="${PATH_PRG}/Construction"
 MICROPY_URL="https://github.com/micropython/micropython.git"
 
 # Clone or update MicroPython safely
@@ -102,17 +101,17 @@ build_core() {
         cmake "${CORE_DIR}" -GNinja
     fi
     cmake --build . --parallel
-    cmake --install .   # installs libMicroPython.a in ${CORE_DIR}
+    cmake --install . --prefix "${PATH_PRG}"   # installs libMicroPython.a in Library/${CORE}/
 
     echo "End of building ${CORE}: $(date)" >> libMicroPython_temp.log
-    mv libMicroPython_temp.log ../libMicroPython_ready.txt
-    cd ..
+    mv libMicroPython_temp.log "${PATH_PRG}/Library/${CORE}/libMicroPython_ready.txt"
+    cd "${PATH_PRG}"
     rm -r "${BUILD_DIR}"
 }
 
 # Build all cores
 
-for core in CORTEX_M4 CORTEX_M7 CORTEX_M33 CORTEX_M55; do
+for core in CORTEX_M4 CORTEX_M7 CORTEX_M33 CORTEX_M55 CORTEX_M85; do
     build_core "${core}"
 done
 

@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #
 # uKOS-X build system
-# Builds IntelRDFPMath for RISC-V64
+# Builds IntelRDFPMath library for RV64IMAFDC
 
 cmake_minimum_required(VERSION 3.26)
 

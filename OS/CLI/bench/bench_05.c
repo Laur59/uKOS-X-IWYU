@@ -49,6 +49,7 @@ bool    bench_05(void) {
 #include    <stdint.h>
 #include    "kern/kern.h"
 #include    "macros_core.h"
+#include    "soc_reg.h"
 
 static  void     local_loop(uint32_t nb);
 
