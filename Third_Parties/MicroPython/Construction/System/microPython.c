@@ -106,13 +106,15 @@ int32_t microPython_exchangeData(const char_t *pyProgram) {
     char_t              ascii[KSZ_INPUT + 1];
     uint32_t            i, size;
     serialManager_t     serialManager;
+    ioChannel_t         ioChannel;
     bool                terminate = false;
     proc_t              *process;
 
     local_init();
 
     kern_getProcessRun(&process);
-    kern_getSerialForProcess(process, &serialManager);
+    kern_getSerialForProcess(process, &ioChannel);
+    serialManager = (serialManager_t)ioChannel;
 
     if (pyProgram == nullptr) {
 
@@ -204,10 +206,12 @@ static  void    local_commandLine(const char_t *ascii, mp_parse_input_kind_t inp
 void    mp_hal_stdout_tx_strn(const uint8_t *ascii, mp_uint_t size) {
     int16_t             i;
     serialManager_t     serialManager;
+    ioChannel_t         ioChannel;
     proc_t              *process;
 
     kern_getProcessRun(&process);
-    kern_getSerialForProcess(process, &serialManager);
+    kern_getSerialForProcess(process, &ioChannel);
+    serialManager = (serialManager_t)ioChannel;
 
     for (i = 0U; i < size; i++) {
         (void)dprintf(serialManager, "%c", ascii[i]);
@@ -226,10 +230,12 @@ char_t  mp_hal_stdin_rx_chr(void) {
     int32_t             status;
     uint32_t            size;
     serialManager_t     serialManager;
+    ioChannel_t         ioChannel;
     proc_t              *process;
 
     kern_getProcessRun(&process);
-    kern_getSerialForProcess(process, &serialManager);
+    kern_getSerialForProcess(process, &ioChannel);
+    serialManager = (serialManager_t)ioChannel;
 
     do {
         kern_suspendProcess(1U);
