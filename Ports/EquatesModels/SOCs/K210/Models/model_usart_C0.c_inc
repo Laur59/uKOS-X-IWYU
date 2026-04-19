@@ -14,6 +14,7 @@
 #include    "macros_soc.h"
 #include    "kern/kern.h"
 #include    "record/record.h"
+#include    "serial/serial.h"
 
 static  volatile    bool        vSending_C0          = false;
 static  volatile    bool        vWithSemaphore_RX_C0 = false;
