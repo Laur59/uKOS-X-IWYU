@@ -164,6 +164,7 @@ def generate_html(filename: str, txt_warnings: List[Dict], yaml_data: Dict) -> s
         # Code snippet with line anchor
         line_num = warning['line']
         code_snippet = warning['code_snippet']
+		html_parts.append(f'<p>Line: {line_num}</p>')
         html_parts.append('<pre>')
         html_parts.append(f'<a name="line{line_num}"></a>{html.escape(code_snippet)}')
         html_parts.append('</pre>')
