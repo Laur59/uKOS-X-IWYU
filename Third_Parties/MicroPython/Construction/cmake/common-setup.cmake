@@ -21,6 +21,7 @@
 # Compute PATH_UKOS from directory structure
 # CMAKE_CURRENT_LIST_DIR points to the directory containing this file (Library/)
 get_filename_component(PATH_UKOS "${CMAKE_CURRENT_LIST_DIR}/../../../.." ABSOLUTE)
+set(PATH_MICROPYTHON "${PATH_UKOS}/Third_Parties/MicroPython")
 
 # Verify PATH_UKOS points to a valid uKOS-X root directory
 if(NOT EXISTS "${PATH_UKOS}/OS/Includes")
@@ -28,6 +29,9 @@ if(NOT EXISTS "${PATH_UKOS}/OS/Includes")
                         "Expected uKOS-X root directory with OS/Includes subdirectory.\n"
                         "Consider setting PATH_UKOS explicitly or check directory structure.")
 endif()
+
+# Ensure libraries are compiled with GNU gcc
+set(USE_LLVM OFF)
 
 # Include toolchain
 include(${PATH_UKOS}/Ports/cmake/select-arm-toolchain.cmake)

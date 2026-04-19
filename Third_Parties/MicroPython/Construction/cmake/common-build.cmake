@@ -25,6 +25,12 @@ else()
     set(BUILD_VERBOSE ON)
 endif()
 
+# Default install prefix (set here, after project(), so CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT
+# is reliable). Allows 'cmake --install build' without an explicit --prefix.
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    set(CMAKE_INSTALL_PREFIX "${PATH_MICROPYTHON}" CACHE PATH "Install prefix" FORCE)
+endif()
+
 # Extract core name from project name with strict validation
 if(CMAKE_PROJECT_NAME MATCHES "^MicroPython_(.+)$")
     set(CORE_NAME ${CMAKE_MATCH_1})
@@ -119,9 +125,8 @@ target_compile_options(${MICROPY_TARGET} PUBLIC
 set(MICROPY_BUILD_TARGET ${MICROPY_TARGET})
 include(${MICROPY_DIR}/py/mkrules.cmake)
 
-# Installation
-set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR})
-install(TARGETS ${MICROPY_TARGET} ARCHIVE DESTINATION .)
+# Installation (deployed by 'cmake --install')
+install(TARGETS ${MICROPY_TARGET} ARCHIVE DESTINATION "Library/${CORE_NAME}")
 
 # Strip unnecessary symbols after build
 add_custom_command(TARGET ${MICROPY_TARGET}
