@@ -5,12 +5,12 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		stub for the "TinyUSB" library.
-;			Multiple profiles
+; Project:  uKOS-X
+; Goal:     stub for the "TinyUSB" library.
+;           Multiple profiles
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -47,44 +47,44 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include    "uKOS.h"
 
 // Save the GCC diagnostic
 //
-#pragma GCC diagnostic	push
+#pragma GCC diagnostic  push
 
 // Ignore the GCC diagnostic
 //
-#pragma GCC diagnostic	ignored	"-Wpedantic"
-#include	"tusb.h"
+#pragma GCC diagnostic  ignored "-Wpedantic"
+#include    "tusb.h"
 
 // Restore the GCC diagnostic
 //
-#pragma GCC	diagnostic	pop
+#pragma GCC diagnostic  pop
 
 #if (CFG_TUD_CDC > 0)
-#include	"TinyUSB/uKOS_Interface/Models/model_TinyUSB_cdc.c_inc"
+#include    "TinyUSB/Construction/Interface/Models/model_TinyUSB_cdc.c_inc"
 #endif
 
 #if (CFG_TUD_MSC > 0)
-#include	"TinyUSB/uKOS_Interface/Models/model_TinyUSB_msc.c_inc"
+#include    "TinyUSB/Construction/Interface/Models/model_TinyUSB_msc.c_inc"
 #endif
 
 #if (CFG_TUD_VIDEO > 0)
-#include	"TinyUSB/uKOS_Interface/Models/model_TinyUSB_video.c_inc"
+#include    "TinyUSB/Construction/Interface/Models/model_TinyUSB_video.c_inc"
 #endif
 
-uint32_t	SystemCoreClock = KFREQUENCY_CORE;
+uint32_t    SystemCoreClock = KFREQUENCY_CORE;
 
 // Prototypes
 
-static	void	local_OTG_HS_IRQHandler(void);
+static  void    local_OTG_HS_IRQHandler(void);
 
 // Init device stack on configured roothub port
 
 tusb_rhport_init_t deviceInit = {
-	.role  = TUSB_ROLE_DEVICE,
-	.speed = TUSB_SPEED_AUTO
+    .role  = TUSB_ROLE_DEVICE,
+    .speed = TUSB_SPEED_AUTO
 };
 
 /*
@@ -93,12 +93,12 @@ tusb_rhport_init_t deviceInit = {
  * - USB initialisation
  *
  */
-void	stub_TinyUSB_init(void) {
+void    stub_TinyUSB_init(void) {
 
-	INTERRUPT_VECTOR(OTG_HS_C0_IRQn, local_OTG_HS_IRQHandler);
-	NVIC_SetPriority(OTG_HS_C0_IRQn, KINT_LEVEL_COMMUNICATIONS);
+    INTERRUPT_VECTOR(OTG_HS_C0_IRQn, local_OTG_HS_IRQHandler);
+    NVIC_SetPriority(OTG_HS_C0_IRQn, KINT_LEVEL_COMMUNICATIONS);
 
-	tusb_init(BOARD_TUD_RHPORT, &deviceInit);
+    tusb_init(BOARD_TUD_RHPORT, &deviceInit);
 }
 
 /*
@@ -107,9 +107,9 @@ void	stub_TinyUSB_init(void) {
  * - USB management
  *
  */
-void	stub_TinyUSB_cyclic(void) {
+void    stub_TinyUSB_cyclic(void) {
 
-	tud_task();
+    tud_task();
 }
 
 // Local routines
@@ -119,7 +119,7 @@ void	stub_TinyUSB_cyclic(void) {
  * \brief local_OTG_HS_IRQHandler
  *
  */
-static	void	local_OTG_HS_IRQHandler(void) {
+static  void    local_OTG_HS_IRQHandler(void) {
 
-	tud_int_handler(BOARD_TUD_RHPORT);
+    tud_int_handler(BOARD_TUD_RHPORT);
 }

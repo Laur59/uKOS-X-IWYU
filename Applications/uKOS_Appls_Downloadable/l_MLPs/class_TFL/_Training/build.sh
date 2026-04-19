@@ -6,11 +6,11 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Create the TF model
+# Project:  uKOS-X
+# Goal:     Create the TF model
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -49,14 +49,14 @@
 set -euo pipefail
 
 if [[ -z "${PATH_UKOS_X_PACKAGE:-}" ]]; then
-	echo "Variable PATH_UKOS_X_PACKAGE is not set!"
-	exit 1
+    echo "Variable PATH_UKOS_X_PACKAGE is not set!"
+    exit 1
 fi
 
-TFL_PYTHON_ENV="${PATH_UKOS_X_PACKAGE}/Third_Parties/Tflite-micro/Tflite-env"
+TFLITE_PYENV="${PATH_UKOS_X_PACKAGE}/Third_Parties/Tflite-micro/Construction/Pyenv/Tflite_Pyenv"
 
-if [[ -d "${TFL_PYTHON_ENV:-}" ]]; then
-    source "${TFL_PYTHON_ENV}/bin/activate"
+if [[ -d "${TFLITE_PYENV:-}" ]]; then
+    source "${TFLITE_PYENV}/bin/activate"
 fi
 
 MODEL_FILE="mlp_model.tflite"
