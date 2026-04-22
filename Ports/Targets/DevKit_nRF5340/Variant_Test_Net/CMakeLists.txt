@@ -36,7 +36,7 @@ include(proj_config)
 # Customisation of firmware copyright text
 add_compile_definitions(
     "uKOS_NAME="
-    "uKOS_OWNER=(c) LvA"
+    "uKOS_OWNER=(c) et Luce"
     "CPU_NETWORK_S"
     "ONLY_ONE_NVIC_S"
     "SECURE_NS"
