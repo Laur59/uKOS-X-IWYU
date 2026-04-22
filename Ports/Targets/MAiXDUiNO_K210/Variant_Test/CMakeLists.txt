@@ -37,7 +37,7 @@ include(proj_config)
 # Customisation of firmware copyright text
 add_compile_definitions(
     "uKOS_NAME="
-    "uKOS_OWNER=(c) LvA"
+    "uKOS_OWNER=(c) et Luce"
 )
 
 # Flash programming script selection
@@ -216,9 +216,6 @@ add_LVGL()
 
 # Statistics support
 add_compile_definitions(KKERN_WITH_STATISTICS_S=true)
-
-# Hardware RTC support
-add_compile_definitions(KCALENDAR_WITH_HW_RTC_S=true)
 
 # Baudrate
 add_compile_definitions(KCOMM_DEFAULT_BAUDRATE=115200)

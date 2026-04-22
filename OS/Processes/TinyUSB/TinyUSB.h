@@ -7,6 +7,9 @@
 
 #pragma once
 
+#include    "kern/kern_types.h"
+#include    "macros_soc.h"
+
 #ifdef __cplusplus
 extern  "C" {
 #endif

@@ -27,6 +27,7 @@
 #include    "Registers/core_debug.h"
 #include    "Registers/nvic.h"
 #include    "clockTree.h"
+#include    "exce.h"
 #include    "kern/kern.h"
 #include    "kern/private/private_processes.h"
 #include    "kern/private/private_preciseSignals.h"
@@ -64,8 +65,6 @@ enum {
         KWUNORTO = 0U,                                                                  // Tickless wake-up by a normal timeout
         KWUINTPR                                                                        // Tickless wake-up by a preemption interruption
 };
-
-extern              uintptr_t   *vVectors;                                              // Relocated VTOR
 
 #if (KKERN_NB_PRECISE_SIGNALS > 0)
 static              uint64_t    vPrcsAbsCount  = 0U;                                    // 64-bit timer (1-us) for signal precise
