@@ -5,37 +5,37 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Linker description for uKOS-X applications.
-;			User only support
+; Project:  uKOS-X
+; Goal:     Linker description for uKOS-X applications.
+;           User only support
 ;
 ;                   CODE
-; linker_stTEXT		+-----------------+
-;					|                 |
-;					| .header         |
-;					| .text           |
-;					| .ctor           |
-;					| .dtor           |
-; linker_enCTOR		|                 |
-; linker_enDTOR		|                 |
-; linker_enTEXT		|                 |
-; linker_stRODATA	+-----------------+
-;					|                 |
-;					| .rodata         |
-; linker_enRODATA	|                 |
-; linker_stDATA		+-----------------+
-;					|                 |
-;					| .data           |
-; linker_enDATA		|                 |
-; linker_stBSS		+-----------------+
-;					|                 |
-;					| .bss            |
-; linker_enBSS		| COMMON          |
-;					|                 |
-; _end				+-----------------+
+; linker_stTEXT     +-----------------+
+;                   |                 |
+;                   | .header         |
+;                   | .text           |
+;                   | .ctor           |
+;                   | .dtor           |
+; linker_enCTOR     |                 |
+; linker_enDTOR     |                 |
+; linker_enTEXT     |                 |
+; linker_stRODATA   +-----------------+
+;                   |                 |
+;                   | .rodata         |
+; linker_enRODATA   |                 |
+; linker_stDATA     +-----------------+
+;                   |                 |
+;                   | .data           |
+; linker_enDATA     |                 |
+; linker_stBSS      +-----------------+
+;                   |                 |
+;                   | .bss            |
+; linker_enBSS      | COMMON          |
+;                   |                 |
+; _end              +-----------------+
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -75,8 +75,8 @@
 ENTRY(aStart)
 
 MEMORY {
-	prgm_code (rx)	: ORIGIN = 0x20050000, LENGTH = 104K
-	prgm_data (rwx)	: ORIGIN = 0x2006A000, LENGTH = 32K
+    prgm_code (rx)  : ORIGIN = 0x20050000, LENGTH = 116K
+    prgm_data (rwx) : ORIGIN = 0x2006D000, LENGTH = 20K
 }
 
-INCLUDE		application.ld
+INCLUDE     application.ld
