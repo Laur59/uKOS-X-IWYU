@@ -7,9 +7,14 @@
 
 #pragma once
 
+#include    "kern/kern_types.h"
+#include    "macros_soc.h"
+
 #ifdef __cplusplus
 extern  "C" {
 #endif
+
+extern mutx_t  *vTinyUSB_API[KNB_CORES];
 
 extern  void    stub_TinyUSB_init(void);
 extern  void    stub_TinyUSB_cyclic(void);

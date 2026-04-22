@@ -37,7 +37,7 @@ file(APPEND "${ARTEFACTS_DIR}/FLASH.cnf" "-DCACHE_D_S ")
 # Customisation of firmware copyright text
 add_compile_definitions(
     "uKOS_NAME="
-    "uKOS_OWNER=(c) LvA"
+    "uKOS_OWNER=(c) et Luce"
     "SECURE_S"
     "__DYNAMIC_REENT__"
 )

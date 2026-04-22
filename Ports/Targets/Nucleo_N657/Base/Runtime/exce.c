@@ -6,6 +6,8 @@
  * Goal:     Exceptions for the Nucleo_U5A5 module.
  */
 
+#include    "exce.h"
+
 #include    <stdint.h>
 #include    <string.h>
 

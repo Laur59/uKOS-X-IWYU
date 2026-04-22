@@ -9,12 +9,11 @@
 #define KDISCONNECTED   false
 
 #include    "cdc/cdc_device.h"
-#include    "macros.h"
 #include    "kern/kern.h"
+#include    "macros.h"
 #include    "record/record.h"
 
 static  bool    vConnected[CFG_TUD_CDC] = MCSET(KDISCONNECTED);
-extern  mutx_t  *vTinyUSB_API[KNB_CORES];
 
 /*
  * \brief TinyUSB_cdc_init

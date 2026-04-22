@@ -53,6 +53,10 @@ elif [[ $# -gt 1 ]]; then
     print -u2 "  cmake_preset: CMake preset name (default: llvm)"
     exit 1
 fi
+if [[ ! "$cmake_preset" =~ ^llvm ]]; then
+    print -u2 "Use only llvm presets"
+    exit 1
+fi
 
 print "${BLUE}Running CMake with preset: ${cmake_preset}${NC}"
 rm -fr build
