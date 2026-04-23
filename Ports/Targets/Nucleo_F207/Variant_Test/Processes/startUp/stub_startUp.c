@@ -29,20 +29,20 @@
 typedef struct  boot    boot_t;
 
 struct  boot {
-                uint8_t             oSW;                // Switch value
         const   char_t              *oFunction;         // Ptr on the function
-                uint8_t             oBaudrate;          // Baudrate
                 serialManager_t     oSerialManager;     // Default Serial Communication Manager
-                uint8_t             oArgC;              // Number of arguments
         const   char_t              **oArgV;            // Ptr on the arguments
+                uint8_t             oSW;                // Switch value
+                uint8_t             oBaudrate;          // Baudrate
+                uint8_t             oArgC;              // Number of arguments
         };
 
 static  const   char_t  *argv_cnsUrt0[] = { "console", "urt0" };
 static  const   char_t  *argv_sloader[] = { "sloader", "-run" };
 
 static  const   boot_t  aFunction[] = {
-                            { 0x00U, "console", KSERIAL_BAUDRATE_460800, KSYST, 2U, argv_cnsUrt0 },
-                            { 0x01U, "sloader", KSERIAL_BAUDRATE_460800, KSYST, 2U, argv_sloader }
+                            { .oSW=0x00U, .oFunction="console", .oBaudrate=KSERIAL_BAUDRATE_460800, .oSerialManager=KSYST, .oArgC=2U, .oArgV=argv_cnsUrt0 },
+                            { .oSW=0x01U, .oFunction="sloader", .oBaudrate=KSERIAL_BAUDRATE_460800, .oSerialManager=KSYST, .oArgC=2U, .oArgV=argv_sloader }
                         };
 
 #define KDEF_COMM       KURT0
