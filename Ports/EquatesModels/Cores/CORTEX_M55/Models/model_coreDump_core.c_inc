@@ -154,7 +154,7 @@ static  void    local_printException(const char_t **vectorName) {
         cmns_send(KDEF0, "Stack overflow, the following registers are not available! r0..r3, r12, lr, pc, xPSR, s0..s15, FPSCR\n\n");
         vStackCoreDump[core][SPP] = (uintptr_t)vStackAfter[core];
         for (i = r00; i < ENDREG; i++) {
-            vStackCoreDump[core][i] = 0u;
+            vStackCoreDump[core][i] = 0U;
         }
     }
 

@@ -37,13 +37,13 @@
 
 // Core machine in bits
 
-#define KMACHINE_BITS           (32u)
+#define KMACHINE_BITS           (32U)
 
 // Preemptions
 
 #if (!defined(PREEMPTION))
 #define PREEMPTION              stub_kern_stopProcessTimeout();                                                                 \
-                                REG(SCB)->ICSR = (1u<<BKERN_PREEMPTION);                                                        \
+                                REG(SCB)->ICSR = (1U<<BKERN_PREEMPTION);                                                        \
                                 __asm volatile ("                                                                            \n \
                                 sev"                                                                                            \
                                 );                                                                                              \
@@ -221,7 +221,7 @@
 #endif
 
 #if (!defined(EXCEPTION_SPECIFIC_HANDLER))
-#define KEXCEPTION              0u
+#define KEXCEPTION              0U
 
 extern  volatile    bool    vPriv_insideException[KNB_CORES];
 extern              void    (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
@@ -253,7 +253,7 @@ extern              void    __attribute__ ((noreturn)) model_coreDump_displayExc
 #endif
 
 #if (!defined(INTERRUPT_SPECIFIC_HANDLER))
-#define KINTERRUPTION           1u
+#define KINTERRUPTION           1U
 
 extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 extern  void    __attribute__ ((noreturn)) model_coreDump_displayInterruptions(uintptr_t lr, uintptr_t *msp);
@@ -321,7 +321,7 @@ extern  void    __attribute__ ((noreturn)) model_coreDump_displayInterruptions(u
 // - Set the PSP as the active stack
 
 #if (!defined(CHECKSET_THREAD_STACK))
-#define CHECKSET_THREAD_STACK   if (core_getPSP() == 0u) {                                                                      \
+#define CHECKSET_THREAD_STACK   if (core_getPSP() == 0U) {                                                                      \
                                     core_setPSP(core_getMSP());                                                                 \
                                     core_setCONTROL(core_getCONTROL() | CONTROL_SET_PSP_STACK);                                 \
                                     INST_SYNC_BARRIER;                                                                          \

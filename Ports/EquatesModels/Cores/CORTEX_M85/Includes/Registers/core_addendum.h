@@ -13,29 +13,29 @@
 // System Reset
 // ------------
 
-#define CONTROL_SET_PSP_STACK           (1u<<1u)
-#define CONTROL_SET_MSP_STACK           (0u<<1u)
-#define CONTROL_SET_USER_MODE           (1u<<0u)
-#define CONTROL_SET_PRIVILEGED_MODE     (0u<<0u)
+#define CONTROL_SET_PSP_STACK           (1U<<1U)
+#define CONTROL_SET_MSP_STACK           (0U<<1U)
+#define CONTROL_SET_USER_MODE           (1U<<0U)
+#define CONTROL_SET_PRIVILEGED_MODE     (0U<<0U)
 
-#define MSC_PFCR_MAX_OS_0               (1U<<7u)
+#define MSC_PFCR_MAX_OS_0               (1U<<7U)
 
 // MPU additilnal definition & macros
 // ----------------------------------
 
 // CTRL Configuration
 
-#define MPU_CTRL_ENABLE                 (1u<<0u)
-#define MPU_CTRL_HFNMIENA               (1u<<1u)
-#define MPU_CTRL_PRIVDEFENA             (1u<<2u)
+#define MPU_CTRL_ENABLE                 (1U<<0U)
+#define MPU_CTRL_HFNMIENA               (1U<<1U)
+#define MPU_CTRL_PRIVDEFENA             (1U<<2U)
 
 // CTRL Configuration
 
-#define MPU_RBAR_XN_0                   (1u<<0u)
-#define KMPU_EXECUTABLE                 0u
-#define KMPU_NOT_EXECUTABLE             1u
+#define MPU_RBAR_XN_0                   (1U<<0U)
+#define KMPU_EXECUTABLE                 0U
+#define KMPU_NOT_EXECUTABLE             1U
 
-#define MPU_RBAR_AP_0                   (1u<<1u)
+#define MPU_RBAR_AP_0                   (1U<<1U)
 
 // AP[2:1]  Description
 // 00       Read/write by privileged code only
@@ -43,20 +43,20 @@
 // 10       Read-only by privileged code only
 // 11       Read-only by any privilege level
 
-#define KMPU_RW_PRI                     0u
-#define KMPU_RW_ALL                     1u
-#define KMPU_R_PRI                      2u
-#define KMPU_R_ALL                      3u
+#define KMPU_RW_PRI                     0U
+#define KMPU_RW_ALL                     1U
+#define KMPU_R_PRI                      2U
+#define KMPU_R_ALL                      3U
 
-#define MPU_RBAR_SH_0                   (1u<<3u)
-#define KMPU_NOT_SHAREABLE              0u
-#define KMPU_OUTER_SHAREABLE            2u
-#define KMPU_INNER_SHAREABLE            3u
+#define MPU_RBAR_SH_0                   (1U<<3U)
+#define KMPU_NOT_SHAREABLE              0U
+#define KMPU_OUTER_SHAREABLE            2U
+#define KMPU_INNER_SHAREABLE            3U
 
 // RLAR Configuration
 
-#define MPU_RLAR_E_0                    (1u<<0u)
-#define MPU_ATTRINDEX_0                 (1u<<1u)
+#define MPU_RLAR_E_0                    (1U<<0U)
+#define MPU_ATTRINDEX_0                 (1U<<1U)
 
 // Indexes
 
@@ -65,8 +65,8 @@
 // Depending on the processor implementation, the inner cache attributes can also
 // be exported to the memory system using extra sideband signals
 
-#define KMPU_INNER                      0u
-#define KMPU_OUTER                      4u
+#define KMPU_INNER                      0U
+#define KMPU_OUTER                      4U
 
 // Gathering (G/nG)
 // - Determines whether multiple accesses can be merged into a single bus transaction
@@ -80,10 +80,10 @@
 // - Indicates to the memory system whether a buffer can send acknowledgements
 // - nE: The response should come from the end slave, not buffering in the interconnect
 
-#define KMPU_DEVICE_nGnRnE              (0u<<2u)
-#define KMPU_DEVICE_nGnRE               (1u<<2u)
-#define KMPU_DEVICE_nGRE                (2u<<2u)
-#define KMPU_DEVICE_GRE                 (3u<<2u)
+#define KMPU_DEVICE_nGnRnE              (0U<<2U)
+#define KMPU_DEVICE_nGnRE               (1U<<2U)
+#define KMPU_DEVICE_nGRE                (2U<<2U)
+#define KMPU_DEVICE_GRE                 (3U<<2U)
 
 // Flash:       Normal memory, Non-shareable, Write-Through
 // RAM_CACHE:   Normal memory, Shareable, Write-Through
@@ -94,10 +94,10 @@
 #define KMPU_RAM_NOT_CACHE_ATTR         ((0x4U<<KMPU_OUTER) | (0x4U<<KMPU_INNER))
 #define KMPU_PERIPH_ATTR                ((0x0U<<4)          | (KMPU_DEVICE_nGnRnE<<0))
 
-#define KMPU_INDEX0                     0u
-#define KMPU_INDEX1                     8u
-#define KMPU_INDEX2                     16u
-#define KMPU_INDEX3                     24u
+#define KMPU_INDEX0                     0U
+#define KMPU_INDEX1                     8U
+#define KMPU_INDEX2                     16U
+#define KMPU_INDEX3                     24U
 
 #define SET_MPU8_INDEX(idx0, idx1, idx2, idx3, idx4, idx5, idx6, idx7, idx8)                                        \
                                                                                                                     \
@@ -134,7 +134,7 @@ extern  uint8_t linker_##end[];                                                 
                    | (sharable * MPU_RBAR_SH_0);                                                                    \
     REG(MPU)->RLAR = ((uint32_t)linker_##end & 0xFFFFFFE0U)                                                         \
                    | (index * MPU_ATTRINDEX_0)                                                                      \
-                   | (1u * MPU_RLAR_E_0);                                                                           \
+                   | (1U * MPU_RLAR_E_0);                                                                           \
                                                                                                                     \
     REG(MPU)->CTRL = MPU_CTRL_PRIVDEFENA | MPU_CTRL_ENABLE;                                                         \
                                                                                                                     \

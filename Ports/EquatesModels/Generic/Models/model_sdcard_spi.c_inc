@@ -114,7 +114,7 @@ int32_t model_sdcard_readStatus(void) {
  *     - if R7 == 0x000001AAU OK, else, unknown sdcard
  *
  *   - Send the KSEND_OP_COND_SDC(0x40000000U) (sdcard initialisation process)
- *     - if R1 == 0x00u OK, else, waiting under timeout, then, unknown sdcard
+ *     - if R1 == 0x00U OK, else, waiting under timeout, then, unknown sdcard
  *
  *   - Send the KREAD_OCR (Read the ocr)
  *     - if R1 == 0x01U sdcard V 2.0 (Block address)
@@ -162,7 +162,7 @@ int32_t model_sdcard_initialise(sdcard_specification_t *specification) {
     }
 
     for (i = 0U; i < 4U; i++) { ans[i] = cb_writeRead(0xFFU); }
-    if ((ans[2] != 0x01u) || (ans[3] != 0xAAU)) {
+    if ((ans[2] != 0x01U) || (ans[3] != 0xAAU)) {
         local_deselectRelease();
         return KERR_STORAGE_CANRE;
     }
