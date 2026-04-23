@@ -85,7 +85,8 @@ while IFS= read -r entry; do
     if [[ "$original_target" =~ ^(thumb|arm) ]]; then
         # ARM architecture
         arch_name="arm"
-        iwyu_target="arm-unknown-none-eabi"
+#         iwyu_target="arm-unknown-none-eabi"
+        iwyu_target=$original_target
         isystem_path="${PATH_LLVM_ARM}/lib/clang-runtimes/arm-none-eabi/include"
     elif [[ "$original_target" =~ ^riscv32 ]]; then
         # RISC-V 32-bit architecture
