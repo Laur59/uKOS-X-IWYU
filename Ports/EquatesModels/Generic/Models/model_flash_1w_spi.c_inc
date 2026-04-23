@@ -66,8 +66,8 @@ int32_t model_flash_1w_read(uint8_t *buffer, uint32_t size, uint32_t sector) {
     cb_control(KFLASH_RESERVE_SPI);
     address = sector * KFLASH_SPI_SZ_SECTOR;
 
-// A read cycle 0x03u 0xAAu 0xAAu 0xAAu 0x00U
-// 0x03u --> Read order
+// A read cycle 0x03U 0xAAu 0xAAu 0xAAu 0x00U
+// 0x03U --> Read order
 // 0xAAu --> 24-bit address
 
     kern_waitAtLeast(1);
@@ -118,8 +118,8 @@ int32_t model_flash_1w_write(const uint8_t *buffer, uint32_t size, uint32_t sect
         cb_writeRead(KFLASH_SPI_CMD_WRITE_ENABLE);
         cb_control(KFLASH_DESELECT);
 
-// Write a page 0x02u 0xAAu 0xAAu 0xAAu (256 x 0xDD) (waiting for 5-ms)
-// 0x02u --> Write order
+// Write a page 0x02U 0xAAu 0xAAu 0xAAu (256 x 0xDD) (waiting for 5-ms)
+// 0x02U --> Write order
 // 0xAAu --> 24-bit address (boundary of 256-bytes)
 // 0xDDu --> 256 x Data
 
@@ -195,7 +195,7 @@ static  void    local_flash_1w_erase(uint32_t size, uint32_t sector) {
         cb_control(KFLASH_DESELECT);
 
 // Erase a sector 4-KBytes
-// 0x20u --> Sector erase order
+// 0x20U --> Sector erase order
 // 0xAAu --> 24-bit address (boundary of 4-KBytes)
 
         kern_waitAtLeast(1U);

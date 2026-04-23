@@ -82,7 +82,7 @@ typedef struct {
 
 // CCR register
 
-#define SCB_CCR_STKOFHFNMIGN            10u
+#define SCB_CCR_STKOFHFNMIGN            10U
 
 // SHCSR register
 

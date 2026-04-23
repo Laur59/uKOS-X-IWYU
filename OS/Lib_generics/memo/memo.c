@@ -76,6 +76,10 @@ static  bool                vFreeDelayed[KNB_CORES] = MCSET(false);             
                                 .oFailedAllocations = 0U                        // Number of failed allocations
                             };
 
+#if (KNB_CORES > 1)
+spinlock_t          vMemo = SPIN_LOCK_INIT;
+#endif
+
 // Prototypes
 
 static  void    local_init(void);

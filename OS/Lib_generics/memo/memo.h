@@ -52,7 +52,7 @@ struct  memoMallocInf {
 };
 
 #if (KNB_CORES > 1)
-static spinlock_t          vMemo = SPIN_LOCK_INIT;
+extern spinlock_t          vMemo;
 #endif
 
 // Prototypes
