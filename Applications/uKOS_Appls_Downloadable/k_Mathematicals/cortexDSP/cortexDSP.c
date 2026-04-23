@@ -85,8 +85,6 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 
 #if (defined(ROMABLE_S))
 
-// Prototypes
-
 static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 
 MODULE(
@@ -315,7 +313,7 @@ __attribute__ ((always_inline)) static inline void local_cumulate32(int32_t *val
 __attribute__ ((always_inline)) static inline void local_cumulate64(int64_t *value, int32_t a, int32_t b) {
     uint32_t    h, l;
 
-    h = (uint32_t)(*value>>32); l = (uint32_t)(*value & 0xFFFFFFFFUl);
+    h = (uint32_t)(*value>>32); l = (uint32_t)(*value & 0xFFFFFFFFul);
 
     __asm volatile ("smlal %0, %1, %2, %3" : "=r" (l), "=r" (h) : "r" (a), "r" (b), "0" (l), "1" (h));
     *value = (int64_t)(((uint64_t)h<<32u) | l);

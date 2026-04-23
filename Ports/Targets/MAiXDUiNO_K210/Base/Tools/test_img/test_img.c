@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Some img tests.
+; Project:  uKOS-X
+; Goal:     Some img tests.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,41 +46,38 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"../../Lib_peripherals/lcd0/lcd0.h"
-#include	"../../Lib_peripherals/imgk/imgk.h"
+#include    "uKOS.h"
+#include    "../../Lib_peripherals/lcd0/lcd0.h"
+#include    "../../Lib_peripherals/imgk/imgk.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"test_img     Some img tests.                           (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "Test of the lcd\n"
-									"===============\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "test_img     Some img tests.                           (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "Test of the lcd\n"
+                                    "===============\n\n"
 
-									"This tool performs some lcd tests.\n\n"
+                                    "This tool performs some lcd tests.\n\n"
 
-									"Input format:  test_lcd\n"
-									"Output format: [result]\n\n"
+                                    "Input format:  test_lcd\n"
+                                    "Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
-// Prototypes
-
-static	int32_t		prgm(uint32_t argc, const char_t *argv[]);
-static	void		local_process(const void *argument);
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 
 MODULE(
-	Test_img,									// Module name (the first letter has to be upper case)
-	KID_FAM_CLI,								// Family (defined in the module.h)
-	(((uint32_t)'_'<<8u)+(uint32_t)'I'),		// Module identifier (defined in the module.h)
-	nullptr,									// Address of the initialisation code (early pre-init)
-	prgm,										// Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
-	nullptr,									// Address of the clean code (clean the module)
-	" 1.0",										// Revision string (major . minor)
-	((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),			// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0											// Execution cores
+    Test_img,                                   // Module name (the first letter has to be upper case)
+    KID_FAM_CLI,                                // Family (defined in the module.h)
+    (((uint32_t)'_'<<8u)+(uint32_t)'I'),        // Module identifier (defined in the module.h)
+    nullptr,                                    // Address of the initialisation code (early pre-init)
+    prgm,                                       // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                                    // Address of the clean code (clean the module)
+    " 1.0",                                     // Revision string (major . minor)
+    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),         // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                                           // Execution cores
 );
 
 // CLI tool specific
@@ -91,31 +88,35 @@ MODULE(
 STRG_LOC_CONST(aStrIden[]) = "Process_IMGK";
 STRG_LOC_CONST(aStrText[]) = "Process IMGK.                             (c) EFr-2026";
 
+// Prototypes
+
+static  void    local_process(const void *argument);
+
 /*
  * \brief Main entry point
  *
  */
-static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
-	proc_t	*process;
+static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
+    proc_t  *process;
 
-	UNUSED(argc);
-	UNUSED(argv);
+    UNUSED(argc);
+    UNUSED(argv);
 
-	(void)dprintf(KSYST, "IMG tests.\n");
+    (void)dprintf(KSYST, "IMG tests.\n");
 
-	PROCESS_STACKMALLOC(
-		0,									// Index
-		specification,						// Specifications (just use specification_x)
-		aStrText,							// Info string (nullptr if anonymous)
-		KKERN_SZ_STACK_MM,					// KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
-		local_process,						// Code of the process
-		aStrIden,							// Identifier (nullptr if anonymous)
-		KSYST,								// Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
-		KKERN_PRIORITY_NORMAL_01			// KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
-	);
+    PROCESS_STACKMALLOC(
+        0,                                  // Index
+        specification,                      // Specifications (just use specification_x)
+        aStrText,                           // Info string (nullptr if anonymous)
+        KKERN_SZ_STACK_MM,                  // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
+        local_process,                      // Code of the process
+        aStrIden,                           // Identifier (nullptr if anonymous)
+        KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
+        KKERN_PRIORITY_NORMAL_01            // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
+    );
 
-	if (kern_createProcess(&specification, nullptr, &process) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "test_img: create proc"); exit(EXIT_OS_FAILURE); }
-	return (EXIT_OS_SUCCESS_CLI);
+    if (kern_createProcess(&specification, nullptr, &process) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "test_img: create proc"); exit(EXIT_OS_FAILURE); }
+    return (EXIT_OS_SUCCESS_CLI);
 }
 
 // Local routines
@@ -128,53 +129,53 @@ static	int32_t	prgm(uint32_t argc, const char_t *argv[]) {
  *
  */
 static void __attribute__ ((noreturn)) local_process(const void *argument) {
-	uint16_t	*image;
-	cnfImgk_t	configure;
-	sema_t		*semaphore;
+    uint16_t    *image;
+    cnfImgk_t   configure;
+    sema_t      *semaphore;
 
-	UNUSED(argument);
+    UNUSED(argument);
 
 // Window position
 
-	#define	KW2_X0			0u
-	#define	KW2_Y0			0u
-	#define	KW2_DX			320u
-	#define	KW2_DY			240u
-	#define	KBACKGROUNG		KBLACK
+    #define KW2_X0          0u
+    #define KW2_Y0          0u
+    #define KW2_DX          320u
+    #define KW2_DY          240u
+    #define KBACKGROUNG     KBLACK
 
-	lcd0_clear(KBACKGROUNG);
-	lcd0_setDirection(KDIR_YX_RLDU);
+    lcd0_clear(KBACKGROUNG);
+    lcd0_setDirection(KDIR_YX_RLDU);
 
 // Image settings
 
-	configure.oPixMode  = KPIX_8_BITS;
-	configure.oStRows   = 0u;
-	configure.oNbRows   = KIMAGER_NB_ROWS_QVGA;
-	configure.oStCols   = 0u;
-	configure.oNbCols   = KIMAGER_NB_COLS_QVGA;
+    configure.oPixMode  = KPIX_8_BITS;
+    configure.oStRows   = 0u;
+    configure.oNbRows   = KIMAGER_NB_ROWS_QVGA;
+    configure.oStCols   = 0u;
+    configure.oNbCols   = KIMAGER_NB_COLS_QVGA;
 
-	imgk_configure(&configure);
-	if (kern_getSemaphoreById(KIMGK_SEMAPHORE_IM, &semaphore) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "test_img: get semaphore"); exit(EXIT_OS_FAILURE); }
+    imgk_configure(&configure);
+    if (kern_getSemaphoreById(KIMGK_SEMAPHORE_IM, &semaphore) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "test_img: get semaphore"); exit(EXIT_OS_FAILURE); }
 
-	while (true) {
-		imgk_acquisition();
-		kern_suspendProcess(10u);
+    while (true) {
+        imgk_acquisition();
+        kern_suspendProcess(10u);
 
-		kern_waitSemaphore(semaphore, KWAIT_INFINITY);
+        kern_waitSemaphore(semaphore, KWAIT_INFINITY);
 
 // Save the GCC diagnostic
 //
-		#pragma GCC diagnostic push
+        #pragma GCC diagnostic push
 
 // Ignore the GCC diagnostic
 //
-		#pragma GCC diagnostic ignored "-Wcast-qual"
-		imgk_getImage((volatile void **)&image);
+        #pragma GCC diagnostic ignored "-Wcast-qual"
+        imgk_getImage((volatile void **)&image);
 
 // Restore the GCC diagnostic
 //
-		#pragma GCC diagnostic pop
+        #pragma GCC diagnostic pop
 
-		lcd0_drawPicture(KW2_X0, KW2_Y0, KW2_DX, KW2_DY, image);
-	}
+        lcd0_drawPicture(KW2_X0, KW2_Y0, KW2_DX, KW2_DY, image);
+    }
 }
