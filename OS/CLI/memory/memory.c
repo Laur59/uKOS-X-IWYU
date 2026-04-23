@@ -13,6 +13,7 @@
 #include    "macros.h"
 #include    "macros_core.h"
 #include    "macros_soc.h"
+#include    "memo/memo.h"
 #include    "memo/private/private_memo.h"
 #include    "modules.h"
 #include    "serial/serial.h"
@@ -82,13 +83,9 @@ MODULE(
 // CLI tool specific
 // =================
 
-#if (KNB_CORES > 1)
-extern  spinlock_t      vMemo;
-#endif
-
 #if (KNB_CORES == 1)
-size_t  size_first      = (size_t)linker_sizeStackFirst_C0;
-size_t  size_system     = (size_t)linker_sizeStackSystem_C0;
+static size_t  size_first      = (size_t)linker_sizeStackFirst_C0;
+static size_t  size_system     = (size_t)linker_sizeStackSystem_C0;
 
 #elif (KNB_CORES == 2)
 #ifdef __riscv      // TODO: find a proper solution to this workaround for MAiXDUiNO
@@ -97,10 +94,10 @@ size_t  size_system_C0  = (size_t)linker_sizeStackSystem_C0;
 size_t  size_first_C1   = (size_t)linker_sizeStackFirst_C1;
 size_t  size_system_C1  = (size_t)linker_sizeStackSystem_C1;
 #else
-size_t  size_first_C0   = (size_t)linker_sizeStackFirst_C0;
-size_t  size_system_C0  = (size_t)linker_sizeStackSystem_C0;
-size_t  size_first_C1   = (size_t)linker_sizeStackFirst_C1;
-size_t  size_system_C1  = (size_t)linker_sizeStackSystem_C1;
+static size_t  size_first_C0   = (size_t)linker_sizeStackFirst_C0;
+static size_t  size_system_C0  = (size_t)linker_sizeStackSystem_C0;
+static size_t  size_first_C1   = (size_t)linker_sizeStackFirst_C1;
+static size_t  size_system_C1  = (size_t)linker_sizeStackSystem_C1;
 #endif
 
 #else

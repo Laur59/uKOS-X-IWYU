@@ -54,7 +54,7 @@ MODULE(
 typedef struct  memckPack   memckPack_t;
 
 struct  memckPack {
-            serialManager_t     oSerialManager;     // Serial Communication Manager
+            ioChannel_t         oSerialManager;     // I/O channel
             uintptr_t           oStartAdd;          // Start memory address
             uintptr_t           oEndAdd;            // End memory address
             uint32_t            oTime;              // Cyclic test time

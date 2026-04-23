@@ -170,6 +170,7 @@ int _close(int fd) {
 ssize_t _write(int fd, const void *buf, size_t count) {
     ssize_t         nbPrintChars;
     serialManager_t     serialManager;
+    ioChannel_t         ioChannel;
     uint32_t            stdio = (uint32_t)fd;
     proc_t              *process;
 
@@ -189,7 +190,8 @@ ssize_t _write(int fd, const void *buf, size_t count) {
         case KSTDOUT:
         case KSYST: {
             kern_getProcessRun(&process);
-            kern_getSerialForProcess(process, &serialManager);
+            kern_getSerialForProcess(process, &ioChannel);
+            serialManager = (serialManager_t)ioChannel;
 
             serial_reserve(serialManager, KMODE_WRITE, KWAIT_INFINITY);
             nbPrintChars = local_write(serialManager, buf, count);
@@ -223,6 +225,7 @@ ssize_t _write(int fd, const void *buf, size_t count) {
 ssize_t _read(int fd, void *buf, size_t count) {
     ssize_t         nbReadChars;
     serialManager_t     serialManager;
+    ioChannel_t         ioChannel;
     uint32_t            stdio = (uint32_t)fd;
     proc_t              *process;
 
@@ -242,7 +245,8 @@ ssize_t _read(int fd, void *buf, size_t count) {
         case KSTDOUT:
         case KSYST: {
             kern_getProcessRun(&process);
-            kern_getSerialForProcess(process, &serialManager);
+            kern_getSerialForProcess(process, &ioChannel);
+            serialManager = (serialManager_t)ioChannel;
 
             serial_reserve(serialManager, KMODE_READ, KWAIT_INFINITY);
             nbReadChars = local_read(serialManager, buf, count);

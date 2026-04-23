@@ -15,6 +15,7 @@
 #include    "ip.h"
 #include    "kern/kern.h"
 #include    "macros.h"
+#include    "macros_soc.h"
 #include    "modules.h"
 #include    "os_errors.h"
 #include    "serial/serial.h"

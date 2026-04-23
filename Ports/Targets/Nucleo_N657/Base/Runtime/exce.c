@@ -19,7 +19,6 @@
 #include    "macros_core.h"
 #include    "macros_soc.h"
 #include    "modules.h"
-#include    "soc_reg.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

@@ -63,8 +63,8 @@ STRG_LOC_CONST(aStrText[]) = "Process MicroPython (micropython.com)     (c) EFr-
 typedef struct  microPythonPack microPythonPack_t;
 
 struct  microPythonPack {
-            serialManager_t     oCLISerialManager;      // Serial Communication Manager (CLI process)
-            serialManager_t     oMPYSerialManager;      // Serial Communication Manager (MPY process)
+            ioChannel_t         oCLISerialManager;      // I/O channel (CLI process)
+            ioChannel_t         oMPYSerialManager;      // I/O channel (MPY process)
             uint32_t            oMPYSize;               // Size of the mpy memory
             uint8_t             *oMPYMemory;            // Ptr on the memory location for mpy
             bool                *oReleasePack;          // Release the pack
@@ -83,7 +83,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     uint8_t             *MPYMemory = nullptr;
     int32_t             status;
     uint32_t            MPYSize;
-    serialManager_t     MPYSerialManager = KSYST, CLISerialManager = KSYST;
+    ioChannel_t         MPYSerialManager = KSYST, CLISerialManager = KSYST;
     enum                { KERR_NOT, KERR_INA, KERR_NME, KERR_LOK } error = KERR_NOT;
     microPythonPack_t   pack;
     bool                releasePack = false;
@@ -101,7 +101,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
     switch (argc) {
         case 3U: {
-            MPYSerialManager = (serialManager_t)(GET_PTR_32(argv[1]));
+            MPYSerialManager = (ioChannel_t)(GET_PTR_32(argv[1]));
             break;
         }
         default: {
@@ -169,7 +169,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 static void __attribute__ ((noreturn)) local_process(const void *argument) {
             microPythonCnf_t    configure;
             bool                *releasePack;
-            serialManager_t     MPYSerialManager = KSYST, CLISerialManager = KSYST;
+            ioChannel_t         MPYSerialManager = KSYST, CLISerialManager = KSYST;
             proc_t              *process;
     const   microPythonPack_t   *pack;
 
