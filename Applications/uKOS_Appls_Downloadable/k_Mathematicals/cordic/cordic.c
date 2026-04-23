@@ -56,8 +56,6 @@ STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
 
 #ifdef ROMABLE_S
 
-// Prototypes
-
 static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 
 MODULE(
