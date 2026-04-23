@@ -24,6 +24,10 @@
 
 #include    <stdint.h>
 
+#include    "macros_soc.h"
+#if (KNB_CORES > 1)
+#include    "spin.h"
+#endif
 #include    "types.h"
 
 // memo_malloc memory alignments
@@ -46,6 +50,10 @@ struct  memoMallocInf {
             uint32_t    oSize;                                  // Block size
     const   char_t      *oIdentifier;                           // Mab user identifier
 };
+
+#if (KNB_CORES > 1)
+static spinlock_t          vMemo = SPIN_LOCK_INIT;
+#endif
 
 // Prototypes
 
