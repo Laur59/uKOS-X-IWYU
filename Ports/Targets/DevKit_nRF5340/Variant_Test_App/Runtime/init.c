@@ -312,4 +312,4 @@ static  void    local_CACHE_Enable(void) {
     cache_I_Enable();
 }
 
-#include    "model_I_cache.c_inc"
+#include    "model_I_cache.c_inc"       // IWYU pragma: keep

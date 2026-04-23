@@ -9,13 +9,15 @@
 
 #include    <stdint.h>
 
+#include    <tusb.h>             // for SystemCoreClock
+
 #include    "TinyUSB/TinyUSB.h"
 #include    "clockTree.h"
 #include    "core_reg.h"
 #include    "macros_core.h"
 #include    "macros_soc.h"
 #include    "soc_reg.h"
-#include    "tusb_config.h"
+#include    "tusb_option.h"      // for BOARD_TUD_RHPORT, CFG_TUD_CDC, CFG_TUD_MSC
 
 // Save the GCC diagnostic
 //
@@ -27,7 +29,6 @@
 
 // cppcheck-suppress missingInclude
 //
-#include    "tusb.h"        // IWYU pragma: keep
 #include    "tusb_types.h"
 #include    "usbd.h"
 

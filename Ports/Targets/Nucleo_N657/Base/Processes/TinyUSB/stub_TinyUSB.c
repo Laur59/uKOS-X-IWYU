@@ -9,13 +9,15 @@
 
 #include    <stdint.h>
 
+#include    <tusb.h>             // for SystemCoreClock
+
 #include    "TinyUSB/TinyUSB.h"
 #include    "clockTree.h"
 #include    "core_reg.h"
 #include    "macros_core.h"
 #include    "macros_soc.h"
 #include    "soc_reg.h"
-#include    "tusb_config.h"
+#include    "tusb_option.h"      // for BOARD_TUD_RHPORT, CFG_TUD_CDC, CFG_TUD_MSC
 
 // Save the GCC diagnostic
 //
@@ -24,7 +26,6 @@
 // Ignore the GCC diagnostic
 //
 #pragma GCC diagnostic  ignored "-Wpedantic"
-#include    "tusb.h"        // IWYU pragma: keep
 #include    "tusb_types.h"
 #include    "usbd.h"
 
@@ -33,15 +34,15 @@
 #pragma GCC diagnostic  pop
 
 #if (CFG_TUD_CDC > 0)
-#include    "Interface/Models/model_TinyUSB_cdc.c_inc"
+#include    "Interface/Models/model_TinyUSB_cdc.c_inc"      // IWYU pragma: keep
 #endif
 
 #if (CFG_TUD_MSC > 0)
-#include    "Interface/Models/model_TinyUSB_msc.c_inc"
+#include    "Interface/Models/model_TinyUSB_msc.c_inc"     // IWYU pragma: keep
 #endif
 
 #if (CFG_TUD_VIDEO > 0)
-#include    "Interface/Models/model_TinyUSB_video.c_inc"
+#include    "Interface/Models/model_TinyUSB_video.c_inc"        // IWYU pragma: keep
 #endif
 
 uint32_t    SystemCoreClock = KFREQUENCY_CORE;

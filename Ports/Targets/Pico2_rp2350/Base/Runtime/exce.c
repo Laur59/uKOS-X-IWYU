@@ -91,8 +91,8 @@ static void __attribute__ ((noreturn)) cb_signal(uint8_t mode) {
 
 #include    "model_coreDump_tracing.c_inc"  // IWYU pragma: keep (workaround for app)
 #include    "model_coreDump_generic.c_inc"  // IWYU pragma: keep (workaround for app)
-#include    "model_coreDump_core.c_inc"
-#include    "model_coredump_soc.c_inc"
+#include    "model_coreDump_core.c_inc"     // IWYU pragma: keep (workaround for app)
+#include    "model_coredump_soc.c_inc"      // IWYU pragma: keep (workaround for app)
 
 /*
  * \brief exce_init

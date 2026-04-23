@@ -9,7 +9,7 @@
 #include    <stdint.h>
 
 #include    "crt0.h"
-#include    "kern/private/private_temporal.h"
+#include    "kern/private/private_temporal.h"   // IWYU pragma: keep (for vKern_TimeException)
 #include    "linker.h"
 #include    "macros_core.h"
 #include    "soc_reg.h"
