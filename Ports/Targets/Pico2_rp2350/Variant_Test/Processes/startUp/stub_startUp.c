@@ -31,12 +31,12 @@ extern  bool    TinyUSB_cdc_isConnected(uint8_t itf);
 typedef struct  boot    boot_t;
 
 struct  boot {
-                uint8_t             oSW;                // Switch value
         const   char_t              *oFunction;         // Ptr on the function
-                uint8_t             oBaudrate;          // Baudrate
                 serialManager_t     oSerialManager;     // Default Serial Communication Manager
-                uint8_t             oArgC;              // Number of arguments
         const   char_t              **oArgV;            // Ptr on the arguments
+                uint8_t             oSW;                // Switch value
+                uint8_t             oBaudrate;          // Baudrate
+                uint8_t             oArgC;              // Number of arguments
         };
 
 #if (CONFIG_DIFFERENT_SERIAL_PER_CORE_S == true)
@@ -48,10 +48,10 @@ static  const   char_t  *argv_cnsCdc0_C0[] = { "console", "cdc0" };
 static  const   char_t  *argv_cnsUrt0_C1[] = { "console", "urt0" };
 
 static  const   boot_t  aFunction_C0[] = {
-                            { 0x00U, "console", KSERIAL_BAUDRATE_460800, KCDC0, 2U, argv_cnsCdc0_C0 },
+                            { .oSW=0x00U, .oFunction="console", .oBaudrate=KSERIAL_BAUDRATE_460800, .oSerialManager=KCDC0, .oArgC=2U, .oArgV=argv_cnsCdc0_C0 },
                         };
 static  const   boot_t  aFunction_C1[] = {
-                            { 0x00U, "console", KSERIAL_BAUDRATE_460800, KURT0, 2U, argv_cnsUrt0_C1 },
+                            { .oSW=0x00U, .oFunction="console", .oBaudrate=KSERIAL_BAUDRATE_460800, .oSerialManager=KURT0, .oArgC=2U, .oArgV=argv_cnsUrt0_C1 },
                         };
 
 #define KDEF_COMM_C0        KCDC0
@@ -78,7 +78,7 @@ STRG_GLB_CONST(aStartUp_StrHelp[]) = "StartUp process\n"
 static  const   char_t  *argv_cnsUrt0_Cx[] = { "console", "urt0" };
 
 static  const   boot_t  aFunction_Cx[] = {
-                            { 0x00U, "console", KSERIAL_BAUDRATE_460800, KURT0, 2U, argv_cnsUrt0_Cx },
+                            { .oSW=0x00U, .oFunction="console", .oBaudrate=KSERIAL_BAUDRATE_460800, .oSerialManager=KURT0, .oArgC=2U, .oArgV=argv_cnsUrt0_Cx },
                         };
 
 #define KDEF_COMM_Cx        KURT0
