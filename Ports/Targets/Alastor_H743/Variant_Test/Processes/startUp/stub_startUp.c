@@ -34,9 +34,9 @@ struct  boot {
         const   char_t              *oFunction;         // Ptr on the function
                 serialManager_t     oSerialManager;     // Default Serial Communication Manager
         const   char_t              **oArgV;            // Ptr on the arguments
+                uint8_t             oArgC;              // Number of arguments
                 uint8_t             oSW;                // Switch value
                 uint8_t             oBaudrate;          // Baudrate
-                uint8_t             oArgC;              // Number of arguments
         };
 
 static  const   char_t  *argv_cnsUrt0[] = { "console", "urt0" };
@@ -46,12 +46,12 @@ static  const   char_t  *argv_sloader[] = { "sloader", "-run" };
 static  const   char_t  *argv_userApp[] = { "userapp", "1234" };
 
 static  const   boot_t  aFunction[] = {
-                            { .oSW=0x00U,  .oFunction="console", .oBaudrate=KSERIAL_BAUDRATE_460800, .oSerialManager=KURT0, .oArgC=2U, .oArgV=argv_cnsUrt0 },
-                            { .oSW=0x01U,  .oFunction="sloader", .oBaudrate=KSERIAL_BAUDRATE_460800, .oSerialManager=KURT0, .oArgC=2U, .oArgV=argv_sloader },
-                            { .oSW=0x02U,  .oFunction="console", .oBaudrate=KSERIAL_BAUDRATE_460800, .oSerialManager=KURT1, .oArgC=2U, .oArgV=argv_cnsUrt1 },
-                            { .oSW=0x03U,  .oFunction="sloader", .oBaudrate=KSERIAL_BAUDRATE_460800, .oSerialManager=KURT1, .oArgC=2U, .oArgV=argv_sloader },
-                            { .oSW=0x04U,  .oFunction="userapp", .oBaudrate=KSERIAL_BAUDRATE_460800, .oSerialManager=KURT0, .oArgC=2U, .oArgV=argv_userApp },
-                            { .oSW=0x05U,  .oFunction="console", .oBaudrate=KSERIAL_BAUDRATE_921600, .oSerialManager=KWFI0, .oArgC=2U, .oArgV=argv_cnsWfi0 }
+                            { .oFunction="console", .oSerialManager=KURT0, .oArgV=argv_cnsUrt0, .oArgC=2U, .oSW=0x00U, .oBaudrate=KSERIAL_BAUDRATE_460800 },
+                            { .oFunction="sloader", .oSerialManager=KURT0, .oArgV=argv_sloader, .oArgC=2U, .oSW=0x01U, .oBaudrate=KSERIAL_BAUDRATE_460800 },
+                            { .oFunction="console", .oSerialManager=KURT1, .oArgV=argv_cnsUrt1, .oArgC=2U, .oSW=0x02U, .oBaudrate=KSERIAL_BAUDRATE_460800 },
+                            { .oFunction="sloader", .oSerialManager=KURT1, .oArgV=argv_sloader, .oArgC=2U, .oSW=0x03U, .oBaudrate=KSERIAL_BAUDRATE_460800 },
+                            { .oFunction="userapp", .oSerialManager=KURT0, .oArgV=argv_userApp, .oArgC=2U, .oSW=0x04U, .oBaudrate=KSERIAL_BAUDRATE_460800 },
+                            { .oFunction="console", .oSerialManager=KWFI0, .oArgV=argv_cnsWfi0, .oArgC=2U, .oSW=0x05U, .oBaudrate=KSERIAL_BAUDRATE_921600 }
                         };
 
 #define KDEF_COMM       KURT0
