@@ -32,17 +32,17 @@ struct  boot {
         const   char_t              *oFunction;         // Ptr on the function
                 serialManager_t     oSerialManager;     // Default Serial Communication Manager
         const   char_t              **oArgV;            // Ptr on the arguments
+                uint8_t             oArgC;              // Number of arguments
                 uint8_t             oSW;                // Switch value
                 uint8_t             oBaudrate;          // Baudrate
-                uint8_t             oArgC;              // Number of arguments
         };
 
 static  const   char_t  *argv_cnsUrt0[] = { "console", "urt0" };
 static  const   char_t  *argv_mpyUrt0[] = { "mpy",     "urt0", "-internal", "100000" };
 
 static  const   boot_t  aFunction[] = {
-                            { .oSW=0x00U, .oFunction="console", .oBaudrate=KSERIAL_BAUDRATE_460800, .oSerialManager=KURT0, .oArgC=2U, .oArgV=argv_cnsUrt0 },
-                            { .oSW=0x01U, .oFunction="mpy", .oBaudrate=KSERIAL_BAUDRATE_460800, .oSerialManager=KURT0, .oArgC=4U, .oArgV=argv_mpyUrt0 },
+                            { .oFunction="console", .oSerialManager=KSYST, .oArgV=argv_cnsUrt0, .oArgC=2U, .oSW=0x00U, .oBaudrate=KSERIAL_BAUDRATE_460800 },
+                            { .oFunction="mpy",     .oSerialManager=KSYST, .oArgV=argv_mpyUrt0, .oArgC=4U, .oSW=0x01U, .oBaudrate=KSERIAL_BAUDRATE_460800 }
                         };
 
 #define KDEF_COMM       KURT0
