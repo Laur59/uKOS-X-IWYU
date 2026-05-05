@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		adc manager.
+; Project:  uKOS-X
+; Goal:     adc manager.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +46,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_peripherals
@@ -66,16 +66,16 @@
 // Semaphores
 // ----------
 
-#define	KADC_MUTEX_RESERVE		"Reserve_adc"
+#define KADC_MUTEX_RESERVE      "Reserve_adc"
 
 // Prototypes
 
 #if (defined(__cplusplus))
-extern	"C" {
+extern  "C" {
 #endif
 
-#define	ADC_reserve		adc_reserve
-#define	ADC_release		adc_release
+#define ADC_reserve     adc_reserve
+#define ADC_release     adc_release
 
 /*!
  * \brief Reserve the adc manager
@@ -92,16 +92,16 @@ extern	"C" {
  *    status = adc_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode		Any mode
- * \param[in]	timeout			Timeout (1-ms of resolution)
- * \param[in]	-				KWAIT_INFINITY, waiting forever
- * \param[in]	-				KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_ADC_NOERR	The manager is reserved
- * \return		KERR_ADC_GEERR	General error
- * \return		KERR_ADC_CHBSY	The manager is busy
+ * \param[in]   reserveMode     Any mode
+ * \param[in]   timeout         Timeout (1-ms of resolution)
+ *                              KWAIT_INFINITY, waiting forever
+ *                              KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_ADC_NOERR  The manager is reserved
+ * \return      KERR_ADC_GEERR  General error
+ * \return      KERR_ADC_CHBSY  The manager is busy
  *
  */
-extern	int32_t	adc_reserve(reserveMode_t reserveMode, uint32_t timeout);
+extern  int32_t adc_reserve(reserveMode_t reserveMode, uint32_t timeout);
 
 /*!
  * \brief Release the adc manager
@@ -114,13 +114,13 @@ extern	int32_t	adc_reserve(reserveMode_t reserveMode, uint32_t timeout);
  *    status = adc_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode		Any mode
- * \return		KERR_ADC_NOERR	OK
- * \return		KERR_ADC_GEERR	General error
- * \return		KERR_ADC_CAREL	Cannot release the manager
+ * \param[in]   reserveMode     Any mode
+ * \return      KERR_ADC_NOERR  OK
+ * \return      KERR_ADC_GEERR  General error
+ * \return      KERR_ADC_CAREL  Cannot release the manager
  *
  */
-extern	int32_t	adc_release(reserveMode_t reserveMode);
+extern  int32_t adc_release(reserveMode_t reserveMode);
 
 /*!
  * \brief Read an analog channel
@@ -140,15 +140,15 @@ extern	int32_t	adc_release(reserveMode_t reserveMode);
  *    }
  * \endcode
  *
- * \param[in]	channel			Channel (0..n)
- * \param[out]	*reference		Ptr on the reference of the A/D
- * \param[out]	*data			Ptr on the conversion result
- * \return		KERR_ADC_NOERR	OK
- * \return		KERR_ADC_GEERR	General error
- * \return		KERR_ADC_NODEV	The selected channel does not exist
+ * \param[in]   channel         Channel (0..n)
+ * \param[out]  *reference      Ptr on the reference of the A/D
+ * \param[out]  *data           Ptr on the conversion result
+ * \return      KERR_ADC_NOERR  OK
+ * \return      KERR_ADC_GEERR  General error
+ * \return      KERR_ADC_NODEV  The selected channel does not exist
  *
  */
-extern	int32_t	adc_read(uint8_t channel, float64_t *reference, float64_t *data);
+extern  int32_t adc_read(uint8_t channel, float64_t *reference, float64_t *data);
 
 #if (defined(__cplusplus))
 }

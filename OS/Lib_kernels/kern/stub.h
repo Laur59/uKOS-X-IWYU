@@ -5,24 +5,24 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Kern - Stub management.
+; Project:  uKOS-X
+; Goal:     Kern - Stub management.
 ;
-;			This module implements the interface with the model_kern_xyz.c_inc.
+;           This module implements the interface with the model_kern_xyz.c_inc.
 ;
-; 			stub system calls
-; 			-----------------
+;           stub system calls
+;           -----------------
 ;
-;			void	stub_kern_init(void);
-;			void	stub_kern_runKernel(void);
-;			void	stub_kern_setLowPower(uint8_t mode);
-;			void	stub_kern_setPreciseSignal(prcs_t *handle);
-;			void	stub_kern_readTickCount(uint64_t *tickCount);
-;			void	stub_kern_newProcessTimeout(void);
-;			void	stub_kern_stopProcessTimeout(void);
+;           void    stub_kern_init(void);
+;           void    stub_kern_runKernel(void);
+;           void    stub_kern_setLowPower(uint8_t mode);
+;           void    stub_kern_setPreciseSignal(prcs_t *handle);
+;           void    stub_kern_readTickCount(uint64_t *tickCount);
+;           void    stub_kern_newProcessTimeout(void);
+;           void    stub_kern_stopProcessTimeout(void);
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -59,7 +59,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_kernels
@@ -79,13 +79,13 @@
 // Modifiable in the makefile: use the PSPLIM & MSPLIM to check the stack overflow (implemented only in armv8.1)
 
 #if (!defined(STUB_KERN_CHECK_XSP_LIMIT_S))
-#undef	STUB_KERN_CHECK_XSP_LIMIT_S
+#undef  STUB_KERN_CHECK_XSP_LIMIT_S
 #endif
 
 // Prototypes
 
 #if (defined(__cplusplus))
-extern	"C" {
+extern  "C" {
 #endif
 
 /*!
@@ -97,12 +97,11 @@ extern	"C" {
  *    stub_kern_init();
  * \endcode
  *
- * \param[in]	-
  *
  * \note This function does not return a value (None).
  *
  */
-extern	void	stub_kern_init(void);
+extern  void    stub_kern_init(void);
 
 /*!
  * \brief Run the multitasking
@@ -113,12 +112,11 @@ extern	void	stub_kern_init(void);
  *    stub_kern_runKernel();
  * \endcode
  *
- * \param[in]	-
  *
  * \note This function does not return a value (None).
  *
  */
-extern	void	stub_kern_runKernel(void);
+extern  void    stub_kern_runKernel(void);
 
 /*!
  * \brief Set the low power mode
@@ -138,12 +136,12 @@ extern	void	stub_kern_runKernel(void);
  *    stub_kern_setLowPower(mode);
  * \endcode
  *
- * \param[in]	mode		Low power mode
+ * \param[in]   mode        Low power mode
  *
  * \note This function does not return a value (None).
  *
  */
-extern	void	stub_kern_setLowPower(uint8_t mode);
+extern  void    stub_kern_setLowPower(uint8_t mode);
 
 /*!
  * \brief Precise signal (minimal jitter)
@@ -179,12 +177,12 @@ extern	void	stub_kern_setLowPower(uint8_t mode);
  *    }
  * \endcode
  *
- * \param[in]	*handle		Ptr on the handle
+ * \param[in]   *handle     Ptr on the handle
  *
  * \note This function does not return a value (None).
  *
  */
-extern	void	stub_kern_setPreciseSignal(prcs_t *handle);
+extern  void    stub_kern_setPreciseSignal(prcs_t *handle);
 
 /*!
  * \brief Read the tickCount
@@ -197,13 +195,12 @@ extern	void	stub_kern_setPreciseSignal(prcs_t *handle);
  *    stub_kern_readTickCount(&tickCount);
  * \endcode
  *
- * \param[in]	-
- * \param[out]	*tickCount	Ptr on the tickCount (1-us of resolution)
+ * \param[out]  *tickCount  Ptr on the tickCount (1-us of resolution)
  *
  * \note This function does not return a value (None).
  *
  */
-extern	void	stub_kern_readTickCount(uint64_t *tickCount);
+extern  void    stub_kern_readTickCount(uint64_t *tickCount);
 
 /*!
  * \brief Start a new process timeout
@@ -214,12 +211,11 @@ extern	void	stub_kern_readTickCount(uint64_t *tickCount);
  *    stub_kern_newProcessTimeout();
  * \endcode
  *
- * \param[in]	-
  *
  * \note This function does not return a value (None).
  *
  */
-extern	void	stub_kern_newProcessTimeout(void);
+extern  void    stub_kern_newProcessTimeout(void);
 
 /*!
  * \brief Stop the process timeout
@@ -230,12 +226,11 @@ extern	void	stub_kern_newProcessTimeout(void);
  *    stub_kern_stopProcessTimeout();
  * \endcode
  *
- * \param[in]	-
  *
  * \note This function does not return a value (None).
  *
  */
-extern	void	stub_kern_stopProcessTimeout(void);
+extern  void    stub_kern_stopProcessTimeout(void);
 
 #if (defined(__cplusplus))
 }

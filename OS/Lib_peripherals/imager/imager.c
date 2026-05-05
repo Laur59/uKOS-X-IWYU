@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		img0 manager.
+; Project:  uKOS-X
+; Goal:     img0 manager.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +46,7 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include    "uKOS.h"
 
 #if (defined(CONFIG_MAN_IMAGER_S))
 
@@ -55,43 +55,43 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"imager       imager manager.                           (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "imager manager\n"
-									"==============\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "imager       imager manager.                           (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "imager manager\n"
+                                    "==============\n\n"
 
-									"This manager ...\n\n"
+                                    "This manager ...\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
-	Imager,							// Module name (the first letter has to be upper case)
-	KID_FAM_PERIPHERALS,			// Family (defined in the module.h)
-	KNUM_IMAGER,					// Module identifier (defined in the module.h)
-	nullptr,						// Address of the initialisation code (early pre-init)
-	nullptr,						// Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
-	nullptr,						// Address of the clean code (clean the module)
-	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0								// Execution cores
+    Imager,                         // Module name (the first letter has to be upper case)
+    KID_FAM_PERIPHERALS,            // Family (defined in the module.h)
+    KNUM_IMAGER,                    // Module identifier (defined in the module.h)
+    nullptr,                        // Address of the initialisation code (early pre-init)
+    nullptr,                        // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                        // Address of the clean code (clean the module)
+    " 1.0",                         // Revision string (major . minor)
+    (1u<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                               // Execution cores
 );
 
 // Library specific
 // ================
 
-static	mutx_t		*vMutex_Reserve[KNB_CORES];
+static  mutx_t      *vMutex_Reserve[KNB_CORES];
 
 // Prototypes
 
-static	int32_t		local_init(void);
-extern	int32_t		stub_imager_init(void);
-extern	int32_t		stub_imager_configure(const imagerCnf_t *configure);
-extern	int32_t		stub_imager_acquisition(void);
-extern	int32_t		stub_imager_read(volatile void **image);
-extern	int32_t		stub_imager_getSerialNumber(uint64_t *serialNumber);
-extern	int32_t		stub_imager_readRegister(uint8_t registerNb, uint16_t *value);
-extern	int32_t		stub_imager_writeRegister(uint8_t registerNb, uint16_t value);
-extern  int32_t		stub_imager_standby(uint8_t mode);
-extern  int32_t		stub_imager_exposure(uint32_t time);
+static  int32_t     local_init(void);
+extern  int32_t     stub_imager_init(void);
+extern  int32_t     stub_imager_configure(const imagerCnf_t *configure);
+extern  int32_t     stub_imager_acquisition(void);
+extern  int32_t     stub_imager_read(volatile void **image);
+extern  int32_t     stub_imager_getSerialNumber(uint64_t *serialNumber);
+extern  int32_t     stub_imager_readRegister(uint8_t registerNb, uint16_t *value);
+extern  int32_t     stub_imager_writeRegister(uint8_t registerNb, uint16_t value);
+extern  int32_t     stub_imager_standby(uint8_t mode);
+extern  int32_t     stub_imager_exposure(uint32_t time);
 
 /*
  * \brief Reserve the imager manager
@@ -108,35 +108,35 @@ extern  int32_t		stub_imager_exposure(uint32_t time);
  *    status = imager_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode			Any mode
- * \param[in]	timeout				Timeout (1-ms of resolution)
- * \param[in]	-					KWAIT_INFINITY, waiting forever
- * \param[in]	-					KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_IMAGER_NOERR	The manager is reserved
- * \return		KERR_IMAGER_GEERR	General error
- * \return		KERR_IMAGER_CHBSY	The manager is busy
+ * \param[in]   reserveMode         Any mode
+ * \param[in]   timeout             Timeout (1-ms of resolution)
+ *                                  KWAIT_INFINITY, waiting forever
+ *                                  KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_IMAGER_NOERR   The manager is reserved
+ * \return      KERR_IMAGER_GEERR   General error
+ * \return      KERR_IMAGER_CHBSY   The manager is busy
  *
  */
-int32_t	imager_reserve(reserveMode_t reserveMode, uint32_t timeout) {
-	int32_t		status;
-	uint32_t	core;
+int32_t imager_reserve(reserveMode_t reserveMode, uint32_t timeout) {
+    int32_t     status;
+    uint32_t    core;
 
-	UNUSED(reserveMode);
+    UNUSED(reserveMode);
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = kern_lockMutex(vMutex_Reserve[core], timeout);
-	if (status != KERR_KERN_NOERR) {
-		PRIVILEGE_RESTORE;
-		return (KERR_IMAGER_CHBSY);
-	}
+    status = kern_lockMutex(vMutex_Reserve[core], timeout);
+    if (status != KERR_KERN_NOERR) {
+        PRIVILEGE_RESTORE;
+        return (KERR_IMAGER_CHBSY);
+    }
 
-	PRIVILEGE_RESTORE;
-	return (KERR_IMAGER_NOERR);
+    PRIVILEGE_RESTORE;
+    return (KERR_IMAGER_NOERR);
 }
 
 /*
@@ -150,32 +150,32 @@ int32_t	imager_reserve(reserveMode_t reserveMode, uint32_t timeout) {
  *    status = imager_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode			Any mode
- * \return		KERR_IMAGER_NOERR	OK
- * \return		KERR_IMAGER_GEERR	General error
- * \return		KERR_IMAGER_CAREL	Cannot release the manager
+ * \param[in]   reserveMode         Any mode
+ * \return      KERR_IMAGER_NOERR   OK
+ * \return      KERR_IMAGER_GEERR   General error
+ * \return      KERR_IMAGER_CAREL   Cannot release the manager
  *
  */
-int32_t	imager_release(reserveMode_t reserveMode) {
-	int32_t		status;
-	uint32_t	core;
+int32_t imager_release(reserveMode_t reserveMode) {
+    int32_t     status;
+    uint32_t    core;
 
-	UNUSED(reserveMode);
+    UNUSED(reserveMode);
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = kern_unlockMutex(vMutex_Reserve[core]);
-	if (status != KERR_KERN_NOERR) {
-		PRIVILEGE_RESTORE;
-		return (KERR_IMAGER_CAREL);
-	}
+    status = kern_unlockMutex(vMutex_Reserve[core]);
+    if (status != KERR_KERN_NOERR) {
+        PRIVILEGE_RESTORE;
+        return (KERR_IMAGER_CAREL);
+    }
 
-	PRIVILEGE_RESTORE;
-	return (KERR_IMAGER_NOERR);
+    PRIVILEGE_RESTORE;
+    return (KERR_IMAGER_NOERR);
 }
 
 /*
@@ -246,23 +246,23 @@ int32_t	imager_release(reserveMode_t reserveMode) {
  * }
  * \endcode
  *
- * \param[in]	*configure			Ptr on the configuration buffer
- * \return		KERR_IMAGER_NOERR	OK
- * \return		KERR_IMAGER_GEERR	General error
- * \return		KERR_IMAGER_TIMEO	Timeout error
- * \return		KERR_IMAGER_NOMEM	Not enough memory
+ * \param[in]   *configure          Ptr on the configuration buffer
+ * \return      KERR_IMAGER_NOERR   OK
+ * \return      KERR_IMAGER_GEERR   General error
+ * \return      KERR_IMAGER_TIMEO   Timeout error
+ * \return      KERR_IMAGER_NOMEM   Not enough memory
  *
  */
-int32_t	imager_configure(const imagerCnf_t *configure) {
-	int32_t		status;
+int32_t imager_configure(const imagerCnf_t *configure) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_imager_configure(configure);
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_imager_configure(configure);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 /*
@@ -276,22 +276,21 @@ int32_t	imager_configure(const imagerCnf_t *configure) {
  *    status = imager_acquisition();
  * \endcode
  *
- * \param[in]	-
- * \return		KERR_IMAGER_NOERR	OK
- * \return		KERR_IMAGER_GEERR	General error
- * \return		KERR_IMAGER_TIMEO	Timeout error
+ * \return      KERR_IMAGER_NOERR   OK
+ * \return      KERR_IMAGER_GEERR   General error
+ * \return      KERR_IMAGER_TIMEO   Timeout error
  *
  */
-int32_t	imager_acquisition(void) {
-	int32_t		status;
+int32_t imager_acquisition(void) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_imager_acquisition();
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_imager_acquisition();
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 /*
@@ -306,21 +305,21 @@ int32_t	imager_acquisition(void) {
  *    status = imager_read(&image);
  * \endcode
  *
- * \param[out]	**image				Ptr on the image
- * \return		KERR_IMAGER_NOERR	OK
- * \return		KERR_IMAGER_GEERR	General error
+ * \param[out]  **image             Ptr on the image
+ * \return      KERR_IMAGER_NOERR   OK
+ * \return      KERR_IMAGER_GEERR   General error
  *
  */
-int32_t	imager_read(volatile void **image) {
-	int32_t		status;
+int32_t imager_read(volatile void **image) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_imager_read(image);
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_imager_read(image);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 /*
@@ -335,23 +334,23 @@ int32_t	imager_read(volatile void **image) {
  *    status = imager_readRegister(0x34, &value);
  * \endcode
  *
- * \param[in]	registerNb			The register number
- * \param[out]	*value				Ptr on the value
- * \return		KERR_IMAGER_NOERR	OK
- * \return		KERR_IMAGER_GEERR	General error
- * \return		KERR_IMAGER_TIMEO	Timeout error
+ * \param[in]   registerNb          The register number
+ * \param[out]  *value              Ptr on the value
+ * \return      KERR_IMAGER_NOERR   OK
+ * \return      KERR_IMAGER_GEERR   General error
+ * \return      KERR_IMAGER_TIMEO   Timeout error
  *
  */
-int32_t	imager_readRegister(uint8_t registerNb, uint16_t *value) {
-	int32_t		status;
+int32_t imager_readRegister(uint8_t registerNb, uint16_t *value) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_imager_readRegister(registerNb, value);
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_imager_readRegister(registerNb, value);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 /*
@@ -366,23 +365,23 @@ int32_t	imager_readRegister(uint8_t registerNb, uint16_t *value) {
  *    status = imager_writeRegister(0x34, value);
  * \endcode
  *
- * \param[in]	registerNb			The register number
- * \param[in]	value				The value
- * \return		KERR_IMAGER_NOERR	OK
- * \return		KERR_IMAGER_GEERR	General error
- * \return		KERR_IMAGER_TIMEO	Timeout error
+ * \param[in]   registerNb          The register number
+ * \param[in]   value               The value
+ * \return      KERR_IMAGER_NOERR   OK
+ * \return      KERR_IMAGER_GEERR   General error
+ * \return      KERR_IMAGER_TIMEO   Timeout error
  *
  */
-int32_t	imager_writeRegister(uint8_t registerNb, uint16_t value) {
-	int32_t		status;
+int32_t imager_writeRegister(uint8_t registerNb, uint16_t value) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_imager_writeRegister(registerNb, value);
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_imager_writeRegister(registerNb, value);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 /*
@@ -396,29 +395,29 @@ int32_t	imager_writeRegister(uint8_t registerNb, uint16_t value) {
  *    status = imager_standby(KIMAGER_STANDBY);
  * \endcode
  *
- * \param[in]	mode				KIMAGER_OPERATE, standby OFF
- * \param[in]	-					KIMAGER_STANDBY, standby ON
- * \return		KERR_IMAGER_NOERR	OK
- * \return		KERR_IMAGER_GEERR	General error
- * \return		KERR_IMAGER_BDMOD	Bad mode for called function
+ * \param[in]   mode                KIMAGER_OPERATE, standby OFF
+ *                                  KIMAGER_STANDBY, standby ON
+ * \return      KERR_IMAGER_NOERR   OK
+ * \return      KERR_IMAGER_GEERR   General error
+ * \return      KERR_IMAGER_BDMOD   Bad mode for called function
  *
  */
-int32_t	imager_standby(uint8_t mode) {
-	int32_t		status;
+int32_t imager_standby(uint8_t mode) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_imager_standby(mode);
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_imager_standby(mode);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 /*
  * \brief Write the exposure time
  *
- * \warning	After this call it is necessary to acqure a dummy image.
+ * \warning After this call it is necessary to acqure a dummy image.
  *
  * Call example in C:
  *
@@ -428,22 +427,22 @@ int32_t	imager_standby(uint8_t mode) {
  *    status = imager_exposure(15000);
  * \endcode
  *
- * \param[in]	time				Integration time (-1 = auto-exposure)
- * \return		KERR_IMAGER_NOERR	OK
- * \return		KERR_IMAGER_GEERR	General error
- * \return		KERR_IMAGER_BDMOD	Bad mode for called function
+ * \param[in]   time                Integration time (-1 = auto-exposure)
+ * \return      KERR_IMAGER_NOERR   OK
+ * \return      KERR_IMAGER_GEERR   General error
+ * \return      KERR_IMAGER_BDMOD   Bad mode for called function
  *
  */
-int32_t	imager_exposure(uint32_t time) {
-	int32_t		status;
+int32_t imager_exposure(uint32_t time) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_IMAGER_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_imager_exposure(time);
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_imager_exposure(time);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 // Local routines
@@ -456,22 +455,22 @@ int32_t	imager_exposure(uint32_t time) {
  *   has to be called at least once
  *
  */
-static	int32_t	local_init(void) {
-			int32_t		status = KERR_IMAGER_NOERR;
-			uint32_t	core;
-	static	bool		vInit[KNB_CORES] = MCSET(false);
+static  int32_t local_init(void) {
+            int32_t     status = KERR_IMAGER_NOERR;
+            uint32_t    core;
+    static  bool        vInit[KNB_CORES] = MCSET(false);
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	INTERRUPTION_OFF;
-	if (vInit[core] == false) {
-		vInit[core] = true;
+    INTERRUPTION_OFF;
+    if (vInit[core] == false) {
+        vInit[core] = true;
 
-		if (kern_createMutex(KIMAGER_MUTEX_RESERVE, &vMutex_Reserve[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "imager: create mutx"); exit(EXIT_OS_PANIC); }
+        if (kern_createMutex(KIMAGER_MUTEX_RESERVE, &vMutex_Reserve[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "imager: create mutx"); exit(EXIT_OS_PANIC); }
 
-		status = stub_imager_init();
-	}
-	RETURN_INT_RESTORE(status);
+        status = stub_imager_init();
+    }
+    RETURN_INT_RESTORE(status);
 }
 
 #endif

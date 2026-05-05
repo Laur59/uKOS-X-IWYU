@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		cdc0 manager.
+; Project:  uKOS-X
+; Goal:     cdc0 manager.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,11 +46,11 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include    "uKOS.h"
 
 // cppcheck-suppress missingInclude
 //
-#include	"tusb_config.h"
+#include    "tusb_config.h"
 
 #if (defined(CONFIG_MAN_CDC0_S))
 
@@ -59,53 +59,53 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"cdc0         cdc0 manager.                             (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "cdc0 manager\n"
-									"============\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "cdc0         cdc0 manager.                             (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "cdc0 manager\n"
+                                    "============\n\n"
 
-									"This manager ...\n\n"
+                                    "This manager ...\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
-	Cdc0,							// Module name (the first letter has to be upper case)
-	KID_FAM_SERIALS,				// Family (defined in the module.h)
-	KNUM_CDC0,						// Module identifier (defined in the module.h)
-	nullptr,						// Address of the initialisation code (early pre-init)
-	nullptr,						// Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
-	nullptr,						// Address of the clean code (clean the module)
-	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0								// Execution cores
+    Cdc0,                           // Module name (the first letter has to be upper case)
+    KID_FAM_SERIALS,                // Family (defined in the module.h)
+    KNUM_CDC0,                      // Module identifier (defined in the module.h)
+    nullptr,                        // Address of the initialisation code (early pre-init)
+    nullptr,                        // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                        // Address of the clean code (clean the module)
+    " 1.0",                         // Revision string (major . minor)
+    (1u<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                               // Execution cores
 );
 
 // Library specific
 // ================
 
-#define	CDC0_SEMA_TX_S
+#define CDC0_SEMA_TX_S
 
-#define	KCDC0_SZ_TX_BUF		CFG_TUD_CDC_TX_BUFSIZE
-#define	KCDC0_SZ_RX_BUF		CFG_TUD_CDC_RX_BUFSIZE
-#define	KPORT0				0
+#define KCDC0_SZ_TX_BUF     CFG_TUD_CDC_TX_BUFSIZE
+#define KCDC0_SZ_RX_BUF     CFG_TUD_CDC_RX_BUFSIZE
+#define KPORT0              0
 
 STRG_LOC_CONST(aStrSemaphore_TX[]) = KCDC0_SEMAPHORE_TX;
 
-static	bool		vWithSemaphore_TX[KNB_CORES] = MCSET(false);
+static  bool        vWithSemaphore_TX[KNB_CORES] = MCSET(false);
 
-static	sema_t		*vSemaphore_TX[KNB_CORES];
-static	mutx_t		*vMutex_Reserve_RX[KNB_CORES];
-static	mutx_t		*vMutex_Reserve_TX[KNB_CORES];
+static  sema_t      *vSemaphore_TX[KNB_CORES];
+static  mutx_t      *vMutex_Reserve_RX[KNB_CORES];
+static  mutx_t      *vMutex_Reserve_TX[KNB_CORES];
 
 // Prototypes
 
-		void		TinyUSB_cdc_init(void);
-		void		TinyUSB_cdc_write(uint8_t itf, const uint8_t *buffer, uint32_t size);
-		void		TinyUSB_cdc_read(uint8_t itf, uint8_t *buffer, uint32_t *size);
-static	int32_t		local_init(void);
-static	int32_t		local_configure(const cdcxCnf_t *configure);
-static	int32_t		local_write(const uint8_t *buffer, uint32_t size);
-static	int32_t		local_read(uint8_t *buffer, uint32_t *size);
-static	int32_t		local_flush(void);
+        void        TinyUSB_cdc_init(void);
+        void        TinyUSB_cdc_write(uint8_t itf, const uint8_t *buffer, uint32_t size);
+        void        TinyUSB_cdc_read(uint8_t itf, uint8_t *buffer, uint32_t *size);
+static  int32_t     local_init(void);
+static  int32_t     local_configure(const cdcxCnf_t *configure);
+static  int32_t     local_write(const uint8_t *buffer, uint32_t size);
+static  int32_t     local_read(uint8_t *buffer, uint32_t *size);
+static  int32_t     local_flush(void);
 
 /*
  * \brief Reserve the cdc0 manager
@@ -122,69 +122,69 @@ static	int32_t		local_flush(void);
  *    status = cdc0_release(KMODE_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode			KMODE_READ, KMODE_WRITE, KMODE_READ_WRITE
- * \param[in]	timeout				Timeout (1-ms of resolution)
- * \param[in]	-					KWAIT_INFINITY, waiting forever
- * \param[in]	-					KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_SERIAL_NOERR	The manager is reserved
- * \return		KERR_SERIAL_GEERR	General error
- * \return		KERR_SERIAL_CHBSY	The manager is busy
+ * \param[in]   reserveMode         KMODE_READ, KMODE_WRITE, KMODE_READ_WRITE
+ * \param[in]   timeout             Timeout (1-ms of resolution)
+ *                                  KWAIT_INFINITY, waiting forever
+ *                                  KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_SERIAL_NOERR   The manager is reserved
+ * \return      KERR_SERIAL_GEERR   General error
+ * \return      KERR_SERIAL_CHBSY   The manager is busy
  *
  */
-int32_t	cdc0_reserve(reserveMode_t reserveMode, uint32_t timeout) {
-	int32_t		status;
-	uint32_t	core;
+int32_t cdc0_reserve(reserveMode_t reserveMode, uint32_t timeout) {
+    int32_t     status;
+    uint32_t    core;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	switch (reserveMode) {
-		case KMODE_READ: {
-			status = kern_lockMutex(vMutex_Reserve_RX[core], timeout);
-			if (status != KERR_KERN_NOERR) {
-				PRIVILEGE_RESTORE;
-				return (KERR_SERIAL_CHBSY);
-			}
+    switch (reserveMode) {
+        case KMODE_READ: {
+            status = kern_lockMutex(vMutex_Reserve_RX[core], timeout);
+            if (status != KERR_KERN_NOERR) {
+                PRIVILEGE_RESTORE;
+                return (KERR_SERIAL_CHBSY);
+            }
 
-			break;
-		}
-		case KMODE_WRITE: {
-			status = kern_lockMutex(vMutex_Reserve_TX[core], timeout);
-			if (status != KERR_KERN_NOERR) {
-				PRIVILEGE_RESTORE;
-				return (KERR_SERIAL_CHBSY);
-			}
+            break;
+        }
+        case KMODE_WRITE: {
+            status = kern_lockMutex(vMutex_Reserve_TX[core], timeout);
+            if (status != KERR_KERN_NOERR) {
+                PRIVILEGE_RESTORE;
+                return (KERR_SERIAL_CHBSY);
+            }
 
-			break;
-		}
-		case KMODE_READ_WRITE: {
-			status = kern_lockMutex(vMutex_Reserve_RX[core], timeout);
-			if (status != KERR_KERN_NOERR) {
-				PRIVILEGE_RESTORE;
-				return (KERR_SERIAL_CHBSY);
-			}
+            break;
+        }
+        case KMODE_READ_WRITE: {
+            status = kern_lockMutex(vMutex_Reserve_RX[core], timeout);
+            if (status != KERR_KERN_NOERR) {
+                PRIVILEGE_RESTORE;
+                return (KERR_SERIAL_CHBSY);
+            }
 
-			status = kern_lockMutex(vMutex_Reserve_TX[core], timeout);
-			if (status != KERR_KERN_NOERR) {
-				kern_unlockMutex(vMutex_Reserve_RX[core]);
-				PRIVILEGE_RESTORE;
-				return (KERR_SERIAL_CHBSY);
-			}
+            status = kern_lockMutex(vMutex_Reserve_TX[core], timeout);
+            if (status != KERR_KERN_NOERR) {
+                kern_unlockMutex(vMutex_Reserve_RX[core]);
+                PRIVILEGE_RESTORE;
+                return (KERR_SERIAL_CHBSY);
+            }
 
-			break;
-		}
-		default: {
+            break;
+        }
+        default: {
 
 // Make MISRA happy :-)
 
-			break;
-		}
-	}
-	PRIVILEGE_RESTORE;
-	return (KERR_SERIAL_NOERR);
+            break;
+        }
+    }
+    PRIVILEGE_RESTORE;
+    return (KERR_SERIAL_NOERR);
 }
 
 /*
@@ -198,65 +198,65 @@ int32_t	cdc0_reserve(reserveMode_t reserveMode, uint32_t timeout) {
  *    status = cdc0_release(KMODE_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode			KMODE_READ, KMODE_WRITE, KMODE_READ_WRITE
- * \return		KERR_SERIAL_NOERR	OK
- * \return		KERR_SERIAL_GEERR	General error
- * \return		KERR_SERIAL_CAREL	Cannot release the manager
+ * \param[in]   reserveMode         KMODE_READ, KMODE_WRITE, KMODE_READ_WRITE
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_GEERR   General error
+ * \return      KERR_SERIAL_CAREL   Cannot release the manager
  *
  */
-int32_t	cdc0_release(reserveMode_t reserveMode) {
-	int32_t		status;
-	uint32_t	core;
+int32_t cdc0_release(reserveMode_t reserveMode) {
+    int32_t     status;
+    uint32_t    core;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	switch (reserveMode) {
-		case KMODE_READ: {
-			status = kern_unlockMutex(vMutex_Reserve_RX[core]);
-			if (status != KERR_KERN_NOERR) {
-				PRIVILEGE_RESTORE;
-				return (KERR_SERIAL_CAREL);
-			}
+    switch (reserveMode) {
+        case KMODE_READ: {
+            status = kern_unlockMutex(vMutex_Reserve_RX[core]);
+            if (status != KERR_KERN_NOERR) {
+                PRIVILEGE_RESTORE;
+                return (KERR_SERIAL_CAREL);
+            }
 
-			break;
-		}
-		case KMODE_WRITE: {
-			status = kern_unlockMutex(vMutex_Reserve_TX[core]);
-			if (status != KERR_KERN_NOERR) {
-				PRIVILEGE_RESTORE;
-				return (KERR_SERIAL_CAREL);
-			}
+            break;
+        }
+        case KMODE_WRITE: {
+            status = kern_unlockMutex(vMutex_Reserve_TX[core]);
+            if (status != KERR_KERN_NOERR) {
+                PRIVILEGE_RESTORE;
+                return (KERR_SERIAL_CAREL);
+            }
 
-			break;
-		}
-		case KMODE_READ_WRITE: {
-			status = kern_unlockMutex(vMutex_Reserve_RX[core]);
-			if (status != KERR_KERN_NOERR) {
-				PRIVILEGE_RESTORE;
-				return (KERR_SERIAL_CAREL);
-			}
+            break;
+        }
+        case KMODE_READ_WRITE: {
+            status = kern_unlockMutex(vMutex_Reserve_RX[core]);
+            if (status != KERR_KERN_NOERR) {
+                PRIVILEGE_RESTORE;
+                return (KERR_SERIAL_CAREL);
+            }
 
-			status = kern_unlockMutex(vMutex_Reserve_TX[core]);
-			if (status != KERR_KERN_NOERR) {
-				PRIVILEGE_RESTORE;
-				return (KERR_SERIAL_CAREL);
-			}
+            status = kern_unlockMutex(vMutex_Reserve_TX[core]);
+            if (status != KERR_KERN_NOERR) {
+                PRIVILEGE_RESTORE;
+                return (KERR_SERIAL_CAREL);
+            }
 
-			break;
-		}
-		default: {
+            break;
+        }
+        default: {
 
 // Make MISRA happy :-)
 
-			break;
-		}
-	}
-	PRIVILEGE_RESTORE;
-	return (KERR_SERIAL_NOERR);
+            break;
+        }
+    }
+    PRIVILEGE_RESTORE;
+    return (KERR_SERIAL_NOERR);
 }
 
 /*
@@ -273,22 +273,22 @@ int32_t	cdc0_release(reserveMode_t reserveMode) {
  *    status = cdc0_configure(&configure);
  * \endcode
  *
- * \param[in]	*configure			Ptr on the configuration buffer
- * \return		KERR_SERIAL_NOERR	OK
- * \return		KERR_SERIAL_GEERR	General error
- * \return		KERR_SERIAL_NOCNF	The configuration does not exist
+ * \param[in]   *configure          Ptr on the configuration buffer
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_GEERR   General error
+ * \return      KERR_SERIAL_NOCNF   The configuration does not exist
  *
  */
-int32_t	cdc0_configure(const cdcxCnf_t *configure) {
-	int32_t		status;
+int32_t cdc0_configure(const cdcxCnf_t *configure) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = local_configure(configure);
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = local_configure(configure);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 /*
@@ -305,25 +305,25 @@ int32_t	cdc0_configure(const cdcxCnf_t *configure) {
  *    status = cdc0_write(buffer, KSIZE);
  * \endcode
  *
- * \param[in]	*buffer				Ptr on the buffer
- * \param[in]	size				Size of the buffer
- * \return		KERR_SERIAL_NOERR	OK
- * \return		KERR_SERIAL_GEERR	General error
- * \return		KERR_SERIAL_SEPRO	The sender is busy
- * \return		KERR_SERIAL_LNBUB	The buffer length is too big
- * \return		KERR_SERIAL_LNBU0	The buffer length is = 0
+ * \param[in]   *buffer             Ptr on the buffer
+ * \param[in]   size                Size of the buffer
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_GEERR   General error
+ * \return      KERR_SERIAL_SEPRO   The sender is busy
+ * \return      KERR_SERIAL_LNBUB   The buffer length is too big
+ * \return      KERR_SERIAL_LNBU0   The buffer length is = 0
  *
  */
-int32_t	cdc0_write(const uint8_t *buffer, uint32_t size) {
-	int32_t		status;
+int32_t cdc0_write(const uint8_t *buffer, uint32_t size) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = local_write(buffer, size);
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = local_write(buffer, size);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 /*
@@ -340,28 +340,28 @@ int32_t	cdc0_write(const uint8_t *buffer, uint32_t size) {
  *    status = cdc0_read(buffer, &size);
  * \endcode
  *
- * \param[in]		*buffer				Ptr on the buffer
- * \param[in, out]	*size				Ptr on the size
- * \return			KERR_SERIAL_NOERR	OK
- * \return			KERR_SERIAL_GEERR	General error
- * \return			KERR_SERIAL_RBUEM	The receiver buffer is empty
- * \return			KERR_SERIAL_RBFUL	The receiver buffer is full
- * \return			KERR_SERIAL_EROVR	Overrun error
- * \return			KERR_SERIAL_ERNOI	Noise error
- * \return			KERR_SERIAL_ERFRA	Framing error
- * \return			KERR_SERIAL_ERPAR	Parity error
+ * \param[in]       *buffer             Ptr on the buffer
+ * \param[in, out]  *size               Ptr on the size
+ * \return          KERR_SERIAL_NOERR   OK
+ * \return          KERR_SERIAL_GEERR   General error
+ * \return          KERR_SERIAL_RBUEM   The receiver buffer is empty
+ * \return          KERR_SERIAL_RBFUL   The receiver buffer is full
+ * \return          KERR_SERIAL_EROVR   Overrun error
+ * \return          KERR_SERIAL_ERNOI   Noise error
+ * \return          KERR_SERIAL_ERFRA   Framing error
+ * \return          KERR_SERIAL_ERPAR   Parity error
  *
  */
-int32_t	cdc0_read(uint8_t *buffer, uint32_t *size) {
-	int32_t		status;
+int32_t cdc0_read(uint8_t *buffer, uint32_t *size) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = local_read(buffer, size);
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = local_read(buffer, size);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 /*
@@ -379,24 +379,24 @@ int32_t	cdc0_read(uint8_t *buffer, uint32_t *size) {
  *    (void)dprintf(KSYST, "Semaphore ids: %s, ...%s\n", identifier[0], identifier[1]);
  * \endcode
  *
- * \param[in]	semaphore				RX or TX semaphore
- * \param[out]	**identifier			Ptr on the semaphore identifier
- * \return		KERR_SERIAL_NOERR		OK
- * \return		KERR_SERIAL_GEERR		General error
- * \return		KERR_SERIAL_SENOE		The semaphore does not exist
+ * \param[in]   semaphore               RX or TX semaphore
+ * \param[out]  **identifier            Ptr on the semaphore identifier
+ * \return      KERR_SERIAL_NOERR       OK
+ * \return      KERR_SERIAL_GEERR       General error
+ * \return      KERR_SERIAL_SENOE       The semaphore does not exist
  *
  */
-int32_t	cdc0_getIdSemaphore(uint8_t semaphore, char_t **identifier) {
-	int32_t		status;
+int32_t cdc0_getIdSemaphore(uint8_t semaphore, char_t **identifier) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	if (semaphore == BSERIAL_SEMAPHORE_RX) { *identifier = KCDC0_SEMAPHORE_RX; PRIVILEGE_RESTORE; return (KERR_SERIAL_NOERR); }
-	if (semaphore == BSERIAL_SEMAPHORE_TX) { *identifier = KCDC0_SEMAPHORE_TX; PRIVILEGE_RESTORE; return (KERR_SERIAL_NOERR); }
-	PRIVILEGE_RESTORE;
-	return (KERR_SERIAL_SENOE);
+    if (semaphore == BSERIAL_SEMAPHORE_RX) { *identifier = KCDC0_SEMAPHORE_RX; PRIVILEGE_RESTORE; return (KERR_SERIAL_NOERR); }
+    if (semaphore == BSERIAL_SEMAPHORE_TX) { *identifier = KCDC0_SEMAPHORE_TX; PRIVILEGE_RESTORE; return (KERR_SERIAL_NOERR); }
+    PRIVILEGE_RESTORE;
+    return (KERR_SERIAL_SENOE);
 }
 
 /*
@@ -410,21 +410,20 @@ int32_t	cdc0_getIdSemaphore(uint8_t semaphore, char_t **identifier) {
  *    status = cdc0_flush();
  * \endcode
  *
- * \param[in]	-
- * \return		KERR_SERIAL_NOERR	OK
- * \return		KERR_SERIAL_GEERR	General error
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_GEERR   General error
  *
  */
-int32_t	cdc0_flush(void) {
-	int32_t		status;
+int32_t cdc0_flush(void) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = local_flush();
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = local_flush();
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 // Local routines
@@ -437,24 +436,24 @@ int32_t	cdc0_flush(void) {
  *   has to be called at least once
  *
  */
-static	int32_t	local_init(void) {
-			int32_t		status = KERR_SERIAL_NOERR;
-			uint32_t	core;
-	static	bool		vInit[KNB_CORES] = MCSET(false);
+static  int32_t local_init(void) {
+            int32_t     status = KERR_SERIAL_NOERR;
+            uint32_t    core;
+    static  bool        vInit[KNB_CORES] = MCSET(false);
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	INTERRUPTION_OFF;
-	if (vInit[core] == false) {
-		vInit[core] = true;
+    INTERRUPTION_OFF;
+    if (vInit[core] == false) {
+        vInit[core] = true;
 
-		TinyUSB_cdc_init();
+        TinyUSB_cdc_init();
 
-		if (kern_createMutex(KCDC0_MUTEX_RESERVE_RX, &vMutex_Reserve_RX[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "cdc0: create mutx"); exit(EXIT_OS_PANIC); }
-		if (kern_createMutex(KCDC0_MUTEX_RESERVE_TX, &vMutex_Reserve_TX[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "cdc0: create mutx"); exit(EXIT_OS_PANIC); }
-		if (kern_createSemaphore(aStrSemaphore_TX, 0, 1, &vSemaphore_TX[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "cdc0: Create sema"); exit(EXIT_OS_PANIC); }
-	}
-	RETURN_INT_RESTORE(status);
+        if (kern_createMutex(KCDC0_MUTEX_RESERVE_RX, &vMutex_Reserve_RX[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "cdc0: create mutx"); exit(EXIT_OS_PANIC); }
+        if (kern_createMutex(KCDC0_MUTEX_RESERVE_TX, &vMutex_Reserve_TX[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "cdc0: create mutx"); exit(EXIT_OS_PANIC); }
+        if (kern_createSemaphore(aStrSemaphore_TX, 0, 1, &vSemaphore_TX[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "cdc0: Create sema"); exit(EXIT_OS_PANIC); }
+    }
+    RETURN_INT_RESTORE(status);
 }
 
 /*
@@ -463,14 +462,14 @@ static	int32_t	local_init(void) {
  * - Configure the manager
  *
  */
-static	int32_t	local_configure(const cdcxCnf_t *configure) {
-	uint32_t	core;
+static  int32_t local_configure(const cdcxCnf_t *configure) {
+    uint32_t    core;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	INTERRUPTION_OFF;
-	vWithSemaphore_TX[core] = ((configure->oKernSync & ((uint32_t)1u<<(uint32_t)BSERIAL_SEMAPHORE_TX)) != 0u) ? (true) : (false);
-	RETURN_INT_RESTORE(KERR_SERIAL_NOERR);
+    INTERRUPTION_OFF;
+    vWithSemaphore_TX[core] = ((configure->oKernSync & ((uint32_t)1u<<(uint32_t)BSERIAL_SEMAPHORE_TX)) != 0u) ? (true) : (false);
+    RETURN_INT_RESTORE(KERR_SERIAL_NOERR);
 }
 
 /*
@@ -479,40 +478,40 @@ static	int32_t	local_configure(const cdcxCnf_t *configure) {
  * - Write a buffer
  *
  */
-static	int32_t	local_write(const uint8_t *buffer, uint32_t size) {
-			uint32_t	core, newSize, wkSize = size;
-	const	uint8_t		*wkBuffer = buffer;
-	static	bool		vTerminate[KNB_CORES] = MCSET(false), vBusy[KNB_CORES] = MCSET(false);
+static  int32_t local_write(const uint8_t *buffer, uint32_t size) {
+            uint32_t    core, newSize, wkSize = size;
+    const   uint8_t     *wkBuffer = buffer;
+    static  bool        vTerminate[KNB_CORES] = MCSET(false), vBusy[KNB_CORES] = MCSET(false);
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	INTERRUPTION_OFF;
-	if (vBusy[core])  { RETURN_INT_RESTORE(KERR_SERIAL_SEPRO); }
-	if (wkSize == 0u) { RETURN_INT_RESTORE(KERR_SERIAL_LNBU0); }
+    INTERRUPTION_OFF;
+    if (vBusy[core])  { RETURN_INT_RESTORE(KERR_SERIAL_SEPRO); }
+    if (wkSize == 0u) { RETURN_INT_RESTORE(KERR_SERIAL_LNBU0); }
 
-	vBusy[core] = true;
-	INTERRUPTION_RESTORE;
+    vBusy[core] = true;
+    INTERRUPTION_RESTORE;
 
-	while (vTerminate[core] == false) {
-		if (wkSize > KCDC0_SZ_TX_BUF) { newSize = KCDC0_SZ_TX_BUF; wkSize -= KCDC0_SZ_TX_BUF; }
-		else						  { newSize = wkSize; vTerminate[core] = true;			  }
+    while (vTerminate[core] == false) {
+        if (wkSize > KCDC0_SZ_TX_BUF) { newSize = KCDC0_SZ_TX_BUF; wkSize -= KCDC0_SZ_TX_BUF; }
+        else                          { newSize = wkSize; vTerminate[core] = true;            }
 
 // Copy the input buffer into the send one and start the transfer
 // Enable the TX interruption
 
-		TinyUSB_cdc_write(KPORT0, wkBuffer, newSize);
-		wkBuffer = (const uint8_t *)((uintptr_t)wkBuffer + (uintptr_t)newSize);
-	}
+        TinyUSB_cdc_write(KPORT0, wkBuffer, newSize);
+        wkBuffer = (const uint8_t *)((uintptr_t)wkBuffer + (uintptr_t)newSize);
+    }
 
 // Signal end of the message
 
-	#if (defined(CDC0_SEMA_TX_S))
-	if (vWithSemaphore_TX[core] == true) { kern_signalSemaphore(vSemaphore_TX[core]); }
-	#endif
+    #if (defined(CDC0_SEMA_TX_S))
+    if (vWithSemaphore_TX[core] == true) { kern_signalSemaphore(vSemaphore_TX[core]); }
+    #endif
 
-	vBusy[core] = false;
-	vTerminate[core] = false;
-	return (KERR_SERIAL_NOERR);
+    vBusy[core] = false;
+    vTerminate[core] = false;
+    return (KERR_SERIAL_NOERR);
 }
 
 /*
@@ -522,24 +521,24 @@ static	int32_t	local_write(const uint8_t *buffer, uint32_t size) {
  *   - Try to read a buffer from the EP usb
  *
  */
-static	int32_t	local_read(uint8_t *buffer, uint32_t *size) {
-	uint32_t	wkSize;
+static  int32_t local_read(uint8_t *buffer, uint32_t *size) {
+    uint32_t    wkSize;
 
-	INTERRUPTION_OFF;
-	if (*size == 0) { *size = 0u; RETURN_INT_RESTORE(KERR_SERIAL_NOERR); }
+    INTERRUPTION_OFF;
+    if (*size == 0) { *size = 0u; RETURN_INT_RESTORE(KERR_SERIAL_NOERR); }
 
 // Read the data
 
-	wkSize = (*size > KCDC0_SZ_RX_BUF) ? (KCDC0_SZ_RX_BUF) : (*size);
-	TinyUSB_cdc_read(KPORT0, buffer, &wkSize);
+    wkSize = (*size > KCDC0_SZ_RX_BUF) ? (KCDC0_SZ_RX_BUF) : (*size);
+    TinyUSB_cdc_read(KPORT0, buffer, &wkSize);
 
-	if (wkSize > 0u) {
-		*size = wkSize;
-		RETURN_INT_RESTORE(KERR_SERIAL_NOERR);
-	}
+    if (wkSize > 0u) {
+        *size = wkSize;
+        RETURN_INT_RESTORE(KERR_SERIAL_NOERR);
+    }
 
-	*size = 0u;
-	RETURN_INT_RESTORE(KERR_SERIAL_RBUEM);
+    *size = 0u;
+    RETURN_INT_RESTORE(KERR_SERIAL_RBUEM);
 }
 
 /*
@@ -548,13 +547,13 @@ static	int32_t	local_read(uint8_t *buffer, uint32_t *size) {
  * - Flush the cdc0 manager
  *
  */
-static	int32_t	local_flush(void) {
-	uint8_t		i, buffer[32];
-	uint32_t	size;
+static  int32_t local_flush(void) {
+    uint8_t     i, buffer[32];
+    uint32_t    size;
 
-	INTERRUPTION_OFF;
-	for (i = 0u; i < (512u / 32u); i++) { TinyUSB_cdc_read(KPORT0, &buffer[0], &size); }
-	RETURN_INT_RESTORE(KERR_SERIAL_NOERR);
+    INTERRUPTION_OFF;
+    for (i = 0u; i < (512u / 32u); i++) { TinyUSB_cdc_read(KPORT0, &buffer[0], &size); }
+    RETURN_INT_RESTORE(KERR_SERIAL_NOERR);
 }
 
 #endif

@@ -48,10 +48,10 @@
 
 set -euo pipefail
 
-readonly PYTHON=/opt/local/bin/python3.11
+readonly PYTHON=python3
 
-if [[ ! -x "${PYTHON}" ]]; then
-    echo "Python 3.11 not found: ${PYTHON}"
+if ! command -v "${PYTHON}" >/dev/null 2>&1; then
+    echo "Python not found: ${PYTHON}"
     exit 1
 fi
 
@@ -82,7 +82,7 @@ printf '%b%s%b' "${GREEN}" "${splash}" "${NC}"
 # Packages
 # --------
 
-readonly package="5.5.1"
+readonly package="6.0.1"
 readonly idf_tag="v${package}"
 readonly URL="https://dl.espressif.com/esp-at/firmwares/esp32/ESP32-WROOM-32/ESP32-WROOM-32-AT-V4.1.1.0.zip"
 readonly ARCHIVE="ESP32-WROOM-32-AT-V4.1.1.0"
@@ -135,16 +135,16 @@ printf '\n%bDownload the AT firmware package ...%b\n\n' "${BOLD}" "${NC}"
 cd esp-idf-current
 mkdir -p AT_firmware
 
-rm -f "$ARCHIVE".zip
+rm -f "$ARCHIVE.zip"
 rm -rf "$ARCHIVE"
-wget -O "$ARCHIVE".zip "$URL"
-unzip "$ARCHIVE".zip
+wget -O "$ARCHIVE.zip" "$URL"
+unzip "$ARCHIVE.zip"
 
 cd "$ARCHIVE"
 rm -rf "../AT_firmware/${ARCHIVE}"
 mv "$ARCHIVE" ../AT_firmware
 cd "${IDF_PATH}"
-rm "$ARCHIVE".zip
+rm "$ARCHIVE.zip"
 rm -rf "$ARCHIVE"
 
 printf '\n🎉 %bBuild Complete%b\n\n' "${GREEN}" "${NC}"

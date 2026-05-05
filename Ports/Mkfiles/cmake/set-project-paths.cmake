@@ -4,11 +4,11 @@
 # SPDX-License-Identifier: MIT
 
 #------------------------------------------------------------------------
-# Author:	Laurent von Allmen	The 2025-07-13
+# Author:   Laurent von Allmen  The 2025-07-13
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Define directory paths required to build the system
+# Project:  uKOS-X
+# Goal:     Define directory paths required to build the system
 #
 #   (c) 2025-2026, Laurent von Allmen
 #   ---------------------------------
@@ -46,12 +46,17 @@
 
 # Project paths
 
-# - PATH_UKOS	--> Main uKOS-X folder
-# - PATH_VARI	--> folder holding CMakeLists.txt
-# - PATH_BASE	--> Projects Root Base folder
+# - PATH_UKOS   --> Main uKOS-X folder
+# - PATH_VARI   --> folder holding CMakeLists.txt
+# - PATH_BASE   --> Projects Root Base folder
+# - PATH_OSYS   --> Projects Root OS folder
 
+# Setup path to project root directory
+get_filename_component(PATH_PORT "${CMAKE_CURRENT_LIST_DIR}/../.." ABSOLUTE)
+get_filename_component(PATH_UKOS "${PATH_PORT}/.." ABSOLUTE)
 cmake_path(GET CMAKE_SOURCE_DIR PARENT_PATH TARGET_DIR)
 set(PATH_VARI ${CMAKE_SOURCE_DIR})
+set(PATH_OSYS ${PATH_UKOS}/OS)
 
 # Assumptions
 # For multi-processor board, each processor is labelled with '_procID'
@@ -60,16 +65,9 @@ set(PATH_VARI ${CMAKE_SOURCE_DIR})
 
 get_filename_component(DIR_NAME "${CMAKE_SOURCE_DIR}" NAME)
 if(DIR_NAME MATCHES "^Variant_Test_(.+)$")
-	set(VARIANT_SUFFIX "_${CMAKE_MATCH_1}")
-	set(PATH_BASE ${TARGET_DIR}/Base${VARIANT_SUFFIX})
-	set(PATH_COMX ${TARGET_DIR}/Base_Common)
+    set(VARIANT_SUFFIX "_${CMAKE_MATCH_1}")
+    set(PATH_BASE ${TARGET_DIR}/Base${VARIANT_SUFFIX})
+    set(PATH_COMX ${TARGET_DIR}/Base_Common)
 else()
-	set(PATH_BASE ${TARGET_DIR}/Base)
+    set(PATH_BASE ${TARGET_DIR}/Base)
 endif()
-
-# Setup path to project root directory
-set(MY_PARENT_PATH ${CMAKE_CURRENT_LIST_DIR})
-# Compute from current path
-cmake_path(GET CMAKE_CURRENT_LIST_DIR PARENT_PATH MKFILES_DIR)
-cmake_path(GET MKFILES_DIR PARENT_PATH PATH_PORT)
-cmake_path(GET PATH_PORT PARENT_PATH PATH_UKOS)

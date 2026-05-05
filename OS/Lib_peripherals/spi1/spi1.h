@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		spi1 manager.
+; Project:  uKOS-X
+; Goal:     spi1 manager.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +46,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_peripherals
@@ -63,21 +63,21 @@
  * @{
  */
 
-#include	"Lib_peripherals/spi_common.h"
+#include    "Lib_peripherals/spi_common.h"
 
 // Semaphores
 // ----------
 
-#define	KSPI1_MUTEX_RESERVE			"Reserve_spi1"
+#define KSPI1_MUTEX_RESERVE         "Reserve_spi1"
 
 // Prototypes
 
 #if (defined(__cplusplus))
-extern	"C" {
+extern  "C" {
 #endif
 
-#define	SPI1_reserve	spi1_reserve
-#define	SPI1_release	spi1_release
+#define SPI1_reserve    spi1_reserve
+#define SPI1_release    spi1_release
 
 /*!
  * \brief Reserve the spi1 manager
@@ -94,16 +94,16 @@ extern	"C" {
  *    status = spi1_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode		Any mode
- * \param[in]	timeout			Timeout (1-ms of resolution)
- * \param[in]	-				KWAIT_INFINITY, waiting forever
- * \param[in]	-				KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_SPI_NOERR	The manager is reserved
- * \return		KERR_SPI_GEERR	General error
- * \return		KERR_SPI_CHBSY	The manager is busy
+ * \param[in]   reserveMode     Any mode
+ * \param[in]   timeout         Timeout (1-ms of resolution)
+ *                              KWAIT_INFINITY, waiting forever
+ *                              KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_SPI_NOERR  The manager is reserved
+ * \return      KERR_SPI_GEERR  General error
+ * \return      KERR_SPI_CHBSY  The manager is busy
  *
  */
-extern	int32_t	spi1_reserve(reserveMode_t reserveMode, uint32_t timeout);
+extern  int32_t spi1_reserve(reserveMode_t reserveMode, uint32_t timeout);
 
 /*!
  * \brief Release the spi1 manager
@@ -116,13 +116,13 @@ extern	int32_t	spi1_reserve(reserveMode_t reserveMode, uint32_t timeout);
  *    status = spi1_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode		Any mode
- * \return		KERR_SPI_NOERR	OK
- * \return		KERR_SPI_GEERR	General error
- * \return		KERR_SPI_CAREL	Cannot release the manager
+ * \param[in]   reserveMode     Any mode
+ * \return      KERR_SPI_NOERR  OK
+ * \return      KERR_SPI_GEERR  General error
+ * \return      KERR_SPI_CAREL  Cannot release the manager
  *
  */
-extern	int32_t	spi1_release(reserveMode_t reserveMode);
+extern  int32_t spi1_release(reserveMode_t reserveMode);
 
 /*!
  * \brief Configure the spi1 manager
@@ -140,12 +140,12 @@ extern	int32_t	spi1_release(reserveMode_t reserveMode);
  *    status = spi1_configure(&configure);
  * \endcode
  *
- * \param[in]	*configure		Ptr on the configuration buffer
- * \return		KERR_SPI_NOERR	OK
- * \return		KERR_SPI_GEERR	General error
+ * \param[in]   *configure      Ptr on the configuration buffer
+ * \return      KERR_SPI_NOERR  OK
+ * \return      KERR_SPI_GEERR  General error
  *
  */
-extern	int32_t	spi1_configure(const spiCnf_t *configure);
+extern  int32_t spi1_configure(const spiCnf_t *configure);
 
 /*!
  * \brief Write-Read a byte to-from the spi1 manager
@@ -160,26 +160,26 @@ extern	int32_t	spi1_configure(const spiCnf_t *configure);
  *    status = spi1_writeRead(&data);
  * \endcode
  *
- * \param[in]	*data			Ptr on the data to write-read
- * \return		KERR_SPI_NOERR	OK
- * \return		KERR_SPI_GEERR	General error
+ * \param[in]   *data           Ptr on the data to write-read
+ * \return      KERR_SPI_NOERR  OK
+ * \return      KERR_SPI_GEERR  General error
  *
  */
-extern	int32_t	spi1_writeRead(uint8_t *data);
+extern  int32_t spi1_writeRead(uint8_t *data);
 
 /*!
  * \brief Generic, multiple Write-Read bytes to-from the spi1 manager
  *
  * Supported transfers
  *
- * Simple reads: spi_multipleWriteRead(xyz, 0, &rBuffer[0], 20, KWAIT_INFINITY);			R, R, R, ..
- * Writes-reads: spi_multipleWriteRead(xyz, 20, &rBuffer[0], 20, KWAIT_INFINITY);			W, R, W, ..
- *				 condition (wSize == rSize)
- *				 if xyz == nullptr, write 0x00
- *				 if xyz == (&wBuffer[0], write the buffer content
+ * Simple reads: spi_multipleWriteRead(xyz, 0, &rBuffer[0], 20, KWAIT_INFINITY);            R, R, R, ..
+ * Writes-reads: spi_multipleWriteRead(xyz, 20, &rBuffer[0], 20, KWAIT_INFINITY);           W, R, W, ..
+ *               condition (wSize == rSize)
+ *               if xyz == nullptr, write 0x00
+ *               if xyz == (&wBuffer[0], write the buffer content
  *
- * EEPROM mode:  spi_multipleWriteRead(&wBuffer[0], 4, &rBuffer[0], 20, KWAIT_INFINITY);	W, W, W, R, R, R, R, ..
- *				 condition (wSize != rSize)
+ * EEPROM mode:  spi_multipleWriteRead(&wBuffer[0], 4, &rBuffer[0], 20, KWAIT_INFINITY);    W, W, W, R, R, R, R, ..
+ *               condition (wSize != rSize)
  *
  * Call example in C:
  *
@@ -201,19 +201,19 @@ extern	int32_t	spi1_writeRead(uint8_t *data);
  *
  * \endcode
  *
- * \param[in]	*wData			Ptr on the data to write
- * \param[in]	wSize			Size of the write buffer
- * \param[in]	*rData			Ptr on the data to read
- * \param[in]	rSize			Size of the read buffer
- * \param[in]	timeout			Timeout (1-ms of resolution)
- * \param[in]	-				KWAIT_INFINITY, waiting forever
- * \param[in]	-				KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_SPI_NOERR	OK
- * \return		KERR_SPI_GEERR	General error
- * \return		KERR_SPI_TIMEO	Timeout error
+ * \param[in]   *wData          Ptr on the data to write
+ * \param[in]   wSize           Size of the write buffer
+ * \param[in]   *rData          Ptr on the data to read
+ * \param[in]   rSize           Size of the read buffer
+ * \param[in]   timeout         Timeout (1-ms of resolution)
+ *                              KWAIT_INFINITY, waiting forever
+ *                              KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_SPI_NOERR  OK
+ * \return      KERR_SPI_GEERR  General error
+ * \return      KERR_SPI_TIMEO  Timeout error
  *
  */
-extern	int32_t	spi1_multipleWriteRead(const uint8_t *wData, uint16_t wSize, uint8_t *rData, uint16_t rSize, uint32_t timeout);
+extern  int32_t spi1_multipleWriteRead(const uint8_t *wData, uint16_t wSize, uint8_t *rData, uint16_t rSize, uint32_t timeout);
 
 #if (defined(__cplusplus))
 }

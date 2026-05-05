@@ -2,14 +2,16 @@
 ; model_rtc.
 ; ==========
 
+; SPDX-License-Identifier: MIT
+
 ;------------------------------------------------------------------------
-; Author:	Laurent von Allmen		The 2026-02-13
-; Author:	Claude Code (Anthropic)	The 2026-02-13
+; Author:   Laurent von Allmen      The 2026-02-13
+; Author:   Claude Code (Anthropic) The 2026-02-13
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Model for managing the time & date by a hardware rtc.
-;			In the rtc it stored the local time.
+; Project:  uKOS-X
+; Goal:     Model for managing the time & date by a hardware rtc.
+;           In the rtc it stored the local time.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,11 +48,11 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include    "uKOS.h"
 
 // Prototypes
 
-static	bool	local_isLeapYear(int year);
+static  bool    local_isLeapYear(int year);
 
 /*
  * \brief model_rtc_update
@@ -58,78 +60,78 @@ static	bool	local_isLeapYear(int year);
  * - Update the hardware rtc with a new UTC time
  *
  */
-void	model_rtc_update(uint64_t unixTime) {
-	tm_t		localTime;
-	time_t		now;
-	uint8_t		absDays, absMonths, absYears, absHours, absMinutes, absSeconds;
-	uint8_t		century;
-	bool		isLeap;
+void    model_rtc_update(uint64_t unixTime) {
+    tm_t        localTime;
+    time_t      now;
+    uint8_t     absDays, absMonths, absYears, absHours, absMinutes, absSeconds;
+    uint8_t     century;
+    bool        isLeap;
 
-	now = (time_t)(unixTime / CLOCKS_PER_SEC);
-	localtime_r(&now, &localTime);
+    now = (time_t)(unixTime / CLOCKS_PER_SEC);
+    localtime_r(&now, &localTime);
 
-//			time.h formats		rtc formats
+//          time.h formats      rtc formats
 //
-// Days:	1..31				1..31
-// Months:	0..11				1..12
-// Years:	since 1900			0..99
-// Hours:	0..23				0..23
-// Minutes:	0..59				0..59
-// Seconds:	0..59				0..59
+// Days:    1..31               1..31
+// Months:  0..11               1..12
+// Years:   since 1900          0..99
+// Hours:   0..23               0..23
+// Minutes: 0..59               0..59
+// Seconds: 0..59               0..59
 
-	absDays    = (uint8_t)localTime.tm_mday;
-	absMonths  = (uint8_t)(localTime.tm_mon  + 1);
-	absYears   = (uint8_t)(localTime.tm_year % 100);
-	absHours   = (uint8_t)localTime.tm_hour;
-	absMinutes = (uint8_t)localTime.tm_min;
-	absSeconds = (uint8_t)localTime.tm_sec;
-	century    = (uint8_t)(localTime.tm_year / 100);
+    absDays    = (uint8_t)localTime.tm_mday;
+    absMonths  = (uint8_t)(localTime.tm_mon  + 1);
+    absYears   = (uint8_t)(localTime.tm_year % 100);
+    absHours   = (uint8_t)localTime.tm_hour;
+    absMinutes = (uint8_t)localTime.tm_min;
+    absSeconds = (uint8_t)localTime.tm_sec;
+    century    = (uint8_t)(localTime.tm_year / 100);
 
-	isLeap = local_isLeapYear(localTime.tm_year + 1900);
+    isLeap = local_isLeapYear(localTime.tm_year + 1900);
 
 // Ensure RTC is properly initialised and clocked
 // Check if RTC is enabled, if not configure it
 
-	if ((sysctl->clk_en_peri.rtc_clk_en) == 0u) {
+    if ((sysctl->clk_en_peri.rtc_clk_en) == 0u) {
 
 // Enable RTC clock
 
-		sysctl->clk_en_peri.rtc_clk_en = 1u;
+        sysctl->clk_en_peri.rtc_clk_en = 1u;
 
 // Release RTC from reset
 
-		sysctl->peri_reset.rtc_reset = 0u;
-		kern_suspendProcess(1u);
-	}
+        sysctl->peri_reset.rtc_reset = 0u;
+        kern_suspendProcess(1u);
+    }
 
 // Enable write access to RTC registers
 
-	rtc->register_ctrl.write_enable = 1u;
+    rtc->register_ctrl.write_enable = 1u;
 
 // Wait for write enable with timeout
 
-	while (rtc->register_ctrl.write_enable == 0U) { ; }
+    while (rtc->register_ctrl.write_enable == 0U) { ; }
 
 // Write date and time registers (K210 uses binary format, not BCD)
 
-	kern_suspendProcess(1u);
-	rtc->time.hour   = absHours   & 0x1Fu;
-	rtc->time.minute = absMinutes & 0x3Fu;
-	rtc->time.second = absSeconds & 0x3Fu;
+    kern_suspendProcess(1u);
+    rtc->time.hour   = absHours   & 0x1Fu;
+    rtc->time.minute = absMinutes & 0x3Fu;
+    rtc->time.second = absSeconds & 0x3Fu;
 
-	kern_suspendProcess(1u);
-	rtc->date.year  = absYears;
-	rtc->date.month = absMonths & 0x0Fu;
-	rtc->date.day   = absDays   & 0x1Fu;
-	rtc->date.week  = ((uint8_t)localTime.tm_wday) & 0x07u;
+    kern_suspendProcess(1u);
+    rtc->date.year  = absYears;
+    rtc->date.month = absMonths & 0x0Fu;
+    rtc->date.day   = absDays   & 0x1Fu;
+    rtc->date.week  = ((uint8_t)localTime.tm_wday) & 0x07u;
 
-	kern_suspendProcess(1u);
-	rtc->extended.century   = century & 0x1Fu;
-	rtc->extended.leap_year = isLeap ? (1u) : (0u);
+    kern_suspendProcess(1u);
+    rtc->extended.century   = century & 0x1Fu;
+    rtc->extended.leap_year = isLeap ? (1u) : (0u);
 
 // Disable write access to RTC registers
 
-	rtc->register_ctrl.write_enable = 0u;
+    rtc->register_ctrl.write_enable = 0u;
 }
 
 /*
@@ -138,51 +140,51 @@ void	model_rtc_update(uint64_t unixTime) {
  * - Read the Unix time from the rtc local time
  *
  */
-void	model_rtc_readUnixTime(uint64_t *unixTime) {
-	time_t		now;
-	tm_t		localTime;
-	uint32_t	date_reg, time_reg, ext_reg;
+void    model_rtc_readUnixTime(uint64_t *unixTime) {
+    time_t      now;
+    tm_t        localTime;
+    uint32_t    date_reg, time_reg, ext_reg;
 
 // Enable read access to RTC registers
 
-	rtc->register_ctrl.read_enable = 1u;
+    rtc->register_ctrl.read_enable = 1u;
 
 // Waiting for read enable with timeout
 
-	while (rtc->register_ctrl.read_enable == 0U) { ; }
+    while (rtc->register_ctrl.read_enable == 0U) { ; }
 
 // Read the RTC registers (K210 uses binary format, not BCD)
 // Important: read atomically to avoid inconsistent values
 
-	time_reg = *(volatile uint32_t *)&rtc->time;
-	date_reg = *(volatile uint32_t *)&rtc->date;
-	ext_reg  = *(volatile uint32_t *)&rtc->extended;
+    time_reg = *(volatile uint32_t *)&rtc->time;
+    date_reg = *(volatile uint32_t *)&rtc->date;
+    ext_reg  = *(volatile uint32_t *)&rtc->extended;
 
 // Disable read access
 
-	rtc->register_ctrl.read_enable = 0u;
+    rtc->register_ctrl.read_enable = 0u;
 
 // Extract fields from registers
 //
-//			time.h formats		rtc formats
+//          time.h formats      rtc formats
 //
-// Days:	1..31				1..31
-// Months:	0..11				1..12
-// Years:	since 1900			0..99
-// Hours:	0..23				0..23
-// Minutes:	0..59				0..59
-// Seconds:	0..59				0..59
+// Days:    1..31               1..31
+// Months:  0..11               1..12
+// Years:   since 1900          0..99
+// Hours:   0..23               0..23
+// Minutes: 0..59               0..59
+// Seconds: 0..59               0..59
 
-	localTime.tm_mday  = (int)((date_reg >> 8u)  & 0x1Fu);
-	localTime.tm_mon   = (int)(((date_reg >> 16u) & 0xFu) - 1u);
-	localTime.tm_year  = (int)((((ext_reg & 0x1Fu) * 100u) + ((date_reg >> 24u) & 0xFFu)) - 1900u);
-	localTime.tm_hour  = (int)((time_reg >> 24u) & 0x1Fu);
-	localTime.tm_min   = (int)((time_reg >> 16u) & 0x3Fu);
-	localTime.tm_sec   = (int)((time_reg >> 10u) & 0x3Fu);
-	localTime.tm_isdst = -1;
+    localTime.tm_mday  = (int)((date_reg >> 8u)  & 0x1Fu);
+    localTime.tm_mon   = (int)(((date_reg >> 16u) & 0xFu) - 1u);
+    localTime.tm_year  = (int)((((ext_reg & 0x1Fu) * 100u) + ((date_reg >> 24u) & 0xFFu)) - 1900u);
+    localTime.tm_hour  = (int)((time_reg >> 24u) & 0x1Fu);
+    localTime.tm_min   = (int)((time_reg >> 16u) & 0x3Fu);
+    localTime.tm_sec   = (int)((time_reg >> 10u) & 0x3Fu);
+    localTime.tm_isdst = -1;
 
-	now = mktime(&localTime);
-	*unixTime = (uint64_t)(now * CLOCKS_PER_SEC);
+    now = mktime(&localTime);
+    *unixTime = (uint64_t)(now * CLOCKS_PER_SEC);
 }
 
 /*
@@ -191,9 +193,9 @@ void	model_rtc_readUnixTime(uint64_t *unixTime) {
  * - Check if a year is a leap year
  *
  */
-static	bool	local_isLeapYear(int year) {
-	if ((year % 4) != 0)	{ return (false); }
-	if ((year % 100) != 0)	{ return (true);  }
-	if ((year % 400) != 0)	{ return (false); }
-	return (true);
+static  bool    local_isLeapYear(int year) {
+    if ((year % 4) != 0)    { return (false); }
+    if ((year % 100) != 0)  { return (true);  }
+    if ((year % 400) != 0)  { return (false); }
+    return (true);
 }

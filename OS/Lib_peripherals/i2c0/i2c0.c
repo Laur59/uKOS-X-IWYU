@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		i2c0 manager.
+; Project:  uKOS-X
+; Goal:     i2c0 manager.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +46,7 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include    "uKOS.h"
 
 #if (defined(CONFIG_MAN_I2C0_S))
 
@@ -55,39 +55,39 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"i2c0         i2c0 manager.                             (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "i2c0 manager\n"
-									"============\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "i2c0         i2c0 manager.                             (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "i2c0 manager\n"
+                                    "============\n\n"
 
-									"This manager ...\n\n"
+                                    "This manager ...\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
-	I2c0,							// Module name (the first letter has to be upper case)
-	KID_FAM_PERIPHERALS,			// Family (defined in the module.h)
-	KNUM_I2C0,						// Module identifier (defined in the module.h)
-	nullptr,						// Address of the initialisation code (early pre-init)
-	nullptr,						// Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
-	nullptr,						// Address of the clean code (clean the module)
-	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0								// Execution cores
+    I2c0,                           // Module name (the first letter has to be upper case)
+    KID_FAM_PERIPHERALS,            // Family (defined in the module.h)
+    KNUM_I2C0,                      // Module identifier (defined in the module.h)
+    nullptr,                        // Address of the initialisation code (early pre-init)
+    nullptr,                        // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                        // Address of the clean code (clean the module)
+    " 1.0",                         // Revision string (major . minor)
+    (1u<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                               // Execution cores
 );
 
 // Library specific
 // ================
 
-static	mutx_t		*vMutex_Reserve[KNB_CORES];
+static  mutx_t      *vMutex_Reserve[KNB_CORES];
 
 // Prototypes
 
-static	int32_t		local_init(void);
-extern	int32_t		stub_i2c0_init(void);
-extern	int32_t		stub_i2c0_configure(const i2cCnf_t *configure);
-extern	int32_t		stub_i2c0_write(uint8_t address, const uint8_t *buffer, uint16_t size);
-extern	int32_t		stub_i2c0_read(uint8_t address, uint8_t *buffer, uint16_t size);
-extern	int32_t		stub_i2c0_flush(void);
+static  int32_t     local_init(void);
+extern  int32_t     stub_i2c0_init(void);
+extern  int32_t     stub_i2c0_configure(const i2cCnf_t *configure);
+extern  int32_t     stub_i2c0_write(uint8_t address, const uint8_t *buffer, uint16_t size);
+extern  int32_t     stub_i2c0_read(uint8_t address, uint8_t *buffer, uint16_t size);
+extern  int32_t     stub_i2c0_flush(void);
 
 /*
  * \brief Reserve the i2c0 manager
@@ -104,35 +104,35 @@ extern	int32_t		stub_i2c0_flush(void);
  *    status = i2c0_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode		Any mode
- * \param[in]	timeout			Timeout (1-ms of resolution)
- * \param[in]	-				KWAIT_INFINITY, waiting forever
- * \param[in]	-				KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_I2C_NOERR	The manager is reserved
- * \return		KERR_I2C_GEERR	General error
- * \return		KERR_I2C_CHBSY	The manager is busy
+ * \param[in]   reserveMode     Any mode
+ * \param[in]   timeout         Timeout (1-ms of resolution)
+ *                              KWAIT_INFINITY, waiting forever
+ *                              KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_I2C_NOERR  The manager is reserved
+ * \return      KERR_I2C_GEERR  General error
+ * \return      KERR_I2C_CHBSY  The manager is busy
  *
  */
-int32_t	i2c0_reserve(reserveMode_t reserveMode, uint32_t timeout) {
-	int32_t		status;
-	uint32_t	core;
+int32_t i2c0_reserve(reserveMode_t reserveMode, uint32_t timeout) {
+    int32_t     status;
+    uint32_t    core;
 
-	UNUSED(reserveMode);
+    UNUSED(reserveMode);
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_I2C_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_I2C_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = kern_lockMutex(vMutex_Reserve[core], timeout);
-	if (status != KERR_KERN_NOERR) {
-		PRIVILEGE_RESTORE;
-		return (KERR_I2C_CHBSY);
-	}
+    status = kern_lockMutex(vMutex_Reserve[core], timeout);
+    if (status != KERR_KERN_NOERR) {
+        PRIVILEGE_RESTORE;
+        return (KERR_I2C_CHBSY);
+    }
 
-	PRIVILEGE_RESTORE;
-	return (KERR_I2C_NOERR);
+    PRIVILEGE_RESTORE;
+    return (KERR_I2C_NOERR);
 }
 
 /*
@@ -146,32 +146,32 @@ int32_t	i2c0_reserve(reserveMode_t reserveMode, uint32_t timeout) {
  *    status = i2c0_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode		Any mode
- * \return		KERR_I2C_NOERR	OK
- * \return		KERR_I2C_GEERR	General error
- * \return		KERR_I2C_CAREL	Cannot release the manager
+ * \param[in]   reserveMode     Any mode
+ * \return      KERR_I2C_NOERR  OK
+ * \return      KERR_I2C_GEERR  General error
+ * \return      KERR_I2C_CAREL  Cannot release the manager
  *
  */
-int32_t	i2c0_release(reserveMode_t reserveMode) {
-	int32_t		status;
-	uint32_t	core;
+int32_t i2c0_release(reserveMode_t reserveMode) {
+    int32_t     status;
+    uint32_t    core;
 
-	UNUSED(reserveMode);
+    UNUSED(reserveMode);
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_I2C_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_I2C_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = kern_unlockMutex(vMutex_Reserve[core]);
-	if (status != KERR_KERN_NOERR) {
-		PRIVILEGE_RESTORE;
-		return (KERR_I2C_CAREL);
-	}
+    status = kern_unlockMutex(vMutex_Reserve[core]);
+    if (status != KERR_KERN_NOERR) {
+        PRIVILEGE_RESTORE;
+        return (KERR_I2C_CAREL);
+    }
 
-	PRIVILEGE_RESTORE;
-	return (KERR_I2C_NOERR);
+    PRIVILEGE_RESTORE;
+    return (KERR_I2C_NOERR);
 }
 
 /*
@@ -189,21 +189,21 @@ int32_t	i2c0_release(reserveMode_t reserveMode) {
  *    status = i2c0_configure(&configure);
  * \endcode
  *
- * \param[in]	*configure		Ptr on the configuration buffer
- * \return		KERR_I2C_NOERR	OK
- * \return		KERR_I2C_GEERR	General error
+ * \param[in]   *configure      Ptr on the configuration buffer
+ * \return      KERR_I2C_NOERR  OK
+ * \return      KERR_I2C_GEERR  General error
  *
  */
-int32_t	i2c0_configure(const i2cCnf_t *configure) {
-	int32_t		status;
+int32_t i2c0_configure(const i2cCnf_t *configure) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_I2C_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_I2C_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_i2c0_configure(configure);
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_i2c0_configure(configure);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 /*
@@ -218,24 +218,24 @@ int32_t	i2c0_configure(const i2cCnf_t *configure) {
  *    status = i2c0_write(0x34, buffer, sizeof(buffer));
  * \endcode
  *
- * \param[in]	address			i2c device address
- * \param[in]	*buffer			Ptr on the buffer
- * \param[in]	size			Size of the buffer
- * \return		KERR_I2C_NOERR	OK
- * \return		KERR_I2C_GEERR	General error
- * \return		KERR_I2C_TIMEO	Timeout error
+ * \param[in]   address         i2c device address
+ * \param[in]   *buffer         Ptr on the buffer
+ * \param[in]   size            Size of the buffer
+ * \return      KERR_I2C_NOERR  OK
+ * \return      KERR_I2C_GEERR  General error
+ * \return      KERR_I2C_TIMEO  Timeout error
  *
  */
-int32_t	i2c0_write(uint8_t address, const uint8_t *buffer, uint16_t size) {
-	int32_t		status;
+int32_t i2c0_write(uint8_t address, const uint8_t *buffer, uint16_t size) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_I2C_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_I2C_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_i2c0_write(address, buffer, size);
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_i2c0_write(address, buffer, size);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 /*
@@ -258,24 +258,24 @@ int32_t	i2c0_write(uint8_t address, const uint8_t *buffer, uint16_t size) {
  *    status = i2c0_read(0x34, buffer, 2);
  * \endcode
  *
- * \param[in]	address			i2c device address
- * \param[out]	*buffer			Ptr on the buffer
- * \param[in]	size			Size of the buffer
- * \return		KERR_I2C_NOERR	OK
- * \return		KERR_I2C_GEERR	General error
- * \return		KERR_I2C_TIMEO	Timeout error
+ * \param[in]   address         i2c device address
+ * \param[out]  *buffer         Ptr on the buffer
+ * \param[in]   size            Size of the buffer
+ * \return      KERR_I2C_NOERR  OK
+ * \return      KERR_I2C_GEERR  General error
+ * \return      KERR_I2C_TIMEO  Timeout error
  *
  */
-int32_t	i2c0_read(uint8_t address, uint8_t *buffer, uint16_t size) {
-	int32_t		status;
+int32_t i2c0_read(uint8_t address, uint8_t *buffer, uint16_t size) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_I2C_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_I2C_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_i2c0_read(address, buffer, size);
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_i2c0_read(address, buffer, size);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 // Local routines
@@ -288,22 +288,22 @@ int32_t	i2c0_read(uint8_t address, uint8_t *buffer, uint16_t size) {
  *   has to be called at least once
  *
  */
-static	int32_t	local_init(void) {
-			int32_t		status = KERR_I2C_NOERR;
-			uint32_t	core;
-	static	bool		vInit[KNB_CORES] = MCSET(false);
+static  int32_t local_init(void) {
+            int32_t     status = KERR_I2C_NOERR;
+            uint32_t    core;
+    static  bool        vInit[KNB_CORES] = MCSET(false);
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	INTERRUPTION_OFF;
-	if (vInit[core] == false) {
-		vInit[core] = true;
+    INTERRUPTION_OFF;
+    if (vInit[core] == false) {
+        vInit[core] = true;
 
-		if (kern_createMutex(KI2C0_MUTEX_RESERVE, &vMutex_Reserve[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "i2c0: create mutx"); exit(EXIT_OS_PANIC); }
+        if (kern_createMutex(KI2C0_MUTEX_RESERVE, &vMutex_Reserve[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "i2c0: create mutx"); exit(EXIT_OS_PANIC); }
 
-		status = stub_i2c0_init();
-	}
-	RETURN_INT_RESTORE(status);
+        status = stub_i2c0_init();
+    }
+    RETURN_INT_RESTORE(status);
 }
 
 #endif

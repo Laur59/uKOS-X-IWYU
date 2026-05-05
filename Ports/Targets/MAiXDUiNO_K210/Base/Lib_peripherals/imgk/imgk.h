@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		imgk manager.
+; Project:  uKOS-X
+; Goal:     imgk manager.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +46,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_peripherals
@@ -63,42 +63,42 @@
  * @{
  */
 
-#define	KIMGK_NUM	(((uint32_t)'_'<<8u) + (uint32_t)'3')
-#define	KIMGKMAN	(KIMGK_NUM<<8u)
+#define KIMGK_NUM   (((uint32_t)'_'<<8u) + (uint32_t)'3')
+#define KIMGKMAN    (KIMGK_NUM<<8u)
 
 // Configuration structure
 // -----------------------
 
-typedef	struct	cnfImgk	cnfImgk_t;
+typedef struct  cnfImgk cnfImgk_t;
 
 struct cnfImgk {
-			uint8_t		oPixMode;										// Pixel mode
-			#define		KPIX_8_BITS				0u						// KPIX_8_BITS  = 8-bit resolution
+            uint8_t     oPixMode;                                       // Pixel mode
+            #define     KPIX_8_BITS             0u                      // KPIX_8_BITS  = 8-bit resolution
 
-			uint16_t	oStRows;										// Start of rows
-			uint16_t	oNbRows;										// Number of rows
-			#define		KIMAGER_NB_ROWS_QVGA	240u					// Number of rows (QVGA)
+            uint16_t    oStRows;                                        // Start of rows
+            uint16_t    oNbRows;                                        // Number of rows
+            #define     KIMAGER_NB_ROWS_QVGA    240u                    // Number of rows (QVGA)
 
-			uint16_t	oStCols;										// Start of cols
-			uint16_t	oNbCols;										// Number of cols
-			#define		KIMAGER_NB_COLS_QVGA	320u					// Number of columns (QVGA)
+            uint16_t    oStCols;                                        // Start of cols
+            uint16_t    oNbCols;                                        // Number of cols
+            #define     KIMAGER_NB_COLS_QVGA    320u                    // Number of columns (QVGA)
 };
 
 // Semaphores
 // ----------
 
-#define	KIMGK_SEMAPHORE_AQ		"imgk - Acquisition"
-#define	KIMGK_SEMAPHORE_IM		"imgk - img OK"
-#define	KIMGK_MUTEX_RESERVE		"Reserve_imgk"
+#define KIMGK_SEMAPHORE_AQ      "imgk - Acquisition"
+#define KIMGK_SEMAPHORE_IM      "imgk - img OK"
+#define KIMGK_MUTEX_RESERVE     "Reserve_imgk"
 
 // Prototypes
 
 #if (defined(__cplusplus))
-extern	"C" {
+extern  "C" {
 #endif
 
-#define	IMGK_reserve	imgk_reserve
-#define	IMGK_release	imgk_release
+#define IMGK_reserve    imgk_reserve
+#define IMGK_release    imgk_release
 
 /*!
  * \brief Reserve the imgk manager
@@ -115,14 +115,14 @@ extern	"C" {
  *    status = imgk_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode		Any mode
- * \param[in]	timeout			Timeout (1-ms of resolution)
- * \return		KERR_IMGK_NOERR	The manager is reserved
- * \return		KERR_IMGK_GEERR	General error
- * \return	  	KERR_IMGK_CHBSY	The manager is busy
+ * \param[in]   reserveMode     Any mode
+ * \param[in]   timeout         Timeout (1-ms of resolution)
+ * \return      KERR_IMGK_NOERR The manager is reserved
+ * \return      KERR_IMGK_GEERR General error
+ * \return      KERR_IMGK_CHBSY The manager is busy
  *
  */
-extern	int32_t	imgk_reserve(reserveMode_t reserveMode, uint32_t timeout);
+extern  int32_t imgk_reserve(reserveMode_t reserveMode, uint32_t timeout);
 
 /*!
  * \brief Release the imgk manager
@@ -135,13 +135,13 @@ extern	int32_t	imgk_reserve(reserveMode_t reserveMode, uint32_t timeout);
  *    status = imgk_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode		Any mode
- * \return		KERR_IMGK_NOERR	OK
- * \return		KERR_IMGK_GEERR	General error
- * \return		KERR_IMGK_CAREL	Cannot release the manager
+ * \param[in]   reserveMode     Any mode
+ * \return      KERR_IMGK_NOERR OK
+ * \return      KERR_IMGK_GEERR General error
+ * \return      KERR_IMGK_CAREL Cannot release the manager
  *
  */
-extern	int32_t	imgk_release(reserveMode_t reserveMode);
+extern  int32_t imgk_release(reserveMode_t reserveMode);
 
 /*!
  * \brief Configure the imgk manager
@@ -195,14 +195,14 @@ extern	int32_t	imgk_release(reserveMode_t reserveMode);
  * }
  * \endcode
  *
- * \param[in]	*configure		Ptr on the configuration buffer
- * \return		KERR_IMGK_NOERR	OK
- * \return		KERR_IMGK_GEERR	General error
- * \return		KERR_IMGK_TIMEO	Timeout error
- * \return		KERR_IMGK_NOMEM	Not enough memory
+ * \param[in]   *configure      Ptr on the configuration buffer
+ * \return      KERR_IMGK_NOERR OK
+ * \return      KERR_IMGK_GEERR General error
+ * \return      KERR_IMGK_TIMEO Timeout error
+ * \return      KERR_IMGK_NOMEM Not enough memory
  *
  */
-extern	int32_t	imgk_configure(const cnfImgk_t *configure);
+extern  int32_t imgk_configure(const cnfImgk_t *configure);
 
 /*!
  * \brief Acquisition of an image
@@ -215,13 +215,12 @@ extern	int32_t	imgk_configure(const cnfImgk_t *configure);
  *    status = imgk_acquisition();
  * \endcode
  *
- * \param[in]	-
- * \return		KERR_IMGK_NOERR	OK
- * \return		KERR_IMGK_GEERR	General error
- * \return		KERR_IMGK_TIMEO	Timeout error
+ * \return      KERR_IMGK_NOERR OK
+ * \return      KERR_IMGK_GEERR General error
+ * \return      KERR_IMGK_TIMEO Timeout error
  *
  */
-extern	int32_t	imgk_acquisition(void);
+extern  int32_t imgk_acquisition(void);
 
 /*!
  * \brief Get the image pointer
@@ -235,12 +234,12 @@ extern	int32_t	imgk_acquisition(void);
  *    status = imgk_getImage(&image);
  * \endcode
  *
- * \param[out]	**image			Ptr on the image
- * \return		KERR_IMGK_NOERR	OK
- * \return		KERR_IMGK_GEERR	General error
+ * \param[out]  **image         Ptr on the image
+ * \return      KERR_IMGK_NOERR OK
+ * \return      KERR_IMGK_GEERR General error
  *
  */
-extern	int32_t	imgk_getImage(volatile void **image);
+extern  int32_t imgk_getImage(volatile void **image);
 
 #if (defined(__cplusplus))
 }
@@ -249,20 +248,20 @@ extern	int32_t	imgk_getImage(volatile void **image);
 // imgk manager errors
 // -------------------
 
-//					Negative				 Family Lib Id							Lib Id xx (error)
-#define	KIMGKERR	((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<24u) | KIMGKMAN)
+//                  Negative                 Family Lib Id                          Lib Id xx (error)
+#define KIMGKERR    ((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<24u) | KIMGKMAN)
 
 enum : int32_t {
-	KERR_IMGK_NOERR = 0, 							// No error
-	KERR_IMGK_SYCNA = (int32_t)(KIMGKERR + 1u),		// System call not available
-	KERR_IMGK_GEERR,								// General error
-	KERR_IMGK_CNERR,								// Configuration error
-	KERR_IMGK_TIMEO,								// Timeout error
-	KERR_IMGK_CHBSY,								// The manager is busy
-	KERR_IMGK_PGNOE,								// The image page does not exist
-	KERR_IMGK_BDMOD,								// Bad mode for called function
-	KERR_IMGK_NOMEM,								// Not enough memory
-	KERR_IMGK_CAREL									// Cannot release the manager
+    KERR_IMGK_NOERR = 0,                            // No error
+    KERR_IMGK_SYCNA = (int32_t)(KIMGKERR + 1u),     // System call not available
+    KERR_IMGK_GEERR,                                // General error
+    KERR_IMGK_CNERR,                                // Configuration error
+    KERR_IMGK_TIMEO,                                // Timeout error
+    KERR_IMGK_CHBSY,                                // The manager is busy
+    KERR_IMGK_PGNOE,                                // The image page does not exist
+    KERR_IMGK_BDMOD,                                // Bad mode for called function
+    KERR_IMGK_NOMEM,                                // Not enough memory
+    KERR_IMGK_CAREL                                 // Cannot release the manager
 };
 
 /**@}*/

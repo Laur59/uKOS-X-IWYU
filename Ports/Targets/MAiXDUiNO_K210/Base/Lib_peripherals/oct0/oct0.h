@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Octo SPI manager (for lcd).
+; Project:  uKOS-X
+; Goal:     Octo SPI manager (for lcd).
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +46,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_peripherals
@@ -63,40 +63,40 @@
  * @{
  */
 
-#define	KOCT0_NUM	(((uint32_t)'_'<<8) + (uint32_t)'0')
-#define	KOCT0MAN	(KOCT0_NUM<<8u)
+#define KOCT0_NUM   (((uint32_t)'_'<<8) + (uint32_t)'0')
+#define KOCT0MAN    (KOCT0_NUM<<8u)
 
-#define	KFILL		0u													// Fill without auto-incrementation
-#define	KXFER8		1u													// Xfer 8-bits with auto-incrementation
-#define	KXFER16		2u													// Xfer 16-bits with auto-incrementation
+#define KFILL       0u                                                  // Fill without auto-incrementation
+#define KXFER8      1u                                                  // Xfer 8-bits with auto-incrementation
+#define KXFER16     2u                                                  // Xfer 16-bits with auto-incrementation
 
 // Configuration structure
 // -----------------------
 
-typedef	struct	cnfOctx		cnfOctx_t;
+typedef struct  cnfOctx     cnfOctx_t;
 
 struct cnfOctx {
-			uint8_t		oMode;											// Mode
-			#define		KDUAL			0u								// Dual spi
-			#define		KQUAD			1u								// Quad spi
-			#define		KOCTAL			2u								// Octo spi
+            uint8_t     oMode;                                          // Mode
+            #define     KDUAL           0u                              // Dual spi
+            #define     KQUAD           1u                              // Quad spi
+            #define     KOCTAL          2u                              // Octo spi
 
-			uint8_t		oNbBits;										// Number of bits
+            uint8_t     oNbBits;                                        // Number of bits
 
-			uint8_t		oXfer;											// Xfer
-			#define		K8BITSAINC		0u								// 8-bits with auto-incrementation
-			#define		K16BITSAINC		1u								// 16-bits with auto-incrementation
-			#define		K16BITSFILL		2u								// 16-bits without auto-incrementation
+            uint8_t     oXfer;                                          // Xfer
+            #define     K8BITSAINC      0u                              // 8-bits with auto-incrementation
+            #define     K16BITSAINC     1u                              // 16-bits with auto-incrementation
+            #define     K16BITSFILL     2u                              // 16-bits without auto-incrementation
 
-			uint8_t		oDevider;										// Clock divider
-			#define		KCLKDIV2		0u								// Fclk / 2
-			#define		KCLKDIV4		1u								// Fclk / 4
-			#define		KCLKDIV8		2u								// Fclk / 8
-			#define		KCLKDIV16		3u								// Fclk / 16
-			#define		KCLKDIV32		4u								// Fclk / 32
-			#define		KCLKDIV64		5u								// Fclk / 64
-			#define		KCLKDIV128		6u								// Fclk / 128
-			#define		KCLKDIV256		7u								// Fclk / 256
+            uint8_t     oDevider;                                       // Clock divider
+            #define     KCLKDIV2        0u                              // Fclk / 2
+            #define     KCLKDIV4        1u                              // Fclk / 4
+            #define     KCLKDIV8        2u                              // Fclk / 8
+            #define     KCLKDIV16       3u                              // Fclk / 16
+            #define     KCLKDIV32       4u                              // Fclk / 32
+            #define     KCLKDIV64       5u                              // Fclk / 64
+            #define     KCLKDIV128      6u                              // Fclk / 128
+            #define     KCLKDIV256      7u                              // Fclk / 256
 };
 
 /*!
@@ -109,12 +109,11 @@ struct cnfOctx {
  *    status = oct0_init(void);
  * \endcode
  *
- * \param[in]	-
- * \return		KERR_OCT0_NOERR	OK
- * \return		KERR_OCT0_GEERR	General error
+ * \return      KERR_OCT0_NOERR OK
+ * \return      KERR_OCT0_GEERR General error
  *
  */
-extern	int32_t	oct0_init(void);
+extern  int32_t oct0_init(void);
 
 /*!
  * \brief Configure the oct0 manager
@@ -133,12 +132,12 @@ extern	int32_t	oct0_init(void);
  *    status = oct0_configure(&configure);
  * \endcode
  *
- * \param[in]	*configure		Ptr on the configuration buffer
- * \return		KERR_OCT0_NOERR	OK
- * \return		KERR_OCT0_GEERR	General error
+ * \param[in]   *configure      Ptr on the configuration buffer
+ * \return      KERR_OCT0_NOERR OK
+ * \return      KERR_OCT0_GEERR General error
  *
  */
-extern	int32_t	oct0_configure(const cnfOctx_t *configure);
+extern  int32_t oct0_configure(const cnfOctx_t *configure);
 
 /*!
  * \brief Write data to the oct0 manager
@@ -154,15 +153,15 @@ extern	int32_t	oct0_configure(const cnfOctx_t *configure);
  *    status = oct0_write(chipSelect, buffer, 3, xferMode);
  * \endcode
  *
- * \param[in]	chipSelect		The chip select
- * \param[in]	*buffer			Ptr on the buffer to write
- * \param[in]	szBuffer		Size of the buffer
- * \param[in]	xferMode		Xfer mode (KFILL, KXFER8, KXFER16)
- * \return		KERR_OCT0_NOERR	OK
- * \return		KERR_OCT0_GEERR	General error
+ * \param[in]   chipSelect      The chip select
+ * \param[in]   *buffer         Ptr on the buffer to write
+ * \param[in]   szBuffer        Size of the buffer
+ * \param[in]   xferMode        Xfer mode (KFILL, KXFER8, KXFER16)
+ * \return      KERR_OCT0_NOERR OK
+ * \return      KERR_OCT0_GEERR General error
  *
  */
-extern	int32_t	oct0_write(uint32_t chipSelect, const void *buffer, uint32_t szBuffer, uint32_t xferMode);
+extern  int32_t oct0_write(uint32_t chipSelect, const void *buffer, uint32_t szBuffer, uint32_t xferMode);
 
 #if (defined(__cplusplus))
 }
@@ -171,13 +170,13 @@ extern	int32_t	oct0_write(uint32_t chipSelect, const void *buffer, uint32_t szBu
 // oct0 manager errors
 // -------------------
 
-//					Negative				 Family Lib Id							Lib Id xx (error)
-#define	KOCT0ERR	((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<24u) | KOCT0MAN)
+//                  Negative                 Family Lib Id                          Lib Id xx (error)
+#define KOCT0ERR    ((uint32_t)0x80000000u | ((uint32_t)KID_FAM_PERIPHERALS<<24u) | KOCT0MAN)
 
 enum : int32_t {
-	KERR_OCT0_NOERR = 0,							// No error
-	KERR_OCT0_SYCNA = (int32_t)(KOCT0ERR + 1u),		// System call not available
-	KERR_OCT0_GEERR									// General error
+    KERR_OCT0_NOERR = 0,                            // No error
+    KERR_OCT0_SYCNA = (int32_t)(KOCT0ERR + 1u),     // System call not available
+    KERR_OCT0_GEERR                                 // General error
 };
 
 /**@}*/

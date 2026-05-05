@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		i2c manager.
+; Project:  uKOS-X
+; Goal:     i2c manager.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +46,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_peripherals
@@ -63,23 +63,23 @@
  * @{
  */
 
-#include	"Lib_peripherals/i2c_common.h"
+#include    "Lib_peripherals/i2c_common.h"
 
-typedef	enum {
-			KI2C0 = (((uint32_t)'i'<<24u) | ((uint32_t)'2'<<16u) | ((uint32_t)'c'<<8u) | (uint32_t)'0'),	// i2c0 manager
-			KI2C1 = (((uint32_t)'i'<<24u) | ((uint32_t)'2'<<16u) | ((uint32_t)'c'<<8u) | (uint32_t)'1'),	// i2c1 manager
-			KI2C2 = (((uint32_t)'i'<<24u) | ((uint32_t)'2'<<16u) | ((uint32_t)'c'<<8u) | (uint32_t)'2'),	// i2c2 manager
-			KI2C3 = (((uint32_t)'i'<<24u) | ((uint32_t)'2'<<16u) | ((uint32_t)'c'<<8u) | (uint32_t)'3')		// i2c3 manager
+typedef enum {
+            KI2C0 = (((uint32_t)'i'<<24u) | ((uint32_t)'2'<<16u) | ((uint32_t)'c'<<8u) | (uint32_t)'0'),    // i2c0 manager
+            KI2C1 = (((uint32_t)'i'<<24u) | ((uint32_t)'2'<<16u) | ((uint32_t)'c'<<8u) | (uint32_t)'1'),    // i2c1 manager
+            KI2C2 = (((uint32_t)'i'<<24u) | ((uint32_t)'2'<<16u) | ((uint32_t)'c'<<8u) | (uint32_t)'2'),    // i2c2 manager
+            KI2C3 = (((uint32_t)'i'<<24u) | ((uint32_t)'2'<<16u) | ((uint32_t)'c'<<8u) | (uint32_t)'3')     // i2c3 manager
 } i2cManager_t;
 
 // Prototypes
 
 #if (defined(__cplusplus))
-extern	"C" {
+extern  "C" {
 #endif
 
-#define	I2C_reserve		i2c_reserve
-#define	I2C_release		i2c_release
+#define I2C_reserve     i2c_reserve
+#define I2C_release     i2c_release
 
 /*!
  * \brief Reserve the i2c manager
@@ -96,15 +96,15 @@ extern	"C" {
  *    status = i2c_release(KI2C0, KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	manager			I2C manager
- * \param[in]	reserveMode		Any mode
- * \param[in]	timeout			Timeout (1-ms of resolution)
- * \param[in]	-				KWAIT_INFINITY, waiting forever
- * \param[in]	-				KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_I2C_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager         I2C manager
+ * \param[in]   reserveMode     Any mode
+ * \param[in]   timeout         Timeout (1-ms of resolution)
+ *                              KWAIT_INFINITY, waiting forever
+ *                              KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_I2C_XXXXX  Depends on the "xxxx" device manager
  *
  */
-extern	int32_t	i2c_reserve(i2cManager_t manager, reserveMode_t reserveMode, uint32_t timeout);
+extern  int32_t i2c_reserve(i2cManager_t manager, reserveMode_t reserveMode, uint32_t timeout);
 
 /*!
  * \brief Release the i2c manager
@@ -117,12 +117,12 @@ extern	int32_t	i2c_reserve(i2cManager_t manager, reserveMode_t reserveMode, uint
  *    status = i2c_release(KI2C0, KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	manager			I2C manager
- * \param[in]	reserveMode		Any mode
- * \return		KERR_I2C_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager         I2C manager
+ * \param[in]   reserveMode     Any mode
+ * \return      KERR_I2C_XXXXX  Depends on the "xxxx" device manager
  *
  */
-extern	int32_t	i2c_release(i2cManager_t manager, reserveMode_t reserveMode);
+extern  int32_t i2c_release(i2cManager_t manager, reserveMode_t reserveMode);
 
 /*!
  * \brief Configure the i2c manager
@@ -139,12 +139,12 @@ extern	int32_t	i2c_release(i2cManager_t manager, reserveMode_t reserveMode);
  *    status = i2c_configure(KI2C0, &configure);
  * \endcode
  *
- * \param[in]	manager			I2C manager
- * \param[in]	*configure		Ptr on the configuration buffer
- * \return		KERR_I2C_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager         I2C manager
+ * \param[in]   *configure      Ptr on the configuration buffer
+ * \return      KERR_I2C_XXXXX  Depends on the "xxxx" device manager
  *
  */
-extern	int32_t	i2c_configure(i2cManager_t manager, const i2cCnf_t *configure);
+extern  int32_t i2c_configure(i2cManager_t manager, const i2cCnf_t *configure);
 
 /*!
  * \brief Write a buffer to the i2c manager
@@ -158,14 +158,14 @@ extern	int32_t	i2c_configure(i2cManager_t manager, const i2cCnf_t *configure);
  *    status = i2c_write(KI2C0, 0x34, buffer, sizeof(buffer));
  * \endcode
  *
- * \param[in]	manager			I2C manager
- * \param[in]	address			i2c device address
- * \param[in]	*buffer			Ptr on the buffer
- * \param[in]	size			Size of the buffer
- * \return		KERR_I2C_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager         I2C manager
+ * \param[in]   address         i2c device address
+ * \param[in]   *buffer         Ptr on the buffer
+ * \param[in]   size            Size of the buffer
+ * \return      KERR_I2C_XXXXX  Depends on the "xxxx" device manager
  *
  */
-extern	int32_t	i2c_write(i2cManager_t manager, uint8_t address, const uint8_t *buffer, uint16_t size);
+extern  int32_t i2c_write(i2cManager_t manager, uint8_t address, const uint8_t *buffer, uint16_t size);
 
 /*!
  * \brief Read a buffer from the i2c manager
@@ -187,14 +187,14 @@ extern	int32_t	i2c_write(i2cManager_t manager, uint8_t address, const uint8_t *b
  *    status = i2c_read(KI2C0, 0x34, buffer, 2);
  * \endcode
  *
- * \param[in]	manager			I2C manager
- * \param[in]	address			i2c device address
- * \param[out]	*buffer			Ptr on the buffer
- * \param[in]	size			Size of the buffer
- * \return		KERR_I2C_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager         I2C manager
+ * \param[in]   address         i2c device address
+ * \param[out]  *buffer         Ptr on the buffer
+ * \param[in]   size            Size of the buffer
+ * \return      KERR_I2C_XXXXX  Depends on the "xxxx" device manager
  *
  */
-extern	int32_t	i2c_read(i2cManager_t manager, uint8_t address, uint8_t *buffer, uint16_t size);
+extern  int32_t i2c_read(i2cManager_t manager, uint8_t address, uint8_t *buffer, uint16_t size);
 
 #if (defined(__cplusplus))
 }

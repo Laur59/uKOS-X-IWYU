@@ -2,14 +2,16 @@
 ; model_random_hard.
 ; ==================
 
+; SPDX-License-Identifier: MIT
+
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Model for generating random numbers.
-;			This takes advantages from the available
-;			hardware.
+; Project:  uKOS-X
+; Goal:     Model for generating random numbers.
+;           This takes advantages from the available
+;           hardware.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,12 +48,12 @@
 ;------------------------------------------------------------------------
 */
 
-static				bool		vTerminated = false;
-static	volatile	uint32_t	*vNumber;
+static              bool        vTerminated = false;
+static  volatile    uint32_t    *vNumber;
 
 // Prototypes
 
-static	void	local_RNG_IRQHandler(void);
+static  void    local_RNG_IRQHandler(void);
 
 /*
  * \brief model_random_hard_init
@@ -59,13 +61,13 @@ static	void	local_RNG_IRQHandler(void);
  * - Initialise the hardware
  *
  */
-void	model_random_hard_init(void) {
+void    model_random_hard_init(void) {
 
-	REG(RCC)->AHB2ENR1 |= RCC_AHB2ENR1_RNGEN;
+    REG(RCC)->AHB2ENR1 |= RCC_AHB2ENR1_RNGEN;
 
-	INTERRUPT_VECTOR(RNG_C0_IRQn, local_RNG_IRQHandler);
-	NVIC_SetPriority(RNG_C0_IRQn, KINT_LEVEL_PERIPHERALS);
-	NVIC_EnableIRQ(RNG_C0_IRQn);
+    INTERRUPT_VECTOR(RNG_C0_IRQn, local_RNG_IRQHandler);
+    NVIC_SetPriority(RNG_C0_IRQn, KINT_LEVEL_PERIPHERALS);
+    NVIC_EnableIRQ(RNG_C0_IRQn);
 }
 
 /*
@@ -74,20 +76,20 @@ void	model_random_hard_init(void) {
  * - Get a random number
  *
  */
-void	model_random_hard_read(uint32_t *number) {
+void    model_random_hard_read(uint32_t *number) {
 
-	vNumber = number;
+    vNumber = number;
 
 // Turn on the RNG
 // The RNG delivers a new random number every 412 x (1 / 160-MHz) = 2575-ns
 // Configuration proposed by ST to comply with NIST SP800-90B
 
-	vTerminated = false;
-	REG(RNG)->CR |= (RNG_CR_RNGEN | RNG_CR_IE);
+    vTerminated = false;
+    REG(RNG)->CR |= (RNG_CR_RNGEN | RNG_CR_IE);
 
-	while (vTerminated == false) {
-		kern_switchFast();
-	}
+    while (vTerminated == false) {
+        kern_switchFast();
+    }
 }
 
 // Local routines
@@ -99,29 +101,29 @@ void	model_random_hard_read(uint32_t *number) {
  * - Interruption new number
  *
  */
-static	void	local_RNG_IRQHandler(void) {
+static  void    local_RNG_IRQHandler(void) {
 
 // Is data ready, no seed error, no clock error
 
-	if (((REG(RNG)->SR & RNG_SR_DRDY) != 0u) && ((REG(RNG)->SR & RNG_SR_SEIS) == 0u) && ((REG(RNG)->SR & RNG_SR_CEIS) == 0u)) {
-		*vNumber = REG(RNG)->DR & KRAND_MAX;
-		vTerminated = true;
-		REG(RNG)->CR &= ~(RNG_CR_RNGEN | RNG_CR_IE);
-		return;
-	}
+    if (((REG(RNG)->SR & RNG_SR_DRDY) != 0u) && ((REG(RNG)->SR & RNG_SR_SEIS) == 0u) && ((REG(RNG)->SR & RNG_SR_CEIS) == 0u)) {
+        *vNumber = REG(RNG)->DR & KRAND_MAX;
+        vTerminated = true;
+        REG(RNG)->CR &= ~(RNG_CR_RNGEN | RNG_CR_IE);
+        return;
+    }
 
 // Seed error
 
-	if ((REG(RNG)->SR & RNG_SR_SEIS) == RNG_SR_SEIS) {
-		REG(RNG)->SR &= (uint32_t)~RNG_SR_SEIS;
-		REG(RNG)->CR |=  RNG_CR_CONDRST;
-		REG(RNG)->CR &= (uint32_t)~RNG_CR_CONDRST;
-	}
+    if ((REG(RNG)->SR & RNG_SR_SEIS) == RNG_SR_SEIS) {
+        REG(RNG)->SR &= (uint32_t)~RNG_SR_SEIS;
+        REG(RNG)->CR |=  RNG_CR_CONDRST;
+        REG(RNG)->CR &= (uint32_t)~RNG_CR_CONDRST;
+    }
 
 // Clock error
 // !!! Wrong clock configurtion, please fix your code
 
-	if ((REG(RNG)->SR & RNG_SR_CEIS) == RNG_SR_CEIS) {
-		REG(RNG)->SR &= (uint32_t)~RNG_SR_CEIS;
-	}
+    if ((REG(RNG)->SR & RNG_SR_CEIS) == RNG_SR_CEIS) {
+        REG(RNG)->SR &= (uint32_t)~RNG_SR_CEIS;
+    }
 }

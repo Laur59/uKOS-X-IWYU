@@ -5,20 +5,20 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Kern - Privilege management.
+; Project:  uKOS-X
+; Goal:     Kern - Privilege management.
 ;
-;			This module implements the software primitives.
+;           This module implements the software primitives.
 ;
-; 			Privilege system calls
-; 			---------------------------
+;           Privilege system calls
+;           ---------------------------
 ;
-;			void	privileges_init(void);
-;			int32_t	kern_setPrivilegeMode(uint8_t mode);
-;			void	kern_privilegeElevate(void); !!! Not for user applications
+;           void    privileges_init(void);
+;           int32_t kern_setPrivilegeMode(uint8_t mode);
+;           void    kern_privilegeElevate(void); !!! Not for user applications
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -55,16 +55,16 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"kern/private/private_processes.h"
+#include    "uKOS.h"
+#include    "kern/private/private_processes.h"
 
-volatile	bool	vPriv_insideSVC[KNB_CORES] = MCSET(false);
-volatile	bool	vPriv_insideException[KNB_CORES] = MCSET(false);
+volatile    bool    vPriv_insideSVC[KNB_CORES] = MCSET(false);
+volatile    bool    vPriv_insideException[KNB_CORES] = MCSET(false);
 
 // Prototypes
 
 #if (defined(PRIVILEGED_USER_S))
-static	void	local_elevate(uintptr_t callAddress);
+static  void    local_elevate(uintptr_t callAddress);
 #endif
 
 /*
@@ -74,16 +74,15 @@ static	void	local_elevate(uintptr_t callAddress);
  *   Before using the manager functions, it is necessary to
  *   call this function
  *
- * \param[in]	-
  *
  * \note This function does not return a value (None).
  *
  */
-void	privileges_init(void) {
+void    privileges_init(void) {
 
-	DEBUG_KERN_TRACE("entry: ");
+    DEBUG_KERN_TRACE("entry: ");
 
-	DEBUG_KERN_TRACE("exit: OK");
+    DEBUG_KERN_TRACE("exit: OK");
 }
 
 /*
@@ -103,71 +102,71 @@ void	privileges_init(void) {
  *
  * - This function allows to change the execution mode (Privileged / user)
  *
- * \param[in]	mode			KPROC_USER, Reduction the process rights in the user mode
- * \param[in]	-				KPROC_PRIVILEGED, Elevate the process rights in the privileged mode
- * \return		KERR_KERN_NOERR	OK
+ * \param[in]   mode            KPROC_USER, Reduction the process rights in the user mode
+ *                              KPROC_PRIVILEGED, Elevate the process rights in the privileged mode
+ * \return      KERR_KERN_NOERR OK
  *
  */
-int32_t	kern_setPrivilegeMode(uint8_t mode) {
+int32_t kern_setPrivilegeMode(uint8_t mode) {
 
-	#if (defined(PRIVILEGED_USER_S))
-	uint32_t	core;
+    #if (defined(PRIVILEGED_USER_S))
+    uint32_t    core;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	const	bool	in_svc = vPriv_insideSVC[core];
-	const	bool	in_exc = vPriv_insideException[core];
+    const   bool    in_svc = vPriv_insideSVC[core];
+    const   bool    in_exc = vPriv_insideException[core];
 
 // Determine if the elevation request originates from an SVC or an exception.
 // If so, enabling privileged mode is unnecessary.
 
-	if ((in_svc == true) || (in_exc == true)) {
-		return (KERR_KERN_NOERR);
-	}
+    if ((in_svc == true) || (in_exc == true)) {
+        return (KERR_KERN_NOERR);
+    }
 
-	RIGHTS_ELEVATION;
+    RIGHTS_ELEVATION;
 
 // From this point, we are in hard-ioff state.
 //
 // If the process is already running in privileged mode, no need to re-enable it.
 
-	if (vKern_runProc[core]->oSpecification.oMode == KPROC_PRIVILEGED) {
-		INTERRUPTION_ON_HARD;
-		return (KERR_KERN_NOERR);
-	}
+    if (vKern_runProc[core]->oSpecification.oMode == KPROC_PRIVILEGED) {
+        INTERRUPTION_ON_HARD;
+        return (KERR_KERN_NOERR);
+    }
 
-	switch (mode) {
-		case KPROC_PRIVILEGED: {
-			vKern_runProc[core]->oInternal.oNestedPrivilege++;
-			vKern_runProc[core]->oInternal.oState |= (1u<<BPROC_PRIV_ELEVATED);
-			break;
-		}
-		case KPROC_USER: {
-			vKern_runProc[core]->oInternal.oNestedPrivilege -= (vKern_runProc[core]->oInternal.oNestedPrivilege > 0u) ? (1u) : (0u);
-			if (vKern_runProc[core]->oInternal.oNestedPrivilege == 0u) {
-				vKern_runProc[core]->oInternal.oState &= (uint16_t)~(1u<<BPROC_PRIV_ELEVATED);
+    switch (mode) {
+        case KPROC_PRIVILEGED: {
+            vKern_runProc[core]->oInternal.oNestedPrivilege++;
+            vKern_runProc[core]->oInternal.oState |= (1u<<BPROC_PRIV_ELEVATED);
+            break;
+        }
+        case KPROC_USER: {
+            vKern_runProc[core]->oInternal.oNestedPrivilege -= (vKern_runProc[core]->oInternal.oNestedPrivilege > 0u) ? (1u) : (0u);
+            if (vKern_runProc[core]->oInternal.oNestedPrivilege == 0u) {
+                vKern_runProc[core]->oInternal.oState &= (uint16_t)~(1u<<BPROC_PRIV_ELEVATED);
 
-				INTERRUPTION_ON_HARD;
-				SET_USER_MODE;
-				return (KERR_KERN_NOERR);
-			}
+                INTERRUPTION_ON_HARD;
+                SET_USER_MODE;
+                return (KERR_KERN_NOERR);
+            }
 
-			break;
-		}
-		default: {
+            break;
+        }
+        default: {
 
 // Make MISRA happy :-)
 
-			break;
-		}
-	}
-	INTERRUPTION_ON_HARD;
+            break;
+        }
+    }
+    INTERRUPTION_ON_HARD;
 
-	#else
-	UNUSED(mode);
-	#endif
+    #else
+    UNUSED(mode);
+    #endif
 
-	return (KERR_KERN_NOERR);
+    return (KERR_KERN_NOERR);
 }
 
 /*
@@ -184,37 +183,36 @@ int32_t	kern_setPrivilegeMode(uint8_t mode) {
  * - Coming from the TRAP dispatcher.
  * - Set the privileged mode
  *
- * \param[in]	-
  *
  * \note This function does not return a value (None).
  *
  */
-void	kern_privilegeElevate(void) __attribute__ ((naked));
-void	kern_privilegeElevate(void) {
+void    kern_privilegeElevate(void) __attribute__ ((naked));
+void    kern_privilegeElevate(void) {
 
-	#if (defined(PRIVILEGED_USER_S))
+    #if (defined(PRIVILEGED_USER_S))
 
 // Load the caller address into r0.
 // GET_ADDRESS_ELEVATION_CALLER sets r0, which is then passed as the
 // argument to CALL_FNCT_ELEVATION according to the Cortex ABI.
 
-	GET_ADDRESS_ELEVATION_CALLER;
-	CALL_FNCT_ELEVATION(local_elevate);
+    GET_ADDRESS_ELEVATION_CALLER;
+    CALL_FNCT_ELEVATION(local_elevate);
 
-	KERN_RETURN_ELEVATION;
-	#endif
+    KERN_RETURN_ELEVATION;
+    #endif
 }
 
 #if (defined(PRIVILEGED_USER_S))
-static	void	__attribute__ ((noinline, used)) local_elevate(uintptr_t callAddress) {
-	extern	uintptr_t	priv_returnElevation;
+static  void    __attribute__ ((noinline, used)) local_elevate(uintptr_t callAddress) {
+    extern  uintptr_t   priv_returnElevation;
 
-	if (callAddress != (uintptr_t)&priv_returnElevation) {
-		LOG(KFATAL_KERNEL, "priv: elevation forbidden");
-		exit(EXIT_OS_PANIC_ELEVATION);
-	}
+    if (callAddress != (uintptr_t)&priv_returnElevation) {
+        LOG(KFATAL_KERNEL, "priv: elevation forbidden");
+        exit(EXIT_OS_PANIC_ELEVATION);
+    }
 
-	SET_PRIVILEGED_MODE;
-	INTERRUPTION_OFF_HARD;
+    SET_PRIVILEGED_MODE;
+    INTERRUPTION_OFF_HARD;
 }
 #endif

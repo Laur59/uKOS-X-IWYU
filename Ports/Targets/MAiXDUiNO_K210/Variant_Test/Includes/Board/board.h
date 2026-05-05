@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Board mapping.
+; Project:  uKOS-X
+; Goal:     Board mapping.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,41 +46,45 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 // System identifiers
 // ------------------
 
-#define	KCPU				"RISC-V RV64IMAFDC"
-#define	KCONTROLLER			"K210"
-#define	KBOARD				"MAiXDUiNO K210 RISC-V (Variant_Test)"
-#define	KTARGET				"MAiXDUiNO_K210"
+#define KCPU                "RISC-V RV64IMAFDC"
+#define KCONTROLLER         "K210"
+#define KBOARD              "MAiXDUiNO K210 RISC-V (Variant_Test)"
+#define KTARGET             "MAiXDUiNO_K210"
 
 // GPIOHS settings
 // ---------------
 
-#define	LED_GREEN_OFF		(gpiohs->output_val.u32[0] |=			 (1u<<BLED_0))	//
-#define	LED_GREEN_ON		(gpiohs->output_val.u32[0] &= (uint32_t)~(1u<<BLED_0))	//
-#define	LED_GREEN_TOGGLE	(gpiohs->output_val.u32[0] ^=			 (1u<<BLED_0))	//
-#define	LED_RED_OFF			(gpiohs->output_val.u32[0] |=			 (1u<<BLED_1))	//
-#define	LED_RED_ON			(gpiohs->output_val.u32[0] &= (uint32_t)~(1u<<BLED_1))	//
-#define	LED_RED_TOGGLE		(gpiohs->output_val.u32[0] ^=			 (1u<<BLED_1))	//
-#define	LED_BLUE_OFF		(gpiohs->output_val.u32[0] |=			 (1u<<BLED_2))	//
-#define	LED_BLUE_ON			(gpiohs->output_val.u32[0] &= (uint32_t)~(1u<<BLED_2))	//
-#define	LED_BLUE_TOGGLE		(gpiohs->output_val.u32[0] ^=			 (1u<<BLED_2))	//
-#define	LED_1_TOGGLE		LED_RED_TOGGLE											//
-#define	LED_1_ON			LED_RED_ON												//
-#define	LED_1_OFF			LED_RED_OFF												// Led macros
+#define LED_GREEN_OFF       (gpiohs->output_val.u32[0] |=            (1u<<BLED_0))  //
+#define LED_GREEN_ON        (gpiohs->output_val.u32[0] &= (uint32_t)~(1u<<BLED_0))  //
+#define LED_GREEN_TOGGLE    (gpiohs->output_val.u32[0] ^=            (1u<<BLED_0))  //
+#define LED_RED_OFF         (gpiohs->output_val.u32[0] |=            (1u<<BLED_1))  //
+#define LED_RED_ON          (gpiohs->output_val.u32[0] &= (uint32_t)~(1u<<BLED_1))  //
+#define LED_RED_TOGGLE      (gpiohs->output_val.u32[0] ^=            (1u<<BLED_1))  //
+#define LED_BLUE_OFF        (gpiohs->output_val.u32[0] |=            (1u<<BLED_2))  //
+#define LED_BLUE_ON         (gpiohs->output_val.u32[0] &= (uint32_t)~(1u<<BLED_2))  //
+#define LED_BLUE_TOGGLE     (gpiohs->output_val.u32[0] ^=            (1u<<BLED_2))  //
+#define LED_1_TOGGLE        LED_RED_TOGGLE                                          //
+#define LED_1_ON            LED_RED_ON                                              //
+#define LED_1_OFF           LED_RED_OFF                                             // Led macros
 
-#define KNB_LED				3u														// Number of LEDs
+#define KNB_LED             3u                                                      // Number of LEDs
 
 // LEDs
 
-#define	BLED_0				8u														// GPIO8  - IO12, BLED_0
-#define	BLED_1				9u														// GPIO9  - IO13, BLED_1
-#define	BLED_2				10u														// GPIO10 - IO14, BLED_2
+#define BLED_0              8u                                                      // GPIO8  - IO12, BLED_0
+#define BLED_1              9u                                                      // GPIO9  - IO13, BLED_1
+#define BLED_2              10u                                                     // GPIO10 - IO14, BLED_2
 
 // LCD
 
-#define	BLCD_DCX			2u														// GPIO02 - IO38, BLCD_DCX
-#define	BLCD_RST			3u														// GPIO03 - IO37, BLCD_RST
+#define BLCD_DCX            2u                                                      // GPIO02 - IO38, BLCD_DCX
+#define BLCD_RST            3u                                                      // GPIO03 - IO37, BLCD_RST
+
+// ESP32
+
+#define BESP32_ENABLE       0u                                                      // GPIO00 - IO08, ESP32_ENABLE, CHIP_PU, low=power off

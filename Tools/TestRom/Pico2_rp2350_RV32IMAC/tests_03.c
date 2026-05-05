@@ -6,11 +6,11 @@
 ; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 ;------------------------------------------------------------------------
-; Author:	Laurent von Allmen	The 2026-02-13
+; Author:   Laurent von Allmen  The 2026-02-13
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test of the UART0 Rx interruption.
+; Project:  uKOS-X
+; Goal:     Test of the UART0 Rx interruption.
 ;
 ;   (c) 2025-2026, Laurent von Allmen
 ;   ---------------------------------
@@ -47,13 +47,11 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
-
-#if (defined(TEST_03_S))
+#include    "tests.h"
 
 // Prototypes
 
-void	local_UART0_IRQHandler(void);
+void    local_UART0_IRQHandler(void);
 
 /*
  * \brief test_03
@@ -61,28 +59,28 @@ void	local_UART0_IRQHandler(void);
  * - Test of the UART0 Rx interruption
  *
  */
-void	test_03(void) {
+void    test_03(void) {
 
-	INTERRUPT_VECTOR(UART0_IRQ_C0_IRQn, local_UART0_IRQHandler);
-	core_enableExternalIRQ(UART0_IRQ_C0_IRQn);
-	core_setBitCSR(RV_CSR_MIE, MIE_MEIE);
+    INTERRUPT_VECTOR(UART0_IRQ_C0_IRQn, local_UART0_IRQHandler);
+    core_enableExternalIRQ(UART0_IRQ_C0_IRQn);
+    core_setBitCSR(RV_CSR_MIE, MIE_MEIE);
 
-	cmns_init();
+    cmns_init();
 
 // Fifo 1/8, Interruption in reception & timeout interruption
 
-	REG(UART0)->UARTLCR_H |= UART_UARTLCR_H_FEN;
-	REG(UART0)->UARTIFLS   = (0u * UART_UARTIFLS_TXIFLSEL_0) | (0u * UART_UARTIFLS_RXIFLSEL_0);
-	REG(UART0)->UARTIMSC  |= (UART_UARTIMSC_RXIM | UART_UARTIMSC_RTIM);
+    REG(UART0)->UARTLCR_H |= UART_UARTLCR_H_FEN;
+    REG(UART0)->UARTIFLS   = (0u * UART_UARTIFLS_TXIFLSEL_0) | (0u * UART_UARTIFLS_RXIFLSEL_0);
+    REG(UART0)->UARTIMSC  |= (UART_UARTIMSC_RXIM | UART_UARTIMSC_RTIM);
 
 // Waiting for the UART0 interruption
 
-	INTERRUPTION_ON_HARD;
+    INTERRUPTION_ON_HARD;
 
-	while (true) {
-		cmns_wait(100000);
-		LED_RED_TOGGLE;
-	}
+    while (true) {
+        cmns_wait(100000);
+        LED_RED_TOGGLE;
+    }
 }
 
 /*
@@ -91,24 +89,22 @@ void	test_03(void) {
  * - Blink the YELLOW Led
  *
  */
-void	local_UART0_IRQHandler(void) {
-	uint32_t	iir;
+void    local_UART0_IRQHandler(void) {
+    uint32_t    iir;
 
-	iir = REG(UART0)->UARTMIS;
+    iir = REG(UART0)->UARTMIS;
 
-	if ((iir & (UART_UARTMIS_RXMIS | UART_UARTMIS_RTMIS)) != 0u ) {
+    if ((iir & (UART_UARTMIS_RXMIS | UART_UARTMIS_RTMIS)) != 0u ) {
 
-		while ((REG(UART0)->UARTFR & UART_UARTFR_RXFE) == 0u) {
-			REG(UART0)->UARTDR;
-			cmns_send(KURT0, "OK interruptions\n");
+        while ((REG(UART0)->UARTFR & UART_UARTFR_RXFE) == 0u) {
+            REG(UART0)->UARTDR;
+            cmns_send(KURT0, "OK interruptions\n");
 
-			LED_YELLOW_TOGGLE;
-		}
+            LED_YELLOW_TOGGLE;
+        }
 
 // Acknowledge the UART0 interruption
 
-		REG(UART0)->UARTICR = (UART_UARTICR_RXIC | UART_UARTICR_RTIC);
-	}
+        REG(UART0)->UARTICR = (UART_UARTICR_RXIC | UART_UARTICR_RTIC);
+    }
 }
-
-#endif

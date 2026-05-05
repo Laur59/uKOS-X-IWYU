@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		machine manager.
+; Project:  uKOS-X
+; Goal:     machine manager.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +46,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_generics
@@ -66,7 +66,7 @@
 // Prototypes
 
 #if (defined(__cplusplus))
-extern	"C" {
+extern  "C" {
 #endif
 
 /*!
@@ -84,12 +84,12 @@ extern	"C" {
  *
  * - This function returns the PC of a process
  *
- * \param[in]	*handle				Ptr on the handle
- * \param[out]	*pc					Ptr on the pc
- * \return		KERR_MACHINE_NOERR	OK
+ * \param[in]   *handle             Ptr on the handle
+ * \param[out]  *pc                 Ptr on the pc
+ * \return      KERR_MACHINE_NOERR  OK
  *
  */
-extern	int32_t	machine_readPC(const proc_t *handle, uintptr_t *pc);
+extern  int32_t machine_readPC(const proc_t *handle, uintptr_t *pc);
 
 /*!
  * \brief Read the function name
@@ -106,12 +106,12 @@ extern	int32_t	machine_readPC(const proc_t *handle, uintptr_t *pc);
  *
  * - This function returns the name of a function
  *
- * \param[in]	pc					The pc
- * \param[out]	**function			Ptr on the function name
- * \return		KERR_MACHINE_NOERR	OK
+ * \param[in]   pc                  The pc
+ * \param[out]  **function          Ptr on the function name
+ * \return      KERR_MACHINE_NOERR  OK
  *
  */
-extern	int32_t	machine_readFunctionName(const uintptr_t pc, const char_t **function);
+extern  int32_t machine_readFunctionName(const uintptr_t pc, const char_t **function);
 
 /*!
  * \brief Restart of the system
@@ -124,11 +124,10 @@ extern	int32_t	machine_readFunctionName(const uintptr_t pc, const char_t **funct
  *    status = stub_machine_restart();
  * \endcode
  *
- * \param[in]	-
- * \return		KERR_SYSTEM_NOERR	OK
+ * \return      KERR_SYSTEM_NOERR   OK
  *
  */
-extern	int32_t	machine_restart(void);
+extern  int32_t machine_restart(void);
 
 #if (defined(__cplusplus))
 }

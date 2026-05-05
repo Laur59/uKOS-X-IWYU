@@ -5,13 +5,13 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Kern - impure data for xLibrary (newlib, picolib, etc.) management.
+; Project:  uKOS-X
+; Goal:     Kern - impure data for xLibrary (newlib, picolib, etc.) management.
 ;
-;			Private uKernel variables.
+;           Private uKernel variables.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -48,7 +48,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_kernels
@@ -70,33 +70,32 @@
  * @{
  */
 
-extern	reent_t		vKern_impureData[KNB_CORES][KKERN_NB_PROCESSES];	// Array of impure pointer fr the newlib
+extern  reent_t     vKern_impureData[KNB_CORES][KKERN_NB_PROCESSES];    // Array of impure pointer fr the newlib
 
 // Prototypes
 
 /*!
  * \brief Initialise the impure data of the process
  *
- * \param[in]	*handle		Ptr on the handle
+ * \param[in]   *handle     Ptr on the handle
  *
  * \note This function does not return a value (None).
  *
  * \warning call usable only by the uKernel.
  *
  */
-extern	void	xLibrary_initialise(proc_t *handle);
+extern  void    xLibrary_initialise(proc_t *handle);
 
 /*!
  * \brief update the impure pointer with the impure data of the process
  *
- * \param[in]	-
  *
  * \note This function does not return a value (None).
  *
  * \warning call usable only by the uKernel.
  *
  */
-extern	void	xLibrary_update(void);
+extern  void    xLibrary_update(void);
 
 /**@}*/
 /**@}*/

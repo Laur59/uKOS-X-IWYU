@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Exceptions for the Longan_Nano_F103 module.
+; Project:  uKOS-X
+; Goal:     Exceptions for the Longan_Nano_F103 module.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,67 +46,66 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include    "uKOS.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"exce         Exception management.                     (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "Exce\n"
-									"====\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "exce         Exception management.                     (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "Exce\n"
+                                    "====\n\n"
 
-									"This code manages the spurious exceptions.\n\n"
+                                    "This code manages the spurious exceptions.\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
-	Exce,							// Module name (the first letter has to be upper case)
-	KID_FAM_STARTUPS,				// Family (defined in the module.h)
-	KNUM_EXCE,						// Module identifier (defined in the module.h)
-	nullptr,						// Address of the initialisation code (early pre-init)
-	nullptr,						// Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
-	nullptr,						// Address of the clean code (clean the module)
-	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0								// Execution cores
+    Exce,                           // Module name (the first letter has to be upper case)
+    KID_FAM_STARTUPS,               // Family (defined in the module.h)
+    KNUM_EXCE,                      // Module identifier (defined in the module.h)
+    nullptr,                        // Address of the initialisation code (early pre-init)
+    nullptr,                        // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                        // Address of the clean code (clean the module)
+    " 1.0",                         // Revision string (major . minor)
+    (1u<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                               // Execution cores
 );
 
 // Runtime specific
 // ================
 
-void	(*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
-void	(*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
+void    (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
+void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 // Prototypes
 
-extern	void	cmns_send(serialManager_t serialManager, const char_t *ascii);
-extern	void	cmns_wait(uint32_t us);
-static	void	model_coreDump_displayExceptions(void);
-static	void	model_coreDump_displayInterruptions(void);
-static	void	local_setLEDs(uint8_t ledNb);
-static	void	local_clrLEDs(uint8_t ledNb);
-static	void	local_cpyLEDs(uint8_t value);
+extern  void    cmns_send(serialManager_t serialManager, const char_t *ascii);
+extern  void    cmns_wait(uint32_t us);
+static  void    model_coreDump_displayExceptions(void);
+static  void    model_coreDump_displayInterruptions(void);
+static  void    local_setLEDs(uint8_t ledNb);
+static  void    local_clrLEDs(uint8_t ledNb);
+static  void    local_cpyLEDs(uint8_t value);
 
 /*
  * \brief exce_init
  *
- * \param[in]	-
  *
  * \note This function does not return a value (None).
  *
  */
-void	exce_init(void) {
-	uint8_t		nbExceptions, nbInterruptions;
+void    exce_init(void) {
+    uint8_t     nbExceptions, nbInterruptions;
 
-	for (nbExceptions = 0u; nbExceptions < KNB_EXCEPTIONS; nbExceptions++) {
-		vExce_indExcVectors[GET_RUNNING_CORE][nbExceptions] = model_coreDump_displayExceptions;
-	}
+    for (nbExceptions = 0u; nbExceptions < KNB_EXCEPTIONS; nbExceptions++) {
+        vExce_indExcVectors[GET_RUNNING_CORE][nbExceptions] = model_coreDump_displayExceptions;
+    }
 
-	for (nbInterruptions = 0u; nbInterruptions < KNB_INTERRUPTIONS; nbInterruptions++) {
-		vExce_indIntVectors[GET_RUNNING_CORE][nbInterruptions] = model_coreDump_displayInterruptions;
-	}
+    for (nbInterruptions = 0u; nbInterruptions < KNB_INTERRUPTIONS; nbInterruptions++) {
+        vExce_indIntVectors[GET_RUNNING_CORE][nbInterruptions] = model_coreDump_displayInterruptions;
+    }
 }
 
 // Model callbacks
@@ -122,27 +121,27 @@ void	exce_init(void) {
  */
 static void __attribute__ ((noreturn)) cb_signal(uint8_t mode) {
 
-	switch (mode) {
-		default:
-		case KEXCEPTION: {
-			local_cpyLEDs(0xFFu);
-			while (true) {
-				cmns_wait(1000000u);
-				local_setLEDs(0u);
-				cmns_wait(1000000u);
-				local_clrLEDs(0u);
-			}
-		}
-		case KINTERRUPTION: {
-			local_cpyLEDs(0xFFu);
-			while (true) {
-				cmns_wait(1000000u);
-				local_setLEDs(1u);
-				cmns_wait(1000000u);
-				local_clrLEDs(1u);
-			}
-		}
-	}
+    switch (mode) {
+        default:
+        case KEXCEPTION: {
+            local_cpyLEDs(0xFFu);
+            while (true) {
+                cmns_wait(1000000u);
+                local_setLEDs(0u);
+                cmns_wait(1000000u);
+                local_clrLEDs(0u);
+            }
+        }
+        case KINTERRUPTION: {
+            local_cpyLEDs(0xFFu);
+            while (true) {
+                cmns_wait(1000000u);
+                local_setLEDs(1u);
+                cmns_wait(1000000u);
+                local_clrLEDs(1u);
+            }
+        }
+    }
 }
 
 // Local routines
@@ -154,18 +153,18 @@ static void __attribute__ ((noreturn)) cb_signal(uint8_t mode) {
  * - Turn on a LED
  *
  */
-static	void	local_setLEDs(uint8_t ledNb) {
+static  void    local_setLEDs(uint8_t ledNb) {
 
-	switch (ledNb) {
-		case 0: { GPIOA->OCTL &= (uint32_t)~(1u<<BLED_0); break; }
-		case 1: { GPIOA->OCTL &= (uint32_t)~(1u<<BLED_1); break; }
-		default: {
+    switch (ledNb) {
+        case 0: { GPIOA->OCTL &= (uint32_t)~(1u<<BLED_0); break; }
+        case 1: { GPIOA->OCTL &= (uint32_t)~(1u<<BLED_1); break; }
+        default: {
 
 // Make MISRA happy :-)
 
-			break;
-		}
-	}
+            break;
+        }
+    }
 }
 
 /*
@@ -174,18 +173,18 @@ static	void	local_setLEDs(uint8_t ledNb) {
  * - Turn off a LED
  *
  */
-static	void	local_clrLEDs(uint8_t ledNb) {
+static  void    local_clrLEDs(uint8_t ledNb) {
 
-	switch (ledNb) {
-		case 0: { GPIOA->OCTL |= (1u<<BLED_0); break; }
-		case 1: { GPIOA->OCTL |= (1u<<BLED_1); break; }
-		default: {
+    switch (ledNb) {
+        case 0: { GPIOA->OCTL |= (1u<<BLED_0); break; }
+        case 1: { GPIOA->OCTL |= (1u<<BLED_1); break; }
+        default: {
 
 // Make MISRA happy :-)
 
-			break;
-		}
-	}
+            break;
+        }
+    }
 }
 
 /*
@@ -194,17 +193,17 @@ static	void	local_clrLEDs(uint8_t ledNb) {
  * - Write on the LEDs
  *
  */
-static	void	local_cpyLEDs(uint8_t value) {
-	uint8_t		led, mask;
+static  void    local_cpyLEDs(uint8_t value) {
+    uint8_t     led, mask;
 
-	mask = 0x01u;
-	for (led = 0u; led < 2u; led++) {
-		(value & mask) ? (local_setLEDs(led)) : (local_clrLEDs(led));
-		mask = (uint8_t)(mask<<1u);
-	}
+    mask = 0x01u;
+    for (led = 0u; led < 2u; led++) {
+        (value & mask) ? (local_setLEDs(led)) : (local_clrLEDs(led));
+        mask = (uint8_t)(mask<<1u);
+    }
 }
 
-#include	"model_coreDump_tracing.c_inc"
-#include	"model_coreDump_generic.c_inc"
-#include	"model_coreDump_core.c_inc"
-#include	"model_coredump_soc.c_inc"
+#include    "model_coreDump_tracing.c_inc"
+#include    "model_coreDump_generic.c_inc"
+#include    "model_coreDump_core.c_inc"
+#include    "model_coredump_soc.c_inc"

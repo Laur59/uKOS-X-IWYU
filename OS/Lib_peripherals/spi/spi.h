@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		spi manager.
+; Project:  uKOS-X
+; Goal:     spi manager.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +46,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_peripherals
@@ -63,23 +63,23 @@
  * @{
  */
 
-#include	"Lib_peripherals/spi_common.h"
+#include    "Lib_peripherals/spi_common.h"
 
-typedef	enum {
-			KSPI0 = (((uint32_t)'s'<<24u) | ((uint32_t)'p'<<16u) | ((uint32_t)'i'<<8u) | (uint32_t)'0'),	// spi0 manager
-			KSPI1 = (((uint32_t)'s'<<24u) | ((uint32_t)'p'<<16u) | ((uint32_t)'i'<<8u) | (uint32_t)'1'),	// spi1 manager
-			KSPI2 = (((uint32_t)'s'<<24u) | ((uint32_t)'p'<<16u) | ((uint32_t)'i'<<8u) | (uint32_t)'2'),	// spi2 manager
-			KSPI3 = (((uint32_t)'s'<<24u) | ((uint32_t)'p'<<16u) | ((uint32_t)'i'<<8u) | (uint32_t)'3')		// spi3 manager
+typedef enum {
+            KSPI0 = (((uint32_t)'s'<<24u) | ((uint32_t)'p'<<16u) | ((uint32_t)'i'<<8u) | (uint32_t)'0'),    // spi0 manager
+            KSPI1 = (((uint32_t)'s'<<24u) | ((uint32_t)'p'<<16u) | ((uint32_t)'i'<<8u) | (uint32_t)'1'),    // spi1 manager
+            KSPI2 = (((uint32_t)'s'<<24u) | ((uint32_t)'p'<<16u) | ((uint32_t)'i'<<8u) | (uint32_t)'2'),    // spi2 manager
+            KSPI3 = (((uint32_t)'s'<<24u) | ((uint32_t)'p'<<16u) | ((uint32_t)'i'<<8u) | (uint32_t)'3')     // spi3 manager
 } spiManager_t;
 
 // Prototypes
 
 #if (defined(__cplusplus))
-extern	"C" {
+extern  "C" {
 #endif
 
-#define	SPI_reserve		spi_reserve
-#define	SPI_release		spi_release
+#define SPI_reserve     spi_reserve
+#define SPI_release     spi_release
 
 /*!
  * \brief Reserve the spi manager
@@ -96,15 +96,15 @@ extern	"C" {
  *    status = spi_release(KSPI0, KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	manager			SPI manager
- * \param[in]	reserveMode		Any mode
- * \param[in]	timeout			Timeout (1-ms of resolution)
- * \param[in]	-				KWAIT_INFINITY, waiting forever
- * \param[in]	-				KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_SPI_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager         SPI manager
+ * \param[in]   reserveMode     Any mode
+ * \param[in]   timeout         Timeout (1-ms of resolution)
+ *                              KWAIT_INFINITY, waiting forever
+ *                              KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_SPI_XXXXX  Depends on the "xxxx" device manager
  *
  */
-extern	int32_t	spi_reserve(spiManager_t manager, reserveMode_t reserveMode, uint32_t timeout);
+extern  int32_t spi_reserve(spiManager_t manager, reserveMode_t reserveMode, uint32_t timeout);
 
 /*!
  * \brief Release the spi manager
@@ -117,12 +117,12 @@ extern	int32_t	spi_reserve(spiManager_t manager, reserveMode_t reserveMode, uint
  *    status = spi_release(KSPI0, KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	manager			SPI manager
- * \param[in]	reserveMode		Any mode
- * \return		KERR_SPI_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager         SPI manager
+ * \param[in]   reserveMode     Any mode
+ * \return      KERR_SPI_XXXXX  Depends on the "xxxx" device manager
  *
  */
-extern	int32_t	spi_release(spiManager_t manager, reserveMode_t reserveMode);
+extern  int32_t spi_release(spiManager_t manager, reserveMode_t reserveMode);
 
 /*!
  * \brief Configure the spi manager
@@ -140,12 +140,12 @@ extern	int32_t	spi_release(spiManager_t manager, reserveMode_t reserveMode);
  *    status = spi_configure(KSPI0, &configure);
  * \endcode
  *
- * \param[in]	manager			SPI manager
- * \param[in]	*configure		Ptr on the configuration buffer
- * \return		KERR_SPI_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager         SPI manager
+ * \param[in]   *configure      Ptr on the configuration buffer
+ * \return      KERR_SPI_XXXXX  Depends on the "xxxx" device manager
  *
  */
-extern	int32_t	spi_configure(spiManager_t manager, const spiCnf_t *configure);
+extern  int32_t spi_configure(spiManager_t manager, const spiCnf_t *configure);
 
 /*!
  * \brief Write-Read a byte to-from the spi manager
@@ -160,12 +160,12 @@ extern	int32_t	spi_configure(spiManager_t manager, const spiCnf_t *configure);
  *    status = spi_writeRead(KSPI0, &data);
  * \endcode
  *
- * \param[in]	manager			SPI manager
- * \param[in]	*data			Ptr on the data to write-read
- * \return		KERR_SPI_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager         SPI manager
+ * \param[in]   *data           Ptr on the data to write-read
+ * \return      KERR_SPI_XXXXX  Depends on the "xxxx" device manager
  *
  */
-extern	int32_t	spi_writeRead(spiManager_t manager, uint8_t *data);
+extern  int32_t spi_writeRead(spiManager_t manager, uint8_t *data);
 
 /*!
  * \brief Generic, multiple Write-Read bytes to-from the spi manager
@@ -174,12 +174,12 @@ extern	int32_t	spi_writeRead(spiManager_t manager, uint8_t *data);
  *
  * Simple reads: spi_multipleWriteRead(KSPI0, 0,  &rBuffer[0], 20, KWAIT_INFINITY); R, R, R, ..
  * Writes-reads: spi_multipleWriteRead(KSPI0, 20, &rBuffer[0], 20, KWAIT_INFINITY); W, R, W, ..
- *				 condition (wSize == rSize)
- *				 if xyz == nullptr, write 0x00
- *				 if xyz == (&wBuffer[0], write the buffer content
+ *               condition (wSize == rSize)
+ *               if xyz == nullptr, write 0x00
+ *               if xyz == (&wBuffer[0], write the buffer content
  *
  * EEPROM mode:  spi_multipleWriteRead(KSPI0, &wBuffer[0], 4, &rBuffer[0], 20, KWAIT_INFINITY); W, W, W, R, R, R, R, ..
- *				 condition (wSize != rSize)
+ *               condition (wSize != rSize)
  *
  * Call example in C:
  *
@@ -201,18 +201,18 @@ extern	int32_t	spi_writeRead(spiManager_t manager, uint8_t *data);
  *
  * \endcode
  *
- * \param[in]	manager			SPI manager
- * \param[in]	*wData			Ptr on the data to write
- * \param[in]	wSize			Size of the write buffer
- * \param[in]	*rData			Ptr on the data to read
- * \param[in]	rSize			Size of the read buffer
- * \param[in]	timeout			Timeout (1-ms of resolution)
- * \param[in]	-				KWAIT_INFINITY, waiting forever
- * \param[in]	-				KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_SPI_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager         SPI manager
+ * \param[in]   *wData          Ptr on the data to write
+ * \param[in]   wSize           Size of the write buffer
+ * \param[in]   *rData          Ptr on the data to read
+ * \param[in]   rSize           Size of the read buffer
+ * \param[in]   timeout         Timeout (1-ms of resolution)
+ *                              KWAIT_INFINITY, waiting forever
+ *                              KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_SPI_XXXXX  Depends on the "xxxx" device manager
  *
  */
-extern	int32_t	spi_multipleWriteRead(spiManager_t manager, const uint8_t *wData, uint16_t wSize, uint8_t *rData, uint16_t rSize, uint32_t timeout);
+extern  int32_t spi_multipleWriteRead(spiManager_t manager, const uint8_t *wData, uint16_t wSize, uint8_t *rData, uint16_t rSize, uint32_t timeout);
 
 #if (defined(__cplusplus))
 }

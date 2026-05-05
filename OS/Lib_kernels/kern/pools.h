@@ -5,24 +5,24 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Kern - Memory pools.
+; Project:  uKOS-X
+; Goal:     Kern - Memory pools.
 ;
-;			This module implements the software primitives.
+;           This module implements the software primitives.
 ;
-;			Memory pool system calls
-;			------------------------
+;           Memory pool system calls
+;           ------------------------
 ;
-;			void	pools_init(void);
-;			int32_t	kern_createPool(const char_t *identifier, pool_t **handle);
-;			int32_t	kern_setPool(pool_t *handle, const pcnf_t *configure);
-;			int32_t	kern_allocateBlock(pool_t *handle, void **address, uint32_t timeout);
-;			int32_t	kern_deAllocateBlock(pool_t *handle, const void *address);
-;			int32_t	kern_killPool(pool_t *handle);
-;			int32_t	kern_getPoolById(const char_t *identifier, pool_t **handle);
+;           void    pools_init(void);
+;           int32_t kern_createPool(const char_t *identifier, pool_t **handle);
+;           int32_t kern_setPool(pool_t *handle, const pcnf_t *configure);
+;           int32_t kern_allocateBlock(pool_t *handle, void **address, uint32_t timeout);
+;           int32_t kern_deAllocateBlock(pool_t *handle, const void *address);
+;           int32_t kern_killPool(pool_t *handle);
+;           int32_t kern_getPoolById(const char_t *identifier, pool_t **handle);
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -59,7 +59,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 #if (KKERN_NB_POOLS > 0)
 
@@ -81,20 +81,20 @@
 // Structure of the memory pool configuration
 // ------------------------------------------
 
-typedef	struct	pcnf		pcnf_t;
+typedef struct  pcnf        pcnf_t;
 
-struct	pcnf {
-				uint32_t	oNbBlocks;							// Number of blocks
-				uint32_t	oBlockSize;							// Block size
+struct  pcnf {
+                uint32_t    oNbBlocks;                          // Number of blocks
+                uint32_t    oBlockSize;                         // Block size
 };
 
 // Prototypes
 
 #if (defined(__cplusplus))
-extern	"C" {
+extern  "C" {
 #endif
 
-extern	void	pools_init(void);
+extern  void    pools_init(void);
 
 /*!
  * \brief Create a memory pool
@@ -109,14 +109,14 @@ extern	void	pools_init(void);
  *    status = kern_createPool(identifier, &memoryPool);
  * \endcode
  *
- * \param[in]	*identifier		Ptr on the memory pool identifier (nullptr = anonymous)
- * \param[out]	**handle		Ptr on the handle
- * \return		KERR_KERN_NOERR	OK
- * \return		KERR_KERN_POFUL	No more memory pool
- * \return		KERR_KERN_IDPOI	The memory pool identifier is already used
+ * \param[in]   *identifier     Ptr on the memory pool identifier (nullptr = anonymous)
+ * \param[out]  **handle        Ptr on the handle
+ * \return      KERR_KERN_NOERR OK
+ * \return      KERR_KERN_POFUL No more memory pool
+ * \return      KERR_KERN_IDPOI The memory pool identifier is already used
  *
  */
-extern	int32_t	kern_createPool(const char_t *identifier, pool_t **handle);
+extern  int32_t kern_createPool(const char_t *identifier, pool_t **handle);
 
 /*!
  * \brief Set a memory pool
@@ -134,14 +134,14 @@ extern	int32_t	kern_createPool(const char_t *identifier, pool_t **handle);
  *    status = kern_setPool(memoryPool, &configure);
  * \endcode
  *
- * \param[in]	*handle			Ptr on the handle
- * \param[in]	*configure		Ptr on the configuration buffer
- * \return		KERR_KERN_NOERR	OK
- * \return		KERR_KERN_NOPOI	The memory pool does not exist
- * \return		KERR_KERN_POCNF	The memory pool configuration is not possible
+ * \param[in]   *handle         Ptr on the handle
+ * \param[in]   *configure      Ptr on the configuration buffer
+ * \return      KERR_KERN_NOERR OK
+ * \return      KERR_KERN_NOPOI The memory pool does not exist
+ * \return      KERR_KERN_POCNF The memory pool configuration is not possible
  *
  */
-extern	int32_t	kern_setPool(pool_t *handle, const pcnf_t *configure);
+extern  int32_t kern_setPool(pool_t *handle, const pcnf_t *configure);
 
 /*!
  * \brief Allocate a block in a memory pool
@@ -156,18 +156,18 @@ extern	int32_t	kern_setPool(pool_t *handle, const pcnf_t *configure);
  *    status = kern_allocateBlock(memoryPool, &address, 1234);
  * \endcode
  *
- * \param[in]	*handle			Ptr on the handle
- * \param[out]	**address		Ptr on the pool address
- * \param[in]	timeout			Timeout (1-ms of resolution)
- * \param[in]	-				KWAIT_INFINITY, waiting forever
- * \param[in]	-				KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_KERN_NOERR	OK
- * \return		KERR_KERN_NOPOI	The memory pool does not exist
- * \return		KERR_KERN_PONCF	The memory pool is not configured
- * \return		KERR_KERN_BKFUL	No more block
+ * \param[in]   *handle         Ptr on the handle
+ * \param[out]  **address       Ptr on the pool address
+ * \param[in]   timeout         Timeout (1-ms of resolution)
+ *                              KWAIT_INFINITY, waiting forever
+ *                              KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_KERN_NOERR OK
+ * \return      KERR_KERN_NOPOI The memory pool does not exist
+ * \return      KERR_KERN_PONCF The memory pool is not configured
+ * \return      KERR_KERN_BKFUL No more block
  *
  */
-extern	int32_t	kern_allocateBlock(pool_t *handle, void **address, uint32_t timeout);
+extern  int32_t kern_allocateBlock(pool_t *handle, void **address, uint32_t timeout);
 
 /*!
  * \brief deallocate a block in a memory pool
@@ -182,15 +182,15 @@ extern	int32_t	kern_allocateBlock(pool_t *handle, void **address, uint32_t timeo
  *    status = kern_deAllocateBlock(memoryPool, address);
  * \endcode
  *
- * \param[in]	*handle			Ptr on the handle
- * \param[in]	*address		Ptr on the pool address
- * \return		KERR_KERN_NOERR	OK
- * \return		KERR_KERN_NOPOI	The memory pool does not exist
- * \return		KERR_KERN_PONCF	The memory pool is not configured
- * \return		KERR_KERN_NOBKI	The block does not exist
+ * \param[in]   *handle         Ptr on the handle
+ * \param[in]   *address        Ptr on the pool address
+ * \return      KERR_KERN_NOERR OK
+ * \return      KERR_KERN_NOPOI The memory pool does not exist
+ * \return      KERR_KERN_PONCF The memory pool is not configured
+ * \return      KERR_KERN_NOBKI The block does not exist
  *
  */
-extern	int32_t	kern_deAllocateBlock(pool_t *handle, const void *address);
+extern  int32_t kern_deAllocateBlock(pool_t *handle, const void *address);
 
 /*!
  * \brief Kill the memory pool
@@ -204,13 +204,13 @@ extern	int32_t	kern_deAllocateBlock(pool_t *handle, const void *address);
  *    status = kern_killPool(memoryPool);
  * \endcode
  *
- * \param[in]	*handle			Ptr on the handle
- * \return		KERR_KERN_NOERR	OK
- * \return		KERR_KERN_NOPOI	The memory pool does not exist
- * \return		KERR_KERN_PONCF	The memory pool is not configured
+ * \param[in]   *handle         Ptr on the handle
+ * \return      KERR_KERN_NOERR OK
+ * \return      KERR_KERN_NOPOI The memory pool does not exist
+ * \return      KERR_KERN_PONCF The memory pool is not configured
  *
  */
-extern	int32_t	kern_killPool(pool_t *handle);
+extern  int32_t kern_killPool(pool_t *handle);
 
 /*!
  * \brief Get the handle of a memory pool by its identifier
@@ -227,13 +227,13 @@ extern	int32_t	kern_killPool(pool_t *handle);
  *
  * - This function returns the handle of the memory pool
  *
- * \param[in]	*identifier		Ptr on the memory pool identifier
- * \param[out]	**handle		Ptr on the handle
- * \return		KERR_KERN_NOERR	OK
- * \return		KERR_KERN_NOPOI	The memory pool does not exist
+ * \param[in]   *identifier     Ptr on the memory pool identifier
+ * \param[out]  **handle        Ptr on the handle
+ * \return      KERR_KERN_NOERR OK
+ * \return      KERR_KERN_NOPOI The memory pool does not exist
  *
  */
-extern	int32_t	kern_getPoolById(const char_t *identifier, pool_t **handle);
+extern  int32_t kern_getPoolById(const char_t *identifier, pool_t **handle);
 
 #if (defined(__cplusplus))
 }

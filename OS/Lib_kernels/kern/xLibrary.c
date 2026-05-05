@@ -5,14 +5,14 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Kern - impure data for xlib management.
+; Project:  uKOS-X
+; Goal:     Kern - impure data for xlib management.
 ;
-;			This module is responsible for creating and swapping the impure data
-;			for the xlib newlib of the uKernel.
+;           This module is responsible for creating and swapping the impure data
+;           for the xlib newlib of the uKernel.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -49,32 +49,32 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"kern/private/private_processes.h"
-#include	"kern/private/private_xLibrary.h"
+#include    "uKOS.h"
+#include    "kern/private/private_processes.h"
+#include    "kern/private/private_xLibrary.h"
 
-reent_t		vKern_impureData[KNB_CORES][KKERN_NB_PROCESSES];
+reent_t     vKern_impureData[KNB_CORES][KKERN_NB_PROCESSES];
 
 /*
  * \brief Initialise the impure data of the process
  *
  * \warning call usable only by the uKernel.
  *
- * \param[in]	*handle		Ptr on the handle
+ * \param[in]   *handle     Ptr on the handle
  *
  * \note This function does not return a value (None).
  *
  */
-void	xLibrary_initialise(proc_t *handle) {
-	uint16_t	i;
-	uint32_t	core;
-	proc_t		*process = handle;
+void    xLibrary_initialise(proc_t *handle) {
+    uint16_t    i;
+    uint32_t    core;
+    proc_t      *process = handle;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	i = (uint16_t)(((uintptr_t)process - (uintptr_t)&vKern_proc[core][0]) / sizeof(proc_t));
-	_REENT_INIT_PTR(&vKern_impureData[core][i]);
-	process->oInternal.oLocal = &vKern_impureData[core][i];
+    i = (uint16_t)(((uintptr_t)process - (uintptr_t)&vKern_proc[core][0]) / sizeof(proc_t));
+    _REENT_INIT_PTR(&vKern_impureData[core][i]);
+    process->oInternal.oLocal = &vKern_impureData[core][i];
 }
 
 /*
@@ -82,17 +82,16 @@ void	xLibrary_initialise(proc_t *handle) {
  *
  * \warning call usable only by the uKernel.
  *
- * \param[in]	-
  *
  * \note This function does not return a value (None).
  *
  */
-void	xLibrary_update(void) {
-	uint32_t	core;
+void    xLibrary_update(void) {
+    uint32_t    core;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	if (vKern_runProc[core]->oInternal.oLocal != nullptr) {
-		_impure_ptr = (reent_t *)vKern_runProc[core]->oInternal.oLocal;
-	}
+    if (vKern_runProc[core]->oInternal.oLocal != nullptr) {
+        _impure_ptr = (reent_t *)vKern_runProc[core]->oInternal.oLocal;
+    }
 }

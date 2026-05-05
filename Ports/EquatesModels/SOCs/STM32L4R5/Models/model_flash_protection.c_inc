@@ -2,12 +2,14 @@
 ; model_flash_protection.
 ; =======================
 
+; SPDX-License-Identifier: MIT
+
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Model for controlling the "flash" protection.
+; Project:  uKOS-X
+; Goal:     Model for controlling the "flash" protection.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -52,38 +54,38 @@
  *   !!! the flash cannot be reprogrammed anymore in level 2 !!!
  *
  */
-void	model_flash_protect(uint8_t level) {
-	uint32_t	optcr;
+void    model_flash_protect(uint8_t level) {
+    uint32_t    optcr;
 
 // Allow operations on the Flash
 
-	FLASH->OPTKEYR = 0x08192A3Bu;
-	FLASH->OPTKEYR = 0x4C5D6E7Fu;
+    FLASH->OPTKEYR = 0x08192A3Bu;
+    FLASH->OPTKEYR = 0x4C5D6E7Fu;
 
 // Set the selected level 0, 1 or 2
 
-	optcr = FLASH->OPTCR;
-	optcr &= (uint32_t)~(0xFFu<<8u);
+    optcr = FLASH->OPTCR;
+    optcr &= (uint32_t)~(0xFFu<<8u);
 
-	switch (level) {
-		case 0x00u: { optcr |= (0x55u<<8u); break; }
-		case 0x01u: { optcr |= (0xAAu<<8u); break; }
-		case 0x02u: { optcr |= (0xCCu<<8u); break; }
-		default:    { optcr |= (0x55u<<8u); break; }
-	}
-	FLASH->OPTCR = optcr;
+    switch (level) {
+        case 0x00u: { optcr |= (0x55u<<8u); break; }
+        case 0x01u: { optcr |= (0xAAu<<8u); break; }
+        case 0x02u: { optcr |= (0xCCu<<8u); break; }
+        default:    { optcr |= (0x55u<<8u); break; }
+    }
+    FLASH->OPTCR = optcr;
 
 // Validate the choice
 
-	kern_suspendProcess(1u);
-	optcr = FLASH->OPTCR;
-	optcr &= (uint32_t)~(FLASH_OPTCR_OPTSTRT | FLASH_OPTCR_OPTLOCK);
-	optcr |= FLASH_OPTCR_OPTSTRT;
-	FLASH->OPTCR = optcr;
+    kern_suspendProcess(1u);
+    optcr = FLASH->OPTCR;
+    optcr &= (uint32_t)~(FLASH_OPTCR_OPTSTRT | FLASH_OPTCR_OPTLOCK);
+    optcr |= FLASH_OPTCR_OPTSTRT;
+    FLASH->OPTCR = optcr;
 
-	kern_suspendProcess(1u);
-	optcr = FLASH->OPTCR;
-	optcr &= (uint32_t)~(FLASH_OPTCR_OPTSTRT | FLASH_OPTCR_OPTLOCK);
-	optcr |= FLASH_OPTCR_OPTLOCK;
-	FLASH->OPTCR = optcr;
+    kern_suspendProcess(1u);
+    optcr = FLASH->OPTCR;
+    optcr &= (uint32_t)~(FLASH_OPTCR_OPTSTRT | FLASH_OPTCR_OPTLOCK);
+    optcr |= FLASH_OPTCR_OPTLOCK;
+    FLASH->OPTCR = optcr;
 }

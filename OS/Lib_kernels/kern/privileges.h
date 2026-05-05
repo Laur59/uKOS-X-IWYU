@@ -5,20 +5,20 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Kern - Privilege management.
+; Project:  uKOS-X
+; Goal:     Kern - Privilege management.
 ;
-;			This module implements the software primitives.
+;           This module implements the software primitives.
 ;
-; 			Privilege system calls
-; 			---------------------------
+;           Privilege system calls
+;           ---------------------------
 ;
-;			void	privileges_init(void);
-;			int32_t	kern_setPrivilegeMode(uint8_t mode);
-;			void	kern_privilegeElevate(void); !!! Not for user applications
+;           void    privileges_init(void);
+;           int32_t kern_setPrivilegeMode(uint8_t mode);
+;           void    kern_privilegeElevate(void); !!! Not for user applications
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -55,7 +55,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_kernels
@@ -73,10 +73,10 @@
  */
 
 #if (defined(__cplusplus))
-extern	"C" {
+extern  "C" {
 #endif
 
-extern	void	privileges_init(void);
+extern  void    privileges_init(void);
 
 /*!
  * \brief Set the privilege mode
@@ -95,12 +95,12 @@ extern	void	privileges_init(void);
  *
  * - This function allows to change the execution mode (Privileged / user)
  *
- * \param[in]	mode			KPROC_USER, Reduction the process rights in the user mode
- * \param[in]	-				KPROC_PRIVILEGED, Elevate the process rights in the privileged mode
- * \return		KERR_KERN_NOERR	OK
+ * \param[in]   mode            KPROC_USER, Reduction the process rights in the user mode
+ *                              KPROC_PRIVILEGED, Elevate the process rights in the privileged mode
+ * \return      KERR_KERN_NOERR OK
  *
  */
-extern	int32_t	kern_setPrivilegeMode(uint8_t mode);
+extern  int32_t kern_setPrivilegeMode(uint8_t mode);
 
 /*!
  * \brief Elevate the privilege
@@ -116,12 +116,11 @@ extern	int32_t	kern_setPrivilegeMode(uint8_t mode);
  * - Coming from the TRAP dispatcher.
  * - Set the privileged mode
  *
- * \param[in]	-
  *
  * \note This function does not return a value (None).
  *
  */
-extern	void	kern_privilegeElevate(void) __attribute__ ((naked));
+extern  void    kern_privilegeElevate(void) __attribute__ ((naked));
 
 #if (defined(__cplusplus))
 }

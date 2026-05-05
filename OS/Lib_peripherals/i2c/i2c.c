@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		i2c manager.
+; Project:  uKOS-X
+; Goal:     i2c manager.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +46,7 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include    "uKOS.h"
 
 #if (defined(CONFIG_MAN_I2C_S))
 
@@ -55,24 +55,24 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"i2c          i2c manager.                              (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "i2c manager\n"
-									"===========\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "i2c          i2c manager.                              (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "i2c manager\n"
+                                    "===========\n\n"
 
-									"This manager ...\n\n"
+                                    "This manager ...\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
-	I2c,							// Module name (the first letter has to be upper case)
-	KID_FAM_PERIPHERALS,			// Family (defined in the module.h)
-	KNUM_I2C,						// Module identifier (defined in the module.h)
-	nullptr,						// Address of the initialisation code (early pre-init)
-	nullptr,						// Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
-	nullptr,						// Address of the clean code (clean the module)
-	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0								// Execution cores
+    I2c,                            // Module name (the first letter has to be upper case)
+    KID_FAM_PERIPHERALS,            // Family (defined in the module.h)
+    KNUM_I2C,                       // Module identifier (defined in the module.h)
+    nullptr,                        // Address of the initialisation code (early pre-init)
+    nullptr,                        // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                        // Address of the clean code (clean the module)
+    " 1.0",                         // Revision string (major . minor)
+    (1u<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                               // Execution cores
 );
 
 /*
@@ -90,36 +90,36 @@ MODULE(
  *    status = i2c_release(KI2C0, KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	manager			I2C manager
- * \param[in]	reserveMode		Any mode
- * \param[in]	timeout			Timeout (1-ms of resolution)
- * \param[in]	-				KWAIT_INFINITY, waiting forever
- * \param[in]	-				KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_I2C_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager         I2C manager
+ * \param[in]   reserveMode     Any mode
+ * \param[in]   timeout         Timeout (1-ms of resolution)
+ *                              KWAIT_INFINITY, waiting forever
+ *                              KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_I2C_XXXXX  Depends on the "xxxx" device manager
  *
  */
-int32_t	i2c_reserve(i2cManager_t manager, reserveMode_t reserveMode, uint32_t timeout) {
+int32_t i2c_reserve(i2cManager_t manager, reserveMode_t reserveMode, uint32_t timeout) {
 
-	switch (manager) {
+    switch (manager) {
 
-		#if (defined(CONFIG_MAN_I2C0_S))
-		case KI2C0: { return (i2c0_reserve(reserveMode, timeout)); }
-		#endif
+        #if (defined(CONFIG_MAN_I2C0_S))
+        case KI2C0: { return (i2c0_reserve(reserveMode, timeout)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_I2C1_S))
-		case KI2C1: { return (i2c1_reserve(reserveMode, timeout)); }
-		#endif
+        #if (defined(CONFIG_MAN_I2C1_S))
+        case KI2C1: { return (i2c1_reserve(reserveMode, timeout)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_I2C2_S))
-		case KI2C2: { return (i2c2_reserve(reserveMode, timeout)); }
-		#endif
+        #if (defined(CONFIG_MAN_I2C2_S))
+        case KI2C2: { return (i2c2_reserve(reserveMode, timeout)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_I2C3_S))
-		case KI2C3: { return (i2c3_reserve(reserveMode, timeout)); }
-		#endif
+        #if (defined(CONFIG_MAN_I2C3_S))
+        case KI2C3: { return (i2c3_reserve(reserveMode, timeout)); }
+        #endif
 
-		default:	{ return (KERR_I2C_NODEV);					   }
-	}
+        default:    { return (KERR_I2C_NODEV);                     }
+    }
 }
 
 /*
@@ -133,33 +133,33 @@ int32_t	i2c_reserve(i2cManager_t manager, reserveMode_t reserveMode, uint32_t ti
  *    status = i2c_release(KI2C0, KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	manager			I2C manager
- * \param[in]	reserveMode		Any mode
- * \return		KERR_I2C_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager         I2C manager
+ * \param[in]   reserveMode     Any mode
+ * \return      KERR_I2C_XXXXX  Depends on the "xxxx" device manager
  *
  */
-int32_t	i2c_release(i2cManager_t manager, reserveMode_t reserveMode) {
+int32_t i2c_release(i2cManager_t manager, reserveMode_t reserveMode) {
 
-	switch (manager) {
+    switch (manager) {
 
-		#if (defined(CONFIG_MAN_I2C0_S))
-		case KI2C0: { return (i2c0_release(reserveMode)); }
-		#endif
+        #if (defined(CONFIG_MAN_I2C0_S))
+        case KI2C0: { return (i2c0_release(reserveMode)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_I2C1_S))
-		case KI2C1: { return (i2c1_release(reserveMode)); }
-		#endif
+        #if (defined(CONFIG_MAN_I2C1_S))
+        case KI2C1: { return (i2c1_release(reserveMode)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_I2C2_S))
-		case KI2C2: { return (i2c2_release(reserveMode)); }
-		#endif
+        #if (defined(CONFIG_MAN_I2C2_S))
+        case KI2C2: { return (i2c2_release(reserveMode)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_I2C3_S))
-		case KI2C3: { return (i2c3_release(reserveMode)); }
-		#endif
+        #if (defined(CONFIG_MAN_I2C3_S))
+        case KI2C3: { return (i2c3_release(reserveMode)); }
+        #endif
 
-		default:	{ return (KERR_I2C_NODEV);	  		  }
-	}
+        default:    { return (KERR_I2C_NODEV);            }
+    }
 }
 
 /*
@@ -177,33 +177,33 @@ int32_t	i2c_release(i2cManager_t manager, reserveMode_t reserveMode) {
  *    status = i2c_configure(KI2C0, &configure);
  * \endcode
  *
- * \param[in]	manager			I2C manager
- * \param[in]	*configure		Ptr on the configuration buffer
- * \return		KERR_I2C_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager         I2C manager
+ * \param[in]   *configure      Ptr on the configuration buffer
+ * \return      KERR_I2C_XXXXX  Depends on the "xxxx" device manager
  *
  */
-int32_t	i2c_configure(i2cManager_t manager, const i2cCnf_t *configure) {
+int32_t i2c_configure(i2cManager_t manager, const i2cCnf_t *configure) {
 
-	switch (manager) {
+    switch (manager) {
 
-		#if (defined(CONFIG_MAN_I2C0_S))
-		case KI2C0: { return (i2c0_configure(configure)); }
-		#endif
+        #if (defined(CONFIG_MAN_I2C0_S))
+        case KI2C0: { return (i2c0_configure(configure)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_I2C1_S))
-		case KI2C1: { return (i2c1_configure(configure)); }
-		#endif
+        #if (defined(CONFIG_MAN_I2C1_S))
+        case KI2C1: { return (i2c1_configure(configure)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_I2C2_S))
-		case KI2C2: { return (i2c2_configure(configure)); }
-		#endif
+        #if (defined(CONFIG_MAN_I2C2_S))
+        case KI2C2: { return (i2c2_configure(configure)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_I2C3_S))
-		case KI2C3: { return (i2c3_configure(configure)); }
-		#endif
+        #if (defined(CONFIG_MAN_I2C3_S))
+        case KI2C3: { return (i2c3_configure(configure)); }
+        #endif
 
-		default:	{ return (KERR_I2C_NODEV);			  }
-	}
+        default:    { return (KERR_I2C_NODEV);            }
+    }
 }
 
 /*
@@ -218,35 +218,35 @@ int32_t	i2c_configure(i2cManager_t manager, const i2cCnf_t *configure) {
  *    status = i2c_write(KI2C0, 0x34, buffer, sizeof(buffer));
  * \endcode
  *
- * \param[in]	manager			I2C manager
- * \param[in]	address			i2c device address
- * \param[in]	*buffer			Ptr on the buffer
- * \param[in]	size			Size of the buffer
- * \return		KERR_I2C_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager         I2C manager
+ * \param[in]   address         i2c device address
+ * \param[in]   *buffer         Ptr on the buffer
+ * \param[in]   size            Size of the buffer
+ * \return      KERR_I2C_XXXXX  Depends on the "xxxx" device manager
  *
  */
-int32_t	i2c_write(i2cManager_t manager, uint8_t address, const uint8_t *buffer, uint16_t size) {
+int32_t i2c_write(i2cManager_t manager, uint8_t address, const uint8_t *buffer, uint16_t size) {
 
-	switch (manager) {
+    switch (manager) {
 
-		#if (defined(CONFIG_MAN_I2C0_S))
-		case KI2C0: { return (i2c0_write(address, buffer, size)); }
-		#endif
+        #if (defined(CONFIG_MAN_I2C0_S))
+        case KI2C0: { return (i2c0_write(address, buffer, size)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_I2C1_S))
-		case KI2C1: { return (i2c1_write(address, buffer, size)); }
-		#endif
+        #if (defined(CONFIG_MAN_I2C1_S))
+        case KI2C1: { return (i2c1_write(address, buffer, size)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_I2C2_S))
-		case KI2C2: { return (i2c2_write(address, buffer, size)); }
-		#endif
+        #if (defined(CONFIG_MAN_I2C2_S))
+        case KI2C2: { return (i2c2_write(address, buffer, size)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_I2C3_S))
-		case KI2C3: { return (i2c3_write(address, buffer, size)); }
-		#endif
+        #if (defined(CONFIG_MAN_I2C3_S))
+        case KI2C3: { return (i2c3_write(address, buffer, size)); }
+        #endif
 
-		default:	{ return (KERR_I2C_NODEV);					  }
-	}
+        default:    { return (KERR_I2C_NODEV);                    }
+    }
 }
 
 /*
@@ -269,35 +269,35 @@ int32_t	i2c_write(i2cManager_t manager, uint8_t address, const uint8_t *buffer, 
  *    status = i2c_read(KI2C0, 0x34, buffer, 2);
  * \endcode
  *
- * \param[in]	manager			I2C manager
- * \param[in]	address			i2c device address
- * \param[out]	*buffer			Ptr on the buffer
- * \param[in]	size			Size of the buffer
- * \return		KERR_I2C_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager         I2C manager
+ * \param[in]   address         i2c device address
+ * \param[out]  *buffer         Ptr on the buffer
+ * \param[in]   size            Size of the buffer
+ * \return      KERR_I2C_XXXXX  Depends on the "xxxx" device manager
  *
  */
-int32_t	i2c_read(i2cManager_t manager, uint8_t address, uint8_t *buffer, uint16_t size) {
+int32_t i2c_read(i2cManager_t manager, uint8_t address, uint8_t *buffer, uint16_t size) {
 
-	switch (manager) {
+    switch (manager) {
 
-		#if (defined(CONFIG_MAN_I2C0_S))
-		case KI2C0: { return (i2c0_read(address, buffer, size)); }
-		#endif
+        #if (defined(CONFIG_MAN_I2C0_S))
+        case KI2C0: { return (i2c0_read(address, buffer, size)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_I2C1_S))
-		case KI2C1: { return (i2c1_read(address, buffer, size)); }
-		#endif
+        #if (defined(CONFIG_MAN_I2C1_S))
+        case KI2C1: { return (i2c1_read(address, buffer, size)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_I2C2_S))
-		case KI2C2: { return (i2c2_read(address, buffer, size)); }
-		#endif
+        #if (defined(CONFIG_MAN_I2C2_S))
+        case KI2C2: { return (i2c2_read(address, buffer, size)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_I2C3_S))
-		case KI2C3: { return (i2c3_read(address, buffer, size)); }
-		#endif
+        #if (defined(CONFIG_MAN_I2C3_S))
+        case KI2C3: { return (i2c3_read(address, buffer, size)); }
+        #endif
 
-		default:	{ return (KERR_I2C_NODEV);					 }
-	}
+        default:    { return (KERR_I2C_NODEV);                   }
+    }
 }
 
 #endif

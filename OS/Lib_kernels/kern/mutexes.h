@@ -5,24 +5,24 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Kern - Mutex management.
+; Project:  uKOS-X
+; Goal:     Kern - Mutex management.
 ;
-;			This module implements the mutex primitives.
+;           This module implements the mutex primitives.
 ;
-;			Mutex system calls
-;			------------------
+;           Mutex system calls
+;           ------------------
 ;
-;			void	mutexes_init(void);
-;			int32_t	kern_createMutex(const char_t *identifier, mutx_t **handle);
-;			int32_t	kern_unlockMutex(mutx_t *handle);
-;			int32_t	kern_lockMutex(mutx_t *handle, uint32_t timeout);
-;			int32_t	kern_killMutex(mutx_t *handle);
-;			int32_t	kern_restartMutex(mutx_t *handle);
-;			int32_t	kern_getMutexById(const char_t identifier, mutx_t **handle);
+;           void    mutexes_init(void);
+;           int32_t kern_createMutex(const char_t *identifier, mutx_t **handle);
+;           int32_t kern_unlockMutex(mutx_t *handle);
+;           int32_t kern_lockMutex(mutx_t *handle, uint32_t timeout);
+;           int32_t kern_killMutex(mutx_t *handle);
+;           int32_t kern_restartMutex(mutx_t *handle);
+;           int32_t kern_getMutexById(const char_t identifier, mutx_t **handle);
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -59,7 +59,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_kernels
@@ -79,10 +79,10 @@
 // Prototypes
 
 #if (defined(__cplusplus))
-extern	"C" {
+extern  "C" {
 #endif
 
-extern	void	mutexes_init(void);
+extern  void    mutexes_init(void);
 
 /*!
  * \brief Create a mutex
@@ -97,14 +97,14 @@ extern	void	mutexes_init(void);
  *    status = kern_createMutex(identifier, &mutex);
  * \endcode
  *
- * \param[in]	*identifier		Ptr on the mutex identifier (nullptr = anonymous)
- * \param[out]	**handle		Ptr on the handle
- * \return		KERR_KERN_NOERR	OK
- * \return		KERR_KERN_MUFUL	No more mutex
- * \return		KERR_KERN_IDMUT	The mutex identifier is already used
+ * \param[in]   *identifier     Ptr on the mutex identifier (nullptr = anonymous)
+ * \param[out]  **handle        Ptr on the handle
+ * \return      KERR_KERN_NOERR OK
+ * \return      KERR_KERN_MUFUL No more mutex
+ * \return      KERR_KERN_IDMUT The mutex identifier is already used
  *
  */
-extern	int32_t	kern_createMutex(const char_t *identifier, mutx_t **handle);
+extern  int32_t kern_createMutex(const char_t *identifier, mutx_t **handle);
 
 /*!
  * \brief Unlock a mutex
@@ -125,15 +125,15 @@ extern	int32_t	kern_createMutex(const char_t *identifier, mutx_t **handle);
  *   - Then disconnect the first process from the mutex list (accordingly to the number of events)
  *   - Connect the process to the execution list
  *
- * \param[in]	*handle			Ptr on the handle
- * \return		KERR_KERN_NOERR	OK
- * \return		KERR_KERN_NOMUT	The mutex does not exist
- * \return		KERR_KERN_MUTME	The mutex counts too many events
- * \return		KERR_KERN_MUNOW	The process is not the owner of the mutex
- * \return		KERR_KERN_FRISR	Execution from ISR
+ * \param[in]   *handle         Ptr on the handle
+ * \return      KERR_KERN_NOERR OK
+ * \return      KERR_KERN_NOMUT The mutex does not exist
+ * \return      KERR_KERN_MUTME The mutex counts too many events
+ * \return      KERR_KERN_MUNOW The process is not the owner of the mutex
+ * \return      KERR_KERN_FRISR Execution from ISR
  *
  */
-extern	int32_t	kern_unlockMutex(mutx_t *handle);
+extern  int32_t kern_unlockMutex(mutx_t *handle);
 
 /*!
  * \brief lock a mutex
@@ -153,19 +153,19 @@ extern	int32_t	kern_unlockMutex(mutx_t *handle);
  * - If (counter < 0)
  *   - Then suspend the process
  *
- * \param[in]	*handle			Ptr on the handle
- * \param[in]	timeout			Timeout (1-ms of resolution)
- * \param[in]	-				KWAIT_INFINITY, waiting forever
- * \param[in]	-				KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_KERN_NOERR	OK
- * \return		KERR_KERN_NOMUT	The mutex does not exist
- * \return		KERR_KERN_MUTME	The mutex counts too many events
- * \return		KERR_KERN_MUKIL	The mutex has been killed (with processes in its list)
- * \return		KERR_KERN_TIMEO	Timeout
- * \return		KERR_KERN_FRISR	Execution from ISR
+ * \param[in]   *handle         Ptr on the handle
+ * \param[in]   timeout         Timeout (1-ms of resolution)
+ *                              KWAIT_INFINITY, waiting forever
+ *                              KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_KERN_NOERR OK
+ * \return      KERR_KERN_NOMUT The mutex does not exist
+ * \return      KERR_KERN_MUTME The mutex counts too many events
+ * \return      KERR_KERN_MUKIL The mutex has been killed (with processes in its list)
+ * \return      KERR_KERN_TIMEO Timeout
+ * \return      KERR_KERN_FRISR Execution from ISR
  *
  */
-extern	int32_t	kern_lockMutex(mutx_t *handle, uint32_t timeout);
+extern  int32_t kern_lockMutex(mutx_t *handle, uint32_t timeout);
 
 /*!
  * \brief Kill the mutex
@@ -182,12 +182,12 @@ extern	int32_t	kern_lockMutex(mutx_t *handle, uint32_t timeout);
  * - If (process still connected to the mutex list)
  *   - Then return error
  *
- * \param[in]	*handle			Ptr on the handle
- * \return		KERR_KERN_NOERR	OK
- * \return		KERR_KERN_NOMUT	The mutex does not exist
+ * \param[in]   *handle         Ptr on the handle
+ * \return      KERR_KERN_NOERR OK
+ * \return      KERR_KERN_NOMUT The mutex does not exist
  *
  */
-extern	int32_t	kern_killMutex(mutx_t *handle);
+extern  int32_t kern_killMutex(mutx_t *handle);
 
 /*!
  * \brief Restart the mutex
@@ -201,12 +201,12 @@ extern	int32_t	kern_killMutex(mutx_t *handle);
  *    status = kern_restartMutex(mutex);
  * \endcode
  *
- * \param[in]	*handle			Ptr on the handle
- * \return		KERR_KERN_NOERR	OK
- * \return		KERR_KERN_NOMUT	The mutex does not exist
+ * \param[in]   *handle         Ptr on the handle
+ * \return      KERR_KERN_NOERR OK
+ * \return      KERR_KERN_NOMUT The mutex does not exist
  *
  */
-extern	int32_t	kern_restartMutex(mutx_t *handle);
+extern  int32_t kern_restartMutex(mutx_t *handle);
 
 /*!
  * \brief Get the handle of a mutex by its identifier
@@ -223,13 +223,13 @@ extern	int32_t	kern_restartMutex(mutx_t *handle);
  *
  * - This function returns the handle of the mutex
  *
- * \param[in]	*identifier		Ptr on the mutex identifier
- * \param[out]	**handle		Ptr on the handle
- * \return		KERR_KERN_NOERR	OK
- * \return		KERR_KERN_NOMUT	The mutex does not exist
+ * \param[in]   *identifier     Ptr on the mutex identifier
+ * \param[out]  **handle        Ptr on the handle
+ * \return      KERR_KERN_NOERR OK
+ * \return      KERR_KERN_NOMUT The mutex does not exist
  *
  */
-extern	int32_t	kern_getMutexById(const char_t *identifier, mutx_t **handle);
+extern  int32_t kern_getMutexById(const char_t *identifier, mutx_t **handle);
 
 #if (defined(__cplusplus))
 }

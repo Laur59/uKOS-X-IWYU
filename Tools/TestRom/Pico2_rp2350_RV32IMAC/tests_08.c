@@ -6,11 +6,11 @@
 ; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 ;------------------------------------------------------------------------
-; Author:	Laurent von Allmen	The 2026-02-13
+; Author:   Laurent von Allmen  The 2026-02-13
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test of the boot of the core 1.
+; Project:  uKOS-X
+; Goal:     Test of the boot of the core 1.
 ;
 ;   (c) 2025-2026, Laurent von Allmen
 ;   ---------------------------------
@@ -47,13 +47,11 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
-
-#if (defined(TEST_08_S))
+#include    "tests.h"
 
 // Prototypes
 
-extern	void	init_launchCore_1(void (*entry)(void));
+extern  void    init_launchCore_1(void (*entry)(void));
 
 /*
  * \brief local_CodeCore_1
@@ -61,15 +59,15 @@ extern	void	init_launchCore_1(void (*entry)(void));
  * - Blink the GREEN Led
  *
  */
-static	void	local_codeCore_1(void) {
+static  void    local_codeCore_1(void) {
 
-	__asm volatile ("la	sp,linker_topStackFirst_C1");
+    __asm volatile ("la sp,linker_topStackFirst_C1");
 
-	while (true) {
-		cmns_wait(50000);
+    while (true) {
+        cmns_wait(50000);
 
-		LED_GREEN_TOGGLE;
-	}
+        LED_GREEN_TOGGLE;
+    }
 }
 
 /*
@@ -78,17 +76,15 @@ static	void	local_codeCore_1(void) {
  * - Test of the boot of the core 1
  *
  */
-void	test_08(void) {
+void    test_08(void) {
 
-	init_launchCore_1(local_codeCore_1);
-	cmns_init();
+    init_launchCore_1(local_codeCore_1);
+    cmns_init();
 
-	while (true) {
-		cmns_wait(1000000);
+    while (true) {
+        cmns_wait(1000000);
 
-		LED_RED_TOGGLE;
-		LED_SYSTEM_TOGGLE;
-	}
+        LED_RED_TOGGLE;
+        LED_SYSTEM_TOGGLE;
+    }
 }
-
-#endif

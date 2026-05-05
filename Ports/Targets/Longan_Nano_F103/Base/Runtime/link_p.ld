@@ -5,33 +5,33 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Linker description for the uKOS-X system.
-;			Privileged only support
+; Project:  uKOS-X
+; Goal:     Linker description for the uKOS-X system.
+;           Privileged only support
 ;
 ;                       CODE
-; linker_stTEXT			+-----------------+
-;						|                 |
-;						| .restart        |
-;						| .vectors        |
-;						| .text           |
-;						| .rodata         |
-; linker_enRODATA		|                 |
-;						+-----------------+
-; linker_stSignature	|				  |             DATA
-;						+-----------------+ ........... +-----------------+ linker_stDATA
-; linker_stINDATA		|                 |				|                 |
-;						| .data           |				| .data           |
-;						|                 |				|                 | linker_enDATA
-;						+-----------------+ ........... +-----------------+
-;														|                 | linker_stBSS
-;														| .bss            |
-;														| COMMON          |
-;														|                 | linker_enBSS
-;														+-----------------+
+; linker_stTEXT         +-----------------+
+;                       |                 |
+;                       | .restart        |
+;                       | .vectors        |
+;                       | .text           |
+;                       | .rodata         |
+; linker_enRODATA       |                 |
+;                       +-----------------+
+; linker_stSignature    |                 |             DATA
+;                       +-----------------+ ........... +-----------------+ linker_stDATA
+; linker_stINDATA       |                 |             |                 |
+;                       | .data           |             | .data           |
+;                       |                 |             |                 | linker_enDATA
+;                       +-----------------+ ........... +-----------------+
+;                                                       |                 | linker_stBSS
+;                                                       | .bss            |
+;                                                       | COMMON          |
+;                                                       |                 | linker_enBSS
+;                                                       +-----------------+
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -71,52 +71,52 @@
 OUTPUT_ARCH( "riscv" )
 ENTRY(Reset_C0_Handler)
 
-INCLUDE		GD32VF103CBT.ld
+INCLUDE     GD32VF103CBT.ld
 
-/* Mapping:													*/
-/*															*/
-/* RAM:		stPrgmData			0x20000000					*/
-/*			16K												*/
-/*			stHeap				0x20004000					*/
-/*			13K												*/
-/*			stUMemo				0x20007400					*/
-/*			16K												*/
+/* Mapping:                                                 */
+/*                                                          */
+/* RAM:     stPrgmData          0x20000000                  */
+/*          16K                                             */
+/*          stHeap              0x20004000                  */
+/*          13K                                             */
+/*          stUMemo             0x20007400                  */
+/*          16K                                             */
 
-/* IMPORTANT:												*/
-/* all the stacks have to be maintained aligned				*/
-/* on a boundary of 16-bytes								*/
+/* IMPORTANT:                                               */
+/* all the stacks have to be maintained aligned             */
+/* on a boundary of 16-bytes                                */
 
-linker_sizeStackSystem_C0	= (0);													/* Length of the System stack  								*/
-linker_sizeStackFirst_C0	= (1792);												/* Length of the First stack  								*/
+linker_sizeStackSystem_C0   = (0);                                                  /* Length of the System stack                               */
+linker_sizeStackFirst_C0    = (768);                                                /* Length of the First stack                                */
 
-/* IMPORTANT:												*/
-/* External memory, User (download application) and shared	*/
+/* IMPORTANT:                                               */
+/* External memory, User (download application) and shared  */
 
-linker_stEXRAM				= 0;													/* 0x00000000: EXRAM, start of the external memory			*/
-linker_lnEXRAM				= (0);													/* Length of the external memory	  						*/
+linker_stEXRAM              = 0;                                                    /* 0x00000000: EXRAM, start of the external memory          */
+linker_lnEXRAM              = (0);                                                  /* Length of the external memory                            */
 
-linker_stUMemo				= (linker_stHeap + linker_lnHeap);						/* 0x20007400: UMemo, start of the user memory 				*/
-linker_lnUMemo				= (3K);													/* Length of the user memory	  							*/
+linker_stUMemo              = (linker_stHeap + linker_lnHeap);                      /* 0x20007400: UMemo, start of the user memory              */
+linker_lnUMemo              = (3K);                                                 /* Length of the user memory                                */
 
-/* IMPORTANT:												*/
-/* The heap has to be maintained aligned					*/
-/* on a boundary of 8-bytes									*/
+/* IMPORTANT:                                               */
+/* The heap has to be maintained aligned                    */
+/* on a boundary of 8-bytes                                 */
 
-linker_stHeap				= (linker_stPrgmData + linker_lnPrgmData);				/* 0x20004000: start of the heap							*/
-linker_lnHeap				= (13K);												/* Length of the heap										*/
+linker_stHeap               = (linker_stPrgmData + linker_lnPrgmData);              /* 0x20004000: start of the heap                            */
+linker_lnHeap               = (14K);                                                /* Length of the heap                                       */
 
-/* IMPORTANT:												*/
-/* uKOS OS Flash + memory									*/
+/* IMPORTANT:                                               */
+/* uKOS OS Flash + memory                                   */
 
-linker_stPrgmCode			= gd_stINTFLASH;										/* 0x08000000: PrgmCode, start of the Flash					*/
-linker_lnPrgmCode			= gd_lnINTFLASH;										/* Length of the the Flash									*/
+linker_stPrgmCode           = gd_stINTFLASH;                                        /* 0x08000000: PrgmCode, start of the Flash                 */
+linker_lnPrgmCode           = gd_lnINTFLASH;                                        /* Length of the the Flash                                  */
 
-linker_stPrgmData			= gd_stSRAM;											/* 0x20000000: PrgmData, start of the RAM					*/
-linker_lnPrgmData			= (16K);												/* Length of the RAM										*/
+linker_stPrgmData           = gd_stSRAM;                                            /* 0x20000000: PrgmData, start of the RAM                   */
+linker_lnPrgmData           = (16K);                                                /* Length of the RAM                                        */
 
 MEMORY {
-	prgm_code (rx)	: ORIGIN = linker_stPrgmCode, LENGTH = linker_lnPrgmCode
-	prgm_data (rwx)	: ORIGIN = linker_stPrgmData, LENGTH = linker_lnPrgmData
+    prgm_code (rx)  : ORIGIN = linker_stPrgmCode, LENGTH = linker_lnPrgmCode
+    prgm_data (rwx) : ORIGIN = linker_stPrgmData, LENGTH = linker_lnPrgmData
 }
 
-INCLUDE		system_p.ld
+INCLUDE     system_p.ld

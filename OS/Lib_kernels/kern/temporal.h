@@ -5,26 +5,26 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Kern - time management.
+; Project:  uKOS-X
+; Goal:     Kern - time management.
 ;
-;			This module implements the temporal and the call-back primitives.
+;           This module implements the temporal and the call-back primitives.
 ;
-; 			Temporal system calls
-; 			---------------------
+;           Temporal system calls
+;           ---------------------
 ;
-;			void	temporal_init(void);
-;			int32_t	kern_suspendProcess(uint32_t time);
-;			int32_t	kern_setNewTimeout(proc_t *handle, uint32_t timeout);
-;			int32_t	kern_resumeProcessWithTimeout(proc_t *handle);
-;			int32_t	kern_readRemainingProcessTimeout(uint32_t *timeout);
-;			int32_t	kern_switchFast(void);
-;			int32_t	kern_readTickCount(uint64_t *tickCount);
-;			int32_t	kern_waitAtLeast(uint16_t time);
-;			int32_t	kern_hasPendingTimeoutProcesses(bool *nonInfTOActive);
+;           void    temporal_init(void);
+;           int32_t kern_suspendProcess(uint32_t time);
+;           int32_t kern_setNewTimeout(proc_t *handle, uint32_t timeout);
+;           int32_t kern_resumeProcessWithTimeout(proc_t *handle);
+;           int32_t kern_readRemainingProcessTimeout(uint32_t *timeout);
+;           int32_t kern_switchFast(void);
+;           int32_t kern_readTickCount(uint64_t *tickCount);
+;           int32_t kern_waitAtLeast(uint16_t time);
+;           int32_t kern_hasPendingTimeoutProcesses(bool *nonInfTOActive);
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -61,7 +61,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_kernels
@@ -78,17 +78,17 @@
  * @{
  */
 
-#define	KWAIT_INFINITY			((uint32_t)(-1))				// Waiting forever
-#define	KWAIT_REMAINING_TIMEOUT	((uint32_t)(-2))				// Waiting for the remaining timeout
+#define KWAIT_INFINITY          ((uint32_t)(-1))                // Waiting forever
+#define KWAIT_REMAINING_TIMEOUT ((uint32_t)(-2))                // Waiting for the remaining timeout
 
 // Prototypes
 
 #if (defined(__cplusplus))
-extern	"C" {
+extern  "C" {
 #endif
 
-extern	void	temporal_init(void);
-extern	void	temporal_testEOTime(uint32_t time);
+extern  void    temporal_init(void);
+extern  void    temporal_testEOTime(uint32_t time);
 
 /*!
  * \brief Suspend the process for a time
@@ -106,14 +106,14 @@ extern	void	temporal_testEOTime(uint32_t time);
  * - Disconnect a process from the execution list
  * - Connect the process to the time list
  *
- * \param[in]	time			Suspend the process for a time (1-ms of resolution)
- * \param[in]	-				KWAIT_INFINITY, waiting forever
- * \param[in]	-				KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_KERN_NOERR	OK
- * \return		KERR_KERN_FRISR	Execution from ISR
+ * \param[in]   time            Suspend the process for a time (1-ms of resolution)
+ *                              KWAIT_INFINITY, waiting forever
+ *                              KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_KERN_NOERR OK
+ * \return      KERR_KERN_FRISR Execution from ISR
  *
  */
-extern	int32_t	kern_suspendProcess(uint32_t time);
+extern  int32_t kern_suspendProcess(uint32_t time);
 
 /*!
  * \brief Set a new timeout
@@ -132,15 +132,15 @@ extern	int32_t	kern_suspendProcess(uint32_t time);
  * - Just change the internal timeout counter
  * - Do not de-schedule the process
  *
- * \param[in]	*handle			Ptr on the handle
- * \param[in]	timeout			Set a new timeout (1-ms of resolution)
- * \param[in]	-				Set with KWAIT_INFINITY, waiting forever
- * \param[in]	-				Set with KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_KERN_NOERR	OK
- * \return		KERR_KERN_NOPRO	The process does not exist
+ * \param[in]   *handle         Ptr on the handle
+ * \param[in]   timeout         Set a new timeout (1-ms of resolution)
+ *                              Set with KWAIT_INFINITY, waiting forever
+ *                              Set with KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_KERN_NOERR OK
+ * \return      KERR_KERN_NOPRO The process does not exist
  *
  */
-extern	int32_t	kern_setNewTimeout(proc_t *handle, uint32_t timeout);
+extern  int32_t kern_setNewTimeout(proc_t *handle, uint32_t timeout);
 
 /*!
  * \brief Restore a waiting process by forcing a timeout
@@ -160,13 +160,13 @@ extern	int32_t	kern_setNewTimeout(proc_t *handle, uint32_t timeout);
  *    status = kern_resumeProcessWithTimeout(process);
  * \endcode
  *
- * \param[in]	*handle			Ptr on the handle
- * \return		KERR_KERN_NOERR	OK
- * \return		KERR_KERN_NOPRO	The process does not exist
- * \return		KERR_KERN_TIMEO	Timeout
+ * \param[in]   *handle         Ptr on the handle
+ * \return      KERR_KERN_NOERR OK
+ * \return      KERR_KERN_NOPRO The process does not exist
+ * \return      KERR_KERN_TIMEO Timeout
  *
  */
-extern	int32_t	kern_resumeProcessWithTimeout(proc_t *handle);
+extern  int32_t kern_resumeProcessWithTimeout(proc_t *handle);
 
 /*!
  * \brief Read the remaining process timeout
@@ -181,11 +181,11 @@ extern	int32_t	kern_resumeProcessWithTimeout(proc_t *handle);
  *    status = kern_readRemainingProcessTimeout(&timeout);
  * \endcode
  *
- * \param[in]	*timeout		Ptr on the timeout
- * \return		KERR_KERN_NOERR	OK
+ * \param[in]   *timeout        Ptr on the timeout
+ * \return      KERR_KERN_NOERR OK
  *
  */
-extern	int32_t	kern_readRemainingProcessTimeout(uint32_t *timeout);
+extern  int32_t kern_readRemainingProcessTimeout(uint32_t *timeout);
 
 /*!
  * \brief Force the context switching
@@ -200,12 +200,11 @@ extern	int32_t	kern_readRemainingProcessTimeout(uint32_t *timeout);
  *
  * - Force a context switch
  *
- * \param[in]	-
- * \return		KERR_KERN_NOERR	OK
- * \return		KERR_KERN_FRISR	Execution from ISR
+ * \return      KERR_KERN_NOERR OK
+ * \return      KERR_KERN_FRISR Execution from ISR
  *
  */
-extern	int32_t	kern_switchFast(void);
+extern  int32_t kern_switchFast(void);
 
 /*!
  * \brief Read the tickCount (1-us) from the start of the uKernel
@@ -221,11 +220,11 @@ extern	int32_t	kern_switchFast(void);
  *
  * - Return the 1-us tickCount value from the start of the uKernel
  *
- * \param[out]	*tickCount		Ptr on the tickCount
- * \return		KERR_KERN_NOERR	OK
+ * \param[out]  *tickCount      Ptr on the tickCount
+ * \return      KERR_KERN_NOERR OK
  *
  */
-extern	int32_t	kern_readTickCount(uint64_t *tickCount);
+extern  int32_t kern_readTickCount(uint64_t *tickCount);
 
 /*!
  * \brief Waiting for short times (at least ... a certain time)
@@ -243,12 +242,12 @@ extern	int32_t	kern_readTickCount(uint64_t *tickCount);
  * - Return when the time is reached. Max. 65536-us
  *   This call ensure the minimum time but not the maximum
  *
- * \param[in]	time			Suspend the process for a time (1-us of resolution)
- * \return		KERR_KERN_NOERR	OK
- * \return		KERR_KERN_FRISR	Execution from ISR
+ * \param[in]   time            Suspend the process for a time (1-us of resolution)
+ * \return      KERR_KERN_NOERR OK
+ * \return      KERR_KERN_FRISR Execution from ISR
  *
  */
-extern	int32_t	kern_waitAtLeast(uint16_t time);
+extern  int32_t kern_waitAtLeast(uint16_t time);
 
 /*!
  * \brief Check if a waiting process has a timeout set
@@ -265,14 +264,13 @@ extern	int32_t	kern_waitAtLeast(uint16_t time);
  * - This functions scans the currently waiting processes and check
  *   if all timeouts are infinite or not
  *
- * \param[in]	-
- * \param[out]	*nonInfTOActive	Non infinite active timeout
- * \param[out]	-				true, If a non-infinite timeout is active
- * \param[out]	-				false, All waiting processes have an KWAIT_INFINITY timeout
- * \return		KERR_KERN_NOERR	OK
+ * \param[out]  *nonInfTOActive Non infinite active timeout
+ *                              true, If a non-infinite timeout is active
+ *                              false, All waiting processes have an KWAIT_INFINITY timeout
+ * \return      KERR_KERN_NOERR OK
  *
  */
-extern	int32_t	kern_hasPendingTimeoutProcesses(bool *nonInfTOActive);
+extern  int32_t kern_hasPendingTimeoutProcesses(bool *nonInfTOActive);
 
 #if (defined(__cplusplus))
 }

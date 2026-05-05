@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		sdcard manager.
+; Project:  uKOS-X
+; Goal:     sdcard manager.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +46,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_storages
@@ -66,76 +66,76 @@
 // Semaphores
 // ----------
 
-#define	KSDCARD_MUTEX_RESERVE	"Reserve_sdcard"
+#define KSDCARD_MUTEX_RESERVE   "Reserve_sdcard"
 
 // Sizes
 
-#define	KSDCARD_SZ_SECTOR				512u					// Sector size in bytes
-#define	KSDCARD_MAX_SECTORS_PER_CALL	128u					// Max. number of sectors per call
+#define KSDCARD_SZ_SECTOR               512u                    // Sector size in bytes
+#define KSDCARD_MAX_SECTORS_PER_CALL    128u                    // Max. number of sectors per call
 
 // sdcard parameters structure
 // ---------------------------
 
-typedef	struct	sdcardSpecifications	sdcard_specification_t;
+typedef struct  sdcardSpecifications    sdcard_specification_t;
 
 struct sdcardSpecifications {
-			uint64_t	oSize;									// Sdcard size in Bytes
-			uint32_t	oSerialNumber;							// Sdcard Serial Number
-			uint16_t	oVoltage;								// Sdcard Voltage
-			uint8_t		oManufacturer;							// Sdcard Manufacturer ID
-			uint32_t	oSpeed;									// Sdcard Speed in bit/s
-			uint8_t		oProductName[5 + 1];					// Sdcard Product Name
-			uint8_t		oCapacityStatus;						// Sdcard Capacity Status
+            uint64_t    oSize;                                  // Sdcard size in Bytes
+            uint32_t    oSerialNumber;                          // Sdcard Serial Number
+            uint16_t    oVoltage;                               // Sdcard Voltage
+            uint8_t     oManufacturer;                          // Sdcard Manufacturer ID
+            uint32_t    oSpeed;                                 // Sdcard Speed in bit/s
+            uint8_t     oProductName[5 + 1];                    // Sdcard Product Name
+            uint8_t     oCapacityStatus;                        // Sdcard Capacity Status
 };
 
 // Voltages
 
 enum {
-			KSDCARD_V_27_28		= 0x001u,						// Supported voltage  2.7 to 2.8V
-			KSDCARD_V_28_29		= 0x002u,						// Supported voltage  2.8 to 2.9V
-			KSDCARD_V_29_30		= 0x004u,						// Supported voltage  2.9 to 3.0V
-			KSDCARD_V_30_31		= 0x008u,						// Supported voltage  3.0 to 3.1V
-			KSDCARD_V_31_32		= 0x010u,						// Supported voltage  3.1 to 3.2V
-			KSDCARD_V_32_33		= 0x020u,						// Supported voltage  3.2 to 3.3V
-			KSDCARD_V_33_34		= 0x040u,						// Supported voltage  3.3 to 3.4V
-			KSDCARD_V_34_35		= 0x080u,						// Supported voltage  3.4 to 3.5V
-			KSDCARD_V_35_36		= 0x100u						// Supported voltage  3.5 to 3.6V
+            KSDCARD_V_27_28     = 0x001u,                       // Supported voltage  2.7 to 2.8V
+            KSDCARD_V_28_29     = 0x002u,                       // Supported voltage  2.8 to 2.9V
+            KSDCARD_V_29_30     = 0x004u,                       // Supported voltage  2.9 to 3.0V
+            KSDCARD_V_30_31     = 0x008u,                       // Supported voltage  3.0 to 3.1V
+            KSDCARD_V_31_32     = 0x010u,                       // Supported voltage  3.1 to 3.2V
+            KSDCARD_V_32_33     = 0x020u,                       // Supported voltage  3.2 to 3.3V
+            KSDCARD_V_33_34     = 0x040u,                       // Supported voltage  3.3 to 3.4V
+            KSDCARD_V_34_35     = 0x080u,                       // Supported voltage  3.4 to 3.5V
+            KSDCARD_V_35_36     = 0x100u                        // Supported voltage  3.5 to 3.6V
 };
 
 // Provider ids
 
 enum {
-			KSDCARD_PANASONIC	= 0x0001u,						// Panasonic
-			KSDCARD_TOSHIBA		= 0x0002u,						// Toshiba
-			KSDCARD_SANDISK		= 0x0003u,						// Sandisk
-			KSDCARD_SAMSUNG		= 0x001Bu,						// Samsung
-			KSDCARD_ADATA		= 0x001Du,						// Adata
-			KSDCARD_PHISON		= 0x0027u,						// Phison
-			KSDCARD_LEXAR		= 0x0028u,						// Lexar
-			KSDCARD_SILICONPWR	= 0x0031u,						// Silicon PWR
-			KSDCARD_KINGSTON	= 0x0041u,						// Kingston
-			KSDCARD_TRANSCEND	= 0x0074u,						// Transcend
-			KSDCARD_PATRIOT		= 0x0076u,						// Patriot
-			KSDCARD_SONY		= 0x0082u						// Sony
+            KSDCARD_PANASONIC   = 0x0001u,                      // Panasonic
+            KSDCARD_TOSHIBA     = 0x0002u,                      // Toshiba
+            KSDCARD_SANDISK     = 0x0003u,                      // Sandisk
+            KSDCARD_SAMSUNG     = 0x001Bu,                      // Samsung
+            KSDCARD_ADATA       = 0x001Du,                      // Adata
+            KSDCARD_PHISON      = 0x0027u,                      // Phison
+            KSDCARD_LEXAR       = 0x0028u,                      // Lexar
+            KSDCARD_SILICONPWR  = 0x0031u,                      // Silicon PWR
+            KSDCARD_KINGSTON    = 0x0041u,                      // Kingston
+            KSDCARD_TRANSCEND   = 0x0074u,                      // Transcend
+            KSDCARD_PATRIOT     = 0x0076u,                      // Patriot
+            KSDCARD_SONY        = 0x0082u                       // Sony
 };
 
 // Card versions
 
 enum {
-			KSDCARD_CT_MMC		= 0x01u,						// MMC sdcard Ver 3 (not supported)
-			KSDCARD_CT_SD1		= 0x02u,						// SDC sdcard Ver 1 (not supported)
-			KSDCARD_CT_SD2		= 0x04u,						// SDC sdcard Ver 2
-			KSDCARD_CT_BLOCK	= 0x08u							// Block addressing
+            KSDCARD_CT_MMC      = 0x01u,                        // MMC sdcard Ver 3 (not supported)
+            KSDCARD_CT_SD1      = 0x02u,                        // SDC sdcard Ver 1 (not supported)
+            KSDCARD_CT_SD2      = 0x04u,                        // SDC sdcard Ver 2
+            KSDCARD_CT_BLOCK    = 0x08u                         // Block addressing
 };
 
 // Prototypes
 
 #if (defined(__cplusplus))
-extern	"C" {
+extern  "C" {
 #endif
 
-#define	SDCARD_reserve	sdcard_reserve
-#define	SDCARD_release	sdcard_release
+#define SDCARD_reserve  sdcard_reserve
+#define SDCARD_release  sdcard_release
 
 /*!
  * \brief Reserve the sdcard manager
@@ -152,16 +152,16 @@ extern	"C" {
  *    status = sdcard_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode			Any mode
- * \param[in]	timeout				Timeout (1-ms of resolution)
- * \param[in]	-					KWAIT_INFINITY, waiting forever
- * \param[in]	-					KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_STORAGE_NOERR	The manager is reserved
- * \return		KERR_STORAGE_GEERR	General error
- * \return		KERR_STORAGE_CHBSY	The manager is busy
+ * \param[in]   reserveMode         Any mode
+ * \param[in]   timeout             Timeout (1-ms of resolution)
+ *                                  KWAIT_INFINITY, waiting forever
+ *                                  KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_STORAGE_NOERR  The manager is reserved
+ * \return      KERR_STORAGE_GEERR  General error
+ * \return      KERR_STORAGE_CHBSY  The manager is busy
  *
  */
-extern	int32_t	sdcard_reserve(reserveMode_t reserveMode, uint32_t timeout);
+extern  int32_t sdcard_reserve(reserveMode_t reserveMode, uint32_t timeout);
 
 /*!
  * \brief Release the sdcard manager
@@ -174,13 +174,13 @@ extern	int32_t	sdcard_reserve(reserveMode_t reserveMode, uint32_t timeout);
  *    status = sdcard_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode			Any mode
- * \return		KERR_STORAGE_NOERR	OK
- * \return		KERR_STORAGE_GEERR	General error
- * \return		KERR_STORAGE_CAREL	Cannot release the manager
+ * \param[in]   reserveMode         Any mode
+ * \return      KERR_STORAGE_NOERR  OK
+ * \return      KERR_STORAGE_GEERR  General error
+ * \return      KERR_STORAGE_CAREL  Cannot release the manager
  *
  */
-extern	int32_t	sdcard_release(reserveMode_t reserveMode);
+extern  int32_t sdcard_release(reserveMode_t reserveMode);
 
 /*!
  * \brief Initialise the sdcard
@@ -200,14 +200,14 @@ extern	int32_t	sdcard_release(reserveMode_t reserveMode);
  *    else                                          sdcard = "sdcard V.2";
  * \endcode
  *
- * \param[in]	*specification		Ptr on the sdcard specification
- * \return		KERR_STORAGE_NOERR	OK
- * \return		KERR_STORAGE_GEERR	General error
- * \return		KERR_STORAGE_NODEV	No sdcard
- * \return		KERR_STORAGE_CANRE	sdcard not recognised
+ * \param[in]   *specification      Ptr on the sdcard specification
+ * \return      KERR_STORAGE_NOERR  OK
+ * \return      KERR_STORAGE_GEERR  General error
+ * \return      KERR_STORAGE_NODEV  No sdcard
+ * \return      KERR_STORAGE_CANRE  sdcard not recognised
  *
  */
-extern	int32_t	sdcard_initialise(sdcard_specification_t *specification);
+extern  int32_t sdcard_initialise(sdcard_specification_t *specification);
 
 /*!
  * \brief Read the status of the sdcard
@@ -220,13 +220,12 @@ extern	int32_t	sdcard_initialise(sdcard_specification_t *specification);
  *    status = sdcard_readStatus();
  * \endcode
  *
- * \param[in]	-
- * \return		KERR_STORAGE_NOERR	OK
- * \return		KERR_STORAGE_GEERR	General error
- * \return		KERR_STORAGE_NODEV	No sdcard
+ * \return      KERR_STORAGE_NOERR  OK
+ * \return      KERR_STORAGE_GEERR  General error
+ * \return      KERR_STORAGE_NODEV  No sdcard
  *
  */
-extern	int32_t	sdcard_readStatus(void);
+extern  int32_t sdcard_readStatus(void);
 
 /*!
  * \brief Read 1 or more sectors from the sdcard
@@ -245,18 +244,18 @@ extern	int32_t	sdcard_readStatus(void);
  *    }
  * \endcode
  *
- * \param[in]	*buffer				Ptr on the buffer
- * \param[in]	size				Number of bytes to read
- * \param[in]	sector				Start sector
- * \return		KERR_STORAGE_NOERR	OK
- * \return		KERR_STORAGE_GEERR	General error
- * \return		KERR_STORAGE_NODEV	No sdcard
- * \return		KERR_STORAGE_CANRE	sdcard not recognised
- * \return		KERR_STORAGE_LNBU0	The number of sectors is = 0
- * \return		KERR_STORAGE_TRANT	Transfer not terminated
+ * \param[in]   *buffer             Ptr on the buffer
+ * \param[in]   size                Number of bytes to read
+ * \param[in]   sector              Start sector
+ * \return      KERR_STORAGE_NOERR  OK
+ * \return      KERR_STORAGE_GEERR  General error
+ * \return      KERR_STORAGE_NODEV  No sdcard
+ * \return      KERR_STORAGE_CANRE  sdcard not recognised
+ * \return      KERR_STORAGE_LNBU0  The number of sectors is = 0
+ * \return      KERR_STORAGE_TRANT  Transfer not terminated
  *
  */
-extern	int32_t	sdcard_read(uint8_t *buffer, uint32_t size, uint32_t sector);
+extern  int32_t sdcard_read(uint8_t *buffer, uint32_t size, uint32_t sector);
 
 /*!
  * \brief Write 1 or more sectors to the sdcard
@@ -275,18 +274,18 @@ extern	int32_t	sdcard_read(uint8_t *buffer, uint32_t size, uint32_t sector);
  *    }
  * \endcode
  *
- * \param[in]	*buffer				Ptr on the buffer
- * \param[in]	size				Number of bytes to write
- * \param[in]	sector				Start sector
- * \return		KERR_STORAGE_NOERR	OK
- * \return		KERR_STORAGE_GEERR	General error
- * \return		KERR_STORAGE_NODEV	No sdcard
- * \return		KERR_STORAGE_CANRE	sdcard not recognised
- * \return		KERR_STORAGE_LNBU0	The number of sectors is = 0
- * \return		KERR_STORAGE_TRANT	Transfer not terminated
+ * \param[in]   *buffer             Ptr on the buffer
+ * \param[in]   size                Number of bytes to write
+ * \param[in]   sector              Start sector
+ * \return      KERR_STORAGE_NOERR  OK
+ * \return      KERR_STORAGE_GEERR  General error
+ * \return      KERR_STORAGE_NODEV  No sdcard
+ * \return      KERR_STORAGE_CANRE  sdcard not recognised
+ * \return      KERR_STORAGE_LNBU0  The number of sectors is = 0
+ * \return      KERR_STORAGE_TRANT  Transfer not terminated
  *
  */
-extern	int32_t	sdcard_write(const uint8_t *buffer, uint32_t size, uint32_t sector);
+extern  int32_t sdcard_write(const uint8_t *buffer, uint32_t size, uint32_t sector);
 
 /*!
  * \brief Get some storage parameters by ioctl
@@ -304,13 +303,13 @@ extern	int32_t	sdcard_write(const uint8_t *buffer, uint32_t size, uint32_t secto
  *    }
  * \endcode
  *
- * \param[in]	command				Command
- * \param[in]	*buffer				Ptr on the buffer
- * \return		KERR_STORAGE_NOERR	OK
- * \return		KERR_STORAGE_GEERR	General error
+ * \param[in]   command             Command
+ * \param[in]   *buffer             Ptr on the buffer
+ * \return      KERR_STORAGE_NOERR  OK
+ * \return      KERR_STORAGE_GEERR  General error
  *
  */
-extern	int32_t	sdcard_ioctl(storageIoctl_t command, void *buffer);
+extern  int32_t sdcard_ioctl(storageIoctl_t command, void *buffer);
 
 #if (defined(__cplusplus))
 }

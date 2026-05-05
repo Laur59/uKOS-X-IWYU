@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		random manager.
+; Project:  uKOS-X
+; Goal:     random manager.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +46,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_cryptographics
@@ -63,15 +63,15 @@
  * @{
  */
 
-typedef	enum {
-			KRANDOM_SOFT = 0u,									// Software generator
-			KRANDOM_HARD										// Hardware generator
+typedef enum {
+            KRANDOM_SOFT = 0u,                                  // Software generator
+            KRANDOM_HARD                                        // Hardware generator
 } randomGenerator_t;
 
-#define	KRAND_MAX	((1u<<31u) - 1)								// RAND_MAX for 32 bit generator
+#define KRAND_MAX   ((1u<<31u) - 1)                             // RAND_MAX for 32 bit generator
 
 #if (defined(__cplusplus))
-extern	"C" {
+extern  "C" {
 #endif
 
 /*!
@@ -88,15 +88,15 @@ extern	"C" {
  *    status = random_read(KRANDOM_SOFT, &number[0], KNB_NUMBERS);
  * \endcode
  *
- * \param[in]	generator			KRANDOM_SOFT, use the software implementation
- * \param[in]	-					KRANDOM_HARD, use the hardware implementation
- * \param[out]	*number				Ptr on the number
- * \param[in]	nbNumbers			Number of numbers
- * \return		KERR_RANDOM_NOERR	OK
- * \return		KERR_RANDOM_GEERR	General error
+ * \param[in]   generator           KRANDOM_SOFT, use the software implementation
+ *                                  KRANDOM_HARD, use the hardware implementation
+ * \param[out]  *number             Ptr on the number
+ * \param[in]   nbNumbers           Number of numbers
+ * \return      KERR_RANDOM_NOERR   OK
+ * \return      KERR_RANDOM_GEERR   General error
  *
  */
-extern	int32_t random_read(randomGenerator_t generator, uint32_t *number, uint32_t nbNumbers);
+extern  int32_t random_read(randomGenerator_t generator, uint32_t *number, uint32_t nbNumbers);
 
 #if (defined(__cplusplus))
 }

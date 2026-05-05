@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		spi manager.
+; Project:  uKOS-X
+; Goal:     spi manager.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +46,7 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include    "uKOS.h"
 
 #if (defined(CONFIG_MAN_SPI_S))
 
@@ -55,24 +55,24 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"spi          spi manager.                              (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "spi manager\n"
-									"===========\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "spi          spi manager.                              (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "spi manager\n"
+                                    "===========\n\n"
 
-									"This manager ...\n\n"
+                                    "This manager ...\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
-	Spi,							// Module name (the first letter has to be upper case)
-	KID_FAM_PERIPHERALS,			// Family (defined in the module.h)
-	KNUM_SPI,						// Module identifier (defined in the module.h)
-	nullptr,						// Address of the initialisation code (early pre-init)
-	nullptr,						// Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
-	nullptr,						// Address of the clean code (clean the module)
-	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0								// Execution cores
+    Spi,                            // Module name (the first letter has to be upper case)
+    KID_FAM_PERIPHERALS,            // Family (defined in the module.h)
+    KNUM_SPI,                       // Module identifier (defined in the module.h)
+    nullptr,                        // Address of the initialisation code (early pre-init)
+    nullptr,                        // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                        // Address of the clean code (clean the module)
+    " 1.0",                         // Revision string (major . minor)
+    (1u<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                               // Execution cores
 );
 
 /*
@@ -90,36 +90,36 @@ MODULE(
  *    status = spi_release(0, KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	manager			SPI manager
- * \param[in]	reserveMode		Any mode
- * \param[in]	timeout			Timeout (1-ms of resolution)
- * \param[in]	-				KWAIT_INFINITY, waiting forever
- * \param[in]	-				KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_SPI_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager         SPI manager
+ * \param[in]   reserveMode     Any mode
+ * \param[in]   timeout         Timeout (1-ms of resolution)
+ *                              KWAIT_INFINITY, waiting forever
+ *                              KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_SPI_XXXXX  Depends on the "xxxx" device manager
  *
  */
-int32_t	spi_reserve(spiManager_t manager, reserveMode_t reserveMode, uint32_t timeout) {
+int32_t spi_reserve(spiManager_t manager, reserveMode_t reserveMode, uint32_t timeout) {
 
-	switch (manager) {
+    switch (manager) {
 
-		#if (defined(CONFIG_MAN_SPI0_S))
-		case KSPI0: { return (spi0_reserve(reserveMode, timeout)); }
-		#endif
+        #if (defined(CONFIG_MAN_SPI0_S))
+        case KSPI0: { return (spi0_reserve(reserveMode, timeout)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_SPI1_S))
-		case KSPI1: { return (spi1_reserve(reserveMode, timeout)); }
-		#endif
+        #if (defined(CONFIG_MAN_SPI1_S))
+        case KSPI1: { return (spi1_reserve(reserveMode, timeout)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_SPI2_S))
-		case KSPI2: { return (spi2_reserve(reserveMode, timeout)); }
-		#endif
+        #if (defined(CONFIG_MAN_SPI2_S))
+        case KSPI2: { return (spi2_reserve(reserveMode, timeout)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_SPI3_S))
-		case KSPI3: { return (spi3_reserve(reserveMode, timeout)); }
-		#endif
+        #if (defined(CONFIG_MAN_SPI3_S))
+        case KSPI3: { return (spi3_reserve(reserveMode, timeout)); }
+        #endif
 
-		default:	{ return (KERR_SPI_NODEV);					   }
-	}
+        default:    { return (KERR_SPI_NODEV);                     }
+    }
 }
 
 /*
@@ -133,33 +133,33 @@ int32_t	spi_reserve(spiManager_t manager, reserveMode_t reserveMode, uint32_t ti
  *    status = spi_release(KSPI0, KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	manager			SPI manager
- * \param[in]	reserveMode		Any mode
- * \return		KERR_SPI_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager         SPI manager
+ * \param[in]   reserveMode     Any mode
+ * \return      KERR_SPI_XXXXX  Depends on the "xxxx" device manager
  *
  */
-int32_t	spi_release(spiManager_t manager, reserveMode_t reserveMode) {
+int32_t spi_release(spiManager_t manager, reserveMode_t reserveMode) {
 
-	switch (manager) {
+    switch (manager) {
 
-		#if (defined(CONFIG_MAN_SPI0_S))
-		case KSPI0: { return (spi0_release(reserveMode)); }
-		#endif
+        #if (defined(CONFIG_MAN_SPI0_S))
+        case KSPI0: { return (spi0_release(reserveMode)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_SPI1_S))
-		case KSPI1: { return (spi1_release(reserveMode)); }
-		#endif
+        #if (defined(CONFIG_MAN_SPI1_S))
+        case KSPI1: { return (spi1_release(reserveMode)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_SPI2_S))
-		case KSPI2: { return (spi2_release(reserveMode)); }
-		#endif
+        #if (defined(CONFIG_MAN_SPI2_S))
+        case KSPI2: { return (spi2_release(reserveMode)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_SPI3_S))
-		case KSPI3: { return (spi3_release(reserveMode)); }
-		#endif
+        #if (defined(CONFIG_MAN_SPI3_S))
+        case KSPI3: { return (spi3_release(reserveMode)); }
+        #endif
 
-		default:	{ return (KERR_SPI_NODEV);			  }
-	}
+        default:    { return (KERR_SPI_NODEV);            }
+    }
 }
 
 /*
@@ -178,33 +178,33 @@ int32_t	spi_release(spiManager_t manager, reserveMode_t reserveMode) {
  *    status = spi_configure(KSPI0, &configure);
  * \endcode
  *
- * \param[in]	manager			SPI manager
- * \param[in]	*configure		Ptr on the configuration buffer
- * \return		KERR_SPI_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager         SPI manager
+ * \param[in]   *configure      Ptr on the configuration buffer
+ * \return      KERR_SPI_XXXXX  Depends on the "xxxx" device manager
  *
  */
-int32_t	spi_configure(spiManager_t manager, const spiCnf_t *configure) {
+int32_t spi_configure(spiManager_t manager, const spiCnf_t *configure) {
 
-	switch (manager) {
+    switch (manager) {
 
-		#if (defined(CONFIG_MAN_SPI0_S))
-		case KSPI0: { return (spi0_configure(configure)); }
-		#endif
+        #if (defined(CONFIG_MAN_SPI0_S))
+        case KSPI0: { return (spi0_configure(configure)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_SPI1_S))
-		case KSPI1: { return (spi1_configure(configure)); }
-		#endif
+        #if (defined(CONFIG_MAN_SPI1_S))
+        case KSPI1: { return (spi1_configure(configure)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_SPI2_S))
-		case KSPI2: { return (spi2_configure(configure)); }
-		#endif
+        #if (defined(CONFIG_MAN_SPI2_S))
+        case KSPI2: { return (spi2_configure(configure)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_SPI3_S))
-		case KSPI3: { return (spi3_configure(configure)); }
-		#endif
+        #if (defined(CONFIG_MAN_SPI3_S))
+        case KSPI3: { return (spi3_configure(configure)); }
+        #endif
 
-		default:	{ return (KERR_SPI_NODEV);			  }
-	}
+        default:    { return (KERR_SPI_NODEV);            }
+    }
 }
 
 /*
@@ -220,33 +220,33 @@ int32_t	spi_configure(spiManager_t manager, const spiCnf_t *configure) {
  *    status = spi_writeRead(KSPI0, &data);
  * \endcode
  *
- * \param[in]	manager			SPI manager
- * \param[in]	*data			Ptr on the data to write-read
- * \return		KERR_SPI_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager         SPI manager
+ * \param[in]   *data           Ptr on the data to write-read
+ * \return      KERR_SPI_XXXXX  Depends on the "xxxx" device manager
  *
  */
-int32_t	spi_writeRead(spiManager_t manager, uint8_t *data) {
+int32_t spi_writeRead(spiManager_t manager, uint8_t *data) {
 
-	switch (manager) {
+    switch (manager) {
 
-		#if (defined(CONFIG_MAN_SPI0_S))
-		case KSPI0: { return (spi0_writeRead(data)); }
-		#endif
+        #if (defined(CONFIG_MAN_SPI0_S))
+        case KSPI0: { return (spi0_writeRead(data)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_SPI1_S))
-		case KSPI1: { return (spi1_writeRead(data)); }
-		#endif
+        #if (defined(CONFIG_MAN_SPI1_S))
+        case KSPI1: { return (spi1_writeRead(data)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_SPI2_S))
-		case KSPI2: { return (spi2_writeRead(data)); }
-		#endif
+        #if (defined(CONFIG_MAN_SPI2_S))
+        case KSPI2: { return (spi2_writeRead(data)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_SPI3_S))
-		case KSPI3: { return (spi3_writeRead(data)); }
-		#endif
+        #if (defined(CONFIG_MAN_SPI3_S))
+        case KSPI3: { return (spi3_writeRead(data)); }
+        #endif
 
-		default:	{ return (KERR_SPI_NODEV);		 }
-	}
+        default:    { return (KERR_SPI_NODEV);       }
+    }
 }
 
 /*
@@ -256,12 +256,12 @@ int32_t	spi_writeRead(spiManager_t manager, uint8_t *data) {
  *
  * Simple reads: spi_multipleWriteRead(KSPI0, 0,  &rBuffer[0], 20, KWAIT_INFINITY); R, R, R, ..
  * Writes-reads: spi_multipleWriteRead(KSPI0, 20, &rBuffer[0], 20, KWAIT_INFINITY); W, R, W, ..
- *				 condition (wSize == rSize)
- *				 if xyz == nullptr, write 0x00
- *				 if xyz == (&wBuffer[0], write the buffer content
+ *               condition (wSize == rSize)
+ *               if xyz == nullptr, write 0x00
+ *               if xyz == (&wBuffer[0], write the buffer content
  *
  * EEPROM mode:  spi_multipleWriteRead(KSPI0, &wBuffer[0], 4, &rBuffer[0], 20, KWAIT_INFINITY); W, W, W, R, R, R, R, ..
- *				 condition (wSize != rSize)
+ *               condition (wSize != rSize)
  *
  * Call example in C:
  *
@@ -283,39 +283,39 @@ int32_t	spi_writeRead(spiManager_t manager, uint8_t *data) {
  *
  * \endcode
  *
- * \param[in]	manager			SPI manager
- * \param[in]	*wData			Ptr on the data to write
- * \param[in]	wSize			Size of the write buffer
- * \param[in]	*rData			Ptr on the data to read
- * \param[in]	rSize			Size of the read buffer
- * \param[in]	timeout			Timeout (1-ms of resolution)
- * \param[in]	-				KWAIT_INFINITY, waiting forever
- * \param[in]	-				KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_SPI_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager         SPI manager
+ * \param[in]   *wData          Ptr on the data to write
+ * \param[in]   wSize           Size of the write buffer
+ * \param[in]   *rData          Ptr on the data to read
+ * \param[in]   rSize           Size of the read buffer
+ * \param[in]   timeout         Timeout (1-ms of resolution)
+ *                              KWAIT_INFINITY, waiting forever
+ *                              KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_SPI_XXXXX  Depends on the "xxxx" device manager
  *
  */
-int32_t	spi_multipleWriteRead(spiManager_t manager, const uint8_t *wData, uint16_t wSize, uint8_t *rData, uint16_t rSize, uint32_t timeout) {
+int32_t spi_multipleWriteRead(spiManager_t manager, const uint8_t *wData, uint16_t wSize, uint8_t *rData, uint16_t rSize, uint32_t timeout) {
 
-	switch (manager) {
+    switch (manager) {
 
-		#if (defined(CONFIG_MAN_SPI0_S))
-		case KSPI0: { return (spi0_multipleWriteRead(wData, wSize, rData, rSize, timeout)); }
-		#endif
+        #if (defined(CONFIG_MAN_SPI0_S))
+        case KSPI0: { return (spi0_multipleWriteRead(wData, wSize, rData, rSize, timeout)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_SPI1_S))
-		case KSPI1: { return (spi1_multipleWriteRead(wData, wSize, rData, rSize, timeout)); }
-		#endif
+        #if (defined(CONFIG_MAN_SPI1_S))
+        case KSPI1: { return (spi1_multipleWriteRead(wData, wSize, rData, rSize, timeout)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_SPI2_S))
-		case KSPI2: { return (spi2_multipleWriteRead(wData, wSize, rData, rSize, timeout)); }
-		#endif
+        #if (defined(CONFIG_MAN_SPI2_S))
+        case KSPI2: { return (spi2_multipleWriteRead(wData, wSize, rData, rSize, timeout)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_SPI3_S))
-		case KSPI3: { return (spi3_multipleWriteRead(wData, wSize, rData, rSize, timeout)); }
-		#endif
+        #if (defined(CONFIG_MAN_SPI3_S))
+        case KSPI3: { return (spi3_multipleWriteRead(wData, wSize, rData, rSize, timeout)); }
+        #endif
 
-		default:	{ return (KERR_SPI_NODEV);												}
-	}
+        default:    { return (KERR_SPI_NODEV);                                              }
+    }
 }
 
 #endif

@@ -2,23 +2,25 @@
 ; model_random_hard.
 ; ==================
 
+; SPDX-License-Identifier: MIT
+
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Model for generating pseudo random numbers.
-;			The generator is implemented using on a
-;			linear congruential generator (LCG)
+; Project:  uKOS-X
+; Goal:     Model for generating pseudo random numbers.
+;           The generator is implemented using on a
+;           linear congruential generator (LCG)
 ;
-;			X[n + 1] = (Ka * X[n] + Kc) * mod(Km)
+;           X[n + 1] = (Ka * X[n] + Kc) * mod(Km)
 ;
-;			For the BSD formula
-;			Ka = 1103515245
-;			Kc = 12345
-;			X0: use the crt0_randomSeed initial seed
+;           For the BSD formula
+;           Ka = 1103515245
+;           Kc = 12345
+;           X0: use the crt0_randomSeed initial seed
 ;
-;			See wikipedia "Linear congruential generator"
+;           See wikipedia "Linear congruential generator"
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -61,7 +63,7 @@
  * - Initialise the seed
  *
  */
-void	model_random_hard_init(void) {
+void    model_random_hard_init(void) {
 
 }
 
@@ -71,7 +73,7 @@ void	model_random_hard_init(void) {
  * - Read a pseudo random number
  *
  */
-void	model_random_hard_read(uint32_t *number) {
+void    model_random_hard_read(uint32_t *number) {
 
-	model_random_soft_read(number);
+    model_random_soft_read(number);
 }

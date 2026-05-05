@@ -5,13 +5,13 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Kern - Scheduler management.
+; Project:  uKOS-X
+; Goal:     Kern - Scheduler management.
 ;
-;			Private uKernel variables.
+;           Private uKernel variables.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -48,7 +48,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_kernels
@@ -71,50 +71,50 @@
  */
 
 enum {
-		KSCHE_FORCE_SWITCH_NORM = 0u,							// Switching process nprmal
-		KSCHE_TIMEOUT_SWITCH_NORM								// Switching process due to a timeaout
+        KSCHE_FORCE_SWITCH_NORM = 0u,                           // Switching process nprmal
+        KSCHE_TIMEOUT_SWITCH_NORM                               // Switching process due to a timeaout
 };
 
-extern	uintptr_t	*vKern_stackProc[KNB_CORES];				// Process stack (entry point by Trap)
+extern  uintptr_t   *vKern_stackProc[KNB_CORES];                // Process stack (entry point by Trap)
 
 // Prototypes
 
 /*!
  * \brief Connect the current process to a list and change the context
  *
- * \param[in]	force	false process timeout
- * \param[in]	-		true force to change the context
- * \param[in]	*list	Ptr on the list
- * \param[in]	bitNb	bit number (flag for suspending)
+ * \param[in]   force   false process timeout
+ *                      true force to change the context
+ * \param[in]   *list   Ptr on the list
+ * \param[in]   bitNb   bit number (flag for suspending)
  *
  * \note This function does not return a value (None).
  *
  * \warning call usable only by the uKernel.
  *
  */
-extern	void	scheduler_changeContext(bool force, list_t *list, uint8_t bitNb);
+extern  void    scheduler_changeContext(bool force, list_t *list, uint8_t bitNb);
 
 /*!
  * \brief scheduler_callBackFast
  *
  * !!! Normal uKernel logic for dynamic priority management would require to execute
  *     the command local_updateDynaPriority only in uKernel model call-backs ...
- *	   scheduler_callBackSlow
- *	   scheduler_callBackTrap
- *	   To avoid multiple process switches, the dynamic priority is incremented in the scheduler_callBackSlow callback
- *	   This is not optimal but it's the best compromise.
+ *     scheduler_callBackSlow
+ *     scheduler_callBackTrap
+ *     To avoid multiple process switches, the dynamic priority is incremented in the scheduler_callBackSlow callback
+ *     This is not optimal but it's the best compromise.
  *
  * - Update the dynamic priority
  * - Verify the timeout condition of the suspended processes
  *
- * \param[in]	time	Suspend the process for a time (1-ms of resolution)
+ * \param[in]   time    Suspend the process for a time (1-ms of resolution)
  *
  * \note This function does not return a value (None).
  *
  * \warning call usable only by the uKernel.
  *
  */
-extern	void	scheduler_callBackFast(uint32_t time);
+extern  void    scheduler_callBackFast(uint32_t time);
 
 /*!
  * \brief scheduler_callBackSlow
@@ -122,14 +122,13 @@ extern	void	scheduler_callBackFast(uint32_t time);
  * - Change the context and prepare the next process
  * - INT acknowledge and new time for the next process
  *
- * \param[in]	-
  *
  * \note This function does not return a value (None).
  *
  * \warning call usable only by the uKernel.
  *
  */
-extern	void	scheduler_callBackSlow(void);
+extern  void    scheduler_callBackSlow(void);
 
 /*!
  * \brief scheduler_callBackTrap
@@ -137,21 +136,21 @@ extern	void	scheduler_callBackSlow(void);
  * - Analysis of the message
  *
  * - Basic services: KKERN_MSG_NO_PARAM
- *	 - KKERN_MSG_JUMP_KERN	force the process switching
- *	 - KKERN_MSG_WAIT_TIME	waiting for a time
- *	 - KKERN_MSG_WAIT_SIGN	waiting for a signal
+ *   - KKERN_MSG_JUMP_KERN  force the process switching
+ *   - KKERN_MSG_WAIT_TIME  waiting for a time
+ *   - KKERN_MSG_WAIT_SIGN  waiting for a signal
  *
  * - Semaphore synchronizations: KKERN_MSG_WAIT_SEMA_SYN
- *	 - KKERN_MSG_WAIT_SEMA_SYN		waiting for a semaphore synchro
+ *   - KKERN_MSG_WAIT_SEMA_SYN      waiting for a semaphore synchro
  *
- * \param[in]	message		Message from the process
+ * \param[in]   message     Message from the process
  *
  * \note This function does not return a value (None).
  *
  * \warning call usable only by the uKernel.
  *
  */
-extern	void	scheduler_callBackTrap(uint32_t message);
+extern  void    scheduler_callBackTrap(uint32_t message);
 
 /**@}*/
 /**@}*/

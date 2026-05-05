@@ -2,12 +2,14 @@
 ; model_lsm9ds1_tmp.
 ; ==================
 
+; SPDX-License-Identifier: MIT
+
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Model for controlling the "lsM9ds1" device (the TMP part).
+; Project:  uKOS-X
+; Goal:     Model for controlling the "lsM9ds1" device (the TMP part).
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -44,7 +46,7 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"LSM9DS1/LSM9DS1.h"
+#include    "LSM9DS1/LSM9DS1.h"
 
 /*
  * \brief model_lsM9ds1tmp_init
@@ -52,12 +54,12 @@
  * - Initialise the manager
  *
  */
-int32_t	model_lsM9ds1tmp_init(void) {
+int32_t model_lsM9ds1tmp_init(void) {
 
-	cb_control(KTEMPERATURE_RESERVE);
-	cb_control(KTEMPERATURE_INIT);
-	cb_control(KTEMPERATURE_RELEASE);
-	return (KERR_TEMPERATURE_NOERR);
+    cb_control(KTEMPERATURE_RESERVE);
+    cb_control(KTEMPERATURE_INIT);
+    cb_control(KTEMPERATURE_RELEASE);
+    return (KERR_TEMPERATURE_NOERR);
 }
 
 /*
@@ -66,16 +68,16 @@ int32_t	model_lsM9ds1tmp_init(void) {
  * - Get the temperature
  *
  */
-int32_t	model_lsM9ds1tmp_read(float64_t *temperature) {
-	uint8_t		xsb[2];
-	int16_t		value;
+int32_t model_lsM9ds1tmp_read(float64_t *temperature) {
+    uint8_t     xsb[2];
+    int16_t     value;
 
-	cb_control(KTEMPERATURE_RESERVE);
-	cb_readTemp(LSM9DS1_OUT_TEMP_L, xsb, 2u);
-	value = (int16_t)(xsb[1]<<8u | xsb[0]);
-	*temperature = (((float64_t)(value)) / 16.0) + 25.0 - KTEMPERATURE_ZERO_KELVIN;
-	cb_control(KTEMPERATURE_RELEASE);
-	return (KERR_TEMPERATURE_NOERR);
+    cb_control(KTEMPERATURE_RESERVE);
+    cb_readTemp(LSM9DS1_OUT_TEMP_L, xsb, 2u);
+    value = (int16_t)(xsb[1]<<8u | xsb[0]);
+    *temperature = (((float64_t)(value)) / 16.0) + 25.0 - KTEMPERATURE_ZERO_KELVIN;
+    cb_control(KTEMPERATURE_RELEASE);
+    return (KERR_TEMPERATURE_NOERR);
 }
 
 /*
@@ -84,9 +86,9 @@ int32_t	model_lsM9ds1tmp_read(float64_t *temperature) {
  * - Set the temperature
  *
  */
-int32_t	model_lsM9ds1tmp_write(float64_t temperature) {
+int32_t model_lsM9ds1tmp_write(float64_t temperature) {
 
-	UNUSED(temperature);
+    UNUSED(temperature);
 
-	return (KERR_TEMPERATURE_SYCNA);
+    return (KERR_TEMPERATURE_SYCNA);
 }

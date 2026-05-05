@@ -6,11 +6,11 @@
 ; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 ;------------------------------------------------------------------------
-; Author:	Laurent von Allmen	The 2026-02-13
+; Author:   Laurent von Allmen  The 2026-02-13
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test reading & sending data via the cnms manager.
+; Project:  uKOS-X
+; Goal:     Test reading & sending data via the cnms manager.
 ;
 ;   (c) 2025-2026, Laurent von Allmen
 ;   ---------------------------------
@@ -47,27 +47,25 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
+#include    "tests.h"
 
-#if (defined(TEST_02_S))
 /*
  * \brief test_02
  *
  * - Test reading & sending data via the cnms manager
  *
  */
-void	test_02(void) {
-	char_t	buffer[20] = "x - lala\n";
+void    test_02(void) {
+    char_t  buffer[20] = "x - lala\n";
 
-	cmns_init();
+    cmns_init();
 
-	while (true) {
-		LED_RED_TOGGLE;
-		cmns_receive(KURT0, &buffer[0]);
+    while (true) {
+        LED_RED_TOGGLE;
+        cmns_receive(KURT0, &buffer[0]);
 
-		if ((buffer[0] != '\n') && (buffer[0] != '\r') && (buffer[0] != '\0')) {
-			cmns_send(KURT0, (const char_t *)buffer);
-		}
-	}
+        if ((buffer[0] != '\n') && (buffer[0] != '\r') && (buffer[0] != '\0')) {
+            cmns_send(KURT0, (const char_t *)buffer);
+        }
+    }
 }
-#endif

@@ -34,7 +34,6 @@
  *
  * - Initialise the UART0 and UART1 peripherals
  *
- * \param[in]   -
  *
  * \note This function does not return a value (None).
  *
@@ -81,12 +80,10 @@ void    cmns_init(void) {
  * \note This function does not return a value (None).
  *
  */
-void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
+void    cmns_send([[maybe_unused]] serialManager_t serialManager, const char_t *ascii) {
             uint8_t     data;
             uint32_t    core;
     const   char_t      *wkAscii = ascii;
-
-    UNUSED(serialManager);
 
     core = GET_RUNNING_CORE;
 

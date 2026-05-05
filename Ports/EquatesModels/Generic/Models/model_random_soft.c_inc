@@ -2,23 +2,25 @@
 ; model_random_soft.
 ; ==================
 
+; SPDX-License-Identifier: MIT
+
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Model for generating pseudo random numbers.
-;			The generator is implemented using on a
-;			linear congruential generator (LCG)
+; Project:  uKOS-X
+; Goal:     Model for generating pseudo random numbers.
+;           The generator is implemented using on a
+;           linear congruential generator (LCG)
 ;
-;			X[n + 1] = (Ka * X[n] + Kc) * mod(Km)
+;           X[n + 1] = (Ka * X[n] + Kc) * mod(Km)
 ;
-;			For the BSD formula
-;			Ka = 1103515245
-;			Kc = 12345
-;			X0: use the crt0_randomSeed initial seed
+;           For the BSD formula
+;           Ka = 1103515245
+;           Kc = 12345
+;           X0: use the crt0_randomSeed initial seed
 ;
-;			See wikipedia "Linear congruential generator"
+;           See wikipedia "Linear congruential generator"
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -57,12 +59,12 @@
 
 // !!! Only positive constants
 
-#define	Ka	1103515245u
-#define	Kc	12345u
-#define	Km	KRAND_MAX
+#define Ka  1103515245u
+#define Kc  12345u
+#define Km  KRAND_MAX
 
-extern	uint32_t	vCrt0_randomSeed;
-static	uint32_t	vSeed[KNB_CORES] = MCSET(0u);
+extern  uint32_t    vCrt0_randomSeed;
+static  uint32_t    vSeed[KNB_CORES] = MCSET(0u);
 
 /*
  * \brief model_random_soft_init
@@ -70,12 +72,12 @@ static	uint32_t	vSeed[KNB_CORES] = MCSET(0u);
  * - Initialise the seed
  *
  */
-void	model_random_soft_init(void) {
-	uint32_t	core;
+void    model_random_soft_init(void) {
+    uint32_t    core;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	vSeed[core] = vCrt0_randomSeed;
+    vSeed[core] = vCrt0_randomSeed;
 }
 
 /*
@@ -84,16 +86,16 @@ void	model_random_soft_init(void) {
  * - Read a pseudo random number
  *
  */
-void	model_random_soft_read(uint32_t *number) {
-	uint32_t	core;
+void    model_random_soft_read(uint32_t *number) {
+    uint32_t    core;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
 // X[n + 1] = (Ka * X[n] + Kc) * mod(Km)
 // With X[n] = vSeed
 
-	INTERRUPTION_OFF;
-	vSeed[core] = ((Ka * vSeed[core]) + Kc) % Km;
-	*number = vSeed[core];
-	INTERRUPTION_RESTORE;
+    INTERRUPTION_OFF;
+    vSeed[core] = ((Ka * vSeed[core]) + Kc) % Km;
+    *number = vSeed[core];
+    INTERRUPTION_RESTORE;
 }

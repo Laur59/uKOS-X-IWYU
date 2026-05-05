@@ -5,11 +5,11 @@
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		storage manager.
+; Project:  uKOS-X
+; Goal:     storage manager.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +46,7 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include    "uKOS.h"
 
 #if (defined(CONFIG_MAN_STORAGE_S))
 
@@ -55,24 +55,24 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"storage      storage manager.                          (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "storage manager\n"
-									"===============\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "storage      storage manager.                          (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "storage manager\n"
+                                    "===============\n\n"
 
-									"This manager ...\n\n"
+                                    "This manager ...\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
-	Storage,						// Module name (the first letter has to be upper case)
-	KID_FAM_STORAGE,				// Family (defined in the module.h)
-	KNUM_STORAGE,					// Module identifier (defined in the module.h)
-	nullptr,						// Address of the initialisation code (early pre-init)
-	nullptr,						// Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
-	nullptr,						// Address of the clean code (clean the module)
-	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0								// Execution cores
+    Storage,                        // Module name (the first letter has to be upper case)
+    KID_FAM_STORAGE,                // Family (defined in the module.h)
+    KNUM_STORAGE,                   // Module identifier (defined in the module.h)
+    nullptr,                        // Address of the initialisation code (early pre-init)
+    nullptr,                        // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                        // Address of the clean code (clean the module)
+    " 1.0",                         // Revision string (major . minor)
+    (1u<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                               // Execution cores
 );
 
 /*
@@ -90,28 +90,28 @@ MODULE(
  *    status = storage_release(KSERIAL_FLASH, KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	manager				Storage manager
- * \param[in]	reserveMode			Any mode
- * \param[in]	timeout				Timeout (1-ms of resolution)
- * \param[in]	-					KWAIT_INFINITY, waiting forever
- * \param[in]	-					KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
- * \return		KERR_FLASH_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager             Storage manager
+ * \param[in]   reserveMode         Any mode
+ * \param[in]   timeout             Timeout (1-ms of resolution)
+ *                                  KWAIT_INFINITY, waiting forever
+ *                                  KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ * \return      KERR_FLASH_XXXXX    Depends on the "xxxx" device manager
  *
  */
-int32_t	storage_reserve(storage_manager_t manager, reserveMode_t reserveMode, uint32_t timeout) {
+int32_t storage_reserve(storage_manager_t manager, reserveMode_t reserveMode, uint32_t timeout) {
 
-	switch (manager) {
+    switch (manager) {
 
-		#if (defined(CONFIG_MAN_SDCARD_S))
-		case KSDCARD: { return (sdcard_reserve(reserveMode, timeout));			  }
-		#endif
+        #if (defined(CONFIG_MAN_SDCARD_S))
+        case KSDCARD: { return (sdcard_reserve(reserveMode, timeout));            }
+        #endif
 
-		#if (defined(CONFIG_MAN_SERIAL_FLASH_S))
-		case KSERIAL_FLASH: { return (serialFlash_reserve(reserveMode, timeout)); }
-		#endif
+        #if (defined(CONFIG_MAN_SERIAL_FLASH_S))
+        case KSERIAL_FLASH: { return (serialFlash_reserve(reserveMode, timeout)); }
+        #endif
 
-		default: { return (KERR_STORAGE_NODEV);									  }
-	}
+        default: { return (KERR_STORAGE_NODEV);                                   }
+    }
 
 }
 
@@ -126,25 +126,25 @@ int32_t	storage_reserve(storage_manager_t manager, reserveMode_t reserveMode, ui
  *    status = storage_release(KSERIAL_FLASH, KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	manager				Storage manager
- * \param[in]	reserveMode			Any mode
- * \return		KERR_STORAGE_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager             Storage manager
+ * \param[in]   reserveMode         Any mode
+ * \return      KERR_STORAGE_XXXXX  Depends on the "xxxx" device manager
  *
  */
-int32_t	storage_release(storage_manager_t manager, reserveMode_t reserveMode) {
+int32_t storage_release(storage_manager_t manager, reserveMode_t reserveMode) {
 
-	switch (manager) {
+    switch (manager) {
 
-		#if (defined(CONFIG_MAN_SDCARD_S))
-		case KSDCARD: { return (sdcard_release(reserveMode));			 }
-		#endif
+        #if (defined(CONFIG_MAN_SDCARD_S))
+        case KSDCARD: { return (sdcard_release(reserveMode));            }
+        #endif
 
-		#if (defined(CONFIG_MAN_SERIAL_FLASH_S))
-		case KSERIAL_FLASH: { return (serialFlash_release(reserveMode)); }
-		#endif
+        #if (defined(CONFIG_MAN_SERIAL_FLASH_S))
+        case KSERIAL_FLASH: { return (serialFlash_release(reserveMode)); }
+        #endif
 
-		default: { return (KERR_STORAGE_NODEV);							 }
-	}
+        default: { return (KERR_STORAGE_NODEV);                          }
+    }
 
 }
 
@@ -162,25 +162,25 @@ int32_t	storage_release(storage_manager_t manager, reserveMode_t reserveMode) {
  *    }
  * \endcode
  *
- * \param[in]	manager				Storage manager
- * \param[in]	*specification		Ptr on the sdcard specification
- * \return		KERR_STORAGE_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager             Storage manager
+ * \param[in]   *specification      Ptr on the sdcard specification
+ * \return      KERR_STORAGE_XXXXX  Depends on the "xxxx" device manager
  *
  */
-int32_t	storage_initialise(storage_manager_t manager, void  *specification) {
+int32_t storage_initialise(storage_manager_t manager, void  *specification) {
 
-	switch (manager) {
+    switch (manager) {
 
-		#if (defined(CONFIG_MAN_SDCARD_S))
-		case KSDCARD: { return (sdcard_initialise((sdcard_specification_t *)specification)); }
-		#endif
+        #if (defined(CONFIG_MAN_SDCARD_S))
+        case KSDCARD: { return (sdcard_initialise((sdcard_specification_t *)specification)); }
+        #endif
 
-		#if (defined(CONFIG_MAN_SERIAL_FLASH_S))
-		case KSERIAL_FLASH: { return (serialFlash_initialise());							 }
-		#endif
+        #if (defined(CONFIG_MAN_SERIAL_FLASH_S))
+        case KSERIAL_FLASH: { return (serialFlash_initialise());                             }
+        #endif
 
-		default: { return (KERR_STORAGE_NODEV);												 }
-	}
+        default: { return (KERR_STORAGE_NODEV);                                              }
+    }
 
 }
 
@@ -195,24 +195,24 @@ int32_t	storage_initialise(storage_manager_t manager, void  *specification) {
  *    status = storage_readStatus();
  * \endcode
  *
- * \param[in]	manager				Storage manager
- * \return		KERR_STORAGE_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager             Storage manager
+ * \return      KERR_STORAGE_XXXXX  Depends on the "xxxx" device manager
  *
  */
-int32_t	storage_readStatus(storage_manager_t manager) {
+int32_t storage_readStatus(storage_manager_t manager) {
 
-	switch (manager) {
+    switch (manager) {
 
-		#if (defined(CONFIG_MAN_SDCARD_S))
-		case KSDCARD: { return (sdcard_readStatus());			 }
-		#endif
+        #if (defined(CONFIG_MAN_SDCARD_S))
+        case KSDCARD: { return (sdcard_readStatus());            }
+        #endif
 
-		#if (defined(CONFIG_MAN_SERIAL_FLASH_S))
-		case KSERIAL_FLASH: { return (serialFlash_readStatus()); }
-		#endif
+        #if (defined(CONFIG_MAN_SERIAL_FLASH_S))
+        case KSERIAL_FLASH: { return (serialFlash_readStatus()); }
+        #endif
 
-		default: { return (KERR_STORAGE_NODEV);					 }
-	}
+        default: { return (KERR_STORAGE_NODEV);                  }
+    }
 
 }
 
@@ -233,27 +233,27 @@ int32_t	storage_readStatus(storage_manager_t manager) {
  *    }
  * \endcode
  *
- * \param[in]	manager				Storage manager
- * \param[in]	*buffer				Ptr on the buffer
- * \param[in]	size				Number of bytes to read
- * \param[in]	sector				Start sector
- * \return		KERR_STORAGE_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager             Storage manager
+ * \param[in]   *buffer             Ptr on the buffer
+ * \param[in]   size                Number of bytes to read
+ * \param[in]   sector              Start sector
+ * \return      KERR_STORAGE_XXXXX  Depends on the "xxxx" device manager
  *
  */
-int32_t	storage_read(storage_manager_t manager, uint8_t *buffer, uint32_t size, uint32_t sector) {
+int32_t storage_read(storage_manager_t manager, uint8_t *buffer, uint32_t size, uint32_t sector) {
 
-	switch (manager) {
+    switch (manager) {
 
-		#if (defined(CONFIG_MAN_SDCARD_S))
-		case KSDCARD: { return (sdcard_read(buffer, size, sector));			   }
-		#endif
+        #if (defined(CONFIG_MAN_SDCARD_S))
+        case KSDCARD: { return (sdcard_read(buffer, size, sector));            }
+        #endif
 
-		#if (defined(CONFIG_MAN_SERIAL_FLASH_S))
-		case KSERIAL_FLASH: { return (serialFlash_read(buffer, size, sector)); }
-		#endif
+        #if (defined(CONFIG_MAN_SERIAL_FLASH_S))
+        case KSERIAL_FLASH: { return (serialFlash_read(buffer, size, sector)); }
+        #endif
 
-		default: { return (KERR_STORAGE_NODEV);								   }
-	}
+        default: { return (KERR_STORAGE_NODEV);                                }
+    }
 
 }
 
@@ -274,27 +274,27 @@ int32_t	storage_read(storage_manager_t manager, uint8_t *buffer, uint32_t size, 
  *    }
  * \endcode
  *
- * \param[in]	manager				Storage manager
- * \param[in]	*buffer				Ptr on the buffer
- * \param[in]	size				Number of bytes to write
- * \param[in]	sector				Start sector
- * \return		KERR_STORAGE_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager             Storage manager
+ * \param[in]   *buffer             Ptr on the buffer
+ * \param[in]   size                Number of bytes to write
+ * \param[in]   sector              Start sector
+ * \return      KERR_STORAGE_XXXXX  Depends on the "xxxx" device manager
  *
  */
-int32_t	storage_write(storage_manager_t manager, const uint8_t *buffer, uint32_t size, uint32_t sector) {
+int32_t storage_write(storage_manager_t manager, const uint8_t *buffer, uint32_t size, uint32_t sector) {
 
-	switch (manager) {
+    switch (manager) {
 
-		#if (defined(CONFIG_MAN_SDCARD_S))
-		case KSDCARD: { return (sdcard_write(buffer, size, sector));			}
-		#endif
+        #if (defined(CONFIG_MAN_SDCARD_S))
+        case KSDCARD: { return (sdcard_write(buffer, size, sector));            }
+        #endif
 
-		#if (defined(CONFIG_MAN_SERIAL_FLASH_S))
-		case KSERIAL_FLASH: { return (serialFlash_write(buffer, size, sector)); }
-		#endif
+        #if (defined(CONFIG_MAN_SERIAL_FLASH_S))
+        case KSERIAL_FLASH: { return (serialFlash_write(buffer, size, sector)); }
+        #endif
 
-		default: { return (KERR_STORAGE_NODEV);									}
-	}
+        default: { return (KERR_STORAGE_NODEV);                                 }
+    }
 
 }
 
@@ -314,26 +314,26 @@ int32_t	storage_write(storage_manager_t manager, const uint8_t *buffer, uint32_t
  *    }
  * \endcode
  *
- * \param[in]	manager				Storage manager
- * \param[in]	command				Command
- * \param[in]	*buffer				Ptr on the buffer
- * \return		KERR_STORAGE_XXXXX	Depends on the "xxxx" device manager
+ * \param[in]   manager             Storage manager
+ * \param[in]   command             Command
+ * \param[in]   *buffer             Ptr on the buffer
+ * \return      KERR_STORAGE_XXXXX  Depends on the "xxxx" device manager
  *
  */
-int32_t	storage_ioctl(storage_manager_t manager, storageIoctl_t command, void *buffer) {
+int32_t storage_ioctl(storage_manager_t manager, storageIoctl_t command, void *buffer) {
 
-	switch (manager) {
+    switch (manager) {
 
-		#if (defined(CONFIG_MAN_SDCARD_S))
-		case KSDCARD: { return (sdcard_ioctl(command, buffer));			   }
-		#endif
+        #if (defined(CONFIG_MAN_SDCARD_S))
+        case KSDCARD: { return (sdcard_ioctl(command, buffer));            }
+        #endif
 
-		#if (defined(CONFIG_MAN_SERIAL_FLASH_S))
-		case KSERIAL_FLASH: { return (serialFlash_ioctl(command, buffer)); }
-		#endif
+        #if (defined(CONFIG_MAN_SERIAL_FLASH_S))
+        case KSERIAL_FLASH: { return (serialFlash_ioctl(command, buffer)); }
+        #endif
 
-		default: { return (KERR_STORAGE_NODEV);							   }
-	}
+        default: { return (KERR_STORAGE_NODEV);                            }
+    }
 
 }
 

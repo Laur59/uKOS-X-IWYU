@@ -1,15 +1,15 @@
 /*
 ; led.
-; ===
+; ====
 
 ; SPDX-License-Identifier: MIT
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		led manager.
+; Project:  uKOS-X
+; Goal:     led manager.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +46,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_peripherals
@@ -54,16 +54,16 @@
 /**@{*/
 
 enum {
-		KLED_0 = (uint8_t)0u,
-		KLED_1 = (uint8_t)1u,
-		KLED_2 = (uint8_t)2u,
-		KLED_3 = (uint8_t)3u,
-		KLED_4 = (uint8_t)4u,
-		KLED_5 = (uint8_t)5u,
-		KLED_6 = (uint8_t)6u,
-		KLED_7 = (uint8_t)7u,
-		KLED_8 = (uint8_t)8u,
-		KLED_9 = (uint8_t)9u
+        KLED_0 = (uint8_t)0u,
+        KLED_1 = (uint8_t)1u,
+        KLED_2 = (uint8_t)2u,
+        KLED_3 = (uint8_t)3u,
+        KLED_4 = (uint8_t)4u,
+        KLED_5 = (uint8_t)5u,
+        KLED_6 = (uint8_t)6u,
+        KLED_7 = (uint8_t)7u,
+        KLED_8 = (uint8_t)8u,
+        KLED_9 = (uint8_t)9u
 };
 
 /*!
@@ -77,7 +77,7 @@ enum {
  */
 
 #if (defined(__cplusplus))
-extern	"C" {
+extern  "C" {
 #endif
 
 /*!
@@ -92,12 +92,12 @@ extern	"C" {
  *     status = led_on(ledNb);
  * \endcode
  *
- * \param[in]	ledNb			LED number
- * \return		KERR_LED_NOERR	OK
- * \return		KERR_LED_NODEV	The selected LED does not exist
+ * \param[in]   ledNb           LED number
+ * \return      KERR_LED_NOERR  OK
+ * \return      KERR_LED_NODEV  The selected LED does not exist
  *
  */
-extern	int32_t	led_on(uint8_t ledNb);
+extern  int32_t led_on(uint8_t ledNb);
 
 /*!
  * \brief Turn off a LED
@@ -111,12 +111,12 @@ extern	int32_t	led_on(uint8_t ledNb);
  *    status = led_off(ledNb);
  * \endcode
  *
- * \param[in]	ledNb			LED number
- * \return		KERR_LED_NOERR	OK
- * \return		KERR_LED_NODEV	The selected LED does not exist
+ * \param[in]   ledNb           LED number
+ * \return      KERR_LED_NOERR  OK
+ * \return      KERR_LED_NODEV  The selected LED does not exist
  *
  */
-extern	int32_t	led_off(uint8_t ledNb);
+extern  int32_t led_off(uint8_t ledNb);
 
 /*!
  * \brief Change the state of a LED
@@ -130,12 +130,12 @@ extern	int32_t	led_off(uint8_t ledNb);
  *    status = led_toggle(ledNb);
  * \endcode
  *
- * \param[in]	ledNb			LED number
- * \return		KERR_LED_NOERR	OK
- * \return		KERR_LED_NODEV	The selected LED does not exist
+ * \param[in]   ledNb           LED number
+ * \return      KERR_LED_NOERR  OK
+ * \return      KERR_LED_NODEV  The selected LED does not exist
  *
  */
-extern	int32_t	led_toggle(uint8_t ledNb);
+extern  int32_t led_toggle(uint8_t ledNb);
 
 /*!
  * \brief General control of the LEDs
@@ -151,11 +151,11 @@ extern	int32_t	led_toggle(uint8_t ledNb);
  *    status = led_mute(false); // Portion of code without any LED activity
  * \endcode
  *
- * \param[in]	mute			true -> turn off all the LEDs, false -> normal mode
- * \return		KERR_LED_NOERR	OK
+ * \param[in]   mute            true -> turn off all the LEDs, false -> normal mode
+ * \return      KERR_LED_NOERR  OK
  *
  */
-extern	int32_t	led_mute(bool mute);
+extern  int32_t led_mute(bool mute);
 
 #if (defined(__cplusplus))
 }
