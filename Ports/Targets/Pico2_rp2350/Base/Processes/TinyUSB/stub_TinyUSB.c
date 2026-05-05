@@ -9,7 +9,7 @@
 
 #include    <stdint.h>
 
-#include    <tusb.h>             // for SystemCoreClock
+#include    <tusb.h>            // for SystemCoreClock
 
 #include    "Registers/nvic.h"
 #include    "TinyUSB/TinyUSB.h"
@@ -42,7 +42,7 @@
 #endif
 
 #if (CFG_TUD_VIDEO > 0)
-#include    "Interface/Models/model_TinyUSB_video.c_inc"      // IWYU pragma: keep
+#include    "Interface/Models/model_TinyUSB_video.c_inc"    // IWYU pragma: keep
 #endif
 
 uint32_t    SystemCoreClock = KFREQUENCY_CORE;

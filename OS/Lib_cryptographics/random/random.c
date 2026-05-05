@@ -71,7 +71,7 @@ static  int32_t     local_init(void);
  * \endcode
  *
  * \param[in]   generator           KRANDOM_SOFT, use the software implementation
- * \param[in]   -                   KRANDOM_HARD, use the hardware implementation
+ *                                  KRANDOM_HARD, use the hardware implementation
  * \param[out]  *number             Ptr on the number
  * \param[in]   nbNumbers           Number of numbers
  * \return      KERR_RANDOM_NOERR   OK

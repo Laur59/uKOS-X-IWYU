@@ -235,7 +235,6 @@ extern  bool    is_exception(void);
  *   Before using the manager functions, it is necessary to
  *   call this function.
  *
- * \param[in]   -
  * \return      KERR_KERN_NOERR OK
  *
  */
@@ -259,7 +258,6 @@ extern  int32_t kern_init(void);
  * - Initialise all the timers (1-ms & 20-ms)
  * - Enable the time sharing and all the interruptions
  *
- * \param[in]   -
  * \return      KERR_KERN_NOERR OK
  *
  */
@@ -283,7 +281,7 @@ extern  int32_t kern_runKernel(void);
  * - This function manages the atomic access to a critical section
  *
  * \param[in]   critical        KENTER_CRITICAL, enter in a critical section
- * \param[in]   -               KEXIT_CRITICAL, exit from a critical section
+ *                              KEXIT_CRITICAL, exit from a critical section
  * \return      KERR_KERN_NOERR OK
  *
  */

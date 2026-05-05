@@ -70,7 +70,7 @@ message("")
 
 # Package version and commit hash (matching build_with_cmake.sh)
 set(TINYUSB_VERSION "0.20.0")
-set(TINYUSB_HASH "4c7fd70")
+set(TINYUSB_HASH "3170fa0")
 
 message(STATUS "Fetching TinyUSB version ${TINYUSB_VERSION} (commit ${TINYUSB_HASH})")
 
@@ -240,7 +240,7 @@ set(SUPPORTED_SOCS
     "u5|STM32U5G9|cdc_cdc,cdc_msc,cdc_video"
     "n6|STM32N657|cdc_cdc,cdc_msc,cdc_video"
     "pico2|rp2350|cdc_cdc"
-#     "v8|STM32V873|cdc_cdc,cdc_msc,cdc_video"
+    "v8|STM32V873|cdc_cdc,cdc_msc,cdc_video"
 )
 
 #------------------------------------------------------------------------
@@ -299,7 +299,6 @@ foreach(SOC_CONFIG ${SUPPORTED_SOCS})
             # Pass build type explicitly to ensure optimization
             CMAKE_ARGS        -DCMAKE_BUILD_TYPE=${SUBPROJECT_BUILD_TYPE}
                               -G ${CMAKE_GENERATOR}
-                              -DUSE_LLVM=OFF
             CMAKE_CACHE_ARGS  ""
 
             # Build step

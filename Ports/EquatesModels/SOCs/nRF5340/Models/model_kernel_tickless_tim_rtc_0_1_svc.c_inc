@@ -75,9 +75,8 @@ static  volatile    bool        vTimeout       = false;                         
 
 extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
-static  uintptr_t   *local_newContextPRE(uintptr_t *stack);
-static  uintptr_t   *local_newContextTOU(uintptr_t *stack);
-static  uintptr_t   *local_newContextMSG(uintptr_t *stack, uint32_t message);
+extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
+
 static  void        local_TIM0_IRQHandler(void);
 static  void        local_RTC0_IRQHandler(void);
 static  void        local_updateTickless(uint8_t mode);
@@ -466,6 +465,7 @@ static  void    local_nextTime(uint64_t absTime) {
  * !!! Do not generate prologue/epilogue sequences
  *
  */
+uintptr_t   *local_newContextPRE(uintptr_t *stack);
 [[gnu::naked]]
 void    PendSV_C0_IRQHandler(void) {
 
@@ -492,7 +492,7 @@ void    PendSV_C0_IRQHandler(void) {
  *   - Return the stack of the new process
  *
  */
-static  uintptr_t   __attribute__ ((noinline, used)) *local_newContextPRE(uintptr_t *stack) {
+uintptr_t   __attribute__ ((noinline, used)) *local_newContextPRE(uintptr_t *stack) {
 
 // Save the stack of the old process
 
@@ -576,6 +576,7 @@ static  uintptr_t   __attribute__ ((noinline, used)) *local_newContextPRE(uintpt
  * !!! Do not generate prologue/epilogue sequences
  *
  */
+uintptr_t   *local_newContextTOU(uintptr_t *stack);
 [[gnu::naked]]
 void    TIMER1_C0_IRQHandler(void) {
 
@@ -605,7 +606,7 @@ void    TIMER1_C0_IRQHandler(void) {
  *   - Return the stack of the new process
  *
  */
-static  uintptr_t   __attribute__ ((noinline, used)) *local_newContextTOU(uintptr_t *stack) {
+uintptr_t   __attribute__ ((noinline, used)) *local_newContextTOU(uintptr_t *stack) {
 
 // Save the stack of the old process
 
@@ -696,6 +697,7 @@ static  uintptr_t   __attribute__ ((noinline, used)) *local_newContextTOU(uintpt
  * !!! Do not generate prologue/epilogue sequences
  *
  */
+uintptr_t   *local_newContextMSG(uintptr_t *stack, uint32_t message);
 [[gnu::naked]]
 void    kernel_message_C0(void) {
 
@@ -724,7 +726,7 @@ void    kernel_message_C0(void) {
  *   - Return the stack of the new process
  *
  */
-static  uintptr_t   __attribute__ ((noinline, used)) *local_newContextMSG(uintptr_t *stack, uint32_t message) {
+uintptr_t   __attribute__ ((noinline, used)) *local_newContextMSG(uintptr_t *stack, uint32_t message) {
 
 // Save the stack of the old process
 

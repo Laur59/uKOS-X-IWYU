@@ -35,19 +35,19 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) = "test_ipi     preliminary ipi test.                     (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])        = "Test of the cores\n"
-                                    "=================\n\n"
+STRG_LOC_CONST(aStrApplication[]) =	"test_ipi     preliminary ipi test.                     (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])		  = "Test of the cores\n"
+									"=================\n\n"
 
-                                    "This tool performs a preliminary ipi tests.\n\n"
+									"This tool performs a preliminary ipi tests.\n\n"
 
-                                    "Input format:  test_ipi -generate/-display\n"
-                                    "Output format: [result]\n\n"
+									"Input format:  test_ipi -generate/-display\n"
+									"Output format: [result]\n\n"
 
-                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
-static  int32_t     test_ipi_pre_init(uint32_t argc, const char_t *argv[]);
-static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+static	int32_t		test_ipi_pre_init(uint32_t argc, const char_t *argv[]);
+static	int32_t		prgm(uint32_t argc, const char_t *argv[]);
 
 MODULE(
     Test_ipi,                                   // Module name (the first letter has to be upper case)
@@ -69,7 +69,7 @@ static  volatile    bool        vDataAvailable[KNB_CORES] = MCSET(false);
 
 // Prototypes
 
-static  void    local_machineSoftware_IRQHandler(uint32_t core, uint64_t parameter);
+static	void	local_machineSoftware_IRQHandler(uint32_t core, uint64_t parameter);
 
 /*
  * \brief Main entry point

@@ -73,8 +73,8 @@ static  int32_t     local_init(void);
  *
  * \param[in]   reserveMode         Any mode
  * \param[in]   timeout             Timeout (1-ms of resolution)
- * \param[in]   -                   KWAIT_INFINITY, waiting forever
- * \param[in]   -                   KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
+ *                                  KWAIT_INFINITY, waiting forever
+ *                                  KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
  * \return      KERR_IMAGER_NOERR   The manager is reserved
  * \return      KERR_IMAGER_GEERR   General error
  * \return      KERR_IMAGER_CHBSY   The manager is busy
@@ -239,7 +239,6 @@ int32_t imager_configure(const imagerCnf_t *configure) {
  *    status = imager_acquisition();
  * \endcode
  *
- * \param[in]   -
  * \return      KERR_IMAGER_NOERR   OK
  * \return      KERR_IMAGER_GEERR   General error
  * \return      KERR_IMAGER_TIMEO   Timeout error
@@ -360,7 +359,7 @@ int32_t imager_writeRegister(uint8_t registerNb, uint16_t value) {
  * \endcode
  *
  * \param[in]   mode                KIMAGER_OPERATE, standby OFF
- * \param[in]   -                   KIMAGER_STANDBY, standby ON
+ *                                  KIMAGER_STANDBY, standby ON
  * \return      KERR_IMAGER_NOERR   OK
  * \return      KERR_IMAGER_GEERR   General error
  * \return      KERR_IMAGER_BDMOD   Bad mode for called function

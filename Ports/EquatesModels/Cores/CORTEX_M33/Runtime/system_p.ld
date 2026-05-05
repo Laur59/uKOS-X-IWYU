@@ -29,7 +29,10 @@
 
 SECTIONS {
     .text : {
-        INCLUDE     vectors.ld
+        linker_stCODE = ABSOLUTE(.);
+        linker_stVECTORS = ABSOLUTE(.);
+        KEEP(*(.isr_vector))
+        linker_enVECTORS = ABSOLUTE(.);
 
         linker_stCODE = ABSOLUTE(.);
         linker_stTEXT = ABSOLUTE(.);

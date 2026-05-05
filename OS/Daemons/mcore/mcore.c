@@ -65,8 +65,8 @@ STRG_LOC_CONST(aStrText_SndX[]) = "Daemon mcore: send to core x.             (c)
 
 // Prototypes
 
-static  void        local_process_SndX(const void *argument);
-static  void        local_process_RecX(const void *argument);
+static  void    local_process_SndX(const void *argument);
+static  void    local_process_RecX(const void *argument);
 
 /*
  * \brief Main entry point

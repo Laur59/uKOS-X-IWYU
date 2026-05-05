@@ -47,7 +47,7 @@ extern  uintptr_t   *vKern_stackProc[KNB_CORES];                // Process stack
  * \brief Connect the current process to a list and change the context
  *
  * \param[in]   force   false process timeout
- * \param[in]   -       true force to change the context
+ *                      true force to change the context
  * \param[in]   *list   Ptr on the list
  * \param[in]   bitNb   bit number (flag for suspending)
  *
@@ -86,7 +86,6 @@ extern  void    scheduler_callBackFast(uint32_t time);
  * - Change the context and prepare the next process
  * - INT acknowledge and new time for the next process
  *
- * \param[in]   -
  *
  * \note This function does not return a value (None).
  *
