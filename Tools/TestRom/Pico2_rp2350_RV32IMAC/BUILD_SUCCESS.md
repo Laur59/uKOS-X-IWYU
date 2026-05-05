@@ -244,7 +244,7 @@ cd /Users/lva/Dev/edo-rtos-uKOSX/uKOS-X-priv-lva/Tools/TestRom/Pico2_rp2350_RISC
 
 # Clean build
 rm -rf build
-cmake -S . -B build -DTEST_NUMBER=00 -DBOARD=Pico2
+cmake -S . -B build -DTEST_NUMBER=00
 
 # Compile
 cmake --build build

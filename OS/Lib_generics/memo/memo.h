@@ -24,6 +24,10 @@
 
 #include    <stdint.h>
 
+#include    "macros_soc.h"
+#if (KNB_CORES > 1)
+#include    "spin.h"
+#endif
 #include    "types.h"
 
 // memo_malloc memory alignments
@@ -46,6 +50,10 @@ struct  memoMallocInf {
             uint32_t    oSize;                                  // Block size
     const   char_t      *oIdentifier;                           // Mab user identifier
 };
+
+#if (KNB_CORES > 1)
+extern spinlock_t       vMemo;
+#endif
 
 // Prototypes
 
@@ -81,9 +89,9 @@ extern  void    memo_free(void *address);
  * \endcode
  *
  * \param[in]   memoAlignement  KMEMO_ALIGN_4
- * \param[in]   -               KMEMO_ALIGN_8
- * \param[in]   -               KMEMO_ALIGN_16
- * \param[in]   -               KMEMO_ALIGN_32
+ *                              KMEMO_ALIGN_8
+ *                              KMEMO_ALIGN_16
+ *                              KMEMO_ALIGN_32
  * \param[in]   size            Size of the memory to allocate
  * \param[in]   *identifier     Ptr on the identifier
  * \return      nullptr         Memory block not allocated
@@ -110,9 +118,9 @@ extern  void    *memo_malloc(memoAlignement_t memoAlignement, uint32_t size, con
  * \endcode
  *
  * \param[in]   memoAlignement  KMEMO_ALIGN_4
- * \param[in]   -               KMEMO_ALIGN_8
- * \param[in]   -               KMEMO_ALIGN_16
- * \param[in]   -               KMEMO_ALIGN_32
+ *                              KMEMO_ALIGN_8
+ *                              KMEMO_ALIGN_16
+ *                              KMEMO_ALIGN_32
  * \param[in]   *address        Ptr on the address
  * \param[in]   size            Size of the memory to allocate
  * \param[in]   *identifier     Ptr on the identifier

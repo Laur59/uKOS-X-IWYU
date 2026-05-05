@@ -1,0 +1,11 @@
+idf_component_register(
+    SRCS
+        "ble_to_uart.c"
+    INCLUDE_DIRS
+        "."
+    REQUIRES
+        nvs_flash
+        bt
+        esp_driver_uart
+        esp_driver_gpio
+)

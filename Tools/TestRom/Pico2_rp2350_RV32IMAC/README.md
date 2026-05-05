@@ -120,7 +120,7 @@ cd /Users/lva/Dev/edo-rtos-uKOSX/uKOS-X-priv-lva/Tools/TestRom/Pico2_rp2350_RISC
 
 # Clean build
 rm -rf build
-cmake -S . -B build -DTEST_NUMBER=00 -DBOARD=Pico2
+cmake -S . -B build -DTEST_NUMBER=00
 
 # Compile
 cmake --build build
@@ -224,7 +224,6 @@ minicom -D /dev/tty.usbserial-* -b 460800
 | Feature              | ARM Cortex-M33            | RISC-V Hazard3                     |
 |----------------------|---------------------------|------------------------------------|
 | Entry Point          | Reset_Handler             | Reset_C0_Handler                   |
-| Vector Table         | .isr_vector               | .text_vectors                      |
 | Boot Block Byte 6    | 0x21 (ARM)                | 0x11 (RISC-V)                      |
 | Startup File         | first.c                   | first_rv.c                         |
 | Small Data Sections  | None                      | .sdata, .srodata                   |

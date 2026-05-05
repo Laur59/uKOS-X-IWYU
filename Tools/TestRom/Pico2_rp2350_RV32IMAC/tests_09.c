@@ -47,9 +47,22 @@
 ;------------------------------------------------------------------------
 */
 
-#include    "tests.h"
+#include    <stdint.h>
 
-#if (defined(TEST_09_S))
+#include    "board.h"
+#include    "clockTree.h"
+#include    "cmns.h"
+#include    "core.h"
+#include    "init.h"
+#include    "macros_core.h"
+#include    "soc_reg.h"
+#include    "macros_soc.h"
+#include    "types.h"
+
+void    (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
+void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
+bool    vExce_isException[KNB_CORES] = MCSET(false);
+
 #define KTIM_ESAMPLING_0    ((float64_t)(0.5))                                  // 500-ms
 #define KDELTA_TIME_0       ((uint32_t)(KFREQUENCY_TIM * KTIM_ESAMPLING_0))     // Delta time
 
@@ -58,9 +71,8 @@
 
 // Prototypes
 
-        void    local_TIM0_0_IRQHandler(void);
-        void    local_TIM0_1_IRQHandler(void);
-extern  void    init_launchCore_1(void (*entry)(void));
+static  void    local_TIM0_0_IRQHandler(void);
+static  void    local_TIM0_1_IRQHandler(void);
 
 extern  uint8_t     linker_topStackFirst_C1[];
 
@@ -128,7 +140,7 @@ void    local_TIM0_1_IRQHandler(void) {
  * - Test of the TIM0 Alarme 0 (core 0) & 1 (core 1) interruption
  *
  */
-void    test_09(void) {
+static  void    test_09(void) {
 
 // Reset of the device
 
@@ -177,4 +189,13 @@ void    local_TIM0_0_IRQHandler(void) {
         LED_GREEN_TOGGLE;
     }
 }
-#endif
+
+/*
+ * \brief main
+ *
+ * - Execute the test
+ *
+ */
+int     main([[maybe_unused]] int argc, [[maybe_unused]] const char_t *argv[]) {
+    test_09();
+}

@@ -8,7 +8,6 @@
 
 #include    "clockTree.h"
 #include    "macros_core.h"
-#include    "os_errors.h"
 #include    "serial_common.h"
 #include    "soc_reg.h"
 #include    "urt0/urt0.h"

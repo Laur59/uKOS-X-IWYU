@@ -66,7 +66,7 @@ typedef enum IRQn {
     StoreAddressMisaligned_IRQn         = 6,    // Store/AMO address misaligned
     StoreAccessFault_IRQn               = 7,    // Store/AMO access fault
     ECallUser_IRQn                      = 8,    // Environment call from U-mode
-    ECallSupervisor_IRQn                = 9,    // Environment call from S-mode
+    // mcause = 9 (ECall from S-mode): Hazard3 has no S-mode, never raised
     ECallMachine_IRQn                   = 11,   // Environment call from M-mode
     InstructionPageFault_IRQn           = 12,   // Instruction page fault
     LoadPageFault_IRQn                  = 13,   // Load page fault
@@ -78,7 +78,7 @@ typedef enum IRQn {
     MTIP_IRQn                           = 7,    // Machine timer interrupt
     MEIP_IRQn                           = 11,   // Machine external interrupt
 
-// SOC Specific Interrupt Numbers (via PLIC/NVIC)
+// SOC Specific Interrupt Numbers (via Hazard3 Xh3irq / mcause = 11)
 
     TIMER0_IRQ_0_IRQn       = 0,    //
     TIMER0_IRQ_1_IRQn       = 1,    //
@@ -215,7 +215,6 @@ typedef enum IRQn {
 #define StoreAddressMisaligned_C0_IRQn          StoreAddressMisaligned_IRQn
 #define StoreAccessFault_C0_IRQn                StoreAccessFault_IRQn
 #define ECallUser_C0_IRQn                       ECallUser_IRQn
-#define ECallSupervisor_C0_IRQn                 ECallSupervisor_IRQn
 #define ECallMachine_C0_IRQn                    ECallMachine_IRQn
 #define InstructionPageFault_C0_IRQn            InstructionPageFault_IRQn
 #define LoadPageFault_C0_IRQn                   LoadPageFault_IRQn
@@ -354,7 +353,6 @@ typedef enum IRQn {
 #define StoreAddressMisaligned_C1_IRQn          StoreAddressMisaligned_IRQn
 #define StoreAccessFault_C1_IRQn                StoreAccessFault_IRQn
 #define ECallUser_C1_IRQn                       ECallUser_IRQn
-#define ECallSupervisor_C1_IRQn                 ECallSupervisor_IRQn
 #define ECallMachine_C1_IRQn                    ECallMachine_IRQn
 #define InstructionPageFault_C1_IRQn            InstructionPageFault_IRQn
 #define LoadPageFault_C1_IRQn                   LoadPageFault_IRQn
@@ -499,7 +497,6 @@ void    LoadAccessFault_C0_IRQHandler(void);
 void    StoreAddressMisaligned_C0_IRQHandler(void);
 void    StoreAccessFault_C0_IRQHandler(void);
 void    ECallUser_C0_IRQHandler(void);
-void    ECallSupervisor_C0_IRQHandler(void);
 void    ECallMachine_C0_IRQHandler(void);
 void    InstructionPageFault_C0_IRQHandler(void);
 void    LoadPageFault_C0_IRQHandler(void);
@@ -591,7 +588,6 @@ void    LoadAccessFault_C1_IRQHandler(void);
 void    StoreAddressMisaligned_C1_IRQHandler(void);
 void    StoreAccessFault_C1_IRQHandler(void);
 void    ECallUser_C1_IRQHandler(void);
-void    ECallSupervisor_C1_IRQHandler(void);
 void    ECallMachine_C1_IRQHandler(void);
 void    InstructionPageFault_C1_IRQHandler(void);
 void    LoadPageFault_C1_IRQHandler(void);

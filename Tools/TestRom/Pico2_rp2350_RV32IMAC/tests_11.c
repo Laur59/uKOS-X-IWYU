@@ -47,14 +47,23 @@
 ;------------------------------------------------------------------------
 */
 
-#include    "tests.h"
+#include    <stdint.h>
 
-#if (defined(TEST_11_S))
+#include    "board.h"
+#include    "cmns.h"
+#include    "core.h"
+#include    "init.h"
+#include    "macros_core.h"
+#include    "macros_soc.h"
+#include    "types.h"
+
+void    (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
+void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
+bool    vExce_isException[KNB_CORES] = MCSET(false);
 
 // Prototypes
 
-        void    local_doorBell_IRQHandler(void);
-extern  void    init_launchCore_1(void (*entry)(void));
+static  void    local_doorBell_IRQHandler(void);
 
 extern  uint8_t     linker_topStackFirst_C1[];
 
@@ -119,7 +128,7 @@ void    local_doorBell_IRQHandler(void) {
  * - Test of the door bell
  *
  */
-void    test_11(void) {
+static  void    test_11(void) {
     uint32_t    cpt = 0;
 
     init_launchCore_1(local_codeCore_1);
@@ -136,4 +145,13 @@ void    test_11(void) {
         if ((cpt % 10u) == 0u) { REG(SIO)->DOORBELL_OUT_SET = 0x2u; }
     }
 }
-#endif
+
+/*
+ * \brief main
+ *
+ * - Execute the test
+ *
+ */
+int     main([[maybe_unused]] int argc, [[maybe_unused]] const char_t *argv[]) {
+    test_11();
+}

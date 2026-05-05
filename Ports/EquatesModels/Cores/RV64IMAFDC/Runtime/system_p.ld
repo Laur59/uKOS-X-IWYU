@@ -31,7 +31,8 @@
 
 SECTIONS {
     .text : {
-        INCLUDE     vectors.ld
+        linker_stTEXT = ABSOLUTE(.);
+        *(.text_vectors)
 
         linker_stTEXT_KERN_p = ABSOLUTE(.);
         libkern_p.a:*(.text .text.*)

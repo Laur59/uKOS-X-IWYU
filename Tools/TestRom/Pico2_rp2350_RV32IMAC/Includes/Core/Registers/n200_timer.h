@@ -3,7 +3,7 @@
 ; ===========
 
 ; SPDX-License-Identifier: MIT
-; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+; SPDX-FileCopyrightText: 2026 Laurent von Allmen
 
 ;------------------------------------------------------------------------
 ; Author:   Laurent von Allmen  The 2026-02-13
@@ -64,4 +64,4 @@ typedef struct {
     volatile    uint32_t    msip;
 } N200_TIMER_Type;
 
-#define N200_TIMER  ((N200_TIMER_Type *)0xD1000000u)
+#define N200_TIMER  ((N200_TIMER_Type *)0xD1000000U)

@@ -133,12 +133,6 @@ enum {
 #define INTERRUPTION_RESTORE    ECLIC->MTH = (uint8_t)__saveECLIC_msk
 #endif
 
-#ifndef RETURN_INT_RESTORE
-#define RETURN_INT_RESTORE(status)                                                                                              \
-                                INTERRUPTION_RESTORE;                                                                           \
-                                return status
-#endif
-
 #ifndef INTERRUPTION_OFF_CRITICAL
 #define INTERRUPTION_OFF_CRITICAL(savemMask)                                                                                    \
                                 savemMask = (volatile uint32_t)ECLIC->MTH;                                                      \

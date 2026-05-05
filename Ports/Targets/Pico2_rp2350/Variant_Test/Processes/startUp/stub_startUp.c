@@ -15,6 +15,7 @@
 #include    "ip.h"
 #include    "kern/kern.h"
 #include    "macros.h"
+#include    "macros_soc.h"
 #include    "modules.h"
 #include    "os_errors.h"
 #include    "serial/serial.h"
@@ -30,12 +31,12 @@ extern  bool    TinyUSB_cdc_isConnected(uint8_t itf);
 typedef struct  boot    boot_t;
 
 struct  boot {
-                uint8_t             oSW;                // Switch value
         const   char_t              *oFunction;         // Ptr on the function
-                uint8_t             oBaudrate;          // Baudrate
                 serialManager_t     oSerialManager;     // Default Serial Communication Manager
-                uint8_t             oArgC;              // Number of arguments
         const   char_t              **oArgV;            // Ptr on the arguments
+                uint8_t             oArgC;              // Number of arguments
+                uint8_t             oSW;                // Switch value
+                uint8_t             oBaudrate;          // Baudrate
         };
 
 #if (CONFIG_DIFFERENT_SERIAL_PER_CORE_S == true)
@@ -47,10 +48,10 @@ static  const   char_t  *argv_cnsCdc0_C0[] = { "console", "cdc0" };
 static  const   char_t  *argv_cnsUrt0_C1[] = { "console", "urt0" };
 
 static  const   boot_t  aFunction_C0[] = {
-                            { 0x00U, "console", KSERIAL_BAUDRATE_460800, KCDC0, 2U, argv_cnsCdc0_C0 },
+                            { .oFunction="console", .oSerialManager=KCDC0, .oArgV=argv_cnsCdc0_C0, .oArgC=2U, .oSW=0x00U, .oBaudrate=KSERIAL_BAUDRATE_460800 }
                         };
 static  const   boot_t  aFunction_C1[] = {
-                            { 0x00U, "console", KSERIAL_BAUDRATE_460800, KURT0, 2U, argv_cnsUrt0_C1 },
+                            { .oFunction="console", .oSerialManager=KURT0, .oArgV=argv_cnsUrt0_C1, .oArgC=2U, .oSW=0x00U, .oBaudrate=KSERIAL_BAUDRATE_460800 }
                         };
 
 #define KDEF_COMM_C0        KCDC0
@@ -77,7 +78,7 @@ STRG_GLB_CONST(aStartUp_StrHelp[]) = "StartUp process\n"
 static  const   char_t  *argv_cnsUrt0_Cx[] = { "console", "urt0" };
 
 static  const   boot_t  aFunction_Cx[] = {
-                            { 0x00U, "console", KSERIAL_BAUDRATE_460800, KURT0, 2U, argv_cnsUrt0_Cx },
+                            { "console", KURT0, argv_cnsUrt0_Cx, 2U, 0x00U, KSERIAL_BAUDRATE_460800 }
                         };
 
 #define KDEF_COMM_Cx        KURT0
@@ -117,7 +118,7 @@ void    stub_startUp_launch(void) {
 // Configure by default all the Serial Communication Managers
 // Set the default communication device (KSYST)
 
-    mode = 0;
+    mode = 0u;
 
     #if (CONFIG_DIFFERENT_SERIAL_PER_CORE_S == true)
     uint32_t    core;

@@ -47,7 +47,3 @@
 */
 
 #pragma once
-
-// Note: Peripheral register access uses the REG(x) macro defined in macros_core.h
-// REG(x) automatically appends _S or _NS based on SECURE_S/SECURE_NS definitions
-// Example: REG(RESETS) expands to RESETS_S when SECURE_S is defined

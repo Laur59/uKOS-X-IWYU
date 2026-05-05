@@ -24,17 +24,42 @@
 ;   Description: Lightweight, real-time multitasking operating
 ;   system for embedded microcontroller and DSP-based systems.
 ;
+;   Permission is hereby granted, free of charge, to any person
+;   obtaining a copy of this software and associated documentation
+;   files (the "Software"), to deal in the Software without restriction,
+;   including without limitation the rights to use, copy, modify,
+;   merge, publish, distribute, sublicense, and/or sell copies of the
+;   Software, and to permit persons to whom the Software is furnished
+;   to do so, subject to the following conditions:
+;
+;   The above copyright notice and this permission notice shall be
+;   included in all copies or substantial portions of the Software.
+;
+;   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+;   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+;   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+;   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+;   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+;   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+;   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+;   SOFTWARE.
+;
 ;------------------------------------------------------------------------
 */
 
-#include    "tests.h"
+#include    <stdint.h>
+
+#include    "clockTree.h"
+#include    "cmns.h"
+#include    "macros_core.h"
+#include    "soc_reg.h"
+
 
 /*
  * \brief cmns_init
  *
  * - Initialise the UART0 and UART1 peripherals
  *
- * \param[in]   -
  *
  * \note This function does not return a value (None).
  *
@@ -81,12 +106,10 @@ void    cmns_init(void) {
  * \note This function does not return a value (None).
  *
  */
-void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
+void    cmns_send([[maybe_unused]] serialManager_t serialManager, const char_t *ascii) {
             uint8_t     data;
             uint32_t    core;
     const   char_t      *wkAscii = ascii;
-
-    UNUSED(serialManager);
 
     core = GET_RUNNING_CORE;
 
@@ -144,11 +167,9 @@ void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
  * \note This function does not return a value (None).
  *
  */
-void    cmns_receive(serialManager_t serialManager, char_t *data) {
+void    cmns_receive([[maybe_unused]] serialManager_t serialManager, char_t *data) {
     uint32_t    core;
     uint32_t    dr;
-
-    UNUSED(serialManager);
 
     core = GET_RUNNING_CORE;
 

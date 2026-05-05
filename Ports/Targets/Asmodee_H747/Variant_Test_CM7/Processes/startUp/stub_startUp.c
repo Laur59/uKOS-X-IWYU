@@ -31,18 +31,18 @@
 typedef struct  boot    boot_t;
 
 struct  boot {
-                uint8_t             oSW;                // Switch value
         const   char_t              *oFunction;         // Ptr on the function
-                uint8_t             oBaudrate;          // Baudrate
                 serialManager_t     oSerialManager;     // Default Serial Communication Manager
-                uint8_t             oArgC;              // Number of arguments
         const   char_t              **oArgV;            // Ptr on the arguments
+                uint8_t             oArgC;              // Number of arguments
+                uint8_t             oSW;                // Switch value
+                uint8_t             oBaudrate;          // Baudrate
         };
 
 static  const   char_t  *argv_cnsUrt0[] = { "console", "urt0" };
 
 static  const   boot_t  aFunction[] = {
-                            { 0x00U, "console", KSERIAL_BAUDRATE_460800, KURT0, 2U, argv_cnsUrt0 }
+                            { .oFunction="console", .oSerialManager=KURT0, .oArgV=argv_cnsUrt0, .oArgC=2U, .oSW=0x00U, .oBaudrate=KSERIAL_BAUDRATE_460800 },
                         };
 
 #define KDEF_COMM       KURT0
@@ -84,7 +84,7 @@ void    stub_startUp_launch(void) {
 
     switch_read(&mode);
     if (mode >= KNB_FUNCTIONS) {
-        mode = 0;
+        mode = 0u;
     }
 
     serial_setDefSerialManager(KDEF_COMM);

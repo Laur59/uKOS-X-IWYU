@@ -212,11 +212,7 @@ if(NOT DEFINED LINKS_LD)
     if(NOT DEFINED PATH_MAPP)
         set(PATH_MAPP "${PATH_BASE}/Runtime")
     endif()
-    if(PREFIX STREQUAL "llvm-")
-        set(LINKS_LD "${PATH_MAPP}/link${MODE}.ld")
-    else()
-        set(LINKS_LD "${PATH_MAPP}/link${MODE}.ld")
-    endif()
+    set(LINKS_LD "${PATH_MAPP}/link${MODE}.ld")
 endif()
 
 # Common link options
@@ -225,8 +221,7 @@ set(TARGET_COMMON_LINK_OPTIONS
     -L${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC}/Runtime
     -L${PATH_UKOS}/Ports/EquatesModels/Cores/${CORE}/Runtime
     -T${LINKS_LD}
-    $<$<C_COMPILER_ID:GNU>:-nostartfiles>
-    $<$<AND:$<VERSION_GREATER_EQUAL:$<C_COMPILER_VERSION>,20>,$<C_COMPILER_ID:Clang>>:-nostartfiles>
+    -nostartfiles
 )
 
 # C library specific memory allocator wrapping
@@ -335,9 +330,7 @@ set(ARTEFACTS_DIR "$ENV{PWD}/Artefacts" CACHE PATH "Directory for build artifact
 add_custom_command(
     TARGET ${TARGET_ELF}
     POST_BUILD
-    COMMAND ${CMAKE_STRIP} --strip-debug ${TARGET_ELF} -o stripped${TARGET_ELF}
-    COMMAND ${CMAKE_SIZE} -A --radix=16 stripped${TARGET_ELF} | grep -F -v -e .debug -e .ARM.attributes -e .comment
-    COMMAND ${CMAKE_COMMAND} -E remove stripped${TARGET_ELF}
+    COMMAND ${CMAKE_SIZE} -A --radix=16 ${TARGET_ELF} | grep -E -e \.text -e \.init_array -e \.fini_array -e \.rodata -e \.signature -e \.data* -e \.bss* -e \.tbss
     VERBATIM
 )
 

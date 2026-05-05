@@ -16,8 +16,8 @@
 ;           !!! It is called before to copy and to initialise
 ;           !!! the variable into the RAM.
 ;
-;   (c) 2025-2026, Laurent von Allmen
-;   ---------------------------------
+;   (c) 2026, Laurent von Allmen
+;   ----------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -31,12 +31,19 @@
 ;------------------------------------------------------------------------
 */
 
-#include    "tests.h"
+#include    <stdint.h>
+
+#include    "board.h"
+#include    "clockTree.h"
+#include    "cmns.h"
+#include    "init.h"
+#include    "macros_core.h"
+#include    "soc_reg.h"
 
 // RISC-V specific runtime
 // =======================
 
-static  inline  void    wfi(void) { __asm volatile ("wfi"); }
+// static   inline  void    wfi(void) { __asm volatile ("wfi"); }
 static  inline  void    fence(void) { __asm volatile ("fence" ::: "memory"); }
 static  inline  void    sev(void) { __asm volatile ("slt x0, x0, x1" ::: "memory"); }
 
@@ -57,7 +64,6 @@ extern  uint8_t     linker_topStackFirst_C1[];
  * - Initialise basic peripherals for RISC-V
  * - GPIO, clocks
  *
- * \param[in]   -
  *
  * \note This function does not return a value (None).
  *
@@ -87,25 +93,13 @@ static  void    local_GPIO_Configuration(void) {
     REG(PADS_BANK0)->GPIO12 &= ~PADS_BANK0_GPIO12_ISO;
     REG(PADS_BANK0)->GPIO13 &= ~PADS_BANK0_GPIO13_ISO;
 
-    #if (BOARD_Pico2 == true)
     REG(PADS_BANK0)->GPIO25 &= ~PADS_BANK0_GPIO25_ISO;
-    #endif
-
-    #if (BOARD_Pico2W == true)
-    REG(PADS_BANK0)->GPIO0 &= ~PADS_BANK0_GPIO0_ISO;
-    #endif
 
     REG(IO_BANK0)->GPIO11_CTRL = IO_BANK0_GPIO11_CTRL_FUNCSEL_SIOB_PROC_11;
     REG(IO_BANK0)->GPIO12_CTRL = IO_BANK0_GPIO12_CTRL_FUNCSEL_SIOB_PROC_12;
     REG(IO_BANK0)->GPIO13_CTRL = IO_BANK0_GPIO13_CTRL_FUNCSEL_SIOB_PROC_13;
 
-    #if (BOARD_Pico2 == true)
     REG(IO_BANK0)->GPIO25_CTRL = IO_BANK0_GPIO25_CTRL_FUNCSEL_SIOB_PROC_25;
-    #endif
-
-    #if (BOARD_Pico2W == true)
-    REG(IO_BANK0)->GPIO0_CTRL = IO_BANK0_GPIO0_CTRL_FUNCSEL_SIOB_PROC_0;
-    #endif
 
     REG(SIO)->GPIO_OE_SET = (1u << BLED_s) | (1u << BLED_0) | (1u << BLED_1) | (1u << BLED_2);
 
@@ -197,6 +191,21 @@ static  void    local_PLL_Configuration(void) {
 
     // Configure clk_peri = clk_sys (for UART, etc.)
     REG(CLOCKS)->CLK_PERI_CTRL = (0x0u<<5u) | (1u<<0x0Bu);
+
+// The timer clocks
+// ----------------
+
+// Timer 0 clocked to 1-MHz
+
+    REG(TICKS)->TIMER0_CTRL   = TICKS_TIMER0_CTRL_ENABLE;
+    REG(TICKS)->TIMER0_CYCLES = KCRYSTAL / KFREQUENCY_TIM;
+    REG(TIMER0)->SOURCE       = 0u;
+
+// Timer 1 clocked to 1-MHz
+
+    REG(TICKS)->TIMER1_CTRL   = TICKS_TIMER1_CTRL_ENABLE;
+    REG(TICKS)->TIMER1_CYCLES = KCRYSTAL / KFREQUENCY_TIM;
+    REG(TIMER1)->SOURCE       = 0u;
 }
 
 /*
@@ -211,15 +220,15 @@ void    init_launchCore_1(void (*entry)(void)) {
     const   uint32_t    vtor   = (uint32_t)(uintptr_t)first_handle_trap;
     const   uint32_t    sp     = (uint32_t)(uintptr_t)linker_topStackFirst_C1;
     const   uint32_t    pc     = (uint32_t)(uintptr_t)entry;
-    const   uint32_t    seq[6] = { 0u, 0u, 1u, vtor, sp, pc };
+    const   uint32_t    seq[6] = { 0U, 0U, 1U, vtor, sp, pc };
 
-    i = 0u;
+    i = 0U;
     do {
         cmd = seq[i];
 
 // Before each 0 : empty RX + SEV
 
-        if (cmd == 0u) { local_emptyRxFifo(); sev(); }
+        if (cmd == 0U) { local_emptyRxFifo(); sev(); }
 
 // Send and waiting for the echo
 

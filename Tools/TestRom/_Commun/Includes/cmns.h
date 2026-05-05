@@ -48,6 +48,8 @@
 
 #pragma once
 
+#include    "types.h"
+
 // Supported managers
 
 typedef enum {
@@ -67,7 +69,6 @@ typedef enum {
 /*
  * \brief cmns_init
  *
- * \param[in]   -
  *
  * \note This function does not return a value (None).
  *

@@ -10,6 +10,7 @@
 #
 # Project:  uKOS-X
 # Goal:     CMake file to set up the building for uKOS-X the testROM.
+# Usage:    cmake -S . -B build -DTEST_NUMBER=xx
 #
 #   (c) 2025-2026, Laurent von Allmen
 #   ---------------------------------
@@ -47,10 +48,11 @@
 
 cmake_minimum_required(VERSION 3.26)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # Get project paths
-cmake_path(GET CMAKE_SOURCE_DIR PARENT_PATH PATH_TEST_ROM)
-cmake_path(GET PATH_TEST_ROM PARENT_PATH PATH_TOOLS)
-cmake_path(GET PATH_TOOLS PARENT_PATH PATH_UKOS)
+get_filename_component(PATH_UKOS "${CMAKE_CURRENT_LIST_DIR}/../../.." ABSOLUTE)
+get_filename_component(PATH_TEST_ROM "${CMAKE_CURRENT_LIST_DIR}/.." ABSOLUTE)
 
 # Set toolchain
 include(${PATH_UKOS}/Ports/cmake/select-riscv-toolchain.cmake)
@@ -64,7 +66,7 @@ project(
 set(TARGET_NAME testROM)
 
 # Define the list of valid values for test number
-set(VALID_TEST_NUMBERS 00 01 02 03 04 05 06 07 08 09 10 11)
+set(VALID_TEST_NUMBERS 00 01 02 03 04 05 06 07 08 09 10 11 12)
 
 # Set the default value
 set(TEST_NUMBER "00" CACHE STRING "Number of test to run.")
@@ -76,21 +78,8 @@ set_property(CACHE TEST_NUMBER PROPERTY STRINGS ${VALID_TEST_NUMBERS})
 if(NOT TEST_NUMBER IN_LIST VALID_TEST_NUMBERS)
     message(FATAL_ERROR "Invalid value for TEST_NUMBER: ${TEST_NUMBER}. Valid values are: ${VALID_TEST_NUMBERS}.")
 endif()
-message(STATUS "Configured to use test number ${TEST_NUMBER}" )
-
-# Define the list of supported boards
-list(APPEND VALID_BOARDS
-    Pico2
-    Pico2W
-)
-# Set the default value
-set(BOARD "Pico2" CACHE STRING "Target board.")
-# Set the property for GUI tools
-set_property(CACHE BOARD PROPERTY STRINGS ${VALID_BOARDS})
-# Validate the value of BOARD
-if(NOT BOARD IN_LIST VALID_BOARDS)
-    message(FATAL_ERROR "Invalid value for BOARD: ${BOARD}. Valid values are: ${VALID_BOARDS}.")
-endif()
+set(test_source "tests_${TEST_NUMBER}.c")
+message(STATUS "Configured to use test file ${test_source}" )
 
 set(CPU_SPECS -march=rv32imac_zicsr_zifencei)
 list(APPEND FLAGS_FP
@@ -98,23 +87,24 @@ list(APPEND FLAGS_FP
 )
 
 include_directories(
-    ${PATH_TEST_ROM}/_Commun/Includes
+    ${PATH_UKOS}/OS/Includes
+    ${PATH_UKOS}/OS/Lib_serials
     ${PATH_TEST_ROM}/_Commun/Runtime
     ${CMAKE_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/Includes
+    ${PATH_UKOS}/Ports/EquatesModels/Generic/Runtime
     ${CMAKE_SOURCE_DIR}/Includes/Core
     ${CMAKE_SOURCE_DIR}/Includes/SOC
 )
 
 # Create the executable
 add_executable(${TARGET_NAME}.elf
-    first_rv.c
-    picobin_rv.c
+    first_riscv.c
+    picobin.c
     init.c
     cmns.c
-    tests.c
+    ${test_source}
     ../_Commun/Runtime/crt0.c
-    ../_Commun/Runtime/debug.c
 )
 
 # Forward selected test
@@ -127,21 +117,23 @@ target_compile_definitions(${TARGET_NAME}.elf PRIVATE
     USING_CMAKE
     CACHE_D_S
     SECURE_S
-    BOARD_${BOARD}
 )
 
 target_compile_options(${TARGET_NAME}.elf PRIVATE
+    -std=c23
     ${CPU_SPECS}
     ${FLAGS_FP}
-    -g -Os
+    -g
+    $<$<C_COMPILER_ID:GNU>:-Os>
+    $<$<C_COMPILER_ID:Clang>:-Oz>
     -Wall
-    -Wlogical-op
+    $<$<C_COMPILER_ID:GNU>:-Wlogical-op>
 )
 
 if(NOT ${PREFIX} STREQUAL "llvm-")
     set(LINKS_LD Runtime/link_p.ld)
 else()
-    set(LINKS_LD Runtime/link_p.lld)
+    set(LINKS_LD Runtime/link_p.ld)
 endif()
 
 target_link_options(${TARGET_NAME}.elf PRIVATE
@@ -153,7 +145,7 @@ target_link_options(${TARGET_NAME}.elf PRIVATE
     -T${LINKS_LD}
     -Wl,-Map=${TARGET_NAME}.map,--cref,--print-memory-usage
     $<$<C_COMPILER_ID:GNU>:-Wl,--no-warn-rwx-segment>
-    -lm
+    -lnosys
 )
 
 # Add map file, and ck file in the list of files removed by make clean
@@ -170,4 +162,11 @@ add_custom_command(TARGET ${TARGET_NAME}.elf
     COMMAND ${CMAKE_OBJCOPY} -O binary --strip-all ${TARGET_NAME}.elf ${TARGET_NAME}.bin
     VERBATIM
     BYPRODUCTS ${TARGET_NAME}.hex ${TARGET_NAME}.bin
+)
+
+# Program the SOC with binary
+add_custom_target(burn
+    DEPENDS ${TARGET_NAME}.elf
+    COMMAND ${CMAKE_SOURCE_DIR}/burn.sh
+    VERBATIM
 )

@@ -19,7 +19,6 @@
 #include    "macros_core.h"
 #include    "macros_soc.h"
 #include    "modules.h"
-#include    "soc_reg.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -49,7 +48,7 @@ MODULE(
 // Runtime specific
 // ================
 
-        uintptr_t   vVectors[KNB_EXCEPTIONS + KNB_INTERRUPTIONS] __attribute__((aligned(2048)));
+        uintptr_t   vVectors[KNB_EXCEPTIONS + KNB_INTERRUPTIONS] __attribute__ ((aligned(2048)));
         void        (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
         void        (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 extern  void        (* const g_pfnVectors_C0[])(void);
@@ -63,7 +62,6 @@ static  void    local_cpyLEDs(uint8_t value);
 /*
  * \brief exce_init
  *
- * \param[in]   -
  *
  * \note This function does not return a value (None).
  *

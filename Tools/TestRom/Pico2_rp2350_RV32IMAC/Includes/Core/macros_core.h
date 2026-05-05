@@ -135,6 +135,12 @@
 #define KPROCESS_INIT_MCAUSE    (MCAUSE_INTERRUPT | RVBB_MCAUSE_MPP(3U) | RVBB_MCAUSE_MPIE | 11U)
 #endif
 
+#ifndef RETURN_INT_RESTORE
+#define RETURN_INT_RESTORE(status)                                                                                              \
+                                INTERRUPTION_RESTORE;                                                                           \
+                                return (status)
+#endif
+
 #ifndef INTERRUPTION_OFF_HARD
 #define INTERRUPTION_OFF_HARD   core_clrBitCSR(RV_CSR_MSTATUS, MSTATUS_MIE)
 #endif
@@ -147,12 +153,6 @@
 #define WAITING_INTERRUPTION    __asm volatile ("                                                                            \n \
                                 wfi"                                                                                            \
                                 )
-#endif
-
-#ifndef RETURN_INT_RESTORE
-#define RETURN_INT_RESTORE(status)                                                                                              \
-                                INTERRUPTION_RESTORE;                                                                           \
-                                return (status)
 #endif
 
 #ifndef GET_CURRENT_PROCESS_STACK
@@ -177,23 +177,23 @@ extern  bool    vExce_isException[KNB_CORES];
 #define EXCLUDE_CPPCHECK
 #ifdef EXCLUDE_CPPCHECK
 
-#define EXCEPTION_SPECIFIC_HANDLER(irq)                                                                                         \
-                                void irq##_local_IRQHandler(void) {                                                             \
+#define EXCEPTION_SPECIFIC_HANDLER(exc)                                                                                         \
+                                __attribute__((used)) static void exc##_local_IRQHandler(void) {                                \
                                     uint32_t    core;                                                                           \
                                     void        (*go)(void);                                                                    \
                                                                                                                                 \
                                     core = GET_RUNNING_CORE;                                                                    \
                                     vExce_isException[core] = true;                                                             \
-                                    go = vExce_indExcVectors[core][irq##_IRQn];                                                 \
+                                    go = vExce_indExcVectors[core][exc##_IRQn];                                                 \
                                     (*go)();                                                                                    \
                                     vExce_isException[core] = false;                                                            \
                                 }                                                                                               \
                                                                                                                                 \
-                                void irq##_IRQHandler(void) __attribute__ ((weak, naked));                                      \
-                                void irq##_IRQHandler(void) {                                                                   \
+                                [[gnu::weak, gnu::naked]]                                                           \
+                                void exc##_IRQHandler(void) {                                                                   \
                                                                                                                                 \
                                     INTERRUPTION_IN;                                                                            \
-                                    CALL_FNCT(irq##_local_IRQHandler);                                                          \
+                                    CALL_FNCT(exc##_local_IRQHandler);                                                          \
                                     INTERRUPTION_OUT;                                                                           \
                                 }
 #endif
@@ -215,7 +215,7 @@ extern  bool    vExce_isException[KNB_CORES];
 #ifdef EXCLUDE_CPPCHECK
 
 #define INTERRUPT_SPECIFIC_HANDLER(irq)                                                                                         \
-                                void irq##_local_IRQHandler(void) {                                                             \
+                                __attribute__((used)) static void irq##_local_IRQHandler(void) {                                \
                                     uint32_t    core;                                                                           \
                                     void        (*go)(void);                                                                    \
                                                                                                                                 \
@@ -226,7 +226,7 @@ extern  bool    vExce_isException[KNB_CORES];
                                     vExce_isException[core] = false;                                                            \
                                 }                                                                                               \
                                                                                                                                 \
-                                void irq##_IRQHandler(void) __attribute__ ((weak, naked));                                      \
+                                [[gnu::weak, gnu::naked]]                                                           \
                                 void irq##_IRQHandler(void) {                                                                   \
                                                                                                                                 \
                                     INTERRUPTION_IN;                                                                            \

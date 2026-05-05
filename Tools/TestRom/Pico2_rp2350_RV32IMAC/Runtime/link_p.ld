@@ -6,12 +6,32 @@
 ; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 ;------------------------------------------------------------------------
-; Author:	Laurent von Allmen	The 2026-02-13
+; Author:   Laurent von Allmen  The 2026-02-13
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Linker description for RISC-V TestROM.
-;			Privileged only support
+; Project:  uKOS-X
+; Goal:     Linker description for the uKOS-X system (RISC-V mode).
+;           Privileged only support
+;
+;                       CODE
+; linker_stTEXT         +-----------------+
+;                       |                 |
+;                       | .isr_vector     |
+;                       | .text           |
+;                       | .rodata         |
+; linker_enRODATA       |                 |
+;                       +-----------------+
+; linker_stSignature    |                 |             DATA
+;                       +-----------------+ ........... +-----------------+ linker_stDATA
+; linker_stINDATA       |                 |             |                 |
+;                       | .data           |             | .data           |
+;                       |                 |             |                 | linker_enDATA
+;                       +-----------------+ ........... +-----------------+
+;                                                       |                 | linker_stBSS
+;                                                       | .bss            |
+;                                                       | COMMON          |
+;                                                       |                 | linker_enBSS
+;                                                       +-----------------+
 ;
 ;   (c) 2025-2026, Laurent von Allmen
 ;   ---------------------------------
@@ -50,52 +70,86 @@
 
 ENTRY(Reset_C0_Handler)
 
-INCLUDE		Runtime/rp2350.ld
+INCLUDE     Runtime/rp2350.ld
 
-/* Memory Mapping for RISC-V TestROM */
+/* Mapping:                                                 */
+/*                                                          */
+/* RAM:     Stacks              0x20000000                  */
+/*          12K                 0x20000000                  */
+/*          Program Data        0x20003000                  */
+/*          180K                                            */
+/*          Heap                0x20030000                  */
+/*          128K                                            */
+/*          User Memory         0x20050000                  */
+/*          72K                                             */
+/*          Share               0x20062000                  */
+/*          64K                                             */
 
-linker_sizeStackSystem_C0	= (4K);		/* System stack for core 0 */
-linker_sizeStackFirst_C0	= (2K);		/* Application stack for core 0 */
+linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
+linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */
+linker_sizeStackSystem_C1   = (4K);                                                         /* Length of the System stack                               */
+linker_sizeStackFirst_C1    = (2K);                                                         /* Length of the First stack                                */
+config_sizeData             = (180K);
+config_sizeHeap             = (128K);
+config_sizeUserMemory       = (72K);
+config_sizeShare            = (64K);
 
-linker_sizeStackSystem_C1	= (4K);		/* System stack for core 1 */
-linker_sizeStackFirst_C1	= (2K);		/* Application stack for core 1 */
+/* IMPORTANT:                                               */
+/* all the stacks have to be maintained aligned             */
+/* on a boundary of 8-bytes                                 */
 
-linker_lowStackSystem_C0	= rp_stSRAM;
-linker_topStackSystem_C0	= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 - 8,
+linker_lowStackFirst_C0     = rp_stSRAM;                                                    /* 0x20000000: start of the First stack                     */
+linker_topStackFirst_C0     = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0 - 8;       /* 0x200007f8                                               */
 
-linker_lowStackFirst_C0		= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;
-linker_topStackFirst_C0		= linker_lowStackFirst_C0 + linker_sizeStackFirst_C0 - 8;
+linker_lowStackFirst_C1     = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;           /* 0x20000800: start of the First stack                     */
+linker_topStackFirst_C1     = linker_lowStackFirst_C1 + linker_sizeStackFirst_C1 - 8;       /* 0x20000ff8                                               */
 
-linker_lowStackSystem_C1	= linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;
-linker_topStackSystem_C1	= linker_lowStackSystem_C1 + linker_sizeStackSystem_C1 - 8;
+linker_lowStackSystem_C0    = linker_lowStackFirst_C1 + linker_sizeStackFirst_C1;           /* 0x20001000: start of the System stack                    */
+linker_topStackSystem_C0    = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 - 8;     /* 0x20001ff8                                               */
 
-linker_lowStackFirst_C1		= linker_lowStackSystem_C1 + linker_sizeStackSystem_C1;
-linker_topStackFirst_C1		= linker_lowStackFirst_C1 + linker_sizeStackFirst_C1 - 8;
+linker_lowStackSystem_C1    = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;         /* 0x20002000: start of the System stack                    */
+linker_topStackSystem_C1    = linker_lowStackSystem_C1 + linker_sizeStackSystem_C1 - 8;     /* 0x20002ff8                                               */
 
-/* IMPORTANT:												*/
-/* The heap has to be maintained aligned					*/
-/* on a boundary of 8-bytes									*/
+ASSERT((linker_lowStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
+ASSERT((linker_topStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
+ASSERT((linker_lowStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
+ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
+ASSERT((linker_lowStackSystem_C1 & 7) == 0, "Stack system must be 8-byte aligned")
+ASSERT((linker_topStackSystem_C1 & 7) == 0, "Stack system must be 8-byte aligned")
+ASSERT((linker_lowStackFirst_C1 & 7)  == 0, "Stack user must be 8-byte aligned")
+ASSERT((linker_topStackFirst_C1 & 7)  == 0, "Stack user must be 8-byte aligned")
 
-linker_stHeap				= (rp_stSRAM + 128K);			/* 0x20020000: start of the heap							*/
-linker_lnHeap				= (128K);												/* Length of the heap										*/
+/* IMPORTANT:                                               */
+/* External memory, User (download application) and shared  */
 
-/* IMPORTANT:												*/
-/* External memory, User (download application) and shared	*/
+linker_stEXRAM              = 0;                                                            /* 0x00000000: EXRAM, start of the external memory          */
+linker_lnEXRAM              = (0);                                                          /* Length of the external memory                            */
 
-linker_stUMemo				= (linker_stHeap + linker_lnHeap);						/* 0x20040000: UMemo, start of the user memory 				*/
-linker_lnUMemo				= (128K);												/* Length of the user memory	  							*/
+linker_stUMemo              = (linker_stHeap + linker_lnHeap);                              /* 0x20050000: UMemo, start of the user memory              */
+linker_lnUMemo              = config_sizeUserMemory;                                        /* Length of the user memory                                */
 
-/* Flash and RAM configuration */
+linker_stShare              = (linker_stUMemo + linker_lnUMemo);                            /* 0x20062000: Share, start of the multicore shared memory  */
+linker_lnShare              = config_sizeShare;                                             /* Length of the user multicore shared memory               */
 
-linker_stPrgmCode			= rp_stINTFLASH;		/* 0x10000000: Flash start */
-linker_lnPrgmCode			= rp_lnINTFLASH;		/* 4MB Flash */
+/* IMPORTANT:                                               */
+/* The heap has to be maintained aligned                    */
+/* on a boundary of 8-bytes                                 */
 
-linker_stPrgmData			= rp_stSRAM + 12K;		/* 0x20000000: RAM start */
-linker_lnPrgmData			= (116K);				/* 128KB RAM for test */
+linker_stHeap               = linker_stPrgmData + config_sizeData;                          /* 0x20030000: start of the heap                            */
+linker_lnHeap               = config_sizeHeap;                                              /* Length of the heap                                       */
+
+/* IMPORTANT:                                               */
+/* uKOS OS Flash + memory                                   */
+
+linker_stPrgmCode           = rp_stINTFLASH;                                                /* 0x10000000: PrgmCode, start of the Flash                 */
+linker_lnPrgmCode           = rp_lnINTFLASH;                                                /* Length of the the Flash                                  */
+
+linker_stPrgmData           = linker_lowStackSystem_C1 + linker_sizeStackSystem_C1;         /* 0x20003000: start of program data                        */
+linker_lnPrgmData           = config_sizeData;                                              /* Length of program data                                   */
 
 MEMORY {
-	prgm_code (rx)	: ORIGIN = linker_stPrgmCode, LENGTH = linker_lnPrgmCode
-	prgm_data (rwx)	: ORIGIN = linker_stPrgmData, LENGTH = linker_lnPrgmData
+    prgm_code (rx)  : ORIGIN = linker_stPrgmCode, LENGTH = linker_lnPrgmCode
+    prgm_data (rwx) : ORIGIN = linker_stPrgmData, LENGTH = linker_lnPrgmData
 }
 
-INCLUDE		Runtime/system_p.ld
+INCLUDE     Runtime/system_p-riscv.ld

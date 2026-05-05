@@ -25,7 +25,6 @@
 // Ignore the GCC diagnostic
 //
 #pragma GCC diagnostic  ignored "-Wpedantic"
-#include    "tusb.h"        // IWYU pragma: keep
 #include    "tusb_types.h"
 #include    "usbd.h"
 
@@ -38,7 +37,7 @@
 #endif
 
 #if (CFG_TUD_MSC > 0)
-#include    "TInterface/Models/model_TinyUSB_msc.c_inc"     // IWYU pragma: keep
+#include    "Interface/Models/model_TinyUSB_msc.c_inc"      // IWYU pragma: keep
 #endif
 
 #if (CFG_TUD_VIDEO > 0)

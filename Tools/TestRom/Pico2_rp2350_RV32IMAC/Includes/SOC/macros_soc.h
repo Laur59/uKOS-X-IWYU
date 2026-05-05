@@ -173,7 +173,7 @@ enum {
 // Architecture-specific interrupt control macros
 // -----------------------------------------------
 
-#if defined(__riscv)
+#ifdef __riscv
 
 // RISC-V interrupt control via mstatus.MIE bit
 // Note: RP2350 RISC-V uses standard machine-mode interrupt enable

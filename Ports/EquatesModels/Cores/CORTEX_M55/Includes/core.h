@@ -33,7 +33,6 @@
  *
  * - Get the BASEPRI register
  *
- * \param[in]   -
  * \return      BASEPRI     The BASEPRI register
  *
  */
@@ -53,7 +52,6 @@ __attribute__ ((always_inline)) static  inline  uint32_t    core_getBASEPRI_S(vo
  *
  * - Get the BASEPRI register
  *
- * \param[in]   -
  * \return      BASEPRI     The BASEPRI register
  *
  */
@@ -111,7 +109,6 @@ __attribute__ ((always_inline)) static  inline  void    core_setBASEPRI_NS(uint3
  *
  * - Get the PSP stack
  *
- * \param[in]   -
  * \return      stackPSP    The thread stack PSP
  *
  */
@@ -131,7 +128,6 @@ __attribute__ ((always_inline)) static  inline  uintptr_t   core_getPSP_S(void) 
  *
  * - Get the PSP stack
  *
- * \param[in]   -
  * \return      stackPSP    The thread stack PSP
  *
  */
@@ -189,7 +185,6 @@ __attribute__ ((always_inline)) static  inline  void    core_setPSP_NS(uintptr_t
  *
  * - Get the MSP stack
  *
- * \param[in]   -
  * \return      stackMSP    The system stack MSP
  *
  */
@@ -209,7 +204,6 @@ __attribute__ ((always_inline)) static  inline  uintptr_t   core_getMSP_S(void) 
  *
  * - Get the MSP stack
  *
- * \param[in]   -
  * \return      stackMSP    The system stack MSP
  *
  */
@@ -267,7 +261,6 @@ __attribute__ ((always_inline)) static  inline  void    core_setMSP_NS(uintptr_t
  *
  * - Get the CONTROL register
  *
- * \param[in]   -
  * \return      CONTROL     The CONTROL register
  *
  */
@@ -287,7 +280,6 @@ __attribute__ ((always_inline)) static  inline  uint32_t    core_getCONTROL_S(vo
  *
  * - Get the CONTROL register
  *
- * \param[in]   -
  * \return      CONTROL     The CONTROL register
  *
  */
@@ -345,7 +337,6 @@ __attribute__ ((always_inline)) static  inline  void    core_setCONTROL_NS(uint3
  *
  * - Get the PSP Limit
  *
- * \param[in]   -
  * \return      PSPLim  The thread stack PSP limit
  *
  */
@@ -365,7 +356,6 @@ __attribute__ ((always_inline)) static  inline  uintptr_t   core_getPSPLIM_S(voi
  *
  * - Get the PSP Limit
  *
- * \param[in]   -
  * \return      PSPLim  The thread stack PSP limit
  *
  */
@@ -423,7 +413,6 @@ __attribute__ ((always_inline)) static  inline  void    core_setPSPLIM_NS(uintpt
  *
  * - Get the MSP Limit
  *
- * \param[in]   -
  * \return      MSPLim  The thread stack MSP limit
  *
  */
@@ -443,7 +432,6 @@ __attribute__ ((always_inline)) static  inline  uintptr_t   core_getMSPLIM_S(voi
  *
  * - Get the MSP Limit
  *
- * \param[in]   -
  * \return      MSPLim  The thread stack MSP limit
  *
  */
@@ -501,7 +489,6 @@ __attribute__ ((always_inline)) static  inline  void    core_setMSPLIM_NS(uintpt
  *
  * - Get the LR register
  *
- * \param[in]   -
  * \return      LR      The LR register
  *
  */
@@ -521,7 +508,6 @@ __attribute__ ((always_inline)) static  inline  uintptr_t   core_getLR(void) {
  *
  * - Get the IPSR register
  *
- * \param[in]   -
  * \return      IPSR        The IPSR register
  *
  */
@@ -541,7 +527,6 @@ __attribute__ ((always_inline)) static  inline  uint32_t    core_getIPSR_S(void)
  *
  * - Get the IPSR register
  *
- * \param[in]   -
  * \return      IPSR        The IPSR register
  *
  */

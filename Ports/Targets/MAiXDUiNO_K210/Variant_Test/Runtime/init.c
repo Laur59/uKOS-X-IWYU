@@ -87,7 +87,6 @@ extern  void    first_handle_trap(void);
  * - Initialise some basic periphs
  * - GPIO, watchdog, SDRAM
  *
- * \param[in]   -
  *
  * \note This function does not return a value (None).
  *
@@ -110,33 +109,28 @@ static  void    local_GPIO_Configuration(void) {
             fpioa_tie_t     tie = { 0 };
     static  const           mainGpio_t  aGPIO_Cnf[] = {
 
-//            .IOxx  .ch_sel,               .ds,              .oe_en, .oe_inv, .do_sel, .do_inv, .pU, .pd, .resv1, .sl, .ie_en, .ie_inv, .di_inv, .st, .tie_en, .tie_val, .resv0, .pad_di
+//            .IOxx  .ch_sel,               .ds,              .oe_en,  .oe_inv,  .do_sel,  .do_inv, .pu,   .pd,  .resv1, .sl,    .ie_en, .ie_inv,  .di_inv,  .st,  .tie_en,  .tie_val, .resv0,  .pad_di
+
+//            .IOxx  .ch_sel,               .ds,              .oe_en,  .oe_inv,  .do_sel,  .do_inv, .pu,   .pd,  .resv1, .sl,    .ie_en, .ie_inv,  .di_inv,  .st,  .tie_en,  .tie_val, .resv0,  .pad_di
 
             { 0U,     FUNC_JTAG_TCLK,       FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
             { 1U,     FUNC_JTAG_TDI,        FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
             { 2U,     FUNC_JTAG_TMS,        FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
             { 3U,     FUNC_JTAG_TDO,        FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    0U,     0U,       0U,       0U,   0U,       0U,        0U,      0U },
-            { 4U,     FUNC_UART2_RX,        FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
-            { 5U,     FUNC_UART2_TX,        FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    0U,     0U,       0U,       0U,   0U,       0U,        0U,      0U },
+            { 4U,     FUNC_UART2_RX,        FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       1U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
+            { 5U,     FUNC_UART2_TX,        FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       1U,   0U,   0U,      0U,    0U,     0U,       0U,       0U,   0U,       0U,        0U,      0U },
 
-            { 0U,     FUNC_JTAG_TCLK,       FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
-            { 1U,     FUNC_JTAG_TDI,        FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
-            { 2U,     FUNC_JTAG_TMS,        FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
-            { 3U,     FUNC_JTAG_TDO,        FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    0U,     0U,       0U,       0U,   0U,       0U,        0U,      0U },
-            { 4U,     FUNC_UART2_RX,        FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
-            { 5U,     FUNC_UART2_TX,        FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    0U,     0U,       0U,       0U,   0U,       0U,        0U,      0U },
-
-            { 6U,     FUNC_UART3_RX,        FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
-            { 7U,     FUNC_UART3_TX,        FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    0U,     0U,       0U,       0U,   0U,       0U,        0U,      0U },
-            { 8U,     FUNC_GPIOHS0,         FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
+            { 6U,     FUNC_UART3_RX,        FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       1U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
+            { 7U,     FUNC_UART3_TX,        FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       1U,   0U,   0U,      0U,    0U,     0U,       0U,       0U,   0U,       0U,        0U,      0U },
+            { 8U,     FUNC_GPIOHS0,         FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       1U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
             { 9U,     FUNC_GPIOHS1,         FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
-            { 10U,    FUNC_UART1_RX,        FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
+            { 10U,    FUNC_UART1_RX,        FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       1U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
             { 11U,    FUNC_GPIOHS5,         FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
 
             { 12U,    FUNC_GPIOHS8,         FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
             { 13U,    FUNC_GPIOHS9,         FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
             { 14U,    FUNC_GPIOHS10,        FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
-            { 15U,    FUNC_UART1_TX,        FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    0U,     0U,       0U,       0U,   0U,       0U,        0U,      0U },
+            { 15U,    FUNC_UART1_TX,        FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       1U,   0U,   0U,      0U,    0U,     0U,       0U,       0U,   0U,       0U,        0U,      0U },
             { 16U,    FUNC_GPIOHS6,         FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
             { 17U,    FUNC_GPIOHS7,         FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
 
@@ -241,7 +235,16 @@ static  void    local_GPIO_Configuration(void) {
                              |  (1U<<BLED_1)
                              |  (1U<<BLED_2)
                              |  (1U<<BLCD_RST)
-                             |  (1U<<BLCD_DCX);
+                             |  (1U<<BLCD_DCX)
+                             |  (1U<<BESP32_ENABLE);
+
+// Led off and esp32 on
+
+    gpiohs->output_val.u32[0] |= (1U<<BLED_0);
+    gpiohs->output_val.u32[0] |= (1U<<BLED_1);
+    gpiohs->output_val.u32[0] |= (1U<<BLED_2);
+
+    gpiohs->output_val.u32[0] |= (1U<<BESP32_ENABLE);
 }
 
 /*

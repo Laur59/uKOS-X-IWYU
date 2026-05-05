@@ -47,16 +47,22 @@
 ;------------------------------------------------------------------------
 */
 
-#include    "tests.h"
+#include    "board.h"
+#include    "cmns.h"
+#include    "macros_soc.h"
+#include    "types.h"
 
-#if (defined(TEST_01_S))
+void    (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
+void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
+bool    vExce_isException[KNB_CORES] = MCSET(false);
+
 /*
  * \brief test_01
  *
  * - Test sending data via the cnms manager
  *
  */
-void    test_01(void) {
+static  void    test_01(void) {
 
     cmns_init();
 
@@ -67,4 +73,13 @@ void    test_01(void) {
         cmns_send(KURT0, "Nous sommes les petits Strumpfs, trala lala lala ...\n");
     }
 }
-#endif
+
+/*
+ * \brief main
+ *
+ * - Execute the test
+ *
+ */
+int     main([[maybe_unused]] int argc, [[maybe_unused]] const char_t *argv[]) {
+    test_01();
+}

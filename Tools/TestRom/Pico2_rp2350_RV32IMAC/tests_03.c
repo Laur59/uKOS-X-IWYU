@@ -47,13 +47,21 @@
 ;------------------------------------------------------------------------
 */
 
-#include    "tests.h"
+#include    "board.h"
+#include    "cmns.h"
+#include    "core.h"
+#include    "macros_core.h"
+#include    "macros_soc.h"
+#include    "soc_reg.h"
+#include    "types.h"
 
-#if (defined(TEST_03_S))
+void    (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
+void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
+bool    vExce_isException[KNB_CORES] = MCSET(false);
 
 // Prototypes
 
-void    local_UART0_IRQHandler(void);
+static void local_UART0_IRQHandler(void);
 
 /*
  * \brief test_03
@@ -61,7 +69,7 @@ void    local_UART0_IRQHandler(void);
  * - Test of the UART0 Rx interruption
  *
  */
-void    test_03(void) {
+static void test_03(void) {
 
     INTERRUPT_VECTOR(UART0_IRQ_C0_IRQn, local_UART0_IRQHandler);
     core_enableExternalIRQ(UART0_IRQ_C0_IRQn);
@@ -111,4 +119,12 @@ void    local_UART0_IRQHandler(void) {
     }
 }
 
-#endif
+/*
+ * \brief main
+ *
+ * - Execute the test
+ *
+ */
+int     main([[maybe_unused]] int argc, [[maybe_unused]] const char_t *argv[]) {
+    test_03();
+}

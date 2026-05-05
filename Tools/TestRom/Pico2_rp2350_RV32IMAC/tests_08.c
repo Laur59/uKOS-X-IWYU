@@ -47,13 +47,17 @@
 ;------------------------------------------------------------------------
 */
 
-#include    "tests.h"
+#include    "board.h"
+#include    "cmns.h"
+#include    "init.h"
+#include    "macros_soc.h"
+#include    "types.h"
 
-#if (defined(TEST_08_S))
+void    (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
+void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
+bool    vExce_isException[KNB_CORES] = MCSET(false);
 
 // Prototypes
-
-extern  void    init_launchCore_1(void (*entry)(void));
 
 /*
  * \brief local_CodeCore_1
@@ -78,7 +82,7 @@ static  void    local_codeCore_1(void) {
  * - Test of the boot of the core 1
  *
  */
-void    test_08(void) {
+static  void    test_08(void) {
 
     init_launchCore_1(local_codeCore_1);
     cmns_init();
@@ -91,4 +95,12 @@ void    test_08(void) {
     }
 }
 
-#endif
+/*
+ * \brief main
+ *
+ * - Execute the test
+ *
+ */
+int     main([[maybe_unused]] int argc, [[maybe_unused]] const char_t *argv[]) {
+    test_08();
+}

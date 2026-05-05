@@ -47,15 +47,26 @@
 ;------------------------------------------------------------------------
 */
 
-#include    "tests.h"
+#include    <stdint.h>
 
-#if (defined(TEST_07_S))
-            bool        vTransmitted = false;
-volatile    uint8_t     vString[] = ".. but we are not afraid, we are alway firsts ...\n";
+#include    "Registers/RP2350_uart.h"
+#include    "board.h"
+#include    "cmns.h"
+#include    "core.h"
+#include    "macros_core.h"
+#include    "macros_soc.h"
+#include    "types.h"
+
+void    (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
+void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
+bool    vExce_isException[KNB_CORES] = MCSET(false);
+
+static volatile bool        vTransmitted = false;
+static volatile uint8_t     vString[] = ".. but we are not afraid, we are alway firsts ...\n";
 
 // Prototypes
 
-void    local_UART0_IRQHandler(void);
+static void local_UART0_IRQHandler(void);
 
 /*
  * \brief test_07
@@ -63,7 +74,7 @@ void    local_UART0_IRQHandler(void);
  * - Test of the UART0 Tx interruption
  *
  */
-void    test_07(void) {
+static void test_07(void) {
 
 // Initialise the UART0 to generate Tx interruptions
 
@@ -122,4 +133,13 @@ void    local_UART0_IRQHandler(void) {
         REG(UART0)->UARTIMSC &= ~UART_UARTIMSC_TXIM;
     }
 }
-#endif
+
+/*
+ * \brief main
+ *
+ * - Execute the test
+ *
+ */
+int     main([[maybe_unused]] int argc, [[maybe_unused]] const char_t *argv[]) {
+    test_07();
+}

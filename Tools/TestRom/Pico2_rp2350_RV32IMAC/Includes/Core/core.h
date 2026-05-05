@@ -73,7 +73,7 @@ __attribute__ ((always_inline)) static  inline  uint32_t    core_getCSR(uint32_t
     : "i" (reg)
     );
 
-    return (value);
+    return value;
 }
 
 /*
@@ -178,7 +178,7 @@ __attribute__ ((always_inline)) static  inline  void    core_enableExternalIRQ(u
     uint32_t    bit   = 1u << (irqNum % 16u);
 
     // Write index in low bits, data in high 16 bits; csrs does atomic OR
-    __asm volatile ("csrs 0xBE0, %0" :: "r" (index | (bit << 16)));
+    __asm volatile ("csrs %0,%1" :: "i" (RV_CSR_MEIEA), "r" (index | (bit << 16)));
 }
 
 /*
@@ -196,7 +196,7 @@ __attribute__ ((always_inline)) static  inline  void    core_disableExternalIRQ(
     uint32_t    bit   = 1u << (irqNum % 16u);
 
     // csrc does atomic AND-NOT
-    __asm volatile ("csrc 0xBE0, %0" :: "r" (index | (bit << 16)));
+    __asm volatile ("csrc %0,%1" :: "i" (RV_CSR_MEIEA), "r" (index | (bit << 16)));
 }
 
 /*
@@ -213,7 +213,7 @@ __attribute__ ((always_inline)) static  inline  void    core_setPendingExternalI
     uint32_t    index = irqNum / 16u;
     uint32_t    bit   = 1u << (irqNum % 16u);
 
-    __asm volatile ("csrs 0xBE2, %0" :: "r" (index | (bit << 16)));
+    __asm volatile ("csrs %0,%1" :: "i" (RV_CSR_MEIFA), "r" (index | (bit << 16)));
 }
 
 /*
@@ -230,7 +230,7 @@ __attribute__ ((always_inline)) static  inline  void    core_clearPendingExterna
     uint32_t    index = irqNum / 16u;
     uint32_t    bit   = 1u << (irqNum % 16u);
 
-    __asm volatile ("csrc 0xBE2, %0" :: "r" (index | (bit << 16)));
+    __asm volatile ("csrc %0,%1" :: "i" (RV_CSR_MEIFA), "r" (index | (bit << 16)));
 }
 
 /*
@@ -251,7 +251,7 @@ __attribute__ ((always_inline)) static  inline  void    core_setExternalIRQPrior
     uint32_t    shift = (irqNum % 4u) * 4u;
 
     // csrs ORs the priority bits into the selected window
-    __asm volatile ("csrs 0xBE3, %0" :: "r" (index | ((priority & 0xFu) << (shift + 16u))));
+    __asm volatile ("csrs %0,%1" :: "i" (RV_CSR_MEIPRA), "r" (index | ((priority & 0xFu) << (shift + 16u))));
 }
 
 /*
@@ -265,6 +265,6 @@ __attribute__ ((always_inline)) static  inline  void    core_setExternalIRQPrior
 __attribute__ ((always_inline)) static  inline  uint32_t    core_getNextExternalIRQ(void) {
     uint32_t    meinext;
 
-    __asm volatile ("csrr %0, 0xBE4" : "=r" (meinext));
+    __asm volatile ("csrr %0,%1" : "=r" (meinext) : "i" (RV_CSR_MEINEXT));
     return (meinext);
 }

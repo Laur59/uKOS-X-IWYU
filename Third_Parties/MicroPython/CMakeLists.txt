@@ -21,6 +21,7 @@
 #   cd Third_Parties/MicroPython
 #   cmake -S . -B build -GNinja
 #   cmake --build build
+#   cmake --install build
 #
 # Build outputs:
 #   - Library/*/libMicroPython.a
@@ -32,6 +33,12 @@ project(MicroPython_Package
     DESCRIPTION "MicroPython library package for all supported Cortex-M cores"
     LANGUAGES NONE
 )
+
+# Default install prefix: keep Library/ adjacent to Construction/ inside the source tree.
+# Override with cmake --install build --prefix /other/path if needed.
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}" CACHE PATH "Install prefix" FORCE)
+endif()
 
 # Include FetchContent module for downloading upstream MicroPython
 include(FetchContent)
@@ -62,6 +69,9 @@ FetchContent_Declare(
     GIT_SHALLOW    OFF  # We need full history to checkout specific tag
     GIT_PROGRESS   TRUE
 )
+
+# eliminates the repeated fetch and makes the CMake flow as fast as the script on subsequent runs.
+set(FETCHCONTENT_UPDATES_DISCONNECTED ON)
 
 # Make the content available
 FetchContent_MakeAvailable(MicroPython_Upstream)
@@ -99,7 +109,7 @@ set(ALL_CORE_PROJECTS "")
 
 foreach(CORE ${SUPPORTED_CORES})
     # Path to core CMakeLists.txt
-    set(CORE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Library/${CORE}")
+    set(CORE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${CORE}")
 
     if(EXISTS "${CORE_SOURCE_DIR}/CMakeLists.txt")
         message(STATUS "Configuring: ${CORE}")
@@ -133,8 +143,8 @@ foreach(CORE ${SUPPORTED_CORES})
             BUILD_COMMAND     ${CMAKE_COMMAND} --build <BINARY_DIR> --parallel
             BUILD_ALWAYS      OFF
 
-            # Install step - installs libMicroPython.a in ${CORE_SOURCE_DIR}
-            INSTALL_COMMAND   ${CMAKE_COMMAND} --install <BINARY_DIR>
+            # Install step - deferred to 'cmake --install' of the top-level project
+            INSTALL_COMMAND   ""
 
             # Download/Update steps - we use local source
             DOWNLOAD_COMMAND  ""
@@ -160,7 +170,24 @@ foreach(CORE ${SUPPORTED_CORES})
 endforeach()
 
 #------------------------------------------------------------------------
-# Step 4: Create convenience targets
+# Step 4: Install rules
+#
+# cmake --install build gathers libMicroPython.a from each per-core build
+# tree (Construction/<CORE>/build/) and deploys it to Library/<CORE>/.
+#------------------------------------------------------------------------
+
+foreach(CORE ${SUPPORTED_CORES})
+    set(CORE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${CORE}")
+    if(EXISTS "${CORE_SOURCE_DIR}/CMakeLists.txt")
+        install(FILES "${CORE_SOURCE_DIR}/build/libMicroPython.a"
+                DESTINATION "Library/${CORE}"
+                OPTIONAL
+        )
+    endif()
+endforeach()
+
+#------------------------------------------------------------------------
+# Step 5: Create convenience targets
 #------------------------------------------------------------------------
 
 # Create a custom target that depends on all external projects
@@ -186,6 +213,7 @@ message("Source location:      ${CMAKE_CURRENT_SOURCE_DIR}/MicroPython-current")
 message("")
 message("To build all MicroPython libraries, run:")
 message("  cmake --build build")
+message("  cmake --install build")
 message("")
 message("Individual core targets:")
 foreach(CORE ${SUPPORTED_CORES})

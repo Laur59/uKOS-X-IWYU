@@ -47,16 +47,22 @@
 ;------------------------------------------------------------------------
 */
 
-#include    "tests.h"
+#include    "board.h"
+#include    "cmns.h"
+#include    "macros_soc.h"
+#include    "types.h"
 
-#if (defined(TEST_00_S))
+void    (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
+void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
+bool    vExce_isException[KNB_CORES] = MCSET(false);
+
 /*
  * \brief test_00
  *
  * - Test blink the RED, GREEN, YELLOW and system Leds
  *
  */
-void    test_00(void) {
+static void test_00(void) {
 
     while (true) {
         LED_SYSTEM_TOGGLE;
@@ -72,4 +78,13 @@ void    test_00(void) {
         cmns_wait(100000);
    }
 }
-#endif
+
+/*
+ * \brief main
+ *
+ * - Execute the test
+ *
+ */
+int     main([[maybe_unused]] int argc, [[maybe_unused]] const char_t *argv[]) {
+    test_00();
+}

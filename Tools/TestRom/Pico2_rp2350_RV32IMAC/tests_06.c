@@ -47,9 +47,18 @@
 ;------------------------------------------------------------------------
 */
 
-#include    "tests.h"
+#include    <inttypes.h>
+#include    <stdint.h>
+#include    <stdio.h>
 
-#if (defined(TEST_06_S))
+#include    "board.h"
+#include    "cmns.h"
+#include    "macros_soc.h"
+#include    "types.h"
+
+void    (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
+void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
+bool    vExce_isException[KNB_CORES] = MCSET(false);
 
 #define VERBOSE_S
 
@@ -83,8 +92,8 @@ volatile    uintptr_t   vStackCurP1;                                        //
 
 // Prototypes
 
-        void    process_0(uintptr_t *argument);
-        void    process_1(uintptr_t *argument);
+static  void    process_0(uintptr_t *argument);
+static  void    process_1(uintptr_t *argument);
 static  void    local_scheduler(void);
 
 /*
@@ -97,7 +106,7 @@ static  void    local_scheduler(void);
  *   [12..27] trap frame: ra, t0-t2, a0-a7, mcause, mepc, pad, pad
  *
  */
-void    test_06(void) {
+static  void    test_06(void) {
     volatile    uintptr_t   *stack;
 
     cmns_init();
@@ -194,9 +203,7 @@ void    test_06(void) {
  * - Blink the RED Led
  *
  */
-void    process_0(uintptr_t *argument) {
-
-    UNUSED(argument);
+void    process_0([[maybe_unused]] uintptr_t *argument) {
 
     cmns_send(KURT0, "Enter P0\n");
 
@@ -216,9 +223,7 @@ void    process_0(uintptr_t *argument) {
  * - Blink the GREEN Led
  *
  */
-void    process_1(uintptr_t *argument) {
-
-    UNUSED(argument);
+void    process_1([[maybe_unused]] uintptr_t *argument) {
 
     cmns_send(KURT0, "Enter P1\n");
 
@@ -239,6 +244,7 @@ void    process_1(uintptr_t *argument) {
  *
  */
 static  void    __attribute__ ((noinline)) local_scheduler(void) {
+    int len;
 
     switch (vMessage) {
         default:
@@ -250,10 +256,14 @@ static  void    __attribute__ ((noinline)) local_scheduler(void) {
         case KMSGFIRST: {
 
             #if (defined(VERBOSE_S))
-            debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&vSaveStack);
-            cmns_send(KURT0, "Kernel First    Stack SV 0x"); cmns_send(KURT0, vString); cmns_send(KURT0, "\n");
-            debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&vStackCurP0);
-            cmns_send(KURT0, "Kernel First    Stack P0 0x"); cmns_send(KURT0, vString); cmns_send(KURT0, "\n");
+            len = snprintf(vString, sizeof(vString), "%08"PRIX32, (uint32_t)vSaveStack);
+            if (len >= 0) {
+                cmns_send(KURT0, "Kernel First    Stack SV 0x"); cmns_send(KURT0, vString); cmns_send(KURT0, "\n");
+            }
+            len = snprintf(vString, sizeof(vString), "%08"PRIX32, (uint32_t)vStackCurP0);
+            if (len >= 0) {
+                cmns_send(KURT0, "Kernel First    Stack P0 0x"); cmns_send(KURT0, vString); cmns_send(KURT0, "\n");
+            }
             #endif
 
             vStackCurFs = vSaveStack;
@@ -268,10 +278,14 @@ static  void    __attribute__ ((noinline)) local_scheduler(void) {
         case KMSGRUNP0: {
 
             #if (defined(VERBOSE_S))
-            debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&vSaveStack);
-            cmns_send(KURT0, "Kernel go to P0 Stack SV 0x"); cmns_send(KURT0, vString); cmns_send(KURT0, "\n");
-            debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&vStackCurP0);
-            cmns_send(KURT0, "Kernel go to P0 Stack P0 0x"); cmns_send(KURT0, vString); cmns_send(KURT0, "\n");
+            len = snprintf(vString, sizeof(vString), "%08"PRIX32, (uint32_t)vSaveStack);
+            if (len >= 0) {
+                cmns_send(KURT0, "Kernel go to P0 Stack SV 0x"); cmns_send(KURT0, vString); cmns_send(KURT0, "\n");
+            }
+            len = snprintf(vString, sizeof(vString), "%08"PRIX32, (uint32_t)vStackCurP0);
+            if (len >= 0) {
+                cmns_send(KURT0, "Kernel go to P0 Stack P0 0x"); cmns_send(KURT0, vString); cmns_send(KURT0, "\n");
+            }
             #endif
 
             vStackCurP1 = vSaveStack;
@@ -286,10 +300,14 @@ static  void    __attribute__ ((noinline)) local_scheduler(void) {
         case KMSGRUNP1: {
 
             #if (defined(VERBOSE_S))
-            debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&vSaveStack);
-            cmns_send(KURT0, "Kernel go to P1 Stack SV 0x"); cmns_send(KURT0, vString); cmns_send(KURT0, "\n");
-            debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&vStackCurP1);
-            cmns_send(KURT0, "Kernel go to P1 Stack P1 0x"); cmns_send(KURT0, vString); cmns_send(KURT0, "\n");
+            len = snprintf(vString, sizeof(vString), "%08"PRIX32, (uint32_t)vSaveStack);
+            if (len >= 0) {
+                cmns_send(KURT0, "Kernel go to P1 Stack SV 0x"); cmns_send(KURT0, vString); cmns_send(KURT0, "\n");
+            }
+            len = snprintf(vString, sizeof(vString), "%08"PRIX32, (uint32_t)vStackCurP1);
+            if (len >= 0) {
+                cmns_send(KURT0, "Kernel go to P1 Stack P1 0x"); cmns_send(KURT0, vString); cmns_send(KURT0, "\n");
+            }
             #endif
 
             vStackCurP0 = vSaveStack;
@@ -298,4 +316,13 @@ static  void    __attribute__ ((noinline)) local_scheduler(void) {
         }
     }
 }
-#endif
+
+/*
+ * \brief main
+ *
+ * - Execute the test
+ *
+ */
+int     main([[maybe_unused]] int argc, [[maybe_unused]] const char_t *argv[]) {
+    test_06();
+}

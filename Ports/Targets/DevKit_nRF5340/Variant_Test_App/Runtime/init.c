@@ -76,7 +76,6 @@ static  inline  void    cache_I_Enable(void);
  * - Initialise some basic periphs
  * - GPIO, watchdog, SDRAM
  *
- * \param[in]   -
  *
  * \note This function does not return a value (None).
  *
@@ -312,4 +311,4 @@ static  void    local_CACHE_Enable(void) {
     cache_I_Enable();
 }
 
-#include    "model_I_cache.c_inc"
+#include    "model_I_cache.c_inc"       // IWYU pragma: keep

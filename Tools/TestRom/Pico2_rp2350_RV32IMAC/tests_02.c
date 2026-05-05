@@ -47,16 +47,22 @@
 ;------------------------------------------------------------------------
 */
 
-#include    "tests.h"
+#include    "board.h"
+#include    "cmns.h"
+#include    "macros_soc.h"
+#include    "types.h"
 
-#if (defined(TEST_02_S))
+void    (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
+void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
+bool    vExce_isException[KNB_CORES] = MCSET(false);
+
 /*
  * \brief test_02
  *
  * - Test reading & sending data via the cnms manager
  *
  */
-void    test_02(void) {
+static void test_02(void) {
     char_t  buffer[20] = "x - lala\n";
 
     cmns_init();
@@ -70,4 +76,13 @@ void    test_02(void) {
         }
     }
 }
-#endif
+
+/*
+ * \brief main
+ *
+ * - Execute the test
+ *
+ */
+int     main([[maybe_unused]] int argc, [[maybe_unused]] const char_t *argv[]) {
+    test_02();
+}

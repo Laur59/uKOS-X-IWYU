@@ -44,9 +44,9 @@ INCLUDE     GD32VF103CBT.ld
 /*          3K                                              */
 
 linker_sizeStackSystem_C0   = (0);                                                          /* Length of the System stack                               */
-linker_sizeStackFirst_C0    = (1792);                                                       /* Length of the First stack                                */
-config_sizeData             = (14592);
-config_sizeHeap             = (13K);
+linker_sizeStackFirst_C0    = (768);                                                        /* Length of the First stack                                */
+config_sizeData             = (15616);
+config_sizeHeap             = (14K);
 
 /* IMPORTANT:                                               */
 /* all the stacks have to be maintained aligned             */
