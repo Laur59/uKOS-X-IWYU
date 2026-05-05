@@ -78,7 +78,7 @@ static          uint32_t    local_readRxFifo(void);
 
 extern          uintptr_t   g_pfnVectors_C0[];
 extern          uintptr_t   g_pfnVectors_C1[];
-static          uintptr_t   vTableRam_C0[KSZ_TABLE] __attribute__((aligned(512)));
+static          uintptr_t   vTableRam_C0[KSZ_TABLE] __attribute__ ((aligned(512)));
 
 /*
  * \brief init_init
@@ -86,7 +86,6 @@ static          uintptr_t   vTableRam_C0[KSZ_TABLE] __attribute__((aligned(512))
  * - Initialise some basic periphs
  * - GPIO, watchdog, SDRAM
  *
- * \param[in]   -
  *
  * \note This function does not return a value (None).
  *
@@ -119,7 +118,6 @@ void    init_init(void) {
  *
  * - Vector table relocation
  *
- * \param[in]   -
  *
  * \note This function does not return a value (None).
  *

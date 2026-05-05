@@ -78,7 +78,7 @@ STRG_GLB_CONST(aStartUp_StrHelp[]) = "StartUp process\n"
 static  const   char_t  *argv_cnsUrt0_Cx[] = { "console", "urt0" };
 
 static  const   boot_t  aFunction_Cx[] = {
-                            { .oSW=0x00U, .oFunction="console", .oBaudrate=KSERIAL_BAUDRATE_460800, .oSerialManager=KURT0, .oArgC=2U, .oArgV=argv_cnsUrt0_Cx },
+                            { "console", KURT0, argv_cnsUrt0_Cx, 2U, 0x00U, KSERIAL_BAUDRATE_460800 }
                         };
 
 #define KDEF_COMM_Cx        KURT0
@@ -118,7 +118,7 @@ void    stub_startUp_launch(void) {
 // Configure by default all the Serial Communication Managers
 // Set the default communication device (KSYST)
 
-    mode = 0;
+    mode = 0u;
 
     #if (CONFIG_DIFFERENT_SERIAL_PER_CORE_S == true)
     uint32_t    core;

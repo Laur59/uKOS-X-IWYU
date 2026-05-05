@@ -3,9 +3,11 @@
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #
 # Checks that header files are self-contained across multiple targets.
-# Usage: check-self-contained.sh <files-list>
+# Usage: check-self-contained.sh <files-list> [target …]
 #   <files-list>  text file with one header path per line; blank lines and
 #                 lines starting with '#' are ignored.
+#   [target …]   optional list of targets to check against; defaults to all
+#                 known targets when omitted.
 # For each target a CMake/LLVM build is configured once to produce
 # compile_commands.json; the extracted compile command is then re-run with
 # -fsyntax-only (full parse and type-check, no code generation) against every
@@ -60,12 +62,15 @@ check_header() {
     fi
 }
 
-if [[ $# -ne 1 || ! -f $1 ]]; then
-    printf '%sUsage: %s <files-list>%s\n' "${RED}" "$0" "${NC}" >&2
+if [[ $# -lt 1 || ! -f $1 ]]; then
+    printf '%sUsage: %s <files-list> [target …]%s\n' "${RED}" "$0" "${NC}" >&2
     exit 1
 fi
 
-targets=(
+readonly files_list=$1
+shift
+
+all_targets=(
     "Alastor_H743/Variant_Test"
     "Asmodee_H747/Variant_Test_CM4"
     "Asmodee_H747/Variant_Test_CM7"
@@ -78,6 +83,7 @@ targets=(
     "Nucleo_N657/Variant_Test"
     "Pico2_rp2350/Variant_Test"
 )
+targets=("${@:-${all_targets[@]}}")
 
 # Configure each target once and cache the clang command
 printf '%sConfiguring targets…%s\n' "${FAINT}" "${NC}"
@@ -100,4 +106,4 @@ while IFS= read -r file_under_test || [[ -n ${file_under_test} ]]; do
         [[ -z ${target_cmds[${target}]} ]] && continue
         check_header "${target}" "${target_cmds[${target}]}" "${file_under_test}"
     done
-done < "$1"
+done < "${files_list}"

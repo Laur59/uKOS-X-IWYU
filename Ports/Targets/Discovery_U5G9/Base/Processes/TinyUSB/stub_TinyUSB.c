@@ -9,7 +9,7 @@
 
 #include    <stdint.h>
 
-#include    <tusb.h>             // for SystemCoreClock
+#include    <tusb.h>                // for SystemCoreClock
 
 #include    "TinyUSB/TinyUSB.h"
 #include    "clockTree.h"
@@ -17,7 +17,7 @@
 #include    "macros_core.h"
 #include    "macros_soc.h"
 #include    "soc_reg.h"
-#include    "tusb_option.h"      // for BOARD_TUD_RHPORT, CFG_TUD_CDC, CFG_TUD_MSC
+#include    "tusb_option.h"         // for BOARD_TUD_RHPORT, CFG_TUD_CDC, CFG_TUD_MSC
 
 // Save the GCC diagnostic
 //
@@ -25,7 +25,7 @@
 
 // Ignore the GCC diagnostic
 //
-#pragma GCC diagnostic ignored "-Wpedantic"
+#pragma GCC diagnostic  ignored "-Wpedantic"
 #include    "tusb_types.h"
 #include    "usbd.h"
 

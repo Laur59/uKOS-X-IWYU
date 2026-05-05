@@ -1,6 +1,6 @@
 # Third-Party Notices — uKOS-X
 
-(c) 2025-2026, Edo. Franzi, 2026-04-18
+(c) 2025-2026, Edo. Franzi, 2026-04-30
 
 
 
@@ -50,7 +50,17 @@ the third-party components shipped in this repository.
 - Copyright:
   -  Copyright (c) 2021 - 2023 jothepro
 
-### 2.4) FatFs
+### 2.4) esp32
+
+- Location: `Third_Parties/Tflite-micro/`
+- Upstream: https://github.com/espressif/esp-idf.git
+- Version: 6.0.1
+- License: Apache-2.0
+- Copyright:
+  -  Copyright (c) 2016-2024, Espressif Systems (Shanghai) Co., Ltd.
+
+### 2.5) FatFs
+
 - Location: `Third_Parties/FatFs/`
 - Upstream: https://github.com/abbrev/fatfs.git
 - Version: 0.16 / commit 30ca13c
@@ -58,7 +68,7 @@ the third-party components shipped in this repository.
 - Copyright:
   -  Copyright (c) 20xx, ChaN, all right reserved
 
-### 2.5) IntelRDFPMath
+### 2.6) IntelRDFPMath
 - Location: `Third_Parties/IntelRDFPMath/`
 - Upstream: https://github.com/xmake-mirror/IntelRDFPMathLib.git
 - Version: 2.3 / commit ffca6d2
@@ -66,7 +76,7 @@ the third-party components shipped in this repository.
 - Copyright:
   -  Copyright (c) 2007-2024, Intel Corp.
 
-### 2.6) LVGL
+### 2.7) LVGL
 - Location: `Third_Parties/LVGL/`
 - Upstream: https://github.com/lvgl/lvgl.git
 - Version: 9.5.0
@@ -74,7 +84,7 @@ the third-party components shipped in this repository.
 - Copyright:
   -  Copyright (c) LVGL Kft and contributors
 
-### 2.7) MicroPython
+### 2.8) MicroPython
 - Location: `Third_Parties/MicroPython/`
 - Upstream: https://github.com/micropython/micropython.git
 - Version: 1.28.0
@@ -82,7 +92,7 @@ the third-party components shipped in this repository.
 - Copyright:
   -  Copyright (c) 2013-2019 Damien P. George
 
-### 2.8) Tflite-micro
+### 2.9) Tflite-micro
 - Location: `Third_Parties/Tflite-micro/`
 - Upstream: https://github.com/tensorflow/tflite-micro.git
 - Version: commit 51bee03
@@ -90,10 +100,10 @@ the third-party components shipped in this repository.
 - Copyright:
   -  Copyright (c) 2020 The TensorFlow Authors. All rights reserved.
 
-### 2.9) TinyUSB-micro
+### 2.10) TinyUSB-micro
 - Location: `Third_Parties/TinyUSB/`
 - Upstream: https://github.com/hathach/tinyusb.git
-- Version: 0.20.0 / commit 4c7fd70
+- Version: 0.20.0 / commit 3170fa0
 - License: MIT
 - Copyright:
   -  Copyright (c) 2018, hathach (tinyusb.org)
@@ -108,3 +118,21 @@ the third-party components shipped in this repository.
 - Copyright:
   -  Copyright (c) 2024, STMicroelectronics
 -  Notes: Not distributed in this repository.
+
+### 3.2) Picotools
+
+- Upstream:  https://github.com/raspberrypi/picotool.git
+- Version: 2.2.0-a4
+- License: BSD-3-Clause
+- Copyright:
+  - Copyright (c) 2020 Raspberry Pi (Trading) Ltd
+- Notes: Not distributed in this repository.
+
+### 3.3) Pico_SDK
+
+- Upstream:  https://github.com/raspberrypi/pico-sdk.git
+- Version: 2.2.0
+- License: BSD-3-Clause
+- Copyright:
+  - Copyright (c) 2020 Raspberry Pi (Trading) Ltd
+- Notes: Not distributed in this repository.

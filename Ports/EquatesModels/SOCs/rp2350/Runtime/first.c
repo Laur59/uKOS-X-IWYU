@@ -19,7 +19,7 @@
         void        Reset_C0_Handler(void);  // NOLINT(misc-use-internal-linkage): called by hardware reset vector
 extern  void        cmns_wait(uint32_t time);
 
-const   uintptr_t   g_pfnVectors_C0[] __attribute__((used, section(".isr_vector"))) = {  // NOLINT(misc-use-internal-linkage): accessed from init.c for RAM vector table copy
+const   uintptr_t   g_pfnVectors_C0[] __attribute__ ((used, section(".isr_vector"))) = {  // NOLINT(misc-use-internal-linkage): accessed from init.c for RAM vector table copy
 
     (uintptr_t)linker_topStackSystem_C0,                        // MSP Stack
 
@@ -151,7 +151,7 @@ INTERRUPT_SPECIFIC_HANDLER(POWMAN_IRQ_TIMER_C0)
 
 // cppcheck-suppress-end premium-unreadVariable
 
-const   uintptr_t   g_pfnVectors_C1[] __attribute__((used, aligned(512))) = {  // NOLINT(misc-use-internal-linkage): accessed from init.c for core 1 VTOR setup
+const   uintptr_t   g_pfnVectors_C1[] __attribute__ ((used, aligned(512))) = {  // NOLINT(misc-use-internal-linkage): accessed from init.c for core 1 VTOR setup
 
     (uintptr_t)linker_topStackSystem_C1,                        // MSP Stack
 

@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
-# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+# SPDX-FileCopyrightText: 2026 Laurent von Allmen
 #
-# TensorFlow Lite Micro integration for CMake builds
+# Goal:     TensorFlow Lite Micro integration for CMake builds
 
 # Macro to integrate the TensorFlow Lite Micro library into the build
 #

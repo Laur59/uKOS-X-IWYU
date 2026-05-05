@@ -27,50 +27,36 @@
 
 #include    "crt0.h"
 
-#include    <inttypes.h>
 #include    <stdint.h>
-#include    <stdio.h>
 #include    <stdlib.h>
 #include    <string.h>
 
 #include    "cmns.h"
-#include    "core.h"
+#include    "exit_codes.h"
 #include    "init.h"
-#include    "kern/kern.h"
-#include    "kern/private/private_processes.h"
 #include    "linker.h"
 #include    "macros.h"
 #include    "macros_core.h"
 #include    "macros_soc.h"
-#include    "modules.h"
 #include    "serial/serial.h"
-#include    "types.h"
 
-// uKOS-X specific (see the module.h)
-// ==================================
-
-// ----------------------------------I------------I-----------------------------------------I--------------I
-
-STRG_LOC_CONST(aStrApplication[]) = "crt0         Runtime crt0.                             (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])        = "crt0\n"
-                                    "====\n\n"
-
-                                    "Runtime crt0 of the system ...\n\n"
-
-                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
-
-MODULE(
-    Crt0,                           // Module name (the first letter has to be upper case)
-    KID_FAM_STARTUPS,               // Family (defined in the module.h)
-    KNUM_CRT0,                      // Module identifier (defined in the module.h)
-    nullptr,                        // Address of the initialisation code (early pre-init)
-    nullptr,                        // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
-    nullptr,                        // Address of the clean code (clean the module)
-    " 1.0",                         // Revision string (major . minor)
-    (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-    0                               // Execution cores
-);
-
+// crt0 contract
+// =============
+//
+// This translation unit is the C-runtime bootstrap and may only reference
+// the following symbols. Anything outside this list is a layering violation
+// (kernel APIs, process structs, vKern_* globals belong in crt0_exit.c).
+//
+//   init_init()              - Low-level pre-init, no statics       (init.h)
+//   exce_init()              - Install ISR/exception vectors        (crt0.h)
+//   init_relocate() (weak)   - Vector-table relocation hook         (this file)
+//   boot()                   - Returns int, called as exit(boot())  (crt0.h)
+//   cmns_send(channel, str)  - Project-wide console output          (cmns.h)
+//   EXIT_OS_PANIC            - Stack-smash exit code                (exit_codes.h)
+//   linker_st*, linker_en*   - Section bounds, __stack_chk_guard    (linker.h)
+//   GET_RUNNING_CORE, KCORE_0- Multicore guard                      (macros_soc.h)
+//   PRIVILEGE_ELEVATE, INTERRUPTION_OFF                             (macros_core.h)
+//
 // Runtime specific
 // ================
 
@@ -90,14 +76,6 @@ extern  uintptr_t   __stack_chk_guard;
 // Prototypes
 
 void    init_relocate(void) __attribute__((weak));      // NOLINT(misc-use-internal-linkage): weak symbol must have external linkage
-static  void    local_killProcess(void);
-static  void    local_panicMallocBroken(void);
-static  void    local_panicStackUnderflow(void);
-static  void    local_panicNoSystemCall(void);
-static  void    local_panicElevation(void);
-static  void    local_panicGeneral(void);
-static  void    local_printTrace(void);
-static  void    local_printLog(void);
 
 /*
  * \brief crt0
@@ -217,175 +195,3 @@ void    __attribute__ ((noreturn)) __wrap___stack_chk_fail(void) {  // NOLINT(mi
     cmns_send(KSYST, "\nStack smashing!");
     exit(EXIT_OS_PANIC);
 }
-
-/*
- * \brief exit_terminate
- *
- * Same behaviour than exit(EXIT_OS_SUCCESS)
- * This call is used to properly terminate the process execution.
- *
- * \param[in]   -
- *
- * \note This function does not return a value (None).
- *
- */
-void    __attribute__ ((noreturn)) exit_terminate(void) {
-
-    exit(EXIT_OS_SUCCESS);
-}
-
-/*
- * \brief crt0_exit
- *
- * code = EXIT_OS_SUCCESS               --->        Success, commit a suicide
- * code = EXIT_OS_FAILURE               --->        Failure; commit a suicide
- * code = EXIT_OS_PANIC                 --->        Failure; panic. System is stopped
- * code = EXIT_OS_PANIC_MALLOC_BROKEN   --->        Failure; panic. System is stopped
- * code = EXIT_OS_PANIC_STACK_UNDERFLOW --->        Failure; panic. System is stopped
- * code = EXIT_OS_PANIC_NO_SYSCALL      --->        Failure; panic. System is stopped
- * code = default                       --->        Failure; panic. System is stopped
- *
- * \param[in]   number  Exit number
- *
- * \note This function does not return a value (None).
- *
- */
-void    crt0_exit(int number) {
-
-    switch (number) {
-        case EXIT_OS_SUCCESS:
-        case EXIT_OS_SUCCESS_CLI:
-        case EXIT_OS_FAILURE:                { local_killProcess();         break; }
-
-        case EXIT_OS_PANIC_MALLOC_BROKEN:    { local_panicMallocBroken();   break; }
-        case EXIT_OS_PANIC_STACK_UNDERFLOW:  { local_panicStackUnderflow(); break; }
-        case EXIT_OS_PANIC_NO_SYSCALL:       { local_panicNoSystemCall();   break; }
-        case EXIT_OS_PANIC_ELEVATION:        { local_panicElevation();      break; }
-
-        case EXIT_OS_PANIC:
-        default:                             { local_panicGeneral();        break; }
-    }
-
-    cmns_send(KSYST, "\n");
-    local_printTrace();
-    local_printLog();
-}
-
-// Local routines
-// ==============
-
-/*
- * \brief local_killProcess
- *
- */
-static  void    __attribute__ ((noinline, noreturn)) local_killProcess(void) {
-    proc_t  *process;
-
-    kern_getProcessRun(&process);
-    kern_killProcess(process);
-
-// Important: do not remove the "while (true);"
-
-    while (true) { ; }
-}
-
-/*
- * \brief local_panicMallocBroken
- *
- */
-static  void    __attribute__ ((noinline)) local_panicMallocBroken(void) {
-    uint32_t    core;
-    const       char_t  *identifier;
-
-    core = GET_RUNNING_CORE;
-
-    PRIVILEGE_ELEVATE;
-    INTERRUPTION_OFF;
-
-    cmns_send(KSYST, "\nPanic: memo_malloc descriptor broken!\nCurrent process: ");
-    identifier = (vKern_runProc[core]->oSpecification.oIdentifier == nullptr) ? "Anonymous" : (vKern_runProc[core]->oSpecification.oIdentifier);
-    cmns_send(KSYST, identifier); cmns_send(KSYST, "\n");
-}
-
-/*
- * \brief local_panicStackUnderflow
- *
- */
-static  void    __attribute__ ((noinline)) local_panicStackUnderflow(void) {
-            uint32_t    core;
-            char_t      string[200 + 1];
-    const   char_t      *identifier;
-
-    core = GET_RUNNING_CORE;
-
-    PRIVILEGE_ELEVATE;
-    INTERRUPTION_OFF;
-
-    cmns_send(KDEF0, "\nPanic: process stack underflow detected!\n");
-
-    identifier = (vKern_runProc[core]->oSpecification.oIdentifier == nullptr) ? "Anonymous" : (vKern_runProc[core]->oSpecification.oIdentifier);
-    (void)snprintf(&string[0], 200U, "Current process:    %s\n", identifier);
-    cmns_send(KDEF0, &string[0]);
-
-    (void)snprintf(&string[0], 200U, "Process code entry: 0x%016"PRIXPTR"\n", (uintptr_t)vKern_runProc[core]->oSpecification.oCode);
-    cmns_send(KDEF0, &string[0]);
-
-    (void)snprintf(&string[0], 200U, "Start of Stack:     0x%016"PRIXPTR"\n", (uintptr_t)vKern_runProc[core]->oSpecification.oStackStart);
-    cmns_send(KDEF0, &string[0]);
-
-    #ifndef RV32IMAC_S
-    uintptr_t   value;
-
-    value = core_getPSP();
-    (void)snprintf(&string[0], 200U, "Current Stack PSP:  0x%016"PRIXPTR"\n", value);
-    cmns_send(KDEF0, &string[0]);
-
-    value = core_getMSP();
-    (void)snprintf(&string[0], 200U, "Current Stack MSP:  0x%016"PRIXPTR"\n", value);
-    cmns_send(KDEF0, &string[0]);
-    #endif
-}
-
-/*
- * \brief local_panicNoSystemCall
- *
- */
-static  void    __attribute__ ((noinline)) local_panicNoSystemCall(void) {
-            uint32_t    core;
-    const   char_t      *identifier;
-
-    core = GET_RUNNING_CORE;
-
-    PRIVILEGE_ELEVATE;
-    INTERRUPTION_OFF;
-
-    cmns_send(KSYST, "\nPanic: The system call does not exist!\nCurrent process: ");
-    identifier = (vKern_runProc[core]->oSpecification.oIdentifier == nullptr) ? "Anonymous" : (vKern_runProc[core]->oSpecification.oIdentifier);
-    cmns_send(KSYST, identifier); cmns_send(KSYST, "\n");
-}
-
-/*
- * \brief local_panicElevation
- *
- */
-static  void    __attribute__ ((noinline)) local_panicElevation(void) {
-
-    PRIVILEGE_ELEVATE;
-    INTERRUPTION_OFF;
-
-    cmns_send(KSYST, "\nPanic: Elevation not allowed!\n");
-}
-
-/*
- * \brief local_panicGeneral
- *
- */
-static  void    __attribute__ ((noinline)) local_panicGeneral(void) {
-
-    PRIVILEGE_ELEVATE;
-    INTERRUPTION_OFF;
-
-    cmns_send(KSYST, "\nPanic: system stopped!\n");
-}
-
-#include    "model_coreDump_tracing.c_inc"      // IWYU pragma: keep

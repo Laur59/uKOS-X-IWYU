@@ -19,7 +19,6 @@
  *
  * - Get the BASEPRI register
  *
- * \param[in]   -
  * \return      BASEPRI     The BASEPRI register
  *
  */
@@ -58,7 +57,6 @@ __attribute__ ((always_inline)) static  inline  void    core_setBASEPRI(uint32_t
  *
  * - Get the PSP stack
  *
- * \param[in]   -
  * \return      stackPSP    The thread stack PSP
  *
  */
@@ -97,7 +95,6 @@ __attribute__ ((always_inline)) static  inline  void    core_setPSP(uintptr_t st
  *
  * - Get the MSP stack
  *
- * \param[in]   -
  * \return      stackMSP    The system stack MSP
  *
  */
@@ -136,7 +133,6 @@ __attribute__ ((always_inline)) static  inline  void    core_setMSP(uintptr_t st
  *
  * - Get the CONTROL register
  *
- * \param[in]   -
  * \return      CONTROL     The CONTROL register
  *
  */
@@ -175,7 +171,6 @@ __attribute__ ((always_inline)) static  inline  void    core_setCONTROL(uint32_t
  *
  * - Get the LR register
  *
- * \param[in]   -
  * \return      LR      The LR register
  *
  */
@@ -195,7 +190,6 @@ __attribute__ ((always_inline)) static  inline  uintptr_t   core_getLR(void) {
  *
  * - Get the IPSR register
  *
- * \param[in]   -
  * \return      IPSR        The IPSR register
  *
  */

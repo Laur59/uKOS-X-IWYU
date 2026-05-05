@@ -37,7 +37,7 @@
 #endif
 
 #if (CFG_TUD_MSC > 0)
-#include    "Interface/Models/model_TinyUSB_msc.c_inc"     // IWYU pragma: keep
+#include    "Interface/Models/model_TinyUSB_msc.c_inc"      // IWYU pragma: keep
 #endif
 
 #if (CFG_TUD_VIDEO > 0)

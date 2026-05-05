@@ -81,7 +81,13 @@
 #define KPROCESS_INIT_MCAUSE    (MCAUSE_INTERRUPT | RVBB_MCAUSE_MPP(3U) | RVBB_MCAUSE_MPIE | 11U)
 #endif
 
-#ifndef INTERRUPTION_OFF_HARD
+#ifndef RETURN_INT_RESTORE
+#define RETURN_INT_RESTORE(status)                                                                                              \
+                                INTERRUPTION_RESTORE;                                                                           \
+                                return (status)
+#endif
+
+#if (!defined(INTERRUPTION_OFF_HARD))
 #define INTERRUPTION_OFF_HARD   core_clrBitCSR(RV_CSR_MSTATUS, MSTATUS_MIE)
 #endif
 

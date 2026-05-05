@@ -30,7 +30,10 @@
 
 SECTIONS {
     .text : {
-        INCLUDE     vectors.ld
+        KEEP(*(.restart))
+        linker_stVECTORS = ABSOLUTE(.);
+        KEEP(*(.vectors))
+        linker_enVECTORS = ABSOLUTE(.);
 
         linker_stTEXT = ABSOLUTE(.);
         linker_stTEXT_KERN_p = ABSOLUTE(.);
