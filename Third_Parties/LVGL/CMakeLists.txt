@@ -130,6 +130,7 @@ foreach(CORE_INDEX RANGE 0 ${LAST_INDEX})
             # Configure step - pass build type explicitly for optimization
             CMAKE_ARGS        -DCMAKE_BUILD_TYPE=${SUBPROJECT_BUILD_TYPE}
                               -G ${CMAKE_GENERATOR}
+                              -DUSE_LLVM=OFF
             CMAKE_CACHE_ARGS  ""
 
             # Build step

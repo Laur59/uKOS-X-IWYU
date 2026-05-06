@@ -1,5 +1,0 @@
-kflash
-numpy
-matplotlib
-pillow
-PyYAML

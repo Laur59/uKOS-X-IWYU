@@ -11,7 +11,6 @@
 #include    <string.h>
 
 static  bool    vEjected[KNB_CORES] = MCSET(false);
-extern  mutx_t  *vTinyUSB_API[KNB_CORES];
 
 // Some MCU doesn't have enough 8KB SRAM to store the whole disk
 // We will use Flash as read-only disk with board that has
