@@ -1,51 +1,11 @@
 /*
-; esp32.
-; ======
-
-; SPDX-License-Identifier: MIT
-
-;------------------------------------------------------------------------
-; Author:   Edo. Franzi     The 2026-04-29
-; Modifs:
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     This tool allows to control the ESP32 Maixduino chip.
+ *           !!! This tool is Maixduino specific.
 ;
-; Project:  uKOS-X
-; Goal:     This tool allows to control the ESP32 Maixduino chip.
-;           !!! This tool is Maixduino specific.
-;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
-;                                              __ ______  _____
-;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
-;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
-;   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
-;                                     \__,_/_/ |_\____//____/
-;   edo.franzi@ukos.ch
-;
-;   Description: Lightweight, real-time multitasking operating
-;   system for embedded microcontroller and DSP-based systems.
-;
-;   Permission is hereby granted, free of charge, to any person
-;   obtaining a copy of this software and associated documentation
-;   files (the "Software"), to deal in the Software without restriction,
-;   including without limitation the rights to use, copy, modify,
-;   merge, publish, distribute, sublicense, and/or sell copies of the
-;   Software, and to permit persons to whom the Software is furnished
-;   to do so, subject to the following conditions:
-;
-;   The above copyright notice and this permission notice shall be
-;   included in all copies or substantial portions of the Software.
-;
-;   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-;   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-;   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-;   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
-;   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-;   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-;   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-;   SOFTWARE.
-;
-;------------------------------------------------------------------------
-*/
+ */
 
 #include    <stdint.h>
 #include    <stdio.h>
@@ -109,7 +69,7 @@ MODULE(
 static  bool    local_getByte(serialManager_t serialManager, char_t *buffer, uint32_t *nbBytes);
 static  void    local_putByte(serialManager_t serialManager, const char_t *buffer, const uint32_t *nbBytes);
 static  bool    local_checkExit(const char_t *buffer);
-static  void    local_removeQuotes(const char_t *bufferIn, char_t *bufferOut);
+static  void    local_removeQuotes(const char_t *bufferIn, char_t *bufferOut, size_t bufferOutSize);
 
 /*
  * \brief Main entry point
@@ -246,8 +206,8 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
             if (equals == true) {
                 serial_flush(KURT1);
 
-                local_removeQuotes(argv[2], &tmp[0]);
-                snprintf(data, sizeof(data), "<%.*s/>", (int16_t)(sizeof(data) - (1 + 2 + 1)), tmp);
+                local_removeQuotes(argv[2], &tmp[0], sizeof(tmp));
+                (void)snprintf(data, sizeof(data), "<%.*s/>", (int16_t)(sizeof(data) - (1 + 2 + 1)), tmp);
                 nbBytes = (uint32_t)strlen(&data[0]);
                 local_putByte(KURT1, &data[0], &nbBytes);
 
@@ -275,15 +235,15 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
 // The SSID
 
-                local_removeQuotes(argv[2], &tmp[0]);
-                snprintf(data, sizeof(data), "<%.*s/>", (int16_t)(sizeof(data) - (1 + 2 + 1)), tmp);
+                local_removeQuotes(argv[2], &tmp[0], sizeof(tmp));
+                (void)snprintf(data, sizeof(data), "<%.*s/>", (int16_t)(sizeof(data) - (1 + 2 + 1)), tmp);
                 nbBytes = (uint32_t)strlen(&data[0]);
                 local_putByte(KURT1, &data[0], &nbBytes);
 
 // The Password
 
-                local_removeQuotes(argv[3], &tmp[0]);
-                snprintf(data, sizeof(data), "<%.*s/>", (int16_t)(sizeof(data) - (1 + 2 + 1)), tmp);
+                local_removeQuotes(argv[3], &tmp[0], sizeof(tmp));
+                (void)snprintf(data, sizeof(data), "<%.*s/>", (int16_t)(sizeof(data) - (1 + 2 + 1)), tmp);
                 nbBytes = (uint32_t)strlen(&data[0]);
                 local_putByte(KURT1, &data[0], &nbBytes);
 
@@ -373,17 +333,26 @@ static  bool    local_checkExit(const char_t *buffer) {
  *     'La Taverne du Diable'\r\n  ->  La Taverne du Diable
  *
  */
-static  void    local_removeQuotes(const char_t *bufferIn, char_t *bufferOut) {
+static  void    local_removeQuotes(const char_t *bufferIn, char_t *bufferOut, size_t bufferOutSize) {
     size_t  start, end, len;
 
-    if ((bufferIn == NULL) || (bufferOut == NULL)) {
+    if ((bufferIn == nullptr) || (bufferOut == nullptr) || (bufferOutSize == 0)) {
         return;
     }
 
-    start = 0; end = strcspn(bufferIn, "\r\n");
-    if ((bufferIn[start] == '"') || (bufferIn[start] == '\''))                        { start++; }
+    start = 0; end = strlen(bufferIn);
+    if ((end > start) && ((bufferIn[start] == '"')   || (bufferIn[start] == '\'')))   { start++; }
     if ((end > start) && ((bufferIn[end - 1] == '"') || (bufferIn[end - 1] == '\''))) { end--;   }
+
+    if (end <= start) {
+        bufferOut[0] = '\0';
+        return;
+    }
+
     len = end - start;
+    if (len >= bufferOutSize) {
+        len = bufferOutSize - 1;
+    }
 
     memcpy(bufferOut, &bufferIn[start], len);
     bufferOut[len] = '\0';
