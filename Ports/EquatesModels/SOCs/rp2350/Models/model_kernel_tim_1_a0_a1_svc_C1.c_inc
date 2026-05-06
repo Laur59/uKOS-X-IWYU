@@ -25,6 +25,7 @@
 #include    "Registers/RP2350_timer.h"
 #include    "macros_core_stackFrame.h"
 #include    "clockTree.h"
+#include    "exce.h"
 #include    "kern/private/private_processes.h"
 #include    "kern/private/private_scheduler.h"
 #include    "kern/private/private_temporal.h"
@@ -43,8 +44,6 @@ static  volatile    uint32_t    vTimeLastStart_C1 = 0U;                         
 static  volatile    uint64_t    vTickCount_C1     = 0U;                                 // 64-bit timer (1-us)
 
 // Prototypes
-
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 static  void        local_TIM1_ALA0_IRQHandler_C1(void);
 static  void        local_timeStmp_C1(bool overflow);

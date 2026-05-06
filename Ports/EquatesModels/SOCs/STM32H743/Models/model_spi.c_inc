@@ -9,6 +9,7 @@
 #include    <stdint.h>
 
 #include    "Registers/nvic.h"
+#include    "exce.h"
 #include    "kern/kern.h"
 #include    "macros.h"
 #include    "macros_core.h"
@@ -29,8 +30,6 @@ static                      sema_t      *vSemaphore_TR;
 STRG_LOC_CONST(aStrSemaphore_TR[]) = UNIT " Transaction";
 
 // Prototypes
-
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 static  void    local_SPI_IRQHandler(void);
 

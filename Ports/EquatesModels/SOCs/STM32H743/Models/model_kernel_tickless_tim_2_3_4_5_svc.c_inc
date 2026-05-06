@@ -27,6 +27,7 @@
 
 #include    "Registers/nvic.h"
 #include    "core_reg.h"
+#include    "exce.h"
 #include    "kern/kern.h"
 #include    "kern/private/private_preciseSignals.h"
 #include    "kern/private/private_processes.h"
@@ -80,8 +81,6 @@ static  volatile    bool        vTickLess      = false;                         
 static  volatile    bool        vTimeout       = false;                                 // Timeout
 
 // Prototypes
-
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 #if (KKERN_NB_PRECISE_SIGNALS > 0)
 static  void        local_TIM4_IRQHandler(void);

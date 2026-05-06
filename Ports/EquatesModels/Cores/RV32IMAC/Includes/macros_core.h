@@ -10,6 +10,7 @@
 
 #include    "Registers/rv32_bumblebee.h"
 #include    "Registers/rv32_csr.h"
+#include    "exce.h"
 #include    "kern/kern.h"       // IWYU pragma: keep for KKERN_PRIORITY_LOW_00
 #include    "macros_soc.h"
 #include    "memo/memo.h"       // IWYU pragma: keep for KMEMO_ALIGN_16
@@ -114,7 +115,6 @@
 #ifndef EXCEPTION_SPECIFIC_HANDLER
 #define KEXCEPTION              0U
 
-extern  void    (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
 extern  bool    vExce_isException[KNB_CORES];
 
 // Suppress the cppcheck warning for the following code portion
@@ -151,7 +151,6 @@ extern  bool    vExce_isException[KNB_CORES];
 #ifndef INTERRUPT_SPECIFIC_HANDLER
 #define KINTERRUPTION           1U
 
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 extern  bool    vExce_isException[KNB_CORES];
 
 // Suppress the cppcheck warning for the following code portion

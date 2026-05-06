@@ -11,6 +11,7 @@
 #include    "board.h"
 #include    "cmns.h"
 #include    "core.h"
+#include    "exce.h"
 #include    "macros.h"
 #include    "macros_core.h"
 #include    "macros_soc.h"

@@ -26,6 +26,7 @@
 #include    <stdlib.h>
 
 #include    "core.h"
+#include    "exce.h"
 #include    "kern/private/private_processes.h"
 #include    "kern/private/private_scheduler.h"
 #include    "macros.h"
@@ -60,8 +61,6 @@ static  volatile    uint32_t    vTimeLastStart = 0U;                            
 static  volatile    uint64_t    vTickCount     = 0U;                                    // 64-bit timer (1-us)
 
 // Prototypes
-
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 #if (KKERN_NB_PRECISE_SIGNALS > 0)
 static  void        local_nextTime(uint64_t absTime);

@@ -11,6 +11,7 @@
 #include    "os_errors.h"
 #include    "clockTree.h"
 #include    "core_reg.h"
+#include    "exce.h"
 #include    "soc_reg.h"
 #include    "macros.h"
 #include    "macros_soc.h"
@@ -24,8 +25,6 @@
 #define KARRT8          ((KFPRET8 / KFINTT8) - 1U)              // Autoreload
 
 // Prototypes
-
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 static  void    stub_intr_timer_interruption(void);
 

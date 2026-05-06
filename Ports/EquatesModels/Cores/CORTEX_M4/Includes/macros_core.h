@@ -14,6 +14,7 @@
 #include    "Registers/soc_vectors.h"
 #include    "core.h"    // IWYU pragma: keep
 #include    "core_reg.h"
+#include    "exce.h"
 #include    "kern/kern.h"
 #include    "linker.h"
 #include    "macros_soc.h"
@@ -212,7 +213,6 @@
 #define KEXCEPTION              0U
 
 extern  volatile    bool    vPriv_insideException[KNB_CORES];
-extern              void    (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
 extern              void    __attribute__ ((noreturn)) model_coreDump_displayExceptions(uintptr_t lr, uintptr_t *msp);
 
 #define EXCEPTION_SPECIFIC_HANDLER(exc)                                                                                         \
@@ -243,7 +243,6 @@ extern              void    __attribute__ ((noreturn)) model_coreDump_displayExc
 #ifndef INTERRUPT_SPECIFIC_HANDLER
 #define KINTERRUPTION           1U
 
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 extern  void    __attribute__ ((noreturn)) model_coreDump_displayInterruptions(uintptr_t lr, uintptr_t *msp);
 
 #define INTERRUPT_SPECIFIC_HANDLER(irq)                                                                                         \

@@ -9,6 +9,7 @@
 #include    <stdint.h>
 
 #include    "Registers/nvic.h"
+#include    "exce.h"
 #include    "i2c_common.h"
 #include    "kern/kern.h"
 #include    "macros.h"
@@ -31,8 +32,6 @@ STRG_LOC_CONST(aStrSemaphore_TR[]) = UNIT " Transaction";
 
 // Prototypes
 // ==========
-
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 static  int32_t local_writeByte(const uint8_t *sndBuffer, uint16_t nbSnd);
 static  int32_t local_readByte(uint8_t *recBuffer, uint16_t nbRec);

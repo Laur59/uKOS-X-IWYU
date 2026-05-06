@@ -11,6 +11,7 @@
 
 #include    "Registers/nvic.h"
 #include    "core_reg.h"
+#include    "exce.h"
 #include    "kern/kern.h"
 #include    "macros.h"
 #include    "macros_core.h"
@@ -36,8 +37,6 @@ STRG_LOC_CONST(aStrSemaphore_RX[]) = KUSART_SEMAPHORE_RX;
 STRG_LOC_CONST(aStrSemaphore_TX[]) = KUSART_SEMAPHORE_TX;
 
 // Prototypes
-
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 static  void    local_USART_IRQHandler(void);
 

@@ -16,6 +16,7 @@
 #include    <stdint.h>
 
 #include    "Registers/nvic.h"
+#include    "exce.h"
 #include    "imager_common.h"
 #include    "kern/kern.h"
 #include    "macros.h"
@@ -51,8 +52,6 @@ STRG_LOC_CONST(aStrSemaphore_IM[]) = KIMAGER_DCMI_SEMAPHORE_IM;
 STRG_LOC_CONST(aStrSemaphore_VS[]) = KIMAGER_DCMI_SEMAPHORE_VS;
 
 // Prototypes
-
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 static  int32_t local_initDCMI(void);
 static  int32_t local_initDMA2(void);

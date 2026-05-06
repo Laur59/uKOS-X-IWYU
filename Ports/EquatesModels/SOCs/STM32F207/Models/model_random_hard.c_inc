@@ -12,6 +12,7 @@
 
 #include    "Registers/nvic.h"
 #include    "Registers/scb.h"
+#include    "exce.h"
 #include    "kern/kern.h"
 #include    "soc_reg.h"
 #include    "macros_soc.h"
@@ -20,8 +21,6 @@ static              bool        vTerminated = false;
 static  volatile    uint32_t    *vNumber;
 
 // Prototypes
-
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 static  void    local_RNG_IRQHandler(void);
 

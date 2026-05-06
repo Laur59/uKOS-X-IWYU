@@ -12,6 +12,7 @@
 #include    "cmns.h"
 #include    "core.h"
 #include    "core_reg.h"
+#include    "exce.h"
 #include    "macros.h"
 #include    "macros_core.h"
 #include    "macros_soc.h"

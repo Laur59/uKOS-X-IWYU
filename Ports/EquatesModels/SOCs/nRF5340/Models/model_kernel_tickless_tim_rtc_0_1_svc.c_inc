@@ -30,6 +30,7 @@
 #include    "Registers/nvic.h"
 #include    "clockTree.h"
 #include    "core_reg.h"
+#include    "exce.h"
 #include    "kern/kern.h"
 #include    "kern/private/private_processes.h"
 #if KKERN_NB_PRECISE_SIGNALS > 0
@@ -72,10 +73,6 @@ static  volatile    bool        vTickLess      = false;                         
 static  volatile    bool        vTimeout       = false;                                 // Timeout
 
 // Prototypes
-
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
-
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 static  void        local_TIM0_IRQHandler(void);
 static  void        local_RTC0_IRQHandler(void);
