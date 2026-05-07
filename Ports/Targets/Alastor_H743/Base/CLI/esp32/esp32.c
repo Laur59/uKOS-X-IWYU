@@ -216,7 +216,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 // (remove the CR)
 
             text_checkAsciiBuffer(argv[1], "-ble", &equals);
-            if (equals == true) {
+            if (equals) {
                 serial_flush(KURT2);
 
                 local_removeQuotes(argv[2], &tmp[0], sizeof(tmp));
@@ -227,9 +227,9 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 // Read the answer
 
                 (void)dprintf(KSYST, "Waiting for the connection ...\n");
-                kern_suspendProcess(5000u);
+                kern_suspendProcess(5000U);
                 nbBytes = KSZ_BUFFER;
-                if (local_getByte(KURT2, &data[0], &nbBytes) == true) {
+                if (local_getByte(KURT2, &data[0], &nbBytes)) {
                     local_putByte(KSYST, &data[0], &nbBytes);
                 }
                 break;
@@ -237,13 +237,13 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
             error = KERR_INA;
             break;
         }
-        case 4u: {
+        case 4U: {
 
 // Send the Wi-Fi ssid & password
 // (remove the CR)
 
             text_checkAsciiBuffer(argv[1], "-wifi", &equals);
-            if (equals == true) {
+            if (equals) {
                 serial_flush(KURT2);
 
 // The SSID
@@ -263,9 +263,9 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 // Read the answer
 
                 (void)dprintf(KSYST, "Waiting for the connection ...\n");
-                kern_suspendProcess(5000u);
+                kern_suspendProcess(5000U);
                 nbBytes = KSZ_BUFFER;
-                if (local_getByte(KURT2, &data[0], &nbBytes) == true) {
+                if (local_getByte(KURT2, &data[0], &nbBytes)) {
                     local_putByte(KSYST, &data[0], &nbBytes);
                 }
                 break;

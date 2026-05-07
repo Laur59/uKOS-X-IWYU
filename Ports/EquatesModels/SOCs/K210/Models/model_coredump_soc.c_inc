@@ -70,7 +70,7 @@ static  void    local_printExt_Interruption(const char_t **vectorName);
  * pc         = 0x7200020A
  *
  */
-        void    local_processExt(uint32_t core, uint64_t number, uintptr_t *stackBefore, uintptr_t *stackAfter);
+void    local_processExt(uint32_t core, uint64_t number, uintptr_t *stackBefore, uintptr_t *stackAfter);
 [[gnu::naked]]
 static  void    coreDump_displayExt_Interruption([[maybe_unused]] uint32_t core, [[maybe_unused]] uint64_t number) {
 
@@ -102,7 +102,7 @@ void    local_processExt(uint32_t core, uint64_t number, uintptr_t *stackBefore,
 
 // Collect the stack frame
 
-    ptr = (uintptr_t *)(vStackAfter[core]);
+    ptr = (vStackAfter[core]);
     for (i = sp; i < ENDREG; i++) {
         vStackCoreDump[core][i] = *ptr;
         ptr++;

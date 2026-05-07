@@ -31,8 +31,8 @@ void    model_watchdog_arm(uint32_t time) {
 
     timeout = (KTIME_WATCHDOG_GAIN * time) / (KTIME_WATCHDOG_RES * KTIME_WATCHDOG_GAIN);
 
-    timeout = (timeout < KTIME_WATCHDOG_RES) ? (KTIME_WATCHDOG_RES) : (timeout);
-    timeout = (timeout > KTIME_WATCHDOG_MAX) ? (KTIME_WATCHDOG_MAX) : (timeout);
+    timeout = (timeout < KTIME_WATCHDOG_RES) ? (KTIME_WATCHDOG_RES) : timeout;
+    timeout = (timeout > KTIME_WATCHDOG_MAX) ? (KTIME_WATCHDOG_MAX) : timeout;
 
 // Unlock the watchdog (to make possible writing PSC & RLD registers)
 // Initialise the prescaler / 256; 8 < time < 32768-ms

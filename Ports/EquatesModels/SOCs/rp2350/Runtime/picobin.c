@@ -68,14 +68,14 @@ struct  __attribute__ ((packed))    picobin_image_def {
 __attribute__ ((used, section(".picobin_block")))
 static  const   struct picobin_image_def picobin_block = {
     .start              = PICOBIN_BLOCK_MARKER_START,
-    .image_type_hdr     = PICOBIN_HDR(1u, PICOBIN_BLOCK_ITEM_1BS_IMAGE_TYPE),
+    .image_type_hdr     = PICOBIN_HDR(1U, PICOBIN_BLOCK_ITEM_1BS_IMAGE_TYPE),
     .image_type_flags   = (uint16_t)(PICOBIN_IMAGE_TYPE_IMAGE_TYPE_AS_BITS(EXE)
                                     | PICOBIN_IMAGE_TYPE_EXE_SECURITY_AS_BITS(S)
                                     | PICOBIN_IMAGE_TYPE_EXE_CPU_AS_BITS(ARM)
                                     | PICOBIN_IMAGE_TYPE_EXE_CHIP_AS_BITS(RP2350)),
-    .last_hdr           = PICOBIN_HDR(1u, PICOBIN_BLOCK_ITEM_2BS_LAST),
-    .last_pad           = 0u,
-    .next               = 0u,
+    .last_hdr           = PICOBIN_HDR(1U, PICOBIN_BLOCK_ITEM_2BS_LAST),
+    .last_pad           = 0U,
+    .next               = 0U,
     .end                = PICOBIN_BLOCK_MARKER_END,
 };
 

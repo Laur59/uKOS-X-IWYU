@@ -77,7 +77,6 @@ static  volatile    uint32_t    vTimeLastStart = 0U;                            
 static  volatile    uint64_t    vTickCount     = 0U;                                    // 64-bit timer (1-us)
 static  volatile    bool        vTickLess      = false;                                 // Tickless mode
 static  volatile    bool        vTimeout       = false;                                 // Timeout
-extern  volatile    bool        vPriv_insideSVC[KNB_CORES];                             // Inside an SVC call
 
 // Prototypes
 
@@ -493,7 +492,7 @@ static  void    local_TIM5_IRQHandler(void) {
  * !!! Do not generate prologue/epilogue sequences
  *
  */
-uintptr_t   *local_newContextPRE(uintptr_t *stack);
+static uintptr_t   *local_newContextPRE(uintptr_t *stack);
 [[gnu::naked]]
 void    PendSV_C0_IRQHandler(void) {
 
@@ -533,7 +532,7 @@ uintptr_t   __attribute__ ((noinline, used)) *local_newContextPRE(uintptr_t *sta
 
 // Verify the sanity of the stack
 
-    #if (defined(STUB_KERN_CHECK_XSP_LIMIT_S))
+    #ifdef STUB_KERN_CHECK_XSP_LIMIT_S
     core_setPSPLIM(0U);
     scheduler_callBackSlow();
     local_timeStart();
@@ -550,14 +549,14 @@ uintptr_t   __attribute__ ((noinline, used)) *local_newContextPRE(uintptr_t *sta
 
     #if (KKERN_WITH_STATISTICS_S == true)
     INTERRUPTION_OFF;
-    const   uint32_t    tStart = vTimeStart;
-    const   uint32_t    tStop  = vTimeStop;
-    const   uint32_t    tLast  = vTimeLastStart;
+    const   uint32_t    timeStart = vTimeStart;
+    const   uint32_t    timeStop  = vTimeStop;
+    const   uint32_t    timeLast  = vTimeLastStart;
     const   uint32_t    tExc   = vKern_TimeException[KCORE_0];
             proc_t      *proc  = vKern_backwardProc[KCORE_0];
     INTERRUPTION_RESTORE;
 
-    statistics_statistic(proc, tStart, tStop, tLast, tExc);
+    statistics_statistic(proc, timeStart, timeStop, timeLast, tExc);
     vKern_TimeException[KCORE_0] = 0U;
     #endif
 
@@ -604,7 +603,7 @@ uintptr_t   __attribute__ ((noinline, used)) *local_newContextPRE(uintptr_t *sta
  * !!! Do not generate prologue/epilogue sequences
  *
  */
-uintptr_t   *local_newContextTOU(uintptr_t *stack);
+static uintptr_t   *local_newContextTOU(uintptr_t *stack);
 [[gnu::naked]]
 void    TIM3_C0_IRQHandler(void) {
 
@@ -649,7 +648,7 @@ uintptr_t   __attribute__ ((noinline, used)) *local_newContextTOU(uintptr_t *sta
 
 // Verify the sanity of the stack
 
-    #if (defined(STUB_KERN_CHECK_XSP_LIMIT_S))
+    #ifdef STUB_KERN_CHECK_XSP_LIMIT_S
     core_setPSPLIM(0U);
     scheduler_callBackSlow();
     local_timeStart();
@@ -666,14 +665,14 @@ uintptr_t   __attribute__ ((noinline, used)) *local_newContextTOU(uintptr_t *sta
 
     #if (KKERN_WITH_STATISTICS_S == true)
     INTERRUPTION_OFF;
-    const   uint32_t    tStart = vTimeStart;
-    const   uint32_t    tStop  = vTimeStop;
-    const   uint32_t    tLast  = vTimeLastStart;
+    const   uint32_t    timeStart = vTimeStart;
+    const   uint32_t    timeStop  = vTimeStop;
+    const   uint32_t    timeLast  = vTimeLastStart;
     const   uint32_t    tExc   = vKern_TimeException[KCORE_0];
             proc_t      *proc  = vKern_backwardProc[KCORE_0];
     INTERRUPTION_RESTORE;
 
-    statistics_statistic(proc, tStart, tStop, tLast, tExc);
+    statistics_statistic(proc, timeStart, timeStop, timeLast, tExc);
     vKern_TimeException[KCORE_0] = 0U;
     #endif
 
@@ -725,7 +724,7 @@ uintptr_t   __attribute__ ((noinline, used)) *local_newContextTOU(uintptr_t *sta
  * !!! Do not generate prologue/epilogue sequences
  *
  */
-uintptr_t   *local_newContextMSG(uintptr_t *stack, uint32_t message);
+static uintptr_t   *local_newContextMSG(uintptr_t *stack, uint32_t message);
 [[gnu::naked]]
 void    kernel_message_C0(void) {
 
@@ -767,7 +766,7 @@ uintptr_t   __attribute__ ((noinline, used)) *local_newContextMSG(uintptr_t *sta
 
 // Verify the sanity of the stack
 
-    #if (defined(STUB_KERN_CHECK_XSP_LIMIT_S))
+    #ifdef STUB_KERN_CHECK_XSP_LIMIT_S
     core_setPSPLIM(0U);
     scheduler_callBackTrap(message);
     local_timeStart();
@@ -784,14 +783,14 @@ uintptr_t   __attribute__ ((noinline, used)) *local_newContextMSG(uintptr_t *sta
 
     #if (KKERN_WITH_STATISTICS_S == true)
     INTERRUPTION_OFF;
-    const   uint32_t    tStart = vTimeStart;
-    const   uint32_t    tStop  = vTimeStop;
-    const   uint32_t    tLast  = vTimeLastStart;
+    const   uint32_t    timeStart = vTimeStart;
+    const   uint32_t    timeStop  = vTimeStop;
+    const   uint32_t    timeLast  = vTimeLastStart;
     const   uint32_t    tExc   = vKern_TimeException[KCORE_0];
             proc_t      *proc  = vKern_backwardProc[KCORE_0];
     INTERRUPTION_RESTORE;
 
-    statistics_statistic(proc, tStart, tStop, tLast, tExc);
+    statistics_statistic(proc, timeStart, timeStop, timeLast, tExc);
     vKern_TimeException[KCORE_0] = 0U;
     #endif
 

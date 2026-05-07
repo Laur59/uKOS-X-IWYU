@@ -133,7 +133,7 @@ static  void    local_printInterruption(const char_t **vectorName) {
     cmns_send(KDEF0, "========================\n\n");
     switch (vExceptionNb[core]) {
 
-        #if(defined(CPU_APPLICATION_S))
+        #ifdef CPU_APPLICATION_S
         case 0U:  { *vectorName = "FPU_IRQn";           break; }
         case 1U:  { *vectorName = "CACHE_IRQn";         break; }
         case 3U:  { *vectorName = "SPU_IRQn";           break; }

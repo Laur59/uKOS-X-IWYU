@@ -10,12 +10,11 @@
 
 #include    "cmns.h"
 #include    "kern/kern.h"
+#include    "kern/private/private_processes.h"
 #include    "machine/machine.h"
 #include    "macros_soc.h"
 #include    "serial/serial.h"
 #include    "types.h"
-
-extern  proc_t  *vKern_runProc[KNB_CORES];
 
 /*
  * \brief local_readFunctionName
@@ -23,7 +22,7 @@ extern  proc_t  *vKern_runProc[KNB_CORES];
  * - Return the function name that belong to a given PC
  *
  */
-void    local_readFunctionName(const uintptr_t pc, const char_t **function) {
+static  void    local_readFunctionName(const uintptr_t pc, const char_t **function) {
 
     UNUSED(pc);
 

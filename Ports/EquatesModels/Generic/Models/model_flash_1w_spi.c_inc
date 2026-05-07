@@ -75,7 +75,7 @@ int32_t model_flash_1w_read(uint8_t *buffer, uint32_t size, uint32_t sector) {
     cb_writeRead(KFLASH_SPI_CMD_READ);
     cb_writeRead((uint8_t)(address>>16U));
     cb_writeRead((uint8_t)(address>>8U));
-    cb_writeRead((uint8_t)(address));
+    cb_writeRead((uint8_t)address);
 
     for (index = 0U; index < size; index++) {
         *wkBuffer = cb_writeRead(0x00U);
@@ -128,7 +128,7 @@ int32_t model_flash_1w_write(const uint8_t *buffer, uint32_t size, uint32_t sect
         cb_writeRead(KFLASH_SPI_CMD_WRITE);
         cb_writeRead((uint8_t)(address>>16U));
         cb_writeRead((uint8_t)(address>>8U));
-        cb_writeRead((uint8_t)(address));
+        cb_writeRead((uint8_t)address);
 
         for (index = 0U; index < KFLASH_SPI_SZ_PAGE; index++) {
             cb_writeRead(*wkBuffer);
@@ -203,7 +203,7 @@ static  void    local_flash_1w_erase(uint32_t size, uint32_t sector) {
         cb_writeRead(KFLASH_SPI_CMD_ERASE_SECTOR);
         cb_writeRead((uint8_t)(address>>16U));
         cb_writeRead((uint8_t)(address>>8U));
-        cb_writeRead((uint8_t)(address));
+        cb_writeRead((uint8_t)address);
         cb_control(KFLASH_DESELECT);
         kern_suspendProcess(240U);
         address += KFLASH_SPI_SZ_SECTOR;

@@ -19,3 +19,5 @@
 #define KPRIV_ELEVATION         1               // priv (privilege elevation)
 
 void    __attribute__ ((noreturn)) syscall(const uintptr_t *arg);
+
+extern  void    kernel_message_C0(void);

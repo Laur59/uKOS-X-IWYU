@@ -140,7 +140,7 @@ void    local_processIntExt(uint32_t core, uint64_t number, uintptr_t *stackBefo
  *
  */
 [[gnu::noinline]]
-static  void    local_processInt_Interruption(void) {
+void    local_processInt_Interruption(void) {
             uint32_t    core, i;
     const   uintptr_t   *ptr;
     const   char_t      *vectorName;
@@ -176,7 +176,7 @@ static  void    local_processInt_Interruption(void) {
  *
  */
 [[gnu::noinline]]
-static  void    local_processInt_Exceptions(void) {
+void    local_processInt_Exceptions(void) {
             uint32_t    core, i;
     const   uintptr_t   *ptr;
     const   char_t      *vectorName;

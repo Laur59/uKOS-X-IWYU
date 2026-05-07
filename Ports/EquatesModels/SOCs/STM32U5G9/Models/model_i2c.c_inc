@@ -79,7 +79,7 @@ int32_t model_i2c_configure(const i2cCnf_t *configure) {
     INTERRUPTION_OFF;
     I2C->CR1 &= (uint32_t)~I2C_CR1_PE;
 
-    vTimeout = (configure->oTimeout == 0U) ? (vTimeout) : (configure->oTimeout);
+    vTimeout = (configure->oTimeout == 0U) ? vTimeout : (configure->oTimeout);
     local_setTiming(configure->oSpeed);
 
     I2C->CR1 |= I2C_CR1_PE;
@@ -208,8 +208,8 @@ static  void    local_setTiming(uint32_t speed) {
 //
     const   uint32_t    frequency = (uint32_t)I2C_FREQUENCY;
 
-    prescaler = (frequency > 16000000U) ? (frequency / 16000000U) : (1U);
-    prescaler = (prescaler > 16U)       ? (16U)                   : (prescaler);
+    prescaler = (frequency > 16000000U) ? (frequency / 16000000U) : 1U;
+    prescaler = (prescaler > 16U)       ? 16U                     : prescaler;
 
     clkDiv  = frequency / prescaler / speed;
     clkDiv2 = clkDiv / 2U;
@@ -235,7 +235,7 @@ static  int32_t local_writeByte(const uint8_t *sndBuffer, uint16_t nbSnd) {
 
     if (kern_waitSemaphore(vSemaphore_TR, vTimeout) == KERR_KERN_TIMEO) {
 
-        status = (vError != KERR_I2C_NOERR) ? (KERR_I2C_GEERR) : (KERR_I2C_TIMEO);
+        status = (vError != KERR_I2C_NOERR) ? KERR_I2C_GEERR : KERR_I2C_TIMEO;
 
 // Problem, restart the i2c hardware
 
@@ -245,7 +245,7 @@ static  int32_t local_writeByte(const uint8_t *sndBuffer, uint16_t nbSnd) {
         return status;
     }
 
-    status = (vError != KERR_I2C_NOERR) ? (KERR_I2C_GEERR) : (KERR_I2C_NOERR);
+    status = (vError != KERR_I2C_NOERR) ? KERR_I2C_GEERR : KERR_I2C_NOERR;
     return status;
 }
 
@@ -263,7 +263,7 @@ static  int32_t local_readByte(uint8_t *recBuffer, uint16_t nbRec) {
 
     if (kern_waitSemaphore(vSemaphore_TR, vTimeout) == KERR_KERN_TIMEO) {
 
-        status = (vError != KERR_I2C_NOERR) ? (KERR_I2C_GEERR) : (KERR_I2C_TIMEO);
+        status = (vError != KERR_I2C_NOERR) ? KERR_I2C_GEERR : KERR_I2C_TIMEO;
 
 // Problem, restart the i2c hardware
 
@@ -273,7 +273,7 @@ static  int32_t local_readByte(uint8_t *recBuffer, uint16_t nbRec) {
         return status;
     }
 
-    status = (vError != KERR_I2C_NOERR) ? (KERR_I2C_GEERR) : (KERR_I2C_NOERR);
+    status = (vError != KERR_I2C_NOERR) ? KERR_I2C_GEERR : KERR_I2C_NOERR;
     return status;
 }
 

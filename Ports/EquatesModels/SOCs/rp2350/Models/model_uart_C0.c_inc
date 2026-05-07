@@ -11,6 +11,7 @@
 
 #include    "Registers/nvic.h"
 #include    "Registers/soc_vectors.h"
+#include    "cmns.h"
 #include    "kern/kern.h"
 #include    "os_errors.h"
 #include    "macros.h"
@@ -38,7 +39,6 @@ STRG_LOC_CONST(aStrSemaphore_TX_C0[]) = KUART_SEMAPHORE_TX_C0;
 
 // Prototypes
 
-extern  void    cmns_wait(uint32_t us);
 static  void    local_UART_IRQHandler_C0(void);
 
 /*
@@ -148,8 +148,8 @@ static  int32_t model_uart_configure_C0(const urtxCnf_t *configure) {
         default:                       { BAUDRATE(UART0, UART_FREQUENCY_C0, KSERIAL_DEFAULT_BAUDRATE); break; }
     }
 
-    vWithSemaphore_RX_C0 = ((configure->oKernSync & ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_RX)) != 0U) ? (true) : (false);
-    vWithSemaphore_TX_C0 = ((configure->oKernSync & ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_TX)) != 0U) ? (true) : (false);
+    vWithSemaphore_RX_C0 = (configure->oKernSync & ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_RX)) != 0U;
+    vWithSemaphore_TX_C0 = (configure->oKernSync & ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_TX)) != 0U;
     UART_C0->UARTCR |= UART_UARTCR_UARTEN;
     RETURN_INT_RESTORE(KERR_SERIAL_NOERR);
 }
@@ -237,7 +237,7 @@ static  int32_t model_uart_read_C0(uint8_t *buffer, uint32_t *size) {
 
 // cppcheck-suppress premium-misra-c-2023-13.2
 //
-        vRRecBuffer_C0 = (vRRecBuffer_C0 == &vRecBuffer_C0[KUART_SZ_RX_BUF_C0]) ? (vRecBuffer_C0) : (vRRecBuffer_C0);
+        vRRecBuffer_C0 = (vRRecBuffer_C0 == &vRecBuffer_C0[KUART_SZ_RX_BUF_C0]) ? vRecBuffer_C0 : vRRecBuffer_C0;
     }
     RETURN_INT_RESTORE(status);
 }
@@ -300,16 +300,16 @@ static  void    local_UART_IRQHandler_C0(void) {
 
 // cppcheck-suppress premium-misra-c-2023-13.2
 //
-            vStatus_C0 = (vWRecBuffer_C0 == vRRecBuffer_C0) ? (KERR_SERIAL_RBFUL) : (vStatus_C0);
+            vStatus_C0 = (vWRecBuffer_C0 == vRRecBuffer_C0) ? KERR_SERIAL_RBFUL : vStatus_C0;
 
 // cppcheck-suppress premium-misra-c-2023-13.2
 //
-            vWRecBuffer_C0 = (vWRecBuffer_C0 == &vRecBuffer_C0[KUART_SZ_RX_BUF_C0]) ? (vRecBuffer_C0) : (vWRecBuffer_C0);
+            vWRecBuffer_C0 = (vWRecBuffer_C0 == &vRecBuffer_C0[KUART_SZ_RX_BUF_C0]) ? vRecBuffer_C0 : vWRecBuffer_C0;
         }
 
         UART_C0->UARTICR = (UART_UARTICR_RXIC | UART_UARTICR_RTIC);
 
-        #if (defined(KUART_SEMA_RX_C0_S))
+        #ifdef KUART_SEMA_RX_C0_S
         if (vWithSemaphore_RX_C0) { kern_signalSemaphore(vSemaphore_RX_C0); }
         #endif
 
@@ -352,7 +352,7 @@ static  void    local_UART_IRQHandler_C0(void) {
                         UART_C0->UARTIMSC &= (uint32_t)~UART_UARTIMSC_TXIM;
                         vSending_C0 = false;
 
-                        #if (defined(KUART_SEMA_TX_C0_S))
+                        #ifdef KUART_SEMA_TX_C0_S
                         if (vWithSemaphore_TX_C0) { kern_signalSemaphore(vSemaphore_TX_C0); }
                         #endif
 
