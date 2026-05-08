@@ -26,18 +26,18 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"test_cores   Some core tests.                          (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "Test of the cores\n"
-									"=================\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "test_cores   Some core tests.                          (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "Test of the cores\n"
+                                    "=================\n\n"
 
-									"This tool performs some core tests.\n\n"
+                                    "This tool performs some core tests.\n\n"
 
-									"Input format:  test_core\n"
-									"Output format: [result]\n\n"
+                                    "Input format:  test_core\n"
+                                    "Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
-static	int32_t		prgm(uint32_t argc, const char_t *argv[]);
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 
 MODULE(
     Test_cores,                                 // Module name (the first letter has to be upper case)
@@ -62,9 +62,6 @@ extern              spinlock_t  vLockVector;
  *
  */
 static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
-    UNUSED(argc);
-    UNUSED(argv);
-
             uint32_t    core;
             uint8_t     i, first;
     static  bool        vError[KNB_CORES] = MCSET(false);

@@ -111,8 +111,6 @@ static  void    local_GPIO_Configuration(void) {
 
 //            .IOxx  .ch_sel,               .ds,              .oe_en,  .oe_inv,  .do_sel,  .do_inv, .pu,   .pd,  .resv1, .sl,    .ie_en, .ie_inv,  .di_inv,  .st,  .tie_en,  .tie_val, .resv0,  .pad_di
 
-//            .IOxx  .ch_sel,               .ds,              .oe_en,  .oe_inv,  .do_sel,  .do_inv, .pu,   .pd,  .resv1, .sl,    .ie_en, .ie_inv,  .di_inv,  .st,  .tie_en,  .tie_val, .resv0,  .pad_di
-
             { 0U,     FUNC_JTAG_TCLK,       FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
             { 1U,     FUNC_JTAG_TDI,        FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
             { 2U,     FUNC_JTAG_TMS,        FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
