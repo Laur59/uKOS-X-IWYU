@@ -45,6 +45,6 @@ Checks: >
   -hicpp-*
 
 CheckOptions: []
-HeaderFilterRegex: ''
+HeaderFilterRegex: '.*\.c_inc$'
 WarningsAsErrors: ''
 FormatStyle: none

@@ -32,18 +32,18 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"test_lcd     Some lcd tests.                           (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "Test of the lcd\n"
-									"===============\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "test_lcd     Some lcd tests.                           (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "Test of the lcd\n"
+                                    "===============\n\n"
 
-									"This tool performs some lcd tests.\n\n"
+                                    "This tool performs some lcd tests.\n\n"
 
-									"Input format:  test_lcd\n"
-									"Output format: [result]\n\n"
+                                    "Input format:  test_lcd\n"
+                                    "Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
-static	int32_t		prgm(uint32_t argc, const char_t *argv[]);
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 
 MODULE(
     Test_lcd,                                   // Module name (the first letter has to be upper case)
@@ -85,21 +85,21 @@ static  const   uint16_t    aTabColor[KNB_COLORS] = { KBLACK, KNAVY, KDARKGREEN,
 
 // Prototypes
 
-static	void	local_process_0(const void *argument);
-static	void	local_process_1(const void *argument);
-static	void	local_process_2(const void *argument);
-static	void	local_process_3(const void *argument);
-static	void	local_process_4(const void *argument);
+static  void    local_process_0(const void *argument);
+static  void    local_process_1(const void *argument);
+static  void    local_process_2(const void *argument);
+static  void    local_process_3(const void *argument);
+static  void    local_process_4(const void *argument);
 
 /*
  * \brief Main entry point
  *
  */
 static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
+    proc_t  *process_0, *process_1, *process_2, *process_3, *process_4;
+
     UNUSED(argc);
     UNUSED(argv);
-
-    proc_t  *process_0, *process_1, *process_2, *process_3, *process_4;
 
     (void)dprintf(KSYST, "LCD tests.\n");
 
@@ -178,8 +178,6 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
  *
  */
 static void __attribute__ ((noreturn)) local_process_0(const void *argument) {
-    UNUSED(argument);
-
 
 // Window position
 
@@ -196,6 +194,8 @@ static void __attribute__ ((noreturn)) local_process_0(const void *argument) {
     const   char_t      strg1[] = "nous sommes toujours";
     const   char_t      strg2[] = "vainqueurs ... nous sommes ";
     const   char_t      strg3[] = "les petits Schtroumpfs.";
+
+    UNUSED(argument);
 
     LCD0_reserve(KMODE_READ_WRITE, KWAIT_INFINITY);
     lcd0_setDirection(KDIR_XY_LRDU);
@@ -239,8 +239,6 @@ static void __attribute__ ((noreturn)) local_process_0(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) local_process_1(const void *argument) {
-    UNUSED(argument);
-
 
 // Window position
 
@@ -251,6 +249,8 @@ static void __attribute__ ((noreturn)) local_process_1(const void *argument) {
 
     uint16_t    x, y, color;
     uint32_t    value;
+
+    UNUSED(argument);
 
     while (true) {
         kern_suspendProcess(10U);
@@ -273,8 +273,6 @@ static void __attribute__ ((noreturn)) local_process_1(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) local_process_2(const void *argument) {
-    UNUSED(argument);
-
 
 // Window position
 
@@ -287,6 +285,8 @@ static void __attribute__ ((noreturn)) local_process_2(const void *argument) {
             uint16_t    x, y, result, oldResult = 0xFFU;
             uint16_t    color_0 = 0U, color_1 = 0U, color_2 = 0U, color_3 = 0U, color_4 = 0U;
     static  uint16_t    vImage[KNB_CORES][KW2_DX * KW2_DY];
+
+    UNUSED(argument);
 
     core = GET_RUNNING_CORE;
 
@@ -331,8 +331,6 @@ static void __attribute__ ((noreturn)) local_process_2(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) local_process_3(const void *argument) {
-    UNUSED(argument);
-
 
     #define KW3_X0      60u
     #define KW3_Y0      20u
@@ -360,6 +358,8 @@ static void __attribute__ ((noreturn)) local_process_3(const void *argument) {
                                     { "  1                                                                                                                          " },
                                     { " 1                                                                                                                           " }
                                 };
+
+    UNUSED(argument);
 
     while (true) {
         kern_suspendProcess(1000U);
@@ -406,10 +406,10 @@ static void __attribute__ ((noreturn)) local_process_3(const void *argument) {
  *
  */
 static void __attribute__ ((noreturn)) local_process_4(const void *argument) {
-    UNUSED(argument);
-
     uint16_t    color;
     uint32_t    value;
+
+    UNUSED(argument);
 
     while (true) {
         kern_suspendProcess(60000U);

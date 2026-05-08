@@ -10,7 +10,7 @@
 
 #include    <stdint.h>
 
-#include    "Registers/stm32H747_CM4_gpio.h"
+#include    "Registers/stm32H747_CM7_gpio.h"
 #include    "board.h"
 #include    "macros_core.h"
 #include    "macros_soc.h"      // IWYU pragma: keep (for symbol KNVIC_PRIORITY_SHIFT)

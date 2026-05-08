@@ -8,6 +8,7 @@
 #include    <stdint.h>
 
 #include    "core_reg.h"
+#include    "exce.h"
 #include    "soc_reg.h"
 #include    "macros.h"
 #include    "macros_soc.h"
@@ -19,8 +20,6 @@ extern  volatile    uint32_t    vCounter;
 #define BPC10   10U
 
 // Prototypes
-
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 static  void    stub_intr_io_interruption(void);
 

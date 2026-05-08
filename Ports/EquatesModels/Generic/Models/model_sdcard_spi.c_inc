@@ -95,7 +95,7 @@ int32_t model_sdcard_init(void) {
 int32_t model_sdcard_readStatus(void) {
     int32_t     status;
 
-    status = (cb_cardInserted() == true) ? (KERR_STORAGE_NOERR) : (KERR_STORAGE_NODEV);
+    status = cb_cardInserted() ? KERR_STORAGE_NOERR : KERR_STORAGE_NODEV;
     return status;
 }
 
@@ -262,7 +262,7 @@ int32_t model_sdcard_initialise(sdcard_specification_t *specification) {
  */
 int32_t model_sdcard_read(const sdcard_specification_t *specification, uint8_t *buffer, uint8_t nbSectors, uint32_t sector) {
 
-    #if (defined(MULTI_BLOCK_READ_S))
+    #ifdef MULTI_BLOCK_READ_S
     uint8_t     command;
     int32_t     status;
     uint32_t    wkSector;
@@ -326,7 +326,7 @@ int32_t model_sdcard_read(const sdcard_specification_t *specification, uint8_t *
     wkSector = sector;
     for (i = 0U; i < nbSectors; i++) {
 
-        wkSector = ((specification->oCapacityStatus & (uint8_t)KSDCARD_CT_BLOCK) == 0U) ? (wkSector * KSDCARD_SZ_SECTOR) : (wkSector);
+        wkSector = ((specification->oCapacityStatus & (uint8_t)KSDCARD_CT_BLOCK) == 0U) ? (wkSector * KSDCARD_SZ_SECTOR) : wkSector;
 
         if (local_writeCommand(KREAD_SINGLE_BLOCK, wkSector) == KR1_OK) {
             if (!local_readSector(wkBuffer, KSDCARD_SZ_SECTOR)) {
@@ -340,7 +340,7 @@ int32_t model_sdcard_read(const sdcard_specification_t *specification, uint8_t *
     #endif
 
     local_deselectRelease();
-    status = (error) ? (KERR_STORAGE_TRANT) : (KERR_STORAGE_NOERR);
+    status = error ? KERR_STORAGE_TRANT : KERR_STORAGE_NOERR;
     return status;
 }
 
@@ -372,7 +372,7 @@ int32_t model_sdcard_write(const sdcard_specification_t *specification, const ui
 // Write 1 sector
 
     wkSector = sector;
-    wkSector = ((specification->oCapacityStatus & (uint8_t)KSDCARD_CT_BLOCK) == 0U) ? (wkSector * KSDCARD_SZ_SECTOR) : (wkSector);
+    wkSector = ((specification->oCapacityStatus & (uint8_t)KSDCARD_CT_BLOCK) == 0U) ? (wkSector * KSDCARD_SZ_SECTOR) : wkSector;
 
     if (wkNbSectors == 1U) {
         if (local_writeCommand(KWRITE_BLOCK, wkSector) == KR1_OK) {
@@ -402,7 +402,7 @@ int32_t model_sdcard_write(const sdcard_specification_t *specification, const ui
     }
 
     local_deselectRelease();
-    status = (error) ? (KERR_STORAGE_TRANT) : (KERR_STORAGE_NOERR);
+    status = error ? KERR_STORAGE_TRANT : KERR_STORAGE_NOERR;
     return status;
 }
 
@@ -605,7 +605,7 @@ static  bool    local_waitReady(void) {
     (void)cb_writeRead(0xFFU);
     kern_readTickCount(&time[0]);
     do {
-        if (cb_writeRead(0xFFu) == 0xFFU) { break; }
+        if (cb_writeRead(0xFFU) == 0xFFU) { break; }
         kern_readTickCount(&time[1]);
         if ((time[1] - time[0]) >= 1000000U) {
             return false;

@@ -330,7 +330,7 @@ static  void    local_printStackFrame(void) {
     (void)snprintf(&string[0], 80U, "xPSR     = 0x%08"PRIXPTR"    r15 (PC) = 0x%08"PRIXPTR"\n", vStackCoreDump[core][xPSR], vStackCoreDump[core][PC]);  cmns_send(KDEF0, string);
     (void)snprintf(&string[0], 80U, "BASEPRI  = 0x%08"PRIXPTR"\n\n",                            vStackCoreDump[core][BASEPRI]);                         cmns_send(KDEF0, string);
 
-    #if (defined(NOFPU_S))
+    #ifdef NOFPU_S
 
     #else
 

@@ -28,6 +28,7 @@
 #include    "Registers/nvic.h"
 #include    "Registers/soc_vectors.h"
 #include    "clockTree.h"
+#include    "exce.h"
 #include    "soc_reg.h"
 #include    "macros.h"
 #include    "macros_soc.h"
@@ -69,7 +70,7 @@ static  volatile    uint64_t    vTickCount     = 0U;                            
 
 // Prototypes
 
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
+extern  uintptr_t   vVectors[];                                         // Relocated VTOR (provided by the board's exce.c)
 
 #if (KKERN_NB_PRECISE_SIGNALS > 0)
 static  void        local_TIM4_IRQHandler(void);

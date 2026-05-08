@@ -16,6 +16,7 @@
 #include    <stdint.h>
 
 #include    "Registers/nvic.h"
+#include    "exce.h"
 #include    "imager_common.h"
 #include    "kern/kern.h"
 #include    "macros.h"
@@ -50,8 +51,6 @@ STRG_LOC_CONST(aStrSemaphore_IM[]) = KIMAGER_DCMI_SEMAPHORE_IM;
 STRG_LOC_CONST(aStrSemaphore_VS[]) = KIMAGER_DCMI_SEMAPHORE_VS;
 
 // Prototypes
-
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 static  int32_t local_initDCMI(void);
 static  int32_t local_initDMA2(void);
@@ -107,7 +106,7 @@ int32_t model_imager_configure(const imagerCnf_t *configure) {
     vNbRows       = configure->oNbRows;
     vNbCols       = configure->oNbCols;
     vNbPixels     = (uint32_t)configure->oNbRows * (uint32_t)configure->oNbCols;
-    vSingleBuffer = ((configure->oAcqMode & KIMAGER_SINGLE_BUFFER) != 0U) ? (true) : (false);
+    vSingleBuffer = (configure->oAcqMode & KIMAGER_SINGLE_BUFFER) != 0U;
 
 // Configure the manager
 
@@ -472,8 +471,8 @@ static  int32_t local_confImag(const imagerCnf_t *configure) {
 
 // The semaphore mode
 
-    vWithSemaphore_IM = ((configure->oKernSync & ((uint32_t)1U<<(uint32_t)BIMAGER_SEMAPHORE_IM)) != 0U) ? (true) : (false);
-    vWithSemaphore_VS = ((configure->oKernSync & ((uint32_t)1U<<(uint32_t)BIMAGER_SEMAPHORE_VS)) != 0U) ? (true) : (false);
+    vWithSemaphore_IM = ((configure->oKernSync & ((uint32_t)1U<<(uint32_t)BIMAGER_SEMAPHORE_IM)) != 0U);
+    vWithSemaphore_VS = ((configure->oKernSync & ((uint32_t)1U<<(uint32_t)BIMAGER_SEMAPHORE_VS)) != 0U);
 
 // The interruption callbacks
 // Start the stream
@@ -527,7 +526,7 @@ static  void    local_DCMI_IRQHandler(void) {
             go = vVSyncCodeRoutine;
             go();
 
-            #if (defined(KIMAGER_SEMA_VS_S))
+            #ifdef KIMAGER_SEMA_VS_S
             if (vWithSemaphore_VS) { kern_signalSemaphore(vSemaphore_VS); }
             #endif
         }
@@ -597,14 +596,14 @@ static  void    local_DMA2_Stream1_IRQHandler(void) {
         row = 0U;
 
         if (!vSingleBuffer) {
-            vPage = (vPage == 0U) ? (1U) : (0U);
+            vPage = (vPage == 0U) ? 1U : 0U;
         }
         if (vDMAEcCodeRoutine != nullptr) {
             go = vDMAEcCodeRoutine;
             go();
         }
 
-        #if (defined(KIMAGER_SEMA_IM_S))
+        #ifdef KIMAGER_SEMA_IM_S
         if (vWithSemaphore_IM) { kern_signalSemaphore(vSemaphore_IM); }
         #endif
     }

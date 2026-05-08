@@ -41,7 +41,7 @@ struct  boot {
 static  const   char_t  *argv_cnsUrt0[] = { "console", "urt0" };
 
 static  const   boot_t  aFunction[] = {
-                            { .oFunction="console", .oSerialManager=KSYST, .oArgV=argv_cnsUrt0, .oArgC=2U, .oSW=0x00U, .oBaudrate=KSERIAL_BAUDRATE_460800 }
+                            { .oFunction="console", .oSerialManager=KSYST, .oArgV=argv_cnsUrt0, .oArgC=2U, .oSW=0x00U, .oBaudrate=KSERIAL_BAUDRATE_115200 }
                         };
 
 #define KDEF_COMM       KURT0
@@ -84,7 +84,7 @@ void    stub_startUp_launch(void) {
     kern_suspendProcess(500U);
     switch_read(&mode);
     if (mode >= KNB_FUNCTIONS) {
-        mode = 0u;
+        mode = 0U;
     }
 
     serial_setDefSerialManager(KDEF_COMM);
@@ -105,7 +105,7 @@ void    stub_startUp_launch(void) {
         configureURTx.oStopBits = KSERIAL_STOPBITS_1;
         configureURTx.oParity   = KSERIAL_PARITY_NONE;
         configureURTx.oBaudRate = KSERIAL_BAUDRATE_460800;
-        configureURTx.oKernSync = ((uint32_t)1u<<(uint32_t)BSERIAL_SEMAPHORE_RX);
+        configureURTx.oKernSync = ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_RX);
         serial_configure(KURT1, &configureURTx);
     }
 

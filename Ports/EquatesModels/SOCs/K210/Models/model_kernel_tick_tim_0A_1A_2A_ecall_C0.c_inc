@@ -308,11 +308,11 @@ static  void    local_TIM0_A_IRQHandler_C0(uint32_t core, uint64_t parameter) {
  * !!! Do not generate prologue/epilogue sequences
  *
  */
-        void    local_changeContext_PRE_C0(uint32_t core, uint64_t parameter, uint64_t *threshold, uintptr_t *stack);
+static  void    local_changeContext_PRE_C0(uint32_t core, uint64_t parameter, uint64_t *threshold, uintptr_t *stack);
 [[gnu::naked]]
 static  void    local_PREEMPTION_IRQHandler_C0(uint32_t core, uint64_t parameter) {
 
-    #if (!defined(__clang__))
+    #ifndef __clang__
     UNUSED(core);
     UNUSED(parameter);
     #endif
@@ -387,14 +387,14 @@ static  void    __attribute__ ((noinline)) local_newContextPRE_C0(uint32_t core,
 
     #if (KKERN_WITH_STATISTICS_S == true)
     INTERRUPTION_OFF;
-    const   uint32_t    tStart = vTimeStart_C0;
-    const   uint32_t    tStop  = vTimeStop_C0;
-    const   uint32_t    tLast  = vTimeLastStart_C0;
+    const   uint32_t    timeStart = vTimeStart_C0;
+    const   uint32_t    timeStop  = vTimeStop_C0;
+    const   uint32_t    timeLast  = vTimeLastStart_C0;
     const   uint32_t    tExc   = vKern_TimeException[core];
             proc_t      *proc  = vKern_backwardProc[core];
     INTERRUPTION_RESTORE;
 
-    statistics_statistic(proc, tStart, tStop, tLast, tExc);
+    statistics_statistic(proc, timeStart, timeStop, timeLast, tExc);
     vKern_TimeException[core] = 0U;
     #endif
 }
@@ -435,11 +435,11 @@ static  void    __attribute__ ((noinline)) local_newContextPRE_C0(uint32_t core,
  * !!! Do not generate prologue/epilogue sequences
  *
  */
-        void    local_changeContext_TOU_C0(uint32_t core, uint64_t parameter, uint64_t *threshold, uintptr_t *stack);
+static   void    local_changeContext_TOU_C0(uint32_t core, uint64_t parameter, uint64_t *threshold, uintptr_t *stack);
 [[gnu::naked]]
 static  void    local_TIM2_A_IRQHandler_C0(uint32_t core, uint64_t parameter) {
 
-    #if (!defined(__clang__))
+    #ifndef __clang__
     UNUSED(core);
     UNUSED(parameter);
     #endif
@@ -515,14 +515,14 @@ static  void    __attribute__ ((noinline)) local_newContextTOU_C0(uint32_t core,
 
     #if (KKERN_WITH_STATISTICS_S == true)
     INTERRUPTION_OFF;
-    const   uint32_t    tStart = vTimeStart_C0;
-    const   uint32_t    tStop  = vTimeStop_C0;
-    const   uint32_t    tLast  = vTimeLastStart_C0;
+    const   uint32_t    timeStart = vTimeStart_C0;
+    const   uint32_t    timeStop  = vTimeStop_C0;
+    const   uint32_t    timeLast  = vTimeLastStart_C0;
     const   uint32_t    tExc   = vKern_TimeException[core];
             proc_t      *proc  = vKern_backwardProc[core];
     INTERRUPTION_RESTORE;
 
-    statistics_statistic(proc, tStart, tStop, tLast, tExc);
+    statistics_statistic(proc, timeStart, timeStop, timeLast, tExc);
     vKern_TimeException[core] = 0U;
     #endif
 }
@@ -564,7 +564,7 @@ static  void    __attribute__ ((noinline)) local_newContextTOU_C0(uint32_t core,
  * !!! Do not generate prologue/epilogue sequences
  *
  */
-        void    local_changeContext_MSG_C0(uint32_t core, uint64_t message, uint64_t *threshold, uintptr_t *stack);
+static  void    local_changeContext_MSG_C0(uint32_t core, uint64_t message, uint64_t *threshold, uintptr_t *stack);
 [[gnu::naked]]
 static  void    local_ECALL_message_C0([[maybe_unused]] uint32_t core, [[maybe_unused]] uint64_t message) {
 
@@ -636,14 +636,14 @@ static  void    __attribute__ ((noinline)) local_newContextMSG_C0(uint32_t core,
 
     #if (KKERN_WITH_STATISTICS_S == true)
     INTERRUPTION_OFF;
-    const   uint32_t    tStart = vTimeStart_C0;
-    const   uint32_t    tStop  = vTimeStop_C0;
-    const   uint32_t    tLast  = vTimeLastStart_C0;
+    const   uint32_t    timeStart = vTimeStart_C0;
+    const   uint32_t    timeStop  = vTimeStop_C0;
+    const   uint32_t    timeLast  = vTimeLastStart_C0;
     const   uint32_t    tExc   = vKern_TimeException[core];
             proc_t      *proc  = vKern_backwardProc[core];
     INTERRUPTION_RESTORE;
 
-    statistics_statistic(proc, tStart, tStop, tLast, tExc);
+    statistics_statistic(proc, timeStart, timeStop, timeLast, tExc);
     vKern_TimeException[core] = 0U;
     #endif
 }

@@ -9,6 +9,7 @@
 #include    <stdint.h>
 
 #include    "Registers/nvic.h"
+#include    "exce.h"
 #include    "kern/kern.h"
 #include    "macros.h"
 #include    "macros_core.h"
@@ -29,8 +30,6 @@ static                      sema_t      *vSemaphore_TR;
 STRG_LOC_CONST(aStrSemaphore_TR[]) = UNIT " Transaction";
 
 // Prototypes
-
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 static  void    local_SPI_IRQHandler(void);
 
@@ -96,14 +95,14 @@ int32_t model_spi_configure(const spiCnf_t *configure) {
     ratio = SPI_FREQUENCY / configure->oSpeed;
 
     mbr = 0U * SPI_CFG1_MBR_0;
-    mbr = ((ratio <= 2U))                      ? (0U * SPI_CFG1_MBR_0) : (mbr);
-    mbr = ((ratio >  2U)   && (ratio <= 4U))   ? (1U * SPI_CFG1_MBR_0) : (mbr);
-    mbr = ((ratio >  4U)   && (ratio <= 8U))   ? (2U * SPI_CFG1_MBR_0) : (mbr);
-    mbr = ((ratio >  8U)   && (ratio <= 16U))  ? (3U * SPI_CFG1_MBR_0) : (mbr);
-    mbr = ((ratio > 16U)   && (ratio <= 32U))  ? (4U * SPI_CFG1_MBR_0) : (mbr);
-    mbr = ((ratio > 32U)   && (ratio <= 64U))  ? (5U * SPI_CFG1_MBR_0) : (mbr);
-    mbr = ((ratio > 64U)   && (ratio <= 128U)) ? (6U * SPI_CFG1_MBR_0) : (mbr);
-    mbr = ((ratio > 128U))                     ? (7U * SPI_CFG1_MBR_0) : (mbr);
+    mbr = (ratio <= 2U)                      ? (0U * SPI_CFG1_MBR_0) : mbr;
+    mbr = ((ratio >  2U) && (ratio <= 4U))   ? (1U * SPI_CFG1_MBR_0) : mbr;
+    mbr = ((ratio >  4U) && (ratio <= 8U))   ? (2U * SPI_CFG1_MBR_0) : mbr;
+    mbr = ((ratio >  8U) && (ratio <= 16U))  ? (3U * SPI_CFG1_MBR_0) : mbr;
+    mbr = ((ratio > 16U) && (ratio <= 32U))  ? (4U * SPI_CFG1_MBR_0) : mbr;
+    mbr = ((ratio > 32U) && (ratio <= 64U))  ? (5U * SPI_CFG1_MBR_0) : mbr;
+    mbr = ((ratio > 64U) && (ratio <= 128U)) ? (6U * SPI_CFG1_MBR_0) : mbr;
+    mbr = (ratio > 128U)                     ? (7U * SPI_CFG1_MBR_0) : mbr;
 
     SPI->CFG1 |= mbr;
 
@@ -127,10 +126,10 @@ int32_t model_spi_multipleWriteRead(const uint8_t *wData, uint16_t wSize, uint8_
     INTERRUPTION_RESTORE;
 
     vMode = KSPI_ERROR;
-    vMode = ((wSize != 0U) && (rSize == 0U))                    ? (KSPI_WRITE)  : (vMode);  // Mode only write
-    vMode = ((wSize == 0U) && (rSize != 0U))                    ? (KSPI_READ)   : (vMode);  // Mode only read
-    vMode = ((wSize == rSize) && (rSize != 0U))                 ? (KSPI_READ)   : (vMode);  // Mode write-read
-    vMode = ((wSize < rSize) && (wSize != 0U) && (rSize != 0U)) ? (KSPI_EEPROM) : (vMode);  // Mode EEPROM
+    vMode = ((wSize != 0U) && (rSize == 0U))                    ? KSPI_WRITE  : vMode;  // Mode only write
+    vMode = ((wSize == 0U) && (rSize != 0U))                    ? KSPI_READ   : vMode;  // Mode only read
+    vMode = ((wSize == rSize) && (rSize != 0U))                 ? KSPI_READ   : vMode;  // Mode write-read
+    vMode = ((wSize < rSize) && (wSize != 0U) && (rSize != 0U)) ? KSPI_EEPROM : vMode;  // Mode EEPROM
 
     vWkBuffer = wData;
     vRkBuffer = rData;
@@ -143,7 +142,7 @@ int32_t model_spi_multipleWriteRead(const uint8_t *wData, uint16_t wSize, uint8_
 
     NVIC_SetPendingIRQ(SPI_VECTOR_NUMBER);
 
-    status = (kern_waitSemaphore(vSemaphore_TR, timeout) != KERR_SPI_NOERR) ? (KERR_SPI_TIMEO) : (KERR_SPI_NOERR);
+    status = (kern_waitSemaphore(vSemaphore_TR, timeout) != KERR_SPI_NOERR) ? KERR_SPI_TIMEO : KERR_SPI_NOERR;
     return status;
 }
 
@@ -193,7 +192,7 @@ static  void    local_SPI_IRQHandler(void) {
             else        { vRkBuffer[vNbBytes - 1U] = data; }
 
             if (vNbBytes < vRSize) {
-                *((volatile uint8_t *)&SPI->TXDR) = (vWkBuffer == nullptr) ? (0U) : (vWkBuffer[vNbBytes]);
+                *((volatile uint8_t *)&SPI->TXDR) = (vWkBuffer == nullptr) ? 0U : (vWkBuffer[vNbBytes]);
                 vNbBytes++;
                 return;
             }

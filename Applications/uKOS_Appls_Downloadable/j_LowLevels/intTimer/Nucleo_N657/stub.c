@@ -9,6 +9,7 @@
 
 #include    "clockTree.h"
 #include    "core_reg.h"
+#include    "exce.h"
 #include    "soc_reg.h"
 #include    "macros.h"
 #include    "macros_soc.h"
@@ -25,8 +26,6 @@
 extern  volatile    uint32_t    vTimer;
 
 // Prototypes
-
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 static  void    stub_intr_timer_interruption(void);
 extern  void    aTimer_callBack(void);

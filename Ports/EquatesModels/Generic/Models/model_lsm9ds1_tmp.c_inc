@@ -41,7 +41,7 @@ int32_t model_lsM9ds1tmp_read(float64_t *temperature) {
     cb_control(KTEMPERATURE_RESERVE);
     cb_readTemp(LSM9DS1_OUT_TEMP_L, xsb, 2U);
     value = (int16_t)(xsb[1]<<8U | xsb[0]);
-    *temperature = (((float64_t)(value)) / 16.0) + 25.0 - KTEMPERATURE_ZERO_KELVIN;
+    *temperature = (((float64_t)value) / 16.0) + 25.0 - KTEMPERATURE_ZERO_KELVIN;
     cb_control(KTEMPERATURE_RELEASE);
     return KERR_TEMPERATURE_NOERR;
 }

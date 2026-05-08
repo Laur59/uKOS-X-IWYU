@@ -31,18 +31,18 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"test_img     Some img tests.                           (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "Test of the lcd\n"
-									"===============\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "test_img     Some img tests.                           (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "Test of the lcd\n"
+                                    "===============\n\n"
 
-									"This tool performs some lcd tests.\n\n"
+                                    "This tool performs some lcd tests.\n\n"
 
-									"Input format:  test_lcd\n"
-									"Output format: [result]\n\n"
+                                    "Input format:  test_lcd\n"
+                                    "Output format: [result]\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
-static	int32_t		prgm(uint32_t argc, const char_t *argv[]);
+static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 
 MODULE(
     Test_img,                                   // Module name (the first letter has to be upper case)
@@ -66,17 +66,17 @@ STRG_LOC_CONST(aStrText[]) = "Process IMGK.                             (c) EFr-
 
 // Prototypes
 
-static	void	local_process(const void *argument);
+static  void    local_process(const void *argument);
 
 /*
  * \brief Main entry point
  *
  */
 static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
+    proc_t  *process;
+
     UNUSED(argc);
     UNUSED(argv);
-
-    proc_t  *process;
 
     (void)dprintf(KSYST, "IMG tests.\n");
 
@@ -91,7 +91,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
         KKERN_PRIORITY_NORMAL_01            // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
     );
 
-    if (kern_createProcess(&specification, NULL, &process) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "test_img: create proc"); exit(EXIT_OS_FAILURE); }
+    if (kern_createProcess(&specification, nullptr, &process) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "test_img: create proc"); exit(EXIT_OS_FAILURE); }
     return EXIT_OS_SUCCESS_CLI;
 }
 

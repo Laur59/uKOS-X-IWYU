@@ -29,6 +29,7 @@
 #include    "Registers/core_debug.h"
 #include    "Registers/nvic.h"
 #include    "Registers/scb.h"
+#include    "exce.h"
 #include    "kern/kern.h"
 #include    "kern/private/private_processes.h"
 #include    "kern/private/private_scheduler.h"
@@ -83,8 +84,6 @@ static  volatile    bool        vTickLess      = false;                         
 static  volatile    bool        vTimeout       = false;                                 // Timeout
 
 // Prototypes
-
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 #if (KKERN_NB_PRECISE_SIGNALS > 0)
 static  void        local_TIM4_IRQHandler(void);
@@ -227,14 +226,14 @@ void    model_kernel_setLowPower(uint8_t mode) {
                 vTickLess = true;
 
                 timeStop = temporal_getNextLowPowerTime();
-                timeStop = (timeStop > (KWAIT_INFINITY / N)) ? (KWAIT_INFINITY / N) : (timeStop);
-                timeStop = (timeStop == 0U)                  ? (1U)                 : (timeStop);
+                timeStop = (timeStop > (KWAIT_INFINITY / N)) ? (KWAIT_INFINITY / N) : timeStop;
+                timeStop = (timeStop == 0U)                  ? 1U                   : timeStop;
 
                 TIM5->CR1 &= (uint32_t)~TIM5_CR1_CEN;
                 TIM5->SR  &= (uint32_t)~TIM5_SR_UIF;
                 TIM5->ARR  = (timeStop * N) - 1U;
 
-                TIM5->CNT  = (N > 1U) ? (TIM5->CNT % N) : (0U);
+                TIM5->CNT  = (N > 1U) ? (TIM5->CNT % N) : 0U;
 
                 NVIC_ClearPendingIRQ(TIM5_C0_IRQn);
                 TIM5->CR1 |= TIM5_CR1_CEN;
@@ -429,8 +428,8 @@ static  void    local_nextTime(uint64_t absTime) {
 // In this case, we launch the new time with a minimal delay of 2 ...
 
     if (found) {
-        minNextTime = (minNextTime < absTime) ? (2U) : (minNextTime - absTime);
-        minNextTime = (minNextTime < 2U)      ? (2U) : (minNextTime);
+        minNextTime = (minNextTime < absTime) ? 2U : (minNextTime - absTime);
+        minNextTime = (minNextTime < 2U)      ? 2U : minNextTime;
         if (minNextTime < 65536U) {
             TIM4->CCR1  = TIM4->CNT + (uint16_t)minNextTime;
             TIM4->SR   &= (uint32_t)~TIM4_SR_CC1IF;
@@ -480,7 +479,7 @@ static  void    local_TIM5_IRQHandler(void) {
  * !!! Do not generate prologue/epilogue sequences
  *
  */
-uintptr_t   *local_newContextPRE(uintptr_t *stack);
+static uintptr_t   *local_newContextPRE(uintptr_t *stack);
 [[gnu::naked]]
 void    PendSV_C0_IRQHandler(void) {
 
@@ -529,21 +528,21 @@ uintptr_t   __attribute__ ((noinline, used)) *local_newContextPRE(uintptr_t *sta
 
     #if (KKERN_WITH_STATISTICS_S == true)
     INTERRUPTION_OFF;
-    const   uint32_t    tStart = vTimeStart;
-    const   uint32_t    tStop  = vTimeStop;
-    const   uint32_t    tLast  = vTimeLastStart;
+    const   uint32_t    timeStart = vTimeStart;
+    const   uint32_t    timeStop  = vTimeStop;
+    const   uint32_t    timeLast  = vTimeLastStart;
     const   uint32_t    tExc   = vKern_TimeException[KCORE_0];
             proc_t      *proc  = vKern_backwardProc[KCORE_0];
     INTERRUPTION_RESTORE;
 
-    statistics_statistic(proc, tStart, tStop, tLast, tExc);
+    statistics_statistic(proc, timeStart, timeStop, timeLast, tExc);
     vKern_TimeException[KCORE_0] = 0U;
     #endif
 
 // Restore the user / privileged mode
 // vKern_runProc is the process that will run in a short ...
 
-    #if (defined(PRIVILEGED_USER_S))
+    #ifdef PRIVILEGED_USER_S
     if ((vKern_runProc[KCORE_0]->oSpecification.oMode == KPROC_PRIVILEGED) || ((vKern_runProc[KCORE_0]->oInternal.oState & (1U<<BPROC_PRIV_ELEVATED)) != 0U)) { SET_PRIVILEGED_MODE; }
     else                                                                                                                                                      { SET_USER_MODE;       }
     #endif
@@ -578,7 +577,7 @@ uintptr_t   __attribute__ ((noinline, used)) *local_newContextPRE(uintptr_t *sta
  * !!! Do not generate prologue/epilogue sequences
  *
  */
-uintptr_t   *local_newContextTOU(uintptr_t *stack);
+static uintptr_t   *local_newContextTOU(uintptr_t *stack);
 [[gnu::naked]]
 void    TIM3_C0_IRQHandler(void) {
 
@@ -632,21 +631,21 @@ uintptr_t   __attribute__ ((noinline, used)) *local_newContextTOU(uintptr_t *sta
 
     #if (KKERN_WITH_STATISTICS_S == true)
     INTERRUPTION_OFF;
-    const   uint32_t    tStart = vTimeStart;
-    const   uint32_t    tStop  = vTimeStop;
-    const   uint32_t    tLast  = vTimeLastStart;
+    const   uint32_t    timeStart = vTimeStart;
+    const   uint32_t    timeStop  = vTimeStop;
+    const   uint32_t    timeLast  = vTimeLastStart;
     const   uint32_t    tExc   = vKern_TimeException[KCORE_0];
             proc_t      *proc  = vKern_backwardProc[KCORE_0];
     INTERRUPTION_RESTORE;
 
-    statistics_statistic(proc, tStart, tStop, tLast, tExc);
+    statistics_statistic(proc, timeStart, timeStop, timeLast, tExc);
     vKern_TimeException[KCORE_0] = 0U;
     #endif
 
 // Restore the user / privileged mode
 // vKern_runProc is the process that will run in a short ...
 
-    #if (defined(PRIVILEGED_USER_S))
+    #ifdef PRIVILEGED_USER_S
     if ((vKern_runProc[KCORE_0]->oSpecification.oMode == KPROC_PRIVILEGED) || ((vKern_runProc[KCORE_0]->oInternal.oState & (1U<<BPROC_PRIV_ELEVATED)) != 0U)) { SET_PRIVILEGED_MODE; }
     else                                                                                                                                                      { SET_USER_MODE;       }
     #endif
@@ -686,7 +685,7 @@ uintptr_t   __attribute__ ((noinline, used)) *local_newContextTOU(uintptr_t *sta
  * !!! Do not generate prologue/epilogue sequences
  *
  */
-uintptr_t   *local_newContextMSG(uintptr_t *stack, uint32_t message);
+static uintptr_t   *local_newContextMSG(uintptr_t *stack, uint32_t message);
 [[gnu::naked]]
 void    kernel_message_C0(void) {
 
@@ -737,21 +736,21 @@ uintptr_t   __attribute__ ((noinline, used)) *local_newContextMSG(uintptr_t *sta
 
     #if (KKERN_WITH_STATISTICS_S == true)
     INTERRUPTION_OFF;
-    const   uint32_t    tStart = vTimeStart;
-    const   uint32_t    tStop  = vTimeStop;
-    const   uint32_t    tLast  = vTimeLastStart;
+    const   uint32_t    timeStart = vTimeStart;
+    const   uint32_t    timeStop  = vTimeStop;
+    const   uint32_t    timeLast  = vTimeLastStart;
     const   uint32_t    tExc   = vKern_TimeException[KCORE_0];
             proc_t      *proc  = vKern_backwardProc[KCORE_0];
     INTERRUPTION_RESTORE;
 
-    statistics_statistic(proc, tStart, tStop, tLast, tExc);
+    statistics_statistic(proc, timeStart, timeStop, timeLast, tExc);
     vKern_TimeException[KCORE_0] = 0U;
     #endif
 
 // Restore the user / privileged mode
 // vKern_runProc is the process that will run in a short ...
 
-    #if (defined(PRIVILEGED_USER_S))
+    #ifdef PRIVILEGED_USER_S
     if ((vKern_runProc[KCORE_0]->oSpecification.oMode == KPROC_PRIVILEGED) || ((vKern_runProc[KCORE_0]->oInternal.oState & (1U<<BPROC_PRIV_ELEVATED)) != 0U)) { SET_PRIVILEGED_MODE; }
     else                                                                                                                                                      { SET_USER_MODE;       }
     #endif
@@ -851,7 +850,7 @@ static  void    local_updateTickTimer(uint32_t tickTime) {
     TIM5->CR1 &= (uint32_t)~TIM5_CR1_CEN;
     TIM5->SR  &= (uint32_t)~TIM5_SR_UIF;
 
-    TIM5->CNT  = (N > 1U) ? (TIM5->CNT % N) : (0U);
+    TIM5->CNT  = (N > 1U) ? (TIM5->CNT % N) : 0U;
 
     TIM5->ARR  = tickTime;
     TIM5->CR1 |= TIM5_CR1_CEN;

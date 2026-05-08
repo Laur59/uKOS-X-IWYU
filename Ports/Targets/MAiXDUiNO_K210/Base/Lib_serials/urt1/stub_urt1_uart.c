@@ -36,7 +36,7 @@ static  void    cb_enable_C0(void) {
  */
 static  bool    cb_CTSCheck_C0(void) {
 
-    return (true);
+    return true;
 }
 
 /*
@@ -75,7 +75,7 @@ int32_t stub_urt1_init(void) {
 
     if (core == KCORE_0) { status = model_usart_init_C0(); }
     else                 { status = KERR_SERIAL_NODEV;     }
-    return (status);
+    return status;
 }
 
 int32_t stub_urt1_configure(const urtxCnf_t *configure) {
@@ -86,7 +86,7 @@ int32_t stub_urt1_configure(const urtxCnf_t *configure) {
 
     if (core == KCORE_0) { status = model_usart_configure_C0(configure); }
     else                 { status = KERR_SERIAL_NODEV;                   }
-    return (status);
+    return status;
 }
 
 int32_t stub_urt1_write(const uint8_t *buffer, uint32_t size) {
@@ -97,7 +97,7 @@ int32_t stub_urt1_write(const uint8_t *buffer, uint32_t size) {
 
     if (core == KCORE_0) { status = model_usart_write_C0(buffer, size); }
     else                 { status = KERR_SERIAL_NODEV;                  }
-    return (status);
+    return status;
 }
 
 int32_t stub_urt1_read(uint8_t *buffer, uint32_t *size) {
@@ -108,7 +108,7 @@ int32_t stub_urt1_read(uint8_t *buffer, uint32_t *size) {
 
     if (core == KCORE_0) { status = model_usart_read_C0(buffer, size); }
     else                 { status = KERR_SERIAL_NODEV;                 }
-    return (status);
+    return status;
 }
 
 int32_t stub_urt1_flush(void) {
@@ -119,5 +119,5 @@ int32_t stub_urt1_flush(void) {
 
     if (core == KCORE_0) { status = model_usart_flush_C0(); }
     else                 { status = KERR_SERIAL_NODEV;      }
-    return (status);
+    return status;
 }

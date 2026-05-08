@@ -30,6 +30,7 @@
 #include    "Registers/nvic.h"
 #include    "clockTree.h"
 #include    "core_reg.h"
+#include    "exce.h"
 #include    "kern/kern.h"
 #include    "kern/private/private_processes.h"
 #if KKERN_NB_PRECISE_SIGNALS > 0
@@ -72,10 +73,6 @@ static  volatile    bool        vTickLess      = false;                         
 static  volatile    bool        vTimeout       = false;                                 // Timeout
 
 // Prototypes
-
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
-
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 static  void        local_TIM0_IRQHandler(void);
 static  void        local_RTC0_IRQHandler(void);
@@ -198,8 +195,8 @@ void    model_kernel_setLowPower(uint8_t mode) {
                 vTickLess = true;
 
                 timeStop = temporal_getNextLowPowerTime();
-                timeStop = (timeStop > (KMAXRTCBIT / N)) ? (KMAXRTCBIT / N) : (timeStop);
-                timeStop = (timeStop == 0U)              ? (1U)             : (timeStop);
+                timeStop = (timeStop > (KMAXRTCBIT / N)) ? (KMAXRTCBIT / N) : timeStop;
+                timeStop = (timeStop == 0U)              ? 1U               : timeStop;
 
                 REG(RTC0)->INTENCLR          = (1U<<16U);
                 REG(RTC0)->EVENTS_COMPARE[0] = 0U;
@@ -423,8 +420,8 @@ static  void    local_nextTime(uint64_t absTime) {
 // In this case, we launch the new time with a minimal delay of 2 ...
 
     if (found) {
-        minNextTime = (minNextTime < absTime) ? (2) : (minNextTime - absTime);
-        minNextTime = (minNextTime < 2U)      ? (2) : (minNextTime);
+        minNextTime = (minNextTime < absTime) ? 2 : (minNextTime - absTime);
+        minNextTime = (minNextTime < 2U)      ? 2 : minNextTime;
         if (minNextTime < 0x100000000U) {
             REG(TIMER0)->TASKS_CAPTURE[1] = 1U;
             REG(TIMER0)->CC[2] = REG(TIMER0)->CC[1] + (uint32_t)minNextTime;
@@ -465,7 +462,7 @@ static  void    local_nextTime(uint64_t absTime) {
  * !!! Do not generate prologue/epilogue sequences
  *
  */
-uintptr_t   *local_newContextPRE(uintptr_t *stack);
+static uintptr_t   *local_newContextPRE(uintptr_t *stack);
 [[gnu::naked]]
 void    PendSV_C0_IRQHandler(void) {
 
@@ -505,7 +502,7 @@ uintptr_t   __attribute__ ((noinline, used)) *local_newContextPRE(uintptr_t *sta
 
 // Verify the sanity of the stack
 
-    #if (defined(STUB_KERN_CHECK_XSP_LIMIT_S))
+    #ifdef STUB_KERN_CHECK_XSP_LIMIT_S
     core_setPSPLIM(0U);
     scheduler_callBackSlow();
     local_timeStart();
@@ -522,21 +519,21 @@ uintptr_t   __attribute__ ((noinline, used)) *local_newContextPRE(uintptr_t *sta
 
     #if (KKERN_WITH_STATISTICS_S == true)
     INTERRUPTION_OFF;
-    const   uint32_t    tStart = vTimeStart;
-    const   uint32_t    tStop  = vTimeStop;
-    const   uint32_t    tLast  = vTimeLastStart;
+    const   uint32_t    timeStart = vTimeStart;
+    const   uint32_t    timeStop  = vTimeStop;
+    const   uint32_t    timeLast  = vTimeLastStart;
     const   uint32_t    tExc   = vKern_TimeException[KCORE_0];
             proc_t      *proc  = vKern_backwardProc[KCORE_0];
     INTERRUPTION_RESTORE;
 
-    statistics_statistic(proc, tStart, tStop, tLast, tExc);
+    statistics_statistic(proc, timeStart, timeStop, timeLast, tExc);
     vKern_TimeException[KCORE_0] = 0U;
     #endif
 
 // Restore the user / privileged mode
 // vKern_runProc is the process that will run in a short ...
 
-    #if (defined(PRIVILEGED_USER_S))
+    #ifdef PRIVILEGED_USER_S
     if ((vKern_runProc[KCORE_0]->oSpecification.oMode == KPROC_PRIVILEGED) || ((vKern_runProc[KCORE_0]->oInternal.oState & (1U<<BPROC_PRIV_ELEVATED)) != 0U)) { SET_PRIVILEGED_MODE; }
     else                                                                                                                                                      { SET_USER_MODE;       }
     #endif
@@ -576,7 +573,7 @@ uintptr_t   __attribute__ ((noinline, used)) *local_newContextPRE(uintptr_t *sta
  * !!! Do not generate prologue/epilogue sequences
  *
  */
-uintptr_t   *local_newContextTOU(uintptr_t *stack);
+static uintptr_t   *local_newContextTOU(uintptr_t *stack);
 [[gnu::naked]]
 void    TIMER1_C0_IRQHandler(void) {
 
@@ -621,7 +618,7 @@ uintptr_t   __attribute__ ((noinline, used)) *local_newContextTOU(uintptr_t *sta
 
 // Verify the sanity of the stack
 
-    #if (defined(STUB_KERN_CHECK_XSP_LIMIT_S))
+    #ifdef STUB_KERN_CHECK_XSP_LIMIT_S
     core_setPSPLIM(0U);
     scheduler_callBackSlow();
     local_timeStart();
@@ -638,21 +635,21 @@ uintptr_t   __attribute__ ((noinline, used)) *local_newContextTOU(uintptr_t *sta
 
     #if (KKERN_WITH_STATISTICS_S == true)
     INTERRUPTION_OFF;
-    const   uint32_t    tStart = vTimeStart;
-    const   uint32_t    tStop  = vTimeStop;
-    const   uint32_t    tLast  = vTimeLastStart;
+    const   uint32_t    timeStart = vTimeStart;
+    const   uint32_t    timeStop  = vTimeStop;
+    const   uint32_t    timeLast  = vTimeLastStart;
     const   uint32_t    tExc   = vKern_TimeException[KCORE_0];
             proc_t      *proc  = vKern_backwardProc[KCORE_0];
     INTERRUPTION_RESTORE;
 
-    statistics_statistic(proc, tStart, tStop, tLast, tExc);
+    statistics_statistic(proc, timeStart, timeStop, timeLast, tExc);
     vKern_TimeException[KCORE_0] = 0U;
     #endif
 
 // Restore the user / privileged mode
 // vKern_runProc is the process that will run in a short ...
 
-    #if (defined(PRIVILEGED_USER_S))
+    #ifdef PRIVILEGED_USER_S
     if ((vKern_runProc[KCORE_0]->oSpecification.oMode == KPROC_PRIVILEGED) || ((vKern_runProc[KCORE_0]->oInternal.oState & (1U<<BPROC_PRIV_ELEVATED)) != 0U)) { SET_PRIVILEGED_MODE; }
     else                                                                                                                                                      { SET_USER_MODE;       }
     #endif
@@ -697,7 +694,7 @@ uintptr_t   __attribute__ ((noinline, used)) *local_newContextTOU(uintptr_t *sta
  * !!! Do not generate prologue/epilogue sequences
  *
  */
-uintptr_t   *local_newContextMSG(uintptr_t *stack, uint32_t message);
+static uintptr_t   *local_newContextMSG(uintptr_t *stack, uint32_t message);
 [[gnu::naked]]
 void    kernel_message_C0(void) {
 
@@ -739,7 +736,7 @@ uintptr_t   __attribute__ ((noinline, used)) *local_newContextMSG(uintptr_t *sta
 
 // Verify the sanity of the stack
 
-    #if (defined(STUB_KERN_CHECK_XSP_LIMIT_S))
+    #ifdef STUB_KERN_CHECK_XSP_LIMIT_S
     core_setPSPLIM(0U);
     scheduler_callBackTrap(message);
     local_timeStart();
@@ -756,21 +753,21 @@ uintptr_t   __attribute__ ((noinline, used)) *local_newContextMSG(uintptr_t *sta
 
     #if (KKERN_WITH_STATISTICS_S == true)
     INTERRUPTION_OFF;
-    const   uint32_t    tStart = vTimeStart;
-    const   uint32_t    tStop  = vTimeStop;
-    const   uint32_t    tLast  = vTimeLastStart;
+    const   uint32_t    timeStart = vTimeStart;
+    const   uint32_t    timeStop  = vTimeStop;
+    const   uint32_t    timeLast  = vTimeLastStart;
     const   uint32_t    tExc   = vKern_TimeException[KCORE_0];
             proc_t      *proc  = vKern_backwardProc[KCORE_0];
     INTERRUPTION_RESTORE;
 
-    statistics_statistic(proc, tStart, tStop, tLast, tExc);
+    statistics_statistic(proc, timeStart, timeStop, timeLast, tExc);
     vKern_TimeException[KCORE_0] = 0U;
     #endif
 
 // Restore the user / privileged mode
 // vKern_runProc is the process that will run in a short ...
 
-    #if (defined(PRIVILEGED_USER_S))
+    #ifdef PRIVILEGED_USER_S
     if ((vKern_runProc[KCORE_0]->oSpecification.oMode == KPROC_PRIVILEGED) || ((vKern_runProc[KCORE_0]->oInternal.oState & (1U<<BPROC_PRIV_ELEVATED)) != 0U)) { SET_PRIVILEGED_MODE; }
     else                                                                                                                                                      { SET_USER_MODE;       }
     #endif

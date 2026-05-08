@@ -142,8 +142,8 @@ static  int32_t model_usart_configure_C0(const urtxCnf_t *configure) {
     }
     USART_C0->LCR &= (uint32_t)~(1U<<7U);
 
-    vWithSemaphore_RX_C0 = ((configure->oKernSync & ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_RX)) != 0U) ? (true) : (false);
-    vWithSemaphore_TX_C0 = ((configure->oKernSync & ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_TX)) != 0U) ? (true) : (false);
+    vWithSemaphore_RX_C0 = (configure->oKernSync & ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_RX)) != 0U;
+    vWithSemaphore_TX_C0 = (configure->oKernSync & ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_TX)) != 0U;
     RETURN_INT_RESTORE(KERR_SERIAL_NOERR);
 }
 
@@ -228,7 +228,7 @@ static  int32_t model_usart_read_C0(uint8_t *buffer, uint32_t *size) {
 
 // cppcheck-suppress premium-misra-c-2023-13.2
 //
-        vRRecBuffer_C0 = (vRRecBuffer_C0 == &vRecBuffer_C0[KUSART_SZ_RX_BUF_C0]) ? (vRecBuffer_C0) : (vRRecBuffer_C0);
+        vRRecBuffer_C0 = (vRRecBuffer_C0 == &vRecBuffer_C0[KUSART_SZ_RX_BUF_C0]) ? vRecBuffer_C0 : vRRecBuffer_C0;
     }
     RETURN_INT_RESTORE(status);
 }
@@ -278,14 +278,14 @@ static  void    local_USART_IRQHandler_C0(uint32_t core, uint64_t parameter) {
 
 // cppcheck-suppress premium-misra-c-2023-13.2
 //
-            vStatus_C0 = (vWRecBuffer_C0 == vRRecBuffer_C0) ? (KERR_SERIAL_RBFUL) : (vStatus_C0);
+            vStatus_C0 = (vWRecBuffer_C0 == vRRecBuffer_C0) ? KERR_SERIAL_RBFUL : vStatus_C0;
 
 // cppcheck-suppress premium-misra-c-2023-13.2
 //
-            vWRecBuffer_C0 = (vWRecBuffer_C0 == &vRecBuffer_C0[KUSART_SZ_RX_BUF_C0]) ? (vRecBuffer_C0) : (vWRecBuffer_C0);
+            vWRecBuffer_C0 = (vWRecBuffer_C0 == &vRecBuffer_C0[KUSART_SZ_RX_BUF_C0]) ? vRecBuffer_C0 : vWRecBuffer_C0;
         } while ((USART_C0->IIR & UART_IIR_ERBFI) != 0);
 
-        #if (defined(KUSART_SEMA_RX_C0_S))
+        #ifdef KUSART_SEMA_RX_C0_S
         if (vWithSemaphore_RX_C0) { kern_signalSemaphore(vSemaphore_RX_C0); }
         #endif
 
@@ -311,7 +311,7 @@ static  void    local_USART_IRQHandler_C0(uint32_t core, uint64_t parameter) {
                 USART_C0->IER &= (uint32_t)~UART_IER_ETBEI;
                 vSending_C0 = false;
 
-                #if (defined(KUSART_SEMA_TX_C0_S))
+                #ifdef KUSART_SEMA_TX_C0_S
                 if (vWithSemaphore_TX_C0) { kern_signalSemaphore(vSemaphore_TX_C0); }
                 #endif
             }

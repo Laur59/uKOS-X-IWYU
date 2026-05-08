@@ -8,6 +8,7 @@
 
 #define DCACHE_LINE_SIZE    32      // Cortex M7 cache line size of 32-bytes
 #define ICACHE_LINE_SIZE    32      // Cortex M7 cache line size of 32-bytes
+#define KCACHE_API          __attribute__((unused))
 
 #include    "macros_core.h"
 
@@ -21,7 +22,7 @@ static  inline  uint32_t local_clz(uint32_t data);
  * - Enable the data cache
  *
  */
-static  inline  void    cache_D_Enable(void) {
+static  inline  KCACHE_API void    cache_D_Enable(void) {
     uint32_t    ccsidr, sShift, wShift, sw;
     uint32_t    numSets, associativity, tmpAssociativity;
 
@@ -71,7 +72,7 @@ static  inline  void    cache_D_Enable(void) {
  * - Disable the data cache
  *
  */
-static  inline  void    cache_D_Disable(void) {
+static  inline  KCACHE_API void    cache_D_Disable(void) {
     uint32_t    ccsidr, sShift, wShift, sw;
     uint32_t    numSets, associativity, tmpAssociativity;
 
@@ -118,7 +119,7 @@ static  inline  void    cache_D_Disable(void) {
  * - Invalidate the data cache
  *
  */
-static  inline  void    cache_D_Invalidate(void) {
+static  inline  KCACHE_API void    cache_D_Invalidate(void) {
     uint32_t    ccsidr, sShift, wShift, sw;
     uint32_t    numSets, associativity, tmpAssociativity;
 
@@ -161,7 +162,7 @@ static  inline  void    cache_D_Invalidate(void) {
  * - Invalidate the data cache by address
  *
  */
-static  inline  void    cache_D_Invalidate_Add(const void *address, int32_t size) {
+static  inline  KCACHE_API void    cache_D_Invalidate_Add(const void *address, int32_t size) {
     int32_t     opSize;
     uint32_t    opAddress;
 
@@ -188,7 +189,7 @@ static  inline  void    cache_D_Invalidate_Add(const void *address, int32_t size
  * - Clean the data cache
  *
  */
-static  inline  void    cache_D_Clean(void) {
+static  inline  KCACHE_API void    cache_D_Clean(void) {
     uint32_t    ccsidr, sShift, wShift, sw;
     uint32_t    numSets, associativity, tmpAssociativity;
 
@@ -231,7 +232,7 @@ static  inline  void    cache_D_Clean(void) {
  * - Clean the data cache by address
  *
  */
-static  inline  void    cache_D_Clean_Add(const void *address, int32_t size) {
+static  inline  KCACHE_API void    cache_D_Clean_Add(const void *address, int32_t size) {
     int32_t     opSize;
     uint32_t    opAddress;
 
@@ -258,7 +259,7 @@ static  inline  void    cache_D_Clean_Add(const void *address, int32_t size) {
  * - Enable the instruction cache
  *
  */
-static  inline  void    cache_I_Enable(void) {
+static  inline  KCACHE_API void    cache_I_Enable(void) {
 
     DATA_SYNC_BARRIER;
     INST_SYNC_BARRIER;
@@ -284,7 +285,7 @@ static  inline  void    cache_I_Enable(void) {
  * - Disable the instruction cache
  *
  */
-static  inline  void    cache_I_Disable(void) {
+static  inline  KCACHE_API void    cache_I_Disable(void) {
 
     DATA_SYNC_BARRIER;
     INST_SYNC_BARRIER;
@@ -305,7 +306,7 @@ static  inline  void    cache_I_Disable(void) {
  * - Invalidate the instruction cache
  *
  */
-static  inline  void    cache_I_Invalidate(void) {
+static  inline  KCACHE_API void    cache_I_Invalidate(void) {
 
     DATA_SYNC_BARRIER;
     INST_SYNC_BARRIER;
@@ -324,7 +325,7 @@ static  inline  void    cache_I_Invalidate(void) {
  * - Invalidate the instruction cache by address
  *
  */
-static  inline  void    cache_I_Invalidate_Add(const void *address, int32_t size) {
+static  inline  KCACHE_API void    cache_I_Invalidate_Add(const void *address, int32_t size) {
     int32_t     opSize;
     uint32_t    opAddress;
 

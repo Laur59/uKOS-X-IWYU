@@ -26,6 +26,7 @@
 #include    <stdlib.h>
 
 #include    "core.h"
+#include    "exce.h"
 #include    "kern/private/private_processes.h"
 #include    "kern/private/private_scheduler.h"
 #include    "macros.h"
@@ -60,8 +61,6 @@ static  volatile    uint32_t    vTimeLastStart = 0U;                            
 static  volatile    uint64_t    vTickCount     = 0U;                                    // 64-bit timer (1-us)
 
 // Prototypes
-
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
 #if (KKERN_NB_PRECISE_SIGNALS > 0)
 static  void        local_nextTime(uint64_t absTime);
@@ -483,7 +482,7 @@ void    local_EXTI1_IRQHandler(void) {
  *   - Return the stack of the new process
  *
  */
-uintptr_t   __attribute__ ((noinline, used)) *local_newContextPRE(uintptr_t *stack) {
+static uintptr_t   __attribute__ ((noinline, used)) *local_newContextPRE(uintptr_t *stack) {
 
 // Save the stack of the old process
 // Save the old priority
@@ -527,7 +526,7 @@ uintptr_t   __attribute__ ((noinline, used)) *local_newContextPRE(uintptr_t *sta
 // Restore the user / privileged mode
 // vKern_runProc is the process that will run in a short ...
 
-    #if (defined(PRIVILEGED_USER_S))
+    #ifdef PRIVILEGED_USER_S
     if ((vKern_runProc[KCORE_0]->oSpecification.oMode == KPROC_PRIVILEGED) || ((vKern_runProc[KCORE_0]->oInternal.oState & (1U<<BPROC_PRIV_ELEVATED)) != 0U)) { SET_PRIVILEGED_MODE; }
     else                                                                                                                                                      { SET_USER_MODE;       }
     #endif
@@ -607,7 +606,7 @@ void    local_TIMER2_IRQHandler(void) {
  *   - Return the stack of the new process
  *
  */
-uintptr_t   __attribute__ ((noinline, used)) *local_newContextTOU(uintptr_t *stack) {
+static uintptr_t   __attribute__ ((noinline, used)) *local_newContextTOU(uintptr_t *stack) {
 
 // Save the stack of the old process
 // Save the old priority
@@ -648,7 +647,7 @@ uintptr_t   __attribute__ ((noinline, used)) *local_newContextTOU(uintptr_t *sta
 // Restore the user / privileged mode
 // vKern_runProc is the process that will run in a short ...
 
-    #if (defined(PRIVILEGED_USER_S))
+    #ifdef PRIVILEGED_USER_S
     if ((vKern_runProc[KCORE_0]->oSpecification.oMode == KPROC_PRIVILEGED) || ((vKern_runProc[KCORE_0]->oInternal.oState & (1U<<BPROC_PRIV_ELEVATED)) != 0U)) { SET_PRIVILEGED_MODE; }
     else                                                                                                                                                      { SET_USER_MODE;       }
     #endif
@@ -730,7 +729,7 @@ void    local_EXTI0_IRQHandler(void) {
  *   - Return the stack of the new process
  *
  */
-uintptr_t   __attribute__ ((noinline, used)) *local_newContextMSG(uintptr_t *stack, uint32_t message) {
+static uintptr_t   __attribute__ ((noinline, used)) *local_newContextMSG(uintptr_t *stack, uint32_t message) {
 
 // Save the stack of the old process
 // Save the old priority
@@ -774,7 +773,7 @@ uintptr_t   __attribute__ ((noinline, used)) *local_newContextMSG(uintptr_t *sta
 // Restore the user / privileged mode
 // vKern_runProc is the process that will run in a short ...
 
-    #if (defined(PRIVILEGED_USER_S))
+    #ifdef PRIVILEGED_USER_S
     if ((vKern_runProc[KCORE_0]->oSpecification.oMode == KPROC_PRIVILEGED) || ((vKern_runProc[KCORE_0]->oInternal.oState & (1U<<BPROC_PRIV_ELEVATED)) != 0U)) { SET_PRIVILEGED_MODE; }
     else                                                                                                                                                      { SET_USER_MODE;       }
     #endif
