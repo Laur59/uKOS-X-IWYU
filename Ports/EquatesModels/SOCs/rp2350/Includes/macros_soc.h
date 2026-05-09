@@ -106,3 +106,82 @@ enum {
 #define BKERN_PREEMPTION        28U
 
 // EXCEPTION_VECTOR and INTERRUPT_VECTOR macros moved to macros_core.h for IWYU compliance
+
+#ifdef RV32IMAC_S
+
+// Kernel message delivery (ecall from process context only)
+// GOTO_KERN_I/M push the message to 0(sp); SET_MESSAGE loads a0 from there
+// and executes ecall so first_handle_trap captures it as vMessage.
+
+#ifndef SET_MESSAGE
+#define SET_MESSAGE     __asm volatile ("lw a0,0(sp)\n\tecall" ::: "a0", "memory")
+#endif
+
+// Interrupt masking – save and restore mstatus.MIE (bit 3).
+// INTERRUPTION_OFF declares a function-scope variable; INTERRUPTION_RESTORE
+// must appear in the same scope.
+
+#ifndef INTERRUPTION_OFF
+#define INTERRUPTION_OFF                                                            \
+    uint32_t _saved_mstatus;                                                        \
+    __asm volatile ("csrrci %0, mstatus, 8" : "=r"(_saved_mstatus) :: "memory")
+#endif
+
+#ifndef INTERRUPTION_RESTORE
+#define INTERRUPTION_RESTORE                                                        \
+    do {                                                                            \
+        if ((_saved_mstatus & 0x8U) != 0U) {                                       \
+            __asm volatile ("csrsi mstatus, 8" ::: "memory");                      \
+        }                                                                           \
+    } while (0)
+#endif
+
+// Peripheral interrupt threshold – no-op for Phase 3.3.
+// (Hazard3 MEICONTEXT threshold programming deferred to Phase 3.4.)
+
+#ifndef INTERRUPTION_SET_PERIPH
+#define INTERRUPTION_SET_PERIPH ((void)0)
+#endif
+
+// Allow-all interrupt threshold – no-op for Phase 3.3.
+// On ARM this sets BASEPRI=0; on Hazard3 it would set MEICONTEXT threshold=0.
+// MEICONTEXT resets to 0 so no explicit write is needed; deferred to Phase 3.4.
+
+#ifndef INTERRUPTION_SET
+#define INTERRUPTION_SET        ((void)0)
+#endif
+
+// Critical-section interrupt save/restore.
+// Uses csrrci/csrsi on mstatus bit 3 (MIE) — same mechanism as INTERRUPTION_OFF
+// but stores the result in the caller-supplied variable instead of a local.
+
+#ifndef INTERRUPTION_OFF_CRITICAL
+#define INTERRUPTION_OFF_CRITICAL(savemMask)                                        \
+    __asm volatile ("csrrci %0, mstatus, 8" : "=r"(savemMask) :: "memory")
+#endif
+
+#ifndef INTERRUPTION_RESTORE_CRITICAL
+#define INTERRUPTION_RESTORE_CRITICAL(savemMask)                                    \
+    do {                                                                             \
+        if (((savemMask) & 0x8U) != 0U) {                                           \
+            __asm volatile ("csrsi mstatus, 8" ::: "memory");                       \
+        }                                                                            \
+    } while (0)
+#endif
+
+// Priority-based preemption trigger – no PendSV on RISC-V.
+// (Deferred to Phase 3.4; context switches happen via ecall only.)
+
+#ifndef PREEMPTION
+#define PREEMPTION      ((void)0)
+#endif
+
+// Exception-context guard – mirrors K210/GD32VF103 pattern.
+// vExce_isException[core] is set by EXCEPTION_DISPATCH in first_riscv.c.
+// The caller must have a local uint32_t core = GET_RUNNING_CORE.
+
+#ifndef IS_EXCEPTION
+#define IS_EXCEPTION    (vExce_isException[core])
+#endif
+
+#endif  // RV32IMAC_S

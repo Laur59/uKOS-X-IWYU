@@ -11,7 +11,10 @@
 extern  "C" {
 #endif
 
-void    init_init(void);
+extern  void    init_init(void);
+extern  void    init_C0_init(void);
+extern  void    init_C1_init(void);
+extern  void    init_launchCore_1(void (*entry)(void));
 
 #ifdef __cplusplus
 }

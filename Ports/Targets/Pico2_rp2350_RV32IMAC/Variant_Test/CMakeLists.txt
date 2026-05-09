@@ -1,0 +1,220 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2026 Laurent von Allmen
+#
+# CMake file to set up the building for uKOS-X system - RISC-V variant.
+
+cmake_minimum_required(VERSION 3.26)
+
+set(USER_MODE OFF)
+
+# uKOS-X CMake module setup
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/../../../cmake")
+
+# Project path configuration
+# - PATH_UKOS   --> Main uKOS-X folder
+# - PATH_OSYS   --> Main OS folder
+# - PATH_VARI   --> Projects Root Variant folder
+# - PATH_BASE   --> Projects Root Base folder
+# - PATH_PORT   --> PATH_UKOS/Ports
+include(set-project-paths)
+
+include(select-riscv-toolchain)
+
+project(
+    Pico2_rp2350_RV32IMAC_Variant_Test
+    VERSION 1.0
+    LANGUAGES C ASM
+)
+
+# Microcontroller description (mandatory variables)
+set(SOC rp2350)
+set(CORE RV32IMAC)
+
+# Apply project settings
+include(proj_config)
+
+# Customisation of firmware copyright text
+add_compile_definitions(
+    "uKOS_NAME="
+    "uKOS_OWNER=(c) LvA"
+    "SECURE_S"
+    "__DYNAMIC_REENT__"
+)
+
+# Flash programming script selection
+set(BURN picotool-riscv)
+
+# Extra compilation options
+add_compile_options(
+    -g3 # include extra information for debugger
+    -Os # optimisation
+)
+
+# Sources
+# -------
+
+# First piece of code (privileged)
+set(FIRST_P
+    ${PATH_PORT}/EquatesModels/SOCs/${SOC}/Runtime/first-riscv.c
+    ${PATH_PORT}/EquatesModels/SOCs/${SOC}/Runtime/picobin.c
+)
+
+# Runtime & common components (privileged) -> librtcb_p.a
+list(APPEND RTCB_P
+    ${PATH_OSYS}/Boots/boot/boot.c
+    ${PATH_PORT}/EquatesModels/Generic/Runtime/crt0.c
+    ${PATH_PORT}/EquatesModels/Generic/Runtime/crt0_exit.c
+    ${PATH_PORT}/EquatesModels/Generic/Runtime/crt0_module.c
+    ${PATH_PORT}/EquatesModels/Cores/${CORE}/Runtime/syscallDispatcher.c
+    ${PATH_BASE}/Runtime/cmns.c
+    ${PATH_BASE}/Runtime/exce.c
+    ${PATH_VARI}/Runtime/init.c
+    ${PATH_VARI}/Runtime/init_C0.c
+    ${PATH_VARI}/Runtime/init_C1.c
+)
+add_library(rtcb_p ${RTCB_P})
+target_link_libraries(rtcb_p PUBLIC system_compiler_flags)
+
+# uKernel components (privileged) -> libkern_p.a
+list(APPEND KERN_P
+    ${PATH_OSYS}/Lib_kernels/kern/debug.c
+    ${PATH_OSYS}/Lib_kernels/kern/identifier.c
+    ${PATH_OSYS}/Lib_kernels/kern/kern.c
+    ${PATH_OSYS}/Lib_kernels/kern/lists.c
+    ${PATH_OSYS}/Lib_kernels/kern/mailboxes.c
+    ${PATH_OSYS}/Lib_kernels/kern/mutexes.c
+    ${PATH_OSYS}/Lib_kernels/kern/pools.c
+#   ${PATH_OSYS}/Lib_kernels/kern/preciseSignals.c
+    ${PATH_OSYS}/Lib_kernels/kern/processes.c
+    ${PATH_OSYS}/Lib_kernels/kern/scheduler.c
+    ${PATH_OSYS}/Lib_kernels/kern/semaphores.c
+    ${PATH_OSYS}/Lib_kernels/kern/signals.c
+    ${PATH_OSYS}/Lib_kernels/kern/softwareTimers.c
+    ${PATH_OSYS}/Lib_kernels/kern/statistics.c
+    ${PATH_OSYS}/Lib_kernels/kern/temporal.c
+    ${PATH_BASE}/Lib_kernels/kern/stub_kern_kernel.c
+)
+add_library(kern_p ${KERN_P})
+target_link_libraries(kern_p PUBLIC system_compiler_flags)
+add_compile_definitions(
+    KKERN_NB_PRECISE_SIGNALS=0
+)
+
+# uKernel components (user) -> libkern_u.a
+list(APPEND KERN_U
+    ${PATH_OSYS}/Lib_kernels/kern/privileges.c
+    ${PATH_OSYS}/Lib_kernels/kern/xLibrary.c
+)
+add_library(kern_u ${KERN_U})
+target_link_libraries(kern_u PUBLIC system_compiler_flags)
+
+# Lib_xxxx components (privileged) -> liblibx_p.a
+# (grouped by manager)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_cryptographics/random/random.c CONFIG_MAN_RANDOM_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/asmp/asmp.c           CONFIG_MAN_ASMP_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/calendar/calendar.c   CONFIG_MAN_CALENDAR_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/machine/machine.c     CONFIG_MAN_MACHINE_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/memo/memo.c           CONFIG_MAN_MEMO_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/record/record.c       CONFIG_MAN_RECORD_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/system/system.c       CONFIG_MAN_SYSTEM_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_peripherals/led/led.c          CONFIG_MAN_LED_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_peripherals/switch/switch.c CONFIG_MAN_SWITCH_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_serials/serial/serial.c        CONFIG_MAN_SERIAL_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_serials/urt0/urt0.c            CONFIG_MAN_URT0_S)
+list(APPEND LIBX_P
+    ${PATH_BASE}/Lib_cryptographics/random/stub_random.c
+    ${PATH_BASE}/Lib_generics/asmp/stub_asmp_dbell.c
+    ${PATH_BASE}/Lib_generics/machine/stub_machine.c
+    ${PATH_BASE}/Lib_peripherals/led/stub_led.c
+    ${PATH_BASE}/Lib_peripherals/switch/stub_switch.c
+    ${PATH_BASE}/Lib_serials/urt0/stub_urt0_uart.c
+)
+add_library(libx_p ${LIBX_P})
+target_link_libraries(libx_p PUBLIC system_compiler_flags)
+
+# Lib_xxxx components (user) -> liblibx_u.a
+# C library integration (conditional based on detected C library)
+if(C_LIBRARY STREQUAL "picolibc")
+    add_source_with_define(LIBX_U ${PATH_OSYS}/Lib_generics/picolibc/picolibc.c CONFIG_MAN_PICOLIBC_S)
+else()
+    add_source_with_define(LIBX_U ${PATH_OSYS}/Lib_generics/newlib/newlib.c CONFIG_MAN_NEWLIB_S)
+endif()
+add_source_with_define(LIBX_U ${PATH_OSYS}/Lib_generics/text/text.c CONFIG_MAN_TEXT_S)
+add_source_with_define(LIBX_U ${PATH_OSYS}/Lib_neurals/mlpn/mlpn.c CONFIG_MAN_MLPN_S)
+add_library(libx_u ${LIBX_U})
+target_link_libraries(libx_u PUBLIC system_compiler_flags)
+
+# Process components (privileged) -> libproc_p.a
+list(APPEND PROC_P
+    ${PATH_OSYS}/Daemons/idle/idle.c
+    ${PATH_OSYS}/Daemons/mcore/mcore.c
+    ${PATH_OSYS}/Daemons/stack/stack.c
+    ${PATH_OSYS}/Daemons/stimer/stimer.c
+)
+add_library(proc_p ${PROC_P})
+target_link_libraries(proc_p PUBLIC system_compiler_flags)
+
+# Process components (user) -> libproc_u.a
+list(APPEND PROC_U
+    ${PATH_OSYS}/Processes/alive/alive.c
+    ${PATH_OSYS}/Processes/launcher/launcher.c
+    ${PATH_OSYS}/Processes/startUp/startUp.c
+    ${PATH_BASE}/Processes/alive/stub_alive.c
+    ${PATH_VARI}/Processes/startUp/stub_startUp.c
+)
+add_library(proc_u ${PROC_U})
+target_link_libraries(proc_u PUBLIC system_compiler_flags)
+
+# CLI components (user) -> libtool_u.a
+list(APPEND CLI_U
+    ${PATH_OSYS}/CLI/bangla/BaNgLa.c
+    ${PATH_OSYS}/CLI/console/console.c
+    ${PATH_OSYS}/CLI/cycle/cycle.c
+    ${PATH_OSYS}/CLI/dump/dump.c
+    ${PATH_OSYS}/CLI/dumplog/dumplog.c
+    ${PATH_OSYS}/CLI/dumptrace/dumptrace.c
+    ${PATH_OSYS}/CLI/echo/echo.c
+    ${PATH_OSYS}/CLI/fill/fill.c
+    ${PATH_OSYS}/CLI/gdb/gdb.c
+    ${PATH_OSYS}/CLI/hexloader/hexloader.c
+    ${PATH_OSYS}/CLI/kill/kill.c
+    ${PATH_OSYS}/CLI/list/list.c
+    ${PATH_OSYS}/CLI/man/man.c
+    ${PATH_OSYS}/CLI/memory/memory.c
+    ${PATH_OSYS}/CLI/mutex/mutex.c
+    ${PATH_OSYS}/CLI/object/object.c
+    ${PATH_OSYS}/CLI/process/process.c
+    ${PATH_OSYS}/CLI/restart/restart.c
+    ${PATH_OSYS}/CLI/rnd/rnd.c
+    ${PATH_OSYS}/CLI/run/run.c
+    ${PATH_OSYS}/CLI/semaphore/semaphore.c
+    ${PATH_OSYS}/CLI/sloader/sloader.c
+    ${PATH_OSYS}/CLI/szkern/szkern.c
+    ${PATH_OSYS}/CLI/test_malloc/test_malloc.c
+    ${PATH_OSYS}/CLI/test_mcore/test_mcore.c
+    ${PATH_OSYS}/CLI/uKOS/uKOS.c
+    ${PATH_OSYS}/CLI/wkserial/wkserial.c
+)
+add_library(tool_u ${CLI_U})
+target_link_libraries(tool_u PUBLIC system_compiler_flags)
+
+# All library components
+set(UKOS_COMPONENTS rtcb_p kern_p kern_u libx_p libx_u proc_p proc_u tool_u)
+
+# System configuration flags
+
+# Statistics support
+add_compile_definitions(KKERN_WITH_STATISTICS_S=true)
+
+# Stack integrity monitoring
+add_compile_definitions(
+    KDAEMONS_ALERT_STACK_INT_S=false
+    KDAEMONS_TIME_STACK_INT=10000
+    KDAEMONS_WITH_STACK_INT_S=true
+)
+
+# RND generator
+add_compile_definitions(GLOB_RND_SOFT_S)
+
+# Apply system configuration
+include(system)
