@@ -52,7 +52,12 @@ message(STATUS "Using MicroPython source at ${MICROPY_DIR}")
 
 # Include core source components.
 include(${MICROPY_DIR}/py/py.cmake)
-list(APPEND MICROPY_SOURCE_PY ${MICROPY_PY_DIR}/nlraarch64.c) # add file present in list of py.mk
+
+# Architecture-specific NLR file — override MICROPY_NLR_FILE in the per-core CMakeLists.txt.
+if(NOT DEFINED MICROPY_NLR_FILE)
+    set(MICROPY_NLR_FILE ${MICROPY_PY_DIR}/nlraarch64.c)
+endif()
+list(APPEND MICROPY_SOURCE_PY ${MICROPY_NLR_FILE})
 
 # Enable adding user modules
 include(${MICROPY_DIR}/py/usermod.cmake)
@@ -78,6 +83,11 @@ target_sources(${MICROPY_TARGET} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Construction/System/headerMicroPython.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Construction/System/microPython.c
 )
+
+# Architecture-specific GC helper (assembly) — set MICROPY_GC_HELPER in the per-core CMakeLists.txt.
+if(DEFINED MICROPY_GC_HELPER)
+    target_sources(${MICROPY_TARGET} PRIVATE ${MICROPY_GC_HELPER})
+endif()
 
 # Super-optimisation flag for performance-critical files (following py.mk line 22)
 if(NOT DEFINED CSUPEROPT)
@@ -118,8 +128,14 @@ target_compile_options(${MICROPY_TARGET} PUBLIC
     -Wno-pedantic
     $<$<C_COMPILER_ID:GNU>:-Wno-dangling-pointer>
     -fshort-enums
+)
+
+# -mpoke-function-name is an ARM-specific GCC extension; skip it on RISC-V.
+if(NOT CMAKE_SYSTEM_PROCESSOR STREQUAL "RISCV")
+    target_compile_options(${MICROPY_TARGET} PUBLIC
     $<$<C_COMPILER_ID:GNU>:-mpoke-function-name>
 )
+endif()
 
 # Include MicroPython mkrules.cmake (after object target exists!)
 set(MICROPY_BUILD_TARGET ${MICROPY_TARGET})

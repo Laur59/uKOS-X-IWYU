@@ -291,7 +291,7 @@ mp_import_stat_t    mp_import_stat(const char_t *path) {
     return (MP_IMPORT_STAT_NO_EXIST);
 }
 
-mp_obj_t    mp_builtin_open(uint n_args, const mp_obj_t *args, mp_map_t *kwargs) {
+mp_obj_t    mp_builtin_open(size_t n_args, const mp_obj_t *args, mp_map_t *kwargs) {
 
     UNUSED(n_args);
     UNUSED(args);

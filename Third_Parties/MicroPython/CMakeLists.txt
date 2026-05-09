@@ -94,6 +94,8 @@ set(SUPPORTED_CORES
     CORTEX_M33
     CORTEX_M55
     CORTEX_M85
+    RV32IMAC
+    RV64IMAFDC
 )
 
 #------------------------------------------------------------------------
