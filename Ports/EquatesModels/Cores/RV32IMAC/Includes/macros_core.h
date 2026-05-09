@@ -19,6 +19,19 @@
 // uKernel macros
 // --------------
 
+// For selecting Secure/NSecure (RISC-V M-mode maps to the Secure world on RP2350)
+
+#ifdef SECURE_S
+#define REG(x)                  (x ## _S)
+#elif (defined(SECURE_NS))
+#define REG(x)                  (x ## _NS)
+#else
+#define REG(x)                  (x ## _S)
+#endif
+
+#define SEC(x)                  (x ## _S)
+#define NONSEC(x)               (x ## _NS)
+
 // Core machine in bits
 
 #define KMACHINE_BITS           (32U)

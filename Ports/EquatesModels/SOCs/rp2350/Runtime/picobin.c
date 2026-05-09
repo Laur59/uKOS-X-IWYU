@@ -2,11 +2,10 @@
  * SPDX-License-Identifier: MIT
  * SPDX-FileCopyrightText: 2026 Laurent von Allmen
  *
- * Project:  uKOS-X
- * Goal:     Picobin IMAGE_DEF block for RP2350 RISC-V boot. The bootrom reads the
- *           entry point and initial SP from this block * both fields are resolved by
- *           the linker against Reset_C0_Handler and linker_topStackFirst_C0, so they
- *           track the real addresses if the image is relaid out.
+ * Goal:    Picobin IMAGE_DEF block for RP2350 RISC-V boot. The bootrom reads the
+ *          entry point and initial SP from this block * both fields are resolved by
+ *          the linker against Reset_C0_Handler and linker_topStackFirst_C0, so they
+ *          track the real addresses if the image is relaid out.
  */
 
 #include    <stdint.h>

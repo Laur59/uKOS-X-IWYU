@@ -179,6 +179,9 @@
 #define RV_CSR_MEDELEG                                  0x302U              //
 #define RV_CSR_MIDELEG                                  0x303U              //
 #define RV_CSR_MIE                                      0x304U              //
+#define MIE_MSIE                                        (1U<<3)             // Machine software interrupt enable
+#define MIE_MTIE                                        (1U<<7)             // Machine timer interrupt enable
+#define MIE_MEIE                                        (1U<<11)            // Machine external interrupt enable
 #define RV_CSR_MTVEC                                    0x305U              //
 #define RV_CSR_MCOUNTEREN                               0x306U              //
 #define RV_CSR_MSTATUSH                                 0x310U              //

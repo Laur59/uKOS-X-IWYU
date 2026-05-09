@@ -37,8 +37,6 @@
 #include    "linker.h"
 #include    "macros.h"
 #include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "serial/serial.h"
 
 // crt0 contract
 // =============
@@ -99,6 +97,7 @@ void    crt0(void) {
 
     if (core == KCORE_0) {
 
+        init_C0_init();
         cmns_init();
 
 // Before to initialise the system RAM, we use its random content
@@ -173,6 +172,16 @@ void    crt0(void) {
  *
  */
 void    __attribute__ ((weak)) init_relocate(void) {
+
+}
+
+/*
+ * \brief init_relocate
+ *
+ * - If necessary, dedicated initialsiation for core 0 only
+ *
+ */
+void    __attribute__ ((weak)) init_C0_init(void) {
 
 }
 
