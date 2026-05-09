@@ -111,7 +111,7 @@ build_core() {
 
 # Build all cores
 
-for core in CORTEX_M4 CORTEX_M7 CORTEX_M33 CORTEX_M55 CORTEX_M85; do
+for core in CORTEX_M4 CORTEX_M7 CORTEX_M33 CORTEX_M55 CORTEX_M85 RV32IMAC RV64IMAFDC; do
     build_core "${core}"
 done
 
