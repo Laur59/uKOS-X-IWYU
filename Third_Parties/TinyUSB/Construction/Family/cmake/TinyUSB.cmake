@@ -163,6 +163,11 @@ function(add_tinyusb_libraries)
             ${PATH_TINYUSB}/TinyUSB-current/lib/pico-sdk/src/rp2350/pico_platform/include
             ${PATH_TINYUSB}/TinyUSB-current/lib/pico-sdk/src/rp2350/hardware_structs/include
             ${PATH_TINYUSB}/TinyUSB-current/lib/pico-sdk/src/rp2350/hardware_regs/include
+            # RISC-V (Hazard3) variants — headers are guarded by #ifdef __riscv
+            # in the consuming sources, so these are harmless on ARM builds.
+            ${PATH_TINYUSB}/TinyUSB-current/lib/pico-sdk/src/rp2_common/hardware_riscv/include
+            ${PATH_TINYUSB}/TinyUSB-current/lib/pico-sdk/src/rp2_common/hardware_hazard3/include
+            ${PATH_TINYUSB}/TinyUSB-current/lib/pico-sdk/src/rp2_common/hardware_riscv_platform_timer/include
             # Additional pico-sdk includes
             ${PATH_TINYUSB}/TinyUSB-current/lib/pico-sdk/bazel/include
             # Pico-SDK runtime includes
@@ -211,11 +216,14 @@ function(add_tinyusb_libraries)
             "${PATH_TINYUSB}/TinyUSB-current/src/portable/raspberrypi/pio_usb/*.c"
         )
         list(APPEND COMMON_SOURCES ${RPI_PORTABLE_SOURCES})
-        # Use patched DCD driver for uKOS
+        # Use patched DCD driver for uKOS. The patch is rp2040 USB-IP-specific
+        # (not arch-specific), so it lives under a fixed "pico2" subdir and is
+        # shared by all families that use the rp2040 USB controller (e.g.
+        # pico2 ARM-S and pico2riscv).
         list(APPEND COMMON_SOURCES
             ${PATH_TINYUSB}/TinyUSB-current/src/portable/raspberrypi/rp2040/hcd_rp2040.c
             ${PATH_TINYUSB}/TinyUSB-current/src/portable/raspberrypi/rp2040/rp2040_usb.c
-            ${PATH_TINYUSB}/Construction/Interface/Patches/mcu/raspberrypi/${TINYUSB_FAMILY}/dcd_rp2040.c
+            ${PATH_TINYUSB}/Construction/Interface/Patches/mcu/raspberrypi/pico2/dcd_rp2040.c
         )
     endif()
 
@@ -267,24 +275,41 @@ function(add_tinyusb_libraries)
         list(APPEND DEFS_UKOS ${DEFS_UKOS_EXTRA_LIST})
     endif()
 
+    # The pico-sdk RISC-V headers (e.g. hardware/riscv.h) use the GNU `asm`
+    # keyword and statement expressions, so RISC-V builds need -std=gnu23.
+    # ARM/non-RISC-V builds keep strict -std=c23.
+    if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "RISCV")
+        set(C_STANDARD_FLAG "-std=gnu23")
+    else()
+        set(C_STANDARD_FLAG "-std=c23")
+    endif()
+
     # Build OPTS_UKOS as a proper list
     list(APPEND OPTS_UKOS
         ${CPU_SPEC_LIST}
         ${FLAGS_FP_LIST}
-        -std=c23
+        ${C_STANDARD_FLAG}
         -Wall -Wno-pedantic -Wlogical-op
         -fsingle-precision-constant
         -Wno-error=undef -Wno-error=unused-parameter
         -Wno-error=cast-align -Wno-error=cast-qual
         -Wno-error=redundant-decls -Wno-error=strict-prototypes
         -Wno-missing-braces
-        $<$<C_COMPILER_ID:GNU>:-mpoke-function-name>
+        $<$<AND:$<C_COMPILER_ID:GNU>,$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},ARM>>:-mpoke-function-name>
     )
 
     # Add provider-specific compile flags
     if(TINYUSB_PROVIDER STREQUAL "raspberrypi")
         # Disable flash macro (code is already in RAM)
         list(APPEND OPTS_UKOS "-D__not_in_flash\(x\)=")
+        # Hazard3 IRQ array CSRs are accessed via inline asm and work on real
+        # silicon, but mainline GCC does not accept '-march=...xh3irq'. Define
+        # the macro manually so the pico-sdk hazard3 IRQ helpers expand to code
+        # rather than firing static_assert(false). Effective only on RISC-V
+        # builds; harmless on ARM where the macro is unused.
+        if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "RISCV")
+            list(APPEND OPTS_UKOS "-D__hazard3_extension_xh3irq=1")
+        endif()
     endif()
 
     # For each profile, build libraries FS and HS

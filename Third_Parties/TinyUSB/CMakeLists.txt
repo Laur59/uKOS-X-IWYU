@@ -240,6 +240,7 @@ set(SUPPORTED_SOCS
     "u5|STM32U5G9|cdc_cdc,cdc_msc,cdc_video"
     "n6|STM32N657|cdc_cdc,cdc_msc,cdc_video"
     "pico2|rp2350|cdc_cdc"
+    "pico2riscv|rp2350|cdc_cdc"
     "v8|STM32V873|cdc_cdc,cdc_msc,cdc_video"
 )
 
@@ -273,8 +274,10 @@ foreach(SOC_CONFIG ${SUPPORTED_SOCS})
     if(EXISTS "${SOC_SOURCE_DIR}/CMakeLists.txt")
         message(STATUS "Configuring: ${SOC} (${FAMILY}) - Profiles: ${PROFILES_DISPLAY}")
 
-        # Create unique project name
-        set(PROJECT_NAME "TinyUSB_${SOC}")
+        # Create unique project name (include FAMILY so distinct families
+        # sharing the same SOC name — e.g. pico2 and pico2riscv on rp2350 —
+        # do not collide).
+        set(PROJECT_NAME "TinyUSB_${FAMILY}_${SOC}")
 
         # Determine build type to pass to ExternalProject
         # Default to MinSizeRel for optimal firmware size (adds -Os -DNDEBUG)
@@ -286,7 +289,7 @@ foreach(SOC_CONFIG ${SUPPORTED_SOCS})
 
         ExternalProject_Add(${PROJECT_NAME}
             # Prefix - unique directories for each external project
-            PREFIX            "${CMAKE_CURRENT_BINARY_DIR}/ep-${SOC}"
+            PREFIX            "${CMAKE_CURRENT_BINARY_DIR}/ep-${FAMILY}-${SOC}"
 
             # Source configuration
             SOURCE_DIR        "${SOC_SOURCE_DIR}"
@@ -391,8 +394,9 @@ message("")
 message("Individual SOC targets:")
 foreach(SOC_CONFIG ${SUPPORTED_SOCS})
     string(REPLACE "|" ";" CONFIG_LIST "${SOC_CONFIG}")
+    list(GET CONFIG_LIST 0 FAMILY)
     list(GET CONFIG_LIST 1 SOC)
-    message("  - TinyUSB_${SOC}")
+    message("  - TinyUSB_${FAMILY}_${SOC}")
 endforeach()
 message("")
 message("Output libraries will be in:")
