@@ -191,6 +191,7 @@ list(APPEND CLI_U
     ${PATH_OSYS}/CLI/list/list.c
     ${PATH_OSYS}/CLI/man/man.c
     ${PATH_OSYS}/CLI/memory/memory.c
+    ${PATH_OSYS}/CLI/microPython/microPython.c
     ${PATH_OSYS}/CLI/mutex/mutex.c
     ${PATH_OSYS}/CLI/object/object.c
     ${PATH_OSYS}/CLI/process/process.c
@@ -211,6 +212,9 @@ target_link_libraries(tool_u PUBLIC system_compiler_flags)
 # All library components
 set(UKOS_COMPONENTS rtcb_p kern_p kern_u libx_p libx_u proc_p proc_u tool_u ${TINYUSB})
 
+# Optional manager
+add_MicroPython()
+
 # System configuration flags
 
 # With cdc0 on core 0 & urt0 on core 1
@@ -225,9 +229,6 @@ add_compile_definitions(
     KDAEMONS_TIME_STACK_INT=10000
     KDAEMONS_WITH_STACK_INT_S=true
 )
-
-# RND generator
-add_compile_definitions(GLOB_RND_SOFT_S)
 
 # Apply system configuration
 include(system)
