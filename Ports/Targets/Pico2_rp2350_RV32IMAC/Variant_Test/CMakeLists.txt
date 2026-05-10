@@ -125,6 +125,8 @@ add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/record/record.c       CO
 add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/system/system.c       CONFIG_MAN_SYSTEM_S)
 add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_peripherals/led/led.c          CONFIG_MAN_LED_S)
 add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_peripherals/switch/switch.c CONFIG_MAN_SWITCH_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_serials/cdc0/cdc0.c            CONFIG_MAN_CDC0_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_serials/cdc1/cdc1.c            CONFIG_MAN_CDC1_S)
 add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_serials/serial/serial.c        CONFIG_MAN_SERIAL_S)
 add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_serials/urt0/urt0.c            CONFIG_MAN_URT0_S)
 list(APPEND LIBX_P
