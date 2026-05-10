@@ -21,6 +21,11 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/TinyUSB.cmake)
 # Options selecting profiles to build
 option(BUILD_CDC_CDC "Build profile cdc_cdc" ON)
 
+# Validation build: produce archives that use OPT_OS_PICO instead of the
+# uKOS-X custom OSAL, so the libraries can be linked into a Pico SDK app
+# for hardware unit-testing without the uKOS-X kernel.
+option(BUILD_VALIDATE_PICO "Build validation archives (OPT_OS_PICO)" OFF)
+
 # List of profiles to build
 set(PROFILES_TO_BUILD "")
 if(BUILD_CDC_CDC)

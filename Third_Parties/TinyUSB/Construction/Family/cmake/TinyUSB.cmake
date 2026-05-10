@@ -144,6 +144,8 @@ function(add_tinyusb_libraries)
     # Add paths specific to provider Raspberry Pi
     if(TINYUSB_PROVIDER STREQUAL "raspberrypi")
         list(APPEND COMMON_INCLUDES
+            # Generic uKOS-X runtime headers (cmns.h, etc.)
+            ${PATH_UKOS}/Ports/EquatesModels/Generic/Runtime
             # Pico-SDK common includes
             ${PATH_TINYUSB}/TinyUSB-current/lib/pico-sdk/src/common/pico_base_headers/include
             ${PATH_TINYUSB}/TinyUSB-current/lib/pico-sdk/src/rp2_common/pico_platform/include
@@ -183,11 +185,19 @@ function(add_tinyusb_libraries)
         )
     endif()
 
-    # Common sources (similar to SRC in TinyUSB.mk)
+    # Common sources (similar to SRC in TinyUSB.mk).
+    #
+    # The uKOS OSAL bridge `tusb_os_custom.c` is OMITTED when building the
+    # validation flavour (BUILD_VALIDATE_PICO=ON), because that flavour
+    # selects OPT_OS_PICO (header-only, lives in upstream `osal_pico.h`).
     set(COMMON_SOURCES
         ${PATH_TINYUSB}/Construction/System/headerTusb.c
-        ${PATH_TINYUSB}/Construction/Interface/OSAL/tusb_os_custom.c
     )
+    if(NOT BUILD_VALIDATE_PICO)
+        list(APPEND COMMON_SOURCES
+            ${PATH_TINYUSB}/Construction/Interface/OSAL/tusb_os_custom.c
+        )
+    endif()
 
     # Use upstream TinyUSB source list (25 curated files instead of GLOB's 74+ files)
     # This ensures we only compile files selected by TinyUSB developers
@@ -258,6 +268,11 @@ function(add_tinyusb_libraries)
         ${CORE}_S
     )
 
+    # Validation build: select OPT_OS_PICO via tusb_config.h gate
+    if(BUILD_VALIDATE_PICO)
+        list(APPEND DEFS_UKOS TINYUSB_VALIDATE_PICO_S)
+    endif()
+
     # Convert string arguments to lists (handles space-separated flags properly)
     if(DEFINED TINYUSB_CPU_SPEC)
         separate_arguments(CPU_SPEC_LIST UNIX_COMMAND "${TINYUSB_CPU_SPEC}")
@@ -284,13 +299,19 @@ function(add_tinyusb_libraries)
         set(C_STANDARD_FLAG "-std=c23")
     endif()
 
-    # Build OPTS_UKOS as a proper list
+    # Build OPTS_UKOS as a proper list.
+    # `-fshort-enums` matches uKOS-X's project-wide setting (system.cmake) so
+    # enum-typed struct fields (e.g., tusb_role_t, tusb_speed_t) have the same
+    # storage size on both sides of the project/library boundary. Without
+    # this, structs like tusb_rhport_init_t have a different layout in the
+    # caller and the prebuilt callee, which silently breaks USB init.
     list(APPEND OPTS_UKOS
         ${CPU_SPEC_LIST}
         ${FLAGS_FP_LIST}
         ${C_STANDARD_FLAG}
         -Wall -Wno-pedantic -Wlogical-op
         -fsingle-precision-constant
+        -fshort-enums
         -Wno-error=undef -Wno-error=unused-parameter
         -Wno-error=cast-align -Wno-error=cast-qual
         -Wno-error=redundant-decls -Wno-error=strict-prototypes
@@ -375,11 +396,19 @@ function(add_tinyusb_libraries)
             )
         endif()
 
+        # Validation builds install to a separate "validate" subdirectory so
+        # the production archives produced by the regular build are not
+        # overwritten.
+        if(BUILD_VALIDATE_PICO)
+            set(_install_dir "Library/Family/${TINYUSB_FAMILY}/${SOC}/${PROFILE}/validate")
+        else()
+            set(_install_dir "Library/Family/${TINYUSB_FAMILY}/${SOC}/${PROFILE}")
+        endif()
         install(TARGETS ${LIB_FS} ${LIB_HS}
-            ARCHIVE DESTINATION "Library/Family/${TINYUSB_FAMILY}/${SOC}/${PROFILE}"
+            ARCHIVE DESTINATION "${_install_dir}"
         )
         install(FILES "${PROFILE_DIR}/tusb_config.h"
-            DESTINATION "Library/Family/${TINYUSB_FAMILY}/${SOC}/${PROFILE}"
+            DESTINATION "${_install_dir}"
         )
 
         # Generate TinyUSBConfig.cmake for this profile

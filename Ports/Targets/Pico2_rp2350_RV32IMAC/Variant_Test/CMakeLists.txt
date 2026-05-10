@@ -50,6 +50,12 @@ add_compile_options(
     -Os # optimisation
 )
 
+# TinyUSB integration (must be before library definitions)
+add_TinyUSB(
+    SPEED FS
+    PROFILE cdc_cdc
+)
+
 # Sources
 # -------
 
@@ -111,16 +117,18 @@ target_link_libraries(kern_u PUBLIC system_compiler_flags)
 # Lib_xxxx components (privileged) -> liblibx_p.a
 # (grouped by manager)
 add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_cryptographics/random/random.c CONFIG_MAN_RANDOM_S)
-add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/asmp/asmp.c           CONFIG_MAN_ASMP_S)
-add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/calendar/calendar.c   CONFIG_MAN_CALENDAR_S)
-add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/machine/machine.c     CONFIG_MAN_MACHINE_S)
-add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/memo/memo.c           CONFIG_MAN_MEMO_S)
-add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/record/record.c       CONFIG_MAN_RECORD_S)
-add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/system/system.c       CONFIG_MAN_SYSTEM_S)
-add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_peripherals/led/led.c          CONFIG_MAN_LED_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/asmp/asmp.c CONFIG_MAN_ASMP_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/calendar/calendar.c CONFIG_MAN_CALENDAR_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/machine/machine.c CONFIG_MAN_MACHINE_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/memo/memo.c CONFIG_MAN_MEMO_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/record/record.c CONFIG_MAN_RECORD_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/system/system.c CONFIG_MAN_SYSTEM_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_peripherals/led/led.c CONFIG_MAN_LED_S)
 add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_peripherals/switch/switch.c CONFIG_MAN_SWITCH_S)
-add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_serials/serial/serial.c        CONFIG_MAN_SERIAL_S)
-add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_serials/urt0/urt0.c            CONFIG_MAN_URT0_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_serials/cdc0/cdc0.c CONFIG_MAN_CDC0_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_serials/cdc1/cdc1.c CONFIG_MAN_CDC1_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_serials/serial/serial.c CONFIG_MAN_SERIAL_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_serials/urt0/urt0.c CONFIG_MAN_URT0_S)
 list(APPEND LIBX_P
     ${PATH_BASE}/Lib_cryptographics/random/stub_random.c
     ${PATH_BASE}/Lib_generics/asmp/stub_asmp_dbell.c
@@ -130,7 +138,7 @@ list(APPEND LIBX_P
     ${PATH_BASE}/Lib_serials/urt0/stub_urt0_uart.c
 )
 add_library(libx_p ${LIBX_P})
-target_link_libraries(libx_p PUBLIC system_compiler_flags)
+target_link_libraries(libx_p PUBLIC system_compiler_flags ${TINYUSB})
 
 # Lib_xxxx components (user) -> liblibx_u.a
 # C library integration (conditional based on detected C library)
@@ -159,11 +167,13 @@ list(APPEND PROC_U
     ${PATH_OSYS}/Processes/alive/alive.c
     ${PATH_OSYS}/Processes/launcher/launcher.c
     ${PATH_OSYS}/Processes/startUp/startUp.c
+    ${PATH_OSYS}/Processes/TinyUSB/TinyUSB.c
     ${PATH_BASE}/Processes/alive/stub_alive.c
+    ${PATH_BASE}/Processes/TinyUSB/stub_TinyUSB.c
     ${PATH_VARI}/Processes/startUp/stub_startUp.c
 )
 add_library(proc_u ${PROC_U})
-target_link_libraries(proc_u PUBLIC system_compiler_flags)
+target_link_libraries(proc_u PUBLIC system_compiler_flags ${TINYUSB})
 
 # CLI components (user) -> libtool_u.a
 list(APPEND CLI_U
@@ -181,6 +191,7 @@ list(APPEND CLI_U
     ${PATH_OSYS}/CLI/list/list.c
     ${PATH_OSYS}/CLI/man/man.c
     ${PATH_OSYS}/CLI/memory/memory.c
+    ${PATH_OSYS}/CLI/microPython/microPython.c
     ${PATH_OSYS}/CLI/mutex/mutex.c
     ${PATH_OSYS}/CLI/object/object.c
     ${PATH_OSYS}/CLI/process/process.c
@@ -199,9 +210,15 @@ add_library(tool_u ${CLI_U})
 target_link_libraries(tool_u PUBLIC system_compiler_flags)
 
 # All library components
-set(UKOS_COMPONENTS rtcb_p kern_p kern_u libx_p libx_u proc_p proc_u tool_u)
+set(UKOS_COMPONENTS rtcb_p kern_p kern_u libx_p libx_u proc_p proc_u tool_u ${TINYUSB})
+
+# Optional manager
+add_MicroPython()
 
 # System configuration flags
+
+# With cdc0 on core 0 & urt0 on core 1
+add_compile_definitions(CONFIG_DIFFERENT_SERIAL_PER_CORE_S=true)
 
 # Statistics support
 add_compile_definitions(KKERN_WITH_STATISTICS_S=true)
@@ -212,9 +229,6 @@ add_compile_definitions(
     KDAEMONS_TIME_STACK_INT=10000
     KDAEMONS_WITH_STACK_INT_S=true
 )
-
-# RND generator
-add_compile_definitions(GLOB_RND_SOFT_S)
 
 # Apply system configuration
 include(system)
