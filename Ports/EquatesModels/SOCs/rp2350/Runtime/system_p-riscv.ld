@@ -2,11 +2,11 @@
  * SPDX-License-Identifier: MIT
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
- * Goal:        RISC-V common Linker description for uKOS-X systems.
+ * Goal:    Common Linker description for uKOS-X systems.
  *          Privileged only support
  *
  *                       CODE
- * linker_stTEXT            +-----------------+
+ * linker_stTEXT        +-----------------+
  *                      |                 |
  *                      | .isr_vector     |
  *                      | .text           |
@@ -29,16 +29,14 @@
 SECTIONS {
     . = ORIGIN(prgm_code);
 
-    /* Picobin block for RISC-V boot */
-    .picobin_block : {
-        KEEP(*(.picobin_block))
-    } > prgm_code
-
-    /* RISC-V vector table and startup code */
     .vectors ALIGN(64) : {
         linker_stVECTORS = ABSOLUTE(.);
         KEEP(*(.isr_vector))
         linker_enVECTORS = ABSOLUTE(.);
+    } > prgm_code
+
+    .picobin_block ALIGN(8) : {
+        KEEP(*(.picobin_block))
     } > prgm_code
 
     .text : {
@@ -128,7 +126,7 @@ SECTIONS {
         linker_stDATA = ABSOLUTE(.);
         linker_stDATA_KERN_p = ABSOLUTE(.);
         libkern_p.a:*(.data .data.*)
-        libkern_p.a:*(.sdata .sdata.*)
+        libkern_p.a:*(.sdata .sdata.*)  /* RISC-V small data */
         linker_enDATA_KERN_p = ABSOLUTE(.);
         *(.sdata .sdata.*)  /* RISC-V small data */
         *(.data .data.*)
@@ -143,7 +141,7 @@ SECTIONS {
         KEEP(*(.user))
         linker_stBSS_KERN_p = ABSOLUTE(.);
         libkern_p.a:*(.bss .bss.*)
-        libkern_p.a:*(.sbss .sbss.*)
+        libkern_p.a:*(.sbss .sbss.*)  /* RISC-V small BSS */
         linker_enBSS_KERN_p = ABSOLUTE(.);
         *(.sbss .sbss.*)  /* RISC-V small BSS */
         *(.bss .bss.*)

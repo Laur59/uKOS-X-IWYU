@@ -24,12 +24,12 @@
 #include    "os_errors.h"
 #include    "types.h"
 
-#define KMESSAGE_SENT   (1U<<0U)
-#define KMESSAGE_ACK    (1U<<1U)
+#define KMESSAGE_SENT   (1U<<0U)                // Door bell to indicate that the message was sent to the other core
+#define KMESSAGE_ACK    (1U<<1U)                // Door bell to indicate to the other core the the message was read
 
 static  const           char_t      *tableCoreReference[KNB_CORES] = {
-                                    "hazard3_rv32imac_C0",
-                                    "hazard3_rv32imac_C1"
+                                    "core_0",
+                                    "core_1"
                                 };
 
 // Prototypes
@@ -39,6 +39,9 @@ static  void    local_doorBell_IRQHandler(void);
 
 /*
  * \brief stub_asmp_init
+ *
+ * - This function initialises the manager and
+ *   has to be called at least once
  *
  */
 int32_t stub_asmp_init(void) {
@@ -55,6 +58,10 @@ int32_t stub_asmp_init(void) {
     NVIC_EnableIRQ(SIO_IRQ_BELL_C0_IRQn);
 
     local_initInterCore(core);
+
+// Create the message ready semaphore
+// Create the message sent semaphore and signal message sent
+// Prepare the information indicating ASMP ready
 
     kern_createSemaphore(identifier_RX, 0, 1, &semaphore_RX);
     kern_createSemaphore(identifier_TX, 0, 1, &semaphore_TX);
@@ -89,6 +96,8 @@ int32_t stub_asmp_getNumberOfCore(uint8_t *nbCore) {
 /*
  * \brief stub_asmp_getReferenceCore
  *
+ * - Get the ptr on the core reference table
+ *
  */
 int32_t stub_asmp_getReferenceCore(uint32_t core, const char_t **coreReference) {
 
@@ -103,6 +112,14 @@ int32_t stub_asmp_getReferenceCore(uint32_t core, const char_t **coreReference) 
 /*
  * \brief stub_asmp_signal
  *
+ * - Signal by an hardware door bell
+ *
+ *      Possible values
+ *      - KASMP_MESSAGE_VALID_FOR_CORE_0
+ *      - KASMP_MESSAGE_VALID_FOR_CORE_1
+ *      - KASMP_MESSAGE_ACKNOWLEDGE_THE_CORE_0
+ *      - KASMP_MESSAGE_ACKNOWLEDGE_THE_CORE_1
+ *
  */
 int32_t stub_asmp_signal(uint32_t message) {
 
@@ -112,6 +129,9 @@ int32_t stub_asmp_signal(uint32_t message) {
         case KASMP_MESSAGE_ACKNOWLEDGE_THE_CORE_0:
         case KASMP_MESSAGE_ACKNOWLEDGE_THE_CORE_1: { REG(SIO)->DOORBELL_OUT_SET = KMESSAGE_ACK;  break; }
         default: {
+
+// Make MISRA happy :-)
+
             break;
         }
     }
@@ -155,6 +175,8 @@ static  void    local_initInterCore(uint32_t core) {
 /*
  * \brief local_doorBell_IRQHandler
  *
+ * - Channel management
+ *
  */
 static  void    local_doorBell_IRQHandler(void) {
             uint32_t    core;
@@ -168,11 +190,22 @@ static  void    local_doorBell_IRQHandler(void) {
     kern_getSemaphoreById(identifier_RX, &semaphore_RX);
     kern_getSemaphoreById(identifier_TX, &semaphore_TX);
 
+// Interruption message sent
+// Interruption message read
+
     if (core == KASMP_CORE_0) {
+
+// core1 indicates to the core0 that there is a valid message in the buffer
+// core1 acknowledge the core0, get free the statusTX of the core1
+
         if ((REG(SIO)->DOORBELL_IN_CLR & KMESSAGE_SENT) != 0U) { REG(SIO)->DOORBELL_IN_CLR = KMESSAGE_SENT; vAsmp_InterCore->oStatusRX[KASMP_CORE_0] = KASMP_LOCK; kern_signalSemaphore(semaphore_RX); }
         if ((REG(SIO)->DOORBELL_IN_CLR & KMESSAGE_ACK)  != 0U) { REG(SIO)->DOORBELL_IN_CLR = KMESSAGE_ACK;  vAsmp_InterCore->oStatusTX[KASMP_CORE_1] = KASMP_FREE; kern_signalSemaphore(semaphore_TX); }
     }
     else {
+
+// core0 indicates to the core1 that there is a valid message in the buffer
+// core0 acknowledge the core1, get free the statusTX of the core0
+
         if ((REG(SIO)->DOORBELL_IN_CLR & KMESSAGE_SENT) != 0U) { REG(SIO)->DOORBELL_IN_CLR = KMESSAGE_SENT; vAsmp_InterCore->oStatusRX[KASMP_CORE_1] = KASMP_LOCK; kern_signalSemaphore(semaphore_RX); }
         if ((REG(SIO)->DOORBELL_IN_CLR & KMESSAGE_ACK)  != 0U) { REG(SIO)->DOORBELL_IN_CLR = KMESSAGE_ACK;  vAsmp_InterCore->oStatusTX[KASMP_CORE_0] = KASMP_FREE; kern_signalSemaphore(semaphore_TX); }
     }

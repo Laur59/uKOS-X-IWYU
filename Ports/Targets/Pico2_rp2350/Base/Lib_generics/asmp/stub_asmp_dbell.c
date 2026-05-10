@@ -4,6 +4,8 @@
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
  * Goal:     stub for the managemen of the "asmp" manager with msip,
+ *           Inter-core messaging via SIO doorbell.
+ *           SIO registers and IRQ dispatch are identical on ARM and Hazard3.
  *
  *           The messages coming from the API are routed to the respective
  *           msip for the IPC management.
@@ -56,8 +58,8 @@
 #define KMESSAGE_ACK    (1U<<1U)                // Door bell to indicate to the other core the the message was read
 
 static  const           char_t      *tableCoreReference[KNB_CORES] = {
-                                    "cortex-m33_C0",
-                                    "cortex-m33_C1"
+                                    "core_0",
+                                    "core_1"
                                 };
 
 // Prototypes
@@ -104,8 +106,6 @@ int32_t stub_asmp_init(void) {
 /*
  * \brief stub_asmp_getRunningCore
  *
- * - Get the running core
- *
  */
 int32_t stub_asmp_getRunningCore(uint32_t *core) {
 
@@ -115,8 +115,6 @@ int32_t stub_asmp_getRunningCore(uint32_t *core) {
 
 /*
  * \brief stub_asmp_getNumberOfCore
- *
- * - Get the number of core
  *
  */
 int32_t stub_asmp_getNumberOfCore(uint8_t *nbCore) {
@@ -173,8 +171,6 @@ int32_t stub_asmp_signal(uint32_t message) {
 /*
  * \brief stub_asmp_waitingForReady
  *
- * - Waiting for the ASMP ready
- *
  */
 int32_t stub_asmp_waitingForReady(void) {
     uint8_t     maskNbCore;
@@ -191,8 +187,6 @@ int32_t stub_asmp_waitingForReady(void) {
 
 /*
  * \brief local_initInterCore
- *
- * - Initialise the InterCore structure
  *
  */
 static  void    local_initInterCore(uint32_t core) {

@@ -8,6 +8,14 @@ cmake_minimum_required(VERSION 3.26)
 # uKOS-X CMake module setup
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/../../../cmake")
 
+# Microcontroller description (mandatory variables)
+set(SOC rp2350)
+set(CORE "CORTEX_M33" CACHE STRING "Target core selection")
+set_property(CACHE CORE PROPERTY STRINGS
+    CORTEX_M33
+    RV32IMAC
+)
+
 # Project path configuration
 # - PATH_UKOS   --> Main uKOS-X folder
 # - PATH_OSYS   --> Main OS folder
@@ -16,17 +24,21 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/../../../cmake")
 # - PATH_PORT   --> PATH_UKOS/Ports
 include(set-project-paths)
 
-include(select-arm-toolchain)
+if(${CORE} STREQUAL "CORTEX_M33")
+    include(select-arm-toolchain)
+    # Flash programming script selection
+    set(BURN picotool-arm)
+else()
+    include(select-riscv-toolchain)
+    # Flash programming script selection
+    set(BURN picotool-riscv)
+endif()
 
 project(
     Pico2_rp2350_Variant_Test
     VERSION 1.0
-    LANGUAGES C
+    LANGUAGES C ASM
 )
-
-# Microcontroller description (mandatory variables)
-set(SOC rp2350)
-set(CORE CORTEX_M33)
 
 # Apply project settings
 include(proj_config)
@@ -38,9 +50,6 @@ add_compile_definitions(
     "SECURE_S"
     "__DYNAMIC_REENT__"
 )
-
-# Flash programming script selection
-set(BURN picotool-arm)
 
 # Extra compilation options
 add_compile_options(
@@ -74,6 +83,12 @@ list(APPEND RTCB_P
     ${PATH_BASE}/Runtime/exce.c
     ${PATH_VARI}/Runtime/init.c
 )
+if(${CORE} STREQUAL "RV32IMAC")
+list(APPEND RTCB_P
+    ${PATH_VARI}/Runtime/init_C0.c
+    ${PATH_VARI}/Runtime/init_C1.c
+)
+endif()
 add_library(rtcb_p ${RTCB_P})
 target_link_libraries(rtcb_p PUBLIC system_compiler_flags)
 

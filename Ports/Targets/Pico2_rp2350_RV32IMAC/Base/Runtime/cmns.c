@@ -1,16 +1,20 @@
 /*
  * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
- * Goal:        Common routines for RISC-V TestROM.
+ * Goal:     Some common routines used in many modules.
  */
+
+#include    "cmns.h"
 
 #include    <stdint.h>
 #include    <reent.h>
 
 #include    "clockTree.h"
-#include    "cmns.h"
+#include    "macros.h"
 #include    "macros_core.h"
+#include    "modules.h"
 #include    "soc_reg.h"
 
 // Weak stubs for --wrap linker flags injected by system.cmake.
@@ -22,12 +26,35 @@ __attribute__ ((weak)) void *__wrap__calloc_r (struct _reent *r, size_t nmemb, s
 __attribute__ ((weak)) void  __wrap__free_r   (struct _reent *r, void *ptr)               { (void)r; (void)ptr;                           }
 __attribute__ ((weak, noreturn)) void __wrap___stack_chk_fail(void)                       { while (1) {}                                   }
 
+// uKOS-X specific (see the module.h)
+// ==================================
+
+// ----------------------------------I------------I-----------------------------------------I--------------I
+
+STRG_LOC_CONST(aStrApplication[]) = "cmns         Minimal I/O (not under uKOS-X).           (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "Cmns\n"
+                                    "====\n\n"
+
+                                    "This code provides some minimal I/O.\n\n"
+
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+
+MODULE(
+    Cmns,                           // Module name (the first letter has to be upper case)
+    KID_FAM_STARTUPS,               // Family (defined in the module.h)
+    KNUM_CMNS,                      // Module identifier (defined in the module.h)
+    nullptr,                        // Address of the initialisation code (early pre-init)
+    nullptr,                        // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                        // Address of the clean code (clean the module)
+    " 1.0",                         // Revision string (major . minor)
+    (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                               // Execution cores
+);
 
 /*
  * \brief cmns_init
  *
  * - Initialise the UART0 and UART1 peripherals
- *
  *
  * \note This function does not return a value (None).
  *
@@ -37,25 +64,25 @@ void    cmns_init(void) {
 // Reset of the devices
 
     REG(RESETS)->RESET &= ~RESETS_RESET_UART0;
-    while ((REG(RESETS)->RESET_DONE & RESETS_RESET_UART0) != RESETS_RESET_UART0) { }
+    while ((REG(RESETS)->RESET_DONE & RESETS_RESET_UART0) != RESETS_RESET_UART0) { ; }
 
     REG(RESETS)->RESET &= ~RESETS_RESET_UART1;
-    while ((REG(RESETS)->RESET_DONE & RESETS_RESET_UART1) != RESETS_RESET_UART1) { }
+    while ((REG(RESETS)->RESET_DONE & RESETS_RESET_UART1) != RESETS_RESET_UART1) { ; }
 
 // Disable the UARTx
 
-    REG(UART0)->UARTCR = 0;
-    REG(UART1)->UARTCR = 0;
+    REG(UART0)->UARTCR = 0U;
+    REG(UART1)->UARTCR = 0U;
 
 // Bauds:
 // Div = UARTCLK / (16 * BAUD) = IBRD + FBRD / 64
 // For 150 MHz et 460800 b/s: IBRD = 20, FBRD = 22 (≈460830 b/s)
 // Format 8N1
 
-    BAUDRATE(UART0, 150000000, 460800);
-    BAUDRATE(UART1, 150000000, 460800);
-    REG(UART0)->UARTLCR_H = (3u * UART_UARTLCR_H_WLEN_0);
-    REG(UART1)->UARTLCR_H = (3u * UART_UARTLCR_H_WLEN_0);
+    BAUDRATE(UART0, 150000000U, 460800U);
+    BAUDRATE(UART1, 150000000U, 460800U);
+    REG(UART0)->UARTLCR_H = (3U * UART_UARTLCR_H_WLEN_0);
+    REG(UART1)->UARTLCR_H = (3U * UART_UARTLCR_H_WLEN_0);
 
 // Enable the UARTx
 
@@ -90,7 +117,7 @@ void    cmns_send([[maybe_unused]] serialManager_t serialManager, const char_t *
         default:
         case KCORE_0: {
             while (true) {
-                while ((REG(UART0)->UARTFR & UART_UARTFR_TXFF) != 0u) { }
+                while ((REG(UART0)->UARTFR & UART_UARTFR_TXFF) != 0U) { ; }
 
                 data = (uint8_t)*wkAscii;
                 wkAscii++;
@@ -108,7 +135,7 @@ void    cmns_send([[maybe_unused]] serialManager_t serialManager, const char_t *
 
         case KCORE_1: {
             while (true) {
-                while ((REG(UART1)->UARTFR & UART_UARTFR_TXFF) != 0u) { }
+                while ((REG(UART1)->UARTFR & UART_UARTFR_TXFF) != 0U) { ; }
 
                 data = (uint8_t)*wkAscii;
                 wkAscii++;
@@ -147,7 +174,7 @@ void    cmns_receive([[maybe_unused]] serialManager_t serialManager, char_t *dat
 
         default:
         case KCORE_0: {
-            while ((REG(UART0)->UARTFR & UART_UARTFR_RXFE) != 0u) { }
+            while ((REG(UART0)->UARTFR & UART_UARTFR_RXFE) != 0U) { ; }
 
             dr = REG(UART0)->UARTDR;
             *data = (uint8_t)dr;
@@ -157,7 +184,7 @@ void    cmns_receive([[maybe_unused]] serialManager_t serialManager, char_t *dat
 // Core 1
 
         case KCORE_1: {
-            while ((REG(UART1)->UARTFR & UART_UARTFR_RXFE) != 0u) { }
+            while ((REG(UART1)->UARTFR & UART_UARTFR_RXFE) != 0U) { ; }
 
             dr = REG(UART1)->UARTDR;
             *data = (uint8_t)dr;

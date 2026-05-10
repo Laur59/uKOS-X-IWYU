@@ -72,9 +72,9 @@ static void __attribute__ ((noreturn)) cb_signal(uint8_t mode) {
 
     while (true) {
         cmns_wait(1000000U);
-        REG(SIO)->GPIO_OUT_CLR = (1u << ledPin);
+        REG(SIO)->GPIO_OUT_CLR = (1U << ledPin);
         cmns_wait(1000000U);
-        REG(SIO)->GPIO_OUT_SET = (1u << ledPin);
+        REG(SIO)->GPIO_OUT_SET = (1U << ledPin);
     }
 }
 

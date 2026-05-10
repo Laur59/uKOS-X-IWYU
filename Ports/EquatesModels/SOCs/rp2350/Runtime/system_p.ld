@@ -1,35 +1,35 @@
 /*
  * SPDX-License-Identifier: MIT
- * SPDX-FileCopyrightText: 2026 Laurent von Allmen
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
- * Goal:     Common Linker description for uKOS-X systems.
- *           Privileged only support
+ * Goal:    Common Linker description for uKOS-X systems.
+ *          Privileged only support
  *
  *                       CODE
- * linker_stTEXT         +-----------------+
- *                       |                 |
- *                       | .isr_vector     |
- *                       | .text           |
- *                       | .rodata         |
- * linker_enRODATA       |                 |
- *                       +-----------------+
- * linker_stSignature    |                 |             DATA
- *                       +-----------------+ ........... +-----------------+ linker_stDATA
- * linker_stINDATA       |                 |             |                 |
- *                       | .data           |             | .data           |
- *                       |                 |             |                 | linker_enDATA
- *                       +-----------------+ ........... +-----------------+
- *                                                       |                 | linker_stBSS
- *                                                       | .bss            |
- *                                                       | COMMON          |
- *                                                       |                 | linker_enBSS
- *                                                       +-----------------+
+ * linker_stTEXT        +-----------------+
+ *                      |                 |
+ *                      | .isr_vector     |
+ *                      | .text           |
+ *                      | .rodata         |
+ * linker_enRODATA      |                 |
+ *                      +-----------------+
+ * linker_stSignature   |                 |             DATA
+ *                      +-----------------+ ........... +-----------------+ linker_stDATA
+ * linker_stINDATA      |                 |             |                 |
+ *                      | .data           |             | .data           |
+ *                      |                 |             |                 | linker_enDATA
+ *                      +-----------------+ ........... +-----------------+
+ *                                                      |                 | linker_stBSS
+ *                                                      | .bss            |
+ *                                                      | COMMON          |
+ *                                                      |                 | linker_enBSS
+ *                                                      +-----------------+
  */
 
 SECTIONS {
     . = ORIGIN(prgm_code);
 
-    .vectors ALIGN(512) : {
+    .vectors ALIGN(64) : {
         linker_stVECTORS = ABSOLUTE(.);
         KEEP(*(.isr_vector))
         linker_enVECTORS = ABSOLUTE(.);
@@ -97,6 +97,7 @@ SECTIONS {
         libkern_p.a:*(.rodata .rodata.*)
         linker_enRODATA_KERN_p = ABSOLUTE(.);
         *(.rodata .rodata.*)
+        *(.srodata .srodata.*)  /* RISC-V small read-only data */
         . = ALIGN(4);
         linker_enRODATA = ABSOLUTE(.);
     } > prgm_code
@@ -125,11 +126,11 @@ SECTIONS {
         linker_stDATA = ABSOLUTE(.);
         linker_stDATA_KERN_p = ABSOLUTE(.);
         libkern_p.a:*(.data .data.*)
+        libkern_p.a:*(.sdata .sdata.*)  /* RISC-V small data */
         linker_enDATA_KERN_p = ABSOLUTE(.);
+        *(.sdata .sdata.*)  /* RISC-V small data */
         *(.data .data.*)
         *(.tdata .tdata.*)
-        . = ALIGN(4);
-        *(vtable)
         . = ALIGN(4);
         linker_enDATA = ABSOLUTE(.);
     } > prgm_data
@@ -140,7 +141,9 @@ SECTIONS {
         KEEP(*(.user))
         linker_stBSS_KERN_p = ABSOLUTE(.);
         libkern_p.a:*(.bss .bss.*)
+        libkern_p.a:*(.sbss .sbss.*)  /* RISC-V small BSS */
         linker_enBSS_KERN_p = ABSOLUTE(.);
+        *(.sbss .sbss.*)  /* RISC-V small BSS */
         *(.bss .bss.*)
         *(COMMON)
         . = ALIGN(4);
@@ -157,4 +160,7 @@ SECTIONS {
         end = ABSOLUTE(.);
         _end = ABSOLUTE(.);
     } > prgm_data
+
+    /* Global pointer for RISC-V (optional) */
+    __global_pointer$ = MIN(linker_stDATA + 0x800, MAX(linker_stDATA + 0x800, linker_enBSS - 0x800));
 }

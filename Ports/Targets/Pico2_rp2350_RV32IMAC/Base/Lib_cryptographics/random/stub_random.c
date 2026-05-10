@@ -1,8 +1,9 @@
 /*
  * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
- * Pico2_rp2350_RV32IMAC – Stub for the random manager.
+ * Pico2_rp2350 – Stub for the random manager.
  */
 
 #include    <stdint.h>
@@ -20,6 +21,8 @@ static  void    model_random_hard_read(uint32_t *number);
 /*
  * \brief stub_random_init
  *
+ * - Initialise some specific CPU parts
+ *
  */
 int32_t stub_random_init(void) {
 
@@ -30,6 +33,8 @@ int32_t stub_random_init(void) {
 
 /*
  * \brief stub_random_read
+ *
+ * - Return the random number
  *
  */
 int32_t stub_random_read(randomGenerator_t generator, uint32_t *number) {

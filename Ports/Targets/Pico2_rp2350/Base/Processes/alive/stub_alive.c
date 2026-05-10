@@ -3,7 +3,7 @@
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
- * Goal:     alive process; the system is working.
+ * Alive process: blink a LED to signal the system is running.
  */
 
 #include    "alive/alive.h"

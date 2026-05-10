@@ -1,5 +1,6 @@
 /*
  * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
  * Pico2_rp2350 – Linker memory regions, privileged-only mode.
@@ -104,9 +105,19 @@ linker_lnPrgmCode           = rp_lnINTFLASH;                                    
 linker_stPrgmData           = linker_lowStackSystem_C1 + linker_sizeStackSystem_C1;         /* 0x20003000: start of program data                        */
 linker_lnPrgmData           = config_sizeData;                                              /* Length of program data                                   */
 
+/* IMPORTANT:                                               */
+/* equates necessary for the arm_v8 MPU regions             */
+/* for the arm_v8 MPU the regions have to be 32-B aligned   */
+
+linker_ST_FLASH_INT_0       = rp_stINTFLASH;                                                /* 0x10000000: Privileged/User FLASH                        */
+linker_EN_FLASH_INT_0       = (rp_stINTFLASH + rp_lnINTFLASH - 1);                          /* 0x103FFFFF: 4-M                                          */
+
+linker_ST_RAM_INT_0         = rp_stSRAM;                                                    /* 0x20000000: Privileged/User RAM                          */
+linker_EN_RAM_INT_0         = (rp_stSRAM + rp_stSRAM - 1);                                  /* 0x3FFFFFFF: 520-K                                        */
+
 MEMORY {
     prgm_code (rx)  : ORIGIN = linker_stPrgmCode, LENGTH = linker_lnPrgmCode
     prgm_data (rwx) : ORIGIN = linker_stPrgmData, LENGTH = linker_lnPrgmData
 }
 
-INCLUDE     system_p-riscv.ld
+INCLUDE     system_p.ld
