@@ -50,6 +50,12 @@ add_compile_options(
     -Os # optimisation
 )
 
+# TinyUSB integration (must be before library definitions)
+add_TinyUSB(
+    SPEED FS
+    PROFILE cdc_cdc
+)
+
 # Sources
 # -------
 
@@ -130,7 +136,7 @@ list(APPEND LIBX_P
     ${PATH_BASE}/Lib_serials/urt0/stub_urt0_uart.c
 )
 add_library(libx_p ${LIBX_P})
-target_link_libraries(libx_p PUBLIC system_compiler_flags)
+target_link_libraries(libx_p PUBLIC system_compiler_flags ${TINYUSB})
 
 # Lib_xxxx components (user) -> liblibx_u.a
 # C library integration (conditional based on detected C library)
@@ -159,11 +165,13 @@ list(APPEND PROC_U
     ${PATH_OSYS}/Processes/alive/alive.c
     ${PATH_OSYS}/Processes/launcher/launcher.c
     ${PATH_OSYS}/Processes/startUp/startUp.c
+    ${PATH_OSYS}/Processes/TinyUSB/TinyUSB.c
     ${PATH_BASE}/Processes/alive/stub_alive.c
+    ${PATH_BASE}/Processes/TinyUSB/stub_TinyUSB.c
     ${PATH_VARI}/Processes/startUp/stub_startUp.c
 )
 add_library(proc_u ${PROC_U})
-target_link_libraries(proc_u PUBLIC system_compiler_flags)
+target_link_libraries(proc_u PUBLIC system_compiler_flags ${TINYUSB})
 
 # CLI components (user) -> libtool_u.a
 list(APPEND CLI_U
@@ -199,7 +207,7 @@ add_library(tool_u ${CLI_U})
 target_link_libraries(tool_u PUBLIC system_compiler_flags)
 
 # All library components
-set(UKOS_COMPONENTS rtcb_p kern_p kern_u libx_p libx_u proc_p proc_u tool_u)
+set(UKOS_COMPONENTS rtcb_p kern_p kern_u libx_p libx_u proc_p proc_u tool_u ${TINYUSB})
 
 # System configuration flags
 

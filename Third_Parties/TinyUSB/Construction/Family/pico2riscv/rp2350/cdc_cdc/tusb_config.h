@@ -17,7 +17,16 @@ extern  "C" {
 // ============================
 
 #define CFG_TUSB_MCU            OPT_MCU_RP2040
+
+// OSAL selection: the default custom OSAL bridges to the uKOS-X kernel
+// (`tusb_os_custom.c`). The validation build (TINYUSB_VALIDATE_PICO_S)
+// instead uses the upstream Pico OSAL so the library can be linked into a
+// Pico SDK app for hardware unit-testing without the uKOS-X kernel.
+#ifdef TINYUSB_VALIDATE_PICO_S
+#define CFG_TUSB_OS             OPT_OS_PICO
+#else
 #define CFG_TUSB_OS             OPT_OS_CUSTOM
+#endif
 
 #ifdef SYSTEM_TINYUSB_HS_S
 #undef  BOARD_TUD_RHPORT
