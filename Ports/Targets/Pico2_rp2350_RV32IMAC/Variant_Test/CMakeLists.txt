@@ -117,18 +117,18 @@ target_link_libraries(kern_u PUBLIC system_compiler_flags)
 # Lib_xxxx components (privileged) -> liblibx_p.a
 # (grouped by manager)
 add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_cryptographics/random/random.c CONFIG_MAN_RANDOM_S)
-add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/asmp/asmp.c           CONFIG_MAN_ASMP_S)
-add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/calendar/calendar.c   CONFIG_MAN_CALENDAR_S)
-add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/machine/machine.c     CONFIG_MAN_MACHINE_S)
-add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/memo/memo.c           CONFIG_MAN_MEMO_S)
-add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/record/record.c       CONFIG_MAN_RECORD_S)
-add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/system/system.c       CONFIG_MAN_SYSTEM_S)
-add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_peripherals/led/led.c          CONFIG_MAN_LED_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/asmp/asmp.c CONFIG_MAN_ASMP_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/calendar/calendar.c CONFIG_MAN_CALENDAR_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/machine/machine.c CONFIG_MAN_MACHINE_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/memo/memo.c CONFIG_MAN_MEMO_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/record/record.c CONFIG_MAN_RECORD_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_generics/system/system.c CONFIG_MAN_SYSTEM_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_peripherals/led/led.c CONFIG_MAN_LED_S)
 add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_peripherals/switch/switch.c CONFIG_MAN_SWITCH_S)
-add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_serials/cdc0/cdc0.c            CONFIG_MAN_CDC0_S)
-add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_serials/cdc1/cdc1.c            CONFIG_MAN_CDC1_S)
-add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_serials/serial/serial.c        CONFIG_MAN_SERIAL_S)
-add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_serials/urt0/urt0.c            CONFIG_MAN_URT0_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_serials/cdc0/cdc0.c CONFIG_MAN_CDC0_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_serials/cdc1/cdc1.c CONFIG_MAN_CDC1_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_serials/serial/serial.c CONFIG_MAN_SERIAL_S)
+add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_serials/urt0/urt0.c CONFIG_MAN_URT0_S)
 list(APPEND LIBX_P
     ${PATH_BASE}/Lib_cryptographics/random/stub_random.c
     ${PATH_BASE}/Lib_generics/asmp/stub_asmp_dbell.c
@@ -212,6 +212,9 @@ target_link_libraries(tool_u PUBLIC system_compiler_flags)
 set(UKOS_COMPONENTS rtcb_p kern_p kern_u libx_p libx_u proc_p proc_u tool_u ${TINYUSB})
 
 # System configuration flags
+
+# With cdc0 on core 0 & urt0 on core 1
+add_compile_definitions(CONFIG_DIFFERENT_SERIAL_PER_CORE_S=true)
 
 # Statistics support
 add_compile_definitions(KKERN_WITH_STATISTICS_S=true)
