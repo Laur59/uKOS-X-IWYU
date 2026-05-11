@@ -1,5 +1,6 @@
 /*
  * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  *
  * Goal:        Indirect Exception Vectors for Cortex_M33.
  *          The "reset" exception is not considered. The indirect table

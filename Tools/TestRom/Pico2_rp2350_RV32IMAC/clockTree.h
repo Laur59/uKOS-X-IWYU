@@ -1,5 +1,6 @@
 /*
  * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  *
  * Goal:        Clock tree definitions for RISC-V RP2350.
  */

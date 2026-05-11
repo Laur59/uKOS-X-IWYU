@@ -1,5 +1,6 @@
 /*
  * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  *
  * Goal:    Picobin IMAGE_DEF block for RP2350 RISC-V boot. The bootrom reads the
  *          entry point and initial SP from this block * both fields are resolved by
