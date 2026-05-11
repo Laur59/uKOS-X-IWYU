@@ -21,7 +21,7 @@
 extern  void    Reset_C0_Handler(void);
 extern  uint8_t linker_topStackFirst_C0[];
 
-struct  __attribute__ ((packed))    picobin_image_def {
+struct [[gnu::packed]] picobin_image_def {
     uint32_t    start;
     uint16_t    image_type_hdr;
     uint16_t    image_type_flags;
@@ -35,7 +35,7 @@ struct  __attribute__ ((packed))    picobin_image_def {
     uint32_t    end;
 };
 
-__attribute__ ((used, section(".picobin_block")))
+[[gnu::used, gnu::section(".picobin_block")]]
 static  const   struct picobin_image_def picobin_block = {
     .start              = PICOBIN_BLOCK_MARKER_START,
     .image_type_hdr     = PICOBIN_HDR(1u, PICOBIN_BLOCK_ITEM_1BS_IMAGE_TYPE),
@@ -53,7 +53,7 @@ static  const   struct picobin_image_def picobin_block = {
 };
 
 #else
-struct  __attribute__ ((packed))    picobin_image_def {
+struct [[gnu::packed]] picobin_image_def {
     uint32_t    start;
     uint16_t    image_type_hdr;
     uint16_t    image_type_flags;
@@ -63,7 +63,7 @@ struct  __attribute__ ((packed))    picobin_image_def {
     uint32_t    end;
 };
 
-__attribute__ ((used, section(".picobin_block")))
+[[gnu::used, gnu::section(".picobin_block")]]
 static  const   struct picobin_image_def picobin_block = {
     .start              = PICOBIN_BLOCK_MARKER_START,
     .image_type_hdr     = PICOBIN_HDR(1u, PICOBIN_BLOCK_ITEM_1BS_IMAGE_TYPE),

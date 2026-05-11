@@ -176,7 +176,7 @@
 #endif
 
 #ifndef INTERRUPTION_OFF
-#define INTERRUPTION_OFF        volatile    uint32_t    saveBASEPRI __attribute__ ((unused));                                   \
+#define INTERRUPTION_OFF        [[maybe_unused]] volatile    uint32_t    saveBASEPRI ;                                   \
                                                                                                                                 \
                                 saveBASEPRI = core_getBASEPRI();                                                                \
                                 (void)saveBASEPRI;                                                                              \
@@ -225,10 +225,12 @@
 #define KEXCEPTION              0U
 
 extern  volatile    bool    vPriv_insideException[KNB_CORES];
-extern              void    __attribute__ ((noreturn)) model_coreDump_displayExceptions(uintptr_t lr, uintptr_t *msp);
+[[noreturn]]
+extern              void    model_coreDump_displayExceptions(uintptr_t lr, uintptr_t *msp);
 
 #define EXCEPTION_SPECIFIC_HANDLER(exc)                                                                                         \
-                                __attribute__((used)) static void exc##_local_IRQHandler(uintptr_t lr, uintptr_t *msp) {        \
+                                [[gnu::used]]                                                                                   \
+                                static void exc##_local_IRQHandler(uintptr_t lr, uintptr_t *msp) {                              \
                                     uint32_t    core = GET_RUNNING_CORE;                                                        \
                                     void        (*go)(void);                                                                    \
                                                                                                                                 \
@@ -241,7 +243,7 @@ extern              void    __attribute__ ((noreturn)) model_coreDump_displayExc
                                     vPriv_insideException[core] = false;                                                        \
                                 }                                                                                               \
                                                                                                                                 \
-                                void exc##_IRQHandler(void) __attribute__ ((weak, naked));                                      \
+                                [[gnu::weak, gnu::naked]]                                                                       \
                                 void exc##_IRQHandler(void) {                                                                   \
                                                                                                                                 \
                                     __asm volatile ("                                                                        \n \
@@ -255,10 +257,12 @@ extern              void    __attribute__ ((noreturn)) model_coreDump_displayExc
 #ifndef INTERRUPT_SPECIFIC_HANDLER
 #define KINTERRUPTION           1U
 
-extern  void    __attribute__ ((noreturn)) model_coreDump_displayInterruptions(uintptr_t lr, uintptr_t *msp);
+[[noreturn]]
+extern  void    model_coreDump_displayInterruptions(uintptr_t lr, uintptr_t *msp);
 
 #define INTERRUPT_SPECIFIC_HANDLER(irq)                                                                                         \
-                                __attribute__((used)) static void irq##_local_IRQHandler(uintptr_t lr, uintptr_t *msp) {        \
+                                [[gnu::used]]                                                                                   \
+                                static void irq##_local_IRQHandler(uintptr_t lr, uintptr_t *msp) {                              \
                                     uint32_t    core = GET_RUNNING_CORE;                                                        \
                                     void        (*go)(void);                                                                    \
                                                                                                                                 \
@@ -271,7 +275,7 @@ extern  void    __attribute__ ((noreturn)) model_coreDump_displayInterruptions(u
                                     TAC_EXCEPTION_TIME(core);                                                                   \
                                 }                                                                                               \
                                                                                                                                 \
-                                void irq##_IRQHandler(void) __attribute__ ((weak, naked));                                      \
+                                [[gnu::weak, gnu::naked]]                                                                       \
                                 void irq##_IRQHandler(void) {                                                                   \
                                                                                                                                 \
                                     __asm volatile ("                                                                        \n \

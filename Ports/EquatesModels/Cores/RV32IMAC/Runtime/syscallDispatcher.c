@@ -16,10 +16,12 @@
 
 // Weak stubs — overridden by the RISC-V kernel model in Phase 3.3.
 
-__attribute__ ((weak)) void kernel_message_C0(void) {}
+[[gnu::weak]]
+void kernel_message_C0(void) {}
 
 #if (KNB_CORES == 2)
-__attribute__ ((weak)) void kernel_message_C1(void) {}
+[[gnu::weak]]
+void kernel_message_C1(void) {}
 #endif
 
 /*

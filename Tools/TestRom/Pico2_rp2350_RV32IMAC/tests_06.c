@@ -214,7 +214,8 @@ static  void    process_1([[maybe_unused]] uintptr_t *argument) {
  * - Pico scheduler
  *
  */
-static  void    __attribute__ ((noinline)) local_scheduler(void) {
+[[gnu::noinline]]
+static  void    local_scheduler(void) {
     int len;
 
     switch (vMessage) {

@@ -106,7 +106,8 @@ MODULE(
  *          - Toggle LED 1
  *
  */
-static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
+[[noreturn]]
+static void aProcess_0(const void *argument) {
                 uint32_t    delta;
                 uint64_t    time[2];
     volatile    float64_t   n = 0.0, Pi = 0.0;
@@ -141,7 +142,8 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *          - Toggle LED 2
  *
  */
-static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
+[[noreturn]]
+static void aProcess_1(const void *argument) {
     int32_t     a, b, c, d;
 
     UNUSED(argument);
@@ -174,7 +176,8 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  *          - Print a string on the stdout
  *
  */
-static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
+[[noreturn]]
+static void aProcess_2(const void *argument) {
 
 // !!! For big strings, consider to use pointers to accomodate them
 

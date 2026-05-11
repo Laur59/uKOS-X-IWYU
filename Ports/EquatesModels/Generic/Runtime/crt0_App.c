@@ -169,7 +169,8 @@ int32_t     aStart(uint32_t argc, const char_t *argv[]) {
  *
  */
 #ifndef __clang__
-void    __attribute__ ((noreturn)) __wrap___stack_chk_fail(void) {
+[[noreturn]]
+void    __wrap___stack_chk_fail(void) {
 
     PRIVILEGE_ELEVATE;
     INTERRUPTION_OFF;

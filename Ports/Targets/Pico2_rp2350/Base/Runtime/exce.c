@@ -65,7 +65,8 @@ static  void    local_cpyLEDs(uint8_t value);
  *   - Interruption
  *
  */
-static void __attribute__ ((noreturn)) cb_signal(uint8_t mode) {
+[[noreturn]]
+static void cb_signal(uint8_t mode) {
 
     switch (mode) {
         default:

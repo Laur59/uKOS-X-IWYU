@@ -137,7 +137,8 @@ extern  bool    vExce_isException[KNB_CORES];
 #ifdef EXCLUDE_CPPCHECK
 
 #define EXCEPTION_SPECIFIC_HANDLER(exc)                                                                                         \
-                                __attribute__((used)) static void exc##_local_IRQHandler(void) {                                \
+                                [[gnu::used]]                                                                                   \
+                                static void exc##_local_IRQHandler(void) {                                                      \
                                     uint32_t    core;                                                                           \
                                     void        (*go)(void);                                                                    \
                                                                                                                                 \
@@ -148,7 +149,7 @@ extern  bool    vExce_isException[KNB_CORES];
                                     vExce_isException[core] = false;                                                            \
                                 }                                                                                               \
                                                                                                                                 \
-                                [[gnu::weak, gnu::naked]]                                                           \
+                                [[gnu::weak, gnu::naked]]                                                                       \
                                 void exc##_IRQHandler(void) {                                                                   \
                                                                                                                                 \
                                     INTERRUPTION_IN;                                                                            \
@@ -173,7 +174,8 @@ extern  bool    vExce_isException[KNB_CORES];
 #ifdef EXCLUDE_CPPCHECK
 
 #define INTERRUPT_SPECIFIC_HANDLER(irq)                                                                                         \
-                                __attribute__((used)) static void irq##_local_IRQHandler(void) {                                \
+                                [[gnu::used]]                                                                                   \
+                                static void irq##_local_IRQHandler(void) {                                                      \
                                     uint32_t    core;                                                                           \
                                     void        (*go)(void);                                                                    \
                                                                                                                                 \
@@ -184,7 +186,7 @@ extern  bool    vExce_isException[KNB_CORES];
                                     vExce_isException[core] = false;                                                            \
                                 }                                                                                               \
                                                                                                                                 \
-                                [[gnu::weak, gnu::naked]]                                                           \
+                                [[gnu::weak, gnu::naked]]                                                                       \
                                 void irq##_IRQHandler(void) {                                                                   \
                                                                                                                                 \
                                     INTERRUPTION_IN;                                                                            \

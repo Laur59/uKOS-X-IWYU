@@ -88,7 +88,7 @@ typedef enum    _dvp_output_mode {
 // The DVP address map
 // -------------------
 
-typedef struct  _dvp {
+typedef struct  [[gnu::packed, gnu::aligned(4)]] _dvp {
     uint32_t    dvp_cfg;                                        // DVP config Register
     uint32_t    r_addr;                                         // DVP start address R component (output to AI)
     uint32_t    g_addr;                                         // DVP start address G component (output to AI)
@@ -100,6 +100,6 @@ typedef struct  _dvp {
     uint32_t    sts;                                            // DVP STS status Register
     uint32_t    reverse;                                        // reserved
     uint32_t    rgb_addr;                                       // DVP output address Register
-} __attribute__ ((packed, aligned (4))) dvp_t;
+} dvp_t;
 
 #define dvp     ((volatile  dvp_t *)0x50430000U)

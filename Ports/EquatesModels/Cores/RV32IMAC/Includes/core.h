@@ -23,7 +23,8 @@
  * \return      value       The register value
  *
  */
-__attribute__ ((always_inline)) static  inline  uint32_t    core_getCSR(uint32_t reg) {
+[[gnu::always_inline]]
+static  inline  uint32_t    core_getCSR(uint32_t reg) {
     uint32_t    value;
 
     __asm volatile (
@@ -46,7 +47,8 @@ __attribute__ ((always_inline)) static  inline  uint32_t    core_getCSR(uint32_t
  * \note This function does not return a value (None).
  *
  */
-__attribute__ ((always_inline)) static  inline  void    core_putCSR(uint32_t reg, uint32_t value) {
+[[gnu::always_inline]]
+static  inline  void    core_putCSR(uint32_t reg, uint32_t value) {
 
     if (__builtin_constant_p(value) && ((uint32_t)(value) < 32U)) {
         __asm volatile (
@@ -75,7 +77,8 @@ __attribute__ ((always_inline)) static  inline  void    core_putCSR(uint32_t reg
  * \note This function does not return a value (None).
  *
  */
-__attribute__ ((always_inline)) static  inline  void    core_setBitCSR(uint32_t reg, uint32_t mask) {
+[[gnu::always_inline]]
+static  inline  void    core_setBitCSR(uint32_t reg, uint32_t mask) {
 
     if (__builtin_constant_p(mask) && ((uint32_t)(mask) < 32U)) {
         __asm volatile (
@@ -104,7 +107,8 @@ __attribute__ ((always_inline)) static  inline  void    core_setBitCSR(uint32_t 
  * \note This function does not return a value (None).
  *
  */
-__attribute__ ((always_inline)) static  inline  void    core_clrBitCSR(uint32_t reg, uint32_t mask) {
+[[gnu::always_inline]]
+static  inline  void    core_clrBitCSR(uint32_t reg, uint32_t mask) {
 
     if (__builtin_constant_p(mask) && ((uint32_t)(mask) < 32U)) {
         __asm volatile (
@@ -130,7 +134,8 @@ __attribute__ ((always_inline)) static  inline  void    core_clrBitCSR(uint32_t 
  *   the queue is empty; otherwise bits [9:2] hold the IRQ index.
  *
  */
-__attribute__ ((always_inline)) static  inline  uint32_t    core_getNextExternalIRQ(void) {
+[[gnu::always_inline]]
+static  inline  uint32_t    core_getNextExternalIRQ(void) {
     uint32_t    value;
 
     __asm volatile ("csrr %0, 0xBE4" : "=r" (value));

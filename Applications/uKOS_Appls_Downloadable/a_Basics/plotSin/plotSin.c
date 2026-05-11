@@ -110,7 +110,8 @@ MODULE(
  *          - Toggle LED 1
  *
  */
-static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
+[[noreturn]]
+static void aProcess_0(const void *argument) {
     uint16_t    x;
     uint32_t    random;
     float64_t   y;

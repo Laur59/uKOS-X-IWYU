@@ -503,7 +503,8 @@ int     _kill_r(reent_t *reent, int pid, int sig) {
  * - exit - Call the crt0 exit
  *
  */
-void    __attribute__ ((noreturn)) _exit(int number) {
+[[noreturn]]
+void    _exit(int number) {
 
     crt0_exit(number);
     while (true) { ; }

@@ -20,11 +20,11 @@
 // Weak stubs for --wrap linker flags injected by system.cmake.
 // The full newlib manager (Phase 2+) provides strong overrides.
 
-__attribute__ ((weak)) void *__wrap__malloc_r (struct _reent *r, size_t size)              { (void)r; (void)size;             return NULL; }
-__attribute__ ((weak)) void *__wrap__realloc_r(struct _reent *r, void *ptr, size_t size)  { (void)r; (void)ptr; (void)size;  return NULL; }
-__attribute__ ((weak)) void *__wrap__calloc_r (struct _reent *r, size_t nmemb, size_t sz) { (void)r; (void)nmemb; (void)sz;  return NULL; }
-__attribute__ ((weak)) void  __wrap__free_r   (struct _reent *r, void *ptr)               { (void)r; (void)ptr;                           }
-__attribute__ ((weak, noreturn)) void __wrap___stack_chk_fail(void)                       { while (1) {}                                   }
+[[gnu::weak]] void *__wrap__malloc_r (struct _reent *r, size_t size)              { (void)r; (void)size;             return NULL; }
+[[gnu::weak]] void *__wrap__realloc_r(struct _reent *r, void *ptr, size_t size)  { (void)r; (void)ptr; (void)size;  return NULL; }
+[[gnu::weak]] void *__wrap__calloc_r (struct _reent *r, size_t nmemb, size_t sz) { (void)r; (void)nmemb; (void)sz;  return NULL; }
+[[gnu::weak]] void  __wrap__free_r   (struct _reent *r, void *ptr)               { (void)r; (void)ptr;                           }
+[[gnu::weak, noreturn]] void __wrap___stack_chk_fail(void)                       { while (1) {}                                   }
 
 // uKOS-X specific (see the module.h)
 // ==================================

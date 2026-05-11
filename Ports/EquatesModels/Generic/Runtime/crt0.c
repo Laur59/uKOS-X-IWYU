@@ -73,7 +73,8 @@ extern  uintptr_t   __stack_chk_guard;
 
 // Prototypes
 
-void    init_relocate(void) __attribute__((weak));      // NOLINT(misc-use-internal-linkage): weak symbol must have external linkage
+[[gnu::weak]]
+void    init_relocate(void);      // NOLINT(misc-use-internal-linkage): weak symbol must have external linkage
 
 /*
  * \brief crt0
@@ -171,7 +172,8 @@ void    crt0(void) {
  *   vector table relocation
  *
  */
-void    __attribute__ ((weak)) init_relocate(void) {
+[[gnu::weak]]
+void    init_relocate(void) {
 
 }
 
@@ -181,7 +183,8 @@ void    __attribute__ ((weak)) init_relocate(void) {
  * - If necessary, dedicated initialsiation for core 0 only
  *
  */
-void    __attribute__ ((weak)) init_C0_init(void) {
+[[gnu::weak]]
+void    init_C0_init(void) {
 
 }
 
@@ -197,7 +200,8 @@ void    __attribute__ ((weak)) init_C0_init(void) {
  *   LDFLAGS += -Wl,--wrap=__stack_chk_fail
  *
  */
-void    __attribute__ ((noreturn)) __wrap___stack_chk_fail(void) {  // NOLINT(misc-use-internal-linkage): linker wrap mechanism requires external linkage
+[[noreturn]]
+void    __wrap___stack_chk_fail(void) {  // NOLINT(misc-use-internal-linkage): linker wrap mechanism requires external linkage
 
     PRIVILEGE_ELEVATE;
     INTERRUPTION_OFF;

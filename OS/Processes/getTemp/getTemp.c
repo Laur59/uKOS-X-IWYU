@@ -141,7 +141,8 @@ static  int32_t temperature_clean(uint32_t argc, const char_t *argv[]) {
  *   200-ms per sample -> 3.2-s -> 1/3.2 = 0.3125-Hz
  *
  */
-static void __attribute__ ((noreturn)) local_process(const void *argument) {
+[[noreturn]]
+static void local_process(const void *argument) {
                     mbox_t      *mailBox;
                     int16_t     *temperature = nullptr;
                     uint16_t    i;

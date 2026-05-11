@@ -460,7 +460,7 @@ void    EXTI1_C0_IRQHandler(void) {
     JUMP_FNCT(local_EXTI1_IRQHandler);
 }
 
-[[gnu::naked]]
+[[gnu::naked, gnu::used]]
 void    local_EXTI1_IRQHandler(void) {
 
     CALL_FNCT(local_newContextPRE);
@@ -482,7 +482,8 @@ void    local_EXTI1_IRQHandler(void) {
  *   - Return the stack of the new process
  *
  */
-static uintptr_t   __attribute__ ((noinline, used)) *local_newContextPRE(uintptr_t *stack) {
+[[gnu::noinline, gnu::used]]
+uintptr_t   *local_newContextPRE(uintptr_t *stack) {
 
 // Save the stack of the old process
 // Save the old priority
@@ -573,6 +574,7 @@ static uintptr_t   __attribute__ ((noinline, used)) *local_newContextPRE(uintptr
  *
  */
 void    local_TIMER2_IRQHandler(void);
+
 [[gnu::naked]]
 void    TIMER2_C0_IRQHandler(void) {
 
@@ -606,7 +608,8 @@ void    local_TIMER2_IRQHandler(void) {
  *   - Return the stack of the new process
  *
  */
-static uintptr_t   __attribute__ ((noinline, used)) *local_newContextTOU(uintptr_t *stack) {
+[[gnu::noinline, gnu::used]]
+uintptr_t   *local_newContextTOU(uintptr_t *stack) {
 
 // Save the stack of the old process
 // Save the old priority
@@ -729,7 +732,8 @@ void    local_EXTI0_IRQHandler(void) {
  *   - Return the stack of the new process
  *
  */
-static uintptr_t   __attribute__ ((noinline, used)) *local_newContextMSG(uintptr_t *stack, uint32_t message) {
+[[gnu::noinline, gnu::used]]
+static uintptr_t   *local_newContextMSG(uintptr_t *stack, uint32_t message) {
 
 // Save the stack of the old process
 // Save the old priority

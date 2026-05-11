@@ -97,7 +97,8 @@ MODULE(
  *          - Display a message on the KSYST manager
  *
  */
-static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
+[[noreturn]]
+static void aProcess_0(const void *argument) {
     int32_t     cpt = 0U;
 
     UNUSED(argument);
@@ -117,7 +118,8 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *          - Display a message on the KSYST manager
  *
  */
-static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
+[[noreturn]]
+static void aProcess_1(const void *argument) {
     int32_t     cpt = 0U;
 
     UNUSED(argument);

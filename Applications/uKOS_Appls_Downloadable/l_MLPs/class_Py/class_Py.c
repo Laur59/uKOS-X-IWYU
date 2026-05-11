@@ -102,7 +102,8 @@ MODULE(
  *          - Display the result
  *
  */
-static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
+[[noreturn]]
+static void aProcess_0(const void *argument) {
             float32_t   x, y, result, gain = 2.0F;
             uint64_t    time[2];
             uint32_t    random[2], delta = 0U;

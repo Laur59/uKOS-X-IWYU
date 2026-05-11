@@ -24,7 +24,8 @@
  * \return      value       The register value
  *
  */
-__attribute__ ((always_inline)) static  inline  uint64_t    core_getCSR(uint64_t reg) {
+[[gnu::always_inline]]
+static  inline  uint64_t    core_getCSR(uint64_t reg) {
     uint64_t    value;
 
     __asm volatile (
@@ -47,7 +48,8 @@ __attribute__ ((always_inline)) static  inline  uint64_t    core_getCSR(uint64_t
  * \note This function does not return a value (None).
  *
  */
-__attribute__ ((always_inline)) static  inline  void    core_putCSR(uint64_t reg, uint64_t value) {
+[[gnu::always_inline]]
+static  inline  void    core_putCSR(uint64_t reg, uint64_t value) {
 
     if (__builtin_constant_p(value) && ((uint64_t)(value) < 32U)) {
         __asm volatile (
@@ -76,7 +78,8 @@ __attribute__ ((always_inline)) static  inline  void    core_putCSR(uint64_t reg
  * \note This function does not return a value (None).
  *
  */
-__attribute__ ((always_inline)) static  inline  void    core_setBitCSR(uint64_t reg, uint64_t mask) {
+[[gnu::always_inline]]
+static  inline  void    core_setBitCSR(uint64_t reg, uint64_t mask) {
 
     if (__builtin_constant_p(mask) && ((uint64_t)(mask) < 32U)) {
         __asm volatile (
@@ -105,7 +108,8 @@ __attribute__ ((always_inline)) static  inline  void    core_setBitCSR(uint64_t 
  * \note This function does not return a value (None).
  *
  */
-__attribute__ ((always_inline)) static  inline  void    core_clrBitCSR(uint64_t reg, uint64_t mask) {
+[[gnu::always_inline]]
+static  inline  void    core_clrBitCSR(uint64_t reg, uint64_t mask) {
 
     if (__builtin_constant_p(mask) && ((uint64_t)(mask) < 32U)) {
         __asm volatile (

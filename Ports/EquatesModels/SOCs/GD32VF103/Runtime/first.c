@@ -28,7 +28,8 @@
  * - call the crt0
  *
  */
-__attribute__ ((noinline)) void local_fixPC(void) {
+[[gnu::noinline]]
+void local_fixPC(void) {
     register    uint32_t    regRa;
 
     __asm volatile ("add    %0,ra,zero" : "=r" (regRa));

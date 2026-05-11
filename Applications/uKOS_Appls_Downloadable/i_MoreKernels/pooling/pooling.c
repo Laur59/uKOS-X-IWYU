@@ -103,7 +103,8 @@ static  pool_t  *vMemoryPool;
  *          - Fill the allocated blocks with counters
  *
  */
-static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
+[[noreturn]]
+static void aProcess_0(const void *argument) {
     uint16_t    *array_0, *array_1, *array_2;
     uint32_t    i, nbElements;
     int32_t     status;
@@ -159,7 +160,8 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *          - Test the allocated blocks with counters
  *
  */
-static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
+[[noreturn]]
+static void aProcess_1(const void *argument) {
     uint16_t    *array_0, *array_1, *array_2;
     uint32_t    i, nbElements;
     int32_t     status;

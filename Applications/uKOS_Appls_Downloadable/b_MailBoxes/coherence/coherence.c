@@ -107,7 +107,8 @@ struct  msg {
  *          - Write a new message into the mailbox "Mailbox_test"
  *
  */
-static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
+[[noreturn]]
+static void aProcess_0(const void *argument) {
             char_t      charMessage = ' ';
             uint32_t    i = 0U, j, k = 0U;
             mcnf_t      configure;
@@ -157,7 +158,8 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *          - Test the coherence
  *
  */
-static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
+[[noreturn]]
+static void aProcess_1(const void *argument) {
             uint64_t    time[2];
             uint32_t    i = 0U, j, k = 0U, size;
             mbox_t      *mailBox;

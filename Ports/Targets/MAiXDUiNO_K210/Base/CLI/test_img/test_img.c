@@ -104,7 +104,8 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
  * - Display the images
  *
  */
-static void __attribute__ ((noreturn)) local_process(const void *argument) {
+[[noreturn]]
+static void local_process(const void *argument) {
     uint16_t    *image;
     cnfImgk_t   configure;
     sema_t      *semaphore;

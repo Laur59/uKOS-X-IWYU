@@ -91,11 +91,12 @@ void    local_reset(uint32_t core) {
 // The PLIC uses the internal interruption number 11 (IINT_MACHINE_EXTERNAL)
 // to dispatch the peripheral interruptions
 //
-// Important. Verify the .lst file to be sure that the __attribute__ interrupt
+// Important. Verify the .lst file to be sure that the [[gnu::interrupt]]
 // Generate the correct stack frame. The preamble has to be:
 // The stack frame change from gcc-13, gcc-14 and clang
 
-void    __attribute__ ((interrupt, aligned (16))) first_handle_trap(void) {
+[[gnu::interrupt, gnu::aligned(16)]]
+void    first_handle_trap(void) {
     uint64_t    message, cause;
     uint32_t    core;
 
@@ -128,7 +129,8 @@ void    __attribute__ ((interrupt, aligned (16))) first_handle_trap(void) {
  *   The number 11, is the Machine External Interrupt (PLIC dispatcher)
  *
  */
-static  void    __attribute__ ((noinline)) local_interruptions(uint32_t core, uint64_t number) {
+[[gnu::noinline]]
+static  void    local_interruptions(uint32_t core, uint64_t number) {
     void    (*go)(uint32_t core, uint64_t number);
 
     go = vExce_intIntVectors[core][number];
@@ -142,7 +144,8 @@ static  void    __attribute__ ((noinline)) local_interruptions(uint32_t core, ui
  *   The number 11, is the Environment Call from M-mode (ECALL dispatcher)
  *
  */
-static  void    __attribute__ ((noinline)) local_exception(uint32_t core, uint64_t number, uint64_t message) {
+[[gnu::noinline]]
+static  void    local_exception(uint32_t core, uint64_t number, uint64_t message) {
     void        (*go)(uint32_t core, uint64_t parameter);
     uint64_t    newPC, parameter;
 
@@ -166,10 +169,10 @@ static  void    __attribute__ ((noinline)) local_exception(uint32_t core, uint64
  *
  */
 void    first_handle_MachineExternal(uint32_t core, uint64_t parameter) {
-    UNUSED(parameter);
-
     void        (*go)(uint32_t core, uint64_t number);
     uint64_t    number;
+
+    UNUSED(parameter);
 
     number = (uint64_t)plic->targets.target[core].claim_complete;
 

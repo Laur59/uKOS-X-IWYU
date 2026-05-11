@@ -78,7 +78,9 @@ static          uint32_t    local_readRxFifo(void);
 
 extern          uintptr_t   g_pfnVectors_C0[];
 extern          uintptr_t   g_pfnVectors_C1[];
-static          uintptr_t   vTableRam_C0[KSZ_TABLE] __attribute__ ((aligned(512)));
+
+[[gnu::aligned(512)]]
+static          uintptr_t   vTableRam_C0[KSZ_TABLE];
 
 /*
  * \brief init_init

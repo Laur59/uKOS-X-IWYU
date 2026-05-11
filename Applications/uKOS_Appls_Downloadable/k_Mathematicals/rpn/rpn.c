@@ -145,7 +145,8 @@ static  void    local_pow(uint32_t argc, const char_t *argv[]);
  *          - Display the result
  *
  */
-static void __attribute__ ((noreturn)) aProcess(const void *argument) {
+[[noreturn]]
+static void aProcess(const void *argument) {
     decNumber       x;
     uint32_t        argc = 0U;
 

@@ -65,7 +65,8 @@ bool    installaProcess_dispatcher(void) {
  *       - Process it
  *
  */
-static void __attribute__ ((noreturn)) aProcess(const void *argument) {
+[[noreturn]]
+static void aProcess(const void *argument) {
     uintptr_t   message;
 
     UNUSED(argument);

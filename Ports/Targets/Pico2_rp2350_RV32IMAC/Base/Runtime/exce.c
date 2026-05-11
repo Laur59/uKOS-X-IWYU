@@ -36,7 +36,8 @@ bool     vExce_isException[KNB_CORES] = MCSET(false);
 
 // Prototype (called by coreDump models at the end of the register dump)
 
-static  void __attribute__ ((noreturn)) cb_signal(uint8_t mode);
+[[noreturn]]
+static  void    cb_signal(uint8_t mode);
 
 /*
  * \brief cb_signal
@@ -48,7 +49,8 @@ static  void __attribute__ ((noreturn)) cb_signal(uint8_t mode);
  * Called by the coreDump models after they have printed the full register dump.
  *
  */
-static void __attribute__ ((noreturn)) cb_signal(uint8_t mode) {
+[[noreturn]]
+static void cb_signal(uint8_t mode) {
     uint32_t ledPin;
 
     switch (mode) {

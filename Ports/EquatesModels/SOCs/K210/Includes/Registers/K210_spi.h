@@ -93,7 +93,7 @@ typedef enum    _spi_chip_select {
 // The SPI address map
 // -------------------
 
-typedef struct  _spi {
+typedef struct  [[gnu::packed, gnu::aligned(4)]] _spi {
     volatile    uint32_t    ctrlr0;                 // SPI Control Register 0                                    (0x00)
     volatile    uint32_t    ctrlr1;                 // SPI Control Register 1                                    (0x04)
     volatile    uint32_t    ssienr;                 // SPI Enable Register                                       (0x08)
@@ -130,7 +130,7 @@ typedef struct  _spi {
     volatile    uint32_t    xrxoicr;                // SPI XIP Receive FIFO Overflow Interrupt Clear Register    (0x110)
     volatile    uint32_t    xip_cnt_time_out;       // SPI XIP time out register for continuous transfers        (0x114)
     volatile    uint32_t    endian;                 // SPI endianess                                             (0x118)
-} __attribute__ ((packed, aligned (4))) spi_t;
+} spi_t;
 
 #define spi0    ((volatile  spi_t *)0x52000000U)
 #define spi1    ((volatile  spi_t *)0x53000000U)

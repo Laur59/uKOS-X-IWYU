@@ -111,7 +111,8 @@ static  enum        { KSTATE1, KSTATE2, KSTATE3, KSTATE4 } vState = KSTATE1;
  *          - Print the "state machine" timings
  *
  */
-static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
+[[noreturn]]
+static void aProcess_0(const void *argument) {
 
     UNUSED(argument);
 
@@ -141,7 +142,8 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *              550-us  2830-us   2510-us 320-us
  *
  */
-static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
+[[noreturn]]
+static void aProcess_1(const void *argument) {
     uint32_t    signal;
     prcs_t      *preciseSignal;
     sign_t      *sigGroup = nullptr;

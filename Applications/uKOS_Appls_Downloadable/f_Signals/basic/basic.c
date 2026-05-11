@@ -111,7 +111,8 @@ MODULE(
  *          - Toggle LED 1
  *
  */
-static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
+[[noreturn]]
+static void aProcess_0(const void *argument) {
     sign_t  *group;
 
     UNUSED(argument);
@@ -134,7 +135,8 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *          - Toggle LED 2
  *
  */
-static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
+[[noreturn]]
+static void aProcess_1(const void *argument) {
     sign_t  *group;
 
     UNUSED(argument);
@@ -156,7 +158,8 @@ static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
  *          - Display a string
  *
  */
-static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
+[[noreturn]]
+static void aProcess_2(const void *argument) {
     uint32_t    signal;
     sign_t      *group;
 
@@ -182,7 +185,8 @@ static void __attribute__ ((noreturn)) aProcess_2(const void *argument) {
  *          - Display a message
  *
  */
-static void __attribute__ ((noreturn)) aProcess_3(const void *argument) {
+[[noreturn]]
+static void aProcess_3(const void *argument) {
     uint32_t    signal;
     sign_t      *group;
 

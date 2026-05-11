@@ -19,9 +19,12 @@ typedef atomic_flag atomic_flag_t;
 
 // Prototypes
 
-__attribute__ ((always_inline)) static  inline  void    atom_init(atomic_flag_t *lock);
-__attribute__ ((always_inline)) static  inline  void    atom_lock(atomic_flag_t *lock);
-__attribute__ ((always_inline)) static  inline  void    atom_unlock(atomic_flag_t *lock);
+[[gnu::always_inline]]
+static  inline  void    atom_init(atomic_flag_t *lock);
+[[gnu::always_inline]]
+static  inline  void    atom_lock(atomic_flag_t *lock);
+[[gnu::always_inline]]
+static  inline  void    atom_unlock(atomic_flag_t *lock);
 
 /*
  * \brief atom_init
@@ -33,7 +36,8 @@ __attribute__ ((always_inline)) static  inline  void    atom_unlock(atomic_flag_
  * \note This function does not return a value (None).
  *
  */
-__attribute__ ((always_inline)) static  inline  void    atom_init(atomic_flag_t *lock) {
+[[gnu::always_inline]]
+static  inline  void    atom_init(atomic_flag_t *lock) {
 
     atomic_flag_clear(lock);
 }
@@ -48,7 +52,8 @@ __attribute__ ((always_inline)) static  inline  void    atom_init(atomic_flag_t 
  * \note This function does not return a value (None).
  *
  */
-__attribute__ ((always_inline)) static  inline  void    atom_lock(atomic_flag_t *lock) {
+[[gnu::always_inline]]
+static  inline  void    atom_lock(atomic_flag_t *lock) {
 
     while (atomic_flag_test_and_set(lock)) { ; }
 }
@@ -63,7 +68,8 @@ __attribute__ ((always_inline)) static  inline  void    atom_lock(atomic_flag_t 
  * \note This function does not return a value (None).
  *
  */
-__attribute__ ((always_inline)) static  inline  void    atom_unlock(atomic_flag_t *lock) {
+[[gnu::always_inline]]
+static  inline  void    atom_unlock(atomic_flag_t *lock) {
 
     atomic_flag_clear(lock);
 }
