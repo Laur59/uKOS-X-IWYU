@@ -8,12 +8,6 @@
 
 #pragma once
 
-// This header contains only board-specific compile-time macros.
-// It is not meant to contain function or variable declarations.
-#if defined(__clang__)
-#  pragma clang diagnostic ignored "-Wempty-translation-unit"
-#endif
-
 #ifndef Pico2_rp2350_S
 #define Pico2_rp2350_S
 #endif
@@ -22,7 +16,7 @@
 // ------------------
 
 #define KCPU                "ARM-Cortex m33 U"
-#define KCONTROLLER         "rp23450"
+#define KCONTROLLER         "rp2350"
 #define KBOARD              "Pico2 rp2350 (Variant_Test)"
 #define KTARGET             "Pico2_rp2350"
 

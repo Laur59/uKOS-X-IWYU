@@ -9,22 +9,13 @@
 #include    "cmns.h"
 
 #include    <stdint.h>
-#include    <reent.h>
 
 #include    "clockTree.h"
 #include    "macros.h"
 #include    "macros_core.h"
 #include    "modules.h"
 #include    "soc_reg.h"
-
-// Weak stubs for --wrap linker flags injected by system.cmake.
-// The full newlib manager (Phase 2+) provides strong overrides.
-
-[[gnu::weak]] void *__wrap__malloc_r (struct _reent *r, size_t size)              { (void)r; (void)size;             return NULL; }
-[[gnu::weak]] void *__wrap__realloc_r(struct _reent *r, void *ptr, size_t size)  { (void)r; (void)ptr; (void)size;  return NULL; }
-[[gnu::weak]] void *__wrap__calloc_r (struct _reent *r, size_t nmemb, size_t sz) { (void)r; (void)nmemb; (void)sz;  return NULL; }
-[[gnu::weak]] void  __wrap__free_r   (struct _reent *r, void *ptr)               { (void)r; (void)ptr;                           }
-[[gnu::weak, noreturn]] void __wrap___stack_chk_fail(void)                       { while (1) {}                                   }
+#include    "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -196,25 +187,29 @@ void    cmns_receive([[maybe_unused]] serialManager_t serialManager, char_t *dat
 /*
  * \brief cmns_wait
  *
- * - Simple delay loop for RISC-V
+ * - Simple delay loop
  *
  * \param[in]   us      Delay in microseconds (approximate)
  *
  * \note This function does not return a value (None).
  *
  */
-void    cmns_wait(uint32_t us) {
-    uint32_t    wkUs = us, time;
-
+#ifdef __riscv
     // Calibrated for ~150 MHz Hazard3 with cache.
     // The compiled busy-loop body is addi/nop/bltu — 4 cycles per
     // iteration in steady state. wkUs = (us/4) * (clock/1e6) gives
     // the iteration count needed to span `us` microseconds.
+    #define CYCLES_PER_ITERATION    4U
+#else
+    #define CYCLES_PER_ITERATION    7U
+#endif
+void    cmns_wait(uint32_t us) {
+    uint32_t    wkUs = us, time;
 
-    wkUs = (wkUs / 4u) * (KFREQUENCY_CORE / 1000000u);
+    wkUs = (wkUs / CYCLES_PER_ITERATION) * (KFREQUENCY_CORE / 1000000U);
 
-    wkUs = (wkUs == 0u) ? (1u) : (wkUs);
+    wkUs = (wkUs == 0U) ? 1U : wkUs;
     for (time = 0; time < wkUs; time++) {
-        __asm volatile ("nop");
+        NOP;
     }
 }

@@ -1,14 +1,44 @@
 /*
  * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
- * Pico2_rp2350_RV32IMAC – Stub for the "asmp" manager.
- *
+ * Goal:     stub for the managemen of the "asmp" manager with msip,
  *           Inter-core messaging via SIO doorbell.
- *           Ported from the ARM Pico2_rp2350 version;
- *           the SIO registers and IRQ dispatch are identical on Hazard3.
+ *           SIO registers and IRQ dispatch are identical on ARM and Hazard3.
  *
- *           Core references reflect the Hazard3 RV32IMAC core name.
+ *           The messages coming from the API are routed to the respective
+ *           msip for the IPC management.
+ *
+ *           Generic from the API
+ *
+ *           KASMP_MESSAGE_VALID_FOR_CORE_0
+ *           KASMP_MESSAGE_VALID_FOR_CORE_1
+ *           KASMP_MESSAGE_ACKNOWLEDGE_THE_CORE_0 (filtered)
+ *           KASMP_MESSAGE_ACKNOWLEDGE_THE_CORE_1 (altered)
+ *
+ *           Ex.
+ *           Core 0 send a message
+ *               SenderFull[KASMP_CORE_1] = true
+ *               Generate the message KASMP_MESSAGE_VALID_FOR_CORE_1 on the core 1
+ *
+ *           Core 1 receives the message KASMP_MESSAGE_VALID_FOR_CORE_1
+ *               ReceiverEmpty = false
+ *               ...
+ *               Read the message
+ *               Generate the message KASMPMESSAGE_ACKNOWLEDGE_FROM_CORE_1
+ *               SenderFull[KASMP_CORE_1] = false
+ *
+ *           Important:
+ *           In this multicore communication layer, we must take into account both heterogeneous (e.g., M4 + M7)
+ *           and homogeneous (e.g., 2 × M33) core configurations.
+ *
+ *           For uKOS:
+ *           In a heterogeneous configuration, KNB_CORES is always equal to 1.
+ *           In a homogeneous configuration, KNB_CORES is always greater than 1.
+ *           Be careful with the PREEMPTION_THRESHOLD macro to ensure it returns the correct core:
+ *           In a heterogeneous configuration: PREEMPTION_THRESHOLD(KCORE_0)
+ *           In a homogeneous configuration: PREEMPTION_THRESHOLD(core)
  */
 
 #include    "asmp/asmp.h"

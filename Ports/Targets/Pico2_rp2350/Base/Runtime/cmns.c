@@ -8,11 +8,12 @@
 
 #include    "cmns.h"
 
+#include    <stdint.h>
+
 #include    "clockTree.h"
 #include    "macros.h"
 #include    "macros_core.h"
 #include    "modules.h"
-#include    "serial/serial.h"
 #include    "soc_reg.h"
 #include    "types.h"
 
@@ -186,16 +187,29 @@ void    cmns_receive([[maybe_unused]] serialManager_t serialManager, char_t *dat
 /*
  * \brief cmns_wait
  *
+ * - Simple delay loop
+ *
  * \param[in]   us      Delay in microseconds (approximate)
  *
  * \note This function does not return a value (None).
  *
  */
+#ifdef __riscv
+    // Calibrated for ~150 MHz Hazard3 with cache.
+    // The compiled busy-loop body is addi/nop/bltu — 4 cycles per
+    // iteration in steady state. wkUs = (us/4) * (clock/1e6) gives
+    // the iteration count needed to span `us` microseconds.
+    #define CYCLES_PER_ITERATION    4U
+#else
+    #define CYCLES_PER_ITERATION    7U
+#endif
 void    cmns_wait(uint32_t us) {
     uint32_t    wkUs = us, time;
 
-    wkUs = (wkUs / 7U) * (KFREQUENCY_CORE / 1000000U);
+    wkUs = (wkUs / CYCLES_PER_ITERATION) * (KFREQUENCY_CORE / 1000000U);
 
     wkUs = (wkUs == 0U) ? 1U : wkUs;
-    for (time = 0; time < wkUs; time++) { NOP; }
+    for (time = 0; time < wkUs; time++) {
+        NOP;
+    }
 }
