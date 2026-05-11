@@ -131,7 +131,8 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
  *              - Send the data to core x"
  *
  */
-static void __attribute__ ((noreturn)) local_process_SndX(const void *argument) {
+[[noreturn]]
+static void local_process_SndX(const void *argument) {
             uint32_t    core, toCore, size, order = 0U;
             uint8_t     *receive = nullptr, *send = nullptr;
             mbox_t      *mailBox;
@@ -211,7 +212,8 @@ static void __attribute__ ((noreturn)) local_process_SndX(const void *argument) 
  *              - Write a message into the mailbox "To receive from core x"
  *
  */
-static void __attribute__ ((noreturn)) local_process_RecX(const void *argument) {
+[[noreturn]]
+static void local_process_RecX(const void *argument) {
             uint32_t    core, fromCore, size, order;
             uint8_t     *receive = nullptr, *send = nullptr;
             mbox_t      *mailBox;

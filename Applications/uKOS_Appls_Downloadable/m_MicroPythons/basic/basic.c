@@ -97,7 +97,8 @@ MODULE(
  *          - Toggle LED 1
  *
  */
-static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
+[[noreturn]]
+static void aProcess_0(const void *argument) {
 
     UNUSED(argument);
 
@@ -116,7 +117,8 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *          - Toggle LED 2
  *
  */
-static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
+[[noreturn]]
+static void aProcess_1(const void *argument) {
             uint32_t            size;
             uint8_t             *memory;
             microPythonCnf_t    configure;

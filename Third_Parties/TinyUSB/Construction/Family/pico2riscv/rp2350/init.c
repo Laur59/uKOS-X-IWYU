@@ -6,6 +6,7 @@
  * Board initial set-up (RP2350 Hazard3 RV32IMAC).
  */
 
-__attribute__((weak)) void __unhandled_user_irq(void) {
+[[gnu::weak]]
+void __unhandled_user_irq(void) {
   while (1) { __asm volatile("wfi"); }
 }

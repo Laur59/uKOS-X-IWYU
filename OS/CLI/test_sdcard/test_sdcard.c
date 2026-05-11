@@ -142,7 +142,8 @@ static  int32_t test_sdcard_clean(uint32_t argc, const char_t *argv[]) {
  * - Check the sdcard (Write / Read) on all the sectors
  *
  */
-static void __attribute__ ((noreturn)) local_process(const void *argument) {
+[[noreturn]]
+static void local_process(const void *argument) {
             uint8_t                 *wBuffer;
             uint8_t                 *rBuffer;
             int32_t                 status;
@@ -275,7 +276,8 @@ static void __attribute__ ((noreturn)) local_process(const void *argument) {
  * \brief local_error
  *
  */
-static void __attribute__ ((noreturn)) local_error(uint8_t error, int32_t status, uint32_t sector, uint8_t *wBuffer, uint8_t *rBuffer) {
+[[noreturn]]
+static void local_error(uint8_t error, int32_t status, uint32_t sector, uint8_t *wBuffer, uint8_t *rBuffer) {
 
     switch (error) {
         case KERR_NOMEM:    { (void)dprintf(KSYST, "Error: Not enough memory\n");                                                                 break; }

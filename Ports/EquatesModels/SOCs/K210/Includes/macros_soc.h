@@ -151,7 +151,7 @@ extern  void                    (*vMsgs_process[KNB_CORES])(uint32_t core, uint6
 #endif
 
 #ifndef INTERRUPTION_OFF
-#define INTERRUPTION_OFF        volatile    uint32_t    __savePLIC_msk __attribute__ ((unused));                                \
+#define INTERRUPTION_OFF        [[maybe_unused]] volatile    uint32_t    __savePLIC_msk ;                                \
                                 __savePLIC_msk = plic->targets.target[GET_RUNNING_CORE].priority_threshold;                     \
                                 (void)__savePLIC_msk;                                                                           \
                                 plic->targets.target[GET_RUNNING_CORE].priority_threshold = KINT_IMASK_OFF

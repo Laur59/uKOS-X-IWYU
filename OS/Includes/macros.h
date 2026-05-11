@@ -44,7 +44,7 @@
 
 #if (defined(__STDC_VERSION__)) && (__STDC_VERSION__ < 201112L)
 #define VAR_DECLARED_ALIGN(varDeclared, boundary)                                           \
-                                varDeclared __attribute__ ((aligned (boundary)))
+                                varDeclared [[gnu::aligned(boundary)]]
 
 #else
 #include    <stdalign.h>

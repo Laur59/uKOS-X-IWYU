@@ -104,7 +104,8 @@ extern  void    stub_intr_io_init(void);
  *          - Display the interruption counter
  *
  */
-static void __attribute__ ((noreturn)) aProcess(const void *argument) {
+[[noreturn]]
+static void aProcess(const void *argument) {
 
     UNUSED(argument);
 

@@ -36,7 +36,8 @@ extern  void    ui_draw(void);
  *                - Increment the VLGL tick
  *
  */
-static void __attribute__ ((noreturn)) aProcess_lvgl_tick(const void *argument) {
+[[noreturn]]
+static void aProcess_lvgl_tick(const void *argument) {
     uint32_t    core, delta;
     uint64_t    last, now;
 
@@ -72,7 +73,8 @@ static void __attribute__ ((noreturn)) aProcess_lvgl_tick(const void *argument) 
  *               - do nothing
  *
  */
-static void __attribute__ ((noreturn)) aProcess_lvgl(const void *argument) {
+[[noreturn]]
+static void aProcess_lvgl(const void *argument) {
     uint32_t    core, LCDBufferSize;
     lv_color_t  *LCDBuffer;
 

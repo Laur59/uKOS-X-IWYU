@@ -28,7 +28,7 @@
 // Timer date information
 // ----------------------
 
-typedef struct  _rtc_date {
+typedef struct  [[gnu::packed, gnu::aligned(4)]] _rtc_date {
     uint32_t    week     : 3;                       // Week. Range [0,6]
     uint32_t    reserved : 5;                       // Reserved
     uint32_t    day      : 5;                       // Day. Range [1,31]
@@ -36,49 +36,49 @@ typedef struct  _rtc_date {
     uint32_t    month    : 4;                       // Month. Range [1,12]
     uint32_t    reserved1: 4;                       // Reserved
     uint32_t    year     : 8;                       // Year. Range [0,99]
-} __attribute__ ((packed, aligned (4))) rtc_date_t;
+} rtc_date_t;
 
 // Timer time information
 // ----------------------
 
-typedef struct  _rtc_time {
+typedef struct  [[gnu::packed, gnu::aligned(4)]] _rtc_time {
     uint32_t    reserved : 10;                      // Reserved
     uint32_t    second   : 6;                       // Second. Range [0,59]
     uint32_t    minute   : 6;                       // Minute. Range [0,59]
     uint32_t    reserved0: 2;                       // Reserved
     uint32_t    hour     : 5;                       // Hour. Range [0,23]
     uint32_t    reserved1: 3;                       // Reserved
-} __attribute__ ((packed, aligned (4))) rtc_time_t;
+} rtc_time_t;
 
 // Timer counter initial value
 // ---------------------------
 
-typedef struct  _rtc_initial_count {
+typedef struct  [[gnu::packed, gnu::aligned(4)]] _rtc_initial_count {
     uint32_t    count    : 32;                      // RTC counter initial value
-} __attribute__ ((packed, aligned (4))) rtc_initial_count_t;
+} rtc_initial_count_t;
 
 // Timer counter current value
 // ---------------------------
 
-typedef struct  _rtc_current_count {
+typedef struct  [[gnu::packed, gnu::aligned(4)]] _rtc_current_count {
     uint32_t    count    : 32;                      // RTC counter current value
-} __attribute__ ((packed, aligned (4))) rtc_current_count_t;
+} rtc_current_count_t;
 
 // RTC interrupt settings
 // ----------------------
 
-typedef struct  _rtc_interrupt_ctrl {
+typedef struct  [[gnu::packed, gnu::aligned(4)]] _rtc_interrupt_ctrl {
     uint32_t    tick_enable        : 1;             // Tick interrupt enable
     uint32_t    alarm_enable       : 1;             // Alarm interrupt enable
     uint32_t    tick_int_mode      : 2;             // Tick interrupt mode
     uint32_t    reserved           : 20;            // Reserved
     uint32_t    alarm_compare_mask : 8;             // Alarm compare mask for interrupt
-} __attribute__ ((packed, aligned (4))) rtc_interrupt_ctrl_t;
+} rtc_interrupt_ctrl_t;
 
 // RTC register settings
 // ---------------------
 
-typedef struct  _rtc_register_ctrl {
+typedef struct  [[gnu::packed, gnu::aligned(4)]] _rtc_register_ctrl {
     uint32_t    read_enable            : 1;         // RTC timer read enable
     uint32_t    write_enable           : 1;         // RTC timer write enable
     uint32_t    reserved               : 11;        // Reserved
@@ -87,21 +87,21 @@ typedef struct  _rtc_register_ctrl {
     uint32_t    initial_count_mask     : 1;         // RTC counter initial count value mask
     uint32_t    interrupt_register_mask: 1;         // RTC interrupt register mask
     uint32_t    reserved0              : 1;         // Reserved
-} __attribute__ ((packed, aligned (4))) rtc_register_ctrl_t;
+} rtc_register_ctrl_t;
 
 // Timer extended information
 // --------------------------
 
-typedef struct  _rtc_extended {
+typedef struct  [[gnu::packed, gnu::aligned(4)]] _rtc_extended {
     uint32_t    century       : 5;                  // Century. Range [0,31]
     uint32_t    leap_year     : 1;                  // Is leap year. 1 is leap year, 0 is not
     uint32_t    reserved      : 26;                 // Reserved
-} __attribute__ ((packed, aligned (4))) rtc_extended_t;
+} rtc_extended_t;
 
 // RTC object
 // ----------
 
-typedef struct  _rtc {
+typedef struct  [[gnu::packed, gnu::aligned(4)]] _rtc {
     rtc_date_t          date;                   // No. 0 (0x00): Timer date information
     rtc_time_t          time;                   // No. 1 (0x04): Timer time information
     rtc_date_t          alarm_date;             // No. 2 (0x08): Alarm date information
@@ -113,6 +113,6 @@ typedef struct  _rtc {
     uint32_t            reserved0;              // No. 8 (0x20): Reserved
     uint32_t            reserved1;              // No. 9 (0x24): Reserved
     rtc_extended_t      extended;               // No. 10 (0x28): Timer extended information
-} __attribute__ ((packed, aligned (4))) rtc_t;
+} rtc_t;
 
 #define rtc     ((volatile rtc_t *)0x50460000U)

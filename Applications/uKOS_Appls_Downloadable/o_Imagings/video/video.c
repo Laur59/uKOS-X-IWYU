@@ -99,7 +99,8 @@ static  void    local_prepareImage(uint8_t *image, uint32_t w, uint32_t h, uint3
  *          - Send it over usb
  *
  */
-static void __attribute__ ((noreturn)) aProcess(const void *argument) {
+[[noreturn]]
+static void aProcess(const void *argument) {
             uint32_t    w, h, frame = 0;
             uint8_t     *image_0, *image_1;
             float64_t   frameRate = 0.0;

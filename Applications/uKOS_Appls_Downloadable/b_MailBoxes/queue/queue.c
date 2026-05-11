@@ -94,7 +94,8 @@ MODULE(
  *          - Toggle LED 1
  *
  */
-static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
+[[noreturn]]
+static void aProcess_0(const void *argument) {
     uintptr_t   message_1_to_0, expected_1_to_0 = 0U;
     mbox_t      *queue_1_to_0;
     mcnf_t      configure = {
@@ -141,7 +142,8 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *          - Write a message into the queue queue 1-to-0
  *
  */
-static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
+[[noreturn]]
+static void aProcess_1(const void *argument) {
     uintptr_t   message_1_to_0 = 0;
     mbox_t      *queue_1_to_0;
 

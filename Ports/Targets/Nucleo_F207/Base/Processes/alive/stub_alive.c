@@ -24,7 +24,8 @@
  * - Blink the LED alive
  *
  */
-void __attribute__ ((noreturn)) stub_alive_process(const void *argument) {
+[[noreturn]]
+void    stub_alive_process(const void *argument) {
             uint8_t         led;
             uint32_t        time[2];
     const   bool            *killRequest;

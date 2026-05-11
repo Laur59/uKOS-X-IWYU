@@ -31,12 +31,18 @@ struct  corelock {
 
 // Prototypes
 
-__attribute__ ((always_inline)) static  inline  void    spin_lockCore(corelock_t *lock);
-__attribute__ ((always_inline)) static  inline  void    spin_unLockCore(corelock_t *lock);
-__attribute__ ((always_inline)) static  inline  bool    spin_tryLockCore(corelock_t *lock);
-__attribute__ ((always_inline)) static  inline  void    spin_lock(spinlock_t *lock);
-__attribute__ ((always_inline)) static  inline  void    spin_unLock(spinlock_t *lock);
-__attribute__ ((always_inline)) static  inline  bool    spin_tryLock(spinlock_t *lock);
+[[gnu::always_inline]]
+static  inline  void    spin_lockCore(corelock_t *lock);
+[[gnu::always_inline]]
+static  inline  void    spin_unLockCore(corelock_t *lock);
+[[gnu::always_inline]]
+static  inline  bool    spin_tryLockCore(corelock_t *lock);
+[[gnu::always_inline]]
+static  inline  void    spin_lock(spinlock_t *lock);
+[[gnu::always_inline]]
+static  inline  void    spin_unLock(spinlock_t *lock);
+[[gnu::always_inline]]
+static  inline  bool    spin_tryLock(spinlock_t *lock);
 
 #define SPIN_LOCK_INIT      { ATOMIC_FLAG_INIT }
 
@@ -64,7 +70,8 @@ __attribute__ ((always_inline)) static  inline  bool    spin_tryLock(spinlock_t 
  * \note This function does not return a value (None).
  *
  */
-__attribute__ ((always_inline)) static  inline  void    spin_lockCore(corelock_t *lock) {
+[[gnu::always_inline]]
+static  inline  void    spin_lockCore(corelock_t *lock) {
     uint32_t    core;
 
     core = GET_RUNNING_CORE;
@@ -112,7 +119,8 @@ __attribute__ ((always_inline)) static  inline  void    spin_lockCore(corelock_t
  * \note This function does not return a value (None).
  *
  */
-__attribute__ ((always_inline)) static  inline  void    spin_unLockCore(corelock_t *lock) {
+[[gnu::always_inline]]
+static  inline  void    spin_unLockCore(corelock_t *lock) {
     uint32_t    core;
 
     core = GET_RUNNING_CORE;
@@ -145,7 +153,8 @@ __attribute__ ((always_inline)) static  inline  void    spin_unLockCore(corelock
  * \return      false       Spin was unlocked, now is locked by me
  *
  */
-__attribute__ ((always_inline)) static  inline  bool    spin_tryLockCore(corelock_t *lock) {
+[[gnu::always_inline]]
+static  inline  bool    spin_tryLockCore(corelock_t *lock) {
     bool        busy = false;
     uint32_t    core;
 
@@ -181,7 +190,8 @@ __attribute__ ((always_inline)) static  inline  bool    spin_tryLockCore(coreloc
  * \note This function does not return a value (None).
  *
  */
-__attribute__ ((always_inline)) static  inline  void    spin_lock(spinlock_t *lock) {
+[[gnu::always_inline]]
+static  inline  void    spin_lock(spinlock_t *lock) {
 
 // MISRA: memory order has to be consistent (defaut)
 
@@ -200,7 +210,8 @@ __attribute__ ((always_inline)) static  inline  void    spin_lock(spinlock_t *lo
  * \note This function does not return a value (None).
  *
  */
-__attribute__ ((always_inline)) static  inline  void    spin_unLock(spinlock_t *lock) {
+[[gnu::always_inline]]
+static  inline  void    spin_unLock(spinlock_t *lock) {
 
 // MISRA: no specific order
 
@@ -217,7 +228,8 @@ __attribute__ ((always_inline)) static  inline  void    spin_unLock(spinlock_t *
  * \return      false       Spin was unlocked, now is locked by me
  *
  */
-__attribute__ ((always_inline)) static  inline  bool    spin_tryLock(spinlock_t *lock) {
+[[gnu::always_inline]]
+static  inline  bool    spin_tryLock(spinlock_t *lock) {
     bool    state;
 
 // MISRA: no specific order

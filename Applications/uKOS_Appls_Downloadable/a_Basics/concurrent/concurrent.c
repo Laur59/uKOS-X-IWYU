@@ -125,7 +125,8 @@ static  const   myPack_t    aParameter[6] = {
  *              - Display the text (t, u)
  *
  */
-static void __attribute__ ((noreturn)) aProcess(const void *argument) {
+[[noreturn]]
+static void aProcess(const void *argument) {
     const   myPack_t    *pack;
             char_t      *name;
             uint32_t    counter, time;

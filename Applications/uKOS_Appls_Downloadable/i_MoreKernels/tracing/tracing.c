@@ -93,7 +93,8 @@ MODULE(
  *       Display the registers
  *
  */
-static void __attribute__ ((noreturn)) aProcess(const void *argument) {
+[[noreturn]]
+static void aProcess(const void *argument) {
     uint32_t    time = 20U;
     uintptr_t   i;
 

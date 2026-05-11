@@ -99,7 +99,8 @@ MODULE(
  *              - pulse on the LED 2
  *
  */
-static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
+[[noreturn]]
+static void aProcess_0(const void *argument) {
     int32_t     status;
     sema_t      *semaphore;
 

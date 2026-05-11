@@ -148,7 +148,8 @@ static  int32_t imager_clean(uint32_t argc, const char_t *argv[]) {
  * - Image acquisition
  *
  */
-static void __attribute__ ((noreturn)) local_process(const void *argument) {
+[[noreturn]]
+static void local_process(const void *argument) {
     volatile        void            *image;
             const   bool            *killRequest;
     static  const   imagerCnf_t configureIMG0 = {

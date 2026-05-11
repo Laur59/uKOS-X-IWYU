@@ -66,7 +66,8 @@ bool    installaProcess_sensor(void) {
  *       - Send a new value to the dispatcher
  *
  */
-static void __attribute__ ((noreturn)) aProcess(const void *argument) {
+[[noreturn]]
+static void aProcess(const void *argument) {
     uint8_t     value = 0U;
     uintptr_t   message_sensor;
 

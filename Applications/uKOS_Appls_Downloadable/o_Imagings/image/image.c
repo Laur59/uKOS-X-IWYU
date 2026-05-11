@@ -110,7 +110,8 @@ static  void    local_transfer(void);
  *          - Acquire an image
  *
  */
-static void __attribute__ ((noreturn)) aProcess_acquisition(const void *argument) {
+[[noreturn]]
+static void aProcess_acquisition(const void *argument) {
     imagerCnf_t configureIMG0;
     mutx_t          *mutex;
 
@@ -172,7 +173,8 @@ static void __attribute__ ((noreturn)) aProcess_acquisition(const void *argument
  * - P1: Send an image
  *
  */
-static void __attribute__ ((noreturn)) aProcess_send(const void *argument) {
+[[noreturn]]
+static void aProcess_send(const void *argument) {
     uint8_t     *imageGray, *imageYUY2;
     mutx_t      *mutex;
 

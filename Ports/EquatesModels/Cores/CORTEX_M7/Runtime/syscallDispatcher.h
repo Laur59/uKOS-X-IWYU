@@ -18,6 +18,7 @@
 #define KKERN_MESSAGE           0               // uKernel (messages passing)
 #define KPRIV_ELEVATION         1               // priv (privilege elevation)
 
-void    __attribute__ ((noreturn)) syscall(const uintptr_t *arg);
+[[noreturn]]
+void    syscall(const uintptr_t *arg);
 
 extern  void    kernel_message_C0(void);

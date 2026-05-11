@@ -3,7 +3,7 @@
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
- * Pico2_rp2350_RV32IMAC – Alive process: blink a LED to signal the system is running.
+ * Alive process: blink a LED to signal the system is running.
  */
 
 #include    "alive/alive.h"
@@ -16,7 +16,14 @@
 #include    "macros_core.h"
 #include    "types.h"
 
-void __attribute__ ((noreturn)) stub_alive_process(const void *argument) {
+/*
+ * \brief stub_alive_process
+ *
+ * - Blink the LED alive
+ *
+ */
+[[noreturn]]
+void    stub_alive_process(const void *argument) {
             uint8_t         led;
             uint32_t        time[2];
     const   bool            *killRequest;
@@ -34,6 +41,8 @@ void __attribute__ ((noreturn)) stub_alive_process(const void *argument) {
         led_off(led);
         kern_suspendProcess(time[1]);
     }
+
+// Kill the process & the ressources
 
     INTERRUPTION_OFF;
     led_off(led);

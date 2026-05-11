@@ -98,7 +98,8 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
  * - Start-up of the system
  *
  */
-static void __attribute__ ((noreturn)) local_process(const void *argument) {
+[[noreturn]]
+static void local_process(const void *argument) {
 
     UNUSED(argument);
 

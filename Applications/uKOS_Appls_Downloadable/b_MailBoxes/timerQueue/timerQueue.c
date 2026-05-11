@@ -105,7 +105,8 @@ extern  void    stub_intr_timer_init(void);
  *          - Toggle the LED 1
  *
  */
-static void __attribute__ ((noreturn)) aProcess(const void *argument) {
+[[noreturn]]
+static void aProcess(const void *argument) {
     uintptr_t   counter = 0U, expectedCounter = 0U;
     int32_t     status;
     mbox_t      *queue;

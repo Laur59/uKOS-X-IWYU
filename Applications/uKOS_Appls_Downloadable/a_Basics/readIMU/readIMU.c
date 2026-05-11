@@ -142,7 +142,8 @@ static  void    local_display(int32_t fpPrint,
  *          - Toggle LED 1
  *
  */
-static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
+[[noreturn]]
+static void aProcess_0(const void *argument) {
 
     UNUSED(argument);
 
@@ -161,7 +162,8 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *          - Display the values
  *
  */
-static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
+[[noreturn]]
+static void aProcess_1(const void *argument) {
                     float64_t           mAcce_X, mAcce_Y, mAcce_Z;
                     float64_t           mGyro_X, mGyro_Y, mGyro_Z;
                     float64_t           mMagn_X, mMagn_Y, mMagn_Z;

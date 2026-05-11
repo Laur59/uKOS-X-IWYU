@@ -6,6 +6,7 @@
  * Goal:     Board initial set-up.
  */
 
-__attribute__((weak)) void __unhandled_user_irq(void) {
+[[gnu::weak]]
+void __unhandled_user_irq(void) {
   while (1) { __asm volatile("wfi"); }
 }

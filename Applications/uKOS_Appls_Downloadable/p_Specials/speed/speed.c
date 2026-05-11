@@ -124,7 +124,8 @@ static  volatile    bool        vEnd = false;
  *          - generate the signal KTRIGGER
  *
  */
-static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
+[[noreturn]]
+static void aProcess_0(const void *argument) {
     uint64_t    counter, time;
     sign_t      *group;
 
@@ -173,7 +174,8 @@ static void __attribute__ ((noreturn)) aProcess_0(const void *argument) {
  *          - Increment a counter
  *
  */
-static void __attribute__ ((noreturn)) aProcess_1(const void *argument) {
+[[noreturn]]
+static void aProcess_1(const void *argument) {
     uint32_t    signal;
     sign_t      *group;
 

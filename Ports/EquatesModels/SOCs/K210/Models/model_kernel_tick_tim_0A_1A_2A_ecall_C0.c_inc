@@ -329,7 +329,8 @@ static  void    local_PREEMPTION_IRQHandler_C0(uint32_t core, uint64_t parameter
 // have to comply with the eabi
 //
 //                                                                             a0             a1                  a2                    a3
-void    __attribute__ ((noinline, used)) local_changeContext_PRE_C0(uint32_t core, uint64_t parameter, uint64_t *threshold, uintptr_t *stack) {
+[[gnu::noinline, gnu::used]]
+void    local_changeContext_PRE_C0(uint32_t core, uint64_t parameter, uint64_t *threshold, uintptr_t *stack) {
     const   volatile    uint64_t    *newStack;
 
 // Save the plic threshold on the current process stack
@@ -367,7 +368,8 @@ void    __attribute__ ((noinline, used)) local_changeContext_PRE_C0(uint32_t cor
  *     - Start time of the process
  *
  */
-static  void    __attribute__ ((noinline)) local_newContextPRE_C0(uint32_t core, uint64_t parameter) {
+[[gnu::noinline]]
+static  void    local_newContextPRE_C0(uint32_t core, uint64_t parameter) {
 
     vExce_isException[core] = false;
 
@@ -456,7 +458,8 @@ static  void    local_TIM2_A_IRQHandler_C0(uint32_t core, uint64_t parameter) {
 // have to comply with the eabi
 //
 //                                                                             a0             a1                  a2                    a3
-void    __attribute__ ((noinline, used)) local_changeContext_TOU_C0(uint32_t core, uint64_t parameter, uint64_t *threshold, uintptr_t *stack) {
+[[gnu::noinline, gnu::used]]
+void    local_changeContext_TOU_C0(uint32_t core, uint64_t parameter, uint64_t *threshold, uintptr_t *stack) {
     const   volatile    uint64_t    *newStack;
 
 // Save the plic threshold on the current process stack
@@ -497,7 +500,8 @@ void    __attribute__ ((noinline, used)) local_changeContext_TOU_C0(uint32_t cor
  *     - Start time of the process
  *
  */
-static  void    __attribute__ ((noinline)) local_newContextTOU_C0(uint32_t core, uint64_t parameter) {
+[[gnu::noinline]]
+static  void    local_newContextTOU_C0(uint32_t core, uint64_t parameter) {
 
     vExce_isException[core] = false;
 
@@ -580,7 +584,8 @@ static  void    local_ECALL_message_C0([[maybe_unused]] uint32_t core, [[maybe_u
 // have to comply with the eabi
 //
 //                                                                             a0             a1                a2                    a3
-void    __attribute__ ((noinline, used)) local_changeContext_MSG_C0(uint32_t core, uint64_t message, uint64_t *threshold, uintptr_t *stack) {
+[[gnu::noinline, gnu::used]]
+void    local_changeContext_MSG_C0(uint32_t core, uint64_t message, uint64_t *threshold, uintptr_t *stack) {
     const   volatile    uint64_t    *newStack;
 
 // Save the plic threshold on the current process stack
@@ -619,7 +624,8 @@ void    __attribute__ ((noinline, used)) local_changeContext_MSG_C0(uint32_t cor
  *     - Start time of the process
  *
  */
-static  void    __attribute__ ((noinline)) local_newContextMSG_C0(uint32_t core, uint64_t message) {
+[[gnu::noinline]]
+static  void    local_newContextMSG_C0(uint32_t core, uint64_t message) {
 
     vExce_isException[core] = false;
 

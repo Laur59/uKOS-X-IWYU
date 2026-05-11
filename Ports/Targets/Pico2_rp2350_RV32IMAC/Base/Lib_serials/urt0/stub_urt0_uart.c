@@ -3,7 +3,7 @@
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
- * Pico2_rp2350_RV32IMAC – Connect the "urt0" manager to the UART device.
+ * Stub for the connection of the "urt0" manager to the uart device.
  */
 
 #include    "clockTree.h"
@@ -15,14 +15,51 @@
 // Model callbacks
 // ---------------
 
-static  void    cb_enable_C0(void) { }
-static  void    cb_enable_C1(void) { }
+/*
+ * \brief cb_enable_Cx
+ *
+ * - Enable the device (clock)
+ *
+ */
+static  void    cb_enable_C0(void) {
 
-static  bool    cb_CTSCheck_C0(void) { return true; }
-static  bool    cb_CTSCheck_C1(void) { return true; }
+}
 
-static  void    cb_init_C0(void) { }
-static  void    cb_init_C1(void) { }
+static  void    cb_enable_C1(void) {
+
+}
+
+/*
+ * \brief cb_CTSCheck_Cx
+ *
+ * - Verify the CTS state
+ *   If CTS =  1, then disable the uart TX interruptions
+ *
+ */
+static  bool    cb_CTSCheck_C0(void) {
+
+    return true;
+}
+
+static  bool    cb_CTSCheck_C1(void) {
+
+    return true;
+}
+
+/*
+ * \brief cb_init_Cx
+ *
+ * - Specific initialisations          __
+ *   i.e the hardware CTS interruption   \__
+ *
+ */
+static  void    cb_init_C0(void) {
+
+}
+
+static  void    cb_init_C1(void) {
+
+}
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
@@ -56,6 +93,7 @@ int32_t stub_urt0_init(void) {
     int32_t     status;
 
     core = GET_RUNNING_CORE;
+
     if (core == KCORE_0) { status = model_uart_init_C0(); }
     else                 { status = model_uart_init_C1(); }
     return status;
@@ -66,6 +104,7 @@ int32_t stub_urt0_configure(const urtxCnf_t *configure) {
     int32_t     status;
 
     core = GET_RUNNING_CORE;
+
     if (core == KCORE_0) { status = model_uart_configure_C0(configure); }
     else                 { status = model_uart_configure_C1(configure); }
     return status;
@@ -76,6 +115,7 @@ int32_t stub_urt0_write(const uint8_t *buffer, uint32_t size) {
     int32_t     status;
 
     core = GET_RUNNING_CORE;
+
     if (core == KCORE_0) { status = model_uart_write_C0(buffer, size); }
     else                 { status = model_uart_write_C1(buffer, size); }
     return status;
@@ -86,6 +126,7 @@ int32_t stub_urt0_read(uint8_t *buffer, uint32_t *size) {
     int32_t     status;
 
     core = GET_RUNNING_CORE;
+
     if (core == KCORE_0) { status = model_uart_read_C0(buffer, size); }
     else                 { status = model_uart_read_C1(buffer, size); }
     return status;
@@ -96,6 +137,7 @@ int32_t stub_urt0_flush(void) {
     int32_t     status;
 
     core = GET_RUNNING_CORE;
+
     if (core == KCORE_0) { status = model_uart_flush_C0(); }
     else                 { status = model_uart_flush_C1(); }
     return status;

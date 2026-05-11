@@ -155,7 +155,8 @@ int32_t watchdog_arm(uint32_t time, uint8_t mode) {
  * - Cyclically re-arm the watchdog
  *
  */
-static void __attribute__ ((noreturn)) local_process_watchdog(const void *argument) {
+[[noreturn]]
+static void local_process_watchdog(const void *argument) {
             uint32_t        time, watchdog;
             bool            *releasePack;
     const   watchdogPack_t  *pack;

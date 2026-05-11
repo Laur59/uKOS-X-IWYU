@@ -6,24 +6,24 @@
  * Pico2_rp2350 – Linker memory regions, privileged-only mode.
  *
  *                       CODE
- * linker_stTEXT         +-----------------+
- *                       |                 |
- *                       | .isr_vector     |
- *                       | .text           |
- *                       | .rodata         |
- * linker_enRODATA       |                 |
- *                       +-----------------+
- * linker_stSignature    |                 |             DATA
- *                       +-----------------+ ........... +-----------------+ linker_stDATA
- * linker_stINDATA       |                 |             |                 |
- *                       | .data           |             | .data           |
- *                       |                 |             |                 | linker_enDATA
- *                       +-----------------+ ........... +-----------------+
- *                                                       |                 | linker_stBSS
- *                                                       | .bss            |
- *                                                       | COMMON          |
- *                                                       |                 | linker_enBSS
- *                                                       +-----------------+
+ * linker_stTEXT        +-----------------+
+ *                      |                 |
+ *                      | .isr_vector     |
+ *                      | .text           |
+ *                      | .rodata         |
+ * linker_enRODATA      |                 |
+ *                      +-----------------+
+ * linker_stSignature   |                 |             DATA
+ *                      +-----------------+ ........... +-----------------+ linker_stDATA
+ * linker_stINDATA      |                 |             |                 |
+ *                      | .data           |             | .data           |
+ *                      |                 |             |                 | linker_enDATA
+ *                      +-----------------+ ........... +-----------------+
+ *                                                      |                 | linker_stBSS
+ *                                                      | .bss            |
+ *                                                      | COMMON          |
+ *                                                      |                 | linker_enBSS
+ *                                                      +-----------------+
  */
 
 ENTRY(Reset_C0_Handler)
@@ -93,7 +93,7 @@ linker_lnShare              = config_sizeShare;                                 
 /* The heap has to be maintained aligned                    */
 /* on a boundary of 8-bytes                                 */
 
-linker_stHeap               = (linker_stPrgmData + linker_lnPrgmData);                      /* 0x20030000: start of the heap                            */
+linker_stHeap               = linker_stPrgmData + config_sizeData;                          /* 0x20030000: start of the heap                            */
 linker_lnHeap               = config_sizeHeap;                                              /* Length of the heap                                       */
 
 /* IMPORTANT:                                               */

@@ -166,7 +166,8 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
  *                        - Execute the command
  *
  */
-static void __attribute__ ((noreturn)) local_process(const void *argument) {
+[[noreturn]]
+static void local_process(const void *argument) {
             microPythonCnf_t    configure;
             bool                *releasePack;
             ioChannel_t         MPYSerialManager = KSYST, CLISerialManager = KSYST;
