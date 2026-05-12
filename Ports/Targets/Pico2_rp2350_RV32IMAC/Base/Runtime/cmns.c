@@ -123,10 +123,18 @@ void    cmns_send([[maybe_unused]] serialManager_t serialManager, const char_t *
         }
 
 // Core 1
+//
+// Phase 5: route Core 1's pre-startUp output to UART0 (not UART1) so that
+// panic messages and coreDump register dumps appear on the same physical
+// terminal as Core 1's later per-process dprintf output (the startUp
+// config maps Core 1's console to KURT0 = UART0 under
+// CONFIG_DIFFERENT_SERIAL_PER_CORE_S). Without this, Core 1's early
+// panic info goes to UART1 which has no terminal connection on the
+// standard Pico 2 wiring.
 
         case KCORE_1: {
             while (true) {
-                while ((REG(UART1)->UARTFR & UART_UARTFR_TXFF) != 0U) { ; }
+                while ((REG(UART0)->UARTFR & UART_UARTFR_TXFF) != 0U) { ; }
 
                 data = (uint8_t)*wkAscii;
                 wkAscii++;
@@ -135,7 +143,7 @@ void    cmns_send([[maybe_unused]] serialManager_t serialManager, const char_t *
                 }
 
                 cmns_wait(100);
-                REG(UART1)->UARTDR = (uint32_t)data;
+                REG(UART0)->UARTDR = (uint32_t)data;
             }
             break;
         }
@@ -175,9 +183,9 @@ void    cmns_receive([[maybe_unused]] serialManager_t serialManager, char_t *dat
 // Core 1
 
         case KCORE_1: {
-            while ((REG(UART1)->UARTFR & UART_UARTFR_RXFE) != 0U) { ; }
+            while ((REG(UART0)->UARTFR & UART_UARTFR_RXFE) != 0U) { ; }
 
-            dr = REG(UART1)->UARTDR;
+            dr = REG(UART0)->UARTDR;
             *data = (uint8_t)dr;
             break;
         }
