@@ -11,9 +11,10 @@ understanding of RP2350 (`/Tools/TestRom/Pico2_rp2350_RV32IMAC/`).
 Development is incremental; this document is kept as a living record of decisions,
 findings, and phase status.
 
-**Status:** Phase 3.5 implementation complete — full kernel boot linked and building clean. Ready for hardware validation.
+**Status:** Phase 5 implementation complete — kernel boot path wired for both
+cores, builds clean. Awaiting hardware validation.
 
-**Date:** 2026-05-09
+**Date:** 2026-05-12
 
 ### Target Structure
 
@@ -387,6 +388,74 @@ all `KID_FAM_DAEMONS` modules (stimer), then exits. `stub_startUp_launch()` call
 - `kern_suspendProcess(N)` suspends for N milliseconds ± 1 ms.
 - At least two processes running (idle + startUp), with `dprintf` output on UART0.
 - Phase 2 coreDump still fires on a deliberate fault.
+
+### Phase 5 — Dual-core kernel parity [implementation complete]
+
+**Goal.** Run the µKOS-X kernel on Core 1 with the same launcher-driven process
+distribution as the ARM port: each core hosts its own idle daemon, its own
+launcher, and the subset of `KID_FAM_PROCESSES` / `KID_FAM_DAEMONS` whose
+`oExecutionCore` mask includes that core.
+
+**Gap analysis (entering Phase 5).**
+
+| Component | State on entry |
+|---|---|
+| `Reset_C1_Handler`, per-hart `mtvec`, `main_C1` → `boot()` | done (Phase 3.5) |
+| `model_kernel_tim1_ecall_C1.c_inc` | drafted, contains residual `KCORE_0` references |
+| `stub_kern_kernel.c` dispatch on `GET_RUNNING_CORE` | only C0 branch wired |
+| `vSaveStack` / `vMessage` per hart | single global scalars — race between harts |
+| `vExce_indExcVectors[KCORE_1][11]` (ecall slot) | not registered |
+| TIMER C1 vector numbers | wired to `TIMER0_IRQ_*_C1_IRQn`, must be `TIMER1_IRQ_*_C1_IRQn` |
+| `stub_startUp.c` per-core branch | C0 only |
+| SIO doorbell ASMP | done (Phase 4) |
+| Core 1 MIE / MEIE | done (Phase 3.5) |
+
+**Plan.**
+
+1. **Per-hart ecall state.** Promote `vSaveStack` and `vMessage` in
+   `Ports/EquatesModels/SOCs/rp2350/Runtime/first-riscv.c` from scalars to
+   2-element arrays. The inline asm in `first_handle_trap` reads `mhartid` into a
+   scratch register, shifts left by 2, and offsets into the array base on both
+   the save and restore paths. `first_dispatch_ecall` and `kernel_message_C*`
+   index by `GET_RUNNING_CORE`. Without this, concurrent ecalls from the two
+   cores would corrupt each other's saved frame pointer.
+
+2. **Finalise `model_kernel_tim1_ecall_C1.c_inc`.** Replace the residual
+   `KCORE_0` references inside `kernel_message_C1` with `KCORE_1`; switch
+   `vSaveStack` / `vMessage` accesses to the C1 slot of the per-hart arrays;
+   strip the "Phase 3.3 — Core 1 not active" comments.
+
+3. **Vector numbers for Core 1 timers.** In `stub_kern_kernel.c`, switch
+   `TIMER_ALA0_VECTOR_NUMBER_C1` / `TIMER_ALA1_VECTOR_NUMBER_C1` from
+   `TIMER0_IRQ_*_C1_IRQn` to `TIMER1_IRQ_*_C1_IRQn`. Each core has its own
+   physical timer block: Core 0 drives TIMER0, Core 1 drives TIMER1, matching
+   the ARM port.
+
+4. **Stub dispatch on `GET_RUNNING_CORE`.** Restore the `else { model_kernel_*_C1(); }`
+   branches in all six stub wrappers (`init`, `runKernel`, `setLowPower`,
+   `readTickCount`, `newProcessTimeout`, `stopProcessTimeout`).
+
+5. **Register `kernel_message_C1`.** Already handled: `syscallDispatcher`
+   (installed at slot 11 by `exce_init()`) branches on `GET_RUNNING_CORE` and
+   calls either `kernel_message_C0` or `kernel_message_C1`. No change needed
+   in `exce.c`.
+
+6. **Per-core startUp.** Already in place: `stub_startUp.c` is identical to the
+   ARM port and already branches on `GET_RUNNING_CORE` to route the console per
+   core (USB CDC0 on Core 0, UART0 on Core 1 when
+   `CONFIG_DIFFERENT_SERIAL_PER_CORE_S=true`).
+
+7. **Hardware bring-up.** Acceptance criteria:
+   - `kern_switchFast()` completes on both cores; both idle daemons run.
+   - UART0 shows interleaved `tick N C0` / `tick N C1` output.
+   - LED_SYSTEM (C0) and LED_GREEN (C1) blink independently at 500 ms.
+   - SIO doorbell ASMP (Phase 4 mcore daemon) still functional.
+   - Deliberate fault on either core still triggers Phase 2 coreDump.
+
+**Out of scope (deferred to a later phase).**
+- U-mode + PMP per-process isolation.
+- Preemptive context switch from ALARM1 interrupt context (both cores still
+  cooperate via ecall — same as Phase 3.5 on Core 0).
 
 ---
 

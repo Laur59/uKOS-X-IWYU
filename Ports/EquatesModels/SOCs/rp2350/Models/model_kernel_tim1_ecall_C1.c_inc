@@ -5,15 +5,13 @@
  * Pico2_rp2350_RV32IMAC – Kernel model for Core 1.
  *
  * Resources used:
- *   TIMER0 ALARM0 – 1-ms reference tick  (scheduler_callBackFast)
- *   TIMER0 ALARM1 – 20-ms process quota  (Phase 3.3: timeout tracking only,
+ *   TIMER1 ALARM0 – 1-ms reference tick  (scheduler_callBackFast)
+ *   TIMER1 ALARM1 – 20-ms process quota  (timeout tracking only,
  *                                          no preemptive stack switch)
  *   ecall slot 11 – kernel message path  (kernel_message_C1 via ecall)
  *
- * Preemptive context switching from interrupt context requires saving the full
- * 35-word process frame (KERN_SAVE_FRAME) and setting vSaveStack from the MEI
- * handler. This is deferred to Phase 3.4. For Phase 3.3, context switches
- * happen exclusively via ecall (process-initiated kernel calls).
+ * Context switches happen exclusively via ecall (process-initiated kernel
+ * calls). Preemptive context switching from interrupt context is deferred.
  *
  * Exported routines:
  *   model_kernel_init_C1
@@ -45,15 +43,15 @@ static  volatile    uint32_t    vTimeStop_C1      = 0U;
 static  volatile    uint32_t    vTimeLastStart_C1 = 0U;
 static  volatile    uint64_t    vTickCount_C1     = 0U;
 
-// External: set/restored by first_handle_trap ecall path
+// External: set/restored by first_handle_trap ecall path (per-hart arrays).
 
-extern  volatile    uintptr_t   vSaveStack;
-extern  volatile    uint32_t    vMessage;
+extern  volatile    uintptr_t   vSaveStack[KNB_CORES];
+extern  volatile    uint32_t    vMessage[KNB_CORES];
 
 // Prototypes
 
-static  void    local_TIM0_ALA0_IRQHandler_C1(void);
-static  void    local_TIM0_ALA1_IRQHandler_C1(void);
+static  void    local_TIM1_ALA0_IRQHandler_C1(void);
+static  void    local_TIM1_ALA1_IRQHandler_C1(void);
 static  void    local_timeStmp_C1(bool overflow);
 static  void    local_timeStart_C1(void);
 static  void    local_timeStop_C1(void);
@@ -61,18 +59,18 @@ static  void    local_timeStop_C1(void);
 /*
  * \brief model_kernel_init_C1
  *
- * - Reset TIMER0, register interrupt vectors, set priorities, arm both alarms.
+ * - Reset TIMER1, register interrupt vectors, set priorities, arm both alarms.
  *
  */
 static  void    model_kernel_init_C1(void) {
 
-    REG(RESETS)->RESET &= ~RESETS_RESET_TIMER0;
-    while ((REG(RESETS)->RESET_DONE & RESETS_RESET_TIMER0) != RESETS_RESET_TIMER0) { ; }
+    REG(RESETS)->RESET &= ~RESETS_RESET_TIMER1;
+    while ((REG(RESETS)->RESET_DONE & RESETS_RESET_TIMER1) != RESETS_RESET_TIMER1) { ; }
 
     TIMER_C1->INTR = 0xFFFFFFFFU;
 
-    INTERRUPT_VECTOR(TIMER_ALA0_VECTOR_NUMBER_C1, local_TIM0_ALA0_IRQHandler_C1);
-    INTERRUPT_VECTOR(TIMER_ALA1_VECTOR_NUMBER_C1, local_TIM0_ALA1_IRQHandler_C1);
+    INTERRUPT_VECTOR(TIMER_ALA0_VECTOR_NUMBER_C1, local_TIM1_ALA0_IRQHandler_C1);
+    INTERRUPT_VECTOR(TIMER_ALA1_VECTOR_NUMBER_C1, local_TIM1_ALA1_IRQHandler_C1);
 
     h3irq_SetPriority(TIMER_ALA0_VECTOR_NUMBER_C1, KINT_LEVEL_KERNEL_TIMERS);
     h3irq_SetPriority(TIMER_ALA1_VECTOR_NUMBER_C1, KINT_LEVEL_KERNEL_TIMERS);
@@ -98,10 +96,8 @@ static  void    model_kernel_runKernel_C1(void) {
     h3irq_EnableIRQ(TIMER_ALA0_VECTOR_NUMBER_C1);
     h3irq_EnableIRQ(TIMER_ALA1_VECTOR_NUMBER_C1);
 
-    // Enable Machine External Interrupt in mie CSR so Hazard3 routes
-    // MEIEA-enabled peripheral IRQs to the core (mcause 11 path).
-    // h3irq_EnableIRQ only sets the MEIEA peripheral-enable bit; MIE_MEIE
-    // is the second gate and must be set separately.
+    // Enable Machine External Interrupt in mie CSR (per-hart) so Hazard3 routes
+    // MEIEA-enabled peripheral IRQs to Core 1.
     core_setBitCSR(RV_CSR_MIE, MIE_MEIE);
 
     vTickCount_C1 = 0U;
@@ -109,9 +105,6 @@ static  void    model_kernel_runKernel_C1(void) {
 
 /*
  * \brief model_kernel_setLowPower_C1
- *
- * - Wait for next interrupt (WFI).
- *
  */
 static  void    model_kernel_setLowPower_C1(uint8_t mode) {
 
@@ -129,9 +122,6 @@ static  void    model_kernel_setLowPower_C1(uint8_t mode) {
 
 /*
  * \brief model_kernel_readTickCount_C1
- *
- * - Return the 64-bit 1-us tick counter.
- *
  */
 static  void    model_kernel_readTickCount_C1(uint64_t *tickCount) {
 
@@ -143,9 +133,6 @@ static  void    model_kernel_readTickCount_C1(uint64_t *tickCount) {
 
 /*
  * \brief model_kernel_newProcessTimeout_C1
- *
- * - Arm ALARM1 for the next process's 20-ms quota.
- *
  */
 static  void    model_kernel_newProcessTimeout_C1(void) {
 
@@ -161,9 +148,6 @@ static  void    model_kernel_newProcessTimeout_C1(void) {
 
 /*
  * \brief model_kernel_stopProcessTimeout_C1
- *
- * - Disarm ALARM1.
- *
  */
 static  void    model_kernel_stopProcessTimeout_C1(void) {
 
@@ -173,37 +157,19 @@ static  void    model_kernel_stopProcessTimeout_C1(void) {
 // Local routines
 // ==============
 
-/*
- * \brief local_TIM0_ALA0_IRQHandler_C1
- *
- * - 1-ms tick: acknowledge, rearm, update timestamp, call fast scheduler.
- *
- */
-static  void    local_TIM0_ALA0_IRQHandler_C1(void) {
+static  void    local_TIM1_ALA0_IRQHandler_C1(void) {
 
     TIMER_C1->INTR   = TIMER_INTR_ALARM_0;
     TIMER_C1->ALARM0 = TIMER_C1->TIMERAWL + KTIC_DELTA_C1;
 
     local_timeStmp_C1(false);
 
-    // Guard: only call scheduler if at least one process has been installed.
-    // local_updateDynaPriority() dereferences oFirst which is nullptr until
-    // the first process is connected to the execution list.
     if (vKern_listExec[GET_RUNNING_CORE].oNbElements > 0U) {
         scheduler_callBackFast(1U);
     }
 }
 
-/*
- * \brief local_TIM0_ALA1_IRQHandler_C1
- *
- * - 20-ms quota expiry: acknowledge and disarm.
- *   Preemptive context switch from interrupt context requires saving the full
- *   35-word process frame; that work is deferred to Phase 3.4. For Phase 3.3,
- *   the process runs until it makes the next kernel call (SET_MESSAGE/ecall).
- *
- */
-static  void    local_TIM0_ALA1_IRQHandler_C1(void) {
+static  void    local_TIM1_ALA1_IRQHandler_C1(void) {
 
     TIMER_C1->INTE = TIMER_C1->INTE & (uint32_t)~TIMER_INTE_ALARM_1;
     TIMER_C1->INTR = TIMER_INTR_ALARM_1;
@@ -213,32 +179,31 @@ static  void    local_TIM0_ALA1_IRQHandler_C1(void) {
 /*
  * \brief kernel_message_C1
  *
- * - ecall-based context switch for Core 0.
+ * - ecall-based context switch for Core 1.
  *   Called from syscallDispatcher (exception vector slot 11) after
  *   first_handle_trap has:
- *     1. saved the full 28-word process frame (16 caller-saved + 12 callee-saved)
- *     2. stored a0 (the kernel message) in vMessage
- *     3. stored sp in vSaveStack
+ *     1. saved the full 35-word process frame on Core 1's stack
+ *     2. stored a0 (the kernel message) in vMessage[KCORE_1]
+ *     3. stored sp in vSaveStack[KCORE_1]
  *
- * - On return, first_handle_trap reads the new vSaveStack (updated by the
- *   scheduler) and restores the next process's context before executing mret.
- *
+ * - On return, first_handle_trap reads vSaveStack[KCORE_1] (possibly switched
+ *   by the scheduler) and restores the next process's context before mret.
  */
 void    kernel_message_C1(void) {
 
-    vKern_stackProc[KCORE_0] = (uintptr_t *)vSaveStack;
-    vPriv_insideSVC[KCORE_0] = true;
+    vKern_stackProc[KCORE_1] = (uintptr_t *)vSaveStack[KCORE_1];
+    vPriv_insideSVC[KCORE_1] = true;
 
     local_timeStop_C1();
 
     INTERRUPTION_SET_PERIPH;
 
-    CHECK_STACK_SANITY(KCORE_0);
+    CHECK_STACK_SANITY(KCORE_1);
 
-    scheduler_callBackTrap(vMessage);
+    scheduler_callBackTrap(vMessage[KCORE_1]);
     local_timeStart_C1();
 
-    vSaveStack = (uintptr_t)vKern_stackProc[KCORE_0];
+    vSaveStack[KCORE_1] = (uintptr_t)vKern_stackProc[KCORE_1];
 
 // Statistics
 
@@ -247,15 +212,15 @@ void    kernel_message_C1(void) {
     const   uint32_t    timeStart = vTimeStart_C1;
     const   uint32_t    timeStop  = vTimeStop_C1;
     const   uint32_t    timeLast  = vTimeLastStart_C1;
-    const   uint32_t    tExc      = vKern_TimeException[KCORE_0];
-            proc_t      *proc     = vKern_backwardProc[KCORE_0];
+    const   uint32_t    tExc      = vKern_TimeException[KCORE_1];
+            proc_t      *proc     = vKern_backwardProc[KCORE_1];
     INTERRUPTION_RESTORE;
 
     statistics_statistic(proc, timeStart, timeStop, timeLast, tExc);
-    vKern_TimeException[KCORE_0] = 0U;
+    vKern_TimeException[KCORE_1] = 0U;
     #endif
 
-    vPriv_insideSVC[KCORE_0] = false;
+    vPriv_insideSVC[KCORE_1] = false;
 }
 
 /*
