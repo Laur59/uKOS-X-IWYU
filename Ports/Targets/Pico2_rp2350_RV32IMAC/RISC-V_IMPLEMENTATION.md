@@ -11,15 +11,11 @@ understanding of RP2350 (`/Tools/TestRom/Pico2_rp2350_RV32IMAC/`).
 Development is incremental; this document is kept as a living record of decisions,
 findings, and phase status.
 
-**Status:** Phase 5 complete — kernel boots on both cores on hardware. Idle,
-launcher, startUp, alive, mcore, stack and stimer daemons all run on Core 1.
-SIO doorbell IRQs deliver on both cores. Per-hart ecall save/restore asm
+**Status:** Phase 5 complete — kernel boots on both cores on hardware,
+`test_mcore` runs the full ASMP round-trip end-to-end. Idle, launcher,
+startUp, alive, mcore, stack and stimer daemons all run on Core 1; SIO
+doorbell IRQs deliver on both cores; per-hart ecall save/restore asm
 audited against `KERN_PREPARE_FRAME` and confirmed correct slot-by-slot.
-
-A separate dual-core hazard surfaces when running `test_mcore`: a heap
-free-list pointer gets overwritten with a process-argument value, faulting
-`memo_malloc` on Core 1 with a misaligned load. The hazard is not in the
-ecall path — see "Known Issue (Phase 5)" below.
 
 **Date:** 2026-05-12
 
@@ -494,31 +490,29 @@ the diagnostic LOGs added during bring-up and since reverted).
    trust the CSR values (mcause / mepc / mbadaddr) and the "Stack content
    before the fault" section, not the register table.
 
-## Known Issue (Phase 5)
-
-`test_mcore` ASMP ping-pong faults inside `memo_malloc` on Core 1 with
-**mcause = 4 (load address misaligned)** at the heap free-list walk.
-The faulting `a3 = 0x2000C979` is the address of the `&vKillRequest[1]`
-argument that test_mcore's `prgm()` passed to `kern_createProcess` for
-the TX process — meaning a heap block's `oPtrNexBlock` field has been
-overwritten with a process-argument value (which is in BSS, not in the
-heap region 0x20030000–0x20050000). `memo_malloc` itself only ever writes
-aligned in-heap pointers there, so the corruption comes from outside
-`memo`.
-
-Phase 5's ecall save/restore asm has been audited slot-by-slot against
-`KERN_PREPARE_FRAME` and confirmed correct, so the corruption is **not**
-in the Phase 5 context-switch path. Investigation continues as a
-separate item — likely candidates: a wild store during process startup,
-or an interaction between the test_mcore CLI tool's process creation
-and a concurrent allocation on Core 0.
+5. **memo heap-init race on parallel-booting cores.** `memo.c`'s
+   `local_init()` runs the heap-descriptor initialisation only on
+   `KCORE_0` and *outside* its own `SPIN_LOCK(vMemo)` cross-core
+   spinlock. On RV32 where Hazard3's Core 1 boots roughly in parallel
+   with Core 0, Core 1's first `memo_malloc` can walk an uninitialised
+   or partially-initialised first heap block (the failure presents as
+   `mcause = 4` "load address misaligned" deep inside `memo_malloc`'s
+   freelist walk, with `oPtrNexBlock` holding an out-of-heap value).
+   ARM Pico2 doesn't hit the same race because Cortex-M's Core 1
+   bootrom release is much slower than Hazard3's, so Core 0 always
+   wins.
+   Target-specific fix (no change to shared `memo.c`): Core 1's
+   `init_C1_init()` spin-waits on `vMemo_heapInfo.oNbBlocks` before
+   enabling interrupts — that field is 0 in BSS at reset and gets set
+   to 1 by the first call to `local_init()` on Core 0 (driven by the
+   launcher creating the first `KID_FAM_PROCESSES` process via
+   `PROCESS_STACKMALLOC`). A `fence r,r` after the spin makes the
+   full heap-init write set visible to Core 1.
 
 **Out of scope (deferred to a later phase).**
 - U-mode + PMP per-process isolation.
 - Preemptive context switch from ALARM1 interrupt context (both cores still
   cooperate via ecall — same as Phase 3.5 on Core 0).
-- `test_mcore` end-to-end iteration (blocked on the heap-corruption hazard
-  documented above).
 
 ---
 
