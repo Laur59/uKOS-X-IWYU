@@ -101,7 +101,7 @@ int32_t stub_asmp_init(void) {
 
     INTERRUPTION_OFF;
     vAsmp_InterCore->oASMPReady |= (core == KASMP_CORE_0) ? (1U<<(uint8_t)KASMP_CORE_0) : (1U<<(uint8_t)KASMP_CORE_1);
-    LOG(KINFO_SYSTEM, (core == KCORE_0) ? "asmp: init done on core 0" : "asmp: init done on core 1");
+    LOG(KWARNING_SYSTEM, (core == KCORE_0) ? "asmp: init done on core 0" : "asmp: init done on core 1");
     RETURN_INT_RESTORE(KERR_ASMP_NOERR);
 }
 
@@ -222,7 +222,10 @@ static  void    local_doorBell_IRQHandler(void) {
     kern_getSemaphoreById(identifier_RX, &semaphore_RX);
     kern_getSemaphoreById(identifier_TX, &semaphore_TX);
 
-    LOG(KINFO_SYSTEM, (core == KCORE_0) ? "asmp: doorbell IRQ on core 0" : "asmp: doorbell IRQ on core 1");
+    // Bump diagnostic priority above KINFO so tinyusb's INFO floods don't evict
+    // these entries from the 200-slot log buffer (KSCANN evicts highest-numeric
+    // = lowest-priority category first).
+    LOG(KWARNING_SYSTEM, (core == KCORE_0) ? "asmp: doorbell IRQ on core 0" : "asmp: doorbell IRQ on core 1");
 
 // Interruption message sent
 // Interruption message read
