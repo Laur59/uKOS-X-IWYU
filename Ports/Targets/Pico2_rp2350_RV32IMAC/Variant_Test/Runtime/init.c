@@ -10,9 +10,13 @@
  */
 
 #include    <stdint.h>
+#include    <stdlib.h>          // for exit
 
+#include    "board.h"
 #include    "clockTree.h"
 #include    "cmns.h"
+#include    "core.h"            // IWYU pragma: keep (core_setBitCSR used via INTERRUPTION_ON_HARD)
+#include    "crt0.h"            // for exce_init, init_relocate, boot
 #include    "init.h"
 #include    "macros_core.h"
 #include    "soc_reg.h"
@@ -31,6 +35,7 @@ static  void        local_USB_Configuration(void);
 static  void        local_emptyRxFifo(void);
 static  void        local_writeRTxFifo(uint32_t data);
 static  uint32_t    local_readRxFifo(void);
+static  void        init_C0_init(void);
 
 extern  void        first_handle_trap(void);
 extern  void        Reset_C1_Handler(void);
@@ -48,6 +53,7 @@ extern  uint8_t     linker_topStackFirst_C1[];
 void    init_init(void) {
 
     local_PLL_Configuration();
+    init_C0_init();
 
     if (GET_RUNNING_CORE == KCORE_0) {
         local_USB_Configuration();
@@ -269,4 +275,93 @@ static  uint32_t    local_readRxFifo(void) {
 
     while ((REG(SIO)->FIFO_ST & SIO_FIFO_ST_VLD) == 0u) { }
     return (REG(SIO)->FIFO_RD);
+}
+
+/*
+ * init_C0.c
+ * Pico2_rp2350_RV32IMAC – Core-0 GPIO and pad initialisation.
+ */
+
+/*
+ * \brief init_C0_init
+ *
+ * - Release IO_BANK0 and PADS_BANK0 from reset
+ * - Configure GPIO pins for the system and user LEDs
+ * - Mux GPIO16/17 to UART0 TX/RX (core 0 serial console)
+ * - Mux GPIO4/5   to UART1 TX/RX (core 1 serial console)
+ *
+ * \note This function does not return a value (None).
+ *
+ */
+void    init_C0_init(void) {
+
+    // Release IO_BANK0 and PADS_BANK0 from reset
+    REG(RESETS)->RESET &= ~(RESETS_RESET_IO_BANK0 | RESETS_RESET_PADS_BANK0);
+    while ((REG(RESETS)->RESET_DONE & (RESETS_RESET_IO_BANK0 | RESETS_RESET_PADS_BANK0)) !=
+           (RESETS_RESET_IO_BANK0 | RESETS_RESET_PADS_BANK0)) { }
+
+// LED outputs — clear ISO bit, set to SIO function, enable output
+
+    REG(PADS_BANK0)->GPIO11 &= ~PADS_BANK0_GPIO11_ISO;
+    REG(PADS_BANK0)->GPIO12 &= ~PADS_BANK0_GPIO12_ISO;
+    REG(PADS_BANK0)->GPIO13 &= ~PADS_BANK0_GPIO13_ISO;
+    REG(PADS_BANK0)->GPIO25 &= ~PADS_BANK0_GPIO25_ISO;
+
+    REG(IO_BANK0)->GPIO11_CTRL = IO_BANK0_GPIO11_CTRL_FUNCSEL_SIOB_PROC_11;
+    REG(IO_BANK0)->GPIO12_CTRL = IO_BANK0_GPIO12_CTRL_FUNCSEL_SIOB_PROC_12;
+    REG(IO_BANK0)->GPIO13_CTRL = IO_BANK0_GPIO13_CTRL_FUNCSEL_SIOB_PROC_13;
+    REG(IO_BANK0)->GPIO25_CTRL = IO_BANK0_GPIO25_CTRL_FUNCSEL_SIOB_PROC_25;
+
+    REG(SIO)->GPIO_OE_SET = (1u << BLED_s) | (1u << BLED_0) | (1u << BLED_1) | (1u << BLED_2);
+
+// UART0: GPIO16 (TX) output, GPIO17 (RX) input with Schmitt trigger
+
+    REG(PADS_BANK0)->GPIO16    = PADS_BANK0_GPIO16_SCHMITT;
+    REG(PADS_BANK0)->GPIO17    = PADS_BANK0_GPIO17_IE | PADS_BANK0_GPIO17_SCHMITT;
+    REG(IO_BANK0)->GPIO16_CTRL = IO_BANK0_GPIO16_CTRL_FUNCSEL_UART0_TX;
+    REG(IO_BANK0)->GPIO17_CTRL = IO_BANK0_GPIO17_CTRL_FUNCSEL_UART0_RX;
+
+// UART1: GPIO4 (TX) output, GPIO5 (RX) input with Schmitt trigger
+
+    REG(PADS_BANK0)->GPIO4    = PADS_BANK0_GPIO4_SCHMITT;
+    REG(PADS_BANK0)->GPIO5    = PADS_BANK0_GPIO5_IE | PADS_BANK0_GPIO5_SCHMITT;
+    REG(IO_BANK0)->GPIO4_CTRL = IO_BANK0_GPIO4_CTRL_FUNCSEL_UART1_TX;
+    REG(IO_BANK0)->GPIO5_CTRL = IO_BANK0_GPIO5_CTRL_FUNCSEL_UART1_RX;
+}
+
+/*
+ * init_C1.c
+ * Pico2_rp2350_RV32IMAC – Core-1 specific initialisation and entry point.
+ */
+
+/*
+ * \brief init_C1_init
+ *
+ * - Enable machine interrupts so Core 1 can receive ecalls and timer events.
+ *
+ */
+static  void    init_C1_init(void) {
+    INTERRUPTION_ON_HARD;
+}
+
+/*
+ * \brief main_C1
+ *
+ * - Core 1 entry point (strong override of the weak symbol in first-riscv.c).
+ * - Called from Reset_C1_Handler after gp, mtvec, and sp are set up.
+ * - Mirrors core 0's tail of crt0(): per-core exception-vector init, then
+ *   into boot() which installs the per-core idle daemon and launcher
+ *   process. The launcher then iterates the module table and creates
+ *   any process whose oExecutionCore mask includes core 1 (e.g.,
+ *   startUp running its core-1 branch on UART0).
+ *
+ */
+// NOLINTNEXTLINE(misc-use-internal-linkage)
+extern  void    init_relocate(void);
+
+void    main_C1(void) {
+    init_C1_init();
+    exce_init();
+    init_relocate();
+    exit(boot());
 }

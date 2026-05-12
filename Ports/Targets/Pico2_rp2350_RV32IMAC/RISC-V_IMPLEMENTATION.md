@@ -203,7 +203,6 @@ reaches a visible LED + UART state, with no kernel modules linked.
 - `init_C0.c` — GPIO/pad config for core 0 (LEDs, UART mux).
 - `init_C1.c` — core-1 placeholder (enable `mstatus.MIE`).
 - `exce.c` — vector tables, four coreDump model includes, `exce_init()`.
-- `crt0.c` calls `init_C0_init()` then `exce_init()` before `main()`.
 - A deliberate bad-address write confirmed coreDump fires on UART0 showing
   `mepc`, `mcause`, and register state.
 

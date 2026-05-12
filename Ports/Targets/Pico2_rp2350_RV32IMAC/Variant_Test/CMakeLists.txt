@@ -83,12 +83,6 @@ list(APPEND RTCB_P
     ${PATH_BASE}/Runtime/exce.c
     ${PATH_VARI}/Runtime/init.c
 )
-if(${CORE} STREQUAL "RV32IMAC")
-list(APPEND RTCB_P
-    ${PATH_VARI}/Runtime/init_C0.c
-    ${PATH_VARI}/Runtime/init_C1.c
-)
-endif()
 add_library(rtcb_p ${RTCB_P})
 target_link_libraries(rtcb_p PUBLIC system_compiler_flags)
 
