@@ -13,6 +13,8 @@
 #include    "macros_core.h"
 #include    "macros_soc.h"
 
+#ifdef __arm
+
 // Connect the physical device to the logical manager
 // --------------------------------------------------
 
@@ -80,3 +82,8 @@ void    stub_kern_stopProcessTimeout(void) {
     if (core == KCORE_0) { model_kernel_stopProcessTimeout_C0(); }
     else                 { model_kernel_stopProcessTimeout_C1(); }
 }
+
+#else
+
+
+#endif  // __arm

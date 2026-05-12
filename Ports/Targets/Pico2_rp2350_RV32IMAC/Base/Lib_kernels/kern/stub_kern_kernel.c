@@ -21,10 +21,14 @@
 // --------------------------------------------------
 
 #define TIMER_C0                        REG(TIMER0)
+#define TIMER_C1                        REG(TIMER1)
 #define TIMER_ALA0_VECTOR_NUMBER_C0     TIMER0_IRQ_0_C0_IRQn
+#define TIMER_ALA0_VECTOR_NUMBER_C1     TIMER0_IRQ_0_C1_IRQn
 #define TIMER_ALA1_VECTOR_NUMBER_C0     TIMER0_IRQ_1_C0_IRQn
+#define TIMER_ALA1_VECTOR_NUMBER_C1     TIMER0_IRQ_1_C1_IRQn
 
 #include    "model_kernel_tim0_ecall_C0.c_inc"
+#include    "model_kernel_tim1_ecall_C1.c_inc"
 
 void    stub_kern_init(void) {
     uint32_t    core;
