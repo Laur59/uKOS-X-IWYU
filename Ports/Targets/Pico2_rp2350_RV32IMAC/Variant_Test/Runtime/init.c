@@ -57,6 +57,26 @@ void    init_init(void) {
 
     if (GET_RUNNING_CORE == KCORE_0) {
         local_USB_Configuration();
+        // NOTE: Core 1 launch is deferred to init_relocate() below.
+        // crt0 calls init_init() before BSS clear and __stack_chk_guard setup;
+        // releasing Core 1 here would let it run canary-protected functions
+        // while __stack_chk_guard is still 0, producing a "Stack smashing!"
+        // panic when Core 0 later writes the real guard value.
+    }
+}
+
+/*
+ * \brief init_relocate
+ *
+ * - Hook called by crt0 after BSS clear, heap init, and
+ *   __stack_chk_guard = KSTACK_GUARD_VALUE.
+ * - Safe point to release Core 1 from reset: by now any canary-protected
+ *   function it runs will see the stable, final guard value.
+ *
+ */
+void    init_relocate(void) {       // NOLINT(misc-use-internal-linkage): overrides weak symbol from crt0
+
+    if (GET_RUNNING_CORE == KCORE_0) {
         init_launchCore_1(Reset_C1_Handler);
     }
 }
