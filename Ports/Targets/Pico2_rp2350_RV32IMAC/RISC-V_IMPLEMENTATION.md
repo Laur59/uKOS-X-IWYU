@@ -11,8 +11,15 @@ understanding of RP2350 (`/Tools/TestRom/Pico2_rp2350_RV32IMAC/`).
 Development is incremental; this document is kept as a living record of decisions,
 findings, and phase status.
 
-**Status:** Phase 5 implementation complete — kernel boot path wired for both
-cores, builds clean. Awaiting hardware validation.
+**Status:** Phase 5 complete — kernel boots on both cores on hardware. Idle,
+launcher, startUp, alive, mcore, stack and stimer daemons all run on Core 1.
+SIO doorbell IRQs deliver on both cores. Per-hart ecall save/restore asm
+audited against `KERN_PREPARE_FRAME` and confirmed correct slot-by-slot.
+
+A separate dual-core hazard surfaces when running `test_mcore`: a heap
+free-list pointer gets overwritten with a process-argument value, faulting
+`memo_malloc` on Core 1 with a misaligned load. The hazard is not in the
+ecall path — see "Known Issue (Phase 5)" below.
 
 **Date:** 2026-05-12
 
@@ -389,7 +396,7 @@ all `KID_FAM_DAEMONS` modules (stimer), then exits. `stub_startUp_launch()` call
 - At least two processes running (idle + startUp), with `dprintf` output on UART0.
 - Phase 2 coreDump still fires on a deliberate fault.
 
-### Phase 5 — Dual-core kernel parity [implementation complete]
+### Phase 5 — Dual-core kernel parity [complete, hardware-verified]
 
 **Goal.** Run the µKOS-X kernel on Core 1 with the same launcher-driven process
 distribution as the ARM port: each core hosts its own idle daemon, its own
@@ -452,10 +459,66 @@ launcher, and the subset of `KID_FAM_PROCESSES` / `KID_FAM_DAEMONS` whose
    - SIO doorbell ASMP (Phase 4 mcore daemon) still functional.
    - Deliberate fault on either core still triggers Phase 2 coreDump.
 
+**Hardware-verified.** Both cores boot to a CLI prompt. `dumplog` shows
+launcher installing idle, startUp, TinyUSB, alive, mcore, stack and stimer
+daemons on both cores. SIO doorbell IRQs fire on both cores (verified via
+the diagnostic LOGs added during bring-up and since reverted).
+
+**Lessons captured during bring-up:**
+
+1. **Stack-canary race.** `crt0` writes `__stack_chk_guard = 0xDeadBeef`
+   only after `init_init()` returns. If `init_init()` releases Core 1 from
+   reset (as the ARM port does), Core 1 enters canary-protected functions
+   while the guard is still 0; when Core 0 later writes the real value,
+   every Core 1 epilogue trips `__wrap___stack_chk_fail` ("Stack smashing!").
+   Fix: move `init_launchCore_1()` into a strong override of
+   `init_relocate()`, which `crt0` invokes *after* the guard is set. See
+   `Variant_Test/Runtime/init.c`.
+
+2. **Per-hart ecall state.** The pre-Phase-5 trap path had a single global
+   `vSaveStack` and `vMessage`. With two cores executing ecalls
+   concurrently this races. Phase 5 promotes both to `[KNB_CORES]` arrays
+   indexed by `mhartid` (offset = `mhartid << 2`); both save and restore
+   paths re-read `mhartid` after the C dispatch call. See
+   `Ports/EquatesModels/SOCs/rp2350/Runtime/first.c`.
+
+3. **TIMER1 vector numbers for Core 1.** An earlier merge left Core 1's
+   kernel timer wired to `TIMER0_IRQ_*_C1_IRQn`. Core 1 must use TIMER1's
+   alarms (`TIMER1_IRQ_*_C1_IRQn`), mirroring the ARM port. See
+   `Base/Lib_kernels/kern/stub_kern_kernel.c`.
+
+4. **`coreDump` register snapshot is dispatch-time, not fault-time.** The
+   "CPU registers" section printed by `model_coredump_soc_riscv.c_inc`
+   reflects register state inside the coredump handler chain, not at the
+   faulting instruction (the file's own comment says so). When diagnosing,
+   trust the CSR values (mcause / mepc / mbadaddr) and the "Stack content
+   before the fault" section, not the register table.
+
+## Known Issue (Phase 5)
+
+`test_mcore` ASMP ping-pong faults inside `memo_malloc` on Core 1 with
+**mcause = 4 (load address misaligned)** at the heap free-list walk.
+The faulting `a3 = 0x2000C979` is the address of the `&vKillRequest[1]`
+argument that test_mcore's `prgm()` passed to `kern_createProcess` for
+the TX process — meaning a heap block's `oPtrNexBlock` field has been
+overwritten with a process-argument value (which is in BSS, not in the
+heap region 0x20030000–0x20050000). `memo_malloc` itself only ever writes
+aligned in-heap pointers there, so the corruption comes from outside
+`memo`.
+
+Phase 5's ecall save/restore asm has been audited slot-by-slot against
+`KERN_PREPARE_FRAME` and confirmed correct, so the corruption is **not**
+in the Phase 5 context-switch path. Investigation continues as a
+separate item — likely candidates: a wild store during process startup,
+or an interaction between the test_mcore CLI tool's process creation
+and a concurrent allocation on Core 0.
+
 **Out of scope (deferred to a later phase).**
 - U-mode + PMP per-process isolation.
 - Preemptive context switch from ALARM1 interrupt context (both cores still
   cooperate via ecall — same as Phase 3.5 on Core 0).
+- `test_mcore` end-to-end iteration (blocked on the heap-corruption hazard
+  documented above).
 
 ---
 
