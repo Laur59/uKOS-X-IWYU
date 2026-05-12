@@ -19,6 +19,7 @@
 #include    "crt0.h"            // for exce_init, init_relocate, boot
 #include    "init.h"
 #include    "macros_core.h"
+#include    "memo/private/private_memo.h"   // for vMemo_heapInfo
 #include    "soc_reg.h"
 
 // RISC-V specific runtime
@@ -361,6 +362,24 @@ void    init_C0_init(void) {
  *
  */
 static  void    init_C1_init(void) {
+
+// Heap-init race guard. memo.c's local_init() runs the heap-descriptor
+// initialisation only on KCORE_0 and *outside* its own cross-core spinlock,
+// so on RV32 (where Core 1 boots roughly in parallel with Core 0) Core 1's
+// first memo_malloc can walk an uninitialised or partially-initialised
+// first heap block. The ARM Pico2 port doesn't hit this because its
+// Core 1 bootrom release is much slower than Hazard3's.
+//
+// Spin until Core 0 has executed local_init(): vMemo_heapInfo.oNbBlocks is
+// 0 in BSS at reset and gets set to 1 as part of the heap-init sequence.
+// This happens when Core 0's launcher creates the first KID_FAM_PROCESSES
+// process via PROCESS_STACKMALLOC.
+
+    while (vMemo_heapInfo.oNbBlocks == 0U) {
+        __asm volatile ("nop");
+    }
+    __asm volatile ("fence r,r" ::: "memory");
+
     INTERRUPTION_ON_HARD;
 }
 
