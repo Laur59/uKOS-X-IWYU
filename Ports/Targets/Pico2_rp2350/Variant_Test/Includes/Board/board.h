@@ -3,7 +3,7 @@
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
- * Goal:     Board mapping.
+ * Board mapping.
  */
 
 #pragma once
@@ -12,10 +12,16 @@
 #define Pico2_rp2350_S
 #endif
 
+#include    "macros_core.h"
+
 // System identifiers
 // ------------------
 
-#define KCPU                "ARM-Cortex m33 U"
+#ifdef __arm
+#define KCPU                "ARM-Cortex m33"
+#else
+#define KCPU                "RISC-V Hazard3"
+#endif
 #define KCONTROLLER         "rp2350"
 #define KBOARD              "Pico2 rp2350 (Variant_Test)"
 #define KTARGET             "Pico2_rp2350"
@@ -41,7 +47,7 @@
 
 #define KNB_LED             4U                                          // Number of LEDs
 
-// PORTs
+// GPIO pin assignments
 
 #define BLED_s              25U                                         // GPIO25, LED system
 #define BLED_0              11U                                         // GPIO11, LED yellow

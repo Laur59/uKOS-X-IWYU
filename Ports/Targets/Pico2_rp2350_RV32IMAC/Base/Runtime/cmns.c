@@ -122,7 +122,7 @@ void    cmns_send([[maybe_unused]] serialManager_t serialManager, const char_t *
             break;
         }
 
-// Core 1 – UART1 (GP4=TX, GP5=RX, muxed in init_C0_init).
+// Core 1
 
         case KCORE_1: {
             while (true) {

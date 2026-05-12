@@ -3,8 +3,12 @@
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
- * Goal:     startUp process; execute some important initialisations
- *           before jumping to the selected function.
+ * Goal:    startUp process:
+ *          - execute some important initialisations
+ *            before jumping to the selected function.
+ *          – route the console either to
+ *            UART0 (single-channel mode) or split across cores so core 0 uses USB
+ *            CDC0 and core 1 uses UART1 (CONFIG_DIFFERENT_SERIAL_PER_CORE_S=true).
  */
 
 #include    "startUp/startUp.h"

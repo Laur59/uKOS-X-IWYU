@@ -3,7 +3,10 @@
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
- * Goal:     stub for the connection of the "kern" manager to the uKernel device.
+ * Connect the "kern" manager to the hardware.
+ *
+ * Core 0 uses TIMER0 (ALARM0 = 1-ms tick, ALARM1 = 20-ms quota).
+ * Core 1 uses TIMER1 (ALARM0 = 1-ms tick, ALARM1 = 20-ms quota).
  */
 
 #include    <stdint.h>
@@ -12,8 +15,6 @@
 #include    "kern/kern.h"
 #include    "macros_core.h"
 #include    "macros_soc.h"
-
-#ifdef __arm
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
@@ -24,11 +25,24 @@
 #define TIMER_ALA0_VECTOR_NUMBER_C1     TIMER1_IRQ_0_C1_IRQn
 #define TIMER_ALA1_VECTOR_NUMBER_C0     TIMER0_IRQ_1_C0_IRQn
 #define TIMER_ALA1_VECTOR_NUMBER_C1     TIMER1_IRQ_1_C1_IRQn
+
+#ifdef __arm
+
 #define PendSV_VECTOR_NUMBER_C0         PendSV_C0_IRQn
 #define PendSV_VECTOR_NUMBER_C1         PendSV_C1_IRQn
 
 #include    "model_kernel_tim_0_a0_a1_svc_C0.c_inc"
 #include    "model_kernel_tim_1_a0_a1_svc_C1.c_inc"
+
+#else
+
+#include    "Registers/rv32_csr.h"
+#include    "core.h"
+
+#include    "model_kernel_tim0_ecall_C0.c_inc"
+#include    "model_kernel_tim1_ecall_C1.c_inc"
+
+#endif
 
 void    stub_kern_init(void) {
     uint32_t    core;
@@ -82,8 +96,3 @@ void    stub_kern_stopProcessTimeout(void) {
     if (core == KCORE_0) { model_kernel_stopProcessTimeout_C0(); }
     else                 { model_kernel_stopProcessTimeout_C1(); }
 }
-
-#else
-
-
-#endif  // __arm
