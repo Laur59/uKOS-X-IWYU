@@ -65,7 +65,7 @@ static  int32_t     local_init(void);
  * \code{.c}
  * int32_t    status;
  *
- *    status = urt4_reserve(KMODE_WRITE, 1234);
+ *    status = urt4_reserve(KMODE_WRITE, 1234U);
  *    ....
  *    urt4_xyz();
  *    ....
@@ -253,7 +253,7 @@ int32_t urt4_configure(const urtxCnf_t *configure) {
  * \code{.c}
  * #define    KSIZE    10
  *
- * uint8_t    buffer[KSIZE] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+ * uint8_t    buffer[KSIZE] = { 0U, 1U, 2U, 3U, 4U, 5U, 6U, 7U, 8U, 9U };
  * int32_t    status;
  *
  *    status = urt4_write(buffer, KSIZE);

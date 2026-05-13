@@ -123,7 +123,7 @@ enum {
 #endif
 
 #ifndef INTERRUPTION_OFF
-#define INTERRUPTION_OFF        [[maybe_unused]] volatile    uint32_t    __saveECLIC_msk ;                               \
+#define INTERRUPTION_OFF        volatile    uint32_t    __saveECLIC_msk [[maybe_unused]];                                       \
                                 __saveECLIC_msk = (uint32_t)ECLIC->MTH;                                                         \
                                 (void)__saveECLIC_msk;                                                                          \
                                 ECLIC->MTH = KINT_IMASK_OFF

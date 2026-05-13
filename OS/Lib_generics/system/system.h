@@ -60,7 +60,7 @@ extern  "C" {
  * \code{.c}
  * int32_t    status;
  *
- *    status = system_reserve(KMODE_READ_WRITE, 1234);
+ *    status = system_reserve(KMODE_READ_WRITE, 1234U);
  *    ....
  *    system_xyz();
  *    ....

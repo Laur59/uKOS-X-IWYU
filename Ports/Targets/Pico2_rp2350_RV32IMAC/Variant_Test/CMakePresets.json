@@ -1,6 +1,0 @@
-{
-  "version": 10,
-  "include": [
-    "${sourceDir}/../../../cmake/commonPresets.json"
-  ]
-}

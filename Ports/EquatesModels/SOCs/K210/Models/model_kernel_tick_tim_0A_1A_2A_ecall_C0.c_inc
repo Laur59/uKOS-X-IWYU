@@ -309,6 +309,7 @@ static  void    local_TIM0_A_IRQHandler_C0(uint32_t core, uint64_t parameter) {
  *
  */
 static  void    local_changeContext_PRE_C0(uint32_t core, uint64_t parameter, uint64_t *threshold, uintptr_t *stack);
+
 [[gnu::naked]]
 static  void    local_PREEMPTION_IRQHandler_C0(uint32_t core, uint64_t parameter) {
 
@@ -438,6 +439,7 @@ static  void    local_newContextPRE_C0(uint32_t core, uint64_t parameter) {
  *
  */
 static   void    local_changeContext_TOU_C0(uint32_t core, uint64_t parameter, uint64_t *threshold, uintptr_t *stack);
+
 [[gnu::naked]]
 static  void    local_TIM2_A_IRQHandler_C0(uint32_t core, uint64_t parameter) {
 
@@ -569,6 +571,7 @@ static  void    local_newContextTOU_C0(uint32_t core, uint64_t parameter) {
  *
  */
 static  void    local_changeContext_MSG_C0(uint32_t core, uint64_t message, uint64_t *threshold, uintptr_t *stack);
+
 [[gnu::naked]]
 static  void    local_ECALL_message_C0([[maybe_unused]] uint32_t core, [[maybe_unused]] uint64_t message) {
 

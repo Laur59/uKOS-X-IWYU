@@ -59,7 +59,7 @@ static  int32_t     local_init(void);
  * \code{.c}
  * int32_t    status;
  *
- *    status = adc_reserve(KMODE_READ_WRITE, 1234);
+ *    status = adc_reserve(KMODE_READ_WRITE, 1234U);
  *    ....
  *    adc_xyz();
  *    ....

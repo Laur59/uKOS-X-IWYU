@@ -65,7 +65,7 @@ static  int32_t     local_sdcard_write(const sdcard_specification_t *specificati
  * \code{.c}
  * int32_t    status;
  *
- *    status = sdcard_reserve(KMODE_READ_WRITE, 1234);
+ *    status = sdcard_reserve(KMODE_READ_WRITE, 1234U);
  *    ....
  *    sdcard_xyz();
  *    ....

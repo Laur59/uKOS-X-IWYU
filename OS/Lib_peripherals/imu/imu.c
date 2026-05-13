@@ -63,7 +63,7 @@ static  int32_t     local_init(void);
  * \code{.c}
  * int32_t    status;
  *
- *    status = imu_reserve(KMODE_READ_WRITEL, 1234);
+ *    status = imu_reserve(KMODE_READ_WRITEL, 1234U);
  *    ....
  *    imu_xyz();
  *    ....

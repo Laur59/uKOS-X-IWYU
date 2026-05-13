@@ -93,6 +93,7 @@ MODULE(
 
 [[gnu::always_inline]]
 static inline void local_cumulate32(int32_t *value, int16_t a, int16_t b);
+
 [[gnu::always_inline]]
 static inline void local_cumulate64(int64_t *value, int32_t a, int32_t b);
 

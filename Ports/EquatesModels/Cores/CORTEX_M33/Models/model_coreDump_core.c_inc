@@ -80,7 +80,7 @@ static  void    local_printStackFrame(void);
  * FPSCR    = 0x00000000
  *
  */
-[[gnu::naked]] [[noreturn]]
+[[gnu::naked, noreturn]]
 void    model_coreDump_displayExceptions([[maybe_unused]] uintptr_t lr, [[maybe_unused]] uintptr_t *msp) {
 
     CORE_DUMP_SAVE_STACK_FRAME;
@@ -98,7 +98,7 @@ void    model_coreDump_displayExceptions([[maybe_unused]] uintptr_t lr, [[maybe_
  * - Display the stack frame
  *
  */
-[[gnu::noinline, gnu::used]] [[noreturn]]
+[[gnu::noinline, gnu::used, noreturn]]
 static  void    local_processException(uintptr_t *stackBefore, uintptr_t *stackAfter) {
             uint32_t    core, i;
     const   uintptr_t   *ptr;

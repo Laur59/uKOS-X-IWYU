@@ -47,8 +47,8 @@ static  volatile    uint64_t    vTickCount_C0     = 0U;
 
 // External: set/restored by first_handle_trap ecall path
 
-extern  volatile    uintptr_t   vSaveStack;
-extern  volatile    uint32_t    vMessage;
+extern  volatile    uintptr_t   vSaveStack[KNB_CORES];
+extern  volatile    uint32_t    vMessage[KNB_CORES];
 
 // Prototypes
 
@@ -226,7 +226,7 @@ static  void    local_TIM0_ALA1_IRQHandler_C0(void) {
  */
 void    kernel_message_C0(void) {
 
-    vKern_stackProc[KCORE_0] = (uintptr_t *)vSaveStack;
+    vKern_stackProc[KCORE_0] = (uintptr_t *)vSaveStack[KCORE_0];
     vPriv_insideSVC[KCORE_0] = true;
 
     local_timeStop_C0();
@@ -235,10 +235,10 @@ void    kernel_message_C0(void) {
 
     CHECK_STACK_SANITY(KCORE_0);
 
-    scheduler_callBackTrap(vMessage);
+    scheduler_callBackTrap(vMessage[KCORE_0]);
     local_timeStart_C0();
 
-    vSaveStack = (uintptr_t)vKern_stackProc[KCORE_0];
+    vSaveStack[KCORE_0] = (uintptr_t)vKern_stackProc[KCORE_0];
 
 // Statistics
 

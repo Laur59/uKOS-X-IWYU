@@ -45,7 +45,8 @@ typedef enum {
             KURT4 = (((uint32_t)'u'<<24U) | ((uint32_t)'r'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'4'),    // urt4 manager
             KCDC0 = (((uint32_t)'c'<<24U) | ((uint32_t)'d'<<16U) | ((uint32_t)'c'<<8U) | (uint32_t)'0'),    // cdc0 manager
             KCDC1 = (((uint32_t)'c'<<24U) | ((uint32_t)'d'<<16U) | ((uint32_t)'c'<<8U) | (uint32_t)'1'),    // cdc1 manager
-            KWFI0 = (((uint32_t)'w'<<24U) | ((uint32_t)'f'<<16U) | ((uint32_t)'i'<<8U) | (uint32_t)'0')     // wfi0 manager
+            KWFI0 = (((uint32_t)'w'<<24U) | ((uint32_t)'f'<<16U) | ((uint32_t)'i'<<8U) | (uint32_t)'0'),    // wfi0 manager
+            KBLE0 = (((uint32_t)'b'<<24U) | ((uint32_t)'l'<<16U) | ((uint32_t)'e'<<8U) | (uint32_t)'0')     // ble0 manager
 } serialManager_t;
 
 // Prototypes
@@ -65,7 +66,7 @@ extern  "C" {
  * \code{.c}
  * int32_t    status;
  *
- *    status = serial_reserve(KDEF0, KMODE_WRITE, 1234);
+ *    status = serial_reserve(KDEF0, KMODE_WRITE, 1234U);
  *    ....
  *    serial_xyz();
  *    ....
@@ -148,7 +149,7 @@ extern  int32_t serial_configure(serialManager_t serialManager, const void *conf
  * \code{.c}
  * #define    KSIZE    10
  *
- * uint8_t    buffer[KSIZE] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+ * uint8_t    buffer[KSIZE] = { 0U, 1U, 2U, 3U, 4U, 5U, 6U, 7U, 8U, 9U };
  * int32_t    status;
  *
  *    status = serial_write(KDEF0, buffer, KSIZE);

@@ -47,7 +47,6 @@
                                 varDeclared [[gnu::aligned(boundary)]]
 
 #else
-#include    <stdalign.h>
 #define VAR_DECLARED_ALIGN(varDeclared, boundary)                                           \
                                 alignas (boundary) varDeclared
 #endif
@@ -69,10 +68,10 @@
 // ------------------
 
 #define GET_PTR_32(ptr)         (                                                           \
-                                ((uint32_t)((const uint8_t *)(ptr))[0]<<24u) |              \
-                                ((uint32_t)((const uint8_t *)(ptr))[1]<<16u) |              \
-                                ((uint32_t)((const uint8_t *)(ptr))[2]<<8u)  |              \
-                                ((uint32_t)((const uint8_t *)(ptr))[3]<<0u))
+                                ((uint32_t)((const uint8_t *)(ptr))[0]<<24U) |              \
+                                ((uint32_t)((const uint8_t *)(ptr))[1]<<16U) |              \
+                                ((uint32_t)((const uint8_t *)(ptr))[2]<<8U)  |              \
+                                ((uint32_t)((const uint8_t *)(ptr))[3]<<0U))
 
 #define UNUSED(x)               (void)(x)
 

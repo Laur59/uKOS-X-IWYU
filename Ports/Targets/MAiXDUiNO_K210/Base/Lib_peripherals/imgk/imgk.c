@@ -265,7 +265,7 @@ static  void    local_DVP_IRQHandler(uint32_t core, uint64_t parameter);
  * \code{.c}
  * int32_t    status;
  *
- *    status = imgk_reserve(KMODE_READ_WRITE, 1234);
+ *    status = imgk_reserve(KMODE_READ_WRITE, 1234U);
  *    ....
  *    imgk_xyz();
  *    ....

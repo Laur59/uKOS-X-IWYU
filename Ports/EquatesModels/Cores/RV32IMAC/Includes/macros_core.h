@@ -213,21 +213,38 @@ extern  bool    vExce_isException[KNB_CORES];
 // --------------------
 
 #ifndef NOP
-#define NOP                     __asm volatile ("                                                                            \n \
-                                nop"                                                                                            \
+#define NOP                     __asm volatile ("        \n \
+                                nop"                        \
+                                )
+#endif
+
+#ifndef INST_SYNC_BARRIER
+#ifdef __riscv_zifencei
+#define INST_SYNC_BARRIER       __asm volatile ("fence.i" ::: "memory")
+#else
+#define INST_SYNC_BARRIER       __asm volatile ("fence" ::: "memory")  // fallback, weaker
+#endif
+#endif
+
+#ifndef DATA_SYNC_BARRIER
+#define DATA_SYNC_BARRIER       __asm volatile ("        \n \
+                                fence"                      \
+                                :                           \
+                                :                           \
+                                : "memory"                  \
                                 )
 #endif
 
 #ifndef JUMP_FNCT
-#define JUMP_FNCT(function)                                                                                                     \
-                                __asm volatile ("                                                                            \n \
-                                j           "#function                                                                          \
+#define JUMP_FNCT(function)                                 \
+                                __asm volatile ("        \n \
+                                j           "#function      \
                                 )
 #endif
 
 #ifndef CALL_FNCT
-#define CALL_FNCT(function)                                                                                                     \
-                                __asm volatile ("                                                                            \n \
-                                jal         "#function                                                                          \
+#define CALL_FNCT(function)                                 \
+                                __asm volatile ("        \n \
+                                jal         "#function      \
                                 )
 #endif

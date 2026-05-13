@@ -53,7 +53,7 @@ extern  int32_t stub_spi0_multipleWriteRead(const uint8_t *wData, uint16_t wSize
  * \code{.c}
  * int32_t    status;
  *
- *    status = spi0_reserve(KMODE_READ_WRITE, 1234);
+ *    status = spi0_reserve(KMODE_READ_WRITE, 1234U);
  *    ....
  *    spi0_xyz();
  *    ....

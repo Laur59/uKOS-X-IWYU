@@ -49,14 +49,9 @@ struct  graphic {
             uint8_t     *oImage;            // Ptr on the image
         };
 
-struct  graphic {
-            uint32_t    oW;                 // Image width
-            uint32_t    oH;                 // Image heigh
-            uint8_t     *oImage;            // Ptr on the image
-        };
-
 [[gnu::weak]]
 extern  uint8_t     linker_stUSB_V_BUFFER_0[];
+
 [[gnu::weak]]
 extern  uint8_t     linker_stUSB_V_BUFFER_1[];
 static  bool        vKillRequest[KNB_CORES] = MCSET(false);

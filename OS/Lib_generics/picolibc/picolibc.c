@@ -688,15 +688,16 @@ static  void    local_outLine(serialManager_t serialManager, const uint8_t *outp
  */
 
 // Alias underscore versions to non-underscore versions
-ssize_t write(int fd, const void *buf, size_t count)    [[gnu::alias("_write")]];
-ssize_t read(int fd, void *buf, size_t count)           [[gnu::alias("_read")]];
-int     close(int fd)                                   [[gnu::alias("_close")]];
-int     fstat(int fd, struct stat *st)                  [[gnu::alias("_fstat")]];
-int     isatty(int fd)                                  [[gnu::alias("_isatty")]];
-off_t   lseek(int fd, off_t offset, int whence)         [[gnu::alias("_lseek")]];
-pid_t   getpid(void)                                    [[gnu::alias("_getpid")]];
-int     gettimeofday(struct timeval *tv, void *tz)      [[gnu::alias("_gettimeofday")]];
-clock_t times(struct tms *buf)                          [[gnu::alias("_times")]];
+ssize_t write(int fd, const void *buf, size_t count) __attribute__((alias("_write")));
+ssize_t read(int fd, void *buf, size_t count) __attribute__((alias("_read")));
+int close(int fd) __attribute__((alias("_close")));
+int fstat(int fd, struct stat *st) __attribute__((alias("_fstat")));
+int isatty(int fd) __attribute__((alias("_isatty")));
+off_t lseek(int fd, off_t offset, int whence) __attribute__((alias("_lseek")));
+pid_t getpid(void) __attribute__((alias("_getpid")));
+int gettimeofday(struct timeval *tv, void *tz) __attribute__((alias("_gettimeofday")));
+clock_t times(struct tms *buf) __attribute__((alias("_times")));
+
 /*
  * \brief stdout FILE pointer
  *

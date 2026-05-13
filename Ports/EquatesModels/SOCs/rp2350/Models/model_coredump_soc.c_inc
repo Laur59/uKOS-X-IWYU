@@ -67,7 +67,7 @@ static  void    local_printInterruption(const char_t **vectorName);
  * FPSCR    = 0x00000000
  *
  */
-[[gnu::naked]] [[noreturn]]
+[[gnu::naked, noreturn]]
 void    model_coreDump_displayInterruptions([[maybe_unused]] uintptr_t lr, [[maybe_unused]] uintptr_t *msp) {
 
     CORE_DUMP_SAVE_STACK_FRAME;

@@ -28,10 +28,12 @@ extern  bool    vExce_isException[KNB_CORES];
 // NOLINTBEGIN(misc-use-internal-linkage)
 
 // Ecall context-switch support
-// These are used by the trap handler to pass the message and save/restore sp
+// These are used by the trap handler to pass the message and save/restore sp.
+// Per-hart arrays: each core stores its own ecall state, indexed by mhartid,
+// so concurrent ecalls from the two cores cannot corrupt each other's frame.
 
-volatile    uintptr_t   vSaveStack;
-volatile    uint32_t    vMessage;
+volatile    uintptr_t   vSaveStack[KNB_CORES];
+volatile    uint32_t    vMessage[KNB_CORES];
 
 // Trap handling for RP2350 Hazard3 (RV32IMAC)
 // Hazard3 has no PLIC: peripheral IRQs arrive as machine external interrupts
@@ -266,21 +268,30 @@ void __attribute__ ((naked, aligned(4))) first_handle_trap(void) {
         "   sw      t0,0*4(sp)    \n"
         "   csrw    mepc,t0       \n"
 
+        // Compute per-hart array offset (mhartid * 4) into t3.
+        "   csrr    t3,mhartid    \n"
+        "   slli    t3,t3,2       \n"
+
         // a0 at entry held the kernel message (SET_MESSAGE: lw a0,0(sp); ecall).
-        // It is now saved at sp[29]; copy it to vMessage for first_dispatch_ecall.
+        // It is now saved at sp[29]; copy it to vMessage[hart] for first_dispatch_ecall.
         "   lw      t1,29*4(sp)   \n"
         "   la      t2,vMessage   \n"
+        "   add     t2,t2,t3      \n"
         "   sw      t1,0(t2)      \n"
 
-        // Save current process sp to vSaveStack.
+        // Save current process sp to vSaveStack[hart].
         "   la      t2,vSaveStack \n"
+        "   add     t2,t2,t3      \n"
         "   sw      sp,0(t2)      \n"
 
-        // Dispatch – kernel_message_C0 may switch vSaveStack to a new process frame.
+        // Dispatch – kernel_message_C{0,1} may switch vSaveStack[hart] to a new frame.
         "   call    first_dispatch_ecall \n"
 
-        // Load new process sp (KERN_PREPARE_FRAME or KERN_SAVE_FRAME layout).
+        // Recompute per-hart offset (call may have used t3) and load new sp.
+        "   csrr    t3,mhartid     \n"
+        "   slli    t3,t3,2        \n"
         "   la      t2,vSaveStack  \n"
+        "   add     t2,t2,t3       \n"
         "   lw      sp,0(t2)       \n"
 
         // Restore full context (inline KERN_NEW_FRAME).

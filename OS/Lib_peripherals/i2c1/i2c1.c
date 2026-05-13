@@ -64,7 +64,7 @@ static  int32_t     local_init(void);
  * \code{.c}
  * int32_t    status;
  *
- *    status = i2c1_reserve(KMODE_READ_WRITE, 1234);
+ *    status = i2c1_reserve(KMODE_READ_WRITE, 1234U);
  *    ....
  *    i2c1_xyz();
  *    ....

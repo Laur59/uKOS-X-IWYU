@@ -21,8 +21,10 @@ typedef atomic_flag atomic_flag_t;
 
 [[gnu::always_inline]]
 static  inline  void    atom_init(atomic_flag_t *lock);
+
 [[gnu::always_inline]]
 static  inline  void    atom_lock(atomic_flag_t *lock);
+
 [[gnu::always_inline]]
 static  inline  void    atom_unlock(atomic_flag_t *lock);
 

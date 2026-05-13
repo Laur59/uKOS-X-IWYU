@@ -98,7 +98,6 @@ void    crt0(void) {
 
     if (core == KCORE_0) {
 
-        init_C0_init();
         cmns_init();
 
 // Before to initialise the system RAM, we use its random content
@@ -174,17 +173,6 @@ void    crt0(void) {
  */
 [[gnu::weak]]
 void    init_relocate(void) {
-
-}
-
-/*
- * \brief init_relocate
- *
- * - If necessary, dedicated initialsiation for core 0 only
- *
- */
-[[gnu::weak]]
-void    init_C0_init(void) {
 
 }
 

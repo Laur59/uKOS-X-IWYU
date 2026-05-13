@@ -45,7 +45,7 @@ source setup.sh
 
 # In the main.c
 #undef  KUART_0
-#undef	KWITHOUT_LOGS
+#undef  KWITHOUT_LOGS
 
 # Optional board control
 esp32 -reset
@@ -70,11 +70,12 @@ source setup.sh
 
 # In the main.c
 #define KUART_0
-#define	KWITHOUT_LOGS
+#define KWITHOUT_LOGS
 
 # Push, and maintain, the boot button
 esp32 -reset
 # Push reset
+# Release the reset button
 # Release the boot button
 
 cd ${PATH_UKOS_X_PACKAGE}/Third_Parties/esp32/Construction/Interface/ble_to_uart

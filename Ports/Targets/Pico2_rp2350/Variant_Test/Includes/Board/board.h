@@ -3,26 +3,26 @@
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
- * Goal:     Board mapping.
+ * Board mapping.
  */
 
 #pragma once
-
-// This header contains only board-specific compile-time macros.
-// It is not meant to contain function or variable declarations.
-#if defined(__clang__)
-#  pragma clang diagnostic ignored "-Wempty-translation-unit"
-#endif
 
 #ifndef Pico2_rp2350_S
 #define Pico2_rp2350_S
 #endif
 
+#include    "macros_core.h"
+
 // System identifiers
 // ------------------
 
-#define KCPU                "ARM-Cortex m33 U"
-#define KCONTROLLER         "rp23450"
+#ifdef __riscv
+#define KCPU                "RISC-V Hazard3"
+#else
+#define KCPU                "ARM-Cortex m33"
+#endif
+#define KCONTROLLER         "rp2350"
 #define KBOARD              "Pico2 rp2350 (Variant_Test)"
 #define KTARGET             "Pico2_rp2350"
 
@@ -47,7 +47,7 @@
 
 #define KNB_LED             4U                                          // Number of LEDs
 
-// PORTs
+// GPIO pin assignments
 
 #define BLED_s              25U                                         // GPIO25, LED system
 #define BLED_0              11U                                         // GPIO11, LED yellow

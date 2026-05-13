@@ -7,9 +7,6 @@
 
 #pragma once
 
-#include    <stdbool.h>
-#include    <stdint.h>
-
 #include    "core_reg.h"
 #include    "macros_soc.h"
 
