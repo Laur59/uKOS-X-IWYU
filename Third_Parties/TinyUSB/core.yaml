@@ -4,6 +4,12 @@ pico2:
     profiles:
       - cdc_cdc
 
+pico2riscv:
+  - dependency: null
+    soc: rp2350
+    profiles:
+      - cdc_cdc
+
 nrf:
   - dependency: nrf5340dk
     soc: nRF5340
