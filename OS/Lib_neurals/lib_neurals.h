@@ -3,13 +3,14 @@
 ; ============
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		lib_neurals system call interface module.
+; Project:  uKOS-X
+; Goal:     lib_neurals system call interface module.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +47,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \defgroup Lib_neurals Library for the neural networks
@@ -73,7 +74,7 @@
  */
 
 #if (defined(CONFIG_MAN_MLPN_S))
-#include	"mlpn/mlpn.h"		// IWYU pragma: export
+#include    "mlpn/mlpn.h"       // IWYU pragma: export
 #endif
 
 /**!@}*/

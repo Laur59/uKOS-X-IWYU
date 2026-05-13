@@ -3,13 +3,14 @@
 ; ======
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Board mapping.
+; Project:  uKOS-X
+; Goal:     Board mapping.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,39 +47,39 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 // System identifiers
 // ------------------
 
-#define	KCPU				"ARM-Cortex m55 N"
-#define	KCONTROLLER			"STM32N657"
-#define	KBOARD				"Discovery N657 (Variant_Test)"
-#define	KTARGET				"Discovery_N657"
+#define KCPU                "ARM-Cortex m55 N"
+#define KCONTROLLER         "STM32N657"
+#define KBOARD              "Discovery N657 (Variant_Test)"
+#define KTARGET             "Discovery_N657"
 
 // GPIO settings
 // -------------
 
-#define	LED_BLUE_ON			(REG(GPIOG)->ODR &= (uint32_t)~(1<<BLED_0))		//
-#define	LED_BLUE_OFF		(REG(GPIOG)->ODR |=  		   (1<<BLED_0))		//
-#define	LED_BLUE_TOGGLE		(REG(GPIOG)->ODR ^=			   (1<<BLED_0))		//
-#define	LED_RED_ON			(REG(GPIOG)->ODR &= (uint32_t)~(1<<BLED_1))		//
-#define	LED_RED_OFF			(REG(GPIOG)->ODR |=  		   (1<<BLED_1))		//
-#define	LED_RED_TOGGLE		(REG(GPIOG)->ODR ^=			   (1<<BLED_1))		//
-#define	LED_GREEN_ON		(REG(GPIOG)->ODR &= (uint32_t)~(1<<BLED_2))		//
-#define	LED_GREEN_OFF		(REG(GPIOG)->ODR |=			   (1<<BLED_2))		//
-#define	LED_GREEN_TOGGLE	(REG(GPIOG)->ODR ^=			   (1<<BLED_2))		// Led macros
+#define LED_BLUE_ON         (REG(GPIOG)->ODR &= (uint32_t)~(1<<BLED_0))     //
+#define LED_BLUE_OFF        (REG(GPIOG)->ODR |=            (1<<BLED_0))     //
+#define LED_BLUE_TOGGLE     (REG(GPIOG)->ODR ^=            (1<<BLED_0))     //
+#define LED_RED_ON          (REG(GPIOG)->ODR &= (uint32_t)~(1<<BLED_1))     //
+#define LED_RED_OFF         (REG(GPIOG)->ODR |=            (1<<BLED_1))     //
+#define LED_RED_TOGGLE      (REG(GPIOG)->ODR ^=            (1<<BLED_1))     //
+#define LED_GREEN_ON        (REG(GPIOG)->ODR &= (uint32_t)~(1<<BLED_2))     //
+#define LED_GREEN_OFF       (REG(GPIOG)->ODR |=            (1<<BLED_2))     //
+#define LED_GREEN_TOGGLE    (REG(GPIOG)->ODR ^=            (1<<BLED_2))     // Led macros
 
-#define	ANALYSER_ON			(REG(GPIOG)->ODR &= (uint32_t)~(1<<BANALYSER))	//
-#define	ANALYSER_OFF		(REG(GPIOG)->ODR |=  		   (1<<BANALYSER))	//
-#define	ANALYSER_TOGGLE		(REG(GPIOG)->ODR ^=			   (1<<BANALYSER))	// Analyser macros
+#define ANALYSER_ON         (REG(GPIOG)->ODR &= (uint32_t)~(1<<BANALYSER))  //
+#define ANALYSER_OFF        (REG(GPIOG)->ODR |=            (1<<BANALYSER))  //
+#define ANALYSER_TOGGLE     (REG(GPIOG)->ODR ^=            (1<<BANALYSER))  // Analyser macros
 
-#define KNB_LED				3u												// Number of LEDs
+#define KNB_LED             3u                                              // Number of LEDs
 
 // PORTs
 
-#define	BLED_0				8u												// PORT G 8, LED
-#define	BLED_1				10u												// PORT G 10, LED
-#define	BLED_2				0u												// PORT G 0, LED
-#define	BANALYSER			1u												// PORT G 1, Analyser
-#define	BSW_0				13u												// PORT C 13, SW1
+#define BLED_0              8u                                              // PORT G 8, LED
+#define BLED_1              10u                                             // PORT G 10, LED
+#define BLED_2              0u                                              // PORT G 0, LED
+#define BANALYSER           1u                                              // PORT G 1, Analyser
+#define BSW_0               13u                                             // PORT C 13, SW1

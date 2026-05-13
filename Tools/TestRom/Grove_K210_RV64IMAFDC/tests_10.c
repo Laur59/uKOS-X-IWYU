@@ -3,13 +3,14 @@
 ; =========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test of a TIM call.
+; Project:  uKOS-X
+; Goal:     Test of a TIM call.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,17 +47,17 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
+#include    "tests.h"
 
 #if (defined(TEST_10_S))
-#define	KTTIMESAMPLING	100000000						// 100-ms -> 100'000'000-ns
+#define KTTIMESAMPLING  100000000                       // 100-ms -> 100'000'000-ns
 
-static		char_t		vString[20];
-volatile	uintptr_t	vKern_stackProc[KNB_CORES];		// Stacks
+static      char_t      vString[20];
+volatile    uintptr_t   vKern_stackProc[KNB_CORES];     // Stacks
 
 // Prototypes
 
-static	void	local_kern(uint32_t core, uint64_t parameter);
+static  void    local_kern(uint32_t core, uint64_t parameter);
 
 /*
  * \brief test_10
@@ -64,43 +65,43 @@ static	void	local_kern(uint32_t core, uint64_t parameter);
  * - Generate a TIM call
  *
  */
-void	test_10(void) {
-	float64_t	step;
-	uint32_t	core, current;
+void    test_10(void) {
+    float64_t   step;
+    uint32_t    core, current;
 
-	INTERRUPTION_SET;
-	INTERRUPTION_ON_HARD;
+    INTERRUPTION_SET;
+    INTERRUPTION_ON_HARD;
 
-	cmns_init();
+    cmns_init();
 
 // Turn on the TIM0
 
-	sysctl->clk_en_peri.timer0_clk_en = 1;
+    sysctl->clk_en_peri.timer0_clk_en = 1;
 
 // Set the priority
 // Get current enable bit array by IRQ number
 // Set enable bit in enable bit array
 // Write back the enable bit array
 
-	core = GET_RUNNING_CORE;
-	EXT_INTERRUPT_VECTOR(EINT_TIMER0A_INTERRUPT, local_kern);
+    core = GET_RUNNING_CORE;
+    EXT_INTERRUPT_VECTOR(EINT_TIMER0A_INTERRUPT, local_kern);
 
-	plic->source_priorities.priority[EINT_TIMER0A_INTERRUPT] = KINT_LEVEL_KERNEL_TIMERS;
-	current = plic->target_enables.target[core].enable[EINT_TIMER0A_INTERRUPT / 32];
-	current |= (uint32_t)(1u<<(EINT_TIMER0A_INTERRUPT % 32));
-	plic->target_enables.target[core].enable[EINT_TIMER0A_INTERRUPT / 32] = current;
+    plic->source_priorities.priority[EINT_TIMER0A_INTERRUPT] = KINT_LEVEL_KERNEL_TIMERS;
+    current = plic->target_enables.target[core].enable[EINT_TIMER0A_INTERRUPT / 32];
+    current |= (uint32_t)(1u<<(EINT_TIMER0A_INTERRUPT % 32));
+    plic->target_enables.target[core].enable[EINT_TIMER0A_INTERRUPT / 32] = current;
 
 // Initialise the TIM0_0 to generate interruptions every 100-ms
 
-	step = 1e9 / KFREQUENCY_TIM;
-	timer0->channel[0].load_count = (uint32_t)(KTTIMESAMPLING / step);
-	timer0->channel[0].control &= ~TIMER_CR_INTERRUPT_MASK;
-	timer0->channel[0].control |= (TIMER_CR_USER_MODE | TIMER_CR_ENABLE);
+    step = 1e9 / KFREQUENCY_TIM;
+    timer0->channel[0].load_count = (uint32_t)(KTTIMESAMPLING / step);
+    timer0->channel[0].control &= ~TIMER_CR_INTERRUPT_MASK;
+    timer0->channel[0].control |= (TIMER_CR_USER_MODE | TIMER_CR_ENABLE);
 
-	while (true) {
-		cmns_wait(100000);
-		LED_RED_1_TOGGLE;
-	}
+    while (true) {
+        cmns_wait(100000);
+        LED_RED_1_TOGGLE;
+    }
 }
 
 /*
@@ -109,16 +110,16 @@ void	test_10(void) {
  * - Display some information
  *
  */
-void	local_kern(uint32_t core, uint64_t parameter) __attribute__ ((naked, optimize("Os")));
-void	local_kern(uint32_t core, uint64_t parameter) {
+[[gnu::naked, gnu::optimize("Os")]]
+void    local_kern(uint32_t core, uint64_t parameter) {
 
 // Save the context
 // Recover the message
 // Restore a new context
 
-	KERN_SAVE_FRAME;
+    KERN_SAVE_FRAME;
 
-	JUMP_FNCT(local_process);
+    JUMP_FNCT(local_process);
 }
 
 /*
@@ -127,47 +128,48 @@ void	local_kern(uint32_t core, uint64_t parameter) {
  * - Blink the Red 2 Led
  *
  */
-void	__attribute__ ((noinline)) local_process(uint32_t core, uint64_t parameter, uint64_t *threshold, volatile uintptr_t *stack) {
-				uint32_t	msb, lsb;
-	volatile	uint64_t	*newStack;
+[[gnu::noinline]]
+void    local_process(uint32_t core, uint64_t parameter, uint64_t *threshold, volatile uintptr_t *stack) {
+                uint32_t    msb, lsb;
+    volatile    uint64_t    *newStack;
 
 // Save the plic threshold on the current process stack
 // Save the current process stack
 
-	*threshold = (uint64_t)plic->targets.target[core].priority_threshold & 0x00000000000000FF;
-	vKern_stackProc[core] = (uintptr_t)stack;
+    *threshold = (uint64_t)plic->targets.target[core].priority_threshold & 0x00000000000000FF;
+    vKern_stackProc[core] = (uintptr_t)stack;
 
 // Acknowledge the TIM0_0 interruption
 // Acknowledge the PLIC claim complete
 
-	timer0->channel[0].eoi;
-	plic->targets.target[core].claim_complete = (uint32_t)parameter;
+    timer0->channel[0].eoi;
+    plic->targets.target[core].claim_complete = (uint32_t)parameter;
 
-	LED_RED_2_TOGGLE;
+    LED_RED_2_TOGGLE;
 
-	msb = (uint32_t)(core);
-	debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&msb);
-	cmns_send(KURT0, "Core        0x"); cmns_send(KURT0, vString);
+    msb = (uint32_t)(core);
+    debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&msb);
+    cmns_send(KURT0, "Core        0x"); cmns_send(KURT0, vString);
 
-	msb = (uint32_t)(*threshold);
-	debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&msb);
-	cmns_send(KURT0, "  Threshold 0x"); cmns_send(KURT0, vString);
+    msb = (uint32_t)(*threshold);
+    debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&msb);
+    cmns_send(KURT0, "  Threshold 0x"); cmns_send(KURT0, vString);
 
-	msb = (uint32_t)(parameter>>32);
-	lsb = (uint32_t)(parameter);
-	debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&msb);
-	cmns_send(KURT0, "  number    0x"); cmns_send(KURT0, vString);
-	debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&lsb);
-	cmns_send(KURT0, vString); cmns_send(KURT0, "\n");
+    msb = (uint32_t)(parameter>>32);
+    lsb = (uint32_t)(parameter);
+    debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&msb);
+    cmns_send(KURT0, "  number    0x"); cmns_send(KURT0, vString);
+    debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&lsb);
+    cmns_send(KURT0, vString); cmns_send(KURT0, "\n");
 
-	newStack = (volatile uint64_t *)vKern_stackProc[core];
-	plic->targets.target[core].priority_threshold = (uint32_t)(newStack[0] & 0x00000000000000FF);
+    newStack = (volatile uint64_t *)vKern_stackProc[core];
+    plic->targets.target[core].priority_threshold = (uint32_t)(newStack[0] & 0x00000000000000FF);
 
 // Prepare a1 with the pointer on the new stack (see macro KERN_NEW_FRAME)
 
-	__asm volatile ("add	a1,x0,%0" : : "r" (newStack) :);																									\
+    __asm volatile ("add    a1,x0,%0" : : "r" (newStack) :);                                                                                                    \
 
-	KERN_NEW_FRAME;
-	KERN_RETURN;
+    KERN_NEW_FRAME;
+    KERN_RETURN;
 }
 #endif

@@ -3,6 +3,7 @@
 ; ============
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
 ; Author:   Edo. Franzi     The 2025-01-01
@@ -95,7 +96,7 @@ extern  int32_t     stub_temperature_write(float64_t temperature);
  * \code{.c}
  * int32_t    status;
  *
- *    status = temperature_reserve(KMODE_READ_WRITE, 1234);
+ *    status = temperature_reserve(KMODE_READ_WRITE, 1234u);
  *    ....
  *    temperature_xyz();
  *    ....

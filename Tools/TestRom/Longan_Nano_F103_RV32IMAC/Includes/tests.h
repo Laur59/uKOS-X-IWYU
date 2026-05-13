@@ -3,13 +3,14 @@
 ; ======
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test ROM routine collection.
+; Project:  uKOS-X
+; Goal:     Test ROM routine collection.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,33 +47,33 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	"types.h"
-#include	"cmns.h"
-#include	"debug.h"
-#include	"core_reg.h"
-#include	"soc_reg.h"
-#include	"board.h"
-#include	"clockTree.h"
-#include	"macros.h"
-#include	"macros_soc.h"
-#include	"macros_core.h"
-#include	"core.h"
+#include    "types.h"
+#include    "cmns.h"
+#include    "debug.h"
+#include    "core_reg.h"
+#include    "soc_reg.h"
+#include    "board.h"
+#include    "clockTree.h"
+#include    "macros.h"
+#include    "macros_soc.h"
+#include    "macros_core.h"
+#include    "core.h"
 
-#define	TEST_00_S			// Test blink the RED, BLUE & GREEN Leds
-#undef	TEST_01_S			// Test of the RTC interruption
-#undef	TEST_02_S			// Tesat send data via the cnms manager
-#undef	TEST_03_S			// Test read & send data via the cnms manager
-#undef	TEST_04_S			// Test of the UART0 Rx interruption
-#undef	TEST_05_S			// Test of the UART0 Tx interruption
-#undef	TEST_06_S			// Test of an EXTI call
-#undef	TEST_07_S			// Test of a double EXTI call
-#undef	TEST_08_S			// Test of the TIMER1 interruption
-#undef	TEST_09_S			// Test of a preliminary pico kernel (with messages EXTI)
-#undef	TEST_10_S			// Test of a preliminary pico kernel (with messages EXTI) and with the macro_core
-#undef	TEST_11_S			// Test of the TIMER2 interruption
-#undef	TEST_12_S			// Test of the TIMER2 interruption OCx
-#undef	TEST_XX_S			// Test of the code size
+#define TEST_00_S           // Test blink the RED, BLUE & GREEN Leds
+#undef  TEST_01_S           // Test of the RTC interruption
+#undef  TEST_02_S           // Tesat send data via the cnms manager
+#undef  TEST_03_S           // Test read & send data via the cnms manager
+#undef  TEST_04_S           // Test of the UART0 Rx interruption
+#undef  TEST_05_S           // Test of the UART0 Tx interruption
+#undef  TEST_06_S           // Test of an EXTI call
+#undef  TEST_07_S           // Test of a double EXTI call
+#undef  TEST_08_S           // Test of the TIMER1 interruption
+#undef  TEST_09_S           // Test of a preliminary pico kernel (with messages EXTI)
+#undef  TEST_10_S           // Test of a preliminary pico kernel (with messages EXTI) and with the macro_core
+#undef  TEST_11_S           // Test of the TIMER2 interruption
+#undef  TEST_12_S           // Test of the TIMER2 interruption OCx
+#undef  TEST_XX_S           // Test of the code size
 
-#define	NO_KERNEL_S			// No kernels (naked function entries)
+#define NO_KERNEL_S         // No kernels (naked function entries)

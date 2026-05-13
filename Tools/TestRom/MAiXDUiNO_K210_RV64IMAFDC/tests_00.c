@@ -3,13 +3,14 @@
 ; =========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test blink the Red 1 & Green 1 the Red 2 & Green 2 Leds.
+; Project:  uKOS-X
+; Goal:     Test blink the Red 1 & Green 1 the Red 2 & Green 2 Leds.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +47,7 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
+#include    "tests.h"
 
 #if (defined(TEST_00_S))
 /*
@@ -55,21 +56,21 @@
  * - Test blink the Red 1 & Green 1 the Red 2 & Green 2 Leds
  *
  */
-void	test_00(void) {
+void    test_00(void) {
 
-	while (true) {
-		LED_RED_ON;
-		cmns_wait(200000);
-		LED_RED_OFF;
-		cmns_wait(5000000);
-		LED_GREEN_ON;
-		cmns_wait(200000);
-		LED_GREEN_OFF;
-		cmns_wait(5000000);
-		LED_BLUE_ON;
-		cmns_wait(200000);
-		LED_BLUE_OFF;
-		cmns_wait(5000000);
-	}
+    while (true) {
+        LED_RED_ON;
+        cmns_wait(200000);
+        LED_RED_OFF;
+        cmns_wait(5000000);
+        LED_GREEN_ON;
+        cmns_wait(200000);
+        LED_GREEN_OFF;
+        cmns_wait(5000000);
+        LED_BLUE_ON;
+        cmns_wait(200000);
+        LED_BLUE_OFF;
+        cmns_wait(5000000);
+    }
 }
 #endif

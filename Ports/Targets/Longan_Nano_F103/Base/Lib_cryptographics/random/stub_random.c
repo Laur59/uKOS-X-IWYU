@@ -3,13 +3,14 @@
 ; ============
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		stub for the "random" manager module.
+; Project:  uKOS-X
+; Goal:     stub for the "random" manager module.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,14 +47,14 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include    "uKOS.h"
 
 // Prototypes
 
-void	model_random_soft_init(void);
-void	model_random_soft_read(uint32_t *number);
-void	model_random_hard_init(void);
-void	model_random_hard_read(uint32_t *number);
+void    model_random_soft_init(void);
+void    model_random_soft_read(uint32_t *number);
+void    model_random_hard_init(void);
+void    model_random_hard_read(uint32_t *number);
 
 /*
  * \brief stub_random_init
@@ -61,11 +62,11 @@ void	model_random_hard_read(uint32_t *number);
  * - Initialise some specific CPU parts
  *
  */
-int32_t	stub_random_init(void) {
+int32_t stub_random_init(void) {
 
-	model_random_soft_init();
-	model_random_hard_init();
-	return (KERR_RANDOM_NOERR);
+    model_random_soft_init();
+    model_random_hard_init();
+    return (KERR_RANDOM_NOERR);
 }
 
 /*
@@ -74,15 +75,15 @@ int32_t	stub_random_init(void) {
  * - Return the random number
  *
  */
-int32_t	stub_random_read(randomGenerator_t generator, uint32_t *number) {
+int32_t stub_random_read(randomGenerator_t generator, uint32_t *number) {
 
-	if (generator == KRANDOM_SOFT) { model_random_soft_read(number); return (KERR_RANDOM_NOERR); }
-	if (generator == KRANDOM_HARD) { model_random_hard_read(number); return (KERR_RANDOM_NOERR); }
-	return (KERR_RANDOM_GEERR);
+    if (generator == KRANDOM_SOFT) { model_random_soft_read(number); return (KERR_RANDOM_NOERR); }
+    if (generator == KRANDOM_HARD) { model_random_hard_read(number); return (KERR_RANDOM_NOERR); }
+    return (KERR_RANDOM_GEERR);
 }
 
 // Local routines
 // ==============
 
-#include	"model_random_soft.c_inc"
-#include	"model_random_hard.c_inc"
+#include    "model_random_soft.c_inc"
+#include    "model_random_hard.c_inc"

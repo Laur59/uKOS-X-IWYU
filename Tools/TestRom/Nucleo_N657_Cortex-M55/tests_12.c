@@ -3,13 +3,14 @@
 ; =========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test of some RAM limits.
+; Project:  uKOS-X
+; Goal:     Test of some RAM limits.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,28 +47,28 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
+#include    "tests.h"
 
 #if (defined(TEST_12_S))
-#define	AXISRAM1_BASE	0x34000000u
-#define	AXISRAM1_SIZE	(1u * 1024u * 1024u)
-#define	AXISRAM2_BASE	0x34100000u
-#define	AXISRAM2_SIZE	(1u * 1024u * 1024u)
-#define	AXISRAM3_BASE	0x34200000u
-#define	AXISRAM3_SIZE	(448u * 1024u)
-#define	AXISRAM4_BASE	0x34270000u
-#define	AXISRAM4_SIZE	(448u * 1024u)
-#define	AXISRAM5_BASE	0x342E0000u
-#define	AXISRAM5_SIZE	(448u * 1024u)
-#define	AXISRAM6_BASE	0x34350000u
-#define	AXISRAM6_SIZE	(448u * 1024u)
-#define	CACHEAXI_BASE	0x343C0000u
-#define	CACHEAXI_SIZE	(256u * 1024u)
-#define	VENCRAM_BASE	0x34400000u
-#define	VENCRAM_SIZE	(256u * 1024u)
+#define AXISRAM1_BASE   0x34000000u
+#define AXISRAM1_SIZE   (1u * 1024u * 1024u)
+#define AXISRAM2_BASE   0x34100000u
+#define AXISRAM2_SIZE   (1u * 1024u * 1024u)
+#define AXISRAM3_BASE   0x34200000u
+#define AXISRAM3_SIZE   (448u * 1024u)
+#define AXISRAM4_BASE   0x34270000u
+#define AXISRAM4_SIZE   (448u * 1024u)
+#define AXISRAM5_BASE   0x342E0000u
+#define AXISRAM5_SIZE   (448u * 1024u)
+#define AXISRAM6_BASE   0x34350000u
+#define AXISRAM6_SIZE   (448u * 1024u)
+#define CACHEAXI_BASE   0x343C0000u
+#define CACHEAXI_SIZE   (256u * 1024u)
+#define VENCRAM_BASE    0x34400000u
+#define VENCRAM_SIZE    (256u * 1024u)
 
-#define	KRAM			AXISRAM6_BASE
-#define	KRAM_SIZE		AXISRAM6_SIZE
+#define KRAM            AXISRAM6_BASE
+#define KRAM_SIZE       AXISRAM6_SIZE
 
 /*
  * \brief test_12
@@ -75,35 +76,35 @@
  * - Test of some RAM limits
  *
  */
-void	test_12(void) {
-				uint32_t	i, ramSize = KRAM_SIZE;
-	volatile	uint8_t		*ram = (uint8_t *)(KRAM);
+void    test_12(void) {
+                uint32_t    i, ramSize = KRAM_SIZE;
+    volatile    uint8_t     *ram = (uint8_t *)(KRAM);
 
 // Erase the SRAM
 
-	for (i = 0; i < ramSize; i++) {
-		ram[i] = 0u;
-	}
+    for (i = 0; i < ramSize; i++) {
+        ram[i] = 0u;
+    }
 
 // Write
 
-	while (true) {
-		for (i = 0; i < ramSize; i++) {
-			ram[i] = (uint8_t)i;
-		}
-		LED_BLUE_TOGGLE;
+    while (true) {
+        for (i = 0; i < ramSize; i++) {
+            ram[i] = (uint8_t)i;
+        }
+        LED_BLUE_TOGGLE;
 
 // Read & test
 
-		for (i = 0; i < ramSize; i++) {
-			if (ram[i] != (uint8_t)i) {
-				LED_RED_ON;
-				LED_BLUE_OFF;
-				while (true) { ; }
-			}
-		}
-		LED_GREEN_TOGGLE;
-	}
+        for (i = 0; i < ramSize; i++) {
+            if (ram[i] != (uint8_t)i) {
+                LED_RED_ON;
+                LED_BLUE_OFF;
+                while (true) { ; }
+            }
+        }
+        LED_GREEN_TOGGLE;
+    }
 }
 
 #endif

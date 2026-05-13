@@ -3,13 +3,14 @@
 ; ==============
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		stub for the connection of the "watchdog" manager to the watchdog device.
+; Project:  uKOS-X
+; Goal:     stub for the connection of the "watchdog" manager to the watchdog device.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,11 +47,11 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include    "uKOS.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
 
-#define	model_watchdog_arm	stub_watchdog_arm
+#define model_watchdog_arm  stub_watchdog_arm
 
-#include	"model_watchdog.c_inc"
+#include    "model_watchdog.c_inc"

@@ -3,15 +3,16 @@
 ; =======================
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Kern - Precise signals.
+; Project:  uKOS-X
+; Goal:     Kern - Precise signals.
 ;
-;			Private uKernel variables.
+;           Private uKernel variables.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -48,7 +49,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_kernels
@@ -72,12 +73,12 @@
 
 #if (KKERN_NB_PRECISE_SIGNALS > 0)
 
-#define	KPRCS_ANONYMOUS_ID			"Prcs_anonymous"
-#define	KPRCS_DEFAULT_SIGNAL_GROUP	"Def_Signal_Group"
+#define KPRCS_ANONYMOUS_ID          "Prcs_anonymous"
+#define KPRCS_DEFAULT_SIGNAL_GROUP  "Def_Signal_Group"
 
-extern	prcs_t		vKern_prcs[KNB_CORES][KKERN_NB_PRECISE_SIGNALS];	// Precise signals
-extern	uint16_t	vKern_nbPrcs[KNB_CORES];							// Nb of used precise signals
-extern	uint16_t	vKern_nbMaxPrcs[KNB_CORES];							// Max number of used precise signals
+extern  prcs_t      vKern_prcs[KNB_CORES][KKERN_NB_PRECISE_SIGNALS];    // Precise signals
+extern  uint16_t    vKern_nbPrcs[KNB_CORES];                            // Nb of used precise signals
+extern  uint16_t    vKern_nbMaxPrcs[KNB_CORES];                         // Max number of used precise signals
 #endif
 
 /**@}*/

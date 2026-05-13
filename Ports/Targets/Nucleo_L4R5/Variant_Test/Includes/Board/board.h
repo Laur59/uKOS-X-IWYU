@@ -3,13 +3,14 @@
 ; ======
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Board mapping.
+; Project:  uKOS-X
+; Goal:     Board mapping.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,25 +47,25 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 // System identifiers
 // ------------------
 
-#define	KCPU				"ARM-Cortex m4 L"
-#define	KCONTROLLER			"STM32L4R5"
-#define	KBOARD				"Nucleo L4R5 (Variant_Test)"
-#define	KTARGET				"Nucleo_L4R5"
+#define KCPU                "ARM-Cortex m4 L"
+#define KCONTROLLER         "STM32L4R5"
+#define KBOARD              "Nucleo L4R5 (Variant_Test)"
+#define KTARGET             "Nucleo_L4R5"
 
 // GPIO settings
 // -------------
 
-#define KNB_LED				3u									// Number of LEDs
+#define KNB_LED             3u                                  // Number of LEDs
 
 // PORTs
 
-#define	BLED_0				7u									// PORT B 7, LED
-#define	BLED_1				14u									// PORT B 14, LED
-#define	BLED_2				7u									// PORT C 7, LED
+#define BLED_0              7u                                  // PORT B 7, LED
+#define BLED_1              14u                                 // PORT B 14, LED
+#define BLED_2              7u                                  // PORT C 7, LED
 
-#define	BSW_0				13u									// PORT C 13, SW1
+#define BSW_0               13u                                 // PORT C 13, SW1

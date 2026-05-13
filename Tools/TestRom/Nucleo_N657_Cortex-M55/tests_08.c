@@ -3,13 +3,14 @@
 ; =========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test of the TIM2 interruption.
+; Project:  uKOS-X
+; Goal:     Test of the TIM2 interruption.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,17 +47,17 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
+#include    "tests.h"
 
 #if (defined(TEST_08_S))
 
-#define	KTTIMESAMPLING	((float64_t)(0.5))										// 500-ms
-#define KPSCT2			((KFREQUENCY_TIM / (KFREQUENCY_1MHz)) - 1)				// Prescaler for 1'000'000-Hz
-#define KARRT2			((uint32_t)((KFREQUENCY_1MHz * KTTIMESAMPLING) - 1))	// Autoreload
+#define KTTIMESAMPLING  ((float64_t)(0.5))                                      // 500-ms
+#define KPSCT2          ((KFREQUENCY_TIM / (KFREQUENCY_1MHz)) - 1)              // Prescaler for 1'000'000-Hz
+#define KARRT2          ((uint32_t)((KFREQUENCY_1MHz * KTTIMESAMPLING) - 1))    // Autoreload
 
 // Prototypes
 
-void	TIM2_C0_IRQHandler(void);
+void    TIM2_C0_IRQHandler(void);
 
 /*
  * \brief test_08
@@ -64,25 +65,25 @@ void	TIM2_C0_IRQHandler(void);
  * - Test of the TIM2 interruption
  *
  */
-void	test_08(void) {
+void    test_08(void) {
 
-	REG(RCC)->APB1LENR |= RCC_APB1LENR_TIM2EN;
-	STRONG_BARRIER;
+    REG(RCC)->APB1LENR |= RCC_APB1LENR_TIM2EN;
+    STRONG_BARRIER;
 
-	NVIC_SetPriority(TIM2_C0_IRQn, KINT_LEVEL_KERNEL_TIMERS);
-	NVIC_EnableIRQ(TIM2_C0_IRQn);
+    NVIC_SetPriority(TIM2_C0_IRQn, KINT_LEVEL_KERNEL_TIMERS);
+    NVIC_EnableIRQ(TIM2_C0_IRQn);
 
-	REG(TIM2)->CR1  = 0;
-	REG(TIM2)->PSC  = KPSCT2;
-	REG(TIM2)->ARR  = KARRT2;
-	REG(TIM2)->CNT  = 0;
-	REG(TIM2)->DIER = TIM2_DIER_UIE;
-	REG(TIM2)->CR1  = TIM2_CR1_CEN;
+    REG(TIM2)->CR1  = 0;
+    REG(TIM2)->PSC  = KPSCT2;
+    REG(TIM2)->ARR  = KARRT2;
+    REG(TIM2)->CNT  = 0;
+    REG(TIM2)->DIER = TIM2_DIER_UIE;
+    REG(TIM2)->CR1  = TIM2_CR1_CEN;
 
-	while (true) {
-		cmns_wait(500000);
-		LED_RED_TOGGLE;
-	}
+    while (true) {
+        cmns_wait(500000);
+        LED_RED_TOGGLE;
+    }
 }
 
 /*
@@ -91,15 +92,15 @@ void	test_08(void) {
  * - Blink the BLUE Led
  *
  */
-void	TIM2_C0_IRQHandler(void) {
+void    TIM2_C0_IRQHandler(void) {
 
 // Acknowledge the TIM2 interruption
 // Read-back to ensure the write completes before the handler returns;
 // without this, on Cortex-M55 the NVIC can re-enter the handler immediately.
 
-	REG(TIM2)->SR = ~TIM2_SR_UIF;
-	(void)REG(TIM2)->SR;
+    REG(TIM2)->SR = ~TIM2_SR_UIF;
+    (void)REG(TIM2)->SR;
 
-	LED_BLUE_TOGGLE;
+    LED_BLUE_TOGGLE;
 }
 #endif

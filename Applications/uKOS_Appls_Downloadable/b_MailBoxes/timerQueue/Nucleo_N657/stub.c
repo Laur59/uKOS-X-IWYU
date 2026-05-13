@@ -3,13 +3,14 @@
 ; =====
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Hardware specific stub.
+; Project:  uKOS-X
+; Goal:     Hardware specific stub.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,68 +47,68 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include    "uKOS.h"
 
-#define KTTIM100US		100u									// For 100-us (10000-Hz)
-#define	KFPRET7			1000000u								// 1'000'000-Hz
-#define	KFINTT7			KTTIM100US								// 10'000-Hz
-#define KPSCT7			((KFREQUENCY_TIM / KFPRET7) - 1u)		// Prescaler for 1'000'000-Hz
-#define KARRT7			((KFPRET7 / KFINTT7) - 1u)				// Autoreload
+#define KTTIM100US      100u                                    // For 100-us (10000-Hz)
+#define KFPRET7         1000000u                                // 1'000'000-Hz
+#define KFINTT7         KTTIM100US                              // 10'000-Hz
+#define KPSCT7          ((KFREQUENCY_TIM / KFPRET7) - 1u)       // Prescaler for 1'000'000-Hz
+#define KARRT7          ((KFPRET7 / KFINTT7) - 1u)              // Autoreload
 
 // Prototypes
 
-static	void	stub_intr_timer_interruption(void);
+static  void    stub_intr_timer_interruption(void);
 
 /*
  * \brief stub_intr_timer_init
  *
  */
-void	stub_intr_timer_init(void) {
+void    stub_intr_timer_init(void) {
 
-	REG(RCC)->APB1LENR   |= RCC_APB1LENR_TIM7EN;
-	REG(RCC)->APB1LLPENR |= RCC_APB1LLPENR_TIM7LPEN;
+    REG(RCC)->APB1LENR   |= RCC_APB1LENR_TIM7EN;
+    REG(RCC)->APB1LLPENR |= RCC_APB1LLPENR_TIM7LPEN;
 
 // Timer 7 (100-us)
 
-	INTERRUPT_VECTOR(TIM7_C0_IRQn, stub_intr_timer_interruption);
-	NVIC_SetPriority(TIM7_C0_IRQn, KHW_PRIORITY_MODERATE);
-	NVIC_EnableIRQ(TIM7_C0_IRQn);
+    INTERRUPT_VECTOR(TIM7_C0_IRQn, stub_intr_timer_interruption);
+    NVIC_SetPriority(TIM7_C0_IRQn, KHW_PRIORITY_MODERATE);
+    NVIC_EnableIRQ(TIM7_C0_IRQn);
 
-	REG(TIM7)->PSC  = KPSCT7;
-	REG(TIM7)->ARR  = KARRT7;
-	REG(TIM7)->DIER = TIM7_DIER_UIE;
-	REG(TIM7)->CR1 |= TIM7_CR1_CEN;
+    REG(TIM7)->PSC  = KPSCT7;
+    REG(TIM7)->ARR  = KARRT7;
+    REG(TIM7)->DIER = TIM7_DIER_UIE;
+    REG(TIM7)->CR1 |= TIM7_CR1_CEN;
 }
 
 /*
  * \brief stub_intr_timer_interruption
  *
  */
-static	void	stub_intr_timer_interruption(void) {
-			uint32_t	core;
-			int32_t		status;
-	static	mbox_t		*vQueue;
-	static	bool		vInit = false;
-	static	uintptr_t	vCounter = 0u;
+static  void    stub_intr_timer_interruption(void) {
+            uint32_t    core;
+            int32_t     status;
+    static  mbox_t      *vQueue;
+    static  bool        vInit = false;
+    static  uintptr_t   vCounter = 0u;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	if (vInit == false) {
-		if (kern_getMailboxById("Queue tim", &vQueue) == KERR_KERN_NOERR) {
-			vInit = true;
-		}
-	}
+    if (vInit == false) {
+        if (kern_getMailboxById("Queue tim", &vQueue) == KERR_KERN_NOERR) {
+            vInit = true;
+        }
+    }
 
 // INT acknowledge
 
-	if ((REG(TIM7)->SR & TIM7_SR_UIF) != 0) {
-		REG(TIM7)->SR &= (uint16_t)~TIM7_SR_UIF;
-	}
+    if ((REG(TIM7)->SR & TIM7_SR_UIF) != 0) {
+        REG(TIM7)->SR &= (uint16_t)~TIM7_SR_UIF;
+    }
 
-	status = kern_writeQueue(vQueue, vCounter, 0u);
-	if (status == KERR_KERN_NOERR) {
-		vCounter++;
-	}
+    status = kern_writeQueue(vQueue, vCounter, 0u);
+    if (status == KERR_KERN_NOERR) {
+        vCounter++;
+    }
 
-	PREEMPTION_THRESHOLD(core);
+    PREEMPTION_THRESHOLD(core);
 }

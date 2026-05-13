@@ -3,13 +3,14 @@
 ; =========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test of the TIM0_0 TIM0_2 interruptions.
+; Project:  uKOS-X
+; Goal:     Test of the TIM0_0 TIM0_2 interruptions.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,16 +47,16 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
+#include    "tests.h"
 
 #if (defined(TEST_12_S))
-#define	KTTIMESAMPLING_0	100000000				// 100-ms -> 100'000'000-ns
-#define	KTTIMESAMPLING_2	200000000				// 200-ms -> 200'000'000-ns
+#define KTTIMESAMPLING_0    100000000               // 100-ms -> 100'000'000-ns
+#define KTTIMESAMPLING_2    200000000               // 200-ms -> 200'000'000-ns
 
 // Prototypes
 
-static	void	local_TIM0_0_IRQHandler(uint32_t core, uint64_t parameter);
-static	void	local_TIM0_2_IRQHandler(uint32_t core, uint64_t parameter);
+static  void    local_TIM0_0_IRQHandler(uint32_t core, uint64_t parameter);
+static  void    local_TIM0_2_IRQHandler(uint32_t core, uint64_t parameter);
 
 /*
  * \brief test_12
@@ -63,56 +64,56 @@ static	void	local_TIM0_2_IRQHandler(uint32_t core, uint64_t parameter);
  * - Test of the TIM0_0 TIM0_2 interruptions
  *
  */
-void	test_12(void) {
-	float64_t	step;
-	uint32_t	core, current;
+void    test_12(void) {
+    float64_t   step;
+    uint32_t    core, current;
 
-	INTERRUPTION_SET;
-	INTERRUPTION_ON_HARD;
+    INTERRUPTION_SET;
+    INTERRUPTION_ON_HARD;
 
 // Turn on the TIM0
 
-	sysctl->clk_en_peri.timer0_clk_en = 1;
+    sysctl->clk_en_peri.timer0_clk_en = 1;
 
 // Set the priority
 // Get current enable bit array by IRQ number
 // Set enable bit in enable bit array
 // Write back the enable bit array
 
-	core = GET_RUNNING_CORE;
-	EXT_INTERRUPT_VECTOR(EINT_TIMER0A_INTERRUPT, local_TIM0_0_IRQHandler);
-	EXT_INTERRUPT_VECTOR(EINT_TIMER0B_INTERRUPT, local_TIM0_2_IRQHandler);
+    core = GET_RUNNING_CORE;
+    EXT_INTERRUPT_VECTOR(EINT_TIMER0A_INTERRUPT, local_TIM0_0_IRQHandler);
+    EXT_INTERRUPT_VECTOR(EINT_TIMER0B_INTERRUPT, local_TIM0_2_IRQHandler);
 
-	plic->source_priorities.priority[EINT_TIMER0A_INTERRUPT] = KINT_LEVEL_ALL;
-	current = plic->target_enables.target[core].enable[EINT_TIMER0A_INTERRUPT / 32];
-	current |= (uint32_t)(1u<<(EINT_TIMER0A_INTERRUPT % 32));
-	plic->target_enables.target[core].enable[EINT_TIMER0A_INTERRUPT / 32] = current;
+    plic->source_priorities.priority[EINT_TIMER0A_INTERRUPT] = KINT_LEVEL_ALL;
+    current = plic->target_enables.target[core].enable[EINT_TIMER0A_INTERRUPT / 32];
+    current |= (uint32_t)(1u<<(EINT_TIMER0A_INTERRUPT % 32));
+    plic->target_enables.target[core].enable[EINT_TIMER0A_INTERRUPT / 32] = current;
 
-	plic->source_priorities.priority[EINT_TIMER0B_INTERRUPT] = KINT_LEVEL_ALL;
-	current = plic->target_enables.target[core].enable[EINT_TIMER0B_INTERRUPT / 32];
-	current |= (uint32_t)(1u<<(EINT_TIMER0B_INTERRUPT % 32));
-	plic->target_enables.target[core].enable[EINT_TIMER0B_INTERRUPT / 32] = current;
+    plic->source_priorities.priority[EINT_TIMER0B_INTERRUPT] = KINT_LEVEL_ALL;
+    current = plic->target_enables.target[core].enable[EINT_TIMER0B_INTERRUPT / 32];
+    current |= (uint32_t)(1u<<(EINT_TIMER0B_INTERRUPT % 32));
+    plic->target_enables.target[core].enable[EINT_TIMER0B_INTERRUPT / 32] = current;
 
 // Initialise the TIM0_0 to generate interruptions every 100-ms
 
-	step = 1e9 / KFREQUENCY_TIM;
-	timer0->channel[0].load_count = (uint32_t)(KTTIMESAMPLING_0 / step);
-	timer0->channel[0].control &= ~TIMER_CR_INTERRUPT_MASK;
-	timer0->channel[0].control |= (TIMER_CR_USER_MODE | TIMER_CR_ENABLE);
+    step = 1e9 / KFREQUENCY_TIM;
+    timer0->channel[0].load_count = (uint32_t)(KTTIMESAMPLING_0 / step);
+    timer0->channel[0].control &= ~TIMER_CR_INTERRUPT_MASK;
+    timer0->channel[0].control |= (TIMER_CR_USER_MODE | TIMER_CR_ENABLE);
 
 // Initialise the TIM0_2 to generate interruptions every 200-ms
 
-	step = 1e9 / KFREQUENCY_TIM;
-	timer0->channel[2].load_count = (uint32_t)(KTTIMESAMPLING_2 / step);
-	timer0->channel[2].control &= ~TIMER_CR_INTERRUPT_MASK;
-	timer0->channel[2].control |= (TIMER_CR_USER_MODE | TIMER_CR_ENABLE);
+    step = 1e9 / KFREQUENCY_TIM;
+    timer0->channel[2].load_count = (uint32_t)(KTTIMESAMPLING_2 / step);
+    timer0->channel[2].control &= ~TIMER_CR_INTERRUPT_MASK;
+    timer0->channel[2].control |= (TIMER_CR_USER_MODE | TIMER_CR_ENABLE);
 
 // Waiting for the TIM0_0 & TIM0_2 interruptions
 
-	while (true) {
-		cmns_wait(1000000);
-		LED_GREEN_1_TOGGLE;
-	}
+    while (true) {
+        cmns_wait(1000000);
+        LED_GREEN_1_TOGGLE;
+    }
 }
 
 /*
@@ -121,16 +122,16 @@ void	test_12(void) {
  * - Blink the Red 1 Led
  *
  */
-static	void	local_TIM0_0_IRQHandler(uint32_t core, uint64_t parameter) {
+static  void    local_TIM0_0_IRQHandler(uint32_t core, uint64_t parameter) {
 
 // Acknowledge the TIM0_0 interruption
 // Acknowledge the PLIC claim complete
 
-	if ((timer0->channel[0].intr_stat & 0x1) != 0) {
-		timer0->channel[0].eoi;
-		LED_RED_1_TOGGLE;
-	}
-	plic->targets.target[core].claim_complete = (uint32_t)parameter;
+    if ((timer0->channel[0].intr_stat & 0x1) != 0) {
+        timer0->channel[0].eoi;
+        LED_RED_1_TOGGLE;
+    }
+    plic->targets.target[core].claim_complete = (uint32_t)parameter;
 }
 
 /*
@@ -139,15 +140,15 @@ static	void	local_TIM0_0_IRQHandler(uint32_t core, uint64_t parameter) {
  * - Blink the Red 2 Led
  *
  */
-static	void	local_TIM0_2_IRQHandler(uint32_t core, uint64_t parameter) {
+static  void    local_TIM0_2_IRQHandler(uint32_t core, uint64_t parameter) {
 
 // Acknowledge the TIM0_2 interruption
 // Acknowledge the PLIC claim complete
 
-	if ((timer0->channel[2].intr_stat & 0x1) != 0) {
-		timer0->channel[2].eoi;
-		LED_RED_2_TOGGLE;
-	}
-	plic->targets.target[core].claim_complete = (uint32_t)parameter;
+    if ((timer0->channel[2].intr_stat & 0x1) != 0) {
+        timer0->channel[2].eoi;
+        LED_RED_2_TOGGLE;
+    }
+    plic->targets.target[core].claim_complete = (uint32_t)parameter;
 }
 #endif

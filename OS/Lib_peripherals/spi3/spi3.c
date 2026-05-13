@@ -3,6 +3,7 @@
 ; =====
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
 ; Author:   Edo. Franzi     The 2025-01-01
@@ -95,7 +96,7 @@ extern  int32_t     stub_spi3_multipleWriteRead(const uint8_t *wData, uint16_t w
  * \code{.c}
  * int32_t    status;
  *
- *    status = spi3_reserve(KMODE_READ_WRITE, 1234);
+ *    status = spi3_reserve(KMODE_READ_WRITE, 1234u);
  *    ....
  *    spi3_xyz();
  *    ....

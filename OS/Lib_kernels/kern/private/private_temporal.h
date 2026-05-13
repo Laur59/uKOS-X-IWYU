@@ -3,15 +3,16 @@
 ; =================
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Kern - time management.
+; Project:  uKOS-X
+; Goal:     Kern - time management.
 ;
-;			Private uKernel variables.
+;           Private uKernel variables.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -48,7 +49,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_kernels
@@ -70,8 +71,8 @@
  * @{
  */
 
-extern				list_t		vKern_listWait[KNB_CORES];					// Wait list (processes waiting for a time)
-extern	volatile	uint32_t	vKern_TimeException[KNB_CORES];				// Sum of time spent inside all the exceptions
+extern              list_t      vKern_listWait[KNB_CORES];                  // Wait list (processes waiting for a time)
+extern  volatile    uint32_t    vKern_TimeException[KNB_CORES];             // Sum of time spent inside all the exceptions
 
 // Prototypes
 
@@ -81,7 +82,7 @@ extern	volatile	uint32_t	vKern_TimeException[KNB_CORES];				// Sum of time spent
  * \warning call usable only by the uKernel.
  *
  */
-extern	uint32_t	temporal_getNextLowPowerTime(void);
+extern  uint32_t    temporal_getNextLowPowerTime(void);
 
 /**@}*/
 /**@}*/

@@ -3,13 +3,14 @@
 ; ============
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		lib_kernels system call interface module.
+; Project:  uKOS-X
+; Goal:     lib_kernels system call interface module.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +47,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \defgroup Lib_kernels Library for micro-kernel
@@ -74,8 +75,8 @@
 
 // IWYU pragma: begin_exports
 
-#include	"modules.h"
-#include	"kern/kern.h"
+#include    "modules.h"
+#include    "kern/kern.h"
 
 // IWYU pragma: end_exports
 

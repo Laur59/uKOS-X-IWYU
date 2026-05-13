@@ -3,6 +3,7 @@
 ; =============
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
 ; Author:   Edo. Franzi     The 2025-01-01
@@ -180,7 +181,7 @@ void    stub_startUp_launch(void) {
 //              case KURT1: { configureURTx.oBaudRate = aFunction[i].oBaudrate; serial_configure(KURT1, &configureURTx); break; }
 //              case KURT2: { configureURTx.oBaudRate = aFunction[i].oBaudrate; serial_configure(KURT2, &configureURTx); break; }
 //              case KURT3: { configureURTx.oBaudRate = aFunction[i].oBaudrate; serial_configure(KURT3, &configureURTx); break; }
-                case KWFI0: { configureURTx.oBaudRate = aFunction[i].oBaudrate; serial_configure(KWFI0, &configureURTx); break; }
+//              case KWFI0: { configureURTx.oBaudRate = aFunction[i].oBaudrate; serial_configure(KWFI0, &configureURTx); break; }
                 default: {
 
 // Make MISRA happy :-)

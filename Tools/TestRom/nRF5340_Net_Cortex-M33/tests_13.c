@@ -3,13 +3,14 @@
 ; =========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test of IPC basics.
+; Project:  uKOS-X
+; Goal:     Test of IPC basics.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,13 +47,13 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
+#include    "tests.h"
 
 #if (defined(TEST_13_S))
 
 // Prototypes
 
-void	local_IPC_IRQHandler(void);
+void    local_IPC_IRQHandler(void);
 
 /*
  * \brief test_13
@@ -60,44 +61,44 @@ void	local_IPC_IRQHandler(void);
  * - Test of IPC basics
  *
  */
-void	test_13(void) {
+void    test_13(void) {
 
 // Initialise the IPC to generate an interruption on the reception
 
-	INTERRUPT_VECTOR(IPC_C0_IRQn, local_IPC_IRQHandler);
-	NVIC_SetPriority(IPC_C0_IRQn, KINT_LEVEL_KERNEL_TIMERS);
-	NVIC_EnableIRQ(IPC_C0_IRQn);
+    INTERRUPT_VECTOR(IPC_C0_IRQn, local_IPC_IRQHandler);
+    NVIC_SetPriority(IPC_C0_IRQn, KINT_LEVEL_KERNEL_TIMERS);
+    NVIC_EnableIRQ(IPC_C0_IRQn);
 
-	#if (defined(CPU_APPLICATION_S))
-	REG(IPC)->SEND_CNF[0]	 = (1u<<0);
-	REG(IPC)->RECEIVE_CNF[1] = (1u<<1);
-	REG(IPC)->INTENSET		 = (1u<<1);
-	#endif
+    #if (defined(CPU_APPLICATION_S))
+    REG(IPC)->SEND_CNF[0]    = (1u<<0);
+    REG(IPC)->RECEIVE_CNF[1] = (1u<<1);
+    REG(IPC)->INTENSET       = (1u<<1);
+    #endif
 
-	#if (defined(CPU_NETWORK_S))
-	REG(IPC)->SEND_CNF[1]	 = (1u<<1);
-	REG(IPC)->RECEIVE_CNF[0] = (1u<<0);
-	REG(IPC)->INTENSET		 = (1u<<0);
-	#endif
+    #if (defined(CPU_NETWORK_S))
+    REG(IPC)->SEND_CNF[1]    = (1u<<1);
+    REG(IPC)->RECEIVE_CNF[0] = (1u<<0);
+    REG(IPC)->INTENSET       = (1u<<0);
+    #endif
 
 // Waiting for the TIM1 interruption
 
-	INTERRUPTION_ON_HARD;
+    INTERRUPTION_ON_HARD;
 
-	while (true) {
-		#if (defined(CPU_APPLICATION_S))
-		cmns_wait(100000);
+    while (true) {
+        #if (defined(CPU_APPLICATION_S))
+        cmns_wait(100000);
 
-		REG(IPC)->TASKS_SEND[0] = 1u;
-		#endif
+        REG(IPC)->TASKS_SEND[0] = 1u;
+        #endif
 
-		#if (defined(CPU_NETWORK_S))
-		cmns_wait(1000000);
+        #if (defined(CPU_NETWORK_S))
+        cmns_wait(1000000);
 
-		REG(IPC)->TASKS_SEND[1] = 1u;
-		#endif
+        REG(IPC)->TASKS_SEND[1] = 1u;
+        #endif
 
-	}
+    }
 }
 
 /*
@@ -106,18 +107,18 @@ void	test_13(void) {
  * - Blink the 0 Led
  *
  */
-void	local_IPC_IRQHandler(void) {
+void    local_IPC_IRQHandler(void) {
 
 // Acknowledge the IPC interruption
 
-	#if (defined(CPU_APPLICATION_S))
-	REG(IPC)->EVENTS_RECEIVE[1] = 0;
-	#endif
+    #if (defined(CPU_APPLICATION_S))
+    REG(IPC)->EVENTS_RECEIVE[1] = 0;
+    #endif
 
-	#if (defined(CPU_NETWORK_S))
-	REG(IPC)->EVENTS_RECEIVE[0] = 0;
-	#endif
+    #if (defined(CPU_NETWORK_S))
+    REG(IPC)->EVENTS_RECEIVE[0] = 0;
+    #endif
 
-	LED_0_TOGGLE;
+    LED_0_TOGGLE;
 }
 #endif

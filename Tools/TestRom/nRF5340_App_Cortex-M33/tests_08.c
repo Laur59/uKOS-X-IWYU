@@ -3,13 +3,14 @@
 ; =========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test of the math library.
+; Project:  uKOS-X
+; Goal:     Test of the math library.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,8 +47,8 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
-#include	<math.h>
+#include    "tests.h"
+#include    <math.h>
 
 #if (defined(TEST_08_S))
 /*
@@ -56,23 +57,23 @@
  * - Test of the math librarys
  *
  */
-void	test_08(void) {
-	volatile	float32_t	a, b, c;
+void    test_08(void) {
+    volatile    float32_t   a, b, c;
 
-	a = 3.1415f;
-	b = 2.0f * 3.1415f;
+    a = 3.1415f;
+    b = 2.0f * 3.1415f;
 
-	while (true) {
-		cmns_wait(1000000);
-		LED_0_ON;
-		LED_1_OFF;
+    while (true) {
+        cmns_wait(1000000);
+        LED_0_ON;
+        LED_1_OFF;
 
-		c = sin( a + b);
-		a = c;
+        c = sin( a + b);
+        a = c;
 
-		cmns_wait(1000000);
-		LED_0_OFF;
-		LED_1_ON;
-	}
+        cmns_wait(1000000);
+        LED_0_OFF;
+        LED_1_ON;
+    }
 }
 #endif

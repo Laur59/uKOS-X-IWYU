@@ -3,6 +3,7 @@
 ; ======
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
 ; Author:   Edo. Franzi     The 2025-01-01
@@ -117,7 +118,8 @@ static  const   cycle_t     aTabCycle[] = {
                                 { KURT4, "Cycle_urt4", "Process cycle urt4.                       (c) EFr-2026" },
                                 { KCDC0, "Cycle_cdc0", "Process cycle cdc0.                       (c) EFr-2026" },
                                 { KCDC1, "Cycle_cdc1", "Process cycle cdc1.                       (c) EFr-2026" },
-                                { KWFI0, "Cycle_wfi0", "Process cycle wfi0.                       (c) EFr-2026" }
+                                { KWFI0, "Cycle_wfi0", "Process cycle wfi0.                       (c) EFr-2026" },
+                                { KBLE0, "Cycle_ble0", "Process cycle ble0.                       (c) EFr-2026" }
                             };
 
 #define KNB_CHANNELS    (sizeof(aTabCycle) / sizeof(cycle_t))
@@ -325,7 +327,8 @@ static  int32_t cycle_clean(uint32_t argc, const char_t *argv[]) {
  * - Launch a cycle
  *
  */
-static void __attribute__ ((noreturn)) local_process(const void *argument) {
+[[noreturn]]
+static  void    local_process(const void *argument) {
             uint32_t            core, time, argc;
             serialManager_t     serialManager;
             uint16_t            indexSerialManager;

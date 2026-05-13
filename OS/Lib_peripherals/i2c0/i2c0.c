@@ -3,6 +3,7 @@
 ; =====
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
 ; Author:   Edo. Franzi     The 2025-01-01
@@ -97,7 +98,7 @@ extern  int32_t     stub_i2c0_flush(void);
  * \code{.c}
  * int32_t    status;
  *
- *    status = i2c0_reserve(KMODE_READ_WRITE, 1234);
+ *    status = i2c0_reserve(KMODE_READ_WRITE, 1234u);
  *    ....
  *    i2c0_xyz();
  *    ....

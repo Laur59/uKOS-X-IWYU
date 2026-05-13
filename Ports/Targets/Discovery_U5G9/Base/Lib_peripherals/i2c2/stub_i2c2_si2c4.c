@@ -3,13 +3,14 @@
 ; ================
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		stub for the connection of the "i2c2" manager to the si2c4 device.
+; Project:  uKOS-X
+; Goal:     stub for the connection of the "i2c2" manager to the si2c4 device.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,20 +47,20 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include    "uKOS.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
 
-#define	UNIT					"I2C4"
-#define	I2C						REG(I2C4)
-#define	I2C_VECTOR_NUMBER		I2C4_EV_C0_IRQn
-#define	I2C_FREQUENCY			KFREQUENCY_APB1
+#define UNIT                    "I2C4"
+#define I2C                     REG(I2C4)
+#define I2C_VECTOR_NUMBER       I2C4_EV_C0_IRQn
+#define I2C_FREQUENCY           KFREQUENCY_APB1
 
-#define	model_i2c_init			stub_i2c2_init
-#define	model_i2c_configure		stub_i2c2_configure
-#define	model_i2c_write			stub_i2c2_write
-#define	model_i2c_read			stub_i2c2_read
+#define model_i2c_init          stub_i2c2_init
+#define model_i2c_configure     stub_i2c2_configure
+#define model_i2c_write         stub_i2c2_write
+#define model_i2c_read          stub_i2c2_read
 
 // Model callbacks
 // ---------------
@@ -70,9 +71,9 @@
  * - Enable the device (clock)
  *
  */
-static	void	cb_enable(void) {
+static  void    cb_enable(void) {
 
-	REG(RCC)->APB1ENR2 |= RCC_APB1ENR2_I2C4EN;
+    REG(RCC)->APB1ENR2 |= RCC_APB1ENR2_I2C4EN;
 }
 
-#include	"model_i2c.c_inc"
+#include    "model_i2c.c_inc"

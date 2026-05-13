@@ -4,13 +4,14 @@
 # ======
 
 # SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Build the mlpn model
+# Project:  uKOS-X
+# Goal:     Build the mlpn model
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -49,11 +50,11 @@
 set -euo pipefail
 
 if [[ -z "${PATH_UKOS_X_PACKAGE:-}" ]]; then
-	echo "Variable PATH_UKOS_X_PACKAGE is not set!"
-	exit 1
+    echo "Variable PATH_UKOS_X_PACKAGE is not set!"
+    exit 1
 fi
 
-export	PYTHONPATH="$PYTHONPATH:$(pwd)"
+export  PYTHONPATH="$PYTHONPATH:$(pwd)"
 
-python3	"${PATH_UKOS_X_PACKAGE}/OS/Lib_neurals/mlpn/backprop.py"
+python3 "${PATH_UKOS_X_PACKAGE}/OS/Lib_neurals/mlpn/backprop.py"
 rm -rf __pycache__

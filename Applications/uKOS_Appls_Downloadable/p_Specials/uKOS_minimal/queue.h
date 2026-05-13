@@ -3,13 +3,14 @@
 ; ======
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Queue definition.
+; Project:  uKOS-X
+; Goal:     Queue definition.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,8 +47,8 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#define	KID_TEST		0x00000000u
-#define	KID_SENSOR		0x01000000u
-#define	KID_ACTUATOR	0x02000000u
+#define KID_TEST        0x00000000u
+#define KID_SENSOR      0x01000000u
+#define KID_ACTUATOR    0x02000000u

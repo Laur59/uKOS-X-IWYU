@@ -3,13 +3,14 @@
 ; =====
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		hard manager.
+; Project:  uKOS-X
+; Goal:     hard manager.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,10 +47,10 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 // Prototypes
 
-extern	void	hard_onLed(uint32_t ledNb);
-extern	void	hard_offLed(uint32_t ledNb);
-extern	void	hard_toggleLed(uint32_t ledNb);
+extern  void    hard_onLed(uint32_t ledNb);
+extern  void    hard_offLed(uint32_t ledNb);
+extern  void    hard_toggleLed(uint32_t ledNb);

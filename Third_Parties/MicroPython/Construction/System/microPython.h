@@ -3,14 +3,15 @@
 ; ============
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		microPython library.
-;			uKOS-X interface for MicroPython (www.micropython.com).
+; Project:  uKOS-X
+; Goal:     microPython library.
+;           uKOS-X interface for MicroPython (www.micropython.com).
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -47,7 +48,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Third_Parties
@@ -67,23 +68,23 @@
 // mpyt access macros
 // ------------------
 
-#define	MICROPYTHON_CMDLINE		microPython_exchangeData(nullptr);
-#define	MICROPYTHON_COMPUTE(x)	microPython_exchangeData(x);
+#define MICROPYTHON_CMDLINE     microPython_exchangeData(nullptr);
+#define MICROPYTHON_COMPUTE(x)  microPython_exchangeData(x);
 
 // Configuration structure
 // -----------------------
 
-typedef	struct	microPythonCnf		microPythonCnf_t;
+typedef struct  microPythonCnf      microPythonCnf_t;
 
 struct microPythonCnf {
-			uint32_t	oSize;									// Size of the memory
-			uint8_t		*oMemory;								// Ptr on the memory location
+            uint32_t    oSize;                                  // Size of the memory
+            uint8_t     *oMemory;                               // Ptr on the memory location
 };
 
 // Prototypes
 
 #if (defined(__cplusplus))
-extern	"C" {
+extern  "C" {
 #endif
 
 /*!
@@ -104,11 +105,11 @@ extern	"C" {
  *    status = microPython_configure(&configure);
  * \endcode
  *
- * \param[in]	*configure				Ptr on the configuration buffer
- * \return		KERR_MICROPYTHON_NOERR	OK
+ * \param[in]   *configure              Ptr on the configuration buffer
+ * \return      KERR_MICROPYTHON_NOERR  OK
  *
  */
-extern	int32_t	microPython_configure(microPythonCnf_t *configure);
+extern  int32_t microPython_configure(microPythonCnf_t *configure);
 
 /*!
  * \brief Exchange data with the microPython manager
@@ -124,12 +125,12 @@ extern	int32_t	microPython_configure(microPythonCnf_t *configure);
  *    status = microPython_exchangeData(myRoutine);
  * \endcode
  *
- * \param[in]	*pyProgram				nullptr = Command line interpreter mode
- * \param[in]	-						Ptr on the ascii script / program
- * \return		KERR_MICROPYTHON_NOERR	OK
+ * \param[in]   *pyProgram              nullptr = Command line interpreter mode
+ * \param[in]   -                       Ptr on the ascii script / program
+ * \return      KERR_MICROPYTHON_NOERR  OK
  *
  */
-extern	int32_t	microPython_exchangeData(const char_t *pyProgram);
+extern  int32_t microPython_exchangeData(const char_t *pyProgram);
 
 #if (defined(__cplusplus))
 }

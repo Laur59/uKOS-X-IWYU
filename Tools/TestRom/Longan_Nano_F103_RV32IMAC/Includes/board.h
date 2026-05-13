@@ -3,13 +3,14 @@
 ; ======
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Board mapping.
+; Project:  uKOS-X
+; Goal:     Board mapping.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,33 +47,33 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 // System identifiers
 // ------------------
 
-#define	KCPU				"RISC-V RV32IMAC"
-#define	KCONTROLLER			"GD32VF103CB"
-#define	KBOARD				"Logan_Nano F103 RISC-V (Variant_Test)"
-#define	KTARGET				"Logan_Nano_F103"
+#define KCPU                "RISC-V RV32IMAC"
+#define KCONTROLLER         "GD32VF103CB"
+#define KBOARD              "Logan_Nano F103 RISC-V (Variant_Test)"
+#define KTARGET             "Logan_Nano_F103"
 
 // GPIO settings
 // -------------
 
-#define	LED_RED_ON			(GPIOC->OCTL &= (uint32_t)~(1u<<BLED_2))		//
-#define	LED_RED_OFF			(GPIOC->OCTL |=			   (1u<<BLED_2))		//
-#define	LED_RED_TOGGLE		(GPIOC->OCTL ^=			   (1u<<BLED_2))		//
-#define	LED_BLUE_ON			(GPIOA->OCTL &= (uint32_t)~(1u<<BLED_1))		//
-#define	LED_BLUE_OFF		(GPIOA->OCTL |=			   (1u<<BLED_1))		//
-#define	LED_BLUE_TOGGLE		(GPIOA->OCTL ^=			   (1u<<BLED_1))		//
-#define	LED_GREEN_ON		(GPIOA->OCTL &= (uint32_t)~(1u<<BLED_0))		//
-#define	LED_GREEN_OFF		(GPIOA->OCTL |=			   (1u<<BLED_0))		//
-#define	LED_GREEN_TOGGLE	(GPIOA->OCTL ^=			   (1u<<BLED_0))		// Led macros
+#define LED_RED_ON          (GPIOC->OCTL &= (uint32_t)~(1u<<BLED_2))        //
+#define LED_RED_OFF         (GPIOC->OCTL |=            (1u<<BLED_2))        //
+#define LED_RED_TOGGLE      (GPIOC->OCTL ^=            (1u<<BLED_2))        //
+#define LED_BLUE_ON         (GPIOA->OCTL &= (uint32_t)~(1u<<BLED_1))        //
+#define LED_BLUE_OFF        (GPIOA->OCTL |=            (1u<<BLED_1))        //
+#define LED_BLUE_TOGGLE     (GPIOA->OCTL ^=            (1u<<BLED_1))        //
+#define LED_GREEN_ON        (GPIOA->OCTL &= (uint32_t)~(1u<<BLED_0))        //
+#define LED_GREEN_OFF       (GPIOA->OCTL |=            (1u<<BLED_0))        //
+#define LED_GREEN_TOGGLE    (GPIOA->OCTL ^=            (1u<<BLED_0))        // Led macros
 
-#define KNB_LED				3u												// Number of LEDs
+#define KNB_LED             3u                                              // Number of LEDs
 
 // PORTs
 
-#define	BLED_0				1u												// PORT A 1, BLED_0
-#define	BLED_1				2u												// PORT A 2, BLED_1
-#define	BLED_2				13u												// PORT C 13, BLED_2
+#define BLED_0              1u                                              // PORT A 1, BLED_0
+#define BLED_1              2u                                              // PORT A 2, BLED_1
+#define BLED_2              13u                                             // PORT C 13, BLED_2

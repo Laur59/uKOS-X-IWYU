@@ -6,12 +6,12 @@
 ; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 ;------------------------------------------------------------------------
-; Author:	Laurent von Allmen	The 2026-02-13
+; Author:   Laurent von Allmen  The 2026-02-13
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Linker description for RISC-V TestROM.
-;			Privileged only support
+; Project:  uKOS-X
+; Goal:     Linker description for RISC-V TestROM.
+;           Privileged only support
 ;
 ;   (c) 2025-2026, Laurent von Allmen
 ;   ---------------------------------
@@ -50,52 +50,52 @@
 
 ENTRY(Reset_C0_Handler)
 
-INCLUDE		Runtime/rp2350.ld
+INCLUDE     Runtime/rp2350.ld
 
 /* Memory Mapping for RISC-V TestROM */
 
-linker_sizeStackSystem_C0	= (4K);		/* System stack for core 0 */
-linker_sizeStackFirst_C0	= (2K);		/* Application stack for core 0 */
+linker_sizeStackSystem_C0   = (4K);     /* System stack for core 0 */
+linker_sizeStackFirst_C0    = (2K);     /* Application stack for core 0 */
 
-linker_sizeStackSystem_C1	= (4K);		/* System stack for core 1 */
-linker_sizeStackFirst_C1	= (2K);		/* Application stack for core 1 */
+linker_sizeStackSystem_C1   = (4K);     /* System stack for core 1 */
+linker_sizeStackFirst_C1    = (2K);     /* Application stack for core 1 */
 
-linker_lowStackSystem_C0	= rp_stSRAM;
-linker_topStackSystem_C0	= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 - 8,
+linker_lowStackSystem_C0    = rp_stSRAM;
+linker_topStackSystem_C0    = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 - 8,
 
-linker_lowStackFirst_C0		= linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;
-linker_topStackFirst_C0		= linker_lowStackFirst_C0 + linker_sizeStackFirst_C0 - 8;
+linker_lowStackFirst_C0     = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;
+linker_topStackFirst_C0     = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0 - 8;
 
-linker_lowStackSystem_C1	= linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;
-linker_topStackSystem_C1	= linker_lowStackSystem_C1 + linker_sizeStackSystem_C1 - 8;
+linker_lowStackSystem_C1    = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;
+linker_topStackSystem_C1    = linker_lowStackSystem_C1 + linker_sizeStackSystem_C1 - 8;
 
-linker_lowStackFirst_C1		= linker_lowStackSystem_C1 + linker_sizeStackSystem_C1;
-linker_topStackFirst_C1		= linker_lowStackFirst_C1 + linker_sizeStackFirst_C1 - 8;
+linker_lowStackFirst_C1     = linker_lowStackSystem_C1 + linker_sizeStackSystem_C1;
+linker_topStackFirst_C1     = linker_lowStackFirst_C1 + linker_sizeStackFirst_C1 - 8;
 
-/* IMPORTANT:												*/
-/* The heap has to be maintained aligned					*/
-/* on a boundary of 8-bytes									*/
+/* IMPORTANT:                                               */
+/* The heap has to be maintained aligned                    */
+/* on a boundary of 8-bytes                                 */
 
-linker_stHeap				= (rp_stSRAM + 128K);			/* 0x20020000: start of the heap							*/
-linker_lnHeap				= (128K);												/* Length of the heap										*/
+linker_stHeap               = (rp_stSRAM + 128K);                   /* 0x20020000: start of the heap                            */
+linker_lnHeap               = (128K);                               /* Length of the heap                                       */
 
-/* IMPORTANT:												*/
-/* External memory, User (download application) and shared	*/
+/* IMPORTANT:                                               */
+/* External memory, User (download application) and shared  */
 
-linker_stUMemo				= (linker_stHeap + linker_lnHeap);						/* 0x20040000: UMemo, start of the user memory 				*/
-linker_lnUMemo				= (128K);												/* Length of the user memory	  							*/
+linker_stUMemo              = (linker_stHeap + linker_lnHeap);      /* 0x20040000: UMemo, start of the user memory              */
+linker_lnUMemo              = (128K);                               /* Length of the user memory                                */
 
 /* Flash and RAM configuration */
 
-linker_stPrgmCode			= rp_stINTFLASH;		/* 0x10000000: Flash start */
-linker_lnPrgmCode			= rp_lnINTFLASH;		/* 4MB Flash */
+linker_stPrgmCode           = rp_stINTFLASH;                        /* 0x10000000: Flash start                                  */
+linker_lnPrgmCode           = rp_lnINTFLASH;                        /* 4MB Flash                                                */
 
-linker_stPrgmData			= rp_stSRAM + 12K;		/* 0x20000000: RAM start */
-linker_lnPrgmData			= (116K);				/* 128KB RAM for test */
+linker_stPrgmData           = rp_stSRAM + 12K;                      /* 0x20000000: RAM start                                    */
+linker_lnPrgmData           = (116K);                               /* 128KB RAM for test                                       */
 
 MEMORY {
-	prgm_code (rx)	: ORIGIN = linker_stPrgmCode, LENGTH = linker_lnPrgmCode
-	prgm_data (rwx)	: ORIGIN = linker_stPrgmData, LENGTH = linker_lnPrgmData
+    prgm_code (rx)  : ORIGIN = linker_stPrgmCode, LENGTH = linker_lnPrgmCode
+    prgm_data (rwx) : ORIGIN = linker_stPrgmData, LENGTH = linker_lnPrgmData
 }
 
-INCLUDE		Runtime/system_p.ld
+INCLUDE     Runtime/system_p.ld

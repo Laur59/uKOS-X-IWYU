@@ -3,13 +3,14 @@
 ; =========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test of the TIM2_0 TIM2_1 interruptions.
+; Project:  uKOS-X
+; Goal:     Test of the TIM2_0 TIM2_1 interruptions.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,15 +47,15 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
+#include    "tests.h"
 
 #if (defined(TEST_17_S))
-#define	KTTIMESAMPLING_0	100000000				// 100-ms -> 100'000'000-ns
-#define	KTTIMESAMPLING_1	200000000				// 200-ms -> 200'000'000-ns
+#define KTTIMESAMPLING_0    100000000               // 100-ms -> 100'000'000-ns
+#define KTTIMESAMPLING_1    200000000               // 200-ms -> 200'000'000-ns
 
 // Prototypes
 
-static	void	local_TIM2_0_IRQHandler(uint32_t core, uint64_t parameter);
+static  void    local_TIM2_0_IRQHandler(uint32_t core, uint64_t parameter);
 
 /*
  * \brief test_17
@@ -62,50 +63,50 @@ static	void	local_TIM2_0_IRQHandler(uint32_t core, uint64_t parameter);
  * - Test of the TIM2_0 TIM2_1 interruptions
  *
  */
-void	test_17(void) {
-	float64_t	step;
-	uint32_t	core, current;
+void    test_17(void) {
+    float64_t   step;
+    uint32_t    core, current;
 
-	INTERRUPTION_SET;
-	INTERRUPTION_ON_HARD;
+    INTERRUPTION_SET;
+    INTERRUPTION_ON_HARD;
 
 // Turn on the TIM2
 
-	sysctl->clk_en_peri.timer2_clk_en = 1;
+    sysctl->clk_en_peri.timer2_clk_en = 1;
 
 // Set the priority
 // Get current enable bit array by IRQ number
 // Set enable bit in enable bit array
 // Write back the enable bit array
 
-	core = GET_RUNNING_CORE;
-	EXT_INTERRUPT_VECTOR(EINT_TIMER2A_INTERRUPT, local_TIM2_0_IRQHandler);
+    core = GET_RUNNING_CORE;
+    EXT_INTERRUPT_VECTOR(EINT_TIMER2A_INTERRUPT, local_TIM2_0_IRQHandler);
 
-	plic->source_priorities.priority[EINT_TIMER2A_INTERRUPT] = KINT_LEVEL_ALL;
-	current = plic->target_enables.target[core].enable[EINT_TIMER2A_INTERRUPT / 32];
-	current |= (uint32_t)(1u<<(EINT_TIMER2A_INTERRUPT % 32));
-	plic->target_enables.target[core].enable[EINT_TIMER2A_INTERRUPT / 32] = current;
+    plic->source_priorities.priority[EINT_TIMER2A_INTERRUPT] = KINT_LEVEL_ALL;
+    current = plic->target_enables.target[core].enable[EINT_TIMER2A_INTERRUPT / 32];
+    current |= (uint32_t)(1u<<(EINT_TIMER2A_INTERRUPT % 32));
+    plic->target_enables.target[core].enable[EINT_TIMER2A_INTERRUPT / 32] = current;
 
 // Initialise the TIM2_0 to generate interruptions every 100-ms
 
-	step = 1e9 / KFREQUENCY_TIM;
-	timer2->channel[0].load_count = (uint32_t)(KTTIMESAMPLING_0 / step);
-	timer2->channel[0].control &= ~TIMER_CR_INTERRUPT_MASK;
-	timer2->channel[0].control |= (TIMER_CR_USER_MODE | TIMER_CR_ENABLE);
+    step = 1e9 / KFREQUENCY_TIM;
+    timer2->channel[0].load_count = (uint32_t)(KTTIMESAMPLING_0 / step);
+    timer2->channel[0].control &= ~TIMER_CR_INTERRUPT_MASK;
+    timer2->channel[0].control |= (TIMER_CR_USER_MODE | TIMER_CR_ENABLE);
 
 // Initialise the TIM2_1 to generate interruptions every 200-ms
 
-	step = 1e9 / KFREQUENCY_TIM;
-	timer2->channel[1].load_count = (uint32_t)(KTTIMESAMPLING_1 / step);
-	timer2->channel[1].control &= ~TIMER_CR_INTERRUPT_MASK;
-	timer2->channel[1].control |= (TIMER_CR_USER_MODE | TIMER_CR_ENABLE);
+    step = 1e9 / KFREQUENCY_TIM;
+    timer2->channel[1].load_count = (uint32_t)(KTTIMESAMPLING_1 / step);
+    timer2->channel[1].control &= ~TIMER_CR_INTERRUPT_MASK;
+    timer2->channel[1].control |= (TIMER_CR_USER_MODE | TIMER_CR_ENABLE);
 
 // Waiting for the TIM2_0 & TIM2_1 interruptions
 
-	while (true) {
-		cmns_wait(1000000);
-		LED_GREEN_TOGGLE;
-	}
+    while (true) {
+        cmns_wait(1000000);
+        LED_GREEN_TOGGLE;
+    }
 }
 
 /*
@@ -115,20 +116,20 @@ void	test_17(void) {
  * - Blink the Red 2 Led (if TIM_1)
  *
  */
-static	void	local_TIM2_0_IRQHandler(uint32_t core, uint64_t parameter) {
+static  void    local_TIM2_0_IRQHandler(uint32_t core, uint64_t parameter) {
 
 // Acknowledge the TIM2_0 interruption
 // Acknowledge the TIM2_1 interruption
 // Acknowledge the PLIC claim complete
 
-	if ((timer2->channel[0].intr_stat & 0x1) != 0) {
-		timer2->channel[0].eoi;
-		LED_RED_TOGGLE;
-	}
-	if ((timer2->channel[1].intr_stat & 0x1) != 0) {
-		timer2->channel[1].eoi;
-		LED_BLUE_TOGGLE;
-	}
-	plic->targets.target[core].claim_complete = (uint32_t)parameter;
+    if ((timer2->channel[0].intr_stat & 0x1) != 0) {
+        timer2->channel[0].eoi;
+        LED_RED_TOGGLE;
+    }
+    if ((timer2->channel[1].intr_stat & 0x1) != 0) {
+        timer2->channel[1].eoi;
+        LED_BLUE_TOGGLE;
+    }
+    plic->targets.target[core].claim_complete = (uint32_t)parameter;
 }
 #endif

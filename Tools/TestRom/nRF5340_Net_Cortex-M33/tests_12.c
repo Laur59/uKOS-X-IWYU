@@ -3,13 +3,14 @@
 ; =========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test of the shared RAM.
+; Project:  uKOS-X
+; Goal:     Test of the shared RAM.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,11 +47,11 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
-#include	"linker.h"
+#include    "tests.h"
+#include    "linker.h"
 
 #if (defined(TEST_12_S))
-static	char_t		vString[20];
+static  char_t      vString[20];
 
 /*
  * \brief test_12
@@ -58,35 +59,35 @@ static	char_t		vString[20];
  * - Test of the shared RAM
  *
  */
-void	test_12(void) {
-	uint32_t	*start, testNb = 0;
-	uintptr_t	i, lenght;
+void    test_12(void) {
+    uint32_t    *start, testNb = 0;
+    uintptr_t   i, lenght;
 
-	start  = (uint32_t *)linker_stShare;
-	lenght = (uintptr_t)(((uintptr_t)linker_lnShare) / 4);
+    start  = (uint32_t *)linker_stShare;
+    lenght = (uintptr_t)(((uintptr_t)linker_lnShare) / 4);
 
-	cmns_init();
+    cmns_init();
 
-	while (true) {
+    while (true) {
 
 // Fill the memory
 
-		for (i = 0; i < lenght; i++) {
-			start[i] = i;
-		}
+        for (i = 0; i < lenght; i++) {
+            start[i] = i;
+        }
 
 // Verify the memory
 
-		for (i = 0; i < lenght; i++) {
-			if (start[i] != i) {
-				cmns_send(KURT0, "Memory problem");
-				while (true) { ; }
-			}
-		}
+        for (i = 0; i < lenght; i++) {
+            if (start[i] != i) {
+                cmns_send(KURT0, "Memory problem");
+                while (true) { ; }
+            }
+        }
 
-		debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&testNb);
-		cmns_send(KURT0, "Test number 0x"); cmns_send(KURT0, vString); cmns_send(KURT0, "\n");
-		testNb++;
-	}
+        debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&testNb);
+        cmns_send(KURT0, "Test number 0x"); cmns_send(KURT0, vString); cmns_send(KURT0, "\n");
+        testNb++;
+    }
 }
 #endif

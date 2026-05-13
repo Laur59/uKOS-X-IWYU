@@ -3,13 +3,14 @@
 ; ======
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test ROM routine collection.
+; Project:  uKOS-X
+; Goal:     Test ROM routine collection.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,20 +47,20 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	"types.h"
-#include	"cmns.h"
-#include	"debug.h"
-#include	"core_reg.h"
-#include	"soc_reg.h"
-#include	"board.h"
-#include	"clockTree.h"
-#include	"macros.h"
-#include	"macros_soc.h"
-#include	"macros_core.h"
-#include	"core.h"
+#include    "types.h"
+#include    "cmns.h"
+#include    "debug.h"
+#include    "core_reg.h"
+#include    "soc_reg.h"
+#include    "board.h"
+#include    "clockTree.h"
+#include    "macros.h"
+#include    "macros_soc.h"
+#include    "macros_core.h"
+#include    "core.h"
 
-#define	TEST_00_S			// Test blink the RED & YELLOW Leds
+#define TEST_00_S           // Test blink the RED & YELLOW Leds
 
-#define	NO_KERNEL_S			// No kernels (naked function entries)
+#define NO_KERNEL_S         // No kernels (naked function entries)

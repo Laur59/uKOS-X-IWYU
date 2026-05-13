@@ -3,13 +3,14 @@
 ; =======
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		record manager.
+; Project:  uKOS-X
+; Goal:     record manager.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,9 +47,9 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	"macros.h"
+#include    "macros.h"
 
 /*!
  * \addtogroup Lib_generics
@@ -68,51 +69,51 @@
 // Modifiable in the makefile: depth of the fifo for the tracing
 
 #if (!defined(KRECORD_SZ_LOG_BUF))
-#define	KRECORD_SZ_LOG_BUF		200u
+#define KRECORD_SZ_LOG_BUF      200u
 #endif
 
 #if (!defined(KRECORD_SZ_TRACE_FIFO))
-#define	KRECORD_SZ_TRACE_FIFO	200u
+#define KRECORD_SZ_TRACE_FIFO   200u
 #endif
 
 // Trace fifo & log buffer
 // -----------------------
 
-typedef	struct	recordTracing	recordTracing_t;
-typedef	struct	recordLogging	recordLogging_t;
+typedef struct  recordTracing   recordTracing_t;
+typedef struct  recordLogging   recordLogging_t;
 
 // Log categories
 
-typedef	enum {
-			KFATAL_SYSTEM = 0x10u,								// Fatal
-			KFATAL_KERNEL,										//
-			KFATAL_MANAGER,										//
-			KFATAL_USER,										//
+typedef enum {
+            KFATAL_SYSTEM = 0x10u,                              // Fatal
+            KFATAL_KERNEL,                                      //
+            KFATAL_MANAGER,                                     //
+            KFATAL_USER,                                        //
 
-			KERROR_SYSTEM = 0x20u,								// Error
-			KERROR_KERNEL,										//
-			KERROR_MANAGER,										//
-			KERROR_USER,										//
+            KERROR_SYSTEM = 0x20u,                              // Error
+            KERROR_KERNEL,                                      //
+            KERROR_MANAGER,                                     //
+            KERROR_USER,                                        //
 
-			KWARNING_SYSTEM = 0x30u,							// Warninig
-			KWARNING_KERNEL,									//
-			KWARNING_MANAGER,									//
-			KWARNING_USER,										//
+            KWARNING_SYSTEM = 0x30u,                            // Warninig
+            KWARNING_KERNEL,                                    //
+            KWARNING_MANAGER,                                   //
+            KWARNING_USER,                                      //
 
-			KINFO_SYSTEM = 0x40u,								// Info
-			KINFO_KERNEL,										//
-			KINFO_MANAGER,										//
-			KINFO_USER											//
+            KINFO_SYSTEM = 0x40u,                               // Info
+            KINFO_KERNEL,                                       //
+            KINFO_MANAGER,                                      //
+            KINFO_USER                                          //
 } recordLogCategory_t;
 
 // Logs macro
 
-#define	LOG(cat, msg)			(UNUSED(record_log((cat), __LINE__, __func__, (msg))))
+#define LOG(cat, msg)           (UNUSED(record_log((cat), __LINE__, __func__, (msg))))
 
 // Prototypes
 
 #if (defined(__cplusplus))
-extern	"C" {
+extern  "C" {
 #endif
 
 /*!
@@ -127,13 +128,13 @@ extern	"C" {
  *    record_trace(“Program write\n”, 0x24);
  * \endcode
  *
- * \param[in]	*message			Ptr on the message
- * \param[in]	parameter			Parameter
- * \return		KERR_RECORD_NOERR	OK
- * \return		KERR_RECORD_SYCNA	System call not available
+ * \param[in]   *message            Ptr on the message
+ * \param[in]   parameter           Parameter
+ * \return      KERR_RECORD_NOERR   OK
+ * \return      KERR_RECORD_SYCNA   System call not available
  *
  */
-extern	int32_t	record_trace(const char_t *message, uintptr_t parameter);
+extern  int32_t record_trace(const char_t *message, uintptr_t parameter);
 
 /*!
  * \brief Log trace
@@ -149,15 +150,15 @@ extern	int32_t	record_trace(const char_t *message, uintptr_t parameter);
  *
  * \endcode
  *
- * \param[in]	logCategory			Log category
- * \param[in]	lineNumber			Line number (__LINE__)
- * \param[in]	*function			Ptr on the function (__func__)
- * \param[in]	*message			Ptr on the message
- * \return		KERR_RECORD_NOERR	OK
- * \return		KERR_RECORD_SYCNA	System call not available
+ * \param[in]   logCategory         Log category
+ * \param[in]   lineNumber          Line number (__LINE__)
+ * \param[in]   *function           Ptr on the function (__func__)
+ * \param[in]   *message            Ptr on the message
+ * \return      KERR_RECORD_NOERR   OK
+ * \return      KERR_RECORD_SYCNA   System call not available
  *
  */
-extern	int32_t	record_log(recordLogCategory_t logCategory, uint32_t lineNumber, const char_t *function, const char_t *message);
+extern  int32_t record_log(recordLogCategory_t logCategory, uint32_t lineNumber, const char_t *function, const char_t *message);
 
 #if (defined(__cplusplus))
 }

@@ -3,13 +3,14 @@
 ; ======
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test ROM routine collection.
+; Project:  uKOS-X
+; Goal:     Test ROM routine collection.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,40 +47,40 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	"types.h"
-#include	"cmns.h"
-#include	"debug.h"
-#include	"core_reg.h"
-#include	"soc_reg.h"
-#include	"board.h"
-#include	"clockTree.h"
-#include	"macros.h"
-#include	"macros_soc.h"
-#include	"macros_core.h"
-#include	"core.h"
+#include    "types.h"
+#include    "cmns.h"
+#include    "debug.h"
+#include    "core_reg.h"
+#include    "soc_reg.h"
+#include    "board.h"
+#include    "clockTree.h"
+#include    "macros.h"
+#include    "macros_soc.h"
+#include    "macros_core.h"
+#include    "core.h"
 
-#define	TEST_00_S			// Test blink the Red 1 & Green 1 the Red 2 & Green 2 Leds
-#undef	TEST_01_S			// Test of the TIM0_0 interruption
-#undef	TEST_02_S			// Test send data via the cnms manager
-#undef	TEST_03_S			// Test read & send data via the cnms manager
-#undef	TEST_04_S			// Test of the UART2 Rx interruption
-#undef	TEST_05_S			// Test of the UART2 Tx interruption
-#undef	TEST_06_S			// Test of an ECALL call
-#undef	TEST_07_S			// Test of the preemption interruption
-#undef	TEST_08_S			// Test of a preliminary pico kernel (with messages ECALL)
-#undef	TEST_09_S			// Test of a preliminary pico kernel (with messages ECALL) and with the macro_core
-#undef	TEST_10_S			// Test of a TIM_0 call
-#undef	TEST_11_S			// Test of a preliminary pico kernel (with TIM_0) and with the macro_core
-#undef	TEST_12_S			// Test of the TIM0_0 TIM0_2 interruptions
-#undef	TEST_13_S			// Test of the TIM0_0 TIM0_1 interruptions
-#undef	TEST_14_S			// Test of the TIM1_0 TIM1_2 interruptions
-#undef	TEST_15_S			// Test of the TIM1_0 TIM1_1 interruptions
-#undef	TEST_16_S			// Test of the TIM2_0 TIM2_2 interruptions
-#undef	TEST_17_S			// Test of the TIM2_0 TIM2_1 interruptions
-#undef	TEST_18_S			// Test of the TIM0_0 used to generate a 64-bit 1-us counter
-#undef	TEST_19_S			// Test of the TIM0_0 in single shot (timeout tasks)
-#undef	TEST_20_S			// Test of the INTERRUPTION_OFF / INTERRUPTION_RESTORE
+#define TEST_00_S           // Test blink the Red 1 & Green 1 the Red 2 & Green 2 Leds
+#undef  TEST_01_S           // Test of the TIM0_0 interruption
+#undef  TEST_02_S           // Test send data via the cnms manager
+#undef  TEST_03_S           // Test read & send data via the cnms manager
+#undef  TEST_04_S           // Test of the UART2 Rx interruption
+#undef  TEST_05_S           // Test of the UART2 Tx interruption
+#undef  TEST_06_S           // Test of an ECALL call
+#undef  TEST_07_S           // Test of the preemption interruption
+#undef  TEST_08_S           // Test of a preliminary pico kernel (with messages ECALL)
+#undef  TEST_09_S           // Test of a preliminary pico kernel (with messages ECALL) and with the macro_core
+#undef  TEST_10_S           // Test of a TIM_0 call
+#undef  TEST_11_S           // Test of a preliminary pico kernel (with TIM_0) and with the macro_core
+#undef  TEST_12_S           // Test of the TIM0_0 TIM0_2 interruptions
+#undef  TEST_13_S           // Test of the TIM0_0 TIM0_1 interruptions
+#undef  TEST_14_S           // Test of the TIM1_0 TIM1_2 interruptions
+#undef  TEST_15_S           // Test of the TIM1_0 TIM1_1 interruptions
+#undef  TEST_16_S           // Test of the TIM2_0 TIM2_2 interruptions
+#undef  TEST_17_S           // Test of the TIM2_0 TIM2_1 interruptions
+#undef  TEST_18_S           // Test of the TIM0_0 used to generate a 64-bit 1-us counter
+#undef  TEST_19_S           // Test of the TIM0_0 in single shot (timeout tasks)
+#undef  TEST_20_S           // Test of the INTERRUPTION_OFF / INTERRUPTION_RESTORE
 
-#define	NO_KERNEL_S			// No kernels (naked function entries)
+#define NO_KERNEL_S         // No kernels (naked function entries)

@@ -3,13 +3,14 @@
 ; =======
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		misc manager.
+; Project:  uKOS-X
+; Goal:     misc manager.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +47,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_peripherals
@@ -64,7 +65,7 @@
  */
 
 #if (defined(__cplusplus))
-extern	"C" {
+extern  "C" {
 #endif
 
 /*!
@@ -79,11 +80,11 @@ extern	"C" {
  *    status = switch_read(&mode);
  * \endcode
  *
- * \param[out]	*mode				Ptr on the jumper value
- * \return		KERR_SWITCH_NOERR	OK
+ * \param[out]  *mode               Ptr on the jumper value
+ * \return      KERR_SWITCH_NOERR   OK
  *
  */
-extern	int32_t	switch_read(uint32_t *mode);
+extern  int32_t switch_read(uint32_t *mode);
 
 #if (defined(__cplusplus))
 }

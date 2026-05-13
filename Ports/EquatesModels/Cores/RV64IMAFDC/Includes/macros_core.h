@@ -3,13 +3,14 @@
 ; ============
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Important macros.
+; Project:  uKOS-X
+; Goal:     Important macros.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,55 +47,55 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	"./kern/privileges.h"
+#include    "./kern/privileges.h"
 
 // uKernel macros
 // --------------
 
 // Core machine in bits
 
-#define	KMACHINE_BITS			(64u)
+#define KMACHINE_BITS           (64u)
 
 // Preemptions
 
 #if (!defined(KSTATUS))
-#define	KSTATUS					(MSTATUS64_SD | MSTATUS_FS | MSTATUS_MPP | MSTATUS_MPIE)
+#define KSTATUS                 (MSTATUS64_SD | MSTATUS_FS | MSTATUS_MPP | MSTATUS_MPIE)
 #endif
 
 #if (!defined(PREEMPTION_THRESHOLD))
-#define	PREEMPTION_THRESHOLD(core)																								\
-								do {																							\
-									extern	proc_t	*vKern_runProc[KNB_CORES]; 													\
-																																\
-									if (vKern_runProc[(uint32_t)core]->oSpecification.oPriority > KKERN_PRIORITY_LOW_00) {		\
-										PREEMPTION;																				\
-									}																							\
-								} while (0)
+#define PREEMPTION_THRESHOLD(core)                                                                                              \
+                                do {                                                                                            \
+                                    extern  proc_t  *vKern_runProc[KNB_CORES];                                                  \
+                                                                                                                                \
+                                    if (vKern_runProc[(uint32_t)core]->oSpecification.oPriority > KKERN_PRIORITY_LOW_00) {      \
+                                        PREEMPTION;                                                                             \
+                                    }                                                                                           \
+                                } while (0)
 #endif
 
 // Elevation macros
 // ----------------
 
 #if (!defined(PRIVILEGE_ELEVATE))
-#define	PRIVILEGE_ELEVATE
+#define PRIVILEGE_ELEVATE
 #endif
 
 #if (!defined(PRIVILEGE_RESTORE))
-#define	PRIVILEGE_RESTORE
+#define PRIVILEGE_RESTORE
 #endif
 
 #if (!defined(RIGHTS_ELEVATION))
-#define	RIGHTS_ELEVATION
+#define RIGHTS_ELEVATION
 #endif
 
 #if (!defined(SET_USER_MODE))
-#define	SET_USER_MODE
+#define SET_USER_MODE
 #endif
 
 #if (!defined(SET_PRIVILEGED_MODE))
-#define	SET_PRIVILEGED_MODE
+#define SET_PRIVILEGED_MODE
 #endif
 
 #if (!defined(GET_ADDRESS_ELEVATION_CALLER))
@@ -110,59 +111,59 @@
 #endif
 
 #if (!defined(KERN_RETURN_ELEVATION))
-#define	KERN_RETURN_ELEVATION
+#define KERN_RETURN_ELEVATION
 #endif
 
 // Interruption macros
 // -------------------
 
 #if (!defined(KPROCESS_INIT_MCAUSE))
-#define	KPROCESS_INIT_MCAUSE	(MCAUSE_INTERRUPT | 11u)
+#define KPROCESS_INIT_MCAUSE    (MCAUSE_INTERRUPT | 11u)
 #endif
 
 #if (!defined(RETURN_INT_RESTORE))
-#define	RETURN_INT_RESTORE(status)																								\
-								INTERRUPTION_RESTORE;																			\
-								return (status)
+#define RETURN_INT_RESTORE(status)                                                                                              \
+                                INTERRUPTION_RESTORE;                                                                           \
+                                return (status)
 #endif
 
 
 #if (!defined(WAITING_INTERRUPTION))
-#define	WAITING_INTERRUPTION	__asm volatile ("																			 \n \
-								wfi"																							\
-								)
+#define WAITING_INTERRUPTION    __asm volatile ("                                                                            \n \
+                                wfi"                                                                                            \
+                                )
 #endif
 
 #if (!defined(GET_CURRENT_PROCESS_STACK))
-#define GET_CURRENT_PROCESS_STACK(stack)										 												\
-								__asm volatile ("																			 \n \
-								add			%0,x0,sp"																			\
-								: "=r" (stack)																					\
-								:																								\
-								:																								\
-								)
+#define GET_CURRENT_PROCESS_STACK(stack)                                                                                        \
+                                __asm volatile ("                                                                            \n \
+                                add         %0,x0,sp"                                                                           \
+                                : "=r" (stack)                                                                                  \
+                                :                                                                                               \
+                                :                                                                                               \
+                                )
 #endif
 
 #if (!defined(NOP))
-#define	NOP 					__asm volatile ("																			 \n \
-								nop"																							\
-								)
+#define NOP                     __asm volatile ("                                                                            \n \
+                                nop"                                                                                            \
+                                )
 #endif
 
 #if (!defined(JUMP_FNCT))
-#define JUMP_FNCT(function)																										\
-								__asm volatile ("																			 \n \
-								j			"#function																			\
-								)
+#define JUMP_FNCT(function)                                                                                                     \
+                                __asm volatile ("                                                                            \n \
+                                j           "#function                                                                          \
+                                )
 #endif
 
 // Stack frame macros
 // ------------------
 
 #if ((!defined(__clang__)) && (__GNUC__ >= 14))
-#include	"macros_core_stackFrame_gcc.h"
+#include    "macros_core_stackFrame_gcc.h"
 #endif
 
 #if (defined(__clang__))
-#include	"macros_core_stackFrame_clang.h"
+#include    "macros_core_stackFrame_clang.h"
 #endif

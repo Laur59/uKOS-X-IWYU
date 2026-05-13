@@ -3,13 +3,14 @@
 ; =========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test reading the switches and copie the state on the LEDs.
+; Project:  uKOS-X
+; Goal:     Test reading the switches and copie the state on the LEDs.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +47,7 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
+#include    "tests.h"
 
 #if (defined(TEST_09_S))
 /*
@@ -55,11 +56,11 @@
  * - Test reading the switches and copie the state on the LEDs
  *
  */
-void	test_09(void) {
+void    test_09(void) {
 
-	while (true) {
-		((REG(P0)->IN & (1u<<BSW_0)) != 0) ? (LED_0_OFF) : (LED_0_ON);
-		((REG(P0)->IN & (1u<<BSW_1)) != 0) ? (LED_1_OFF) : (LED_1_ON);
-	}
+    while (true) {
+        ((REG(P0)->IN & (1u<<BSW_0)) != 0) ? (LED_0_OFF) : (LED_0_ON);
+        ((REG(P0)->IN & (1u<<BSW_1)) != 0) ? (LED_1_OFF) : (LED_1_ON);
+    }
 }
 #endif

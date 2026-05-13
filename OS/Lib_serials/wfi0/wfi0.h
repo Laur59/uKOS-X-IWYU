@@ -3,6 +3,7 @@
 ; =====
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
 ; Author:   Edo. Franzi     The 2025-01-01
@@ -65,14 +66,6 @@
 
 #include    "Lib_serials/serial_common.h"
 
-// Semaphores
-// ----------
-
-#define KWFI0_SEMAPHORE_RX      "wfi0 - RX char"
-#define KWFI0_SEMAPHORE_TX      "wfi0 - TX buff"
-#define KWFI0_MUTEX_RESERVE_RX  "Reserve_wfi0_R"
-#define KWFI0_MUTEX_RESERVE_TX  "Reserve_wfi0_T"
-
 // Prototypes
 
 #if (defined(__cplusplus))
@@ -90,7 +83,7 @@ extern  "C" {
  * \code{.c}
  * int32_t    status;
  *
- *    status = wfi0_reserve(KMODE_WRITE, 1234);
+ *    status = wfi0_reserve(KMODE_WRITE, 1234u);
  *    ....
  *    wfi0_xyz();
  *    ....
@@ -161,7 +154,7 @@ extern  int32_t wfi0_configure(const urtxCnf_t *configure);
  * \code{.c}
  * #define    KSIZE    10
  *
- * uint8_t    buffer[KSIZE] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+ * uint8_t    buffer[KSIZE] = { 0u, 1u, 2u, 3u, 4u, 5u, 6u, 7u, 8u, 9u };
  * int32_t    status;
  *
  *    status = wfi0_write(buffer, KSIZE);

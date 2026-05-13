@@ -3,13 +3,14 @@
 ; =========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test of the code size.
+; Project:  uKOS-X
+; Goal:     Test of the code size.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,25 +47,25 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
+#include    "tests.h"
 
-#define	TEST_STRUCTURE
+#define TEST_STRUCTURE
 
 #if (defined(TEST_XX_S))
 
-typedef	struct objectParam	objectParam_t;
+typedef struct objectParam  objectParam_t;
 
-struct	objectParam {
-	uint32_t	oP0;
-	uint32_t	oP1;
-	uint32_t	oP2;
-	uint32_t	oP3;
+struct  objectParam {
+    uint32_t    oP0;
+    uint32_t    oP1;
+    uint32_t    oP2;
+    uint32_t    oP3;
 };
 
 // Prototypes
 
-void	local_Test_a(objectParam_t *parameter);
-void	local_Test_b(uint32_t p0, uint32_t p1, uint32_t p2, uint32_t p3);
+void    local_Test_a(objectParam_t *parameter);
+void    local_Test_b(uint32_t p0, uint32_t p1, uint32_t p2, uint32_t p3);
 
 /*
  * \brief test_XX
@@ -72,26 +73,26 @@ void	local_Test_b(uint32_t p0, uint32_t p1, uint32_t p2, uint32_t p3);
  * - Test of the code size
  *
  */
-void	test_XX(void) {
+void    test_XX(void) {
 
-	#if (defined(TEST_STRUCTURE))
-	objectParam_t	px;
+    #if (defined(TEST_STRUCTURE))
+    objectParam_t   px;
 
-	px.oP0	= 0;
-	px.oP1	= 1;
-	px.oP2	= 2;
-	px.oP3	= 3;
-	local_Test_a(&px);
+    px.oP0  = 0;
+    px.oP1  = 1;
+    px.oP2  = 2;
+    px.oP3  = 3;
+    local_Test_a(&px);
 
-	#else
-	uint32_t	p0, p1, p2, p3;
+    #else
+    uint32_t    p0, p1, p2, p3;
 
-	p0		= 0;
-	p1		= 1;
-	p2		= 2;
-	p3		= 3;
-	local_Test_b(p0, p1, p2, p3);
-	#endif
+    p0      = 0;
+    p1      = 1;
+    p2      = 2;
+    p3      = 3;
+    local_Test_b(p0, p1, p2, p3);
+    #endif
 
 }
 
@@ -102,16 +103,17 @@ void	test_XX(void) {
  * - Test
  *
  */
-__attribute__ ((noinline)) void	local_Test_a(objectParam_t *parameter) {
-	volatile	uint32_t	*a = (volatile	uint32_t *)0x12345678;
-	volatile	uint32_t	*b = (volatile	uint32_t *)0x23456789;
-	volatile	uint32_t	*c = (volatile	uint32_t *)0x3456789A;
-	volatile	uint32_t	*d = (volatile	uint32_t *)0x456789AB;
+[[gnu::noinline]]
+void    local_Test_a(objectParam_t *parameter) {
+    volatile    uint32_t    *a = (volatile  uint32_t *)0x12345678;
+    volatile    uint32_t    *b = (volatile  uint32_t *)0x23456789;
+    volatile    uint32_t    *c = (volatile  uint32_t *)0x3456789A;
+    volatile    uint32_t    *d = (volatile  uint32_t *)0x456789AB;
 
-	*a = parameter->oP0;
-	*b = parameter->oP1;
-	*c = parameter->oP2;
-	*d = parameter->oP3;
+    *a = parameter->oP0;
+    *b = parameter->oP1;
+    *c = parameter->oP2;
+    *d = parameter->oP3;
 }
 
 #else
@@ -121,16 +123,17 @@ __attribute__ ((noinline)) void	local_Test_a(objectParam_t *parameter) {
  * - Test
  *
  */
-__attribute__ ((noinline)) void	local_Test_b(uint32_t p0, uint32_t p1, uint32_t p2, uint32_t p3) {
-	volatile	uint32_t	*a = (volatile	uint32_t *)0x12345678;
-	volatile	uint32_t	*b = (volatile	uint32_t *)0x23456789;
-	volatile	uint32_t	*c = (volatile	uint32_t *)0x3456789A;
-	volatile	uint32_t	*d = (volatile	uint32_t *)0x456789AB;
+[[gnu::noinline]]
+void    local_Test_b(uint32_t p0, uint32_t p1, uint32_t p2, uint32_t p3) {
+    volatile    uint32_t    *a = (volatile  uint32_t *)0x12345678;
+    volatile    uint32_t    *b = (volatile  uint32_t *)0x23456789;
+    volatile    uint32_t    *c = (volatile  uint32_t *)0x3456789A;
+    volatile    uint32_t    *d = (volatile  uint32_t *)0x456789AB;
 
-	*a = p0;
-	*b = p1;
-	*c = p2;
-	*d = p3;
+    *a = p0;
+    *b = p1;
+    *c = p2;
+    *d = p3;
 }
 #endif
 

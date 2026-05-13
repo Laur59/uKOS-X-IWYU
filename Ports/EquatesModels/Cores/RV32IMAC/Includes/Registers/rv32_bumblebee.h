@@ -3,13 +3,14 @@
 ; ===============
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		rv32_bumblebee equates.
+; Project:  uKOS-X
+; Goal:     rv32_bumblebee equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,26 +47,26 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#define	RVBB_CSR_MTVT			0x307u					//
-#define	RVBB_CSR_MNVEC			0x7C3u					//
-#define	RVBB_CSR_MSUBM			0x7C4u					//
-#define	RVBB_CSR_MMISC_CTL		0x7D0u					//
-#define	RVBB_CSR_MSAVESTATUS	0x7D6u					//
-#define	RVBB_CSR_MSAVEEPC1		0x7D7u					//
-#define	RVBB_CSR_MSAVECAUSE1	0x7D8u					//
-#define	RVBB_CSR_MSAVEEPC2		0x7D9u					//
-#define	RVBB_CSR_MSAVECAUSE2	0x7DAu					//
-#define	RVBB_CSR_PUSHMSUBM		0x7EBu					//
-#define	RVBB_CSR_MTVT2			0x7ECu					//
-#define	RVBB_CSR_JALMNXTI		0x7EDu					//
-#define	RVBB_CSR_PUSHMCAUSE		0x7EEu					//
-#define	RVBB_CSR_PUSHMEPC		0x7EFu					//
-#define	RVBB_CSR_WFE			0x810u					//
-#define	RVBB_CSR_SLEEPVALUE		0x811u					//
-#define	RVBB_CSR_TXEVT			0x812u					//
+#define RVBB_CSR_MTVT           0x307u                  //
+#define RVBB_CSR_MNVEC          0x7C3u                  //
+#define RVBB_CSR_MSUBM          0x7C4u                  //
+#define RVBB_CSR_MMISC_CTL      0x7D0u                  //
+#define RVBB_CSR_MSAVESTATUS    0x7D6u                  //
+#define RVBB_CSR_MSAVEEPC1      0x7D7u                  //
+#define RVBB_CSR_MSAVECAUSE1    0x7D8u                  //
+#define RVBB_CSR_MSAVEEPC2      0x7D9u                  //
+#define RVBB_CSR_MSAVECAUSE2    0x7DAu                  //
+#define RVBB_CSR_PUSHMSUBM      0x7EBu                  //
+#define RVBB_CSR_MTVT2          0x7ECu                  //
+#define RVBB_CSR_JALMNXTI       0x7EDu                  //
+#define RVBB_CSR_PUSHMCAUSE     0x7EEu                  //
+#define RVBB_CSR_PUSHMEPC       0x7EFu                  //
+#define RVBB_CSR_WFE            0x810u                  //
+#define RVBB_CSR_SLEEPVALUE     0x811u                  //
+#define RVBB_CSR_TXEVT          0x812u                  //
 
-#define	RVBB_MCAUSE_MINHV		(1u<<30)				//
-#define	RVBB_MCAUSE_MPP(m)		((((m) & 0x3u)<<28))	//
-#define	RVBB_MCAUSE_MPIE		(1u<<27)				//
+#define RVBB_MCAUSE_MINHV       (1u<<30)                //
+#define RVBB_MCAUSE_MPP(m)      ((((m) & 0x3u)<<28))    //
+#define RVBB_MCAUSE_MPIE        (1u<<27)                //

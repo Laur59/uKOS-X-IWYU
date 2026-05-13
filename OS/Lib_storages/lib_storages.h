@@ -3,13 +3,14 @@
 ; =============
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		lib_storages system call interface module.
+; Project:  uKOS-X
+; Goal:     lib_storages system call interface module.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +47,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \defgroup Lib_storages Library for storage manager
@@ -74,13 +75,13 @@
 // IWYU pragma: begin_exports
 
 #if (defined(CONFIG_MAN_STORAGE_S))
-#include	"storage/storage.h"
+#include    "storage/storage.h"
 #endif
 #if (defined(CONFIG_MAN_SDCARD_S))
-#include	"sdcard/sdcard.h"
+#include    "sdcard/sdcard.h"
 #endif
 #if (defined(CONFIG_MAN_SERIAL_FLASH_S))
-#include	"serialFlash/serialFlash.h"
+#include    "serialFlash/serialFlash.h"
 #endif
 
 // IWYU pragma: end_exports

@@ -3,13 +3,14 @@
 ; ===========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		alive process; the system is working.
+; Project:  uKOS-X
+; Goal:     alive process; the system is working.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,8 +47,8 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
-#include	"alive/alive.h"
+#include    "uKOS.h"
+#include    "alive/alive.h"
 
 /*
  * \brief stub_alive_process
@@ -55,29 +56,30 @@
  * - Blink the LED alive
  *
  */
-void __attribute__ ((noreturn)) stub_alive_process(const void *argument) {
-			uint8_t			led;
-			uint32_t		time[2];
-	const	bool			*killRequest;
-	const	aliveCnf_t		*configure;
+[[noreturn]]
+void    stub_alive_process(const void *argument) {
+            uint8_t         led;
+            uint32_t        time[2];
+    const   bool            *killRequest;
+    const   aliveCnf_t      *configure;
 
-	configure	= (const aliveCnf_t *)argument;
-	killRequest = configure->oKillRequest;
-	time[0]		= configure->oTime[0];
-	time[1]		= configure->oTime[1];
-	led			= configure->oLed;
+    configure   = (const aliveCnf_t *)argument;
+    killRequest = configure->oKillRequest;
+    time[0]     = configure->oTime[0];
+    time[1]     = configure->oTime[1];
+    led         = configure->oLed;
 
-	while (*killRequest == false) {
-		led_on(led);
-		kern_suspendProcess(time[0]);
-		led_off(led);
-		kern_suspendProcess(time[1]);
-	}
+    while (*killRequest == false) {
+        led_on(led);
+        kern_suspendProcess(time[0]);
+        led_off(led);
+        kern_suspendProcess(time[1]);
+    }
 
 // Kill the process & the ressources
 
-	INTERRUPTION_OFF;
-	led_off(led);
+    INTERRUPTION_OFF;
+    led_off(led);
 
-	exit(EXIT_OS_SUCCESS);
+    exit(EXIT_OS_SUCCESS);
 }

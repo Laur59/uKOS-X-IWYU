@@ -3,13 +3,14 @@
 ; ======
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Board mapping.
+; Project:  uKOS-X
+; Goal:     Board mapping.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,36 +47,36 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 // System identifiers
 // ------------------
 
-#define	KCPU				"ARM-Cortex m33"
-#define	KCONTROLLER			"nRF5340"
-#define	KBOARD				"DevKit_nRF5340 (Variant_Test)"
-#define	KTARGET				"DevKit_nRF5340"
+#define KCPU                "ARM-Cortex m33"
+#define KCONTROLLER         "nRF5340"
+#define KBOARD              "DevKit_nRF5340 (Variant_Test)"
+#define KTARGET             "DevKit_nRF5340"
 
 // GPIO settings
 // -------------
 
-#define	LED_0_ON			(REG(P0)->OUTCLR  = (1u<<BLED_0))																				//
-#define	LED_0_OFF			(REG(P0)->OUTSET  = (1u<<BLED_0))																				//
-#define	LED_0_TOGGLE		((REG(P0)->OUTSET & (1u<<BLED_0)) == 0) ? (REG(P0)->OUTSET = (1u<<BLED_0)) : (REG(P0)->OUTCLR = (1u<<BLED_0))	//
+#define LED_0_ON            (REG(P0)->OUTCLR  = (1u<<BLED_0))                                                                               //
+#define LED_0_OFF           (REG(P0)->OUTSET  = (1u<<BLED_0))                                                                               //
+#define LED_0_TOGGLE        ((REG(P0)->OUTSET & (1u<<BLED_0)) == 0) ? (REG(P0)->OUTSET = (1u<<BLED_0)) : (REG(P0)->OUTCLR = (1u<<BLED_0))   //
 
-#define	LED_1_ON			(REG(P0)->OUTCLR  = (1u<<BLED_1))																				//
-#define	LED_1_OFF			(REG(P0)->OUTSET  = (1u<<BLED_1))																				//
-#define	LED_1_TOGGLE		((REG(P0)->OUTSET & (1u<<BLED_1)) == 0) ? (REG(P0)->OUTSET = (1u<<BLED_1)) : (REG(P0)->OUTCLR = (1u<<BLED_1))	//
+#define LED_1_ON            (REG(P0)->OUTCLR  = (1u<<BLED_1))                                                                               //
+#define LED_1_OFF           (REG(P0)->OUTSET  = (1u<<BLED_1))                                                                               //
+#define LED_1_TOGGLE        ((REG(P0)->OUTSET & (1u<<BLED_1)) == 0) ? (REG(P0)->OUTSET = (1u<<BLED_1)) : (REG(P0)->OUTCLR = (1u<<BLED_1))   //
 
-#define KNB_LED				2u									// Number of LEDs
+#define KNB_LED             2u                                  // Number of LEDs
 
 // PORTs
 
 // The LEDs 2 & 3 and the Switches 2 & 3 are attributed to
 // the Net cpu
 
-#define	BLED_0				30u									// P0.30, LED
-#define	BLED_1				31u									// P0.31, LED
+#define BLED_0              30u                                 // P0.30, LED
+#define BLED_1              31u                                 // P0.31, LED
 
-#define	BSW_0				8u									// P0.8,  SW2
-#define	BSW_1				9u									// P0.9,  SW3
+#define BSW_0               8u                                  // P0.8,  SW2
+#define BSW_1               9u                                  // P0.9,  SW3

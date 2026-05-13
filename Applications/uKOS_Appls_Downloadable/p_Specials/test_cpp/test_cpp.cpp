@@ -3,6 +3,7 @@
 ; =========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
 ; Author:   Edo. Franzi     The 2025-01-01
@@ -134,7 +135,9 @@ private:
  *
  */
 namespace {
-void    __attribute__ ((noreturn)) aProcess_0(const void *argument) {
+
+[[noreturn]]
+void    aProcess_0(const void *argument) {
 
     UNUSED(argument);
 
@@ -186,14 +189,6 @@ MAIN_ENTRY(argc, argv[]) {
     PROCESS_STACKMALLOC(
         0,                                  // Index
         specification_0,                    // Specifications (just use vSpecification_x)
-        aStrText_0,                         // Info string (nullptr if anonymous)
-        KKERN_SZ_STACK_MM,                  // KSZSTACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
-        aProcess_0,                         // Code of the process
-        aStrIden_0,                         // Identifier (nullptr if anonymous)
-        KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
-        KKERN_PRIORITY_HIGH_02              // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
-    );
-
         aStrText_0,                         // Info string (nullptr if anonymous)
         KKERN_SZ_STACK_MM,                  // KSZSTACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
         aProcess_0,                         // Code of the process

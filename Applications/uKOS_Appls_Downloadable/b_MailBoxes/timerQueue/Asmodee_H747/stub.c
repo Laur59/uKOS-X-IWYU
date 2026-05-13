@@ -3,13 +3,14 @@
 ; =====
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Hardware specific stub.
+; Project:  uKOS-X
+; Goal:     Hardware specific stub.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,67 +47,67 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include    "uKOS.h"
 
-#define KTTIM100US		100u									// For 100-us (10000-Hz)
-#define	KFPRET8			1000000u								// 1'000'000-Hz
-#define	KFINTT8			KTTIM100US								// 10'000-Hz
-#define KPSCT8			((KFREQUENCY_APB2 / KFPRET8) - 1u)		// Prescaler for 1'000'000-Hz
-#define KARRT8			((KFPRET8 / KFINTT8) - 1u)				// Autoreload
+#define KTTIM100US      100u                                    // For 100-us (10000-Hz)
+#define KFPRET8         1000000u                                // 1'000'000-Hz
+#define KFINTT8         KTTIM100US                              // 10'000-Hz
+#define KPSCT8          ((KFREQUENCY_APB2 / KFPRET8) - 1u)      // Prescaler for 1'000'000-Hz
+#define KARRT8          ((KFPRET8 / KFINTT8) - 1u)              // Autoreload
 
 // Prototypes
 
-static	void	stub_intr_timer_interruption(void);
+static  void    stub_intr_timer_interruption(void);
 
 /*
  * \brief stub_intr_timer_init
  *
  */
-void	stub_intr_timer_init(void) {
+void    stub_intr_timer_init(void) {
 
-	RCC->APB2ENR |= RCC_APB2ENR_TIM8EN;
+    RCC->APB2ENR |= RCC_APB2ENR_TIM8EN;
 
 // Timer 8 (100-us)
 
-	INTERRUPT_VECTOR(TIM8_UP_TIM13_C0_IRQn, stub_intr_timer_interruption);
-	NVIC_SetPriority(TIM8_UP_TIM13_C0_IRQn, KHW_PRIORITY_MODERATE);
-	NVIC_EnableIRQ(TIM8_UP_TIM13_C0_IRQn);
+    INTERRUPT_VECTOR(TIM8_UP_TIM13_C0_IRQn, stub_intr_timer_interruption);
+    NVIC_SetPriority(TIM8_UP_TIM13_C0_IRQn, KHW_PRIORITY_MODERATE);
+    NVIC_EnableIRQ(TIM8_UP_TIM13_C0_IRQn);
 
-	TIM8->PSC  = KPSCT8;
-	TIM8->ARR  = KARRT8;
-	TIM8->DIER = TIM8_DIER_UIE;
-	TIM8->CR1 |= TIM8_CR1_CEN;
+    TIM8->PSC  = KPSCT8;
+    TIM8->ARR  = KARRT8;
+    TIM8->DIER = TIM8_DIER_UIE;
+    TIM8->CR1 |= TIM8_CR1_CEN;
 }
 
 /*
  * \brief stub_intr_timer_interruption
  *
  */
-static	void	stub_intr_timer_interruption(void) {
-			uint32_t	core;
-			int32_t		status;
-	static	mbox_t		*vQueue;
-	static	bool		vInit = false;
-	static	uintptr_t	vCounter = 0u;
+static  void    stub_intr_timer_interruption(void) {
+            uint32_t    core;
+            int32_t     status;
+    static  mbox_t      *vQueue;
+    static  bool        vInit = false;
+    static  uintptr_t   vCounter = 0u;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	if (vInit == false) {
-		if (kern_getMailboxById("Queue tim", &vQueue) == KERR_KERN_NOERR) {
-			vInit = true;
-		}
-	}
+    if (vInit == false) {
+        if (kern_getMailboxById("Queue tim", &vQueue) == KERR_KERN_NOERR) {
+            vInit = true;
+        }
+    }
 
 // INT acknowledge
 
-	if ((TIM8->SR & TIM8_SR_UIF) != 0u) {
-		TIM8->SR &= (uint16_t)~TIM8_SR_UIF;
-	}
+    if ((TIM8->SR & TIM8_SR_UIF) != 0u) {
+        TIM8->SR &= (uint16_t)~TIM8_SR_UIF;
+    }
 
-	status = kern_writeQueue(vQueue, vCounter, 0u);
-	if (status == KERR_KERN_NOERR) {
-		vCounter++;
-	}
+    status = kern_writeQueue(vQueue, vCounter, 0u);
+    if (status == KERR_KERN_NOERR) {
+        vCounter++;
+    }
 
-	PREEMPTION_THRESHOLD(core);
+    PREEMPTION_THRESHOLD(core);
 }

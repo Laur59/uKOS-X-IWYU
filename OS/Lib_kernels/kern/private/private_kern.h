@@ -3,15 +3,16 @@
 ; =============
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Kern - misc management.
+; Project:  uKOS-X
+; Goal:     Kern - misc management.
 ;
-;			Private uKernel variables.
+;           Private uKernel variables.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -48,7 +49,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_kernels
@@ -75,23 +76,23 @@
 
 // For the uKernel basic services
 
-#define	KKERN_MSG_NO_PARAM			(0x0000u<<16u)					// Message without parameters
-#define	KKERN_MSG_JUMP_KERN			(KKERN_MSG_NO_PARAM + 0x0000u)	// Message: jump to the uKernel
-#define	KKERN_MSG_WAIT_TIME			(KKERN_MSG_NO_PARAM + 0x0001u)	// Message: waiting for a time
-#define	KKERN_MSG_WAIT_SIGN			(KKERN_MSG_NO_PARAM + 0x0002u)	// Message: waiting for a signal
+#define KKERN_MSG_NO_PARAM          (0x0000u<<16u)                  // Message without parameters
+#define KKERN_MSG_JUMP_KERN         (KKERN_MSG_NO_PARAM + 0x0000u)  // Message: jump to the uKernel
+#define KKERN_MSG_WAIT_TIME         (KKERN_MSG_NO_PARAM + 0x0001u)  // Message: waiting for a time
+#define KKERN_MSG_WAIT_SIGN         (KKERN_MSG_NO_PARAM + 0x0002u)  // Message: waiting for a signal
 
 // For the uKernel semaphore synchronizations
 // For the uKernel mutex synchronizations
 
-#define	KKERN_MSG_WAIT_SEMA_SYN		(0x0001u<<16u)					// Message: waiting for a semaphore
-#define	KKERN_MSG_WAIT_MUTX_SYN		(0x0002u<<16u)					// Message: waiting for a mutex
+#define KKERN_MSG_WAIT_SEMA_SYN     (0x0001u<<16u)                  // Message: waiting for a semaphore
+#define KKERN_MSG_WAIT_MUTX_SYN     (0x0002u<<16u)                  // Message: waiting for a mutex
 
 // For the uKernel mailbox synchronizations
 
-#define	KKERN_MSG_WAIT_MBOX_E		(0x0003u<<16u)					// Message: waiting for an mbox empty
-#define	KKERN_MSG_WAIT_MBOX_F		(0x0004u<<16u)					// Message: waiting for an mbox full
+#define KKERN_MSG_WAIT_MBOX_E       (0x0003u<<16u)                  // Message: waiting for an mbox empty
+#define KKERN_MSG_WAIT_MBOX_F       (0x0004u<<16u)                  // Message: waiting for an mbox full
 
-extern	uint32_t	vKern_nbIntImbrications[KNB_CORES];				// Nb of interruptions imbrications
+extern  uint32_t    vKern_nbIntImbrications[KNB_CORES];             // Nb of interruptions imbrications
 
 /**@}*/
 /**@}*/

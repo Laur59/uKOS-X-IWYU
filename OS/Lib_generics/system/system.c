@@ -3,6 +3,7 @@
 ; =======
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
 ; Author:   Edo. Franzi     The 2025-01-01
@@ -101,7 +102,7 @@ STRG_LOC_CONST(aStrApp[]) = uKOS_KBOARD", V."uKOS_VERSION", "__DATE__"  "__TIME_
 STRG_LOC_CONST(aStrRev[]) = uKOS_VERSION_NUMBER;
 STRG_LOC_CONST(KFAMILY[]) = KTARGET;
 
-static  void    *vDoLoCode[KNB_CORES]   = MCSET(nullptr);       // Ptr on the execution code after the download
+static  void    *vDoLoCode[KNB_CORES]   = MCSET(nullptr);   // Ptr on the execution code after the download
 static  bool    vUserRamBusy[KNB_CORES] = MCSET(false);     // Availability of the User Ram
 
 // Prototypes
@@ -116,7 +117,7 @@ static  int32_t local_init(void);
  * \code{.c}
  * int32_t    status;
  *
- *    status = system_reserve(KMODE_READ_WRITE, 1234);
+ *    status = system_reserve(KMODE_READ_WRITE, 1234u);
  *    ....
  *    system_xyz();
  *    ....

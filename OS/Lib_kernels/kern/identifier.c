@@ -3,15 +3,16 @@
 ; ===========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Kern - Identifier management (compare the object IDs)
+; Project:  uKOS-X
+; Goal:     Kern - Identifier management (compare the object IDs)
 ;
-;			This module is responsible for manipulating the identifiers of the uKernel.
+;           This module is responsible for manipulating the identifiers of the uKernel.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -48,35 +49,35 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include    "uKOS.h"
 
 /*
  * \brief Compare 2 identifiers (string_1 -> string_2)
  *
- * \param[in]	*string_1	Ptr on the identifiers string_1
- * \param[in]	*string_2	Ptr on the identifiers string_2
- * \return		true		string_1 == string_2
- * \return		false		string_1 != string_2
+ * \param[in]   *string_1   Ptr on the identifiers string_1
+ * \param[in]   *string_2   Ptr on the identifiers string_2
+ * \return      true        string_1 == string_2
+ * \return      false       string_1 != string_2
  *
  */
-bool	identifiers_cmpStrings(const char_t *string_1, const char_t *string_2) {
-	uint8_t		i;
-	bool		status;
+bool    identifiers_cmpStrings(const char_t *string_1, const char_t *string_2) {
+    uint8_t     i;
+    bool        status;
 
-	if ((string_1 == nullptr) || (string_2 == nullptr)) {
-		return (false);
-	}
+    if ((string_1 == nullptr) || (string_2 == nullptr)) {
+        return (false);
+    }
 
-	for (i = 0u; i < KKERN_OBJECT_SZ_ID; i++) {
-		if ((string_1[i] == '\0') || (string_2[i] == '\0')) {
-			status = (string_1[i] == string_2[i]) ? (true) : (false);
-			return (status);
-		}
+    for (i = 0u; i < KKERN_OBJECT_SZ_ID; i++) {
+        if ((string_1[i] == '\0') || (string_2[i] == '\0')) {
+            status = (string_1[i] == string_2[i]) ? (true) : (false);
+            return (status);
+        }
 
-		if (string_1[i] != string_2[i]) {
-			return (false);
-		}
+        if (string_1[i] != string_2[i]) {
+            return (false);
+        }
 
-	}
-	return (true);
+    }
+    return (true);
 }

@@ -3,13 +3,14 @@
 ; ======
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		alive process; blink a LED.
+; Project:  uKOS-X
+; Goal:     alive process; blink a LED.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,19 +47,19 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#define	KLED_ALIVE			KLED_0
-#define	KTIME_ALIVE_ON		50u
-#define	KTIME_ALIVE_OFF		950u
+#define KLED_ALIVE          KLED_0
+#define KTIME_ALIVE_ON      50u
+#define KTIME_ALIVE_OFF     950u
 
 // Configuration structure
 // -----------------------
 
-typedef	struct	aliveCnf	aliveCnf_t;
+typedef struct  aliveCnf    aliveCnf_t;
 
 struct aliveCnf {
-			bool		*oKillRequest;							// Kill request
-			uint32_t	oTime[2];								// Process time
-			uint8_t		oLed;									// Process Led
+            bool        *oKillRequest;                          // Kill request
+            uint32_t    oTime[2];                               // Process time
+            uint8_t     oLed;                                   // Process Led
 };

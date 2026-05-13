@@ -3,13 +3,14 @@
 ; =============
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		stub for the "machine" manager module.
+; Project:  uKOS-X
+; Goal:     stub for the "machine" manager module.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +47,7 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include    "uKOS.h"
 
 /*
  * \brief stub_machine_restart
@@ -55,14 +56,14 @@
  * - Restart
  *
  */
-int32_t	stub_machine_restart(void) {
+int32_t stub_machine_restart(void) {
 
 // Stop all the interruptions and restart
 
-	INTERRUPTION_OFF;
-	while (true) { ; }
+    INTERRUPTION_OFF;
+    while (true) { ; }
 
-	return (KERR_MACHINE_NOERR);
+    return (KERR_MACHINE_NOERR);
 }
 
 /*
@@ -71,24 +72,24 @@ int32_t	stub_machine_restart(void) {
  * - Return the PC of the selected process
  *
  */
-int32_t	stub_machine_readPC(const uintptr_t *stackProcess, uintptr_t *pc) {
-	uint8_t		pcOffset = 0u;
+int32_t stub_machine_readPC(const uintptr_t *stackProcess, uintptr_t *pc) {
+    uint8_t     pcOffset = 0u;
 
 // uKOS-X stack frame:
 //
 //  ....
-//	mepc							-> pcOffset += 1
-//	mcause							-> pcOffset += 1
-//	mstatus							-> pcOffset += 1
-//	core							-> pcOffset += 1
-//	PLIC-mth						-> pcOffset  = 0
+//  mepc                            -> pcOffset += 1
+//  mcause                          -> pcOffset += 1
+//  mstatus                         -> pcOffset += 1
+//  core                            -> pcOffset += 1
+//  PLIC-mth                        -> pcOffset  = 0
 
 //               PLIC   core  mstatus   mcause    mepc
 //               ----   ----  -------   ------    ----
-	pcOffset +=  +0u    +1u    +1u       +1u      +1u;
+    pcOffset +=  +0u    +1u    +1u       +1u      +1u;
 
-	*pc = (stackProcess[pcOffset]);
-	return (KERR_SYSTEM_NOERR);
+    *pc = (stackProcess[pcOffset]);
+    return (KERR_SYSTEM_NOERR);
 }
 
 /*
@@ -97,10 +98,10 @@ int32_t	stub_machine_readPC(const uintptr_t *stackProcess, uintptr_t *pc) {
  * - Return the function name that belong to a given PC
  *
  */
-int32_t	stub_machine_readFunctionName(const uintptr_t pc, const char_t **function) {
+int32_t stub_machine_readFunctionName(const uintptr_t pc, const char_t **function) {
 
-	UNUSED(pc);
+    UNUSED(pc);
 
-	*function = nullptr;
-	return (KERR_SYSTEM_NOERR);
+    *function = nullptr;
+    return (KERR_SYSTEM_NOERR);
 }

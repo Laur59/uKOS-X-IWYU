@@ -3,13 +3,14 @@
 ; =========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test of core ID.
+; Project:  uKOS-X
+; Goal:     Test of core ID.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,10 +47,10 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
+#include    "tests.h"
 
 #if (defined(TEST_15_S))
-static	char_t	vString[20];
+static  char_t  vString[20];
 
 /*
  * \brief test_15
@@ -57,39 +58,39 @@ static	char_t	vString[20];
  * - Test of core ID
  *
  */
-void	test_15(void) {
-	uint32_t	configID;
-	uint32_t	coreID;
-	uint32_t	infoPart;
-	uint32_t	deviceID[2];
+void    test_15(void) {
+    uint32_t    configID;
+    uint32_t    coreID;
+    uint32_t    infoPart;
+    uint32_t    deviceID[2];
 
-	cmns_init();
+    cmns_init();
 
-	while (true) {
-		cmns_wait(1000000);
+    while (true) {
+        cmns_wait(1000000);
 
-		configID	= REG(FICR)->INFO_CONFIGID;
+        configID    = REG(FICR)->INFO_CONFIGID;
 
-		coreID		= ((REG(SCB)->CPUID & 0x0000FFF0u)>>4);
+        coreID      = ((REG(SCB)->CPUID & 0x0000FFF0u)>>4);
 
-		infoPart	= REG(FICR)->INFO_PART;
+        infoPart    = REG(FICR)->INFO_PART;
 
-		deviceID[0] = REG(FICR)->INFO_DEVICEID[0];
-		deviceID[1] = REG(FICR)->INFO_DEVICEID[1];
+        deviceID[0] = REG(FICR)->INFO_DEVICEID[0];
+        deviceID[1] = REG(FICR)->INFO_DEVICEID[1];
 
-		debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&configID);
-		cmns_send(KURT0, "Config ID 0x"); cmns_send(KURT0, vString); cmns_send(KURT0, "\n");
+        debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&configID);
+        cmns_send(KURT0, "Config ID 0x"); cmns_send(KURT0, vString); cmns_send(KURT0, "\n");
 
-		debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&coreID);
-		cmns_send(KURT0, "Core ID   0x"); cmns_send(KURT0, vString); cmns_send(KURT0, "\n");
+        debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&coreID);
+        cmns_send(KURT0, "Core ID   0x"); cmns_send(KURT0, vString); cmns_send(KURT0, "\n");
 
-		debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&infoPart);
-		cmns_send(KURT0, "Info part 0x"); cmns_send(KURT0, vString); cmns_send(KURT0, "\n");
+        debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&infoPart);
+        cmns_send(KURT0, "Info part 0x"); cmns_send(KURT0, vString); cmns_send(KURT0, "\n");
 
-		debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&deviceID[0]);
-		cmns_send(KURT0, "Device ID 0x"); cmns_send(KURT0, vString);
-		debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&deviceID[1]);
-										  cmns_send(KURT0, vString); cmns_send(KURT0, "\n");
-	}
+        debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&deviceID[0]);
+        cmns_send(KURT0, "Device ID 0x"); cmns_send(KURT0, vString);
+        debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&deviceID[1]);
+                                          cmns_send(KURT0, vString); cmns_send(KURT0, "\n");
+    }
 }
 #endif

@@ -3,15 +3,16 @@
 ; =====
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Atomic primitives for multi-core.
-;			These calls uses the low level gcc implementation and
-;			are core independent
+; Project:  uKOS-X
+; Goal:     Atomic primitives for multi-core.
+;           These calls uses the low level gcc implementation and
+;           are core independent
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -48,34 +49,40 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<stdatomic.h>
+#include    <stdatomic.h>
 
 // Structures for locks
 // --------------------
 
-typedef	atomic_flag	atomic_flag_t;
+typedef atomic_flag atomic_flag_t;
 
 // Prototypes
 
-__attribute__ ((always_inline))	static	inline	void	atom_init(atomic_flag_t *lock);
-__attribute__ ((always_inline))	static	inline	void	atom_lock(atomic_flag_t *lock);
-__attribute__ ((always_inline))	static	inline	void	atom_unlock(atomic_flag_t *lock);
+[[gnu::always_inline]]
+static  inline  void    atom_init(atomic_flag_t *lock);
+
+[[gnu::always_inline]]
+static  inline  void    atom_lock(atomic_flag_t *lock);
+
+[[gnu::always_inline]]
+static  inline  void    atom_unlock(atomic_flag_t *lock);
 
 /*
  * \brief atom_init
  *
  * - Initialise the core shared memory
  *
- * \param[in]	*lock		Prt on the atomic flag
+ * \param[in]   *lock       Prt on the atomic flag
  *
  * \note This function does not return a value (None).
  *
  */
-__attribute__ ((always_inline))	static	inline	void	atom_init(atomic_flag_t *lock) {
+[[gnu::always_inline]]
+static  inline  void    atom_init(atomic_flag_t *lock) {
 
-	atomic_flag_clear(lock);
+    atomic_flag_clear(lock);
 }
 
 /*
@@ -83,14 +90,15 @@ __attribute__ ((always_inline))	static	inline	void	atom_init(atomic_flag_t *lock
  *
  * - Lock the access
  *
- * \param[in]	*lock		Prt on the atomic flag
+ * \param[in]   *lock       Prt on the atomic flag
  *
  * \note This function does not return a value (None).
  *
  */
-__attribute__ ((always_inline))	static	inline	void	atom_lock(atomic_flag_t *lock) {
+[[gnu::always_inline]]
+static  inline  void    atom_lock(atomic_flag_t *lock) {
 
-	while (atomic_flag_test_and_set(lock) == true) { ; }
+    while (atomic_flag_test_and_set(lock) == true) { ; }
 }
 
 /*
@@ -98,12 +106,13 @@ __attribute__ ((always_inline))	static	inline	void	atom_lock(atomic_flag_t *lock
  *
  * - Unlock the access
  *
- * \param[in]	*lock		Prt on the atomic flag
+ * \param[in]   *lock       Prt on the atomic flag
  *
  * \note This function does not return a value (None).
  *
  */
-__attribute__ ((always_inline))	static	inline	void	atom_unlock(atomic_flag_t *lock) {
+[[gnu::always_inline]]
+static  inline  void    atom_unlock(atomic_flag_t *lock) {
 
-	atomic_flag_clear(lock);
+    atomic_flag_clear(lock);
 }

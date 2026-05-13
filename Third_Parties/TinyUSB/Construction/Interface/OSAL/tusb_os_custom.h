@@ -3,16 +3,18 @@
 ; ===============
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2019 Ha Thach (tinyusb.org)
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		uKOS OS interface between uKOS-X & TinyUSB.
+; Project:  uKOS-X
+; Goal:     uKOS OS interface between uKOS-X & TinyUSB.
 ;
-;			Work based on an preliminary initial version
-;			written by Jean-Marc Koller.
+;           Work based on an preliminary initial version
+;           written by Jean-Marc Koller.
 ;
 ;   (c) 2019 Ha Thach (tinyusb.org)
 ;   -------------------------------
@@ -72,34 +74,34 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	"osal_kern_interface.h"
+#include    "osal_kern_interface.h"
 
-extern	uint32_t	SystemCoreClock;
+extern  uint32_t    SystemCoreClock;
 
 typedef struct {
-	uint16_t	depth;
-	uint16_t	item_sz;
+    uint16_t    depth;
+    uint16_t    item_sz;
 } osal_queue_def_t;
 
-typedef	uint8_t					osal_semaphore_def_t;
-typedef	uint8_t					osal_mutex_def_t;
-typedef	osal_semaphore_def_t	*osal_semaphore_t;
-typedef	osal_semaphore_def_t	osal_mutex_def_t;
-typedef	osal_semaphore_t		osal_mutex_t;
-typedef	osal_queue_def_t		*osal_queue_t;
-typedef	uint32_t				osal_spinlock_t;
+typedef uint8_t                 osal_semaphore_def_t;
+typedef uint8_t                 osal_mutex_def_t;
+typedef osal_semaphore_def_t    *osal_semaphore_t;
+typedef osal_semaphore_def_t    osal_mutex_def_t;
+typedef osal_semaphore_t        osal_mutex_t;
+typedef osal_queue_def_t        *osal_queue_t;
+typedef uint32_t                osal_spinlock_t;
 
 #if (defined(__cplusplus))
-extern	"C" {
+extern  "C" {
 #endif
 
-#define	OSAL_QUEUE_DEF(_int_set, _name, _depth, _type) \
-						osal_queue_def_t _name = { .depth = _depth, .item_sz = sizeof(_type) };
+#define OSAL_QUEUE_DEF(_int_set, _name, _depth, _type) \
+                        osal_queue_def_t _name = { .depth = _depth, .item_sz = sizeof(_type) };
 
-#define	OSAL_SPINLOCK_DEF(_name, _int_set) \
-						osal_spinlock_t _name
+#define OSAL_SPINLOCK_DEF(_name, _int_set) \
+                        osal_spinlock_t _name
 
 // Misc
 // ====
@@ -108,11 +110,11 @@ extern	"C" {
  * \brief board_millis
  *
  * - Return the number of milli-seconds
- *	 This call is not used but it is in place
- *	 to allow the compilation
+ *   This call is not used but it is in place
+ *   to allow the compilation
  *
  */
-extern	uint32_t	board_millis(void);
+extern  uint32_t    board_millis(void);
 
 /*
  * \brief osal_task_delay
@@ -120,7 +122,7 @@ extern	uint32_t	board_millis(void);
  * - Wait in ms
  *
  */
-extern	void	osal_task_delay(uint32_t msec);
+extern  void    osal_task_delay(uint32_t msec);
 
 /*
  * \brief osal_time_millis
@@ -128,7 +130,7 @@ extern	void	osal_task_delay(uint32_t msec);
  * - Time elapsed in ms
  *
  */
-extern	uint32_t	osal_time_millis(void);
+extern  uint32_t    osal_time_millis(void);
 
 // Semaphore
 // =========
@@ -139,7 +141,7 @@ extern	uint32_t	osal_time_millis(void);
  * - Create an anonymous synchro semaphore
  *
  */
-extern	osal_semaphore_t	osal_semaphore_create(osal_semaphore_def_t *semdef);
+extern  osal_semaphore_t    osal_semaphore_create(osal_semaphore_def_t *semdef);
 
 /*
  * \brief osal_semaphore_post
@@ -147,7 +149,7 @@ extern	osal_semaphore_t	osal_semaphore_create(osal_semaphore_def_t *semdef);
  * - Signal the synchro semaphore
  *
  */
-extern	bool	osal_semaphore_post(osal_semaphore_t sem_hdl, bool in_isr);
+extern  bool    osal_semaphore_post(osal_semaphore_t sem_hdl, bool in_isr);
 
 /*
  * \brief osal_semaphore_wait
@@ -155,7 +157,7 @@ extern	bool	osal_semaphore_post(osal_semaphore_t sem_hdl, bool in_isr);
  * - Waiting for the synchro semaphore
  *
  */
-extern	bool	osal_semaphore_wait(osal_semaphore_t sem_hdl, uint32_t msec);
+extern  bool    osal_semaphore_wait(osal_semaphore_t sem_hdl, uint32_t msec);
 
 /*
  * \brief osal_semaphore_reset
@@ -163,7 +165,7 @@ extern	bool	osal_semaphore_wait(osal_semaphore_t sem_hdl, uint32_t msec);
  * - Restart the synchro semaphore
  *
  */
-extern	void	osal_semaphore_reset(osal_semaphore_t sem_hdl);
+extern  void    osal_semaphore_reset(osal_semaphore_t sem_hdl);
 
 // Mutex
 // =====
@@ -174,7 +176,7 @@ extern	void	osal_semaphore_reset(osal_semaphore_t sem_hdl);
  * - Create an anonymous mutex semaphore
  *
  */
-extern	osal_mutex_t osal_mutex_create(osal_mutex_def_t *mdef);
+extern  osal_mutex_t osal_mutex_create(osal_mutex_def_t *mdef);
 
 /*
  * \brief osal_mutex_delete
@@ -182,7 +184,7 @@ extern	osal_mutex_t osal_mutex_create(osal_mutex_def_t *mdef);
  * - Delete an anonymous synchro semaphore
  *
  */
-extern	bool	osal_mutex_delete(osal_mutex_t mutex_hdl);
+extern  bool    osal_mutex_delete(osal_mutex_t mutex_hdl);
 
 /*
  * \brief osal_mutex_lock
@@ -190,7 +192,7 @@ extern	bool	osal_mutex_delete(osal_mutex_t mutex_hdl);
  * - Lock the mutex semaphore
  *
  */
-extern	bool osal_mutex_lock(osal_mutex_t mutex_hdl, uint32_t msec);
+extern  bool osal_mutex_lock(osal_mutex_t mutex_hdl, uint32_t msec);
 
 /*
  * \brief osal_mutex_unlock
@@ -198,7 +200,7 @@ extern	bool osal_mutex_lock(osal_mutex_t mutex_hdl, uint32_t msec);
  * - Unlock the mutex semaphore
  *
  */
-extern	bool osal_mutex_unlock(osal_mutex_t mutex_hdl);
+extern  bool osal_mutex_unlock(osal_mutex_t mutex_hdl);
 
 // Queue
 // =====
@@ -209,7 +211,7 @@ extern	bool osal_mutex_unlock(osal_mutex_t mutex_hdl);
  * - Create an anonymous queue
  *
  */
-extern	osal_queue_t osal_queue_create(osal_queue_def_t *qdef);
+extern  osal_queue_t osal_queue_create(osal_queue_def_t *qdef);
 
 /*
  * \brief osal_queue_receive
@@ -217,7 +219,7 @@ extern	osal_queue_t osal_queue_create(osal_queue_def_t *qdef);
  * - Receive data from the queue
  *
  */
-extern	bool	osal_queue_receive(osal_queue_t qhdl, void *data, uint32_t msec);
+extern  bool    osal_queue_receive(osal_queue_t qhdl, void *data, uint32_t msec);
 
 /*
  * \brief osal_queue_send
@@ -225,7 +227,7 @@ extern	bool	osal_queue_receive(osal_queue_t qhdl, void *data, uint32_t msec);
  * - Send data to the queue
  *
  */
-extern	bool	osal_queue_send(osal_queue_t qhdl, void const *data, bool in_isr);
+extern  bool    osal_queue_send(osal_queue_t qhdl, void const *data, bool in_isr);
 
 /*
  * \brief osal_queue_empty
@@ -233,7 +235,7 @@ extern	bool	osal_queue_send(osal_queue_t qhdl, void const *data, bool in_isr);
  * - Check if the queue is empty
  *
  */
-extern	bool	osal_queue_empty(osal_queue_t qhdl);
+extern  bool    osal_queue_empty(osal_queue_t qhdl);
 
 /*
  * \brief osal_queue_delete
@@ -241,7 +243,7 @@ extern	bool	osal_queue_empty(osal_queue_t qhdl);
  * - Delete the queue
  *
  */
-extern	bool	osal_queue_delete(osal_queue_t qhdl);
+extern  bool    osal_queue_delete(osal_queue_t qhdl);
 
 // Spinlock
 // ========
@@ -252,9 +254,9 @@ extern	bool	osal_queue_delete(osal_queue_t qhdl);
  * - Init the spinlock
  *
  */
-TU_ATTR_ALWAYS_INLINE	static	inline	void	osal_spin_init(osal_spinlock_t *ctx) {
+TU_ATTR_ALWAYS_INLINE   static  inline  void    osal_spin_init(osal_spinlock_t *ctx) {
 
-	UNUSED(ctx);
+    UNUSED(ctx);
 }
 
 /*
@@ -263,16 +265,16 @@ TU_ATTR_ALWAYS_INLINE	static	inline	void	osal_spin_init(osal_spinlock_t *ctx) {
  * - Lock the spinlock
  *
  */
-TU_ATTR_ALWAYS_INLINE	static	inline	void	osal_spin_lock(osal_spinlock_t *ctx, bool in_isr) {
+TU_ATTR_ALWAYS_INLINE   static  inline  void    osal_spin_lock(osal_spinlock_t *ctx, bool in_isr) {
 
-	if (in_isr == true) {
-		if (TUP_MCU_MULTIPLE_CORE == false) {
+    if (in_isr == true) {
+        if (TUP_MCU_MULTIPLE_CORE == false) {
 
 // Single core MCU does not need to lock in ISR
 
-			UNUSED(ctx);
-			return;
-		}
+            UNUSED(ctx);
+            return;
+        }
     }
 }
 
@@ -282,16 +284,16 @@ TU_ATTR_ALWAYS_INLINE	static	inline	void	osal_spin_lock(osal_spinlock_t *ctx, bo
  * - Unlock the spinlock
  *
  */
-TU_ATTR_ALWAYS_INLINE	static	inline	void	osal_spin_unlock(osal_spinlock_t *ctx, bool in_isr) {
+TU_ATTR_ALWAYS_INLINE   static  inline  void    osal_spin_unlock(osal_spinlock_t *ctx, bool in_isr) {
 
-	if (in_isr == true) {
-		if (TUP_MCU_MULTIPLE_CORE == false) {
+    if (in_isr == true) {
+        if (TUP_MCU_MULTIPLE_CORE == false) {
 
 // Single core MCU does not need to lock in ISR
 
-			UNUSED(ctx);
-			return;
-		}
+            UNUSED(ctx);
+            return;
+        }
     }
 }
 

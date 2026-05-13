@@ -3,13 +3,14 @@
 ; ======
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Board mapping.
+; Project:  uKOS-X
+; Goal:     Board mapping.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,45 +47,45 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 // System identifiers
 // ------------------
 
-#define	KCPU				"RISC-V RV64IMAFDC"
-#define	KCONTROLLER			"K210"
-#define	KBOARD				"SiPeed_M1 RISC-V (Variant_Test)"
-#define	KTARGET				"SiPeed_M1"
+#define KCPU                "RISC-V RV64IMAFDC"
+#define KCONTROLLER         "K210"
+#define KBOARD              "SiPeed_M1 RISC-V (Variant_Test)"
+#define KTARGET             "SiPeed_M1"
 
 // GPIOHS settings
 // ---------------
 
-#define	LED_RED_1_ON		(gpiohs->output_val.u32[0] |=			 (1u<<BLED_0))	//
-#define	LED_RED_1_OFF		(gpiohs->output_val.u32[0] &= (uint32_t)~(1u<<BLED_0))	//
-#define	LED_RED_1_TOGGLE	(gpiohs->output_val.u32[0] ^=			 (1u<<BLED_0))	//
-#define	LED_GREEN_1_ON		(gpiohs->output_val.u32[0] |=			 (1u<<BLED_1))	//
-#define	LED_GREEN_1_OFF		(gpiohs->output_val.u32[0] &= (uint32_t)~(1u<<BLED_1))	//
-#define	LED_GREEN_1_TOGGLE	(gpiohs->output_val.u32[0] ^=			 (1u<<BLED_1))	//
-#define	LED_RED_2_ON		(gpiohs->output_val.u32[0] |=			 (1u<<BLED_2))	//
-#define	LED_RED_2_OFF		(gpiohs->output_val.u32[0] &= (uint32_t)~(1u<<BLED_2))	//
-#define	LED_RED_2_TOGGLE	(gpiohs->output_val.u32[0] ^=			 (1u<<BLED_2))	//
-#define	LED_GREEN_2_ON		(gpiohs->output_val.u32[0] |=			 (1u<<BLED_3))	//
-#define	LED_GREEN_2_OFF		(gpiohs->output_val.u32[0] &= (uint32_t)~(1u<<BLED_3))	//
-#define	LED_GREEN_2_TOGGLE	(gpiohs->output_val.u32[0] ^=			 (1u<<BLED_3))	//
-#define	LED_1_TOGGLE		LED_GREEN_1_TOGGLE										//
-#define	LED_1_ON			LED_GREEN_1_ON											//
-#define	LED_1_OFF			LED_GREEN_1_OFF											// Led macros
+#define LED_RED_1_ON        (gpiohs->output_val.u32[0] |=            (1u<<BLED_0))  //
+#define LED_RED_1_OFF       (gpiohs->output_val.u32[0] &= (uint32_t)~(1u<<BLED_0))  //
+#define LED_RED_1_TOGGLE    (gpiohs->output_val.u32[0] ^=            (1u<<BLED_0))  //
+#define LED_GREEN_1_ON      (gpiohs->output_val.u32[0] |=            (1u<<BLED_1))  //
+#define LED_GREEN_1_OFF     (gpiohs->output_val.u32[0] &= (uint32_t)~(1u<<BLED_1))  //
+#define LED_GREEN_1_TOGGLE  (gpiohs->output_val.u32[0] ^=            (1u<<BLED_1))  //
+#define LED_RED_2_ON        (gpiohs->output_val.u32[0] |=            (1u<<BLED_2))  //
+#define LED_RED_2_OFF       (gpiohs->output_val.u32[0] &= (uint32_t)~(1u<<BLED_2))  //
+#define LED_RED_2_TOGGLE    (gpiohs->output_val.u32[0] ^=            (1u<<BLED_2))  //
+#define LED_GREEN_2_ON      (gpiohs->output_val.u32[0] |=            (1u<<BLED_3))  //
+#define LED_GREEN_2_OFF     (gpiohs->output_val.u32[0] &= (uint32_t)~(1u<<BLED_3))  //
+#define LED_GREEN_2_TOGGLE  (gpiohs->output_val.u32[0] ^=            (1u<<BLED_3))  //
+#define LED_1_TOGGLE        LED_GREEN_1_TOGGLE                                      //
+#define LED_1_ON            LED_GREEN_1_ON                                          //
+#define LED_1_OFF           LED_GREEN_1_OFF                                         // Led macros
 
-#define KNB_LED				4u														// Number of LEDs
+#define KNB_LED             4u                                                      // Number of LEDs
 
 // LEDs
 
-#define	BLED_0				16u														// GPIO16 - IO11, BLED_0
-#define	BLED_1				17u														// GPIO17 - IO12, BLED_1
-#define	BLED_2				18u														// GPIO18 - IO13, BLED_2
-#define	BLED_3				19u														// GPIO19 - IO14, BLED_3
+#define BLED_0              16u                                                     // GPIO16 - IO11, BLED_0
+#define BLED_1              17u                                                     // GPIO17 - IO12, BLED_1
+#define BLED_2              18u                                                     // GPIO18 - IO13, BLED_2
+#define BLED_3              19u                                                     // GPIO19 - IO14, BLED_3
 
 // LCD
 
-#define	BLCD_DCX			2u														// GPIO02 - IO38, BLCD_DCX
-#define	BLCD_RST			3u														// GPIO03 - IO37, BLCD_RST
+#define BLCD_DCX            2u                                                      // GPIO02 - IO38, BLCD_DCX
+#define BLCD_RST            3u                                                      // GPIO03 - IO37, BLCD_RST

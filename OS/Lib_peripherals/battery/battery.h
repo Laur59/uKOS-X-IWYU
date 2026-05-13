@@ -3,13 +3,14 @@
 ; ========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		battery manager.
+; Project:  uKOS-X
+; Goal:     battery manager.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +47,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_peripherals
@@ -63,21 +64,21 @@
  * @{
  */
 
-#include	"Lib_peripherals/battery_common.h"
+#include    "Lib_peripherals/battery_common.h"
 
 // Semaphores
 // ----------
 
-#define	KBATTERY_MUTEX_RESERVE	"Reserve_battery"
+#define KBATTERY_MUTEX_RESERVE  "Reserve_battery"
 
 // Prototypes
 
 #if (defined(__cplusplus))
-extern	"C" {
+extern  "C" {
 #endif
 
-#define	BATTERY_reserve		battery_reserve
-#define	BATTERY_release		battery_release
+#define BATTERY_reserve     battery_reserve
+#define BATTERY_release     battery_release
 
 /*!
  * \brief Reserve the battery manager
@@ -87,21 +88,21 @@ extern	"C" {
  * \code{.c}
  * int32_t    status;
  *
- *    status = battery_reserve(KMODE_READ_WRITE, 1234);
+ *    status = battery_reserve(KMODE_READ_WRITE, 1234u);
  *    ....
  *    battery_xyz();
  *    ....
  *    status = battery_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode			Any mode
- * \param[in]	timeout				Timeout (1-ms of resolution)
- * \return		KERR_BATTERY_NOERR	The manager is reserved
- * \return		KERR_BATTERY_GEERR	General error
- * \return		KERR_BATTERY_CHBSY	The manager is busy
+ * \param[in]   reserveMode         Any mode
+ * \param[in]   timeout             Timeout (1-ms of resolution)
+ * \return      KERR_BATTERY_NOERR  The manager is reserved
+ * \return      KERR_BATTERY_GEERR  General error
+ * \return      KERR_BATTERY_CHBSY  The manager is busy
  *
  */
-extern	int32_t	battery_reserve(reserveMode_t reserveMode, uint32_t timeout);
+extern  int32_t battery_reserve(reserveMode_t reserveMode, uint32_t timeout);
 
 /*!
  * \brief Release the battery manager
@@ -114,13 +115,13 @@ extern	int32_t	battery_reserve(reserveMode_t reserveMode, uint32_t timeout);
  *    status = battery_release(KMODE_READ_WRITE);
  * \endcode
  *
- * \param[in]	reserveMode			Any mode
- * \return		KERR_BATTERY_NOERR	OK
- * \return		KERR_BATTERY_GEERR	General error
- * \return		KERR_BATTERY_CAREL	Cannot release the manager
+ * \param[in]   reserveMode         Any mode
+ * \return      KERR_BATTERY_NOERR  OK
+ * \return      KERR_BATTERY_GEERR  General error
+ * \return      KERR_BATTERY_CAREL  Cannot release the manager
  *
  */
-extern	int32_t	battery_release(reserveMode_t reserveMode);
+extern  int32_t battery_release(reserveMode_t reserveMode);
 
 /*!
  * \brief Read the battery information
@@ -134,12 +135,12 @@ extern	int32_t	battery_release(reserveMode_t reserveMode);
  *    status = battery_read(&infoBattery);
  * \endcode
  *
- * \param[out]	*infoBattery		Ptr on the battery info
- * \return		KERR_BATTERY_NOERR	OK
- * \return		KERR_BATTERY_GEERR	General error
+ * \param[out]  *infoBattery        Ptr on the battery info
+ * \return      KERR_BATTERY_NOERR  OK
+ * \return      KERR_BATTERY_GEERR  General error
  *
  */
-extern	int32_t	battery_read(batteryInfo_t *infoBattery);
+extern  int32_t battery_read(batteryInfo_t *infoBattery);
 
 #if (defined(__cplusplus))
 }

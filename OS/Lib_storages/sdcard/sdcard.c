@@ -3,6 +3,7 @@
 ; =======
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
 ; Author:   Edo. Franzi     The 2025-01-01
@@ -100,7 +101,7 @@ static  int32_t     local_sdcard_write(const sdcard_specification_t *specificati
  * \code{.c}
  * int32_t    status;
  *
- *    status = sdcard_reserve(KMODE_READ_WRITE, 1234);
+ *    status = sdcard_reserve(KMODE_READ_WRITE, 1234u);
  *    ....
  *    sdcard_xyz();
  *    ....

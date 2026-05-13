@@ -3,13 +3,14 @@
 ; ======
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Vectors for the uKOS-X system (first).
+; Project:  uKOS-X
+; Goal:     Vectors for the uKOS-X system (first).
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,8 +47,8 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
-#include	"linker.h"
+#include    "tests.h"
+#include    "linker.h"
 
 // Vector table: ...
 // However rather than start at zero the vector table starts at address 0x00000004,
@@ -55,7 +56,7 @@
 
 // Prototypes
 
-extern	void	crt0(void);
+extern  void    crt0(void);
 
 /*
  * \brief Reset_C0_Handler
@@ -66,31 +67,33 @@ extern	void	crt0(void);
  * - call the crt0
  *
  */
-__attribute__ ((noinline)) void local_fixPC(void) {
-	register	uint32_t	regRa;
+[[gnu::noinline]]
+void    local_fixPC(void) {
+    register    uint32_t    regRa;
 
-	__asm volatile ("add	%0,ra,zero" : "=r" (regRa));
+    __asm volatile ("add    %0,ra,zero" : "=r" (regRa));
 
 // Check if the return address is below the flash
 // Move the return address into the flash area
 
-	if (regRa < 0x08000000) {
-		regRa |= 0x08000000;
+    if (regRa < 0x08000000) {
+        regRa |= 0x08000000;
 
-		__asm volatile ("add	ra,%0,zero" : : "r" (regRa));
-	}
+        __asm volatile ("add    ra,%0,zero" : : "r" (regRa));
+    }
 }
 
-void __attribute__ ((naked)) Reset_C0_Handler(void) {
+[[gnu::naked]]
+void    Reset_C0_Handler(void) {
 
-	CALL_FNCT(local_fixPC);
+    CALL_FNCT(local_fixPC);
 
 // Initialise the first stack
 // Continue with the crt0
 
-	__asm volatile ("la	sp,linker_topStackFirst_C0");
+    __asm volatile ("la sp,linker_topStackFirst_C0");
 
-	CALL_FNCT(crt0);
+    CALL_FNCT(crt0);
 }
 
 EXCEPTION_SPECIFIC_HANDLER(MSIP_C0)

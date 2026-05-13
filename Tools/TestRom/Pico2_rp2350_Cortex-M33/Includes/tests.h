@@ -3,13 +3,14 @@
 ; ======
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test ROM routine collection.
+; Project:  uKOS-X
+; Goal:     Test ROM routine collection.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,32 +47,32 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	"types.h"
-#include	"cmns.h"
-#include	"debug.h"
-#include	"core_reg.h"
-#include	"soc_reg.h"
-#include	"board.h"
-#include	"clockTree.h"
-#include	"macros.h"
-#include	"macros_soc.h"
-#include	"macros_core.h"
-#include	"core.h"
-#include	"spin.h"
+#include    "types.h"
+#include    "cmns.h"
+#include    "debug.h"
+#include    "core_reg.h"
+#include    "soc_reg.h"
+#include    "board.h"
+#include    "clockTree.h"
+#include    "macros.h"
+#include    "macros_soc.h"
+#include    "macros_core.h"
+#include    "core.h"
+#include    "spin.h"
 
-#undef	TEST_00_S			// Test blink the RED, GREEN, YELLOW and system Leds
-#undef	TEST_01_S			// Test sending data via the cnms manager
-#undef	TEST_02_S			// Test reading & sending data via the cnms manager
-#undef	TEST_03_S			// Test of the UART0 Rx interruption
-#undef	TEST_04_S			// Test of the UART0 Tx interruption
-#undef	TEST_05_S			// Test of the TIM0 Alarme 0 & 1 interruption
-#undef	TEST_06_S			// Test of a preliminary pico kernel (with messages swi)
-#undef	TEST_07_S			// Test of the UART0 Tx interruption
-#undef	TEST_08_S			// Test of the boot of the core 1
-#undef	TEST_09_S			// Test of the TIM0 Alarme 0 (core 0) & 1 (core 1) interruption
-#undef	TEST_10_S			// Test of the spin lock
-#define	TEST_11_S			// Test of the door bell
+#undef  TEST_00_S           // Test blink the RED, GREEN, YELLOW and system Leds
+#undef  TEST_01_S           // Test sending data via the cnms manager
+#undef  TEST_02_S           // Test reading & sending data via the cnms manager
+#undef  TEST_03_S           // Test of the UART0 Rx interruption
+#undef  TEST_04_S           // Test of the UART0 Tx interruption
+#undef  TEST_05_S           // Test of the TIM0 Alarme 0 & 1 interruption
+#undef  TEST_06_S           // Test of a preliminary pico kernel (with messages swi)
+#undef  TEST_07_S           // Test of the UART0 Tx interruption
+#undef  TEST_08_S           // Test of the boot of the core 1
+#undef  TEST_09_S           // Test of the TIM0 Alarme 0 (core 0) & 1 (core 1) interruption
+#undef  TEST_10_S           // Test of the spin lock
+#define TEST_11_S           // Test of the door bell
 
-#define	NO_KERNEL_S			// No kernels (naked function entries)
+#define NO_KERNEL_S         // No kernels (naked function entries)

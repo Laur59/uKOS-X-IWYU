@@ -3,13 +3,14 @@
 ; ==========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		K210_plic equates.
+; Project:  uKOS-X
+; Goal:     K210_plic equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,11 +47,11 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#define	PLIC_NUM_SOURCES		(EINT_MAX - 1u)
-#define	PLIC_NUM_PRIORITIES		7u
-#define	PLIC_NUM_CORES			2u
+#define PLIC_NUM_SOURCES        (EINT_MAX - 1u)
+#define PLIC_NUM_PRIORITIES     7u
+#define PLIC_NUM_CORES          2u
 
 // See vectors.h
 //
@@ -134,9 +135,9 @@
 // the lowest ID have the highest effective priority. The priority
 // registers are all WARL.
 //
-typedef	struct	_plic_source_priorities {
-	uint32_t	priority[1024];								// 0x0C000000: Reserved, 0x0C000004-0x0C000FFC: 1-1023 priorities
-} __attribute__ ((packed, aligned (4))) plic_source_priorities_t;
+typedef struct  [[gnu::packed, gnu::aligned(4)]] _plic_source_priorities {
+    uint32_t    priority[1024];                             // 0x0C000000: Reserved, 0x0C000004-0x0C000FFC: 1-1023 priorities
+} plic_source_priorities_t;
 
 // Interrupt Pending Bits
 // ----------------------
@@ -152,10 +153,10 @@ typedef	struct	_plic_source_priorities {
 // pending bit can be set by instructing the associated gateway to
 // send an interrupt service request.
 //
-typedef	struct	_plic_pending_bits {
-	uint32_t	u32[32];									// 0x0C001000-0x0C00107C: Bit 0 is zero, Bits 1-1023 is pending bits
-	uint8_t		resved[0xF80];								// 0x0C001080-0x0C001FFF: Reserved
-} __attribute__ ((packed, aligned (4))) plic_pending_bits_t;
+typedef struct  [[gnu::packed, gnu::aligned(4)]] _plic_pending_bits {
+    uint32_t    u32[32];                                    // 0x0C001000-0x0C00107C: Bit 0 is zero, Bits 1-1023 is pending bits
+    uint8_t     resved[0xF80];                              // 0x0C001080-0x0C001FFF: Reserved
+} plic_pending_bits_t;
 
 // Target Interrupt Enables
 // ------------------------
@@ -175,13 +176,13 @@ typedef	struct	_plic_pending_bits {
 // treating all non-existent interrupt source’s enables as
 // hardwired to zero.
 //
-typedef	struct	_plic_target_enables {
-	struct {
-		uint32_t	enable[32 * 2];							// Offset 0x00-0x7C: Bit 0 is zero, Bits 1-1023 is bits
-	} target[15872 / 2];									// 0x0C002000-0x0C1F1F80: target 0-15871 enables
+typedef struct  [[gnu::packed, gnu::aligned(4)]] _plic_target_enables {
+    struct {
+        uint32_t    enable[32 * 2];                         // Offset 0x00-0x7C: Bit 0 is zero, Bits 1-1023 is bits
+    } target[15872 / 2];                                    // 0x0C002000-0x0C1F1F80: target 0-15871 enables
 
-	uint8_t			resved[0xE000];							// 0x0C1F2000-0x0C1FFFFC: Reserved, size 0xE000
-} __attribute__ ((packed, aligned (4))) plic_target_enables_t;
+    uint8_t         resved[0xE000];                         // 0x0C1F2000-0x0C1FFFFC: Reserved, size 0xE000
+} plic_target_enables_t;
 
 // PLIC Targets
 // ------------
@@ -212,16 +213,16 @@ typedef	struct	_plic_target_enables {
 // that is currently enabled for the target, the completion is
 // silently ignored.
 //
-typedef	struct	_plic_target {
+typedef struct  [[gnu::packed, gnu::aligned(4)]] _plic_target {
 
 // 0x0C200000-0x0FFFF004: target 0-15871
 
-	struct {
-		uint32_t	priority_threshold;						// Offset 0x000
-		uint32_t	claim_complete;							// Offset 0x004
-		uint8_t		resved[0x1FF8];							// Offset 0x008, Size 0xFF8
-	} target[15872 / 2];
-} __attribute__ ((packed, aligned (4))) plic_target_t;
+    struct {
+        uint32_t    priority_threshold;                     // Offset 0x000
+        uint32_t    claim_complete;                         // Offset 0x004
+        uint8_t     resved[0x1FF8];                         // Offset 0x008, Size 0xFF8
+    } target[15872 / 2];
+} plic_target_t;
 
 // Platform-Level Interrupt Controller
 // -----------------------------------
@@ -231,11 +232,11 @@ typedef	struct	_plic_target {
 // support a maximum of 1023 external interrupt sources targeting
 // up to 15,872 core contexts.
 //
-typedef	struct	_plic {
-			plic_source_priorities_t	source_priorities;	// 0x0C000000-0x0C000FFC
-	const	plic_pending_bits_t			pending_bits;		// 0x0C001000-0x0C001FFF
-			plic_target_enables_t		target_enables;		// 0x0C002000-0x0C1FFFFC
-			plic_target_t				targets;			// 0x0C200000-0x0FFFF004
-} __attribute__ ((packed, aligned (4))) plic_t;
+typedef struct  [[gnu::packed, gnu::aligned(4)]] _plic {
+            plic_source_priorities_t    source_priorities;  // 0x0C000000-0x0C000FFC
+    const   plic_pending_bits_t         pending_bits;       // 0x0C001000-0x0C001FFF
+            plic_target_enables_t       target_enables;     // 0x0C002000-0x0C1FFFFC
+            plic_target_t               targets;            // 0x0C200000-0x0FFFF004
+} plic_t;
 
-#define	plic	((volatile plic_t *)0x0C000000u)
+#define plic    ((volatile plic_t *)0x0C000000u)

@@ -3,13 +3,14 @@
 ; ===================
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		lib_cryptographics system call interface module.
+; Project:  uKOS-X
+; Goal:     lib_cryptographics system call interface module.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +47,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \defgroup Lib_cryptographics Library for the crypto tools
@@ -74,7 +75,7 @@
 // IWYU pragma: begin_exports
 
 #if (defined(CONFIG_MAN_RANDOM_S))
-#include	"random/random.h"
+#include    "random/random.h"
 #endif
 
 // IWYU pragma: end_exports

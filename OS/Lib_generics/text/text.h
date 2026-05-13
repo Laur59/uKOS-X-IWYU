@@ -3,13 +3,14 @@
 ; =====
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		text manager.
+; Project:  uKOS-X
+; Goal:     text manager.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +47,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_generics
@@ -66,7 +67,7 @@
 // Prototypes
 
 #if (defined(__cplusplus))
-extern	"C" {
+extern  "C" {
 #endif
 
 /*!
@@ -93,14 +94,14 @@ extern	"C" {
  *   - Ex. buffer1 R________
  *         buffer2 RXYZCRLF\0
  *
- * \param[in]	*ascii			Ptr on the ASCII buffer
- * \param[in]	size			Size of the buffer
- * \param[out]	*argv			Ptr on the ASCII argument buffer
- * \param[out]	*argc			Ptr on the number of ASCII arguments
- * \return		KERR_TEXT_NOERR	OK
+ * \param[in]   *ascii          Ptr on the ASCII buffer
+ * \param[in]   size            Size of the buffer
+ * \param[out]  *argv           Ptr on the ASCII argument buffer
+ * \param[out]  *argc           Ptr on the number of ASCII arguments
+ * \return      KERR_TEXT_NOERR OK
  *
  */
-extern	int32_t	text_readArgs(char_t *ascii, uint32_t size, const char_t *argv[], uint32_t *argc);
+extern  int32_t text_readArgs(char_t *ascii, uint32_t size, const char_t *argv[], uint32_t *argc);
 
 /*!
  * \brief Copy 2 ASCII buffers (\0 is copied)
@@ -121,12 +122,12 @@ extern	int32_t	text_readArgs(char_t *ascii, uint32_t size, const char_t *argv[],
  *   - Ex. buffer1 R________
  *         buffer2 RXYZCRLF\0
  *
- * \param[out]	*asciiD			Ptr on the ASCII destination buffer
- * \param[in]	*asciiS			Ptr on the ASCII source buffer
- * \return		KERR_TEXT_NOERR	OK
+ * \param[out]  *asciiD         Ptr on the ASCII destination buffer
+ * \param[in]   *asciiS         Ptr on the ASCII source buffer
+ * \return      KERR_TEXT_NOERR OK
  *
  */
-extern	int32_t	text_copyAsciiBufferZ(char_t *asciiD, const char_t *asciiS);
+extern  int32_t text_copyAsciiBufferZ(char_t *asciiD, const char_t *asciiS);
 
 /*!
  * \brief Copy 2 ASCII buffers (\0 is not copied)
@@ -143,12 +144,12 @@ extern	int32_t	text_copyAsciiBufferZ(char_t *asciiD, const char_t *asciiS);
  *    status = text_copyBufferN(asciiD, asciiS);
  * \endcode
  *
- * \param[in]	*asciiD			Ptr on the ASCII destination buffer
- * \param[in]	*asciiS			Ptr on the ASCII source buffer
- * \return		KERR_TEXT_NOERR	OK
+ * \param[in]   *asciiD         Ptr on the ASCII destination buffer
+ * \param[in]   *asciiS         Ptr on the ASCII source buffer
+ * \return      KERR_TEXT_NOERR OK
  *
  */
-extern	int32_t	text_copyAsciiBufferN(char_t *asciiD, const char_t *asciiS);
+extern  int32_t text_copyAsciiBufferN(char_t *asciiD, const char_t *asciiS);
 
 /*!
  * \brief Check if 2 ASCII buffers are identical
@@ -164,13 +165,13 @@ extern	int32_t	text_copyAsciiBufferN(char_t *asciiD, const char_t *asciiS);
  *    status = text_checkAsciiBuffer(ascii1, ascii2, equals);
  * \endcode
  *
- * \param[in]	*ascii1			Ptr on the ASCII buffer 1
- * \param[in]	*ascii2			Ptr on the ASCII buffer 2
- * \param[out]	*equals			The 2 ASCII buffers are identical (true) or not (false)
- * \return		KERR_TEXT_NOERR	OK
+ * \param[in]   *ascii1         Ptr on the ASCII buffer 1
+ * \param[in]   *ascii2         Ptr on the ASCII buffer 2
+ * \param[out]  *equals         The 2 ASCII buffers are identical (true) or not (false)
+ * \return      KERR_TEXT_NOERR OK
  *
  */
-extern	int32_t	text_checkAsciiBuffer(const char_t *ascii1, const char_t *ascii2, bool *equals);
+extern  int32_t text_checkAsciiBuffer(const char_t *ascii1, const char_t *ascii2, bool *equals);
 
 /*!
  * \brief Waiting for an ASCII string from a Serial Communication Manager
@@ -190,13 +191,13 @@ extern	int32_t	text_checkAsciiBuffer(const char_t *ascii1, const char_t *ascii2,
  *   - string\0 char is added at the end
  *     The CR or LF at the end are skipped
  *
- * \param[in]	serialManager	Serial Communication Manager
- * \param[in]	*ascii			Ptr on the ASCII buffer
- * \param[in]	size			Size of the ASCII buffer
- * \return		KERR_TEXT_NOERR	OK
+ * \param[in]   serialManager   Serial Communication Manager
+ * \param[in]   *ascii          Ptr on the ASCII buffer
+ * \param[in]   size            Size of the ASCII buffer
+ * \return      KERR_TEXT_NOERR OK
  *
  */
-extern	int32_t	text_waitString(serialManager_t serialManager, char_t *ascii, uint32_t size);
+extern  int32_t text_waitString(serialManager_t serialManager, char_t *ascii, uint32_t size);
 
 #if (defined(__cplusplus))
 }

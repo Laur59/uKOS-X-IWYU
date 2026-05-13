@@ -3,13 +3,14 @@
 ; ===========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		spi_commun equates.
+; Project:  uKOS-X
+; Goal:     spi_commun equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +47,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_peripherals
@@ -66,26 +67,26 @@
 // Configuration structure
 // -----------------------
 
-typedef	struct	spiCnf	spiCnf_t;
+typedef struct  spiCnf  spiCnf_t;
 
 struct spiCnf {
-			uint32_t	oSpeed;									// SPI speed in bit/s
-			uint8_t		oMode;									// Mode
-			uint8_t		oClock;									// Clock format
+            uint32_t    oSpeed;                                 // SPI speed in bit/s
+            uint8_t     oMode;                                  // Mode
+            uint8_t     oClock;                                 // Clock format
 };
 
 // Mode (master/slave) (oMode)
 
 enum {
-			KSPI_MASTER = 0u,									// SPI master
-			KSPI_SLAVE											// SPI slave
+            KSPI_MASTER = 0u,                                   // SPI master
+            KSPI_SLAVE                                          // SPI slave
 };
 
 // Clock polarity (oClock)
 
 enum {
-			BSPI_POL = 0u,										// Polarity
-			BSPI_PHA											// Phase
+            BSPI_POL = 0u,                                      // Polarity
+            BSPI_PHA                                            // Phase
 };
 
 /**@}*/

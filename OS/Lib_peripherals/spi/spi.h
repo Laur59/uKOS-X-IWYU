@@ -3,6 +3,7 @@
 ; ====
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
 ; Author:   Edo. Franzi     The 2025-01-01
@@ -89,7 +90,7 @@ extern  "C" {
  * \code{.c}
  * int32_t    status;
  *
- *    status = spi_reserve(KSPI0, KMODE_READ_WRITE, 1234);
+ *    status = spi_reserve(KSPI0, KMODE_READ_WRITE, 1234u);
  *    ....
  *    spi_xyz(KSPI0, );
  *    ....

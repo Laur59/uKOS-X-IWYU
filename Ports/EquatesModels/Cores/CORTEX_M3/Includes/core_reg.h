@@ -3,13 +3,14 @@
 ; =========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		cortex_m3_core equates.
+; Project:  uKOS-X
+; Goal:     cortex_m3_core equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,17 +47,15 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 // IWYU pragma: begin_exports
 
-#include	<stdint.h>
-
-#include	"Registers/core_debug.h"
-#include	"Registers/scb.h"
-#include	"Registers/mpu.h"
-#include	"Registers/nvic.h"
-#include	"Registers/systick.h"
-#include	"Registers/core_addendum.h"
+#include    "Registers/core_debug.h"
+#include    "Registers/scb.h"
+#include    "Registers/mpu.h"
+#include    "Registers/nvic.h"
+#include    "Registers/systick.h"
+#include    "Registers/core_addendum.h"
 
 // IWYU pragma: end_exports

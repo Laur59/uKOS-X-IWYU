@@ -3,13 +3,14 @@
 ; ====
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		led manager.
+; Project:  uKOS-X
+; Goal:     led manager.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +47,7 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include    "uKOS.h"
 
 #if (defined(CONFIG_MAN_LED_S))
 
@@ -55,24 +56,24 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) =	"led          led manager.                              (c) EFr-2026";
-STRG_LOC_CONST(aStrHelp[])		  = "led manager\n"
-									"===========\n\n"
+STRG_LOC_CONST(aStrApplication[]) = "led          led manager.                              (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "led manager\n"
+                                    "===========\n\n"
 
-									"This manager ...\n\n"
+                                    "This manager ...\n\n"
 
-									"Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
 MODULE(
-	Led,							// Module name (the first letter has to be upper case)
-	KID_FAM_PERIPHERALS,			// Family (defined in the module.h)
-	KNUM_LED,						// Module identifier (defined in the module.h)
-	nullptr,						// Address of the initialisation code (early pre-init)
-	nullptr,						// Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
-	nullptr,						// Address of the clean code (clean the module)
-	" 1.0",							// Revision string (major . minor)
-	(1u<<BSHOW),					// Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
-	0								// Execution cores
+    Led,                            // Module name (the first letter has to be upper case)
+    KID_FAM_PERIPHERALS,            // Family (defined in the module.h)
+    KNUM_LED,                       // Module identifier (defined in the module.h)
+    nullptr,                        // Address of the initialisation code (early pre-init)
+    nullptr,                        // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                        // Address of the clean code (clean the module)
+    " 1.0",                         // Revision string (major . minor)
+    (1u<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                               // Execution cores
 );
 
 // Library specific
@@ -80,12 +81,12 @@ MODULE(
 
 // Prototypes
 
-static	int32_t		local_init(void);
-extern	int32_t		stub_led_init(void);
-extern	int32_t		stub_led_on(uint8_t ledNb);
-extern	int32_t		stub_led_off(uint8_t ledNb);
-extern	int32_t		stub_led_toggle(uint8_t ledNb);
-extern	int32_t		stub_led_mute(bool mute);
+static  int32_t     local_init(void);
+extern  int32_t     stub_led_init(void);
+extern  int32_t     stub_led_on(uint8_t ledNb);
+extern  int32_t     stub_led_off(uint8_t ledNb);
+extern  int32_t     stub_led_toggle(uint8_t ledNb);
+extern  int32_t     stub_led_mute(bool mute);
 
 /*
  * \brief Turn on a LED
@@ -99,21 +100,21 @@ extern	int32_t		stub_led_mute(bool mute);
  *     status = led_on(ledNb);
  * \endcode
  *
- * \param[in]	ledNb			LED number
- * \return		KERR_LED_NOERR	OK
- * \return		KERR_LED_NODEV	The selected LED does not exist
+ * \param[in]   ledNb           LED number
+ * \return      KERR_LED_NOERR  OK
+ * \return      KERR_LED_NODEV  The selected LED does not exist
  *
  */
-int32_t	led_on(uint8_t ledNb) {
-	int32_t		status;
+int32_t led_on(uint8_t ledNb) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_LED_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_LED_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_led_on(ledNb);
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_led_on(ledNb);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 /*
@@ -128,21 +129,21 @@ int32_t	led_on(uint8_t ledNb) {
  *    status = led_off(ledNb);
  * \endcode
  *
- * \param[in]	ledNb			LED number
- * \return		KERR_LED_NOERR	OK
- * \return		KERR_LED_NODEV	The selected LED does not exist
+ * \param[in]   ledNb           LED number
+ * \return      KERR_LED_NOERR  OK
+ * \return      KERR_LED_NODEV  The selected LED does not exist
  *
  */
-int32_t	led_off(uint8_t ledNb) {
-	int32_t		status;
+int32_t led_off(uint8_t ledNb) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_LED_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_LED_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_led_off(ledNb);
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_led_off(ledNb);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 /*
@@ -157,21 +158,21 @@ int32_t	led_off(uint8_t ledNb) {
  *    status = led_toggle(ledNb);
  * \endcode
  *
- * \param[in]	ledNb			LED number
- * \return		KERR_LED_NOERR	OK
- * \return		KERR_LED_NODEV	The selected LED does not exist
+ * \param[in]   ledNb           LED number
+ * \return      KERR_LED_NOERR  OK
+ * \return      KERR_LED_NODEV  The selected LED does not exist
  *
  */
-int32_t	led_toggle(uint8_t ledNb) {
-	int32_t		status;
+int32_t led_toggle(uint8_t ledNb) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_LED_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_LED_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_led_toggle(ledNb);
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_led_toggle(ledNb);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 /*
@@ -188,20 +189,20 @@ int32_t	led_toggle(uint8_t ledNb) {
  *    status = led_mute(false); // Portion of code without any LED activity
  * \endcode
  *
- * \param[in]	mute			true -> turn off all the LEDs, false -> normal mode
- * \return		KERR_LED_NOERR	OK
+ * \param[in]   mute            true -> turn off all the LEDs, false -> normal mode
+ * \return      KERR_LED_NOERR  OK
  *
  */
-int32_t	led_mute(bool mute) {
-	int32_t		status;
+int32_t led_mute(bool mute) {
+    int32_t     status;
 
-	PRIVILEGE_ELEVATE;
-	status = local_init();
-	if (status != KERR_LED_NOERR) { PRIVILEGE_RESTORE; return (status); }
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_LED_NOERR) { PRIVILEGE_RESTORE; return (status); }
 
-	status = stub_led_mute(mute);
-	PRIVILEGE_RESTORE;
-	return (status);
+    status = stub_led_mute(mute);
+    PRIVILEGE_RESTORE;
+    return (status);
 }
 
 // Local routines
@@ -214,20 +215,20 @@ int32_t	led_mute(bool mute) {
  *   has to be called at least once
  *
  */
-static	int32_t	local_init(void) {
-			int32_t		status = KERR_LED_NOERR;
-			uint32_t	core;
-	static	bool		vInit[KNB_CORES] = MCSET(false);
+static  int32_t local_init(void) {
+            int32_t     status = KERR_LED_NOERR;
+            uint32_t    core;
+    static  bool        vInit[KNB_CORES] = MCSET(false);
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	INTERRUPTION_OFF;
-	if (vInit[core] == false) {
-		vInit[core] = true;
+    INTERRUPTION_OFF;
+    if (vInit[core] == false) {
+        vInit[core] = true;
 
-		status = stub_led_init();
-	}
-	RETURN_INT_RESTORE(status);
+        status = stub_led_init();
+    }
+    RETURN_INT_RESTORE(status);
 }
 
 #endif

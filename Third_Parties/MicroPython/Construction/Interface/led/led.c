@@ -3,17 +3,18 @@
 ; ====
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		uKOS led interface
+; Project:  uKOS-X
+; Goal:     uKOS led interface
 ;
-;			Usage:
-;			import led
-;			status = led.led(led_number, led_state)
+;           Usage:
+;           import led
+;           status = led.led(led_number, led_state)
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -50,11 +51,11 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"types.h"
-#include	"led/led.h"
-#include	"py/obj.h"
-#include	"py/runtime.h"
-#include	"py/builtin.h"
+#include    "types.h"
+#include    "led/led.h"
+#include    "py/obj.h"
+#include    "py/runtime.h"
+#include    "py/builtin.h"
 
 /*
  * \brief Control of the LEDs
@@ -69,26 +70,26 @@
  * \endcode
  *
  */
-static	mp_obj_t	led_led(mp_obj_t ledNb_obj, mp_obj_t action_obj) {
-	int32_t		status, ledNb, action;
+static  mp_obj_t    led_led(mp_obj_t ledNb_obj, mp_obj_t action_obj) {
+    int32_t     status, ledNb, action;
 
 // Extract the ints from the MicroPython input objects
 
-	ledNb  = mp_obj_get_int(ledNb_obj);
-	action = mp_obj_get_int(action_obj);
+    ledNb  = mp_obj_get_int(ledNb_obj);
+    action = mp_obj_get_int(action_obj);
 
-	switch (action) {
-		case 0u: { status = led_off((uint8_t)ledNb);	break; }
-		case 1u: { status = led_on((uint8_t)ledNb);		break; }
-		case 2u: { status = led_toggle((uint8_t)ledNb);	break; }
-		default: { status = led_toggle((uint8_t)ledNb);	break; }
-	}
-	return (mp_obj_new_int(status & 0x7FFFFFFFu));
+    switch (action) {
+        case 0u: { status = led_off((uint8_t)ledNb);    break; }
+        case 1u: { status = led_on((uint8_t)ledNb);     break; }
+        case 2u: { status = led_toggle((uint8_t)ledNb); break; }
+        default: { status = led_toggle((uint8_t)ledNb); break; }
+    }
+    return (mp_obj_new_int(status & 0x7FFFFFFFu));
 }
 
 // Define a Python reference to the function above.
 
-static	MP_DEFINE_CONST_FUN_OBJ_2(led_led_obj,  led_led);
+static  MP_DEFINE_CONST_FUN_OBJ_2(led_led_obj,  led_led);
 
 // Define all properties of the example module.
 // Table entries are key/value pairs of the attribute name (a string)
@@ -96,18 +97,18 @@ static	MP_DEFINE_CONST_FUN_OBJ_2(led_led_obj,  led_led);
 // All identifiers and strings are written as MP_QSTR_xxx and will be
 // optimised to word-sized integers by the build system (interned strings).
 
-static	const	mp_rom_map_elem_t	led_module_globals_table[] = {
-	{ MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_led)  },
-	{ MP_ROM_QSTR(MP_QSTR_led),		 MP_ROM_PTR(&led_led_obj)  },
+static  const   mp_rom_map_elem_t   led_module_globals_table[] = {
+    { MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_led)  },
+    { MP_ROM_QSTR(MP_QSTR_led),      MP_ROM_PTR(&led_led_obj)  },
 };
 
-static	MP_DEFINE_CONST_DICT(led_module_globals, led_module_globals_table);
+static  MP_DEFINE_CONST_DICT(led_module_globals, led_module_globals_table);
 
 // Define module object.
 
-const	mp_obj_module_t	led_user_cmodule = {
-	.base	 = { &mp_type_module },
-	.globals = (mp_obj_dict_t *)&led_module_globals,
+const   mp_obj_module_t led_user_cmodule = {
+    .base    = { &mp_type_module },
+    .globals = (mp_obj_dict_t *)&led_module_globals,
 };
 
 // Register the module to make it available in MicroPython.

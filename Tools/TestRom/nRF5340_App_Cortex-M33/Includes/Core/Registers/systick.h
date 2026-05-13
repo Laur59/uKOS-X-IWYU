@@ -3,13 +3,14 @@
 ; ========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		SYSTICK equates.
+; Project:  uKOS-X
+; Goal:     SYSTICK equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,30 +47,30 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 // SYSTICK address definitions
 // ---------------------------
 
 typedef struct {
-	volatile			uint32_t	CTRL;
-	volatile			uint32_t	LOAD;
-	volatile			uint32_t	VAL;
-	volatile	const	uint32_t	CALIB;
+    volatile            uint32_t    CTRL;
+    volatile            uint32_t    LOAD;
+    volatile            uint32_t    VAL;
+    volatile    const   uint32_t    CALIB;
 } SysTick_TypeDef;
 
 #if (defined(__cplusplus))
-#define	SysTick_S	reinterpret_cast<SysTick_TypeDef *>(0xE000E010u)
-#define	SysTick_NS	reinterpret_cast<SysTick_TypeDef *>(0xE002E010u)
+#define SysTick_S   reinterpret_cast<SysTick_TypeDef *>(0xE000E010u)
+#define SysTick_NS  reinterpret_cast<SysTick_TypeDef *>(0xE002E010u)
 
 #else
-#define	SysTick_S	((SysTick_TypeDef *)0xE000E010u)
-#define	SysTick_NS	((SysTick_TypeDef *)0xE002E010u)
+#define SysTick_S   ((SysTick_TypeDef *)0xE000E010u)
+#define SysTick_NS  ((SysTick_TypeDef *)0xE002E010u)
 #endif
 
 // SysTick_CTRL register
 
-#define	SysTick_CTRL_ENABLE			0x00000001u
-#define	SysTick_CTRL_TICKINT		0x00000002u
-#define	SysTick_CTRL_CLKSOURCE		0x00000004u
-#define	SysTick_CTRL_COUNTFLAG		0x00010000u
+#define SysTick_CTRL_ENABLE         0x00000001u
+#define SysTick_CTRL_TICKINT        0x00000002u
+#define SysTick_CTRL_CLKSOURCE      0x00000004u
+#define SysTick_CTRL_COUNTFLAG      0x00010000u

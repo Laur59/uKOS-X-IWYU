@@ -3,13 +3,14 @@
 ; =========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test of a SVC call.
+; Project:  uKOS-X
+; Goal:     Test of a SVC call.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,36 +47,36 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
+#include    "tests.h"
 
 #if (defined(TEST_06_S))
-static		char_t		vString[20];
-			uint32_t	vMessage;
+static      char_t      vString[20];
+            uint32_t    vMessage;
 
-#define	MESSAGE(msg)	__asm volatile ("										\n \
-						ldr			r0,%0										\n \
-						push		{r0}										\n \
-						push		{r0}"										   \
-						:														   \
-						: "m" (msg)												   \
-						: "r0"													   \
-						);														   \
-						__asm volatile ("										\n \
-						svc			0											\n \
-						dmb														\n \
-						dsb														\n \
-						isb														\n \
-						mrs			r0,psp										\n \
-						add			r0,r0,#8									\n \
-						msr			psp,r0"										   \
-						:														   \
-						:														   \
-						: "r0"													   \
-						);
+#define MESSAGE(msg)    __asm volatile ("                                       \n \
+                        ldr         r0,%0                                       \n \
+                        push        {r0}                                        \n \
+                        push        {r0}"                                          \
+                        :                                                          \
+                        : "m" (msg)                                                \
+                        : "r0"                                                     \
+                        );                                                         \
+                        __asm volatile ("                                       \n \
+                        svc         0                                           \n \
+                        dmb                                                     \n \
+                        dsb                                                     \n \
+                        isb                                                     \n \
+                        mrs         r0,psp                                      \n \
+                        add         r0,r0,#8                                    \n \
+                        msr         psp,r0"                                        \
+                        :                                                          \
+                        :                                                          \
+                        : "r0"                                                     \
+                        );
 
 // Prototypes
 
-static	void	local_process(uint32_t message);
+static  void    local_process(uint32_t message);
 
 /*
  * \brief test_06
@@ -83,18 +84,18 @@ static	void	local_process(uint32_t message);
  * - Test of a SVC call
  *
  */
-void	test_06(void) {
-	volatile	uint32_t	message = 0;
+void    test_06(void) {
+    volatile    uint32_t    message = 0;
 
-	cmns_init();
+    cmns_init();
 
-	while (true) {
-		cmns_wait(100000);
-		LED_RED_TOGGLE;
+    while (true) {
+        cmns_wait(100000);
+        LED_RED_TOGGLE;
 
-		MESSAGE(message)
-		message++;
-	}
+        MESSAGE(message)
+        message++;
+    }
 }
 
 /*
@@ -103,41 +104,41 @@ void	test_06(void) {
  * - Change the context f(message)
  *
  */
-#define	KSAVEREGISTERS	"r0", "r1", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11"
+#define KSAVEREGISTERS  "r0", "r1", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11"
 
-void	SVCall_IRQHandler(void) __attribute__ ((naked)) __attribute__ ((optimize("Os")));
-void	SVCall_IRQHandler(void) {
+[[gnu::naked, gnu::optimize("Os")]]
+void    SVCall_IRQHandler(void) {
 
 // Recover the message
 
-	__asm volatile ("							\n \
-	cpsid		i								\n \
-	tst			lr,#0x4							\n \
-	ite 		eq								\n \
-	mrseq		r0,msp							\n \
-	mrsne		r0,psp							\n \
-	add			r1,r0,#(32+4)					\n \
-	tst			lr,#0x10						\n \
-	it 			eq								\n \
-	addeq		r1,r0,#(32+68+4)				\n \
-	ldr			r1,[r1]							\n \
-	str			r1,%0							\n \
-	push 		{lr}"							   \
-	:											   \
-	: "m" (vMessage)							   \
-	: KSAVEREGISTERS							   \
-	);	
+    __asm volatile ("                           \n \
+    cpsid       i                               \n \
+    tst         lr,#0x4                         \n \
+    ite         eq                              \n \
+    mrseq       r0,msp                          \n \
+    mrsne       r0,psp                          \n \
+    add         r1,r0,#(32+4)                   \n \
+    tst         lr,#0x10                        \n \
+    it          eq                              \n \
+    addeq       r1,r0,#(32+68+4)                \n \
+    ldr         r1,[r1]                         \n \
+    str         r1,%0                           \n \
+    push        {lr}"                              \
+    :                                              \
+    : "m" (vMessage)                               \
+    : KSAVEREGISTERS                               \
+    );
 
-		local_process(vMessage);
+        local_process(vMessage);
 
-	__asm volatile ("							\n \
-	pop			{lr}							\n \
-	cpsie		i								\n \
-	dmb											\n \
-	dsb											\n \
-	isb											\n \
-	bx			lr"								   \
-	);
+    __asm volatile ("                           \n \
+    pop         {lr}                            \n \
+    cpsie       i                               \n \
+    dmb                                         \n \
+    dsb                                         \n \
+    isb                                         \n \
+    bx          lr"                                \
+    );
 }
 
 /*
@@ -146,11 +147,12 @@ void	SVCall_IRQHandler(void) {
  * - Blink the BLUE Led
  *
  */
-static	void	__attribute__ ((noinline)) local_process(uint32_t message) {
+[[gnu::noinline]]
+static  void    local_process(uint32_t message) {
 
-	LED_BLUE_TOGGLE;
+    LED_BLUE_TOGGLE;
 
-	debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&message);
-	cmns_send(KURT0, "Message 0x"); cmns_send(KURT0, vString); cmns_send(KURT0, "\n");
+    debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&message);
+    cmns_send(KURT0, "Message 0x"); cmns_send(KURT0, vString); cmns_send(KURT0, "\n");
 }
 #endif

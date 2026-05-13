@@ -3,59 +3,60 @@
 ; =======
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		newLib interface for gcc C compiler (reentrant version).
+; Project:  uKOS-X
+; Goal:     newLib interface for gcc C compiler (reentrant version).
 ;
-;			See: https://linux.die.net/man/
+;           See: https://linux.die.net/man/
 ;
-;			Fully or partially supported functions to support
+;           Fully or partially supported functions to support
 ;
-;			Open - close - read - write newlib functions
-;			_open_r
-;			_close_r
-;			_write_r
-;			_read_r
+;           Open - close - read - write newlib functions
+;           _open_r
+;           _close_r
+;           _write_r
+;           _read_r
 ;
-;			Generic newlib functions
-;			_times_r
-;			_wait_r
-;			__errno
-;			_fork_r
-;			_stat_r
-;			_fstat_r
-;			_link_r
-;			_unlink_r
-;			_lseek_r
-;			_getpid_r
-;			_kill_r
+;           Generic newlib functions
+;           _times_r
+;           _wait_r
+;           __errno
+;           _fork_r
+;           _stat_r
+;           _fstat_r
+;           _link_r
+;           _unlink_r
+;           _lseek_r
+;           _getpid_r
+;           _kill_r
 ;
-;			Allocator newlib functions
-;			_sbrk_r
-;			__wrap__malloc_r
-;			__wrap__free_r
-;			__wrap__realloc_r
-;			__wrap__calloc_r
+;           Allocator newlib functions
+;           _sbrk_r
+;           __wrap__malloc_r
+;           __wrap__free_r
+;           __wrap__realloc_r
+;           __wrap__calloc_r
 ;
-;			Suported devices controlled by the open - close - read - write newlib functions
-;			urt0
-;			urt1
-;			urt2
-;			urt3
-;			urt4
-;			cdc0
-;			cdc1
-;			wfi0
+;           Suported devices controlled by the open - close - read - write newlib functions
+;           urt0
+;           urt1
+;           urt2
+;           urt3
+;           urt4
+;           cdc0
+;           cdc1
+;           wfi0
 ;
-;			syst
-;			def0
-;			stdin
-;			stdout
-;			stderr
+;           syst
+;           def0
+;           stdin
+;           stdout
+;           stderr
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -92,9 +93,9 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	<sys/time.h>
+#include    <sys/time.h>
 
 /*!
  * \addtogroup Lib_generics
@@ -111,13 +112,13 @@
  * @{
  */
 
-typedef	struct	_reent	reent_t;
+typedef struct  _reent  reent_t;
 
 // Integer equivalence of stdin, stdout, stderr
 
-#define	KSTDIN		STDIN_FILENO
-#define	KSTDOUT		STDOUT_FILENO
-#define	KSTDERR		STDERR_FILENO
+#define KSTDIN      STDIN_FILENO
+#define KSTDOUT     STDOUT_FILENO
+#define KSTDERR     STDERR_FILENO
 
 // This value has to be re-defined accordingly to the
 // µKernel specification. For an unclear reason, the newlib
@@ -131,13 +132,12 @@ static_assert(CLOCKS_PER_SEC_CHECK(_CLOCKS_PER_SEC_), "_CLOCKS_PER_SEC_ must be 
 // Prototypes
 
 #if (defined(__cplusplus))
-extern	"C" {
+extern  "C" {
 #endif
 
 #if (defined(__cplusplus))
 }
 #endif
-
 
 /**@}*/
 /**@}*/

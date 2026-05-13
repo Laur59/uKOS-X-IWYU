@@ -3,16 +3,17 @@
 ; ===========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Kern - Statistic management.
+; Project:  uKOS-X
+; Goal:     Kern - Statistic management.
 ;
-;			This module is responsible for computing the statistic of
-;			the uKernel.
+;           This module is responsible for computing the statistic of
+;           the uKernel.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -49,7 +50,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 #if (KKERN_WITH_STATISTICS_S == true)
 
@@ -71,7 +72,7 @@
 // Prototypes
 
 #if (defined(__cplusplus))
-extern	"C" {
+extern  "C" {
 #endif
 
 /*!
@@ -109,16 +110,16 @@ extern	"C" {
  *   - KAvg[k+1] = ( (KAvg[k] x ((1u<<KNMEAN)-1)) + KIns[k] ) / (1u<<KNMEAN)
  *   - EAvg[k+1] = ( (EAvg[k] x ((1u<<KNMEAN)-1)) + EIns[k] ) / (1u<<KNMEAN)
  *
- * \param[in]	*backwardProcess	Ptr on the backward process
- * \param[in]	timeStart			Time when the process was scheduled
- * \param[in]	timeStop			Time when the process was stopped
- * \param[in]	timeLastStart		Time when the process was started (previous cycle)
- * \param[in]	timeE				Time spent in the exceptions (int managers)
+ * \param[in]   *backwardProcess    Ptr on the backward process
+ * \param[in]   timeStart           Time when the process was scheduled
+ * \param[in]   timeStop            Time when the process was stopped
+ * \param[in]   timeLastStart       Time when the process was started (previous cycle)
+ * \param[in]   timeE               Time spent in the exceptions (int managers)
  *
  * \note This function does not return a value (None).
  *
  */
-extern	void	statistics_statistic(proc_t *backwardProcess, uint32_t timeStart, uint32_t timeStop, uint32_t timeLastStart, uint32_t timeE);
+extern  void    statistics_statistic(proc_t *backwardProcess, uint32_t timeStart, uint32_t timeStop, uint32_t timeLastStart, uint32_t timeE);
 
 #if (defined(__cplusplus))
 }

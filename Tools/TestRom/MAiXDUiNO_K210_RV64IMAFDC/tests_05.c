@@ -3,13 +3,14 @@
 ; =========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test of the USART2 Tx interruption.
+; Project:  uKOS-X
+; Goal:     Test of the USART2 Tx interruption.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,15 +47,15 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
+#include    "tests.h"
 
 #if (defined(TEST_05_S))
-bool		vTransmitted = false;
-uint8_t		vString[] = ".. but we are not afraid, we are alway firsts ...\n";
+bool        vTransmitted = false;
+uint8_t     vString[] = ".. but we are not afraid, we are alway firsts ...\n";
 
 // Prototypes
 
-void	local_USART2_IRQHandler(uint32_t core, uint64_t parameter);
+void    local_USART2_IRQHandler(uint32_t core, uint64_t parameter);
 
 /*
  * \brief test_05
@@ -62,44 +63,44 @@ void	local_USART2_IRQHandler(uint32_t core, uint64_t parameter);
  * - Test of the USART2 Tx interruption
  *
  */
-void	test_05(void) {
-	uint32_t	core, current;
+void    test_05(void) {
+    uint32_t    core, current;
 
-	INTERRUPTION_SET;
-	INTERRUPTION_ON_HARD;
+    INTERRUPTION_SET;
+    INTERRUPTION_ON_HARD;
 
 // Turn on the UART2
 
-	sysctl->clk_en_peri.uart2_clk_en = 1;
+    sysctl->clk_en_peri.uart2_clk_en = 1;
 
-	cmns_init();
+    cmns_init();
 
 // Set the priority
 // Get current enable bit array by IRQ number
 // Set enable bit in enable bit array
 // Write back the enable bit array
 
-	core = GET_RUNNING_CORE;
-	EXT_INTERRUPT_VECTOR(EINT_UART2_INTERRUPT, local_USART2_IRQHandler);
+    core = GET_RUNNING_CORE;
+    EXT_INTERRUPT_VECTOR(EINT_UART2_INTERRUPT, local_USART2_IRQHandler);
 
-	plic->source_priorities.priority[EINT_UART2_INTERRUPT] = KINT_LEVEL_ALL;
-	current = plic->target_enables.target[core].enable[(EINT_UART2_INTERRUPT) / 32];
-	current |= (uint32_t)(1u<<(EINT_UART2_INTERRUPT % 32));
-	plic->target_enables.target[core].enable[EINT_UART2_INTERRUPT / 32] = current;
+    plic->source_priorities.priority[EINT_UART2_INTERRUPT] = KINT_LEVEL_ALL;
+    current = plic->target_enables.target[core].enable[(EINT_UART2_INTERRUPT) / 32];
+    current |= (uint32_t)(1u<<(EINT_UART2_INTERRUPT % 32));
+    plic->target_enables.target[core].enable[EINT_UART2_INTERRUPT / 32] = current;
 
 // Waiting for the USART2 interruption
 
-	while (true) {
-		uart2->IER |= UART_IER_ETBEI | UART_IER_ERBFI;
+    while (true) {
+        uart2->IER |= UART_IER_ETBEI | UART_IER_ERBFI;
 
 // Let terminate the buffer transfer
 
-		cmns_wait(1000000);
-		do { } while (vTransmitted == false);
+        cmns_wait(1000000);
+        do { } while (vTransmitted == false);
 
-		vTransmitted = false;
-		LED_RED_TOGGLE;
-	}
+        vTransmitted = false;
+        LED_RED_TOGGLE;
+    }
 }
 
 /*
@@ -108,42 +109,42 @@ void	test_05(void) {
  * - Blink the Green 1 Led
  *
  */
-void	local_USART2_IRQHandler(uint32_t core, uint64_t parameter) {
-			volatile	uint16_t	data;
-			volatile	uint32_t	iir;
-	static	volatile	uint8_t		index = 0;
-	static	const		uint8_t		aSendText[] = "This is a text ...\n";
+void    local_USART2_IRQHandler(uint32_t core, uint64_t parameter) {
+            volatile    uint16_t    data;
+            volatile    uint32_t    iir;
+    static  volatile    uint8_t     index = 0;
+    static  const       uint8_t     aSendText[] = "This is a text ...\n";
 
-	iir = uart2->IIR;
-	if ((iir & UART_IIR_ERBFI) != 0) {
+    iir = uart2->IIR;
+    if ((iir & UART_IIR_ERBFI) != 0) {
 
 // Rx interruption
 
-		data = (uint8_t)(uart2->RBR & 0xFF);
-		LED_BLUE_TOGGLE;
-	}
+        data = (uint8_t)(uart2->RBR & 0xFF);
+        LED_BLUE_TOGGLE;
+    }
 
-	if (((iir & UART_IIR_ETBEI) != 0) && ((uart2->IER & UART_IER_ETBEI) != 0)) {
+    if (((iir & UART_IIR_ETBEI) != 0) && ((uart2->IER & UART_IER_ETBEI) != 0)) {
 
 // Tx interruption
 
-		data = (uint16_t)aSendText[index];
-		if (data == 0) {
+        data = (uint16_t)aSendText[index];
+        if (data == 0) {
 
 // Terminated
 
-			index = 0;
-			vTransmitted = true;
-			uart2->IER &= ~UART_IER_ETBEI;
-		}
-		else {
-			uart2->THR = data;
-			index++;
-		}
-	}
+            index = 0;
+            vTransmitted = true;
+            uart2->IER &= ~UART_IER_ETBEI;
+        }
+        else {
+            uart2->THR = data;
+            index++;
+        }
+    }
 
 // Acknowledge the PLIC claim complete
 
-	plic->targets.target[core].claim_complete = (uint32_t)parameter;
+    plic->targets.target[core].claim_complete = (uint32_t)parameter;
 }
 #endif

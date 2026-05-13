@@ -3,13 +3,14 @@
 ; =========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test blink the 0, 1 Leds.
+; Project:  uKOS-X
+; Goal:     Test blink the 0, 1 Leds.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +47,7 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
+#include    "tests.h"
 
 #if (defined(TEST_00_S))
 /*
@@ -55,13 +56,13 @@
  * - Test blink the 0, 1 Leds
  *
  */
-void	test_00(void) {
+void    test_00(void) {
 
-	while (true) {
-		cmns_wait(100000);
-		LED_0_TOGGLE;
-		cmns_wait(100000);
-		LED_1_TOGGLE;
-	}
+    while (true) {
+        cmns_wait(100000);
+        LED_0_TOGGLE;
+        cmns_wait(100000);
+        LED_1_TOGGLE;
+    }
 }
 #endif

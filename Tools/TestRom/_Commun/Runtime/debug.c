@@ -3,13 +3,14 @@
 ; ======
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Some debug tools.
+; Project:  uKOS-X
+; Goal:     Some debug tools.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,14 +47,14 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
+#include    "tests.h"
 
-static	char_t	vString[30];
+static  char_t  vString[30];
 
 // Prototypes
 
-static	void	local_cnvtInt32HASCII(int32_t binary, char_t *ascii, uint8_t nbDigits);
-static	void	local_cnvtInt32DASCII(int32_t binary, char_t *ascii);
+static  void    local_cnvtInt32HASCII(int32_t binary, char_t *ascii, uint8_t nbDigits);
+static  void    local_cnvtInt32DASCII(int32_t binary, char_t *ascii);
 
 /*
  * \brief Convert a int32_t binary value to a hexadecimal ASCII buffer
@@ -69,18 +70,18 @@ static	void	local_cnvtInt32DASCII(int32_t binary, char_t *ascii);
  *   debug_cnvtValInt32ToHexAscii(ascii, &value);
  * \endcode
  *
- * - int32_t input value:	ASCII output buffer:
- * - (.32) -0x92A			(ASCII) -0x92A
+ * - int32_t input value:   ASCII output buffer:
+ * - (.32) -0x92A           (ASCII) -0x92A
  *
- * \param[out]	*ascii		Ptr on the ASCII buffer
- * \param[in]	*binary		Ptr on the binary value
+ * \param[out]  *ascii      Ptr on the ASCII buffer
+ * \param[in]   *binary     Ptr on the binary value
  *
  * \note This function does not return a value (None).
  *
  */
-void	debug_cnvtValInt32ToHexAscii(char_t *ascii, const int32_t *binary) {
+void    debug_cnvtValInt32ToHexAscii(char_t *ascii, const int32_t *binary) {
 
-	local_cnvtInt32HASCII(*binary, ascii, 8);
+    local_cnvtInt32HASCII(*binary, ascii, 8);
 }
 
 /*
@@ -97,18 +98,18 @@ void	debug_cnvtValInt32ToHexAscii(char_t *ascii, const int32_t *binary) {
  *    debug_cnvtValInt32ToDecAscii(ascii, &value);
  * \endcode
  *
- * - int32_t input value:	ASCII output buffer:
- * - (.32) -0x929			(ASCII) -2345
+ * - int32_t input value:   ASCII output buffer:
+ * - (.32) -0x929           (ASCII) -2345
  *
- * \param[out]	*ascii		Ptr on the ASCII buffer
- * \param[in]	*binary		Ptr on the binary value
+ * \param[out]  *ascii      Ptr on the ASCII buffer
+ * \param[in]   *binary     Ptr on the binary value
  *
  * \note This function does not return a value (None).
  *
  */
-void	debug_cnvtValInt32ToDecAscii(char_t *ascii, const int32_t *binary) {
+void    debug_cnvtValInt32ToDecAscii(char_t *ascii, const int32_t *binary) {
 
-	local_cnvtInt32DASCII(*binary, ascii);
+    local_cnvtInt32DASCII(*binary, ascii);
 }
 
 /*
@@ -122,15 +123,15 @@ void	debug_cnvtValInt32ToDecAscii(char_t *ascii, const int32_t *binary) {
  *   debug_printValueH(value);
  * \endcode
  *
- * \param[in]	*binary		Ptr on the binary value
+ * \param[in]   *binary     Ptr on the binary value
  *
  * \note This function does not return a value (None).
  *
  */
-void	debug_printValueH(volatile int32_t binary) {
+void    debug_printValueH(volatile int32_t binary) {
 
-	debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&binary);
-	cmns_send(0, "Value  0x"); cmns_send(0, vString); cmns_send(0, "\n");
+    debug_cnvtValInt32ToHexAscii(vString, (int32_t *)&binary);
+    cmns_send(0, "Value  0x"); cmns_send(0, vString); cmns_send(0, "\n");
 }
 
 /*
@@ -144,15 +145,15 @@ void	debug_printValueH(volatile int32_t binary) {
  *   debug_printValueHD(value);
  * \endcode
  *
- * \param[in]	*binary		Ptr on the binary value
+ * \param[in]   *binary     Ptr on the binary value
  *
  * \note This function does not return a value (None).
  *
  */
-void	debug_printValueD(volatile int32_t binary) {
+void    debug_printValueD(volatile int32_t binary) {
 
-	debug_cnvtValInt32ToDecAscii(vString, (int32_t *)&binary);
-	cmns_send(0, "Value    "); cmns_send(0, vString); cmns_send(0, "\n");
+    debug_cnvtValInt32ToDecAscii(vString, (int32_t *)&binary);
+    cmns_send(0, "Value    "); cmns_send(0, vString); cmns_send(0, "\n");
 }
 
 /*
@@ -161,16 +162,16 @@ void	debug_printValueD(volatile int32_t binary) {
  * - Conversion from a int32_t value to a hexadecimal ASCII buffer
  *
  */
-static	void	local_cnvtInt32HASCII(int32_t binary, char_t *ascii, uint8_t nbDigits) {
-					uint8_t		i, number;
-	static	const	char_t		tabHX[] = { '0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F' };
+static  void    local_cnvtInt32HASCII(int32_t binary, char_t *ascii, uint8_t nbDigits) {
+                    uint8_t     i, number;
+    static  const   char_t      tabHX[] = { '0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F' };
 
-	for (i = 0; i < nbDigits; i++) {
-		number = (uint8_t)binary & 0xF;
-		binary >>= 4;
-		ascii[nbDigits - 1 - i] = tabHX[number];
-	}
-	ascii[nbDigits] = '\0';
+    for (i = 0; i < nbDigits; i++) {
+        number = (uint8_t)binary & 0xF;
+        binary >>= 4;
+        ascii[nbDigits - 1 - i] = tabHX[number];
+    }
+    ascii[nbDigits] = '\0';
 }
 
 /*
@@ -179,46 +180,46 @@ static	void	local_cnvtInt32HASCII(int32_t binary, char_t *ascii, uint8_t nbDigit
  * - Conversion from a int32_t value to a decimal ASCII buffer
  *
  */
-static	void	local_cnvtInt32DASCII(int32_t binary, char_t *ascii) {
-					uint8_t		i, digit;
-					bool		zero = true;
-					int32_t		wkBinary = binary;
-					char_t		*wkAscii = ascii;
-	static	const	int32_t		tabDF[] = {
-									1000000000,
-									100000000,
-									10000000,
-									1000000,
-									100000,
-									10000,
-									1000,
-									100,
-									10,
-									1
-								};
+static  void    local_cnvtInt32DASCII(int32_t binary, char_t *ascii) {
+                    uint8_t     i, digit;
+                    bool        zero = true;
+                    int32_t     wkBinary = binary;
+                    char_t      *wkAscii = ascii;
+    static  const   int32_t     tabDF[] = {
+                                    1000000000,
+                                    100000000,
+                                    10000000,
+                                    1000000,
+                                    100000,
+                                    10000,
+                                    1000,
+                                    100,
+                                    10,
+                                    1
+                                };
 
 // Process only positive numbers of max. 10 digits
 
-	for (i = 0; i < 10; i++) {
-		digit = 0;
-		do {
-			digit++;
-			wkBinary -= tabDF[i];
-		} while (wkBinary >= 0);
-		digit--;
-		wkBinary += tabDF[i];
+    for (i = 0; i < 10; i++) {
+        digit = 0;
+        do {
+            digit++;
+            wkBinary -= tabDF[i];
+        } while (wkBinary >= 0);
+        digit--;
+        wkBinary += tabDF[i];
 
-		if (digit != 0) {
-			zero = false;
-		}
-		if (zero == false) {
-			*wkAscii = (char_t)digit + '0';
-			wkAscii++;
-		}
-	}
-	if (zero == true) {
-		*wkAscii = '0';
-		wkAscii++;
-	}
-	*wkAscii = '\0';
+        if (digit != 0) {
+            zero = false;
+        }
+        if (zero == false) {
+            *wkAscii = (char_t)digit + '0';
+            wkAscii++;
+        }
+    }
+    if (zero == true) {
+        *wkAscii = '0';
+        wkAscii++;
+    }
+    *wkAscii = '\0';
 }

@@ -3,24 +3,25 @@
 ; ===============
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Kern - Software timers.
+; Project:  uKOS-X
+; Goal:     Kern - Software timers.
 ;
-;			This module implements the software primitives.
+;           This module implements the software primitives.
 ;
-;			Software timer system calls
-;			---------------------------
+;           Software timer system calls
+;           ---------------------------
 ;
-;			void	softwareTimers_init(void);
-;			int32_t	kern_createSoftwareTimer(const char_t *identifier, stim_t **handle);
-;			int32_t	kern_setSoftwareTimer(stim_t *handle, const tspc_t *configure);
-;			int32_t	kern_killSoftwareTimer(stim_t *handle);
-;			int32_t	kern_getSoftwareTimerById(const char_t *identifier, stim_t **handle);
+;           void    softwareTimers_init(void);
+;           int32_t kern_createSoftwareTimer(const char_t *identifier, stim_t **handle);
+;           int32_t kern_setSoftwareTimer(stim_t *handle, const tspc_t *configure);
+;           int32_t kern_killSoftwareTimer(stim_t *handle);
+;           int32_t kern_getSoftwareTimerById(const char_t *identifier, stim_t **handle);
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -57,7 +58,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 #if (KKERN_NB_SOFTWARE_TIMERS > 0)
 
@@ -76,36 +77,36 @@
  * @{
  */
 
-#define	KMBOX_SOFTWARE_TIMER	"Mbox_software_timer"			// Id of the mbox used by the software timer daemon
+#define KMBOX_SOFTWARE_TIMER    "Mbox_software_timer"           // Id of the mbox used by the software timer daemon
 
 // Structure of the software timer specification
 // ---------------------------------------------
 
-typedef	struct	tspc		tspc_t;
+typedef struct  tspc        tspc_t;
 
-struct	tspc {
-			uint8_t		oMode;									// Mode
-			uint32_t	oInitialTime;							// Initial time
-			uint32_t	oTime;									// Continuous time
-	const	void		*oArgument;								// Ptr on the software timer argument
-			void		(*oCode)(const void *argument);			// Ptr on the code
+struct  tspc {
+            uint8_t     oMode;                                  // Mode
+            uint32_t    oInitialTime;                           // Initial time
+            uint32_t    oTime;                                  // Continuous time
+    const   void        *oArgument;                             // Ptr on the software timer argument
+            void        (*oCode)(const void *argument);         // Ptr on the code
 };
 
 // Mode (oMode)
 
 enum {
-			KSTIM_STOP = 0u,									// Stop the execution of the timer
-			KSTIM_SINGLE_SHOT,									// Single shot software timer (with start)
-			KSTIM_CONTINUOUS,									// Continuous software timer (with start)
+            KSTIM_STOP = 0u,                                    // Stop the execution of the timer
+            KSTIM_SINGLE_SHOT,                                  // Single shot software timer (with start)
+            KSTIM_CONTINUOUS,                                   // Continuous software timer (with start)
 };
 
 // Prototypes
 
 #if (defined(__cplusplus))
-extern	"C" {
+extern  "C" {
 #endif
 
-extern	void	softwareTimers_init(void);
+extern  void    softwareTimers_init(void);
 
 /*!
  * \brief Create a software timer
@@ -120,14 +121,14 @@ extern	void	softwareTimers_init(void);
  *    status = kern_createSoftwareTimer(identifier, &softwareTimer);
  * \endcode
  *
- * \param[in]	*identifier		Ptr on the software timer identifier (nullptr = anonymous)
- * \param[out]	**handle		Ptr on the handle
- * \return		KERR_KERN_NOERR	OK
- * \return		KERR_KERN_STFUL	No more software timer
- * \return		KERR_KERN_IDSTI	The software timer identifier is already used
+ * \param[in]   *identifier     Ptr on the software timer identifier (nullptr = anonymous)
+ * \param[out]  **handle        Ptr on the handle
+ * \return      KERR_KERN_NOERR OK
+ * \return      KERR_KERN_STFUL No more software timer
+ * \return      KERR_KERN_IDSTI The software timer identifier is already used
  *
  */
-extern	int32_t	kern_createSoftwareTimer(const char_t *identifier, stim_t **handle);
+extern  int32_t kern_createSoftwareTimer(const char_t *identifier, stim_t **handle);
 
 /*!
  * \brief Set a software timer
@@ -157,14 +158,14 @@ extern	int32_t	kern_createSoftwareTimer(const char_t *identifier, stim_t **handl
  *    }
  * \endcode
  *
- * \param[in]	*handle			Ptr on the handle
- * \param[in]	*configure		Ptr on the configuration buffer
- * \return		KERR_KERN_NOERR	OK
- * \return		KERR_KERN_NOSTI	The software timer does not exist
- * \return		KERR_KERN_CFSTI	The software timer cannot be configured
+ * \param[in]   *handle         Ptr on the handle
+ * \param[in]   *configure      Ptr on the configuration buffer
+ * \return      KERR_KERN_NOERR OK
+ * \return      KERR_KERN_NOSTI The software timer does not exist
+ * \return      KERR_KERN_CFSTI The software timer cannot be configured
  *
  */
-extern	int32_t	kern_setSoftwareTimer(stim_t *handle, const tspc_t *configure);
+extern  int32_t kern_setSoftwareTimer(stim_t *handle, const tspc_t *configure);
 
 /*!
  * \brief Kill the software timer
@@ -178,12 +179,12 @@ extern	int32_t	kern_setSoftwareTimer(stim_t *handle, const tspc_t *configure);
  *    status = kern_killSoftwareTimer(softwareTimer);
  * \endcode
  *
- * \param[in]	*handle			Ptr on the handle
- * \return		KERR_KERN_NOERR	OK
- * \return		KERR_KERN_NOSTI	The software timer does not exist
+ * \param[in]   *handle         Ptr on the handle
+ * \return      KERR_KERN_NOERR OK
+ * \return      KERR_KERN_NOSTI The software timer does not exist
  *
  */
-extern	int32_t	kern_killSoftwareTimer(stim_t *handle);
+extern  int32_t kern_killSoftwareTimer(stim_t *handle);
 
 /*!
  * \brief Get the handle of a software timer by its identifier
@@ -200,13 +201,13 @@ extern	int32_t	kern_killSoftwareTimer(stim_t *handle);
  *
  * - This function returns the handle of the software timer
  *
- * \param[in]	*identifier		Ptr on the software timer identifier
- * \param[out]	**handle		Ptr on the handle
- * \return		KERR_KERN_NOERR	OK
- * \return		KERR_KERN_NOSTI	The software timer does not exist
+ * \param[in]   *identifier     Ptr on the software timer identifier
+ * \param[out]  **handle        Ptr on the handle
+ * \return      KERR_KERN_NOERR OK
+ * \return      KERR_KERN_NOSTI The software timer does not exist
  *
  */
-extern	int32_t	kern_getSoftwareTimerById(const char_t *identifier, stim_t **handle);
+extern  int32_t kern_getSoftwareTimerById(const char_t *identifier, stim_t **handle);
 
 #if (defined(__cplusplus))
 }

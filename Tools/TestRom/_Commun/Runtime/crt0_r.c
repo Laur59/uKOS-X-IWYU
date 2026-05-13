@@ -3,33 +3,34 @@
 ; =======
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		crt0 for the uKOS-X system.
-;			Privileged only support
+; Project:  uKOS-X
+; Goal:     crt0 for the uKOS-X system.
+;           Privileged only support
 ;
 ;                       CODE
-; linker_stTEXT			+-----------------+
-;						|                 |
-;						| .text           |
-; linker_enTEXT			|                 |
-; linker_stRODATA		+-----------------+
-;						|                 |
-;						| .rodata         |
-; linker_enRODATA		|                 |
-; linker_stDATA			+-----------------+
-;						|                 |
-;						| .data           |
-; linker_enDATA			|                 |
-; linker_stBSS			+-----------------+
-;						|                 |
-;						| .bss            |
-; linker_enBSS			|                 |
-; _end					+-----------------+
+; linker_stTEXT         +-----------------+
+;                       |                 |
+;                       | .text           |
+; linker_enTEXT         |                 |
+; linker_stRODATA       +-----------------+
+;                       |                 |
+;                       | .rodata         |
+; linker_enRODATA       |                 |
+; linker_stDATA         +-----------------+
+;                       |                 |
+;                       | .data           |
+; linker_enDATA         |                 |
+; linker_stBSS          +-----------------+
+;                       |                 |
+;                       | .bss            |
+; linker_enBSS          |                 |
+; _end                  +-----------------+
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -66,20 +67,20 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
-#include	"linker.h"
-#include	<string.h>
+#include    "tests.h"
+#include    "linker.h"
+#include    <string.h>
 
 // Runtime specific
 // ================
 
-uint32_t	vCrt0_randomSeed;
+uint32_t    vCrt0_randomSeed;
 
 // Prototypes
 
-extern	void		init_init(void);
-extern	void		exce_init(void);
-extern	int			main(int argc, const char_t *argv[]);
+extern  void        init_init(void);
+extern  void        exce_init(void);
+extern  int         main(int argc, const char_t *argv[]);
 
 /*
  * \brief crt0
@@ -89,9 +90,9 @@ extern	int			main(int argc, const char_t *argv[]);
  * - Call the main
  *
  */
-void	crt0(void) {
-	uint32_t	*regionSeed, seed;
-	intptr_t	nbWords;
+void    crt0(void) {
+    uint32_t    *regionSeed, seed;
+    intptr_t    nbWords;
 
 // Before to initialise the system RAM, we use its random content
 // @ the power-on for generating a random seed usable for the software
@@ -99,35 +100,35 @@ void	crt0(void) {
 //
 // seed = seed[k - 1] + memory[k]
 
-	regionSeed = (uint32_t *)linker_stPrgmData;
-	nbWords    = (intptr_t)(((uintptr_t)linker_lnPrgmData) / 4);
-	seed       = 0u;
-	while (nbWords-- > 0u) {
-		seed += *regionSeed;
-		regionSeed++;
-	}
+    regionSeed = (uint32_t *)linker_stPrgmData;
+    nbWords    = (intptr_t)(((uintptr_t)linker_lnPrgmData) / 4);
+    seed       = 0u;
+    while (nbWords-- > 0u) {
+        seed += *regionSeed;
+        regionSeed++;
+    }
 
 // Initialise the BSS region
 
-	memset(linker_stBSS, 0x00u, (size_t)((uintptr_t)linker_enBSS - (uintptr_t)linker_stBSS));
+    memset(linker_stBSS, 0x00u, (size_t)((uintptr_t)linker_enBSS - (uintptr_t)linker_stBSS));
 
 // Initialise the LOW level (!!! No static variables !!!)
 
-	init_init();
+    init_init();
 
-	#if (defined(CONFIG_MAN_SERIAL_S))
-	cmns_init();
-	#endif
+    #if (defined(CONFIG_MAN_SERIAL_S))
+    cmns_init();
+    #endif
 
 // Initialise the Heap regions
 
-	memset(linker_stHeap, 0x00u, (size_t)linker_lnHeap);
+    memset(linker_stHeap, 0x00u, (size_t)linker_lnHeap);
 
-	vCrt0_randomSeed = seed;
+    vCrt0_randomSeed = seed;
 
 // Initialise the interruption and exception vectors
 // Go to the main
 
-	exce_init();
-	main(0u, nullptr);
+    exce_init();
+    main(0u, nullptr);
 }

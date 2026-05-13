@@ -3,22 +3,23 @@
 ; ======
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Kern - Debug list management.
+; Project:  uKOS-X
+; Goal:     Kern - Debug list management.
 ;
-;			This module implements the debug list primitives.
+;           This module implements the debug list primitives.
 ;
-; 			Software debug system calls
-; 			---------------------------
+;           Software debug system calls
+;           ---------------------------
 ;
-;			void	debug_init(void);
-;			int32_t	kern_stopProcess(proc_t *handle);
-;			int32_t	kern_reactivateProcess(proc_t *handle);
+;           void    debug_init(void);
+;           int32_t kern_stopProcess(proc_t *handle);
+;           int32_t kern_reactivateProcess(proc_t *handle);
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -55,7 +56,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 #if (KKERN_WITH_DEBUG_S == true)
 
@@ -77,10 +78,10 @@
 // Prototypes
 
 #if (defined(__cplusplus))
-extern	"C" {
+extern  "C" {
 #endif
 
-extern	void	debug_init(void);
+extern  void    debug_init(void);
 
 /*!
  * \brief Stop a process
@@ -94,14 +95,14 @@ extern	void	debug_init(void);
  *    status = kern_stopProcess(process);
  * \endcode
  *
- * \param[in]	*handle			Ptr on the handle
- * \return		KERR_KERN_NOERR	OK
- * \return		KERR_KERN_NOPRO	The process does not exist
- * \return		KERR_KERN_DBGER	The process is already in the debug list
- * \return		KERR_KERN_DBNOS	The process is attached to a sensitive list and cannot be stopped
+ * \param[in]   *handle         Ptr on the handle
+ * \return      KERR_KERN_NOERR OK
+ * \return      KERR_KERN_NOPRO The process does not exist
+ * \return      KERR_KERN_DBGER The process is already in the debug list
+ * \return      KERR_KERN_DBNOS The process is attached to a sensitive list and cannot be stopped
  *
  */
-extern	int32_t	kern_stopProcess(proc_t *handle);
+extern  int32_t kern_stopProcess(proc_t *handle);
 
 /*!
  * \brief Reactivate a process
@@ -115,13 +116,13 @@ extern	int32_t	kern_stopProcess(proc_t *handle);
  *    status = kern_reactivateProcess(process);
  * \endcode
  *
- * \param[in]	*handle			Ptr on the handle
- * \return		KERR_KERN_NOERR	OK
- * \return		KERR_KERN_NOPRO	The process does not exist
- * \return		KERR_KERN_DBGER	The process is not in the debug list
+ * \param[in]   *handle         Ptr on the handle
+ * \return      KERR_KERN_NOERR OK
+ * \return      KERR_KERN_NOPRO The process does not exist
+ * \return      KERR_KERN_DBGER The process is not in the debug list
  *
  */
-extern	int32_t	kern_reactivateProcess(proc_t *handle);
+extern  int32_t kern_reactivateProcess(proc_t *handle);
 
 #if (defined(__cplusplus))
 }

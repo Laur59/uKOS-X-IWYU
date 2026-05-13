@@ -3,13 +3,14 @@
 ; =====
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		K210 equates.
+; Project:  uKOS-X
+; Goal:     K210 equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,25 +47,23 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 // IWYU pragma: begin_exports
 
-#include	<stdint.h>
-
-#include	"Registers/soc_vectors.h"
-#include	"Registers/K210_fpioa.h"
-#include	"Registers/K210_gpio.h"
-#include	"Registers/K210_gpiohs.h"
-#include	"Registers/K210_spi.h"
-#include	"Registers/K210_uart.h"
-#include	"Registers/K210_timer.h"
-#include	"Registers/K210_sysctl.h"
-#include	"Registers/K210_clint.h"
-#include	"Registers/K210_plic.h"
-#include	"Registers/K210_dvp.h"
-#include	"Registers/K210_dmac.h"
-#include	"Registers/K210_rtc.h"
-#include	"Registers/soc_addendum.h"
+#include    "Registers/soc_vectors.h"
+#include    "Registers/K210_fpioa.h"
+#include    "Registers/K210_gpio.h"
+#include    "Registers/K210_gpiohs.h"
+#include    "Registers/K210_spi.h"
+#include    "Registers/K210_uart.h"
+#include    "Registers/K210_timer.h"
+#include    "Registers/K210_sysctl.h"
+#include    "Registers/K210_clint.h"
+#include    "Registers/K210_plic.h"
+#include    "Registers/K210_dvp.h"
+#include    "Registers/K210_dmac.h"
+#include    "Registers/K210_rtc.h"
+#include    "Registers/soc_addendum.h"
 
 // IWYU pragma: end_exports

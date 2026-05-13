@@ -3,13 +3,14 @@
 ; =========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test of the TIM0_0 in single shot (timeout tasks).
+; Project:  uKOS-X
+; Goal:     Test of the TIM0_0 in single shot (timeout tasks).
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,14 +47,14 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
+#include    "tests.h"
 
 #if (defined(TEST_19_S))
-#define	KTTIMESAMPLING	2000000000					// 2000-ms -> 2'000'000'000-ns
+#define KTTIMESAMPLING  2000000000                  // 2000-ms -> 2'000'000'000-ns
 
 // Prototypes
 
-static	void	local_TIM0_0_IRQHandler(uint32_t core, uint64_t parameter);
+static  void    local_TIM0_0_IRQHandler(uint32_t core, uint64_t parameter);
 
 /*
  * \brief test_19
@@ -61,55 +62,55 @@ static	void	local_TIM0_0_IRQHandler(uint32_t core, uint64_t parameter);
  * - Test of the TIM0_0 in single shot (timeout tasks)
  *
  */
-void	test_19(void) {
-	float64_t	step;
-	uint32_t	core, current;
+void    test_19(void) {
+    float64_t   step;
+    uint32_t    core, current;
 
-	INTERRUPTION_SET;
-	INTERRUPTION_ON_HARD;
+    INTERRUPTION_SET;
+    INTERRUPTION_ON_HARD;
 
-	cmns_init();
+    cmns_init();
 
 // Turn on the TIM0
 
-	sysctl->clk_en_peri.timer0_clk_en = 1;
+    sysctl->clk_en_peri.timer0_clk_en = 1;
 
 // Set the priority
 // Get current enable bit array by IRQ number
 // Set enable bit in enable bit array
 // Write back the enable bit array
 
-	core = GET_RUNNING_CORE;
-	EXT_INTERRUPT_VECTOR(EINT_TIMER0A_INTERRUPT, local_TIM0_0_IRQHandler);
+    core = GET_RUNNING_CORE;
+    EXT_INTERRUPT_VECTOR(EINT_TIMER0A_INTERRUPT, local_TIM0_0_IRQHandler);
 
-	plic->source_priorities.priority[EINT_TIMER0A_INTERRUPT] = KINT_LEVEL_ALL;
-	current = plic->target_enables.target[core].enable[EINT_TIMER0A_INTERRUPT / 32];
-	current |= (uint32_t)(1u<<(EINT_TIMER0A_INTERRUPT % 32));
-	plic->target_enables.target[core].enable[EINT_TIMER0A_INTERRUPT / 32] = current;
+    plic->source_priorities.priority[EINT_TIMER0A_INTERRUPT] = KINT_LEVEL_ALL;
+    current = plic->target_enables.target[core].enable[EINT_TIMER0A_INTERRUPT / 32];
+    current |= (uint32_t)(1u<<(EINT_TIMER0A_INTERRUPT % 32));
+    plic->target_enables.target[core].enable[EINT_TIMER0A_INTERRUPT / 32] = current;
 
 // Initialise the TIM0_0 to generate interruptions every 2-s
 
-	step = 1e9 / KFREQUENCY_TIM;
-	timer0->channel[0].load_count = (uint32_t)(KTTIMESAMPLING / step);
-	timer0->channel[0].control &= ~TIMER_CR_INTERRUPT_MASK;
-	timer0->channel[0].control |=  TIMER_CR_USER_MODE;
+    step = 1e9 / KFREQUENCY_TIM;
+    timer0->channel[0].load_count = (uint32_t)(KTTIMESAMPLING / step);
+    timer0->channel[0].control &= ~TIMER_CR_INTERRUPT_MASK;
+    timer0->channel[0].control |=  TIMER_CR_USER_MODE;
 
 // Waiting for the TIM0_0 end of interval
 
-	while (true) {
-		LED_RED_OFF;
-		LED_GREEN_OFF;
-		cmns_wait(10000000);
+    while (true) {
+        LED_RED_OFF;
+        LED_GREEN_OFF;
+        cmns_wait(10000000);
 
-		cmns_send(KURT0, "Start\n");
-		LED_RED_ON;
+        cmns_send(KURT0, "Start\n");
+        LED_RED_ON;
 
-		timer0->channel[0].load_count = (uint32_t)(KTTIMESAMPLING / step);
-		timer0->channel[0].control &= ~TIMER_CR_INTERRUPT_MASK;
-		timer0->channel[0].control |=  TIMER_CR_ENABLE;
+        timer0->channel[0].load_count = (uint32_t)(KTTIMESAMPLING / step);
+        timer0->channel[0].control &= ~TIMER_CR_INTERRUPT_MASK;
+        timer0->channel[0].control |=  TIMER_CR_ENABLE;
 
-		cmns_wait(10000000);
-	}
+        cmns_wait(10000000);
+    }
 }
 
 /*
@@ -118,16 +119,16 @@ void	test_19(void) {
  * - Blink the Red 1 Led
  *
  */
-static	void	local_TIM0_0_IRQHandler(uint32_t core, uint64_t parameter) {
+static  void    local_TIM0_0_IRQHandler(uint32_t core, uint64_t parameter) {
 
 // Acknowledge the TIM0_0 interruption
 // Acknowledge the PLIC claim complete
 
-	timer0->channel[0].eoi;
-	plic->targets.target[core].claim_complete = (uint32_t)parameter;
-	timer0->channel[0].control &= ~TIMER_CR_ENABLE;
+    timer0->channel[0].eoi;
+    plic->targets.target[core].claim_complete = (uint32_t)parameter;
+    timer0->channel[0].control &= ~TIMER_CR_ENABLE;
 
-	cmns_send(KURT0, "Stop\n");
-	LED_GREEN_ON;
+    cmns_send(KURT0, "Stop\n");
+    LED_GREEN_ON;
 }
 #endif

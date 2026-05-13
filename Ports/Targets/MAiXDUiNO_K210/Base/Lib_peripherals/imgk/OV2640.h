@@ -3,13 +3,14 @@
 ; =======
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Omni vision OV2640 imager equates.
+; Project:  uKOS-X
+; Goal:     Omni vision OV2640 imager equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,22 +47,22 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 // Aptina initialisation table
 
-typedef	struct	ov2640	ov2640_t;
+typedef struct  ov2640  ov2640_t;
 
 struct ov2640 {
-			uint8_t		oRegNumber;										// Register number
-			uint8_t		oValue;											// Value
+            uint8_t     oRegNumber;                                     // Register number
+            uint8_t     oValue;                                         // Value
 };
 
 // Max image size
 
-#define	KNBROWS					480u									// Max 480 rows
-#define	KNBCOLS					640u									// Max 640 cols
+#define KNBROWS                 480u                                    // Max 480 rows
+#define KNBCOLS                 640u                                    // Max 640 cols
 
 // I2c interface
 
-#define	KOV2640A				0x60u									// I2C Omni vision address
+#define KOV2640A                0x60u                                   // I2C Omni vision address

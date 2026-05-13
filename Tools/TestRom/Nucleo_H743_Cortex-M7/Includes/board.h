@@ -3,13 +3,14 @@
 ; ======
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Board mapping.
+; Project:  uKOS-X
+; Goal:     Board mapping.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,35 +47,35 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 // System identifiers
 // ------------------
 
-#define	KCPU				"ARM-Cortex m7 H"
-#define	KCONTROLLER			"STM32H743"
-#define	KBOARD				"Nucleo 743 (Variant_V)"
-#define	KTARGET				"Nucleo_743"
+#define KCPU                "ARM-Cortex m7 H"
+#define KCONTROLLER         "STM32H743"
+#define KBOARD              "Nucleo 743 (Variant_V)"
+#define KTARGET             "Nucleo_743"
 
 // GPIO settings
 // -------------
 
-#define	LED_RED_ON			(GPIOB->ODR |=			  (1u<<BLED_2))		//
-#define	LED_RED_OFF			(GPIOB->ODR &= (uint32_t)~(1u<<BLED_2))		//
-#define	LED_RED_TOGGLE		(GPIOB->ODR ^=			  (1u<<BLED_2))		//
-#define	LED_YELLOW_ON		(GPIOE->ODR |=			  (1u<<BLED_1))		//
-#define	LED_YELLOW_OFF		(GPIOE->ODR &= (uint32_t)~(1u<<BLED_1))		//
-#define	LED_YELLOW_TOGGLE	(GPIOE->ODR ^=			  (1u<<BLED_1))		//
-#define	LED_GREEN_ON		(GPIOB->ODR |=			  (1u<<BLED_0))		//
-#define	LED_GREEN_OFF		(GPIOB->ODR &= (uint32_t)~(1u<<BLED_0))		//
-#define	LED_GREEN_TOGGLE	(GPIOB->ODR ^=			  (1u<<BLED_0))		// Led macros
+#define LED_RED_ON          (GPIOB->ODR |=            (1u<<BLED_2))     //
+#define LED_RED_OFF         (GPIOB->ODR &= (uint32_t)~(1u<<BLED_2))     //
+#define LED_RED_TOGGLE      (GPIOB->ODR ^=            (1u<<BLED_2))     //
+#define LED_YELLOW_ON       (GPIOE->ODR |=            (1u<<BLED_1))     //
+#define LED_YELLOW_OFF      (GPIOE->ODR &= (uint32_t)~(1u<<BLED_1))     //
+#define LED_YELLOW_TOGGLE   (GPIOE->ODR ^=            (1u<<BLED_1))     //
+#define LED_GREEN_ON        (GPIOB->ODR |=            (1u<<BLED_0))     //
+#define LED_GREEN_OFF       (GPIOB->ODR &= (uint32_t)~(1u<<BLED_0))     //
+#define LED_GREEN_TOGGLE    (GPIOB->ODR ^=            (1u<<BLED_0))     // Led macros
 
-#define KNB_LED				3u											// Number of LEDs
+#define KNB_LED             3u                                          // Number of LEDs
 
 // PORTs
 
-#define	BLED_0				0u											// PORT B 0, LED
-#define	BLED_1				1u											// PORT E 1, LED
-#define	BLED_2				14u											// PORT B 14, LED
+#define BLED_0              0u                                          // PORT B 0, LED
+#define BLED_1              1u                                          // PORT E 1, LED
+#define BLED_2              14u                                         // PORT B 14, LED
 
-#define	BSW_0				13u											// PORT C 13, SW1
+#define BSW_0               13u                                         // PORT C 13, SW1

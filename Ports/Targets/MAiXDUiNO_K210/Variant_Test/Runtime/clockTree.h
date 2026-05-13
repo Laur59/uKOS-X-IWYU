@@ -3,13 +3,14 @@
 ; ==========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Clock tree definitions.
+; Project:  uKOS-X
+; Goal:     Clock tree definitions.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,26 +47,26 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 // Main system clocks
 // ------------------
 
-#define KCRYSTAL			26000000u									// Quartz crystal resonator
-#define KFREQUENCY_PLL0		299000000u									// AHB bus frequency of 299-MHz
-#define KFREQUENCY_PLL1		299000000u									// AHB bus frequency of 299-MHz
-#define KFREQUENCY_PLL2		403000000u									// AHB bus frequency of 403-MHz
-#define KFREQUENCY_AHB		403000000u									// AHB bus frequency of 403-MHz
-#define KFREQUENCY_APB0		201500000u									// APB1 bus frequency of 201-MHz
-#define KFREQUENCY_APB1		201500000u									// APB1 bus frequency of 201-MHz
-#define KFREQUENCY_APB2		201500000u									// APB2 bus frequency of 201-MHz
-#define KFREQUENCY_TIM		403000000u									// Timer clock 403-MHz
-#define KFREQUENCY_UART		201500000u									// Uart clock 201-MHz
-#define KFREQUENCY_SPI0		403000000u									// Spi0 clock 403-MHz
-#define KFREQUENCY_SPI1		403000000u									// Spi1 clock 403-MHz
-#define KFREQUENCY_SPI2		403000000u									// Spi2 clock 403-MHz
-#define KFREQUENCY_SPI3		100750000u									// Spi3 clock 100-MHz
-#define KFREQUENCY_1GHz		1000000000u									// Frequency of 1-GHz
-#define KFREQUENCY_1MHz		1000000u									// Frequency of 1-MHz
-#define KFREQUENCY_1KHz		1000u										// Frequency of 1-KHz
-#define KFREQUENCY_CORE		KFREQUENCY_AHB								// CORE frequency
+#define KCRYSTAL            26000000u                                   // Quartz crystal resonator
+#define KFREQUENCY_PLL0     299000000u                                  // AHB bus frequency of 299-MHz
+#define KFREQUENCY_PLL1     299000000u                                  // AHB bus frequency of 299-MHz
+#define KFREQUENCY_PLL2     403000000u                                  // AHB bus frequency of 403-MHz
+#define KFREQUENCY_AHB      403000000u                                  // AHB bus frequency of 403-MHz
+#define KFREQUENCY_APB0     201500000u                                  // APB1 bus frequency of 201-MHz
+#define KFREQUENCY_APB1     201500000u                                  // APB1 bus frequency of 201-MHz
+#define KFREQUENCY_APB2     201500000u                                  // APB2 bus frequency of 201-MHz
+#define KFREQUENCY_TIM      403000000u                                  // Timer clock 403-MHz
+#define KFREQUENCY_UART     201500000u                                  // Uart clock 201-MHz
+#define KFREQUENCY_SPI0     403000000u                                  // Spi0 clock 403-MHz
+#define KFREQUENCY_SPI1     403000000u                                  // Spi1 clock 403-MHz
+#define KFREQUENCY_SPI2     403000000u                                  // Spi2 clock 403-MHz
+#define KFREQUENCY_SPI3     100750000u                                  // Spi3 clock 100-MHz
+#define KFREQUENCY_1GHz     1000000000u                                 // Frequency of 1-GHz
+#define KFREQUENCY_1MHz     1000000u                                    // Frequency of 1-MHz
+#define KFREQUENCY_1KHz     1000u                                       // Frequency of 1-KHz
+#define KFREQUENCY_CORE     KFREQUENCY_AHB                              // CORE frequency

@@ -3,13 +3,14 @@
 ; =========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		stub for the "led" manager module.
+; Project:  uKOS-X
+; Goal:     stub for the "led" manager module.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,9 +47,9 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include    "uKOS.h"
 
-static	bool	vMute;
+static  bool    vMute;
 
 /*
  * \brief stub_led_init
@@ -57,14 +58,14 @@ static	bool	vMute;
  *   - The LEDs state
  *
  */
-int32_t	stub_led_init(void) {
+int32_t stub_led_init(void) {
 
-	INTERRUPTION_OFF;
-	vMute = false;
+    INTERRUPTION_OFF;
+    vMute = false;
 
-	REG(GPIOE)->ODR &= ~(1u<<BLED_0);
-	REG(GPIOE)->ODR &= ~(1u<<BLED_1);
-	RETURN_INT_RESTORE(KERR_LED_NOERR);
+    REG(GPIOE)->ODR &= ~(1u<<BLED_0);
+    REG(GPIOE)->ODR &= ~(1u<<BLED_1);
+    RETURN_INT_RESTORE(KERR_LED_NOERR);
 }
 
 /*
@@ -73,17 +74,17 @@ int32_t	stub_led_init(void) {
  * - Turn on a LED
  *
  */
-int32_t	stub_led_on(uint8_t ledNb) {
+int32_t stub_led_on(uint8_t ledNb) {
 
-	INTERRUPTION_OFF;
-	if (vMute == true) { RETURN_INT_RESTORE(KERR_LED_NOERR); }
-	switch (ledNb) {
-		case 0u:  { REG(GPIOE)->ODR |= (1u<<BLED_0);	break; }
-		case 1u:  { REG(GPIOE)->ODR |= (1u<<BLED_1);	break; }
-		default:  { RETURN_INT_RESTORE(KERR_LED_NODEV);	break; }
-	}
+    INTERRUPTION_OFF;
+    if (vMute == true) { RETURN_INT_RESTORE(KERR_LED_NOERR); }
+    switch (ledNb) {
+        case 0u:  { REG(GPIOE)->ODR |= (1u<<BLED_0);    break; }
+        case 1u:  { REG(GPIOE)->ODR |= (1u<<BLED_1);    break; }
+        default:  { RETURN_INT_RESTORE(KERR_LED_NODEV); break; }
+    }
 
-	RETURN_INT_RESTORE(KERR_LED_NOERR);
+    RETURN_INT_RESTORE(KERR_LED_NOERR);
 }
 
 /*
@@ -92,17 +93,17 @@ int32_t	stub_led_on(uint8_t ledNb) {
  * - Turn off a LED
  *
  */
-int32_t	stub_led_off(uint8_t ledNb) {
+int32_t stub_led_off(uint8_t ledNb) {
 
-	INTERRUPTION_OFF;
-	if (vMute == true) { RETURN_INT_RESTORE(KERR_LED_NOERR); }
-	switch (ledNb) {
-		case 0u:  { REG(GPIOE)->ODR &= ~(1u<<BLED_0);	break; }
-		case 1u:  { REG(GPIOE)->ODR &= ~(1u<<BLED_1);   break; }
-		default:  { RETURN_INT_RESTORE(KERR_LED_NODEV); break; }
-	}
+    INTERRUPTION_OFF;
+    if (vMute == true) { RETURN_INT_RESTORE(KERR_LED_NOERR); }
+    switch (ledNb) {
+        case 0u:  { REG(GPIOE)->ODR &= ~(1u<<BLED_0);   break; }
+        case 1u:  { REG(GPIOE)->ODR &= ~(1u<<BLED_1);   break; }
+        default:  { RETURN_INT_RESTORE(KERR_LED_NODEV); break; }
+    }
 
-	RETURN_INT_RESTORE(KERR_LED_NOERR);
+    RETURN_INT_RESTORE(KERR_LED_NOERR);
 }
 
 /*
@@ -111,17 +112,17 @@ int32_t	stub_led_off(uint8_t ledNb) {
  * - Change the state of a LED
  *
  */
-int32_t	stub_led_toggle(uint8_t ledNb) {
+int32_t stub_led_toggle(uint8_t ledNb) {
 
-	INTERRUPTION_OFF;
-	if (vMute == true) { RETURN_INT_RESTORE(KERR_LED_NOERR); }
-	switch (ledNb) {
-		case 0u:  { REG(GPIOE)->ODR ^= (1u<<BLED_0);	break; }
-		case 1u:  { REG(GPIOE)->ODR ^= (1u<<BLED_1);	break; }
-		default:  { RETURN_INT_RESTORE(KERR_LED_NODEV); break; }
-	}
+    INTERRUPTION_OFF;
+    if (vMute == true) { RETURN_INT_RESTORE(KERR_LED_NOERR); }
+    switch (ledNb) {
+        case 0u:  { REG(GPIOE)->ODR ^= (1u<<BLED_0);    break; }
+        case 1u:  { REG(GPIOE)->ODR ^= (1u<<BLED_1);    break; }
+        default:  { RETURN_INT_RESTORE(KERR_LED_NODEV); break; }
+    }
 
-	RETURN_INT_RESTORE(KERR_LED_NOERR);
+    RETURN_INT_RESTORE(KERR_LED_NOERR);
 }
 
 /*
@@ -130,14 +131,14 @@ int32_t	stub_led_toggle(uint8_t ledNb) {
  * - Control (general) of the LEDs
  *
  */
-int32_t	stub_led_mute(bool mute) {
+int32_t stub_led_mute(bool mute) {
 
-	if (mute == false) { vMute = false; return (KERR_LED_NOERR); }
+    if (mute == false) { vMute = false; return (KERR_LED_NOERR); }
 
-	INTERRUPTION_OFF;
-	vMute = true;
+    INTERRUPTION_OFF;
+    vMute = true;
 
-	REG(GPIOE)->ODR &= ~(1u<<BLED_0);
-	REG(GPIOE)->ODR &= ~(1u<<BLED_1);
-	RETURN_INT_RESTORE(KERR_LED_NOERR);
+    REG(GPIOE)->ODR &= ~(1u<<BLED_0);
+    REG(GPIOE)->ODR &= ~(1u<<BLED_1);
+    RETURN_INT_RESTORE(KERR_LED_NOERR);
 }

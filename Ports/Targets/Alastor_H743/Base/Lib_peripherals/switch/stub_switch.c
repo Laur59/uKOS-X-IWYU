@@ -3,13 +3,14 @@
 ; ===========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		stub for the "switch" manager module.
+; Project:  uKOS-X
+; Goal:     stub for the "switch" manager module.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +47,7 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include    "uKOS.h"
 
 /*
  * \brief stub_switch_init
@@ -54,9 +55,9 @@
  * - Initialise some specific hardware parts
  *
  */
-int32_t	stub_switch_init(void) {
+int32_t stub_switch_init(void) {
 
-	return (KERR_SWITCH_NOERR);
+    return (KERR_SWITCH_NOERR);
 }
 
 /*
@@ -65,14 +66,14 @@ int32_t	stub_switch_init(void) {
  * - Read the jumper configuration
  *
  */
-int32_t	stub_switch_read(uint32_t *mode) {
-	uint32_t	switches = 0u;
+int32_t stub_switch_read(uint32_t *mode) {
+    uint32_t    switches = 0u;
 
-	INTERRUPTION_OFF;
-	switches |= ((GPIOC->IDR>>10u) & 0x01u);
-	switches |= ((GPIOC->IDR>>10u) & 0x02u);
-	switches |= ((GPIOC->IDR>>10u) & 0x04u);
-	switches |= ((GPIOC->IDR>>10u) & 0x08u);
-	*mode = (switches & 0x0Fu);
-	RETURN_INT_RESTORE(KERR_SWITCH_NOERR);
+    INTERRUPTION_OFF;
+    switches |= ((GPIOC->IDR>>10u) & 0x01u);
+    switches |= ((GPIOC->IDR>>10u) & 0x02u);
+    switches |= ((GPIOC->IDR>>10u) & 0x04u);
+    switches |= ((GPIOC->IDR>>10u) & 0x08u);
+    *mode = (switches & 0x0Fu);
+    RETURN_INT_RESTORE(KERR_SWITCH_NOERR);
 }

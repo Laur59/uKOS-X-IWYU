@@ -3,13 +3,14 @@
 ; ==========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Clock tree definitions.
+; Project:  uKOS-X
+; Goal:     Clock tree definitions.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,16 +47,16 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 // Main system clocks
 // ------------------
 
-#define KCRYSTAL			16000000u									// Quartz crystal resonator
-#define KFREQUENCY_AHB		120000000u									// AHB bus frequency of 120-MHz
-#define KFREQUENCY_APB2		60000000u									// APB2 periph bus frequency of 60-MHz
-#define KFREQUENCY_APB1		30000000u									// APB1 periph bus frequency of 30-MHz
-#define KFREQUENCY_1GHz		1000000000u									// Frequency of 1-GHz
-#define KFREQUENCY_1MHz		1000000u									// Frequency of 1-MHz
-#define KFREQUENCY_1KHz		1000u										// Frequency of 1-KHz
-#define KFREQUENCY_CORE		KFREQUENCY_AHB								// CORE frequency
+#define KCRYSTAL            16000000u                                   // Quartz crystal resonator
+#define KFREQUENCY_AHB      120000000u                                  // AHB bus frequency of 120-MHz
+#define KFREQUENCY_APB2     60000000u                                   // APB2 periph bus frequency of 60-MHz
+#define KFREQUENCY_APB1     30000000u                                   // APB1 periph bus frequency of 30-MHz
+#define KFREQUENCY_1GHz     1000000000u                                 // Frequency of 1-GHz
+#define KFREQUENCY_1MHz     1000000u                                    // Frequency of 1-MHz
+#define KFREQUENCY_1KHz     1000u                                       // Frequency of 1-KHz
+#define KFREQUENCY_CORE     KFREQUENCY_AHB                              // CORE frequency

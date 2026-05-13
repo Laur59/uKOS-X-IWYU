@@ -3,6 +3,7 @@
 ; =======
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
 ; Author:   Edo. Franzi     The 2025-01-01
@@ -92,7 +93,7 @@ static  void    local_getDevice(serialManager_t serialManager, serialManager_t *
  * \code{.c}
  * int32_t    status;
  *
- *    status = serial_reserve(KDEF0, KMODE_WRITE, 1234);
+ *    status = serial_reserve(KDEF0, KMODE_WRITE, 1234u);
  *    ....
  *    serial_xyz();
  *    ....
@@ -146,6 +147,10 @@ int32_t serial_reserve(serialManager_t serialManager, reserveMode_t reserveMode,
 
         #if (defined(CONFIG_MAN_WFI0_S))
         case KWFI0: { return (wfi0_reserve(reserveMode, timeout)); }
+        #endif
+
+        #if (defined(CONFIG_MAN_BLE0_S))
+        case KBLE0: { return (ble0_reserve(reserveMode, timeout)); }
         #endif
 
         default:    { return (KERR_SERIAL_NODEV);                  }
@@ -207,6 +212,10 @@ int32_t serial_release(serialManager_t serialManager, reserveMode_t reserveMode)
 
         #if (defined(CONFIG_MAN_WFI0_S))
         case KWFI0: { return (wfi0_release(reserveMode)); }
+        #endif
+
+        #if (defined(CONFIG_MAN_BLE0_S))
+        case KBLE0: { return (ble0_release(reserveMode)); }
         #endif
 
         default:    { return (KERR_SERIAL_NODEV);         }
@@ -277,6 +286,10 @@ int32_t serial_configure(serialManager_t serialManager, const void *configure) {
         case KWFI0: { return (wfi0_configure((const urtxCnf_t *)configure)); }
         #endif
 
+        #if (defined(CONFIG_MAN_BLE0_S))
+        case KBLE0: { return (ble0_configure((const urtxCnf_t *)configure)); }
+        #endif
+
         default:    { return (KERR_SERIAL_NODEV);                             }
     }
 }
@@ -298,7 +311,7 @@ int32_t serial_configure(serialManager_t serialManager, const void *configure) {
  * \code{.c}
  * #define    KSIZE    10
  *
- * uint8_t    buffer[KSIZE] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+ * uint8_t    buffer[KSIZE] = { 0u, 1u, 2u, 3u, 4u, 5u, 6u, 7u, 8u, 9u };
  * int32_t    status;
  *
  *    status = serial_write(KDEF0, buffer, KSIZE);
@@ -349,6 +362,10 @@ int32_t serial_write(serialManager_t serialManager, const uint8_t *buffer, uint3
 
         #if (defined(CONFIG_MAN_WFI0_S))
         case KWFI0: { return (wfi0_write(buffer, size)); }
+        #endif
+
+        #if (defined(CONFIG_MAN_BLE0_S))
+        case KBLE0: { return (ble0_write(buffer, size)); }
         #endif
 
         default:    { return (KERR_SERIAL_NODEV);        }
@@ -419,6 +436,10 @@ int32_t serial_read(serialManager_t serialManager, uint8_t *buffer, uint32_t *si
         case KWFI0: { return (wfi0_read(buffer, size)); }
         #endif
 
+        #if (defined(CONFIG_MAN_BLE0_S))
+        case KBLE0: { return (ble0_read(buffer, size)); }
+        #endif
+
         default:    { return (KERR_SERIAL_NODEV);       }
     }
 }
@@ -486,6 +507,10 @@ int32_t serial_getIdSemaphore(serialManager_t serialManager, uint8_t semaphore, 
         case KWFI0: { return (wfi0_getIdSemaphore(semaphore, identifier)); }
         #endif
 
+        #if (defined(CONFIG_MAN_BLE0_S))
+        case KBLE0: { return (ble0_getIdSemaphore(semaphore, identifier)); }
+        #endif
+
         default:    { return (KERR_SERIAL_NODEV);                          }
     }
 }
@@ -543,6 +568,10 @@ int32_t serial_flush(serialManager_t serialManager) {
 
         #if (defined(CONFIG_MAN_WFI0_S))
         case KWFI0: { return (wfi0_flush());      }
+        #endif
+
+        #if (defined(CONFIG_MAN_BLE0_S))
+        case KBLE0: { return (ble0_flush());      }
         #endif
 
         default:    { return (KERR_SERIAL_NODEV); }

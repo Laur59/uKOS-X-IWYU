@@ -52,13 +52,13 @@ source setup.sh
 
 # In the main.c
 #undef  KUART_0
-#undef	KWITHOUT_LOGS
+#undef  KWITHOUT_LOGS
 
 # Optional board control
 esp32 -reset
 esp32 -boot
 
-cd ${PATH_UKOS_X_PACKAGE}/Third_Parties/esp32/Construction/Interface/wifi_to_uart_client
+cd ${PATH_UKOS_X_PACKAGE}/Third_Parties/esp32/Construction/Interface/wifi_to_uart
 idf.py set-target esp32
 idf.py build
 idf.py -p /dev/cu.usbserial-uKOS_1 flash
@@ -77,14 +77,15 @@ source setup.sh
 
 # In the main.c
 #define KUART_0
-#define	KWITHOUT_LOGS
+#define KWITHOUT_LOGS
 
 # Push, and maintain, the boot button
 esp32 -reset
 # Push reset
+# Release the reset button
 # Release the boot button
 
-cd ${PATH_UKOS_X_PACKAGE}/Third_Parties/esp32/Construction/Interface/wifi_to_uart_client
+cd ${PATH_UKOS_X_PACKAGE}/Third_Parties/esp32/Construction/Interface/wifi_to_uart
 idf.py set-target esp32
 idf.py build
 idf.py -p /dev/cu.usbserial-00320000001 -b 115200 flash
@@ -189,5 +190,5 @@ Typical range:
   - UDP mode (lower latency)
 
   - TLS (secure TCP)
-  
+
   - Multi-client support

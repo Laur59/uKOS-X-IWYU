@@ -3,13 +3,14 @@
 ; ======
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Board mapping.
+; Project:  uKOS-X
+; Goal:     Board mapping.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,54 +47,54 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
-#include	"MT9V03x/MT9V03x.h"
+#include    "MT9V03x/MT9V03x.h"
 
 // System identifiers
 // ------------------
 
-#define	KCPU				"ARM-Cortex m7 H"
-#define	KCONTROLLER			"STM32H747"
-#define	KBOARD				"Asmodee H747 (Variant_Test_CM7)"
-#define	KTARGET				"Asmodee_H747"
+#define KCPU                "ARM-Cortex m7 H"
+#define KCONTROLLER         "STM32H747"
+#define KBOARD              "Asmodee H747 (Variant_Test_CM7)"
+#define KTARGET             "Asmodee_H747"
 
 // GPIO settings
 // -------------
 
-#define KNB_LED				(8u + 3u)							// Number of LEDs
+#define KNB_LED             (8u + 3u)                           // Number of LEDs
 
 // PORTs
 
-#define	BLED_0				9u									// PORT I 9, LED
-#define	BLED_1				10u									// PORT I 10, LED
-#define	BLED_2				13u									// PORT I 13, LED
-#define	BLED_3				14u									// PORT I 14, LED
-#define	BLED_4				15u									// PORT I 15, LED
-#define	BLED_5				13u									// PORT H 13, LED
-#define	BLED_6				6u									// PORT D 6, LED
-#define	BLED_7				2u									// PORT E 2, LED
-#define	BLED_RED			5u									// PORT K 5, LED Red
-#define	BLED_GREEN			6u									// PORT K 6, LED Green
-#define	BLED_BLUE			7u									// PORT K 7, LED Blue
+#define BLED_0              9u                                  // PORT I 9, LED
+#define BLED_1              10u                                 // PORT I 10, LED
+#define BLED_2              13u                                 // PORT I 13, LED
+#define BLED_3              14u                                 // PORT I 14, LED
+#define BLED_4              15u                                 // PORT I 15, LED
+#define BLED_5              13u                                 // PORT H 13, LED
+#define BLED_6              6u                                  // PORT D 6, LED
+#define BLED_7              2u                                  // PORT E 2, LED
+#define BLED_RED            5u                                  // PORT K 5, LED Red
+#define BLED_GREEN          6u                                  // PORT K 6, LED Green
+#define BLED_BLUE           7u                                  // PORT K 7, LED Blue
 
-#define	BPUSH_0				0u									// PORT A 0, PUSH0
+#define BPUSH_0             0u                                  // PORT A 0, PUSH0
 
-#define	BSW_0				8u									// PORT B 8, SW0
-#define	BSW_1				14u									// PORT B 14, SW1
-#define	BSW_2				15u									// PORT B 15, SW2
-#define	BSW_3				2u									// PORT B 2, SW3
+#define BSW_0               8u                                  // PORT B 8, SW0
+#define BSW_1               14u                                 // PORT B 14, SW1
+#define BSW_2               15u                                 // PORT B 15, SW2
+#define BSW_3               2u                                  // PORT B 2, SW3
 
-#define	BLOGIC_0			15u									// PORT I 15, LOGIC0
-#define	BLOGIC_1			13u									// PORT H 13, LOGIC1
-#define	BRZ_CAMERA			7u									// PORT J 7, Camera reset
-#define	BEN_CLK				10u									// PORT J 10, Enable the Aptina clock
-#define	BSTANDBY			4u									// PORT D 4, Standby imager
-#define	BEXPOSURE			5u									// PORT D 5, Exposure imager
+#define BLOGIC_0            15u                                 // PORT I 15, LOGIC0
+#define BLOGIC_1            13u                                 // PORT H 13, LOGIC1
+#define BRZ_CAMERA          7u                                  // PORT J 7, Camera reset
+#define BEN_CLK             10u                                 // PORT J 10, Enable the Aptina clock
+#define BSTANDBY            4u                                  // PORT D 4, Standby imager
+#define BEXPOSURE           5u                                  // PORT D 5, Exposure imager
 
-#define	BSEL_MAGNETO		9u									// PORT B 9, /CS magnetometer
-#define	BSEL_ACCELERO		3u									// PORT G 3, /CS accelerometer/gyroscope
-#define	BDEN_AG				15u									// PORTC 15, BDEN_AG IMU
-#define	BINT_IMU			3u									// PORT E 3, /int IMU
+#define BSEL_MAGNETO        9u                                  // PORT B 9, /CS magnetometer
+#define BSEL_ACCELERO       3u                                  // PORT G 3, /CS accelerometer/gyroscope
+#define BDEN_AG             15u                                 // PORTC 15, BDEN_AG IMU
+#define BINT_IMU            3u                                  // PORT E 3, /int IMU
 
-#define	BRZ_PHY				4u									// PORT J 4, Reset of the USB PHY
+#define BRZ_PHY             4u                                  // PORT J 4, Reset of the USB PHY

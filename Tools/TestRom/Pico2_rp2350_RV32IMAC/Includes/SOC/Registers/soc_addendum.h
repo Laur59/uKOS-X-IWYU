@@ -3,13 +3,14 @@
 ; =============
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		addendum equates.
+; Project:  uKOS-X
+; Goal:     addendum equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +47,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 // Note: Peripheral register access uses the REG(x) macro defined in macros_core.h
 // REG(x) automatically appends _S or _NS based on SECURE_S/SECURE_NS definitions

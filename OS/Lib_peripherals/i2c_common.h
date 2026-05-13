@@ -3,13 +3,14 @@
 ; ===========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		i2c_commun equates.
+; Project:  uKOS-X
+; Goal:     i2c_commun equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +47,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_peripherals
@@ -66,22 +67,22 @@
 // Configuration structure
 // -----------------------
 
-typedef	struct	i2cCnf	i2cCnf_t;
+typedef struct  i2cCnf  i2cCnf_t;
 
 struct i2cCnf {
-			uint32_t	oTimeout;								// I2C bus timeout in ms
-			uint32_t	oSpeed;									// I2C speed in bit/s
+            uint32_t    oTimeout;                               // I2C bus timeout in ms
+            uint32_t    oSpeed;                                 // I2C speed in bit/s
 };
 
 // Speed (oSpeed)
 
 enum {
-			KI2C_100KBPS =	100000u,							// Sm, bus at 100-Kbit/s
-			KI2C_400KBPS =	400000u,							// Fm, bus at 400-Kbit/s
-			KI2C_1MBPS	 =	1000000u,							// Fm+, bus at 1-Mbit/s
-			KI2C_17MBPS  =	1700000u,							// Hs, bus at 1.7-Mbit/s
-			KI2C_34MBPS  =	3400000u,							// Hs, bus at 3.4-Mbit/s
-			KI2C_5MBPS	 =	5000000u							// UFm, bus at 5-Mbit/s
+            KI2C_100KBPS =  100000u,                            // Sm, bus at 100-Kbit/s
+            KI2C_400KBPS =  400000u,                            // Fm, bus at 400-Kbit/s
+            KI2C_1MBPS   =  1000000u,                           // Fm+, bus at 1-Mbit/s
+            KI2C_17MBPS  =  1700000u,                           // Hs, bus at 1.7-Mbit/s
+            KI2C_34MBPS  =  3400000u,                           // Hs, bus at 3.4-Mbit/s
+            KI2C_5MBPS   =  5000000u                            // UFm, bus at 5-Mbit/s
 };
 
 /**@}*/

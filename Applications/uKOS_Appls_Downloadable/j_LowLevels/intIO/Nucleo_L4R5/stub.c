@@ -3,13 +3,14 @@
 ; =====
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Hardware specific stub.
+; Project:  uKOS-X
+; Goal:     Hardware specific stub.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,46 +47,46 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"uKOS.h"
+#include    "uKOS.h"
 
-extern	volatile	uint32_t	vCounter;
+extern  volatile    uint32_t    vCounter;
 
-#define	BPC13	13u
+#define BPC13   13u
 
 // Prototypes
 
-static	void	stub_intr_io_interruption(void);
+static  void    stub_intr_io_interruption(void);
 
 /*
  * \brief stub_intr_io_init
  *
  */
-void	stub_intr_io_init(void) {
+void    stub_intr_io_init(void) {
 
-	RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
+    RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
 
-	SYSCFG->EXTICR4 = (2u * SYSCFG_EXTICR4_EXTI13_0);
+    SYSCFG->EXTICR4 = (2u * SYSCFG_EXTICR4_EXTI13_0);
 
-	INTERRUPT_VECTOR(EXTI15_10_C0_IRQn, stub_intr_io_interruption);
-	NVIC_SetPriority(EXTI15_10_C0_IRQn, KHW_PRIORITY_HIGH);
-	NVIC_EnableIRQ(EXTI15_10_C0_IRQn);
+    INTERRUPT_VECTOR(EXTI15_10_C0_IRQn, stub_intr_io_interruption);
+    NVIC_SetPriority(EXTI15_10_C0_IRQn, KHW_PRIORITY_HIGH);
+    NVIC_EnableIRQ(EXTI15_10_C0_IRQn);
 
-	EXTI->FTSR1	|= (1u<<BPC13);
-	EXTI->PR1	|= (1u<<BPC13);
-	EXTI->IMR1	|= (1u<<BPC13);
+    EXTI->FTSR1 |= (1u<<BPC13);
+    EXTI->PR1   |= (1u<<BPC13);
+    EXTI->IMR1  |= (1u<<BPC13);
 }
 
 /*
  * \brief stub_intr_io_interruption
  *
  */
-static	void	stub_intr_io_interruption(void) {
-	uint32_t	core;
+static  void    stub_intr_io_interruption(void) {
+    uint32_t    core;
 
-	core = GET_RUNNING_CORE;
+    core = GET_RUNNING_CORE;
 
-	EXTI->PR1 |= (1u<<BPC13);
-	vCounter++;
+    EXTI->PR1 |= (1u<<BPC13);
+    vCounter++;
 
-	PREEMPTION_THRESHOLD(core);
+    PREEMPTION_THRESHOLD(core);
 }

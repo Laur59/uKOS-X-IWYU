@@ -3,13 +3,14 @@
 ; ===========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		COREDEBUG equates.
+; Project:  uKOS-X
+; Goal:     COREDEBUG equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,25 +47,25 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 // COREDEBUG address definitions
 // -----------------------------
 
 typedef struct {
-	volatile	uint32_t	DHCSR;
-	volatile	uint32_t	DCRSR;
-	volatile	uint32_t	DCRDR;
-	volatile	uint32_t	DEMCR;
+    volatile    uint32_t    DHCSR;
+    volatile    uint32_t    DCRSR;
+    volatile    uint32_t    DCRDR;
+    volatile    uint32_t    DEMCR;
 } CoreDebug_TypeDef;
 
 #if (defined(__cplusplus))
-#define	CoreDebug	reinterpret_cast<CoreDebug_TypeDef *>(0xE000EDF0u)
+#define CoreDebug   reinterpret_cast<CoreDebug_TypeDef *>(0xE000EDF0u)
 
 #else
-#define	CoreDebug	((CoreDebug_TypeDef *)0xE000EDF0u)
+#define CoreDebug   ((CoreDebug_TypeDef *)0xE000EDF0u)
 #endif
 
 // DEMCR register
 
-#define CoreDebug_DEMCR_TRCENA		(1u<<24)
+#define CoreDebug_DEMCR_TRCENA      (1u<<24)

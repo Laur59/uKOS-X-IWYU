@@ -3,13 +3,14 @@
 ; =========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Test sending data via the cnms manager.
+; Project:  uKOS-X
+; Goal:     Test sending data via the cnms manager.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -46,7 +47,7 @@
 ;------------------------------------------------------------------------
 */
 
-#include	"tests.h"
+#include    "tests.h"
 
 #if (defined(TEST_01_S))
 /*
@@ -55,15 +56,15 @@
  * - Test sending data via the cnms manager
  *
  */
-void	test_01(void) {
+void    test_01(void) {
 
-	cmns_init();
+    cmns_init();
 
-	while (true) {
-		cmns_wait(100000);
-		LED_RED_TOGGLE;
+    while (true) {
+        cmns_wait(100000);
+        LED_RED_TOGGLE;
 
-		cmns_send(KURT0, "Nous sommes les petits Strumpfs, trala lala lala ...\n");
-	}
+        cmns_send(KURT0, "Nous sommes les petits Strumpfs, trala lala lala ...\n");
+    }
 }
 #endif

@@ -3,15 +3,16 @@
 ; ================
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Kern - Signal management.
+; Project:  uKOS-X
+; Goal:     Kern - Signal management.
 ;
-;			Private uKernel variables.
+;           Private uKernel variables.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -48,7 +49,7 @@
 ;------------------------------------------------------------------------
 */
 
-#pragma	once
+#pragma once
 
 /*!
  * \addtogroup Lib_kernels
@@ -70,33 +71,33 @@
  * @{
  */
 
-#define	KSIGN_ANONYMOUS_ID	"Sign_anonymous"
+#define KSIGN_ANONYMOUS_ID  "Sign_anonymous"
 
-typedef	struct	dsin		dsin_t;
+typedef struct  dsin        dsin_t;
 
 struct dsin {
-			uint32_t	oSignalBitPending;						// The pending signals
-			uint32_t	oSignalBitGenerate;						// The generated signals
-			proc_t		*oSignalFromProcess;					// Ptr on the process that generate the signals
+            uint32_t    oSignalBitPending;                      // The pending signals
+            uint32_t    oSignalBitGenerate;                     // The generated signals
+            proc_t      *oSignalFromProcess;                    // Ptr on the process that generate the signals
 };
 
-struct	sign {
-	const	char_t		*oIdentifier;							// Group identifier
-			uint16_t	oState;									// Group state
-			#define		BSIGN_INSTALLED		0u					// Group installed
+struct  sign {
+    const   char_t      *oIdentifier;                           // Group identifier
+            uint16_t    oState;                                 // Group state
+            #define     BSIGN_INSTALLED     0u                  // Group installed
 
-			uint32_t	oGroupNumber;							// Group number
-			uint32_t	oUsedBit;								// Used bit
-			dsin_t		oSynchro[KKERN_NB_PROCESSES];			// Process synchro
-			void		(*oCbOnWaiting)(sign_t *handle,
-										uint32_t signals,
-										proc_t *fromProcess);
+            uint32_t    oGroupNumber;                           // Group number
+            uint32_t    oUsedBit;                               // Used bit
+            dsin_t      oSynchro[KKERN_NB_PROCESSES];           // Process synchro
+            void        (*oCbOnWaiting)(sign_t *handle,
+                                        uint32_t signals,
+                                        proc_t *fromProcess);
 };
 
-extern	list_t		vKern_listSign[KNB_CORES];					// Signal list (processes waiting for a signal)
-extern	sign_t		vKern_sign[KNB_CORES][KKERN_NB_SIGNALS];	// Group of signals
-extern	uint16_t	vKern_nbSign[KNB_CORES];					// Nb of used signals
-extern	uint16_t	vKern_nbMaxSign[KNB_CORES];					// Max number of used signals
+extern  list_t      vKern_listSign[KNB_CORES];                  // Signal list (processes waiting for a signal)
+extern  sign_t      vKern_sign[KNB_CORES][KKERN_NB_SIGNALS];    // Group of signals
+extern  uint16_t    vKern_nbSign[KNB_CORES];                    // Nb of used signals
+extern  uint16_t    vKern_nbMaxSign[KNB_CORES];                 // Max number of used signals
 
 /**@}*/
 /**@}*/
