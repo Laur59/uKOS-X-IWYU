@@ -51,7 +51,7 @@ extern  int32_t stub_adc_read(uint8_t channel, float64_t *reference, float64_t *
  * \code{.c}
  * int32_t    status;
  *
- *    status = adc_reserve(KMODE_READ_WRITE, 1234);
+ *    status = adc_reserve(KMODE_READ_WRITE, 1234U);
  *    ....
  *    adc_xyz();
  *    ....

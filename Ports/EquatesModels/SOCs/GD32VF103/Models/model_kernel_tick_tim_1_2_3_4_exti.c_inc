@@ -700,6 +700,7 @@ uintptr_t   *local_newContextTOU(uintptr_t *stack) {
  *
  */
 void    local_EXTI0_IRQHandler(void);
+
 [[gnu::naked]]
 void    EXTI0_C0_IRQHandler(void) {
 

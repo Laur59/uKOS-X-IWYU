@@ -4,7 +4,6 @@
  *
  * Goal:     This tool allows to control the ESP32 Maixduino chip.
  *           !!! This tool is Maixduino specific.
-;
  */
 
 #include    <stdint.h>

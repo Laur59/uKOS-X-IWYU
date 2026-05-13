@@ -262,8 +262,8 @@ int32_t kern_setMailbox(mbox_t *handle, const mcnf_t *configure) {
  * \code{.c}
  * #define     KSIZE    5
  * int32_t     status;
- * uint32_t    timeout = 1234;
- * uint8_t     message[KSIZE] = {1,2,3,4,5};
+ * uint32_t    timeout = 1234U;
+ * uint8_t     message[KSIZE] = {1U,2U,3U,4U,5U};
  * mbox_t      *mailBox;
  *
  *    status = kern_writeMessage(mailBox, message, KSIZE, timeout);
@@ -352,7 +352,7 @@ int32_t kern_writeQueue(mbox_t *handle, uintptr_t message, uint32_t timeout) {
  *
  * \code{.c}
  * int32_t     status;
- * uint32_t    timeout = 1234;
+ * uint32_t    timeout = 1234U;
  * uint8_t     size, *message:
  * mbox_t      *mailBox;
  *

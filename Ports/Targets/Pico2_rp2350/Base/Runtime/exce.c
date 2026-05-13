@@ -109,34 +109,7 @@ static void cb_signal(uint8_t mode) {
 #include    "model_coreDump_generic.c_inc"      // IWYU pragma: keep
 #include    "model_coreDump_core.c_inc"         // IWYU pragma: keep
 
-#ifdef __arm
-#include    "model_coredump_soc.c_inc"          // IWYU pragma: keep
-
-/*
- * \brief exce_init
- *
- *
- * \note This function does not return a value (None).
- *
- */
-void    exce_init(void) {
-    uint8_t     nbExceptions, nbInterruptions;
-
-    for (nbExceptions = 0U; nbExceptions < KNB_EXCEPTIONS; nbExceptions++) {
-        vExce_indExcVectors[GET_RUNNING_CORE][nbExceptions] = nullptr;
-    }
-
-    for (nbInterruptions = 0U; nbInterruptions < KNB_INTERRUPTIONS; nbInterruptions++) {
-        vExce_indIntVectors[GET_RUNNING_CORE][nbInterruptions] = nullptr;
-    }
-
-    core_setBASEPRI((uint32_t)KINT_LEVEL_PERIPHERALS<<(uint32_t)KNVIC_PRIORITY_SHIFT);
-    REG(SCB)->AIRCR = SCB_AIRCR_VECTKEY_MASK | 0x0300U;
-
-    REG(SCB)->SHCSR |= SCB_SHCSR_MEMFAULTENA | SCB_SHCSR_BUSFAULTENA | SCB_SHCSR_USGFAULTENA | SCB_SHCSR_SECUREFAULTENA;
-}
-
-#else
+#ifdef __riscv
 
 bool     vExce_isException[KNB_CORES] = MCSET(false);
 #include    "model_coredump_soc_riscv.c_inc"    // IWYU pragma: keep
@@ -164,4 +137,32 @@ void    exce_init(void) {
     vExce_indExcVectors[core][11U] = syscallDispatcher;
 }
 
-#endif  // __arm
+#else
+
+#include    "model_coredump_soc.c_inc"          // IWYU pragma: keep
+
+/*
+ * \brief exce_init
+ *
+ *
+ * \note This function does not return a value (None).
+ *
+ */
+void    exce_init(void) {
+    uint8_t     nbExceptions, nbInterruptions;
+
+    for (nbExceptions = 0U; nbExceptions < KNB_EXCEPTIONS; nbExceptions++) {
+        vExce_indExcVectors[GET_RUNNING_CORE][nbExceptions] = nullptr;
+    }
+
+    for (nbInterruptions = 0U; nbInterruptions < KNB_INTERRUPTIONS; nbInterruptions++) {
+        vExce_indIntVectors[GET_RUNNING_CORE][nbInterruptions] = nullptr;
+    }
+
+    core_setBASEPRI((uint32_t)KINT_LEVEL_PERIPHERALS<<(uint32_t)KNVIC_PRIORITY_SHIFT);
+    REG(SCB)->AIRCR = SCB_AIRCR_VECTKEY_MASK | 0x0300U;
+
+    REG(SCB)->SHCSR |= SCB_SHCSR_MEMFAULTENA | SCB_SHCSR_BUSFAULTENA | SCB_SHCSR_USGFAULTENA | SCB_SHCSR_SECUREFAULTENA;
+}
+
+#endif  // __riscv

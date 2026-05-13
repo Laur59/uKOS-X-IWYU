@@ -27,14 +27,6 @@
 #include    "serial_common.h"
 #include    "types.h"
 
-// Semaphores
-// ----------
-
-#define KWFI0_SEMAPHORE_RX      "wfi0 - RX char"
-#define KWFI0_SEMAPHORE_TX      "wfi0 - TX buff"
-#define KWFI0_MUTEX_RESERVE_RX  "Reserve_wfi0_R"
-#define KWFI0_MUTEX_RESERVE_TX  "Reserve_wfi0_T"
-
 // Prototypes
 
 #ifdef __cplusplus
@@ -44,10 +36,14 @@ extern  "C" {
 #define WFI0_reserve    wfi0_reserve
 #define WFI0_release    wfi0_release
 
-extern  int32_t stub_wfi0_init(void);
+// Prototypes
+
+extern  int32_t     stub_wfi0_reserve(reserveMode_t reserveMode, uint32_t timeout);
+extern  int32_t     stub_wfi0_release(reserveMode_t reserveMode);
 extern  int32_t stub_wfi0_configure(const urtxCnf_t *configure);
 extern  int32_t stub_wfi0_write(const uint8_t *buffer, uint32_t size);
 extern  int32_t stub_wfi0_read(uint8_t *buffer, uint32_t *size);
+extern  int32_t     stub_wfi0_getIdSemaphore(uint8_t semaphore, char_t **identifier);
 extern  int32_t stub_wfi0_flush(void);
 
 /*!
@@ -58,7 +54,7 @@ extern  int32_t stub_wfi0_flush(void);
  * \code{.c}
  * int32_t    status;
  *
- *    status = wfi0_reserve(KMODE_WRITE, 1234);
+ *    status = wfi0_reserve(KMODE_WRITE, 1234U);
  *    ....
  *    wfi0_xyz();
  *    ....
@@ -129,7 +125,7 @@ extern  int32_t wfi0_configure(const urtxCnf_t *configure);
  * \code{.c}
  * #define    KSIZE    10
  *
- * uint8_t    buffer[KSIZE] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+ * uint8_t    buffer[KSIZE] = { 0U, 1U, 2U, 3U, 4U, 5U, 6U, 7U, 8U, 9U };
  * int32_t    status;
  *
  *    status = wfi0_write(buffer, KSIZE);

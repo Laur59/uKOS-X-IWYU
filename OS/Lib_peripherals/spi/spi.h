@@ -51,7 +51,7 @@ extern  "C" {
  * \code{.c}
  * int32_t    status;
  *
- *    status = spi_reserve(KSPI0, KMODE_READ_WRITE, 1234);
+ *    status = spi_reserve(KSPI0, KMODE_READ_WRITE, 1234U);
  *    ....
  *    spi_xyz(KSPI0, );
  *    ....

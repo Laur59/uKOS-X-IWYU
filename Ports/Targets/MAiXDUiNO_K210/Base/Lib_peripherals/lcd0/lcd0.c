@@ -71,7 +71,7 @@ static  void    local_drawPoint(uint16_t x, uint16_t y, uint16_t color);
  * \code{.c}
  * int32_t    status;
  *
- *    status = lcd0_reserve(KMODE_READ_WRITE, 1234);
+ *    status = lcd0_reserve(KMODE_READ_WRITE, 1234U);
  *    ....
  *    lcd0_xyz();
  *    ....

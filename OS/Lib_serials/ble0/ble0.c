@@ -2,61 +2,60 @@
  * SPDX-License-Identifier: MIT
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  *
- * Goal:     cdc0 manager.
+ * Goal:    ble0 manager.
  */
 
-#pragma once
-
-/*!
- * \addtogroup Lib_serials
- */
-/**@{*/
-
-/*!
- * \defgroup cdc0 Cdc0
- *
- * \brief Cdc0
- *
- * Cdc0 management
- *
- * @{
- */
+#include    "ble0.h"
 
 #include    <stdint.h>
 
-#include    "serial_common.h"
+#include    "macros.h"
+#include    "modules.h"
 #include    "types.h"
 
-// Semaphores
-// ----------
+#if (defined(CONFIG_MAN_BLE0_S))
 
-#define KCDC0_SEMAPHORE_RX      "cdc0 - RX char"
-#define KCDC0_SEMAPHORE_TX      "cdc0 - TX buff"
-#define KCDC0_MUTEX_RESERVE_RX  "Reserve_cdc0_R"
-#define KCDC0_MUTEX_RESERVE_TX  "Reserve_cdc0_T"
+// uKOS-X specific (see the module.h)
+// ==================================
 
-// Prototypes
+// ----------------------------------I------------I-----------------------------------------I--------------I
 
-#ifdef __cplusplus
-extern  "C" {
-#endif
+STRG_LOC_CONST(aStrApplication[]) = "ble0         ble0 manager.                             (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "ble0 manager\n"
+                                    "============\n\n"
 
-#define CDC0_reserve    cdc0_reserve
-#define CDC0_release    cdc0_release
+                                    "This manager ...\n\n"
 
-/*!
- * \brief Reserve the cdc0 manager
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+
+MODULE(
+    Ble0,                           // Module name (the first letter has to be upper case)
+    KID_FAM_SERIALS,                // Family (defined in the module.h)
+    KNUM_BLE0,                      // Module identifier (defined in the module.h)
+    nullptr,                        // Address of the initialisation code (early pre-init)
+    nullptr,                        // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                        // Address of the clean code (clean the module)
+    " 1.0",                         // Revision string (major . minor)
+    (1u<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                               // Execution cores
+);
+
+// Library specific
+// ================
+
+/*
+ * \brief Reserve the ble0 manager
  *
  * Call example in C:
  *
  * \code{.c}
  * int32_t    status;
  *
- *    status = cdc0_reserve(KMODE_WRITE, 1234U);
+ *    status = ble0_reserve(KMODE_WRITE, 1234U);
  *    ....
- *    cdc0_xyz();
+ *    ble0_xyz();
  *    ....
- *    status = cdc0_release(KMODE_WRITE);
+ *    status = ble0_release(KMODE_WRITE);
  * \endcode
  *
  * \param[in]   reserveMode         KMODE_READ, KMODE_WRITE, KMODE_READ_WRITE
@@ -68,17 +67,20 @@ extern  "C" {
  * \return      KERR_SERIAL_CHBSY   The manager is busy
  *
  */
-extern  int32_t cdc0_reserve(reserveMode_t reserveMode, uint32_t timeout);
+int32_t ble0_reserve(reserveMode_t reserveMode, uint32_t timeout) {
 
-/*!
- * \brief Release the cdc0 manager
+    return(stub_ble0_reserve(reserveMode, timeout));
+}
+
+/*
+ * \brief Release the ble0 manager
  *
  * Call example in C:
  *
  * \code{.c}
  * int32_t    status;
  *
- *    status = cdc0_release(KMODE_WRITE);
+ *    status = ble0_release(KMODE_WRITE);
  * \endcode
  *
  * \param[in]   reserveMode         KMODE_READ, KMODE_WRITE, KMODE_READ_WRITE
@@ -87,20 +89,27 @@ extern  int32_t cdc0_reserve(reserveMode_t reserveMode, uint32_t timeout);
  * \return      KERR_SERIAL_CAREL   Cannot release the manager
  *
  */
-extern  int32_t cdc0_release(reserveMode_t reserveMode);
+int32_t ble0_release(reserveMode_t reserveMode) {
 
-/*!
- * \brief Configure the cdc0 manager
+    return(stub_ble0_release(reserveMode));
+}
+
+/*
+ * \brief Configure the ble0 manager
  *
  * Call example in C:
  *
  * \code{.c}
  *          int32_t       status;
- * const    cdcxCnf_t    configure = {
- *                              .oKernSync = (1U<<BSERIAL_SEMAPHORE_RX),
+ * const    urtxCnf_t    configure = {
+ *                            .oBaudRate = KSERIAL_BAUDRATE_57600,
+ *                            .oKernSync = (1u<<BSERIAL_SEMAPHORE_RX),
+ *                            .oNBBits   = KSERIAL_NB_BITS_8,
+ *                            .oStopBits = KSERIAL_STOPBITS_1,
+ *                            .oParity   = KSERIAL_PARITY_NONE
  *                        };
  *
- *    status = cdc0_configure(&configure);
+ *    status = ble0_configure(&configure);
  * \endcode
  *
  * \param[in]   *configure          Ptr on the configuration buffer
@@ -109,10 +118,13 @@ extern  int32_t cdc0_release(reserveMode_t reserveMode);
  * \return      KERR_SERIAL_NOCNF   The configuration does not exist
  *
  */
-extern  int32_t cdc0_configure(const cdcxCnf_t *configure);
+int32_t ble0_configure(const urtxCnf_t *configure) {
 
-/*!
- * \brief Write a buffer to the cdc0 manager
+    return(stub_ble0_configure(configure));
+}
+
+/*
+ * \brief Write a buffer to the ble0 manager
  *
  * Call example in C:
  *
@@ -122,7 +134,7 @@ extern  int32_t cdc0_configure(const cdcxCnf_t *configure);
  * uint8_t    buffer[KSIZE] = { 0U, 1U, 2U, 3U, 4U, 5U, 6U, 7U, 8U, 9U };
  * int32_t    status;
  *
- *    status = cdc0_write(buffer, KSIZE);
+ *    status = ble0_write(buffer, KSIZE);
  * \endcode
  *
  * \param[in]   *buffer             Ptr on the buffer
@@ -134,10 +146,13 @@ extern  int32_t cdc0_configure(const cdcxCnf_t *configure);
  * \return      KERR_SERIAL_LNBU0   The buffer length is = 0
  *
  */
-extern  int32_t cdc0_write(const uint8_t *buffer, uint32_t size);
+int32_t ble0_write(const uint8_t *buffer, uint32_t size) {
 
-/*!
- * \brief Read a buffer from the cdc0 manager
+    return(stub_ble0_write(buffer, size));
+}
+
+/*
+ * \brief Read a buffer from the ble0 manager
  *
  * Call example in C:
  *
@@ -147,7 +162,7 @@ extern  int32_t cdc0_write(const uint8_t *buffer, uint32_t size);
  * int32_t     status;
  *
  *    size = 1;
- *    status = cdc0_read(buffer, &size);
+ *    status = ble0_read(buffer, &size);
  * \endcode
  *
  * \param[in]       *buffer             Ptr on the buffer
@@ -162,9 +177,12 @@ extern  int32_t cdc0_write(const uint8_t *buffer, uint32_t size);
  * \return          KERR_SERIAL_ERPAR   Parity error
  *
  */
-extern  int32_t cdc0_read(uint8_t *buffer, uint32_t *size);
+int32_t ble0_read(uint8_t *buffer, uint32_t *size) {
 
-/*!
+    return(stub_ble0_read(buffer, size));
+}
+
+/*
  * \brief Get the semaphore identifier
  *
  * Call example in C:
@@ -173,8 +191,8 @@ extern  int32_t cdc0_read(uint8_t *buffer, uint32_t *size);
  * int32_t    status;
  * char_t     *identifier[2];
  *
- *    status = cdc0_getIdSemaphore(BSERIAL_SEMAPHORE_RX, &identifier[0];
- *    status = cdc0_getIdSemaphore(BSERIAL_SEMAPHORE_TX, &identifier[1];
+ *    status = ble0_getIdSemaphore(BSERIAL_SEMAPHORE_RX, &identifier[0];
+ *    status = ble0_getIdSemaphore(BSERIAL_SEMAPHORE_TX, &identifier[1];
  *
  *    (void)dprintf(KSYST, "Semaphore ids: %s, ...%s\n", identifier[0], identifier[1]);
  * \endcode
@@ -186,28 +204,29 @@ extern  int32_t cdc0_read(uint8_t *buffer, uint32_t *size);
  * \return      KERR_SERIAL_SENOE   The semaphore does not exist
  *
  */
-extern  int32_t cdc0_getIdSemaphore(uint8_t semaphore, char_t **identifier);
+int32_t ble0_getIdSemaphore(uint8_t semaphore, char_t **identifier) {
 
-/*!
- * \brief Flush the cdc0 manager
+    return(stub_ble0_getIdSemaphore(semaphore, identifier));
+}
+
+/*
+ * \brief Flush the ble0 manager
  *
  * Call example in C:
  *
  * \code{.c}
  * int32_t    status;
  *
- *    status = cdc0_flush();
+ *    status = ble0_flush();
  * \endcode
  *
  * \return      KERR_SERIAL_NOERR   OK
  * \return      KERR_SERIAL_GEERR   General error
  *
  */
-extern  int32_t cdc0_flush(void);
+int32_t ble0_flush(void) {
 
-#ifdef __cplusplus
+    return(stub_ble0_flush());
 }
-#endif
 
-/**@}*/
-/**@}*/
+#endif

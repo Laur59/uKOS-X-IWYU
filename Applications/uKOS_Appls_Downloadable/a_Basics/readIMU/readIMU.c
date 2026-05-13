@@ -34,7 +34,6 @@
 
 #include    <fcntl.h>
 
-#include    "board.h"
 #include    "crt0.h"
 #include    "serial/serial.h"
 #include    "imu/imu.h"

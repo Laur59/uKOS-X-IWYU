@@ -106,7 +106,7 @@ extern  "C" {
  * \code{.c}
  * int32_t    status;
  *
- *    status = lcd0_reserve(KMODE_READ_WRITE, 1234);
+ *    status = lcd0_reserve(KMODE_READ_WRITE, 1234U);
  *    ....
  *    lcd0_xyz();
  *    ....

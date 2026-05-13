@@ -58,7 +58,7 @@ extern  "C" {
  * \code{.c}
  * int32_t    status;
  *
- *    status = storage_reserve(KSERIAL_FLASH, KMODE_READ_WRITE, 1234);
+ *    status = storage_reserve(KSERIAL_FLASH, KMODE_READ_WRITE, 1234U);
  *    ....
  *    storage__xyz();
  *    ....

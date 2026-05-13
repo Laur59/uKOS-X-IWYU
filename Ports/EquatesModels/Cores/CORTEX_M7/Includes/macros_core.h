@@ -164,7 +164,7 @@
 #endif
 
 #ifndef INTERRUPTION_OFF
-#define INTERRUPTION_OFF        [[maybe_unused]] volatile    uint32_t    saveBASEPRI ;                                   \
+#define INTERRUPTION_OFF        [[maybe_unused]] volatile   uint32_t    saveBASEPRI;                                    \
                                                                                                                                 \
                                 saveBASEPRI = core_getBASEPRI();                                                                \
                                 (void)saveBASEPRI;                                                                              \
@@ -213,12 +213,12 @@
 #define KEXCEPTION              0U
 
 extern  volatile    bool    vPriv_insideException[KNB_CORES];
+
 [[noreturn]]
 extern              void    model_coreDump_displayExceptions(uintptr_t lr, uintptr_t *msp);
 
 #define EXCEPTION_SPECIFIC_HANDLER(exc)                                                                                         \
-                                [[gnu::used]]                                                                                   \
-                                static void exc##_local_IRQHandler(uintptr_t lr, uintptr_t *msp) {                              \
+                                __attribute__((used)) static void exc##_local_IRQHandler(uintptr_t lr, uintptr_t *msp) {        \
                                     uint32_t    core = GET_RUNNING_CORE;                                                        \
                                     void        (*go)(void);                                                                    \
                                                                                                                                 \
@@ -249,8 +249,7 @@ extern              void    model_coreDump_displayExceptions(uintptr_t lr, uintp
 extern  void    model_coreDump_displayInterruptions(uintptr_t lr, uintptr_t *msp);
 
 #define INTERRUPT_SPECIFIC_HANDLER(irq)                                                                                         \
-                                [[gnu::used]]                                                                                   \
-                                static void irq##_local_IRQHandler(uintptr_t lr, uintptr_t *msp) {                              \
+                                __attribute__((used)) static void irq##_local_IRQHandler(uintptr_t lr, uintptr_t *msp) {        \
                                     uint32_t    core = GET_RUNNING_CORE;                                                        \
                                     void        (*go)(void);                                                                    \
                                                                                                                                 \

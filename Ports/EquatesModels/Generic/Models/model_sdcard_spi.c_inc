@@ -73,7 +73,6 @@ static  void    local_deselectRelease(void);
 
 static  sdcard_specification_t  vSdCard;
 
-
 /*
  * \brief model_sdcard_init
  *

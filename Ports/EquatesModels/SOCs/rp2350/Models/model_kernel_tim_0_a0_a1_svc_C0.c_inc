@@ -222,6 +222,7 @@ static  void    local_TIM0_ALA0_IRQHandler_C0(void) {
  *
  */
 static uintptr_t   *local_newContextPRE_C0(uintptr_t *stack);
+
 [[gnu::naked]]
 void    PendSV_C0_IRQHandler(void) {
 
@@ -333,6 +334,7 @@ uintptr_t   *local_newContextPRE_C0(uintptr_t *stack) {
  *
  */
 static uintptr_t   *local_newContextTOU_C0(uintptr_t *stack);
+
 [[gnu::naked]]
 void    TIMER0_IRQ_1_C0_IRQHandler(void) {
 
@@ -455,6 +457,7 @@ uintptr_t   *local_newContextTOU_C0(uintptr_t *stack) {
  *
  */
 static uintptr_t   *local_newContextMSG_C0(uintptr_t *stack, uint32_t message) ;
+
 [[gnu::naked]]
 void    kernel_message_C0(void) {
 

@@ -22,7 +22,6 @@ extern  void        Reset_C0_Handler(void);
 [[gnu::used, gnu::section(".isr_vector")]]
 const   uintptr_t   g_pfnVectors_C0[] = {
 
-
     (uintptr_t)linker_topStackSystem_C0,                        // MSP Stack
 
 // Cortex-M4 & M7 Processor Exceptions Numbers

@@ -17,10 +17,10 @@
 // System identifiers
 // ------------------
 
-#ifdef __arm
-#define KCPU                "ARM-Cortex m33"
-#else
+#ifdef __riscv
 #define KCPU                "RISC-V Hazard3"
+#else
+#define KCPU                "ARM-Cortex m33"
 #endif
 #define KCONTROLLER         "rp2350"
 #define KBOARD              "Pico2 rp2350 (Variant_Test)"

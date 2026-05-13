@@ -116,7 +116,7 @@ extern  int32_t stub_sdcard_ioctl(storageIoctl_t command, void *buffer);
  * \code{.c}
  * int32_t    status;
  *
- *    status = sdcard_reserve(KMODE_READ_WRITE, 1234);
+ *    status = sdcard_reserve(KMODE_READ_WRITE, 1234U);
  *    ....
  *    sdcard_xyz();
  *    ....

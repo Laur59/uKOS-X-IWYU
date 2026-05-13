@@ -57,7 +57,7 @@ extern  int32_t stub_i2c2_flush(void);
  * \code{.c}
  * int32_t    status;
  *
- *    status = i2c2_reserve(KMODE_READ_WRITE, 1234);
+ *    status = i2c2_reserve(KMODE_READ_WRITE, 1234U);
  *    ....
  *    i2c2_xyz();
  *    ....

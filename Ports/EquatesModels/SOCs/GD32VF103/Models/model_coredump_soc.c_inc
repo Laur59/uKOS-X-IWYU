@@ -72,7 +72,7 @@ static  void    model_coreDump_displayInterruptions(void) {
  * - Display the stack frame
  *
  */
-[[gnu::noinline, gnu::used]] [[noreturn]]
+[[gnu::noinline, gnu::used, noreturn]]
 static  void    local_processInterruption(uintptr_t *stackBefore, uintptr_t *stackAfter) {
             uint32_t    core, i;
     const   uintptr_t   *ptr;

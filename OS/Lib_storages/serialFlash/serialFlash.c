@@ -64,7 +64,7 @@ static  int32_t     local_init(void);
  * \code{.c}
  * int32_t    status;
  *
- *    status = serialFlash_reserve(KMODE_READ_WRITE, 1234);
+ *    status = serialFlash_reserve(KMODE_READ_WRITE, 1234U);
  *    ....
  *    serialFlash_xyz();
  *    ....

@@ -172,7 +172,9 @@ void    debuglog(const char *s) {
  *
  */
 namespace {
-void    __attribute__ ((noreturn)) aProcess_0(const void *argument) {
+
+[[noreturn]]
+void    aProcess_0(const void *argument) {
     TfLiteTensor    *input;
     uint64_t        time[2];
     uint32_t        random[2], delta = 0U;

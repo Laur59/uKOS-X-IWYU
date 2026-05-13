@@ -56,7 +56,7 @@ extern  int32_t stub_serialFlash_ioctl(storageIoctl_t command, void *buffer);
  * \code{.c}
  * int32_t    status;
  *
- *    status = serialFlash_reserve(KMODE_READ_WRITE, 1234);
+ *    status = serialFlash_reserve(KMODE_READ_WRITE, 1234U);
  *    ....
  *    serialFlash_xyz();
  *    ....
