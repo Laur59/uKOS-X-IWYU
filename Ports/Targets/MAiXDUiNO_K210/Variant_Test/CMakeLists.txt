@@ -193,6 +193,7 @@ list(APPEND CLI_U
     ${PATH_OSYS}/CLI/man/man.c
     ${PATH_OSYS}/CLI/memck/memck.c
     ${PATH_OSYS}/CLI/memory/memory.c
+    ${PATH_OSYS}/CLI/microPython/microPython.c
     ${PATH_OSYS}/CLI/mutex/mutex.c
     ${PATH_OSYS}/CLI/object/object.c
     ${PATH_OSYS}/CLI/process/process.c
@@ -215,6 +216,9 @@ set(UKOS_COMPONENTS rtcb_p kern_p kern_u libx_p libx_u proc_p proc_u tool_u)
 
 # Optional manager
 add_LVGL()
+
+# Optional manager
+add_MicroPython()
 
 # System configuration flags
 

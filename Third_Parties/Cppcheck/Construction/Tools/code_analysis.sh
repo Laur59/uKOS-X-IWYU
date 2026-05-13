@@ -73,42 +73,42 @@ mkdir -p Cppcheck-build
 # --premium=misra-c-2025
 
 cppcheck \
-	-D__GNUC__ \
-	-UEXCLUDE_CPPCHECK \
-	--max-configs=1 \
-	--suppressions-list="${PATH_UKOS_X_PACKAGE}/Third_Parties/Cppcheck/Construction/Rules/uKOS_misra_rules.suppress" -rp="${PATH_UKOS_X_PACKAGE}/Third_Parties/Cppcheck/Construction/Rules" \
-	--suppress=asctimeCalled \
-	--suppress=missingIncludeSystem \
-	--suppress=variableScope \
-	--suppress=unknownMacro \
-	--suppress=unknownSymbol \
-	--suppress=unusedFunction \
-	--suppress=knownConditionTrueFalse \
-	--suppress=badBitmaskCheck \
-	--suppress=duplicateBreak \
-	--suppress=premium-misra-config \
-	--suppress=unmatchedSuppression \
-	--suppress='*:*/Third_Parties/TinyUSB/*' \
-	--suppress='*:*/Third_Parties/MicroPython/*' \
-	--suppress='*:*/Third_Parties/FatFs/*' \
-	--suppress='*:*/Third_Parties/LVGL/*' \
-	--suppress='*:*/Third_Parties/Tflite-micro/*' \
-	"${premium_options[@]}" \
-	-I"${PATH_UKOS_X_PACKAGE}"/OS/Includes \
-	--enable=all --inconclusive \
-	--enable=style \
-	--project=build/compile_commands.json \
-	-iFLASH.sig.c \
-	--cppcheck-build-dir=Cppcheck-build \
-	--inline-suppr \
-	--check-level=exhaustive \
-	--quiet \
-	--xml \
-	--output-file=ukos-analysis.xml
+    -D__GNUC__ \
+    -UEXCLUDE_CPPCHECK \
+    --max-configs=1 \
+    --suppressions-list="${PATH_UKOS_X_PACKAGE}/Third_Parties/Cppcheck/Construction/Rules/uKOS_misra_rules.suppress" -rp="${PATH_UKOS_X_PACKAGE}/Third_Parties/Cppcheck/Construction/Rules" \
+    --suppress=asctimeCalled \
+    --suppress=missingIncludeSystem \
+    --suppress=variableScope \
+    --suppress=unknownMacro \
+    --suppress=unknownSymbol \
+    --suppress=unusedFunction \
+    --suppress=knownConditionTrueFalse \
+    --suppress=badBitmaskCheck \
+    --suppress=duplicateBreak \
+    --suppress=premium-misra-config \
+    --suppress=unmatchedSuppression \
+    --suppress='*:*/Third_Parties/TinyUSB/*' \
+    --suppress='*:*/Third_Parties/MicroPython/*' \
+    --suppress='*:*/Third_Parties/FatFs/*' \
+    --suppress='*:*/Third_Parties/LVGL/*' \
+    --suppress='*:*/Third_Parties/Tflite-micro/*' \
+    "${premium_options[@]}" \
+    -I"${PATH_UKOS_X_PACKAGE}"/OS/Includes \
+    --enable=all --inconclusive \
+    --enable=style \
+    --project=build/compile_commands.json \
+    -iFLASH.sig.c \
+    --cppcheck-build-dir=Cppcheck-build \
+    --inline-suppr \
+    --check-level=exhaustive \
+    --quiet \
+    --xml \
+    --output-file=ukos-analysis.xml
 
 if [[ -d "${PATH_PRG}/Construction/Pyenv/Cppcheck_Pyenv" ]]
 then
-	source "${PATH_PRG}/Construction/Pyenv/Cppcheck_Pyenv/bin/activate"
+    source "${PATH_PRG}/Construction/Pyenv/Cppcheck_Pyenv/bin/activate"
 fi
 cppcheck-htmlreport --file=ukos-analysis.xml --report-dir=html &> /dev/null
 if [[ -d "${PATH_PRG}/Construction/Pyenv/Cppcheck_Pyenv" ]]
