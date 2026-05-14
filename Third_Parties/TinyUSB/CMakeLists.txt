@@ -70,7 +70,7 @@ message("")
 
 # Package version and commit hash (matching build_with_cmake.sh)
 set(TINYUSB_VERSION "0.20.0")
-set(TINYUSB_HASH "9b1b781")
+set(TINYUSB_HASH "e1cb1b5")
 
 message(STATUS "Fetching TinyUSB version ${TINYUSB_VERSION} (commit ${TINYUSB_HASH})")
 
@@ -158,6 +158,12 @@ if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/TinyUSB-current/lib/pico-sdk/README.m
         GIT_PROGRESS   TRUE
         UPDATE_DISCONNECTED TRUE
         EXCLUDE_FROM_ALL  # Don't build pico-sdk targets, only fetch sources
+        # Fix upstream hazard3 bug: duplicate __hazard3_bextm macro whose
+        # second definition references an unbound identifier 'shamt'.
+        # PATCH_COMMAND runs with CWD = SOURCE_DIR (pico-sdk root), so -p4
+        # strips "a/TinyUSB-current/lib/pico-sdk/" from the patch paths.
+        PATCH_COMMAND  patch -p4 --forward -i
+                       ${CMAKE_CURRENT_SOURCE_DIR}/Construction/Interface/Patches/mcu/raspberrypi/pico2/hazard3.patch
     )
     # Use MakeAvailable with EXCLUDE_FROM_ALL - we only need the sources, not to build pico-sdk
     # The pico-sdk source files are compiled directly into TinyUSB libraries by TinyUSB.cmake
@@ -239,7 +245,7 @@ set(SUPPORTED_SOCS
     "l4|STM32L4R5|cdc_cdc,cdc_msc"
     "u5|STM32U5G9|cdc_cdc,cdc_msc,cdc_video"
     "n6|STM32N657|cdc_cdc,cdc_msc,cdc_video"
-    "pico2|rp2350|cdc_cdc"
+    "pico2m33|rp2350|cdc_cdc"
     "pico2riscv|rp2350|cdc_cdc"
     "v8|STM32V873|cdc_cdc,cdc_msc,cdc_video"
 )

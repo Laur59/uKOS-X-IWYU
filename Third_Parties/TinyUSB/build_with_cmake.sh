@@ -27,7 +27,7 @@ readonly NC=$'\033[0m' # No Colour
 # --------
 
 readonly package=0.20.0
-readonly hash=9b1b781
+readonly hash=e1cb1b5
 
 TinyUSB_PACK="TinyUSB-current"
 
@@ -57,6 +57,23 @@ if [[ ! -d "${TinyUSB_PACK}"/lib/pico-sdk ]]; then
 fi
 git -C "${TinyUSB_PACK}"/lib/pico-sdk pull
 
+
+# Patch the package (for pico2 hazard3)
+echo "$PWD"
+local patch_rc=0
+local patch_output
+patch_output=$(patch -p1 --forward < ./Construction/Interface/Patches/mcu/raspberrypi/pico2/hazard3.patch 2>&1) \
+    || patch_rc=$?
+
+if (( patch_rc == 0 )); then
+    print "  [patch] hazard3: applied."
+elif print "$patch_output" | grep -q "Reversed.*patch detected\|previously applied"; then
+    print "  [patch] hazard3: already applied, ignored."
+else
+    print "  [patch] hazard3: FAIL (rc=${patch_rc})" >&2
+    print "$patch_output" >&2
+    return 1
+fi
 
 # Parse core.yaml file using yq
 parse_core_yaml() {
@@ -98,7 +115,7 @@ while IFS=$'\t' read -r family dependency soc profile; do
     # using FetchContent when needed. No manual intervention required.
 
     # Check if CMakeLists.txt exists for this SOC
-    SOC_DIR="${PATH_PRG}/Library/Family/${family}/${soc}"
+    SOC_DIR="${PATH_PRG}/Construction/Family/${family}/${soc}"
     if [ ! -f "${SOC_DIR}/CMakeLists.txt" ]; then
         echo -e "${YELLOW}Skipping $${soc} - CMakeLists.txt not found${NC}"
         continue
@@ -122,12 +139,19 @@ while IFS=$'\t' read -r family dependency soc profile; do
     echo "Start of building: $(date)" > ../libTinyUSB_temp.log
 
     # Configure with CMake
-    if cmake .. -G Ninja; then
+    if cmake .. -G Ninja -DCMAKE_INSTALL_PREFIX="${PATH_PRG}"; then
         # Build all targets
         if cmake --build . -j ; then
+            # Install the built libraries
+            if cmake --install . ; then
             echo "End of building: $(date)" >> ../libTinyUSB_temp.log
             mv ../libTinyUSB_temp.log ../libTinyUSB_cmake_ready.txt
-            echo -e "${GREEN}Successfully built ${soc}${NC}"
+                echo -e "${GREEN}Successfully built and installed ${soc}${NC}"
+        else
+                echo -e "${RED}Install failed for ${soc}${NC}"
+                echo "Install failed: $(date)" >> ../libTinyUSB_temp.log
+                mv ../libTinyUSB_temp.log ../libTinyUSB_cmake_error.txt
+            fi
         else
             echo -e "${RED}Build failed for ${soc}${NC}"
             echo "Build failed: $(date)" >> ../libTinyUSB_temp.log
