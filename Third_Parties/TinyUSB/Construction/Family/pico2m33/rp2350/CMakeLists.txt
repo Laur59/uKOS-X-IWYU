@@ -29,7 +29,7 @@ endif()
 
 # Call function creating TinyUSB libraries
 add_tinyusb_libraries(
-    FAMILY "pico2"
+    FAMILY "pico2m33"
     CPU_SPEC "-mcpu=cortex-m33"
     FLAGS_FP "-mfloat-abi=hard -mfpu=fpv5-sp-d16"
     DEFS_UKOS_EXTRA "-DCORTEX_M33_S"
