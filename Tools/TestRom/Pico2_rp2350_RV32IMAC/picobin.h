@@ -152,6 +152,7 @@
 #ifndef __ASSEMBLER__
 
 #include    <stdbool.h>
+#include    <stdint.h>
 
 typedef struct {
 
