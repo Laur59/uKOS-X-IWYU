@@ -11,7 +11,6 @@
 #include    "Registers/rv32_csr.h"
 #include    "Registers/soc_vectors.h"   // IWYU pragma: keep for KNB_EXCEPTIONS KNB_INTERRUPTIONS
 #include    "macros_soc.h"
-// #include "macros_core_stackFrame.h"
 
 // uKernel macros
 // --------------

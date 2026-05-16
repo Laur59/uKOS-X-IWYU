@@ -61,6 +61,7 @@ void    init_init(void) {
 static  void    local_GPIO_Configuration(void) {
 
     // Release GPIO from reset
+
     REG(RESETS)->RESET &= ~(RESETS_RESET_IO_BANK0 | RESETS_RESET_PADS_BANK0);
     while ((REG(RESETS)->RESET_DONE & (RESETS_RESET_IO_BANK0 | RESETS_RESET_PADS_BANK0)) !=
            (RESETS_RESET_IO_BANK0 | RESETS_RESET_PADS_BANK0)) { }
@@ -141,6 +142,7 @@ static  void    local_PLL_Configuration(void) {
     while ((REG(CLOCKS)->CLK_REF_SELECTED & (1u<<0x2u)) == 0x0u) { }
 
 // Reset PLL_SYS
+
     REG(RESETS)->RESET |= RESETS_RESET_PLL_SYS;
     cmns_wait(10);
     REG(RESETS)->RESET &= ~RESETS_RESET_PLL_SYS;
@@ -151,10 +153,12 @@ static  void    local_PLL_Configuration(void) {
     // Configure PLL_SYS for 150 MHz
     // VCO = 1500 MHz, REFDIV = 1, FBDIV = 125 (12 * 125 = 1500)
     // postdiv1 = 5, postdiv2 = 2 => 1500 / (5 * 2) = 150 MHz
+
     REG(PLL_SYS)->CS        = 0x1u;
     REG(PLL_SYS)->FBDIV_INT = 125u;
 
     // Turn on the VCO
+
     REG(PLL_SYS)->PWR &= ~(PLL_SYS_PWR_PD | PLL_SYS_PWR_VCOPD);
     while ((REG(PLL_SYS)->CS & PLL_SYS_CS_LOCK) == 0u) { }
 
@@ -162,12 +166,14 @@ static  void    local_PLL_Configuration(void) {
     REG(PLL_SYS)->PWR &= ~PLL_SYS_PWR_POSTDIVPD;
 
     // Switch clk_sys to PLL_SYS (glitchless via SRC/AUXSRC)
+
     REG(CLOCKS)->CLK_SYS_DIV  = 1u * CLOCKS_CLK_SYS_DIV_INT_0;
     REG(CLOCKS)->CLK_SYS_CTRL = (REG(CLOCKS)->CLK_SYS_CTRL & ~(0x7u<<5u)) | (0x0u<<5u);
     REG(CLOCKS)->CLK_SYS_CTRL = (REG(CLOCKS)->CLK_SYS_CTRL & ~0x1u) | 0x1u;
     while ((REG(CLOCKS)->CLK_SYS_SELECTED & (1u<<0x1u)) == 0x0u) { }
 
     // Configure clk_peri = clk_sys (for UART, etc.)
+
     REG(CLOCKS)->CLK_PERI_CTRL = (0x0u<<5u) | (1u<<0x0Bu);
 
 // The timer clocks

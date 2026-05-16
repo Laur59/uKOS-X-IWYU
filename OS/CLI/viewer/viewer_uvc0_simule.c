@@ -226,20 +226,11 @@ static  void    local_callBack(const void *argument) {
  *
  */
 static  void    local_prepareImage(uint8_t *image, uint32_t w, uint32_t h, uint32_t position) {
-            size_t      i, j, idx;
-            uint8_t     *p;
-    const   size_t      half = (size_t)w / 2U;
-    const   size_t      rowBytes = (size_t)w * 2U;
-    const   size_t      span = ((size_t)w) / (2U * 8U);
-    const   uint8_t     *end;
-
-
-// EBU color bars: https://stackoverflow.com/questions/6939422
-
+                    uint32_t    i, x, y, bar;
+                    uint32_t    shiftPairs;
+                    uint32_t    pairsPerLine;
     static  const   uint8_t     aColorBars[8][4] = {
-
-//           Y,    U,    Y,    V
-        { 235U, 128U, 235U, 128U },     // 100% White
+                                    { 235U, 128U, 235U, 128U },     // White
         { 219U,  16U, 219U, 138U },     // Yellow
         { 188U, 154U, 188U,  16U },     // Cyan
         { 173U,  42U, 173U,  26U },     // Green
@@ -249,28 +240,22 @@ static  void    local_prepareImage(uint8_t *image, uint32_t w, uint32_t h, uint3
         {  16U, 128U,  16U, 128U },     // Black
     };
 
-// Generate the 1st line
-
-    end = &image[rowBytes];
-    idx = (half - 1U) - ((size_t)position % half);
-    p = &image[idx * 4U];
-
-    for (i = 0U; i < 8U; i++) {
-        for (j = 0U; j < span; j++) {
-            memcpy(p, &aColorBars[i][0], 4U);
-            p += 4U;
-            if (p == end) {
-                p = image;
+    if ((w & 1U) != 0U) {
+        return;
             }
+
+    pairsPerLine = w / 2U;
+    shiftPairs = position % pairsPerLine;
+
+    for (y = 0U; y < h; y++) {
+        uint8_t *p = image + ((size_t)y * (size_t)w * 2U);
+
+        for (i = 0U; i < pairsPerLine; i++) {
+            x = (i + shiftPairs) % pairsPerLine;
+            bar = (x * 8U) / pairsPerLine;
+
+            memcpy(p, aColorBars[bar], 4U);
+            p += 4U;
         }
-    }
-
-// Duplicate the 1st line to the others
-
-    p = &image[rowBytes];
-    for (i = 1U; i < (size_t)h; i++) {
-
-        memcpy(p, image, rowBytes);
-        p = &p[rowBytes];
     }
 }

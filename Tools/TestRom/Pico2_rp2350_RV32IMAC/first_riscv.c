@@ -46,7 +46,8 @@ volatile    uint32_t    vMessage;
  * - call the crt0
  *
  */
-void __attribute__ ((naked, section(".isr_vector"))) Reset_C0_Handler(void) {
+[[gnu::naked, gnu::section(".text_vectors")]]
+void    Reset_C0_Handler(void) {
 
 // Initialise the RISC-V global pointer (required for small data access)
 
@@ -86,7 +87,8 @@ void __attribute__ ((naked, section(".isr_vector"))) Reset_C0_Handler(void) {
  * already been performed by core 0 and re-running them would clobber
  * state core 0 has set up before launching core 1.
  */
-void __attribute__ ((naked)) Reset_C1_Handler(void) {
+[[gnu::naked]]
+void    Reset_C1_Handler(void) {
 
 // Initialise the RISC-V global pointer (per-hart)
 
@@ -273,7 +275,8 @@ INTERRUPT_SPECIFIC_HANDLER(POWMAN_IRQ_TIMER_C1)
  * This function is called from trapEntry in vectors_rv.S
  * It reads mcause to determine the cause and dispatches to the appropriate handler
  */
-void __attribute__ ((naked, aligned(4))) first_handle_trap(void) {
+[[gnu::naked]]
+void    first_handle_trap(void) {
     // Save context (basic registers)
     __asm volatile (
         "   addi    sp,sp,-16*4                     \n"     // Allocate stack space

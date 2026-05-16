@@ -1,0 +1,179 @@
+/*
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:        Exceptions for the Firefly_H743 module.
+ */
+
+#include    <stdint.h>
+
+#include    "board.h"
+#include    "cmns.h"
+#include    "core.h"
+#include    "core_reg.h"
+#include    "exce.h"
+#include    "macros.h"
+#include    "macros_core.h"
+#include    "macros_soc.h"
+#include    "modules.h"
+#include    "soc_reg.h"
+
+// uKOS-X specific (see the module.h)
+// ==================================
+
+// ----------------------------------I------------I-----------------------------------------I--------------I
+
+STRG_LOC_CONST(aStrApplication[]) = "exce         Exception management.                     (c) EFr-2026";
+STRG_LOC_CONST(aStrHelp[])        = "Exce\n"
+                                    "====\n\n"
+
+                                    "This code manages the spurious exceptions.\n\n"
+
+                                    "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
+
+MODULE(
+    Exce,                           // Module name (the first letter has to be upper case)
+    KID_FAM_STARTUPS,               // Family (defined in the module.h)
+    KNUM_EXCE,                      // Module identifier (defined in the module.h)
+    nullptr,                        // Address of the initialisation code (early pre-init)
+    nullptr,                        // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
+    nullptr,                        // Address of the clean code (clean the module)
+    " 1.0",                         // Revision string (major . minor)
+    (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    0                               // Execution cores
+);
+
+// Runtime specific
+// ================
+
+void    (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
+void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
+
+// Prototypes
+
+static  void    local_setLEDs(uint8_t ledNb);
+static  void    local_clrLEDs(uint8_t ledNb);
+static  void    local_cpyLEDs(uint8_t value);
+
+/*
+ * \brief exce_init
+ *
+ *
+ * \note This function does not return a value (None).
+ *
+ */
+void    exce_init(void) {
+    uint8_t     nbExceptions, nbInterruptions;
+
+    for (nbExceptions = 0U; nbExceptions < KNB_EXCEPTIONS; nbExceptions++) {
+        vExce_indExcVectors[GET_RUNNING_CORE][nbExceptions] = nullptr;
+    }
+
+    for (nbInterruptions = 0U; nbInterruptions < KNB_INTERRUPTIONS; nbInterruptions++) {
+        vExce_indIntVectors[GET_RUNNING_CORE][nbInterruptions] = nullptr;
+    }
+
+    core_setBASEPRI((uint32_t)KINT_LEVEL_PERIPHERALS<<(uint32_t)KNVIC_PRIORITY_SHIFT);
+    SCB->AIRCR = SCB_AIRCR_VECTKEY_MASK | 0x0300U;
+}
+
+// Model callbacks
+// ---------------
+
+/*
+ * \brief cb_signal
+ *
+ * - Signal an exception or an interruption
+ *   - Exception
+ *   - Interruption
+ *
+ */
+[[noreturn]]
+static  void    cb_signal(uint8_t mode) {
+
+    switch (mode) {
+        default:
+        case KEXCEPTION: {
+            local_cpyLEDs(0xFFU);
+            while (true) {
+                cmns_wait(1000000U);
+                local_setLEDs(0U);
+                cmns_wait(1000000U);
+                local_clrLEDs(0U);
+            }
+        }
+        case KINTERRUPTION: {
+            local_cpyLEDs(0xFFU);
+            while (true) {
+                cmns_wait(1000000U);
+                local_setLEDs(1U);
+                cmns_wait(1000000U);
+                local_clrLEDs(1U);
+            }
+        }
+    }
+}
+
+// Local routines
+// ==============
+
+/*
+ * \brief local_setLEDs
+ *
+ * - Turn on a LED
+ *
+ */
+static  void    local_setLEDs(uint8_t ledNb) {
+
+    switch (ledNb) {
+        case 0U: { GPIOB->ODR &= (uint32_t)~(1U<<BLED_0); break; }
+        case 1U: { GPIOB->ODR &= (uint32_t)~(1U<<BLED_1); break; }
+        default: {
+
+// Make MISRA happy :-)
+
+            break;
+        }
+    }
+}
+
+/*
+ * \brief local_clrLEDs
+ *
+ * - Turn off a LED
+ *
+ */
+static  void    local_clrLEDs(uint8_t ledNb) {
+
+    switch (ledNb) {
+        case 0U: { GPIOB->ODR |= (1U<<BLED_0); break; }
+        case 1U: { GPIOB->ODR |= (1U<<BLED_1); break; }
+        default: {
+
+// Make MISRA happy :-)
+
+            break;
+        }
+    }
+}
+
+/*
+ * \brief local_cpyLEDs
+ *
+ * - Write on the LEDs
+ *
+ */
+static  void    local_cpyLEDs(uint8_t value) {
+    uint8_t     led, mask;
+
+    mask = 0x01U;
+    for (led = 0U; led < 2U; led++) {
+        (value & mask) ? (local_setLEDs(led)) : (local_clrLEDs(led));
+        mask = (uint8_t)(mask<<1U);
+    }
+}
+
+#include    "model_coreDump_tracing.c_inc"      // IWYU pragma: keep
+#include    "model_coreDump_generic.c_inc"      // IWYU pragma: keep
+#include    "model_coreDump_core.c_inc"         // IWYU pragma: keep
+#include    "model_coredump_soc.c_inc"          // IWYU pragma: keep

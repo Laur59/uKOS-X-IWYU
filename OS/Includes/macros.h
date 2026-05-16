@@ -30,15 +30,6 @@
 #define uKOS_COMPILER_VERSION   ((__GNUC__ * 10000) + (__GNUC_MINOR__ * 100) + (__GNUC_PATCHLEVEL__))
 #endif
 
-#define uKOS_KBOARD             KBOARD PRIVILEGE_USER_MODE
-
-#if (defined(PRIVILEGED_USER_S))
-#define PRIVILEGE_USER_MODE     ", privileged-user mode"
-
-#else
-#define PRIVILEGE_USER_MODE     ", privileged ONLY mode"
-#endif
-
 // Variable alignment macros for C99 & C11
 // ---------------------------------------
 
@@ -59,11 +50,6 @@
 #define RELEASE(device, reserveMode)                                                        \
                                 device##_release(reserveMode)
 
-#define RESERVE_SERIAL(serialManager, reserveMode)                                          \
-                                serial_reserve(serialManager, reserveMode, KWAIT_INFINITY)
-#define RELEASE_SERIAL(serialManager, reserveMode)                                          \
-                                serial_release(serialManager, reserveMode)
-
 // Some useful macros
 // ------------------
 
@@ -80,23 +66,6 @@
 #define STRG_GLB_CONST(aId)     VAR_DECLARED_ALIGN(const        char_t  aId, 4)
 
 #define ALIGNED_PTR(type, ptr)  ((type *)__builtin_assume_aligned((ptr), _Alignof(type)))
-
-// uKernel macros
-// --------------
-
-#if (KKERN_WITH_STATISTICS_S == true)
-#define TIC_EXCEPTION_TIME      uint64_t    tic, tac;                                       \
-                                kern_readTickCount(&tic)
-
-#define TAC_EXCEPTION_TIME(core)                                                            \
-                                kern_readTickCount(&tac);                                   \
-                                vKern_TimeException[core] += (uint32_t)(tac - tic);         \
-                                (void)vKern_TimeException[core]
-
-#else
-#define TIC_EXCEPTION_TIME
-#define TAC_EXCEPTION_TIME
-#endif
 
 // Call suffix for Applications (downloadable) or Tools (romable application)
 // --------------------------------------------------------------------------

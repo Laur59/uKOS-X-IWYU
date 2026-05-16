@@ -55,8 +55,11 @@ extern  volatile    uint32_t    vMessage;
 static      char_t      vString[20];
 #endif
 
-volatile    uintptr_t   vStackP0[200] __attribute__ ((aligned (16)));       //
-volatile    uintptr_t   vStackP1[200] __attribute__ ((aligned (16)));       //
+[[gnu::aligned(16)]]
+volatile    uintptr_t   vStackP0[200];                                      //
+
+[[gnu::aligned(16)]]
+volatile    uintptr_t   vStackP1[200];                                      //
 volatile    uintptr_t   vStackCurFs;                                        //
 volatile    uintptr_t   vStackCurP0;                                        //
 volatile    uintptr_t   vStackCurP1;                                        //

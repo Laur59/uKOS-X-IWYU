@@ -77,17 +77,17 @@ ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
 /* External memory, User (download application) and shared  */
 
 linker_stEXRAM              = 0x70000000;                                                   /* 0x70000000: EXRAM, start of the external memory          */
-linker_lnEXRAM              = (8192K);                                                      /* Length of the external memory                            */
+linker_lnEXRAM              = (65536K);                                                     /* Length of the external memory                            */
 
 linker_stUMemo              = 0x70200000;                                                   /* 0x70200000: UMemo, start of the user memory              */
-linker_lnUMemo              = (6144K);                                                      /* Length of the user memory                                */
+linker_lnUMemo              = (32768K);                                                     /* Length of the user memory                                */
 
 /* IMPORTANT:                                               */
 /* The heap has to be maintained aligned                    */
 /* on a boundary of 8-bytes                                 */
 
 linker_stHeap               = 0x70000000;                                                   /* 0x70000000: start of the heap                            */
-linker_lnHeap               = (2048K);                                                      /* Length of the heap                                       */
+linker_lnHeap               = (32768K);                                                     /* Length of the heap                                       */
 
 /* IMPORTANT:                                               */
 /* uKOS OS Flash + memory                                   */
@@ -119,7 +119,7 @@ linker_SZ_RAM_INT_2_OS      = 15;                                               
 hex_SZ_RAM_INT_2_OS         = (1 << (linker_SZ_RAM_INT_2_OS+1));                            /* 64-K                                                     */
 
 linker_ST_RAM_EXT_0         = linker_stEXRAM;                                               /* 0x70000000: Privileged/User RAM                          */
-linker_SZ_RAM_EXT_0         = 22;                                                           /* 8-M = 2^(SZ + 1), SZ = log2(8-M) - 1                     */
+linker_SZ_RAM_EXT_0         = 25;                                                           /* 8-M = 2^(SZ + 1), SZ = log2(8-M) - 1                     */
 
 linker_ST_PERIPH_SOC        = stm_stPERIPH;                                                 /* 0x40000000: Privileged PERIPHERALS                       */
 linker_SZ_PERIPH_SOC        = 28;                                                           /* 512-M = 2^(SZ + 1), SZ = log2(512-M) - 1                 */

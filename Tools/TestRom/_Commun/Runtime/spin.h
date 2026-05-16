@@ -31,14 +31,19 @@ struct  corelock {
 
 [[gnu::always_inline]]
 static  inline  void    spin_lockCore(corelock_t *lock);
+
 [[gnu::always_inline]]
 static  inline  void    spin_unLockCore(corelock_t *lock);
+
 [[gnu::always_inline]]
 static  inline  bool    spin_tryLockCore(corelock_t *lock);
+
 [[gnu::always_inline]]
 static  inline  void    spin_lock(spinlock_t *lock);
+
 [[gnu::always_inline]]
 static  inline  void    spin_unLock(spinlock_t *lock);
+
 [[gnu::always_inline]]
 static  inline  bool    spin_tryLock(spinlock_t *lock);
 

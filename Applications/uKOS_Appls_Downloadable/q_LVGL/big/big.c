@@ -20,9 +20,6 @@
  *
  */
 
-#include    "../ulvgl.h"
-#include    "ui.h"
-
 // uKOS-X specific (see the module.h)
 // ==================================
 
