@@ -31,14 +31,18 @@ INCLUDE     STM32H743xI.ld
 
 /* Mapping:                                                 */
 /*                                                          */
-/* RAM1:    stPrgmData          0x30000000                  */
-/*          (128 + 128 + 32)K                               */
-/* EXT:     stHeap              0x70000000                  */
-/*          8192K                                           */
-/*          stUMemo             0x70800000                  */
-/*          8192K                                           */
-/*          stFrameBuffer       0x71000000                  */
-/*          16384K                                          */
+/* RAM1:    Stacks              0x30000000                  */
+/*            6K                                            */
+/*          Program Data        0x30001800                  */
+/*            122K +                                        */
+/* RAM2:      128K +                                        */
+/* RAM2:      32K                                           */
+/* EXT:     Heap                0x70000000                  */
+/*            8192K                                         */
+/*          User Memory         0x70800000                  */
+/*            8192K                                         */
+/*          Frame Buffer        0x71000000                  */
+/*            16384K                                        */
 
 linker_sizeStackSystem_C0   = (4K);                                                 /* Length of the System stack                               */
 linker_sizeStackFirst_C0    = (2K);                                                 /* Length of the First stack                                */

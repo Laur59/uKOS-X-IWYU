@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #
-# Goal:     CMake file to set up the building for uKOS-X system.
+# CMake file to set up the building for uKOS-X system.
 
 cmake_minimum_required(VERSION 3.26)
 
@@ -38,7 +38,7 @@ file(APPEND "${ARTEFACTS_DIR}/FLASH.cnf" "-DCACHE_D_S ")
 # Customisation of firmware copyright text
 add_compile_definitions(
     "uKOS_NAME="
-    "uKOS_OWNER=(c) LvA"
+    "uKOS_OWNER=(c) et Luce"
 )
 
 # Flash programming script selection
@@ -141,7 +141,12 @@ add_library(libx_p ${LIBX_P})
 target_link_libraries(libx_p PUBLIC system_compiler_flags ${TINYUSB})
 
 # Lib_xxxx components (user) -> liblibx_u.a
+# C library integration (conditional: newlib or picolibc)
+if(C_LIBRARY STREQUAL "picolibc")
+    add_source_with_define(LIBX_U ${PATH_OSYS}/Lib_generics/picolibc/picolibc.c CONFIG_MAN_PICOLIBC_S)
+else()
 add_source_with_define(LIBX_U ${PATH_OSYS}/Lib_generics/newlib/newlib.c CONFIG_MAN_NEWLIB_S)
+endif()
 add_source_with_define(LIBX_U ${PATH_OSYS}/Lib_generics/text/text.c CONFIG_MAN_TEXT_S)
 add_source_with_define(LIBX_U ${PATH_OSYS}/Lib_neurals/mlpn/mlpn.c CONFIG_MAN_MLPN_S)
 add_library(libx_u ${LIBX_U})
