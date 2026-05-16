@@ -46,7 +46,7 @@ INCLUDE     STM32H743xI.ld
 linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
 linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */
 config_sizeData             = stm_lnSRAM123 - linker_sizeStackSystem_C0 - linker_sizeStackFirst_C0;
-config_sizeHeap             = (2048K);
+config_sizeHeap             = (32768K);
 
 /* IMPORTANT:                                               */
 /* all the stacks have to be maintained aligned             */
@@ -67,7 +67,7 @@ ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
 /* External memory, User (download application) and shared  */
 
 linker_stEXRAM              = 0x70000000;                                                   /* 0x70000000: EXRAM, start of the external memory          */
-linker_lnEXRAM              = (8192K);                                                      /* Length of the external memory                            */
+linker_lnEXRAM              = (65536K);                                                     /* Length of the external memory                            */
 
 linker_stUMemo              = 0x70200000;                                                   /* 0x70200000: UMemo, start of the user memory              */
 linker_lnUMemo              = linker_lnEXRAM - config_sizeHeap;                             /* Length of the user memory                                */
@@ -106,7 +106,7 @@ linker_ST_RAM_INT_2         = stm_stSRAM4;                                      
 linker_SZ_RAM_INT_2         = 15;                                                           /* 64-K = 2^(SZ + 1), SZ = log2(64-K) - 1                   */
 
 linker_ST_RAM_EXT_0         = linker_stEXRAM;                                               /* 0x70000000: Privileged/User RAM                          */
-linker_SZ_RAM_EXT_0         = 22;                                                           /* 8-M = 2^(SZ + 1), SZ = log2(8-M) - 1                     */
+linker_SZ_RAM_EXT_0         = 25;                                                           /* 8-M = 2^(SZ + 1), SZ = log2(8-M) - 1                     */
 
 MEMORY {
     prgm_code (rx)  : ORIGIN = linker_stPrgmCode, LENGTH = linker_lnPrgmCode
