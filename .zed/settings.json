@@ -1,0 +1,23 @@
+// Folder-specific settings
+//
+// For a full list of overridable settings, and general information on folder-specific settings,
+// see the documentation: https://zed.dev/docs/configuring-zed#settings-files
+{
+  "terminal": {
+    "env": {
+      "PATH_GCC_ARM": "/opt/embedded/cross/gcc-current/arm",
+      "PATH_LLVM_ARM": "/opt/embedded/llvm-current/arm",
+    },
+  },
+  "lsp": {
+    "clangd": {
+      "binary": {
+        "path": "/opt/embedded/cross/llvm-current/arm/bin/clangd",
+        "arguments": ["--background-index", "--clang-tidy"],
+      },
+//      "initialization_options": {
+//        "compilationDatabasePath": "Variant_Test/build",
+//      },
+    },
+  },
+}

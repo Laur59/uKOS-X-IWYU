@@ -22,7 +22,9 @@
 #include    "modules.h"
 #include    "os_errors.h"
 #include    "record/record.h"
+#ifdef CONFIG_MAN_SERIAL_S
 #include    "serial/serial.h"
+#endif
 #include    "system/system.h"
 #include    "types.h"
 
