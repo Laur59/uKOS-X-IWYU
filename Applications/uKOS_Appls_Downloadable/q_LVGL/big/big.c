@@ -20,6 +20,20 @@
  *
  */
 
+#include    <stdint.h>
+
+#include    "crt0.h"
+#include    "kern/kern.h"
+#include    "../ulvgl.h"
+#include    "macros.h"
+#include    "macros_core_stackFrame.h"
+#include    "memo/memo.h"
+#include    "modules.h"
+#include    "os_errors.h"
+#include    "random/random.h"
+#include    "record/record.h"
+#include    "ui.h"
+
 // uKOS-X specific (see the module.h)
 // ==================================
 
