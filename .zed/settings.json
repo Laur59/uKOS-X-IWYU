@@ -15,9 +15,6 @@
         "path": "/opt/embedded/cross/llvm-current/arm/bin/clangd",
         "arguments": ["--background-index", "--clang-tidy"],
       },
-//      "initialization_options": {
-//        "compilationDatabasePath": "Variant_Test/build",
-//      },
     },
   },
 }
