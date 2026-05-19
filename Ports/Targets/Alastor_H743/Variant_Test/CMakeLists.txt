@@ -133,7 +133,7 @@ add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_storages/storage/storage.c CONFIG
 add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_storages/sdcard/sdcard.c CONFIG_MAN_SDCARD_S)
 add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_storages/serialFlash/serialFlash.c CONFIG_MAN_SERIAL_FLASH_S)
 list(APPEND LIBX_P
-    ${PATH_BASE}/Lib_cryptographics/random/stub_random.c
+    ${PATH_PORT}/EquatesModels/SOCs/${SOC}/Models/stub_random.c
     ${PATH_BASE}/Lib_generics/machine/stub_machine.c
     ${PATH_BASE}/Lib_peripherals/battery/stub_battery_bq27510g3.c
     ${PATH_BASE}/Lib_peripherals/i2c0/stub_i2c0_si2c2.c
@@ -160,9 +160,9 @@ target_link_libraries(libx_p PUBLIC system_compiler_flags)
 # Lib_xxxx components (user) -> liblibx_u.a
 # C library integration (conditional based on detected C library)
 if(C_LIBRARY STREQUAL "picolibc")
-    add_source_with_define(LIBX_U ${PATH_OSYS}/Lib_generics/picolibc/picolibc.c CONFIG_MAN_PICOLIBC_S)
+  add_source_with_define(LIBX_U ${PATH_OSYS}/Lib_generics/picolibc/picolibc.c CONFIG_MAN_PICOLIBC_S)
 else()
-    add_source_with_define(LIBX_U ${PATH_OSYS}/Lib_generics/newlib/newlib.c CONFIG_MAN_NEWLIB_S)
+  add_source_with_define(LIBX_U ${PATH_OSYS}/Lib_generics/newlib/newlib.c CONFIG_MAN_NEWLIB_S)
 endif()
 add_source_with_define(LIBX_U ${PATH_OSYS}/Lib_generics/text/text.c CONFIG_MAN_TEXT_S)
 add_source_with_define(LIBX_U ${PATH_OSYS}/Lib_neurals/mlpn/mlpn.c CONFIG_MAN_MLPN_S)
@@ -245,8 +245,8 @@ list(APPEND CLI_U
     ${PATH_OSYS}/CLI/X/X.c
 )
 if(WITHAPP)
-    list(APPEND CLI_U ${PATH_UKOS}/Applications/uKOS_Appls_Downloadable/l_MLPs/class_Py/class_Py.c)
-    add_compile_definitions(WITHAPP_S)
+  list(APPEND CLI_U ${PATH_UKOS}/Applications/uKOS_Appls_Downloadable/l_MLPs/class_Py/class_Py.c)
+  add_compile_definitions(WITHAPP_S)
 endif()
 add_library(tool_u ${CLI_U})
 target_link_libraries(tool_u PUBLIC system_compiler_flags)

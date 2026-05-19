@@ -3,20 +3,51 @@
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
- * Goal:     Model for generating random numbers.
- *           This takes advantages from the available
- *           hardware.
+ * Goal:     stub for the "random" manager module.
  */
 
 #include    <stdint.h>
 
 #include    "Registers/nvic.h"
-#include    "Registers/scb.h"
 #include    "kern/kern.h"
-#include    "macros.h"
 #include    "macros_core.h"
-#include    "macros_soc.h"
+#include    "os_errors.h"
+#include    "random/random.h"
 #include    "soc_reg.h"
+
+// Prototypes
+
+static  void    model_random_hard_init(void);
+static  void    model_random_hard_read(uint32_t *number);
+
+/*
+ * \brief stub_random_init
+ *
+ * - Initialise some specific CPU parts
+ *
+ */
+int32_t stub_random_init(void) {
+
+    model_random_soft_init();
+    model_random_hard_init();
+    return KERR_RANDOM_NOERR;
+}
+
+/*
+ * \brief stub_random_read
+ *
+ * - Return the random number
+ *
+ */
+int32_t stub_random_read(randomGenerator_t generator, uint32_t *number) {
+
+    if (generator == KRANDOM_SOFT) { model_random_soft_read(number); return KERR_RANDOM_NOERR; }
+    if (generator == KRANDOM_HARD) { model_random_hard_read(number); return KERR_RANDOM_NOERR; }
+    return KERR_RANDOM_GEERR;
+}
+
+// Local routines
+// ==============
 
 static              bool        vTerminated = false;
 static  volatile    uint32_t    *vNumber;
@@ -33,8 +64,7 @@ static  void    local_RNG_IRQHandler(void);
  */
 void    model_random_hard_init(void) {
 
-    REG(RCC)->AHB3ENR   |= RCC_AHB3ENR_RNGEN;
-    REG(RCC)->AHB3LPENR |= RCC_AHB3LPENR_RNGLPEN;
+    REG(RCC)->AHB2ENR1 |= RCC_AHB2ENR1_RNGEN;
 
     INTERRUPT_VECTOR(RNG_C0_IRQn, local_RNG_IRQHandler);
     NVIC_SetPriority(RNG_C0_IRQn, KINT_LEVEL_PERIPHERALS);

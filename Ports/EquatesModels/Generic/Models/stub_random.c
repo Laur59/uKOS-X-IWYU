@@ -3,7 +3,7 @@
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
- * Pico2_rp2350 – Stub for the random manager.
+ * Goal:     stub for the "random" manager module.
  */
 
 #include    <stdint.h>
@@ -45,4 +45,23 @@ int32_t stub_random_read(randomGenerator_t generator, uint32_t *number) {
 // Local routines
 // ==============
 
-#include    "model_random_hard.c_inc"       // IWYU pragma: keep
+/*
+ * \brief model_random_hard_init
+ *
+ * - Initialise the seed
+ *
+ */
+void    model_random_hard_init(void) {
+
+}
+
+/*
+ * \brief model_random_hard_read
+ *
+ * - Read a pseudo random number
+ *
+ */
+void    model_random_hard_read(uint32_t *number) {
+
+    model_random_soft_read(number);
+}

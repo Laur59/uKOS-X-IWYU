@@ -3,20 +3,52 @@
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
- * Goal:     Model for generating random numbers.
- *           This takes advantages from the available
- *           hardware.
+ * Nucleo_H743 – Stub for the random manager.
  */
 
 #include    <stdint.h>
 
 #include    "Registers/nvic.h"
-#include    "Registers/scb.h"
-#include    "exce.h"
 #include    "kern/kern.h"
-#include    "soc_reg.h"
 #include    "macros_core.h"
 #include    "macros_soc.h"
+#include    "os_errors.h"
+#include    "random/random.h"
+#include    "soc_reg.h"
+
+// Prototypes
+
+static  void    model_random_hard_init(void);
+static  void    model_random_hard_read(uint32_t *number);
+
+/*
+ * \brief stub_random_init
+ *
+ * - Initialise some specific CPU parts
+ *
+ */
+int32_t stub_random_init(void) {
+
+    model_random_soft_init();
+    model_random_hard_init();
+    return KERR_RANDOM_NOERR;
+}
+
+/*
+ * \brief stub_random_read
+ *
+ * - Return the random number
+ *
+ */
+int32_t stub_random_read(randomGenerator_t generator, uint32_t *number) {
+
+    if (generator == KRANDOM_SOFT) { model_random_soft_read(number); return KERR_RANDOM_NOERR; }
+    if (generator == KRANDOM_HARD) { model_random_hard_read(number); return KERR_RANDOM_NOERR; }
+    return KERR_RANDOM_GEERR;
+}
+
+// Local routines
+// ==============
 
 static              bool        vTerminated = false;
 static  volatile    uint32_t    *vNumber;
@@ -28,8 +60,11 @@ static  void    local_RNG_IRQHandler(void);
 /*
  * \brief model_random_hard_init
  *
- * - Initialise the hardware
+ * Goal:     Model for generating random numbers.
+ *           This takes advantages from the available
+ *           hardware.
  *
+ * - Initialise the hardware
  */
 void    model_random_hard_init(void) {
 
@@ -51,7 +86,7 @@ void    model_random_hard_read(uint32_t *number) {
     vNumber = number;
 
 // Turn on the RNG
-// The RNG delivers a new random number every 40 x (1 / 48-MHz) = 333-ns
+// The RNG delivers a new random number every 16 x (480-MHz / 48-MHz) = 160-ns
 // Configuration proposed by ST to comply with NIST SP800-90B
 
     vTerminated = false;
@@ -72,6 +107,7 @@ void    model_random_hard_read(uint32_t *number) {
  *
  */
 static  void    local_RNG_IRQHandler(void) {
+    uint8_t     i;
 
 // Is data ready, no seed error, no clock error
 
@@ -83,11 +119,13 @@ static  void    local_RNG_IRQHandler(void) {
     }
 
 // Seed error
-// Read 1 time to clear seed error
+// Read 12 time to clear seed error
 
     if ((RNG->SR & RNG_SR_SEIS) == RNG_SR_SEIS) {
         RNG->SR &= (uint32_t)~RNG_SR_SEIS;
-        RNG->DR;
+        for (i = 0U; i < 12U; i++) {
+            RNG->DR;
+        }
     }
 
 // Clock error

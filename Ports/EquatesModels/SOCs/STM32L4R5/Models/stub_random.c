@@ -8,8 +8,12 @@
 
 #include    <stdint.h>
 
+#include    "Registers/nvic.h"
+#include    "kern/kern.h"
+#include    "macros_core.h"
 #include    "os_errors.h"
 #include    "random/random.h"
+#include    "soc_reg.h"
 
 // Prototypes
 
@@ -45,14 +49,6 @@ int32_t stub_random_read(randomGenerator_t generator, uint32_t *number) {
 // Local routines
 // ==============
 
-// #include "model_random_hard.c_inc"
-
-#include    "Registers/nvic.h"
-#include    "kern/kern.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "soc_reg.h"
-
 static              bool        vTerminated = false;
 static  volatile    uint32_t    *vNumber;
 
@@ -66,11 +62,11 @@ static  void    local_RNG_IRQHandler(void);
  * - Initialise the hardware
  *
  */
-static  void    model_random_hard_init(void) {
+void    model_random_hard_init(void) {
 
     RCC->AHB2ENR |= RCC_AHB2ENR_RNGEN;
 
-    INTERRUPT_VECTOR(RNG_HASH_IRQn, local_RNG_IRQHandler);
+    INTERRUPT_VECTOR(RNG_HASH_C0_IRQn, local_RNG_IRQHandler);
     NVIC_SetPriority(RNG_HASH_C0_IRQn, KINT_LEVEL_PERIPHERALS);
     NVIC_EnableIRQ(RNG_HASH_C0_IRQn);
 }
@@ -81,7 +77,7 @@ static  void    model_random_hard_init(void) {
  * - Get a random number
  *
  */
-static  void    model_random_hard_read(uint32_t *number) {
+void    model_random_hard_read(uint32_t *number) {
 
     vNumber = number;
 
@@ -92,7 +88,7 @@ static  void    model_random_hard_read(uint32_t *number) {
     vTerminated = false;
     RNG->CR |= (RNG_CR_RNGEN | RNG_CR_IE);
 
-    while (vTerminated) {
+    while (!vTerminated) {
         kern_switchFast();
     }
 }
@@ -112,7 +108,7 @@ static  void    local_RNG_IRQHandler(void) {
 // Is data ready, no seed error, no clock error
 
     if (((RNG->SR & RNG_SR_DRDY) != 0U) && ((RNG->SR & RNG_SR_SEIS) == 0U) && ((RNG->SR & RNG_SR_CEIS) == 0U)) {
-        *vNumber = RNG->DR;
+        *vNumber = RNG->DR & KRAND_MAX;
         vTerminated = true;
         RNG->CR &= ~(RNG_CR_RNGEN | RNG_CR_IE);
         return;

@@ -1,0 +1,142 @@
+/*
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Pico2_rp2350 – Stub for the random manager.
+ */
+
+#include    <stdint.h>
+
+#include    "Registers/nvic.h"
+#include    "kern/kern.h"
+#include    "macros_core.h"
+#include    "os_errors.h"
+#include    "random/random.h"
+
+// Prototypes
+
+static  void    model_random_hard_init(void);
+static  void    model_random_hard_read(uint32_t *number);
+
+/*
+ * \brief stub_random_init
+ *
+ * - Initialise some specific CPU parts
+ *
+ */
+int32_t stub_random_init(void) {
+
+    model_random_soft_init();
+    model_random_hard_init();
+    return KERR_RANDOM_NOERR;
+}
+
+/*
+ * \brief stub_random_read
+ *
+ * - Return the random number
+ *
+ */
+int32_t stub_random_read(randomGenerator_t generator, uint32_t *number) {
+
+    if (generator == KRANDOM_SOFT) { model_random_soft_read(number); return KERR_RANDOM_NOERR; }
+    if (generator == KRANDOM_HARD) { model_random_hard_read(number); return KERR_RANDOM_NOERR; }
+    return KERR_RANDOM_GEERR;
+}
+
+// Local routines
+// ==============
+
+static              bool        vTerminated = false;
+static  volatile    uint32_t    *vNumber;
+
+// Prototypes
+
+static  void    local_TRNG_IRQHandler(void);
+
+/*
+ * \brief model_random_hard_init
+ *
+ * - Initialise the hardware
+ *
+ */
+void    model_random_hard_init(void) {
+
+// Take the TRNG out of reset and wait until it is ready
+
+    REG(RESETS)->RESET &= (uint32_t)~RESETS_RESET_TRNG;
+    while ((REG(RESETS)->RESET_DONE & RESETS_RESET_DONE_TRNG) == 0U) {}
+
+// Mask every TRNG interrupt source except EHR_VALID
+
+    REG(TRNG)->RNG_IMR = (uint32_t)~TRNG_RNG_IMR_EHR_VALID_INT_MASK;
+
+    INTERRUPT_VECTOR(TRNG_IRQ_C0_IRQn, local_TRNG_IRQHandler);
+    NVIC_SetPriority(TRNG_IRQ_C0_IRQn, KINT_LEVEL_PERIPHERALS);
+    NVIC_EnableIRQ(TRNG_IRQ_C0_IRQn);
+}
+
+/*
+ * \brief model_random_hard_read
+ *
+ * - Get a random number
+ *
+ */
+void    model_random_hard_read(uint32_t *number) {
+
+    vNumber = number;
+
+// Clear any stale status, select the ring-oscillator source, set the
+// recommended sample count and start a 192-bit sampling round.
+
+    vTerminated = false;
+    REG(TRNG)->RNG_ICR           = 0xFFFFFFFFU;
+    REG(TRNG)->CONFIG            = 0U;
+    REG(TRNG)->SAMPLE_CNT1       = 0x0000FFFFU;
+    REG(TRNG)->RND_SOURCE_ENABLE = TRNG_RND_SOURCE_ENABLE_RND_SRC_EN;
+
+    while (!vTerminated) {
+        kern_switchFast();
+    }
+}
+
+// Local routines
+// ==============
+
+/*
+ * \brief local_TRNG_IRQHandler
+ *
+ * - Interruption new number
+ *
+ */
+static  void    local_TRNG_IRQHandler(void) {
+    volatile    uint32_t    drop;
+
+// Data ready: extract one 32-bit word, then drain the remaining EHR words
+// to release the engine for the next round.
+
+    if ((REG(TRNG)->RNG_ISR & TRNG_RNG_ISR_EHR_VALID) != 0U) {
+        *vNumber = REG(TRNG)->EHR_DATA0 & KRAND_MAX;
+
+        drop = REG(TRNG)->EHR_DATA1;
+        drop = REG(TRNG)->EHR_DATA2;
+        drop = REG(TRNG)->EHR_DATA3;
+        drop = REG(TRNG)->EHR_DATA4;
+        drop = REG(TRNG)->EHR_DATA5;
+        (void)drop;
+
+        REG(TRNG)->RND_SOURCE_ENABLE = 0U;
+        REG(TRNG)->RNG_ICR           = TRNG_RNG_ICR_EHR_VALID;
+        vTerminated = true;
+        return;
+    }
+
+// Health-test failure: clear and restart the source so the next round retries
+
+    if ((REG(TRNG)->RNG_ISR & (TRNG_RNG_ISR_AUTOCORR_ERR | TRNG_RNG_ISR_CRNGT_ERR | TRNG_RNG_ISR_VN_ERR)) != 0U) {
+        REG(TRNG)->RND_SOURCE_ENABLE = 0U;
+        REG(TRNG)->RNG_ICR           = (TRNG_RNG_ICR_AUTOCORR_ERR | TRNG_RNG_ICR_CRNGT_ERR | TRNG_RNG_ICR_VN_ERR);
+        REG(TRNG)->RND_SOURCE_ENABLE = TRNG_RND_SOURCE_ENABLE_RND_SRC_EN;
+    }
+}
