@@ -6,6 +6,8 @@
  * Goal:     Vectors for the uKOS-X system (first).
  */
 
+#include    "first.h"
+
 #include    <stdint.h>
 
 #include    "core.h"

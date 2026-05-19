@@ -367,8 +367,8 @@ int32_t imgk_release(reserveMode_t reserveMode) {
  * int32_t    status;
  * const      cnfImgk_t    configure = {
  *                             .oPixMode  = PIX8BITS;
- *                             .oNbRows   = 60;
- *                             .oNbCols   = 60;
+ *                             .oImagerNbRows = 60;
+ *                             .oImagerNbCols = 60;
  *                         };
  *
  *    status = imgk_configure(&configure);

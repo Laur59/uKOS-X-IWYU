@@ -35,6 +35,9 @@ typedef enum {
 extern  "C" {
 #endif
 
+extern  void    model_random_soft_init(void);
+extern  void    model_random_soft_read(uint32_t *number);
+
 extern  int32_t stub_random_init(void);
 extern  int32_t stub_random_read(randomGenerator_t generator, uint32_t *number);
 

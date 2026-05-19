@@ -15,6 +15,7 @@
 #include    "board.h"
 #include    "cmns.h"
 #include    "core.h"
+#include    "first.h"
 #include    "macros.h"
 #include    "macros_core.h"
 #include    "macros_soc.h"
@@ -52,7 +53,6 @@ MODULE(
         uintptr_t   vVectors[KNB_EXCEPTIONS + KNB_INTERRUPTIONS];
         void        (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
         void        (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
-extern  void        (* const g_pfnVectors_C0[])(void);
 
 // Prototypes
 

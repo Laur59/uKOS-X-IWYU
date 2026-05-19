@@ -80,8 +80,6 @@ static  volatile    bool        vTimeout       = false;                         
 
 // Prototypes
 
-extern  uintptr_t   vVectors[];                                         // Relocated VTOR (provided by the board's exce.c)
-
 #if (KKERN_NB_PRECISE_SIGNALS > 0)
 static  void        local_TIM4_IRQHandler(void);
 static  void        local_nextTime(uint64_t absTime);

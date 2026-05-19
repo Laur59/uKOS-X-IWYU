@@ -177,8 +177,8 @@ int32_t imager_release(reserveMode_t reserveMode) {
  * const    cnfImgx_t    configure = {
  *                           .oAcqMode  = KIMAGER_CONT | KIMAGER_SINGLE_BUFFER;
  *                           .oPixMode  = KIMAGER_PIX_8_BITS;
- *                           .oNbRows   = 60;
- *                           .oNbCols   = 60;
+ *                           .oImagerNbRows = 60;
+ *                           .oImagerNbCols = 60;
  *                           .oKernSync = (1U<<BIMAGER_SEMAPHORE_IM) | (1U<<BIMAGER_SEMAPHORE_VS);
  *                           .oHSync    = nullptr;
  *                           .oFrame    = nullptr;
@@ -191,8 +191,8 @@ int32_t imager_release(reserveMode_t reserveMode) {
  * const    cnfImgx_t    configure = {
  *                           .oAcqMode  = KIMAGER_CONT;
  *                           .oPixMode  = KIMAGER_PIX_8_BITS;
- *                           .oNbRows   = 60;
- *                           .oNbCols   = 60;
+ *                           .oImagerNbRows = 60;
+ *                           .oImagerNbCols = 60;
  *                           .oKernSync = (1U<<BIMAGER_SEMAPHORE_IM) | (1U<<BIMAGER_SEMAPHORE_VS);
  *                           .oHSync    = nullptr;
  *                           .oFrame    = nullptr;

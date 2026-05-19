@@ -17,6 +17,7 @@
 #include    "macros_core_stackFrame.h"
 #include    "macros_soc.h"
 #include    "os_errors.h"
+#include    "ui.h"
 
 #define KLVGL_MUTEX_API     "Protect_LVGL_API"
 

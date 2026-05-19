@@ -31,14 +31,18 @@ INCLUDE     STM32H743xI.ld
 
 /* Mapping:                                                 */
 /*                                                          */
-/* RAM1:    stPrgmData          0x30000000                  */
-/*          (128 + 128 + 32)K                               */
-/* EXT:     stHeap              0x70000000                  */
-/*          8192K                                           */
-/*          stUMemo             0x70800000                  */
-/*          8192K                                           */
-/*          stFrameBuffer       0x71000000                  */
-/*          16384K                                          */
+/* RAM1:    Stacks              0x30000000                  */
+/*            6K                                            */
+/*          Program Data        0x30001800                  */
+/*            122K +                                        */
+/* RAM2:      128K +                                        */
+/* RAM2:      32K                                           */
+/* EXT:     Heap                0x70000000                  */
+/*            8192K                                         */
+/*          User Memory         0x70800000                  */
+/*            8192K                                         */
+/*          Frame Buffer        0x71000000                  */
+/*            16384K                                        */
 
 linker_sizeStackSystem_C0   = (4K);                                                 /* Length of the System stack                               */
 linker_sizeStackFirst_C0    = (2K);                                                 /* Length of the First stack                                */
@@ -104,7 +108,10 @@ linker_ST_RAM_INT_2         = stm_stSRAM4;                                      
 linker_SZ_RAM_INT_2         = 15;                                                   /* 64-K = 2^(SZ + 1), SZ = log2(64-K) - 1                   */
 
 linker_ST_RAM_EXT_0         = linker_stEXRAM;                                       /* 0x70000000: Privileged/User RAM                          */
-linker_SZ_RAM_EXT_0         = 24;                                                   /* 32-M = 2^(SZ + 1), SZ = log2(32-M) - 1                   */
+linker_SZ_RAM_EXT_0         = 23;                                                   /* 32-M = 2^(SZ + 1), SZ = log2(32-M) - 1                   */
+
+linker_ST_RAM_EXT_1         = linker_stFrameBuffer;                                 /* 0x71000000: Privileged/User RAM (no cache)               */
+linker_SZ_RAM_EXT_1         = 23;                                                   /* 16-M = 2^(SZ + 1), SZ = log2(16-M) - 1                   */
 
 MEMORY {
     prgm_code (rx)  : ORIGIN = linker_stPrgmCode, LENGTH = linker_lnPrgmCode

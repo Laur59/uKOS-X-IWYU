@@ -122,7 +122,7 @@ add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_serials/urt0/urt0.c CONFIG_MAN_UR
 add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_serials/urt1/urt1.c CONFIG_MAN_URT1_S)
 add_source_with_define(LIBX_P ${PATH_OSYS}/Lib_serials/urt2/urt2.c CONFIG_MAN_URT2_S)
 list(APPEND LIBX_P
-    ${PATH_BASE}/Lib_cryptographics/random/stub_random.c
+    ${PATH_PORT}/EquatesModels/SOCs/${SOC}/Models/stub_random.c
     ${PATH_BASE}/Lib_generics/machine/stub_machine.c
     ${PATH_BASE}/Lib_peripherals/led/stub_led.c
     ${PATH_BASE}/Lib_peripherals/switch/stub_switch.c
@@ -137,9 +137,9 @@ target_link_libraries(libx_p PUBLIC system_compiler_flags ${TINYUSB})
 # Lib_xxxx components (user) -> liblibx_u.a
 # C library integration (conditional based on detected C library)
 if(C_LIBRARY STREQUAL "picolibc")
-    add_source_with_define(LIBX_U ${PATH_OSYS}/Lib_generics/picolibc/picolibc.c CONFIG_MAN_PICOLIBC_S)
+  add_source_with_define(LIBX_U ${PATH_OSYS}/Lib_generics/picolibc/picolibc.c CONFIG_MAN_PICOLIBC_S)
 else()
-    add_source_with_define(LIBX_U ${PATH_OSYS}/Lib_generics/newlib/newlib.c CONFIG_MAN_NEWLIB_S)
+  add_source_with_define(LIBX_U ${PATH_OSYS}/Lib_generics/newlib/newlib.c CONFIG_MAN_NEWLIB_S)
 endif()
 add_source_with_define(LIBX_U ${PATH_OSYS}/Lib_generics/text/text.c CONFIG_MAN_TEXT_S)
 add_source_with_define(LIBX_U ${PATH_OSYS}/Lib_neurals/mlpn/mlpn.c CONFIG_MAN_MLPN_S)

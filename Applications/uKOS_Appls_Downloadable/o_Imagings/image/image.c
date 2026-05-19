@@ -23,19 +23,20 @@
 #include    <stdio.h>
 #include    <stdlib.h>
 
+#include    "MT9V03x/MT9V03x.h"
 #include    "crt0.h"
-#include    "serial/serial.h"
 #include    "imager/imager.h"
 #include    "imager_common.h"
 #include    "kern/kern.h"
+#include    "led/led.h"
 #include    "macros.h"
 #include    "macros_core.h"
 #include    "macros_core_stackFrame.h"
 #include    "memo/memo.h"
-#include    "led/led.h"
 #include    "modules.h"
 #include    "os_errors.h"
 #include    "record/record.h"
+#include    "serial/serial.h"
 #include    "types.h"
 
 // uKOS-X specific (see the module.h)
@@ -126,8 +127,10 @@ static void aProcess_acquisition(const void *argument) {
     configureIMG0.oPixMode  = KIMAGER_PIX_8_BITS;
     configureIMG0.oStRows   = 0U;
     configureIMG0.oStCols   = 0U;
-    configureIMG0.oNbRows   = (uint16_t)vH;
-    configureIMG0.oNbCols   = (uint16_t)vW;
+    configureIMG0.oImagerNbRows = KIMAGER_NB_ROWS;
+    configureIMG0.oImagerNbCols = KIMAGER_NB_COLS;
+    configureIMG0.oFrameNbRows  = (uint16_t)vH;
+    configureIMG0.oFrameNbCols  = (uint16_t)vW;
     configureIMG0.oKernSync = 0U;
     configureIMG0.oHSync    = nullptr;
     configureIMG0.oFrame    = nullptr;
