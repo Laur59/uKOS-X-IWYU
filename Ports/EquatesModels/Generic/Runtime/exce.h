@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include    <stdint.h>
+
 #include    "macros_soc.h"      // KNB_CORES
 #include    "soc_reg.h"         // KNB_EXCEPTIONS, KNB_INTERRUPTIONS (via Registers/soc_vectors*.h)
 
@@ -18,6 +20,7 @@ extern  "C" {
 // Public variables
 // ----------------
 
+extern  uintptr_t   vVectors[KNB_EXCEPTIONS + KNB_INTERRUPTIONS];
 extern  void    (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
 extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
 
