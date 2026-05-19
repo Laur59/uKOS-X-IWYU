@@ -13,8 +13,6 @@
 
 // Prototypes
 
-static  void    model_random_soft_init(void);
-static  void    model_random_soft_read(uint32_t *number);
 static  void    model_random_hard_init(void);
 static  void    model_random_hard_read(uint32_t *number);
 
@@ -47,7 +45,6 @@ int32_t stub_random_read(randomGenerator_t generator, uint32_t *number) {
 // Local routines
 // ==============
 
-#include    "model_random_soft.c_inc"   // IWYU pragma: keep (workaround for app)
 // #include "model_random_hard.c_inc"
 
 #include    "Registers/nvic.h"

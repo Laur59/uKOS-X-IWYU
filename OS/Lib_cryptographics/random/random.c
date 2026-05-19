@@ -1,8 +1,9 @@
 /*
  * SPDX-License-Identifier: MIT
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
- * Goal:     random manager.
+ * Random number manager — mutex-protected pool read, soft LCG implementation.
  */
 
 #include    "random.h"
@@ -10,10 +11,10 @@
 #include    <stdint.h>
 #include    <stdlib.h>
 
+#include    "macros_soc.h"
+#include    "macros_core.h"
 #include    "kern/kern.h"
 #include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
 #include    "modules.h"
 #include    "os_errors.h"
 #include    "record/record.h"
@@ -105,6 +106,49 @@ int32_t random_read(randomGenerator_t generator, uint32_t *number, uint32_t nbNu
 
 // Local routines
 // ==============
+
+// !!! Only positive constants
+
+#define Ka  1103515245U
+#define Kc  12345U
+#define Km  KRAND_MAX
+
+extern  uint32_t    vCrt0_randomSeed;
+static  uint32_t    vSeed[KNB_CORES] = MCSET(0U);
+
+/*
+ * \brief model_random_soft_init
+ *
+ * - Initialise the seed
+ *
+ */
+void    model_random_soft_init(void) {
+    uint32_t    core;
+
+    core = GET_RUNNING_CORE;
+
+    vSeed[core] = vCrt0_randomSeed;
+}
+
+/*
+ * \brief model_random_soft_read
+ *
+ * - Read a pseudo random number
+ *
+ */
+void    model_random_soft_read(uint32_t *number) {
+    uint32_t    core;
+
+    core = GET_RUNNING_CORE;
+
+// X[n + 1] = (Ka * X[n] + Kc) * mod(Km)
+// With X[n] = vSeed
+
+    INTERRUPTION_OFF;
+    vSeed[core] = ((Ka * vSeed[core]) + Kc) % Km;
+    *number = vSeed[core];
+    INTERRUPTION_RESTORE;
+}
 
 /*
  * \brief local_init

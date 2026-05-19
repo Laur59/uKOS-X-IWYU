@@ -15,6 +15,7 @@
 #include    "exce.h"
 #include    "kern/kern.h"
 #include    "soc_reg.h"
+#include    "macros_core.h"
 #include    "macros_soc.h"
 
 static              bool        vTerminated = false;

@@ -11,6 +11,7 @@
 #include    "Registers/nvic.h"
 #include    "exce.h"
 #include    "kern/kern.h"
+#include    "macros_core.h"
 #include    "macros_soc.h"
 #include    "soc_reg.h"
 
