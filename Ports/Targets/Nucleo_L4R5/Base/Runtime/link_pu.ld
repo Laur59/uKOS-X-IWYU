@@ -38,24 +38,20 @@ INCLUDE     STM32L4R5xx.ld
 
 /* Mapping:                                                 */
 /*                                                          */
-/* RAM1:  Protected             0x20000000                  */
-/*          Stack System        0x20000000                  */
-/*          4K                                              */
-/*          Program Data (P)    0x20001000                  */
-/*          60K                                             */
-/*        Unprotected           0x20010000                  */
-/*          Stack First         0x20010000                  */
-/*          2K                                              */
-/*          Program Data (U)    0x20010800                  */
-/*          62K                                             */
-/*          Heap                0x20020000                  */
-/*          64K                                             */
-/* RAM2:    Heap                0x20030000                  */
-/*          64K                                             */
-/* RAM3:    Heap                0x20040000                  */
-/*          320K                                            */
-/*          User Memory         0x20090000                  */
-/*          64K                                             */
+/* RAM1:     Stack System        0x20000000  (Protected)    */
+/*            └ 4K                                          */
+/*           Program Data        0x20001000  (Protected)    */
+/*            └ 60K                                         */
+/*           Stack First         0x20010000  (User)         */
+/*            └ 2K                                          */
+/*           Program Data        0x20010800  (User)         */
+/*            └ 62K                                         */
+/*           Heap                0x20020000  (User)         */
+/*            ├ 64K                                         */
+/* RAM2:      ├ 64K              0x20030000                 */
+/* RAM3:      └ 320K             0x20040000                 */
+/*           User Memory         0x20090000  (User)         */
+/*            └ 64K                                         */
 
 linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
 linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */

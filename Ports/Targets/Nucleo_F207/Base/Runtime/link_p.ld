@@ -32,17 +32,15 @@ INCLUDE     STM32F207xx.ld
 
 /* Mapping:                                                 */
 /*                                                          */
-/* RAM1:    Stacks              0x20000000                  */
-/*            Stack First       0x20000000                  */
-/*            2K                                                */
-/*            Stack System      0x20000800                  */
-/*            4K                                                */
-/*          Program Data        0x20001800                  */
-/*          74K                                             */
-/*          stHeap              0x20014000                  */
-/*          28K                                             */
-/*          stUMemo             0x2001B000                  */
-/*          20K                                             */
+/* RAM1:     Stacks              0x20000000                 */
+/*            └ 6K                                          */
+/*           Program Data        0x20001800                 */
+/*            └ 74K                                         */
+/*           Heap                0x20014000                 */
+/*            └ 28K                                         */
+/*           User Memory         0x2001B000                 */
+/*            ├  4K                                         */
+/* RAM2:      └ 16K              0x2001C000                 */
 
 linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
 linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */

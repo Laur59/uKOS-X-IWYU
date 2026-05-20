@@ -38,24 +38,24 @@ INCLUDE     nRF5340xx.ld
 
 /* Mapping:                                                 */
 /*                                                          */
-/* RAM:     Protected           0x20000000                  */
-/*            Stack System      0x20000000                  */
-/*            4K                                            */
-/*            Program Data (P)  0x20001000                  */
-/*            124K                                          */
-/*          Unprotected         0x20020000                  */
-/*            Stack First       0x20020000                  */
-/*            2K                                            */
-/*            Program Data (U)  0x20020800                  */
-/*            126K                                          */
-/*            Heap              0x20040000                  */
-/*            128K                                          */
-/*            User Memory       0x20060000                  */
-/*            64K                                           */
-/*          For NET cpu         0x20070000                  */
-/*            32K                                           */
-/*          Share               0x20078000                  */
-/*            32K                                           */
+/* RAM:      Protected           0x20000000                 */
+/*           Stack System        0x20000000                 */
+/*            └ 4K                                          */
+/*           Program Data (P)    0x20001000                 */
+/*            └ 124K                                        */
+/*           Unprotected         0x20020000                 */
+/*           Stack First         0x20020000                 */
+/*            └ 2K                                          */
+/*           Program Data (U)    0x20020800                 */
+/*            └ 126K                                        */
+/*           Heap                0x20040000                 */
+/*            └ 128K                                        */
+/*           User Memory         0x20060000                 */
+/*            └ 64K                                         */
+/*           For NET cpu         0x20070000                 */
+/*            └ 32K                                         */
+/*           Share               0x20078000                 */
+/*            └ 32K                                         */
 
 linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
 linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */

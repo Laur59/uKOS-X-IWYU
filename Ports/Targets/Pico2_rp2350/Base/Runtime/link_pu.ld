@@ -38,22 +38,20 @@ INCLUDE     rp2350.ld
 
 /* Mapping:                                                 */
 /*                                                          */
-/* RAM:     Protected           0x20000000                  */
-/*            Stack System      0x20000000                  */
-/*            8K                                            */
-/*            Program Data (P)  0x20002000                  */
-/*            88K                                           */
-/*          Unprotected         0x20010000                  */
-/*            Stack First       0x20010000                  */
-/*            4K                                            */
-/*            Program Data (U)  0x20011000                  */
-/*            92K                                           */
-/*            Heap              0x20030000                  */
-/*            128K                                          */
-/*            User Memory       0x20050000                  */
-/*            136K                                          */
-/*            Share             0x20072000                  */
-/*            64K                                           */
+/* SRAM:     Stack System        0x20000000  (Protected)    */
+/*            └ 8K                                          */
+/*           Program Data        0x20002000  (Protected)    */
+/*            └ 88K                                         */
+/*           Stack First         0x20010000  (User)         */
+/*            └ 4K                                          */
+/*           Program Data        0x20011000  (User)         */
+/*            └ 92K                                         */
+/*           Heap                0x20030000  (User)         */
+/*            └ 128K                                        */
+/*           User Memory         0x20050000  (User)         */
+/*            └ 136K                                        */
+/*           Share               0x20072000  (User)         */
+/*            └ 64K                                         */
 
 linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
 linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */

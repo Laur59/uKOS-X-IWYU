@@ -36,18 +36,18 @@ INCLUDE     K210.ld
 
 /* Mapping:                                                 */
 /*                                                          */
-/* RAM:     Program Code        0x80000000                  */
-/*          2M                                              */
-/*          Stacks              0x80200000                  */
-/*          8K                                              */
-/*          Program Data        0x80202000                  */
-/*          504K                                            */
-/*          Heap                0x80300000                  */
-/*          1M                                              */
-/*          User Memory         0x80400000                  */
-/*          1M - 64K                                        */
-/*          Share               0x804F0000                  */
-/*          64K                                             */
+/* RAM:      Program Code        0x80000000                 */
+/*            └ 2M                                          */
+/*           Stacks              0x80200000                 */
+/*            └ 8K                                          */
+/*           Program Data        0x80202000                 */
+/*            └ 504K                                        */
+/*           Heap                0x80300000                 */
+/*            └ 1M                                          */
+/*           User Memory         0x80400000                 */
+/*            └ 1M - 64K                                    */
+/*           Share               0x804F0000                 */
+/*            └ 64K                                         */
 
 linker_sizeStackFirst_C0    = (4K);                                                         /* Length of the First stack for core 0                     */
 linker_sizeStackSystem_C0   = (0);                                                          /* Length of the System stack for core 0                    */

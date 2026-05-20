@@ -38,18 +38,19 @@ INCLUDE     STM32F207xx.ld
 
 /* Mapping:                                                 */
 /*                                                          */
-/* RAM1:    Stack System        0x20000000                  */
-/*            4K                                            */
-/*          Program Data (P)    0x20001000                  */
-/*            28K                                           */
-/*          Stack First         0x20008000                  */
-/*            2K                                            */
-/*          Program Data (U)    0x20008800                  */
-/*            46K                                           */
-/*          stHeap              0x20014000                  */
-/*            26K                                           */
-/*          stUMemo             0x2001A800                  */
-/*            22K                                           */
+/* RAM1:     Stack System        0x20000000  (Protected)    */
+/*            └ 4K                                          */
+/*           Program Data        0x20001000  (Protected)    */
+/*            └ 28K                                         */
+/*           Stack First         0x20008000  (User)         */
+/*            └ 2K                                          */
+/*           Program Data        0x20008800  (User)         */
+/*            └ 46K                                         */
+/*           Heap                0x20014000  (User)         */
+/*            └ 26K                                         */
+/*           User Memory         0x2001A800  (User)         */
+/*            ├  6K                                         */
+/* RAM2:      └ 16K              0x2001C000  (User)         */
 
 linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
 linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */

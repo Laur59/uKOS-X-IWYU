@@ -31,21 +31,23 @@ INCLUDE     STM32H743xI.ld
 
 /* Mapping:                                                 */
 /*                                                          */
-/* RAM1:    Stacks              0x30000000                  */
-/*            6K                                            */
-/*          Program Data        0x30001800                  */
-/*            122K +                                        */
-/* RAM2:      128K +                                        */
-/* RAM2:      32K                                           */
-/* EXT:     Heap                0x70000000                  */
-/*            8192K                                         */
-/*          User Memory         0x70800000                  */
-/*            8192K                                         */
-/*          Frame Buffer        0x71000000                  */
-/*            16384K                                        */
+/* RAM1:     Stacks              0x30000000                 */
+/*            └ 6K                                          */
+/*           Program Data        0x30001800                 */
+/*            ├ 122K                                        */
+/* RAM2:      ├ 128K             0x30020000                 */
+/* RAM3:      └  32K             0x30040000                 */
+/* External: Heap                0x70000000                 */
+/*            └ 8192K                                       */
+/*           User Memory         0x70800000                 */
+/*            └ 8192K                                       */
+/*           Frame Buffer        0x71000000                 */
+/*            └ 16384K                                      */
 
 linker_sizeStackSystem_C0   = (4K);                                                 /* Length of the System stack                               */
 linker_sizeStackFirst_C0    = (2K);                                                 /* Length of the First stack                                */
+config_sizeData             = stm_lnSRAM123 - linker_sizeStackSystem_C0 - linker_sizeStackFirst_C0;
+config_sizeHeap             = (8192K);
 
 /* IMPORTANT:                                               */
 /* all the stacks have to be maintained aligned             */

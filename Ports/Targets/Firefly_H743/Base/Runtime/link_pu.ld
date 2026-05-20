@@ -37,20 +37,29 @@ INCLUDE     STM32H743xI.ld
 
 /* Mapping:                                                 */
 /*                                                          */
-/* RAM1:    stPrgmData_u        0x30000000                  */
-/*          (128 + 128 + 32)K                               */
-/* RAM4:    stPrgmData_p        0x38000000                  */
-/*          64K                                             */
-/* EXT:     stHeap              0x70000000                  */
-/*          8192K                                           */
-/*          stUMemo             0x70800000                  */
-/*          8192K                                           */
-/*          stFrameBuffer       0x71000000                  */
-/*          16384K                                          */
+/* RAM1:     Stack First         0x30000000  (User)         */
+/*            └ 2K                                          */
+/*           Program Data        0x30000800  (User)         */
+/*            ├ 126K                                        */
+/* RAM2:      ├ 128K             0x30020000  (User)         */
+/* RAM3:      └  32K             0x30040000  (User)         */
+/* RAM4:     Stack System        0x38000000  (Protected)    */
+/*            └ 4K                                          */
+/*           Program Data        0x38001000  (Protected)    */
+/*            └ 60K                                         */
+/* External: Heap                0x70000000  (User)         */
+/*            └ 8192K                                       */
+/*          User Memory          0x70800000  (User)         */
+/*            └ 8192K                                       */
+/*          Frame Buffer         0x71000000  (User)         */
+/*            └ 16384K                                      */
 
 linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
 linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */
-config_sizeData_p           = (62K);
+config_sizeData_u           = stm_lnSRAM123 - linker_sizeStackFirst_C0;
+config_sizeData_p           = stm_lnSRAM4 - linker_sizeStackSystem_C0;
+config_sizeHeap             = (16384K);
+config_sizeUserMemory       = (16384K);
 
 /* IMPORTANT:                                               */
 /* all the stacks have to be maintained aligned             */

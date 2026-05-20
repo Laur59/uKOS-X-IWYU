@@ -32,16 +32,16 @@ INCLUDE     rp2350.ld
 
 /* Mapping:                                                 */
 /*                                                          */
-/* RAM:     Stacks              0x20000000                  */
-/*          12K                 0x20000000                  */
-/*          Program Data        0x20003000                  */
-/*          180K                                            */
-/*          Heap                0x20030000                  */
-/*          128K                                            */
-/*          User Memory         0x20050000                  */
-/*          72K                                             */
-/*          Share               0x20062000                  */
-/*          64K                                             */
+/* SRAM:     Stacks              0x20000000                 */
+/*            └ 12K                                         */
+/*           Program Data        0x20003000                 */
+/*            └ 180K                                        */
+/*           Heap                0x20030000                 */
+/*            └ 128K                                        */
+/*           User Memory         0x20050000                 */
+/*            └ 136K                                        */
+/*           Share               0x20072000                 */
+/*            └ 64K                                         */
 
 linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
 linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */
@@ -49,7 +49,7 @@ linker_sizeStackSystem_C1   = (4K);                                             
 linker_sizeStackFirst_C1    = (2K);                                                         /* Length of the First stack                                */
 config_sizeData             = (180K);
 config_sizeHeap             = (128K);
-config_sizeUserMemory       = (72K);
+config_sizeUserMemory       = (136K);
 config_sizeShare            = (64K);
 
 /* IMPORTANT:                                               */

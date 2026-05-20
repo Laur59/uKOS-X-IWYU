@@ -32,16 +32,15 @@ INCLUDE     STM32H747xI.ld
 
 /* Mapping:                                                 */
 /*                                                          */
-/* RAM1:    Stacks              0x30000000                  */
-/*          6K                                              */
-/*          Program Data        0x30001800                  */
-/*          122K                                            */
-/* RAM2:    Heap                0x30020000                  */
-/*          128K                                            */
-/* RAM3:    Heap                0x30040000                  */
-/*          32K                                             */
-/* RAM4:    Share               0x38000000                  */
-/*          64K                                             */
+/* RAM1:     Stacks              0x30000000                 */
+/*            └ 6K                                          */
+/*           Program Data        0x30001800                 */
+/*            └ 122K                                        */
+/* RAM2:     Heap                0x30020000                 */
+/*            ├ 128K                                        */
+/* RAM3:      └ 32K              0x30040000                 */
+/* RAM4:     Share               0x38000000                 */
+/*            └ 64K                                         */
 
 linker_sizeStackSystem_C0   = (4K);                                                         /* 0x00001000: Length of the System stack                   */
 linker_sizeStackFirst_C0    = (2K);                                                         /* 0x00000800: Length of the First stack                    */

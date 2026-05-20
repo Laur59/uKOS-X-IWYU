@@ -38,21 +38,21 @@ INCLUDE     nRF5340xx.ld
 
 /* Mapping:                                                 */
 /*                                                          */
-/* RAM_NET: Protected           0x21000000                  */
-/*            Stack System      0x21000000                  */
-/*            4K                                            */
-/*            Program Data (P)  0x21001000                  */
-/*            28K                                           */
-/*          Unprotected         0x21008000                  */
-/*            Stack First       0x21008000                  */
-/*            2K                                            */
-/*            Program Data (U)  0x21008800                  */
-/*            30K                                           */
-/* RAM:     For NET cpu         0x20070000                  */
-/*            Heap              0x20070000                  */
-/*            32K                                           */
-/*          Share               0x20078000                  */
-/*            32K                                           */
+/* RAM_NET:  Protected           0x21000000                 */
+/*           Stack System        0x21000000                 */
+/*            └ 4K                                          */
+/*           Program Data        0x21001000                 */
+/*            └ 28K                                         */
+/*           Unprotected         0x21008000                 */
+/*           Stack First         0x21008000                 */
+/*            └ 2K                                          */
+/*           Program Data        0x21008800                 */
+/*            └ 30K                                         */
+/* RAM:      For NET cpu         0x20070000                 */
+/*           Heap                0x20070000                 */
+/*            └ 32K                                         */
+/*           Share               0x20078000                 */
+/*            └ 32K                                         */
 
 linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
 linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */

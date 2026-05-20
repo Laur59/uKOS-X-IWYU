@@ -38,22 +38,20 @@ INCLUDE     STM32H747xI.ld
 
 /* Mapping:                                                 */
 /*                                                          */
-/* AXI:     Protected           0x24000000                  */
-/*            Stack System      0x24000000                  */
-/*            4K                                            */
-/*            Program Data (P)  0x24001000                  */
-/*            60K                                           */
-/*          Unprotected         0x24010000                  */
-/*            Stack First       0x24010000                  */
-/*            2K                                            */
-/*            Program Data (U)  0x24010800                  */
-/*            446K                                          */
-/* RAM4:    Share               0x38000000                  */
-/*          64K                                             */
-/* EXT:     Heap                0x70000000                  */
-/*          2048K                                           */
-/*          User Memory         0x70200000                  */
-/*          6144K                                           */
+/* AXI:      Stack System        0x24000000  (Protected)    */
+/*            └ 4K                                          */
+/*           Program Data        0x24001000  (Protected)    */
+/*            └ 60K                                         */
+/*           Stack First         0x24010000  (User)         */
+/*            └ 2K                                          */
+/*           Program Data        0x24010800  (User)         */
+/*            └ 446K                                        */
+/* RAM4:     Share               0x38000000  (User)         */
+/*            └ 64K                                         */
+/* External: Heap                0x70000000  (User)         */
+/*            └ 2048K                                       */
+/*           User Memory         0x70200000  (User)         */
+/*            └ 6144K                                       */
 
 linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
 linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */

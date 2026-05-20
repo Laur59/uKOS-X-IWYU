@@ -32,18 +32,16 @@ INCLUDE     STM32L4R5xx.ld
 
 /* Mapping:                                                 */
 /*                                                          */
-/* RAM1:    Stacks              0x20000000                  */
-/*          6K                                              */
-/*          Program Data        0x20001800                  */
-/*          58K                                             */
-/*          Heap                0x20010000                  */
-/*          128K                                            */
-/* RAM2:    Heap                0x20030000                  */
-/*          64K                                             */
-/* RAM3:    Heap                0x20040000                  */
-/*          320K                                            */
-/*          User Memory         0x20090000                  */
-/*          64K                                             */
+/* RAM1:     Stacks              0x20000000                 */
+/*            └ 6K                                          */
+/*           Program Data        0x20001800                 */
+/*            └ 58K                                         */
+/*           Heap                0x20010000                 */
+/*            ├ 128K                                        */
+/* RAM2:      ├ 64K              0x20030000                 */
+/* RAM3:      └ 320K             0x20040000                 */
+/*           User Memory         0x20090000                 */
+/*            └ 64K                                         */
 
 linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
 linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */

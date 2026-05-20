@@ -38,24 +38,22 @@ INCLUDE     STM32U5G9xJ.ld
 
 /* Mapping:                                                 */
 /*                                                          */
-/* RAM1:    Protected           0x30000000                  */
-/*            Stack System      0x30000000                  */
-/*            4K                                            */
-/*            Program Data (P)  0x30001000                  */
-/*            124K                                          */
-/*          Unprotected         0x30020000                  */
-/*            Stack First       0x30020000                  */
-/*            2K                                            */
-/*            Program Data (U)  0x30020800                  */
-/*            126K                                          */
-/*            Heap              0x30040000                  */
-/*            512K                                          */
-/* RAM2:      64K               0x300C0000                  */
-/* RAM3:      832K              0x300D0000                  */
-/* RAM5:      640K              0x301A0000                  */
-/*            User Memory       0x30240000                  */
-/*            192K                                          */
-/* RAM6:      512K              0x30270000                  */
+/* RAM1:     Stack System        0x30000000  (Protected)    */
+/*            └ 4K                                          */
+/*           Program Data        0x30001000  (Protected)    */
+/*            └ 124K                                        */
+/*           Stack First         0x30020000  (User)         */
+/*            └ 2K                                          */
+/*           Program Data        0x30020800  (User)         */
+/*            └ 126K                                        */
+/*           Heap                0x30040000  (User)         */
+/*            ├ 512K                                        */
+/* RAM2:      ├  64K             0x300C0000                 */
+/* RAM3:      ├ 832K             0x300D0000                 */
+/* RAM5:      └ 640K             0x301A0000                 */
+/*           User Memory         0x30240000  (User)         */
+/*            ├ 192K                                        */
+/* RAM6:      └ 512K             0x30270000                 */
 
 linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
 linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */
