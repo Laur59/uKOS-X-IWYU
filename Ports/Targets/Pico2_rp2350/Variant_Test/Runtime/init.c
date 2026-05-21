@@ -22,6 +22,7 @@
 #ifndef __riscv
 
 #include    "core_reg.h"
+#include    "first.h"
 #include    "linker.h"
 #include    "macros.h"
 #include    "macros_soc.h"
@@ -80,9 +81,6 @@ static          void        local_writeRTxFifo(uint32_t data);
 static          uint32_t    local_readRxFifo(void);
 
 #define KSZ_TABLE   (2U + KNB_EXCEPTIONS + KNB_INTERRUPTIONS)
-
-extern          uintptr_t   g_pfnVectors_C0[];
-extern          uintptr_t   g_pfnVectors_C1[];
 
 [[gnu::aligned(512)]]
 static          uintptr_t   vTableRam_C0[KSZ_TABLE];
