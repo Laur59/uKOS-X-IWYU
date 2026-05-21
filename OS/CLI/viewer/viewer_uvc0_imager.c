@@ -11,7 +11,6 @@
 #include    <stdint.h>
 #include    <stdio.h>
 #include    <stdlib.h>
-#include    <string.h>
 
 #include    "Lib_peripherals/imager_common.h"
 #include    "MT9V03x/MT9V03x.h"
