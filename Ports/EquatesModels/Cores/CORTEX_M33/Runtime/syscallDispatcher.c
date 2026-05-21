@@ -20,8 +20,6 @@
 #include    "macros_soc.h"
 #include    "types.h"
 
-extern  void    kernel_message_C0(void);
-
 /*
  * \brief SVCall_Cx_IRQHandler
  *
