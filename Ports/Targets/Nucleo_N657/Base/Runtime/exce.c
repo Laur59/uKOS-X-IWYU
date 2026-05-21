@@ -11,7 +11,6 @@
 #include    <stdint.h>
 #include    <string.h>
 
-#include    "Registers/soc_vectors.h"
 #include    "board.h"
 #include    "cmns.h"
 #include    "core.h"
