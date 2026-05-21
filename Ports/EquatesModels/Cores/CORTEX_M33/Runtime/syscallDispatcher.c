@@ -45,7 +45,6 @@ void    SVCall_C0_IRQHandler(void) {
 }
 
 #if (KNB_CORES == 2)
-extern  void    kernel_message_C1(void);
 
 [[gnu::naked]]
 void    SVCall_C1_IRQHandler(void) {
