@@ -9,6 +9,7 @@
 
 #include    <stdint.h>
 
+#include    "serial_common.h"  // for urtxCnf_t
 #include    "macros.h"
 #include    "modules.h"
 #include    "types.h"

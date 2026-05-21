@@ -32,11 +32,13 @@
 #include    <string.h>
 
 #include    "cmns.h"
-#include    "exit_codes.h"
+#include    "exce.h"           // for exce_init
 #include    "init.h"
 #include    "linker.h"
 #include    "macros.h"
 #include    "macros_core.h"
+#include    "macros_soc.h"     // for GET_RUNNING_CORE, KCORE_0
+#include    "serial/serial.h"  // for KSYST
 
 // crt0 contract
 // =============
