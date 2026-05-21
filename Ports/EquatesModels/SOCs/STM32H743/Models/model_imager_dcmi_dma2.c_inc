@@ -195,8 +195,9 @@ int32_t model_imager_acquisition(void) {
  */
 int32_t model_imager_read(volatile void **image) {
 
-    if (vPage == 0U) { *image = vImageE0; return KERR_IMAGER_NOERR; }
-    else             { *image = vImageE1; return KERR_IMAGER_NOERR; }
+    if (vPage == 0U) { *image = vImageE0; }
+    else             { *image = vImageE1; }
+    return KERR_IMAGER_NOERR;
 }
 
 /*
@@ -439,7 +440,7 @@ static  int32_t local_confMemo(const imagerCnf_t *configure) {
         vPage    = 0U;
         vImageE0 = (uint8_t *)memo_malloc(KMEMO_ALIGN_32, (uint32_t)nbBytes, "dcmi");
         if (vImageE0 == nullptr) { status = KERR_IMAGER_NOMEM; }
-        memset(vImageE0, 0u, nbBytes);
+        memset(vImageE0, 0U, nbBytes);
     }
     else {
 
@@ -450,8 +451,8 @@ static  int32_t local_confMemo(const imagerCnf_t *configure) {
         vImageE1 = (uint8_t *)memo_malloc(KMEMO_ALIGN_32, (uint32_t)nbBytes, "dcmi");
         if (vImageE0 == nullptr) { status = KERR_IMAGER_NOMEM; }
         if (vImageE1 == nullptr) { status = KERR_IMAGER_NOMEM; }
-        memset(vImageE0, 0u, nbBytes);
-        memset(vImageE1, 0u, nbBytes);
+        memset(vImageE0, 0U, nbBytes);
+        memset(vImageE1, 0U, nbBytes);
     }
     DMA2->S1M0AR = (uint32_t)vRowXX;
     return status;
