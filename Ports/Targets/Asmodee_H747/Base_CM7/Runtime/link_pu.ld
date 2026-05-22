@@ -115,6 +115,7 @@ linker_SZ_FLASH_INT_0       = 19;                                               
 
 linker_ST_RAM_INT_0         = stm_stAXISRAM;                                                /* 0x24000000: Privileged/User RAM                          */
 linker_SZ_RAM_INT_0         = 18;                                                           /* 512-K = 2^(SZ + 1), SZ = log2(512-K) - 1                 */
+hex_SZ_RAM_INT_0            = (1 << (linker_SZ_RAM_INT_0+1));                               /* 512-K                                                    */
 
 linker_ST_RAM_INT_0_OS      = stm_stAXISRAM;                                                /* 0x24000000: Privileged RAM                               */
 linker_SZ_RAM_INT_0_OS      = 15;                                                           /* 64-K = 2^(SZ + 1), SZ = log2(64-K) - 1                   */
@@ -140,5 +141,7 @@ MEMORY {
 
 ASSERT((linker_stPrgmData_p) < (linker_ST_RAM_INT_0_OS + hex_SZ_RAM_INT_0_OS), "Start address of data outside protected region")
 ASSERT((linker_stPrgmData_p + linker_lnPrgmData_p) <= (linker_ST_RAM_INT_0_OS + hex_SZ_RAM_INT_0_OS), "End address of data outside protected region")
+ASSERT((linker_stPrgmData_u) >= (linker_ST_RAM_INT_0), "Start address of user data outside user region")
+ASSERT((linker_stPrgmData_u + linker_lnPrgmData_u) <= (linker_ST_RAM_INT_0 + hex_SZ_RAM_INT_0), "End address of user data outside user region")
 
 INCLUDE     system_pu.ld

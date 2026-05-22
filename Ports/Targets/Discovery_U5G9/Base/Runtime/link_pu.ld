@@ -135,4 +135,8 @@ MEMORY {
     prgm_data_u (rwx)   : ORIGIN = linker_stPrgmData_u, LENGTH = linker_lnPrgmData_u
 }
 
+ASSERT((linker_stPrgmData_p) >= (linker_ST_RAM_INT_0_OS), "Start address of data outside (below) protected region")
+ASSERT((linker_stPrgmData_p) < (linker_EN_RAM_INT_0_OS), "Start address of data outside (above) protected region")
+ASSERT((linker_stPrgmData_p + linker_lnPrgmData_p - 1) <= (linker_EN_RAM_INT_0_OS), "End address of data outside protected region")
+
 INCLUDE     system_pu.ld

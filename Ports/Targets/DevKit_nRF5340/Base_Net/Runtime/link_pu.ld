@@ -118,7 +118,7 @@ linker_ST_FLASH_INT_0       = nrf_stINTFLASH_NET;                               
 linker_EN_FLASH_INT_0       = (nrf_stINTFLASH_NET + nrf_lnINTFLASH_NET - 1);                /* 0x0103FFFF: 256-M                                        */
 
 linker_ST_RAM_INT_0_OS      = nrf_stSRAM_NET;                                               /* 0x21000000: Privileged RAM                               */
-linker_EN_RAM_INT_0_OS      = (nrf_stSRAM_NET + 24K - 1);                                   /* 0x21005FFF: 24-K                                         */
+linker_EN_RAM_INT_0_OS      = (nrf_stSRAM_NET + 32K - 1);                                   /* 0x21007FFF: 32-K                                         */
 
 linker_ST_RAM_INT_0         = linker_lowStackFirst_C0;                                      /* 0x21008000: Privileged/User RAM                          */
 linker_EN_RAM_INT_0         = (linker_stPrgmData_u + linker_lnPrgmData_u - 1);              /* 0x2100FFFF: 40-K                                         */
@@ -140,5 +140,9 @@ MEMORY {
     prgm_data_p (rwx)   : ORIGIN = linker_stPrgmData_p, LENGTH = linker_lnPrgmData_p
     prgm_data_u (rwx)   : ORIGIN = linker_stPrgmData_u, LENGTH = linker_lnPrgmData_u
 }
+
+ASSERT((linker_stPrgmData_p) >= (linker_ST_RAM_INT_0_OS), "Start address of data outside (below) protected region")
+ASSERT((linker_stPrgmData_p) < (linker_EN_RAM_INT_0_OS), "Start address of data outside (above) protected region")
+ASSERT((linker_stPrgmData_p + linker_lnPrgmData_p - 1) <= (linker_EN_RAM_INT_0_OS), "End address of data outside protected region")
 
 INCLUDE     system_pu.ld

@@ -40,6 +40,8 @@
 #define KMPU_R_ALL                      6U
 
 #define KMPU_TEX_LEVEL0                 0U
+#define KMPU_TEX_LEVEL1                 1U
+#define KMPU_TEX_LEVEL6                 6U
 
 #define KMPU_SHAREABLE                  1U
 #define KMPU_NOT_SHAREABLE              0U

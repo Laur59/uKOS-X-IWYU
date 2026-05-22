@@ -119,9 +119,11 @@ linker_SZ_RAM_INT_0         = 18;                                               
 
 linker_ST_RAM_INT_1         = stm_stSRAM1;                                                  /* 0x30000000: Privileged/User RAM                          */
 linker_SZ_RAM_INT_1         = 18;                                                           /* 512-K = 2^(SZ + 1), SZ = log2(512-K) - 1                 */
+hex_SZ_RAM_INT_1            = (1 << (linker_SZ_RAM_INT_1+1));                               /* 512-K                                                    */
 
 linker_ST_RAM_INT_2_OS      = stm_stSRAM4;                                                  /* 0x38000000: Privileged RAM                               */
 linker_SZ_RAM_INT_2_OS      = 15;                                                           /* 64-K = 2^(SZ + 1), SZ = log2(64-K) - 1                   */
+hex_SZ_RAM_INT_2_OS         = (1 << (linker_SZ_RAM_INT_2_OS+1));                            /* 64-K                                                     */
 
 linker_ST_RAM_EXT_0         = linker_stEXRAM;                                               /* 0x70000000: Privileged/User RAM                          */
 linker_SZ_RAM_EXT_0         = 23;                                                           /* 16-M = 2^(SZ + 1), SZ = log2(16-M) - 1                   */
@@ -140,5 +142,10 @@ MEMORY {
     prgm_data_p (rwx)   : ORIGIN = linker_stPrgmData_p, LENGTH = linker_lnPrgmData_p
     prgm_data_u (rwx)   : ORIGIN = linker_stPrgmData_u, LENGTH = linker_lnPrgmData_u
 }
+
+ASSERT((linker_stPrgmData_p) < (linker_ST_RAM_INT_2_OS + hex_SZ_RAM_INT_2_OS), "Start address of data outside protected region")
+ASSERT((linker_stPrgmData_p + linker_lnPrgmData_p) <= (linker_ST_RAM_INT_2_OS + hex_SZ_RAM_INT_2_OS), "End address of data outside protected region")
+ASSERT((linker_stPrgmData_u) >= (linker_ST_RAM_INT_1), "Start address of user data outside user region")
+ASSERT((linker_stPrgmData_u + linker_lnPrgmData_u) <= (linker_ST_RAM_INT_1 + hex_SZ_RAM_INT_1), "End address of user data outside user region")
 
 INCLUDE     system_pu.ld

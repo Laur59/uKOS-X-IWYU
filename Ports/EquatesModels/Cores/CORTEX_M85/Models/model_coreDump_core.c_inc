@@ -277,7 +277,7 @@ static  void    local_printStackFrame(void) {
 //      |             |
 //      ~~~~~~~~~~~~~~~ 0x000..00
 
-    offset = ((vStackCoreDump[core][LR] & (1U<<4U)) == 0U) ? (26U) : (8U);
+    offset = ((vStackCoreDump[core][LR] & (1U<<4U)) == 0U) ? 26U : 8U;
 
     stack = &vStackBefore[core][SPP];
 
