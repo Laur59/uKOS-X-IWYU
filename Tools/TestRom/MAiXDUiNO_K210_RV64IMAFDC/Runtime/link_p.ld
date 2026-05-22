@@ -3,36 +3,37 @@
 ; =======
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Linker description for the uKOS-X system.
-;			Privileged only support
+; Project:  uKOS-X
+; Goal:     Linker description for the uKOS-X system.
+;           Privileged only support
 ;
 ;                       CODE
-; linker_stTEXT			+-----------------+
-;						|                 |
-;						| .text           |
-; linker_enTEXT			|                 |
-; linker_stRODATA		+-----------------+
-;						|                 |
-;						| .rodata         |
-; linker_enRODATA		|                 |
-; linker_stDATA			+-----------------+
-;						|                 |
-;						| .data           |
-; linker_enDATA			|                 |
-;						+-----------------+
-; linker_stSignature	|				  |
-; linker_stBSS			+-----------------+
-;						|                 |
-;						| .bss            |
-; linker_enBSS			| COMMON          |
-;						|                 |
-; _end					+-----------------+
+; linker_stTEXT         +-----------------+
+;                       |                 |
+;                       | .text           |
+; linker_enTEXT         |                 |
+; linker_stRODATA       +-----------------+
+;                       |                 |
+;                       | .rodata         |
+; linker_enRODATA       |                 |
+; linker_stDATA         +-----------------+
+;                       |                 |
+;                       | .data           |
+; linker_enDATA         |                 |
+;                       +-----------------+
+; linker_stSignature    |                 |
+; linker_stBSS          +-----------------+
+;                       |                 |
+;                       | .bss            |
+; linker_enBSS          | COMMON          |
+;                       |                 |
+; _end                  +-----------------+
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -72,54 +73,54 @@
 OUTPUT_ARCH( "riscv" )
 ENTRY(Reset_Handler)
 
-INCLUDE		Runtime/K210.ld
+INCLUDE     Runtime/K210.ld
 
-/* Mapping:													*/
-/*															*/
-/* RAM:		stPrgmCode			0x80000000					*/
-/*			2M												*/
-/*			stPrgmData			0x80200000					*/
-/*			512K											*/
-/*			stHeap				0x80300000					*/
-/*			1M												*/
-/*			stUMemo				0x80400000					*/
-/*			4M												*/
+/* Mapping:                                                 */
+/*                                                          */
+/* RAM:     stPrgmCode          0x80000000                  */
+/*          2M                                              */
+/*          stPrgmData          0x80200000                  */
+/*          512K                                            */
+/*          stHeap              0x80300000                  */
+/*          1M                                              */
+/*          stUMemo             0x80400000                  */
+/*          4M                                              */
 
-/* IMPORTANT:												*/
-/* all the stacks have to be maintained aligned				*/
-/* on a boundary of 16-bytes								*/
+/* IMPORTANT:                                               */
+/* all the stacks have to be maintained aligned             */
+/* on a boundary of 16-bytes                                */
 
-linker_sizeStackFirst_C0	= (2K);													/* Length of the First stack  								*/
-linker_sizeStackFirst_C1	= (2K);													/* Length of the First stack  								*/
+linker_sizeStackFirst_C0    = (2K);                                                 /* Length of the First stack                                */
+linker_sizeStackFirst_C1    = (2K);                                                 /* Length of the First stack                                */
 
-/* IMPORTANT:												*/
-/* External memory, User (download application) and shared	*/
+/* IMPORTANT:                                               */
+/* External memory, User (download application) and shared  */
 
-linker_stEXRAM				= 0;													/* 0x00000000: EXRAM, start of the external memory			*/
-linker_lnEXRAM				= (0);													/* Length of the external memory	  						*/
+linker_stEXRAM              = 0;                                                    /* 0x00000000: EXRAM, start of the external memory          */
+linker_lnEXRAM              = (0);                                                  /* Length of the external memory                            */
 
-linker_stUMemo				= (k210_stSRAM_Cache + 4M);								/* 0x80400000: UMemo, start of the user memory 				*/
-linker_lnUMemo				= (1M);													/* Length of the user memory	  							*/
+linker_stUMemo              = (k210_stSRAM_Cache + 4M);                             /* 0x80400000: UMemo, start of the user memory              */
+linker_lnUMemo              = (1M);                                                 /* Length of the user memory                                */
 
-/* IMPORTANT:												*/
-/* The heap has to be maintained aligned					*/
-/* on a boundary of 8-bytes									*/
+/* IMPORTANT:                                               */
+/* The heap has to be maintained aligned                    */
+/* on a boundary of 8-bytes                                 */
 
-linker_stHeap				= (k210_stSRAM_Cache + 3M);								/* 0x80300000: start of the heap							*/
-linker_lnHeap				= (1M);													/* Length of the heap										*/
+linker_stHeap               = (k210_stSRAM_Cache + 3M);                             /* 0x80300000: start of the heap                            */
+linker_lnHeap               = (1M);                                                 /* Length of the heap                                       */
 
-/* IMPORTANT:												*/
-/* uKOS OS Flash + memory									*/
+/* IMPORTANT:                                               */
+/* uKOS OS Flash + memory                                   */
 
-linker_stPrgmCode			= k210_stSRAM_Cache;									/* 0x80000000: PrgmCode, start of the Flash					*/
-linker_lnPrgmCode			= (2M);													/* Length of the the Flash									*/
+linker_stPrgmCode           = k210_stSRAM_Cache;                                    /* 0x80000000: PrgmCode, start of the Flash                 */
+linker_lnPrgmCode           = (2M);                                                 /* Length of the the Flash                                  */
 
-linker_stPrgmData			= (k210_stSRAM_Cache + linker_lnPrgmCode);				/* 0x80200000: PrgmData, start of the RAM					*/
-linker_lnPrgmData			= (512K);												/* Length of the RAM										*/
+linker_stPrgmData           = (k210_stSRAM_Cache + linker_lnPrgmCode);              /* 0x80200000: PrgmData, start of the RAM                   */
+linker_lnPrgmData           = (512K);                                               /* Length of the RAM                                        */
 
 MEMORY {
-	prgm_code (rx)	: ORIGIN = linker_stPrgmCode, LENGTH = linker_lnPrgmCode
-	prgm_data (rwx)	: ORIGIN = linker_stPrgmData, LENGTH = linker_lnPrgmData
+    prgm_code (rx)  : ORIGIN = linker_stPrgmCode, LENGTH = linker_lnPrgmCode
+    prgm_data (rwx) : ORIGIN = linker_stPrgmData, LENGTH = linker_lnPrgmData
 }
 
-INCLUDE		Runtime/system_p.ld
+INCLUDE     Runtime/system_p.ld

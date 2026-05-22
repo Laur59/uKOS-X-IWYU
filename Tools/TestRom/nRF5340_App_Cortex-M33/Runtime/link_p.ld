@@ -3,34 +3,35 @@
 ; =======
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Linker description for the uKOS-X system.
-;			Privileged only support
+; Project:  uKOS-X
+; Goal:     Linker description for the uKOS-X system.
+;           Privileged only support
 ;
 ;                       CODE
-; linker_stTEXT			+-----------------+
-;						|                 |
-;						| .isr_vector     |
-;						| .text           |
-;						| .rodata         |
-; linker_enRODATA		|                 |
-;						+-----------------+
-; linker_stSignature	|				  |             DATA
-;						+-----------------+ ........... +-----------------+ linker_stDATA
-; linker_stINDATA		|                 |				|                 |
-;						| .data           |				| .data           |
-;						|                 |				|                 | linker_enDATA
-;						+-----------------+ ........... +-----------------+
-;														|                 | linker_stBSS
-;														| .bss            |
-;														| COMMON          |
-;														|                 | linker_enBSS
-;														+-----------------+
+; linker_stTEXT         +-----------------+
+;                       |                 |
+;                       | .isr_vector     |
+;                       | .text           |
+;                       | .rodata         |
+; linker_enRODATA       |                 |
+;                       +-----------------+
+; linker_stSignature    |                 |             DATA
+;                       +-----------------+ ........... +-----------------+ linker_stDATA
+; linker_stINDATA       |                 |             |                 |
+;                       | .data           |             | .data           |
+;                       |                 |             |                 | linker_enDATA
+;                       +-----------------+ ........... +-----------------+
+;                                                       |                 | linker_stBSS
+;                                                       | .bss            |
+;                                                       | COMMON          |
+;                                                       |                 | linker_enBSS
+;                                                       +-----------------+
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -69,75 +70,75 @@
 
 ENTRY(Reset_C0_Handler)
 
-INCLUDE		Runtime/nRF5340xx.ld
+INCLUDE     Runtime/nRF5340xx.ld
 
-/* Mapping:													*/
-/*															*/
-/* RAM:		stPrgmData			0x20000000					*/
-/*			128K											*/
-/*			stHeap				0x20020000					*/
-/*			256K											*/
-/*			stUMemo				0x20060000					*/
-/*			64K												*/
-/*			For NET cpu			0x20070000					*/
-/*			32K												*/
-/*			stShare				0x20078000					*/
-/*			32K												*/
+/* Mapping:                                                 */
+/*                                                          */
+/* RAM:     stPrgmData          0x20000000                  */
+/*          128K                                            */
+/*          stHeap              0x20020000                  */
+/*          256K                                            */
+/*          stUMemo             0x20060000                  */
+/*          64K                                             */
+/*          For NET cpu         0x20070000                  */
+/*          32K                                             */
+/*          stShare             0x20078000                  */
+/*          32K                                             */
 
-/* IMPORTANT:												*/
-/* all the stacks have to be maintained aligned				*/
-/* on a boundary of 8-bytes									*/
+/* IMPORTANT:                                               */
+/* all the stacks have to be maintained aligned             */
+/* on a boundary of 8-bytes                                 */
 
-linker_sizeStackSystem_C0	= (4K);																/* Length of the System stack  								*/
-linker_sizeStackFirst_C0	= (2K);																/* Length of the First stack  								*/
+linker_sizeStackSystem_C0   = (4K);                                                             /* Length of the System stack                               */
+linker_sizeStackFirst_C0    = (2K);                                                             /* Length of the First stack                                */
 
-/* IMPORTANT:												*/
-/* External memory, User (download application) and shared	*/
+/* IMPORTANT:                                               */
+/* External memory, User (download application) and shared  */
 
-linker_stEXRAM				= 0;																/* 0x00000000: EXRAM, start of the external memory			*/
-linker_lnEXRAM				= (0);																/* Length of the external memory	  						*/
+linker_stEXRAM              = 0;                                                                /* 0x00000000: EXRAM, start of the external memory          */
+linker_lnEXRAM              = (0);                                                              /* Length of the external memory                            */
 
-linker_stUMemo				= (linker_stHeap + linker_lnHeap);									/* 0x20060000: UMemo, start of the user memory 				*/
-linker_lnUMemo				= (64K);															/* Length of the user memory	  							*/
+linker_stUMemo              = (linker_stHeap + linker_lnHeap);                                  /* 0x20060000: UMemo, start of the user memory              */
+linker_lnUMemo              = (64K);                                                            /* Length of the user memory                                */
 
-linker_stFoNet				= (linker_stUMemo + linker_lnUMemo);								/* 0x20070000: Share, start of the multicore shared memory	*/
-linker_lnFNet				= (32K);															/* Length of the user multicore shared memory				*/
+linker_stFoNet              = (linker_stUMemo + linker_lnUMemo);                                /* 0x20070000: Share, start of the multicore shared memory  */
+linker_lnFNet               = (32K);                                                            /* Length of the user multicore shared memory               */
 
-linker_stShare				= (linker_stFoNet + linker_lnFNet);									/* 0x20078000: Share, start of the multicore shared memory	*/
-linker_lnShare				= (32K);															/* Length of the user multicore shared memory				*/
+linker_stShare              = (linker_stFoNet + linker_lnFNet);                                 /* 0x20078000: Share, start of the multicore shared memory  */
+linker_lnShare              = (32K);                                                            /* Length of the user multicore shared memory               */
 
-/* IMPORTANT:												*/
-/* The heap has to be maintained aligned					*/
-/* on a boundary of 8-bytes									*/
+/* IMPORTANT:                                               */
+/* The heap has to be maintained aligned                    */
+/* on a boundary of 8-bytes                                 */
 
-linker_stHeap				= (linker_stPrgmData + linker_lnPrgmData);							/* 0x20020000: start of the heap							*/
-linker_lnHeap				= (256K);															/* Length of the heap										*/
+linker_stHeap               = (linker_stPrgmData + linker_lnPrgmData);                          /* 0x20020000: start of the heap                            */
+linker_lnHeap               = (256K);                                                           /* Length of the heap                                       */
 
-/* IMPORTANT:												*/
-/* uKOS OS Flash + memory									*/
+/* IMPORTANT:                                               */
+/* uKOS OS Flash + memory                                   */
 
-linker_stPrgmCode			= nrf_stINTFLASH_APP;												/* 0x00000000: PrgmCode, start of the Flash					*/
-linker_lnPrgmCode			= nrf_lnINTFLASH_APP;												/* Length of the the Flash									*/
+linker_stPrgmCode           = nrf_stINTFLASH_APP;                                               /* 0x00000000: PrgmCode, start of the Flash                 */
+linker_lnPrgmCode           = nrf_lnINTFLASH_APP;                                               /* Length of the the Flash                                  */
 
-linker_stPrgmData			= nrf_stSRAM;														/* 0x20000000: PrgmData_p, start of the RAM					*/
-linker_lnPrgmData			= (128K);															/* Length_p of the RAM										*/
+linker_stPrgmData           = nrf_stSRAM;                                                       /* 0x20000000: PrgmData_p, start of the RAM                 */
+linker_lnPrgmData           = (128K);                                                           /* Length_p of the RAM                                      */
 
-/* IMPORTANT:												*/
-/* equates necessary for the arm_v8 MPU regions				*/
-/* for the arm_v8 MPU the regions have to be 32-B aligned	*/
+/* IMPORTANT:                                               */
+/* equates necessary for the arm_v8 MPU regions             */
+/* for the arm_v8 MPU the regions have to be 32-B aligned   */
 
-linker_ST_FLASH_INT_0		= nrf_stINTFLASH_APP;												/* 0x00000000: Privileged/User FLASH						*/
-linker_EN_FLASH_INT_0		= ((nrf_stINTFLASH_APP + nrf_lnINTFLASH_APP) - 1);					/* 0x000FFFFF: 1-M											*/
+linker_ST_FLASH_INT_0       = nrf_stINTFLASH_APP;                                               /* 0x00000000: Privileged/User FLASH                        */
+linker_EN_FLASH_INT_0       = ((nrf_stINTFLASH_APP + nrf_lnINTFLASH_APP) - 1);                  /* 0x000FFFFF: 1-M                                          */
 
-linker_ST_RAM_INT_0			= nrf_stSRAM;														/* 0x20000000: Privileged/User RAM							*/
-linker_EN_RAM_INT_0			= (nrf_stSRAM + nrf_lnSRAM - linker_lnFNet - linker_lnShare - 1);	/* 0x2006FFFF: 448-K										*/
+linker_ST_RAM_INT_0         = nrf_stSRAM;                                                       /* 0x20000000: Privileged/User RAM                          */
+linker_EN_RAM_INT_0         = (nrf_stSRAM + nrf_lnSRAM - linker_lnFNet - linker_lnShare - 1);   /* 0x2006FFFF: 448-K                                        */
 
-linker_ST_RAM_INT_0_SHARED	= linker_stShare;													/* 0x20078000: Privileged/User RAM							*/
-linker_EN_RAM_INT_0_SHARED	= (linker_stShare + linker_lnShare - 1);							/* 0x2007FFFF: 32-K											*/
+linker_ST_RAM_INT_0_SHARED  = linker_stShare;                                                   /* 0x20078000: Privileged/User RAM                          */
+linker_EN_RAM_INT_0_SHARED  = (linker_stShare + linker_lnShare - 1);                            /* 0x2007FFFF: 32-K                                         */
 
 MEMORY {
-	prgm_code (rx)	: ORIGIN = linker_stPrgmCode, LENGTH = linker_lnPrgmCode
-	prgm_data (rwx)	: ORIGIN = linker_stPrgmData, LENGTH = linker_lnPrgmData
+    prgm_code (rx)  : ORIGIN = linker_stPrgmCode, LENGTH = linker_lnPrgmCode
+    prgm_data (rwx) : ORIGIN = linker_stPrgmData, LENGTH = linker_lnPrgmData
 }
 
-INCLUDE		Runtime/system_p.ld
+INCLUDE     Runtime/system_p.ld

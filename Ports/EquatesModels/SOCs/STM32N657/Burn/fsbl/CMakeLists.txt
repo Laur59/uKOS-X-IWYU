@@ -2,15 +2,16 @@
 # ===========
 
 # SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #------------------------------------------------------------------------
-# Author:	Laurent von Allmen	The 2025-01-01
+# Author:   Laurent von Allmen  The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Builds directly STM32N657 FSBL from STM32CubeN6 sources
-#			without copying files.
-#			Standalone CMake project (Load-and-Run, NUCLEO-N657X0-Q)
+# Project:  uKOS-X
+# Goal:     Builds directly STM32N657 FSBL from STM32CubeN6 sources
+#           without copying files.
+#           Standalone CMake project (Load-and-Run, NUCLEO-N657X0-Q)
 #
 #   (c) 2025-2026, Laurent von Allmen
 #   ---------------------------------

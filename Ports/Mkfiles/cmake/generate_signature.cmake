@@ -2,13 +2,14 @@
 # ===================
 
 # SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #------------------------------------------------------------------------
-# Author:	Laurent von Allmen	The 2025-10-24
+# Author:   Laurent von Allmen  The 2025-10-24
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Cross-platform signature generation script for uKOS-X.
+# Project:  uKOS-X
+# Goal:     Cross-platform signature generation script for uKOS-X.
 #
 #    This script generates a SHA-256 signature from a binary file and creates
 #    C source files containing the signature as a compile-time constant.
@@ -60,20 +61,20 @@
 
 # Validate required variables
 if(NOT DEFINED INPUT_FILE)
-	message(FATAL_ERROR "INPUT_FILE variable is required")
+    message(FATAL_ERROR "INPUT_FILE variable is required")
 endif()
 
 if(NOT DEFINED OUTPUT_SIG_C)
-	message(FATAL_ERROR "OUTPUT_SIG_C variable is required")
+    message(FATAL_ERROR "OUTPUT_SIG_C variable is required")
 endif()
 
 if(NOT DEFINED OUTPUT_CK)
-	message(FATAL_ERROR "OUTPUT_CK variable is required")
+    message(FATAL_ERROR "OUTPUT_CK variable is required")
 endif()
 
 # Check if input file exists
 if(NOT EXISTS "${INPUT_FILE}")
-	message(FATAL_ERROR "Input file does not exist: ${INPUT_FILE}")
+    message(FATAL_ERROR "Input file does not exist: ${INPUT_FILE}")
 endif()
 
 # Compute SHA-256 hash using CMake's built-in function (cross-platform)

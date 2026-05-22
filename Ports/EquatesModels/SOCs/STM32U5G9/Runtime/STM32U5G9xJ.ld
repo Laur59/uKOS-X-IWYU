@@ -3,16 +3,17 @@
 ; ============
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Specs of STM32U5G9xJ.
-;			References:
-;			- DS14102 Rev 1, p. 27; Datasheet
-;			- RM0456 Rev 5, p. 143; STM32U5 Series Arm®-based 32-bit MCUs
+; Project:  uKOS-X
+; Goal:     Specs of STM32U5G9xJ.
+;           References:
+;           - DS14102 Rev 1, p. 27; Datasheet
+;           - RM0456 Rev 5, p. 143; STM32U5 Series Arm®-based 32-bit MCUs
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -49,36 +50,36 @@
 ;------------------------------------------------------------------------
 */
 
-stm_stINTFLASH			= 0x0C000000;												/* 0x0C000000: Starting address of internal flash of SOC	*/
-stm_lnINTFLASH			= (4096K);													/* Size of internal flash									*/
+stm_stINTFLASH          = 0x0C000000;                                               /* 0x0C000000: Starting address of internal flash of SOC    */
+stm_lnINTFLASH          = (4096K);                                                  /* Size of internal flash                                   */
 
-/* Six SRAMs are embedded, each with specific features.		*/
-/* SRAM1, SRAM2, SRAM3 and SRAM5 are the main SRAMs.		*/
-/* SRAM4 is in the SRAM used for peripherals LPBAM			*/
-/* (low-power background autonomous mode) in Stop 2 mode.	*/
+/* Six SRAMs are embedded, each with specific features.     */
+/* SRAM1, SRAM2, SRAM3 and SRAM5 are the main SRAMs.        */
+/* SRAM4 is in the SRAM used for peripherals LPBAM          */
+/* (low-power background autonomous mode) in Stop 2 mode.   */
 
-stm_stSRAM1				= 0x30000000;												/* 0x30000000: Starting address of SRAM1					*/
-stm_lnSRAM1				= (768K);													/* Length of internal memory SRAM1							*/
+stm_stSRAM1             = 0x30000000;                                               /* 0x30000000: Starting address of SRAM1                    */
+stm_lnSRAM1             = (768K);                                                   /* Length of internal memory SRAM1                          */
 
-stm_stSRAM2				= (stm_stSRAM1 + stm_lnSRAM1);								/* 0x300C0000: Starting address of SRAM2					*/
-stm_lnSRAM2				= (64K);													/* Length of internal memory SRAM2							*/
-stm_lnSRAM12			= (stm_lnSRAM1 + stm_lnSRAM2);
+stm_stSRAM2             = (stm_stSRAM1 + stm_lnSRAM1);                              /* 0x300C0000: Starting address of SRAM2                    */
+stm_lnSRAM2             = (64K);                                                    /* Length of internal memory SRAM2                          */
+stm_lnSRAM12            = (stm_lnSRAM1 + stm_lnSRAM2);
 
-stm_stSRAM3				= (stm_stSRAM2 + stm_lnSRAM2);								/* 0x300D0000: Starting address of SRAM3					*/
-stm_lnSRAM3				= (832K);													/* Length of internal memory SRAM3							*/
-stm_lnSRAM123			= (stm_lnSRAM12 + stm_lnSRAM3);
+stm_stSRAM3             = (stm_stSRAM2 + stm_lnSRAM2);                              /* 0x300D0000: Starting address of SRAM3                    */
+stm_lnSRAM3             = (832K);                                                   /* Length of internal memory SRAM3                          */
+stm_lnSRAM123           = (stm_lnSRAM12 + stm_lnSRAM3);
 
-stm_stSRAM4				= 0x38000000;												/* 0x38000000: Starting address of SRAM4					*/
-stm_lnSRAM4				= (16K);													/* Length of internal memory SRAM4							*/
+stm_stSRAM4             = 0x38000000;                                               /* 0x38000000: Starting address of SRAM4                    */
+stm_lnSRAM4             = (16K);                                                    /* Length of internal memory SRAM4                          */
 
-stm_stSRAM5				= (stm_stSRAM3 + stm_lnSRAM3);								/* 0x301A0000: Starting address of SRAM5					*/
-stm_lnSRAM5				= (832K);													/* Length of internal memory SRAM5							*/
+stm_stSRAM5             = (stm_stSRAM3 + stm_lnSRAM3);                              /* 0x301A0000: Starting address of SRAM5                    */
+stm_lnSRAM5             = (832K);                                                   /* Length of internal memory SRAM5                          */
 
-stm_stSRAM6				= (stm_stSRAM5 + stm_lnSRAM5);								/* 0x30270000: Starting address of SRAM6					*/
-stm_lnSRAM6				= (512K);													/* Length of internal memory SRAM6							*/
+stm_stSRAM6             = (stm_stSRAM5 + stm_lnSRAM5);                              /* 0x30270000: Starting address of SRAM6                    */
+stm_lnSRAM6             = (512K);                                                   /* Length of internal memory SRAM6                          */
 
-stm_stPERIPH_NS			= 0x40000000;												/*															*/
-stm_stPERIPH_S			= 0x50000000;												/*															*/
-stm_lnPERIPH			= 0x10000000;												/*															*/
-stm_stCORE				= 0xE0000000;												/*															*/
-stm_lnCORE				= 0x20000000;												/* Defined by the ARM cortex-M specification				*/
+stm_stPERIPH_NS         = 0x40000000;                                               /*                                                          */
+stm_stPERIPH_S          = 0x50000000;                                               /*                                                          */
+stm_lnPERIPH            = 0x10000000;                                               /*                                                          */
+stm_stCORE              = 0xE0000000;                                               /*                                                          */
+stm_lnCORE              = 0x20000000;                                               /* Defined by the ARM cortex-M specification                */

@@ -2,14 +2,15 @@
 # =============
 
 # SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #------------------------------------------------------------------------
-# Author:	Laurent von Allmen	The 2025-01-01
+# Author:   Laurent von Allmen  The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Toolchain file for configuring Cmake to build cross-compiling
-#			projects based on CORTEM M core.
+# Project:  uKOS-X
+# Goal:     Toolchain file for configuring Cmake to build cross-compiling
+#           projects based on CORTEM M core.
 #
 #   (c) 2025-2026, Laurent von Allmen
 #   ---------------------------------
@@ -53,11 +54,11 @@ set(PATH_TOOLCHAIN_PREFIX ${PATH_GCC_ARM}/bin/arm-none-eabi-)
 
 # Validate that all required toolchain utilities exist
 foreach(tool IN ITEMS gcc g++ ar ld objcopy objdump ranlib strip size)
-	set(tool_path "${PATH_TOOLCHAIN_PREFIX}${tool}")
-	if(NOT EXISTS "${tool_path}")
-		message(FATAL_ERROR "Toolchain utility not found: ${tool_path}\n"
-							"Please verify PATH_GCC_ARM is set correctly: ${PATH_GCC_ARM}")
-	endif()
+    set(tool_path "${PATH_TOOLCHAIN_PREFIX}${tool}")
+    if(NOT EXISTS "${tool_path}")
+        message(FATAL_ERROR "Toolchain utility not found: ${tool_path}\n"
+                            "Please verify PATH_GCC_ARM is set correctly: ${PATH_GCC_ARM}")
+    endif()
 endforeach()
 
 set(CMAKE_C_COMPILER "${PATH_TOOLCHAIN_PREFIX}gcc")

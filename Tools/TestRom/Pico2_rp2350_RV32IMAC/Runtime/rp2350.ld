@@ -3,15 +3,16 @@
 ; ========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
-; Author:	Edo. Franzi		The 2025-01-01
+; Author:   Edo. Franzi     The 2025-01-01
 ; Modifs:
 ;
-; Project:	uKOS-X
-; Goal:		Specs of rp2350J.
-;			References:
-;			- rp2350 Rev 1, p. 338; Datasheet
+; Project:  uKOS-X
+; Goal:     Specs of rp2350J.
+;           References:
+;           - rp2350 Rev 1, p. 338; Datasheet
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -48,10 +49,10 @@
 ;------------------------------------------------------------------------
 */
 
-rp_stINTFLASH			= 0x10000000;												/* 0x10000000: Starting address of internal flash of SOC	*/
-rp_lnINTFLASH			= (4096K);													/* Size of internal flash									*/
+rp_stINTFLASH           = 0x10000000;                                               /* 0x10000000: Starting address of internal flash of SOC    */
+rp_lnINTFLASH           = (4096K);                                                  /* Size of internal flash                                   */
 
-/* Six SRAMs are embedded, each with specific features.		*/
+/* Six SRAMs are embedded, each with specific features.     */
 
-rp_stSRAM				= 0x20000000;												/* 0x20000000: Starting address of SRAM						*/
-rp_lnSRAM1				= (520K);													/* Length of internal memory SRAM							*/
+rp_stSRAM               = 0x20000000;                                               /* 0x20000000: Starting address of SRAM                     */
+rp_lnSRAM1              = (520K);                                                   /* Length of internal memory SRAM                           */
