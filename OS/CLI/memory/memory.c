@@ -90,11 +90,21 @@ static size_t   size_first      = (size_t)linker_sizeStackFirst_C0;
 static size_t   size_system     = (size_t)linker_sizeStackSystem_C0;
 
 #elif (KNB_CORES == 2)
-#ifdef __riscv      // TODO: find a proper solution to this workaround for MAiXDUiNO
-size_t  size_first_C0   = (size_t)linker_sizeStackFirst_C0;
-size_t  size_system_C0  = (size_t)linker_sizeStackSystem_C0;
-size_t  size_first_C1   = (size_t)linker_sizeStackFirst_C1;
-size_t  size_system_C1  = (size_t)linker_sizeStackSystem_C1;
+// `volatile` is required on Clang RV64 (-mcmodel=medany). Without it,
+// Clang constant-propagates the linker-symbol initialiser to the use
+// site in prgm() and emits an `auipc` (R_RISCV_PCREL_HI20) trying to
+// reach the absolute symbol value PC-relatively; since the linker script
+// assigns small absolute constants (e.g. 4K) that sit far outside .text's
+// ±512K reach, ld.lld fails with "R_RISCV_PCREL_HI20 out of range".
+// `volatile` forces a real load from the variable's .data storage, where
+// the absolute relocation has already written the correct value at link
+// time. GCC RV64 doesn't hit this — it keeps the variable in memory even
+// with `static`. ARM has no equivalent codegen issue.
+#if defined(__riscv) && defined(__clang__)
+static volatile size_t  size_first_C0   = (size_t)linker_sizeStackFirst_C0;
+static volatile size_t  size_system_C0  = (size_t)linker_sizeStackSystem_C0;
+static volatile size_t  size_first_C1   = (size_t)linker_sizeStackFirst_C1;
+static volatile size_t  size_system_C1  = (size_t)linker_sizeStackSystem_C1;
 #else
 static size_t   size_first_C0   = (size_t)linker_sizeStackFirst_C0;
 static size_t   size_system_C0  = (size_t)linker_sizeStackSystem_C0;
@@ -189,20 +199,12 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     #if (KNB_CORES == 1)
     (void)dprintf(KSYST, "Stack first:       addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_lowStackFirst_C0,  size_first);
     (void)dprintf(KSYST, "Stack system:      addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n\n", (uintptr_t)linker_lowStackSystem_C0, size_system);
-// The folowing lines could be used if one wish to have static to variables size_*_C* also for RISC-V
-// but with an inacurate value of 4 or 8
-//  (void)dprintf(KSYST, "Stack first:       addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_lowStackFirst_C0,  (uintptr_t)linker_topStackFirst_C0  - (uintptr_t)linker_lowStackFirst_C0);
-//  (void)dprintf(KSYST, "Stack system:      addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n\n", (uintptr_t)linker_lowStackSystem_C0, (uintptr_t)linker_topStackSystem_C0 - (uintptr_t)linker_lowStackSystem_C0);
 
     #elif (KNB_CORES == 2)
     (void)dprintf(KSYST, "C0 Stack first:    addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_lowStackFirst_C0,  size_first_C0);
     (void)dprintf(KSYST, "C0 Stack system:   addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_lowStackSystem_C0, size_system_C0);
     (void)dprintf(KSYST, "C1 Stack first:    addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_lowStackFirst_C1,  size_first_C1);
     (void)dprintf(KSYST, "C1 Stack system:   addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n\n", (uintptr_t)linker_lowStackSystem_C1, size_system_C1);
-//  (void)dprintf(KSYST, "C0 Stack first:    addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_lowStackFirst_C0,  (uintptr_t)linker_topStackFirst_C0  - (uintptr_t)linker_lowStackFirst_C0);
-//  (void)dprintf(KSYST, "C0 Stack system:   addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_lowStackSystem_C0, (uintptr_t)linker_topStackSystem_C0 - (uintptr_t)linker_lowStackSystem_C0);
-//  (void)dprintf(KSYST, "C1 Stack first:    addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_lowStackFirst_C1,  (uintptr_t)linker_topStackFirst_C1  - (uintptr_t)linker_lowStackFirst_C1);
-//  (void)dprintf(KSYST, "C1 Stack system:   addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n\n", (uintptr_t)linker_lowStackSystem_C1, (uintptr_t)linker_topStackSystem_C1 - (uintptr_t)linker_lowStackSystem_C1);
 
     #else
     #error  "*** The number of cores (KNB_CORES) exceed 4"
