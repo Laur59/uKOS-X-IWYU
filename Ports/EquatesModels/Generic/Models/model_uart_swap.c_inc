@@ -8,7 +8,6 @@
 #include    <stdint.h>
 
 #include    "types.h"
-#include    "urt2/urt2.h"
 
 #define CAT_(a,b)   a##b
 #define CAT(a,b)    CAT_(a,b)
