@@ -149,7 +149,7 @@ int32_t lcd0_release(reserveMode_t reserveMode) {
  * \return      KERR_LCD0_GEERR General error
  *
  */
-int32_t lcd0_setDirection(uint8_t direction) {
+int32_t lcd0_setDirection(uint8_t direction) {  // NOLINT(misc-no-recursion): intentional bounded recursion for first-call init (max depth: 2)
     int32_t     status;
 
     status = local_init();
@@ -387,7 +387,7 @@ int32_t lcd0_drawPicture(uint16_t x, uint16_t y, uint16_t width, uint16_t height
  *   has to be called at least once
  *
  */
-static  int32_t local_init(void) {
+static  int32_t local_init(void) {  // NOLINT(misc-no-recursion): intentional bounded recursion for first-call init (max depth: 2)
             uint8_t     data;
     static  bool        vInit = false;
 

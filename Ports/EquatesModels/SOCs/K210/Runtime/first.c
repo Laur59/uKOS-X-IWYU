@@ -23,15 +23,13 @@ static  void        local_interruptions(uint32_t core, uint64_t number);
 static  void        local_exception(uint32_t core, uint64_t number, uint64_t message);
 
 [[gnu::naked]]
-void    Reset_Handler(uint32_t core) {
-
-    #ifndef __clang__
-    UNUSED(core);
-    #endif
+// NOLINTNEXTLINE(misc-use-internal-linkage): linker ENTRY symbol (link_p.ld) and jumped to from vectors.S
+void    Reset_Handler([[maybe_unused]] uint32_t core) {
 
     __asm volatile ("j  local_reset");
 }
-void    local_reset(uint32_t core) {
+[[gnu::noinline, gnu::used]]
+static void    local_reset(uint32_t core) {
 
     if (core == KCORE_0) {
 
@@ -94,6 +92,14 @@ void    local_reset(uint32_t core) {
 // Important. Verify the .lst file to be sure that the [[gnu::interrupt]]
 // Generate the correct stack frame. The preamble has to be:
 // The stack frame change from gcc-13, gcc-14 and clang
+
+// first_handle_trap is the mtvec target (jumped to from vectors.S and its
+// address is written to RV_CSR_MTVEC in exce.c). first_handle_MachineExternal
+// and first_handle_EnvironmentalCallM are registered as function pointers
+// in vExce_intIntVectors / vExce_intExcVectors from exce.c. clang-tidy's
+// single-TU view cannot see these references, so misc-use-internal-linkage
+// produces false positives here.
+// NOLINTBEGIN(misc-use-internal-linkage)
 
 [[gnu::interrupt, gnu::aligned(16)]]
 void    first_handle_trap(void) {
@@ -195,3 +201,5 @@ void    first_handle_EnvironmentalCallM(uint32_t core, uint64_t message) {
     go = vMsgs_process[core];
     (*go)(core, message);
 }
+
+// NOLINTEND(misc-use-internal-linkage)

@@ -9,7 +9,6 @@
 #include    <stdint.h>
 
 #include    "soc_reg.h"
-#include    "macros_soc.h"
 #include    "macros_core.h"
 #include    "macros_core_stackFrame.h"  // IWYU pragma: keep (for INTERRUPTION_IN INTERRUPTION_OUT)
 
@@ -28,8 +27,8 @@
  * - call the crt0
  *
  */
-[[gnu::noinline]]
-void local_fixPC(void) {
+[[gnu::noinline, gnu::used]]
+static void local_fixPC(void) {
     register    uint32_t    regRa;
 
     __asm volatile ("add    %0,ra,zero" : "=r" (regRa));
@@ -44,6 +43,10 @@ void local_fixPC(void) {
     }
 }
 
+// Reset_C0_Handler is the linker ENTRY (Base/Runtime/link_p.ld) and must
+// keep external linkage. clang-tidy cannot see that reference, so
+// misc-use-internal-linkage is a false positive here.
+// NOLINTBEGIN(misc-use-internal-linkage)
 [[gnu::naked]]
 void Reset_C0_Handler(void) {
 
@@ -56,6 +59,7 @@ void Reset_C0_Handler(void) {
 
     CALL_FNCT(crt0);
 }
+// NOLINTEND(misc-use-internal-linkage)
 
 EXCEPTION_SPECIFIC_HANDLER(MSIP_C0)
 EXCEPTION_SPECIFIC_HANDLER(MTIP_C0)

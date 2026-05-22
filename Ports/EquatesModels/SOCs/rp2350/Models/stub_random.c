@@ -11,8 +11,10 @@
 #include    "Registers/nvic.h"
 #include    "kern/kern.h"
 #include    "macros_core.h"
+#include    "macros_soc.h"      // for KINT_LEVEL_PERIPHERALS
 #include    "os_errors.h"
 #include    "random/random.h"
+#include    "soc_reg.h"         // for TRNG_S, TRNG_IRQ_C0_IRQn, RESETS_S, TRNG...
 
 // Prototypes
 

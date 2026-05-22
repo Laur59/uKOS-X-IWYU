@@ -9,6 +9,8 @@
 
 #include    "led/led.h"
 
+#include    <stdint.h>
+
 #include    "board.h"
 #include    "macros_core.h"
 #include    "os_errors.h"

@@ -42,8 +42,7 @@
 
 #pragma once
 
-#ifndef _BOOT_PICOBIN_H
-#define _BOOT_PICOBIN_H
+#include    <stdint.h>  // for uint32_t, int32_t
 
 #ifndef NO_PICO_PLATFORM
 #include    "pico/platform.h"
@@ -187,8 +186,6 @@
 
 #ifndef __ASSEMBLER__
 
-#include    <stdbool.h>
-
 typedef struct {
 
 // These must all be word aligned
@@ -211,5 +208,4 @@ static  inline  bool    picobin_load_map_is_relative(const picobin_load_map *lm)
     return ((int32_t)lm->header >= 0);
 }
 
-#endif
 #endif

@@ -6,6 +6,8 @@
  * Stub for the connection of the "urt0" manager to the uart device.
  */
 
+#include    <stdint.h>
+
 #include    "clockTree.h"
 #include    "macros_core.h"
 #include    "serial_common.h"

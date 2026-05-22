@@ -5,8 +5,6 @@
  * Goal:        stub for the connection of the "urt0" manager to the usart1 device.
  */
 
-#include    <stdint.h>
-
 #include    "clockTree.h"
 #include    "soc_reg.h"
 #include    "urt0/urt0.h"

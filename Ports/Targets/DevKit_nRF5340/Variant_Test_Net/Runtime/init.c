@@ -53,8 +53,8 @@ MODULE(
 typedef struct  gpio    gpio_t;
 
 struct  gpio {
-            uint8_t     oPin;               // Pin number (32 ... > 0 of P1)
             uint32_t    oPinCNFValue;       // Pin configuration value
+            uint8_t     oPin;               // Pin number (32 ... > 0 of P1)
             uint8_t     oOutputQuite;       // Output value in a quite state
         };
 
@@ -141,16 +141,16 @@ static  void    local_GPIO_Configuration(void) {
                     uint8_t     i, pin;
                     uint32_t    *pCnf;
     static  const   gpio_t      aGPIO_Cnf[] = {
-                                        { 8U,  (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_CONNECT    | KDIR_INPUT),    0U },   // P0.8 Button 3
-                                        { 9U,  (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_CONNECT    | KDIR_INPUT),    0U },   // P0.9 Button 4
+                                        { .oPin=8U,  .oPinCNFValue=(KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_CONNECT    | KDIR_INPUT),    .oOutputQuite=0U },   // P0.8 Button 3
+                                        { .oPin=9U,  .oPinCNFValue=(KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_CONNECT    | KDIR_INPUT),    .oOutputQuite=0U },   // P0.9 Button 4
 
-                                        { 19U, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   0U },   // P0.19 USART_0 /RTS
-                                        { 20U, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   0U },   // P0.20 USART_0 TXD
-                                        { 21U, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DOWN    | KINPUT_CONNECT    | KDIR_INPUT),    0U },   // P0.21 USART_0 /CTS
-                                        { 22U, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_DISCONNECT | KDIR_INPUT),    0U },   // P0.22 USART_0 RXD
+                                        { .oPin=19U, .oPinCNFValue=(KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   .oOutputQuite=0U },   // P0.19 USART_0 /RTS
+                                        { .oPin=20U, .oPinCNFValue=(KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   .oOutputQuite=0U },   // P0.20 USART_0 TXD
+                                        { .oPin=21U, .oPinCNFValue=(KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DOWN    | KINPUT_CONNECT    | KDIR_INPUT),    .oOutputQuite=0U },   // P0.21 USART_0 /CTS
+                                        { .oPin=22U, .oPinCNFValue=(KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_DISCONNECT | KDIR_INPUT),    .oOutputQuite=0U },   // P0.22 USART_0 RXD
 
-                                        { 30U, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   1U },   // P0.30 Led 3
-                                        { 31U, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   1U },   // P0.31 Led 4
+                                        { .oPin=30U, .oPinCNFValue=(KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   .oOutputQuite=1U },   // P0.30 Led 3
+                                        { .oPin=31U, .oPinCNFValue=(KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   .oOutputQuite=1U },   // P0.31 Led 4
                                     };
 
 #define KNBCNF      (sizeof(aGPIO_Cnf) / sizeof(gpio_t))

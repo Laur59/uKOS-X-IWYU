@@ -760,4 +760,4 @@ static  void    local_CACHE_Enable(void) {
     cache_D_Enable();
 }
 
-#include    "model_I_D_cache.c_inc"
+#include    "model_I_D_cache.c_inc"     // IWYU pragma: keep

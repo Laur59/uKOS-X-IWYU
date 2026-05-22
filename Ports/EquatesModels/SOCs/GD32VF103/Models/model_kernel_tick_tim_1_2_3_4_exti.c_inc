@@ -451,7 +451,7 @@ static  void    local_TIMER1_IRQHandler(void) {
  * !!! Do not generate prologue/epilogue sequences
  *
  */
-void    local_EXTI1_IRQHandler(void);
+static void    local_EXTI1_IRQHandler(void);
 [[gnu::naked]]
 void    EXTI1_C0_IRQHandler(void) {
 
@@ -483,7 +483,7 @@ void    local_EXTI1_IRQHandler(void) {
  *
  */
 [[gnu::noinline, gnu::used]]
-uintptr_t   *local_newContextPRE(uintptr_t *stack) {
+static uintptr_t   *local_newContextPRE(uintptr_t *stack) {
 
 // Save the stack of the old process
 // Save the old priority
@@ -573,7 +573,7 @@ uintptr_t   *local_newContextPRE(uintptr_t *stack) {
  * !!! Do not generate prologue/epilogue sequences
  *
  */
-void    local_TIMER2_IRQHandler(void);
+static  void    local_TIMER2_IRQHandler(void);
 
 [[gnu::naked]]
 void    TIMER2_C0_IRQHandler(void) {
@@ -583,8 +583,8 @@ void    TIMER2_C0_IRQHandler(void) {
     JUMP_FNCT(local_TIMER2_IRQHandler);
 }
 
-[[gnu::naked]]
-void    local_TIMER2_IRQHandler(void) {
+[[gnu::naked, gnu::used]]
+static  void    local_TIMER2_IRQHandler(void) {
 
     CALL_FNCT(local_newContextTOU);
 
@@ -609,7 +609,7 @@ void    local_TIMER2_IRQHandler(void) {
  *
  */
 [[gnu::noinline, gnu::used]]
-uintptr_t   *local_newContextTOU(uintptr_t *stack) {
+static uintptr_t   *local_newContextTOU(uintptr_t *stack) {
 
 // Save the stack of the old process
 // Save the old priority
@@ -699,7 +699,7 @@ uintptr_t   *local_newContextTOU(uintptr_t *stack) {
  * !!! Do not generate prologue/epilogue sequences
  *
  */
-void    local_EXTI0_IRQHandler(void);
+static  void    local_EXTI0_IRQHandler(void);
 
 [[gnu::naked]]
 void    EXTI0_C0_IRQHandler(void) {
@@ -710,8 +710,8 @@ void    EXTI0_C0_IRQHandler(void) {
     JUMP_FNCT(local_EXTI0_IRQHandler);
 }
 
-[[gnu::naked]]
-void    local_EXTI0_IRQHandler(void) {
+[[gnu::naked, gnu::used]]
+static  void    local_EXTI0_IRQHandler(void) {
 
     CALL_FNCT(local_newContextMSG);
 
@@ -734,7 +734,7 @@ void    local_EXTI0_IRQHandler(void) {
  *
  */
 [[gnu::noinline, gnu::used]]
-uintptr_t   *local_newContextMSG(uintptr_t *stack, uint32_t message) {
+static uintptr_t   *local_newContextMSG(uintptr_t *stack, uint32_t message) {
 
 // Save the stack of the old process
 // Save the old priority
