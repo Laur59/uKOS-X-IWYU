@@ -38,24 +38,20 @@ INCLUDE     STM32L4R5xx.ld
 
 /* Mapping:                                                 */
 /*                                                          */
-/* RAM1:  Protected             0x20000000                  */
-/*          Stack System        0x20000000                  */
-/*          4K                                              */
-/*          Program Data (P)    0x20001000                  */
-/*          60K                                             */
-/*        Unprotected           0x20010000                  */
-/*          Stack First         0x20010000                  */
-/*          2K                                              */
-/*          Program Data (U)    0x20010800                  */
-/*          62K                                             */
-/*          Heap                0x20020000                  */
-/*          64K                                             */
-/* RAM2:    Heap                0x20030000                  */
-/*          64K                                             */
-/* RAM3:    Heap                0x20040000                  */
-/*          320K                                            */
-/*          User Memory         0x20090000                  */
-/*          64K                                             */
+/* RAM1:     Stack System        0x20000000  (Protected)    */
+/*            └ 4K                                          */
+/*           Program Data        0x20001000  (Protected)    */
+/*            └ 60K                                         */
+/*           Stack First         0x20010000  (User)         */
+/*            └ 2K                                          */
+/*           Program Data        0x20010800  (User)         */
+/*            └ 62K                                         */
+/*           Heap                0x20020000  (User)         */
+/*            ├ 64K                                         */
+/* RAM2:      ├ 64K              0x20030000                 */
+/* RAM3:      └ 320K             0x20040000                 */
+/*           User Memory         0x20090000  (User)         */
+/*            └ 64K                                         */
 
 linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
 linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */
@@ -119,6 +115,7 @@ linker_SZ_FLASH_INT_0       = 19;                                               
 
 linker_ST_RAM_INT_0         = stm_stSRAM1;                                                  /* 0x20000000: Privileged/User RAM                          */
 linker_SZ_RAM_INT_0         = 19;                                                           /* 1-M = 2^(SZ + 1), SZ = log2(1-M) - 1                     */
+hex_SZ_RAM_INT_0            = (1 << (linker_SZ_RAM_INT_0+1));                               /* 1-M                                                      */
 
 linker_ST_RAM_INT_0_OS      = stm_stSRAM1;                                                  /* 0x20000000: Privileged RAM                               */
 linker_SZ_RAM_INT_0_OS      = 15;                                                           /* 64-K = 2^(SZ + 1), SZ = log2(64-K) - 1                   */
@@ -139,5 +136,7 @@ MEMORY {
 ASSERT((linker_sizeStackFirst_C0 + linker_sizeStackSystem_C0 + linker_lnPrgmData_p + linker_lnPrgmData_u + linker_lnHeap + linker_lnUMemo) == stm_lnSRAM123, "Check RAM mapping: over/under usage")
 ASSERT((linker_stPrgmData_p) < (linker_ST_RAM_INT_0_OS + hex_SZ_RAM_INT_0_OS), "Start address of data outside protected region")
 ASSERT((linker_stPrgmData_p + linker_lnPrgmData_p) <= (linker_ST_RAM_INT_0_OS + hex_SZ_RAM_INT_0_OS), "End address of data outside protected region")
+ASSERT((linker_stPrgmData_u) >= (linker_ST_RAM_INT_0), "Start address of user data outside user region")
+ASSERT((linker_stPrgmData_u + linker_lnPrgmData_u) <= (linker_ST_RAM_INT_0 + hex_SZ_RAM_INT_0), "End address of user data outside user region")
 
 INCLUDE     system_pu.ld

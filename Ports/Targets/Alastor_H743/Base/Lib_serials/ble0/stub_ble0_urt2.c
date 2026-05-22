@@ -5,12 +5,6 @@
  * Goal:    stub for the connection of the "ble0" manager to the "urt2" manager.
  */
 
-#include    <stdint.h>
-
-#include    "ble0/ble0.h"
-#include    "types.h"
-#include    "urt2/urt2.h"
-
 #define DEVICE_IN   ble0
 #define DEVICE_OUT  urt2
 

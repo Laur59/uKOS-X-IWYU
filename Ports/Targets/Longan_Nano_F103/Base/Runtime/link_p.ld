@@ -34,14 +34,14 @@ INCLUDE     GD32VF103CBT.ld
 
 /* Mapping:                                                 */
 /*                                                          */
-/* RAM:     Stacks              0x20000000                  */
-/*          1.75K                                           */
-/*          Program Data        0x20000700                  */
-/*          14.25K                                          */
-/*          Heap                0x20004000                  */
-/*          13K                                             */
-/*          User Memory         0x20007400                  */
-/*          3K                                              */
+/* RAM:      Stacks              0x20000000                 */
+/*            └ 1.75K                                       */
+/*           Program Data        0x20000700                 */
+/*            └ 14.25K                                      */
+/*           Heap                0x20004000                 */
+/*            └ 13K                                         */
+/*           User Memory         0x20007400                 */
+/*            └ 3K                                          */
 
 linker_sizeStackSystem_C0   = (0);                                                          /* Length of the System stack                               */
 linker_sizeStackFirst_C0    = (768);                                                        /* Length of the First stack                                */

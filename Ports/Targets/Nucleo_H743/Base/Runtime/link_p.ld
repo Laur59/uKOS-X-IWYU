@@ -32,21 +32,22 @@ INCLUDE     STM32H743xI.ld
 
 /* Mapping:                                                 */
 /*                                                          */
-/* AXI:     User Memory         0x24000000                  */
-/*          512K                                            */
-/* RAM1:    Heap                0x30000000                  */
-/*          128K                                            */
-/* RAM2:    Heap                0x30020000                  */
-/*          128K                                            */
-/* RAM3:    Heap                0x30040000                  */
-/*          32K                                             */
-/* RAM4:    Stacks              0x38000000                  */
-/*          6K                                              */
-/*          Program Data        0x38001800                  */
-/*          58K                                             */
+/* AXI:      User Memory         0x24000000                 */
+/*            └ 512K                                        */
+/* RAM1:     Heap                0x30000000                 */
+/*            ├ 128K                                        */
+/* RAM2:      ├ 128K             0x30020000                 */
+/* RAM3:      └  32K             0x30040000                 */
+/* RAM4:     Stacks              0x38000000                 */
+/*            └ 6K                                          */
+/*           Program Data        0x38001800                 */
+/*            └ 58K                                         */
 
 linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
 linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */
+config_sizeData             = stm_lnSRAM4 - linker_sizeStackSystem_C0 - linker_sizeStackFirst_C0;
+config_sizeHeap             = stm_lnSRAM123;
+config_sizeUserMemory       = (512K);
 
 /* IMPORTANT:                                               */
 /* all the stacks have to be maintained aligned             */

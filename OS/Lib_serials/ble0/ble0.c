@@ -9,11 +9,12 @@
 
 #include    <stdint.h>
 
+#include    "serial_common.h"  // for urtxCnf_t
 #include    "macros.h"
 #include    "modules.h"
 #include    "types.h"
 
-#if (defined(CONFIG_MAN_BLE0_S))
+#ifdef CONFIG_MAN_BLE0_S
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -36,7 +37,7 @@ MODULE(
     nullptr,                        // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                        // Address of the clean code (clean the module)
     " 1.0",                         // Revision string (major . minor)
-    (1u<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    (1U<<BSHOW),                    // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                               // Execution cores
 );
 
@@ -69,7 +70,7 @@ MODULE(
  */
 int32_t ble0_reserve(reserveMode_t reserveMode, uint32_t timeout) {
 
-    return(stub_ble0_reserve(reserveMode, timeout));
+    return (stub_ble0_reserve(reserveMode, timeout));
 }
 
 /*
@@ -91,7 +92,7 @@ int32_t ble0_reserve(reserveMode_t reserveMode, uint32_t timeout) {
  */
 int32_t ble0_release(reserveMode_t reserveMode) {
 
-    return(stub_ble0_release(reserveMode));
+    return (stub_ble0_release(reserveMode));
 }
 
 /*
@@ -120,7 +121,7 @@ int32_t ble0_release(reserveMode_t reserveMode) {
  */
 int32_t ble0_configure(const urtxCnf_t *configure) {
 
-    return(stub_ble0_configure(configure));
+    return (stub_ble0_configure(configure));
 }
 
 /*
@@ -148,7 +149,7 @@ int32_t ble0_configure(const urtxCnf_t *configure) {
  */
 int32_t ble0_write(const uint8_t *buffer, uint32_t size) {
 
-    return(stub_ble0_write(buffer, size));
+    return (stub_ble0_write(buffer, size));
 }
 
 /*
@@ -179,7 +180,7 @@ int32_t ble0_write(const uint8_t *buffer, uint32_t size) {
  */
 int32_t ble0_read(uint8_t *buffer, uint32_t *size) {
 
-    return(stub_ble0_read(buffer, size));
+    return (stub_ble0_read(buffer, size));
 }
 
 /*
@@ -206,7 +207,7 @@ int32_t ble0_read(uint8_t *buffer, uint32_t *size) {
  */
 int32_t ble0_getIdSemaphore(uint8_t semaphore, char_t **identifier) {
 
-    return(stub_ble0_getIdSemaphore(semaphore, identifier));
+    return (stub_ble0_getIdSemaphore(semaphore, identifier));
 }
 
 /*
@@ -226,7 +227,7 @@ int32_t ble0_getIdSemaphore(uint8_t semaphore, char_t **identifier) {
  */
 int32_t ble0_flush(void) {
 
-    return(stub_ble0_flush());
+    return (stub_ble0_flush());
 }
 
 #endif

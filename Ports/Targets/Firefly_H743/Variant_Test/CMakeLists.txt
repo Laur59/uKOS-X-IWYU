@@ -19,7 +19,7 @@ include(set-project-paths)
 include(select-arm-toolchain)
 
 project(
-    Nucleo_H743_Variant_Test
+    Firefly_H743_Variant_Test
     VERSION 1.0
     LANGUAGES C
 )

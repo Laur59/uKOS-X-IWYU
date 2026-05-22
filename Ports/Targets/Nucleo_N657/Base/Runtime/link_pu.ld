@@ -36,29 +36,30 @@ ENTRY(Reset_C0_Handler)
 
 INCLUDE     STM32N657xD.ld
 
-/* Mapping:                                                     */
-/*                                                              */
-/* SRAM2:   First Stage BootLoader  0x34100400 (400 signature)  */
-/*          64K                                                 */
-/* SRAM1:   Signature           0x34000000                      */
-/*          1K                                                  */
-/*          Program Code        0x34000400                      */
-/*          (1024K - 1K)                                        */
-/* SRAM2:   Protected           0x34100000                      */
-/*            Stack System      0x34100000                      */
-/*            8K                                                */
-/*            Program Data (P)  0x34102000                      */
-/*            88K                                               */
-/*          Unprotected         0x34118000                      */
-/*            Stack First       0x34118000                      */
-/*            8K                                                */
-/*            Program Data (U)  0x3411A000                      */
-/*            152K                                              */
-/*            User Memory       0x34140000                      */
-/*            512K                                              */
-/*            Heap              0x341C0000                      */
-/*            256K                                              */
-/* SRAM3-6: Heap                0x34200000                      */
+/* Mapping:                                                 */
+/*                                                          */
+/* SRAM2:    First Stage BootLoader 0x34100400 (400 signature) */
+/*            └ 64K                                         */
+/* SRAM1:    Signature           0x34000000                 */
+/*            └ 1K                                          */
+/*           Program Code        0x34000400                 */
+/*            └ (1024K - 1K)                                */
+/* SRAM2:    Stack System        0x34100000  (Protected)    */
+/*            └ 8K                                          */
+/*           Program Data        0x34102000  (Protected)    */
+/*            └ 88K                                         */
+/*           Stack First         0x34118000  (User)         */
+/*            └ 8K                                          */
+/*           Program Data        0x3411A000  (User)         */
+/*            └ 152K                                        */
+/*           User Memory         0x34140000  (User)         */
+/*            └ 512K                                        */
+/*           Heap                0x341C0000  (User)         */
+/*            ├ 256K                                        */
+/* SRAM3:     ├ 448K             0x34200000                 */
+/* SRAM4:     ├ 448K             0x34270000                 */
+/* SRAM5:     ├ 448K             0x342E0000                 */
+/* SRAM6:     └ 448K             0x34350000                 */
 
 linker_sizeStackSystem_C0   = (8K);                                                         /* Length of the System stack                               */
 linker_sizeStackFirst_C0    = (8K);                                                         /* Length of the First stack                                */

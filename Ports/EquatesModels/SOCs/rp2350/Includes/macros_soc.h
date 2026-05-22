@@ -53,9 +53,6 @@
         REG(UART)->UARTFBRD = _fbrd;                                                                                            \
     } while (0)
 
-// Interruption macros
-// -------------------
-
 enum {
 
 // Reserved names: all the possible levels
@@ -63,6 +60,7 @@ enum {
 // are reserved for the uKernel (!!! do not change those values)
 
         KINT_LEVEL_KERNEL_SWI = 1U,
+        KINT_LEVEL_VERY_HS_PERIPHERALS,
         KINT_LEVEL_COMMUNICATIONS,
         KINT_LEVEL_PERIPHERALS,
         KINT_LEVEL_KERNEL_TIMERS,
@@ -74,14 +72,16 @@ enum {
 // Masks used to filter some priorities
 // KINT_IMASK_OFF               Allows only NMI, SWI
 // KINT_IMASK_KERNEL_SWI        Allows only NMI, SWI
-// KINT_IMASK_COMMUNICATIONS    Allows only NMI, SWI, communications
-// KINT_IMASK_PERIPHERALS       Allows only NMI, SWI, communications, peripherals
-// KINT_IMASK_KERNEL_TIMERS     Allows only NMI, SWI, communications, peripherals, kernel timers
-// KINT_IMASK_KERNEL_PREEMPTION Allows only NMI, SWI, communications, peripherals, kernel timers, kernel preemptions
+// KINT_LEVEL_VERY_HS_PERIPHERALS   Allows only NMI, SWI, HS peripherals, communications
+// KINT_IMASK_COMMUNICATIONS        Allows only NMI, SWI, HS peripherals, communications
+// KINT_IMASK_PERIPHERALS           Allows only NMI, SWI, HS peripherals, communications, peripherals
+// KINT_IMASK_KERNEL_TIMERS         Allows only NMI, SWI, HS peripherals, communications, peripherals, kernel timers
+// KINT_IMASK_KERNEL_PREEMPTION     Allows only NMI, SWI, HS peripherals, communications, peripherals, kernel timers, kernel preemptions
 // KINT_IMASK_ALL               Allows all
 
 #define KINT_IMASK_OFF                  (KINT_LEVEL_KERNEL_SWI + 1U)
 #define KINT_IMASK_KERNEL_SWI           (KINT_LEVEL_KERNEL_SWI + 1U)
+#define KINT_IMASK_VERY_HS_PERIPHERALS  (KINT_LEVEL_VERY_HS_PERIPHERALS + 1U)
 #define KINT_IMASK_COMMUNICATIONS       (KINT_LEVEL_COMMUNICATIONS + 1U)
 #define KINT_IMASK_PERIPHERALS          (KINT_LEVEL_PERIPHERALS + 1U)
 #define KINT_IMASK_KERNEL_TIMERS        (KINT_LEVEL_KERNEL_TIMERS + 1U)

@@ -32,18 +32,18 @@ INCLUDE     nRF5340xx.ld
 
 /* Mapping:                                                 */
 /*                                                          */
-/* RAM:     Stacks              0x20000000                  */
-/*          6K                                              */
-/*          Program Data        0x20001800                  */
-/*          122K                                            */
-/*          Heap                0x20020000                  */
-/*          256K                                            */
-/*          User Memory         0x20060000                  */
-/*          64K                                             */
-/*          For NET cpu         0x20070000                  */
-/*          32K                                             */
-/*          Share               0x20078000                  */
-/*          32K                                             */
+/* RAM:      Stacks              0x20000000                 */
+/*            └ 6K                                          */
+/*           Program Data        0x20001800                 */
+/*            └ 122K                                        */
+/*           Heap                0x20020000                 */
+/*            └ 256K                                        */
+/*           User Memory         0x20060000                 */
+/*            └ 64K                                         */
+/*           For NET cpu         0x20070000                 */
+/*            └ 32K                                         */
+/*           Share               0x20078000                 */
+/*            └ 32K                                         */
 
 linker_sizeStackSystem_C0   = (4K);                                                             /* Length of the System stack                               */
 linker_sizeStackFirst_C0    = (2K);                                                             /* Length of the First stack                                */

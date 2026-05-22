@@ -13,7 +13,6 @@
 #include    "macros.h"
 #include    "macros_core.h"
 #include    "macros_soc.h"
-#include    "memo/memo.h"
 #include    "memo/private/private_memo.h"
 #include    "modules.h"
 #include    "serial/serial.h"

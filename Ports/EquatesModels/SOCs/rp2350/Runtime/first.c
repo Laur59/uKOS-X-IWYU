@@ -513,6 +513,8 @@ void    vector_table_C0(void) {
 
 #else       // ARM
 
+#include    "first.h"
+
 #include    "crt0.h"
 #include    "kern/private/private_temporal.h"   // IWYU pragma: keep (for vKern_TimeException)
 #include    "linker.h"

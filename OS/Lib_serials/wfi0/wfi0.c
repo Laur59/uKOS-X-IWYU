@@ -77,7 +77,7 @@ MODULE(
  */
 int32_t wfi0_reserve(reserveMode_t reserveMode, uint32_t timeout) {
 
-    return(stub_wfi0_reserve(reserveMode, timeout));
+    return (stub_wfi0_reserve(reserveMode, timeout));
             }
 
 /*
@@ -99,7 +99,7 @@ int32_t wfi0_reserve(reserveMode_t reserveMode, uint32_t timeout) {
  */
 int32_t wfi0_release(reserveMode_t reserveMode) {
 
-    return(stub_wfi0_release(reserveMode));
+    return (stub_wfi0_release(reserveMode));
             }
 
 /*
@@ -128,7 +128,7 @@ int32_t wfi0_release(reserveMode_t reserveMode) {
  */
 int32_t wfi0_configure(const urtxCnf_t *configure) {
 
-    return(stub_wfi0_configure(configure));
+    return (stub_wfi0_configure(configure));
 }
 
 /*
@@ -156,7 +156,7 @@ int32_t wfi0_configure(const urtxCnf_t *configure) {
  */
 int32_t wfi0_write(const uint8_t *buffer, uint32_t size) {
 
-    return(stub_wfi0_write(buffer, size));
+    return (stub_wfi0_write(buffer, size));
 }
 
 /*
@@ -187,7 +187,7 @@ int32_t wfi0_write(const uint8_t *buffer, uint32_t size) {
  */
 int32_t wfi0_read(uint8_t *buffer, uint32_t *size) {
 
-    return(stub_wfi0_read(buffer, size));
+    return (stub_wfi0_read(buffer, size));
 }
 
 /*
@@ -214,7 +214,7 @@ int32_t wfi0_read(uint8_t *buffer, uint32_t *size) {
  */
 int32_t wfi0_getIdSemaphore(uint8_t semaphore, char_t **identifier) {
 
-    return(stub_wfi0_getIdSemaphore(semaphore, identifier));
+    return (stub_wfi0_getIdSemaphore(semaphore, identifier));
 }
 
 /*
@@ -234,7 +234,7 @@ int32_t wfi0_getIdSemaphore(uint8_t semaphore, char_t **identifier) {
  */
 int32_t wfi0_flush(void) {
 
-    return(stub_wfi0_flush());
+    return (stub_wfi0_flush());
 }
 
 #endif

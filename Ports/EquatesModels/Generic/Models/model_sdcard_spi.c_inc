@@ -462,7 +462,7 @@ int32_t model_sdcard_ioctl(storageIoctl_t command, void *buffer) {
  *   - R1.0 In idle State
  *
  */
-static  uint8_t local_writeCommand(uint8_t command, uint32_t argument) {
+static  uint8_t local_writeCommand(uint8_t command, uint32_t argument) {  // NOLINT(misc-no-recursion): intentional bounded recursion for ACMD-after-CMD55 protocol (max depth: 2)
     uint8_t     wkCommand = command, i, crc, R1;
 
 // Verify if it is a KACMD command

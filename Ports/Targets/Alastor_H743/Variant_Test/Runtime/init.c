@@ -52,7 +52,7 @@ MODULE(
 
 // SDRAM macro
 
-#define SDRAM_COMMAND_BANK2(command, mrd, cycles)               \
+#define SDRAM_COMMAND_BANK_CTB2(command, mrd, cycles)               \
             do {                                                \
                 FMC->SDCMR = ((uint32_t)((mrd))<<9U)            \
                            | ((uint32_t)((cycles))<<5U)         \
@@ -453,7 +453,13 @@ static  void    local_RCC_Configuration(void) {
     RCC->PLL3DIVR   = 0x00000000U;                      // Reset PLL3DIVR register
     RCC->PLL3FRACR  = 0x00000000U;                      // Reset PLL3FRACR register
     RCC->CIER       = 0x00000000U;                      // Disable all interrupts
-    *((volatile uint32_t *)0x51008108U) = 0x000000001U; // Change the switch matrix read issuing capability to 1 for the AXI SRAM target (Target 7)
+
+// Change the switch matrix read issuing capability to 1 for the AXI SRAM target (Target 7)
+// Document ES0392, section 2.2.10
+
+    if ((DBGMCU->IDC & 0xFFFF0000U) < 0x20000000U) {
+        *((volatile uint32_t *)0x51008108U) = 0x000000001U;
+    }
 
     while ((RCC->CR & RCC_CR_RC48RDY) == 0U) { ; }      // Waiting for the 48-MHz
 
@@ -612,8 +618,10 @@ static  void    local_FMC_Configuration(void) {
 
 // FMC bank 5-6 & CE1 configuration in the synchronous mode
 // - SDRAM is a 42S16320F-6 speed grade, connected to bank 2 (0xD0000000)
-//   Some bits in SDCR[1] are don't care, and the have to be set in SDCR[0],
-//   they aren't just don't care, the controller will fail if they aren't at 0
+//
+// For SDRAM bank 2, some control bits are still taken from SDCR[0].
+// In particular SDCLK, RBURST and RPIPE must be configured in SDCR[0].
+// The bank-specific geometry is configured in SDCR[1].
 
     FMC->SDCR1 = (1U * FMC_SDCR1_RPIPE_0)               // 1 clocks cycle delay
                | FMC_SDCR1_RBURST                       // Read as bursts
@@ -626,37 +634,39 @@ static  void    local_FMC_Configuration(void) {
                | (2U * FMC_SDCR2_NC_0);                 // 10-bit column address
 
 // One SDRAM clock cycle is 1/100-MHz = 10-ns
-// Some bits in SDTR[1] are don't care, and the have to be set in SDTR[0],
-// they aren't just don't care, the controller will fail if they aren't at 0
+//
+// For SDRAM bank 2, some timing bits are still taken from SDTR[0].
+// In particular TRP and TRC must be configured in SDTR[0].
+// The remaining bank-specific timings are configured in SDTR[1].
 
-    FMC->SDTR1 = ((2U - 1U) * FMC_SDTR1_TRP_0)          // 2 cycle TRP (20.x-ns > 18-ns)
-               | ((7U - 1U) * FMC_SDTR1_TRC_0);         // 7 cycle TRC (70.x-ns > 60-ns)
+    FMC->SDTR1 = ((2U - 1U) * FMC_SDTR1_TRP_0)          // 2 cycle TRP (20.0-ns > 18-ns)
+               | ((7U - 1U) * FMC_SDTR1_TRC_0);         // 7 cycle TRC (70.0-ns > 60-ns)
 
-    FMC->SDTR2 = ((2U - 1U) * FMC_SDTR2_TRCD_0)         // 2 cycle TRCD (20.x-ns > 18-ns)
-               | ((3U - 1U) * FMC_SDTR2_TWR_0)          // 3 cycle TWR
-               | ((5U - 1U) * FMC_SDTR2_TRAS_0)         // 5 cycle TRAS (50.x-ns > 42-ns)
-               | ((8U - 1U) * FMC_SDTR2_TXSR_0)         // 8 cycle TXSR (80.x-ns > 70-ns)
+    FMC->SDTR2 = ((2U - 1U) * FMC_SDTR2_TRCD_0)         // 2 cycle TRCD (20.0-ns > 18-ns)
+               | ((3U - 1U) * FMC_SDTR2_TWR_0)          // 3 cycle TWR (>= (TRAS - TRCD)
+               | ((5U - 1U) * FMC_SDTR2_TRAS_0)         // 5 cycle TRAS (50.0-ns > 42-ns)
+               | ((8U - 1U) * FMC_SDTR2_TXSR_0)         // 8 cycle TXSR (80.0-ns > 70-ns)
                | ((2U - 1U) * FMC_SDTR2_TMRD_0);        // 2 cycle TMRD
 
 // SDRam mode register
 // Mode: 11 10 09 08   07 06 05 04   03 02 01 00
 //        -  -  1  0    0  0  1  0    0  0  0  0
 //
-// M9      = 1      Single location access
+// M9      = 1      Write node
 // M8 - M7 = 00     Standard operation
 // M6 - M4 = 010    CAS latency 2
 // M3      = 0      Sequential
 // M2 - M0 = 000    Burst length 1
 
-    SDRAM_COMMAND_BANK2(0x1U, 0U,     0U      );        // Command Clock Configuration Enable
+    SDRAM_COMMAND_BANK_CTB2(0x1U, 0U,     0U      );    // Command Clock Configuration Enable
     local_wait_us(200000U);
 
-    SDRAM_COMMAND_BANK2(0x2U, 0U,     0U      );        // Command All Bank Precharge
-    SDRAM_COMMAND_BANK2(0x3U, 0U,    (2U - 1U));        // Command Auto Refresh (2 cycles)
-    SDRAM_COMMAND_BANK2(0x4U, 0x220U, 0U      );        // Command Load Mode Register (CAS latency = 2, burst len = 1 (only Read))
+    SDRAM_COMMAND_BANK_CTB2(0x2U, 0U,     0U      );    // Command All Bank Precharge
+    SDRAM_COMMAND_BANK_CTB2(0x3U, 0U,    (2U - 1U));    // Command Auto Refresh (2 cycles)
+    SDRAM_COMMAND_BANK_CTB2(0x4U, 0x220U, 0U      );    // Command Load Mode Register (CAS latency = 2, burst len = 1 (only Read))
 
     #ifdef SELF_REFRESH_S
-    SDRAM_COMMAND_BANK2(0x5U, 0U,     0U      );        // Command Self Refresh
+    SDRAM_COMMAND_BANK_CTB2(0x5U, 0U,     0U      );    // Command Self Refresh
 
     #else
 
@@ -683,20 +693,20 @@ static  void    local_FMC_Configuration(void) {
 static  void    local_MPU_Configuration(void) {
 
     #ifdef PRIVILEGED_USER_S
-    SET_MPU7_REGION(0U, 0U, ST_FLASH_INT_0,     SZ_FLASH_INT_0,     KMPU_EXECUTABLE,        KMPU_R_ALL,     KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,    KMPU_CASHABLE,      KMPU_NOT_BUFFERABLE);
-    SET_MPU7_REGION(1U, 0U, ST_RAM_INT_0,       SZ_RAM_INT_0,       KMPU_EXECUTABLE,        KMPU_RW_ALL,    KMPU_TEX_LEVEL6, KMPU_NOT_SHAREABLE,    KMPU_CASHABLE,      KMPU_NOT_BUFFERABLE);
-    SET_MPU7_REGION(2U, 0U, ST_RAM_INT_1,       SZ_RAM_INT_1,       KMPU_EXECUTABLE,        KMPU_RW_ALL,    KMPU_TEX_LEVEL6, KMPU_NOT_SHAREABLE,    KMPU_CASHABLE,      KMPU_NOT_BUFFERABLE);
-    SET_MPU7_REGION(3U, 0U, ST_RAM_INT_2_OS,    SZ_RAM_INT_2_OS,    KMPU_EXECUTABLE,        KMPU_RW_PRI,    KMPU_TEX_LEVEL6, KMPU_NOT_SHAREABLE,    KMPU_CASHABLE,      KMPU_NOT_BUFFERABLE);
-    SET_MPU7_REGION(4U, 0U, ST_RAM_EXT_0,       SZ_RAM_EXT_0,       KMPU_EXECUTABLE,        KMPU_RW_ALL,    KMPU_TEX_LEVEL6, KMPU_NOT_SHAREABLE,    KMPU_CASHABLE,      KMPU_NOT_BUFFERABLE);
+    SET_MPU7_REGION(0U, 0U, ST_FLASH_INT_0,     SZ_FLASH_INT_0,     KMPU_EXECUTABLE,        KMPU_R_ALL,     KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,    KMPU_CASHABLE,      KMPU_BUFFERABLE);
+    SET_MPU7_REGION(1U, 0U, ST_RAM_INT_0,       SZ_RAM_INT_0,       KMPU_EXECUTABLE,        KMPU_RW_ALL,    KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,    KMPU_CASHABLE,      KMPU_BUFFERABLE);
+    SET_MPU7_REGION(2U, 0U, ST_RAM_INT_1,       SZ_RAM_INT_1,       KMPU_EXECUTABLE,        KMPU_RW_ALL,    KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,    KMPU_CASHABLE,      KMPU_BUFFERABLE);
+    SET_MPU7_REGION(3U, 0U, ST_RAM_INT_2_OS,    SZ_RAM_INT_2_OS,    KMPU_EXECUTABLE,        KMPU_RW_PRI,    KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,    KMPU_CASHABLE,      KMPU_BUFFERABLE);
+    SET_MPU7_REGION(4U, 0U, ST_RAM_EXT_0,       SZ_RAM_EXT_0,       KMPU_EXECUTABLE,        KMPU_RW_ALL,    KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,    KMPU_CASHABLE,      KMPU_BUFFERABLE);
     SET_MPU7_REGION(5U, 0U, ST_PERIPH_SOC,      SZ_PERIPH_SOC,      KMPU_NOT_EXECUTABLE,    KMPU_RW_PRI,    KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,    KMPU_NOT_CASHABLE,  KMPU_BUFFERABLE);
     SET_MPU7_REGION(6U, 0U, ST_PERIPH_CORE,     SZ_PERIPH_CORE,     KMPU_NOT_EXECUTABLE,    KMPU_RW_PRI,    KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,    KMPU_NOT_CASHABLE,  KMPU_BUFFERABLE);
 
     #else
-    SET_MPU7_REGION(0U, 0U, ST_FLASH_INT_0,     SZ_FLASH_INT_0,     KMPU_EXECUTABLE,        KMPU_R_ALL,     KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,    KMPU_CASHABLE,      KMPU_NOT_BUFFERABLE);
-    SET_MPU7_REGION(1U, 0U, ST_RAM_INT_0,       SZ_RAM_INT_0,       KMPU_EXECUTABLE,        KMPU_RW_ALL,    KMPU_TEX_LEVEL6, KMPU_NOT_SHAREABLE,    KMPU_CASHABLE,      KMPU_NOT_BUFFERABLE);
-    SET_MPU7_REGION(2U, 0U, ST_RAM_INT_1,       SZ_RAM_INT_1,       KMPU_EXECUTABLE,        KMPU_RW_ALL,    KMPU_TEX_LEVEL6, KMPU_NOT_SHAREABLE,    KMPU_CASHABLE,      KMPU_NOT_BUFFERABLE);
-    SET_MPU7_REGION(3U, 0U, ST_RAM_INT_2,       SZ_RAM_INT_2,       KMPU_EXECUTABLE,        KMPU_RW_ALL,    KMPU_TEX_LEVEL6, KMPU_NOT_SHAREABLE,    KMPU_CASHABLE,      KMPU_NOT_BUFFERABLE);
-    SET_MPU7_REGION(4U, 0U, ST_RAM_EXT_0,       SZ_RAM_EXT_0,       KMPU_EXECUTABLE,        KMPU_RW_ALL,    KMPU_TEX_LEVEL6, KMPU_NOT_SHAREABLE,    KMPU_CASHABLE,      KMPU_NOT_BUFFERABLE);
+    SET_MPU7_REGION(0U, 0U, ST_FLASH_INT_0,     SZ_FLASH_INT_0,     KMPU_EXECUTABLE,        KMPU_R_ALL,     KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,    KMPU_CASHABLE,      KMPU_BUFFERABLE);
+    SET_MPU7_REGION(1U, 0U, ST_RAM_INT_0,       SZ_RAM_INT_0,       KMPU_EXECUTABLE,        KMPU_RW_ALL,    KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,    KMPU_CASHABLE,      KMPU_BUFFERABLE);
+    SET_MPU7_REGION(2U, 0U, ST_RAM_INT_1,       SZ_RAM_INT_1,       KMPU_EXECUTABLE,        KMPU_RW_ALL,    KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,    KMPU_CASHABLE,      KMPU_BUFFERABLE);
+    SET_MPU7_REGION(3U, 0U, ST_RAM_INT_2,       SZ_RAM_INT_2,       KMPU_EXECUTABLE,        KMPU_RW_ALL,    KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,    KMPU_CASHABLE,      KMPU_BUFFERABLE);
+    SET_MPU7_REGION(4U, 0U, ST_RAM_EXT_0,       SZ_RAM_EXT_0,       KMPU_EXECUTABLE,        KMPU_RW_ALL,    KMPU_TEX_LEVEL0, KMPU_NOT_SHAREABLE,    KMPU_CASHABLE,      KMPU_BUFFERABLE);
     #endif
 
 // Enable branch prediction

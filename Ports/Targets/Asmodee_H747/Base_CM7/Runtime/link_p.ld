@@ -32,16 +32,16 @@ INCLUDE     STM32H747xI.ld
 
 /* Mapping:                                                 */
 /*                                                          */
-/* AXI:     Stacks              0x24000000                  */
-/*          6K                                              */
-/*          Program Data        0x24001800                  */
-/*          250K                                            */
-/* RAM4:    Share               0x38000000                  */
-/*          64K                                             */
-/* EXT:     Heap                0x70000000                  */
-/*          2048K                                           */
-/*          User Memory         0x70200000                  */
-/*          6144K                                           */
+/* AXI:      Stacks              0x24000000                 */
+/*            └ 6K                                          */
+/*           Program Data        0x24001800                 */
+/*            └ 250K                                        */
+/* RAM4:     Share               0x38000000                 */
+/*            └ 64K                                         */
+/* External: Heap                0x70000000                 */
+/*            └ 2048K                                       */
+/*           User Memory         0x70200000                 */
+/*            └ 6144K                                       */
 
 linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
 linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */
@@ -101,7 +101,7 @@ linker_SZ_FLASH_INT_0       = 19;                                               
 linker_ST_RAM_INT_0         = stm_stAXISRAM;                                                /* 0x24000000: Privileged RAM/User RAM                      */
 linker_SZ_RAM_INT_0         = 18;                                                           /* 512-K = 2^(SZ + 1), SZ = log2(512-K) - 1                 */
 
-linker_ST_RAM_EXT_0         = linker_stEXRAM;                                               /* 0x70000000: Privileged/User RAM                          */
+linker_ST_RAM_EXT_0         = (linker_stEXRAM + 2048K);                                     /* 0x70200000: Privileged/User RAM                          */
 linker_SZ_RAM_EXT_0         = 22;                                                           /* 8-M = 2^(SZ + 1), SZ = log2(8-M) - 1                     */
 
 linker_ST_RAM_INT_1_SHARED  = linker_stShare;                                               /* 0x38000000: Privileged/User RAM                          */

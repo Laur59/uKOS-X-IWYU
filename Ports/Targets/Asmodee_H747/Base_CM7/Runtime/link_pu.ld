@@ -38,22 +38,20 @@ INCLUDE     STM32H747xI.ld
 
 /* Mapping:                                                 */
 /*                                                          */
-/* AXI:     Protected           0x24000000                  */
-/*            Stack System      0x24000000                  */
-/*            4K                                            */
-/*            Program Data (P)  0x24001000                  */
-/*            60K                                           */
-/*          Unprotected         0x24010000                  */
-/*            Stack First       0x24010000                  */
-/*            2K                                            */
-/*            Program Data (U)  0x24010800                  */
-/*            446K                                          */
-/* RAM4:    Share               0x38000000                  */
-/*          64K                                             */
-/* EXT:     Heap                0x70000000                  */
-/*          2048K                                           */
-/*          User Memory         0x70200000                  */
-/*          6144K                                           */
+/* AXI:      Stack System        0x24000000  (Protected)    */
+/*            └ 4K                                          */
+/*           Program Data        0x24001000  (Protected)    */
+/*            └ 60K                                         */
+/*           Stack First         0x24010000  (User)         */
+/*            └ 2K                                          */
+/*           Program Data        0x24010800  (User)         */
+/*            └ 446K                                        */
+/* RAM4:     Share               0x38000000  (User)         */
+/*            └ 64K                                         */
+/* External: Heap                0x70000000  (User)         */
+/*            └ 2048K                                       */
+/*           User Memory         0x70200000  (User)         */
+/*            └ 6144K                                       */
 
 linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
 linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */
@@ -117,6 +115,7 @@ linker_SZ_FLASH_INT_0       = 19;                                               
 
 linker_ST_RAM_INT_0         = stm_stAXISRAM;                                                /* 0x24000000: Privileged/User RAM                          */
 linker_SZ_RAM_INT_0         = 18;                                                           /* 512-K = 2^(SZ + 1), SZ = log2(512-K) - 1                 */
+hex_SZ_RAM_INT_0            = (1 << (linker_SZ_RAM_INT_0+1));                               /* 512-K                                                    */
 
 linker_ST_RAM_INT_0_OS      = stm_stAXISRAM;                                                /* 0x24000000: Privileged RAM                               */
 linker_SZ_RAM_INT_0_OS      = 15;                                                           /* 64-K = 2^(SZ + 1), SZ = log2(64-K) - 1                   */
@@ -142,5 +141,7 @@ MEMORY {
 
 ASSERT((linker_stPrgmData_p) < (linker_ST_RAM_INT_0_OS + hex_SZ_RAM_INT_0_OS), "Start address of data outside protected region")
 ASSERT((linker_stPrgmData_p + linker_lnPrgmData_p) <= (linker_ST_RAM_INT_0_OS + hex_SZ_RAM_INT_0_OS), "End address of data outside protected region")
+ASSERT((linker_stPrgmData_u) >= (linker_ST_RAM_INT_0), "Start address of user data outside user region")
+ASSERT((linker_stPrgmData_u + linker_lnPrgmData_u) <= (linker_ST_RAM_INT_0 + hex_SZ_RAM_INT_0), "End address of user data outside user region")
 
 INCLUDE     system_pu.ld

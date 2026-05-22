@@ -10,7 +10,6 @@
 
 #include    "macros.h"
 #include    "modules.h"
-#include    "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
