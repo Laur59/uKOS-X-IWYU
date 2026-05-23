@@ -5,11 +5,8 @@
  * Goal:     stub for the connection of the "wfi0" manager to the "urt1" manager.
  */
 
-#include    <stdint.h>
-
-#include    "types.h"
-#include    "urt1/urt1.h"
-#include    "wfi0/wfi0.h"
+#include    "urt1/urt1.h"       // IWYU pragma: keep for urt1
+#include    "wfi0/wfi0.h"       // IWYU pragma: keep for wfi0
 
 #define DEVICE_IN   wfi0
 #define DEVICE_OUT  urt1

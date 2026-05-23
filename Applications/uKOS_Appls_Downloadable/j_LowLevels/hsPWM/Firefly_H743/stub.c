@@ -1,0 +1,77 @@
+/*
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Hardware specific stub.
+ */
+
+#include    <stdint.h>
+
+#include    "core_reg.h"
+#include    "soc_reg.h"
+#include    "macros.h"
+#include    "macros_soc.h"
+#include    "macros_core.h"
+#include    "kern/kern.h"
+
+#define KPSCT1      0U                          // Prescaler for 240'000'000-Hz
+#define KARRT1      ((1U<<12U) - 1U)            // Autoreload (4096-bits for 58-KHz)
+
+#define KPSCT15     0U                          // Prescaler for 240'000'000-Hz
+#define KARRT15     60000U                      // Autoreload (> 8192-bits for 20-KHz)
+
+/*
+ * \brief stub_intr_timer_init
+ *
+ */
+void    stub_intr_timer_init(void) {
+
+    RCC->APB2ENR |= RCC_APB2ENR_TIM1EN;
+    RCC->APB2ENR |= RCC_APB2ENR_TIM15EN;
+
+// Timer 1 (58-KHz PWM)
+
+    TIM1->CNT  = 0U;
+    TIM1->PSC  = KPSCT1;
+    TIM1->ARR  = KARRT1;
+
+// Timer 15 (58-KHz PWM)
+
+    TIM15->CNT  = 0U;
+    TIM15->PSC  = KPSCT15;
+    TIM15->ARR  = KARRT15;
+
+// CH1 - Tim 1
+
+    TIM1->CCR1   = ((TIM1->ARR + 1U) * 33U) / 100U;
+    TIM1->CCMR1 |= (6U * TIM1_CCMR1_OC1M_0);
+    TIM1->CCMR1 |= TIM1_CCMR1_OC1PE;
+    TIM1->CCER  |= TIM1_CCER_CC1E;
+
+// CH2 - Tim 1
+
+    TIM1->CCR2   = ((TIM1->ARR + 1U) * 75U) / 100U;
+    TIM1->CCMR1 |= (6U * TIM1_CCMR1_OC2M_0);
+    TIM1->CCMR1 |= TIM1_CCMR1_OC2PE;
+    TIM1->CCER  |= TIM1_CCER_CC2E;
+
+// CH3 - Tim 1
+
+    TIM1->CCR3   = ((TIM1->ARR + 1U) * 50U) / 100U;
+    TIM1->CCMR2 |= (6U * TIM1_CCMR2_OC3M_0);
+    TIM1->CCMR2 |= TIM1_CCMR2_OC3PE;
+    TIM1->CCER  |= TIM1_CCER_CC3E;
+
+    TIM1->BDTR |= TIM1_BDTR_MOE;
+    TIM1->CR1  |= TIM1_CR1_CEN;
+
+// CH1 - Tim 15
+
+    TIM15->CCR1   = ((TIM15->ARR + 1U) * 50U) / 100U;
+    TIM15->CCMR1 |= (6U * TIM15_CCMR1_OC1M_0);
+    TIM15->CCMR1 |= TIM15_CCMR1_OC1PE;
+    TIM15->CCER  |= TIM15_CCER_CC1E;
+
+    TIM15->BDTR |= TIM15_BDTR_MOE;
+    TIM15->CR1  |= TIM15_CR1_CEN;
+}

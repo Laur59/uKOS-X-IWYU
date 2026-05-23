@@ -53,8 +53,8 @@ MODULE(
 typedef struct  gpio    gpio_t;
 
 struct  gpio {
-            uint8_t     oPin;               // Pin number (32 ... > 0 of P1)
             uint32_t    oPinCNFValue;       // Pin configuration value
+            uint8_t     oPin;               // Pin number (32 ... > 0 of P1)
             uint8_t     oOutputQuite;       // Output value in a quite state
         };
 
@@ -179,51 +179,51 @@ static  void    local_GPIO_Configuration(void) {
                     uint8_t     i, pin;
                     uint32_t    *pCnf;
     static  const   gpio_t      aGPIO_Cnf[] = {
-                                        { 0U,  (KPIN_TND),                                                                                      0U },   // P0.0 32-KHz
-                                        { 1U,  (KPIN_TND),                                                                                      0U },   // P0.1 32-KHz
+                                        { .oPin=0U,  .oPinCNFValue=(KPIN_TND),                                                                                      .oOutputQuite=0U },   // P0.0 32-KHz
+                                        { .oPin=1U,  .oPinCNFValue=(KPIN_TND),                                                                                      .oOutputQuite=0U },   // P0.1 32-KHz
 
-                                        { 2U,  (KPIN_PERIPH | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    0U },   // P0.2 NFC
-                                        { 3U,  (KPIN_PERIPH | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    0U },   // P0.3 NFC
+                                        { .oPin=2U,  .oPinCNFValue=(KPIN_PERIPH | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    .oOutputQuite=0U },   // P0.2 NFC
+                                        { .oPin=3U,  .oPinCNFValue=(KPIN_PERIPH | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    .oOutputQuite=0U },   // P0.3 NFC
 
-                                        { 4U,  (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    0U },   // P0.4 Analog A0
-                                        { 5U,  (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    0U },   // P0.5 Analog A1
-                                        { 6U,  (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    0U },   // P0.6 Analog A2
-                                        { 7U,  (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    0U },   // P0.7 Analog A3
+                                        { .oPin=4U,  .oPinCNFValue=(KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    .oOutputQuite=0U },   // P0.4 Analog A0
+                                        { .oPin=5U,  .oPinCNFValue=(KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    .oOutputQuite=0U },   // P0.5 Analog A1
+                                        { .oPin=6U,  .oPinCNFValue=(KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    .oOutputQuite=0U },   // P0.6 Analog A2
+                                        { .oPin=7U,  .oPinCNFValue=(KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    .oOutputQuite=0U },   // P0.7 Analog A3
 
-                                        { 8U,  (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_CONNECT    | KDIR_INPUT),    0U },   // P0.8 Button 3
-                                        { 9U,  (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_CONNECT    | KDIR_INPUT),    0U },   // P0.9 Button 4
+                                        { .oPin=8U,  .oPinCNFValue=(KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_CONNECT    | KDIR_INPUT),    .oOutputQuite=0U },   // P0.8 Button 3
+                                        { .oPin=9U,  .oPinCNFValue=(KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_CONNECT    | KDIR_INPUT),    .oOutputQuite=0U },   // P0.9 Button 4
 
-                                        { 10U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DOWN    | KINPUT_CONNECT    | KDIR_INPUT),    0U },   // P0.10 USART_1 /CTS
-                                        { 11U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   0U },   // P0.11 USART_1 /RTS
+                                        { .oPin=10U, .oPinCNFValue=(KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DOWN    | KINPUT_CONNECT    | KDIR_INPUT),    .oOutputQuite=0U },   // P0.10 USART_1 /CTS
+                                        { .oPin=11U, .oPinCNFValue=(KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   .oOutputQuite=0U },   // P0.11 USART_1 /RTS
 
-                                        { 13U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_DISCONNECT | KDIR_INPUT),    0U },   // P0.13 SIO_0 SI
-                                        { 14U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   0U },   // P0.14 SIO_1 SO
-                                        { 15U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_DISCONNECT | KDIR_INPUT),    0U },   // P0.15 SIO_2 WP
-                                        { 16U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_DISCONNECT | KDIR_INPUT),    0U },   // P0.16 SIO_2 HOLD
-                                        { 17U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   0U },   // P0.17 SIO SCLK
-                                        { 18U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   1U },   // P0.18 SIO /CS
+                                        { .oPin=13U, .oPinCNFValue=(KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_DISCONNECT | KDIR_INPUT),    .oOutputQuite=0U },   // P0.13 SIO_0 SI
+                                        { .oPin=14U, .oPinCNFValue=(KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   .oOutputQuite=0U },   // P0.14 SIO_1 SO
+                                        { .oPin=15U, .oPinCNFValue=(KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_DISCONNECT | KDIR_INPUT),    .oOutputQuite=0U },   // P0.15 SIO_2 WP
+                                        { .oPin=16U, .oPinCNFValue=(KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_DISCONNECT | KDIR_INPUT),    .oOutputQuite=0U },   // P0.16 SIO_2 HOLD
+                                        { .oPin=17U, .oPinCNFValue=(KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   .oOutputQuite=0U },   // P0.17 SIO SCLK
+                                        { .oPin=18U, .oPinCNFValue=(KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   .oOutputQuite=1U },   // P0.18 SIO /CS
 
-                                        { 19U, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   0U },   // P0.19 USART_2 /RTS
-                                        { 20U, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   0U },   // P0.20 USART_2 TXD
-                                        { 21U, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DOWN    | KINPUT_CONNECT    | KDIR_INPUT),    0U },   // P0.21 USART_2 /CTS
-                                        { 22U, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_DISCONNECT | KDIR_INPUT),    0U },   // P0.22 USART_2 RXD
+                                        { .oPin=19U, .oPinCNFValue=(KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   .oOutputQuite=0U },   // P0.19 USART_2 /RTS
+                                        { .oPin=20U, .oPinCNFValue=(KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   .oOutputQuite=0U },   // P0.20 USART_2 TXD
+                                        { .oPin=21U, .oPinCNFValue=(KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DOWN    | KINPUT_CONNECT    | KDIR_INPUT),    .oOutputQuite=0U },   // P0.21 USART_2 /CTS
+                                        { .oPin=22U, .oPinCNFValue=(KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_DISCONNECT | KDIR_INPUT),    .oOutputQuite=0U },   // P0.22 USART_2 RXD
 
-                                        { 23U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_CONNECT    | KDIR_INPUT),    0U },   // P0.23 Button 1
-                                        { 24U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_CONNECT    | KDIR_INPUT),    0U },   // P0.24 Button 2
+                                        { .oPin=23U, .oPinCNFValue=(KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_CONNECT    | KDIR_INPUT),    .oOutputQuite=0U },   // P0.23 Button 1
+                                        { .oPin=24U, .oPinCNFValue=(KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_CONNECT    | KDIR_INPUT),    .oOutputQuite=0U },   // P0.24 Button 2
 
-                                        { 25U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    0U },   // P0.25 Analog A4
-                                        { 26U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    0U },   // P0.26 Analog A5
+                                        { .oPin=25U, .oPinCNFValue=(KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    .oOutputQuite=0U },   // P0.25 Analog A4
+                                        { .oPin=26U, .oPinCNFValue=(KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_INPUT),    .oOutputQuite=0U },   // P0.26 Analog A5
 
-                                        { 28U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   1U },   // P0.28 Led 1
-                                        { 29U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   1U },   // P0.29 Led 2
-                                        { 30U, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   1U },   // P0.30 Led 3
-                                        { 31U, (KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   1U },   // P0.31 Led 4
+                                        { .oPin=28U, .oPinCNFValue=(KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   .oOutputQuite=1U },   // P0.28 Led 1
+                                        { .oPin=29U, .oPinCNFValue=(KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   .oOutputQuite=1U },   // P0.29 Led 2
+                                        { .oPin=30U, .oPinCNFValue=(KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   .oOutputQuite=1U },   // P0.30 Led 3
+                                        { .oPin=31U, .oPinCNFValue=(KPIN_NETCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   .oOutputQuite=1U },   // P0.31 Led 4
 
-                                        { 32U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_DISCONNECT | KDIR_INPUT),    0U },   // P1.0 USART_1 RXD
-                                        { 33U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   0U },   // P1.1 USART_1 TXD
+                                        { .oPin=32U, .oPinCNFValue=(KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_DISCONNECT | KDIR_INPUT),    .oOutputQuite=0U },   // P1.0 USART_1 RXD
+                                        { .oPin=33U, .oPinCNFValue=(KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   .oOutputQuite=0U },   // P1.1 USART_1 TXD
 
-                                        { 34U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_CONNECT   | KDIR_INPUT),     0U },   // P1.2 Shield detect
-                                        { 35U, (KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_CONNECT   | KDIR_INPUT),     0U }    // P1.3 Shield detect
+                                        { .oPin=34U, .oPinCNFValue=(KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_CONNECT   | KDIR_INPUT),     .oOutputQuite=0U },   // P1.2 Shield detect
+                                        { .oPin=35U, .oPinCNFValue=(KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_CONNECT   | KDIR_INPUT),     .oOutputQuite=0U }    // P1.3 Shield detect
                                     };
 
 #define KNBCNF      (sizeof(aGPIO_Cnf) / sizeof(gpio_t))

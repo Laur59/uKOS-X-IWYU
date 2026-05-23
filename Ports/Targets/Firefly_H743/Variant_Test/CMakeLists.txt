@@ -42,7 +42,7 @@ add_compile_definitions(
 )
 
 # Flash programming script selection
-set(BURN stm32programmer)
+set(BURN jlinkexe)
 
 # Extra compilation options
 add_compile_options(
@@ -208,6 +208,7 @@ list(APPEND CLI_U
     ${PATH_OSYS}/CLI/semaphore/semaphore.c
     ${PATH_OSYS}/CLI/sloader/sloader.c
     ${PATH_OSYS}/CLI/szkern/szkern.c
+    ${PATH_OSYS}/CLI/test_malloc/test_malloc.c
     ${PATH_OSYS}/CLI/test_ram/test_ram.c
     ${PATH_OSYS}/CLI/uKOS/uKOS.c
     ${PATH_OSYS}/CLI/wki2c/wki2c.c

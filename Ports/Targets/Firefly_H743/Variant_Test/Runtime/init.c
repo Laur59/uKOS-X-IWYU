@@ -227,7 +227,7 @@ static  void    local_GPIO_Configuration(void) {
 //             15  14  13  12  11  10   9   8   7   6   5   4   3   2   1   0
     CNFGPIO(B,KIN,KIN,KIN,KIN,KIN,KOU,KAL,KAL,KAL,KAL,KAL,KAL,KAL,KAL,KOU,KOU,
               K50,K50,K50,K50,K50,K50,K99,K99,K99,K99,K99,K99,K99,K99,K50,K50,
-              KPU,KPU,KPU,KPU,KPU,KOD,KPU,KPU,KPU,KNO,KNO,KPU,KNO,KNO,KPU,KNO,
+              KPU,KPU,KPU,KPU,KPU,KOD,KPU,KPU,KPU,KNO,KNO,KPU,KNO,KNO,KNO,KNO,
               A00,A00,A00,A00,A00,A00,A13,A13,A13,A10,A05,A05,A05,A09,A00,A00,
               KPP,KPP,KPP,KPP,KPP,KOD,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
               0U, 0U, 0U, 0U, 0U, 1U, 0U, 0U, 0U, 1U, 0U, 0U, 0U, 0U, 1U, 1U);
@@ -760,4 +760,4 @@ static  void    local_CACHE_Enable(void) {
     cache_D_Enable();
 }
 
-#include    "model_I_D_cache.c_inc"
+#include    "model_I_D_cache.c_inc"     // IWYU pragma: keep

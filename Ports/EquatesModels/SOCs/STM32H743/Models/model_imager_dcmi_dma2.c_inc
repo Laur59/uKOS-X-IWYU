@@ -193,9 +193,8 @@ int32_t model_imager_acquisition(void) {
  */
 int32_t model_imager_read(volatile void **image) {
 
-    if (vPage == 0U) { *image = vImageE0; }
-    else             { *image = vImageE1; }
-    return KERR_IMAGER_NOERR;
+    if (vPage == 0U) { *image = vImageE0; return KERR_IMAGER_NOERR; }
+                     { *image = vImageE1; return KERR_IMAGER_NOERR; }
 }
 
 /*

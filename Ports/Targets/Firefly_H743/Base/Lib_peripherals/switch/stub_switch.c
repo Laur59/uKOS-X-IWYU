@@ -34,8 +34,8 @@ int32_t stub_switch_read(uint32_t *mode) {
     uint32_t    switches = 0U;
 
     INTERRUPTION_OFF;
-    switches |= ((GPIOB->IDR & (1U<<BSW_0)) == 0U) ? 0x1U : 0U;
-    switches |= ((GPIOB->IDR & (1U<<BSW_1)) == 0U) ? 0x2U : 0U;
+    switches |= ((GPIOA->IDR & (1U<<BSW_0)) == 0U) ? 0x1U : 0U;
+    switches |= ((GPIOA->IDR & (1U<<BSW_1)) == 0U) ? 0x2U : 0U;
     *mode = (switches & 0x03U);
     RETURN_INT_RESTORE(KERR_SWITCH_NOERR);
 }

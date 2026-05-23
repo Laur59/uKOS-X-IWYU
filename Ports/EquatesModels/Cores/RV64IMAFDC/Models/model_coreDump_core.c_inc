@@ -101,8 +101,8 @@ static  void    coreDump_displayInt_Interruption([[maybe_unused]] uint32_t core,
     JUMP_FNCT(local_processIntInt);
 }
 
-[[gnu::noinline]]
-void    local_processIntInt(uint32_t core, uint64_t number, uintptr_t *stackBefore, uintptr_t *stackAfter) {
+[[gnu::noinline, gnu::used]]
+static  void    local_processIntInt(uint32_t core, uint64_t number, uintptr_t *stackBefore, uintptr_t *stackAfter) {
 
     vExceptionNb[core] = number;
     vStackBefore[core] = stackBefore;
@@ -121,8 +121,8 @@ static  void    coreDump_displayInt_Exceptions([[maybe_unused]] uint32_t core, [
     JUMP_FNCT(local_processIntExt);
 }
 
-[[gnu::noinline]]
-void    local_processIntExt(uint32_t core, uint64_t number, uintptr_t *stackBefore, uintptr_t *stackAfter) {
+[[gnu::noinline, gnu::used]]
+static  void    local_processIntExt(uint32_t core, uint64_t number, uintptr_t *stackBefore, uintptr_t *stackAfter) {
 
     vExceptionNb[core] = number;
     vStackBefore[core] = stackBefore;
