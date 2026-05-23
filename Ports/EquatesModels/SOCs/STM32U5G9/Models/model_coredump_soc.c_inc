@@ -269,8 +269,10 @@ static  void    local_printInterruption(const char_t **vectorName) {
         case 134U: { *vectorName = "GFXMMU_IRQn";           break; }
         case 135U: { *vectorName = "LCD_TFT_IRQn";          break; }
         case 136U: { *vectorName = "LCD_TFT_ERR_IRQn";      break; }
-        case 137U:
-        case 138U: { *vectorName = "DSIHOST_IRQn";          break; }
+        case 137U: { *vectorName = "DSIHOST_IRQn";          break; }
+        case 138U: { *vectorName = "DCACHE2_IRQn";          break; }
+        case 139U: { *vectorName = "GFXTIM_IRQn";           break; }
+        case 140U: { *vectorName = "JPEG_IRQn";             break; }
         default:   { *vectorName = "Unknown";               break; }
     }
 }

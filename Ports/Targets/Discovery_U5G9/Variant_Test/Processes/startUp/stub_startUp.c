@@ -41,11 +41,11 @@ struct  boot {
         };
 
 static  const   char_t  *argv_cnsUrt0[] = { "console", "urt0" };
-static  const   char_t  *argv_mpyUrt0[] = { "mpy",     "urt0", "-internal", "100000" };
+static  const   char_t  *argv_mpyUrt0[] = { "microPython", "urt0", "100000" };
 
 static  const   boot_t  aFunction[] = {
                             { .oFunction="console", .oSerialManager=KURT0, .oArgV=argv_cnsUrt0, .oArgC=2U, .oSW=0x00U, .oBaudrate=KSERIAL_BAUDRATE_460800 },
-                            { .oFunction="mpy",     .oSerialManager=KURT0, .oArgV=argv_mpyUrt0, .oArgC=4U, .oSW=0x01U, .oBaudrate=KSERIAL_BAUDRATE_460800 }
+                            { .oFunction="microPython", .oSerialManager=KURT0, .oArgV=argv_mpyUrt0, .oArgC=3U, .oSW=0x01U, .oBaudrate=KSERIAL_BAUDRATE_460800 }
                         };
 
 #define KDEF_COMM       KURT0
@@ -62,7 +62,7 @@ STRG_GLB_CONST(aStartUp_StrHelp[]) = "StartUp process\n"
 
                                      "   SW1\n"
                                      "    0   KURT0, console (460800-bit/s).\n"
-                                     "    1   KURT0, mpy     (460800-bit/s).\n\n";
+                                     "    1   KURT0, microPython (460800-bit/s).\n\n";
 
 STRG_LOC_CONST(aStrLogo[]) = STRG_LOGO;
 

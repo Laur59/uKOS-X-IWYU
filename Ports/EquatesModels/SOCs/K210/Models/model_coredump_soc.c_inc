@@ -103,7 +103,7 @@ static  void    local_processExt(uint32_t core, uint64_t number, uintptr_t *stac
 
 // Collect the stack frame
 
-    ptr = (vStackAfter[core]);
+    ptr = vStackAfter[core];
     for (i = sp; i < ENDREG; i++) {
         vStackCoreDump[core][i] = *ptr;
         ptr++;
