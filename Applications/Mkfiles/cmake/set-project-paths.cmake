@@ -2,13 +2,14 @@
 # ==================
 
 # SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #------------------------------------------------------------------------
-# Author:	Laurent von Allmen	The 2025-07-13
+# Author:   Laurent von Allmen  The 2025-07-13
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Define directory paths required to build the system
+# Project:  uKOS-X
+# Goal:     Define directory paths required to build the system
 #
 #   (c) 2025-2026, Laurent von Allmen
 #   ---------------------------------

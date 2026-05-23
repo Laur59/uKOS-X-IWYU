@@ -1,20 +1,21 @@
 #!/usr/bin/env zsh
 
 # SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi			The 2025-01-01
-# Modifs:	Laurent von Allmen	The 2025-01-01
+# Author:   Laurent von Allmen  The 2025-01-01
+# Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Build all the downloadable applications (generic).
+# Project:  uKOS-X
+# Goal:     Build all the downloadable applications (generic).
 #
-#			usage:
-#			cd ${PATH_UKOS_X_PACKAGE}/Ports/Targets
-#			./build.sh [-C] [-L] [-U] [-Y] [-v|-w]
+#           usage:
+#           cd ${PATH_UKOS_X_PACKAGE}/Ports/Targets
+#           ./build.sh [-C] [-L] [-U] [-Y] [-v|-w]
 #
-#   (c) 2025-2026, Edo. Franzi
-#   --------------------------
+#   (c) 2025-2026, Laurent von Allmen
+#   ---------------------------------
 #                                              __ ______  _____
 #   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 #   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -54,7 +55,7 @@ llvm_option=''
 build_with_cmake=0
 
 usage() {
-	cat <<'EOF'
+    cat <<'EOF'
 Usage: ./build.sh [-C] [-L] [-v|-w] [-U] [-Y]
 
 Options:
@@ -71,33 +72,33 @@ EOF
 readonly OPTSTRING=':LCUYvwh'
 
 while getopts "${OPTSTRING}" option; do
-	case "${option}" in
-		h)
-			usage
-			exit 0
-			;;
-		C)
-			build_with_cmake=1
-			;;
-		L)
-			llvm_option='-L'
-			;;
-		U|Y|v|w)
-			cli_args+=("-${option}")
-			;;
-		?)
-			printf 'Invalid option: -%s\n' "${OPTARG}" >&2
-			exit 1
-			;;
-	esac
+    case "${option}" in
+        h)
+            usage
+            exit 0
+            ;;
+        C)
+            build_with_cmake=1
+            ;;
+        L)
+            llvm_option='-L'
+            ;;
+        U|Y|v|w)
+            cli_args+=("-${option}")
+            ;;
+        ?)
+            printf 'Invalid option: -%s\n' "${OPTARG}" >&2
+            exit 1
+            ;;
+    esac
 done
 
 if [[ "${build_with_cmake}" == 0 ]]; then
-	if [[ "${llvm_option}" == '-L' ]]; then
-		./_build_llvm.sh "${cli_args[@]:-}"
-	else
-		./_build_gcc.sh "${cli_args[@]:-}"
-	fi
+    if [[ "${llvm_option}" == '-L' ]]; then
+        ./_build_llvm.sh "${cli_args[@]:-}"
+    else
+        ./_build_gcc.sh "${cli_args[@]:-}"
+    fi
 else
-	./_build_cmake.sh "${llvm_option}" "${cli_args[@]:-}"
+    ./_build_cmake.sh "${llvm_option}" "${cli_args[@]:-}"
 fi

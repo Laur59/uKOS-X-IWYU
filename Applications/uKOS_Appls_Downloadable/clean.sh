@@ -1,16 +1,17 @@
 #!/usr/bin/env zsh
 
 # SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Cleaning all the uKOS downloadable applications.
+# Project:  uKOS-X
+# Goal:     Cleaning all the uKOS downloadable applications.
 #
-#			usage:
-#			./clean.sh
+#           usage:
+#           ./clean.sh
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -66,10 +67,10 @@ readonly NC=$'\033[0m' # No Color
 
 # Parse apps.yaml file using yq
 parse_apps_yaml() {
-	local yaml_file="${PATH_PRG}/apps.yaml"
+    local yaml_file="${PATH_PRG}/apps.yaml"
 
-	# Parse YAML: iterate through families, projects, and targets
-	yq eval 'to_entries[] | .key as $family | .value | to_entries[] | .key as $project | .value[] | "\($family)/\($project)/\(.)"' "${yaml_file}"
+    # Parse YAML: iterate through families, projects, and targets
+    yq eval 'to_entries[] | .key as $family | .value | to_entries[] | .key as $project | .value[] | "\($family)/\($project)/\(.)"' "${yaml_file}"
 }
 
 readonly LOG_FILE='compilation.log'
@@ -77,10 +78,10 @@ readonly LOG_FILE='compilation.log'
 printf '%bCleaning all the downloadable applications ...%b\n' "${BOLD}" "${NC}"
 while IFS= read -r CURRENT_TARGET
 do
-	printf '.'
-	cd "${PATH_PRG}/${CURRENT_TARGET}"
-	make --silent clean_all
-	rm -f "${LOG_FILE}"
-	rm -fr build
+    printf '.'
+    cd "${PATH_PRG}/${CURRENT_TARGET}"
+    make --silent clean_all
+    rm -f "${LOG_FILE}"
+    rm -fr build
 done < <(parse_apps_yaml)
 printf '\n%bTerminated!%b\n' "${BOLD}" "${NC}"

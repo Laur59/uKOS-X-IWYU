@@ -1,16 +1,17 @@
 #!/usr/bin/env zsh
 
 # SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Building the documentation.
+# Project:  uKOS-X
+# Goal:     Building the documentation.
 #
-#			usage:
-#			./build.sh
+#           usage:
+#           ./build.sh
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -50,16 +51,16 @@
 
 if ! command -v doxygen &> /dev/null
 then
-	echo "doxygen is not in your path"
-	exit 1
+    echo "doxygen is not in your path"
+    exit 1
 fi
 
 # check that GraphViz has been installed
 
 if ! command -v dot &> /dev/null
 then
-	echo "dot (GraphViz) is not in your path"
-	exit 1
+    echo "dot (GraphViz) is not in your path"
+    exit 1
 fi
 
 doxygen ./doc_src/Doxyfile > /dev/null

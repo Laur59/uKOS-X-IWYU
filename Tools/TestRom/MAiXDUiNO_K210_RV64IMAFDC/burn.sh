@@ -1,16 +1,17 @@
 #!/usr/bin/env zsh
 
 # SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi			The 2025-01-01
-# Modifs:	Laurent von Allmen	The 2025-01-01
+# Author:   Edo. Franzi         The 2025-01-01
+# Modifs:   Laurent von Allmen  The 2025-01-01
 #
-# Project:	uKOS-X
-# Goal:		script for burning the arm flash via the kflash_maixduino.
+# Project:  uKOS-X
+# Goal:     script for burning the arm flash via the kflash_maixduino.
 #
-#			- Usage:
-#			./burn.sh
+#           - Usage:
+#           ./burn.sh
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -49,12 +50,12 @@
 set -e
 
 case "$(uname)" in
-	"Darwin")
-		usbsn=`ioreg -p IOUSB -n Sipeed-Debug | grep "kUSBSerialNumberString" | sed 's/\(.*\)= "\(.*\)"/\2/'`"0"
-		kflash -B maixduino -p /dev/tty.usbserial-${usbsn} testROM.bin
-		;;
-	"Linux")
-		kflash -B maixduino -p /dev/ttyUSB0 testROM.bin
-		;;
+    "Darwin")
+        usbsn=`ioreg -p IOUSB -n Sipeed-Debug | grep "kUSBSerialNumberString" | sed 's/\(.*\)= "\(.*\)"/\2/'`"0"
+        kflash -B maixduino -p /dev/tty.usbserial-${usbsn} testROM.bin
+        ;;
+    "Linux")
+        kflash -B maixduino -p /dev/ttyUSB0 testROM.bin
+        ;;
 esac
 

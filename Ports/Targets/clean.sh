@@ -1,16 +1,17 @@
 #!/usr/bin/env zsh
 
 # SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Cleaning all the projects.
+# Project:  uKOS-X
+# Goal:     Cleaning all the projects.
 #
-#			usage:
-#			./clean.sh
+#           usage:
+#           ./clean.sh
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -65,10 +66,10 @@ readonly NC='\033[0m' # No Color
 
 # Parse variants.yaml file using yq
 parse_variants_yaml() {
-	local yaml_file="${PATH_PRG}/variants.yaml"
+    local yaml_file="${PATH_PRG}/variants.yaml"
 
-	# Parse YAML: iterate through families and their variants
-	yq eval 'to_entries[] | .key as $family | .value[] | "\($family)\t\(.name)"' "${yaml_file}"
+    # Parse YAML: iterate through families and their variants
+    yq eval 'to_entries[] | .key as $family | .value[] | "\($family)\t\(.name)"' "${yaml_file}"
 }
 
 readonly LOG_FILE="compilation.log"
@@ -76,11 +77,11 @@ readonly LOG_FILE="compilation.log"
 printf "%bCleaning all the systems ...%b\n" "${BOLD}" "${NC}"
 # Parse YAML and iterate through all build targets
 while IFS=$'\t' read -r family variant_name; do
-	printf "."
-	cd "${PATH_PRG}/${family}/Variant_${variant_name}/System"
-	make --silent clean_all
-	rm -f "${LOG_FILE}"
-	rm -rf buildscan
-	rm -fr ../build
+    printf "."
+    cd "${PATH_PRG}/${family}/Variant_${variant_name}/System"
+    make --silent clean_all
+    rm -f "${LOG_FILE}"
+    rm -rf buildscan
+    rm -fr ../build
 done < <(parse_variants_yaml)
 printf "\n%bTerminated!%b\n" "${BOLD}" "${NC}"

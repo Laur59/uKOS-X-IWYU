@@ -1,16 +1,17 @@
 #!/usr/bin/env zsh
 
 # SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2025-01-01
+# Author:   Edo. Franzi     The 2025-01-01
 # Modifs:
 #
-# Project:	uKOS-X
-# Goal:		Burn the K210_M1 chip.
+# Project:  uKOS-X
+# Goal:     Burn the K210_M1 chip.
 #
-#			usage:
-#			./burn.sh
+#           usage:
+#           ./burn.sh
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -47,14 +48,14 @@
 #------------------------------------------------------------------------
 
 case "$(uname)" in
-	"Darwin")
-		dev="$(ls -1 /dev/tty.usbserial-* 2>/dev/null | grep -E 'tty\.usbserial-[0-9]+0$' | head -n1 || true)"
-		if [[ -n "${dev:-}" ]]; then
-			usbsn="${dev##*-}"
-		fi
-		kflash -B dan -p /dev/tty.usbserial-${usbsn} testROM.bin
-		;;
-	"Linux")
-		kflash -B dan -p /dev/ttyUSB0 testROM.bin
-		;;
+    "Darwin")
+        dev="$(ls -1 /dev/tty.usbserial-* 2>/dev/null | grep -E 'tty\.usbserial-[0-9]+0$' | head -n1 || true)"
+        if [[ -n "${dev:-}" ]]; then
+            usbsn="${dev##*-}"
+        fi
+        kflash -B dan -p /dev/tty.usbserial-${usbsn} testROM.bin
+        ;;
+    "Linux")
+        kflash -B dan -p /dev/ttyUSB0 testROM.bin
+        ;;
 esac

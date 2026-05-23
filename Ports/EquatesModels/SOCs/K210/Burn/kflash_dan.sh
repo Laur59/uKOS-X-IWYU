@@ -1,16 +1,17 @@
 #!/usr/bin/env zsh
 
 # SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 #------------------------------------------------------------------------
-# Author:	Edo. Franzi			The 2025-01-01
-# Modifs:	Laurent von Allmen	The 2025-01-01
+# Author:   Edo. Franzi         The 2025-01-01
+# Modifs:   Laurent von Allmen  The 2025-01-01
 #
-# Project:	uKOS-X
-# Goal:		script for burning the arm flash via the kflash_dan.
+# Project:  uKOS-X
+# Goal:     script for burning the arm flash via the kflash_dan.
 #
-#			- Usage:
-#			  ./kflash_dan.sh
+#           - Usage:
+#             ./kflash_dan.sh
 #
 #   (c) 2025-2026, Edo. Franzi
 #   --------------------------
@@ -49,11 +50,11 @@
 set -e
 
 case "$(uname)" in
-	"Darwin")
-		usbsn=`ioreg -p IOUSB -n Sipeed-Debug | grep "kUSBSerialNumberString" | sed 's/\(.*\)= "\(.*\)"/\2/'`"0"
-		kflash -B dan -p "/dev/tty.usbserial-${usbsn}" FLASH.bin
-		;;
-	"Linux")
-		kflash -B dan -p /dev/ttyUSB0 FLASH.bin
-		;;
+    "Darwin")
+        usbsn=`ioreg -p IOUSB -n Sipeed-Debug | grep "kUSBSerialNumberString" | sed 's/\(.*\)= "\(.*\)"/\2/'`"0"
+        kflash -B dan -p "/dev/tty.usbserial-${usbsn}" FLASH.bin
+        ;;
+    "Linux")
+        kflash -B dan -p /dev/ttyUSB0 FLASH.bin
+        ;;
 esac
