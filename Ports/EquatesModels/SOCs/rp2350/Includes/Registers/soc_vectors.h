@@ -72,7 +72,7 @@ typedef enum IRQn {
     POWMAN_IRQ_TIMER_IRQn   = 45,   //
 } IRQn_Type;
 
-#ifndef RV32IMAC_S
+#ifndef __riscv
 #define KNB_EXCEPTIONS      14U
 #endif
 
@@ -206,7 +206,7 @@ typedef enum IRQn {
 
 // Prototypes
 
-#ifdef RV32IMAC_S
+#ifdef __riscv
 
 #define KNB_EXCEPTIONS      16U
 
@@ -249,7 +249,7 @@ typedef enum IRQn {
 #define MTIP_C0_IRQn                            7u
 #define MTIP_C1_IRQn                            7u
 
-#endif // RV32IMAC_S
+#endif // __riscv
 
 #ifdef __cplusplus
 extern  "C" {
