@@ -478,6 +478,14 @@ function(configure_riscv_core)
         list(APPEND COMPILE_FLAGS "$<$<C_COMPILER_ID:GNU>:${EXTRA_FLAGS_GNU}>")
     endif()
 
+    # Privileged/user split (_pu): privileged and user small-data sit farther apart than
+    # the ±2 KiB gp window, so gp-relative access to the other domain would silently hit
+    # the wrong address. Disable small-data entirely (globals addressed absolutely); the
+    # KERN_NEW_FRAME "la gp,__global_pointer$" reload stays harmless. Accepted by GCC and Clang.
+    if(MODE STREQUAL "_pu")
+        list(APPEND COMPILE_FLAGS "-msmall-data-limit=0")
+    endif()
+
     # Build link flags
     set(LINK_FLAGS
         "$<$<C_COMPILER_ID:GNU>:-march=${MARCH_GNU}>"
