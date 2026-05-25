@@ -32,6 +32,9 @@ project(
 set(SOC GD32VF103)
 set(CORE RV32IMAC)
 
+# RISC-V ISA extensions (GD32VF103 Bumblebee core is M-mode only — no user_mode)
+set(CPU_FEATURES "zicsr;zifencei")
+
 # Apply project settings
 include(proj_config)
 

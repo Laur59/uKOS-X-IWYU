@@ -26,11 +26,20 @@ option(WITHAPP "Integrate a user application into the system" OFF)
 option(CONSTANT_SIG "Use SHA-256 of zero to generate signature" OFF)
 
 add_library(core_compiler_flags INTERFACE)
-if(${USER_MODE} AND (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "ARM"))
+
+# RISC-V "user_mode" capability pre-scan.
+# The privilege-split gate below runs before configure_riscv_core(), so the
+# capability has to be detected from CPU_FEATURES here. Only cores/ports that
+# implement M+U mode + PMP (e.g. rp2350 Hazard3) declare it; others stay privileged.
+set(RISCV_FEATURE_UMODE OFF)
+if((CMAKE_SYSTEM_PROCESSOR STREQUAL "RISCV") AND DEFINED CPU_FEATURES AND ("user_mode" IN_LIST CPU_FEATURES))
+    set(RISCV_FEATURE_UMODE ON)
+endif()
+
+if(${USER_MODE} AND ((${CMAKE_SYSTEM_PROCESSOR} STREQUAL "ARM") OR RISCV_FEATURE_UMODE))
     set(MODE _pu)
     target_compile_definitions(core_compiler_flags INTERFACE PRIVILEGED_USER_S)
 else()
-    # RISC-V does not support privileged/user spaces
     set(MODE _p)
 endif()
 
@@ -84,10 +93,17 @@ set(TARGET_TRIPLE_MIDDLE unknown-none)
 #   RV32IMAC:
 #     zicsr           - Control and Status Register instructions
 #     zifencei        - Instruction-Fetch Fence instructions
+#     <z...>          - Any further RISC-V Z-extension (e.g. zba, zbb, zbs, zbkb, zca,
+#                       zcb, zcmp), appended to -march for both GCC and Clang. Requesting
+#                       any Zc* code-size extension drops the monolithic "c" from the base
+#                       ISA (Zca/Zcb/Zcmp supersede C — list "zca" to keep compression).
+#     user_mode       - Capability (not an ISA extension): enable the privileged/user
+#                       split (M+U mode + PMP). Requires core + port support.
 #
 #   RV64IMAFDC:
 #     zicsr           - Control and Status Register instructions
 #     zifencei        - Instruction-Fetch Fence instructions
+#     <z...>          - Any further RISC-V Z-extension, appended to -march
 #
 # EXAMPLES:
 #
@@ -361,23 +377,18 @@ function(configure_riscv_core)
         $<$<C_COMPILER_ID:Clang>:-fdata-sections>
     )
 
-    # RISC-V core configurations
+    # RISC-V core configurations.
+    # The base ISA is fixed per core; optional ISA extensions (zicsr, zifencei and any
+    # further z*) and capabilities (user_mode) are declared by the target via CPU_FEATURES
+    # and parsed below into the -march suffix. ABI / code model / extra flags stay per core.
     if(${CORE} STREQUAL "RV32IMAC")
-        # RV32IMAC_VALID_FEATURES
-        #   "zicsr|Control and Status Register instructions|||_zicsr"
-        #   "zifencei|Instruction-Fetch Fence instructions|||_zifencei"
         set(LLVM_TARGET "riscv32-unknown-elf")
-        set(MARCH_GNU "rv32imac_zicsr_zifencei")
-        set(MARCH_LLVM "rv32imac")
+        set(MARCH_BASE "rv32imac")
         set(MABI "ilp32")
         set(EXTRA_FLAGS "-gdwarf-4")
     elseif(${CORE} STREQUAL "RV64IMAFDC")
-        # RV64IMAFDC_VALID_FEATURES
-        #   "zicsr|Control and Status Register instructions|||_zicsr"
-        #   "zifencei|Instruction-Fetch Fence instructions|||_zifencei"
         set(LLVM_TARGET "riscv64-unknown-elf")
-        set(MARCH_GNU "rv64imafdc_zicsr_zifencei")
-        set(MARCH_LLVM "rv64imafdc")
+        set(MARCH_BASE "rv64imafdc")
         set(MABI "lp64d")
         set(MCMODEL "medany")
         set(EXTRA_FLAGS
@@ -392,6 +403,37 @@ function(configure_riscv_core)
     else()
         message(FATAL_ERROR "Unsupported RISC-V core: ${CORE}")
     endif()
+
+    # Parse CPU_FEATURES into the -march extension suffix (applied to BOTH GCC and Clang,
+    # so the two toolchains stay in sync). A z* token becomes an ISA extension; "user_mode"
+    # is a capability consumed by the privilege gate (see RISCV_FEATURE_UMODE) and does not
+    # affect -march; anything else is a hard error to catch typos early.
+    #
+    # The granular code-size extensions (Zca/Zcb/Zcmp/...) supersede the monolithic "C":
+    # if any Zc* is requested, drop the trailing "c" from the base ISA and let the target
+    # provide compression explicitly via "zca". This matches the RP2350 datasheet's
+    # rv32ima_..._zca_zcb_zcmp recommendation and avoids older assemblers rejecting c + zcmp.
+    set(_march_ext "")
+    set(_has_zc FALSE)
+    if(DEFINED CPU_FEATURES AND NOT "${CPU_FEATURES}" STREQUAL "")
+        foreach(feature IN LISTS CPU_FEATURES)
+            if(feature MATCHES "^z[0-9a-z]+$")
+                string(APPEND _march_ext "_${feature}")
+                if(feature MATCHES "^zc")
+                    set(_has_zc TRUE)
+                endif()
+            elseif(feature STREQUAL "user_mode")
+                # capability only — no effect on -march
+            else()
+                message(FATAL_ERROR "Unknown RISC-V CPU feature: '${feature}' (CORE=${CORE})")
+            endif()
+        endforeach()
+    endif()
+    if(_has_zc)
+        string(REGEX REPLACE "c$" "" MARCH_BASE "${MARCH_BASE}")
+    endif()
+    set(MARCH_GNU  "${MARCH_BASE}${_march_ext}")
+    set(MARCH_LLVM "${MARCH_BASE}${_march_ext}")
 
     # Apply LLVM target if using LLVM
     if(${COMPILER_FAMILY} STREQUAL "llvm" AND DEFINED LLVM_TARGET)
