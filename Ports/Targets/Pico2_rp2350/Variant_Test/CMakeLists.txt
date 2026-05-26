@@ -33,10 +33,8 @@ else()
   # Flash programming script selection
   set(BURN picotool-riscv)
   # RISC-V ISA extensions per the RP2350 datasheet (Hazard3) + user/privileged split
-  # capability (M+U mode + PMP). The Zc* extensions supersede "C", so the base becomes
-  # rv32ima and "zca" restores compression. Drop "zcmp" if your assembler lacks Zcmp
-  # support (datasheet case 2). Resulting -march: rv32ima_zicsr_zifencei_zba_zbb_zbs_zbkb_zca_zcb_zcmp
-  set(CPU_FEATURES "zicsr;zifencei;zba;zbb;zbs;zbkb;zca;zcb;zcmp;user_mode")
+  # capability (M+U mode + PMP). Resulting -march: rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb
+  set(CPU_FEATURES "zicsr;zifencei;zba;zbb;zbs;zbkb;user_mode")
 endif()
 
 project(
