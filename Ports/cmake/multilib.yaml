@@ -1,0 +1,79 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+#
+# Multilib selection for the RISC-V LLVM embedded toolchain (RTfE 22.1.6).
+#
+# DEPLOYMENT: this file is not read from the repo. Copy it into the toolchain at
+#   <toolchain>/lib/clang-runtimes/multilib.yaml
+# (for the current install: /opt/embedded/cross/RTfE-22.1.6-Darwin-arm64/lib/clang-runtimes/).
+# It is kept here under version control so it can be re-deployed after a toolchain
+# upgrade (when the llvm-current symlink is repointed).
+#
+# Why this file exists:
+#   The built-in multilib matched the *fully expanded* -march string by exact
+#   equality, so adding any extra ISA extension (e.g. rv64imafdc + zicsr/zifencei
+#   on the K210) no longer matched the rv64imafdc/lp64d variant and silently fell
+#   back to the soft-float default. The hard-float objects then failed to link
+#   against soft-float libc with "different floating-point ABI". GCC keys multilib
+#   on the ABI, so it was unaffected.
+#
+# Strategy:
+#   - RV64: the two variants have distinct ABIs (lp64 soft vs lp64d hard), so we
+#     match on -mabi alone. Any rv64 + lp64d arch -> hard-float libs.
+#   - RV32: the ilp32 ABI is shared by several archs, so the "imac family" (the
+#     only ilp32 arch the ports use: Longan rv32imac, Pico2 rv32ima+zc*) is routed
+#     via a regex mapping that recognises m+a+c regardless of extra extensions.
+#     The unused rv32i/rv32im/rv32iac base variants keep exact-arch matching.
+
+MultilibVersion: 1.0
+
+Variants:
+  # --- RV64 -----------------------------------------------------------------
+  - Dir: riscv64-unknown-elf/rv64imafdc/lp64d
+    Flags:
+      - --target=riscv64-unknown-unknown-elf
+      - -mabi=lp64d
+
+  - Dir: riscv64-unknown-elf
+    Flags:
+      - --target=riscv64-unknown-unknown-elf
+      - -mabi=lp64
+
+  # --- RV32 -----------------------------------------------------------------
+  - Dir: riscv32-unknown-elf/rv32imafc/ilp32f
+    Flags:
+      - --target=riscv32-unknown-unknown-elf
+      - -mabi=ilp32f
+
+  # rv32imac family (Longan, Pico2-RV32, plain rv32imac) -> default ilp32 dir.
+  # Keyed on the canonical token injected by the imac Mapping below.
+  - Dir: riscv32-unknown-elf
+    Flags:
+      - --target=riscv32-unknown-unknown-elf
+      - -mabi=ilp32
+      - -march=canon-rv32imac
+
+  - Dir: riscv32-unknown-elf/rv32iac/ilp32
+    Flags:
+      - --target=riscv32-unknown-unknown-elf
+      - -mabi=ilp32
+      - -march=rv32i2p1_a2p1_c2p0_zaamo1p0_zalrsc1p0_zca1p0
+
+  - Dir: riscv32-unknown-elf/rv32im/ilp32
+    Flags:
+      - --target=riscv32-unknown-unknown-elf
+      - -mabi=ilp32
+      - -march=rv32i2p1_m2p0_zmmul1p0
+
+  - Dir: riscv32-unknown-elf/rv32i/ilp32
+    Flags:
+      - --target=riscv32-unknown-unknown-elf
+      - -mabi=ilp32
+      - -march=rv32i2p1
+
+Mappings:
+  # Recognise the rv32 imac family (has M, A and C) regardless of any extra
+  # Z-extensions, and inject a stable canonical token the variant matches on.
+  - Match: ^-march=rv32i.*_m.*_a.*_c.*$
+    Flags:
+      - -march=canon-rv32imac
