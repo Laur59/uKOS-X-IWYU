@@ -52,7 +52,8 @@ volatile    uint32_t    vMessage[KNB_CORES];
  * - call the crt0
  *
  */
-void __attribute__ ((naked, section(".isr_vector"))) Reset_C0_Handler(void) {
+[[gnu::naked, gnu::section(".isr_vector")]]
+void    Reset_C0_Handler(void) {
 
 // Initialise the RISC-V global pointer (required for small data access)
 
@@ -92,7 +93,8 @@ void __attribute__ ((naked, section(".isr_vector"))) Reset_C0_Handler(void) {
  * already been performed by core 0 and re-running them would clobber
  * state core 0 has set up before launching core 1.
  */
-void __attribute__ ((naked)) Reset_C1_Handler(void) {
+[[gnu::naked]]
+void    Reset_C1_Handler(void) {
 
 // Initialise the RISC-V global pointer (per-hart)
 
@@ -127,7 +129,8 @@ void __attribute__ ((naked)) Reset_C1_Handler(void) {
  * is never released by the bootrom, but the symbol must still resolve
  * at link time.
  */
-void __attribute__ ((weak)) main_C1(void) {
+[[gnu::weak]]
+void    main_C1(void) {
     while (true) {
         __asm volatile ("wfi");
     }
@@ -169,9 +172,9 @@ EXCEPTION_SPECIFIC_HANDLER(LoadPageFault_C1)
 EXCEPTION_SPECIFIC_HANDLER(StorePageFault_C1)
 
 // RISC-V machine-mode timer and software interrupts (per core)
+
 EXCEPTION_SPECIFIC_HANDLER(MSIP_C0)     // Machine Software Interrupt
 EXCEPTION_SPECIFIC_HANDLER(MTIP_C0)     // Machine Timer Interrupt
-
 EXCEPTION_SPECIFIC_HANDLER(MSIP_C1)
 EXCEPTION_SPECIFIC_HANDLER(MTIP_C1)
 
@@ -184,7 +187,8 @@ EXCEPTION_SPECIFIC_HANDLER(MTIP_C1)
  * This function is called from trapEntry in vectors_rv.S
  * It reads mcause to determine the cause and dispatches to the appropriate handler
  */
-void __attribute__ ((naked, aligned(4))) first_handle_trap(void) {
+[[gnu::naked, gnu::aligned(4)]]
+void    first_handle_trap(void) {
     // Save context (basic registers)
     __asm volatile (
         "   addi    sp,sp,-16*4  \n"  // Allocate stack space
@@ -373,8 +377,11 @@ void __attribute__ ((naked, aligned(4))) first_handle_trap(void) {
  * - Dispatches to exception handler based on exception code in t0
  */
 void first_dispatch_exception(void) {
-    uint32_t core = GET_RUNNING_CORE;
+    uint32_t    core;
     uint32_t exception;
+
+    core = GET_RUNNING_CORE;
+
     __asm volatile ("mv %0,t0" : "=r"(exception));
 
     if (exception < KNB_EXCEPTIONS && vExce_indExcVectors[core][exception] != nullptr) {
@@ -390,8 +397,11 @@ void first_dispatch_exception(void) {
  *   meinext CSR to determine the actual peripheral IRQ number
  */
 void first_dispatch_interrupt(void) {
-    uint32_t    core = GET_RUNNING_CORE;
+    uint32_t    core;
     uint32_t    interrupt;
+
+    core = GET_RUNNING_CORE;
+
     __asm volatile ("mv %0,t0" : "=r"(interrupt));
 
     if (interrupt == 11u) {
@@ -420,7 +430,9 @@ void first_dispatch_interrupt(void) {
  *   the full process context and setting vMessage/vSaveStack
  */
 void first_dispatch_ecall(void) {
-    uint32_t    core = GET_RUNNING_CORE;
+    uint32_t    core;
+
+    core = GET_RUNNING_CORE;
 
     if (vExce_indExcVectors[core][11u] != nullptr) {
         vExce_indExcVectors[core][11u]();
@@ -434,18 +446,21 @@ void first_dispatch_ecall(void) {
  * - Spins so the failure is visible under a debugger
  *
  */
-__attribute__ ((interrupt ("machine"), aligned(4), used))
+[[gnu::interrupt("machine"), gnu::aligned(4), gnu::used]]
 void    default_handler(void) {
 
     while (true) {
         NOP;
     }
 }
-__attribute__ ((interrupt("machine"), weak, alias("default_handler")))
+
+[[gnu::interrupt("machine"), gnu::weak, gnu::alias("default_handler")]]
 void MTVEC_EXCEPTION_Handler_C0(void);
-__attribute__ ((interrupt("machine"), weak, alias("default_handler")))
+
+[[gnu::interrupt("machine"), gnu::weak, gnu::alias("default_handler")]]
 void MTVEC_MSI_Handler_C0(void);
-__attribute__ ((interrupt("machine"), weak, alias("default_handler")))
+
+[[gnu::interrupt("machine"), gnu::weak, gnu::alias("default_handler")]]
 void MTVEC_MTI_Handler_C0(void);
 
 /*
@@ -456,7 +471,7 @@ void MTVEC_MTI_Handler_C0(void);
  *   IRQ through the project's vExce_indIntVectors table
  *
  */
-__attribute__ ((interrupt ("machine"), aligned(4), used))
+[[gnu::interrupt("machine"), gnu::aligned(4), gnu::used]]
 static void MTVEC_MEI_Handler_C0(void) {
     uint32_t    core;
     uint32_t    meinext;
@@ -488,7 +503,7 @@ static void MTVEC_MEI_Handler_C0(void) {
  *   offset 44 : Machine External Interrupt   (cause 11)
  *
  */
-__attribute__ ((naked, aligned(64), section(".isr_vector"), used))
+[[gnu::naked, gnu::aligned(64), gnu::section(".isr_vector"), gnu::used]]
 void    vector_table_C0(void) {
     __asm__ volatile (
         ".option push                           \n"
@@ -612,6 +627,8 @@ EXCEPTION_SPECIFIC_HANDLER(DebugMonitor_C0)
 EXCEPTION_SPECIFIC_HANDLER(PendSV_C0)
 EXCEPTION_SPECIFIC_HANDLER(SysTick_C0)
 
+// cppcheck-suppress-end premium-unreadVariable
+
 [[gnu::used, gnu::aligned(512)]]  // NOLINT(misc-use-internal-linkage): accessed from init.c for core 1 VTOR setup
 const   uintptr_t   g_pfnVectors_C1[] = {
 
@@ -717,7 +734,7 @@ void    Reset_C0_Handler(void) {
  */
 void    Reset_C1_Handler(void) {  // NOLINT(misc-use-internal-linkage): called by hardware reset vector for core 1
 
-    cmns_wait(1000000);
+    cmns_wait(1000000U);
 
     SET_MSP_STACK(linker_topStackSystem_C1);
     SET_THREAD_STACK(linker_topStackFirst_C1);

@@ -31,7 +31,6 @@
 // RISC-V specific runtime
 // =======================
 
-// static   inline  void    wfi(void) { __asm volatile ("wfi"); }
 static  inline  void    fence(void) { __asm volatile ("fence" ::: "memory"); }
 static  inline  void    sev(void) { __asm volatile ("slt x0, x0, x1" ::: "memory"); }
 
@@ -64,6 +63,7 @@ void    init_init(void) {
 
     if (GET_RUNNING_CORE == KCORE_0) {
         local_USB_Configuration();
+
         // NOTE: Core 1 launch is deferred to init_relocate() below.
         // crt0 calls init_init() before BSS clear and __stack_chk_guard setup;
         // releasing Core 1 here would let it run canary-protected functions
@@ -132,6 +132,7 @@ static  void    local_PLL_Configuration(void) {
     while ((REG(CLOCKS)->CLK_REF_SELECTED & (1u<<0x2u)) == 0x0u) { }
 
 // Reset PLL_SYS
+
     REG(RESETS)->RESET |= RESETS_RESET_PLL_SYS;
     cmns_wait(10);
     REG(RESETS)->RESET &= ~RESETS_RESET_PLL_SYS;
@@ -142,10 +143,12 @@ static  void    local_PLL_Configuration(void) {
     // Configure PLL_SYS for 150 MHz
     // VCO = 1500 MHz, REFDIV = 1, FBDIV = 125 (12 * 125 = 1500)
     // postdiv1 = 5, postdiv2 = 2 => 1500 / (5 * 2) = 150 MHz
+
     REG(PLL_SYS)->CS        = 0x1u;
     REG(PLL_SYS)->FBDIV_INT = 125u;
 
     // Turn on the VCO
+
     REG(PLL_SYS)->PWR &= ~(PLL_SYS_PWR_PD | PLL_SYS_PWR_VCOPD);
     while ((REG(PLL_SYS)->CS & PLL_SYS_CS_LOCK) == 0u) { }
 
@@ -153,12 +156,14 @@ static  void    local_PLL_Configuration(void) {
     REG(PLL_SYS)->PWR &= ~PLL_SYS_PWR_POSTDIVPD;
 
     // Switch clk_sys to PLL_SYS (glitchless via SRC/AUXSRC)
+
     REG(CLOCKS)->CLK_SYS_DIV  = 1u * CLOCKS_CLK_SYS_DIV_INT_0;
     REG(CLOCKS)->CLK_SYS_CTRL = (REG(CLOCKS)->CLK_SYS_CTRL & ~(0x7u<<5u)) | (0x0u<<5u);
     REG(CLOCKS)->CLK_SYS_CTRL = (REG(CLOCKS)->CLK_SYS_CTRL & ~0x1u) | 0x1u;
     while ((REG(CLOCKS)->CLK_SYS_SELECTED & (1u<<0x1u)) == 0x0u) { }
 
     // Configure clk_peri = clk_sys (for UART, etc.)
+
     REG(CLOCKS)->CLK_PERI_CTRL = (0x0u<<5u) | (1u<<0x0Bu);
 
 // The USB PLL
@@ -235,9 +240,9 @@ static  void    local_USB_Configuration(void) {
 void    init_launchCore_1(void (*entry)(void)) {
             uint32_t    i, cmd, echo;
     const   uint32_t    vtor   = (uint32_t)(uintptr_t)first_handle_trap;
-    const   uint32_t    sp     = (uint32_t)(uintptr_t)linker_topStackFirst_C1;
+    const   uint32_t    sptr   = (uint32_t)(uintptr_t)linker_topStackFirst_C1;
     const   uint32_t    pc     = (uint32_t)(uintptr_t)entry;
-    const   uint32_t    seq[6] = { 0U, 0U, 1U, vtor, sp, pc };
+    const   uint32_t    seq[6] = { 0U, 0U, 1U, vtor, sptr, pc };
 
     i = 0U;
     do {
@@ -253,8 +258,8 @@ void    init_launchCore_1(void (*entry)(void)) {
         fence();
 
         echo = local_readRxFifo();
-        i = (echo == cmd) ? (i + 1) : (0);
-    } while (i < 6);
+        i = (echo == cmd) ? (i + 1U) : (0U);
+    } while (i < 6U);
 }
 
 /*
@@ -266,7 +271,7 @@ void    init_launchCore_1(void (*entry)(void)) {
 static  void    local_emptyRxFifo(void) {
     uint8_t     i;
 
-    for (i = 0; i < 8; i++) {
+    for (i = 0U; i < 8U; i++) {
         if ((REG(SIO)->FIFO_ST & SIO_FIFO_ST_VLD) != 0u) {
             (void)REG(SIO)->FIFO_RD;
         }
@@ -323,6 +328,7 @@ static  uint32_t    local_readRxFifo(void) {
 void    init_C0_init(void) {
 
     // Release IO_BANK0 and PADS_BANK0 from reset
+
     REG(RESETS)->RESET &= ~(RESETS_RESET_IO_BANK0 | RESETS_RESET_PADS_BANK0);
     while ((REG(RESETS)->RESET_DONE & (RESETS_RESET_IO_BANK0 | RESETS_RESET_PADS_BANK0)) !=
            (RESETS_RESET_IO_BANK0 | RESETS_RESET_PADS_BANK0)) { }
@@ -357,13 +363,9 @@ void    init_C0_init(void) {
 }
 
 /*
- * init_C1.c
- * Pico2_rp2350_RV32IMAC – Core-1 specific initialisation and entry point.
- */
-
-/*
  * \brief init_C1_init
  *
+ * - Pico2_rp2350_RV32IMAC – Core-1 specific initialisation and entry point.
  * - Enable machine interrupts so Core 1 can receive ecalls and timer events.
  *
  */
@@ -882,5 +884,4 @@ static  uint32_t    local_readRxFifo(void) {
     while ((REG(SIO)->FIFO_ST & SIO_FIFO_ST_VLD) == 0U) { wfe(); }
     return (REG(SIO)->FIFO_RD);
 }
-
 #endif

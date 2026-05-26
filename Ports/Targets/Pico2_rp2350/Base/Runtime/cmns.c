@@ -200,6 +200,7 @@ void    cmns_receive([[maybe_unused]] serialManager_t serialManager, char_t *dat
     // iteration in steady state. wkUs = (us/4) * (clock/1e6) gives
     // the iteration count needed to span `us` microseconds.
     #define CYCLES_PER_ITERATION    4U
+
 #else
     #define CYCLES_PER_ITERATION    7U
 #endif

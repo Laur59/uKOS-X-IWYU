@@ -28,7 +28,9 @@
 #   cmake --build build
 #
 # Build outputs:
-#   - Library/*/libFatFs.a
+#   - Library/*/flash/libFatFs.a
+#   - Library/*/sdcard/libFatFs.a
+#   - Library/*/sdcard_flash/libFatFs.a
 
 cmake_minimum_required(VERSION 3.26)
 
@@ -120,6 +122,14 @@ set(SUPPORTED_CORES
     RV64IMAFDC
 )
 
+# Each core builds one libFatFs.a per variant into Library/<core>/<variant>/.
+# Keep this list in sync with FATFS_VARIANTS in the per-core CMakeLists.txt.
+set(FATFS_VARIANTS
+    flash
+    sdcard
+    sdcard_flash
+)
+
 # Determine build type to pass to ExternalProjects
 # Default to MinSizeRel for optimal firmware size (adds -Os -DNDEBUG)
 if(CMAKE_BUILD_TYPE)
@@ -133,13 +143,23 @@ foreach(CORE ${SUPPORTED_CORES})
     if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${CORE}/CMakeLists.txt")
         message(STATUS "Configuring build for core: ${CORE}")
 
+        # One byproduct per variant produced by this core
+        set(CORE_BYPRODUCTS "")
+        foreach(VARIANT ${FATFS_VARIANTS})
+            list(APPEND CORE_BYPRODUCTS
+                "${CMAKE_CURRENT_SOURCE_DIR}/Library/${CORE}/${VARIANT}/libFatFs.a")
+        endforeach()
+
         ExternalProject_Add(FatFs_${CORE}
             # Prefix - this sets up unique directories for each external project
             PREFIX            "${CMAKE_CURRENT_BINARY_DIR}/ep-${CORE}"
 
             # Source configuration
+            # Keep the per-core build tree under the umbrella binary dir so that
+            # "rm -fr build" fully cleans it. Placing it in the source tree leaves
+            # a stale cache that breaks re-runs when the generator changes.
             SOURCE_DIR        "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${CORE}"
-            BINARY_DIR        "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${CORE}/build"
+            BINARY_DIR        "${CMAKE_CURRENT_BINARY_DIR}/build-${CORE}"
 
             # Configure step - pass build type explicitly for optimization
             CMAKE_ARGS        -DCMAKE_BUILD_TYPE=${SUBPROJECT_BUILD_TYPE}
@@ -150,7 +170,7 @@ foreach(CORE ${SUPPORTED_CORES})
             # Build step
             BUILD_COMMAND     ${CMAKE_COMMAND} --build <BINARY_DIR>
             BUILD_ALWAYS      OFF
-            BUILD_BYPRODUCTS  "${CMAKE_CURRENT_SOURCE_DIR}/Library/${CORE}/libFatFs.a"
+            BUILD_BYPRODUCTS  ${CORE_BYPRODUCTS}
 
             # Install step - libraries stay in-place
             INSTALL_COMMAND   ""
@@ -208,5 +228,5 @@ foreach(CORE ${SUPPORTED_CORES})
 endforeach()
 message("")
 message("Output libraries will be in:")
-message("  Library/<CORE>/libFatFs.a")
+message("  Library/<CORE>/<VARIANT>/libFatFs.a  (VARIANT: flash, sdcard, sdcard_flash)")
 message("══════════════════════════════════════════════════════════════")

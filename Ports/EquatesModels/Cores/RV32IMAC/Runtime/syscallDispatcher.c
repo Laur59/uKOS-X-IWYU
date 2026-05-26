@@ -17,18 +17,18 @@
 // Weak stubs — overridden by the RISC-V kernel model in Phase 3.3.
 
 [[gnu::weak]]
-void kernel_message_C0(void) {}
+void kernel_message_C0(void) { }
 
 #if (KNB_CORES == 2)
 [[gnu::weak]]
-void kernel_message_C1(void) {}
+void kernel_message_C1(void) { }
 #endif
 
 /*
  * \brief syscallDispatcher
  *
- * - Routes ecall to the kernel context-switch entry point based on vMessage.
- * - Registered in vExce_indExcVectors[core][11] by exce_init().
+ * - Routes ecall to the kernel context-switch entry point based on vMessage
+ * - Registered in vExce_indExcVectors[core][11] by exce_init()
  *
  */
 void    syscallDispatcher(void) {
@@ -44,5 +44,5 @@ void    syscallDispatcher(void) {
     kernel_message_C0();
     #endif
 
-    // KPRIV_ELEVATION is a no-op on RV32IMAC (no U-mode in this build).
+    // KPRIV_ELEVATION is a no-op on RV32IMAC (no U-mode in this build)
 }

@@ -201,6 +201,7 @@ extern  bool    vExce_isException[KNB_CORES];
 
 // Vector registration macros
 // --------------------------
+
 // Moved from macros_soc.h for IWYU compliance (eliminates circular dependency)
 
 #define EXCEPTION_VECTOR(vectorNb, address)                                                                                         \

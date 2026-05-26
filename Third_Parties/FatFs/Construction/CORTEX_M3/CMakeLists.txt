@@ -18,7 +18,14 @@ project(FatFs_CORTEX_M3
 
 set(FLAGS_FP -mfloat-abi=soft)
 set(CPU_SPEC -mcpu=cortex-m3)
-set(FLAGS_UKOS SECURE_S)
+
+# Library variants to build, format "subdir|definitions".
+# Each entry produces Library/CORTEX_M3/<subdir>/libFatFs.a.
+set(FATFS_VARIANTS
+    "flash|SECURE_S FLASH_S"
+    "sdcard|SECURE_S SDCARD_S"
+    "sdcard_flash|SECURE_S SDCARD_S FLASH_S"
+)
 
 # Include the shared template with all build logic
 include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/common-build.cmake)

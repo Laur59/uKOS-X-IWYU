@@ -45,7 +45,7 @@ static  volatile    uint32_t    vTimeStop_C0      = 0U;
 static  volatile    uint32_t    vTimeLastStart_C0 = 0U;
 static  volatile    uint64_t    vTickCount_C0     = 0U;
 
-// External: set/restored by first_handle_trap ecall path
+// External: set/restored by first_handle_trap ecall path (per-hart arrays).
 
 extern  volatile    uintptr_t   vSaveStack[KNB_CORES];
 extern  volatile    uint32_t    vMessage[KNB_CORES];
@@ -102,6 +102,7 @@ static  void    model_kernel_runKernel_C0(void) {
     // MEIEA-enabled peripheral IRQs to the core (mcause 11 path).
     // h3irq_EnableIRQ only sets the MEIEA peripheral-enable bit; MIE_MEIE
     // is the second gate and must be set separately.
+
     core_setBitCSR(RV_CSR_MIE, MIE_MEIE);
 
     vTickCount_C0 = 0U;
@@ -110,7 +111,12 @@ static  void    model_kernel_runKernel_C0(void) {
 /*
  * \brief model_kernel_setLowPower_C0
  *
- * - Wait for next interrupt (WFI).
+ * - Set the low power mode
+ *
+ * KKERN_CPU_MODE_NORMAL        -> Normal mode
+ * KKERN_CPU_MODE_DEEP_SLEEP    -> CPU in a deep sleep mode
+ * KKERN_CPU_MODE_HIBERNATE     -> CPU in a hibernate mode
+ * KKERN_CPU_MODE_STOP          -> CPU in a stop mode
  *
  */
 static  void    model_kernel_setLowPower_C0(uint8_t mode) {
@@ -162,7 +168,7 @@ static  void    model_kernel_newProcessTimeout_C0(void) {
 /*
  * \brief model_kernel_stopProcessTimeout_C0
  *
- * - Disarm ALARM1.
+ * - Stop the process timeout
  *
  */
 static  void    model_kernel_stopProcessTimeout_C0(void) {
@@ -176,7 +182,8 @@ static  void    model_kernel_stopProcessTimeout_C0(void) {
 /*
  * \brief local_TIM0_ALA0_IRQHandler_C0
  *
- * - 1-ms tick: acknowledge, rearm, update timestamp, call fast scheduler.
+ * - Fine time interruption
+ * - Verify the timeout condition of the suspended processes
  *
  */
 static  void    local_TIM0_ALA0_IRQHandler_C0(void) {
@@ -189,6 +196,7 @@ static  void    local_TIM0_ALA0_IRQHandler_C0(void) {
     // Guard: only call scheduler if at least one process has been installed.
     // local_updateDynaPriority() dereferences oFirst which is nullptr until
     // the first process is connected to the execution list.
+
     if (vKern_listExec[GET_RUNNING_CORE].oNbElements > 0U) {
         scheduler_callBackFast(1U);
     }
@@ -259,7 +267,11 @@ void    kernel_message_C0(void) {
 }
 
 /*
- * \brief local_timeStart_C0 / local_timeStop_C0 / local_timeStmp_C0
+ * \brief local_timeStart_C0
+ *
+ * - Give a new time-stamp (1-us of resolution)
+ *   - 0x00000000 to 0xFFFFFFFF incremental counter
+ *
  */
 static  void    local_timeStart_C0(void) {
 
@@ -269,6 +281,13 @@ static  void    local_timeStart_C0(void) {
     INTERRUPTION_RESTORE;
 }
 
+/*
+ * \brief local_timeStop_C0
+ *
+ * - Give a new time-stamp (1-us of resolution)
+ *   - 0x00000000 to 0xFFFFFFFF incremental counter
+ *
+ */
 static  void    local_timeStop_C0(void) {
 
     INTERRUPTION_OFF;
@@ -276,6 +295,12 @@ static  void    local_timeStop_C0(void) {
     INTERRUPTION_RESTORE;
 }
 
+/*
+ * \brief local_timeStmp_C0
+ *
+ * - Maintain a 64-bit timer with 1-us of resolution
+ *
+ */
 static  void    local_timeStmp_C0(bool overflow) {
     uint32_t    newTime;
 

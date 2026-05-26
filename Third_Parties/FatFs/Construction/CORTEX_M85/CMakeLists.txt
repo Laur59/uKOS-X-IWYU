@@ -18,7 +18,13 @@ project(FatFs_CORTEX_M85
 
 set(FLAGS_FP -mfloat-abi=hard -mfpu=fpv5-sp-d16)
 set(CPU_SPEC -mcpu=cortex-m85 -mthumb)
-set(FLAGS_UKOS SECURE_S)
+# Library variants to build, format "subdir|definitions".
+# Each entry produces Library/<core>/<subdir>/libFatFs.a.
+set(FATFS_VARIANTS
+    "flash|SECURE_S FLASH_S"
+    "sdcard|SECURE_S SDCARD_S"
+    "sdcard_flash|SECURE_S SDCARD_S FLASH_S"
+)
 
 # Include the shared template with all build logic
 include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/common-build.cmake)
