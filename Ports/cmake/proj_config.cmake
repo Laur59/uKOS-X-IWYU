@@ -100,6 +100,11 @@ set(TARGET_TRIPLE_MIDDLE unknown-none)
 #     user_mode       - Capability (not an ISA extension): enable the privileged/user
 #                       split (M+U mode + PMP). Requires core + port support.
 #
+#   RV32IMAFDC (ilp32d), RV32EMAC (ilp32e), RV64IMAFC (lp64f):
+#     zicsr / zifencei / <z...> - As above; any further RISC-V Z-extension is appended
+#                       to -march. The base ISA + ABI is fixed per core (the toolchain
+#                       ships a matching libc multilib for each ABI).
+#
 #   RV64IMAFDC:
 #     zicsr           - Control and Status Register instructions
 #     zifencei        - Instruction-Fetch Fence instructions
@@ -385,6 +390,22 @@ function(configure_riscv_core)
         set(LLVM_TARGET "riscv32-unknown-elf")
         set(MARCH_BASE "rv32imac")
         set(MABI "ilp32")
+        set(EXTRA_FLAGS "-gdwarf-4")
+    elseif(${CORE} STREQUAL "RV32IMAFDC")
+        set(LLVM_TARGET "riscv32-unknown-elf")
+        set(MARCH_BASE "rv32imafdc")
+        set(MABI "ilp32d")
+        set(EXTRA_FLAGS "-gdwarf-4")
+    elseif(${CORE} STREQUAL "RV32EMAC")
+        set(LLVM_TARGET "riscv32-unknown-elf")
+        set(MARCH_BASE "rv32emac")
+        set(MABI "ilp32e")
+        set(EXTRA_FLAGS "-gdwarf-4")
+    elseif(${CORE} STREQUAL "RV64IMAFC")
+        set(LLVM_TARGET "riscv64-unknown-elf")
+        set(MARCH_BASE "rv64imafc")
+        set(MABI "lp64f")
+        set(MCMODEL "medany")
         set(EXTRA_FLAGS "-gdwarf-4")
     elseif(${CORE} STREQUAL "RV64IMAFDC")
         set(LLVM_TARGET "riscv64-unknown-elf")
