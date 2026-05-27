@@ -27,7 +27,6 @@
 
 #include    <stdint.h>
 
-#include    "board.h"
 #include    "linker.h"
 #include    "macros.h"
 #include    "macros_core.h"

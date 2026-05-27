@@ -7,13 +7,9 @@
 
 #include    <stdint.h>
 
-#include    "board.h"
 #include    "clockTree.h"
-#include    "kern/kern.h"
 #include    "sdcard/sdcard.h"
 #include    "soc_reg.h"
-#include    "spi/spi.h"
-#include    "spi_common.h"
 
 #undef  WITH_SD_INSERTED_S
 
