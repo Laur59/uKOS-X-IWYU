@@ -13,14 +13,6 @@
 
 #include    "soc_reg.h"
 
-// System identifiers
-// ------------------
-
-#define KCPU                "ARM-Cortex m7 H"
-#define KCONTROLLER         "STM32H743"
-#define KBOARD              "Firefly H743 (Variant_Test)"
-#define KTARGET             "Firefly_H743"
-
 // GPIO settings
 // -------------
 

@@ -9,7 +9,7 @@
 
 #include    <stdint.h>  // IWYU pragma: keep
 
-#if (defined(UKOS_S))
+#ifdef UKOS_S
 #include    "types.h"           // IWYU pragma: keep (for char_t)
 // Note: RESERVE/RELEASE macros use KWAIT_INFINITY from kern/temporal.h
 // Users must include kern/temporal.h explicitly to use these macros
@@ -29,6 +29,8 @@
 #define uKOS_COMPILER           "gcc-" STRG(__GNUC__) "." STRG(__GNUC_MINOR__) "." STRG(__GNUC_PATCHLEVEL__)
 #define uKOS_COMPILER_VERSION   ((__GNUC__ * 10000) + (__GNUC_MINOR__ * 100) + (__GNUC_PATCHLEVEL__))
 #endif
+
+#define uKOS_KBOARD             STRG(BOARD) PRIVILEGE_USER_MODE
 
 // Variable alignment macros for C99 & C11
 // ---------------------------------------

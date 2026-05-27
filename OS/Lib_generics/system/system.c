@@ -39,7 +39,7 @@
 #include    "types.h"
 #include    "version.h"
 
-#define uKOS_KBOARD             KBOARD PRIVILEGE_USER_MODE
+#define uKOS_KBOARD             STRG(BOARD) PRIVILEGE_USER_MODE
 
 #ifdef PRIVILEGED_USER_S
 #define PRIVILEGE_USER_MODE     ", privileged-user mode"
@@ -78,7 +78,7 @@ MODULE(
 
 STRG_LOC_CONST(aStrApp[]) = uKOS_KBOARD", V."uKOS_VERSION", "__DATE__"  "__TIME__"\n"uKOS_COMPILER", "VERSIONING_TOOL" "SW_VERSION"\n";
 STRG_LOC_CONST(aStrRev[]) = uKOS_VERSION_NUMBER;
-STRG_LOC_CONST(KFAMILY[]) = KTARGET;
+STRG_LOC_CONST(KFAMILY[]) = STRG(BOARD);
 
 static  void    *vDoLoCode[KNB_CORES]   = MCSET(nullptr);       // Ptr on the execution code after the download
 static  bool    vUserRamBusy[KNB_CORES] = MCSET(false);     // Availability of the User Ram

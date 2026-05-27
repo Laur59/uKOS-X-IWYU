@@ -18,14 +18,6 @@
 #define Nucleo_L4R5_S
 #endif
 
-// System identifiers
-// ------------------
-
-#define KCPU                "ARM-Cortex m4 L"
-#define KCONTROLLER         "STM32L4R5"
-#define KBOARD              "Nucleo L4R5 (Variant_Test)"
-#define KTARGET             "Nucleo_L4R5"
-
 // GPIO settings
 // -------------
 
