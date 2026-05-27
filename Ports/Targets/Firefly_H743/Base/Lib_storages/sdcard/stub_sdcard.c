@@ -31,7 +31,7 @@
 #define model_sdcard_ioctl          stub_sdcard_ioctl
 
 enum {
-        KSDCARD_INIT = 0u,
+        KSDCARD_INIT = 0U,
 };
 
 // Model callbacks
