@@ -12,14 +12,6 @@
 #define MAiXDUiNO_K210_S
 #endif
 
-// System identifiers
-// ------------------
-
-#define KCPU                "RISC-V RV64IMAFDC"
-#define KCONTROLLER         "K210"
-#define KBOARD              "MAiXDUiNO K210 RISC-V (Variant_Test)"
-#define KTARGET             "MAiXDUiNO_K210"
-
 // GPIOHS settings
 // ---------------
 

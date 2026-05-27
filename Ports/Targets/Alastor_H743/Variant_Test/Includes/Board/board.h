@@ -18,13 +18,7 @@
 #define Alastor_H743_S
 #endif
 
-// System identifiers
-// ------------------
-
-#define KCPU                "ARM-Cortex m7 H"
-#define KCONTROLLER         "STM32H743"
-#define KBOARD              "Alastor H743 (Variant_Test)"
-#define KTARGET             "Alastor_H743"
+#include    "MT9V03x/MT9V03x.h"
 
 // GPIO settings
 // -------------

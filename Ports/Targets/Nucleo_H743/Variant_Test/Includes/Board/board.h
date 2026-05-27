@@ -14,14 +14,6 @@
 
 #include    "soc_reg.h"
 
-// System identifiers
-// ------------------
-
-#define KCPU                "ARM-Cortex m7 H"
-#define KCONTROLLER         "STM32H743"
-#define KBOARD              "Nucleo H743 (Variant_Test)"
-#define KTARGET             "Nucleo_H743"
-
 // GPIO settings
 // -------------
 

@@ -44,6 +44,10 @@ endif()
 
 # Compile definitions
 target_compile_definitions(system_compiler_flags INTERFACE
+    BOARD=${BOARD}
+    VARIANT=${VARIANT}
+    SOC=${SOC}
+    CORE=${CORE}
     UKOS_S
     ${SOC}_S
     ${CORE}_S
