@@ -32,6 +32,9 @@ else()
   include(select-riscv-toolchain)
   # Flash programming script selection
   set(BURN picotool-riscv)
+  # RISC-V ISA extensions per the RP2350 datasheet (Hazard3) + user/privileged split
+  # capability (M+U mode + PMP). Resulting -march: rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb
+  set(CPU_FEATURES "zicsr;zifencei;zba;zbb;zbs;zbkb;user_mode")
 endif()
 
 project(

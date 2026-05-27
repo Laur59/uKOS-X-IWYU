@@ -60,6 +60,15 @@ SECTIONS {
         linker_enDirectory = ABSOLUTE(.);
     } > prgm_code
 
+    .preinit_array : {
+        . = ALIGN(4);
+        linker_stPreInitArray = ABSOLUTE(.);
+        KEEP(*(SORT_BY_INIT_PRIORITY(.preinit_array.*)))
+        KEEP(*(.preinit_array))
+        . = ALIGN(4);
+        linker_enPreInitArray = ABSOLUTE(.);
+    } > prgm_code
+
     .init_array : {
         . = ALIGN(4);
         linker_stInitArray = ABSOLUTE(.);
@@ -151,16 +160,20 @@ SECTIONS {
     } > prgm_data
 
     /* Thread-local storage BSS section - treated as regular BSS for bare-metal */
+
     .tbss (NOLOAD) : {
         linker_stTBSS = ABSOLUTE(.);
         *(.tbss .tbss.*)
         linker_enTBSS = ABSOLUTE(.);
+
         /* Standard symbol used by C library for heap start */
         /* Placed after .tbss so heap doesn't overlap with TLS data */
+
         end = ABSOLUTE(.);
         _end = ABSOLUTE(.);
     } > prgm_data
 
     /* Global pointer for RISC-V (optional) */
+
     __global_pointer$ = MIN(linker_stDATA + 0x800, MAX(linker_stDATA + 0x800, linker_enBSS - 0x800));
 }

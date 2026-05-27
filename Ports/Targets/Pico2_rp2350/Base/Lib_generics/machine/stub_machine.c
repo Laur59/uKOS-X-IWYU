@@ -46,7 +46,6 @@ int32_t stub_machine_restart(void) {
  * \brief stub_machine_readPC
  *
  * - Return the PC of the selected process
- *
  * RV32IMAC KERN_SAVE_FRAME layout: sp[0] = mepc
  *
  */

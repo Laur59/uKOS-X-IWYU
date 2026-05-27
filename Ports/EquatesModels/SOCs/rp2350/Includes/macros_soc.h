@@ -107,7 +107,11 @@ enum {
 
 // EXCEPTION_VECTOR and INTERRUPT_VECTOR macros moved to macros_core.h for IWYU compliance
 
-#ifdef RV32IMAC_S
+// rp2350's RISC-V cores (Hazard3) are RV32IMAC only, so the compiler-intrinsic
+// __riscv gate is equivalent to RV32IMAC_S here and keeps this SOC header usable
+// without the uKOS-X build injecting the CORE define.
+
+#ifdef __riscv
 
 // Kernel message delivery (ecall from process context only)
 // GOTO_KERN_I/M push the message to 0(sp); SET_MESSAGE loads a0 from there
@@ -184,4 +188,4 @@ enum {
 #define IS_EXCEPTION    (vExce_isException[core])
 #endif
 
-#endif  // RV32IMAC_S
+#endif  // __riscv

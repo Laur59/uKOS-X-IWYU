@@ -38,24 +38,24 @@
 // Enable external interrupt `irq` via Hazard3 MEIEA.
 
 static inline void h3irq_EnableIRQ(uint32_t irq) {
-    uint32_t window = irq >> 4u;
-    uint32_t bit    = (irq & 15u) + 16u;
+    uint32_t window = irq>>4U;
+    uint32_t bit    = (irq & 15U) + 16U;
     uint32_t old;
 
     __asm volatile ("csrrw %0, 0xBE0, %1" : "=r"(old) : "r"(window));
-    __asm volatile ("csrw  0xBE0,    %0"  :: "r"((old & 0xFFFF0000u) | (1u << bit) | window));
+    __asm volatile ("csrw  0xBE0,    %0"  :: "r"((old & 0xFFFF0000U) | (1u<<bit) | window));
 }
 
 // h3irq_DisableIRQ
 // Disable external interrupt `irq` via Hazard3 MEIEA.
 
 static inline void h3irq_DisableIRQ(uint32_t irq) {
-    uint32_t window = irq >> 4u;
-    uint32_t bit    = (irq & 15u) + 16u;
+    uint32_t window = irq>>4U;
+    uint32_t bit    = (irq & 15U) + 16U;
     uint32_t old;
 
     __asm volatile ("csrrw %0, 0xBE0, %1" : "=r"(old) : "r"(window));
-    __asm volatile ("csrw  0xBE0,    %0"  :: "r"((old & ~(1u << bit)) | window));
+    __asm volatile ("csrw  0xBE0,    %0"  :: "r"((old & ~(1U<<bit)) | window));
 }
 
 // h3irq_SetPriority
@@ -63,25 +63,25 @@ static inline void h3irq_DisableIRQ(uint32_t irq) {
 // Each window covers 4 IRQs (4 bits each → 16 bits of priority in bits[31:16]).
 
 static inline void h3irq_SetPriority(uint32_t irq, uint32_t priority) {
-    uint32_t window = irq >> 2u;
-    uint32_t shift  = ((irq & 3u) << 2u) + 16u;
+    uint32_t window = irq>>2U;
+    uint32_t shift  = ((irq & 3U)<<2U) + 16U;
     uint32_t old;
 
     __asm volatile ("csrrw %0, 0xBE3, %1" : "=r"(old) : "r"(window));
     __asm volatile ("csrw  0xBE3,    %0"
-        :: "r"((old & ~(0xFu << shift)) | ((priority & 0xFu) << shift) | window));
+        :: "r"((old & ~(0xFU<<shift)) | ((priority & 0xFU)<<shift) | window));
 }
 
 // h3irq_SetPendingIRQ
 // Software-force IRQ `irq` pending via Hazard3 MEIFA.
 
 static inline void h3irq_SetPendingIRQ(uint32_t irq) {
-    uint32_t window = irq >> 4u;
-    uint32_t bit    = (irq & 15u) + 16u;
+    uint32_t window = irq>>4U;
+    uint32_t bit    = (irq & 15U) + 16U;
     uint32_t old;
 
     __asm volatile ("csrrw %0, 0xBE2, %1" : "=r"(old) : "r"(window));
-    __asm volatile ("csrw  0xBE2,    %0"  :: "r"((old & 0xFFFF0000u) | (1u << bit) | window));
+    __asm volatile ("csrw  0xBE2,    %0"  :: "r"((old & 0xFFFF0000U) | (1U<<bit) | window));
 }
 
 // h3irq_ClearPendingIRQ
@@ -90,12 +90,12 @@ static inline void h3irq_SetPendingIRQ(uint32_t irq) {
 // pending bit set via MEIFA).
 
 static inline void h3irq_ClearPendingIRQ(uint32_t irq) {
-    uint32_t window = irq >> 4u;
-    uint32_t bit    = (irq & 15u) + 16u;
+    uint32_t window = irq>>4U;
+    uint32_t bit    = (irq & 15U) + 16U;
     uint32_t old;
 
     __asm volatile ("csrrw %0, 0xBE2, %1" : "=r"(old) : "r"(window));
-    __asm volatile ("csrw  0xBE2,    %0"  :: "r"((old & ~(1u << bit)) | window));
+    __asm volatile ("csrw  0xBE2,    %0"  :: "r"((old & ~(1U<<bit)) | window));
 }
 
 // Backward-compat aliases for shared rp2350 model files (model_uart_C0.c_inc

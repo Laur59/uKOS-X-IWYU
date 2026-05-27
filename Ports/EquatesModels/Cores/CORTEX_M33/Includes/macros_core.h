@@ -287,6 +287,7 @@ extern  void    model_coreDump_displayInterruptions(uintptr_t lr, uintptr_t *msp
 
 // Vector registration macros
 // --------------------------
+
 // Moved from macros_soc.h for IWYU compliance (eliminates circular dependency)
 
 #define EXCEPTION_VECTOR(vectorNb, address)                                                                                     \

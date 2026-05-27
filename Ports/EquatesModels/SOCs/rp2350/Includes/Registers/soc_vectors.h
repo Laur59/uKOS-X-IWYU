@@ -9,8 +9,88 @@
 
 #pragma once
 
+#ifdef __riscv
+
+#define KNB_EXCEPTIONS      16U
+
+// RISC-V mcause exception codes — used as vExce_indExcVectors table indices.
+// Cx_IRQn aliases share the same standard code on both harts.
+
+#define InstructionAddressMisaligned_C0_IRQn    0u
+#define InstructionAddressMisaligned_C1_IRQn    0u
+#define InstructionAccessFault_C0_IRQn          1u
+#define InstructionAccessFault_C1_IRQn          1u
+#define IllegalInstruction_C0_IRQn              2u
+#define IllegalInstruction_C1_IRQn              2u
+#define Breakpoint_C0_IRQn                      3u
+#define Breakpoint_C1_IRQn                      3u
+#define LoadAddressMisaligned_C0_IRQn           4u
+#define LoadAddressMisaligned_C1_IRQn           4u
+#define LoadAccessFault_C0_IRQn                 5u
+#define LoadAccessFault_C1_IRQn                 5u
+#define StoreAddressMisaligned_C0_IRQn          6u
+#define StoreAddressMisaligned_C1_IRQn          6u
+#define StoreAccessFault_C0_IRQn                7u
+#define StoreAccessFault_C1_IRQn                7u
+#define ECallUser_C0_IRQn                       8u
+#define ECallUser_C1_IRQn                       8u
+// 9  = ECallSupervisor — no S-mode on Hazard3; unreachable
+// 10 = reserved
+#define ECallMachine_C0_IRQn                    11u
+#define ECallMachine_C1_IRQn                    11u
+#define InstructionPageFault_C0_IRQn            12u
+#define InstructionPageFault_C1_IRQn            12u
+#define LoadPageFault_C0_IRQn                   13u
+#define LoadPageFault_C1_IRQn                   13u
+// 14 = reserved
+#define StorePageFault_C0_IRQn                  15u     // > KNB_EXCEPTIONS; unreachable (no MMU on Hazard3)
+#define StorePageFault_C1_IRQn                  15u
+
+// Machine Software (mip.MSIP bit 3) and Timer (mip.MTIP bit 7) interrupt indices
+#define MSIP_C0_IRQn                            3u
+#define MSIP_C1_IRQn                            3u
+#define MTIP_C0_IRQn                            7u
+#define MTIP_C1_IRQn                            7u
+
+#else
+
+#define KNB_EXCEPTIONS      14U
+
+// Cortex_M33 Processor Exceptions Numbers
+
+// For the core 0
+// --------------
+
+#define NonMaskableInt_C0_IRQn      NonMaskableInt_IRQn
+#define HardFault_C0_IRQn           HardFault_IRQn
+#define MemoryManagement_C0_IRQn    MemoryManagement_IRQn
+#define BusFault_C0_IRQn            BusFault_IRQn
+#define UsageFault_C0_IRQn          UsageFault_IRQn
+#define SecureFault_C0_IRQn         SecureFault_IRQn
+#define SVCall_C0_IRQn              SVCall_IRQn
+#define DebugMonitor_C0_IRQn        DebugMonitor_IRQn
+#define PendSV_C0_IRQn              PendSV_IRQn
+#define SysTick_C0_IRQn             SysTick_IRQn
+
+// For the core 1
+// --------------
+
+#define NonMaskableInt_C1_IRQn      NonMaskableInt_IRQn
+#define HardFault_C1_IRQn           HardFault_IRQn
+#define MemoryManagement_C1_IRQn    MemoryManagement_IRQn
+#define BusFault_C1_IRQn            BusFault_IRQn
+#define UsageFault_C1_IRQn          UsageFault_IRQn
+#define SecureFault_C1_IRQn         SecureFault_IRQn
+#define SVCall_C1_IRQn              SVCall_IRQn
+#define DebugMonitor_C1_IRQn        DebugMonitor_IRQn
+#define PendSV_C1_IRQn              PendSV_IRQn
+#define SysTick_C1_IRQn             SysTick_IRQn
+
+#endif // __riscv
+
 typedef enum IRQn {
 
+#ifndef __riscv
 // Cortex_M33 Processor Exceptions Numbers
 
     NonMaskableInt_IRQn     = -14,  // Non Maskable Interrupt
@@ -23,6 +103,7 @@ typedef enum IRQn {
     DebugMonitor_IRQn       = -4,   // Debug Monitor Interrupt
     PendSV_IRQn             = -2,   // Pend SV Interrupt
     SysTick_IRQn            = -1,   // System Tick Interrupt
+#endif
 
 // SOC Specific Interrupt Numbers
 
@@ -72,29 +153,12 @@ typedef enum IRQn {
     POWMAN_IRQ_TIMER_IRQn   = 45,   //
 } IRQn_Type;
 
-#ifndef RV32IMAC_S
-#define KNB_EXCEPTIONS      14U
-#endif
-
 #define KNB_INTERRUPTIONS   46U
+
+// SOC Specific Interrupt Numbers
 
 // For the core 0
 // --------------
-
-// Cortex_M33 Processor Exceptions Numbers
-
-#define NonMaskableInt_C0_IRQn      NonMaskableInt_IRQn
-#define HardFault_C0_IRQn           HardFault_IRQn
-#define MemoryManagement_C0_IRQn    MemoryManagement_IRQn
-#define BusFault_C0_IRQn            BusFault_IRQn
-#define UsageFault_C0_IRQn          UsageFault_IRQn
-#define SecureFault_C0_IRQn         SecureFault_IRQn
-#define SVCall_C0_IRQn              SVCall_IRQn
-#define DebugMonitor_C0_IRQn        DebugMonitor_IRQn
-#define PendSV_C0_IRQn              PendSV_IRQn
-#define SysTick_C0_IRQn             SysTick_IRQn
-
-// SOC Specific Interrupt Numbers
 
 #define TIMER0_IRQ_0_C0_IRQn        TIMER0_IRQ_0_IRQn
 #define TIMER0_IRQ_1_C0_IRQn        TIMER0_IRQ_1_IRQn
@@ -144,21 +208,6 @@ typedef enum IRQn {
 // For the core 1
 // --------------
 
-// Cortex_M33 Processor Exceptions Numbers
-
-#define NonMaskableInt_C1_IRQn      NonMaskableInt_IRQn
-#define HardFault_C1_IRQn           HardFault_IRQn
-#define MemoryManagement_C1_IRQn    MemoryManagement_IRQn
-#define BusFault_C1_IRQn            BusFault_IRQn
-#define UsageFault_C1_IRQn          UsageFault_IRQn
-#define SecureFault_C1_IRQn         SecureFault_IRQn
-#define SVCall_C1_IRQn              SVCall_IRQn
-#define DebugMonitor_C1_IRQn        DebugMonitor_IRQn
-#define PendSV_C1_IRQn              PendSV_IRQn
-#define SysTick_C1_IRQn             SysTick_IRQn
-
-// SOC Specific Interrupt Numbers
-
 #define TIMER0_IRQ_0_C1_IRQn        TIMER0_IRQ_0_IRQn
 #define TIMER0_IRQ_1_C1_IRQn        TIMER0_IRQ_1_IRQn
 #define TIMER0_IRQ_2_C1_IRQn        TIMER0_IRQ_2_IRQn
@@ -205,51 +254,6 @@ typedef enum IRQn {
 #define POWMAN_IRQ_TIMER_C1_IRQn    POWMAN_IRQ_TIMER_IRQn
 
 // Prototypes
-
-#ifdef RV32IMAC_S
-
-#define KNB_EXCEPTIONS      16U
-
-// RISC-V mcause exception codes — used as vExce_indExcVectors table indices.
-// Cx_IRQn aliases share the same standard code on both harts.
-
-#define InstructionAddressMisaligned_C0_IRQn    0u
-#define InstructionAddressMisaligned_C1_IRQn    0u
-#define InstructionAccessFault_C0_IRQn          1u
-#define InstructionAccessFault_C1_IRQn          1u
-#define IllegalInstruction_C0_IRQn              2u
-#define IllegalInstruction_C1_IRQn              2u
-#define Breakpoint_C0_IRQn                      3u
-#define Breakpoint_C1_IRQn                      3u
-#define LoadAddressMisaligned_C0_IRQn           4u
-#define LoadAddressMisaligned_C1_IRQn           4u
-#define LoadAccessFault_C0_IRQn                 5u
-#define LoadAccessFault_C1_IRQn                 5u
-#define StoreAddressMisaligned_C0_IRQn          6u
-#define StoreAddressMisaligned_C1_IRQn          6u
-#define StoreAccessFault_C0_IRQn                7u
-#define StoreAccessFault_C1_IRQn                7u
-#define ECallUser_C0_IRQn                       8u
-#define ECallUser_C1_IRQn                       8u
-// 9  = ECallSupervisor — no S-mode on Hazard3; unreachable
-// 10 = reserved
-#define ECallMachine_C0_IRQn                    11u
-#define ECallMachine_C1_IRQn                    11u
-#define InstructionPageFault_C0_IRQn            12u
-#define InstructionPageFault_C1_IRQn            12u
-#define LoadPageFault_C0_IRQn                   13u
-#define LoadPageFault_C1_IRQn                   13u
-// 14 = reserved
-#define StorePageFault_C0_IRQn                  15u     // > KNB_EXCEPTIONS; unreachable (no MMU on Hazard3)
-#define StorePageFault_C1_IRQn                  15u
-
-// Machine Software (mip.MSIP bit 3) and Timer (mip.MTIP bit 7) interrupt indices
-#define MSIP_C0_IRQn                            3u
-#define MSIP_C1_IRQn                            3u
-#define MTIP_C0_IRQn                            7u
-#define MTIP_C1_IRQn                            7u
-
-#endif // RV32IMAC_S
 
 #ifdef __cplusplus
 extern  "C" {

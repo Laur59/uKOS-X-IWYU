@@ -32,6 +32,9 @@ project(
 set(SOC K210)
 set(CORE RV64IMAFDC)
 
+# RISC-V ISA extensions (K210 runs privileged/M-mode only — no user_mode)
+set(CPU_FEATURES "zicsr;zifencei")
+
 # Apply project settings
 include(proj_config)
 

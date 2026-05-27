@@ -17,7 +17,13 @@ project(FatFs_RV64IMAFDC
 
 set(FLAGS_FP -mabi=lp64d)
 set(CPU_SPEC -march=rv64imafdc_zicsr_zifencei -mcmodel=medany)
-set(FLAGS_UKOS SECURE_S)
+# Library variants to build, format "subdir|definitions".
+# Each entry produces Library/<core>/<subdir>/libFatFs.a.
+set(FATFS_VARIANTS
+    "flash|SECURE_S FLASH_S"
+    "sdcard|SECURE_S SDCARD_S"
+    "sdcard_flash|SECURE_S SDCARD_S FLASH_S"
+)
 
 # Include the shared template with all build logic
 include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/common-build.cmake)

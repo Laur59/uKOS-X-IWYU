@@ -30,18 +30,15 @@
 
 #include    "Registers/rv32_csr.h"
 #include    "core.h"
-
 #include    "model_kernel_tim0_ecall_C0.c_inc"
 #include    "model_kernel_tim1_ecall_C1.c_inc"
 
 #else
-
 #define PendSV_VECTOR_NUMBER_C0         PendSV_C0_IRQn
 #define PendSV_VECTOR_NUMBER_C1         PendSV_C1_IRQn
 
 #include    "model_kernel_tim_0_a0_a1_svc_C0.c_inc"
 #include    "model_kernel_tim_1_a0_a1_svc_C1.c_inc"
-
 #endif
 
 void    stub_kern_init(void) {

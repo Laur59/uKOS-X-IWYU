@@ -98,13 +98,22 @@ static  void    model_kernel_runKernel_C1(void) {
 
     // Enable Machine External Interrupt in mie CSR (per-hart) so Hazard3 routes
     // MEIEA-enabled peripheral IRQs to Core 1.
+
     core_setBitCSR(RV_CSR_MIE, MIE_MEIE);
 
     vTickCount_C1 = 0U;
 }
 
 /*
- * \brief model_kernel_setLowPower_C1
+ * \brief Set the low power mode
+ *
+ * - Set the low power mode
+ *
+ * KKERN_CPU_MODE_NORMAL        -> Normal mode
+ * KKERN_CPU_MODE_DEEP_SLEEP    -> CPU in a deep sleep mode
+ * KKERN_CPU_MODE_HIBERNATE     -> CPU in a hibernate mode
+ * KKERN_CPU_MODE_STOP          -> CPU in a stop mode
+ *
  */
 static  void    model_kernel_setLowPower_C1(uint8_t mode) {
 
@@ -122,6 +131,9 @@ static  void    model_kernel_setLowPower_C1(uint8_t mode) {
 
 /*
  * \brief model_kernel_readTickCount_C1
+ *
+ * - Return the 64-bit 1-us tick counter.
+ *
  */
 static  void    model_kernel_readTickCount_C1(uint64_t *tickCount) {
 
@@ -133,6 +145,9 @@ static  void    model_kernel_readTickCount_C1(uint64_t *tickCount) {
 
 /*
  * \brief model_kernel_newProcessTimeout_C1
+ *
+ * - Arm ALARM1 for the next process's 20-ms quota.
+ *
  */
 static  void    model_kernel_newProcessTimeout_C1(void) {
 
@@ -148,6 +163,9 @@ static  void    model_kernel_newProcessTimeout_C1(void) {
 
 /*
  * \brief model_kernel_stopProcessTimeout_C1
+ *
+ * - Stop the process timeout
+ *
  */
 static  void    model_kernel_stopProcessTimeout_C1(void) {
 
@@ -157,6 +175,13 @@ static  void    model_kernel_stopProcessTimeout_C1(void) {
 // Local routines
 // ==============
 
+/*
+ * \brief local_TIM1_ALA0_IRQHandler_C1
+ *
+ * - Fine time interruption
+ * - Verify the timeout condition of the suspended processes
+ *
+ */
 static  void    local_TIM1_ALA0_IRQHandler_C1(void) {
 
     TIMER_C1->INTR   = TIMER_INTR_ALARM_0;
@@ -164,11 +189,24 @@ static  void    local_TIM1_ALA0_IRQHandler_C1(void) {
 
     local_timeStmp_C1(false);
 
+// Guard: only call scheduler if at least one process has been installed.
+// local_updateDynaPriority() dereferences oFirst which is nullptr until
+// the first process is connected to the execution list.
+
     if (vKern_listExec[GET_RUNNING_CORE].oNbElements > 0U) {
         scheduler_callBackFast(1U);
     }
 }
 
+/*
+ * \brief local_TIM0_ALA1_IRQHandler_C1
+ *
+ * - 20-ms quota expiry: acknowledge and disarm.
+ *   Preemptive context switch from interrupt context requires saving the full
+ *   35-word process frame; that work is deferred to Phase 3.4. For Phase 3.3,
+ *   the process runs until it makes the next kernel call (SET_MESSAGE/ecall).
+ *
+ */
 static  void    local_TIM1_ALA1_IRQHandler_C1(void) {
 
     TIMER_C1->INTE = TIMER_C1->INTE & (uint32_t)~TIMER_INTE_ALARM_1;
@@ -182,12 +220,13 @@ static  void    local_TIM1_ALA1_IRQHandler_C1(void) {
  * - ecall-based context switch for Core 1.
  *   Called from syscallDispatcher (exception vector slot 11) after
  *   first_handle_trap has:
- *     1. saved the full 35-word process frame on Core 1's stack
- *     2. stored a0 (the kernel message) in vMessage[KCORE_1]
- *     3. stored sp in vSaveStack[KCORE_1]
+ *     1. saved the full 28-word process frame (16 caller-saved + 12 callee-saved)
+ *     2. stored a0 (the kernel message) in vMessage
+ *     3. stored sp in vSaveStack
  *
- * - On return, first_handle_trap reads vSaveStack[KCORE_1] (possibly switched
- *   by the scheduler) and restores the next process's context before mret.
+ * - On return, first_handle_trap reads the new vSaveStack (updated by the
+ *   scheduler) and restores the next process's context before executing mret.
+ *
  */
 void    kernel_message_C1(void) {
 
@@ -224,7 +263,11 @@ void    kernel_message_C1(void) {
 }
 
 /*
- * \brief local_timeStart_C1 / local_timeStop_C1 / local_timeStmp_C1
+ * \brief local_timeStart_C1
+ *
+ * - Give a new time-stamp (1-us of resolution)
+ *   - 0x00000000 to 0xFFFFFFFF incremental counter
+ *
  */
 static  void    local_timeStart_C1(void) {
 
@@ -234,6 +277,13 @@ static  void    local_timeStart_C1(void) {
     INTERRUPTION_RESTORE;
 }
 
+/*
+ * \brief local_timeStop_C1
+ *
+ * - Give a new time-stamp (1-us of resolution)
+ *   - 0x00000000 to 0xFFFFFFFF incremental counter
+ *
+ */
 static  void    local_timeStop_C1(void) {
 
     INTERRUPTION_OFF;
@@ -241,6 +291,12 @@ static  void    local_timeStop_C1(void) {
     INTERRUPTION_RESTORE;
 }
 
+/*
+ * \brief local_timeStmp_C1
+ *
+ * - Maintain a 64-bit timer with 1-us of resolution
+ *
+ */
 static  void    local_timeStmp_C1(bool overflow) {
     uint32_t    newTime;
 
