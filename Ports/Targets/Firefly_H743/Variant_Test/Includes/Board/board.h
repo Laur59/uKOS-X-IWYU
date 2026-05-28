@@ -11,8 +11,6 @@
 #define Firefly_H743_S
 #endif
 
-#include    "soc_reg.h"
-
 // GPIO settings
 // -------------
 
