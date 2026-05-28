@@ -8,12 +8,6 @@
 
 #pragma once
 
-// This header contains only board-specific compile-time macros.
-// It is not meant to contain function or variable declarations.
-#if defined(__clang__)
-#  pragma clang diagnostic ignored "-Wempty-translation-unit"
-#endif
-
 #ifndef Nucleo_F207_S
 #define Nucleo_F207_S
 #endif

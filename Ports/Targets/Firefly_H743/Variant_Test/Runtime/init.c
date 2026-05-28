@@ -221,19 +221,19 @@ static  void    local_GPIO_Configuration(void) {
 // PB11, IN,  50-MHz, Pull-up   --------    AF00    P1  26
 // PB12, IN,  50-MHz, Pull-up   --------    AF00    P1  34
 // PB13, IN,  50-MHz, Pull-up   --------    AF00    P2  25
-// PB14, IN,  50-MHz, Pull-up   --------    AF00    P1  36
+// PB14, OU,  50-MHz, Push-pull --------    AF00    P1  36
 // PB15, IN,  50-MHz, Pull-up   --------    AF00    P1  36
 
 //             15  14  13  12  11  10   9   8   7   6   5   4   3   2   1   0
-    CNFGPIO(B,KIN,KIN,KIN,KIN,KIN,KOU,KAL,KAL,KAL,KAL,KAL,KAL,KAL,KAL,KOU,KOU,
+    CNFGPIO(B,KIN,KOU,KIN,KIN,KIN,KOU,KAL,KAL,KAL,KAL,KAL,KAL,KAL,KAL,KOU,KOU,
               K50,K50,K50,K50,K50,K50,K99,K99,K99,K99,K99,K99,K99,K99,K50,K50,
-              KPU,KPU,KPU,KPU,KPU,KOD,KPU,KPU,KPU,KNO,KNO,KPU,KNO,KNO,KNO,KNO,
+              KPU,KNO,KPU,KPU,KPU,KOD,KPU,KPU,KPU,KNO,KNO,KPU,KNO,KNO,KNO,KNO,
               A00,A00,A00,A00,A00,A00,A13,A13,A13,A10,A05,A05,A05,A09,A00,A00,
               KPP,KPP,KPP,KPP,KPP,KOD,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-              0U, 0U, 0U, 0U, 0U, 1U, 0U, 0U, 0U, 1U, 0U, 0U, 0U, 0U, 1U, 1U);
+              0U, 1U, 0U, 0U, 0U, 1U, 0U, 0U, 0U, 1U, 0U, 0U, 0U, 0U, 1U, 1U);
 
 // PC00, AL,  99-MHz, Push-pull FMC_SDNWE   AF12
-// PC01, IN,  50-MHz, Pull-up   --------    AF00    P1  7
+// PC01, OU,  50-MHz, Push-pull LCD_POWER   AF00    P1  7
 // PC02, IN,  50-MHz, Pull-up   --------    AF00    P1  6
 // PC03, IN,  50-MHz, Pull-up   --------    AF00    P1  9
 // PC04, OU,  50-MHz, Push-pull LED_EN      AF00    P1  21
@@ -250,12 +250,12 @@ static  void    local_GPIO_Configuration(void) {
 // PC15, AL,  50-MHz, -         OSC         AF00
 
 //             15  14  13  12  11  10   9   8   7   6   5   4   3   2   1   0
-    CNFGPIO(C,KAL,KAL,KIN,KAL,KAL,KAL,KAL,KAL,KAL,KAL,KOU,KOU,KIN,KIN,KIN,KAL,
+    CNFGPIO(C,KAL,KAL,KIN,KAL,KAL,KAL,KAL,KAL,KAL,KAL,KOU,KOU,KIN,KIN,KOU,KAL,
               K50,K50,K50,K99,K99,K99,K99,K99,K99,K99,K50,K50,K50,K50,K50,K99,
-              KNO,KNO,KPU,KNO,KPU,KPU,KPU,KPU,KPU,KPU,KNO,KNO,KPU,KPU,KPU,KNO,
+              KNO,KNO,KPU,KNO,KPU,KPU,KPU,KPU,KPU,KPU,KNO,KNO,KPU,KPU,KNO,KNO,
               A00,A00,A00,A12,A12,A12,A12,A12,A13,A13,A00,A00,A00,A00,A00,A12,
               KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-              0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 1U, 1U, 0U, 0U, 0U, 0U);
+              0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 1U, 1U, 0U, 0U, 1U, 0U);
 
 // PD00, AL,  99-MHz, Push-pull FMC_D2      AF12
 // PD01, AL,  99-MHz, Push-pull FMC_D3      AF12
@@ -280,7 +280,7 @@ static  void    local_GPIO_Configuration(void) {
               KNO,KNO,KNO,KNO,KNO,KNO,KNO,KNO,KPU,KPU,KPU,KPU,KNO,KNO,KNO,KNO,
               A12,A12,A00,A00,A00,A12,A12,A12,A00,A14,A00,A00,A13,A12,A12,A12,
               KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-              0U, 0U, 1U, 1U, 1U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
+              0U, 0U, 1U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
 
 // PE00, AL,  99-MHz, Push-pull FMC_NBL0    AF12
 // PE01, AL,  99-MHz, Push-pull FMC_NBL1    AF12
@@ -385,7 +385,7 @@ static  void    local_GPIO_Configuration(void) {
 // PI00, AL,  99-MHz, Push-pull LCD_G5      AF14    P2  48
 // PI01, AL,  99-MHz, Push-pull LCD_G6      AF14    P2  47
 // PI02, AL,  99-MHz, Push-pull LCD_G7      AF14    P2  46
-// PI03, AL,  50-MHz, Push-pull DCMI_PWDN   AF13    P2  45
+// PI03, OU,  50-MHz, Push-pull DCMI_PWDN   AF00    P2  45
 // PI04, AL,  99-MHz, Push-pull LCD_B4      AF14
 // PI05, AL,  99-MHz, Push-pull LCD_B5      AF14
 // PI06, AL,  99-MHz, Push-pull LCD_B6      AF14
@@ -400,10 +400,10 @@ static  void    local_GPIO_Configuration(void) {
 // PI15, IN,  50-MHz, Pull-up   --------    AF00
 
 //             15  14  13  12  11  10   9   8   7   6   5   4   3   2   1   0
-    CNFGPIO(I,KIN,KIN,KIN,KIN,KIN,KAL,KAL,KIN,KAL,KAL,KAL,KAL,KAL,KAL,KAL,KAL,
-              K50,K50,K50,K50,K50,K99,K99,K50,K99,K99,K99,K99,K99,K99,K99,K99,
+    CNFGPIO(I,KIN,KIN,KIN,KIN,KIN,KAL,KAL,KIN,KAL,KAL,KAL,KAL,KOU,KAL,KAL,KAL,
+              K50,K50,K50,K50,K50,K99,K99,K50,K99,K99,K99,K99,K50,K99,K99,K99,
               KPU,KPU,KPU,KPU,KPU,KNO,KNO,KPU,KNO,KNO,KNO,KNO,KNO,KNO,KNO,KNO,
-              A00,A00,A00,A00,A00,A14,A14,A00,A14,A14,A14,A14,A13,A14,A14,A14,
+              A00,A00,A00,A00,A00,A14,A14,A00,A14,A14,A14,A14,A00,A14,A14,A14,
               KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
               0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
 }
@@ -547,14 +547,14 @@ static  void    local_RCC_Configuration(void) {
 // f(vco) = f(ck in) * (N + 1)   f(vco) = 16-MHz, N = 14 ---> f(vco) = 240-MHz
 // f(P) = f(vco) / (P + 1) P = 1                         ---> f(P) = 120
 // f(Q) = f(vco) / (Q + 1) Q = 4                         ---> f(Q) = 48
-// f(R) = f(vco) / (R + 1) R = 1                         ---> f(R) = 120
+// f(R) = f(vco) / (R + 1) R = 1                         ---> f(R) = 24
 
     RCC->PLLCFGR |= RCC_PLLCFGR_DIVR3EN                 // Div R enable
                   | RCC_PLLCFGR_DIVQ3EN                 // Div Q enable
                   | RCC_PLLCFGR_DIVP3EN                 // Div P enable
                   | (3U * RCC_PLLCFGR_PLL3RGE_0);       // Input 16-MHz
 
-    RCC->PLL3DIVR = (1U  * RCC_PLL3DIVR_DIVR3_0)        // Div R
+    RCC->PLL3DIVR = (9U  * RCC_PLL3DIVR_DIVR3_0)        // Div R
                   | (4U  * RCC_PLL3DIVR_DIVQ3_0)        // Div Q
                   | (1U  * RCC_PLL3DIVR_DIVP3_0)        // Div P
                   | (14U * RCC_PLL3DIVR_DIVN3_0);       // Div N 14 = 240-MHz
