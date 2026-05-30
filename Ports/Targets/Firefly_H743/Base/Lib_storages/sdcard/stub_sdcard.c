@@ -7,13 +7,9 @@
 
 #include    <stdint.h>
 
-#include    "board.h"
 #include    "clockTree.h"
-#include    "kern/kern.h"
 #include    "sdcard/sdcard.h"
 #include    "soc_reg.h"
-#include    "spi/spi.h"
-#include    "spi_common.h"
 
 #undef  WITH_SD_INSERTED_S
 
@@ -31,7 +27,7 @@
 #define model_sdcard_ioctl          stub_sdcard_ioctl
 
 enum {
-        KSDCARD_INIT = 0u,
+        KSDCARD_INIT = 0U,
 };
 
 // Model callbacks

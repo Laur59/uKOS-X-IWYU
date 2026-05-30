@@ -184,14 +184,14 @@ static  void    local_caliImu(void) {
 // Read the values
 //      The accelerometer                                       // The gyroscope                                    // The magnetometer
 
-        cb_readAcceGyro(LSM9DS1_OUT_X_L_XL, xsbAcce, 2U);                   cb_readAcceGyro(LSM9DS1_OUT_X_L_G, xsbGyro, 2u);    cb_readMagn(LSM9DS1_OUT_X_L_M, xsbMagn, 2u);
-        acce[0] = (int16_t)(xsbAcce[1]<<8U | xsbAcce[0]);                   gyro[0] = (int16_t)(xsbGyro[1]<<8u | xsbGyro[0]);   magn[0] = (int16_t)(xsbMagn[1]<<8u | xsbMagn[0]);
+        cb_readAcceGyro(LSM9DS1_OUT_X_L_XL, xsbAcce, 2U);                   cb_readAcceGyro(LSM9DS1_OUT_X_L_G, xsbGyro, 2U);    cb_readMagn(LSM9DS1_OUT_X_L_M, xsbMagn, 2U);
+        acce[0] = (int16_t)(xsbAcce[1]<<8U | xsbAcce[0]);                   gyro[0] = (int16_t)(xsbGyro[1]<<8U | xsbGyro[0]);   magn[0] = (int16_t)(xsbMagn[1]<<8U | xsbMagn[0]);
 
-        cb_readAcceGyro(LSM9DS1_OUT_Y_L_XL, xsbAcce, 2U);                   cb_readAcceGyro(LSM9DS1_OUT_Y_L_G, xsbGyro, 2u);    cb_readMagn(LSM9DS1_OUT_Y_L_M, xsbMagn, 2u);
-        acce[1] = (int16_t)(xsbAcce[1]<<8U | xsbAcce[0]);                   gyro[1] = (int16_t)(xsbGyro[1]<<8u | xsbGyro[0]);   magn[1] = (int16_t)(xsbMagn[1]<<8u | xsbMagn[0]);
+        cb_readAcceGyro(LSM9DS1_OUT_Y_L_XL, xsbAcce, 2U);                   cb_readAcceGyro(LSM9DS1_OUT_Y_L_G, xsbGyro, 2U);    cb_readMagn(LSM9DS1_OUT_Y_L_M, xsbMagn, 2U);
+        acce[1] = (int16_t)(xsbAcce[1]<<8U | xsbAcce[0]);                   gyro[1] = (int16_t)(xsbGyro[1]<<8U | xsbGyro[0]);   magn[1] = (int16_t)(xsbMagn[1]<<8U | xsbMagn[0]);
 
-        cb_readAcceGyro(LSM9DS1_OUT_Z_L_XL, xsbAcce, 2U);                   cb_readAcceGyro(LSM9DS1_OUT_Z_L_G, xsbGyro, 2u);    cb_readMagn(LSM9DS1_OUT_Z_L_M, xsbMagn, 2u);
-        acce[2] = (int16_t)((int16_t)(xsbAcce[1]<<8U | xsbAcce[0]) + v1G);  gyro[2] = (int16_t)(xsbGyro[1]<<8u | xsbGyro[0]);   magn[2] = (int16_t)(xsbMagn[1]<<8u | xsbMagn[0]);
+        cb_readAcceGyro(LSM9DS1_OUT_Z_L_XL, xsbAcce, 2U);                   cb_readAcceGyro(LSM9DS1_OUT_Z_L_G, xsbGyro, 2U);    cb_readMagn(LSM9DS1_OUT_Z_L_M, xsbMagn, 2U);
+        acce[2] = (int16_t)((int16_t)(xsbAcce[1]<<8U | xsbAcce[0]) + v1G);  gyro[2] = (int16_t)(xsbGyro[1]<<8U | xsbGyro[0]);   magn[2] = (int16_t)(xsbMagn[1]<<8U | xsbMagn[0]);
 
 // Cumulate for the mean
 

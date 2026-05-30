@@ -53,19 +53,41 @@
 // ----------------
 
 #ifndef PRIVILEGE_ELEVATE
+#ifdef PRIVILEGED_USER_S
+#define PRIVILEGE_ELEVATE       kern_setPrivilegeMode(KPROC_PRIVILEGED)
+#else
 #define PRIVILEGE_ELEVATE
+#endif
 #endif
 
 #ifndef PRIVILEGE_RESTORE
+#ifdef PRIVILEGED_USER_S
+#define PRIVILEGE_RESTORE       kern_setPrivilegeMode(KPROC_USER)
+#else
 #define PRIVILEGE_RESTORE
+#endif
 #endif
 
 #ifndef RIGHTS_ELEVATION
-#define RIGHTS_ELEVATION
+// Elevate the current process to M-mode (R5). The ecall traps to syscallDispatcher, which
+// recognises the elevation by the saved mepc (== priv_returnElevation, the label right
+// after the ecall) and sets the returning frame's mstatus.MPP = 3 — no context switch;
+// mret returns to this same process now in M-mode. All registers are frame-restored, so
+// the ecall is transparent to kern_setPrivilegeMode.
+#define RIGHTS_ELEVATION        __asm volatile (                                                \
+                                "ecall                          \n"                             \
+                                ".global priv_returnElevation   \n"                             \
+                                "priv_returnElevation:" ::: "memory")
 #endif
 
 #ifndef SET_USER_MODE
-#define SET_USER_MODE
+// Drop the current process back to U-mode (R5). Mirror of RIGHTS_ELEVATION: syscallDispatcher
+// recognises this ecall by mepc == priv_returnRestore and clears the returning frame's
+// mstatus.MPP (-> U-mode). Used by kern_setPrivilegeMode() when nested privilege reaches 0.
+#define SET_USER_MODE           __asm volatile (                                                \
+                                "ecall                          \n"                             \
+                                ".global priv_returnRestore     \n"                             \
+                                "priv_returnRestore:" ::: "memory")
 #endif
 
 #ifndef SET_PRIVILEGED_MODE

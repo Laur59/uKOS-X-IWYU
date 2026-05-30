@@ -24,21 +24,17 @@
 #include    "Registers/core_addendum.h" // IWYU pragma: keep
 #include    "core.h"                    // IWYU pragma: keep
 #include    "debug.h"
-#ifdef  __arm__
+#include    "macros_soc.h"
+#include    "os_errors.h"
+#include    "syscallDispatcher.h"       // IWYU pragma: keep
+#ifdef PRIVILEGED_USER_S
 #include    "kern/kern.h"
 #include    "kern/private/private_processes.h"
 #include    "macros_core.h"
-#endif
-#include    "macros_soc.h"
-#include    "os_errors.h"
-#ifdef PRIVILEGED_USER_S
 #include    "record/record.h"
+#include    "types.h"
 #else
 #include    "macros.h"
-#endif
-#include    "syscallDispatcher.h"       // IWYU pragma: keep
-#ifdef PRIVILEGED_USER_S
-#include    "types.h"
 #endif
 
 volatile    bool    vPriv_insideSVC[KNB_CORES] = MCSET(false);

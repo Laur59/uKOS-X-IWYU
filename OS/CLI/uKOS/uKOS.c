@@ -77,7 +77,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
     switch (argc) {
         case 2U: {
-            text_checkAsciiBuffer(argv[1], "-history", &equals); if (equals == true) { local_displayHistory(); break; }
+            text_checkAsciiBuffer(argv[1], "-history", &equals); if (equals) { local_displayHistory(); break; }
             error = KERR_INA;
             break;
         }
@@ -92,7 +92,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
         case KERR_INA: { (void)dprintf(KSYST, "Incorrect arguments.\n\n"); status = EXIT_OS_FAILURE;     break; }
         default:       {                                                   status = EXIT_OS_FAILURE;     break; }
     }
-    return (status);
+    return status;
 }
 
 
