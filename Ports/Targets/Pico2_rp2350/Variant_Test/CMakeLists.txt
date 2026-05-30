@@ -46,6 +46,12 @@ project(
 # Apply project settings
 include(proj_config)
 
+# RISC-V privileged/user split uses a dedicated NAPOT-aligned linker script.
+# (The default link${MODE}.ld would resolve to the ARM-flavoured link_pu.ld.)
+if((CMAKE_SYSTEM_PROCESSOR STREQUAL "RISCV") AND (MODE STREQUAL "_pu"))
+    set(LINKS_LD "${PATH_BASE}/Runtime/link_pu-riscv.ld")
+endif()
+
 # Customisation of firmware copyright text
 add_compile_definitions(
     "uKOS_NAME="

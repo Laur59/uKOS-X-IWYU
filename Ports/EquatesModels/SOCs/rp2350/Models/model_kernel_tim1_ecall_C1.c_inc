@@ -242,6 +242,23 @@ void    kernel_message_C1(void) {
     scheduler_callBackTrap(vMessage[KCORE_1]);
     local_timeStart_C1();
 
+// Privilege of the process about to resume (see model_kernel_tim0_ecall_C0.c_inc).
+// vKern_stackProc[KCORE_1][2] is the saved mstatus; privileged daemons / elevated
+// processes stay M-mode, the rest drop to U-mode.
+
+    #ifdef PRIVILEGED_USER_S
+    {
+        uint32_t    *frame = (uint32_t *)vKern_stackProc[KCORE_1];
+        if ((vKern_runProc[KCORE_1]->oSpecification.oMode == KPROC_PRIVILEGED) ||
+            ((vKern_runProc[KCORE_1]->oInternal.oState & (1U<<BPROC_PRIV_ELEVATED)) != 0U)) {
+            frame[2] |= (uint32_t)MSTATUS_MPP;          // MPP = 3 (M-mode)
+        }
+        else {
+            frame[2] &= ~(uint32_t)MSTATUS_MPP;         // MPP = 0 (U-mode)
+        }
+    }
+    #endif
+
     vSaveStack[KCORE_1] = (uintptr_t)vKern_stackProc[KCORE_1];
 
 // Statistics
