@@ -249,18 +249,19 @@
 #ifndef KERN_SAVE_FRAME
 #define KERN_SAVE_FRAME         __asm volatile ("                                                                            \n \
                                 addi        sp,sp,-(12*8)                                                                    \n \
-                                fsd         fs11,11*8(sp)                                                                    \n \
-                                fsd         fs10,10*8(sp)                                                                    \n \
-                                fsd         fs9,9*8(sp)                                                                      \n \
-                                fsd         fs8,8*8(sp)                                                                      \n \
-                                fsd         fs7,7*8(sp)                                                                      \n \
+                                fsd         fs0,12*8(sp)                                                                     \n \
+                                sd          x0,0*8(sp)                                                                       \n \
+                                fsd         fs11,1*8(sp)                                                                     \n \
+                                fsd         fs10,2*8(sp)                                                                     \n \
+                                fsd         fs9,3*8(sp)                                                                      \n \
+                                fsd         fs8,4*8(sp)                                                                      \n \
+                                fsd         fs7,5*8(sp)                                                                      \n \
                                 fsd         fs6,6*8(sp)                                                                      \n \
-                                fsd         fs5,5*8(sp)                                                                      \n \
-                                fsd         fs4,4*8(sp)                                                                      \n \
-                                fsd         fs3,3*8(sp)                                                                      \n \
-                                fsd         fs2,2*8(sp)                                                                      \n \
-                                fsd         fs1,1*8(sp)                                                                      \n \
-                                fsd         fs0,0*8(sp)"                                                                        \
+                                fsd         fs5,7*8(sp)                                                                      \n \
+                                fsd         fs4,8*8(sp)                                                                      \n \
+                                fsd         fs3,9*8(sp)                                                                      \n \
+                                fsd         fs2,10*8(sp)                                                                     \n \
+                                fsd         fs1,11*8(sp)"                                                                       \
                                 );                                                                                              \
                                                                                                                                 \
                                 __asm volatile ("                                                                            \n \
