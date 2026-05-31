@@ -85,16 +85,7 @@ MODULE(
 // CLI tool specific
 // =================
 
-#if (KNB_CORES == 1)
-static size_t   size_first      = (size_t)linker_sizeStackFirst_C0;
-static size_t   size_system     = (size_t)linker_sizeStackSystem_C0;
-
-#elif (KNB_CORES == 2)
-// Stack sizes are derived from top/low address symbols (both in high address space,
-// within Clang medany PCREL range) to avoid R_RISCV_PCREL_HI20 overflow that occurs
-// when referencing the small absolute sizeStack* symbols directly.
-
-#else
+#if (KNB_CORES > 2)
 #error  "*** The number of cores (KNB_CORES) exceed 2"
 #endif
 
@@ -109,6 +100,28 @@ static  void    local_displayHeap(uint8_t *stHeap, uint32_t blocks, uint32_t use
 static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     uint32_t    usdMemory, nbBlocks;
     intptr_t    length;
+
+    #if (KNB_CORES == 1)
+    #   ifdef __clang__
+    size_t  size_first  = (uintptr_t)linker_topStackFirst_C0  - (uintptr_t)linker_lowStackFirst_C0  + 16;
+    size_t  size_system = (uintptr_t)linker_topStackSystem_C0 - (uintptr_t)linker_lowStackSystem_C0 + 16;
+    #   else
+    size_t  size_first  = (size_t)linker_sizeStackFirst_C0;
+    size_t  size_system = (size_t)linker_sizeStackSystem_C0;
+    #   endif
+    #elif (KNB_CORES == 2)
+    #   ifdef __clang__
+    size_t  size_first_C0  = (uintptr_t)linker_topStackFirst_C0  - (uintptr_t)linker_lowStackFirst_C0  + 16;
+    size_t  size_system_C0 = (uintptr_t)linker_topStackSystem_C0 - (uintptr_t)linker_lowStackSystem_C0 + 16;
+    size_t  size_first_C1  = (uintptr_t)linker_topStackFirst_C1  - (uintptr_t)linker_lowStackFirst_C1  + 16;
+    size_t  size_system_C1 = (uintptr_t)linker_topStackSystem_C1 - (uintptr_t)linker_lowStackSystem_C1 + 16;
+    #   else
+    size_t  size_first_C0  = (size_t)linker_sizeStackFirst_C0;
+    size_t  size_system_C0 = (size_t)linker_sizeStackSystem_C0;
+    size_t  size_first_C1  = (size_t)linker_sizeStackFirst_C1;
+    size_t  size_system_C1 = (size_t)linker_sizeStackSystem_C1;
+    #   endif
+    #endif
 
     UNUSED(argc);
     UNUSED(argv);
@@ -184,10 +197,10 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     (void)dprintf(KSYST, "Stack system:      addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n\n", (uintptr_t)linker_lowStackSystem_C0, size_system);
 
     #elif (KNB_CORES == 2)
-    (void)dprintf(KSYST, "C0 Stack first:    addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_lowStackFirst_C0,  (uintptr_t)linker_topStackFirst_C0  - (uintptr_t)linker_lowStackFirst_C0  + 16);
-    (void)dprintf(KSYST, "C0 Stack system:   addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_lowStackSystem_C0, (uintptr_t)linker_topStackSystem_C0 - (uintptr_t)linker_lowStackSystem_C0 + 16);
-    (void)dprintf(KSYST, "C1 Stack first:    addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_lowStackFirst_C1,  (uintptr_t)linker_topStackFirst_C1  - (uintptr_t)linker_lowStackFirst_C1  + 16);
-    (void)dprintf(KSYST, "C1 Stack system:   addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n\n", (uintptr_t)linker_lowStackSystem_C1, (uintptr_t)linker_topStackSystem_C1 - (uintptr_t)linker_lowStackSystem_C1 + 16);
+    (void)dprintf(KSYST, "C0 Stack first:    addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_lowStackFirst_C0,  size_first_C0);
+    (void)dprintf(KSYST, "C0 Stack system:   addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_lowStackSystem_C0, size_system_C0);
+    (void)dprintf(KSYST, "C1 Stack first:    addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_lowStackFirst_C1,  size_first_C1);
+    (void)dprintf(KSYST, "C1 Stack system:   addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n\n", (uintptr_t)linker_lowStackSystem_C1, size_system_C1);
 
     #else
     #error  "*** The number of cores (KNB_CORES) exceed 4"
