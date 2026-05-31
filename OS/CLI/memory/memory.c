@@ -90,27 +90,9 @@ static size_t   size_first      = (size_t)linker_sizeStackFirst_C0;
 static size_t   size_system     = (size_t)linker_sizeStackSystem_C0;
 
 #elif (KNB_CORES == 2)
-// `volatile` is required on Clang RV64 (-mcmodel=medany). Without it,
-// Clang constant-propagates the linker-symbol initialiser to the use
-// site in prgm() and emits an `auipc` (R_RISCV_PCREL_HI20) trying to
-// reach the absolute symbol value PC-relatively; since the linker script
-// assigns small absolute constants (e.g. 4K) that sit far outside .text's
-// ±512K reach, ld.lld fails with "R_RISCV_PCREL_HI20 out of range".
-// `volatile` forces a real load from the variable's .data storage, where
-// the absolute relocation has already written the correct value at link
-// time. GCC RV64 doesn't hit this — it keeps the variable in memory even
-// with `static`. ARM has no equivalent codegen issue.
-#if defined(__riscv) && defined(__clang__)
-static volatile size_t  size_first_C0   = (size_t)linker_sizeStackFirst_C0;
-static volatile size_t  size_system_C0  = (size_t)linker_sizeStackSystem_C0;
-static volatile size_t  size_first_C1   = (size_t)linker_sizeStackFirst_C1;
-static volatile size_t  size_system_C1  = (size_t)linker_sizeStackSystem_C1;
-#else
-static size_t   size_first_C0   = (size_t)linker_sizeStackFirst_C0;
-static size_t   size_system_C0  = (size_t)linker_sizeStackSystem_C0;
-static size_t   size_first_C1   = (size_t)linker_sizeStackFirst_C1;
-static size_t   size_system_C1  = (size_t)linker_sizeStackSystem_C1;
-#endif
+// Stack sizes are derived from top/low address symbols (both in high address space,
+// within Clang medany PCREL range) to avoid R_RISCV_PCREL_HI20 overflow that occurs
+// when referencing the small absolute sizeStack* symbols directly.
 
 #else
 #error  "*** The number of cores (KNB_CORES) exceed 2"
@@ -171,11 +153,12 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
                     + (uint32_t)((uintptr_t)linker_enBSS_u  - (uintptr_t)linker_stBSS_u);
 
     usedPrgmCodef   = ((float64_t)usedPrgmCode   / (float64_t)(uintptr_t)linker_lnPrgmCode)   * 100.0;
-    usedPrgmData_pf = ((float64_t)usedPrgmData_p / (float64_t)(uintptr_t)linker_lnPrgmData_p) * 100.0;
-    usedPrgmData_uf = ((float64_t)usedPrgmData_u / (float64_t)(uintptr_t)linker_lnPrgmData_u) * 100.0;
-
     (void)dprintf(KSYST, "uKOS code:         addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes], used: %5.2f [%%]\n", (uintptr_t)linker_stPrgmCode,        (uintptr_t)linker_lnPrgmCode,   usedPrgmCodef);
+
+    usedPrgmData_pf = ((float64_t)usedPrgmData_p / (float64_t)(uintptr_t)linker_lnPrgmData_p) * 100.0;
     (void)dprintf(KSYST, "uKOS data_p:       addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes], used: %5.2f [%%]\n", (uintptr_t)linker_stPrgmData_p,      (uintptr_t)linker_lnPrgmData_p, usedPrgmData_pf);
+
+    usedPrgmData_uf = ((float64_t)usedPrgmData_u / (float64_t)(uintptr_t)linker_lnPrgmData_u) * 100.0;
     (void)dprintf(KSYST, "uKOS data_u:       addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes], used: %5.2f [%%]\n", (uintptr_t)linker_stPrgmData_u,      (uintptr_t)linker_lnPrgmData_u, usedPrgmData_uf);
 
     #else
@@ -190,9 +173,9 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
                   + (uint32_t)((uintptr_t)linker_enBSS    - (uintptr_t)linker_stBSS);
 
     usedPrgmCodef = ((float64_t)usedPrgmCode / (float64_t)((uintptr_t)linker_lnPrgmCode)) * 100.0;
-    usedPrgmDataf = ((float64_t)usedPrgmData / (float64_t)((uintptr_t)linker_lnPrgmData)) * 100.0;
-
     (void)dprintf(KSYST, "uKOS code:         addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes], used: %5.2f [%%]\n", (uintptr_t)linker_stPrgmCode, (uintptr_t)linker_lnPrgmCode, usedPrgmCodef);
+
+    usedPrgmDataf = ((float64_t)usedPrgmData / (float64_t)((uintptr_t)linker_lnPrgmData)) * 100.0;
     (void)dprintf(KSYST, "uKOS data:         addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes], used: %5.2f [%%]\n", (uintptr_t)linker_stPrgmData, (uintptr_t)linker_lnPrgmData, usedPrgmDataf);
     #endif
 
@@ -201,10 +184,10 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     (void)dprintf(KSYST, "Stack system:      addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n\n", (uintptr_t)linker_lowStackSystem_C0, size_system);
 
     #elif (KNB_CORES == 2)
-    (void)dprintf(KSYST, "C0 Stack first:    addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_lowStackFirst_C0,  size_first_C0);
-    (void)dprintf(KSYST, "C0 Stack system:   addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_lowStackSystem_C0, size_system_C0);
-    (void)dprintf(KSYST, "C1 Stack first:    addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_lowStackFirst_C1,  size_first_C1);
-    (void)dprintf(KSYST, "C1 Stack system:   addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n\n", (uintptr_t)linker_lowStackSystem_C1, size_system_C1);
+    (void)dprintf(KSYST, "C0 Stack first:    addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_lowStackFirst_C0,  (uintptr_t)linker_topStackFirst_C0  - (uintptr_t)linker_lowStackFirst_C0  + 16);
+    (void)dprintf(KSYST, "C0 Stack system:   addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_lowStackSystem_C0, (uintptr_t)linker_topStackSystem_C0 - (uintptr_t)linker_lowStackSystem_C0 + 16);
+    (void)dprintf(KSYST, "C1 Stack first:    addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n",   (uintptr_t)linker_lowStackFirst_C1,  (uintptr_t)linker_topStackFirst_C1  - (uintptr_t)linker_lowStackFirst_C1  + 16);
+    (void)dprintf(KSYST, "C1 Stack system:   addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes]\n\n", (uintptr_t)linker_lowStackSystem_C1, (uintptr_t)linker_topStackSystem_C1 - (uintptr_t)linker_lowStackSystem_C1 + 16);
 
     #else
     #error  "*** The number of cores (KNB_CORES) exceed 4"
