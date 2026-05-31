@@ -139,13 +139,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
     #ifdef PRIVILEGED_USER_S
     uint32_t    usedPrgmCode, usedPrgmData_p, usedPrgmData_u;
-    float64_t   usedPrgmCodef;
-    volatile float64_t   usedPrgmData_pf, usedPrgmData_uf;
-    // k100 is volatile so each read generates a stack load, preventing Clang
-    // from keeping 100.0 in an fs* register across dprintf calls.  dprintf
-    // violates the RISC-V ABI by not saving callee-saved FP registers (fs0-
-    // fs11), so any fs* value held across the call is silently clobbered.
-    volatile float64_t   k100 = 100.0;
+    float64_t   usedPrgmCodef, usedPrgmData_pf, usedPrgmData_uf;
 
     usedPrgmCode    = (uint32_t)((uintptr_t)linker_enTEXT   - (uintptr_t)linker_stTEXT)     \
                     + (uint32_t)((uintptr_t)linker_enRODATA - (uintptr_t)linker_stRODATA)   \
@@ -158,24 +152,18 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     usedPrgmData_u  = (uint32_t)((uintptr_t)linker_enDATA_u - (uintptr_t)linker_stDATA_u)   \
                     + (uint32_t)((uintptr_t)linker_enBSS_u  - (uintptr_t)linker_stBSS_u);
 
-    usedPrgmCodef   = ((float64_t)usedPrgmCode   / (float64_t)(uintptr_t)linker_lnPrgmCode)   * k100;
+    usedPrgmCodef   = ((float64_t)usedPrgmCode   / (float64_t)(uintptr_t)linker_lnPrgmCode)   * 100.0;
     (void)dprintf(KSYST, "uKOS code:         addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes], used: %5.2f [%%]\n", (uintptr_t)linker_stPrgmCode,        (uintptr_t)linker_lnPrgmCode,   usedPrgmCodef);
 
-    usedPrgmData_pf = ((float64_t)usedPrgmData_p / (float64_t)(uintptr_t)linker_lnPrgmData_p) * k100;
+    usedPrgmData_pf = ((float64_t)usedPrgmData_p / (float64_t)(uintptr_t)linker_lnPrgmData_p) * 100.0;
     (void)dprintf(KSYST, "uKOS data_p:       addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes], used: %5.2f [%%]\n", (uintptr_t)linker_stPrgmData_p,      (uintptr_t)linker_lnPrgmData_p, usedPrgmData_pf);
 
-    usedPrgmData_uf = ((float64_t)usedPrgmData_u / (float64_t)(uintptr_t)linker_lnPrgmData_u) * k100;
+    usedPrgmData_uf = ((float64_t)usedPrgmData_u / (float64_t)(uintptr_t)linker_lnPrgmData_u) * 100.0;
     (void)dprintf(KSYST, "uKOS data_u:       addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes], used: %5.2f [%%]\n", (uintptr_t)linker_stPrgmData_u,      (uintptr_t)linker_lnPrgmData_u, usedPrgmData_uf);
 
     #else
     uint32_t    usedPrgmCode, usedPrgmData;
-    float64_t   usedPrgmCodef;
-    volatile float64_t   usedPrgmDataf;
-    // k100 is volatile so each read generates a stack load, preventing Clang
-    // from keeping 100.0 in an fs* register across dprintf calls.  dprintf
-    // violates the RISC-V ABI by not saving callee-saved FP registers (fs0-
-    // fs11), so any fs* value held across the call is silently clobbered.
-    volatile float64_t   k100 = 100.0;
+    float64_t   usedPrgmCodef, usedPrgmDataf;
 
     usedPrgmCode  = (uint32_t)((uintptr_t)linker_enTEXT   - (uintptr_t)linker_stTEXT)       \
                   + (uint32_t)((uintptr_t)linker_enRODATA - (uintptr_t)linker_stRODATA)     \
@@ -184,10 +172,10 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     usedPrgmData  = (uint32_t)((uintptr_t)linker_enDATA   - (uintptr_t)linker_stDATA)       \
                   + (uint32_t)((uintptr_t)linker_enBSS    - (uintptr_t)linker_stBSS);
 
-    usedPrgmCodef = ((float64_t)usedPrgmCode / (float64_t)((uintptr_t)linker_lnPrgmCode)) * k100;
+    usedPrgmCodef = ((float64_t)usedPrgmCode / (float64_t)((uintptr_t)linker_lnPrgmCode)) * 100.0;
     (void)dprintf(KSYST, "uKOS code:         addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes], used: %5.2f [%%]\n", (uintptr_t)linker_stPrgmCode, (uintptr_t)linker_lnPrgmCode, usedPrgmCodef);
 
-    usedPrgmDataf = ((float64_t)usedPrgmData / (float64_t)((uintptr_t)linker_lnPrgmData)) * k100;
+    usedPrgmDataf = ((float64_t)usedPrgmData / (float64_t)((uintptr_t)linker_lnPrgmData)) * 100.0;
     (void)dprintf(KSYST, "uKOS data:         addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes], used: %5.2f [%%]\n", (uintptr_t)linker_stPrgmData, (uintptr_t)linker_lnPrgmData, usedPrgmDataf);
     #endif
 
