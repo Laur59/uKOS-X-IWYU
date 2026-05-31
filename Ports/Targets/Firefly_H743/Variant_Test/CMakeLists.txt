@@ -42,7 +42,7 @@ add_compile_definitions(
 )
 
 # Flash programming script selection
-set(BURN jlinkexe)
+set(BURN dfu-util)
 
 # Extra compilation options
 add_compile_options(
@@ -55,6 +55,9 @@ add_TinyUSB(
     SPEED FS
     PROFILE cdc_cdc
 )
+
+# Graphical display
+set(DISPLAY WKS43WV067_5_Inches)
 
 # Sources
 # -------
@@ -227,6 +230,7 @@ set(UKOS_COMPONENTS rtcb_p kern_p kern_u libx_p libx_u proc_p proc_u tool_u ${TI
 
 # Optional manager
 add_MicroPython()
+add_LVGL()
 add_FatFs(STORAGE sdcard)
 
 # System configuration flags
