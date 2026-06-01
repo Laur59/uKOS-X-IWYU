@@ -9,12 +9,13 @@
 
 // Memory structure
 
+#define KFLASH_SPI_SZ_FLASH                 (8U * 1024U * 1024U)                            // FLASH size
 #define KFLASH_SPI_SZ_SECTOR                4096U                                           // Sector size
-#define KFLASH_SPI_NB_SECTOR                2048U                                           // Number of sectors
+#define KFLASH_SPI_NB_SECTOR                (KFLASH_SPI_SZ_FLASH / KFLASH_SPI_SZ_SECTOR)    // Number of sectors
 #define KFLASH_SPI_SZ_PAGE                  256U                                            // Page size
+#define KFLASH_SPI_NB_PAGE                  (KFLASH_SPI_SZ_FLASH / KFLASH_SPI_SZ_PAGE)      // Number of pages
 #define KFLASH_SPI_SZ_BLOC                  65536U                                          // Bloc size
-#define KFLASH_SPI_NB_BLOC                  128U                                            // Number of blocs of 64-KBytes
-#define KFLASH_SPI_SZ_FLASH                 (KFLASH_SPI_NB_SECTOR * KFLASH_SPI_SZ_SECTOR)   // FLASH size
+#define KFLASH_SPI_NB_BLOC                  (KFLASH_SPI_SZ_FLASH / KFLASH_SPI_SZ_BLOC)      // Number of blocs
 
 // Commands for the chip MX25R6435
 

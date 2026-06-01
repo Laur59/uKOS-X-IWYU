@@ -37,7 +37,7 @@ fi
 # Packages
 # --------
 
-readonly hash=cc99d05
+readonly hash=7c26381
 
 printf '\n%bDownload the Tflite-micro package ...%b\n\n' "${BOLD}" "${NC}"
 
@@ -110,17 +110,25 @@ do
     fi
 
     if [[ ${model} == riscv32_generic ]]; then
+        # rv32imac targets the Pico2's small RAM-resident downloadable-app region
+        # (~116 KB code), so build size-optimised (release: -O + strip error strings;
+        # the app strips to match). rv64imafdc has room, so keep its debug build.
+        case ${target_arch} in
+            rv32*) riscv_abi=ilp32; build_type=release ;;
+            rv64*) riscv_abi=lp64d; build_type=debug   ;;
+            *)     printf '%bError: unknown RISC-V target_arch %s%b\n' "${RED}" "${target_arch}" "${NC}" >&2; exit 1 ;;
+        esac
         make -f tensorflow/lite/micro/tools/make/Makefile \
             TARGET=riscv32_generic TARGET_ARCH="${target_arch}" \
-            RISCV_ARCH=rv64imafdc \
-            RISCV_ABI=lp64d \
+            RISCV_ARCH="${target_arch}" \
+            RISCV_ABI="${riscv_abi}" \
             DISABLE_PRINTF=true \
-            microlite -j8 FLOAT="${fpu}" BUILD_TYPE=debug \
-            CFLAGS_EXTRA='-march=rv64imafdc -mabi=lp64d' \
-            CXXFLAGS_EXTRA='-march=rv64imafdc -mabi=lp64d' \
-            LDFLAGS_EXTRA='-march=rv64imafdc -mabi=lp64d'
+            microlite -j8 FLOAT="${fpu}" BUILD_TYPE="${build_type}" \
+            CFLAGS_EXTRA="-march=${target_arch} -mabi=${riscv_abi}" \
+            CXXFLAGS_EXTRA="-march=${target_arch} -mabi=${riscv_abi}" \
+            LDFLAGS_EXTRA="-march=${target_arch} -mabi=${riscv_abi}"
         mkdir -p "../Library/${core}"
-        cp "./gen/riscv32_generic_${target_arch}_debug_gcc/lib/libtensorflow-microlite.a" \
+        cp "./gen/riscv32_generic_${target_arch}_${build_type}_gcc/lib/libtensorflow-microlite.a" \
             "../Library/${core}/libTFLite.a"
     fi
 done < <(parse_core_yaml)

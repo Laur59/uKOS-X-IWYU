@@ -42,7 +42,7 @@ add_compile_definitions(
 )
 
 # Flash programming script selection
-set(BURN jlinkexe)
+set(BURN dfu-util)
 
 # Extra compilation options
 add_compile_options(
@@ -227,6 +227,7 @@ set(UKOS_COMPONENTS rtcb_p kern_p kern_u libx_p libx_u proc_p proc_u tool_u ${TI
 
 # Optional manager
 add_MicroPython()
+add_LVGL(DISPLAY WKS43WV067_5_Inches)
 add_FatFs(STORAGE sdcard)
 
 # System configuration flags

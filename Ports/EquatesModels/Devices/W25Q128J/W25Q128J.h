@@ -2,14 +2,14 @@
  * SPDX-License-Identifier: MIT
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  *
- * Goal:     Flash W25X80L equates.
+ * Goal:    Flash W25Q128J equates.
  */
 
 #pragma once
 
 // Memory structure
 
-#define KFLASH_SPI_SZ_FLASH                 (1U * 1024U * 1024U)                            // FLASH size
+#define KFLASH_SPI_SZ_FLASH                 (16U * 1024U * 1024U)                           // FLASH size
 #define KFLASH_SPI_SZ_SECTOR                4096U                                           // Sector size
 #define KFLASH_SPI_NB_SECTOR                (KFLASH_SPI_SZ_FLASH / KFLASH_SPI_SZ_SECTOR)    // Number of sectors
 #define KFLASH_SPI_SZ_PAGE                  256U                                            // Page size
@@ -17,7 +17,7 @@
 #define KFLASH_SPI_SZ_BLOC                  65536U                                          // Bloc size
 #define KFLASH_SPI_NB_BLOC                  (KFLASH_SPI_SZ_FLASH / KFLASH_SPI_SZ_BLOC)      // Number of blocs
 
-// Commands for the chip W25X80L
+// Commands for the chip W25Q128J
 
 #define KFLASH_SPI_CMD_WRITE_STATUS         0x01U                                           // FLASH write status command
 #define KFLASH_SPI_CMD_WRITE                0x02U                                           // FLASH write command (pages of 256 bytes)
@@ -29,7 +29,7 @@
 #define KFLASH_SPI_CMD_ERASE_BLOC           0xD8U                                           // FLASH erase bloc command
 #define KFLASH_SPI_CMD_ERASE_BULK           0xC7U                                           // FLASH bulk erase command
 
-// Status bits for the chip W25X80L
+// Status bits for the chip W25Q128J
 
 #define BFLASH_SPI_BUSY                     0U                                              // Erase or write in progress
 #define BFLASH_SPI_WEL                      1U                                              // Write enable latch
@@ -37,4 +37,5 @@
 #define BFLASH_SPI_BP1                      3U                                              // Block protect block 1
 #define BFLASH_SPI_BP2                      4U                                              // Block protect block 2
 #define BFLASH_SPI_TB                       5U                                              // Top/Bottom write protect
+#define BFLASH_SPI_SEC                      6U                                              // Top/Bottom write protect
 #define BFLASH_SPI_SRWD                     7U                                              // Status register protect
