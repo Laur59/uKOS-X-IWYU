@@ -21,3 +21,6 @@ riscv32_generic:
   - core: RV64IMAFDC
     target_arch: rv64imafdc
     fpu: hard
+  - core: RV32IMAC
+    target_arch: rv32imac
+    fpu: soft
