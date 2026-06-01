@@ -85,9 +85,15 @@ extern              proc_t  *vKern_runProc[KNB_CORES];
 
 // Prepare the stack frame
 //
-// The stack has to be aligned on boundary of 16-bytes
-// In this case the (140 + 4) mod 16 has to be 0
+// The running sp (after KERN_NEW_FRAME pops 35 words = 140 bytes) must be 16-byte
+// aligned per the RISC-V ABI, otherwise variadic doubles (e.g. dprintf("%f", ...))
+// are mis-fetched. oStack (P0) is 16-byte aligned, so the frame reserves a 16-byte
+// top region (the magic word + 3 pad words = 4 words): saved_SP = P0 - 156 and the
+// running sp = saved_SP + 140 = P0 - 16, which is 16-byte aligned.
 //
+//  +152    pad             = KMAGICSTACK (top region, keeps the running sp 16-aligned)
+//  +148    pad             = KMAGICSTACK (top region, keeps the running sp 16-aligned)
+//  +144    pad             = KMAGICSTACK (top region, keeps the running sp 16-aligned)
 //  +140    "uKOS"          = KMAGICSTACK
 //  +136    x1 ra           = address of the routine exit_terminate()
 //  +132    x5 t0           =
@@ -127,6 +133,9 @@ extern              proc_t  *vKern_runProc[KNB_CORES];
 
 #ifndef KERN_PREPARE_FRAME
 #define KERN_PREPARE_FRAME(stack, code, core, argument, priority)                                                               \
+                                *(--stack) = KMAGICSTACK;                           /* pad              */                      \
+                                *(--stack) = KMAGICSTACK;                           /* pad              */                      \
+                                *(--stack) = KMAGICSTACK;                           /* pad              */                      \
                                 *(--stack) = KMAGICSTACK;                           /* "uKOS"           */                      \
                                 *(--stack) = (uintptr_t)exit_terminate;             /* x1 ra            */                      \
                                 *(--stack) = 0x05050505U;                           /* x5 t0            */                      \
