@@ -115,7 +115,7 @@ math(EXPR LAST_INDEX "${NUM_CORES} - 1")
 foreach(CORE_INDEX RANGE 0 ${LAST_INDEX})
     list(GET SUPPORTED_CORES ${CORE_INDEX} CORE)
     list(GET CORE_DISPLAY ${CORE_INDEX} DISPLAY)
-    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${CORE}/${DISPLAY}/CMakeLists.txt")
+    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${DISPLAY}/${CORE}/CMakeLists.txt")
         message(STATUS "Configuring build for core: ${CORE} and display ${DISPLAY}")
 
         ExternalProject_Add(LVGL_${CORE}
@@ -126,8 +126,8 @@ foreach(CORE_INDEX RANGE 0 ${LAST_INDEX})
             DEPENDS           LVGL_Download
 
             # Source configuration
-            SOURCE_DIR        "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${CORE}/${DISPLAY}"
-            BINARY_DIR        "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${CORE}/${DISPLAY}/build"
+            SOURCE_DIR        "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${DISPLAY}/${CORE}"
+            BINARY_DIR        "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${DISPLAY}/${CORE}/build"
 
             # Configure step - pass build type explicitly for optimization
             CMAKE_ARGS        -DCMAKE_BUILD_TYPE=${SUBPROJECT_BUILD_TYPE}
@@ -138,7 +138,7 @@ foreach(CORE_INDEX RANGE 0 ${LAST_INDEX})
             # Build step
             BUILD_COMMAND     ${CMAKE_COMMAND} --build <BINARY_DIR>
             BUILD_ALWAYS      OFF
-            BUILD_BYPRODUCTS  "${CMAKE_CURRENT_SOURCE_DIR}/Library/${CORE}/${DISPLAY}/libLVGL.a"
+            BUILD_BYPRODUCTS  "${CMAKE_CURRENT_SOURCE_DIR}/Library/${DISPLAY}/${CORE}/libLVGL.a"
 
             # Install step - libraries stay in-place
             INSTALL_COMMAND   ""
@@ -158,7 +158,7 @@ foreach(CORE_INDEX RANGE 0 ${LAST_INDEX})
 
         list(APPEND ALL_CORE_PROJECTS LVGL_${CORE})
     else()
-        message(WARNING "Skipping ${CORE}: CMakeLists.txt not found at Construction/${CORE}/${DISPLAY}")
+        message(WARNING "Skipping ${CORE}: CMakeLists.txt not found at Construction/${DISPLAY}/${CORE}")
     endif()
 endforeach()
 
@@ -194,5 +194,5 @@ foreach(CORE ${SUPPORTED_CORES})
 endforeach()
 message("")
 message("Output libraries will be in:")
-message("  Library/<CORE>/<DISPLAY>/libLVGL.a")
+message("  Library/<DISPLAY>/<CORE>/libLVGL.a")
 message("══════════════════════════════════════════════════════════════")

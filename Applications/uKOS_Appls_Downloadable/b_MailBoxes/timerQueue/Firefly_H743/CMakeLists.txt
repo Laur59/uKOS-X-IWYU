@@ -4,11 +4,11 @@
 cmake_minimum_required(VERSION 3.26)
 
 # Applications CMake module setup
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/../../../../Mkfiles/cmake")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/../../../../cmake")
 
 include(set-project-paths)
 
-include(${PATH_UKOS}/Ports/Mkfiles/cmake/select-arm-toolchain.cmake)
+include(${PATH_UKOS}/Ports/cmake/select-arm-toolchain.cmake)
 
 project(
     timerQueue

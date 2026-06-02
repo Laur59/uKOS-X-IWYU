@@ -3,6 +3,7 @@
 ; ========
 
 ; SPDX-License-Identifier: MIT
+; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
 
 ;------------------------------------------------------------------------
 ; Author:   Edo. Franzi     The 2026-01-01
@@ -18,6 +19,36 @@
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
+;                                              __ ______  _____
+;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
+;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
+;   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
+;                                     \__,_/_/ |_\____//____/
+;   edo.franzi@ukos.ch
+;
+;   Description: Lightweight, real-time multitasking operating
+;   system for embedded microcontroller and DSP-based systems.
+;
+;   Permission is hereby granted, free of charge, to any person
+;   obtaining a copy of this software and associated documentation
+;   files (the "Software"), to deal in the Software without restriction,
+;   including without limitation the rights to use, copy, modify,
+;   merge, publish, distribute, sublicense, and/or sell copies of the
+;   Software, and to permit persons to whom the Software is furnished
+;   to do so, subject to the following conditions:
+;
+;   The above copyright notice and this permission notice shall be
+;   included in all copies or substantial portions of the Software.
+;
+;   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+;   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+;   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+;   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+;   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+;   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+;   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+;   SOFTWARE.
+;
 ;------------------------------------------------------------------------
 */
 
@@ -27,14 +58,14 @@
 #define LV_CONF_H
 
 // COLOR SETTINGS
-// ==============
+// --------------
 
 // Color depth: 1 (I1), 8 (L8), 16 (RGB565), 24 (RGB888), 32 (XRGB8888)
 //
-#define LV_COLOR_DEPTH                                  32
+#define LV_COLOR_DEPTH                                  16
 
 // STDLIB WRAPPER SETTINGS
-// =======================
+// -----------------------
 
 // Possible values
 // - LV_STDLIB_BUILTIN: LVGL's built in implementation
@@ -73,7 +104,7 @@
 #define LV_STDARG_INCLUDE                               <stdarg.h>
 
 // HAL SETTINGS
-// ============
+// ------------
 
 // Default display refresh, input device read and animation step period i ms
 //
@@ -85,26 +116,26 @@
 
 // Resolution
 //
-#define LV_HOR_RES_MAX                                  800
-#define LV_VER_RES_MAX                                  480
+#define LV_HOR_RES_MAX                                  320
+#define LV_VER_RES_MAX                                  240
 
 // OPERATING SYSTEM
-// ================
+// ----------------
 
 // Select operating system to use
 //
 #define LV_USE_OS                                       LV_OS_NONE
 
 // RENDERING CONFIGURATION
-// =======================
+// -----------------------
 
 #define LV_DRAW_BUF_STRIDE_ALIGN                        1
 #define LV_DRAW_BUF_ALIGN                               4
 
 #define LV_DRAW_TRANSFORM_USE_MATRIX                    0
-#define LV_DRAW_LAYER_SIMPLE_BUF_SIZE                   (64 * 1024)
+#define LV_DRAW_LAYER_SIMPLE_BUF_SIZE                   (24 * 1024)
 #define LV_DRAW_LAYER_MAX_MEMORY                        0
-#define LV_DRAW_THREAD_STACK_SIZE                       (16 * 1024)
+#define LV_DRAW_THREAD_STACK_SIZE                       (8 * 1024)
 #define LV_DRAW_THREAD_PRIO                             LV_THREAD_PRIO_HIGH
 
 #define LV_USE_DRAW_SW                                  1
@@ -134,7 +165,7 @@
 #endif
 
 // FEATURE CONFIGURATION
-// =====================
+// ---------------------
 
 // Logging
 //
@@ -165,7 +196,7 @@
 #define LV_USE_OBJ_PROPERTY_NAME                        1
 
 // FONT USAGE
-// ==========
+// ----------
 
 #define LV_FONT_MONTSERRAT_8                            0
 #define LV_FONT_MONTSERRAT_10                           0
@@ -203,7 +234,7 @@
 #define LV_USE_FONT_PLACEHOLDER                         1
 
 // TEXT SETTINGS
-// =============
+// -------------
 
 #define LV_TXT_ENC                                      LV_TXT_ENC_UTF8
 #define LV_TXT_BREAK_CHARS                              " ,.;:-_)]}"
@@ -216,7 +247,7 @@
 #define LV_TXT_COLOR_CMD                                "#"
 
 // WIDGETS
-// =======
+// -------
 
 #define LV_WIDGETS_HAS_DEFAULT_VALUE                    1
 #define LV_USE_ANIMIMG                                  1
@@ -277,7 +308,7 @@
 #define LV_USE_WIN                                      1
 
 // THEMES
-// ======
+// ------
 
 #define LV_USE_THEME_DEFAULT                            0
 #if LV_USE_THEME_DEFAULT
@@ -289,7 +320,7 @@
 #define LV_USE_THEME_MONO                               0
 
 // BUILD OPTIONS
-// =============
+// -------------
 
 #define LV_DISABLE_API_MAPPING                          1
 #define LV_BUILD_EXAMPLES                               0

@@ -11,6 +11,7 @@
 
 #include    "Registers/stm32N657_gpioe.h"
 #include    "../../ulvgl.h"
+#include    "lcd_display.h"
 #include    "macros_core.h"
 #include    "spi/spi.h"
 #include    "spi_common.h"
@@ -18,70 +19,6 @@
 #define BLCD_CS         9U              // LCD CS
 #define BLCD_DC         10U             // LCD Data/Command
 #define BLCD_RST        11U             // LCD Reset
-
-// Macros for controlling the LCD controller ST7789VW
-
-#define CMD_PARAMETER_00(commmande)                                                                 \
-                                                                                                    \
-    do {                                                                                            \
-        local_LCD_WriteCommand(commmande);                                                          \
-    } while (0)
-
-#define CMD_PARAMETER_01(commmande, d1)                                                             \
-                                                                                                    \
-    do {                                                                                            \
-        local_LCD_WriteCommand(commmande);                                                          \
-        local_LCD_WriteData(d1);                                                                    \
-    } while (0)
-
-#define CMD_PARAMETER_02(commmande, d1, d2)                                                         \
-                                                                                                    \
-    do {                                                                                            \
-        local_LCD_WriteCommand(commmande);                                                          \
-        local_LCD_WriteData(d1);                                                                    \
-        local_LCD_WriteData(d2);                                                                    \
-    } while (0)
-
-#define CMD_PARAMETER_04(commmande, d1, d2, d3, d4)                                                 \
-                                                                                                    \
-    do {                                                                                            \
-        local_LCD_WriteCommand(commmande);                                                          \
-        local_LCD_WriteData(d1);                                                                    \
-        local_LCD_WriteData(d2);                                                                    \
-        local_LCD_WriteData(d3);                                                                    \
-        local_LCD_WriteData(d4);                                                                    \
-    } while (0)
-
-#define CMD_PARAMETER_05(commmande, d1, d2, d3, d4, d5)                                             \
-                                                                                                    \
-    do {                                                                                            \
-        local_LCD_WriteCommand(commmande);                                                          \
-        local_LCD_WriteData(d1);                                                                    \
-        local_LCD_WriteData(d2);                                                                    \
-        local_LCD_WriteData(d3);                                                                    \
-        local_LCD_WriteData(d4);                                                                    \
-        local_LCD_WriteData(d5);                                                                    \
-    } while (0)
-
-#define CMD_PARAMETER_14(commmande, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14)    \
-                                                                                                    \
-    do {                                                                                            \
-        local_LCD_WriteCommand(commmande);                                                          \
-        local_LCD_WriteData(d1);                                                                    \
-        local_LCD_WriteData(d2);                                                                    \
-        local_LCD_WriteData(d3);                                                                    \
-        local_LCD_WriteData(d4);                                                                    \
-        local_LCD_WriteData(d5);                                                                    \
-        local_LCD_WriteData(d6);                                                                    \
-        local_LCD_WriteData(d7);                                                                    \
-        local_LCD_WriteData(d8);                                                                    \
-        local_LCD_WriteData(d9);                                                                    \
-        local_LCD_WriteData(d10);                                                                   \
-        local_LCD_WriteData(d11);                                                                   \
-        local_LCD_WriteData(d12);                                                                   \
-        local_LCD_WriteData(d13);                                                                   \
-        local_LCD_WriteData(d14);                                                                   \
-    } while (0)
 
 // Prototypes
 
@@ -180,98 +117,95 @@ static  void    local_LCD_Init(void) {
 // Bottom to Top, Left to Right, Reverse Mode, LCD Refresh Top to Bottom
 // RGB, LCD Refresh Left to Right
 
-    CMD_PARAMETER_01(0x36U, 0xA0U);
+    CMD_PARAMETER_01(MADCTL, 0xA0U);
 
 // COLMOD (3Ah): Interface Pixel Format
 // ‘101’ = 16bit/pixel
 
-    CMD_PARAMETER_01(0x3AU, 0x05U);
+    CMD_PARAMETER_01(COLMOD, 0x05U);
 
 // INVON (21h): Display Inversion On
 
-    CMD_PARAMETER_00(0x21U);
+    CMD_PARAMETER_00(INVON);
 
 // CASET (2Ah): Column Address Set
 // start: 0001, end: 0063
 
-    CMD_PARAMETER_04(0x2AU, 0x00U, 0x01, 0x00U, 0x3FU);
+    CMD_PARAMETER_04(CASET, 0x00U, 0x01, 0x00U, 0x3FU);
 
 // RASET (2Bh): Row Address Set
 // start: 0000, end: 0239
 
-    CMD_PARAMETER_04(0x2BU, 0x00U, 0x00U, 0x00U, 0xEFU);
+    CMD_PARAMETER_04(RASET, 0x00U, 0x00U, 0x00U, 0xEFU);
 
 // PORCTRL (B2h): Porch Setting
 // 0Ch/0Ch/00h/33h/33h (default)
 
-    CMD_PARAMETER_05(0xB2U, 0x0CU, 0x0C, 0x00U, 0x33U, 0x33U);
+    CMD_PARAMETER_05(PORCTRL, 0x0CU, 0x0C, 0x00U, 0x33U, 0x33U);
 
 // GCTRL (B7h): Gate Control
 // VGHS = 13.26-V, VGLS = -10.43-V
 
-    CMD_PARAMETER_01(0xB7U, 0x35U);
+    CMD_PARAMETER_01(GCTRL, 0x35U);
 
 // VCOMS (BBh): VCOM Setting
 // Vcom = 0.875-V
 
-    CMD_PARAMETER_01(0xBBU, 0x1FU);
+    CMD_PARAMETER_01(VCOMS, 0x1FU);
 
 // LCMCTRL (C0h): LCM Control
-// ----
 
-    CMD_PARAMETER_01(0xC0U, 0x2CU);
+    CMD_PARAMETER_01(LCMCTRL, 0x2CU);
 
 // VDVVRHEN (C2h): VDV and VRH Command Enable
 // 01h/FFh (default)
 
-    CMD_PARAMETER_02(0xC2U, 0x01U, 0xFFU);
+    CMD_PARAMETER_02(VDVVRHEN, 0x01U, 0xFFU);
 
 // VRHS (C3h): VRH Set
 // VAP = 4.45-V +( vcom+vcom offset+vdv)
 
-    CMD_PARAMETER_01(0xC3U, 0x12U);
+    CMD_PARAMETER_01(VRHS, 0x12U);
 
 // RAMCTRL (B0h): RAM Control
 // MCU, Little Endian
 
-    CMD_PARAMETER_02(0xB0U, 0x00U, 0xF8);
+    CMD_PARAMETER_02(RAMCTRL, 0x00U, 0xF8);
 
 // VDVS (C4h): VDV Set
 // 20h (default)
 
-    CMD_PARAMETER_01(0xC4U, 0x20U);
+    CMD_PARAMETER_01(VDVS, 0x20U);
 
 // FRCTRL2 (C6h): Frame Rate Control in Normal Mode
 // FR = 60-Hz
 
-    CMD_PARAMETER_01(0xC6U, 0x0FU);
+    CMD_PARAMETER_01(FRCTRL2, 0x0FU);
 
 // PWCTRL1 (D0h): Power Control 1
 // A4h/A1h (default)
 
-    CMD_PARAMETER_02(0xD0U, 0xA4U, 0xA1U);
+    CMD_PARAMETER_02(PWCTRL1, 0xA4U, 0xA1U);
 
 // PVGAMCTRL (E0h): Positive Voltage Gamma Control
-// ----
 
-    CMD_PARAMETER_14(0xE0U, 0xD0U, 0x08U, 0x11U, 0x08U, 0x0CU, 0x15U, 0x39U, 0x33U, 0x50U, 0x36U, 0x13U, 0x14U, 0x29U, 0x2DU);
+    CMD_PARAMETER_14(PVGAMCTRL, 0xD0U, 0x08U, 0x11U, 0x08U, 0x0CU, 0x15U, 0x39U, 0x33U, 0x50U, 0x36U, 0x13U, 0x14U, 0x29U, 0x2DU);
 
 // NVGAMCTRL (E1h): Negative Voltage Gamma Control
-// ----
 
-    CMD_PARAMETER_14(0xE1U, 0xD0U, 0x08U, 0x10U, 0x08U, 0x06U, 0x06U, 0x39U, 0x44U, 0x51U, 0x0BU, 0x16U, 0x14U, 0x2FU, 0x31U);
+    CMD_PARAMETER_14(NVGAMCTRL, 0xD0U, 0x08U, 0x10U, 0x08U, 0x06U, 0x06U, 0x39U, 0x44U, 0x51U, 0x0BU, 0x16U, 0x14U, 0x2FU, 0x31U);
 
 // INVON (21h): Display Inversion On
 
-    CMD_PARAMETER_00(0x21U);
+    CMD_PARAMETER_00(INVON);
 
 // SLPOUT (11h): Sleep Out
 
-    CMD_PARAMETER_00(0x11U);
+    CMD_PARAMETER_00(SLPOUT);
 
 // DISPON (29h): Display On
 
-    CMD_PARAMETER_00(0x29U);
+    CMD_PARAMETER_00(DISPON);
 }
 
 /*

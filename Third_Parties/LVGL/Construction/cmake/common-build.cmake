@@ -28,7 +28,8 @@ else()
 endif()
 
 # Display name is the leaf directory of the build folder (e.g. WaveShare_2_Inches)
-get_filename_component(DISPLAY_NAME "${CMAKE_CURRENT_SOURCE_DIR}" NAME)
+cmake_path(GET CMAKE_CURRENT_SOURCE_DIR PARENT_PATH PARENT_DIR)
+cmake_path(GET PARENT_DIR               FILENAME     DISPLAY_NAME)
 set(VALID_CORE_NAMES CORTEX_M3 CORTEX_M4 CORTEX_M7 CORTEX_M33 CORTEX_M55)
 
 # Define the path to LVGL source
@@ -50,7 +51,7 @@ add_library(${TARGET_LIB} STATIC
 
 target_include_directories(${TARGET_LIB} PRIVATE
     ${PATH_UKOS}/OS/Includes
-    ${PATH_LVGL}/Library/${CORE_NAME}/${DISPLAY_NAME}
+    ${PATH_LVGL}/Library/${DISPLAY_NAME}/${CORE_NAME}
     ${LIB_SRC_DIR}
 )
 
@@ -89,20 +90,23 @@ if(CORE_NAME IN_LIST VALID_CORE_NAMES)
     )
 endif()
 
-file(MAKE_DIRECTORY "${PATH_LVGL}/Library/${CORE_NAME}/${DISPLAY_NAME}")
+file(MAKE_DIRECTORY "${PATH_LVGL}/Library/${DISPLAY_NAME}/${CORE_NAME}")
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/lv_conf.h"
-     DESTINATION "${PATH_LVGL}/Library/${CORE_NAME}/${DISPLAY_NAME}"
+     DESTINATION "${PATH_LVGL}/Library/${DISPLAY_NAME}/${CORE_NAME}"
+)
+file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/../lcd_display.h"
+     DESTINATION "${PATH_LVGL}/Library/${DISPLAY_NAME}"
 )
 
 set_target_properties(${TARGET_LIB} PROPERTIES
-    ARCHIVE_OUTPUT_DIRECTORY "${PATH_LVGL}/Library/${CORE_NAME}/${DISPLAY_NAME}"
+    ARCHIVE_OUTPUT_DIRECTORY "${PATH_LVGL}/Library/${DISPLAY_NAME}/${CORE_NAME}"
     OUTPUT_NAME "LVGL"
 )
 
 # Strip unnecessary symbols after build
 add_custom_command(TARGET ${TARGET_LIB}
     POST_BUILD
-    COMMAND ${CMAKE_STRIP} --strip-unneeded ${PATH_LVGL}/Library/${CORE_NAME}/${DISPLAY_NAME}/libLVGL.a
+    COMMAND ${CMAKE_STRIP} --strip-unneeded ${PATH_LVGL}/Library/${DISPLAY_NAME}/${CORE_NAME}/libLVGL.a
 )
 
 # Post-build notification

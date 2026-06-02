@@ -26,7 +26,7 @@ static  volatile    bool            vLVGLReady[KNB_CORES] = MCSET(false);
                     mutx_t          *vLVGL_API[KNB_CORES];
 // Prototypes
 
-extern  void    stub_LCD_On(void);
+extern  void    stub_LCD_On(uint32_t rgb8888);
 extern  void    stub_LCD_flush_cb(lv_display_t *lv_display, const lv_area_t *area, uint8_t *pixelMapping);
 extern  void    ui_draw(void);
 
@@ -87,7 +87,8 @@ static void aProcess_lvgl(const void *argument) {
 // Ask for a small image buffer (for partial rendering)
 
     PRIVILEGE_ELEVATE;
-    stub_LCD_On();
+//                  RRGGBB
+    stub_LCD_On(0x00FF0000u);
 
     kern_lockMutex(vLVGL_API[core], KWAIT_INFINITY);
     lv_init();
