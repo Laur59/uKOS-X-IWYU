@@ -10,7 +10,7 @@
 ; Modifs:
 ;
 ; Project:  uKOS-X
-; Goal:     FLASH MX25R6435 equates.
+; Goal:     Flash MX25R6435 equates.
 ;
 ;   (c) 2025-2026, Edo. Franzi
 ;   --------------------------
@@ -51,12 +51,13 @@
 
 // Memory structure
 
+#define KFLASH_SPI_SZ_FLASH                 (8u * 1024u * 1024u)                            // FLASH size
 #define KFLASH_SPI_SZ_SECTOR                4096u                                           // Sector size
-#define KFLASH_SPI_NB_SECTOR                2048u                                           // Number of sectors
+#define KFLASH_SPI_NB_SECTOR                (KFLASH_SPI_SZ_FLASH / KFLASH_SPI_SZ_SECTOR)    // Number of sectors
 #define KFLASH_SPI_SZ_PAGE                  256u                                            // Page size
+#define KFLASH_SPI_NB_PAGE                  (KFLASH_SPI_SZ_FLASH / KFLASH_SPI_SZ_PAGE)      // Number of pages
 #define KFLASH_SPI_SZ_BLOC                  65536u                                          // Bloc size
-#define KFLASH_SPI_NB_BLOC                  128u                                            // Number of blocs of 64-KBytes
-#define KFLASH_SPI_SZ_FLASH                 (KFLASH_SPI_NB_SECTOR * KFLASH_SPI_SZ_SECTOR)   // FLASH size
+#define KFLASH_SPI_NB_BLOC                  (KFLASH_SPI_SZ_FLASH / KFLASH_SPI_SZ_BLOC)      // Number of blocs
 
 // Commands for the chip MX25R6435
 
