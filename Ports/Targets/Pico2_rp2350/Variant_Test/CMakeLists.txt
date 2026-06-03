@@ -28,10 +28,16 @@ if(${CORE} STREQUAL "CORTEX_M33")
   include(select-arm-toolchain)
   # Flash programming script selection
   set(BURN picotool-arm)
+    add_compile_definitions(
+        "uKOS_NAME=ARM"
+    )
 else()
   include(select-riscv-toolchain)
   # Flash programming script selection
   set(BURN picotool-riscv)
+    add_compile_definitions(
+        "uKOS_NAME=RISC-V"
+    )
   # RISC-V ISA extensions per the RP2350 datasheet (Hazard3) + user/privileged split
   # capability (M+U mode + PMP). Resulting -march: rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb
   set(CPU_FEATURES "zicsr;zifencei;zba;zbb;zbs;zbkb;user_mode")
@@ -54,7 +60,6 @@ endif()
 
 # Customisation of firmware copyright text
 add_compile_definitions(
-    "uKOS_NAME="
     "uKOS_OWNER=(c) et Luce"
     "SECURE_S"
     "__DYNAMIC_REENT__"
