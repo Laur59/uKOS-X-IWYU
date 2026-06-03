@@ -125,9 +125,6 @@ SECTIONS {
         *(COMMON)
         . = ALIGN(4);
         linker_enBSS = ABSOLUTE(.);
-        /* Standard symbol used by C library for heap start */
-        end = ABSOLUTE(.);
-        _end = ABSOLUTE(.);
     } > prgm_data
 
     /* Thread-local storage BSS section - treated as regular BSS for bare-metal */
