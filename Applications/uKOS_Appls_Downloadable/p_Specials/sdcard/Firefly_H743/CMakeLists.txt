@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: MIT
-#
-# Goal: CMake file to set up the building for uKOS-X system.
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 cmake_minimum_required(VERSION 3.26)
 
