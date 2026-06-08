@@ -6,8 +6,14 @@
  *          Interface between the lvgl and the hardware.
  */
 
-#include    "ulvgl.h"
+#include    <string.h>
+
+#include    "Registers/stm32H743_rcc.h"
+#include    "board.h"
 #include    "lcd_display.h"
+#include    "macros.h"
+#include    "macros_core.h"
+#include    "ulvgl.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------

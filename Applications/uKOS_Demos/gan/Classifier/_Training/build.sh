@@ -19,7 +19,7 @@ fi
 
 # First, load the image dataset
 
-python DB_Creator.py
+# python DB_Creator.py
 
 MODEL_FILE="mlp_model.tflite"
 

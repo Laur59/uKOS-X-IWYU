@@ -10,6 +10,16 @@
  *           - P0: Display a classe
  *                 Every 100-ms
  *                 Toggle LED 1
+ * Expected results:
+ *          Serial terminal output
+ *          uKOS-X > run
+ *          Execute the downloaded application.
+ *          Run the downloaded application...
+ *
+ *  uKOS-X >
+ *  Construction
+ *  in the middle (counter = 0)
+ *  Destruction
  */
 
 /*!

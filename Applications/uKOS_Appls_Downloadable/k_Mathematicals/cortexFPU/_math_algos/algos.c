@@ -30,10 +30,10 @@
  *
  */
 float64_t   pi_lambert(float64_t index, float64_t oldPi) {
-    UNUSED(oldPi);
-
             float64_t   pi;
     static  float64_t   v = 0.0;
+
+    UNUSED(oldPi);
 
     v = v + (1.0 / pow(index, 2));
     pi = sqrt(v * 6);

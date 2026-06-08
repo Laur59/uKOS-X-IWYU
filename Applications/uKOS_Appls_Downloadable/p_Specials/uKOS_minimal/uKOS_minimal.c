@@ -3,6 +3,21 @@
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  *
  * Demo of a minimal application using the uKOS-X uKernel.
+ * Expected results:
+ *          Serial terminal output
+ *          uKOS-X > run
+ *          Execute the downloaded application.
+ *          Run the downloaded application...
+ *
+ *  uKOS-X >
+ *  Motor position 00
+ *  Motor position 01
+ *  Motor position 03
+ *  Motor position 02
+ *  Motor position 00
+ *  Motor position 01
+ *  Motor position 03
+ *  .....
  */
 
 /*!

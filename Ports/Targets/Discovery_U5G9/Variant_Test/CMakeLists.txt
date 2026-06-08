@@ -220,7 +220,7 @@ target_sources(tool_u PRIVATE
     ${PATH_OSYS}/CLI/wki2c/wki2c.c
     ${PATH_OSYS}/CLI/wkserial/wkserial.c
 )
-if(DEFINED WITHAPP AND WITHAPP STREQUAL app)
+if(DEFINED WITHAPP AND WITHAPP STREQUAL coherence)
     target_sources(tool_u PRIVATE ${PATH_UKOS}/Applications/uKOS_Appls_Downloadable/b_MailBoxes/coherence/coherence.c)
   add_compile_definitions(WITHAPP_S)
 endif()

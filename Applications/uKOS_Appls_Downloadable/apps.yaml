@@ -298,7 +298,6 @@ k_Mathematicals:
     - Alastor_H743
     - Asmodee_H747
     - Discovery_U5G9
-    - Firefly_H743
     - MAiXDUiNO_K210
     - Nucleo_H743
 
@@ -507,6 +506,9 @@ q_LVGL:
     - Nucleo_N657
 
   big:
+    - Firefly_H743
+
+  gan:
     - Firefly_H743
 
   team:

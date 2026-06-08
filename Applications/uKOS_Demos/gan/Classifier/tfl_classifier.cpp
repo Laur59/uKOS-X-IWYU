@@ -9,6 +9,10 @@
 #include    <stdlib.h>
 #include    <math.h>
 #include    <cinttypes>
+
+#include    "kern/kern.h"
+#include    "serial/serial.h"
+#include    "types.h"
 #include    "ui.h"
 
 #pragma GCC diagnostic push

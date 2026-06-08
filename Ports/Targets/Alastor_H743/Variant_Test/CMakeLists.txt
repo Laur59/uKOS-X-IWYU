@@ -244,7 +244,7 @@ target_sources(tool_u PRIVATE
     ${PATH_OSYS}/CLI/wkspi/wkspi.c
     ${PATH_OSYS}/CLI/X/X.c
 )
-if(DEFINED WITHAPP AND WITHAPP STREQUAL "app")
+if(DEFINED WITHAPP AND WITHAPP STREQUAL "class_Py")
     target_sources(tool_u PRIVATE ${PATH_UKOS}/Applications/uKOS_Appls_Downloadable/l_MLPs/class_Py/class_Py.c)
   add_compile_definitions(WITHAPP_S)
 endif()

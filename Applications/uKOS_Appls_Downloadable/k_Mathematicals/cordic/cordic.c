@@ -4,6 +4,44 @@
  *
  * Demo of a C application.
  * This application shows how to operate with the uKOS-X uKernel.
+ * Expected results:
+ *          Serial terminal output
+ *          uKOS-X > run
+ *          Execute the downloaded application.
+ *          Run the downloaded application...
+ *
+ *  uKOS-X >
+ *  Cordic angle  1.3830344, time 9-us
+ *  newlib angle  1.3830344, time 1-us
+ *  Cordic angle  1.3830344, time 8-us
+ *  newlib angle  1.3830344, time 2-us
+ *  Cordic angle  1.3830344, time 5-us
+ *  newlib angle  1.3830344, time 1-us
+ *  Cordic angle  1.3830344, time 6-us
+ *  newlib angle  1.3830344, time 1-us
+ *  Cordic angle  1.3830344, time 6-us
+ *  newlib angle  1.3830344, time 1-us
+ *  Cordic angle  1.3830344, time 5-us
+ *  newlib angle  1.3830344, time 1-us
+ *  Cordic angle  1.3830344, time 6-us
+ *  newlib angle  1.3830344, time 1-us
+ *  Cordic angle  1.3830344, time 6-us
+ *  newlib angle  1.3830344, time 1-us
+ *  Cordic angle  1.3830344, time 6-us
+ *  newlib angle  1.3830344, time 1-us
+ *  Cordic angle  1.3830344, time 6-us
+ *  newlib angle  1.3830344, time 1-us
+ *  Cordic angle  1.3830344, time 6-us
+ *  newlib angle  1.3830344, time 1-us
+ *  Cordic angle  1.3830344, time 7-us
+ *  newlib angle  1.3830344, time 1-us
+ *  Cordic angle  1.3830344, time 6-us
+ *  newlib angle  1.3830344, time 1-us
+ *  Cordic angle  1.3830344, time 6-us
+ *  newlib angle  1.3830344, time 1-us
+ *  Cordic angle  1.3830344, time 7-us
+ *  newlib angle  1.3830344, time 1-us
+ *  .....
  */
 
 /*!

@@ -4,6 +4,21 @@
  *
  * Demo of a C application.
  * This application shows how to operate with the uKOS-X uKernel.
+ * Expected results:
+ *          Serial terminal output
+ *          uKOS-X > run
+ *          Execute the downloaded application.
+ *          Run the downloaded application...
+ *
+ *  uKOS interface for MicroPython (www.MicroPython.com)
+ *  uKOS-X >
+ *  Package 1.28.0 for uKOS-X (cortex M7)
+ *  Built with int on 64-bits and float on simple precision
+ *
+ *  bytearray(b'\x03')
+ *  bytearray(b'\x03')
+ *  bytearray(b'\x03')
+ *  .....
  */
 
 /*!

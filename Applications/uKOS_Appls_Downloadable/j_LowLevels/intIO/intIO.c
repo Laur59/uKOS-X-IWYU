@@ -4,6 +4,22 @@
  *
  * Demo of a C application.
  * This application shows how to operate with the uKOS-X uKernel.
+ * Expected results:
+ *          Serial terminal output
+ *          uKOS-X > run
+ *          Execute the downloaded application.
+ *          Run the downloaded application...
+ *
+ *  uKOS-X >
+ *  Counter = 00000000
+ *  Counter = 00000000
+ *  Counter = 00000000
+ *  Counter = 00000000
+ *  Counter = 00000000
+ *  Counter = 00000000
+ *  Counter = 00000000
+ *  Counter = 00000000
+ *  .....
  */
 
 /*!

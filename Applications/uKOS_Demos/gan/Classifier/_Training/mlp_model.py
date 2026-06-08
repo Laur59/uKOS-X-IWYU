@@ -13,10 +13,10 @@
 #			A dedicated Python script downloads 1000 samples for training:
 #			python DB_Creator.py
 #
-#
 # 			The GAN is composed of a Generator and a Discriminator.
 #
 # 			Generator architecture (embedded-friendly CNN):
+#			-----------------------------------------------
 #
 # 			Input:
 #				Random latent vector of 64 float32 values
@@ -25,55 +25,81 @@
 #				64 -> 4 x 4 x 96
 #
 #			Feature map expansion:
+#
 #				4x4x96
 #					|
 #					+-- Resize 8x8
 #					+-- Conv2D(48)
+#					+-- BatchNorm
+#					+-- ReLU
 #
 #				8x8x48
 #					|
 #					+-- Resize 16x16
 #					+-- Conv2D(24)
+#					+-- BatchNorm
+#					+-- ReLU
 #
 #				16x16x24
 #					  |
 #					  +-- Resize 32x32
 #					  +-- Conv2D(12)
+#					+-- BatchNorm
+#					+-- ReLU
 #
 #				32x32x12
 #					  |
 #					  +-- Resize 64x64
 #					  +-- Conv2D(8)
+#					+-- BatchNorm
+#					+-- ReLU
 #
 #				64x64x8
 #					  |
+#					+-- Conv2D(8)
+#					+-- BatchNorm
+#					+-- ReLU
+#
+#				64x64x8
+#					|
 #					  +-- Conv2D(1)
 #					  +-- tanh
 #
 #				Output:
 #					64x64 grayscale image
 #
-#
 #			Discriminator architecture:
+#			---------------------------
 #
 #			Input:
 #				64x64 grayscale image
 #
 #				Conv2D(24), stride=2
+#				LeakyReLU(0.2)
+#
 #				Conv2D(48), stride=2
+#				LeakyReLU(0.2)
+#
 #				Conv2D(96), stride=2
+#				LeakyReLU(0.2)
 #
 #				Flatten
 #
 #				Dense(96)
+#				LeakyReLU(0.2)
+#
 #				Dense(1)
 #
-#
 #			Embedded constraints:
-#				- Generator only is exported to TensorFlow Lite.
-#				- Float32 inference.
-#				- Reduced channel count for STM32H7 execution speed.
+#				- Only the Generator is exported to TensorFlow Lite.
+#				- int8 inference.
+#				- Reduced channel count for embedded execution.
 #				- Compatible with TensorFlow Lite Micro.
+#
+#			Notes:
+#				- BatchNormalization layers are used only during training.
+#				- They are typically folded into Conv2D layers during
+#				  TensorFlow Lite conversion.
 #
 #			Output files:
 #				- best_generator.keras
@@ -98,7 +124,7 @@ IMG_SIZE			= 64
 LATENT_DIM			= 64
 
 BATCH_SIZE			= 32
-EPOCHS				= 100
+EPOCHS				= 400
 DISPLAY_EVERY		= 5
 
 LEARNING_RATE_G		= 0.0001
@@ -146,9 +172,41 @@ def load_faces_from_folder(folder):
 # Generator model (lightweight CNN)
 # ---------------------------------
 #
-# STM32H7-oriented generator.
+# Lightweight face generator optimized for embedded inference.
 #
-# Supported TensorFlow Lite Micro operators:
+# Input:
+#		Latent vector of LATENT_DIM float values.
+#
+# Architecture:
+#
+#		Dense(4 x 4 x 96)
+#			↓
+#		Reshape(4,4,96)
+#			↓
+#		Resize 8x8  → Conv2D(48)
+#			↓
+#		Resize 16x16 → Conv2D(24)
+#			↓
+#		Resize 32x32 → Conv2D(12)
+#			↓
+#		Resize 64x64 → Conv2D(8)
+#			↓
+#		Conv2D(8)    (feature refinement)
+#			↓
+#		Conv2D(1) + tanh
+#
+# Channel configuration:
+#
+#		96 → 48 → 24 → 12 → 8 → 8 → 1
+#
+# Training-only layers:
+#
+#		BatchNormalization is used after each convolution
+#		to stabilize GAN training. These layers are folded
+#		into the convolution weights during TFLite export.
+#
+# Supported TensorFlow Lite operators:
+#
 # - FullyConnected
 # - Reshape
 # - ResizeNearestNeighbor
@@ -156,16 +214,17 @@ def load_faces_from_folder(folder):
 # - ReLU
 # - Tanh
 #
-# Channel configuration:
-# 96 -> 48 -> 24 -> 12 -> 8 -> 1
+# Design goals:
 #
-# Compared to the previous version:
-# 256 -> 128 -> 64 -> 32 -> 16 -> 1
+#		- Small memory footprint
+#		- Fast embedded inference
+#		- TensorFlow Lite / TensorFlow Lite Micro compatible
+#		- Suitable for Cortex-Mx and Neural-ART based targets
 #
-# The number of parameters and MAC operations
-# has been significantly reduced in order to
-# decrease inference time on Cortex-M7 targets.
-
+# Output:
+#
+#		64 x 64 grayscale image in [-1, +1]
+#
 def build_generator():
 	return tf.keras.Sequential([
 		layers.Input(shape=(LATENT_DIM,)),
@@ -194,12 +253,50 @@ def build_generator():
 		layers.BatchNormalization(),
 		layers.ReLU(),
 
+		layers.Conv2D(8, 3, padding="same"),
+		layers.BatchNormalization(),
+		layers.ReLU(),
+
 		layers.Conv2D(1, 3, padding="same", activation="tanh")
 	])
 
 # Discriminator model (CNN)
 # -------------------------
-
+#
+# Binary classifier used only during GAN training.
+#
+# Input:
+#
+#		64 x 64 grayscale image
+#
+# Architecture:
+#
+#		Conv2D(24), stride=2
+#			↓
+#		Conv2D(48), stride=2
+#			↓
+#		Conv2D(96), stride=2
+#			↓
+#		Flatten
+#			↓
+#		Dense(96)
+#			↓
+#		Dense(1)
+#
+# Activations:
+#
+#		LeakyReLU(0.2)
+#
+# Output:
+#
+#		Single logit representing the probability
+#		that the input image belongs to the training set.
+#
+# Notes:
+#
+#		The discriminator is used only during training.
+#		It is not exported to TensorFlow Lite.
+#
 def build_discriminator():
 	return tf.keras.Sequential([
 		layers.Input((64, 64, 1)),

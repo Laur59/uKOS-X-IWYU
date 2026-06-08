@@ -36,11 +36,23 @@
  *
  */
 
-#include    "ulvgl.h"
+#include    <stdio.h>
 #include    <stdlib.h>
 #include    <math.h>
 #include    <cinttypes>
+
+#include    "board.h"
+#include    "kern/kern.h"
+#include    "led/led.h"
+#include    "macros.h"
+#include    "macros_core.h"
+#include    "macros_core_stackFrame.h"
+#include    "macros_runtime.h"
+#include    "modules.h"
+#include    "os_errors.h"
+#include    "random/random.h"
 #include    "ui.h"
+#include    "ulvgl.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

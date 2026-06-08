@@ -6,6 +6,11 @@
  *          Simple UI for the debris demo.
  */
 
+#include    <stdint.h>
+#include    <string.h>
+
+#include    "kern/kern.h"
+#include    "macros_soc.h"
 #include    "ulvgl.h"
 #include    "ui.h"
 
