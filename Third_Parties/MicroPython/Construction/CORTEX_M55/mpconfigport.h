@@ -6,6 +6,7 @@
  */
 
 #include    <stdint.h>
+
 #include    "py/mpconfig.h"
 
 // Options to control how MicroPython is built

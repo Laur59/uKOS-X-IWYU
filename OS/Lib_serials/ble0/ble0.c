@@ -9,9 +9,9 @@
 
 #include    <stdint.h>
 
-#include    "serial_common.h"  // for urtxCnf_t
 #include    "macros.h"
 #include    "modules.h"
+#include    "serial_common.h"  // for urtxCnf_t
 #include    "types.h"
 
 #ifdef CONFIG_MAN_BLE0_S
