@@ -124,7 +124,7 @@ IMG_SIZE			= 64
 LATENT_DIM			= 64
 
 BATCH_SIZE			= 32
-EPOCHS				= 400
+EPOCHS				= 1000
 DISPLAY_EVERY		= 5
 
 LEARNING_RATE_G		= 0.0001
@@ -391,7 +391,7 @@ def representative_dataset():
 		z = np.random.normal(0.0, 1.0, (1, LATENT_DIM)).astype(np.float32)
 		yield [z]
 
-def export_tflite_int8(generator):
+def export_tflite_int8(generator, filename=FINAL_TFLITE_FILE):
 	print("")
 	print("Export TFLite int8...")
 
@@ -411,7 +411,7 @@ def export_tflite_int8(generator):
 
 	tflite_model = converter.convert()
 
-	with open(FINAL_TFLITE_FILE, "wb") as f:
+	with open(filename, "wb") as f:
 		f.write(tflite_model)
 
 	print(f"TFLite int8 model saved : {os.path.abspath(FINAL_TFLITE_FILE)}")
@@ -463,6 +463,7 @@ def main():
 		# Save the best generator
 		if epoch % 50 == 0:
 			generator.save(f"generator_epoch_{epoch:04d}.keras")
+			export_tflite_int8(generator, f"generator_epoch_{epoch:04d}.tflite")
 
 	print("Training terminated.")
 	generator.save(BEST_KERAS_FILE)

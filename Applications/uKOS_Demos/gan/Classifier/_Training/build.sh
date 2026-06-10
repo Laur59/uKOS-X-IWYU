@@ -19,7 +19,10 @@ fi
 
 # First, load the image dataset
 
-# python DB_Creator.py
+if [ ! -d "DB_faces" ]; then
+    echo "DB_faces does not exist, create a new set"
+    python DB_Creator.py
+fi
 
 MODEL_FILE="mlp_model.tflite"
 

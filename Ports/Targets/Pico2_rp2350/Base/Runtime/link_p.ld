@@ -86,7 +86,7 @@ linker_lnEXRAM              = (0);                                              
 linker_stUMemo              = (linker_stHeap + linker_lnHeap);                              /* 0x20050000: UMemo, start of the user memory              */
 linker_lnUMemo              = config_sizeUserMemory;                                        /* Length of the user memory                                */
 
-linker_stShare              = (linker_stUMemo + linker_lnUMemo);                            /* 0x20062000: Share, start of the multicore shared memory  */
+linker_stShare              = (linker_stUMemo + linker_lnUMemo);                            /* 0x20072000: Share, start of the multicore shared memory  */
 linker_lnShare              = config_sizeShare;                                             /* Length of the user multicore shared memory               */
 
 /* IMPORTANT:                                               */
@@ -113,7 +113,7 @@ linker_ST_FLASH_INT_0       = rp_stINTFLASH;                                    
 linker_EN_FLASH_INT_0       = (rp_stINTFLASH + rp_lnINTFLASH - 1);                          /* 0x103FFFFF: 4-M                                          */
 
 linker_ST_RAM_INT_0         = rp_stSRAM;                                                    /* 0x20000000: Privileged/User RAM                          */
-linker_EN_RAM_INT_0         = (rp_stSRAM + rp_stSRAM - 1);                                  /* 0x3FFFFFFF: 520-K                                        */
+linker_EN_RAM_INT_0         = (rp_stSRAM + rp_lnSRAM1 - 1);                                 /* 0x20081FFF: 520-K                                        */
 
 MEMORY {
     prgm_code (rx)  : ORIGIN = linker_stPrgmCode, LENGTH = linker_lnPrgmCode
