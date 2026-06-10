@@ -4,6 +4,38 @@
  *
  * Demo of a C application.
  * This application shows how to operate with the uKOS-X uKernel.
+ * Expected results:
+ *          Serial terminal output
+ *          uKOS-X > run
+ *          Execute the downloaded application.
+ *          Run the downloaded application...
+ *
+ *  uKOS-X >
+ *  Watchdog in automatic mode (trying for 10'000-ms)
+ *  Watchdog in manual mode    (trying for 10'000-ms)
+ *
+ *  Now waiting 20-s for the watchdog restart
+ *  Elapsed 0-s!
+ *  Elapsed 1-s!
+ *  Elapsed 2-s!
+ *  Elapsed 3-s!
+ *  Elapsed 4-s!
+ *  Elapsed 5-s!
+ *  Elapsed 6-s!
+ *  Elapsed 7-s!
+ *  Elapsed 8-s!
+ *  Elapsed 9-s!
+ *  Elapsed 10-s!
+ *  Elapsed 11-s!
+ *  Elapsed 12-s!
+ *  Elapsed 13-s!
+ *  Elapsed 14-s!
+ *  Elapsed 15-s!
+ *  Elapsed 16-s!
+ *  Elapsed 17-s!
+ *  Elapsed 18-s!
+ *  Elapsed 19-s!
+ *  Elapsed 20-s!
  */
 
 /*!

@@ -1,23 +1,12 @@
 /*
-; mpconfigport.
-; =============
-
-; SPDX-License-Identifier: MIT
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-
-;------------------------------------------------------------------------
-; Author:   Edo. Franzi     The 2025-01-01
-; Modifs:
-;
-; Project:  uKOS-X
-; Goal:     Configuration port for MicroPython.
-;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Configuration port for MicroPython.
+ */
 
 #include    <stdint.h>
+
 #include    "py/mpconfig.h"
 
 // Options to control how MicroPython is built

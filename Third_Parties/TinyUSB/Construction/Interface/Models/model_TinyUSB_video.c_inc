@@ -6,7 +6,9 @@
  *           !! This is only for tests.
  */
 
-#define FRAME_WIDTH         752U
+// Mandatory, FRAME_WIDTH x FRAME_HEIGHT HAS to be multiple of 512
+
+#define FRAME_WIDTH         768U
 #define FRAME_HEIGHT        480U
 
 #include    <stdlib.h>

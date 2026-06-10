@@ -35,9 +35,9 @@ INCLUDE     rp2350.ld
 /* SRAM:     Stacks              0x20000000                 */
 /*            └ 12K                                         */
 /*           Program Data        0x20003000                 */
-/*            └ 180K                                        */
-/*           Heap                0x20030000                 */
 /*            └ 128K                                        */
+/*           Heap                0x20030000                 */
+/*            └ 180K                                        */
 /*           User Memory         0x20050000                 */
 /*            └ 136K                                        */
 /*           Share               0x20072000                 */
@@ -47,8 +47,8 @@ linker_sizeStackSystem_C0   = (4K);                                             
 linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */
 linker_sizeStackSystem_C1   = (4K);                                                         /* Length of the System stack                               */
 linker_sizeStackFirst_C1    = (2K);                                                         /* Length of the First stack                                */
-config_sizeData             = (180K);
-config_sizeHeap             = (128K);
+config_sizeData             = (128K);
+config_sizeHeap             = (180K);
 config_sizeUserMemory       = (136K);
 config_sizeShare            = (64K);
 
@@ -86,7 +86,7 @@ linker_lnEXRAM              = (0);                                              
 linker_stUMemo              = (linker_stHeap + linker_lnHeap);                              /* 0x20050000: UMemo, start of the user memory              */
 linker_lnUMemo              = config_sizeUserMemory;                                        /* Length of the user memory                                */
 
-linker_stShare              = (linker_stUMemo + linker_lnUMemo);                            /* 0x20062000: Share, start of the multicore shared memory  */
+linker_stShare              = (linker_stUMemo + linker_lnUMemo);                            /* 0x20072000: Share, start of the multicore shared memory  */
 linker_lnShare              = config_sizeShare;                                             /* Length of the user multicore shared memory               */
 
 /* IMPORTANT:                                               */
@@ -113,7 +113,7 @@ linker_ST_FLASH_INT_0       = rp_stINTFLASH;                                    
 linker_EN_FLASH_INT_0       = (rp_stINTFLASH + rp_lnINTFLASH - 1);                          /* 0x103FFFFF: 4-M                                          */
 
 linker_ST_RAM_INT_0         = rp_stSRAM;                                                    /* 0x20000000: Privileged/User RAM                          */
-linker_EN_RAM_INT_0         = (rp_stSRAM + rp_stSRAM - 1);                                  /* 0x3FFFFFFF: 520-K                                        */
+linker_EN_RAM_INT_0         = (rp_stSRAM + rp_lnSRAM1 - 1);                                 /* 0x20081FFF: 520-K                                        */
 
 MEMORY {
     prgm_code (rx)  : ORIGIN = linker_stPrgmCode, LENGTH = linker_lnPrgmCode

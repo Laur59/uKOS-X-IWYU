@@ -58,7 +58,6 @@ linker_sizeStackFirst_C0    = (2K);                                             
 config_sizeData_u           = stm_lnSRAM123 - linker_sizeStackFirst_C0;
 config_sizeData_p           = stm_lnSRAM4 - linker_sizeStackSystem_C0;
 config_sizeHeap             = (32768K);
-config_sizeUserMemory       = (32768K);
 
 /* IMPORTANT:                                               */
 /* all the stacks have to be maintained aligned             */
@@ -81,8 +80,8 @@ ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
 linker_stEXRAM              = 0x70000000;                                                   /* 0x70000000: EXRAM, start of external memory              */
 linker_lnEXRAM              = (65536K);                                                     /* Length of external memory IS42S16320F                    */
 
-linker_stUMemo              = linker_stEXRAM + config_sizeHeap;                             /* 0x70200000: UMemo, start of user memory                  */
-linker_lnUMemo              = config_sizeUserMemory;                                        /* Length of user memory                                    */
+linker_stUMemo              = linker_stEXRAM + config_sizeHeap;                             /* 0x72000000: UMemo, start of user memory                  */
+linker_lnUMemo              = linker_lnEXRAM - config_sizeHeap;                             /* Length of user memory                                    */
 
 /* IMPORTANT:                                               */
 /* The heap has to be maintained aligned                    */

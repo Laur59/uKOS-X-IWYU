@@ -52,11 +52,11 @@ config_sizeHeap             = (2048K);
 /* all the stacks have to be maintained aligned             */
 /* on a boundary of 8-bytes                                 */
 
-linker_lowStackSystem_C0    = stm_stAXISRAM;                                                /* 0x24000000:                                              */
-linker_topStackSystem_C0    = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 - 8;
-
-linker_lowStackFirst_C0     = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;         /* 0x24001000:                                              */
+linker_lowStackFirst_C0     = stm_stAXISRAM;                                                /* 0x24000000:                                              */
 linker_topStackFirst_C0     = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0 - 8;
+
+linker_lowStackSystem_C0    = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;           /* 0x24000800:                                              */
+linker_topStackSystem_C0    = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 - 8;
 
 ASSERT((linker_lowStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
 ASSERT((linker_topStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
@@ -88,7 +88,8 @@ linker_lnHeap               = config_sizeHeap;                                  
 linker_stPrgmCode           = stm_stINTFLASH_CM7;                                           /* 0x08000000: PrgmCode, start of the Flash                 */
 linker_lnPrgmCode           = stm_lnINTFLASH_CM7;                                           /* Length of the the Flash                                  */
 
-linker_stPrgmData           = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;           /* 0x24001800: start of program data                        */
+linker_stPrgmData           = stm_stAXISRAM + linker_sizeStackFirst_C0
+                                + linker_sizeStackSystem_C0;                                /* 0x24001800: start of program data                        */
 linker_lnPrgmData           = config_sizeData;                                              /* Length of program data                                   */
 
 /* IMPORTANT:                                               */
@@ -101,7 +102,7 @@ linker_SZ_FLASH_INT_0       = 19;                                               
 linker_ST_RAM_INT_0         = stm_stAXISRAM;                                                /* 0x24000000: Privileged RAM/User RAM                      */
 linker_SZ_RAM_INT_0         = 18;                                                           /* 512-K = 2^(SZ + 1), SZ = log2(512-K) - 1                 */
 
-linker_ST_RAM_EXT_0         = (linker_stEXRAM + 2048K);                                     /* 0x70200000: Privileged/User RAM                          */
+linker_ST_RAM_EXT_0         = linker_stEXRAM;                                               /* 0x70000000: Privileged/User RAM                          */
 linker_SZ_RAM_EXT_0         = 22;                                                           /* 8-M = 2^(SZ + 1), SZ = log2(8-M) - 1                     */
 
 linker_ST_RAM_INT_1_SHARED  = linker_stShare;                                               /* 0x38000000: Privileged/User RAM                          */

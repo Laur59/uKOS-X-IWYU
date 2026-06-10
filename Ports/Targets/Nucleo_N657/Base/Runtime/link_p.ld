@@ -66,11 +66,11 @@ stm_lnAXISRAM3_6            = (stm_lnAXISRAM3 + stm_lnAXISRAM4 + stm_lnAXISRAM5 
 /* all the stacks have to be maintained aligned             */
 /* on a boundary of 8-bytes                                 */
 
-linker_lowStackSystem_C0    = stm_stAXISRAM2;                                               /* 0x34100000:                                              */
-linker_topStackSystem_C0    = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 - 8;     /* 0x34101FF8:                                              */
-
-linker_lowStackFirst_C0     = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;         /* 0x34102000:                                              */
+linker_lowStackFirst_C0     = stm_stAXISRAM2;                                               /* 0x34100000:                                              */
 linker_topStackFirst_C0     = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0 - 8;       /* 0x34103FF8:                                              */
+
+linker_lowStackSystem_C0    = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;           /* 0x34100000:                                              */
+linker_topStackSystem_C0    = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 - 8;     /* 0x34101FF8:                                              */
 
 ASSERT((linker_lowStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")
 ASSERT((linker_topStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")

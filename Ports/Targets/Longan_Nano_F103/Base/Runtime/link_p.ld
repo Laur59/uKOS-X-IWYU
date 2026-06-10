@@ -35,9 +35,9 @@ INCLUDE     GD32VF103CBT.ld
 /* Mapping:                                                 */
 /*                                                          */
 /* RAM:      Stacks              0x20000000                 */
-/*            └ 1.75K                                       */
+/*          0.75K                                           */
 /*           Program Data        0x20000700                 */
-/*            └ 14.25K                                      */
+/*            └ 15.25K                                      */
 /*           Heap                0x20004000                 */
 /*            └ 13K                                         */
 /*           User Memory         0x20007400                 */
@@ -46,7 +46,7 @@ INCLUDE     GD32VF103CBT.ld
 linker_sizeStackSystem_C0   = (0);                                                          /* Length of the System stack                               */
 linker_sizeStackFirst_C0    = (768);                                                        /* Length of the First stack                                */
 config_sizeData             = (15616);
-config_sizeHeap             = (14K);
+config_sizeHeap             = (13K);
 
 /* IMPORTANT:                                               */
 /* all the stacks have to be maintained aligned             */
@@ -54,7 +54,7 @@ config_sizeHeap             = (14K);
 
 linker_lowStackFirst_C0     = gd_stSRAM;                                                    /* 0x20000000                                               */
 linker_topStackFirst_C0     = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0 - 16;
-linker_lowStackSystem_C0    = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;           /* 0x20000700                                               */
+linker_lowStackSystem_C0    = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;           /* 0x20000300                                               */
 linker_topStackSystem_C0    = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 - 16;
 ASSERT((linker_lowStackSystem_C0 & 15) == 0, "Stack system must be 16-byte aligned")
 ASSERT((linker_topStackSystem_C0 & 15) == 0, "Stack system must be 16-byte aligned")
@@ -84,7 +84,7 @@ linker_lnHeap               = config_sizeHeap;                                  
 linker_stPrgmCode           = gd_stINTFLASH;                                                /* 0x08000000: PrgmCode, start of the Flash                 */
 linker_lnPrgmCode           = gd_lnINTFLASH;                                                /* Length of the the Flash                                  */
 
-linker_stPrgmData           = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;         /* 0x20000700: start of program data                        */
+linker_stPrgmData           = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;         /* 0x20000300: start of program data                        */
 linker_lnPrgmData           = config_sizeData;                                              /* Length of program data                                   */
 
 MEMORY {

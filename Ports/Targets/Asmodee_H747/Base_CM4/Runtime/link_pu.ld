@@ -47,14 +47,14 @@ INCLUDE     STM32H747xI.ld
 /*           Program Data        0x30010800  (User)         */
 /*            └ 62K                                         */
 /* RAM2:     Heap                0x30020000  (User)         */
-/*            ├ 128K                                        */
-/* RAM3:      └  32K             0x30040000  (User)         */
+/*            └ 128K                                        */
 /* RAM4:     Share               0x38000000  (User)         */
 /*            └ 64K                                         */
 
 linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
 linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */
 config_sizeData_p           = (60k);
+config_sizeData_u           = stm_lnSRAM1 - linker_sizeStackSystem_C0 - linker_sizeStackFirst_C0 - config_sizeData_p;
 
 /* IMPORTANT:                                               */
 /* all the stacks have to be maintained aligned             */
@@ -89,7 +89,7 @@ linker_lnShare              = stm_lnSRAM4;                                      
 /* on a boundary of 8-bytes                                 */
 
 linker_stHeap               = stm_stSRAM2;                                                  /* 0x30020000: start of the heap                            */
-linker_lnHeap               = stm_lnSRAM2 + stm_lnSRAM3;                                    /* Length of the heap                                       */
+linker_lnHeap               = stm_lnSRAM2;                                                  /* Length of the heap                                       */
 
 /* IMPORTANT:                                               */
 /* uKOS OS Flash + memory                                   */
@@ -101,8 +101,7 @@ linker_stPrgmData_p         = linker_lowStackSystem_C0 + linker_sizeStackSystem_
 linker_lnPrgmData_p         = config_sizeData_p;                                            /* Length of protected program data                         */
 
 linker_stPrgmData_u         = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;           /* 0x30010800: start of unprotected program data            */
-linker_lnPrgmData_u         = stm_lnSRAM1 - linker_sizeStackSystem_C0
-                                - linker_sizeStackFirst_C0 - config_sizeData_p;             /* Length of unprotected program data                       */
+linker_lnPrgmData_u         = config_sizeData_u;                                            /* Length of unprotected program data                       */
 
 /* IMPORTANT:                                               */
 /* equates necessary for the arm_v7 MPU regions             */
@@ -119,7 +118,7 @@ linker_ST_RAM_INT_0_OS      = stm_stSRAM1;                                      
 linker_SZ_RAM_INT_0_OS      = 15;                                                           /* 64-K = 2^(SZ + 1), SZ = log2(64-K) - 1                   */
 hex_SZ_RAM_INT_0_OS         = (1 << (linker_SZ_RAM_INT_0_OS+1));                            /* 64-K                                                     */
 
-linker_ST_RAM_INT_1         = stm_stSRAM2;                                                  /* Privileged/User RAM                                      */
+linker_ST_RAM_INT_1         = stm_stSRAM2;                                                  /* 0x30020000: Privileged/User RAM                          */
 linker_SZ_RAM_INT_1         = 16;                                                           /* 128-K = 2^(SZ + 1), SZ = log2(128-K) - 1                 */
 
 linker_ST_RAM_INT_2_SHARED  = stm_stSRAM4;                                                  /* 0x38000000: Privileged/User RAM                          */
@@ -137,7 +136,7 @@ MEMORY {
     prgm_data_u (rwx)   : ORIGIN = linker_stPrgmData_u, LENGTH = linker_lnPrgmData_u
 }
 
-ASSERT((linker_sizeStackFirst_C0 + linker_sizeStackSystem_C0 + linker_lnPrgmData_p + linker_lnPrgmData_u + linker_lnHeap + linker_lnUMemo) == stm_lnSRAM123, "Check RAM mapping: over/under usage")
+ASSERT((linker_sizeStackFirst_C0 + linker_sizeStackSystem_C0 + linker_lnPrgmData_p + linker_lnPrgmData_u + linker_lnHeap + linker_lnUMemo) <= stm_lnSRAM123, "Check RAM mapping: over/under usage")
 ASSERT((linker_stPrgmData_p) < (linker_ST_RAM_INT_0_OS + hex_SZ_RAM_INT_0_OS), "Start address of data outside protected region")
 ASSERT((linker_stPrgmData_p + linker_lnPrgmData_p) <= (linker_ST_RAM_INT_0_OS + hex_SZ_RAM_INT_0_OS), "End address of data outside protected region")
 ASSERT((linker_stPrgmData_u) >= (linker_ST_RAM_INT_0), "Start address of user data outside user region")

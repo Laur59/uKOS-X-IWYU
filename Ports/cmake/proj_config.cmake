@@ -21,8 +21,6 @@ option(CANARY "Canary stack protection" ON)
 # Set default mode to privileged
 option(USER_MODE "User mode activated" ON)
 
-option(WITHAPP "Integrate a user application into the system" OFF)
-
 option(CONSTANT_SIG "Use SHA-256 of zero to generate signature" OFF)
 
 add_library(core_compiler_flags INTERFACE)
@@ -520,8 +518,8 @@ file(REMOVE "${ARTEFACTS_DIR}/FLASH.cnf")
 # Mark the file for deletion during clean
 set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_CLEAN_FILES "${ARTEFACTS_DIR}/FLASH.cnf")
 # Macro to add a file with an associated define option
-macro(add_source_with_define the_list source_file)
-    list(APPEND ${the_list} ${source_file})
+macro(add_source_with_define the_lib source_file)
+    target_sources(${the_lib} PRIVATE ${source_file})
     # Handle all definitions passed as remaining arguments
     foreach(definition ${ARGN})
         add_compile_definitions(${definition})

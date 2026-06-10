@@ -73,16 +73,16 @@ struct uKOS_module {
 };
 
 #define MODULE(name, family, idModule, init, execution, clean, revision, flag, executionCore)                                                           \
-    C_DECLARE   const   uKOS_module_t       a##name##_Specifications /* NOLINT(misc-use-internal-linkage) */ = {                                \
-                                                .oIdModule       = ( ((uint32_t)(family)<<24U) | ((uint32_t)(idModule)<<8U) | ((uint32_t)(uint8_t)'_')),    \
+    C_DECLARE   const   uKOS_module_t       a##name##_Specifications /* NOLINT(misc-use-internal-linkage) */ = {                                        \
+                                                .oIdModule       = ( ((uint32_t)family<<24U) | ((uint32_t)idModule<<8U) | ((uint32_t)(uint8_t)'_')),    \
                                                 .oStrApplication = aStrApplication,                                                                     \
                                                 .oStrHelp        = aStrHelp,                                                                            \
-                                                .oInit           = (int32_t (*)(uint32_t argc, const char_t *argv[]))(init),                              \
-                                                .oExecution      = (int32_t (*)(uint32_t argc, const char_t *argv[]))(execution),                         \
-                                                .oClean          = (int32_t (*)(uint32_t argc, const char_t *argv[]))(clean),                             \
-                                                .oStrRevision    = (revision),                                                                            \
-                                                .oFlag           = (flag),                                                                                \
-                                                .oExecutionCore  = (executionCore)                                                                        \
+                                                .oInit           = (int32_t (*)(uint32_t argc, const char_t *argv[]))init,                            \
+                                                .oExecution      = (int32_t (*)(uint32_t argc, const char_t *argv[]))execution,                       \
+                                                .oClean          = (int32_t (*)(uint32_t argc, const char_t *argv[]))clean,                           \
+                                                .oStrRevision    = revision,                                                                            \
+                                                .oFlag           = flag,                                                                                \
+                                                .oExecutionCore  = executionCore                                                                        \
                                             };                                                                                                          \
     C_DECLARE   const   uKOS_directory_t    dir##name [[gnu::section(".directory")]] = { /* NOLINT(misc-use-internal-linkage) */                        \
                                                 .oModuleLocation = KBUILD_IN,                                                                           \
