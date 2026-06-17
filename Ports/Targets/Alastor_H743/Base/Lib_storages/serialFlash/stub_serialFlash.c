@@ -17,12 +17,12 @@
 // Connect the physical device to the logical manager
 // --------------------------------------------------
 
-#define model_flash_1w_init         stub_serialFlash_init
-#define model_flash_1w_readStatus   stub_serialFlash_readStatus
-#define model_flash_1w_initialise   stub_serialFlash_initialise
-#define model_flash_1w_read         stub_serialFlash_read
-#define model_flash_1w_write        stub_serialFlash_write
-#define model_flash_1w_ioctl        stub_serialFlash_ioctl
+#define model_flash_spi_init        stub_serialFlash_init
+#define model_flash_spi_readStatus  stub_serialFlash_readStatus
+#define model_flash_spi_initialise  stub_serialFlash_initialise
+#define model_flash_spi_read        stub_serialFlash_read
+#define model_flash_spi_write       stub_serialFlash_write
+#define model_flash_spi_ioctl       stub_serialFlash_ioctl
 
 enum {
         KFLASH_INIT = 0U,
@@ -31,17 +31,6 @@ enum {
         KFLASH_SELECT,
         KFLASH_DESELECT
 };
-
-// uKOS-X flash MX25R6435 structure
-// --------------------------------
-
-// Size of the flash MX25R6435 8-MB
-// Size of the flash MX25R6435 sector 4096
-// Number of sectors of the flash MX25R6435
-
-#define KFLASH_SZ_MIN               KFLASH_SPI_SZ_FLASH
-#define KFLASH_SZ_SECTOR            KFLASH_SPI_SZ_SECTOR
-#define KFLASH_NB_SECORS            (KFLASH_SZ_MIN / KFLASH_SZ_SECTOR)
 
 // Model callbacks
 // ---------------
@@ -103,4 +92,4 @@ static  uint8_t     cb_writeRead(uint8_t data) {
     return wRData;
 }
 
-#include    "model_flash_1w_spi.c_inc"
+#include    "model_flash_spi.c_inc"
