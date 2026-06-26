@@ -1,0 +1,40 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+#
+# Goal:     CMake file to set up the building for uKOS-X system.
+
+cmake_minimum_required(VERSION 3.26)
+
+# Applications CMake module setup
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/../../../../cmake")
+
+include(set-project-paths)
+
+include(${PATH_UKOS}/Ports/cmake/select-arm-toolchain.cmake)
+
+project(
+    test_cpp
+    VERSION 1.0
+    LANGUAGES C CXX
+)
+
+# Microcontroller description (mandatory variables)
+set(SOC STM32N657)
+set(CORE CORTEX_M55)
+
+# Target
+set(BOARD Nucleo_N657)
+set(VARIANT Variant_Test)
+
+# Extra compilation options
+add_compile_options(-g3 # includes extra information for debugger
+    $<$<COMPILE_LANGUAGE:CXX>:-std=c++23>
+    $<$<COMPILE_LANGUAGE:C>:-std=c23> # STANDARD
+    -Os # optimisation
+)
+
+set(OBJ
+    ${APP_DIR}/demo_class.cpp
+)
+
+include(common)

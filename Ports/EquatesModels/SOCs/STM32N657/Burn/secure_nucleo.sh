@@ -4,7 +4,7 @@
 #
 # Goal:     script for burning the arm flash via the stm32programmer.
 #           script mainly generated with chatgpt.
-#			This is for nucleo boards.
+#           This is for nucleo boards.
 #
 #           - Usage:
 #             ./secure_nucleo.sh
@@ -17,11 +17,11 @@ BOOT="FSBL"
 APPL="FLASH"
 
 if [ -f "${SCRIPT_PATH}/fsbl/build/nucleo/fsbl.bin" ]; then
-	cp -f "${SCRIPT_PATH}/fsbl/build/nucleo/fsbl.bin" "${SCRIPT_PATH}/fsbl_nucleo.noSignature"
-	cp -f "${SCRIPT_PATH}/fsbl_nucleo.noSignature" "${BOOT}.bin"
+    cp -f "${SCRIPT_PATH}/fsbl/build/nucleo/fsbl.bin" "${SCRIPT_PATH}/fsbl_nucleo.noSignature"
+    cp -f "${SCRIPT_PATH}/fsbl_nucleo.noSignature" "${BOOT}.bin"
 
 elif [ -f "${SCRIPT_PATH}/fsbl_nucleo.noSignature" ]; then
-	cp -f "${SCRIPT_PATH}/fsbl_nucleo.noSignature" "${BOOT}.bin"
+    cp -f "${SCRIPT_PATH}/fsbl_nucleo.noSignature" "${BOOT}.bin"
 
 else
     echo "You need to build the fsbl.bin"

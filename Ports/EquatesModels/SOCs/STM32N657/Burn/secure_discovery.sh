@@ -7,7 +7,7 @@
 #           This is for discovery boards.
 #
 #           - Usage:
-#             ./secure_nucleo.sh
+#             ./secure_discovery.sh
 
 set -euo pipefail
 
