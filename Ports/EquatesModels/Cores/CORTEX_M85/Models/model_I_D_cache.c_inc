@@ -1,31 +1,29 @@
 /*
  * SPDX-License-Identifier: MIT
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
- * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
- * Goal:     Cortex M7 L1 cache management.
+ * Goal:     Cortex M85 L1 cache management.
  */
 
-#define DCACHE_LINE_SIZE    32      // Cortex M7 cache line size of 32-bytes
-#define ICACHE_LINE_SIZE    32      // Cortex M7 cache line size of 32-bytes
+#include    "macros_core.h"
 
 // Prototypes
 
 static  inline  uint32_t local_clz(uint32_t data);
 
 /*
- * \brief cache_D_Enable
+ * \brief model_cache_D_Enable
  *
  * - Enable the data cache
  *
  */
-static  inline  void    cache_D_Enable(void) {
+static  inline  void    model_cache_D_Enable(void) {
     uint32_t    ccsidr, sShift, wShift, sw;
     uint32_t    numSets, associativity, tmpAssociativity;
 
 // Level 1 data cache
 
-    SCB->CSSELR = (0U<<1U) | (0U<<0U);
+    REG(SCB)->CSSELR = (0U<<1U) | (0U<<0U);
     DATA_SYNC_BARRIER;
 
 // Number of sets - 1
@@ -34,8 +32,8 @@ static  inline  void    cache_D_Enable(void) {
 //                              0x1 = 8 words in the cache line
 // Number of ways
 
-    ccsidr        = SCB->CCSIDR;
-    numSets       = ((ccsidr & (0x7FFFU<<13))>>13U);
+    ccsidr        = REG(SCB)->CCSIDR;
+    numSets       = ((ccsidr & (0x7FFFU<<13U))>>13U);
     sShift        = (ccsidr & 7U) + 4U;
     associativity = ((ccsidr & (0x3FFU<<3U))>>3U);
     wShift        = (local_clz(associativity) & ((uint32_t)DCACHE_LINE_SIZE - 1U));
@@ -48,7 +46,7 @@ static  inline  void    cache_D_Enable(void) {
         tmpAssociativity = associativity;
         do {
             sw = ((tmpAssociativity<<wShift) | (numSets<<sShift));
-            SCB->DCISW = sw;
+            REG(SCB)->DCISW = sw;
         } while (tmpAssociativity-- != 0U);
     } while (numSets-- != 0U);
 
@@ -57,30 +55,30 @@ static  inline  void    cache_D_Enable(void) {
 
 // Enable D-Cache
 
-    SCB->CCR |= (1U<<16U);
+    REG(SCB)->CCR |= (1U<<16U);
 
     DATA_SYNC_BARRIER;
     INST_SYNC_BARRIER;
 }
 
 /*
- * \brief cache_D_Disable
+ * \brief model_cache_D_Disable
  *
  * - Disable the data cache
  *
  */
-static  inline  void    cache_D_Disable(void) {
+static  inline  void    model_cache_D_Disable(void) {
     uint32_t    ccsidr, sShift, wShift, sw;
     uint32_t    numSets, associativity, tmpAssociativity;
 
 // Level 1 data cache
 
-    SCB->CSSELR = (0U<<1U) | (0U<<0U);
+    REG(SCB)->CSSELR = (0U<<1U) | (0U<<0U);
     DATA_SYNC_BARRIER;
 
 // Disable D-Cache
 
-    SCB->CCR &= (uint32_t)~(1U<<16U);
+    REG(SCB)->CCR &= (uint32_t)~(1U<<16U);
 
 // Number of sets - 1
 // Number of shift (2 - log(2)) of the number of words in the cache line
@@ -88,7 +86,7 @@ static  inline  void    cache_D_Disable(void) {
 //                              0x1 = 8 words in the cache line
 // Number of ways
 
-    ccsidr        = SCB->CCSIDR;
+    ccsidr        = REG(SCB)->CCSIDR;
     numSets       = ((ccsidr & (0x7FFFU<<13U))>>13U);
     sShift        = (ccsidr & 7U) + 4U;
     associativity = ((ccsidr & (0x3FFU<<3U))>>3U);
@@ -102,7 +100,7 @@ static  inline  void    cache_D_Disable(void) {
         tmpAssociativity = associativity;
         do {
             sw = ((tmpAssociativity<<wShift) | (numSets<<sShift));
-            SCB->DCCISW = sw;
+            REG(SCB)->DCCISW = sw;
         } while (tmpAssociativity-- != 0U);
     } while (numSets-- != 0U);
 
@@ -111,18 +109,18 @@ static  inline  void    cache_D_Disable(void) {
 }
 
 /*
- * \brief cache_D_Invalidate
+ * \brief model_cache_D_Invalidate
  *
  * - Invalidate the data cache
  *
  */
-static  inline  void    cache_D_Invalidate(void) {
+static  inline  void    model_cache_D_Invalidate(void) {
     uint32_t    ccsidr, sShift, wShift, sw;
     uint32_t    numSets, associativity, tmpAssociativity;
 
 // Level 1 data cache
 
-    SCB->CSSELR = (0U<<1U) | (0U<<0U);
+    REG(SCB)->CSSELR = (0U<<1U) | (0U<<0U);
     DATA_SYNC_BARRIER;
 
 // Number of sets - 1
@@ -131,8 +129,8 @@ static  inline  void    cache_D_Invalidate(void) {
 //                              0x1 = 8 words in the cache line
 // Number of ways
 
-    ccsidr        = SCB->CCSIDR;
-    numSets       = ((ccsidr & (0x7FFFU<<13))>>13U);
+    ccsidr        = REG(SCB)->CCSIDR;
+    numSets       = ((ccsidr & (0x7FFFU<<13))>>13);
     sShift        = (ccsidr & 7U) + 4U;
     associativity = ((ccsidr & (0x3FFU<<3U))>>3U);
     wShift        = (local_clz(associativity) & ((uint32_t)DCACHE_LINE_SIZE - 1U));
@@ -145,7 +143,7 @@ static  inline  void    cache_D_Invalidate(void) {
         tmpAssociativity = associativity;
         do {
             sw = ((tmpAssociativity<<wShift) | (numSets<<sShift));
-            SCB->DCISW = sw;
+            REG(SCB)->DCISW = sw;
         } while (tmpAssociativity-- != 0U);
     } while (numSets-- != 0U);
 
@@ -154,12 +152,12 @@ static  inline  void    cache_D_Invalidate(void) {
 }
 
 /*
- * \brief cache_D_Invalidate_Add
+ * \brief model_cache_D_Invalidate_Add
  *
  * - Invalidate the data cache by address
  *
  */
-static  inline  void    cache_D_Invalidate_Add(const void *address, int32_t size) {
+static  inline  void    model_cache_D_Invalidate_Add(const void *address, int32_t size) {
     int32_t     opSize;
     uint32_t    opAddress;
 
@@ -170,7 +168,7 @@ static  inline  void    cache_D_Invalidate_Add(const void *address, int32_t size
         DATA_SYNC_BARRIER;
 
         do {
-            SCB->DCIMVAC = opAddress;
+            REG(SCB)->DCIMVAC = opAddress;
             opAddress += (uint32_t)DCACHE_LINE_SIZE;
             opSize    -= DCACHE_LINE_SIZE;
         } while (opSize > 0);
@@ -181,18 +179,18 @@ static  inline  void    cache_D_Invalidate_Add(const void *address, int32_t size
 }
 
 /*
- * \brief cache_D_Clean
+ * \brief model_cache_D_Clean
  *
  * - Clean the data cache
  *
  */
-static  inline  void    cache_D_Clean(void) {
+static  inline  void    model_cache_D_Clean(void) {
     uint32_t    ccsidr, sShift, wShift, sw;
     uint32_t    numSets, associativity, tmpAssociativity;
 
 // Level 1 data cache
 
-    SCB->CSSELR = (0U<<1U) | (0U<<0U);
+    REG(SCB)->CSSELR = (0U<<1U) | (0U<<0U);
     DATA_SYNC_BARRIER;
 
 // Number of sets - 1
@@ -201,7 +199,7 @@ static  inline  void    cache_D_Clean(void) {
 //                              0x1 = 8 words in the cache line
 // Number of ways
 
-    ccsidr        = SCB->CCSIDR;
+    ccsidr        = REG(SCB)->CCSIDR;
     numSets       = ((ccsidr & (0x7FFFU<<13U))>>13U);
     sShift        = (ccsidr & 7U) + 4U;
     associativity = ((ccsidr & (0x3FFU<<3U))>>3U);
@@ -215,7 +213,7 @@ static  inline  void    cache_D_Clean(void) {
         tmpAssociativity = associativity;
         do {
             sw = ((tmpAssociativity<<wShift) | (numSets<<sShift));
-            SCB->DCCSW = sw;
+            REG(SCB)->DCCSW = sw;
         } while (tmpAssociativity-- != 0U);
     } while (numSets-- != 0U);
 
@@ -224,12 +222,12 @@ static  inline  void    cache_D_Clean(void) {
 }
 
 /*
- * \brief cache_D_Clean_Add
+ * \brief model_cache_D_Clean_Add
  *
  * - Clean the data cache by address
  *
  */
-static  inline  void    cache_D_Clean_Add(const void *address, int32_t size) {
+static  inline  void    model_cache_D_Clean_Add(const void *address, int32_t size) {
     int32_t     opSize;
     uint32_t    opAddress;
 
@@ -240,7 +238,7 @@ static  inline  void    cache_D_Clean_Add(const void *address, int32_t size) {
         DATA_SYNC_BARRIER;
 
         do {
-            SCB->DCCMVAC = opAddress;
+            REG(SCB)->DCCMVAC = opAddress;
             opAddress += (uint32_t)DCACHE_LINE_SIZE;
             opSize    -= DCACHE_LINE_SIZE;
         } while (opSize > 0);
@@ -251,38 +249,38 @@ static  inline  void    cache_D_Clean_Add(const void *address, int32_t size) {
 }
 
 /*
- * \brief cache_I_Enable
+ * \brief model_cache_I_Enable
  *
  * - Enable the instruction cache
  *
  */
-static  inline  void    cache_I_Enable(void) {
+static  inline  void    model_cache_I_Enable(void) {
 
     DATA_SYNC_BARRIER;
     INST_SYNC_BARRIER;
 
 // Invalidate I-Cache
 
-    SCB->ICIALLU = 0U;
+    REG(SCB)->ICIALLU = 0U;
 
     DATA_SYNC_BARRIER;
     INST_SYNC_BARRIER;
 
 // Enable I-Cache
 
-    SCB->CCR |= (1U<<17U);
+    REG(SCB)->CCR |= (1U<<17U);
 
     DATA_SYNC_BARRIER;
     INST_SYNC_BARRIER;
 }
 
 /*
- * \brief cache_I_Disable
+ * \brief model_cache_I_Disable
  *
  * - Disable the instruction cache
  *
  */
-static  inline  void    cache_I_Disable(void) {
+static  inline  void    model_cache_I_Disable(void) {
 
     DATA_SYNC_BARRIER;
     INST_SYNC_BARRIER;
@@ -290,39 +288,39 @@ static  inline  void    cache_I_Disable(void) {
 // Disable I-Cache
 // Invalidate I-Cache
 
-    SCB->CCR &= (uint32_t)~(1U<<17U);
-    SCB->ICIALLU = 0U;
+    REG(SCB)->CCR &= (uint32_t)~(1U<<17U);
+    REG(SCB)->ICIALLU = 0U;
 
     DATA_SYNC_BARRIER;
     INST_SYNC_BARRIER;
 }
 
 /*
- * \brief cache_I_Invalidate
+ * \brief model_cache_I_Invalidate
  *
  * - Invalidate the instruction cache
  *
  */
-static  inline  void    cache_I_Invalidate(void) {
+static  inline  void    model_cache_I_Invalidate(void) {
 
     DATA_SYNC_BARRIER;
     INST_SYNC_BARRIER;
 
 // Invalidate I-Cache
 
-    SCB->ICIALLU = 0U;
+    REG(SCB)->ICIALLU = 0U;
 
     DATA_SYNC_BARRIER;
     INST_SYNC_BARRIER;
 }
 
 /*
- * \brief cache_I_Invalidate_Add
+ * \brief model_cache_I_Invalidate_Add
  *
  * - Invalidate the instruction cache by address
  *
  */
-static  inline  void    cache_I_Invalidate_Add(const void *address, int32_t size) {
+static  inline  void    model_cache_I_Invalidate_Add(const void *address, int32_t size) {
     int32_t     opSize;
     uint32_t    opAddress;
 
@@ -333,7 +331,7 @@ static  inline  void    cache_I_Invalidate_Add(const void *address, int32_t size
         DATA_SYNC_BARRIER;
 
         do {
-            SCB->ICIMVAU = opAddress;
+            REG(SCB)->ICIMVAU = opAddress;
             opAddress += (uint32_t)ICACHE_LINE_SIZE;
             opSize    -= ICACHE_LINE_SIZE;
         } while (opSize > 0);

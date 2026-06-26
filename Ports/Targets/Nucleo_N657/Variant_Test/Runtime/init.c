@@ -15,6 +15,7 @@
 #include    <stddef.h>
 #include    <stdint.h>
 
+#include    "cache.h"
 #include    "clockTree.h"
 #include    "core_reg.h"
 #include    "linker.h"
@@ -68,13 +69,6 @@ static          void    local_writeByte(uint8_t byte);
 static          void    local_waitingForFlagOn(uint32_t flag);
 static          void    local_waitingForFlagOff(uint32_t flag);
 static          void    local_wait_us(uint32_t us);
-static  inline  void    cache_D_Enable(void);
-static  inline  void    cache_D_Disable(void);
-static  inline  void    cache_D_Clean(void);
-static  inline  void    cache_D_Invalidate(void);
-static  inline  void    cache_I_Enable(void);
-static  inline  void    cache_I_Disable(void);
-static  inline  void    cache_I_Invalidate(void);
 
 /*
  * \brief init_init
@@ -880,5 +874,3 @@ static  void    local_wait_us(uint32_t us) {
 
     for (time = 0; time < us; time++) { NOP; }
 }
-
-#include    "model_I_D_cache.c_inc"     // IWYU pragma: keep

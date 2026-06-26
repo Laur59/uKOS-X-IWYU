@@ -38,6 +38,9 @@
     return ck / baudrate;
 }
 
+// Interruption macros
+// -------------------
+
 enum {
 
 // Reserved names: all the possible levels

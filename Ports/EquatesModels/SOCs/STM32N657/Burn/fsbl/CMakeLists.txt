@@ -92,12 +92,33 @@ endif()
 
 message(STATUS "Using STM32CubeN6 at: ${CUBE_ROOT}")
 
+# ---- Board selection -------------------------------------------------------
+set(BOARD "" CACHE STRING "Target board: NUCLEO or DISCOVERY_N657")
+set_property(CACHE BOARD PROPERTY STRINGS NUCLEO DISCOVERY_N657)
+
+if(NOT BOARD MATCHES "^(NUCLEO|DISCOVERY_N657)$")
+    message(FATAL_ERROR
+        "BOARD must be set explicitly. Valid values:\n"
+        "  -DBOARD=NUCLEO          (NUCLEO-N657X0-Q, MX25UM51245G)\n"
+        "  -DBOARD=DISCOVERY_N657  (STM32N6570-DK,   MX66UW1G45G)\n"
+        "Or use a preset that sets it: cmake --preset discovery\n"
+    )
+endif()
+
+message(STATUS "Target board: ${BOARD}")
+
 # ---- Global compile definitions --------------------------------------------
 add_compile_definitions(
     STM32N657xx
     USE_HAL_DRIVER
     CPU_IN_SECURE_STATE
 )
+
+if(BOARD STREQUAL "DISCOVERY_N657")
+    # Discovery reads its 1 Gbit NOR at the reference 50 MHz (see hal_msp.c), so the
+    # VDDIO3_HSLV OTP fuse is unnecessary — do not auto-burn it (NO_OTP_FUSE).
+    add_compile_definitions(BOARD_DISCOVERY_N657 NO_OTP_FUSE)
+endif()
 
 # =============================================================================
 # Sources
@@ -130,28 +151,61 @@ set(HAL_SOURCES
     ${CUBE_ROOT}/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_xspi.c
 )
 
-# ---- ExtMem Manager middleware (from STM32CubeN6) --------------------------
-# LRUN boot logic and NOR SFDP driver
+# ---- ExtMem Manager middleware --------------------------------------------
+# LRUN boot logic and NOR SFDP driver.
+#
+# By default this comes from the STM32CubeN6 clone (currently ExtMem v1.5.0).
+# That version fails to read the Discovery's MX66UW1G45G reliably, while ST's
+# proven reference FSBL uses ExtMem v1.1.0. Set -DUSE_REF_EXTMEM=ON to build
+# the flash stack against the vendored v1.1.0 middleware
+# (third_party/cubeN6-v1.1.0/, extracted from STM32CubeN6 tag v1.1.0) so it
+# matches the reference. Pairs with the Discovery DHQC read-timing fix.
+option(USE_REF_EXTMEM
+    "Use the vendored v1.1.0 ExtMem middleware instead of the CUBE_ROOT clone" OFF)
+
+if(USE_REF_EXTMEM)
+    set(EXTMEM_ROOT
+        "${CMAKE_CURRENT_SOURCE_DIR}/third_party/cubeN6-v1.1.0/Middlewares/ST/STM32_ExtMem_Manager")
+    message(STATUS "ExtMem middleware: PINNED v1.1.0 (vendored) -> ${EXTMEM_ROOT}")
+else()
+    set(EXTMEM_ROOT "${CUBE_ROOT}/Middlewares/ST/STM32_ExtMem_Manager")
+    message(STATUS "ExtMem middleware: from CUBE_ROOT clone -> ${EXTMEM_ROOT}")
+endif()
+
 file(GLOB EXTMEM_NOR_SFDP_SOURCES
-    ${CUBE_ROOT}/Middlewares/ST/STM32_ExtMem_Manager/nor_sfdp/*.c
+    ${EXTMEM_ROOT}/nor_sfdp/*.c
 )
 file(GLOB EXTMEM_SAL_SOURCES
-    ${CUBE_ROOT}/Middlewares/ST/STM32_ExtMem_Manager/sal/*.c
+    ${EXTMEM_ROOT}/sal/*.c
 )
 set(EXTMEM_SOURCES
-    ${CUBE_ROOT}/Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c
-    ${CUBE_ROOT}/Middlewares/ST/STM32_ExtMem_Manager/boot/stm32_boot_lrun.c
+    ${EXTMEM_ROOT}/stm32_extmem.c
+    ${EXTMEM_ROOT}/boot/stm32_boot_lrun.c
     ${EXTMEM_NOR_SFDP_SOURCES}
     ${EXTMEM_SAL_SOURCES}
 )
 
-# ---- BSP (optional — from STM32CubeN6) -------------------------------------
-# Board Support Package for NUCLEO-N657X0-Q
-file(GLOB BSP_SOURCES
-    ${CUBE_ROOT}/Drivers/BSP/STM32N657X0-Nucleo/*.c
-    ${CUBE_ROOT}/Drivers/BSP/NUCLEO-N657X0-Q/*.c
-    ${CUBE_ROOT}/Drivers/BSP/STM32N6570-Nucleo/*.c
+# ---- BSP (from STM32CubeN6) ------------------------------------------------
+# Only compile the minimal subset needed by FSBL: core BSP + XSPI.
+# The full Discovery BSP has LCD/camera/audio/SD/TS drivers with extra
+# component dependencies not present in this project.
+if(BOARD STREQUAL "DISCOVERY_N657")
+    set(BSP_SOURCES
+        ${CUBE_ROOT}/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery.c
+        ${CUBE_ROOT}/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_xspi.c
 )
+    set(BSP_INCLUDE_DIRS
+        ${CUBE_ROOT}/Drivers/BSP/STM32N6570-DK
+    )
+else()
+    set(BSP_SOURCES
+        ${CUBE_ROOT}/Drivers/BSP/STM32N6xx_Nucleo/stm32n6xx_nucleo.c
+        ${CUBE_ROOT}/Drivers/BSP/STM32N6xx_Nucleo/stm32n6xx_nucleo_xspi.c
+    )
+    set(BSP_INCLUDE_DIRS
+        ${CUBE_ROOT}/Drivers/BSP/STM32N6xx_Nucleo
+    )
+endif()
 
 # ---- Startup (project-specific, device-specific) ----------------------------
 set(STARTUP_SOURCE startup/startup_stm32n657xx.s)
@@ -182,16 +236,14 @@ target_include_directories(fsbl PRIVATE
     # HAL driver headers from STM32CubeN6
     ${CUBE_ROOT}/Drivers/STM32N6xx_HAL_Driver/Inc
 
-    # BSP from STM32CubeN6 (try multiple possible paths)
-    ${CUBE_ROOT}/Drivers/BSP/STM32N657X0-Nucleo
-    ${CUBE_ROOT}/Drivers/BSP/NUCLEO-N657X0-Q
-    ${CUBE_ROOT}/Drivers/BSP/STM32N6570-Nucleo
+    # BSP from STM32CubeN6
+    ${BSP_INCLUDE_DIRS}
 
-    # ExtMem Manager from STM32CubeN6
-    ${CUBE_ROOT}/Middlewares/ST/STM32_ExtMem_Manager
-    ${CUBE_ROOT}/Middlewares/ST/STM32_ExtMem_Manager/boot
-    ${CUBE_ROOT}/Middlewares/ST/STM32_ExtMem_Manager/nor_sfdp
-    ${CUBE_ROOT}/Middlewares/ST/STM32_ExtMem_Manager/sal
+    # ExtMem Manager (CUBE_ROOT clone, or vendored v1.1.0 if USE_REF_EXTMEM=ON)
+    ${EXTMEM_ROOT}
+    ${EXTMEM_ROOT}/boot
+    ${EXTMEM_ROOT}/nor_sfdp
+    ${EXTMEM_ROOT}/sal
 )
 
 # ---- Compiler flags ---------------------------------------------------------
@@ -245,31 +297,6 @@ add_custom_command(TARGET fsbl POST_BUILD
 )
 
 # =============================================================================
-# Optional: FSBL signing (requires STM32_SigningTool_CLI in PATH)
-# =============================================================================
-option(SIGN_FSBL "Sign the FSBL binary with STM32_SigningTool_CLI" OFF)
-
-if(SIGN_FSBL)
-    find_program(SIGNING_TOOL STM32_SigningTool_CLI)
-    if(NOT SIGNING_TOOL)
-        message(WARNING "STM32_SigningTool_CLI not found — FSBL will not be signed")
-    else()
-        set(TRUSTED_BIN ${CMAKE_CURRENT_BINARY_DIR}/fsbl-trusted.bin)
-        add_custom_command(TARGET fsbl POST_BUILD
-            COMMAND ${SIGNING_TOOL}
-                -bin ${BIN_FILE}
-                -nk
-                -of 0x80000000
-                -t fsbl
-                -o ${TRUSTED_BIN}
-                -hv 2.3
-            COMMENT ">> Signing FSBL → fsbl-trusted.bin"
-            VERBATIM
-        )
-    endif()
-endif()
-
-# =============================================================================
 # Custom target: flash (convenience)
 # =============================================================================
 find_program(PROGRAMMER STM32_Programmer_CLI)
@@ -277,7 +304,7 @@ find_program(PROGRAMMER STM32_Programmer_CLI)
 if(PROGRAMMER)
     # Adjust the external loader path for your installation
     set(EXT_LOADER "" CACHE FILEPATH
-        "Path to .stldr external loader for NUCLEO-N657X0-Q (MX25UM51245G)"
+        "Path to .stldr external loader (NUCLEO: MX25UM51245G_STM32N6570-NUCLEO.stldr / DISCOVERY_N657: MX66UW1G45G_STM32N6570-DK.stldr)"
     )
 
     add_custom_target(flash

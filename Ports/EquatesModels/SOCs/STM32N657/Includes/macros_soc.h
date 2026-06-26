@@ -10,6 +10,8 @@
 
 #include    <stdint.h>
 
+#include    "cache.h"
+
 // Multicore macro
 // ---------------
 
@@ -37,6 +39,9 @@
 [[maybe_unused]] static inline uint32_t BAUDRATE(uint32_t ck, uint32_t baudrate) {
     return ck / baudrate;
 }
+
+// Interruption macros
+// -------------------
 
 enum {
 

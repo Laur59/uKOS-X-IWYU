@@ -78,6 +78,7 @@ function(add_tinyusb_libraries)
             ${PATH_TINYUSB}/TinyUSB-current/lib/CMSIS_5/CMSIS/Core/Include
             ${PATH_UKOS}/Ports/EquatesModels/Generic/Runtime
             ${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC}/Includes
+            ${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC}/Runtime
             ${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC}/Models
             ${PATH_UKOS}/Ports/EquatesModels/Cores/${CORE}/Includes
             ${PATH_TINYUSB}/Construction/Interface/Includes/mcu/st
@@ -146,6 +147,7 @@ function(add_tinyusb_libraries)
         list(APPEND COMMON_INCLUDES
             # Generic uKOS-X runtime headers (cmns.h, etc.)
             ${PATH_UKOS}/Ports/EquatesModels/Generic/Runtime
+             ${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC}/Runtime
             # Pico-SDK common includes
             ${PATH_TINYUSB}/TinyUSB-current/lib/pico-sdk/src/common/pico_base_headers/include
             ${PATH_TINYUSB}/TinyUSB-current/lib/pico-sdk/src/rp2_common/pico_platform/include

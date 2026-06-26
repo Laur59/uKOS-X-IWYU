@@ -13,6 +13,7 @@
 
 #include    <stdint.h>
 
+#include    "cache.h"
 #include    "core_reg.h"
 #include    "macros.h"
 #include    "macros_core.h"
@@ -70,13 +71,6 @@ static          void    local_FPE_Configuration(void);
 static          void    local_wait_us(uint32_t us);
 static          void    local_CACHE_Enable(void);
 static          void    local_USB_Configuration(void);
-static  inline  void    cache_D_Enable(void);
-static  inline  void    cache_D_Disable(void);
-static  inline  void    cache_D_Clean(void);
-static  inline  void    cache_D_Invalidate(void);
-static  inline  void    cache_I_Enable(void);
-static  inline  void    cache_I_Disable(void);
-static  inline  void    cache_I_Invalidate(void);
 
 /*
  * \brief init_init
@@ -759,5 +753,3 @@ static  void    local_CACHE_Enable(void) {
     cache_D_Invalidate();
     cache_D_Enable();
 }
-
-#include    "model_I_D_cache.c_inc"     // IWYU pragma: keep
