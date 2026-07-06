@@ -37,6 +37,9 @@
     return (uint32_t)(((baudrate * 268) + 0x800) & 0xFFFFF000);
 }
 
+// Interruption macros
+// -------------------
+
 enum {
 
 // Reserved names: all the possible levels

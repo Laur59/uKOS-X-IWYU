@@ -78,10 +78,10 @@ int main(void)
   /* Enable the CPU Cache */
 
   /* Enable I-Cache---------------------------------------------------------*/
-  SCB_EnableICache();
+//  SCB_EnableICache();
 
   /* Enable D-Cache---------------------------------------------------------*/
-  SCB_EnableDCache();
+//  SCB_EnableDCache();
 
   /* MCU Configuration--------------------------------------------------------*/
   HAL_Init();
@@ -278,7 +278,11 @@ static void MX_XSPI2_Init(void)
   hxspi2.Init.FifoThresholdByte = 4;
   hxspi2.Init.MemoryMode = HAL_XSPI_SINGLE_MEM;
   hxspi2.Init.MemoryType = HAL_XSPI_MEMTYPE_MACRONIX;
-  hxspi2.Init.MemorySize = HAL_XSPI_SIZE_512MB;
+#ifdef BOARD_DISCOVERY_N657
+  hxspi2.Init.MemorySize = HAL_XSPI_SIZE_1GB;   /* MX66UW1G45G — 1 Gbit */
+#else
+  hxspi2.Init.MemorySize = HAL_XSPI_SIZE_512MB; /* MX25UM51245G — 512 Mbit */
+#endif
   hxspi2.Init.ChipSelectHighTimeCycle = 2;
   hxspi2.Init.FreeRunningClock = HAL_XSPI_FREERUNCLK_DISABLE;
   hxspi2.Init.ClockMode = HAL_XSPI_CLOCK_MODE_0;
@@ -302,7 +306,14 @@ static void MX_XSPI2_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN XSPI2_Init 2 */
-
+#ifdef BOARD_DISCOVERY_N657
+  /* STM32CubeN6 FW.N6.1.3.0 deprecated Init.DelayHoldQuarterCycle: HAL_XSPI_Init no
+     longer programs the TCR.DHQC read-timing bit (the field set above is ignored).
+     ST's proven v1.1.0 reference FSBL sets DHQC, and the Discovery's MX66UW1G45G needs
+     that read-sampling hold to be read reliably. The silicon bit still exists, so set
+     it manually here to restore the reference behaviour. */
+  SET_BIT(hxspi2.Instance->TCR, XSPI_TCR_DHQC);
+#endif
   /* USER CODE END XSPI2_Init 2 */
 
 }

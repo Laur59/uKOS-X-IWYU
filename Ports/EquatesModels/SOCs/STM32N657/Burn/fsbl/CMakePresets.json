@@ -7,53 +7,38 @@
     },
     "configurePresets": [
         {
-            "name": "debug",
-            "displayName": "Debug",
+            "name": "nucleo",
+            "displayName": "NUCLEO-N657X0-Q",
             "generator": "Ninja",
-            "binaryDir": "${sourceDir}/build/debug",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug",
-                "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/cmake/arm-none-eabi-gcc.cmake",
-                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
-            }
-        },
-        {
-            "name": "release",
-            "displayName": "Release",
-            "generator": "Ninja",
-            "binaryDir": "${sourceDir}/build/release",
+            "binaryDir": "${sourceDir}/build/nucleo",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
                 "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/cmake/arm-none-eabi-gcc.cmake",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-                "SIGN_FSBL": "OFF"
+                "BOARD": "NUCLEO"
             }
         },
         {
-            "name": "release-signed",
-            "displayName": "Release (with signing)",
+            "name": "discovery",
+            "displayName": "Discovery_N657 (STM32N6570-DK)",
             "generator": "Ninja",
-            "binaryDir": "${sourceDir}/build/release-signed",
+            "binaryDir": "${sourceDir}/build/discovery",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
                 "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/cmake/arm-none-eabi-gcc.cmake",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-                "SIGN_FSBL": "ON"
+                "BOARD": "DISCOVERY_N657"
             }
         }
     ],
     "buildPresets": [
         {
-            "name": "debug",
-            "configurePreset": "debug"
+            "name": "nucleo",
+            "configurePreset": "nucleo"
         },
         {
-            "name": "release",
-            "configurePreset": "release"
-        },
-        {
-            "name": "release-signed",
-            "configurePreset": "release-signed"
+            "name": "discovery",
+            "configurePreset": "discovery"
         }
     ]
 }

@@ -23,6 +23,7 @@
 #define SEC(x)                  (x ## _S)
 #define NONSEC(x)               (x ## _NS)
 
+#include    "cache.h"
 #include    "core_reg.h"
 #include    "soc_reg.h"
 
@@ -43,8 +44,6 @@
                                 : "memory"                                                                                      \
                                 )
 #endif
-
-#include    "model_I_D_cache.c_inc"
 
 // For dwc2_stm32 working in DMA
 

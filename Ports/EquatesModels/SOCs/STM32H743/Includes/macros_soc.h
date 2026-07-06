@@ -10,6 +10,8 @@
 
 #include    <stdint.h>
 
+#include    "cache.h"
+
 // Multicore macro
 // ---------------
 
@@ -38,6 +40,9 @@
     uint32_t rem = ((remainder * 16U) + (divisor / 2U)) / divisor;
     return (div << 4) | rem;
 }
+
+// Interruption macros
+// -------------------
 
 enum {
 

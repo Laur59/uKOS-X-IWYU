@@ -46,7 +46,7 @@ add_compile_definitions(
 )
 
 # Flash programming script selection
-set(BURN secure)
+set(BURN secure_nucleo)
 
 # Extra compilation options
 add_compile_options(
@@ -72,10 +72,11 @@ set(FIRST_P
 add_library(rtcb_p)
 target_sources(rtcb_p PRIVATE
     ${PATH_OSYS}/Boots/boot/boot.c
+    ${PATH_PORT}/EquatesModels/Cores/${CORE}/Runtime/syscallDispatcher.c
     ${PATH_PORT}/EquatesModels/Generic/Runtime/crt0.c
     ${PATH_PORT}/EquatesModels/Generic/Runtime/crt0_exit.c
     ${PATH_PORT}/EquatesModels/Generic/Runtime/crt0_module.c
-    ${PATH_PORT}/EquatesModels/Cores/${CORE}/Runtime/syscallDispatcher.c
+    ${PATH_PORT}/EquatesModels/SOCs/${SOC}/Runtime/cache.c
     ${PATH_BASE}/Runtime/cmns.c
     ${PATH_BASE}/Runtime/exce.c
     ${PATH_VARI}/Runtime/init.c
@@ -148,9 +149,9 @@ target_link_libraries(libx_p PUBLIC system_compiler_flags ${TINYUSB})
 add_library(libx_u)
 # C library integration (conditional based on detected C library)
 if(C_LIBRARY STREQUAL "picolibc")
-    add_source_with_define(libx_u ${PATH_OSYS}/Lib_generics/picolibc/picolibc.c CONFIG_MAN_PICOLIBC_S)
+  add_source_with_define(libx_u ${PATH_OSYS}/Lib_generics/picolibc/picolibc.c CONFIG_MAN_PICOLIBC_S)
 else()
-    add_source_with_define(libx_u ${PATH_OSYS}/Lib_generics/newlib/newlib.c CONFIG_MAN_NEWLIB_S)
+  add_source_with_define(libx_u ${PATH_OSYS}/Lib_generics/newlib/newlib.c CONFIG_MAN_NEWLIB_S)
 endif()
 add_source_with_define(libx_u ${PATH_OSYS}/Lib_generics/text/text.c CONFIG_MAN_TEXT_S)
 add_source_with_define(libx_u ${PATH_OSYS}/Lib_neurals/mlpn/mlpn.c CONFIG_MAN_MLPN_S)

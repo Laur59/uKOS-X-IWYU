@@ -9,6 +9,10 @@
 
 #include    <stdint.h>
 
+#if (defined(CORTEX_M7_S))
+#include    "cache.h"
+#endif
+
 // Multicore macro
 // ---------------
 

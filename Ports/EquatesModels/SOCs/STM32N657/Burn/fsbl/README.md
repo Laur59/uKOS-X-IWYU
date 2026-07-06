@@ -1,16 +1,21 @@
 # STM32N657 FSBL - Build Instructions
 
-(c) 2025-2026, Laurent von Allmen, 2026-02-11
+This package contains a pre-configured First Stage Boot Loader (FSBL) project for the STM32N657 in Load-and-Run mode. It supports two boards:
 
+| Board | CMake `BOARD` value | NOR flash chip |
+|-------|---------------------|----------------|
+| **NUCLEO-N657X0-Q** | `NUCLEO` | MX25UM51245G (512 Mbit) |
+| **Discovery_N657 (STM32N6570-DK)** | `DISCOVERY_N657` | MX66UW1G45G (1 Gbit) |
 
-
-This package contains a pre-configured First Stage Boot Loader (FSBL) project for the STM32N657 NUCLEO board in Load-and-Run mode.
+`BOARD` is mandatory — no default. Use one of the presets below.
 
 **Key Feature:** This project builds directly from STM32CubeN6 sources without copying files, making it easy to update to new STM32Cube versions.
 
 ## What is this?
 
 The FSBL is a bootloader that runs from AXISRAM2 (address 0x3418_0400) and copies your application from external NOR flash to internal SRAM before jumping to it. This is required because the STM32N657 has no internal flash.
+
+The build produces an unsigned `fsbl.bin`. The Boot ROM requires a trusted header; signing is done at flash time by the programmer script, not by this CMake build.
 
 ## Prerequisites
 
@@ -26,422 +31,229 @@ Install the following tools:
 
 **Note:** You do NOT need STM32CubeIDE.
 
+### Toolchain not in PATH?
+
+If `arm-none-eabi-gcc` is installed to a non-standard location, pass its `bin/` directory via `TOOLCHAIN_PATH`:
+
+```bash
+cmake --preset nucleo -DTOOLCHAIN_PATH=/opt/embedded/cross/gcc-16.1.0/arm/bin
+```
+
+The value is cached after the first configure, so subsequent builds don't need it.
+
+For a permanent machine-local override, create `CMakeUserPresets.json` (already gitignored):
+
+```json
+{
+    "version": 6,
+    "configurePresets": [
+        {
+            "name": "local-toolchain",
+            "hidden": true,
+            "cacheVariables": {
+                "TOOLCHAIN_PATH": "/opt/embedded/cross/gcc-16.1.0/arm/bin"
+            }
+        },
+        { "name": "nucleo-l",    "inherits": ["nucleo",    "local-toolchain"] },
+        { "name": "discovery-l", "inherits": ["discovery", "local-toolchain"] }
+    ],
+    "buildPresets": [
+        { "name": "nucleo-l",    "configurePreset": "nucleo-l" },
+        { "name": "discovery-l", "configurePreset": "discovery-l" }
+    ]
+}
+```
+
+Then use `cmake --preset nucleo-l` (the `-l` suffix avoids the CMake v6 restriction on reusing project preset names).
+
 ## Quick Start
 
-### Option A: Use local STM32CubeN6 (inside project)
+### NUCLEO-N657X0-Q
 
 ```bash
-# 1. Extract this archive
-tar -xzf stm32n657-fsbl.tar.gz
-cd stm32n657-fsbl
-
-# 2. Clone STM32CubeN6 inside the project
+# 1. Clone STM32CubeN6 inside the project
 git clone --recursive --depth 1 \
     https://github.com/STMicroelectronics/STM32CubeN6.git
 
-# 3. Configure
-cmake --preset release
+# 2. Configure and build
+cmake --preset nucleo
+cmake --build build/nucleo
 
-# 4. Build
-cmake --build build/release
+# 3. Flash (signing is done by the flash programmer)
+./scripts/flash_fsbl.sh build/nucleo
 ```
 
-### Option B: Use shared STM32CubeN6 installation
+### Discovery_N657 (STM32N6570-DK)
 
 ```bash
-# 1. Extract this archive
-tar -xzf stm32n657-fsbl.tar.gz
-cd stm32n657-fsbl
-
-# 2. Point to your existing STM32CubeN6 installation
-cmake --preset release -DCUBE_ROOT=/path/to/your/STM32CubeN6
-
-# 3. Build
-cmake --build build/release
-```
-
-### Option C: Use environment variable
-
-```bash
-# 1. Set STM32CubeN6 location once
-export STM32CUBEN6_ROOT=/path/to/your/STM32CubeN6
-
-# 2. Extract and configure
-tar -xzf stm32n657-fsbl.tar.gz
-cd stm32n657-fsbl
-cmake --preset release
-
-# 3. Build
-cmake --build build/release
-```
-
-**Result:** `build/release/fsbl.bin` ready to flash at **0x70000000** (unsigned - will be signed by flash script)
-
-## Detailed Setup Instructions
-
-### 1. Extract the archive
-
-```bash
-tar -xzf stm32n657-fsbl.tar.gz
-cd stm32n657-fsbl
-```
-
-### 2. Configure STM32CubeN6 location
-
-You have **three options** for where STM32CubeN6 is located:
-
-#### Option A: Inside the project (default)
-
-Clone STM32CubeN6 directly into the project directory:
-
-```bash
+# 1. Clone STM32CubeN6 inside the project
 git clone --recursive --depth 1 \
     https://github.com/STMicroelectronics/STM32CubeN6.git
+
+# 2. Configure and build
+cmake --preset discovery
+cmake --build build/discovery
+
+# 3. Flash (signing is done by the flash programmer)
+./scripts/flash_fsbl.sh build/discovery
 ```
 
-⚠️ **Important:** The `--recursive` flag is mandatory to get CMSIS submodules.
+The flash script automatically searches for the correct external loader
+(`MX66UW1G45G_STM32N6570-DK.stldr` or `MX25UM51245G_STM32N6570-NUCLEO.stldr`)
+in the standard STM32CubeProgrammer installation paths.
 
-Structure:
-```
-stm32n657-fsbl/
-├── STM32CubeN6/           # Cloned here
-├── fsbl/                  # Your FSBL application
-├── CMakeLists.txt
-└── ...
-```
+## Available Presets
 
-#### Option B: Shared installation (via CMake variable)
-
-If you have STM32CubeN6 installed elsewhere (e.g., shared across projects):
+| Preset | Board | Build type |
+|--------|-------|------------|
+| `nucleo` | NUCLEO-N657X0-Q | Release |
+| `discovery` | Discovery_N657 (STM32N6570-DK) | Release |
 
 ```bash
-# No need to clone - just point to existing installation
-cmake --preset release -DCUBE_ROOT=/path/to/your/STM32CubeN6
+cmake --preset nucleo    && cmake --build build/nucleo
+cmake --preset discovery && cmake --build build/discovery
 ```
 
-**Benefits:**
-- Share one STM32CubeN6 across multiple projects
-- Save disk space
-- Easier to update centrally
+## Configuring STM32CubeN6 Location
 
-#### Option C: Shared installation (via environment variable)
-
-Set once in your shell profile (`~/.bashrc`, `~/.zshrc`):
+Three ways to specify STM32CubeN6, in priority order:
 
 ```bash
-export STM32CUBEN6_ROOT=/path/to/your/STM32CubeN6
+# 1. CMake command line (highest priority)
+cmake --preset nucleo -DCUBE_ROOT=/path/to/STM32CubeN6
+
+# 2. Environment variable
+export STM32CUBEN6_ROOT=/path/to/STM32CubeN6
+cmake --preset nucleo
+
+# 3. Default — clone into the project directory (lowest priority)
+git clone --recursive --depth 1 \
+    https://github.com/STMicroelectronics/STM32CubeN6.git
+cmake --preset nucleo
 ```
 
-Then just use standard build commands - it will automatically find STM32CubeN6.
-
-### 3. Build
-
-```bash
-# Configure (Release build - unsigned by default)
-cmake --preset release
-
-# Build
-cmake --build build/release
-```
-
-The unsigned `fsbl.bin` will be generated in `build/release/`.
-
-**Note:** The release build produces an unsigned binary by default. Your flash script will sign it on-the-fly when programming. If you need a pre-signed binary for testing, use the `release-signed` preset instead:
-
-```bash
-cmake --preset release-signed
-cmake --build build/release-signed
-# Output: build/release-signed/fsbl-trusted.bin
-```
-
-### Alternative: Manual configuration
-
-```bash
-# Default location (inside project)
-cmake -B build -DCMAKE_BUILD_TYPE=Release -G Ninja
-
-# Custom location
-cmake -B build -DCMAKE_BUILD_TYPE=Release -G Ninja \
-    -DCUBE_ROOT=/path/to/STM32CubeN6
-
-cmake --build build
-```
-
-## Binary Signing
-
-The FSBL binary can be built in two modes:
-
-### Default: Unsigned (Recommended)
-
-```bash
-cmake --preset release
-cmake --build build/release
-# Output: fsbl.bin (unsigned)
-```
-
-**Use this when:** Your flash script signs binaries during programming (typical workflow).
-
-### Optional: Pre-signed
-
-```bash
-cmake --preset release-signed
-cmake --build build/release-signed
-# Output: fsbl-trusted.bin (pre-signed)
-```
-
-**Use this when:** You need to test the signed binary directly or distribute pre-signed binaries.
-
-**Behind the scenes:** The signing process uses `STM32_SigningTool_CLI` to add the trusted header (v2.3) required by the STM32N657 secure boot.
+> **Important:** Always use `--recursive` when cloning STM32CubeN6 to get the CMSIS submodules.
 
 ## Build Artifacts
 
-After a successful build, you'll find in `build/release/`:
+After a successful build:
 
-- `fsbl.elf` - ELF executable with debug symbols
-- **`fsbl.bin`** - Unsigned binary (default) ⭐
-- `fsbl.hex` - Intel HEX format
-- `fsbl.map` - Linker map file
+| File | Description |
+|------|-------------|
+| `fsbl.elf` | ELF with debug symbols |
+| `fsbl.bin` | Raw binary (unsigned) |
+| `fsbl.hex` | Intel HEX format |
+| `fsbl.map` | Linker map file |
 
-**Optional:** If using `release-signed` preset:
-- `fsbl-trusted.bin` - Pre-signed binary (only if built with `--preset release-signed`)
+## Boot Switch Configuration
+
+Both boards use the same switch positions:
+
+| Mode | BOOT0 | BOOT1 | Use case |
+|------|-------|-------|----------|
+| DEV (debug/flash) | — | 2-3 | Flashing via SWD |
+| External flash | 1-2 | 1-2 | Normal boot |
 
 ## Using the FSBL with Your Firmware
 
-### Memory Layout
+The FSBL copies your application from external NOR flash to internal SRAM at boot.
 
-| Component | Flash Address | Size |
-|-----------|---------------|------|
-| **FSBL** (this project) | 0x7000_0000 | ~32 KB |
-| **Your Application** | 0x7000_8000 | (depends on your app) |
-
-### Programming Sequence
-
-1. Program FSBL: `fsbl.bin` at address `0x70000000` (your flash script will sign it automatically)
-2. Program your application at `0x70008000` (or as configured)
-3. Set boot switches to External flash mode
-4. Reset the board
-
-**Note:** The unsigned `fsbl.bin` is sufficient - your flash script handles signing during programming.
-
-### Boot Switch Configuration
-
-| Mode | BOOT0 | BOOT1 | Use Case |
-|------|-------|-------|----------|
-| DEV (debug) | — | 2-3 | For flashing via SWD |
-| External flash | 1-2 | 1-2 | Normal boot from flash |
-
-## Updating to New STM32CubeN6 Versions
-
-This is the key advantage of this project structure!
-
-```bash
-cd STM32CubeN6
-git pull
-git submodule update --init --recursive
-cd ..
-cmake --build build/release --clean-first
-```
-
-That's it! The build system automatically uses the updated drivers.
-
-## Configuration
-
-### Critical Configuration Files
-
-#### 1. `fsbl/inc/stm32_extmem_conf.h`
-
-**Most important setting:**
+**Critical setting** in `fsbl/inc/stm32_extmem_conf.h`:
 
 ```c
 #define EXTMEM_LRUN_SOURCE_SIZE  (your_application_size_in_bytes)
 ```
 
-⚠️ This MUST match your application binary size. Default is 64 KB, which may be too small.
+This must be >= your actual application binary size. The default (64 KB) is often too small.
 
-#### 2. `fsbl/inc/stm32n6xx_hal_conf.h`
+**Flash memory layout:**
 
-Controls which HAL modules are enabled. Typically doesn't need modification.
+| Component | Address | Notes |
+|-----------|---------|-------|
+| FSBL | 0x7000_0000 | External NOR flash start |
+| Your application | 0x7010_0000 | Configurable via `EXTMEM_LRUN_SOURCE_ADDRESS` |
 
-### Adding HAL Drivers
+## Updating to New STM32CubeN6 Versions
 
-If you need additional HAL drivers:
+```bash
+cd STM32CubeN6 && git pull && git submodule update --init --recursive && cd ..
+cmake --build build/nucleo --clean-first
+```
 
-1. Enable in `fsbl/inc/stm32n6xx_hal_conf.h`: `#define HAL_XXX_MODULE_ENABLED`
-2. Add to `CMakeLists.txt` in the `HAL_SOURCES` section:
-   ```cmake
-   ${CUBE_ROOT}/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_xxx.c
-   ```
+## Configuration Files
 
-No file copying needed - it references STM32CubeN6 directly!
+| File | Purpose |
+|------|---------|
+| `fsbl/inc/stm32_extmem_conf.h` | ExtMem Manager — set `EXTMEM_LRUN_SOURCE_SIZE` here |
+| `fsbl/inc/stm32n6xx_hal_conf.h` | HAL module enable/disable |
+| `fsbl/inc/stm32n6570_discovery_conf.h` | Discovery BSP configuration |
+| `fsbl/inc/stm32n6xx_nucleo_conf.h` | NUCLEO BSP configuration |
 
 ## Troubleshooting
 
-### Error: "STM32CubeN6 not found"
-
-You need to clone STM32CubeN6 in the project directory:
-
+**"STM32CubeN6 not found"**
 ```bash
 git clone --recursive --depth 1 \
     https://github.com/STMicroelectronics/STM32CubeN6.git
 ```
 
-### Error: "CMSIS submodules not initialized"
-
-The CMSIS headers weren't downloaded:
-
+**"CMSIS submodules not initialized"**
 ```bash
-cd STM32CubeN6
-git submodule update --init --recursive
-cd ..
+cd STM32CubeN6 && git submodule update --init --recursive
 ```
 
-### Build fails with "undefined reference to HAL_XXX"
+**"arm-none-eabi-gcc not found"**
+Pass the toolchain bin directory:
+```bash
+cmake --preset nucleo -DTOOLCHAIN_PATH=/path/to/arm-none-eabi/bin
+```
 
-You need to add the corresponding HAL driver to `CMakeLists.txt` (see "Adding HAL Drivers" above).
+**"undefined reference to HAL_XXX"**
+Add the corresponding driver to `CMakeLists.txt` `HAL_SOURCES` and enable it in `stm32n6xx_hal_conf.h`.
 
-### Binary too large (> 511 KB)
+**Application doesn't boot**
+Check `EXTMEM_LRUN_SOURCE_SIZE` — it must be >= your application size.
 
-The FSBL must fit in AXISRAM2 (511 KB). If it's too large:
-
-- Remove unused HAL drivers from `CMakeLists.txt`
-- Verify you're using Release build (`--preset release`)
-- Review and minimize code
-
-### Application doesn't boot after FSBL
-
-Check that `EXTMEM_LRUN_SOURCE_SIZE` in `fsbl/inc/stm32_extmem_conf.h` is set to your actual application size (or larger).
+**Binary too large (> 511 KB)**
+Remove unused HAL drivers.
 
 ## Project Structure
 
 ```
 stm32n657-fsbl/
-├── CMakeLists.txt              # Build configuration (references STM32CubeN6)
-├── CMakePresets.json           # Build presets (debug/release)
-├── TEAM_README.md              # This file
-├── CLAUDE.md                   # Detailed technical documentation
-├── README.md                   # Project overview (French)
+├── CMakeLists.txt              # Build config — BOARD option here
+├── CMakePresets.json           # Presets: nucleo / discovery
+├── CMakeUserPresets.json       # Machine-local overrides (gitignored — create if needed)
 │
 ├── cmake/
-│   └── arm-none-eabi-gcc.cmake # Toolchain definition
+│   └── arm-none-eabi-gcc.cmake # Toolchain (supports TOOLCHAIN_PATH variable)
 │
-├── fsbl/                       # FSBL application (project-specific)
-│   ├── src/                    # Your FSBL source code
-│   │   ├── main.c
-│   │   ├── extmem.c
-│   │   ├── stm32n6xx_hal_msp.c
-│   │   ├── stm32n6xx_it.c
-│   │   └── system_stm32n6xx_fsbl.c
-│   └── inc/                    # Your FSBL headers
-│       ├── main.h
-│       ├── stm32n6xx_hal_conf.h     # ⚠️ HAL configuration
-│       └── stm32_extmem_conf.h      # ⚠️ ExtMem configuration
+├── fsbl/
+│   ├── src/                    # main.c, hal_msp, it, extmem, system_init
+│   └── inc/
+│       ├── stm32n6xx_hal_conf.h          # HAL module selection
+│       ├── stm32_extmem_conf.h           # ⚠️ Set EXTMEM_LRUN_SOURCE_SIZE here
+│       ├── stm32n6570_discovery_conf.h   # Discovery BSP config
+│       ├── stm32n6xx_nucleo_conf.h       # NUCLEO BSP config
+│       ├── mx66uw1g45g_conf.h            # Discovery NOR flash config
+│       ├── mx25um51245g_conf.h           # NUCLEO NOR flash config
+│       └── aps256xx_conf.h               # Discovery PSRAM config (unused by FSBL)
 │
-├── startup/                    # Startup code (device-specific)
+├── startup/
 │   └── startup_stm32n657xx.s
-│
-├── linker/                     # Linker script
+├── linker/
 │   └── STM32N657XX_AXISRAM2_fsbl.ld
 │
 ├── scripts/
-│   ├── sign_fsbl.sh            # Sign the binary (manual)
-│   └── flash_fsbl.sh           # Flash to board
+│   ├── sign_fsbl.sh            # Standalone signing utility (optional, for manual use)
+│   └── flash_fsbl.sh           # Flash via STM32CubeProgrammer (auto-detects board loader)
 │
-└── STM32CubeN6/               # ⚠️ Clone this separately (not in archive)
-    ├── Drivers/                # HAL, CMSIS, BSP (referenced by build)
-    ├── Middlewares/            # ExtMem Manager (referenced by build)
-    └── ...
-```
-
-## What's NOT in the Archive
-
-The archive is intentionally small (~100 KB) because it doesn't include:
-
-- ❌ `STM32CubeN6/` - You clone this separately (3+ GB)
-- ❌ `build/` - Generated during build
-- ❌ Copied driver files - Project references them from STM32CubeN6
-
-This makes it easy to:
-- Update to new STM32Cube versions (just `git pull` in STM32CubeN6)
-- Share the project (small archive size)
-- Track only project-specific changes
-
-## Configuring STM32CubeN6 Location
-
-The build system supports multiple ways to specify where STM32CubeN6 is located (in priority order):
-
-### 1. CMake command line (highest priority)
-
-```bash
-cmake --preset release -DCUBE_ROOT=/path/to/STM32CubeN6
-# OR
-cmake -B build -DCUBE_ROOT=/path/to/STM32CubeN6
-```
-
-**Use case:** Override per-project, temporary testing
-
-### 2. Environment variable
-
-```bash
-export STM32CUBEN6_ROOT=/path/to/STM32CubeN6
-cmake --preset release
-```
-
-**Use case:** Team-wide standard location, set in shell profile
-
-### 3. Default location (lowest priority)
-
-```bash
-# Project expects: ./STM32CubeN6/
-cmake --preset release
-```
-
-**Use case:** Self-contained project, each project has its own copy
-
-### Examples
-
-```bash
-# Use company-wide shared installation
-export STM32CUBEN6_ROOT=/opt/st/STM32CubeN6
-cmake --preset release
-
-# Override for testing a different version
-cmake --preset release -DCUBE_ROOT=/home/user/STM32CubeN6-dev
-
-# Use project-local copy (clone it first)
-git clone --recursive --depth 1 \
-    https://github.com/STMicroelectronics/STM32CubeN6.git
-cmake --preset release
+└── STM32CubeN6/               # Clone separately (not committed)
 ```
 
 ## Additional Resources
 
-- **CLAUDE.md** - Comprehensive documentation for working with this codebase
-- **README.md** - Original project description (French)
+- **CLAUDE.md** — Comprehensive technical documentation
 - [STM32N6 FSBL explained](https://community.st.com/t5/stm32-mcus/stm32n6-fsbl-explained/ta-p/764307)
 - [How to create an STM32N6 FSBL](https://community.st.com/t5/stm32-mcus/how-to-create-an-stm32n6-fsbl-load-and-run/ta-p/768206)
 - [STM32CubeN6 GitHub](https://github.com/STMicroelectronics/STM32CubeN6)
-
-## Quick Reference
-
-```bash
-# Full build from scratch
-tar -xzf stm32n657-fsbl.tar.gz
-cd stm32n657-fsbl
-git clone --recursive --depth 1 https://github.com/STMicroelectronics/STM32CubeN6.git
-cmake --preset release
-cmake --build build/release
-
-# Output: build/release/fsbl.bin (unsigned - flash script will sign it)
-```
-
-```bash
-# Rebuild after code changes
-cmake --build build/release
-
-# Clean rebuild
-cmake --build build/release --clean-first
-
-# Update STM32CubeN6 to latest version
-cd STM32CubeN6 && git pull && git submodule update --init --recursive && cd ..
-cmake --build build/release --clean-first
-```
