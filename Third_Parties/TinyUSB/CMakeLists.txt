@@ -35,7 +35,7 @@
 cmake_minimum_required(VERSION 3.26)
 
 project(TinyUSB_Package
-    VERSION 0.20.0
+    VERSION 0.21.0
     DESCRIPTION "TinyUSB library package for all supported SOCs"
     LANGUAGES NONE
 )
@@ -69,8 +69,8 @@ message("")
 #------------------------------------------------------------------------
 
 # Package version and commit hash (matching build_with_cmake.sh)
-set(TINYUSB_VERSION "0.20.0")
-set(TINYUSB_HASH "52035e2")
+set(TINYUSB_VERSION "0.21.0")
+set(TINYUSB_HASH "4354b24")
 
 message(STATUS "Fetching TinyUSB version ${TINYUSB_VERSION} (commit ${TINYUSB_HASH})")
 
@@ -247,7 +247,7 @@ set(SUPPORTED_SOCS
     "n6|STM32N657|cdc_cdc,cdc_msc,cdc_video"
     "pico2m33|rp2350|cdc_cdc"
     "pico2riscv|rp2350|cdc_cdc"
-    "v8|STM32V873|cdc_cdc,cdc_msc,cdc_video"
+#     "v8|STM32V873|cdc_cdc,cdc_msc,cdc_video"
 )
 
 #------------------------------------------------------------------------

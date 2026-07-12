@@ -18,12 +18,12 @@ static  inline  void local_commandByAddress(DCACHE_TypeDef *cache, uint32_t comm
 #define DCACHE_COMMAND_CLEAN_INVALIDATE     (3U * DCACHE_CR_CACHECMD_0)
 
 /*
- * \brief cache_D_Enable
+ * \brief model_cache_D_Enable
  *
  * - Enable the data cache
  *
  */
-static  inline  void    cache_D_Enable(uint8_t unit) {
+static  inline  void    model_cache_D_Enable(uint8_t unit) {
     DCACHE_TypeDef  *cache = DCACHE1_NS;
 
     cache = (unit == 0U) ? (DCACHE1_NS) : (DCACHE2_NS);
@@ -46,12 +46,12 @@ static  inline  void    cache_D_Enable(uint8_t unit) {
 }
 
 /*
- * \brief cache_D_Disable
+ * \brief model_cache_D_Disable
  *
  * - Disable the data cache
  *
  */
-static  inline  void    cache_D_Disable(uint8_t unit) {
+static  inline  void    model_cache_D_Disable(uint8_t unit) {
     DCACHE_TypeDef  *cache = DCACHE1_NS;
 
     cache = (unit == 0U) ? (DCACHE1_NS) : (DCACHE2_NS);
@@ -74,12 +74,12 @@ static  inline  void    cache_D_Disable(uint8_t unit) {
 }
 
 /*
- * \brief cache_D_Invalidate
+ * \brief model_cache_D_Invalidate
  *
  * - Invalidate the data cache
  *
  */
-static  inline  void    cache_D_Invalidate(uint8_t unit) {
+static  inline  void    model_cache_D_Invalidate(uint8_t unit) {
     DCACHE_TypeDef  *cache = DCACHE1_NS;
 
     cache = (unit == 0U) ? (DCACHE1_NS) : (DCACHE2_NS);
@@ -110,12 +110,12 @@ static  inline  void    cache_D_Invalidate(uint8_t unit) {
 }
 
 /*
- * \brief cache_D_Invalidate_Add
+ * \brief model_cache_D_Invalidate_Add
  *
  * - Invalidate the data cache by address
  *
  */
-static  inline  void    cache_D_Invalidate_Add(uint8_t unit, const void *address, int32_t size) {
+static  inline  void    model_cache_D_Invalidate_Add(uint8_t unit, const void *address, int32_t size) {
     DCACHE_TypeDef  *cache = DCACHE1_NS;
 
     cache = (unit == 0U) ? (DCACHE1_NS) : (DCACHE2_NS);
@@ -131,12 +131,12 @@ static  inline  void    cache_D_Invalidate_Add(uint8_t unit, const void *address
 }
 
 /*
- * \brief cache_D_Clean_Add
+ * \brief model_cache_D_Clean_Add
  *
  * - Clean the data cache by address
  *
  */
-static  inline  void    cache_D_Clean_Add(uint8_t unit, const void *address, int32_t size) {
+static  inline  void    model_cache_D_Clean_Add(uint8_t unit, const void *address, int32_t size) {
     DCACHE_TypeDef  *cache = DCACHE1_NS;
 
     cache = (unit == 0U) ? (DCACHE1_NS) : (DCACHE2_NS);
@@ -152,12 +152,12 @@ static  inline  void    cache_D_Clean_Add(uint8_t unit, const void *address, int
 }
 
 /*
- * \brief cache_I_Enable
+ * \brief model_cache_I_Enable
  *
  * - Enable the instruction cache
  *
  */
-static  inline  void    cache_I_Enable(void) {
+static  inline  void    model_cache_I_Enable(void) {
 
     DATA_SYNC_BARRIER;
     INST_SYNC_BARRIER;
@@ -171,12 +171,12 @@ static  inline  void    cache_I_Enable(void) {
 }
 
 /*
- * \brief cache_I_Disable
+ * \brief model_cache_I_Disable
  *
  * - Disable the instruction cache
  *
  */
-static  inline  void    cache_I_Disable(void) {
+static  inline  void    model_cache_I_Disable(void) {
 
     DATA_SYNC_BARRIER;
     INST_SYNC_BARRIER;
@@ -196,12 +196,12 @@ static  inline  void    cache_I_Disable(void) {
 }
 
 /*
- * \brief cache_I_Invalidate
+ * \brief model_cache_I_Invalidate
  *
  * - Invalidate the instruction cache
  *
  */
-static  inline  void    cache_I_Invalidate(void) {
+static  inline  void    model_cache_I_Invalidate(void) {
 
     DATA_SYNC_BARRIER;
     INST_SYNC_BARRIER;

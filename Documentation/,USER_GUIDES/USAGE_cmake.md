@@ -14,6 +14,11 @@ Before using CMake, ensure the following environment variables are defined:
 - `PATH_LLVM_ARM` - Path to ARM LLVM toolchain
 - `PATH_LLVM_RVXX` - Path to RISC-V LLVM toolchain
 
+Optional, required only for the corresponding C library:
+
+- `PATH_LLVM_ARMP` / `PATH_GCC_ARMP` - ARM toolchains for `-DC_LIBRARY=picolibc`
+- `PATH_LLVM_ARML` - ARM LLVM libc toolchain for `-DC_LIBRARY=llvmlibc` (ARM only)
+
 ## Quick Start
 
 The simplest way to build a target is to navigate to a **Variant** folder and configure the build:
@@ -51,7 +56,22 @@ CMake accepts several build options that control compilation behaviour:
 | `-DCANARY=ON/OFF` | ON | Enable/disable canary stack protection |
 | `-DUSER_MODE=ON/OFF` | ON | Activate user mode of processor (code protection) |
 | `-DUSE_LLVM=ON/OFF` | OFF | Use LLVM toolchain (clang) instead of GCC |
+| `-DC_LIBRARY=newlib/picolibc/llvmlibc` | newlib | Select the C library (see below) |
 | `-DVERBOSE_LINK=ON/OFF` | OFF | Add verbose option (-v) when linking with lld |
+
+### C Library Selection
+
+The C library is chosen with `-DC_LIBRARY`:
+
+- `newlib` (default) - GCC or Clang, ARM and RISC-V.
+- `picolibc` - GCC or Clang; uses `PATH_*_ARMP` / `PATH_LLVM_RVXXP` toolchains.
+- `llvmlibc` - **LLVM/Clang only, ARM only** (Arm Toolchain for Embedded). Requires
+  `USE_LLVM=ON` and `PATH_LLVM_ARML`; combining it with GCC or a RISC-V target is a
+  configuration error. See **LLVMLIBC_TOOLCHAIN_GUIDE.md**.
+
+```shell
+cmake --preset llvm -DC_LIBRARY=llvmlibc
+```
 
 ## Using CMake Commands
 

@@ -29,8 +29,13 @@ reent_t     vKern_impureData[KNB_CORES][KKERN_NB_PROCESSES];
 
 // No global storage needed for picolibc - errno is stored per-process in proc_t
 
+#elifdef CONFIG_MAN_LLVMLIBC_S
+#include    "llvmlibc/llvmlibc.h"
+
+// No global storage needed for llvmlibc - errno is owned by LLVM libc (__llvm_libc_errno)
+
 #else
-#error "No C library configured (CONFIG_MAN_NEWLIB_S or CONFIG_MAN_PICOLIBC_S required)"
+#error "No C library configured (CONFIG_MAN_NEWLIB_S, CONFIG_MAN_PICOLIBC_S or CONFIG_MAN_LLVMLIBC_S required)"
 #endif
 
 #ifdef CONFIG_MAN_NEWLIB_S
@@ -122,6 +127,44 @@ void    xLibrary_update(void) {
     // No action needed for picolibc
     // errno is accessed via __ukos_get_errno() which automatically
     // returns the current process's errno pointer
+}
+
+#elifdef CONFIG_MAN_LLVMLIBC_S
+
+/*
+ * \brief Initialise the C library state for the process (llvmlibc)
+ *
+ * LLVM libc owns its own errno storage (__llvm_libc_errno is defined inside
+ * libc.a), so there is no per-process C library state for uKOS-X to set up.
+ *
+ * \warning call usable only by the uKernel.
+ *
+ * \param[in]   *handle     Ptr on the handle
+ *
+ * \note This function does not return a value (None).
+ *
+ */
+void    xLibrary_initialise(proc_t *handle) {
+    (void)handle;
+
+    // No per-process C library state for llvmlibc
+}
+
+/*
+ * \brief No-op for llvmlibc (no context switch update required)
+ *
+ * LLVM libc manages its own errno, so no explicit update is needed during
+ * context switches.
+ *
+ * \warning call usable only by the uKernel.
+ *
+ * \param[in]   -
+ *
+ * \note This function does not return a value (None).
+ *
+ */
+void    xLibrary_update(void) {
+    // No action needed for llvmlibc
 }
 
 #endif

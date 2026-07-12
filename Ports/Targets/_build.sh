@@ -56,11 +56,12 @@ trap cleanup INT TERM
 
 usage() {
     cat <<'EOF'
-Usage: ./_build.sh [-G] [-P] [-U] [-Y] [-v|-w]
+Usage: ./_build.sh [-G] [-P|-M] [-U] [-Y] [-v|-w]
 
 Options:
   -G  Use gcc compiler
   -P  Use picolibc
+  -M  Use llvmlibc (LLVM libc; requires clang, ARM targets only)
   -U  Privileged mode only
   -Y  Disable canary stack protection
   -v  Verbose: display warnings and errors
@@ -69,7 +70,7 @@ Options:
 EOF
 }
 
-readonly OPTSTRING=":GPUYvwh"
+readonly OPTSTRING=":GPMUYvwh"
 while getopts "${OPTSTRING}" option; do
     case "${option}" in
         h)
@@ -81,6 +82,9 @@ while getopts "${OPTSTRING}" option; do
             ;;
         P)
             C_LIB="picolibc"
+            ;;
+        M)
+            C_LIB="llvmlibc"
             ;;
         U)
             USER_MODE="OFF"
@@ -103,6 +107,12 @@ while getopts "${OPTSTRING}" option; do
             ;;
     esac
 done
+
+# llvmlibc is a Clang/LLVM-only C library (Arm Toolchain for Embedded)
+if [[ "${C_LIB}" == "llvmlibc" ]] && [[ "${COMPILER_TOOL}" == "gcc" ]]; then
+    printf "%bError:%b -M (llvmlibc) cannot be combined with -G (gcc); llvmlibc requires clang.\n" "${RED}" "${NC}" >&2
+    exit 1
+fi
 
 get_cmake_preset() {
     local compiler="$1"
@@ -144,15 +154,24 @@ case ${COMPILER_TOOL} in
         CMAKE_PRESET=$(get_cmake_preset "gcc" "${USER_MODE}" "${CANARY_MODE}")
         ;;
     "LLVM clang")
-        if [[ -z "${PATH_LLVM_ARM}" ]]; then
-            printf "%bWarning:%b PATH_LLVM_ARM not set; ARM targets will not build!\n" "${YELLOW}" "${NC}" >&2
+        if [[ "${C_LIB}" == "llvmlibc" ]]; then
+            # llvmlibc uses a dedicated ARM toolchain (PATH_LLVM_ARML) and is ARM-only
+            if [[ -z "${PATH_LLVM_ARML:-}" ]]; then
+                printf "%bWarning:%b PATH_LLVM_ARML not set; llvmlibc ARM targets will not build!\n" "${YELLOW}" "${NC}" >&2
+            fi
+            llvm_arm_version=$("${PATH_LLVM_ARML:-}"/bin/clang --version | awk 'NR==1{for(i=1;i<=NF;i++)if($i=="version"){print $(i+1); exit}}')
+            COMPILER_VERSIONS="arm:${llvm_arm_version}"
+        else
+            if [[ -z "${PATH_LLVM_ARM}" ]]; then
+                printf "%bWarning:%b PATH_LLVM_ARM not set; ARM targets will not build!\n" "${YELLOW}" "${NC}" >&2
+            fi
+            if [[ -z "${PATH_LLVM_RVXX}" ]]; then
+                printf "%bWarning:%b PATH_LLVM_RVXX not set; RISC-V targets will not build!\n" "${YELLOW}" "${NC}" >&2
+            fi
+            llvm_arm_version=$("${PATH_LLVM_ARM}"/bin/clang --version | awk 'NR==1{for(i=1;i<=NF;i++)if($i=="version"){print $(i+1); exit}}')
+            llvm_rvxx_version=$("${PATH_LLVM_RVXX}"/bin/clang --version | awk 'NR==1{for(i=1;i<=NF;i++)if($i=="version"){print $(i+1); exit}}')
+            COMPILER_VERSIONS="arm:${llvm_arm_version} - riscv:${llvm_rvxx_version}"
         fi
-        if [[ -z "${PATH_LLVM_RVXX}" ]]; then
-            printf "%bWarning:%b PATH_LLVM_RVXX not set; RISC-V targets will not build!\n" "${YELLOW}" "${NC}" >&2
-        fi
-        llvm_arm_version=$("${PATH_LLVM_ARM}"/bin/clang --version | awk 'NR==1{for(i=1;i<=NF;i++)if($i=="version"){print $(i+1); exit}}')
-        llvm_rvxx_version=$("${PATH_LLVM_RVXX}"/bin/clang --version | awk 'NR==1{for(i=1;i<=NF;i++)if($i=="version"){print $(i+1); exit}}')
-        COMPILER_VERSIONS="arm:${llvm_arm_version} - riscv:${llvm_rvxx_version}"
         CMAKE_PRESET=$(get_cmake_preset "llvm" "${USER_MODE}" "${CANARY_MODE}")
         ;;
 esac
@@ -219,8 +238,8 @@ while IFS=$'\t' read -r family variant_name; do
     if [ -f "${LOG_FILE}" ]; then
         grep -v '^\[' "${LOG_FILE}" > "${LOG_FILE}.filtered" 2>/dev/null || true
         mv "${LOG_FILE}.filtered" "${LOG_FILE}"
+        sed -i '' '/Memory region/,$d' "${LOG_FILE}"    # macOS / BSD sed
     fi
-    sed -i '' '/Memory region/,$d' "${LOG_FILE}"    # macOS / BSD sed
 
     if (( was_error == 0 )); then
         build_success+=$'\n'"${CURRENT_VARIANT}"

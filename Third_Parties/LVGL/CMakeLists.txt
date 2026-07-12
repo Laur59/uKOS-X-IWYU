@@ -89,6 +89,7 @@ message("───────────────────────�
 # List of all supported cores
 set(SUPPORTED_CORES
     CORTEX_M55
+    CORTEX_M55
     RV64IMAFDC
     CORTEX_M85
     CORTEX_M7
@@ -96,6 +97,7 @@ set(SUPPORTED_CORES
 # and their display
 set(CORE_DISPLAY
     WaveShare_2_Inches
+    RK050HR18_5_Inches
     TFT_2_4_Inches
     RK050HR18_5_Inches
     WKS43WV067_5_Inches
@@ -118,9 +120,9 @@ foreach(CORE_INDEX RANGE 0 ${LAST_INDEX})
     if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${DISPLAY}/${CORE}/CMakeLists.txt")
         message(STATUS "Configuring build for core: ${CORE} and display ${DISPLAY}")
 
-        ExternalProject_Add(LVGL_${CORE}
+        ExternalProject_Add(LVGL_${CORE}_${DISPLAY}
             # Prefix - this sets up unique directories for each external project
-            PREFIX            "${CMAKE_CURRENT_BINARY_DIR}/ep-${CORE}"
+            PREFIX            "${CMAKE_CURRENT_BINARY_DIR}/ep-${CORE}-${DISPLAY}"
 
             # Dependency - wait for LVGL source to be downloaded
             DEPENDS           LVGL_Download
@@ -156,7 +158,7 @@ foreach(CORE_INDEX RANGE 0 ${LAST_INDEX})
             USES_TERMINAL_BUILD ON
         )
 
-        list(APPEND ALL_CORE_PROJECTS LVGL_${CORE})
+        list(APPEND ALL_CORE_PROJECTS LVGL_${CORE}_${DISPLAY})
     else()
         message(WARNING "Skipping ${CORE}: CMakeLists.txt not found at Construction/${DISPLAY}/${CORE}")
     endif()
@@ -183,7 +185,6 @@ message("")
 message("LVGL version:    ${LVGL_VERSION}")
 message("Git commit:      ${LVGL_HASH}")
 message("Source location: ${CMAKE_CURRENT_SOURCE_DIR}/LVGL-current")
-message("Display:         ${DISPLAY}")
 message("")
 message("To build all LVGL libraries, run:")
 message("  cmake --build build")

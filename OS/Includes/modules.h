@@ -128,6 +128,7 @@ enum {
             KNUM_MEMO              = (((uint32_t)'0'<<8) + (uint32_t)'3'),                                  // memo manager
             KNUM_NEWLIB            = (((uint32_t)'0'<<8) + (uint32_t)'4'),                                  // newlib module
             KNUM_PICOLIBC          = (((uint32_t)'0'<<8) + (uint32_t)'8'),                                  // picolibc module
+            KNUM_LLVMLIBC          = (((uint32_t)'0'<<8) + (uint32_t)'9'),                                  // llvmlibc module
             KNUM_RECORD            = (((uint32_t)'0'<<8) + (uint32_t)'5'),                                  // record manager
             KNUM_SYSTEM            = (((uint32_t)'0'<<8) + (uint32_t)'6'),                                  // system manager
             KNUM_TEXT              = (((uint32_t)'0'<<8) + (uint32_t)'7')                                   // text manager

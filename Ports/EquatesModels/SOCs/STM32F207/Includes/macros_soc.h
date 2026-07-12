@@ -39,6 +39,9 @@
     return (div << 4) | rem;
 }
 
+// Interruption macros
+// -------------------
+
 enum {
 
 // Reserved names: all the possible levels

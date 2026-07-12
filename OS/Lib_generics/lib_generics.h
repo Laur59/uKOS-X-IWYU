@@ -73,8 +73,10 @@
 #include    "newlib/newlib.h"
 #elif defined(CONFIG_MAN_PICOLIBC_S)
 #include    "picolibc/picolibc.h"
+#elif defined(CONFIG_MAN_LLVMLIBC_S)
+#include    "llvmlibc/llvmlibc.h"
 #else
-#error "No C library configured (CONFIG_MAN_NEWLIB_S or CONFIG_MAN_PICOLIBC_S required)"
+#error "No C library configured (CONFIG_MAN_NEWLIB_S, CONFIG_MAN_PICOLIBC_S or CONFIG_MAN_LLVMLIBC_S required)"
 #endif
 
 // IWYU pragma: end_exports

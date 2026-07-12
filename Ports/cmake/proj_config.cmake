@@ -527,6 +527,19 @@ macro(add_source_with_define the_lib source_file)
     endforeach()
 endmacro()
 
+# Macro to add the C library manager source selected by C_LIBRARY.
+# Centralises the newlib/picolibc/llvmlibc source-file switch that would
+# otherwise be copy-pasted into every target's CMakeLists.txt.
+macro(add_clib_manager_source the_lib)
+    if(C_LIBRARY STREQUAL "picolibc")
+        add_source_with_define(${the_lib} ${PATH_OSYS}/Lib_generics/picolibc/picolibc.c CONFIG_MAN_PICOLIBC_S)
+    elseif(C_LIBRARY STREQUAL "llvmlibc")
+        add_source_with_define(${the_lib} ${PATH_OSYS}/Lib_generics/llvmlibc/llvmlibc.c CONFIG_MAN_LLVMLIBC_S)
+    else()
+        add_source_with_define(${the_lib} ${PATH_OSYS}/Lib_generics/newlib/newlib.c CONFIG_MAN_NEWLIB_S)
+    endif()
+endmacro()
+
 # MicroPython Engine integration (MicroPython manager)
 macro(add_MicroPython)
     add_compile_definitions(CONFIG_MAN_MICROPYTHON_S)

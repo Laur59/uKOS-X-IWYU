@@ -24,22 +24,27 @@ do_clang=1
 do_gcc=1
 do_newlib=1
 do_picolibc=1
+do_llvmlibc=1
 do_U=1
 do_Y=1
 
-OPTSTRING=":GLNPUYh"
+OPTSTRING=":GLMNPUYh"
 while getopts ${OPTSTRING} option; do
     case ${option} in
         h)
-            echo "USAGE: ./latotale.sh [-L] [-G] [-N] [-P] [-U] [-Y]"
+            echo "USAGE: ./latotale.sh [-L] [-G] [-M] [-N] [-P] [-U] [-Y]"
             echo
             echo "OPTIONS:"
             echo "    -G: exclude gcc"
             echo "    -L: exclude clang"
+            echo "    -M: exclude llvmlibc"
             echo "    -P: exclude picolibc"
             echo "    -U: exclude user mode"
             echo "    -Y: exclude canary"
             exit 0
+            ;;
+        M)
+            do_llvmlibc=
             ;;
         L)
             if [[ ! $do_gcc ]]; then
@@ -135,6 +140,23 @@ if [[ $do_picolibc ]]; then
             [[ $do_gcc ]] && ./_build.sh -GPUY
             [[ $do_clang ]] && ./_build.sh -PUY
         fi
+    fi
+fi
+#
+# llvmlibc is Clang/LLVM-only (Arm Toolchain for Embedded) and ARM-only. It is
+# built only when its dedicated toolchain (PATH_LLVM_ARML) is available; the two
+# RISC-V targets are reported as FAIL by _build.sh (unsupported, by design).
+if [[ $do_llvmlibc ]] && [[ $do_clang ]]; then
+    if [[ -n "${PATH_LLVM_ARML:-}" ]]; then
+        ./_build.sh -M
+        [[ $do_Y ]] && ./_build.sh -MY
+
+        if [[ $do_U ]]; then
+            ./_build.sh -MU
+            [[ $do_Y ]] && ./_build.sh -MUY
+        fi
+    else
+        print "${YELLOW}Skipping llvmlibc: PATH_LLVM_ARML not set${NC}"
     fi
 fi
 

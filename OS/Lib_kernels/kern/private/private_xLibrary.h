@@ -45,8 +45,13 @@ extern  reent_t     vKern_impureData[KNB_CORES][KKERN_NB_PROCESSES];    // Array
 
 // No global impure data for picolibc - errno is stored per-process in proc_t
 
+#elif defined(CONFIG_MAN_LLVMLIBC_S)
+#include    "llvmlibc/llvmlibc.h"
+
+// No global impure data for llvmlibc - errno is owned by LLVM libc (__llvm_libc_errno)
+
 #else
-#error "No C library configured (CONFIG_MAN_NEWLIB_S or CONFIG_MAN_PICOLIBC_S required)"
+#error "No C library configured (CONFIG_MAN_NEWLIB_S, CONFIG_MAN_PICOLIBC_S or CONFIG_MAN_LLVMLIBC_S required)"
 #endif
 
 // Prototypes

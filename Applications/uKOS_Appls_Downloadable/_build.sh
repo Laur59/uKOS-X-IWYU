@@ -54,11 +54,12 @@ C_LIB="newlib"
 
 usage() {
     cat <<'EOF'
-Usage: ./_build_cmake.sh [-G] [-P] [-U] [-Y] [-v|-w]
+Usage: ./_build_cmake.sh [-G] [-P|-M] [-U] [-Y] [-v|-w]
 
 Options:
   -G    Use gcc compiler
   -P  Use picolibc
+  -M  Use llvmlibc (LLVM libc; requires clang, ARM targets only)
   -U  Privileged mode only
   -Y  Disable canary stack protection
   -v  Verbose: display warnings and errors
@@ -67,7 +68,7 @@ Options:
 EOF
 }
 
-OPTSTRING=":GPUYvwh"
+OPTSTRING=":GPMUYvwh"
 while getopts ${OPTSTRING} option; do
     case ${option} in
         h)
@@ -80,6 +81,11 @@ while getopts ${OPTSTRING} option; do
             ;;
         P)
             C_LIB="picolibc"
+            ;;
+        M)
+            C_LIB="llvmlibc"
+            COMPILER_TOOL="LLVM clang"
+            TOOLCHAIN_VAR=""
             ;;
         U)
             CMAKE_USER_MODE="-DUSER_MODE=OFF"
@@ -103,6 +109,12 @@ while getopts ${OPTSTRING} option; do
     esac
 done
 
+# llvmlibc is a Clang/LLVM-only C library (Arm Toolchain for Embedded)
+if [[ "${C_LIB}" == "llvmlibc" ]] && [[ "${COMPILER_TOOL}" == "gcc" ]]; then
+    printf "%bError:%b -M (llvmlibc) cannot be combined with -G (gcc); llvmlibc requires clang.\n" "${RED}" "${NC}" >&2
+    exit 1
+fi
+
 case ${COMPILER_TOOL} in
     "gcc")
         gcc_arm_version=$(${PATH_GCC_ARM}/bin/arm-none-eabi-gcc --version | awk 'NR==1{print $3; exit}')
@@ -110,9 +122,15 @@ case ${COMPILER_TOOL} in
         COMPILER_VERSIONS="arm:${gcc_arm_version} - riscv:${gcc_rvxx_version}"
         ;;
     "LLVM clang")
-        llvm_arm_version=$(${PATH_LLVM_ARM}/bin/clang --version | awk 'NR==1{for(i=1;i<=NF;i++)if($i=="version"){print $(i+1); exit}}')
-        llvm_rvxx_version=$(${PATH_LLVM_RVXX}/bin/clang --version | awk 'NR==1{for(i=1;i<=NF;i++)if($i=="version"){print $(i+1); exit}}')
-        COMPILER_VERSIONS="arm:${llvm_arm_version} - riscv:${llvm_rvxx_version}"
+        # llvmlibc uses a dedicated ARM toolchain (PATH_LLVM_ARML) and is ARM-only
+        if [[ "${C_LIB}" == "llvmlibc" ]]; then
+            llvm_arm_version=$(${PATH_LLVM_ARML:-}/bin/clang --version | awk 'NR==1{for(i=1;i<=NF;i++)if($i=="version"){print $(i+1); exit}}')
+            COMPILER_VERSIONS="arm:${llvm_arm_version}"
+        else
+            llvm_arm_version=$(${PATH_LLVM_ARM:-}/bin/clang --version | awk 'NR==1{for(i=1;i<=NF;i++)if($i=="version"){print $(i+1); exit}}')
+            llvm_rvxx_version=$(${PATH_LLVM_RVXX:-}/bin/clang --version | awk 'NR==1{for(i=1;i<=NF;i++)if($i=="version"){print $(i+1); exit}}')
+            COMPILER_VERSIONS="arm:${llvm_arm_version} - riscv:${llvm_rvxx_version}"
+        fi
         ;;
 esac
 

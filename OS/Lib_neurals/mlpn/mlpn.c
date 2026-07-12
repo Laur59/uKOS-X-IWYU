@@ -11,7 +11,9 @@
 #include    <math.h>
 #include    <stdint.h>
 
-#include    <sys/cdefs.h>
+#if __has_include(<sys/cdefs.h>)
+#include    <sys/cdefs.h>   // for __restrict (a compiler builtin; header absent under LLVM libc)
+#endif
 
 #include    "macros.h"
 #include    "modules.h"

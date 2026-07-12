@@ -155,16 +155,29 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
         index = local_getIndex(serialManager);
 
+// CLI tools run as a direct call within this process's own stack (see local_execute), so it
+// has to absorb whatever the heaviest one needs. Under llvmlibc, a single dprintf("%f", ...)
+// nests ~1 KB deep in LLVM libc's own printf internals (decimal_digits() alone is a ~470-word
+// stack frame) on top of the console/CLI/dprintf call chain, which KKERN_SZ_STACK_LL does not
+// leave room for; picolibc/newlib's lighter printf implementations do not need the extra size.
+
+        #ifdef CONFIG_MAN_LLVMLIBC_S
+        #define KLOCAL_SZ_STACK_CONSOLE     KKERN_SZ_STACK_XLIB
+        #else
+        #define KLOCAL_SZ_STACK_CONSOLE     KKERN_SZ_STACK_LL
+        #endif
+
         PROCESS_STACKMALLOC(
             0,                                  // Index
             specification,                      // Specifications (just use specification_x)
             aTabConsole[index].oText,           // Info string (nullptr if anonymous)
-            KKERN_SZ_STACK_LL,                  // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
+            KLOCAL_SZ_STACK_CONSOLE,            // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
             local_process,                      // Code of the process
             aTabConsole[index].oIdentifier,     // Identifier (nullptr if anonymous)
             serialManager,                      // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
             KKERN_PRIORITY_NORMAL_01            // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
         );
+        #undef KLOCAL_SZ_STACK_CONSOLE
 
         if (kern_createProcess(&specification, &pack, &process) != KERR_KERN_NOERR) { error  = KERR_PRO; }
     }

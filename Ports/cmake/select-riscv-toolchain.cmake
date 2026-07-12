@@ -6,6 +6,12 @@
 # Get the parent directory of the current file
 cmake_path(GET CMAKE_CURRENT_LIST_FILE PARENT_PATH mkfiles_cmake_path)
 
+# LLVM libc is not yet supported for RISC-V: the Arm Toolchain for Embedded is
+# ARM/AArch64 only, and no RISC-V baremetal LLVM-libc toolchain is wired here.
+if(DEFINED C_LIBRARY AND C_LIBRARY STREQUAL "llvmlibc")
+    message(FATAL_ERROR "C_LIBRARY=llvmlibc is not supported for RISC-V targets (ARM/AArch64 only)")
+endif()
+
 option(USE_LLVM "Selection of toolchain" ON)
 if(${USE_LLVM})
     set(COMPILER_FAMILY llvm)

@@ -26,8 +26,8 @@ readonly NC=$'\033[0m' # No Colour
 # Packages
 # --------
 
-readonly package=0.20.0
-readonly hash=52035e2
+readonly package=0.21.0
+readonly hash=4354b24
 
 TinyUSB_PACK="TinyUSB-current"
 

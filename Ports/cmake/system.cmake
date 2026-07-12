@@ -65,6 +65,23 @@ if(C_LIBRARY STREQUAL "picolibc")
         _REENT_GLOBAL_ERRNO
     )
     message(STATUS "C library compile definitions (picolibc): CONFIG_MAN_PICOLIBC_S, _REENT_GLOBAL_ERRNO")
+elseif(C_LIBRARY STREQUAL "llvmlibc")
+    target_compile_definitions(system_compiler_flags INTERFACE
+        CONFIG_MAN_LLVMLIBC_S
+    )
+    # LLVM libc has no FILE*-based dprintf; force-include the declaration shim
+    # so the many callers that only include <stdio.h> still see a prototype.
+    target_compile_options(system_compiler_flags INTERFACE
+        "$<$<COMPILE_LANGUAGE:C,CXX>:-include;${PATH_OSYS}/Lib_generics/llvmlibc/llvmlibc_shim.h>"
+    )
+    # Overlay installs need --config=llvmlibc.cfg to select LLVM libc; a
+    # dedicated LLVM-libc toolchain build does not (and has no such file).
+    # Set LLVMLIBC_CONFIG=llvmlibc.cfg to enable it for overlay installs.
+    if(LLVMLIBC_CONFIG)
+        target_compile_options(system_compiler_flags INTERFACE --config=${LLVMLIBC_CONFIG})
+        target_link_options(system_compiler_flags INTERFACE --config=${LLVMLIBC_CONFIG})
+    endif()
+    message(STATUS "C library compile definitions (llvmlibc): CONFIG_MAN_LLVMLIBC_S (dprintf shim force-included)")
 else()
     # newlib (default)
     target_compile_definitions(system_compiler_flags INTERFACE
@@ -244,6 +261,15 @@ if(C_LIBRARY STREQUAL "picolibc")
     # (e.g. watchdog_arm) that are only called by downloadable applications.
     list(APPEND TARGET_COMMON_LINK_OPTIONS
         $<$<C_COMPILER_ID:GNU>:-Wl,--no-gc-sections>
+    )
+    message(STATUS "C library malloc wrapping: --wrap=malloc, --wrap=free, --wrap=realloc, --wrap=calloc")
+elseif(C_LIBRARY STREQUAL "llvmlibc")
+    # LLVM libc uses standard function names (no _r suffix), like picolibc
+    list(APPEND TARGET_COMMON_LINK_OPTIONS
+        -Wl,--wrap=malloc
+        -Wl,--wrap=free
+        -Wl,--wrap=realloc
+        -Wl,--wrap=calloc
     )
     message(STATUS "C library malloc wrapping: --wrap=malloc, --wrap=free, --wrap=realloc, --wrap=calloc")
 else()
