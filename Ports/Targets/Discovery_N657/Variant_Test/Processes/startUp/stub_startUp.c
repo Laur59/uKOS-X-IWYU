@@ -37,11 +37,11 @@ struct  boot {
         };
 
 static  const   char_t  *argv_cnsUrt0[] = { "console", "urt0" };
-static  const   char_t  *argv_mpyUrt0[] = { "microPython", "urt0", "100000" };
+static  const   char_t  *argv_runDemoUrt0[] = { "runDemo", "urt0", "100000" };
 
 static  const   boot_t  aFunction[] = {
-                            { .oFunction="console",     .oSerialManager=KURT0, .oArgV=argv_cnsUrt0, .oArgC=2U, .oSW=0x00U, .oBaudrate=KSERIAL_BAUDRATE_460800 },
-                            { .oFunction="microPython", .oSerialManager=KURT0, .oArgV=argv_mpyUrt0, .oArgC=3U, .oSW=0x01U, .oBaudrate=KSERIAL_BAUDRATE_460800 }
+                            { "console", KURT0, argv_cnsUrt0,     2u, 0x00u, KSERIAL_BAUDRATE_460800 },
+                            { "runDemo", KURT0, argv_runDemoUrt0, 2u, 0x00u, KSERIAL_BAUDRATE_460800 }
                         };
 
 #define KDEF_COMM       KURT0
@@ -58,7 +58,7 @@ STRG_GLB_CONST(aStartUp_StrHelp[]) = "StartUp process\n"
 
                                      "   SW3\n"
                                      "    0   KURT0, console     (460800-bit/s).\n"
-                                     "    1   KURT0, microPython (460800-bit/s).\n\n";
+                                     "    1   KURT0, runDemo     (460800-bit/s).\n\n";
 
 STRG_LOC_CONST(aStrLogo[]) = STRG_LOGO;
 
@@ -118,7 +118,7 @@ void    stub_startUp_launch(void) {
     kern_suspendProcess(500U);
 
     for (i = 0U; i < (uint8_t)KNB_FUNCTIONS; i++) {
-        if (aFunction[i].oSW == mode) {
+        if ((i == 0) || ((i > 0) && (mode == 0U))) {
 
 // The communication
 

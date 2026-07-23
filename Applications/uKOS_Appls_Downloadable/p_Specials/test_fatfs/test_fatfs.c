@@ -105,7 +105,6 @@ static          DIR         dir;
 [[maybe_unused]]
 static          FILINFO     fno;
 
-static          BYTE        work[FF_MAX_SS];
 [[maybe_unused]]
 static          char_t      buffer_sdcard_1[128];
 [[maybe_unused]]
@@ -134,9 +133,11 @@ static  const   char_t      aTest_serialFlash_3[]   = "F6: When in doubt, print 
 
 // Prototype
 
+#ifdef WITH_FORMAT_S
 static  void    test_format(const char_t *device);
+#endif
+#if defined WITH_SDCARD_S || defined WITH_SERIAL_FLASH_S
 static  void    test_mount(FATFS *fs, const char_t *device);
-static  void    test_folder(const char_t *folder);
 static  void    test_create(FIL *fp, const char_t *name, BYTE mode);
 static  void    test_write(FIL *fp, const void *buffer, UINT size, UINT *sizeWritten);
 static  void    test_close(FIL *fp);
@@ -145,6 +146,10 @@ static  void    test_read(FIL *fp, void *buffer, UINT size, UINT *sizeRead);
 static  void    test_display(void *buffer, UINT size);
 static  void    test_listDirectory(const char_t *path);
 static  void    test_listDirectoryTree(const char *path, uint8_t depth);
+#endif
+#ifdef WITH_SDCARD_S
+static  void    test_folder(const char_t *folder);
+#endif
 
 /*
  * \brief aProcess 0
@@ -404,6 +409,7 @@ MAIN_ENTRY(argc, argv[]) {
 // Local routines
 // ==============
 
+#ifdef WITH_FORMAT_S
 /*
  * \brief test_format
  *
@@ -422,7 +428,9 @@ static  void    test_format(const char_t *device) {
     }
     (void)dprintf(KSYST, "f_mkfs passed\n");
 }
+#endif
 
+#if defined WITH_SDCARD_S || defined WITH_SERIAL_FLASH_S
 /*
  * \brief test_mount
  *
@@ -439,7 +447,9 @@ static  void    test_mount(FATFS *fs, const char_t *device) {
     }
     (void)dprintf(KSYST, "f_mount passed\n");
 }
+#endif
 
+#ifdef WITH_SDCARD_S
 /*
  * \brief test_folder
  *
@@ -456,7 +466,9 @@ static  void    test_folder(const char_t *folder) {
     }
     (void)dprintf(KSYST, "f_mkdir passed\n");
 }
+#endif
 
+#if defined WITH_SDCARD_S || defined WITH_SERIAL_FLASH_S
 /*
  * \brief test_create
  *
@@ -598,7 +610,9 @@ static  void    test_listDirectory(const char_t *path) {
         while (true) { ; }
     }
 }
+#endif
 
+#if defined WITH_SDCARD_S || defined WITH_SERIAL_FLASH_S
 /*
  * \brief test_listTree
  *
@@ -652,3 +666,4 @@ static  void    test_listDirectoryTree(const char *path, uint8_t depth) {
     listDirectoryTree(path, depth);
     (void)dprintf(KSYST, "\n");
 }
+#endif

@@ -25,7 +25,7 @@
 
 #include    "crt0.h"
 #include    "kern/kern.h"
-#include    "../ulvgl.h"
+#include    "ulvgl.h"
 #include    "macros.h"
 #include    "macros_core_stackFrame.h"
 #include    "memo/memo.h"

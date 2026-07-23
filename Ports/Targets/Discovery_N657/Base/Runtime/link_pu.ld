@@ -36,35 +36,33 @@ ENTRY(Reset_C0_Handler)
 
 INCLUDE     STM32N657xD.ld
 
-/* Mapping:                                                     */
-/*                                                              */
-/* SRAM2:   First Stage BootLoader  0x34100400 (400 signature)  */
-/*          64K                                                 */
-/* SRAM1:   Signature           0x34000000                      */
-/*          1K                                                  */
-/*          Program Code        0x34000400                      */
-/*          (1024K - 1K)                                        */
-/* SRAM2:   776K                0x34100000                      */
-/*          Protected           0x341C2000                      */
-/*            Stack System      0x341C2000                      */
-/*            8K                                                */
-/*            Program Data (P)  0x341C4000                      */
-/*            88K                                               */
-/*          Unprotected         0x341DA000                      */
-/*            Stack First       0x341DA000                      */
-/*            8K                                                */
-/*            Program Data (U)  0x341DC000                      */
-/*            144K                                              */
-/* SRAM3:     8K                0x34200000                      */
-/*            Heap              0x34202000                      */
-/*            256K                                              */
-/*            Frame buffer      0x34242000                      */
-/*            184K                                              */
-/* SRAM4:     448K              0x34270000                      */
-/* SRAM5:     448K              0x342E0000                      */
-/* SRAM6:     448K              0x34350000                      */
-/* APSRAM:    User Memory       0x90000000                      */
-/*            32M                                               */
+/* Mapping:                                                    */
+/*                                                             */
+/* SRAM2:    First Stage BootLoader 0x34100400 (400 signature) */
+/*            └ 64K                                            */
+/* SRAM1:    Signature           0x34000000                    */
+/*            └ 1K                                             */
+/*           Program Code        0x34000400                    */
+/*            ├ (1024K - 1K)                                   */
+/* SRAM2:     └ 776K             0x34100000                    */
+/*           Stack System        0x341C2000  (Protected)       */
+/*            └ 8K                                             */
+/*           Program Data        0x341C4000  (Protected)       */
+/*            └ 88K                                            */
+/*           Stack First         0x341DA000  (User)            */
+/*            └ 8K                                             */
+/*           Program Data        0x341DC000  (User)            */
+/*            ├ 144K                                           */
+/* SRAM3:     └ 8K               0x34200000                    */
+/*           Heap                0x34202000  (User)            */
+/*            └ 256K                                           */
+/*           Frame buffer        0x34242000  (User)            */
+/*            ├ 184K                                           */
+/* SRAM4:     ├ 448K             0x34270000                    */
+/* SRAM5:     ├ 448K             0x342E0000                    */
+/* SRAM6:     └ 448K             0x34350000                    */
+/* APSRAM:   User Memory         0x90000000                    */
+/*            └ 32M                                            */
 
 linker_sizeStackSystem_C0   = (8K);                                                         /* Length of the System stack                               */
 linker_sizeStackFirst_C0    = (8K);                                                         /* Length of the First stack                                */
@@ -100,6 +98,9 @@ linker_lnEXRAM              = (32 * 1024K);                                     
 
 linker_stUMemo              = 0x90000000;                                                   /* 0x90000000: UMemo, start of the user memory              */
 linker_lnUMemo              = config_sizeUserMemory;                                        /* Length of the user memory                                */
+
+linker_stExtFlash           = 0x70000000;                                                           /* 0x70000000: ExtFlash, start of the external flash memory */
+linker_lnExtFlash           = (128 * 1024K);                                                        /* Length of the external flash memory                      */
 
 /* IMPORTANT:                                               */
 /* The heap has to be maintained aligned                    */
@@ -143,6 +144,9 @@ linker_EN_RAM_INT_3         = (linker_stLCD_F_BUFFER + 1500K - 1);              
 
 linker_ST_APSRAM            = linker_stUMemo;                                               /* 0x90000000: Privileged/User RAM                          */
 linker_EN_APSRAM            = (linker_stUMemo + linker_lnUMemo - 1);                        /* 0x91FFFFFF: 32-M                                         */
+
+linker_ST_OCTOFLASH         = linker_stExtFlash;                                            /* 0x70000000: Privileged/User RAM                          */
+linker_EN_OCTOFLASH         = (linker_stExtFlash + linker_lnExtFlash - 1);                  /* 0x77FFFFFF: 128-M                                        */
 
 linker_ST_PERIPH_SOC        = stm_stPERIPH_NS;                                              /* 0x40000000: Privileged PERIPHERALS                       */
 linker_EN_PERIPH_SOC        = (stm_stPERIPH_NS + 524288K - 1);                              /* 0x5FFFFFFF: 2 x 256-M (_S & _NS)                         */

@@ -97,6 +97,9 @@ linker_lnEXRAM              = (0);                                              
 linker_stUMemo              = (linker_stPrgmData_u + linker_lnPrgmData_u);                  /* 0x34140000: UMemo, start of the user memory              */
 linker_lnUMemo              = config_sizeUserMemory;                                        /* Length of the user memory                                */
 
+linker_stExtFlash           = 0x70000000;                                                   /* 0x70000000: ExtFlash, start of the external flash memory */
+linker_lnExtFlash           = (128 * 1024K);                                                /* Length of the external flash memory                      */
+
 /* IMPORTANT:                                               */
 /* The heap has to be maintained aligned                    */
 /* on a boundary of 8-bytes                                 */
@@ -130,6 +133,9 @@ linker_EN_RAM_INT_2_OS      = (stm_stAXISRAM2 + linker_sizeStackSystem_C0
 linker_ST_RAM_INT_2         = linker_lowStackFirst_C0;                                      /* 0x34118000: Privileged/User RAM                          */
 linker_EN_RAM_INT_2         = (linker_lowStackFirst_C0 + linker_sizeStackFirst_C0 + config_sizeData_u
                                 + config_sizeUserMemory + linker_lnHeap - 1);               /* 0x343BFFFF: 2720-K                                       */
+
+linker_ST_OCTOFLASH         = linker_stExtFlash;                                            /* 0x70000000: Privileged/User RAM                          */
+linker_EN_OCTOFLASH         = (linker_stExtFlash + linker_lnExtFlash - 1);                  /* 0x77FFFFFF: 128-M                                        */
 
 linker_ST_PERIPH_SOC        = stm_stPERIPH_NS;                                              /* 0x40000000: Privileged PERIPHERALS                       */
 linker_EN_PERIPH_SOC        = (stm_stPERIPH_NS + 524288K - 1);                              /* 0x5FFFFFFF: 2 x 256-M (_S & _NS)                         */

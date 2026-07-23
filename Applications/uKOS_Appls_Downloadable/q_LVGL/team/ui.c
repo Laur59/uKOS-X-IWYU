@@ -11,7 +11,7 @@
 
 #include    <stdint.h>
 
-#include    "../ulvgl.h"
+#include    "ulvgl.h"
 #include    "kern/kern.h"
 #include    "kern/kern_types.h"
 #include    "macros.h"

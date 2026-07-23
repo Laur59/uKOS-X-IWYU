@@ -10,7 +10,7 @@
 
 #include    <stdint.h>
 
-#include    "../ulvgl.h"
+#include    "ulvgl.h"
 #include    "kern/kern.h"
 #include    "kern/kern_types.h"
 #include    "macros.h"
@@ -22,7 +22,7 @@ extern  mutx_t      *vLVGL_API[KNB_CORES];
         lv_obj_t    *vL2[KNB_CORES];
         lv_obj_t    *vL3[KNB_CORES];
         lv_obj_t    *vArc[KNB_CORES];
-        lv_obj_t    *vSquare[KNB_CORES][KSQUARES_NB_MAX] = { nullptr };
+        lv_obj_t    *vSquare[KNB_CORES][KSQUARES_NB_MAX] = { {nullptr} };
 
 // Prototypes
 

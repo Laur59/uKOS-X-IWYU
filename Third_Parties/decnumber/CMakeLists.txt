@@ -53,7 +53,7 @@ message("")
 
 # Package version and commit hash (matching build.sh)
 set(DECNUMBER_VERSION "3.68")
-set(DECNUMBER_HASH "a941bd3")
+set(DECNUMBER_HASH "4771421")
 
 message(STATUS "Fetching decnumber version ${DECNUMBER_VERSION} (commit ${DECNUMBER_HASH})")
 

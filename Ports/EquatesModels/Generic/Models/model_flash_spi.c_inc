@@ -106,7 +106,7 @@ int32_t model_flash_spi_write(const uint8_t *buffer, uint32_t size, uint32_t sec
     local_flash_spi_erase(size, sector);
 
     address = sector * KFLASH_xSPI_SZ_SECTOR;
-    nbPages = (size + KFLASH_xSPI_SZ_PAGE - 1u) / KFLASH_xSPI_SZ_PAGE;
+    nbPages = (size + KFLASH_xSPI_SZ_PAGE - 1U) / KFLASH_xSPI_SZ_PAGE;
 
 // Write complete pages of 256-bytes
 // In case of the page is not complete,
@@ -130,7 +130,7 @@ int32_t model_flash_spi_write(const uint8_t *buffer, uint32_t size, uint32_t sec
         cb_writeRead((uint8_t)(address>>8U));
         cb_writeRead((uint8_t)address);
 
-        for (index = 0u; index < KFLASH_xSPI_SZ_PAGE; index++) {
+        for (index = 0U; index < KFLASH_xSPI_SZ_PAGE; index++) {
             cb_writeRead(*wkBuffer);
             wkBuffer++;
         }
@@ -186,7 +186,7 @@ static  void    local_flash_spi_erase(uint32_t size, uint32_t sector) {
     uint32_t    nbSectors, address;
 
     address   = sector * KFLASH_xSPI_SZ_SECTOR;
-    nbSectors = (size + KFLASH_xSPI_SZ_SECTOR - 1u) / KFLASH_xSPI_SZ_SECTOR;
+    nbSectors = (size + KFLASH_xSPI_SZ_SECTOR - 1U) / KFLASH_xSPI_SZ_SECTOR;
 
     for (sector = 0U; sector < nbSectors; sector++) {
         kern_waitAtLeast(1U);

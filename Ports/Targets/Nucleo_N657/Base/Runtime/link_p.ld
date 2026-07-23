@@ -86,6 +86,9 @@ linker_lnEXRAM              = (0);                                              
 linker_stUMemo              = (linker_stPrgmData + linker_lnPrgmData);                      /* 0x34140000: UMemo, start of the user memory              */
 linker_lnUMemo              = config_sizeUserMemory;                                        /* Length of the user memory                                */
 
+linker_stExtFlash           = 0x70000000;                                                   /* 0x70000000: ExtFlash, start of the external flash memory */
+linker_lnExtFlash           = (128 * 1024K);                                                /* Length of the external flash memory                      */
+
 /* IMPORTANT:                                               */
 /* The heap has to be maintained aligned                    */
 /* on a boundary of 8-bytes                                 */
@@ -111,6 +114,9 @@ linker_EN_RAM_INT_1         = (stm_stAXISRAM1 + stm_lnAXISRAM1 - 1);            
 
 linker_ST_RAM_INT_2         = (stm_stAXISRAM2);                                             /* 0x34100000: Privileged/User RAM                          */
 linker_EN_RAM_INT_2         = (stm_stAXISRAM2 + stm_lnAXISRAM2 + stm_lnAXISRAM3_6 - 1);     /* 0x343BFFFF: 2816-K                                       */
+
+linker_ST_OCTOFLASH         = linker_stExtFlash;                                            /* 0x70000000: Privileged/User RAM                          */
+linker_EN_OCTOFLASH         = (linker_stExtFlash + linker_lnExtFlash - 1);                  /* 0x77FFFFFF: 128-M                                        */
 
 MEMORY {
     prgm_code (rwx) : ORIGIN = linker_stPrgmCode, LENGTH = linker_lnPrgmCode

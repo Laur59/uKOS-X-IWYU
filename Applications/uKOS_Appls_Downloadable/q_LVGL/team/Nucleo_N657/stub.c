@@ -10,7 +10,7 @@
 #include    <stdint.h>
 
 #include    "Registers/stm32N657_gpioe.h"
-#include    "../../ulvgl.h"
+#include    "../ulvgl.h"
 #include    "lcd_display.h"
 #include    "macros_core.h"
 #include    "spi/spi.h"

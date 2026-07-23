@@ -5,8 +5,10 @@
  * Goal:        stub for the connection of the "serialFlash" manager device by qspi device.
  */
 
+#include    "Registers/stm32H743_quadspi.h"  // for QUADSPI
 #include    "Registers/stm32H743_rcc.h"
-#include    "W25Q128J/W25Q128J.h"
+#include    "W25Q128J/W25Q128J.h"            // IWYU pragma: export
+#include    "clockTree.h"                    // for KFREQUENCY_AHB3
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
@@ -19,9 +21,9 @@
 #define model_flash_qspi_ioctl                  stub_serialFlash_ioctl
 
 #define QSPI                                    QUADSPI
-#define KQSPI_SPEED                             50000000u
+#define KQSPI_SPEED                             50000000U
 #define KQSPI_FREQUENCY                         KFREQUENCY_AHB3
-#define KQSPI_READ_CHUNK                        1024u
+#define KQSPI_READ_CHUNK                        1024U
 
 // Model callbacks
 // ---------------

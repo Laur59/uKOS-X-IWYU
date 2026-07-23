@@ -7,10 +7,11 @@
 #
 # Usage:
 #    cd cloned_directory/Applications/uKOS_Appls_Downloadable
-#    ./_build_cmake.sh [-L] [-U] [-Y] [-v|-w]
+#    ./_build.sh [-L] [-U] [-Y] [-v|-w]
 
 emulate -L zsh
 setopt ERR_EXIT NO_UNSET PIPE_FAIL EXTENDED_GLOB
+zmodload zsh/zutil
 
 # Determine script directory (works if executed via ./script.sh or bash script.sh)
 
@@ -47,19 +48,19 @@ readonly NC=$'\033[0m' # No Color
 
 CMAKE_CANARY_MODE=''
 CMAKE_USER_MODE=''
-COMPILER_TOOL='gcc'
+COMPILER_TOOL='LLVM clang'
 TOOLCHAIN_VAR=''
 VERBOSITY=''
 C_LIB="newlib"
 
 usage() {
     cat <<'EOF'
-Usage: ./_build_cmake.sh [-G] [-P|-M] [-U] [-Y] [-v|-w]
+Usage: ./_build.sh [-G] [-P|-L] [-U] [-Y] [-v|-w]
 
 Options:
-  -G    Use gcc compiler
+  -G  Use gcc compiler
   -P  Use picolibc
-  -M  Use llvmlibc (LLVM libc; requires clang, ARM targets only)
+  -L  Use llvmlibc (LLVM libc; requires clang, ARM targets only)
   -U  Privileged mode only
   -Y  Disable canary stack protection
   -v  Verbose: display warnings and errors
@@ -68,52 +69,74 @@ Options:
 EOF
 }
 
-OPTSTRING=":GPMUYvwh"
-while getopts ${OPTSTRING} option; do
-    case ${option} in
-        h)
-            usage
-            exit 0
-            ;;
-        G)
-            COMPILER_TOOL="gcc"
-            TOOLCHAIN_VAR="-DUSE_LLVM=OFF"
-            ;;
-        P)
-            C_LIB="picolibc"
-            ;;
-        M)
-            C_LIB="llvmlibc"
-            COMPILER_TOOL="LLVM clang"
-            TOOLCHAIN_VAR=""
-            ;;
-        U)
-            CMAKE_USER_MODE="-DUSER_MODE=OFF"
-            ;;
-        Y)
-            CMAKE_CANARY_MODE="-DCANARY=OFF"
-            ;;
-        v)
-            VERBOSITY="-v"
-            ;;
-        w)
-            # -v (verbose) takes precedence over -w (write log)
-            if [[ "${VERBOSITY}" != "-v" ]]; then
-                VERBOSITY="-w"
-            fi
-            ;;
-        ?)
-            printf "Invalid option: -%s\n" "${OPTARG}" >&2
-            exit 1
-            ;;
-    esac
-done
+# Parse options with zparseopts. -P and -L both feed a single array so that
+# passing both can be detected as a conflict (they are mutually exclusive).
+# Pre-initialise every result array because the script runs under NO_UNSET.
 
-# llvmlibc is a Clang/LLVM-only C library (Arm Toolchain for Embedded)
-if [[ "${C_LIB}" == "llvmlibc" ]] && [[ "${COMPILER_TOOL}" == "gcc" ]]; then
+o_gcc=() o_user=() o_canary=() o_verbose=() o_write=() o_help=() clib_flag=()
+
+zparseopts -D -F - \
+    G=o_gcc \
+    U=o_user \
+    Y=o_canary \
+    v=o_verbose \
+    w=o_write \
+    h=o_help \
+    P=clib_flag \
+    L=clib_flag || { usage; exit 1; }
+
+# -h short-circuits everything else
+if (( $#o_help )); then
+    usage
+    exit 0
+fi
+
+# -P (picolibc) and -L (llvmlibc) are mutually exclusive
+clib_flag=(${(u)clib_flag})            # dedupe so -PP / -MM is not a conflict
+if (( $#clib_flag > 1 )); then
+    printf "%bError:%b -P and -L are mutually exclusive.\n" "${RED}" "${NC}" >&2
+    usage
+    exit 1
+fi
+
+# llvmlibc is a Clang/LLVM-only C library (Arm Toolchain for Embedded), so
+# -M cannot be combined with -G (gcc). Checked before -M rewrites COMPILER_TOOL.
+if (( $#o_gcc )) && [[ ${clib_flag[1]:-} == -L ]]; then
     printf "%bError:%b -M (llvmlibc) cannot be combined with -G (gcc); llvmlibc requires clang.\n" "${RED}" "${NC}" >&2
     exit 1
 fi
+
+# Apply the parsed options
+if (( $#o_gcc )); then
+    COMPILER_TOOL="gcc"
+    TOOLCHAIN_VAR="-DUSE_LLVM=OFF"
+else
+    COMPILER_TOOL="LLVM clang"
+    TOOLCHAIN_VAR="-DUSE_LLVM=ON"
+fi
+if (( $#o_user )); then
+    CMAKE_USER_MODE="-DUSER_MODE=OFF"
+else
+    CMAKE_USER_MODE="-DUSER_MODE=ON"
+fi
+if (( $#o_canary )); then
+    CMAKE_CANARY_MODE="-DCANARY=OFF"
+else
+    CMAKE_CANARY_MODE="-DCANARY=ON"
+fi
+
+# -v (verbose) takes precedence over -w (write log)
+if (( $#o_verbose )); then
+    VERBOSITY="-v"
+elif (( $#o_write )); then
+    VERBOSITY="-w"
+fi
+
+case ${clib_flag[1]:-} in
+    -P) C_LIB="picolibc" ;;
+    -L) C_LIB="llvmlibc"; COMPILER_TOOL="LLVM clang"; TOOLCHAIN_VAR="" ;;
+    '') ;;                             # keep default (newlib)
+esac
 
 case ${COMPILER_TOOL} in
     "gcc")
@@ -175,7 +198,8 @@ build_warning=""
 build_success=""
 readonly LOG_FILE="build/compilation.log"
 
-printf '%bBuilding all the downloadable applications with CMake options %s %s %s -DC_LIBRARY=%s%b\n' "${BOLD}" "${TOOLCHAIN_VAR}" "${CMAKE_USER_MODE}" "${CMAKE_CANARY_MODE}" "${C_LIB}" "${NC}"
+printf '%bBuilding all the downloadable applications with:\n' "${YELLOW}"
+printf '   %bcmake -S . -B build %s %s %s -DC_LIBRARY=%s%b\n' "${BOLD}" "${TOOLCHAIN_VAR}" "${CMAKE_USER_MODE}" "${CMAKE_CANARY_MODE}" "${C_LIB}" "${NC}"
 # Parse YAML and iterate through all build targets
 while IFS= read -r CURRENT_TARGET; do
     printf "%-40s " "${CURRENT_TARGET}"

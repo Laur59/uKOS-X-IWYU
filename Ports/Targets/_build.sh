@@ -10,6 +10,7 @@
 
 emulate -L zsh
 setopt ERR_EXIT NO_UNSET PIPE_FAIL EXTENDED_GLOB
+zmodload zsh/zutil
 
 # Determine script directory (works if executed via ./script.sh or zsh script.sh)
 
@@ -56,12 +57,12 @@ trap cleanup INT TERM
 
 usage() {
     cat <<'EOF'
-Usage: ./_build.sh [-G] [-P|-M] [-U] [-Y] [-v|-w]
+Usage: ./_build.sh [-G] [-P|-L] [-U] [-Y] [-v|-w]
 
 Options:
   -G  Use gcc compiler
   -P  Use picolibc
-  -M  Use llvmlibc (LLVM libc; requires clang, ARM targets only)
+  -L  Use llvmlibc (LLVM libc; requires clang, ARM and RISC-V targets)
   -U  Privileged mode only
   -Y  Disable canary stack protection
   -v  Verbose: display warnings and errors
@@ -70,49 +71,60 @@ Options:
 EOF
 }
 
-readonly OPTSTRING=":GPMUYvwh"
-while getopts "${OPTSTRING}" option; do
-    case "${option}" in
-        h)
-            usage
-            exit 0
-            ;;
-        G)
-            COMPILER_TOOL="gcc"
-            ;;
-        P)
-            C_LIB="picolibc"
-            ;;
-        M)
-            C_LIB="llvmlibc"
-            ;;
-        U)
-            USER_MODE="OFF"
-            ;;
-        Y)
-            CANARY_MODE="OFF"
-            ;;
-        v)
-            VERBOSITY="-v"
-            ;;
-        w)
-            # -v (verbose) takes precedence over -w (write log)
-            if [[ "${VERBOSITY}" != "-v" ]]; then
-                VERBOSITY="-w"
-            fi
-            ;;
-        ?)
-            printf "Invalid option: -%s\n" "${OPTARG}" >&2
-            exit 1
-            ;;
-    esac
-done
+# Parse options with zparseopts. -P and -L both feed a single array so that
+# passing both can be detected as a conflict (they are mutually exclusive).
+# Pre-initialise every result array because the script runs under NO_UNSET.
 
-# llvmlibc is a Clang/LLVM-only C library (Arm Toolchain for Embedded)
-if [[ "${C_LIB}" == "llvmlibc" ]] && [[ "${COMPILER_TOOL}" == "gcc" ]]; then
+o_gcc=() clib_flag=() o_user=() o_canary=() o_verbose=() o_write=() o_help=()
+
+zparseopts -D -F - \
+    G=o_gcc \
+    P=clib_flag \
+    L=clib_flag \
+    U=o_user \
+    Y=o_canary \
+    v=o_verbose \
+    w=o_write \
+    h=o_help || { usage; exit 1; }
+
+# -h short-circuits everything else
+if (( $#o_help )); then
+    usage
+    exit 0
+fi
+
+# -P (picolibc) and -L (llvmlibc) are mutually exclusive
+clib_flag=(${(u)clib_flag})            # dedupe so -PP / -MM is not a conflict
+if (( $#clib_flag > 1 )); then
+    printf "%bError:%b -P and -L are mutually exclusive.\n" "${RED}" "${NC}" >&2
+    usage
+    exit 1
+fi
+
+# llvmlibc is a Clang/LLVM-only C library (Arm Toolchain for Embedded), so
+# -M cannot be combined with -G (gcc). Checked before -M rewrites COMPILER_TOOL.
+if (( $#o_gcc )) && [[ ${clib_flag[1]:-} == -L ]]; then
     printf "%bError:%b -M (llvmlibc) cannot be combined with -G (gcc); llvmlibc requires clang.\n" "${RED}" "${NC}" >&2
     exit 1
 fi
+
+# Apply the parsed options
+(( $#o_gcc ))    && { COMPILER_TOOL="gcc"; TOOLCHAIN_VAR="-DUSE_LLVM=OFF"; }
+(( $#o_user ))   && USER_MODE="OFF"
+(( $#o_canary )) && CANARY_MODE="OFF"
+
+# -v (verbose) takes precedence over -w (write log)
+if (( $#o_verbose )); then
+    VERBOSITY="-v"
+elif (( $#o_write )); then
+    VERBOSITY="-w"
+fi
+
+case ${clib_flag[1]:-} in
+    -P) C_LIB="picolibc" ;;
+    -L) C_LIB="llvmlibc"; COMPILER_TOOL="LLVM clang"; TOOLCHAIN_VAR="" ;;
+    '') ;;                             # keep default (newlib)
+esac
 
 get_cmake_preset() {
     local compiler="$1"
@@ -155,12 +167,16 @@ case ${COMPILER_TOOL} in
         ;;
     "LLVM clang")
         if [[ "${C_LIB}" == "llvmlibc" ]]; then
-            # llvmlibc uses a dedicated ARM toolchain (PATH_LLVM_ARML) and is ARM-only
+            # llvmlibc uses dedicated toolchains: PATH_LLVM_ARML (ARM) and PATH_LLVM_RVXXL (RISC-V)
             if [[ -z "${PATH_LLVM_ARML:-}" ]]; then
                 printf "%bWarning:%b PATH_LLVM_ARML not set; llvmlibc ARM targets will not build!\n" "${YELLOW}" "${NC}" >&2
             fi
+            if [[ -z "${PATH_LLVM_RVXXL:-}" ]]; then
+                printf "%bWarning:%b PATH_LLVM_RVXXL not set; llvmlibc RISC-V targets will not build!\n" "${YELLOW}" "${NC}" >&2
+            fi
             llvm_arm_version=$("${PATH_LLVM_ARML:-}"/bin/clang --version | awk 'NR==1{for(i=1;i<=NF;i++)if($i=="version"){print $(i+1); exit}}')
-            COMPILER_VERSIONS="arm:${llvm_arm_version}"
+            llvm_rvxx_version=$("${PATH_LLVM_RVXXL:-}"/bin/clang --version | awk 'NR==1{for(i=1;i<=NF;i++)if($i=="version"){print $(i+1); exit}}')
+            COMPILER_VERSIONS="arm:${llvm_arm_version} - riscv:${llvm_rvxx_version}"
         else
             if [[ -z "${PATH_LLVM_ARM}" ]]; then
                 printf "%bWarning:%b PATH_LLVM_ARM not set; ARM targets will not build!\n" "${YELLOW}" "${NC}" >&2
@@ -217,7 +233,7 @@ build_failure=""
 build_success=""
 readonly LOG_FILE="build/compilation.log"
 
-printf "%bBuilding all the systems with --preset %s -DC_LIBRARY=%s%b (USER_MODE=%s CANARY=%s)\n" "${BOLD}" "${CMAKE_PRESET}" "${C_LIB}" "${NC}" "${USER_MODE}" "${CANARY_MODE})"
+printf "%bBuilding all the systems for (USER_MODE=%s CANARY=%s) with:\n   %bcmake --preset %s -DC_LIBRARY=%s%b\n" "${YELLOW}" "${USER_MODE}" "${CANARY_MODE}" "${BOLD}" "${CMAKE_PRESET}" "${C_LIB}" "${NC}"
 # Parse YAML and iterate through all build targets
 while IFS=$'\t' read -r family variant_name; do
     CURRENT_VARIANT="${family}/Variant_${variant_name}"

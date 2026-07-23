@@ -60,7 +60,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
     system_getDownloadCodeAddress((void **)&code);
     if (code == nullptr) { (void)dprintf(KSYST, "No application in the memory!\n\n");     status = EXIT_OS_FAILURE;     }
-    else              { (void)dprintf(KSYST, "Run the downloaded application...\n\n"); status = EXIT_OS_SUCCESS_CLI; }
+    else                 { (void)dprintf(KSYST, "Run the downloaded application...\n\n"); status = EXIT_OS_SUCCESS_CLI; }
 
     system_setDownloadCodeAddress(nullptr);
 

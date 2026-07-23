@@ -321,6 +321,7 @@ k_Mathematicals:
     - Asmodee_H747
     - Discovery_N657
     - Discovery_U5G9
+    - Firefly_H743
     - MAiXDUiNO_K210
     - Nucleo_H743
     - Nucleo_N657
@@ -416,6 +417,10 @@ l_MLPs:
     - Nucleo_H743
     - Nucleo_N657
     - Pico2_rp2350
+
+  gan:
+    - Discovery_N657
+    - Firefly_H743
 
   tfl_vs_ukos:
     - Alastor_H743
@@ -545,12 +550,6 @@ q_LVGL:
 
   big:
     - Discovery_N657
-    - Firefly_H743
-
-  gan:
-    - Firefly_H743
-
-  gan:
     - Firefly_H743
 
   team:

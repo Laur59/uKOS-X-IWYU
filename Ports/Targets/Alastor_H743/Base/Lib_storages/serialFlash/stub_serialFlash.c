@@ -8,7 +8,7 @@
 
 #include    <stdint.h>
 
-#include    "MX25R6435/MX25R6435.h"
+#include    "MX25R6435/MX25R6435.h"         // IWYU pragma: export
 #include    "Registers/stm32H743_gpio.h"
 #include    "board.h"
 #include    "kern/kern.h"

@@ -14,7 +14,8 @@
 
 #include    <stdint.h>
 
-#include    "core_reg.h"
+#include    "cache.h"        // for cache_D_Enable, cache_D_Invalidate, cache_I...#include    "core_reg.h"
+#include    "core_reg.h"     // for KMPU_BUFFERABLE, KMPU_NOT_SHAREABLE, KMPU_T...
 #include    "macros.h"
 #include    "macros_core.h"
 #include    "modules.h"

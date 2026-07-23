@@ -6,25 +6,20 @@
  *          Interface between the lvgl and the hardware.
  */
 
-#include    <stdint.h>
 #include    <string.h>
 
-#include    "../ulvgl.h"
+#include    "Registers/stm32N657_rcc.h"
 #include    "board.h"
-#include    "kern/kern.h"
-#include    "kern/kern_types.h"
 #include    "lcd_display.h"
 #include    "macros.h"
 #include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "macros_soc.h"
-#include    "os_errors.h"
+#include    "ulvgl.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
 
 extern  uint32_t                    linker_stLCD_F_BUFFER[];
-#define FB_ADDR                     ((uint32_t)linker_stLCD_F_BUFFER)
+#define FB_ADDR                     linker_stLCD_F_BUFFER
 #define LCD_TFT                     REG(LTDC)
 
 #define model_lcd_tft_rgb8888_init  stub_LCD_On

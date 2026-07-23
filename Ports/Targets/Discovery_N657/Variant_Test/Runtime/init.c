@@ -14,7 +14,7 @@
 #include    <stddef.h>
 #include    <stdint.h>
 
-#include    "APS256XXN/APS256XXN.h"
+#include    "APS256XXN/APS256XXN.h"     // IWYU pragma: export
 #include    "cache.h"
 #include    "clockTree.h"
 #include    "core_reg.h"
@@ -58,7 +58,7 @@ extern  uint32_t                    linker_stLCD_F_BUFFER[];
 extern  uint32_t                    linker_lnLCD_F_BUFFER[];
 #define FB_ADDR                     ((uint32_t)linker_stLCD_F_BUFFER)
 #define FB_SIZE                     ((uint32_t)linker_lnLCD_F_BUFFER)
-#define FB_END                      (FB_ADDR + FB_SIZE - 1u)
+#define FB_END                      (FB_ADDR + FB_SIZE - 1U)
 
 // Connect the physical device to the logical manager
 
@@ -112,14 +112,7 @@ void    init_init(void) {
     local_Protection_Configuration();
     local_MCO2_Configuration();
     local_CACHE_Enable();
-
-// Working on progress
-
-    #if 1
     xspi_apsram_init();
-    #endif
-
-
 }
 
 /*
@@ -208,11 +201,11 @@ static  void    local_GPIO_Compensation(void) {
     REG(SYSCFG)->VDDIOCCCR  |= SYSCFG_VDDIOCCCR_EN;
     STRONG_BARRIER;
 
-    while ((REG(SYSCFG)->VDDIO1CCSR & SYSCFG_VDDIO1CCSR_READY) == 0u) { ; }
-    while ((REG(SYSCFG)->VDDIO2CCSR & SYSCFG_VDDIO2CCSR_READY) == 0u) { ; }
-    while ((REG(SYSCFG)->VDDIO3CCSR & SYSCFG_VDDIO3CCSR_READY) == 0u) { ; }
-    while ((REG(SYSCFG)->VDDIO4CCSR & SYSCFG_VDDIO4CCSR_READY) == 0u) { ; }
-    while ((REG(SYSCFG)->VDDIOCCSR  & SYSCFG_VDDIOCCSR_READY)  == 0u) { ; }
+    while ((REG(SYSCFG)->VDDIO1CCSR & SYSCFG_VDDIO1CCSR_READY) == 0U) { ; }
+    while ((REG(SYSCFG)->VDDIO2CCSR & SYSCFG_VDDIO2CCSR_READY) == 0U) { ; }
+    while ((REG(SYSCFG)->VDDIO3CCSR & SYSCFG_VDDIO3CCSR_READY) == 0U) { ; }
+    while ((REG(SYSCFG)->VDDIO4CCSR & SYSCFG_VDDIO4CCSR_READY) == 0U) { ; }
+    while ((REG(SYSCFG)->VDDIOCCSR  & SYSCFG_VDDIOCCSR_READY)  == 0U) { ; }
 }
 
 /*
@@ -330,13 +323,13 @@ static  void    local_USB_Configuration(void) {
  *   This to allow the connection between the LTDC to the AXI bus
  *
  */
-#define RISAF_REG_CFGR_BREN             (1u<<0)
-#define RISAF_REG_CFGR_SEC              (1u<<8)
+#define RISAF_REG_CFGR_BREN             (1U<<0)
+#define RISAF_REG_CFGR_SEC              (1U<<8)
 #define RISAF_REG_CIDCFGR_RDENC_ALL     (0xFFu<<0)
 #define RISAF_REG_CIDCFGR_WRENC_ALL     (0xFFu<<16)
-#define RIMC_ATTR_MCID_1                (1u<<4)
-#define RIMC_ATTR_MSEC                  (1u<<8)
-#define RIMC_ATTR_MPRIV                 (1u<<9)
+#define RIMC_ATTR_MCID_1                (1U<<4)
+#define RIMC_ATTR_MSEC                  (1U<<8)
+#define RIMC_ATTR_MPRIV                 (1U<<9)
 #define RIMC_ATTR_SEC_CID1_PRIV         (RIMC_ATTR_MSEC | RIMC_ATTR_MPRIV | RIMC_ATTR_MCID_1)
 
 static  void    local_Protection_Configuration(void) {
@@ -347,7 +340,7 @@ static  void    local_Protection_Configuration(void) {
 
 // Graphic Frame buffer region
 
-    REG(RISAF)->REG1_CFGR   = 0u;
+    REG(RISAF)->REG1_CFGR   = 0U;
     REG(RISAF)->REG1_STARTR = FB_ADDR;
     REG(RISAF)->REG1_ENDR   = FB_END;
 
@@ -355,17 +348,17 @@ static  void    local_Protection_Configuration(void) {
 
     REG(RISAF)->REG1_CIDCFGR = RISAF_REG_CIDCFGR_RDENC_ALL | RISAF_REG_CIDCFGR_WRENC_ALL;
 
-    REG(RISAF)->REG1_ACFGR   = 0u;
-    REG(RISAF)->REG1_ASTARTR = 0u;
-    REG(RISAF)->REG1_AENDR   = 0u;
-    REG(RISAF)->REG1_ANESTR  = 0u;
+    REG(RISAF)->REG1_ACFGR   = 0U;
+    REG(RISAF)->REG1_ASTARTR = 0U;
+    REG(RISAF)->REG1_AENDR   = 0U;
+    REG(RISAF)->REG1_ANESTR  = 0U;
 
-    REG(RISAF)->REG1_BCFGR   = 0u;
-    REG(RISAF)->REG1_BSTARTR = 0u;
-    REG(RISAF)->REG1_BENDR   = 0u;
-    REG(RISAF)->REG1_BNESTR  = 0u;
+    REG(RISAF)->REG1_BCFGR   = 0U;
+    REG(RISAF)->REG1_BSTARTR = 0U;
+    REG(RISAF)->REG1_BENDR   = 0U;
+    REG(RISAF)->REG1_BNESTR  = 0U;
 
-    REG(RISAF)->IACR         = 0xFFFFFFFFu;
+    REG(RISAF)->IACR         = 0xFFFFFFFFU;
 
 // BREN + SEC, sans PRIVC
 
@@ -374,8 +367,8 @@ static  void    local_Protection_Configuration(void) {
 
 // RISUP 102/103/104: LTDC_CMN, LTDC_L1, LTDC_L2
 
-    REG(RIFSC)->RISC_SECCFGR3  |= 0x000001C0u;
-    REG(RIFSC)->RISC_PRIVCFGR3 |= 0x000001C0u;
+    REG(RIFSC)->RISC_SECCFGR3  |= 0x000001C0U;
+    REG(RIFSC)->RISC_PRIVCFGR3 |= 0x000001C0U;
 
 // Master LTDC1 / LTDC_L1 / LTDC_L2
 // Important point: The LTDC master needs to have the same
@@ -634,7 +627,7 @@ static  void    local_GPIO_Configuration(void) {
               KPD,KPD,KPD,KPD,KPD,KPD,KPD,KPD,KPD,KPD,KPD,KNO,KNO,KNO,KNO,KNO,
               A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A15,A09,A09,A09,A15,A09,
               KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
-              0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u);
+              0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
 
 // PP00, AL,  99-MHz, Push_pull XSPI_IO     AF09
 // PP01, AL,  99-MHz, Push-pull XSPI_IO     AF09
@@ -876,7 +869,7 @@ static  void    local_RCC_Configuration(void) {
 // System clock (IC1 mux)
 
     REG(RCC)->IC1CFGR = (0U * RCC_IC1CFGR_IC1SEL_0)             // PLL1
-                      | ((1U - 1U) * RCC_IC1CFGR_IC1INT_0);     // IC1 = PLL1 / 1, ~800-MHz
+                      | (0U * RCC_IC1CFGR_IC1INT_0);            // IC1 = PLL1 / 1, ~800-MHz
     STRONG_BARRIER;                                             //
     REG(RCC)->DIVENR |= RCC_DIVENR_IC1EN;                       //
     (void)(REG(RCC)->DIVENR);                                   //
@@ -913,12 +906,13 @@ static  void    local_RCC_Configuration(void) {
     REG(RCC)->DIVENR |= RCC_DIVENR_IC9EN;                       //
     (void)(REG(RCC)->DIVENR);                                   //
 
-// System clock (IC3 mux) (for xspi)
+// System clock (IC3 mux) for xspi2 (set in the FSBL)
+// System clock (IC4 mux) for xspi1
 
-    REG(RCC)->IC3CFGR = (3u * RCC_IC2CFGR_IC2SEL_0)             // PLL4
-                      | ((2u - 1u) * RCC_IC3CFGR_IC3INT_0);     // IC3 = PLL4 / 2, ~200_MHz
+    REG(RCC)->IC4CFGR = (3U * RCC_IC4CFGR_IC4SEL_0)             // PLL4
+                      | ((2U - 1U) * RCC_IC4CFGR_IC4INT_0);     // IC4 = PLL4 / 2, ~200_MHz
     STRONG_BARRIER;                                             //
-    REG(RCC)->DIVENR |= RCC_DIVENR_IC3EN;                       //
+    REG(RCC)->DIVENR |= RCC_DIVENR_IC4EN;                       //
     (void)(REG(RCC)->DIVENR);                                   //
 
 // Bus speeds
@@ -970,14 +964,16 @@ static  void    local_MPU_Configuration(void) {
     SET_MPU8_REGION(2U, ST_RAM_INT_2,       EN_RAM_INT_2,       KMPU_EXECUTABLE,        KMPU_RW_ALL, 1U, KMPU_NOT_SHAREABLE);
     SET_MPU8_REGION(3U, ST_RAM_INT_3,       EN_RAM_INT_3,       KMPU_NOT_EXECUTABLE,    KMPU_RW_ALL, 2U, KMPU_INNER_SHAREABLE);
     SET_MPU8_REGION(4U, ST_APSRAM,          EN_APSRAM,          KMPU_EXECUTABLE,        KMPU_RW_ALL, 1U, KMPU_NOT_SHAREABLE);
-    SET_MPU8_REGION(5U, ST_PERIPH_SOC,      EN_PERIPH_SOC,      KMPU_NOT_EXECUTABLE,    KMPU_RW_PRI, 3U, KMPU_NOT_SHAREABLE);
-    SET_MPU8_REGION(6U, ST_PERIPH_CORE,     EN_PERIPH_CORE,     KMPU_NOT_EXECUTABLE,    KMPU_RW_PRI, 3U, KMPU_NOT_SHAREABLE);
+    SET_MPU8_REGION(5U, ST_OCTOFLASH,       EN_OCTOFLASH,       KMPU_NOT_EXECUTABLE,    KMPU_RW_ALL, 2U, KMPU_INNER_SHAREABLE);
+    SET_MPU8_REGION(6U, ST_PERIPH_SOC,      EN_PERIPH_SOC,      KMPU_NOT_EXECUTABLE,    KMPU_RW_PRI, 3U, KMPU_NOT_SHAREABLE);
+    SET_MPU8_REGION(7U, ST_PERIPH_CORE,     EN_PERIPH_CORE,     KMPU_NOT_EXECUTABLE,    KMPU_RW_PRI, 3U, KMPU_NOT_SHAREABLE);
 
     #else
     SET_MPU8_REGION(0U, ST_RAM_INT_1,       EN_RAM_INT_1,       KMPU_EXECUTABLE,        KMPU_R_ALL,  0U, KMPU_NOT_SHAREABLE);
     SET_MPU8_REGION(1U, ST_RAM_INT_2,       EN_RAM_INT_2,       KMPU_EXECUTABLE,        KMPU_RW_ALL, 1U, KMPU_NOT_SHAREABLE);
     SET_MPU8_REGION(2U, ST_RAM_INT_3,       EN_RAM_INT_3,       KMPU_NOT_EXECUTABLE,    KMPU_RW_ALL, 2U, KMPU_INNER_SHAREABLE);
     SET_MPU8_REGION(3U, ST_APSRAM,          EN_APSRAM,          KMPU_EXECUTABLE,        KMPU_RW_ALL, 1U, KMPU_NOT_SHAREABLE);
+    SET_MPU8_REGION(4U, ST_OCTOFLASH,       EN_OCTOFLASH,       KMPU_NOT_EXECUTABLE,    KMPU_RW_ALL, 2U, KMPU_INNER_SHAREABLE);
     #endif
 
 }
@@ -1044,31 +1040,19 @@ static  void    cb_enable(void) {
 
     REG(RCC)->AHB5ENR  |=  RCC_AHB5ENR_XSPI1EN;
     REG(RCC)->AHB5ENR  |=  RCC_AHB5ENR_XSPIMEN;
+    REG(RCC)->AHB5LPENR |=  RCC_AHB5LPENR_XSPI1LPEN;
     REG(RCC)->AHB5RSTR |=  RCC_AHB5RSTR_XSPI1RST;
     REG(RCC)->AHB5RSTR &= ~RCC_AHB5RSTR_XSPI1RST;
-    REG(RCC)->AHB5RSTR |=  RCC_AHB5RSTR_XSPIMRST;
-    REG(RCC)->AHB5RSTR &= ~RCC_AHB5RSTR_XSPIMRST;
 
     STRONG_BARRIER;
 
-// ic3 = 200-MHz (pll4 / 2)
+// ic4 = 200-MHz (pll4 / 2)
 
+    #ifdef WK
     REG(RCC)->CCIPR6 &= ~RCC_CCIPR6_XSPI1SEL;
-    REG(RCC)->CCIPR6 |=  (2u * RCC_CCIPR6_XSPI1SEL_0);
+    REG(RCC)->CCIPR6 |=  (3U * RCC_CCIPR6_XSPI1SEL_0);
     (void)(REG(RCC)->CCIPR6);
-
-    STRONG_BARRIER;
-
-// Cube:
-// nCSOverride = NCS1
-// IOPort      = 1
-// Req2AckTime = 1
-//
-// Pour NCS1, ne mets PAS XSPI_CR_CSSEL.
-// Mais XSPIM doit avoir l'override CS actif.
-
-    REG(XSPIM)->CR = (1u * XSPIM_CR_REQ2ACK_TIME_0)
-                   | XSPIM_CR_CSSEL_OVR_EN;
+    #endif
 
     STRONG_BARRIER;
 }
