@@ -10,6 +10,7 @@
 
 #include    <tusb.h>            // for SystemCoreClock
 
+#include    "exce.h"
 #include    "TinyUSB/TinyUSB.h"
 #include    "clockTree.h"
 #include    "core_reg.h"

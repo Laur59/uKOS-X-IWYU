@@ -106,28 +106,35 @@ static  void    Apply_NRST_Workaround(void) {
   */
 int main(void) {
 
+<<<<<<<< HEAD:Third_Parties/STM32/Construction/fsbl/src/main.c
   /* USER CODE BEGIN 1 */
     Apply_NRST_Workaround();
   /* USER CODE END 1 */
+========
+    /* USER CODE BEGIN 1 */
+    Apply_NRST_Workaround();
+    /* USER CODE END 1 */
 
-  /* Enable the CPU Cache */
+    /* Enable the CPU Cache */
+>>>>>>>> develop:Third_Parties/STM32/STM32N6/Construction/fsbl/fsbl/src/main.c
 
-  /* Enable I-Cache---------------------------------------------------------*/
+    /* Enable I-Cache---------------------------------------------------------*/
 //  SCB_EnableICache();
 
-  /* Enable D-Cache---------------------------------------------------------*/
+    /* Enable D-Cache---------------------------------------------------------*/
 //  SCB_EnableDCache();
 
-  /* MCU Configuration--------------------------------------------------------*/
-  HAL_Init();
+    /* MCU Configuration--------------------------------------------------------*/
+    HAL_Init();
 
-  /* USER CODE BEGIN Init */
+    /* USER CODE BEGIN Init */
 
-  /* USER CODE END Init */
+    /* USER CODE END Init */
 
-  /* Configure the system clock */
-  SystemClock_Config();
+    /* Configure the system clock */
+    SystemClock_Config();
 
+<<<<<<<< HEAD:Third_Parties/STM32/Construction/fsbl/src/main.c
   /* USER CODE BEGIN SysInit */
 
 #ifndef NO_OTP_FUSE
@@ -159,6 +166,39 @@ int main(void) {
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
   /* USER CODE END 3 */
+========
+    /* USER CODE BEGIN SysInit */
+
+    #ifndef NO_OTP_FUSE
+    /* Set OTP fuses for XSPI IO pins speed optimization */
+
+    if(OTP_Config() != 0){
+        Error_Handler();
+    }
+    #endif /* NO_OTP_FUSE */
+    /* USER CODE END SysInit */
+
+    /* Initialize all configured peripherals */
+    MX_GPIO_Init();  
+    MX_XSPI2_Init();
+ 
+    /* USER CODE BEGIN 2 */
+    /* Initialise the serial memory */
+    MX_EXTMEM_Init();
+
+    BOOT_Application();
+    /* USER CODE END 2 */
+
+    /* Infinite loop */
+    /* USER CODE BEGIN WHILE */
+    /* We should never get here as execution is now from user application */
+
+    while (1) { __NOP(); }
+
+    /* USER CODE END WHILE */
+    /* USER CODE BEGIN 3 */
+    /* USER CODE END 3 */
+>>>>>>>> develop:Third_Parties/STM32/STM32N6/Construction/fsbl/fsbl/src/main.c
 }
 
 /* USER CODE BEGIN CLK 1 */

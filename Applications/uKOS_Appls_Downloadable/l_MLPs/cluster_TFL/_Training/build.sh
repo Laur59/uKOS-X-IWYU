@@ -6,10 +6,8 @@
 
 set -euo pipefail
 
-# Determine script directory (works if executed via ./script.sh or bash script.sh)
-readonly PATH_PRG="${0:a:h}"
-readonly PATH_UKOS="$(cd "$PATH_PRG/../../../../.." && pwd)"
-
+PATH_UKOS_X_PACKAGE="${0:A:h:h:h:h:h:h}"
+if [[ -z "${PATH_UKOS_X_PACKAGE:-}" ]]; then
     echo "Variable PATH_UKOS_X_PACKAGE is not set!"
     exit 1
 fi
@@ -20,8 +18,8 @@ if [[ -d "${TFLITE_PYENV:-}" ]]; then
     source "${TFLITE_PYENV}/bin/activate"
 fi
 
-MODEL_FILE="mlp_model.tflite"
+MODEL_FILE=NN_model
 
-python3 mlp_model.py --model_file ${MODEL_FILE} 2>mlp_model_warnings.log
+python3 NN_model.py --model_file ${MODEL_FILE}.tflite 2>"${MODEL_FILE}_warnings.log"
 
-xxd -i "${MODEL_FILE}" > mlp_model.c_inc
+xxd "${MODEL_FILE}.tflite" > "${MODEL_FILE}.xxd"

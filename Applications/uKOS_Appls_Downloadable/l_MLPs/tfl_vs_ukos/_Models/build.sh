@@ -6,6 +6,7 @@
 
 set -euo pipefail
 
+PATH_UKOS_X_PACKAGE="${0:A:h:h:h:h:h:h}"
 if [[ -z "${PATH_UKOS_X_PACKAGE:-}" ]]; then
     echo "Variable PATH_UKOS_X_PACKAGE is not set!"
     exit 1
@@ -18,12 +19,10 @@ if [[ -d "${TFLITE_PYENV:-}" ]]; then
     source "${TFLITE_PYENV}/bin/activate"
 fi
 
-MODEL_FILE="mlp_model.tflite"
+MODEL_FILE=NN_model
 
-xxd -i "${MODEL_FILE}" > mlp_model.c_inc
+xxd -r "${MODEL_FILE}.xxd" > "${MODEL_FILE}.tflite"
 
 # Now generate the uKOS-X mlpn model
 
-python3 "${MLPN_CONVERTER}/tflite_structure.py" "${MODEL_FILE}" -o structure.c
-
-
+python3 "${MLPN_CONVERTER}/tflite_structure.py" "${MODEL_FILE}.tflite" -o structure.c

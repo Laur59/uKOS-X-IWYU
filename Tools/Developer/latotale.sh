@@ -148,12 +148,12 @@ fi
 # RISC-V targets are reported as FAIL by _build.sh (unsupported, by design).
 if [[ $do_llvmlibc ]] && [[ $do_clang ]]; then
     if [[ -n "${PATH_LLVM_ARML:-}" ]]; then
-        ./_build.sh -M
-        [[ $do_Y ]] && ./_build.sh -MY
+        ./_build.sh -L
+        [[ $do_Y ]] && ./_build.sh -LY
 
         if [[ $do_U ]]; then
-            ./_build.sh -MU
-            [[ $do_Y ]] && ./_build.sh -MUY
+            ./_build.sh -LU
+            [[ $do_Y ]] && ./_build.sh -LUY
         fi
     else
         print "${YELLOW}Skipping llvmlibc: PATH_LLVM_ARML not set${NC}"

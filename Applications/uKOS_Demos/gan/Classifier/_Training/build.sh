@@ -6,6 +6,7 @@
 
 set -euo pipefail
 
+PATH_UKOS_X_PACKAGE="${0:A:h:h:h:h:h:h}"
 if [[ -z "${PATH_UKOS_X_PACKAGE:-}" ]]; then
     echo "Variable PATH_UKOS_X_PACKAGE is not set!"
     exit 1
@@ -15,6 +16,9 @@ TFLITE_PYENV="${PATH_UKOS_X_PACKAGE}/Third_Parties/Tflite-micro/Construction/Pye
 
 if [[ -d "${TFLITE_PYENV:-}" ]]; then
     source "${TFLITE_PYENV}/bin/activate"
+else
+    print "No Python virual environment found: ${TFLITE_PYENV}"
+    exit 1
 fi
 
 # First, load the image dataset
@@ -24,8 +28,8 @@ if [ ! -d "DB_faces" ]; then
     python DB_Creator.py
 fi
 
-MODEL_FILE="mlp_model.tflite"
+MODEL_FILE=NN_model
 
-python mlp_model.py --model_file ${MODEL_FILE} --mode full 2>mlp_model_warnings.log
+python NN_model.py --model_file "${MODEL_FILE}.tflite" --mode full 2>"${MODEL_FILE}_warnings.log"
 
-xxd -i "${MODEL_FILE}" > mlp_model.c_inc
+xxd "${MODEL_FILE}.tflite" > "${MODEL_FILE}.xxd"

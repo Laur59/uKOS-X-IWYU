@@ -62,13 +62,17 @@ INCLUDE     STM32N657xD.ld
 /* SRAM5:     ├ 448K             0x342E0000                    */
 /* SRAM6:     └ 448K             0x34350000                    */
 /* APSRAM:   User Memory         0x90000000                    */
-/*            └ 32M                                            */
+/*            ├ 16M, for the applications                      */
+/*            └ 16M, for the NUP                               */
 
 linker_sizeStackSystem_C0   = (8K);                                                         /* Length of the System stack                               */
 linker_sizeStackFirst_C0    = (8K);                                                         /* Length of the First stack                                */
+config_sizeProgramCode1     = (stm_lnAXISRAM1 - 1K);
+config_sizeProgramCode2     = (776K);
+config_sizeProgramCode      = (stm_lnAXISRAM1 - 1K + 776K);                                 /* Code in RAM, no flash in N657                            */
 config_sizeData_p           = (88K);
 config_sizeData_u           = (152K);
-config_sizeUserMemory       = (32768K);
+config_sizeUserMemory       = (16M);
 config_sizeHeap             = (256K);
 
 stm_lnAXISRAM3_6            = (stm_lnAXISRAM3 + stm_lnAXISRAM4
@@ -78,7 +82,7 @@ stm_lnAXISRAM3_6            = (stm_lnAXISRAM3 + stm_lnAXISRAM4
 /* all the stacks have to be maintained aligned             */
 /* on a boundary of 8-bytes                                 */
 
-linker_lowStackSystem_C0    = stm_stAXISRAM2;                                               /* 0x341C2000:                                              */
+linker_lowStackSystem_C0    = stm_stAXISRAM2 + config_sizeProgramCode2;                     /* 0x341C2000:                                              */
 linker_topStackSystem_C0    = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 - 8;     /* 0x341c3ff8                                               */
 
 linker_lowStackFirst_C0     = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0
@@ -116,34 +120,32 @@ linker_lnLCD_F_BUFFER       = (1500K);                                          
 /* uKOS OS Flash + memory                                   */
 
 linker_stPrgmCode           = (stm_stAXISRAM1 + 1K);                                        /* 0x34000400: PrgmCode, start of the Flash                 */
-linker_lnPrgmCode           = (stm_lnAXISRAM1 - 1K);                                        /* Length of the the Flash                                  */
+linker_lnPrgmCode           = config_sizeProgramCode1 + config_sizeProgramCode2;            /* Length of the code                                   */
 
-linker_stPrgmData_p         = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;         /* 0x341C2000: start of protected program data              */
+linker_stPrgmData_p         = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;         /* 0x341C4000: start of protected program data              */
 linker_lnPrgmData_p         = config_sizeData_p;                                            /* Length of protected program data                         */
 
-linker_stPrgmData_u         = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;           /* 0x341DA000: start of unprotected program data            */
+linker_stPrgmData_u         = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;           /* 0x341DC000: start of unprotected program data            */
 linker_lnPrgmData_u         = config_sizeData_u;                                            /* Length of unprotected program data                       */
 
 /* IMPORTANT:                                               */
 /* equates necessary for the arm_v8 MPU regions             */
 /* for the arm_v8 MPU the regions have to be 32-B aligned   */
 
-linker_ST_RAM_INT_1         = (stm_stAXISRAM1);                                             /* 0x34000000: Privileged/User RAM                          */
-linker_EN_RAM_INT_1         = (stm_stAXISRAM1 + stm_lnAXISRAM1 - 1);                        /* 0x340FFFFF: 1-M                                          */
+linker_ST_RAM_INT_1         = stm_stAXISRAM1;                                               /* 0x34000000: Privileged/User RAM                          */
+linker_EN_RAM_INT_1         = (stm_stAXISRAM1 + stm_lnAXISRAM1 - 1);                        /* 0x340FFFFF: 1800-K                                       */
 
-linker_ST_RAM_INT_2_OS      = stm_stAXISRAM2;                                               /* 0x341C2000: Privileged/User RAM                          */
-linker_EN_RAM_INT_2_OS      = (stm_stAXISRAM2 + linker_sizeStackSystem_C0
-                                + config_sizeData_p - 1);                                   /* 0x341D9FFF: 96-K                                         */
+linker_ST_RAM_INT_2_OS      = linker_lowStackSystem_C0;                                     /* 0x341C2000: Privileged/User RAM                          */
+linker_EN_RAM_INT_2_OS      = (linker_stPrgmData_p + config_sizeData_p - 1);                /* 0x341D9FFF: 96-K                                         */
 
 linker_ST_RAM_INT_2         = linker_lowStackFirst_C0;                                      /* 0x341DA000: Privileged/User RAM                          */
-linker_EN_RAM_INT_2         = (linker_lowStackFirst_C0 + linker_sizeStackFirst_C0 + config_sizeData_u
-                                + config_sizeUserMemory + linker_lnHeap - 1);               /* 0x34241FFF: 2720-K                                       */
+linker_EN_RAM_INT_2         = (linker_stPrgmData_u + config_sizeData_u + 256K - 1);         /* 0x34241FFF: 416-K                                        */
 
 linker_ST_RAM_INT_3         = linker_stLCD_F_BUFFER;                                        /* 0x34242000: Privileged/User RAM                          */
-linker_EN_RAM_INT_3         = (linker_stLCD_F_BUFFER + 1500K - 1);                          /* 0x343B8FFF: 1500-K                                       */
+linker_EN_RAM_INT_3         = (linker_stLCD_F_BUFFER + 1500K - 1);                          /* 0x343BFFFF: 1500-K                                       */
 
 linker_ST_APSRAM            = linker_stUMemo;                                               /* 0x90000000: Privileged/User RAM                          */
-linker_EN_APSRAM            = (linker_stUMemo + linker_lnUMemo - 1);                        /* 0x91FFFFFF: 32-M                                         */
+linker_EN_APSRAM            = (linker_stUMemo + linker_lnUMemo - 1);                        /* 0x90FFFFFF: 32-M                                         */
 
 linker_ST_OCTOFLASH         = linker_stExtFlash;                                            /* 0x70000000: Privileged/User RAM                          */
 linker_EN_OCTOFLASH         = (linker_stExtFlash + linker_lnExtFlash - 1);                  /* 0x77FFFFFF: 128-M                                        */

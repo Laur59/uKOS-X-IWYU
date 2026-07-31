@@ -88,7 +88,7 @@ SECTIONS
 
   .ARM.extab   : {
     . = ALIGN(4);
-    *(.ARM.extab*)
+    *(.ARM.extab* .gnu.linkonce.armextab.*)
     . = ALIGN(4);
   } >RAM
 

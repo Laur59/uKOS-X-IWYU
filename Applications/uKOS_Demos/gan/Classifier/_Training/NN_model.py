@@ -1,8 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
+# NN_model.
+# =========
+
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+
+#------------------------------------------------------------------------
+# Author:	Edo. Franzi		The 2026-05-18
 #
+# Project:	uKOS-X
 # Goal:		Generate the TensorFlow Lite C model for the uKOS system.
 #			This application trains a GAN network to generate faces
 #			from random vectors.
@@ -13,12 +21,12 @@
 #			A dedicated Python script downloads 1000 samples for training:
 #			python DB_Creator.py
 #
-# 			The GAN is composed of a Generator and a Discriminator.
+#			The GAN is composed of a Generator and a Discriminator.
 #
-# 			Generator architecture (embedded-friendly CNN):
+#			Generator architecture (embedded-friendly CNN):
 #			-----------------------------------------------
 #
-# 			Input:
+#			Input:
 #				Random latent vector of 64 float32 values
 #
 #			Dense:
@@ -41,32 +49,32 @@
 #					+-- ReLU
 #
 #				16x16x24
-#					  |
-#					  +-- Resize 32x32
-#					  +-- Conv2D(12)
+#					|
+#					+-- Resize 32x32
+#					+-- Conv2D(12)
 #					+-- BatchNorm
 #					+-- ReLU
 #
 #				32x32x12
-#					  |
-#					  +-- Resize 64x64
-#					  +-- Conv2D(8)
-#					+-- BatchNorm
-#					+-- ReLU
-#
-#				64x64x8
-#					  |
+#					|
+#					+-- Resize 64x64
 #					+-- Conv2D(8)
 #					+-- BatchNorm
 #					+-- ReLU
 #
 #				64x64x8
 #					|
-#					  +-- Conv2D(1)
-#					  +-- tanh
+#					+-- Conv2D(8)
+#					+-- BatchNorm
+#					+-- ReLU
 #
-#				Output:
-#					64x64 grayscale image
+#				64x64x8
+#					|
+#					+-- Conv2D(1)
+#					+-- tanh
+#
+#			Output:
+#				64x64 grayscale image
 #
 #			Discriminator architecture:
 #			---------------------------
@@ -104,7 +112,41 @@
 #			Output files:
 #				- best_generator.keras
 #				- generator_epoch_xxxx.keras
-#				- mlp_model.tflite
+#				- NN_model.tflite
+#
+#   (c) 2025-2026, Edo. Franzi
+#   --------------------------
+#                                              __ ______  _____
+#   Edo. Franzi                         __  __/ //_/ __ \/ ___/
+#   5-Route de Cheseaux                / / / / ,< / / / /\__ \
+#   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
+#                                     \__,_/_/ |_\____//____/
+#   edo.franzi@ukos.ch
+#
+#   Description: Lightweight, real-time multitasking operating
+#   system for embedded microcontroller and DSP-based systems.
+#
+#   Permission is hereby granted, free of charge, to any person
+#   obtaining a copy of this software and associated documentation
+#   files (the "Software"), to deal in the Software without restriction,
+#   including without limitation the rights to use, copy, modify,
+#   merge, publish, distribute, sublicense, and/or sell copies of the
+#   Software, and to permit persons to whom the Software is furnished
+#   to do so, subject to the following conditions:
+#
+#   The above copyright notice and this permission notice shall be
+#   included in all copies or substantial portions of the Software.
+#
+#   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+#   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+#   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+#   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+#   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+#   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+#   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+#   SOFTWARE.
+#
+#------------------------------------------------------------------------
 
 import	os
 import	glob
@@ -131,7 +173,7 @@ LEARNING_RATE_G		= 0.0001
 LEARNING_RATE_D		= 0.0002
 
 BEST_KERAS_FILE		= "best_generator.keras"
-FINAL_TFLITE_FILE	= "mlp_model.tflite"
+FINAL_TFLITE_FILE	= "NN_model.tflite"
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
@@ -207,12 +249,12 @@ def load_faces_from_folder(folder):
 #
 # Supported TensorFlow Lite operators:
 #
-# - FullyConnected
-# - Reshape
-# - ResizeNearestNeighbor
-# - Conv2D
-# - ReLU
-# - Tanh
+#		- FullyConnected
+#		- Reshape
+#		- ResizeNearestNeighbor
+#		- Conv2D
+#		- ReLU
+#		- Tanh
 #
 # Design goals:
 #

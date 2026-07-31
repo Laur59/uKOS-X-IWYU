@@ -171,6 +171,27 @@ target_link_options(system_compiler_flags INTERFACE
 add_executable(${TARGET_ELF} ${RUNTIME} ${OBJ})
 target_link_libraries(${TARGET_ELF} PUBLIC system_compiler_flags)
 
+# Generated TFLite models (mlp_model.xxd --> mlp_model.c_inc)
+# Scan the application folder and the folders of all application sources
+# for committed model hex dumps
+include(${PATH_UKOS}/Ports/cmake/tflite-model.cmake)
+
+set(MODEL_SCAN_DIRS ${PATH_MYPR})
+foreach(SRC IN LISTS OBJ)
+    cmake_path(GET SRC PARENT_PATH SRC_DIR)
+    list(APPEND MODEL_SCAN_DIRS ${SRC_DIR})
+endforeach()
+list(REMOVE_DUPLICATES MODEL_SCAN_DIRS)
+
+set(MODEL_XXD_FILES "")
+foreach(SCAN_DIR IN LISTS MODEL_SCAN_DIRS)
+    file(GLOB DIR_XXD "${SCAN_DIR}/_Training/*.xxd" "${SCAN_DIR}/_Models/*.xxd")
+    list(APPEND MODEL_XXD_FILES ${DIR_XXD})
+endforeach()
+list(REMOVE_DUPLICATES MODEL_XXD_FILES)
+
+ukos_add_tflite_models(${TARGET_ELF} ${MODEL_XXD_FILES})
+
 # Add map file in the list of files removed by make clean
 set_property(TARGET ${TARGET_ELF} APPEND
     PROPERTY ADDITIONAL_CLEAN_FILES ${LOCAL_TARGET}.map

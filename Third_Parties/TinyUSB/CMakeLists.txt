@@ -70,7 +70,7 @@ message("")
 
 # Package version and commit hash (matching build_with_cmake.sh)
 set(TINYUSB_VERSION "0.21.0")
-set(TINYUSB_HASH "50f3077")
+set(TINYUSB_HASH "eef5af8")
 
 message(STATUS "Fetching TinyUSB version ${TINYUSB_VERSION} (commit ${TINYUSB_HASH})")
 
@@ -152,18 +152,14 @@ if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/TinyUSB-current/lib/pico-sdk/README.m
     FetchContent_Declare(
         pico_sdk_upstream
         GIT_REPOSITORY https://github.com/raspberrypi/pico-sdk.git
-        GIT_TAG        master
+        # Pinned to SDK 2.3.0 (was a floating "master", which broke the old
+        # hazard3.patch on every upstream move — see removed PATCH_COMMAND).
+        GIT_TAG        98a542c1a62fb549ffb5d66a3e5892b06276b670
         SOURCE_DIR     ${CMAKE_CURRENT_SOURCE_DIR}/TinyUSB-current/lib/pico-sdk
         GIT_SHALLOW    OFF
         GIT_PROGRESS   TRUE
         UPDATE_DISCONNECTED TRUE
         EXCLUDE_FROM_ALL  # Don't build pico-sdk targets, only fetch sources
-        # Fix upstream hazard3 bug: duplicate __hazard3_bextm macro whose
-        # second definition references an unbound identifier 'shamt'.
-        # PATCH_COMMAND runs with CWD = SOURCE_DIR (pico-sdk root), so -p4
-        # strips "a/TinyUSB-current/lib/pico-sdk/" from the patch paths.
-        PATCH_COMMAND  patch -p4 --forward -i
-                       ${CMAKE_CURRENT_SOURCE_DIR}/Construction/Interface/Patches/mcu/raspberrypi/pico2/hazard3.patch
     )
     # Use MakeAvailable with EXCLUDE_FROM_ALL - we only need the sources, not to build pico-sdk
     # The pico-sdk source files are compiled directly into TinyUSB libraries by TinyUSB.cmake
@@ -192,8 +188,48 @@ else()
     message(STATUS "pico-sdk already present")
 endif()
 
-# Create a stamp file that tracks when the source was last fetched
-# This helps ExternalProjects know when to rebuild
+#------------------------------------------------------------------------
+# Drift check for shadow copies of upstream sources
+#
+# Construction/Interface/Patches carries locally modified copies of
+# upstream files that are compiled INSTEAD of the originals, so upstream
+# fixes to those files would otherwise go unnoticed. Each shadow copy has
+# a sidecar <file>.upstream-sha256 recording the hash of the upstream
+# original it was last reviewed against.
+#------------------------------------------------------------------------
+
+function(check_shadow_copy_drift UPSTREAM_FILE BASELINE_FILE)
+    if(NOT EXISTS "${UPSTREAM_FILE}")
+        return()
+    endif()
+    if(NOT EXISTS "${BASELINE_FILE}")
+        message(WARNING "Shadow copy baseline missing: ${BASELINE_FILE}\n"
+            "Create it with:\n"
+            "  shasum -a 256 ${UPSTREAM_FILE} | cut -d' ' -f1 > ${BASELINE_FILE}")
+        return()
+    endif()
+    file(SHA256 "${UPSTREAM_FILE}" UPSTREAM_HASH)
+    file(READ "${BASELINE_FILE}" BASELINE_HASH)
+    string(STRIP "${BASELINE_HASH}" BASELINE_HASH)
+    if(NOT UPSTREAM_HASH STREQUAL BASELINE_HASH)
+        message(WARNING "Upstream file changed since its shadow copy was last reviewed:\n"
+            "  ${UPSTREAM_FILE}\n"
+            "Review the upstream changes and port anything relevant into the shadow copy:\n"
+            "  git -C ${CMAKE_CURRENT_SOURCE_DIR}/TinyUSB-current log -p -- <file>\n"
+            "then refresh the baseline:\n"
+            "  shasum -a 256 ${UPSTREAM_FILE} | cut -d' ' -f1 > ${BASELINE_FILE}")
+    endif()
+endfunction()
+
+check_shadow_copy_drift(
+    "${CMAKE_CURRENT_SOURCE_DIR}/TinyUSB-current/src/portable/raspberrypi/rp2040/dcd_rp2040.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Construction/Interface/Patches/mcu/raspberrypi/pico2/dcd_rp2040.c.upstream-sha256"
+)
+
+# Stamp file encoding the fetched version/hash. It is regenerated whenever
+# TINYUSB_VERSION/TINYUSB_HASH change and is wired as a file-level dependency
+# of every SOC's configure step (see Step 3), which is what actually forces
+# the libraries to be rebuilt after a version bump.
 set(TINYUSB_SOURCE_STAMP "${CMAKE_CURRENT_BINARY_DIR}/tinyusb_source.stamp")
 
 # Create a custom command that generates the stamp file
@@ -301,7 +337,10 @@ foreach(SOC_CONFIG ${SUPPORTED_SOCS})
             SOURCE_DIR        "${SOC_SOURCE_DIR}"
             BINARY_DIR        "${SOC_SOURCE_DIR}/build_cmake"
 
-            # Depend on the fetch completion target - when version changes, this triggers rebuild
+            # Ordering only: ensures the upstream source is fetched first.
+            # (A plain custom target here never invalidates this project's
+            # stamps — rebuild on version change comes from the
+            # ExternalProject_Add_StepDependencies call below.)
             DEPENDS           TinyUSB_Fetch_Complete
 
             # Configure step
@@ -329,6 +368,11 @@ foreach(SOC_CONFIG ${SUPPORTED_SOCS})
             # Use terminal for better output
             USES_TERMINAL_BUILD ON
         )
+
+        # File-level dependency on the version stamp: a TINYUSB_HASH change
+        # regenerates the stamp, which invalidates this project's configure
+        # step (re-evaluating the source GLOBs) and thus the build step.
+        ExternalProject_Add_StepDependencies(${PROJECT_NAME} configure "${TINYUSB_SOURCE_STAMP}")
 
         list(APPEND ALL_SOC_PROJECTS ${PROJECT_NAME})
     else()

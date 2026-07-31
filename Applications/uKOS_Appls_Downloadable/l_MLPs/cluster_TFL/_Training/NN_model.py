@@ -1,8 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
+# NN_model.
+# =========
+
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+
+#------------------------------------------------------------------------
+# Author:	Edo. Franzi		The 2025-01-01
 #
+# Project:	uKOS-X
 # Goal:		Generate the TensorFlow Lite C model
 #			for uKOS system.
 #			We use the Sysquake database for the training.
@@ -10,8 +18,42 @@
 #			Necessary packages:
 #			python3 -m pip install numpy tensorflow pillow
 #
-#			python3 mlp_model.py
-#			xxd -i  mlp_model.tflite > mlp_model.c_inc
+#			python3 NN_model.py
+#			xxd -i  NN_model.tflite > NN_model.c_inc
+#
+#   (c) 2025-2026, Edo. Franzi
+#   --------------------------
+#                                              __ ______  _____
+#   Edo. Franzi                         __  __/ //_/ __ \/ ___/
+#   5-Route de Cheseaux                / / / / ,< / / / /\__ \
+#   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
+#                                     \__,_/_/ |_\____//____/
+#   edo.franzi@ukos.ch
+#
+#   Description: Lightweight, real-time multitasking operating
+#   system for embedded microcontroller and DSP-based systems.
+#
+#   Permission is hereby granted, free of charge, to any person
+#   obtaining a copy of this software and associated documentation
+#   files (the "Software"), to deal in the Software without restriction,
+#   including without limitation the rights to use, copy, modify,
+#   merge, publish, distribute, sublicense, and/or sell copies of the
+#   Software, and to permit persons to whom the Software is furnished
+#   to do so, subject to the following conditions:
+#
+#   The above copyright notice and this permission notice shall be
+#   included in all copies or substantial portions of the Software.
+#
+#   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+#   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+#   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+#   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+#   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+#   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+#   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+#   SOFTWARE.
+#
+#------------------------------------------------------------------------
 
 import	argparse
 import	numpy as np
@@ -110,10 +152,10 @@ def main():
 	print("Output TF", output)
 
 	# Convert the model to TFLite format
-	model.save('mlp_model.keras')
+	model.save('NN_model.keras')
 	converter = tf.lite.TFLiteConverter.from_keras_model(model)
 	tflite_model = converter.convert()
-	with open('mlp_model.tflite', 'wb') as f:
+	with open('NN_model.tflite', 'wb') as f:
 		f.write(tflite_model)
 
 	# Use TensorFlow Lite Interpreter to test the TFLite model

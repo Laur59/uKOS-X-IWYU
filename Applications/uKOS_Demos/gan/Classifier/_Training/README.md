@@ -1,10 +1,10 @@
 # Gan demo for uKOS-X (v.1.0)
 
-(c) 2025-2026, Edo. Franzi
+(c) 2025-2026, Edo. Franzi, 2026-07-29
 
 ## Tools and libraries installation
 
-### Generate the mlp_model.c_inc for the demo
+### Generate the NN_model.c_inc for the demo
 
 The Third_Parties Tflite-micro has to be installed
 
@@ -17,7 +17,9 @@ source Tflite_Pyenv/bin/activate
 cd Applications/uKOS_Demos/gan/Classifier/_Training
 ./build
 
-# At this stage, mlp_model.c_inc should be in the folder
+# At this stage, NN_model.xxd should be in the folder (a reversible hex dump
+# of the trained model; xxd -r NN_model.xxd NN_model.tflite recreates the
+# flatbuffer). The build generates mlp_model.c_inc from it automatically
 # Now, build the system with the embedded the demo
 cd Ports/Targets/Discovery_xyz/Variant_Test/System
 make -j USER_MODE=1 WITHAPP=gan
@@ -31,12 +33,8 @@ Inside the `generated_faces` folder, there is a list of result images for each e
 # Example, the epoch 0600 is the better visual result
 # We want to use it
 cd Applications/uKOS_Demos/gan/Classifier/_Training
-xxd -i generator_epoch_0600.tflite > mlp_model.c_inc
-
-# Rename the label
-# Open the file mlp_model.c_inc
-# Verify and eventually change the label to have
-unsigned char mlp_model_tflite[] = {
+xxd generator_epoch_0600.tflite > NN_model.xxd
+xxd -i generator_epoch_0600.tflite > NN_model.c_inc
 ```
 
-Use a better model
+No label renaming is required: the build reconstructs the model as `NN_model.tflite` before generating `NN_model.c_inc`, so the symbol is always `NN_model_tflite`.

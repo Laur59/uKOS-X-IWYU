@@ -27,7 +27,8 @@ readonly NC=$'\033[0m' # No Colour
 # --------
 
 readonly package=0.21.0
-readonly hash=50f3077
+readonly hash=eef5af8
+readonly pico_sdk_hash=98a542c1a62fb549ffb5d66a3e5892b06276b670   # SDK 2.3.0
 
 TinyUSB_PACK="TinyUSB-current"
 
@@ -51,29 +52,15 @@ printf '\n%bDownload the pico-sdk package ...%b\n\n' "${BOLD}" "${NC}"
 if [[ ! -d "${TinyUSB_PACK}"/lib/pico-sdk ]]; then
     cd "${TinyUSB_PACK}"/lib
     git clone https://github.com/raspberrypi/pico-sdk.git
-    cd pico-sdk
-    git submodule update --init --recursive
     cd "${PATH_PRG}"
-fi
-git -C "${TinyUSB_PACK}"/lib/pico-sdk pull
-
-
-# Patch the package (for pico2 hazard3)
-echo "$PWD"
-local patch_rc=0
-local patch_output
-patch_output=$(patch -p1 --forward < ./Construction/Interface/Patches/mcu/raspberrypi/pico2/hazard3.patch 2>&1) \
-    || patch_rc=$?
-
-if (( patch_rc == 0 )); then
-    print "  [patch] hazard3: applied."
-elif print "$patch_output" | grep -q "Reversed.*patch detected\|previously applied"; then
-    print "  [patch] hazard3: already applied, ignored."
 else
-    print "  [patch] hazard3: FAIL (rc=${patch_rc})" >&2
-    print "$patch_output" >&2
-    return 1
+    git -C "${TinyUSB_PACK}"/lib/pico-sdk fetch --quiet
 fi
+# Pinned to SDK 2.3.0 (was tracking a moving master); the previously required
+# hazard3.patch is retired — its buggy __hazard3_bextmi #else fallback is never
+# expanded by the TinyUSB build, so no source patch is needed on this pin.
+git -C "${TinyUSB_PACK}"/lib/pico-sdk checkout ${pico_sdk_hash}
+git -C "${TinyUSB_PACK}"/lib/pico-sdk submodule update --init --recursive
 
 # Parse core.yaml file using yq
 parse_core_yaml() {
