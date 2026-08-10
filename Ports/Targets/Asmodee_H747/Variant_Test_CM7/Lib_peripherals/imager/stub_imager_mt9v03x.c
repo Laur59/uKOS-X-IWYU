@@ -47,7 +47,7 @@ enum {
         KIMG_STANDBY,
         KIMG_NORMAL,
         KIMG_PIXEL_MODE,
-        KIMG_EXPOSITION
+        KIMG_EXPOSITION,
 };
 
 extern  volatile    uint8_t     vAcqPage;
@@ -163,7 +163,7 @@ static  int32_t cb_getRegister(uint8_t registerNb, uint16_t *value) {
     status = (status == KERR_I2C_NOERR) ? KERR_IMAGER_NOERR : KERR_IMAGER_TIMEO;
     I2C0_release(KMODE_READ_WRITE);
 
-    *value = (uint16_t)((buffer[0]<<8U) | buffer[1]);
+    *value = (uint16_t)(buffer[0]<<8U) | (uint16_t)buffer[1];
     return status;
 }
 
@@ -243,7 +243,7 @@ static  int32_t local_setAptina(mt9v03x_t *cnfTable) {
     I2C0_reserve(KMODE_READ_WRITE, KWAIT_INFINITY);
     while (true) {
         buffer[0] = cnfTable[i].oRegNumber;
-        buffer[1] = (uint8_t)(cnfTable[i].oValue>>8);
+        buffer[1] = (uint8_t)(cnfTable[i].oValue>>8U);
         buffer[2] = (uint8_t)cnfTable[i].oValue;
 
         if ((buffer[0] == 0U) && (i > 0U)) { I2C0_release(KMODE_READ_WRITE); return KERR_IMAGER_NOERR; }

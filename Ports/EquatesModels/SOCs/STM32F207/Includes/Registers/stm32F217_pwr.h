@@ -27,21 +27,21 @@ typedef struct {
 
 // CR Configuration
 
-#define PWR_CR_LPDS     (0x1U<<0)
-#define PWR_CR_PDDS     (0x1U<<1)
-#define PWR_CR_CWUF     (0x1U<<2)
-#define PWR_CR_CSBF     (0x1U<<3)
-#define PWR_CR_PVDE     (0x1U<<4)
-#define PWR_CR_PLS      (0x7U<<5)
-#define PWR_CR_PLS_0    (0x1U<<5)
-#define PWR_CR_DBP      (0x1U<<8)
-#define PWR_CR_FPDS     (0x1U<<9)
+#define PWR_CR_LPDS     (0x1U<<0U)
+#define PWR_CR_PDDS     (0x1U<<1U)
+#define PWR_CR_CWUF     (0x1U<<2U)
+#define PWR_CR_CSBF     (0x1U<<3U)
+#define PWR_CR_PVDE     (0x1U<<4U)
+#define PWR_CR_PLS      (0x7U<<5U)
+#define PWR_CR_PLS_0    (0x1U<<5U)
+#define PWR_CR_DBP      (0x1U<<8U)
+#define PWR_CR_FPDS     (0x1U<<9U)
 
 // CSR Configuration
 
-#define PWR_CSR_WUF     (0x1U<<0)
-#define PWR_CSR_SBF     (0x1U<<1)
-#define PWR_CSR_PVDO    (0x1U<<2)
-#define PWR_CSR_BRR     (0x1U<<3)
-#define PWR_CSR_EWUP    (0x1U<<8)
-#define PWR_CSR_BRE     (0x1U<<9)
+#define PWR_CSR_WUF     (0x1U<<0U)
+#define PWR_CSR_SBF     (0x1U<<1U)
+#define PWR_CSR_PVDO    (0x1U<<2U)
+#define PWR_CSR_BRR     (0x1U<<3U)
+#define PWR_CSR_EWUP    (0x1U<<8U)
+#define PWR_CSR_BRE     (0x1U<<9U)

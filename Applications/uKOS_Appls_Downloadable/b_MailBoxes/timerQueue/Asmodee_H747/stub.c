@@ -5,6 +5,8 @@
  * Hardware specific stub.
  */
 
+#include    "stub.h"
+
 #include    <stdint.h>
 
 #include    "types.h"

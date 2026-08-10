@@ -61,7 +61,7 @@ int32_t tft0_init(void) {
                     .oMode    = KOCTAL,
                     .oNbBits  = 8U,
                     .oXfer    = K8BITSAINC,
-                    .oDevider = KCLKDIV64
+                    .oDevider = KCLKDIV64,
                 };
 
     gpiohs->output_val.u32[0] |= (1U<<BLCD_DCX);
@@ -99,7 +99,7 @@ int32_t tft0_writeCommand(uint8_t command) {
                     .oMode    = KOCTAL,
                     .oNbBits  = 8U,
                     .oXfer    = K8BITSAINC,
-                    .oDevider = KCLKDIV64
+                    .oDevider = KCLKDIV64,
                 };
 
     oct0_configure(&configure);
@@ -132,7 +132,7 @@ int32_t tft0_write8(const uint8_t *buffer, uint32_t szBuffer) {
                     .oMode    = KOCTAL,
                     .oNbBits  = 8U,
                     .oXfer    = K8BITSAINC,
-                    .oDevider = KCLKDIV64
+                    .oDevider = KCLKDIV64,
                 };
 
     oct0_configure(&configure);
@@ -165,7 +165,7 @@ int32_t tft0_write16(const uint16_t *buffer, uint32_t szBuffer) {
                     .oMode    = KOCTAL,
                     .oNbBits  = 16U,
                     .oXfer    = K16BITSAINC,
-                    .oDevider = KCLKDIV64
+                    .oDevider = KCLKDIV64,
                 };
 
     oct0_configure(&configure);
@@ -198,7 +198,7 @@ int32_t tft0_fill16(const uint16_t *buffer, uint32_t szBuffer) {
                     .oMode    = KOCTAL,
                     .oNbBits  = 16U,
                     .oXfer    = K16BITSFILL,
-                    .oDevider = KCLKDIV64
+                    .oDevider = KCLKDIV64,
                 };
 
     oct0_configure(&configure);

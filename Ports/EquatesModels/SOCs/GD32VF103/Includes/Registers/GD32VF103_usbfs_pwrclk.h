@@ -26,5 +26,5 @@ typedef struct {
 
 // PWRCLKCTL Configuration
 
-#define USBFS_PWRCLK_PWRCLKCTL_SHCLK    (0x1U<<1)
-#define USBFS_PWRCLK_PWRCLKCTL_SUCLK    (0x1U<<0)
+#define USBFS_PWRCLK_PWRCLKCTL_SHCLK    (0x1U<<1U)
+#define USBFS_PWRCLK_PWRCLKCTL_SUCLK    (0x1U<<0U)

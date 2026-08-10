@@ -1,0 +1,6 @@
+{
+  "version": 10,
+  "include": [
+    "../../Ports/cmake/commonPresets.json"
+  ]
+}

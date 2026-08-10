@@ -33,36 +33,36 @@ typedef struct {
 
 // CSSA Configuration
 
-#define FIREWALL_CSSA_ADD       (0xFFFFU<<8)
-#define FIREWALL_CSSA_ADD_0     (0x1U<<8)
+#define FIREWALL_CSSA_ADD       (0xFFFFU<<8U)
+#define FIREWALL_CSSA_ADD_0     (0x1U<<8U)
 
 // CSL Configuration
 
-#define FIREWALL_CSL_LENG       (0x3FFFU<<8)
-#define FIREWALL_CSL_LENG_0     (0x1U<<8)
+#define FIREWALL_CSL_LENG       (0x3FFFU<<8U)
+#define FIREWALL_CSL_LENG_0     (0x1U<<8U)
 
 // NVDSSA Configuration
 
-#define FIREWALL_NVDSSA_ADD     (0xFFFFU<<8)
-#define FIREWALL_NVDSSA_ADD_0   (0x1U<<8)
+#define FIREWALL_NVDSSA_ADD     (0xFFFFU<<8U)
+#define FIREWALL_NVDSSA_ADD_0   (0x1U<<8U)
 
 // NVDSL Configuration
 
-#define FIREWALL_NVDSL_LENG     (0x3FFFU<<8)
-#define FIREWALL_NVDSL_LENG_0   (0x1U<<8)
+#define FIREWALL_NVDSL_LENG     (0x3FFFU<<8U)
+#define FIREWALL_NVDSL_LENG_0   (0x1U<<8U)
 
 // VDSSA Configuration
 
-#define FIREWALL_VDSSA_ADD      (0x3FFU<<6)
-#define FIREWALL_VDSSA_ADD_0    (0x1U<<6)
+#define FIREWALL_VDSSA_ADD      (0x3FFU<<6U)
+#define FIREWALL_VDSSA_ADD_0    (0x1U<<6U)
 
 // VDSL Configuration
 
-#define FIREWALL_VDSL_LENG      (0x3FFU<<6)
-#define FIREWALL_VDSL_LENG_0    (0x1U<<6)
+#define FIREWALL_VDSL_LENG      (0x3FFU<<6U)
+#define FIREWALL_VDSL_LENG_0    (0x1U<<6U)
 
 // CR Configuration
 
-#define FIREWALL_CR_FPA         (0x1U<<0)
-#define FIREWALL_CR_VDS         (0x1U<<1)
-#define FIREWALL_CR_VDE         (0x1U<<2)
+#define FIREWALL_CR_FPA         (0x1U<<0U)
+#define FIREWALL_CR_VDS         (0x1U<<1U)
+#define FIREWALL_CR_VDE         (0x1U<<2U)

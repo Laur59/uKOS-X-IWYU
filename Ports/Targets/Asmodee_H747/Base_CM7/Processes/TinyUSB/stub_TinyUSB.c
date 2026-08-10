@@ -54,7 +54,7 @@ static  void    local_OTG_HS_IRQHandler(void);
 
 static  tusb_rhport_init_t deviceInit = {
     .role  = TUSB_ROLE_DEVICE,
-    .speed = TUSB_SPEED_AUTO
+    .speed = TUSB_SPEED_AUTO,
 };
 
 /*

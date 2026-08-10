@@ -26,5 +26,5 @@ typedef struct {
 
 // CPACR Configuration
 
-#define FPU_CPACR_CPACR_CP      (0xFU<<20)
-#define FPU_CPACR_CPACR_CP_0    (0x1U<<20)
+#define FPU_CPACR_CPACR_CP      (0xFU<<20U)
+#define FPU_CPACR_CPACR_CP_0    (0x1U<<20U)

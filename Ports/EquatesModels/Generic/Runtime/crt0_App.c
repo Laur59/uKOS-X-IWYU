@@ -34,6 +34,7 @@
 #include    "serial/serial.h"
 #include    "cmns.h"
 #include    "crt0.h"
+#include    "linker.h"
 #include    "kern/kern.h"
 #include    "macros.h"
 #include    "macros_core.h"
@@ -53,13 +54,6 @@
 
 // Runtime specific
 // ================
-
-extern  uint8_t     linker_stBSS[];
-extern  uint8_t     linker_enBSS[];
-extern  uint8_t     linker_stInitArray[];
-extern  uint8_t     linker_enInitArray[];
-extern  uint8_t     linker_stFiniArray[];
-extern  uint8_t     linker_enFiniArray[];
 
 extern  char_t      aFLASH_signature[];
 extern  uint32_t    vKern_nbIntImbrications;
@@ -90,13 +84,13 @@ int32_t     aStart(uint32_t argc, const char_t *argv[]) {
     uintptr_t   *ptrStInitArray;
     uintptr_t   *ptrEnInitArray;
 
-    #if (!defined(SKIP_CXX_DESTRUCTORS_S))
+    #ifndef SKIP_CXX_DESTRUCTORS_S
     uintptr_t   *ptrStFiniArray;
     uintptr_t   *ptrEnFiniArray;
     #endif
 
     PRIVILEGE_ELEVATE;
-    gdb = (vKern_nbIntImbrications != 0U) ? (true) : (false);
+    gdb = vKern_nbIntImbrications != 0U;
     if (gdb) {
         kern_criticalSection(KEXIT_CRITICAL);
     }
@@ -139,7 +133,7 @@ int32_t     aStart(uint32_t argc, const char_t *argv[]) {
 
 // Call all destructors from .fini_array
 
-    #if (!defined(SKIP_CXX_DESTRUCTORS_S))
+    #ifndef SKIP_CXX_DESTRUCTORS_S
     ptrStFiniArray = ALIGNED_PTR(uintptr_t, linker_stFiniArray);
     ptrEnFiniArray = ALIGNED_PTR(uintptr_t, linker_enFiniArray);
 

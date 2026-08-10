@@ -106,106 +106,106 @@ typedef struct {
 
 // CONFIGID Configuration
 
-#define FICR_INFO_CONFIGID_HWID                         (0xFFFFU<<0)
-#define FICR_INFO_CONFIGID_HWID_0                       (0x1U<<0)
+#define FICR_INFO_CONFIGID_HWID                         (0xFFFFU<<0U)
+#define FICR_INFO_CONFIGID_HWID_0                       (0x1U<<0U)
 
 // DEVICEID Configuration
 
-#define FICR_INFO_DEVICEID_DEVICEID                     (0xFFFFFFFFU<<0)
-#define FICR_INFO_DEVICEID_DEVICEID_0                   (0x1U<<0)
+#define FICR_INFO_DEVICEID_DEVICEID                     (0xFFFFFFFFU<<0U)
+#define FICR_INFO_DEVICEID_DEVICEID_0                   (0x1U<<0U)
 
 // PART Configuration
 
-#define FICR_INFO_PART_PART                             (0xFFFFFFFFU<<0)
-#define FICR_INFO_PART_PART_0                           (0x1U<<0)
-#define FICR_INFO_PART_PART_N5340                       (0x5340U<<0)
-#define FICR_INFO_PART_PART_UNSPECIFIED                 (0xFFFFFFFFU<<0)
+#define FICR_INFO_PART_PART                             (0xFFFFFFFFU<<0U)
+#define FICR_INFO_PART_PART_0                           (0x1U<<0U)
+#define FICR_INFO_PART_PART_N5340                       (0x5340U<<0U)
+#define FICR_INFO_PART_PART_UNSPECIFIED                 (0xFFFFFFFFU<<0U)
 
 // VARIANT Configuration
 
-#define FICR_INFO_VARIANT_VARIANT                       (0xFFFFFFFFU<<0)
-#define FICR_INFO_VARIANT_VARIANT_0                     (0x1U<<0)
-#define FICR_INFO_VARIANT_VARIANT_QKAA                  (0x514B4141U<<0)
-#define FICR_INFO_VARIANT_VARIANT_CLAA                  (0x434C4141U<<0)
-#define FICR_INFO_VARIANT_VARIANT_UNSPECIFIED           (0xFFFFFFFFU<<0)
+#define FICR_INFO_VARIANT_VARIANT                       (0xFFFFFFFFU<<0U)
+#define FICR_INFO_VARIANT_VARIANT_0                     (0x1U<<0U)
+#define FICR_INFO_VARIANT_VARIANT_QKAA                  (0x514B4141U<<0U)
+#define FICR_INFO_VARIANT_VARIANT_CLAA                  (0x434C4141U<<0U)
+#define FICR_INFO_VARIANT_VARIANT_UNSPECIFIED           (0xFFFFFFFFU<<0U)
 
 // PACKAGE Configuration
 
-#define FICR_INFO_PACKAGE_PACKAGE                       (0xFFFFFFFFU<<0)
-#define FICR_INFO_PACKAGE_PACKAGE_0                     (0x1U<<0)
-#define FICR_INFO_PACKAGE_PACKAGE_QK                    (0x2000U<<0)
-#define FICR_INFO_PACKAGE_PACKAGE_CL                    (0x2005U<<0)
-#define FICR_INFO_PACKAGE_PACKAGE_UNSPECIFIED           (0xFFFFFFFFU<<0)
+#define FICR_INFO_PACKAGE_PACKAGE                       (0xFFFFFFFFU<<0U)
+#define FICR_INFO_PACKAGE_PACKAGE_0                     (0x1U<<0U)
+#define FICR_INFO_PACKAGE_PACKAGE_QK                    (0x2000U<<0U)
+#define FICR_INFO_PACKAGE_PACKAGE_CL                    (0x2005U<<0U)
+#define FICR_INFO_PACKAGE_PACKAGE_UNSPECIFIED           (0xFFFFFFFFU<<0U)
 
 // RAM Configuration
 
-#define FICR_INFO_RAM_RAM                               (0xFFFFFFFFU<<0)
-#define FICR_INFO_RAM_RAM_0                             (0x1U<<0)
-#define FICR_INFO_RAM_RAM_K16                           (0x10U<<0)
-#define FICR_INFO_RAM_RAM_K32                           (0x20U<<0)
-#define FICR_INFO_RAM_RAM_K64                           (0x40U<<0)
-#define FICR_INFO_RAM_RAM_K128                          (0x80U<<0)
-#define FICR_INFO_RAM_RAM_K256                          (0x100U<<0)
-#define FICR_INFO_RAM_RAM_K512                          (0x200U<<0)
-#define FICR_INFO_RAM_RAM_UNSPECIFIED                   (0xFFFFFFFFU<<0)
+#define FICR_INFO_RAM_RAM                               (0xFFFFFFFFU<<0U)
+#define FICR_INFO_RAM_RAM_0                             (0x1U<<0U)
+#define FICR_INFO_RAM_RAM_K16                           (0x10U<<0U)
+#define FICR_INFO_RAM_RAM_K32                           (0x20U<<0U)
+#define FICR_INFO_RAM_RAM_K64                           (0x40U<<0U)
+#define FICR_INFO_RAM_RAM_K128                          (0x80U<<0U)
+#define FICR_INFO_RAM_RAM_K256                          (0x100U<<0U)
+#define FICR_INFO_RAM_RAM_K512                          (0x200U<<0U)
+#define FICR_INFO_RAM_RAM_UNSPECIFIED                   (0xFFFFFFFFU<<0U)
 
 // FLASH Configuration
 
-#define FICR_INFO_FLASH_FLASH                           (0xFFFFFFFFU<<0)
-#define FICR_INFO_FLASH_FLASH_0                         (0x1U<<0)
-#define FICR_INFO_FLASH_FLASH_K128                      (0x80U<<0)
-#define FICR_INFO_FLASH_FLASH_K256                      (0x100U<<0)
-#define FICR_INFO_FLASH_FLASH_K512                      (0x200U<<0)
-#define FICR_INFO_FLASH_FLASH_K1024                     (0x400U<<0)
-#define FICR_INFO_FLASH_FLASH_K2048                     (0x800U<<0)
-#define FICR_INFO_FLASH_FLASH_UNSPECIFIED               (0xFFFFFFFFU<<0)
+#define FICR_INFO_FLASH_FLASH                           (0xFFFFFFFFU<<0U)
+#define FICR_INFO_FLASH_FLASH_0                         (0x1U<<0U)
+#define FICR_INFO_FLASH_FLASH_K128                      (0x80U<<0U)
+#define FICR_INFO_FLASH_FLASH_K256                      (0x100U<<0U)
+#define FICR_INFO_FLASH_FLASH_K512                      (0x200U<<0U)
+#define FICR_INFO_FLASH_FLASH_K1024                     (0x400U<<0U)
+#define FICR_INFO_FLASH_FLASH_K2048                     (0x800U<<0U)
+#define FICR_INFO_FLASH_FLASH_UNSPECIFIED               (0xFFFFFFFFU<<0U)
 
 // CODEPAGESIZE Configuration
 
-#define FICR_INFO_CODEPAGESIZE_CODEPAGESIZE             (0xFFFFFFFFU<<0)
-#define FICR_INFO_CODEPAGESIZE_CODEPAGESIZE_0           (0x1U<<0)
-#define FICR_INFO_CODEPAGESIZE_CODEPAGESIZE_K2048       (0x800U<<0)
+#define FICR_INFO_CODEPAGESIZE_CODEPAGESIZE             (0xFFFFFFFFU<<0U)
+#define FICR_INFO_CODEPAGESIZE_CODEPAGESIZE_0           (0x1U<<0U)
+#define FICR_INFO_CODEPAGESIZE_CODEPAGESIZE_K2048       (0x800U<<0U)
 
 // CODESIZE Configuration
 
-#define FICR_INFO_CODESIZE_CODESIZE                     (0xFFFFFFFFU<<0)
-#define FICR_INFO_CODESIZE_CODESIZE_0                   (0x1U<<0)
-#define FICR_INFO_CODESIZE_CODESIZE_P128                (0x80U<<0)
+#define FICR_INFO_CODESIZE_CODESIZE                     (0xFFFFFFFFU<<0U)
+#define FICR_INFO_CODESIZE_CODESIZE_0                   (0x1U<<0U)
+#define FICR_INFO_CODESIZE_CODESIZE_P128                (0x80U<<0U)
 
 // DEVICETYPE Configuration
 
-#define FICR_INFO_DEVICETYPE_DEVICETYPE                 (0xFFFFFFFFU<<0)
-#define FICR_INFO_DEVICETYPE_DEVICETYPE_0               (0x1U<<0)
-#define FICR_INFO_DEVICETYPE_DEVICETYPE_DIE             (0x0U<<0)
-#define FICR_INFO_DEVICETYPE_DEVICETYPE_FPGA            (0xFFFFFFFFU<<0)
+#define FICR_INFO_DEVICETYPE_DEVICETYPE                 (0xFFFFFFFFU<<0U)
+#define FICR_INFO_DEVICETYPE_DEVICETYPE_0               (0x1U<<0U)
+#define FICR_INFO_DEVICETYPE_DEVICETYPE_DIE             (0x0U<<0U)
+#define FICR_INFO_DEVICETYPE_DEVICETYPE_FPGA            (0xFFFFFFFFU<<0U)
 
 // ER Configuration
 
-#define FICR_ER_ER                                      (0xFFFFFFFFU<<0)
-#define FICR_ER_ER_0                                    (0x1U<<0)
+#define FICR_ER_ER                                      (0xFFFFFFFFU<<0U)
+#define FICR_ER_ER_0                                    (0x1U<<0U)
 
 // IR Configuration
 
-#define FICR_IR_IR                                      (0xFFFFFFFFU<<0)
-#define FICR_IR_IR_0                                    (0x1U<<0)
+#define FICR_IR_IR                                      (0xFFFFFFFFU<<0U)
+#define FICR_IR_IR_0                                    (0x1U<<0U)
 
 // DEVICEADDRTYPE Configuration
 
-#define FICR_DEVICEADDRTYPE_DEVICEADDRTYPE              (0x1U<<0)
-#define FICR_DEVICEADDRTYPE_DEVICEADDRTYPE_PUBLIC       (0x0U<<0)
-#define FICR_DEVICEADDRTYPE_DEVICEADDRTYPE_RANDOM       (0x1U<<0)
+#define FICR_DEVICEADDRTYPE_DEVICEADDRTYPE              (0x1U<<0U)
+#define FICR_DEVICEADDRTYPE_DEVICEADDRTYPE_PUBLIC       (0x0U<<0U)
+#define FICR_DEVICEADDRTYPE_DEVICEADDRTYPE_RANDOM       (0x1U<<0U)
 
 // DEVICEADDR Configuration
 
-#define FICR_DEVICEADDR_DEVICEADDR                      (0xFFFFFFFFU<<0)
-#define FICR_DEVICEADDR_DEVICEADDR_0                    (0x1U<<0)
+#define FICR_DEVICEADDR_DEVICEADDR                      (0xFFFFFFFFU<<0U)
+#define FICR_DEVICEADDR_DEVICEADDR_0                    (0x1U<<0U)
 
 // ADDR Configuration
 
-#define FICR_TRIMCNF_ADDR_ADDRESS                       (0xFFFFFFFFU<<0)
-#define FICR_TRIMCNF_ADDR_ADDRESS_0                     (0x1U<<0)
+#define FICR_TRIMCNF_ADDR_ADDRESS                       (0xFFFFFFFFU<<0U)
+#define FICR_TRIMCNF_ADDR_ADDRESS_0                     (0x1U<<0U)
 
 // DATA Configuration
 
-#define FICR_TRIMCNF_DATA_DATA                          (0xFFFFFFFFU<<0)
-#define FICR_TRIMCNF_DATA_DATA_0                        (0x1U<<0)
+#define FICR_TRIMCNF_DATA_DATA                          (0xFFFFFFFFU<<0U)
+#define FICR_TRIMCNF_DATA_DATA_0                        (0x1U<<0U)

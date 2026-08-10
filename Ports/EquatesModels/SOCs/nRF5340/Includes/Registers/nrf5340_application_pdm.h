@@ -60,192 +60,192 @@ typedef struct {
 
 // TASKS_START Configuration
 
-#define PDM_TASKS_START_TASKS_START                     (0x1U<<0)
-#define PDM_TASKS_START_TASKS_START_TRIGGER             (0x1U<<0)
+#define PDM_TASKS_START_TASKS_START                     (0x1U<<0U)
+#define PDM_TASKS_START_TASKS_START_TRIGGER             (0x1U<<0U)
 
 // TASKS_STOP Configuration
 
-#define PDM_TASKS_STOP_TASKS_STOP                       (0x1U<<0)
-#define PDM_TASKS_STOP_TASKS_STOP_TRIGGER               (0x1U<<0)
+#define PDM_TASKS_STOP_TASKS_STOP                       (0x1U<<0U)
+#define PDM_TASKS_STOP_TASKS_STOP_TRIGGER               (0x1U<<0U)
 
 // SUBSCRIBE_START Configuration
 
-#define PDM_SUBSCRIBE_START_EN                          (0x1U<<31)
-#define PDM_SUBSCRIBE_START_CHIDX                       (0xFFU<<0)
-#define PDM_SUBSCRIBE_START_CHIDX_0                     (0x1U<<0)
-#define PDM_SUBSCRIBE_START_EN_DISABLED                 (0x0U<<31)
-#define PDM_SUBSCRIBE_START_EN_ENABLED                  (0x1U<<31)
+#define PDM_SUBSCRIBE_START_EN                          (0x1U<<31U)
+#define PDM_SUBSCRIBE_START_CHIDX                       (0xFFU<<0U)
+#define PDM_SUBSCRIBE_START_CHIDX_0                     (0x1U<<0U)
+#define PDM_SUBSCRIBE_START_EN_DISABLED                 (0x0U<<31U)
+#define PDM_SUBSCRIBE_START_EN_ENABLED                  (0x1U<<31U)
 
 // SUBSCRIBE_STOP Configuration
 
-#define PDM_SUBSCRIBE_STOP_EN                           (0x1U<<31)
-#define PDM_SUBSCRIBE_STOP_CHIDX                        (0xFFU<<0)
-#define PDM_SUBSCRIBE_STOP_CHIDX_0                      (0x1U<<0)
-#define PDM_SUBSCRIBE_STOP_EN_DISABLED                  (0x0U<<31)
-#define PDM_SUBSCRIBE_STOP_EN_ENABLED                   (0x1U<<31)
+#define PDM_SUBSCRIBE_STOP_EN                           (0x1U<<31U)
+#define PDM_SUBSCRIBE_STOP_CHIDX                        (0xFFU<<0U)
+#define PDM_SUBSCRIBE_STOP_CHIDX_0                      (0x1U<<0U)
+#define PDM_SUBSCRIBE_STOP_EN_DISABLED                  (0x0U<<31U)
+#define PDM_SUBSCRIBE_STOP_EN_ENABLED                   (0x1U<<31U)
 
 // EVENTS_STARTED Configuration
 
-#define PDM_EVENTS_STARTED_EVENTS_STARTED               (0x1U<<0)
-#define PDM_EVENTS_STARTED_EVENTS_STARTED_NOTGENERATED  (0x0U<<0)
-#define PDM_EVENTS_STARTED_EVENTS_STARTED_GENERATED     (0x1U<<0)
+#define PDM_EVENTS_STARTED_EVENTS_STARTED               (0x1U<<0U)
+#define PDM_EVENTS_STARTED_EVENTS_STARTED_NOTGENERATED  (0x0U<<0U)
+#define PDM_EVENTS_STARTED_EVENTS_STARTED_GENERATED     (0x1U<<0U)
 
 // EVENTS_STOPPED Configuration
 
-#define PDM_EVENTS_STOPPED_EVENTS_STOPPED               (0x1U<<0)
-#define PDM_EVENTS_STOPPED_EVENTS_STOPPED_NOTGENERATED  (0x0U<<0)
-#define PDM_EVENTS_STOPPED_EVENTS_STOPPED_GENERATED     (0x1U<<0)
+#define PDM_EVENTS_STOPPED_EVENTS_STOPPED               (0x1U<<0U)
+#define PDM_EVENTS_STOPPED_EVENTS_STOPPED_NOTGENERATED  (0x0U<<0U)
+#define PDM_EVENTS_STOPPED_EVENTS_STOPPED_GENERATED     (0x1U<<0U)
 
 // EVENTS_END Configuration
 
-#define PDM_EVENTS_END_EVENTS_END                       (0x1U<<0)
-#define PDM_EVENTS_END_EVENTS_END_NOTGENERATED          (0x0U<<0)
-#define PDM_EVENTS_END_EVENTS_END_GENERATED             (0x1U<<0)
+#define PDM_EVENTS_END_EVENTS_END                       (0x1U<<0U)
+#define PDM_EVENTS_END_EVENTS_END_NOTGENERATED          (0x0U<<0U)
+#define PDM_EVENTS_END_EVENTS_END_GENERATED             (0x1U<<0U)
 
 // PUBLISH_STARTED Configuration
 
-#define PDM_PUBLISH_STARTED_EN                          (0x1U<<31)
-#define PDM_PUBLISH_STARTED_CHIDX                       (0xFFU<<0)
-#define PDM_PUBLISH_STARTED_CHIDX_0                     (0x1U<<0)
-#define PDM_PUBLISH_STARTED_EN_DISABLED                 (0x0U<<31)
-#define PDM_PUBLISH_STARTED_EN_ENABLED                  (0x1U<<31)
+#define PDM_PUBLISH_STARTED_EN                          (0x1U<<31U)
+#define PDM_PUBLISH_STARTED_CHIDX                       (0xFFU<<0U)
+#define PDM_PUBLISH_STARTED_CHIDX_0                     (0x1U<<0U)
+#define PDM_PUBLISH_STARTED_EN_DISABLED                 (0x0U<<31U)
+#define PDM_PUBLISH_STARTED_EN_ENABLED                  (0x1U<<31U)
 
 // PUBLISH_STOPPED Configuration
 
-#define PDM_PUBLISH_STOPPED_EN                          (0x1U<<31)
-#define PDM_PUBLISH_STOPPED_CHIDX                       (0xFFU<<0)
-#define PDM_PUBLISH_STOPPED_CHIDX_0                     (0x1U<<0)
-#define PDM_PUBLISH_STOPPED_EN_DISABLED                 (0x0U<<31)
-#define PDM_PUBLISH_STOPPED_EN_ENABLED                  (0x1U<<31)
+#define PDM_PUBLISH_STOPPED_EN                          (0x1U<<31U)
+#define PDM_PUBLISH_STOPPED_CHIDX                       (0xFFU<<0U)
+#define PDM_PUBLISH_STOPPED_CHIDX_0                     (0x1U<<0U)
+#define PDM_PUBLISH_STOPPED_EN_DISABLED                 (0x0U<<31U)
+#define PDM_PUBLISH_STOPPED_EN_ENABLED                  (0x1U<<31U)
 
 // PUBLISH_END Configuration
 
-#define PDM_PUBLISH_END_EN                              (0x1U<<31)
-#define PDM_PUBLISH_END_CHIDX                           (0xFFU<<0)
-#define PDM_PUBLISH_END_CHIDX_0                         (0x1U<<0)
-#define PDM_PUBLISH_END_EN_DISABLED                     (0x0U<<31)
-#define PDM_PUBLISH_END_EN_ENABLED                      (0x1U<<31)
+#define PDM_PUBLISH_END_EN                              (0x1U<<31U)
+#define PDM_PUBLISH_END_CHIDX                           (0xFFU<<0U)
+#define PDM_PUBLISH_END_CHIDX_0                         (0x1U<<0U)
+#define PDM_PUBLISH_END_EN_DISABLED                     (0x0U<<31U)
+#define PDM_PUBLISH_END_EN_ENABLED                      (0x1U<<31U)
 
 // INTEN Configuration
 
-#define PDM_INTEN_END                                   (0x1U<<2)
-#define PDM_INTEN_STOPPED                               (0x1U<<1)
-#define PDM_INTEN_STARTED                               (0x1U<<0)
-#define PDM_INTEN_END_DISABLED                          (0x0U<<2)
-#define PDM_INTEN_END_ENABLED                           (0x1U<<2)
-#define PDM_INTEN_STOPPED_DISABLED                      (0x0U<<1)
-#define PDM_INTEN_STOPPED_ENABLED                       (0x1U<<1)
-#define PDM_INTEN_STARTED_DISABLED                      (0x0U<<0)
-#define PDM_INTEN_STARTED_ENABLED                       (0x1U<<0)
+#define PDM_INTEN_END                                   (0x1U<<2U)
+#define PDM_INTEN_STOPPED                               (0x1U<<1U)
+#define PDM_INTEN_STARTED                               (0x1U<<0U)
+#define PDM_INTEN_END_DISABLED                          (0x0U<<2U)
+#define PDM_INTEN_END_ENABLED                           (0x1U<<2U)
+#define PDM_INTEN_STOPPED_DISABLED                      (0x0U<<1U)
+#define PDM_INTEN_STOPPED_ENABLED                       (0x1U<<1U)
+#define PDM_INTEN_STARTED_DISABLED                      (0x0U<<0U)
+#define PDM_INTEN_STARTED_ENABLED                       (0x1U<<0U)
 
 // INTENSET Configuration
 
-#define PDM_INTENSET_END                                (0x1U<<2)
-#define PDM_INTENSET_STOPPED                            (0x1U<<1)
-#define PDM_INTENSET_STARTED                            (0x1U<<0)
-#define PDM_INTENSET_END_DISABLED                       (0x0U<<2)
-#define PDM_INTENSET_END_ENABLED                        (0x1U<<2)
-#define PDM_INTENSET_END_SET                            (0x1U<<2)
-#define PDM_INTENSET_STOPPED_DISABLED                   (0x0U<<1)
-#define PDM_INTENSET_STOPPED_ENABLED                    (0x1U<<1)
-#define PDM_INTENSET_STOPPED_SET                        (0x1U<<1)
-#define PDM_INTENSET_STARTED_DISABLED                   (0x0U<<0)
-#define PDM_INTENSET_STARTED_ENABLED                    (0x1U<<0)
-#define PDM_INTENSET_STARTED_SET                        (0x1U<<0)
+#define PDM_INTENSET_END                                (0x1U<<2U)
+#define PDM_INTENSET_STOPPED                            (0x1U<<1U)
+#define PDM_INTENSET_STARTED                            (0x1U<<0U)
+#define PDM_INTENSET_END_DISABLED                       (0x0U<<2U)
+#define PDM_INTENSET_END_ENABLED                        (0x1U<<2U)
+#define PDM_INTENSET_END_SET                            (0x1U<<2U)
+#define PDM_INTENSET_STOPPED_DISABLED                   (0x0U<<1U)
+#define PDM_INTENSET_STOPPED_ENABLED                    (0x1U<<1U)
+#define PDM_INTENSET_STOPPED_SET                        (0x1U<<1U)
+#define PDM_INTENSET_STARTED_DISABLED                   (0x0U<<0U)
+#define PDM_INTENSET_STARTED_ENABLED                    (0x1U<<0U)
+#define PDM_INTENSET_STARTED_SET                        (0x1U<<0U)
 
 // INTENCLR Configuration
 
-#define PDM_INTENCLR_END                                (0x1U<<2)
-#define PDM_INTENCLR_STOPPED                            (0x1U<<1)
-#define PDM_INTENCLR_STARTED                            (0x1U<<0)
-#define PDM_INTENCLR_END_DISABLED                       (0x0U<<2)
-#define PDM_INTENCLR_END_ENABLED                        (0x1U<<2)
-#define PDM_INTENCLR_END_CLEAR                          (0x1U<<2)
-#define PDM_INTENCLR_STOPPED_DISABLED                   (0x0U<<1)
-#define PDM_INTENCLR_STOPPED_ENABLED                    (0x1U<<1)
-#define PDM_INTENCLR_STOPPED_CLEAR                      (0x1U<<1)
-#define PDM_INTENCLR_STARTED_DISABLED                   (0x0U<<0)
-#define PDM_INTENCLR_STARTED_ENABLED                    (0x1U<<0)
-#define PDM_INTENCLR_STARTED_CLEAR                      (0x1U<<0)
+#define PDM_INTENCLR_END                                (0x1U<<2U)
+#define PDM_INTENCLR_STOPPED                            (0x1U<<1U)
+#define PDM_INTENCLR_STARTED                            (0x1U<<0U)
+#define PDM_INTENCLR_END_DISABLED                       (0x0U<<2U)
+#define PDM_INTENCLR_END_ENABLED                        (0x1U<<2U)
+#define PDM_INTENCLR_END_CLEAR                          (0x1U<<2U)
+#define PDM_INTENCLR_STOPPED_DISABLED                   (0x0U<<1U)
+#define PDM_INTENCLR_STOPPED_ENABLED                    (0x1U<<1U)
+#define PDM_INTENCLR_STOPPED_CLEAR                      (0x1U<<1U)
+#define PDM_INTENCLR_STARTED_DISABLED                   (0x0U<<0U)
+#define PDM_INTENCLR_STARTED_ENABLED                    (0x1U<<0U)
+#define PDM_INTENCLR_STARTED_CLEAR                      (0x1U<<0U)
 
 // ENABLE Configuration
 
-#define PDM_ENABLE_ENABLE                               (0x1U<<0)
-#define PDM_ENABLE_ENABLE_DISABLED                      (0x0U<<0)
-#define PDM_ENABLE_ENABLE_ENABLED                       (0x1U<<0)
+#define PDM_ENABLE_ENABLE                               (0x1U<<0U)
+#define PDM_ENABLE_ENABLE_DISABLED                      (0x0U<<0U)
+#define PDM_ENABLE_ENABLE_ENABLED                       (0x1U<<0U)
 
 // PDMCLKCTRL Configuration
 
-#define PDM_PDMCLKCTRL_FREQ                             (0xFFFFFFFFU<<0)
-#define PDM_PDMCLKCTRL_FREQ_0                           (0x1U<<0)
-#define PDM_PDMCLKCTRL_FREQ_1000K                       (0x8000000U<<0)
-#define PDM_PDMCLKCTRL_FREQ_DEFAULT                     (0x8400000U<<0)
-#define PDM_PDMCLKCTRL_FREQ_1067K                       (0x8800000U<<0)
-#define PDM_PDMCLKCTRL_FREQ_1231K                       (0x9800000U<<0)
-#define PDM_PDMCLKCTRL_FREQ_1280K                       (0xA000000U<<0)
-#define PDM_PDMCLKCTRL_FREQ_1333K                       (0xA800000U<<0)
+#define PDM_PDMCLKCTRL_FREQ                             (0xFFFFFFFFU<<0U)
+#define PDM_PDMCLKCTRL_FREQ_0                           (0x1U<<0U)
+#define PDM_PDMCLKCTRL_FREQ_1000K                       (0x8000000U<<0U)
+#define PDM_PDMCLKCTRL_FREQ_DEFAULT                     (0x8400000U<<0U)
+#define PDM_PDMCLKCTRL_FREQ_1067K                       (0x8800000U<<0U)
+#define PDM_PDMCLKCTRL_FREQ_1231K                       (0x9800000U<<0U)
+#define PDM_PDMCLKCTRL_FREQ_1280K                       (0xA000000U<<0U)
+#define PDM_PDMCLKCTRL_FREQ_1333K                       (0xA800000U<<0U)
 
 // MODE Configuration
 
-#define PDM_MODE_EDGE                                   (0x1U<<1)
-#define PDM_MODE_OPERATION                              (0x1U<<0)
-#define PDM_MODE_EDGE_LEFTFALLING                       (0x0U<<1)
-#define PDM_MODE_EDGE_LEFTRISING                        (0x1U<<1)
-#define PDM_MODE_OPERATION_STEREO                       (0x0U<<0)
-#define PDM_MODE_OPERATION_MONO                         (0x1U<<0)
+#define PDM_MODE_EDGE                                   (0x1U<<1U)
+#define PDM_MODE_OPERATION                              (0x1U<<0U)
+#define PDM_MODE_EDGE_LEFTFALLING                       (0x0U<<1U)
+#define PDM_MODE_EDGE_LEFTRISING                        (0x1U<<1U)
+#define PDM_MODE_OPERATION_STEREO                       (0x0U<<0U)
+#define PDM_MODE_OPERATION_MONO                         (0x1U<<0U)
 
 // GAINL Configuration
 
-#define PDM_GAINL_GAINL                                 (0x7FU<<0)
-#define PDM_GAINL_GAINL_0                               (0x1U<<0)
-#define PDM_GAINL_GAINL_MINGAIN                         (0x0U<<0)
-#define PDM_GAINL_GAINL_DEFAULTGAIN                     (0x28U<<0)
-#define PDM_GAINL_GAINL_MAXGAIN                         (0x50U<<0)
+#define PDM_GAINL_GAINL                                 (0x7FU<<0U)
+#define PDM_GAINL_GAINL_0                               (0x1U<<0U)
+#define PDM_GAINL_GAINL_MINGAIN                         (0x0U<<0U)
+#define PDM_GAINL_GAINL_DEFAULTGAIN                     (0x28U<<0U)
+#define PDM_GAINL_GAINL_MAXGAIN                         (0x50U<<0U)
 
 // GAINR Configuration
 
-#define PDM_GAINR_GAINR                                 (0x7FU<<0)
-#define PDM_GAINR_GAINR_0                               (0x1U<<0)
-#define PDM_GAINR_GAINR_MINGAIN                         (0x0U<<0)
-#define PDM_GAINR_GAINR_DEFAULTGAIN                     (0x28U<<0)
-#define PDM_GAINR_GAINR_MAXGAIN                         (0x50U<<0)
+#define PDM_GAINR_GAINR                                 (0x7FU<<0U)
+#define PDM_GAINR_GAINR_0                               (0x1U<<0U)
+#define PDM_GAINR_GAINR_MINGAIN                         (0x0U<<0U)
+#define PDM_GAINR_GAINR_DEFAULTGAIN                     (0x28U<<0U)
+#define PDM_GAINR_GAINR_MAXGAIN                         (0x50U<<0U)
 
 // RATIO Configuration
 
-#define PDM_RATIO_RATIO                                 (0x1U<<0)
-#define PDM_RATIO_RATIO_RATIO64                         (0x0U<<0)
-#define PDM_RATIO_RATIO_RATIO80                         (0x1U<<0)
+#define PDM_RATIO_RATIO                                 (0x1U<<0U)
+#define PDM_RATIO_RATIO_RATIO64                         (0x0U<<0U)
+#define PDM_RATIO_RATIO_RATIO80                         (0x1U<<0U)
 
 // CLK Configuration
 
-#define PDM_PSEL_CLK_CONNECT                            (0x1U<<31)
-#define PDM_PSEL_CLK_PORT                               (0x1U<<5)
-#define PDM_PSEL_CLK_PIN                                (0x1FU<<0)
-#define PDM_PSEL_CLK_PIN_0                              (0x1U<<0)
-#define PDM_PSEL_CLK_CONNECT_DISCONNECTED               (0x1U<<31)
-#define PDM_PSEL_CLK_CONNECT_CONNECTED                  (0x0U<<31)
+#define PDM_PSEL_CLK_CONNECT                            (0x1U<<31U)
+#define PDM_PSEL_CLK_PORT                               (0x1U<<5U)
+#define PDM_PSEL_CLK_PIN                                (0x1FU<<0U)
+#define PDM_PSEL_CLK_PIN_0                              (0x1U<<0U)
+#define PDM_PSEL_CLK_CONNECT_DISCONNECTED               (0x1U<<31U)
+#define PDM_PSEL_CLK_CONNECT_CONNECTED                  (0x0U<<31U)
 
 // DIN Configuration
 
-#define PDM_PSEL_DIN_CONNECT                            (0x1U<<31)
-#define PDM_PSEL_DIN_PORT                               (0x1U<<5)
-#define PDM_PSEL_DIN_PIN                                (0x1FU<<0)
-#define PDM_PSEL_DIN_PIN_0                              (0x1U<<0)
-#define PDM_PSEL_DIN_CONNECT_DISCONNECTED               (0x1U<<31)
-#define PDM_PSEL_DIN_CONNECT_CONNECTED                  (0x0U<<31)
+#define PDM_PSEL_DIN_CONNECT                            (0x1U<<31U)
+#define PDM_PSEL_DIN_PORT                               (0x1U<<5U)
+#define PDM_PSEL_DIN_PIN                                (0x1FU<<0U)
+#define PDM_PSEL_DIN_PIN_0                              (0x1U<<0U)
+#define PDM_PSEL_DIN_CONNECT_DISCONNECTED               (0x1U<<31U)
+#define PDM_PSEL_DIN_CONNECT_CONNECTED                  (0x0U<<31U)
 
 // MCLKCONFIG Configuration
 
-#define PDM_MCLKCONFIG_SRC                              (0x1U<<0)
-#define PDM_MCLKCONFIG_SRC_PCLK32M                      (0x0U<<0)
-#define PDM_MCLKCONFIG_SRC_ACLK                         (0x1U<<0)
+#define PDM_MCLKCONFIG_SRC                              (0x1U<<0U)
+#define PDM_MCLKCONFIG_SRC_PCLK32M                      (0x0U<<0U)
+#define PDM_MCLKCONFIG_SRC_ACLK                         (0x1U<<0U)
 
 // PTR Configuration
 
-#define PDM_SAMPLE_PTR_SAMPLEPTR                        (0xFFFFFFFFU<<0)
-#define PDM_SAMPLE_PTR_SAMPLEPTR_0                      (0x1U<<0)
+#define PDM_SAMPLE_PTR_SAMPLEPTR                        (0xFFFFFFFFU<<0U)
+#define PDM_SAMPLE_PTR_SAMPLEPTR_0                      (0x1U<<0U)
 
 // MAXCNT Configuration
 
-#define PDM_SAMPLE_MAXCNT_BUFFSIZE                      (0x7FFFU<<0)
-#define PDM_SAMPLE_MAXCNT_BUFFSIZE_0                    (0x1U<<0)
+#define PDM_SAMPLE_MAXCNT_BUFFSIZE                      (0x7FFFU<<0U)
+#define PDM_SAMPLE_MAXCNT_BUFFSIZE_0                    (0x1U<<0U)

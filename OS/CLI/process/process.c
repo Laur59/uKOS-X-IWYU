@@ -421,7 +421,7 @@ static  void    local_printParameter_P1(uint8_t core, uint16_t number, process_t
 
     UNUSED(core);
 
-    father = (handle->oInternal.oProcFather == nullptr)   ? "Orphan" : (handle->oInternal.oProcFather->oSpecification.oIdentifier);
+    father = (handle->oInternal.oProcFather == nullptr)   ? "Orphan" : handle->oInternal.oProcFather->oSpecification.oIdentifier;
     space  = (handle->oSpecification.oMode == KPROC_USER) ? "User"   : "Privileged";
 
     (void)dprintf(KSYST, "Process identifier: %d %s\n", number, handle->oSpecification.oIdentifier);

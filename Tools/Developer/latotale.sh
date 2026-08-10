@@ -10,6 +10,10 @@
 emulate -L zsh
 setopt ERR_EXIT NO_UNSET PIPE_FAIL
 
+# Paths ( :A resolves symlinks, so the root is correct when called through Tools/Developer/bin )
+
+readonly PATH_ROOT="${0:A:h:h:h}"
+
 # Colours for messages
 
 readonly RED=$'\033[0;31m'
@@ -89,7 +93,7 @@ done
 
 tic=$(date +%s)
 print "$(date -r $tic)"
-cd "${PROJECT_DIRECTORY}"/Ports/Targets
+cd "${PATH_ROOT}/Ports/Targets"
 print "${YELLOW}\ngit branch $(git branch --show-current)${NC}\n"
 export NOLISTING=1
 #

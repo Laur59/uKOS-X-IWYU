@@ -5,6 +5,8 @@
  * Hardware specific stub.
  */
 
+#include    "stub.h"
+
 #include    <stdint.h>
 
 #include    "clockTree.h"
@@ -18,12 +20,9 @@
 #define KTIM_ESAMPLING_0    ((float64_t)(0.001))                                // 1-ms
 #define KDELTA_TIME_0       ((uint32_t)(KFREQUENCY_TIM * KTIM_ESAMPLING_0))     // Delta time
 
-extern  volatile    uint32_t    vTimer;
-
 // Prototypes
 
 static  void    stub_intr_timer_interruption(void);
-extern  void    aTimer_callBack(void);
 
 /*
  * \brief stub_intr_timer_init

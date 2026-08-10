@@ -41,22 +41,6 @@ SECTIONS {
         linker_enTEXT = ABSOLUTE(.);
     } > prgm_code
 
-    .init_array : {
-        . = ALIGN(8);
-        linker_stInitArray = ABSOLUTE(.);
-        KEEP(*(SORT_BY_INIT_PRIORITY(.init_array.*)))
-        KEEP(*(.init_array))
-        linker_enInitArray = ABSOLUTE(.);
-    } > prgm_code
-
-    .fini_array : {
-        . = ALIGN(8);
-        linker_stFiniArray = ABSOLUTE(.);
-        KEEP(*(SORT_BY_INIT_PRIORITY(.fini_array.*)))
-        KEEP(*(.fini_array))
-        linker_enFiniArray = ABSOLUTE(.);
-    } > prgm_code
-
     .rodata : {
         . = ALIGN(8);
         linker_stRODATA = ABSOLUTE(.);
@@ -88,6 +72,27 @@ SECTIONS {
         *(.gcc_except_table)
         *(.gcc_except_table.*)
         . = ALIGN(8);
+    } > prgm_code
+
+    /* .init_array and .fini_array are writable (SHF_WRITE) and must stay
+       contiguous with .data. Placed between read-only sections, they land in
+       the writable PT_LOAD whilst keeping an address outside its range, which
+       ld tolerates but strip rejects.                                        */
+
+    .init_array : {
+        . = ALIGN(8);
+        linker_stInitArray = ABSOLUTE(.);
+        KEEP(*(SORT_BY_INIT_PRIORITY(.init_array.*)))
+        KEEP(*(.init_array))
+        linker_enInitArray = ABSOLUTE(.);
+    } > prgm_code
+
+    .fini_array : {
+        . = ALIGN(8);
+        linker_stFiniArray = ABSOLUTE(.);
+        KEEP(*(SORT_BY_INIT_PRIORITY(.fini_array.*)))
+        KEEP(*(.fini_array))
+        linker_enFiniArray = ABSOLUTE(.);
     } > prgm_code
 
     .data : {

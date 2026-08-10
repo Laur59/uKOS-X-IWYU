@@ -63,7 +63,7 @@ enum {
         KERR_SDCARD,
         KERR_WRITE,
         KERR_READ,
-        KERR_MISMATCH
+        KERR_MISMATCH,
 };
 
 // ---------------------------I-----------------------------------------I--------------I

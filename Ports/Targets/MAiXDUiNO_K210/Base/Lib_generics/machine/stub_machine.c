@@ -55,7 +55,7 @@ int32_t stub_machine_readPC(const uintptr_t *stackProcess, uintptr_t *pc) {
 //               ----   ----  -------   ------    ----
     pcOffset +=  +0U    +1U    +1U       +1U      +1U;
 
-    *pc = (stackProcess[pcOffset]);
+    *pc = stackProcess[pcOffset];
     return KERR_SYSTEM_NOERR;
 }
 

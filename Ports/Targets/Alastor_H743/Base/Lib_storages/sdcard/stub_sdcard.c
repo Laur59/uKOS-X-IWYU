@@ -29,7 +29,7 @@ enum {
         KSDCARD_INIT = 0U,
         KSDCARD_RELEASE,
         KSDCARD_SELECT,
-        KSDCARD_DESELECT
+        KSDCARD_DESELECT,
 };
 
 // Model callbacks
@@ -50,7 +50,7 @@ static  void    cb_control(uint8_t mode) {
     static  const   spiCnf_t    configure = {
                                     .oSpeed    = 400000U,
                                     .oMode     = (uint8_t)KSPI_MASTER,
-                                    .oClock    = 0U
+                                    .oClock    = 0U,
                                 };
 
     switch (mode) {
@@ -88,7 +88,7 @@ static  void    cb_speed(uint32_t speed) {
     static  spiCnf_t    configure = {
                             .oMode     = (uint8_t)KSPI_MASTER,
                             .oClock    = 0U,
-                            .oSpeed    = 0U
+                            .oSpeed    = 0U,
                         };
 
     configure.oSpeed = speed;

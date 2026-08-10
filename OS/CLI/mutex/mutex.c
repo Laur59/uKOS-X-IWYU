@@ -92,7 +92,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
                 counter = vKern_mutx[core][i].oCounter;
 
                 if (vKern_mutx[core][i].oOwner == nullptr) { owner = "";                                                                                                                            }
-                else                                       { owner = (vKern_mutx[core][i].oOwner == KKERN_HANDLE_FROM_ISR) ? "From ISR" : (vKern_mutx[core][i].oOwner->oSpecification.oIdentifier); }
+                else                                       { owner = (vKern_mutx[core][i].oOwner == KKERN_HANDLE_FROM_ISR) ? "From ISR" : vKern_mutx[core][i].oOwner->oSpecification.oIdentifier; }
                 local_compose(owner, &idSpacerO);
 
 // Scann the mutex list and collect

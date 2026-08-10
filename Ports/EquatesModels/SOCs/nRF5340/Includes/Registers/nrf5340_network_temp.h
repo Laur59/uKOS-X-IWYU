@@ -59,144 +59,144 @@ typedef struct {
 
 // TASKS_START Configuration
 
-#define TEMP_TASKS_START_TASKS_START                    (0x1U<<0)
-#define TEMP_TASKS_START_TASKS_START_TRIGGER            (0x1U<<0)
+#define TEMP_TASKS_START_TASKS_START                    (0x1U<<0U)
+#define TEMP_TASKS_START_TASKS_START_TRIGGER            (0x1U<<0U)
 
 // TASKS_STOP Configuration
 
-#define TEMP_TASKS_STOP_TASKS_STOP                      (0x1U<<0)
-#define TEMP_TASKS_STOP_TASKS_STOP_TRIGGER              (0x1U<<0)
+#define TEMP_TASKS_STOP_TASKS_STOP                      (0x1U<<0U)
+#define TEMP_TASKS_STOP_TASKS_STOP_TRIGGER              (0x1U<<0U)
 
 // SUBSCRIBE_START Configuration
 
-#define TEMP_SUBSCRIBE_START_EN                         (0x1U<<31)
-#define TEMP_SUBSCRIBE_START_CHIDX                      (0xFFU<<0)
-#define TEMP_SUBSCRIBE_START_CHIDX_0                    (0x1U<<0)
-#define TEMP_SUBSCRIBE_START_EN_DISABLED                (0x0U<<31)
-#define TEMP_SUBSCRIBE_START_EN_ENABLED                 (0x1U<<31)
+#define TEMP_SUBSCRIBE_START_EN                         (0x1U<<31U)
+#define TEMP_SUBSCRIBE_START_CHIDX                      (0xFFU<<0U)
+#define TEMP_SUBSCRIBE_START_CHIDX_0                    (0x1U<<0U)
+#define TEMP_SUBSCRIBE_START_EN_DISABLED                (0x0U<<31U)
+#define TEMP_SUBSCRIBE_START_EN_ENABLED                 (0x1U<<31U)
 
 // SUBSCRIBE_STOP Configuration
 
-#define TEMP_SUBSCRIBE_STOP_EN                          (0x1U<<31)
-#define TEMP_SUBSCRIBE_STOP_CHIDX                       (0xFFU<<0)
-#define TEMP_SUBSCRIBE_STOP_CHIDX_0                     (0x1U<<0)
-#define TEMP_SUBSCRIBE_STOP_EN_DISABLED                 (0x0U<<31)
-#define TEMP_SUBSCRIBE_STOP_EN_ENABLED                  (0x1U<<31)
+#define TEMP_SUBSCRIBE_STOP_EN                          (0x1U<<31U)
+#define TEMP_SUBSCRIBE_STOP_CHIDX                       (0xFFU<<0U)
+#define TEMP_SUBSCRIBE_STOP_CHIDX_0                     (0x1U<<0U)
+#define TEMP_SUBSCRIBE_STOP_EN_DISABLED                 (0x0U<<31U)
+#define TEMP_SUBSCRIBE_STOP_EN_ENABLED                  (0x1U<<31U)
 
 // EVENTS_DATARDY Configuration
 
-#define TEMP_EVENTS_DATARDY_EVENTS_DATARDY              (0x1U<<0)
-#define TEMP_EVENTS_DATARDY_EVENTS_DATARDY_NOTGENERATED (0x0U<<0)
-#define TEMP_EVENTS_DATARDY_EVENTS_DATARDY_GENERATED    (0x1U<<0)
+#define TEMP_EVENTS_DATARDY_EVENTS_DATARDY              (0x1U<<0U)
+#define TEMP_EVENTS_DATARDY_EVENTS_DATARDY_NOTGENERATED (0x0U<<0U)
+#define TEMP_EVENTS_DATARDY_EVENTS_DATARDY_GENERATED    (0x1U<<0U)
 
 // PUBLISH_DATARDY Configuration
 
-#define TEMP_PUBLISH_DATARDY_EN                         (0x1U<<31)
-#define TEMP_PUBLISH_DATARDY_CHIDX                      (0xFFU<<0)
-#define TEMP_PUBLISH_DATARDY_CHIDX_0                    (0x1U<<0)
-#define TEMP_PUBLISH_DATARDY_EN_DISABLED                (0x0U<<31)
-#define TEMP_PUBLISH_DATARDY_EN_ENABLED                 (0x1U<<31)
+#define TEMP_PUBLISH_DATARDY_EN                         (0x1U<<31U)
+#define TEMP_PUBLISH_DATARDY_CHIDX                      (0xFFU<<0U)
+#define TEMP_PUBLISH_DATARDY_CHIDX_0                    (0x1U<<0U)
+#define TEMP_PUBLISH_DATARDY_EN_DISABLED                (0x0U<<31U)
+#define TEMP_PUBLISH_DATARDY_EN_ENABLED                 (0x1U<<31U)
 
 // INTENSET Configuration
 
-#define TEMP_INTENSET_DATARDY                           (0x1U<<0)
-#define TEMP_INTENSET_DATARDY_DISABLED                  (0x0U<<0)
-#define TEMP_INTENSET_DATARDY_ENABLED                   (0x1U<<0)
-#define TEMP_INTENSET_DATARDY_SET                       (0x1U<<0)
+#define TEMP_INTENSET_DATARDY                           (0x1U<<0U)
+#define TEMP_INTENSET_DATARDY_DISABLED                  (0x0U<<0U)
+#define TEMP_INTENSET_DATARDY_ENABLED                   (0x1U<<0U)
+#define TEMP_INTENSET_DATARDY_SET                       (0x1U<<0U)
 
 // INTENCLR Configuration
 
-#define TEMP_INTENCLR_DATARDY                           (0x1U<<0)
-#define TEMP_INTENCLR_DATARDY_DISABLED                  (0x0U<<0)
-#define TEMP_INTENCLR_DATARDY_ENABLED                   (0x1U<<0)
-#define TEMP_INTENCLR_DATARDY_CLEAR                     (0x1U<<0)
+#define TEMP_INTENCLR_DATARDY                           (0x1U<<0U)
+#define TEMP_INTENCLR_DATARDY_DISABLED                  (0x0U<<0U)
+#define TEMP_INTENCLR_DATARDY_ENABLED                   (0x1U<<0U)
+#define TEMP_INTENCLR_DATARDY_CLEAR                     (0x1U<<0U)
 
 // TEMP Configuration
 
-#define TEMP_TEMP_TEMP                                  (0xFFFFFFFFU<<0)
-#define TEMP_TEMP_TEMP_0                                (0x1U<<0)
+#define TEMP_TEMP_TEMP                                  (0xFFFFFFFFU<<0U)
+#define TEMP_TEMP_TEMP_0                                (0x1U<<0U)
 
 // A0 Configuration
 
-#define TEMP_A0_A0                                      (0xFFFU<<0)
-#define TEMP_A0_A0_0                                    (0x1U<<0)
+#define TEMP_A0_A0                                      (0xFFFU<<0U)
+#define TEMP_A0_A0_0                                    (0x1U<<0U)
 
 // A1 Configuration
 
-#define TEMP_A1_A1                                      (0xFFFU<<0)
-#define TEMP_A1_A1_0                                    (0x1U<<0)
+#define TEMP_A1_A1                                      (0xFFFU<<0U)
+#define TEMP_A1_A1_0                                    (0x1U<<0U)
 
 // A2 Configuration
 
-#define TEMP_A2_A2                                      (0xFFFU<<0)
-#define TEMP_A2_A2_0                                    (0x1U<<0)
+#define TEMP_A2_A2                                      (0xFFFU<<0U)
+#define TEMP_A2_A2_0                                    (0x1U<<0U)
 
 // A3 Configuration
 
-#define TEMP_A3_A3                                      (0xFFFU<<0)
-#define TEMP_A3_A3_0                                    (0x1U<<0)
+#define TEMP_A3_A3                                      (0xFFFU<<0U)
+#define TEMP_A3_A3_0                                    (0x1U<<0U)
 
 // A4 Configuration
 
-#define TEMP_A4_A4                                      (0xFFFU<<0)
-#define TEMP_A4_A4_0                                    (0x1U<<0)
+#define TEMP_A4_A4                                      (0xFFFU<<0U)
+#define TEMP_A4_A4_0                                    (0x1U<<0U)
 
 // A5 Configuration
 
-#define TEMP_A5_A5                                      (0xFFFU<<0)
-#define TEMP_A5_A5_0                                    (0x1U<<0)
+#define TEMP_A5_A5                                      (0xFFFU<<0U)
+#define TEMP_A5_A5_0                                    (0x1U<<0U)
 
 // B0 Configuration
 
-#define TEMP_B0_B0                                      (0xFFFU<<0)
-#define TEMP_B0_B0_0                                    (0x1U<<0)
+#define TEMP_B0_B0                                      (0xFFFU<<0U)
+#define TEMP_B0_B0_0                                    (0x1U<<0U)
 
 // B1 Configuration
 
-#define TEMP_B1_B1                                      (0xFFFU<<0)
-#define TEMP_B1_B1_0                                    (0x1U<<0)
+#define TEMP_B1_B1                                      (0xFFFU<<0U)
+#define TEMP_B1_B1_0                                    (0x1U<<0U)
 
 // B2 Configuration
 
-#define TEMP_B2_B2                                      (0xFFFU<<0)
-#define TEMP_B2_B2_0                                    (0x1U<<0)
+#define TEMP_B2_B2                                      (0xFFFU<<0U)
+#define TEMP_B2_B2_0                                    (0x1U<<0U)
 
 // B3 Configuration
 
-#define TEMP_B3_B3                                      (0xFFFU<<0)
-#define TEMP_B3_B3_0                                    (0x1U<<0)
+#define TEMP_B3_B3                                      (0xFFFU<<0U)
+#define TEMP_B3_B3_0                                    (0x1U<<0U)
 
 // B4 Configuration
 
-#define TEMP_B4_B4                                      (0xFFFU<<0)
-#define TEMP_B4_B4_0                                    (0x1U<<0)
+#define TEMP_B4_B4                                      (0xFFFU<<0U)
+#define TEMP_B4_B4_0                                    (0x1U<<0U)
 
 // B5 Configuration
 
-#define TEMP_B5_B5                                      (0xFFFU<<0)
-#define TEMP_B5_B5_0                                    (0x1U<<0)
+#define TEMP_B5_B5                                      (0xFFFU<<0U)
+#define TEMP_B5_B5_0                                    (0x1U<<0U)
 
 // T0 Configuration
 
-#define TEMP_T0_T0                                      (0xFFU<<0)
-#define TEMP_T0_T0_0                                    (0x1U<<0)
+#define TEMP_T0_T0                                      (0xFFU<<0U)
+#define TEMP_T0_T0_0                                    (0x1U<<0U)
 
 // T1 Configuration
 
-#define TEMP_T1_T1                                      (0xFFU<<0)
-#define TEMP_T1_T1_0                                    (0x1U<<0)
+#define TEMP_T1_T1                                      (0xFFU<<0U)
+#define TEMP_T1_T1_0                                    (0x1U<<0U)
 
 // T2 Configuration
 
-#define TEMP_T2_T2                                      (0xFFU<<0)
-#define TEMP_T2_T2_0                                    (0x1U<<0)
+#define TEMP_T2_T2                                      (0xFFU<<0U)
+#define TEMP_T2_T2_0                                    (0x1U<<0U)
 
 // T3 Configuration
 
-#define TEMP_T3_T3                                      (0xFFU<<0)
-#define TEMP_T3_T3_0                                    (0x1U<<0)
+#define TEMP_T3_T3                                      (0xFFU<<0U)
+#define TEMP_T3_T3_0                                    (0x1U<<0U)
 
 // T4 Configuration
 
-#define TEMP_T4_T4                                      (0xFFU<<0)
-#define TEMP_T4_T4_0                                    (0x1U<<0)
+#define TEMP_T4_T4                                      (0xFFU<<0U)
+#define TEMP_T4_T4_0                                    (0x1U<<0U)

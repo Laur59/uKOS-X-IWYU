@@ -23,7 +23,7 @@ static  bool    local_isLeapYear(int year);
  * - Update the hardware rtc with a new UTC time
  *
  */
-void    model_rtc_update(uint64_t unixTime) {
+static  void    model_rtc_update(uint64_t unixTime) {
     tm_t        localTime;
     time_t      now;
     uint8_t     absDays, absMonths, absYears, absHours, absMinutes, absSeconds;
@@ -103,7 +103,7 @@ void    model_rtc_update(uint64_t unixTime) {
  * - Read the Unix time from the rtc local time
  *
  */
-void    model_rtc_readUnixTime(uint64_t *unixTime) {
+static  void    model_rtc_readUnixTime(uint64_t *unixTime) {
     time_t      now;
     tm_t        localTime;
     uint32_t    date_reg, time_reg, ext_reg;

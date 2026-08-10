@@ -299,12 +299,11 @@ static  void    local_updateDynaPriority(void) {
 // Do not modify the dynamic priority of the running process.
 // Do not modify the dynamic priority if requested by the user.
 
-        if (process != vKern_runProc[core]) {
-            if (process->oInternal.oDynamicPriority > 0U) {
-                dynaPriority = (uint8_t)process->oInternal.oDynamicPriority;
-                dynaPriority--;
-                process->oInternal.oDynamicPriority = (priority_t)dynaPriority;
-            }
+        if ((process != vKern_runProc[core]) &&
+            (process->oInternal.oDynamicPriority > 0U)) {
+            dynaPriority = (uint8_t)process->oInternal.oDynamicPriority;
+            dynaPriority--;
+            process->oInternal.oDynamicPriority = (priority_t)dynaPriority;
         }
         process = process->oObject.oForward;
     }
@@ -324,12 +323,11 @@ static  void    local_callIdleOut(void) {
     core = GET_RUNNING_CORE;
     code = vKern_codeRoutine[core];
 
-    if (vKern_backwardProc[core] == &vKern_proc[core][0]) {
-        if (code != nullptr) {
-            vKern_runProc[core]->oInternal.oState |= (1U<<BPROC_LIKE_ISR);
-            code(KKERN_IDLE_OUT);
-            vKern_runProc[core]->oInternal.oState &= (uint16_t)~(1U<<BPROC_LIKE_ISR);
-        }
+    if ((vKern_backwardProc[core] == &vKern_proc[core][0]) &&
+        (code != nullptr)) {
+        vKern_runProc[core]->oInternal.oState |= (1U<<BPROC_LIKE_ISR);
+        code(KKERN_IDLE_OUT);
+        vKern_runProc[core]->oInternal.oState &= (uint16_t)~(1U<<BPROC_LIKE_ISR);
     }
 }
 

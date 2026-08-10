@@ -39,77 +39,77 @@ typedef struct {
 
 // CR1 Configuration
 
-#define TIM18_CR1_DITHEN            (0x1U<<12)
-#define TIM18_CR1_UIFREMAP          (0x1U<<11)
-#define TIM18_CR1_ARPE              (0x1U<<7)
-#define TIM18_CR1_OPM               (0x1U<<3)
-#define TIM18_CR1_URS               (0x1U<<2)
-#define TIM18_CR1_UDIS              (0x1U<<1)
-#define TIM18_CR1_CEN               (0x1U<<0)
+#define TIM18_CR1_DITHEN            (0x1U<<12U)
+#define TIM18_CR1_UIFREMAP          (0x1U<<11U)
+#define TIM18_CR1_ARPE              (0x1U<<7U)
+#define TIM18_CR1_OPM               (0x1U<<3U)
+#define TIM18_CR1_URS               (0x1U<<2U)
+#define TIM18_CR1_UDIS              (0x1U<<1U)
+#define TIM18_CR1_CEN               (0x1U<<0U)
 
-#define TIM18_CR1_DITHEN_B_0X0      (0x0U<<12)
-#define TIM18_CR1_DITHEN_B_0X1      (0x1U<<12)
-#define TIM18_CR1_UIFREMAP_B_0X0    (0x0U<<11)
-#define TIM18_CR1_UIFREMAP_B_0X1    (0x1U<<11)
-#define TIM18_CR1_ARPE_B_0X0        (0x0U<<7)
-#define TIM18_CR1_ARPE_B_0X1        (0x1U<<7)
-#define TIM18_CR1_OPM_B_0X0         (0x0U<<3)
-#define TIM18_CR1_OPM_B_0X1         (0x1U<<3)
-#define TIM18_CR1_URS_B_0X0         (0x0U<<2)
-#define TIM18_CR1_URS_B_0X1         (0x1U<<2)
-#define TIM18_CR1_UDIS_B_0X0        (0x0U<<1)
-#define TIM18_CR1_UDIS_B_0X1        (0x1U<<1)
-#define TIM18_CR1_CEN_B_0X0         (0x0U<<0)
-#define TIM18_CR1_CEN_B_0X1         (0x1U<<0)
+#define TIM18_CR1_DITHEN_B_0X0      (0x0U<<12U)
+#define TIM18_CR1_DITHEN_B_0X1      (0x1U<<12U)
+#define TIM18_CR1_UIFREMAP_B_0X0    (0x0U<<11U)
+#define TIM18_CR1_UIFREMAP_B_0X1    (0x1U<<11U)
+#define TIM18_CR1_ARPE_B_0X0        (0x0U<<7U)
+#define TIM18_CR1_ARPE_B_0X1        (0x1U<<7U)
+#define TIM18_CR1_OPM_B_0X0         (0x0U<<3U)
+#define TIM18_CR1_OPM_B_0X1         (0x1U<<3U)
+#define TIM18_CR1_URS_B_0X0         (0x0U<<2U)
+#define TIM18_CR1_URS_B_0X1         (0x1U<<2U)
+#define TIM18_CR1_UDIS_B_0X0        (0x0U<<1U)
+#define TIM18_CR1_UDIS_B_0X1        (0x1U<<1U)
+#define TIM18_CR1_CEN_B_0X0         (0x0U<<0U)
+#define TIM18_CR1_CEN_B_0X1         (0x1U<<0U)
 
 // CR2 Configuration
 
-#define TIM18_CR2_ADSYNC            (0x1U<<28)
-#define TIM18_CR2_MMS               (0x7U<<4)
-#define TIM18_CR2_MMS_0             (0x1U<<4)
+#define TIM18_CR2_ADSYNC            (0x1U<<28U)
+#define TIM18_CR2_MMS               (0x7U<<4U)
+#define TIM18_CR2_MMS_0             (0x1U<<4U)
 
-#define TIM18_CR2_ADSYNC_B_0X0      (0x0U<<28)
-#define TIM18_CR2_ADSYNC_B_0X1      (0x1U<<28)
-#define TIM18_CR2_MMS_B_0X0         (0x0U<<4)
-#define TIM18_CR2_MMS_B_0X1         (0x1U<<4)
-#define TIM18_CR2_MMS_B_0X2         (0x2U<<4)
+#define TIM18_CR2_ADSYNC_B_0X0      (0x0U<<28U)
+#define TIM18_CR2_ADSYNC_B_0X1      (0x1U<<28U)
+#define TIM18_CR2_MMS_B_0X0         (0x0U<<4U)
+#define TIM18_CR2_MMS_B_0X1         (0x1U<<4U)
+#define TIM18_CR2_MMS_B_0X2         (0x2U<<4U)
 
 // DIER Configuration
 
-#define TIM18_DIER_UDE              (0x1U<<8)
-#define TIM18_DIER_UIE              (0x1U<<0)
+#define TIM18_DIER_UDE              (0x1U<<8U)
+#define TIM18_DIER_UIE              (0x1U<<0U)
 
-#define TIM18_DIER_UDE_B_0X0        (0x0U<<8)
-#define TIM18_DIER_UDE_B_0X1        (0x1U<<8)
-#define TIM18_DIER_UIE_B_0X0        (0x0U<<0)
-#define TIM18_DIER_UIE_B_0X1        (0x1U<<0)
+#define TIM18_DIER_UDE_B_0X0        (0x0U<<8U)
+#define TIM18_DIER_UDE_B_0X1        (0x1U<<8U)
+#define TIM18_DIER_UIE_B_0X0        (0x0U<<0U)
+#define TIM18_DIER_UIE_B_0X1        (0x1U<<0U)
 
 // SR Configuration
 
-#define TIM18_SR_UIF                (0x1U<<0)
+#define TIM18_SR_UIF                (0x1U<<0U)
 
-#define TIM18_SR_UIF_B_0X0          (0x0U<<0)
-#define TIM18_SR_UIF_B_0X1          (0x1U<<0)
+#define TIM18_SR_UIF_B_0X0          (0x0U<<0U)
+#define TIM18_SR_UIF_B_0X1          (0x1U<<0U)
 
 // EGR Configuration
 
-#define TIM18_EGR_UG                (0x1U<<0)
+#define TIM18_EGR_UG                (0x1U<<0U)
 
-#define TIM18_EGR_UG_B_0X0          (0x0U<<0)
-#define TIM18_EGR_UG_B_0X1          (0x1U<<0)
+#define TIM18_EGR_UG_B_0X0          (0x0U<<0U)
+#define TIM18_EGR_UG_B_0X1          (0x1U<<0U)
 
 // CNT Configuration
 
-#define TIM18_CNT_UIFCPY            (0x1U<<31)
-#define TIM18_CNT_CNT               (0xFFFFU<<0)
-#define TIM18_CNT_CNT_0             (0x1U<<0)
+#define TIM18_CNT_UIFCPY            (0x1U<<31U)
+#define TIM18_CNT_CNT               (0xFFFFU<<0U)
+#define TIM18_CNT_CNT_0             (0x1U<<0U)
 
 // PSC Configuration
 
-#define TIM18_PSC_PSC               (0xFFFFU<<0)
-#define TIM18_PSC_PSC_0             (0x1U<<0)
+#define TIM18_PSC_PSC               (0xFFFFU<<0U)
+#define TIM18_PSC_PSC_0             (0x1U<<0U)
 
 // ARR Configuration
 
-#define TIM18_ARR_ARR               (0xFFFFFU<<0)
-#define TIM18_ARR_ARR_0             (0x1U<<0)
+#define TIM18_ARR_ARR               (0xFFFFFU<<0U)
+#define TIM18_ARR_ARR_0             (0x1U<<0U)

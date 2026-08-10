@@ -81,294 +81,294 @@ typedef struct {
 
 // PVTREG_LOCKR Configuration
 
-#define DTS_PVTREG_LOCKR_LOCK                       (0xFFFFFFFFU<<0)
-#define DTS_PVTREG_LOCKR_LOCK_0                     (0x1U<<0)
+#define DTS_PVTREG_LOCKR_LOCK                       (0xFFFFFFFFU<<0U)
+#define DTS_PVTREG_LOCKR_LOCK_0                     (0x1U<<0U)
 
 // PVTLOCK_SR Configuration
 
-#define DTS_PVTLOCK_SR_HW_LOCK_STATUS               (0x1U<<1)
-#define DTS_PVTLOCK_SR_SW_LOCK_STATUS               (0x1U<<0)
+#define DTS_PVTLOCK_SR_HW_LOCK_STATUS               (0x1U<<1U)
+#define DTS_PVTLOCK_SR_SW_LOCK_STATUS               (0x1U<<0U)
 
 // PVTTMR_CR Configuration
 
-#define DTS_PVTTMR_CR_TMR_RUN                       (0x1U<<16)
-#define DTS_PVTTMR_CR_TMR_DELAY                     (0xFFFFU<<0)
-#define DTS_PVTTMR_CR_TMR_DELAY_0                   (0x1U<<0)
+#define DTS_PVTTMR_CR_TMR_RUN                       (0x1U<<16U)
+#define DTS_PVTTMR_CR_TMR_DELAY                     (0xFFFFU<<0U)
+#define DTS_PVTTMR_CR_TMR_DELAY_0                   (0x1U<<0U)
 
 // PVTTMR_SR Configuration
 
-#define DTS_PVTTMR_SR_TMR_DONE                      (0x1U<<1)
-#define DTS_PVTTMR_SR_TMR_BUSY                      (0x1U<<0)
+#define DTS_PVTTMR_SR_TMR_DONE                      (0x1U<<1U)
+#define DTS_PVTTMR_SR_TMR_BUSY                      (0x1U<<0U)
 
 // PVT_IER Configuration
 
-#define DTS_PVT_IER_TS_IRQ_ENABLE                   (0x1U<<1)
-#define DTS_PVT_IER_TMR_IRQ_ENABLE                  (0x1U<<0)
+#define DTS_PVT_IER_TS_IRQ_ENABLE                   (0x1U<<1U)
+#define DTS_PVT_IER_TMR_IRQ_ENABLE                  (0x1U<<0U)
 
 // PVTIRQTRMASKR Configuration
 
-#define DTS_PVTIRQTRMASKR_TMR_IRQ_MASK              (0x1U<<0)
+#define DTS_PVTIRQTRMASKR_TMR_IRQ_MASK              (0x1U<<0U)
 
 // TS_MR Configuration
 
-#define DTS_TS_MR_TS1_IRQ_MASK                      (0x1U<<1)
-#define DTS_TS_MR_TS0_IRQ_MASK                      (0x1U<<0)
+#define DTS_TS_MR_TS1_IRQ_MASK                      (0x1U<<1U)
+#define DTS_TS_MR_TS0_IRQ_MASK                      (0x1U<<0U)
 
 // PVTTR_SR Configuration
 
-#define DTS_PVTTR_SR_TMR_IRQ_STATUS                 (0x1U<<0)
+#define DTS_PVTTR_SR_TMR_IRQ_STATUS                 (0x1U<<0U)
 
 // TS_ISR Configuration
 
-#define DTS_TS_ISR_TS1_IRQ_STATUS                   (0x1U<<1)
-#define DTS_TS_ISR_TS0_IRQ_STATUS                   (0x1U<<0)
+#define DTS_TS_ISR_TS1_IRQ_STATUS                   (0x1U<<1U)
+#define DTS_TS_ISR_TS0_IRQ_STATUS                   (0x1U<<0U)
 
 // PVTTMRRAW_ISR Configuration
 
-#define DTS_PVTTMRRAW_ISR_TMR_IRQ_RAW_STATUS        (0x1U<<0)
+#define DTS_PVTTMRRAW_ISR_TMR_IRQ_RAW_STATUS        (0x1U<<0U)
 
 // TSRAW_ISR Configuration
 
-#define DTS_TSRAW_ISR_TS1_IRQ_RAW_STATUS            (0x1U<<1)
-#define DTS_TSRAW_ISR_TS0_IRQ_RAW_STATUS            (0x1U<<0)
+#define DTS_TSRAW_ISR_TS1_IRQ_RAW_STATUS            (0x1U<<1U)
+#define DTS_TSRAW_ISR_TS0_IRQ_RAW_STATUS            (0x1U<<0U)
 
 // TSCCLKSYNTHR Configuration
 
-#define DTS_TSCCLKSYNTHR_CLK_SYTH_EN                (0x1U<<24)
-#define DTS_TSCCLKSYNTHR_CLK_SYNTH_HOLD             (0xFU<<16)
-#define DTS_TSCCLKSYNTHR_CLK_SYNTH_HOLD_0           (0x1U<<16)
-#define DTS_TSCCLKSYNTHR_CLK_SYNTH_HI               (0xFFU<<8)
-#define DTS_TSCCLKSYNTHR_CLK_SYNTH_HI_0             (0x1U<<8)
-#define DTS_TSCCLKSYNTHR_CLK_SYNTH_LO               (0xFFU<<0)
-#define DTS_TSCCLKSYNTHR_CLK_SYNTH_LO_0             (0x1U<<0)
+#define DTS_TSCCLKSYNTHR_CLK_SYTH_EN                (0x1U<<24U)
+#define DTS_TSCCLKSYNTHR_CLK_SYNTH_HOLD             (0xFU<<16U)
+#define DTS_TSCCLKSYNTHR_CLK_SYNTH_HOLD_0           (0x1U<<16U)
+#define DTS_TSCCLKSYNTHR_CLK_SYNTH_HI               (0xFFU<<8U)
+#define DTS_TSCCLKSYNTHR_CLK_SYNTH_HI_0             (0x1U<<8U)
+#define DTS_TSCCLKSYNTHR_CLK_SYNTH_LO               (0xFFU<<0U)
+#define DTS_TSCCLKSYNTHR_CLK_SYNTH_LO_0             (0x1U<<0U)
 
-#define DTS_TSCCLKSYNTHR_CLK_SYTH_EN_B_0X0          (0x0U<<24)
-#define DTS_TSCCLKSYNTHR_CLK_SYTH_EN_B_0X1          (0x1U<<24)
+#define DTS_TSCCLKSYNTHR_CLK_SYTH_EN_B_0X0          (0x0U<<24U)
+#define DTS_TSCCLKSYNTHR_CLK_SYTH_EN_B_0X1          (0x1U<<24U)
 
 // TSCSDIFDISABLER Configuration
 
-#define DTS_TSCSDIFDISABLER_TS1_SDIF_DISABLE        (0x1U<<1)
-#define DTS_TSCSDIFDISABLER_TS0_SDIF_DISABLE        (0x1U<<0)
+#define DTS_TSCSDIFDISABLER_TS1_SDIF_DISABLE        (0x1U<<1U)
+#define DTS_TSCSDIFDISABLER_TS0_SDIF_DISABLE        (0x1U<<0U)
 
-#define DTS_TSCSDIFDISABLER_TS1_SDIF_DISABLE_B_0X0  (0x0U<<1)
-#define DTS_TSCSDIFDISABLER_TS1_SDIF_DISABLE_B_0X1  (0x1U<<1)
-#define DTS_TSCSDIFDISABLER_TS0_SDIF_DISABLE_B_0X0  (0x0U<<0)
-#define DTS_TSCSDIFDISABLER_TS0_SDIF_DISABLE_B_0X1  (0x1U<<0)
+#define DTS_TSCSDIFDISABLER_TS1_SDIF_DISABLE_B_0X0  (0x0U<<1U)
+#define DTS_TSCSDIFDISABLER_TS1_SDIF_DISABLE_B_0X1  (0x1U<<1U)
+#define DTS_TSCSDIFDISABLER_TS0_SDIF_DISABLE_B_0X0  (0x0U<<0U)
+#define DTS_TSCSDIFDISABLER_TS0_SDIF_DISABLE_B_0X1  (0x1U<<0U)
 
 // TSCSDIF_SR Configuration
 
-#define DTS_TSCSDIF_SR_SDIF_LOCK                    (0x1U<<1)
-#define DTS_TSCSDIF_SR_SDIF_BUSY                    (0x1U<<0)
+#define DTS_TSCSDIF_SR_SDIF_LOCK                    (0x1U<<1U)
+#define DTS_TSCSDIF_SR_SDIF_BUSY                    (0x1U<<0U)
 
-#define DTS_TSCSDIF_SR_SDIF_LOCK_B_0X0              (0x0U<<1)
-#define DTS_TSCSDIF_SR_SDIF_LOCK_B_0X1              (0x1U<<1)
-#define DTS_TSCSDIF_SR_SDIF_BUSY_B_0X0              (0x0U<<0)
-#define DTS_TSCSDIF_SR_SDIF_BUSY_B_0X1              (0x1U<<0)
+#define DTS_TSCSDIF_SR_SDIF_LOCK_B_0X0              (0x0U<<1U)
+#define DTS_TSCSDIF_SR_SDIF_LOCK_B_0X1              (0x1U<<1U)
+#define DTS_TSCSDIF_SR_SDIF_BUSY_B_0X0              (0x0U<<0U)
+#define DTS_TSCSDIF_SR_SDIF_BUSY_B_0X1              (0x1U<<0U)
 
 // TSCSDIF_CR Configuration
 
-#define DTS_TSCSDIF_CR_SDIF_PROG                    (0x1U<<31)
-#define DTS_TSCSDIF_CR_SDIF_WRN                     (0x1U<<27)
-#define DTS_TSCSDIF_CR_SDIF_ADDR                    (0x7U<<24)
-#define DTS_TSCSDIF_CR_SDIF_ADDR_0                  (0x1U<<24)
-#define DTS_TSCSDIF_CR_SDIF_WDATA                   (0xFFFFFFU<<0)
-#define DTS_TSCSDIF_CR_SDIF_WDATA_0                 (0x1U<<0)
+#define DTS_TSCSDIF_CR_SDIF_PROG                    (0x1U<<31U)
+#define DTS_TSCSDIF_CR_SDIF_WRN                     (0x1U<<27U)
+#define DTS_TSCSDIF_CR_SDIF_ADDR                    (0x7U<<24U)
+#define DTS_TSCSDIF_CR_SDIF_ADDR_0                  (0x1U<<24U)
+#define DTS_TSCSDIF_CR_SDIF_WDATA                   (0xFFFFFFU<<0U)
+#define DTS_TSCSDIF_CR_SDIF_WDATA_0                 (0x1U<<0U)
 
-#define DTS_TSCSDIF_CR_SDIF_PROG_B_0X0              (0x0U<<31)
-#define DTS_TSCSDIF_CR_SDIF_PROG_B_0X1              (0x1U<<31)
-#define DTS_TSCSDIF_CR_SDIF_WRN_B_0X0               (0x0U<<27)
-#define DTS_TSCSDIF_CR_SDIF_WRN_B_0X1               (0x1U<<27)
+#define DTS_TSCSDIF_CR_SDIF_PROG_B_0X0              (0x0U<<31U)
+#define DTS_TSCSDIF_CR_SDIF_PROG_B_0X1              (0x1U<<31U)
+#define DTS_TSCSDIF_CR_SDIF_WRN_B_0X0               (0x0U<<27U)
+#define DTS_TSCSDIF_CR_SDIF_WRN_B_0X1               (0x1U<<27U)
 
 // TSCSDIFHALTR Configuration
 
-#define DTS_TSCSDIFHALTR_SDIF_STOP                  (0x1U<<0)
+#define DTS_TSCSDIFHALTR_SDIF_STOP                  (0x1U<<0U)
 
-#define DTS_TSCSDIFHALTR_SDIF_STOP_B_0X0            (0x0U<<0)
-#define DTS_TSCSDIFHALTR_SDIF_STOP_B_0X1            (0x1U<<0)
+#define DTS_TSCSDIFHALTR_SDIF_STOP_B_0X0            (0x0U<<0U)
+#define DTS_TSCSDIFHALTR_SDIF_STOP_B_0X1            (0x1U<<0U)
 
 // TSCSDIF_CFGR Configuration
 
-#define DTS_TSCSDIF_CFGR_SDIF_INHIBIT               (0x3U<<0)
-#define DTS_TSCSDIF_CFGR_SDIF_INHIBIT_0             (0x1U<<0)
+#define DTS_TSCSDIF_CFGR_SDIF_INHIBIT               (0x3U<<0U)
+#define DTS_TSCSDIF_CFGR_SDIF_INHIBIT_0             (0x1U<<0U)
 
-#define DTS_TSCSDIF_CFGR_SDIF_INHIBIT_B_0X0         (0x0U<<0)
-#define DTS_TSCSDIF_CFGR_SDIF_INHIBIT_B_0X1         (0x1U<<0)
-#define DTS_TSCSDIF_CFGR_SDIF_INHIBIT_B_0X2         (0x2U<<0)
-#define DTS_TSCSDIF_CFGR_SDIF_INHIBIT_B_0X3         (0x3U<<0)
+#define DTS_TSCSDIF_CFGR_SDIF_INHIBIT_B_0X0         (0x0U<<0U)
+#define DTS_TSCSDIF_CFGR_SDIF_INHIBIT_B_0X1         (0x1U<<0U)
+#define DTS_TSCSDIF_CFGR_SDIF_INHIBIT_B_0X2         (0x2U<<0U)
+#define DTS_TSCSDIF_CFGR_SDIF_INHIBIT_B_0X3         (0x3U<<0U)
 
 // TSCSMPL_CR Configuration
 
-#define DTS_TSCSMPL_CR_SMPL_DISCARD                 (0x1U<<2)
-#define DTS_TSCSMPL_CR_SMPL_CTR_HOLD                (0x1U<<1)
-#define DTS_TSCSMPL_CR_SMPL_CTR_DISABLE             (0x1U<<0)
+#define DTS_TSCSMPL_CR_SMPL_DISCARD                 (0x1U<<2U)
+#define DTS_TSCSMPL_CR_SMPL_CTR_HOLD                (0x1U<<1U)
+#define DTS_TSCSMPL_CR_SMPL_CTR_DISABLE             (0x1U<<0U)
 
-#define DTS_TSCSMPL_CR_SMPL_DISCARD_B_0X0           (0x0U<<2)
-#define DTS_TSCSMPL_CR_SMPL_DISCARD_B_0X1           (0x1U<<2)
-#define DTS_TSCSMPL_CR_SMPL_CTR_HOLD_B_0X0          (0x0U<<1)
-#define DTS_TSCSMPL_CR_SMPL_CTR_HOLD_B_0X1          (0x1U<<1)
-#define DTS_TSCSMPL_CR_SMPL_CTR_DISABLE_B_0X0       (0x0U<<0)
-#define DTS_TSCSMPL_CR_SMPL_CTR_DISABLE_B_0X1       (0x1U<<0)
+#define DTS_TSCSMPL_CR_SMPL_DISCARD_B_0X0           (0x0U<<2U)
+#define DTS_TSCSMPL_CR_SMPL_DISCARD_B_0X1           (0x1U<<2U)
+#define DTS_TSCSMPL_CR_SMPL_CTR_HOLD_B_0X0          (0x0U<<1U)
+#define DTS_TSCSMPL_CR_SMPL_CTR_HOLD_B_0X1          (0x1U<<1U)
+#define DTS_TSCSMPL_CR_SMPL_CTR_DISABLE_B_0X0       (0x0U<<0U)
+#define DTS_TSCSMPL_CR_SMPL_CTR_DISABLE_B_0X1       (0x1U<<0U)
 
 // TSCSDIFSMPLCLRR Configuration
 
-#define DTS_TSCSDIFSMPLCLRR_SMPL_CNTER_CLEAR        (0x1U<<0)
+#define DTS_TSCSDIFSMPLCLRR_SMPL_CNTER_CLEAR        (0x1U<<0U)
 
-#define DTS_TSCSDIFSMPLCLRR_SMPL_CNTER_CLEAR_B_0X0  (0x0U<<0)
-#define DTS_TSCSDIFSMPLCLRR_SMPL_CNTER_CLEAR_B_0X1  (0x1U<<0)
+#define DTS_TSCSDIFSMPLCLRR_SMPL_CNTER_CLEAR_B_0X0  (0x0U<<0U)
+#define DTS_TSCSDIFSMPLCLRR_SMPL_CNTER_CLEAR_B_0X1  (0x1U<<0U)
 
 // TSCSMPLCNTR Configuration
 
-#define DTS_TSCSMPLCNTR_SMPL_COUNT                  (0xFFFFU<<0)
-#define DTS_TSCSMPLCNTR_SMPL_COUNT_0                (0x1U<<0)
+#define DTS_TSCSMPLCNTR_SMPL_COUNT                  (0xFFFFU<<0U)
+#define DTS_TSCSMPLCNTR_SMPL_COUNT_0                (0x1U<<0U)
 
 // TS0_IER Configuration
 
-#define DTS_TS0_IER_IRQ_EN_ALARMB                   (0x1U<<4)
-#define DTS_TS0_IER_IRQ_EN_ALARMA                   (0x1U<<3)
-#define DTS_TS0_IER_IRQ_EN_DONE                     (0x1U<<1)
-#define DTS_TS0_IER_IRQ_EN_FAULT                    (0x1U<<0)
+#define DTS_TS0_IER_IRQ_EN_ALARMB                   (0x1U<<4U)
+#define DTS_TS0_IER_IRQ_EN_ALARMA                   (0x1U<<3U)
+#define DTS_TS0_IER_IRQ_EN_DONE                     (0x1U<<1U)
+#define DTS_TS0_IER_IRQ_EN_FAULT                    (0x1U<<0U)
 
 // TS0_ISR Configuration
 
-#define DTS_TS0_ISR_IRQ_STATUS_ALARMB               (0x1U<<4)
-#define DTS_TS0_ISR_IRQ_STATUS_ALARMA               (0x1U<<3)
-#define DTS_TS0_ISR_IRQ_STATUS_DONE                 (0x1U<<1)
-#define DTS_TS0_ISR_IRQ_STATUS_FAULT                (0x1U<<0)
+#define DTS_TS0_ISR_IRQ_STATUS_ALARMB               (0x1U<<4U)
+#define DTS_TS0_ISR_IRQ_STATUS_ALARMA               (0x1U<<3U)
+#define DTS_TS0_ISR_IRQ_STATUS_DONE                 (0x1U<<1U)
+#define DTS_TS0_ISR_IRQ_STATUS_FAULT                (0x1U<<0U)
 
 // TS0_ICR Configuration
 
-#define DTS_TS0_ICR_IRQ_CLEAR_ALARMB                (0x1U<<4)
-#define DTS_TS0_ICR_IRQ_CLEAR_ALARMA                (0x1U<<3)
-#define DTS_TS0_ICR_IRQ_CLEAR_DONE                  (0x1U<<1)
-#define DTS_TS0_ICR_IRQ_CLEAR_FAULT                 (0x1U<<0)
+#define DTS_TS0_ICR_IRQ_CLEAR_ALARMB                (0x1U<<4U)
+#define DTS_TS0_ICR_IRQ_CLEAR_ALARMA                (0x1U<<3U)
+#define DTS_TS0_ICR_IRQ_CLEAR_DONE                  (0x1U<<1U)
+#define DTS_TS0_ICR_IRQ_CLEAR_FAULT                 (0x1U<<0U)
 
 // TS0IRQTESTR Configuration
 
-#define DTS_TS0IRQTESTR_IRQ_TEST_ALARMB             (0x1U<<4)
-#define DTS_TS0IRQTESTR_IRQ_TEST_ALARMA             (0x1U<<3)
-#define DTS_TS0IRQTESTR_IRQ_TEST_DONE               (0x1U<<1)
-#define DTS_TS0IRQTESTR_IRQ_TEST_FAULT              (0x1U<<0)
+#define DTS_TS0IRQTESTR_IRQ_TEST_ALARMB             (0x1U<<4U)
+#define DTS_TS0IRQTESTR_IRQ_TEST_ALARMA             (0x1U<<3U)
+#define DTS_TS0IRQTESTR_IRQ_TEST_DONE               (0x1U<<1U)
+#define DTS_TS0IRQTESTR_IRQ_TEST_FAULT              (0x1U<<0U)
 
 // TS0SDIFRDATAR Configuration
 
-#define DTS_TS0SDIFRDATAR_SDIF_RDATA                (0xFFFFFFU<<0)
-#define DTS_TS0SDIFRDATAR_SDIF_RDATA_0              (0x1U<<0)
+#define DTS_TS0SDIFRDATAR_SDIF_RDATA                (0xFFFFFFU<<0U)
+#define DTS_TS0SDIFRDATAR_SDIF_RDATA_0              (0x1U<<0U)
 
 // TS0SDIFDONER Configuration
 
-#define DTS_TS0SDIFDONER_SDIF_SMPL_DONE             (0x1U<<0)
+#define DTS_TS0SDIFDONER_SDIF_SMPL_DONE             (0x1U<<0U)
 
-#define DTS_TS0SDIFDONER_SDIF_SMPL_DONE_B_0X0       (0x0U<<0)
-#define DTS_TS0SDIFDONER_SDIF_SMPL_DONE_B_0X1       (0x1U<<0)
+#define DTS_TS0SDIFDONER_SDIF_SMPL_DONE_B_0X0       (0x0U<<0U)
+#define DTS_TS0SDIFDONER_SDIF_SMPL_DONE_B_0X1       (0x1U<<0U)
 
 // TS0SDIFDATAR Configuration
 
-#define DTS_TS0SDIFDATAR_SAMPLE_FAULT               (0x1U<<17)
-#define DTS_TS0SDIFDATAR_SAMPLE_TYPE                (0x1U<<16)
-#define DTS_TS0SDIFDATAR_SAMPLE_DATA                (0xFFFFU<<0)
-#define DTS_TS0SDIFDATAR_SAMPLE_DATA_0              (0x1U<<0)
+#define DTS_TS0SDIFDATAR_SAMPLE_FAULT               (0x1U<<17U)
+#define DTS_TS0SDIFDATAR_SAMPLE_TYPE                (0x1U<<16U)
+#define DTS_TS0SDIFDATAR_SAMPLE_DATA                (0xFFFFU<<0U)
+#define DTS_TS0SDIFDATAR_SAMPLE_DATA_0              (0x1U<<0U)
 
-#define DTS_TS0SDIFDATAR_SAMPLE_TYPE_B_0X0          (0x0U<<16)
-#define DTS_TS0SDIFDATAR_SAMPLE_TYPE_B_0X1          (0x1U<<16)
+#define DTS_TS0SDIFDATAR_SAMPLE_TYPE_B_0X0          (0x0U<<16U)
+#define DTS_TS0SDIFDATAR_SAMPLE_TYPE_B_0X1          (0x1U<<16U)
 
 // TS0ALARMA_CFGR Configuration
 
-#define DTS_TS0ALARMA_CFGR_ALARMA_THRESH            (0xFFFFU<<16)
-#define DTS_TS0ALARMA_CFGR_ALARMA_THRESH_0          (0x1U<<16)
-#define DTS_TS0ALARMA_CFGR_HYSTA_THRESH             (0xFFFFU<<0)
-#define DTS_TS0ALARMA_CFGR_HYSTA_THRESH_0           (0x1U<<0)
+#define DTS_TS0ALARMA_CFGR_ALARMA_THRESH            (0xFFFFU<<16U)
+#define DTS_TS0ALARMA_CFGR_ALARMA_THRESH_0          (0x1U<<16U)
+#define DTS_TS0ALARMA_CFGR_HYSTA_THRESH             (0xFFFFU<<0U)
+#define DTS_TS0ALARMA_CFGR_HYSTA_THRESH_0           (0x1U<<0U)
 
 // TS0ALARMB_CFGR Configuration
 
-#define DTS_TS0ALARMB_CFGR_ALARMB_THRESH            (0xFFFFU<<16)
-#define DTS_TS0ALARMB_CFGR_ALARMB_THRESH_0          (0x1U<<16)
-#define DTS_TS0ALARMB_CFGR_HYSTB_THRESH             (0xFFFFU<<0)
-#define DTS_TS0ALARMB_CFGR_HYSTB_THRESH_0           (0x1U<<0)
+#define DTS_TS0ALARMB_CFGR_ALARMB_THRESH            (0xFFFFU<<16U)
+#define DTS_TS0ALARMB_CFGR_ALARMB_THRESH_0          (0x1U<<16U)
+#define DTS_TS0ALARMB_CFGR_HYSTB_THRESH             (0xFFFFU<<0U)
+#define DTS_TS0ALARMB_CFGR_HYSTB_THRESH_0           (0x1U<<0U)
 
 // TS0HLSAMPLER Configuration
 
-#define DTS_TS0HLSAMPLER_SMPL_HI                    (0xFFFFU<<16)
-#define DTS_TS0HLSAMPLER_SMPL_HI_0                  (0x1U<<16)
-#define DTS_TS0HLSAMPLER_SMPL_LO                    (0xFFFFU<<0)
-#define DTS_TS0HLSAMPLER_SMPL_LO_0                  (0x1U<<0)
+#define DTS_TS0HLSAMPLER_SMPL_HI                    (0xFFFFU<<16U)
+#define DTS_TS0HLSAMPLER_SMPL_HI_0                  (0x1U<<16U)
+#define DTS_TS0HLSAMPLER_SMPL_LO                    (0xFFFFU<<0U)
+#define DTS_TS0HLSAMPLER_SMPL_LO_0                  (0x1U<<0U)
 
 // TS0HILORESETR Configuration
 
-#define DTS_TS0HILORESETR_SMPL_HI_CLR               (0x1U<<1)
-#define DTS_TS0HILORESETR_SMPL_LO_SET               (0x1U<<0)
+#define DTS_TS0HILORESETR_SMPL_HI_CLR               (0x1U<<1U)
+#define DTS_TS0HILORESETR_SMPL_LO_SET               (0x1U<<0U)
 
 // TS1_IER Configuration
 
-#define DTS_TS1_IER_IRQ_EN_ALARMB                   (0x1U<<4)
-#define DTS_TS1_IER_IRQ_EN_ALARMA                   (0x1U<<3)
-#define DTS_TS1_IER_IRQ_EN_DONE                     (0x1U<<1)
-#define DTS_TS1_IER_IRQ_EN_FAULT                    (0x1U<<0)
+#define DTS_TS1_IER_IRQ_EN_ALARMB                   (0x1U<<4U)
+#define DTS_TS1_IER_IRQ_EN_ALARMA                   (0x1U<<3U)
+#define DTS_TS1_IER_IRQ_EN_DONE                     (0x1U<<1U)
+#define DTS_TS1_IER_IRQ_EN_FAULT                    (0x1U<<0U)
 
 // TS1_ISR Configuration
 
-#define DTS_TS1_ISR_IRQ_STATUS_ALARMB               (0x1U<<4)
-#define DTS_TS1_ISR_IRQ_STATUS_ALARMA               (0x1U<<3)
-#define DTS_TS1_ISR_IRQ_STATUS_DONE                 (0x1U<<1)
-#define DTS_TS1_ISR_IRQ_STATUS_FAULT                (0x1U<<0)
+#define DTS_TS1_ISR_IRQ_STATUS_ALARMB               (0x1U<<4U)
+#define DTS_TS1_ISR_IRQ_STATUS_ALARMA               (0x1U<<3U)
+#define DTS_TS1_ISR_IRQ_STATUS_DONE                 (0x1U<<1U)
+#define DTS_TS1_ISR_IRQ_STATUS_FAULT                (0x1U<<0U)
 
 // TS1_ICR Configuration
 
-#define DTS_TS1_ICR_IRQ_CLEAR_ALARMB                (0x1U<<4)
-#define DTS_TS1_ICR_IRQ_CLEAR_ALARMA                (0x1U<<3)
-#define DTS_TS1_ICR_IRQ_CLEAR_DONE                  (0x1U<<1)
-#define DTS_TS1_ICR_IRQ_CLEAR_FAULT                 (0x1U<<0)
+#define DTS_TS1_ICR_IRQ_CLEAR_ALARMB                (0x1U<<4U)
+#define DTS_TS1_ICR_IRQ_CLEAR_ALARMA                (0x1U<<3U)
+#define DTS_TS1_ICR_IRQ_CLEAR_DONE                  (0x1U<<1U)
+#define DTS_TS1_ICR_IRQ_CLEAR_FAULT                 (0x1U<<0U)
 
 // TS1IRQTESTR Configuration
 
-#define DTS_TS1IRQTESTR_IRQ_TEST_ALARMB             (0x1U<<4)
-#define DTS_TS1IRQTESTR_IRQ_TEST_ALARMA             (0x1U<<3)
-#define DTS_TS1IRQTESTR_IRQ_TEST_DONE               (0x1U<<1)
-#define DTS_TS1IRQTESTR_IRQ_TEST_FAULT              (0x1U<<0)
+#define DTS_TS1IRQTESTR_IRQ_TEST_ALARMB             (0x1U<<4U)
+#define DTS_TS1IRQTESTR_IRQ_TEST_ALARMA             (0x1U<<3U)
+#define DTS_TS1IRQTESTR_IRQ_TEST_DONE               (0x1U<<1U)
+#define DTS_TS1IRQTESTR_IRQ_TEST_FAULT              (0x1U<<0U)
 
 // TS1SDIFRDATAR Configuration
 
-#define DTS_TS1SDIFRDATAR_SDIF_RDATA                (0xFFFFFFU<<0)
-#define DTS_TS1SDIFRDATAR_SDIF_RDATA_0              (0x1U<<0)
+#define DTS_TS1SDIFRDATAR_SDIF_RDATA                (0xFFFFFFU<<0U)
+#define DTS_TS1SDIFRDATAR_SDIF_RDATA_0              (0x1U<<0U)
 
 // TS1SDIFDONER Configuration
 
-#define DTS_TS1SDIFDONER_SDIF_SMPL_DONE             (0x1U<<0)
+#define DTS_TS1SDIFDONER_SDIF_SMPL_DONE             (0x1U<<0U)
 
-#define DTS_TS1SDIFDONER_SDIF_SMPL_DONE_B_0X0       (0x0U<<0)
-#define DTS_TS1SDIFDONER_SDIF_SMPL_DONE_B_0X1       (0x1U<<0)
+#define DTS_TS1SDIFDONER_SDIF_SMPL_DONE_B_0X0       (0x0U<<0U)
+#define DTS_TS1SDIFDONER_SDIF_SMPL_DONE_B_0X1       (0x1U<<0U)
 
 // TS1SDIFDATAR Configuration
 
-#define DTS_TS1SDIFDATAR_SAMPLE_FAULT               (0x1U<<17)
-#define DTS_TS1SDIFDATAR_SAMPLE_TYPE                (0x1U<<16)
-#define DTS_TS1SDIFDATAR_SAMPLE_DATA                (0xFFFFU<<0)
-#define DTS_TS1SDIFDATAR_SAMPLE_DATA_0              (0x1U<<0)
+#define DTS_TS1SDIFDATAR_SAMPLE_FAULT               (0x1U<<17U)
+#define DTS_TS1SDIFDATAR_SAMPLE_TYPE                (0x1U<<16U)
+#define DTS_TS1SDIFDATAR_SAMPLE_DATA                (0xFFFFU<<0U)
+#define DTS_TS1SDIFDATAR_SAMPLE_DATA_0              (0x1U<<0U)
 
-#define DTS_TS1SDIFDATAR_SAMPLE_TYPE_B_0X0          (0x0U<<16)
-#define DTS_TS1SDIFDATAR_SAMPLE_TYPE_B_0X1          (0x1U<<16)
+#define DTS_TS1SDIFDATAR_SAMPLE_TYPE_B_0X0          (0x0U<<16U)
+#define DTS_TS1SDIFDATAR_SAMPLE_TYPE_B_0X1          (0x1U<<16U)
 
 // TS1ALARMA_CFGR Configuration
 
-#define DTS_TS1ALARMA_CFGR_ALARMA_THRESH            (0xFFFFU<<16)
-#define DTS_TS1ALARMA_CFGR_ALARMA_THRESH_0          (0x1U<<16)
-#define DTS_TS1ALARMA_CFGR_HYSTA_THRESH             (0xFFFFU<<0)
-#define DTS_TS1ALARMA_CFGR_HYSTA_THRESH_0           (0x1U<<0)
+#define DTS_TS1ALARMA_CFGR_ALARMA_THRESH            (0xFFFFU<<16U)
+#define DTS_TS1ALARMA_CFGR_ALARMA_THRESH_0          (0x1U<<16U)
+#define DTS_TS1ALARMA_CFGR_HYSTA_THRESH             (0xFFFFU<<0U)
+#define DTS_TS1ALARMA_CFGR_HYSTA_THRESH_0           (0x1U<<0U)
 
 // TS1ALARMB_CFGR Configuration
 
-#define DTS_TS1ALARMB_CFGR_ALARMB_THRESH            (0xFFFFU<<16)
-#define DTS_TS1ALARMB_CFGR_ALARMB_THRESH_0          (0x1U<<16)
-#define DTS_TS1ALARMB_CFGR_HYSTB_THRESH             (0xFFFFU<<0)
-#define DTS_TS1ALARMB_CFGR_HYSTB_THRESH_0           (0x1U<<0)
+#define DTS_TS1ALARMB_CFGR_ALARMB_THRESH            (0xFFFFU<<16U)
+#define DTS_TS1ALARMB_CFGR_ALARMB_THRESH_0          (0x1U<<16U)
+#define DTS_TS1ALARMB_CFGR_HYSTB_THRESH             (0xFFFFU<<0U)
+#define DTS_TS1ALARMB_CFGR_HYSTB_THRESH_0           (0x1U<<0U)
 
 // TS1HLSAMPLER Configuration
 
-#define DTS_TS1HLSAMPLER_SMPL_HI                    (0xFFFFU<<16)
-#define DTS_TS1HLSAMPLER_SMPL_HI_0                  (0x1U<<16)
-#define DTS_TS1HLSAMPLER_SMPL_LO                    (0xFFFFU<<0)
-#define DTS_TS1HLSAMPLER_SMPL_LO_0                  (0x1U<<0)
+#define DTS_TS1HLSAMPLER_SMPL_HI                    (0xFFFFU<<16U)
+#define DTS_TS1HLSAMPLER_SMPL_HI_0                  (0x1U<<16U)
+#define DTS_TS1HLSAMPLER_SMPL_LO                    (0xFFFFU<<0U)
+#define DTS_TS1HLSAMPLER_SMPL_LO_0                  (0x1U<<0U)
 
 // TS1HILORESETR Configuration
 
-#define DTS_TS1HILORESETR_SMPL_HI_CLR               (0x1U<<1)
-#define DTS_TS1HILORESETR_SMPL_LO_SET               (0x1U<<0)
+#define DTS_TS1HILORESETR_SMPL_HI_CLR               (0x1U<<1U)
+#define DTS_TS1HILORESETR_SMPL_LO_SET               (0x1U<<0U)

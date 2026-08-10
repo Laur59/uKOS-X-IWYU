@@ -5,6 +5,8 @@
  * Hardware specific stub.
  */
 
+#include    "stub.h"
+
 #include    <stdint.h>
 
 #include    "clockTree.h"
@@ -22,12 +24,9 @@
 #define KPSCT8          ((KFREQUENCY_APB2 / KFPRET8) - 1U)      // Prescaler for 1'000'000-Hz
 #define KARRT8          ((KFPRET8 / KFINTT8) - 1U)              // Autoreload
 
-extern  volatile    uint32_t    vTimer;
-
 // Prototypes
 
 static  void    stub_intr_timer_interruption(void);
-extern  void    aTimer_callBack(void);
 
 /*
  * \brief stub_intr_timer_init

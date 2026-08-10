@@ -30,27 +30,27 @@ typedef struct {
 
 // CSR Configuration
 
-#define CORDIC_CSR_RRDY         (0x1U<<31)
-#define CORDIC_CSR_ARGSIZE      (0x1U<<22)
-#define CORDIC_CSR_RESSIZE      (0x1U<<21)
-#define CORDIC_CSR_NARGS        (0x1U<<20)
-#define CORDIC_CSR_NRES         (0x1U<<19)
-#define CORDIC_CSR_DMAWEN       (0x1U<<18)
-#define CORDIC_CSR_DMAREN       (0x1U<<17)
-#define CORDIC_CSR_IEN          (0x1U<<16)
-#define CORDIC_CSR_SCALE        (0x7U<<8)
-#define CORDIC_CSR_SCALE_0      (0x1U<<8)
-#define CORDIC_CSR_PRECISION    (0xFU<<4)
-#define CORDIC_CSR_PRECISION_0  (0x1U<<4)
-#define CORDIC_CSR_FUNC         (0xFU<<0)
-#define CORDIC_CSR_FUNC_0       (0x1U<<0)
+#define CORDIC_CSR_RRDY         (0x1U<<31U)
+#define CORDIC_CSR_ARGSIZE      (0x1U<<22U)
+#define CORDIC_CSR_RESSIZE      (0x1U<<21U)
+#define CORDIC_CSR_NARGS        (0x1U<<20U)
+#define CORDIC_CSR_NRES         (0x1U<<19U)
+#define CORDIC_CSR_DMAWEN       (0x1U<<18U)
+#define CORDIC_CSR_DMAREN       (0x1U<<17U)
+#define CORDIC_CSR_IEN          (0x1U<<16U)
+#define CORDIC_CSR_SCALE        (0x7U<<8U)
+#define CORDIC_CSR_SCALE_0      (0x1U<<8U)
+#define CORDIC_CSR_PRECISION    (0xFU<<4U)
+#define CORDIC_CSR_PRECISION_0  (0x1U<<4U)
+#define CORDIC_CSR_FUNC         (0xFU<<0U)
+#define CORDIC_CSR_FUNC_0       (0x1U<<0U)
 
 // WDATA Configuration
 
-#define CORDIC_WDATA_ARG        (0xFFFFFFFFU<<0)
-#define CORDIC_WDATA_ARG_0      (0x1U<<0)
+#define CORDIC_WDATA_ARG        (0xFFFFFFFFU<<0U)
+#define CORDIC_WDATA_ARG_0      (0x1U<<0U)
 
 // RDATA Configuration
 
-#define CORDIC_RDATA_RES        (0xFFFFFFFFU<<0)
-#define CORDIC_RDATA_RES_0      (0x1U<<0)
+#define CORDIC_RDATA_RES        (0xFFFFFFFFU<<0U)
+#define CORDIC_RDATA_RES_0      (0x1U<<0U)

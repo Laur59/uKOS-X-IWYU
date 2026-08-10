@@ -14,6 +14,8 @@
 ;
 */
 
+#include    "stub.h"
+
 #include    <stdint.h>
 
 #include    "clockTree.h"
@@ -32,12 +34,9 @@
 #define KPSCT7          ((KFREQUENCY_TIM / KFPRET7) - 1U)       // Prescaler for 1'000'000-Hz
 #define KARRT7          ((KFPRET7 / KFINTT7) - 1U)              // Autoreload
 
-extern  volatile    uint32_t    vTimer;
-
 // Prototypes
 
 static  void    stub_intr_timer_interruption(void);
-extern  void    aTimer_callBack(void);
 
 /*
  * \brief stub_intr_timer_init

@@ -24,8 +24,8 @@
 #define DVP_CFG_Y_FORMAT                        0x00000600U     //
 #define DVP_CFG_HREF_BURST_NUM_MASK             0x000FF000U     //
 #define DVP_CFG_LINE_NUM_MASK                   0x3FF00000U     //
-#define DVP_CFG_HREF_BURST_NUM(x)               ((x)<<12)       //
-#define DVP_CFG_LINE_NUM(x)                     ((x)<<20)       //
+#define DVP_CFG_HREF_BURST_NUM(x)               ((x)<<12U)       //
+#define DVP_CFG_LINE_NUM(x)                     ((x)<<20U)       //
 
 // DVP CMOS Config register
 // ------------------------
@@ -34,7 +34,7 @@
 #define DVP_CMOS_CLK_ENABLE                     0x00000100U     //
 #define DVP_CMOS_RESET                          0x00010000U     //
 #define DVP_CMOS_POWER_DOWN                     0x01000000U     //
-#define DVP_CMOS_CLK_DIV(x)                     ((x)<<0)        //
+#define DVP_CMOS_CLK_DIV(x)                     ((x)<<0U)        //
 
 // DVP SCCB Config register
 // ------------------------
@@ -45,18 +45,18 @@
 #define DVP_SCCB_BYTE_NUM_4                     0x00000003U     //
 #define DVP_SCCB_SCL_LCNT_MASK                  0x0000FF00U     //
 #define DVP_SCCB_SCL_HCNT_MASK                  0x00FF0000U     //
-#define DVP_SCCB_SCL_LCNT(x)                    ((x)<<8)        //
-#define DVP_SCCB_SCL_HCNT(x)                    ((x)<<16)       //
+#define DVP_SCCB_SCL_LCNT(x)                    ((x)<<8U)        //
+#define DVP_SCCB_SCL_HCNT(x)                    ((x)<<16U)       //
 #define DVP_SCCB_RDATA_BYTE(x)                  ((x)>>24)       //
 
 // DVP SCCB Control register
 // -------------------------
 
 #define DVP_SCCB_WRITE_DATA_ENABLE              0x00000001U     //
-#define DVP_SCCB_DEVICE_ADDRESS(x)              ((x)<<0)        //
-#define DVP_SCCB_REG_ADDRESS(x)                 ((x)<<8)        //
-#define DVP_SCCB_WDATA_BYTE0(x)                 ((x)<<16)       //
-#define DVP_SCCB_WDATA_BYTE1(x)                 ((x)<<24)       //
+#define DVP_SCCB_DEVICE_ADDRESS(x)              ((x)<<0U)        //
+#define DVP_SCCB_REG_ADDRESS(x)                 ((x)<<8U)        //
+#define DVP_SCCB_WDATA_BYTE0(x)                 ((x)<<16U)       //
+#define DVP_SCCB_WDATA_BYTE1(x)                 ((x)<<24U)       //
 
 // DVP AXI register
 // ----------------

@@ -29,22 +29,22 @@ typedef struct {
 
 // CTRL Configuration
 
-#define STK_CTRL_COUNTFLAG  (0x1U<<16)
-#define STK_CTRL_CLKSOURCE  (0x1U<<2)
-#define STK_CTRL_TICKINT    (0x1U<<1)
-#define STK_CTRL_ENABLE     (0x1U<<0)
+#define STK_CTRL_COUNTFLAG  (0x1U<<16U)
+#define STK_CTRL_CLKSOURCE  (0x1U<<2U)
+#define STK_CTRL_TICKINT    (0x1U<<1U)
+#define STK_CTRL_ENABLE     (0x1U<<0U)
 
 // LOAD_ Configuration
 
-#define STK_LOAD__RELOAD    (0xFFFFFFU<<0)
-#define STK_LOAD__RELOAD_0  (0x1U<<0)
+#define STK_LOAD__RELOAD    (0xFFFFFFU<<0U)
+#define STK_LOAD__RELOAD_0  (0x1U<<0U)
 
 // VAL Configuration
 
-#define STK_VAL_CURRENT     (0xFFFFFFU<<0)
-#define STK_VAL_CURRENT_0   (0x1U<<0)
+#define STK_VAL_CURRENT     (0xFFFFFFU<<0U)
+#define STK_VAL_CURRENT_0   (0x1U<<0U)
 
 // CALIB Configuration
 
-#define STK_CALIB_TENMS     (0xFFFFFFU<<0)
-#define STK_CALIB_TENMS_0   (0x1U<<0)
+#define STK_CALIB_TENMS     (0xFFFFFFU<<0U)
+#define STK_CALIB_TENMS_0   (0x1U<<0U)

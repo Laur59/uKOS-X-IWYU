@@ -144,7 +144,7 @@ static  void    local_GPIO_Configuration(void) {
             { 44U,    FUNC_CMOS_PWDN,       FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    0U,     0U,       0U,       0U,   0U,       0U,        0U,      0U },
             { 45U,    FUNC_CMOS_HREF,       FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
             { 46U,    FUNC_CMOS_XCLK,       FPIOA_DRIVING_15, 1U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    0U,     0U,       0U,       0U,   0U,       0U,        0U,      0U },
-            { 47U,    FUNC_CMOS_PCLK,       FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U }
+            { 47U,    FUNC_CMOS_PCLK,       FPIOA_DRIVING_0,  0U,      0U,       0U,       0U,       0U,   0U,   0U,      0U,    1U,     0U,       0U,       1U,   0U,       0U,        0U,      0U },
         };
 
 #define KNBCNF      (sizeof(aGPIO_Cnf)/sizeof(mainGpio_t))

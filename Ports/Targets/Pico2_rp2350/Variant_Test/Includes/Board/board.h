@@ -17,21 +17,21 @@
 // GPIO settings
 // -------------
 
-#define LED_SYSTEM_ON       (REG(SIO)->GPIO_OUT_SET = (1<<BLED_s))      //
-#define LED_SYSTEM_OFF      (REG(SIO)->GPIO_OUT_CLR = (1<<BLED_s))      //
-#define LED_SYSTEM_TOGGLE   (REG(SIO)->GPIO_OUT_XOR = (1<<BLED_s))      // Led macros
+#define LED_SYSTEM_ON       (REG(SIO)->GPIO_OUT_SET = (1U<<BLED_s))      //
+#define LED_SYSTEM_OFF      (REG(SIO)->GPIO_OUT_CLR = (1U<<BLED_s))      //
+#define LED_SYSTEM_TOGGLE   (REG(SIO)->GPIO_OUT_XOR = (1U<<BLED_s))      // Led macros
 
-#define LED_YELLOW_ON       (REG(SIO)->GPIO_OUT_SET = (1<<BLED_0))      //
-#define LED_YELLOW_OFF      (REG(SIO)->GPIO_OUT_CLR = (1<<BLED_0))      //
-#define LED_YELLOW_TOGGLE   (REG(SIO)->GPIO_OUT_XOR = (1<<BLED_0))      // Led macros
+#define LED_YELLOW_ON       (REG(SIO)->GPIO_OUT_SET = (1U<<BLED_0))      //
+#define LED_YELLOW_OFF      (REG(SIO)->GPIO_OUT_CLR = (1U<<BLED_0))      //
+#define LED_YELLOW_TOGGLE   (REG(SIO)->GPIO_OUT_XOR = (1U<<BLED_0))      // Led macros
 
-#define LED_GREEN_ON        (REG(SIO)->GPIO_OUT_SET = (1<<BLED_1))      //
-#define LED_GREEN_OFF       (REG(SIO)->GPIO_OUT_CLR = (1<<BLED_1))      //
-#define LED_GREEN_TOGGLE    (REG(SIO)->GPIO_OUT_XOR = (1<<BLED_1))      // Led macros
+#define LED_GREEN_ON        (REG(SIO)->GPIO_OUT_SET = (1U<<BLED_1))      //
+#define LED_GREEN_OFF       (REG(SIO)->GPIO_OUT_CLR = (1U<<BLED_1))      //
+#define LED_GREEN_TOGGLE    (REG(SIO)->GPIO_OUT_XOR = (1U<<BLED_1))      // Led macros
 
-#define LED_RED_ON          (REG(SIO)->GPIO_OUT_SET = (1<<BLED_2))      //
-#define LED_RED_OFF         (REG(SIO)->GPIO_OUT_CLR = (1<<BLED_2))      //
-#define LED_RED_TOGGLE      (REG(SIO)->GPIO_OUT_XOR = (1<<BLED_2))      // Led macros
+#define LED_RED_ON          (REG(SIO)->GPIO_OUT_SET = (1U<<BLED_2))      //
+#define LED_RED_OFF         (REG(SIO)->GPIO_OUT_CLR = (1U<<BLED_2))      //
+#define LED_RED_TOGGLE      (REG(SIO)->GPIO_OUT_XOR = (1U<<BLED_2))      // Led macros
 
 #define KNB_LED             4U                                          // Number of LEDs
 

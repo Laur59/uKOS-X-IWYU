@@ -140,8 +140,8 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
         case 7U: {
             parameter = (int32_t)strtoul(argv[1], &dummy, 10U); currentTime.tm_mday  = (int)parameter;
-            parameter = (int32_t)strtoul(argv[2], &dummy, 10U); currentTime.tm_mon   = (int)(parameter - 1);
-            parameter = (int32_t)strtoul(argv[3], &dummy, 10U); currentTime.tm_year  = (int)(parameter - 1900);
+            parameter = (int32_t)strtoul(argv[2], &dummy, 10U); currentTime.tm_mon   = parameter - 1;
+            parameter = (int32_t)strtoul(argv[3], &dummy, 10U); currentTime.tm_year  = parameter - 1900;
             parameter = (int32_t)strtoul(argv[4], &dummy, 10U); currentTime.tm_hour  = (int)parameter;
             parameter = (int32_t)strtoul(argv[5], &dummy, 10U); currentTime.tm_min   = (int)parameter;
             parameter = (int32_t)strtoul(argv[6], &dummy, 10U); currentTime.tm_sec   = (int)parameter;

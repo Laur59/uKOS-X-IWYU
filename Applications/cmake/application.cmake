@@ -20,8 +20,14 @@ if(NOT DEFINED CXXSTANDARD)
 endif()
 
 # Compile definitions
+# Identity macros, kept aligned with the system build (Ports/cmake/system.cmake)
 target_compile_definitions(system_compiler_flags INTERFACE
+    BOARD=${BOARD}
+    VARIANT=${VARIANT}
+    SOC=${SOC}
+    CORE=${CORE}
     UKOS_S
+    ${BOARD}_S
     ${SOC}_S
     ${CORE}_S
 )
@@ -54,7 +60,6 @@ else()
     # newlib (default)
     target_compile_definitions(system_compiler_flags INTERFACE
         CONFIG_MAN_NEWLIB_S
-        __DYNAMIC_REENT__
         _POSIX_C_SOURCE=200809L
     )
     message(STATUS "C library compile definitions: CONFIG_MAN_NEWLIB_S, __DYNAMIC_REENT__, _POSIX_C_SOURCE=200809L")
@@ -100,7 +105,7 @@ target_compile_options(system_compiler_flags BEFORE INTERFACE
     $<$<COMPILE_LANGUAGE:C>:-std=${CSTANDARD}>
     $<$<COMPILE_LANGUAGE:CXX>:-std=${CXXSTANDARD}>
     # Security
-    $<$<BOOL:${CANARY}>:-fstack-protector-strong>
+    $<$<COMPILE_LANGUAGE:C>:$<$<BOOL:${CANARY}>:-fstack-protector-strong>>
     # Basic behaviour
     -fshort-enums
     -fstack-usage
@@ -159,6 +164,10 @@ target_include_directories(system_compiler_flags INTERFACE
     ${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC}/Runtime
     ${PATH_UKOS}/Ports/EquatesModels/Generic/Runtime
     ${PATH_UKOS}/Third_Parties
+    # Application root, so a board stub reaches the shared headers of its own
+    # application by name (e.g. "stub.h") instead of by relative path. Kept
+    # last so a project header always wins a name clash.
+    ${PATH_MYPR}
 )
 
 # Link options
@@ -198,10 +207,11 @@ set_property(TARGET ${TARGET_ELF} APPEND
 )
 
 # Common link libraries
+# The matching target_link_libraries() call is deferred to the end of this file
+# so that the tail of the link line keeps the same order as the make build.
 set(TARGET_COMMON_LIBS
     "-lm"
 )
-target_link_libraries(${TARGET_ELF} PRIVATE ${TARGET_COMMON_LIBS})
 
 # Linker Script Selection
 if(NOT DEFINED LINKS_LD)
@@ -213,6 +223,7 @@ endif()
 
 # Link options
 set(TARGET_COMMON_LINK_OPTIONS
+    $<$<BOOL:${CANARY}>:-Wl,--wrap=__stack_chk_fail>
     $<$<C_COMPILER_ID:Clang>:-Wl,--gc-sections>
     -Wall
     -L${PATH_UKOS}/Ports/EquatesModels/Cores/${CORE}/Runtime
@@ -253,12 +264,26 @@ endif()
 
 target_link_options(${TARGET_ELF} PRIVATE
     ${TARGET_COMMON_LINK_OPTIONS}
-    $<$<COMPILE_LANGUAGE:CXX>:-lc>
-    $<$<COMPILE_LANGUAGE:CXX>:-lstdc++>
-    -Wl,--just-symbols=${SYSTEM_ELF_PATH}
     -Wl,-Map=${LOCAL_TARGET}.map,--cref,--print-memory-usage
 )
-target_link_libraries(${TARGET_ELF} PRIVATE ${MYLIB})
+
+# Tail of the link line, in the same order as the make build:
+#   <application objects> ${MYLIB} --just-symbols=FLASH.elf -lc -lstdc++ -lm
+# Everything here must follow the application objects:
+#   - --just-symbols: a symbol defined by both the application and the system
+#     image (e.g. __wrap___stack_chk_fail, provided by crt0_App.o and by
+#     FLASH.elf) must resolve to the application copy.
+#   - -lc/-lstdc++: a library only resolves references from objects that
+#     precede it on the link line.
+# target_link_options() emits before the objects, target_link_libraries() after,
+# hence the placement here.
+target_link_libraries(${TARGET_ELF} PRIVATE
+    ${MYLIB}
+    -Wl,--just-symbols=${SYSTEM_ELF_PATH}
+    $<$<LINK_LANGUAGE:CXX>:-lc>
+    $<$<LINK_LANGUAGE:CXX>:-lstdc++>
+    ${TARGET_COMMON_LIBS}
+)
 
 # Post-Build Actions
 

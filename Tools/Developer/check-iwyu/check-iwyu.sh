@@ -24,9 +24,6 @@ if ! command -v include-what-you-use &>/dev/null; then
     exit 1
 fi
 
-# Determine project directory
-readonly workspace="${0:A:h:h:h}"
-
 readonly mapping_file="${0:A:h}/iwyu-ukosx.imp"
 if [[ ! -f "$mapping_file" ]]; then
     print -u2 "${RED}Error: IWYU mapping file not found: ${mapping_file}${NC}"

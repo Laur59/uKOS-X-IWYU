@@ -27,6 +27,6 @@ typedef struct {
 
 // PLATFORM Configuration
 
-#define TBMAN_PLATFORM_ASIC     (0x1U<<0)
-#define TBMAN_PLATFORM_FPGA     (0x1U<<1)
-#define TBMAN_PLATFORM_HDLSIM   (0x1U<<2)
+#define TBMAN_PLATFORM_ASIC     (0x1U<<0U)
+#define TBMAN_PLATFORM_FPGA     (0x1U<<1U)
+#define TBMAN_PLATFORM_HDLSIM   (0x1U<<2U)

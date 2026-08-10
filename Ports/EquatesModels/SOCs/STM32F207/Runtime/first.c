@@ -127,7 +127,7 @@ const   uintptr_t   g_pfnVectors_C0[] = {
     (uintptr_t)OTG_HS_C0_IRQHandler,                            // Address: 0x0000_0174
     (uintptr_t)DCMI_C0_IRQHandler,                              // Address: 0x0000_0178
     (uintptr_t)CRYP_C0_IRQHandler,                              // Address: 0x0000_017C
-    (uintptr_t)HASH_RNG_C0_IRQHandler                           // Address: 0x0000_0180
+    (uintptr_t)HASH_RNG_C0_IRQHandler,                          // Address: 0x0000_0180
 };
 
 EXCEPTION_SPECIFIC_HANDLER(NonMaskableInt_C0)

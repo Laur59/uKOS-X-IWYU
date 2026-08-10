@@ -28,13 +28,13 @@ typedef struct {
 
 // STAT Configuration
 
-#define HSTX_FIFO_STAT_LEVEL    (0xFFU<<0)
-#define HSTX_FIFO_STAT_LEVEL_0  (0x1U<<0)
-#define HSTX_FIFO_STAT_FULL     (0x1U<<8)
-#define HSTX_FIFO_STAT_EMPTY    (0x1U<<9)
-#define HSTX_FIFO_STAT_WOF      (0x1U<<10)
+#define HSTX_FIFO_STAT_LEVEL    (0xFFU<<0U)
+#define HSTX_FIFO_STAT_LEVEL_0  (0x1U<<0U)
+#define HSTX_FIFO_STAT_FULL     (0x1U<<8U)
+#define HSTX_FIFO_STAT_EMPTY    (0x1U<<9U)
+#define HSTX_FIFO_STAT_WOF      (0x1U<<10U)
 
 // FIFO Configuration
 
-#define HSTX_FIFO_FIFO_FIFO     (0xFFFFFFFFU<<0)
-#define HSTX_FIFO_FIFO_FIFO_0   (0x1U<<0)
+#define HSTX_FIFO_FIFO_FIFO     (0xFFFFFFFFU<<0U)
+#define HSTX_FIFO_FIFO_FIFO_0   (0x1U<<0U)

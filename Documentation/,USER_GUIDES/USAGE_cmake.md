@@ -126,6 +126,8 @@ make -j
 
 ## Build Presets
 
+Presets use schema version 10, so **CMake 3.31 or newer is required**.
+
 For convenience, common combinations of build options are available as presets:
 
 ```shell
@@ -155,6 +157,24 @@ cmake --preset llvm-nouser
 ```
 
 By default presets use Ninja, therefore there is no need to pass option `--parallel` to build a system.
+
+### Presets for the downloadable applications
+
+The same presets are available from any application board directory, for example:
+
+```shell
+cd Applications/uKOS_Appls_Downloadable/p_Specials/test_fatfs/Alastor_H743
+cmake --preset llvm
+cmake --build build
+```
+
+Each application board directory holds a `CMakePresets.json` stub that resolves, through
+`Applications/cmake/appPresets.json`, to the same `Ports/cmake/commonPresets.json` used by
+the system targets — so there is a single definition of the preset matrix.
+
+Note that `_build.sh` configures applications with explicit `-D` options and therefore uses
+the default generator (Unix Makefiles), whereas presets select Ninja. Both build into
+`build/`, so run `rm -fr build` before switching between the two in the same directory.
 
 ## Build Types Summary
 

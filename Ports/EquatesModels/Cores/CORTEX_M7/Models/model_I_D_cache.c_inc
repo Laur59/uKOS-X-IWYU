@@ -38,7 +38,7 @@ static  inline  void    model_cache_D_Enable(void) {
 // Number of ways
 
     ccsidr        = SCB->CCSIDR;
-    numSets       = ((ccsidr & (0x7FFFU<<13))>>13U);
+    numSets       = ((ccsidr & (0x7FFFU<<13U))>>13U);
     sShift        = (ccsidr & 7U) + 4U;
     associativity = ((ccsidr & (0x3FFU<<3U))>>3U);
     wShift        = (local_clz(associativity) & ((uint32_t)DCACHE_LINE_SIZE - 1U));
@@ -137,7 +137,7 @@ static  inline  void    model_cache_D_Invalidate(void) {
 // Number of ways
 
     ccsidr        = SCB->CCSIDR;
-    numSets       = ((ccsidr & (0x7FFFU<<13))>>13U);
+    numSets       = ((ccsidr & (0x7FFFU<<13U))>>13U);
     sShift        = (ccsidr & 7U) + 4U;
     associativity = ((ccsidr & (0x3FFU<<3U))>>3U);
     wShift        = (local_clz(associativity) & ((uint32_t)DCACHE_LINE_SIZE - 1U));

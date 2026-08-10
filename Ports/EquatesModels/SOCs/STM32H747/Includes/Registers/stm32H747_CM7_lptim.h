@@ -43,82 +43,82 @@ typedef struct {
 
 // ISR Configuration
 
-#define LPTIM_ISR_CMPM          (0x1U<<0)
-#define LPTIM_ISR_ARRM          (0x1U<<1)
-#define LPTIM_ISR_EXTTRIG       (0x1U<<2)
-#define LPTIM_ISR_CMPOK         (0x1U<<3)
-#define LPTIM_ISR_ARROK         (0x1U<<4)
-#define LPTIM_ISR_UP            (0x1U<<5)
-#define LPTIM_ISR_DOWN          (0x1U<<6)
+#define LPTIM_ISR_CMPM          (0x1U<<0U)
+#define LPTIM_ISR_ARRM          (0x1U<<1U)
+#define LPTIM_ISR_EXTTRIG       (0x1U<<2U)
+#define LPTIM_ISR_CMPOK         (0x1U<<3U)
+#define LPTIM_ISR_ARROK         (0x1U<<4U)
+#define LPTIM_ISR_UP            (0x1U<<5U)
+#define LPTIM_ISR_DOWN          (0x1U<<6U)
 
 // ICR Configuration
 
-#define LPTIM_ICR_CMPMCF        (0x1U<<0)
-#define LPTIM_ICR_ARRMCF        (0x1U<<1)
-#define LPTIM_ICR_EXTTRIGCF     (0x1U<<2)
-#define LPTIM_ICR_CMPOKCF       (0x1U<<3)
-#define LPTIM_ICR_ARROKCF       (0x1U<<4)
-#define LPTIM_ICR_UPCF          (0x1U<<5)
-#define LPTIM_ICR_DOWNCF        (0x1U<<6)
+#define LPTIM_ICR_CMPMCF        (0x1U<<0U)
+#define LPTIM_ICR_ARRMCF        (0x1U<<1U)
+#define LPTIM_ICR_EXTTRIGCF     (0x1U<<2U)
+#define LPTIM_ICR_CMPOKCF       (0x1U<<3U)
+#define LPTIM_ICR_ARROKCF       (0x1U<<4U)
+#define LPTIM_ICR_UPCF          (0x1U<<5U)
+#define LPTIM_ICR_DOWNCF        (0x1U<<6U)
 
 // IER Configuration
 
-#define LPTIM_IER_CMPMIE        (0x1U<<0)
-#define LPTIM_IER_ARRMIE        (0x1U<<1)
-#define LPTIM_IER_EXTTRIGIE     (0x1U<<2)
-#define LPTIM_IER_CMPOKIE       (0x1U<<3)
-#define LPTIM_IER_ARROKIE       (0x1U<<4)
-#define LPTIM_IER_UPIE          (0x1U<<5)
-#define LPTIM_IER_DOWNIE        (0x1U<<6)
+#define LPTIM_IER_CMPMIE        (0x1U<<0U)
+#define LPTIM_IER_ARRMIE        (0x1U<<1U)
+#define LPTIM_IER_EXTTRIGIE     (0x1U<<2U)
+#define LPTIM_IER_CMPOKIE       (0x1U<<3U)
+#define LPTIM_IER_ARROKIE       (0x1U<<4U)
+#define LPTIM_IER_UPIE          (0x1U<<5U)
+#define LPTIM_IER_DOWNIE        (0x1U<<6U)
 
 // CFGR Configuration
 
-#define LPTIM_CFGR_CKSEL        (0x1U<<0)
-#define LPTIM_CFGR_CKPOL        (0x3U<<1)
-#define LPTIM_CFGR_CKPOL_0      (0x1U<<1)
-#define LPTIM_CFGR_CKFLT        (0x3U<<3)
-#define LPTIM_CFGR_CKFLT_0      (0x1U<<3)
-#define LPTIM_CFGR_TRGFLT       (0x3U<<6)
-#define LPTIM_CFGR_TRGFLT_0     (0x1U<<6)
-#define LPTIM_CFGR_PRESC        (0x7U<<9)
-#define LPTIM_CFGR_PRESC_0      (0x1U<<9)
-#define LPTIM_CFGR_TRIGSEL      (0x7U<<13)
-#define LPTIM_CFGR_TRIGSEL_0    (0x1U<<13)
-#define LPTIM_CFGR_TRIGEN       (0x3U<<17)
-#define LPTIM_CFGR_TRIGEN_0     (0x1U<<17)
-#define LPTIM_CFGR_TIMOUT       (0x1U<<19)
-#define LPTIM_CFGR_WAVE         (0x1U<<20)
-#define LPTIM_CFGR_WAVPOL       (0x1U<<21)
-#define LPTIM_CFGR_PRELOAD      (0x1U<<22)
-#define LPTIM_CFGR_COUNTMODE    (0x1U<<23)
-#define LPTIM_CFGR_ENC          (0x1U<<24)
+#define LPTIM_CFGR_CKSEL        (0x1U<<0U)
+#define LPTIM_CFGR_CKPOL        (0x3U<<1U)
+#define LPTIM_CFGR_CKPOL_0      (0x1U<<1U)
+#define LPTIM_CFGR_CKFLT        (0x3U<<3U)
+#define LPTIM_CFGR_CKFLT_0      (0x1U<<3U)
+#define LPTIM_CFGR_TRGFLT       (0x3U<<6U)
+#define LPTIM_CFGR_TRGFLT_0     (0x1U<<6U)
+#define LPTIM_CFGR_PRESC        (0x7U<<9U)
+#define LPTIM_CFGR_PRESC_0      (0x1U<<9U)
+#define LPTIM_CFGR_TRIGSEL      (0x7U<<13U)
+#define LPTIM_CFGR_TRIGSEL_0    (0x1U<<13U)
+#define LPTIM_CFGR_TRIGEN       (0x3U<<17U)
+#define LPTIM_CFGR_TRIGEN_0     (0x1U<<17U)
+#define LPTIM_CFGR_TIMOUT       (0x1U<<19U)
+#define LPTIM_CFGR_WAVE         (0x1U<<20U)
+#define LPTIM_CFGR_WAVPOL       (0x1U<<21U)
+#define LPTIM_CFGR_PRELOAD      (0x1U<<22U)
+#define LPTIM_CFGR_COUNTMODE    (0x1U<<23U)
+#define LPTIM_CFGR_ENC          (0x1U<<24U)
 
 // CR Configuration
 
-#define LPTIM_CR_RSTARE         (0x1U<<4)
-#define LPTIM_CR_COUNTRST       (0x1U<<3)
-#define LPTIM_CR_CNTSTRT        (0x1U<<2)
-#define LPTIM_CR_SNGSTRT        (0x1U<<1)
-#define LPTIM_CR_ENABLE         (0x1U<<0)
+#define LPTIM_CR_RSTARE         (0x1U<<4U)
+#define LPTIM_CR_COUNTRST       (0x1U<<3U)
+#define LPTIM_CR_CNTSTRT        (0x1U<<2U)
+#define LPTIM_CR_SNGSTRT        (0x1U<<1U)
+#define LPTIM_CR_ENABLE         (0x1U<<0U)
 
 // CMP Configuration
 
-#define LPTIM_CMP_CMP           (0xFFFFU<<0)
-#define LPTIM_CMP_CMP_0         (0x1U<<0)
+#define LPTIM_CMP_CMP           (0xFFFFU<<0U)
+#define LPTIM_CMP_CMP_0         (0x1U<<0U)
 
 // ARR Configuration
 
-#define LPTIM_ARR_ARR           (0xFFFFU<<0)
-#define LPTIM_ARR_ARR_0         (0x1U<<0)
+#define LPTIM_ARR_ARR           (0xFFFFU<<0U)
+#define LPTIM_ARR_ARR_0         (0x1U<<0U)
 
 // CNT Configuration
 
-#define LPTIM_CNT_CNT           (0xFFFFU<<0)
-#define LPTIM_CNT_CNT_0         (0x1U<<0)
+#define LPTIM_CNT_CNT           (0xFFFFU<<0U)
+#define LPTIM_CNT_CNT_0         (0x1U<<0U)
 
 // CFGR2 Configuration
 
-#define LPTIM_CFGR2_IN2SEL      (0x3U<<4)
-#define LPTIM_CFGR2_IN2SEL_0    (0x1U<<4)
-#define LPTIM_CFGR2_IN1SEL      (0x3U<<0)
-#define LPTIM_CFGR2_IN1SEL_0    (0x1U<<0)
+#define LPTIM_CFGR2_IN2SEL      (0x3U<<4U)
+#define LPTIM_CFGR2_IN2SEL_0    (0x1U<<4U)
+#define LPTIM_CFGR2_IN1SEL      (0x3U<<0U)
+#define LPTIM_CFGR2_IN1SEL_0    (0x1U<<0U)

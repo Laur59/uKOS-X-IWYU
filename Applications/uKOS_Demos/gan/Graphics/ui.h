@@ -45,3 +45,5 @@
 #define KTEXT_POS_Y_1       260                     // Text Y, random
 #define KTEXT_POS_X_2       270                     // Text X, execution TensorFlow
 #define KTEXT_POS_Y_2       300                     // Text Y, execution TensorFlow
+#define KTEXT_POS_X_3       270                     // Text X, execution NPU
+#define KTEXT_POS_Y_3       320                     // Text Y, execution NPU

@@ -58,7 +58,7 @@ enum {
         KERR_PRE,
         KERR_008,
         KERR_016,
-        KERR_032
+        KERR_032,
 };
 
 #define KSTART      ((uintptr_t)linker_lnHeap)

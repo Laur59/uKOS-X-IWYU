@@ -31,7 +31,7 @@ enum {
         KBAT_CHARGED_CAPACITY,
         KBAT_REMAINING_CAPACITY,
         KBAT_TIME_TO_EMPTY,
-        KBAT_CYCLE_COUNT
+        KBAT_CYCLE_COUNT,
 };
 
 // Prototypes
@@ -72,13 +72,13 @@ static  void    cb_configure(void) {
 static  bool    cb_getValue(uint8_t mode, uint16_t *value) {
 
     switch (mode) {
-        case KBAT_VOLTAGE:            { return (local_readRegister(BQ27510G3_VOLTAGE, value));              }
-        case KBAT_CURRENT:            { return (local_readRegister(BQ27510G3_AVERAGE_CURRENT, value));      }
-        case KBAT_TEMPERATURE:        { return (local_readRegister(BQ27510G3_INTERNAL_TEMPERATURE, value)); }
-        case KBAT_CHARGED_CAPACITY:   { return (local_readRegister(BQ27510G3_FULL_CHARGE_CAPACITY, value)); }
-        case KBAT_REMAINING_CAPACITY: { return (local_readRegister(BQ27510G3_REMAINING_CAPACITY, value));   }
-        case KBAT_TIME_TO_EMPTY:      { return (local_readRegister(BQ27510G3_TIME_TO_EMPTY, value));        }
-        case KBAT_CYCLE_COUNT:        { return (local_readRegister(BQ27510G3_CYCLE_COUNT, value));          }
+        case KBAT_VOLTAGE:            { return local_readRegister(BQ27510G3_VOLTAGE, value);              }
+        case KBAT_CURRENT:            { return local_readRegister(BQ27510G3_AVERAGE_CURRENT, value);      }
+        case KBAT_TEMPERATURE:        { return local_readRegister(BQ27510G3_INTERNAL_TEMPERATURE, value); }
+        case KBAT_CHARGED_CAPACITY:   { return local_readRegister(BQ27510G3_FULL_CHARGE_CAPACITY, value); }
+        case KBAT_REMAINING_CAPACITY: { return local_readRegister(BQ27510G3_REMAINING_CAPACITY, value);   }
+        case KBAT_TIME_TO_EMPTY:      { return local_readRegister(BQ27510G3_TIME_TO_EMPTY, value);        }
+        case KBAT_CYCLE_COUNT:        { return local_readRegister(BQ27510G3_CYCLE_COUNT, value);          }
         default: {
             *value = 0U;
             return true;
@@ -99,14 +99,14 @@ static  bool    local_readRegister(uint16_t command, uint16_t *value) {
     uint8_t     buffer[2];
     bool        status;
 
-    buffer[0] = (uint8_t)(command>>8);
+    buffer[0] = (uint8_t)(command>>8U);
 
     RESERVE(I2C0, KMODE_READ_WRITE);
     status = (i2c_read(KI2C0, KI2C_ADD_BQ27510G3, &buffer[0], 2U) != KERR_I2C_NOERR);
     kern_suspendProcess(10U);
     I2C0_release(KMODE_READ_WRITE);
 
-    *value = (uint16_t)((buffer[1]<<8) | buffer[0]);
+    *value = (uint16_t)(((uint32_t)buffer[1]<<8U) | (uint32_t)buffer[0]);
     return status;
 }
 
@@ -129,11 +129,11 @@ static  bool    local_readSubRegister(uint16_t command, uint16_t subCommand, uin
     kern_suspendProcess(10U);
 
     buffer[0] = (uint8_t)(command>>8U);
-    status |= (i2c_read(KI2C0, KI2C_ADD_BQ27510G3, &buffer[0], 2U) != KERR_I2C_NOERR);
+    status |= (bool)(i2c_read(KI2C0, KI2C_ADD_BQ27510G3, &buffer[0], 2U) != KERR_I2C_NOERR);
     kern_suspendProcess(10U);
     I2C0_release(KMODE_READ_WRITE);
 
-    *value =(uint16_t)((buffer[1]<<8U) | buffer[0]);
+    *value = (uint16_t)(((uint32_t)buffer[1]<<8U) | (uint32_t)buffer[0]);
     return status;
 }
 

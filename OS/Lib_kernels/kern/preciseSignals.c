@@ -145,7 +145,7 @@ int32_t kern_createPreciseSignal(const char_t *identifier, prcs_t **handle) {
             *handle = &vKern_prcs[core][i];
 
             vKern_nbPrcs[core]    = (uint16_t)(vKern_nbPrcs[core] + 1U);
-            vKern_nbMaxPrcs[core] = (vKern_nbPrcs[core] > vKern_nbMaxPrcs[core]) ? (vKern_nbPrcs[core]) : (vKern_nbMaxPrcs[core]);
+            vKern_nbMaxPrcs[core] = (vKern_nbPrcs[core] > vKern_nbMaxPrcs[core]) ? vKern_nbPrcs[core] : vKern_nbMaxPrcs[core];
             DEBUG_KERN_TRACE("exit: OK");
             INTERRUPTION_RESTORE;
             PRIVILEGE_RESTORE;
@@ -221,7 +221,7 @@ int32_t kern_setPreciseSignal(prcs_t *handle, sign_t **sigGroup, proc_t *toProce
     if ((preciseSignal->oState & (1U<<BPRCS_INSTALLED)) == 0U) { *sigGroup = nullptr; DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOPRC; }
 
     preciseSignal->oMode        = mode;
-    preciseSignal->oSignalGroup = (*sigGroup == nullptr) ? (vDefaultSignalGroup[core]) : (*sigGroup);
+    preciseSignal->oSignalGroup = (*sigGroup == nullptr) ? vDefaultSignalGroup[core] : (*sigGroup);
     preciseSignal->oToProcess   = toProcess;
     preciseSignal->oSignal      = signal;
     preciseSignal->oPeriod      = period;

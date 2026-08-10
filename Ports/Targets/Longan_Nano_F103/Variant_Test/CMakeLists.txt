@@ -3,7 +3,7 @@
 #
 # CMake file to set up the building for uKOS-X system.
 
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.31)
 
 if (${USER_MODE})
     message(WARNING "Microcontroller has no User/Supervisor modes. Using privileged mode.")

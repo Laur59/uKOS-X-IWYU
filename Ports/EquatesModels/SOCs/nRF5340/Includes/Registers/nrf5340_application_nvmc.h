@@ -40,48 +40,48 @@ typedef struct {
 
 // READY Configuration
 
-#define NVMC_READY_READY                    (0x1U<<0)
-#define NVMC_READY_READY_BUSY               (0x0U<<0)
-#define NVMC_READY_READY_READY              (0x1U<<0)
+#define NVMC_READY_READY                    (0x1U<<0U)
+#define NVMC_READY_READY_BUSY               (0x0U<<0U)
+#define NVMC_READY_READY_READY              (0x1U<<0U)
 
 // READYNEXT Configuration
 
-#define NVMC_READYNEXT_READYNEXT            (0x1U<<0)
-#define NVMC_READYNEXT_READYNEXT_BUSY       (0x0U<<0)
-#define NVMC_READYNEXT_READYNEXT_READY      (0x1U<<0)
+#define NVMC_READYNEXT_READYNEXT            (0x1U<<0U)
+#define NVMC_READYNEXT_READYNEXT_BUSY       (0x0U<<0U)
+#define NVMC_READYNEXT_READYNEXT_READY      (0x1U<<0U)
 
 // CONFIG Configuration
 
-#define NVMC_CONFIG_WEN                     (0x7U<<0)
-#define NVMC_CONFIG_WEN_0                   (0x1U<<0)
-#define NVMC_CONFIG_WEN_REN                 (0x0U<<0)
-#define NVMC_CONFIG_WEN_WEN                 (0x1U<<0)
-#define NVMC_CONFIG_WEN_EEN                 (0x2U<<0)
-#define NVMC_CONFIG_WEN_PEEN                (0x4U<<0)
+#define NVMC_CONFIG_WEN                     (0x7U<<0U)
+#define NVMC_CONFIG_WEN_0                   (0x1U<<0U)
+#define NVMC_CONFIG_WEN_REN                 (0x0U<<0U)
+#define NVMC_CONFIG_WEN_WEN                 (0x1U<<0U)
+#define NVMC_CONFIG_WEN_EEN                 (0x2U<<0U)
+#define NVMC_CONFIG_WEN_PEEN                (0x4U<<0U)
 
 // ERASEALL Configuration
 
-#define NVMC_ERASEALL_ERASEALL              (0x1U<<0)
-#define NVMC_ERASEALL_ERASEALL_NOOPERATION  (0x0U<<0)
-#define NVMC_ERASEALL_ERASEALL_ERASE        (0x1U<<0)
+#define NVMC_ERASEALL_ERASEALL              (0x1U<<0U)
+#define NVMC_ERASEALL_ERASEALL_NOOPERATION  (0x0U<<0U)
+#define NVMC_ERASEALL_ERASEALL_ERASE        (0x1U<<0U)
 
 // ERASEPAGEPARTIALCFG Configuration
 
-#define NVMC_ERASEPAGEPARTIALCFG_DURATION   (0x7FU<<0)
-#define NVMC_ERASEPAGEPARTIALCFG_DURATION_0 (0x1U<<0)
+#define NVMC_ERASEPAGEPARTIALCFG_DURATION   (0x7FU<<0U)
+#define NVMC_ERASEPAGEPARTIALCFG_DURATION_0 (0x1U<<0U)
 
 // CONFIGNS Configuration
 
-#define NVMC_CONFIGNS_WEN                   (0x3U<<0)
-#define NVMC_CONFIGNS_WEN_0                 (0x1U<<0)
-#define NVMC_CONFIGNS_WEN_REN               (0x0U<<0)
-#define NVMC_CONFIGNS_WEN_WEN               (0x1U<<0)
-#define NVMC_CONFIGNS_WEN_EEN               (0x2U<<0)
+#define NVMC_CONFIGNS_WEN                   (0x3U<<0U)
+#define NVMC_CONFIGNS_WEN_0                 (0x1U<<0U)
+#define NVMC_CONFIGNS_WEN_REN               (0x0U<<0U)
+#define NVMC_CONFIGNS_WEN_WEN               (0x1U<<0U)
+#define NVMC_CONFIGNS_WEN_EEN               (0x2U<<0U)
 
 // WRITEUICRNS Configuration
 
-#define NVMC_WRITEUICRNS_KEY                (0xFFFFFFFU<<4)
-#define NVMC_WRITEUICRNS_KEY_0              (0x1U<<4)
-#define NVMC_WRITEUICRNS_SET                (0x1U<<0)
-#define NVMC_WRITEUICRNS_KEY_KEYVALID       (0xAFBE5A7U<<4)
-#define NVMC_WRITEUICRNS_SET_SET            (0x1U<<0)
+#define NVMC_WRITEUICRNS_KEY                (0xFFFFFFFU<<4U)
+#define NVMC_WRITEUICRNS_KEY_0              (0x1U<<4U)
+#define NVMC_WRITEUICRNS_SET                (0x1U<<0U)
+#define NVMC_WRITEUICRNS_KEY_KEYVALID       (0xAFBE5A7U<<4U)
+#define NVMC_WRITEUICRNS_SET_SET            (0x1U<<0U)

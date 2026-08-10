@@ -66,7 +66,7 @@
 
 static  const   char_t  *tableCoreReference[2] = {
                             "Cortex-M4",
-                            "Cortex-M7"
+                            "Cortex-M7",
                         };
 
 // Prototypes

@@ -686,7 +686,7 @@ const   uintptr_t   g_pfnVectors_C0[] = {
     (uintptr_t)PLL_SYS_IRQ_C0_IRQHandler,                       // Address: 0x0000_00E8
     (uintptr_t)PLL_USB_IRQ_C0_IRQHandler,                       // Address: 0x0000_00EC
     (uintptr_t)POWMAN_IRQ_POW_C0_IRQHandler,                    // Address: 0x0000_00F0
-    (uintptr_t)POWMAN_IRQ_TIMER_C0_IRQHandler                   // Address: 0x0000_00F4
+    (uintptr_t)POWMAN_IRQ_TIMER_C0_IRQHandler,                  // Address: 0x0000_00F4
 };
 
 EXCEPTION_SPECIFIC_HANDLER(NonMaskableInt_C0)
@@ -772,7 +772,7 @@ const   uintptr_t   g_pfnVectors_C1[] = {
     (uintptr_t)PLL_SYS_IRQ_C1_IRQHandler,                       // Address: 0x0000_00E8
     (uintptr_t)PLL_USB_IRQ_C1_IRQHandler,                       // Address: 0x0000_00EC
     (uintptr_t)POWMAN_IRQ_POW_C1_IRQHandler,                    // Address: 0x0000_00F0
-    (uintptr_t)POWMAN_IRQ_TIMER_C1_IRQHandler                   // Address: 0x0000_00F4
+    (uintptr_t)POWMAN_IRQ_TIMER_C1_IRQHandler,                  // Address: 0x0000_00F4
 };
 
 EXCEPTION_SPECIFIC_HANDLER(NonMaskableInt_C1)

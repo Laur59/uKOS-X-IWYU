@@ -27,5 +27,5 @@ typedef struct {
 
 // CPUID Configuration
 
-#define DCNF_CPUID_CPUID    (0xFFU<<0)
-#define DCNF_CPUID_CPUID_0  (0x1U<<0)
+#define DCNF_CPUID_CPUID    (0xFFU<<0U)
+#define DCNF_CPUID_CPUID_0  (0x1U<<0U)

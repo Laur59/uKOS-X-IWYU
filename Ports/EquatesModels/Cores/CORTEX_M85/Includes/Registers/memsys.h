@@ -41,11 +41,11 @@ typedef struct {
 
 // MSCR register
 
-#define MEMSYSCTL_MSCR_CPWRDN               (0x1U<<17)
-#define MEMSYSCTL_MSCR_DCCLEAN              (0x1U<<16)
-#define MEMSYSCTL_MSCR_ICACTIVE             (0x1U<<13)
-#define MEMSYSCTL_MSCR_DCACTIVE             (0x1U<<12)
-#define MEMSYSCTL_MSCR_TECCCHKDIS           (0x1U<<4)
-#define MEMSYSCTL_MSCR_EVECCFAULT           (0x1U<<3)
-#define MEMSYSCTL_MSCR_FORCEWT              (0x1U<<2)
-#define MEMSYSCTL_MSCR_ECCEN                (0x1U<<1)
+#define MEMSYSCTL_MSCR_CPWRDN               (0x1U<<17U)
+#define MEMSYSCTL_MSCR_DCCLEAN              (0x1U<<16U)
+#define MEMSYSCTL_MSCR_ICACTIVE             (0x1U<<13U)
+#define MEMSYSCTL_MSCR_DCACTIVE             (0x1U<<12U)
+#define MEMSYSCTL_MSCR_TECCCHKDIS           (0x1U<<4U)
+#define MEMSYSCTL_MSCR_EVECCFAULT           (0x1U<<3U)
+#define MEMSYSCTL_MSCR_FORCEWT              (0x1U<<2U)
+#define MEMSYSCTL_MSCR_ECCEN                (0x1U<<1U)

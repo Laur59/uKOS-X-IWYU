@@ -79,8 +79,8 @@ static  int32_t local_init(void);
 static  void    local_composeTimeZone(char_t *timeZone, const char_t *utcLocation, const char_t *dstLocation);
 
 #if (KCALENDAR_WITH_HW_RTC_S == true)
-extern  void    model_rtc_readUnixTime(uint64_t *unixTime);
-extern  void    model_rtc_update(uint64_t unixTime);
+static  void    model_rtc_readUnixTime(uint64_t *unixTime);
+static  void    model_rtc_update(uint64_t unixTime);
 #endif
 
 /*

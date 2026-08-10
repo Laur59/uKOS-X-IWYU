@@ -127,7 +127,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     (void)dprintf(KSYST, "      Time [us]   Parameter            Process or ISR identifier          Information\n\n");
 
     for (i = 0; i < nbTraceWrites; i++) {
-        identifier = (rTraceFifo->oProcess == nullptr) ? "From ISR" : (rTraceFifo->oProcess->oSpecification.oIdentifier);
+        identifier = (rTraceFifo->oProcess == nullptr) ? "From ISR" : rTraceFifo->oProcess->oSpecification.oIdentifier;
         local_compose(identifier, &idSpacer);
         (void)dprintf(KSYST, "%12lld-us   0x%016"PRIXPTR"   %s%s  %s\n", rTraceFifo->oTimeStamp, rTraceFifo->oParameter, identifier, idSpacer, rTraceFifo->oMessage);
 

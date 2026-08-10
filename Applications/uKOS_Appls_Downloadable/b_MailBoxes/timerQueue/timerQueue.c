@@ -57,6 +57,7 @@
 #include    "modules.h"
 #include    "os_errors.h"
 #include    "record/record.h"
+#include    "stub.h"
 #include    "types.h"
 
 #define ALLOW_HARDWARE_ACCESS_S         // define: elevate the privilege for permitting hardware accesses
@@ -110,10 +111,6 @@ MODULE(
 
 // Application specific
 // ====================
-
-// Prototypes
-
-extern  void    stub_intr_timer_init(void);
 
 /*
  * \brief aProcess

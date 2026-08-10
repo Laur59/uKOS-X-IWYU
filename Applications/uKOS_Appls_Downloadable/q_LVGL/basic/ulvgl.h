@@ -5,6 +5,8 @@
  * Wrapper for LVGL header file: Suppress clang warnings.
  */
 
+#pragma once
+
 #ifdef  __clang__
 // Ignore the clang diagnostic
 //

@@ -131,6 +131,26 @@ static  const   char_t      aTest_serialFlash_2[]   = "F5: Measure twice, cut on
 [[maybe_unused]]
 static  const   char_t      aTest_serialFlash_3[]   = "F6: When in doubt, print it out - logs are cheap, bugs aren't.";
 
+// Feature selection
+// The WITH_xxx macros gate the prototypes below as well as the code, so they
+// have to be known before the first of them is read.
+
+#ifdef Alastor_H743_S
+#define WITH_SDCARD_S
+#define WITH_SERIAL_FLASH_S
+#define WITH_FORMAT_S
+#endif
+
+#ifdef Firefly_H743_S
+#undef  WITH_SDCARD_S
+#define WITH_SERIAL_FLASH_S
+#define WITH_FORMAT_S
+#endif
+
+#ifdef WITH_FORMAT_S
+static          BYTE        work[FF_MAX_SS];
+#endif
+
 // Prototype
 
 #ifdef WITH_FORMAT_S
@@ -147,7 +167,7 @@ static  void    test_display(void *buffer, UINT size);
 static  void    test_listDirectory(const char_t *path);
 static  void    test_listDirectoryTree(const char *path, uint8_t depth);
 #endif
-#ifdef WITH_SDCARD_S
+#if defined WITH_SDCARD_S || defined WITH_SERIAL_FLASH_S
 static  void    test_folder(const char_t *folder);
 #endif
 
@@ -171,18 +191,6 @@ static  void    test_folder(const char_t *folder);
  *       suicide
  *
  */
-#ifdef Alastor_H743_S
-#define WITH_SDCARD_S
-#define WITH_SERIAL_FLASH_S
-#define WITH_FORMAT_S
-#endif
-
-#ifdef Firefly_H743_S
-#undef  WITH_SDCARD_S
-#define WITH_SERIAL_FLASH_S
-#define WITH_FORMAT_S
-#endif
-
 #define DRIVE_FLASH     "/flash"
 #define DRIVE_SDCARD    "/sdcard"
 
@@ -449,7 +457,7 @@ static  void    test_mount(FATFS *fs, const char_t *device) {
 }
 #endif
 
-#ifdef WITH_SDCARD_S
+#if defined WITH_SDCARD_S || defined WITH_SERIAL_FLASH_S
 /*
  * \brief test_folder
  *

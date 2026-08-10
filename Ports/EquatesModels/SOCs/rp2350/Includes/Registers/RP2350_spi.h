@@ -49,111 +49,111 @@ typedef struct {
 
 // SSPCR0 Configuration
 
-#define SPI_SSPCR0_DSS                      (0xFU<<0)
-#define SPI_SSPCR0_DSS_0                    (0x1U<<0)
-#define SPI_SSPCR0_FRF                      (0x3U<<4)
-#define SPI_SSPCR0_FRF_0                    (0x1U<<4)
-#define SPI_SSPCR0_SPO                      (0x1U<<6)
-#define SPI_SSPCR0_SPH                      (0x1U<<7)
-#define SPI_SSPCR0_SCR                      (0xFFU<<8)
-#define SPI_SSPCR0_SCR_0                    (0x1U<<8)
+#define SPI_SSPCR0_DSS                      (0xFU<<0U)
+#define SPI_SSPCR0_DSS_0                    (0x1U<<0U)
+#define SPI_SSPCR0_FRF                      (0x3U<<4U)
+#define SPI_SSPCR0_FRF_0                    (0x1U<<4U)
+#define SPI_SSPCR0_SPO                      (0x1U<<6U)
+#define SPI_SSPCR0_SPH                      (0x1U<<7U)
+#define SPI_SSPCR0_SCR                      (0xFFU<<8U)
+#define SPI_SSPCR0_SCR_0                    (0x1U<<8U)
 
 // SSPCR1 Configuration
 
-#define SPI_SSPCR1_LBM                      (0x1U<<0)
-#define SPI_SSPCR1_SSE                      (0x1U<<1)
-#define SPI_SSPCR1_MS                       (0x1U<<2)
-#define SPI_SSPCR1_SOD                      (0x1U<<3)
+#define SPI_SSPCR1_LBM                      (0x1U<<0U)
+#define SPI_SSPCR1_SSE                      (0x1U<<1U)
+#define SPI_SSPCR1_MS                       (0x1U<<2U)
+#define SPI_SSPCR1_SOD                      (0x1U<<3U)
 
 // SSPDR Configuration
 
-#define SPI_SSPDR_DATA                      (0xFFFFU<<0)
-#define SPI_SSPDR_DATA_0                    (0x1U<<0)
+#define SPI_SSPDR_DATA                      (0xFFFFU<<0U)
+#define SPI_SSPDR_DATA_0                    (0x1U<<0U)
 
 // SSPSR Configuration
 
-#define SPI_SSPSR_TFE                       (0x1U<<0)
-#define SPI_SSPSR_TNF                       (0x1U<<1)
-#define SPI_SSPSR_RNE                       (0x1U<<2)
-#define SPI_SSPSR_RFF                       (0x1U<<3)
-#define SPI_SSPSR_BSY                       (0x1U<<4)
+#define SPI_SSPSR_TFE                       (0x1U<<0U)
+#define SPI_SSPSR_TNF                       (0x1U<<1U)
+#define SPI_SSPSR_RNE                       (0x1U<<2U)
+#define SPI_SSPSR_RFF                       (0x1U<<3U)
+#define SPI_SSPSR_BSY                       (0x1U<<4U)
 
 // SSPCPSR Configuration
 
-#define SPI_SSPCPSR_CPSDVSR                 (0xFFU<<0)
-#define SPI_SSPCPSR_CPSDVSR_0               (0x1U<<0)
+#define SPI_SSPCPSR_CPSDVSR                 (0xFFU<<0U)
+#define SPI_SSPCPSR_CPSDVSR_0               (0x1U<<0U)
 
 // SSPIMSC Configuration
 
-#define SPI_SSPIMSC_RORIM                   (0x1U<<0)
-#define SPI_SSPIMSC_RTIM                    (0x1U<<1)
-#define SPI_SSPIMSC_RXIM                    (0x1U<<2)
-#define SPI_SSPIMSC_TXIM                    (0x1U<<3)
+#define SPI_SSPIMSC_RORIM                   (0x1U<<0U)
+#define SPI_SSPIMSC_RTIM                    (0x1U<<1U)
+#define SPI_SSPIMSC_RXIM                    (0x1U<<2U)
+#define SPI_SSPIMSC_TXIM                    (0x1U<<3U)
 
 // SSPRIS Configuration
 
-#define SPI_SSPRIS_RORRIS                   (0x1U<<0)
-#define SPI_SSPRIS_RTRIS                    (0x1U<<1)
-#define SPI_SSPRIS_RXRIS                    (0x1U<<2)
-#define SPI_SSPRIS_TXRIS                    (0x1U<<3)
+#define SPI_SSPRIS_RORRIS                   (0x1U<<0U)
+#define SPI_SSPRIS_RTRIS                    (0x1U<<1U)
+#define SPI_SSPRIS_RXRIS                    (0x1U<<2U)
+#define SPI_SSPRIS_TXRIS                    (0x1U<<3U)
 
 // SSPMIS Configuration
 
-#define SPI_SSPMIS_RORMIS                   (0x1U<<0)
-#define SPI_SSPMIS_RTMIS                    (0x1U<<1)
-#define SPI_SSPMIS_RXMIS                    (0x1U<<2)
-#define SPI_SSPMIS_TXMIS                    (0x1U<<3)
+#define SPI_SSPMIS_RORMIS                   (0x1U<<0U)
+#define SPI_SSPMIS_RTMIS                    (0x1U<<1U)
+#define SPI_SSPMIS_RXMIS                    (0x1U<<2U)
+#define SPI_SSPMIS_TXMIS                    (0x1U<<3U)
 
 // SSPICR Configuration
 
-#define SPI_SSPICR_RORIC                    (0x1U<<0)
-#define SPI_SSPICR_RTIC                     (0x1U<<1)
+#define SPI_SSPICR_RORIC                    (0x1U<<0U)
+#define SPI_SSPICR_RTIC                     (0x1U<<1U)
 
 // SSPDMACR Configuration
 
-#define SPI_SSPDMACR_RXDMAE                 (0x1U<<0)
-#define SPI_SSPDMACR_TXDMAE                 (0x1U<<1)
+#define SPI_SSPDMACR_RXDMAE                 (0x1U<<0U)
+#define SPI_SSPDMACR_TXDMAE                 (0x1U<<1U)
 
 // SSPPERIPHID0 Configuration
 
-#define SPI_SSPPERIPHID0_PARTNUMBER0        (0xFFU<<0)
-#define SPI_SSPPERIPHID0_PARTNUMBER0_0      (0x1U<<0)
+#define SPI_SSPPERIPHID0_PARTNUMBER0        (0xFFU<<0U)
+#define SPI_SSPPERIPHID0_PARTNUMBER0_0      (0x1U<<0U)
 
 // SSPPERIPHID1 Configuration
 
-#define SPI_SSPPERIPHID1_PARTNUMBER1        (0xFU<<0)
-#define SPI_SSPPERIPHID1_PARTNUMBER1_0      (0x1U<<0)
-#define SPI_SSPPERIPHID1_DESIGNER0          (0xFU<<4)
-#define SPI_SSPPERIPHID1_DESIGNER0_0        (0x1U<<4)
+#define SPI_SSPPERIPHID1_PARTNUMBER1        (0xFU<<0U)
+#define SPI_SSPPERIPHID1_PARTNUMBER1_0      (0x1U<<0U)
+#define SPI_SSPPERIPHID1_DESIGNER0          (0xFU<<4U)
+#define SPI_SSPPERIPHID1_DESIGNER0_0        (0x1U<<4U)
 
 // SSPPERIPHID2 Configuration
 
-#define SPI_SSPPERIPHID2_DESIGNER1          (0xFU<<0)
-#define SPI_SSPPERIPHID2_DESIGNER1_0        (0x1U<<0)
-#define SPI_SSPPERIPHID2_REVISION           (0xFU<<4)
-#define SPI_SSPPERIPHID2_REVISION_0         (0x1U<<4)
+#define SPI_SSPPERIPHID2_DESIGNER1          (0xFU<<0U)
+#define SPI_SSPPERIPHID2_DESIGNER1_0        (0x1U<<0U)
+#define SPI_SSPPERIPHID2_REVISION           (0xFU<<4U)
+#define SPI_SSPPERIPHID2_REVISION_0         (0x1U<<4U)
 
 // SSPPERIPHID3 Configuration
 
-#define SPI_SSPPERIPHID3_CONFIGURATION      (0xFFU<<0)
-#define SPI_SSPPERIPHID3_CONFIGURATION_0    (0x1U<<0)
+#define SPI_SSPPERIPHID3_CONFIGURATION      (0xFFU<<0U)
+#define SPI_SSPPERIPHID3_CONFIGURATION_0    (0x1U<<0U)
 
 // SSPPCELLID0 Configuration
 
-#define SPI_SSPPCELLID0_SSPPCELLID0         (0xFFU<<0)
-#define SPI_SSPPCELLID0_SSPPCELLID0_0       (0x1U<<0)
+#define SPI_SSPPCELLID0_SSPPCELLID0         (0xFFU<<0U)
+#define SPI_SSPPCELLID0_SSPPCELLID0_0       (0x1U<<0U)
 
 // SSPPCELLID1 Configuration
 
-#define SPI_SSPPCELLID1_SSPPCELLID1         (0xFFU<<0)
-#define SPI_SSPPCELLID1_SSPPCELLID1_0       (0x1U<<0)
+#define SPI_SSPPCELLID1_SSPPCELLID1         (0xFFU<<0U)
+#define SPI_SSPPCELLID1_SSPPCELLID1_0       (0x1U<<0U)
 
 // SSPPCELLID2 Configuration
 
-#define SPI_SSPPCELLID2_SSPPCELLID2         (0xFFU<<0)
-#define SPI_SSPPCELLID2_SSPPCELLID2_0       (0x1U<<0)
+#define SPI_SSPPCELLID2_SSPPCELLID2         (0xFFU<<0U)
+#define SPI_SSPPCELLID2_SSPPCELLID2_0       (0x1U<<0U)
 
 // SSPPCELLID3 Configuration
 
-#define SPI_SSPPCELLID3_SSPPCELLID3         (0xFFU<<0)
-#define SPI_SSPPCELLID3_SSPPCELLID3_0       (0x1U<<0)
+#define SPI_SSPPCELLID3_SSPPCELLID3         (0xFFU<<0U)
+#define SPI_SSPPCELLID3_SSPPCELLID3_0       (0x1U<<0U)

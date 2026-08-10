@@ -43,7 +43,7 @@ static  void    local_printTrace(void) {
                 cmns_send(KDEF0, &string[0]);
 
                 vRecord_RTraceFifo[core]++;
-                vRecord_RTraceFifo[core] = (vRecord_RTraceFifo[core] == &vRecord_traceFifo[core][KRECORD_SZ_TRACE_FIFO]) ? (&vRecord_traceFifo[core][0]) : (vRecord_RTraceFifo[core]);
+                vRecord_RTraceFifo[core] = (vRecord_RTraceFifo[core] == &vRecord_traceFifo[core][KRECORD_SZ_TRACE_FIFO]) ? (&vRecord_traceFifo[core][0]) : vRecord_RTraceFifo[core];
             }
             cmns_send(KDEF0, "\n");
         }

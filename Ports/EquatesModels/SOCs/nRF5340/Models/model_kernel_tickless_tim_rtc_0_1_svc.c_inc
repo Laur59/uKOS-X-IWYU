@@ -57,7 +57,7 @@
 
 enum {
         KWUNORTO = 0U,                                                                  // Tickless wake-up by a normal timeout
-        KWUINTPR                                                                        // Tickless wake-up by a preemption interruption
+        KWUINTPR,                                                                       // Tickless wake-up by a preemption interruption
 };
 
 #if (KKERN_NB_PRECISE_SIGNALS > 0)
@@ -405,14 +405,12 @@ static  void    local_nextTime(uint64_t absTime) {
 
     minNextTime = 0xFFFFFFFFFFFFFFFFU;
     for (i = 0U; i < KKERN_NB_PRECISE_SIGNALS; i++) {
-        if ((vKern_prcs[KCORE_0][i].oState & (1U<<BPRCS_INSTALLED)) != 0U) {
-            if (vKern_prcs[KCORE_0][i].oMode != KPRCS_STOP) {
-                if (vKern_prcs[KCORE_0][i].oNextTime < minNextTime) {
-                    minNextTime = vKern_prcs[KCORE_0][i].oNextTime;
-                    found = true;
-                    vPrcsIndex = i;
-                }
-            }
+        if (((vKern_prcs[KCORE_0][i].oState & (1U<<BPRCS_INSTALLED)) != 0U) &&
+            (vKern_prcs[KCORE_0][i].oMode != KPRCS_STOP) &&
+            (vKern_prcs[KCORE_0][i].oNextTime < minNextTime)) {
+            minNextTime = vKern_prcs[KCORE_0][i].oNextTime;
+            found = true;
+            vPrcsIndex = i;
         }
     }
 
@@ -542,7 +540,7 @@ uintptr_t   *local_newContextPRE(uintptr_t *stack) {
 
 // Return the stack of the new process
 
-    return (vKern_stackProc[KCORE_0]);
+    return vKern_stackProc[KCORE_0];
 }
 
 /*
@@ -660,7 +658,7 @@ uintptr_t   *local_newContextTOU(uintptr_t *stack) {
 
 // Return the stack of the new process
 
-    return (vKern_stackProc[KCORE_0]);
+    return vKern_stackProc[KCORE_0];
 }
 
 /*
@@ -781,7 +779,7 @@ uintptr_t   *local_newContextMSG(uintptr_t *stack, uint32_t message) {
 // Return the stack of the new process
 
     vPriv_insideSVC[KCORE_0] = false;
-    return (vKern_stackProc[KCORE_0]);
+    return vKern_stackProc[KCORE_0];
 }
 
 /*

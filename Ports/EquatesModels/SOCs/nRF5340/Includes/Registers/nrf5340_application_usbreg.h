@@ -41,93 +41,93 @@ typedef struct {
 
 // EVENTS_USBDETECTED Configuration
 
-#define USBREG_EVENTS_USBDETECTED_EVENTS_USBDETECTED                (0x1U<<0)
-#define USBREG_EVENTS_USBDETECTED_EVENTS_USBDETECTED_NOTGENERATED   (0x0U<<0)
-#define USBREG_EVENTS_USBDETECTED_EVENTS_USBDETECTED_GENERATED      (0x1U<<0)
+#define USBREG_EVENTS_USBDETECTED_EVENTS_USBDETECTED                (0x1U<<0U)
+#define USBREG_EVENTS_USBDETECTED_EVENTS_USBDETECTED_NOTGENERATED   (0x0U<<0U)
+#define USBREG_EVENTS_USBDETECTED_EVENTS_USBDETECTED_GENERATED      (0x1U<<0U)
 
 // EVENTS_USBREMOVED Configuration
 
-#define USBREG_EVENTS_USBREMOVED_EVENTS_USBREMOVED                  (0x1U<<0)
-#define USBREG_EVENTS_USBREMOVED_EVENTS_USBREMOVED_NOTGENERATED     (0x0U<<0)
-#define USBREG_EVENTS_USBREMOVED_EVENTS_USBREMOVED_GENERATED        (0x1U<<0)
+#define USBREG_EVENTS_USBREMOVED_EVENTS_USBREMOVED                  (0x1U<<0U)
+#define USBREG_EVENTS_USBREMOVED_EVENTS_USBREMOVED_NOTGENERATED     (0x0U<<0U)
+#define USBREG_EVENTS_USBREMOVED_EVENTS_USBREMOVED_GENERATED        (0x1U<<0U)
 
 // EVENTS_USBPWRRDY Configuration
 
-#define USBREG_EVENTS_USBPWRRDY_EVENTS_USBPWRRDY                    (0x1U<<0)
-#define USBREG_EVENTS_USBPWRRDY_EVENTS_USBPWRRDY_NOTGENERATED       (0x0U<<0)
-#define USBREG_EVENTS_USBPWRRDY_EVENTS_USBPWRRDY_GENERATED          (0x1U<<0)
+#define USBREG_EVENTS_USBPWRRDY_EVENTS_USBPWRRDY                    (0x1U<<0U)
+#define USBREG_EVENTS_USBPWRRDY_EVENTS_USBPWRRDY_NOTGENERATED       (0x0U<<0U)
+#define USBREG_EVENTS_USBPWRRDY_EVENTS_USBPWRRDY_GENERATED          (0x1U<<0U)
 
 // PUBLISH_USBDETECTED Configuration
 
-#define USBREG_PUBLISH_USBDETECTED_EN                               (0x1U<<31)
-#define USBREG_PUBLISH_USBDETECTED_CHIDX                            (0xFFU<<0)
-#define USBREG_PUBLISH_USBDETECTED_CHIDX_0                          (0x1U<<0)
-#define USBREG_PUBLISH_USBDETECTED_EN_DISABLED                      (0x0U<<31)
-#define USBREG_PUBLISH_USBDETECTED_EN_ENABLED                       (0x1U<<31)
+#define USBREG_PUBLISH_USBDETECTED_EN                               (0x1U<<31U)
+#define USBREG_PUBLISH_USBDETECTED_CHIDX                            (0xFFU<<0U)
+#define USBREG_PUBLISH_USBDETECTED_CHIDX_0                          (0x1U<<0U)
+#define USBREG_PUBLISH_USBDETECTED_EN_DISABLED                      (0x0U<<31U)
+#define USBREG_PUBLISH_USBDETECTED_EN_ENABLED                       (0x1U<<31U)
 
 // PUBLISH_USBREMOVED Configuration
 
-#define USBREG_PUBLISH_USBREMOVED_EN                                (0x1U<<31)
-#define USBREG_PUBLISH_USBREMOVED_CHIDX                             (0xFFU<<0)
-#define USBREG_PUBLISH_USBREMOVED_CHIDX_0                           (0x1U<<0)
-#define USBREG_PUBLISH_USBREMOVED_EN_DISABLED                       (0x0U<<31)
-#define USBREG_PUBLISH_USBREMOVED_EN_ENABLED                        (0x1U<<31)
+#define USBREG_PUBLISH_USBREMOVED_EN                                (0x1U<<31U)
+#define USBREG_PUBLISH_USBREMOVED_CHIDX                             (0xFFU<<0U)
+#define USBREG_PUBLISH_USBREMOVED_CHIDX_0                           (0x1U<<0U)
+#define USBREG_PUBLISH_USBREMOVED_EN_DISABLED                       (0x0U<<31U)
+#define USBREG_PUBLISH_USBREMOVED_EN_ENABLED                        (0x1U<<31U)
 
 // PUBLISH_USBPWRRDY Configuration
 
-#define USBREG_PUBLISH_USBPWRRDY_EN                                 (0x1U<<31)
-#define USBREG_PUBLISH_USBPWRRDY_CHIDX                              (0xFFU<<0)
-#define USBREG_PUBLISH_USBPWRRDY_CHIDX_0                            (0x1U<<0)
-#define USBREG_PUBLISH_USBPWRRDY_EN_DISABLED                        (0x0U<<31)
-#define USBREG_PUBLISH_USBPWRRDY_EN_ENABLED                         (0x1U<<31)
+#define USBREG_PUBLISH_USBPWRRDY_EN                                 (0x1U<<31U)
+#define USBREG_PUBLISH_USBPWRRDY_CHIDX                              (0xFFU<<0U)
+#define USBREG_PUBLISH_USBPWRRDY_CHIDX_0                            (0x1U<<0U)
+#define USBREG_PUBLISH_USBPWRRDY_EN_DISABLED                        (0x0U<<31U)
+#define USBREG_PUBLISH_USBPWRRDY_EN_ENABLED                         (0x1U<<31U)
 
 // INTEN Configuration
 
-#define USBREG_INTEN_USBPWRRDY                                      (0x1U<<2)
-#define USBREG_INTEN_USBREMOVED                                     (0x1U<<1)
-#define USBREG_INTEN_USBDETECTED                                    (0x1U<<0)
-#define USBREG_INTEN_USBPWRRDY_DISABLED                             (0x0U<<2)
-#define USBREG_INTEN_USBPWRRDY_ENABLED                              (0x1U<<2)
-#define USBREG_INTEN_USBREMOVED_DISABLED                            (0x0U<<1)
-#define USBREG_INTEN_USBREMOVED_ENABLED                             (0x1U<<1)
-#define USBREG_INTEN_USBDETECTED_DISABLED                           (0x0U<<0)
-#define USBREG_INTEN_USBDETECTED_ENABLED                            (0x1U<<0)
+#define USBREG_INTEN_USBPWRRDY                                      (0x1U<<2U)
+#define USBREG_INTEN_USBREMOVED                                     (0x1U<<1U)
+#define USBREG_INTEN_USBDETECTED                                    (0x1U<<0U)
+#define USBREG_INTEN_USBPWRRDY_DISABLED                             (0x0U<<2U)
+#define USBREG_INTEN_USBPWRRDY_ENABLED                              (0x1U<<2U)
+#define USBREG_INTEN_USBREMOVED_DISABLED                            (0x0U<<1U)
+#define USBREG_INTEN_USBREMOVED_ENABLED                             (0x1U<<1U)
+#define USBREG_INTEN_USBDETECTED_DISABLED                           (0x0U<<0U)
+#define USBREG_INTEN_USBDETECTED_ENABLED                            (0x1U<<0U)
 
 // INTENSET Configuration
 
-#define USBREG_INTENSET_USBPWRRDY                                   (0x1U<<2)
-#define USBREG_INTENSET_USBREMOVED                                  (0x1U<<1)
-#define USBREG_INTENSET_USBDETECTED                                 (0x1U<<0)
-#define USBREG_INTENSET_USBPWRRDY_DISABLED                          (0x0U<<2)
-#define USBREG_INTENSET_USBPWRRDY_ENABLED                           (0x1U<<2)
-#define USBREG_INTENSET_USBPWRRDY_SET                               (0x1U<<2)
-#define USBREG_INTENSET_USBREMOVED_DISABLED                         (0x0U<<1)
-#define USBREG_INTENSET_USBREMOVED_ENABLED                          (0x1U<<1)
-#define USBREG_INTENSET_USBREMOVED_SET                              (0x1U<<1)
-#define USBREG_INTENSET_USBDETECTED_DISABLED                        (0x0U<<0)
-#define USBREG_INTENSET_USBDETECTED_ENABLED                         (0x1U<<0)
-#define USBREG_INTENSET_USBDETECTED_SET                             (0x1U<<0)
+#define USBREG_INTENSET_USBPWRRDY                                   (0x1U<<2U)
+#define USBREG_INTENSET_USBREMOVED                                  (0x1U<<1U)
+#define USBREG_INTENSET_USBDETECTED                                 (0x1U<<0U)
+#define USBREG_INTENSET_USBPWRRDY_DISABLED                          (0x0U<<2U)
+#define USBREG_INTENSET_USBPWRRDY_ENABLED                           (0x1U<<2U)
+#define USBREG_INTENSET_USBPWRRDY_SET                               (0x1U<<2U)
+#define USBREG_INTENSET_USBREMOVED_DISABLED                         (0x0U<<1U)
+#define USBREG_INTENSET_USBREMOVED_ENABLED                          (0x1U<<1U)
+#define USBREG_INTENSET_USBREMOVED_SET                              (0x1U<<1U)
+#define USBREG_INTENSET_USBDETECTED_DISABLED                        (0x0U<<0U)
+#define USBREG_INTENSET_USBDETECTED_ENABLED                         (0x1U<<0U)
+#define USBREG_INTENSET_USBDETECTED_SET                             (0x1U<<0U)
 
 // INTENCLR Configuration
 
-#define USBREG_INTENCLR_USBPWRRDY                                   (0x1U<<2)
-#define USBREG_INTENCLR_USBREMOVED                                  (0x1U<<1)
-#define USBREG_INTENCLR_USBDETECTED                                 (0x1U<<0)
-#define USBREG_INTENCLR_USBPWRRDY_DISABLED                          (0x0U<<2)
-#define USBREG_INTENCLR_USBPWRRDY_ENABLED                           (0x1U<<2)
-#define USBREG_INTENCLR_USBPWRRDY_CLEAR                             (0x1U<<2)
-#define USBREG_INTENCLR_USBREMOVED_DISABLED                         (0x0U<<1)
-#define USBREG_INTENCLR_USBREMOVED_ENABLED                          (0x1U<<1)
-#define USBREG_INTENCLR_USBREMOVED_CLEAR                            (0x1U<<1)
-#define USBREG_INTENCLR_USBDETECTED_DISABLED                        (0x0U<<0)
-#define USBREG_INTENCLR_USBDETECTED_ENABLED                         (0x1U<<0)
-#define USBREG_INTENCLR_USBDETECTED_CLEAR                           (0x1U<<0)
+#define USBREG_INTENCLR_USBPWRRDY                                   (0x1U<<2U)
+#define USBREG_INTENCLR_USBREMOVED                                  (0x1U<<1U)
+#define USBREG_INTENCLR_USBDETECTED                                 (0x1U<<0U)
+#define USBREG_INTENCLR_USBPWRRDY_DISABLED                          (0x0U<<2U)
+#define USBREG_INTENCLR_USBPWRRDY_ENABLED                           (0x1U<<2U)
+#define USBREG_INTENCLR_USBPWRRDY_CLEAR                             (0x1U<<2U)
+#define USBREG_INTENCLR_USBREMOVED_DISABLED                         (0x0U<<1U)
+#define USBREG_INTENCLR_USBREMOVED_ENABLED                          (0x1U<<1U)
+#define USBREG_INTENCLR_USBREMOVED_CLEAR                            (0x1U<<1U)
+#define USBREG_INTENCLR_USBDETECTED_DISABLED                        (0x0U<<0U)
+#define USBREG_INTENCLR_USBDETECTED_ENABLED                         (0x1U<<0U)
+#define USBREG_INTENCLR_USBDETECTED_CLEAR                           (0x1U<<0U)
 
 // USBREGSTATUS Configuration
 
-#define USBREG_USBREGSTATUS_OUTPUTRDY                               (0x1U<<1)
-#define USBREG_USBREGSTATUS_VBUSDETECT                              (0x1U<<0)
-#define USBREG_USBREGSTATUS_OUTPUTRDY_NOTREADY                      (0x0U<<1)
-#define USBREG_USBREGSTATUS_OUTPUTRDY_READY                         (0x1U<<1)
-#define USBREG_USBREGSTATUS_VBUSDETECT_NOVBUS                       (0x0U<<0)
-#define USBREG_USBREGSTATUS_VBUSDETECT_VBUSPRESENT                  (0x1U<<0)
+#define USBREG_USBREGSTATUS_OUTPUTRDY                               (0x1U<<1U)
+#define USBREG_USBREGSTATUS_VBUSDETECT                              (0x1U<<0U)
+#define USBREG_USBREGSTATUS_OUTPUTRDY_NOTREADY                      (0x0U<<1U)
+#define USBREG_USBREGSTATUS_OUTPUTRDY_READY                         (0x1U<<1U)
+#define USBREG_USBREGSTATUS_VBUSDETECT_NOVBUS                       (0x0U<<0U)
+#define USBREG_USBREGSTATUS_VBUSDETECT_VBUSPRESENT                  (0x1U<<0U)

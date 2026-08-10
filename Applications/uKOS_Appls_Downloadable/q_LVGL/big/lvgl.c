@@ -17,6 +17,7 @@
 #include    "macros_core_stackFrame.h"
 #include    "macros_soc.h"
 #include    "os_errors.h"
+#include    "stub.h"
 #include    "ui.h"
 
 #define KLVGL_MUTEX_API     "Protect_LVGL_API"
@@ -26,8 +27,6 @@ static  volatile    bool            vLVGLReady[KNB_CORES] = MCSET(false);
                     mutx_t          *vLVGL_API[KNB_CORES];
 // Prototypes
 
-extern  void    stub_LCD_On(uint32_t rgb8888);
-extern  void    stub_LCD_flush_cb(lv_display_t *lv_display, const lv_area_t *area, uint8_t *pixelMapping);
 extern  void    ui_draw(void);
 
 /*

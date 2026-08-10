@@ -57,7 +57,7 @@
 
 static  const       char_t      *tableCoreReference[KNB_CORES] = {
                                     "RISC-V_C0",
-                                    "RISC-V_C1"
+                                    "RISC-V_C1",
                                 };
 
 static  volatile    uint32_t        vMessage[KNB_CORES] = MCSET(0U);

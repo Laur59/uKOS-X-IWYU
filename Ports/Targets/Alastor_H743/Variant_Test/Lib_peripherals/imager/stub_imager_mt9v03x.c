@@ -48,7 +48,7 @@ enum {
         KIMG_STANDBY,
         KIMG_NORMAL,
         KIMG_PIXEL_MODE,
-        KIMG_EXPOSITION
+        KIMG_EXPOSITION,
 };
 
 extern  volatile    uint8_t     vAcqPage;
@@ -158,7 +158,7 @@ static  int32_t cb_getRegister(uint8_t registerNb, uint16_t *value) {
     status = (status == KERR_I2C_NOERR) ? KERR_IMAGER_NOERR : KERR_IMAGER_TIMEO;
     RELEASE(I2C1, KMODE_READ_WRITE);
 
-    *value = (uint16_t)((buffer[0]<<8U) | buffer[1]);
+    *value = (uint16_t)(((uint32_t)buffer[0]<<8U) | (uint32_t)buffer[1]);
     return status;
 }
 

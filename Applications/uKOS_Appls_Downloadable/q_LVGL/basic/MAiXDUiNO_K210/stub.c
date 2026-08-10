@@ -7,10 +7,12 @@
  * Interface between the lvgl and the hardware.
  */
 
+#include    "stub.h"
+
 #include    <stdint.h>
 
 #include    "kern/kern.h"
-#include    "../ulvgl.h"
+#include    "ulvgl.h"
 #include    "lcd_display.h"
 #include    "macros_core.h"
 

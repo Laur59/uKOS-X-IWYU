@@ -87,233 +87,233 @@ typedef struct {
 
 // TASKS_ACQUIRE Configuration
 
-#define SPIS_TASKS_ACQUIRE_TASKS_ACQUIRE                    (0x1U<<0)
-#define SPIS_TASKS_ACQUIRE_TASKS_ACQUIRE_TRIGGER            (0x1U<<0)
+#define SPIS_TASKS_ACQUIRE_TASKS_ACQUIRE                    (0x1U<<0U)
+#define SPIS_TASKS_ACQUIRE_TASKS_ACQUIRE_TRIGGER            (0x1U<<0U)
 
 // TASKS_RELEASE Configuration
 
-#define SPIS_TASKS_RELEASE_TASKS_RELEASE                    (0x1U<<0)
-#define SPIS_TASKS_RELEASE_TASKS_RELEASE_TRIGGER            (0x1U<<0)
+#define SPIS_TASKS_RELEASE_TASKS_RELEASE                    (0x1U<<0U)
+#define SPIS_TASKS_RELEASE_TASKS_RELEASE_TRIGGER            (0x1U<<0U)
 
 // SUBSCRIBE_ACQUIRE Configuration
 
-#define SPIS_SUBSCRIBE_ACQUIRE_EN                           (0x1U<<31)
-#define SPIS_SUBSCRIBE_ACQUIRE_CHIDX                        (0xFFU<<0)
-#define SPIS_SUBSCRIBE_ACQUIRE_CHIDX_0                      (0x1U<<0)
-#define SPIS_SUBSCRIBE_ACQUIRE_EN_DISABLED                  (0x0U<<31)
-#define SPIS_SUBSCRIBE_ACQUIRE_EN_ENABLED                   (0x1U<<31)
+#define SPIS_SUBSCRIBE_ACQUIRE_EN                           (0x1U<<31U)
+#define SPIS_SUBSCRIBE_ACQUIRE_CHIDX                        (0xFFU<<0U)
+#define SPIS_SUBSCRIBE_ACQUIRE_CHIDX_0                      (0x1U<<0U)
+#define SPIS_SUBSCRIBE_ACQUIRE_EN_DISABLED                  (0x0U<<31U)
+#define SPIS_SUBSCRIBE_ACQUIRE_EN_ENABLED                   (0x1U<<31U)
 
 // SUBSCRIBE_RELEASE Configuration
 
-#define SPIS_SUBSCRIBE_RELEASE_EN                           (0x1U<<31)
-#define SPIS_SUBSCRIBE_RELEASE_CHIDX                        (0xFFU<<0)
-#define SPIS_SUBSCRIBE_RELEASE_CHIDX_0                      (0x1U<<0)
-#define SPIS_SUBSCRIBE_RELEASE_EN_DISABLED                  (0x0U<<31)
-#define SPIS_SUBSCRIBE_RELEASE_EN_ENABLED                   (0x1U<<31)
+#define SPIS_SUBSCRIBE_RELEASE_EN                           (0x1U<<31U)
+#define SPIS_SUBSCRIBE_RELEASE_CHIDX                        (0xFFU<<0U)
+#define SPIS_SUBSCRIBE_RELEASE_CHIDX_0                      (0x1U<<0U)
+#define SPIS_SUBSCRIBE_RELEASE_EN_DISABLED                  (0x0U<<31U)
+#define SPIS_SUBSCRIBE_RELEASE_EN_ENABLED                   (0x1U<<31U)
 
 // EVENTS_END Configuration
 
-#define SPIS_EVENTS_END_EVENTS_END                          (0x1U<<0)
-#define SPIS_EVENTS_END_EVENTS_END_NOTGENERATED             (0x0U<<0)
-#define SPIS_EVENTS_END_EVENTS_END_GENERATED                (0x1U<<0)
+#define SPIS_EVENTS_END_EVENTS_END                          (0x1U<<0U)
+#define SPIS_EVENTS_END_EVENTS_END_NOTGENERATED             (0x0U<<0U)
+#define SPIS_EVENTS_END_EVENTS_END_GENERATED                (0x1U<<0U)
 
 // EVENTS_ENDRX Configuration
 
-#define SPIS_EVENTS_ENDRX_EVENTS_ENDRX                      (0x1U<<0)
-#define SPIS_EVENTS_ENDRX_EVENTS_ENDRX_NOTGENERATED         (0x0U<<0)
-#define SPIS_EVENTS_ENDRX_EVENTS_ENDRX_GENERATED            (0x1U<<0)
+#define SPIS_EVENTS_ENDRX_EVENTS_ENDRX                      (0x1U<<0U)
+#define SPIS_EVENTS_ENDRX_EVENTS_ENDRX_NOTGENERATED         (0x0U<<0U)
+#define SPIS_EVENTS_ENDRX_EVENTS_ENDRX_GENERATED            (0x1U<<0U)
 
 // EVENTS_ACQUIRED Configuration
 
-#define SPIS_EVENTS_ACQUIRED_EVENTS_ACQUIRED                (0x1U<<0)
-#define SPIS_EVENTS_ACQUIRED_EVENTS_ACQUIRED_NOTGENERATED   (0x0U<<0)
-#define SPIS_EVENTS_ACQUIRED_EVENTS_ACQUIRED_GENERATED      (0x1U<<0)
+#define SPIS_EVENTS_ACQUIRED_EVENTS_ACQUIRED                (0x1U<<0U)
+#define SPIS_EVENTS_ACQUIRED_EVENTS_ACQUIRED_NOTGENERATED   (0x0U<<0U)
+#define SPIS_EVENTS_ACQUIRED_EVENTS_ACQUIRED_GENERATED      (0x1U<<0U)
 
 // PUBLISH_END Configuration
 
-#define SPIS_PUBLISH_END_EN                                 (0x1U<<31)
-#define SPIS_PUBLISH_END_CHIDX                              (0xFFU<<0)
-#define SPIS_PUBLISH_END_CHIDX_0                            (0x1U<<0)
-#define SPIS_PUBLISH_END_EN_DISABLED                        (0x0U<<31)
-#define SPIS_PUBLISH_END_EN_ENABLED                         (0x1U<<31)
+#define SPIS_PUBLISH_END_EN                                 (0x1U<<31U)
+#define SPIS_PUBLISH_END_CHIDX                              (0xFFU<<0U)
+#define SPIS_PUBLISH_END_CHIDX_0                            (0x1U<<0U)
+#define SPIS_PUBLISH_END_EN_DISABLED                        (0x0U<<31U)
+#define SPIS_PUBLISH_END_EN_ENABLED                         (0x1U<<31U)
 
 // PUBLISH_ENDRX Configuration
 
-#define SPIS_PUBLISH_ENDRX_EN                               (0x1U<<31)
-#define SPIS_PUBLISH_ENDRX_CHIDX                            (0xFFU<<0)
-#define SPIS_PUBLISH_ENDRX_CHIDX_0                          (0x1U<<0)
-#define SPIS_PUBLISH_ENDRX_EN_DISABLED                      (0x0U<<31)
-#define SPIS_PUBLISH_ENDRX_EN_ENABLED                       (0x1U<<31)
+#define SPIS_PUBLISH_ENDRX_EN                               (0x1U<<31U)
+#define SPIS_PUBLISH_ENDRX_CHIDX                            (0xFFU<<0U)
+#define SPIS_PUBLISH_ENDRX_CHIDX_0                          (0x1U<<0U)
+#define SPIS_PUBLISH_ENDRX_EN_DISABLED                      (0x0U<<31U)
+#define SPIS_PUBLISH_ENDRX_EN_ENABLED                       (0x1U<<31U)
 
 // PUBLISH_ACQUIRED Configuration
 
-#define SPIS_PUBLISH_ACQUIRED_EN                            (0x1U<<31)
-#define SPIS_PUBLISH_ACQUIRED_CHIDX                         (0xFFU<<0)
-#define SPIS_PUBLISH_ACQUIRED_CHIDX_0                       (0x1U<<0)
-#define SPIS_PUBLISH_ACQUIRED_EN_DISABLED                   (0x0U<<31)
-#define SPIS_PUBLISH_ACQUIRED_EN_ENABLED                    (0x1U<<31)
+#define SPIS_PUBLISH_ACQUIRED_EN                            (0x1U<<31U)
+#define SPIS_PUBLISH_ACQUIRED_CHIDX                         (0xFFU<<0U)
+#define SPIS_PUBLISH_ACQUIRED_CHIDX_0                       (0x1U<<0U)
+#define SPIS_PUBLISH_ACQUIRED_EN_DISABLED                   (0x0U<<31U)
+#define SPIS_PUBLISH_ACQUIRED_EN_ENABLED                    (0x1U<<31U)
 
 // SHORTS Configuration
 
-#define SPIS_SHORTS_END_ACQUIRE                             (0x1U<<2)
-#define SPIS_SHORTS_END_ACQUIRE_DISABLED                    (0x0U<<2)
-#define SPIS_SHORTS_END_ACQUIRE_ENABLED                     (0x1U<<2)
+#define SPIS_SHORTS_END_ACQUIRE                             (0x1U<<2U)
+#define SPIS_SHORTS_END_ACQUIRE_DISABLED                    (0x0U<<2U)
+#define SPIS_SHORTS_END_ACQUIRE_ENABLED                     (0x1U<<2U)
 
 // INTENSET Configuration
 
-#define SPIS_INTENSET_ACQUIRED                              (0x1U<<10)
-#define SPIS_INTENSET_ENDRX                                 (0x1U<<4)
-#define SPIS_INTENSET_END                                   (0x1U<<1)
-#define SPIS_INTENSET_ACQUIRED_DISABLED                     (0x0U<<10)
-#define SPIS_INTENSET_ACQUIRED_ENABLED                      (0x1U<<10)
-#define SPIS_INTENSET_ACQUIRED_SET                          (0x1U<<10)
-#define SPIS_INTENSET_ENDRX_DISABLED                        (0x0U<<4)
-#define SPIS_INTENSET_ENDRX_ENABLED                         (0x1U<<4)
-#define SPIS_INTENSET_ENDRX_SET                             (0x1U<<4)
-#define SPIS_INTENSET_END_DISABLED                          (0x0U<<1)
-#define SPIS_INTENSET_END_ENABLED                           (0x1U<<1)
-#define SPIS_INTENSET_END_SET                               (0x1U<<1)
+#define SPIS_INTENSET_ACQUIRED                              (0x1U<<10U)
+#define SPIS_INTENSET_ENDRX                                 (0x1U<<4U)
+#define SPIS_INTENSET_END                                   (0x1U<<1U)
+#define SPIS_INTENSET_ACQUIRED_DISABLED                     (0x0U<<10U)
+#define SPIS_INTENSET_ACQUIRED_ENABLED                      (0x1U<<10U)
+#define SPIS_INTENSET_ACQUIRED_SET                          (0x1U<<10U)
+#define SPIS_INTENSET_ENDRX_DISABLED                        (0x0U<<4U)
+#define SPIS_INTENSET_ENDRX_ENABLED                         (0x1U<<4U)
+#define SPIS_INTENSET_ENDRX_SET                             (0x1U<<4U)
+#define SPIS_INTENSET_END_DISABLED                          (0x0U<<1U)
+#define SPIS_INTENSET_END_ENABLED                           (0x1U<<1U)
+#define SPIS_INTENSET_END_SET                               (0x1U<<1U)
 
 // INTENCLR Configuration
 
-#define SPIS_INTENCLR_ACQUIRED                              (0x1U<<10)
-#define SPIS_INTENCLR_ENDRX                                 (0x1U<<4)
-#define SPIS_INTENCLR_END                                   (0x1U<<1)
-#define SPIS_INTENCLR_ACQUIRED_DISABLED                     (0x0U<<10)
-#define SPIS_INTENCLR_ACQUIRED_ENABLED                      (0x1U<<10)
-#define SPIS_INTENCLR_ACQUIRED_CLEAR                        (0x1U<<10)
-#define SPIS_INTENCLR_ENDRX_DISABLED                        (0x0U<<4)
-#define SPIS_INTENCLR_ENDRX_ENABLED                         (0x1U<<4)
-#define SPIS_INTENCLR_ENDRX_CLEAR                           (0x1U<<4)
-#define SPIS_INTENCLR_END_DISABLED                          (0x0U<<1)
-#define SPIS_INTENCLR_END_ENABLED                           (0x1U<<1)
-#define SPIS_INTENCLR_END_CLEAR                             (0x1U<<1)
+#define SPIS_INTENCLR_ACQUIRED                              (0x1U<<10U)
+#define SPIS_INTENCLR_ENDRX                                 (0x1U<<4U)
+#define SPIS_INTENCLR_END                                   (0x1U<<1U)
+#define SPIS_INTENCLR_ACQUIRED_DISABLED                     (0x0U<<10U)
+#define SPIS_INTENCLR_ACQUIRED_ENABLED                      (0x1U<<10U)
+#define SPIS_INTENCLR_ACQUIRED_CLEAR                        (0x1U<<10U)
+#define SPIS_INTENCLR_ENDRX_DISABLED                        (0x0U<<4U)
+#define SPIS_INTENCLR_ENDRX_ENABLED                         (0x1U<<4U)
+#define SPIS_INTENCLR_ENDRX_CLEAR                           (0x1U<<4U)
+#define SPIS_INTENCLR_END_DISABLED                          (0x0U<<1U)
+#define SPIS_INTENCLR_END_ENABLED                           (0x1U<<1U)
+#define SPIS_INTENCLR_END_CLEAR                             (0x1U<<1U)
 
 // SEMSTAT Configuration
 
-#define SPIS_SEMSTAT_SEMSTAT                                (0x3U<<0)
-#define SPIS_SEMSTAT_SEMSTAT_0                              (0x1U<<0)
-#define SPIS_SEMSTAT_SEMSTAT_FREE                           (0x0U<<0)
-#define SPIS_SEMSTAT_SEMSTAT_CPU                            (0x1U<<0)
-#define SPIS_SEMSTAT_SEMSTAT_SPIS                           (0x2U<<0)
-#define SPIS_SEMSTAT_SEMSTAT_CPUPENDING                     (0x3U<<0)
+#define SPIS_SEMSTAT_SEMSTAT                                (0x3U<<0U)
+#define SPIS_SEMSTAT_SEMSTAT_0                              (0x1U<<0U)
+#define SPIS_SEMSTAT_SEMSTAT_FREE                           (0x0U<<0U)
+#define SPIS_SEMSTAT_SEMSTAT_CPU                            (0x1U<<0U)
+#define SPIS_SEMSTAT_SEMSTAT_SPIS                           (0x2U<<0U)
+#define SPIS_SEMSTAT_SEMSTAT_CPUPENDING                     (0x3U<<0U)
 
 // STATUS Configuration
 
-#define SPIS_STATUS_OVERFLOW                                (0x1U<<1)
-#define SPIS_STATUS_OVERREAD                                (0x1U<<0)
-#define SPIS_STATUS_OVERFLOW_NOTPRESENT                     (0x0U<<1)
-#define SPIS_STATUS_OVERFLOW_PRESENT                        (0x1U<<1)
-#define SPIS_STATUS_OVERFLOW_CLEAR                          (0x1U<<1)
-#define SPIS_STATUS_OVERREAD_NOTPRESENT                     (0x0U<<0)
-#define SPIS_STATUS_OVERREAD_PRESENT                        (0x1U<<0)
-#define SPIS_STATUS_OVERREAD_CLEAR                          (0x1U<<0)
+#define SPIS_STATUS_OVERFLOW                                (0x1U<<1U)
+#define SPIS_STATUS_OVERREAD                                (0x1U<<0U)
+#define SPIS_STATUS_OVERFLOW_NOTPRESENT                     (0x0U<<1U)
+#define SPIS_STATUS_OVERFLOW_PRESENT                        (0x1U<<1U)
+#define SPIS_STATUS_OVERFLOW_CLEAR                          (0x1U<<1U)
+#define SPIS_STATUS_OVERREAD_NOTPRESENT                     (0x0U<<0U)
+#define SPIS_STATUS_OVERREAD_PRESENT                        (0x1U<<0U)
+#define SPIS_STATUS_OVERREAD_CLEAR                          (0x1U<<0U)
 
 // ENABLE Configuration
 
-#define SPIS_ENABLE_ENABLE                                  (0xFU<<0)
-#define SPIS_ENABLE_ENABLE_0                                (0x1U<<0)
-#define SPIS_ENABLE_ENABLE_DISABLED                         (0x0U<<0)
-#define SPIS_ENABLE_ENABLE_ENABLED                          (0x2U<<0)
+#define SPIS_ENABLE_ENABLE                                  (0xFU<<0U)
+#define SPIS_ENABLE_ENABLE_0                                (0x1U<<0U)
+#define SPIS_ENABLE_ENABLE_DISABLED                         (0x0U<<0U)
+#define SPIS_ENABLE_ENABLE_ENABLED                          (0x2U<<0U)
 
 // SCK Configuration
 
-#define SPIS_PSEL_SCK_CONNECT                               (0x1U<<31)
-#define SPIS_PSEL_SCK_PORT                                  (0x1U<<5)
-#define SPIS_PSEL_SCK_PIN                                   (0x1FU<<0)
-#define SPIS_PSEL_SCK_PIN_0                                 (0x1U<<0)
-#define SPIS_PSEL_SCK_CONNECT_DISCONNECTED                  (0x1U<<31)
-#define SPIS_PSEL_SCK_CONNECT_CONNECTED                     (0x0U<<31)
+#define SPIS_PSEL_SCK_CONNECT                               (0x1U<<31U)
+#define SPIS_PSEL_SCK_PORT                                  (0x1U<<5U)
+#define SPIS_PSEL_SCK_PIN                                   (0x1FU<<0U)
+#define SPIS_PSEL_SCK_PIN_0                                 (0x1U<<0U)
+#define SPIS_PSEL_SCK_CONNECT_DISCONNECTED                  (0x1U<<31U)
+#define SPIS_PSEL_SCK_CONNECT_CONNECTED                     (0x0U<<31U)
 
 // MISO Configuration
 
-#define SPIS_PSEL_MISO_CONNECT                              (0x1U<<31)
-#define SPIS_PSEL_MISO_PORT                                 (0x1U<<5)
-#define SPIS_PSEL_MISO_PIN                                  (0x1FU<<0)
-#define SPIS_PSEL_MISO_PIN_0                                (0x1U<<0)
-#define SPIS_PSEL_MISO_CONNECT_DISCONNECTED                 (0x1U<<31)
-#define SPIS_PSEL_MISO_CONNECT_CONNECTED                    (0x0U<<31)
+#define SPIS_PSEL_MISO_CONNECT                              (0x1U<<31U)
+#define SPIS_PSEL_MISO_PORT                                 (0x1U<<5U)
+#define SPIS_PSEL_MISO_PIN                                  (0x1FU<<0U)
+#define SPIS_PSEL_MISO_PIN_0                                (0x1U<<0U)
+#define SPIS_PSEL_MISO_CONNECT_DISCONNECTED                 (0x1U<<31U)
+#define SPIS_PSEL_MISO_CONNECT_CONNECTED                    (0x0U<<31U)
 
 // MOSI Configuration
 
-#define SPIS_PSEL_MOSI_CONNECT                              (0x1U<<31)
-#define SPIS_PSEL_MOSI_PORT                                 (0x1U<<5)
-#define SPIS_PSEL_MOSI_PIN                                  (0x1FU<<0)
-#define SPIS_PSEL_MOSI_PIN_0                                (0x1U<<0)
-#define SPIS_PSEL_MOSI_CONNECT_DISCONNECTED                 (0x1U<<31)
-#define SPIS_PSEL_MOSI_CONNECT_CONNECTED                    (0x0U<<31)
+#define SPIS_PSEL_MOSI_CONNECT                              (0x1U<<31U)
+#define SPIS_PSEL_MOSI_PORT                                 (0x1U<<5U)
+#define SPIS_PSEL_MOSI_PIN                                  (0x1FU<<0U)
+#define SPIS_PSEL_MOSI_PIN_0                                (0x1U<<0U)
+#define SPIS_PSEL_MOSI_CONNECT_DISCONNECTED                 (0x1U<<31U)
+#define SPIS_PSEL_MOSI_CONNECT_CONNECTED                    (0x0U<<31U)
 
 // CSN Configuration
 
-#define SPIS_PSEL_CSN_CONNECT                               (0x1U<<31)
-#define SPIS_PSEL_CSN_PORT                                  (0x1U<<5)
-#define SPIS_PSEL_CSN_PIN                                   (0x1FU<<0)
-#define SPIS_PSEL_CSN_PIN_0                                 (0x1U<<0)
-#define SPIS_PSEL_CSN_CONNECT_DISCONNECTED                  (0x1U<<31)
-#define SPIS_PSEL_CSN_CONNECT_CONNECTED                     (0x0U<<31)
+#define SPIS_PSEL_CSN_CONNECT                               (0x1U<<31U)
+#define SPIS_PSEL_CSN_PORT                                  (0x1U<<5U)
+#define SPIS_PSEL_CSN_PIN                                   (0x1FU<<0U)
+#define SPIS_PSEL_CSN_PIN_0                                 (0x1U<<0U)
+#define SPIS_PSEL_CSN_CONNECT_DISCONNECTED                  (0x1U<<31U)
+#define SPIS_PSEL_CSN_CONNECT_CONNECTED                     (0x0U<<31U)
 
 // PTR Configuration
 
-#define SPIS_RXD_PTR_PTR                                    (0xFFFFFFFFU<<0)
-#define SPIS_RXD_PTR_PTR_0                                  (0x1U<<0)
+#define SPIS_RXD_PTR_PTR                                    (0xFFFFFFFFU<<0U)
+#define SPIS_RXD_PTR_PTR_0                                  (0x1U<<0U)
 
 // MAXCNT Configuration
 
-#define SPIS_RXD_MAXCNT_MAXCNT                              (0xFFFFU<<0)
-#define SPIS_RXD_MAXCNT_MAXCNT_0                            (0x1U<<0)
+#define SPIS_RXD_MAXCNT_MAXCNT                              (0xFFFFU<<0U)
+#define SPIS_RXD_MAXCNT_MAXCNT_0                            (0x1U<<0U)
 
 // AMOUNT Configuration
 
-#define SPIS_RXD_AMOUNT_AMOUNT                              (0xFFFFU<<0)
-#define SPIS_RXD_AMOUNT_AMOUNT_0                            (0x1U<<0)
+#define SPIS_RXD_AMOUNT_AMOUNT                              (0xFFFFU<<0U)
+#define SPIS_RXD_AMOUNT_AMOUNT_0                            (0x1U<<0U)
 
 // LIST Configuration
 
-#define SPIS_RXD_LIST_LIST                                  (0x3U<<0)
-#define SPIS_RXD_LIST_LIST_0                                (0x1U<<0)
-#define SPIS_RXD_LIST_LIST_DISABLED                         (0x0U<<0)
-#define SPIS_RXD_LIST_LIST_ARRAYLIST                        (0x1U<<0)
+#define SPIS_RXD_LIST_LIST                                  (0x3U<<0U)
+#define SPIS_RXD_LIST_LIST_0                                (0x1U<<0U)
+#define SPIS_RXD_LIST_LIST_DISABLED                         (0x0U<<0U)
+#define SPIS_RXD_LIST_LIST_ARRAYLIST                        (0x1U<<0U)
 
 // PTR Configuration
 
-#define SPIS_TXD_PTR_PTR                                    (0xFFFFFFFFU<<0)
-#define SPIS_TXD_PTR_PTR_0                                  (0x1U<<0)
+#define SPIS_TXD_PTR_PTR                                    (0xFFFFFFFFU<<0U)
+#define SPIS_TXD_PTR_PTR_0                                  (0x1U<<0U)
 
 // MAXCNT Configuration
 
-#define SPIS_TXD_MAXCNT_MAXCNT                              (0xFFFFU<<0)
-#define SPIS_TXD_MAXCNT_MAXCNT_0                            (0x1U<<0)
+#define SPIS_TXD_MAXCNT_MAXCNT                              (0xFFFFU<<0U)
+#define SPIS_TXD_MAXCNT_MAXCNT_0                            (0x1U<<0U)
 
 // AMOUNT Configuration
 
-#define SPIS_TXD_AMOUNT_AMOUNT                              (0xFFFFU<<0)
-#define SPIS_TXD_AMOUNT_AMOUNT_0                            (0x1U<<0)
+#define SPIS_TXD_AMOUNT_AMOUNT                              (0xFFFFU<<0U)
+#define SPIS_TXD_AMOUNT_AMOUNT_0                            (0x1U<<0U)
 
 // LIST Configuration
 
-#define SPIS_TXD_LIST_LIST                                  (0x3U<<0)
-#define SPIS_TXD_LIST_LIST_0                                (0x1U<<0)
-#define SPIS_TXD_LIST_LIST_DISABLED                         (0x0U<<0)
-#define SPIS_TXD_LIST_LIST_ARRAYLIST                        (0x1U<<0)
+#define SPIS_TXD_LIST_LIST                                  (0x3U<<0U)
+#define SPIS_TXD_LIST_LIST_0                                (0x1U<<0U)
+#define SPIS_TXD_LIST_LIST_DISABLED                         (0x0U<<0U)
+#define SPIS_TXD_LIST_LIST_ARRAYLIST                        (0x1U<<0U)
 
 // CONFIG Configuration
 
-#define SPIS_CONFIG_CPOL                                    (0x1U<<2)
-#define SPIS_CONFIG_CPHA                                    (0x1U<<1)
-#define SPIS_CONFIG_ORDER                                   (0x1U<<0)
-#define SPIS_CONFIG_CPOL_ACTIVEHIGH                         (0x0U<<2)
-#define SPIS_CONFIG_CPOL_ACTIVELOW                          (0x1U<<2)
-#define SPIS_CONFIG_CPHA_LEADING                            (0x0U<<1)
-#define SPIS_CONFIG_CPHA_TRAILING                           (0x1U<<1)
-#define SPIS_CONFIG_ORDER_MSBFIRST                          (0x0U<<0)
-#define SPIS_CONFIG_ORDER_LSBFIRST                          (0x1U<<0)
+#define SPIS_CONFIG_CPOL                                    (0x1U<<2U)
+#define SPIS_CONFIG_CPHA                                    (0x1U<<1U)
+#define SPIS_CONFIG_ORDER                                   (0x1U<<0U)
+#define SPIS_CONFIG_CPOL_ACTIVEHIGH                         (0x0U<<2U)
+#define SPIS_CONFIG_CPOL_ACTIVELOW                          (0x1U<<2U)
+#define SPIS_CONFIG_CPHA_LEADING                            (0x0U<<1U)
+#define SPIS_CONFIG_CPHA_TRAILING                           (0x1U<<1U)
+#define SPIS_CONFIG_ORDER_MSBFIRST                          (0x0U<<0U)
+#define SPIS_CONFIG_ORDER_LSBFIRST                          (0x1U<<0U)
 
 // DEF Configuration
 
-#define SPIS_DEF_DEF                                        (0xFFU<<0)
-#define SPIS_DEF_DEF_0                                      (0x1U<<0)
+#define SPIS_DEF_DEF                                        (0xFFU<<0U)
+#define SPIS_DEF_DEF_0                                      (0x1U<<0U)
 
 // ORC Configuration
 
-#define SPIS_ORC_ORC                                        (0xFFU<<0)
-#define SPIS_ORC_ORC_0                                      (0x1U<<0)
+#define SPIS_ORC_ORC                                        (0xFFU<<0U)
+#define SPIS_ORC_ORC_0                                      (0x1U<<0U)

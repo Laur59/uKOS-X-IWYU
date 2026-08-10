@@ -41,7 +41,7 @@ struct  boot {
 static  const   char_t  *argv_cnsUrt0[] = { "console", "urt0" };
 
 static  const   boot_t  aFunction[] = {
-                            { .oFunction="console", .oSerialManager=KSYST, .oArgV=argv_cnsUrt0, .oArgC=2U, .oSW=0x00U, .oBaudrate=KSERIAL_BAUDRATE_115200 }
+                            { .oFunction="console", .oSerialManager=KSYST, .oArgV=argv_cnsUrt0, .oArgC=2U, .oSW=0x00U, .oBaudrate=KSERIAL_BAUDRATE_115200 },
                         };
 
 #define KDEF_COMM       KURT0

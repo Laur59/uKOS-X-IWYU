@@ -54,7 +54,7 @@ int32_t model_stts22h_read(float64_t *temperature) {
 
 // Scale it
 
-    value = (int16_t)((msb<<8U) | lsb);
+    value = (int16_t)((uint16_t)(msb<<8U) | lsb);
     *temperature = ((float64_t)value / KSTTS22H_SCALING) - KTEMPERATURE_ZERO_KELVIN;
     return KERR_TEMPERATURE_NOERR;
 }

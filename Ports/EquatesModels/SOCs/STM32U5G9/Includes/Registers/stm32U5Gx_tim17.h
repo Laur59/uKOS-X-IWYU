@@ -53,154 +53,154 @@ typedef struct {
 
 // CR1 Configuration
 
-#define TIM17_CR1_CEN           (0x1U<<0)
-#define TIM17_CR1_UDIS          (0x1U<<1)
-#define TIM17_CR1_URS           (0x1U<<2)
-#define TIM17_CR1_OPM           (0x1U<<3)
-#define TIM17_CR1_ARPE          (0x1U<<7)
-#define TIM17_CR1_CKD           (0x3U<<8)
-#define TIM17_CR1_CKD_0         (0x1U<<8)
-#define TIM17_CR1_UIFREMAP      (0x1U<<11)
+#define TIM17_CR1_CEN           (0x1U<<0U)
+#define TIM17_CR1_UDIS          (0x1U<<1U)
+#define TIM17_CR1_URS           (0x1U<<2U)
+#define TIM17_CR1_OPM           (0x1U<<3U)
+#define TIM17_CR1_ARPE          (0x1U<<7U)
+#define TIM17_CR1_CKD           (0x3U<<8U)
+#define TIM17_CR1_CKD_0         (0x1U<<8U)
+#define TIM17_CR1_UIFREMAP      (0x1U<<11U)
 
 // CR2 Configuration
 
-#define TIM17_CR2_CCPC          (0x1U<<0)
-#define TIM17_CR2_CCUS          (0x1U<<2)
-#define TIM17_CR2_CCDS          (0x1U<<3)
-#define TIM17_CR2_OIS1          (0x1U<<8)
-#define TIM17_CR2_OIS1N         (0x1U<<9)
+#define TIM17_CR2_CCPC          (0x1U<<0U)
+#define TIM17_CR2_CCUS          (0x1U<<2U)
+#define TIM17_CR2_CCDS          (0x1U<<3U)
+#define TIM17_CR2_OIS1          (0x1U<<8U)
+#define TIM17_CR2_OIS1N         (0x1U<<9U)
 
 // DIER Configuration
 
-#define TIM17_DIER_UIE          (0x1U<<0)
-#define TIM17_DIER_CC1IE        (0x1U<<1)
-#define TIM17_DIER_COMIE        (0x1U<<5)
-#define TIM17_DIER_BIE          (0x1U<<7)
-#define TIM17_DIER_UDE          (0x1U<<8)
-#define TIM17_DIER_CC1DE        (0x1U<<9)
-#define TIM17_DIER_COMDE        (0x1U<<13)
+#define TIM17_DIER_UIE          (0x1U<<0U)
+#define TIM17_DIER_CC1IE        (0x1U<<1U)
+#define TIM17_DIER_COMIE        (0x1U<<5U)
+#define TIM17_DIER_BIE          (0x1U<<7U)
+#define TIM17_DIER_UDE          (0x1U<<8U)
+#define TIM17_DIER_CC1DE        (0x1U<<9U)
+#define TIM17_DIER_COMDE        (0x1U<<13U)
 
 // SR Configuration
 
-#define TIM17_SR_UIF            (0x1U<<0)
-#define TIM17_SR_CC1IF          (0x1U<<1)
-#define TIM17_SR_COMIF          (0x1U<<5)
-#define TIM17_SR_BIF            (0x1U<<7)
-#define TIM17_SR_CC1OF          (0x1U<<9)
+#define TIM17_SR_UIF            (0x1U<<0U)
+#define TIM17_SR_CC1IF          (0x1U<<1U)
+#define TIM17_SR_COMIF          (0x1U<<5U)
+#define TIM17_SR_BIF            (0x1U<<7U)
+#define TIM17_SR_CC1OF          (0x1U<<9U)
 
 // EGR Configuration
 
-#define TIM17_EGR_UG            (0x1U<<0)
-#define TIM17_EGR_CC1G          (0x1U<<1)
-#define TIM17_EGR_COMG          (0x1U<<5)
-#define TIM17_EGR_BG            (0x1U<<7)
+#define TIM17_EGR_UG            (0x1U<<0U)
+#define TIM17_EGR_CC1G          (0x1U<<1U)
+#define TIM17_EGR_COMG          (0x1U<<5U)
+#define TIM17_EGR_BG            (0x1U<<7U)
 
 // CCMR1 Configuration
 
-#define TIM17_CCMR1_CC1S        (0x3U<<0)
-#define TIM17_CCMR1_CC1S_0      (0x1U<<0)
-#define TIM17_CCMR1_OC1FE       (0x1U<<2)
-#define TIM17_CCMR1_OC1PE       (0x1U<<3)
-#define TIM17_CCMR1_OC1M        (0x7U<<4)
-#define TIM17_CCMR1_OC1M_0      (0x1U<<4)
-#define TIM17_CCMR1_OC1CE       (0x1U<<7)
-#define TIM17_CCMR1_OC1M_2      (0x1U<<16)
+#define TIM17_CCMR1_CC1S        (0x3U<<0U)
+#define TIM17_CCMR1_CC1S_0      (0x1U<<0U)
+#define TIM17_CCMR1_OC1FE       (0x1U<<2U)
+#define TIM17_CCMR1_OC1PE       (0x1U<<3U)
+#define TIM17_CCMR1_OC1M        (0x7U<<4U)
+#define TIM17_CCMR1_OC1M_0      (0x1U<<4U)
+#define TIM17_CCMR1_OC1CE       (0x1U<<7U)
+#define TIM17_CCMR1_OC1M_2      (0x1U<<16U)
 
 // CCER Configuration
 
-#define TIM17_CCER_CC1E         (0x1U<<0)
-#define TIM17_CCER_CC1P         (0x1U<<1)
-#define TIM17_CCER_CC1NE        (0x1U<<2)
-#define TIM17_CCER_CC1NP        (0x1U<<3)
+#define TIM17_CCER_CC1E         (0x1U<<0U)
+#define TIM17_CCER_CC1P         (0x1U<<1U)
+#define TIM17_CCER_CC1NE        (0x1U<<2U)
+#define TIM17_CCER_CC1NP        (0x1U<<3U)
 
 // CNT Configuration
 
-#define TIM17_CNT_CNT           (0xFFFFU<<0)
-#define TIM17_CNT_CNT_0         (0x1U<<0)
-#define TIM17_CNT_UIFCPY        (0x1U<<31)
+#define TIM17_CNT_CNT           (0xFFFFU<<0U)
+#define TIM17_CNT_CNT_0         (0x1U<<0U)
+#define TIM17_CNT_UIFCPY        (0x1U<<31U)
 
 // PSC Configuration
 
-#define TIM17_PSC_PSC           (0xFFFFU<<0)
-#define TIM17_PSC_PSC_0         (0x1U<<0)
+#define TIM17_PSC_PSC           (0xFFFFU<<0U)
+#define TIM17_PSC_PSC_0         (0x1U<<0U)
 
 // ARR Configuration
 
-#define TIM17_ARR_ARR           (0xFFFFFU<<0)
-#define TIM17_ARR_ARR_0         (0x1U<<0)
+#define TIM17_ARR_ARR           (0xFFFFFU<<0U)
+#define TIM17_ARR_ARR_0         (0x1U<<0U)
 
 // RCR Configuration
 
-#define TIM17_RCR_REP           (0xFFU<<0)
-#define TIM17_RCR_REP_0         (0x1U<<0)
+#define TIM17_RCR_REP           (0xFFU<<0U)
+#define TIM17_RCR_REP_0         (0x1U<<0U)
 
 // CCR1 Configuration
 
-#define TIM17_CCR1_CCR1         (0xFFFFFU<<0)
-#define TIM17_CCR1_CCR1_0       (0x1U<<0)
+#define TIM17_CCR1_CCR1         (0xFFFFFU<<0U)
+#define TIM17_CCR1_CCR1_0       (0x1U<<0U)
 
 // BDTR Configuration
 
-#define TIM17_BDTR_DTG          (0xFFU<<0)
-#define TIM17_BDTR_DTG_0        (0x1U<<0)
-#define TIM17_BDTR_LOCK         (0x3U<<8)
-#define TIM17_BDTR_LOCK_0       (0x1U<<8)
-#define TIM17_BDTR_OSSI         (0x1U<<10)
-#define TIM17_BDTR_OSSR         (0x1U<<11)
-#define TIM17_BDTR_BKE          (0x1U<<12)
-#define TIM17_BDTR_BKP          (0x1U<<13)
-#define TIM17_BDTR_AOE          (0x1U<<14)
-#define TIM17_BDTR_MOE          (0x1U<<15)
-#define TIM17_BDTR_BKDSRM       (0x1U<<26)
-#define TIM17_BDTR_BKBID        (0x1U<<28)
+#define TIM17_BDTR_DTG          (0xFFU<<0U)
+#define TIM17_BDTR_DTG_0        (0x1U<<0U)
+#define TIM17_BDTR_LOCK         (0x3U<<8U)
+#define TIM17_BDTR_LOCK_0       (0x1U<<8U)
+#define TIM17_BDTR_OSSI         (0x1U<<10U)
+#define TIM17_BDTR_OSSR         (0x1U<<11U)
+#define TIM17_BDTR_BKE          (0x1U<<12U)
+#define TIM17_BDTR_BKP          (0x1U<<13U)
+#define TIM17_BDTR_AOE          (0x1U<<14U)
+#define TIM17_BDTR_MOE          (0x1U<<15U)
+#define TIM17_BDTR_BKDSRM       (0x1U<<26U)
+#define TIM17_BDTR_BKBID        (0x1U<<28U)
 
 // OR1 Configuration
 
-#define TIM17_OR1_HSE32EN       (0x1U<<0)
+#define TIM17_OR1_HSE32EN       (0x1U<<0U)
 
 // DTR2 Configuration
 
-#define TIM17_DTR2_DTGF         (0xFFU<<0)
-#define TIM17_DTR2_DTGF_0       (0x1U<<0)
-#define TIM17_DTR2_DTAE         (0x1U<<16)
-#define TIM17_DTR2_DTPE         (0x1U<<17)
+#define TIM17_DTR2_DTGF         (0xFFU<<0U)
+#define TIM17_DTR2_DTGF_0       (0x1U<<0U)
+#define TIM17_DTR2_DTAE         (0x1U<<16U)
+#define TIM17_DTR2_DTPE         (0x1U<<17U)
 
 // TISEL Configuration
 
-#define TIM17_TISEL_TI1SEL      (0xFU<<0)
-#define TIM17_TISEL_TI1SEL_0    (0x1U<<0)
+#define TIM17_TISEL_TI1SEL      (0xFU<<0U)
+#define TIM17_TISEL_TI1SEL_0    (0x1U<<0U)
 
 // AF1 Configuration
 
-#define TIM17_AF1_BKINE         (0x1U<<0)
-#define TIM17_AF1_BKCMP1E       (0x1U<<1)
-#define TIM17_AF1_BKCMP2E       (0x1U<<2)
-#define TIM17_AF1_BKCMP3E       (0x1U<<3)
-#define TIM17_AF1_BKCMP4E       (0x1U<<4)
-#define TIM17_AF1_BKCMP5E       (0x1U<<5)
-#define TIM17_AF1_BKCMP6E       (0x1U<<6)
-#define TIM17_AF1_BKCMP7E       (0x1U<<7)
-#define TIM17_AF1_BKINP         (0x1U<<9)
-#define TIM17_AF1_BKCMP1P       (0x1U<<10)
-#define TIM17_AF1_BKCMP2P       (0x1U<<11)
-#define TIM17_AF1_BKCMP3P       (0x1U<<12)
-#define TIM17_AF1_BKCMP4P       (0x1U<<13)
+#define TIM17_AF1_BKINE         (0x1U<<0U)
+#define TIM17_AF1_BKCMP1E       (0x1U<<1U)
+#define TIM17_AF1_BKCMP2E       (0x1U<<2U)
+#define TIM17_AF1_BKCMP3E       (0x1U<<3U)
+#define TIM17_AF1_BKCMP4E       (0x1U<<4U)
+#define TIM17_AF1_BKCMP5E       (0x1U<<5U)
+#define TIM17_AF1_BKCMP6E       (0x1U<<6U)
+#define TIM17_AF1_BKCMP7E       (0x1U<<7U)
+#define TIM17_AF1_BKINP         (0x1U<<9U)
+#define TIM17_AF1_BKCMP1P       (0x1U<<10U)
+#define TIM17_AF1_BKCMP2P       (0x1U<<11U)
+#define TIM17_AF1_BKCMP3P       (0x1U<<12U)
+#define TIM17_AF1_BKCMP4P       (0x1U<<13U)
 
 // AF2 Configuration
 
-#define TIM17_AF2_OCRSEL        (0x7U<<16)
-#define TIM17_AF2_OCRSEL_0      (0x1U<<16)
+#define TIM17_AF2_OCRSEL        (0x7U<<16U)
+#define TIM17_AF2_OCRSEL_0      (0x1U<<16U)
 
 // DCR Configuration
 
-#define TIM17_DCR_DBA           (0x1FU<<0)
-#define TIM17_DCR_DBA_0         (0x1U<<0)
-#define TIM17_DCR_DBL           (0x1FU<<8)
-#define TIM17_DCR_DBL_0         (0x1U<<8)
-#define TIM17_DCR_DBSS          (0xFU<<16)
-#define TIM17_DCR_DBSS_0        (0x1U<<16)
+#define TIM17_DCR_DBA           (0x1FU<<0U)
+#define TIM17_DCR_DBA_0         (0x1U<<0U)
+#define TIM17_DCR_DBL           (0x1FU<<8U)
+#define TIM17_DCR_DBL_0         (0x1U<<8U)
+#define TIM17_DCR_DBSS          (0xFU<<16U)
+#define TIM17_DCR_DBSS_0        (0x1U<<16U)
 
 // DMAR Configuration
 
-#define TIM17_DMAR_DMAB         (0xFFFFFFFFU<<0)
-#define TIM17_DMAR_DMAB_0       (0x1U<<0)
+#define TIM17_DMAR_DMAB         (0xFFFFFFFFU<<0U)
+#define TIM17_DMAR_DMAB_0       (0x1U<<0U)

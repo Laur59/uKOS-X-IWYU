@@ -55,6 +55,33 @@ if [[ ! -f "${COMPILE_DB}" ]]; then
     exit 1
 fi
 
+# The FixedAddressDereference checker fires on every memory-mapped register access, so it
+# must stay disabled. It sits in the default-enabled "core" package up to clang 22 and moved
+# to the opt-in "optin.core" package in clang 23. An unknown checker name is a hard error, so
+# probe for the spelling this compiler accepts rather than hard-coding one.
+# Note: the probe output is captured before grepping rather than piped straight into it.
+# PIPE_FAIL is set above, so a pipeline ending in grep would report clang's non-zero exit
+# status instead of grep's match result, inverting the test.
+detect_disable_fixedaddr() {
+    local cc="$1" ckr out
+    for ckr in core.FixedAddressDereference optin.core.FixedAddressDereference; do
+        out=$(print 'int main(void){return 0;}' |
+              "${cc}" --analyze -Xanalyzer -analyzer-disable-checker="${ckr}" \
+                      -x c - -o /dev/null 2>&1 || true)
+        if ! grep -q 'no analyzer checkers' <<< "${out}"; then
+            print -- "-Xanalyzer -analyzer-disable-checker=${ckr}"
+            return
+        fi
+    done
+}
+readonly ANALYZER_CC=$(jq -r '.[0].command' "${COMPILE_DB}" | awk '{print $1}')
+readonly DISABLE_FIXEDADDR=$(detect_disable_fixedaddr "${ANALYZER_CC}")
+if [[ -z "${DISABLE_FIXEDADDR}" ]]; then
+    printf "%bWarning: no known FixedAddressDereference checker name accepted by %s%b\n" \
+           "${YELLOW}" "${ANALYZER_CC}" "${NC}" >&2
+    printf "Memory-mapped register accesses may produce false positives.\n" >&2
+fi
+
 printf '%b═══════════════════════════════════════════════════════════════
   Clang Static Analyzer
 ═══════════════════════════════════════════════════════════════%b\n\n' "${BLUE}" "${NC}"
@@ -91,6 +118,7 @@ fi
 
 # Parse and analyze each file
 warnings=0
+failures=0
 
 for current in {1..$length_DB}; do
     filename="${filenames[$current]}"
@@ -118,7 +146,8 @@ for current in {1..$length_DB}; do
             -e 's|-o [^ ]*\.o|--analyze -Xanalyzer -analyzer-output=html|' \
             -e 's| -c | |'
     )
-    analyse_cmd+=' -Xanalyzer -analyzer-disable-checker=core.FixedAddressDereference -o "$OUTPUT_DIR"'
+    analyse_cmd+=" ${DISABLE_FIXEDADDR}"
+    analyse_cmd+=' -o "$OUTPUT_DIR"'
 
     # Run analyzer; do not abort on failures, but capture output
     analyse_res=$(eval "${analyse_cmd}" 2>&1 || true)
@@ -127,8 +156,17 @@ for current in {1..$length_DB}; do
     count=$(grep -c 'warning:' <<< "$analyse_res" || true)
     count=$(echo "$count" | tr -d '[:space:]')
 
+    # An analyzer hard error (bad flag, unknown checker, crash) emits no "warning:" line and
+    # would otherwise be reported as a clean file, silently hiding every finding in it.
+    errors=$(grep -c 'error:' <<< "$analyse_res" || true)
+    errors=$(echo "$errors" | tr -d '[:space:]')
+
     # Report results
-    if [[ "$count" -gt 0 ]]; then
+    if [[ "$errors" -gt 0 ]]; then
+        printf '%b⚠ %d errors (file not analysed)%b\n' "${RED}" "$errors" "${NC}"
+        grep 'error:' <<< "$analyse_res" | head -3 | sed 's/^/          /'
+        failures=$((failures + 1))
+    elif [[ "$count" -gt 0 ]]; then
         printf '✗ %d warnings\n' "$count"
         warnings=$((warnings + count))
     else
@@ -142,11 +180,15 @@ readonly COMPILER="${analyse_cmd%% *}"
 printf '\n═══════════════════════════════════════════════════════════════\n'
 
 # Report analyzer results
-if [[ "$warnings" -eq 0 ]]; then
+if [[ "$warnings" -eq 0 ]] && [[ "$failures" -eq 0 ]]; then
     printf '%b  Analyzer: No issues found!%b\n' "${BOLD}" "${NC}"
     printf '═══════════════════════════════════════════════════════════════\n'
 else
     printf '%b  Analysis Complete: %d warnings found%b\n' "${BOLD}" "$warnings" "${NC}"
+    if [[ "$failures" -gt 0 ]]; then
+        printf '%b  %d file(s) FAILED to analyse - results are incomplete%b\n' \
+               "${RED}" "$failures" "${NC}"
+    fi
     printf '═══════════════════════════════════════════════════════════════\n'
 fi
 
@@ -231,7 +273,10 @@ for current in {1..$length_DB}; do
     # Run clang-tidy and capture output (filter out summary lines)
     tidy_output_file="${TIDY_OUTPUT}/${filename}.txt"
     tidy_fix_file="${TIDY_OUTPUT}/${filename}.yaml"
-    "${CLANG_TIDY}" -config-file="${tidy_config_file}" -p="${BUILD_DIR}" --export-fixes="${tidy_fix_file}" -checks=-clang-analyzer-core.FixedAddressDereference "${source_file}" 2>&1 | \
+    # Both spellings are listed: the checker moved from "core" to "optin.core" in clang 23.
+    # Unlike the analyzer, clang-tidy silently ignores an unknown check name, so the spelling
+    # that does not apply to this version is harmless.
+    "${CLANG_TIDY}" -config-file="${tidy_config_file}" -p="${BUILD_DIR}" --export-fixes="${tidy_fix_file}" -checks=-clang-analyzer-core.FixedAddressDereference,-clang-analyzer-optin.core.FixedAddressDereference "${source_file}" 2>&1 | \
         sed -E '/warnings generated\./d; /^Suppressed .* warnings/d; /^Use -header-filter=/d' > "${tidy_output_file}" || true
 
     # Count warnings in output

@@ -121,7 +121,7 @@ static  void    local_panicMallocBroken(void) {
     INTERRUPTION_OFF;
 
     cmns_send(KSYST, "\nPanic: memo_malloc descriptor broken!\nCurrent process: ");
-    identifier = (vKern_runProc[core]->oSpecification.oIdentifier == nullptr) ? "Anonymous" : (vKern_runProc[core]->oSpecification.oIdentifier);
+    identifier = (vKern_runProc[core]->oSpecification.oIdentifier == nullptr) ? "Anonymous" : vKern_runProc[core]->oSpecification.oIdentifier;
     cmns_send(KSYST, identifier); cmns_send(KSYST, "\n");
 }
 
@@ -142,7 +142,7 @@ static  void    local_panicStackUnderflow(void) {
 
     cmns_send(KDEF0, "\nPanic: process stack underflow detected!\n");
 
-    identifier = (vKern_runProc[core]->oSpecification.oIdentifier == nullptr) ? "Anonymous" : (vKern_runProc[core]->oSpecification.oIdentifier);
+    identifier = (vKern_runProc[core]->oSpecification.oIdentifier == nullptr) ? "Anonymous" : vKern_runProc[core]->oSpecification.oIdentifier;
     (void)snprintf(&string[0], 200U, "Current process:    %s\n", identifier);
     cmns_send(KDEF0, &string[0]);
 
@@ -180,7 +180,7 @@ static  void    local_panicNoSystemCall(void) {
     INTERRUPTION_OFF;
 
     cmns_send(KSYST, "\nPanic: The system call does not exist!\nCurrent process: ");
-    identifier = (vKern_runProc[core]->oSpecification.oIdentifier == nullptr) ? "Anonymous" : (vKern_runProc[core]->oSpecification.oIdentifier);
+    identifier = (vKern_runProc[core]->oSpecification.oIdentifier == nullptr) ? "Anonymous" : vKern_runProc[core]->oSpecification.oIdentifier;
     cmns_send(KSYST, identifier); cmns_send(KSYST, "\n");
 }
 

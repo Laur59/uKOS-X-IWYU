@@ -26,8 +26,8 @@ typedef struct {
 
 // ACTRL Configuration
 
-#define SCB_ACTRL_ACTRL_DISOOFP     (0x1U<<9)
-#define SCB_ACTRL_ACTRL_DISFPCA     (0x1U<<8)
-#define SCB_ACTRL_ACTRL_DISFOLD     (0x1U<<2)
-#define SCB_ACTRL_ACTRL_DISDEFWBUF  (0x1U<<1)
-#define SCB_ACTRL_ACTRL_DISMCYCINT  (0x1U<<0)
+#define SCB_ACTRL_ACTRL_DISOOFP     (0x1U<<9U)
+#define SCB_ACTRL_ACTRL_DISFPCA     (0x1U<<8U)
+#define SCB_ACTRL_ACTRL_DISFOLD     (0x1U<<2U)
+#define SCB_ACTRL_ACTRL_DISDEFWBUF  (0x1U<<1U)
+#define SCB_ACTRL_ACTRL_DISMCYCINT  (0x1U<<0U)

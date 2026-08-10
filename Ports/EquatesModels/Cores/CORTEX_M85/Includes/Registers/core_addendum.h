@@ -92,7 +92,7 @@
 #define KMPU_FLASH_ATTR                 ((0xAU<<KMPU_OUTER) | (0xAU<<KMPU_INNER))
 #define KMPU_RAM_CACHE_ATTR             ((0xBU<<KMPU_OUTER) | (0xBU<<KMPU_INNER))
 #define KMPU_RAM_NOT_CACHE_ATTR         ((0x4U<<KMPU_OUTER) | (0x4U<<KMPU_INNER))
-#define KMPU_PERIPH_ATTR                ((0x0U<<4)          | (KMPU_DEVICE_nGnRnE<<0))
+#define KMPU_PERIPH_ATTR                ((0x0U<<4U)          | (KMPU_DEVICE_nGnRnE<<0U))
 
 #define KMPU_INDEX0                     0U
 #define KMPU_INDEX1                     8U

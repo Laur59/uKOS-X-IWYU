@@ -92,7 +92,7 @@ void    processes_init(void) {
                                     .oSerialManager = KIOCHAN_DEFAULT,
                                     .oPriority      = KKERN_PRIORITY_HIGH_01,
                                     .oKind          = KPROC_NORMAL,
-                                    .oMode          = KPROC_PRIVILEGED
+                                    .oMode          = KPROC_PRIVILEGED,
                                 };
 
     DEBUG_KERN_TRACE("entry: ");
@@ -235,7 +235,7 @@ int32_t kern_createProcess(const spec_t *specification, const void *argument, pr
     *handle = nullptr;
 
     if (IS_EXCEPTION)                                                                                                                              { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_FRISR; }
-    if (specification->oStackStart == nullptr)                                                                                                         { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOSTK; }
+    if (specification->oStackStart == nullptr)                                                                                                     { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOSTK; }
     if (vKern_listFree[core].oNbElements == 0U)                                                                                                    { DEBUG_KERN_TRACE("exit: KO 3"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_LIFUL; }
     if ((specification->oMode == KPROC_PRIVILEGED) &&
        ((vKern_runProc[core]->oSpecification.oMode == KPROC_USER) && ((vKern_runProc[core]->oInternal.oState & (1U<<BPROC_PRIV_ELEVATED)) == 0U))) { DEBUG_KERN_TRACE("exit: KO 4"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_PRIVI; }
@@ -246,16 +246,15 @@ int32_t kern_createProcess(const spec_t *specification, const void *argument, pr
 
     if (specification->oIdentifier != nullptr) {
         for (i = 0U; i < KKERN_NB_PROCESSES; i++) {
-            if ((vKern_proc[core][i].oInternal.oState & (1U<<BPROC_INSTALLED)) != 0U) {
-                if (identifiers_cmpStrings(vKern_proc[core][i].oSpecification.oIdentifier, specification->oIdentifier)) {
-                    *handle = &vKern_proc[core][i];
-                    DEBUG_KERN_TRACE("exit: KO 5");
-                    INTERRUPTION_RESTORE;
-                    PRIVILEGE_RESTORE;
-                    return KERR_KERN_IDPRO;
-                }
-
+            if (((vKern_proc[core][i].oInternal.oState & (1U<<BPROC_INSTALLED)) != 0U) &&
+                identifiers_cmpStrings(vKern_proc[core][i].oSpecification.oIdentifier, specification->oIdentifier)) {
+                *handle = &vKern_proc[core][i];
+                DEBUG_KERN_TRACE("exit: KO 5");
+                INTERRUPTION_RESTORE;
+                PRIVILEGE_RESTORE;
+                return KERR_KERN_IDPRO;
             }
+
         }
     }
 
@@ -281,7 +280,7 @@ int32_t kern_createProcess(const spec_t *specification, const void *argument, pr
     preemption = (process->oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority);
 
     vKern_nbProc[core]    = (uint16_t)(vKern_nbProc[core] + 1U);
-    vKern_nbMaxProc[core] = (vKern_nbProc[core] > vKern_nbMaxProc[core]) ? (vKern_nbProc[core]) : (vKern_nbMaxProc[core]);
+    vKern_nbMaxProc[core] = (vKern_nbProc[core] > vKern_nbMaxProc[core]) ? vKern_nbProc[core] : vKern_nbMaxProc[core];
     DEBUG_KERN_TRACE("exit: OK");
     INTERRUPTION_RESTORE;
 
@@ -329,7 +328,7 @@ int32_t kern_killProcess(proc_t *handle) {
 
 // If the handle == nullptr, then, commit a suicide
 
-    wkHandle = (wkHandle == nullptr) ? (vKern_runProc[core]) : wkHandle;
+    wkHandle = (wkHandle == nullptr) ? vKern_runProc[core] : wkHandle;
 
     if (IS_EXCEPTION)                                                                                                                      { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_FRISR; }
     if (identifiers_cmpStrings(wkHandle->oSpecification.oIdentifier, aStrFirst))                                                           { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_REFRS; }
@@ -370,7 +369,7 @@ int32_t kern_killProcess(proc_t *handle) {
 
         case KSUICIDE: {
             local_fatherKilled(wkHandle);
-            vKern_stackLocation[core] = (wkHandle->oSpecification.oStackMode == KPROC_STACK_DYNAMIC) ? (wkHandle->oSpecification.oStackStart) : nullptr;
+            vKern_stackLocation[core] = (wkHandle->oSpecification.oStackMode == KPROC_STACK_DYNAMIC) ? wkHandle->oSpecification.oStackStart : nullptr;
             memo_delayedFree(vKern_stackLocation[core]);
             lists_disconnectConnect(wkHandle->oObject.oList, &vKern_listFree[core], wkHandle);
             local_initialise(wkHandle);
@@ -389,7 +388,7 @@ int32_t kern_killProcess(proc_t *handle) {
 
         case KNORMAL: {
             local_fatherKilled(wkHandle);
-            vKern_stackLocation[core] = (wkHandle->oSpecification.oStackMode == KPROC_STACK_DYNAMIC) ? (wkHandle->oSpecification.oStackStart) : nullptr;
+            vKern_stackLocation[core] = (wkHandle->oSpecification.oStackMode == KPROC_STACK_DYNAMIC) ? wkHandle->oSpecification.oStackStart : nullptr;
             memo_free(vKern_stackLocation[core]);
             lists_disconnectConnect(wkHandle->oObject.oList, &vKern_listFree[core], wkHandle);
             local_initialise(wkHandle);
@@ -441,7 +440,7 @@ int32_t kern_setPriority(proc_t *handle, priority_t priority) {
 
 // If the handle == nullptr, then, consider the current process
 
-    wkHandle = (wkHandle == nullptr) ? (vKern_runProc[core]) : wkHandle;
+    wkHandle = (wkHandle == nullptr) ? vKern_runProc[core] : wkHandle;
 
     if ((wkHandle->oInternal.oState & (1U<<BPROC_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOPRO; }
 
@@ -493,7 +492,7 @@ int32_t kern_getPriority(proc_t *handle, priority_t *priority) {
 
 // If the handle == nullptr, then, consider the current process
 
-    wkHandle = (wkHandle == nullptr) ? (vKern_runProc[core]) : wkHandle;
+    wkHandle = (wkHandle == nullptr) ? vKern_runProc[core] : wkHandle;
 
     if ((wkHandle->oInternal.oState & (1U<<BPROC_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOPRO; }
     *priority = wkHandle->oSpecification.oPriority;
@@ -654,7 +653,7 @@ static  void    local_initialise(proc_t *handle) {
                                 .oPriority      = KKERN_PRIORITY_HIGH_01,
                                 .oKind          = 0U,
                                 .oMode          = 0U,
-                                .oScheduleHook  = nullptr
+                                .oScheduleHook  = nullptr,
                             };
 
     local_setupDescriptor(handle, nullptr, &specification, 0U);
@@ -670,13 +669,13 @@ static  void    local_initialise(proc_t *handle) {
 static  void    local_setupDescriptor(proc_t *handle, proc_t *father, const spec_t *specification, uint16_t state) {
     priority_t  priority;
 
-    priority = (specification->oPriority == KKERN_PRIORITY_HIGH_Reserved) ? KKERN_PRIORITY_HIGH_01  : (specification->oPriority);
+    priority = (specification->oPriority == KKERN_PRIORITY_HIGH_Reserved) ? KKERN_PRIORITY_HIGH_01  : specification->oPriority;
     priority = (priority >= KKERN_NB_PRIORITIES)                          ? KKERN_PRIORITY_LOW_IDLE : priority;
 
 // The process specifications
 
-    handle->oSpecification.oIdentifier    = ((specification->oIdentifier == nullptr) && (state == (1U<<BPROC_INSTALLED))) ? (KPROC_ANONYMOUS_ID) : (specification->oIdentifier);
-    handle->oSpecification.oText          = ((specification->oText       == nullptr) && (state == (1U<<BPROC_INSTALLED))) ? (KPROC_ANONYMOUS_TX) : (specification->oText);
+    handle->oSpecification.oIdentifier    = ((specification->oIdentifier == nullptr) && (state == (1U<<BPROC_INSTALLED))) ? (KPROC_ANONYMOUS_ID) : specification->oIdentifier;
+    handle->oSpecification.oText          = ((specification->oText       == nullptr) && (state == (1U<<BPROC_INSTALLED))) ? (KPROC_ANONYMOUS_TX) : specification->oText;
     handle->oSpecification.oCode          = specification->oCode;
     handle->oSpecification.oStackStart    = specification->oStackStart;
     handle->oSpecification.oStack         = specification->oStack;
@@ -737,10 +736,9 @@ static  void    local_fatherKilled(const proc_t *handle) {
     core = GET_RUNNING_CORE;
 
     for (i = 0U; i < KKERN_NB_PROCESSES; i++) {
-        if ((vKern_proc[core][i].oInternal.oState & (1U<<BPROC_INSTALLED)) != 0U) {
-            if (vKern_proc[core][i].oInternal.oProcFather == handle) {
-                vKern_proc[core][i].oInternal.oProcFather = nullptr;
-            }
+        if (((vKern_proc[core][i].oInternal.oState & (1U<<BPROC_INSTALLED)) != 0U) &&
+            (vKern_proc[core][i].oInternal.oProcFather == handle)) {
+            vKern_proc[core][i].oInternal.oProcFather = nullptr;
         }
     }
 }

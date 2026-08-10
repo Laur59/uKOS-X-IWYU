@@ -288,13 +288,13 @@ static  void    local_printProcess(uint32_t core, uint16_t number) {
     #else
     for (i = 0U; i < 4U; i++) {
         serialManagerA[3U - i] = (char_t)(serialManager & 0xFFU);
-        serialManager = serialManager>>8;
+        serialManager = serialManager>>8U;
     }
     #endif
 
     serialManagerA[4] = '\0';
 
-    father = (process.oInternal.oProcFather == nullptr)                     ? "Orphan"   : (process.oInternal.oProcFather->oSpecification.oIdentifier);
+    father = (process.oInternal.oProcFather == nullptr)                     ? "Orphan"   : process.oInternal.oProcFather->oSpecification.oIdentifier;
     mode   = (process.oSpecification.oStackMode == KPROC_STACK_STATIC)      ? "Static"   : "Dynamic";
     kind   = (process.oSpecification.oKind == KPROC_NORMAL)                 ? "Normal"   : "Daemon";
     space  = (process.oSpecification.oMode == KPROC_USER)                   ? "User"     : "Privileged";
@@ -322,7 +322,7 @@ static  void    local_printProcess(uint32_t core, uint16_t number) {
     (void)dprintf(KSYST, "   Stack mode:           0x%04"PRIX16", %s\n",     process.oSpecification.oStackMode, mode);
     (void)dprintf(KSYST, "   Stack start:          0x%016"PRIXPTR"\n",       (uintptr_t)process.oSpecification.oStackStart);
     (void)dprintf(KSYST, "   Stack:                0x%016"PRIXPTR"\n",       (uintptr_t)process.oSpecification.oStack);
-    (void)dprintf(KSYST, "   Stack size:           %"PRIu32" [Bytes]\n",     (process.oSpecification.oStackSize<<2));
+    (void)dprintf(KSYST, "   Stack size:           %"PRIu32" [Bytes]\n",     (process.oSpecification.oStackSize<<2U));
     (void)dprintf(KSYST, "   Code:                 0x%016"PRIXPTR"\n",       (uintptr_t)process.oSpecification.oCode);
     (void)dprintf(KSYST, "   Kind:                 0x%02"PRIX8", %s\n",      process.oSpecification.oKind, kind);
     (void)dprintf(KSYST, "   Process space:        0x%02"PRIX8", %s\n",      process.oSpecification.oMode, space);

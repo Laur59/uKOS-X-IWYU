@@ -36,70 +36,70 @@ typedef struct {
 
 // CLOCKSTART Configuration
 
-#define TAD_CLOCKSTART_START                            (0x1U<<0)
-#define TAD_CLOCKSTART_START_START                      (0x1U<<0)
+#define TAD_CLOCKSTART_START                            (0x1U<<0U)
+#define TAD_CLOCKSTART_START_START                      (0x1U<<0U)
 
 // CLOCKSTOP Configuration
 
-#define TAD_CLOCKSTOP_STOP                              (0x1U<<0)
-#define TAD_CLOCKSTOP_STOP_STOP                         (0x1U<<0)
+#define TAD_CLOCKSTOP_STOP                              (0x1U<<0U)
+#define TAD_CLOCKSTOP_STOP_STOP                         (0x1U<<0U)
 
 // ENABLE Configuration
 
-#define TAD_ENABLE_ENABLE                               (0x1U<<0)
-#define TAD_ENABLE_ENABLE_DISABLED                      (0x0U<<0)
-#define TAD_ENABLE_ENABLE_ENABLED                       (0x1U<<0)
+#define TAD_ENABLE_ENABLE                               (0x1U<<0U)
+#define TAD_ENABLE_ENABLE_DISABLED                      (0x0U<<0U)
+#define TAD_ENABLE_ENABLE_ENABLED                       (0x1U<<0U)
 
 // TRACECLK Configuration
 
-#define TAD_PSEL_TRACECLK_CONNECT                       (0x1U<<31)
-#define TAD_PSEL_TRACECLK_PIN                           (0x1FU<<0)
-#define TAD_PSEL_TRACECLK_PIN_0                         (0x1U<<0)
-#define TAD_PSEL_TRACECLK_CONNECT_DISCONNECTED          (0x1U<<31)
-#define TAD_PSEL_TRACECLK_CONNECT_CONNECTED             (0x0U<<31)
-#define TAD_PSEL_TRACECLK_PIN_TRACECLK                  (0xCU<<0)
+#define TAD_PSEL_TRACECLK_CONNECT                       (0x1U<<31U)
+#define TAD_PSEL_TRACECLK_PIN                           (0x1FU<<0U)
+#define TAD_PSEL_TRACECLK_PIN_0                         (0x1U<<0U)
+#define TAD_PSEL_TRACECLK_CONNECT_DISCONNECTED          (0x1U<<31U)
+#define TAD_PSEL_TRACECLK_CONNECT_CONNECTED             (0x0U<<31U)
+#define TAD_PSEL_TRACECLK_PIN_TRACECLK                  (0xCU<<0U)
 
 // TRACEDATA0 Configuration
 
-#define TAD_PSEL_TRACEDATA0_CONNECT                     (0x1U<<31)
-#define TAD_PSEL_TRACEDATA0_PIN                         (0x1FU<<0)
-#define TAD_PSEL_TRACEDATA0_PIN_0                       (0x1U<<0)
-#define TAD_PSEL_TRACEDATA0_CONNECT_DISCONNECTED        (0x1U<<31)
-#define TAD_PSEL_TRACEDATA0_CONNECT_CONNECTED           (0x0U<<31)
-#define TAD_PSEL_TRACEDATA0_PIN_TRACEDATA0              (0xBU<<0)
+#define TAD_PSEL_TRACEDATA0_CONNECT                     (0x1U<<31U)
+#define TAD_PSEL_TRACEDATA0_PIN                         (0x1FU<<0U)
+#define TAD_PSEL_TRACEDATA0_PIN_0                       (0x1U<<0U)
+#define TAD_PSEL_TRACEDATA0_CONNECT_DISCONNECTED        (0x1U<<31U)
+#define TAD_PSEL_TRACEDATA0_CONNECT_CONNECTED           (0x0U<<31U)
+#define TAD_PSEL_TRACEDATA0_PIN_TRACEDATA0              (0xBU<<0U)
 
 // TRACEDATA1 Configuration
 
-#define TAD_PSEL_TRACEDATA1_CONNECT                     (0x1U<<31)
-#define TAD_PSEL_TRACEDATA1_PIN                         (0x1FU<<0)
-#define TAD_PSEL_TRACEDATA1_PIN_0                       (0x1U<<0)
-#define TAD_PSEL_TRACEDATA1_CONNECT_DISCONNECTED        (0x1U<<31)
-#define TAD_PSEL_TRACEDATA1_CONNECT_CONNECTED           (0x0U<<31)
-#define TAD_PSEL_TRACEDATA1_PIN_TRACEDATA1              (0xAU<<0)
+#define TAD_PSEL_TRACEDATA1_CONNECT                     (0x1U<<31U)
+#define TAD_PSEL_TRACEDATA1_PIN                         (0x1FU<<0U)
+#define TAD_PSEL_TRACEDATA1_PIN_0                       (0x1U<<0U)
+#define TAD_PSEL_TRACEDATA1_CONNECT_DISCONNECTED        (0x1U<<31U)
+#define TAD_PSEL_TRACEDATA1_CONNECT_CONNECTED           (0x0U<<31U)
+#define TAD_PSEL_TRACEDATA1_PIN_TRACEDATA1              (0xAU<<0U)
 
 // TRACEDATA2 Configuration
 
-#define TAD_PSEL_TRACEDATA2_CONNECT                     (0x1U<<31)
-#define TAD_PSEL_TRACEDATA2_PIN                         (0x1FU<<0)
-#define TAD_PSEL_TRACEDATA2_PIN_0                       (0x1U<<0)
-#define TAD_PSEL_TRACEDATA2_CONNECT_DISCONNECTED        (0x1U<<31)
-#define TAD_PSEL_TRACEDATA2_CONNECT_CONNECTED           (0x0U<<31)
-#define TAD_PSEL_TRACEDATA2_PIN_TRACEDATA2              (0x9U<<0)
+#define TAD_PSEL_TRACEDATA2_CONNECT                     (0x1U<<31U)
+#define TAD_PSEL_TRACEDATA2_PIN                         (0x1FU<<0U)
+#define TAD_PSEL_TRACEDATA2_PIN_0                       (0x1U<<0U)
+#define TAD_PSEL_TRACEDATA2_CONNECT_DISCONNECTED        (0x1U<<31U)
+#define TAD_PSEL_TRACEDATA2_CONNECT_CONNECTED           (0x0U<<31U)
+#define TAD_PSEL_TRACEDATA2_PIN_TRACEDATA2              (0x9U<<0U)
 
 // TRACEDATA3 Configuration
 
-#define TAD_PSEL_TRACEDATA3_CONNECT                     (0x1U<<31)
-#define TAD_PSEL_TRACEDATA3_PIN                         (0x1FU<<0)
-#define TAD_PSEL_TRACEDATA3_PIN_0                       (0x1U<<0)
-#define TAD_PSEL_TRACEDATA3_CONNECT_DISCONNECTED        (0x1U<<31)
-#define TAD_PSEL_TRACEDATA3_CONNECT_CONNECTED           (0x0U<<31)
-#define TAD_PSEL_TRACEDATA3_PIN_TRACEDATA3              (0x8U<<0)
+#define TAD_PSEL_TRACEDATA3_CONNECT                     (0x1U<<31U)
+#define TAD_PSEL_TRACEDATA3_PIN                         (0x1FU<<0U)
+#define TAD_PSEL_TRACEDATA3_PIN_0                       (0x1U<<0U)
+#define TAD_PSEL_TRACEDATA3_CONNECT_DISCONNECTED        (0x1U<<31U)
+#define TAD_PSEL_TRACEDATA3_CONNECT_CONNECTED           (0x0U<<31U)
+#define TAD_PSEL_TRACEDATA3_PIN_TRACEDATA3              (0x8U<<0U)
 
 // TRACEPORTSPEED Configuration
 
-#define TAD_TRACEPORTSPEED_TRACEPORTSPEED               (0x3U<<0)
-#define TAD_TRACEPORTSPEED_TRACEPORTSPEED_0             (0x1U<<0)
-#define TAD_TRACEPORTSPEED_TRACEPORTSPEED_64MHZ         (0x0U<<0)
-#define TAD_TRACEPORTSPEED_TRACEPORTSPEED_32MHZ         (0x1U<<0)
-#define TAD_TRACEPORTSPEED_TRACEPORTSPEED_16MHZ         (0x2U<<0)
-#define TAD_TRACEPORTSPEED_TRACEPORTSPEED_8MHZ          (0x3U<<0)
+#define TAD_TRACEPORTSPEED_TRACEPORTSPEED               (0x3U<<0U)
+#define TAD_TRACEPORTSPEED_TRACEPORTSPEED_0             (0x1U<<0U)
+#define TAD_TRACEPORTSPEED_TRACEPORTSPEED_64MHZ         (0x0U<<0U)
+#define TAD_TRACEPORTSPEED_TRACEPORTSPEED_32MHZ         (0x1U<<0U)
+#define TAD_TRACEPORTSPEED_TRACEPORTSPEED_16MHZ         (0x2U<<0U)
+#define TAD_TRACEPORTSPEED_TRACEPORTSPEED_8MHZ          (0x3U<<0U)

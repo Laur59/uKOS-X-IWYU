@@ -6,10 +6,12 @@
  *          Interface between the lvgl and the hardware.
  */
 
+#include    "stub.h"
+
 #include    <stdint.h>
 #include    <string.h>
 
-#include    "../ulvgl.h"
+#include    "ulvgl.h"
 #include    "board.h"
 #include    "kern/kern.h"
 #include    "kern/kern_types.h"

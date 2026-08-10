@@ -55,18 +55,18 @@
 #include    <stdio.h>
 
 #include    "crt0.h"
-#include    "serial/serial.h"
 #include    "kern/kern.h"
+#include    "led/led.h"
 #include    "macros.h"
 #include    "macros_core.h"
 #include    "macros_core_stackFrame.h"
 #include    "memo/memo.h"
-#include    "led/led.h"
 #include    "modules.h"
 #include    "os_errors.h"
 #include    "record/record.h"
-#include    "types.h"
 #include    "serial/serial.h"
+#include    "stub.h"
+#include    "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -118,11 +118,6 @@ MODULE(
 // ====================
 
 volatile    uint32_t    vTimer = 0U;
-
-// Prototypes
-
-extern  void    stub_intr_timer_init(void);
-        void    aTimer_callBack(void);
 
 /*
  * \brief aProcess

@@ -32,7 +32,7 @@
 #define ANALYSER_ON         (REG(GPIOG)->ODR &= (uint32_t)~(1<<BANALYSER))  //
 #define ANALYSER_OFF        (REG(GPIOG)->ODR |=            (1<<BANALYSER))  //
 #define ANALYSER_TOGGLE     do { \
-                                REG(GPIOG)->ODR ^= (1<<BANALYSER);  \
+                                REG(GPIOG)->ODR ^= (1U<<BANALYSER);  \
                                 (void)(REG(GPIOG)->ODR);            \
                             } while (0)                                     // Analyser macros
 

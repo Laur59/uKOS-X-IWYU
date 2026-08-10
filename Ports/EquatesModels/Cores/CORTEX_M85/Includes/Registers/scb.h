@@ -77,8 +77,8 @@ typedef struct {
 
 // CPACR register
 
-#define SCB_CPACR_CP10                  (0x3U<<20)
-#define SCB_CPACR_CP11                  (0x3U<<22)
+#define SCB_CPACR_CP10                  (0x3U<<20U)
+#define SCB_CPACR_CP11                  (0x3U<<22U)
 
 // CCR register
 

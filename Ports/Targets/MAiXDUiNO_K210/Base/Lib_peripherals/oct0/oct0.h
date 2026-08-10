@@ -27,7 +27,7 @@
 
 #include    "modules.h"
 
-#define KOCT0_NUM   (((uint32_t)'_'<<8) + (uint32_t)'0')
+#define KOCT0_NUM   (((uint32_t)'_'<<8U) + (uint32_t)'0')
 #define KOCT0MAN    (KOCT0_NUM<<8U)
 
 #define KFILL       0U                                                  // Fill without auto-incrementation

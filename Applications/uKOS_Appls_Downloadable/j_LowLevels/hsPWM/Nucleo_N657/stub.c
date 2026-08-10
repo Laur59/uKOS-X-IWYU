@@ -5,6 +5,8 @@
  * Hardware specific stub.
  */
 
+#include    "stub.h"
+
 #include    "core_reg.h"
 #include    "soc_reg.h"
 #include    "macros_core.h"

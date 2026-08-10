@@ -56,14 +56,14 @@ enum {
             KIMAGER_PIX_8_BITS = 0U,                            // 8-bit resolution
             KIMAGER_PIX_10_BITS,                                // 10-bit resolution
             KIMAGER_PIX_12_BITS,                                // 12-bit resolution
-            KIMAGER_PIX_14_BITS                                 // 14-bit resolution
+            KIMAGER_PIX_14_BITS,                                // 14-bit resolution
 };
 
 // Kernel synchro semaphores
 
 enum {
             BIMAGER_SEMAPHORE_IM = 0U,                          // IM semaphore
-            BIMAGER_SEMAPHORE_VS                                // Vertical synchro semaphore
+            BIMAGER_SEMAPHORE_VS,                               // Vertical synchro semaphore
 };
 
 // Acquisition modes
@@ -71,14 +71,14 @@ enum {
 enum {
             KIMAGER_CONT = 0U,                                  // Continuous mode
             KIMAGER_SNAP,                                       // Snapshot mode
-            KIMAGER_SYNC                                        // Sync mode
+            KIMAGER_SYNC,                                       // Sync mode
 };
 
 // Operation modes
 
 enum {
             KIMAGER_OPERATE = 0U,                               // Imager in a normal mode (run)
-            KIMAGER_STANDBY                                     // Imager in standby
+            KIMAGER_STANDBY,                                     // Imager in standby
 };
 
 /**@}*/

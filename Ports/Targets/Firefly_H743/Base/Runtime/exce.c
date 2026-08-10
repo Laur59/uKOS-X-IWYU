@@ -168,7 +168,7 @@ static  void    local_cpyLEDs(uint8_t value) {
 
     mask = 0x01U;
     for (led = 0U; led < 2U; led++) {
-        (value & mask) ? (local_setLEDs(led)) : (local_clrLEDs(led));
+        (value & mask) ? local_setLEDs(led) : local_clrLEDs(led);
         mask = (uint8_t)(mask<<1U);
     }
 }

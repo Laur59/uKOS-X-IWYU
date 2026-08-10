@@ -29,23 +29,23 @@ typedef struct {
 
 // STREAM Configuration
 
-#define XIP_AUX_STREAM_STREAM                   (0xFFFFFFFFU<<0)
-#define XIP_AUX_STREAM_STREAM_0                 (0x1U<<0)
+#define XIP_AUX_STREAM_STREAM                   (0xFFFFFFFFU<<0U)
+#define XIP_AUX_STREAM_STREAM_0                 (0x1U<<0U)
 
 // QMI_DIRECT_TX Configuration
 
-#define XIP_AUX_QMI_DIRECT_TX_DATA              (0xFFFFU<<0)
-#define XIP_AUX_QMI_DIRECT_TX_DATA_0            (0x1U<<0)
-#define XIP_AUX_QMI_DIRECT_TX_IWIDTH            (0x3U<<16)
-#define XIP_AUX_QMI_DIRECT_TX_IWIDTH_0          (0x1U<<16)
-#define XIP_AUX_QMI_DIRECT_TX_DWIDTH            (0x1U<<18)
-#define XIP_AUX_QMI_DIRECT_TX_OE                (0x1U<<19)
-#define XIP_AUX_QMI_DIRECT_TX_NOPUSH            (0x1U<<20)
-#define XIP_AUX_QMI_DIRECT_TX_IWIDTH_S          (0x0U<<16)
-#define XIP_AUX_QMI_DIRECT_TX_IWIDTH_D          (0x1U<<16)
-#define XIP_AUX_QMI_DIRECT_TX_IWIDTH_Q          (0x2U<<16)
+#define XIP_AUX_QMI_DIRECT_TX_DATA              (0xFFFFU<<0U)
+#define XIP_AUX_QMI_DIRECT_TX_DATA_0            (0x1U<<0U)
+#define XIP_AUX_QMI_DIRECT_TX_IWIDTH            (0x3U<<16U)
+#define XIP_AUX_QMI_DIRECT_TX_IWIDTH_0          (0x1U<<16U)
+#define XIP_AUX_QMI_DIRECT_TX_DWIDTH            (0x1U<<18U)
+#define XIP_AUX_QMI_DIRECT_TX_OE                (0x1U<<19U)
+#define XIP_AUX_QMI_DIRECT_TX_NOPUSH            (0x1U<<20U)
+#define XIP_AUX_QMI_DIRECT_TX_IWIDTH_S          (0x0U<<16U)
+#define XIP_AUX_QMI_DIRECT_TX_IWIDTH_D          (0x1U<<16U)
+#define XIP_AUX_QMI_DIRECT_TX_IWIDTH_Q          (0x2U<<16U)
 
 // QMI_DIRECT_RX Configuration
 
-#define XIP_AUX_QMI_DIRECT_RX_QMI_DIRECT_RX     (0xFFFFU<<0)
-#define XIP_AUX_QMI_DIRECT_RX_QMI_DIRECT_RX_0   (0x1U<<0)
+#define XIP_AUX_QMI_DIRECT_RX_QMI_DIRECT_RX     (0xFFFFU<<0U)
+#define XIP_AUX_QMI_DIRECT_RX_QMI_DIRECT_RX_0   (0x1U<<0U)

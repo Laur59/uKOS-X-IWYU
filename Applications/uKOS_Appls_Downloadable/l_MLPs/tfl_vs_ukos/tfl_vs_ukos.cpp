@@ -149,7 +149,7 @@ MODULE(
     aStart,                             // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 #endif
@@ -210,11 +210,12 @@ void    aProcess_0(const void *argument) {
     uint32_t        random[2], delta = 0U;
     uint32_t        minUkos = 0xFFFFFFFFU, minTFL = 0xFFFFFFFFU;
     uint32_t        maxUkos = 0U, maxTFL = 0U;
-    float32_t       x, y, gain = 2.0F;
+    float32_t       x, y;
+    const float32_t gain = 2.0F;
 
     UNUSED(argument);
 
-    #if (defined(CORTEX))
+    #ifdef CORTEX
     RegisterDebugLogCallback(debuglog);
     #endif
 
@@ -246,9 +247,9 @@ void    aProcess_0(const void *argument) {
 // Measure the inference time
 // --------------------------
 
-        random_read(KRANDOM_SOFT, &random[0], 2u);
-        x = (((float32_t)random[0] / (float32_t)(KRAND_MAX)) - 0.5f) * gain;
-        y = (((float32_t)random[1] / (float32_t)(KRAND_MAX)) - 0.5f) * gain;
+        random_read(KRANDOM_SOFT, &random[0], 2U);
+        x = (((float32_t)random[0] / (float32_t)(KRAND_MAX)) - 0.5F) * gain;
+        y = (((float32_t)random[1] / (float32_t)(KRAND_MAX)) - 0.5F) * gain;
 
 // For TensorFlowLite
 // Prepare the inputs
@@ -263,8 +264,8 @@ void    aProcess_0(const void *argument) {
         kern_readTickCount(&time[1]);
         delta = (uint32_t)(time[1] - time[0]);
 
-        if (delta < minTFL) { minTFL = delta; }
-        if (delta > maxTFL) { maxTFL = delta; }
+        minTFL = std::min(delta, minTFL);
+        maxTFL = std::max(delta, maxTFL);
         (void)dprintf(KSYST, "Exec time for TensorFlowLite, min = %" PRIu32 " [us], max = %" PRIu32 " [us]\n", minTFL, maxTFL);
 
 // For MLPN uKOS-X
@@ -279,8 +280,8 @@ void    aProcess_0(const void *argument) {
         kern_readTickCount(&time[1]);
         delta = (uint32_t)(time[1] - time[0]);
 
-        if (delta < minUkos) { minUkos = delta; }
-        if (delta > maxUkos) { maxUkos = delta; }
+        minUkos = std::min(delta, minUkos);
+        maxUkos = std::max(delta, maxUkos);
         (void)dprintf(KSYST, "Exec time for MLPN uKOS-X,    min = %" PRIu32 " [us], max = %" PRIu32 " [us]\n\n", minUkos, maxUkos);
     }
 }

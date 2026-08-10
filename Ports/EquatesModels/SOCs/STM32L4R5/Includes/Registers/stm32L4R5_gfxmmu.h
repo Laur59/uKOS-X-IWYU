@@ -2087,13387 +2087,13387 @@ typedef struct {
 
 // CR Configuration
 
-#define GFXMMU_CR_BM192         (0x1U<<6)
-#define GFXMMU_CR_AMEIE         (0x1U<<4)
-#define GFXMMU_CR_B3OIE         (0x1U<<3)
-#define GFXMMU_CR_B2OIE         (0x1U<<2)
-#define GFXMMU_CR_B1OIE         (0x1U<<1)
-#define GFXMMU_CR_B0OIE         (0x1U<<0)
+#define GFXMMU_CR_BM192         (0x1U<<6U)
+#define GFXMMU_CR_AMEIE         (0x1U<<4U)
+#define GFXMMU_CR_B3OIE         (0x1U<<3U)
+#define GFXMMU_CR_B2OIE         (0x1U<<2U)
+#define GFXMMU_CR_B1OIE         (0x1U<<1U)
+#define GFXMMU_CR_B0OIE         (0x1U<<0U)
 
 // SR Configuration
 
-#define GFXMMU_SR_AMEF          (0x1U<<4)
-#define GFXMMU_SR_B3OF          (0x1U<<3)
-#define GFXMMU_SR_B2OF          (0x1U<<2)
-#define GFXMMU_SR_B1OF          (0x1U<<1)
-#define GFXMMU_SR_B0OF          (0x1U<<0)
+#define GFXMMU_SR_AMEF          (0x1U<<4U)
+#define GFXMMU_SR_B3OF          (0x1U<<3U)
+#define GFXMMU_SR_B2OF          (0x1U<<2U)
+#define GFXMMU_SR_B1OF          (0x1U<<1U)
+#define GFXMMU_SR_B0OF          (0x1U<<0U)
 
 // FCR Configuration
 
-#define GFXMMU_FCR_CAMEF        (0x1U<<4)
-#define GFXMMU_FCR_CB3OF        (0x1U<<3)
-#define GFXMMU_FCR_CB2OF        (0x1U<<2)
-#define GFXMMU_FCR_CB1OF        (0x1U<<1)
-#define GFXMMU_FCR_CB0OF        (0x1U<<0)
+#define GFXMMU_FCR_CAMEF        (0x1U<<4U)
+#define GFXMMU_FCR_CB3OF        (0x1U<<3U)
+#define GFXMMU_FCR_CB2OF        (0x1U<<2U)
+#define GFXMMU_FCR_CB1OF        (0x1U<<1U)
+#define GFXMMU_FCR_CB0OF        (0x1U<<0U)
 
 // DVR Configuration
 
-#define GFXMMU_DVR_DV           (0xFFFFFFFFU<<0)
-#define GFXMMU_DVR_DV_0         (0x1U<<0)
+#define GFXMMU_DVR_DV           (0xFFFFFFFFU<<0U)
+#define GFXMMU_DVR_DV_0         (0x1U<<0U)
 
 // B0CR Configuration
 
-#define GFXMMU_B0CR_PBBA        (0x1FFU<<23)
-#define GFXMMU_B0CR_PBBA_0      (0x1U<<23)
-#define GFXMMU_B0CR_PBO         (0x7FFFFU<<4)
-#define GFXMMU_B0CR_PBO_0       (0x1U<<4)
+#define GFXMMU_B0CR_PBBA        (0x1FFU<<23U)
+#define GFXMMU_B0CR_PBBA_0      (0x1U<<23U)
+#define GFXMMU_B0CR_PBO         (0x7FFFFU<<4U)
+#define GFXMMU_B0CR_PBO_0       (0x1U<<4U)
 
 // B1CR Configuration
 
-#define GFXMMU_B1CR_PBBA        (0x1FFU<<23)
-#define GFXMMU_B1CR_PBBA_0      (0x1U<<23)
-#define GFXMMU_B1CR_PBO         (0x7FFFFU<<4)
-#define GFXMMU_B1CR_PBO_0       (0x1U<<4)
+#define GFXMMU_B1CR_PBBA        (0x1FFU<<23U)
+#define GFXMMU_B1CR_PBBA_0      (0x1U<<23U)
+#define GFXMMU_B1CR_PBO         (0x7FFFFU<<4U)
+#define GFXMMU_B1CR_PBO_0       (0x1U<<4U)
 
 // B2CR Configuration
 
-#define GFXMMU_B2CR_PBBA        (0x1FFU<<23)
-#define GFXMMU_B2CR_PBBA_0      (0x1U<<23)
-#define GFXMMU_B2CR_PBO         (0x7FFFFU<<4)
-#define GFXMMU_B2CR_PBO_0       (0x1U<<4)
+#define GFXMMU_B2CR_PBBA        (0x1FFU<<23U)
+#define GFXMMU_B2CR_PBBA_0      (0x1U<<23U)
+#define GFXMMU_B2CR_PBO         (0x7FFFFU<<4U)
+#define GFXMMU_B2CR_PBO_0       (0x1U<<4U)
 
 // B3CR Configuration
 
-#define GFXMMU_B3CR_PBBA        (0x1FFU<<23)
-#define GFXMMU_B3CR_PBBA_0      (0x1U<<23)
-#define GFXMMU_B3CR_PBO         (0x7FFFFU<<4)
-#define GFXMMU_B3CR_PBO_0       (0x1U<<4)
+#define GFXMMU_B3CR_PBBA        (0x1FFU<<23U)
+#define GFXMMU_B3CR_PBBA_0      (0x1U<<23U)
+#define GFXMMU_B3CR_PBO         (0x7FFFFU<<4U)
+#define GFXMMU_B3CR_PBO_0       (0x1U<<4U)
 
 // VERR Configuration
 
-#define GFXMMU_VERR_MAJREV      (0xFU<<4)
-#define GFXMMU_VERR_MAJREV_0    (0x1U<<4)
-#define GFXMMU_VERR_MINREV      (0xFU<<0)
-#define GFXMMU_VERR_MINREV_0    (0x1U<<0)
+#define GFXMMU_VERR_MAJREV      (0xFU<<4U)
+#define GFXMMU_VERR_MAJREV_0    (0x1U<<4U)
+#define GFXMMU_VERR_MINREV      (0xFU<<0U)
+#define GFXMMU_VERR_MINREV_0    (0x1U<<0U)
 
 // IPIDR Configuration
 
-#define GFXMMU_IPIDR_ID         (0xFFFFFFFFU<<0)
-#define GFXMMU_IPIDR_ID_0       (0x1U<<0)
+#define GFXMMU_IPIDR_ID         (0xFFFFFFFFU<<0U)
+#define GFXMMU_IPIDR_ID_0       (0x1U<<0U)
 
 // SIDR Configuration
 
-#define GFXMMU_SIDR_SID         (0xFFFFFFFFU<<0)
-#define GFXMMU_SIDR_SID_0       (0x1U<<0)
+#define GFXMMU_SIDR_SID         (0xFFFFFFFFU<<0U)
+#define GFXMMU_SIDR_SID_0       (0x1U<<0U)
 
 // LUT0L Configuration
 
-#define GFXMMU_LUT0L_LVB        (0xFFU<<16)
-#define GFXMMU_LUT0L_LVB_0      (0x1U<<16)
-#define GFXMMU_LUT0L_FVB        (0xFFU<<8)
-#define GFXMMU_LUT0L_FVB_0      (0x1U<<8)
-#define GFXMMU_LUT0L_EN         (0x1U<<0)
+#define GFXMMU_LUT0L_LVB        (0xFFU<<16U)
+#define GFXMMU_LUT0L_LVB_0      (0x1U<<16U)
+#define GFXMMU_LUT0L_FVB        (0xFFU<<8U)
+#define GFXMMU_LUT0L_FVB_0      (0x1U<<8U)
+#define GFXMMU_LUT0L_EN         (0x1U<<0U)
 
 // LUT0H Configuration
 
-#define GFXMMU_LUT0H_LO         (0x3FFFFU<<4)
-#define GFXMMU_LUT0H_LO_0       (0x1U<<4)
+#define GFXMMU_LUT0H_LO         (0x3FFFFU<<4U)
+#define GFXMMU_LUT0H_LO_0       (0x1U<<4U)
 
 // LUT1L Configuration
 
-#define GFXMMU_LUT1L_LVB        (0xFFU<<16)
-#define GFXMMU_LUT1L_LVB_0      (0x1U<<16)
-#define GFXMMU_LUT1L_FVB        (0xFFU<<8)
-#define GFXMMU_LUT1L_FVB_0      (0x1U<<8)
-#define GFXMMU_LUT1L_EN         (0x1U<<0)
+#define GFXMMU_LUT1L_LVB        (0xFFU<<16U)
+#define GFXMMU_LUT1L_LVB_0      (0x1U<<16U)
+#define GFXMMU_LUT1L_FVB        (0xFFU<<8U)
+#define GFXMMU_LUT1L_FVB_0      (0x1U<<8U)
+#define GFXMMU_LUT1L_EN         (0x1U<<0U)
 
 // LUT1H Configuration
 
-#define GFXMMU_LUT1H_LO         (0x3FFFFU<<4)
-#define GFXMMU_LUT1H_LO_0       (0x1U<<4)
+#define GFXMMU_LUT1H_LO         (0x3FFFFU<<4U)
+#define GFXMMU_LUT1H_LO_0       (0x1U<<4U)
 
 // LUT2L Configuration
 
-#define GFXMMU_LUT2L_LVB        (0xFFU<<16)
-#define GFXMMU_LUT2L_LVB_0      (0x1U<<16)
-#define GFXMMU_LUT2L_FVB        (0xFFU<<8)
-#define GFXMMU_LUT2L_FVB_0      (0x1U<<8)
-#define GFXMMU_LUT2L_EN         (0x1U<<0)
+#define GFXMMU_LUT2L_LVB        (0xFFU<<16U)
+#define GFXMMU_LUT2L_LVB_0      (0x1U<<16U)
+#define GFXMMU_LUT2L_FVB        (0xFFU<<8U)
+#define GFXMMU_LUT2L_FVB_0      (0x1U<<8U)
+#define GFXMMU_LUT2L_EN         (0x1U<<0U)
 
 // LUT2H Configuration
 
-#define GFXMMU_LUT2H_LO         (0x3FFFFU<<4)
-#define GFXMMU_LUT2H_LO_0       (0x1U<<4)
+#define GFXMMU_LUT2H_LO         (0x3FFFFU<<4U)
+#define GFXMMU_LUT2H_LO_0       (0x1U<<4U)
 
 // LUT3L Configuration
 
-#define GFXMMU_LUT3L_LVB        (0xFFU<<16)
-#define GFXMMU_LUT3L_LVB_0      (0x1U<<16)
-#define GFXMMU_LUT3L_FVB        (0xFFU<<8)
-#define GFXMMU_LUT3L_FVB_0      (0x1U<<8)
-#define GFXMMU_LUT3L_EN         (0x1U<<0)
+#define GFXMMU_LUT3L_LVB        (0xFFU<<16U)
+#define GFXMMU_LUT3L_LVB_0      (0x1U<<16U)
+#define GFXMMU_LUT3L_FVB        (0xFFU<<8U)
+#define GFXMMU_LUT3L_FVB_0      (0x1U<<8U)
+#define GFXMMU_LUT3L_EN         (0x1U<<0U)
 
 // LUT3H Configuration
 
-#define GFXMMU_LUT3H_LO         (0x3FFFFU<<4)
-#define GFXMMU_LUT3H_LO_0       (0x1U<<4)
+#define GFXMMU_LUT3H_LO         (0x3FFFFU<<4U)
+#define GFXMMU_LUT3H_LO_0       (0x1U<<4U)
 
 // LUT4L Configuration
 
-#define GFXMMU_LUT4L_LVB        (0xFFU<<16)
-#define GFXMMU_LUT4L_LVB_0      (0x1U<<16)
-#define GFXMMU_LUT4L_FVB        (0xFFU<<8)
-#define GFXMMU_LUT4L_FVB_0      (0x1U<<8)
-#define GFXMMU_LUT4L_EN         (0x1U<<0)
+#define GFXMMU_LUT4L_LVB        (0xFFU<<16U)
+#define GFXMMU_LUT4L_LVB_0      (0x1U<<16U)
+#define GFXMMU_LUT4L_FVB        (0xFFU<<8U)
+#define GFXMMU_LUT4L_FVB_0      (0x1U<<8U)
+#define GFXMMU_LUT4L_EN         (0x1U<<0U)
 
 // LUT4H Configuration
 
-#define GFXMMU_LUT4H_LO         (0x3FFFFU<<4)
-#define GFXMMU_LUT4H_LO_0       (0x1U<<4)
+#define GFXMMU_LUT4H_LO         (0x3FFFFU<<4U)
+#define GFXMMU_LUT4H_LO_0       (0x1U<<4U)
 
 // LUT5L Configuration
 
-#define GFXMMU_LUT5L_LVB        (0xFFU<<16)
-#define GFXMMU_LUT5L_LVB_0      (0x1U<<16)
-#define GFXMMU_LUT5L_FVB        (0xFFU<<8)
-#define GFXMMU_LUT5L_FVB_0      (0x1U<<8)
-#define GFXMMU_LUT5L_EN         (0x1U<<0)
+#define GFXMMU_LUT5L_LVB        (0xFFU<<16U)
+#define GFXMMU_LUT5L_LVB_0      (0x1U<<16U)
+#define GFXMMU_LUT5L_FVB        (0xFFU<<8U)
+#define GFXMMU_LUT5L_FVB_0      (0x1U<<8U)
+#define GFXMMU_LUT5L_EN         (0x1U<<0U)
 
 // LUT5H Configuration
 
-#define GFXMMU_LUT5H_LO         (0x3FFFFU<<4)
-#define GFXMMU_LUT5H_LO_0       (0x1U<<4)
+#define GFXMMU_LUT5H_LO         (0x3FFFFU<<4U)
+#define GFXMMU_LUT5H_LO_0       (0x1U<<4U)
 
 // LUT6L Configuration
 
-#define GFXMMU_LUT6L_LVB        (0xFFU<<16)
-#define GFXMMU_LUT6L_LVB_0      (0x1U<<16)
-#define GFXMMU_LUT6L_FVB        (0xFFU<<8)
-#define GFXMMU_LUT6L_FVB_0      (0x1U<<8)
-#define GFXMMU_LUT6L_EN         (0x1U<<0)
+#define GFXMMU_LUT6L_LVB        (0xFFU<<16U)
+#define GFXMMU_LUT6L_LVB_0      (0x1U<<16U)
+#define GFXMMU_LUT6L_FVB        (0xFFU<<8U)
+#define GFXMMU_LUT6L_FVB_0      (0x1U<<8U)
+#define GFXMMU_LUT6L_EN         (0x1U<<0U)
 
 // LUT6H Configuration
 
-#define GFXMMU_LUT6H_LO         (0x3FFFFU<<4)
-#define GFXMMU_LUT6H_LO_0       (0x1U<<4)
+#define GFXMMU_LUT6H_LO         (0x3FFFFU<<4U)
+#define GFXMMU_LUT6H_LO_0       (0x1U<<4U)
 
 // LUT7L Configuration
 
-#define GFXMMU_LUT7L_LVB        (0xFFU<<16)
-#define GFXMMU_LUT7L_LVB_0      (0x1U<<16)
-#define GFXMMU_LUT7L_FVB        (0xFFU<<8)
-#define GFXMMU_LUT7L_FVB_0      (0x1U<<8)
-#define GFXMMU_LUT7L_EN         (0x1U<<0)
+#define GFXMMU_LUT7L_LVB        (0xFFU<<16U)
+#define GFXMMU_LUT7L_LVB_0      (0x1U<<16U)
+#define GFXMMU_LUT7L_FVB        (0xFFU<<8U)
+#define GFXMMU_LUT7L_FVB_0      (0x1U<<8U)
+#define GFXMMU_LUT7L_EN         (0x1U<<0U)
 
 // LUT7H Configuration
 
-#define GFXMMU_LUT7H_LO         (0x3FFFFU<<4)
-#define GFXMMU_LUT7H_LO_0       (0x1U<<4)
+#define GFXMMU_LUT7H_LO         (0x3FFFFU<<4U)
+#define GFXMMU_LUT7H_LO_0       (0x1U<<4U)
 
 // LUT8L Configuration
 
-#define GFXMMU_LUT8L_LVB        (0xFFU<<16)
-#define GFXMMU_LUT8L_LVB_0      (0x1U<<16)
-#define GFXMMU_LUT8L_FVB        (0xFFU<<8)
-#define GFXMMU_LUT8L_FVB_0      (0x1U<<8)
-#define GFXMMU_LUT8L_EN         (0x1U<<0)
+#define GFXMMU_LUT8L_LVB        (0xFFU<<16U)
+#define GFXMMU_LUT8L_LVB_0      (0x1U<<16U)
+#define GFXMMU_LUT8L_FVB        (0xFFU<<8U)
+#define GFXMMU_LUT8L_FVB_0      (0x1U<<8U)
+#define GFXMMU_LUT8L_EN         (0x1U<<0U)
 
 // LUT8H Configuration
 
-#define GFXMMU_LUT8H_LO         (0x3FFFFU<<4)
-#define GFXMMU_LUT8H_LO_0       (0x1U<<4)
+#define GFXMMU_LUT8H_LO         (0x3FFFFU<<4U)
+#define GFXMMU_LUT8H_LO_0       (0x1U<<4U)
 
 // LUT9L Configuration
 
-#define GFXMMU_LUT9L_LVB        (0xFFU<<16)
-#define GFXMMU_LUT9L_LVB_0      (0x1U<<16)
-#define GFXMMU_LUT9L_FVB        (0xFFU<<8)
-#define GFXMMU_LUT9L_FVB_0      (0x1U<<8)
-#define GFXMMU_LUT9L_EN         (0x1U<<0)
+#define GFXMMU_LUT9L_LVB        (0xFFU<<16U)
+#define GFXMMU_LUT9L_LVB_0      (0x1U<<16U)
+#define GFXMMU_LUT9L_FVB        (0xFFU<<8U)
+#define GFXMMU_LUT9L_FVB_0      (0x1U<<8U)
+#define GFXMMU_LUT9L_EN         (0x1U<<0U)
 
 // LUT9H Configuration
 
-#define GFXMMU_LUT9H_LO         (0x3FFFFU<<4)
-#define GFXMMU_LUT9H_LO_0       (0x1U<<4)
+#define GFXMMU_LUT9H_LO         (0x3FFFFU<<4U)
+#define GFXMMU_LUT9H_LO_0       (0x1U<<4U)
 
 // LUT10L Configuration
 
-#define GFXMMU_LUT10L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT10L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT10L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT10L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT10L_EN        (0x1U<<0)
+#define GFXMMU_LUT10L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT10L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT10L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT10L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT10L_EN        (0x1U<<0U)
 
 // LUT10H Configuration
 
-#define GFXMMU_LUT10H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT10H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT10H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT10H_LO_0      (0x1U<<4U)
 
 // LUT11L Configuration
 
-#define GFXMMU_LUT11L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT11L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT11L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT11L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT11L_EN        (0x1U<<0)
+#define GFXMMU_LUT11L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT11L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT11L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT11L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT11L_EN        (0x1U<<0U)
 
 // LUT11H Configuration
 
-#define GFXMMU_LUT11H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT11H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT11H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT11H_LO_0      (0x1U<<4U)
 
 // LUT12L Configuration
 
-#define GFXMMU_LUT12L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT12L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT12L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT12L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT12L_EN        (0x1U<<0)
+#define GFXMMU_LUT12L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT12L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT12L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT12L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT12L_EN        (0x1U<<0U)
 
 // LUT12H Configuration
 
-#define GFXMMU_LUT12H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT12H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT12H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT12H_LO_0      (0x1U<<4U)
 
 // LUT13L Configuration
 
-#define GFXMMU_LUT13L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT13L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT13L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT13L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT13L_EN        (0x1U<<0)
+#define GFXMMU_LUT13L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT13L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT13L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT13L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT13L_EN        (0x1U<<0U)
 
 // LUT13H Configuration
 
-#define GFXMMU_LUT13H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT13H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT13H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT13H_LO_0      (0x1U<<4U)
 
 // LUT14L Configuration
 
-#define GFXMMU_LUT14L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT14L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT14L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT14L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT14L_EN        (0x1U<<0)
+#define GFXMMU_LUT14L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT14L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT14L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT14L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT14L_EN        (0x1U<<0U)
 
 // LUT14H Configuration
 
-#define GFXMMU_LUT14H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT14H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT14H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT14H_LO_0      (0x1U<<4U)
 
 // LUT15L Configuration
 
-#define GFXMMU_LUT15L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT15L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT15L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT15L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT15L_EN        (0x1U<<0)
+#define GFXMMU_LUT15L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT15L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT15L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT15L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT15L_EN        (0x1U<<0U)
 
 // LUT15H Configuration
 
-#define GFXMMU_LUT15H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT15H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT15H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT15H_LO_0      (0x1U<<4U)
 
 // LUT16L Configuration
 
-#define GFXMMU_LUT16L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT16L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT16L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT16L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT16L_EN        (0x1U<<0)
+#define GFXMMU_LUT16L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT16L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT16L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT16L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT16L_EN        (0x1U<<0U)
 
 // LUT16H Configuration
 
-#define GFXMMU_LUT16H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT16H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT16H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT16H_LO_0      (0x1U<<4U)
 
 // LUT17L Configuration
 
-#define GFXMMU_LUT17L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT17L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT17L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT17L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT17L_EN        (0x1U<<0)
+#define GFXMMU_LUT17L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT17L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT17L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT17L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT17L_EN        (0x1U<<0U)
 
 // LUT17H Configuration
 
-#define GFXMMU_LUT17H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT17H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT17H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT17H_LO_0      (0x1U<<4U)
 
 // LUT18L Configuration
 
-#define GFXMMU_LUT18L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT18L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT18L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT18L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT18L_EN        (0x1U<<0)
+#define GFXMMU_LUT18L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT18L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT18L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT18L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT18L_EN        (0x1U<<0U)
 
 // LUT18H Configuration
 
-#define GFXMMU_LUT18H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT18H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT18H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT18H_LO_0      (0x1U<<4U)
 
 // LUT19L Configuration
 
-#define GFXMMU_LUT19L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT19L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT19L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT19L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT19L_EN        (0x1U<<0)
+#define GFXMMU_LUT19L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT19L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT19L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT19L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT19L_EN        (0x1U<<0U)
 
 // LUT19H Configuration
 
-#define GFXMMU_LUT19H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT19H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT19H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT19H_LO_0      (0x1U<<4U)
 
 // LUT20L Configuration
 
-#define GFXMMU_LUT20L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT20L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT20L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT20L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT20L_EN        (0x1U<<0)
+#define GFXMMU_LUT20L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT20L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT20L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT20L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT20L_EN        (0x1U<<0U)
 
 // LUT20H Configuration
 
-#define GFXMMU_LUT20H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT20H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT20H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT20H_LO_0      (0x1U<<4U)
 
 // LUT21L Configuration
 
-#define GFXMMU_LUT21L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT21L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT21L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT21L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT21L_EN        (0x1U<<0)
+#define GFXMMU_LUT21L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT21L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT21L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT21L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT21L_EN        (0x1U<<0U)
 
 // LUT21H Configuration
 
-#define GFXMMU_LUT21H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT21H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT21H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT21H_LO_0      (0x1U<<4U)
 
 // LUT22L Configuration
 
-#define GFXMMU_LUT22L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT22L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT22L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT22L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT22L_EN        (0x1U<<0)
+#define GFXMMU_LUT22L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT22L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT22L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT22L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT22L_EN        (0x1U<<0U)
 
 // LUT22H Configuration
 
-#define GFXMMU_LUT22H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT22H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT22H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT22H_LO_0      (0x1U<<4U)
 
 // LUT23L Configuration
 
-#define GFXMMU_LUT23L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT23L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT23L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT23L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT23L_EN        (0x1U<<0)
+#define GFXMMU_LUT23L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT23L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT23L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT23L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT23L_EN        (0x1U<<0U)
 
 // LUT23H Configuration
 
-#define GFXMMU_LUT23H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT23H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT23H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT23H_LO_0      (0x1U<<4U)
 
 // LUT24L Configuration
 
-#define GFXMMU_LUT24L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT24L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT24L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT24L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT24L_EN        (0x1U<<0)
+#define GFXMMU_LUT24L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT24L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT24L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT24L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT24L_EN        (0x1U<<0U)
 
 // LUT24H Configuration
 
-#define GFXMMU_LUT24H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT24H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT24H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT24H_LO_0      (0x1U<<4U)
 
 // LUT25L Configuration
 
-#define GFXMMU_LUT25L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT25L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT25L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT25L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT25L_EN        (0x1U<<0)
+#define GFXMMU_LUT25L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT25L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT25L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT25L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT25L_EN        (0x1U<<0U)
 
 // LUT25H Configuration
 
-#define GFXMMU_LUT25H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT25H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT25H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT25H_LO_0      (0x1U<<4U)
 
 // LUT26L Configuration
 
-#define GFXMMU_LUT26L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT26L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT26L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT26L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT26L_EN        (0x1U<<0)
+#define GFXMMU_LUT26L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT26L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT26L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT26L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT26L_EN        (0x1U<<0U)
 
 // LUT26H Configuration
 
-#define GFXMMU_LUT26H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT26H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT26H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT26H_LO_0      (0x1U<<4U)
 
 // LUT27L Configuration
 
-#define GFXMMU_LUT27L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT27L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT27L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT27L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT27L_EN        (0x1U<<0)
+#define GFXMMU_LUT27L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT27L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT27L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT27L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT27L_EN        (0x1U<<0U)
 
 // LUT27H Configuration
 
-#define GFXMMU_LUT27H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT27H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT27H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT27H_LO_0      (0x1U<<4U)
 
 // LUT28L Configuration
 
-#define GFXMMU_LUT28L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT28L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT28L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT28L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT28L_EN        (0x1U<<0)
+#define GFXMMU_LUT28L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT28L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT28L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT28L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT28L_EN        (0x1U<<0U)
 
 // LUT28H Configuration
 
-#define GFXMMU_LUT28H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT28H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT28H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT28H_LO_0      (0x1U<<4U)
 
 // LUT29L Configuration
 
-#define GFXMMU_LUT29L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT29L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT29L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT29L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT29L_EN        (0x1U<<0)
+#define GFXMMU_LUT29L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT29L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT29L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT29L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT29L_EN        (0x1U<<0U)
 
 // LUT29H Configuration
 
-#define GFXMMU_LUT29H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT29H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT29H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT29H_LO_0      (0x1U<<4U)
 
 // LUT30L Configuration
 
-#define GFXMMU_LUT30L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT30L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT30L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT30L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT30L_EN        (0x1U<<0)
+#define GFXMMU_LUT30L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT30L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT30L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT30L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT30L_EN        (0x1U<<0U)
 
 // LUT30H Configuration
 
-#define GFXMMU_LUT30H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT30H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT30H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT30H_LO_0      (0x1U<<4U)
 
 // LUT31L Configuration
 
-#define GFXMMU_LUT31L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT31L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT31L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT31L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT31L_EN        (0x1U<<0)
+#define GFXMMU_LUT31L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT31L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT31L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT31L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT31L_EN        (0x1U<<0U)
 
 // LUT31H Configuration
 
-#define GFXMMU_LUT31H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT31H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT31H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT31H_LO_0      (0x1U<<4U)
 
 // LUT32L Configuration
 
-#define GFXMMU_LUT32L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT32L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT32L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT32L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT32L_EN        (0x1U<<0)
+#define GFXMMU_LUT32L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT32L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT32L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT32L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT32L_EN        (0x1U<<0U)
 
 // LUT32H Configuration
 
-#define GFXMMU_LUT32H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT32H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT32H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT32H_LO_0      (0x1U<<4U)
 
 // LUT33L Configuration
 
-#define GFXMMU_LUT33L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT33L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT33L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT33L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT33L_EN        (0x1U<<0)
+#define GFXMMU_LUT33L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT33L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT33L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT33L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT33L_EN        (0x1U<<0U)
 
 // LUT33H Configuration
 
-#define GFXMMU_LUT33H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT33H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT33H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT33H_LO_0      (0x1U<<4U)
 
 // LUT34L Configuration
 
-#define GFXMMU_LUT34L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT34L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT34L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT34L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT34L_EN        (0x1U<<0)
+#define GFXMMU_LUT34L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT34L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT34L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT34L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT34L_EN        (0x1U<<0U)
 
 // LUT34H Configuration
 
-#define GFXMMU_LUT34H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT34H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT34H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT34H_LO_0      (0x1U<<4U)
 
 // LUT35L Configuration
 
-#define GFXMMU_LUT35L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT35L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT35L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT35L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT35L_EN        (0x1U<<0)
+#define GFXMMU_LUT35L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT35L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT35L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT35L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT35L_EN        (0x1U<<0U)
 
 // LUT35H Configuration
 
-#define GFXMMU_LUT35H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT35H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT35H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT35H_LO_0      (0x1U<<4U)
 
 // LUT36L Configuration
 
-#define GFXMMU_LUT36L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT36L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT36L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT36L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT36L_EN        (0x1U<<0)
+#define GFXMMU_LUT36L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT36L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT36L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT36L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT36L_EN        (0x1U<<0U)
 
 // LUT36H Configuration
 
-#define GFXMMU_LUT36H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT36H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT36H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT36H_LO_0      (0x1U<<4U)
 
 // LUT37L Configuration
 
-#define GFXMMU_LUT37L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT37L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT37L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT37L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT37L_EN        (0x1U<<0)
+#define GFXMMU_LUT37L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT37L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT37L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT37L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT37L_EN        (0x1U<<0U)
 
 // LUT37H Configuration
 
-#define GFXMMU_LUT37H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT37H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT37H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT37H_LO_0      (0x1U<<4U)
 
 // LUT38L Configuration
 
-#define GFXMMU_LUT38L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT38L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT38L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT38L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT38L_EN        (0x1U<<0)
+#define GFXMMU_LUT38L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT38L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT38L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT38L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT38L_EN        (0x1U<<0U)
 
 // LUT38H Configuration
 
-#define GFXMMU_LUT38H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT38H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT38H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT38H_LO_0      (0x1U<<4U)
 
 // LUT39L Configuration
 
-#define GFXMMU_LUT39L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT39L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT39L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT39L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT39L_EN        (0x1U<<0)
+#define GFXMMU_LUT39L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT39L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT39L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT39L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT39L_EN        (0x1U<<0U)
 
 // LUT39H Configuration
 
-#define GFXMMU_LUT39H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT39H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT39H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT39H_LO_0      (0x1U<<4U)
 
 // LUT40L Configuration
 
-#define GFXMMU_LUT40L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT40L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT40L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT40L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT40L_EN        (0x1U<<0)
+#define GFXMMU_LUT40L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT40L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT40L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT40L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT40L_EN        (0x1U<<0U)
 
 // LUT40H Configuration
 
-#define GFXMMU_LUT40H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT40H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT40H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT40H_LO_0      (0x1U<<4U)
 
 // LUT41L Configuration
 
-#define GFXMMU_LUT41L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT41L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT41L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT41L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT41L_EN        (0x1U<<0)
+#define GFXMMU_LUT41L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT41L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT41L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT41L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT41L_EN        (0x1U<<0U)
 
 // LUT41H Configuration
 
-#define GFXMMU_LUT41H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT41H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT41H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT41H_LO_0      (0x1U<<4U)
 
 // LUT42L Configuration
 
-#define GFXMMU_LUT42L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT42L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT42L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT42L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT42L_EN        (0x1U<<0)
+#define GFXMMU_LUT42L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT42L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT42L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT42L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT42L_EN        (0x1U<<0U)
 
 // LUT42H Configuration
 
-#define GFXMMU_LUT42H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT42H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT42H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT42H_LO_0      (0x1U<<4U)
 
 // LUT43L Configuration
 
-#define GFXMMU_LUT43L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT43L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT43L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT43L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT43L_EN        (0x1U<<0)
+#define GFXMMU_LUT43L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT43L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT43L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT43L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT43L_EN        (0x1U<<0U)
 
 // LUT43H Configuration
 
-#define GFXMMU_LUT43H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT43H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT43H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT43H_LO_0      (0x1U<<4U)
 
 // LUT44L Configuration
 
-#define GFXMMU_LUT44L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT44L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT44L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT44L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT44L_EN        (0x1U<<0)
+#define GFXMMU_LUT44L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT44L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT44L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT44L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT44L_EN        (0x1U<<0U)
 
 // LUT44H Configuration
 
-#define GFXMMU_LUT44H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT44H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT44H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT44H_LO_0      (0x1U<<4U)
 
 // LUT45L Configuration
 
-#define GFXMMU_LUT45L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT45L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT45L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT45L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT45L_EN        (0x1U<<0)
+#define GFXMMU_LUT45L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT45L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT45L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT45L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT45L_EN        (0x1U<<0U)
 
 // LUT45H Configuration
 
-#define GFXMMU_LUT45H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT45H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT45H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT45H_LO_0      (0x1U<<4U)
 
 // LUT46L Configuration
 
-#define GFXMMU_LUT46L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT46L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT46L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT46L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT46L_EN        (0x1U<<0)
+#define GFXMMU_LUT46L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT46L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT46L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT46L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT46L_EN        (0x1U<<0U)
 
 // LUT46H Configuration
 
-#define GFXMMU_LUT46H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT46H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT46H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT46H_LO_0      (0x1U<<4U)
 
 // LUT47L Configuration
 
-#define GFXMMU_LUT47L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT47L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT47L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT47L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT47L_EN        (0x1U<<0)
+#define GFXMMU_LUT47L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT47L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT47L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT47L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT47L_EN        (0x1U<<0U)
 
 // LUT47H Configuration
 
-#define GFXMMU_LUT47H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT47H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT47H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT47H_LO_0      (0x1U<<4U)
 
 // LUT48L Configuration
 
-#define GFXMMU_LUT48L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT48L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT48L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT48L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT48L_EN        (0x1U<<0)
+#define GFXMMU_LUT48L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT48L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT48L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT48L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT48L_EN        (0x1U<<0U)
 
 // LUT48H Configuration
 
-#define GFXMMU_LUT48H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT48H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT48H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT48H_LO_0      (0x1U<<4U)
 
 // LUT49L Configuration
 
-#define GFXMMU_LUT49L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT49L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT49L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT49L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT49L_EN        (0x1U<<0)
+#define GFXMMU_LUT49L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT49L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT49L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT49L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT49L_EN        (0x1U<<0U)
 
 // LUT49H Configuration
 
-#define GFXMMU_LUT49H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT49H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT49H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT49H_LO_0      (0x1U<<4U)
 
 // LUT50L Configuration
 
-#define GFXMMU_LUT50L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT50L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT50L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT50L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT50L_EN        (0x1U<<0)
+#define GFXMMU_LUT50L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT50L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT50L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT50L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT50L_EN        (0x1U<<0U)
 
 // LUT50H Configuration
 
-#define GFXMMU_LUT50H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT50H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT50H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT50H_LO_0      (0x1U<<4U)
 
 // LUT51L Configuration
 
-#define GFXMMU_LUT51L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT51L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT51L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT51L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT51L_EN        (0x1U<<0)
+#define GFXMMU_LUT51L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT51L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT51L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT51L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT51L_EN        (0x1U<<0U)
 
 // LUT51H Configuration
 
-#define GFXMMU_LUT51H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT51H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT51H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT51H_LO_0      (0x1U<<4U)
 
 // LUT52L Configuration
 
-#define GFXMMU_LUT52L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT52L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT52L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT52L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT52L_EN        (0x1U<<0)
+#define GFXMMU_LUT52L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT52L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT52L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT52L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT52L_EN        (0x1U<<0U)
 
 // LUT52H Configuration
 
-#define GFXMMU_LUT52H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT52H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT52H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT52H_LO_0      (0x1U<<4U)
 
 // LUT53L Configuration
 
-#define GFXMMU_LUT53L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT53L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT53L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT53L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT53L_EN        (0x1U<<0)
+#define GFXMMU_LUT53L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT53L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT53L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT53L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT53L_EN        (0x1U<<0U)
 
 // LUT53H Configuration
 
-#define GFXMMU_LUT53H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT53H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT53H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT53H_LO_0      (0x1U<<4U)
 
 // LUT54L Configuration
 
-#define GFXMMU_LUT54L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT54L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT54L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT54L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT54L_EN        (0x1U<<0)
+#define GFXMMU_LUT54L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT54L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT54L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT54L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT54L_EN        (0x1U<<0U)
 
 // LUT54H Configuration
 
-#define GFXMMU_LUT54H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT54H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT54H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT54H_LO_0      (0x1U<<4U)
 
 // LUT55L Configuration
 
-#define GFXMMU_LUT55L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT55L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT55L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT55L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT55L_EN        (0x1U<<0)
+#define GFXMMU_LUT55L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT55L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT55L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT55L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT55L_EN        (0x1U<<0U)
 
 // LUT55H Configuration
 
-#define GFXMMU_LUT55H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT55H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT55H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT55H_LO_0      (0x1U<<4U)
 
 // LUT56L Configuration
 
-#define GFXMMU_LUT56L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT56L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT56L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT56L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT56L_EN        (0x1U<<0)
+#define GFXMMU_LUT56L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT56L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT56L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT56L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT56L_EN        (0x1U<<0U)
 
 // LUT56H Configuration
 
-#define GFXMMU_LUT56H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT56H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT56H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT56H_LO_0      (0x1U<<4U)
 
 // LUT57L Configuration
 
-#define GFXMMU_LUT57L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT57L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT57L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT57L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT57L_EN        (0x1U<<0)
+#define GFXMMU_LUT57L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT57L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT57L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT57L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT57L_EN        (0x1U<<0U)
 
 // LUT57H Configuration
 
-#define GFXMMU_LUT57H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT57H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT57H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT57H_LO_0      (0x1U<<4U)
 
 // LUT58L Configuration
 
-#define GFXMMU_LUT58L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT58L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT58L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT58L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT58L_EN        (0x1U<<0)
+#define GFXMMU_LUT58L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT58L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT58L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT58L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT58L_EN        (0x1U<<0U)
 
 // LUT58H Configuration
 
-#define GFXMMU_LUT58H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT58H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT58H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT58H_LO_0      (0x1U<<4U)
 
 // LUT59L Configuration
 
-#define GFXMMU_LUT59L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT59L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT59L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT59L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT59L_EN        (0x1U<<0)
+#define GFXMMU_LUT59L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT59L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT59L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT59L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT59L_EN        (0x1U<<0U)
 
 // LUT59H Configuration
 
-#define GFXMMU_LUT59H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT59H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT59H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT59H_LO_0      (0x1U<<4U)
 
 // LUT60L Configuration
 
-#define GFXMMU_LUT60L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT60L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT60L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT60L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT60L_EN        (0x1U<<0)
+#define GFXMMU_LUT60L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT60L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT60L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT60L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT60L_EN        (0x1U<<0U)
 
 // LUT60H Configuration
 
-#define GFXMMU_LUT60H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT60H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT60H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT60H_LO_0      (0x1U<<4U)
 
 // LUT61L Configuration
 
-#define GFXMMU_LUT61L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT61L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT61L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT61L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT61L_EN        (0x1U<<0)
+#define GFXMMU_LUT61L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT61L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT61L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT61L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT61L_EN        (0x1U<<0U)
 
 // LUT61H Configuration
 
-#define GFXMMU_LUT61H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT61H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT61H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT61H_LO_0      (0x1U<<4U)
 
 // LUT62L Configuration
 
-#define GFXMMU_LUT62L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT62L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT62L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT62L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT62L_EN        (0x1U<<0)
+#define GFXMMU_LUT62L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT62L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT62L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT62L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT62L_EN        (0x1U<<0U)
 
 // LUT62H Configuration
 
-#define GFXMMU_LUT62H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT62H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT62H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT62H_LO_0      (0x1U<<4U)
 
 // LUT63L Configuration
 
-#define GFXMMU_LUT63L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT63L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT63L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT63L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT63L_EN        (0x1U<<0)
+#define GFXMMU_LUT63L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT63L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT63L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT63L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT63L_EN        (0x1U<<0U)
 
 // LUT63H Configuration
 
-#define GFXMMU_LUT63H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT63H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT63H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT63H_LO_0      (0x1U<<4U)
 
 // LUT64L Configuration
 
-#define GFXMMU_LUT64L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT64L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT64L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT64L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT64L_EN        (0x1U<<0)
+#define GFXMMU_LUT64L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT64L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT64L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT64L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT64L_EN        (0x1U<<0U)
 
 // LUT64H Configuration
 
-#define GFXMMU_LUT64H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT64H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT64H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT64H_LO_0      (0x1U<<4U)
 
 // LUT65L Configuration
 
-#define GFXMMU_LUT65L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT65L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT65L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT65L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT65L_EN        (0x1U<<0)
+#define GFXMMU_LUT65L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT65L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT65L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT65L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT65L_EN        (0x1U<<0U)
 
 // LUT65H Configuration
 
-#define GFXMMU_LUT65H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT65H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT65H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT65H_LO_0      (0x1U<<4U)
 
 // LUT66L Configuration
 
-#define GFXMMU_LUT66L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT66L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT66L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT66L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT66L_EN        (0x1U<<0)
+#define GFXMMU_LUT66L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT66L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT66L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT66L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT66L_EN        (0x1U<<0U)
 
 // LUT66H Configuration
 
-#define GFXMMU_LUT66H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT66H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT66H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT66H_LO_0      (0x1U<<4U)
 
 // LUT67L Configuration
 
-#define GFXMMU_LUT67L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT67L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT67L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT67L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT67L_EN        (0x1U<<0)
+#define GFXMMU_LUT67L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT67L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT67L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT67L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT67L_EN        (0x1U<<0U)
 
 // LUT67H Configuration
 
-#define GFXMMU_LUT67H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT67H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT67H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT67H_LO_0      (0x1U<<4U)
 
 // LUT68L Configuration
 
-#define GFXMMU_LUT68L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT68L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT68L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT68L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT68L_EN        (0x1U<<0)
+#define GFXMMU_LUT68L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT68L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT68L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT68L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT68L_EN        (0x1U<<0U)
 
 // LUT68H Configuration
 
-#define GFXMMU_LUT68H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT68H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT68H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT68H_LO_0      (0x1U<<4U)
 
 // LUT69L Configuration
 
-#define GFXMMU_LUT69L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT69L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT69L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT69L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT69L_EN        (0x1U<<0)
+#define GFXMMU_LUT69L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT69L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT69L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT69L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT69L_EN        (0x1U<<0U)
 
 // LUT69H Configuration
 
-#define GFXMMU_LUT69H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT69H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT69H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT69H_LO_0      (0x1U<<4U)
 
 // LUT70L Configuration
 
-#define GFXMMU_LUT70L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT70L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT70L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT70L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT70L_EN        (0x1U<<0)
+#define GFXMMU_LUT70L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT70L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT70L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT70L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT70L_EN        (0x1U<<0U)
 
 // LUT70H Configuration
 
-#define GFXMMU_LUT70H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT70H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT70H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT70H_LO_0      (0x1U<<4U)
 
 // LUT71L Configuration
 
-#define GFXMMU_LUT71L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT71L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT71L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT71L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT71L_EN        (0x1U<<0)
+#define GFXMMU_LUT71L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT71L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT71L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT71L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT71L_EN        (0x1U<<0U)
 
 // LUT71H Configuration
 
-#define GFXMMU_LUT71H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT71H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT71H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT71H_LO_0      (0x1U<<4U)
 
 // LUT72L Configuration
 
-#define GFXMMU_LUT72L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT72L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT72L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT72L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT72L_EN        (0x1U<<0)
+#define GFXMMU_LUT72L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT72L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT72L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT72L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT72L_EN        (0x1U<<0U)
 
 // LUT72H Configuration
 
-#define GFXMMU_LUT72H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT72H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT72H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT72H_LO_0      (0x1U<<4U)
 
 // LUT73L Configuration
 
-#define GFXMMU_LUT73L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT73L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT73L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT73L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT73L_EN        (0x1U<<0)
+#define GFXMMU_LUT73L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT73L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT73L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT73L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT73L_EN        (0x1U<<0U)
 
 // LUT73H Configuration
 
-#define GFXMMU_LUT73H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT73H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT73H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT73H_LO_0      (0x1U<<4U)
 
 // LUT74L Configuration
 
-#define GFXMMU_LUT74L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT74L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT74L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT74L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT74L_EN        (0x1U<<0)
+#define GFXMMU_LUT74L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT74L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT74L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT74L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT74L_EN        (0x1U<<0U)
 
 // LUT74H Configuration
 
-#define GFXMMU_LUT74H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT74H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT74H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT74H_LO_0      (0x1U<<4U)
 
 // LUT75L Configuration
 
-#define GFXMMU_LUT75L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT75L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT75L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT75L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT75L_EN        (0x1U<<0)
+#define GFXMMU_LUT75L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT75L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT75L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT75L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT75L_EN        (0x1U<<0U)
 
 // LUT75H Configuration
 
-#define GFXMMU_LUT75H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT75H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT75H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT75H_LO_0      (0x1U<<4U)
 
 // LUT76L Configuration
 
-#define GFXMMU_LUT76L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT76L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT76L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT76L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT76L_EN        (0x1U<<0)
+#define GFXMMU_LUT76L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT76L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT76L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT76L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT76L_EN        (0x1U<<0U)
 
 // LUT76H Configuration
 
-#define GFXMMU_LUT76H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT76H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT76H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT76H_LO_0      (0x1U<<4U)
 
 // LUT77L Configuration
 
-#define GFXMMU_LUT77L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT77L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT77L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT77L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT77L_EN        (0x1U<<0)
+#define GFXMMU_LUT77L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT77L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT77L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT77L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT77L_EN        (0x1U<<0U)
 
 // LUT77H Configuration
 
-#define GFXMMU_LUT77H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT77H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT77H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT77H_LO_0      (0x1U<<4U)
 
 // LUT78L Configuration
 
-#define GFXMMU_LUT78L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT78L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT78L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT78L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT78L_EN        (0x1U<<0)
+#define GFXMMU_LUT78L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT78L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT78L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT78L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT78L_EN        (0x1U<<0U)
 
 // LUT78H Configuration
 
-#define GFXMMU_LUT78H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT78H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT78H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT78H_LO_0      (0x1U<<4U)
 
 // LUT79L Configuration
 
-#define GFXMMU_LUT79L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT79L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT79L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT79L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT79L_EN        (0x1U<<0)
+#define GFXMMU_LUT79L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT79L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT79L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT79L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT79L_EN        (0x1U<<0U)
 
 // LUT79H Configuration
 
-#define GFXMMU_LUT79H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT79H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT79H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT79H_LO_0      (0x1U<<4U)
 
 // LUT80L Configuration
 
-#define GFXMMU_LUT80L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT80L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT80L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT80L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT80L_EN        (0x1U<<0)
+#define GFXMMU_LUT80L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT80L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT80L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT80L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT80L_EN        (0x1U<<0U)
 
 // LUT80H Configuration
 
-#define GFXMMU_LUT80H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT80H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT80H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT80H_LO_0      (0x1U<<4U)
 
 // LUT81L Configuration
 
-#define GFXMMU_LUT81L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT81L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT81L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT81L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT81L_EN        (0x1U<<0)
+#define GFXMMU_LUT81L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT81L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT81L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT81L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT81L_EN        (0x1U<<0U)
 
 // LUT81H Configuration
 
-#define GFXMMU_LUT81H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT81H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT81H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT81H_LO_0      (0x1U<<4U)
 
 // LUT82L Configuration
 
-#define GFXMMU_LUT82L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT82L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT82L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT82L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT82L_EN        (0x1U<<0)
+#define GFXMMU_LUT82L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT82L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT82L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT82L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT82L_EN        (0x1U<<0U)
 
 // LUT82H Configuration
 
-#define GFXMMU_LUT82H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT82H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT82H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT82H_LO_0      (0x1U<<4U)
 
 // LUT83L Configuration
 
-#define GFXMMU_LUT83L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT83L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT83L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT83L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT83L_EN        (0x1U<<0)
+#define GFXMMU_LUT83L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT83L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT83L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT83L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT83L_EN        (0x1U<<0U)
 
 // LUT83H Configuration
 
-#define GFXMMU_LUT83H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT83H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT83H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT83H_LO_0      (0x1U<<4U)
 
 // LUT84L Configuration
 
-#define GFXMMU_LUT84L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT84L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT84L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT84L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT84L_EN        (0x1U<<0)
+#define GFXMMU_LUT84L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT84L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT84L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT84L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT84L_EN        (0x1U<<0U)
 
 // LUT84H Configuration
 
-#define GFXMMU_LUT84H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT84H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT84H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT84H_LO_0      (0x1U<<4U)
 
 // LUT85L Configuration
 
-#define GFXMMU_LUT85L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT85L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT85L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT85L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT85L_EN        (0x1U<<0)
+#define GFXMMU_LUT85L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT85L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT85L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT85L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT85L_EN        (0x1U<<0U)
 
 // LUT85H Configuration
 
-#define GFXMMU_LUT85H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT85H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT85H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT85H_LO_0      (0x1U<<4U)
 
 // LUT86L Configuration
 
-#define GFXMMU_LUT86L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT86L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT86L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT86L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT86L_EN        (0x1U<<0)
+#define GFXMMU_LUT86L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT86L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT86L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT86L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT86L_EN        (0x1U<<0U)
 
 // LUT86H Configuration
 
-#define GFXMMU_LUT86H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT86H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT86H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT86H_LO_0      (0x1U<<4U)
 
 // LUT87L Configuration
 
-#define GFXMMU_LUT87L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT87L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT87L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT87L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT87L_EN        (0x1U<<0)
+#define GFXMMU_LUT87L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT87L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT87L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT87L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT87L_EN        (0x1U<<0U)
 
 // LUT87H Configuration
 
-#define GFXMMU_LUT87H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT87H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT87H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT87H_LO_0      (0x1U<<4U)
 
 // LUT88L Configuration
 
-#define GFXMMU_LUT88L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT88L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT88L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT88L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT88L_EN        (0x1U<<0)
+#define GFXMMU_LUT88L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT88L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT88L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT88L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT88L_EN        (0x1U<<0U)
 
 // LUT88H Configuration
 
-#define GFXMMU_LUT88H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT88H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT88H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT88H_LO_0      (0x1U<<4U)
 
 // LUT89L Configuration
 
-#define GFXMMU_LUT89L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT89L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT89L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT89L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT89L_EN        (0x1U<<0)
+#define GFXMMU_LUT89L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT89L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT89L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT89L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT89L_EN        (0x1U<<0U)
 
 // LUT89H Configuration
 
-#define GFXMMU_LUT89H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT89H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT89H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT89H_LO_0      (0x1U<<4U)
 
 // LUT90L Configuration
 
-#define GFXMMU_LUT90L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT90L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT90L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT90L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT90L_EN        (0x1U<<0)
+#define GFXMMU_LUT90L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT90L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT90L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT90L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT90L_EN        (0x1U<<0U)
 
 // LUT90H Configuration
 
-#define GFXMMU_LUT90H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT90H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT90H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT90H_LO_0      (0x1U<<4U)
 
 // LUT91L Configuration
 
-#define GFXMMU_LUT91L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT91L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT91L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT91L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT91L_EN        (0x1U<<0)
+#define GFXMMU_LUT91L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT91L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT91L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT91L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT91L_EN        (0x1U<<0U)
 
 // LUT91H Configuration
 
-#define GFXMMU_LUT91H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT91H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT91H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT91H_LO_0      (0x1U<<4U)
 
 // LUT92L Configuration
 
-#define GFXMMU_LUT92L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT92L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT92L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT92L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT92L_EN        (0x1U<<0)
+#define GFXMMU_LUT92L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT92L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT92L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT92L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT92L_EN        (0x1U<<0U)
 
 // LUT92H Configuration
 
-#define GFXMMU_LUT92H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT92H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT92H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT92H_LO_0      (0x1U<<4U)
 
 // LUT93L Configuration
 
-#define GFXMMU_LUT93L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT93L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT93L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT93L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT93L_EN        (0x1U<<0)
+#define GFXMMU_LUT93L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT93L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT93L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT93L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT93L_EN        (0x1U<<0U)
 
 // LUT93H Configuration
 
-#define GFXMMU_LUT93H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT93H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT93H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT93H_LO_0      (0x1U<<4U)
 
 // LUT94L Configuration
 
-#define GFXMMU_LUT94L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT94L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT94L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT94L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT94L_EN        (0x1U<<0)
+#define GFXMMU_LUT94L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT94L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT94L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT94L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT94L_EN        (0x1U<<0U)
 
 // LUT94H Configuration
 
-#define GFXMMU_LUT94H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT94H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT94H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT94H_LO_0      (0x1U<<4U)
 
 // LUT95L Configuration
 
-#define GFXMMU_LUT95L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT95L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT95L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT95L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT95L_EN        (0x1U<<0)
+#define GFXMMU_LUT95L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT95L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT95L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT95L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT95L_EN        (0x1U<<0U)
 
 // LUT95H Configuration
 
-#define GFXMMU_LUT95H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT95H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT95H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT95H_LO_0      (0x1U<<4U)
 
 // LUT96L Configuration
 
-#define GFXMMU_LUT96L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT96L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT96L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT96L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT96L_EN        (0x1U<<0)
+#define GFXMMU_LUT96L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT96L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT96L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT96L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT96L_EN        (0x1U<<0U)
 
 // LUT96H Configuration
 
-#define GFXMMU_LUT96H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT96H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT96H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT96H_LO_0      (0x1U<<4U)
 
 // LUT97L Configuration
 
-#define GFXMMU_LUT97L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT97L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT97L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT97L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT97L_EN        (0x1U<<0)
+#define GFXMMU_LUT97L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT97L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT97L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT97L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT97L_EN        (0x1U<<0U)
 
 // LUT97H Configuration
 
-#define GFXMMU_LUT97H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT97H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT97H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT97H_LO_0      (0x1U<<4U)
 
 // LUT98L Configuration
 
-#define GFXMMU_LUT98L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT98L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT98L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT98L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT98L_EN        (0x1U<<0)
+#define GFXMMU_LUT98L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT98L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT98L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT98L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT98L_EN        (0x1U<<0U)
 
 // LUT98H Configuration
 
-#define GFXMMU_LUT98H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT98H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT98H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT98H_LO_0      (0x1U<<4U)
 
 // LUT99L Configuration
 
-#define GFXMMU_LUT99L_LVB       (0xFFU<<16)
-#define GFXMMU_LUT99L_LVB_0     (0x1U<<16)
-#define GFXMMU_LUT99L_FVB       (0xFFU<<8)
-#define GFXMMU_LUT99L_FVB_0     (0x1U<<8)
-#define GFXMMU_LUT99L_EN        (0x1U<<0)
+#define GFXMMU_LUT99L_LVB       (0xFFU<<16U)
+#define GFXMMU_LUT99L_LVB_0     (0x1U<<16U)
+#define GFXMMU_LUT99L_FVB       (0xFFU<<8U)
+#define GFXMMU_LUT99L_FVB_0     (0x1U<<8U)
+#define GFXMMU_LUT99L_EN        (0x1U<<0U)
 
 // LUT99H Configuration
 
-#define GFXMMU_LUT99H_LO        (0x3FFFFU<<4)
-#define GFXMMU_LUT99H_LO_0      (0x1U<<4)
+#define GFXMMU_LUT99H_LO        (0x3FFFFU<<4U)
+#define GFXMMU_LUT99H_LO_0      (0x1U<<4U)
 
 // LUT100L Configuration
 
-#define GFXMMU_LUT100L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT100L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT100L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT100L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT100L_EN       (0x1U<<0)
+#define GFXMMU_LUT100L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT100L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT100L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT100L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT100L_EN       (0x1U<<0U)
 
 // LUT100H Configuration
 
-#define GFXMMU_LUT100H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT100H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT100H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT100H_LO_0     (0x1U<<4U)
 
 // LUT101L Configuration
 
-#define GFXMMU_LUT101L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT101L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT101L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT101L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT101L_EN       (0x1U<<0)
+#define GFXMMU_LUT101L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT101L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT101L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT101L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT101L_EN       (0x1U<<0U)
 
 // LUT101H Configuration
 
-#define GFXMMU_LUT101H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT101H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT101H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT101H_LO_0     (0x1U<<4U)
 
 // LUT102L Configuration
 
-#define GFXMMU_LUT102L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT102L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT102L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT102L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT102L_EN       (0x1U<<0)
+#define GFXMMU_LUT102L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT102L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT102L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT102L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT102L_EN       (0x1U<<0U)
 
 // LUT102H Configuration
 
-#define GFXMMU_LUT102H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT102H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT102H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT102H_LO_0     (0x1U<<4U)
 
 // LUT103L Configuration
 
-#define GFXMMU_LUT103L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT103L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT103L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT103L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT103L_EN       (0x1U<<0)
+#define GFXMMU_LUT103L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT103L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT103L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT103L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT103L_EN       (0x1U<<0U)
 
 // LUT103H Configuration
 
-#define GFXMMU_LUT103H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT103H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT103H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT103H_LO_0     (0x1U<<4U)
 
 // LUT104L Configuration
 
-#define GFXMMU_LUT104L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT104L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT104L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT104L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT104L_EN       (0x1U<<0)
+#define GFXMMU_LUT104L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT104L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT104L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT104L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT104L_EN       (0x1U<<0U)
 
 // LUT104H Configuration
 
-#define GFXMMU_LUT104H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT104H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT104H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT104H_LO_0     (0x1U<<4U)
 
 // LUT105L Configuration
 
-#define GFXMMU_LUT105L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT105L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT105L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT105L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT105L_EN       (0x1U<<0)
+#define GFXMMU_LUT105L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT105L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT105L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT105L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT105L_EN       (0x1U<<0U)
 
 // LUT105H Configuration
 
-#define GFXMMU_LUT105H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT105H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT105H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT105H_LO_0     (0x1U<<4U)
 
 // LUT106L Configuration
 
-#define GFXMMU_LUT106L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT106L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT106L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT106L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT106L_EN       (0x1U<<0)
+#define GFXMMU_LUT106L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT106L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT106L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT106L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT106L_EN       (0x1U<<0U)
 
 // LUT106H Configuration
 
-#define GFXMMU_LUT106H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT106H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT106H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT106H_LO_0     (0x1U<<4U)
 
 // LUT107L Configuration
 
-#define GFXMMU_LUT107L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT107L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT107L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT107L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT107L_EN       (0x1U<<0)
+#define GFXMMU_LUT107L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT107L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT107L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT107L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT107L_EN       (0x1U<<0U)
 
 // LUT107H Configuration
 
-#define GFXMMU_LUT107H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT107H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT107H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT107H_LO_0     (0x1U<<4U)
 
 // LUT108L Configuration
 
-#define GFXMMU_LUT108L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT108L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT108L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT108L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT108L_EN       (0x1U<<0)
+#define GFXMMU_LUT108L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT108L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT108L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT108L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT108L_EN       (0x1U<<0U)
 
 // LUT108H Configuration
 
-#define GFXMMU_LUT108H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT108H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT108H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT108H_LO_0     (0x1U<<4U)
 
 // LUT109L Configuration
 
-#define GFXMMU_LUT109L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT109L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT109L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT109L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT109L_EN       (0x1U<<0)
+#define GFXMMU_LUT109L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT109L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT109L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT109L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT109L_EN       (0x1U<<0U)
 
 // LUT109H Configuration
 
-#define GFXMMU_LUT109H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT109H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT109H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT109H_LO_0     (0x1U<<4U)
 
 // LUT110L Configuration
 
-#define GFXMMU_LUT110L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT110L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT110L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT110L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT110L_EN       (0x1U<<0)
+#define GFXMMU_LUT110L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT110L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT110L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT110L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT110L_EN       (0x1U<<0U)
 
 // LUT110H Configuration
 
-#define GFXMMU_LUT110H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT110H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT110H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT110H_LO_0     (0x1U<<4U)
 
 // LUT111L Configuration
 
-#define GFXMMU_LUT111L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT111L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT111L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT111L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT111L_EN       (0x1U<<0)
+#define GFXMMU_LUT111L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT111L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT111L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT111L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT111L_EN       (0x1U<<0U)
 
 // LUT111H Configuration
 
-#define GFXMMU_LUT111H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT111H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT111H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT111H_LO_0     (0x1U<<4U)
 
 // LUT112L Configuration
 
-#define GFXMMU_LUT112L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT112L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT112L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT112L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT112L_EN       (0x1U<<0)
+#define GFXMMU_LUT112L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT112L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT112L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT112L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT112L_EN       (0x1U<<0U)
 
 // LUT112H Configuration
 
-#define GFXMMU_LUT112H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT112H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT112H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT112H_LO_0     (0x1U<<4U)
 
 // LUT113L Configuration
 
-#define GFXMMU_LUT113L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT113L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT113L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT113L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT113L_EN       (0x1U<<0)
+#define GFXMMU_LUT113L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT113L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT113L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT113L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT113L_EN       (0x1U<<0U)
 
 // LUT113H Configuration
 
-#define GFXMMU_LUT113H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT113H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT113H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT113H_LO_0     (0x1U<<4U)
 
 // LUT114L Configuration
 
-#define GFXMMU_LUT114L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT114L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT114L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT114L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT114L_EN       (0x1U<<0)
+#define GFXMMU_LUT114L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT114L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT114L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT114L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT114L_EN       (0x1U<<0U)
 
 // LUT114H Configuration
 
-#define GFXMMU_LUT114H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT114H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT114H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT114H_LO_0     (0x1U<<4U)
 
 // LUT115L Configuration
 
-#define GFXMMU_LUT115L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT115L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT115L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT115L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT115L_EN       (0x1U<<0)
+#define GFXMMU_LUT115L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT115L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT115L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT115L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT115L_EN       (0x1U<<0U)
 
 // LUT115H Configuration
 
-#define GFXMMU_LUT115H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT115H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT115H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT115H_LO_0     (0x1U<<4U)
 
 // LUT116L Configuration
 
-#define GFXMMU_LUT116L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT116L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT116L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT116L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT116L_EN       (0x1U<<0)
+#define GFXMMU_LUT116L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT116L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT116L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT116L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT116L_EN       (0x1U<<0U)
 
 // LUT116H Configuration
 
-#define GFXMMU_LUT116H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT116H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT116H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT116H_LO_0     (0x1U<<4U)
 
 // LUT117L Configuration
 
-#define GFXMMU_LUT117L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT117L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT117L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT117L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT117L_EN       (0x1U<<0)
+#define GFXMMU_LUT117L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT117L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT117L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT117L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT117L_EN       (0x1U<<0U)
 
 // LUT117H Configuration
 
-#define GFXMMU_LUT117H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT117H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT117H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT117H_LO_0     (0x1U<<4U)
 
 // LUT118L Configuration
 
-#define GFXMMU_LUT118L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT118L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT118L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT118L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT118L_EN       (0x1U<<0)
+#define GFXMMU_LUT118L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT118L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT118L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT118L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT118L_EN       (0x1U<<0U)
 
 // LUT118H Configuration
 
-#define GFXMMU_LUT118H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT118H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT118H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT118H_LO_0     (0x1U<<4U)
 
 // LUT119L Configuration
 
-#define GFXMMU_LUT119L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT119L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT119L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT119L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT119L_EN       (0x1U<<0)
+#define GFXMMU_LUT119L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT119L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT119L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT119L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT119L_EN       (0x1U<<0U)
 
 // LUT119H Configuration
 
-#define GFXMMU_LUT119H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT119H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT119H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT119H_LO_0     (0x1U<<4U)
 
 // LUT120L Configuration
 
-#define GFXMMU_LUT120L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT120L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT120L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT120L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT120L_EN       (0x1U<<0)
+#define GFXMMU_LUT120L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT120L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT120L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT120L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT120L_EN       (0x1U<<0U)
 
 // LUT120H Configuration
 
-#define GFXMMU_LUT120H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT120H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT120H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT120H_LO_0     (0x1U<<4U)
 
 // LUT121L Configuration
 
-#define GFXMMU_LUT121L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT121L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT121L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT121L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT121L_EN       (0x1U<<0)
+#define GFXMMU_LUT121L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT121L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT121L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT121L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT121L_EN       (0x1U<<0U)
 
 // LUT121H Configuration
 
-#define GFXMMU_LUT121H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT121H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT121H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT121H_LO_0     (0x1U<<4U)
 
 // LUT122L Configuration
 
-#define GFXMMU_LUT122L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT122L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT122L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT122L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT122L_EN       (0x1U<<0)
+#define GFXMMU_LUT122L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT122L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT122L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT122L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT122L_EN       (0x1U<<0U)
 
 // LUT122H Configuration
 
-#define GFXMMU_LUT122H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT122H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT122H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT122H_LO_0     (0x1U<<4U)
 
 // LUT123L Configuration
 
-#define GFXMMU_LUT123L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT123L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT123L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT123L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT123L_EN       (0x1U<<0)
+#define GFXMMU_LUT123L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT123L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT123L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT123L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT123L_EN       (0x1U<<0U)
 
 // LUT123H Configuration
 
-#define GFXMMU_LUT123H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT123H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT123H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT123H_LO_0     (0x1U<<4U)
 
 // LUT124L Configuration
 
-#define GFXMMU_LUT124L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT124L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT124L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT124L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT124L_EN       (0x1U<<0)
+#define GFXMMU_LUT124L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT124L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT124L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT124L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT124L_EN       (0x1U<<0U)
 
 // LUT124H Configuration
 
-#define GFXMMU_LUT124H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT124H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT124H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT124H_LO_0     (0x1U<<4U)
 
 // LUT125L Configuration
 
-#define GFXMMU_LUT125L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT125L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT125L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT125L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT125L_EN       (0x1U<<0)
+#define GFXMMU_LUT125L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT125L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT125L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT125L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT125L_EN       (0x1U<<0U)
 
 // LUT125H Configuration
 
-#define GFXMMU_LUT125H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT125H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT125H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT125H_LO_0     (0x1U<<4U)
 
 // LUT126L Configuration
 
-#define GFXMMU_LUT126L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT126L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT126L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT126L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT126L_EN       (0x1U<<0)
+#define GFXMMU_LUT126L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT126L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT126L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT126L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT126L_EN       (0x1U<<0U)
 
 // LUT126H Configuration
 
-#define GFXMMU_LUT126H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT126H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT126H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT126H_LO_0     (0x1U<<4U)
 
 // LUT127L Configuration
 
-#define GFXMMU_LUT127L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT127L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT127L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT127L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT127L_EN       (0x1U<<0)
+#define GFXMMU_LUT127L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT127L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT127L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT127L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT127L_EN       (0x1U<<0U)
 
 // LUT127H Configuration
 
-#define GFXMMU_LUT127H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT127H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT127H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT127H_LO_0     (0x1U<<4U)
 
 // LUT128L Configuration
 
-#define GFXMMU_LUT128L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT128L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT128L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT128L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT128L_EN       (0x1U<<0)
+#define GFXMMU_LUT128L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT128L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT128L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT128L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT128L_EN       (0x1U<<0U)
 
 // LUT128H Configuration
 
-#define GFXMMU_LUT128H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT128H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT128H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT128H_LO_0     (0x1U<<4U)
 
 // LUT129L Configuration
 
-#define GFXMMU_LUT129L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT129L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT129L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT129L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT129L_EN       (0x1U<<0)
+#define GFXMMU_LUT129L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT129L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT129L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT129L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT129L_EN       (0x1U<<0U)
 
 // LUT129H Configuration
 
-#define GFXMMU_LUT129H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT129H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT129H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT129H_LO_0     (0x1U<<4U)
 
 // LUT130L Configuration
 
-#define GFXMMU_LUT130L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT130L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT130L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT130L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT130L_EN       (0x1U<<0)
+#define GFXMMU_LUT130L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT130L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT130L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT130L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT130L_EN       (0x1U<<0U)
 
 // LUT130H Configuration
 
-#define GFXMMU_LUT130H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT130H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT130H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT130H_LO_0     (0x1U<<4U)
 
 // LUT131L Configuration
 
-#define GFXMMU_LUT131L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT131L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT131L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT131L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT131L_EN       (0x1U<<0)
+#define GFXMMU_LUT131L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT131L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT131L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT131L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT131L_EN       (0x1U<<0U)
 
 // LUT131H Configuration
 
-#define GFXMMU_LUT131H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT131H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT131H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT131H_LO_0     (0x1U<<4U)
 
 // LUT132L Configuration
 
-#define GFXMMU_LUT132L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT132L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT132L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT132L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT132L_EN       (0x1U<<0)
+#define GFXMMU_LUT132L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT132L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT132L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT132L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT132L_EN       (0x1U<<0U)
 
 // LUT132H Configuration
 
-#define GFXMMU_LUT132H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT132H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT132H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT132H_LO_0     (0x1U<<4U)
 
 // LUT133L Configuration
 
-#define GFXMMU_LUT133L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT133L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT133L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT133L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT133L_EN       (0x1U<<0)
+#define GFXMMU_LUT133L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT133L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT133L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT133L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT133L_EN       (0x1U<<0U)
 
 // LUT133H Configuration
 
-#define GFXMMU_LUT133H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT133H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT133H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT133H_LO_0     (0x1U<<4U)
 
 // LUT134L Configuration
 
-#define GFXMMU_LUT134L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT134L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT134L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT134L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT134L_EN       (0x1U<<0)
+#define GFXMMU_LUT134L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT134L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT134L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT134L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT134L_EN       (0x1U<<0U)
 
 // LUT134H Configuration
 
-#define GFXMMU_LUT134H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT134H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT134H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT134H_LO_0     (0x1U<<4U)
 
 // LUT135L Configuration
 
-#define GFXMMU_LUT135L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT135L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT135L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT135L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT135L_EN       (0x1U<<0)
+#define GFXMMU_LUT135L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT135L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT135L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT135L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT135L_EN       (0x1U<<0U)
 
 // LUT135H Configuration
 
-#define GFXMMU_LUT135H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT135H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT135H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT135H_LO_0     (0x1U<<4U)
 
 // LUT136L Configuration
 
-#define GFXMMU_LUT136L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT136L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT136L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT136L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT136L_EN       (0x1U<<0)
+#define GFXMMU_LUT136L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT136L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT136L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT136L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT136L_EN       (0x1U<<0U)
 
 // LUT136H Configuration
 
-#define GFXMMU_LUT136H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT136H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT136H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT136H_LO_0     (0x1U<<4U)
 
 // LUT137L Configuration
 
-#define GFXMMU_LUT137L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT137L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT137L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT137L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT137L_EN       (0x1U<<0)
+#define GFXMMU_LUT137L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT137L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT137L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT137L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT137L_EN       (0x1U<<0U)
 
 // LUT137H Configuration
 
-#define GFXMMU_LUT137H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT137H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT137H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT137H_LO_0     (0x1U<<4U)
 
 // LUT138L Configuration
 
-#define GFXMMU_LUT138L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT138L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT138L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT138L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT138L_EN       (0x1U<<0)
+#define GFXMMU_LUT138L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT138L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT138L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT138L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT138L_EN       (0x1U<<0U)
 
 // LUT138H Configuration
 
-#define GFXMMU_LUT138H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT138H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT138H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT138H_LO_0     (0x1U<<4U)
 
 // LUT139L Configuration
 
-#define GFXMMU_LUT139L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT139L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT139L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT139L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT139L_EN       (0x1U<<0)
+#define GFXMMU_LUT139L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT139L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT139L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT139L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT139L_EN       (0x1U<<0U)
 
 // LUT139H Configuration
 
-#define GFXMMU_LUT139H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT139H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT139H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT139H_LO_0     (0x1U<<4U)
 
 // LUT140L Configuration
 
-#define GFXMMU_LUT140L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT140L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT140L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT140L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT140L_EN       (0x1U<<0)
+#define GFXMMU_LUT140L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT140L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT140L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT140L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT140L_EN       (0x1U<<0U)
 
 // LUT140H Configuration
 
-#define GFXMMU_LUT140H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT140H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT140H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT140H_LO_0     (0x1U<<4U)
 
 // LUT141L Configuration
 
-#define GFXMMU_LUT141L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT141L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT141L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT141L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT141L_EN       (0x1U<<0)
+#define GFXMMU_LUT141L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT141L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT141L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT141L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT141L_EN       (0x1U<<0U)
 
 // LUT141H Configuration
 
-#define GFXMMU_LUT141H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT141H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT141H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT141H_LO_0     (0x1U<<4U)
 
 // LUT142L Configuration
 
-#define GFXMMU_LUT142L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT142L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT142L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT142L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT142L_EN       (0x1U<<0)
+#define GFXMMU_LUT142L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT142L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT142L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT142L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT142L_EN       (0x1U<<0U)
 
 // LUT142H Configuration
 
-#define GFXMMU_LUT142H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT142H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT142H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT142H_LO_0     (0x1U<<4U)
 
 // LUT143L Configuration
 
-#define GFXMMU_LUT143L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT143L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT143L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT143L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT143L_EN       (0x1U<<0)
+#define GFXMMU_LUT143L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT143L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT143L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT143L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT143L_EN       (0x1U<<0U)
 
 // LUT143H Configuration
 
-#define GFXMMU_LUT143H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT143H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT143H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT143H_LO_0     (0x1U<<4U)
 
 // LUT144L Configuration
 
-#define GFXMMU_LUT144L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT144L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT144L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT144L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT144L_EN       (0x1U<<0)
+#define GFXMMU_LUT144L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT144L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT144L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT144L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT144L_EN       (0x1U<<0U)
 
 // LUT144H Configuration
 
-#define GFXMMU_LUT144H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT144H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT144H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT144H_LO_0     (0x1U<<4U)
 
 // LUT145L Configuration
 
-#define GFXMMU_LUT145L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT145L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT145L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT145L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT145L_EN       (0x1U<<0)
+#define GFXMMU_LUT145L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT145L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT145L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT145L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT145L_EN       (0x1U<<0U)
 
 // LUT145H Configuration
 
-#define GFXMMU_LUT145H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT145H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT145H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT145H_LO_0     (0x1U<<4U)
 
 // LUT146L Configuration
 
-#define GFXMMU_LUT146L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT146L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT146L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT146L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT146L_EN       (0x1U<<0)
+#define GFXMMU_LUT146L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT146L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT146L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT146L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT146L_EN       (0x1U<<0U)
 
 // LUT146H Configuration
 
-#define GFXMMU_LUT146H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT146H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT146H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT146H_LO_0     (0x1U<<4U)
 
 // LUT147L Configuration
 
-#define GFXMMU_LUT147L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT147L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT147L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT147L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT147L_EN       (0x1U<<0)
+#define GFXMMU_LUT147L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT147L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT147L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT147L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT147L_EN       (0x1U<<0U)
 
 // LUT147H Configuration
 
-#define GFXMMU_LUT147H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT147H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT147H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT147H_LO_0     (0x1U<<4U)
 
 // LUT148L Configuration
 
-#define GFXMMU_LUT148L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT148L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT148L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT148L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT148L_EN       (0x1U<<0)
+#define GFXMMU_LUT148L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT148L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT148L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT148L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT148L_EN       (0x1U<<0U)
 
 // LUT148H Configuration
 
-#define GFXMMU_LUT148H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT148H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT148H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT148H_LO_0     (0x1U<<4U)
 
 // LUT149L Configuration
 
-#define GFXMMU_LUT149L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT149L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT149L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT149L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT149L_EN       (0x1U<<0)
+#define GFXMMU_LUT149L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT149L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT149L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT149L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT149L_EN       (0x1U<<0U)
 
 // LUT149H Configuration
 
-#define GFXMMU_LUT149H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT149H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT149H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT149H_LO_0     (0x1U<<4U)
 
 // LUT150L Configuration
 
-#define GFXMMU_LUT150L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT150L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT150L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT150L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT150L_EN       (0x1U<<0)
+#define GFXMMU_LUT150L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT150L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT150L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT150L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT150L_EN       (0x1U<<0U)
 
 // LUT150H Configuration
 
-#define GFXMMU_LUT150H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT150H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT150H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT150H_LO_0     (0x1U<<4U)
 
 // LUT151L Configuration
 
-#define GFXMMU_LUT151L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT151L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT151L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT151L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT151L_EN       (0x1U<<0)
+#define GFXMMU_LUT151L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT151L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT151L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT151L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT151L_EN       (0x1U<<0U)
 
 // LUT151H Configuration
 
-#define GFXMMU_LUT151H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT151H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT151H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT151H_LO_0     (0x1U<<4U)
 
 // LUT152L Configuration
 
-#define GFXMMU_LUT152L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT152L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT152L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT152L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT152L_EN       (0x1U<<0)
+#define GFXMMU_LUT152L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT152L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT152L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT152L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT152L_EN       (0x1U<<0U)
 
 // LUT152H Configuration
 
-#define GFXMMU_LUT152H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT152H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT152H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT152H_LO_0     (0x1U<<4U)
 
 // LUT153L Configuration
 
-#define GFXMMU_LUT153L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT153L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT153L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT153L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT153L_EN       (0x1U<<0)
+#define GFXMMU_LUT153L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT153L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT153L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT153L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT153L_EN       (0x1U<<0U)
 
 // LUT153H Configuration
 
-#define GFXMMU_LUT153H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT153H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT153H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT153H_LO_0     (0x1U<<4U)
 
 // LUT154L Configuration
 
-#define GFXMMU_LUT154L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT154L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT154L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT154L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT154L_EN       (0x1U<<0)
+#define GFXMMU_LUT154L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT154L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT154L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT154L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT154L_EN       (0x1U<<0U)
 
 // LUT154H Configuration
 
-#define GFXMMU_LUT154H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT154H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT154H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT154H_LO_0     (0x1U<<4U)
 
 // LUT155L Configuration
 
-#define GFXMMU_LUT155L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT155L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT155L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT155L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT155L_EN       (0x1U<<0)
+#define GFXMMU_LUT155L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT155L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT155L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT155L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT155L_EN       (0x1U<<0U)
 
 // LUT155H Configuration
 
-#define GFXMMU_LUT155H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT155H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT155H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT155H_LO_0     (0x1U<<4U)
 
 // LUT156L Configuration
 
-#define GFXMMU_LUT156L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT156L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT156L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT156L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT156L_EN       (0x1U<<0)
+#define GFXMMU_LUT156L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT156L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT156L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT156L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT156L_EN       (0x1U<<0U)
 
 // LUT156H Configuration
 
-#define GFXMMU_LUT156H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT156H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT156H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT156H_LO_0     (0x1U<<4U)
 
 // LUT157L Configuration
 
-#define GFXMMU_LUT157L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT157L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT157L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT157L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT157L_EN       (0x1U<<0)
+#define GFXMMU_LUT157L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT157L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT157L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT157L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT157L_EN       (0x1U<<0U)
 
 // LUT157H Configuration
 
-#define GFXMMU_LUT157H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT157H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT157H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT157H_LO_0     (0x1U<<4U)
 
 // LUT158L Configuration
 
-#define GFXMMU_LUT158L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT158L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT158L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT158L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT158L_EN       (0x1U<<0)
+#define GFXMMU_LUT158L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT158L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT158L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT158L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT158L_EN       (0x1U<<0U)
 
 // LUT158H Configuration
 
-#define GFXMMU_LUT158H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT158H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT158H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT158H_LO_0     (0x1U<<4U)
 
 // LUT159L Configuration
 
-#define GFXMMU_LUT159L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT159L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT159L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT159L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT159L_EN       (0x1U<<0)
+#define GFXMMU_LUT159L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT159L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT159L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT159L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT159L_EN       (0x1U<<0U)
 
 // LUT159H Configuration
 
-#define GFXMMU_LUT159H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT159H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT159H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT159H_LO_0     (0x1U<<4U)
 
 // LUT160L Configuration
 
-#define GFXMMU_LUT160L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT160L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT160L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT160L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT160L_EN       (0x1U<<0)
+#define GFXMMU_LUT160L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT160L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT160L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT160L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT160L_EN       (0x1U<<0U)
 
 // LUT160H Configuration
 
-#define GFXMMU_LUT160H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT160H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT160H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT160H_LO_0     (0x1U<<4U)
 
 // LUT161L Configuration
 
-#define GFXMMU_LUT161L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT161L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT161L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT161L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT161L_EN       (0x1U<<0)
+#define GFXMMU_LUT161L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT161L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT161L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT161L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT161L_EN       (0x1U<<0U)
 
 // LUT161H Configuration
 
-#define GFXMMU_LUT161H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT161H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT161H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT161H_LO_0     (0x1U<<4U)
 
 // LUT162L Configuration
 
-#define GFXMMU_LUT162L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT162L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT162L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT162L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT162L_EN       (0x1U<<0)
+#define GFXMMU_LUT162L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT162L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT162L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT162L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT162L_EN       (0x1U<<0U)
 
 // LUT162H Configuration
 
-#define GFXMMU_LUT162H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT162H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT162H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT162H_LO_0     (0x1U<<4U)
 
 // LUT163L Configuration
 
-#define GFXMMU_LUT163L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT163L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT163L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT163L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT163L_EN       (0x1U<<0)
+#define GFXMMU_LUT163L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT163L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT163L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT163L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT163L_EN       (0x1U<<0U)
 
 // LUT163H Configuration
 
-#define GFXMMU_LUT163H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT163H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT163H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT163H_LO_0     (0x1U<<4U)
 
 // LUT164L Configuration
 
-#define GFXMMU_LUT164L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT164L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT164L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT164L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT164L_EN       (0x1U<<0)
+#define GFXMMU_LUT164L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT164L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT164L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT164L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT164L_EN       (0x1U<<0U)
 
 // LUT164H Configuration
 
-#define GFXMMU_LUT164H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT164H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT164H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT164H_LO_0     (0x1U<<4U)
 
 // LUT165L Configuration
 
-#define GFXMMU_LUT165L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT165L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT165L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT165L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT165L_EN       (0x1U<<0)
+#define GFXMMU_LUT165L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT165L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT165L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT165L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT165L_EN       (0x1U<<0U)
 
 // LUT165H Configuration
 
-#define GFXMMU_LUT165H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT165H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT165H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT165H_LO_0     (0x1U<<4U)
 
 // LUT166L Configuration
 
-#define GFXMMU_LUT166L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT166L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT166L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT166L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT166L_EN       (0x1U<<0)
+#define GFXMMU_LUT166L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT166L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT166L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT166L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT166L_EN       (0x1U<<0U)
 
 // LUT166H Configuration
 
-#define GFXMMU_LUT166H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT166H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT166H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT166H_LO_0     (0x1U<<4U)
 
 // LUT167L Configuration
 
-#define GFXMMU_LUT167L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT167L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT167L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT167L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT167L_EN       (0x1U<<0)
+#define GFXMMU_LUT167L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT167L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT167L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT167L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT167L_EN       (0x1U<<0U)
 
 // LUT167H Configuration
 
-#define GFXMMU_LUT167H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT167H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT167H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT167H_LO_0     (0x1U<<4U)
 
 // LUT168L Configuration
 
-#define GFXMMU_LUT168L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT168L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT168L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT168L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT168L_EN       (0x1U<<0)
+#define GFXMMU_LUT168L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT168L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT168L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT168L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT168L_EN       (0x1U<<0U)
 
 // LUT168H Configuration
 
-#define GFXMMU_LUT168H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT168H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT168H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT168H_LO_0     (0x1U<<4U)
 
 // LUT169L Configuration
 
-#define GFXMMU_LUT169L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT169L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT169L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT169L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT169L_EN       (0x1U<<0)
+#define GFXMMU_LUT169L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT169L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT169L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT169L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT169L_EN       (0x1U<<0U)
 
 // LUT169H Configuration
 
-#define GFXMMU_LUT169H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT169H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT169H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT169H_LO_0     (0x1U<<4U)
 
 // LUT170L Configuration
 
-#define GFXMMU_LUT170L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT170L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT170L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT170L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT170L_EN       (0x1U<<0)
+#define GFXMMU_LUT170L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT170L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT170L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT170L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT170L_EN       (0x1U<<0U)
 
 // LUT170H Configuration
 
-#define GFXMMU_LUT170H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT170H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT170H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT170H_LO_0     (0x1U<<4U)
 
 // LUT171L Configuration
 
-#define GFXMMU_LUT171L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT171L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT171L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT171L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT171L_EN       (0x1U<<0)
+#define GFXMMU_LUT171L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT171L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT171L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT171L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT171L_EN       (0x1U<<0U)
 
 // LUT171H Configuration
 
-#define GFXMMU_LUT171H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT171H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT171H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT171H_LO_0     (0x1U<<4U)
 
 // LUT172L Configuration
 
-#define GFXMMU_LUT172L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT172L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT172L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT172L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT172L_EN       (0x1U<<0)
+#define GFXMMU_LUT172L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT172L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT172L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT172L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT172L_EN       (0x1U<<0U)
 
 // LUT172H Configuration
 
-#define GFXMMU_LUT172H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT172H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT172H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT172H_LO_0     (0x1U<<4U)
 
 // LUT173L Configuration
 
-#define GFXMMU_LUT173L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT173L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT173L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT173L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT173L_EN       (0x1U<<0)
+#define GFXMMU_LUT173L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT173L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT173L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT173L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT173L_EN       (0x1U<<0U)
 
 // LUT173H Configuration
 
-#define GFXMMU_LUT173H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT173H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT173H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT173H_LO_0     (0x1U<<4U)
 
 // LUT174L Configuration
 
-#define GFXMMU_LUT174L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT174L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT174L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT174L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT174L_EN       (0x1U<<0)
+#define GFXMMU_LUT174L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT174L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT174L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT174L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT174L_EN       (0x1U<<0U)
 
 // LUT174H Configuration
 
-#define GFXMMU_LUT174H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT174H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT174H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT174H_LO_0     (0x1U<<4U)
 
 // LUT175L Configuration
 
-#define GFXMMU_LUT175L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT175L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT175L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT175L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT175L_EN       (0x1U<<0)
+#define GFXMMU_LUT175L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT175L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT175L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT175L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT175L_EN       (0x1U<<0U)
 
 // LUT175H Configuration
 
-#define GFXMMU_LUT175H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT175H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT175H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT175H_LO_0     (0x1U<<4U)
 
 // LUT176L Configuration
 
-#define GFXMMU_LUT176L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT176L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT176L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT176L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT176L_EN       (0x1U<<0)
+#define GFXMMU_LUT176L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT176L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT176L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT176L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT176L_EN       (0x1U<<0U)
 
 // LUT176H Configuration
 
-#define GFXMMU_LUT176H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT176H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT176H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT176H_LO_0     (0x1U<<4U)
 
 // LUT177L Configuration
 
-#define GFXMMU_LUT177L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT177L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT177L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT177L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT177L_EN       (0x1U<<0)
+#define GFXMMU_LUT177L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT177L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT177L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT177L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT177L_EN       (0x1U<<0U)
 
 // LUT177H Configuration
 
-#define GFXMMU_LUT177H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT177H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT177H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT177H_LO_0     (0x1U<<4U)
 
 // LUT178L Configuration
 
-#define GFXMMU_LUT178L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT178L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT178L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT178L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT178L_EN       (0x1U<<0)
+#define GFXMMU_LUT178L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT178L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT178L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT178L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT178L_EN       (0x1U<<0U)
 
 // LUT178H Configuration
 
-#define GFXMMU_LUT178H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT178H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT178H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT178H_LO_0     (0x1U<<4U)
 
 // LUT179L Configuration
 
-#define GFXMMU_LUT179L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT179L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT179L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT179L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT179L_EN       (0x1U<<0)
+#define GFXMMU_LUT179L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT179L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT179L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT179L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT179L_EN       (0x1U<<0U)
 
 // LUT179H Configuration
 
-#define GFXMMU_LUT179H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT179H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT179H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT179H_LO_0     (0x1U<<4U)
 
 // LUT180L Configuration
 
-#define GFXMMU_LUT180L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT180L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT180L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT180L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT180L_EN       (0x1U<<0)
+#define GFXMMU_LUT180L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT180L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT180L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT180L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT180L_EN       (0x1U<<0U)
 
 // LUT180H Configuration
 
-#define GFXMMU_LUT180H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT180H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT180H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT180H_LO_0     (0x1U<<4U)
 
 // LUT181L Configuration
 
-#define GFXMMU_LUT181L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT181L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT181L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT181L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT181L_EN       (0x1U<<0)
+#define GFXMMU_LUT181L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT181L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT181L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT181L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT181L_EN       (0x1U<<0U)
 
 // LUT181H Configuration
 
-#define GFXMMU_LUT181H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT181H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT181H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT181H_LO_0     (0x1U<<4U)
 
 // LUT182L Configuration
 
-#define GFXMMU_LUT182L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT182L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT182L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT182L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT182L_EN       (0x1U<<0)
+#define GFXMMU_LUT182L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT182L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT182L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT182L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT182L_EN       (0x1U<<0U)
 
 // LUT182H Configuration
 
-#define GFXMMU_LUT182H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT182H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT182H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT182H_LO_0     (0x1U<<4U)
 
 // LUT183L Configuration
 
-#define GFXMMU_LUT183L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT183L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT183L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT183L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT183L_EN       (0x1U<<0)
+#define GFXMMU_LUT183L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT183L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT183L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT183L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT183L_EN       (0x1U<<0U)
 
 // LUT183H Configuration
 
-#define GFXMMU_LUT183H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT183H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT183H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT183H_LO_0     (0x1U<<4U)
 
 // LUT184L Configuration
 
-#define GFXMMU_LUT184L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT184L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT184L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT184L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT184L_EN       (0x1U<<0)
+#define GFXMMU_LUT184L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT184L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT184L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT184L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT184L_EN       (0x1U<<0U)
 
 // LUT184H Configuration
 
-#define GFXMMU_LUT184H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT184H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT184H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT184H_LO_0     (0x1U<<4U)
 
 // LUT185L Configuration
 
-#define GFXMMU_LUT185L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT185L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT185L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT185L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT185L_EN       (0x1U<<0)
+#define GFXMMU_LUT185L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT185L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT185L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT185L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT185L_EN       (0x1U<<0U)
 
 // LUT185H Configuration
 
-#define GFXMMU_LUT185H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT185H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT185H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT185H_LO_0     (0x1U<<4U)
 
 // LUT186L Configuration
 
-#define GFXMMU_LUT186L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT186L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT186L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT186L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT186L_EN       (0x1U<<0)
+#define GFXMMU_LUT186L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT186L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT186L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT186L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT186L_EN       (0x1U<<0U)
 
 // LUT186H Configuration
 
-#define GFXMMU_LUT186H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT186H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT186H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT186H_LO_0     (0x1U<<4U)
 
 // LUT187L Configuration
 
-#define GFXMMU_LUT187L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT187L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT187L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT187L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT187L_EN       (0x1U<<0)
+#define GFXMMU_LUT187L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT187L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT187L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT187L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT187L_EN       (0x1U<<0U)
 
 // LUT187H Configuration
 
-#define GFXMMU_LUT187H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT187H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT187H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT187H_LO_0     (0x1U<<4U)
 
 // LUT188L Configuration
 
-#define GFXMMU_LUT188L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT188L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT188L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT188L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT188L_EN       (0x1U<<0)
+#define GFXMMU_LUT188L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT188L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT188L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT188L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT188L_EN       (0x1U<<0U)
 
 // LUT188H Configuration
 
-#define GFXMMU_LUT188H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT188H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT188H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT188H_LO_0     (0x1U<<4U)
 
 // LUT189L Configuration
 
-#define GFXMMU_LUT189L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT189L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT189L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT189L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT189L_EN       (0x1U<<0)
+#define GFXMMU_LUT189L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT189L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT189L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT189L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT189L_EN       (0x1U<<0U)
 
 // LUT189H Configuration
 
-#define GFXMMU_LUT189H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT189H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT189H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT189H_LO_0     (0x1U<<4U)
 
 // LUT190L Configuration
 
-#define GFXMMU_LUT190L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT190L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT190L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT190L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT190L_EN       (0x1U<<0)
+#define GFXMMU_LUT190L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT190L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT190L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT190L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT190L_EN       (0x1U<<0U)
 
 // LUT190H Configuration
 
-#define GFXMMU_LUT190H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT190H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT190H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT190H_LO_0     (0x1U<<4U)
 
 // LUT191L Configuration
 
-#define GFXMMU_LUT191L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT191L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT191L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT191L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT191L_EN       (0x1U<<0)
+#define GFXMMU_LUT191L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT191L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT191L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT191L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT191L_EN       (0x1U<<0U)
 
 // LUT191H Configuration
 
-#define GFXMMU_LUT191H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT191H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT191H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT191H_LO_0     (0x1U<<4U)
 
 // LUT192L Configuration
 
-#define GFXMMU_LUT192L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT192L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT192L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT192L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT192L_EN       (0x1U<<0)
+#define GFXMMU_LUT192L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT192L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT192L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT192L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT192L_EN       (0x1U<<0U)
 
 // LUT192H Configuration
 
-#define GFXMMU_LUT192H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT192H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT192H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT192H_LO_0     (0x1U<<4U)
 
 // LUT193L Configuration
 
-#define GFXMMU_LUT193L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT193L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT193L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT193L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT193L_EN       (0x1U<<0)
+#define GFXMMU_LUT193L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT193L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT193L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT193L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT193L_EN       (0x1U<<0U)
 
 // LUT193H Configuration
 
-#define GFXMMU_LUT193H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT193H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT193H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT193H_LO_0     (0x1U<<4U)
 
 // LUT194L Configuration
 
-#define GFXMMU_LUT194L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT194L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT194L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT194L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT194L_EN       (0x1U<<0)
+#define GFXMMU_LUT194L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT194L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT194L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT194L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT194L_EN       (0x1U<<0U)
 
 // LUT194H Configuration
 
-#define GFXMMU_LUT194H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT194H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT194H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT194H_LO_0     (0x1U<<4U)
 
 // LUT195L Configuration
 
-#define GFXMMU_LUT195L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT195L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT195L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT195L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT195L_EN       (0x1U<<0)
+#define GFXMMU_LUT195L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT195L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT195L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT195L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT195L_EN       (0x1U<<0U)
 
 // LUT195H Configuration
 
-#define GFXMMU_LUT195H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT195H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT195H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT195H_LO_0     (0x1U<<4U)
 
 // LUT196L Configuration
 
-#define GFXMMU_LUT196L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT196L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT196L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT196L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT196L_EN       (0x1U<<0)
+#define GFXMMU_LUT196L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT196L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT196L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT196L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT196L_EN       (0x1U<<0U)
 
 // LUT196H Configuration
 
-#define GFXMMU_LUT196H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT196H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT196H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT196H_LO_0     (0x1U<<4U)
 
 // LUT197L Configuration
 
-#define GFXMMU_LUT197L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT197L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT197L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT197L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT197L_EN       (0x1U<<0)
+#define GFXMMU_LUT197L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT197L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT197L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT197L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT197L_EN       (0x1U<<0U)
 
 // LUT197H Configuration
 
-#define GFXMMU_LUT197H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT197H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT197H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT197H_LO_0     (0x1U<<4U)
 
 // LUT198L Configuration
 
-#define GFXMMU_LUT198L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT198L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT198L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT198L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT198L_EN       (0x1U<<0)
+#define GFXMMU_LUT198L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT198L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT198L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT198L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT198L_EN       (0x1U<<0U)
 
 // LUT198H Configuration
 
-#define GFXMMU_LUT198H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT198H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT198H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT198H_LO_0     (0x1U<<4U)
 
 // LUT199L Configuration
 
-#define GFXMMU_LUT199L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT199L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT199L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT199L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT199L_EN       (0x1U<<0)
+#define GFXMMU_LUT199L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT199L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT199L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT199L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT199L_EN       (0x1U<<0U)
 
 // LUT199H Configuration
 
-#define GFXMMU_LUT199H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT199H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT199H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT199H_LO_0     (0x1U<<4U)
 
 // LUT200L Configuration
 
-#define GFXMMU_LUT200L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT200L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT200L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT200L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT200L_EN       (0x1U<<0)
+#define GFXMMU_LUT200L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT200L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT200L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT200L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT200L_EN       (0x1U<<0U)
 
 // LUT200H Configuration
 
-#define GFXMMU_LUT200H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT200H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT200H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT200H_LO_0     (0x1U<<4U)
 
 // LUT201L Configuration
 
-#define GFXMMU_LUT201L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT201L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT201L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT201L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT201L_EN       (0x1U<<0)
+#define GFXMMU_LUT201L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT201L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT201L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT201L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT201L_EN       (0x1U<<0U)
 
 // LUT201H Configuration
 
-#define GFXMMU_LUT201H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT201H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT201H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT201H_LO_0     (0x1U<<4U)
 
 // LUT202L Configuration
 
-#define GFXMMU_LUT202L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT202L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT202L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT202L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT202L_EN       (0x1U<<0)
+#define GFXMMU_LUT202L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT202L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT202L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT202L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT202L_EN       (0x1U<<0U)
 
 // LUT202H Configuration
 
-#define GFXMMU_LUT202H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT202H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT202H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT202H_LO_0     (0x1U<<4U)
 
 // LUT203L Configuration
 
-#define GFXMMU_LUT203L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT203L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT203L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT203L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT203L_EN       (0x1U<<0)
+#define GFXMMU_LUT203L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT203L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT203L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT203L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT203L_EN       (0x1U<<0U)
 
 // LUT203H Configuration
 
-#define GFXMMU_LUT203H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT203H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT203H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT203H_LO_0     (0x1U<<4U)
 
 // LUT204L Configuration
 
-#define GFXMMU_LUT204L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT204L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT204L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT204L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT204L_EN       (0x1U<<0)
+#define GFXMMU_LUT204L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT204L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT204L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT204L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT204L_EN       (0x1U<<0U)
 
 // LUT204H Configuration
 
-#define GFXMMU_LUT204H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT204H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT204H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT204H_LO_0     (0x1U<<4U)
 
 // LUT205L Configuration
 
-#define GFXMMU_LUT205L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT205L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT205L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT205L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT205L_EN       (0x1U<<0)
+#define GFXMMU_LUT205L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT205L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT205L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT205L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT205L_EN       (0x1U<<0U)
 
 // LUT205H Configuration
 
-#define GFXMMU_LUT205H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT205H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT205H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT205H_LO_0     (0x1U<<4U)
 
 // LUT206L Configuration
 
-#define GFXMMU_LUT206L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT206L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT206L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT206L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT206L_EN       (0x1U<<0)
+#define GFXMMU_LUT206L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT206L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT206L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT206L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT206L_EN       (0x1U<<0U)
 
 // LUT206H Configuration
 
-#define GFXMMU_LUT206H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT206H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT206H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT206H_LO_0     (0x1U<<4U)
 
 // LUT207L Configuration
 
-#define GFXMMU_LUT207L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT207L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT207L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT207L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT207L_EN       (0x1U<<0)
+#define GFXMMU_LUT207L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT207L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT207L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT207L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT207L_EN       (0x1U<<0U)
 
 // LUT207H Configuration
 
-#define GFXMMU_LUT207H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT207H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT207H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT207H_LO_0     (0x1U<<4U)
 
 // LUT208L Configuration
 
-#define GFXMMU_LUT208L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT208L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT208L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT208L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT208L_EN       (0x1U<<0)
+#define GFXMMU_LUT208L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT208L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT208L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT208L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT208L_EN       (0x1U<<0U)
 
 // LUT208H Configuration
 
-#define GFXMMU_LUT208H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT208H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT208H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT208H_LO_0     (0x1U<<4U)
 
 // LUT209L Configuration
 
-#define GFXMMU_LUT209L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT209L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT209L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT209L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT209L_EN       (0x1U<<0)
+#define GFXMMU_LUT209L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT209L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT209L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT209L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT209L_EN       (0x1U<<0U)
 
 // LUT209H Configuration
 
-#define GFXMMU_LUT209H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT209H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT209H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT209H_LO_0     (0x1U<<4U)
 
 // LUT210L Configuration
 
-#define GFXMMU_LUT210L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT210L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT210L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT210L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT210L_EN       (0x1U<<0)
+#define GFXMMU_LUT210L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT210L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT210L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT210L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT210L_EN       (0x1U<<0U)
 
 // LUT210H Configuration
 
-#define GFXMMU_LUT210H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT210H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT210H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT210H_LO_0     (0x1U<<4U)
 
 // LUT211L Configuration
 
-#define GFXMMU_LUT211L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT211L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT211L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT211L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT211L_EN       (0x1U<<0)
+#define GFXMMU_LUT211L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT211L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT211L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT211L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT211L_EN       (0x1U<<0U)
 
 // LUT211H Configuration
 
-#define GFXMMU_LUT211H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT211H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT211H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT211H_LO_0     (0x1U<<4U)
 
 // LUT212L Configuration
 
-#define GFXMMU_LUT212L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT212L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT212L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT212L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT212L_EN       (0x1U<<0)
+#define GFXMMU_LUT212L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT212L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT212L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT212L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT212L_EN       (0x1U<<0U)
 
 // LUT212H Configuration
 
-#define GFXMMU_LUT212H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT212H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT212H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT212H_LO_0     (0x1U<<4U)
 
 // LUT213L Configuration
 
-#define GFXMMU_LUT213L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT213L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT213L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT213L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT213L_EN       (0x1U<<0)
+#define GFXMMU_LUT213L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT213L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT213L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT213L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT213L_EN       (0x1U<<0U)
 
 // LUT213H Configuration
 
-#define GFXMMU_LUT213H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT213H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT213H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT213H_LO_0     (0x1U<<4U)
 
 // LUT214L Configuration
 
-#define GFXMMU_LUT214L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT214L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT214L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT214L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT214L_EN       (0x1U<<0)
+#define GFXMMU_LUT214L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT214L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT214L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT214L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT214L_EN       (0x1U<<0U)
 
 // LUT214H Configuration
 
-#define GFXMMU_LUT214H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT214H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT214H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT214H_LO_0     (0x1U<<4U)
 
 // LUT215L Configuration
 
-#define GFXMMU_LUT215L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT215L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT215L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT215L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT215L_EN       (0x1U<<0)
+#define GFXMMU_LUT215L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT215L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT215L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT215L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT215L_EN       (0x1U<<0U)
 
 // LUT215H Configuration
 
-#define GFXMMU_LUT215H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT215H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT215H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT215H_LO_0     (0x1U<<4U)
 
 // LUT216L Configuration
 
-#define GFXMMU_LUT216L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT216L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT216L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT216L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT216L_EN       (0x1U<<0)
+#define GFXMMU_LUT216L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT216L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT216L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT216L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT216L_EN       (0x1U<<0U)
 
 // LUT216H Configuration
 
-#define GFXMMU_LUT216H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT216H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT216H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT216H_LO_0     (0x1U<<4U)
 
 // LUT217L Configuration
 
-#define GFXMMU_LUT217L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT217L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT217L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT217L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT217L_EN       (0x1U<<0)
+#define GFXMMU_LUT217L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT217L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT217L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT217L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT217L_EN       (0x1U<<0U)
 
 // LUT217H Configuration
 
-#define GFXMMU_LUT217H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT217H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT217H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT217H_LO_0     (0x1U<<4U)
 
 // LUT218L Configuration
 
-#define GFXMMU_LUT218L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT218L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT218L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT218L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT218L_EN       (0x1U<<0)
+#define GFXMMU_LUT218L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT218L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT218L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT218L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT218L_EN       (0x1U<<0U)
 
 // LUT218H Configuration
 
-#define GFXMMU_LUT218H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT218H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT218H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT218H_LO_0     (0x1U<<4U)
 
 // LUT219L Configuration
 
-#define GFXMMU_LUT219L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT219L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT219L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT219L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT219L_EN       (0x1U<<0)
+#define GFXMMU_LUT219L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT219L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT219L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT219L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT219L_EN       (0x1U<<0U)
 
 // LUT219H Configuration
 
-#define GFXMMU_LUT219H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT219H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT219H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT219H_LO_0     (0x1U<<4U)
 
 // LUT220L Configuration
 
-#define GFXMMU_LUT220L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT220L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT220L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT220L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT220L_EN       (0x1U<<0)
+#define GFXMMU_LUT220L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT220L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT220L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT220L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT220L_EN       (0x1U<<0U)
 
 // LUT220H Configuration
 
-#define GFXMMU_LUT220H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT220H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT220H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT220H_LO_0     (0x1U<<4U)
 
 // LUT221L Configuration
 
-#define GFXMMU_LUT221L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT221L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT221L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT221L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT221L_EN       (0x1U<<0)
+#define GFXMMU_LUT221L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT221L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT221L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT221L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT221L_EN       (0x1U<<0U)
 
 // LUT221H Configuration
 
-#define GFXMMU_LUT221H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT221H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT221H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT221H_LO_0     (0x1U<<4U)
 
 // LUT222L Configuration
 
-#define GFXMMU_LUT222L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT222L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT222L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT222L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT222L_EN       (0x1U<<0)
+#define GFXMMU_LUT222L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT222L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT222L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT222L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT222L_EN       (0x1U<<0U)
 
 // LUT222H Configuration
 
-#define GFXMMU_LUT222H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT222H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT222H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT222H_LO_0     (0x1U<<4U)
 
 // LUT223L Configuration
 
-#define GFXMMU_LUT223L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT223L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT223L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT223L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT223L_EN       (0x1U<<0)
+#define GFXMMU_LUT223L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT223L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT223L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT223L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT223L_EN       (0x1U<<0U)
 
 // LUT223H Configuration
 
-#define GFXMMU_LUT223H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT223H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT223H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT223H_LO_0     (0x1U<<4U)
 
 // LUT224L Configuration
 
-#define GFXMMU_LUT224L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT224L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT224L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT224L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT224L_EN       (0x1U<<0)
+#define GFXMMU_LUT224L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT224L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT224L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT224L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT224L_EN       (0x1U<<0U)
 
 // LUT224H Configuration
 
-#define GFXMMU_LUT224H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT224H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT224H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT224H_LO_0     (0x1U<<4U)
 
 // LUT225L Configuration
 
-#define GFXMMU_LUT225L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT225L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT225L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT225L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT225L_EN       (0x1U<<0)
+#define GFXMMU_LUT225L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT225L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT225L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT225L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT225L_EN       (0x1U<<0U)
 
 // LUT225H Configuration
 
-#define GFXMMU_LUT225H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT225H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT225H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT225H_LO_0     (0x1U<<4U)
 
 // LUT226L Configuration
 
-#define GFXMMU_LUT226L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT226L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT226L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT226L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT226L_EN       (0x1U<<0)
+#define GFXMMU_LUT226L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT226L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT226L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT226L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT226L_EN       (0x1U<<0U)
 
 // LUT226H Configuration
 
-#define GFXMMU_LUT226H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT226H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT226H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT226H_LO_0     (0x1U<<4U)
 
 // LUT227L Configuration
 
-#define GFXMMU_LUT227L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT227L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT227L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT227L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT227L_EN       (0x1U<<0)
+#define GFXMMU_LUT227L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT227L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT227L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT227L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT227L_EN       (0x1U<<0U)
 
 // LUT227H Configuration
 
-#define GFXMMU_LUT227H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT227H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT227H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT227H_LO_0     (0x1U<<4U)
 
 // LUT228L Configuration
 
-#define GFXMMU_LUT228L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT228L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT228L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT228L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT228L_EN       (0x1U<<0)
+#define GFXMMU_LUT228L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT228L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT228L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT228L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT228L_EN       (0x1U<<0U)
 
 // LUT228H Configuration
 
-#define GFXMMU_LUT228H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT228H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT228H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT228H_LO_0     (0x1U<<4U)
 
 // LUT229L Configuration
 
-#define GFXMMU_LUT229L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT229L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT229L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT229L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT229L_EN       (0x1U<<0)
+#define GFXMMU_LUT229L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT229L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT229L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT229L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT229L_EN       (0x1U<<0U)
 
 // LUT229H Configuration
 
-#define GFXMMU_LUT229H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT229H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT229H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT229H_LO_0     (0x1U<<4U)
 
 // LUT230L Configuration
 
-#define GFXMMU_LUT230L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT230L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT230L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT230L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT230L_EN       (0x1U<<0)
+#define GFXMMU_LUT230L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT230L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT230L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT230L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT230L_EN       (0x1U<<0U)
 
 // LUT230H Configuration
 
-#define GFXMMU_LUT230H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT230H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT230H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT230H_LO_0     (0x1U<<4U)
 
 // LUT231L Configuration
 
-#define GFXMMU_LUT231L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT231L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT231L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT231L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT231L_EN       (0x1U<<0)
+#define GFXMMU_LUT231L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT231L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT231L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT231L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT231L_EN       (0x1U<<0U)
 
 // LUT231H Configuration
 
-#define GFXMMU_LUT231H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT231H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT231H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT231H_LO_0     (0x1U<<4U)
 
 // LUT232L Configuration
 
-#define GFXMMU_LUT232L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT232L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT232L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT232L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT232L_EN       (0x1U<<0)
+#define GFXMMU_LUT232L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT232L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT232L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT232L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT232L_EN       (0x1U<<0U)
 
 // LUT232H Configuration
 
-#define GFXMMU_LUT232H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT232H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT232H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT232H_LO_0     (0x1U<<4U)
 
 // LUT233L Configuration
 
-#define GFXMMU_LUT233L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT233L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT233L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT233L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT233L_EN       (0x1U<<0)
+#define GFXMMU_LUT233L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT233L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT233L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT233L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT233L_EN       (0x1U<<0U)
 
 // LUT233H Configuration
 
-#define GFXMMU_LUT233H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT233H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT233H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT233H_LO_0     (0x1U<<4U)
 
 // LUT234L Configuration
 
-#define GFXMMU_LUT234L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT234L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT234L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT234L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT234L_EN       (0x1U<<0)
+#define GFXMMU_LUT234L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT234L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT234L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT234L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT234L_EN       (0x1U<<0U)
 
 // LUT234H Configuration
 
-#define GFXMMU_LUT234H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT234H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT234H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT234H_LO_0     (0x1U<<4U)
 
 // LUT235L Configuration
 
-#define GFXMMU_LUT235L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT235L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT235L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT235L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT235L_EN       (0x1U<<0)
+#define GFXMMU_LUT235L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT235L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT235L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT235L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT235L_EN       (0x1U<<0U)
 
 // LUT235H Configuration
 
-#define GFXMMU_LUT235H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT235H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT235H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT235H_LO_0     (0x1U<<4U)
 
 // LUT236L Configuration
 
-#define GFXMMU_LUT236L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT236L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT236L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT236L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT236L_EN       (0x1U<<0)
+#define GFXMMU_LUT236L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT236L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT236L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT236L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT236L_EN       (0x1U<<0U)
 
 // LUT236H Configuration
 
-#define GFXMMU_LUT236H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT236H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT236H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT236H_LO_0     (0x1U<<4U)
 
 // LUT237L Configuration
 
-#define GFXMMU_LUT237L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT237L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT237L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT237L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT237L_EN       (0x1U<<0)
+#define GFXMMU_LUT237L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT237L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT237L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT237L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT237L_EN       (0x1U<<0U)
 
 // LUT237H Configuration
 
-#define GFXMMU_LUT237H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT237H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT237H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT237H_LO_0     (0x1U<<4U)
 
 // LUT238L Configuration
 
-#define GFXMMU_LUT238L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT238L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT238L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT238L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT238L_EN       (0x1U<<0)
+#define GFXMMU_LUT238L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT238L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT238L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT238L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT238L_EN       (0x1U<<0U)
 
 // LUT238H Configuration
 
-#define GFXMMU_LUT238H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT238H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT238H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT238H_LO_0     (0x1U<<4U)
 
 // LUT239L Configuration
 
-#define GFXMMU_LUT239L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT239L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT239L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT239L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT239L_EN       (0x1U<<0)
+#define GFXMMU_LUT239L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT239L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT239L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT239L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT239L_EN       (0x1U<<0U)
 
 // LUT239H Configuration
 
-#define GFXMMU_LUT239H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT239H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT239H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT239H_LO_0     (0x1U<<4U)
 
 // LUT240L Configuration
 
-#define GFXMMU_LUT240L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT240L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT240L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT240L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT240L_EN       (0x1U<<0)
+#define GFXMMU_LUT240L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT240L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT240L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT240L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT240L_EN       (0x1U<<0U)
 
 // LUT240H Configuration
 
-#define GFXMMU_LUT240H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT240H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT240H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT240H_LO_0     (0x1U<<4U)
 
 // LUT241L Configuration
 
-#define GFXMMU_LUT241L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT241L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT241L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT241L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT241L_EN       (0x1U<<0)
+#define GFXMMU_LUT241L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT241L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT241L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT241L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT241L_EN       (0x1U<<0U)
 
 // LUT241H Configuration
 
-#define GFXMMU_LUT241H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT241H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT241H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT241H_LO_0     (0x1U<<4U)
 
 // LUT242L Configuration
 
-#define GFXMMU_LUT242L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT242L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT242L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT242L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT242L_EN       (0x1U<<0)
+#define GFXMMU_LUT242L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT242L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT242L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT242L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT242L_EN       (0x1U<<0U)
 
 // LUT242H Configuration
 
-#define GFXMMU_LUT242H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT242H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT242H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT242H_LO_0     (0x1U<<4U)
 
 // LUT243L Configuration
 
-#define GFXMMU_LUT243L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT243L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT243L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT243L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT243L_EN       (0x1U<<0)
+#define GFXMMU_LUT243L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT243L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT243L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT243L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT243L_EN       (0x1U<<0U)
 
 // LUT243H Configuration
 
-#define GFXMMU_LUT243H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT243H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT243H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT243H_LO_0     (0x1U<<4U)
 
 // LUT244L Configuration
 
-#define GFXMMU_LUT244L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT244L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT244L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT244L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT244L_EN       (0x1U<<0)
+#define GFXMMU_LUT244L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT244L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT244L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT244L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT244L_EN       (0x1U<<0U)
 
 // LUT244H Configuration
 
-#define GFXMMU_LUT244H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT244H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT244H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT244H_LO_0     (0x1U<<4U)
 
 // LUT245L Configuration
 
-#define GFXMMU_LUT245L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT245L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT245L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT245L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT245L_EN       (0x1U<<0)
+#define GFXMMU_LUT245L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT245L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT245L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT245L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT245L_EN       (0x1U<<0U)
 
 // LUT245H Configuration
 
-#define GFXMMU_LUT245H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT245H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT245H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT245H_LO_0     (0x1U<<4U)
 
 // LUT246L Configuration
 
-#define GFXMMU_LUT246L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT246L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT246L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT246L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT246L_EN       (0x1U<<0)
+#define GFXMMU_LUT246L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT246L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT246L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT246L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT246L_EN       (0x1U<<0U)
 
 // LUT246H Configuration
 
-#define GFXMMU_LUT246H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT246H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT246H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT246H_LO_0     (0x1U<<4U)
 
 // LUT247L Configuration
 
-#define GFXMMU_LUT247L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT247L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT247L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT247L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT247L_EN       (0x1U<<0)
+#define GFXMMU_LUT247L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT247L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT247L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT247L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT247L_EN       (0x1U<<0U)
 
 // LUT247H Configuration
 
-#define GFXMMU_LUT247H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT247H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT247H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT247H_LO_0     (0x1U<<4U)
 
 // LUT248L Configuration
 
-#define GFXMMU_LUT248L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT248L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT248L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT248L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT248L_EN       (0x1U<<0)
+#define GFXMMU_LUT248L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT248L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT248L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT248L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT248L_EN       (0x1U<<0U)
 
 // LUT248H Configuration
 
-#define GFXMMU_LUT248H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT248H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT248H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT248H_LO_0     (0x1U<<4U)
 
 // LUT249L Configuration
 
-#define GFXMMU_LUT249L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT249L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT249L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT249L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT249L_EN       (0x1U<<0)
+#define GFXMMU_LUT249L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT249L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT249L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT249L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT249L_EN       (0x1U<<0U)
 
 // LUT249H Configuration
 
-#define GFXMMU_LUT249H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT249H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT249H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT249H_LO_0     (0x1U<<4U)
 
 // LUT250L Configuration
 
-#define GFXMMU_LUT250L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT250L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT250L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT250L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT250L_EN       (0x1U<<0)
+#define GFXMMU_LUT250L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT250L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT250L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT250L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT250L_EN       (0x1U<<0U)
 
 // LUT250H Configuration
 
-#define GFXMMU_LUT250H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT250H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT250H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT250H_LO_0     (0x1U<<4U)
 
 // LUT251L Configuration
 
-#define GFXMMU_LUT251L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT251L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT251L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT251L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT251L_EN       (0x1U<<0)
+#define GFXMMU_LUT251L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT251L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT251L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT251L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT251L_EN       (0x1U<<0U)
 
 // LUT251H Configuration
 
-#define GFXMMU_LUT251H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT251H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT251H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT251H_LO_0     (0x1U<<4U)
 
 // LUT252L Configuration
 
-#define GFXMMU_LUT252L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT252L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT252L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT252L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT252L_EN       (0x1U<<0)
+#define GFXMMU_LUT252L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT252L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT252L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT252L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT252L_EN       (0x1U<<0U)
 
 // LUT252H Configuration
 
-#define GFXMMU_LUT252H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT252H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT252H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT252H_LO_0     (0x1U<<4U)
 
 // LUT253L Configuration
 
-#define GFXMMU_LUT253L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT253L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT253L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT253L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT253L_EN       (0x1U<<0)
+#define GFXMMU_LUT253L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT253L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT253L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT253L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT253L_EN       (0x1U<<0U)
 
 // LUT253H Configuration
 
-#define GFXMMU_LUT253H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT253H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT253H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT253H_LO_0     (0x1U<<4U)
 
 // LUT254L Configuration
 
-#define GFXMMU_LUT254L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT254L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT254L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT254L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT254L_EN       (0x1U<<0)
+#define GFXMMU_LUT254L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT254L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT254L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT254L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT254L_EN       (0x1U<<0U)
 
 // LUT254H Configuration
 
-#define GFXMMU_LUT254H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT254H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT254H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT254H_LO_0     (0x1U<<4U)
 
 // LUT255L Configuration
 
-#define GFXMMU_LUT255L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT255L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT255L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT255L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT255L_EN       (0x1U<<0)
+#define GFXMMU_LUT255L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT255L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT255L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT255L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT255L_EN       (0x1U<<0U)
 
 // LUT255H Configuration
 
-#define GFXMMU_LUT255H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT255H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT255H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT255H_LO_0     (0x1U<<4U)
 
 // LUT256L Configuration
 
-#define GFXMMU_LUT256L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT256L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT256L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT256L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT256L_EN       (0x1U<<0)
+#define GFXMMU_LUT256L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT256L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT256L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT256L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT256L_EN       (0x1U<<0U)
 
 // LUT256H Configuration
 
-#define GFXMMU_LUT256H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT256H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT256H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT256H_LO_0     (0x1U<<4U)
 
 // LUT257L Configuration
 
-#define GFXMMU_LUT257L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT257L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT257L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT257L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT257L_EN       (0x1U<<0)
+#define GFXMMU_LUT257L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT257L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT257L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT257L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT257L_EN       (0x1U<<0U)
 
 // LUT257H Configuration
 
-#define GFXMMU_LUT257H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT257H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT257H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT257H_LO_0     (0x1U<<4U)
 
 // LUT258L Configuration
 
-#define GFXMMU_LUT258L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT258L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT258L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT258L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT258L_EN       (0x1U<<0)
+#define GFXMMU_LUT258L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT258L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT258L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT258L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT258L_EN       (0x1U<<0U)
 
 // LUT258H Configuration
 
-#define GFXMMU_LUT258H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT258H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT258H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT258H_LO_0     (0x1U<<4U)
 
 // LUT259L Configuration
 
-#define GFXMMU_LUT259L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT259L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT259L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT259L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT259L_EN       (0x1U<<0)
+#define GFXMMU_LUT259L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT259L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT259L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT259L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT259L_EN       (0x1U<<0U)
 
 // LUT259H Configuration
 
-#define GFXMMU_LUT259H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT259H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT259H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT259H_LO_0     (0x1U<<4U)
 
 // LUT260L Configuration
 
-#define GFXMMU_LUT260L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT260L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT260L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT260L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT260L_EN       (0x1U<<0)
+#define GFXMMU_LUT260L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT260L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT260L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT260L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT260L_EN       (0x1U<<0U)
 
 // LUT260H Configuration
 
-#define GFXMMU_LUT260H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT260H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT260H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT260H_LO_0     (0x1U<<4U)
 
 // LUT261L Configuration
 
-#define GFXMMU_LUT261L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT261L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT261L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT261L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT261L_EN       (0x1U<<0)
+#define GFXMMU_LUT261L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT261L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT261L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT261L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT261L_EN       (0x1U<<0U)
 
 // LUT261H Configuration
 
-#define GFXMMU_LUT261H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT261H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT261H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT261H_LO_0     (0x1U<<4U)
 
 // LUT262L Configuration
 
-#define GFXMMU_LUT262L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT262L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT262L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT262L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT262L_EN       (0x1U<<0)
+#define GFXMMU_LUT262L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT262L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT262L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT262L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT262L_EN       (0x1U<<0U)
 
 // LUT262H Configuration
 
-#define GFXMMU_LUT262H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT262H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT262H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT262H_LO_0     (0x1U<<4U)
 
 // LUT263L Configuration
 
-#define GFXMMU_LUT263L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT263L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT263L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT263L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT263L_EN       (0x1U<<0)
+#define GFXMMU_LUT263L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT263L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT263L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT263L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT263L_EN       (0x1U<<0U)
 
 // LUT263H Configuration
 
-#define GFXMMU_LUT263H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT263H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT263H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT263H_LO_0     (0x1U<<4U)
 
 // LUT264L Configuration
 
-#define GFXMMU_LUT264L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT264L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT264L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT264L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT264L_EN       (0x1U<<0)
+#define GFXMMU_LUT264L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT264L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT264L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT264L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT264L_EN       (0x1U<<0U)
 
 // LUT264H Configuration
 
-#define GFXMMU_LUT264H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT264H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT264H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT264H_LO_0     (0x1U<<4U)
 
 // LUT265L Configuration
 
-#define GFXMMU_LUT265L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT265L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT265L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT265L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT265L_EN       (0x1U<<0)
+#define GFXMMU_LUT265L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT265L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT265L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT265L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT265L_EN       (0x1U<<0U)
 
 // LUT265H Configuration
 
-#define GFXMMU_LUT265H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT265H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT265H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT265H_LO_0     (0x1U<<4U)
 
 // LUT266L Configuration
 
-#define GFXMMU_LUT266L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT266L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT266L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT266L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT266L_EN       (0x1U<<0)
+#define GFXMMU_LUT266L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT266L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT266L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT266L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT266L_EN       (0x1U<<0U)
 
 // LUT266H Configuration
 
-#define GFXMMU_LUT266H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT266H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT266H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT266H_LO_0     (0x1U<<4U)
 
 // LUT267L Configuration
 
-#define GFXMMU_LUT267L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT267L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT267L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT267L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT267L_EN       (0x1U<<0)
+#define GFXMMU_LUT267L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT267L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT267L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT267L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT267L_EN       (0x1U<<0U)
 
 // LUT267H Configuration
 
-#define GFXMMU_LUT267H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT267H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT267H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT267H_LO_0     (0x1U<<4U)
 
 // LUT268L Configuration
 
-#define GFXMMU_LUT268L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT268L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT268L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT268L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT268L_EN       (0x1U<<0)
+#define GFXMMU_LUT268L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT268L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT268L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT268L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT268L_EN       (0x1U<<0U)
 
 // LUT268H Configuration
 
-#define GFXMMU_LUT268H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT268H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT268H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT268H_LO_0     (0x1U<<4U)
 
 // LUT269L Configuration
 
-#define GFXMMU_LUT269L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT269L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT269L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT269L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT269L_EN       (0x1U<<0)
+#define GFXMMU_LUT269L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT269L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT269L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT269L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT269L_EN       (0x1U<<0U)
 
 // LUT269H Configuration
 
-#define GFXMMU_LUT269H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT269H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT269H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT269H_LO_0     (0x1U<<4U)
 
 // LUT270L Configuration
 
-#define GFXMMU_LUT270L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT270L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT270L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT270L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT270L_EN       (0x1U<<0)
+#define GFXMMU_LUT270L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT270L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT270L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT270L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT270L_EN       (0x1U<<0U)
 
 // LUT270H Configuration
 
-#define GFXMMU_LUT270H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT270H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT270H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT270H_LO_0     (0x1U<<4U)
 
 // LUT271L Configuration
 
-#define GFXMMU_LUT271L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT271L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT271L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT271L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT271L_EN       (0x1U<<0)
+#define GFXMMU_LUT271L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT271L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT271L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT271L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT271L_EN       (0x1U<<0U)
 
 // LUT271H Configuration
 
-#define GFXMMU_LUT271H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT271H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT271H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT271H_LO_0     (0x1U<<4U)
 
 // LUT272L Configuration
 
-#define GFXMMU_LUT272L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT272L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT272L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT272L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT272L_EN       (0x1U<<0)
+#define GFXMMU_LUT272L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT272L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT272L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT272L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT272L_EN       (0x1U<<0U)
 
 // LUT272H Configuration
 
-#define GFXMMU_LUT272H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT272H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT272H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT272H_LO_0     (0x1U<<4U)
 
 // LUT273L Configuration
 
-#define GFXMMU_LUT273L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT273L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT273L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT273L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT273L_EN       (0x1U<<0)
+#define GFXMMU_LUT273L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT273L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT273L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT273L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT273L_EN       (0x1U<<0U)
 
 // LUT273H Configuration
 
-#define GFXMMU_LUT273H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT273H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT273H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT273H_LO_0     (0x1U<<4U)
 
 // LUT274L Configuration
 
-#define GFXMMU_LUT274L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT274L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT274L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT274L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT274L_EN       (0x1U<<0)
+#define GFXMMU_LUT274L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT274L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT274L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT274L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT274L_EN       (0x1U<<0U)
 
 // LUT274H Configuration
 
-#define GFXMMU_LUT274H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT274H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT274H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT274H_LO_0     (0x1U<<4U)
 
 // LUT275L Configuration
 
-#define GFXMMU_LUT275L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT275L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT275L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT275L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT275L_EN       (0x1U<<0)
+#define GFXMMU_LUT275L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT275L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT275L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT275L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT275L_EN       (0x1U<<0U)
 
 // LUT275H Configuration
 
-#define GFXMMU_LUT275H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT275H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT275H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT275H_LO_0     (0x1U<<4U)
 
 // LUT276L Configuration
 
-#define GFXMMU_LUT276L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT276L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT276L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT276L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT276L_EN       (0x1U<<0)
+#define GFXMMU_LUT276L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT276L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT276L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT276L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT276L_EN       (0x1U<<0U)
 
 // LUT276H Configuration
 
-#define GFXMMU_LUT276H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT276H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT276H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT276H_LO_0     (0x1U<<4U)
 
 // LUT277L Configuration
 
-#define GFXMMU_LUT277L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT277L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT277L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT277L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT277L_EN       (0x1U<<0)
+#define GFXMMU_LUT277L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT277L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT277L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT277L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT277L_EN       (0x1U<<0U)
 
 // LUT277H Configuration
 
-#define GFXMMU_LUT277H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT277H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT277H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT277H_LO_0     (0x1U<<4U)
 
 // LUT278L Configuration
 
-#define GFXMMU_LUT278L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT278L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT278L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT278L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT278L_EN       (0x1U<<0)
+#define GFXMMU_LUT278L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT278L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT278L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT278L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT278L_EN       (0x1U<<0U)
 
 // LUT278H Configuration
 
-#define GFXMMU_LUT278H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT278H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT278H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT278H_LO_0     (0x1U<<4U)
 
 // LUT279L Configuration
 
-#define GFXMMU_LUT279L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT279L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT279L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT279L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT279L_EN       (0x1U<<0)
+#define GFXMMU_LUT279L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT279L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT279L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT279L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT279L_EN       (0x1U<<0U)
 
 // LUT279H Configuration
 
-#define GFXMMU_LUT279H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT279H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT279H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT279H_LO_0     (0x1U<<4U)
 
 // LUT280L Configuration
 
-#define GFXMMU_LUT280L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT280L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT280L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT280L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT280L_EN       (0x1U<<0)
+#define GFXMMU_LUT280L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT280L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT280L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT280L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT280L_EN       (0x1U<<0U)
 
 // LUT280H Configuration
 
-#define GFXMMU_LUT280H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT280H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT280H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT280H_LO_0     (0x1U<<4U)
 
 // LUT281L Configuration
 
-#define GFXMMU_LUT281L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT281L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT281L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT281L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT281L_EN       (0x1U<<0)
+#define GFXMMU_LUT281L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT281L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT281L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT281L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT281L_EN       (0x1U<<0U)
 
 // LUT281H Configuration
 
-#define GFXMMU_LUT281H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT281H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT281H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT281H_LO_0     (0x1U<<4U)
 
 // LUT282L Configuration
 
-#define GFXMMU_LUT282L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT282L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT282L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT282L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT282L_EN       (0x1U<<0)
+#define GFXMMU_LUT282L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT282L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT282L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT282L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT282L_EN       (0x1U<<0U)
 
 // LUT282H Configuration
 
-#define GFXMMU_LUT282H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT282H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT282H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT282H_LO_0     (0x1U<<4U)
 
 // LUT283L Configuration
 
-#define GFXMMU_LUT283L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT283L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT283L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT283L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT283L_EN       (0x1U<<0)
+#define GFXMMU_LUT283L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT283L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT283L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT283L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT283L_EN       (0x1U<<0U)
 
 // LUT283H Configuration
 
-#define GFXMMU_LUT283H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT283H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT283H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT283H_LO_0     (0x1U<<4U)
 
 // LUT284L Configuration
 
-#define GFXMMU_LUT284L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT284L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT284L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT284L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT284L_EN       (0x1U<<0)
+#define GFXMMU_LUT284L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT284L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT284L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT284L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT284L_EN       (0x1U<<0U)
 
 // LUT284H Configuration
 
-#define GFXMMU_LUT284H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT284H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT284H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT284H_LO_0     (0x1U<<4U)
 
 // LUT285L Configuration
 
-#define GFXMMU_LUT285L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT285L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT285L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT285L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT285L_EN       (0x1U<<0)
+#define GFXMMU_LUT285L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT285L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT285L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT285L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT285L_EN       (0x1U<<0U)
 
 // LUT285H Configuration
 
-#define GFXMMU_LUT285H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT285H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT285H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT285H_LO_0     (0x1U<<4U)
 
 // LUT286L Configuration
 
-#define GFXMMU_LUT286L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT286L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT286L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT286L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT286L_EN       (0x1U<<0)
+#define GFXMMU_LUT286L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT286L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT286L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT286L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT286L_EN       (0x1U<<0U)
 
 // LUT286H Configuration
 
-#define GFXMMU_LUT286H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT286H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT286H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT286H_LO_0     (0x1U<<4U)
 
 // LUT287L Configuration
 
-#define GFXMMU_LUT287L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT287L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT287L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT287L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT287L_EN       (0x1U<<0)
+#define GFXMMU_LUT287L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT287L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT287L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT287L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT287L_EN       (0x1U<<0U)
 
 // LUT287H Configuration
 
-#define GFXMMU_LUT287H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT287H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT287H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT287H_LO_0     (0x1U<<4U)
 
 // LUT288L Configuration
 
-#define GFXMMU_LUT288L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT288L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT288L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT288L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT288L_EN       (0x1U<<0)
+#define GFXMMU_LUT288L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT288L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT288L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT288L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT288L_EN       (0x1U<<0U)
 
 // LUT288H Configuration
 
-#define GFXMMU_LUT288H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT288H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT288H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT288H_LO_0     (0x1U<<4U)
 
 // LUT289L Configuration
 
-#define GFXMMU_LUT289L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT289L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT289L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT289L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT289L_EN       (0x1U<<0)
+#define GFXMMU_LUT289L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT289L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT289L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT289L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT289L_EN       (0x1U<<0U)
 
 // LUT289H Configuration
 
-#define GFXMMU_LUT289H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT289H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT289H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT289H_LO_0     (0x1U<<4U)
 
 // LUT290L Configuration
 
-#define GFXMMU_LUT290L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT290L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT290L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT290L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT290L_EN       (0x1U<<0)
+#define GFXMMU_LUT290L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT290L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT290L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT290L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT290L_EN       (0x1U<<0U)
 
 // LUT290H Configuration
 
-#define GFXMMU_LUT290H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT290H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT290H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT290H_LO_0     (0x1U<<4U)
 
 // LUT291L Configuration
 
-#define GFXMMU_LUT291L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT291L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT291L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT291L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT291L_EN       (0x1U<<0)
+#define GFXMMU_LUT291L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT291L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT291L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT291L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT291L_EN       (0x1U<<0U)
 
 // LUT291H Configuration
 
-#define GFXMMU_LUT291H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT291H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT291H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT291H_LO_0     (0x1U<<4U)
 
 // LUT292L Configuration
 
-#define GFXMMU_LUT292L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT292L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT292L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT292L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT292L_EN       (0x1U<<0)
+#define GFXMMU_LUT292L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT292L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT292L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT292L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT292L_EN       (0x1U<<0U)
 
 // LUT292H Configuration
 
-#define GFXMMU_LUT292H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT292H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT292H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT292H_LO_0     (0x1U<<4U)
 
 // LUT293L Configuration
 
-#define GFXMMU_LUT293L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT293L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT293L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT293L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT293L_EN       (0x1U<<0)
+#define GFXMMU_LUT293L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT293L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT293L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT293L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT293L_EN       (0x1U<<0U)
 
 // LUT293H Configuration
 
-#define GFXMMU_LUT293H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT293H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT293H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT293H_LO_0     (0x1U<<4U)
 
 // LUT294L Configuration
 
-#define GFXMMU_LUT294L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT294L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT294L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT294L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT294L_EN       (0x1U<<0)
+#define GFXMMU_LUT294L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT294L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT294L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT294L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT294L_EN       (0x1U<<0U)
 
 // LUT294H Configuration
 
-#define GFXMMU_LUT294H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT294H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT294H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT294H_LO_0     (0x1U<<4U)
 
 // LUT295L Configuration
 
-#define GFXMMU_LUT295L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT295L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT295L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT295L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT295L_EN       (0x1U<<0)
+#define GFXMMU_LUT295L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT295L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT295L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT295L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT295L_EN       (0x1U<<0U)
 
 // LUT295H Configuration
 
-#define GFXMMU_LUT295H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT295H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT295H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT295H_LO_0     (0x1U<<4U)
 
 // LUT296L Configuration
 
-#define GFXMMU_LUT296L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT296L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT296L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT296L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT296L_EN       (0x1U<<0)
+#define GFXMMU_LUT296L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT296L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT296L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT296L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT296L_EN       (0x1U<<0U)
 
 // LUT296H Configuration
 
-#define GFXMMU_LUT296H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT296H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT296H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT296H_LO_0     (0x1U<<4U)
 
 // LUT297L Configuration
 
-#define GFXMMU_LUT297L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT297L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT297L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT297L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT297L_EN       (0x1U<<0)
+#define GFXMMU_LUT297L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT297L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT297L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT297L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT297L_EN       (0x1U<<0U)
 
 // LUT297H Configuration
 
-#define GFXMMU_LUT297H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT297H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT297H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT297H_LO_0     (0x1U<<4U)
 
 // LUT298L Configuration
 
-#define GFXMMU_LUT298L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT298L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT298L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT298L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT298L_EN       (0x1U<<0)
+#define GFXMMU_LUT298L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT298L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT298L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT298L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT298L_EN       (0x1U<<0U)
 
 // LUT298H Configuration
 
-#define GFXMMU_LUT298H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT298H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT298H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT298H_LO_0     (0x1U<<4U)
 
 // LUT299L Configuration
 
-#define GFXMMU_LUT299L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT299L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT299L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT299L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT299L_EN       (0x1U<<0)
+#define GFXMMU_LUT299L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT299L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT299L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT299L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT299L_EN       (0x1U<<0U)
 
 // LUT299H Configuration
 
-#define GFXMMU_LUT299H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT299H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT299H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT299H_LO_0     (0x1U<<4U)
 
 // LUT300L Configuration
 
-#define GFXMMU_LUT300L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT300L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT300L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT300L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT300L_EN       (0x1U<<0)
+#define GFXMMU_LUT300L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT300L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT300L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT300L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT300L_EN       (0x1U<<0U)
 
 // LUT300H Configuration
 
-#define GFXMMU_LUT300H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT300H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT300H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT300H_LO_0     (0x1U<<4U)
 
 // LUT301L Configuration
 
-#define GFXMMU_LUT301L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT301L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT301L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT301L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT301L_EN       (0x1U<<0)
+#define GFXMMU_LUT301L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT301L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT301L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT301L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT301L_EN       (0x1U<<0U)
 
 // LUT301H Configuration
 
-#define GFXMMU_LUT301H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT301H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT301H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT301H_LO_0     (0x1U<<4U)
 
 // LUT302L Configuration
 
-#define GFXMMU_LUT302L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT302L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT302L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT302L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT302L_EN       (0x1U<<0)
+#define GFXMMU_LUT302L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT302L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT302L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT302L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT302L_EN       (0x1U<<0U)
 
 // LUT302H Configuration
 
-#define GFXMMU_LUT302H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT302H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT302H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT302H_LO_0     (0x1U<<4U)
 
 // LUT303L Configuration
 
-#define GFXMMU_LUT303L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT303L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT303L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT303L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT303L_EN       (0x1U<<0)
+#define GFXMMU_LUT303L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT303L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT303L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT303L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT303L_EN       (0x1U<<0U)
 
 // LUT303H Configuration
 
-#define GFXMMU_LUT303H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT303H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT303H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT303H_LO_0     (0x1U<<4U)
 
 // LUT304L Configuration
 
-#define GFXMMU_LUT304L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT304L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT304L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT304L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT304L_EN       (0x1U<<0)
+#define GFXMMU_LUT304L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT304L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT304L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT304L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT304L_EN       (0x1U<<0U)
 
 // LUT304H Configuration
 
-#define GFXMMU_LUT304H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT304H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT304H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT304H_LO_0     (0x1U<<4U)
 
 // LUT305L Configuration
 
-#define GFXMMU_LUT305L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT305L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT305L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT305L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT305L_EN       (0x1U<<0)
+#define GFXMMU_LUT305L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT305L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT305L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT305L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT305L_EN       (0x1U<<0U)
 
 // LUT305H Configuration
 
-#define GFXMMU_LUT305H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT305H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT305H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT305H_LO_0     (0x1U<<4U)
 
 // LUT306L Configuration
 
-#define GFXMMU_LUT306L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT306L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT306L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT306L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT306L_EN       (0x1U<<0)
+#define GFXMMU_LUT306L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT306L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT306L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT306L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT306L_EN       (0x1U<<0U)
 
 // LUT306H Configuration
 
-#define GFXMMU_LUT306H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT306H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT306H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT306H_LO_0     (0x1U<<4U)
 
 // LUT307L Configuration
 
-#define GFXMMU_LUT307L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT307L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT307L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT307L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT307L_EN       (0x1U<<0)
+#define GFXMMU_LUT307L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT307L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT307L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT307L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT307L_EN       (0x1U<<0U)
 
 // LUT307H Configuration
 
-#define GFXMMU_LUT307H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT307H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT307H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT307H_LO_0     (0x1U<<4U)
 
 // LUT308L Configuration
 
-#define GFXMMU_LUT308L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT308L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT308L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT308L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT308L_EN       (0x1U<<0)
+#define GFXMMU_LUT308L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT308L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT308L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT308L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT308L_EN       (0x1U<<0U)
 
 // LUT308H Configuration
 
-#define GFXMMU_LUT308H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT308H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT308H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT308H_LO_0     (0x1U<<4U)
 
 // LUT309L Configuration
 
-#define GFXMMU_LUT309L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT309L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT309L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT309L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT309L_EN       (0x1U<<0)
+#define GFXMMU_LUT309L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT309L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT309L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT309L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT309L_EN       (0x1U<<0U)
 
 // LUT309H Configuration
 
-#define GFXMMU_LUT309H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT309H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT309H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT309H_LO_0     (0x1U<<4U)
 
 // LUT310L Configuration
 
-#define GFXMMU_LUT310L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT310L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT310L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT310L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT310L_EN       (0x1U<<0)
+#define GFXMMU_LUT310L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT310L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT310L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT310L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT310L_EN       (0x1U<<0U)
 
 // LUT310H Configuration
 
-#define GFXMMU_LUT310H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT310H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT310H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT310H_LO_0     (0x1U<<4U)
 
 // LUT311L Configuration
 
-#define GFXMMU_LUT311L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT311L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT311L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT311L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT311L_EN       (0x1U<<0)
+#define GFXMMU_LUT311L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT311L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT311L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT311L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT311L_EN       (0x1U<<0U)
 
 // LUT311H Configuration
 
-#define GFXMMU_LUT311H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT311H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT311H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT311H_LO_0     (0x1U<<4U)
 
 // LUT312L Configuration
 
-#define GFXMMU_LUT312L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT312L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT312L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT312L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT312L_EN       (0x1U<<0)
+#define GFXMMU_LUT312L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT312L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT312L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT312L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT312L_EN       (0x1U<<0U)
 
 // LUT312H Configuration
 
-#define GFXMMU_LUT312H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT312H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT312H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT312H_LO_0     (0x1U<<4U)
 
 // LUT313L Configuration
 
-#define GFXMMU_LUT313L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT313L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT313L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT313L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT313L_EN       (0x1U<<0)
+#define GFXMMU_LUT313L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT313L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT313L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT313L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT313L_EN       (0x1U<<0U)
 
 // LUT313H Configuration
 
-#define GFXMMU_LUT313H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT313H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT313H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT313H_LO_0     (0x1U<<4U)
 
 // LUT314L Configuration
 
-#define GFXMMU_LUT314L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT314L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT314L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT314L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT314L_EN       (0x1U<<0)
+#define GFXMMU_LUT314L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT314L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT314L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT314L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT314L_EN       (0x1U<<0U)
 
 // LUT314H Configuration
 
-#define GFXMMU_LUT314H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT314H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT314H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT314H_LO_0     (0x1U<<4U)
 
 // LUT315L Configuration
 
-#define GFXMMU_LUT315L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT315L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT315L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT315L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT315L_EN       (0x1U<<0)
+#define GFXMMU_LUT315L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT315L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT315L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT315L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT315L_EN       (0x1U<<0U)
 
 // LUT315H Configuration
 
-#define GFXMMU_LUT315H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT315H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT315H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT315H_LO_0     (0x1U<<4U)
 
 // LUT316L Configuration
 
-#define GFXMMU_LUT316L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT316L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT316L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT316L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT316L_EN       (0x1U<<0)
+#define GFXMMU_LUT316L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT316L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT316L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT316L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT316L_EN       (0x1U<<0U)
 
 // LUT316H Configuration
 
-#define GFXMMU_LUT316H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT316H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT316H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT316H_LO_0     (0x1U<<4U)
 
 // LUT317L Configuration
 
-#define GFXMMU_LUT317L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT317L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT317L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT317L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT317L_EN       (0x1U<<0)
+#define GFXMMU_LUT317L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT317L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT317L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT317L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT317L_EN       (0x1U<<0U)
 
 // LUT317H Configuration
 
-#define GFXMMU_LUT317H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT317H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT317H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT317H_LO_0     (0x1U<<4U)
 
 // LUT318L Configuration
 
-#define GFXMMU_LUT318L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT318L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT318L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT318L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT318L_EN       (0x1U<<0)
+#define GFXMMU_LUT318L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT318L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT318L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT318L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT318L_EN       (0x1U<<0U)
 
 // LUT318H Configuration
 
-#define GFXMMU_LUT318H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT318H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT318H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT318H_LO_0     (0x1U<<4U)
 
 // LUT319L Configuration
 
-#define GFXMMU_LUT319L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT319L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT319L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT319L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT319L_EN       (0x1U<<0)
+#define GFXMMU_LUT319L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT319L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT319L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT319L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT319L_EN       (0x1U<<0U)
 
 // LUT319H Configuration
 
-#define GFXMMU_LUT319H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT319H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT319H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT319H_LO_0     (0x1U<<4U)
 
 // LUT320L Configuration
 
-#define GFXMMU_LUT320L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT320L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT320L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT320L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT320L_EN       (0x1U<<0)
+#define GFXMMU_LUT320L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT320L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT320L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT320L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT320L_EN       (0x1U<<0U)
 
 // LUT320H Configuration
 
-#define GFXMMU_LUT320H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT320H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT320H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT320H_LO_0     (0x1U<<4U)
 
 // LUT321L Configuration
 
-#define GFXMMU_LUT321L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT321L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT321L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT321L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT321L_EN       (0x1U<<0)
+#define GFXMMU_LUT321L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT321L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT321L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT321L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT321L_EN       (0x1U<<0U)
 
 // LUT321H Configuration
 
-#define GFXMMU_LUT321H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT321H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT321H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT321H_LO_0     (0x1U<<4U)
 
 // LUT322L Configuration
 
-#define GFXMMU_LUT322L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT322L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT322L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT322L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT322L_EN       (0x1U<<0)
+#define GFXMMU_LUT322L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT322L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT322L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT322L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT322L_EN       (0x1U<<0U)
 
 // LUT322H Configuration
 
-#define GFXMMU_LUT322H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT322H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT322H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT322H_LO_0     (0x1U<<4U)
 
 // LUT323L Configuration
 
-#define GFXMMU_LUT323L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT323L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT323L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT323L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT323L_EN       (0x1U<<0)
+#define GFXMMU_LUT323L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT323L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT323L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT323L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT323L_EN       (0x1U<<0U)
 
 // LUT323H Configuration
 
-#define GFXMMU_LUT323H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT323H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT323H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT323H_LO_0     (0x1U<<4U)
 
 // LUT324L Configuration
 
-#define GFXMMU_LUT324L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT324L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT324L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT324L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT324L_EN       (0x1U<<0)
+#define GFXMMU_LUT324L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT324L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT324L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT324L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT324L_EN       (0x1U<<0U)
 
 // LUT324H Configuration
 
-#define GFXMMU_LUT324H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT324H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT324H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT324H_LO_0     (0x1U<<4U)
 
 // LUT325L Configuration
 
-#define GFXMMU_LUT325L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT325L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT325L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT325L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT325L_EN       (0x1U<<0)
+#define GFXMMU_LUT325L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT325L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT325L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT325L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT325L_EN       (0x1U<<0U)
 
 // LUT325H Configuration
 
-#define GFXMMU_LUT325H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT325H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT325H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT325H_LO_0     (0x1U<<4U)
 
 // LUT326L Configuration
 
-#define GFXMMU_LUT326L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT326L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT326L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT326L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT326L_EN       (0x1U<<0)
+#define GFXMMU_LUT326L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT326L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT326L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT326L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT326L_EN       (0x1U<<0U)
 
 // LUT326H Configuration
 
-#define GFXMMU_LUT326H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT326H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT326H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT326H_LO_0     (0x1U<<4U)
 
 // LUT327L Configuration
 
-#define GFXMMU_LUT327L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT327L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT327L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT327L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT327L_EN       (0x1U<<0)
+#define GFXMMU_LUT327L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT327L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT327L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT327L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT327L_EN       (0x1U<<0U)
 
 // LUT327H Configuration
 
-#define GFXMMU_LUT327H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT327H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT327H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT327H_LO_0     (0x1U<<4U)
 
 // LUT328L Configuration
 
-#define GFXMMU_LUT328L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT328L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT328L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT328L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT328L_EN       (0x1U<<0)
+#define GFXMMU_LUT328L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT328L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT328L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT328L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT328L_EN       (0x1U<<0U)
 
 // LUT328H Configuration
 
-#define GFXMMU_LUT328H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT328H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT328H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT328H_LO_0     (0x1U<<4U)
 
 // LUT329L Configuration
 
-#define GFXMMU_LUT329L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT329L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT329L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT329L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT329L_EN       (0x1U<<0)
+#define GFXMMU_LUT329L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT329L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT329L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT329L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT329L_EN       (0x1U<<0U)
 
 // LUT329H Configuration
 
-#define GFXMMU_LUT329H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT329H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT329H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT329H_LO_0     (0x1U<<4U)
 
 // LUT330L Configuration
 
-#define GFXMMU_LUT330L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT330L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT330L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT330L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT330L_EN       (0x1U<<0)
+#define GFXMMU_LUT330L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT330L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT330L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT330L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT330L_EN       (0x1U<<0U)
 
 // LUT330H Configuration
 
-#define GFXMMU_LUT330H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT330H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT330H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT330H_LO_0     (0x1U<<4U)
 
 // LUT331L Configuration
 
-#define GFXMMU_LUT331L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT331L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT331L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT331L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT331L_EN       (0x1U<<0)
+#define GFXMMU_LUT331L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT331L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT331L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT331L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT331L_EN       (0x1U<<0U)
 
 // LUT331H Configuration
 
-#define GFXMMU_LUT331H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT331H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT331H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT331H_LO_0     (0x1U<<4U)
 
 // LUT332L Configuration
 
-#define GFXMMU_LUT332L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT332L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT332L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT332L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT332L_EN       (0x1U<<0)
+#define GFXMMU_LUT332L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT332L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT332L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT332L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT332L_EN       (0x1U<<0U)
 
 // LUT332H Configuration
 
-#define GFXMMU_LUT332H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT332H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT332H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT332H_LO_0     (0x1U<<4U)
 
 // LUT333L Configuration
 
-#define GFXMMU_LUT333L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT333L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT333L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT333L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT333L_EN       (0x1U<<0)
+#define GFXMMU_LUT333L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT333L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT333L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT333L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT333L_EN       (0x1U<<0U)
 
 // LUT333H Configuration
 
-#define GFXMMU_LUT333H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT333H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT333H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT333H_LO_0     (0x1U<<4U)
 
 // LUT334L Configuration
 
-#define GFXMMU_LUT334L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT334L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT334L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT334L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT334L_EN       (0x1U<<0)
+#define GFXMMU_LUT334L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT334L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT334L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT334L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT334L_EN       (0x1U<<0U)
 
 // LUT334H Configuration
 
-#define GFXMMU_LUT334H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT334H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT334H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT334H_LO_0     (0x1U<<4U)
 
 // LUT335L Configuration
 
-#define GFXMMU_LUT335L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT335L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT335L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT335L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT335L_EN       (0x1U<<0)
+#define GFXMMU_LUT335L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT335L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT335L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT335L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT335L_EN       (0x1U<<0U)
 
 // LUT335H Configuration
 
-#define GFXMMU_LUT335H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT335H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT335H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT335H_LO_0     (0x1U<<4U)
 
 // LUT336L Configuration
 
-#define GFXMMU_LUT336L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT336L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT336L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT336L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT336L_EN       (0x1U<<0)
+#define GFXMMU_LUT336L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT336L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT336L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT336L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT336L_EN       (0x1U<<0U)
 
 // LUT336H Configuration
 
-#define GFXMMU_LUT336H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT336H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT336H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT336H_LO_0     (0x1U<<4U)
 
 // LUT337L Configuration
 
-#define GFXMMU_LUT337L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT337L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT337L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT337L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT337L_EN       (0x1U<<0)
+#define GFXMMU_LUT337L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT337L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT337L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT337L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT337L_EN       (0x1U<<0U)
 
 // LUT337H Configuration
 
-#define GFXMMU_LUT337H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT337H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT337H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT337H_LO_0     (0x1U<<4U)
 
 // LUT338L Configuration
 
-#define GFXMMU_LUT338L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT338L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT338L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT338L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT338L_EN       (0x1U<<0)
+#define GFXMMU_LUT338L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT338L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT338L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT338L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT338L_EN       (0x1U<<0U)
 
 // LUT338H Configuration
 
-#define GFXMMU_LUT338H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT338H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT338H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT338H_LO_0     (0x1U<<4U)
 
 // LUT339L Configuration
 
-#define GFXMMU_LUT339L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT339L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT339L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT339L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT339L_EN       (0x1U<<0)
+#define GFXMMU_LUT339L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT339L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT339L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT339L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT339L_EN       (0x1U<<0U)
 
 // LUT339H Configuration
 
-#define GFXMMU_LUT339H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT339H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT339H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT339H_LO_0     (0x1U<<4U)
 
 // LUT340L Configuration
 
-#define GFXMMU_LUT340L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT340L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT340L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT340L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT340L_EN       (0x1U<<0)
+#define GFXMMU_LUT340L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT340L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT340L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT340L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT340L_EN       (0x1U<<0U)
 
 // LUT340H Configuration
 
-#define GFXMMU_LUT340H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT340H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT340H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT340H_LO_0     (0x1U<<4U)
 
 // LUT341L Configuration
 
-#define GFXMMU_LUT341L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT341L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT341L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT341L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT341L_EN       (0x1U<<0)
+#define GFXMMU_LUT341L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT341L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT341L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT341L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT341L_EN       (0x1U<<0U)
 
 // LUT341H Configuration
 
-#define GFXMMU_LUT341H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT341H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT341H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT341H_LO_0     (0x1U<<4U)
 
 // LUT342L Configuration
 
-#define GFXMMU_LUT342L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT342L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT342L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT342L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT342L_EN       (0x1U<<0)
+#define GFXMMU_LUT342L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT342L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT342L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT342L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT342L_EN       (0x1U<<0U)
 
 // LUT342H Configuration
 
-#define GFXMMU_LUT342H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT342H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT342H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT342H_LO_0     (0x1U<<4U)
 
 // LUT343L Configuration
 
-#define GFXMMU_LUT343L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT343L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT343L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT343L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT343L_EN       (0x1U<<0)
+#define GFXMMU_LUT343L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT343L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT343L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT343L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT343L_EN       (0x1U<<0U)
 
 // LUT343H Configuration
 
-#define GFXMMU_LUT343H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT343H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT343H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT343H_LO_0     (0x1U<<4U)
 
 // LUT344L Configuration
 
-#define GFXMMU_LUT344L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT344L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT344L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT344L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT344L_EN       (0x1U<<0)
+#define GFXMMU_LUT344L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT344L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT344L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT344L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT344L_EN       (0x1U<<0U)
 
 // LUT344H Configuration
 
-#define GFXMMU_LUT344H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT344H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT344H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT344H_LO_0     (0x1U<<4U)
 
 // LUT345L Configuration
 
-#define GFXMMU_LUT345L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT345L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT345L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT345L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT345L_EN       (0x1U<<0)
+#define GFXMMU_LUT345L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT345L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT345L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT345L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT345L_EN       (0x1U<<0U)
 
 // LUT345H Configuration
 
-#define GFXMMU_LUT345H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT345H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT345H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT345H_LO_0     (0x1U<<4U)
 
 // LUT346L Configuration
 
-#define GFXMMU_LUT346L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT346L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT346L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT346L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT346L_EN       (0x1U<<0)
+#define GFXMMU_LUT346L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT346L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT346L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT346L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT346L_EN       (0x1U<<0U)
 
 // LUT346H Configuration
 
-#define GFXMMU_LUT346H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT346H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT346H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT346H_LO_0     (0x1U<<4U)
 
 // LUT347L Configuration
 
-#define GFXMMU_LUT347L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT347L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT347L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT347L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT347L_EN       (0x1U<<0)
+#define GFXMMU_LUT347L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT347L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT347L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT347L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT347L_EN       (0x1U<<0U)
 
 // LUT347H Configuration
 
-#define GFXMMU_LUT347H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT347H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT347H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT347H_LO_0     (0x1U<<4U)
 
 // LUT348L Configuration
 
-#define GFXMMU_LUT348L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT348L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT348L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT348L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT348L_EN       (0x1U<<0)
+#define GFXMMU_LUT348L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT348L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT348L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT348L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT348L_EN       (0x1U<<0U)
 
 // LUT348H Configuration
 
-#define GFXMMU_LUT348H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT348H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT348H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT348H_LO_0     (0x1U<<4U)
 
 // LUT349L Configuration
 
-#define GFXMMU_LUT349L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT349L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT349L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT349L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT349L_EN       (0x1U<<0)
+#define GFXMMU_LUT349L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT349L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT349L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT349L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT349L_EN       (0x1U<<0U)
 
 // LUT349H Configuration
 
-#define GFXMMU_LUT349H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT349H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT349H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT349H_LO_0     (0x1U<<4U)
 
 // LUT350L Configuration
 
-#define GFXMMU_LUT350L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT350L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT350L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT350L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT350L_EN       (0x1U<<0)
+#define GFXMMU_LUT350L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT350L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT350L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT350L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT350L_EN       (0x1U<<0U)
 
 // LUT350H Configuration
 
-#define GFXMMU_LUT350H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT350H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT350H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT350H_LO_0     (0x1U<<4U)
 
 // LUT351L Configuration
 
-#define GFXMMU_LUT351L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT351L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT351L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT351L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT351L_EN       (0x1U<<0)
+#define GFXMMU_LUT351L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT351L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT351L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT351L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT351L_EN       (0x1U<<0U)
 
 // LUT351H Configuration
 
-#define GFXMMU_LUT351H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT351H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT351H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT351H_LO_0     (0x1U<<4U)
 
 // LUT352L Configuration
 
-#define GFXMMU_LUT352L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT352L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT352L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT352L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT352L_EN       (0x1U<<0)
+#define GFXMMU_LUT352L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT352L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT352L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT352L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT352L_EN       (0x1U<<0U)
 
 // LUT352H Configuration
 
-#define GFXMMU_LUT352H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT352H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT352H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT352H_LO_0     (0x1U<<4U)
 
 // LUT353L Configuration
 
-#define GFXMMU_LUT353L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT353L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT353L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT353L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT353L_EN       (0x1U<<0)
+#define GFXMMU_LUT353L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT353L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT353L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT353L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT353L_EN       (0x1U<<0U)
 
 // LUT353H Configuration
 
-#define GFXMMU_LUT353H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT353H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT353H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT353H_LO_0     (0x1U<<4U)
 
 // LUT354L Configuration
 
-#define GFXMMU_LUT354L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT354L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT354L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT354L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT354L_EN       (0x1U<<0)
+#define GFXMMU_LUT354L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT354L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT354L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT354L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT354L_EN       (0x1U<<0U)
 
 // LUT354H Configuration
 
-#define GFXMMU_LUT354H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT354H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT354H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT354H_LO_0     (0x1U<<4U)
 
 // LUT355L Configuration
 
-#define GFXMMU_LUT355L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT355L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT355L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT355L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT355L_EN       (0x1U<<0)
+#define GFXMMU_LUT355L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT355L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT355L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT355L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT355L_EN       (0x1U<<0U)
 
 // LUT355H Configuration
 
-#define GFXMMU_LUT355H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT355H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT355H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT355H_LO_0     (0x1U<<4U)
 
 // LUT356L Configuration
 
-#define GFXMMU_LUT356L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT356L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT356L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT356L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT356L_EN       (0x1U<<0)
+#define GFXMMU_LUT356L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT356L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT356L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT356L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT356L_EN       (0x1U<<0U)
 
 // LUT356H Configuration
 
-#define GFXMMU_LUT356H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT356H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT356H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT356H_LO_0     (0x1U<<4U)
 
 // LUT357L Configuration
 
-#define GFXMMU_LUT357L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT357L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT357L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT357L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT357L_EN       (0x1U<<0)
+#define GFXMMU_LUT357L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT357L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT357L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT357L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT357L_EN       (0x1U<<0U)
 
 // LUT357H Configuration
 
-#define GFXMMU_LUT357H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT357H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT357H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT357H_LO_0     (0x1U<<4U)
 
 // LUT358L Configuration
 
-#define GFXMMU_LUT358L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT358L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT358L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT358L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT358L_EN       (0x1U<<0)
+#define GFXMMU_LUT358L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT358L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT358L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT358L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT358L_EN       (0x1U<<0U)
 
 // LUT358H Configuration
 
-#define GFXMMU_LUT358H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT358H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT358H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT358H_LO_0     (0x1U<<4U)
 
 // LUT359L Configuration
 
-#define GFXMMU_LUT359L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT359L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT359L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT359L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT359L_EN       (0x1U<<0)
+#define GFXMMU_LUT359L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT359L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT359L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT359L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT359L_EN       (0x1U<<0U)
 
 // LUT359H Configuration
 
-#define GFXMMU_LUT359H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT359H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT359H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT359H_LO_0     (0x1U<<4U)
 
 // LUT360L Configuration
 
-#define GFXMMU_LUT360L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT360L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT360L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT360L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT360L_EN       (0x1U<<0)
+#define GFXMMU_LUT360L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT360L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT360L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT360L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT360L_EN       (0x1U<<0U)
 
 // LUT360H Configuration
 
-#define GFXMMU_LUT360H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT360H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT360H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT360H_LO_0     (0x1U<<4U)
 
 // LUT361L Configuration
 
-#define GFXMMU_LUT361L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT361L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT361L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT361L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT361L_EN       (0x1U<<0)
+#define GFXMMU_LUT361L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT361L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT361L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT361L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT361L_EN       (0x1U<<0U)
 
 // LUT361H Configuration
 
-#define GFXMMU_LUT361H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT361H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT361H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT361H_LO_0     (0x1U<<4U)
 
 // LUT362L Configuration
 
-#define GFXMMU_LUT362L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT362L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT362L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT362L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT362L_EN       (0x1U<<0)
+#define GFXMMU_LUT362L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT362L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT362L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT362L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT362L_EN       (0x1U<<0U)
 
 // LUT362H Configuration
 
-#define GFXMMU_LUT362H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT362H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT362H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT362H_LO_0     (0x1U<<4U)
 
 // LUT363L Configuration
 
-#define GFXMMU_LUT363L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT363L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT363L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT363L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT363L_EN       (0x1U<<0)
+#define GFXMMU_LUT363L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT363L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT363L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT363L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT363L_EN       (0x1U<<0U)
 
 // LUT363H Configuration
 
-#define GFXMMU_LUT363H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT363H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT363H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT363H_LO_0     (0x1U<<4U)
 
 // LUT364L Configuration
 
-#define GFXMMU_LUT364L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT364L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT364L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT364L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT364L_EN       (0x1U<<0)
+#define GFXMMU_LUT364L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT364L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT364L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT364L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT364L_EN       (0x1U<<0U)
 
 // LUT364H Configuration
 
-#define GFXMMU_LUT364H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT364H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT364H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT364H_LO_0     (0x1U<<4U)
 
 // LUT365L Configuration
 
-#define GFXMMU_LUT365L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT365L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT365L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT365L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT365L_EN       (0x1U<<0)
+#define GFXMMU_LUT365L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT365L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT365L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT365L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT365L_EN       (0x1U<<0U)
 
 // LUT365H Configuration
 
-#define GFXMMU_LUT365H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT365H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT365H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT365H_LO_0     (0x1U<<4U)
 
 // LUT366L Configuration
 
-#define GFXMMU_LUT366L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT366L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT366L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT366L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT366L_EN       (0x1U<<0)
+#define GFXMMU_LUT366L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT366L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT366L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT366L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT366L_EN       (0x1U<<0U)
 
 // LUT366H Configuration
 
-#define GFXMMU_LUT366H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT366H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT366H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT366H_LO_0     (0x1U<<4U)
 
 // LUT367L Configuration
 
-#define GFXMMU_LUT367L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT367L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT367L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT367L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT367L_EN       (0x1U<<0)
+#define GFXMMU_LUT367L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT367L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT367L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT367L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT367L_EN       (0x1U<<0U)
 
 // LUT367H Configuration
 
-#define GFXMMU_LUT367H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT367H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT367H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT367H_LO_0     (0x1U<<4U)
 
 // LUT368L Configuration
 
-#define GFXMMU_LUT368L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT368L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT368L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT368L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT368L_EN       (0x1U<<0)
+#define GFXMMU_LUT368L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT368L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT368L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT368L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT368L_EN       (0x1U<<0U)
 
 // LUT368H Configuration
 
-#define GFXMMU_LUT368H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT368H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT368H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT368H_LO_0     (0x1U<<4U)
 
 // LUT369L Configuration
 
-#define GFXMMU_LUT369L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT369L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT369L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT369L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT369L_EN       (0x1U<<0)
+#define GFXMMU_LUT369L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT369L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT369L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT369L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT369L_EN       (0x1U<<0U)
 
 // LUT369H Configuration
 
-#define GFXMMU_LUT369H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT369H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT369H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT369H_LO_0     (0x1U<<4U)
 
 // LUT370L Configuration
 
-#define GFXMMU_LUT370L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT370L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT370L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT370L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT370L_EN       (0x1U<<0)
+#define GFXMMU_LUT370L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT370L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT370L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT370L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT370L_EN       (0x1U<<0U)
 
 // LUT370H Configuration
 
-#define GFXMMU_LUT370H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT370H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT370H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT370H_LO_0     (0x1U<<4U)
 
 // LUT371L Configuration
 
-#define GFXMMU_LUT371L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT371L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT371L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT371L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT371L_EN       (0x1U<<0)
+#define GFXMMU_LUT371L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT371L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT371L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT371L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT371L_EN       (0x1U<<0U)
 
 // LUT371H Configuration
 
-#define GFXMMU_LUT371H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT371H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT371H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT371H_LO_0     (0x1U<<4U)
 
 // LUT372L Configuration
 
-#define GFXMMU_LUT372L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT372L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT372L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT372L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT372L_EN       (0x1U<<0)
+#define GFXMMU_LUT372L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT372L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT372L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT372L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT372L_EN       (0x1U<<0U)
 
 // LUT372H Configuration
 
-#define GFXMMU_LUT372H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT372H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT372H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT372H_LO_0     (0x1U<<4U)
 
 // LUT373L Configuration
 
-#define GFXMMU_LUT373L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT373L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT373L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT373L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT373L_EN       (0x1U<<0)
+#define GFXMMU_LUT373L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT373L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT373L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT373L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT373L_EN       (0x1U<<0U)
 
 // LUT373H Configuration
 
-#define GFXMMU_LUT373H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT373H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT373H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT373H_LO_0     (0x1U<<4U)
 
 // LUT374L Configuration
 
-#define GFXMMU_LUT374L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT374L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT374L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT374L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT374L_EN       (0x1U<<0)
+#define GFXMMU_LUT374L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT374L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT374L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT374L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT374L_EN       (0x1U<<0U)
 
 // LUT374H Configuration
 
-#define GFXMMU_LUT374H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT374H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT374H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT374H_LO_0     (0x1U<<4U)
 
 // LUT375L Configuration
 
-#define GFXMMU_LUT375L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT375L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT375L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT375L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT375L_EN       (0x1U<<0)
+#define GFXMMU_LUT375L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT375L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT375L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT375L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT375L_EN       (0x1U<<0U)
 
 // LUT375H Configuration
 
-#define GFXMMU_LUT375H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT375H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT375H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT375H_LO_0     (0x1U<<4U)
 
 // LUT376L Configuration
 
-#define GFXMMU_LUT376L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT376L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT376L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT376L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT376L_EN       (0x1U<<0)
+#define GFXMMU_LUT376L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT376L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT376L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT376L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT376L_EN       (0x1U<<0U)
 
 // LUT376H Configuration
 
-#define GFXMMU_LUT376H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT376H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT376H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT376H_LO_0     (0x1U<<4U)
 
 // LUT377L Configuration
 
-#define GFXMMU_LUT377L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT377L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT377L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT377L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT377L_EN       (0x1U<<0)
+#define GFXMMU_LUT377L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT377L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT377L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT377L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT377L_EN       (0x1U<<0U)
 
 // LUT377H Configuration
 
-#define GFXMMU_LUT377H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT377H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT377H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT377H_LO_0     (0x1U<<4U)
 
 // LUT378L Configuration
 
-#define GFXMMU_LUT378L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT378L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT378L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT378L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT378L_EN       (0x1U<<0)
+#define GFXMMU_LUT378L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT378L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT378L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT378L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT378L_EN       (0x1U<<0U)
 
 // LUT378H Configuration
 
-#define GFXMMU_LUT378H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT378H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT378H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT378H_LO_0     (0x1U<<4U)
 
 // LUT379L Configuration
 
-#define GFXMMU_LUT379L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT379L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT379L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT379L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT379L_EN       (0x1U<<0)
+#define GFXMMU_LUT379L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT379L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT379L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT379L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT379L_EN       (0x1U<<0U)
 
 // LUT379H Configuration
 
-#define GFXMMU_LUT379H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT379H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT379H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT379H_LO_0     (0x1U<<4U)
 
 // LUT380L Configuration
 
-#define GFXMMU_LUT380L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT380L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT380L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT380L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT380L_EN       (0x1U<<0)
+#define GFXMMU_LUT380L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT380L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT380L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT380L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT380L_EN       (0x1U<<0U)
 
 // LUT380H Configuration
 
-#define GFXMMU_LUT380H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT380H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT380H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT380H_LO_0     (0x1U<<4U)
 
 // LUT381L Configuration
 
-#define GFXMMU_LUT381L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT381L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT381L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT381L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT381L_EN       (0x1U<<0)
+#define GFXMMU_LUT381L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT381L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT381L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT381L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT381L_EN       (0x1U<<0U)
 
 // LUT381H Configuration
 
-#define GFXMMU_LUT381H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT381H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT381H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT381H_LO_0     (0x1U<<4U)
 
 // LUT382L Configuration
 
-#define GFXMMU_LUT382L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT382L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT382L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT382L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT382L_EN       (0x1U<<0)
+#define GFXMMU_LUT382L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT382L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT382L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT382L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT382L_EN       (0x1U<<0U)
 
 // LUT382H Configuration
 
-#define GFXMMU_LUT382H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT382H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT382H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT382H_LO_0     (0x1U<<4U)
 
 // LUT383L Configuration
 
-#define GFXMMU_LUT383L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT383L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT383L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT383L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT383L_EN       (0x1U<<0)
+#define GFXMMU_LUT383L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT383L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT383L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT383L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT383L_EN       (0x1U<<0U)
 
 // LUT383H Configuration
 
-#define GFXMMU_LUT383H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT383H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT383H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT383H_LO_0     (0x1U<<4U)
 
 // LUT384L Configuration
 
-#define GFXMMU_LUT384L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT384L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT384L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT384L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT384L_EN       (0x1U<<0)
+#define GFXMMU_LUT384L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT384L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT384L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT384L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT384L_EN       (0x1U<<0U)
 
 // LUT384H Configuration
 
-#define GFXMMU_LUT384H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT384H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT384H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT384H_LO_0     (0x1U<<4U)
 
 // LUT385L Configuration
 
-#define GFXMMU_LUT385L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT385L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT385L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT385L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT385L_EN       (0x1U<<0)
+#define GFXMMU_LUT385L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT385L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT385L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT385L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT385L_EN       (0x1U<<0U)
 
 // LUT385H Configuration
 
-#define GFXMMU_LUT385H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT385H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT385H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT385H_LO_0     (0x1U<<4U)
 
 // LUT386L Configuration
 
-#define GFXMMU_LUT386L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT386L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT386L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT386L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT386L_EN       (0x1U<<0)
+#define GFXMMU_LUT386L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT386L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT386L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT386L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT386L_EN       (0x1U<<0U)
 
 // LUT386H Configuration
 
-#define GFXMMU_LUT386H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT386H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT386H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT386H_LO_0     (0x1U<<4U)
 
 // LUT387L Configuration
 
-#define GFXMMU_LUT387L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT387L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT387L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT387L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT387L_EN       (0x1U<<0)
+#define GFXMMU_LUT387L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT387L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT387L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT387L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT387L_EN       (0x1U<<0U)
 
 // LUT387H Configuration
 
-#define GFXMMU_LUT387H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT387H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT387H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT387H_LO_0     (0x1U<<4U)
 
 // LUT388L Configuration
 
-#define GFXMMU_LUT388L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT388L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT388L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT388L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT388L_EN       (0x1U<<0)
+#define GFXMMU_LUT388L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT388L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT388L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT388L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT388L_EN       (0x1U<<0U)
 
 // LUT388H Configuration
 
-#define GFXMMU_LUT388H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT388H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT388H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT388H_LO_0     (0x1U<<4U)
 
 // LUT389L Configuration
 
-#define GFXMMU_LUT389L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT389L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT389L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT389L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT389L_EN       (0x1U<<0)
+#define GFXMMU_LUT389L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT389L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT389L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT389L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT389L_EN       (0x1U<<0U)
 
 // LUT389H Configuration
 
-#define GFXMMU_LUT389H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT389H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT389H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT389H_LO_0     (0x1U<<4U)
 
 // LUT390L Configuration
 
-#define GFXMMU_LUT390L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT390L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT390L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT390L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT390L_EN       (0x1U<<0)
+#define GFXMMU_LUT390L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT390L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT390L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT390L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT390L_EN       (0x1U<<0U)
 
 // LUT390H Configuration
 
-#define GFXMMU_LUT390H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT390H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT390H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT390H_LO_0     (0x1U<<4U)
 
 // LUT391L Configuration
 
-#define GFXMMU_LUT391L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT391L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT391L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT391L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT391L_EN       (0x1U<<0)
+#define GFXMMU_LUT391L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT391L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT391L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT391L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT391L_EN       (0x1U<<0U)
 
 // LUT391H Configuration
 
-#define GFXMMU_LUT391H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT391H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT391H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT391H_LO_0     (0x1U<<4U)
 
 // LUT392L Configuration
 
-#define GFXMMU_LUT392L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT392L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT392L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT392L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT392L_EN       (0x1U<<0)
+#define GFXMMU_LUT392L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT392L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT392L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT392L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT392L_EN       (0x1U<<0U)
 
 // LUT392H Configuration
 
-#define GFXMMU_LUT392H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT392H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT392H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT392H_LO_0     (0x1U<<4U)
 
 // LUT393L Configuration
 
-#define GFXMMU_LUT393L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT393L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT393L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT393L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT393L_EN       (0x1U<<0)
+#define GFXMMU_LUT393L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT393L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT393L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT393L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT393L_EN       (0x1U<<0U)
 
 // LUT393H Configuration
 
-#define GFXMMU_LUT393H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT393H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT393H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT393H_LO_0     (0x1U<<4U)
 
 // LUT394L Configuration
 
-#define GFXMMU_LUT394L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT394L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT394L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT394L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT394L_EN       (0x1U<<0)
+#define GFXMMU_LUT394L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT394L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT394L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT394L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT394L_EN       (0x1U<<0U)
 
 // LUT394H Configuration
 
-#define GFXMMU_LUT394H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT394H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT394H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT394H_LO_0     (0x1U<<4U)
 
 // LUT395L Configuration
 
-#define GFXMMU_LUT395L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT395L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT395L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT395L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT395L_EN       (0x1U<<0)
+#define GFXMMU_LUT395L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT395L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT395L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT395L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT395L_EN       (0x1U<<0U)
 
 // LUT395H Configuration
 
-#define GFXMMU_LUT395H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT395H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT395H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT395H_LO_0     (0x1U<<4U)
 
 // LUT396L Configuration
 
-#define GFXMMU_LUT396L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT396L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT396L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT396L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT396L_EN       (0x1U<<0)
+#define GFXMMU_LUT396L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT396L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT396L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT396L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT396L_EN       (0x1U<<0U)
 
 // LUT396H Configuration
 
-#define GFXMMU_LUT396H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT396H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT396H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT396H_LO_0     (0x1U<<4U)
 
 // LUT397L Configuration
 
-#define GFXMMU_LUT397L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT397L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT397L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT397L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT397L_EN       (0x1U<<0)
+#define GFXMMU_LUT397L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT397L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT397L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT397L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT397L_EN       (0x1U<<0U)
 
 // LUT397H Configuration
 
-#define GFXMMU_LUT397H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT397H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT397H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT397H_LO_0     (0x1U<<4U)
 
 // LUT398L Configuration
 
-#define GFXMMU_LUT398L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT398L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT398L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT398L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT398L_EN       (0x1U<<0)
+#define GFXMMU_LUT398L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT398L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT398L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT398L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT398L_EN       (0x1U<<0U)
 
 // LUT398H Configuration
 
-#define GFXMMU_LUT398H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT398H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT398H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT398H_LO_0     (0x1U<<4U)
 
 // LUT399L Configuration
 
-#define GFXMMU_LUT399L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT399L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT399L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT399L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT399L_EN       (0x1U<<0)
+#define GFXMMU_LUT399L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT399L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT399L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT399L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT399L_EN       (0x1U<<0U)
 
 // LUT399H Configuration
 
-#define GFXMMU_LUT399H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT399H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT399H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT399H_LO_0     (0x1U<<4U)
 
 // LUT400L Configuration
 
-#define GFXMMU_LUT400L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT400L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT400L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT400L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT400L_EN       (0x1U<<0)
+#define GFXMMU_LUT400L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT400L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT400L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT400L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT400L_EN       (0x1U<<0U)
 
 // LUT400H Configuration
 
-#define GFXMMU_LUT400H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT400H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT400H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT400H_LO_0     (0x1U<<4U)
 
 // LUT401L Configuration
 
-#define GFXMMU_LUT401L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT401L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT401L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT401L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT401L_EN       (0x1U<<0)
+#define GFXMMU_LUT401L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT401L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT401L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT401L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT401L_EN       (0x1U<<0U)
 
 // LUT401H Configuration
 
-#define GFXMMU_LUT401H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT401H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT401H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT401H_LO_0     (0x1U<<4U)
 
 // LUT402L Configuration
 
-#define GFXMMU_LUT402L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT402L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT402L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT402L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT402L_EN       (0x1U<<0)
+#define GFXMMU_LUT402L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT402L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT402L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT402L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT402L_EN       (0x1U<<0U)
 
 // LUT402H Configuration
 
-#define GFXMMU_LUT402H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT402H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT402H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT402H_LO_0     (0x1U<<4U)
 
 // LUT403L Configuration
 
-#define GFXMMU_LUT403L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT403L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT403L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT403L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT403L_EN       (0x1U<<0)
+#define GFXMMU_LUT403L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT403L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT403L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT403L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT403L_EN       (0x1U<<0U)
 
 // LUT403H Configuration
 
-#define GFXMMU_LUT403H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT403H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT403H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT403H_LO_0     (0x1U<<4U)
 
 // LUT404L Configuration
 
-#define GFXMMU_LUT404L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT404L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT404L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT404L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT404L_EN       (0x1U<<0)
+#define GFXMMU_LUT404L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT404L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT404L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT404L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT404L_EN       (0x1U<<0U)
 
 // LUT404H Configuration
 
-#define GFXMMU_LUT404H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT404H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT404H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT404H_LO_0     (0x1U<<4U)
 
 // LUT405L Configuration
 
-#define GFXMMU_LUT405L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT405L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT405L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT405L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT405L_EN       (0x1U<<0)
+#define GFXMMU_LUT405L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT405L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT405L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT405L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT405L_EN       (0x1U<<0U)
 
 // LUT405H Configuration
 
-#define GFXMMU_LUT405H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT405H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT405H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT405H_LO_0     (0x1U<<4U)
 
 // LUT406L Configuration
 
-#define GFXMMU_LUT406L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT406L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT406L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT406L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT406L_EN       (0x1U<<0)
+#define GFXMMU_LUT406L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT406L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT406L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT406L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT406L_EN       (0x1U<<0U)
 
 // LUT406H Configuration
 
-#define GFXMMU_LUT406H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT406H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT406H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT406H_LO_0     (0x1U<<4U)
 
 // LUT407L Configuration
 
-#define GFXMMU_LUT407L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT407L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT407L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT407L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT407L_EN       (0x1U<<0)
+#define GFXMMU_LUT407L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT407L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT407L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT407L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT407L_EN       (0x1U<<0U)
 
 // LUT407H Configuration
 
-#define GFXMMU_LUT407H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT407H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT407H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT407H_LO_0     (0x1U<<4U)
 
 // LUT408L Configuration
 
-#define GFXMMU_LUT408L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT408L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT408L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT408L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT408L_EN       (0x1U<<0)
+#define GFXMMU_LUT408L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT408L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT408L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT408L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT408L_EN       (0x1U<<0U)
 
 // LUT408H Configuration
 
-#define GFXMMU_LUT408H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT408H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT408H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT408H_LO_0     (0x1U<<4U)
 
 // LUT409L Configuration
 
-#define GFXMMU_LUT409L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT409L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT409L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT409L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT409L_EN       (0x1U<<0)
+#define GFXMMU_LUT409L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT409L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT409L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT409L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT409L_EN       (0x1U<<0U)
 
 // LUT409H Configuration
 
-#define GFXMMU_LUT409H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT409H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT409H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT409H_LO_0     (0x1U<<4U)
 
 // LUT410L Configuration
 
-#define GFXMMU_LUT410L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT410L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT410L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT410L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT410L_EN       (0x1U<<0)
+#define GFXMMU_LUT410L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT410L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT410L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT410L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT410L_EN       (0x1U<<0U)
 
 // LUT410H Configuration
 
-#define GFXMMU_LUT410H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT410H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT410H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT410H_LO_0     (0x1U<<4U)
 
 // LUT411L Configuration
 
-#define GFXMMU_LUT411L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT411L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT411L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT411L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT411L_EN       (0x1U<<0)
+#define GFXMMU_LUT411L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT411L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT411L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT411L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT411L_EN       (0x1U<<0U)
 
 // LUT411H Configuration
 
-#define GFXMMU_LUT411H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT411H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT411H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT411H_LO_0     (0x1U<<4U)
 
 // LUT412L Configuration
 
-#define GFXMMU_LUT412L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT412L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT412L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT412L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT412L_EN       (0x1U<<0)
+#define GFXMMU_LUT412L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT412L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT412L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT412L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT412L_EN       (0x1U<<0U)
 
 // LUT412H Configuration
 
-#define GFXMMU_LUT412H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT412H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT412H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT412H_LO_0     (0x1U<<4U)
 
 // LUT413L Configuration
 
-#define GFXMMU_LUT413L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT413L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT413L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT413L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT413L_EN       (0x1U<<0)
+#define GFXMMU_LUT413L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT413L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT413L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT413L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT413L_EN       (0x1U<<0U)
 
 // LUT413H Configuration
 
-#define GFXMMU_LUT413H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT413H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT413H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT413H_LO_0     (0x1U<<4U)
 
 // LUT414L Configuration
 
-#define GFXMMU_LUT414L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT414L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT414L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT414L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT414L_EN       (0x1U<<0)
+#define GFXMMU_LUT414L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT414L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT414L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT414L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT414L_EN       (0x1U<<0U)
 
 // LUT414H Configuration
 
-#define GFXMMU_LUT414H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT414H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT414H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT414H_LO_0     (0x1U<<4U)
 
 // LUT415L Configuration
 
-#define GFXMMU_LUT415L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT415L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT415L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT415L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT415L_EN       (0x1U<<0)
+#define GFXMMU_LUT415L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT415L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT415L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT415L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT415L_EN       (0x1U<<0U)
 
 // LUT415H Configuration
 
-#define GFXMMU_LUT415H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT415H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT415H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT415H_LO_0     (0x1U<<4U)
 
 // LUT416L Configuration
 
-#define GFXMMU_LUT416L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT416L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT416L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT416L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT416L_EN       (0x1U<<0)
+#define GFXMMU_LUT416L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT416L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT416L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT416L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT416L_EN       (0x1U<<0U)
 
 // LUT416H Configuration
 
-#define GFXMMU_LUT416H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT416H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT416H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT416H_LO_0     (0x1U<<4U)
 
 // LUT417L Configuration
 
-#define GFXMMU_LUT417L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT417L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT417L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT417L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT417L_EN       (0x1U<<0)
+#define GFXMMU_LUT417L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT417L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT417L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT417L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT417L_EN       (0x1U<<0U)
 
 // LUT417H Configuration
 
-#define GFXMMU_LUT417H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT417H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT417H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT417H_LO_0     (0x1U<<4U)
 
 // LUT418L Configuration
 
-#define GFXMMU_LUT418L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT418L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT418L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT418L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT418L_EN       (0x1U<<0)
+#define GFXMMU_LUT418L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT418L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT418L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT418L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT418L_EN       (0x1U<<0U)
 
 // LUT418H Configuration
 
-#define GFXMMU_LUT418H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT418H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT418H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT418H_LO_0     (0x1U<<4U)
 
 // LUT419L Configuration
 
-#define GFXMMU_LUT419L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT419L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT419L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT419L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT419L_EN       (0x1U<<0)
+#define GFXMMU_LUT419L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT419L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT419L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT419L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT419L_EN       (0x1U<<0U)
 
 // LUT419H Configuration
 
-#define GFXMMU_LUT419H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT419H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT419H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT419H_LO_0     (0x1U<<4U)
 
 // LUT420L Configuration
 
-#define GFXMMU_LUT420L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT420L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT420L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT420L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT420L_EN       (0x1U<<0)
+#define GFXMMU_LUT420L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT420L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT420L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT420L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT420L_EN       (0x1U<<0U)
 
 // LUT420H Configuration
 
-#define GFXMMU_LUT420H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT420H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT420H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT420H_LO_0     (0x1U<<4U)
 
 // LUT421L Configuration
 
-#define GFXMMU_LUT421L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT421L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT421L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT421L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT421L_EN       (0x1U<<0)
+#define GFXMMU_LUT421L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT421L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT421L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT421L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT421L_EN       (0x1U<<0U)
 
 // LUT421H Configuration
 
-#define GFXMMU_LUT421H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT421H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT421H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT421H_LO_0     (0x1U<<4U)
 
 // LUT422L Configuration
 
-#define GFXMMU_LUT422L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT422L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT422L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT422L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT422L_EN       (0x1U<<0)
+#define GFXMMU_LUT422L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT422L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT422L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT422L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT422L_EN       (0x1U<<0U)
 
 // LUT422H Configuration
 
-#define GFXMMU_LUT422H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT422H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT422H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT422H_LO_0     (0x1U<<4U)
 
 // LUT423L Configuration
 
-#define GFXMMU_LUT423L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT423L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT423L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT423L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT423L_EN       (0x1U<<0)
+#define GFXMMU_LUT423L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT423L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT423L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT423L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT423L_EN       (0x1U<<0U)
 
 // LUT423H Configuration
 
-#define GFXMMU_LUT423H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT423H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT423H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT423H_LO_0     (0x1U<<4U)
 
 // LUT424L Configuration
 
-#define GFXMMU_LUT424L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT424L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT424L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT424L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT424L_EN       (0x1U<<0)
+#define GFXMMU_LUT424L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT424L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT424L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT424L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT424L_EN       (0x1U<<0U)
 
 // LUT424H Configuration
 
-#define GFXMMU_LUT424H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT424H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT424H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT424H_LO_0     (0x1U<<4U)
 
 // LUT425L Configuration
 
-#define GFXMMU_LUT425L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT425L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT425L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT425L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT425L_EN       (0x1U<<0)
+#define GFXMMU_LUT425L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT425L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT425L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT425L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT425L_EN       (0x1U<<0U)
 
 // LUT425H Configuration
 
-#define GFXMMU_LUT425H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT425H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT425H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT425H_LO_0     (0x1U<<4U)
 
 // LUT426L Configuration
 
-#define GFXMMU_LUT426L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT426L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT426L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT426L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT426L_EN       (0x1U<<0)
+#define GFXMMU_LUT426L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT426L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT426L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT426L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT426L_EN       (0x1U<<0U)
 
 // LUT426H Configuration
 
-#define GFXMMU_LUT426H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT426H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT426H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT426H_LO_0     (0x1U<<4U)
 
 // LUT427L Configuration
 
-#define GFXMMU_LUT427L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT427L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT427L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT427L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT427L_EN       (0x1U<<0)
+#define GFXMMU_LUT427L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT427L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT427L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT427L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT427L_EN       (0x1U<<0U)
 
 // LUT427H Configuration
 
-#define GFXMMU_LUT427H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT427H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT427H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT427H_LO_0     (0x1U<<4U)
 
 // LUT428L Configuration
 
-#define GFXMMU_LUT428L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT428L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT428L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT428L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT428L_EN       (0x1U<<0)
+#define GFXMMU_LUT428L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT428L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT428L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT428L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT428L_EN       (0x1U<<0U)
 
 // LUT428H Configuration
 
-#define GFXMMU_LUT428H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT428H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT428H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT428H_LO_0     (0x1U<<4U)
 
 // LUT429L Configuration
 
-#define GFXMMU_LUT429L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT429L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT429L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT429L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT429L_EN       (0x1U<<0)
+#define GFXMMU_LUT429L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT429L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT429L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT429L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT429L_EN       (0x1U<<0U)
 
 // LUT429H Configuration
 
-#define GFXMMU_LUT429H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT429H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT429H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT429H_LO_0     (0x1U<<4U)
 
 // LUT430L Configuration
 
-#define GFXMMU_LUT430L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT430L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT430L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT430L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT430L_EN       (0x1U<<0)
+#define GFXMMU_LUT430L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT430L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT430L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT430L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT430L_EN       (0x1U<<0U)
 
 // LUT430H Configuration
 
-#define GFXMMU_LUT430H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT430H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT430H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT430H_LO_0     (0x1U<<4U)
 
 // LUT431L Configuration
 
-#define GFXMMU_LUT431L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT431L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT431L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT431L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT431L_EN       (0x1U<<0)
+#define GFXMMU_LUT431L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT431L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT431L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT431L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT431L_EN       (0x1U<<0U)
 
 // LUT431H Configuration
 
-#define GFXMMU_LUT431H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT431H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT431H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT431H_LO_0     (0x1U<<4U)
 
 // LUT432L Configuration
 
-#define GFXMMU_LUT432L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT432L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT432L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT432L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT432L_EN       (0x1U<<0)
+#define GFXMMU_LUT432L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT432L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT432L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT432L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT432L_EN       (0x1U<<0U)
 
 // LUT432H Configuration
 
-#define GFXMMU_LUT432H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT432H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT432H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT432H_LO_0     (0x1U<<4U)
 
 // LUT433L Configuration
 
-#define GFXMMU_LUT433L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT433L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT433L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT433L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT433L_EN       (0x1U<<0)
+#define GFXMMU_LUT433L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT433L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT433L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT433L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT433L_EN       (0x1U<<0U)
 
 // LUT433H Configuration
 
-#define GFXMMU_LUT433H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT433H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT433H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT433H_LO_0     (0x1U<<4U)
 
 // LUT434L Configuration
 
-#define GFXMMU_LUT434L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT434L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT434L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT434L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT434L_EN       (0x1U<<0)
+#define GFXMMU_LUT434L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT434L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT434L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT434L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT434L_EN       (0x1U<<0U)
 
 // LUT434H Configuration
 
-#define GFXMMU_LUT434H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT434H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT434H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT434H_LO_0     (0x1U<<4U)
 
 // LUT435L Configuration
 
-#define GFXMMU_LUT435L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT435L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT435L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT435L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT435L_EN       (0x1U<<0)
+#define GFXMMU_LUT435L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT435L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT435L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT435L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT435L_EN       (0x1U<<0U)
 
 // LUT435H Configuration
 
-#define GFXMMU_LUT435H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT435H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT435H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT435H_LO_0     (0x1U<<4U)
 
 // LUT436L Configuration
 
-#define GFXMMU_LUT436L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT436L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT436L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT436L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT436L_EN       (0x1U<<0)
+#define GFXMMU_LUT436L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT436L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT436L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT436L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT436L_EN       (0x1U<<0U)
 
 // LUT436H Configuration
 
-#define GFXMMU_LUT436H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT436H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT436H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT436H_LO_0     (0x1U<<4U)
 
 // LUT437L Configuration
 
-#define GFXMMU_LUT437L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT437L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT437L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT437L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT437L_EN       (0x1U<<0)
+#define GFXMMU_LUT437L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT437L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT437L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT437L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT437L_EN       (0x1U<<0U)
 
 // LUT437H Configuration
 
-#define GFXMMU_LUT437H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT437H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT437H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT437H_LO_0     (0x1U<<4U)
 
 // LUT438L Configuration
 
-#define GFXMMU_LUT438L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT438L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT438L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT438L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT438L_EN       (0x1U<<0)
+#define GFXMMU_LUT438L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT438L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT438L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT438L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT438L_EN       (0x1U<<0U)
 
 // LUT438H Configuration
 
-#define GFXMMU_LUT438H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT438H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT438H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT438H_LO_0     (0x1U<<4U)
 
 // LUT439L Configuration
 
-#define GFXMMU_LUT439L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT439L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT439L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT439L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT439L_EN       (0x1U<<0)
+#define GFXMMU_LUT439L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT439L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT439L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT439L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT439L_EN       (0x1U<<0U)
 
 // LUT439H Configuration
 
-#define GFXMMU_LUT439H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT439H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT439H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT439H_LO_0     (0x1U<<4U)
 
 // LUT440L Configuration
 
-#define GFXMMU_LUT440L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT440L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT440L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT440L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT440L_EN       (0x1U<<0)
+#define GFXMMU_LUT440L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT440L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT440L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT440L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT440L_EN       (0x1U<<0U)
 
 // LUT440H Configuration
 
-#define GFXMMU_LUT440H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT440H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT440H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT440H_LO_0     (0x1U<<4U)
 
 // LUT441L Configuration
 
-#define GFXMMU_LUT441L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT441L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT441L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT441L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT441L_EN       (0x1U<<0)
+#define GFXMMU_LUT441L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT441L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT441L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT441L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT441L_EN       (0x1U<<0U)
 
 // LUT441H Configuration
 
-#define GFXMMU_LUT441H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT441H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT441H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT441H_LO_0     (0x1U<<4U)
 
 // LUT442L Configuration
 
-#define GFXMMU_LUT442L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT442L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT442L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT442L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT442L_EN       (0x1U<<0)
+#define GFXMMU_LUT442L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT442L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT442L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT442L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT442L_EN       (0x1U<<0U)
 
 // LUT442H Configuration
 
-#define GFXMMU_LUT442H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT442H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT442H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT442H_LO_0     (0x1U<<4U)
 
 // LUT443L Configuration
 
-#define GFXMMU_LUT443L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT443L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT443L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT443L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT443L_EN       (0x1U<<0)
+#define GFXMMU_LUT443L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT443L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT443L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT443L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT443L_EN       (0x1U<<0U)
 
 // LUT443H Configuration
 
-#define GFXMMU_LUT443H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT443H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT443H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT443H_LO_0     (0x1U<<4U)
 
 // LUT444L Configuration
 
-#define GFXMMU_LUT444L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT444L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT444L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT444L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT444L_EN       (0x1U<<0)
+#define GFXMMU_LUT444L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT444L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT444L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT444L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT444L_EN       (0x1U<<0U)
 
 // LUT444H Configuration
 
-#define GFXMMU_LUT444H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT444H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT444H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT444H_LO_0     (0x1U<<4U)
 
 // LUT445L Configuration
 
-#define GFXMMU_LUT445L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT445L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT445L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT445L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT445L_EN       (0x1U<<0)
+#define GFXMMU_LUT445L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT445L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT445L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT445L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT445L_EN       (0x1U<<0U)
 
 // LUT445H Configuration
 
-#define GFXMMU_LUT445H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT445H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT445H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT445H_LO_0     (0x1U<<4U)
 
 // LUT446L Configuration
 
-#define GFXMMU_LUT446L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT446L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT446L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT446L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT446L_EN       (0x1U<<0)
+#define GFXMMU_LUT446L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT446L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT446L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT446L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT446L_EN       (0x1U<<0U)
 
 // LUT446H Configuration
 
-#define GFXMMU_LUT446H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT446H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT446H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT446H_LO_0     (0x1U<<4U)
 
 // LUT447L Configuration
 
-#define GFXMMU_LUT447L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT447L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT447L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT447L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT447L_EN       (0x1U<<0)
+#define GFXMMU_LUT447L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT447L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT447L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT447L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT447L_EN       (0x1U<<0U)
 
 // LUT447H Configuration
 
-#define GFXMMU_LUT447H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT447H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT447H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT447H_LO_0     (0x1U<<4U)
 
 // LUT448L Configuration
 
-#define GFXMMU_LUT448L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT448L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT448L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT448L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT448L_EN       (0x1U<<0)
+#define GFXMMU_LUT448L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT448L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT448L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT448L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT448L_EN       (0x1U<<0U)
 
 // LUT448H Configuration
 
-#define GFXMMU_LUT448H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT448H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT448H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT448H_LO_0     (0x1U<<4U)
 
 // LUT449L Configuration
 
-#define GFXMMU_LUT449L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT449L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT449L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT449L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT449L_EN       (0x1U<<0)
+#define GFXMMU_LUT449L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT449L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT449L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT449L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT449L_EN       (0x1U<<0U)
 
 // LUT449H Configuration
 
-#define GFXMMU_LUT449H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT449H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT449H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT449H_LO_0     (0x1U<<4U)
 
 // LUT450L Configuration
 
-#define GFXMMU_LUT450L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT450L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT450L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT450L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT450L_EN       (0x1U<<0)
+#define GFXMMU_LUT450L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT450L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT450L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT450L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT450L_EN       (0x1U<<0U)
 
 // LUT450H Configuration
 
-#define GFXMMU_LUT450H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT450H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT450H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT450H_LO_0     (0x1U<<4U)
 
 // LUT451L Configuration
 
-#define GFXMMU_LUT451L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT451L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT451L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT451L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT451L_EN       (0x1U<<0)
+#define GFXMMU_LUT451L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT451L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT451L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT451L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT451L_EN       (0x1U<<0U)
 
 // LUT451H Configuration
 
-#define GFXMMU_LUT451H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT451H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT451H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT451H_LO_0     (0x1U<<4U)
 
 // LUT452L Configuration
 
-#define GFXMMU_LUT452L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT452L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT452L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT452L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT452L_EN       (0x1U<<0)
+#define GFXMMU_LUT452L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT452L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT452L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT452L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT452L_EN       (0x1U<<0U)
 
 // LUT452H Configuration
 
-#define GFXMMU_LUT452H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT452H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT452H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT452H_LO_0     (0x1U<<4U)
 
 // LUT453L Configuration
 
-#define GFXMMU_LUT453L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT453L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT453L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT453L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT453L_EN       (0x1U<<0)
+#define GFXMMU_LUT453L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT453L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT453L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT453L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT453L_EN       (0x1U<<0U)
 
 // LUT453H Configuration
 
-#define GFXMMU_LUT453H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT453H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT453H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT453H_LO_0     (0x1U<<4U)
 
 // LUT454L Configuration
 
-#define GFXMMU_LUT454L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT454L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT454L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT454L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT454L_EN       (0x1U<<0)
+#define GFXMMU_LUT454L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT454L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT454L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT454L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT454L_EN       (0x1U<<0U)
 
 // LUT454H Configuration
 
-#define GFXMMU_LUT454H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT454H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT454H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT454H_LO_0     (0x1U<<4U)
 
 // LUT455L Configuration
 
-#define GFXMMU_LUT455L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT455L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT455L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT455L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT455L_EN       (0x1U<<0)
+#define GFXMMU_LUT455L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT455L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT455L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT455L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT455L_EN       (0x1U<<0U)
 
 // LUT455H Configuration
 
-#define GFXMMU_LUT455H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT455H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT455H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT455H_LO_0     (0x1U<<4U)
 
 // LUT456L Configuration
 
-#define GFXMMU_LUT456L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT456L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT456L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT456L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT456L_EN       (0x1U<<0)
+#define GFXMMU_LUT456L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT456L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT456L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT456L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT456L_EN       (0x1U<<0U)
 
 // LUT456H Configuration
 
-#define GFXMMU_LUT456H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT456H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT456H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT456H_LO_0     (0x1U<<4U)
 
 // LUT457L Configuration
 
-#define GFXMMU_LUT457L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT457L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT457L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT457L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT457L_EN       (0x1U<<0)
+#define GFXMMU_LUT457L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT457L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT457L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT457L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT457L_EN       (0x1U<<0U)
 
 // LUT457H Configuration
 
-#define GFXMMU_LUT457H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT457H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT457H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT457H_LO_0     (0x1U<<4U)
 
 // LUT458L Configuration
 
-#define GFXMMU_LUT458L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT458L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT458L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT458L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT458L_EN       (0x1U<<0)
+#define GFXMMU_LUT458L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT458L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT458L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT458L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT458L_EN       (0x1U<<0U)
 
 // LUT458H Configuration
 
-#define GFXMMU_LUT458H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT458H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT458H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT458H_LO_0     (0x1U<<4U)
 
 // LUT459L Configuration
 
-#define GFXMMU_LUT459L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT459L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT459L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT459L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT459L_EN       (0x1U<<0)
+#define GFXMMU_LUT459L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT459L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT459L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT459L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT459L_EN       (0x1U<<0U)
 
 // LUT459H Configuration
 
-#define GFXMMU_LUT459H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT459H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT459H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT459H_LO_0     (0x1U<<4U)
 
 // LUT460L Configuration
 
-#define GFXMMU_LUT460L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT460L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT460L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT460L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT460L_EN       (0x1U<<0)
+#define GFXMMU_LUT460L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT460L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT460L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT460L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT460L_EN       (0x1U<<0U)
 
 // LUT460H Configuration
 
-#define GFXMMU_LUT460H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT460H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT460H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT460H_LO_0     (0x1U<<4U)
 
 // LUT461L Configuration
 
-#define GFXMMU_LUT461L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT461L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT461L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT461L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT461L_EN       (0x1U<<0)
+#define GFXMMU_LUT461L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT461L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT461L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT461L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT461L_EN       (0x1U<<0U)
 
 // LUT461H Configuration
 
-#define GFXMMU_LUT461H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT461H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT461H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT461H_LO_0     (0x1U<<4U)
 
 // LUT462L Configuration
 
-#define GFXMMU_LUT462L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT462L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT462L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT462L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT462L_EN       (0x1U<<0)
+#define GFXMMU_LUT462L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT462L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT462L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT462L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT462L_EN       (0x1U<<0U)
 
 // LUT462H Configuration
 
-#define GFXMMU_LUT462H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT462H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT462H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT462H_LO_0     (0x1U<<4U)
 
 // LUT463L Configuration
 
-#define GFXMMU_LUT463L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT463L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT463L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT463L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT463L_EN       (0x1U<<0)
+#define GFXMMU_LUT463L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT463L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT463L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT463L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT463L_EN       (0x1U<<0U)
 
 // LUT463H Configuration
 
-#define GFXMMU_LUT463H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT463H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT463H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT463H_LO_0     (0x1U<<4U)
 
 // LUT464L Configuration
 
-#define GFXMMU_LUT464L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT464L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT464L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT464L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT464L_EN       (0x1U<<0)
+#define GFXMMU_LUT464L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT464L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT464L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT464L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT464L_EN       (0x1U<<0U)
 
 // LUT464H Configuration
 
-#define GFXMMU_LUT464H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT464H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT464H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT464H_LO_0     (0x1U<<4U)
 
 // LUT465L Configuration
 
-#define GFXMMU_LUT465L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT465L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT465L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT465L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT465L_EN       (0x1U<<0)
+#define GFXMMU_LUT465L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT465L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT465L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT465L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT465L_EN       (0x1U<<0U)
 
 // LUT465H Configuration
 
-#define GFXMMU_LUT465H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT465H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT465H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT465H_LO_0     (0x1U<<4U)
 
 // LUT466L Configuration
 
-#define GFXMMU_LUT466L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT466L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT466L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT466L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT466L_EN       (0x1U<<0)
+#define GFXMMU_LUT466L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT466L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT466L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT466L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT466L_EN       (0x1U<<0U)
 
 // LUT466H Configuration
 
-#define GFXMMU_LUT466H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT466H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT466H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT466H_LO_0     (0x1U<<4U)
 
 // LUT467L Configuration
 
-#define GFXMMU_LUT467L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT467L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT467L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT467L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT467L_EN       (0x1U<<0)
+#define GFXMMU_LUT467L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT467L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT467L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT467L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT467L_EN       (0x1U<<0U)
 
 // LUT467H Configuration
 
-#define GFXMMU_LUT467H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT467H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT467H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT467H_LO_0     (0x1U<<4U)
 
 // LUT468L Configuration
 
-#define GFXMMU_LUT468L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT468L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT468L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT468L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT468L_EN       (0x1U<<0)
+#define GFXMMU_LUT468L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT468L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT468L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT468L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT468L_EN       (0x1U<<0U)
 
 // LUT468H Configuration
 
-#define GFXMMU_LUT468H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT468H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT468H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT468H_LO_0     (0x1U<<4U)
 
 // LUT469L Configuration
 
-#define GFXMMU_LUT469L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT469L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT469L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT469L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT469L_EN       (0x1U<<0)
+#define GFXMMU_LUT469L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT469L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT469L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT469L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT469L_EN       (0x1U<<0U)
 
 // LUT469H Configuration
 
-#define GFXMMU_LUT469H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT469H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT469H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT469H_LO_0     (0x1U<<4U)
 
 // LUT470L Configuration
 
-#define GFXMMU_LUT470L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT470L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT470L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT470L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT470L_EN       (0x1U<<0)
+#define GFXMMU_LUT470L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT470L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT470L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT470L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT470L_EN       (0x1U<<0U)
 
 // LUT470H Configuration
 
-#define GFXMMU_LUT470H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT470H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT470H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT470H_LO_0     (0x1U<<4U)
 
 // LUT471L Configuration
 
-#define GFXMMU_LUT471L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT471L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT471L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT471L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT471L_EN       (0x1U<<0)
+#define GFXMMU_LUT471L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT471L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT471L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT471L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT471L_EN       (0x1U<<0U)
 
 // LUT471H Configuration
 
-#define GFXMMU_LUT471H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT471H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT471H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT471H_LO_0     (0x1U<<4U)
 
 // LUT472L Configuration
 
-#define GFXMMU_LUT472L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT472L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT472L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT472L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT472L_EN       (0x1U<<0)
+#define GFXMMU_LUT472L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT472L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT472L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT472L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT472L_EN       (0x1U<<0U)
 
 // LUT472H Configuration
 
-#define GFXMMU_LUT472H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT472H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT472H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT472H_LO_0     (0x1U<<4U)
 
 // LUT473L Configuration
 
-#define GFXMMU_LUT473L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT473L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT473L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT473L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT473L_EN       (0x1U<<0)
+#define GFXMMU_LUT473L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT473L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT473L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT473L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT473L_EN       (0x1U<<0U)
 
 // LUT473H Configuration
 
-#define GFXMMU_LUT473H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT473H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT473H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT473H_LO_0     (0x1U<<4U)
 
 // LUT474L Configuration
 
-#define GFXMMU_LUT474L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT474L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT474L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT474L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT474L_EN       (0x1U<<0)
+#define GFXMMU_LUT474L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT474L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT474L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT474L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT474L_EN       (0x1U<<0U)
 
 // LUT474H Configuration
 
-#define GFXMMU_LUT474H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT474H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT474H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT474H_LO_0     (0x1U<<4U)
 
 // LUT475L Configuration
 
-#define GFXMMU_LUT475L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT475L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT475L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT475L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT475L_EN       (0x1U<<0)
+#define GFXMMU_LUT475L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT475L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT475L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT475L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT475L_EN       (0x1U<<0U)
 
 // LUT475H Configuration
 
-#define GFXMMU_LUT475H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT475H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT475H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT475H_LO_0     (0x1U<<4U)
 
 // LUT476L Configuration
 
-#define GFXMMU_LUT476L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT476L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT476L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT476L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT476L_EN       (0x1U<<0)
+#define GFXMMU_LUT476L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT476L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT476L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT476L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT476L_EN       (0x1U<<0U)
 
 // LUT476H Configuration
 
-#define GFXMMU_LUT476H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT476H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT476H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT476H_LO_0     (0x1U<<4U)
 
 // LUT477L Configuration
 
-#define GFXMMU_LUT477L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT477L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT477L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT477L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT477L_EN       (0x1U<<0)
+#define GFXMMU_LUT477L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT477L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT477L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT477L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT477L_EN       (0x1U<<0U)
 
 // LUT477H Configuration
 
-#define GFXMMU_LUT477H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT477H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT477H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT477H_LO_0     (0x1U<<4U)
 
 // LUT478L Configuration
 
-#define GFXMMU_LUT478L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT478L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT478L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT478L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT478L_EN       (0x1U<<0)
+#define GFXMMU_LUT478L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT478L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT478L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT478L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT478L_EN       (0x1U<<0U)
 
 // LUT478H Configuration
 
-#define GFXMMU_LUT478H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT478H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT478H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT478H_LO_0     (0x1U<<4U)
 
 // LUT479L Configuration
 
-#define GFXMMU_LUT479L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT479L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT479L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT479L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT479L_EN       (0x1U<<0)
+#define GFXMMU_LUT479L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT479L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT479L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT479L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT479L_EN       (0x1U<<0U)
 
 // LUT479H Configuration
 
-#define GFXMMU_LUT479H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT479H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT479H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT479H_LO_0     (0x1U<<4U)
 
 // LUT480L Configuration
 
-#define GFXMMU_LUT480L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT480L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT480L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT480L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT480L_EN       (0x1U<<0)
+#define GFXMMU_LUT480L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT480L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT480L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT480L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT480L_EN       (0x1U<<0U)
 
 // LUT480H Configuration
 
-#define GFXMMU_LUT480H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT480H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT480H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT480H_LO_0     (0x1U<<4U)
 
 // LUT481L Configuration
 
-#define GFXMMU_LUT481L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT481L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT481L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT481L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT481L_EN       (0x1U<<0)
+#define GFXMMU_LUT481L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT481L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT481L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT481L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT481L_EN       (0x1U<<0U)
 
 // LUT481H Configuration
 
-#define GFXMMU_LUT481H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT481H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT481H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT481H_LO_0     (0x1U<<4U)
 
 // LUT482L Configuration
 
-#define GFXMMU_LUT482L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT482L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT482L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT482L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT482L_EN       (0x1U<<0)
+#define GFXMMU_LUT482L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT482L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT482L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT482L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT482L_EN       (0x1U<<0U)
 
 // LUT482H Configuration
 
-#define GFXMMU_LUT482H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT482H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT482H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT482H_LO_0     (0x1U<<4U)
 
 // LUT483L Configuration
 
-#define GFXMMU_LUT483L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT483L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT483L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT483L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT483L_EN       (0x1U<<0)
+#define GFXMMU_LUT483L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT483L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT483L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT483L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT483L_EN       (0x1U<<0U)
 
 // LUT483H Configuration
 
-#define GFXMMU_LUT483H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT483H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT483H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT483H_LO_0     (0x1U<<4U)
 
 // LUT484L Configuration
 
-#define GFXMMU_LUT484L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT484L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT484L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT484L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT484L_EN       (0x1U<<0)
+#define GFXMMU_LUT484L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT484L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT484L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT484L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT484L_EN       (0x1U<<0U)
 
 // LUT484H Configuration
 
-#define GFXMMU_LUT484H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT484H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT484H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT484H_LO_0     (0x1U<<4U)
 
 // LUT485L Configuration
 
-#define GFXMMU_LUT485L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT485L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT485L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT485L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT485L_EN       (0x1U<<0)
+#define GFXMMU_LUT485L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT485L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT485L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT485L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT485L_EN       (0x1U<<0U)
 
 // LUT485H Configuration
 
-#define GFXMMU_LUT485H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT485H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT485H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT485H_LO_0     (0x1U<<4U)
 
 // LUT486L Configuration
 
-#define GFXMMU_LUT486L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT486L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT486L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT486L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT486L_EN       (0x1U<<0)
+#define GFXMMU_LUT486L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT486L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT486L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT486L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT486L_EN       (0x1U<<0U)
 
 // LUT486H Configuration
 
-#define GFXMMU_LUT486H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT486H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT486H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT486H_LO_0     (0x1U<<4U)
 
 // LUT487L Configuration
 
-#define GFXMMU_LUT487L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT487L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT487L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT487L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT487L_EN       (0x1U<<0)
+#define GFXMMU_LUT487L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT487L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT487L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT487L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT487L_EN       (0x1U<<0U)
 
 // LUT487H Configuration
 
-#define GFXMMU_LUT487H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT487H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT487H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT487H_LO_0     (0x1U<<4U)
 
 // LUT488L Configuration
 
-#define GFXMMU_LUT488L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT488L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT488L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT488L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT488L_EN       (0x1U<<0)
+#define GFXMMU_LUT488L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT488L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT488L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT488L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT488L_EN       (0x1U<<0U)
 
 // LUT488H Configuration
 
-#define GFXMMU_LUT488H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT488H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT488H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT488H_LO_0     (0x1U<<4U)
 
 // LUT489L Configuration
 
-#define GFXMMU_LUT489L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT489L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT489L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT489L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT489L_EN       (0x1U<<0)
+#define GFXMMU_LUT489L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT489L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT489L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT489L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT489L_EN       (0x1U<<0U)
 
 // LUT489H Configuration
 
-#define GFXMMU_LUT489H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT489H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT489H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT489H_LO_0     (0x1U<<4U)
 
 // LUT490L Configuration
 
-#define GFXMMU_LUT490L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT490L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT490L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT490L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT490L_EN       (0x1U<<0)
+#define GFXMMU_LUT490L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT490L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT490L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT490L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT490L_EN       (0x1U<<0U)
 
 // LUT490H Configuration
 
-#define GFXMMU_LUT490H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT490H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT490H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT490H_LO_0     (0x1U<<4U)
 
 // LUT491L Configuration
 
-#define GFXMMU_LUT491L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT491L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT491L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT491L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT491L_EN       (0x1U<<0)
+#define GFXMMU_LUT491L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT491L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT491L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT491L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT491L_EN       (0x1U<<0U)
 
 // LUT491H Configuration
 
-#define GFXMMU_LUT491H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT491H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT491H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT491H_LO_0     (0x1U<<4U)
 
 // LUT492L Configuration
 
-#define GFXMMU_LUT492L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT492L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT492L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT492L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT492L_EN       (0x1U<<0)
+#define GFXMMU_LUT492L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT492L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT492L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT492L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT492L_EN       (0x1U<<0U)
 
 // LUT492H Configuration
 
-#define GFXMMU_LUT492H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT492H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT492H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT492H_LO_0     (0x1U<<4U)
 
 // LUT493L Configuration
 
-#define GFXMMU_LUT493L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT493L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT493L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT493L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT493L_EN       (0x1U<<0)
+#define GFXMMU_LUT493L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT493L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT493L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT493L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT493L_EN       (0x1U<<0U)
 
 // LUT493H Configuration
 
-#define GFXMMU_LUT493H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT493H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT493H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT493H_LO_0     (0x1U<<4U)
 
 // LUT494L Configuration
 
-#define GFXMMU_LUT494L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT494L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT494L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT494L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT494L_EN       (0x1U<<0)
+#define GFXMMU_LUT494L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT494L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT494L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT494L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT494L_EN       (0x1U<<0U)
 
 // LUT494H Configuration
 
-#define GFXMMU_LUT494H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT494H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT494H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT494H_LO_0     (0x1U<<4U)
 
 // LUT495L Configuration
 
-#define GFXMMU_LUT495L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT495L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT495L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT495L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT495L_EN       (0x1U<<0)
+#define GFXMMU_LUT495L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT495L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT495L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT495L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT495L_EN       (0x1U<<0U)
 
 // LUT495H Configuration
 
-#define GFXMMU_LUT495H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT495H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT495H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT495H_LO_0     (0x1U<<4U)
 
 // LUT496L Configuration
 
-#define GFXMMU_LUT496L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT496L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT496L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT496L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT496L_EN       (0x1U<<0)
+#define GFXMMU_LUT496L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT496L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT496L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT496L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT496L_EN       (0x1U<<0U)
 
 // LUT496H Configuration
 
-#define GFXMMU_LUT496H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT496H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT496H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT496H_LO_0     (0x1U<<4U)
 
 // LUT497L Configuration
 
-#define GFXMMU_LUT497L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT497L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT497L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT497L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT497L_EN       (0x1U<<0)
+#define GFXMMU_LUT497L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT497L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT497L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT497L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT497L_EN       (0x1U<<0U)
 
 // LUT497H Configuration
 
-#define GFXMMU_LUT497H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT497H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT497H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT497H_LO_0     (0x1U<<4U)
 
 // LUT498L Configuration
 
-#define GFXMMU_LUT498L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT498L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT498L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT498L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT498L_EN       (0x1U<<0)
+#define GFXMMU_LUT498L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT498L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT498L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT498L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT498L_EN       (0x1U<<0U)
 
 // LUT498H Configuration
 
-#define GFXMMU_LUT498H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT498H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT498H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT498H_LO_0     (0x1U<<4U)
 
 // LUT499L Configuration
 
-#define GFXMMU_LUT499L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT499L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT499L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT499L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT499L_EN       (0x1U<<0)
+#define GFXMMU_LUT499L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT499L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT499L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT499L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT499L_EN       (0x1U<<0U)
 
 // LUT499H Configuration
 
-#define GFXMMU_LUT499H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT499H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT499H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT499H_LO_0     (0x1U<<4U)
 
 // LUT500L Configuration
 
-#define GFXMMU_LUT500L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT500L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT500L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT500L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT500L_EN       (0x1U<<0)
+#define GFXMMU_LUT500L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT500L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT500L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT500L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT500L_EN       (0x1U<<0U)
 
 // LUT500H Configuration
 
-#define GFXMMU_LUT500H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT500H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT500H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT500H_LO_0     (0x1U<<4U)
 
 // LUT501L Configuration
 
-#define GFXMMU_LUT501L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT501L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT501L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT501L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT501L_EN       (0x1U<<0)
+#define GFXMMU_LUT501L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT501L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT501L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT501L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT501L_EN       (0x1U<<0U)
 
 // LUT501H Configuration
 
-#define GFXMMU_LUT501H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT501H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT501H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT501H_LO_0     (0x1U<<4U)
 
 // LUT502L Configuration
 
-#define GFXMMU_LUT502L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT502L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT502L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT502L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT502L_EN       (0x1U<<0)
+#define GFXMMU_LUT502L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT502L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT502L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT502L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT502L_EN       (0x1U<<0U)
 
 // LUT502H Configuration
 
-#define GFXMMU_LUT502H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT502H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT502H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT502H_LO_0     (0x1U<<4U)
 
 // LUT503L Configuration
 
-#define GFXMMU_LUT503L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT503L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT503L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT503L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT503L_EN       (0x1U<<0)
+#define GFXMMU_LUT503L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT503L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT503L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT503L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT503L_EN       (0x1U<<0U)
 
 // LUT503H Configuration
 
-#define GFXMMU_LUT503H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT503H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT503H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT503H_LO_0     (0x1U<<4U)
 
 // LUT504L Configuration
 
-#define GFXMMU_LUT504L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT504L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT504L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT504L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT504L_EN       (0x1U<<0)
+#define GFXMMU_LUT504L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT504L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT504L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT504L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT504L_EN       (0x1U<<0U)
 
 // LUT504H Configuration
 
-#define GFXMMU_LUT504H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT504H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT504H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT504H_LO_0     (0x1U<<4U)
 
 // LUT505L Configuration
 
-#define GFXMMU_LUT505L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT505L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT505L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT505L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT505L_EN       (0x1U<<0)
+#define GFXMMU_LUT505L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT505L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT505L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT505L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT505L_EN       (0x1U<<0U)
 
 // LUT505H Configuration
 
-#define GFXMMU_LUT505H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT505H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT505H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT505H_LO_0     (0x1U<<4U)
 
 // LUT506L Configuration
 
-#define GFXMMU_LUT506L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT506L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT506L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT506L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT506L_EN       (0x1U<<0)
+#define GFXMMU_LUT506L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT506L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT506L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT506L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT506L_EN       (0x1U<<0U)
 
 // LUT506H Configuration
 
-#define GFXMMU_LUT506H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT506H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT506H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT506H_LO_0     (0x1U<<4U)
 
 // LUT507L Configuration
 
-#define GFXMMU_LUT507L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT507L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT507L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT507L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT507L_EN       (0x1U<<0)
+#define GFXMMU_LUT507L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT507L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT507L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT507L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT507L_EN       (0x1U<<0U)
 
 // LUT507H Configuration
 
-#define GFXMMU_LUT507H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT507H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT507H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT507H_LO_0     (0x1U<<4U)
 
 // LUT508L Configuration
 
-#define GFXMMU_LUT508L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT508L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT508L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT508L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT508L_EN       (0x1U<<0)
+#define GFXMMU_LUT508L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT508L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT508L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT508L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT508L_EN       (0x1U<<0U)
 
 // LUT508H Configuration
 
-#define GFXMMU_LUT508H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT508H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT508H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT508H_LO_0     (0x1U<<4U)
 
 // LUT509L Configuration
 
-#define GFXMMU_LUT509L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT509L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT509L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT509L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT509L_EN       (0x1U<<0)
+#define GFXMMU_LUT509L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT509L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT509L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT509L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT509L_EN       (0x1U<<0U)
 
 // LUT509H Configuration
 
-#define GFXMMU_LUT509H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT509H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT509H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT509H_LO_0     (0x1U<<4U)
 
 // LUT510L Configuration
 
-#define GFXMMU_LUT510L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT510L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT510L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT510L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT510L_EN       (0x1U<<0)
+#define GFXMMU_LUT510L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT510L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT510L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT510L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT510L_EN       (0x1U<<0U)
 
 // LUT510H Configuration
 
-#define GFXMMU_LUT510H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT510H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT510H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT510H_LO_0     (0x1U<<4U)
 
 // LUT511L Configuration
 
-#define GFXMMU_LUT511L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT511L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT511L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT511L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT511L_EN       (0x1U<<0)
+#define GFXMMU_LUT511L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT511L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT511L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT511L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT511L_EN       (0x1U<<0U)
 
 // LUT511H Configuration
 
-#define GFXMMU_LUT511H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT511H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT511H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT511H_LO_0     (0x1U<<4U)
 
 // LUT512L Configuration
 
-#define GFXMMU_LUT512L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT512L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT512L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT512L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT512L_EN       (0x1U<<0)
+#define GFXMMU_LUT512L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT512L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT512L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT512L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT512L_EN       (0x1U<<0U)
 
 // LUT512H Configuration
 
-#define GFXMMU_LUT512H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT512H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT512H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT512H_LO_0     (0x1U<<4U)
 
 // LUT513L Configuration
 
-#define GFXMMU_LUT513L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT513L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT513L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT513L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT513L_EN       (0x1U<<0)
+#define GFXMMU_LUT513L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT513L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT513L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT513L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT513L_EN       (0x1U<<0U)
 
 // LUT513H Configuration
 
-#define GFXMMU_LUT513H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT513H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT513H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT513H_LO_0     (0x1U<<4U)
 
 // LUT514L Configuration
 
-#define GFXMMU_LUT514L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT514L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT514L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT514L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT514L_EN       (0x1U<<0)
+#define GFXMMU_LUT514L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT514L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT514L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT514L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT514L_EN       (0x1U<<0U)
 
 // LUT514H Configuration
 
-#define GFXMMU_LUT514H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT514H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT514H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT514H_LO_0     (0x1U<<4U)
 
 // LUT515L Configuration
 
-#define GFXMMU_LUT515L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT515L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT515L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT515L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT515L_EN       (0x1U<<0)
+#define GFXMMU_LUT515L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT515L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT515L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT515L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT515L_EN       (0x1U<<0U)
 
 // LUT515H Configuration
 
-#define GFXMMU_LUT515H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT515H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT515H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT515H_LO_0     (0x1U<<4U)
 
 // LUT516L Configuration
 
-#define GFXMMU_LUT516L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT516L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT516L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT516L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT516L_EN       (0x1U<<0)
+#define GFXMMU_LUT516L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT516L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT516L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT516L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT516L_EN       (0x1U<<0U)
 
 // LUT516H Configuration
 
-#define GFXMMU_LUT516H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT516H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT516H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT516H_LO_0     (0x1U<<4U)
 
 // LUT517L Configuration
 
-#define GFXMMU_LUT517L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT517L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT517L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT517L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT517L_EN       (0x1U<<0)
+#define GFXMMU_LUT517L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT517L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT517L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT517L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT517L_EN       (0x1U<<0U)
 
 // LUT517H Configuration
 
-#define GFXMMU_LUT517H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT517H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT517H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT517H_LO_0     (0x1U<<4U)
 
 // LUT518L Configuration
 
-#define GFXMMU_LUT518L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT518L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT518L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT518L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT518L_EN       (0x1U<<0)
+#define GFXMMU_LUT518L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT518L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT518L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT518L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT518L_EN       (0x1U<<0U)
 
 // LUT518H Configuration
 
-#define GFXMMU_LUT518H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT518H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT518H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT518H_LO_0     (0x1U<<4U)
 
 // LUT519L Configuration
 
-#define GFXMMU_LUT519L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT519L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT519L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT519L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT519L_EN       (0x1U<<0)
+#define GFXMMU_LUT519L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT519L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT519L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT519L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT519L_EN       (0x1U<<0U)
 
 // LUT519H Configuration
 
-#define GFXMMU_LUT519H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT519H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT519H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT519H_LO_0     (0x1U<<4U)
 
 // LUT520L Configuration
 
-#define GFXMMU_LUT520L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT520L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT520L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT520L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT520L_EN       (0x1U<<0)
+#define GFXMMU_LUT520L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT520L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT520L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT520L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT520L_EN       (0x1U<<0U)
 
 // LUT520H Configuration
 
-#define GFXMMU_LUT520H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT520H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT520H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT520H_LO_0     (0x1U<<4U)
 
 // LUT521L Configuration
 
-#define GFXMMU_LUT521L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT521L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT521L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT521L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT521L_EN       (0x1U<<0)
+#define GFXMMU_LUT521L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT521L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT521L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT521L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT521L_EN       (0x1U<<0U)
 
 // LUT521H Configuration
 
-#define GFXMMU_LUT521H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT521H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT521H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT521H_LO_0     (0x1U<<4U)
 
 // LUT522L Configuration
 
-#define GFXMMU_LUT522L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT522L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT522L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT522L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT522L_EN       (0x1U<<0)
+#define GFXMMU_LUT522L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT522L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT522L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT522L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT522L_EN       (0x1U<<0U)
 
 // LUT522H Configuration
 
-#define GFXMMU_LUT522H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT522H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT522H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT522H_LO_0     (0x1U<<4U)
 
 // LUT523L Configuration
 
-#define GFXMMU_LUT523L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT523L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT523L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT523L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT523L_EN       (0x1U<<0)
+#define GFXMMU_LUT523L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT523L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT523L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT523L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT523L_EN       (0x1U<<0U)
 
 // LUT523H Configuration
 
-#define GFXMMU_LUT523H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT523H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT523H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT523H_LO_0     (0x1U<<4U)
 
 // LUT524L Configuration
 
-#define GFXMMU_LUT524L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT524L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT524L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT524L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT524L_EN       (0x1U<<0)
+#define GFXMMU_LUT524L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT524L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT524L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT524L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT524L_EN       (0x1U<<0U)
 
 // LUT524H Configuration
 
-#define GFXMMU_LUT524H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT524H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT524H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT524H_LO_0     (0x1U<<4U)
 
 // LUT525L Configuration
 
-#define GFXMMU_LUT525L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT525L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT525L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT525L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT525L_EN       (0x1U<<0)
+#define GFXMMU_LUT525L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT525L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT525L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT525L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT525L_EN       (0x1U<<0U)
 
 // LUT525H Configuration
 
-#define GFXMMU_LUT525H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT525H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT525H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT525H_LO_0     (0x1U<<4U)
 
 // LUT526L Configuration
 
-#define GFXMMU_LUT526L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT526L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT526L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT526L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT526L_EN       (0x1U<<0)
+#define GFXMMU_LUT526L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT526L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT526L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT526L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT526L_EN       (0x1U<<0U)
 
 // LUT526H Configuration
 
-#define GFXMMU_LUT526H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT526H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT526H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT526H_LO_0     (0x1U<<4U)
 
 // LUT527L Configuration
 
-#define GFXMMU_LUT527L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT527L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT527L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT527L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT527L_EN       (0x1U<<0)
+#define GFXMMU_LUT527L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT527L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT527L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT527L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT527L_EN       (0x1U<<0U)
 
 // LUT527H Configuration
 
-#define GFXMMU_LUT527H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT527H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT527H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT527H_LO_0     (0x1U<<4U)
 
 // LUT528L Configuration
 
-#define GFXMMU_LUT528L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT528L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT528L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT528L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT528L_EN       (0x1U<<0)
+#define GFXMMU_LUT528L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT528L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT528L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT528L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT528L_EN       (0x1U<<0U)
 
 // LUT528H Configuration
 
-#define GFXMMU_LUT528H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT528H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT528H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT528H_LO_0     (0x1U<<4U)
 
 // LUT529L Configuration
 
-#define GFXMMU_LUT529L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT529L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT529L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT529L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT529L_EN       (0x1U<<0)
+#define GFXMMU_LUT529L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT529L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT529L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT529L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT529L_EN       (0x1U<<0U)
 
 // LUT529H Configuration
 
-#define GFXMMU_LUT529H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT529H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT529H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT529H_LO_0     (0x1U<<4U)
 
 // LUT530L Configuration
 
-#define GFXMMU_LUT530L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT530L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT530L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT530L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT530L_EN       (0x1U<<0)
+#define GFXMMU_LUT530L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT530L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT530L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT530L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT530L_EN       (0x1U<<0U)
 
 // LUT530H Configuration
 
-#define GFXMMU_LUT530H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT530H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT530H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT530H_LO_0     (0x1U<<4U)
 
 // LUT531L Configuration
 
-#define GFXMMU_LUT531L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT531L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT531L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT531L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT531L_EN       (0x1U<<0)
+#define GFXMMU_LUT531L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT531L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT531L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT531L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT531L_EN       (0x1U<<0U)
 
 // LUT531H Configuration
 
-#define GFXMMU_LUT531H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT531H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT531H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT531H_LO_0     (0x1U<<4U)
 
 // LUT532L Configuration
 
-#define GFXMMU_LUT532L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT532L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT532L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT532L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT532L_EN       (0x1U<<0)
+#define GFXMMU_LUT532L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT532L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT532L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT532L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT532L_EN       (0x1U<<0U)
 
 // LUT532H Configuration
 
-#define GFXMMU_LUT532H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT532H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT532H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT532H_LO_0     (0x1U<<4U)
 
 // LUT533L Configuration
 
-#define GFXMMU_LUT533L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT533L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT533L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT533L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT533L_EN       (0x1U<<0)
+#define GFXMMU_LUT533L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT533L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT533L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT533L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT533L_EN       (0x1U<<0U)
 
 // LUT533H Configuration
 
-#define GFXMMU_LUT533H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT533H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT533H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT533H_LO_0     (0x1U<<4U)
 
 // LUT534L Configuration
 
-#define GFXMMU_LUT534L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT534L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT534L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT534L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT534L_EN       (0x1U<<0)
+#define GFXMMU_LUT534L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT534L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT534L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT534L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT534L_EN       (0x1U<<0U)
 
 // LUT534H Configuration
 
-#define GFXMMU_LUT534H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT534H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT534H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT534H_LO_0     (0x1U<<4U)
 
 // LUT535L Configuration
 
-#define GFXMMU_LUT535L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT535L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT535L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT535L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT535L_EN       (0x1U<<0)
+#define GFXMMU_LUT535L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT535L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT535L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT535L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT535L_EN       (0x1U<<0U)
 
 // LUT535H Configuration
 
-#define GFXMMU_LUT535H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT535H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT535H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT535H_LO_0     (0x1U<<4U)
 
 // LUT536L Configuration
 
-#define GFXMMU_LUT536L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT536L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT536L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT536L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT536L_EN       (0x1U<<0)
+#define GFXMMU_LUT536L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT536L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT536L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT536L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT536L_EN       (0x1U<<0U)
 
 // LUT536H Configuration
 
-#define GFXMMU_LUT536H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT536H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT536H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT536H_LO_0     (0x1U<<4U)
 
 // LUT537L Configuration
 
-#define GFXMMU_LUT537L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT537L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT537L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT537L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT537L_EN       (0x1U<<0)
+#define GFXMMU_LUT537L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT537L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT537L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT537L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT537L_EN       (0x1U<<0U)
 
 // LUT537H Configuration
 
-#define GFXMMU_LUT537H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT537H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT537H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT537H_LO_0     (0x1U<<4U)
 
 // LUT538L Configuration
 
-#define GFXMMU_LUT538L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT538L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT538L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT538L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT538L_EN       (0x1U<<0)
+#define GFXMMU_LUT538L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT538L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT538L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT538L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT538L_EN       (0x1U<<0U)
 
 // LUT538H Configuration
 
-#define GFXMMU_LUT538H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT538H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT538H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT538H_LO_0     (0x1U<<4U)
 
 // LUT539L Configuration
 
-#define GFXMMU_LUT539L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT539L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT539L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT539L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT539L_EN       (0x1U<<0)
+#define GFXMMU_LUT539L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT539L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT539L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT539L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT539L_EN       (0x1U<<0U)
 
 // LUT539H Configuration
 
-#define GFXMMU_LUT539H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT539H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT539H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT539H_LO_0     (0x1U<<4U)
 
 // LUT540L Configuration
 
-#define GFXMMU_LUT540L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT540L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT540L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT540L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT540L_EN       (0x1U<<0)
+#define GFXMMU_LUT540L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT540L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT540L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT540L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT540L_EN       (0x1U<<0U)
 
 // LUT540H Configuration
 
-#define GFXMMU_LUT540H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT540H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT540H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT540H_LO_0     (0x1U<<4U)
 
 // LUT541L Configuration
 
-#define GFXMMU_LUT541L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT541L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT541L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT541L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT541L_EN       (0x1U<<0)
+#define GFXMMU_LUT541L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT541L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT541L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT541L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT541L_EN       (0x1U<<0U)
 
 // LUT541H Configuration
 
-#define GFXMMU_LUT541H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT541H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT541H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT541H_LO_0     (0x1U<<4U)
 
 // LUT542L Configuration
 
-#define GFXMMU_LUT542L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT542L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT542L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT542L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT542L_EN       (0x1U<<0)
+#define GFXMMU_LUT542L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT542L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT542L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT542L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT542L_EN       (0x1U<<0U)
 
 // LUT542H Configuration
 
-#define GFXMMU_LUT542H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT542H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT542H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT542H_LO_0     (0x1U<<4U)
 
 // LUT543L Configuration
 
-#define GFXMMU_LUT543L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT543L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT543L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT543L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT543L_EN       (0x1U<<0)
+#define GFXMMU_LUT543L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT543L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT543L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT543L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT543L_EN       (0x1U<<0U)
 
 // LUT543H Configuration
 
-#define GFXMMU_LUT543H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT543H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT543H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT543H_LO_0     (0x1U<<4U)
 
 // LUT544L Configuration
 
-#define GFXMMU_LUT544L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT544L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT544L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT544L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT544L_EN       (0x1U<<0)
+#define GFXMMU_LUT544L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT544L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT544L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT544L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT544L_EN       (0x1U<<0U)
 
 // LUT544H Configuration
 
-#define GFXMMU_LUT544H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT544H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT544H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT544H_LO_0     (0x1U<<4U)
 
 // LUT545L Configuration
 
-#define GFXMMU_LUT545L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT545L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT545L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT545L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT545L_EN       (0x1U<<0)
+#define GFXMMU_LUT545L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT545L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT545L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT545L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT545L_EN       (0x1U<<0U)
 
 // LUT545H Configuration
 
-#define GFXMMU_LUT545H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT545H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT545H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT545H_LO_0     (0x1U<<4U)
 
 // LUT546L Configuration
 
-#define GFXMMU_LUT546L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT546L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT546L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT546L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT546L_EN       (0x1U<<0)
+#define GFXMMU_LUT546L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT546L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT546L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT546L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT546L_EN       (0x1U<<0U)
 
 // LUT546H Configuration
 
-#define GFXMMU_LUT546H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT546H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT546H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT546H_LO_0     (0x1U<<4U)
 
 // LUT547L Configuration
 
-#define GFXMMU_LUT547L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT547L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT547L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT547L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT547L_EN       (0x1U<<0)
+#define GFXMMU_LUT547L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT547L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT547L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT547L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT547L_EN       (0x1U<<0U)
 
 // LUT547H Configuration
 
-#define GFXMMU_LUT547H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT547H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT547H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT547H_LO_0     (0x1U<<4U)
 
 // LUT548L Configuration
 
-#define GFXMMU_LUT548L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT548L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT548L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT548L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT548L_EN       (0x1U<<0)
+#define GFXMMU_LUT548L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT548L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT548L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT548L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT548L_EN       (0x1U<<0U)
 
 // LUT548H Configuration
 
-#define GFXMMU_LUT548H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT548H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT548H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT548H_LO_0     (0x1U<<4U)
 
 // LUT549L Configuration
 
-#define GFXMMU_LUT549L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT549L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT549L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT549L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT549L_EN       (0x1U<<0)
+#define GFXMMU_LUT549L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT549L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT549L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT549L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT549L_EN       (0x1U<<0U)
 
 // LUT549H Configuration
 
-#define GFXMMU_LUT549H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT549H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT549H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT549H_LO_0     (0x1U<<4U)
 
 // LUT550L Configuration
 
-#define GFXMMU_LUT550L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT550L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT550L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT550L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT550L_EN       (0x1U<<0)
+#define GFXMMU_LUT550L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT550L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT550L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT550L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT550L_EN       (0x1U<<0U)
 
 // LUT550H Configuration
 
-#define GFXMMU_LUT550H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT550H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT550H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT550H_LO_0     (0x1U<<4U)
 
 // LUT551L Configuration
 
-#define GFXMMU_LUT551L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT551L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT551L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT551L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT551L_EN       (0x1U<<0)
+#define GFXMMU_LUT551L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT551L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT551L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT551L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT551L_EN       (0x1U<<0U)
 
 // LUT551H Configuration
 
-#define GFXMMU_LUT551H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT551H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT551H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT551H_LO_0     (0x1U<<4U)
 
 // LUT552L Configuration
 
-#define GFXMMU_LUT552L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT552L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT552L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT552L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT552L_EN       (0x1U<<0)
+#define GFXMMU_LUT552L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT552L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT552L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT552L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT552L_EN       (0x1U<<0U)
 
 // LUT552H Configuration
 
-#define GFXMMU_LUT552H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT552H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT552H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT552H_LO_0     (0x1U<<4U)
 
 // LUT553L Configuration
 
-#define GFXMMU_LUT553L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT553L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT553L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT553L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT553L_EN       (0x1U<<0)
+#define GFXMMU_LUT553L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT553L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT553L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT553L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT553L_EN       (0x1U<<0U)
 
 // LUT553H Configuration
 
-#define GFXMMU_LUT553H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT553H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT553H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT553H_LO_0     (0x1U<<4U)
 
 // LUT554L Configuration
 
-#define GFXMMU_LUT554L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT554L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT554L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT554L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT554L_EN       (0x1U<<0)
+#define GFXMMU_LUT554L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT554L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT554L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT554L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT554L_EN       (0x1U<<0U)
 
 // LUT554H Configuration
 
-#define GFXMMU_LUT554H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT554H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT554H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT554H_LO_0     (0x1U<<4U)
 
 // LUT555L Configuration
 
-#define GFXMMU_LUT555L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT555L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT555L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT555L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT555L_EN       (0x1U<<0)
+#define GFXMMU_LUT555L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT555L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT555L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT555L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT555L_EN       (0x1U<<0U)
 
 // LUT555H Configuration
 
-#define GFXMMU_LUT555H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT555H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT555H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT555H_LO_0     (0x1U<<4U)
 
 // LUT556L Configuration
 
-#define GFXMMU_LUT556L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT556L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT556L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT556L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT556L_EN       (0x1U<<0)
+#define GFXMMU_LUT556L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT556L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT556L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT556L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT556L_EN       (0x1U<<0U)
 
 // LUT556H Configuration
 
-#define GFXMMU_LUT556H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT556H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT556H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT556H_LO_0     (0x1U<<4U)
 
 // LUT557L Configuration
 
-#define GFXMMU_LUT557L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT557L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT557L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT557L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT557L_EN       (0x1U<<0)
+#define GFXMMU_LUT557L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT557L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT557L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT557L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT557L_EN       (0x1U<<0U)
 
 // LUT557H Configuration
 
-#define GFXMMU_LUT557H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT557H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT557H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT557H_LO_0     (0x1U<<4U)
 
 // LUT558L Configuration
 
-#define GFXMMU_LUT558L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT558L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT558L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT558L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT558L_EN       (0x1U<<0)
+#define GFXMMU_LUT558L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT558L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT558L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT558L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT558L_EN       (0x1U<<0U)
 
 // LUT558H Configuration
 
-#define GFXMMU_LUT558H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT558H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT558H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT558H_LO_0     (0x1U<<4U)
 
 // LUT559L Configuration
 
-#define GFXMMU_LUT559L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT559L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT559L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT559L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT559L_EN       (0x1U<<0)
+#define GFXMMU_LUT559L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT559L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT559L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT559L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT559L_EN       (0x1U<<0U)
 
 // LUT559H Configuration
 
-#define GFXMMU_LUT559H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT559H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT559H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT559H_LO_0     (0x1U<<4U)
 
 // LUT560L Configuration
 
-#define GFXMMU_LUT560L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT560L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT560L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT560L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT560L_EN       (0x1U<<0)
+#define GFXMMU_LUT560L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT560L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT560L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT560L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT560L_EN       (0x1U<<0U)
 
 // LUT560H Configuration
 
-#define GFXMMU_LUT560H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT560H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT560H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT560H_LO_0     (0x1U<<4U)
 
 // LUT561L Configuration
 
-#define GFXMMU_LUT561L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT561L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT561L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT561L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT561L_EN       (0x1U<<0)
+#define GFXMMU_LUT561L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT561L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT561L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT561L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT561L_EN       (0x1U<<0U)
 
 // LUT561H Configuration
 
-#define GFXMMU_LUT561H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT561H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT561H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT561H_LO_0     (0x1U<<4U)
 
 // LUT562L Configuration
 
-#define GFXMMU_LUT562L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT562L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT562L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT562L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT562L_EN       (0x1U<<0)
+#define GFXMMU_LUT562L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT562L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT562L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT562L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT562L_EN       (0x1U<<0U)
 
 // LUT562H Configuration
 
-#define GFXMMU_LUT562H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT562H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT562H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT562H_LO_0     (0x1U<<4U)
 
 // LUT563L Configuration
 
-#define GFXMMU_LUT563L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT563L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT563L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT563L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT563L_EN       (0x1U<<0)
+#define GFXMMU_LUT563L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT563L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT563L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT563L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT563L_EN       (0x1U<<0U)
 
 // LUT563H Configuration
 
-#define GFXMMU_LUT563H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT563H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT563H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT563H_LO_0     (0x1U<<4U)
 
 // LUT564L Configuration
 
-#define GFXMMU_LUT564L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT564L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT564L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT564L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT564L_EN       (0x1U<<0)
+#define GFXMMU_LUT564L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT564L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT564L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT564L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT564L_EN       (0x1U<<0U)
 
 // LUT564H Configuration
 
-#define GFXMMU_LUT564H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT564H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT564H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT564H_LO_0     (0x1U<<4U)
 
 // LUT565L Configuration
 
-#define GFXMMU_LUT565L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT565L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT565L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT565L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT565L_EN       (0x1U<<0)
+#define GFXMMU_LUT565L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT565L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT565L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT565L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT565L_EN       (0x1U<<0U)
 
 // LUT565H Configuration
 
-#define GFXMMU_LUT565H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT565H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT565H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT565H_LO_0     (0x1U<<4U)
 
 // LUT566L Configuration
 
-#define GFXMMU_LUT566L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT566L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT566L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT566L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT566L_EN       (0x1U<<0)
+#define GFXMMU_LUT566L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT566L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT566L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT566L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT566L_EN       (0x1U<<0U)
 
 // LUT566H Configuration
 
-#define GFXMMU_LUT566H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT566H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT566H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT566H_LO_0     (0x1U<<4U)
 
 // LUT567L Configuration
 
-#define GFXMMU_LUT567L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT567L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT567L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT567L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT567L_EN       (0x1U<<0)
+#define GFXMMU_LUT567L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT567L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT567L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT567L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT567L_EN       (0x1U<<0U)
 
 // LUT567H Configuration
 
-#define GFXMMU_LUT567H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT567H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT567H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT567H_LO_0     (0x1U<<4U)
 
 // LUT568L Configuration
 
-#define GFXMMU_LUT568L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT568L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT568L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT568L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT568L_EN       (0x1U<<0)
+#define GFXMMU_LUT568L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT568L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT568L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT568L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT568L_EN       (0x1U<<0U)
 
 // LUT568H Configuration
 
-#define GFXMMU_LUT568H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT568H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT568H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT568H_LO_0     (0x1U<<4U)
 
 // LUT569L Configuration
 
-#define GFXMMU_LUT569L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT569L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT569L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT569L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT569L_EN       (0x1U<<0)
+#define GFXMMU_LUT569L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT569L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT569L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT569L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT569L_EN       (0x1U<<0U)
 
 // LUT569H Configuration
 
-#define GFXMMU_LUT569H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT569H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT569H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT569H_LO_0     (0x1U<<4U)
 
 // LUT570L Configuration
 
-#define GFXMMU_LUT570L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT570L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT570L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT570L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT570L_EN       (0x1U<<0)
+#define GFXMMU_LUT570L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT570L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT570L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT570L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT570L_EN       (0x1U<<0U)
 
 // LUT570H Configuration
 
-#define GFXMMU_LUT570H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT570H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT570H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT570H_LO_0     (0x1U<<4U)
 
 // LUT571L Configuration
 
-#define GFXMMU_LUT571L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT571L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT571L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT571L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT571L_EN       (0x1U<<0)
+#define GFXMMU_LUT571L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT571L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT571L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT571L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT571L_EN       (0x1U<<0U)
 
 // LUT571H Configuration
 
-#define GFXMMU_LUT571H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT571H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT571H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT571H_LO_0     (0x1U<<4U)
 
 // LUT572L Configuration
 
-#define GFXMMU_LUT572L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT572L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT572L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT572L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT572L_EN       (0x1U<<0)
+#define GFXMMU_LUT572L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT572L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT572L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT572L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT572L_EN       (0x1U<<0U)
 
 // LUT572H Configuration
 
-#define GFXMMU_LUT572H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT572H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT572H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT572H_LO_0     (0x1U<<4U)
 
 // LUT573L Configuration
 
-#define GFXMMU_LUT573L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT573L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT573L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT573L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT573L_EN       (0x1U<<0)
+#define GFXMMU_LUT573L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT573L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT573L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT573L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT573L_EN       (0x1U<<0U)
 
 // LUT573H Configuration
 
-#define GFXMMU_LUT573H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT573H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT573H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT573H_LO_0     (0x1U<<4U)
 
 // LUT574L Configuration
 
-#define GFXMMU_LUT574L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT574L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT574L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT574L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT574L_EN       (0x1U<<0)
+#define GFXMMU_LUT574L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT574L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT574L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT574L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT574L_EN       (0x1U<<0U)
 
 // LUT574H Configuration
 
-#define GFXMMU_LUT574H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT574H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT574H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT574H_LO_0     (0x1U<<4U)
 
 // LUT575L Configuration
 
-#define GFXMMU_LUT575L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT575L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT575L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT575L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT575L_EN       (0x1U<<0)
+#define GFXMMU_LUT575L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT575L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT575L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT575L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT575L_EN       (0x1U<<0U)
 
 // LUT575H Configuration
 
-#define GFXMMU_LUT575H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT575H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT575H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT575H_LO_0     (0x1U<<4U)
 
 // LUT576L Configuration
 
-#define GFXMMU_LUT576L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT576L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT576L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT576L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT576L_EN       (0x1U<<0)
+#define GFXMMU_LUT576L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT576L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT576L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT576L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT576L_EN       (0x1U<<0U)
 
 // LUT576H Configuration
 
-#define GFXMMU_LUT576H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT576H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT576H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT576H_LO_0     (0x1U<<4U)
 
 // LUT577L Configuration
 
-#define GFXMMU_LUT577L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT577L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT577L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT577L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT577L_EN       (0x1U<<0)
+#define GFXMMU_LUT577L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT577L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT577L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT577L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT577L_EN       (0x1U<<0U)
 
 // LUT577H Configuration
 
-#define GFXMMU_LUT577H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT577H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT577H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT577H_LO_0     (0x1U<<4U)
 
 // LUT578L Configuration
 
-#define GFXMMU_LUT578L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT578L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT578L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT578L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT578L_EN       (0x1U<<0)
+#define GFXMMU_LUT578L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT578L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT578L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT578L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT578L_EN       (0x1U<<0U)
 
 // LUT578H Configuration
 
-#define GFXMMU_LUT578H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT578H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT578H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT578H_LO_0     (0x1U<<4U)
 
 // LUT579L Configuration
 
-#define GFXMMU_LUT579L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT579L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT579L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT579L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT579L_EN       (0x1U<<0)
+#define GFXMMU_LUT579L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT579L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT579L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT579L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT579L_EN       (0x1U<<0U)
 
 // LUT579H Configuration
 
-#define GFXMMU_LUT579H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT579H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT579H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT579H_LO_0     (0x1U<<4U)
 
 // LUT580L Configuration
 
-#define GFXMMU_LUT580L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT580L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT580L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT580L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT580L_EN       (0x1U<<0)
+#define GFXMMU_LUT580L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT580L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT580L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT580L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT580L_EN       (0x1U<<0U)
 
 // LUT580H Configuration
 
-#define GFXMMU_LUT580H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT580H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT580H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT580H_LO_0     (0x1U<<4U)
 
 // LUT581L Configuration
 
-#define GFXMMU_LUT581L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT581L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT581L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT581L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT581L_EN       (0x1U<<0)
+#define GFXMMU_LUT581L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT581L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT581L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT581L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT581L_EN       (0x1U<<0U)
 
 // LUT581H Configuration
 
-#define GFXMMU_LUT581H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT581H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT581H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT581H_LO_0     (0x1U<<4U)
 
 // LUT582L Configuration
 
-#define GFXMMU_LUT582L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT582L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT582L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT582L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT582L_EN       (0x1U<<0)
+#define GFXMMU_LUT582L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT582L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT582L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT582L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT582L_EN       (0x1U<<0U)
 
 // LUT582H Configuration
 
-#define GFXMMU_LUT582H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT582H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT582H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT582H_LO_0     (0x1U<<4U)
 
 // LUT583L Configuration
 
-#define GFXMMU_LUT583L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT583L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT583L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT583L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT583L_EN       (0x1U<<0)
+#define GFXMMU_LUT583L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT583L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT583L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT583L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT583L_EN       (0x1U<<0U)
 
 // LUT583H Configuration
 
-#define GFXMMU_LUT583H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT583H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT583H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT583H_LO_0     (0x1U<<4U)
 
 // LUT584L Configuration
 
-#define GFXMMU_LUT584L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT584L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT584L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT584L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT584L_EN       (0x1U<<0)
+#define GFXMMU_LUT584L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT584L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT584L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT584L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT584L_EN       (0x1U<<0U)
 
 // LUT584H Configuration
 
-#define GFXMMU_LUT584H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT584H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT584H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT584H_LO_0     (0x1U<<4U)
 
 // LUT585L Configuration
 
-#define GFXMMU_LUT585L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT585L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT585L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT585L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT585L_EN       (0x1U<<0)
+#define GFXMMU_LUT585L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT585L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT585L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT585L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT585L_EN       (0x1U<<0U)
 
 // LUT585H Configuration
 
-#define GFXMMU_LUT585H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT585H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT585H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT585H_LO_0     (0x1U<<4U)
 
 // LUT586L Configuration
 
-#define GFXMMU_LUT586L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT586L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT586L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT586L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT586L_EN       (0x1U<<0)
+#define GFXMMU_LUT586L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT586L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT586L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT586L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT586L_EN       (0x1U<<0U)
 
 // LUT586H Configuration
 
-#define GFXMMU_LUT586H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT586H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT586H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT586H_LO_0     (0x1U<<4U)
 
 // LUT587L Configuration
 
-#define GFXMMU_LUT587L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT587L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT587L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT587L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT587L_EN       (0x1U<<0)
+#define GFXMMU_LUT587L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT587L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT587L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT587L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT587L_EN       (0x1U<<0U)
 
 // LUT587H Configuration
 
-#define GFXMMU_LUT587H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT587H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT587H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT587H_LO_0     (0x1U<<4U)
 
 // LUT588L Configuration
 
-#define GFXMMU_LUT588L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT588L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT588L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT588L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT588L_EN       (0x1U<<0)
+#define GFXMMU_LUT588L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT588L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT588L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT588L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT588L_EN       (0x1U<<0U)
 
 // LUT588H Configuration
 
-#define GFXMMU_LUT588H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT588H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT588H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT588H_LO_0     (0x1U<<4U)
 
 // LUT589L Configuration
 
-#define GFXMMU_LUT589L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT589L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT589L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT589L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT589L_EN       (0x1U<<0)
+#define GFXMMU_LUT589L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT589L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT589L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT589L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT589L_EN       (0x1U<<0U)
 
 // LUT589H Configuration
 
-#define GFXMMU_LUT589H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT589H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT589H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT589H_LO_0     (0x1U<<4U)
 
 // LUT590L Configuration
 
-#define GFXMMU_LUT590L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT590L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT590L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT590L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT590L_EN       (0x1U<<0)
+#define GFXMMU_LUT590L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT590L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT590L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT590L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT590L_EN       (0x1U<<0U)
 
 // LUT590H Configuration
 
-#define GFXMMU_LUT590H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT590H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT590H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT590H_LO_0     (0x1U<<4U)
 
 // LUT591L Configuration
 
-#define GFXMMU_LUT591L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT591L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT591L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT591L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT591L_EN       (0x1U<<0)
+#define GFXMMU_LUT591L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT591L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT591L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT591L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT591L_EN       (0x1U<<0U)
 
 // LUT591H Configuration
 
-#define GFXMMU_LUT591H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT591H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT591H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT591H_LO_0     (0x1U<<4U)
 
 // LUT592L Configuration
 
-#define GFXMMU_LUT592L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT592L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT592L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT592L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT592L_EN       (0x1U<<0)
+#define GFXMMU_LUT592L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT592L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT592L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT592L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT592L_EN       (0x1U<<0U)
 
 // LUT592H Configuration
 
-#define GFXMMU_LUT592H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT592H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT592H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT592H_LO_0     (0x1U<<4U)
 
 // LUT593L Configuration
 
-#define GFXMMU_LUT593L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT593L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT593L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT593L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT593L_EN       (0x1U<<0)
+#define GFXMMU_LUT593L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT593L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT593L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT593L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT593L_EN       (0x1U<<0U)
 
 // LUT593H Configuration
 
-#define GFXMMU_LUT593H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT593H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT593H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT593H_LO_0     (0x1U<<4U)
 
 // LUT594L Configuration
 
-#define GFXMMU_LUT594L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT594L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT594L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT594L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT594L_EN       (0x1U<<0)
+#define GFXMMU_LUT594L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT594L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT594L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT594L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT594L_EN       (0x1U<<0U)
 
 // LUT594H Configuration
 
-#define GFXMMU_LUT594H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT594H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT594H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT594H_LO_0     (0x1U<<4U)
 
 // LUT595L Configuration
 
-#define GFXMMU_LUT595L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT595L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT595L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT595L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT595L_EN       (0x1U<<0)
+#define GFXMMU_LUT595L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT595L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT595L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT595L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT595L_EN       (0x1U<<0U)
 
 // LUT595H Configuration
 
-#define GFXMMU_LUT595H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT595H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT595H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT595H_LO_0     (0x1U<<4U)
 
 // LUT596L Configuration
 
-#define GFXMMU_LUT596L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT596L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT596L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT596L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT596L_EN       (0x1U<<0)
+#define GFXMMU_LUT596L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT596L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT596L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT596L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT596L_EN       (0x1U<<0U)
 
 // LUT596H Configuration
 
-#define GFXMMU_LUT596H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT596H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT596H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT596H_LO_0     (0x1U<<4U)
 
 // LUT597L Configuration
 
-#define GFXMMU_LUT597L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT597L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT597L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT597L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT597L_EN       (0x1U<<0)
+#define GFXMMU_LUT597L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT597L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT597L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT597L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT597L_EN       (0x1U<<0U)
 
 // LUT597H Configuration
 
-#define GFXMMU_LUT597H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT597H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT597H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT597H_LO_0     (0x1U<<4U)
 
 // LUT598L Configuration
 
-#define GFXMMU_LUT598L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT598L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT598L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT598L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT598L_EN       (0x1U<<0)
+#define GFXMMU_LUT598L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT598L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT598L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT598L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT598L_EN       (0x1U<<0U)
 
 // LUT598H Configuration
 
-#define GFXMMU_LUT598H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT598H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT598H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT598H_LO_0     (0x1U<<4U)
 
 // LUT599L Configuration
 
-#define GFXMMU_LUT599L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT599L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT599L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT599L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT599L_EN       (0x1U<<0)
+#define GFXMMU_LUT599L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT599L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT599L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT599L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT599L_EN       (0x1U<<0U)
 
 // LUT599H Configuration
 
-#define GFXMMU_LUT599H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT599H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT599H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT599H_LO_0     (0x1U<<4U)
 
 // LUT600L Configuration
 
-#define GFXMMU_LUT600L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT600L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT600L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT600L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT600L_EN       (0x1U<<0)
+#define GFXMMU_LUT600L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT600L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT600L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT600L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT600L_EN       (0x1U<<0U)
 
 // LUT600H Configuration
 
-#define GFXMMU_LUT600H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT600H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT600H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT600H_LO_0     (0x1U<<4U)
 
 // LUT601L Configuration
 
-#define GFXMMU_LUT601L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT601L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT601L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT601L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT601L_EN       (0x1U<<0)
+#define GFXMMU_LUT601L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT601L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT601L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT601L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT601L_EN       (0x1U<<0U)
 
 // LUT601H Configuration
 
-#define GFXMMU_LUT601H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT601H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT601H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT601H_LO_0     (0x1U<<4U)
 
 // LUT602L Configuration
 
-#define GFXMMU_LUT602L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT602L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT602L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT602L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT602L_EN       (0x1U<<0)
+#define GFXMMU_LUT602L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT602L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT602L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT602L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT602L_EN       (0x1U<<0U)
 
 // LUT602H Configuration
 
-#define GFXMMU_LUT602H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT602H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT602H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT602H_LO_0     (0x1U<<4U)
 
 // LUT603L Configuration
 
-#define GFXMMU_LUT603L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT603L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT603L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT603L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT603L_EN       (0x1U<<0)
+#define GFXMMU_LUT603L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT603L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT603L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT603L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT603L_EN       (0x1U<<0U)
 
 // LUT603H Configuration
 
-#define GFXMMU_LUT603H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT603H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT603H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT603H_LO_0     (0x1U<<4U)
 
 // LUT604L Configuration
 
-#define GFXMMU_LUT604L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT604L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT604L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT604L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT604L_EN       (0x1U<<0)
+#define GFXMMU_LUT604L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT604L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT604L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT604L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT604L_EN       (0x1U<<0U)
 
 // LUT604H Configuration
 
-#define GFXMMU_LUT604H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT604H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT604H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT604H_LO_0     (0x1U<<4U)
 
 // LUT605L Configuration
 
-#define GFXMMU_LUT605L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT605L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT605L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT605L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT605L_EN       (0x1U<<0)
+#define GFXMMU_LUT605L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT605L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT605L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT605L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT605L_EN       (0x1U<<0U)
 
 // LUT605H Configuration
 
-#define GFXMMU_LUT605H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT605H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT605H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT605H_LO_0     (0x1U<<4U)
 
 // LUT606L Configuration
 
-#define GFXMMU_LUT606L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT606L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT606L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT606L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT606L_EN       (0x1U<<0)
+#define GFXMMU_LUT606L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT606L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT606L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT606L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT606L_EN       (0x1U<<0U)
 
 // LUT606H Configuration
 
-#define GFXMMU_LUT606H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT606H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT606H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT606H_LO_0     (0x1U<<4U)
 
 // LUT607L Configuration
 
-#define GFXMMU_LUT607L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT607L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT607L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT607L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT607L_EN       (0x1U<<0)
+#define GFXMMU_LUT607L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT607L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT607L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT607L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT607L_EN       (0x1U<<0U)
 
 // LUT607H Configuration
 
-#define GFXMMU_LUT607H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT607H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT607H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT607H_LO_0     (0x1U<<4U)
 
 // LUT608L Configuration
 
-#define GFXMMU_LUT608L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT608L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT608L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT608L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT608L_EN       (0x1U<<0)
+#define GFXMMU_LUT608L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT608L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT608L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT608L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT608L_EN       (0x1U<<0U)
 
 // LUT608H Configuration
 
-#define GFXMMU_LUT608H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT608H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT608H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT608H_LO_0     (0x1U<<4U)
 
 // LUT609L Configuration
 
-#define GFXMMU_LUT609L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT609L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT609L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT609L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT609L_EN       (0x1U<<0)
+#define GFXMMU_LUT609L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT609L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT609L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT609L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT609L_EN       (0x1U<<0U)
 
 // LUT609H Configuration
 
-#define GFXMMU_LUT609H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT609H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT609H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT609H_LO_0     (0x1U<<4U)
 
 // LUT610L Configuration
 
-#define GFXMMU_LUT610L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT610L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT610L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT610L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT610L_EN       (0x1U<<0)
+#define GFXMMU_LUT610L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT610L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT610L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT610L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT610L_EN       (0x1U<<0U)
 
 // LUT610H Configuration
 
-#define GFXMMU_LUT610H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT610H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT610H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT610H_LO_0     (0x1U<<4U)
 
 // LUT611L Configuration
 
-#define GFXMMU_LUT611L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT611L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT611L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT611L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT611L_EN       (0x1U<<0)
+#define GFXMMU_LUT611L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT611L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT611L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT611L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT611L_EN       (0x1U<<0U)
 
 // LUT611H Configuration
 
-#define GFXMMU_LUT611H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT611H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT611H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT611H_LO_0     (0x1U<<4U)
 
 // LUT612L Configuration
 
-#define GFXMMU_LUT612L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT612L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT612L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT612L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT612L_EN       (0x1U<<0)
+#define GFXMMU_LUT612L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT612L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT612L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT612L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT612L_EN       (0x1U<<0U)
 
 // LUT612H Configuration
 
-#define GFXMMU_LUT612H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT612H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT612H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT612H_LO_0     (0x1U<<4U)
 
 // LUT613L Configuration
 
-#define GFXMMU_LUT613L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT613L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT613L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT613L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT613L_EN       (0x1U<<0)
+#define GFXMMU_LUT613L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT613L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT613L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT613L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT613L_EN       (0x1U<<0U)
 
 // LUT613H Configuration
 
-#define GFXMMU_LUT613H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT613H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT613H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT613H_LO_0     (0x1U<<4U)
 
 // LUT614L Configuration
 
-#define GFXMMU_LUT614L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT614L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT614L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT614L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT614L_EN       (0x1U<<0)
+#define GFXMMU_LUT614L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT614L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT614L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT614L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT614L_EN       (0x1U<<0U)
 
 // LUT614H Configuration
 
-#define GFXMMU_LUT614H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT614H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT614H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT614H_LO_0     (0x1U<<4U)
 
 // LUT615L Configuration
 
-#define GFXMMU_LUT615L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT615L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT615L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT615L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT615L_EN       (0x1U<<0)
+#define GFXMMU_LUT615L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT615L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT615L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT615L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT615L_EN       (0x1U<<0U)
 
 // LUT615H Configuration
 
-#define GFXMMU_LUT615H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT615H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT615H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT615H_LO_0     (0x1U<<4U)
 
 // LUT616L Configuration
 
-#define GFXMMU_LUT616L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT616L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT616L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT616L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT616L_EN       (0x1U<<0)
+#define GFXMMU_LUT616L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT616L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT616L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT616L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT616L_EN       (0x1U<<0U)
 
 // LUT616H Configuration
 
-#define GFXMMU_LUT616H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT616H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT616H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT616H_LO_0     (0x1U<<4U)
 
 // LUT617L Configuration
 
-#define GFXMMU_LUT617L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT617L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT617L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT617L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT617L_EN       (0x1U<<0)
+#define GFXMMU_LUT617L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT617L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT617L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT617L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT617L_EN       (0x1U<<0U)
 
 // LUT617H Configuration
 
-#define GFXMMU_LUT617H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT617H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT617H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT617H_LO_0     (0x1U<<4U)
 
 // LUT618L Configuration
 
-#define GFXMMU_LUT618L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT618L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT618L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT618L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT618L_EN       (0x1U<<0)
+#define GFXMMU_LUT618L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT618L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT618L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT618L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT618L_EN       (0x1U<<0U)
 
 // LUT618H Configuration
 
-#define GFXMMU_LUT618H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT618H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT618H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT618H_LO_0     (0x1U<<4U)
 
 // LUT619L Configuration
 
-#define GFXMMU_LUT619L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT619L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT619L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT619L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT619L_EN       (0x1U<<0)
+#define GFXMMU_LUT619L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT619L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT619L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT619L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT619L_EN       (0x1U<<0U)
 
 // LUT619H Configuration
 
-#define GFXMMU_LUT619H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT619H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT619H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT619H_LO_0     (0x1U<<4U)
 
 // LUT620L Configuration
 
-#define GFXMMU_LUT620L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT620L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT620L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT620L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT620L_EN       (0x1U<<0)
+#define GFXMMU_LUT620L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT620L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT620L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT620L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT620L_EN       (0x1U<<0U)
 
 // LUT620H Configuration
 
-#define GFXMMU_LUT620H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT620H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT620H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT620H_LO_0     (0x1U<<4U)
 
 // LUT621L Configuration
 
-#define GFXMMU_LUT621L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT621L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT621L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT621L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT621L_EN       (0x1U<<0)
+#define GFXMMU_LUT621L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT621L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT621L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT621L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT621L_EN       (0x1U<<0U)
 
 // LUT621H Configuration
 
-#define GFXMMU_LUT621H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT621H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT621H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT621H_LO_0     (0x1U<<4U)
 
 // LUT622L Configuration
 
-#define GFXMMU_LUT622L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT622L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT622L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT622L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT622L_EN       (0x1U<<0)
+#define GFXMMU_LUT622L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT622L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT622L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT622L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT622L_EN       (0x1U<<0U)
 
 // LUT622H Configuration
 
-#define GFXMMU_LUT622H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT622H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT622H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT622H_LO_0     (0x1U<<4U)
 
 // LUT623L Configuration
 
-#define GFXMMU_LUT623L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT623L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT623L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT623L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT623L_EN       (0x1U<<0)
+#define GFXMMU_LUT623L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT623L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT623L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT623L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT623L_EN       (0x1U<<0U)
 
 // LUT623H Configuration
 
-#define GFXMMU_LUT623H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT623H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT623H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT623H_LO_0     (0x1U<<4U)
 
 // LUT624L Configuration
 
-#define GFXMMU_LUT624L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT624L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT624L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT624L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT624L_EN       (0x1U<<0)
+#define GFXMMU_LUT624L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT624L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT624L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT624L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT624L_EN       (0x1U<<0U)
 
 // LUT624H Configuration
 
-#define GFXMMU_LUT624H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT624H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT624H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT624H_LO_0     (0x1U<<4U)
 
 // LUT625L Configuration
 
-#define GFXMMU_LUT625L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT625L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT625L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT625L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT625L_EN       (0x1U<<0)
+#define GFXMMU_LUT625L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT625L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT625L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT625L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT625L_EN       (0x1U<<0U)
 
 // LUT625H Configuration
 
-#define GFXMMU_LUT625H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT625H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT625H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT625H_LO_0     (0x1U<<4U)
 
 // LUT626L Configuration
 
-#define GFXMMU_LUT626L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT626L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT626L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT626L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT626L_EN       (0x1U<<0)
+#define GFXMMU_LUT626L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT626L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT626L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT626L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT626L_EN       (0x1U<<0U)
 
 // LUT626H Configuration
 
-#define GFXMMU_LUT626H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT626H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT626H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT626H_LO_0     (0x1U<<4U)
 
 // LUT627L Configuration
 
-#define GFXMMU_LUT627L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT627L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT627L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT627L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT627L_EN       (0x1U<<0)
+#define GFXMMU_LUT627L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT627L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT627L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT627L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT627L_EN       (0x1U<<0U)
 
 // LUT627H Configuration
 
-#define GFXMMU_LUT627H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT627H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT627H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT627H_LO_0     (0x1U<<4U)
 
 // LUT628L Configuration
 
-#define GFXMMU_LUT628L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT628L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT628L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT628L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT628L_EN       (0x1U<<0)
+#define GFXMMU_LUT628L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT628L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT628L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT628L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT628L_EN       (0x1U<<0U)
 
 // LUT628H Configuration
 
-#define GFXMMU_LUT628H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT628H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT628H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT628H_LO_0     (0x1U<<4U)
 
 // LUT629L Configuration
 
-#define GFXMMU_LUT629L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT629L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT629L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT629L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT629L_EN       (0x1U<<0)
+#define GFXMMU_LUT629L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT629L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT629L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT629L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT629L_EN       (0x1U<<0U)
 
 // LUT629H Configuration
 
-#define GFXMMU_LUT629H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT629H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT629H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT629H_LO_0     (0x1U<<4U)
 
 // LUT630L Configuration
 
-#define GFXMMU_LUT630L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT630L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT630L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT630L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT630L_EN       (0x1U<<0)
+#define GFXMMU_LUT630L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT630L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT630L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT630L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT630L_EN       (0x1U<<0U)
 
 // LUT630H Configuration
 
-#define GFXMMU_LUT630H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT630H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT630H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT630H_LO_0     (0x1U<<4U)
 
 // LUT631L Configuration
 
-#define GFXMMU_LUT631L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT631L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT631L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT631L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT631L_EN       (0x1U<<0)
+#define GFXMMU_LUT631L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT631L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT631L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT631L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT631L_EN       (0x1U<<0U)
 
 // LUT631H Configuration
 
-#define GFXMMU_LUT631H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT631H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT631H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT631H_LO_0     (0x1U<<4U)
 
 // LUT632L Configuration
 
-#define GFXMMU_LUT632L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT632L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT632L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT632L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT632L_EN       (0x1U<<0)
+#define GFXMMU_LUT632L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT632L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT632L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT632L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT632L_EN       (0x1U<<0U)
 
 // LUT632H Configuration
 
-#define GFXMMU_LUT632H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT632H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT632H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT632H_LO_0     (0x1U<<4U)
 
 // LUT633L Configuration
 
-#define GFXMMU_LUT633L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT633L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT633L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT633L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT633L_EN       (0x1U<<0)
+#define GFXMMU_LUT633L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT633L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT633L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT633L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT633L_EN       (0x1U<<0U)
 
 // LUT633H Configuration
 
-#define GFXMMU_LUT633H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT633H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT633H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT633H_LO_0     (0x1U<<4U)
 
 // LUT634L Configuration
 
-#define GFXMMU_LUT634L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT634L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT634L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT634L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT634L_EN       (0x1U<<0)
+#define GFXMMU_LUT634L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT634L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT634L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT634L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT634L_EN       (0x1U<<0U)
 
 // LUT634H Configuration
 
-#define GFXMMU_LUT634H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT634H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT634H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT634H_LO_0     (0x1U<<4U)
 
 // LUT635L Configuration
 
-#define GFXMMU_LUT635L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT635L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT635L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT635L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT635L_EN       (0x1U<<0)
+#define GFXMMU_LUT635L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT635L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT635L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT635L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT635L_EN       (0x1U<<0U)
 
 // LUT635H Configuration
 
-#define GFXMMU_LUT635H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT635H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT635H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT635H_LO_0     (0x1U<<4U)
 
 // LUT636L Configuration
 
-#define GFXMMU_LUT636L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT636L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT636L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT636L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT636L_EN       (0x1U<<0)
+#define GFXMMU_LUT636L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT636L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT636L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT636L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT636L_EN       (0x1U<<0U)
 
 // LUT636H Configuration
 
-#define GFXMMU_LUT636H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT636H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT636H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT636H_LO_0     (0x1U<<4U)
 
 // LUT637L Configuration
 
-#define GFXMMU_LUT637L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT637L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT637L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT637L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT637L_EN       (0x1U<<0)
+#define GFXMMU_LUT637L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT637L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT637L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT637L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT637L_EN       (0x1U<<0U)
 
 // LUT637H Configuration
 
-#define GFXMMU_LUT637H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT637H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT637H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT637H_LO_0     (0x1U<<4U)
 
 // LUT638L Configuration
 
-#define GFXMMU_LUT638L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT638L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT638L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT638L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT638L_EN       (0x1U<<0)
+#define GFXMMU_LUT638L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT638L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT638L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT638L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT638L_EN       (0x1U<<0U)
 
 // LUT638H Configuration
 
-#define GFXMMU_LUT638H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT638H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT638H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT638H_LO_0     (0x1U<<4U)
 
 // LUT639L Configuration
 
-#define GFXMMU_LUT639L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT639L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT639L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT639L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT639L_EN       (0x1U<<0)
+#define GFXMMU_LUT639L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT639L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT639L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT639L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT639L_EN       (0x1U<<0U)
 
 // LUT639H Configuration
 
-#define GFXMMU_LUT639H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT639H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT639H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT639H_LO_0     (0x1U<<4U)
 
 // LUT640L Configuration
 
-#define GFXMMU_LUT640L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT640L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT640L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT640L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT640L_EN       (0x1U<<0)
+#define GFXMMU_LUT640L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT640L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT640L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT640L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT640L_EN       (0x1U<<0U)
 
 // LUT640H Configuration
 
-#define GFXMMU_LUT640H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT640H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT640H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT640H_LO_0     (0x1U<<4U)
 
 // LUT641L Configuration
 
-#define GFXMMU_LUT641L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT641L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT641L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT641L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT641L_EN       (0x1U<<0)
+#define GFXMMU_LUT641L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT641L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT641L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT641L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT641L_EN       (0x1U<<0U)
 
 // LUT641H Configuration
 
-#define GFXMMU_LUT641H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT641H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT641H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT641H_LO_0     (0x1U<<4U)
 
 // LUT642L Configuration
 
-#define GFXMMU_LUT642L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT642L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT642L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT642L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT642L_EN       (0x1U<<0)
+#define GFXMMU_LUT642L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT642L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT642L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT642L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT642L_EN       (0x1U<<0U)
 
 // LUT642H Configuration
 
-#define GFXMMU_LUT642H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT642H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT642H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT642H_LO_0     (0x1U<<4U)
 
 // LUT643L Configuration
 
-#define GFXMMU_LUT643L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT643L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT643L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT643L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT643L_EN       (0x1U<<0)
+#define GFXMMU_LUT643L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT643L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT643L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT643L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT643L_EN       (0x1U<<0U)
 
 // LUT643H Configuration
 
-#define GFXMMU_LUT643H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT643H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT643H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT643H_LO_0     (0x1U<<4U)
 
 // LUT644L Configuration
 
-#define GFXMMU_LUT644L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT644L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT644L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT644L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT644L_EN       (0x1U<<0)
+#define GFXMMU_LUT644L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT644L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT644L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT644L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT644L_EN       (0x1U<<0U)
 
 // LUT644H Configuration
 
-#define GFXMMU_LUT644H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT644H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT644H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT644H_LO_0     (0x1U<<4U)
 
 // LUT645L Configuration
 
-#define GFXMMU_LUT645L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT645L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT645L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT645L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT645L_EN       (0x1U<<0)
+#define GFXMMU_LUT645L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT645L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT645L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT645L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT645L_EN       (0x1U<<0U)
 
 // LUT645H Configuration
 
-#define GFXMMU_LUT645H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT645H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT645H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT645H_LO_0     (0x1U<<4U)
 
 // LUT646L Configuration
 
-#define GFXMMU_LUT646L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT646L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT646L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT646L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT646L_EN       (0x1U<<0)
+#define GFXMMU_LUT646L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT646L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT646L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT646L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT646L_EN       (0x1U<<0U)
 
 // LUT646H Configuration
 
-#define GFXMMU_LUT646H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT646H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT646H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT646H_LO_0     (0x1U<<4U)
 
 // LUT647L Configuration
 
-#define GFXMMU_LUT647L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT647L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT647L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT647L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT647L_EN       (0x1U<<0)
+#define GFXMMU_LUT647L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT647L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT647L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT647L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT647L_EN       (0x1U<<0U)
 
 // LUT647H Configuration
 
-#define GFXMMU_LUT647H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT647H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT647H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT647H_LO_0     (0x1U<<4U)
 
 // LUT648L Configuration
 
-#define GFXMMU_LUT648L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT648L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT648L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT648L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT648L_EN       (0x1U<<0)
+#define GFXMMU_LUT648L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT648L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT648L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT648L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT648L_EN       (0x1U<<0U)
 
 // LUT648H Configuration
 
-#define GFXMMU_LUT648H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT648H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT648H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT648H_LO_0     (0x1U<<4U)
 
 // LUT649L Configuration
 
-#define GFXMMU_LUT649L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT649L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT649L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT649L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT649L_EN       (0x1U<<0)
+#define GFXMMU_LUT649L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT649L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT649L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT649L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT649L_EN       (0x1U<<0U)
 
 // LUT649H Configuration
 
-#define GFXMMU_LUT649H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT649H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT649H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT649H_LO_0     (0x1U<<4U)
 
 // LUT650L Configuration
 
-#define GFXMMU_LUT650L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT650L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT650L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT650L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT650L_EN       (0x1U<<0)
+#define GFXMMU_LUT650L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT650L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT650L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT650L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT650L_EN       (0x1U<<0U)
 
 // LUT650H Configuration
 
-#define GFXMMU_LUT650H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT650H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT650H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT650H_LO_0     (0x1U<<4U)
 
 // LUT651L Configuration
 
-#define GFXMMU_LUT651L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT651L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT651L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT651L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT651L_EN       (0x1U<<0)
+#define GFXMMU_LUT651L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT651L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT651L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT651L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT651L_EN       (0x1U<<0U)
 
 // LUT651H Configuration
 
-#define GFXMMU_LUT651H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT651H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT651H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT651H_LO_0     (0x1U<<4U)
 
 // LUT652L Configuration
 
-#define GFXMMU_LUT652L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT652L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT652L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT652L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT652L_EN       (0x1U<<0)
+#define GFXMMU_LUT652L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT652L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT652L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT652L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT652L_EN       (0x1U<<0U)
 
 // LUT652H Configuration
 
-#define GFXMMU_LUT652H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT652H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT652H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT652H_LO_0     (0x1U<<4U)
 
 // LUT653L Configuration
 
-#define GFXMMU_LUT653L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT653L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT653L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT653L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT653L_EN       (0x1U<<0)
+#define GFXMMU_LUT653L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT653L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT653L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT653L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT653L_EN       (0x1U<<0U)
 
 // LUT653H Configuration
 
-#define GFXMMU_LUT653H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT653H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT653H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT653H_LO_0     (0x1U<<4U)
 
 // LUT654L Configuration
 
-#define GFXMMU_LUT654L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT654L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT654L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT654L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT654L_EN       (0x1U<<0)
+#define GFXMMU_LUT654L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT654L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT654L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT654L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT654L_EN       (0x1U<<0U)
 
 // LUT654H Configuration
 
-#define GFXMMU_LUT654H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT654H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT654H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT654H_LO_0     (0x1U<<4U)
 
 // LUT655L Configuration
 
-#define GFXMMU_LUT655L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT655L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT655L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT655L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT655L_EN       (0x1U<<0)
+#define GFXMMU_LUT655L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT655L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT655L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT655L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT655L_EN       (0x1U<<0U)
 
 // LUT655H Configuration
 
-#define GFXMMU_LUT655H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT655H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT655H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT655H_LO_0     (0x1U<<4U)
 
 // LUT656L Configuration
 
-#define GFXMMU_LUT656L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT656L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT656L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT656L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT656L_EN       (0x1U<<0)
+#define GFXMMU_LUT656L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT656L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT656L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT656L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT656L_EN       (0x1U<<0U)
 
 // LUT656H Configuration
 
-#define GFXMMU_LUT656H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT656H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT656H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT656H_LO_0     (0x1U<<4U)
 
 // LUT657L Configuration
 
-#define GFXMMU_LUT657L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT657L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT657L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT657L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT657L_EN       (0x1U<<0)
+#define GFXMMU_LUT657L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT657L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT657L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT657L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT657L_EN       (0x1U<<0U)
 
 // LUT657H Configuration
 
-#define GFXMMU_LUT657H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT657H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT657H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT657H_LO_0     (0x1U<<4U)
 
 // LUT658L Configuration
 
-#define GFXMMU_LUT658L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT658L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT658L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT658L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT658L_EN       (0x1U<<0)
+#define GFXMMU_LUT658L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT658L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT658L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT658L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT658L_EN       (0x1U<<0U)
 
 // LUT658H Configuration
 
-#define GFXMMU_LUT658H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT658H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT658H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT658H_LO_0     (0x1U<<4U)
 
 // LUT659L Configuration
 
-#define GFXMMU_LUT659L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT659L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT659L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT659L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT659L_EN       (0x1U<<0)
+#define GFXMMU_LUT659L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT659L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT659L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT659L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT659L_EN       (0x1U<<0U)
 
 // LUT659H Configuration
 
-#define GFXMMU_LUT659H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT659H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT659H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT659H_LO_0     (0x1U<<4U)
 
 // LUT660L Configuration
 
-#define GFXMMU_LUT660L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT660L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT660L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT660L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT660L_EN       (0x1U<<0)
+#define GFXMMU_LUT660L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT660L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT660L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT660L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT660L_EN       (0x1U<<0U)
 
 // LUT660H Configuration
 
-#define GFXMMU_LUT660H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT660H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT660H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT660H_LO_0     (0x1U<<4U)
 
 // LUT661L Configuration
 
-#define GFXMMU_LUT661L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT661L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT661L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT661L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT661L_EN       (0x1U<<0)
+#define GFXMMU_LUT661L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT661L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT661L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT661L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT661L_EN       (0x1U<<0U)
 
 // LUT661H Configuration
 
-#define GFXMMU_LUT661H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT661H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT661H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT661H_LO_0     (0x1U<<4U)
 
 // LUT662L Configuration
 
-#define GFXMMU_LUT662L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT662L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT662L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT662L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT662L_EN       (0x1U<<0)
+#define GFXMMU_LUT662L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT662L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT662L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT662L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT662L_EN       (0x1U<<0U)
 
 // LUT662H Configuration
 
-#define GFXMMU_LUT662H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT662H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT662H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT662H_LO_0     (0x1U<<4U)
 
 // LUT663L Configuration
 
-#define GFXMMU_LUT663L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT663L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT663L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT663L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT663L_EN       (0x1U<<0)
+#define GFXMMU_LUT663L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT663L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT663L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT663L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT663L_EN       (0x1U<<0U)
 
 // LUT663H Configuration
 
-#define GFXMMU_LUT663H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT663H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT663H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT663H_LO_0     (0x1U<<4U)
 
 // LUT664L Configuration
 
-#define GFXMMU_LUT664L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT664L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT664L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT664L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT664L_EN       (0x1U<<0)
+#define GFXMMU_LUT664L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT664L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT664L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT664L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT664L_EN       (0x1U<<0U)
 
 // LUT664H Configuration
 
-#define GFXMMU_LUT664H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT664H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT664H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT664H_LO_0     (0x1U<<4U)
 
 // LUT665L Configuration
 
-#define GFXMMU_LUT665L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT665L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT665L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT665L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT665L_EN       (0x1U<<0)
+#define GFXMMU_LUT665L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT665L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT665L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT665L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT665L_EN       (0x1U<<0U)
 
 // LUT665H Configuration
 
-#define GFXMMU_LUT665H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT665H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT665H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT665H_LO_0     (0x1U<<4U)
 
 // LUT666L Configuration
 
-#define GFXMMU_LUT666L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT666L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT666L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT666L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT666L_EN       (0x1U<<0)
+#define GFXMMU_LUT666L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT666L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT666L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT666L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT666L_EN       (0x1U<<0U)
 
 // LUT666H Configuration
 
-#define GFXMMU_LUT666H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT666H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT666H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT666H_LO_0     (0x1U<<4U)
 
 // LUT667L Configuration
 
-#define GFXMMU_LUT667L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT667L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT667L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT667L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT667L_EN       (0x1U<<0)
+#define GFXMMU_LUT667L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT667L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT667L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT667L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT667L_EN       (0x1U<<0U)
 
 // LUT667H Configuration
 
-#define GFXMMU_LUT667H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT667H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT667H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT667H_LO_0     (0x1U<<4U)
 
 // LUT668L Configuration
 
-#define GFXMMU_LUT668L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT668L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT668L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT668L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT668L_EN       (0x1U<<0)
+#define GFXMMU_LUT668L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT668L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT668L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT668L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT668L_EN       (0x1U<<0U)
 
 // LUT668H Configuration
 
-#define GFXMMU_LUT668H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT668H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT668H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT668H_LO_0     (0x1U<<4U)
 
 // LUT669L Configuration
 
-#define GFXMMU_LUT669L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT669L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT669L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT669L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT669L_EN       (0x1U<<0)
+#define GFXMMU_LUT669L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT669L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT669L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT669L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT669L_EN       (0x1U<<0U)
 
 // LUT669H Configuration
 
-#define GFXMMU_LUT669H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT669H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT669H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT669H_LO_0     (0x1U<<4U)
 
 // LUT670L Configuration
 
-#define GFXMMU_LUT670L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT670L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT670L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT670L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT670L_EN       (0x1U<<0)
+#define GFXMMU_LUT670L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT670L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT670L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT670L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT670L_EN       (0x1U<<0U)
 
 // LUT670H Configuration
 
-#define GFXMMU_LUT670H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT670H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT670H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT670H_LO_0     (0x1U<<4U)
 
 // LUT671L Configuration
 
-#define GFXMMU_LUT671L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT671L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT671L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT671L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT671L_EN       (0x1U<<0)
+#define GFXMMU_LUT671L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT671L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT671L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT671L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT671L_EN       (0x1U<<0U)
 
 // LUT671H Configuration
 
-#define GFXMMU_LUT671H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT671H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT671H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT671H_LO_0     (0x1U<<4U)
 
 // LUT672L Configuration
 
-#define GFXMMU_LUT672L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT672L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT672L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT672L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT672L_EN       (0x1U<<0)
+#define GFXMMU_LUT672L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT672L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT672L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT672L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT672L_EN       (0x1U<<0U)
 
 // LUT672H Configuration
 
-#define GFXMMU_LUT672H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT672H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT672H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT672H_LO_0     (0x1U<<4U)
 
 // LUT673L Configuration
 
-#define GFXMMU_LUT673L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT673L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT673L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT673L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT673L_EN       (0x1U<<0)
+#define GFXMMU_LUT673L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT673L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT673L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT673L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT673L_EN       (0x1U<<0U)
 
 // LUT673H Configuration
 
-#define GFXMMU_LUT673H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT673H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT673H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT673H_LO_0     (0x1U<<4U)
 
 // LUT674L Configuration
 
-#define GFXMMU_LUT674L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT674L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT674L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT674L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT674L_EN       (0x1U<<0)
+#define GFXMMU_LUT674L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT674L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT674L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT674L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT674L_EN       (0x1U<<0U)
 
 // LUT674H Configuration
 
-#define GFXMMU_LUT674H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT674H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT674H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT674H_LO_0     (0x1U<<4U)
 
 // LUT675L Configuration
 
-#define GFXMMU_LUT675L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT675L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT675L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT675L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT675L_EN       (0x1U<<0)
+#define GFXMMU_LUT675L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT675L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT675L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT675L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT675L_EN       (0x1U<<0U)
 
 // LUT675H Configuration
 
-#define GFXMMU_LUT675H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT675H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT675H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT675H_LO_0     (0x1U<<4U)
 
 // LUT676L Configuration
 
-#define GFXMMU_LUT676L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT676L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT676L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT676L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT676L_EN       (0x1U<<0)
+#define GFXMMU_LUT676L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT676L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT676L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT676L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT676L_EN       (0x1U<<0U)
 
 // LUT676H Configuration
 
-#define GFXMMU_LUT676H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT676H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT676H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT676H_LO_0     (0x1U<<4U)
 
 // LUT677L Configuration
 
-#define GFXMMU_LUT677L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT677L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT677L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT677L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT677L_EN       (0x1U<<0)
+#define GFXMMU_LUT677L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT677L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT677L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT677L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT677L_EN       (0x1U<<0U)
 
 // LUT677H Configuration
 
-#define GFXMMU_LUT677H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT677H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT677H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT677H_LO_0     (0x1U<<4U)
 
 // LUT678L Configuration
 
-#define GFXMMU_LUT678L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT678L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT678L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT678L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT678L_EN       (0x1U<<0)
+#define GFXMMU_LUT678L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT678L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT678L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT678L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT678L_EN       (0x1U<<0U)
 
 // LUT678H Configuration
 
-#define GFXMMU_LUT678H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT678H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT678H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT678H_LO_0     (0x1U<<4U)
 
 // LUT679L Configuration
 
-#define GFXMMU_LUT679L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT679L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT679L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT679L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT679L_EN       (0x1U<<0)
+#define GFXMMU_LUT679L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT679L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT679L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT679L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT679L_EN       (0x1U<<0U)
 
 // LUT679H Configuration
 
-#define GFXMMU_LUT679H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT679H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT679H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT679H_LO_0     (0x1U<<4U)
 
 // LUT680L Configuration
 
-#define GFXMMU_LUT680L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT680L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT680L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT680L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT680L_EN       (0x1U<<0)
+#define GFXMMU_LUT680L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT680L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT680L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT680L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT680L_EN       (0x1U<<0U)
 
 // LUT680H Configuration
 
-#define GFXMMU_LUT680H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT680H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT680H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT680H_LO_0     (0x1U<<4U)
 
 // LUT681L Configuration
 
-#define GFXMMU_LUT681L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT681L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT681L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT681L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT681L_EN       (0x1U<<0)
+#define GFXMMU_LUT681L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT681L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT681L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT681L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT681L_EN       (0x1U<<0U)
 
 // LUT681H Configuration
 
-#define GFXMMU_LUT681H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT681H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT681H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT681H_LO_0     (0x1U<<4U)
 
 // LUT682L Configuration
 
-#define GFXMMU_LUT682L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT682L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT682L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT682L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT682L_EN       (0x1U<<0)
+#define GFXMMU_LUT682L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT682L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT682L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT682L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT682L_EN       (0x1U<<0U)
 
 // LUT682H Configuration
 
-#define GFXMMU_LUT682H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT682H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT682H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT682H_LO_0     (0x1U<<4U)
 
 // LUT683L Configuration
 
-#define GFXMMU_LUT683L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT683L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT683L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT683L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT683L_EN       (0x1U<<0)
+#define GFXMMU_LUT683L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT683L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT683L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT683L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT683L_EN       (0x1U<<0U)
 
 // LUT683H Configuration
 
-#define GFXMMU_LUT683H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT683H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT683H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT683H_LO_0     (0x1U<<4U)
 
 // LUT684L Configuration
 
-#define GFXMMU_LUT684L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT684L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT684L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT684L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT684L_EN       (0x1U<<0)
+#define GFXMMU_LUT684L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT684L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT684L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT684L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT684L_EN       (0x1U<<0U)
 
 // LUT684H Configuration
 
-#define GFXMMU_LUT684H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT684H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT684H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT684H_LO_0     (0x1U<<4U)
 
 // LUT685L Configuration
 
-#define GFXMMU_LUT685L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT685L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT685L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT685L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT685L_EN       (0x1U<<0)
+#define GFXMMU_LUT685L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT685L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT685L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT685L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT685L_EN       (0x1U<<0U)
 
 // LUT685H Configuration
 
-#define GFXMMU_LUT685H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT685H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT685H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT685H_LO_0     (0x1U<<4U)
 
 // LUT686L Configuration
 
-#define GFXMMU_LUT686L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT686L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT686L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT686L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT686L_EN       (0x1U<<0)
+#define GFXMMU_LUT686L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT686L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT686L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT686L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT686L_EN       (0x1U<<0U)
 
 // LUT686H Configuration
 
-#define GFXMMU_LUT686H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT686H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT686H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT686H_LO_0     (0x1U<<4U)
 
 // LUT687L Configuration
 
-#define GFXMMU_LUT687L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT687L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT687L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT687L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT687L_EN       (0x1U<<0)
+#define GFXMMU_LUT687L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT687L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT687L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT687L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT687L_EN       (0x1U<<0U)
 
 // LUT687H Configuration
 
-#define GFXMMU_LUT687H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT687H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT687H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT687H_LO_0     (0x1U<<4U)
 
 // LUT688L Configuration
 
-#define GFXMMU_LUT688L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT688L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT688L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT688L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT688L_EN       (0x1U<<0)
+#define GFXMMU_LUT688L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT688L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT688L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT688L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT688L_EN       (0x1U<<0U)
 
 // LUT688H Configuration
 
-#define GFXMMU_LUT688H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT688H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT688H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT688H_LO_0     (0x1U<<4U)
 
 // LUT689L Configuration
 
-#define GFXMMU_LUT689L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT689L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT689L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT689L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT689L_EN       (0x1U<<0)
+#define GFXMMU_LUT689L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT689L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT689L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT689L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT689L_EN       (0x1U<<0U)
 
 // LUT689H Configuration
 
-#define GFXMMU_LUT689H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT689H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT689H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT689H_LO_0     (0x1U<<4U)
 
 // LUT690L Configuration
 
-#define GFXMMU_LUT690L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT690L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT690L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT690L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT690L_EN       (0x1U<<0)
+#define GFXMMU_LUT690L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT690L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT690L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT690L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT690L_EN       (0x1U<<0U)
 
 // LUT690H Configuration
 
-#define GFXMMU_LUT690H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT690H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT690H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT690H_LO_0     (0x1U<<4U)
 
 // LUT691L Configuration
 
-#define GFXMMU_LUT691L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT691L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT691L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT691L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT691L_EN       (0x1U<<0)
+#define GFXMMU_LUT691L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT691L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT691L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT691L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT691L_EN       (0x1U<<0U)
 
 // LUT691H Configuration
 
-#define GFXMMU_LUT691H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT691H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT691H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT691H_LO_0     (0x1U<<4U)
 
 // LUT692L Configuration
 
-#define GFXMMU_LUT692L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT692L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT692L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT692L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT692L_EN       (0x1U<<0)
+#define GFXMMU_LUT692L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT692L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT692L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT692L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT692L_EN       (0x1U<<0U)
 
 // LUT692H Configuration
 
-#define GFXMMU_LUT692H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT692H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT692H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT692H_LO_0     (0x1U<<4U)
 
 // LUT693L Configuration
 
-#define GFXMMU_LUT693L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT693L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT693L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT693L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT693L_EN       (0x1U<<0)
+#define GFXMMU_LUT693L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT693L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT693L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT693L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT693L_EN       (0x1U<<0U)
 
 // LUT693H Configuration
 
-#define GFXMMU_LUT693H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT693H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT693H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT693H_LO_0     (0x1U<<4U)
 
 // LUT694L Configuration
 
-#define GFXMMU_LUT694L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT694L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT694L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT694L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT694L_EN       (0x1U<<0)
+#define GFXMMU_LUT694L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT694L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT694L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT694L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT694L_EN       (0x1U<<0U)
 
 // LUT694H Configuration
 
-#define GFXMMU_LUT694H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT694H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT694H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT694H_LO_0     (0x1U<<4U)
 
 // LUT695L Configuration
 
-#define GFXMMU_LUT695L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT695L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT695L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT695L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT695L_EN       (0x1U<<0)
+#define GFXMMU_LUT695L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT695L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT695L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT695L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT695L_EN       (0x1U<<0U)
 
 // LUT695H Configuration
 
-#define GFXMMU_LUT695H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT695H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT695H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT695H_LO_0     (0x1U<<4U)
 
 // LUT696L Configuration
 
-#define GFXMMU_LUT696L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT696L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT696L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT696L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT696L_EN       (0x1U<<0)
+#define GFXMMU_LUT696L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT696L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT696L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT696L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT696L_EN       (0x1U<<0U)
 
 // LUT696H Configuration
 
-#define GFXMMU_LUT696H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT696H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT696H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT696H_LO_0     (0x1U<<4U)
 
 // LUT697L Configuration
 
-#define GFXMMU_LUT697L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT697L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT697L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT697L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT697L_EN       (0x1U<<0)
+#define GFXMMU_LUT697L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT697L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT697L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT697L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT697L_EN       (0x1U<<0U)
 
 // LUT697H Configuration
 
-#define GFXMMU_LUT697H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT697H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT697H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT697H_LO_0     (0x1U<<4U)
 
 // LUT698L Configuration
 
-#define GFXMMU_LUT698L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT698L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT698L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT698L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT698L_EN       (0x1U<<0)
+#define GFXMMU_LUT698L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT698L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT698L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT698L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT698L_EN       (0x1U<<0U)
 
 // LUT698H Configuration
 
-#define GFXMMU_LUT698H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT698H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT698H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT698H_LO_0     (0x1U<<4U)
 
 // LUT699L Configuration
 
-#define GFXMMU_LUT699L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT699L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT699L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT699L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT699L_EN       (0x1U<<0)
+#define GFXMMU_LUT699L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT699L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT699L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT699L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT699L_EN       (0x1U<<0U)
 
 // LUT699H Configuration
 
-#define GFXMMU_LUT699H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT699H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT699H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT699H_LO_0     (0x1U<<4U)
 
 // LUT700L Configuration
 
-#define GFXMMU_LUT700L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT700L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT700L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT700L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT700L_EN       (0x1U<<0)
+#define GFXMMU_LUT700L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT700L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT700L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT700L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT700L_EN       (0x1U<<0U)
 
 // LUT700H Configuration
 
-#define GFXMMU_LUT700H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT700H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT700H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT700H_LO_0     (0x1U<<4U)
 
 // LUT701L Configuration
 
-#define GFXMMU_LUT701L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT701L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT701L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT701L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT701L_EN       (0x1U<<0)
+#define GFXMMU_LUT701L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT701L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT701L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT701L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT701L_EN       (0x1U<<0U)
 
 // LUT701H Configuration
 
-#define GFXMMU_LUT701H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT701H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT701H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT701H_LO_0     (0x1U<<4U)
 
 // LUT702L Configuration
 
-#define GFXMMU_LUT702L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT702L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT702L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT702L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT702L_EN       (0x1U<<0)
+#define GFXMMU_LUT702L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT702L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT702L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT702L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT702L_EN       (0x1U<<0U)
 
 // LUT702H Configuration
 
-#define GFXMMU_LUT702H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT702H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT702H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT702H_LO_0     (0x1U<<4U)
 
 // LUT703L Configuration
 
-#define GFXMMU_LUT703L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT703L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT703L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT703L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT703L_EN       (0x1U<<0)
+#define GFXMMU_LUT703L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT703L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT703L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT703L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT703L_EN       (0x1U<<0U)
 
 // LUT703H Configuration
 
-#define GFXMMU_LUT703H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT703H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT703H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT703H_LO_0     (0x1U<<4U)
 
 // LUT704L Configuration
 
-#define GFXMMU_LUT704L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT704L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT704L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT704L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT704L_EN       (0x1U<<0)
+#define GFXMMU_LUT704L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT704L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT704L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT704L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT704L_EN       (0x1U<<0U)
 
 // LUT704H Configuration
 
-#define GFXMMU_LUT704H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT704H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT704H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT704H_LO_0     (0x1U<<4U)
 
 // LUT705L Configuration
 
-#define GFXMMU_LUT705L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT705L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT705L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT705L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT705L_EN       (0x1U<<0)
+#define GFXMMU_LUT705L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT705L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT705L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT705L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT705L_EN       (0x1U<<0U)
 
 // LUT705H Configuration
 
-#define GFXMMU_LUT705H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT705H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT705H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT705H_LO_0     (0x1U<<4U)
 
 // LUT706L Configuration
 
-#define GFXMMU_LUT706L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT706L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT706L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT706L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT706L_EN       (0x1U<<0)
+#define GFXMMU_LUT706L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT706L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT706L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT706L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT706L_EN       (0x1U<<0U)
 
 // LUT706H Configuration
 
-#define GFXMMU_LUT706H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT706H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT706H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT706H_LO_0     (0x1U<<4U)
 
 // LUT707L Configuration
 
-#define GFXMMU_LUT707L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT707L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT707L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT707L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT707L_EN       (0x1U<<0)
+#define GFXMMU_LUT707L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT707L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT707L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT707L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT707L_EN       (0x1U<<0U)
 
 // LUT707H Configuration
 
-#define GFXMMU_LUT707H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT707H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT707H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT707H_LO_0     (0x1U<<4U)
 
 // LUT708L Configuration
 
-#define GFXMMU_LUT708L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT708L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT708L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT708L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT708L_EN       (0x1U<<0)
+#define GFXMMU_LUT708L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT708L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT708L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT708L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT708L_EN       (0x1U<<0U)
 
 // LUT708H Configuration
 
-#define GFXMMU_LUT708H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT708H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT708H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT708H_LO_0     (0x1U<<4U)
 
 // LUT709L Configuration
 
-#define GFXMMU_LUT709L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT709L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT709L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT709L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT709L_EN       (0x1U<<0)
+#define GFXMMU_LUT709L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT709L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT709L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT709L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT709L_EN       (0x1U<<0U)
 
 // LUT709H Configuration
 
-#define GFXMMU_LUT709H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT709H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT709H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT709H_LO_0     (0x1U<<4U)
 
 // LUT710L Configuration
 
-#define GFXMMU_LUT710L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT710L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT710L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT710L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT710L_EN       (0x1U<<0)
+#define GFXMMU_LUT710L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT710L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT710L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT710L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT710L_EN       (0x1U<<0U)
 
 // LUT710H Configuration
 
-#define GFXMMU_LUT710H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT710H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT710H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT710H_LO_0     (0x1U<<4U)
 
 // LUT711L Configuration
 
-#define GFXMMU_LUT711L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT711L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT711L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT711L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT711L_EN       (0x1U<<0)
+#define GFXMMU_LUT711L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT711L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT711L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT711L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT711L_EN       (0x1U<<0U)
 
 // LUT711H Configuration
 
-#define GFXMMU_LUT711H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT711H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT711H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT711H_LO_0     (0x1U<<4U)
 
 // LUT712L Configuration
 
-#define GFXMMU_LUT712L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT712L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT712L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT712L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT712L_EN       (0x1U<<0)
+#define GFXMMU_LUT712L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT712L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT712L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT712L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT712L_EN       (0x1U<<0U)
 
 // LUT712H Configuration
 
-#define GFXMMU_LUT712H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT712H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT712H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT712H_LO_0     (0x1U<<4U)
 
 // LUT713L Configuration
 
-#define GFXMMU_LUT713L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT713L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT713L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT713L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT713L_EN       (0x1U<<0)
+#define GFXMMU_LUT713L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT713L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT713L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT713L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT713L_EN       (0x1U<<0U)
 
 // LUT713H Configuration
 
-#define GFXMMU_LUT713H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT713H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT713H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT713H_LO_0     (0x1U<<4U)
 
 // LUT714L Configuration
 
-#define GFXMMU_LUT714L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT714L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT714L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT714L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT714L_EN       (0x1U<<0)
+#define GFXMMU_LUT714L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT714L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT714L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT714L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT714L_EN       (0x1U<<0U)
 
 // LUT714H Configuration
 
-#define GFXMMU_LUT714H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT714H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT714H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT714H_LO_0     (0x1U<<4U)
 
 // LUT715L Configuration
 
-#define GFXMMU_LUT715L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT715L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT715L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT715L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT715L_EN       (0x1U<<0)
+#define GFXMMU_LUT715L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT715L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT715L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT715L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT715L_EN       (0x1U<<0U)
 
 // LUT715H Configuration
 
-#define GFXMMU_LUT715H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT715H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT715H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT715H_LO_0     (0x1U<<4U)
 
 // LUT716L Configuration
 
-#define GFXMMU_LUT716L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT716L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT716L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT716L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT716L_EN       (0x1U<<0)
+#define GFXMMU_LUT716L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT716L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT716L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT716L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT716L_EN       (0x1U<<0U)
 
 // LUT716H Configuration
 
-#define GFXMMU_LUT716H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT716H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT716H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT716H_LO_0     (0x1U<<4U)
 
 // LUT717L Configuration
 
-#define GFXMMU_LUT717L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT717L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT717L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT717L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT717L_EN       (0x1U<<0)
+#define GFXMMU_LUT717L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT717L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT717L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT717L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT717L_EN       (0x1U<<0U)
 
 // LUT717H Configuration
 
-#define GFXMMU_LUT717H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT717H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT717H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT717H_LO_0     (0x1U<<4U)
 
 // LUT718L Configuration
 
-#define GFXMMU_LUT718L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT718L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT718L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT718L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT718L_EN       (0x1U<<0)
+#define GFXMMU_LUT718L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT718L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT718L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT718L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT718L_EN       (0x1U<<0U)
 
 // LUT718H Configuration
 
-#define GFXMMU_LUT718H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT718H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT718H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT718H_LO_0     (0x1U<<4U)
 
 // LUT719L Configuration
 
-#define GFXMMU_LUT719L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT719L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT719L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT719L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT719L_EN       (0x1U<<0)
+#define GFXMMU_LUT719L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT719L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT719L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT719L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT719L_EN       (0x1U<<0U)
 
 // LUT719H Configuration
 
-#define GFXMMU_LUT719H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT719H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT719H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT719H_LO_0     (0x1U<<4U)
 
 // LUT720L Configuration
 
-#define GFXMMU_LUT720L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT720L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT720L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT720L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT720L_EN       (0x1U<<0)
+#define GFXMMU_LUT720L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT720L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT720L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT720L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT720L_EN       (0x1U<<0U)
 
 // LUT720H Configuration
 
-#define GFXMMU_LUT720H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT720H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT720H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT720H_LO_0     (0x1U<<4U)
 
 // LUT721L Configuration
 
-#define GFXMMU_LUT721L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT721L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT721L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT721L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT721L_EN       (0x1U<<0)
+#define GFXMMU_LUT721L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT721L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT721L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT721L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT721L_EN       (0x1U<<0U)
 
 // LUT721H Configuration
 
-#define GFXMMU_LUT721H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT721H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT721H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT721H_LO_0     (0x1U<<4U)
 
 // LUT722L Configuration
 
-#define GFXMMU_LUT722L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT722L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT722L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT722L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT722L_EN       (0x1U<<0)
+#define GFXMMU_LUT722L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT722L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT722L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT722L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT722L_EN       (0x1U<<0U)
 
 // LUT722H Configuration
 
-#define GFXMMU_LUT722H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT722H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT722H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT722H_LO_0     (0x1U<<4U)
 
 // LUT723L Configuration
 
-#define GFXMMU_LUT723L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT723L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT723L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT723L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT723L_EN       (0x1U<<0)
+#define GFXMMU_LUT723L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT723L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT723L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT723L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT723L_EN       (0x1U<<0U)
 
 // LUT723H Configuration
 
-#define GFXMMU_LUT723H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT723H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT723H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT723H_LO_0     (0x1U<<4U)
 
 // LUT724L Configuration
 
-#define GFXMMU_LUT724L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT724L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT724L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT724L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT724L_EN       (0x1U<<0)
+#define GFXMMU_LUT724L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT724L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT724L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT724L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT724L_EN       (0x1U<<0U)
 
 // LUT724H Configuration
 
-#define GFXMMU_LUT724H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT724H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT724H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT724H_LO_0     (0x1U<<4U)
 
 // LUT725L Configuration
 
-#define GFXMMU_LUT725L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT725L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT725L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT725L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT725L_EN       (0x1U<<0)
+#define GFXMMU_LUT725L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT725L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT725L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT725L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT725L_EN       (0x1U<<0U)
 
 // LUT725H Configuration
 
-#define GFXMMU_LUT725H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT725H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT725H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT725H_LO_0     (0x1U<<4U)
 
 // LUT726L Configuration
 
-#define GFXMMU_LUT726L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT726L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT726L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT726L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT726L_EN       (0x1U<<0)
+#define GFXMMU_LUT726L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT726L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT726L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT726L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT726L_EN       (0x1U<<0U)
 
 // LUT726H Configuration
 
-#define GFXMMU_LUT726H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT726H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT726H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT726H_LO_0     (0x1U<<4U)
 
 // LUT727L Configuration
 
-#define GFXMMU_LUT727L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT727L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT727L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT727L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT727L_EN       (0x1U<<0)
+#define GFXMMU_LUT727L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT727L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT727L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT727L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT727L_EN       (0x1U<<0U)
 
 // LUT727H Configuration
 
-#define GFXMMU_LUT727H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT727H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT727H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT727H_LO_0     (0x1U<<4U)
 
 // LUT728L Configuration
 
-#define GFXMMU_LUT728L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT728L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT728L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT728L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT728L_EN       (0x1U<<0)
+#define GFXMMU_LUT728L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT728L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT728L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT728L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT728L_EN       (0x1U<<0U)
 
 // LUT728H Configuration
 
-#define GFXMMU_LUT728H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT728H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT728H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT728H_LO_0     (0x1U<<4U)
 
 // LUT729L Configuration
 
-#define GFXMMU_LUT729L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT729L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT729L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT729L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT729L_EN       (0x1U<<0)
+#define GFXMMU_LUT729L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT729L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT729L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT729L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT729L_EN       (0x1U<<0U)
 
 // LUT729H Configuration
 
-#define GFXMMU_LUT729H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT729H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT729H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT729H_LO_0     (0x1U<<4U)
 
 // LUT730L Configuration
 
-#define GFXMMU_LUT730L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT730L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT730L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT730L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT730L_EN       (0x1U<<0)
+#define GFXMMU_LUT730L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT730L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT730L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT730L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT730L_EN       (0x1U<<0U)
 
 // LUT730H Configuration
 
-#define GFXMMU_LUT730H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT730H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT730H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT730H_LO_0     (0x1U<<4U)
 
 // LUT731L Configuration
 
-#define GFXMMU_LUT731L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT731L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT731L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT731L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT731L_EN       (0x1U<<0)
+#define GFXMMU_LUT731L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT731L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT731L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT731L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT731L_EN       (0x1U<<0U)
 
 // LUT731H Configuration
 
-#define GFXMMU_LUT731H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT731H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT731H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT731H_LO_0     (0x1U<<4U)
 
 // LUT732L Configuration
 
-#define GFXMMU_LUT732L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT732L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT732L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT732L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT732L_EN       (0x1U<<0)
+#define GFXMMU_LUT732L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT732L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT732L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT732L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT732L_EN       (0x1U<<0U)
 
 // LUT732H Configuration
 
-#define GFXMMU_LUT732H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT732H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT732H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT732H_LO_0     (0x1U<<4U)
 
 // LUT733L Configuration
 
-#define GFXMMU_LUT733L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT733L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT733L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT733L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT733L_EN       (0x1U<<0)
+#define GFXMMU_LUT733L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT733L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT733L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT733L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT733L_EN       (0x1U<<0U)
 
 // LUT733H Configuration
 
-#define GFXMMU_LUT733H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT733H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT733H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT733H_LO_0     (0x1U<<4U)
 
 // LUT734L Configuration
 
-#define GFXMMU_LUT734L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT734L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT734L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT734L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT734L_EN       (0x1U<<0)
+#define GFXMMU_LUT734L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT734L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT734L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT734L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT734L_EN       (0x1U<<0U)
 
 // LUT734H Configuration
 
-#define GFXMMU_LUT734H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT734H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT734H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT734H_LO_0     (0x1U<<4U)
 
 // LUT735L Configuration
 
-#define GFXMMU_LUT735L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT735L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT735L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT735L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT735L_EN       (0x1U<<0)
+#define GFXMMU_LUT735L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT735L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT735L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT735L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT735L_EN       (0x1U<<0U)
 
 // LUT735H Configuration
 
-#define GFXMMU_LUT735H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT735H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT735H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT735H_LO_0     (0x1U<<4U)
 
 // LUT736L Configuration
 
-#define GFXMMU_LUT736L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT736L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT736L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT736L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT736L_EN       (0x1U<<0)
+#define GFXMMU_LUT736L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT736L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT736L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT736L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT736L_EN       (0x1U<<0U)
 
 // LUT736H Configuration
 
-#define GFXMMU_LUT736H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT736H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT736H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT736H_LO_0     (0x1U<<4U)
 
 // LUT737L Configuration
 
-#define GFXMMU_LUT737L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT737L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT737L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT737L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT737L_EN       (0x1U<<0)
+#define GFXMMU_LUT737L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT737L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT737L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT737L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT737L_EN       (0x1U<<0U)
 
 // LUT737H Configuration
 
-#define GFXMMU_LUT737H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT737H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT737H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT737H_LO_0     (0x1U<<4U)
 
 // LUT738L Configuration
 
-#define GFXMMU_LUT738L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT738L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT738L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT738L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT738L_EN       (0x1U<<0)
+#define GFXMMU_LUT738L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT738L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT738L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT738L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT738L_EN       (0x1U<<0U)
 
 // LUT738H Configuration
 
-#define GFXMMU_LUT738H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT738H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT738H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT738H_LO_0     (0x1U<<4U)
 
 // LUT739L Configuration
 
-#define GFXMMU_LUT739L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT739L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT739L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT739L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT739L_EN       (0x1U<<0)
+#define GFXMMU_LUT739L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT739L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT739L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT739L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT739L_EN       (0x1U<<0U)
 
 // LUT739H Configuration
 
-#define GFXMMU_LUT739H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT739H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT739H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT739H_LO_0     (0x1U<<4U)
 
 // LUT740L Configuration
 
-#define GFXMMU_LUT740L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT740L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT740L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT740L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT740L_EN       (0x1U<<0)
+#define GFXMMU_LUT740L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT740L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT740L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT740L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT740L_EN       (0x1U<<0U)
 
 // LUT740H Configuration
 
-#define GFXMMU_LUT740H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT740H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT740H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT740H_LO_0     (0x1U<<4U)
 
 // LUT741L Configuration
 
-#define GFXMMU_LUT741L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT741L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT741L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT741L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT741L_EN       (0x1U<<0)
+#define GFXMMU_LUT741L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT741L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT741L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT741L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT741L_EN       (0x1U<<0U)
 
 // LUT741H Configuration
 
-#define GFXMMU_LUT741H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT741H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT741H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT741H_LO_0     (0x1U<<4U)
 
 // LUT742L Configuration
 
-#define GFXMMU_LUT742L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT742L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT742L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT742L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT742L_EN       (0x1U<<0)
+#define GFXMMU_LUT742L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT742L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT742L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT742L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT742L_EN       (0x1U<<0U)
 
 // LUT742H Configuration
 
-#define GFXMMU_LUT742H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT742H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT742H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT742H_LO_0     (0x1U<<4U)
 
 // LUT743L Configuration
 
-#define GFXMMU_LUT743L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT743L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT743L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT743L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT743L_EN       (0x1U<<0)
+#define GFXMMU_LUT743L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT743L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT743L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT743L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT743L_EN       (0x1U<<0U)
 
 // LUT743H Configuration
 
-#define GFXMMU_LUT743H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT743H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT743H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT743H_LO_0     (0x1U<<4U)
 
 // LUT744L Configuration
 
-#define GFXMMU_LUT744L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT744L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT744L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT744L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT744L_EN       (0x1U<<0)
+#define GFXMMU_LUT744L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT744L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT744L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT744L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT744L_EN       (0x1U<<0U)
 
 // LUT744H Configuration
 
-#define GFXMMU_LUT744H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT744H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT744H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT744H_LO_0     (0x1U<<4U)
 
 // LUT745L Configuration
 
-#define GFXMMU_LUT745L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT745L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT745L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT745L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT745L_EN       (0x1U<<0)
+#define GFXMMU_LUT745L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT745L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT745L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT745L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT745L_EN       (0x1U<<0U)
 
 // LUT745H Configuration
 
-#define GFXMMU_LUT745H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT745H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT745H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT745H_LO_0     (0x1U<<4U)
 
 // LUT746L Configuration
 
-#define GFXMMU_LUT746L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT746L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT746L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT746L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT746L_EN       (0x1U<<0)
+#define GFXMMU_LUT746L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT746L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT746L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT746L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT746L_EN       (0x1U<<0U)
 
 // LUT746H Configuration
 
-#define GFXMMU_LUT746H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT746H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT746H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT746H_LO_0     (0x1U<<4U)
 
 // LUT747L Configuration
 
-#define GFXMMU_LUT747L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT747L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT747L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT747L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT747L_EN       (0x1U<<0)
+#define GFXMMU_LUT747L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT747L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT747L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT747L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT747L_EN       (0x1U<<0U)
 
 // LUT747H Configuration
 
-#define GFXMMU_LUT747H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT747H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT747H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT747H_LO_0     (0x1U<<4U)
 
 // LUT748L Configuration
 
-#define GFXMMU_LUT748L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT748L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT748L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT748L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT748L_EN       (0x1U<<0)
+#define GFXMMU_LUT748L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT748L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT748L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT748L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT748L_EN       (0x1U<<0U)
 
 // LUT748H Configuration
 
-#define GFXMMU_LUT748H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT748H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT748H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT748H_LO_0     (0x1U<<4U)
 
 // LUT749L Configuration
 
-#define GFXMMU_LUT749L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT749L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT749L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT749L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT749L_EN       (0x1U<<0)
+#define GFXMMU_LUT749L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT749L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT749L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT749L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT749L_EN       (0x1U<<0U)
 
 // LUT749H Configuration
 
-#define GFXMMU_LUT749H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT749H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT749H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT749H_LO_0     (0x1U<<4U)
 
 // LUT750L Configuration
 
-#define GFXMMU_LUT750L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT750L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT750L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT750L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT750L_EN       (0x1U<<0)
+#define GFXMMU_LUT750L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT750L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT750L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT750L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT750L_EN       (0x1U<<0U)
 
 // LUT750H Configuration
 
-#define GFXMMU_LUT750H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT750H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT750H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT750H_LO_0     (0x1U<<4U)
 
 // LUT751L Configuration
 
-#define GFXMMU_LUT751L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT751L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT751L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT751L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT751L_EN       (0x1U<<0)
+#define GFXMMU_LUT751L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT751L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT751L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT751L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT751L_EN       (0x1U<<0U)
 
 // LUT751H Configuration
 
-#define GFXMMU_LUT751H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT751H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT751H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT751H_LO_0     (0x1U<<4U)
 
 // LUT752L Configuration
 
-#define GFXMMU_LUT752L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT752L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT752L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT752L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT752L_EN       (0x1U<<0)
+#define GFXMMU_LUT752L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT752L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT752L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT752L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT752L_EN       (0x1U<<0U)
 
 // LUT752H Configuration
 
-#define GFXMMU_LUT752H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT752H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT752H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT752H_LO_0     (0x1U<<4U)
 
 // LUT753L Configuration
 
-#define GFXMMU_LUT753L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT753L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT753L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT753L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT753L_EN       (0x1U<<0)
+#define GFXMMU_LUT753L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT753L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT753L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT753L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT753L_EN       (0x1U<<0U)
 
 // LUT753H Configuration
 
-#define GFXMMU_LUT753H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT753H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT753H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT753H_LO_0     (0x1U<<4U)
 
 // LUT754L Configuration
 
-#define GFXMMU_LUT754L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT754L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT754L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT754L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT754L_EN       (0x1U<<0)
+#define GFXMMU_LUT754L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT754L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT754L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT754L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT754L_EN       (0x1U<<0U)
 
 // LUT754H Configuration
 
-#define GFXMMU_LUT754H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT754H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT754H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT754H_LO_0     (0x1U<<4U)
 
 // LUT755L Configuration
 
-#define GFXMMU_LUT755L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT755L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT755L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT755L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT755L_EN       (0x1U<<0)
+#define GFXMMU_LUT755L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT755L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT755L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT755L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT755L_EN       (0x1U<<0U)
 
 // LUT755H Configuration
 
-#define GFXMMU_LUT755H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT755H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT755H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT755H_LO_0     (0x1U<<4U)
 
 // LUT756L Configuration
 
-#define GFXMMU_LUT756L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT756L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT756L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT756L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT756L_EN       (0x1U<<0)
+#define GFXMMU_LUT756L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT756L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT756L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT756L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT756L_EN       (0x1U<<0U)
 
 // LUT756H Configuration
 
-#define GFXMMU_LUT756H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT756H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT756H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT756H_LO_0     (0x1U<<4U)
 
 // LUT757L Configuration
 
-#define GFXMMU_LUT757L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT757L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT757L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT757L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT757L_EN       (0x1U<<0)
+#define GFXMMU_LUT757L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT757L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT757L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT757L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT757L_EN       (0x1U<<0U)
 
 // LUT757H Configuration
 
-#define GFXMMU_LUT757H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT757H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT757H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT757H_LO_0     (0x1U<<4U)
 
 // LUT758L Configuration
 
-#define GFXMMU_LUT758L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT758L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT758L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT758L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT758L_EN       (0x1U<<0)
+#define GFXMMU_LUT758L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT758L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT758L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT758L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT758L_EN       (0x1U<<0U)
 
 // LUT758H Configuration
 
-#define GFXMMU_LUT758H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT758H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT758H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT758H_LO_0     (0x1U<<4U)
 
 // LUT759L Configuration
 
-#define GFXMMU_LUT759L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT759L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT759L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT759L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT759L_EN       (0x1U<<0)
+#define GFXMMU_LUT759L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT759L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT759L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT759L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT759L_EN       (0x1U<<0U)
 
 // LUT759H Configuration
 
-#define GFXMMU_LUT759H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT759H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT759H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT759H_LO_0     (0x1U<<4U)
 
 // LUT760L Configuration
 
-#define GFXMMU_LUT760L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT760L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT760L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT760L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT760L_EN       (0x1U<<0)
+#define GFXMMU_LUT760L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT760L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT760L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT760L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT760L_EN       (0x1U<<0U)
 
 // LUT760H Configuration
 
-#define GFXMMU_LUT760H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT760H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT760H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT760H_LO_0     (0x1U<<4U)
 
 // LUT761L Configuration
 
-#define GFXMMU_LUT761L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT761L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT761L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT761L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT761L_EN       (0x1U<<0)
+#define GFXMMU_LUT761L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT761L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT761L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT761L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT761L_EN       (0x1U<<0U)
 
 // LUT761H Configuration
 
-#define GFXMMU_LUT761H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT761H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT761H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT761H_LO_0     (0x1U<<4U)
 
 // LUT762L Configuration
 
-#define GFXMMU_LUT762L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT762L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT762L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT762L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT762L_EN       (0x1U<<0)
+#define GFXMMU_LUT762L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT762L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT762L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT762L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT762L_EN       (0x1U<<0U)
 
 // LUT762H Configuration
 
-#define GFXMMU_LUT762H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT762H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT762H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT762H_LO_0     (0x1U<<4U)
 
 // LUT763L Configuration
 
-#define GFXMMU_LUT763L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT763L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT763L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT763L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT763L_EN       (0x1U<<0)
+#define GFXMMU_LUT763L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT763L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT763L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT763L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT763L_EN       (0x1U<<0U)
 
 // LUT763H Configuration
 
-#define GFXMMU_LUT763H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT763H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT763H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT763H_LO_0     (0x1U<<4U)
 
 // LUT764L Configuration
 
-#define GFXMMU_LUT764L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT764L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT764L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT764L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT764L_EN       (0x1U<<0)
+#define GFXMMU_LUT764L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT764L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT764L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT764L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT764L_EN       (0x1U<<0U)
 
 // LUT764H Configuration
 
-#define GFXMMU_LUT764H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT764H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT764H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT764H_LO_0     (0x1U<<4U)
 
 // LUT765L Configuration
 
-#define GFXMMU_LUT765L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT765L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT765L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT765L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT765L_EN       (0x1U<<0)
+#define GFXMMU_LUT765L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT765L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT765L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT765L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT765L_EN       (0x1U<<0U)
 
 // LUT765H Configuration
 
-#define GFXMMU_LUT765H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT765H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT765H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT765H_LO_0     (0x1U<<4U)
 
 // LUT766L Configuration
 
-#define GFXMMU_LUT766L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT766L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT766L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT766L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT766L_EN       (0x1U<<0)
+#define GFXMMU_LUT766L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT766L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT766L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT766L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT766L_EN       (0x1U<<0U)
 
 // LUT766H Configuration
 
-#define GFXMMU_LUT766H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT766H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT766H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT766H_LO_0     (0x1U<<4U)
 
 // LUT767L Configuration
 
-#define GFXMMU_LUT767L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT767L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT767L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT767L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT767L_EN       (0x1U<<0)
+#define GFXMMU_LUT767L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT767L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT767L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT767L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT767L_EN       (0x1U<<0U)
 
 // LUT767H Configuration
 
-#define GFXMMU_LUT767H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT767H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT767H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT767H_LO_0     (0x1U<<4U)
 
 // LUT768L Configuration
 
-#define GFXMMU_LUT768L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT768L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT768L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT768L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT768L_EN       (0x1U<<0)
+#define GFXMMU_LUT768L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT768L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT768L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT768L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT768L_EN       (0x1U<<0U)
 
 // LUT768H Configuration
 
-#define GFXMMU_LUT768H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT768H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT768H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT768H_LO_0     (0x1U<<4U)
 
 // LUT769L Configuration
 
-#define GFXMMU_LUT769L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT769L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT769L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT769L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT769L_EN       (0x1U<<0)
+#define GFXMMU_LUT769L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT769L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT769L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT769L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT769L_EN       (0x1U<<0U)
 
 // LUT769H Configuration
 
-#define GFXMMU_LUT769H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT769H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT769H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT769H_LO_0     (0x1U<<4U)
 
 // LUT770L Configuration
 
-#define GFXMMU_LUT770L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT770L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT770L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT770L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT770L_EN       (0x1U<<0)
+#define GFXMMU_LUT770L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT770L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT770L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT770L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT770L_EN       (0x1U<<0U)
 
 // LUT770H Configuration
 
-#define GFXMMU_LUT770H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT770H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT770H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT770H_LO_0     (0x1U<<4U)
 
 // LUT771L Configuration
 
-#define GFXMMU_LUT771L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT771L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT771L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT771L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT771L_EN       (0x1U<<0)
+#define GFXMMU_LUT771L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT771L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT771L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT771L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT771L_EN       (0x1U<<0U)
 
 // LUT771H Configuration
 
-#define GFXMMU_LUT771H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT771H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT771H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT771H_LO_0     (0x1U<<4U)
 
 // LUT772L Configuration
 
-#define GFXMMU_LUT772L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT772L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT772L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT772L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT772L_EN       (0x1U<<0)
+#define GFXMMU_LUT772L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT772L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT772L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT772L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT772L_EN       (0x1U<<0U)
 
 // LUT772H Configuration
 
-#define GFXMMU_LUT772H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT772H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT772H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT772H_LO_0     (0x1U<<4U)
 
 // LUT773L Configuration
 
-#define GFXMMU_LUT773L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT773L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT773L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT773L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT773L_EN       (0x1U<<0)
+#define GFXMMU_LUT773L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT773L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT773L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT773L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT773L_EN       (0x1U<<0U)
 
 // LUT773H Configuration
 
-#define GFXMMU_LUT773H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT773H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT773H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT773H_LO_0     (0x1U<<4U)
 
 // LUT774L Configuration
 
-#define GFXMMU_LUT774L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT774L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT774L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT774L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT774L_EN       (0x1U<<0)
+#define GFXMMU_LUT774L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT774L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT774L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT774L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT774L_EN       (0x1U<<0U)
 
 // LUT774H Configuration
 
-#define GFXMMU_LUT774H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT774H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT774H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT774H_LO_0     (0x1U<<4U)
 
 // LUT775L Configuration
 
-#define GFXMMU_LUT775L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT775L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT775L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT775L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT775L_EN       (0x1U<<0)
+#define GFXMMU_LUT775L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT775L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT775L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT775L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT775L_EN       (0x1U<<0U)
 
 // LUT775H Configuration
 
-#define GFXMMU_LUT775H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT775H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT775H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT775H_LO_0     (0x1U<<4U)
 
 // LUT776L Configuration
 
-#define GFXMMU_LUT776L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT776L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT776L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT776L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT776L_EN       (0x1U<<0)
+#define GFXMMU_LUT776L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT776L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT776L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT776L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT776L_EN       (0x1U<<0U)
 
 // LUT776H Configuration
 
-#define GFXMMU_LUT776H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT776H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT776H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT776H_LO_0     (0x1U<<4U)
 
 // LUT777L Configuration
 
-#define GFXMMU_LUT777L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT777L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT777L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT777L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT777L_EN       (0x1U<<0)
+#define GFXMMU_LUT777L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT777L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT777L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT777L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT777L_EN       (0x1U<<0U)
 
 // LUT777H Configuration
 
-#define GFXMMU_LUT777H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT777H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT777H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT777H_LO_0     (0x1U<<4U)
 
 // LUT778L Configuration
 
-#define GFXMMU_LUT778L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT778L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT778L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT778L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT778L_EN       (0x1U<<0)
+#define GFXMMU_LUT778L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT778L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT778L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT778L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT778L_EN       (0x1U<<0U)
 
 // LUT778H Configuration
 
-#define GFXMMU_LUT778H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT778H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT778H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT778H_LO_0     (0x1U<<4U)
 
 // LUT779L Configuration
 
-#define GFXMMU_LUT779L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT779L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT779L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT779L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT779L_EN       (0x1U<<0)
+#define GFXMMU_LUT779L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT779L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT779L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT779L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT779L_EN       (0x1U<<0U)
 
 // LUT779H Configuration
 
-#define GFXMMU_LUT779H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT779H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT779H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT779H_LO_0     (0x1U<<4U)
 
 // LUT780L Configuration
 
-#define GFXMMU_LUT780L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT780L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT780L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT780L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT780L_EN       (0x1U<<0)
+#define GFXMMU_LUT780L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT780L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT780L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT780L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT780L_EN       (0x1U<<0U)
 
 // LUT780H Configuration
 
-#define GFXMMU_LUT780H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT780H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT780H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT780H_LO_0     (0x1U<<4U)
 
 // LUT781L Configuration
 
-#define GFXMMU_LUT781L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT781L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT781L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT781L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT781L_EN       (0x1U<<0)
+#define GFXMMU_LUT781L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT781L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT781L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT781L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT781L_EN       (0x1U<<0U)
 
 // LUT781H Configuration
 
-#define GFXMMU_LUT781H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT781H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT781H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT781H_LO_0     (0x1U<<4U)
 
 // LUT782L Configuration
 
-#define GFXMMU_LUT782L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT782L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT782L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT782L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT782L_EN       (0x1U<<0)
+#define GFXMMU_LUT782L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT782L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT782L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT782L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT782L_EN       (0x1U<<0U)
 
 // LUT782H Configuration
 
-#define GFXMMU_LUT782H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT782H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT782H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT782H_LO_0     (0x1U<<4U)
 
 // LUT783L Configuration
 
-#define GFXMMU_LUT783L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT783L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT783L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT783L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT783L_EN       (0x1U<<0)
+#define GFXMMU_LUT783L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT783L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT783L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT783L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT783L_EN       (0x1U<<0U)
 
 // LUT783H Configuration
 
-#define GFXMMU_LUT783H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT783H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT783H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT783H_LO_0     (0x1U<<4U)
 
 // LUT784L Configuration
 
-#define GFXMMU_LUT784L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT784L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT784L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT784L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT784L_EN       (0x1U<<0)
+#define GFXMMU_LUT784L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT784L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT784L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT784L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT784L_EN       (0x1U<<0U)
 
 // LUT784H Configuration
 
-#define GFXMMU_LUT784H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT784H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT784H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT784H_LO_0     (0x1U<<4U)
 
 // LUT785L Configuration
 
-#define GFXMMU_LUT785L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT785L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT785L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT785L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT785L_EN       (0x1U<<0)
+#define GFXMMU_LUT785L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT785L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT785L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT785L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT785L_EN       (0x1U<<0U)
 
 // LUT785H Configuration
 
-#define GFXMMU_LUT785H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT785H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT785H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT785H_LO_0     (0x1U<<4U)
 
 // LUT786L Configuration
 
-#define GFXMMU_LUT786L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT786L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT786L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT786L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT786L_EN       (0x1U<<0)
+#define GFXMMU_LUT786L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT786L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT786L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT786L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT786L_EN       (0x1U<<0U)
 
 // LUT786H Configuration
 
-#define GFXMMU_LUT786H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT786H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT786H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT786H_LO_0     (0x1U<<4U)
 
 // LUT787L Configuration
 
-#define GFXMMU_LUT787L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT787L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT787L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT787L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT787L_EN       (0x1U<<0)
+#define GFXMMU_LUT787L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT787L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT787L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT787L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT787L_EN       (0x1U<<0U)
 
 // LUT787H Configuration
 
-#define GFXMMU_LUT787H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT787H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT787H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT787H_LO_0     (0x1U<<4U)
 
 // LUT788L Configuration
 
-#define GFXMMU_LUT788L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT788L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT788L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT788L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT788L_EN       (0x1U<<0)
+#define GFXMMU_LUT788L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT788L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT788L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT788L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT788L_EN       (0x1U<<0U)
 
 // LUT788H Configuration
 
-#define GFXMMU_LUT788H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT788H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT788H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT788H_LO_0     (0x1U<<4U)
 
 // LUT789L Configuration
 
-#define GFXMMU_LUT789L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT789L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT789L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT789L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT789L_EN       (0x1U<<0)
+#define GFXMMU_LUT789L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT789L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT789L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT789L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT789L_EN       (0x1U<<0U)
 
 // LUT789H Configuration
 
-#define GFXMMU_LUT789H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT789H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT789H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT789H_LO_0     (0x1U<<4U)
 
 // LUT790L Configuration
 
-#define GFXMMU_LUT790L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT790L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT790L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT790L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT790L_EN       (0x1U<<0)
+#define GFXMMU_LUT790L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT790L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT790L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT790L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT790L_EN       (0x1U<<0U)
 
 // LUT790H Configuration
 
-#define GFXMMU_LUT790H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT790H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT790H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT790H_LO_0     (0x1U<<4U)
 
 // LUT791L Configuration
 
-#define GFXMMU_LUT791L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT791L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT791L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT791L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT791L_EN       (0x1U<<0)
+#define GFXMMU_LUT791L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT791L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT791L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT791L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT791L_EN       (0x1U<<0U)
 
 // LUT791H Configuration
 
-#define GFXMMU_LUT791H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT791H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT791H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT791H_LO_0     (0x1U<<4U)
 
 // LUT792L Configuration
 
-#define GFXMMU_LUT792L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT792L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT792L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT792L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT792L_EN       (0x1U<<0)
+#define GFXMMU_LUT792L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT792L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT792L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT792L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT792L_EN       (0x1U<<0U)
 
 // LUT792H Configuration
 
-#define GFXMMU_LUT792H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT792H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT792H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT792H_LO_0     (0x1U<<4U)
 
 // LUT793L Configuration
 
-#define GFXMMU_LUT793L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT793L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT793L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT793L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT793L_EN       (0x1U<<0)
+#define GFXMMU_LUT793L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT793L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT793L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT793L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT793L_EN       (0x1U<<0U)
 
 // LUT793H Configuration
 
-#define GFXMMU_LUT793H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT793H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT793H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT793H_LO_0     (0x1U<<4U)
 
 // LUT794L Configuration
 
-#define GFXMMU_LUT794L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT794L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT794L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT794L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT794L_EN       (0x1U<<0)
+#define GFXMMU_LUT794L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT794L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT794L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT794L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT794L_EN       (0x1U<<0U)
 
 // LUT794H Configuration
 
-#define GFXMMU_LUT794H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT794H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT794H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT794H_LO_0     (0x1U<<4U)
 
 // LUT795L Configuration
 
-#define GFXMMU_LUT795L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT795L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT795L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT795L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT795L_EN       (0x1U<<0)
+#define GFXMMU_LUT795L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT795L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT795L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT795L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT795L_EN       (0x1U<<0U)
 
 // LUT795H Configuration
 
-#define GFXMMU_LUT795H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT795H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT795H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT795H_LO_0     (0x1U<<4U)
 
 // LUT796L Configuration
 
-#define GFXMMU_LUT796L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT796L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT796L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT796L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT796L_EN       (0x1U<<0)
+#define GFXMMU_LUT796L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT796L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT796L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT796L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT796L_EN       (0x1U<<0U)
 
 // LUT796H Configuration
 
-#define GFXMMU_LUT796H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT796H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT796H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT796H_LO_0     (0x1U<<4U)
 
 // LUT797L Configuration
 
-#define GFXMMU_LUT797L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT797L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT797L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT797L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT797L_EN       (0x1U<<0)
+#define GFXMMU_LUT797L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT797L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT797L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT797L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT797L_EN       (0x1U<<0U)
 
 // LUT797H Configuration
 
-#define GFXMMU_LUT797H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT797H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT797H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT797H_LO_0     (0x1U<<4U)
 
 // LUT798L Configuration
 
-#define GFXMMU_LUT798L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT798L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT798L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT798L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT798L_EN       (0x1U<<0)
+#define GFXMMU_LUT798L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT798L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT798L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT798L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT798L_EN       (0x1U<<0U)
 
 // LUT798H Configuration
 
-#define GFXMMU_LUT798H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT798H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT798H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT798H_LO_0     (0x1U<<4U)
 
 // LUT799L Configuration
 
-#define GFXMMU_LUT799L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT799L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT799L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT799L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT799L_EN       (0x1U<<0)
+#define GFXMMU_LUT799L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT799L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT799L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT799L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT799L_EN       (0x1U<<0U)
 
 // LUT799H Configuration
 
-#define GFXMMU_LUT799H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT799H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT799H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT799H_LO_0     (0x1U<<4U)
 
 // LUT800L Configuration
 
-#define GFXMMU_LUT800L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT800L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT800L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT800L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT800L_EN       (0x1U<<0)
+#define GFXMMU_LUT800L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT800L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT800L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT800L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT800L_EN       (0x1U<<0U)
 
 // LUT800H Configuration
 
-#define GFXMMU_LUT800H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT800H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT800H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT800H_LO_0     (0x1U<<4U)
 
 // LUT801L Configuration
 
-#define GFXMMU_LUT801L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT801L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT801L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT801L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT801L_EN       (0x1U<<0)
+#define GFXMMU_LUT801L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT801L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT801L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT801L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT801L_EN       (0x1U<<0U)
 
 // LUT801H Configuration
 
-#define GFXMMU_LUT801H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT801H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT801H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT801H_LO_0     (0x1U<<4U)
 
 // LUT802L Configuration
 
-#define GFXMMU_LUT802L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT802L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT802L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT802L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT802L_EN       (0x1U<<0)
+#define GFXMMU_LUT802L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT802L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT802L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT802L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT802L_EN       (0x1U<<0U)
 
 // LUT802H Configuration
 
-#define GFXMMU_LUT802H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT802H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT802H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT802H_LO_0     (0x1U<<4U)
 
 // LUT803L Configuration
 
-#define GFXMMU_LUT803L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT803L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT803L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT803L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT803L_EN       (0x1U<<0)
+#define GFXMMU_LUT803L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT803L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT803L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT803L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT803L_EN       (0x1U<<0U)
 
 // LUT803H Configuration
 
-#define GFXMMU_LUT803H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT803H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT803H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT803H_LO_0     (0x1U<<4U)
 
 // LUT804L Configuration
 
-#define GFXMMU_LUT804L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT804L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT804L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT804L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT804L_EN       (0x1U<<0)
+#define GFXMMU_LUT804L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT804L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT804L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT804L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT804L_EN       (0x1U<<0U)
 
 // LUT804H Configuration
 
-#define GFXMMU_LUT804H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT804H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT804H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT804H_LO_0     (0x1U<<4U)
 
 // LUT805L Configuration
 
-#define GFXMMU_LUT805L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT805L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT805L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT805L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT805L_EN       (0x1U<<0)
+#define GFXMMU_LUT805L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT805L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT805L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT805L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT805L_EN       (0x1U<<0U)
 
 // LUT805H Configuration
 
-#define GFXMMU_LUT805H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT805H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT805H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT805H_LO_0     (0x1U<<4U)
 
 // LUT806L Configuration
 
-#define GFXMMU_LUT806L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT806L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT806L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT806L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT806L_EN       (0x1U<<0)
+#define GFXMMU_LUT806L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT806L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT806L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT806L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT806L_EN       (0x1U<<0U)
 
 // LUT806H Configuration
 
-#define GFXMMU_LUT806H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT806H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT806H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT806H_LO_0     (0x1U<<4U)
 
 // LUT807L Configuration
 
-#define GFXMMU_LUT807L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT807L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT807L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT807L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT807L_EN       (0x1U<<0)
+#define GFXMMU_LUT807L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT807L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT807L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT807L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT807L_EN       (0x1U<<0U)
 
 // LUT807H Configuration
 
-#define GFXMMU_LUT807H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT807H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT807H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT807H_LO_0     (0x1U<<4U)
 
 // LUT808L Configuration
 
-#define GFXMMU_LUT808L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT808L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT808L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT808L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT808L_EN       (0x1U<<0)
+#define GFXMMU_LUT808L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT808L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT808L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT808L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT808L_EN       (0x1U<<0U)
 
 // LUT808H Configuration
 
-#define GFXMMU_LUT808H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT808H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT808H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT808H_LO_0     (0x1U<<4U)
 
 // LUT809L Configuration
 
-#define GFXMMU_LUT809L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT809L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT809L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT809L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT809L_EN       (0x1U<<0)
+#define GFXMMU_LUT809L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT809L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT809L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT809L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT809L_EN       (0x1U<<0U)
 
 // LUT809H Configuration
 
-#define GFXMMU_LUT809H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT809H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT809H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT809H_LO_0     (0x1U<<4U)
 
 // LUT810L Configuration
 
-#define GFXMMU_LUT810L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT810L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT810L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT810L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT810L_EN       (0x1U<<0)
+#define GFXMMU_LUT810L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT810L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT810L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT810L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT810L_EN       (0x1U<<0U)
 
 // LUT810H Configuration
 
-#define GFXMMU_LUT810H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT810H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT810H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT810H_LO_0     (0x1U<<4U)
 
 // LUT811L Configuration
 
-#define GFXMMU_LUT811L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT811L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT811L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT811L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT811L_EN       (0x1U<<0)
+#define GFXMMU_LUT811L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT811L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT811L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT811L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT811L_EN       (0x1U<<0U)
 
 // LUT811H Configuration
 
-#define GFXMMU_LUT811H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT811H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT811H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT811H_LO_0     (0x1U<<4U)
 
 // LUT812L Configuration
 
-#define GFXMMU_LUT812L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT812L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT812L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT812L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT812L_EN       (0x1U<<0)
+#define GFXMMU_LUT812L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT812L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT812L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT812L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT812L_EN       (0x1U<<0U)
 
 // LUT812H Configuration
 
-#define GFXMMU_LUT812H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT812H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT812H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT812H_LO_0     (0x1U<<4U)
 
 // LUT813L Configuration
 
-#define GFXMMU_LUT813L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT813L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT813L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT813L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT813L_EN       (0x1U<<0)
+#define GFXMMU_LUT813L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT813L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT813L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT813L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT813L_EN       (0x1U<<0U)
 
 // LUT813H Configuration
 
-#define GFXMMU_LUT813H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT813H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT813H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT813H_LO_0     (0x1U<<4U)
 
 // LUT814L Configuration
 
-#define GFXMMU_LUT814L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT814L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT814L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT814L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT814L_EN       (0x1U<<0)
+#define GFXMMU_LUT814L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT814L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT814L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT814L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT814L_EN       (0x1U<<0U)
 
 // LUT814H Configuration
 
-#define GFXMMU_LUT814H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT814H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT814H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT814H_LO_0     (0x1U<<4U)
 
 // LUT815L Configuration
 
-#define GFXMMU_LUT815L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT815L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT815L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT815L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT815L_EN       (0x1U<<0)
+#define GFXMMU_LUT815L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT815L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT815L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT815L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT815L_EN       (0x1U<<0U)
 
 // LUT815H Configuration
 
-#define GFXMMU_LUT815H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT815H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT815H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT815H_LO_0     (0x1U<<4U)
 
 // LUT816L Configuration
 
-#define GFXMMU_LUT816L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT816L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT816L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT816L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT816L_EN       (0x1U<<0)
+#define GFXMMU_LUT816L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT816L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT816L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT816L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT816L_EN       (0x1U<<0U)
 
 // LUT816H Configuration
 
-#define GFXMMU_LUT816H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT816H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT816H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT816H_LO_0     (0x1U<<4U)
 
 // LUT817L Configuration
 
-#define GFXMMU_LUT817L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT817L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT817L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT817L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT817L_EN       (0x1U<<0)
+#define GFXMMU_LUT817L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT817L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT817L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT817L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT817L_EN       (0x1U<<0U)
 
 // LUT817H Configuration
 
-#define GFXMMU_LUT817H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT817H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT817H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT817H_LO_0     (0x1U<<4U)
 
 // LUT818L Configuration
 
-#define GFXMMU_LUT818L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT818L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT818L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT818L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT818L_EN       (0x1U<<0)
+#define GFXMMU_LUT818L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT818L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT818L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT818L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT818L_EN       (0x1U<<0U)
 
 // LUT818H Configuration
 
-#define GFXMMU_LUT818H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT818H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT818H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT818H_LO_0     (0x1U<<4U)
 
 // LUT819L Configuration
 
-#define GFXMMU_LUT819L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT819L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT819L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT819L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT819L_EN       (0x1U<<0)
+#define GFXMMU_LUT819L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT819L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT819L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT819L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT819L_EN       (0x1U<<0U)
 
 // LUT819H Configuration
 
-#define GFXMMU_LUT819H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT819H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT819H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT819H_LO_0     (0x1U<<4U)
 
 // LUT820L Configuration
 
-#define GFXMMU_LUT820L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT820L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT820L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT820L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT820L_EN       (0x1U<<0)
+#define GFXMMU_LUT820L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT820L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT820L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT820L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT820L_EN       (0x1U<<0U)
 
 // LUT820H Configuration
 
-#define GFXMMU_LUT820H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT820H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT820H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT820H_LO_0     (0x1U<<4U)
 
 // LUT821L Configuration
 
-#define GFXMMU_LUT821L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT821L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT821L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT821L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT821L_EN       (0x1U<<0)
+#define GFXMMU_LUT821L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT821L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT821L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT821L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT821L_EN       (0x1U<<0U)
 
 // LUT821H Configuration
 
-#define GFXMMU_LUT821H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT821H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT821H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT821H_LO_0     (0x1U<<4U)
 
 // LUT822L Configuration
 
-#define GFXMMU_LUT822L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT822L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT822L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT822L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT822L_EN       (0x1U<<0)
+#define GFXMMU_LUT822L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT822L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT822L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT822L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT822L_EN       (0x1U<<0U)
 
 // LUT822H Configuration
 
-#define GFXMMU_LUT822H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT822H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT822H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT822H_LO_0     (0x1U<<4U)
 
 // LUT823L Configuration
 
-#define GFXMMU_LUT823L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT823L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT823L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT823L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT823L_EN       (0x1U<<0)
+#define GFXMMU_LUT823L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT823L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT823L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT823L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT823L_EN       (0x1U<<0U)
 
 // LUT823H Configuration
 
-#define GFXMMU_LUT823H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT823H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT823H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT823H_LO_0     (0x1U<<4U)
 
 // LUT824L Configuration
 
-#define GFXMMU_LUT824L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT824L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT824L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT824L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT824L_EN       (0x1U<<0)
+#define GFXMMU_LUT824L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT824L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT824L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT824L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT824L_EN       (0x1U<<0U)
 
 // LUT824H Configuration
 
-#define GFXMMU_LUT824H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT824H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT824H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT824H_LO_0     (0x1U<<4U)
 
 // LUT825L Configuration
 
-#define GFXMMU_LUT825L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT825L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT825L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT825L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT825L_EN       (0x1U<<0)
+#define GFXMMU_LUT825L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT825L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT825L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT825L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT825L_EN       (0x1U<<0U)
 
 // LUT825H Configuration
 
-#define GFXMMU_LUT825H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT825H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT825H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT825H_LO_0     (0x1U<<4U)
 
 // LUT826L Configuration
 
-#define GFXMMU_LUT826L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT826L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT826L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT826L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT826L_EN       (0x1U<<0)
+#define GFXMMU_LUT826L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT826L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT826L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT826L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT826L_EN       (0x1U<<0U)
 
 // LUT826H Configuration
 
-#define GFXMMU_LUT826H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT826H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT826H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT826H_LO_0     (0x1U<<4U)
 
 // LUT827L Configuration
 
-#define GFXMMU_LUT827L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT827L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT827L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT827L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT827L_EN       (0x1U<<0)
+#define GFXMMU_LUT827L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT827L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT827L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT827L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT827L_EN       (0x1U<<0U)
 
 // LUT827H Configuration
 
-#define GFXMMU_LUT827H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT827H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT827H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT827H_LO_0     (0x1U<<4U)
 
 // LUT828L Configuration
 
-#define GFXMMU_LUT828L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT828L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT828L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT828L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT828L_EN       (0x1U<<0)
+#define GFXMMU_LUT828L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT828L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT828L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT828L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT828L_EN       (0x1U<<0U)
 
 // LUT828H Configuration
 
-#define GFXMMU_LUT828H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT828H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT828H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT828H_LO_0     (0x1U<<4U)
 
 // LUT829L Configuration
 
-#define GFXMMU_LUT829L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT829L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT829L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT829L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT829L_EN       (0x1U<<0)
+#define GFXMMU_LUT829L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT829L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT829L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT829L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT829L_EN       (0x1U<<0U)
 
 // LUT829H Configuration
 
-#define GFXMMU_LUT829H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT829H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT829H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT829H_LO_0     (0x1U<<4U)
 
 // LUT830L Configuration
 
-#define GFXMMU_LUT830L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT830L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT830L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT830L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT830L_EN       (0x1U<<0)
+#define GFXMMU_LUT830L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT830L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT830L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT830L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT830L_EN       (0x1U<<0U)
 
 // LUT830H Configuration
 
-#define GFXMMU_LUT830H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT830H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT830H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT830H_LO_0     (0x1U<<4U)
 
 // LUT831L Configuration
 
-#define GFXMMU_LUT831L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT831L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT831L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT831L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT831L_EN       (0x1U<<0)
+#define GFXMMU_LUT831L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT831L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT831L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT831L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT831L_EN       (0x1U<<0U)
 
 // LUT831H Configuration
 
-#define GFXMMU_LUT831H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT831H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT831H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT831H_LO_0     (0x1U<<4U)
 
 // LUT832L Configuration
 
-#define GFXMMU_LUT832L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT832L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT832L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT832L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT832L_EN       (0x1U<<0)
+#define GFXMMU_LUT832L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT832L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT832L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT832L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT832L_EN       (0x1U<<0U)
 
 // LUT832H Configuration
 
-#define GFXMMU_LUT832H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT832H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT832H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT832H_LO_0     (0x1U<<4U)
 
 // LUT833L Configuration
 
-#define GFXMMU_LUT833L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT833L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT833L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT833L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT833L_EN       (0x1U<<0)
+#define GFXMMU_LUT833L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT833L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT833L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT833L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT833L_EN       (0x1U<<0U)
 
 // LUT833H Configuration
 
-#define GFXMMU_LUT833H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT833H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT833H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT833H_LO_0     (0x1U<<4U)
 
 // LUT834L Configuration
 
-#define GFXMMU_LUT834L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT834L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT834L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT834L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT834L_EN       (0x1U<<0)
+#define GFXMMU_LUT834L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT834L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT834L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT834L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT834L_EN       (0x1U<<0U)
 
 // LUT834H Configuration
 
-#define GFXMMU_LUT834H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT834H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT834H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT834H_LO_0     (0x1U<<4U)
 
 // LUT835L Configuration
 
-#define GFXMMU_LUT835L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT835L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT835L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT835L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT835L_EN       (0x1U<<0)
+#define GFXMMU_LUT835L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT835L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT835L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT835L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT835L_EN       (0x1U<<0U)
 
 // LUT835H Configuration
 
-#define GFXMMU_LUT835H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT835H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT835H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT835H_LO_0     (0x1U<<4U)
 
 // LUT836L Configuration
 
-#define GFXMMU_LUT836L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT836L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT836L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT836L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT836L_EN       (0x1U<<0)
+#define GFXMMU_LUT836L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT836L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT836L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT836L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT836L_EN       (0x1U<<0U)
 
 // LUT836H Configuration
 
-#define GFXMMU_LUT836H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT836H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT836H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT836H_LO_0     (0x1U<<4U)
 
 // LUT837L Configuration
 
-#define GFXMMU_LUT837L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT837L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT837L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT837L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT837L_EN       (0x1U<<0)
+#define GFXMMU_LUT837L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT837L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT837L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT837L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT837L_EN       (0x1U<<0U)
 
 // LUT837H Configuration
 
-#define GFXMMU_LUT837H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT837H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT837H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT837H_LO_0     (0x1U<<4U)
 
 // LUT838L Configuration
 
-#define GFXMMU_LUT838L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT838L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT838L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT838L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT838L_EN       (0x1U<<0)
+#define GFXMMU_LUT838L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT838L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT838L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT838L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT838L_EN       (0x1U<<0U)
 
 // LUT838H Configuration
 
-#define GFXMMU_LUT838H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT838H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT838H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT838H_LO_0     (0x1U<<4U)
 
 // LUT839L Configuration
 
-#define GFXMMU_LUT839L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT839L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT839L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT839L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT839L_EN       (0x1U<<0)
+#define GFXMMU_LUT839L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT839L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT839L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT839L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT839L_EN       (0x1U<<0U)
 
 // LUT839H Configuration
 
-#define GFXMMU_LUT839H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT839H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT839H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT839H_LO_0     (0x1U<<4U)
 
 // LUT840L Configuration
 
-#define GFXMMU_LUT840L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT840L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT840L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT840L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT840L_EN       (0x1U<<0)
+#define GFXMMU_LUT840L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT840L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT840L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT840L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT840L_EN       (0x1U<<0U)
 
 // LUT840H Configuration
 
-#define GFXMMU_LUT840H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT840H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT840H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT840H_LO_0     (0x1U<<4U)
 
 // LUT841L Configuration
 
-#define GFXMMU_LUT841L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT841L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT841L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT841L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT841L_EN       (0x1U<<0)
+#define GFXMMU_LUT841L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT841L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT841L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT841L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT841L_EN       (0x1U<<0U)
 
 // LUT841H Configuration
 
-#define GFXMMU_LUT841H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT841H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT841H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT841H_LO_0     (0x1U<<4U)
 
 // LUT842L Configuration
 
-#define GFXMMU_LUT842L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT842L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT842L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT842L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT842L_EN       (0x1U<<0)
+#define GFXMMU_LUT842L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT842L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT842L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT842L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT842L_EN       (0x1U<<0U)
 
 // LUT842H Configuration
 
-#define GFXMMU_LUT842H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT842H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT842H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT842H_LO_0     (0x1U<<4U)
 
 // LUT843L Configuration
 
-#define GFXMMU_LUT843L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT843L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT843L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT843L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT843L_EN       (0x1U<<0)
+#define GFXMMU_LUT843L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT843L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT843L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT843L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT843L_EN       (0x1U<<0U)
 
 // LUT843H Configuration
 
-#define GFXMMU_LUT843H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT843H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT843H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT843H_LO_0     (0x1U<<4U)
 
 // LUT844L Configuration
 
-#define GFXMMU_LUT844L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT844L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT844L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT844L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT844L_EN       (0x1U<<0)
+#define GFXMMU_LUT844L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT844L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT844L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT844L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT844L_EN       (0x1U<<0U)
 
 // LUT844H Configuration
 
-#define GFXMMU_LUT844H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT844H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT844H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT844H_LO_0     (0x1U<<4U)
 
 // LUT845L Configuration
 
-#define GFXMMU_LUT845L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT845L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT845L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT845L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT845L_EN       (0x1U<<0)
+#define GFXMMU_LUT845L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT845L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT845L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT845L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT845L_EN       (0x1U<<0U)
 
 // LUT845H Configuration
 
-#define GFXMMU_LUT845H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT845H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT845H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT845H_LO_0     (0x1U<<4U)
 
 // LUT846L Configuration
 
-#define GFXMMU_LUT846L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT846L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT846L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT846L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT846L_EN       (0x1U<<0)
+#define GFXMMU_LUT846L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT846L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT846L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT846L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT846L_EN       (0x1U<<0U)
 
 // LUT846H Configuration
 
-#define GFXMMU_LUT846H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT846H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT846H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT846H_LO_0     (0x1U<<4U)
 
 // LUT847L Configuration
 
-#define GFXMMU_LUT847L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT847L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT847L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT847L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT847L_EN       (0x1U<<0)
+#define GFXMMU_LUT847L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT847L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT847L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT847L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT847L_EN       (0x1U<<0U)
 
 // LUT847H Configuration
 
-#define GFXMMU_LUT847H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT847H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT847H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT847H_LO_0     (0x1U<<4U)
 
 // LUT848L Configuration
 
-#define GFXMMU_LUT848L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT848L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT848L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT848L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT848L_EN       (0x1U<<0)
+#define GFXMMU_LUT848L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT848L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT848L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT848L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT848L_EN       (0x1U<<0U)
 
 // LUT848H Configuration
 
-#define GFXMMU_LUT848H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT848H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT848H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT848H_LO_0     (0x1U<<4U)
 
 // LUT849L Configuration
 
-#define GFXMMU_LUT849L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT849L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT849L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT849L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT849L_EN       (0x1U<<0)
+#define GFXMMU_LUT849L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT849L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT849L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT849L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT849L_EN       (0x1U<<0U)
 
 // LUT849H Configuration
 
-#define GFXMMU_LUT849H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT849H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT849H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT849H_LO_0     (0x1U<<4U)
 
 // LUT850L Configuration
 
-#define GFXMMU_LUT850L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT850L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT850L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT850L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT850L_EN       (0x1U<<0)
+#define GFXMMU_LUT850L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT850L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT850L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT850L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT850L_EN       (0x1U<<0U)
 
 // LUT850H Configuration
 
-#define GFXMMU_LUT850H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT850H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT850H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT850H_LO_0     (0x1U<<4U)
 
 // LUT851L Configuration
 
-#define GFXMMU_LUT851L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT851L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT851L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT851L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT851L_EN       (0x1U<<0)
+#define GFXMMU_LUT851L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT851L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT851L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT851L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT851L_EN       (0x1U<<0U)
 
 // LUT851H Configuration
 
-#define GFXMMU_LUT851H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT851H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT851H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT851H_LO_0     (0x1U<<4U)
 
 // LUT852L Configuration
 
-#define GFXMMU_LUT852L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT852L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT852L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT852L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT852L_EN       (0x1U<<0)
+#define GFXMMU_LUT852L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT852L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT852L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT852L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT852L_EN       (0x1U<<0U)
 
 // LUT852H Configuration
 
-#define GFXMMU_LUT852H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT852H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT852H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT852H_LO_0     (0x1U<<4U)
 
 // LUT853L Configuration
 
-#define GFXMMU_LUT853L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT853L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT853L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT853L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT853L_EN       (0x1U<<0)
+#define GFXMMU_LUT853L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT853L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT853L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT853L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT853L_EN       (0x1U<<0U)
 
 // LUT853H Configuration
 
-#define GFXMMU_LUT853H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT853H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT853H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT853H_LO_0     (0x1U<<4U)
 
 // LUT854L Configuration
 
-#define GFXMMU_LUT854L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT854L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT854L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT854L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT854L_EN       (0x1U<<0)
+#define GFXMMU_LUT854L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT854L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT854L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT854L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT854L_EN       (0x1U<<0U)
 
 // LUT854H Configuration
 
-#define GFXMMU_LUT854H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT854H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT854H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT854H_LO_0     (0x1U<<4U)
 
 // LUT855L Configuration
 
-#define GFXMMU_LUT855L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT855L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT855L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT855L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT855L_EN       (0x1U<<0)
+#define GFXMMU_LUT855L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT855L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT855L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT855L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT855L_EN       (0x1U<<0U)
 
 // LUT855H Configuration
 
-#define GFXMMU_LUT855H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT855H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT855H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT855H_LO_0     (0x1U<<4U)
 
 // LUT856L Configuration
 
-#define GFXMMU_LUT856L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT856L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT856L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT856L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT856L_EN       (0x1U<<0)
+#define GFXMMU_LUT856L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT856L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT856L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT856L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT856L_EN       (0x1U<<0U)
 
 // LUT856H Configuration
 
-#define GFXMMU_LUT856H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT856H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT856H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT856H_LO_0     (0x1U<<4U)
 
 // LUT857L Configuration
 
-#define GFXMMU_LUT857L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT857L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT857L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT857L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT857L_EN       (0x1U<<0)
+#define GFXMMU_LUT857L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT857L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT857L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT857L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT857L_EN       (0x1U<<0U)
 
 // LUT857H Configuration
 
-#define GFXMMU_LUT857H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT857H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT857H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT857H_LO_0     (0x1U<<4U)
 
 // LUT858L Configuration
 
-#define GFXMMU_LUT858L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT858L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT858L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT858L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT858L_EN       (0x1U<<0)
+#define GFXMMU_LUT858L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT858L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT858L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT858L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT858L_EN       (0x1U<<0U)
 
 // LUT858H Configuration
 
-#define GFXMMU_LUT858H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT858H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT858H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT858H_LO_0     (0x1U<<4U)
 
 // LUT859L Configuration
 
-#define GFXMMU_LUT859L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT859L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT859L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT859L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT859L_EN       (0x1U<<0)
+#define GFXMMU_LUT859L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT859L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT859L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT859L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT859L_EN       (0x1U<<0U)
 
 // LUT859H Configuration
 
-#define GFXMMU_LUT859H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT859H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT859H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT859H_LO_0     (0x1U<<4U)
 
 // LUT860L Configuration
 
-#define GFXMMU_LUT860L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT860L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT860L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT860L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT860L_EN       (0x1U<<0)
+#define GFXMMU_LUT860L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT860L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT860L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT860L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT860L_EN       (0x1U<<0U)
 
 // LUT860H Configuration
 
-#define GFXMMU_LUT860H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT860H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT860H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT860H_LO_0     (0x1U<<4U)
 
 // LUT861L Configuration
 
-#define GFXMMU_LUT861L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT861L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT861L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT861L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT861L_EN       (0x1U<<0)
+#define GFXMMU_LUT861L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT861L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT861L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT861L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT861L_EN       (0x1U<<0U)
 
 // LUT861H Configuration
 
-#define GFXMMU_LUT861H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT861H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT861H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT861H_LO_0     (0x1U<<4U)
 
 // LUT862L Configuration
 
-#define GFXMMU_LUT862L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT862L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT862L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT862L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT862L_EN       (0x1U<<0)
+#define GFXMMU_LUT862L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT862L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT862L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT862L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT862L_EN       (0x1U<<0U)
 
 // LUT862H Configuration
 
-#define GFXMMU_LUT862H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT862H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT862H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT862H_LO_0     (0x1U<<4U)
 
 // LUT863L Configuration
 
-#define GFXMMU_LUT863L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT863L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT863L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT863L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT863L_EN       (0x1U<<0)
+#define GFXMMU_LUT863L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT863L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT863L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT863L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT863L_EN       (0x1U<<0U)
 
 // LUT863H Configuration
 
-#define GFXMMU_LUT863H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT863H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT863H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT863H_LO_0     (0x1U<<4U)
 
 // LUT864L Configuration
 
-#define GFXMMU_LUT864L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT864L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT864L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT864L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT864L_EN       (0x1U<<0)
+#define GFXMMU_LUT864L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT864L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT864L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT864L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT864L_EN       (0x1U<<0U)
 
 // LUT864H Configuration
 
-#define GFXMMU_LUT864H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT864H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT864H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT864H_LO_0     (0x1U<<4U)
 
 // LUT865L Configuration
 
-#define GFXMMU_LUT865L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT865L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT865L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT865L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT865L_EN       (0x1U<<0)
+#define GFXMMU_LUT865L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT865L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT865L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT865L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT865L_EN       (0x1U<<0U)
 
 // LUT865H Configuration
 
-#define GFXMMU_LUT865H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT865H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT865H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT865H_LO_0     (0x1U<<4U)
 
 // LUT866L Configuration
 
-#define GFXMMU_LUT866L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT866L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT866L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT866L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT866L_EN       (0x1U<<0)
+#define GFXMMU_LUT866L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT866L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT866L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT866L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT866L_EN       (0x1U<<0U)
 
 // LUT866H Configuration
 
-#define GFXMMU_LUT866H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT866H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT866H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT866H_LO_0     (0x1U<<4U)
 
 // LUT867L Configuration
 
-#define GFXMMU_LUT867L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT867L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT867L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT867L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT867L_EN       (0x1U<<0)
+#define GFXMMU_LUT867L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT867L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT867L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT867L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT867L_EN       (0x1U<<0U)
 
 // LUT867H Configuration
 
-#define GFXMMU_LUT867H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT867H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT867H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT867H_LO_0     (0x1U<<4U)
 
 // LUT868L Configuration
 
-#define GFXMMU_LUT868L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT868L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT868L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT868L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT868L_EN       (0x1U<<0)
+#define GFXMMU_LUT868L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT868L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT868L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT868L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT868L_EN       (0x1U<<0U)
 
 // LUT868H Configuration
 
-#define GFXMMU_LUT868H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT868H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT868H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT868H_LO_0     (0x1U<<4U)
 
 // LUT869L Configuration
 
-#define GFXMMU_LUT869L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT869L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT869L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT869L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT869L_EN       (0x1U<<0)
+#define GFXMMU_LUT869L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT869L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT869L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT869L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT869L_EN       (0x1U<<0U)
 
 // LUT869H Configuration
 
-#define GFXMMU_LUT869H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT869H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT869H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT869H_LO_0     (0x1U<<4U)
 
 // LUT870L Configuration
 
-#define GFXMMU_LUT870L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT870L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT870L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT870L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT870L_EN       (0x1U<<0)
+#define GFXMMU_LUT870L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT870L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT870L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT870L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT870L_EN       (0x1U<<0U)
 
 // LUT870H Configuration
 
-#define GFXMMU_LUT870H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT870H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT870H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT870H_LO_0     (0x1U<<4U)
 
 // LUT871L Configuration
 
-#define GFXMMU_LUT871L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT871L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT871L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT871L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT871L_EN       (0x1U<<0)
+#define GFXMMU_LUT871L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT871L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT871L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT871L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT871L_EN       (0x1U<<0U)
 
 // LUT871H Configuration
 
-#define GFXMMU_LUT871H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT871H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT871H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT871H_LO_0     (0x1U<<4U)
 
 // LUT872L Configuration
 
-#define GFXMMU_LUT872L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT872L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT872L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT872L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT872L_EN       (0x1U<<0)
+#define GFXMMU_LUT872L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT872L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT872L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT872L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT872L_EN       (0x1U<<0U)
 
 // LUT872H Configuration
 
-#define GFXMMU_LUT872H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT872H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT872H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT872H_LO_0     (0x1U<<4U)
 
 // LUT873L Configuration
 
-#define GFXMMU_LUT873L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT873L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT873L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT873L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT873L_EN       (0x1U<<0)
+#define GFXMMU_LUT873L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT873L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT873L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT873L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT873L_EN       (0x1U<<0U)
 
 // LUT873H Configuration
 
-#define GFXMMU_LUT873H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT873H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT873H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT873H_LO_0     (0x1U<<4U)
 
 // LUT874L Configuration
 
-#define GFXMMU_LUT874L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT874L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT874L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT874L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT874L_EN       (0x1U<<0)
+#define GFXMMU_LUT874L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT874L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT874L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT874L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT874L_EN       (0x1U<<0U)
 
 // LUT874H Configuration
 
-#define GFXMMU_LUT874H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT874H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT874H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT874H_LO_0     (0x1U<<4U)
 
 // LUT875L Configuration
 
-#define GFXMMU_LUT875L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT875L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT875L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT875L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT875L_EN       (0x1U<<0)
+#define GFXMMU_LUT875L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT875L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT875L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT875L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT875L_EN       (0x1U<<0U)
 
 // LUT875H Configuration
 
-#define GFXMMU_LUT875H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT875H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT875H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT875H_LO_0     (0x1U<<4U)
 
 // LUT876L Configuration
 
-#define GFXMMU_LUT876L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT876L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT876L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT876L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT876L_EN       (0x1U<<0)
+#define GFXMMU_LUT876L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT876L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT876L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT876L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT876L_EN       (0x1U<<0U)
 
 // LUT876H Configuration
 
-#define GFXMMU_LUT876H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT876H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT876H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT876H_LO_0     (0x1U<<4U)
 
 // LUT877L Configuration
 
-#define GFXMMU_LUT877L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT877L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT877L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT877L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT877L_EN       (0x1U<<0)
+#define GFXMMU_LUT877L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT877L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT877L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT877L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT877L_EN       (0x1U<<0U)
 
 // LUT877H Configuration
 
-#define GFXMMU_LUT877H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT877H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT877H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT877H_LO_0     (0x1U<<4U)
 
 // LUT878L Configuration
 
-#define GFXMMU_LUT878L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT878L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT878L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT878L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT878L_EN       (0x1U<<0)
+#define GFXMMU_LUT878L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT878L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT878L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT878L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT878L_EN       (0x1U<<0U)
 
 // LUT878H Configuration
 
-#define GFXMMU_LUT878H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT878H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT878H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT878H_LO_0     (0x1U<<4U)
 
 // LUT879L Configuration
 
-#define GFXMMU_LUT879L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT879L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT879L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT879L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT879L_EN       (0x1U<<0)
+#define GFXMMU_LUT879L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT879L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT879L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT879L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT879L_EN       (0x1U<<0U)
 
 // LUT879H Configuration
 
-#define GFXMMU_LUT879H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT879H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT879H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT879H_LO_0     (0x1U<<4U)
 
 // LUT880L Configuration
 
-#define GFXMMU_LUT880L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT880L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT880L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT880L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT880L_EN       (0x1U<<0)
+#define GFXMMU_LUT880L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT880L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT880L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT880L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT880L_EN       (0x1U<<0U)
 
 // LUT880H Configuration
 
-#define GFXMMU_LUT880H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT880H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT880H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT880H_LO_0     (0x1U<<4U)
 
 // LUT881L Configuration
 
-#define GFXMMU_LUT881L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT881L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT881L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT881L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT881L_EN       (0x1U<<0)
+#define GFXMMU_LUT881L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT881L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT881L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT881L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT881L_EN       (0x1U<<0U)
 
 // LUT881H Configuration
 
-#define GFXMMU_LUT881H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT881H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT881H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT881H_LO_0     (0x1U<<4U)
 
 // LUT882L Configuration
 
-#define GFXMMU_LUT882L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT882L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT882L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT882L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT882L_EN       (0x1U<<0)
+#define GFXMMU_LUT882L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT882L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT882L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT882L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT882L_EN       (0x1U<<0U)
 
 // LUT882H Configuration
 
-#define GFXMMU_LUT882H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT882H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT882H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT882H_LO_0     (0x1U<<4U)
 
 // LUT883L Configuration
 
-#define GFXMMU_LUT883L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT883L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT883L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT883L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT883L_EN       (0x1U<<0)
+#define GFXMMU_LUT883L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT883L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT883L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT883L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT883L_EN       (0x1U<<0U)
 
 // LUT883H Configuration
 
-#define GFXMMU_LUT883H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT883H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT883H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT883H_LO_0     (0x1U<<4U)
 
 // LUT884L Configuration
 
-#define GFXMMU_LUT884L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT884L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT884L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT884L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT884L_EN       (0x1U<<0)
+#define GFXMMU_LUT884L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT884L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT884L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT884L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT884L_EN       (0x1U<<0U)
 
 // LUT884H Configuration
 
-#define GFXMMU_LUT884H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT884H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT884H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT884H_LO_0     (0x1U<<4U)
 
 // LUT885L Configuration
 
-#define GFXMMU_LUT885L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT885L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT885L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT885L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT885L_EN       (0x1U<<0)
+#define GFXMMU_LUT885L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT885L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT885L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT885L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT885L_EN       (0x1U<<0U)
 
 // LUT885H Configuration
 
-#define GFXMMU_LUT885H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT885H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT885H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT885H_LO_0     (0x1U<<4U)
 
 // LUT886L Configuration
 
-#define GFXMMU_LUT886L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT886L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT886L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT886L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT886L_EN       (0x1U<<0)
+#define GFXMMU_LUT886L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT886L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT886L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT886L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT886L_EN       (0x1U<<0U)
 
 // LUT886H Configuration
 
-#define GFXMMU_LUT886H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT886H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT886H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT886H_LO_0     (0x1U<<4U)
 
 // LUT887L Configuration
 
-#define GFXMMU_LUT887L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT887L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT887L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT887L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT887L_EN       (0x1U<<0)
+#define GFXMMU_LUT887L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT887L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT887L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT887L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT887L_EN       (0x1U<<0U)
 
 // LUT887H Configuration
 
-#define GFXMMU_LUT887H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT887H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT887H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT887H_LO_0     (0x1U<<4U)
 
 // LUT888L Configuration
 
-#define GFXMMU_LUT888L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT888L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT888L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT888L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT888L_EN       (0x1U<<0)
+#define GFXMMU_LUT888L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT888L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT888L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT888L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT888L_EN       (0x1U<<0U)
 
 // LUT888H Configuration
 
-#define GFXMMU_LUT888H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT888H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT888H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT888H_LO_0     (0x1U<<4U)
 
 // LUT889L Configuration
 
-#define GFXMMU_LUT889L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT889L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT889L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT889L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT889L_EN       (0x1U<<0)
+#define GFXMMU_LUT889L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT889L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT889L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT889L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT889L_EN       (0x1U<<0U)
 
 // LUT889H Configuration
 
-#define GFXMMU_LUT889H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT889H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT889H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT889H_LO_0     (0x1U<<4U)
 
 // LUT890L Configuration
 
-#define GFXMMU_LUT890L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT890L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT890L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT890L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT890L_EN       (0x1U<<0)
+#define GFXMMU_LUT890L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT890L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT890L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT890L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT890L_EN       (0x1U<<0U)
 
 // LUT890H Configuration
 
-#define GFXMMU_LUT890H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT890H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT890H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT890H_LO_0     (0x1U<<4U)
 
 // LUT891L Configuration
 
-#define GFXMMU_LUT891L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT891L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT891L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT891L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT891L_EN       (0x1U<<0)
+#define GFXMMU_LUT891L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT891L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT891L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT891L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT891L_EN       (0x1U<<0U)
 
 // LUT891H Configuration
 
-#define GFXMMU_LUT891H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT891H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT891H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT891H_LO_0     (0x1U<<4U)
 
 // LUT892L Configuration
 
-#define GFXMMU_LUT892L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT892L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT892L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT892L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT892L_EN       (0x1U<<0)
+#define GFXMMU_LUT892L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT892L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT892L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT892L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT892L_EN       (0x1U<<0U)
 
 // LUT892H Configuration
 
-#define GFXMMU_LUT892H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT892H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT892H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT892H_LO_0     (0x1U<<4U)
 
 // LUT893L Configuration
 
-#define GFXMMU_LUT893L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT893L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT893L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT893L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT893L_EN       (0x1U<<0)
+#define GFXMMU_LUT893L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT893L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT893L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT893L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT893L_EN       (0x1U<<0U)
 
 // LUT893H Configuration
 
-#define GFXMMU_LUT893H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT893H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT893H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT893H_LO_0     (0x1U<<4U)
 
 // LUT894L Configuration
 
-#define GFXMMU_LUT894L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT894L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT894L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT894L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT894L_EN       (0x1U<<0)
+#define GFXMMU_LUT894L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT894L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT894L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT894L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT894L_EN       (0x1U<<0U)
 
 // LUT894H Configuration
 
-#define GFXMMU_LUT894H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT894H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT894H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT894H_LO_0     (0x1U<<4U)
 
 // LUT895L Configuration
 
-#define GFXMMU_LUT895L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT895L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT895L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT895L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT895L_EN       (0x1U<<0)
+#define GFXMMU_LUT895L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT895L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT895L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT895L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT895L_EN       (0x1U<<0U)
 
 // LUT895H Configuration
 
-#define GFXMMU_LUT895H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT895H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT895H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT895H_LO_0     (0x1U<<4U)
 
 // LUT896L Configuration
 
-#define GFXMMU_LUT896L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT896L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT896L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT896L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT896L_EN       (0x1U<<0)
+#define GFXMMU_LUT896L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT896L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT896L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT896L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT896L_EN       (0x1U<<0U)
 
 // LUT896H Configuration
 
-#define GFXMMU_LUT896H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT896H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT896H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT896H_LO_0     (0x1U<<4U)
 
 // LUT897L Configuration
 
-#define GFXMMU_LUT897L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT897L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT897L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT897L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT897L_EN       (0x1U<<0)
+#define GFXMMU_LUT897L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT897L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT897L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT897L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT897L_EN       (0x1U<<0U)
 
 // LUT897H Configuration
 
-#define GFXMMU_LUT897H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT897H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT897H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT897H_LO_0     (0x1U<<4U)
 
 // LUT898L Configuration
 
-#define GFXMMU_LUT898L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT898L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT898L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT898L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT898L_EN       (0x1U<<0)
+#define GFXMMU_LUT898L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT898L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT898L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT898L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT898L_EN       (0x1U<<0U)
 
 // LUT898H Configuration
 
-#define GFXMMU_LUT898H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT898H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT898H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT898H_LO_0     (0x1U<<4U)
 
 // LUT899L Configuration
 
-#define GFXMMU_LUT899L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT899L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT899L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT899L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT899L_EN       (0x1U<<0)
+#define GFXMMU_LUT899L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT899L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT899L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT899L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT899L_EN       (0x1U<<0U)
 
 // LUT899H Configuration
 
-#define GFXMMU_LUT899H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT899H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT899H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT899H_LO_0     (0x1U<<4U)
 
 // LUT900L Configuration
 
-#define GFXMMU_LUT900L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT900L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT900L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT900L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT900L_EN       (0x1U<<0)
+#define GFXMMU_LUT900L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT900L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT900L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT900L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT900L_EN       (0x1U<<0U)
 
 // LUT900H Configuration
 
-#define GFXMMU_LUT900H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT900H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT900H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT900H_LO_0     (0x1U<<4U)
 
 // LUT901L Configuration
 
-#define GFXMMU_LUT901L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT901L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT901L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT901L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT901L_EN       (0x1U<<0)
+#define GFXMMU_LUT901L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT901L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT901L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT901L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT901L_EN       (0x1U<<0U)
 
 // LUT901H Configuration
 
-#define GFXMMU_LUT901H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT901H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT901H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT901H_LO_0     (0x1U<<4U)
 
 // LUT902L Configuration
 
-#define GFXMMU_LUT902L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT902L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT902L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT902L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT902L_EN       (0x1U<<0)
+#define GFXMMU_LUT902L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT902L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT902L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT902L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT902L_EN       (0x1U<<0U)
 
 // LUT902H Configuration
 
-#define GFXMMU_LUT902H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT902H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT902H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT902H_LO_0     (0x1U<<4U)
 
 // LUT903L Configuration
 
-#define GFXMMU_LUT903L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT903L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT903L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT903L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT903L_EN       (0x1U<<0)
+#define GFXMMU_LUT903L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT903L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT903L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT903L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT903L_EN       (0x1U<<0U)
 
 // LUT903H Configuration
 
-#define GFXMMU_LUT903H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT903H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT903H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT903H_LO_0     (0x1U<<4U)
 
 // LUT904L Configuration
 
-#define GFXMMU_LUT904L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT904L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT904L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT904L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT904L_EN       (0x1U<<0)
+#define GFXMMU_LUT904L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT904L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT904L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT904L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT904L_EN       (0x1U<<0U)
 
 // LUT904H Configuration
 
-#define GFXMMU_LUT904H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT904H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT904H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT904H_LO_0     (0x1U<<4U)
 
 // LUT905L Configuration
 
-#define GFXMMU_LUT905L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT905L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT905L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT905L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT905L_EN       (0x1U<<0)
+#define GFXMMU_LUT905L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT905L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT905L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT905L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT905L_EN       (0x1U<<0U)
 
 // LUT905H Configuration
 
-#define GFXMMU_LUT905H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT905H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT905H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT905H_LO_0     (0x1U<<4U)
 
 // LUT906L Configuration
 
-#define GFXMMU_LUT906L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT906L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT906L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT906L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT906L_EN       (0x1U<<0)
+#define GFXMMU_LUT906L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT906L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT906L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT906L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT906L_EN       (0x1U<<0U)
 
 // LUT906H Configuration
 
-#define GFXMMU_LUT906H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT906H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT906H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT906H_LO_0     (0x1U<<4U)
 
 // LUT907L Configuration
 
-#define GFXMMU_LUT907L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT907L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT907L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT907L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT907L_EN       (0x1U<<0)
+#define GFXMMU_LUT907L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT907L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT907L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT907L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT907L_EN       (0x1U<<0U)
 
 // LUT907H Configuration
 
-#define GFXMMU_LUT907H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT907H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT907H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT907H_LO_0     (0x1U<<4U)
 
 // LUT908L Configuration
 
-#define GFXMMU_LUT908L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT908L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT908L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT908L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT908L_EN       (0x1U<<0)
+#define GFXMMU_LUT908L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT908L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT908L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT908L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT908L_EN       (0x1U<<0U)
 
 // LUT908H Configuration
 
-#define GFXMMU_LUT908H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT908H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT908H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT908H_LO_0     (0x1U<<4U)
 
 // LUT909L Configuration
 
-#define GFXMMU_LUT909L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT909L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT909L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT909L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT909L_EN       (0x1U<<0)
+#define GFXMMU_LUT909L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT909L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT909L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT909L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT909L_EN       (0x1U<<0U)
 
 // LUT909H Configuration
 
-#define GFXMMU_LUT909H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT909H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT909H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT909H_LO_0     (0x1U<<4U)
 
 // LUT910L Configuration
 
-#define GFXMMU_LUT910L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT910L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT910L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT910L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT910L_EN       (0x1U<<0)
+#define GFXMMU_LUT910L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT910L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT910L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT910L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT910L_EN       (0x1U<<0U)
 
 // LUT910H Configuration
 
-#define GFXMMU_LUT910H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT910H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT910H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT910H_LO_0     (0x1U<<4U)
 
 // LUT911L Configuration
 
-#define GFXMMU_LUT911L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT911L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT911L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT911L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT911L_EN       (0x1U<<0)
+#define GFXMMU_LUT911L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT911L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT911L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT911L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT911L_EN       (0x1U<<0U)
 
 // LUT911H Configuration
 
-#define GFXMMU_LUT911H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT911H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT911H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT911H_LO_0     (0x1U<<4U)
 
 // LUT912L Configuration
 
-#define GFXMMU_LUT912L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT912L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT912L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT912L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT912L_EN       (0x1U<<0)
+#define GFXMMU_LUT912L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT912L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT912L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT912L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT912L_EN       (0x1U<<0U)
 
 // LUT912H Configuration
 
-#define GFXMMU_LUT912H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT912H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT912H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT912H_LO_0     (0x1U<<4U)
 
 // LUT913L Configuration
 
-#define GFXMMU_LUT913L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT913L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT913L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT913L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT913L_EN       (0x1U<<0)
+#define GFXMMU_LUT913L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT913L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT913L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT913L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT913L_EN       (0x1U<<0U)
 
 // LUT913H Configuration
 
-#define GFXMMU_LUT913H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT913H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT913H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT913H_LO_0     (0x1U<<4U)
 
 // LUT914L Configuration
 
-#define GFXMMU_LUT914L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT914L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT914L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT914L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT914L_EN       (0x1U<<0)
+#define GFXMMU_LUT914L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT914L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT914L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT914L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT914L_EN       (0x1U<<0U)
 
 // LUT914H Configuration
 
-#define GFXMMU_LUT914H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT914H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT914H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT914H_LO_0     (0x1U<<4U)
 
 // LUT915L Configuration
 
-#define GFXMMU_LUT915L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT915L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT915L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT915L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT915L_EN       (0x1U<<0)
+#define GFXMMU_LUT915L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT915L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT915L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT915L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT915L_EN       (0x1U<<0U)
 
 // LUT915H Configuration
 
-#define GFXMMU_LUT915H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT915H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT915H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT915H_LO_0     (0x1U<<4U)
 
 // LUT916L Configuration
 
-#define GFXMMU_LUT916L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT916L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT916L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT916L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT916L_EN       (0x1U<<0)
+#define GFXMMU_LUT916L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT916L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT916L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT916L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT916L_EN       (0x1U<<0U)
 
 // LUT916H Configuration
 
-#define GFXMMU_LUT916H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT916H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT916H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT916H_LO_0     (0x1U<<4U)
 
 // LUT917L Configuration
 
-#define GFXMMU_LUT917L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT917L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT917L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT917L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT917L_EN       (0x1U<<0)
+#define GFXMMU_LUT917L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT917L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT917L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT917L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT917L_EN       (0x1U<<0U)
 
 // LUT917H Configuration
 
-#define GFXMMU_LUT917H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT917H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT917H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT917H_LO_0     (0x1U<<4U)
 
 // LUT918L Configuration
 
-#define GFXMMU_LUT918L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT918L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT918L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT918L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT918L_EN       (0x1U<<0)
+#define GFXMMU_LUT918L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT918L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT918L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT918L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT918L_EN       (0x1U<<0U)
 
 // LUT918H Configuration
 
-#define GFXMMU_LUT918H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT918H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT918H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT918H_LO_0     (0x1U<<4U)
 
 // LUT919L Configuration
 
-#define GFXMMU_LUT919L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT919L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT919L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT919L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT919L_EN       (0x1U<<0)
+#define GFXMMU_LUT919L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT919L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT919L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT919L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT919L_EN       (0x1U<<0U)
 
 // LUT919H Configuration
 
-#define GFXMMU_LUT919H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT919H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT919H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT919H_LO_0     (0x1U<<4U)
 
 // LUT920L Configuration
 
-#define GFXMMU_LUT920L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT920L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT920L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT920L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT920L_EN       (0x1U<<0)
+#define GFXMMU_LUT920L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT920L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT920L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT920L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT920L_EN       (0x1U<<0U)
 
 // LUT920H Configuration
 
-#define GFXMMU_LUT920H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT920H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT920H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT920H_LO_0     (0x1U<<4U)
 
 // LUT921L Configuration
 
-#define GFXMMU_LUT921L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT921L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT921L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT921L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT921L_EN       (0x1U<<0)
+#define GFXMMU_LUT921L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT921L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT921L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT921L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT921L_EN       (0x1U<<0U)
 
 // LUT921H Configuration
 
-#define GFXMMU_LUT921H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT921H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT921H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT921H_LO_0     (0x1U<<4U)
 
 // LUT922L Configuration
 
-#define GFXMMU_LUT922L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT922L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT922L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT922L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT922L_EN       (0x1U<<0)
+#define GFXMMU_LUT922L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT922L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT922L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT922L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT922L_EN       (0x1U<<0U)
 
 // LUT922H Configuration
 
-#define GFXMMU_LUT922H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT922H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT922H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT922H_LO_0     (0x1U<<4U)
 
 // LUT923L Configuration
 
-#define GFXMMU_LUT923L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT923L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT923L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT923L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT923L_EN       (0x1U<<0)
+#define GFXMMU_LUT923L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT923L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT923L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT923L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT923L_EN       (0x1U<<0U)
 
 // LUT923H Configuration
 
-#define GFXMMU_LUT923H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT923H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT923H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT923H_LO_0     (0x1U<<4U)
 
 // LUT924L Configuration
 
-#define GFXMMU_LUT924L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT924L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT924L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT924L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT924L_EN       (0x1U<<0)
+#define GFXMMU_LUT924L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT924L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT924L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT924L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT924L_EN       (0x1U<<0U)
 
 // LUT924H Configuration
 
-#define GFXMMU_LUT924H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT924H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT924H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT924H_LO_0     (0x1U<<4U)
 
 // LUT925L Configuration
 
-#define GFXMMU_LUT925L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT925L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT925L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT925L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT925L_EN       (0x1U<<0)
+#define GFXMMU_LUT925L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT925L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT925L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT925L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT925L_EN       (0x1U<<0U)
 
 // LUT925H Configuration
 
-#define GFXMMU_LUT925H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT925H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT925H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT925H_LO_0     (0x1U<<4U)
 
 // LUT926L Configuration
 
-#define GFXMMU_LUT926L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT926L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT926L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT926L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT926L_EN       (0x1U<<0)
+#define GFXMMU_LUT926L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT926L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT926L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT926L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT926L_EN       (0x1U<<0U)
 
 // LUT926H Configuration
 
-#define GFXMMU_LUT926H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT926H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT926H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT926H_LO_0     (0x1U<<4U)
 
 // LUT927L Configuration
 
-#define GFXMMU_LUT927L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT927L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT927L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT927L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT927L_EN       (0x1U<<0)
+#define GFXMMU_LUT927L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT927L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT927L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT927L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT927L_EN       (0x1U<<0U)
 
 // LUT927H Configuration
 
-#define GFXMMU_LUT927H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT927H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT927H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT927H_LO_0     (0x1U<<4U)
 
 // LUT928L Configuration
 
-#define GFXMMU_LUT928L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT928L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT928L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT928L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT928L_EN       (0x1U<<0)
+#define GFXMMU_LUT928L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT928L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT928L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT928L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT928L_EN       (0x1U<<0U)
 
 // LUT928H Configuration
 
-#define GFXMMU_LUT928H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT928H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT928H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT928H_LO_0     (0x1U<<4U)
 
 // LUT929L Configuration
 
-#define GFXMMU_LUT929L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT929L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT929L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT929L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT929L_EN       (0x1U<<0)
+#define GFXMMU_LUT929L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT929L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT929L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT929L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT929L_EN       (0x1U<<0U)
 
 // LUT929H Configuration
 
-#define GFXMMU_LUT929H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT929H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT929H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT929H_LO_0     (0x1U<<4U)
 
 // LUT930L Configuration
 
-#define GFXMMU_LUT930L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT930L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT930L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT930L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT930L_EN       (0x1U<<0)
+#define GFXMMU_LUT930L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT930L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT930L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT930L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT930L_EN       (0x1U<<0U)
 
 // LUT930H Configuration
 
-#define GFXMMU_LUT930H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT930H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT930H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT930H_LO_0     (0x1U<<4U)
 
 // LUT931L Configuration
 
-#define GFXMMU_LUT931L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT931L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT931L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT931L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT931L_EN       (0x1U<<0)
+#define GFXMMU_LUT931L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT931L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT931L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT931L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT931L_EN       (0x1U<<0U)
 
 // LUT931H Configuration
 
-#define GFXMMU_LUT931H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT931H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT931H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT931H_LO_0     (0x1U<<4U)
 
 // LUT932L Configuration
 
-#define GFXMMU_LUT932L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT932L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT932L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT932L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT932L_EN       (0x1U<<0)
+#define GFXMMU_LUT932L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT932L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT932L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT932L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT932L_EN       (0x1U<<0U)
 
 // LUT932H Configuration
 
-#define GFXMMU_LUT932H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT932H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT932H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT932H_LO_0     (0x1U<<4U)
 
 // LUT933L Configuration
 
-#define GFXMMU_LUT933L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT933L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT933L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT933L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT933L_EN       (0x1U<<0)
+#define GFXMMU_LUT933L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT933L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT933L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT933L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT933L_EN       (0x1U<<0U)
 
 // LUT933H Configuration
 
-#define GFXMMU_LUT933H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT933H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT933H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT933H_LO_0     (0x1U<<4U)
 
 // LUT934L Configuration
 
-#define GFXMMU_LUT934L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT934L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT934L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT934L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT934L_EN       (0x1U<<0)
+#define GFXMMU_LUT934L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT934L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT934L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT934L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT934L_EN       (0x1U<<0U)
 
 // LUT934H Configuration
 
-#define GFXMMU_LUT934H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT934H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT934H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT934H_LO_0     (0x1U<<4U)
 
 // LUT935L Configuration
 
-#define GFXMMU_LUT935L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT935L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT935L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT935L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT935L_EN       (0x1U<<0)
+#define GFXMMU_LUT935L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT935L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT935L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT935L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT935L_EN       (0x1U<<0U)
 
 // LUT935H Configuration
 
-#define GFXMMU_LUT935H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT935H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT935H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT935H_LO_0     (0x1U<<4U)
 
 // LUT936L Configuration
 
-#define GFXMMU_LUT936L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT936L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT936L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT936L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT936L_EN       (0x1U<<0)
+#define GFXMMU_LUT936L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT936L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT936L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT936L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT936L_EN       (0x1U<<0U)
 
 // LUT936H Configuration
 
-#define GFXMMU_LUT936H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT936H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT936H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT936H_LO_0     (0x1U<<4U)
 
 // LUT937L Configuration
 
-#define GFXMMU_LUT937L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT937L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT937L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT937L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT937L_EN       (0x1U<<0)
+#define GFXMMU_LUT937L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT937L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT937L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT937L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT937L_EN       (0x1U<<0U)
 
 // LUT937H Configuration
 
-#define GFXMMU_LUT937H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT937H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT937H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT937H_LO_0     (0x1U<<4U)
 
 // LUT938L Configuration
 
-#define GFXMMU_LUT938L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT938L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT938L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT938L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT938L_EN       (0x1U<<0)
+#define GFXMMU_LUT938L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT938L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT938L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT938L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT938L_EN       (0x1U<<0U)
 
 // LUT938H Configuration
 
-#define GFXMMU_LUT938H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT938H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT938H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT938H_LO_0     (0x1U<<4U)
 
 // LUT939L Configuration
 
-#define GFXMMU_LUT939L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT939L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT939L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT939L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT939L_EN       (0x1U<<0)
+#define GFXMMU_LUT939L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT939L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT939L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT939L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT939L_EN       (0x1U<<0U)
 
 // LUT939H Configuration
 
-#define GFXMMU_LUT939H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT939H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT939H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT939H_LO_0     (0x1U<<4U)
 
 // LUT940L Configuration
 
-#define GFXMMU_LUT940L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT940L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT940L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT940L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT940L_EN       (0x1U<<0)
+#define GFXMMU_LUT940L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT940L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT940L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT940L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT940L_EN       (0x1U<<0U)
 
 // LUT940H Configuration
 
-#define GFXMMU_LUT940H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT940H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT940H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT940H_LO_0     (0x1U<<4U)
 
 // LUT941L Configuration
 
-#define GFXMMU_LUT941L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT941L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT941L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT941L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT941L_EN       (0x1U<<0)
+#define GFXMMU_LUT941L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT941L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT941L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT941L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT941L_EN       (0x1U<<0U)
 
 // LUT941H Configuration
 
-#define GFXMMU_LUT941H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT941H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT941H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT941H_LO_0     (0x1U<<4U)
 
 // LUT942L Configuration
 
-#define GFXMMU_LUT942L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT942L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT942L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT942L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT942L_EN       (0x1U<<0)
+#define GFXMMU_LUT942L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT942L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT942L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT942L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT942L_EN       (0x1U<<0U)
 
 // LUT942H Configuration
 
-#define GFXMMU_LUT942H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT942H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT942H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT942H_LO_0     (0x1U<<4U)
 
 // LUT943L Configuration
 
-#define GFXMMU_LUT943L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT943L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT943L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT943L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT943L_EN       (0x1U<<0)
+#define GFXMMU_LUT943L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT943L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT943L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT943L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT943L_EN       (0x1U<<0U)
 
 // LUT943H Configuration
 
-#define GFXMMU_LUT943H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT943H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT943H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT943H_LO_0     (0x1U<<4U)
 
 // LUT944L Configuration
 
-#define GFXMMU_LUT944L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT944L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT944L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT944L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT944L_EN       (0x1U<<0)
+#define GFXMMU_LUT944L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT944L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT944L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT944L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT944L_EN       (0x1U<<0U)
 
 // LUT944H Configuration
 
-#define GFXMMU_LUT944H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT944H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT944H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT944H_LO_0     (0x1U<<4U)
 
 // LUT945L Configuration
 
-#define GFXMMU_LUT945L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT945L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT945L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT945L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT945L_EN       (0x1U<<0)
+#define GFXMMU_LUT945L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT945L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT945L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT945L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT945L_EN       (0x1U<<0U)
 
 // LUT945H Configuration
 
-#define GFXMMU_LUT945H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT945H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT945H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT945H_LO_0     (0x1U<<4U)
 
 // LUT946L Configuration
 
-#define GFXMMU_LUT946L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT946L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT946L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT946L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT946L_EN       (0x1U<<0)
+#define GFXMMU_LUT946L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT946L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT946L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT946L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT946L_EN       (0x1U<<0U)
 
 // LUT946H Configuration
 
-#define GFXMMU_LUT946H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT946H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT946H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT946H_LO_0     (0x1U<<4U)
 
 // LUT947L Configuration
 
-#define GFXMMU_LUT947L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT947L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT947L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT947L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT947L_EN       (0x1U<<0)
+#define GFXMMU_LUT947L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT947L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT947L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT947L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT947L_EN       (0x1U<<0U)
 
 // LUT947H Configuration
 
-#define GFXMMU_LUT947H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT947H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT947H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT947H_LO_0     (0x1U<<4U)
 
 // LUT948L Configuration
 
-#define GFXMMU_LUT948L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT948L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT948L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT948L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT948L_EN       (0x1U<<0)
+#define GFXMMU_LUT948L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT948L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT948L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT948L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT948L_EN       (0x1U<<0U)
 
 // LUT948H Configuration
 
-#define GFXMMU_LUT948H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT948H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT948H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT948H_LO_0     (0x1U<<4U)
 
 // LUT949L Configuration
 
-#define GFXMMU_LUT949L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT949L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT949L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT949L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT949L_EN       (0x1U<<0)
+#define GFXMMU_LUT949L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT949L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT949L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT949L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT949L_EN       (0x1U<<0U)
 
 // LUT949H Configuration
 
-#define GFXMMU_LUT949H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT949H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT949H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT949H_LO_0     (0x1U<<4U)
 
 // LUT950L Configuration
 
-#define GFXMMU_LUT950L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT950L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT950L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT950L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT950L_EN       (0x1U<<0)
+#define GFXMMU_LUT950L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT950L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT950L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT950L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT950L_EN       (0x1U<<0U)
 
 // LUT950H Configuration
 
-#define GFXMMU_LUT950H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT950H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT950H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT950H_LO_0     (0x1U<<4U)
 
 // LUT951L Configuration
 
-#define GFXMMU_LUT951L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT951L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT951L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT951L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT951L_EN       (0x1U<<0)
+#define GFXMMU_LUT951L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT951L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT951L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT951L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT951L_EN       (0x1U<<0U)
 
 // LUT951H Configuration
 
-#define GFXMMU_LUT951H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT951H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT951H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT951H_LO_0     (0x1U<<4U)
 
 // LUT952L Configuration
 
-#define GFXMMU_LUT952L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT952L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT952L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT952L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT952L_EN       (0x1U<<0)
+#define GFXMMU_LUT952L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT952L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT952L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT952L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT952L_EN       (0x1U<<0U)
 
 // LUT952H Configuration
 
-#define GFXMMU_LUT952H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT952H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT952H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT952H_LO_0     (0x1U<<4U)
 
 // LUT953L Configuration
 
-#define GFXMMU_LUT953L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT953L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT953L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT953L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT953L_EN       (0x1U<<0)
+#define GFXMMU_LUT953L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT953L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT953L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT953L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT953L_EN       (0x1U<<0U)
 
 // LUT953H Configuration
 
-#define GFXMMU_LUT953H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT953H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT953H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT953H_LO_0     (0x1U<<4U)
 
 // LUT954L Configuration
 
-#define GFXMMU_LUT954L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT954L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT954L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT954L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT954L_EN       (0x1U<<0)
+#define GFXMMU_LUT954L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT954L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT954L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT954L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT954L_EN       (0x1U<<0U)
 
 // LUT954H Configuration
 
-#define GFXMMU_LUT954H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT954H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT954H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT954H_LO_0     (0x1U<<4U)
 
 // LUT955L Configuration
 
-#define GFXMMU_LUT955L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT955L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT955L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT955L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT955L_EN       (0x1U<<0)
+#define GFXMMU_LUT955L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT955L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT955L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT955L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT955L_EN       (0x1U<<0U)
 
 // LUT955H Configuration
 
-#define GFXMMU_LUT955H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT955H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT955H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT955H_LO_0     (0x1U<<4U)
 
 // LUT956L Configuration
 
-#define GFXMMU_LUT956L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT956L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT956L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT956L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT956L_EN       (0x1U<<0)
+#define GFXMMU_LUT956L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT956L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT956L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT956L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT956L_EN       (0x1U<<0U)
 
 // LUT956H Configuration
 
-#define GFXMMU_LUT956H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT956H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT956H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT956H_LO_0     (0x1U<<4U)
 
 // LUT957L Configuration
 
-#define GFXMMU_LUT957L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT957L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT957L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT957L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT957L_EN       (0x1U<<0)
+#define GFXMMU_LUT957L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT957L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT957L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT957L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT957L_EN       (0x1U<<0U)
 
 // LUT957H Configuration
 
-#define GFXMMU_LUT957H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT957H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT957H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT957H_LO_0     (0x1U<<4U)
 
 // LUT958L Configuration
 
-#define GFXMMU_LUT958L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT958L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT958L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT958L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT958L_EN       (0x1U<<0)
+#define GFXMMU_LUT958L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT958L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT958L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT958L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT958L_EN       (0x1U<<0U)
 
 // LUT958H Configuration
 
-#define GFXMMU_LUT958H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT958H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT958H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT958H_LO_0     (0x1U<<4U)
 
 // LUT959L Configuration
 
-#define GFXMMU_LUT959L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT959L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT959L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT959L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT959L_EN       (0x1U<<0)
+#define GFXMMU_LUT959L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT959L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT959L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT959L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT959L_EN       (0x1U<<0U)
 
 // LUT959H Configuration
 
-#define GFXMMU_LUT959H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT959H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT959H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT959H_LO_0     (0x1U<<4U)
 
 // LUT960L Configuration
 
-#define GFXMMU_LUT960L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT960L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT960L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT960L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT960L_EN       (0x1U<<0)
+#define GFXMMU_LUT960L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT960L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT960L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT960L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT960L_EN       (0x1U<<0U)
 
 // LUT960H Configuration
 
-#define GFXMMU_LUT960H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT960H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT960H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT960H_LO_0     (0x1U<<4U)
 
 // LUT961L Configuration
 
-#define GFXMMU_LUT961L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT961L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT961L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT961L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT961L_EN       (0x1U<<0)
+#define GFXMMU_LUT961L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT961L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT961L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT961L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT961L_EN       (0x1U<<0U)
 
 // LUT961H Configuration
 
-#define GFXMMU_LUT961H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT961H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT961H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT961H_LO_0     (0x1U<<4U)
 
 // LUT962L Configuration
 
-#define GFXMMU_LUT962L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT962L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT962L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT962L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT962L_EN       (0x1U<<0)
+#define GFXMMU_LUT962L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT962L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT962L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT962L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT962L_EN       (0x1U<<0U)
 
 // LUT962H Configuration
 
-#define GFXMMU_LUT962H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT962H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT962H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT962H_LO_0     (0x1U<<4U)
 
 // LUT963L Configuration
 
-#define GFXMMU_LUT963L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT963L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT963L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT963L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT963L_EN       (0x1U<<0)
+#define GFXMMU_LUT963L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT963L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT963L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT963L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT963L_EN       (0x1U<<0U)
 
 // LUT963H Configuration
 
-#define GFXMMU_LUT963H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT963H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT963H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT963H_LO_0     (0x1U<<4U)
 
 // LUT964L Configuration
 
-#define GFXMMU_LUT964L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT964L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT964L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT964L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT964L_EN       (0x1U<<0)
+#define GFXMMU_LUT964L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT964L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT964L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT964L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT964L_EN       (0x1U<<0U)
 
 // LUT964H Configuration
 
-#define GFXMMU_LUT964H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT964H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT964H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT964H_LO_0     (0x1U<<4U)
 
 // LUT965L Configuration
 
-#define GFXMMU_LUT965L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT965L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT965L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT965L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT965L_EN       (0x1U<<0)
+#define GFXMMU_LUT965L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT965L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT965L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT965L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT965L_EN       (0x1U<<0U)
 
 // LUT965H Configuration
 
-#define GFXMMU_LUT965H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT965H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT965H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT965H_LO_0     (0x1U<<4U)
 
 // LUT966L Configuration
 
-#define GFXMMU_LUT966L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT966L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT966L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT966L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT966L_EN       (0x1U<<0)
+#define GFXMMU_LUT966L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT966L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT966L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT966L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT966L_EN       (0x1U<<0U)
 
 // LUT966H Configuration
 
-#define GFXMMU_LUT966H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT966H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT966H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT966H_LO_0     (0x1U<<4U)
 
 // LUT967L Configuration
 
-#define GFXMMU_LUT967L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT967L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT967L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT967L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT967L_EN       (0x1U<<0)
+#define GFXMMU_LUT967L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT967L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT967L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT967L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT967L_EN       (0x1U<<0U)
 
 // LUT967H Configuration
 
-#define GFXMMU_LUT967H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT967H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT967H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT967H_LO_0     (0x1U<<4U)
 
 // LUT968L Configuration
 
-#define GFXMMU_LUT968L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT968L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT968L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT968L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT968L_EN       (0x1U<<0)
+#define GFXMMU_LUT968L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT968L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT968L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT968L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT968L_EN       (0x1U<<0U)
 
 // LUT968H Configuration
 
-#define GFXMMU_LUT968H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT968H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT968H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT968H_LO_0     (0x1U<<4U)
 
 // LUT969L Configuration
 
-#define GFXMMU_LUT969L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT969L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT969L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT969L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT969L_EN       (0x1U<<0)
+#define GFXMMU_LUT969L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT969L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT969L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT969L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT969L_EN       (0x1U<<0U)
 
 // LUT969H Configuration
 
-#define GFXMMU_LUT969H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT969H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT969H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT969H_LO_0     (0x1U<<4U)
 
 // LUT970L Configuration
 
-#define GFXMMU_LUT970L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT970L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT970L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT970L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT970L_EN       (0x1U<<0)
+#define GFXMMU_LUT970L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT970L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT970L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT970L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT970L_EN       (0x1U<<0U)
 
 // LUT970H Configuration
 
-#define GFXMMU_LUT970H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT970H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT970H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT970H_LO_0     (0x1U<<4U)
 
 // LUT971L Configuration
 
-#define GFXMMU_LUT971L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT971L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT971L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT971L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT971L_EN       (0x1U<<0)
+#define GFXMMU_LUT971L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT971L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT971L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT971L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT971L_EN       (0x1U<<0U)
 
 // LUT971H Configuration
 
-#define GFXMMU_LUT971H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT971H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT971H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT971H_LO_0     (0x1U<<4U)
 
 // LUT972L Configuration
 
-#define GFXMMU_LUT972L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT972L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT972L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT972L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT972L_EN       (0x1U<<0)
+#define GFXMMU_LUT972L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT972L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT972L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT972L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT972L_EN       (0x1U<<0U)
 
 // LUT972H Configuration
 
-#define GFXMMU_LUT972H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT972H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT972H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT972H_LO_0     (0x1U<<4U)
 
 // LUT973L Configuration
 
-#define GFXMMU_LUT973L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT973L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT973L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT973L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT973L_EN       (0x1U<<0)
+#define GFXMMU_LUT973L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT973L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT973L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT973L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT973L_EN       (0x1U<<0U)
 
 // LUT973H Configuration
 
-#define GFXMMU_LUT973H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT973H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT973H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT973H_LO_0     (0x1U<<4U)
 
 // LUT974L Configuration
 
-#define GFXMMU_LUT974L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT974L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT974L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT974L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT974L_EN       (0x1U<<0)
+#define GFXMMU_LUT974L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT974L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT974L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT974L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT974L_EN       (0x1U<<0U)
 
 // LUT974H Configuration
 
-#define GFXMMU_LUT974H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT974H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT974H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT974H_LO_0     (0x1U<<4U)
 
 // LUT975L Configuration
 
-#define GFXMMU_LUT975L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT975L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT975L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT975L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT975L_EN       (0x1U<<0)
+#define GFXMMU_LUT975L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT975L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT975L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT975L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT975L_EN       (0x1U<<0U)
 
 // LUT975H Configuration
 
-#define GFXMMU_LUT975H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT975H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT975H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT975H_LO_0     (0x1U<<4U)
 
 // LUT976L Configuration
 
-#define GFXMMU_LUT976L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT976L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT976L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT976L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT976L_EN       (0x1U<<0)
+#define GFXMMU_LUT976L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT976L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT976L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT976L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT976L_EN       (0x1U<<0U)
 
 // LUT976H Configuration
 
-#define GFXMMU_LUT976H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT976H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT976H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT976H_LO_0     (0x1U<<4U)
 
 // LUT977L Configuration
 
-#define GFXMMU_LUT977L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT977L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT977L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT977L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT977L_EN       (0x1U<<0)
+#define GFXMMU_LUT977L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT977L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT977L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT977L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT977L_EN       (0x1U<<0U)
 
 // LUT977H Configuration
 
-#define GFXMMU_LUT977H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT977H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT977H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT977H_LO_0     (0x1U<<4U)
 
 // LUT978L Configuration
 
-#define GFXMMU_LUT978L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT978L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT978L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT978L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT978L_EN       (0x1U<<0)
+#define GFXMMU_LUT978L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT978L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT978L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT978L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT978L_EN       (0x1U<<0U)
 
 // LUT978H Configuration
 
-#define GFXMMU_LUT978H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT978H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT978H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT978H_LO_0     (0x1U<<4U)
 
 // LUT979L Configuration
 
-#define GFXMMU_LUT979L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT979L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT979L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT979L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT979L_EN       (0x1U<<0)
+#define GFXMMU_LUT979L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT979L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT979L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT979L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT979L_EN       (0x1U<<0U)
 
 // LUT979H Configuration
 
-#define GFXMMU_LUT979H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT979H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT979H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT979H_LO_0     (0x1U<<4U)
 
 // LUT980L Configuration
 
-#define GFXMMU_LUT980L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT980L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT980L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT980L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT980L_EN       (0x1U<<0)
+#define GFXMMU_LUT980L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT980L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT980L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT980L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT980L_EN       (0x1U<<0U)
 
 // LUT980H Configuration
 
-#define GFXMMU_LUT980H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT980H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT980H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT980H_LO_0     (0x1U<<4U)
 
 // LUT981L Configuration
 
-#define GFXMMU_LUT981L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT981L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT981L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT981L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT981L_EN       (0x1U<<0)
+#define GFXMMU_LUT981L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT981L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT981L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT981L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT981L_EN       (0x1U<<0U)
 
 // LUT981H Configuration
 
-#define GFXMMU_LUT981H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT981H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT981H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT981H_LO_0     (0x1U<<4U)
 
 // LUT982L Configuration
 
-#define GFXMMU_LUT982L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT982L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT982L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT982L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT982L_EN       (0x1U<<0)
+#define GFXMMU_LUT982L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT982L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT982L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT982L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT982L_EN       (0x1U<<0U)
 
 // LUT982H Configuration
 
-#define GFXMMU_LUT982H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT982H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT982H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT982H_LO_0     (0x1U<<4U)
 
 // LUT983L Configuration
 
-#define GFXMMU_LUT983L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT983L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT983L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT983L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT983L_EN       (0x1U<<0)
+#define GFXMMU_LUT983L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT983L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT983L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT983L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT983L_EN       (0x1U<<0U)
 
 // LUT983H Configuration
 
-#define GFXMMU_LUT983H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT983H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT983H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT983H_LO_0     (0x1U<<4U)
 
 // LUT984L Configuration
 
-#define GFXMMU_LUT984L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT984L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT984L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT984L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT984L_EN       (0x1U<<0)
+#define GFXMMU_LUT984L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT984L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT984L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT984L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT984L_EN       (0x1U<<0U)
 
 // LUT984H Configuration
 
-#define GFXMMU_LUT984H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT984H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT984H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT984H_LO_0     (0x1U<<4U)
 
 // LUT985L Configuration
 
-#define GFXMMU_LUT985L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT985L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT985L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT985L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT985L_EN       (0x1U<<0)
+#define GFXMMU_LUT985L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT985L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT985L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT985L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT985L_EN       (0x1U<<0U)
 
 // LUT985H Configuration
 
-#define GFXMMU_LUT985H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT985H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT985H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT985H_LO_0     (0x1U<<4U)
 
 // LUT986L Configuration
 
-#define GFXMMU_LUT986L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT986L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT986L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT986L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT986L_EN       (0x1U<<0)
+#define GFXMMU_LUT986L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT986L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT986L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT986L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT986L_EN       (0x1U<<0U)
 
 // LUT986H Configuration
 
-#define GFXMMU_LUT986H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT986H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT986H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT986H_LO_0     (0x1U<<4U)
 
 // LUT987L Configuration
 
-#define GFXMMU_LUT987L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT987L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT987L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT987L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT987L_EN       (0x1U<<0)
+#define GFXMMU_LUT987L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT987L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT987L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT987L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT987L_EN       (0x1U<<0U)
 
 // LUT987H Configuration
 
-#define GFXMMU_LUT987H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT987H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT987H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT987H_LO_0     (0x1U<<4U)
 
 // LUT988L Configuration
 
-#define GFXMMU_LUT988L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT988L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT988L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT988L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT988L_EN       (0x1U<<0)
+#define GFXMMU_LUT988L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT988L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT988L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT988L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT988L_EN       (0x1U<<0U)
 
 // LUT988H Configuration
 
-#define GFXMMU_LUT988H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT988H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT988H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT988H_LO_0     (0x1U<<4U)
 
 // LUT989L Configuration
 
-#define GFXMMU_LUT989L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT989L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT989L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT989L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT989L_EN       (0x1U<<0)
+#define GFXMMU_LUT989L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT989L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT989L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT989L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT989L_EN       (0x1U<<0U)
 
 // LUT989H Configuration
 
-#define GFXMMU_LUT989H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT989H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT989H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT989H_LO_0     (0x1U<<4U)
 
 // LUT990L Configuration
 
-#define GFXMMU_LUT990L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT990L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT990L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT990L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT990L_EN       (0x1U<<0)
+#define GFXMMU_LUT990L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT990L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT990L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT990L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT990L_EN       (0x1U<<0U)
 
 // LUT990H Configuration
 
-#define GFXMMU_LUT990H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT990H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT990H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT990H_LO_0     (0x1U<<4U)
 
 // LUT991L Configuration
 
-#define GFXMMU_LUT991L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT991L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT991L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT991L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT991L_EN       (0x1U<<0)
+#define GFXMMU_LUT991L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT991L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT991L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT991L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT991L_EN       (0x1U<<0U)
 
 // LUT991H Configuration
 
-#define GFXMMU_LUT991H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT991H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT991H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT991H_LO_0     (0x1U<<4U)
 
 // LUT992L Configuration
 
-#define GFXMMU_LUT992L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT992L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT992L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT992L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT992L_EN       (0x1U<<0)
+#define GFXMMU_LUT992L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT992L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT992L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT992L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT992L_EN       (0x1U<<0U)
 
 // LUT992H Configuration
 
-#define GFXMMU_LUT992H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT992H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT992H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT992H_LO_0     (0x1U<<4U)
 
 // LUT993L Configuration
 
-#define GFXMMU_LUT993L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT993L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT993L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT993L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT993L_EN       (0x1U<<0)
+#define GFXMMU_LUT993L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT993L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT993L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT993L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT993L_EN       (0x1U<<0U)
 
 // LUT993H Configuration
 
-#define GFXMMU_LUT993H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT993H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT993H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT993H_LO_0     (0x1U<<4U)
 
 // LUT994L Configuration
 
-#define GFXMMU_LUT994L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT994L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT994L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT994L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT994L_EN       (0x1U<<0)
+#define GFXMMU_LUT994L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT994L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT994L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT994L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT994L_EN       (0x1U<<0U)
 
 // LUT994H Configuration
 
-#define GFXMMU_LUT994H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT994H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT994H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT994H_LO_0     (0x1U<<4U)
 
 // LUT995L Configuration
 
-#define GFXMMU_LUT995L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT995L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT995L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT995L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT995L_EN       (0x1U<<0)
+#define GFXMMU_LUT995L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT995L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT995L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT995L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT995L_EN       (0x1U<<0U)
 
 // LUT995H Configuration
 
-#define GFXMMU_LUT995H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT995H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT995H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT995H_LO_0     (0x1U<<4U)
 
 // LUT996L Configuration
 
-#define GFXMMU_LUT996L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT996L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT996L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT996L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT996L_EN       (0x1U<<0)
+#define GFXMMU_LUT996L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT996L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT996L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT996L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT996L_EN       (0x1U<<0U)
 
 // LUT996H Configuration
 
-#define GFXMMU_LUT996H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT996H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT996H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT996H_LO_0     (0x1U<<4U)
 
 // LUT997L Configuration
 
-#define GFXMMU_LUT997L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT997L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT997L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT997L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT997L_EN       (0x1U<<0)
+#define GFXMMU_LUT997L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT997L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT997L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT997L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT997L_EN       (0x1U<<0U)
 
 // LUT997H Configuration
 
-#define GFXMMU_LUT997H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT997H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT997H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT997H_LO_0     (0x1U<<4U)
 
 // LUT998L Configuration
 
-#define GFXMMU_LUT998L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT998L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT998L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT998L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT998L_EN       (0x1U<<0)
+#define GFXMMU_LUT998L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT998L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT998L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT998L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT998L_EN       (0x1U<<0U)
 
 // LUT998H Configuration
 
-#define GFXMMU_LUT998H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT998H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT998H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT998H_LO_0     (0x1U<<4U)
 
 // LUT999L Configuration
 
-#define GFXMMU_LUT999L_LVB      (0xFFU<<16)
-#define GFXMMU_LUT999L_LVB_0    (0x1U<<16)
-#define GFXMMU_LUT999L_FVB      (0xFFU<<8)
-#define GFXMMU_LUT999L_FVB_0    (0x1U<<8)
-#define GFXMMU_LUT999L_EN       (0x1U<<0)
+#define GFXMMU_LUT999L_LVB      (0xFFU<<16U)
+#define GFXMMU_LUT999L_LVB_0    (0x1U<<16U)
+#define GFXMMU_LUT999L_FVB      (0xFFU<<8U)
+#define GFXMMU_LUT999L_FVB_0    (0x1U<<8U)
+#define GFXMMU_LUT999L_EN       (0x1U<<0U)
 
 // LUT999H Configuration
 
-#define GFXMMU_LUT999H_LO       (0x3FFFFU<<4)
-#define GFXMMU_LUT999H_LO_0     (0x1U<<4)
+#define GFXMMU_LUT999H_LO       (0x3FFFFU<<4U)
+#define GFXMMU_LUT999H_LO_0     (0x1U<<4U)
 
 // LUT1000L Configuration
 
-#define GFXMMU_LUT1000L_LVB     (0xFFU<<16)
-#define GFXMMU_LUT1000L_LVB_0   (0x1U<<16)
-#define GFXMMU_LUT1000L_FVB     (0xFFU<<8)
-#define GFXMMU_LUT1000L_FVB_0   (0x1U<<8)
-#define GFXMMU_LUT1000L_EN      (0x1U<<0)
+#define GFXMMU_LUT1000L_LVB     (0xFFU<<16U)
+#define GFXMMU_LUT1000L_LVB_0   (0x1U<<16U)
+#define GFXMMU_LUT1000L_FVB     (0xFFU<<8U)
+#define GFXMMU_LUT1000L_FVB_0   (0x1U<<8U)
+#define GFXMMU_LUT1000L_EN      (0x1U<<0U)
 
 // LUT1000H Configuration
 
-#define GFXMMU_LUT1000H_LO      (0x3FFFFU<<4)
-#define GFXMMU_LUT1000H_LO_0    (0x1U<<4)
+#define GFXMMU_LUT1000H_LO      (0x3FFFFU<<4U)
+#define GFXMMU_LUT1000H_LO_0    (0x1U<<4U)
 
 // LUT1001L Configuration
 
-#define GFXMMU_LUT1001L_LVB     (0xFFU<<16)
-#define GFXMMU_LUT1001L_LVB_0   (0x1U<<16)
-#define GFXMMU_LUT1001L_FVB     (0xFFU<<8)
-#define GFXMMU_LUT1001L_FVB_0   (0x1U<<8)
-#define GFXMMU_LUT1001L_EN      (0x1U<<0)
+#define GFXMMU_LUT1001L_LVB     (0xFFU<<16U)
+#define GFXMMU_LUT1001L_LVB_0   (0x1U<<16U)
+#define GFXMMU_LUT1001L_FVB     (0xFFU<<8U)
+#define GFXMMU_LUT1001L_FVB_0   (0x1U<<8U)
+#define GFXMMU_LUT1001L_EN      (0x1U<<0U)
 
 // LUT1001H Configuration
 
-#define GFXMMU_LUT1001H_LO      (0x3FFFFU<<4)
-#define GFXMMU_LUT1001H_LO_0    (0x1U<<4)
+#define GFXMMU_LUT1001H_LO      (0x3FFFFU<<4U)
+#define GFXMMU_LUT1001H_LO_0    (0x1U<<4U)
 
 // LUT1002L Configuration
 
-#define GFXMMU_LUT1002L_LVB     (0xFFU<<16)
-#define GFXMMU_LUT1002L_LVB_0   (0x1U<<16)
-#define GFXMMU_LUT1002L_FVB     (0xFFU<<8)
-#define GFXMMU_LUT1002L_FVB_0   (0x1U<<8)
-#define GFXMMU_LUT1002L_EN      (0x1U<<0)
+#define GFXMMU_LUT1002L_LVB     (0xFFU<<16U)
+#define GFXMMU_LUT1002L_LVB_0   (0x1U<<16U)
+#define GFXMMU_LUT1002L_FVB     (0xFFU<<8U)
+#define GFXMMU_LUT1002L_FVB_0   (0x1U<<8U)
+#define GFXMMU_LUT1002L_EN      (0x1U<<0U)
 
 // LUT1002H Configuration
 
-#define GFXMMU_LUT1002H_LO      (0x3FFFFU<<4)
-#define GFXMMU_LUT1002H_LO_0    (0x1U<<4)
+#define GFXMMU_LUT1002H_LO      (0x3FFFFU<<4U)
+#define GFXMMU_LUT1002H_LO_0    (0x1U<<4U)
 
 // LUT1003L Configuration
 
-#define GFXMMU_LUT1003L_LVB     (0xFFU<<16)
-#define GFXMMU_LUT1003L_LVB_0   (0x1U<<16)
-#define GFXMMU_LUT1003L_FVB     (0xFFU<<8)
-#define GFXMMU_LUT1003L_FVB_0   (0x1U<<8)
-#define GFXMMU_LUT1003L_EN      (0x1U<<0)
+#define GFXMMU_LUT1003L_LVB     (0xFFU<<16U)
+#define GFXMMU_LUT1003L_LVB_0   (0x1U<<16U)
+#define GFXMMU_LUT1003L_FVB     (0xFFU<<8U)
+#define GFXMMU_LUT1003L_FVB_0   (0x1U<<8U)
+#define GFXMMU_LUT1003L_EN      (0x1U<<0U)
 
 // LUT1003H Configuration
 
-#define GFXMMU_LUT1003H_LO      (0x3FFFFU<<4)
-#define GFXMMU_LUT1003H_LO_0    (0x1U<<4)
+#define GFXMMU_LUT1003H_LO      (0x3FFFFU<<4U)
+#define GFXMMU_LUT1003H_LO_0    (0x1U<<4U)
 
 // LUT1004L Configuration
 
-#define GFXMMU_LUT1004L_LVB     (0xFFU<<16)
-#define GFXMMU_LUT1004L_LVB_0   (0x1U<<16)
-#define GFXMMU_LUT1004L_FVB     (0xFFU<<8)
-#define GFXMMU_LUT1004L_FVB_0   (0x1U<<8)
-#define GFXMMU_LUT1004L_EN      (0x1U<<0)
+#define GFXMMU_LUT1004L_LVB     (0xFFU<<16U)
+#define GFXMMU_LUT1004L_LVB_0   (0x1U<<16U)
+#define GFXMMU_LUT1004L_FVB     (0xFFU<<8U)
+#define GFXMMU_LUT1004L_FVB_0   (0x1U<<8U)
+#define GFXMMU_LUT1004L_EN      (0x1U<<0U)
 
 // LUT1004H Configuration
 
-#define GFXMMU_LUT1004H_LO      (0x3FFFFU<<4)
-#define GFXMMU_LUT1004H_LO_0    (0x1U<<4)
+#define GFXMMU_LUT1004H_LO      (0x3FFFFU<<4U)
+#define GFXMMU_LUT1004H_LO_0    (0x1U<<4U)
 
 // LUT1005L Configuration
 
-#define GFXMMU_LUT1005L_LVB     (0xFFU<<16)
-#define GFXMMU_LUT1005L_LVB_0   (0x1U<<16)
-#define GFXMMU_LUT1005L_FVB     (0xFFU<<8)
-#define GFXMMU_LUT1005L_FVB_0   (0x1U<<8)
-#define GFXMMU_LUT1005L_EN      (0x1U<<0)
+#define GFXMMU_LUT1005L_LVB     (0xFFU<<16U)
+#define GFXMMU_LUT1005L_LVB_0   (0x1U<<16U)
+#define GFXMMU_LUT1005L_FVB     (0xFFU<<8U)
+#define GFXMMU_LUT1005L_FVB_0   (0x1U<<8U)
+#define GFXMMU_LUT1005L_EN      (0x1U<<0U)
 
 // LUT1005H Configuration
 
-#define GFXMMU_LUT1005H_LO      (0x3FFFFU<<4)
-#define GFXMMU_LUT1005H_LO_0    (0x1U<<4)
+#define GFXMMU_LUT1005H_LO      (0x3FFFFU<<4U)
+#define GFXMMU_LUT1005H_LO_0    (0x1U<<4U)
 
 // LUT1006L Configuration
 
-#define GFXMMU_LUT1006L_LVB     (0xFFU<<16)
-#define GFXMMU_LUT1006L_LVB_0   (0x1U<<16)
-#define GFXMMU_LUT1006L_FVB     (0xFFU<<8)
-#define GFXMMU_LUT1006L_FVB_0   (0x1U<<8)
-#define GFXMMU_LUT1006L_EN      (0x1U<<0)
+#define GFXMMU_LUT1006L_LVB     (0xFFU<<16U)
+#define GFXMMU_LUT1006L_LVB_0   (0x1U<<16U)
+#define GFXMMU_LUT1006L_FVB     (0xFFU<<8U)
+#define GFXMMU_LUT1006L_FVB_0   (0x1U<<8U)
+#define GFXMMU_LUT1006L_EN      (0x1U<<0U)
 
 // LUT1006H Configuration
 
-#define GFXMMU_LUT1006H_LO      (0x3FFFFU<<4)
-#define GFXMMU_LUT1006H_LO_0    (0x1U<<4)
+#define GFXMMU_LUT1006H_LO      (0x3FFFFU<<4U)
+#define GFXMMU_LUT1006H_LO_0    (0x1U<<4U)
 
 // LUT1007L Configuration
 
-#define GFXMMU_LUT1007L_LVB     (0xFFU<<16)
-#define GFXMMU_LUT1007L_LVB_0   (0x1U<<16)
-#define GFXMMU_LUT1007L_FVB     (0xFFU<<8)
-#define GFXMMU_LUT1007L_FVB_0   (0x1U<<8)
-#define GFXMMU_LUT1007L_EN      (0x1U<<0)
+#define GFXMMU_LUT1007L_LVB     (0xFFU<<16U)
+#define GFXMMU_LUT1007L_LVB_0   (0x1U<<16U)
+#define GFXMMU_LUT1007L_FVB     (0xFFU<<8U)
+#define GFXMMU_LUT1007L_FVB_0   (0x1U<<8U)
+#define GFXMMU_LUT1007L_EN      (0x1U<<0U)
 
 // LUT1007H Configuration
 
-#define GFXMMU_LUT1007H_LO      (0x3FFFFU<<4)
-#define GFXMMU_LUT1007H_LO_0    (0x1U<<4)
+#define GFXMMU_LUT1007H_LO      (0x3FFFFU<<4U)
+#define GFXMMU_LUT1007H_LO_0    (0x1U<<4U)
 
 // LUT1008L Configuration
 
-#define GFXMMU_LUT1008L_LVB     (0xFFU<<16)
-#define GFXMMU_LUT1008L_LVB_0   (0x1U<<16)
-#define GFXMMU_LUT1008L_FVB     (0xFFU<<8)
-#define GFXMMU_LUT1008L_FVB_0   (0x1U<<8)
-#define GFXMMU_LUT1008L_EN      (0x1U<<0)
+#define GFXMMU_LUT1008L_LVB     (0xFFU<<16U)
+#define GFXMMU_LUT1008L_LVB_0   (0x1U<<16U)
+#define GFXMMU_LUT1008L_FVB     (0xFFU<<8U)
+#define GFXMMU_LUT1008L_FVB_0   (0x1U<<8U)
+#define GFXMMU_LUT1008L_EN      (0x1U<<0U)
 
 // LUT1008H Configuration
 
-#define GFXMMU_LUT1008H_LO      (0x3FFFFU<<4)
-#define GFXMMU_LUT1008H_LO_0    (0x1U<<4)
+#define GFXMMU_LUT1008H_LO      (0x3FFFFU<<4U)
+#define GFXMMU_LUT1008H_LO_0    (0x1U<<4U)
 
 // LUT1009L Configuration
 
-#define GFXMMU_LUT1009L_LVB     (0xFFU<<16)
-#define GFXMMU_LUT1009L_LVB_0   (0x1U<<16)
-#define GFXMMU_LUT1009L_FVB     (0xFFU<<8)
-#define GFXMMU_LUT1009L_FVB_0   (0x1U<<8)
-#define GFXMMU_LUT1009L_EN      (0x1U<<0)
+#define GFXMMU_LUT1009L_LVB     (0xFFU<<16U)
+#define GFXMMU_LUT1009L_LVB_0   (0x1U<<16U)
+#define GFXMMU_LUT1009L_FVB     (0xFFU<<8U)
+#define GFXMMU_LUT1009L_FVB_0   (0x1U<<8U)
+#define GFXMMU_LUT1009L_EN      (0x1U<<0U)
 
 // LUT1009H Configuration
 
-#define GFXMMU_LUT1009H_LO      (0x3FFFFU<<4)
-#define GFXMMU_LUT1009H_LO_0    (0x1U<<4)
+#define GFXMMU_LUT1009H_LO      (0x3FFFFU<<4U)
+#define GFXMMU_LUT1009H_LO_0    (0x1U<<4U)
 
 // LUT1010L Configuration
 
-#define GFXMMU_LUT1010L_LVB     (0xFFU<<16)
-#define GFXMMU_LUT1010L_LVB_0   (0x1U<<16)
-#define GFXMMU_LUT1010L_FVB     (0xFFU<<8)
-#define GFXMMU_LUT1010L_FVB_0   (0x1U<<8)
-#define GFXMMU_LUT1010L_EN      (0x1U<<0)
+#define GFXMMU_LUT1010L_LVB     (0xFFU<<16U)
+#define GFXMMU_LUT1010L_LVB_0   (0x1U<<16U)
+#define GFXMMU_LUT1010L_FVB     (0xFFU<<8U)
+#define GFXMMU_LUT1010L_FVB_0   (0x1U<<8U)
+#define GFXMMU_LUT1010L_EN      (0x1U<<0U)
 
 // LUT1010H Configuration
 
-#define GFXMMU_LUT1010H_LO      (0x3FFFFU<<4)
-#define GFXMMU_LUT1010H_LO_0    (0x1U<<4)
+#define GFXMMU_LUT1010H_LO      (0x3FFFFU<<4U)
+#define GFXMMU_LUT1010H_LO_0    (0x1U<<4U)
 
 // LUT1011L Configuration
 
-#define GFXMMU_LUT1011L_LVB     (0xFFU<<16)
-#define GFXMMU_LUT1011L_LVB_0   (0x1U<<16)
-#define GFXMMU_LUT1011L_FVB     (0xFFU<<8)
-#define GFXMMU_LUT1011L_FVB_0   (0x1U<<8)
-#define GFXMMU_LUT1011L_EN      (0x1U<<0)
+#define GFXMMU_LUT1011L_LVB     (0xFFU<<16U)
+#define GFXMMU_LUT1011L_LVB_0   (0x1U<<16U)
+#define GFXMMU_LUT1011L_FVB     (0xFFU<<8U)
+#define GFXMMU_LUT1011L_FVB_0   (0x1U<<8U)
+#define GFXMMU_LUT1011L_EN      (0x1U<<0U)
 
 // LUT1011H Configuration
 
-#define GFXMMU_LUT1011H_LO      (0x3FFFFU<<4)
-#define GFXMMU_LUT1011H_LO_0    (0x1U<<4)
+#define GFXMMU_LUT1011H_LO      (0x3FFFFU<<4U)
+#define GFXMMU_LUT1011H_LO_0    (0x1U<<4U)
 
 // LUT1012L Configuration
 
-#define GFXMMU_LUT1012L_LVB     (0xFFU<<16)
-#define GFXMMU_LUT1012L_LVB_0   (0x1U<<16)
-#define GFXMMU_LUT1012L_FVB     (0xFFU<<8)
-#define GFXMMU_LUT1012L_FVB_0   (0x1U<<8)
-#define GFXMMU_LUT1012L_EN      (0x1U<<0)
+#define GFXMMU_LUT1012L_LVB     (0xFFU<<16U)
+#define GFXMMU_LUT1012L_LVB_0   (0x1U<<16U)
+#define GFXMMU_LUT1012L_FVB     (0xFFU<<8U)
+#define GFXMMU_LUT1012L_FVB_0   (0x1U<<8U)
+#define GFXMMU_LUT1012L_EN      (0x1U<<0U)
 
 // LUT1012H Configuration
 
-#define GFXMMU_LUT1012H_LO      (0x3FFFFU<<4)
-#define GFXMMU_LUT1012H_LO_0    (0x1U<<4)
+#define GFXMMU_LUT1012H_LO      (0x3FFFFU<<4U)
+#define GFXMMU_LUT1012H_LO_0    (0x1U<<4U)
 
 // LUT1013L Configuration
 
-#define GFXMMU_LUT1013L_LVB     (0xFFU<<16)
-#define GFXMMU_LUT1013L_LVB_0   (0x1U<<16)
-#define GFXMMU_LUT1013L_FVB     (0xFFU<<8)
-#define GFXMMU_LUT1013L_FVB_0   (0x1U<<8)
-#define GFXMMU_LUT1013L_EN      (0x1U<<0)
+#define GFXMMU_LUT1013L_LVB     (0xFFU<<16U)
+#define GFXMMU_LUT1013L_LVB_0   (0x1U<<16U)
+#define GFXMMU_LUT1013L_FVB     (0xFFU<<8U)
+#define GFXMMU_LUT1013L_FVB_0   (0x1U<<8U)
+#define GFXMMU_LUT1013L_EN      (0x1U<<0U)
 
 // LUT1013H Configuration
 
-#define GFXMMU_LUT1013H_LO      (0x3FFFFU<<4)
-#define GFXMMU_LUT1013H_LO_0    (0x1U<<4)
+#define GFXMMU_LUT1013H_LO      (0x3FFFFU<<4U)
+#define GFXMMU_LUT1013H_LO_0    (0x1U<<4U)
 
 // LUT1014L Configuration
 
-#define GFXMMU_LUT1014L_LVB     (0xFFU<<16)
-#define GFXMMU_LUT1014L_LVB_0   (0x1U<<16)
-#define GFXMMU_LUT1014L_FVB     (0xFFU<<8)
-#define GFXMMU_LUT1014L_FVB_0   (0x1U<<8)
-#define GFXMMU_LUT1014L_EN      (0x1U<<0)
+#define GFXMMU_LUT1014L_LVB     (0xFFU<<16U)
+#define GFXMMU_LUT1014L_LVB_0   (0x1U<<16U)
+#define GFXMMU_LUT1014L_FVB     (0xFFU<<8U)
+#define GFXMMU_LUT1014L_FVB_0   (0x1U<<8U)
+#define GFXMMU_LUT1014L_EN      (0x1U<<0U)
 
 // LUT1014H Configuration
 
-#define GFXMMU_LUT1014H_LO      (0x3FFFFU<<4)
-#define GFXMMU_LUT1014H_LO_0    (0x1U<<4)
+#define GFXMMU_LUT1014H_LO      (0x3FFFFU<<4U)
+#define GFXMMU_LUT1014H_LO_0    (0x1U<<4U)
 
 // LUT1015L Configuration
 
-#define GFXMMU_LUT1015L_LVB     (0xFFU<<16)
-#define GFXMMU_LUT1015L_LVB_0   (0x1U<<16)
-#define GFXMMU_LUT1015L_FVB     (0xFFU<<8)
-#define GFXMMU_LUT1015L_FVB_0   (0x1U<<8)
-#define GFXMMU_LUT1015L_EN      (0x1U<<0)
+#define GFXMMU_LUT1015L_LVB     (0xFFU<<16U)
+#define GFXMMU_LUT1015L_LVB_0   (0x1U<<16U)
+#define GFXMMU_LUT1015L_FVB     (0xFFU<<8U)
+#define GFXMMU_LUT1015L_FVB_0   (0x1U<<8U)
+#define GFXMMU_LUT1015L_EN      (0x1U<<0U)
 
 // LUT1015H Configuration
 
-#define GFXMMU_LUT1015H_LO      (0x3FFFFU<<4)
-#define GFXMMU_LUT1015H_LO_0    (0x1U<<4)
+#define GFXMMU_LUT1015H_LO      (0x3FFFFU<<4U)
+#define GFXMMU_LUT1015H_LO_0    (0x1U<<4U)
 
 // LUT1016L Configuration
 
-#define GFXMMU_LUT1016L_LVB     (0xFFU<<16)
-#define GFXMMU_LUT1016L_LVB_0   (0x1U<<16)
-#define GFXMMU_LUT1016L_FVB     (0xFFU<<8)
-#define GFXMMU_LUT1016L_FVB_0   (0x1U<<8)
-#define GFXMMU_LUT1016L_EN      (0x1U<<0)
+#define GFXMMU_LUT1016L_LVB     (0xFFU<<16U)
+#define GFXMMU_LUT1016L_LVB_0   (0x1U<<16U)
+#define GFXMMU_LUT1016L_FVB     (0xFFU<<8U)
+#define GFXMMU_LUT1016L_FVB_0   (0x1U<<8U)
+#define GFXMMU_LUT1016L_EN      (0x1U<<0U)
 
 // LUT1016H Configuration
 
-#define GFXMMU_LUT1016H_LO      (0x3FFFFU<<4)
-#define GFXMMU_LUT1016H_LO_0    (0x1U<<4)
+#define GFXMMU_LUT1016H_LO      (0x3FFFFU<<4U)
+#define GFXMMU_LUT1016H_LO_0    (0x1U<<4U)
 
 // LUT1017L Configuration
 
-#define GFXMMU_LUT1017L_LVB     (0xFFU<<16)
-#define GFXMMU_LUT1017L_LVB_0   (0x1U<<16)
-#define GFXMMU_LUT1017L_FVB     (0xFFU<<8)
-#define GFXMMU_LUT1017L_FVB_0   (0x1U<<8)
-#define GFXMMU_LUT1017L_EN      (0x1U<<0)
+#define GFXMMU_LUT1017L_LVB     (0xFFU<<16U)
+#define GFXMMU_LUT1017L_LVB_0   (0x1U<<16U)
+#define GFXMMU_LUT1017L_FVB     (0xFFU<<8U)
+#define GFXMMU_LUT1017L_FVB_0   (0x1U<<8U)
+#define GFXMMU_LUT1017L_EN      (0x1U<<0U)
 
 // LUT1017H Configuration
 
-#define GFXMMU_LUT1017H_LO      (0x3FFFFU<<4)
-#define GFXMMU_LUT1017H_LO_0    (0x1U<<4)
+#define GFXMMU_LUT1017H_LO      (0x3FFFFU<<4U)
+#define GFXMMU_LUT1017H_LO_0    (0x1U<<4U)
 
 // LUT1018L Configuration
 
-#define GFXMMU_LUT1018L_LVB     (0xFFU<<16)
-#define GFXMMU_LUT1018L_LVB_0   (0x1U<<16)
-#define GFXMMU_LUT1018L_FVB     (0xFFU<<8)
-#define GFXMMU_LUT1018L_FVB_0   (0x1U<<8)
-#define GFXMMU_LUT1018L_EN      (0x1U<<0)
+#define GFXMMU_LUT1018L_LVB     (0xFFU<<16U)
+#define GFXMMU_LUT1018L_LVB_0   (0x1U<<16U)
+#define GFXMMU_LUT1018L_FVB     (0xFFU<<8U)
+#define GFXMMU_LUT1018L_FVB_0   (0x1U<<8U)
+#define GFXMMU_LUT1018L_EN      (0x1U<<0U)
 
 // LUT1018H Configuration
 
-#define GFXMMU_LUT1018H_LO      (0x3FFFFU<<4)
-#define GFXMMU_LUT1018H_LO_0    (0x1U<<4)
+#define GFXMMU_LUT1018H_LO      (0x3FFFFU<<4U)
+#define GFXMMU_LUT1018H_LO_0    (0x1U<<4U)
 
 // LUT1019L Configuration
 
-#define GFXMMU_LUT1019L_LVB     (0xFFU<<16)
-#define GFXMMU_LUT1019L_LVB_0   (0x1U<<16)
-#define GFXMMU_LUT1019L_FVB     (0xFFU<<8)
-#define GFXMMU_LUT1019L_FVB_0   (0x1U<<8)
-#define GFXMMU_LUT1019L_EN      (0x1U<<0)
+#define GFXMMU_LUT1019L_LVB     (0xFFU<<16U)
+#define GFXMMU_LUT1019L_LVB_0   (0x1U<<16U)
+#define GFXMMU_LUT1019L_FVB     (0xFFU<<8U)
+#define GFXMMU_LUT1019L_FVB_0   (0x1U<<8U)
+#define GFXMMU_LUT1019L_EN      (0x1U<<0U)
 
 // LUT1019H Configuration
 
-#define GFXMMU_LUT1019H_LO      (0x3FFFFU<<4)
-#define GFXMMU_LUT1019H_LO_0    (0x1U<<4)
+#define GFXMMU_LUT1019H_LO      (0x3FFFFU<<4U)
+#define GFXMMU_LUT1019H_LO_0    (0x1U<<4U)
 
 // LUT1020L Configuration
 
-#define GFXMMU_LUT1020L_LVB     (0xFFU<<16)
-#define GFXMMU_LUT1020L_LVB_0   (0x1U<<16)
-#define GFXMMU_LUT1020L_FVB     (0xFFU<<8)
-#define GFXMMU_LUT1020L_FVB_0   (0x1U<<8)
-#define GFXMMU_LUT1020L_EN      (0x1U<<0)
+#define GFXMMU_LUT1020L_LVB     (0xFFU<<16U)
+#define GFXMMU_LUT1020L_LVB_0   (0x1U<<16U)
+#define GFXMMU_LUT1020L_FVB     (0xFFU<<8U)
+#define GFXMMU_LUT1020L_FVB_0   (0x1U<<8U)
+#define GFXMMU_LUT1020L_EN      (0x1U<<0U)
 
 // LUT1020H Configuration
 
-#define GFXMMU_LUT1020H_LO      (0x3FFFFU<<4)
-#define GFXMMU_LUT1020H_LO_0    (0x1U<<4)
+#define GFXMMU_LUT1020H_LO      (0x3FFFFU<<4U)
+#define GFXMMU_LUT1020H_LO_0    (0x1U<<4U)
 
 // LUT1021L Configuration
 
-#define GFXMMU_LUT1021L_LVB     (0xFFU<<16)
-#define GFXMMU_LUT1021L_LVB_0   (0x1U<<16)
-#define GFXMMU_LUT1021L_FVB     (0xFFU<<8)
-#define GFXMMU_LUT1021L_FVB_0   (0x1U<<8)
-#define GFXMMU_LUT1021L_EN      (0x1U<<0)
+#define GFXMMU_LUT1021L_LVB     (0xFFU<<16U)
+#define GFXMMU_LUT1021L_LVB_0   (0x1U<<16U)
+#define GFXMMU_LUT1021L_FVB     (0xFFU<<8U)
+#define GFXMMU_LUT1021L_FVB_0   (0x1U<<8U)
+#define GFXMMU_LUT1021L_EN      (0x1U<<0U)
 
 // LUT1021H Configuration
 
-#define GFXMMU_LUT1021H_LO      (0x3FFFFU<<4)
-#define GFXMMU_LUT1021H_LO_0    (0x1U<<4)
+#define GFXMMU_LUT1021H_LO      (0x3FFFFU<<4U)
+#define GFXMMU_LUT1021H_LO_0    (0x1U<<4U)
 
 // LUT1022L Configuration
 
-#define GFXMMU_LUT1022L_LVB     (0xFFU<<16)
-#define GFXMMU_LUT1022L_LVB_0   (0x1U<<16)
-#define GFXMMU_LUT1022L_FVB     (0xFFU<<8)
-#define GFXMMU_LUT1022L_FVB_0   (0x1U<<8)
-#define GFXMMU_LUT1022L_EN      (0x1U<<0)
+#define GFXMMU_LUT1022L_LVB     (0xFFU<<16U)
+#define GFXMMU_LUT1022L_LVB_0   (0x1U<<16U)
+#define GFXMMU_LUT1022L_FVB     (0xFFU<<8U)
+#define GFXMMU_LUT1022L_FVB_0   (0x1U<<8U)
+#define GFXMMU_LUT1022L_EN      (0x1U<<0U)
 
 // LUT1022H Configuration
 
-#define GFXMMU_LUT1022H_LO      (0x3FFFFU<<4)
-#define GFXMMU_LUT1022H_LO_0    (0x1U<<4)
+#define GFXMMU_LUT1022H_LO      (0x3FFFFU<<4U)
+#define GFXMMU_LUT1022H_LO_0    (0x1U<<4U)
 
 // LUT1023L Configuration
 
-#define GFXMMU_LUT1023L_LVB     (0xFFU<<16)
-#define GFXMMU_LUT1023L_LVB_0   (0x1U<<16)
-#define GFXMMU_LUT1023L_FVB     (0xFFU<<8)
-#define GFXMMU_LUT1023L_FVB_0   (0x1U<<8)
-#define GFXMMU_LUT1023L_EN      (0x1U<<0)
+#define GFXMMU_LUT1023L_LVB     (0xFFU<<16U)
+#define GFXMMU_LUT1023L_LVB_0   (0x1U<<16U)
+#define GFXMMU_LUT1023L_FVB     (0xFFU<<8U)
+#define GFXMMU_LUT1023L_FVB_0   (0x1U<<8U)
+#define GFXMMU_LUT1023L_EN      (0x1U<<0U)
 
 // LUT1023H Configuration
 
-#define GFXMMU_LUT1023H_LO      (0x3FFFFU<<4)
-#define GFXMMU_LUT1023H_LO_0    (0x1U<<4)
+#define GFXMMU_LUT1023H_LO      (0x3FFFFU<<4U)
+#define GFXMMU_LUT1023H_LO_0    (0x1U<<4U)

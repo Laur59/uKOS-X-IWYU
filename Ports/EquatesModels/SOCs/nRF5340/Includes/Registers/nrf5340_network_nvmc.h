@@ -40,51 +40,51 @@ typedef struct {
 
 // READY Configuration
 
-#define NVMC_READY_READY                    (0x1U<<0)
-#define NVMC_READY_READY_BUSY               (0x0U<<0)
-#define NVMC_READY_READY_READY              (0x1U<<0)
+#define NVMC_READY_READY                    (0x1U<<0U)
+#define NVMC_READY_READY_BUSY               (0x0U<<0U)
+#define NVMC_READY_READY_READY              (0x1U<<0U)
 
 // READYNEXT Configuration
 
-#define NVMC_READYNEXT_READYNEXT            (0x1U<<0)
-#define NVMC_READYNEXT_READYNEXT_BUSY       (0x0U<<0)
-#define NVMC_READYNEXT_READYNEXT_READY      (0x1U<<0)
+#define NVMC_READYNEXT_READYNEXT            (0x1U<<0U)
+#define NVMC_READYNEXT_READYNEXT_BUSY       (0x0U<<0U)
+#define NVMC_READYNEXT_READYNEXT_READY      (0x1U<<0U)
 
 // CONFIG Configuration
 
-#define NVMC_CONFIG_WEN                     (0x7U<<0)
-#define NVMC_CONFIG_WEN_0                   (0x1U<<0)
-#define NVMC_CONFIG_WEN_REN                 (0x0U<<0)
-#define NVMC_CONFIG_WEN_WEN                 (0x1U<<0)
-#define NVMC_CONFIG_WEN_EEN                 (0x2U<<0)
-#define NVMC_CONFIG_WEN_PEEN                (0x4U<<0)
+#define NVMC_CONFIG_WEN                     (0x7U<<0U)
+#define NVMC_CONFIG_WEN_0                   (0x1U<<0U)
+#define NVMC_CONFIG_WEN_REN                 (0x0U<<0U)
+#define NVMC_CONFIG_WEN_WEN                 (0x1U<<0U)
+#define NVMC_CONFIG_WEN_EEN                 (0x2U<<0U)
+#define NVMC_CONFIG_WEN_PEEN                (0x4U<<0U)
 
 // ERASEALL Configuration
 
-#define NVMC_ERASEALL_ERASEALL              (0x1U<<0)
-#define NVMC_ERASEALL_ERASEALL_NOOPERATION  (0x0U<<0)
-#define NVMC_ERASEALL_ERASEALL_ERASE        (0x1U<<0)
+#define NVMC_ERASEALL_ERASEALL              (0x1U<<0U)
+#define NVMC_ERASEALL_ERASEALL_NOOPERATION  (0x0U<<0U)
+#define NVMC_ERASEALL_ERASEALL_ERASE        (0x1U<<0U)
 
 // ERASEPAGEPARTIALCFG Configuration
 
-#define NVMC_ERASEPAGEPARTIALCFG_DURATION   (0x7FU<<0)
-#define NVMC_ERASEPAGEPARTIALCFG_DURATION_0 (0x1U<<0)
+#define NVMC_ERASEPAGEPARTIALCFG_DURATION   (0x7FU<<0U)
+#define NVMC_ERASEPAGEPARTIALCFG_DURATION_0 (0x1U<<0U)
 
 // ICACHECNF Configuration
 
-#define NVMC_ICACHECNF_CACHEPROFEN          (0x1U<<8)
-#define NVMC_ICACHECNF_CACHEEN              (0x1U<<0)
-#define NVMC_ICACHECNF_CACHEPROFEN_DISABLED (0x0U<<8)
-#define NVMC_ICACHECNF_CACHEPROFEN_ENABLED  (0x1U<<8)
-#define NVMC_ICACHECNF_CACHEEN_DISABLED     (0x0U<<0)
-#define NVMC_ICACHECNF_CACHEEN_ENABLED      (0x1U<<0)
+#define NVMC_ICACHECNF_CACHEPROFEN          (0x1U<<8U)
+#define NVMC_ICACHECNF_CACHEEN              (0x1U<<0U)
+#define NVMC_ICACHECNF_CACHEPROFEN_DISABLED (0x0U<<8U)
+#define NVMC_ICACHECNF_CACHEPROFEN_ENABLED  (0x1U<<8U)
+#define NVMC_ICACHECNF_CACHEEN_DISABLED     (0x0U<<0U)
+#define NVMC_ICACHECNF_CACHEEN_ENABLED      (0x1U<<0U)
 
 // IHIT Configuration
 
-#define NVMC_IHIT_HITS                      (0xFFFFFFFFU<<0)
-#define NVMC_IHIT_HITS_0                    (0x1U<<0)
+#define NVMC_IHIT_HITS                      (0xFFFFFFFFU<<0U)
+#define NVMC_IHIT_HITS_0                    (0x1U<<0U)
 
 // IMISS Configuration
 
-#define NVMC_IMISS_MISSES                   (0xFFFFFFFFU<<0)
-#define NVMC_IMISS_MISSES_0                 (0x1U<<0)
+#define NVMC_IMISS_MISSES                   (0xFFFFFFFFU<<0U)
+#define NVMC_IMISS_MISSES_0                 (0x1U<<0U)

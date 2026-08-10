@@ -72,267 +72,267 @@ typedef struct {
 
 // SSCR Configuration
 
-#define LTDC_SSCR_VSH           (0x7FFU<<0)
-#define LTDC_SSCR_VSH_0         (0x1U<<0)
-#define LTDC_SSCR_HSW           (0x3FFU<<16)
-#define LTDC_SSCR_HSW_0         (0x1U<<16)
+#define LTDC_SSCR_VSH           (0x7FFU<<0U)
+#define LTDC_SSCR_VSH_0         (0x1U<<0U)
+#define LTDC_SSCR_HSW           (0x3FFU<<16U)
+#define LTDC_SSCR_HSW_0         (0x1U<<16U)
 
 // BPCR Configuration
 
-#define LTDC_BPCR_AVBP          (0x7FFU<<0)
-#define LTDC_BPCR_AVBP_0        (0x1U<<0)
-#define LTDC_BPCR_AHBP          (0xFFFU<<16)
-#define LTDC_BPCR_AHBP_0        (0x1U<<16)
+#define LTDC_BPCR_AVBP          (0x7FFU<<0U)
+#define LTDC_BPCR_AVBP_0        (0x1U<<0U)
+#define LTDC_BPCR_AHBP          (0xFFFU<<16U)
+#define LTDC_BPCR_AHBP_0        (0x1U<<16U)
 
 // AWCR Configuration
 
-#define LTDC_AWCR_AAH           (0x7FFU<<0)
-#define LTDC_AWCR_AAH_0         (0x1U<<0)
-#define LTDC_AWCR_AAV           (0xFFFU<<16)
-#define LTDC_AWCR_AAV_0         (0x1U<<16)
+#define LTDC_AWCR_AAH           (0x7FFU<<0U)
+#define LTDC_AWCR_AAH_0         (0x1U<<0U)
+#define LTDC_AWCR_AAV           (0xFFFU<<16U)
+#define LTDC_AWCR_AAV_0         (0x1U<<16U)
 
 // TWCR Configuration
 
-#define LTDC_TWCR_TOTALH        (0x7FFU<<0)
-#define LTDC_TWCR_TOTALH_0      (0x1U<<0)
-#define LTDC_TWCR_TOTALW        (0xFFFU<<16)
-#define LTDC_TWCR_TOTALW_0      (0x1U<<16)
+#define LTDC_TWCR_TOTALH        (0x7FFU<<0U)
+#define LTDC_TWCR_TOTALH_0      (0x1U<<0U)
+#define LTDC_TWCR_TOTALW        (0xFFFU<<16U)
+#define LTDC_TWCR_TOTALW_0      (0x1U<<16U)
 
 // GCR Configuration
 
-#define LTDC_GCR_LTDCEN         (0x1U<<0)
-#define LTDC_GCR_DBW            (0x7U<<4)
-#define LTDC_GCR_DBW_0          (0x1U<<4)
-#define LTDC_GCR_DGW            (0x7U<<8)
-#define LTDC_GCR_DGW_0          (0x1U<<8)
-#define LTDC_GCR_DRW            (0x7U<<12)
-#define LTDC_GCR_DRW_0          (0x1U<<12)
-#define LTDC_GCR_DEN            (0x1U<<16)
-#define LTDC_GCR_PCPOL          (0x1U<<28)
-#define LTDC_GCR_DEPOL          (0x1U<<29)
-#define LTDC_GCR_VSPOL          (0x1U<<30)
-#define LTDC_GCR_HSPOL          (0x1U<<31)
+#define LTDC_GCR_LTDCEN         (0x1U<<0U)
+#define LTDC_GCR_DBW            (0x7U<<4U)
+#define LTDC_GCR_DBW_0          (0x1U<<4U)
+#define LTDC_GCR_DGW            (0x7U<<8U)
+#define LTDC_GCR_DGW_0          (0x1U<<8U)
+#define LTDC_GCR_DRW            (0x7U<<12U)
+#define LTDC_GCR_DRW_0          (0x1U<<12U)
+#define LTDC_GCR_DEN            (0x1U<<16U)
+#define LTDC_GCR_PCPOL          (0x1U<<28U)
+#define LTDC_GCR_DEPOL          (0x1U<<29U)
+#define LTDC_GCR_VSPOL          (0x1U<<30U)
+#define LTDC_GCR_HSPOL          (0x1U<<31U)
 
 // SRCR Configuration
 
-#define LTDC_SRCR_IMR           (0x1U<<0)
-#define LTDC_SRCR_VBR           (0x1U<<1)
+#define LTDC_SRCR_IMR           (0x1U<<0U)
+#define LTDC_SRCR_VBR           (0x1U<<1U)
 
 // BCCR Configuration
 
-#define LTDC_BCCR_BCRED         (0xFFU<<16)
-#define LTDC_BCCR_BCRED_0       (0x1U<<16)
-#define LTDC_BCCR_BCGREEN       (0xFFU<<8)
-#define LTDC_BCCR_BCGREEN_0     (0x1U<<8)
-#define LTDC_BCCR_BCBLUE        (0xFFU<<0)
-#define LTDC_BCCR_BCBLUE_0      (0x1U<<0)
+#define LTDC_BCCR_BCRED         (0xFFU<<16U)
+#define LTDC_BCCR_BCRED_0       (0x1U<<16U)
+#define LTDC_BCCR_BCGREEN       (0xFFU<<8U)
+#define LTDC_BCCR_BCGREEN_0     (0x1U<<8U)
+#define LTDC_BCCR_BCBLUE        (0xFFU<<0U)
+#define LTDC_BCCR_BCBLUE_0      (0x1U<<0U)
 
 // IER Configuration
 
-#define LTDC_IER_LIE            (0x1U<<0)
-#define LTDC_IER_FUIE           (0x1U<<1)
-#define LTDC_IER_TERRIE         (0x1U<<2)
-#define LTDC_IER_RRIE           (0x1U<<3)
+#define LTDC_IER_LIE            (0x1U<<0U)
+#define LTDC_IER_FUIE           (0x1U<<1U)
+#define LTDC_IER_TERRIE         (0x1U<<2U)
+#define LTDC_IER_RRIE           (0x1U<<3U)
 
 // ISR Configuration
 
-#define LTDC_ISR_LIF            (0x1U<<0)
-#define LTDC_ISR_FUIF           (0x1U<<1)
-#define LTDC_ISR_TERRIF         (0x1U<<2)
-#define LTDC_ISR_RRIF           (0x1U<<3)
+#define LTDC_ISR_LIF            (0x1U<<0U)
+#define LTDC_ISR_FUIF           (0x1U<<1U)
+#define LTDC_ISR_TERRIF         (0x1U<<2U)
+#define LTDC_ISR_RRIF           (0x1U<<3U)
 
 // ICR Configuration
 
-#define LTDC_ICR_CLIF           (0x1U<<0)
-#define LTDC_ICR_CFUIF          (0x1U<<1)
-#define LTDC_ICR_CTERRIF        (0x1U<<2)
-#define LTDC_ICR_CRRIF          (0x1U<<3)
+#define LTDC_ICR_CLIF           (0x1U<<0U)
+#define LTDC_ICR_CFUIF          (0x1U<<1U)
+#define LTDC_ICR_CTERRIF        (0x1U<<2U)
+#define LTDC_ICR_CRRIF          (0x1U<<3U)
 
 // LIPCR Configuration
 
-#define LTDC_LIPCR_LIPOS        (0x7FFU<<0)
-#define LTDC_LIPCR_LIPOS_0      (0x1U<<0)
+#define LTDC_LIPCR_LIPOS        (0x7FFU<<0U)
+#define LTDC_LIPCR_LIPOS_0      (0x1U<<0U)
 
 // CPSR Configuration
 
-#define LTDC_CPSR_CYPOS         (0xFFFFU<<0)
-#define LTDC_CPSR_CYPOS_0       (0x1U<<0)
-#define LTDC_CPSR_CXPOS         (0xFFFFU<<16)
-#define LTDC_CPSR_CXPOS_0       (0x1U<<16)
+#define LTDC_CPSR_CYPOS         (0xFFFFU<<0U)
+#define LTDC_CPSR_CYPOS_0       (0x1U<<0U)
+#define LTDC_CPSR_CXPOS         (0xFFFFU<<16U)
+#define LTDC_CPSR_CXPOS_0       (0x1U<<16U)
 
 // CDSR Configuration
 
-#define LTDC_CDSR_VDES          (0x1U<<0)
-#define LTDC_CDSR_HDES          (0x1U<<1)
-#define LTDC_CDSR_VSYNCS        (0x1U<<2)
-#define LTDC_CDSR_HSYNCS        (0x1U<<3)
+#define LTDC_CDSR_VDES          (0x1U<<0U)
+#define LTDC_CDSR_HDES          (0x1U<<1U)
+#define LTDC_CDSR_VSYNCS        (0x1U<<2U)
+#define LTDC_CDSR_HSYNCS        (0x1U<<3U)
 
 // L1CR Configuration
 
-#define LTDC_L1CR_LEN           (0x1U<<0)
-#define LTDC_L1CR_COLKEN        (0x1U<<1)
-#define LTDC_L1CR_CLUTEN        (0x1U<<4)
+#define LTDC_L1CR_LEN           (0x1U<<0U)
+#define LTDC_L1CR_COLKEN        (0x1U<<1U)
+#define LTDC_L1CR_CLUTEN        (0x1U<<4U)
 
 // L1WHPCR Configuration
 
-#define LTDC_L1WHPCR_WHSTPOS    (0xFFFU<<0)
-#define LTDC_L1WHPCR_WHSTPOS_0  (0x1U<<0)
-#define LTDC_L1WHPCR_WHSPPOS    (0xFFFU<<16)
-#define LTDC_L1WHPCR_WHSPPOS_0  (0x1U<<16)
+#define LTDC_L1WHPCR_WHSTPOS    (0xFFFU<<0U)
+#define LTDC_L1WHPCR_WHSTPOS_0  (0x1U<<0U)
+#define LTDC_L1WHPCR_WHSPPOS    (0xFFFU<<16U)
+#define LTDC_L1WHPCR_WHSPPOS_0  (0x1U<<16U)
 
 // L1WVPCR Configuration
 
-#define LTDC_L1WVPCR_WVSTPOS    (0x7FFU<<0)
-#define LTDC_L1WVPCR_WVSTPOS_0  (0x1U<<0)
-#define LTDC_L1WVPCR_WVSPPOS    (0x7FFU<<16)
-#define LTDC_L1WVPCR_WVSPPOS_0  (0x1U<<16)
+#define LTDC_L1WVPCR_WVSTPOS    (0x7FFU<<0U)
+#define LTDC_L1WVPCR_WVSTPOS_0  (0x1U<<0U)
+#define LTDC_L1WVPCR_WVSPPOS    (0x7FFU<<16U)
+#define LTDC_L1WVPCR_WVSPPOS_0  (0x1U<<16U)
 
 // L1CKCR Configuration
 
-#define LTDC_L1CKCR_CKBLUE      (0xFFU<<0)
-#define LTDC_L1CKCR_CKBLUE_0    (0x1U<<0)
-#define LTDC_L1CKCR_CKGREEN     (0xFFU<<8)
-#define LTDC_L1CKCR_CKGREEN_0   (0x1U<<8)
-#define LTDC_L1CKCR_CKRED       (0xFFU<<16)
-#define LTDC_L1CKCR_CKRED_0     (0x1U<<16)
+#define LTDC_L1CKCR_CKBLUE      (0xFFU<<0U)
+#define LTDC_L1CKCR_CKBLUE_0    (0x1U<<0U)
+#define LTDC_L1CKCR_CKGREEN     (0xFFU<<8U)
+#define LTDC_L1CKCR_CKGREEN_0   (0x1U<<8U)
+#define LTDC_L1CKCR_CKRED       (0xFFU<<16U)
+#define LTDC_L1CKCR_CKRED_0     (0x1U<<16U)
 
 // L1PFCR Configuration
 
-#define LTDC_L1PFCR_PF          (0x7U<<0)
-#define LTDC_L1PFCR_PF_0        (0x1U<<0)
+#define LTDC_L1PFCR_PF          (0x7U<<0U)
+#define LTDC_L1PFCR_PF_0        (0x1U<<0U)
 
 // L1CACR Configuration
 
-#define LTDC_L1CACR_CONSTA      (0xFFU<<0)
-#define LTDC_L1CACR_CONSTA_0    (0x1U<<0)
+#define LTDC_L1CACR_CONSTA      (0xFFU<<0U)
+#define LTDC_L1CACR_CONSTA_0    (0x1U<<0U)
 
 // L1DCCR Configuration
 
-#define LTDC_L1DCCR_DCBLUE      (0xFFU<<0)
-#define LTDC_L1DCCR_DCBLUE_0    (0x1U<<0)
-#define LTDC_L1DCCR_DCGREEN     (0xFFU<<8)
-#define LTDC_L1DCCR_DCGREEN_0   (0x1U<<8)
-#define LTDC_L1DCCR_DCRED       (0xFFU<<16)
-#define LTDC_L1DCCR_DCRED_0     (0x1U<<16)
-#define LTDC_L1DCCR_DCALPHA     (0xFFU<<24)
-#define LTDC_L1DCCR_DCALPHA_0   (0x1U<<24)
+#define LTDC_L1DCCR_DCBLUE      (0xFFU<<0U)
+#define LTDC_L1DCCR_DCBLUE_0    (0x1U<<0U)
+#define LTDC_L1DCCR_DCGREEN     (0xFFU<<8U)
+#define LTDC_L1DCCR_DCGREEN_0   (0x1U<<8U)
+#define LTDC_L1DCCR_DCRED       (0xFFU<<16U)
+#define LTDC_L1DCCR_DCRED_0     (0x1U<<16U)
+#define LTDC_L1DCCR_DCALPHA     (0xFFU<<24U)
+#define LTDC_L1DCCR_DCALPHA_0   (0x1U<<24U)
 
 // L1BFCR Configuration
 
-#define LTDC_L1BFCR_BF2         (0x7U<<0)
-#define LTDC_L1BFCR_BF2_0       (0x1U<<0)
-#define LTDC_L1BFCR_BF1         (0x7U<<8)
-#define LTDC_L1BFCR_BF1_0       (0x1U<<8)
+#define LTDC_L1BFCR_BF2         (0x7U<<0U)
+#define LTDC_L1BFCR_BF2_0       (0x1U<<0U)
+#define LTDC_L1BFCR_BF1         (0x7U<<8U)
+#define LTDC_L1BFCR_BF1_0       (0x1U<<8U)
 
 // L1CFBAR Configuration
 
-#define LTDC_L1CFBAR_CFBADD     (0xFFFFFFFFU<<0)
-#define LTDC_L1CFBAR_CFBADD_0   (0x1U<<0)
+#define LTDC_L1CFBAR_CFBADD     (0xFFFFFFFFU<<0U)
+#define LTDC_L1CFBAR_CFBADD_0   (0x1U<<0U)
 
 // L1CFBLR Configuration
 
-#define LTDC_L1CFBLR_CFBLL      (0x1FFFU<<0)
-#define LTDC_L1CFBLR_CFBLL_0    (0x1U<<0)
-#define LTDC_L1CFBLR_CFBP       (0x1FFFU<<16)
-#define LTDC_L1CFBLR_CFBP_0     (0x1U<<16)
+#define LTDC_L1CFBLR_CFBLL      (0x1FFFU<<0U)
+#define LTDC_L1CFBLR_CFBLL_0    (0x1U<<0U)
+#define LTDC_L1CFBLR_CFBP       (0x1FFFU<<16U)
+#define LTDC_L1CFBLR_CFBP_0     (0x1U<<16U)
 
 // L1CFBLNR Configuration
 
-#define LTDC_L1CFBLNR_CFBLNBR   (0x7FFU<<0)
-#define LTDC_L1CFBLNR_CFBLNBR_0 (0x1U<<0)
+#define LTDC_L1CFBLNR_CFBLNBR   (0x7FFU<<0U)
+#define LTDC_L1CFBLNR_CFBLNBR_0 (0x1U<<0U)
 
 // L1CLUTWR Configuration
 
-#define LTDC_L1CLUTWR_BLUE      (0xFFU<<0)
-#define LTDC_L1CLUTWR_BLUE_0    (0x1U<<0)
-#define LTDC_L1CLUTWR_GREEN     (0xFFU<<8)
-#define LTDC_L1CLUTWR_GREEN_0   (0x1U<<8)
-#define LTDC_L1CLUTWR_RED       (0xFFU<<16)
-#define LTDC_L1CLUTWR_RED_0     (0x1U<<16)
-#define LTDC_L1CLUTWR_CLUTADD   (0xFFU<<24)
-#define LTDC_L1CLUTWR_CLUTADD_0 (0x1U<<24)
+#define LTDC_L1CLUTWR_BLUE      (0xFFU<<0U)
+#define LTDC_L1CLUTWR_BLUE_0    (0x1U<<0U)
+#define LTDC_L1CLUTWR_GREEN     (0xFFU<<8U)
+#define LTDC_L1CLUTWR_GREEN_0   (0x1U<<8U)
+#define LTDC_L1CLUTWR_RED       (0xFFU<<16U)
+#define LTDC_L1CLUTWR_RED_0     (0x1U<<16U)
+#define LTDC_L1CLUTWR_CLUTADD   (0xFFU<<24U)
+#define LTDC_L1CLUTWR_CLUTADD_0 (0x1U<<24U)
 
 // L2CR Configuration
 
-#define LTDC_L2CR_LEN           (0x1U<<0)
-#define LTDC_L2CR_COLKEN        (0x1U<<1)
-#define LTDC_L2CR_CLUTEN        (0x1U<<4)
+#define LTDC_L2CR_LEN           (0x1U<<0U)
+#define LTDC_L2CR_COLKEN        (0x1U<<1U)
+#define LTDC_L2CR_CLUTEN        (0x1U<<4U)
 
 // L2WHPCR Configuration
 
-#define LTDC_L2WHPCR_WHSTPOS    (0xFFFU<<0)
-#define LTDC_L2WHPCR_WHSTPOS_0  (0x1U<<0)
-#define LTDC_L2WHPCR_WHSPPOS    (0xFFFU<<16)
-#define LTDC_L2WHPCR_WHSPPOS_0  (0x1U<<16)
+#define LTDC_L2WHPCR_WHSTPOS    (0xFFFU<<0U)
+#define LTDC_L2WHPCR_WHSTPOS_0  (0x1U<<0U)
+#define LTDC_L2WHPCR_WHSPPOS    (0xFFFU<<16U)
+#define LTDC_L2WHPCR_WHSPPOS_0  (0x1U<<16U)
 
 // L2WVPCR Configuration
 
-#define LTDC_L2WVPCR_WVSTPOS    (0x7FFU<<0)
-#define LTDC_L2WVPCR_WVSTPOS_0  (0x1U<<0)
-#define LTDC_L2WVPCR_WVSPPOS    (0x7FFU<<16)
-#define LTDC_L2WVPCR_WVSPPOS_0  (0x1U<<16)
+#define LTDC_L2WVPCR_WVSTPOS    (0x7FFU<<0U)
+#define LTDC_L2WVPCR_WVSTPOS_0  (0x1U<<0U)
+#define LTDC_L2WVPCR_WVSPPOS    (0x7FFU<<16U)
+#define LTDC_L2WVPCR_WVSPPOS_0  (0x1U<<16U)
 
 // L2CKCR Configuration
 
-#define LTDC_L2CKCR_CKBLUE      (0xFFU<<0)
-#define LTDC_L2CKCR_CKBLUE_0    (0x1U<<0)
-#define LTDC_L2CKCR_CKGREEN     (0xFFU<<8)
-#define LTDC_L2CKCR_CKGREEN_0   (0x1U<<8)
-#define LTDC_L2CKCR_CKRED       (0xFFU<<16)
-#define LTDC_L2CKCR_CKRED_0     (0x1U<<16)
+#define LTDC_L2CKCR_CKBLUE      (0xFFU<<0U)
+#define LTDC_L2CKCR_CKBLUE_0    (0x1U<<0U)
+#define LTDC_L2CKCR_CKGREEN     (0xFFU<<8U)
+#define LTDC_L2CKCR_CKGREEN_0   (0x1U<<8U)
+#define LTDC_L2CKCR_CKRED       (0xFFU<<16U)
+#define LTDC_L2CKCR_CKRED_0     (0x1U<<16U)
 
 // L2PFCR Configuration
 
-#define LTDC_L2PFCR_PF          (0x7U<<0)
-#define LTDC_L2PFCR_PF_0        (0x1U<<0)
+#define LTDC_L2PFCR_PF          (0x7U<<0U)
+#define LTDC_L2PFCR_PF_0        (0x1U<<0U)
 
 // L2CACR Configuration
 
-#define LTDC_L2CACR_CONSTA      (0xFFU<<0)
-#define LTDC_L2CACR_CONSTA_0    (0x1U<<0)
+#define LTDC_L2CACR_CONSTA      (0xFFU<<0U)
+#define LTDC_L2CACR_CONSTA_0    (0x1U<<0U)
 
 // L2DCCR Configuration
 
-#define LTDC_L2DCCR_DCBLUE      (0xFFU<<0)
-#define LTDC_L2DCCR_DCBLUE_0    (0x1U<<0)
-#define LTDC_L2DCCR_DCGREEN     (0xFFU<<8)
-#define LTDC_L2DCCR_DCGREEN_0   (0x1U<<8)
-#define LTDC_L2DCCR_DCRED       (0xFFU<<16)
-#define LTDC_L2DCCR_DCRED_0     (0x1U<<16)
-#define LTDC_L2DCCR_DCALPHA     (0xFFU<<24)
-#define LTDC_L2DCCR_DCALPHA_0   (0x1U<<24)
+#define LTDC_L2DCCR_DCBLUE      (0xFFU<<0U)
+#define LTDC_L2DCCR_DCBLUE_0    (0x1U<<0U)
+#define LTDC_L2DCCR_DCGREEN     (0xFFU<<8U)
+#define LTDC_L2DCCR_DCGREEN_0   (0x1U<<8U)
+#define LTDC_L2DCCR_DCRED       (0xFFU<<16U)
+#define LTDC_L2DCCR_DCRED_0     (0x1U<<16U)
+#define LTDC_L2DCCR_DCALPHA     (0xFFU<<24U)
+#define LTDC_L2DCCR_DCALPHA_0   (0x1U<<24U)
 
 // L2BFCR Configuration
 
-#define LTDC_L2BFCR_BF2         (0x7U<<0)
-#define LTDC_L2BFCR_BF2_0       (0x1U<<0)
-#define LTDC_L2BFCR_BF1         (0x7U<<8)
-#define LTDC_L2BFCR_BF1_0       (0x1U<<8)
+#define LTDC_L2BFCR_BF2         (0x7U<<0U)
+#define LTDC_L2BFCR_BF2_0       (0x1U<<0U)
+#define LTDC_L2BFCR_BF1         (0x7U<<8U)
+#define LTDC_L2BFCR_BF1_0       (0x1U<<8U)
 
 // L2CFBAR Configuration
 
-#define LTDC_L2CFBAR_CFBADD     (0xFFFFFFFFU<<0)
-#define LTDC_L2CFBAR_CFBADD_0   (0x1U<<0)
+#define LTDC_L2CFBAR_CFBADD     (0xFFFFFFFFU<<0U)
+#define LTDC_L2CFBAR_CFBADD_0   (0x1U<<0U)
 
 // L2CFBLR Configuration
 
-#define LTDC_L2CFBLR_CFBLL      (0x1FFFU<<0)
-#define LTDC_L2CFBLR_CFBLL_0    (0x1U<<0)
-#define LTDC_L2CFBLR_CFBP       (0x1FFFU<<16)
-#define LTDC_L2CFBLR_CFBP_0     (0x1U<<16)
+#define LTDC_L2CFBLR_CFBLL      (0x1FFFU<<0U)
+#define LTDC_L2CFBLR_CFBLL_0    (0x1U<<0U)
+#define LTDC_L2CFBLR_CFBP       (0x1FFFU<<16U)
+#define LTDC_L2CFBLR_CFBP_0     (0x1U<<16U)
 
 // L2CFBLNR Configuration
 
-#define LTDC_L2CFBLNR_CFBLNBR   (0x7FFU<<0)
-#define LTDC_L2CFBLNR_CFBLNBR_0 (0x1U<<0)
+#define LTDC_L2CFBLNR_CFBLNBR   (0x7FFU<<0U)
+#define LTDC_L2CFBLNR_CFBLNBR_0 (0x1U<<0U)
 
 // L2CLUTWR Configuration
 
-#define LTDC_L2CLUTWR_BLUE      (0xFFU<<0)
-#define LTDC_L2CLUTWR_BLUE_0    (0x1U<<0)
-#define LTDC_L2CLUTWR_GREEN     (0xFFU<<8)
-#define LTDC_L2CLUTWR_GREEN_0   (0x1U<<8)
-#define LTDC_L2CLUTWR_RED       (0xFFU<<16)
-#define LTDC_L2CLUTWR_RED_0     (0x1U<<16)
-#define LTDC_L2CLUTWR_CLUTADD   (0xFFU<<24)
-#define LTDC_L2CLUTWR_CLUTADD_0 (0x1U<<24)
+#define LTDC_L2CLUTWR_BLUE      (0xFFU<<0U)
+#define LTDC_L2CLUTWR_BLUE_0    (0x1U<<0U)
+#define LTDC_L2CLUTWR_GREEN     (0xFFU<<8U)
+#define LTDC_L2CLUTWR_GREEN_0   (0x1U<<8U)
+#define LTDC_L2CLUTWR_RED       (0xFFU<<16U)
+#define LTDC_L2CLUTWR_RED_0     (0x1U<<16U)
+#define LTDC_L2CLUTWR_CLUTADD   (0xFFU<<24U)
+#define LTDC_L2CLUTWR_CLUTADD_0 (0x1U<<24U)

@@ -30,43 +30,43 @@ typedef struct {
 
 // TYPER Configuration
 
-#define MPU_TYPER_IREGION   (0xFFU<<16)
-#define MPU_TYPER_IREGION_0 (0x1U<<16)
-#define MPU_TYPER_DREGION   (0xFFU<<8)
-#define MPU_TYPER_DREGION_0 (0x1U<<8)
-#define MPU_TYPER_SEPARATE  (0x1U<<0)
+#define MPU_TYPER_IREGION   (0xFFU<<16U)
+#define MPU_TYPER_IREGION_0 (0x1U<<16U)
+#define MPU_TYPER_DREGION   (0xFFU<<8U)
+#define MPU_TYPER_DREGION_0 (0x1U<<8U)
+#define MPU_TYPER_SEPARATE  (0x1U<<0U)
 
 // CTRL Configuration
 
-#define MPU_CTRL_PRIVDEFENA (0x1U<<2)
-#define MPU_CTRL_HFNMIENA   (0x1U<<1)
-#define MPU_CTRL_ENABLE     (0x1U<<0)
+#define MPU_CTRL_PRIVDEFENA (0x1U<<2U)
+#define MPU_CTRL_HFNMIENA   (0x1U<<1U)
+#define MPU_CTRL_ENABLE     (0x1U<<0U)
 
 // RNR Configuration
 
-#define MPU_RNR_REGION      (0xFFU<<0)
-#define MPU_RNR_REGION_0    (0x1U<<0)
+#define MPU_RNR_REGION      (0xFFU<<0U)
+#define MPU_RNR_REGION_0    (0x1U<<0U)
 
 // RBAR Configuration
 
-#define MPU_RBAR_ADDR       (0x7FFFFFFU<<5)
-#define MPU_RBAR_ADDR_0     (0x1U<<5)
-#define MPU_RBAR_VALID      (0x1U<<4)
-#define MPU_RBAR_REGION     (0xFU<<0)
-#define MPU_RBAR_REGION_0   (0x1U<<0)
+#define MPU_RBAR_ADDR       (0x7FFFFFFU<<5U)
+#define MPU_RBAR_ADDR_0     (0x1U<<5U)
+#define MPU_RBAR_VALID      (0x1U<<4U)
+#define MPU_RBAR_REGION     (0xFU<<0U)
+#define MPU_RBAR_REGION_0   (0x1U<<0U)
 
 // RASR Configuration
 
-#define MPU_RASR_XN         (0x1U<<28)
-#define MPU_RASR_AP         (0x7U<<24)
-#define MPU_RASR_AP_0       (0x1U<<24)
-#define MPU_RASR_TEX        (0x7U<<19)
-#define MPU_RASR_TEX_0      (0x1U<<19)
-#define MPU_RASR_S          (0x1U<<18)
-#define MPU_RASR_C          (0x1U<<17)
-#define MPU_RASR_B          (0x1U<<16)
-#define MPU_RASR_SRD        (0xFFU<<8)
-#define MPU_RASR_SRD_0      (0x1U<<8)
-#define MPU_RASR_SIZE       (0x1FU<<1)
-#define MPU_RASR_SIZE_0     (0x1U<<1)
-#define MPU_RASR_ENABLE     (0x1U<<0)
+#define MPU_RASR_XN         (0x1U<<28U)
+#define MPU_RASR_AP         (0x7U<<24U)
+#define MPU_RASR_AP_0       (0x1U<<24U)
+#define MPU_RASR_TEX        (0x7U<<19U)
+#define MPU_RASR_TEX_0      (0x1U<<19U)
+#define MPU_RASR_S          (0x1U<<18U)
+#define MPU_RASR_C          (0x1U<<17U)
+#define MPU_RASR_B          (0x1U<<16U)
+#define MPU_RASR_SRD        (0xFFU<<8U)
+#define MPU_RASR_SRD_0      (0x1U<<8U)
+#define MPU_RASR_SIZE       (0x1FU<<1U)
+#define MPU_RASR_SIZE_0     (0x1U<<1U)
+#define MPU_RASR_ENABLE     (0x1U<<0U)

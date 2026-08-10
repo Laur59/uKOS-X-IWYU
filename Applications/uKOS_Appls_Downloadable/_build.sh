@@ -7,7 +7,7 @@
 #
 # Usage:
 #    cd cloned_directory/Applications/uKOS_Appls_Downloadable
-#    ./_build.sh [-L] [-U] [-Y] [-v|-w]
+#    ./_build.sh [-G] [-P|-L] [-U] [-Y] [-v|-w]
 
 emulate -L zsh
 setopt ERR_EXIT NO_UNSET PIPE_FAIL EXTENDED_GLOB
@@ -46,12 +46,31 @@ readonly NC=$'\033[0m' # No Color
 
 # Defaults
 
-CMAKE_CANARY_MODE=''
-CMAKE_USER_MODE=''
 COMPILER_TOOL='LLVM clang'
-TOOLCHAIN_VAR=''
 VERBOSITY=''
+CANARY_MODE="ON"
+USER_MODE="ON"
 C_LIB="newlib"
+
+# Cleanup trap (runs on Ctrl-C)
+cleanup() {
+    printf "\n%bBuild interrupted by user%b\n" "${YELLOW}" "${NC}" >&2
+
+    # If -w was passed, keep BUILD_DIR for inspection
+    if [ "${VERBOSITY}" = "-w" ]; then
+        printf "%bBuild artifacts preserved in: %s%b\n" "${YELLOW}" "${BUILD_DIR:-<none>}" "${NC}" >&2
+    else
+        # Clean up BUILD_DIR if not keeping logs
+        if [ -n "${BUILD_DIR:-}" ] && [ -d "${BUILD_DIR}" ]; then
+            rm -rf "${BUILD_DIR}" 2>/dev/null || true
+            printf "%bBuild directory cleaned up%b\n" "${YELLOW}" "${NC}" >&2
+        fi
+    fi
+
+    exit 130
+}
+
+trap cleanup INT TERM
 
 usage() {
     cat <<'EOF'
@@ -100,30 +119,16 @@ if (( $#clib_flag > 1 )); then
 fi
 
 # llvmlibc is a Clang/LLVM-only C library (Arm Toolchain for Embedded), so
-# -M cannot be combined with -G (gcc). Checked before -M rewrites COMPILER_TOOL.
+# -L cannot be combined with -G (gcc). Checked before -L rewrites COMPILER_TOOL.
 if (( $#o_gcc )) && [[ ${clib_flag[1]:-} == -L ]]; then
-    printf "%bError:%b -M (llvmlibc) cannot be combined with -G (gcc); llvmlibc requires clang.\n" "${RED}" "${NC}" >&2
+    printf "%bError:%b -L (llvmlibc) cannot be combined with -G (gcc); llvmlibc requires clang.\n" "${RED}" "${NC}" >&2
     exit 1
 fi
 
 # Apply the parsed options
-if (( $#o_gcc )); then
-    COMPILER_TOOL="gcc"
-    TOOLCHAIN_VAR="-DUSE_LLVM=OFF"
-else
-    COMPILER_TOOL="LLVM clang"
-    TOOLCHAIN_VAR="-DUSE_LLVM=ON"
-fi
-if (( $#o_user )); then
-    CMAKE_USER_MODE="-DUSER_MODE=OFF"
-else
-    CMAKE_USER_MODE="-DUSER_MODE=ON"
-fi
-if (( $#o_canary )); then
-    CMAKE_CANARY_MODE="-DCANARY=OFF"
-else
-    CMAKE_CANARY_MODE="-DCANARY=ON"
-fi
+(( $#o_gcc ))    && COMPILER_TOOL="gcc"
+(( $#o_user ))   && USER_MODE="OFF"
+(( $#o_canary )) && CANARY_MODE="OFF"
 
 # -v (verbose) takes precedence over -w (write log)
 if (( $#o_verbose )); then
@@ -134,15 +139,38 @@ fi
 
 case ${clib_flag[1]:-} in
     -P) C_LIB="picolibc" ;;
-    -L) C_LIB="llvmlibc"; COMPILER_TOOL="LLVM clang"; TOOLCHAIN_VAR="" ;;
+    -L) C_LIB="llvmlibc"; COMPILER_TOOL="LLVM clang" ;;
     '') ;;                             # keep default (newlib)
 esac
+
+get_cmake_preset() {
+    local compiler="$1"
+    local user_mode="$2"
+    local canary_mode="$3"
+    local preset="${compiler}"
+
+    if [ "$user_mode" = "OFF" ]; then
+        preset="${preset}-nouser"
+        if [ "$canary_mode" = "OFF" ]; then
+            preset="${preset}-nocanary"
+        fi
+    else
+        # user_mode = ON
+        if [ "$canary_mode" = "OFF" ]; then
+            preset="${preset}-nocanary"
+        fi
+        # When user_mode=ON and canary_mode=ON, preset stays as just "${compiler}"
+    fi
+
+    echo "$preset"
+}
 
 case ${COMPILER_TOOL} in
     "gcc")
         gcc_arm_version=$(${PATH_GCC_ARM}/bin/arm-none-eabi-gcc --version | awk 'NR==1{print $3; exit}')
         gcc_rvxx_version=$(${PATH_GCC_RVXX}/bin/riscv64-unknown-elf-gcc --version | awk 'NR==1{print $3; exit}')
         COMPILER_VERSIONS="arm:${gcc_arm_version} - riscv:${gcc_rvxx_version}"
+        CMAKE_PRESET=$(get_cmake_preset "gcc" "${USER_MODE}" "${CANARY_MODE}")
         ;;
     "LLVM clang")
         # llvmlibc uses a dedicated ARM toolchain (PATH_LLVM_ARML) and is ARM-only
@@ -154,11 +182,37 @@ case ${COMPILER_TOOL} in
             llvm_rvxx_version=$(${PATH_LLVM_RVXX:-}/bin/clang --version | awk 'NR==1{for(i=1;i<=NF;i++)if($i=="version"){print $(i+1); exit}}')
             COMPILER_VERSIONS="arm:${llvm_arm_version} - riscv:${llvm_rvxx_version}"
         fi
+        CMAKE_PRESET=$(get_cmake_preset "llvm" "${USER_MODE}" "${CANARY_MODE}")
         ;;
 esac
 
 cmake_version=$(cmake --version | awk 'NR==1{print $3; exit}')
 printf '%bUsing cmake (%s) and %s (%s)%b\n' "${YELLOW}" "${cmake_version}" "${COMPILER_TOOL}" "${COMPILER_VERSIONS}" "${NC}"
+
+# Ninja re-emits the stdout *and* the stderr of every subprocess on its own
+# stdout, so the build log has to capture both streams. Drop the lines that are
+# normal progress or normal reporting; whatever survives is a real diagnostic.
+#
+# This is an allow-list of benign patterns rather than "delete everything from
+# the memory table onwards", because the strip step of the POST_BUILD chain runs
+# between the memory table and the size table and can emit a genuine warning
+# there (f_Signals/basic/Nucleo_F207 does).
+filter_log() {
+    local log_file="$1"
+
+    [[ -f "${log_file}" ]] || return 0
+    grep -Ev \
+        -e '^\[' \
+        -e '^Memory region' \
+        -e '^[[:space:]]+[A-Za-z_][A-Za-z0-9_]*:[[:space:]]+[0-9]' \
+        -e '^stripped.*:[[:space:]]*$' \
+        -e '^section[[:space:]]+size' \
+        -e '^\.[A-Za-z0-9_.]+[[:space:]]+[0-9]' \
+        -e '^Total[[:space:]]+[0-9]' \
+        -e '^[[:space:]]*$' \
+        "${log_file}" > "${log_file}.filtered" 2>/dev/null || true
+    mv "${log_file}.filtered" "${log_file}"
+}
 
 process_option() {
     local log_file="$1"
@@ -198,22 +252,25 @@ build_warning=""
 build_success=""
 readonly LOG_FILE="build/compilation.log"
 
-printf '%bBuilding all the downloadable applications with:\n' "${YELLOW}"
-printf '   %bcmake -S . -B build %s %s %s -DC_LIBRARY=%s%b\n' "${BOLD}" "${TOOLCHAIN_VAR}" "${CMAKE_USER_MODE}" "${CMAKE_CANARY_MODE}" "${C_LIB}" "${NC}"
+printf "%bBuilding all the downloadable applications for (USER_MODE=%s CANARY=%s) with:\n   %bcmake --preset %s -DC_LIBRARY=%s%b\n" "${YELLOW}" "${USER_MODE}" "${CANARY_MODE}" "${BOLD}" "${CMAKE_PRESET}" "${C_LIB}" "${NC}"
 # Parse YAML and iterate through all build targets
 while IFS= read -r CURRENT_TARGET; do
     printf "%-40s " "${CURRENT_TARGET}"
     cd "${PATH_PRG}/${CURRENT_TARGET}"
+    BUILD_DIR="${PWD}/build"
     rm -fr build >/dev/null
 
-    # Normal output on the stdout, error/warnings on comp.log
+    # Build output (both streams) on comp.log, then filtered
     # If comp.log empty     -> "PASS"
     # If comp.log not empty -> "WARNING"
-    # If make error         -> "FAIL"
+    # If build error        -> "FAIL"
 
     was_error=0
-    cmake -S . -B build ${TOOLCHAIN_VAR} ${CMAKE_CANARY_MODE} ${CMAKE_USER_MODE} -DC_LIBRARY=${C_LIB} >/dev/null && \
-    cmake --build build >/dev/null 2>"${LOG_FILE}" || was_error=1
+    cmake --preset "${CMAKE_PRESET}" -DC_LIBRARY=${C_LIB} &>/dev/null && \
+    cmake --build build --parallel >"${LOG_FILE}" 2>&1 || was_error=1
+
+    filter_log "${LOG_FILE}"
+
     if (( was_error == 0 )); then
         if [[ ! -s "${LOG_FILE}" ]]; then
             build_success+=$'\n'"${CURRENT_TARGET}"

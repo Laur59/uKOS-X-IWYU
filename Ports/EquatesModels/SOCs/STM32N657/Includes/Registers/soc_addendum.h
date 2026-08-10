@@ -14,49 +14,49 @@
 
 // CCMR1 Configuration
 
-#define TIM1_CCMR1_OC2M_3           (0x1U<<24)
-#define TIM1_CCMR1_OC1M_3           (0x1U<<16)
-#define TIM1_CCMR1_OC2CE            (0x1U<<15)
-#define TIM1_CCMR1_OC2M             (0x7U<<12)
-#define TIM1_CCMR1_OC2M_0           (0x1U<<12)
-#define TIM1_CCMR1_OC2PE            (0x1U<<11)
-#define TIM1_CCMR1_OC2FE            (0x1U<<10)
-#define TIM1_CCMR1_OC1CE            (0x1U<<7)
-#define TIM1_CCMR1_OC1M             (0x7U<<4)
-#define TIM1_CCMR1_OC1M_0           (0x1U<<4)
-#define TIM1_CCMR1_OC1PE            (0x1U<<3)
-#define TIM1_CCMR1_OC1FE            (0x1U<<2)
+#define TIM1_CCMR1_OC2M_3           (0x1U<<24U)
+#define TIM1_CCMR1_OC1M_3           (0x1U<<16U)
+#define TIM1_CCMR1_OC2CE            (0x1U<<15U)
+#define TIM1_CCMR1_OC2M             (0x7U<<12U)
+#define TIM1_CCMR1_OC2M_0           (0x1U<<12U)
+#define TIM1_CCMR1_OC2PE            (0x1U<<11U)
+#define TIM1_CCMR1_OC2FE            (0x1U<<10U)
+#define TIM1_CCMR1_OC1CE            (0x1U<<7U)
+#define TIM1_CCMR1_OC1M             (0x7U<<4U)
+#define TIM1_CCMR1_OC1M_0           (0x1U<<4U)
+#define TIM1_CCMR1_OC1PE            (0x1U<<3U)
+#define TIM1_CCMR1_OC1FE            (0x1U<<2U)
 
 // CCMR2 Configuration
 
-#define TIM1_CCMR2_OC4M_4           (0x1U<<24)
-#define TIM1_CCMR2_OC3M_3           (0x1U<<16)
-#define TIM1_CCMR2_OC4CE            (0x1U<<15)
-#define TIM1_CCMR2_OC4M             (0x7U<<12)
-#define TIM1_CCMR2_OC4M_0           (0x1U<<12)
-#define TIM1_CCMR2_OC4PE            (0x1U<<11)
-#define TIM1_CCMR2_OC4FE            (0x1U<<10)
-#define TIM1_CCMR2_OC3CE            (0x1U<<7)
-#define TIM1_CCMR2_OC3M             (0x7U<<4)
-#define TIM1_CCMR2_OC3M_0           (0x1U<<4)
-#define TIM1_CCMR2_OC3PE            (0x1U<<3)
-#define TIM1_CCMR2_OC3FE            (0x1U<<2)
+#define TIM1_CCMR2_OC4M_4           (0x1U<<24U)
+#define TIM1_CCMR2_OC3M_3           (0x1U<<16U)
+#define TIM1_CCMR2_OC4CE            (0x1U<<15U)
+#define TIM1_CCMR2_OC4M             (0x7U<<12U)
+#define TIM1_CCMR2_OC4M_0           (0x1U<<12U)
+#define TIM1_CCMR2_OC4PE            (0x1U<<11U)
+#define TIM1_CCMR2_OC4FE            (0x1U<<10U)
+#define TIM1_CCMR2_OC3CE            (0x1U<<7U)
+#define TIM1_CCMR2_OC3M             (0x7U<<4U)
+#define TIM1_CCMR2_OC3M_0           (0x1U<<4U)
+#define TIM1_CCMR2_OC3PE            (0x1U<<3U)
+#define TIM1_CCMR2_OC3FE            (0x1U<<2U)
 
 // tim15 additional definitions
 // ----------------------------
 
 // CCMR1 Configuration
 
-#define TIM15_CCMR1_OC2M_3          (0x1U<<24)
-#define TIM15_CCMR1_OC1M_3          (0x1U<<16)
-#define TIM15_CCMR1_OC2M            (0x7U<<12)
-#define TIM15_CCMR1_OC2M_0          (0x1U<<12)
-#define TIM15_CCMR1_OC2PE           (0x1U<<11)
-#define TIM15_CCMR1_OC2FE           (0x1U<<10)
-#define TIM15_CCMR1_OC1M            (0x7U<<4)
-#define TIM15_CCMR1_OC1M_0          (0x1U<<4)
-#define TIM15_CCMR1_OC1PE           (0x1U<<3)
-#define TIM15_CCMR1_OC1FE           (0x1U<<2)
+#define TIM15_CCMR1_OC2M_3          (0x1U<<24U)
+#define TIM15_CCMR1_OC1M_3          (0x1U<<16U)
+#define TIM15_CCMR1_OC2M            (0x7U<<12U)
+#define TIM15_CCMR1_OC2M_0          (0x1U<<12U)
+#define TIM15_CCMR1_OC2PE           (0x1U<<11U)
+#define TIM15_CCMR1_OC2FE           (0x1U<<10U)
+#define TIM15_CCMR1_OC1M            (0x7U<<4U)
+#define TIM15_CCMR1_OC1M_0          (0x1U<<4U)
+#define TIM15_CCMR1_OC1PE           (0x1U<<3U)
+#define TIM15_CCMR1_OC1FE           (0x1U<<2U)
 
 // iwdg additional definitions
 // ---------------------------
@@ -179,30 +179,30 @@ typedef struct {
                 d15, d14, d13, d12, d11, d10, d9, d8, d7, d6, d5, d4, d3, d2, d1, d0, \
                 e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0, \
                 f15, f14, f13, f12, f11, f10, f9, f8, f7, f6, f5, f4, f3, f2, f1, f0) \
-                GPIO##port##_S->AFRH =      (d15<<28) | (d14<<24) | (d13<<20) | (d12<<16) | \
-                                            (d11<<12) | (d10<<8)  | (d9<<4)   | (d8<<0);    \
-                GPIO##port##_S->AFRL =      (d7<<28)  | (d6<<24)  | (d5<<20)  | (d4<<16)  | \
-                                            (d3<<12)  | (d2<<8)   | (d1<<4)   | (d0<<0);    \
-                GPIO##port##_S->OSPEEDR =   (b15<<30) | (b14<<28) | (b13<<26) | (b12<<24) | \
-                                            (b11<<22) | (b10<<20) | (b9<<18)  | (b8<<16)  | \
-                                            (b7<<14)  | (b6<<12)  | (b5<<10)  | (b4<<8)   | \
-                                            (b3<<6)   | (b2<<4)   | (b1<<2)   | (b0<<0);    \
-                GPIO##port##_S->OTYPER =    (e15<<15) | (e14<<14) | (e13<<13) | (e12<<12) | \
-                                            (e11<<11) | (e10<<10) | (e9<<9)   | (e8<<8)   | \
-                                            (e7<<7)   | (e6<<6)   | (e5<<5)   | (e4<<4)   | \
-                                            (e3<<3)   | (e2<<2)   | (e1<<1)   | (e0<<0);    \
-                GPIO##port##_S->MODER =     (a15<<30) | (a14<<28) | (a13<<26) | (a12<<24) | \
-                                            (a11<<22) | (a10<<20) | (a9<<18)  | (a8<<16)  | \
-                                            (a7<<14)  | (a6<<12)  | (a5<<10)  | (a4<<8)   | \
-                                            (a3<<6)   | (a2<<4)   | (a1<<2)   | (a0<<0);    \
-                GPIO##port##_S->PUPDR =     (c15<<30) | (c14<<28) | (c13<<26) | (c12<<24) | \
-                                            (c11<<22) | (c10<<20) | (c9<<18)  | (c8<<16)  | \
-                                            (c7<<14)  | (c6<<12)  | (c5<<10)  | (c4<<8)   | \
-                                            (c3<<6)   | (c2<<4)   | (c1<<2)   | (c0<<0);    \
-                GPIO##port##_S->ODR |=      (f15<<15) | (f14<<14) | (f13<<13) | (f12<<12) | \
-                                            (f11<<11) | (f10<<10) | (f9<<9)   | (f8<<8)   | \
-                                            (f7<<7)   | (f6<<6)   | (f5<<5)   | (f4<<4)   | \
-                                            (f3<<3)   | (f2<<2)   | (f1<<1)   | (f0<<0);
+                GPIO##port##_S->AFRH =      (d15<<28U) | (d14<<24U) | (d13<<20U) | (d12<<16U) | \
+                                            (d11<<12U) | (d10<<8U)  | (d9<<4U)   | (d8<<0U);    \
+                GPIO##port##_S->AFRL =      (d7<<28U)  | (d6<<24U)  | (d5<<20U)  | (d4<<16U)  | \
+                                            (d3<<12U)  | (d2<<8U)   | (d1<<4U)   | (d0<<0U);    \
+                GPIO##port##_S->OSPEEDR =   (b15<<30U) | (b14<<28U) | (b13<<26U) | (b12<<24U) | \
+                                            (b11<<22U) | (b10<<20U) | (b9<<18U)  | (b8<<16U)  | \
+                                            (b7<<14U)  | (b6<<12U)  | (b5<<10U)  | (b4<<8U)   | \
+                                            (b3<<6U)   | (b2<<4U)   | (b1<<2U)   | (b0<<0U);    \
+                GPIO##port##_S->OTYPER =    (e15<<15U) | (e14<<14U) | (e13<<13U) | (e12<<12U) | \
+                                            (e11<<11U) | (e10<<10U) | (e9<<9U)   | (e8<<8U)   | \
+                                            (e7<<7U)   | (e6<<6U)   | (e5<<5U)   | (e4<<4U)   | \
+                                            (e3<<3U)   | (e2<<2U)   | (e1<<1U)   | (e0<<0U);    \
+                GPIO##port##_S->MODER =     (a15<<30U) | (a14<<28U) | (a13<<26U) | (a12<<24U) | \
+                                            (a11<<22U) | (a10<<20U) | (a9<<18U)  | (a8<<16U)  | \
+                                            (a7<<14U)  | (a6<<12U)  | (a5<<10U)  | (a4<<8U)   | \
+                                            (a3<<6U)   | (a2<<4U)   | (a1<<2U)   | (a0<<0U);    \
+                GPIO##port##_S->PUPDR =     (c15<<30U) | (c14<<28U) | (c13<<26U) | (c12<<24U) | \
+                                            (c11<<22U) | (c10<<20U) | (c9<<18U)  | (c8<<16U)  | \
+                                            (c7<<14U)  | (c6<<12U)  | (c5<<10U)  | (c4<<8U)   | \
+                                            (c3<<6U)   | (c2<<4U)   | (c1<<2U)   | (c0<<0U);    \
+                GPIO##port##_S->ODR |=      (f15<<15U) | (f14<<14U) | (f13<<13U) | (f12<<12U) | \
+                                            (f11<<11U) | (f10<<10U) | (f9<<9U)   | (f8<<8U)   | \
+                                            (f7<<7U)   | (f6<<6U)   | (f5<<5U)   | (f4<<4U)   | \
+                                            (f3<<3U)   | (f2<<2U)   | (f1<<1U)   | (f0<<0U);
 
 #else
 #define CNFGPIO(port, \
@@ -212,30 +212,30 @@ typedef struct {
                 d15, d14, d13, d12, d11, d10, d9, d8, d7, d6, d5, d4, d3, d2, d1, d0, \
                 e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0, \
                 f15, f14, f13, f12, f11, f10, f9, f8, f7, f6, f5, f4, f3, f2, f1, f0) \
-                GPIO##port##_NS->AFRH =     (d15<<28) | (d14<<24) | (d13<<20) | (d12<<16) | \
-                                            (d11<<12) | (d10<<8)  | (d9<<4)   | (d8<<0);    \
-                GPIO##port##_NS->AFRL =     (d7<<28)  | (d6<<24)  | (d5<<20)  | (d4<<16)  | \
-                                            (d3<<12)  | (d2<<8)   | (d1<<4)   | (d0<<0);    \
-                GPIO##port##_NS->OSPEEDR =  (b15<<30) | (b14<<28) | (b13<<26) | (b12<<24) | \
-                                            (b11<<22) | (b10<<20) | (b9<<18)  | (b8<<16)  | \
-                                            (b7<<14)  | (b6<<12)  | (b5<<10)  | (b4<<8)   | \
-                                            (b3<<6)   | (b2<<4)   | (b1<<2)   | (b0<<0);    \
-                GPIO##port##_NS->OTYPER =   (e15<<15) | (e14<<14) | (e13<<13) | (e12<<12) | \
-                                            (e11<<11) | (e10<<10) | (e9<<9)   | (e8<<8)   | \
-                                            (e7<<7)   | (e6<<6)   | (e5<<5)   | (e4<<4)   | \
-                                            (e3<<3)   | (e2<<2)   | (e1<<1)   | (e0<<0);    \
-                GPIO##port##_NS->MODER =    (a15<<30) | (a14<<28) | (a13<<26) | (a12<<24) | \
-                                            (a11<<22) | (a10<<20) | (a9<<18)  | (a8<<16)  | \
-                                            (a7<<14)  | (a6<<12)  | (a5<<10)  | (a4<<8)   | \
-                                            (a3<<6)   | (a2<<4)   | (a1<<2)   | (a0<<0);    \
-                GPIO##port##_NS->PUPDR =    (c15<<30) | (c14<<28) | (c13<<26) | (c12<<24) | \
-                                            (c11<<22) | (c10<<20) | (c9<<18)  | (c8<<16)  | \
-                                            (c7<<14)  | (c6<<12)  | (c5<<10)  | (c4<<8)   | \
-                                            (c3<<6)   | (c2<<4)   | (c1<<2)   | (c0<<0);    \
-                GPIO##port##_NS->ODR |=     (f15<<15) | (f14<<14) | (f13<<13) | (f12<<12) | \
-                                            (f11<<11) | (f10<<10) | (f9<<9)   | (f8<<8)   | \
-                                            (f7<<7)   | (f6<<6)   | (f5<<5)   | (f4<<4)   | \
-                                            (f3<<3)   | (f2<<2)   | (f1<<1)   | (f0<<0);
+                GPIO##port##_NS->AFRH =     (d15<<28U) | (d14<<24U) | (d13<<20U) | (d12<<16U) | \
+                                            (d11<<12U) | (d10<<8U)  | (d9<<4U)   | (d8<<0U);    \
+                GPIO##port##_NS->AFRL =     (d7<<28U)  | (d6<<24U)  | (d5<<20U)  | (d4<<16U)  | \
+                                            (d3<<12U)  | (d2<<8U)   | (d1<<4U)   | (d0<<0U);    \
+                GPIO##port##_NS->OSPEEDR =  (b15<<30U) | (b14<<28U) | (b13<<26U) | (b12<<24U) | \
+                                            (b11<<22U) | (b10<<20U) | (b9<<18U)  | (b8<<16U)  | \
+                                            (b7<<14U)  | (b6<<12U)  | (b5<<10U)  | (b4<<8U)   | \
+                                            (b3<<6U)   | (b2<<4U)   | (b1<<2U)   | (b0<<0U);    \
+                GPIO##port##_NS->OTYPER =   (e15<<15U) | (e14<<14U) | (e13<<13U) | (e12<<12U) | \
+                                            (e11<<11U) | (e10<<10U) | (e9<<9U)   | (e8<<8U)   | \
+                                            (e7<<7U)   | (e6<<6U)   | (e5<<5U)   | (e4<<4U)   | \
+                                            (e3<<3U)   | (e2<<2U)   | (e1<<1U)   | (e0<<0U);    \
+                GPIO##port##_NS->MODER =    (a15<<30U) | (a14<<28U) | (a13<<26U) | (a12<<24U) | \
+                                            (a11<<22U) | (a10<<20U) | (a9<<18U)  | (a8<<16U)  | \
+                                            (a7<<14U)  | (a6<<12U)  | (a5<<10U)  | (a4<<8U)   | \
+                                            (a3<<6U)   | (a2<<4U)   | (a1<<2U)   | (a0<<0U);    \
+                GPIO##port##_NS->PUPDR =    (c15<<30U) | (c14<<28U) | (c13<<26U) | (c12<<24U) | \
+                                            (c11<<22U) | (c10<<20U) | (c9<<18U)  | (c8<<16U)  | \
+                                            (c7<<14U)  | (c6<<12U)  | (c5<<10U)  | (c4<<8U)   | \
+                                            (c3<<6U)   | (c2<<4U)   | (c1<<2U)   | (c0<<0U);    \
+                GPIO##port##_NS->ODR |=     (f15<<15U) | (f14<<14U) | (f13<<13U) | (f12<<12U) | \
+                                            (f11<<11U) | (f10<<10U) | (f9<<9U)   | (f8<<8U)   | \
+                                            (f7<<7U)   | (f6<<6U)   | (f5<<5U)   | (f4<<4U)   | \
+                                            (f3<<3U)   | (f2<<2U)   | (f1<<1U)   | (f0<<0U);
 #endif
 
 // RTC additional definitions

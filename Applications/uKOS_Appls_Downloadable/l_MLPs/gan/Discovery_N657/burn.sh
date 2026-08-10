@@ -16,10 +16,10 @@ DEMO="gan"
 
 STM32_PROGRAMMER_CLI="${STM32_PROGRAMMER_CLI:-/Applications/STMicroelectronics/STM32Cube/STM32CubeProgrammer/STM32CubeProgrammer.app/Contents/Resources/bin/STM32_Programmer_CLI}"
 if [[ ! -x "${STM32_PROGRAMMER_CLI}" ]]; then
- print -u2 "Error: STM32_Programmer_CLI not found."
- print -u2 "Install STM32CubeProgrammer, or set STM32_PROGRAMMER_CLI to its full path:"
- print -u2 "  export STM32_PROGRAMMER_CLI=/path/to/STM32_Programmer_CLI"
- exit 1
+    print -u2 "Error: STM32_Programmer_CLI not found."
+    print -u2 "Install STM32CubeProgrammer, or set STM32_PROGRAMMER_CLI to its full path:"
+    print -u2 "  export STM32_PROGRAMMER_CLI=/path/to/STM32_Programmer_CLI"
+    exit 1
 fi
 
 STM32_PROGRAMMER_BIN=${STM32_PROGRAMMER_CLI:h}

@@ -35,43 +35,43 @@ typedef struct {
 
 // CR1 Configuration
 
-#define TIM7_CR1_CEN        (0x1U<<0)
-#define TIM7_CR1_UDIS       (0x1U<<1)
-#define TIM7_CR1_URS        (0x1U<<2)
-#define TIM7_CR1_OPM        (0x1U<<3)
-#define TIM7_CR1_ARPE       (0x1U<<7)
-#define TIM7_CR1_UIFREMAP   (0x1U<<11)
+#define TIM7_CR1_CEN        (0x1U<<0U)
+#define TIM7_CR1_UDIS       (0x1U<<1U)
+#define TIM7_CR1_URS        (0x1U<<2U)
+#define TIM7_CR1_OPM        (0x1U<<3U)
+#define TIM7_CR1_ARPE       (0x1U<<7U)
+#define TIM7_CR1_UIFREMAP   (0x1U<<11U)
 
 // CR2 Configuration
 
-#define TIM7_CR2_MMS        (0x7U<<4)
-#define TIM7_CR2_MMS_0      (0x1U<<4)
+#define TIM7_CR2_MMS        (0x7U<<4U)
+#define TIM7_CR2_MMS_0      (0x1U<<4U)
 
 // DIER Configuration
 
-#define TIM7_DIER_UIE       (0x1U<<0)
-#define TIM7_DIER_UDE       (0x1U<<8)
+#define TIM7_DIER_UIE       (0x1U<<0U)
+#define TIM7_DIER_UDE       (0x1U<<8U)
 
 // SR Configuration
 
-#define TIM7_SR_UIF         (0x1U<<0)
+#define TIM7_SR_UIF         (0x1U<<0U)
 
 // EGR Configuration
 
-#define TIM7_EGR_UG         (0x1U<<0)
+#define TIM7_EGR_UG         (0x1U<<0U)
 
 // CNT Configuration
 
-#define TIM7_CNT_UIFCPY     (0x1U<<31)
-#define TIM7_CNT_CNT        (0xFFFFU<<0)
-#define TIM7_CNT_CNT_0      (0x1U<<0)
+#define TIM7_CNT_UIFCPY     (0x1U<<31U)
+#define TIM7_CNT_CNT        (0xFFFFU<<0U)
+#define TIM7_CNT_CNT_0      (0x1U<<0U)
 
 // PSC Configuration
 
-#define TIM7_PSC_PSC        (0xFFFFU<<0)
-#define TIM7_PSC_PSC_0      (0x1U<<0)
+#define TIM7_PSC_PSC        (0xFFFFU<<0U)
+#define TIM7_PSC_PSC_0      (0x1U<<0U)
 
 // ARR Configuration
 
-#define TIM7_ARR_ARR        (0xFFFFU<<0)
-#define TIM7_ARR_ARR_0      (0x1U<<0)
+#define TIM7_ARR_ARR        (0xFFFFU<<0U)
+#define TIM7_ARR_ARR_0      (0x1U<<0U)

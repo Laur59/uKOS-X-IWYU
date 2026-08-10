@@ -64,6 +64,6 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
     system_setDownloadCodeAddress(nullptr);
 
-    status = (status == EXIT_OS_SUCCESS_CLI) ? ((*code)(argc, argv)) : status;
+    status = (status == EXIT_OS_SUCCESS_CLI) ? (*code)(argc, argv) : status;
     return status;
 }

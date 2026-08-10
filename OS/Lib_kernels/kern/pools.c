@@ -131,7 +131,7 @@ int32_t kern_createPool(const char_t *identifier, pool_t **handle) {
             *handle = &vKern_pool[core][i];
 
             vKern_nbPool[core]    = (uint16_t)(vKern_nbPool[core] + 1);
-            vKern_nbMaxPool[core] = (vKern_nbPool[core] > vKern_nbMaxPool[core]) ? (vKern_nbPool[core]) : (vKern_nbMaxPool[core]);
+            vKern_nbMaxPool[core] = (vKern_nbPool[core] > vKern_nbMaxPool[core]) ? vKern_nbPool[core] : vKern_nbMaxPool[core];
             DEBUG_KERN_TRACE("exit: OK");
             INTERRUPTION_RESTORE;
             PRIVILEGE_RESTORE;
@@ -290,11 +290,9 @@ int32_t kern_allocateBlock(pool_t *handle, void **address, uint32_t timeout) {  
     INTERRUPTION_RESTORE;
     PRIVILEGE_RESTORE;
 
-    if (timeout > 0U) {
-        if (kern_waitSemaphore(handle->oReleaseSema, timeout) == KERR_KERN_NOERR) {
-            return (kern_allocateBlock(handle, address, 0U));
-        }
-
+    if ((timeout > 0U) &&
+        (kern_waitSemaphore(handle->oReleaseSema, timeout) == KERR_KERN_NOERR)) {
+        return kern_allocateBlock(handle, address, 0U);
     }
     return KERR_KERN_BKFUL;
 }

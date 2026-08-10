@@ -26,5 +26,5 @@ typedef struct {
 
 // STIR Configuration
 
-#define NVIC_STIR_STIR_INTID    (0x1FFU<<0)
-#define NVIC_STIR_STIR_INTID_0  (0x1U<<0)
+#define NVIC_STIR_STIR_INTID    (0x1FFU<<0U)
+#define NVIC_STIR_STIR_INTID_0  (0x1U<<0U)

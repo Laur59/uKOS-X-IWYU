@@ -115,231 +115,231 @@ typedef struct {
 
 // DATA0 Configuration
 
-#define BKP_DATA0_DATA      (0xFFFFU<<0)
-#define BKP_DATA0_DATA_0    (0x1U<<0)
+#define BKP_DATA0_DATA      (0xFFFFU<<0U)
+#define BKP_DATA0_DATA_0    (0x1U<<0U)
 
 // DATA1 Configuration
 
-#define BKP_DATA1_DATA      (0xFFFFU<<0)
-#define BKP_DATA1_DATA_0    (0x1U<<0)
+#define BKP_DATA1_DATA      (0xFFFFU<<0U)
+#define BKP_DATA1_DATA_0    (0x1U<<0U)
 
 // DATA2 Configuration
 
-#define BKP_DATA2_DATA      (0xFFFFU<<0)
-#define BKP_DATA2_DATA_0    (0x1U<<0)
+#define BKP_DATA2_DATA      (0xFFFFU<<0U)
+#define BKP_DATA2_DATA_0    (0x1U<<0U)
 
 // DATA3 Configuration
 
-#define BKP_DATA3_DATA      (0xFFFFU<<0)
-#define BKP_DATA3_DATA_0    (0x1U<<0)
+#define BKP_DATA3_DATA      (0xFFFFU<<0U)
+#define BKP_DATA3_DATA_0    (0x1U<<0U)
 
 // DATA4 Configuration
 
-#define BKP_DATA4_DATA      (0xFFFFU<<0)
-#define BKP_DATA4_DATA_0    (0x1U<<0)
+#define BKP_DATA4_DATA      (0xFFFFU<<0U)
+#define BKP_DATA4_DATA_0    (0x1U<<0U)
 
 // DATA5 Configuration
 
-#define BKP_DATA5_DATA      (0xFFFFU<<0)
-#define BKP_DATA5_DATA_0    (0x1U<<0)
+#define BKP_DATA5_DATA      (0xFFFFU<<0U)
+#define BKP_DATA5_DATA_0    (0x1U<<0U)
 
 // DATA6 Configuration
 
-#define BKP_DATA6_DATA      (0xFFFFU<<0)
-#define BKP_DATA6_DATA_0    (0x1U<<0)
+#define BKP_DATA6_DATA      (0xFFFFU<<0U)
+#define BKP_DATA6_DATA_0    (0x1U<<0U)
 
 // DATA7 Configuration
 
-#define BKP_DATA7_DATA      (0xFFFFU<<0)
-#define BKP_DATA7_DATA_0    (0x1U<<0)
+#define BKP_DATA7_DATA      (0xFFFFU<<0U)
+#define BKP_DATA7_DATA_0    (0x1U<<0U)
 
 // DATA8 Configuration
 
-#define BKP_DATA8_DATA      (0xFFFFU<<0)
-#define BKP_DATA8_DATA_0    (0x1U<<0)
+#define BKP_DATA8_DATA      (0xFFFFU<<0U)
+#define BKP_DATA8_DATA_0    (0x1U<<0U)
 
 // DATA9 Configuration
 
-#define BKP_DATA9_DATA      (0xFFFFU<<0)
-#define BKP_DATA9_DATA_0    (0x1U<<0)
+#define BKP_DATA9_DATA      (0xFFFFU<<0U)
+#define BKP_DATA9_DATA_0    (0x1U<<0U)
 
 // OCTL Configuration
 
-#define BKP_OCTL_RCCV       (0x7FU<<0)
-#define BKP_OCTL_RCCV_0     (0x1U<<0)
-#define BKP_OCTL_COEN       (0x1U<<7)
-#define BKP_OCTL_ASOEN      (0x1U<<8)
-#define BKP_OCTL_ROSEL      (0x1U<<9)
+#define BKP_OCTL_RCCV       (0x7FU<<0U)
+#define BKP_OCTL_RCCV_0     (0x1U<<0U)
+#define BKP_OCTL_COEN       (0x1U<<7U)
+#define BKP_OCTL_ASOEN      (0x1U<<8U)
+#define BKP_OCTL_ROSEL      (0x1U<<9U)
 
 // TPCTL Configuration
 
-#define BKP_TPCTL_TPEN      (0x1U<<0)
-#define BKP_TPCTL_TPAL      (0x1U<<1)
+#define BKP_TPCTL_TPEN      (0x1U<<0U)
+#define BKP_TPCTL_TPAL      (0x1U<<1U)
 
 // TPCS Configuration
 
-#define BKP_TPCS_TER        (0x1U<<0)
-#define BKP_TPCS_TIR        (0x1U<<1)
-#define BKP_TPCS_TPIE       (0x1U<<2)
-#define BKP_TPCS_TEF        (0x1U<<8)
-#define BKP_TPCS_TIF        (0x1U<<9)
+#define BKP_TPCS_TER        (0x1U<<0U)
+#define BKP_TPCS_TIR        (0x1U<<1U)
+#define BKP_TPCS_TPIE       (0x1U<<2U)
+#define BKP_TPCS_TEF        (0x1U<<8U)
+#define BKP_TPCS_TIF        (0x1U<<9U)
 
 // DATA10 Configuration
 
-#define BKP_DATA10_DATA     (0xFFFFU<<0)
-#define BKP_DATA10_DATA_0   (0x1U<<0)
+#define BKP_DATA10_DATA     (0xFFFFU<<0U)
+#define BKP_DATA10_DATA_0   (0x1U<<0U)
 
 // DATA11 Configuration
 
-#define BKP_DATA11_DATA     (0xFFFFU<<0)
-#define BKP_DATA11_DATA_0   (0x1U<<0)
+#define BKP_DATA11_DATA     (0xFFFFU<<0U)
+#define BKP_DATA11_DATA_0   (0x1U<<0U)
 
 // DATA12 Configuration
 
-#define BKP_DATA12_DATA     (0xFFFFU<<0)
-#define BKP_DATA12_DATA_0   (0x1U<<0)
+#define BKP_DATA12_DATA     (0xFFFFU<<0U)
+#define BKP_DATA12_DATA_0   (0x1U<<0U)
 
 // DATA13 Configuration
 
-#define BKP_DATA13_DATA     (0xFFFFU<<0)
-#define BKP_DATA13_DATA_0   (0x1U<<0)
+#define BKP_DATA13_DATA     (0xFFFFU<<0U)
+#define BKP_DATA13_DATA_0   (0x1U<<0U)
 
 // DATA14 Configuration
 
-#define BKP_DATA14_DATA     (0xFFFFU<<0)
-#define BKP_DATA14_DATA_0   (0x1U<<0)
+#define BKP_DATA14_DATA     (0xFFFFU<<0U)
+#define BKP_DATA14_DATA_0   (0x1U<<0U)
 
 // DATA15 Configuration
 
-#define BKP_DATA15_DATA     (0xFFFFU<<0)
-#define BKP_DATA15_DATA_0   (0x1U<<0)
+#define BKP_DATA15_DATA     (0xFFFFU<<0U)
+#define BKP_DATA15_DATA_0   (0x1U<<0U)
 
 // DATA16 Configuration
 
-#define BKP_DATA16_DATA     (0xFFFFU<<0)
-#define BKP_DATA16_DATA_0   (0x1U<<0)
+#define BKP_DATA16_DATA     (0xFFFFU<<0U)
+#define BKP_DATA16_DATA_0   (0x1U<<0U)
 
 // DATA17 Configuration
 
-#define BKP_DATA17_DATA     (0xFFFFU<<0)
-#define BKP_DATA17_DATA_0   (0x1U<<0)
+#define BKP_DATA17_DATA     (0xFFFFU<<0U)
+#define BKP_DATA17_DATA_0   (0x1U<<0U)
 
 // DATA18 Configuration
 
-#define BKP_DATA18_DATA     (0xFFFFU<<0)
-#define BKP_DATA18_DATA_0   (0x1U<<0)
+#define BKP_DATA18_DATA     (0xFFFFU<<0U)
+#define BKP_DATA18_DATA_0   (0x1U<<0U)
 
 // DATA19 Configuration
 
-#define BKP_DATA19_DATA     (0xFFFFU<<0)
-#define BKP_DATA19_DATA_0   (0x1U<<0)
+#define BKP_DATA19_DATA     (0xFFFFU<<0U)
+#define BKP_DATA19_DATA_0   (0x1U<<0U)
 
 // DATA20 Configuration
 
-#define BKP_DATA20_DATA     (0xFFFFU<<0)
-#define BKP_DATA20_DATA_0   (0x1U<<0)
+#define BKP_DATA20_DATA     (0xFFFFU<<0U)
+#define BKP_DATA20_DATA_0   (0x1U<<0U)
 
 // DATA21 Configuration
 
-#define BKP_DATA21_DATA     (0xFFFFU<<0)
-#define BKP_DATA21_DATA_0   (0x1U<<0)
+#define BKP_DATA21_DATA     (0xFFFFU<<0U)
+#define BKP_DATA21_DATA_0   (0x1U<<0U)
 
 // DATA22 Configuration
 
-#define BKP_DATA22_DATA     (0xFFFFU<<0)
-#define BKP_DATA22_DATA_0   (0x1U<<0)
+#define BKP_DATA22_DATA     (0xFFFFU<<0U)
+#define BKP_DATA22_DATA_0   (0x1U<<0U)
 
 // DATA23 Configuration
 
-#define BKP_DATA23_DATA     (0xFFFFU<<0)
-#define BKP_DATA23_DATA_0   (0x1U<<0)
+#define BKP_DATA23_DATA     (0xFFFFU<<0U)
+#define BKP_DATA23_DATA_0   (0x1U<<0U)
 
 // DATA24 Configuration
 
-#define BKP_DATA24_DATA     (0xFFFFU<<0)
-#define BKP_DATA24_DATA_0   (0x1U<<0)
+#define BKP_DATA24_DATA     (0xFFFFU<<0U)
+#define BKP_DATA24_DATA_0   (0x1U<<0U)
 
 // DATA25 Configuration
 
-#define BKP_DATA25_DATA     (0xFFFFU<<0)
-#define BKP_DATA25_DATA_0   (0x1U<<0)
+#define BKP_DATA25_DATA     (0xFFFFU<<0U)
+#define BKP_DATA25_DATA_0   (0x1U<<0U)
 
 // DATA26 Configuration
 
-#define BKP_DATA26_DATA     (0xFFFFU<<0)
-#define BKP_DATA26_DATA_0   (0x1U<<0)
+#define BKP_DATA26_DATA     (0xFFFFU<<0U)
+#define BKP_DATA26_DATA_0   (0x1U<<0U)
 
 // DATA27 Configuration
 
-#define BKP_DATA27_DATA     (0xFFFFU<<0)
-#define BKP_DATA27_DATA_0   (0x1U<<0)
+#define BKP_DATA27_DATA     (0xFFFFU<<0U)
+#define BKP_DATA27_DATA_0   (0x1U<<0U)
 
 // DATA28 Configuration
 
-#define BKP_DATA28_DATA     (0xFFFFU<<0)
-#define BKP_DATA28_DATA_0   (0x1U<<0)
+#define BKP_DATA28_DATA     (0xFFFFU<<0U)
+#define BKP_DATA28_DATA_0   (0x1U<<0U)
 
 // DATA29 Configuration
 
-#define BKP_DATA29_DATA     (0xFFFFU<<0)
-#define BKP_DATA29_DATA_0   (0x1U<<0)
+#define BKP_DATA29_DATA     (0xFFFFU<<0U)
+#define BKP_DATA29_DATA_0   (0x1U<<0U)
 
 // DATA30 Configuration
 
-#define BKP_DATA30_DATA     (0xFFFFU<<0)
-#define BKP_DATA30_DATA_0   (0x1U<<0)
+#define BKP_DATA30_DATA     (0xFFFFU<<0U)
+#define BKP_DATA30_DATA_0   (0x1U<<0U)
 
 // DATA31 Configuration
 
-#define BKP_DATA31_DATA     (0xFFFFU<<0)
-#define BKP_DATA31_DATA_0   (0x1U<<0)
+#define BKP_DATA31_DATA     (0xFFFFU<<0U)
+#define BKP_DATA31_DATA_0   (0x1U<<0U)
 
 // DATA32 Configuration
 
-#define BKP_DATA32_DATA     (0xFFFFU<<0)
-#define BKP_DATA32_DATA_0   (0x1U<<0)
+#define BKP_DATA32_DATA     (0xFFFFU<<0U)
+#define BKP_DATA32_DATA_0   (0x1U<<0U)
 
 // DATA33 Configuration
 
-#define BKP_DATA33_DATA     (0xFFFFU<<0)
-#define BKP_DATA33_DATA_0   (0x1U<<0)
+#define BKP_DATA33_DATA     (0xFFFFU<<0U)
+#define BKP_DATA33_DATA_0   (0x1U<<0U)
 
 // DATA34 Configuration
 
-#define BKP_DATA34_DATA     (0xFFFFU<<0)
-#define BKP_DATA34_DATA_0   (0x1U<<0)
+#define BKP_DATA34_DATA     (0xFFFFU<<0U)
+#define BKP_DATA34_DATA_0   (0x1U<<0U)
 
 // DATA35 Configuration
 
-#define BKP_DATA35_DATA     (0xFFFFU<<0)
-#define BKP_DATA35_DATA_0   (0x1U<<0)
+#define BKP_DATA35_DATA     (0xFFFFU<<0U)
+#define BKP_DATA35_DATA_0   (0x1U<<0U)
 
 // DATA36 Configuration
 
-#define BKP_DATA36_DATA     (0xFFFFU<<0)
-#define BKP_DATA36_DATA_0   (0x1U<<0)
+#define BKP_DATA36_DATA     (0xFFFFU<<0U)
+#define BKP_DATA36_DATA_0   (0x1U<<0U)
 
 // DATA37 Configuration
 
-#define BKP_DATA37_DATA     (0xFFFFU<<0)
-#define BKP_DATA37_DATA_0   (0x1U<<0)
+#define BKP_DATA37_DATA     (0xFFFFU<<0U)
+#define BKP_DATA37_DATA_0   (0x1U<<0U)
 
 // DATA38 Configuration
 
-#define BKP_DATA38_DATA     (0xFFFFU<<0)
-#define BKP_DATA38_DATA_0   (0x1U<<0)
+#define BKP_DATA38_DATA     (0xFFFFU<<0U)
+#define BKP_DATA38_DATA_0   (0x1U<<0U)
 
 // DATA39 Configuration
 
-#define BKP_DATA39_DATA     (0xFFFFU<<0)
-#define BKP_DATA39_DATA_0   (0x1U<<0)
+#define BKP_DATA39_DATA     (0xFFFFU<<0U)
+#define BKP_DATA39_DATA_0   (0x1U<<0U)
 
 // DATA40 Configuration
 
-#define BKP_DATA40_DATA     (0xFFFFU<<0)
-#define BKP_DATA40_DATA_0   (0x1U<<0)
+#define BKP_DATA40_DATA     (0xFFFFU<<0U)
+#define BKP_DATA40_DATA_0   (0x1U<<0U)
 
 // DATA41 Configuration
 
-#define BKP_DATA41_DATA     (0xFFFFU<<0)
-#define BKP_DATA41_DATA_0   (0x1U<<0)
+#define BKP_DATA41_DATA     (0xFFFFU<<0U)
+#define BKP_DATA41_DATA_0   (0x1U<<0U)

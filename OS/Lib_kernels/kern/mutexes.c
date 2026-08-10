@@ -415,7 +415,7 @@ static  int32_t local_createMutex(const char_t *identifier, int32_t iniCounter, 
             *handle = &vKern_mutx[core][i];
 
             vKern_nbMutx[core]    = (uint16_t)(vKern_nbMutx[core] + 1U);
-            vKern_nbMaxMutx[core] = (vKern_nbMutx[core] > vKern_nbMaxMutx[core]) ? (vKern_nbMutx[core]) : (vKern_nbMaxMutx[core]);
+            vKern_nbMaxMutx[core] = (vKern_nbMutx[core] > vKern_nbMaxMutx[core]) ? vKern_nbMutx[core] : vKern_nbMaxMutx[core];
             DEBUG_KERN_TRACE("exit: OK");
             return KERR_KERN_NOERR;
         }
@@ -459,7 +459,7 @@ static  int32_t local_waitMutex(uint32_t core, mutx_t *handle, uint32_t timeout)
 //                                              == timeout value    = (timeout value / unit)                                = (timeout value / unit)
 
     wkTimeout = (timeout == KWAIT_INFINITY)          ? (KWAIT_INFINITY)                          : (timeout / KKERN_TIC_TIME);
-    wkTimeout = (timeout == KWAIT_REMAINING_TIMEOUT) ? (vKern_runProc[core]->oInternal.oTimeout) : wkTimeout;
+    wkTimeout = (timeout == KWAIT_REMAINING_TIMEOUT) ? vKern_runProc[core]->oInternal.oTimeout : wkTimeout;
     vKern_runProc[core]->oInternal.oTimeout = wkTimeout;
 
     if ((handle->oCounter >= 0) || (handle->oOwner == vKern_runProc[core])) {
@@ -476,7 +476,7 @@ static  int32_t local_waitMutex(uint32_t core, mutx_t *handle, uint32_t timeout)
 
         GOTO_KERN_M(synchro);
         DEBUG_KERN_TRACE("exit: ->");
-        return (vKern_runProc[core]->oInternal.oStatus);
+        return vKern_runProc[core]->oInternal.oStatus;
     }
 
     DEBUG_KERN_TRACE("exit: KO 6");

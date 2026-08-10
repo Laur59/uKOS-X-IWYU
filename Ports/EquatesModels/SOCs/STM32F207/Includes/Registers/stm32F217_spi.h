@@ -38,81 +38,81 @@ typedef struct {
 
 // CR1 Configuration
 
-#define SPI_CR1_CPHA            (0x1U<<0)
-#define SPI_CR1_CPOL            (0x1U<<1)
-#define SPI_CR1_MSTR            (0x1U<<2)
-#define SPI_CR1_BR              (0x7U<<3)
-#define SPI_CR1_BR_0            (0x1U<<3)
-#define SPI_CR1_SPE             (0x1U<<6)
-#define SPI_CR1_LSBFIRST        (0x1U<<7)
-#define SPI_CR1_SSI             (0x1U<<8)
-#define SPI_CR1_SSM             (0x1U<<9)
-#define SPI_CR1_RXONLY          (0x1U<<10)
-#define SPI_CR1_DFF             (0x1U<<11)
-#define SPI_CR1_CRCNEXT         (0x1U<<12)
-#define SPI_CR1_CRCEN           (0x1U<<13)
-#define SPI_CR1_BIDIOE          (0x1U<<14)
-#define SPI_CR1_BIDIMODE        (0x1U<<15)
+#define SPI_CR1_CPHA            (0x1U<<0U)
+#define SPI_CR1_CPOL            (0x1U<<1U)
+#define SPI_CR1_MSTR            (0x1U<<2U)
+#define SPI_CR1_BR              (0x7U<<3U)
+#define SPI_CR1_BR_0            (0x1U<<3U)
+#define SPI_CR1_SPE             (0x1U<<6U)
+#define SPI_CR1_LSBFIRST        (0x1U<<7U)
+#define SPI_CR1_SSI             (0x1U<<8U)
+#define SPI_CR1_SSM             (0x1U<<9U)
+#define SPI_CR1_RXONLY          (0x1U<<10U)
+#define SPI_CR1_DFF             (0x1U<<11U)
+#define SPI_CR1_CRCNEXT         (0x1U<<12U)
+#define SPI_CR1_CRCEN           (0x1U<<13U)
+#define SPI_CR1_BIDIOE          (0x1U<<14U)
+#define SPI_CR1_BIDIMODE        (0x1U<<15U)
 
 // CR2 Configuration
 
-#define SPI_CR2_RXDMAEN         (0x1U<<0)
-#define SPI_CR2_TXDMAEN         (0x1U<<1)
-#define SPI_CR2_SSOE            (0x1U<<2)
-#define SPI_CR2_FRF             (0x1U<<4)
-#define SPI_CR2_ERRIE           (0x1U<<5)
-#define SPI_CR2_RXNEIE          (0x1U<<6)
-#define SPI_CR2_TXEIE           (0x1U<<7)
+#define SPI_CR2_RXDMAEN         (0x1U<<0U)
+#define SPI_CR2_TXDMAEN         (0x1U<<1U)
+#define SPI_CR2_SSOE            (0x1U<<2U)
+#define SPI_CR2_FRF             (0x1U<<4U)
+#define SPI_CR2_ERRIE           (0x1U<<5U)
+#define SPI_CR2_RXNEIE          (0x1U<<6U)
+#define SPI_CR2_TXEIE           (0x1U<<7U)
 
 // SR Configuration
 
-#define SPI_SR_RXNE             (0x1U<<0)
-#define SPI_SR_TXE              (0x1U<<1)
-#define SPI_SR_CHSIDE           (0x1U<<2)
-#define SPI_SR_UDR              (0x1U<<3)
-#define SPI_SR_CRCERR           (0x1U<<4)
-#define SPI_SR_MODF             (0x1U<<5)
-#define SPI_SR_OVR              (0x1U<<6)
-#define SPI_SR_BSY              (0x1U<<7)
-#define SPI_SR_TIFRFE           (0x1U<<8)
+#define SPI_SR_RXNE             (0x1U<<0U)
+#define SPI_SR_TXE              (0x1U<<1U)
+#define SPI_SR_CHSIDE           (0x1U<<2U)
+#define SPI_SR_UDR              (0x1U<<3U)
+#define SPI_SR_CRCERR           (0x1U<<4U)
+#define SPI_SR_MODF             (0x1U<<5U)
+#define SPI_SR_OVR              (0x1U<<6U)
+#define SPI_SR_BSY              (0x1U<<7U)
+#define SPI_SR_TIFRFE           (0x1U<<8U)
 
 // DR Configuration
 
-#define SPI_DR_DR               (0xFFFFU<<0)
-#define SPI_DR_DR_0             (0x1U<<0)
+#define SPI_DR_DR               (0xFFFFU<<0U)
+#define SPI_DR_DR_0             (0x1U<<0U)
 
 // CRCPR Configuration
 
-#define SPI_CRCPR_CRCPOLY       (0xFFFFU<<0)
-#define SPI_CRCPR_CRCPOLY_0     (0x1U<<0)
+#define SPI_CRCPR_CRCPOLY       (0xFFFFU<<0U)
+#define SPI_CRCPR_CRCPOLY_0     (0x1U<<0U)
 
 // RXCRCR Configuration
 
-#define SPI_RXCRCR_RXCRC        (0xFFFFU<<0)
-#define SPI_RXCRCR_RXCRC_0      (0x1U<<0)
+#define SPI_RXCRCR_RXCRC        (0xFFFFU<<0U)
+#define SPI_RXCRCR_RXCRC_0      (0x1U<<0U)
 
 // TXCRCR Configuration
 
-#define SPI_TXCRCR_TXCRC        (0xFFFFU<<0)
-#define SPI_TXCRCR_TXCRC_0      (0x1U<<0)
+#define SPI_TXCRCR_TXCRC        (0xFFFFU<<0U)
+#define SPI_TXCRCR_TXCRC_0      (0x1U<<0U)
 
 // I2SCFGR Configuration
 
-#define SPI_I2SCFGR_CHLEN       (0x1U<<0)
-#define SPI_I2SCFGR_DATLEN      (0x3U<<1)
-#define SPI_I2SCFGR_DATLEN_0    (0x1U<<1)
-#define SPI_I2SCFGR_CKPOL       (0x1U<<3)
-#define SPI_I2SCFGR_I2SSTD      (0x3U<<4)
-#define SPI_I2SCFGR_I2SSTD_0    (0x1U<<4)
-#define SPI_I2SCFGR_PCMSYNC     (0x1U<<7)
-#define SPI_I2SCFGR_I2SCFG      (0x3U<<8)
-#define SPI_I2SCFGR_I2SCFG_0    (0x1U<<8)
-#define SPI_I2SCFGR_I2SE        (0x1U<<10)
-#define SPI_I2SCFGR_I2SMOD      (0x1U<<11)
+#define SPI_I2SCFGR_CHLEN       (0x1U<<0U)
+#define SPI_I2SCFGR_DATLEN      (0x3U<<1U)
+#define SPI_I2SCFGR_DATLEN_0    (0x1U<<1U)
+#define SPI_I2SCFGR_CKPOL       (0x1U<<3U)
+#define SPI_I2SCFGR_I2SSTD      (0x3U<<4U)
+#define SPI_I2SCFGR_I2SSTD_0    (0x1U<<4U)
+#define SPI_I2SCFGR_PCMSYNC     (0x1U<<7U)
+#define SPI_I2SCFGR_I2SCFG      (0x3U<<8U)
+#define SPI_I2SCFGR_I2SCFG_0    (0x1U<<8U)
+#define SPI_I2SCFGR_I2SE        (0x1U<<10U)
+#define SPI_I2SCFGR_I2SMOD      (0x1U<<11U)
 
 // I2SPR Configuration
 
-#define SPI_I2SPR_I2SDIV        (0xFFU<<0)
-#define SPI_I2SPR_I2SDIV_0      (0x1U<<0)
-#define SPI_I2SPR_ODD           (0x1U<<8)
-#define SPI_I2SPR_MCKOE         (0x1U<<9)
+#define SPI_I2SPR_I2SDIV        (0xFFU<<0U)
+#define SPI_I2SPR_I2SDIV_0      (0x1U<<0U)
+#define SPI_I2SPR_ODD           (0x1U<<8U)
+#define SPI_I2SPR_MCKOE         (0x1U<<9U)

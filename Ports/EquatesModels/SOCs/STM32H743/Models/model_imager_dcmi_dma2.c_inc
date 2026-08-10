@@ -205,7 +205,7 @@ int32_t model_imager_read(volatile void **image) {
  */
 int32_t model_imager_readRegister(uint8_t registerNb, uint16_t *value) {
 
-    return (cb_getRegister(registerNb, value));
+    return cb_getRegister(registerNb, value);
 }
 
 /*
@@ -216,7 +216,7 @@ int32_t model_imager_readRegister(uint8_t registerNb, uint16_t *value) {
  */
 int32_t model_imager_writeRegister(uint8_t registerNb, uint16_t value) {
 
-    return (cb_putRegister(registerNb, value));
+    return cb_putRegister(registerNb, value);
 }
 
 /*
@@ -244,7 +244,7 @@ int32_t model_imager_standby(uint8_t mode) {
  */
 int32_t model_imager_exposure(uint32_t time) {
 
-    return (cb_control(KIMG_EXPOSITION, time));
+    return cb_control(KIMG_EXPOSITION, time);
 }
 
 // Local routines
@@ -477,7 +477,7 @@ static  int32_t local_confImag(const imagerCnf_t *configure) {
     if ( configure->oImagerNbCols > configure->oFrameNbCols)               { return KERR_IMAGER_CNERR; }
 
     DCMI->CWSIZE = (uint32_t)((configure->oImagerNbRows - 1U)<<16U) | (configure->oImagerNbCols - 1U);
-    DCMI->CWSTRT = (uint32_t)( configure->oStRows<<16U)             | (configure->oStCols);
+    DCMI->CWSTRT = (uint32_t)( configure->oStRows<<16U)             | configure->oStCols;
 
 // Configure the imager
 

@@ -58,214 +58,214 @@ typedef struct {
 
 // PMCR Configuration
 
-#define SYSCFG_PMCR_PC3SO       (0x1U<<27)
-#define SYSCFG_PMCR_PC2SO       (0x1U<<26)
-#define SYSCFG_PMCR_PA1SO       (0x1U<<25)
-#define SYSCFG_PMCR_PA0SO       (0x1U<<24)
-#define SYSCFG_PMCR_EPIS        (0x7U<<21)
-#define SYSCFG_PMCR_EPIS_0      (0x1U<<21)
-#define SYSCFG_PMCR_BOOSTVDDSEL (0x1U<<9)
-#define SYSCFG_PMCR_BOOSTE      (0x1U<<8)
-#define SYSCFG_PMCR_PB9FMP      (0x1U<<7)
-#define SYSCFG_PMCR_PB8FMP      (0x1U<<6)
-#define SYSCFG_PMCR_PB7FMP      (0x1U<<5)
-#define SYSCFG_PMCR_PB6FMP      (0x1U<<4)
-#define SYSCFG_PMCR_I2C4FMP     (0x1U<<3)
-#define SYSCFG_PMCR_I2C3FMP     (0x1U<<2)
-#define SYSCFG_PMCR_I2C2FMP     (0x1U<<1)
-#define SYSCFG_PMCR_I2C1FMP     (0x1U<<0)
+#define SYSCFG_PMCR_PC3SO       (0x1U<<27U)
+#define SYSCFG_PMCR_PC2SO       (0x1U<<26U)
+#define SYSCFG_PMCR_PA1SO       (0x1U<<25U)
+#define SYSCFG_PMCR_PA0SO       (0x1U<<24U)
+#define SYSCFG_PMCR_EPIS        (0x7U<<21U)
+#define SYSCFG_PMCR_EPIS_0      (0x1U<<21U)
+#define SYSCFG_PMCR_BOOSTVDDSEL (0x1U<<9U)
+#define SYSCFG_PMCR_BOOSTE      (0x1U<<8U)
+#define SYSCFG_PMCR_PB9FMP      (0x1U<<7U)
+#define SYSCFG_PMCR_PB8FMP      (0x1U<<6U)
+#define SYSCFG_PMCR_PB7FMP      (0x1U<<5U)
+#define SYSCFG_PMCR_PB6FMP      (0x1U<<4U)
+#define SYSCFG_PMCR_I2C4FMP     (0x1U<<3U)
+#define SYSCFG_PMCR_I2C3FMP     (0x1U<<2U)
+#define SYSCFG_PMCR_I2C2FMP     (0x1U<<1U)
+#define SYSCFG_PMCR_I2C1FMP     (0x1U<<0U)
 
 // EXTICR1 Configuration
 
-#define SYSCFG_EXTICR1_EXTI0    (0xFU<<0)
-#define SYSCFG_EXTICR1_EXTI0_0  (0x1U<<0)
-#define SYSCFG_EXTICR1_EXTI1    (0xFU<<4)
-#define SYSCFG_EXTICR1_EXTI1_0  (0x1U<<4)
-#define SYSCFG_EXTICR1_EXTI2    (0xFU<<8)
-#define SYSCFG_EXTICR1_EXTI2_0  (0x1U<<8)
-#define SYSCFG_EXTICR1_EXTI3    (0xFU<<12)
-#define SYSCFG_EXTICR1_EXTI3_0  (0x1U<<12)
+#define SYSCFG_EXTICR1_EXTI0    (0xFU<<0U)
+#define SYSCFG_EXTICR1_EXTI0_0  (0x1U<<0U)
+#define SYSCFG_EXTICR1_EXTI1    (0xFU<<4U)
+#define SYSCFG_EXTICR1_EXTI1_0  (0x1U<<4U)
+#define SYSCFG_EXTICR1_EXTI2    (0xFU<<8U)
+#define SYSCFG_EXTICR1_EXTI2_0  (0x1U<<8U)
+#define SYSCFG_EXTICR1_EXTI3    (0xFU<<12U)
+#define SYSCFG_EXTICR1_EXTI3_0  (0x1U<<12U)
 
 // EXTICR2 Configuration
 
-#define SYSCFG_EXTICR2_EXTI4    (0xFU<<0)
-#define SYSCFG_EXTICR2_EXTI4_0  (0x1U<<0)
-#define SYSCFG_EXTICR2_EXTI5    (0xFU<<4)
-#define SYSCFG_EXTICR2_EXTI5_0  (0x1U<<4)
-#define SYSCFG_EXTICR2_EXTI6    (0xFU<<8)
-#define SYSCFG_EXTICR2_EXTI6_0  (0x1U<<8)
-#define SYSCFG_EXTICR2_EXTI7    (0xFU<<12)
-#define SYSCFG_EXTICR2_EXTI7_0  (0x1U<<12)
+#define SYSCFG_EXTICR2_EXTI4    (0xFU<<0U)
+#define SYSCFG_EXTICR2_EXTI4_0  (0x1U<<0U)
+#define SYSCFG_EXTICR2_EXTI5    (0xFU<<4U)
+#define SYSCFG_EXTICR2_EXTI5_0  (0x1U<<4U)
+#define SYSCFG_EXTICR2_EXTI6    (0xFU<<8U)
+#define SYSCFG_EXTICR2_EXTI6_0  (0x1U<<8U)
+#define SYSCFG_EXTICR2_EXTI7    (0xFU<<12U)
+#define SYSCFG_EXTICR2_EXTI7_0  (0x1U<<12U)
 
 // EXTICR3 Configuration
 
-#define SYSCFG_EXTICR3_EXTI8    (0xFU<<0)
-#define SYSCFG_EXTICR3_EXTI8_0  (0x1U<<0)
-#define SYSCFG_EXTICR3_EXTI9    (0xFU<<4)
-#define SYSCFG_EXTICR3_EXTI9_0  (0x1U<<4)
-#define SYSCFG_EXTICR3_EXTI10   (0xFU<<8)
-#define SYSCFG_EXTICR3_EXTI10_0 (0x1U<<8)
-#define SYSCFG_EXTICR3_EXTI11   (0xFU<<12)
-#define SYSCFG_EXTICR3_EXTI11_0 (0x1U<<12)
+#define SYSCFG_EXTICR3_EXTI8    (0xFU<<0U)
+#define SYSCFG_EXTICR3_EXTI8_0  (0x1U<<0U)
+#define SYSCFG_EXTICR3_EXTI9    (0xFU<<4U)
+#define SYSCFG_EXTICR3_EXTI9_0  (0x1U<<4U)
+#define SYSCFG_EXTICR3_EXTI10   (0xFU<<8U)
+#define SYSCFG_EXTICR3_EXTI10_0 (0x1U<<8U)
+#define SYSCFG_EXTICR3_EXTI11   (0xFU<<12U)
+#define SYSCFG_EXTICR3_EXTI11_0 (0x1U<<12U)
 
 // EXTICR4 Configuration
 
-#define SYSCFG_EXTICR4_EXTI12   (0xFU<<0)
-#define SYSCFG_EXTICR4_EXTI12_0 (0x1U<<0)
-#define SYSCFG_EXTICR4_EXTI13   (0xFU<<4)
-#define SYSCFG_EXTICR4_EXTI13_0 (0x1U<<4)
-#define SYSCFG_EXTICR4_EXTI14   (0xFU<<8)
-#define SYSCFG_EXTICR4_EXTI14_0 (0x1U<<8)
-#define SYSCFG_EXTICR4_EXTI15   (0xFU<<12)
-#define SYSCFG_EXTICR4_EXTI15_0 (0x1U<<12)
+#define SYSCFG_EXTICR4_EXTI12   (0xFU<<0U)
+#define SYSCFG_EXTICR4_EXTI12_0 (0x1U<<0U)
+#define SYSCFG_EXTICR4_EXTI13   (0xFU<<4U)
+#define SYSCFG_EXTICR4_EXTI13_0 (0x1U<<4U)
+#define SYSCFG_EXTICR4_EXTI14   (0xFU<<8U)
+#define SYSCFG_EXTICR4_EXTI14_0 (0x1U<<8U)
+#define SYSCFG_EXTICR4_EXTI15   (0xFU<<12U)
+#define SYSCFG_EXTICR4_EXTI15_0 (0x1U<<12U)
 
 // CFGR Configuration
 
-#define SYSCFG_CFGR_AXISRAML    (0x1U<<15)
-#define SYSCFG_CFGR_ITCML       (0x1U<<14)
-#define SYSCFG_CFGR_DTCML       (0x1U<<13)
-#define SYSCFG_CFGR_SRAM1L      (0x1U<<12)
-#define SYSCFG_CFGR_SRAM2L      (0x1U<<11)
-#define SYSCFG_CFGR_SRAM3L      (0x1U<<10)
-#define SYSCFG_CFGR_SRAM4L      (0x1U<<9)
-#define SYSCFG_CFGR_BKRAML      (0x1U<<7)
-#define SYSCFG_CFGR_CM7L        (0x1U<<6)
-#define SYSCFG_CFGR_FLASHL      (0x1U<<3)
-#define SYSCFG_CFGR_PVDL        (0x1U<<2)
-#define SYSCFG_CFGR_CM4L        (0x1U<<0)
+#define SYSCFG_CFGR_AXISRAML    (0x1U<<15U)
+#define SYSCFG_CFGR_ITCML       (0x1U<<14U)
+#define SYSCFG_CFGR_DTCML       (0x1U<<13U)
+#define SYSCFG_CFGR_SRAM1L      (0x1U<<12U)
+#define SYSCFG_CFGR_SRAM2L      (0x1U<<11U)
+#define SYSCFG_CFGR_SRAM3L      (0x1U<<10U)
+#define SYSCFG_CFGR_SRAM4L      (0x1U<<9U)
+#define SYSCFG_CFGR_BKRAML      (0x1U<<7U)
+#define SYSCFG_CFGR_CM7L        (0x1U<<6U)
+#define SYSCFG_CFGR_FLASHL      (0x1U<<3U)
+#define SYSCFG_CFGR_PVDL        (0x1U<<2U)
+#define SYSCFG_CFGR_CM4L        (0x1U<<0U)
 
 // CCCSR Configuration
 
-#define SYSCFG_CCCSR_HSLV       (0x1U<<16)
-#define SYSCFG_CCCSR_READY      (0x1U<<8)
-#define SYSCFG_CCCSR_CS         (0x1U<<1)
-#define SYSCFG_CCCSR_EN         (0x1U<<0)
+#define SYSCFG_CCCSR_HSLV       (0x1U<<16U)
+#define SYSCFG_CCCSR_READY      (0x1U<<8U)
+#define SYSCFG_CCCSR_CS         (0x1U<<1U)
+#define SYSCFG_CCCSR_EN         (0x1U<<0U)
 
 // CCVR Configuration
 
-#define SYSCFG_CCVR_PCV         (0xFU<<4)
-#define SYSCFG_CCVR_PCV_0       (0x1U<<4)
-#define SYSCFG_CCVR_NCV         (0xFU<<0)
-#define SYSCFG_CCVR_NCV_0       (0x1U<<0)
+#define SYSCFG_CCVR_PCV         (0xFU<<4U)
+#define SYSCFG_CCVR_PCV_0       (0x1U<<4U)
+#define SYSCFG_CCVR_NCV         (0xFU<<0U)
+#define SYSCFG_CCVR_NCV_0       (0x1U<<0U)
 
 // CCCR Configuration
 
-#define SYSCFG_CCCR_PCC         (0xFU<<4)
-#define SYSCFG_CCCR_PCC_0       (0x1U<<4)
-#define SYSCFG_CCCR_NCC         (0xFU<<0)
-#define SYSCFG_CCCR_NCC_0       (0x1U<<0)
+#define SYSCFG_CCCR_PCC         (0xFU<<4U)
+#define SYSCFG_CCCR_PCC_0       (0x1U<<4U)
+#define SYSCFG_CCCR_NCC         (0xFU<<0U)
+#define SYSCFG_CCCR_NCC_0       (0x1U<<0U)
 
 // PWRCR Configuration
 
-#define SYSCFG_PWRCR_ODEN       (0x1U<<0)
+#define SYSCFG_PWRCR_ODEN       (0x1U<<0U)
 
 // PKGR Configuration
 
-#define SYSCFG_PKGR_PKG         (0xFU<<0)
-#define SYSCFG_PKGR_PKG_0       (0x1U<<0)
+#define SYSCFG_PKGR_PKG         (0xFU<<0U)
+#define SYSCFG_PKGR_PKG_0       (0x1U<<0U)
 
 // UR0 Configuration
 
-#define SYSCFG_UR0_RDP          (0xFFU<<16)
-#define SYSCFG_UR0_RDP_0        (0x1U<<16)
-#define SYSCFG_UR0_BKS          (0x1U<<0)
+#define SYSCFG_UR0_RDP          (0xFFU<<16U)
+#define SYSCFG_UR0_RDP_0        (0x1U<<16U)
+#define SYSCFG_UR0_BKS          (0x1U<<0U)
 
 // UR1 Configuration
 
-#define SYSCFG_UR1_BCM7         (0x1U<<16)
-#define SYSCFG_UR1_BCM4         (0x1U<<0)
+#define SYSCFG_UR1_BCM7         (0x1U<<16U)
+#define SYSCFG_UR1_BCM4         (0x1U<<0U)
 
 // UR2 Configuration
 
-#define SYSCFG_UR2_BCM7_ADD0    (0xFFFFU<<16)
-#define SYSCFG_UR2_BCM7_ADD0_0  (0x1U<<16)
-#define SYSCFG_UR2_BORH         (0x3U<<0)
-#define SYSCFG_UR2_BORH_0       (0x1U<<0)
+#define SYSCFG_UR2_BCM7_ADD0    (0xFFFFU<<16U)
+#define SYSCFG_UR2_BCM7_ADD0_0  (0x1U<<16U)
+#define SYSCFG_UR2_BORH         (0x3U<<0U)
+#define SYSCFG_UR2_BORH_0       (0x1U<<0U)
 
 // UR3 Configuration
 
-#define SYSCFG_UR3_BCM7_ADD1    (0xFFFFU<<16)
-#define SYSCFG_UR3_BCM7_ADD1_0  (0x1U<<16)
-#define SYSCFG_UR3_BCM4_ADD1    (0xFFFFU<<0)
-#define SYSCFG_UR3_BCM4_ADD1_0  (0x1U<<0)
+#define SYSCFG_UR3_BCM7_ADD1    (0xFFFFU<<16U)
+#define SYSCFG_UR3_BCM7_ADD1_0  (0x1U<<16U)
+#define SYSCFG_UR3_BCM4_ADD1    (0xFFFFU<<0U)
+#define SYSCFG_UR3_BCM4_ADD1_0  (0x1U<<0U)
 
 // UR4 Configuration
 
-#define SYSCFG_UR4_MEPAD_1      (0x1U<<16)
-#define SYSCFG_UR4_BCM4_ADD1    (0xFFFFU<<0)
-#define SYSCFG_UR4_BCM4_ADD1_0  (0x1U<<0)
+#define SYSCFG_UR4_MEPAD_1      (0x1U<<16U)
+#define SYSCFG_UR4_BCM4_ADD1    (0xFFFFU<<0U)
+#define SYSCFG_UR4_BCM4_ADD1_0  (0x1U<<0U)
 
 // UR5 Configuration
 
-#define SYSCFG_UR5_WRPS_1       (0xFFU<<16)
-#define SYSCFG_UR5_WRPS_1_0     (0x1U<<16)
-#define SYSCFG_UR5_MESAD_1      (0x1U<<0)
+#define SYSCFG_UR5_WRPS_1       (0xFFU<<16U)
+#define SYSCFG_UR5_WRPS_1_0     (0x1U<<16U)
+#define SYSCFG_UR5_MESAD_1      (0x1U<<0U)
 
 // UR6 Configuration
 
-#define SYSCFG_UR6_PA_END_1     (0xFFFU<<16)
-#define SYSCFG_UR6_PA_END_1_0   (0x1U<<16)
-#define SYSCFG_UR6_PA_BEG_1     (0xFFFU<<0)
-#define SYSCFG_UR6_PA_BEG_1_0   (0x1U<<0)
+#define SYSCFG_UR6_PA_END_1     (0xFFFU<<16U)
+#define SYSCFG_UR6_PA_END_1_0   (0x1U<<16U)
+#define SYSCFG_UR6_PA_BEG_1     (0xFFFU<<0U)
+#define SYSCFG_UR6_PA_BEG_1_0   (0x1U<<0U)
 
 // UR7 Configuration
 
-#define SYSCFG_UR7_SA_END_1     (0xFFFU<<16)
-#define SYSCFG_UR7_SA_END_1_0   (0x1U<<16)
-#define SYSCFG_UR7_SA_BEG_1     (0xFFFU<<0)
-#define SYSCFG_UR7_SA_BEG_1_0   (0x1U<<0)
+#define SYSCFG_UR7_SA_END_1     (0xFFFU<<16U)
+#define SYSCFG_UR7_SA_END_1_0   (0x1U<<16U)
+#define SYSCFG_UR7_SA_BEG_1     (0xFFFU<<0U)
+#define SYSCFG_UR7_SA_BEG_1_0   (0x1U<<0U)
 
 // UR8 Configuration
 
-#define SYSCFG_UR8_MESAD_2      (0x1U<<16)
-#define SYSCFG_UR8_MEPAD_2      (0x1U<<0)
+#define SYSCFG_UR8_MESAD_2      (0x1U<<16U)
+#define SYSCFG_UR8_MEPAD_2      (0x1U<<0U)
 
 // UR9 Configuration
 
-#define SYSCFG_UR9_PA_BEG_2     (0xFFFU<<16)
-#define SYSCFG_UR9_PA_BEG_2_0   (0x1U<<16)
-#define SYSCFG_UR9_WRPS_2       (0xFFU<<0)
-#define SYSCFG_UR9_WRPS_2_0     (0x1U<<0)
+#define SYSCFG_UR9_PA_BEG_2     (0xFFFU<<16U)
+#define SYSCFG_UR9_PA_BEG_2_0   (0x1U<<16U)
+#define SYSCFG_UR9_WRPS_2       (0xFFU<<0U)
+#define SYSCFG_UR9_WRPS_2_0     (0x1U<<0U)
 
 // UR10 Configuration
 
-#define SYSCFG_UR10_SA_BEG_2    (0xFFFU<<16)
-#define SYSCFG_UR10_SA_BEG_2_0  (0x1U<<16)
-#define SYSCFG_UR10_PA_END_2    (0xFFFU<<0)
-#define SYSCFG_UR10_PA_END_2_0  (0x1U<<0)
+#define SYSCFG_UR10_SA_BEG_2    (0xFFFU<<16U)
+#define SYSCFG_UR10_SA_BEG_2_0  (0x1U<<16U)
+#define SYSCFG_UR10_PA_END_2    (0xFFFU<<0U)
+#define SYSCFG_UR10_PA_END_2_0  (0x1U<<0U)
 
 // UR11 Configuration
 
-#define SYSCFG_UR11_IWDG1M      (0x1U<<16)
-#define SYSCFG_UR11_SA_END_2    (0xFFFU<<0)
-#define SYSCFG_UR11_SA_END_2_0  (0x1U<<0)
+#define SYSCFG_UR11_IWDG1M      (0x1U<<16U)
+#define SYSCFG_UR11_SA_END_2    (0xFFFU<<0U)
+#define SYSCFG_UR11_SA_END_2_0  (0x1U<<0U)
 
 // UR12 Configuration
 
-#define SYSCFG_UR12_SECURE      (0x1U<<16)
-#define SYSCFG_UR12_IWDG2M      (0x1U<<0)
+#define SYSCFG_UR12_SECURE      (0x1U<<16U)
+#define SYSCFG_UR12_IWDG2M      (0x1U<<0U)
 
 // UR13 Configuration
 
-#define SYSCFG_UR13_D1SBRST     (0x1U<<16)
-#define SYSCFG_UR13_SDRS        (0x3U<<0)
-#define SYSCFG_UR13_SDRS_0      (0x1U<<0)
+#define SYSCFG_UR13_D1SBRST     (0x1U<<16U)
+#define SYSCFG_UR13_SDRS        (0x3U<<0U)
+#define SYSCFG_UR13_SDRS_0      (0x1U<<0U)
 
 // UR14 Configuration
 
-#define SYSCFG_UR14_D2SBRST     (0x1U<<16)
-#define SYSCFG_UR14_D1STPRST    (0x1U<<0)
+#define SYSCFG_UR14_D2SBRST     (0x1U<<16U)
+#define SYSCFG_UR14_D1STPRST    (0x1U<<0U)
 
 // UR15 Configuration
 
-#define SYSCFG_UR15_FZIWDGSTB   (0x1U<<16)
-#define SYSCFG_UR15_D2STPRST    (0x1U<<0)
+#define SYSCFG_UR15_FZIWDGSTB   (0x1U<<16U)
+#define SYSCFG_UR15_D2STPRST    (0x1U<<0U)
 
 // UR16 Configuration
 
-#define SYSCFG_UR16_PKP         (0x1U<<16)
-#define SYSCFG_UR16_FZIWDGSTP   (0x1U<<0)
+#define SYSCFG_UR16_PKP         (0x1U<<16U)
+#define SYSCFG_UR16_FZIWDGSTP   (0x1U<<0U)
 
 // UR17 Configuration
 
-#define SYSCFG_UR17_IO_HSLV     (0x1U<<0)
+#define SYSCFG_UR17_IO_HSLV     (0x1U<<0U)

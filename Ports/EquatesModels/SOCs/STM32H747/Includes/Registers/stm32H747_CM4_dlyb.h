@@ -31,15 +31,15 @@ typedef struct {
 
 // CR Configuration
 
-#define DLYB_CR_SEN         (0x1U<<1)
-#define DLYB_CR_DEN         (0x1U<<0)
+#define DLYB_CR_SEN         (0x1U<<1U)
+#define DLYB_CR_DEN         (0x1U<<0U)
 
 // CFGR Configuration
 
-#define DLYB_CFGR_LNGF      (0x1U<<31)
-#define DLYB_CFGR_LNG       (0xFFFU<<16)
-#define DLYB_CFGR_LNG_0     (0x1U<<16)
-#define DLYB_CFGR_UNIT      (0x7FU<<8)
-#define DLYB_CFGR_UNIT_0    (0x1U<<8)
-#define DLYB_CFGR_SEL       (0xFU<<0)
-#define DLYB_CFGR_SEL_0     (0x1U<<0)
+#define DLYB_CFGR_LNGF      (0x1U<<31U)
+#define DLYB_CFGR_LNG       (0xFFFU<<16U)
+#define DLYB_CFGR_LNG_0     (0x1U<<16U)
+#define DLYB_CFGR_UNIT      (0x7FU<<8U)
+#define DLYB_CFGR_UNIT_0    (0x1U<<8U)
+#define DLYB_CFGR_SEL       (0xFU<<0U)
+#define DLYB_CFGR_SEL_0     (0x1U<<0U)

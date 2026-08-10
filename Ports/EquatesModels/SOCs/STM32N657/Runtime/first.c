@@ -242,7 +242,7 @@ const   uintptr_t   g_pfnVectors_C0[] = {
     (uintptr_t)CTI1_C0_IRQHandler,                              // Address: 0x0000_033C
     (uintptr_t)0,                                               // Address: 0x0000_0340
     (uintptr_t)LTDC_UP_C0_IRQHandler,                           // Address: 0x0000_0344
-    (uintptr_t)LTDC_UP_ERR_C0_IRQHandler                        // Address: 0x0000_0348
+    (uintptr_t)LTDC_UP_ERR_C0_IRQHandler,                       // Address: 0x0000_0348
 };
 
 EXCEPTION_SPECIFIC_HANDLER(NonMaskableInt_C0)

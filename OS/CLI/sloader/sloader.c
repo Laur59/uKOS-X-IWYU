@@ -86,12 +86,12 @@ enum {
         KERR_S_LOADER_NOI,
         KERR_S_LOADER_FRA,
         KERR_S_LOADER_PAR,
-        KERR_S_LOADER_OUM
+        KERR_S_LOADER_OUM,
 };
 
 enum {
         KRUN = 0U,
-        KRUN_NO
+        KRUN_NO,
 };
 
 // Prototypes
@@ -217,7 +217,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
                     ramHeader.oModule         = nullptr;
                     memcpy((void *)linker_stUMemo, (const void *)&ramHeader, sizeof(ramHeader));
 
-                    return ((*code)(argc, argv));
+                    return (*code)(argc, argv);
                 }
 
                 (void)dprintf(KSYST, "\nS: failed to find the application signature!\n");
@@ -301,7 +301,7 @@ static  int32_t local_getHexValue(uint8_t *value) {
                                     8U,   9U,  0U,  0U,     // '8' '9' ':' ';'
                                     0U,   0U,  0U,  0U,     // '<' '=' '>' '?'
                                     0U,  10U, 11U, 12U,     // '@' 'A' 'B' 'C'
-                                   13U,  14U, 15U           // 'D' 'E' 'F'
+                                   13U,  14U, 15U,          // 'D' 'E' 'F'
                                 };
 
     *value = 0U;
@@ -315,8 +315,8 @@ static  int32_t local_getHexValue(uint8_t *value) {
     else { ; }
 
     status = local_getByte(&byte);  if (status != KERR_S_LOADER_NOT) { return status; }
-    if       ((byte >= '0') && (byte <= '9'))                                      { *value = *value + (uint8_t)(aTabAB[byte - (uint8_t)'0']);                       }
-    else if (((byte >= 'A') && (byte <= 'F')) || ((byte >= 'a') && (byte <= 'f'))) { *value = *value + (uint8_t)(aTabAB[(byte & (uint8_t)(~0x20U)) - (uint8_t)'0']); }
+    if       ((byte >= '0') && (byte <= '9'))                                      { *value = *value + (uint8_t)aTabAB[byte - (uint8_t)'0'];                       }
+    else if (((byte >= 'A') && (byte <= 'F')) || ((byte >= 'a') && (byte <= 'f'))) { *value = *value + (uint8_t)aTabAB[(byte & (uint8_t)(~0x20U)) - (uint8_t)'0']; }
     else { ; }
 
     return KERR_S_LOADER_NOT;

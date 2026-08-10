@@ -29,6 +29,6 @@ typedef struct {
 
 // MUTEX Configuration
 
-#define MUTEX_MUTEX_MUTEX           (0x1U<<0)
-#define MUTEX_MUTEX_MUTEX_UNLOCKED  (0x0U<<0)
-#define MUTEX_MUTEX_MUTEX_LOCKED    (0x1U<<0)
+#define MUTEX_MUTEX_MUTEX           (0x1U<<0U)
+#define MUTEX_MUTEX_MUTEX_UNLOCKED  (0x0U<<0U)
+#define MUTEX_MUTEX_MUTEX_LOCKED    (0x1U<<0U)

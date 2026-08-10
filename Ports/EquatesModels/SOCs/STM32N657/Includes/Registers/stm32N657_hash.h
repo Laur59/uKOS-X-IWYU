@@ -158,705 +158,705 @@ typedef struct {
 
 // CR Configuration
 
-#define HASH_CR_ALGO                (0xFU<<17)
-#define HASH_CR_ALGO_0              (0x1U<<17)
-#define HASH_CR_LKEY                (0x1U<<16)
-#define HASH_CR_MDMAT               (0x1U<<13)
-#define HASH_CR_DINNE               (0x1U<<12)
-#define HASH_CR_NBW                 (0xFU<<8)
-#define HASH_CR_NBW_0               (0x1U<<8)
-#define HASH_CR_MODE                (0x1U<<6)
-#define HASH_CR_DATATYPE            (0x3U<<4)
-#define HASH_CR_DATATYPE_0          (0x1U<<4)
-#define HASH_CR_DMAE                (0x1U<<3)
-#define HASH_CR_INIT                (0x1U<<2)
+#define HASH_CR_ALGO                (0xFU<<17U)
+#define HASH_CR_ALGO_0              (0x1U<<17U)
+#define HASH_CR_LKEY                (0x1U<<16U)
+#define HASH_CR_MDMAT               (0x1U<<13U)
+#define HASH_CR_DINNE               (0x1U<<12U)
+#define HASH_CR_NBW                 (0xFU<<8U)
+#define HASH_CR_NBW_0               (0x1U<<8U)
+#define HASH_CR_MODE                (0x1U<<6U)
+#define HASH_CR_DATATYPE            (0x3U<<4U)
+#define HASH_CR_DATATYPE_0          (0x1U<<4U)
+#define HASH_CR_DMAE                (0x1U<<3U)
+#define HASH_CR_INIT                (0x1U<<2U)
 
-#define HASH_CR_ALGO_B_0X0          (0x0U<<17)
-#define HASH_CR_ALGO_B_0X2          (0x2U<<17)
-#define HASH_CR_ALGO_B_0X3          (0x3U<<17)
-#define HASH_CR_ALGO_B_0XC          (0xCU<<17)
-#define HASH_CR_ALGO_B_0XD          (0xDU<<17)
-#define HASH_CR_ALGO_B_0XE          (0xEU<<17)
-#define HASH_CR_ALGO_B_0XF          (0xFU<<17)
-#define HASH_CR_LKEY_B_0X0          (0x0U<<16)
-#define HASH_CR_LKEY_B_0X1          (0x1U<<16)
-#define HASH_CR_MDMAT_B_0X0         (0x0U<<13)
-#define HASH_CR_MDMAT_B_0X1         (0x1U<<13)
-#define HASH_CR_MODE_B_0X0          (0x0U<<6)
-#define HASH_CR_MODE_B_0X1          (0x1U<<6)
-#define HASH_CR_DATATYPE_B_0X0      (0x0U<<4)
-#define HASH_CR_DATATYPE_B_0X1      (0x1U<<4)
-#define HASH_CR_DATATYPE_B_0X2      (0x2U<<4)
-#define HASH_CR_DATATYPE_B_0X3      (0x3U<<4)
-#define HASH_CR_DMAE_B_0X0          (0x0U<<3)
-#define HASH_CR_DMAE_B_0X1          (0x1U<<3)
+#define HASH_CR_ALGO_B_0X0          (0x0U<<17U)
+#define HASH_CR_ALGO_B_0X2          (0x2U<<17U)
+#define HASH_CR_ALGO_B_0X3          (0x3U<<17U)
+#define HASH_CR_ALGO_B_0XC          (0xCU<<17U)
+#define HASH_CR_ALGO_B_0XD          (0xDU<<17U)
+#define HASH_CR_ALGO_B_0XE          (0xEU<<17U)
+#define HASH_CR_ALGO_B_0XF          (0xFU<<17U)
+#define HASH_CR_LKEY_B_0X0          (0x0U<<16U)
+#define HASH_CR_LKEY_B_0X1          (0x1U<<16U)
+#define HASH_CR_MDMAT_B_0X0         (0x0U<<13U)
+#define HASH_CR_MDMAT_B_0X1         (0x1U<<13U)
+#define HASH_CR_MODE_B_0X0          (0x0U<<6U)
+#define HASH_CR_MODE_B_0X1          (0x1U<<6U)
+#define HASH_CR_DATATYPE_B_0X0      (0x0U<<4U)
+#define HASH_CR_DATATYPE_B_0X1      (0x1U<<4U)
+#define HASH_CR_DATATYPE_B_0X2      (0x2U<<4U)
+#define HASH_CR_DATATYPE_B_0X3      (0x3U<<4U)
+#define HASH_CR_DMAE_B_0X0          (0x0U<<3U)
+#define HASH_CR_DMAE_B_0X1          (0x1U<<3U)
 
 // DIN Configuration
 
-#define HASH_DIN_DATAIN             (0xFFFFFFFFU<<0)
-#define HASH_DIN_DATAIN_0           (0x1U<<0)
+#define HASH_DIN_DATAIN             (0xFFFFFFFFU<<0U)
+#define HASH_DIN_DATAIN_0           (0x1U<<0U)
 
 // STR Configuration
 
-#define HASH_STR_DCAL               (0x1U<<8)
-#define HASH_STR_NBLW               (0x1FU<<0)
-#define HASH_STR_NBLW_0             (0x1U<<0)
+#define HASH_STR_DCAL               (0x1U<<8U)
+#define HASH_STR_NBLW               (0x1FU<<0U)
+#define HASH_STR_NBLW_0             (0x1U<<0U)
 
-#define HASH_STR_NBLW_B_0X00        (0x0U<<0)
-#define HASH_STR_NBLW_B_0X01        (0x1U<<0)
-#define HASH_STR_NBLW_B_0X02        (0x2U<<0)
-#define HASH_STR_NBLW_B_0X03        (0x3U<<0)
-#define HASH_STR_NBLW_B_0X1F        (0x1FU<<0)
+#define HASH_STR_NBLW_B_0X00        (0x0U<<0U)
+#define HASH_STR_NBLW_B_0X01        (0x1U<<0U)
+#define HASH_STR_NBLW_B_0X02        (0x2U<<0U)
+#define HASH_STR_NBLW_B_0X03        (0x3U<<0U)
+#define HASH_STR_NBLW_B_0X1F        (0x1FU<<0U)
 
 // HRA0 Configuration
 
-#define HASH_HRA0_H0                (0xFFFFFFFFU<<0)
-#define HASH_HRA0_H0_0              (0x1U<<0)
+#define HASH_HRA0_H0                (0xFFFFFFFFU<<0U)
+#define HASH_HRA0_H0_0              (0x1U<<0U)
 
 // HRA1 Configuration
 
-#define HASH_HRA1_H1                (0xFFFFFFFFU<<0)
-#define HASH_HRA1_H1_0              (0x1U<<0)
+#define HASH_HRA1_H1                (0xFFFFFFFFU<<0U)
+#define HASH_HRA1_H1_0              (0x1U<<0U)
 
 // HRA2 Configuration
 
-#define HASH_HRA2_H2                (0xFFFFFFFFU<<0)
-#define HASH_HRA2_H2_0              (0x1U<<0)
+#define HASH_HRA2_H2                (0xFFFFFFFFU<<0U)
+#define HASH_HRA2_H2_0              (0x1U<<0U)
 
 // HRA3 Configuration
 
-#define HASH_HRA3_H3                (0xFFFFFFFFU<<0)
-#define HASH_HRA3_H3_0              (0x1U<<0)
+#define HASH_HRA3_H3                (0xFFFFFFFFU<<0U)
+#define HASH_HRA3_H3_0              (0x1U<<0U)
 
 // HRA4 Configuration
 
-#define HASH_HRA4_H4                (0xFFFFFFFFU<<0)
-#define HASH_HRA4_H4_0              (0x1U<<0)
+#define HASH_HRA4_H4                (0xFFFFFFFFU<<0U)
+#define HASH_HRA4_H4_0              (0x1U<<0U)
 
 // IMR Configuration
 
-#define HASH_IMR_DCIE               (0x1U<<1)
-#define HASH_IMR_DINIE              (0x1U<<0)
+#define HASH_IMR_DCIE               (0x1U<<1U)
+#define HASH_IMR_DINIE              (0x1U<<0U)
 
-#define HASH_IMR_DCIE_B_0X0         (0x0U<<1)
-#define HASH_IMR_DCIE_B_0X1         (0x1U<<1)
-#define HASH_IMR_DINIE_B_0X0        (0x0U<<0)
-#define HASH_IMR_DINIE_B_0X1        (0x1U<<0)
+#define HASH_IMR_DCIE_B_0X0         (0x0U<<1U)
+#define HASH_IMR_DCIE_B_0X1         (0x1U<<1U)
+#define HASH_IMR_DINIE_B_0X0        (0x0U<<0U)
+#define HASH_IMR_DINIE_B_0X1        (0x1U<<0U)
 
 // SR Configuration
 
-#define HASH_SR_NBWE                (0x1FU<<16)
-#define HASH_SR_NBWE_0              (0x1U<<16)
-#define HASH_SR_DINNE               (0x1U<<15)
-#define HASH_SR_NBWP                (0x1FU<<9)
-#define HASH_SR_NBWP_0              (0x1U<<9)
-#define HASH_SR_BUSY                (0x1U<<3)
-#define HASH_SR_DMAS                (0x1U<<2)
-#define HASH_SR_DCIS                (0x1U<<1)
-#define HASH_SR_DINIS               (0x1U<<0)
+#define HASH_SR_NBWE                (0x1FU<<16U)
+#define HASH_SR_NBWE_0              (0x1U<<16U)
+#define HASH_SR_DINNE               (0x1U<<15U)
+#define HASH_SR_NBWP                (0x1FU<<9U)
+#define HASH_SR_NBWP_0              (0x1U<<9U)
+#define HASH_SR_BUSY                (0x1U<<3U)
+#define HASH_SR_DMAS                (0x1U<<2U)
+#define HASH_SR_DCIS                (0x1U<<1U)
+#define HASH_SR_DINIS               (0x1U<<0U)
 
-#define HASH_SR_DINNE_B_0X0         (0x0U<<15)
-#define HASH_SR_DINNE_B_0X1         (0x1U<<15)
-#define HASH_SR_BUSY_B_0X0          (0x0U<<3)
-#define HASH_SR_BUSY_B_0X1          (0x1U<<3)
-#define HASH_SR_DMAS_B_0X0          (0x0U<<2)
-#define HASH_SR_DMAS_B_0X1          (0x1U<<2)
-#define HASH_SR_DCIS_B_0X0          (0x0U<<1)
-#define HASH_SR_DCIS_B_0X1          (0x1U<<1)
-#define HASH_SR_DINIS_B_0X0         (0x0U<<0)
-#define HASH_SR_DINIS_B_0X1         (0x1U<<0)
+#define HASH_SR_DINNE_B_0X0         (0x0U<<15U)
+#define HASH_SR_DINNE_B_0X1         (0x1U<<15U)
+#define HASH_SR_BUSY_B_0X0          (0x0U<<3U)
+#define HASH_SR_BUSY_B_0X1          (0x1U<<3U)
+#define HASH_SR_DMAS_B_0X0          (0x0U<<2U)
+#define HASH_SR_DMAS_B_0X1          (0x1U<<2U)
+#define HASH_SR_DCIS_B_0X0          (0x0U<<1U)
+#define HASH_SR_DCIS_B_0X1          (0x1U<<1U)
+#define HASH_SR_DINIS_B_0X0         (0x0U<<0U)
+#define HASH_SR_DINIS_B_0X1         (0x1U<<0U)
 
 // CSR0 Configuration
 
-#define HASH_CSR0_CS0               (0xFFFFFFFFU<<0)
-#define HASH_CSR0_CS0_0             (0x1U<<0)
+#define HASH_CSR0_CS0               (0xFFFFFFFFU<<0U)
+#define HASH_CSR0_CS0_0             (0x1U<<0U)
 
 // CSR1 Configuration
 
-#define HASH_CSR1_CS1               (0xFFFFFFFFU<<0)
-#define HASH_CSR1_CS1_0             (0x1U<<0)
+#define HASH_CSR1_CS1               (0xFFFFFFFFU<<0U)
+#define HASH_CSR1_CS1_0             (0x1U<<0U)
 
 // CSR2 Configuration
 
-#define HASH_CSR2_CS2               (0xFFFFFFFFU<<0)
-#define HASH_CSR2_CS2_0             (0x1U<<0)
+#define HASH_CSR2_CS2               (0xFFFFFFFFU<<0U)
+#define HASH_CSR2_CS2_0             (0x1U<<0U)
 
 // CSR3 Configuration
 
-#define HASH_CSR3_CS3               (0xFFFFFFFFU<<0)
-#define HASH_CSR3_CS3_0             (0x1U<<0)
+#define HASH_CSR3_CS3               (0xFFFFFFFFU<<0U)
+#define HASH_CSR3_CS3_0             (0x1U<<0U)
 
 // CSR4 Configuration
 
-#define HASH_CSR4_CS4               (0xFFFFFFFFU<<0)
-#define HASH_CSR4_CS4_0             (0x1U<<0)
+#define HASH_CSR4_CS4               (0xFFFFFFFFU<<0U)
+#define HASH_CSR4_CS4_0             (0x1U<<0U)
 
 // CSR5 Configuration
 
-#define HASH_CSR5_CS5               (0xFFFFFFFFU<<0)
-#define HASH_CSR5_CS5_0             (0x1U<<0)
+#define HASH_CSR5_CS5               (0xFFFFFFFFU<<0U)
+#define HASH_CSR5_CS5_0             (0x1U<<0U)
 
 // CSR6 Configuration
 
-#define HASH_CSR6_CS6               (0xFFFFFFFFU<<0)
-#define HASH_CSR6_CS6_0             (0x1U<<0)
+#define HASH_CSR6_CS6               (0xFFFFFFFFU<<0U)
+#define HASH_CSR6_CS6_0             (0x1U<<0U)
 
 // CSR7 Configuration
 
-#define HASH_CSR7_CS7               (0xFFFFFFFFU<<0)
-#define HASH_CSR7_CS7_0             (0x1U<<0)
+#define HASH_CSR7_CS7               (0xFFFFFFFFU<<0U)
+#define HASH_CSR7_CS7_0             (0x1U<<0U)
 
 // CSR8 Configuration
 
-#define HASH_CSR8_CS8               (0xFFFFFFFFU<<0)
-#define HASH_CSR8_CS8_0             (0x1U<<0)
+#define HASH_CSR8_CS8               (0xFFFFFFFFU<<0U)
+#define HASH_CSR8_CS8_0             (0x1U<<0U)
 
 // CSR9 Configuration
 
-#define HASH_CSR9_CS9               (0xFFFFFFFFU<<0)
-#define HASH_CSR9_CS9_0             (0x1U<<0)
+#define HASH_CSR9_CS9               (0xFFFFFFFFU<<0U)
+#define HASH_CSR9_CS9_0             (0x1U<<0U)
 
 // CSR10 Configuration
 
-#define HASH_CSR10_CS10             (0xFFFFFFFFU<<0)
-#define HASH_CSR10_CS10_0           (0x1U<<0)
+#define HASH_CSR10_CS10             (0xFFFFFFFFU<<0U)
+#define HASH_CSR10_CS10_0           (0x1U<<0U)
 
 // CSR11 Configuration
 
-#define HASH_CSR11_CS11             (0xFFFFFFFFU<<0)
-#define HASH_CSR11_CS11_0           (0x1U<<0)
+#define HASH_CSR11_CS11             (0xFFFFFFFFU<<0U)
+#define HASH_CSR11_CS11_0           (0x1U<<0U)
 
 // CSR12 Configuration
 
-#define HASH_CSR12_CS12             (0xFFFFFFFFU<<0)
-#define HASH_CSR12_CS12_0           (0x1U<<0)
+#define HASH_CSR12_CS12             (0xFFFFFFFFU<<0U)
+#define HASH_CSR12_CS12_0           (0x1U<<0U)
 
 // CSR13 Configuration
 
-#define HASH_CSR13_CS13             (0xFFFFFFFFU<<0)
-#define HASH_CSR13_CS13_0           (0x1U<<0)
+#define HASH_CSR13_CS13             (0xFFFFFFFFU<<0U)
+#define HASH_CSR13_CS13_0           (0x1U<<0U)
 
 // CSR14 Configuration
 
-#define HASH_CSR14_CS14             (0xFFFFFFFFU<<0)
-#define HASH_CSR14_CS14_0           (0x1U<<0)
+#define HASH_CSR14_CS14             (0xFFFFFFFFU<<0U)
+#define HASH_CSR14_CS14_0           (0x1U<<0U)
 
 // CSR15 Configuration
 
-#define HASH_CSR15_CS15             (0xFFFFFFFFU<<0)
-#define HASH_CSR15_CS15_0           (0x1U<<0)
+#define HASH_CSR15_CS15             (0xFFFFFFFFU<<0U)
+#define HASH_CSR15_CS15_0           (0x1U<<0U)
 
 // CSR16 Configuration
 
-#define HASH_CSR16_CS16             (0xFFFFFFFFU<<0)
-#define HASH_CSR16_CS16_0           (0x1U<<0)
+#define HASH_CSR16_CS16             (0xFFFFFFFFU<<0U)
+#define HASH_CSR16_CS16_0           (0x1U<<0U)
 
 // CSR17 Configuration
 
-#define HASH_CSR17_CS17             (0xFFFFFFFFU<<0)
-#define HASH_CSR17_CS17_0           (0x1U<<0)
+#define HASH_CSR17_CS17             (0xFFFFFFFFU<<0U)
+#define HASH_CSR17_CS17_0           (0x1U<<0U)
 
 // CSR18 Configuration
 
-#define HASH_CSR18_CS18             (0xFFFFFFFFU<<0)
-#define HASH_CSR18_CS18_0           (0x1U<<0)
+#define HASH_CSR18_CS18             (0xFFFFFFFFU<<0U)
+#define HASH_CSR18_CS18_0           (0x1U<<0U)
 
 // CSR19 Configuration
 
-#define HASH_CSR19_CS19             (0xFFFFFFFFU<<0)
-#define HASH_CSR19_CS19_0           (0x1U<<0)
+#define HASH_CSR19_CS19             (0xFFFFFFFFU<<0U)
+#define HASH_CSR19_CS19_0           (0x1U<<0U)
 
 // CSR20 Configuration
 
-#define HASH_CSR20_CS20             (0xFFFFFFFFU<<0)
-#define HASH_CSR20_CS20_0           (0x1U<<0)
+#define HASH_CSR20_CS20             (0xFFFFFFFFU<<0U)
+#define HASH_CSR20_CS20_0           (0x1U<<0U)
 
 // CSR21 Configuration
 
-#define HASH_CSR21_CS21             (0xFFFFFFFFU<<0)
-#define HASH_CSR21_CS21_0           (0x1U<<0)
+#define HASH_CSR21_CS21             (0xFFFFFFFFU<<0U)
+#define HASH_CSR21_CS21_0           (0x1U<<0U)
 
 // CSR22 Configuration
 
-#define HASH_CSR22_CS22             (0xFFFFFFFFU<<0)
-#define HASH_CSR22_CS22_0           (0x1U<<0)
+#define HASH_CSR22_CS22             (0xFFFFFFFFU<<0U)
+#define HASH_CSR22_CS22_0           (0x1U<<0U)
 
 // CSR23 Configuration
 
-#define HASH_CSR23_CS23             (0xFFFFFFFFU<<0)
-#define HASH_CSR23_CS23_0           (0x1U<<0)
+#define HASH_CSR23_CS23             (0xFFFFFFFFU<<0U)
+#define HASH_CSR23_CS23_0           (0x1U<<0U)
 
 // CSR24 Configuration
 
-#define HASH_CSR24_CS24             (0xFFFFFFFFU<<0)
-#define HASH_CSR24_CS24_0           (0x1U<<0)
+#define HASH_CSR24_CS24             (0xFFFFFFFFU<<0U)
+#define HASH_CSR24_CS24_0           (0x1U<<0U)
 
 // CSR25 Configuration
 
-#define HASH_CSR25_CS25             (0xFFFFFFFFU<<0)
-#define HASH_CSR25_CS25_0           (0x1U<<0)
+#define HASH_CSR25_CS25             (0xFFFFFFFFU<<0U)
+#define HASH_CSR25_CS25_0           (0x1U<<0U)
 
 // CSR26 Configuration
 
-#define HASH_CSR26_CS26             (0xFFFFFFFFU<<0)
-#define HASH_CSR26_CS26_0           (0x1U<<0)
+#define HASH_CSR26_CS26             (0xFFFFFFFFU<<0U)
+#define HASH_CSR26_CS26_0           (0x1U<<0U)
 
 // CSR27 Configuration
 
-#define HASH_CSR27_CS27             (0xFFFFFFFFU<<0)
-#define HASH_CSR27_CS27_0           (0x1U<<0)
+#define HASH_CSR27_CS27             (0xFFFFFFFFU<<0U)
+#define HASH_CSR27_CS27_0           (0x1U<<0U)
 
 // CSR28 Configuration
 
-#define HASH_CSR28_CS28             (0xFFFFFFFFU<<0)
-#define HASH_CSR28_CS28_0           (0x1U<<0)
+#define HASH_CSR28_CS28             (0xFFFFFFFFU<<0U)
+#define HASH_CSR28_CS28_0           (0x1U<<0U)
 
 // CSR29 Configuration
 
-#define HASH_CSR29_CS29             (0xFFFFFFFFU<<0)
-#define HASH_CSR29_CS29_0           (0x1U<<0)
+#define HASH_CSR29_CS29             (0xFFFFFFFFU<<0U)
+#define HASH_CSR29_CS29_0           (0x1U<<0U)
 
 // CSR30 Configuration
 
-#define HASH_CSR30_CS30             (0xFFFFFFFFU<<0)
-#define HASH_CSR30_CS30_0           (0x1U<<0)
+#define HASH_CSR30_CS30             (0xFFFFFFFFU<<0U)
+#define HASH_CSR30_CS30_0           (0x1U<<0U)
 
 // CSR31 Configuration
 
-#define HASH_CSR31_CS31             (0xFFFFFFFFU<<0)
-#define HASH_CSR31_CS31_0           (0x1U<<0)
+#define HASH_CSR31_CS31             (0xFFFFFFFFU<<0U)
+#define HASH_CSR31_CS31_0           (0x1U<<0U)
 
 // CSR32 Configuration
 
-#define HASH_CSR32_CS32             (0xFFFFFFFFU<<0)
-#define HASH_CSR32_CS32_0           (0x1U<<0)
+#define HASH_CSR32_CS32             (0xFFFFFFFFU<<0U)
+#define HASH_CSR32_CS32_0           (0x1U<<0U)
 
 // CSR33 Configuration
 
-#define HASH_CSR33_CS33             (0xFFFFFFFFU<<0)
-#define HASH_CSR33_CS33_0           (0x1U<<0)
+#define HASH_CSR33_CS33             (0xFFFFFFFFU<<0U)
+#define HASH_CSR33_CS33_0           (0x1U<<0U)
 
 // CSR34 Configuration
 
-#define HASH_CSR34_CS34             (0xFFFFFFFFU<<0)
-#define HASH_CSR34_CS34_0           (0x1U<<0)
+#define HASH_CSR34_CS34             (0xFFFFFFFFU<<0U)
+#define HASH_CSR34_CS34_0           (0x1U<<0U)
 
 // CSR35 Configuration
 
-#define HASH_CSR35_CS35             (0xFFFFFFFFU<<0)
-#define HASH_CSR35_CS35_0           (0x1U<<0)
+#define HASH_CSR35_CS35             (0xFFFFFFFFU<<0U)
+#define HASH_CSR35_CS35_0           (0x1U<<0U)
 
 // CSR36 Configuration
 
-#define HASH_CSR36_CS36             (0xFFFFFFFFU<<0)
-#define HASH_CSR36_CS36_0           (0x1U<<0)
+#define HASH_CSR36_CS36             (0xFFFFFFFFU<<0U)
+#define HASH_CSR36_CS36_0           (0x1U<<0U)
 
 // CSR37 Configuration
 
-#define HASH_CSR37_CS37             (0xFFFFFFFFU<<0)
-#define HASH_CSR37_CS37_0           (0x1U<<0)
+#define HASH_CSR37_CS37             (0xFFFFFFFFU<<0U)
+#define HASH_CSR37_CS37_0           (0x1U<<0U)
 
 // CSR38 Configuration
 
-#define HASH_CSR38_CS38             (0xFFFFFFFFU<<0)
-#define HASH_CSR38_CS38_0           (0x1U<<0)
+#define HASH_CSR38_CS38             (0xFFFFFFFFU<<0U)
+#define HASH_CSR38_CS38_0           (0x1U<<0U)
 
 // CSR39 Configuration
 
-#define HASH_CSR39_CS39             (0xFFFFFFFFU<<0)
-#define HASH_CSR39_CS39_0           (0x1U<<0)
+#define HASH_CSR39_CS39             (0xFFFFFFFFU<<0U)
+#define HASH_CSR39_CS39_0           (0x1U<<0U)
 
 // CSR40 Configuration
 
-#define HASH_CSR40_CS40             (0xFFFFFFFFU<<0)
-#define HASH_CSR40_CS40_0           (0x1U<<0)
+#define HASH_CSR40_CS40             (0xFFFFFFFFU<<0U)
+#define HASH_CSR40_CS40_0           (0x1U<<0U)
 
 // CSR41 Configuration
 
-#define HASH_CSR41_CS41             (0xFFFFFFFFU<<0)
-#define HASH_CSR41_CS41_0           (0x1U<<0)
+#define HASH_CSR41_CS41             (0xFFFFFFFFU<<0U)
+#define HASH_CSR41_CS41_0           (0x1U<<0U)
 
 // CSR42 Configuration
 
-#define HASH_CSR42_CS42             (0xFFFFFFFFU<<0)
-#define HASH_CSR42_CS42_0           (0x1U<<0)
+#define HASH_CSR42_CS42             (0xFFFFFFFFU<<0U)
+#define HASH_CSR42_CS42_0           (0x1U<<0U)
 
 // CSR43 Configuration
 
-#define HASH_CSR43_CS43             (0xFFFFFFFFU<<0)
-#define HASH_CSR43_CS43_0           (0x1U<<0)
+#define HASH_CSR43_CS43             (0xFFFFFFFFU<<0U)
+#define HASH_CSR43_CS43_0           (0x1U<<0U)
 
 // CSR44 Configuration
 
-#define HASH_CSR44_CS44             (0xFFFFFFFFU<<0)
-#define HASH_CSR44_CS44_0           (0x1U<<0)
+#define HASH_CSR44_CS44             (0xFFFFFFFFU<<0U)
+#define HASH_CSR44_CS44_0           (0x1U<<0U)
 
 // CSR45 Configuration
 
-#define HASH_CSR45_CS45             (0xFFFFFFFFU<<0)
-#define HASH_CSR45_CS45_0           (0x1U<<0)
+#define HASH_CSR45_CS45             (0xFFFFFFFFU<<0U)
+#define HASH_CSR45_CS45_0           (0x1U<<0U)
 
 // CSR46 Configuration
 
-#define HASH_CSR46_CS46             (0xFFFFFFFFU<<0)
-#define HASH_CSR46_CS46_0           (0x1U<<0)
+#define HASH_CSR46_CS46             (0xFFFFFFFFU<<0U)
+#define HASH_CSR46_CS46_0           (0x1U<<0U)
 
 // CSR47 Configuration
 
-#define HASH_CSR47_CS47             (0xFFFFFFFFU<<0)
-#define HASH_CSR47_CS47_0           (0x1U<<0)
+#define HASH_CSR47_CS47             (0xFFFFFFFFU<<0U)
+#define HASH_CSR47_CS47_0           (0x1U<<0U)
 
 // CSR48 Configuration
 
-#define HASH_CSR48_CS48             (0xFFFFFFFFU<<0)
-#define HASH_CSR48_CS48_0           (0x1U<<0)
+#define HASH_CSR48_CS48             (0xFFFFFFFFU<<0U)
+#define HASH_CSR48_CS48_0           (0x1U<<0U)
 
 // CSR49 Configuration
 
-#define HASH_CSR49_CS49             (0xFFFFFFFFU<<0)
-#define HASH_CSR49_CS49_0           (0x1U<<0)
+#define HASH_CSR49_CS49             (0xFFFFFFFFU<<0U)
+#define HASH_CSR49_CS49_0           (0x1U<<0U)
 
 // CSR50 Configuration
 
-#define HASH_CSR50_CS50             (0xFFFFFFFFU<<0)
-#define HASH_CSR50_CS50_0           (0x1U<<0)
+#define HASH_CSR50_CS50             (0xFFFFFFFFU<<0U)
+#define HASH_CSR50_CS50_0           (0x1U<<0U)
 
 // CSR51 Configuration
 
-#define HASH_CSR51_CS51             (0xFFFFFFFFU<<0)
-#define HASH_CSR51_CS51_0           (0x1U<<0)
+#define HASH_CSR51_CS51             (0xFFFFFFFFU<<0U)
+#define HASH_CSR51_CS51_0           (0x1U<<0U)
 
 // CSR52 Configuration
 
-#define HASH_CSR52_CS52             (0xFFFFFFFFU<<0)
-#define HASH_CSR52_CS52_0           (0x1U<<0)
+#define HASH_CSR52_CS52             (0xFFFFFFFFU<<0U)
+#define HASH_CSR52_CS52_0           (0x1U<<0U)
 
 // CSR53 Configuration
 
-#define HASH_CSR53_CS53             (0xFFFFFFFFU<<0)
-#define HASH_CSR53_CS53_0           (0x1U<<0)
+#define HASH_CSR53_CS53             (0xFFFFFFFFU<<0U)
+#define HASH_CSR53_CS53_0           (0x1U<<0U)
 
 // CSR54 Configuration
 
-#define HASH_CSR54_CS54             (0xFFFFFFFFU<<0)
-#define HASH_CSR54_CS54_0           (0x1U<<0)
+#define HASH_CSR54_CS54             (0xFFFFFFFFU<<0U)
+#define HASH_CSR54_CS54_0           (0x1U<<0U)
 
 // CSR55 Configuration
 
-#define HASH_CSR55_CS55             (0xFFFFFFFFU<<0)
-#define HASH_CSR55_CS55_0           (0x1U<<0)
+#define HASH_CSR55_CS55             (0xFFFFFFFFU<<0U)
+#define HASH_CSR55_CS55_0           (0x1U<<0U)
 
 // CSR56 Configuration
 
-#define HASH_CSR56_CS56             (0xFFFFFFFFU<<0)
-#define HASH_CSR56_CS56_0           (0x1U<<0)
+#define HASH_CSR56_CS56             (0xFFFFFFFFU<<0U)
+#define HASH_CSR56_CS56_0           (0x1U<<0U)
 
 // CSR57 Configuration
 
-#define HASH_CSR57_CS57             (0xFFFFFFFFU<<0)
-#define HASH_CSR57_CS57_0           (0x1U<<0)
+#define HASH_CSR57_CS57             (0xFFFFFFFFU<<0U)
+#define HASH_CSR57_CS57_0           (0x1U<<0U)
 
 // CSR58 Configuration
 
-#define HASH_CSR58_CS58             (0xFFFFFFFFU<<0)
-#define HASH_CSR58_CS58_0           (0x1U<<0)
+#define HASH_CSR58_CS58             (0xFFFFFFFFU<<0U)
+#define HASH_CSR58_CS58_0           (0x1U<<0U)
 
 // CSR59 Configuration
 
-#define HASH_CSR59_CS59             (0xFFFFFFFFU<<0)
-#define HASH_CSR59_CS59_0           (0x1U<<0)
+#define HASH_CSR59_CS59             (0xFFFFFFFFU<<0U)
+#define HASH_CSR59_CS59_0           (0x1U<<0U)
 
 // CSR60 Configuration
 
-#define HASH_CSR60_CS60             (0xFFFFFFFFU<<0)
-#define HASH_CSR60_CS60_0           (0x1U<<0)
+#define HASH_CSR60_CS60             (0xFFFFFFFFU<<0U)
+#define HASH_CSR60_CS60_0           (0x1U<<0U)
 
 // CSR61 Configuration
 
-#define HASH_CSR61_CS61             (0xFFFFFFFFU<<0)
-#define HASH_CSR61_CS61_0           (0x1U<<0)
+#define HASH_CSR61_CS61             (0xFFFFFFFFU<<0U)
+#define HASH_CSR61_CS61_0           (0x1U<<0U)
 
 // CSR62 Configuration
 
-#define HASH_CSR62_CS62             (0xFFFFFFFFU<<0)
-#define HASH_CSR62_CS62_0           (0x1U<<0)
+#define HASH_CSR62_CS62             (0xFFFFFFFFU<<0U)
+#define HASH_CSR62_CS62_0           (0x1U<<0U)
 
 // CSR63 Configuration
 
-#define HASH_CSR63_CS63             (0xFFFFFFFFU<<0)
-#define HASH_CSR63_CS63_0           (0x1U<<0)
+#define HASH_CSR63_CS63             (0xFFFFFFFFU<<0U)
+#define HASH_CSR63_CS63_0           (0x1U<<0U)
 
 // CSR64 Configuration
 
-#define HASH_CSR64_CS64             (0xFFFFFFFFU<<0)
-#define HASH_CSR64_CS64_0           (0x1U<<0)
+#define HASH_CSR64_CS64             (0xFFFFFFFFU<<0U)
+#define HASH_CSR64_CS64_0           (0x1U<<0U)
 
 // CSR65 Configuration
 
-#define HASH_CSR65_CS65             (0xFFFFFFFFU<<0)
-#define HASH_CSR65_CS65_0           (0x1U<<0)
+#define HASH_CSR65_CS65             (0xFFFFFFFFU<<0U)
+#define HASH_CSR65_CS65_0           (0x1U<<0U)
 
 // CSR66 Configuration
 
-#define HASH_CSR66_CS66             (0xFFFFFFFFU<<0)
-#define HASH_CSR66_CS66_0           (0x1U<<0)
+#define HASH_CSR66_CS66             (0xFFFFFFFFU<<0U)
+#define HASH_CSR66_CS66_0           (0x1U<<0U)
 
 // CSR67 Configuration
 
-#define HASH_CSR67_CS67             (0xFFFFFFFFU<<0)
-#define HASH_CSR67_CS67_0           (0x1U<<0)
+#define HASH_CSR67_CS67             (0xFFFFFFFFU<<0U)
+#define HASH_CSR67_CS67_0           (0x1U<<0U)
 
 // CSR68 Configuration
 
-#define HASH_CSR68_CS68             (0xFFFFFFFFU<<0)
-#define HASH_CSR68_CS68_0           (0x1U<<0)
+#define HASH_CSR68_CS68             (0xFFFFFFFFU<<0U)
+#define HASH_CSR68_CS68_0           (0x1U<<0U)
 
 // CSR69 Configuration
 
-#define HASH_CSR69_CS69             (0xFFFFFFFFU<<0)
-#define HASH_CSR69_CS69_0           (0x1U<<0)
+#define HASH_CSR69_CS69             (0xFFFFFFFFU<<0U)
+#define HASH_CSR69_CS69_0           (0x1U<<0U)
 
 // CSR70 Configuration
 
-#define HASH_CSR70_CS70             (0xFFFFFFFFU<<0)
-#define HASH_CSR70_CS70_0           (0x1U<<0)
+#define HASH_CSR70_CS70             (0xFFFFFFFFU<<0U)
+#define HASH_CSR70_CS70_0           (0x1U<<0U)
 
 // CSR71 Configuration
 
-#define HASH_CSR71_CS71             (0xFFFFFFFFU<<0)
-#define HASH_CSR71_CS71_0           (0x1U<<0)
+#define HASH_CSR71_CS71             (0xFFFFFFFFU<<0U)
+#define HASH_CSR71_CS71_0           (0x1U<<0U)
 
 // CSR72 Configuration
 
-#define HASH_CSR72_CS72             (0xFFFFFFFFU<<0)
-#define HASH_CSR72_CS72_0           (0x1U<<0)
+#define HASH_CSR72_CS72             (0xFFFFFFFFU<<0U)
+#define HASH_CSR72_CS72_0           (0x1U<<0U)
 
 // CSR73 Configuration
 
-#define HASH_CSR73_CS73             (0xFFFFFFFFU<<0)
-#define HASH_CSR73_CS73_0           (0x1U<<0)
+#define HASH_CSR73_CS73             (0xFFFFFFFFU<<0U)
+#define HASH_CSR73_CS73_0           (0x1U<<0U)
 
 // CSR74 Configuration
 
-#define HASH_CSR74_CS74             (0xFFFFFFFFU<<0)
-#define HASH_CSR74_CS74_0           (0x1U<<0)
+#define HASH_CSR74_CS74             (0xFFFFFFFFU<<0U)
+#define HASH_CSR74_CS74_0           (0x1U<<0U)
 
 // CSR75 Configuration
 
-#define HASH_CSR75_CS75             (0xFFFFFFFFU<<0)
-#define HASH_CSR75_CS75_0           (0x1U<<0)
+#define HASH_CSR75_CS75             (0xFFFFFFFFU<<0U)
+#define HASH_CSR75_CS75_0           (0x1U<<0U)
 
 // CSR76 Configuration
 
-#define HASH_CSR76_CS76             (0xFFFFFFFFU<<0)
-#define HASH_CSR76_CS76_0           (0x1U<<0)
+#define HASH_CSR76_CS76             (0xFFFFFFFFU<<0U)
+#define HASH_CSR76_CS76_0           (0x1U<<0U)
 
 // CSR77 Configuration
 
-#define HASH_CSR77_CS77             (0xFFFFFFFFU<<0)
-#define HASH_CSR77_CS77_0           (0x1U<<0)
+#define HASH_CSR77_CS77             (0xFFFFFFFFU<<0U)
+#define HASH_CSR77_CS77_0           (0x1U<<0U)
 
 // CSR78 Configuration
 
-#define HASH_CSR78_CS78             (0xFFFFFFFFU<<0)
-#define HASH_CSR78_CS78_0           (0x1U<<0)
+#define HASH_CSR78_CS78             (0xFFFFFFFFU<<0U)
+#define HASH_CSR78_CS78_0           (0x1U<<0U)
 
 // CSR79 Configuration
 
-#define HASH_CSR79_CS79             (0xFFFFFFFFU<<0)
-#define HASH_CSR79_CS79_0           (0x1U<<0)
+#define HASH_CSR79_CS79             (0xFFFFFFFFU<<0U)
+#define HASH_CSR79_CS79_0           (0x1U<<0U)
 
 // CSR80 Configuration
 
-#define HASH_CSR80_CS80             (0xFFFFFFFFU<<0)
-#define HASH_CSR80_CS80_0           (0x1U<<0)
+#define HASH_CSR80_CS80             (0xFFFFFFFFU<<0U)
+#define HASH_CSR80_CS80_0           (0x1U<<0U)
 
 // CSR81 Configuration
 
-#define HASH_CSR81_CS81             (0xFFFFFFFFU<<0)
-#define HASH_CSR81_CS81_0           (0x1U<<0)
+#define HASH_CSR81_CS81             (0xFFFFFFFFU<<0U)
+#define HASH_CSR81_CS81_0           (0x1U<<0U)
 
 // CSR82 Configuration
 
-#define HASH_CSR82_CS82             (0xFFFFFFFFU<<0)
-#define HASH_CSR82_CS82_0           (0x1U<<0)
+#define HASH_CSR82_CS82             (0xFFFFFFFFU<<0U)
+#define HASH_CSR82_CS82_0           (0x1U<<0U)
 
 // CSR83 Configuration
 
-#define HASH_CSR83_CS83             (0xFFFFFFFFU<<0)
-#define HASH_CSR83_CS83_0           (0x1U<<0)
+#define HASH_CSR83_CS83             (0xFFFFFFFFU<<0U)
+#define HASH_CSR83_CS83_0           (0x1U<<0U)
 
 // CSR84 Configuration
 
-#define HASH_CSR84_CS84             (0xFFFFFFFFU<<0)
-#define HASH_CSR84_CS84_0           (0x1U<<0)
+#define HASH_CSR84_CS84             (0xFFFFFFFFU<<0U)
+#define HASH_CSR84_CS84_0           (0x1U<<0U)
 
 // CSR85 Configuration
 
-#define HASH_CSR85_CS85             (0xFFFFFFFFU<<0)
-#define HASH_CSR85_CS85_0           (0x1U<<0)
+#define HASH_CSR85_CS85             (0xFFFFFFFFU<<0U)
+#define HASH_CSR85_CS85_0           (0x1U<<0U)
 
 // CSR86 Configuration
 
-#define HASH_CSR86_CS86             (0xFFFFFFFFU<<0)
-#define HASH_CSR86_CS86_0           (0x1U<<0)
+#define HASH_CSR86_CS86             (0xFFFFFFFFU<<0U)
+#define HASH_CSR86_CS86_0           (0x1U<<0U)
 
 // CSR87 Configuration
 
-#define HASH_CSR87_CS87             (0xFFFFFFFFU<<0)
-#define HASH_CSR87_CS87_0           (0x1U<<0)
+#define HASH_CSR87_CS87             (0xFFFFFFFFU<<0U)
+#define HASH_CSR87_CS87_0           (0x1U<<0U)
 
 // CSR88 Configuration
 
-#define HASH_CSR88_CS88             (0xFFFFFFFFU<<0)
-#define HASH_CSR88_CS88_0           (0x1U<<0)
+#define HASH_CSR88_CS88             (0xFFFFFFFFU<<0U)
+#define HASH_CSR88_CS88_0           (0x1U<<0U)
 
 // CSR89 Configuration
 
-#define HASH_CSR89_CS89             (0xFFFFFFFFU<<0)
-#define HASH_CSR89_CS89_0           (0x1U<<0)
+#define HASH_CSR89_CS89             (0xFFFFFFFFU<<0U)
+#define HASH_CSR89_CS89_0           (0x1U<<0U)
 
 // CSR90 Configuration
 
-#define HASH_CSR90_CS90             (0xFFFFFFFFU<<0)
-#define HASH_CSR90_CS90_0           (0x1U<<0)
+#define HASH_CSR90_CS90             (0xFFFFFFFFU<<0U)
+#define HASH_CSR90_CS90_0           (0x1U<<0U)
 
 // CSR91 Configuration
 
-#define HASH_CSR91_CS91             (0xFFFFFFFFU<<0)
-#define HASH_CSR91_CS91_0           (0x1U<<0)
+#define HASH_CSR91_CS91             (0xFFFFFFFFU<<0U)
+#define HASH_CSR91_CS91_0           (0x1U<<0U)
 
 // CSR92 Configuration
 
-#define HASH_CSR92_CS92             (0xFFFFFFFFU<<0)
-#define HASH_CSR92_CS92_0           (0x1U<<0)
+#define HASH_CSR92_CS92             (0xFFFFFFFFU<<0U)
+#define HASH_CSR92_CS92_0           (0x1U<<0U)
 
 // CSR93 Configuration
 
-#define HASH_CSR93_CS93             (0xFFFFFFFFU<<0)
-#define HASH_CSR93_CS93_0           (0x1U<<0)
+#define HASH_CSR93_CS93             (0xFFFFFFFFU<<0U)
+#define HASH_CSR93_CS93_0           (0x1U<<0U)
 
 // CSR94 Configuration
 
-#define HASH_CSR94_CS94             (0xFFFFFFFFU<<0)
-#define HASH_CSR94_CS94_0           (0x1U<<0)
+#define HASH_CSR94_CS94             (0xFFFFFFFFU<<0U)
+#define HASH_CSR94_CS94_0           (0x1U<<0U)
 
 // CSR95 Configuration
 
-#define HASH_CSR95_CS95             (0xFFFFFFFFU<<0)
-#define HASH_CSR95_CS95_0           (0x1U<<0)
+#define HASH_CSR95_CS95             (0xFFFFFFFFU<<0U)
+#define HASH_CSR95_CS95_0           (0x1U<<0U)
 
 // CSR96 Configuration
 
-#define HASH_CSR96_CS96             (0xFFFFFFFFU<<0)
-#define HASH_CSR96_CS96_0           (0x1U<<0)
+#define HASH_CSR96_CS96             (0xFFFFFFFFU<<0U)
+#define HASH_CSR96_CS96_0           (0x1U<<0U)
 
 // CSR97 Configuration
 
-#define HASH_CSR97_CS97             (0xFFFFFFFFU<<0)
-#define HASH_CSR97_CS97_0           (0x1U<<0)
+#define HASH_CSR97_CS97             (0xFFFFFFFFU<<0U)
+#define HASH_CSR97_CS97_0           (0x1U<<0U)
 
 // CSR98 Configuration
 
-#define HASH_CSR98_CS98             (0xFFFFFFFFU<<0)
-#define HASH_CSR98_CS98_0           (0x1U<<0)
+#define HASH_CSR98_CS98             (0xFFFFFFFFU<<0U)
+#define HASH_CSR98_CS98_0           (0x1U<<0U)
 
 // CSR99 Configuration
 
-#define HASH_CSR99_CS99             (0xFFFFFFFFU<<0)
-#define HASH_CSR99_CS99_0           (0x1U<<0)
+#define HASH_CSR99_CS99             (0xFFFFFFFFU<<0U)
+#define HASH_CSR99_CS99_0           (0x1U<<0U)
 
 // CSR100 Configuration
 
-#define HASH_CSR100_CS100           (0xFFFFFFFFU<<0)
-#define HASH_CSR100_CS100_0         (0x1U<<0)
+#define HASH_CSR100_CS100           (0xFFFFFFFFU<<0U)
+#define HASH_CSR100_CS100_0         (0x1U<<0U)
 
 // CSR101 Configuration
 
-#define HASH_CSR101_CS101           (0xFFFFFFFFU<<0)
-#define HASH_CSR101_CS101_0         (0x1U<<0)
+#define HASH_CSR101_CS101           (0xFFFFFFFFU<<0U)
+#define HASH_CSR101_CS101_0         (0x1U<<0U)
 
 // CSR102 Configuration
 
-#define HASH_CSR102_CS102           (0xFFFFFFFFU<<0)
-#define HASH_CSR102_CS102_0         (0x1U<<0)
+#define HASH_CSR102_CS102           (0xFFFFFFFFU<<0U)
+#define HASH_CSR102_CS102_0         (0x1U<<0U)
 
 // HR0 Configuration
 
-#define HASH_HR0_H0                 (0xFFFFFFFFU<<0)
-#define HASH_HR0_H0_0               (0x1U<<0)
+#define HASH_HR0_H0                 (0xFFFFFFFFU<<0U)
+#define HASH_HR0_H0_0               (0x1U<<0U)
 
 // HR1 Configuration
 
-#define HASH_HR1_H1                 (0xFFFFFFFFU<<0)
-#define HASH_HR1_H1_0               (0x1U<<0)
+#define HASH_HR1_H1                 (0xFFFFFFFFU<<0U)
+#define HASH_HR1_H1_0               (0x1U<<0U)
 
 // HR2 Configuration
 
-#define HASH_HR2_H2                 (0xFFFFFFFFU<<0)
-#define HASH_HR2_H2_0               (0x1U<<0)
+#define HASH_HR2_H2                 (0xFFFFFFFFU<<0U)
+#define HASH_HR2_H2_0               (0x1U<<0U)
 
 // HR3 Configuration
 
-#define HASH_HR3_H3                 (0xFFFFFFFFU<<0)
-#define HASH_HR3_H3_0               (0x1U<<0)
+#define HASH_HR3_H3                 (0xFFFFFFFFU<<0U)
+#define HASH_HR3_H3_0               (0x1U<<0U)
 
 // HR4 Configuration
 
-#define HASH_HR4_H4                 (0xFFFFFFFFU<<0)
-#define HASH_HR4_H4_0               (0x1U<<0)
+#define HASH_HR4_H4                 (0xFFFFFFFFU<<0U)
+#define HASH_HR4_H4_0               (0x1U<<0U)
 
 // HR5 Configuration
 
-#define HASH_HR5_H5                 (0xFFFFFFFFU<<0)
-#define HASH_HR5_H5_0               (0x1U<<0)
+#define HASH_HR5_H5                 (0xFFFFFFFFU<<0U)
+#define HASH_HR5_H5_0               (0x1U<<0U)
 
 // HR6 Configuration
 
-#define HASH_HR6_H6                 (0xFFFFFFFFU<<0)
-#define HASH_HR6_H6_0               (0x1U<<0)
+#define HASH_HR6_H6                 (0xFFFFFFFFU<<0U)
+#define HASH_HR6_H6_0               (0x1U<<0U)
 
 // HR7 Configuration
 
-#define HASH_HR7_H7                 (0xFFFFFFFFU<<0)
-#define HASH_HR7_H7_0               (0x1U<<0)
+#define HASH_HR7_H7                 (0xFFFFFFFFU<<0U)
+#define HASH_HR7_H7_0               (0x1U<<0U)
 
 // HR8 Configuration
 
-#define HASH_HR8_H8                 (0xFFFFFFFFU<<0)
-#define HASH_HR8_H8_0               (0x1U<<0)
+#define HASH_HR8_H8                 (0xFFFFFFFFU<<0U)
+#define HASH_HR8_H8_0               (0x1U<<0U)
 
 // HR9 Configuration
 
-#define HASH_HR9_H9                 (0xFFFFFFFFU<<0)
-#define HASH_HR9_H9_0               (0x1U<<0)
+#define HASH_HR9_H9                 (0xFFFFFFFFU<<0U)
+#define HASH_HR9_H9_0               (0x1U<<0U)
 
 // HR10 Configuration
 
-#define HASH_HR10_H10               (0xFFFFFFFFU<<0)
-#define HASH_HR10_H10_0             (0x1U<<0)
+#define HASH_HR10_H10               (0xFFFFFFFFU<<0U)
+#define HASH_HR10_H10_0             (0x1U<<0U)
 
 // HR11 Configuration
 
-#define HASH_HR11_H11               (0xFFFFFFFFU<<0)
-#define HASH_HR11_H11_0             (0x1U<<0)
+#define HASH_HR11_H11               (0xFFFFFFFFU<<0U)
+#define HASH_HR11_H11_0             (0x1U<<0U)
 
 // HR12 Configuration
 
-#define HASH_HR12_H12               (0xFFFFFFFFU<<0)
-#define HASH_HR12_H12_0             (0x1U<<0)
+#define HASH_HR12_H12               (0xFFFFFFFFU<<0U)
+#define HASH_HR12_H12_0             (0x1U<<0U)
 
 // HR13 Configuration
 
-#define HASH_HR13_H13               (0xFFFFFFFFU<<0)
-#define HASH_HR13_H13_0             (0x1U<<0)
+#define HASH_HR13_H13               (0xFFFFFFFFU<<0U)
+#define HASH_HR13_H13_0             (0x1U<<0U)
 
 // HR14 Configuration
 
-#define HASH_HR14_H14               (0xFFFFFFFFU<<0)
-#define HASH_HR14_H14_0             (0x1U<<0)
+#define HASH_HR14_H14               (0xFFFFFFFFU<<0U)
+#define HASH_HR14_H14_0             (0x1U<<0U)
 
 // HR15 Configuration
 
-#define HASH_HR15_H15               (0xFFFFFFFFU<<0)
-#define HASH_HR15_H15_0             (0x1U<<0)
+#define HASH_HR15_H15               (0xFFFFFFFFU<<0U)
+#define HASH_HR15_H15_0             (0x1U<<0U)

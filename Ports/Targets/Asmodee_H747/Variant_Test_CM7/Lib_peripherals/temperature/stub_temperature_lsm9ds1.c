@@ -27,7 +27,7 @@
 enum {
         KTEMPERATURE_INIT = 0U,
         KTEMPERATURE_RESERVE,
-        KTEMPERATURE_RELEASE
+        KTEMPERATURE_RELEASE,
 };
 
 // Prototypes

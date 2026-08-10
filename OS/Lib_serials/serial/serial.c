@@ -114,39 +114,39 @@ int32_t serial_reserve(serialManager_t serialManager, reserveMode_t reserveMode,
     switch (manager) {
 
         #ifdef CONFIG_MAN_URT0_S
-        case KURT0: { return (urt0_reserve(reserveMode, timeout)); }
+        case KURT0: { return urt0_reserve(reserveMode, timeout); }
         #endif
 
         #ifdef CONFIG_MAN_URT1_S
-        case KURT1: { return (urt1_reserve(reserveMode, timeout)); }
+        case KURT1: { return urt1_reserve(reserveMode, timeout); }
         #endif
 
         #ifdef CONFIG_MAN_URT2_S
-        case KURT2: { return (urt2_reserve(reserveMode, timeout)); }
+        case KURT2: { return urt2_reserve(reserveMode, timeout); }
         #endif
 
         #ifdef CONFIG_MAN_URT3_S
-        case KURT3: { return (urt3_reserve(reserveMode, timeout)); }
+        case KURT3: { return urt3_reserve(reserveMode, timeout); }
         #endif
 
         #ifdef CONFIG_MAN_URT4_S
-        case KURT4: { return (urt4_reserve(reserveMode, timeout)); }
+        case KURT4: { return urt4_reserve(reserveMode, timeout); }
         #endif
 
         #ifdef CONFIG_MAN_CDC0_S
-        case KCDC0: { return (cdc0_reserve(reserveMode, timeout)); }
+        case KCDC0: { return cdc0_reserve(reserveMode, timeout); }
         #endif
 
         #ifdef CONFIG_MAN_CDC1_S
-        case KCDC1: { return (cdc1_reserve(reserveMode, timeout)); }
+        case KCDC1: { return cdc1_reserve(reserveMode, timeout); }
         #endif
 
         #ifdef CONFIG_MAN_WFI0_S
-        case KWFI0: { return (wfi0_reserve(reserveMode, timeout)); }
+        case KWFI0: { return wfi0_reserve(reserveMode, timeout); }
         #endif
 
         #ifdef CONFIG_MAN_BLE0_S
-        case KBLE0: { return (ble0_reserve(reserveMode, timeout)); }
+        case KBLE0: { return ble0_reserve(reserveMode, timeout); }
         #endif
 
         default:    { return KERR_SERIAL_NODEV;                }
@@ -179,39 +179,39 @@ int32_t serial_release(serialManager_t serialManager, reserveMode_t reserveMode)
     switch (manager) {
 
         #ifdef CONFIG_MAN_URT0_S
-        case KURT0: { return (urt0_release(reserveMode)); }
+        case KURT0: { return urt0_release(reserveMode); }
         #endif
 
         #ifdef CONFIG_MAN_URT1_S
-        case KURT1: { return (urt1_release(reserveMode)); }
+        case KURT1: { return urt1_release(reserveMode); }
         #endif
 
         #ifdef CONFIG_MAN_URT2_S
-        case KURT2: { return (urt2_release(reserveMode)); }
+        case KURT2: { return urt2_release(reserveMode); }
         #endif
 
         #ifdef CONFIG_MAN_URT3_S
-        case KURT3: { return (urt3_release(reserveMode)); }
+        case KURT3: { return urt3_release(reserveMode); }
         #endif
 
         #ifdef CONFIG_MAN_URT4_S
-        case KURT4: { return (urt4_release(reserveMode)); }
+        case KURT4: { return urt4_release(reserveMode); }
         #endif
 
         #ifdef CONFIG_MAN_CDC0_S
-        case KCDC0: { return (cdc0_release(reserveMode)); }
+        case KCDC0: { return cdc0_release(reserveMode); }
         #endif
 
         #ifdef CONFIG_MAN_CDC1_S
-        case KCDC1: { return (cdc1_release(reserveMode)); }
+        case KCDC1: { return cdc1_release(reserveMode); }
         #endif
 
         #ifdef CONFIG_MAN_WFI0_S
-        case KWFI0: { return (wfi0_release(reserveMode)); }
+        case KWFI0: { return wfi0_release(reserveMode); }
         #endif
 
         #ifdef CONFIG_MAN_BLE0_S
-        case KBLE0: { return (ble0_release(reserveMode)); }
+        case KBLE0: { return ble0_release(reserveMode); }
         #endif
 
         default:    { return KERR_SERIAL_NODEV;       }
@@ -251,39 +251,39 @@ int32_t serial_configure(serialManager_t serialManager, const void *configure) {
     switch (manager) {
 
         #ifdef CONFIG_MAN_URT0_S
-        case KURT0: { return (urt0_configure((const urtxCnf_t *)configure)); }
+        case KURT0: { return urt0_configure((const urtxCnf_t *)configure); }
         #endif
 
         #ifdef CONFIG_MAN_URT1_S
-        case KURT1: { return (urt1_configure((const urtxCnf_t *)configure)); }
+        case KURT1: { return urt1_configure((const urtxCnf_t *)configure); }
         #endif
 
         #ifdef CONFIG_MAN_URT2_S
-        case KURT2: { return (urt2_configure((const urtxCnf_t *)configure)); }
+        case KURT2: { return urt2_configure((const urtxCnf_t *)configure); }
         #endif
 
         #ifdef CONFIG_MAN_URT3_S
-        case KURT3: { return (urt3_configure((const urtxCnf_t *)configure)); }
+        case KURT3: { return urt3_configure((const urtxCnf_t *)configure); }
         #endif
 
         #ifdef CONFIG_MAN_URT4_S
-        case KURT4: { return (urt4_configure((const urtxCnf_t *)configure)); }
+        case KURT4: { return urt4_configure((const urtxCnf_t *)configure); }
         #endif
 
         #ifdef CONFIG_MAN_CDC0_S
-        case KCDC0: { return (cdc0_configure((const cdcxCnf_t *)configure)); }
+        case KCDC0: { return cdc0_configure((const cdcxCnf_t *)configure); }
         #endif
 
         #ifdef CONFIG_MAN_CDC1_S
-        case KCDC1: { return (cdc1_configure((const cdcxCnf_t *)configure)); }
+        case KCDC1: { return cdc1_configure((const cdcxCnf_t *)configure); }
         #endif
 
         #ifdef CONFIG_MAN_WFI0_S
-        case KWFI0: { return (wfi0_configure((const urtxCnf_t *)configure)); }
+        case KWFI0: { return wfi0_configure((const urtxCnf_t *)configure); }
         #endif
 
         #ifdef CONFIG_MAN_BLE0_S
-        case KBLE0: { return (ble0_configure((const urtxCnf_t *)configure)); }
+        case KBLE0: { return ble0_configure((const urtxCnf_t *)configure); }
         #endif
 
         default:    { return KERR_SERIAL_NODEV;                           }
@@ -329,39 +329,39 @@ int32_t serial_write(serialManager_t serialManager, const uint8_t *buffer, uint3
     switch (manager) {
 
         #ifdef CONFIG_MAN_URT0_S
-        case KURT0: { return (urt0_write(buffer, size)); }
+        case KURT0: { return urt0_write(buffer, size); }
         #endif
 
         #ifdef CONFIG_MAN_URT1_S
-        case KURT1: { return (urt1_write(buffer, size)); }
+        case KURT1: { return urt1_write(buffer, size); }
         #endif
 
         #ifdef CONFIG_MAN_URT2_S
-        case KURT2: { return (urt2_write(buffer, size)); }
+        case KURT2: { return urt2_write(buffer, size); }
         #endif
 
         #ifdef CONFIG_MAN_URT3_S
-        case KURT3: { return (urt3_write(buffer, size)); }
+        case KURT3: { return urt3_write(buffer, size); }
         #endif
 
         #ifdef CONFIG_MAN_URT4_S
-        case KURT4: { return (urt4_write(buffer, size)); }
+        case KURT4: { return urt4_write(buffer, size); }
         #endif
 
         #ifdef CONFIG_MAN_CDC0_S
-        case KCDC0: { return (cdc0_write(buffer, size)); }
+        case KCDC0: { return cdc0_write(buffer, size); }
         #endif
 
         #ifdef CONFIG_MAN_CDC1_S
-        case KCDC1: { return (cdc1_write(buffer, size)); }
+        case KCDC1: { return cdc1_write(buffer, size); }
         #endif
 
         #ifdef CONFIG_MAN_WFI0_S
-        case KWFI0: { return (wfi0_write(buffer, size)); }
+        case KWFI0: { return wfi0_write(buffer, size); }
         #endif
 
         #ifdef CONFIG_MAN_BLE0_S
-        case KBLE0: { return (ble0_write(buffer, size)); }
+        case KBLE0: { return ble0_write(buffer, size); }
         #endif
 
         default:    { return KERR_SERIAL_NODEV;      }
@@ -401,39 +401,39 @@ int32_t serial_read(serialManager_t serialManager, uint8_t *buffer, uint32_t *si
     switch (manager) {
 
         #ifdef CONFIG_MAN_URT0_S
-        case KURT0: { return (urt0_read(buffer, size)); }
+        case KURT0: { return urt0_read(buffer, size); }
         #endif
 
         #ifdef CONFIG_MAN_URT1_S
-        case KURT1: { return (urt1_read(buffer, size)); }
+        case KURT1: { return urt1_read(buffer, size); }
         #endif
 
         #ifdef CONFIG_MAN_URT2_S
-        case KURT2: { return (urt2_read(buffer, size)); }
+        case KURT2: { return urt2_read(buffer, size); }
         #endif
 
         #ifdef CONFIG_MAN_URT3_S
-        case KURT3: { return (urt3_read(buffer, size)); }
+        case KURT3: { return urt3_read(buffer, size); }
         #endif
 
         #ifdef CONFIG_MAN_URT4_S
-        case KURT4: { return (urt4_read(buffer, size)); }
+        case KURT4: { return urt4_read(buffer, size); }
         #endif
 
         #ifdef CONFIG_MAN_CDC0_S
-        case KCDC0: { return (cdc0_read(buffer, size)); }
+        case KCDC0: { return cdc0_read(buffer, size); }
         #endif
 
         #ifdef CONFIG_MAN_CDC1_S
-        case KCDC1: { return (cdc1_read(buffer, size)); }
+        case KCDC1: { return cdc1_read(buffer, size); }
         #endif
 
         #ifdef CONFIG_MAN_WFI0_S
-        case KWFI0: { return (wfi0_read(buffer, size)); }
+        case KWFI0: { return wfi0_read(buffer, size); }
         #endif
 
         #ifdef CONFIG_MAN_BLE0_S
-        case KBLE0: { return (ble0_read(buffer, size)); }
+        case KBLE0: { return ble0_read(buffer, size); }
         #endif
 
         default:    { return KERR_SERIAL_NODEV;     }
@@ -472,39 +472,39 @@ int32_t serial_getIdSemaphore(serialManager_t serialManager, uint8_t semaphore, 
     switch (manager) {
 
         #ifdef CONFIG_MAN_URT0_S
-        case KURT0: { return (urt0_getIdSemaphore(semaphore, identifier)); }
+        case KURT0: { return urt0_getIdSemaphore(semaphore, identifier); }
         #endif
 
         #ifdef CONFIG_MAN_URT1_S
-        case KURT1: { return (urt1_getIdSemaphore(semaphore, identifier)); }
+        case KURT1: { return urt1_getIdSemaphore(semaphore, identifier); }
         #endif
 
         #ifdef CONFIG_MAN_URT2_S
-        case KURT2: { return (urt2_getIdSemaphore(semaphore, identifier)); }
+        case KURT2: { return urt2_getIdSemaphore(semaphore, identifier); }
         #endif
 
         #ifdef CONFIG_MAN_URT3_S
-        case KURT3: { return (urt3_getIdSemaphore(semaphore, identifier)); }
+        case KURT3: { return urt3_getIdSemaphore(semaphore, identifier); }
         #endif
 
         #ifdef CONFIG_MAN_URT4_S
-        case KURT4: { return (urt4_getIdSemaphore(semaphore, identifier)); }
+        case KURT4: { return urt4_getIdSemaphore(semaphore, identifier); }
         #endif
 
         #ifdef CONFIG_MAN_CDC0_S
-        case KCDC0: { return (cdc0_getIdSemaphore(semaphore, identifier)); }
+        case KCDC0: { return cdc0_getIdSemaphore(semaphore, identifier); }
         #endif
 
         #ifdef CONFIG_MAN_CDC1_S
-        case KCDC1: { return (cdc1_getIdSemaphore(semaphore, identifier)); }
+        case KCDC1: { return cdc1_getIdSemaphore(semaphore, identifier); }
         #endif
 
         #ifdef CONFIG_MAN_WFI0_S
-        case KWFI0: { return (wfi0_getIdSemaphore(semaphore, identifier)); }
+        case KWFI0: { return wfi0_getIdSemaphore(semaphore, identifier); }
         #endif
 
         #ifdef CONFIG_MAN_BLE0_S
-        case KBLE0: { return (ble0_getIdSemaphore(semaphore, identifier)); }
+        case KBLE0: { return ble0_getIdSemaphore(semaphore, identifier); }
         #endif
 
         default:    { return KERR_SERIAL_NODEV;                        }
@@ -535,39 +535,39 @@ int32_t serial_flush(serialManager_t serialManager) {
     switch (manager) {
 
         #ifdef CONFIG_MAN_URT0_S
-        case KURT0: { return (urt0_flush());      }
+        case KURT0: { return urt0_flush(); }
         #endif
 
         #ifdef CONFIG_MAN_URT1_S
-        case KURT1: { return (urt1_flush());      }
+        case KURT1: { return urt1_flush(); }
         #endif
 
         #ifdef CONFIG_MAN_URT2_S
-        case KURT2: { return (urt2_flush());      }
+        case KURT2: { return urt2_flush(); }
         #endif
 
         #ifdef CONFIG_MAN_URT3_S
-        case KURT3: { return (urt3_flush());      }
+        case KURT3: { return urt3_flush(); }
         #endif
 
         #ifdef CONFIG_MAN_URT4_S
-        case KURT4: { return (urt4_flush());      }
+        case KURT4: { return urt4_flush(); }
         #endif
 
         #ifdef CONFIG_MAN_CDC0_S
-        case KCDC0: { return (cdc0_flush());      }
+        case KCDC0: { return cdc0_flush(); }
         #endif
 
         #ifdef CONFIG_MAN_CDC1_S
-        case KCDC1: { return (cdc1_flush());      }
+        case KCDC1: { return cdc1_flush(); }
         #endif
 
         #ifdef CONFIG_MAN_WFI0_S
-        case KWFI0: { return (wfi0_flush());      }
+        case KWFI0: { return wfi0_flush(); }
         #endif
 
         #ifdef CONFIG_MAN_BLE0_S
-        case KBLE0: { return (ble0_flush());      }
+        case KBLE0: { return ble0_flush(); }
         #endif
 
         default:    { return KERR_SERIAL_NODEV; }

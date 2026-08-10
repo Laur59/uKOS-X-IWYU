@@ -104,13 +104,41 @@ set(RUNTIME
 # Get the application name from the directory name
 cmake_path(GET APP_DIR STEM APP_NAME)
 if(EXISTS "${PATH_MYPR}/${APP_NAME}.c")
-    set(OBJ
-        ${PATH_MYPR}/${APP_NAME}.c ${OBJ}
-    )
+    set(MAIN_SRC ${PATH_MYPR}/${APP_NAME}.c)
 elseif(EXISTS "${PATH_MYPR}/${APP_NAME}.cpp")
-    set(OBJ
-        ${PATH_MYPR}/${APP_NAME}.cpp ${OBJ}
-    )
+    set(MAIN_SRC ${PATH_MYPR}/${APP_NAME}.cpp)
+endif()
+
+if(DEFINED MAIN_SRC)
+    # Reproduce the source order of the make build, which globs every directory
+    # listed in APPL_SRC and links the resulting objects in that order. An
+    # application makefile appends its own directories before including
+    # common.mk, which is what appends the application and the board directory,
+    # so APPL_SRC ends up as:
+    #
+    #   <directories added by the application> <application> <board>
+    #
+    # and the sources of each directory are compiled in alphabetical order. The
+    # main source therefore belongs at its alphabetical position among the other
+    # sources of the application directory, not simply in front of them.
+    set(OBJ_EXTRA_DIRS "")
+    set(OBJ_APP_DIR "")
+    set(OBJ_BOARD_DIR "")
+    foreach(SRC IN LISTS OBJ)
+        cmake_path(ABSOLUTE_PATH SRC BASE_DIRECTORY ${PROJECT_SOURCE_DIR} NORMALIZE OUTPUT_VARIABLE SRC_ABS)
+        cmake_path(GET SRC_ABS PARENT_PATH SRC_DIR)
+        if(SRC_DIR STREQUAL PATH_MYPR)
+            list(APPEND OBJ_APP_DIR ${SRC_ABS})
+        elseif(SRC_DIR STREQUAL PROJECT_SOURCE_DIR)
+            list(APPEND OBJ_BOARD_DIR ${SRC_ABS})
+        else()
+            list(APPEND OBJ_EXTRA_DIRS ${SRC})
+        endif()
+    endforeach()
+    list(APPEND OBJ_APP_DIR ${MAIN_SRC})
+    list(SORT OBJ_APP_DIR)
+    list(SORT OBJ_BOARD_DIR)
+    set(OBJ ${OBJ_EXTRA_DIRS} ${OBJ_APP_DIR} ${OBJ_BOARD_DIR})
 endif()
 
 # Apply application configuration

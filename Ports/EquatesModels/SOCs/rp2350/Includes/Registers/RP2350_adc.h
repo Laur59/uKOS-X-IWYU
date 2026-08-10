@@ -35,63 +35,63 @@ typedef struct {
 
 // CS Configuration
 
-#define ADC_CS_EN           (0x1U<<0)
-#define ADC_CS_TS_EN        (0x1U<<1)
-#define ADC_CS_START_ONCE   (0x1U<<2)
-#define ADC_CS_START_MANY   (0x1U<<3)
-#define ADC_CS_READY        (0x1U<<8)
-#define ADC_CS_ERR          (0x1U<<9)
-#define ADC_CS_ERR_STICKY   (0x1U<<10)
-#define ADC_CS_AINSEL       (0xFU<<12)
-#define ADC_CS_AINSEL_0     (0x1U<<12)
-#define ADC_CS_RROBIN       (0x1FFU<<16)
-#define ADC_CS_RROBIN_0     (0x1U<<16)
+#define ADC_CS_EN           (0x1U<<0U)
+#define ADC_CS_TS_EN        (0x1U<<1U)
+#define ADC_CS_START_ONCE   (0x1U<<2U)
+#define ADC_CS_START_MANY   (0x1U<<3U)
+#define ADC_CS_READY        (0x1U<<8U)
+#define ADC_CS_ERR          (0x1U<<9U)
+#define ADC_CS_ERR_STICKY   (0x1U<<10U)
+#define ADC_CS_AINSEL       (0xFU<<12U)
+#define ADC_CS_AINSEL_0     (0x1U<<12U)
+#define ADC_CS_RROBIN       (0x1FFU<<16U)
+#define ADC_CS_RROBIN_0     (0x1U<<16U)
 
 // RESULT Configuration
 
-#define ADC_RESULT_RESULT   (0xFFFU<<0)
-#define ADC_RESULT_RESULT_0 (0x1U<<0)
+#define ADC_RESULT_RESULT   (0xFFFU<<0U)
+#define ADC_RESULT_RESULT_0 (0x1U<<0U)
 
 // FCS Configuration
 
-#define ADC_FCS_EN          (0x1U<<0)
-#define ADC_FCS_SHIFT       (0x1U<<1)
-#define ADC_FCS_ERR         (0x1U<<2)
-#define ADC_FCS_DREQ_EN     (0x1U<<3)
-#define ADC_FCS_EMPTY       (0x1U<<8)
-#define ADC_FCS_FULL        (0x1U<<9)
-#define ADC_FCS_UNDER       (0x1U<<10)
-#define ADC_FCS_OVER        (0x1U<<11)
-#define ADC_FCS_LEVEL       (0xFU<<16)
-#define ADC_FCS_LEVEL_0     (0x1U<<16)
-#define ADC_FCS_THRESH      (0xFU<<24)
-#define ADC_FCS_THRESH_0    (0x1U<<24)
+#define ADC_FCS_EN          (0x1U<<0U)
+#define ADC_FCS_SHIFT       (0x1U<<1U)
+#define ADC_FCS_ERR         (0x1U<<2U)
+#define ADC_FCS_DREQ_EN     (0x1U<<3U)
+#define ADC_FCS_EMPTY       (0x1U<<8U)
+#define ADC_FCS_FULL        (0x1U<<9U)
+#define ADC_FCS_UNDER       (0x1U<<10U)
+#define ADC_FCS_OVER        (0x1U<<11U)
+#define ADC_FCS_LEVEL       (0xFU<<16U)
+#define ADC_FCS_LEVEL_0     (0x1U<<16U)
+#define ADC_FCS_THRESH      (0xFU<<24U)
+#define ADC_FCS_THRESH_0    (0x1U<<24U)
 
 // FIFO Configuration
 
-#define ADC_FIFO_VAL        (0xFFFU<<0)
-#define ADC_FIFO_VAL_0      (0x1U<<0)
-#define ADC_FIFO_ERR        (0x1U<<15)
+#define ADC_FIFO_VAL        (0xFFFU<<0U)
+#define ADC_FIFO_VAL_0      (0x1U<<0U)
+#define ADC_FIFO_ERR        (0x1U<<15U)
 
 // DIV Configuration
 
-#define ADC_DIV_FRAC        (0xFFU<<0)
-#define ADC_DIV_FRAC_0      (0x1U<<0)
-#define ADC_DIV_INT         (0xFFFFU<<8)
-#define ADC_DIV_INT_0       (0x1U<<8)
+#define ADC_DIV_FRAC        (0xFFU<<0U)
+#define ADC_DIV_FRAC_0      (0x1U<<0U)
+#define ADC_DIV_INT         (0xFFFFU<<8U)
+#define ADC_DIV_INT_0       (0x1U<<8U)
 
 // INTR Configuration
 
-#define ADC_INTR_FIFO       (0x1U<<0)
+#define ADC_INTR_FIFO       (0x1U<<0U)
 
 // INTE Configuration
 
-#define ADC_INTE_FIFO       (0x1U<<0)
+#define ADC_INTE_FIFO       (0x1U<<0U)
 
 // INTF Configuration
 
-#define ADC_INTF_FIFO       (0x1U<<0)
+#define ADC_INTF_FIFO       (0x1U<<0U)
 
 // INTS Configuration
 
-#define ADC_INTS_FIFO       (0x1U<<0)
+#define ADC_INTS_FIFO       (0x1U<<0U)

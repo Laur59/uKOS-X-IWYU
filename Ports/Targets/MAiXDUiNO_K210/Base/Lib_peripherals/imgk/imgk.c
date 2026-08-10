@@ -244,7 +244,7 @@ static  const   ov2640_t    aOV2640_Cnf[] = {
                                 { 0xE1U, 0x67U },
                                 { 0xE0U, 0x00U },
                                 { 0xDDU, 0x7FU },
-                                { 0x05U, 0x00U }
+                                { 0x05U, 0x00U },
                             };
 
 #define KNBCNF      (sizeof(aOV2640_Cnf) / sizeof(ov2640_t))

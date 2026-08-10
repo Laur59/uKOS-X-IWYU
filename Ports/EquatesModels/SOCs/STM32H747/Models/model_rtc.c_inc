@@ -24,7 +24,7 @@ static  void    local_binToBCD(uint8_t *value);
  * - Update the hardware rtc with a new UTC time
  *
  */
-void    model_rtc_update(uint64_t unixTime) {
+static  void    model_rtc_update(uint64_t unixTime) {
     tm_t        localTime;
     time_t      now;
     uint8_t     absDays, absMonths, absYears, absHours, absMinutes, absSeconds;
@@ -103,7 +103,7 @@ void    model_rtc_update(uint64_t unixTime) {
  * - Read the Unix time from the rtc local time
  *
  */
-void    model_rtc_readUnixTime(uint64_t *unixTime) {
+static  void    model_rtc_readUnixTime(uint64_t *unixTime) {
     time_t      now;
     tm_t        localTime;
     uint32_t    date, time;
@@ -125,12 +125,12 @@ void    model_rtc_readUnixTime(uint64_t *unixTime) {
 // Minutes: 0..59               0..59
 // Seconds: 0..59               0..59
 
-    localTime.tm_mday  = (int)((((date>>4)  & 0x3U) * 10U) + ((date>>0U)  & 0xFU));
-    localTime.tm_mon   = (int)((((date>>12) & 0x1U) * 10U) + ((date>>8U)  & 0xFU) - 1U);
-    localTime.tm_year  = (int)((((date>>20) & 0xFU) * 10U) + ((date>>16U) & 0xFU) + 100U);
-    localTime.tm_hour  = (int)((((time>>20) & 0x3U) * 10U) + ((time>>16U) & 0xFU));
-    localTime.tm_min   = (int)((((time>>12) & 0x7U) * 10U) + ((time>>8U)  & 0xFU));
-    localTime.tm_sec   = (int)((((time>>4)  & 0x7U) * 10U) + ((time>>0U)  & 0xFU));
+    localTime.tm_mday  = (int)((((date>>4U)  & 0x3U) * 10U) + ((date>>0U)  & 0xFU));
+    localTime.tm_mon   = (int)((((date>>12U) & 0x1U) * 10U) + ((date>>8U)  & 0xFU) - 1U);
+    localTime.tm_year  = (int)((((date>>20U) & 0xFU) * 10U) + ((date>>16U) & 0xFU) + 100U);
+    localTime.tm_hour  = (int)((((time>>20U) & 0x3U) * 10U) + ((time>>16U) & 0xFU));
+    localTime.tm_min   = (int)((((time>>12U) & 0x7U) * 10U) + ((time>>8U)  & 0xFU));
+    localTime.tm_sec   = (int)((((time>>4U)  & 0x7U) * 10U) + ((time>>0U)  & 0xFU));
     localTime.tm_isdst = -1;
 
     now = mktime(&localTime);

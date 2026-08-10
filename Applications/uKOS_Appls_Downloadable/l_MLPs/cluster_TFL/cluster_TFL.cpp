@@ -186,7 +186,7 @@ void    aProcess_0(const void *argument) {
             uint64_t        time[2];
             uint32_t        random[2], delta = 0;
             float32_t       x, y, result;
-    const   float32_t       gain = 2.0f;
+    const   float32_t       gain = 2.0F;
     const   char_t          *winner;
 
     UNUSED(argument);
@@ -224,8 +224,8 @@ void    aProcess_0(const void *argument) {
 // Prepare the inputs
 
         random_read(KRANDOM_SOFT, &random[0], 2U);
-        x = (((float32_t)random[0] / (float32_t)(KRAND_MAX)) - 0.5f) * gain;
-        y = (((float32_t)random[1] / (float32_t)(KRAND_MAX)) - 0.5f) * gain;
+        x = (((float32_t)random[0] / (float32_t)(KRAND_MAX)) - 0.5F) * gain;
+        y = (((float32_t)random[1] / (float32_t)(KRAND_MAX)) - 0.5F) * gain;
 
         input  = interpreter.input(0);
         input->data.f[0] = x;

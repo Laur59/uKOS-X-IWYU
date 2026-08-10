@@ -5,6 +5,8 @@
  * Hardware specific stub.
  */
 
+#include    "stub.h"
+
 #include    <stdint.h>
 
 #include    "core_reg.h"
@@ -14,8 +16,6 @@
 #include    "macros_soc.h"
 #include    "macros_core.h"
 #include    "kern/kern.h"
-
-extern  volatile    uint32_t    vCounter;
 
 #define BPA0    0U
 

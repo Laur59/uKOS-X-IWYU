@@ -49,6 +49,7 @@ target_compile_definitions(system_compiler_flags INTERFACE
     SOC=${SOC}
     CORE=${CORE}
     UKOS_S
+    ${BOARD}_S
     ${SOC}_S
     ${CORE}_S
     ROMABLE_S

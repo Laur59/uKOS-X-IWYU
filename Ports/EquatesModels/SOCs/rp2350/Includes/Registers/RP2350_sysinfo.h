@@ -31,27 +31,27 @@ typedef struct {
 
 // CHIP_ID Configuration
 
-#define SYSINFO_CHIP_ID_STOP_BIT                (0x1U<<0)
-#define SYSINFO_CHIP_ID_MANUFACTURER            (0x7FFU<<1)
-#define SYSINFO_CHIP_ID_MANUFACTURER_0          (0x1U<<1)
-#define SYSINFO_CHIP_ID_PART                    (0xFFFFU<<12)
-#define SYSINFO_CHIP_ID_PART_0                  (0x1U<<12)
-#define SYSINFO_CHIP_ID_REVISION                (0xFU<<28)
-#define SYSINFO_CHIP_ID_REVISION_0              (0x1U<<28)
+#define SYSINFO_CHIP_ID_STOP_BIT                (0x1U<<0U)
+#define SYSINFO_CHIP_ID_MANUFACTURER            (0x7FFU<<1U)
+#define SYSINFO_CHIP_ID_MANUFACTURER_0          (0x1U<<1U)
+#define SYSINFO_CHIP_ID_PART                    (0xFFFFU<<12U)
+#define SYSINFO_CHIP_ID_PART_0                  (0x1U<<12U)
+#define SYSINFO_CHIP_ID_REVISION                (0xFU<<28U)
+#define SYSINFO_CHIP_ID_REVISION_0              (0x1U<<28U)
 
 // PACKAGE_SEL Configuration
 
-#define SYSINFO_PACKAGE_SEL_PACKAGE_SEL         (0x1U<<0)
+#define SYSINFO_PACKAGE_SEL_PACKAGE_SEL         (0x1U<<0U)
 
 // PLATFORM Configuration
 
-#define SYSINFO_PLATFORM_FPGA                   (0x1U<<0)
-#define SYSINFO_PLATFORM_ASIC                   (0x1U<<1)
-#define SYSINFO_PLATFORM_HDLSIM                 (0x1U<<2)
-#define SYSINFO_PLATFORM_BATCHSIM               (0x1U<<3)
-#define SYSINFO_PLATFORM_GATESIM                (0x1U<<4)
+#define SYSINFO_PLATFORM_FPGA                   (0x1U<<0U)
+#define SYSINFO_PLATFORM_ASIC                   (0x1U<<1U)
+#define SYSINFO_PLATFORM_HDLSIM                 (0x1U<<2U)
+#define SYSINFO_PLATFORM_BATCHSIM               (0x1U<<3U)
+#define SYSINFO_PLATFORM_GATESIM                (0x1U<<4U)
 
 // GITREF_RP2350 Configuration
 
-#define SYSINFO_GITREF_RP2350_GITREF_RP2350     (0xFFFFFFFFU<<0)
-#define SYSINFO_GITREF_RP2350_GITREF_RP2350_0   (0x1U<<0)
+#define SYSINFO_GITREF_RP2350_GITREF_RP2350     (0xFFFFFFFFU<<0U)
+#define SYSINFO_GITREF_RP2350_GITREF_RP2350_0   (0x1U<<0U)

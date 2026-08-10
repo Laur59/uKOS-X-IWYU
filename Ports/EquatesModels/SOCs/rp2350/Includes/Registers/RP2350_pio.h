@@ -132,820 +132,820 @@ typedef struct {
 
 // CTRL Configuration
 
-#define PIO_CTRL_SM_ENABLE                          (0xFU<<0)
-#define PIO_CTRL_SM_ENABLE_0                        (0x1U<<0)
-#define PIO_CTRL_SM_RESTART                         (0xFU<<4)
-#define PIO_CTRL_SM_RESTART_0                       (0x1U<<4)
-#define PIO_CTRL_CLKDIV_RESTART                     (0xFU<<8)
-#define PIO_CTRL_CLKDIV_RESTART_0                   (0x1U<<8)
-#define PIO_CTRL_PREV_PIO_MASK                      (0xFU<<16)
-#define PIO_CTRL_PREV_PIO_MASK_0                    (0x1U<<16)
-#define PIO_CTRL_NEXT_PIO_MASK                      (0xFU<<20)
-#define PIO_CTRL_NEXT_PIO_MASK_0                    (0x1U<<20)
-#define PIO_CTRL_NEXTPREV_SM_ENABLE                 (0x1U<<24)
-#define PIO_CTRL_NEXTPREV_SM_DISABLE                (0x1U<<25)
-#define PIO_CTRL_NEXTPREV_CLKDIV_RESTART            (0x1U<<26)
+#define PIO_CTRL_SM_ENABLE                          (0xFU<<0U)
+#define PIO_CTRL_SM_ENABLE_0                        (0x1U<<0U)
+#define PIO_CTRL_SM_RESTART                         (0xFU<<4U)
+#define PIO_CTRL_SM_RESTART_0                       (0x1U<<4U)
+#define PIO_CTRL_CLKDIV_RESTART                     (0xFU<<8U)
+#define PIO_CTRL_CLKDIV_RESTART_0                   (0x1U<<8U)
+#define PIO_CTRL_PREV_PIO_MASK                      (0xFU<<16U)
+#define PIO_CTRL_PREV_PIO_MASK_0                    (0x1U<<16U)
+#define PIO_CTRL_NEXT_PIO_MASK                      (0xFU<<20U)
+#define PIO_CTRL_NEXT_PIO_MASK_0                    (0x1U<<20U)
+#define PIO_CTRL_NEXTPREV_SM_ENABLE                 (0x1U<<24U)
+#define PIO_CTRL_NEXTPREV_SM_DISABLE                (0x1U<<25U)
+#define PIO_CTRL_NEXTPREV_CLKDIV_RESTART            (0x1U<<26U)
 
 // FSTAT Configuration
 
-#define PIO_FSTAT_RXFULL                            (0xFU<<0)
-#define PIO_FSTAT_RXFULL_0                          (0x1U<<0)
-#define PIO_FSTAT_RXEMPTY                           (0xFU<<8)
-#define PIO_FSTAT_RXEMPTY_0                         (0x1U<<8)
-#define PIO_FSTAT_TXFULL                            (0xFU<<16)
-#define PIO_FSTAT_TXFULL_0                          (0x1U<<16)
-#define PIO_FSTAT_TXEMPTY                           (0xFU<<24)
-#define PIO_FSTAT_TXEMPTY_0                         (0x1U<<24)
+#define PIO_FSTAT_RXFULL                            (0xFU<<0U)
+#define PIO_FSTAT_RXFULL_0                          (0x1U<<0U)
+#define PIO_FSTAT_RXEMPTY                           (0xFU<<8U)
+#define PIO_FSTAT_RXEMPTY_0                         (0x1U<<8U)
+#define PIO_FSTAT_TXFULL                            (0xFU<<16U)
+#define PIO_FSTAT_TXFULL_0                          (0x1U<<16U)
+#define PIO_FSTAT_TXEMPTY                           (0xFU<<24U)
+#define PIO_FSTAT_TXEMPTY_0                         (0x1U<<24U)
 
 // FDEBUG Configuration
 
-#define PIO_FDEBUG_RXSTALL                          (0xFU<<0)
-#define PIO_FDEBUG_RXSTALL_0                        (0x1U<<0)
-#define PIO_FDEBUG_RXUNDER                          (0xFU<<8)
-#define PIO_FDEBUG_RXUNDER_0                        (0x1U<<8)
-#define PIO_FDEBUG_TXOVER                           (0xFU<<16)
-#define PIO_FDEBUG_TXOVER_0                         (0x1U<<16)
-#define PIO_FDEBUG_TXSTALL                          (0xFU<<24)
-#define PIO_FDEBUG_TXSTALL_0                        (0x1U<<24)
+#define PIO_FDEBUG_RXSTALL                          (0xFU<<0U)
+#define PIO_FDEBUG_RXSTALL_0                        (0x1U<<0U)
+#define PIO_FDEBUG_RXUNDER                          (0xFU<<8U)
+#define PIO_FDEBUG_RXUNDER_0                        (0x1U<<8U)
+#define PIO_FDEBUG_TXOVER                           (0xFU<<16U)
+#define PIO_FDEBUG_TXOVER_0                         (0x1U<<16U)
+#define PIO_FDEBUG_TXSTALL                          (0xFU<<24U)
+#define PIO_FDEBUG_TXSTALL_0                        (0x1U<<24U)
 
 // FLEVEL Configuration
 
-#define PIO_FLEVEL_TX0                              (0xFU<<0)
-#define PIO_FLEVEL_TX0_0                            (0x1U<<0)
-#define PIO_FLEVEL_RX0                              (0xFU<<4)
-#define PIO_FLEVEL_RX0_0                            (0x1U<<4)
-#define PIO_FLEVEL_TX1                              (0xFU<<8)
-#define PIO_FLEVEL_TX1_0                            (0x1U<<8)
-#define PIO_FLEVEL_RX1                              (0xFU<<12)
-#define PIO_FLEVEL_RX1_0                            (0x1U<<12)
-#define PIO_FLEVEL_TX2                              (0xFU<<16)
-#define PIO_FLEVEL_TX2_0                            (0x1U<<16)
-#define PIO_FLEVEL_RX2                              (0xFU<<20)
-#define PIO_FLEVEL_RX2_0                            (0x1U<<20)
-#define PIO_FLEVEL_TX3                              (0xFU<<24)
-#define PIO_FLEVEL_TX3_0                            (0x1U<<24)
-#define PIO_FLEVEL_RX3                              (0xFU<<28)
-#define PIO_FLEVEL_RX3_0                            (0x1U<<28)
+#define PIO_FLEVEL_TX0                              (0xFU<<0U)
+#define PIO_FLEVEL_TX0_0                            (0x1U<<0U)
+#define PIO_FLEVEL_RX0                              (0xFU<<4U)
+#define PIO_FLEVEL_RX0_0                            (0x1U<<4U)
+#define PIO_FLEVEL_TX1                              (0xFU<<8U)
+#define PIO_FLEVEL_TX1_0                            (0x1U<<8U)
+#define PIO_FLEVEL_RX1                              (0xFU<<12U)
+#define PIO_FLEVEL_RX1_0                            (0x1U<<12U)
+#define PIO_FLEVEL_TX2                              (0xFU<<16U)
+#define PIO_FLEVEL_TX2_0                            (0x1U<<16U)
+#define PIO_FLEVEL_RX2                              (0xFU<<20U)
+#define PIO_FLEVEL_RX2_0                            (0x1U<<20U)
+#define PIO_FLEVEL_TX3                              (0xFU<<24U)
+#define PIO_FLEVEL_TX3_0                            (0x1U<<24U)
+#define PIO_FLEVEL_RX3                              (0xFU<<28U)
+#define PIO_FLEVEL_RX3_0                            (0x1U<<28U)
 
 // TXF0 Configuration
 
-#define PIO_TXF0_TXF0                               (0xFFFFFFFFU<<0)
-#define PIO_TXF0_TXF0_0                             (0x1U<<0)
+#define PIO_TXF0_TXF0                               (0xFFFFFFFFU<<0U)
+#define PIO_TXF0_TXF0_0                             (0x1U<<0U)
 
 // TXF1 Configuration
 
-#define PIO_TXF1_TXF1                               (0xFFFFFFFFU<<0)
-#define PIO_TXF1_TXF1_0                             (0x1U<<0)
+#define PIO_TXF1_TXF1                               (0xFFFFFFFFU<<0U)
+#define PIO_TXF1_TXF1_0                             (0x1U<<0U)
 
 // TXF2 Configuration
 
-#define PIO_TXF2_TXF2                               (0xFFFFFFFFU<<0)
-#define PIO_TXF2_TXF2_0                             (0x1U<<0)
+#define PIO_TXF2_TXF2                               (0xFFFFFFFFU<<0U)
+#define PIO_TXF2_TXF2_0                             (0x1U<<0U)
 
 // TXF3 Configuration
 
-#define PIO_TXF3_TXF3                               (0xFFFFFFFFU<<0)
-#define PIO_TXF3_TXF3_0                             (0x1U<<0)
+#define PIO_TXF3_TXF3                               (0xFFFFFFFFU<<0U)
+#define PIO_TXF3_TXF3_0                             (0x1U<<0U)
 
 // RXF0 Configuration
 
-#define PIO_RXF0_RXF0                               (0xFFFFFFFFU<<0)
-#define PIO_RXF0_RXF0_0                             (0x1U<<0)
+#define PIO_RXF0_RXF0                               (0xFFFFFFFFU<<0U)
+#define PIO_RXF0_RXF0_0                             (0x1U<<0U)
 
 // RXF1 Configuration
 
-#define PIO_RXF1_RXF1                               (0xFFFFFFFFU<<0)
-#define PIO_RXF1_RXF1_0                             (0x1U<<0)
+#define PIO_RXF1_RXF1                               (0xFFFFFFFFU<<0U)
+#define PIO_RXF1_RXF1_0                             (0x1U<<0U)
 
 // RXF2 Configuration
 
-#define PIO_RXF2_RXF2                               (0xFFFFFFFFU<<0)
-#define PIO_RXF2_RXF2_0                             (0x1U<<0)
+#define PIO_RXF2_RXF2                               (0xFFFFFFFFU<<0U)
+#define PIO_RXF2_RXF2_0                             (0x1U<<0U)
 
 // RXF3 Configuration
 
-#define PIO_RXF3_RXF3                               (0xFFFFFFFFU<<0)
-#define PIO_RXF3_RXF3_0                             (0x1U<<0)
+#define PIO_RXF3_RXF3                               (0xFFFFFFFFU<<0U)
+#define PIO_RXF3_RXF3_0                             (0x1U<<0U)
 
 // IRQ Configuration
 
-#define PIO_IRQ_IRQ                                 (0xFFU<<0)
-#define PIO_IRQ_IRQ_0                               (0x1U<<0)
+#define PIO_IRQ_IRQ                                 (0xFFU<<0U)
+#define PIO_IRQ_IRQ_0                               (0x1U<<0U)
 
 // IRQ_FORCE Configuration
 
-#define PIO_IRQ_FORCE_IRQ_FORCE                     (0xFFU<<0)
-#define PIO_IRQ_FORCE_IRQ_FORCE_0                   (0x1U<<0)
+#define PIO_IRQ_FORCE_IRQ_FORCE                     (0xFFU<<0U)
+#define PIO_IRQ_FORCE_IRQ_FORCE_0                   (0x1U<<0U)
 
 // INPUT_SYNC_BYPASS Configuration
 
-#define PIO_INPUT_SYNC_BYPASS_INPUT_SYNC_BYPASS     (0xFFFFFFFFU<<0)
-#define PIO_INPUT_SYNC_BYPASS_INPUT_SYNC_BYPASS_0   (0x1U<<0)
+#define PIO_INPUT_SYNC_BYPASS_INPUT_SYNC_BYPASS     (0xFFFFFFFFU<<0U)
+#define PIO_INPUT_SYNC_BYPASS_INPUT_SYNC_BYPASS_0   (0x1U<<0U)
 
 // DBG_PADOUT Configuration
 
-#define PIO_DBG_PADOUT_DBG_PADOUT                   (0xFFFFFFFFU<<0)
-#define PIO_DBG_PADOUT_DBG_PADOUT_0                 (0x1U<<0)
+#define PIO_DBG_PADOUT_DBG_PADOUT                   (0xFFFFFFFFU<<0U)
+#define PIO_DBG_PADOUT_DBG_PADOUT_0                 (0x1U<<0U)
 
 // DBG_PADOE Configuration
 
-#define PIO_DBG_PADOE_DBG_PADOE                     (0xFFFFFFFFU<<0)
-#define PIO_DBG_PADOE_DBG_PADOE_0                   (0x1U<<0)
+#define PIO_DBG_PADOE_DBG_PADOE                     (0xFFFFFFFFU<<0U)
+#define PIO_DBG_PADOE_DBG_PADOE_0                   (0x1U<<0U)
 
 // DBG_CFGINFO Configuration
 
-#define PIO_DBG_CFGINFO_FIFO_DEPTH                  (0x3FU<<0)
-#define PIO_DBG_CFGINFO_FIFO_DEPTH_0                (0x1U<<0)
-#define PIO_DBG_CFGINFO_SM_COUNT                    (0xFU<<8)
-#define PIO_DBG_CFGINFO_SM_COUNT_0                  (0x1U<<8)
-#define PIO_DBG_CFGINFO_IMEM_SIZE                   (0x3FU<<16)
-#define PIO_DBG_CFGINFO_IMEM_SIZE_0                 (0x1U<<16)
-#define PIO_DBG_CFGINFO_VERSION                     (0xFU<<28)
-#define PIO_DBG_CFGINFO_VERSION_0                   (0x1U<<28)
-#define PIO_DBG_CFGINFO_VERSION_V0                  (0x0U<<28)
-#define PIO_DBG_CFGINFO_VERSION_V1                  (0x1U<<28)
+#define PIO_DBG_CFGINFO_FIFO_DEPTH                  (0x3FU<<0U)
+#define PIO_DBG_CFGINFO_FIFO_DEPTH_0                (0x1U<<0U)
+#define PIO_DBG_CFGINFO_SM_COUNT                    (0xFU<<8U)
+#define PIO_DBG_CFGINFO_SM_COUNT_0                  (0x1U<<8U)
+#define PIO_DBG_CFGINFO_IMEM_SIZE                   (0x3FU<<16U)
+#define PIO_DBG_CFGINFO_IMEM_SIZE_0                 (0x1U<<16U)
+#define PIO_DBG_CFGINFO_VERSION                     (0xFU<<28U)
+#define PIO_DBG_CFGINFO_VERSION_0                   (0x1U<<28U)
+#define PIO_DBG_CFGINFO_VERSION_V0                  (0x0U<<28U)
+#define PIO_DBG_CFGINFO_VERSION_V1                  (0x1U<<28U)
 
 // INSTR_MEM0 Configuration
 
-#define PIO_INSTR_MEM0_INSTR_MEM0                   (0xFFFFU<<0)
-#define PIO_INSTR_MEM0_INSTR_MEM0_0                 (0x1U<<0)
+#define PIO_INSTR_MEM0_INSTR_MEM0                   (0xFFFFU<<0U)
+#define PIO_INSTR_MEM0_INSTR_MEM0_0                 (0x1U<<0U)
 
 // INSTR_MEM1 Configuration
 
-#define PIO_INSTR_MEM1_INSTR_MEM1                   (0xFFFFU<<0)
-#define PIO_INSTR_MEM1_INSTR_MEM1_0                 (0x1U<<0)
+#define PIO_INSTR_MEM1_INSTR_MEM1                   (0xFFFFU<<0U)
+#define PIO_INSTR_MEM1_INSTR_MEM1_0                 (0x1U<<0U)
 
 // INSTR_MEM2 Configuration
 
-#define PIO_INSTR_MEM2_INSTR_MEM2                   (0xFFFFU<<0)
-#define PIO_INSTR_MEM2_INSTR_MEM2_0                 (0x1U<<0)
+#define PIO_INSTR_MEM2_INSTR_MEM2                   (0xFFFFU<<0U)
+#define PIO_INSTR_MEM2_INSTR_MEM2_0                 (0x1U<<0U)
 
 // INSTR_MEM3 Configuration
 
-#define PIO_INSTR_MEM3_INSTR_MEM3                   (0xFFFFU<<0)
-#define PIO_INSTR_MEM3_INSTR_MEM3_0                 (0x1U<<0)
+#define PIO_INSTR_MEM3_INSTR_MEM3                   (0xFFFFU<<0U)
+#define PIO_INSTR_MEM3_INSTR_MEM3_0                 (0x1U<<0U)
 
 // INSTR_MEM4 Configuration
 
-#define PIO_INSTR_MEM4_INSTR_MEM4                   (0xFFFFU<<0)
-#define PIO_INSTR_MEM4_INSTR_MEM4_0                 (0x1U<<0)
+#define PIO_INSTR_MEM4_INSTR_MEM4                   (0xFFFFU<<0U)
+#define PIO_INSTR_MEM4_INSTR_MEM4_0                 (0x1U<<0U)
 
 // INSTR_MEM5 Configuration
 
-#define PIO_INSTR_MEM5_INSTR_MEM5                   (0xFFFFU<<0)
-#define PIO_INSTR_MEM5_INSTR_MEM5_0                 (0x1U<<0)
+#define PIO_INSTR_MEM5_INSTR_MEM5                   (0xFFFFU<<0U)
+#define PIO_INSTR_MEM5_INSTR_MEM5_0                 (0x1U<<0U)
 
 // INSTR_MEM6 Configuration
 
-#define PIO_INSTR_MEM6_INSTR_MEM6                   (0xFFFFU<<0)
-#define PIO_INSTR_MEM6_INSTR_MEM6_0                 (0x1U<<0)
+#define PIO_INSTR_MEM6_INSTR_MEM6                   (0xFFFFU<<0U)
+#define PIO_INSTR_MEM6_INSTR_MEM6_0                 (0x1U<<0U)
 
 // INSTR_MEM7 Configuration
 
-#define PIO_INSTR_MEM7_INSTR_MEM7                   (0xFFFFU<<0)
-#define PIO_INSTR_MEM7_INSTR_MEM7_0                 (0x1U<<0)
+#define PIO_INSTR_MEM7_INSTR_MEM7                   (0xFFFFU<<0U)
+#define PIO_INSTR_MEM7_INSTR_MEM7_0                 (0x1U<<0U)
 
 // INSTR_MEM8 Configuration
 
-#define PIO_INSTR_MEM8_INSTR_MEM8                   (0xFFFFU<<0)
-#define PIO_INSTR_MEM8_INSTR_MEM8_0                 (0x1U<<0)
+#define PIO_INSTR_MEM8_INSTR_MEM8                   (0xFFFFU<<0U)
+#define PIO_INSTR_MEM8_INSTR_MEM8_0                 (0x1U<<0U)
 
 // INSTR_MEM9 Configuration
 
-#define PIO_INSTR_MEM9_INSTR_MEM9                   (0xFFFFU<<0)
-#define PIO_INSTR_MEM9_INSTR_MEM9_0                 (0x1U<<0)
+#define PIO_INSTR_MEM9_INSTR_MEM9                   (0xFFFFU<<0U)
+#define PIO_INSTR_MEM9_INSTR_MEM9_0                 (0x1U<<0U)
 
 // INSTR_MEM10 Configuration
 
-#define PIO_INSTR_MEM10_INSTR_MEM10                 (0xFFFFU<<0)
-#define PIO_INSTR_MEM10_INSTR_MEM10_0               (0x1U<<0)
+#define PIO_INSTR_MEM10_INSTR_MEM10                 (0xFFFFU<<0U)
+#define PIO_INSTR_MEM10_INSTR_MEM10_0               (0x1U<<0U)
 
 // INSTR_MEM11 Configuration
 
-#define PIO_INSTR_MEM11_INSTR_MEM11                 (0xFFFFU<<0)
-#define PIO_INSTR_MEM11_INSTR_MEM11_0               (0x1U<<0)
+#define PIO_INSTR_MEM11_INSTR_MEM11                 (0xFFFFU<<0U)
+#define PIO_INSTR_MEM11_INSTR_MEM11_0               (0x1U<<0U)
 
 // INSTR_MEM12 Configuration
 
-#define PIO_INSTR_MEM12_INSTR_MEM12                 (0xFFFFU<<0)
-#define PIO_INSTR_MEM12_INSTR_MEM12_0               (0x1U<<0)
+#define PIO_INSTR_MEM12_INSTR_MEM12                 (0xFFFFU<<0U)
+#define PIO_INSTR_MEM12_INSTR_MEM12_0               (0x1U<<0U)
 
 // INSTR_MEM13 Configuration
 
-#define PIO_INSTR_MEM13_INSTR_MEM13                 (0xFFFFU<<0)
-#define PIO_INSTR_MEM13_INSTR_MEM13_0               (0x1U<<0)
+#define PIO_INSTR_MEM13_INSTR_MEM13                 (0xFFFFU<<0U)
+#define PIO_INSTR_MEM13_INSTR_MEM13_0               (0x1U<<0U)
 
 // INSTR_MEM14 Configuration
 
-#define PIO_INSTR_MEM14_INSTR_MEM14                 (0xFFFFU<<0)
-#define PIO_INSTR_MEM14_INSTR_MEM14_0               (0x1U<<0)
+#define PIO_INSTR_MEM14_INSTR_MEM14                 (0xFFFFU<<0U)
+#define PIO_INSTR_MEM14_INSTR_MEM14_0               (0x1U<<0U)
 
 // INSTR_MEM15 Configuration
 
-#define PIO_INSTR_MEM15_INSTR_MEM15                 (0xFFFFU<<0)
-#define PIO_INSTR_MEM15_INSTR_MEM15_0               (0x1U<<0)
+#define PIO_INSTR_MEM15_INSTR_MEM15                 (0xFFFFU<<0U)
+#define PIO_INSTR_MEM15_INSTR_MEM15_0               (0x1U<<0U)
 
 // INSTR_MEM16 Configuration
 
-#define PIO_INSTR_MEM16_INSTR_MEM16                 (0xFFFFU<<0)
-#define PIO_INSTR_MEM16_INSTR_MEM16_0               (0x1U<<0)
+#define PIO_INSTR_MEM16_INSTR_MEM16                 (0xFFFFU<<0U)
+#define PIO_INSTR_MEM16_INSTR_MEM16_0               (0x1U<<0U)
 
 // INSTR_MEM17 Configuration
 
-#define PIO_INSTR_MEM17_INSTR_MEM17                 (0xFFFFU<<0)
-#define PIO_INSTR_MEM17_INSTR_MEM17_0               (0x1U<<0)
+#define PIO_INSTR_MEM17_INSTR_MEM17                 (0xFFFFU<<0U)
+#define PIO_INSTR_MEM17_INSTR_MEM17_0               (0x1U<<0U)
 
 // INSTR_MEM18 Configuration
 
-#define PIO_INSTR_MEM18_INSTR_MEM18                 (0xFFFFU<<0)
-#define PIO_INSTR_MEM18_INSTR_MEM18_0               (0x1U<<0)
+#define PIO_INSTR_MEM18_INSTR_MEM18                 (0xFFFFU<<0U)
+#define PIO_INSTR_MEM18_INSTR_MEM18_0               (0x1U<<0U)
 
 // INSTR_MEM19 Configuration
 
-#define PIO_INSTR_MEM19_INSTR_MEM19                 (0xFFFFU<<0)
-#define PIO_INSTR_MEM19_INSTR_MEM19_0               (0x1U<<0)
+#define PIO_INSTR_MEM19_INSTR_MEM19                 (0xFFFFU<<0U)
+#define PIO_INSTR_MEM19_INSTR_MEM19_0               (0x1U<<0U)
 
 // INSTR_MEM20 Configuration
 
-#define PIO_INSTR_MEM20_INSTR_MEM20                 (0xFFFFU<<0)
-#define PIO_INSTR_MEM20_INSTR_MEM20_0               (0x1U<<0)
+#define PIO_INSTR_MEM20_INSTR_MEM20                 (0xFFFFU<<0U)
+#define PIO_INSTR_MEM20_INSTR_MEM20_0               (0x1U<<0U)
 
 // INSTR_MEM21 Configuration
 
-#define PIO_INSTR_MEM21_INSTR_MEM21                 (0xFFFFU<<0)
-#define PIO_INSTR_MEM21_INSTR_MEM21_0               (0x1U<<0)
+#define PIO_INSTR_MEM21_INSTR_MEM21                 (0xFFFFU<<0U)
+#define PIO_INSTR_MEM21_INSTR_MEM21_0               (0x1U<<0U)
 
 // INSTR_MEM22 Configuration
 
-#define PIO_INSTR_MEM22_INSTR_MEM22                 (0xFFFFU<<0)
-#define PIO_INSTR_MEM22_INSTR_MEM22_0               (0x1U<<0)
+#define PIO_INSTR_MEM22_INSTR_MEM22                 (0xFFFFU<<0U)
+#define PIO_INSTR_MEM22_INSTR_MEM22_0               (0x1U<<0U)
 
 // INSTR_MEM23 Configuration
 
-#define PIO_INSTR_MEM23_INSTR_MEM23                 (0xFFFFU<<0)
-#define PIO_INSTR_MEM23_INSTR_MEM23_0               (0x1U<<0)
+#define PIO_INSTR_MEM23_INSTR_MEM23                 (0xFFFFU<<0U)
+#define PIO_INSTR_MEM23_INSTR_MEM23_0               (0x1U<<0U)
 
 // INSTR_MEM24 Configuration
 
-#define PIO_INSTR_MEM24_INSTR_MEM24                 (0xFFFFU<<0)
-#define PIO_INSTR_MEM24_INSTR_MEM24_0               (0x1U<<0)
+#define PIO_INSTR_MEM24_INSTR_MEM24                 (0xFFFFU<<0U)
+#define PIO_INSTR_MEM24_INSTR_MEM24_0               (0x1U<<0U)
 
 // INSTR_MEM25 Configuration
 
-#define PIO_INSTR_MEM25_INSTR_MEM25                 (0xFFFFU<<0)
-#define PIO_INSTR_MEM25_INSTR_MEM25_0               (0x1U<<0)
+#define PIO_INSTR_MEM25_INSTR_MEM25                 (0xFFFFU<<0U)
+#define PIO_INSTR_MEM25_INSTR_MEM25_0               (0x1U<<0U)
 
 // INSTR_MEM26 Configuration
 
-#define PIO_INSTR_MEM26_INSTR_MEM26                 (0xFFFFU<<0)
-#define PIO_INSTR_MEM26_INSTR_MEM26_0               (0x1U<<0)
+#define PIO_INSTR_MEM26_INSTR_MEM26                 (0xFFFFU<<0U)
+#define PIO_INSTR_MEM26_INSTR_MEM26_0               (0x1U<<0U)
 
 // INSTR_MEM27 Configuration
 
-#define PIO_INSTR_MEM27_INSTR_MEM27                 (0xFFFFU<<0)
-#define PIO_INSTR_MEM27_INSTR_MEM27_0               (0x1U<<0)
+#define PIO_INSTR_MEM27_INSTR_MEM27                 (0xFFFFU<<0U)
+#define PIO_INSTR_MEM27_INSTR_MEM27_0               (0x1U<<0U)
 
 // INSTR_MEM28 Configuration
 
-#define PIO_INSTR_MEM28_INSTR_MEM28                 (0xFFFFU<<0)
-#define PIO_INSTR_MEM28_INSTR_MEM28_0               (0x1U<<0)
+#define PIO_INSTR_MEM28_INSTR_MEM28                 (0xFFFFU<<0U)
+#define PIO_INSTR_MEM28_INSTR_MEM28_0               (0x1U<<0U)
 
 // INSTR_MEM29 Configuration
 
-#define PIO_INSTR_MEM29_INSTR_MEM29                 (0xFFFFU<<0)
-#define PIO_INSTR_MEM29_INSTR_MEM29_0               (0x1U<<0)
+#define PIO_INSTR_MEM29_INSTR_MEM29                 (0xFFFFU<<0U)
+#define PIO_INSTR_MEM29_INSTR_MEM29_0               (0x1U<<0U)
 
 // INSTR_MEM30 Configuration
 
-#define PIO_INSTR_MEM30_INSTR_MEM30                 (0xFFFFU<<0)
-#define PIO_INSTR_MEM30_INSTR_MEM30_0               (0x1U<<0)
+#define PIO_INSTR_MEM30_INSTR_MEM30                 (0xFFFFU<<0U)
+#define PIO_INSTR_MEM30_INSTR_MEM30_0               (0x1U<<0U)
 
 // INSTR_MEM31 Configuration
 
-#define PIO_INSTR_MEM31_INSTR_MEM31                 (0xFFFFU<<0)
-#define PIO_INSTR_MEM31_INSTR_MEM31_0               (0x1U<<0)
+#define PIO_INSTR_MEM31_INSTR_MEM31                 (0xFFFFU<<0U)
+#define PIO_INSTR_MEM31_INSTR_MEM31_0               (0x1U<<0U)
 
 // SM0_CLKDIV Configuration
 
-#define PIO_SM0_CLKDIV_FRAC                         (0xFFU<<8)
-#define PIO_SM0_CLKDIV_FRAC_0                       (0x1U<<8)
-#define PIO_SM0_CLKDIV_INT                          (0xFFFFU<<16)
-#define PIO_SM0_CLKDIV_INT_0                        (0x1U<<16)
+#define PIO_SM0_CLKDIV_FRAC                         (0xFFU<<8U)
+#define PIO_SM0_CLKDIV_FRAC_0                       (0x1U<<8U)
+#define PIO_SM0_CLKDIV_INT                          (0xFFFFU<<16U)
+#define PIO_SM0_CLKDIV_INT_0                        (0x1U<<16U)
 
 // SM0_EXECCTRL Configuration
 
-#define PIO_SM0_EXECCTRL_STATUS_N                   (0x1FU<<0)
-#define PIO_SM0_EXECCTRL_STATUS_N_0                 (0x1U<<0)
-#define PIO_SM0_EXECCTRL_STATUS_SEL                 (0x3U<<5)
-#define PIO_SM0_EXECCTRL_STATUS_SEL_0               (0x1U<<5)
-#define PIO_SM0_EXECCTRL_WRAP_BOTTOM                (0x1FU<<7)
-#define PIO_SM0_EXECCTRL_WRAP_BOTTOM_0              (0x1U<<7)
-#define PIO_SM0_EXECCTRL_WRAP_TOP                   (0x1FU<<12)
-#define PIO_SM0_EXECCTRL_WRAP_TOP_0                 (0x1U<<12)
-#define PIO_SM0_EXECCTRL_OUT_STICKY                 (0x1U<<17)
-#define PIO_SM0_EXECCTRL_INLINE_OUT_EN              (0x1U<<18)
-#define PIO_SM0_EXECCTRL_OUT_EN_SEL                 (0x1FU<<19)
-#define PIO_SM0_EXECCTRL_OUT_EN_SEL_0               (0x1U<<19)
-#define PIO_SM0_EXECCTRL_JMP_PIN                    (0x1FU<<24)
-#define PIO_SM0_EXECCTRL_JMP_PIN_0                  (0x1U<<24)
-#define PIO_SM0_EXECCTRL_SIDE_PINDIR                (0x1U<<29)
-#define PIO_SM0_EXECCTRL_SIDE_EN                    (0x1U<<30)
-#define PIO_SM0_EXECCTRL_EXEC_STALLED               (0x1U<<31)
-#define PIO_SM0_EXECCTRL_STATUS_N_IRQ               (0x0U<<0)
-#define PIO_SM0_EXECCTRL_STATUS_N_IRQ_PREVPIO       (0x8U<<0)
-#define PIO_SM0_EXECCTRL_STATUS_N_IRQ_NEXTPIO       (0x10U<<0)
-#define PIO_SM0_EXECCTRL_STATUS_SEL_TXLEVEL         (0x0U<<5)
-#define PIO_SM0_EXECCTRL_STATUS_SEL_RXLEVEL         (0x1U<<5)
-#define PIO_SM0_EXECCTRL_STATUS_SEL_IRQ             (0x2U<<5)
+#define PIO_SM0_EXECCTRL_STATUS_N                   (0x1FU<<0U)
+#define PIO_SM0_EXECCTRL_STATUS_N_0                 (0x1U<<0U)
+#define PIO_SM0_EXECCTRL_STATUS_SEL                 (0x3U<<5U)
+#define PIO_SM0_EXECCTRL_STATUS_SEL_0               (0x1U<<5U)
+#define PIO_SM0_EXECCTRL_WRAP_BOTTOM                (0x1FU<<7U)
+#define PIO_SM0_EXECCTRL_WRAP_BOTTOM_0              (0x1U<<7U)
+#define PIO_SM0_EXECCTRL_WRAP_TOP                   (0x1FU<<12U)
+#define PIO_SM0_EXECCTRL_WRAP_TOP_0                 (0x1U<<12U)
+#define PIO_SM0_EXECCTRL_OUT_STICKY                 (0x1U<<17U)
+#define PIO_SM0_EXECCTRL_INLINE_OUT_EN              (0x1U<<18U)
+#define PIO_SM0_EXECCTRL_OUT_EN_SEL                 (0x1FU<<19U)
+#define PIO_SM0_EXECCTRL_OUT_EN_SEL_0               (0x1U<<19U)
+#define PIO_SM0_EXECCTRL_JMP_PIN                    (0x1FU<<24U)
+#define PIO_SM0_EXECCTRL_JMP_PIN_0                  (0x1U<<24U)
+#define PIO_SM0_EXECCTRL_SIDE_PINDIR                (0x1U<<29U)
+#define PIO_SM0_EXECCTRL_SIDE_EN                    (0x1U<<30U)
+#define PIO_SM0_EXECCTRL_EXEC_STALLED               (0x1U<<31U)
+#define PIO_SM0_EXECCTRL_STATUS_N_IRQ               (0x0U<<0U)
+#define PIO_SM0_EXECCTRL_STATUS_N_IRQ_PREVPIO       (0x8U<<0U)
+#define PIO_SM0_EXECCTRL_STATUS_N_IRQ_NEXTPIO       (0x10U<<0U)
+#define PIO_SM0_EXECCTRL_STATUS_SEL_TXLEVEL         (0x0U<<5U)
+#define PIO_SM0_EXECCTRL_STATUS_SEL_RXLEVEL         (0x1U<<5U)
+#define PIO_SM0_EXECCTRL_STATUS_SEL_IRQ             (0x2U<<5U)
 
 // SM0_SHIFTCTRL Configuration
 
-#define PIO_SM0_SHIFTCTRL_IN_COUNT                  (0x1FU<<0)
-#define PIO_SM0_SHIFTCTRL_IN_COUNT_0                (0x1U<<0)
-#define PIO_SM0_SHIFTCTRL_FJOIN_RX_GET              (0x1U<<14)
-#define PIO_SM0_SHIFTCTRL_FJOIN_RX_PUT              (0x1U<<15)
-#define PIO_SM0_SHIFTCTRL_AUTOPUSH                  (0x1U<<16)
-#define PIO_SM0_SHIFTCTRL_AUTOPULL                  (0x1U<<17)
-#define PIO_SM0_SHIFTCTRL_IN_SHIFTDIR               (0x1U<<18)
-#define PIO_SM0_SHIFTCTRL_OUT_SHIFTDIR              (0x1U<<19)
-#define PIO_SM0_SHIFTCTRL_PUSH_THRESH               (0x1FU<<20)
-#define PIO_SM0_SHIFTCTRL_PUSH_THRESH_0             (0x1U<<20)
-#define PIO_SM0_SHIFTCTRL_PULL_THRESH               (0x1FU<<25)
-#define PIO_SM0_SHIFTCTRL_PULL_THRESH_0             (0x1U<<25)
-#define PIO_SM0_SHIFTCTRL_FJOIN_TX                  (0x1U<<30)
-#define PIO_SM0_SHIFTCTRL_FJOIN_RX                  (0x1U<<31)
+#define PIO_SM0_SHIFTCTRL_IN_COUNT                  (0x1FU<<0U)
+#define PIO_SM0_SHIFTCTRL_IN_COUNT_0                (0x1U<<0U)
+#define PIO_SM0_SHIFTCTRL_FJOIN_RX_GET              (0x1U<<14U)
+#define PIO_SM0_SHIFTCTRL_FJOIN_RX_PUT              (0x1U<<15U)
+#define PIO_SM0_SHIFTCTRL_AUTOPUSH                  (0x1U<<16U)
+#define PIO_SM0_SHIFTCTRL_AUTOPULL                  (0x1U<<17U)
+#define PIO_SM0_SHIFTCTRL_IN_SHIFTDIR               (0x1U<<18U)
+#define PIO_SM0_SHIFTCTRL_OUT_SHIFTDIR              (0x1U<<19U)
+#define PIO_SM0_SHIFTCTRL_PUSH_THRESH               (0x1FU<<20U)
+#define PIO_SM0_SHIFTCTRL_PUSH_THRESH_0             (0x1U<<20U)
+#define PIO_SM0_SHIFTCTRL_PULL_THRESH               (0x1FU<<25U)
+#define PIO_SM0_SHIFTCTRL_PULL_THRESH_0             (0x1U<<25U)
+#define PIO_SM0_SHIFTCTRL_FJOIN_TX                  (0x1U<<30U)
+#define PIO_SM0_SHIFTCTRL_FJOIN_RX                  (0x1U<<31U)
 
 // SM0_ADDR Configuration
 
-#define PIO_SM0_ADDR_SM0_ADDR                       (0x1FU<<0)
-#define PIO_SM0_ADDR_SM0_ADDR_0                     (0x1U<<0)
+#define PIO_SM0_ADDR_SM0_ADDR                       (0x1FU<<0U)
+#define PIO_SM0_ADDR_SM0_ADDR_0                     (0x1U<<0U)
 
 // SM0_INSTR Configuration
 
-#define PIO_SM0_INSTR_SM0_INSTR                     (0xFFFFU<<0)
-#define PIO_SM0_INSTR_SM0_INSTR_0                   (0x1U<<0)
+#define PIO_SM0_INSTR_SM0_INSTR                     (0xFFFFU<<0U)
+#define PIO_SM0_INSTR_SM0_INSTR_0                   (0x1U<<0U)
 
 // SM0_PINCTRL Configuration
 
-#define PIO_SM0_PINCTRL_OUT_BASE                    (0x1FU<<0)
-#define PIO_SM0_PINCTRL_OUT_BASE_0                  (0x1U<<0)
-#define PIO_SM0_PINCTRL_SET_BASE                    (0x1FU<<5)
-#define PIO_SM0_PINCTRL_SET_BASE_0                  (0x1U<<5)
-#define PIO_SM0_PINCTRL_SIDESET_BASE                (0x1FU<<10)
-#define PIO_SM0_PINCTRL_SIDESET_BASE_0              (0x1U<<10)
-#define PIO_SM0_PINCTRL_IN_BASE                     (0x1FU<<15)
-#define PIO_SM0_PINCTRL_IN_BASE_0                   (0x1U<<15)
-#define PIO_SM0_PINCTRL_OUT_COUNT                   (0x3FU<<20)
-#define PIO_SM0_PINCTRL_OUT_COUNT_0                 (0x1U<<20)
-#define PIO_SM0_PINCTRL_SET_COUNT                   (0x7U<<26)
-#define PIO_SM0_PINCTRL_SET_COUNT_0                 (0x1U<<26)
-#define PIO_SM0_PINCTRL_SIDESET_COUNT               (0x7U<<29)
-#define PIO_SM0_PINCTRL_SIDESET_COUNT_0             (0x1U<<29)
+#define PIO_SM0_PINCTRL_OUT_BASE                    (0x1FU<<0U)
+#define PIO_SM0_PINCTRL_OUT_BASE_0                  (0x1U<<0U)
+#define PIO_SM0_PINCTRL_SET_BASE                    (0x1FU<<5U)
+#define PIO_SM0_PINCTRL_SET_BASE_0                  (0x1U<<5U)
+#define PIO_SM0_PINCTRL_SIDESET_BASE                (0x1FU<<10U)
+#define PIO_SM0_PINCTRL_SIDESET_BASE_0              (0x1U<<10U)
+#define PIO_SM0_PINCTRL_IN_BASE                     (0x1FU<<15U)
+#define PIO_SM0_PINCTRL_IN_BASE_0                   (0x1U<<15U)
+#define PIO_SM0_PINCTRL_OUT_COUNT                   (0x3FU<<20U)
+#define PIO_SM0_PINCTRL_OUT_COUNT_0                 (0x1U<<20U)
+#define PIO_SM0_PINCTRL_SET_COUNT                   (0x7U<<26U)
+#define PIO_SM0_PINCTRL_SET_COUNT_0                 (0x1U<<26U)
+#define PIO_SM0_PINCTRL_SIDESET_COUNT               (0x7U<<29U)
+#define PIO_SM0_PINCTRL_SIDESET_COUNT_0             (0x1U<<29U)
 
 // SM1_CLKDIV Configuration
 
-#define PIO_SM1_CLKDIV_FRAC                         (0xFFU<<8)
-#define PIO_SM1_CLKDIV_FRAC_0                       (0x1U<<8)
-#define PIO_SM1_CLKDIV_INT                          (0xFFFFU<<16)
-#define PIO_SM1_CLKDIV_INT_0                        (0x1U<<16)
+#define PIO_SM1_CLKDIV_FRAC                         (0xFFU<<8U)
+#define PIO_SM1_CLKDIV_FRAC_0                       (0x1U<<8U)
+#define PIO_SM1_CLKDIV_INT                          (0xFFFFU<<16U)
+#define PIO_SM1_CLKDIV_INT_0                        (0x1U<<16U)
 
 // SM1_EXECCTRL Configuration
 
-#define PIO_SM1_EXECCTRL_STATUS_N                   (0x1FU<<0)
-#define PIO_SM1_EXECCTRL_STATUS_N_0                 (0x1U<<0)
-#define PIO_SM1_EXECCTRL_STATUS_SEL                 (0x3U<<5)
-#define PIO_SM1_EXECCTRL_STATUS_SEL_0               (0x1U<<5)
-#define PIO_SM1_EXECCTRL_WRAP_BOTTOM                (0x1FU<<7)
-#define PIO_SM1_EXECCTRL_WRAP_BOTTOM_0              (0x1U<<7)
-#define PIO_SM1_EXECCTRL_WRAP_TOP                   (0x1FU<<12)
-#define PIO_SM1_EXECCTRL_WRAP_TOP_0                 (0x1U<<12)
-#define PIO_SM1_EXECCTRL_OUT_STICKY                 (0x1U<<17)
-#define PIO_SM1_EXECCTRL_INLINE_OUT_EN              (0x1U<<18)
-#define PIO_SM1_EXECCTRL_OUT_EN_SEL                 (0x1FU<<19)
-#define PIO_SM1_EXECCTRL_OUT_EN_SEL_0               (0x1U<<19)
-#define PIO_SM1_EXECCTRL_JMP_PIN                    (0x1FU<<24)
-#define PIO_SM1_EXECCTRL_JMP_PIN_0                  (0x1U<<24)
-#define PIO_SM1_EXECCTRL_SIDE_PINDIR                (0x1U<<29)
-#define PIO_SM1_EXECCTRL_SIDE_EN                    (0x1U<<30)
-#define PIO_SM1_EXECCTRL_EXEC_STALLED               (0x1U<<31)
-#define PIO_SM1_EXECCTRL_STATUS_N_IRQ               (0x0U<<0)
-#define PIO_SM1_EXECCTRL_STATUS_N_IRQ_PREVPIO       (0x8U<<0)
-#define PIO_SM1_EXECCTRL_STATUS_N_IRQ_NEXTPIO       (0x10U<<0)
-#define PIO_SM1_EXECCTRL_STATUS_SEL_TXLEVEL         (0x0U<<5)
-#define PIO_SM1_EXECCTRL_STATUS_SEL_RXLEVEL         (0x1U<<5)
-#define PIO_SM1_EXECCTRL_STATUS_SEL_IRQ             (0x2U<<5)
+#define PIO_SM1_EXECCTRL_STATUS_N                   (0x1FU<<0U)
+#define PIO_SM1_EXECCTRL_STATUS_N_0                 (0x1U<<0U)
+#define PIO_SM1_EXECCTRL_STATUS_SEL                 (0x3U<<5U)
+#define PIO_SM1_EXECCTRL_STATUS_SEL_0               (0x1U<<5U)
+#define PIO_SM1_EXECCTRL_WRAP_BOTTOM                (0x1FU<<7U)
+#define PIO_SM1_EXECCTRL_WRAP_BOTTOM_0              (0x1U<<7U)
+#define PIO_SM1_EXECCTRL_WRAP_TOP                   (0x1FU<<12U)
+#define PIO_SM1_EXECCTRL_WRAP_TOP_0                 (0x1U<<12U)
+#define PIO_SM1_EXECCTRL_OUT_STICKY                 (0x1U<<17U)
+#define PIO_SM1_EXECCTRL_INLINE_OUT_EN              (0x1U<<18U)
+#define PIO_SM1_EXECCTRL_OUT_EN_SEL                 (0x1FU<<19U)
+#define PIO_SM1_EXECCTRL_OUT_EN_SEL_0               (0x1U<<19U)
+#define PIO_SM1_EXECCTRL_JMP_PIN                    (0x1FU<<24U)
+#define PIO_SM1_EXECCTRL_JMP_PIN_0                  (0x1U<<24U)
+#define PIO_SM1_EXECCTRL_SIDE_PINDIR                (0x1U<<29U)
+#define PIO_SM1_EXECCTRL_SIDE_EN                    (0x1U<<30U)
+#define PIO_SM1_EXECCTRL_EXEC_STALLED               (0x1U<<31U)
+#define PIO_SM1_EXECCTRL_STATUS_N_IRQ               (0x0U<<0U)
+#define PIO_SM1_EXECCTRL_STATUS_N_IRQ_PREVPIO       (0x8U<<0U)
+#define PIO_SM1_EXECCTRL_STATUS_N_IRQ_NEXTPIO       (0x10U<<0U)
+#define PIO_SM1_EXECCTRL_STATUS_SEL_TXLEVEL         (0x0U<<5U)
+#define PIO_SM1_EXECCTRL_STATUS_SEL_RXLEVEL         (0x1U<<5U)
+#define PIO_SM1_EXECCTRL_STATUS_SEL_IRQ             (0x2U<<5U)
 
 // SM1_SHIFTCTRL Configuration
 
-#define PIO_SM1_SHIFTCTRL_IN_COUNT                  (0x1FU<<0)
-#define PIO_SM1_SHIFTCTRL_IN_COUNT_0                (0x1U<<0)
-#define PIO_SM1_SHIFTCTRL_FJOIN_RX_GET              (0x1U<<14)
-#define PIO_SM1_SHIFTCTRL_FJOIN_RX_PUT              (0x1U<<15)
-#define PIO_SM1_SHIFTCTRL_AUTOPUSH                  (0x1U<<16)
-#define PIO_SM1_SHIFTCTRL_AUTOPULL                  (0x1U<<17)
-#define PIO_SM1_SHIFTCTRL_IN_SHIFTDIR               (0x1U<<18)
-#define PIO_SM1_SHIFTCTRL_OUT_SHIFTDIR              (0x1U<<19)
-#define PIO_SM1_SHIFTCTRL_PUSH_THRESH               (0x1FU<<20)
-#define PIO_SM1_SHIFTCTRL_PUSH_THRESH_0             (0x1U<<20)
-#define PIO_SM1_SHIFTCTRL_PULL_THRESH               (0x1FU<<25)
-#define PIO_SM1_SHIFTCTRL_PULL_THRESH_0             (0x1U<<25)
-#define PIO_SM1_SHIFTCTRL_FJOIN_TX                  (0x1U<<30)
-#define PIO_SM1_SHIFTCTRL_FJOIN_RX                  (0x1U<<31)
+#define PIO_SM1_SHIFTCTRL_IN_COUNT                  (0x1FU<<0U)
+#define PIO_SM1_SHIFTCTRL_IN_COUNT_0                (0x1U<<0U)
+#define PIO_SM1_SHIFTCTRL_FJOIN_RX_GET              (0x1U<<14U)
+#define PIO_SM1_SHIFTCTRL_FJOIN_RX_PUT              (0x1U<<15U)
+#define PIO_SM1_SHIFTCTRL_AUTOPUSH                  (0x1U<<16U)
+#define PIO_SM1_SHIFTCTRL_AUTOPULL                  (0x1U<<17U)
+#define PIO_SM1_SHIFTCTRL_IN_SHIFTDIR               (0x1U<<18U)
+#define PIO_SM1_SHIFTCTRL_OUT_SHIFTDIR              (0x1U<<19U)
+#define PIO_SM1_SHIFTCTRL_PUSH_THRESH               (0x1FU<<20U)
+#define PIO_SM1_SHIFTCTRL_PUSH_THRESH_0             (0x1U<<20U)
+#define PIO_SM1_SHIFTCTRL_PULL_THRESH               (0x1FU<<25U)
+#define PIO_SM1_SHIFTCTRL_PULL_THRESH_0             (0x1U<<25U)
+#define PIO_SM1_SHIFTCTRL_FJOIN_TX                  (0x1U<<30U)
+#define PIO_SM1_SHIFTCTRL_FJOIN_RX                  (0x1U<<31U)
 
 // SM1_ADDR Configuration
 
-#define PIO_SM1_ADDR_SM1_ADDR                       (0x1FU<<0)
-#define PIO_SM1_ADDR_SM1_ADDR_0                     (0x1U<<0)
+#define PIO_SM1_ADDR_SM1_ADDR                       (0x1FU<<0U)
+#define PIO_SM1_ADDR_SM1_ADDR_0                     (0x1U<<0U)
 
 // SM1_INSTR Configuration
 
-#define PIO_SM1_INSTR_SM1_INSTR                     (0xFFFFU<<0)
-#define PIO_SM1_INSTR_SM1_INSTR_0                   (0x1U<<0)
+#define PIO_SM1_INSTR_SM1_INSTR                     (0xFFFFU<<0U)
+#define PIO_SM1_INSTR_SM1_INSTR_0                   (0x1U<<0U)
 
 // SM1_PINCTRL Configuration
 
-#define PIO_SM1_PINCTRL_OUT_BASE                    (0x1FU<<0)
-#define PIO_SM1_PINCTRL_OUT_BASE_0                  (0x1U<<0)
-#define PIO_SM1_PINCTRL_SET_BASE                    (0x1FU<<5)
-#define PIO_SM1_PINCTRL_SET_BASE_0                  (0x1U<<5)
-#define PIO_SM1_PINCTRL_SIDESET_BASE                (0x1FU<<10)
-#define PIO_SM1_PINCTRL_SIDESET_BASE_0              (0x1U<<10)
-#define PIO_SM1_PINCTRL_IN_BASE                     (0x1FU<<15)
-#define PIO_SM1_PINCTRL_IN_BASE_0                   (0x1U<<15)
-#define PIO_SM1_PINCTRL_OUT_COUNT                   (0x3FU<<20)
-#define PIO_SM1_PINCTRL_OUT_COUNT_0                 (0x1U<<20)
-#define PIO_SM1_PINCTRL_SET_COUNT                   (0x7U<<26)
-#define PIO_SM1_PINCTRL_SET_COUNT_0                 (0x1U<<26)
-#define PIO_SM1_PINCTRL_SIDESET_COUNT               (0x7U<<29)
-#define PIO_SM1_PINCTRL_SIDESET_COUNT_0             (0x1U<<29)
+#define PIO_SM1_PINCTRL_OUT_BASE                    (0x1FU<<0U)
+#define PIO_SM1_PINCTRL_OUT_BASE_0                  (0x1U<<0U)
+#define PIO_SM1_PINCTRL_SET_BASE                    (0x1FU<<5U)
+#define PIO_SM1_PINCTRL_SET_BASE_0                  (0x1U<<5U)
+#define PIO_SM1_PINCTRL_SIDESET_BASE                (0x1FU<<10U)
+#define PIO_SM1_PINCTRL_SIDESET_BASE_0              (0x1U<<10U)
+#define PIO_SM1_PINCTRL_IN_BASE                     (0x1FU<<15U)
+#define PIO_SM1_PINCTRL_IN_BASE_0                   (0x1U<<15U)
+#define PIO_SM1_PINCTRL_OUT_COUNT                   (0x3FU<<20U)
+#define PIO_SM1_PINCTRL_OUT_COUNT_0                 (0x1U<<20U)
+#define PIO_SM1_PINCTRL_SET_COUNT                   (0x7U<<26U)
+#define PIO_SM1_PINCTRL_SET_COUNT_0                 (0x1U<<26U)
+#define PIO_SM1_PINCTRL_SIDESET_COUNT               (0x7U<<29U)
+#define PIO_SM1_PINCTRL_SIDESET_COUNT_0             (0x1U<<29U)
 
 // SM2_CLKDIV Configuration
 
-#define PIO_SM2_CLKDIV_FRAC                         (0xFFU<<8)
-#define PIO_SM2_CLKDIV_FRAC_0                       (0x1U<<8)
-#define PIO_SM2_CLKDIV_INT                          (0xFFFFU<<16)
-#define PIO_SM2_CLKDIV_INT_0                        (0x1U<<16)
+#define PIO_SM2_CLKDIV_FRAC                         (0xFFU<<8U)
+#define PIO_SM2_CLKDIV_FRAC_0                       (0x1U<<8U)
+#define PIO_SM2_CLKDIV_INT                          (0xFFFFU<<16U)
+#define PIO_SM2_CLKDIV_INT_0                        (0x1U<<16U)
 
 // SM2_EXECCTRL Configuration
 
-#define PIO_SM2_EXECCTRL_STATUS_N                   (0x1FU<<0)
-#define PIO_SM2_EXECCTRL_STATUS_N_0                 (0x1U<<0)
-#define PIO_SM2_EXECCTRL_STATUS_SEL                 (0x3U<<5)
-#define PIO_SM2_EXECCTRL_STATUS_SEL_0               (0x1U<<5)
-#define PIO_SM2_EXECCTRL_WRAP_BOTTOM                (0x1FU<<7)
-#define PIO_SM2_EXECCTRL_WRAP_BOTTOM_0              (0x1U<<7)
-#define PIO_SM2_EXECCTRL_WRAP_TOP                   (0x1FU<<12)
-#define PIO_SM2_EXECCTRL_WRAP_TOP_0                 (0x1U<<12)
-#define PIO_SM2_EXECCTRL_OUT_STICKY                 (0x1U<<17)
-#define PIO_SM2_EXECCTRL_INLINE_OUT_EN              (0x1U<<18)
-#define PIO_SM2_EXECCTRL_OUT_EN_SEL                 (0x1FU<<19)
-#define PIO_SM2_EXECCTRL_OUT_EN_SEL_0               (0x1U<<19)
-#define PIO_SM2_EXECCTRL_JMP_PIN                    (0x1FU<<24)
-#define PIO_SM2_EXECCTRL_JMP_PIN_0                  (0x1U<<24)
-#define PIO_SM2_EXECCTRL_SIDE_PINDIR                (0x1U<<29)
-#define PIO_SM2_EXECCTRL_SIDE_EN                    (0x1U<<30)
-#define PIO_SM2_EXECCTRL_EXEC_STALLED               (0x1U<<31)
-#define PIO_SM2_EXECCTRL_STATUS_N_IRQ               (0x0U<<0)
-#define PIO_SM2_EXECCTRL_STATUS_N_IRQ_PREVPIO       (0x8U<<0)
-#define PIO_SM2_EXECCTRL_STATUS_N_IRQ_NEXTPIO       (0x10U<<0)
-#define PIO_SM2_EXECCTRL_STATUS_SEL_TXLEVEL         (0x0U<<5)
-#define PIO_SM2_EXECCTRL_STATUS_SEL_RXLEVEL         (0x1U<<5)
-#define PIO_SM2_EXECCTRL_STATUS_SEL_IRQ             (0x2U<<5)
+#define PIO_SM2_EXECCTRL_STATUS_N                   (0x1FU<<0U)
+#define PIO_SM2_EXECCTRL_STATUS_N_0                 (0x1U<<0U)
+#define PIO_SM2_EXECCTRL_STATUS_SEL                 (0x3U<<5U)
+#define PIO_SM2_EXECCTRL_STATUS_SEL_0               (0x1U<<5U)
+#define PIO_SM2_EXECCTRL_WRAP_BOTTOM                (0x1FU<<7U)
+#define PIO_SM2_EXECCTRL_WRAP_BOTTOM_0              (0x1U<<7U)
+#define PIO_SM2_EXECCTRL_WRAP_TOP                   (0x1FU<<12U)
+#define PIO_SM2_EXECCTRL_WRAP_TOP_0                 (0x1U<<12U)
+#define PIO_SM2_EXECCTRL_OUT_STICKY                 (0x1U<<17U)
+#define PIO_SM2_EXECCTRL_INLINE_OUT_EN              (0x1U<<18U)
+#define PIO_SM2_EXECCTRL_OUT_EN_SEL                 (0x1FU<<19U)
+#define PIO_SM2_EXECCTRL_OUT_EN_SEL_0               (0x1U<<19U)
+#define PIO_SM2_EXECCTRL_JMP_PIN                    (0x1FU<<24U)
+#define PIO_SM2_EXECCTRL_JMP_PIN_0                  (0x1U<<24U)
+#define PIO_SM2_EXECCTRL_SIDE_PINDIR                (0x1U<<29U)
+#define PIO_SM2_EXECCTRL_SIDE_EN                    (0x1U<<30U)
+#define PIO_SM2_EXECCTRL_EXEC_STALLED               (0x1U<<31U)
+#define PIO_SM2_EXECCTRL_STATUS_N_IRQ               (0x0U<<0U)
+#define PIO_SM2_EXECCTRL_STATUS_N_IRQ_PREVPIO       (0x8U<<0U)
+#define PIO_SM2_EXECCTRL_STATUS_N_IRQ_NEXTPIO       (0x10U<<0U)
+#define PIO_SM2_EXECCTRL_STATUS_SEL_TXLEVEL         (0x0U<<5U)
+#define PIO_SM2_EXECCTRL_STATUS_SEL_RXLEVEL         (0x1U<<5U)
+#define PIO_SM2_EXECCTRL_STATUS_SEL_IRQ             (0x2U<<5U)
 
 // SM2_SHIFTCTRL Configuration
 
-#define PIO_SM2_SHIFTCTRL_IN_COUNT                  (0x1FU<<0)
-#define PIO_SM2_SHIFTCTRL_IN_COUNT_0                (0x1U<<0)
-#define PIO_SM2_SHIFTCTRL_FJOIN_RX_GET              (0x1U<<14)
-#define PIO_SM2_SHIFTCTRL_FJOIN_RX_PUT              (0x1U<<15)
-#define PIO_SM2_SHIFTCTRL_AUTOPUSH                  (0x1U<<16)
-#define PIO_SM2_SHIFTCTRL_AUTOPULL                  (0x1U<<17)
-#define PIO_SM2_SHIFTCTRL_IN_SHIFTDIR               (0x1U<<18)
-#define PIO_SM2_SHIFTCTRL_OUT_SHIFTDIR              (0x1U<<19)
-#define PIO_SM2_SHIFTCTRL_PUSH_THRESH               (0x1FU<<20)
-#define PIO_SM2_SHIFTCTRL_PUSH_THRESH_0             (0x1U<<20)
-#define PIO_SM2_SHIFTCTRL_PULL_THRESH               (0x1FU<<25)
-#define PIO_SM2_SHIFTCTRL_PULL_THRESH_0             (0x1U<<25)
-#define PIO_SM2_SHIFTCTRL_FJOIN_TX                  (0x1U<<30)
-#define PIO_SM2_SHIFTCTRL_FJOIN_RX                  (0x1U<<31)
+#define PIO_SM2_SHIFTCTRL_IN_COUNT                  (0x1FU<<0U)
+#define PIO_SM2_SHIFTCTRL_IN_COUNT_0                (0x1U<<0U)
+#define PIO_SM2_SHIFTCTRL_FJOIN_RX_GET              (0x1U<<14U)
+#define PIO_SM2_SHIFTCTRL_FJOIN_RX_PUT              (0x1U<<15U)
+#define PIO_SM2_SHIFTCTRL_AUTOPUSH                  (0x1U<<16U)
+#define PIO_SM2_SHIFTCTRL_AUTOPULL                  (0x1U<<17U)
+#define PIO_SM2_SHIFTCTRL_IN_SHIFTDIR               (0x1U<<18U)
+#define PIO_SM2_SHIFTCTRL_OUT_SHIFTDIR              (0x1U<<19U)
+#define PIO_SM2_SHIFTCTRL_PUSH_THRESH               (0x1FU<<20U)
+#define PIO_SM2_SHIFTCTRL_PUSH_THRESH_0             (0x1U<<20U)
+#define PIO_SM2_SHIFTCTRL_PULL_THRESH               (0x1FU<<25U)
+#define PIO_SM2_SHIFTCTRL_PULL_THRESH_0             (0x1U<<25U)
+#define PIO_SM2_SHIFTCTRL_FJOIN_TX                  (0x1U<<30U)
+#define PIO_SM2_SHIFTCTRL_FJOIN_RX                  (0x1U<<31U)
 
 // SM2_ADDR Configuration
 
-#define PIO_SM2_ADDR_SM2_ADDR                       (0x1FU<<0)
-#define PIO_SM2_ADDR_SM2_ADDR_0                     (0x1U<<0)
+#define PIO_SM2_ADDR_SM2_ADDR                       (0x1FU<<0U)
+#define PIO_SM2_ADDR_SM2_ADDR_0                     (0x1U<<0U)
 
 // SM2_INSTR Configuration
 
-#define PIO_SM2_INSTR_SM2_INSTR                     (0xFFFFU<<0)
-#define PIO_SM2_INSTR_SM2_INSTR_0                   (0x1U<<0)
+#define PIO_SM2_INSTR_SM2_INSTR                     (0xFFFFU<<0U)
+#define PIO_SM2_INSTR_SM2_INSTR_0                   (0x1U<<0U)
 
 // SM2_PINCTRL Configuration
 
-#define PIO_SM2_PINCTRL_OUT_BASE                    (0x1FU<<0)
-#define PIO_SM2_PINCTRL_OUT_BASE_0                  (0x1U<<0)
-#define PIO_SM2_PINCTRL_SET_BASE                    (0x1FU<<5)
-#define PIO_SM2_PINCTRL_SET_BASE_0                  (0x1U<<5)
-#define PIO_SM2_PINCTRL_SIDESET_BASE                (0x1FU<<10)
-#define PIO_SM2_PINCTRL_SIDESET_BASE_0              (0x1U<<10)
-#define PIO_SM2_PINCTRL_IN_BASE                     (0x1FU<<15)
-#define PIO_SM2_PINCTRL_IN_BASE_0                   (0x1U<<15)
-#define PIO_SM2_PINCTRL_OUT_COUNT                   (0x3FU<<20)
-#define PIO_SM2_PINCTRL_OUT_COUNT_0                 (0x1U<<20)
-#define PIO_SM2_PINCTRL_SET_COUNT                   (0x7U<<26)
-#define PIO_SM2_PINCTRL_SET_COUNT_0                 (0x1U<<26)
-#define PIO_SM2_PINCTRL_SIDESET_COUNT               (0x7U<<29)
-#define PIO_SM2_PINCTRL_SIDESET_COUNT_0             (0x1U<<29)
+#define PIO_SM2_PINCTRL_OUT_BASE                    (0x1FU<<0U)
+#define PIO_SM2_PINCTRL_OUT_BASE_0                  (0x1U<<0U)
+#define PIO_SM2_PINCTRL_SET_BASE                    (0x1FU<<5U)
+#define PIO_SM2_PINCTRL_SET_BASE_0                  (0x1U<<5U)
+#define PIO_SM2_PINCTRL_SIDESET_BASE                (0x1FU<<10U)
+#define PIO_SM2_PINCTRL_SIDESET_BASE_0              (0x1U<<10U)
+#define PIO_SM2_PINCTRL_IN_BASE                     (0x1FU<<15U)
+#define PIO_SM2_PINCTRL_IN_BASE_0                   (0x1U<<15U)
+#define PIO_SM2_PINCTRL_OUT_COUNT                   (0x3FU<<20U)
+#define PIO_SM2_PINCTRL_OUT_COUNT_0                 (0x1U<<20U)
+#define PIO_SM2_PINCTRL_SET_COUNT                   (0x7U<<26U)
+#define PIO_SM2_PINCTRL_SET_COUNT_0                 (0x1U<<26U)
+#define PIO_SM2_PINCTRL_SIDESET_COUNT               (0x7U<<29U)
+#define PIO_SM2_PINCTRL_SIDESET_COUNT_0             (0x1U<<29U)
 
 // SM3_CLKDIV Configuration
 
-#define PIO_SM3_CLKDIV_FRAC                         (0xFFU<<8)
-#define PIO_SM3_CLKDIV_FRAC_0                       (0x1U<<8)
-#define PIO_SM3_CLKDIV_INT                          (0xFFFFU<<16)
-#define PIO_SM3_CLKDIV_INT_0                        (0x1U<<16)
+#define PIO_SM3_CLKDIV_FRAC                         (0xFFU<<8U)
+#define PIO_SM3_CLKDIV_FRAC_0                       (0x1U<<8U)
+#define PIO_SM3_CLKDIV_INT                          (0xFFFFU<<16U)
+#define PIO_SM3_CLKDIV_INT_0                        (0x1U<<16U)
 
 // SM3_EXECCTRL Configuration
 
-#define PIO_SM3_EXECCTRL_STATUS_N                   (0x1FU<<0)
-#define PIO_SM3_EXECCTRL_STATUS_N_0                 (0x1U<<0)
-#define PIO_SM3_EXECCTRL_STATUS_SEL                 (0x3U<<5)
-#define PIO_SM3_EXECCTRL_STATUS_SEL_0               (0x1U<<5)
-#define PIO_SM3_EXECCTRL_WRAP_BOTTOM                (0x1FU<<7)
-#define PIO_SM3_EXECCTRL_WRAP_BOTTOM_0              (0x1U<<7)
-#define PIO_SM3_EXECCTRL_WRAP_TOP                   (0x1FU<<12)
-#define PIO_SM3_EXECCTRL_WRAP_TOP_0                 (0x1U<<12)
-#define PIO_SM3_EXECCTRL_OUT_STICKY                 (0x1U<<17)
-#define PIO_SM3_EXECCTRL_INLINE_OUT_EN              (0x1U<<18)
-#define PIO_SM3_EXECCTRL_OUT_EN_SEL                 (0x1FU<<19)
-#define PIO_SM3_EXECCTRL_OUT_EN_SEL_0               (0x1U<<19)
-#define PIO_SM3_EXECCTRL_JMP_PIN                    (0x1FU<<24)
-#define PIO_SM3_EXECCTRL_JMP_PIN_0                  (0x1U<<24)
-#define PIO_SM3_EXECCTRL_SIDE_PINDIR                (0x1U<<29)
-#define PIO_SM3_EXECCTRL_SIDE_EN                    (0x1U<<30)
-#define PIO_SM3_EXECCTRL_EXEC_STALLED               (0x1U<<31)
-#define PIO_SM3_EXECCTRL_STATUS_N_IRQ               (0x0U<<0)
-#define PIO_SM3_EXECCTRL_STATUS_N_IRQ_PREVPIO       (0x8U<<0)
-#define PIO_SM3_EXECCTRL_STATUS_N_IRQ_NEXTPIO       (0x10U<<0)
-#define PIO_SM3_EXECCTRL_STATUS_SEL_TXLEVEL         (0x0U<<5)
-#define PIO_SM3_EXECCTRL_STATUS_SEL_RXLEVEL         (0x1U<<5)
-#define PIO_SM3_EXECCTRL_STATUS_SEL_IRQ             (0x2U<<5)
+#define PIO_SM3_EXECCTRL_STATUS_N                   (0x1FU<<0U)
+#define PIO_SM3_EXECCTRL_STATUS_N_0                 (0x1U<<0U)
+#define PIO_SM3_EXECCTRL_STATUS_SEL                 (0x3U<<5U)
+#define PIO_SM3_EXECCTRL_STATUS_SEL_0               (0x1U<<5U)
+#define PIO_SM3_EXECCTRL_WRAP_BOTTOM                (0x1FU<<7U)
+#define PIO_SM3_EXECCTRL_WRAP_BOTTOM_0              (0x1U<<7U)
+#define PIO_SM3_EXECCTRL_WRAP_TOP                   (0x1FU<<12U)
+#define PIO_SM3_EXECCTRL_WRAP_TOP_0                 (0x1U<<12U)
+#define PIO_SM3_EXECCTRL_OUT_STICKY                 (0x1U<<17U)
+#define PIO_SM3_EXECCTRL_INLINE_OUT_EN              (0x1U<<18U)
+#define PIO_SM3_EXECCTRL_OUT_EN_SEL                 (0x1FU<<19U)
+#define PIO_SM3_EXECCTRL_OUT_EN_SEL_0               (0x1U<<19U)
+#define PIO_SM3_EXECCTRL_JMP_PIN                    (0x1FU<<24U)
+#define PIO_SM3_EXECCTRL_JMP_PIN_0                  (0x1U<<24U)
+#define PIO_SM3_EXECCTRL_SIDE_PINDIR                (0x1U<<29U)
+#define PIO_SM3_EXECCTRL_SIDE_EN                    (0x1U<<30U)
+#define PIO_SM3_EXECCTRL_EXEC_STALLED               (0x1U<<31U)
+#define PIO_SM3_EXECCTRL_STATUS_N_IRQ               (0x0U<<0U)
+#define PIO_SM3_EXECCTRL_STATUS_N_IRQ_PREVPIO       (0x8U<<0U)
+#define PIO_SM3_EXECCTRL_STATUS_N_IRQ_NEXTPIO       (0x10U<<0U)
+#define PIO_SM3_EXECCTRL_STATUS_SEL_TXLEVEL         (0x0U<<5U)
+#define PIO_SM3_EXECCTRL_STATUS_SEL_RXLEVEL         (0x1U<<5U)
+#define PIO_SM3_EXECCTRL_STATUS_SEL_IRQ             (0x2U<<5U)
 
 // SM3_SHIFTCTRL Configuration
 
-#define PIO_SM3_SHIFTCTRL_IN_COUNT                  (0x1FU<<0)
-#define PIO_SM3_SHIFTCTRL_IN_COUNT_0                (0x1U<<0)
-#define PIO_SM3_SHIFTCTRL_FJOIN_RX_GET              (0x1U<<14)
-#define PIO_SM3_SHIFTCTRL_FJOIN_RX_PUT              (0x1U<<15)
-#define PIO_SM3_SHIFTCTRL_AUTOPUSH                  (0x1U<<16)
-#define PIO_SM3_SHIFTCTRL_AUTOPULL                  (0x1U<<17)
-#define PIO_SM3_SHIFTCTRL_IN_SHIFTDIR               (0x1U<<18)
-#define PIO_SM3_SHIFTCTRL_OUT_SHIFTDIR              (0x1U<<19)
-#define PIO_SM3_SHIFTCTRL_PUSH_THRESH               (0x1FU<<20)
-#define PIO_SM3_SHIFTCTRL_PUSH_THRESH_0             (0x1U<<20)
-#define PIO_SM3_SHIFTCTRL_PULL_THRESH               (0x1FU<<25)
-#define PIO_SM3_SHIFTCTRL_PULL_THRESH_0             (0x1U<<25)
-#define PIO_SM3_SHIFTCTRL_FJOIN_TX                  (0x1U<<30)
-#define PIO_SM3_SHIFTCTRL_FJOIN_RX                  (0x1U<<31)
+#define PIO_SM3_SHIFTCTRL_IN_COUNT                  (0x1FU<<0U)
+#define PIO_SM3_SHIFTCTRL_IN_COUNT_0                (0x1U<<0U)
+#define PIO_SM3_SHIFTCTRL_FJOIN_RX_GET              (0x1U<<14U)
+#define PIO_SM3_SHIFTCTRL_FJOIN_RX_PUT              (0x1U<<15U)
+#define PIO_SM3_SHIFTCTRL_AUTOPUSH                  (0x1U<<16U)
+#define PIO_SM3_SHIFTCTRL_AUTOPULL                  (0x1U<<17U)
+#define PIO_SM3_SHIFTCTRL_IN_SHIFTDIR               (0x1U<<18U)
+#define PIO_SM3_SHIFTCTRL_OUT_SHIFTDIR              (0x1U<<19U)
+#define PIO_SM3_SHIFTCTRL_PUSH_THRESH               (0x1FU<<20U)
+#define PIO_SM3_SHIFTCTRL_PUSH_THRESH_0             (0x1U<<20U)
+#define PIO_SM3_SHIFTCTRL_PULL_THRESH               (0x1FU<<25U)
+#define PIO_SM3_SHIFTCTRL_PULL_THRESH_0             (0x1U<<25U)
+#define PIO_SM3_SHIFTCTRL_FJOIN_TX                  (0x1U<<30U)
+#define PIO_SM3_SHIFTCTRL_FJOIN_RX                  (0x1U<<31U)
 
 // SM3_ADDR Configuration
 
-#define PIO_SM3_ADDR_SM3_ADDR                       (0x1FU<<0)
-#define PIO_SM3_ADDR_SM3_ADDR_0                     (0x1U<<0)
+#define PIO_SM3_ADDR_SM3_ADDR                       (0x1FU<<0U)
+#define PIO_SM3_ADDR_SM3_ADDR_0                     (0x1U<<0U)
 
 // SM3_INSTR Configuration
 
-#define PIO_SM3_INSTR_SM3_INSTR                     (0xFFFFU<<0)
-#define PIO_SM3_INSTR_SM3_INSTR_0                   (0x1U<<0)
+#define PIO_SM3_INSTR_SM3_INSTR                     (0xFFFFU<<0U)
+#define PIO_SM3_INSTR_SM3_INSTR_0                   (0x1U<<0U)
 
 // SM3_PINCTRL Configuration
 
-#define PIO_SM3_PINCTRL_OUT_BASE                    (0x1FU<<0)
-#define PIO_SM3_PINCTRL_OUT_BASE_0                  (0x1U<<0)
-#define PIO_SM3_PINCTRL_SET_BASE                    (0x1FU<<5)
-#define PIO_SM3_PINCTRL_SET_BASE_0                  (0x1U<<5)
-#define PIO_SM3_PINCTRL_SIDESET_BASE                (0x1FU<<10)
-#define PIO_SM3_PINCTRL_SIDESET_BASE_0              (0x1U<<10)
-#define PIO_SM3_PINCTRL_IN_BASE                     (0x1FU<<15)
-#define PIO_SM3_PINCTRL_IN_BASE_0                   (0x1U<<15)
-#define PIO_SM3_PINCTRL_OUT_COUNT                   (0x3FU<<20)
-#define PIO_SM3_PINCTRL_OUT_COUNT_0                 (0x1U<<20)
-#define PIO_SM3_PINCTRL_SET_COUNT                   (0x7U<<26)
-#define PIO_SM3_PINCTRL_SET_COUNT_0                 (0x1U<<26)
-#define PIO_SM3_PINCTRL_SIDESET_COUNT               (0x7U<<29)
-#define PIO_SM3_PINCTRL_SIDESET_COUNT_0             (0x1U<<29)
+#define PIO_SM3_PINCTRL_OUT_BASE                    (0x1FU<<0U)
+#define PIO_SM3_PINCTRL_OUT_BASE_0                  (0x1U<<0U)
+#define PIO_SM3_PINCTRL_SET_BASE                    (0x1FU<<5U)
+#define PIO_SM3_PINCTRL_SET_BASE_0                  (0x1U<<5U)
+#define PIO_SM3_PINCTRL_SIDESET_BASE                (0x1FU<<10U)
+#define PIO_SM3_PINCTRL_SIDESET_BASE_0              (0x1U<<10U)
+#define PIO_SM3_PINCTRL_IN_BASE                     (0x1FU<<15U)
+#define PIO_SM3_PINCTRL_IN_BASE_0                   (0x1U<<15U)
+#define PIO_SM3_PINCTRL_OUT_COUNT                   (0x3FU<<20U)
+#define PIO_SM3_PINCTRL_OUT_COUNT_0                 (0x1U<<20U)
+#define PIO_SM3_PINCTRL_SET_COUNT                   (0x7U<<26U)
+#define PIO_SM3_PINCTRL_SET_COUNT_0                 (0x1U<<26U)
+#define PIO_SM3_PINCTRL_SIDESET_COUNT               (0x7U<<29U)
+#define PIO_SM3_PINCTRL_SIDESET_COUNT_0             (0x1U<<29U)
 
 // RXF0_PUTGET0 Configuration
 
-#define PIO_RXF0_PUTGET0_RXF0_PUTGET0               (0xFFFFFFFFU<<0)
-#define PIO_RXF0_PUTGET0_RXF0_PUTGET0_0             (0x1U<<0)
+#define PIO_RXF0_PUTGET0_RXF0_PUTGET0               (0xFFFFFFFFU<<0U)
+#define PIO_RXF0_PUTGET0_RXF0_PUTGET0_0             (0x1U<<0U)
 
 // RXF0_PUTGET1 Configuration
 
-#define PIO_RXF0_PUTGET1_RXF0_PUTGET1               (0xFFFFFFFFU<<0)
-#define PIO_RXF0_PUTGET1_RXF0_PUTGET1_0             (0x1U<<0)
+#define PIO_RXF0_PUTGET1_RXF0_PUTGET1               (0xFFFFFFFFU<<0U)
+#define PIO_RXF0_PUTGET1_RXF0_PUTGET1_0             (0x1U<<0U)
 
 // RXF0_PUTGET2 Configuration
 
-#define PIO_RXF0_PUTGET2_RXF0_PUTGET2               (0xFFFFFFFFU<<0)
-#define PIO_RXF0_PUTGET2_RXF0_PUTGET2_0             (0x1U<<0)
+#define PIO_RXF0_PUTGET2_RXF0_PUTGET2               (0xFFFFFFFFU<<0U)
+#define PIO_RXF0_PUTGET2_RXF0_PUTGET2_0             (0x1U<<0U)
 
 // RXF0_PUTGET3 Configuration
 
-#define PIO_RXF0_PUTGET3_RXF0_PUTGET3               (0xFFFFFFFFU<<0)
-#define PIO_RXF0_PUTGET3_RXF0_PUTGET3_0             (0x1U<<0)
+#define PIO_RXF0_PUTGET3_RXF0_PUTGET3               (0xFFFFFFFFU<<0U)
+#define PIO_RXF0_PUTGET3_RXF0_PUTGET3_0             (0x1U<<0U)
 
 // RXF1_PUTGET0 Configuration
 
-#define PIO_RXF1_PUTGET0_RXF1_PUTGET0               (0xFFFFFFFFU<<0)
-#define PIO_RXF1_PUTGET0_RXF1_PUTGET0_0             (0x1U<<0)
+#define PIO_RXF1_PUTGET0_RXF1_PUTGET0               (0xFFFFFFFFU<<0U)
+#define PIO_RXF1_PUTGET0_RXF1_PUTGET0_0             (0x1U<<0U)
 
 // RXF1_PUTGET1 Configuration
 
-#define PIO_RXF1_PUTGET1_RXF1_PUTGET1               (0xFFFFFFFFU<<0)
-#define PIO_RXF1_PUTGET1_RXF1_PUTGET1_0             (0x1U<<0)
+#define PIO_RXF1_PUTGET1_RXF1_PUTGET1               (0xFFFFFFFFU<<0U)
+#define PIO_RXF1_PUTGET1_RXF1_PUTGET1_0             (0x1U<<0U)
 
 // RXF1_PUTGET2 Configuration
 
-#define PIO_RXF1_PUTGET2_RXF1_PUTGET2               (0xFFFFFFFFU<<0)
-#define PIO_RXF1_PUTGET2_RXF1_PUTGET2_0             (0x1U<<0)
+#define PIO_RXF1_PUTGET2_RXF1_PUTGET2               (0xFFFFFFFFU<<0U)
+#define PIO_RXF1_PUTGET2_RXF1_PUTGET2_0             (0x1U<<0U)
 
 // RXF1_PUTGET3 Configuration
 
-#define PIO_RXF1_PUTGET3_RXF1_PUTGET3               (0xFFFFFFFFU<<0)
-#define PIO_RXF1_PUTGET3_RXF1_PUTGET3_0             (0x1U<<0)
+#define PIO_RXF1_PUTGET3_RXF1_PUTGET3               (0xFFFFFFFFU<<0U)
+#define PIO_RXF1_PUTGET3_RXF1_PUTGET3_0             (0x1U<<0U)
 
 // RXF2_PUTGET0 Configuration
 
-#define PIO_RXF2_PUTGET0_RXF2_PUTGET0               (0xFFFFFFFFU<<0)
-#define PIO_RXF2_PUTGET0_RXF2_PUTGET0_0             (0x1U<<0)
+#define PIO_RXF2_PUTGET0_RXF2_PUTGET0               (0xFFFFFFFFU<<0U)
+#define PIO_RXF2_PUTGET0_RXF2_PUTGET0_0             (0x1U<<0U)
 
 // RXF2_PUTGET1 Configuration
 
-#define PIO_RXF2_PUTGET1_RXF2_PUTGET1               (0xFFFFFFFFU<<0)
-#define PIO_RXF2_PUTGET1_RXF2_PUTGET1_0             (0x1U<<0)
+#define PIO_RXF2_PUTGET1_RXF2_PUTGET1               (0xFFFFFFFFU<<0U)
+#define PIO_RXF2_PUTGET1_RXF2_PUTGET1_0             (0x1U<<0U)
 
 // RXF2_PUTGET2 Configuration
 
-#define PIO_RXF2_PUTGET2_RXF2_PUTGET2               (0xFFFFFFFFU<<0)
-#define PIO_RXF2_PUTGET2_RXF2_PUTGET2_0             (0x1U<<0)
+#define PIO_RXF2_PUTGET2_RXF2_PUTGET2               (0xFFFFFFFFU<<0U)
+#define PIO_RXF2_PUTGET2_RXF2_PUTGET2_0             (0x1U<<0U)
 
 // RXF2_PUTGET3 Configuration
 
-#define PIO_RXF2_PUTGET3_RXF2_PUTGET3               (0xFFFFFFFFU<<0)
-#define PIO_RXF2_PUTGET3_RXF2_PUTGET3_0             (0x1U<<0)
+#define PIO_RXF2_PUTGET3_RXF2_PUTGET3               (0xFFFFFFFFU<<0U)
+#define PIO_RXF2_PUTGET3_RXF2_PUTGET3_0             (0x1U<<0U)
 
 // RXF3_PUTGET0 Configuration
 
-#define PIO_RXF3_PUTGET0_RXF3_PUTGET0               (0xFFFFFFFFU<<0)
-#define PIO_RXF3_PUTGET0_RXF3_PUTGET0_0             (0x1U<<0)
+#define PIO_RXF3_PUTGET0_RXF3_PUTGET0               (0xFFFFFFFFU<<0U)
+#define PIO_RXF3_PUTGET0_RXF3_PUTGET0_0             (0x1U<<0U)
 
 // RXF3_PUTGET1 Configuration
 
-#define PIO_RXF3_PUTGET1_RXF3_PUTGET1               (0xFFFFFFFFU<<0)
-#define PIO_RXF3_PUTGET1_RXF3_PUTGET1_0             (0x1U<<0)
+#define PIO_RXF3_PUTGET1_RXF3_PUTGET1               (0xFFFFFFFFU<<0U)
+#define PIO_RXF3_PUTGET1_RXF3_PUTGET1_0             (0x1U<<0U)
 
 // RXF3_PUTGET2 Configuration
 
-#define PIO_RXF3_PUTGET2_RXF3_PUTGET2               (0xFFFFFFFFU<<0)
-#define PIO_RXF3_PUTGET2_RXF3_PUTGET2_0             (0x1U<<0)
+#define PIO_RXF3_PUTGET2_RXF3_PUTGET2               (0xFFFFFFFFU<<0U)
+#define PIO_RXF3_PUTGET2_RXF3_PUTGET2_0             (0x1U<<0U)
 
 // RXF3_PUTGET3 Configuration
 
-#define PIO_RXF3_PUTGET3_RXF3_PUTGET3               (0xFFFFFFFFU<<0)
-#define PIO_RXF3_PUTGET3_RXF3_PUTGET3_0             (0x1U<<0)
+#define PIO_RXF3_PUTGET3_RXF3_PUTGET3               (0xFFFFFFFFU<<0U)
+#define PIO_RXF3_PUTGET3_RXF3_PUTGET3_0             (0x1U<<0U)
 
 // GPIOBASE Configuration
 
-#define PIO_GPIOBASE_GPIOBASE                       (0x1U<<4)
+#define PIO_GPIOBASE_GPIOBASE                       (0x1U<<4U)
 
 // INTR Configuration
 
-#define PIO_INTR_SM0_RXNEMPTY                       (0x1U<<0)
-#define PIO_INTR_SM1_RXNEMPTY                       (0x1U<<1)
-#define PIO_INTR_SM2_RXNEMPTY                       (0x1U<<2)
-#define PIO_INTR_SM3_RXNEMPTY                       (0x1U<<3)
-#define PIO_INTR_SM0_TXNFULL                        (0x1U<<4)
-#define PIO_INTR_SM1_TXNFULL                        (0x1U<<5)
-#define PIO_INTR_SM2_TXNFULL                        (0x1U<<6)
-#define PIO_INTR_SM3_TXNFULL                        (0x1U<<7)
-#define PIO_INTR_SM0                                (0x1U<<8)
-#define PIO_INTR_SM1                                (0x1U<<9)
-#define PIO_INTR_SM2                                (0x1U<<10)
-#define PIO_INTR_SM3                                (0x1U<<11)
-#define PIO_INTR_SM4                                (0x1U<<12)
-#define PIO_INTR_SM5                                (0x1U<<13)
-#define PIO_INTR_SM6                                (0x1U<<14)
-#define PIO_INTR_SM7                                (0x1U<<15)
+#define PIO_INTR_SM0_RXNEMPTY                       (0x1U<<0U)
+#define PIO_INTR_SM1_RXNEMPTY                       (0x1U<<1U)
+#define PIO_INTR_SM2_RXNEMPTY                       (0x1U<<2U)
+#define PIO_INTR_SM3_RXNEMPTY                       (0x1U<<3U)
+#define PIO_INTR_SM0_TXNFULL                        (0x1U<<4U)
+#define PIO_INTR_SM1_TXNFULL                        (0x1U<<5U)
+#define PIO_INTR_SM2_TXNFULL                        (0x1U<<6U)
+#define PIO_INTR_SM3_TXNFULL                        (0x1U<<7U)
+#define PIO_INTR_SM0                                (0x1U<<8U)
+#define PIO_INTR_SM1                                (0x1U<<9U)
+#define PIO_INTR_SM2                                (0x1U<<10U)
+#define PIO_INTR_SM3                                (0x1U<<11U)
+#define PIO_INTR_SM4                                (0x1U<<12U)
+#define PIO_INTR_SM5                                (0x1U<<13U)
+#define PIO_INTR_SM6                                (0x1U<<14U)
+#define PIO_INTR_SM7                                (0x1U<<15U)
 
 // IRQ0_INTE Configuration
 
-#define PIO_IRQ0_INTE_SM0_RXNEMPTY                  (0x1U<<0)
-#define PIO_IRQ0_INTE_SM1_RXNEMPTY                  (0x1U<<1)
-#define PIO_IRQ0_INTE_SM2_RXNEMPTY                  (0x1U<<2)
-#define PIO_IRQ0_INTE_SM3_RXNEMPTY                  (0x1U<<3)
-#define PIO_IRQ0_INTE_SM0_TXNFULL                   (0x1U<<4)
-#define PIO_IRQ0_INTE_SM1_TXNFULL                   (0x1U<<5)
-#define PIO_IRQ0_INTE_SM2_TXNFULL                   (0x1U<<6)
-#define PIO_IRQ0_INTE_SM3_TXNFULL                   (0x1U<<7)
-#define PIO_IRQ0_INTE_SM0                           (0x1U<<8)
-#define PIO_IRQ0_INTE_SM1                           (0x1U<<9)
-#define PIO_IRQ0_INTE_SM2                           (0x1U<<10)
-#define PIO_IRQ0_INTE_SM3                           (0x1U<<11)
-#define PIO_IRQ0_INTE_SM4                           (0x1U<<12)
-#define PIO_IRQ0_INTE_SM5                           (0x1U<<13)
-#define PIO_IRQ0_INTE_SM6                           (0x1U<<14)
-#define PIO_IRQ0_INTE_SM7                           (0x1U<<15)
+#define PIO_IRQ0_INTE_SM0_RXNEMPTY                  (0x1U<<0U)
+#define PIO_IRQ0_INTE_SM1_RXNEMPTY                  (0x1U<<1U)
+#define PIO_IRQ0_INTE_SM2_RXNEMPTY                  (0x1U<<2U)
+#define PIO_IRQ0_INTE_SM3_RXNEMPTY                  (0x1U<<3U)
+#define PIO_IRQ0_INTE_SM0_TXNFULL                   (0x1U<<4U)
+#define PIO_IRQ0_INTE_SM1_TXNFULL                   (0x1U<<5U)
+#define PIO_IRQ0_INTE_SM2_TXNFULL                   (0x1U<<6U)
+#define PIO_IRQ0_INTE_SM3_TXNFULL                   (0x1U<<7U)
+#define PIO_IRQ0_INTE_SM0                           (0x1U<<8U)
+#define PIO_IRQ0_INTE_SM1                           (0x1U<<9U)
+#define PIO_IRQ0_INTE_SM2                           (0x1U<<10U)
+#define PIO_IRQ0_INTE_SM3                           (0x1U<<11U)
+#define PIO_IRQ0_INTE_SM4                           (0x1U<<12U)
+#define PIO_IRQ0_INTE_SM5                           (0x1U<<13U)
+#define PIO_IRQ0_INTE_SM6                           (0x1U<<14U)
+#define PIO_IRQ0_INTE_SM7                           (0x1U<<15U)
 
 // IRQ0_INTF Configuration
 
-#define PIO_IRQ0_INTF_SM0_RXNEMPTY                  (0x1U<<0)
-#define PIO_IRQ0_INTF_SM1_RXNEMPTY                  (0x1U<<1)
-#define PIO_IRQ0_INTF_SM2_RXNEMPTY                  (0x1U<<2)
-#define PIO_IRQ0_INTF_SM3_RXNEMPTY                  (0x1U<<3)
-#define PIO_IRQ0_INTF_SM0_TXNFULL                   (0x1U<<4)
-#define PIO_IRQ0_INTF_SM1_TXNFULL                   (0x1U<<5)
-#define PIO_IRQ0_INTF_SM2_TXNFULL                   (0x1U<<6)
-#define PIO_IRQ0_INTF_SM3_TXNFULL                   (0x1U<<7)
-#define PIO_IRQ0_INTF_SM0                           (0x1U<<8)
-#define PIO_IRQ0_INTF_SM1                           (0x1U<<9)
-#define PIO_IRQ0_INTF_SM2                           (0x1U<<10)
-#define PIO_IRQ0_INTF_SM3                           (0x1U<<11)
-#define PIO_IRQ0_INTF_SM4                           (0x1U<<12)
-#define PIO_IRQ0_INTF_SM5                           (0x1U<<13)
-#define PIO_IRQ0_INTF_SM6                           (0x1U<<14)
-#define PIO_IRQ0_INTF_SM7                           (0x1U<<15)
+#define PIO_IRQ0_INTF_SM0_RXNEMPTY                  (0x1U<<0U)
+#define PIO_IRQ0_INTF_SM1_RXNEMPTY                  (0x1U<<1U)
+#define PIO_IRQ0_INTF_SM2_RXNEMPTY                  (0x1U<<2U)
+#define PIO_IRQ0_INTF_SM3_RXNEMPTY                  (0x1U<<3U)
+#define PIO_IRQ0_INTF_SM0_TXNFULL                   (0x1U<<4U)
+#define PIO_IRQ0_INTF_SM1_TXNFULL                   (0x1U<<5U)
+#define PIO_IRQ0_INTF_SM2_TXNFULL                   (0x1U<<6U)
+#define PIO_IRQ0_INTF_SM3_TXNFULL                   (0x1U<<7U)
+#define PIO_IRQ0_INTF_SM0                           (0x1U<<8U)
+#define PIO_IRQ0_INTF_SM1                           (0x1U<<9U)
+#define PIO_IRQ0_INTF_SM2                           (0x1U<<10U)
+#define PIO_IRQ0_INTF_SM3                           (0x1U<<11U)
+#define PIO_IRQ0_INTF_SM4                           (0x1U<<12U)
+#define PIO_IRQ0_INTF_SM5                           (0x1U<<13U)
+#define PIO_IRQ0_INTF_SM6                           (0x1U<<14U)
+#define PIO_IRQ0_INTF_SM7                           (0x1U<<15U)
 
 // IRQ0_INTS Configuration
 
-#define PIO_IRQ0_INTS_SM0_RXNEMPTY                  (0x1U<<0)
-#define PIO_IRQ0_INTS_SM1_RXNEMPTY                  (0x1U<<1)
-#define PIO_IRQ0_INTS_SM2_RXNEMPTY                  (0x1U<<2)
-#define PIO_IRQ0_INTS_SM3_RXNEMPTY                  (0x1U<<3)
-#define PIO_IRQ0_INTS_SM0_TXNFULL                   (0x1U<<4)
-#define PIO_IRQ0_INTS_SM1_TXNFULL                   (0x1U<<5)
-#define PIO_IRQ0_INTS_SM2_TXNFULL                   (0x1U<<6)
-#define PIO_IRQ0_INTS_SM3_TXNFULL                   (0x1U<<7)
-#define PIO_IRQ0_INTS_SM0                           (0x1U<<8)
-#define PIO_IRQ0_INTS_SM1                           (0x1U<<9)
-#define PIO_IRQ0_INTS_SM2                           (0x1U<<10)
-#define PIO_IRQ0_INTS_SM3                           (0x1U<<11)
-#define PIO_IRQ0_INTS_SM4                           (0x1U<<12)
-#define PIO_IRQ0_INTS_SM5                           (0x1U<<13)
-#define PIO_IRQ0_INTS_SM6                           (0x1U<<14)
-#define PIO_IRQ0_INTS_SM7                           (0x1U<<15)
+#define PIO_IRQ0_INTS_SM0_RXNEMPTY                  (0x1U<<0U)
+#define PIO_IRQ0_INTS_SM1_RXNEMPTY                  (0x1U<<1U)
+#define PIO_IRQ0_INTS_SM2_RXNEMPTY                  (0x1U<<2U)
+#define PIO_IRQ0_INTS_SM3_RXNEMPTY                  (0x1U<<3U)
+#define PIO_IRQ0_INTS_SM0_TXNFULL                   (0x1U<<4U)
+#define PIO_IRQ0_INTS_SM1_TXNFULL                   (0x1U<<5U)
+#define PIO_IRQ0_INTS_SM2_TXNFULL                   (0x1U<<6U)
+#define PIO_IRQ0_INTS_SM3_TXNFULL                   (0x1U<<7U)
+#define PIO_IRQ0_INTS_SM0                           (0x1U<<8U)
+#define PIO_IRQ0_INTS_SM1                           (0x1U<<9U)
+#define PIO_IRQ0_INTS_SM2                           (0x1U<<10U)
+#define PIO_IRQ0_INTS_SM3                           (0x1U<<11U)
+#define PIO_IRQ0_INTS_SM4                           (0x1U<<12U)
+#define PIO_IRQ0_INTS_SM5                           (0x1U<<13U)
+#define PIO_IRQ0_INTS_SM6                           (0x1U<<14U)
+#define PIO_IRQ0_INTS_SM7                           (0x1U<<15U)
 
 // IRQ1_INTE Configuration
 
-#define PIO_IRQ1_INTE_SM0_RXNEMPTY                  (0x1U<<0)
-#define PIO_IRQ1_INTE_SM1_RXNEMPTY                  (0x1U<<1)
-#define PIO_IRQ1_INTE_SM2_RXNEMPTY                  (0x1U<<2)
-#define PIO_IRQ1_INTE_SM3_RXNEMPTY                  (0x1U<<3)
-#define PIO_IRQ1_INTE_SM0_TXNFULL                   (0x1U<<4)
-#define PIO_IRQ1_INTE_SM1_TXNFULL                   (0x1U<<5)
-#define PIO_IRQ1_INTE_SM2_TXNFULL                   (0x1U<<6)
-#define PIO_IRQ1_INTE_SM3_TXNFULL                   (0x1U<<7)
-#define PIO_IRQ1_INTE_SM0                           (0x1U<<8)
-#define PIO_IRQ1_INTE_SM1                           (0x1U<<9)
-#define PIO_IRQ1_INTE_SM2                           (0x1U<<10)
-#define PIO_IRQ1_INTE_SM3                           (0x1U<<11)
-#define PIO_IRQ1_INTE_SM4                           (0x1U<<12)
-#define PIO_IRQ1_INTE_SM5                           (0x1U<<13)
-#define PIO_IRQ1_INTE_SM6                           (0x1U<<14)
-#define PIO_IRQ1_INTE_SM7                           (0x1U<<15)
+#define PIO_IRQ1_INTE_SM0_RXNEMPTY                  (0x1U<<0U)
+#define PIO_IRQ1_INTE_SM1_RXNEMPTY                  (0x1U<<1U)
+#define PIO_IRQ1_INTE_SM2_RXNEMPTY                  (0x1U<<2U)
+#define PIO_IRQ1_INTE_SM3_RXNEMPTY                  (0x1U<<3U)
+#define PIO_IRQ1_INTE_SM0_TXNFULL                   (0x1U<<4U)
+#define PIO_IRQ1_INTE_SM1_TXNFULL                   (0x1U<<5U)
+#define PIO_IRQ1_INTE_SM2_TXNFULL                   (0x1U<<6U)
+#define PIO_IRQ1_INTE_SM3_TXNFULL                   (0x1U<<7U)
+#define PIO_IRQ1_INTE_SM0                           (0x1U<<8U)
+#define PIO_IRQ1_INTE_SM1                           (0x1U<<9U)
+#define PIO_IRQ1_INTE_SM2                           (0x1U<<10U)
+#define PIO_IRQ1_INTE_SM3                           (0x1U<<11U)
+#define PIO_IRQ1_INTE_SM4                           (0x1U<<12U)
+#define PIO_IRQ1_INTE_SM5                           (0x1U<<13U)
+#define PIO_IRQ1_INTE_SM6                           (0x1U<<14U)
+#define PIO_IRQ1_INTE_SM7                           (0x1U<<15U)
 
 // IRQ1_INTF Configuration
 
-#define PIO_IRQ1_INTF_SM0_RXNEMPTY                  (0x1U<<0)
-#define PIO_IRQ1_INTF_SM1_RXNEMPTY                  (0x1U<<1)
-#define PIO_IRQ1_INTF_SM2_RXNEMPTY                  (0x1U<<2)
-#define PIO_IRQ1_INTF_SM3_RXNEMPTY                  (0x1U<<3)
-#define PIO_IRQ1_INTF_SM0_TXNFULL                   (0x1U<<4)
-#define PIO_IRQ1_INTF_SM1_TXNFULL                   (0x1U<<5)
-#define PIO_IRQ1_INTF_SM2_TXNFULL                   (0x1U<<6)
-#define PIO_IRQ1_INTF_SM3_TXNFULL                   (0x1U<<7)
-#define PIO_IRQ1_INTF_SM0                           (0x1U<<8)
-#define PIO_IRQ1_INTF_SM1                           (0x1U<<9)
-#define PIO_IRQ1_INTF_SM2                           (0x1U<<10)
-#define PIO_IRQ1_INTF_SM3                           (0x1U<<11)
-#define PIO_IRQ1_INTF_SM4                           (0x1U<<12)
-#define PIO_IRQ1_INTF_SM5                           (0x1U<<13)
-#define PIO_IRQ1_INTF_SM6                           (0x1U<<14)
-#define PIO_IRQ1_INTF_SM7                           (0x1U<<15)
+#define PIO_IRQ1_INTF_SM0_RXNEMPTY                  (0x1U<<0U)
+#define PIO_IRQ1_INTF_SM1_RXNEMPTY                  (0x1U<<1U)
+#define PIO_IRQ1_INTF_SM2_RXNEMPTY                  (0x1U<<2U)
+#define PIO_IRQ1_INTF_SM3_RXNEMPTY                  (0x1U<<3U)
+#define PIO_IRQ1_INTF_SM0_TXNFULL                   (0x1U<<4U)
+#define PIO_IRQ1_INTF_SM1_TXNFULL                   (0x1U<<5U)
+#define PIO_IRQ1_INTF_SM2_TXNFULL                   (0x1U<<6U)
+#define PIO_IRQ1_INTF_SM3_TXNFULL                   (0x1U<<7U)
+#define PIO_IRQ1_INTF_SM0                           (0x1U<<8U)
+#define PIO_IRQ1_INTF_SM1                           (0x1U<<9U)
+#define PIO_IRQ1_INTF_SM2                           (0x1U<<10U)
+#define PIO_IRQ1_INTF_SM3                           (0x1U<<11U)
+#define PIO_IRQ1_INTF_SM4                           (0x1U<<12U)
+#define PIO_IRQ1_INTF_SM5                           (0x1U<<13U)
+#define PIO_IRQ1_INTF_SM6                           (0x1U<<14U)
+#define PIO_IRQ1_INTF_SM7                           (0x1U<<15U)
 
 // IRQ1_INTS Configuration
 
-#define PIO_IRQ1_INTS_SM0_RXNEMPTY                  (0x1U<<0)
-#define PIO_IRQ1_INTS_SM1_RXNEMPTY                  (0x1U<<1)
-#define PIO_IRQ1_INTS_SM2_RXNEMPTY                  (0x1U<<2)
-#define PIO_IRQ1_INTS_SM3_RXNEMPTY                  (0x1U<<3)
-#define PIO_IRQ1_INTS_SM0_TXNFULL                   (0x1U<<4)
-#define PIO_IRQ1_INTS_SM1_TXNFULL                   (0x1U<<5)
-#define PIO_IRQ1_INTS_SM2_TXNFULL                   (0x1U<<6)
-#define PIO_IRQ1_INTS_SM3_TXNFULL                   (0x1U<<7)
-#define PIO_IRQ1_INTS_SM0                           (0x1U<<8)
-#define PIO_IRQ1_INTS_SM1                           (0x1U<<9)
-#define PIO_IRQ1_INTS_SM2                           (0x1U<<10)
-#define PIO_IRQ1_INTS_SM3                           (0x1U<<11)
-#define PIO_IRQ1_INTS_SM4                           (0x1U<<12)
-#define PIO_IRQ1_INTS_SM5                           (0x1U<<13)
-#define PIO_IRQ1_INTS_SM6                           (0x1U<<14)
-#define PIO_IRQ1_INTS_SM7                           (0x1U<<15)
+#define PIO_IRQ1_INTS_SM0_RXNEMPTY                  (0x1U<<0U)
+#define PIO_IRQ1_INTS_SM1_RXNEMPTY                  (0x1U<<1U)
+#define PIO_IRQ1_INTS_SM2_RXNEMPTY                  (0x1U<<2U)
+#define PIO_IRQ1_INTS_SM3_RXNEMPTY                  (0x1U<<3U)
+#define PIO_IRQ1_INTS_SM0_TXNFULL                   (0x1U<<4U)
+#define PIO_IRQ1_INTS_SM1_TXNFULL                   (0x1U<<5U)
+#define PIO_IRQ1_INTS_SM2_TXNFULL                   (0x1U<<6U)
+#define PIO_IRQ1_INTS_SM3_TXNFULL                   (0x1U<<7U)
+#define PIO_IRQ1_INTS_SM0                           (0x1U<<8U)
+#define PIO_IRQ1_INTS_SM1                           (0x1U<<9U)
+#define PIO_IRQ1_INTS_SM2                           (0x1U<<10U)
+#define PIO_IRQ1_INTS_SM3                           (0x1U<<11U)
+#define PIO_IRQ1_INTS_SM4                           (0x1U<<12U)
+#define PIO_IRQ1_INTS_SM5                           (0x1U<<13U)
+#define PIO_IRQ1_INTS_SM6                           (0x1U<<14U)
+#define PIO_IRQ1_INTS_SM7                           (0x1U<<15U)

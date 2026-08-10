@@ -25,8 +25,6 @@
 // uKOS-X specific (see the module.h)
 // ==================================
 
-extern  VAR_DECLARED_ALIGN(const char_t aStartUp_StrHelp[], 4);
-
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
 STRG_LOC_CONST(aStrApplication[]) = "startUp      StartUp process of the system.            (c) EFr-2026";

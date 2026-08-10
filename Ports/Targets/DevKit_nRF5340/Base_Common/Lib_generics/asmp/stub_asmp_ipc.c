@@ -58,7 +58,7 @@
 
 static  const   char_t  *tableCoreReference[2] = {
                             "Cortex-M33 App (fpu + dsp) ",
-                            "Cortex-M33 Net"
+                            "Cortex-M33 Net",
                         };
 
 // Prototypes

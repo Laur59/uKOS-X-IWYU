@@ -147,7 +147,7 @@ int32_t kern_createMailbox(const char_t *identifier, mbox_t **handle) {
             *handle = &vKern_mbox[core][i];
 
             vKern_nbMbox[core]    = (uint16_t)(vKern_nbMbox[core] + 1U);
-            vKern_nbMaxMbox[core] = (vKern_nbMbox[core] > vKern_nbMaxMbox[core]) ? (vKern_nbMbox[core]) : (vKern_nbMaxMbox[core]);
+            vKern_nbMaxMbox[core] = (vKern_nbMbox[core] > vKern_nbMaxMbox[core]) ? vKern_nbMbox[core] : vKern_nbMaxMbox[core];
             DEBUG_KERN_TRACE("exit: OK");
             INTERRUPTION_RESTORE;
             PRIVILEGE_RESTORE;
@@ -613,8 +613,8 @@ static  int32_t local_writeMailbox(uint32_t core, mbox_t *handle, void *message,
 //                   == KWAIT_REMAINING_TIMEOUT                     = vKern_runProc[core]->oInternal.oTimeout               = vKern_runProc[core]->oInternal.oTimeout
 //                                              == timeout value    = (timeout value / unit)                                = (timeout value / unit)
 
-    wkTimeout = (timeout == KWAIT_INFINITY)          ? (KWAIT_INFINITY)                          : (timeout / KKERN_TIC_TIME);
-    wkTimeout = (timeout == KWAIT_REMAINING_TIMEOUT) ? (vKern_runProc[core]->oInternal.oTimeout) : wkTimeout;
+    wkTimeout = (timeout == KWAIT_INFINITY)          ? KWAIT_INFINITY                          : (timeout / KKERN_TIC_TIME);
+    wkTimeout = (timeout == KWAIT_REMAINING_TIMEOUT) ? vKern_runProc[core]->oInternal.oTimeout : wkTimeout;
     if (!(IS_EXCEPTION)) {
         vKern_runProc[core]->oInternal.oTimeout = wkTimeout;
     }
@@ -638,7 +638,7 @@ static  int32_t local_writeMailbox(uint32_t core, mbox_t *handle, void *message,
         }
 
         DEBUG_KERN_TRACE("exit: ->");
-        return (vKern_runProc[core]->oInternal.oStatus);
+        return vKern_runProc[core]->oInternal.oStatus;
     }
 
     DEBUG_KERN_TRACE("exit: KO 4");
@@ -669,15 +669,15 @@ static  void    local_write(uint32_t core, mbox_t *handle, void *message, uint32
     kern_readTickCount(&timeStmp);
     handle->oWrite->oReadTimeStmp  = 0U;
     handle->oWrite->oWriteTimeStmp = timeStmp;
-    handle->oWrite->oProcess       = (IS_EXCEPTION) ? nullptr : (vKern_runProc[core]);
+    handle->oWrite->oProcess       = (IS_EXCEPTION) ? nullptr : vKern_runProc[core];
     #endif
 
     handle->oWrite++;
     handle->oNbUsedPacks++;
-    handle->oNbMaxUsedPacks = (handle->oNbUsedPacks > handle->oNbMaxUsedPacks) ? (handle->oNbUsedPacks) : (handle->oNbMaxUsedPacks);
+    handle->oNbMaxUsedPacks = (handle->oNbUsedPacks > handle->oNbMaxUsedPacks) ? handle->oNbUsedPacks : handle->oNbMaxUsedPacks;
     handle->oState &= (uint16_t)~(1U<<BMBOX_EMPTY);
 
-    handle->oWrite = (handle->oWrite == &handle->oFIFO[nbMaxPacks]) ? (&handle->oFIFO[0])                  : (handle->oWrite);
+    handle->oWrite = (handle->oWrite == &handle->oFIFO[nbMaxPacks]) ? (&handle->oFIFO[0])                  : handle->oWrite;
                      (handle->oWrite == handle->oRead)              ? (handle->oState |= (1U<<BMBOX_FULL)) : (handle->oState |= 0U);
 
     if (handle->oListEmpty.oNbElements > 0U) {
@@ -737,8 +737,8 @@ static  int32_t local_readMailbox(uint32_t core, mbox_t *handle, void **message,
 //                   == KWAIT_REMAINING_TIMEOUT                     = vKern_runProc[core]->oInternal.oTimeout               = vKern_runProc[core]->oInternal.oTimeout
 //                                              == timeout value    = (timeout value / unit)                                = (timeout value / unit)
 
-    wkTimeout = (timeout == KWAIT_INFINITY)          ? (KWAIT_INFINITY)                          : (timeout / KKERN_TIC_TIME);
-    wkTimeout = (timeout == KWAIT_REMAINING_TIMEOUT) ? (vKern_runProc[core]->oInternal.oTimeout) : wkTimeout;
+    wkTimeout = (timeout == KWAIT_INFINITY)          ? KWAIT_INFINITY                          : (timeout / KKERN_TIC_TIME);
+    wkTimeout = (timeout == KWAIT_REMAINING_TIMEOUT) ? vKern_runProc[core]->oInternal.oTimeout : wkTimeout;
     if (!(IS_EXCEPTION)) {
         vKern_runProc[core]->oInternal.oTimeout = wkTimeout;
     }
@@ -762,7 +762,7 @@ static  int32_t local_readMailbox(uint32_t core, mbox_t *handle, void **message,
         }
 
         DEBUG_KERN_TRACE("exit: ->");
-        return (vKern_runProc[core]->oInternal.oStatus);
+        return vKern_runProc[core]->oInternal.oStatus;
     }
 
     DEBUG_KERN_TRACE("exit: KO 4");
@@ -802,7 +802,7 @@ static  void    local_read(uint32_t core, mbox_t *handle, void **message, uint32
     handle->oNbUsedPacks--;
     handle->oState &= (uint16_t)~(1U<<BMBOX_FULL);
 
-    handle->oRead = (handle->oRead == &handle->oFIFO[nbMaxPacks]) ? (&handle->oFIFO[0])                   : (handle->oRead);
+    handle->oRead = (handle->oRead == &handle->oFIFO[nbMaxPacks]) ? (&handle->oFIFO[0])                   : handle->oRead;
                     (handle->oRead == handle->oWrite)             ? (handle->oState |= (1U<<BMBOX_EMPTY)) : (handle->oState |= 0U);
 
     if (handle->oListFull.oNbElements > 0U) {

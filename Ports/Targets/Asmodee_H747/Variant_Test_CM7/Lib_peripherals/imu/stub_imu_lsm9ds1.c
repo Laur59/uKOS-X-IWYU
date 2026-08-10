@@ -25,7 +25,7 @@
 enum {
         KIMU_INIT = 0U,
         KIMU_RESERVE,
-        KIMU_RELEASE
+        KIMU_RELEASE,
 };
 
 // Prototypes

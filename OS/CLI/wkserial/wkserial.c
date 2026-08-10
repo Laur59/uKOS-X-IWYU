@@ -231,7 +231,7 @@ static  void    local_setBaudRate(serialManager_t serialManager, uint8_t baudRat
                     .oStopBits = KSERIAL_STOPBITS_1,
                     .oParity   = KSERIAL_PARITY_NONE,
                     .oBaudRate = baudRate,
-                    .oKernSync = ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_RX)
+                    .oKernSync = ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_RX),
                 };
 
     kern_suspendProcess(500U);

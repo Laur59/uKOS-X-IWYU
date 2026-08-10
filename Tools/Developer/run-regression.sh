@@ -8,10 +8,10 @@
 #   dedicated 'artefacts' directory.
 #
 # Usage:
-#   ./run-regression.sh [-L] [-U] [-Y] [-v] [-t <target>]
+#   ./run-regression.sh [-G] [-U] [-Y] [-v] [-t <target>]
 #
 # Options:
-#   -L  Use LLVM/clang compiler
+#   -G  Use gcc compiler
 #   -U  Privileged mode only (User mode OFF)
 #   -Y  Disable canary stack protection
 #   -v  Verbose: display full build output
@@ -29,23 +29,29 @@ readonly BLUE=$'\033[0;34m'
 readonly BOLD=$'\033[1m'
 readonly NC=$'\033[0m'
 
-# Paths
-readonly PATH_ROOT="${0:a:h:h:h}"
+# Paths ( :A resolves symlinks, so the root is correct when called through Tools/Developer/bin )
+readonly PATH_ROOT="${0:A:h:h:h}"
 readonly PATH_ARTEFACTS="${PATH_ROOT:h}/artefacts"
 readonly PATH_VARIANTS_YAML="${PATH_ROOT}/Ports/Targets/variants.yaml"
 readonly PATH_APPS_YAML="${PATH_ROOT}/Applications/uKOS_Appls_Downloadable/apps.yaml"
 
-# Defaults
-COMPILER="gcc"
-USE_LLVM="OFF"
+# PATH_ARTEFACTS is removed below and sits outside the repository; refuse to run on a wrong root
+if [[ ! -f "${PATH_VARIANTS_YAML}" || ! -f "${PATH_APPS_YAML}" ]]; then
+    printf "%bError: %s does not look like a uKOS-X tree%b\n" "${RED}" "${PATH_ROOT}" "${NC}" >&2
+    exit 1
+fi
+
+# Defaults (LLVM, as in the _build.sh scripts)
+COMPILER="llvm"
+USE_LLVM="ON"
 USER_MODE="ON"
 CANARY="ON"
 VERBOSE=0
 TARGET_FILTER=""
 
-while getopts "LUYvt:" option; do
+while getopts "GUYvt:" option; do
     case "${option}" in
-        L) COMPILER="llvm"; USE_LLVM="ON" ;;
+        G) COMPILER="gcc"; USE_LLVM="OFF" ;;
         U) USER_MODE="OFF" ;;
         Y) CANARY="OFF" ;;
         v) VERBOSE=1 ;;
@@ -54,12 +60,12 @@ while getopts "LUYvt:" option; do
     esac
 done
 
-# Determine Preset (only used for Systems)
+# Determine the preset (systems and applications share the same matrix)
 PRESET="${COMPILER}"
 [[ "${USER_MODE}" == "OFF" ]] && PRESET+="-nouser"
 [[ "${CANARY}" == "OFF" ]] && PRESET+="-nocanary"
 
-rm -fr ${PATH_ARTEFACTS}
+rm -fr "${PATH_ARTEFACTS}"
 
 printf "%bStarting Regression Test%b\n" "${BOLD}${BLUE}" "${NC}"
 printf "Source:    %s\n" "${PATH_ROOT}"
@@ -93,18 +99,14 @@ build_target() {
     : > "${log_file}"
 
     # Configuration step
-    if [[ "$name" == App:* ]]; then
-        # Applications don't have presets, use manual flags
-        cmake -S "${source_dir}" -B "${build_dir}" \
-              -DUSE_LLVM="${USE_LLVM}" \
-              -DUSER_MODE="${USER_MODE}" \
-              -DCANARY="${CANARY}" \
-              "${extra_args[@]}" >> "${log_file}" 2>&1
-    else
-        # Systems use presets
-        cmake -S "${source_dir}" -B "${build_dir}" --preset "${PRESET}" \
-              -DARTEFACTS_DIR="${build_dir}/System" "${extra_args[@]}" >> "${log_file}" 2>&1
-    fi
+    # Systems and applications share the same preset matrix; only the system
+    # build redirects its artefacts into the build tree. -B overrides the
+    # binaryDir of the preset, which keeps the out-of-source layout.
+    local -a config_args=(--preset "${PRESET}")
+    [[ "$name" == App:* ]] || config_args+=(-DARTEFACTS_DIR="${build_dir}/System")
+
+    cmake -S "${source_dir}" -B "${build_dir}" "${config_args[@]}" \
+          "${extra_args[@]}" >> "${log_file}" 2>&1
 
     if [[ $? -eq 0 ]]; then
         # Build step

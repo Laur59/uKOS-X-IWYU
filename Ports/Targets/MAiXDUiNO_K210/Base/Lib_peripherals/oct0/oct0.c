@@ -112,10 +112,10 @@ int32_t oct0_configure(const cnfOctx_t *configure) {
 // The number of bits
 
     switch (configure->oMode) {
-        case KDUAL:   { octoSpi0->ctrlr0 = ((uint32_t)((uint32_t)SPI_WORK_MODE_0<<6U) | ((configure->oNbBits - 1U)<<16) | ((uint32_t)SPI_FF_DUAL<<21U));  break; }
-        case KQUAD:   { octoSpi0->ctrlr0 = ((uint32_t)((uint32_t)SPI_WORK_MODE_0<<6U) | ((configure->oNbBits - 1U)<<16) | ((uint32_t)SPI_FF_QUAD<<21U));  break; }
+        case KDUAL:   { octoSpi0->ctrlr0 = ((uint32_t)SPI_WORK_MODE_0<<6U) | ((configure->oNbBits - 1U)<<16U) | ((uint32_t)SPI_FF_DUAL<<21U);  break; }
+        case KQUAD:   { octoSpi0->ctrlr0 = ((uint32_t)SPI_WORK_MODE_0<<6U) | ((configure->oNbBits - 1U)<<16U) | ((uint32_t)SPI_FF_QUAD<<21U);  break; }
         case KOCTAL:
-        default:      { octoSpi0->ctrlr0 = ((uint32_t)((uint32_t)SPI_WORK_MODE_0<<6U) | ((configure->oNbBits - 1U)<<16) | ((uint32_t)SPI_FF_OCTAL<<21U)); break; }
+        default:      { octoSpi0->ctrlr0 = (((uint32_t)SPI_WORK_MODE_0<<6U) | ((configure->oNbBits - 1U)<<16U) | ((uint32_t)SPI_FF_OCTAL<<21U)); break; }
     }
 
 // The divider factor

@@ -74,11 +74,11 @@ int32_t storage_reserve(storage_manager_t manager, reserveMode_t reserveMode, ui
     switch (manager) {
 
         #ifdef CONFIG_MAN_SDCARD_S
-        case KSDCARD: { return (sdcard_reserve(reserveMode, timeout));            }
+        case KSDCARD: { return sdcard_reserve(reserveMode, timeout); }
         #endif
 
         #ifdef CONFIG_MAN_SERIAL_FLASH_S
-        case KSERIAL_FLASH: { return (serialFlash_reserve(reserveMode, timeout)); }
+        case KSERIAL_FLASH: { return serialFlash_reserve(reserveMode, timeout); }
         #endif
 
         default: { return KERR_STORAGE_NODEV;                                     }
@@ -107,11 +107,11 @@ int32_t storage_release(storage_manager_t manager, reserveMode_t reserveMode) {
     switch (manager) {
 
         #ifdef CONFIG_MAN_SDCARD_S
-        case KSDCARD: { return (sdcard_release(reserveMode));            }
+        case KSDCARD: { return sdcard_release(reserveMode); }
         #endif
 
         #ifdef CONFIG_MAN_SERIAL_FLASH_S
-        case KSERIAL_FLASH: { return (serialFlash_release(reserveMode)); }
+        case KSERIAL_FLASH: { return serialFlash_release(reserveMode); }
         #endif
 
         default: { return KERR_STORAGE_NODEV;                            }
@@ -143,11 +143,11 @@ int32_t storage_initialise(storage_manager_t manager, void  *specification) {
     switch (manager) {
 
         #ifdef CONFIG_MAN_SDCARD_S
-        case KSDCARD: { return (sdcard_initialise((sdcard_specification_t *)specification)); }
+        case KSDCARD: { return sdcard_initialise((sdcard_specification_t *)specification); }
         #endif
 
         #ifdef CONFIG_MAN_SERIAL_FLASH_S
-        case KSERIAL_FLASH: { return (serialFlash_initialise());                             }
+        case KSERIAL_FLASH: { return serialFlash_initialise(); }
         #endif
 
         default: { return KERR_STORAGE_NODEV;                                                }
@@ -175,11 +175,11 @@ int32_t storage_readStatus(storage_manager_t manager) {
     switch (manager) {
 
         #ifdef CONFIG_MAN_SDCARD_S
-        case KSDCARD: { return (sdcard_readStatus());            }
+        case KSDCARD: { return sdcard_readStatus(); }
         #endif
 
         #ifdef CONFIG_MAN_SERIAL_FLASH_S
-        case KSERIAL_FLASH: { return (serialFlash_readStatus()); }
+        case KSERIAL_FLASH: { return serialFlash_readStatus(); }
         #endif
 
         default: { return KERR_STORAGE_NODEV;                    }
@@ -216,11 +216,11 @@ int32_t storage_read(storage_manager_t manager, uint8_t *buffer, uint32_t size, 
     switch (manager) {
 
         #ifdef CONFIG_MAN_SDCARD_S
-        case KSDCARD: { return (sdcard_read(buffer, size, sector));            }
+        case KSDCARD: { return sdcard_read(buffer, size, sector); }
         #endif
 
         #ifdef CONFIG_MAN_SERIAL_FLASH_S
-        case KSERIAL_FLASH: { return (serialFlash_read(buffer, size, sector)); }
+        case KSERIAL_FLASH: { return serialFlash_read(buffer, size, sector); }
         #endif
 
         default: { return KERR_STORAGE_NODEV;                                  }
@@ -257,11 +257,11 @@ int32_t storage_write(storage_manager_t manager, const uint8_t *buffer, uint32_t
     switch (manager) {
 
         #ifdef CONFIG_MAN_SDCARD_S
-        case KSDCARD: { return (sdcard_write(buffer, size, sector));            }
+        case KSDCARD: { return sdcard_write(buffer, size, sector); }
         #endif
 
         #ifdef CONFIG_MAN_SERIAL_FLASH_S
-        case KSERIAL_FLASH: { return (serialFlash_write(buffer, size, sector)); }
+        case KSERIAL_FLASH: { return serialFlash_write(buffer, size, sector); }
         #endif
 
         default: { return KERR_STORAGE_NODEV;                                   }
@@ -296,11 +296,11 @@ int32_t storage_ioctl(storage_manager_t manager, storageIoctl_t command, void *b
     switch (manager) {
 
         #ifdef CONFIG_MAN_SDCARD_S
-        case KSDCARD: { return (sdcard_ioctl(command, buffer));            }
+        case KSDCARD: { return sdcard_ioctl(command, buffer); }
         #endif
 
         #ifdef CONFIG_MAN_SERIAL_FLASH_S
-        case KSERIAL_FLASH: { return (serialFlash_ioctl(command, buffer)); }
+        case KSERIAL_FLASH: { return serialFlash_ioctl(command, buffer); }
         #endif
 
         default: { return KERR_STORAGE_NODEV;                              }

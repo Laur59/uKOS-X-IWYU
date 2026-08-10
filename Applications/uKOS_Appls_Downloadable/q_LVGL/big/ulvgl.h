@@ -6,6 +6,8 @@
  *          Suppress clang warnings.
  */
 
+#pragma once
+
 #if (defined(__clang__))
 // Ignore the clang diagnostic
 //

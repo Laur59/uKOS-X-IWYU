@@ -163,7 +163,7 @@
 #include    "soc_reg.h"
 #endif
 
-#define KKERN_VERSION   " 1.1"
+#define KKERN_VERSION   " 1.2"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -354,7 +354,7 @@ int32_t kern_criticalSection(uint8_t critical) {
                 INTERRUPTION_RESTORE_CRITICAL(vIntMask[core]);
             }
             else {
-                vKern_nbIntImbrications[core] = (vKern_nbIntImbrications[core] > 1U ) ? (vKern_nbIntImbrications[core] - 1U) : (vKern_nbIntImbrications[core]);
+                vKern_nbIntImbrications[core] = (vKern_nbIntImbrications[core] > 1U ) ? (vKern_nbIntImbrications[core] - 1U) : vKern_nbIntImbrications[core];
             }
             break;
         }

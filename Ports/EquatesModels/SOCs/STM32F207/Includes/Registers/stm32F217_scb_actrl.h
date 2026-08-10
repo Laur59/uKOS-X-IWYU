@@ -26,7 +26,7 @@ typedef struct {
 
 // ACTRL Configuration
 
-#define SCB_ACTRL_ACTRL_DISITMATBFLUSH  (0x1U<<12)
-#define SCB_ACTRL_ACTRL_DISRAMODE       (0x1U<<11)
-#define SCB_ACTRL_ACTRL_FPEXCODIS       (0x1U<<10)
-#define SCB_ACTRL_ACTRL_DISFOLD         (0x1U<<2)
+#define SCB_ACTRL_ACTRL_DISITMATBFLUSH  (0x1U<<12U)
+#define SCB_ACTRL_ACTRL_DISRAMODE       (0x1U<<11U)
+#define SCB_ACTRL_ACTRL_FPEXCODIS       (0x1U<<10U)
+#define SCB_ACTRL_ACTRL_DISFOLD         (0x1U<<2U)

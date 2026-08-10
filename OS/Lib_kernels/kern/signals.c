@@ -145,7 +145,7 @@ int32_t kern_createSignalGroup(const char_t *identifier, sign_t **handle) {
             *handle = &vKern_sign[core][i];
 
             vKern_nbSign[core]    = (uint16_t)(vKern_nbSign[core] + 1U);
-            vKern_nbMaxSign[core] = (vKern_nbSign[core] > vKern_nbMaxSign[core]) ? (vKern_nbSign[core]) : (vKern_nbMaxSign[core]);
+            vKern_nbMaxSign[core] = (vKern_nbSign[core] > vKern_nbMaxSign[core]) ? vKern_nbSign[core] : vKern_nbMaxSign[core];
             DEBUG_KERN_TRACE("exit: OK");
             INTERRUPTION_RESTORE;
             PRIVILEGE_RESTORE;
@@ -272,21 +272,20 @@ int32_t kern_signalSignal(sign_t *handle, uint32_t signals, proc_t *toProcess, u
 // ------------------------
 
         for (i = 0U; i < KKERN_NB_PROCESSES; i++) {
-            if ((vKern_proc[core][i].oInternal.oState & (1U<<BPROC_INSTALLED)) != 0U) {
-                if (&vKern_proc[core][i] != vKern_runProc[core]) {
-                    handle->oSynchro[i].oSignalBitPending |= signals;
-                    if ((vKern_proc[core][i].oInternal.oState & (1U<<BPROC_SUSP_SIGN)) != 0U) {
-                        theSignals = handle->oSynchro[i].oSignalBitGenerate & signals;
-                        if ((theSignals != 0) && ((handle->oSynchro[i].oSignalFromProcess == vKern_runProc[core]) || (handle->oSynchro[i].oSignalFromProcess == KKERN_HANDLE_BROADCAST) || (handle->oSynchro[i].oSignalFromProcess == KKERN_HANDLE_FROM_ISR))) {
-                            vKern_proc[core][i].oInternal.oState &= (uint16_t)~(1U<<BPROC_SUSP_SIGN);
-                            lists_disconnectConnect(vKern_proc[core][i].oObject.oList, &vKern_listExec[core], &vKern_proc[core][i]);
-                            vKern_proc[core][i].oInternal.oStatus = KERR_KERN_NOERR;
+            if (((vKern_proc[core][i].oInternal.oState & (1U<<BPROC_INSTALLED)) != 0U) &&
+                (&vKern_proc[core][i] != vKern_runProc[core])) {
+                handle->oSynchro[i].oSignalBitPending |= signals;
+                if ((vKern_proc[core][i].oInternal.oState & (1U<<BPROC_SUSP_SIGN)) != 0U) {
+                    theSignals = handle->oSynchro[i].oSignalBitGenerate & signals;
+                    if ((theSignals != 0) && ((handle->oSynchro[i].oSignalFromProcess == vKern_runProc[core]) || (handle->oSynchro[i].oSignalFromProcess == KKERN_HANDLE_BROADCAST) || (handle->oSynchro[i].oSignalFromProcess == KKERN_HANDLE_FROM_ISR))) {
+                        vKern_proc[core][i].oInternal.oState &= (uint16_t)~(1U<<BPROC_SUSP_SIGN);
+                        lists_disconnectConnect(vKern_proc[core][i].oObject.oList, &vKern_listExec[core], &vKern_proc[core][i]);
+                        vKern_proc[core][i].oInternal.oStatus = KERR_KERN_NOERR;
 
 // mode == KSIGN_SIGNALE_WITH_CONTEXT_SWITCH
 // If the ready process has a higher priority, then preemption occurs
 
-                            preemption = ((mode == KSIGN_SIGNALE_WITH_CONTEXT_SWITCH) && (vKern_proc[core][i].oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority));
-                        }
+                        preemption = ((mode == KSIGN_SIGNALE_WITH_CONTEXT_SWITCH) && (vKern_proc[core][i].oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority));
                     }
                 }
             }
@@ -393,8 +392,8 @@ int32_t kern_waitSignal(sign_t *handle, uint32_t *signals, proc_t *fromProcess, 
 //                   == KWAIT_REMAINING_TIMEOUT                     = vKern_runProc[core]->oInternal.oTimeout               = vKern_runProc[core]->oInternal.oTimeout
 //                                              == timeout value    = (timeout value / unit)                                = (timeout value / unit)
 
-    wkTimeout = (timeout == KWAIT_INFINITY)          ? (KWAIT_INFINITY)                          : (timeout / KKERN_TIC_TIME);
-    wkTimeout = (timeout == KWAIT_REMAINING_TIMEOUT) ? (vKern_runProc[core]->oInternal.oTimeout) : wkTimeout;
+    wkTimeout = (timeout == KWAIT_INFINITY)          ? KWAIT_INFINITY                          : (timeout / KKERN_TIC_TIME);
+    wkTimeout = (timeout == KWAIT_REMAINING_TIMEOUT) ? vKern_runProc[core]->oInternal.oTimeout : wkTimeout;
     vKern_runProc[core]->oInternal.oTimeout = wkTimeout;
 
     i = (uint16_t)(((uintptr_t)vKern_runProc[core] - (uintptr_t)&vKern_proc[core][0]) / sizeof(proc_t));
@@ -417,7 +416,7 @@ int32_t kern_waitSignal(sign_t *handle, uint32_t *signals, proc_t *fromProcess, 
         handle->oSynchro[i].oSignalBitGenerate |= *signals;
 
         if (handle->oCbOnWaiting != nullptr) {
-            (handle->oCbOnWaiting)(handle, *signals, fromProcess);
+            handle->oCbOnWaiting(handle, *signals, fromProcess);
         }
 
         GOTO_KERN_I(KKERN_MSG_WAIT_SIGN);

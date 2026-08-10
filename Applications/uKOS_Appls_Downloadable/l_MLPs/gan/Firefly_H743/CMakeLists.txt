@@ -1,9 +1,7 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
-#
-# Goal:     CMake file to set up the building for uKOS-X system.
 
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.31)
 
 # Applications CMake module setup
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/../../../../cmake")
@@ -56,6 +54,7 @@ find_library(MYLIB TFLite ${PATH_UKOS}/Third_Parties/Tflite-micro/Library/${CORE
 
 set(OBJ
     ${PATH_UKOS}/Applications/uKOS_Demos/gan/Classifier/tfl_classifier.cpp
+    ${PATH_UKOS}/Applications/uKOS_Demos/gan/Classifier/nnh_classifier.c
     ${PATH_UKOS}/Applications/uKOS_Demos/gan/Firefly_H743/stub.c
     ${PATH_UKOS}/Applications/uKOS_Demos/gan/Graphics/Widgets/Firefly_H743/background/background.c
     ${PATH_UKOS}/Applications/uKOS_Demos/gan/Graphics/lvgl.c

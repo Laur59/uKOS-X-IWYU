@@ -30,27 +30,27 @@ typedef struct {
 
 // CR Configuration
 
-#define PKA_CR_EN           (0x1U<<0)
-#define PKA_CR_START        (0x1U<<1)
-#define PKA_CR_MODE         (0x3FU<<8)
-#define PKA_CR_MODE_0       (0x1U<<8)
-#define PKA_CR_PROCENDIE    (0x1U<<17)
-#define PKA_CR_RAMERRIE     (0x1U<<19)
-#define PKA_CR_ADDRERRIE    (0x1U<<20)
-#define PKA_CR_OPERRIE      (0x1U<<21)
+#define PKA_CR_EN           (0x1U<<0U)
+#define PKA_CR_START        (0x1U<<1U)
+#define PKA_CR_MODE         (0x3FU<<8U)
+#define PKA_CR_MODE_0       (0x1U<<8U)
+#define PKA_CR_PROCENDIE    (0x1U<<17U)
+#define PKA_CR_RAMERRIE     (0x1U<<19U)
+#define PKA_CR_ADDRERRIE    (0x1U<<20U)
+#define PKA_CR_OPERRIE      (0x1U<<21U)
 
 // SR Configuration
 
-#define PKA_SR_OPERRF       (0x1U<<21)
-#define PKA_SR_ADDRERRF     (0x1U<<20)
-#define PKA_SR_RAMERRF      (0x1U<<19)
-#define PKA_SR_PROCENDF     (0x1U<<17)
-#define PKA_SR_BUSY         (0x1U<<16)
-#define PKA_SR_INITOK       (0x1U<<0)
+#define PKA_SR_OPERRF       (0x1U<<21U)
+#define PKA_SR_ADDRERRF     (0x1U<<20U)
+#define PKA_SR_RAMERRF      (0x1U<<19U)
+#define PKA_SR_PROCENDF     (0x1U<<17U)
+#define PKA_SR_BUSY         (0x1U<<16U)
+#define PKA_SR_INITOK       (0x1U<<0U)
 
 // CLRFR Configuration
 
-#define PKA_CLRFR_OPERRFC   (0x1U<<21)
-#define PKA_CLRFR_ADDRERRFC (0x1U<<20)
-#define PKA_CLRFR_RAMERRFC  (0x1U<<19)
-#define PKA_CLRFR_PROCENDFC (0x1U<<17)
+#define PKA_CLRFR_OPERRFC   (0x1U<<21U)
+#define PKA_CLRFR_ADDRERRFC (0x1U<<20U)
+#define PKA_CLRFR_RAMERRFC  (0x1U<<19U)
+#define PKA_CLRFR_PROCENDFC (0x1U<<17U)

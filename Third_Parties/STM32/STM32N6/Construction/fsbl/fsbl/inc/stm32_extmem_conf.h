@@ -27,7 +27,7 @@ extern "C" {
 /** @defgroup EXTMEN_CONF
   * @{
   */
-
+ 
 /*
   @brief management of the driver layer enable
 */
@@ -116,21 +116,13 @@ EXTMEM_DefinitionTypeDef extmem_list_config[1] =
 //////////        {
 //////////          {.WriteMask = 0x40, .WriteValue = 0x40, .REGAddress = 8}
 //////////        },
-<<<<<<<< HEAD:Third_Parties/STM32/Construction/fsbl/inc/stm32_extmem_conf.h
-//////////
-========
 //////////        
->>>>>>>> develop:Third_Parties/STM32/STM32N6/Construction/fsbl/fsbl/inc/stm32_extmem_conf.h
 //////////        /* Memory command configuration */
 //////////        .ReadREG           = 0x40u,
 //////////        .WriteREG          = 0xC0u,
 //////////        .ReadREGSize       = 2u,
 //////////        .REG_DummyCycle    = 4u,
-<<<<<<<< HEAD:Third_Parties/STM32/Construction/fsbl/inc/stm32_extmem_conf.h
-//////////
-========
 //////////        
->>>>>>>> develop:Third_Parties/STM32/STM32N6/Construction/fsbl/fsbl/inc/stm32_extmem_conf.h
 //////////        .Write_command     = 0xA0u,
 //////////        .Write_DummyCycle  = 4u,
 //////////        .Read_command      = 0x20u,

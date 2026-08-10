@@ -36,3 +36,5 @@ Static_Analysis/
 .vscode
 .env.local
 .cache
+.clangd
+.zed/

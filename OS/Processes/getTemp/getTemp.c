@@ -151,7 +151,7 @@ static void local_process(const void *argument) {
                     float64_t   raw;
                     mcnf_t      configure = {
                                     .oNbMaxPacks    = 10U,
-                                    .oDataEntrySize = 0U
+                                    .oDataEntrySize = 0U,
                                 };
             const   bool        *killRequest;
 
@@ -173,7 +173,7 @@ static void local_process(const void *argument) {
                                     20.23, 20.52, 21.23, 21.87, 22.21, 22.67, 23.12, 23.67,
                                     23.78, 23.34, 22.76, 22.09, 21.56, 21.14, 20.55, 20.03,
                                     20.23, 20.52, 21.23, 21.87, 22.21, 22.67, 23.12, 23.67,
-                                    23.78, 23.34, 22.76, 22.09, 21.56, 21.14, 20.55, 20.03
+                                    23.78, 23.34, 22.76, 22.09, 21.56, 21.14, 20.55, 20.03,
                                 };
 
     #else

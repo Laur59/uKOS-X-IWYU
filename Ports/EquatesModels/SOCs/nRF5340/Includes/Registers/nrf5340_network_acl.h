@@ -57,19 +57,19 @@ typedef struct {
 
 // ADDR Configuration
 
-#define ACL_ACL_ADDR_ADDR           (0xFFFFFFFFU<<0)
-#define ACL_ACL_ADDR_ADDR_0         (0x1U<<0)
+#define ACL_ACL_ADDR_ADDR           (0xFFFFFFFFU<<0U)
+#define ACL_ACL_ADDR_ADDR_0         (0x1U<<0U)
 
 // SIZE Configuration
 
-#define ACL_ACL_SIZE_SIZE           (0xFFFFFFFFU<<0)
-#define ACL_ACL_SIZE_SIZE_0         (0x1U<<0)
+#define ACL_ACL_SIZE_SIZE           (0xFFFFFFFFU<<0U)
+#define ACL_ACL_SIZE_SIZE_0         (0x1U<<0U)
 
 // PERM Configuration
 
-#define ACL_ACL_PERM_READ           (0x1U<<2)
-#define ACL_ACL_PERM_WRITE          (0x1U<<1)
-#define ACL_ACL_PERM_READ_ENABLE    (0x0U<<2)
-#define ACL_ACL_PERM_READ_DISABLE   (0x1U<<2)
-#define ACL_ACL_PERM_WRITE_ENABLE   (0x0U<<1)
-#define ACL_ACL_PERM_WRITE_DISABLE  (0x1U<<1)
+#define ACL_ACL_PERM_READ           (0x1U<<2U)
+#define ACL_ACL_PERM_WRITE          (0x1U<<1U)
+#define ACL_ACL_PERM_READ_ENABLE    (0x0U<<2U)
+#define ACL_ACL_PERM_READ_DISABLE   (0x1U<<2U)
+#define ACL_ACL_PERM_WRITE_ENABLE   (0x0U<<1U)
+#define ACL_ACL_PERM_WRITE_DISABLE  (0x1U<<1U)

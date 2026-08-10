@@ -324,13 +324,13 @@ static  void    local_USB_Configuration(void) {
  *   - LTDC and NPU masters generate Secure, Privileged, CID1 transactions
  *
  */
-#define RISAF_REG_CFGR_BREN             (1U<<0)
-#define RISAF_REG_CFGR_SEC              (1U<<8)
-#define RISAF_REG_CIDCFGR_RDENC_ALL     (0xFFu<<0)
-#define RISAF_REG_CIDCFGR_WRENC_ALL     (0xFFu<<16)
-#define RIMC_ATTR_MCID_1                (1U<<4)
-#define RIMC_ATTR_MSEC                  (1U<<8)
-#define RIMC_ATTR_MPRIV                 (1U<<9)
+#define RISAF_REG_CFGR_BREN             (1U<<0U)
+#define RISAF_REG_CFGR_SEC              (1U<<8U)
+#define RISAF_REG_CIDCFGR_RDENC_ALL     (0xFFU<<0U)
+#define RISAF_REG_CIDCFGR_WRENC_ALL     (0xFFU<<16U)
+#define RIMC_ATTR_MCID_1                (1U<<4U)
+#define RIMC_ATTR_MSEC                  (1U<<8U)
+#define RIMC_ATTR_MPRIV                 (1U<<9U)
 #define RIMC_ATTR_SEC_CID1_PRIV         (RIMC_ATTR_MSEC | RIMC_ATTR_MPRIV | RIMC_ATTR_MCID_1)
 
 static  void    local_Protection_Configuration(void) {

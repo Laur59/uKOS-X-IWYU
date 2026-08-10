@@ -408,9 +408,9 @@ static  void    local_getChar(serialManager_t serialManager, char_t *c, sema_t *
 // The serialManager is a BLE0; the BLE0 is redirected to URTx
 // The serialManager is a URTx
 
-        case (KWFI0 & 0xFFFFFF00U):
-        case (KBLE0 & 0xFFFFFF00U):
-        case (KURT0 & 0xFFFFFF00U): {
+        case ((uint32_t)KWFI0 & 0xFFFFFF00U):
+        case ((uint32_t)KBLE0 & 0xFFFFFF00U):
+        case ((uint32_t)KURT0 & 0xFFFFFF00U): {
             while (true) {
                 size = 1U;
                 if (serial_read(serialManager, (uint8_t *)c, &size) == KERR_SERIAL_NOERR) {
@@ -424,7 +424,7 @@ static  void    local_getChar(serialManager_t serialManager, char_t *c, sema_t *
 
 // ... or any other managers
 
-        case (KCDC0 & 0xFFFFFF00U):
+        case ((uint32_t)KCDC0 & 0xFFFFFF00U):
         default: {
             while (true) {
                 size = 1U;

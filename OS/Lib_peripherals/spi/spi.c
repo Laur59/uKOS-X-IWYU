@@ -82,19 +82,19 @@ int32_t spi_reserve(spiManager_t manager, reserveMode_t reserveMode, uint32_t ti
     switch (manager) {
 
         #ifdef CONFIG_MAN_SPI0_S
-        case KSPI0: { return (spi0_reserve(reserveMode, timeout)); }
+        case KSPI0: { return spi0_reserve(reserveMode, timeout); }
         #endif
 
         #ifdef CONFIG_MAN_SPI1_S
-        case KSPI1: { return (spi1_reserve(reserveMode, timeout)); }
+        case KSPI1: { return spi1_reserve(reserveMode, timeout); }
         #endif
 
         #ifdef CONFIG_MAN_SPI2_S
-        case KSPI2: { return (spi2_reserve(reserveMode, timeout)); }
+        case KSPI2: { return spi2_reserve(reserveMode, timeout); }
         #endif
 
         #ifdef CONFIG_MAN_SPI3_S
-        case KSPI3: { return (spi3_reserve(reserveMode, timeout)); }
+        case KSPI3: { return spi3_reserve(reserveMode, timeout); }
         #endif
 
         default:    { return KERR_SPI_NODEV;                       }
@@ -122,19 +122,19 @@ int32_t spi_release(spiManager_t manager, reserveMode_t reserveMode) {
     switch (manager) {
 
         #ifdef CONFIG_MAN_SPI0_S
-        case KSPI0: { return (spi0_release(reserveMode)); }
+        case KSPI0: { return spi0_release(reserveMode); }
         #endif
 
         #ifdef CONFIG_MAN_SPI1_S
-        case KSPI1: { return (spi1_release(reserveMode)); }
+        case KSPI1: { return spi1_release(reserveMode); }
         #endif
 
         #ifdef CONFIG_MAN_SPI2_S
-        case KSPI2: { return (spi2_release(reserveMode)); }
+        case KSPI2: { return spi2_release(reserveMode); }
         #endif
 
         #ifdef CONFIG_MAN_SPI3_S
-        case KSPI3: { return (spi3_release(reserveMode)); }
+        case KSPI3: { return spi3_release(reserveMode); }
         #endif
 
         default:    { return KERR_SPI_NODEV;              }
@@ -167,19 +167,19 @@ int32_t spi_configure(spiManager_t manager, const spiCnf_t *configure) {
     switch (manager) {
 
         #ifdef CONFIG_MAN_SPI0_S
-        case KSPI0: { return (spi0_configure(configure)); }
+        case KSPI0: { return spi0_configure(configure); }
         #endif
 
         #ifdef CONFIG_MAN_SPI1_S
-        case KSPI1: { return (spi1_configure(configure)); }
+        case KSPI1: { return spi1_configure(configure); }
         #endif
 
         #ifdef CONFIG_MAN_SPI2_S
-        case KSPI2: { return (spi2_configure(configure)); }
+        case KSPI2: { return spi2_configure(configure); }
         #endif
 
         #ifdef CONFIG_MAN_SPI3_S
-        case KSPI3: { return (spi3_configure(configure)); }
+        case KSPI3: { return spi3_configure(configure); }
         #endif
 
         default:    { return KERR_SPI_NODEV;              }
@@ -209,19 +209,19 @@ int32_t spi_writeRead(spiManager_t manager, uint8_t *data) {
     switch (manager) {
 
         #ifdef CONFIG_MAN_SPI0_S
-        case KSPI0: { return (spi0_writeRead(data)); }
+        case KSPI0: { return spi0_writeRead(data); }
         #endif
 
         #ifdef CONFIG_MAN_SPI1_S
-        case KSPI1: { return (spi1_writeRead(data)); }
+        case KSPI1: { return spi1_writeRead(data); }
         #endif
 
         #ifdef CONFIG_MAN_SPI2_S
-        case KSPI2: { return (spi2_writeRead(data)); }
+        case KSPI2: { return spi2_writeRead(data); }
         #endif
 
         #ifdef CONFIG_MAN_SPI3_S
-        case KSPI3: { return (spi3_writeRead(data)); }
+        case KSPI3: { return spi3_writeRead(data); }
         #endif
 
         default:    { return KERR_SPI_NODEV;         }
@@ -278,19 +278,19 @@ int32_t spi_multipleWriteRead(spiManager_t manager, const uint8_t *wData, uint16
     switch (manager) {
 
         #ifdef CONFIG_MAN_SPI0_S
-        case KSPI0: { return (spi0_multipleWriteRead(wData, wSize, rData, rSize, timeout)); }
+        case KSPI0: { return spi0_multipleWriteRead(wData, wSize, rData, rSize, timeout); }
         #endif
 
         #ifdef CONFIG_MAN_SPI1_S
-        case KSPI1: { return (spi1_multipleWriteRead(wData, wSize, rData, rSize, timeout)); }
+        case KSPI1: { return spi1_multipleWriteRead(wData, wSize, rData, rSize, timeout); }
         #endif
 
         #ifdef CONFIG_MAN_SPI2_S
-        case KSPI2: { return (spi2_multipleWriteRead(wData, wSize, rData, rSize, timeout)); }
+        case KSPI2: { return spi2_multipleWriteRead(wData, wSize, rData, rSize, timeout); }
         #endif
 
         #ifdef CONFIG_MAN_SPI3_S
-        case KSPI3: { return (spi3_multipleWriteRead(wData, wSize, rData, rSize, timeout)); }
+        case KSPI3: { return spi3_multipleWriteRead(wData, wSize, rData, rSize, timeout); }
         #endif
 
         default:    { return KERR_SPI_NODEV;                                                }

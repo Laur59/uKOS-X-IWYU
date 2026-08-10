@@ -31,29 +31,29 @@ typedef struct {
 
 // DR Configuration
 
-#define CRC_DR_DR                           (0xFFFFFFFFU<<0)
-#define CRC_DR_DR_0                         (0x1U<<0)
+#define CRC_DR_DR                           (0xFFFFFFFFU<<0U)
+#define CRC_DR_DR_0                         (0x1U<<0U)
 
 // IDR Configuration
 
-#define CRC_IDR_IDR                         (0xFFU<<0)
-#define CRC_IDR_IDR_0                       (0x1U<<0)
+#define CRC_IDR_IDR                         (0xFFU<<0U)
+#define CRC_IDR_IDR_0                       (0x1U<<0U)
 
 // CR Configuration
 
-#define CRC_CR_RESET                        (0x1U<<0)
-#define CRC_CR_POLYSIZE                     (0x3U<<3)
-#define CRC_CR_POLYSIZE_0                   (0x1U<<3)
-#define CRC_CR_REV_IN                       (0x3U<<5)
-#define CRC_CR_REV_IN_0                     (0x1U<<5)
-#define CRC_CR_REV_OUT                      (0x1U<<7)
+#define CRC_CR_RESET                        (0x1U<<0U)
+#define CRC_CR_POLYSIZE                     (0x3U<<3U)
+#define CRC_CR_POLYSIZE_0                   (0x1U<<3U)
+#define CRC_CR_REV_IN                       (0x3U<<5U)
+#define CRC_CR_REV_IN_0                     (0x1U<<5U)
+#define CRC_CR_REV_OUT                      (0x1U<<7U)
 
 // INIT Configuration
 
-#define CRC_INIT_CRC_INIT                   (0xFFFFFFFFU<<0)
-#define CRC_INIT_CRC_INIT_0                 (0x1U<<0)
+#define CRC_INIT_CRC_INIT                   (0xFFFFFFFFU<<0U)
+#define CRC_INIT_CRC_INIT_0                 (0x1U<<0U)
 
 // POL Configuration
 
-#define CRC_POL_POLYNOMIALCOEFFICIENTS      (0xFFFFFFFFU<<0)
-#define CRC_POL_POLYNOMIALCOEFFICIENTS_0    (0x1U<<0)
+#define CRC_POL_POLYNOMIALCOEFFICIENTS      (0xFFFFFFFFU<<0U)
+#define CRC_POL_POLYNOMIALCOEFFICIENTS_0    (0x1U<<0U)

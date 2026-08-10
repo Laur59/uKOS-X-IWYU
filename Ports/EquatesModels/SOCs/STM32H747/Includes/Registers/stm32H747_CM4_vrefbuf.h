@@ -27,13 +27,13 @@ typedef struct {
 
 // CSR Configuration
 
-#define VREFBUF_CSR_VRS     (0x7U<<4)
-#define VREFBUF_CSR_VRS_0   (0x1U<<4)
-#define VREFBUF_CSR_VRR     (0x1U<<3)
-#define VREFBUF_CSR_HIZ     (0x1U<<1)
-#define VREFBUF_CSR_ENVR    (0x1U<<0)
+#define VREFBUF_CSR_VRS     (0x7U<<4U)
+#define VREFBUF_CSR_VRS_0   (0x1U<<4U)
+#define VREFBUF_CSR_VRR     (0x1U<<3U)
+#define VREFBUF_CSR_HIZ     (0x1U<<1U)
+#define VREFBUF_CSR_ENVR    (0x1U<<0U)
 
 // CCR Configuration
 
-#define VREFBUF_CCR_TRIM    (0x3FU<<0)
-#define VREFBUF_CCR_TRIM_0  (0x1U<<0)
+#define VREFBUF_CCR_TRIM    (0x3FU<<0U)
+#define VREFBUF_CCR_TRIM_0  (0x1U<<0U)

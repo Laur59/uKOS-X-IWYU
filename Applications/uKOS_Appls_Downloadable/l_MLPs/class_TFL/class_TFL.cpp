@@ -189,7 +189,7 @@ void    aProcess_0(const void *argument) {
 
     UNUSED(argument);
 
-    #if (defined(CORTEX))
+    #ifdef CORTEX
     RegisterDebugLogCallback(debuglog);
     #endif
 
@@ -221,9 +221,9 @@ void    aProcess_0(const void *argument) {
 
 // Prepare the inputs
 
-        random_read(KRANDOM_SOFT, &random[0], 2u);
-        x = (((float32_t)random[0] / (float32_t)(KRAND_MAX)) - 0.5f) * gain;
-        y = (((float32_t)random[1] / (float32_t)(KRAND_MAX)) - 0.5f) * gain;
+        random_read(KRANDOM_SOFT, &random[0], 2U);
+        x = (((float32_t)random[0] / (float32_t)(KRAND_MAX)) - 0.5F) * gain;
+        y = (((float32_t)random[1] / (float32_t)(KRAND_MAX)) - 0.5F) * gain;
 
         input  = interpreter.input(0);
         input->data.f[0] = x;

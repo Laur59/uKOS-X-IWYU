@@ -44,7 +44,7 @@ typedef struct {
 
 #define NVIC_VECTRESET              0U
 #define NVIC_SYSRESETREQ            2U
-#define NVIC_AIRCR_VECTKEY          (0x5FAU<<16)
+#define NVIC_AIRCR_VECTKEY          (0x5FAU<<16U)
 #define NVIC_AIRCR_ENDIANESS        15U
 
 // NVIC macros

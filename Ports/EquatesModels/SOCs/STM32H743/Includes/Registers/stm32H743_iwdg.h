@@ -30,26 +30,26 @@ typedef struct {
 
 // KR Configuration
 
-#define IWDG_KR_KEY     (0xFFFFU<<0)
-#define IWDG_KR_KEY_0   (0x1U<<0)
+#define IWDG_KR_KEY     (0xFFFFU<<0U)
+#define IWDG_KR_KEY_0   (0x1U<<0U)
 
 // PR Configuration
 
-#define IWDG_PR_PR      (0x7U<<0)
-#define IWDG_PR_PR_0    (0x1U<<0)
+#define IWDG_PR_PR      (0x7U<<0U)
+#define IWDG_PR_PR_0    (0x1U<<0U)
 
 // RLR Configuration
 
-#define IWDG_RLR_RL     (0xFFFU<<0)
-#define IWDG_RLR_RL_0   (0x1U<<0)
+#define IWDG_RLR_RL     (0xFFFU<<0U)
+#define IWDG_RLR_RL_0   (0x1U<<0U)
 
 // SR Configuration
 
-#define IWDG_SR_WVU     (0x1U<<2)
-#define IWDG_SR_RVU     (0x1U<<1)
-#define IWDG_SR_PVU     (0x1U<<0)
+#define IWDG_SR_WVU     (0x1U<<2U)
+#define IWDG_SR_RVU     (0x1U<<1U)
+#define IWDG_SR_PVU     (0x1U<<0U)
 
 // WINR Configuration
 
-#define IWDG_WINR_WIN   (0xFFFU<<0)
-#define IWDG_WINR_WIN_0 (0x1U<<0)
+#define IWDG_WINR_WIN   (0xFFFU<<0U)
+#define IWDG_WINR_WIN_0 (0x1U<<0U)

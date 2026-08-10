@@ -40,8 +40,8 @@ static  const   char_t  *argv_cnsUrt0[] = { "console", "urt0" };
 static  const   char_t  *argv_runDemoUrt0[] = { "runDemo", "urt0", "100000" };
 
 static  const   boot_t  aFunction[] = {
-                            { "console", KURT0, argv_cnsUrt0,     2u, 0x00u, KSERIAL_BAUDRATE_460800 },
-                            { "runDemo", KURT0, argv_runDemoUrt0, 2u, 0x00u, KSERIAL_BAUDRATE_460800 }
+                            { "console", KURT0, argv_cnsUrt0,     2U, 0x00U, KSERIAL_BAUDRATE_460800 },
+                            { "runDemo", KURT0, argv_runDemoUrt0, 2U, 0x00U, KSERIAL_BAUDRATE_460800 },
                         };
 
 #define KDEF_COMM       KURT0

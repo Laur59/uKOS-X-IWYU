@@ -75,310 +75,310 @@ typedef struct {
 
 // TASKS_START Configuration
 
-#define QDEC_TASKS_START_TASKS_START                        (0x1U<<0)
-#define QDEC_TASKS_START_TASKS_START_TRIGGER                (0x1U<<0)
+#define QDEC_TASKS_START_TASKS_START                        (0x1U<<0U)
+#define QDEC_TASKS_START_TASKS_START_TRIGGER                (0x1U<<0U)
 
 // TASKS_STOP Configuration
 
-#define QDEC_TASKS_STOP_TASKS_STOP                          (0x1U<<0)
-#define QDEC_TASKS_STOP_TASKS_STOP_TRIGGER                  (0x1U<<0)
+#define QDEC_TASKS_STOP_TASKS_STOP                          (0x1U<<0U)
+#define QDEC_TASKS_STOP_TASKS_STOP_TRIGGER                  (0x1U<<0U)
 
 // TASKS_READCLRACC Configuration
 
-#define QDEC_TASKS_READCLRACC_TASKS_READCLRACC              (0x1U<<0)
-#define QDEC_TASKS_READCLRACC_TASKS_READCLRACC_TRIGGER      (0x1U<<0)
+#define QDEC_TASKS_READCLRACC_TASKS_READCLRACC              (0x1U<<0U)
+#define QDEC_TASKS_READCLRACC_TASKS_READCLRACC_TRIGGER      (0x1U<<0U)
 
 // TASKS_RDCLRACC Configuration
 
-#define QDEC_TASKS_RDCLRACC_TASKS_RDCLRACC                  (0x1U<<0)
-#define QDEC_TASKS_RDCLRACC_TASKS_RDCLRACC_TRIGGER          (0x1U<<0)
+#define QDEC_TASKS_RDCLRACC_TASKS_RDCLRACC                  (0x1U<<0U)
+#define QDEC_TASKS_RDCLRACC_TASKS_RDCLRACC_TRIGGER          (0x1U<<0U)
 
 // TASKS_RDCLRDBL Configuration
 
-#define QDEC_TASKS_RDCLRDBL_TASKS_RDCLRDBL                  (0x1U<<0)
-#define QDEC_TASKS_RDCLRDBL_TASKS_RDCLRDBL_TRIGGER          (0x1U<<0)
+#define QDEC_TASKS_RDCLRDBL_TASKS_RDCLRDBL                  (0x1U<<0U)
+#define QDEC_TASKS_RDCLRDBL_TASKS_RDCLRDBL_TRIGGER          (0x1U<<0U)
 
 // SUBSCRIBE_START Configuration
 
-#define QDEC_SUBSCRIBE_START_EN                             (0x1U<<31)
-#define QDEC_SUBSCRIBE_START_CHIDX                          (0xFFU<<0)
-#define QDEC_SUBSCRIBE_START_CHIDX_0                        (0x1U<<0)
-#define QDEC_SUBSCRIBE_START_EN_DISABLED                    (0x0U<<31)
-#define QDEC_SUBSCRIBE_START_EN_ENABLED                     (0x1U<<31)
+#define QDEC_SUBSCRIBE_START_EN                             (0x1U<<31U)
+#define QDEC_SUBSCRIBE_START_CHIDX                          (0xFFU<<0U)
+#define QDEC_SUBSCRIBE_START_CHIDX_0                        (0x1U<<0U)
+#define QDEC_SUBSCRIBE_START_EN_DISABLED                    (0x0U<<31U)
+#define QDEC_SUBSCRIBE_START_EN_ENABLED                     (0x1U<<31U)
 
 // SUBSCRIBE_STOP Configuration
 
-#define QDEC_SUBSCRIBE_STOP_EN                              (0x1U<<31)
-#define QDEC_SUBSCRIBE_STOP_CHIDX                           (0xFFU<<0)
-#define QDEC_SUBSCRIBE_STOP_CHIDX_0                         (0x1U<<0)
-#define QDEC_SUBSCRIBE_STOP_EN_DISABLED                     (0x0U<<31)
-#define QDEC_SUBSCRIBE_STOP_EN_ENABLED                      (0x1U<<31)
+#define QDEC_SUBSCRIBE_STOP_EN                              (0x1U<<31U)
+#define QDEC_SUBSCRIBE_STOP_CHIDX                           (0xFFU<<0U)
+#define QDEC_SUBSCRIBE_STOP_CHIDX_0                         (0x1U<<0U)
+#define QDEC_SUBSCRIBE_STOP_EN_DISABLED                     (0x0U<<31U)
+#define QDEC_SUBSCRIBE_STOP_EN_ENABLED                      (0x1U<<31U)
 
 // SUBSCRIBE_READCLRACC Configuration
 
-#define QDEC_SUBSCRIBE_READCLRACC_EN                        (0x1U<<31)
-#define QDEC_SUBSCRIBE_READCLRACC_CHIDX                     (0xFFU<<0)
-#define QDEC_SUBSCRIBE_READCLRACC_CHIDX_0                   (0x1U<<0)
-#define QDEC_SUBSCRIBE_READCLRACC_EN_DISABLED               (0x0U<<31)
-#define QDEC_SUBSCRIBE_READCLRACC_EN_ENABLED                (0x1U<<31)
+#define QDEC_SUBSCRIBE_READCLRACC_EN                        (0x1U<<31U)
+#define QDEC_SUBSCRIBE_READCLRACC_CHIDX                     (0xFFU<<0U)
+#define QDEC_SUBSCRIBE_READCLRACC_CHIDX_0                   (0x1U<<0U)
+#define QDEC_SUBSCRIBE_READCLRACC_EN_DISABLED               (0x0U<<31U)
+#define QDEC_SUBSCRIBE_READCLRACC_EN_ENABLED                (0x1U<<31U)
 
 // SUBSCRIBE_RDCLRACC Configuration
 
-#define QDEC_SUBSCRIBE_RDCLRACC_EN                          (0x1U<<31)
-#define QDEC_SUBSCRIBE_RDCLRACC_CHIDX                       (0xFFU<<0)
-#define QDEC_SUBSCRIBE_RDCLRACC_CHIDX_0                     (0x1U<<0)
-#define QDEC_SUBSCRIBE_RDCLRACC_EN_DISABLED                 (0x0U<<31)
-#define QDEC_SUBSCRIBE_RDCLRACC_EN_ENABLED                  (0x1U<<31)
+#define QDEC_SUBSCRIBE_RDCLRACC_EN                          (0x1U<<31U)
+#define QDEC_SUBSCRIBE_RDCLRACC_CHIDX                       (0xFFU<<0U)
+#define QDEC_SUBSCRIBE_RDCLRACC_CHIDX_0                     (0x1U<<0U)
+#define QDEC_SUBSCRIBE_RDCLRACC_EN_DISABLED                 (0x0U<<31U)
+#define QDEC_SUBSCRIBE_RDCLRACC_EN_ENABLED                  (0x1U<<31U)
 
 // SUBSCRIBE_RDCLRDBL Configuration
 
-#define QDEC_SUBSCRIBE_RDCLRDBL_EN                          (0x1U<<31)
-#define QDEC_SUBSCRIBE_RDCLRDBL_CHIDX                       (0xFFU<<0)
-#define QDEC_SUBSCRIBE_RDCLRDBL_CHIDX_0                     (0x1U<<0)
-#define QDEC_SUBSCRIBE_RDCLRDBL_EN_DISABLED                 (0x0U<<31)
-#define QDEC_SUBSCRIBE_RDCLRDBL_EN_ENABLED                  (0x1U<<31)
+#define QDEC_SUBSCRIBE_RDCLRDBL_EN                          (0x1U<<31U)
+#define QDEC_SUBSCRIBE_RDCLRDBL_CHIDX                       (0xFFU<<0U)
+#define QDEC_SUBSCRIBE_RDCLRDBL_CHIDX_0                     (0x1U<<0U)
+#define QDEC_SUBSCRIBE_RDCLRDBL_EN_DISABLED                 (0x0U<<31U)
+#define QDEC_SUBSCRIBE_RDCLRDBL_EN_ENABLED                  (0x1U<<31U)
 
 // EVENTS_SAMPLERDY Configuration
 
-#define QDEC_EVENTS_SAMPLERDY_EVENTS_SAMPLERDY              (0x1U<<0)
-#define QDEC_EVENTS_SAMPLERDY_EVENTS_SAMPLERDY_NOTGENERATED (0x0U<<0)
-#define QDEC_EVENTS_SAMPLERDY_EVENTS_SAMPLERDY_GENERATED    (0x1U<<0)
+#define QDEC_EVENTS_SAMPLERDY_EVENTS_SAMPLERDY              (0x1U<<0U)
+#define QDEC_EVENTS_SAMPLERDY_EVENTS_SAMPLERDY_NOTGENERATED (0x0U<<0U)
+#define QDEC_EVENTS_SAMPLERDY_EVENTS_SAMPLERDY_GENERATED    (0x1U<<0U)
 
 // EVENTS_REPORTRDY Configuration
 
-#define QDEC_EVENTS_REPORTRDY_EVENTS_REPORTRDY              (0x1U<<0)
-#define QDEC_EVENTS_REPORTRDY_EVENTS_REPORTRDY_NOTGENERATED (0x0U<<0)
-#define QDEC_EVENTS_REPORTRDY_EVENTS_REPORTRDY_GENERATED    (0x1U<<0)
+#define QDEC_EVENTS_REPORTRDY_EVENTS_REPORTRDY              (0x1U<<0U)
+#define QDEC_EVENTS_REPORTRDY_EVENTS_REPORTRDY_NOTGENERATED (0x0U<<0U)
+#define QDEC_EVENTS_REPORTRDY_EVENTS_REPORTRDY_GENERATED    (0x1U<<0U)
 
 // EVENTS_ACCOF Configuration
 
-#define QDEC_EVENTS_ACCOF_EVENTS_ACCOF                      (0x1U<<0)
-#define QDEC_EVENTS_ACCOF_EVENTS_ACCOF_NOTGENERATED         (0x0U<<0)
-#define QDEC_EVENTS_ACCOF_EVENTS_ACCOF_GENERATED            (0x1U<<0)
+#define QDEC_EVENTS_ACCOF_EVENTS_ACCOF                      (0x1U<<0U)
+#define QDEC_EVENTS_ACCOF_EVENTS_ACCOF_NOTGENERATED         (0x0U<<0U)
+#define QDEC_EVENTS_ACCOF_EVENTS_ACCOF_GENERATED            (0x1U<<0U)
 
 // EVENTS_DBLRDY Configuration
 
-#define QDEC_EVENTS_DBLRDY_EVENTS_DBLRDY                    (0x1U<<0)
-#define QDEC_EVENTS_DBLRDY_EVENTS_DBLRDY_NOTGENERATED       (0x0U<<0)
-#define QDEC_EVENTS_DBLRDY_EVENTS_DBLRDY_GENERATED          (0x1U<<0)
+#define QDEC_EVENTS_DBLRDY_EVENTS_DBLRDY                    (0x1U<<0U)
+#define QDEC_EVENTS_DBLRDY_EVENTS_DBLRDY_NOTGENERATED       (0x0U<<0U)
+#define QDEC_EVENTS_DBLRDY_EVENTS_DBLRDY_GENERATED          (0x1U<<0U)
 
 // EVENTS_STOPPED Configuration
 
-#define QDEC_EVENTS_STOPPED_EVENTS_STOPPED                  (0x1U<<0)
-#define QDEC_EVENTS_STOPPED_EVENTS_STOPPED_NOTGENERATED     (0x0U<<0)
-#define QDEC_EVENTS_STOPPED_EVENTS_STOPPED_GENERATED        (0x1U<<0)
+#define QDEC_EVENTS_STOPPED_EVENTS_STOPPED                  (0x1U<<0U)
+#define QDEC_EVENTS_STOPPED_EVENTS_STOPPED_NOTGENERATED     (0x0U<<0U)
+#define QDEC_EVENTS_STOPPED_EVENTS_STOPPED_GENERATED        (0x1U<<0U)
 
 // PUBLISH_SAMPLERDY Configuration
 
-#define QDEC_PUBLISH_SAMPLERDY_EN                           (0x1U<<31)
-#define QDEC_PUBLISH_SAMPLERDY_CHIDX                        (0xFFU<<0)
-#define QDEC_PUBLISH_SAMPLERDY_CHIDX_0                      (0x1U<<0)
-#define QDEC_PUBLISH_SAMPLERDY_EN_DISABLED                  (0x0U<<31)
-#define QDEC_PUBLISH_SAMPLERDY_EN_ENABLED                   (0x1U<<31)
+#define QDEC_PUBLISH_SAMPLERDY_EN                           (0x1U<<31U)
+#define QDEC_PUBLISH_SAMPLERDY_CHIDX                        (0xFFU<<0U)
+#define QDEC_PUBLISH_SAMPLERDY_CHIDX_0                      (0x1U<<0U)
+#define QDEC_PUBLISH_SAMPLERDY_EN_DISABLED                  (0x0U<<31U)
+#define QDEC_PUBLISH_SAMPLERDY_EN_ENABLED                   (0x1U<<31U)
 
 // PUBLISH_REPORTRDY Configuration
 
-#define QDEC_PUBLISH_REPORTRDY_EN                           (0x1U<<31)
-#define QDEC_PUBLISH_REPORTRDY_CHIDX                        (0xFFU<<0)
-#define QDEC_PUBLISH_REPORTRDY_CHIDX_0                      (0x1U<<0)
-#define QDEC_PUBLISH_REPORTRDY_EN_DISABLED                  (0x0U<<31)
-#define QDEC_PUBLISH_REPORTRDY_EN_ENABLED                   (0x1U<<31)
+#define QDEC_PUBLISH_REPORTRDY_EN                           (0x1U<<31U)
+#define QDEC_PUBLISH_REPORTRDY_CHIDX                        (0xFFU<<0U)
+#define QDEC_PUBLISH_REPORTRDY_CHIDX_0                      (0x1U<<0U)
+#define QDEC_PUBLISH_REPORTRDY_EN_DISABLED                  (0x0U<<31U)
+#define QDEC_PUBLISH_REPORTRDY_EN_ENABLED                   (0x1U<<31U)
 
 // PUBLISH_ACCOF Configuration
 
-#define QDEC_PUBLISH_ACCOF_EN                               (0x1U<<31)
-#define QDEC_PUBLISH_ACCOF_CHIDX                            (0xFFU<<0)
-#define QDEC_PUBLISH_ACCOF_CHIDX_0                          (0x1U<<0)
-#define QDEC_PUBLISH_ACCOF_EN_DISABLED                      (0x0U<<31)
-#define QDEC_PUBLISH_ACCOF_EN_ENABLED                       (0x1U<<31)
+#define QDEC_PUBLISH_ACCOF_EN                               (0x1U<<31U)
+#define QDEC_PUBLISH_ACCOF_CHIDX                            (0xFFU<<0U)
+#define QDEC_PUBLISH_ACCOF_CHIDX_0                          (0x1U<<0U)
+#define QDEC_PUBLISH_ACCOF_EN_DISABLED                      (0x0U<<31U)
+#define QDEC_PUBLISH_ACCOF_EN_ENABLED                       (0x1U<<31U)
 
 // PUBLISH_DBLRDY Configuration
 
-#define QDEC_PUBLISH_DBLRDY_EN                              (0x1U<<31)
-#define QDEC_PUBLISH_DBLRDY_CHIDX                           (0xFFU<<0)
-#define QDEC_PUBLISH_DBLRDY_CHIDX_0                         (0x1U<<0)
-#define QDEC_PUBLISH_DBLRDY_EN_DISABLED                     (0x0U<<31)
-#define QDEC_PUBLISH_DBLRDY_EN_ENABLED                      (0x1U<<31)
+#define QDEC_PUBLISH_DBLRDY_EN                              (0x1U<<31U)
+#define QDEC_PUBLISH_DBLRDY_CHIDX                           (0xFFU<<0U)
+#define QDEC_PUBLISH_DBLRDY_CHIDX_0                         (0x1U<<0U)
+#define QDEC_PUBLISH_DBLRDY_EN_DISABLED                     (0x0U<<31U)
+#define QDEC_PUBLISH_DBLRDY_EN_ENABLED                      (0x1U<<31U)
 
 // PUBLISH_STOPPED Configuration
 
-#define QDEC_PUBLISH_STOPPED_EN                             (0x1U<<31)
-#define QDEC_PUBLISH_STOPPED_CHIDX                          (0xFFU<<0)
-#define QDEC_PUBLISH_STOPPED_CHIDX_0                        (0x1U<<0)
-#define QDEC_PUBLISH_STOPPED_EN_DISABLED                    (0x0U<<31)
-#define QDEC_PUBLISH_STOPPED_EN_ENABLED                     (0x1U<<31)
+#define QDEC_PUBLISH_STOPPED_EN                             (0x1U<<31U)
+#define QDEC_PUBLISH_STOPPED_CHIDX                          (0xFFU<<0U)
+#define QDEC_PUBLISH_STOPPED_CHIDX_0                        (0x1U<<0U)
+#define QDEC_PUBLISH_STOPPED_EN_DISABLED                    (0x0U<<31U)
+#define QDEC_PUBLISH_STOPPED_EN_ENABLED                     (0x1U<<31U)
 
 // SHORTS Configuration
 
-#define QDEC_SHORTS_SAMPLERDY_READCLRACC                    (0x1U<<6)
-#define QDEC_SHORTS_DBLRDY_STOP                             (0x1U<<5)
-#define QDEC_SHORTS_DBLRDY_RDCLRDBL                         (0x1U<<4)
-#define QDEC_SHORTS_REPORTRDY_STOP                          (0x1U<<3)
-#define QDEC_SHORTS_REPORTRDY_RDCLRACC                      (0x1U<<2)
-#define QDEC_SHORTS_SAMPLERDY_STOP                          (0x1U<<1)
-#define QDEC_SHORTS_REPORTRDY_READCLRACC                    (0x1U<<0)
-#define QDEC_SHORTS_SAMPLERDY_READCLRACC_DISABLED           (0x0U<<6)
-#define QDEC_SHORTS_SAMPLERDY_READCLRACC_ENABLED            (0x1U<<6)
-#define QDEC_SHORTS_DBLRDY_STOP_DISABLED                    (0x0U<<5)
-#define QDEC_SHORTS_DBLRDY_STOP_ENABLED                     (0x1U<<5)
-#define QDEC_SHORTS_DBLRDY_RDCLRDBL_DISABLED                (0x0U<<4)
-#define QDEC_SHORTS_DBLRDY_RDCLRDBL_ENABLED                 (0x1U<<4)
-#define QDEC_SHORTS_REPORTRDY_STOP_DISABLED                 (0x0U<<3)
-#define QDEC_SHORTS_REPORTRDY_STOP_ENABLED                  (0x1U<<3)
-#define QDEC_SHORTS_REPORTRDY_RDCLRACC_DISABLED             (0x0U<<2)
-#define QDEC_SHORTS_REPORTRDY_RDCLRACC_ENABLED              (0x1U<<2)
-#define QDEC_SHORTS_SAMPLERDY_STOP_DISABLED                 (0x0U<<1)
-#define QDEC_SHORTS_SAMPLERDY_STOP_ENABLED                  (0x1U<<1)
-#define QDEC_SHORTS_REPORTRDY_READCLRACC_DISABLED           (0x0U<<0)
-#define QDEC_SHORTS_REPORTRDY_READCLRACC_ENABLED            (0x1U<<0)
+#define QDEC_SHORTS_SAMPLERDY_READCLRACC                    (0x1U<<6U)
+#define QDEC_SHORTS_DBLRDY_STOP                             (0x1U<<5U)
+#define QDEC_SHORTS_DBLRDY_RDCLRDBL                         (0x1U<<4U)
+#define QDEC_SHORTS_REPORTRDY_STOP                          (0x1U<<3U)
+#define QDEC_SHORTS_REPORTRDY_RDCLRACC                      (0x1U<<2U)
+#define QDEC_SHORTS_SAMPLERDY_STOP                          (0x1U<<1U)
+#define QDEC_SHORTS_REPORTRDY_READCLRACC                    (0x1U<<0U)
+#define QDEC_SHORTS_SAMPLERDY_READCLRACC_DISABLED           (0x0U<<6U)
+#define QDEC_SHORTS_SAMPLERDY_READCLRACC_ENABLED            (0x1U<<6U)
+#define QDEC_SHORTS_DBLRDY_STOP_DISABLED                    (0x0U<<5U)
+#define QDEC_SHORTS_DBLRDY_STOP_ENABLED                     (0x1U<<5U)
+#define QDEC_SHORTS_DBLRDY_RDCLRDBL_DISABLED                (0x0U<<4U)
+#define QDEC_SHORTS_DBLRDY_RDCLRDBL_ENABLED                 (0x1U<<4U)
+#define QDEC_SHORTS_REPORTRDY_STOP_DISABLED                 (0x0U<<3U)
+#define QDEC_SHORTS_REPORTRDY_STOP_ENABLED                  (0x1U<<3U)
+#define QDEC_SHORTS_REPORTRDY_RDCLRACC_DISABLED             (0x0U<<2U)
+#define QDEC_SHORTS_REPORTRDY_RDCLRACC_ENABLED              (0x1U<<2U)
+#define QDEC_SHORTS_SAMPLERDY_STOP_DISABLED                 (0x0U<<1U)
+#define QDEC_SHORTS_SAMPLERDY_STOP_ENABLED                  (0x1U<<1U)
+#define QDEC_SHORTS_REPORTRDY_READCLRACC_DISABLED           (0x0U<<0U)
+#define QDEC_SHORTS_REPORTRDY_READCLRACC_ENABLED            (0x1U<<0U)
 
 // INTENSET Configuration
 
-#define QDEC_INTENSET_STOPPED                               (0x1U<<4)
-#define QDEC_INTENSET_DBLRDY                                (0x1U<<3)
-#define QDEC_INTENSET_ACCOF                                 (0x1U<<2)
-#define QDEC_INTENSET_REPORTRDY                             (0x1U<<1)
-#define QDEC_INTENSET_SAMPLERDY                             (0x1U<<0)
-#define QDEC_INTENSET_STOPPED_DISABLED                      (0x0U<<4)
-#define QDEC_INTENSET_STOPPED_ENABLED                       (0x1U<<4)
-#define QDEC_INTENSET_STOPPED_SET                           (0x1U<<4)
-#define QDEC_INTENSET_DBLRDY_DISABLED                       (0x0U<<3)
-#define QDEC_INTENSET_DBLRDY_ENABLED                        (0x1U<<3)
-#define QDEC_INTENSET_DBLRDY_SET                            (0x1U<<3)
-#define QDEC_INTENSET_ACCOF_DISABLED                        (0x0U<<2)
-#define QDEC_INTENSET_ACCOF_ENABLED                         (0x1U<<2)
-#define QDEC_INTENSET_ACCOF_SET                             (0x1U<<2)
-#define QDEC_INTENSET_REPORTRDY_DISABLED                    (0x0U<<1)
-#define QDEC_INTENSET_REPORTRDY_ENABLED                     (0x1U<<1)
-#define QDEC_INTENSET_REPORTRDY_SET                         (0x1U<<1)
-#define QDEC_INTENSET_SAMPLERDY_DISABLED                    (0x0U<<0)
-#define QDEC_INTENSET_SAMPLERDY_ENABLED                     (0x1U<<0)
-#define QDEC_INTENSET_SAMPLERDY_SET                         (0x1U<<0)
+#define QDEC_INTENSET_STOPPED                               (0x1U<<4U)
+#define QDEC_INTENSET_DBLRDY                                (0x1U<<3U)
+#define QDEC_INTENSET_ACCOF                                 (0x1U<<2U)
+#define QDEC_INTENSET_REPORTRDY                             (0x1U<<1U)
+#define QDEC_INTENSET_SAMPLERDY                             (0x1U<<0U)
+#define QDEC_INTENSET_STOPPED_DISABLED                      (0x0U<<4U)
+#define QDEC_INTENSET_STOPPED_ENABLED                       (0x1U<<4U)
+#define QDEC_INTENSET_STOPPED_SET                           (0x1U<<4U)
+#define QDEC_INTENSET_DBLRDY_DISABLED                       (0x0U<<3U)
+#define QDEC_INTENSET_DBLRDY_ENABLED                        (0x1U<<3U)
+#define QDEC_INTENSET_DBLRDY_SET                            (0x1U<<3U)
+#define QDEC_INTENSET_ACCOF_DISABLED                        (0x0U<<2U)
+#define QDEC_INTENSET_ACCOF_ENABLED                         (0x1U<<2U)
+#define QDEC_INTENSET_ACCOF_SET                             (0x1U<<2U)
+#define QDEC_INTENSET_REPORTRDY_DISABLED                    (0x0U<<1U)
+#define QDEC_INTENSET_REPORTRDY_ENABLED                     (0x1U<<1U)
+#define QDEC_INTENSET_REPORTRDY_SET                         (0x1U<<1U)
+#define QDEC_INTENSET_SAMPLERDY_DISABLED                    (0x0U<<0U)
+#define QDEC_INTENSET_SAMPLERDY_ENABLED                     (0x1U<<0U)
+#define QDEC_INTENSET_SAMPLERDY_SET                         (0x1U<<0U)
 
 // INTENCLR Configuration
 
-#define QDEC_INTENCLR_STOPPED                               (0x1U<<4)
-#define QDEC_INTENCLR_DBLRDY                                (0x1U<<3)
-#define QDEC_INTENCLR_ACCOF                                 (0x1U<<2)
-#define QDEC_INTENCLR_REPORTRDY                             (0x1U<<1)
-#define QDEC_INTENCLR_SAMPLERDY                             (0x1U<<0)
-#define QDEC_INTENCLR_STOPPED_DISABLED                      (0x0U<<4)
-#define QDEC_INTENCLR_STOPPED_ENABLED                       (0x1U<<4)
-#define QDEC_INTENCLR_STOPPED_CLEAR                         (0x1U<<4)
-#define QDEC_INTENCLR_DBLRDY_DISABLED                       (0x0U<<3)
-#define QDEC_INTENCLR_DBLRDY_ENABLED                        (0x1U<<3)
-#define QDEC_INTENCLR_DBLRDY_CLEAR                          (0x1U<<3)
-#define QDEC_INTENCLR_ACCOF_DISABLED                        (0x0U<<2)
-#define QDEC_INTENCLR_ACCOF_ENABLED                         (0x1U<<2)
-#define QDEC_INTENCLR_ACCOF_CLEAR                           (0x1U<<2)
-#define QDEC_INTENCLR_REPORTRDY_DISABLED                    (0x0U<<1)
-#define QDEC_INTENCLR_REPORTRDY_ENABLED                     (0x1U<<1)
-#define QDEC_INTENCLR_REPORTRDY_CLEAR                       (0x1U<<1)
-#define QDEC_INTENCLR_SAMPLERDY_DISABLED                    (0x0U<<0)
-#define QDEC_INTENCLR_SAMPLERDY_ENABLED                     (0x1U<<0)
-#define QDEC_INTENCLR_SAMPLERDY_CLEAR                       (0x1U<<0)
+#define QDEC_INTENCLR_STOPPED                               (0x1U<<4U)
+#define QDEC_INTENCLR_DBLRDY                                (0x1U<<3U)
+#define QDEC_INTENCLR_ACCOF                                 (0x1U<<2U)
+#define QDEC_INTENCLR_REPORTRDY                             (0x1U<<1U)
+#define QDEC_INTENCLR_SAMPLERDY                             (0x1U<<0U)
+#define QDEC_INTENCLR_STOPPED_DISABLED                      (0x0U<<4U)
+#define QDEC_INTENCLR_STOPPED_ENABLED                       (0x1U<<4U)
+#define QDEC_INTENCLR_STOPPED_CLEAR                         (0x1U<<4U)
+#define QDEC_INTENCLR_DBLRDY_DISABLED                       (0x0U<<3U)
+#define QDEC_INTENCLR_DBLRDY_ENABLED                        (0x1U<<3U)
+#define QDEC_INTENCLR_DBLRDY_CLEAR                          (0x1U<<3U)
+#define QDEC_INTENCLR_ACCOF_DISABLED                        (0x0U<<2U)
+#define QDEC_INTENCLR_ACCOF_ENABLED                         (0x1U<<2U)
+#define QDEC_INTENCLR_ACCOF_CLEAR                           (0x1U<<2U)
+#define QDEC_INTENCLR_REPORTRDY_DISABLED                    (0x0U<<1U)
+#define QDEC_INTENCLR_REPORTRDY_ENABLED                     (0x1U<<1U)
+#define QDEC_INTENCLR_REPORTRDY_CLEAR                       (0x1U<<1U)
+#define QDEC_INTENCLR_SAMPLERDY_DISABLED                    (0x0U<<0U)
+#define QDEC_INTENCLR_SAMPLERDY_ENABLED                     (0x1U<<0U)
+#define QDEC_INTENCLR_SAMPLERDY_CLEAR                       (0x1U<<0U)
 
 // ENABLE Configuration
 
-#define QDEC_ENABLE_ENABLE                                  (0x1U<<0)
-#define QDEC_ENABLE_ENABLE_DISABLED                         (0x0U<<0)
-#define QDEC_ENABLE_ENABLE_ENABLED                          (0x1U<<0)
+#define QDEC_ENABLE_ENABLE                                  (0x1U<<0U)
+#define QDEC_ENABLE_ENABLE_DISABLED                         (0x0U<<0U)
+#define QDEC_ENABLE_ENABLE_ENABLED                          (0x1U<<0U)
 
 // LEDPOL Configuration
 
-#define QDEC_LEDPOL_LEDPOL                                  (0x1U<<0)
-#define QDEC_LEDPOL_LEDPOL_ACTIVELOW                        (0x0U<<0)
-#define QDEC_LEDPOL_LEDPOL_ACTIVEHIGH                       (0x1U<<0)
+#define QDEC_LEDPOL_LEDPOL                                  (0x1U<<0U)
+#define QDEC_LEDPOL_LEDPOL_ACTIVELOW                        (0x0U<<0U)
+#define QDEC_LEDPOL_LEDPOL_ACTIVEHIGH                       (0x1U<<0U)
 
 // SAMPLEPER Configuration
 
-#define QDEC_SAMPLEPER_SAMPLEPER                            (0xFU<<0)
-#define QDEC_SAMPLEPER_SAMPLEPER_0                          (0x1U<<0)
-#define QDEC_SAMPLEPER_SAMPLEPER_128US                      (0x0U<<0)
-#define QDEC_SAMPLEPER_SAMPLEPER_256US                      (0x1U<<0)
-#define QDEC_SAMPLEPER_SAMPLEPER_512US                      (0x2U<<0)
-#define QDEC_SAMPLEPER_SAMPLEPER_1024US                     (0x3U<<0)
-#define QDEC_SAMPLEPER_SAMPLEPER_2048US                     (0x4U<<0)
-#define QDEC_SAMPLEPER_SAMPLEPER_4096US                     (0x5U<<0)
-#define QDEC_SAMPLEPER_SAMPLEPER_8192US                     (0x6U<<0)
-#define QDEC_SAMPLEPER_SAMPLEPER_16384US                    (0x7U<<0)
-#define QDEC_SAMPLEPER_SAMPLEPER_32MS                       (0x8U<<0)
-#define QDEC_SAMPLEPER_SAMPLEPER_65MS                       (0x9U<<0)
-#define QDEC_SAMPLEPER_SAMPLEPER_131MS                      (0xAU<<0)
+#define QDEC_SAMPLEPER_SAMPLEPER                            (0xFU<<0U)
+#define QDEC_SAMPLEPER_SAMPLEPER_0                          (0x1U<<0U)
+#define QDEC_SAMPLEPER_SAMPLEPER_128US                      (0x0U<<0U)
+#define QDEC_SAMPLEPER_SAMPLEPER_256US                      (0x1U<<0U)
+#define QDEC_SAMPLEPER_SAMPLEPER_512US                      (0x2U<<0U)
+#define QDEC_SAMPLEPER_SAMPLEPER_1024US                     (0x3U<<0U)
+#define QDEC_SAMPLEPER_SAMPLEPER_2048US                     (0x4U<<0U)
+#define QDEC_SAMPLEPER_SAMPLEPER_4096US                     (0x5U<<0U)
+#define QDEC_SAMPLEPER_SAMPLEPER_8192US                     (0x6U<<0U)
+#define QDEC_SAMPLEPER_SAMPLEPER_16384US                    (0x7U<<0U)
+#define QDEC_SAMPLEPER_SAMPLEPER_32MS                       (0x8U<<0U)
+#define QDEC_SAMPLEPER_SAMPLEPER_65MS                       (0x9U<<0U)
+#define QDEC_SAMPLEPER_SAMPLEPER_131MS                      (0xAU<<0U)
 
 // SAMPLE Configuration
 
-#define QDEC_SAMPLE_SAMPLE                                  (0xFFFFFFFFU<<0)
-#define QDEC_SAMPLE_SAMPLE_0                                (0x1U<<0)
+#define QDEC_SAMPLE_SAMPLE                                  (0xFFFFFFFFU<<0U)
+#define QDEC_SAMPLE_SAMPLE_0                                (0x1U<<0U)
 
 // REPORTPER Configuration
 
-#define QDEC_REPORTPER_REPORTPER                            (0xFU<<0)
-#define QDEC_REPORTPER_REPORTPER_0                          (0x1U<<0)
-#define QDEC_REPORTPER_REPORTPER_10SMPL                     (0x0U<<0)
-#define QDEC_REPORTPER_REPORTPER_40SMPL                     (0x1U<<0)
-#define QDEC_REPORTPER_REPORTPER_80SMPL                     (0x2U<<0)
-#define QDEC_REPORTPER_REPORTPER_120SMPL                    (0x3U<<0)
-#define QDEC_REPORTPER_REPORTPER_160SMPL                    (0x4U<<0)
-#define QDEC_REPORTPER_REPORTPER_200SMPL                    (0x5U<<0)
-#define QDEC_REPORTPER_REPORTPER_240SMPL                    (0x6U<<0)
-#define QDEC_REPORTPER_REPORTPER_280SMPL                    (0x7U<<0)
-#define QDEC_REPORTPER_REPORTPER_1SMPL                      (0x8U<<0)
+#define QDEC_REPORTPER_REPORTPER                            (0xFU<<0U)
+#define QDEC_REPORTPER_REPORTPER_0                          (0x1U<<0U)
+#define QDEC_REPORTPER_REPORTPER_10SMPL                     (0x0U<<0U)
+#define QDEC_REPORTPER_REPORTPER_40SMPL                     (0x1U<<0U)
+#define QDEC_REPORTPER_REPORTPER_80SMPL                     (0x2U<<0U)
+#define QDEC_REPORTPER_REPORTPER_120SMPL                    (0x3U<<0U)
+#define QDEC_REPORTPER_REPORTPER_160SMPL                    (0x4U<<0U)
+#define QDEC_REPORTPER_REPORTPER_200SMPL                    (0x5U<<0U)
+#define QDEC_REPORTPER_REPORTPER_240SMPL                    (0x6U<<0U)
+#define QDEC_REPORTPER_REPORTPER_280SMPL                    (0x7U<<0U)
+#define QDEC_REPORTPER_REPORTPER_1SMPL                      (0x8U<<0U)
 
 // ACC Configuration
 
-#define QDEC_ACC_ACC                                        (0xFFFFFFFFU<<0)
-#define QDEC_ACC_ACC_0                                      (0x1U<<0)
+#define QDEC_ACC_ACC                                        (0xFFFFFFFFU<<0U)
+#define QDEC_ACC_ACC_0                                      (0x1U<<0U)
 
 // ACCREAD Configuration
 
-#define QDEC_ACCREAD_ACCREAD                                (0xFFFFFFFFU<<0)
-#define QDEC_ACCREAD_ACCREAD_0                              (0x1U<<0)
+#define QDEC_ACCREAD_ACCREAD                                (0xFFFFFFFFU<<0U)
+#define QDEC_ACCREAD_ACCREAD_0                              (0x1U<<0U)
 
 // LED Configuration
 
-#define QDEC_PSEL_LED_CONNECT                               (0x1U<<31)
-#define QDEC_PSEL_LED_PORT                                  (0x1U<<5)
-#define QDEC_PSEL_LED_PIN                                   (0x1FU<<0)
-#define QDEC_PSEL_LED_PIN_0                                 (0x1U<<0)
-#define QDEC_PSEL_LED_CONNECT_DISCONNECTED                  (0x1U<<31)
-#define QDEC_PSEL_LED_CONNECT_CONNECTED                     (0x0U<<31)
+#define QDEC_PSEL_LED_CONNECT                               (0x1U<<31U)
+#define QDEC_PSEL_LED_PORT                                  (0x1U<<5U)
+#define QDEC_PSEL_LED_PIN                                   (0x1FU<<0U)
+#define QDEC_PSEL_LED_PIN_0                                 (0x1U<<0U)
+#define QDEC_PSEL_LED_CONNECT_DISCONNECTED                  (0x1U<<31U)
+#define QDEC_PSEL_LED_CONNECT_CONNECTED                     (0x0U<<31U)
 
 // A Configuration
 
-#define QDEC_PSEL_A_CONNECT                                 (0x1U<<31)
-#define QDEC_PSEL_A_PORT                                    (0x1U<<5)
-#define QDEC_PSEL_A_PIN                                     (0x1FU<<0)
-#define QDEC_PSEL_A_PIN_0                                   (0x1U<<0)
-#define QDEC_PSEL_A_CONNECT_DISCONNECTED                    (0x1U<<31)
-#define QDEC_PSEL_A_CONNECT_CONNECTED                       (0x0U<<31)
+#define QDEC_PSEL_A_CONNECT                                 (0x1U<<31U)
+#define QDEC_PSEL_A_PORT                                    (0x1U<<5U)
+#define QDEC_PSEL_A_PIN                                     (0x1FU<<0U)
+#define QDEC_PSEL_A_PIN_0                                   (0x1U<<0U)
+#define QDEC_PSEL_A_CONNECT_DISCONNECTED                    (0x1U<<31U)
+#define QDEC_PSEL_A_CONNECT_CONNECTED                       (0x0U<<31U)
 
 // B Configuration
 
-#define QDEC_PSEL_B_CONNECT                                 (0x1U<<31)
-#define QDEC_PSEL_B_PORT                                    (0x1U<<5)
-#define QDEC_PSEL_B_PIN                                     (0x1FU<<0)
-#define QDEC_PSEL_B_PIN_0                                   (0x1U<<0)
-#define QDEC_PSEL_B_CONNECT_DISCONNECTED                    (0x1U<<31)
-#define QDEC_PSEL_B_CONNECT_CONNECTED                       (0x0U<<31)
+#define QDEC_PSEL_B_CONNECT                                 (0x1U<<31U)
+#define QDEC_PSEL_B_PORT                                    (0x1U<<5U)
+#define QDEC_PSEL_B_PIN                                     (0x1FU<<0U)
+#define QDEC_PSEL_B_PIN_0                                   (0x1U<<0U)
+#define QDEC_PSEL_B_CONNECT_DISCONNECTED                    (0x1U<<31U)
+#define QDEC_PSEL_B_CONNECT_CONNECTED                       (0x0U<<31U)
 
 // DBFEN Configuration
 
-#define QDEC_DBFEN_DBFEN                                    (0x1U<<0)
-#define QDEC_DBFEN_DBFEN_DISABLED                           (0x0U<<0)
-#define QDEC_DBFEN_DBFEN_ENABLED                            (0x1U<<0)
+#define QDEC_DBFEN_DBFEN                                    (0x1U<<0U)
+#define QDEC_DBFEN_DBFEN_DISABLED                           (0x0U<<0U)
+#define QDEC_DBFEN_DBFEN_ENABLED                            (0x1U<<0U)
 
 // LEDPRE Configuration
 
-#define QDEC_LEDPRE_LEDPRE                                  (0x1FFU<<0)
-#define QDEC_LEDPRE_LEDPRE_0                                (0x1U<<0)
+#define QDEC_LEDPRE_LEDPRE                                  (0x1FFU<<0U)
+#define QDEC_LEDPRE_LEDPRE_0                                (0x1U<<0U)
 
 // ACCDBL Configuration
 
-#define QDEC_ACCDBL_ACCDBL                                  (0xFU<<0)
-#define QDEC_ACCDBL_ACCDBL_0                                (0x1U<<0)
+#define QDEC_ACCDBL_ACCDBL                                  (0xFU<<0U)
+#define QDEC_ACCDBL_ACCDBL_0                                (0x1U<<0U)
 
 // ACCDBLREAD Configuration
 
-#define QDEC_ACCDBLREAD_ACCDBLREAD                          (0xFU<<0)
-#define QDEC_ACCDBLREAD_ACCDBLREAD_0                        (0x1U<<0)
+#define QDEC_ACCDBLREAD_ACCDBLREAD                          (0xFU<<0U)
+#define QDEC_ACCDBLREAD_ACCDBLREAD_0                        (0x1U<<0U)

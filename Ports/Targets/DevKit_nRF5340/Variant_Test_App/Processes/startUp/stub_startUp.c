@@ -44,7 +44,7 @@ static  const   char_t  *argv_sloader[] = { "sloader"         };
 
 static  const   boot_t  aFunction[] = {
                             { .oFunction="console", .oSerialManager=KURT0, .oArgV=argv_cnsUrt0, .oArgC=2U, .oSW=0x00U, .oBaudrate=KSERIAL_BAUDRATE_460800 },
-                            { .oFunction="sloader", .oSerialManager=KURT0, .oArgV=argv_sloader, .oArgC=1U, .oSW=0x01U, .oBaudrate=KSERIAL_BAUDRATE_460800 }
+                            { .oFunction="sloader", .oSerialManager=KURT0, .oArgV=argv_sloader, .oArgC=1U, .oSW=0x01U, .oBaudrate=KSERIAL_BAUDRATE_460800 },
                         };
 
 #define KDEF_COMM       KURT0

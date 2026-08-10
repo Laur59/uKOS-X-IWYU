@@ -43,4 +43,4 @@
 
 // CR2 Configuration
 
-#define I2C_CR2_SADD_0                  (0x1U<<0)
+#define I2C_CR2_SADD_0                  (0x1U<<0U)

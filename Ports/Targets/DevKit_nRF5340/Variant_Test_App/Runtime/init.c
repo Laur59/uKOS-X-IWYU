@@ -223,7 +223,7 @@ static  void    local_GPIO_Configuration(void) {
                                         { .oPin=33U, .oPinCNFValue=(KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_DISABLE | KINPUT_DISCONNECT | KDIR_OUTPUT),   .oOutputQuite=0U },   // P1.1 USART_1 TXD
 
                                         { .oPin=34U, .oPinCNFValue=(KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_CONNECT   | KDIR_INPUT),     .oOutputQuite=0U },   // P1.2 Shield detect
-                                        { .oPin=35U, .oPinCNFValue=(KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_CONNECT   | KDIR_INPUT),     .oOutputQuite=0U }    // P1.3 Shield detect
+                                        { .oPin=35U, .oPinCNFValue=(KPIN_APPCPU | KSENS_DISABLE | KDRIVE_S0S1 | KPULL_UP      | KINPUT_CONNECT   | KDIR_INPUT),     .oOutputQuite=0U },   // P1.3 Shield detect
                                     };
 
 #define KNBCNF      (sizeof(aGPIO_Cnf) / sizeof(gpio_t))

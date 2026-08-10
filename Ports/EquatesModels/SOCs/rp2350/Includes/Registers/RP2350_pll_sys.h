@@ -38,43 +38,43 @@ typedef struct {
 
 // CS Configuration
 
-#define PLL_SYS_CS_REFDIV               (0x3FU<<0)
-#define PLL_SYS_CS_REFDIV_0             (0x1U<<0)
-#define PLL_SYS_CS_BYPASS               (0x1U<<8)
-#define PLL_SYS_CS_LOCK_N               (0x1U<<30)
-#define PLL_SYS_CS_LOCK                 (0x1U<<31)
+#define PLL_SYS_CS_REFDIV               (0x3FU<<0U)
+#define PLL_SYS_CS_REFDIV_0             (0x1U<<0U)
+#define PLL_SYS_CS_BYPASS               (0x1U<<8U)
+#define PLL_SYS_CS_LOCK_N               (0x1U<<30U)
+#define PLL_SYS_CS_LOCK                 (0x1U<<31U)
 
 // PWR Configuration
 
-#define PLL_SYS_PWR_PD                  (0x1U<<0)
-#define PLL_SYS_PWR_DSMPD               (0x1U<<2)
-#define PLL_SYS_PWR_POSTDIVPD           (0x1U<<3)
-#define PLL_SYS_PWR_VCOPD               (0x1U<<5)
+#define PLL_SYS_PWR_PD                  (0x1U<<0U)
+#define PLL_SYS_PWR_DSMPD               (0x1U<<2U)
+#define PLL_SYS_PWR_POSTDIVPD           (0x1U<<3U)
+#define PLL_SYS_PWR_VCOPD               (0x1U<<5U)
 
 // FBDIV_INT Configuration
 
-#define PLL_SYS_FBDIV_INT_FBDIV_INT     (0xFFFU<<0)
-#define PLL_SYS_FBDIV_INT_FBDIV_INT_0   (0x1U<<0)
+#define PLL_SYS_FBDIV_INT_FBDIV_INT     (0xFFFU<<0U)
+#define PLL_SYS_FBDIV_INT_FBDIV_INT_0   (0x1U<<0U)
 
 // PRIM Configuration
 
-#define PLL_SYS_PRIM_POSTDIV2           (0x7U<<12)
-#define PLL_SYS_PRIM_POSTDIV2_0         (0x1U<<12)
-#define PLL_SYS_PRIM_POSTDIV1           (0x7U<<16)
-#define PLL_SYS_PRIM_POSTDIV1_0         (0x1U<<16)
+#define PLL_SYS_PRIM_POSTDIV2           (0x7U<<12U)
+#define PLL_SYS_PRIM_POSTDIV2_0         (0x1U<<12U)
+#define PLL_SYS_PRIM_POSTDIV1           (0x7U<<16U)
+#define PLL_SYS_PRIM_POSTDIV1_0         (0x1U<<16U)
 
 // INTR Configuration
 
-#define PLL_SYS_INTR_LOCK_N_STICKY      (0x1U<<0)
+#define PLL_SYS_INTR_LOCK_N_STICKY      (0x1U<<0U)
 
 // INTE Configuration
 
-#define PLL_SYS_INTE_LOCK_N_STICKY      (0x1U<<0)
+#define PLL_SYS_INTE_LOCK_N_STICKY      (0x1U<<0U)
 
 // INTF Configuration
 
-#define PLL_SYS_INTF_LOCK_N_STICKY      (0x1U<<0)
+#define PLL_SYS_INTF_LOCK_N_STICKY      (0x1U<<0U)
 
 // INTS Configuration
 
-#define PLL_SYS_INTS_LOCK_N_STICKY      (0x1U<<0)
+#define PLL_SYS_INTS_LOCK_N_STICKY      (0x1U<<0U)

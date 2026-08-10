@@ -42,7 +42,7 @@ static  const   char_t  *argv_mpyUrt0[] = { "microPython", "urt0", "100000" };
 
 static  const   boot_t  aFunction[] = {
                             { .oFunction="console", .oSerialManager=KSYST, .oArgV=argv_cnsUrt0, .oArgC=2U, .oSW=0x00U, .oBaudrate=KSERIAL_BAUDRATE_460800 },
-                            { .oFunction="microPython", .oSerialManager=KSYST, .oArgV=argv_mpyUrt0, .oArgC=3U, .oSW=0x01U, .oBaudrate=KSERIAL_BAUDRATE_460800 }
+                            { .oFunction="microPython", .oSerialManager=KSYST, .oArgV=argv_mpyUrt0, .oArgC=3U, .oSW=0x01U, .oBaudrate=KSERIAL_BAUDRATE_460800 },
                         };
 
 #define KDEF_COMM       KURT0
@@ -123,7 +123,7 @@ void    stub_startUp_launch(void) {
 
 // The communication
 
-            switch (aFunction[i].oSerialManager) {
+//            switch (aFunction[i].oSerialManager) {
 
 // If the serial device is already configured,
 // do not reconfigure it again.
@@ -132,13 +132,13 @@ void    stub_startUp_launch(void) {
 //              case KURT0: { configureURTx.oBaudRate = aFunction[i].oBaudrate; serial_configure(KURT0, &configureURTx); break; }
 //              case KURT1: { configureURTx.oBaudRate = aFunction[i].oBaudrate; serial_configure(KURT1, &configureURTx); break; }
 //              case KURT2: { configureURTx.oBaudRate = aFunction[i].oBaudrate; serial_configure(KURT2, &configureURTx); break; }
-                default: {
+//                default: {
 
 // Make MISRA happy :-)
 
-                    break;
-                }
-            }
+//                    break;
+//                }
+//            }
 
 // The mode exist
 // Found a module; execute it or error
@@ -153,17 +153,8 @@ void    stub_startUp_launch(void) {
             }
             else {
 
-                switch (module->oExecution(aFunction[i].oArgC, aFunction[i].oArgV)) {
-                    case EXIT_OS_FAILURE_CRT0: {
-                        (void)dprintf(KSYST, "Incompatible OS!!!\nReload the latest OS inside the target.\n");
-                        break;
-                    }
-                    default: {
-
-// Make MISRA happy :-)
-
-                        break;
-                    }
+                if (module->oExecution(aFunction[i].oArgC, aFunction[i].oArgV) == EXIT_OS_FAILURE_CRT0) {
+                    (void)dprintf(KSYST, "Incompatible OS!!!\nReload the latest OS inside the target.\n");
                 }
             }
         }

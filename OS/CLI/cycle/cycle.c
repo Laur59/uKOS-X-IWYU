@@ -91,7 +91,7 @@ static  const   cycle_t     aTabCycle[] = {
                                 { KCDC0, "Cycle_cdc0", "Process cycle cdc0.                       (c) EFr-2026" },
                                 { KCDC1, "Cycle_cdc1", "Process cycle cdc1.                       (c) EFr-2026" },
                                 { KWFI0, "Cycle_wfi0", "Process cycle wfi0.                       (c) EFr-2026" },
-                                { KBLE0, "Cycle_ble0", "Process cycle ble0.                       (c) EFr-2026" }
+                                { KBLE0, "Cycle_ble0", "Process cycle ble0.                       (c) EFr-2026" },
                             };
 
 #define KNB_CHANNELS    (sizeof(aTabCycle) / sizeof(cycle_t))

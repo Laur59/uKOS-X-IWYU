@@ -26,6 +26,6 @@
 #define RVBB_CSR_SLEEPVALUE     0x811U                  //
 #define RVBB_CSR_TXEVT          0x812U                  //
 
-#define RVBB_MCAUSE_MINHV       (1U<<30)                //
-#define RVBB_MCAUSE_MPP(m)      ((((m) & 0x3U)<<28))    //
-#define RVBB_MCAUSE_MPIE        (1U<<27)                //
+#define RVBB_MCAUSE_MINHV       (1U<<30U)                //
+#define RVBB_MCAUSE_MPP(m)      ((((m) & 0x3U)<<28U))    //
+#define RVBB_MCAUSE_MPIE        (1U<<27U)                //

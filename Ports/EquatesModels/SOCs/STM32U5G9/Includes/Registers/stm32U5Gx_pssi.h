@@ -35,45 +35,45 @@ typedef struct {
 
 // CR Configuration
 
-#define PSSI_CR_OUTEN       (0x1U<<31)
-#define PSSI_CR_DMAEN       (0x1U<<30)
-#define PSSI_CR_DERDYCFG    (0x7U<<18)
-#define PSSI_CR_DERDYCFG_0  (0x1U<<18)
-#define PSSI_CR_ENABLE      (0x1U<<14)
-#define PSSI_CR_EDM         (0x3U<<10)
-#define PSSI_CR_EDM_0       (0x1U<<10)
-#define PSSI_CR_RDYPOL      (0x1U<<8)
-#define PSSI_CR_DEPOL       (0x1U<<6)
-#define PSSI_CR_CKPOL       (0x1U<<5)
+#define PSSI_CR_OUTEN       (0x1U<<31U)
+#define PSSI_CR_DMAEN       (0x1U<<30U)
+#define PSSI_CR_DERDYCFG    (0x7U<<18U)
+#define PSSI_CR_DERDYCFG_0  (0x1U<<18U)
+#define PSSI_CR_ENABLE      (0x1U<<14U)
+#define PSSI_CR_EDM         (0x3U<<10U)
+#define PSSI_CR_EDM_0       (0x1U<<10U)
+#define PSSI_CR_RDYPOL      (0x1U<<8U)
+#define PSSI_CR_DEPOL       (0x1U<<6U)
+#define PSSI_CR_CKPOL       (0x1U<<5U)
 
 // SR Configuration
 
-#define PSSI_SR_RTT1B       (0x1U<<3)
-#define PSSI_SR_RTT4B       (0x1U<<2)
+#define PSSI_SR_RTT1B       (0x1U<<3U)
+#define PSSI_SR_RTT4B       (0x1U<<2U)
 
 // RIS Configuration
 
-#define PSSI_RIS_OVR_RIS    (0x1U<<1)
+#define PSSI_RIS_OVR_RIS    (0x1U<<1U)
 
 // IER Configuration
 
-#define PSSI_IER_OVR_IE     (0x1U<<1)
+#define PSSI_IER_OVR_IE     (0x1U<<1U)
 
 // MIS Configuration
 
-#define PSSI_MIS_OVR_MIS    (0x1U<<1)
+#define PSSI_MIS_OVR_MIS    (0x1U<<1U)
 
 // ICR Configuration
 
-#define PSSI_ICR_OVR_ISC    (0x1U<<1)
+#define PSSI_ICR_OVR_ISC    (0x1U<<1U)
 
 // DR Configuration
 
-#define PSSI_DR_BYTE3       (0xFFU<<24)
-#define PSSI_DR_BYTE3_0     (0x1U<<24)
-#define PSSI_DR_BYTE2       (0xFFU<<16)
-#define PSSI_DR_BYTE2_0     (0x1U<<16)
-#define PSSI_DR_BYTE1       (0xFFU<<8)
-#define PSSI_DR_BYTE1_0     (0x1U<<8)
-#define PSSI_DR_BYTE0       (0xFFU<<0)
-#define PSSI_DR_BYTE0_0     (0x1U<<0)
+#define PSSI_DR_BYTE3       (0xFFU<<24U)
+#define PSSI_DR_BYTE3_0     (0x1U<<24U)
+#define PSSI_DR_BYTE2       (0xFFU<<16U)
+#define PSSI_DR_BYTE2_0     (0x1U<<16U)
+#define PSSI_DR_BYTE1       (0xFFU<<8U)
+#define PSSI_DR_BYTE1_0     (0x1U<<8U)
+#define PSSI_DR_BYTE0       (0xFFU<<0U)
+#define PSSI_DR_BYTE0_0     (0x1U<<0U)

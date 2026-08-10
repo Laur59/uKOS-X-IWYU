@@ -139,7 +139,7 @@ static void local_process_SndX(const void *argument) {
             sema_t      *semaphore;
             mcnf_t      configure = {
                             .oNbMaxPacks    = KASMP_MBOX_MAX_PACK,
-                            .oDataEntrySize = KASMP_MBOX_ENTRY_SIZE
+                            .oDataEntrySize = KASMP_MBOX_ENTRY_SIZE,
                         };
     const   char_t      *idSendMbox;
 
@@ -220,7 +220,7 @@ static void local_process_RecX(const void *argument) {
             sema_t      *semaphore;
             mcnf_t      configure = {
                             .oNbMaxPacks    = KASMP_MBOX_MAX_PACK,
-                            .oDataEntrySize = KASMP_MBOX_ENTRY_SIZE
+                            .oDataEntrySize = KASMP_MBOX_ENTRY_SIZE,
                         };
     const   char_t      *idReceiveMbox;
 

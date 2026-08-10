@@ -37,8 +37,8 @@
 // otg additional definitions
 // --------------------------
 
-#define OTG_HS_GCCFG_VBVALEXTOEN    (0x1U<<24)
-#define OTG_HS_GCCFG_VBVALOVAL      (0x1U<<23)
+#define OTG_HS_GCCFG_VBVALEXTOEN    (0x1U<<24U)
+#define OTG_HS_GCCFG_VBVALOVAL      (0x1U<<23U)
 #define USB_OTG_HS_BASE             (uintptr_t)OTG_HS_S
 
 // gpio additional definitions
@@ -114,34 +114,34 @@
                 e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0, \
                 f15, f14, f13, f12, f11, f10, f9, f8, f7, f6, f5, f4, f3, f2, f1, f0, \
                 g15, g14, g13, g12, g11, g10, g9, g8, g7, g6, g5, g4, g3, g2, g1, g0) \
-                GPIO##port##_S->AFRH =      (d15<<28) | (d14<<24) | (d13<<20) | (d12<<16) | \
-                                            (d11<<12) | (d10<<8)  | (d9<<4)   | (d8<<0); \
-                GPIO##port##_S->AFRL =      (d7<<28)  | (d6<<24)  | (d5<<20)  | (d4<<16)  | \
-                                            (d3<<12)  | (d2<<8)   | (d1<<4)   | (d0<<0); \
-                GPIO##port##_S->OSPEEDR =   (b15<<30) | (b14<<28) | (b13<<26) | (b12<<24) | \
-                                            (b11<<22) | (b10<<20) | (b9<<18)  | (b8<<16)  | \
-                                            (b7<<14)  | (b6<<12)  | (b5<<10)  | (b4<<8)   | \
-                                            (b3<<6)   | (b2<<4)   | (b1<<2)   | (b0<<0); \
-                GPIO##port##_S->OTYPER =    (e15<<15) | (e14<<14) | (e13<<13) | (e12<<12) | \
-                                            (e11<<11) | (e10<<10) | (e9<<9)   | (e8<<8)   | \
-                                            (e7<<7)   | (e6<<6)   | (e5<<5)   | (e4<<4)   | \
-                                            (e3<<3)   | (e2<<2)   | (e1<<1)   | (e0<<0); \
-                GPIO##port##_S->MODER =     (a15<<30) | (a14<<28) | (a13<<26) | (a12<<24) | \
-                                            (a11<<22) | (a10<<20) | (a9<<18)  | (a8<<16)  | \
-                                            (a7<<14)  | (a6<<12)  | (a5<<10)  | (a4<<8)   | \
-                                            (a3<<6)   | (a2<<4)   | (a1<<2)   | (a0<<0); \
-                GPIO##port##_S->PUPDR =     (c15<<30) | (c14<<28) | (c13<<26) | (c12<<24) | \
-                                            (c11<<22) | (c10<<20) | (c9<<18)  | (c8<<16)  | \
-                                            (c7<<14)  | (c6<<12)  | (c5<<10)  | (c4<<8)   | \
-                                            (c3<<6)   | (c2<<4)   | (c1<<2)   | (c0<<0); \
-                GPIO##port##_S->ODR |=      (f15<<15) | (f14<<14) | (f13<<13) | (f12<<12) | \
-                                            (f11<<11) | (f10<<10) | (f9<<9)   | (f8<<8)   | \
-                                            (f7<<7)   | (f6<<6)   | (f5<<5)   | (f4<<4)   | \
-                                            (f3<<3)   | (f2<<2)   | (f1<<1)   | (f0<<0); \
-                GPIO##port##_S->HSLVR |=    (g15<<15) | (g14<<14) | (g13<<13) | (g12<<12) | \
-                                            (g11<<11) | (g10<<10) | (g9<<9)   | (g8<<8)   | \
-                                            (g7<<7)   | (g6<<6)   | (g5<<5)   | (g4<<4)   | \
-                                            (g3<<3)   | (g2<<2)   | (g1<<1)   | (g0<<0);
+                GPIO##port##_S->AFRH =      (d15<<28U) | (d14<<24U) | (d13<<20U) | (d12<<16U) | \
+                                            (d11<<12U) | (d10<<8U)  | (d9<<4U)   | (d8<<0U); \
+                GPIO##port##_S->AFRL =      (d7<<28U)  | (d6<<24U)  | (d5<<20U)  | (d4<<16U)  | \
+                                            (d3<<12U)  | (d2<<8U)   | (d1<<4U)   | (d0<<0U); \
+                GPIO##port##_S->OSPEEDR =   (b15<<30U) | (b14<<28U) | (b13<<26U) | (b12<<24U) | \
+                                            (b11<<22U) | (b10<<20U) | (b9<<18U)  | (b8<<16U)  | \
+                                            (b7<<14U)  | (b6<<12U)  | (b5<<10U)  | (b4<<8U)   | \
+                                            (b3<<6U)   | (b2<<4U)   | (b1<<2U)   | (b0<<0U); \
+                GPIO##port##_S->OTYPER =    (e15<<15U) | (e14<<14U) | (e13<<13U) | (e12<<12U) | \
+                                            (e11<<11U) | (e10<<10U) | (e9<<9U)   | (e8<<8U)   | \
+                                            (e7<<7U)   | (e6<<6U)   | (e5<<5U)   | (e4<<4U)   | \
+                                            (e3<<3U)   | (e2<<2U)   | (e1<<1U)   | (e0<<0U); \
+                GPIO##port##_S->MODER =     (a15<<30U) | (a14<<28U) | (a13<<26U) | (a12<<24U) | \
+                                            (a11<<22U) | (a10<<20U) | (a9<<18U)  | (a8<<16U)  | \
+                                            (a7<<14U)  | (a6<<12U)  | (a5<<10U)  | (a4<<8U)   | \
+                                            (a3<<6U)   | (a2<<4U)   | (a1<<2U)   | (a0<<0U); \
+                GPIO##port##_S->PUPDR =     (c15<<30U) | (c14<<28U) | (c13<<26U) | (c12<<24U) | \
+                                            (c11<<22U) | (c10<<20U) | (c9<<18U)  | (c8<<16U)  | \
+                                            (c7<<14U)  | (c6<<12U)  | (c5<<10U)  | (c4<<8U)   | \
+                                            (c3<<6U)   | (c2<<4U)   | (c1<<2U)   | (c0<<0U); \
+                GPIO##port##_S->ODR |=      (f15<<15U) | (f14<<14U) | (f13<<13U) | (f12<<12U) | \
+                                            (f11<<11U) | (f10<<10U) | (f9<<9U)   | (f8<<8U)   | \
+                                            (f7<<7U)   | (f6<<6U)   | (f5<<5U)   | (f4<<4U)   | \
+                                            (f3<<3U)   | (f2<<2U)   | (f1<<1U)   | (f0<<0U); \
+                GPIO##port##_S->HSLVR |=    (g15<<15U) | (g14<<14U) | (g13<<13U) | (g12<<12U) | \
+                                            (g11<<11U) | (g10<<10U) | (g9<<9U)   | (g8<<8U)   | \
+                                            (g7<<7U)   | (g6<<6U)   | (g5<<5U)   | (g4<<4U)   | \
+                                            (g3<<3U)   | (g2<<2U)   | (g1<<1U)   | (g0<<0U);
 
 #else
 #define CNFGPIO(port, \
@@ -152,34 +152,34 @@
                 e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0, \
                 f15, f14, f13, f12, f11, f10, f9, f8, f7, f6, f5, f4, f3, f2, f1, f0, \
                 g15, g14, g13, g12, g11, g10, g9, g8, g7, g6, g5, g4, g3, g2, g1, g0) \
-                GPIO##port##_NS->AFRH =     (d15<<28) | (d14<<24) | (d13<<20) | (d12<<16) | \
-                                            (d11<<12) | (d10<<8)  | (d9<<4)   | (d8<<0); \
-                GPIO##port##_NS->AFRL =     (d7<<28)  | (d6<<24)  | (d5<<20)  | (d4<<16)  | \
-                                            (d3<<12)  | (d2<<8)   | (d1<<4)   | (d0<<0); \
-                GPIO##port##_NS->OSPEEDR =  (b15<<30) | (b14<<28) | (b13<<26) | (b12<<24) | \
-                                            (b11<<22) | (b10<<20) | (b9<<18)  | (b8<<16)  | \
-                                            (b7<<14)  | (b6<<12)  | (b5<<10)  | (b4<<8)   | \
-                                            (b3<<6)   | (b2<<4)   | (b1<<2)   | (b0<<0); \
-                GPIO##port##_NS->OTYPER =   (e15<<15) | (e14<<14) | (e13<<13) | (e12<<12) | \
-                                            (e11<<11) | (e10<<10) | (e9<<9)   | (e8<<8)   | \
-                                            (e7<<7)   | (e6<<6)   | (e5<<5)   | (e4<<4)   | \
-                                            (e3<<3)   | (e2<<2)   | (e1<<1)   | (e0<<0); \
-                GPIO##port##_NS->MODER =    (a15<<30) | (a14<<28) | (a13<<26) | (a12<<24) | \
-                                            (a11<<22) | (a10<<20) | (a9<<18)  | (a8<<16)  | \
-                                            (a7<<14)  | (a6<<12)  | (a5<<10)  | (a4<<8)   | \
-                                            (a3<<6)   | (a2<<4)   | (a1<<2)   | (a0<<0); \
-                GPIO##port##_NS->PUPDR =    (c15<<30) | (c14<<28) | (c13<<26) | (c12<<24) | \
-                                            (c11<<22) | (c10<<20) | (c9<<18)  | (c8<<16)  | \
-                                            (c7<<14)  | (c6<<12)  | (c5<<10)  | (c4<<8)   | \
-                                            (c3<<6)   | (c2<<4)   | (c1<<2)   | (c0<<0); \
-                GPIO##port##_NS->ODR |=     (f15<<15) | (f14<<14) | (f13<<13) | (f12<<12) | \
-                                            (f11<<11) | (f10<<10) | (f9<<9)   | (f8<<8)   | \
-                                            (f7<<7)   | (f6<<6)   | (f5<<5)   | (f4<<4)   | \
-                                            (f3<<3)   | (f2<<2)   | (f1<<1)   | (f0<<0); \
-                GPIO##port##_S->HSLVR |=    (g15<<15) | (g14<<14) | (g13<<13) | (g12<<12) | \
-                                            (g11<<11) | (g10<<10) | (g9<<9)   | (g8<<8)   | \
-                                            (g7<<7)   | (g6<<6)   | (g5<<5)   | (g4<<4)   | \
-                                            (g3<<3)   | (g2<<2)   | (g1<<1)   | (g0<<0);
+                GPIO##port##_NS->AFRH =     (d15<<28U) | (d14<<24U) | (d13<<20U) | (d12<<16U) | \
+                                            (d11<<12U) | (d10<<8U)  | (d9<<4U)   | (d8<<0U); \
+                GPIO##port##_NS->AFRL =     (d7<<28U)  | (d6<<24U)  | (d5<<20U)  | (d4<<16U)  | \
+                                            (d3<<12U)  | (d2<<8U)   | (d1<<4U)   | (d0<<0U); \
+                GPIO##port##_NS->OSPEEDR =  (b15<<30U) | (b14<<28U) | (b13<<26U) | (b12<<24U) | \
+                                            (b11<<22U) | (b10<<20U) | (b9<<18U)  | (b8<<16U)  | \
+                                            (b7<<14U)  | (b6<<12U)  | (b5<<10U)  | (b4<<8U)   | \
+                                            (b3<<6U)   | (b2<<4U)   | (b1<<2U)   | (b0<<0U); \
+                GPIO##port##_NS->OTYPER =   (e15<<15U) | (e14<<14U) | (e13<<13U) | (e12<<12U) | \
+                                            (e11<<11U) | (e10<<10U) | (e9<<9U)   | (e8<<8U)   | \
+                                            (e7<<7U)   | (e6<<6U)   | (e5<<5U)   | (e4<<4U)   | \
+                                            (e3<<3U)   | (e2<<2U)   | (e1<<1U)   | (e0<<0U); \
+                GPIO##port##_NS->MODER =    (a15<<30U) | (a14<<28U) | (a13<<26U) | (a12<<24U) | \
+                                            (a11<<22U) | (a10<<20U) | (a9<<18U)  | (a8<<16U)  | \
+                                            (a7<<14U)  | (a6<<12U)  | (a5<<10U)  | (a4<<8U)   | \
+                                            (a3<<6U)   | (a2<<4U)   | (a1<<2U)   | (a0<<0U); \
+                GPIO##port##_NS->PUPDR =    (c15<<30U) | (c14<<28U) | (c13<<26U) | (c12<<24U) | \
+                                            (c11<<22U) | (c10<<20U) | (c9<<18U)  | (c8<<16U)  | \
+                                            (c7<<14U)  | (c6<<12U)  | (c5<<10U)  | (c4<<8U)   | \
+                                            (c3<<6U)   | (c2<<4U)   | (c1<<2U)   | (c0<<0U); \
+                GPIO##port##_NS->ODR |=     (f15<<15U) | (f14<<14U) | (f13<<13U) | (f12<<12U) | \
+                                            (f11<<11U) | (f10<<10U) | (f9<<9U)   | (f8<<8U)   | \
+                                            (f7<<7U)   | (f6<<6U)   | (f5<<5U)   | (f4<<4U)   | \
+                                            (f3<<3U)   | (f2<<2U)   | (f1<<1U)   | (f0<<0U); \
+                GPIO##port##_S->HSLVR |=    (g15<<15U) | (g14<<14U) | (g13<<13U) | (g12<<12U) | \
+                                            (g11<<11U) | (g10<<10U) | (g9<<9U)   | (g8<<8U)   | \
+                                            (g7<<7U)   | (g6<<6U)   | (g5<<5U)   | (g4<<4U)   | \
+                                            (g3<<3U)   | (g2<<2U)   | (g1<<1U)   | (g0<<0U);
 #endif
 
 // DSI additional definitions
@@ -303,35 +303,35 @@ typedef struct {
 
 // WRPCR Configuration
 
-#define DSI_WRPCR_BC            (0x3U<<29)
-#define DSI_WRPCR_BC_0          (0x1U<<29)
+#define DSI_WRPCR_BC            (0x3U<<29U)
+#define DSI_WRPCR_BC_0          (0x1U<<29U)
 
 // WPTR Configuration
 
-#define DSI_WPTR_CP             (0xFU<<8)
-#define DSI_WPTR_CP_0           (0x1U<<8)
-#define DSI_WPTR_LPF            (0xFU<<12)
-#define DSI_WPTR_LPF_0          (0x1U<<12)
+#define DSI_WPTR_CP             (0xFU<<8U)
+#define DSI_WPTR_CP_0           (0x1U<<8U)
+#define DSI_WPTR_LPF            (0xFU<<12U)
+#define DSI_WPTR_LPF_0          (0x1U<<12U)
 
 // DPDL0HSOCR Configuration
 
-#define DSI_DPDL0HSOCR          (0xFU<<4)
-#define DSI_DPDL0HSOCR_0        (0x1U<<4)
+#define DSI_DPDL0HSOCR          (0xFU<<4U)
+#define DSI_DPDL0HSOCR_0        (0x1U<<4U)
 
 // DPDL0LPXOCR Configuration
 
-#define DSI_DPDL0LPXOCR         (0xFU<<0)
-#define DDSI_DPDL0LPXOCR_0      (0x1U<<0)
+#define DSI_DPDL0LPXOCR         (0xFU<<0U)
+#define DDSI_DPDL0LPXOCR_0      (0x1U<<0U)
 
 // DSI_DPDL1HSOCR Configuration
 
-#define DSI_DSI_DPDL1HSOCR      (0xFU<<4)
-#define DDSI_DSI_DPDL1HSOCR_0   (0x1U<<4)
+#define DSI_DSI_DPDL1HSOCR      (0xFU<<4U)
+#define DDSI_DSI_DPDL1HSOCR_0   (0x1U<<4U)
 
 // DSI_DPDL1LPXOCR Configuration
 
-#define DSI_DSI_DPDL1LPXOCR     (0xFU<<0)
-#define DDSI_DSI_DPDL1LPXOCR_0  (0x1U<<0)
+#define DSI_DSI_DPDL1LPXOCR     (0xFU<<0U)
+#define DDSI_DSI_DPDL1LPXOCR_0  (0x1U<<0U)
 
 // LTDC additional definitions
 // ---------------------------
@@ -422,9 +422,9 @@ typedef struct {
 // LxPFCR Configuration
 
 #define LTDC_LxPFCR_PF          LTDC_L1PFCR_PF
-#define LTDC_LxPFCR_PF_0        (0x1U<<0)
-#define LTDC_LxPFCR_PF_1        (0x1U<<1)
-#define LTDC_LxPFCR_PF_2        (0x1U<<2)
+#define LTDC_LxPFCR_PF_0        (0x1U<<0U)
+#define LTDC_LxPFCR_PF_1        (0x1U<<1U)
+#define LTDC_LxPFCR_PF_2        (0x1U<<2U)
 
 enum : uint32_t {
     LTDC_LxPFCR_PF_ARGB8888             = 0,
@@ -456,13 +456,13 @@ enum : uint32_t {
 // LxBFCR Configuration
 
 #define LTDC_LxBFCR_BF1         LTDC_L1BFCR_BF1
-#define LTDC_LxBFCR_BF1_0       (0x1U<<8)
-#define LTDC_LxBFCR_BF1_1       (0x1U<<9)
-#define LTDC_LxBFCR_BF1_2       (0x1U<<10)
+#define LTDC_LxBFCR_BF1_0       (0x1U<<8U)
+#define LTDC_LxBFCR_BF1_1       (0x1U<<9U)
+#define LTDC_LxBFCR_BF1_2       (0x1U<<10U)
 #define LTDC_LxBFCR_BF2         LTDC_L1BFCR_BF2
-#define LTDC_LxBFCR_BF2_0       (0x1U<<0)
-#define LTDC_LxBFCR_BF2_1       (0x1U<<1)
-#define LTDC_LxBFCR_BF2_2       (0x1U<<2)
+#define LTDC_LxBFCR_BF2_0       (0x1U<<0U)
+#define LTDC_LxBFCR_BF2_1       (0x1U<<1U)
+#define LTDC_LxBFCR_BF2_2       (0x1U<<2U)
 
 enum : uint32_t {
     LTDC_LxBFCR_BF1_CONSTANT_ALPHA                      = LTDC_LxBFCR_BF1_2,

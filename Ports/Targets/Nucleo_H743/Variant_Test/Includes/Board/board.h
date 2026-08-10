@@ -30,7 +30,7 @@
 #define ANALYSER_ON         (GPIOB->ODR &= (uint32_t)~(1<<BANALYSER))       //
 #define ANALYSER_OFF        (GPIOB->ODR |=            (1<<BANALYSER))       //
 #define ANALYSER_TOGGLE     do { \
-                                GPIOB->ODR ^= (1<<BANALYSER);       \
+                                GPIOB->ODR ^= (1U<<BANALYSER);       \
                                 (void)(GPIOB->ODR);                 \
                             } while (0)                                     // Analyser macros
 

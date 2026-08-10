@@ -96,234 +96,234 @@ typedef struct {
 
 // PERIPH_ID_4 Configuration
 
-#define AXI_PERIPH_ID_4_KCOUNT4                     (0xFU<<4)
-#define AXI_PERIPH_ID_4_KCOUNT4_0                   (0x1U<<4)
-#define AXI_PERIPH_ID_4_JEP106CON                   (0xFU<<0)
-#define AXI_PERIPH_ID_4_JEP106CON_0                 (0x1U<<0)
+#define AXI_PERIPH_ID_4_KCOUNT4                     (0xFU<<4U)
+#define AXI_PERIPH_ID_4_KCOUNT4_0                   (0x1U<<4U)
+#define AXI_PERIPH_ID_4_JEP106CON                   (0xFU<<0U)
+#define AXI_PERIPH_ID_4_JEP106CON_0                 (0x1U<<0U)
 
 // PERIPH_ID_0 Configuration
 
-#define AXI_PERIPH_ID_0_PARTNUM                     (0xFFU<<0)
-#define AXI_PERIPH_ID_0_PARTNUM_0                   (0x1U<<0)
+#define AXI_PERIPH_ID_0_PARTNUM                     (0xFFU<<0U)
+#define AXI_PERIPH_ID_0_PARTNUM_0                   (0x1U<<0U)
 
 // PERIPH_ID_1 Configuration
 
-#define AXI_PERIPH_ID_1_JEP106I                     (0xFU<<4)
-#define AXI_PERIPH_ID_1_JEP106I_0                   (0x1U<<4)
-#define AXI_PERIPH_ID_1_PARTNUM                     (0xFU<<0)
-#define AXI_PERIPH_ID_1_PARTNUM_0                   (0x1U<<0)
+#define AXI_PERIPH_ID_1_JEP106I                     (0xFU<<4U)
+#define AXI_PERIPH_ID_1_JEP106I_0                   (0x1U<<4U)
+#define AXI_PERIPH_ID_1_PARTNUM                     (0xFU<<0U)
+#define AXI_PERIPH_ID_1_PARTNUM_0                   (0x1U<<0U)
 
 // PERIPH_ID_2 Configuration
 
-#define AXI_PERIPH_ID_2_REVISION                    (0xFU<<4)
-#define AXI_PERIPH_ID_2_REVISION_0                  (0x1U<<4)
-#define AXI_PERIPH_ID_2_JEDEC                       (0x1U<<3)
-#define AXI_PERIPH_ID_2_JEP106ID                    (0x7U<<0)
-#define AXI_PERIPH_ID_2_JEP106ID_0                  (0x1U<<0)
+#define AXI_PERIPH_ID_2_REVISION                    (0xFU<<4U)
+#define AXI_PERIPH_ID_2_REVISION_0                  (0x1U<<4U)
+#define AXI_PERIPH_ID_2_JEDEC                       (0x1U<<3U)
+#define AXI_PERIPH_ID_2_JEP106ID                    (0x7U<<0U)
+#define AXI_PERIPH_ID_2_JEP106ID_0                  (0x1U<<0U)
 
 // PERIPH_ID_3 Configuration
 
-#define AXI_PERIPH_ID_3_REV_AND                     (0xFU<<4)
-#define AXI_PERIPH_ID_3_REV_AND_0                   (0x1U<<4)
-#define AXI_PERIPH_ID_3_CUST_MOD_NUM                (0xFU<<0)
-#define AXI_PERIPH_ID_3_CUST_MOD_NUM_0              (0x1U<<0)
+#define AXI_PERIPH_ID_3_REV_AND                     (0xFU<<4U)
+#define AXI_PERIPH_ID_3_REV_AND_0                   (0x1U<<4U)
+#define AXI_PERIPH_ID_3_CUST_MOD_NUM                (0xFU<<0U)
+#define AXI_PERIPH_ID_3_CUST_MOD_NUM_0              (0x1U<<0U)
 
 // COMP_ID_0 Configuration
 
-#define AXI_COMP_ID_0_PREAMBLE                      (0xFFU<<0)
-#define AXI_COMP_ID_0_PREAMBLE_0                    (0x1U<<0)
+#define AXI_COMP_ID_0_PREAMBLE                      (0xFFU<<0U)
+#define AXI_COMP_ID_0_PREAMBLE_0                    (0x1U<<0U)
 
 // COMP_ID_1 Configuration
 
-#define AXI_COMP_ID_1_CLASS                         (0xFU<<4)
-#define AXI_COMP_ID_1_CLASS_0                       (0x1U<<4)
-#define AXI_COMP_ID_1_PREAMBLE                      (0xFU<<0)
-#define AXI_COMP_ID_1_PREAMBLE_0                    (0x1U<<0)
+#define AXI_COMP_ID_1_CLASS                         (0xFU<<4U)
+#define AXI_COMP_ID_1_CLASS_0                       (0x1U<<4U)
+#define AXI_COMP_ID_1_PREAMBLE                      (0xFU<<0U)
+#define AXI_COMP_ID_1_PREAMBLE_0                    (0x1U<<0U)
 
 // COMP_ID_2 Configuration
 
-#define AXI_COMP_ID_2_PREAMBLE                      (0xFFU<<0)
-#define AXI_COMP_ID_2_PREAMBLE_0                    (0x1U<<0)
+#define AXI_COMP_ID_2_PREAMBLE                      (0xFFU<<0U)
+#define AXI_COMP_ID_2_PREAMBLE_0                    (0x1U<<0U)
 
 // COMP_ID_3 Configuration
 
-#define AXI_COMP_ID_3_PREAMBLE                      (0xFFU<<0)
-#define AXI_COMP_ID_3_PREAMBLE_0                    (0x1U<<0)
+#define AXI_COMP_ID_3_PREAMBLE                      (0xFFU<<0U)
+#define AXI_COMP_ID_3_PREAMBLE_0                    (0x1U<<0U)
 
 // TARG1_FN_MOD_ISS_BM Configuration
 
-#define AXI_TARG1_FN_MOD_ISS_BM_WRITE_ISS_OVERRIDE  (0x1U<<1)
-#define AXI_TARG1_FN_MOD_ISS_BM_READ_ISS_OVERRIDE   (0x1U<<0)
+#define AXI_TARG1_FN_MOD_ISS_BM_WRITE_ISS_OVERRIDE  (0x1U<<1U)
+#define AXI_TARG1_FN_MOD_ISS_BM_READ_ISS_OVERRIDE   (0x1U<<0U)
 
 // TARG1_FN_MOD2 Configuration
 
-#define AXI_TARG1_FN_MOD2_BYPASS_MERGE              (0x1U<<0)
+#define AXI_TARG1_FN_MOD2_BYPASS_MERGE              (0x1U<<0U)
 
 // TARG1_FN_MOD_LB Configuration
 
-#define AXI_TARG1_FN_MOD_LB_FN_MOD_LB               (0x1U<<0)
+#define AXI_TARG1_FN_MOD_LB_FN_MOD_LB               (0x1U<<0U)
 
 // TARG1_FN_MOD Configuration
 
-#define AXI_TARG1_FN_MOD_WRITE_ISS_OVERRIDE         (0x1U<<1)
-#define AXI_TARG1_FN_MOD_READ_ISS_OVERRIDE          (0x1U<<0)
+#define AXI_TARG1_FN_MOD_WRITE_ISS_OVERRIDE         (0x1U<<1U)
+#define AXI_TARG1_FN_MOD_READ_ISS_OVERRIDE          (0x1U<<0U)
 
 // TARG2_FN_MOD_ISS_BM Configuration
 
-#define AXI_TARG2_FN_MOD_ISS_BM_WRITE_ISS_OVERRIDE  (0x1U<<1)
-#define AXI_TARG2_FN_MOD_ISS_BM_READ_ISS_OVERRIDE   (0x1U<<0)
+#define AXI_TARG2_FN_MOD_ISS_BM_WRITE_ISS_OVERRIDE  (0x1U<<1U)
+#define AXI_TARG2_FN_MOD_ISS_BM_READ_ISS_OVERRIDE   (0x1U<<0U)
 
 // TARG2_FN_MOD2 Configuration
 
-#define AXI_TARG2_FN_MOD2_BYPASS_MERGE              (0x1U<<0)
+#define AXI_TARG2_FN_MOD2_BYPASS_MERGE              (0x1U<<0U)
 
 // TARG2_FN_MOD_LB Configuration
 
-#define AXI_TARG2_FN_MOD_LB_FN_MOD_LB               (0x1U<<0)
+#define AXI_TARG2_FN_MOD_LB_FN_MOD_LB               (0x1U<<0U)
 
 // TARG2_FN_MOD Configuration
 
-#define AXI_TARG2_FN_MOD_WRITE_ISS_OVERRIDE         (0x1U<<1)
-#define AXI_TARG2_FN_MOD_READ_ISS_OVERRIDE          (0x1U<<0)
+#define AXI_TARG2_FN_MOD_WRITE_ISS_OVERRIDE         (0x1U<<1U)
+#define AXI_TARG2_FN_MOD_READ_ISS_OVERRIDE          (0x1U<<0U)
 
 // TARG3_FN_MOD_ISS_BM Configuration
 
-#define AXI_TARG3_FN_MOD_ISS_BM_WRITE_ISS_OVERRIDE  (0x1U<<1)
-#define AXI_TARG3_FN_MOD_ISS_BM_READ_ISS_OVERRIDE   (0x1U<<0)
+#define AXI_TARG3_FN_MOD_ISS_BM_WRITE_ISS_OVERRIDE  (0x1U<<1U)
+#define AXI_TARG3_FN_MOD_ISS_BM_READ_ISS_OVERRIDE   (0x1U<<0U)
 
 // TARG4_FN_MOD_ISS_BM Configuration
 
-#define AXI_TARG4_FN_MOD_ISS_BM_WRITE_ISS_OVERRIDE  (0x1U<<1)
-#define AXI_TARG4_FN_MOD_ISS_BM_READ_ISS_OVERRIDE   (0x1U<<0)
+#define AXI_TARG4_FN_MOD_ISS_BM_WRITE_ISS_OVERRIDE  (0x1U<<1U)
+#define AXI_TARG4_FN_MOD_ISS_BM_READ_ISS_OVERRIDE   (0x1U<<0U)
 
 // TARG5_FN_MOD_ISS_BM Configuration
 
-#define AXI_TARG5_FN_MOD_ISS_BM_WRITE_ISS_OVERRIDE  (0x1U<<1)
-#define AXI_TARG5_FN_MOD_ISS_BM_READ_ISS_OVERRIDE   (0x1U<<0)
+#define AXI_TARG5_FN_MOD_ISS_BM_WRITE_ISS_OVERRIDE  (0x1U<<1U)
+#define AXI_TARG5_FN_MOD_ISS_BM_READ_ISS_OVERRIDE   (0x1U<<0U)
 
 // TARG6_FN_MOD_ISS_BM Configuration
 
-#define AXI_TARG6_FN_MOD_ISS_BM_WRITE_ISS_OVERRIDE  (0x1U<<1)
-#define AXI_TARG6_FN_MOD_ISS_BM_READ_ISS_OVERRIDE   (0x1U<<0)
+#define AXI_TARG6_FN_MOD_ISS_BM_WRITE_ISS_OVERRIDE  (0x1U<<1U)
+#define AXI_TARG6_FN_MOD_ISS_BM_READ_ISS_OVERRIDE   (0x1U<<0U)
 
 // TARG7_FN_MOD_ISS_BM Configuration
 
-#define AXI_TARG7_FN_MOD_ISS_BM_WRITE_ISS_OVERRIDE  (0x1U<<1)
-#define AXI_TARG7_FN_MOD_ISS_BM_READ_ISS_OVERRIDE   (0x1U<<0)
+#define AXI_TARG7_FN_MOD_ISS_BM_WRITE_ISS_OVERRIDE  (0x1U<<1U)
+#define AXI_TARG7_FN_MOD_ISS_BM_READ_ISS_OVERRIDE   (0x1U<<0U)
 
 // TARG7_FN_MOD2 Configuration
 
-#define AXI_TARG7_FN_MOD2_BYPASS_MERGE              (0x1U<<0)
+#define AXI_TARG7_FN_MOD2_BYPASS_MERGE              (0x1U<<0U)
 
 // TARG7_FN_MOD Configuration
 
-#define AXI_TARG7_FN_MOD_WRITE_ISS_OVERRIDE         (0x1U<<1)
-#define AXI_TARG7_FN_MOD_READ_ISS_OVERRIDE          (0x1U<<0)
+#define AXI_TARG7_FN_MOD_WRITE_ISS_OVERRIDE         (0x1U<<1U)
+#define AXI_TARG7_FN_MOD_READ_ISS_OVERRIDE          (0x1U<<0U)
 
 // INI1_FN_MOD2 Configuration
 
-#define AXI_INI1_FN_MOD2_BYPASS_MERGE               (0x1U<<0)
+#define AXI_INI1_FN_MOD2_BYPASS_MERGE               (0x1U<<0U)
 
 // INI1_FN_MOD_AHB Configuration
 
-#define AXI_INI1_FN_MOD_AHB_WR_INC_OVERRIDE         (0x1U<<1)
-#define AXI_INI1_FN_MOD_AHB_RD_INC_OVERRIDE         (0x1U<<0)
+#define AXI_INI1_FN_MOD_AHB_WR_INC_OVERRIDE         (0x1U<<1U)
+#define AXI_INI1_FN_MOD_AHB_RD_INC_OVERRIDE         (0x1U<<0U)
 
 // INI1_READ_QOS Configuration
 
-#define AXI_INI1_READ_QOS_AR_QOS                    (0xFU<<0)
-#define AXI_INI1_READ_QOS_AR_QOS_0                  (0x1U<<0)
+#define AXI_INI1_READ_QOS_AR_QOS                    (0xFU<<0U)
+#define AXI_INI1_READ_QOS_AR_QOS_0                  (0x1U<<0U)
 
 // INI1_WRITE_QOS Configuration
 
-#define AXI_INI1_WRITE_QOS_AW_QOS                   (0xFU<<0)
-#define AXI_INI1_WRITE_QOS_AW_QOS_0                 (0x1U<<0)
+#define AXI_INI1_WRITE_QOS_AW_QOS                   (0xFU<<0U)
+#define AXI_INI1_WRITE_QOS_AW_QOS_0                 (0x1U<<0U)
 
 // INI1_FN_MOD Configuration
 
-#define AXI_INI1_FN_MOD_WRITE_ISS_OVERRIDE          (0x1U<<1)
-#define AXI_INI1_FN_MOD_READ_ISS_OVERRIDE           (0x1U<<0)
+#define AXI_INI1_FN_MOD_WRITE_ISS_OVERRIDE          (0x1U<<1U)
+#define AXI_INI1_FN_MOD_READ_ISS_OVERRIDE           (0x1U<<0U)
 
 // INI2_READ_QOS Configuration
 
-#define AXI_INI2_READ_QOS_AR_QOS                    (0xFU<<0)
-#define AXI_INI2_READ_QOS_AR_QOS_0                  (0x1U<<0)
+#define AXI_INI2_READ_QOS_AR_QOS                    (0xFU<<0U)
+#define AXI_INI2_READ_QOS_AR_QOS_0                  (0x1U<<0U)
 
 // INI2_WRITE_QOS Configuration
 
-#define AXI_INI2_WRITE_QOS_AW_QOS                   (0xFU<<0)
-#define AXI_INI2_WRITE_QOS_AW_QOS_0                 (0x1U<<0)
+#define AXI_INI2_WRITE_QOS_AW_QOS                   (0xFU<<0U)
+#define AXI_INI2_WRITE_QOS_AW_QOS_0                 (0x1U<<0U)
 
 // INI2_FN_MOD Configuration
 
-#define AXI_INI2_FN_MOD_WRITE_ISS_OVERRIDE          (0x1U<<1)
-#define AXI_INI2_FN_MOD_READ_ISS_OVERRIDE           (0x1U<<0)
+#define AXI_INI2_FN_MOD_WRITE_ISS_OVERRIDE          (0x1U<<1U)
+#define AXI_INI2_FN_MOD_READ_ISS_OVERRIDE           (0x1U<<0U)
 
 // INI3_FN_MOD2 Configuration
 
-#define AXI_INI3_FN_MOD2_BYPASS_MERGE               (0x1U<<0)
+#define AXI_INI3_FN_MOD2_BYPASS_MERGE               (0x1U<<0U)
 
 // INI3_FN_MOD_AHB Configuration
 
-#define AXI_INI3_FN_MOD_AHB_WR_INC_OVERRIDE         (0x1U<<1)
-#define AXI_INI3_FN_MOD_AHB_RD_INC_OVERRIDE         (0x1U<<0)
+#define AXI_INI3_FN_MOD_AHB_WR_INC_OVERRIDE         (0x1U<<1U)
+#define AXI_INI3_FN_MOD_AHB_RD_INC_OVERRIDE         (0x1U<<0U)
 
 // INI3_READ_QOS Configuration
 
-#define AXI_INI3_READ_QOS_AR_QOS                    (0xFU<<0)
-#define AXI_INI3_READ_QOS_AR_QOS_0                  (0x1U<<0)
+#define AXI_INI3_READ_QOS_AR_QOS                    (0xFU<<0U)
+#define AXI_INI3_READ_QOS_AR_QOS_0                  (0x1U<<0U)
 
 // INI3_WRITE_QOS Configuration
 
-#define AXI_INI3_WRITE_QOS_AW_QOS                   (0xFU<<0)
-#define AXI_INI3_WRITE_QOS_AW_QOS_0                 (0x1U<<0)
+#define AXI_INI3_WRITE_QOS_AW_QOS                   (0xFU<<0U)
+#define AXI_INI3_WRITE_QOS_AW_QOS_0                 (0x1U<<0U)
 
 // INI3_FN_MOD Configuration
 
-#define AXI_INI3_FN_MOD_WRITE_ISS_OVERRIDE          (0x1U<<1)
-#define AXI_INI3_FN_MOD_READ_ISS_OVERRIDE           (0x1U<<0)
+#define AXI_INI3_FN_MOD_WRITE_ISS_OVERRIDE          (0x1U<<1U)
+#define AXI_INI3_FN_MOD_READ_ISS_OVERRIDE           (0x1U<<0U)
 
 // INI4_READ_QOS Configuration
 
-#define AXI_INI4_READ_QOS_AR_QOS                    (0xFU<<0)
-#define AXI_INI4_READ_QOS_AR_QOS_0                  (0x1U<<0)
+#define AXI_INI4_READ_QOS_AR_QOS                    (0xFU<<0U)
+#define AXI_INI4_READ_QOS_AR_QOS_0                  (0x1U<<0U)
 
 // INI4_WRITE_QOS Configuration
 
-#define AXI_INI4_WRITE_QOS_AW_QOS                   (0xFU<<0)
-#define AXI_INI4_WRITE_QOS_AW_QOS_0                 (0x1U<<0)
+#define AXI_INI4_WRITE_QOS_AW_QOS                   (0xFU<<0U)
+#define AXI_INI4_WRITE_QOS_AW_QOS_0                 (0x1U<<0U)
 
 // INI4_FN_MOD Configuration
 
-#define AXI_INI4_FN_MOD_WRITE_ISS_OVERRIDE          (0x1U<<1)
-#define AXI_INI4_FN_MOD_READ_ISS_OVERRIDE           (0x1U<<0)
+#define AXI_INI4_FN_MOD_WRITE_ISS_OVERRIDE          (0x1U<<1U)
+#define AXI_INI4_FN_MOD_READ_ISS_OVERRIDE           (0x1U<<0U)
 
 // INI5_READ_QOS Configuration
 
-#define AXI_INI5_READ_QOS_AR_QOS                    (0xFU<<0)
-#define AXI_INI5_READ_QOS_AR_QOS_0                  (0x1U<<0)
+#define AXI_INI5_READ_QOS_AR_QOS                    (0xFU<<0U)
+#define AXI_INI5_READ_QOS_AR_QOS_0                  (0x1U<<0U)
 
 // INI5_WRITE_QOS Configuration
 
-#define AXI_INI5_WRITE_QOS_AW_QOS                   (0xFU<<0)
-#define AXI_INI5_WRITE_QOS_AW_QOS_0                 (0x1U<<0)
+#define AXI_INI5_WRITE_QOS_AW_QOS                   (0xFU<<0U)
+#define AXI_INI5_WRITE_QOS_AW_QOS_0                 (0x1U<<0U)
 
 // INI5_FN_MOD Configuration
 
-#define AXI_INI5_FN_MOD_WRITE_ISS_OVERRIDE          (0x1U<<1)
-#define AXI_INI5_FN_MOD_READ_ISS_OVERRIDE           (0x1U<<0)
+#define AXI_INI5_FN_MOD_WRITE_ISS_OVERRIDE          (0x1U<<1U)
+#define AXI_INI5_FN_MOD_READ_ISS_OVERRIDE           (0x1U<<0U)
 
 // INI6_READ_QOS Configuration
 
-#define AXI_INI6_READ_QOS_AR_QOS                    (0xFU<<0)
-#define AXI_INI6_READ_QOS_AR_QOS_0                  (0x1U<<0)
+#define AXI_INI6_READ_QOS_AR_QOS                    (0xFU<<0U)
+#define AXI_INI6_READ_QOS_AR_QOS_0                  (0x1U<<0U)
 
 // INI6_WRITE_QOS Configuration
 
-#define AXI_INI6_WRITE_QOS_AW_QOS                   (0xFU<<0)
-#define AXI_INI6_WRITE_QOS_AW_QOS_0                 (0x1U<<0)
+#define AXI_INI6_WRITE_QOS_AW_QOS                   (0xFU<<0U)
+#define AXI_INI6_WRITE_QOS_AW_QOS_0                 (0x1U<<0U)
 
 // INI6_FN_MOD Configuration
 
-#define AXI_INI6_FN_MOD_WRITE_ISS_OVERRIDE          (0x1U<<1)
-#define AXI_INI6_FN_MOD_READ_ISS_OVERRIDE           (0x1U<<0)
+#define AXI_INI6_FN_MOD_WRITE_ISS_OVERRIDE          (0x1U<<1U)
+#define AXI_INI6_FN_MOD_READ_ISS_OVERRIDE           (0x1U<<0U)

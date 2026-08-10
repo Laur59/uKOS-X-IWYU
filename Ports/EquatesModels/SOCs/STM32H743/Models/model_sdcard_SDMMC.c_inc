@@ -179,7 +179,7 @@ int32_t model_sdcard_initialise(sdcard_specification_t *specification) {
 // Extract "Device size"
 // Extract "Speed"
 
-    specification->oVoltage = (uint16_t)((ocr>>15) & 0x1FFU);
+    specification->oVoltage = (uint16_t)((ocr>>15U) & 0x1FFU);
     specification->oSize    = (uint64_t)(((((uint32_t)(csd[7] & 0x3FU)<<16U)
                             |               ((uint32_t)csd[8]<<8U)
                             |               ((uint32_t)csd[9])) + 1LLU) * 512LLU * 1024LLU);
@@ -331,7 +331,7 @@ static  bool    local_readBlock(uint8_t *destination, uint32_t sector) {
         return false;
     }
 
-    return (local_readSector(destination, KSDCARD_SZ_SECTOR));
+    return local_readSector(destination, KSDCARD_SZ_SECTOR);
 }
 
 /*
@@ -407,7 +407,7 @@ static  bool    local_writeBlock(const uint8_t *source, uint32_t sector) {
         return false;
     }
 
-    return (local_writeSector(source, KSDCARD_SZ_SECTOR));
+    return local_writeSector(source, KSDCARD_SZ_SECTOR);
 }
 
 /*
@@ -562,7 +562,7 @@ static  bool    local_readCSD(uint8_t csd[16]) {
         csd[(i * 4U) + 0U] = (uint8_t)(r[i]>>24U);
         csd[(i * 4U) + 1U] = (uint8_t)(r[i]>>16U);
         csd[(i * 4U) + 2U] = (uint8_t)(r[i]>>8U);
-        csd[(i * 4U) + 3U] = (uint8_t)(r[i]);
+        csd[(i * 4U) + 3U] = (uint8_t)r[i];
     }
     return true;
 }
@@ -587,7 +587,7 @@ static  bool    local_readCID(uint8_t cid[16]) {
         cid[(i * 4U) + 0U] = (uint8_t)(r[i]>>24U);
         cid[(i * 4U) + 1U] = (uint8_t)(r[i]>>16U);
         cid[(i * 4U) + 2U] = (uint8_t)(r[i]>>8U);
-        cid[(i * 4U) + 3U] = (uint8_t)(r[i]);
+        cid[(i * 4U) + 3U] = (uint8_t)r[i];
     }
     return true;
 }

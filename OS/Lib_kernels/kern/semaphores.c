@@ -412,7 +412,7 @@ static  int32_t local_createSemaphore(const char_t *identifier, int32_t iniCount
             *handle = &vKern_sema[core][i];
 
             vKern_nbSema[core]    = (uint16_t)(vKern_nbSema[core] + 1U);
-            vKern_nbMaxSema[core] = (vKern_nbSema[core] > vKern_nbMaxSema[core]) ? (vKern_nbSema[core]) : (vKern_nbMaxSema[core]);
+            vKern_nbMaxSema[core] = (vKern_nbSema[core] > vKern_nbMaxSema[core]) ? vKern_nbSema[core] : vKern_nbMaxSema[core];
             DEBUG_KERN_TRACE("exit: OK");
             return KERR_KERN_NOERR;
         }
@@ -456,7 +456,7 @@ static  int32_t local_waitSync(uint32_t core, sema_t *handle, uint32_t timeout) 
 //                                              == timeout value    = (timeout value / unit)                                = (timeout value / unit)
 
     wkTimeout = (timeout == KWAIT_INFINITY)          ? (KWAIT_INFINITY)                          : (timeout / KKERN_TIC_TIME);
-    wkTimeout = (timeout == KWAIT_REMAINING_TIMEOUT) ? (vKern_runProc[core]->oInternal.oTimeout) : wkTimeout;
+    wkTimeout = (timeout == KWAIT_REMAINING_TIMEOUT) ? vKern_runProc[core]->oInternal.oTimeout : wkTimeout;
     vKern_runProc[core]->oInternal.oTimeout = wkTimeout;
 
     handle->oCounter--;
@@ -471,9 +471,9 @@ static  int32_t local_waitSync(uint32_t core, sema_t *handle, uint32_t timeout) 
         (void)synchro;
 
         GOTO_KERN_M(synchro);
-        handle->oCounter = (vKern_runProc[core]->oInternal.oStatus == KERR_KERN_TIMEO) ? (handle->oCounter + 1) : (handle->oCounter);
+        handle->oCounter = (vKern_runProc[core]->oInternal.oStatus == KERR_KERN_TIMEO) ? (handle->oCounter + 1) : handle->oCounter;
         DEBUG_KERN_TRACE("exit: ->");
-        return (vKern_runProc[core]->oInternal.oStatus);
+        return vKern_runProc[core]->oInternal.oStatus;
     }
 
     handle->oCounter++;
@@ -500,7 +500,7 @@ static  int32_t local_signalSync(uint32_t core, sema_t *handle,  bool *preemptio
     if ((handle->oState & (1U<<BSEMA_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 2"); return KERR_KERN_NOSEM; }
     if (handle->oCounter == handle->oMaxCounter)        { DEBUG_KERN_TRACE("exit: KO 4"); return KERR_KERN_SETME; }
 
-    handle->oCounter = (handle->oCounter < handle->oMaxCounter) ? (handle->oCounter + 1) : (handle->oCounter);
+    handle->oCounter = (handle->oCounter < handle->oMaxCounter) ? (handle->oCounter + 1) : handle->oCounter;
 
     if (handle->oList.oNbElements == 0U)                { DEBUG_KERN_TRACE("exit: OK");   return KERR_KERN_NOERR; }
 
@@ -513,7 +513,7 @@ static  int32_t local_signalSync(uint32_t core, sema_t *handle,  bool *preemptio
     lists_disconnectConnect(&handle->oList, &vKern_listExec[core], process);
     process->oInternal.oStatus = KERR_KERN_NOERR;
 
-    handle->oOwner = (IS_EXCEPTION) ? (KKERN_HANDLE_FROM_ISR) : (vKern_runProc[core]);
+    handle->oOwner = (IS_EXCEPTION) ? (KKERN_HANDLE_FROM_ISR) : vKern_runProc[core];
 
 // If the ready process has a higher priority, then preemption occurs
 

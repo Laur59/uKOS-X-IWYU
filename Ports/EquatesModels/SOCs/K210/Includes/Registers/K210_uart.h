@@ -12,49 +12,49 @@
 // UART FCR Register
 // -----------------
 
-#define UART_FCR_SEND_FIFO_0        (0U<<4)         //
-#define UART_FCR_SEND_FIFO_2        (1U<<4)         //
-#define UART_FCR_SEND_FIFO_4        (2U<<4)         //
-#define UART_FCR_SEND_FIFO_8        (3U<<4)         //
+#define UART_FCR_SEND_FIFO_0        (0U<<4U)         //
+#define UART_FCR_SEND_FIFO_2        (1U<<4U)         //
+#define UART_FCR_SEND_FIFO_4        (2U<<4U)         //
+#define UART_FCR_SEND_FIFO_8        (3U<<4U)         //
 
-#define UART_FCR_RECEIVE_FIFO_1     (0U<<6)         //
-#define UART_FCR_RECEIVE_FIFO_4     (1U<<6)         //
-#define UART_FCR_RECEIVE_FIFO_8     (2U<<6)         //
-#define UART_FCR_RECEIVE_FIFO_14    (3U<<6)         //
+#define UART_FCR_RECEIVE_FIFO_1     (0U<<6U)         //
+#define UART_FCR_RECEIVE_FIFO_4     (1U<<6U)         //
+#define UART_FCR_RECEIVE_FIFO_8     (2U<<6U)         //
+#define UART_FCR_RECEIVE_FIFO_14    (3U<<6U)         //
 
 // UART LCR Register
 // -----------------
 
-#define UART_LCR_NBBITSMSK          (3U<<0)         //
-#define UART_LCR_NBBIT8             (3U<<0)         //
-#define UART_LCR_NBBIT7             (2U<<0)         //
+#define UART_LCR_NBBITSMSK          (3U<<0U)         //
+#define UART_LCR_NBBIT8             (3U<<0U)         //
+#define UART_LCR_NBBIT7             (2U<<0U)         //
 
-#define UART_LCR_STBITSMSK          (1U<<2)         //
-#define UART_LCR_STBIT1             (0U<<2)         //
-#define UART_LCR_STBIT15            (1U<<2)         //
+#define UART_LCR_STBITSMSK          (1U<<2U)         //
+#define UART_LCR_STBIT1             (0U<<2U)         //
+#define UART_LCR_STBIT15            (1U<<2U)         //
 
-#define UART_LCR_PARITYSMSK         (3U<<3)         //
-#define UART_LCR_PARITYNONE         (0U<<3)         //
-#define UART_LCR_PARITYODD          (1U<<3)         //
-#define UART_LCR_PARITYEVEN         (3U<<3)         //
+#define UART_LCR_PARITYSMSK         (3U<<3U)         //
+#define UART_LCR_PARITYNONE         (0U<<3U)         //
+#define UART_LCR_PARITYODD          (1U<<3U)         //
+#define UART_LCR_PARITYEVEN         (3U<<3U)         //
 
 // UART LSR Register
 // -----------------
 
-#define UART_LSR_DATAREADY          (1U<<0)         //
-#define UART_LSR_TEMT               (1U<<5)         //
+#define UART_LSR_DATAREADY          (1U<<0U)         //
+#define UART_LSR_TEMT               (1U<<5U)         //
 
 // UART IER Register
 // -----------------
 
-#define UART_IER_ERBFI              (1U<<0)         //
-#define UART_IER_ETBEI              (1U<<1)         //
+#define UART_IER_ERBFI              (1U<<0U)         //
+#define UART_IER_ETBEI              (1U<<1U)         //
 
 // UART IIR Register
 // -----------------
 
-#define UART_IIR_ERBFI              (1U<<2)         //
-#define UART_IIR_ETBEI              (1U<<1)         //
+#define UART_IIR_ERBFI              (1U<<2U)         //
+#define UART_IIR_ETBEI              (1U<<1U)         //
 
 // The UART address map
 // --------------------

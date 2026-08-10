@@ -27,7 +27,7 @@ readonly NC=$'\033[0m' # No Colour
 # --------
 
 readonly package=0.21.0
-readonly hash=eef5af8
+readonly hash=32530d8
 readonly pico_sdk_hash=98a542c1a62fb549ffb5d66a3e5892b06276b670   # SDK 2.3.0
 
 TinyUSB_PACK="TinyUSB-current"

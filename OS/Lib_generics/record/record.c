@@ -54,7 +54,7 @@ MODULE(
 
 typedef enum {
             KCUMULATE = 0U,
-            KSCANN
+            KSCANN,
 } recordAction_t;
 
 recordLogging_t     vRecord_logBuffer[KNB_CORES][KRECORD_SZ_LOG_BUF];               // Buffer for log
@@ -104,14 +104,14 @@ int32_t record_trace(const char_t *message, uintptr_t parameter) {
     vRecord_WTraceFifo[core]->oMessage   = message;
     vRecord_WTraceFifo[core]->oParameter = parameter;
     vRecord_WTraceFifo[core]->oTimeStamp = timeStamp;
-    vRecord_WTraceFifo[core]->oProcess   = (IS_EXCEPTION) ? nullptr : (vKern_runProc[core]);
+    vRecord_WTraceFifo[core]->oProcess   = (IS_EXCEPTION) ? nullptr : vKern_runProc[core];
     vRecord_WTraceFifo[core]++;
 
     vRecord_NbTraceWrites[core] = (vRecord_NbTraceWrites[core] == KRECORD_SZ_TRACE_FIFO) ? (KRECORD_SZ_TRACE_FIFO) : (vRecord_NbTraceWrites[core] + 1);
 
-    vRollOver[core]          = (vRecord_WTraceFifo[core] == &vRecord_traceFifo[core][KRECORD_SZ_TRACE_FIFO]) ? true                          : (vRollOver[core]);
-    vRecord_WTraceFifo[core] = (vRecord_WTraceFifo[core] == &vRecord_traceFifo[core][KRECORD_SZ_TRACE_FIFO]) ? (&vRecord_traceFifo[core][0]) : (vRecord_WTraceFifo[core]);
-    vRecord_RTraceFifo[core] = (vRollOver[core])                                                     ? (vRecord_WTraceFifo[core])    : (&vRecord_traceFifo[core][0]);
+    vRollOver[core]          = (vRecord_WTraceFifo[core] == &vRecord_traceFifo[core][KRECORD_SZ_TRACE_FIFO]) ? true                          : vRollOver[core];
+    vRecord_WTraceFifo[core] = (vRecord_WTraceFifo[core] == &vRecord_traceFifo[core][KRECORD_SZ_TRACE_FIFO]) ? (&vRecord_traceFifo[core][0]) : vRecord_WTraceFifo[core];
+    vRecord_RTraceFifo[core] = vRollOver[core]                                                               ? vRecord_WTraceFifo[core] : (&vRecord_traceFifo[core][0]);
     INTERRUPTION_RESTORE;
     PRIVILEGE_RESTORE;
     return KERR_RECORD_NOERR;
@@ -205,7 +205,7 @@ int32_t record_log(recordLogCategory_t logCategory, uint32_t lineNumber, const c
     vRecord_logBuffer[core][i].oFunction    = function;
     vRecord_logBuffer[core][i].oMessage     = message;
     vRecord_logBuffer[core][i].oLineNumber  = lineNumber;
-    vRecord_logBuffer[core][i].oIdentifier  = (IS_EXCEPTION) ? "From ISR" : (vKern_runProc[core]->oSpecification.oIdentifier);
+    vRecord_logBuffer[core][i].oIdentifier  = (IS_EXCEPTION) ? "From ISR" : vKern_runProc[core]->oSpecification.oIdentifier;
 
     vRecord_NbLogWrites[core] += (vRecord_NbLogWrites[core] < KRECORD_SZ_LOG_BUF) ? 1U : 0U;
     INTERRUPTION_RESTORE;

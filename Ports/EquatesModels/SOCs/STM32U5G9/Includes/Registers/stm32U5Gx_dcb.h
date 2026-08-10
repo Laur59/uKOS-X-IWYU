@@ -26,4 +26,4 @@ typedef struct {
 
 // DSCSR Configuration
 
-#define DCB_DSCSR_CDS   (0x1U<<16)
+#define DCB_DSCSR_CDS   (0x1U<<16U)

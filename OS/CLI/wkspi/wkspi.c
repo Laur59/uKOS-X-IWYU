@@ -97,7 +97,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     static      spiCnf_t        configure = {
                                     .oSpeed    = 5000000U,
                                     .oMode     = (uint8_t)KSPI_MASTER,
-                                    .oClock    = (1U<<(uint8_t)BSPI_POL) | (1U<<(uint8_t)BSPI_PHA)
+                                    .oClock    = (1U<<(uint8_t)BSPI_POL) | (1U<<(uint8_t)BSPI_PHA),
                                 };
 
     (void)dprintf(KSYST, "wkspi operations.\n");

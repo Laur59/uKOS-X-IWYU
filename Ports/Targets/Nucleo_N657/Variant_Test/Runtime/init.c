@@ -182,11 +182,11 @@ static  void    local_GPIO_Compensation(void) {
     REG(SYSCFG)->VDDIOCCCR  |= SYSCFG_VDDIOCCCR_EN;
     STRONG_BARRIER;
 
-    while ((REG(SYSCFG)->VDDIO1CCSR & SYSCFG_VDDIO1CCSR_READY) == 0u) { ; }
-    while ((REG(SYSCFG)->VDDIO2CCSR & SYSCFG_VDDIO2CCSR_READY) == 0u) { ; }
-    while ((REG(SYSCFG)->VDDIO3CCSR & SYSCFG_VDDIO3CCSR_READY) == 0u) { ; }
-    while ((REG(SYSCFG)->VDDIO4CCSR & SYSCFG_VDDIO4CCSR_READY) == 0u) { ; }
-    while ((REG(SYSCFG)->VDDIOCCSR  & SYSCFG_VDDIOCCSR_READY)  == 0u) { ; }
+    while ((REG(SYSCFG)->VDDIO1CCSR & SYSCFG_VDDIO1CCSR_READY) == 0U) { ; }
+    while ((REG(SYSCFG)->VDDIO2CCSR & SYSCFG_VDDIO2CCSR_READY) == 0U) { ; }
+    while ((REG(SYSCFG)->VDDIO3CCSR & SYSCFG_VDDIO3CCSR_READY) == 0U) { ; }
+    while ((REG(SYSCFG)->VDDIO4CCSR & SYSCFG_VDDIO4CCSR_READY) == 0U) { ; }
+    while ((REG(SYSCFG)->VDDIOCCSR  & SYSCFG_VDDIOCCSR_READY)  == 0U) { ; }
 }
 
 /*
@@ -697,8 +697,8 @@ static  void    local_RCC_Configuration(void) {
 // System clock (IC3 mux) for xspi2 (set in the FSBL)
 // System clock (IC4 mux) for xspi1
 
-    REG(RCC)->IC4CFGR = (3u * RCC_IC4CFGR_IC4SEL_0)             // PLL4
-                      | ((2u - 1u) * RCC_IC4CFGR_IC4INT_0);     // IC4 = PLL4 / 2, ~200_MHz
+    REG(RCC)->IC4CFGR = (3U * RCC_IC4CFGR_IC4SEL_0)             // PLL4
+                      | ((2U - 1U) * RCC_IC4CFGR_IC4INT_0);     // IC4 = PLL4 / 2, ~200_MHz
     STRONG_BARRIER;                                             //
     REG(RCC)->DIVENR |= RCC_DIVENR_IC4EN;                       //
     (void)(REG(RCC)->DIVENR);                                   //

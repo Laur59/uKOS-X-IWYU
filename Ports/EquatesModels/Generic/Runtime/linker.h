@@ -72,6 +72,8 @@ extern  uint8_t linker_lnHeap[];
 extern  uint8_t linker_stShare[];
 extern  uint8_t linker_lnShare[];
 
+extern  uint8_t linker_stExtFlash[];
+
 // Necessary for all the systems
 // -----------------------------
 

@@ -32,36 +32,36 @@ typedef struct {
 
 // CR Configuration
 
-#define RNG_CR_RNGEN            (0x1U<<2)
-#define RNG_CR_IE               (0x1U<<3)
-#define RNG_CR_CED              (0x1U<<5)
-#define RNG_CR_ARDIS            (0x1U<<7)
-#define RNG_CR_RNG_CONFIG3      (0xFU<<8)
-#define RNG_CR_RNG_CONFIG3_0    (0x1U<<8)
-#define RNG_CR_NISTC            (0x1U<<12)
-#define RNG_CR_RNG_CONFIG2      (0x7U<<13)
-#define RNG_CR_RNG_CONFIG2_0    (0x1U<<13)
-#define RNG_CR_CLKDIV           (0xFU<<16)
-#define RNG_CR_CLKDIV_0         (0x1U<<16)
-#define RNG_CR_RNG_CONFIG1      (0x3FU<<20)
-#define RNG_CR_RNG_CONFIG1_0    (0x1U<<20)
-#define RNG_CR_CONDRST          (0x1U<<30)
-#define RNG_CR_CONFIGLOCK       (0x1U<<31)
+#define RNG_CR_RNGEN            (0x1U<<2U)
+#define RNG_CR_IE               (0x1U<<3U)
+#define RNG_CR_CED              (0x1U<<5U)
+#define RNG_CR_ARDIS            (0x1U<<7U)
+#define RNG_CR_RNG_CONFIG3      (0xFU<<8U)
+#define RNG_CR_RNG_CONFIG3_0    (0x1U<<8U)
+#define RNG_CR_NISTC            (0x1U<<12U)
+#define RNG_CR_RNG_CONFIG2      (0x7U<<13U)
+#define RNG_CR_RNG_CONFIG2_0    (0x1U<<13U)
+#define RNG_CR_CLKDIV           (0xFU<<16U)
+#define RNG_CR_CLKDIV_0         (0x1U<<16U)
+#define RNG_CR_RNG_CONFIG1      (0x3FU<<20U)
+#define RNG_CR_RNG_CONFIG1_0    (0x1U<<20U)
+#define RNG_CR_CONDRST          (0x1U<<30U)
+#define RNG_CR_CONFIGLOCK       (0x1U<<31U)
 
 // SR Configuration
 
-#define RNG_SR_DRDY             (0x1U<<0)
-#define RNG_SR_CECS             (0x1U<<1)
-#define RNG_SR_SECS             (0x1U<<2)
-#define RNG_SR_CEIS             (0x1U<<5)
-#define RNG_SR_SEIS             (0x1U<<6)
+#define RNG_SR_DRDY             (0x1U<<0U)
+#define RNG_SR_CECS             (0x1U<<1U)
+#define RNG_SR_SECS             (0x1U<<2U)
+#define RNG_SR_CEIS             (0x1U<<5U)
+#define RNG_SR_SEIS             (0x1U<<6U)
 
 // DR Configuration
 
-#define RNG_DR_RNDATA           (0xFFFFFFFFU<<0)
-#define RNG_DR_RNDATA_0         (0x1U<<0)
+#define RNG_DR_RNDATA           (0xFFFFFFFFU<<0U)
+#define RNG_DR_RNDATA_0         (0x1U<<0U)
 
 // HTCR Configuration
 
-#define RNG_HTCR_HTCFG          (0xFFFFFFFFU<<0)
-#define RNG_HTCR_HTCFG_0        (0x1U<<0)
+#define RNG_HTCR_HTCFG          (0xFFFFFFFFU<<0U)
+#define RNG_HTCR_HTCFG_0        (0x1U<<0U)

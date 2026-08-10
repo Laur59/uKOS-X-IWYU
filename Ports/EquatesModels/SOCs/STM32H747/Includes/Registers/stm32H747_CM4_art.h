@@ -26,6 +26,6 @@ typedef struct {
 
 // CTR Configuration
 
-#define ART_CTR_PCACHEADDR      (0xFFFU<<8)
-#define ART_CTR_PCACHEADDR_0    (0x1U<<8)
-#define ART_CTR_EN              (0x1U<<0)
+#define ART_CTR_PCACHEADDR      (0xFFFU<<8U)
+#define ART_CTR_PCACHEADDR_0    (0x1U<<8U)
+#define ART_CTR_EN              (0x1U<<0U)

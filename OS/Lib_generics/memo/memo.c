@@ -73,7 +73,7 @@ static  bool                vFreeDelayed[KNB_CORES] = MCSET(false);             
                                 .oNbBlocks = 0U,                                // Number of blocks
                                 .oNbMaxBlocks = 0U,                             // Max number of blocks
                                 .oUsdMaxMemory = 0U,                            // Max used memory
-                                .oFailedAllocations = 0U                        // Number of failed allocations
+                                .oFailedAllocations = 0U,                       // Number of failed allocations
                             };
 
 #if (KNB_CORES > 1)
@@ -184,9 +184,9 @@ void    *memo_malloc(memoAlignement_t memoAlignement, uint32_t size, const char_
             else                  {                                       newBlock->oPtrNexBlock = nullptr;  }
 
             heapInfo->oNbBlocks++;
-            heapInfo->oNbMaxBlocks  =  (heapInfo->oNbBlocks > heapInfo->oNbMaxBlocks) ? (heapInfo->oNbBlocks) : (heapInfo->oNbMaxBlocks);
+            heapInfo->oNbMaxBlocks  =  (heapInfo->oNbBlocks > heapInfo->oNbMaxBlocks) ? heapInfo->oNbBlocks : heapInfo->oNbMaxBlocks;
             heapInfo->oUsdMemory    += (uint32_t)(sizeof(memoMab_t) + (deltaNewBlock + wkSize));
-            heapInfo->oUsdMaxMemory =  (heapInfo->oUsdMemory > heapInfo->oUsdMaxMemory) ? (heapInfo->oUsdMemory) : (heapInfo->oUsdMaxMemory);
+            heapInfo->oUsdMaxMemory =  (heapInfo->oUsdMemory > heapInfo->oUsdMaxMemory) ? heapInfo->oUsdMemory : heapInfo->oUsdMaxMemory;
 
             address = ((void *)((uintptr_t)newBlock + (uintptr_t)sizeof(memoMab_t)));
 

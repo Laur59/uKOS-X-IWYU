@@ -146,709 +146,709 @@ typedef struct {
 
 // MACCR Configuration
 
-#define ETHERNET_MAC_MACCR_ARPEN                                        (0x1U<<31)
-#define ETHERNET_MAC_MACCR_SARC                                         (0x7U<<28)
-#define ETHERNET_MAC_MACCR_SARC_0                                       (0x1U<<28)
-#define ETHERNET_MAC_MACCR_IPC                                          (0x1U<<27)
-#define ETHERNET_MAC_MACCR_IPG                                          (0x7U<<24)
-#define ETHERNET_MAC_MACCR_IPG_0                                        (0x1U<<24)
-#define ETHERNET_MAC_MACCR_GPSLCE                                       (0x1U<<23)
-#define ETHERNET_MAC_MACCR_S2KP                                         (0x1U<<22)
-#define ETHERNET_MAC_MACCR_CST                                          (0x1U<<21)
-#define ETHERNET_MAC_MACCR_ACS                                          (0x1U<<20)
-#define ETHERNET_MAC_MACCR_WD                                           (0x1U<<19)
-#define ETHERNET_MAC_MACCR_JD                                           (0x1U<<17)
-#define ETHERNET_MAC_MACCR_JE                                           (0x1U<<16)
-#define ETHERNET_MAC_MACCR_FES                                          (0x1U<<14)
-#define ETHERNET_MAC_MACCR_DM                                           (0x1U<<13)
-#define ETHERNET_MAC_MACCR_LM                                           (0x1U<<12)
-#define ETHERNET_MAC_MACCR_ECRSFD                                       (0x1U<<11)
-#define ETHERNET_MAC_MACCR_DO                                           (0x1U<<10)
-#define ETHERNET_MAC_MACCR_DCRS                                         (0x1U<<9)
-#define ETHERNET_MAC_MACCR_DR                                           (0x1U<<8)
-#define ETHERNET_MAC_MACCR_BL                                           (0x3U<<5)
-#define ETHERNET_MAC_MACCR_BL_0                                         (0x1U<<5)
-#define ETHERNET_MAC_MACCR_DC                                           (0x1U<<4)
-#define ETHERNET_MAC_MACCR_PRELEN                                       (0x3U<<2)
-#define ETHERNET_MAC_MACCR_PRELEN_0                                     (0x1U<<2)
-#define ETHERNET_MAC_MACCR_TE                                           (0x1U<<1)
-#define ETHERNET_MAC_MACCR_RE                                           (0x1U<<0)
+#define ETHERNET_MAC_MACCR_ARPEN                                        (0x1U<<31U)
+#define ETHERNET_MAC_MACCR_SARC                                         (0x7U<<28U)
+#define ETHERNET_MAC_MACCR_SARC_0                                       (0x1U<<28U)
+#define ETHERNET_MAC_MACCR_IPC                                          (0x1U<<27U)
+#define ETHERNET_MAC_MACCR_IPG                                          (0x7U<<24U)
+#define ETHERNET_MAC_MACCR_IPG_0                                        (0x1U<<24U)
+#define ETHERNET_MAC_MACCR_GPSLCE                                       (0x1U<<23U)
+#define ETHERNET_MAC_MACCR_S2KP                                         (0x1U<<22U)
+#define ETHERNET_MAC_MACCR_CST                                          (0x1U<<21U)
+#define ETHERNET_MAC_MACCR_ACS                                          (0x1U<<20U)
+#define ETHERNET_MAC_MACCR_WD                                           (0x1U<<19U)
+#define ETHERNET_MAC_MACCR_JD                                           (0x1U<<17U)
+#define ETHERNET_MAC_MACCR_JE                                           (0x1U<<16U)
+#define ETHERNET_MAC_MACCR_FES                                          (0x1U<<14U)
+#define ETHERNET_MAC_MACCR_DM                                           (0x1U<<13U)
+#define ETHERNET_MAC_MACCR_LM                                           (0x1U<<12U)
+#define ETHERNET_MAC_MACCR_ECRSFD                                       (0x1U<<11U)
+#define ETHERNET_MAC_MACCR_DO                                           (0x1U<<10U)
+#define ETHERNET_MAC_MACCR_DCRS                                         (0x1U<<9U)
+#define ETHERNET_MAC_MACCR_DR                                           (0x1U<<8U)
+#define ETHERNET_MAC_MACCR_BL                                           (0x3U<<5U)
+#define ETHERNET_MAC_MACCR_BL_0                                         (0x1U<<5U)
+#define ETHERNET_MAC_MACCR_DC                                           (0x1U<<4U)
+#define ETHERNET_MAC_MACCR_PRELEN                                       (0x3U<<2U)
+#define ETHERNET_MAC_MACCR_PRELEN_0                                     (0x1U<<2U)
+#define ETHERNET_MAC_MACCR_TE                                           (0x1U<<1U)
+#define ETHERNET_MAC_MACCR_RE                                           (0x1U<<0U)
 
 // MACECR Configuration
 
-#define ETHERNET_MAC_MACECR_EIPG                                        (0x1FU<<25)
-#define ETHERNET_MAC_MACECR_EIPG_0                                      (0x1U<<25)
-#define ETHERNET_MAC_MACECR_EIPGEN                                      (0x1U<<24)
-#define ETHERNET_MAC_MACECR_USP                                         (0x1U<<18)
-#define ETHERNET_MAC_MACECR_SPEN                                        (0x1U<<17)
-#define ETHERNET_MAC_MACECR_DCRCC                                       (0x1U<<16)
-#define ETHERNET_MAC_MACECR_GPSL                                        (0x3FFFU<<0)
-#define ETHERNET_MAC_MACECR_GPSL_0                                      (0x1U<<0)
+#define ETHERNET_MAC_MACECR_EIPG                                        (0x1FU<<25U)
+#define ETHERNET_MAC_MACECR_EIPG_0                                      (0x1U<<25U)
+#define ETHERNET_MAC_MACECR_EIPGEN                                      (0x1U<<24U)
+#define ETHERNET_MAC_MACECR_USP                                         (0x1U<<18U)
+#define ETHERNET_MAC_MACECR_SPEN                                        (0x1U<<17U)
+#define ETHERNET_MAC_MACECR_DCRCC                                       (0x1U<<16U)
+#define ETHERNET_MAC_MACECR_GPSL                                        (0x3FFFU<<0U)
+#define ETHERNET_MAC_MACECR_GPSL_0                                      (0x1U<<0U)
 
 // MACPFR Configuration
 
-#define ETHERNET_MAC_MACPFR_RA                                          (0x1U<<31)
-#define ETHERNET_MAC_MACPFR_DNTU                                        (0x1U<<21)
-#define ETHERNET_MAC_MACPFR_IPFE                                        (0x1U<<20)
-#define ETHERNET_MAC_MACPFR_VTFE                                        (0x1U<<16)
-#define ETHERNET_MAC_MACPFR_HPF                                         (0x1U<<10)
-#define ETHERNET_MAC_MACPFR_SAF                                         (0x1U<<9)
-#define ETHERNET_MAC_MACPFR_SAIF                                        (0x1U<<8)
-#define ETHERNET_MAC_MACPFR_PCF                                         (0x3U<<6)
-#define ETHERNET_MAC_MACPFR_PCF_0                                       (0x1U<<6)
-#define ETHERNET_MAC_MACPFR_DBF                                         (0x1U<<5)
-#define ETHERNET_MAC_MACPFR_PM                                          (0x1U<<4)
-#define ETHERNET_MAC_MACPFR_DAIF                                        (0x1U<<3)
-#define ETHERNET_MAC_MACPFR_HMC                                         (0x1U<<2)
-#define ETHERNET_MAC_MACPFR_HUC                                         (0x1U<<1)
-#define ETHERNET_MAC_MACPFR_PR                                          (0x1U<<0)
+#define ETHERNET_MAC_MACPFR_RA                                          (0x1U<<31U)
+#define ETHERNET_MAC_MACPFR_DNTU                                        (0x1U<<21U)
+#define ETHERNET_MAC_MACPFR_IPFE                                        (0x1U<<20U)
+#define ETHERNET_MAC_MACPFR_VTFE                                        (0x1U<<16U)
+#define ETHERNET_MAC_MACPFR_HPF                                         (0x1U<<10U)
+#define ETHERNET_MAC_MACPFR_SAF                                         (0x1U<<9U)
+#define ETHERNET_MAC_MACPFR_SAIF                                        (0x1U<<8U)
+#define ETHERNET_MAC_MACPFR_PCF                                         (0x3U<<6U)
+#define ETHERNET_MAC_MACPFR_PCF_0                                       (0x1U<<6U)
+#define ETHERNET_MAC_MACPFR_DBF                                         (0x1U<<5U)
+#define ETHERNET_MAC_MACPFR_PM                                          (0x1U<<4U)
+#define ETHERNET_MAC_MACPFR_DAIF                                        (0x1U<<3U)
+#define ETHERNET_MAC_MACPFR_HMC                                         (0x1U<<2U)
+#define ETHERNET_MAC_MACPFR_HUC                                         (0x1U<<1U)
+#define ETHERNET_MAC_MACPFR_PR                                          (0x1U<<0U)
 
 // MACWTR Configuration
 
-#define ETHERNET_MAC_MACWTR_PWE                                         (0x1U<<8)
-#define ETHERNET_MAC_MACWTR_WTO                                         (0xFU<<0)
-#define ETHERNET_MAC_MACWTR_WTO_0                                       (0x1U<<0)
+#define ETHERNET_MAC_MACWTR_PWE                                         (0x1U<<8U)
+#define ETHERNET_MAC_MACWTR_WTO                                         (0xFU<<0U)
+#define ETHERNET_MAC_MACWTR_WTO_0                                       (0x1U<<0U)
 
 // MACHT0R Configuration
 
-#define ETHERNET_MAC_MACHT0R_HT31T0                                     (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_MACHT0R_HT31T0_0                                   (0x1U<<0)
+#define ETHERNET_MAC_MACHT0R_HT31T0                                     (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_MACHT0R_HT31T0_0                                   (0x1U<<0U)
 
 // MACHT1R Configuration
 
-#define ETHERNET_MAC_MACHT1R_HT63T32                                    (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_MACHT1R_HT63T32_0                                  (0x1U<<0)
+#define ETHERNET_MAC_MACHT1R_HT63T32                                    (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_MACHT1R_HT63T32_0                                  (0x1U<<0U)
 
 // MACVTR Configuration
 
-#define ETHERNET_MAC_MACVTR_EIVLRXS                                     (0x1U<<31)
-#define ETHERNET_MAC_MACVTR_EIVLS                                       (0x3U<<28)
-#define ETHERNET_MAC_MACVTR_EIVLS_0                                     (0x1U<<28)
-#define ETHERNET_MAC_MACVTR_ERIVLT                                      (0x1U<<27)
-#define ETHERNET_MAC_MACVTR_EDVLP                                       (0x1U<<26)
-#define ETHERNET_MAC_MACVTR_VTHM                                        (0x1U<<25)
-#define ETHERNET_MAC_MACVTR_EVLRXS                                      (0x1U<<24)
-#define ETHERNET_MAC_MACVTR_EVLS                                        (0x3U<<21)
-#define ETHERNET_MAC_MACVTR_EVLS_0                                      (0x1U<<21)
-#define ETHERNET_MAC_MACVTR_DOVLTC                                      (0x1U<<20)
-#define ETHERNET_MAC_MACVTR_ERSVLM                                      (0x1U<<19)
-#define ETHERNET_MAC_MACVTR_ESVL                                        (0x1U<<18)
-#define ETHERNET_MAC_MACVTR_VTIM                                        (0x1U<<17)
-#define ETHERNET_MAC_MACVTR_ETV                                         (0x1U<<16)
-#define ETHERNET_MAC_MACVTR_VL                                          (0xFFFFU<<0)
-#define ETHERNET_MAC_MACVTR_VL_0                                        (0x1U<<0)
+#define ETHERNET_MAC_MACVTR_EIVLRXS                                     (0x1U<<31U)
+#define ETHERNET_MAC_MACVTR_EIVLS                                       (0x3U<<28U)
+#define ETHERNET_MAC_MACVTR_EIVLS_0                                     (0x1U<<28U)
+#define ETHERNET_MAC_MACVTR_ERIVLT                                      (0x1U<<27U)
+#define ETHERNET_MAC_MACVTR_EDVLP                                       (0x1U<<26U)
+#define ETHERNET_MAC_MACVTR_VTHM                                        (0x1U<<25U)
+#define ETHERNET_MAC_MACVTR_EVLRXS                                      (0x1U<<24U)
+#define ETHERNET_MAC_MACVTR_EVLS                                        (0x3U<<21U)
+#define ETHERNET_MAC_MACVTR_EVLS_0                                      (0x1U<<21U)
+#define ETHERNET_MAC_MACVTR_DOVLTC                                      (0x1U<<20U)
+#define ETHERNET_MAC_MACVTR_ERSVLM                                      (0x1U<<19U)
+#define ETHERNET_MAC_MACVTR_ESVL                                        (0x1U<<18U)
+#define ETHERNET_MAC_MACVTR_VTIM                                        (0x1U<<17U)
+#define ETHERNET_MAC_MACVTR_ETV                                         (0x1U<<16U)
+#define ETHERNET_MAC_MACVTR_VL                                          (0xFFFFU<<0U)
+#define ETHERNET_MAC_MACVTR_VL_0                                        (0x1U<<0U)
 
 // MACVHTR Configuration
 
-#define ETHERNET_MAC_MACVHTR_VLHT                                       (0xFFFFU<<0)
-#define ETHERNET_MAC_MACVHTR_VLHT_0                                     (0x1U<<0)
+#define ETHERNET_MAC_MACVHTR_VLHT                                       (0xFFFFU<<0U)
+#define ETHERNET_MAC_MACVHTR_VLHT_0                                     (0x1U<<0U)
 
 // MACVIR Configuration
 
-#define ETHERNET_MAC_MACVIR_VLTI                                        (0x1U<<20)
-#define ETHERNET_MAC_MACVIR_CSVL                                        (0x1U<<19)
-#define ETHERNET_MAC_MACVIR_VLP                                         (0x1U<<18)
-#define ETHERNET_MAC_MACVIR_VLC                                         (0x3U<<16)
-#define ETHERNET_MAC_MACVIR_VLC_0                                       (0x1U<<16)
-#define ETHERNET_MAC_MACVIR_VLT                                         (0xFFFFU<<0)
-#define ETHERNET_MAC_MACVIR_VLT_0                                       (0x1U<<0)
+#define ETHERNET_MAC_MACVIR_VLTI                                        (0x1U<<20U)
+#define ETHERNET_MAC_MACVIR_CSVL                                        (0x1U<<19U)
+#define ETHERNET_MAC_MACVIR_VLP                                         (0x1U<<18U)
+#define ETHERNET_MAC_MACVIR_VLC                                         (0x3U<<16U)
+#define ETHERNET_MAC_MACVIR_VLC_0                                       (0x1U<<16U)
+#define ETHERNET_MAC_MACVIR_VLT                                         (0xFFFFU<<0U)
+#define ETHERNET_MAC_MACVIR_VLT_0                                       (0x1U<<0U)
 
 // MACIVIR Configuration
 
-#define ETHERNET_MAC_MACIVIR_VLTI                                       (0x1U<<20)
-#define ETHERNET_MAC_MACIVIR_CSVL                                       (0x1U<<19)
-#define ETHERNET_MAC_MACIVIR_VLP                                        (0x1U<<18)
-#define ETHERNET_MAC_MACIVIR_VLC                                        (0x3U<<16)
-#define ETHERNET_MAC_MACIVIR_VLC_0                                      (0x1U<<16)
-#define ETHERNET_MAC_MACIVIR_VLT                                        (0xFFFFU<<0)
-#define ETHERNET_MAC_MACIVIR_VLT_0                                      (0x1U<<0)
+#define ETHERNET_MAC_MACIVIR_VLTI                                       (0x1U<<20U)
+#define ETHERNET_MAC_MACIVIR_CSVL                                       (0x1U<<19U)
+#define ETHERNET_MAC_MACIVIR_VLP                                        (0x1U<<18U)
+#define ETHERNET_MAC_MACIVIR_VLC                                        (0x3U<<16U)
+#define ETHERNET_MAC_MACIVIR_VLC_0                                      (0x1U<<16U)
+#define ETHERNET_MAC_MACIVIR_VLT                                        (0xFFFFU<<0U)
+#define ETHERNET_MAC_MACIVIR_VLT_0                                      (0x1U<<0U)
 
 // MACQTXFCR Configuration
 
-#define ETHERNET_MAC_MACQTXFCR_PT                                       (0xFFFFU<<16)
-#define ETHERNET_MAC_MACQTXFCR_PT_0                                     (0x1U<<16)
-#define ETHERNET_MAC_MACQTXFCR_DZPQ                                     (0x1U<<7)
-#define ETHERNET_MAC_MACQTXFCR_PLT                                      (0x7U<<4)
-#define ETHERNET_MAC_MACQTXFCR_PLT_0                                    (0x1U<<4)
-#define ETHERNET_MAC_MACQTXFCR_TFE                                      (0x1U<<1)
-#define ETHERNET_MAC_MACQTXFCR_FCB_BPA                                  (0x1U<<0)
+#define ETHERNET_MAC_MACQTXFCR_PT                                       (0xFFFFU<<16U)
+#define ETHERNET_MAC_MACQTXFCR_PT_0                                     (0x1U<<16U)
+#define ETHERNET_MAC_MACQTXFCR_DZPQ                                     (0x1U<<7U)
+#define ETHERNET_MAC_MACQTXFCR_PLT                                      (0x7U<<4U)
+#define ETHERNET_MAC_MACQTXFCR_PLT_0                                    (0x1U<<4U)
+#define ETHERNET_MAC_MACQTXFCR_TFE                                      (0x1U<<1U)
+#define ETHERNET_MAC_MACQTXFCR_FCB_BPA                                  (0x1U<<0U)
 
 // MACRXFCR Configuration
 
-#define ETHERNET_MAC_MACRXFCR_UP                                        (0x1U<<1)
-#define ETHERNET_MAC_MACRXFCR_RFE                                       (0x1U<<0)
+#define ETHERNET_MAC_MACRXFCR_UP                                        (0x1U<<1U)
+#define ETHERNET_MAC_MACRXFCR_RFE                                       (0x1U<<0U)
 
 // MACISR Configuration
 
-#define ETHERNET_MAC_MACISR_RXSTSIS                                     (0x1U<<14)
-#define ETHERNET_MAC_MACISR_TXSTSIS                                     (0x1U<<13)
-#define ETHERNET_MAC_MACISR_TSIS                                        (0x1U<<12)
-#define ETHERNET_MAC_MACISR_MMCTXIS                                     (0x1U<<10)
-#define ETHERNET_MAC_MACISR_MMCRXIS                                     (0x1U<<9)
-#define ETHERNET_MAC_MACISR_MMCIS                                       (0x1U<<8)
-#define ETHERNET_MAC_MACISR_LPIIS                                       (0x1U<<5)
-#define ETHERNET_MAC_MACISR_PMTIS                                       (0x1U<<4)
-#define ETHERNET_MAC_MACISR_PHYIS                                       (0x1U<<3)
+#define ETHERNET_MAC_MACISR_RXSTSIS                                     (0x1U<<14U)
+#define ETHERNET_MAC_MACISR_TXSTSIS                                     (0x1U<<13U)
+#define ETHERNET_MAC_MACISR_TSIS                                        (0x1U<<12U)
+#define ETHERNET_MAC_MACISR_MMCTXIS                                     (0x1U<<10U)
+#define ETHERNET_MAC_MACISR_MMCRXIS                                     (0x1U<<9U)
+#define ETHERNET_MAC_MACISR_MMCIS                                       (0x1U<<8U)
+#define ETHERNET_MAC_MACISR_LPIIS                                       (0x1U<<5U)
+#define ETHERNET_MAC_MACISR_PMTIS                                       (0x1U<<4U)
+#define ETHERNET_MAC_MACISR_PHYIS                                       (0x1U<<3U)
 
 // MACIER Configuration
 
-#define ETHERNET_MAC_MACIER_RXSTSIE                                     (0x1U<<14)
-#define ETHERNET_MAC_MACIER_TXSTSIE                                     (0x1U<<13)
-#define ETHERNET_MAC_MACIER_TSIE                                        (0x1U<<12)
-#define ETHERNET_MAC_MACIER_LPIIE                                       (0x1U<<5)
-#define ETHERNET_MAC_MACIER_PMTIE                                       (0x1U<<4)
-#define ETHERNET_MAC_MACIER_PHYIE                                       (0x1U<<3)
+#define ETHERNET_MAC_MACIER_RXSTSIE                                     (0x1U<<14U)
+#define ETHERNET_MAC_MACIER_TXSTSIE                                     (0x1U<<13U)
+#define ETHERNET_MAC_MACIER_TSIE                                        (0x1U<<12U)
+#define ETHERNET_MAC_MACIER_LPIIE                                       (0x1U<<5U)
+#define ETHERNET_MAC_MACIER_PMTIE                                       (0x1U<<4U)
+#define ETHERNET_MAC_MACIER_PHYIE                                       (0x1U<<3U)
 
 // MACRXTXSR Configuration
 
-#define ETHERNET_MAC_MACRXTXSR_RWT                                      (0x1U<<8)
-#define ETHERNET_MAC_MACRXTXSR_EXCOL                                    (0x1U<<5)
-#define ETHERNET_MAC_MACRXTXSR_LCOL                                     (0x1U<<4)
-#define ETHERNET_MAC_MACRXTXSR_EXDEF                                    (0x1U<<3)
-#define ETHERNET_MAC_MACRXTXSR_LCARR                                    (0x1U<<2)
-#define ETHERNET_MAC_MACRXTXSR_NCARR                                    (0x1U<<1)
-#define ETHERNET_MAC_MACRXTXSR_TJT                                      (0x1U<<0)
+#define ETHERNET_MAC_MACRXTXSR_RWT                                      (0x1U<<8U)
+#define ETHERNET_MAC_MACRXTXSR_EXCOL                                    (0x1U<<5U)
+#define ETHERNET_MAC_MACRXTXSR_LCOL                                     (0x1U<<4U)
+#define ETHERNET_MAC_MACRXTXSR_EXDEF                                    (0x1U<<3U)
+#define ETHERNET_MAC_MACRXTXSR_LCARR                                    (0x1U<<2U)
+#define ETHERNET_MAC_MACRXTXSR_NCARR                                    (0x1U<<1U)
+#define ETHERNET_MAC_MACRXTXSR_TJT                                      (0x1U<<0U)
 
 // MACPCSR Configuration
 
-#define ETHERNET_MAC_MACPCSR_RWKFILTRST                                 (0x1U<<31)
-#define ETHERNET_MAC_MACPCSR_RWKPTR                                     (0x1FU<<24)
-#define ETHERNET_MAC_MACPCSR_RWKPTR_0                                   (0x1U<<24)
-#define ETHERNET_MAC_MACPCSR_RWKPFE                                     (0x1U<<10)
-#define ETHERNET_MAC_MACPCSR_GLBLUCAST                                  (0x1U<<9)
-#define ETHERNET_MAC_MACPCSR_RWKPRCVD                                   (0x1U<<6)
-#define ETHERNET_MAC_MACPCSR_MGKPRCVD                                   (0x1U<<5)
-#define ETHERNET_MAC_MACPCSR_RWKPKTEN                                   (0x1U<<2)
-#define ETHERNET_MAC_MACPCSR_MGKPKTEN                                   (0x1U<<1)
-#define ETHERNET_MAC_MACPCSR_PWRDWN                                     (0x1U<<0)
+#define ETHERNET_MAC_MACPCSR_RWKFILTRST                                 (0x1U<<31U)
+#define ETHERNET_MAC_MACPCSR_RWKPTR                                     (0x1FU<<24U)
+#define ETHERNET_MAC_MACPCSR_RWKPTR_0                                   (0x1U<<24U)
+#define ETHERNET_MAC_MACPCSR_RWKPFE                                     (0x1U<<10U)
+#define ETHERNET_MAC_MACPCSR_GLBLUCAST                                  (0x1U<<9U)
+#define ETHERNET_MAC_MACPCSR_RWKPRCVD                                   (0x1U<<6U)
+#define ETHERNET_MAC_MACPCSR_MGKPRCVD                                   (0x1U<<5U)
+#define ETHERNET_MAC_MACPCSR_RWKPKTEN                                   (0x1U<<2U)
+#define ETHERNET_MAC_MACPCSR_MGKPKTEN                                   (0x1U<<1U)
+#define ETHERNET_MAC_MACPCSR_PWRDWN                                     (0x1U<<0U)
 
 // MACRWKPFR Configuration
 
-#define ETHERNET_MAC_MACRWKPFR_MACRWKPFR                                (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_MACRWKPFR_MACRWKPFR_0                              (0x1U<<0)
+#define ETHERNET_MAC_MACRWKPFR_MACRWKPFR                                (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_MACRWKPFR_MACRWKPFR_0                              (0x1U<<0U)
 
 // MACLCSR Configuration
 
-#define ETHERNET_MAC_MACLCSR_LPITE                                      (0x1U<<20)
-#define ETHERNET_MAC_MACLCSR_LPITXA                                     (0x1U<<19)
-#define ETHERNET_MAC_MACLCSR_PLSEN                                      (0x1U<<18)
-#define ETHERNET_MAC_MACLCSR_PLS                                        (0x1U<<17)
-#define ETHERNET_MAC_MACLCSR_LPIEN                                      (0x1U<<16)
-#define ETHERNET_MAC_MACLCSR_RLPIST                                     (0x1U<<9)
-#define ETHERNET_MAC_MACLCSR_TLPIST                                     (0x1U<<8)
-#define ETHERNET_MAC_MACLCSR_RLPIEX                                     (0x1U<<3)
-#define ETHERNET_MAC_MACLCSR_RLPIEN                                     (0x1U<<2)
-#define ETHERNET_MAC_MACLCSR_TLPIEX                                     (0x1U<<1)
-#define ETHERNET_MAC_MACLCSR_TLPIEN                                     (0x1U<<0)
+#define ETHERNET_MAC_MACLCSR_LPITE                                      (0x1U<<20U)
+#define ETHERNET_MAC_MACLCSR_LPITXA                                     (0x1U<<19U)
+#define ETHERNET_MAC_MACLCSR_PLSEN                                      (0x1U<<18U)
+#define ETHERNET_MAC_MACLCSR_PLS                                        (0x1U<<17U)
+#define ETHERNET_MAC_MACLCSR_LPIEN                                      (0x1U<<16U)
+#define ETHERNET_MAC_MACLCSR_RLPIST                                     (0x1U<<9U)
+#define ETHERNET_MAC_MACLCSR_TLPIST                                     (0x1U<<8U)
+#define ETHERNET_MAC_MACLCSR_RLPIEX                                     (0x1U<<3U)
+#define ETHERNET_MAC_MACLCSR_RLPIEN                                     (0x1U<<2U)
+#define ETHERNET_MAC_MACLCSR_TLPIEX                                     (0x1U<<1U)
+#define ETHERNET_MAC_MACLCSR_TLPIEN                                     (0x1U<<0U)
 
 // MACLTCR Configuration
 
-#define ETHERNET_MAC_MACLTCR_LST                                        (0x3FFU<<16)
-#define ETHERNET_MAC_MACLTCR_LST_0                                      (0x1U<<16)
-#define ETHERNET_MAC_MACLTCR_TWT                                        (0xFFFFU<<0)
-#define ETHERNET_MAC_MACLTCR_TWT_0                                      (0x1U<<0)
+#define ETHERNET_MAC_MACLTCR_LST                                        (0x3FFU<<16U)
+#define ETHERNET_MAC_MACLTCR_LST_0                                      (0x1U<<16U)
+#define ETHERNET_MAC_MACLTCR_TWT                                        (0xFFFFU<<0U)
+#define ETHERNET_MAC_MACLTCR_TWT_0                                      (0x1U<<0U)
 
 // MACLETR Configuration
 
-#define ETHERNET_MAC_MACLETR_LPIET                                      (0x1FFFFU<<0)
-#define ETHERNET_MAC_MACLETR_LPIET_0                                    (0x1U<<0)
+#define ETHERNET_MAC_MACLETR_LPIET                                      (0x1FFFFU<<0U)
+#define ETHERNET_MAC_MACLETR_LPIET_0                                    (0x1U<<0U)
 
 // MAC1USTCR Configuration
 
-#define ETHERNET_MAC_MAC1USTCR_TIC_1US_CNTR                             (0xFFFU<<0)
-#define ETHERNET_MAC_MAC1USTCR_TIC_1US_CNTR_0                           (0x1U<<0)
+#define ETHERNET_MAC_MAC1USTCR_TIC_1US_CNTR                             (0xFFFU<<0U)
+#define ETHERNET_MAC_MAC1USTCR_TIC_1US_CNTR_0                           (0x1U<<0U)
 
 // MACVR Configuration
 
-#define ETHERNET_MAC_MACVR_USERVER                                      (0xFFU<<8)
-#define ETHERNET_MAC_MACVR_USERVER_0                                    (0x1U<<8)
-#define ETHERNET_MAC_MACVR_SNPSVER                                      (0xFFU<<0)
-#define ETHERNET_MAC_MACVR_SNPSVER_0                                    (0x1U<<0)
+#define ETHERNET_MAC_MACVR_USERVER                                      (0xFFU<<8U)
+#define ETHERNET_MAC_MACVR_USERVER_0                                    (0x1U<<8U)
+#define ETHERNET_MAC_MACVR_SNPSVER                                      (0xFFU<<0U)
+#define ETHERNET_MAC_MACVR_SNPSVER_0                                    (0x1U<<0U)
 
 // MACDR Configuration
 
-#define ETHERNET_MAC_MACDR_TFCSTS                                       (0x3U<<17)
-#define ETHERNET_MAC_MACDR_TFCSTS_0                                     (0x1U<<17)
-#define ETHERNET_MAC_MACDR_TPESTS                                       (0x1U<<16)
-#define ETHERNET_MAC_MACDR_RFCFCSTS                                     (0x3U<<1)
-#define ETHERNET_MAC_MACDR_RFCFCSTS_0                                   (0x1U<<1)
-#define ETHERNET_MAC_MACDR_RPESTS                                       (0x1U<<0)
+#define ETHERNET_MAC_MACDR_TFCSTS                                       (0x3U<<17U)
+#define ETHERNET_MAC_MACDR_TFCSTS_0                                     (0x1U<<17U)
+#define ETHERNET_MAC_MACDR_TPESTS                                       (0x1U<<16U)
+#define ETHERNET_MAC_MACDR_RFCFCSTS                                     (0x3U<<1U)
+#define ETHERNET_MAC_MACDR_RFCFCSTS_0                                   (0x1U<<1U)
+#define ETHERNET_MAC_MACDR_RPESTS                                       (0x1U<<0U)
 
 // MACHWF1R Configuration
 
-#define ETHERNET_MAC_MACHWF1R_L3L4FNUM                                  (0xFU<<27)
-#define ETHERNET_MAC_MACHWF1R_L3L4FNUM_0                                (0x1U<<27)
-#define ETHERNET_MAC_MACHWF1R_HASHTBLSZ                                 (0x3U<<24)
-#define ETHERNET_MAC_MACHWF1R_HASHTBLSZ_0                               (0x1U<<24)
-#define ETHERNET_MAC_MACHWF1R_AVSEL                                     (0x1U<<20)
-#define ETHERNET_MAC_MACHWF1R_DBGMEMA                                   (0x1U<<19)
-#define ETHERNET_MAC_MACHWF1R_TSOEN                                     (0x1U<<18)
-#define ETHERNET_MAC_MACHWF1R_SPHEN                                     (0x1U<<17)
-#define ETHERNET_MAC_MACHWF1R_DCBEN                                     (0x1U<<16)
-#define ETHERNET_MAC_MACHWF1R_ADDR64                                    (0x3U<<14)
-#define ETHERNET_MAC_MACHWF1R_ADDR64_0                                  (0x1U<<14)
-#define ETHERNET_MAC_MACHWF1R_ADVTHWORD                                 (0x1U<<13)
-#define ETHERNET_MAC_MACHWF1R_PTOEN                                     (0x1U<<12)
-#define ETHERNET_MAC_MACHWF1R_OSTEN                                     (0x1U<<11)
-#define ETHERNET_MAC_MACHWF1R_TXFIFOSIZE                                (0x1FU<<6)
-#define ETHERNET_MAC_MACHWF1R_TXFIFOSIZE_0                              (0x1U<<6)
-#define ETHERNET_MAC_MACHWF1R_RXFIFOSIZE                                (0x1FU<<0)
-#define ETHERNET_MAC_MACHWF1R_RXFIFOSIZE_0                              (0x1U<<0)
+#define ETHERNET_MAC_MACHWF1R_L3L4FNUM                                  (0xFU<<27U)
+#define ETHERNET_MAC_MACHWF1R_L3L4FNUM_0                                (0x1U<<27U)
+#define ETHERNET_MAC_MACHWF1R_HASHTBLSZ                                 (0x3U<<24U)
+#define ETHERNET_MAC_MACHWF1R_HASHTBLSZ_0                               (0x1U<<24U)
+#define ETHERNET_MAC_MACHWF1R_AVSEL                                     (0x1U<<20U)
+#define ETHERNET_MAC_MACHWF1R_DBGMEMA                                   (0x1U<<19U)
+#define ETHERNET_MAC_MACHWF1R_TSOEN                                     (0x1U<<18U)
+#define ETHERNET_MAC_MACHWF1R_SPHEN                                     (0x1U<<17U)
+#define ETHERNET_MAC_MACHWF1R_DCBEN                                     (0x1U<<16U)
+#define ETHERNET_MAC_MACHWF1R_ADDR64                                    (0x3U<<14U)
+#define ETHERNET_MAC_MACHWF1R_ADDR64_0                                  (0x1U<<14U)
+#define ETHERNET_MAC_MACHWF1R_ADVTHWORD                                 (0x1U<<13U)
+#define ETHERNET_MAC_MACHWF1R_PTOEN                                     (0x1U<<12U)
+#define ETHERNET_MAC_MACHWF1R_OSTEN                                     (0x1U<<11U)
+#define ETHERNET_MAC_MACHWF1R_TXFIFOSIZE                                (0x1FU<<6U)
+#define ETHERNET_MAC_MACHWF1R_TXFIFOSIZE_0                              (0x1U<<6U)
+#define ETHERNET_MAC_MACHWF1R_RXFIFOSIZE                                (0x1FU<<0U)
+#define ETHERNET_MAC_MACHWF1R_RXFIFOSIZE_0                              (0x1U<<0U)
 
 // MACHWF2R Configuration
 
-#define ETHERNET_MAC_MACHWF2R_AUXSNAPNUM                                (0x7U<<28)
-#define ETHERNET_MAC_MACHWF2R_AUXSNAPNUM_0                              (0x1U<<28)
-#define ETHERNET_MAC_MACHWF2R_PPSOUTNUM                                 (0x7U<<24)
-#define ETHERNET_MAC_MACHWF2R_PPSOUTNUM_0                               (0x1U<<24)
-#define ETHERNET_MAC_MACHWF2R_TXCHCNT                                   (0xFU<<18)
-#define ETHERNET_MAC_MACHWF2R_TXCHCNT_0                                 (0x1U<<18)
-#define ETHERNET_MAC_MACHWF2R_RXCHCNT                                   (0xFU<<12)
-#define ETHERNET_MAC_MACHWF2R_RXCHCNT_0                                 (0x1U<<12)
-#define ETHERNET_MAC_MACHWF2R_TXQCNT                                    (0xFU<<6)
-#define ETHERNET_MAC_MACHWF2R_TXQCNT_0                                  (0x1U<<6)
-#define ETHERNET_MAC_MACHWF2R_RXQCNT                                    (0xFU<<0)
-#define ETHERNET_MAC_MACHWF2R_RXQCNT_0                                  (0x1U<<0)
+#define ETHERNET_MAC_MACHWF2R_AUXSNAPNUM                                (0x7U<<28U)
+#define ETHERNET_MAC_MACHWF2R_AUXSNAPNUM_0                              (0x1U<<28U)
+#define ETHERNET_MAC_MACHWF2R_PPSOUTNUM                                 (0x7U<<24U)
+#define ETHERNET_MAC_MACHWF2R_PPSOUTNUM_0                               (0x1U<<24U)
+#define ETHERNET_MAC_MACHWF2R_TXCHCNT                                   (0xFU<<18U)
+#define ETHERNET_MAC_MACHWF2R_TXCHCNT_0                                 (0x1U<<18U)
+#define ETHERNET_MAC_MACHWF2R_RXCHCNT                                   (0xFU<<12U)
+#define ETHERNET_MAC_MACHWF2R_RXCHCNT_0                                 (0x1U<<12U)
+#define ETHERNET_MAC_MACHWF2R_TXQCNT                                    (0xFU<<6U)
+#define ETHERNET_MAC_MACHWF2R_TXQCNT_0                                  (0x1U<<6U)
+#define ETHERNET_MAC_MACHWF2R_RXQCNT                                    (0xFU<<0U)
+#define ETHERNET_MAC_MACHWF2R_RXQCNT_0                                  (0x1U<<0U)
 
 // MACMDIOAR Configuration
 
-#define ETHERNET_MAC_MACMDIOAR_PSE                                      (0x1U<<27)
-#define ETHERNET_MAC_MACMDIOAR_BTB                                      (0x1U<<26)
-#define ETHERNET_MAC_MACMDIOAR_PA                                       (0x1FU<<21)
-#define ETHERNET_MAC_MACMDIOAR_PA_0                                     (0x1U<<21)
-#define ETHERNET_MAC_MACMDIOAR_RDA                                      (0x1FU<<16)
-#define ETHERNET_MAC_MACMDIOAR_RDA_0                                    (0x1U<<16)
-#define ETHERNET_MAC_MACMDIOAR_NTC                                      (0x7U<<12)
-#define ETHERNET_MAC_MACMDIOAR_NTC_0                                    (0x1U<<12)
-#define ETHERNET_MAC_MACMDIOAR_CR                                       (0xFU<<8)
-#define ETHERNET_MAC_MACMDIOAR_CR_0                                     (0x1U<<8)
-#define ETHERNET_MAC_MACMDIOAR_SKAP                                     (0x1U<<4)
-#define ETHERNET_MAC_MACMDIOAR_GOC                                      (0x3U<<2)
-#define ETHERNET_MAC_MACMDIOAR_GOC_0                                    (0x1U<<2)
-#define ETHERNET_MAC_MACMDIOAR_C45E                                     (0x1U<<1)
-#define ETHERNET_MAC_MACMDIOAR_MB                                       (0x1U<<0)
+#define ETHERNET_MAC_MACMDIOAR_PSE                                      (0x1U<<27U)
+#define ETHERNET_MAC_MACMDIOAR_BTB                                      (0x1U<<26U)
+#define ETHERNET_MAC_MACMDIOAR_PA                                       (0x1FU<<21U)
+#define ETHERNET_MAC_MACMDIOAR_PA_0                                     (0x1U<<21U)
+#define ETHERNET_MAC_MACMDIOAR_RDA                                      (0x1FU<<16U)
+#define ETHERNET_MAC_MACMDIOAR_RDA_0                                    (0x1U<<16U)
+#define ETHERNET_MAC_MACMDIOAR_NTC                                      (0x7U<<12U)
+#define ETHERNET_MAC_MACMDIOAR_NTC_0                                    (0x1U<<12U)
+#define ETHERNET_MAC_MACMDIOAR_CR                                       (0xFU<<8U)
+#define ETHERNET_MAC_MACMDIOAR_CR_0                                     (0x1U<<8U)
+#define ETHERNET_MAC_MACMDIOAR_SKAP                                     (0x1U<<4U)
+#define ETHERNET_MAC_MACMDIOAR_GOC                                      (0x3U<<2U)
+#define ETHERNET_MAC_MACMDIOAR_GOC_0                                    (0x1U<<2U)
+#define ETHERNET_MAC_MACMDIOAR_C45E                                     (0x1U<<1U)
+#define ETHERNET_MAC_MACMDIOAR_MB                                       (0x1U<<0U)
 
 // MACMDIODR Configuration
 
-#define ETHERNET_MAC_MACMDIODR_RA                                       (0xFFFFU<<16)
-#define ETHERNET_MAC_MACMDIODR_RA_0                                     (0x1U<<16)
-#define ETHERNET_MAC_MACMDIODR_MD                                       (0xFFFFU<<0)
-#define ETHERNET_MAC_MACMDIODR_MD_0                                     (0x1U<<0)
+#define ETHERNET_MAC_MACMDIODR_RA                                       (0xFFFFU<<16U)
+#define ETHERNET_MAC_MACMDIODR_RA_0                                     (0x1U<<16U)
+#define ETHERNET_MAC_MACMDIODR_MD                                       (0xFFFFU<<0U)
+#define ETHERNET_MAC_MACMDIODR_MD_0                                     (0x1U<<0U)
 
 // MACA0HR Configuration
 
-#define ETHERNET_MAC_MACA0HR_AE                                         (0x1U<<31)
-#define ETHERNET_MAC_MACA0HR_ADDRHI                                     (0xFFFFU<<0)
-#define ETHERNET_MAC_MACA0HR_ADDRHI_0                                   (0x1U<<0)
+#define ETHERNET_MAC_MACA0HR_AE                                         (0x1U<<31U)
+#define ETHERNET_MAC_MACA0HR_ADDRHI                                     (0xFFFFU<<0U)
+#define ETHERNET_MAC_MACA0HR_ADDRHI_0                                   (0x1U<<0U)
 
 // MACA0LR Configuration
 
-#define ETHERNET_MAC_MACA0LR_ADDRLO                                     (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_MACA0LR_ADDRLO_0                                   (0x1U<<0)
+#define ETHERNET_MAC_MACA0LR_ADDRLO                                     (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_MACA0LR_ADDRLO_0                                   (0x1U<<0U)
 
 // MACA1HR Configuration
 
-#define ETHERNET_MAC_MACA1HR_AE                                         (0x1U<<31)
-#define ETHERNET_MAC_MACA1HR_SA                                         (0x1U<<30)
-#define ETHERNET_MAC_MACA1HR_MBC                                        (0x3FU<<24)
-#define ETHERNET_MAC_MACA1HR_MBC_0                                      (0x1U<<24)
-#define ETHERNET_MAC_MACA1HR_ADDRHI                                     (0xFFFFU<<0)
-#define ETHERNET_MAC_MACA1HR_ADDRHI_0                                   (0x1U<<0)
+#define ETHERNET_MAC_MACA1HR_AE                                         (0x1U<<31U)
+#define ETHERNET_MAC_MACA1HR_SA                                         (0x1U<<30U)
+#define ETHERNET_MAC_MACA1HR_MBC                                        (0x3FU<<24U)
+#define ETHERNET_MAC_MACA1HR_MBC_0                                      (0x1U<<24U)
+#define ETHERNET_MAC_MACA1HR_ADDRHI                                     (0xFFFFU<<0U)
+#define ETHERNET_MAC_MACA1HR_ADDRHI_0                                   (0x1U<<0U)
 
 // MACA1LR Configuration
 
-#define ETHERNET_MAC_MACA1LR_ADDRLO                                     (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_MACA1LR_ADDRLO_0                                   (0x1U<<0)
+#define ETHERNET_MAC_MACA1LR_ADDRLO                                     (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_MACA1LR_ADDRLO_0                                   (0x1U<<0U)
 
 // MACA2HR Configuration
 
-#define ETHERNET_MAC_MACA2HR_AE                                         (0x1U<<31)
-#define ETHERNET_MAC_MACA2HR_SA                                         (0x1U<<30)
-#define ETHERNET_MAC_MACA2HR_MBC                                        (0x3FU<<24)
-#define ETHERNET_MAC_MACA2HR_MBC_0                                      (0x1U<<24)
-#define ETHERNET_MAC_MACA2HR_ADDRHI                                     (0xFFFFU<<0)
-#define ETHERNET_MAC_MACA2HR_ADDRHI_0                                   (0x1U<<0)
+#define ETHERNET_MAC_MACA2HR_AE                                         (0x1U<<31U)
+#define ETHERNET_MAC_MACA2HR_SA                                         (0x1U<<30U)
+#define ETHERNET_MAC_MACA2HR_MBC                                        (0x3FU<<24U)
+#define ETHERNET_MAC_MACA2HR_MBC_0                                      (0x1U<<24U)
+#define ETHERNET_MAC_MACA2HR_ADDRHI                                     (0xFFFFU<<0U)
+#define ETHERNET_MAC_MACA2HR_ADDRHI_0                                   (0x1U<<0U)
 
 // MACA2LR Configuration
 
-#define ETHERNET_MAC_MACA2LR_ADDRLO                                     (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_MACA2LR_ADDRLO_0                                   (0x1U<<0)
+#define ETHERNET_MAC_MACA2LR_ADDRLO                                     (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_MACA2LR_ADDRLO_0                                   (0x1U<<0U)
 
 // MACA3HR Configuration
 
-#define ETHERNET_MAC_MACA3HR_AE                                         (0x1U<<31)
-#define ETHERNET_MAC_MACA3HR_SA                                         (0x1U<<30)
-#define ETHERNET_MAC_MACA3HR_MBC                                        (0x3FU<<24)
-#define ETHERNET_MAC_MACA3HR_MBC_0                                      (0x1U<<24)
-#define ETHERNET_MAC_MACA3HR_ADDRHI                                     (0xFFFFU<<0)
-#define ETHERNET_MAC_MACA3HR_ADDRHI_0                                   (0x1U<<0)
+#define ETHERNET_MAC_MACA3HR_AE                                         (0x1U<<31U)
+#define ETHERNET_MAC_MACA3HR_SA                                         (0x1U<<30U)
+#define ETHERNET_MAC_MACA3HR_MBC                                        (0x3FU<<24U)
+#define ETHERNET_MAC_MACA3HR_MBC_0                                      (0x1U<<24U)
+#define ETHERNET_MAC_MACA3HR_ADDRHI                                     (0xFFFFU<<0U)
+#define ETHERNET_MAC_MACA3HR_ADDRHI_0                                   (0x1U<<0U)
 
 // MACA3LR Configuration
 
-#define ETHERNET_MAC_MACA3LR_ADDRLO                                     (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_MACA3LR_ADDRLO_0                                   (0x1U<<0)
+#define ETHERNET_MAC_MACA3LR_ADDRLO                                     (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_MACA3LR_ADDRLO_0                                   (0x1U<<0U)
 
 // MMC_CONTROL Configuration
 
-#define ETHERNET_MAC_MMC_CONTROL_UCDBC                                  (0x1U<<8)
-#define ETHERNET_MAC_MMC_CONTROL_CNTPRSTLVL                             (0x1U<<5)
-#define ETHERNET_MAC_MMC_CONTROL_CNTPRST                                (0x1U<<4)
-#define ETHERNET_MAC_MMC_CONTROL_CNTFREEZ                               (0x1U<<3)
-#define ETHERNET_MAC_MMC_CONTROL_RSTONRD                                (0x1U<<2)
-#define ETHERNET_MAC_MMC_CONTROL_CNTSTOPRO                              (0x1U<<1)
-#define ETHERNET_MAC_MMC_CONTROL_CNTRST                                 (0x1U<<0)
+#define ETHERNET_MAC_MMC_CONTROL_UCDBC                                  (0x1U<<8U)
+#define ETHERNET_MAC_MMC_CONTROL_CNTPRSTLVL                             (0x1U<<5U)
+#define ETHERNET_MAC_MMC_CONTROL_CNTPRST                                (0x1U<<4U)
+#define ETHERNET_MAC_MMC_CONTROL_CNTFREEZ                               (0x1U<<3U)
+#define ETHERNET_MAC_MMC_CONTROL_RSTONRD                                (0x1U<<2U)
+#define ETHERNET_MAC_MMC_CONTROL_CNTSTOPRO                              (0x1U<<1U)
+#define ETHERNET_MAC_MMC_CONTROL_CNTRST                                 (0x1U<<0U)
 
 // MMC_RX_INTERRUPT Configuration
 
-#define ETHERNET_MAC_MMC_RX_INTERRUPT_RXLPITRCIS                        (0x1U<<27)
-#define ETHERNET_MAC_MMC_RX_INTERRUPT_RXLPIUSCIS                        (0x1U<<26)
-#define ETHERNET_MAC_MMC_RX_INTERRUPT_RXUCGPIS                          (0x1U<<17)
-#define ETHERNET_MAC_MMC_RX_INTERRUPT_RXALGNERPIS                       (0x1U<<6)
-#define ETHERNET_MAC_MMC_RX_INTERRUPT_RXCRCERPIS                        (0x1U<<5)
+#define ETHERNET_MAC_MMC_RX_INTERRUPT_RXLPITRCIS                        (0x1U<<27U)
+#define ETHERNET_MAC_MMC_RX_INTERRUPT_RXLPIUSCIS                        (0x1U<<26U)
+#define ETHERNET_MAC_MMC_RX_INTERRUPT_RXUCGPIS                          (0x1U<<17U)
+#define ETHERNET_MAC_MMC_RX_INTERRUPT_RXALGNERPIS                       (0x1U<<6U)
+#define ETHERNET_MAC_MMC_RX_INTERRUPT_RXCRCERPIS                        (0x1U<<5U)
 
 // MMC_TX_INTERRUPT Configuration
 
-#define ETHERNET_MAC_MMC_TX_INTERRUPT_TXLPITRCIS                        (0x1U<<27)
-#define ETHERNET_MAC_MMC_TX_INTERRUPT_TXLPIUSCIS                        (0x1U<<26)
-#define ETHERNET_MAC_MMC_TX_INTERRUPT_TXGPKTIS                          (0x1U<<21)
-#define ETHERNET_MAC_MMC_TX_INTERRUPT_TXMCOLGPIS                        (0x1U<<15)
-#define ETHERNET_MAC_MMC_TX_INTERRUPT_TXSCOLGPIS                        (0x1U<<14)
+#define ETHERNET_MAC_MMC_TX_INTERRUPT_TXLPITRCIS                        (0x1U<<27U)
+#define ETHERNET_MAC_MMC_TX_INTERRUPT_TXLPIUSCIS                        (0x1U<<26U)
+#define ETHERNET_MAC_MMC_TX_INTERRUPT_TXGPKTIS                          (0x1U<<21U)
+#define ETHERNET_MAC_MMC_TX_INTERRUPT_TXMCOLGPIS                        (0x1U<<15U)
+#define ETHERNET_MAC_MMC_TX_INTERRUPT_TXSCOLGPIS                        (0x1U<<14U)
 
 // MMC_RX_INTERRUPT_MASK Configuration
 
-#define ETHERNET_MAC_MMC_RX_INTERRUPT_MASK_RXLPITRCIM                   (0x1U<<27)
-#define ETHERNET_MAC_MMC_RX_INTERRUPT_MASK_RXLPIUSCIM                   (0x1U<<26)
-#define ETHERNET_MAC_MMC_RX_INTERRUPT_MASK_RXUCGPIM                     (0x1U<<17)
-#define ETHERNET_MAC_MMC_RX_INTERRUPT_MASK_RXALGNERPIM                  (0x1U<<6)
-#define ETHERNET_MAC_MMC_RX_INTERRUPT_MASK_RXCRCERPIM                   (0x1U<<5)
+#define ETHERNET_MAC_MMC_RX_INTERRUPT_MASK_RXLPITRCIM                   (0x1U<<27U)
+#define ETHERNET_MAC_MMC_RX_INTERRUPT_MASK_RXLPIUSCIM                   (0x1U<<26U)
+#define ETHERNET_MAC_MMC_RX_INTERRUPT_MASK_RXUCGPIM                     (0x1U<<17U)
+#define ETHERNET_MAC_MMC_RX_INTERRUPT_MASK_RXALGNERPIM                  (0x1U<<6U)
+#define ETHERNET_MAC_MMC_RX_INTERRUPT_MASK_RXCRCERPIM                   (0x1U<<5U)
 
 // MMC_TX_INTERRUPT_MASK Configuration
 
-#define ETHERNET_MAC_MMC_TX_INTERRUPT_MASK_TXLPITRCIM                   (0x1U<<27)
-#define ETHERNET_MAC_MMC_TX_INTERRUPT_MASK_TXLPIUSCIM                   (0x1U<<26)
-#define ETHERNET_MAC_MMC_TX_INTERRUPT_MASK_TXGPKTIM                     (0x1U<<21)
-#define ETHERNET_MAC_MMC_TX_INTERRUPT_MASK_TXMCOLGPIM                   (0x1U<<15)
-#define ETHERNET_MAC_MMC_TX_INTERRUPT_MASK_TXSCOLGPIM                   (0x1U<<14)
+#define ETHERNET_MAC_MMC_TX_INTERRUPT_MASK_TXLPITRCIM                   (0x1U<<27U)
+#define ETHERNET_MAC_MMC_TX_INTERRUPT_MASK_TXLPIUSCIM                   (0x1U<<26U)
+#define ETHERNET_MAC_MMC_TX_INTERRUPT_MASK_TXGPKTIM                     (0x1U<<21U)
+#define ETHERNET_MAC_MMC_TX_INTERRUPT_MASK_TXMCOLGPIM                   (0x1U<<15U)
+#define ETHERNET_MAC_MMC_TX_INTERRUPT_MASK_TXSCOLGPIM                   (0x1U<<14U)
 
 // TX_SINGLE_COLLISION_GOOD_PACKETS Configuration
 
-#define ETHERNET_MAC_TX_SINGLE_COLLISION_GOOD_PACKETS_TXSNGLCOLG        (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_TX_SINGLE_COLLISION_GOOD_PACKETS_TXSNGLCOLG_0      (0x1U<<0)
+#define ETHERNET_MAC_TX_SINGLE_COLLISION_GOOD_PACKETS_TXSNGLCOLG        (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_TX_SINGLE_COLLISION_GOOD_PACKETS_TXSNGLCOLG_0      (0x1U<<0U)
 
 // TX_MULTIPLE_COLLISION_GOOD_PACKETS Configuration
 
-#define ETHERNET_MAC_TX_MULTIPLE_COLLISION_GOOD_PACKETS_TXMULTCOLG      (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_TX_MULTIPLE_COLLISION_GOOD_PACKETS_TXMULTCOLG_0    (0x1U<<0)
+#define ETHERNET_MAC_TX_MULTIPLE_COLLISION_GOOD_PACKETS_TXMULTCOLG      (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_TX_MULTIPLE_COLLISION_GOOD_PACKETS_TXMULTCOLG_0    (0x1U<<0U)
 
 // TX_PACKET_COUNT_GOOD Configuration
 
-#define ETHERNET_MAC_TX_PACKET_COUNT_GOOD_TXPKTG                        (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_TX_PACKET_COUNT_GOOD_TXPKTG_0                      (0x1U<<0)
+#define ETHERNET_MAC_TX_PACKET_COUNT_GOOD_TXPKTG                        (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_TX_PACKET_COUNT_GOOD_TXPKTG_0                      (0x1U<<0U)
 
 // RX_CRC_ERROR_PACKETS Configuration
 
-#define ETHERNET_MAC_RX_CRC_ERROR_PACKETS_RXCRCERR                      (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_RX_CRC_ERROR_PACKETS_RXCRCERR_0                    (0x1U<<0)
+#define ETHERNET_MAC_RX_CRC_ERROR_PACKETS_RXCRCERR                      (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_RX_CRC_ERROR_PACKETS_RXCRCERR_0                    (0x1U<<0U)
 
 // RX_ALIGNMENT_ERROR_PACKETS Configuration
 
-#define ETHERNET_MAC_RX_ALIGNMENT_ERROR_PACKETS_RXALGNERR               (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_RX_ALIGNMENT_ERROR_PACKETS_RXALGNERR_0             (0x1U<<0)
+#define ETHERNET_MAC_RX_ALIGNMENT_ERROR_PACKETS_RXALGNERR               (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_RX_ALIGNMENT_ERROR_PACKETS_RXALGNERR_0             (0x1U<<0U)
 
 // RX_UNICAST_PACKETS_GOOD Configuration
 
-#define ETHERNET_MAC_RX_UNICAST_PACKETS_GOOD_RXUCASTG                   (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_RX_UNICAST_PACKETS_GOOD_RXUCASTG_0                 (0x1U<<0)
+#define ETHERNET_MAC_RX_UNICAST_PACKETS_GOOD_RXUCASTG                   (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_RX_UNICAST_PACKETS_GOOD_RXUCASTG_0                 (0x1U<<0U)
 
 // TX_LPI_USEC_CNTR Configuration
 
-#define ETHERNET_MAC_TX_LPI_USEC_CNTR_TXLPIUSC                          (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_TX_LPI_USEC_CNTR_TXLPIUSC_0                        (0x1U<<0)
+#define ETHERNET_MAC_TX_LPI_USEC_CNTR_TXLPIUSC                          (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_TX_LPI_USEC_CNTR_TXLPIUSC_0                        (0x1U<<0U)
 
 // TX_LPI_TRAN_CNTR Configuration
 
-#define ETHERNET_MAC_TX_LPI_TRAN_CNTR_TXLPITRC                          (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_TX_LPI_TRAN_CNTR_TXLPITRC_0                        (0x1U<<0)
+#define ETHERNET_MAC_TX_LPI_TRAN_CNTR_TXLPITRC                          (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_TX_LPI_TRAN_CNTR_TXLPITRC_0                        (0x1U<<0U)
 
 // RX_LPI_USEC_CNTR Configuration
 
-#define ETHERNET_MAC_RX_LPI_USEC_CNTR_RXLPIUSC                          (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_RX_LPI_USEC_CNTR_RXLPIUSC_0                        (0x1U<<0)
+#define ETHERNET_MAC_RX_LPI_USEC_CNTR_RXLPIUSC                          (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_RX_LPI_USEC_CNTR_RXLPIUSC_0                        (0x1U<<0U)
 
 // RX_LPI_TRAN_CNTR Configuration
 
-#define ETHERNET_MAC_RX_LPI_TRAN_CNTR_RXLPITRC                          (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_RX_LPI_TRAN_CNTR_RXLPITRC_0                        (0x1U<<0)
+#define ETHERNET_MAC_RX_LPI_TRAN_CNTR_RXLPITRC                          (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_RX_LPI_TRAN_CNTR_RXLPITRC_0                        (0x1U<<0U)
 
 // MACL3L4C0R Configuration
 
-#define ETHERNET_MAC_MACL3L4C0R_L4DPIM0                                 (0x1U<<21)
-#define ETHERNET_MAC_MACL3L4C0R_L4DPM0                                  (0x1U<<20)
-#define ETHERNET_MAC_MACL3L4C0R_L4SPIM0                                 (0x1U<<19)
-#define ETHERNET_MAC_MACL3L4C0R_L4SPM0                                  (0x1U<<18)
-#define ETHERNET_MAC_MACL3L4C0R_L4PEN0                                  (0x1U<<16)
-#define ETHERNET_MAC_MACL3L4C0R_L3HDBM0                                 (0x1FU<<11)
-#define ETHERNET_MAC_MACL3L4C0R_L3HDBM0_0                               (0x1U<<11)
-#define ETHERNET_MAC_MACL3L4C0R_L3HSBM0                                 (0x1FU<<6)
-#define ETHERNET_MAC_MACL3L4C0R_L3HSBM0_0                               (0x1U<<6)
-#define ETHERNET_MAC_MACL3L4C0R_L3DAIM0                                 (0x1U<<5)
-#define ETHERNET_MAC_MACL3L4C0R_L3DAM0                                  (0x1U<<4)
-#define ETHERNET_MAC_MACL3L4C0R_L3SAIM0                                 (0x1U<<3)
-#define ETHERNET_MAC_MACL3L4C0R_L3SAM0                                  (0x1U<<2)
-#define ETHERNET_MAC_MACL3L4C0R_L3PEN0                                  (0x1U<<0)
+#define ETHERNET_MAC_MACL3L4C0R_L4DPIM0                                 (0x1U<<21U)
+#define ETHERNET_MAC_MACL3L4C0R_L4DPM0                                  (0x1U<<20U)
+#define ETHERNET_MAC_MACL3L4C0R_L4SPIM0                                 (0x1U<<19U)
+#define ETHERNET_MAC_MACL3L4C0R_L4SPM0                                  (0x1U<<18U)
+#define ETHERNET_MAC_MACL3L4C0R_L4PEN0                                  (0x1U<<16U)
+#define ETHERNET_MAC_MACL3L4C0R_L3HDBM0                                 (0x1FU<<11U)
+#define ETHERNET_MAC_MACL3L4C0R_L3HDBM0_0                               (0x1U<<11U)
+#define ETHERNET_MAC_MACL3L4C0R_L3HSBM0                                 (0x1FU<<6U)
+#define ETHERNET_MAC_MACL3L4C0R_L3HSBM0_0                               (0x1U<<6U)
+#define ETHERNET_MAC_MACL3L4C0R_L3DAIM0                                 (0x1U<<5U)
+#define ETHERNET_MAC_MACL3L4C0R_L3DAM0                                  (0x1U<<4U)
+#define ETHERNET_MAC_MACL3L4C0R_L3SAIM0                                 (0x1U<<3U)
+#define ETHERNET_MAC_MACL3L4C0R_L3SAM0                                  (0x1U<<2U)
+#define ETHERNET_MAC_MACL3L4C0R_L3PEN0                                  (0x1U<<0U)
 
 // MACL4A0R Configuration
 
-#define ETHERNET_MAC_MACL4A0R_L4DP0                                     (0xFFFFU<<16)
-#define ETHERNET_MAC_MACL4A0R_L4DP0_0                                   (0x1U<<16)
-#define ETHERNET_MAC_MACL4A0R_L4SP0                                     (0xFFFFU<<0)
-#define ETHERNET_MAC_MACL4A0R_L4SP0_0                                   (0x1U<<0)
+#define ETHERNET_MAC_MACL4A0R_L4DP0                                     (0xFFFFU<<16U)
+#define ETHERNET_MAC_MACL4A0R_L4DP0_0                                   (0x1U<<16U)
+#define ETHERNET_MAC_MACL4A0R_L4SP0                                     (0xFFFFU<<0U)
+#define ETHERNET_MAC_MACL4A0R_L4SP0_0                                   (0x1U<<0U)
 
 // MACL3A00R Configuration
 
-#define ETHERNET_MAC_MACL3A00R_L3A00                                    (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_MACL3A00R_L3A00_0                                  (0x1U<<0)
+#define ETHERNET_MAC_MACL3A00R_L3A00                                    (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_MACL3A00R_L3A00_0                                  (0x1U<<0U)
 
 // MACL3A10R Configuration
 
-#define ETHERNET_MAC_MACL3A10R_L3A10                                    (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_MACL3A10R_L3A10_0                                  (0x1U<<0)
+#define ETHERNET_MAC_MACL3A10R_L3A10                                    (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_MACL3A10R_L3A10_0                                  (0x1U<<0U)
 
 // MACL3A20 Configuration
 
-#define ETHERNET_MAC_MACL3A20_L3A20                                     (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_MACL3A20_L3A20_0                                   (0x1U<<0)
+#define ETHERNET_MAC_MACL3A20_L3A20                                     (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_MACL3A20_L3A20_0                                   (0x1U<<0U)
 
 // MACL3A30 Configuration
 
-#define ETHERNET_MAC_MACL3A30_L3A30                                     (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_MACL3A30_L3A30_0                                   (0x1U<<0)
+#define ETHERNET_MAC_MACL3A30_L3A30                                     (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_MACL3A30_L3A30_0                                   (0x1U<<0U)
 
 // MACL3L4C1R Configuration
 
-#define ETHERNET_MAC_MACL3L4C1R_L4DPIM1                                 (0x1U<<21)
-#define ETHERNET_MAC_MACL3L4C1R_L4DPM1                                  (0x1U<<20)
-#define ETHERNET_MAC_MACL3L4C1R_L4SPIM1                                 (0x1U<<19)
-#define ETHERNET_MAC_MACL3L4C1R_L4SPM1                                  (0x1U<<18)
-#define ETHERNET_MAC_MACL3L4C1R_L4PEN1                                  (0x1U<<16)
-#define ETHERNET_MAC_MACL3L4C1R_L3HDBM1                                 (0x1FU<<11)
-#define ETHERNET_MAC_MACL3L4C1R_L3HDBM1_0                               (0x1U<<11)
-#define ETHERNET_MAC_MACL3L4C1R_L3HSBM1                                 (0x1FU<<6)
-#define ETHERNET_MAC_MACL3L4C1R_L3HSBM1_0                               (0x1U<<6)
-#define ETHERNET_MAC_MACL3L4C1R_L3DAIM1                                 (0x1U<<5)
-#define ETHERNET_MAC_MACL3L4C1R_L3DAM1                                  (0x1U<<4)
-#define ETHERNET_MAC_MACL3L4C1R_L3SAIM1                                 (0x1U<<3)
-#define ETHERNET_MAC_MACL3L4C1R_L3SAM1                                  (0x1U<<2)
-#define ETHERNET_MAC_MACL3L4C1R_L3PEN1                                  (0x1U<<0)
+#define ETHERNET_MAC_MACL3L4C1R_L4DPIM1                                 (0x1U<<21U)
+#define ETHERNET_MAC_MACL3L4C1R_L4DPM1                                  (0x1U<<20U)
+#define ETHERNET_MAC_MACL3L4C1R_L4SPIM1                                 (0x1U<<19U)
+#define ETHERNET_MAC_MACL3L4C1R_L4SPM1                                  (0x1U<<18U)
+#define ETHERNET_MAC_MACL3L4C1R_L4PEN1                                  (0x1U<<16U)
+#define ETHERNET_MAC_MACL3L4C1R_L3HDBM1                                 (0x1FU<<11U)
+#define ETHERNET_MAC_MACL3L4C1R_L3HDBM1_0                               (0x1U<<11U)
+#define ETHERNET_MAC_MACL3L4C1R_L3HSBM1                                 (0x1FU<<6U)
+#define ETHERNET_MAC_MACL3L4C1R_L3HSBM1_0                               (0x1U<<6U)
+#define ETHERNET_MAC_MACL3L4C1R_L3DAIM1                                 (0x1U<<5U)
+#define ETHERNET_MAC_MACL3L4C1R_L3DAM1                                  (0x1U<<4U)
+#define ETHERNET_MAC_MACL3L4C1R_L3SAIM1                                 (0x1U<<3U)
+#define ETHERNET_MAC_MACL3L4C1R_L3SAM1                                  (0x1U<<2U)
+#define ETHERNET_MAC_MACL3L4C1R_L3PEN1                                  (0x1U<<0U)
 
 // MACL4A1R Configuration
 
-#define ETHERNET_MAC_MACL4A1R_L4DP1                                     (0xFFFFU<<16)
-#define ETHERNET_MAC_MACL4A1R_L4DP1_0                                   (0x1U<<16)
-#define ETHERNET_MAC_MACL4A1R_L4SP1                                     (0xFFFFU<<0)
-#define ETHERNET_MAC_MACL4A1R_L4SP1_0                                   (0x1U<<0)
+#define ETHERNET_MAC_MACL4A1R_L4DP1                                     (0xFFFFU<<16U)
+#define ETHERNET_MAC_MACL4A1R_L4DP1_0                                   (0x1U<<16U)
+#define ETHERNET_MAC_MACL4A1R_L4SP1                                     (0xFFFFU<<0U)
+#define ETHERNET_MAC_MACL4A1R_L4SP1_0                                   (0x1U<<0U)
 
 // MACL3A01R Configuration
 
-#define ETHERNET_MAC_MACL3A01R_L3A01                                    (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_MACL3A01R_L3A01_0                                  (0x1U<<0)
+#define ETHERNET_MAC_MACL3A01R_L3A01                                    (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_MACL3A01R_L3A01_0                                  (0x1U<<0U)
 
 // MACL3A11R Configuration
 
-#define ETHERNET_MAC_MACL3A11R_L3A11                                    (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_MACL3A11R_L3A11_0                                  (0x1U<<0)
+#define ETHERNET_MAC_MACL3A11R_L3A11                                    (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_MACL3A11R_L3A11_0                                  (0x1U<<0U)
 
 // MACL3A21R Configuration
 
-#define ETHERNET_MAC_MACL3A21R_L3A21                                    (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_MACL3A21R_L3A21_0                                  (0x1U<<0)
+#define ETHERNET_MAC_MACL3A21R_L3A21                                    (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_MACL3A21R_L3A21_0                                  (0x1U<<0U)
 
 // MACL3A31R Configuration
 
-#define ETHERNET_MAC_MACL3A31R_L3A31                                    (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_MACL3A31R_L3A31_0                                  (0x1U<<0)
+#define ETHERNET_MAC_MACL3A31R_L3A31                                    (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_MACL3A31R_L3A31_0                                  (0x1U<<0U)
 
 // MACARPAR Configuration
 
-#define ETHERNET_MAC_MACARPAR_ARPPA                                     (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_MACARPAR_ARPPA_0                                   (0x1U<<0)
+#define ETHERNET_MAC_MACARPAR_ARPPA                                     (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_MACARPAR_ARPPA_0                                   (0x1U<<0U)
 
 // MACTSCR Configuration
 
-#define ETHERNET_MAC_MACTSCR_TXTSSTSM                                   (0x1U<<24)
-#define ETHERNET_MAC_MACTSCR_CSC                                        (0x1U<<19)
-#define ETHERNET_MAC_MACTSCR_TSENMACADDR                                (0x1U<<18)
-#define ETHERNET_MAC_MACTSCR_SNAPTYPSEL                                 (0x3U<<16)
-#define ETHERNET_MAC_MACTSCR_SNAPTYPSEL_0                               (0x1U<<16)
-#define ETHERNET_MAC_MACTSCR_TSMSTRENA                                  (0x1U<<15)
-#define ETHERNET_MAC_MACTSCR_TSEVNTENA                                  (0x1U<<14)
-#define ETHERNET_MAC_MACTSCR_TSIPV4ENA                                  (0x1U<<13)
-#define ETHERNET_MAC_MACTSCR_TSIPV6ENA                                  (0x1U<<12)
-#define ETHERNET_MAC_MACTSCR_TSIPENA                                    (0x1U<<11)
-#define ETHERNET_MAC_MACTSCR_TSVER2ENA                                  (0x1U<<10)
-#define ETHERNET_MAC_MACTSCR_TSCTRLSSR                                  (0x1U<<9)
-#define ETHERNET_MAC_MACTSCR_TSENALL                                    (0x1U<<8)
-#define ETHERNET_MAC_MACTSCR_TSADDREG                                   (0x1U<<5)
-#define ETHERNET_MAC_MACTSCR_TSUPDT                                     (0x1U<<3)
-#define ETHERNET_MAC_MACTSCR_TSINIT                                     (0x1U<<2)
-#define ETHERNET_MAC_MACTSCR_TSCFUPDT                                   (0x1U<<1)
-#define ETHERNET_MAC_MACTSCR_TSENA                                      (0x1U<<0)
+#define ETHERNET_MAC_MACTSCR_TXTSSTSM                                   (0x1U<<24U)
+#define ETHERNET_MAC_MACTSCR_CSC                                        (0x1U<<19U)
+#define ETHERNET_MAC_MACTSCR_TSENMACADDR                                (0x1U<<18U)
+#define ETHERNET_MAC_MACTSCR_SNAPTYPSEL                                 (0x3U<<16U)
+#define ETHERNET_MAC_MACTSCR_SNAPTYPSEL_0                               (0x1U<<16U)
+#define ETHERNET_MAC_MACTSCR_TSMSTRENA                                  (0x1U<<15U)
+#define ETHERNET_MAC_MACTSCR_TSEVNTENA                                  (0x1U<<14U)
+#define ETHERNET_MAC_MACTSCR_TSIPV4ENA                                  (0x1U<<13U)
+#define ETHERNET_MAC_MACTSCR_TSIPV6ENA                                  (0x1U<<12U)
+#define ETHERNET_MAC_MACTSCR_TSIPENA                                    (0x1U<<11U)
+#define ETHERNET_MAC_MACTSCR_TSVER2ENA                                  (0x1U<<10U)
+#define ETHERNET_MAC_MACTSCR_TSCTRLSSR                                  (0x1U<<9U)
+#define ETHERNET_MAC_MACTSCR_TSENALL                                    (0x1U<<8U)
+#define ETHERNET_MAC_MACTSCR_TSADDREG                                   (0x1U<<5U)
+#define ETHERNET_MAC_MACTSCR_TSUPDT                                     (0x1U<<3U)
+#define ETHERNET_MAC_MACTSCR_TSINIT                                     (0x1U<<2U)
+#define ETHERNET_MAC_MACTSCR_TSCFUPDT                                   (0x1U<<1U)
+#define ETHERNET_MAC_MACTSCR_TSENA                                      (0x1U<<0U)
 
 // MACSSIR Configuration
 
-#define ETHERNET_MAC_MACSSIR_SSINC                                      (0xFFU<<16)
-#define ETHERNET_MAC_MACSSIR_SSINC_0                                    (0x1U<<16)
-#define ETHERNET_MAC_MACSSIR_SNSINC                                     (0xFFU<<8)
-#define ETHERNET_MAC_MACSSIR_SNSINC_0                                   (0x1U<<8)
+#define ETHERNET_MAC_MACSSIR_SSINC                                      (0xFFU<<16U)
+#define ETHERNET_MAC_MACSSIR_SSINC_0                                    (0x1U<<16U)
+#define ETHERNET_MAC_MACSSIR_SNSINC                                     (0xFFU<<8U)
+#define ETHERNET_MAC_MACSSIR_SNSINC_0                                   (0x1U<<8U)
 
 // MACSTSR Configuration
 
-#define ETHERNET_MAC_MACSTSR_TSS                                        (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_MACSTSR_TSS_0                                      (0x1U<<0)
+#define ETHERNET_MAC_MACSTSR_TSS                                        (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_MACSTSR_TSS_0                                      (0x1U<<0U)
 
 // MACSTNR Configuration
 
-#define ETHERNET_MAC_MACSTNR_TSSS                                       (0x7FFFFFFFU<<0)
-#define ETHERNET_MAC_MACSTNR_TSSS_0                                     (0x1U<<0)
+#define ETHERNET_MAC_MACSTNR_TSSS                                       (0x7FFFFFFFU<<0U)
+#define ETHERNET_MAC_MACSTNR_TSSS_0                                     (0x1U<<0U)
 
 // MACSTSUR Configuration
 
-#define ETHERNET_MAC_MACSTSUR_TSS                                       (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_MACSTSUR_TSS_0                                     (0x1U<<0)
+#define ETHERNET_MAC_MACSTSUR_TSS                                       (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_MACSTSUR_TSS_0                                     (0x1U<<0U)
 
 // MACSTNUR Configuration
 
-#define ETHERNET_MAC_MACSTNUR_ADDSUB                                    (0x1U<<31)
-#define ETHERNET_MAC_MACSTNUR_TSSS                                      (0x7FFFFFFFU<<0)
-#define ETHERNET_MAC_MACSTNUR_TSSS_0                                    (0x1U<<0)
+#define ETHERNET_MAC_MACSTNUR_ADDSUB                                    (0x1U<<31U)
+#define ETHERNET_MAC_MACSTNUR_TSSS                                      (0x7FFFFFFFU<<0U)
+#define ETHERNET_MAC_MACSTNUR_TSSS_0                                    (0x1U<<0U)
 
 // MACTSAR Configuration
 
-#define ETHERNET_MAC_MACTSAR_TSAR                                       (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_MACTSAR_TSAR_0                                     (0x1U<<0)
+#define ETHERNET_MAC_MACTSAR_TSAR                                       (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_MACTSAR_TSAR_0                                     (0x1U<<0U)
 
 // MACTSSR Configuration
 
-#define ETHERNET_MAC_MACTSSR_ATSNS                                      (0x1FU<<25)
-#define ETHERNET_MAC_MACTSSR_ATSNS_0                                    (0x1U<<25)
-#define ETHERNET_MAC_MACTSSR_ATSSTM                                     (0x1U<<24)
-#define ETHERNET_MAC_MACTSSR_ATSSTN                                     (0xFU<<16)
-#define ETHERNET_MAC_MACTSSR_ATSSTN_0                                   (0x1U<<16)
-#define ETHERNET_MAC_MACTSSR_TXTSSIS                                    (0x1U<<15)
-#define ETHERNET_MAC_MACTSSR_TSTRGTERR0                                 (0x1U<<3)
-#define ETHERNET_MAC_MACTSSR_AUXTSTRIG                                  (0x1U<<2)
-#define ETHERNET_MAC_MACTSSR_TSTARGT0                                   (0x1U<<1)
-#define ETHERNET_MAC_MACTSSR_TSSOVF                                     (0x1U<<0)
+#define ETHERNET_MAC_MACTSSR_ATSNS                                      (0x1FU<<25U)
+#define ETHERNET_MAC_MACTSSR_ATSNS_0                                    (0x1U<<25U)
+#define ETHERNET_MAC_MACTSSR_ATSSTM                                     (0x1U<<24U)
+#define ETHERNET_MAC_MACTSSR_ATSSTN                                     (0xFU<<16U)
+#define ETHERNET_MAC_MACTSSR_ATSSTN_0                                   (0x1U<<16U)
+#define ETHERNET_MAC_MACTSSR_TXTSSIS                                    (0x1U<<15U)
+#define ETHERNET_MAC_MACTSSR_TSTRGTERR0                                 (0x1U<<3U)
+#define ETHERNET_MAC_MACTSSR_AUXTSTRIG                                  (0x1U<<2U)
+#define ETHERNET_MAC_MACTSSR_TSTARGT0                                   (0x1U<<1U)
+#define ETHERNET_MAC_MACTSSR_TSSOVF                                     (0x1U<<0U)
 
 // MACTXTSSNR Configuration
 
-#define ETHERNET_MAC_MACTXTSSNR_TXTSSMIS                                (0x1U<<31)
-#define ETHERNET_MAC_MACTXTSSNR_TXTSSLO                                 (0x7FFFFFFFU<<0)
-#define ETHERNET_MAC_MACTXTSSNR_TXTSSLO_0                               (0x1U<<0)
+#define ETHERNET_MAC_MACTXTSSNR_TXTSSMIS                                (0x1U<<31U)
+#define ETHERNET_MAC_MACTXTSSNR_TXTSSLO                                 (0x7FFFFFFFU<<0U)
+#define ETHERNET_MAC_MACTXTSSNR_TXTSSLO_0                               (0x1U<<0U)
 
 // MACTXTSSSR Configuration
 
-#define ETHERNET_MAC_MACTXTSSSR_TXTSSHI                                 (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_MACTXTSSSR_TXTSSHI_0                               (0x1U<<0)
+#define ETHERNET_MAC_MACTXTSSSR_TXTSSHI                                 (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_MACTXTSSSR_TXTSSHI_0                               (0x1U<<0U)
 
 // MACACR Configuration
 
-#define ETHERNET_MAC_MACACR_ATSEN3                                      (0x1U<<7)
-#define ETHERNET_MAC_MACACR_ATSEN2                                      (0x1U<<6)
-#define ETHERNET_MAC_MACACR_ATSEN1                                      (0x1U<<5)
-#define ETHERNET_MAC_MACACR_ATSEN0                                      (0x1U<<4)
-#define ETHERNET_MAC_MACACR_ATSFC                                       (0x1U<<0)
+#define ETHERNET_MAC_MACACR_ATSEN3                                      (0x1U<<7U)
+#define ETHERNET_MAC_MACACR_ATSEN2                                      (0x1U<<6U)
+#define ETHERNET_MAC_MACACR_ATSEN1                                      (0x1U<<5U)
+#define ETHERNET_MAC_MACACR_ATSEN0                                      (0x1U<<4U)
+#define ETHERNET_MAC_MACACR_ATSFC                                       (0x1U<<0U)
 
 // MACATSNR Configuration
 
-#define ETHERNET_MAC_MACATSNR_AUXTSLO                                   (0x7FFFFFFFU<<0)
-#define ETHERNET_MAC_MACATSNR_AUXTSLO_0                                 (0x1U<<0)
+#define ETHERNET_MAC_MACATSNR_AUXTSLO                                   (0x7FFFFFFFU<<0U)
+#define ETHERNET_MAC_MACATSNR_AUXTSLO_0                                 (0x1U<<0U)
 
 // MACATSSR Configuration
 
-#define ETHERNET_MAC_MACATSSR_AUXTSHI                                   (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_MACATSSR_AUXTSHI_0                                 (0x1U<<0)
+#define ETHERNET_MAC_MACATSSR_AUXTSHI                                   (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_MACATSSR_AUXTSHI_0                                 (0x1U<<0U)
 
 // MACTSIACR Configuration
 
-#define ETHERNET_MAC_MACTSIACR_OSTIAC                                   (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_MACTSIACR_OSTIAC_0                                 (0x1U<<0)
+#define ETHERNET_MAC_MACTSIACR_OSTIAC                                   (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_MACTSIACR_OSTIAC_0                                 (0x1U<<0U)
 
 // MACTSEACR Configuration
 
-#define ETHERNET_MAC_MACTSEACR_OSTEAC                                   (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_MACTSEACR_OSTEAC_0                                 (0x1U<<0)
+#define ETHERNET_MAC_MACTSEACR_OSTEAC                                   (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_MACTSEACR_OSTEAC_0                                 (0x1U<<0U)
 
 // MACTSICNR Configuration
 
-#define ETHERNET_MAC_MACTSICNR_TSIC                                     (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_MACTSICNR_TSIC_0                                   (0x1U<<0)
+#define ETHERNET_MAC_MACTSICNR_TSIC                                     (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_MACTSICNR_TSIC_0                                   (0x1U<<0U)
 
 // MACTSECNR Configuration
 
-#define ETHERNET_MAC_MACTSECNR_TSEC                                     (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_MACTSECNR_TSEC_0                                   (0x1U<<0)
+#define ETHERNET_MAC_MACTSECNR_TSEC                                     (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_MACTSECNR_TSEC_0                                   (0x1U<<0U)
 
 // MACPPSCR Configuration
 
-#define ETHERNET_MAC_MACPPSCR_TRGTMODSEL0                               (0x3U<<5)
-#define ETHERNET_MAC_MACPPSCR_TRGTMODSEL0_0                             (0x1U<<5)
-#define ETHERNET_MAC_MACPPSCR_PPSEN0                                    (0x1U<<4)
-#define ETHERNET_MAC_MACPPSCR_PPSCTRL                                   (0xFU<<0)
-#define ETHERNET_MAC_MACPPSCR_PPSCTRL_0                                 (0x1U<<0)
+#define ETHERNET_MAC_MACPPSCR_TRGTMODSEL0                               (0x3U<<5U)
+#define ETHERNET_MAC_MACPPSCR_TRGTMODSEL0_0                             (0x1U<<5U)
+#define ETHERNET_MAC_MACPPSCR_PPSEN0                                    (0x1U<<4U)
+#define ETHERNET_MAC_MACPPSCR_PPSCTRL                                   (0xFU<<0U)
+#define ETHERNET_MAC_MACPPSCR_PPSCTRL_0                                 (0x1U<<0U)
 
 // MACPPSTTSR Configuration
 
-#define ETHERNET_MAC_MACPPSTTSR_TSTRH0                                  (0x7FFFFFFFU<<0)
-#define ETHERNET_MAC_MACPPSTTSR_TSTRH0_0                                (0x1U<<0)
+#define ETHERNET_MAC_MACPPSTTSR_TSTRH0                                  (0x7FFFFFFFU<<0U)
+#define ETHERNET_MAC_MACPPSTTSR_TSTRH0_0                                (0x1U<<0U)
 
 // MACPPSTTNR Configuration
 
-#define ETHERNET_MAC_MACPPSTTNR_TRGTBUSY0                               (0x1U<<31)
-#define ETHERNET_MAC_MACPPSTTNR_TTSL0                                   (0x7FFFFFFFU<<0)
-#define ETHERNET_MAC_MACPPSTTNR_TTSL0_0                                 (0x1U<<0)
+#define ETHERNET_MAC_MACPPSTTNR_TRGTBUSY0                               (0x1U<<31U)
+#define ETHERNET_MAC_MACPPSTTNR_TTSL0                                   (0x7FFFFFFFU<<0U)
+#define ETHERNET_MAC_MACPPSTTNR_TTSL0_0                                 (0x1U<<0U)
 
 // MACPPSIR Configuration
 
-#define ETHERNET_MAC_MACPPSIR_PPSINT0                                   (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_MACPPSIR_PPSINT0_0                                 (0x1U<<0)
+#define ETHERNET_MAC_MACPPSIR_PPSINT0                                   (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_MACPPSIR_PPSINT0_0                                 (0x1U<<0U)
 
 // MACPPSWR Configuration
 
-#define ETHERNET_MAC_MACPPSWR_PPSWIDTH0                                 (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_MACPPSWR_PPSWIDTH0_0                               (0x1U<<0)
+#define ETHERNET_MAC_MACPPSWR_PPSWIDTH0                                 (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_MACPPSWR_PPSWIDTH0_0                               (0x1U<<0U)
 
 // MACPOCR Configuration
 
-#define ETHERNET_MAC_MACPOCR_DN                                         (0xFFU<<8)
-#define ETHERNET_MAC_MACPOCR_DN_0                                       (0x1U<<8)
-#define ETHERNET_MAC_MACPOCR_DRRDIS                                     (0x1U<<6)
-#define ETHERNET_MAC_MACPOCR_APDREQTRIG                                 (0x1U<<5)
-#define ETHERNET_MAC_MACPOCR_ASYNCTRIG                                  (0x1U<<4)
-#define ETHERNET_MAC_MACPOCR_APDREQEN                                   (0x1U<<2)
-#define ETHERNET_MAC_MACPOCR_ASYNCEN                                    (0x1U<<1)
-#define ETHERNET_MAC_MACPOCR_PTOEN                                      (0x1U<<0)
+#define ETHERNET_MAC_MACPOCR_DN                                         (0xFFU<<8U)
+#define ETHERNET_MAC_MACPOCR_DN_0                                       (0x1U<<8U)
+#define ETHERNET_MAC_MACPOCR_DRRDIS                                     (0x1U<<6U)
+#define ETHERNET_MAC_MACPOCR_APDREQTRIG                                 (0x1U<<5U)
+#define ETHERNET_MAC_MACPOCR_ASYNCTRIG                                  (0x1U<<4U)
+#define ETHERNET_MAC_MACPOCR_APDREQEN                                   (0x1U<<2U)
+#define ETHERNET_MAC_MACPOCR_ASYNCEN                                    (0x1U<<1U)
+#define ETHERNET_MAC_MACPOCR_PTOEN                                      (0x1U<<0U)
 
 // MACSPI0R Configuration
 
-#define ETHERNET_MAC_MACSPI0R_SPI0                                      (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_MACSPI0R_SPI0_0                                    (0x1U<<0)
+#define ETHERNET_MAC_MACSPI0R_SPI0                                      (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_MACSPI0R_SPI0_0                                    (0x1U<<0U)
 
 // MACSPI1R Configuration
 
-#define ETHERNET_MAC_MACSPI1R_SPI1                                      (0xFFFFFFFFU<<0)
-#define ETHERNET_MAC_MACSPI1R_SPI1_0                                    (0x1U<<0)
+#define ETHERNET_MAC_MACSPI1R_SPI1                                      (0xFFFFFFFFU<<0U)
+#define ETHERNET_MAC_MACSPI1R_SPI1_0                                    (0x1U<<0U)
 
 // MACSPI2R Configuration
 
-#define ETHERNET_MAC_MACSPI2R_SPI2                                      (0xFFFFU<<0)
-#define ETHERNET_MAC_MACSPI2R_SPI2_0                                    (0x1U<<0)
+#define ETHERNET_MAC_MACSPI2R_SPI2                                      (0xFFFFU<<0U)
+#define ETHERNET_MAC_MACSPI2R_SPI2_0                                    (0x1U<<0U)
 
 // MACLMIR Configuration
 
-#define ETHERNET_MAC_MACLMIR_LMPDRI                                     (0xFFU<<24)
-#define ETHERNET_MAC_MACLMIR_LMPDRI_0                                   (0x1U<<24)
-#define ETHERNET_MAC_MACLMIR_DRSYNCR                                    (0x7U<<8)
-#define ETHERNET_MAC_MACLMIR_DRSYNCR_0                                  (0x1U<<8)
-#define ETHERNET_MAC_MACLMIR_LSI                                        (0xFFU<<0)
-#define ETHERNET_MAC_MACLMIR_LSI_0                                      (0x1U<<0)
+#define ETHERNET_MAC_MACLMIR_LMPDRI                                     (0xFFU<<24U)
+#define ETHERNET_MAC_MACLMIR_LMPDRI_0                                   (0x1U<<24U)
+#define ETHERNET_MAC_MACLMIR_DRSYNCR                                    (0x7U<<8U)
+#define ETHERNET_MAC_MACLMIR_DRSYNCR_0                                  (0x1U<<8U)
+#define ETHERNET_MAC_MACLMIR_LSI                                        (0xFFU<<0U)
+#define ETHERNET_MAC_MACLMIR_LSI_0                                      (0x1U<<0U)

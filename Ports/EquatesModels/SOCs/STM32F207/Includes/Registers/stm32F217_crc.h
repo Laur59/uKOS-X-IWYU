@@ -28,14 +28,14 @@ typedef struct {
 
 // DR Configuration
 
-#define CRC_DR_DR       (0xFFFFFFFFU<<0)
-#define CRC_DR_DR_0     (0x1U<<0)
+#define CRC_DR_DR       (0xFFFFFFFFU<<0U)
+#define CRC_DR_DR_0     (0x1U<<0U)
 
 // IDR Configuration
 
-#define CRC_IDR_IDR     (0xFFU<<0)
-#define CRC_IDR_IDR_0   (0x1U<<0)
+#define CRC_IDR_IDR     (0xFFU<<0U)
+#define CRC_IDR_IDR_0   (0x1U<<0U)
 
 // CR Configuration
 
-#define CRC_CR_RESET    (0x1U<<0)
+#define CRC_CR_RESET    (0x1U<<0U)

@@ -51,7 +51,7 @@ static  const   boot_t  aFunction[] = {
                             { .oFunction="console", .oSerialManager=KURT1, .oArgV=argv_cnsUrt1, .oArgC=2U, .oSW=0x02U, .oBaudrate=KSERIAL_BAUDRATE_460800 },
                             { .oFunction="sloader", .oSerialManager=KURT1, .oArgV=argv_sloader, .oArgC=2U, .oSW=0x03U, .oBaudrate=KSERIAL_BAUDRATE_460800 },
                             { .oFunction="userapp", .oSerialManager=KURT0, .oArgV=argv_userApp, .oArgC=2U, .oSW=0x04U, .oBaudrate=KSERIAL_BAUDRATE_460800 },
-                            { .oFunction="console", .oSerialManager=KWFI0, .oArgV=argv_cnsWfi0, .oArgC=2U, .oSW=0x05U, .oBaudrate=KSERIAL_BAUDRATE_921600 }
+                            { .oFunction="console", .oSerialManager=KWFI0, .oArgV=argv_cnsWfi0, .oArgC=2U, .oSW=0x05U, .oBaudrate=KSERIAL_BAUDRATE_921600 },
                         };
 
 #define KDEF_COMM       KURT0

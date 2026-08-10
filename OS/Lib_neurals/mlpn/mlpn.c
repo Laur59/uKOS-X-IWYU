@@ -405,7 +405,7 @@ static  inline  float32_t   local_dot_f32(const float32_t * __restrict w, const 
 
 // Reduction
 
-    return (local_hadd_f32x4(vaddq_f32(acc0, acc1)));
+    return local_hadd_f32x4(vaddq_f32(acc0, acc1));
 
     #else
     float32_t   p = 0.0F;
@@ -682,7 +682,7 @@ static  inline  float32_t   local_exp(float32_t p) {
     union { float f; int32_t i; } u;
 
     u.i = (int32_t)(12102203.0F * p) + 1064866805;
-    return (u.f);
+    return u.f;
 }
 
 NEURAL_OPTIMIZE

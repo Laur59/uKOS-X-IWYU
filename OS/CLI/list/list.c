@@ -84,7 +84,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
                                     KID_FAM_CLI, KID_FAM_KERNELS,
                                     KID_FAM_CRYPTOGRAPHICS, KID_FAM_NEURALS, KID_FAM_GENERICS, KID_FAM_STORAGE, KID_FAM_PERIPHERALS,
                                     KID_FAM_SERIALS, KID_FAM_COMPANY, KID_FAM_SHARED,
-                                    KID_FAM_THIRD_PARTIES
+                                    KID_FAM_THIRD_PARTIES,
                                 };
 
     (void)dprintf(KSYST, "uKOS-X module list.\n");
@@ -102,7 +102,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 // List of the selected family module
 
         str = argv[1];
-        idModule = (uint8_t)(str[0]);
+        idModule = (uint8_t)str[0];
         error = !local_listModule(idModule);
     }
 

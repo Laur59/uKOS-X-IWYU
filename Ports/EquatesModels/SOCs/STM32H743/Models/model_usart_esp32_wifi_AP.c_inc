@@ -348,27 +348,25 @@ static  void    local_USART_IRQHandler(void) {
         PREEMPTION_THRESHOLD(core);
     }
 
-    if (((iir & USART_ISR_TXE) != 0U) && ((USART->CR1 & USART_CR1_TXEIE) != 0U)) {
-
 // TX interruption
 
-        if (cb_CTSCheck()) {
-            USART->TDR = (uint16_t)*vRSndBuffer;
-            vRSndBuffer++;
+    if (((iir & USART_ISR_TXE) != 0U) && ((USART->CR1 & USART_CR1_TXEIE) != 0U) &&
+        cb_CTSCheck()) {
+        USART->TDR = (uint16_t)*vRSndBuffer;
+        vRSndBuffer++;
 
 // cppcheck-suppress premium-misra-c-2023-13.2
 //
-            if (vRSndBuffer == vWSndBuffer) {
+        if (vRSndBuffer == vWSndBuffer) {
 
 // Terminated; disable the Tx interruption
 
-                USART->CR1 &= (uint32_t)~USART_CR1_TXEIE;
-                vSending = false;
+            USART->CR1 &= (uint32_t)~USART_CR1_TXEIE;
+            vSending = false;
 
-                #ifdef KUSART_SEMA_TX_S
-                if (vWithSemaphore_TX) { kern_signalSemaphore(vSemaphore_TX); }
-                #endif
-            }
+            #ifdef KUSART_SEMA_TX_S
+            if (vWithSemaphore_TX) { kern_signalSemaphore(vSemaphore_TX); }
+            #endif
         }
 
 // Continue to send data

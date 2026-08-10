@@ -410,2273 +410,2273 @@ typedef struct {
 
 // ITM_STIM0 Configuration
 
-#define PPB_ITM_STIM0_STIMULUS                  (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM0_STIMULUS_0                (0x1U<<0)
+#define PPB_ITM_STIM0_STIMULUS                  (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM0_STIMULUS_0                (0x1U<<0U)
 
 // ITM_STIM1 Configuration
 
-#define PPB_ITM_STIM1_STIMULUS                  (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM1_STIMULUS_0                (0x1U<<0)
+#define PPB_ITM_STIM1_STIMULUS                  (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM1_STIMULUS_0                (0x1U<<0U)
 
 // ITM_STIM2 Configuration
 
-#define PPB_ITM_STIM2_STIMULUS                  (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM2_STIMULUS_0                (0x1U<<0)
+#define PPB_ITM_STIM2_STIMULUS                  (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM2_STIMULUS_0                (0x1U<<0U)
 
 // ITM_STIM3 Configuration
 
-#define PPB_ITM_STIM3_STIMULUS                  (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM3_STIMULUS_0                (0x1U<<0)
+#define PPB_ITM_STIM3_STIMULUS                  (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM3_STIMULUS_0                (0x1U<<0U)
 
 // ITM_STIM4 Configuration
 
-#define PPB_ITM_STIM4_STIMULUS                  (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM4_STIMULUS_0                (0x1U<<0)
+#define PPB_ITM_STIM4_STIMULUS                  (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM4_STIMULUS_0                (0x1U<<0U)
 
 // ITM_STIM5 Configuration
 
-#define PPB_ITM_STIM5_STIMULUS                  (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM5_STIMULUS_0                (0x1U<<0)
+#define PPB_ITM_STIM5_STIMULUS                  (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM5_STIMULUS_0                (0x1U<<0U)
 
 // ITM_STIM6 Configuration
 
-#define PPB_ITM_STIM6_STIMULUS                  (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM6_STIMULUS_0                (0x1U<<0)
+#define PPB_ITM_STIM6_STIMULUS                  (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM6_STIMULUS_0                (0x1U<<0U)
 
 // ITM_STIM7 Configuration
 
-#define PPB_ITM_STIM7_STIMULUS                  (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM7_STIMULUS_0                (0x1U<<0)
+#define PPB_ITM_STIM7_STIMULUS                  (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM7_STIMULUS_0                (0x1U<<0U)
 
 // ITM_STIM8 Configuration
 
-#define PPB_ITM_STIM8_STIMULUS                  (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM8_STIMULUS_0                (0x1U<<0)
+#define PPB_ITM_STIM8_STIMULUS                  (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM8_STIMULUS_0                (0x1U<<0U)
 
 // ITM_STIM9 Configuration
 
-#define PPB_ITM_STIM9_STIMULUS                  (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM9_STIMULUS_0                (0x1U<<0)
+#define PPB_ITM_STIM9_STIMULUS                  (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM9_STIMULUS_0                (0x1U<<0U)
 
 // ITM_STIM10 Configuration
 
-#define PPB_ITM_STIM10_STIMULUS                 (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM10_STIMULUS_0               (0x1U<<0)
+#define PPB_ITM_STIM10_STIMULUS                 (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM10_STIMULUS_0               (0x1U<<0U)
 
 // ITM_STIM11 Configuration
 
-#define PPB_ITM_STIM11_STIMULUS                 (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM11_STIMULUS_0               (0x1U<<0)
+#define PPB_ITM_STIM11_STIMULUS                 (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM11_STIMULUS_0               (0x1U<<0U)
 
 // ITM_STIM12 Configuration
 
-#define PPB_ITM_STIM12_STIMULUS                 (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM12_STIMULUS_0               (0x1U<<0)
+#define PPB_ITM_STIM12_STIMULUS                 (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM12_STIMULUS_0               (0x1U<<0U)
 
 // ITM_STIM13 Configuration
 
-#define PPB_ITM_STIM13_STIMULUS                 (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM13_STIMULUS_0               (0x1U<<0)
+#define PPB_ITM_STIM13_STIMULUS                 (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM13_STIMULUS_0               (0x1U<<0U)
 
 // ITM_STIM14 Configuration
 
-#define PPB_ITM_STIM14_STIMULUS                 (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM14_STIMULUS_0               (0x1U<<0)
+#define PPB_ITM_STIM14_STIMULUS                 (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM14_STIMULUS_0               (0x1U<<0U)
 
 // ITM_STIM15 Configuration
 
-#define PPB_ITM_STIM15_STIMULUS                 (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM15_STIMULUS_0               (0x1U<<0)
+#define PPB_ITM_STIM15_STIMULUS                 (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM15_STIMULUS_0               (0x1U<<0U)
 
 // ITM_STIM16 Configuration
 
-#define PPB_ITM_STIM16_STIMULUS                 (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM16_STIMULUS_0               (0x1U<<0)
+#define PPB_ITM_STIM16_STIMULUS                 (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM16_STIMULUS_0               (0x1U<<0U)
 
 // ITM_STIM17 Configuration
 
-#define PPB_ITM_STIM17_STIMULUS                 (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM17_STIMULUS_0               (0x1U<<0)
+#define PPB_ITM_STIM17_STIMULUS                 (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM17_STIMULUS_0               (0x1U<<0U)
 
 // ITM_STIM18 Configuration
 
-#define PPB_ITM_STIM18_STIMULUS                 (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM18_STIMULUS_0               (0x1U<<0)
+#define PPB_ITM_STIM18_STIMULUS                 (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM18_STIMULUS_0               (0x1U<<0U)
 
 // ITM_STIM19 Configuration
 
-#define PPB_ITM_STIM19_STIMULUS                 (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM19_STIMULUS_0               (0x1U<<0)
+#define PPB_ITM_STIM19_STIMULUS                 (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM19_STIMULUS_0               (0x1U<<0U)
 
 // ITM_STIM20 Configuration
 
-#define PPB_ITM_STIM20_STIMULUS                 (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM20_STIMULUS_0               (0x1U<<0)
+#define PPB_ITM_STIM20_STIMULUS                 (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM20_STIMULUS_0               (0x1U<<0U)
 
 // ITM_STIM21 Configuration
 
-#define PPB_ITM_STIM21_STIMULUS                 (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM21_STIMULUS_0               (0x1U<<0)
+#define PPB_ITM_STIM21_STIMULUS                 (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM21_STIMULUS_0               (0x1U<<0U)
 
 // ITM_STIM22 Configuration
 
-#define PPB_ITM_STIM22_STIMULUS                 (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM22_STIMULUS_0               (0x1U<<0)
+#define PPB_ITM_STIM22_STIMULUS                 (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM22_STIMULUS_0               (0x1U<<0U)
 
 // ITM_STIM23 Configuration
 
-#define PPB_ITM_STIM23_STIMULUS                 (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM23_STIMULUS_0               (0x1U<<0)
+#define PPB_ITM_STIM23_STIMULUS                 (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM23_STIMULUS_0               (0x1U<<0U)
 
 // ITM_STIM24 Configuration
 
-#define PPB_ITM_STIM24_STIMULUS                 (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM24_STIMULUS_0               (0x1U<<0)
+#define PPB_ITM_STIM24_STIMULUS                 (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM24_STIMULUS_0               (0x1U<<0U)
 
 // ITM_STIM25 Configuration
 
-#define PPB_ITM_STIM25_STIMULUS                 (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM25_STIMULUS_0               (0x1U<<0)
+#define PPB_ITM_STIM25_STIMULUS                 (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM25_STIMULUS_0               (0x1U<<0U)
 
 // ITM_STIM26 Configuration
 
-#define PPB_ITM_STIM26_STIMULUS                 (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM26_STIMULUS_0               (0x1U<<0)
+#define PPB_ITM_STIM26_STIMULUS                 (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM26_STIMULUS_0               (0x1U<<0U)
 
 // ITM_STIM27 Configuration
 
-#define PPB_ITM_STIM27_STIMULUS                 (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM27_STIMULUS_0               (0x1U<<0)
+#define PPB_ITM_STIM27_STIMULUS                 (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM27_STIMULUS_0               (0x1U<<0U)
 
 // ITM_STIM28 Configuration
 
-#define PPB_ITM_STIM28_STIMULUS                 (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM28_STIMULUS_0               (0x1U<<0)
+#define PPB_ITM_STIM28_STIMULUS                 (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM28_STIMULUS_0               (0x1U<<0U)
 
 // ITM_STIM29 Configuration
 
-#define PPB_ITM_STIM29_STIMULUS                 (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM29_STIMULUS_0               (0x1U<<0)
+#define PPB_ITM_STIM29_STIMULUS                 (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM29_STIMULUS_0               (0x1U<<0U)
 
 // ITM_STIM30 Configuration
 
-#define PPB_ITM_STIM30_STIMULUS                 (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM30_STIMULUS_0               (0x1U<<0)
+#define PPB_ITM_STIM30_STIMULUS                 (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM30_STIMULUS_0               (0x1U<<0U)
 
 // ITM_STIM31 Configuration
 
-#define PPB_ITM_STIM31_STIMULUS                 (0xFFFFFFFFU<<0)
-#define PPB_ITM_STIM31_STIMULUS_0               (0x1U<<0)
+#define PPB_ITM_STIM31_STIMULUS                 (0xFFFFFFFFU<<0U)
+#define PPB_ITM_STIM31_STIMULUS_0               (0x1U<<0U)
 
 // ITM_TER0 Configuration
 
-#define PPB_ITM_TER0_STIMENA                    (0xFFFFFFFFU<<0)
-#define PPB_ITM_TER0_STIMENA_0                  (0x1U<<0)
+#define PPB_ITM_TER0_STIMENA                    (0xFFFFFFFFU<<0U)
+#define PPB_ITM_TER0_STIMENA_0                  (0x1U<<0U)
 
 // ITM_TPR Configuration
 
-#define PPB_ITM_TPR_PRIVMASK                    (0xFU<<0)
-#define PPB_ITM_TPR_PRIVMASK_0                  (0x1U<<0)
+#define PPB_ITM_TPR_PRIVMASK                    (0xFU<<0U)
+#define PPB_ITM_TPR_PRIVMASK_0                  (0x1U<<0U)
 
 // ITM_TCR Configuration
 
-#define PPB_ITM_TCR_ITMENA                      (0x1U<<0)
-#define PPB_ITM_TCR_TSENA                       (0x1U<<1)
-#define PPB_ITM_TCR_SYNCENA                     (0x1U<<2)
-#define PPB_ITM_TCR_TXENA                       (0x1U<<3)
-#define PPB_ITM_TCR_SWOENA                      (0x1U<<4)
-#define PPB_ITM_TCR_STALLENA                    (0x1U<<5)
-#define PPB_ITM_TCR_TSPRESCALE                  (0x3U<<8)
-#define PPB_ITM_TCR_TSPRESCALE_0                (0x1U<<8)
-#define PPB_ITM_TCR_GTSFREQ                     (0x3U<<10)
-#define PPB_ITM_TCR_GTSFREQ_0                   (0x1U<<10)
-#define PPB_ITM_TCR_TRACEBUSID                  (0x7FU<<16)
-#define PPB_ITM_TCR_TRACEBUSID_0                (0x1U<<16)
-#define PPB_ITM_TCR_BUSY                        (0x1U<<23)
+#define PPB_ITM_TCR_ITMENA                      (0x1U<<0U)
+#define PPB_ITM_TCR_TSENA                       (0x1U<<1U)
+#define PPB_ITM_TCR_SYNCENA                     (0x1U<<2U)
+#define PPB_ITM_TCR_TXENA                       (0x1U<<3U)
+#define PPB_ITM_TCR_SWOENA                      (0x1U<<4U)
+#define PPB_ITM_TCR_STALLENA                    (0x1U<<5U)
+#define PPB_ITM_TCR_TSPRESCALE                  (0x3U<<8U)
+#define PPB_ITM_TCR_TSPRESCALE_0                (0x1U<<8U)
+#define PPB_ITM_TCR_GTSFREQ                     (0x3U<<10U)
+#define PPB_ITM_TCR_GTSFREQ_0                   (0x1U<<10U)
+#define PPB_ITM_TCR_TRACEBUSID                  (0x7FU<<16U)
+#define PPB_ITM_TCR_TRACEBUSID_0                (0x1U<<16U)
+#define PPB_ITM_TCR_BUSY                        (0x1U<<23U)
 
 // INT_ATREADY Configuration
 
-#define PPB_INT_ATREADY_ATREADY                 (0x1U<<0)
-#define PPB_INT_ATREADY_AFVALID                 (0x1U<<1)
+#define PPB_INT_ATREADY_ATREADY                 (0x1U<<0U)
+#define PPB_INT_ATREADY_AFVALID                 (0x1U<<1U)
 
 // INT_ATVALID Configuration
 
-#define PPB_INT_ATVALID_ATREADY                 (0x1U<<0)
-#define PPB_INT_ATVALID_AFREADY                 (0x1U<<1)
+#define PPB_INT_ATVALID_ATREADY                 (0x1U<<0U)
+#define PPB_INT_ATVALID_AFREADY                 (0x1U<<1U)
 
 // ITM_ITCTRL Configuration
 
-#define PPB_ITM_ITCTRL_IME                      (0x1U<<0)
+#define PPB_ITM_ITCTRL_IME                      (0x1U<<0U)
 
 // ITM_DEVARCH Configuration
 
-#define PPB_ITM_DEVARCH_ARCHPART                (0xFFFU<<0)
-#define PPB_ITM_DEVARCH_ARCHPART_0              (0x1U<<0)
-#define PPB_ITM_DEVARCH_ARCHVER                 (0xFU<<12)
-#define PPB_ITM_DEVARCH_ARCHVER_0               (0x1U<<12)
-#define PPB_ITM_DEVARCH_REVISION                (0xFU<<16)
-#define PPB_ITM_DEVARCH_REVISION_0              (0x1U<<16)
-#define PPB_ITM_DEVARCH_PRESENT                 (0x1U<<20)
-#define PPB_ITM_DEVARCH_ARCHITECT               (0x7FFU<<21)
-#define PPB_ITM_DEVARCH_ARCHITECT_0             (0x1U<<21)
+#define PPB_ITM_DEVARCH_ARCHPART                (0xFFFU<<0U)
+#define PPB_ITM_DEVARCH_ARCHPART_0              (0x1U<<0U)
+#define PPB_ITM_DEVARCH_ARCHVER                 (0xFU<<12U)
+#define PPB_ITM_DEVARCH_ARCHVER_0               (0x1U<<12U)
+#define PPB_ITM_DEVARCH_REVISION                (0xFU<<16U)
+#define PPB_ITM_DEVARCH_REVISION_0              (0x1U<<16U)
+#define PPB_ITM_DEVARCH_PRESENT                 (0x1U<<20U)
+#define PPB_ITM_DEVARCH_ARCHITECT               (0x7FFU<<21U)
+#define PPB_ITM_DEVARCH_ARCHITECT_0             (0x1U<<21U)
 
 // ITM_DEVTYPE Configuration
 
-#define PPB_ITM_DEVTYPE_MAJOR                   (0xFU<<0)
-#define PPB_ITM_DEVTYPE_MAJOR_0                 (0x1U<<0)
-#define PPB_ITM_DEVTYPE_SUB                     (0xFU<<4)
-#define PPB_ITM_DEVTYPE_SUB_0                   (0x1U<<4)
+#define PPB_ITM_DEVTYPE_MAJOR                   (0xFU<<0U)
+#define PPB_ITM_DEVTYPE_MAJOR_0                 (0x1U<<0U)
+#define PPB_ITM_DEVTYPE_SUB                     (0xFU<<4U)
+#define PPB_ITM_DEVTYPE_SUB_0                   (0x1U<<4U)
 
 // ITM_PIDR4 Configuration
 
-#define PPB_ITM_PIDR4_DES_2                     (0xFU<<0)
-#define PPB_ITM_PIDR4_DES_2_0                   (0x1U<<0)
-#define PPB_ITM_PIDR4_SIZE                      (0xFU<<4)
-#define PPB_ITM_PIDR4_SIZE_0                    (0x1U<<4)
+#define PPB_ITM_PIDR4_DES_2                     (0xFU<<0U)
+#define PPB_ITM_PIDR4_DES_2_0                   (0x1U<<0U)
+#define PPB_ITM_PIDR4_SIZE                      (0xFU<<4U)
+#define PPB_ITM_PIDR4_SIZE_0                    (0x1U<<4U)
 
 // ITM_PIDR5 Configuration
 
-#define PPB_ITM_PIDR5_ITM_PIDR5                 (0xFFFFFFFFU<<0)
-#define PPB_ITM_PIDR5_ITM_PIDR5_0               (0x1U<<0)
+#define PPB_ITM_PIDR5_ITM_PIDR5                 (0xFFFFFFFFU<<0U)
+#define PPB_ITM_PIDR5_ITM_PIDR5_0               (0x1U<<0U)
 
 // ITM_PIDR6 Configuration
 
-#define PPB_ITM_PIDR6_ITM_PIDR6                 (0xFFFFFFFFU<<0)
-#define PPB_ITM_PIDR6_ITM_PIDR6_0               (0x1U<<0)
+#define PPB_ITM_PIDR6_ITM_PIDR6                 (0xFFFFFFFFU<<0U)
+#define PPB_ITM_PIDR6_ITM_PIDR6_0               (0x1U<<0U)
 
 // ITM_PIDR7 Configuration
 
-#define PPB_ITM_PIDR7_ITM_PIDR7                 (0xFFFFFFFFU<<0)
-#define PPB_ITM_PIDR7_ITM_PIDR7_0               (0x1U<<0)
+#define PPB_ITM_PIDR7_ITM_PIDR7                 (0xFFFFFFFFU<<0U)
+#define PPB_ITM_PIDR7_ITM_PIDR7_0               (0x1U<<0U)
 
 // ITM_PIDR0 Configuration
 
-#define PPB_ITM_PIDR0_PART_0                    (0xFFU<<0)
-#define PPB_ITM_PIDR0_PART_0_0                  (0x1U<<0)
+#define PPB_ITM_PIDR0_PART_0                    (0xFFU<<0U)
+#define PPB_ITM_PIDR0_PART_0_0                  (0x1U<<0U)
 
 // ITM_PIDR1 Configuration
 
-#define PPB_ITM_PIDR1_PART_1                    (0xFU<<0)
-#define PPB_ITM_PIDR1_PART_1_0                  (0x1U<<0)
-#define PPB_ITM_PIDR1_DES_0                     (0xFU<<4)
-#define PPB_ITM_PIDR1_DES_0_0                   (0x1U<<4)
+#define PPB_ITM_PIDR1_PART_1                    (0xFU<<0U)
+#define PPB_ITM_PIDR1_PART_1_0                  (0x1U<<0U)
+#define PPB_ITM_PIDR1_DES_0                     (0xFU<<4U)
+#define PPB_ITM_PIDR1_DES_0_0                   (0x1U<<4U)
 
 // ITM_PIDR2 Configuration
 
-#define PPB_ITM_PIDR2_DES_1                     (0x7U<<0)
-#define PPB_ITM_PIDR2_DES_1_0                   (0x1U<<0)
-#define PPB_ITM_PIDR2_JEDEC                     (0x1U<<3)
-#define PPB_ITM_PIDR2_REVISION                  (0xFU<<4)
-#define PPB_ITM_PIDR2_REVISION_0                (0x1U<<4)
+#define PPB_ITM_PIDR2_DES_1                     (0x7U<<0U)
+#define PPB_ITM_PIDR2_DES_1_0                   (0x1U<<0U)
+#define PPB_ITM_PIDR2_JEDEC                     (0x1U<<3U)
+#define PPB_ITM_PIDR2_REVISION                  (0xFU<<4U)
+#define PPB_ITM_PIDR2_REVISION_0                (0x1U<<4U)
 
 // ITM_PIDR3 Configuration
 
-#define PPB_ITM_PIDR3_CMOD                      (0xFU<<0)
-#define PPB_ITM_PIDR3_CMOD_0                    (0x1U<<0)
-#define PPB_ITM_PIDR3_REVAND                    (0xFU<<4)
-#define PPB_ITM_PIDR3_REVAND_0                  (0x1U<<4)
+#define PPB_ITM_PIDR3_CMOD                      (0xFU<<0U)
+#define PPB_ITM_PIDR3_CMOD_0                    (0x1U<<0U)
+#define PPB_ITM_PIDR3_REVAND                    (0xFU<<4U)
+#define PPB_ITM_PIDR3_REVAND_0                  (0x1U<<4U)
 
 // ITM_CIDR0 Configuration
 
-#define PPB_ITM_CIDR0_PRMBL_0                   (0xFFU<<0)
-#define PPB_ITM_CIDR0_PRMBL_0_0                 (0x1U<<0)
+#define PPB_ITM_CIDR0_PRMBL_0                   (0xFFU<<0U)
+#define PPB_ITM_CIDR0_PRMBL_0_0                 (0x1U<<0U)
 
 // ITM_CIDR1 Configuration
 
-#define PPB_ITM_CIDR1_PRMBL_1                   (0xFU<<0)
-#define PPB_ITM_CIDR1_PRMBL_1_0                 (0x1U<<0)
-#define PPB_ITM_CIDR1_CLASS                     (0xFU<<4)
-#define PPB_ITM_CIDR1_CLASS_0                   (0x1U<<4)
+#define PPB_ITM_CIDR1_PRMBL_1                   (0xFU<<0U)
+#define PPB_ITM_CIDR1_PRMBL_1_0                 (0x1U<<0U)
+#define PPB_ITM_CIDR1_CLASS                     (0xFU<<4U)
+#define PPB_ITM_CIDR1_CLASS_0                   (0x1U<<4U)
 
 // ITM_CIDR2 Configuration
 
-#define PPB_ITM_CIDR2_PRMBL_2                   (0xFFU<<0)
-#define PPB_ITM_CIDR2_PRMBL_2_0                 (0x1U<<0)
+#define PPB_ITM_CIDR2_PRMBL_2                   (0xFFU<<0U)
+#define PPB_ITM_CIDR2_PRMBL_2_0                 (0x1U<<0U)
 
 // ITM_CIDR3 Configuration
 
-#define PPB_ITM_CIDR3_PRMBL_3                   (0xFFU<<0)
-#define PPB_ITM_CIDR3_PRMBL_3_0                 (0x1U<<0)
+#define PPB_ITM_CIDR3_PRMBL_3                   (0xFFU<<0U)
+#define PPB_ITM_CIDR3_PRMBL_3_0                 (0x1U<<0U)
 
 // DWT_CTRL Configuration
 
-#define PPB_DWT_CTRL_CYCCNTENA                  (0x1U<<0)
-#define PPB_DWT_CTRL_POSTPRESET                 (0xFU<<1)
-#define PPB_DWT_CTRL_POSTPRESET_0               (0x1U<<1)
-#define PPB_DWT_CTRL_POSTINIT                   (0xFU<<5)
-#define PPB_DWT_CTRL_POSTINIT_0                 (0x1U<<5)
-#define PPB_DWT_CTRL_CYCTAP                     (0x1U<<9)
-#define PPB_DWT_CTRL_SYNCTAP                    (0x3U<<10)
-#define PPB_DWT_CTRL_SYNCTAP_0                  (0x1U<<10)
-#define PPB_DWT_CTRL_PCSAMPLENA                 (0x1U<<12)
-#define PPB_DWT_CTRL_EXTTRCENA                  (0x1U<<16)
-#define PPB_DWT_CTRL_CPIEVTENA                  (0x1U<<17)
-#define PPB_DWT_CTRL_EXCEVTENA                  (0x1U<<18)
-#define PPB_DWT_CTRL_SLEEPEVTENA                (0x1U<<19)
-#define PPB_DWT_CTRL_LSUEVTENA                  (0x1U<<20)
-#define PPB_DWT_CTRL_FOLDEVTENA                 (0x1U<<21)
-#define PPB_DWT_CTRL_CYCEVTENA                  (0x1U<<22)
-#define PPB_DWT_CTRL_CYCDISS                    (0x1U<<23)
-#define PPB_DWT_CTRL_NOPRFCNT                   (0x1U<<24)
-#define PPB_DWT_CTRL_NOCYCCNT                   (0x1U<<25)
-#define PPB_DWT_CTRL_NOEXTTRIG                  (0x1U<<26)
-#define PPB_DWT_CTRL_NOTRCPKT                   (0x1U<<27)
-#define PPB_DWT_CTRL_NUMCOMP                    (0xFU<<28)
-#define PPB_DWT_CTRL_NUMCOMP_0                  (0x1U<<28)
+#define PPB_DWT_CTRL_CYCCNTENA                  (0x1U<<0U)
+#define PPB_DWT_CTRL_POSTPRESET                 (0xFU<<1U)
+#define PPB_DWT_CTRL_POSTPRESET_0               (0x1U<<1U)
+#define PPB_DWT_CTRL_POSTINIT                   (0xFU<<5U)
+#define PPB_DWT_CTRL_POSTINIT_0                 (0x1U<<5U)
+#define PPB_DWT_CTRL_CYCTAP                     (0x1U<<9U)
+#define PPB_DWT_CTRL_SYNCTAP                    (0x3U<<10U)
+#define PPB_DWT_CTRL_SYNCTAP_0                  (0x1U<<10U)
+#define PPB_DWT_CTRL_PCSAMPLENA                 (0x1U<<12U)
+#define PPB_DWT_CTRL_EXTTRCENA                  (0x1U<<16U)
+#define PPB_DWT_CTRL_CPIEVTENA                  (0x1U<<17U)
+#define PPB_DWT_CTRL_EXCEVTENA                  (0x1U<<18U)
+#define PPB_DWT_CTRL_SLEEPEVTENA                (0x1U<<19U)
+#define PPB_DWT_CTRL_LSUEVTENA                  (0x1U<<20U)
+#define PPB_DWT_CTRL_FOLDEVTENA                 (0x1U<<21U)
+#define PPB_DWT_CTRL_CYCEVTENA                  (0x1U<<22U)
+#define PPB_DWT_CTRL_CYCDISS                    (0x1U<<23U)
+#define PPB_DWT_CTRL_NOPRFCNT                   (0x1U<<24U)
+#define PPB_DWT_CTRL_NOCYCCNT                   (0x1U<<25U)
+#define PPB_DWT_CTRL_NOEXTTRIG                  (0x1U<<26U)
+#define PPB_DWT_CTRL_NOTRCPKT                   (0x1U<<27U)
+#define PPB_DWT_CTRL_NUMCOMP                    (0xFU<<28U)
+#define PPB_DWT_CTRL_NUMCOMP_0                  (0x1U<<28U)
 
 // DWT_CYCCNT Configuration
 
-#define PPB_DWT_CYCCNT_CYCCNT                   (0xFFFFFFFFU<<0)
-#define PPB_DWT_CYCCNT_CYCCNT_0                 (0x1U<<0)
+#define PPB_DWT_CYCCNT_CYCCNT                   (0xFFFFFFFFU<<0U)
+#define PPB_DWT_CYCCNT_CYCCNT_0                 (0x1U<<0U)
 
 // DWT_EXCCNT Configuration
 
-#define PPB_DWT_EXCCNT_EXCCNT                   (0xFFU<<0)
-#define PPB_DWT_EXCCNT_EXCCNT_0                 (0x1U<<0)
+#define PPB_DWT_EXCCNT_EXCCNT                   (0xFFU<<0U)
+#define PPB_DWT_EXCCNT_EXCCNT_0                 (0x1U<<0U)
 
 // DWT_LSUCNT Configuration
 
-#define PPB_DWT_LSUCNT_LSUCNT                   (0xFFU<<0)
-#define PPB_DWT_LSUCNT_LSUCNT_0                 (0x1U<<0)
+#define PPB_DWT_LSUCNT_LSUCNT                   (0xFFU<<0U)
+#define PPB_DWT_LSUCNT_LSUCNT_0                 (0x1U<<0U)
 
 // DWT_FOLDCNT Configuration
 
-#define PPB_DWT_FOLDCNT_FOLDCNT                 (0xFFU<<0)
-#define PPB_DWT_FOLDCNT_FOLDCNT_0               (0x1U<<0)
+#define PPB_DWT_FOLDCNT_FOLDCNT                 (0xFFU<<0U)
+#define PPB_DWT_FOLDCNT_FOLDCNT_0               (0x1U<<0U)
 
 // DWT_COMP0 Configuration
 
-#define PPB_DWT_COMP0_DWT_COMP0                 (0xFFFFFFFFU<<0)
-#define PPB_DWT_COMP0_DWT_COMP0_0               (0x1U<<0)
+#define PPB_DWT_COMP0_DWT_COMP0                 (0xFFFFFFFFU<<0U)
+#define PPB_DWT_COMP0_DWT_COMP0_0               (0x1U<<0U)
 
 // DWT_FUNCTION0 Configuration
 
-#define PPB_DWT_FUNCTION0_MATCH                 (0xFU<<0)
-#define PPB_DWT_FUNCTION0_MATCH_0               (0x1U<<0)
-#define PPB_DWT_FUNCTION0_ACTION                (0x3U<<4)
-#define PPB_DWT_FUNCTION0_ACTION_0              (0x1U<<4)
-#define PPB_DWT_FUNCTION0_DATAVSIZE             (0x3U<<10)
-#define PPB_DWT_FUNCTION0_DATAVSIZE_0           (0x1U<<10)
-#define PPB_DWT_FUNCTION0_MATCHED               (0x1U<<24)
-#define PPB_DWT_FUNCTION0_ID                    (0x1FU<<27)
-#define PPB_DWT_FUNCTION0_ID_0                  (0x1U<<27)
+#define PPB_DWT_FUNCTION0_MATCH                 (0xFU<<0U)
+#define PPB_DWT_FUNCTION0_MATCH_0               (0x1U<<0U)
+#define PPB_DWT_FUNCTION0_ACTION                (0x3U<<4U)
+#define PPB_DWT_FUNCTION0_ACTION_0              (0x1U<<4U)
+#define PPB_DWT_FUNCTION0_DATAVSIZE             (0x3U<<10U)
+#define PPB_DWT_FUNCTION0_DATAVSIZE_0           (0x1U<<10U)
+#define PPB_DWT_FUNCTION0_MATCHED               (0x1U<<24U)
+#define PPB_DWT_FUNCTION0_ID                    (0x1FU<<27U)
+#define PPB_DWT_FUNCTION0_ID_0                  (0x1U<<27U)
 
 // DWT_COMP1 Configuration
 
-#define PPB_DWT_COMP1_DWT_COMP1                 (0xFFFFFFFFU<<0)
-#define PPB_DWT_COMP1_DWT_COMP1_0               (0x1U<<0)
+#define PPB_DWT_COMP1_DWT_COMP1                 (0xFFFFFFFFU<<0U)
+#define PPB_DWT_COMP1_DWT_COMP1_0               (0x1U<<0U)
 
 // DWT_FUNCTION1 Configuration
 
-#define PPB_DWT_FUNCTION1_MATCH                 (0xFU<<0)
-#define PPB_DWT_FUNCTION1_MATCH_0               (0x1U<<0)
-#define PPB_DWT_FUNCTION1_ACTION                (0x3U<<4)
-#define PPB_DWT_FUNCTION1_ACTION_0              (0x1U<<4)
-#define PPB_DWT_FUNCTION1_DATAVSIZE             (0x3U<<10)
-#define PPB_DWT_FUNCTION1_DATAVSIZE_0           (0x1U<<10)
-#define PPB_DWT_FUNCTION1_MATCHED               (0x1U<<24)
-#define PPB_DWT_FUNCTION1_ID                    (0x1FU<<27)
-#define PPB_DWT_FUNCTION1_ID_0                  (0x1U<<27)
+#define PPB_DWT_FUNCTION1_MATCH                 (0xFU<<0U)
+#define PPB_DWT_FUNCTION1_MATCH_0               (0x1U<<0U)
+#define PPB_DWT_FUNCTION1_ACTION                (0x3U<<4U)
+#define PPB_DWT_FUNCTION1_ACTION_0              (0x1U<<4U)
+#define PPB_DWT_FUNCTION1_DATAVSIZE             (0x3U<<10U)
+#define PPB_DWT_FUNCTION1_DATAVSIZE_0           (0x1U<<10U)
+#define PPB_DWT_FUNCTION1_MATCHED               (0x1U<<24U)
+#define PPB_DWT_FUNCTION1_ID                    (0x1FU<<27U)
+#define PPB_DWT_FUNCTION1_ID_0                  (0x1U<<27U)
 
 // DWT_COMP2 Configuration
 
-#define PPB_DWT_COMP2_DWT_COMP2                 (0xFFFFFFFFU<<0)
-#define PPB_DWT_COMP2_DWT_COMP2_0               (0x1U<<0)
+#define PPB_DWT_COMP2_DWT_COMP2                 (0xFFFFFFFFU<<0U)
+#define PPB_DWT_COMP2_DWT_COMP2_0               (0x1U<<0U)
 
 // DWT_FUNCTION2 Configuration
 
-#define PPB_DWT_FUNCTION2_MATCH                 (0xFU<<0)
-#define PPB_DWT_FUNCTION2_MATCH_0               (0x1U<<0)
-#define PPB_DWT_FUNCTION2_ACTION                (0x3U<<4)
-#define PPB_DWT_FUNCTION2_ACTION_0              (0x1U<<4)
-#define PPB_DWT_FUNCTION2_DATAVSIZE             (0x3U<<10)
-#define PPB_DWT_FUNCTION2_DATAVSIZE_0           (0x1U<<10)
-#define PPB_DWT_FUNCTION2_MATCHED               (0x1U<<24)
-#define PPB_DWT_FUNCTION2_ID                    (0x1FU<<27)
-#define PPB_DWT_FUNCTION2_ID_0                  (0x1U<<27)
+#define PPB_DWT_FUNCTION2_MATCH                 (0xFU<<0U)
+#define PPB_DWT_FUNCTION2_MATCH_0               (0x1U<<0U)
+#define PPB_DWT_FUNCTION2_ACTION                (0x3U<<4U)
+#define PPB_DWT_FUNCTION2_ACTION_0              (0x1U<<4U)
+#define PPB_DWT_FUNCTION2_DATAVSIZE             (0x3U<<10U)
+#define PPB_DWT_FUNCTION2_DATAVSIZE_0           (0x1U<<10U)
+#define PPB_DWT_FUNCTION2_MATCHED               (0x1U<<24U)
+#define PPB_DWT_FUNCTION2_ID                    (0x1FU<<27U)
+#define PPB_DWT_FUNCTION2_ID_0                  (0x1U<<27U)
 
 // DWT_COMP3 Configuration
 
-#define PPB_DWT_COMP3_DWT_COMP3                 (0xFFFFFFFFU<<0)
-#define PPB_DWT_COMP3_DWT_COMP3_0               (0x1U<<0)
+#define PPB_DWT_COMP3_DWT_COMP3                 (0xFFFFFFFFU<<0U)
+#define PPB_DWT_COMP3_DWT_COMP3_0               (0x1U<<0U)
 
 // DWT_FUNCTION3 Configuration
 
-#define PPB_DWT_FUNCTION3_MATCH                 (0xFU<<0)
-#define PPB_DWT_FUNCTION3_MATCH_0               (0x1U<<0)
-#define PPB_DWT_FUNCTION3_ACTION                (0x3U<<4)
-#define PPB_DWT_FUNCTION3_ACTION_0              (0x1U<<4)
-#define PPB_DWT_FUNCTION3_DATAVSIZE             (0x3U<<10)
-#define PPB_DWT_FUNCTION3_DATAVSIZE_0           (0x1U<<10)
-#define PPB_DWT_FUNCTION3_MATCHED               (0x1U<<24)
-#define PPB_DWT_FUNCTION3_ID                    (0x1FU<<27)
-#define PPB_DWT_FUNCTION3_ID_0                  (0x1U<<27)
+#define PPB_DWT_FUNCTION3_MATCH                 (0xFU<<0U)
+#define PPB_DWT_FUNCTION3_MATCH_0               (0x1U<<0U)
+#define PPB_DWT_FUNCTION3_ACTION                (0x3U<<4U)
+#define PPB_DWT_FUNCTION3_ACTION_0              (0x1U<<4U)
+#define PPB_DWT_FUNCTION3_DATAVSIZE             (0x3U<<10U)
+#define PPB_DWT_FUNCTION3_DATAVSIZE_0           (0x1U<<10U)
+#define PPB_DWT_FUNCTION3_MATCHED               (0x1U<<24U)
+#define PPB_DWT_FUNCTION3_ID                    (0x1FU<<27U)
+#define PPB_DWT_FUNCTION3_ID_0                  (0x1U<<27U)
 
 // DWT_DEVARCH Configuration
 
-#define PPB_DWT_DEVARCH_ARCHPART                (0xFFFU<<0)
-#define PPB_DWT_DEVARCH_ARCHPART_0              (0x1U<<0)
-#define PPB_DWT_DEVARCH_ARCHVER                 (0xFU<<12)
-#define PPB_DWT_DEVARCH_ARCHVER_0               (0x1U<<12)
-#define PPB_DWT_DEVARCH_REVISION                (0xFU<<16)
-#define PPB_DWT_DEVARCH_REVISION_0              (0x1U<<16)
-#define PPB_DWT_DEVARCH_PRESENT                 (0x1U<<20)
-#define PPB_DWT_DEVARCH_ARCHITECT               (0x7FFU<<21)
-#define PPB_DWT_DEVARCH_ARCHITECT_0             (0x1U<<21)
+#define PPB_DWT_DEVARCH_ARCHPART                (0xFFFU<<0U)
+#define PPB_DWT_DEVARCH_ARCHPART_0              (0x1U<<0U)
+#define PPB_DWT_DEVARCH_ARCHVER                 (0xFU<<12U)
+#define PPB_DWT_DEVARCH_ARCHVER_0               (0x1U<<12U)
+#define PPB_DWT_DEVARCH_REVISION                (0xFU<<16U)
+#define PPB_DWT_DEVARCH_REVISION_0              (0x1U<<16U)
+#define PPB_DWT_DEVARCH_PRESENT                 (0x1U<<20U)
+#define PPB_DWT_DEVARCH_ARCHITECT               (0x7FFU<<21U)
+#define PPB_DWT_DEVARCH_ARCHITECT_0             (0x1U<<21U)
 
 // DWT_DEVTYPE Configuration
 
-#define PPB_DWT_DEVTYPE_MAJOR                   (0xFU<<0)
-#define PPB_DWT_DEVTYPE_MAJOR_0                 (0x1U<<0)
-#define PPB_DWT_DEVTYPE_SUB                     (0xFU<<4)
-#define PPB_DWT_DEVTYPE_SUB_0                   (0x1U<<4)
+#define PPB_DWT_DEVTYPE_MAJOR                   (0xFU<<0U)
+#define PPB_DWT_DEVTYPE_MAJOR_0                 (0x1U<<0U)
+#define PPB_DWT_DEVTYPE_SUB                     (0xFU<<4U)
+#define PPB_DWT_DEVTYPE_SUB_0                   (0x1U<<4U)
 
 // DWT_PIDR4 Configuration
 
-#define PPB_DWT_PIDR4_DES_2                     (0xFU<<0)
-#define PPB_DWT_PIDR4_DES_2_0                   (0x1U<<0)
-#define PPB_DWT_PIDR4_SIZE                      (0xFU<<4)
-#define PPB_DWT_PIDR4_SIZE_0                    (0x1U<<4)
+#define PPB_DWT_PIDR4_DES_2                     (0xFU<<0U)
+#define PPB_DWT_PIDR4_DES_2_0                   (0x1U<<0U)
+#define PPB_DWT_PIDR4_SIZE                      (0xFU<<4U)
+#define PPB_DWT_PIDR4_SIZE_0                    (0x1U<<4U)
 
 // DWT_PIDR5 Configuration
 
-#define PPB_DWT_PIDR5_DWT_PIDR5                 (0xFFFFFFFFU<<0)
-#define PPB_DWT_PIDR5_DWT_PIDR5_0               (0x1U<<0)
+#define PPB_DWT_PIDR5_DWT_PIDR5                 (0xFFFFFFFFU<<0U)
+#define PPB_DWT_PIDR5_DWT_PIDR5_0               (0x1U<<0U)
 
 // DWT_PIDR6 Configuration
 
-#define PPB_DWT_PIDR6_DWT_PIDR6                 (0xFFFFFFFFU<<0)
-#define PPB_DWT_PIDR6_DWT_PIDR6_0               (0x1U<<0)
+#define PPB_DWT_PIDR6_DWT_PIDR6                 (0xFFFFFFFFU<<0U)
+#define PPB_DWT_PIDR6_DWT_PIDR6_0               (0x1U<<0U)
 
 // DWT_PIDR7 Configuration
 
-#define PPB_DWT_PIDR7_DWT_PIDR7                 (0xFFFFFFFFU<<0)
-#define PPB_DWT_PIDR7_DWT_PIDR7_0               (0x1U<<0)
+#define PPB_DWT_PIDR7_DWT_PIDR7                 (0xFFFFFFFFU<<0U)
+#define PPB_DWT_PIDR7_DWT_PIDR7_0               (0x1U<<0U)
 
 // DWT_PIDR0 Configuration
 
-#define PPB_DWT_PIDR0_PART_0                    (0xFFU<<0)
-#define PPB_DWT_PIDR0_PART_0_0                  (0x1U<<0)
+#define PPB_DWT_PIDR0_PART_0                    (0xFFU<<0U)
+#define PPB_DWT_PIDR0_PART_0_0                  (0x1U<<0U)
 
 // DWT_PIDR1 Configuration
 
-#define PPB_DWT_PIDR1_PART_1                    (0xFU<<0)
-#define PPB_DWT_PIDR1_PART_1_0                  (0x1U<<0)
-#define PPB_DWT_PIDR1_DES_0                     (0xFU<<4)
-#define PPB_DWT_PIDR1_DES_0_0                   (0x1U<<4)
+#define PPB_DWT_PIDR1_PART_1                    (0xFU<<0U)
+#define PPB_DWT_PIDR1_PART_1_0                  (0x1U<<0U)
+#define PPB_DWT_PIDR1_DES_0                     (0xFU<<4U)
+#define PPB_DWT_PIDR1_DES_0_0                   (0x1U<<4U)
 
 // DWT_PIDR2 Configuration
 
-#define PPB_DWT_PIDR2_DES_1                     (0x7U<<0)
-#define PPB_DWT_PIDR2_DES_1_0                   (0x1U<<0)
-#define PPB_DWT_PIDR2_JEDEC                     (0x1U<<3)
-#define PPB_DWT_PIDR2_REVISION                  (0xFU<<4)
-#define PPB_DWT_PIDR2_REVISION_0                (0x1U<<4)
+#define PPB_DWT_PIDR2_DES_1                     (0x7U<<0U)
+#define PPB_DWT_PIDR2_DES_1_0                   (0x1U<<0U)
+#define PPB_DWT_PIDR2_JEDEC                     (0x1U<<3U)
+#define PPB_DWT_PIDR2_REVISION                  (0xFU<<4U)
+#define PPB_DWT_PIDR2_REVISION_0                (0x1U<<4U)
 
 // DWT_PIDR3 Configuration
 
-#define PPB_DWT_PIDR3_CMOD                      (0xFU<<0)
-#define PPB_DWT_PIDR3_CMOD_0                    (0x1U<<0)
-#define PPB_DWT_PIDR3_REVAND                    (0xFU<<4)
-#define PPB_DWT_PIDR3_REVAND_0                  (0x1U<<4)
+#define PPB_DWT_PIDR3_CMOD                      (0xFU<<0U)
+#define PPB_DWT_PIDR3_CMOD_0                    (0x1U<<0U)
+#define PPB_DWT_PIDR3_REVAND                    (0xFU<<4U)
+#define PPB_DWT_PIDR3_REVAND_0                  (0x1U<<4U)
 
 // DWT_CIDR0 Configuration
 
-#define PPB_DWT_CIDR0_PRMBL_0                   (0xFFU<<0)
-#define PPB_DWT_CIDR0_PRMBL_0_0                 (0x1U<<0)
+#define PPB_DWT_CIDR0_PRMBL_0                   (0xFFU<<0U)
+#define PPB_DWT_CIDR0_PRMBL_0_0                 (0x1U<<0U)
 
 // DWT_CIDR1 Configuration
 
-#define PPB_DWT_CIDR1_PRMBL_1                   (0xFU<<0)
-#define PPB_DWT_CIDR1_PRMBL_1_0                 (0x1U<<0)
-#define PPB_DWT_CIDR1_CLASS                     (0xFU<<4)
-#define PPB_DWT_CIDR1_CLASS_0                   (0x1U<<4)
+#define PPB_DWT_CIDR1_PRMBL_1                   (0xFU<<0U)
+#define PPB_DWT_CIDR1_PRMBL_1_0                 (0x1U<<0U)
+#define PPB_DWT_CIDR1_CLASS                     (0xFU<<4U)
+#define PPB_DWT_CIDR1_CLASS_0                   (0x1U<<4U)
 
 // DWT_CIDR2 Configuration
 
-#define PPB_DWT_CIDR2_PRMBL_2                   (0xFFU<<0)
-#define PPB_DWT_CIDR2_PRMBL_2_0                 (0x1U<<0)
+#define PPB_DWT_CIDR2_PRMBL_2                   (0xFFU<<0U)
+#define PPB_DWT_CIDR2_PRMBL_2_0                 (0x1U<<0U)
 
 // DWT_CIDR3 Configuration
 
-#define PPB_DWT_CIDR3_PRMBL_3                   (0xFFU<<0)
-#define PPB_DWT_CIDR3_PRMBL_3_0                 (0x1U<<0)
+#define PPB_DWT_CIDR3_PRMBL_3                   (0xFFU<<0U)
+#define PPB_DWT_CIDR3_PRMBL_3_0                 (0x1U<<0U)
 
 // FP_CTRL Configuration
 
-#define PPB_FP_CTRL_ENABLE                      (0x1U<<0)
-#define PPB_FP_CTRL_KEY                         (0x1U<<1)
-#define PPB_FP_CTRL_NUM_CODE_7_4_               (0xFU<<4)
-#define PPB_FP_CTRL_NUM_CODE_7_4__0             (0x1U<<4)
-#define PPB_FP_CTRL_NUM_LIT                     (0xFU<<8)
-#define PPB_FP_CTRL_NUM_LIT_0                   (0x1U<<8)
-#define PPB_FP_CTRL_NUM_CODE_14_12_             (0x7U<<12)
-#define PPB_FP_CTRL_NUM_CODE_14_12__0           (0x1U<<12)
-#define PPB_FP_CTRL_REV                         (0xFU<<28)
-#define PPB_FP_CTRL_REV_0                       (0x1U<<28)
+#define PPB_FP_CTRL_ENABLE                      (0x1U<<0U)
+#define PPB_FP_CTRL_KEY                         (0x1U<<1U)
+#define PPB_FP_CTRL_NUM_CODE_7_4_               (0xFU<<4U)
+#define PPB_FP_CTRL_NUM_CODE_7_4__0             (0x1U<<4U)
+#define PPB_FP_CTRL_NUM_LIT                     (0xFU<<8U)
+#define PPB_FP_CTRL_NUM_LIT_0                   (0x1U<<8U)
+#define PPB_FP_CTRL_NUM_CODE_14_12_             (0x7U<<12U)
+#define PPB_FP_CTRL_NUM_CODE_14_12__0           (0x1U<<12U)
+#define PPB_FP_CTRL_REV                         (0xFU<<28U)
+#define PPB_FP_CTRL_REV_0                       (0x1U<<28U)
 
 // FP_REMAP Configuration
 
-#define PPB_FP_REMAP_REMAP                      (0xFFFFFFU<<5)
-#define PPB_FP_REMAP_REMAP_0                    (0x1U<<5)
-#define PPB_FP_REMAP_RMPSPT                     (0x1U<<29)
+#define PPB_FP_REMAP_REMAP                      (0xFFFFFFU<<5U)
+#define PPB_FP_REMAP_REMAP_0                    (0x1U<<5U)
+#define PPB_FP_REMAP_RMPSPT                     (0x1U<<29U)
 
 // FP_COMP0 Configuration
 
-#define PPB_FP_COMP0_BE                         (0x1U<<0)
+#define PPB_FP_COMP0_BE                         (0x1U<<0U)
 
 // FP_COMP1 Configuration
 
-#define PPB_FP_COMP1_BE                         (0x1U<<0)
+#define PPB_FP_COMP1_BE                         (0x1U<<0U)
 
 // FP_COMP2 Configuration
 
-#define PPB_FP_COMP2_BE                         (0x1U<<0)
+#define PPB_FP_COMP2_BE                         (0x1U<<0U)
 
 // FP_COMP3 Configuration
 
-#define PPB_FP_COMP3_BE                         (0x1U<<0)
+#define PPB_FP_COMP3_BE                         (0x1U<<0U)
 
 // FP_COMP4 Configuration
 
-#define PPB_FP_COMP4_BE                         (0x1U<<0)
+#define PPB_FP_COMP4_BE                         (0x1U<<0U)
 
 // FP_COMP5 Configuration
 
-#define PPB_FP_COMP5_BE                         (0x1U<<0)
+#define PPB_FP_COMP5_BE                         (0x1U<<0U)
 
 // FP_COMP6 Configuration
 
-#define PPB_FP_COMP6_BE                         (0x1U<<0)
+#define PPB_FP_COMP6_BE                         (0x1U<<0U)
 
 // FP_COMP7 Configuration
 
-#define PPB_FP_COMP7_BE                         (0x1U<<0)
+#define PPB_FP_COMP7_BE                         (0x1U<<0U)
 
 // FP_DEVARCH Configuration
 
-#define PPB_FP_DEVARCH_ARCHPART                 (0xFFFU<<0)
-#define PPB_FP_DEVARCH_ARCHPART_0               (0x1U<<0)
-#define PPB_FP_DEVARCH_ARCHVER                  (0xFU<<12)
-#define PPB_FP_DEVARCH_ARCHVER_0                (0x1U<<12)
-#define PPB_FP_DEVARCH_REVISION                 (0xFU<<16)
-#define PPB_FP_DEVARCH_REVISION_0               (0x1U<<16)
-#define PPB_FP_DEVARCH_PRESENT                  (0x1U<<20)
-#define PPB_FP_DEVARCH_ARCHITECT                (0x7FFU<<21)
-#define PPB_FP_DEVARCH_ARCHITECT_0              (0x1U<<21)
+#define PPB_FP_DEVARCH_ARCHPART                 (0xFFFU<<0U)
+#define PPB_FP_DEVARCH_ARCHPART_0               (0x1U<<0U)
+#define PPB_FP_DEVARCH_ARCHVER                  (0xFU<<12U)
+#define PPB_FP_DEVARCH_ARCHVER_0                (0x1U<<12U)
+#define PPB_FP_DEVARCH_REVISION                 (0xFU<<16U)
+#define PPB_FP_DEVARCH_REVISION_0               (0x1U<<16U)
+#define PPB_FP_DEVARCH_PRESENT                  (0x1U<<20U)
+#define PPB_FP_DEVARCH_ARCHITECT                (0x7FFU<<21U)
+#define PPB_FP_DEVARCH_ARCHITECT_0              (0x1U<<21U)
 
 // FP_DEVTYPE Configuration
 
-#define PPB_FP_DEVTYPE_MAJOR                    (0xFU<<0)
-#define PPB_FP_DEVTYPE_MAJOR_0                  (0x1U<<0)
-#define PPB_FP_DEVTYPE_SUB                      (0xFU<<4)
-#define PPB_FP_DEVTYPE_SUB_0                    (0x1U<<4)
+#define PPB_FP_DEVTYPE_MAJOR                    (0xFU<<0U)
+#define PPB_FP_DEVTYPE_MAJOR_0                  (0x1U<<0U)
+#define PPB_FP_DEVTYPE_SUB                      (0xFU<<4U)
+#define PPB_FP_DEVTYPE_SUB_0                    (0x1U<<4U)
 
 // FP_PIDR4 Configuration
 
-#define PPB_FP_PIDR4_DES_2                      (0xFU<<0)
-#define PPB_FP_PIDR4_DES_2_0                    (0x1U<<0)
-#define PPB_FP_PIDR4_SIZE                       (0xFU<<4)
-#define PPB_FP_PIDR4_SIZE_0                     (0x1U<<4)
+#define PPB_FP_PIDR4_DES_2                      (0xFU<<0U)
+#define PPB_FP_PIDR4_DES_2_0                    (0x1U<<0U)
+#define PPB_FP_PIDR4_SIZE                       (0xFU<<4U)
+#define PPB_FP_PIDR4_SIZE_0                     (0x1U<<4U)
 
 // FP_PIDR5 Configuration
 
-#define PPB_FP_PIDR5_FP_PIDR5                   (0xFFFFFFFFU<<0)
-#define PPB_FP_PIDR5_FP_PIDR5_0                 (0x1U<<0)
+#define PPB_FP_PIDR5_FP_PIDR5                   (0xFFFFFFFFU<<0U)
+#define PPB_FP_PIDR5_FP_PIDR5_0                 (0x1U<<0U)
 
 // FP_PIDR6 Configuration
 
-#define PPB_FP_PIDR6_FP_PIDR6                   (0xFFFFFFFFU<<0)
-#define PPB_FP_PIDR6_FP_PIDR6_0                 (0x1U<<0)
+#define PPB_FP_PIDR6_FP_PIDR6                   (0xFFFFFFFFU<<0U)
+#define PPB_FP_PIDR6_FP_PIDR6_0                 (0x1U<<0U)
 
 // FP_PIDR7 Configuration
 
-#define PPB_FP_PIDR7_FP_PIDR7                   (0xFFFFFFFFU<<0)
-#define PPB_FP_PIDR7_FP_PIDR7_0                 (0x1U<<0)
+#define PPB_FP_PIDR7_FP_PIDR7                   (0xFFFFFFFFU<<0U)
+#define PPB_FP_PIDR7_FP_PIDR7_0                 (0x1U<<0U)
 
 // FP_PIDR0 Configuration
 
-#define PPB_FP_PIDR0_PART_0                     (0xFFU<<0)
-#define PPB_FP_PIDR0_PART_0_0                   (0x1U<<0)
+#define PPB_FP_PIDR0_PART_0                     (0xFFU<<0U)
+#define PPB_FP_PIDR0_PART_0_0                   (0x1U<<0U)
 
 // FP_PIDR1 Configuration
 
-#define PPB_FP_PIDR1_PART_1                     (0xFU<<0)
-#define PPB_FP_PIDR1_PART_1_0                   (0x1U<<0)
-#define PPB_FP_PIDR1_DES_0                      (0xFU<<4)
-#define PPB_FP_PIDR1_DES_0_0                    (0x1U<<4)
+#define PPB_FP_PIDR1_PART_1                     (0xFU<<0U)
+#define PPB_FP_PIDR1_PART_1_0                   (0x1U<<0U)
+#define PPB_FP_PIDR1_DES_0                      (0xFU<<4U)
+#define PPB_FP_PIDR1_DES_0_0                    (0x1U<<4U)
 
 // FP_PIDR2 Configuration
 
-#define PPB_FP_PIDR2_DES_1                      (0x7U<<0)
-#define PPB_FP_PIDR2_DES_1_0                    (0x1U<<0)
-#define PPB_FP_PIDR2_JEDEC                      (0x1U<<3)
-#define PPB_FP_PIDR2_REVISION                   (0xFU<<4)
-#define PPB_FP_PIDR2_REVISION_0                 (0x1U<<4)
+#define PPB_FP_PIDR2_DES_1                      (0x7U<<0U)
+#define PPB_FP_PIDR2_DES_1_0                    (0x1U<<0U)
+#define PPB_FP_PIDR2_JEDEC                      (0x1U<<3U)
+#define PPB_FP_PIDR2_REVISION                   (0xFU<<4U)
+#define PPB_FP_PIDR2_REVISION_0                 (0x1U<<4U)
 
 // FP_PIDR3 Configuration
 
-#define PPB_FP_PIDR3_CMOD                       (0xFU<<0)
-#define PPB_FP_PIDR3_CMOD_0                     (0x1U<<0)
-#define PPB_FP_PIDR3_REVAND                     (0xFU<<4)
-#define PPB_FP_PIDR3_REVAND_0                   (0x1U<<4)
+#define PPB_FP_PIDR3_CMOD                       (0xFU<<0U)
+#define PPB_FP_PIDR3_CMOD_0                     (0x1U<<0U)
+#define PPB_FP_PIDR3_REVAND                     (0xFU<<4U)
+#define PPB_FP_PIDR3_REVAND_0                   (0x1U<<4U)
 
 // FP_CIDR0 Configuration
 
-#define PPB_FP_CIDR0_PRMBL_0                    (0xFFU<<0)
-#define PPB_FP_CIDR0_PRMBL_0_0                  (0x1U<<0)
+#define PPB_FP_CIDR0_PRMBL_0                    (0xFFU<<0U)
+#define PPB_FP_CIDR0_PRMBL_0_0                  (0x1U<<0U)
 
 // FP_CIDR1 Configuration
 
-#define PPB_FP_CIDR1_PRMBL_1                    (0xFU<<0)
-#define PPB_FP_CIDR1_PRMBL_1_0                  (0x1U<<0)
-#define PPB_FP_CIDR1_CLASS                      (0xFU<<4)
-#define PPB_FP_CIDR1_CLASS_0                    (0x1U<<4)
+#define PPB_FP_CIDR1_PRMBL_1                    (0xFU<<0U)
+#define PPB_FP_CIDR1_PRMBL_1_0                  (0x1U<<0U)
+#define PPB_FP_CIDR1_CLASS                      (0xFU<<4U)
+#define PPB_FP_CIDR1_CLASS_0                    (0x1U<<4U)
 
 // FP_CIDR2 Configuration
 
-#define PPB_FP_CIDR2_PRMBL_2                    (0xFFU<<0)
-#define PPB_FP_CIDR2_PRMBL_2_0                  (0x1U<<0)
+#define PPB_FP_CIDR2_PRMBL_2                    (0xFFU<<0U)
+#define PPB_FP_CIDR2_PRMBL_2_0                  (0x1U<<0U)
 
 // FP_CIDR3 Configuration
 
-#define PPB_FP_CIDR3_PRMBL_3                    (0xFFU<<0)
-#define PPB_FP_CIDR3_PRMBL_3_0                  (0x1U<<0)
+#define PPB_FP_CIDR3_PRMBL_3                    (0xFFU<<0U)
+#define PPB_FP_CIDR3_PRMBL_3_0                  (0x1U<<0U)
 
 // ICTR Configuration
 
-#define PPB_ICTR_INTLINESNUM                    (0xFU<<0)
-#define PPB_ICTR_INTLINESNUM_0                  (0x1U<<0)
+#define PPB_ICTR_INTLINESNUM                    (0xFU<<0U)
+#define PPB_ICTR_INTLINESNUM_0                  (0x1U<<0U)
 
 // ACTLR Configuration
 
-#define PPB_ACTLR_DISMCYCINT                    (0x1U<<0)
-#define PPB_ACTLR_DISFOLD                       (0x1U<<2)
-#define PPB_ACTLR_DISOOFP                       (0x1U<<9)
-#define PPB_ACTLR_FPEXCODIS                     (0x1U<<10)
-#define PPB_ACTLR_DISITMATBFLUSH                (0x1U<<12)
-#define PPB_ACTLR_EXTEXCLALL                    (0x1U<<29)
+#define PPB_ACTLR_DISMCYCINT                    (0x1U<<0U)
+#define PPB_ACTLR_DISFOLD                       (0x1U<<2U)
+#define PPB_ACTLR_DISOOFP                       (0x1U<<9U)
+#define PPB_ACTLR_FPEXCODIS                     (0x1U<<10U)
+#define PPB_ACTLR_DISITMATBFLUSH                (0x1U<<12U)
+#define PPB_ACTLR_EXTEXCLALL                    (0x1U<<29U)
 
 // SYST_CSR Configuration
 
-#define PPB_SYST_CSR_ENABLE                     (0x1U<<0)
-#define PPB_SYST_CSR_TICKINT                    (0x1U<<1)
-#define PPB_SYST_CSR_CLKSOURCE                  (0x1U<<2)
-#define PPB_SYST_CSR_COUNTFLAG                  (0x1U<<16)
+#define PPB_SYST_CSR_ENABLE                     (0x1U<<0U)
+#define PPB_SYST_CSR_TICKINT                    (0x1U<<1U)
+#define PPB_SYST_CSR_CLKSOURCE                  (0x1U<<2U)
+#define PPB_SYST_CSR_COUNTFLAG                  (0x1U<<16U)
 
 // SYST_RVR Configuration
 
-#define PPB_SYST_RVR_RELOAD                     (0xFFFFFFU<<0)
-#define PPB_SYST_RVR_RELOAD_0                   (0x1U<<0)
+#define PPB_SYST_RVR_RELOAD                     (0xFFFFFFU<<0U)
+#define PPB_SYST_RVR_RELOAD_0                   (0x1U<<0U)
 
 // SYST_CVR Configuration
 
-#define PPB_SYST_CVR_CURRENT                    (0xFFFFFFU<<0)
-#define PPB_SYST_CVR_CURRENT_0                  (0x1U<<0)
+#define PPB_SYST_CVR_CURRENT                    (0xFFFFFFU<<0U)
+#define PPB_SYST_CVR_CURRENT_0                  (0x1U<<0U)
 
 // SYST_CALIB Configuration
 
-#define PPB_SYST_CALIB_TENMS                    (0xFFFFFFU<<0)
-#define PPB_SYST_CALIB_TENMS_0                  (0x1U<<0)
-#define PPB_SYST_CALIB_SKEW                     (0x1U<<30)
-#define PPB_SYST_CALIB_NOREF                    (0x1U<<31)
+#define PPB_SYST_CALIB_TENMS                    (0xFFFFFFU<<0U)
+#define PPB_SYST_CALIB_TENMS_0                  (0x1U<<0U)
+#define PPB_SYST_CALIB_SKEW                     (0x1U<<30U)
+#define PPB_SYST_CALIB_NOREF                    (0x1U<<31U)
 
 // NVIC_ISER0 Configuration
 
-#define PPB_NVIC_ISER0_SETENA                   (0xFFFFFFFFU<<0)
-#define PPB_NVIC_ISER0_SETENA_0                 (0x1U<<0)
+#define PPB_NVIC_ISER0_SETENA                   (0xFFFFFFFFU<<0U)
+#define PPB_NVIC_ISER0_SETENA_0                 (0x1U<<0U)
 
 // NVIC_ISER1 Configuration
 
-#define PPB_NVIC_ISER1_SETENA                   (0xFFFFFFFFU<<0)
-#define PPB_NVIC_ISER1_SETENA_0                 (0x1U<<0)
+#define PPB_NVIC_ISER1_SETENA                   (0xFFFFFFFFU<<0U)
+#define PPB_NVIC_ISER1_SETENA_0                 (0x1U<<0U)
 
 // NVIC_ICER0 Configuration
 
-#define PPB_NVIC_ICER0_CLRENA                   (0xFFFFFFFFU<<0)
-#define PPB_NVIC_ICER0_CLRENA_0                 (0x1U<<0)
+#define PPB_NVIC_ICER0_CLRENA                   (0xFFFFFFFFU<<0U)
+#define PPB_NVIC_ICER0_CLRENA_0                 (0x1U<<0U)
 
 // NVIC_ICER1 Configuration
 
-#define PPB_NVIC_ICER1_CLRENA                   (0xFFFFFFFFU<<0)
-#define PPB_NVIC_ICER1_CLRENA_0                 (0x1U<<0)
+#define PPB_NVIC_ICER1_CLRENA                   (0xFFFFFFFFU<<0U)
+#define PPB_NVIC_ICER1_CLRENA_0                 (0x1U<<0U)
 
 // NVIC_ISPR0 Configuration
 
-#define PPB_NVIC_ISPR0_SETPEND                  (0xFFFFFFFFU<<0)
-#define PPB_NVIC_ISPR0_SETPEND_0                (0x1U<<0)
+#define PPB_NVIC_ISPR0_SETPEND                  (0xFFFFFFFFU<<0U)
+#define PPB_NVIC_ISPR0_SETPEND_0                (0x1U<<0U)
 
 // NVIC_ISPR1 Configuration
 
-#define PPB_NVIC_ISPR1_SETPEND                  (0xFFFFFFFFU<<0)
-#define PPB_NVIC_ISPR1_SETPEND_0                (0x1U<<0)
+#define PPB_NVIC_ISPR1_SETPEND                  (0xFFFFFFFFU<<0U)
+#define PPB_NVIC_ISPR1_SETPEND_0                (0x1U<<0U)
 
 // NVIC_ICPR0 Configuration
 
-#define PPB_NVIC_ICPR0_CLRPEND                  (0xFFFFFFFFU<<0)
-#define PPB_NVIC_ICPR0_CLRPEND_0                (0x1U<<0)
+#define PPB_NVIC_ICPR0_CLRPEND                  (0xFFFFFFFFU<<0U)
+#define PPB_NVIC_ICPR0_CLRPEND_0                (0x1U<<0U)
 
 // NVIC_ICPR1 Configuration
 
-#define PPB_NVIC_ICPR1_CLRPEND                  (0xFFFFFFFFU<<0)
-#define PPB_NVIC_ICPR1_CLRPEND_0                (0x1U<<0)
+#define PPB_NVIC_ICPR1_CLRPEND                  (0xFFFFFFFFU<<0U)
+#define PPB_NVIC_ICPR1_CLRPEND_0                (0x1U<<0U)
 
 // NVIC_IABR0 Configuration
 
-#define PPB_NVIC_IABR0_ACTIVE                   (0xFFFFFFFFU<<0)
-#define PPB_NVIC_IABR0_ACTIVE_0                 (0x1U<<0)
+#define PPB_NVIC_IABR0_ACTIVE                   (0xFFFFFFFFU<<0U)
+#define PPB_NVIC_IABR0_ACTIVE_0                 (0x1U<<0U)
 
 // NVIC_IABR1 Configuration
 
-#define PPB_NVIC_IABR1_ACTIVE                   (0xFFFFFFFFU<<0)
-#define PPB_NVIC_IABR1_ACTIVE_0                 (0x1U<<0)
+#define PPB_NVIC_IABR1_ACTIVE                   (0xFFFFFFFFU<<0U)
+#define PPB_NVIC_IABR1_ACTIVE_0                 (0x1U<<0U)
 
 // NVIC_ITNS0 Configuration
 
-#define PPB_NVIC_ITNS0_ITNS                     (0xFFFFFFFFU<<0)
-#define PPB_NVIC_ITNS0_ITNS_0                   (0x1U<<0)
+#define PPB_NVIC_ITNS0_ITNS                     (0xFFFFFFFFU<<0U)
+#define PPB_NVIC_ITNS0_ITNS_0                   (0x1U<<0U)
 
 // NVIC_ITNS1 Configuration
 
-#define PPB_NVIC_ITNS1_ITNS                     (0xFFFFFFFFU<<0)
-#define PPB_NVIC_ITNS1_ITNS_0                   (0x1U<<0)
+#define PPB_NVIC_ITNS1_ITNS                     (0xFFFFFFFFU<<0U)
+#define PPB_NVIC_ITNS1_ITNS_0                   (0x1U<<0U)
 
 // NVIC_IPR0 Configuration
 
-#define PPB_NVIC_IPR0_PRI_N0                    (0xFU<<4)
-#define PPB_NVIC_IPR0_PRI_N0_0                  (0x1U<<4)
-#define PPB_NVIC_IPR0_PRI_N1                    (0xFU<<12)
-#define PPB_NVIC_IPR0_PRI_N1_0                  (0x1U<<12)
-#define PPB_NVIC_IPR0_PRI_N2                    (0xFU<<20)
-#define PPB_NVIC_IPR0_PRI_N2_0                  (0x1U<<20)
-#define PPB_NVIC_IPR0_PRI_N3                    (0xFU<<28)
-#define PPB_NVIC_IPR0_PRI_N3_0                  (0x1U<<28)
+#define PPB_NVIC_IPR0_PRI_N0                    (0xFU<<4U)
+#define PPB_NVIC_IPR0_PRI_N0_0                  (0x1U<<4U)
+#define PPB_NVIC_IPR0_PRI_N1                    (0xFU<<12U)
+#define PPB_NVIC_IPR0_PRI_N1_0                  (0x1U<<12U)
+#define PPB_NVIC_IPR0_PRI_N2                    (0xFU<<20U)
+#define PPB_NVIC_IPR0_PRI_N2_0                  (0x1U<<20U)
+#define PPB_NVIC_IPR0_PRI_N3                    (0xFU<<28U)
+#define PPB_NVIC_IPR0_PRI_N3_0                  (0x1U<<28U)
 
 // NVIC_IPR1 Configuration
 
-#define PPB_NVIC_IPR1_PRI_N0                    (0xFU<<4)
-#define PPB_NVIC_IPR1_PRI_N0_0                  (0x1U<<4)
-#define PPB_NVIC_IPR1_PRI_N1                    (0xFU<<12)
-#define PPB_NVIC_IPR1_PRI_N1_0                  (0x1U<<12)
-#define PPB_NVIC_IPR1_PRI_N2                    (0xFU<<20)
-#define PPB_NVIC_IPR1_PRI_N2_0                  (0x1U<<20)
-#define PPB_NVIC_IPR1_PRI_N3                    (0xFU<<28)
-#define PPB_NVIC_IPR1_PRI_N3_0                  (0x1U<<28)
+#define PPB_NVIC_IPR1_PRI_N0                    (0xFU<<4U)
+#define PPB_NVIC_IPR1_PRI_N0_0                  (0x1U<<4U)
+#define PPB_NVIC_IPR1_PRI_N1                    (0xFU<<12U)
+#define PPB_NVIC_IPR1_PRI_N1_0                  (0x1U<<12U)
+#define PPB_NVIC_IPR1_PRI_N2                    (0xFU<<20U)
+#define PPB_NVIC_IPR1_PRI_N2_0                  (0x1U<<20U)
+#define PPB_NVIC_IPR1_PRI_N3                    (0xFU<<28U)
+#define PPB_NVIC_IPR1_PRI_N3_0                  (0x1U<<28U)
 
 // NVIC_IPR2 Configuration
 
-#define PPB_NVIC_IPR2_PRI_N0                    (0xFU<<4)
-#define PPB_NVIC_IPR2_PRI_N0_0                  (0x1U<<4)
-#define PPB_NVIC_IPR2_PRI_N1                    (0xFU<<12)
-#define PPB_NVIC_IPR2_PRI_N1_0                  (0x1U<<12)
-#define PPB_NVIC_IPR2_PRI_N2                    (0xFU<<20)
-#define PPB_NVIC_IPR2_PRI_N2_0                  (0x1U<<20)
-#define PPB_NVIC_IPR2_PRI_N3                    (0xFU<<28)
-#define PPB_NVIC_IPR2_PRI_N3_0                  (0x1U<<28)
+#define PPB_NVIC_IPR2_PRI_N0                    (0xFU<<4U)
+#define PPB_NVIC_IPR2_PRI_N0_0                  (0x1U<<4U)
+#define PPB_NVIC_IPR2_PRI_N1                    (0xFU<<12U)
+#define PPB_NVIC_IPR2_PRI_N1_0                  (0x1U<<12U)
+#define PPB_NVIC_IPR2_PRI_N2                    (0xFU<<20U)
+#define PPB_NVIC_IPR2_PRI_N2_0                  (0x1U<<20U)
+#define PPB_NVIC_IPR2_PRI_N3                    (0xFU<<28U)
+#define PPB_NVIC_IPR2_PRI_N3_0                  (0x1U<<28U)
 
 // NVIC_IPR3 Configuration
 
-#define PPB_NVIC_IPR3_PRI_N0                    (0xFU<<4)
-#define PPB_NVIC_IPR3_PRI_N0_0                  (0x1U<<4)
-#define PPB_NVIC_IPR3_PRI_N1                    (0xFU<<12)
-#define PPB_NVIC_IPR3_PRI_N1_0                  (0x1U<<12)
-#define PPB_NVIC_IPR3_PRI_N2                    (0xFU<<20)
-#define PPB_NVIC_IPR3_PRI_N2_0                  (0x1U<<20)
-#define PPB_NVIC_IPR3_PRI_N3                    (0xFU<<28)
-#define PPB_NVIC_IPR3_PRI_N3_0                  (0x1U<<28)
+#define PPB_NVIC_IPR3_PRI_N0                    (0xFU<<4U)
+#define PPB_NVIC_IPR3_PRI_N0_0                  (0x1U<<4U)
+#define PPB_NVIC_IPR3_PRI_N1                    (0xFU<<12U)
+#define PPB_NVIC_IPR3_PRI_N1_0                  (0x1U<<12U)
+#define PPB_NVIC_IPR3_PRI_N2                    (0xFU<<20U)
+#define PPB_NVIC_IPR3_PRI_N2_0                  (0x1U<<20U)
+#define PPB_NVIC_IPR3_PRI_N3                    (0xFU<<28U)
+#define PPB_NVIC_IPR3_PRI_N3_0                  (0x1U<<28U)
 
 // NVIC_IPR4 Configuration
 
-#define PPB_NVIC_IPR4_PRI_N0                    (0xFU<<4)
-#define PPB_NVIC_IPR4_PRI_N0_0                  (0x1U<<4)
-#define PPB_NVIC_IPR4_PRI_N1                    (0xFU<<12)
-#define PPB_NVIC_IPR4_PRI_N1_0                  (0x1U<<12)
-#define PPB_NVIC_IPR4_PRI_N2                    (0xFU<<20)
-#define PPB_NVIC_IPR4_PRI_N2_0                  (0x1U<<20)
-#define PPB_NVIC_IPR4_PRI_N3                    (0xFU<<28)
-#define PPB_NVIC_IPR4_PRI_N3_0                  (0x1U<<28)
+#define PPB_NVIC_IPR4_PRI_N0                    (0xFU<<4U)
+#define PPB_NVIC_IPR4_PRI_N0_0                  (0x1U<<4U)
+#define PPB_NVIC_IPR4_PRI_N1                    (0xFU<<12U)
+#define PPB_NVIC_IPR4_PRI_N1_0                  (0x1U<<12U)
+#define PPB_NVIC_IPR4_PRI_N2                    (0xFU<<20U)
+#define PPB_NVIC_IPR4_PRI_N2_0                  (0x1U<<20U)
+#define PPB_NVIC_IPR4_PRI_N3                    (0xFU<<28U)
+#define PPB_NVIC_IPR4_PRI_N3_0                  (0x1U<<28U)
 
 // NVIC_IPR5 Configuration
 
-#define PPB_NVIC_IPR5_PRI_N0                    (0xFU<<4)
-#define PPB_NVIC_IPR5_PRI_N0_0                  (0x1U<<4)
-#define PPB_NVIC_IPR5_PRI_N1                    (0xFU<<12)
-#define PPB_NVIC_IPR5_PRI_N1_0                  (0x1U<<12)
-#define PPB_NVIC_IPR5_PRI_N2                    (0xFU<<20)
-#define PPB_NVIC_IPR5_PRI_N2_0                  (0x1U<<20)
-#define PPB_NVIC_IPR5_PRI_N3                    (0xFU<<28)
-#define PPB_NVIC_IPR5_PRI_N3_0                  (0x1U<<28)
+#define PPB_NVIC_IPR5_PRI_N0                    (0xFU<<4U)
+#define PPB_NVIC_IPR5_PRI_N0_0                  (0x1U<<4U)
+#define PPB_NVIC_IPR5_PRI_N1                    (0xFU<<12U)
+#define PPB_NVIC_IPR5_PRI_N1_0                  (0x1U<<12U)
+#define PPB_NVIC_IPR5_PRI_N2                    (0xFU<<20U)
+#define PPB_NVIC_IPR5_PRI_N2_0                  (0x1U<<20U)
+#define PPB_NVIC_IPR5_PRI_N3                    (0xFU<<28U)
+#define PPB_NVIC_IPR5_PRI_N3_0                  (0x1U<<28U)
 
 // NVIC_IPR6 Configuration
 
-#define PPB_NVIC_IPR6_PRI_N0                    (0xFU<<4)
-#define PPB_NVIC_IPR6_PRI_N0_0                  (0x1U<<4)
-#define PPB_NVIC_IPR6_PRI_N1                    (0xFU<<12)
-#define PPB_NVIC_IPR6_PRI_N1_0                  (0x1U<<12)
-#define PPB_NVIC_IPR6_PRI_N2                    (0xFU<<20)
-#define PPB_NVIC_IPR6_PRI_N2_0                  (0x1U<<20)
-#define PPB_NVIC_IPR6_PRI_N3                    (0xFU<<28)
-#define PPB_NVIC_IPR6_PRI_N3_0                  (0x1U<<28)
+#define PPB_NVIC_IPR6_PRI_N0                    (0xFU<<4U)
+#define PPB_NVIC_IPR6_PRI_N0_0                  (0x1U<<4U)
+#define PPB_NVIC_IPR6_PRI_N1                    (0xFU<<12U)
+#define PPB_NVIC_IPR6_PRI_N1_0                  (0x1U<<12U)
+#define PPB_NVIC_IPR6_PRI_N2                    (0xFU<<20U)
+#define PPB_NVIC_IPR6_PRI_N2_0                  (0x1U<<20U)
+#define PPB_NVIC_IPR6_PRI_N3                    (0xFU<<28U)
+#define PPB_NVIC_IPR6_PRI_N3_0                  (0x1U<<28U)
 
 // NVIC_IPR7 Configuration
 
-#define PPB_NVIC_IPR7_PRI_N0                    (0xFU<<4)
-#define PPB_NVIC_IPR7_PRI_N0_0                  (0x1U<<4)
-#define PPB_NVIC_IPR7_PRI_N1                    (0xFU<<12)
-#define PPB_NVIC_IPR7_PRI_N1_0                  (0x1U<<12)
-#define PPB_NVIC_IPR7_PRI_N2                    (0xFU<<20)
-#define PPB_NVIC_IPR7_PRI_N2_0                  (0x1U<<20)
-#define PPB_NVIC_IPR7_PRI_N3                    (0xFU<<28)
-#define PPB_NVIC_IPR7_PRI_N3_0                  (0x1U<<28)
+#define PPB_NVIC_IPR7_PRI_N0                    (0xFU<<4U)
+#define PPB_NVIC_IPR7_PRI_N0_0                  (0x1U<<4U)
+#define PPB_NVIC_IPR7_PRI_N1                    (0xFU<<12U)
+#define PPB_NVIC_IPR7_PRI_N1_0                  (0x1U<<12U)
+#define PPB_NVIC_IPR7_PRI_N2                    (0xFU<<20U)
+#define PPB_NVIC_IPR7_PRI_N2_0                  (0x1U<<20U)
+#define PPB_NVIC_IPR7_PRI_N3                    (0xFU<<28U)
+#define PPB_NVIC_IPR7_PRI_N3_0                  (0x1U<<28U)
 
 // NVIC_IPR8 Configuration
 
-#define PPB_NVIC_IPR8_PRI_N0                    (0xFU<<4)
-#define PPB_NVIC_IPR8_PRI_N0_0                  (0x1U<<4)
-#define PPB_NVIC_IPR8_PRI_N1                    (0xFU<<12)
-#define PPB_NVIC_IPR8_PRI_N1_0                  (0x1U<<12)
-#define PPB_NVIC_IPR8_PRI_N2                    (0xFU<<20)
-#define PPB_NVIC_IPR8_PRI_N2_0                  (0x1U<<20)
-#define PPB_NVIC_IPR8_PRI_N3                    (0xFU<<28)
-#define PPB_NVIC_IPR8_PRI_N3_0                  (0x1U<<28)
+#define PPB_NVIC_IPR8_PRI_N0                    (0xFU<<4U)
+#define PPB_NVIC_IPR8_PRI_N0_0                  (0x1U<<4U)
+#define PPB_NVIC_IPR8_PRI_N1                    (0xFU<<12U)
+#define PPB_NVIC_IPR8_PRI_N1_0                  (0x1U<<12U)
+#define PPB_NVIC_IPR8_PRI_N2                    (0xFU<<20U)
+#define PPB_NVIC_IPR8_PRI_N2_0                  (0x1U<<20U)
+#define PPB_NVIC_IPR8_PRI_N3                    (0xFU<<28U)
+#define PPB_NVIC_IPR8_PRI_N3_0                  (0x1U<<28U)
 
 // NVIC_IPR9 Configuration
 
-#define PPB_NVIC_IPR9_PRI_N0                    (0xFU<<4)
-#define PPB_NVIC_IPR9_PRI_N0_0                  (0x1U<<4)
-#define PPB_NVIC_IPR9_PRI_N1                    (0xFU<<12)
-#define PPB_NVIC_IPR9_PRI_N1_0                  (0x1U<<12)
-#define PPB_NVIC_IPR9_PRI_N2                    (0xFU<<20)
-#define PPB_NVIC_IPR9_PRI_N2_0                  (0x1U<<20)
-#define PPB_NVIC_IPR9_PRI_N3                    (0xFU<<28)
-#define PPB_NVIC_IPR9_PRI_N3_0                  (0x1U<<28)
+#define PPB_NVIC_IPR9_PRI_N0                    (0xFU<<4U)
+#define PPB_NVIC_IPR9_PRI_N0_0                  (0x1U<<4U)
+#define PPB_NVIC_IPR9_PRI_N1                    (0xFU<<12U)
+#define PPB_NVIC_IPR9_PRI_N1_0                  (0x1U<<12U)
+#define PPB_NVIC_IPR9_PRI_N2                    (0xFU<<20U)
+#define PPB_NVIC_IPR9_PRI_N2_0                  (0x1U<<20U)
+#define PPB_NVIC_IPR9_PRI_N3                    (0xFU<<28U)
+#define PPB_NVIC_IPR9_PRI_N3_0                  (0x1U<<28U)
 
 // NVIC_IPR10 Configuration
 
-#define PPB_NVIC_IPR10_PRI_N0                   (0xFU<<4)
-#define PPB_NVIC_IPR10_PRI_N0_0                 (0x1U<<4)
-#define PPB_NVIC_IPR10_PRI_N1                   (0xFU<<12)
-#define PPB_NVIC_IPR10_PRI_N1_0                 (0x1U<<12)
-#define PPB_NVIC_IPR10_PRI_N2                   (0xFU<<20)
-#define PPB_NVIC_IPR10_PRI_N2_0                 (0x1U<<20)
-#define PPB_NVIC_IPR10_PRI_N3                   (0xFU<<28)
-#define PPB_NVIC_IPR10_PRI_N3_0                 (0x1U<<28)
+#define PPB_NVIC_IPR10_PRI_N0                   (0xFU<<4U)
+#define PPB_NVIC_IPR10_PRI_N0_0                 (0x1U<<4U)
+#define PPB_NVIC_IPR10_PRI_N1                   (0xFU<<12U)
+#define PPB_NVIC_IPR10_PRI_N1_0                 (0x1U<<12U)
+#define PPB_NVIC_IPR10_PRI_N2                   (0xFU<<20U)
+#define PPB_NVIC_IPR10_PRI_N2_0                 (0x1U<<20U)
+#define PPB_NVIC_IPR10_PRI_N3                   (0xFU<<28U)
+#define PPB_NVIC_IPR10_PRI_N3_0                 (0x1U<<28U)
 
 // NVIC_IPR11 Configuration
 
-#define PPB_NVIC_IPR11_PRI_N0                   (0xFU<<4)
-#define PPB_NVIC_IPR11_PRI_N0_0                 (0x1U<<4)
-#define PPB_NVIC_IPR11_PRI_N1                   (0xFU<<12)
-#define PPB_NVIC_IPR11_PRI_N1_0                 (0x1U<<12)
-#define PPB_NVIC_IPR11_PRI_N2                   (0xFU<<20)
-#define PPB_NVIC_IPR11_PRI_N2_0                 (0x1U<<20)
-#define PPB_NVIC_IPR11_PRI_N3                   (0xFU<<28)
-#define PPB_NVIC_IPR11_PRI_N3_0                 (0x1U<<28)
+#define PPB_NVIC_IPR11_PRI_N0                   (0xFU<<4U)
+#define PPB_NVIC_IPR11_PRI_N0_0                 (0x1U<<4U)
+#define PPB_NVIC_IPR11_PRI_N1                   (0xFU<<12U)
+#define PPB_NVIC_IPR11_PRI_N1_0                 (0x1U<<12U)
+#define PPB_NVIC_IPR11_PRI_N2                   (0xFU<<20U)
+#define PPB_NVIC_IPR11_PRI_N2_0                 (0x1U<<20U)
+#define PPB_NVIC_IPR11_PRI_N3                   (0xFU<<28U)
+#define PPB_NVIC_IPR11_PRI_N3_0                 (0x1U<<28U)
 
 // NVIC_IPR12 Configuration
 
-#define PPB_NVIC_IPR12_PRI_N0                   (0xFU<<4)
-#define PPB_NVIC_IPR12_PRI_N0_0                 (0x1U<<4)
-#define PPB_NVIC_IPR12_PRI_N1                   (0xFU<<12)
-#define PPB_NVIC_IPR12_PRI_N1_0                 (0x1U<<12)
-#define PPB_NVIC_IPR12_PRI_N2                   (0xFU<<20)
-#define PPB_NVIC_IPR12_PRI_N2_0                 (0x1U<<20)
-#define PPB_NVIC_IPR12_PRI_N3                   (0xFU<<28)
-#define PPB_NVIC_IPR12_PRI_N3_0                 (0x1U<<28)
+#define PPB_NVIC_IPR12_PRI_N0                   (0xFU<<4U)
+#define PPB_NVIC_IPR12_PRI_N0_0                 (0x1U<<4U)
+#define PPB_NVIC_IPR12_PRI_N1                   (0xFU<<12U)
+#define PPB_NVIC_IPR12_PRI_N1_0                 (0x1U<<12U)
+#define PPB_NVIC_IPR12_PRI_N2                   (0xFU<<20U)
+#define PPB_NVIC_IPR12_PRI_N2_0                 (0x1U<<20U)
+#define PPB_NVIC_IPR12_PRI_N3                   (0xFU<<28U)
+#define PPB_NVIC_IPR12_PRI_N3_0                 (0x1U<<28U)
 
 // NVIC_IPR13 Configuration
 
-#define PPB_NVIC_IPR13_PRI_N0                   (0xFU<<4)
-#define PPB_NVIC_IPR13_PRI_N0_0                 (0x1U<<4)
-#define PPB_NVIC_IPR13_PRI_N1                   (0xFU<<12)
-#define PPB_NVIC_IPR13_PRI_N1_0                 (0x1U<<12)
-#define PPB_NVIC_IPR13_PRI_N2                   (0xFU<<20)
-#define PPB_NVIC_IPR13_PRI_N2_0                 (0x1U<<20)
-#define PPB_NVIC_IPR13_PRI_N3                   (0xFU<<28)
-#define PPB_NVIC_IPR13_PRI_N3_0                 (0x1U<<28)
+#define PPB_NVIC_IPR13_PRI_N0                   (0xFU<<4U)
+#define PPB_NVIC_IPR13_PRI_N0_0                 (0x1U<<4U)
+#define PPB_NVIC_IPR13_PRI_N1                   (0xFU<<12U)
+#define PPB_NVIC_IPR13_PRI_N1_0                 (0x1U<<12U)
+#define PPB_NVIC_IPR13_PRI_N2                   (0xFU<<20U)
+#define PPB_NVIC_IPR13_PRI_N2_0                 (0x1U<<20U)
+#define PPB_NVIC_IPR13_PRI_N3                   (0xFU<<28U)
+#define PPB_NVIC_IPR13_PRI_N3_0                 (0x1U<<28U)
 
 // NVIC_IPR14 Configuration
 
-#define PPB_NVIC_IPR14_PRI_N0                   (0xFU<<4)
-#define PPB_NVIC_IPR14_PRI_N0_0                 (0x1U<<4)
-#define PPB_NVIC_IPR14_PRI_N1                   (0xFU<<12)
-#define PPB_NVIC_IPR14_PRI_N1_0                 (0x1U<<12)
-#define PPB_NVIC_IPR14_PRI_N2                   (0xFU<<20)
-#define PPB_NVIC_IPR14_PRI_N2_0                 (0x1U<<20)
-#define PPB_NVIC_IPR14_PRI_N3                   (0xFU<<28)
-#define PPB_NVIC_IPR14_PRI_N3_0                 (0x1U<<28)
+#define PPB_NVIC_IPR14_PRI_N0                   (0xFU<<4U)
+#define PPB_NVIC_IPR14_PRI_N0_0                 (0x1U<<4U)
+#define PPB_NVIC_IPR14_PRI_N1                   (0xFU<<12U)
+#define PPB_NVIC_IPR14_PRI_N1_0                 (0x1U<<12U)
+#define PPB_NVIC_IPR14_PRI_N2                   (0xFU<<20U)
+#define PPB_NVIC_IPR14_PRI_N2_0                 (0x1U<<20U)
+#define PPB_NVIC_IPR14_PRI_N3                   (0xFU<<28U)
+#define PPB_NVIC_IPR14_PRI_N3_0                 (0x1U<<28U)
 
 // NVIC_IPR15 Configuration
 
-#define PPB_NVIC_IPR15_PRI_N0                   (0xFU<<4)
-#define PPB_NVIC_IPR15_PRI_N0_0                 (0x1U<<4)
-#define PPB_NVIC_IPR15_PRI_N1                   (0xFU<<12)
-#define PPB_NVIC_IPR15_PRI_N1_0                 (0x1U<<12)
-#define PPB_NVIC_IPR15_PRI_N2                   (0xFU<<20)
-#define PPB_NVIC_IPR15_PRI_N2_0                 (0x1U<<20)
-#define PPB_NVIC_IPR15_PRI_N3                   (0xFU<<28)
-#define PPB_NVIC_IPR15_PRI_N3_0                 (0x1U<<28)
+#define PPB_NVIC_IPR15_PRI_N0                   (0xFU<<4U)
+#define PPB_NVIC_IPR15_PRI_N0_0                 (0x1U<<4U)
+#define PPB_NVIC_IPR15_PRI_N1                   (0xFU<<12U)
+#define PPB_NVIC_IPR15_PRI_N1_0                 (0x1U<<12U)
+#define PPB_NVIC_IPR15_PRI_N2                   (0xFU<<20U)
+#define PPB_NVIC_IPR15_PRI_N2_0                 (0x1U<<20U)
+#define PPB_NVIC_IPR15_PRI_N3                   (0xFU<<28U)
+#define PPB_NVIC_IPR15_PRI_N3_0                 (0x1U<<28U)
 
 // CPUID Configuration
 
-#define PPB_CPUID_REVISION                      (0xFU<<0)
-#define PPB_CPUID_REVISION_0                    (0x1U<<0)
-#define PPB_CPUID_PARTNO                        (0xFFFU<<4)
-#define PPB_CPUID_PARTNO_0                      (0x1U<<4)
-#define PPB_CPUID_ARCHITECTURE                  (0xFU<<16)
-#define PPB_CPUID_ARCHITECTURE_0                (0x1U<<16)
-#define PPB_CPUID_VARIANT                       (0xFU<<20)
-#define PPB_CPUID_VARIANT_0                     (0x1U<<20)
-#define PPB_CPUID_IMPLEMENTER                   (0xFFU<<24)
-#define PPB_CPUID_IMPLEMENTER_0                 (0x1U<<24)
+#define PPB_CPUID_REVISION                      (0xFU<<0U)
+#define PPB_CPUID_REVISION_0                    (0x1U<<0U)
+#define PPB_CPUID_PARTNO                        (0xFFFU<<4U)
+#define PPB_CPUID_PARTNO_0                      (0x1U<<4U)
+#define PPB_CPUID_ARCHITECTURE                  (0xFU<<16U)
+#define PPB_CPUID_ARCHITECTURE_0                (0x1U<<16U)
+#define PPB_CPUID_VARIANT                       (0xFU<<20U)
+#define PPB_CPUID_VARIANT_0                     (0x1U<<20U)
+#define PPB_CPUID_IMPLEMENTER                   (0xFFU<<24U)
+#define PPB_CPUID_IMPLEMENTER_0                 (0x1U<<24U)
 
 // ICSR Configuration
 
-#define PPB_ICSR_VECTACTIVE                     (0x1FFU<<0)
-#define PPB_ICSR_VECTACTIVE_0                   (0x1U<<0)
-#define PPB_ICSR_RETTOBASE                      (0x1U<<11)
-#define PPB_ICSR_VECTPENDING                    (0x1FFU<<12)
-#define PPB_ICSR_VECTPENDING_0                  (0x1U<<12)
-#define PPB_ICSR_ISRPENDING                     (0x1U<<22)
-#define PPB_ICSR_ISRPREEMPT                     (0x1U<<23)
-#define PPB_ICSR_STTNS                          (0x1U<<24)
-#define PPB_ICSR_PENDSTCLR                      (0x1U<<25)
-#define PPB_ICSR_PENDSTSET                      (0x1U<<26)
-#define PPB_ICSR_PENDSVCLR                      (0x1U<<27)
-#define PPB_ICSR_PENDSVSET                      (0x1U<<28)
-#define PPB_ICSR_PENDNMICLR                     (0x1U<<30)
-#define PPB_ICSR_PENDNMISET                     (0x1U<<31)
+#define PPB_ICSR_VECTACTIVE                     (0x1FFU<<0U)
+#define PPB_ICSR_VECTACTIVE_0                   (0x1U<<0U)
+#define PPB_ICSR_RETTOBASE                      (0x1U<<11U)
+#define PPB_ICSR_VECTPENDING                    (0x1FFU<<12U)
+#define PPB_ICSR_VECTPENDING_0                  (0x1U<<12U)
+#define PPB_ICSR_ISRPENDING                     (0x1U<<22U)
+#define PPB_ICSR_ISRPREEMPT                     (0x1U<<23U)
+#define PPB_ICSR_STTNS                          (0x1U<<24U)
+#define PPB_ICSR_PENDSTCLR                      (0x1U<<25U)
+#define PPB_ICSR_PENDSTSET                      (0x1U<<26U)
+#define PPB_ICSR_PENDSVCLR                      (0x1U<<27U)
+#define PPB_ICSR_PENDSVSET                      (0x1U<<28U)
+#define PPB_ICSR_PENDNMICLR                     (0x1U<<30U)
+#define PPB_ICSR_PENDNMISET                     (0x1U<<31U)
 
 // VTOR Configuration
 
-#define PPB_VTOR_TBLOFF                         (0x1FFFFFFU<<7)
-#define PPB_VTOR_TBLOFF_0                       (0x1U<<7)
+#define PPB_VTOR_TBLOFF                         (0x1FFFFFFU<<7U)
+#define PPB_VTOR_TBLOFF_0                       (0x1U<<7U)
 
 // AIRCR Configuration
 
-#define PPB_AIRCR_VECTCLRACTIVE                 (0x1U<<1)
-#define PPB_AIRCR_SYSRESETREQ                   (0x1U<<2)
-#define PPB_AIRCR_SYSRESETREQS                  (0x1U<<3)
-#define PPB_AIRCR_PRIGROUP                      (0x7U<<8)
-#define PPB_AIRCR_PRIGROUP_0                    (0x1U<<8)
-#define PPB_AIRCR_BFHFNMINS                     (0x1U<<13)
-#define PPB_AIRCR_PRIS                          (0x1U<<14)
-#define PPB_AIRCR_ENDIANESS                     (0x1U<<15)
-#define PPB_AIRCR_VECTKEY                       (0xFFFFU<<16)
-#define PPB_AIRCR_VECTKEY_0                     (0x1U<<16)
+#define PPB_AIRCR_VECTCLRACTIVE                 (0x1U<<1U)
+#define PPB_AIRCR_SYSRESETREQ                   (0x1U<<2U)
+#define PPB_AIRCR_SYSRESETREQS                  (0x1U<<3U)
+#define PPB_AIRCR_PRIGROUP                      (0x7U<<8U)
+#define PPB_AIRCR_PRIGROUP_0                    (0x1U<<8U)
+#define PPB_AIRCR_BFHFNMINS                     (0x1U<<13U)
+#define PPB_AIRCR_PRIS                          (0x1U<<14U)
+#define PPB_AIRCR_ENDIANESS                     (0x1U<<15U)
+#define PPB_AIRCR_VECTKEY                       (0xFFFFU<<16U)
+#define PPB_AIRCR_VECTKEY_0                     (0x1U<<16U)
 
 // SCR Configuration
 
-#define PPB_SCR_SLEEPONEXIT                     (0x1U<<1)
-#define PPB_SCR_SLEEPDEEP                       (0x1U<<2)
-#define PPB_SCR_SLEEPDEEPS                      (0x1U<<3)
-#define PPB_SCR_SEVONPEND                       (0x1U<<4)
+#define PPB_SCR_SLEEPONEXIT                     (0x1U<<1U)
+#define PPB_SCR_SLEEPDEEP                       (0x1U<<2U)
+#define PPB_SCR_SLEEPDEEPS                      (0x1U<<3U)
+#define PPB_SCR_SEVONPEND                       (0x1U<<4U)
 
 // CCR Configuration
 
-#define PPB_CCR_RES1_1                          (0x1U<<0)
-#define PPB_CCR_USERSETMPEND                    (0x1U<<1)
-#define PPB_CCR_UNALIGN_TRP                     (0x1U<<3)
-#define PPB_CCR_DIV_0_TRP                       (0x1U<<4)
-#define PPB_CCR_BFHFNMIGN                       (0x1U<<8)
-#define PPB_CCR_RES1                            (0x1U<<9)
-#define PPB_CCR_STKOFHFNMIGN                    (0x1U<<10)
-#define PPB_CCR_DC                              (0x1U<<16)
-#define PPB_CCR_IC                              (0x1U<<17)
-#define PPB_CCR_BP                              (0x1U<<18)
+#define PPB_CCR_RES1_1                          (0x1U<<0U)
+#define PPB_CCR_USERSETMPEND                    (0x1U<<1U)
+#define PPB_CCR_UNALIGN_TRP                     (0x1U<<3U)
+#define PPB_CCR_DIV_0_TRP                       (0x1U<<4U)
+#define PPB_CCR_BFHFNMIGN                       (0x1U<<8U)
+#define PPB_CCR_RES1                            (0x1U<<9U)
+#define PPB_CCR_STKOFHFNMIGN                    (0x1U<<10U)
+#define PPB_CCR_DC                              (0x1U<<16U)
+#define PPB_CCR_IC                              (0x1U<<17U)
+#define PPB_CCR_BP                              (0x1U<<18U)
 
 // SHPR1 Configuration
 
-#define PPB_SHPR1_PRI_4_3                       (0x7U<<5)
-#define PPB_SHPR1_PRI_4_3_0                     (0x1U<<5)
-#define PPB_SHPR1_PRI_5_3                       (0x7U<<13)
-#define PPB_SHPR1_PRI_5_3_0                     (0x1U<<13)
-#define PPB_SHPR1_PRI_6_3                       (0x7U<<21)
-#define PPB_SHPR1_PRI_6_3_0                     (0x1U<<21)
-#define PPB_SHPR1_PRI_7_3                       (0x7U<<29)
-#define PPB_SHPR1_PRI_7_3_0                     (0x1U<<29)
+#define PPB_SHPR1_PRI_4_3                       (0x7U<<5U)
+#define PPB_SHPR1_PRI_4_3_0                     (0x1U<<5U)
+#define PPB_SHPR1_PRI_5_3                       (0x7U<<13U)
+#define PPB_SHPR1_PRI_5_3_0                     (0x1U<<13U)
+#define PPB_SHPR1_PRI_6_3                       (0x7U<<21U)
+#define PPB_SHPR1_PRI_6_3_0                     (0x1U<<21U)
+#define PPB_SHPR1_PRI_7_3                       (0x7U<<29U)
+#define PPB_SHPR1_PRI_7_3_0                     (0x1U<<29U)
 
 // SHPR2 Configuration
 
-#define PPB_SHPR2_PRI_8                         (0xFFU<<0)
-#define PPB_SHPR2_PRI_8_0                       (0x1U<<0)
-#define PPB_SHPR2_PRI_9                         (0xFFU<<8)
-#define PPB_SHPR2_PRI_9_0                       (0x1U<<8)
-#define PPB_SHPR2_PRI_10                        (0xFFU<<16)
-#define PPB_SHPR2_PRI_10_0                      (0x1U<<16)
-#define PPB_SHPR2_PRI_11_3                      (0x7U<<29)
-#define PPB_SHPR2_PRI_11_3_0                    (0x1U<<29)
+#define PPB_SHPR2_PRI_8                         (0xFFU<<0U)
+#define PPB_SHPR2_PRI_8_0                       (0x1U<<0U)
+#define PPB_SHPR2_PRI_9                         (0xFFU<<8U)
+#define PPB_SHPR2_PRI_9_0                       (0x1U<<8U)
+#define PPB_SHPR2_PRI_10                        (0xFFU<<16U)
+#define PPB_SHPR2_PRI_10_0                      (0x1U<<16U)
+#define PPB_SHPR2_PRI_11_3                      (0x7U<<29U)
+#define PPB_SHPR2_PRI_11_3_0                    (0x1U<<29U)
 
 // SHPR3 Configuration
 
-#define PPB_SHPR3_PRI_12_3                      (0x7U<<5)
-#define PPB_SHPR3_PRI_12_3_0                    (0x1U<<5)
-#define PPB_SHPR3_PRI_13                        (0xFFU<<8)
-#define PPB_SHPR3_PRI_13_0                      (0x1U<<8)
-#define PPB_SHPR3_PRI_14_3                      (0x7U<<21)
-#define PPB_SHPR3_PRI_14_3_0                    (0x1U<<21)
-#define PPB_SHPR3_PRI_15_3                      (0x7U<<29)
-#define PPB_SHPR3_PRI_15_3_0                    (0x1U<<29)
+#define PPB_SHPR3_PRI_12_3                      (0x7U<<5U)
+#define PPB_SHPR3_PRI_12_3_0                    (0x1U<<5U)
+#define PPB_SHPR3_PRI_13                        (0xFFU<<8U)
+#define PPB_SHPR3_PRI_13_0                      (0x1U<<8U)
+#define PPB_SHPR3_PRI_14_3                      (0x7U<<21U)
+#define PPB_SHPR3_PRI_14_3_0                    (0x1U<<21U)
+#define PPB_SHPR3_PRI_15_3                      (0x7U<<29U)
+#define PPB_SHPR3_PRI_15_3_0                    (0x1U<<29U)
 
 // SHCSR Configuration
 
-#define PPB_SHCSR_MEMFAULTACT                   (0x1U<<0)
-#define PPB_SHCSR_BUSFAULTACT                   (0x1U<<1)
-#define PPB_SHCSR_HARDFAULTACT                  (0x1U<<2)
-#define PPB_SHCSR_USGFAULTACT                   (0x1U<<3)
-#define PPB_SHCSR_SECUREFAULTACT                (0x1U<<4)
-#define PPB_SHCSR_NMIACT                        (0x1U<<5)
-#define PPB_SHCSR_SVCALLACT                     (0x1U<<7)
-#define PPB_SHCSR_MONITORACT                    (0x1U<<8)
-#define PPB_SHCSR_PENDSVACT                     (0x1U<<10)
-#define PPB_SHCSR_SYSTICKACT                    (0x1U<<11)
-#define PPB_SHCSR_USGFAULTPENDED                (0x1U<<12)
-#define PPB_SHCSR_MEMFAULTPENDED                (0x1U<<13)
-#define PPB_SHCSR_BUSFAULTPENDED                (0x1U<<14)
-#define PPB_SHCSR_SVCALLPENDED                  (0x1U<<15)
-#define PPB_SHCSR_MEMFAULTENA                   (0x1U<<16)
-#define PPB_SHCSR_BUSFAULTENA                   (0x1U<<17)
-#define PPB_SHCSR_USGFAULTENA                   (0x1U<<18)
-#define PPB_SHCSR_SECUREFAULTENA                (0x1U<<19)
-#define PPB_SHCSR_SECUREFAULTPENDED             (0x1U<<20)
-#define PPB_SHCSR_HARDFAULTPENDED               (0x1U<<21)
+#define PPB_SHCSR_MEMFAULTACT                   (0x1U<<0U)
+#define PPB_SHCSR_BUSFAULTACT                   (0x1U<<1U)
+#define PPB_SHCSR_HARDFAULTACT                  (0x1U<<2U)
+#define PPB_SHCSR_USGFAULTACT                   (0x1U<<3U)
+#define PPB_SHCSR_SECUREFAULTACT                (0x1U<<4U)
+#define PPB_SHCSR_NMIACT                        (0x1U<<5U)
+#define PPB_SHCSR_SVCALLACT                     (0x1U<<7U)
+#define PPB_SHCSR_MONITORACT                    (0x1U<<8U)
+#define PPB_SHCSR_PENDSVACT                     (0x1U<<10U)
+#define PPB_SHCSR_SYSTICKACT                    (0x1U<<11U)
+#define PPB_SHCSR_USGFAULTPENDED                (0x1U<<12U)
+#define PPB_SHCSR_MEMFAULTPENDED                (0x1U<<13U)
+#define PPB_SHCSR_BUSFAULTPENDED                (0x1U<<14U)
+#define PPB_SHCSR_SVCALLPENDED                  (0x1U<<15U)
+#define PPB_SHCSR_MEMFAULTENA                   (0x1U<<16U)
+#define PPB_SHCSR_BUSFAULTENA                   (0x1U<<17U)
+#define PPB_SHCSR_USGFAULTENA                   (0x1U<<18U)
+#define PPB_SHCSR_SECUREFAULTENA                (0x1U<<19U)
+#define PPB_SHCSR_SECUREFAULTPENDED             (0x1U<<20U)
+#define PPB_SHCSR_HARDFAULTPENDED               (0x1U<<21U)
 
 // CFSR Configuration
 
-#define PPB_CFSR_MMFSR                          (0xFFU<<0)
-#define PPB_CFSR_MMFSR_0                        (0x1U<<0)
-#define PPB_CFSR_BFSR_IBUSERR                   (0x1U<<8)
-#define PPB_CFSR_BFSR_PRECISERR                 (0x1U<<9)
-#define PPB_CFSR_BFSR_IMPRECISERR               (0x1U<<10)
-#define PPB_CFSR_BFSR_UNSTKERR                  (0x1U<<11)
-#define PPB_CFSR_BFSR_STKERR                    (0x1U<<12)
-#define PPB_CFSR_BFSR_LSPERR                    (0x1U<<13)
-#define PPB_CFSR_BFSR_BFARVALID                 (0x1U<<15)
-#define PPB_CFSR_UFSR_UNDEFINSTR                (0x1U<<16)
-#define PPB_CFSR_UFSR_INVSTATE                  (0x1U<<17)
-#define PPB_CFSR_UFSR_INVPC                     (0x1U<<18)
-#define PPB_CFSR_UFSR_NOCP                      (0x1U<<19)
-#define PPB_CFSR_UFSR_STKOF                     (0x1U<<20)
-#define PPB_CFSR_UFSR_UNALIGNED                 (0x1U<<24)
-#define PPB_CFSR_UFSR_DIVBYZERO                 (0x1U<<25)
+#define PPB_CFSR_MMFSR                          (0xFFU<<0U)
+#define PPB_CFSR_MMFSR_0                        (0x1U<<0U)
+#define PPB_CFSR_BFSR_IBUSERR                   (0x1U<<8U)
+#define PPB_CFSR_BFSR_PRECISERR                 (0x1U<<9U)
+#define PPB_CFSR_BFSR_IMPRECISERR               (0x1U<<10U)
+#define PPB_CFSR_BFSR_UNSTKERR                  (0x1U<<11U)
+#define PPB_CFSR_BFSR_STKERR                    (0x1U<<12U)
+#define PPB_CFSR_BFSR_LSPERR                    (0x1U<<13U)
+#define PPB_CFSR_BFSR_BFARVALID                 (0x1U<<15U)
+#define PPB_CFSR_UFSR_UNDEFINSTR                (0x1U<<16U)
+#define PPB_CFSR_UFSR_INVSTATE                  (0x1U<<17U)
+#define PPB_CFSR_UFSR_INVPC                     (0x1U<<18U)
+#define PPB_CFSR_UFSR_NOCP                      (0x1U<<19U)
+#define PPB_CFSR_UFSR_STKOF                     (0x1U<<20U)
+#define PPB_CFSR_UFSR_UNALIGNED                 (0x1U<<24U)
+#define PPB_CFSR_UFSR_DIVBYZERO                 (0x1U<<25U)
 
 // HFSR Configuration
 
-#define PPB_HFSR_VECTTBL                        (0x1U<<1)
-#define PPB_HFSR_FORCED                         (0x1U<<30)
-#define PPB_HFSR_DEBUGEVT                       (0x1U<<31)
+#define PPB_HFSR_VECTTBL                        (0x1U<<1U)
+#define PPB_HFSR_FORCED                         (0x1U<<30U)
+#define PPB_HFSR_DEBUGEVT                       (0x1U<<31U)
 
 // DFSR Configuration
 
-#define PPB_DFSR_HALTED                         (0x1U<<0)
-#define PPB_DFSR_BKPT                           (0x1U<<1)
-#define PPB_DFSR_DWTTRAP                        (0x1U<<2)
-#define PPB_DFSR_VCATCH                         (0x1U<<3)
-#define PPB_DFSR_EXTERNAL                       (0x1U<<4)
+#define PPB_DFSR_HALTED                         (0x1U<<0U)
+#define PPB_DFSR_BKPT                           (0x1U<<1U)
+#define PPB_DFSR_DWTTRAP                        (0x1U<<2U)
+#define PPB_DFSR_VCATCH                         (0x1U<<3U)
+#define PPB_DFSR_EXTERNAL                       (0x1U<<4U)
 
 // MMFAR Configuration
 
-#define PPB_MMFAR_ADDRESS                       (0xFFFFFFFFU<<0)
-#define PPB_MMFAR_ADDRESS_0                     (0x1U<<0)
+#define PPB_MMFAR_ADDRESS                       (0xFFFFFFFFU<<0U)
+#define PPB_MMFAR_ADDRESS_0                     (0x1U<<0U)
 
 // BFAR Configuration
 
-#define PPB_BFAR_ADDRESS                        (0xFFFFFFFFU<<0)
-#define PPB_BFAR_ADDRESS_0                      (0x1U<<0)
+#define PPB_BFAR_ADDRESS                        (0xFFFFFFFFU<<0U)
+#define PPB_BFAR_ADDRESS_0                      (0x1U<<0U)
 
 // ID_PFR0 Configuration
 
-#define PPB_ID_PFR0_STATE0                      (0xFU<<0)
-#define PPB_ID_PFR0_STATE0_0                    (0x1U<<0)
-#define PPB_ID_PFR0_STATE1                      (0xFU<<4)
-#define PPB_ID_PFR0_STATE1_0                    (0x1U<<4)
+#define PPB_ID_PFR0_STATE0                      (0xFU<<0U)
+#define PPB_ID_PFR0_STATE0_0                    (0x1U<<0U)
+#define PPB_ID_PFR0_STATE1                      (0xFU<<4U)
+#define PPB_ID_PFR0_STATE1_0                    (0x1U<<4U)
 
 // ID_PFR1 Configuration
 
-#define PPB_ID_PFR1_SECURITY                    (0xFU<<4)
-#define PPB_ID_PFR1_SECURITY_0                  (0x1U<<4)
-#define PPB_ID_PFR1_MPROGMOD                    (0xFU<<8)
-#define PPB_ID_PFR1_MPROGMOD_0                  (0x1U<<8)
+#define PPB_ID_PFR1_SECURITY                    (0xFU<<4U)
+#define PPB_ID_PFR1_SECURITY_0                  (0x1U<<4U)
+#define PPB_ID_PFR1_MPROGMOD                    (0xFU<<8U)
+#define PPB_ID_PFR1_MPROGMOD_0                  (0x1U<<8U)
 
 // ID_DFR0 Configuration
 
-#define PPB_ID_DFR0_MPROFDBG                    (0xFU<<20)
-#define PPB_ID_DFR0_MPROFDBG_0                  (0x1U<<20)
+#define PPB_ID_DFR0_MPROFDBG                    (0xFU<<20U)
+#define PPB_ID_DFR0_MPROFDBG_0                  (0x1U<<20U)
 
 // ID_AFR0 Configuration
 
-#define PPB_ID_AFR0_IMPDEF0                     (0xFU<<0)
-#define PPB_ID_AFR0_IMPDEF0_0                   (0x1U<<0)
-#define PPB_ID_AFR0_IMPDEF1                     (0xFU<<4)
-#define PPB_ID_AFR0_IMPDEF1_0                   (0x1U<<4)
-#define PPB_ID_AFR0_IMPDEF2                     (0xFU<<8)
-#define PPB_ID_AFR0_IMPDEF2_0                   (0x1U<<8)
-#define PPB_ID_AFR0_IMPDEF3                     (0xFU<<12)
-#define PPB_ID_AFR0_IMPDEF3_0                   (0x1U<<12)
+#define PPB_ID_AFR0_IMPDEF0                     (0xFU<<0U)
+#define PPB_ID_AFR0_IMPDEF0_0                   (0x1U<<0U)
+#define PPB_ID_AFR0_IMPDEF1                     (0xFU<<4U)
+#define PPB_ID_AFR0_IMPDEF1_0                   (0x1U<<4U)
+#define PPB_ID_AFR0_IMPDEF2                     (0xFU<<8U)
+#define PPB_ID_AFR0_IMPDEF2_0                   (0x1U<<8U)
+#define PPB_ID_AFR0_IMPDEF3                     (0xFU<<12U)
+#define PPB_ID_AFR0_IMPDEF3_0                   (0x1U<<12U)
 
 // ID_MMFR0 Configuration
 
-#define PPB_ID_MMFR0_PMSA                       (0xFU<<4)
-#define PPB_ID_MMFR0_PMSA_0                     (0x1U<<4)
-#define PPB_ID_MMFR0_OUTERSHR                   (0xFU<<8)
-#define PPB_ID_MMFR0_OUTERSHR_0                 (0x1U<<8)
-#define PPB_ID_MMFR0_SHARELVL                   (0xFU<<12)
-#define PPB_ID_MMFR0_SHARELVL_0                 (0x1U<<12)
-#define PPB_ID_MMFR0_TCM                        (0xFU<<16)
-#define PPB_ID_MMFR0_TCM_0                      (0x1U<<16)
-#define PPB_ID_MMFR0_AUXREG                     (0xFU<<20)
-#define PPB_ID_MMFR0_AUXREG_0                   (0x1U<<20)
+#define PPB_ID_MMFR0_PMSA                       (0xFU<<4U)
+#define PPB_ID_MMFR0_PMSA_0                     (0x1U<<4U)
+#define PPB_ID_MMFR0_OUTERSHR                   (0xFU<<8U)
+#define PPB_ID_MMFR0_OUTERSHR_0                 (0x1U<<8U)
+#define PPB_ID_MMFR0_SHARELVL                   (0xFU<<12U)
+#define PPB_ID_MMFR0_SHARELVL_0                 (0x1U<<12U)
+#define PPB_ID_MMFR0_TCM                        (0xFU<<16U)
+#define PPB_ID_MMFR0_TCM_0                      (0x1U<<16U)
+#define PPB_ID_MMFR0_AUXREG                     (0xFU<<20U)
+#define PPB_ID_MMFR0_AUXREG_0                   (0x1U<<20U)
 
 // ID_MMFR1 Configuration
 
-#define PPB_ID_MMFR1_ID_MMFR1                   (0xFFFFFFFFU<<0)
-#define PPB_ID_MMFR1_ID_MMFR1_0                 (0x1U<<0)
+#define PPB_ID_MMFR1_ID_MMFR1                   (0xFFFFFFFFU<<0U)
+#define PPB_ID_MMFR1_ID_MMFR1_0                 (0x1U<<0U)
 
 // ID_MMFR2 Configuration
 
-#define PPB_ID_MMFR2_WFISTALL                   (0xFU<<24)
-#define PPB_ID_MMFR2_WFISTALL_0                 (0x1U<<24)
+#define PPB_ID_MMFR2_WFISTALL                   (0xFU<<24U)
+#define PPB_ID_MMFR2_WFISTALL_0                 (0x1U<<24U)
 
 // ID_MMFR3 Configuration
 
-#define PPB_ID_MMFR3_CMAINTVA                   (0xFU<<0)
-#define PPB_ID_MMFR3_CMAINTVA_0                 (0x1U<<0)
-#define PPB_ID_MMFR3_CMAINTSW                   (0xFU<<4)
-#define PPB_ID_MMFR3_CMAINTSW_0                 (0x1U<<4)
-#define PPB_ID_MMFR3_BPMAINT                    (0xFU<<8)
-#define PPB_ID_MMFR3_BPMAINT_0                  (0x1U<<8)
+#define PPB_ID_MMFR3_CMAINTVA                   (0xFU<<0U)
+#define PPB_ID_MMFR3_CMAINTVA_0                 (0x1U<<0U)
+#define PPB_ID_MMFR3_CMAINTSW                   (0xFU<<4U)
+#define PPB_ID_MMFR3_CMAINTSW_0                 (0x1U<<4U)
+#define PPB_ID_MMFR3_BPMAINT                    (0xFU<<8U)
+#define PPB_ID_MMFR3_BPMAINT_0                  (0x1U<<8U)
 
 // ID_ISAR0 Configuration
 
-#define PPB_ID_ISAR0_BITCOUNT                   (0xFU<<4)
-#define PPB_ID_ISAR0_BITCOUNT_0                 (0x1U<<4)
-#define PPB_ID_ISAR0_BITFIELD                   (0xFU<<8)
-#define PPB_ID_ISAR0_BITFIELD_0                 (0x1U<<8)
-#define PPB_ID_ISAR0_CMPBRANCH                  (0xFU<<12)
-#define PPB_ID_ISAR0_CMPBRANCH_0                (0x1U<<12)
-#define PPB_ID_ISAR0_COPROC                     (0xFU<<16)
-#define PPB_ID_ISAR0_COPROC_0                   (0x1U<<16)
-#define PPB_ID_ISAR0_DEBUG                      (0xFU<<20)
-#define PPB_ID_ISAR0_DEBUG_0                    (0x1U<<20)
-#define PPB_ID_ISAR0_DIVIDE                     (0xFU<<24)
-#define PPB_ID_ISAR0_DIVIDE_0                   (0x1U<<24)
+#define PPB_ID_ISAR0_BITCOUNT                   (0xFU<<4U)
+#define PPB_ID_ISAR0_BITCOUNT_0                 (0x1U<<4U)
+#define PPB_ID_ISAR0_BITFIELD                   (0xFU<<8U)
+#define PPB_ID_ISAR0_BITFIELD_0                 (0x1U<<8U)
+#define PPB_ID_ISAR0_CMPBRANCH                  (0xFU<<12U)
+#define PPB_ID_ISAR0_CMPBRANCH_0                (0x1U<<12U)
+#define PPB_ID_ISAR0_COPROC                     (0xFU<<16U)
+#define PPB_ID_ISAR0_COPROC_0                   (0x1U<<16U)
+#define PPB_ID_ISAR0_DEBUG                      (0xFU<<20U)
+#define PPB_ID_ISAR0_DEBUG_0                    (0x1U<<20U)
+#define PPB_ID_ISAR0_DIVIDE                     (0xFU<<24U)
+#define PPB_ID_ISAR0_DIVIDE_0                   (0x1U<<24U)
 
 // ID_ISAR1 Configuration
 
-#define PPB_ID_ISAR1_EXTEND                     (0xFU<<12)
-#define PPB_ID_ISAR1_EXTEND_0                   (0x1U<<12)
-#define PPB_ID_ISAR1_IFTHEN                     (0xFU<<16)
-#define PPB_ID_ISAR1_IFTHEN_0                   (0x1U<<16)
-#define PPB_ID_ISAR1_IMMEDIATE                  (0xFU<<20)
-#define PPB_ID_ISAR1_IMMEDIATE_0                (0x1U<<20)
-#define PPB_ID_ISAR1_INTERWORK                  (0xFU<<24)
-#define PPB_ID_ISAR1_INTERWORK_0                (0x1U<<24)
+#define PPB_ID_ISAR1_EXTEND                     (0xFU<<12U)
+#define PPB_ID_ISAR1_EXTEND_0                   (0x1U<<12U)
+#define PPB_ID_ISAR1_IFTHEN                     (0xFU<<16U)
+#define PPB_ID_ISAR1_IFTHEN_0                   (0x1U<<16U)
+#define PPB_ID_ISAR1_IMMEDIATE                  (0xFU<<20U)
+#define PPB_ID_ISAR1_IMMEDIATE_0                (0x1U<<20U)
+#define PPB_ID_ISAR1_INTERWORK                  (0xFU<<24U)
+#define PPB_ID_ISAR1_INTERWORK_0                (0x1U<<24U)
 
 // ID_ISAR2 Configuration
 
-#define PPB_ID_ISAR2_LOADSTORE                  (0xFU<<0)
-#define PPB_ID_ISAR2_LOADSTORE_0                (0x1U<<0)
-#define PPB_ID_ISAR2_MEMHINT                    (0xFU<<4)
-#define PPB_ID_ISAR2_MEMHINT_0                  (0x1U<<4)
-#define PPB_ID_ISAR2_MULTIACCESSINT             (0xFU<<8)
-#define PPB_ID_ISAR2_MULTIACCESSINT_0           (0x1U<<8)
-#define PPB_ID_ISAR2_MULT                       (0xFU<<12)
-#define PPB_ID_ISAR2_MULT_0                     (0x1U<<12)
-#define PPB_ID_ISAR2_MULTS                      (0xFU<<16)
-#define PPB_ID_ISAR2_MULTS_0                    (0x1U<<16)
-#define PPB_ID_ISAR2_MULTU                      (0xFU<<20)
-#define PPB_ID_ISAR2_MULTU_0                    (0x1U<<20)
-#define PPB_ID_ISAR2_REVERSAL                   (0xFU<<28)
-#define PPB_ID_ISAR2_REVERSAL_0                 (0x1U<<28)
+#define PPB_ID_ISAR2_LOADSTORE                  (0xFU<<0U)
+#define PPB_ID_ISAR2_LOADSTORE_0                (0x1U<<0U)
+#define PPB_ID_ISAR2_MEMHINT                    (0xFU<<4U)
+#define PPB_ID_ISAR2_MEMHINT_0                  (0x1U<<4U)
+#define PPB_ID_ISAR2_MULTIACCESSINT             (0xFU<<8U)
+#define PPB_ID_ISAR2_MULTIACCESSINT_0           (0x1U<<8U)
+#define PPB_ID_ISAR2_MULT                       (0xFU<<12U)
+#define PPB_ID_ISAR2_MULT_0                     (0x1U<<12U)
+#define PPB_ID_ISAR2_MULTS                      (0xFU<<16U)
+#define PPB_ID_ISAR2_MULTS_0                    (0x1U<<16U)
+#define PPB_ID_ISAR2_MULTU                      (0xFU<<20U)
+#define PPB_ID_ISAR2_MULTU_0                    (0x1U<<20U)
+#define PPB_ID_ISAR2_REVERSAL                   (0xFU<<28U)
+#define PPB_ID_ISAR2_REVERSAL_0                 (0x1U<<28U)
 
 // ID_ISAR3 Configuration
 
-#define PPB_ID_ISAR3_SATURATE                   (0xFU<<0)
-#define PPB_ID_ISAR3_SATURATE_0                 (0x1U<<0)
-#define PPB_ID_ISAR3_SIMD                       (0xFU<<4)
-#define PPB_ID_ISAR3_SIMD_0                     (0x1U<<4)
-#define PPB_ID_ISAR3_SVC                        (0xFU<<8)
-#define PPB_ID_ISAR3_SVC_0                      (0x1U<<8)
-#define PPB_ID_ISAR3_SYNCHPRIM                  (0xFU<<12)
-#define PPB_ID_ISAR3_SYNCHPRIM_0                (0x1U<<12)
-#define PPB_ID_ISAR3_TABBRANCH                  (0xFU<<16)
-#define PPB_ID_ISAR3_TABBRANCH_0                (0x1U<<16)
-#define PPB_ID_ISAR3_T32COPY                    (0xFU<<20)
-#define PPB_ID_ISAR3_T32COPY_0                  (0x1U<<20)
-#define PPB_ID_ISAR3_TRUENOP                    (0xFU<<24)
-#define PPB_ID_ISAR3_TRUENOP_0                  (0x1U<<24)
+#define PPB_ID_ISAR3_SATURATE                   (0xFU<<0U)
+#define PPB_ID_ISAR3_SATURATE_0                 (0x1U<<0U)
+#define PPB_ID_ISAR3_SIMD                       (0xFU<<4U)
+#define PPB_ID_ISAR3_SIMD_0                     (0x1U<<4U)
+#define PPB_ID_ISAR3_SVC                        (0xFU<<8U)
+#define PPB_ID_ISAR3_SVC_0                      (0x1U<<8U)
+#define PPB_ID_ISAR3_SYNCHPRIM                  (0xFU<<12U)
+#define PPB_ID_ISAR3_SYNCHPRIM_0                (0x1U<<12U)
+#define PPB_ID_ISAR3_TABBRANCH                  (0xFU<<16U)
+#define PPB_ID_ISAR3_TABBRANCH_0                (0x1U<<16U)
+#define PPB_ID_ISAR3_T32COPY                    (0xFU<<20U)
+#define PPB_ID_ISAR3_T32COPY_0                  (0x1U<<20U)
+#define PPB_ID_ISAR3_TRUENOP                    (0xFU<<24U)
+#define PPB_ID_ISAR3_TRUENOP_0                  (0x1U<<24U)
 
 // ID_ISAR4 Configuration
 
-#define PPB_ID_ISAR4_UNPRIV                     (0xFU<<0)
-#define PPB_ID_ISAR4_UNPRIV_0                   (0x1U<<0)
-#define PPB_ID_ISAR4_WITHSHIFTS                 (0xFU<<4)
-#define PPB_ID_ISAR4_WITHSHIFTS_0               (0x1U<<4)
-#define PPB_ID_ISAR4_WRITEBACK                  (0xFU<<8)
-#define PPB_ID_ISAR4_WRITEBACK_0                (0x1U<<8)
-#define PPB_ID_ISAR4_BARRIER                    (0xFU<<16)
-#define PPB_ID_ISAR4_BARRIER_0                  (0x1U<<16)
-#define PPB_ID_ISAR4_SYNCPRIM_FRAC              (0xFU<<20)
-#define PPB_ID_ISAR4_SYNCPRIM_FRAC_0            (0x1U<<20)
-#define PPB_ID_ISAR4_PSR_M                      (0xFU<<24)
-#define PPB_ID_ISAR4_PSR_M_0                    (0x1U<<24)
+#define PPB_ID_ISAR4_UNPRIV                     (0xFU<<0U)
+#define PPB_ID_ISAR4_UNPRIV_0                   (0x1U<<0U)
+#define PPB_ID_ISAR4_WITHSHIFTS                 (0xFU<<4U)
+#define PPB_ID_ISAR4_WITHSHIFTS_0               (0x1U<<4U)
+#define PPB_ID_ISAR4_WRITEBACK                  (0xFU<<8U)
+#define PPB_ID_ISAR4_WRITEBACK_0                (0x1U<<8U)
+#define PPB_ID_ISAR4_BARRIER                    (0xFU<<16U)
+#define PPB_ID_ISAR4_BARRIER_0                  (0x1U<<16U)
+#define PPB_ID_ISAR4_SYNCPRIM_FRAC              (0xFU<<20U)
+#define PPB_ID_ISAR4_SYNCPRIM_FRAC_0            (0x1U<<20U)
+#define PPB_ID_ISAR4_PSR_M                      (0xFU<<24U)
+#define PPB_ID_ISAR4_PSR_M_0                    (0x1U<<24U)
 
 // ID_ISAR5 Configuration
 
-#define PPB_ID_ISAR5_ID_ISAR5                   (0xFFFFFFFFU<<0)
-#define PPB_ID_ISAR5_ID_ISAR5_0                 (0x1U<<0)
+#define PPB_ID_ISAR5_ID_ISAR5                   (0xFFFFFFFFU<<0U)
+#define PPB_ID_ISAR5_ID_ISAR5_0                 (0x1U<<0U)
 
 // CTR Configuration
 
-#define PPB_CTR_IMINLINE                        (0xFU<<0)
-#define PPB_CTR_IMINLINE_0                      (0x1U<<0)
-#define PPB_CTR_RES1_1                          (0x3U<<14)
-#define PPB_CTR_RES1_1_0                        (0x1U<<14)
-#define PPB_CTR_DMINLINE                        (0xFU<<16)
-#define PPB_CTR_DMINLINE_0                      (0x1U<<16)
-#define PPB_CTR_ERG                             (0xFU<<20)
-#define PPB_CTR_ERG_0                           (0x1U<<20)
-#define PPB_CTR_CWG                             (0xFU<<24)
-#define PPB_CTR_CWG_0                           (0x1U<<24)
-#define PPB_CTR_RES1                            (0x1U<<31)
+#define PPB_CTR_IMINLINE                        (0xFU<<0U)
+#define PPB_CTR_IMINLINE_0                      (0x1U<<0U)
+#define PPB_CTR_RES1_1                          (0x3U<<14U)
+#define PPB_CTR_RES1_1_0                        (0x1U<<14U)
+#define PPB_CTR_DMINLINE                        (0xFU<<16U)
+#define PPB_CTR_DMINLINE_0                      (0x1U<<16U)
+#define PPB_CTR_ERG                             (0xFU<<20U)
+#define PPB_CTR_ERG_0                           (0x1U<<20U)
+#define PPB_CTR_CWG                             (0xFU<<24U)
+#define PPB_CTR_CWG_0                           (0x1U<<24U)
+#define PPB_CTR_RES1                            (0x1U<<31U)
 
 // CPACR Configuration
 
-#define PPB_CPACR_CP0                           (0x3U<<0)
-#define PPB_CPACR_CP0_0                         (0x1U<<0)
-#define PPB_CPACR_CP1                           (0x3U<<2)
-#define PPB_CPACR_CP1_0                         (0x1U<<2)
-#define PPB_CPACR_CP2                           (0x3U<<4)
-#define PPB_CPACR_CP2_0                         (0x1U<<4)
-#define PPB_CPACR_CP3                           (0x3U<<6)
-#define PPB_CPACR_CP3_0                         (0x1U<<6)
-#define PPB_CPACR_CP4                           (0x3U<<8)
-#define PPB_CPACR_CP4_0                         (0x1U<<8)
-#define PPB_CPACR_CP5                           (0x3U<<10)
-#define PPB_CPACR_CP5_0                         (0x1U<<10)
-#define PPB_CPACR_CP6                           (0x3U<<12)
-#define PPB_CPACR_CP6_0                         (0x1U<<12)
-#define PPB_CPACR_CP7                           (0x3U<<14)
-#define PPB_CPACR_CP7_0                         (0x1U<<14)
-#define PPB_CPACR_CP10                          (0x3U<<20)
-#define PPB_CPACR_CP10_0                        (0x1U<<20)
-#define PPB_CPACR_CP11                          (0x3U<<22)
-#define PPB_CPACR_CP11_0                        (0x1U<<22)
+#define PPB_CPACR_CP0                           (0x3U<<0U)
+#define PPB_CPACR_CP0_0                         (0x1U<<0U)
+#define PPB_CPACR_CP1                           (0x3U<<2U)
+#define PPB_CPACR_CP1_0                         (0x1U<<2U)
+#define PPB_CPACR_CP2                           (0x3U<<4U)
+#define PPB_CPACR_CP2_0                         (0x1U<<4U)
+#define PPB_CPACR_CP3                           (0x3U<<6U)
+#define PPB_CPACR_CP3_0                         (0x1U<<6U)
+#define PPB_CPACR_CP4                           (0x3U<<8U)
+#define PPB_CPACR_CP4_0                         (0x1U<<8U)
+#define PPB_CPACR_CP5                           (0x3U<<10U)
+#define PPB_CPACR_CP5_0                         (0x1U<<10U)
+#define PPB_CPACR_CP6                           (0x3U<<12U)
+#define PPB_CPACR_CP6_0                         (0x1U<<12U)
+#define PPB_CPACR_CP7                           (0x3U<<14U)
+#define PPB_CPACR_CP7_0                         (0x1U<<14U)
+#define PPB_CPACR_CP10                          (0x3U<<20U)
+#define PPB_CPACR_CP10_0                        (0x1U<<20U)
+#define PPB_CPACR_CP11                          (0x3U<<22U)
+#define PPB_CPACR_CP11_0                        (0x1U<<22U)
 
 // NSACR Configuration
 
-#define PPB_NSACR_CP0                           (0x1U<<0)
-#define PPB_NSACR_CP1                           (0x1U<<1)
-#define PPB_NSACR_CP2                           (0x1U<<2)
-#define PPB_NSACR_CP3                           (0x1U<<3)
-#define PPB_NSACR_CP4                           (0x1U<<4)
-#define PPB_NSACR_CP5                           (0x1U<<5)
-#define PPB_NSACR_CP6                           (0x1U<<6)
-#define PPB_NSACR_CP7                           (0x1U<<7)
-#define PPB_NSACR_CP10                          (0x1U<<10)
-#define PPB_NSACR_CP11                          (0x1U<<11)
+#define PPB_NSACR_CP0                           (0x1U<<0U)
+#define PPB_NSACR_CP1                           (0x1U<<1U)
+#define PPB_NSACR_CP2                           (0x1U<<2U)
+#define PPB_NSACR_CP3                           (0x1U<<3U)
+#define PPB_NSACR_CP4                           (0x1U<<4U)
+#define PPB_NSACR_CP5                           (0x1U<<5U)
+#define PPB_NSACR_CP6                           (0x1U<<6U)
+#define PPB_NSACR_CP7                           (0x1U<<7U)
+#define PPB_NSACR_CP10                          (0x1U<<10U)
+#define PPB_NSACR_CP11                          (0x1U<<11U)
 
 // MPU_TYPE Configuration
 
-#define PPB_MPU_TYPE_SEPARATE                   (0x1U<<0)
-#define PPB_MPU_TYPE_DREGION                    (0xFFU<<8)
-#define PPB_MPU_TYPE_DREGION_0                  (0x1U<<8)
+#define PPB_MPU_TYPE_SEPARATE                   (0x1U<<0U)
+#define PPB_MPU_TYPE_DREGION                    (0xFFU<<8U)
+#define PPB_MPU_TYPE_DREGION_0                  (0x1U<<8U)
 
 // MPU_CTRL Configuration
 
-#define PPB_MPU_CTRL_ENABLE                     (0x1U<<0)
-#define PPB_MPU_CTRL_HFNMIENA                   (0x1U<<1)
-#define PPB_MPU_CTRL_PRIVDEFENA                 (0x1U<<2)
+#define PPB_MPU_CTRL_ENABLE                     (0x1U<<0U)
+#define PPB_MPU_CTRL_HFNMIENA                   (0x1U<<1U)
+#define PPB_MPU_CTRL_PRIVDEFENA                 (0x1U<<2U)
 
 // MPU_RNR Configuration
 
-#define PPB_MPU_RNR_REGION                      (0x7U<<0)
-#define PPB_MPU_RNR_REGION_0                    (0x1U<<0)
+#define PPB_MPU_RNR_REGION                      (0x7U<<0U)
+#define PPB_MPU_RNR_REGION_0                    (0x1U<<0U)
 
 // MPU_RBAR Configuration
 
-#define PPB_MPU_RBAR_XN                         (0x1U<<0)
-#define PPB_MPU_RBAR_AP                         (0x3U<<1)
-#define PPB_MPU_RBAR_AP_0                       (0x1U<<1)
-#define PPB_MPU_RBAR_SH                         (0x3U<<3)
-#define PPB_MPU_RBAR_SH_0                       (0x1U<<3)
-#define PPB_MPU_RBAR_BASE                       (0x7FFFFFFU<<5)
-#define PPB_MPU_RBAR_BASE_0                     (0x1U<<5)
+#define PPB_MPU_RBAR_XN                         (0x1U<<0U)
+#define PPB_MPU_RBAR_AP                         (0x3U<<1U)
+#define PPB_MPU_RBAR_AP_0                       (0x1U<<1U)
+#define PPB_MPU_RBAR_SH                         (0x3U<<3U)
+#define PPB_MPU_RBAR_SH_0                       (0x1U<<3U)
+#define PPB_MPU_RBAR_BASE                       (0x7FFFFFFU<<5U)
+#define PPB_MPU_RBAR_BASE_0                     (0x1U<<5U)
 
 // MPU_RLAR Configuration
 
-#define PPB_MPU_RLAR_EN                         (0x1U<<0)
-#define PPB_MPU_RLAR_ATTRINDX                   (0x7U<<1)
-#define PPB_MPU_RLAR_ATTRINDX_0                 (0x1U<<1)
-#define PPB_MPU_RLAR_LIMIT                      (0x7FFFFFFU<<5)
-#define PPB_MPU_RLAR_LIMIT_0                    (0x1U<<5)
+#define PPB_MPU_RLAR_EN                         (0x1U<<0U)
+#define PPB_MPU_RLAR_ATTRINDX                   (0x7U<<1U)
+#define PPB_MPU_RLAR_ATTRINDX_0                 (0x1U<<1U)
+#define PPB_MPU_RLAR_LIMIT                      (0x7FFFFFFU<<5U)
+#define PPB_MPU_RLAR_LIMIT_0                    (0x1U<<5U)
 
 // MPU_RBAR_A1 Configuration
 
-#define PPB_MPU_RBAR_A1_XN                      (0x1U<<0)
-#define PPB_MPU_RBAR_A1_AP                      (0x3U<<1)
-#define PPB_MPU_RBAR_A1_AP_0                    (0x1U<<1)
-#define PPB_MPU_RBAR_A1_SH                      (0x3U<<3)
-#define PPB_MPU_RBAR_A1_SH_0                    (0x1U<<3)
-#define PPB_MPU_RBAR_A1_BASE                    (0x7FFFFFFU<<5)
-#define PPB_MPU_RBAR_A1_BASE_0                  (0x1U<<5)
+#define PPB_MPU_RBAR_A1_XN                      (0x1U<<0U)
+#define PPB_MPU_RBAR_A1_AP                      (0x3U<<1U)
+#define PPB_MPU_RBAR_A1_AP_0                    (0x1U<<1U)
+#define PPB_MPU_RBAR_A1_SH                      (0x3U<<3U)
+#define PPB_MPU_RBAR_A1_SH_0                    (0x1U<<3U)
+#define PPB_MPU_RBAR_A1_BASE                    (0x7FFFFFFU<<5U)
+#define PPB_MPU_RBAR_A1_BASE_0                  (0x1U<<5U)
 
 // MPU_RLAR_A1 Configuration
 
-#define PPB_MPU_RLAR_A1_EN                      (0x1U<<0)
-#define PPB_MPU_RLAR_A1_ATTRINDX                (0x7U<<1)
-#define PPB_MPU_RLAR_A1_ATTRINDX_0              (0x1U<<1)
-#define PPB_MPU_RLAR_A1_LIMIT                   (0x7FFFFFFU<<5)
-#define PPB_MPU_RLAR_A1_LIMIT_0                 (0x1U<<5)
+#define PPB_MPU_RLAR_A1_EN                      (0x1U<<0U)
+#define PPB_MPU_RLAR_A1_ATTRINDX                (0x7U<<1U)
+#define PPB_MPU_RLAR_A1_ATTRINDX_0              (0x1U<<1U)
+#define PPB_MPU_RLAR_A1_LIMIT                   (0x7FFFFFFU<<5U)
+#define PPB_MPU_RLAR_A1_LIMIT_0                 (0x1U<<5U)
 
 // MPU_RBAR_A2 Configuration
 
-#define PPB_MPU_RBAR_A2_XN                      (0x1U<<0)
-#define PPB_MPU_RBAR_A2_AP                      (0x3U<<1)
-#define PPB_MPU_RBAR_A2_AP_0                    (0x1U<<1)
-#define PPB_MPU_RBAR_A2_SH                      (0x3U<<3)
-#define PPB_MPU_RBAR_A2_SH_0                    (0x1U<<3)
-#define PPB_MPU_RBAR_A2_BASE                    (0x7FFFFFFU<<5)
-#define PPB_MPU_RBAR_A2_BASE_0                  (0x1U<<5)
+#define PPB_MPU_RBAR_A2_XN                      (0x1U<<0U)
+#define PPB_MPU_RBAR_A2_AP                      (0x3U<<1U)
+#define PPB_MPU_RBAR_A2_AP_0                    (0x1U<<1U)
+#define PPB_MPU_RBAR_A2_SH                      (0x3U<<3U)
+#define PPB_MPU_RBAR_A2_SH_0                    (0x1U<<3U)
+#define PPB_MPU_RBAR_A2_BASE                    (0x7FFFFFFU<<5U)
+#define PPB_MPU_RBAR_A2_BASE_0                  (0x1U<<5U)
 
 // MPU_RLAR_A2 Configuration
 
-#define PPB_MPU_RLAR_A2_EN                      (0x1U<<0)
-#define PPB_MPU_RLAR_A2_ATTRINDX                (0x7U<<1)
-#define PPB_MPU_RLAR_A2_ATTRINDX_0              (0x1U<<1)
-#define PPB_MPU_RLAR_A2_LIMIT                   (0x7FFFFFFU<<5)
-#define PPB_MPU_RLAR_A2_LIMIT_0                 (0x1U<<5)
+#define PPB_MPU_RLAR_A2_EN                      (0x1U<<0U)
+#define PPB_MPU_RLAR_A2_ATTRINDX                (0x7U<<1U)
+#define PPB_MPU_RLAR_A2_ATTRINDX_0              (0x1U<<1U)
+#define PPB_MPU_RLAR_A2_LIMIT                   (0x7FFFFFFU<<5U)
+#define PPB_MPU_RLAR_A2_LIMIT_0                 (0x1U<<5U)
 
 // MPU_RBAR_A3 Configuration
 
-#define PPB_MPU_RBAR_A3_XN                      (0x1U<<0)
-#define PPB_MPU_RBAR_A3_AP                      (0x3U<<1)
-#define PPB_MPU_RBAR_A3_AP_0                    (0x1U<<1)
-#define PPB_MPU_RBAR_A3_SH                      (0x3U<<3)
-#define PPB_MPU_RBAR_A3_SH_0                    (0x1U<<3)
-#define PPB_MPU_RBAR_A3_BASE                    (0x7FFFFFFU<<5)
-#define PPB_MPU_RBAR_A3_BASE_0                  (0x1U<<5)
+#define PPB_MPU_RBAR_A3_XN                      (0x1U<<0U)
+#define PPB_MPU_RBAR_A3_AP                      (0x3U<<1U)
+#define PPB_MPU_RBAR_A3_AP_0                    (0x1U<<1U)
+#define PPB_MPU_RBAR_A3_SH                      (0x3U<<3U)
+#define PPB_MPU_RBAR_A3_SH_0                    (0x1U<<3U)
+#define PPB_MPU_RBAR_A3_BASE                    (0x7FFFFFFU<<5U)
+#define PPB_MPU_RBAR_A3_BASE_0                  (0x1U<<5U)
 
 // MPU_RLAR_A3 Configuration
 
-#define PPB_MPU_RLAR_A3_EN                      (0x1U<<0)
-#define PPB_MPU_RLAR_A3_ATTRINDX                (0x7U<<1)
-#define PPB_MPU_RLAR_A3_ATTRINDX_0              (0x1U<<1)
-#define PPB_MPU_RLAR_A3_LIMIT                   (0x7FFFFFFU<<5)
-#define PPB_MPU_RLAR_A3_LIMIT_0                 (0x1U<<5)
+#define PPB_MPU_RLAR_A3_EN                      (0x1U<<0U)
+#define PPB_MPU_RLAR_A3_ATTRINDX                (0x7U<<1U)
+#define PPB_MPU_RLAR_A3_ATTRINDX_0              (0x1U<<1U)
+#define PPB_MPU_RLAR_A3_LIMIT                   (0x7FFFFFFU<<5U)
+#define PPB_MPU_RLAR_A3_LIMIT_0                 (0x1U<<5U)
 
 // MPU_MAIR0 Configuration
 
-#define PPB_MPU_MAIR0_ATTR0                     (0xFFU<<0)
-#define PPB_MPU_MAIR0_ATTR0_0                   (0x1U<<0)
-#define PPB_MPU_MAIR0_ATTR1                     (0xFFU<<8)
-#define PPB_MPU_MAIR0_ATTR1_0                   (0x1U<<8)
-#define PPB_MPU_MAIR0_ATTR2                     (0xFFU<<16)
-#define PPB_MPU_MAIR0_ATTR2_0                   (0x1U<<16)
-#define PPB_MPU_MAIR0_ATTR3                     (0xFFU<<24)
-#define PPB_MPU_MAIR0_ATTR3_0                   (0x1U<<24)
+#define PPB_MPU_MAIR0_ATTR0                     (0xFFU<<0U)
+#define PPB_MPU_MAIR0_ATTR0_0                   (0x1U<<0U)
+#define PPB_MPU_MAIR0_ATTR1                     (0xFFU<<8U)
+#define PPB_MPU_MAIR0_ATTR1_0                   (0x1U<<8U)
+#define PPB_MPU_MAIR0_ATTR2                     (0xFFU<<16U)
+#define PPB_MPU_MAIR0_ATTR2_0                   (0x1U<<16U)
+#define PPB_MPU_MAIR0_ATTR3                     (0xFFU<<24U)
+#define PPB_MPU_MAIR0_ATTR3_0                   (0x1U<<24U)
 
 // MPU_MAIR1 Configuration
 
-#define PPB_MPU_MAIR1_ATTR4                     (0xFFU<<0)
-#define PPB_MPU_MAIR1_ATTR4_0                   (0x1U<<0)
-#define PPB_MPU_MAIR1_ATTR5                     (0xFFU<<8)
-#define PPB_MPU_MAIR1_ATTR5_0                   (0x1U<<8)
-#define PPB_MPU_MAIR1_ATTR6                     (0xFFU<<16)
-#define PPB_MPU_MAIR1_ATTR6_0                   (0x1U<<16)
-#define PPB_MPU_MAIR1_ATTR7                     (0xFFU<<24)
-#define PPB_MPU_MAIR1_ATTR7_0                   (0x1U<<24)
+#define PPB_MPU_MAIR1_ATTR4                     (0xFFU<<0U)
+#define PPB_MPU_MAIR1_ATTR4_0                   (0x1U<<0U)
+#define PPB_MPU_MAIR1_ATTR5                     (0xFFU<<8U)
+#define PPB_MPU_MAIR1_ATTR5_0                   (0x1U<<8U)
+#define PPB_MPU_MAIR1_ATTR6                     (0xFFU<<16U)
+#define PPB_MPU_MAIR1_ATTR6_0                   (0x1U<<16U)
+#define PPB_MPU_MAIR1_ATTR7                     (0xFFU<<24U)
+#define PPB_MPU_MAIR1_ATTR7_0                   (0x1U<<24U)
 
 // SAU_CTRL Configuration
 
-#define PPB_SAU_CTRL_ENABLE                     (0x1U<<0)
-#define PPB_SAU_CTRL_ALLNS                      (0x1U<<1)
+#define PPB_SAU_CTRL_ENABLE                     (0x1U<<0U)
+#define PPB_SAU_CTRL_ALLNS                      (0x1U<<1U)
 
 // SAU_TYPE Configuration
 
-#define PPB_SAU_TYPE_SREGION                    (0xFFU<<0)
-#define PPB_SAU_TYPE_SREGION_0                  (0x1U<<0)
+#define PPB_SAU_TYPE_SREGION                    (0xFFU<<0U)
+#define PPB_SAU_TYPE_SREGION_0                  (0x1U<<0U)
 
 // SAU_RNR Configuration
 
-#define PPB_SAU_RNR_REGION                      (0xFFU<<0)
-#define PPB_SAU_RNR_REGION_0                    (0x1U<<0)
+#define PPB_SAU_RNR_REGION                      (0xFFU<<0U)
+#define PPB_SAU_RNR_REGION_0                    (0x1U<<0U)
 
 // SAU_RBAR Configuration
 
-#define PPB_SAU_RBAR_BADDR                      (0x7FFFFFFU<<5)
-#define PPB_SAU_RBAR_BADDR_0                    (0x1U<<5)
+#define PPB_SAU_RBAR_BADDR                      (0x7FFFFFFU<<5U)
+#define PPB_SAU_RBAR_BADDR_0                    (0x1U<<5U)
 
 // SAU_RLAR Configuration
 
-#define PPB_SAU_RLAR_ENABLE                     (0x1U<<0)
-#define PPB_SAU_RLAR_NSC                        (0x1U<<1)
-#define PPB_SAU_RLAR_LADDR                      (0x7FFFFFFU<<5)
-#define PPB_SAU_RLAR_LADDR_0                    (0x1U<<5)
+#define PPB_SAU_RLAR_ENABLE                     (0x1U<<0U)
+#define PPB_SAU_RLAR_NSC                        (0x1U<<1U)
+#define PPB_SAU_RLAR_LADDR                      (0x7FFFFFFU<<5U)
+#define PPB_SAU_RLAR_LADDR_0                    (0x1U<<5U)
 
 // SFSR Configuration
 
-#define PPB_SFSR_INVEP                          (0x1U<<0)
-#define PPB_SFSR_INVIS                          (0x1U<<1)
-#define PPB_SFSR_INVER                          (0x1U<<2)
-#define PPB_SFSR_AUVIOL                         (0x1U<<3)
-#define PPB_SFSR_INVTRAN                        (0x1U<<4)
-#define PPB_SFSR_LSPERR                         (0x1U<<5)
-#define PPB_SFSR_SFARVALID                      (0x1U<<6)
-#define PPB_SFSR_LSERR                          (0x1U<<7)
+#define PPB_SFSR_INVEP                          (0x1U<<0U)
+#define PPB_SFSR_INVIS                          (0x1U<<1U)
+#define PPB_SFSR_INVER                          (0x1U<<2U)
+#define PPB_SFSR_AUVIOL                         (0x1U<<3U)
+#define PPB_SFSR_INVTRAN                        (0x1U<<4U)
+#define PPB_SFSR_LSPERR                         (0x1U<<5U)
+#define PPB_SFSR_SFARVALID                      (0x1U<<6U)
+#define PPB_SFSR_LSERR                          (0x1U<<7U)
 
 // SFAR Configuration
 
-#define PPB_SFAR_ADDRESS                        (0xFFFFFFFFU<<0)
-#define PPB_SFAR_ADDRESS_0                      (0x1U<<0)
+#define PPB_SFAR_ADDRESS                        (0xFFFFFFFFU<<0U)
+#define PPB_SFAR_ADDRESS_0                      (0x1U<<0U)
 
 // DHCSR Configuration
 
-#define PPB_DHCSR_C_DEBUGEN                     (0x1U<<0)
-#define PPB_DHCSR_C_HALT                        (0x1U<<1)
-#define PPB_DHCSR_C_STEP                        (0x1U<<2)
-#define PPB_DHCSR_C_MASKINTS                    (0x1U<<3)
-#define PPB_DHCSR_C_SNAPSTALL                   (0x1U<<5)
-#define PPB_DHCSR_S_REGRDY                      (0x1U<<16)
-#define PPB_DHCSR_S_HALT                        (0x1U<<17)
-#define PPB_DHCSR_S_SLEEP                       (0x1U<<18)
-#define PPB_DHCSR_S_LOCKUP                      (0x1U<<19)
-#define PPB_DHCSR_S_SDE                         (0x1U<<20)
-#define PPB_DHCSR_S_RETIRE_ST                   (0x1U<<24)
-#define PPB_DHCSR_S_RESET_ST                    (0x1U<<25)
-#define PPB_DHCSR_S_RESTART_ST                  (0x1U<<26)
+#define PPB_DHCSR_C_DEBUGEN                     (0x1U<<0U)
+#define PPB_DHCSR_C_HALT                        (0x1U<<1U)
+#define PPB_DHCSR_C_STEP                        (0x1U<<2U)
+#define PPB_DHCSR_C_MASKINTS                    (0x1U<<3U)
+#define PPB_DHCSR_C_SNAPSTALL                   (0x1U<<5U)
+#define PPB_DHCSR_S_REGRDY                      (0x1U<<16U)
+#define PPB_DHCSR_S_HALT                        (0x1U<<17U)
+#define PPB_DHCSR_S_SLEEP                       (0x1U<<18U)
+#define PPB_DHCSR_S_LOCKUP                      (0x1U<<19U)
+#define PPB_DHCSR_S_SDE                         (0x1U<<20U)
+#define PPB_DHCSR_S_RETIRE_ST                   (0x1U<<24U)
+#define PPB_DHCSR_S_RESET_ST                    (0x1U<<25U)
+#define PPB_DHCSR_S_RESTART_ST                  (0x1U<<26U)
 
 // DCRSR Configuration
 
-#define PPB_DCRSR_REGSEL                        (0x7FU<<0)
-#define PPB_DCRSR_REGSEL_0                      (0x1U<<0)
-#define PPB_DCRSR_REGWNR                        (0x1U<<16)
+#define PPB_DCRSR_REGSEL                        (0x7FU<<0U)
+#define PPB_DCRSR_REGSEL_0                      (0x1U<<0U)
+#define PPB_DCRSR_REGWNR                        (0x1U<<16U)
 
 // DCRDR Configuration
 
-#define PPB_DCRDR_DBGTMP                        (0xFFFFFFFFU<<0)
-#define PPB_DCRDR_DBGTMP_0                      (0x1U<<0)
+#define PPB_DCRDR_DBGTMP                        (0xFFFFFFFFU<<0U)
+#define PPB_DCRDR_DBGTMP_0                      (0x1U<<0U)
 
 // DEMCR Configuration
 
-#define PPB_DEMCR_VC_CORERESET                  (0x1U<<0)
-#define PPB_DEMCR_VC_MMERR                      (0x1U<<4)
-#define PPB_DEMCR_VC_NOCPERR                    (0x1U<<5)
-#define PPB_DEMCR_VC_CHKERR                     (0x1U<<6)
-#define PPB_DEMCR_VC_STATERR                    (0x1U<<7)
-#define PPB_DEMCR_VC_BUSERR                     (0x1U<<8)
-#define PPB_DEMCR_VC_INTERR                     (0x1U<<9)
-#define PPB_DEMCR_VC_HARDERR                    (0x1U<<10)
-#define PPB_DEMCR_VC_SFERR                      (0x1U<<11)
-#define PPB_DEMCR_MON_EN                        (0x1U<<16)
-#define PPB_DEMCR_MON_PEND                      (0x1U<<17)
-#define PPB_DEMCR_MON_STEP                      (0x1U<<18)
-#define PPB_DEMCR_MON_REQ                       (0x1U<<19)
-#define PPB_DEMCR_SDME                          (0x1U<<20)
-#define PPB_DEMCR_TRCENA                        (0x1U<<24)
+#define PPB_DEMCR_VC_CORERESET                  (0x1U<<0U)
+#define PPB_DEMCR_VC_MMERR                      (0x1U<<4U)
+#define PPB_DEMCR_VC_NOCPERR                    (0x1U<<5U)
+#define PPB_DEMCR_VC_CHKERR                     (0x1U<<6U)
+#define PPB_DEMCR_VC_STATERR                    (0x1U<<7U)
+#define PPB_DEMCR_VC_BUSERR                     (0x1U<<8U)
+#define PPB_DEMCR_VC_INTERR                     (0x1U<<9U)
+#define PPB_DEMCR_VC_HARDERR                    (0x1U<<10U)
+#define PPB_DEMCR_VC_SFERR                      (0x1U<<11U)
+#define PPB_DEMCR_MON_EN                        (0x1U<<16U)
+#define PPB_DEMCR_MON_PEND                      (0x1U<<17U)
+#define PPB_DEMCR_MON_STEP                      (0x1U<<18U)
+#define PPB_DEMCR_MON_REQ                       (0x1U<<19U)
+#define PPB_DEMCR_SDME                          (0x1U<<20U)
+#define PPB_DEMCR_TRCENA                        (0x1U<<24U)
 
 // DSCSR Configuration
 
-#define PPB_DSCSR_SBRSELEN                      (0x1U<<0)
-#define PPB_DSCSR_SBRSEL                        (0x1U<<1)
-#define PPB_DSCSR_CDS                           (0x1U<<16)
-#define PPB_DSCSR_CDSKEY                        (0x1U<<17)
+#define PPB_DSCSR_SBRSELEN                      (0x1U<<0U)
+#define PPB_DSCSR_SBRSEL                        (0x1U<<1U)
+#define PPB_DSCSR_CDS                           (0x1U<<16U)
+#define PPB_DSCSR_CDSKEY                        (0x1U<<17U)
 
 // STIR Configuration
 
-#define PPB_STIR_INTID                          (0x1FFU<<0)
-#define PPB_STIR_INTID_0                        (0x1U<<0)
+#define PPB_STIR_INTID                          (0x1FFU<<0U)
+#define PPB_STIR_INTID_0                        (0x1U<<0U)
 
 // FPCCR Configuration
 
-#define PPB_FPCCR_LSPACT                        (0x1U<<0)
-#define PPB_FPCCR_USER                          (0x1U<<1)
-#define PPB_FPCCR_S                             (0x1U<<2)
-#define PPB_FPCCR_THREAD                        (0x1U<<3)
-#define PPB_FPCCR_HFRDY                         (0x1U<<4)
-#define PPB_FPCCR_MMRDY                         (0x1U<<5)
-#define PPB_FPCCR_BFRDY                         (0x1U<<6)
-#define PPB_FPCCR_SFRDY                         (0x1U<<7)
-#define PPB_FPCCR_MONRDY                        (0x1U<<8)
-#define PPB_FPCCR_SPLIMVIOL                     (0x1U<<9)
-#define PPB_FPCCR_UFRDY                         (0x1U<<10)
-#define PPB_FPCCR_TS                            (0x1U<<26)
-#define PPB_FPCCR_CLRONRETS                     (0x1U<<27)
-#define PPB_FPCCR_CLRONRET                      (0x1U<<28)
-#define PPB_FPCCR_LSPENS                        (0x1U<<29)
-#define PPB_FPCCR_LSPEN                         (0x1U<<30)
-#define PPB_FPCCR_ASPEN                         (0x1U<<31)
+#define PPB_FPCCR_LSPACT                        (0x1U<<0U)
+#define PPB_FPCCR_USER                          (0x1U<<1U)
+#define PPB_FPCCR_S                             (0x1U<<2U)
+#define PPB_FPCCR_THREAD                        (0x1U<<3U)
+#define PPB_FPCCR_HFRDY                         (0x1U<<4U)
+#define PPB_FPCCR_MMRDY                         (0x1U<<5U)
+#define PPB_FPCCR_BFRDY                         (0x1U<<6U)
+#define PPB_FPCCR_SFRDY                         (0x1U<<7U)
+#define PPB_FPCCR_MONRDY                        (0x1U<<8U)
+#define PPB_FPCCR_SPLIMVIOL                     (0x1U<<9U)
+#define PPB_FPCCR_UFRDY                         (0x1U<<10U)
+#define PPB_FPCCR_TS                            (0x1U<<26U)
+#define PPB_FPCCR_CLRONRETS                     (0x1U<<27U)
+#define PPB_FPCCR_CLRONRET                      (0x1U<<28U)
+#define PPB_FPCCR_LSPENS                        (0x1U<<29U)
+#define PPB_FPCCR_LSPEN                         (0x1U<<30U)
+#define PPB_FPCCR_ASPEN                         (0x1U<<31U)
 
 // FPCAR Configuration
 
-#define PPB_FPCAR_ADDRESS                       (0x1FFFFFFFU<<3)
-#define PPB_FPCAR_ADDRESS_0                     (0x1U<<3)
+#define PPB_FPCAR_ADDRESS                       (0x1FFFFFFFU<<3U)
+#define PPB_FPCAR_ADDRESS_0                     (0x1U<<3U)
 
 // FPDSCR Configuration
 
-#define PPB_FPDSCR_RMODE                        (0x3U<<22)
-#define PPB_FPDSCR_RMODE_0                      (0x1U<<22)
-#define PPB_FPDSCR_FZ                           (0x1U<<24)
-#define PPB_FPDSCR_DN                           (0x1U<<25)
-#define PPB_FPDSCR_AHP                          (0x1U<<26)
+#define PPB_FPDSCR_RMODE                        (0x3U<<22U)
+#define PPB_FPDSCR_RMODE_0                      (0x1U<<22U)
+#define PPB_FPDSCR_FZ                           (0x1U<<24U)
+#define PPB_FPDSCR_DN                           (0x1U<<25U)
+#define PPB_FPDSCR_AHP                          (0x1U<<26U)
 
 // MVFR0 Configuration
 
-#define PPB_MVFR0_SIMDREG                       (0xFU<<0)
-#define PPB_MVFR0_SIMDREG_0                     (0x1U<<0)
-#define PPB_MVFR0_FPSP                          (0xFU<<4)
-#define PPB_MVFR0_FPSP_0                        (0x1U<<4)
-#define PPB_MVFR0_FPDP                          (0xFU<<8)
-#define PPB_MVFR0_FPDP_0                        (0x1U<<8)
-#define PPB_MVFR0_FPDIVIDE                      (0xFU<<16)
-#define PPB_MVFR0_FPDIVIDE_0                    (0x1U<<16)
-#define PPB_MVFR0_FPSQRT                        (0xFU<<20)
-#define PPB_MVFR0_FPSQRT_0                      (0x1U<<20)
-#define PPB_MVFR0_FPROUND                       (0xFU<<28)
-#define PPB_MVFR0_FPROUND_0                     (0x1U<<28)
+#define PPB_MVFR0_SIMDREG                       (0xFU<<0U)
+#define PPB_MVFR0_SIMDREG_0                     (0x1U<<0U)
+#define PPB_MVFR0_FPSP                          (0xFU<<4U)
+#define PPB_MVFR0_FPSP_0                        (0x1U<<4U)
+#define PPB_MVFR0_FPDP                          (0xFU<<8U)
+#define PPB_MVFR0_FPDP_0                        (0x1U<<8U)
+#define PPB_MVFR0_FPDIVIDE                      (0xFU<<16U)
+#define PPB_MVFR0_FPDIVIDE_0                    (0x1U<<16U)
+#define PPB_MVFR0_FPSQRT                        (0xFU<<20U)
+#define PPB_MVFR0_FPSQRT_0                      (0x1U<<20U)
+#define PPB_MVFR0_FPROUND                       (0xFU<<28U)
+#define PPB_MVFR0_FPROUND_0                     (0x1U<<28U)
 
 // MVFR1 Configuration
 
-#define PPB_MVFR1_FPFTZ                         (0xFU<<0)
-#define PPB_MVFR1_FPFTZ_0                       (0x1U<<0)
-#define PPB_MVFR1_FPDNAN                        (0xFU<<4)
-#define PPB_MVFR1_FPDNAN_0                      (0x1U<<4)
-#define PPB_MVFR1_FPHP                          (0xFU<<24)
-#define PPB_MVFR1_FPHP_0                        (0x1U<<24)
-#define PPB_MVFR1_FMAC                          (0xFU<<28)
-#define PPB_MVFR1_FMAC_0                        (0x1U<<28)
+#define PPB_MVFR1_FPFTZ                         (0xFU<<0U)
+#define PPB_MVFR1_FPFTZ_0                       (0x1U<<0U)
+#define PPB_MVFR1_FPDNAN                        (0xFU<<4U)
+#define PPB_MVFR1_FPDNAN_0                      (0x1U<<4U)
+#define PPB_MVFR1_FPHP                          (0xFU<<24U)
+#define PPB_MVFR1_FPHP_0                        (0x1U<<24U)
+#define PPB_MVFR1_FMAC                          (0xFU<<28U)
+#define PPB_MVFR1_FMAC_0                        (0x1U<<28U)
 
 // MVFR2 Configuration
 
-#define PPB_MVFR2_FPMISC                        (0xFU<<4)
-#define PPB_MVFR2_FPMISC_0                      (0x1U<<4)
+#define PPB_MVFR2_FPMISC                        (0xFU<<4U)
+#define PPB_MVFR2_FPMISC_0                      (0x1U<<4U)
 
 // DDEVARCH Configuration
 
-#define PPB_DDEVARCH_ARCHPART                   (0xFFFU<<0)
-#define PPB_DDEVARCH_ARCHPART_0                 (0x1U<<0)
-#define PPB_DDEVARCH_ARCHVER                    (0xFU<<12)
-#define PPB_DDEVARCH_ARCHVER_0                  (0x1U<<12)
-#define PPB_DDEVARCH_REVISION                   (0xFU<<16)
-#define PPB_DDEVARCH_REVISION_0                 (0x1U<<16)
-#define PPB_DDEVARCH_PRESENT                    (0x1U<<20)
-#define PPB_DDEVARCH_ARCHITECT                  (0x7FFU<<21)
-#define PPB_DDEVARCH_ARCHITECT_0                (0x1U<<21)
+#define PPB_DDEVARCH_ARCHPART                   (0xFFFU<<0U)
+#define PPB_DDEVARCH_ARCHPART_0                 (0x1U<<0U)
+#define PPB_DDEVARCH_ARCHVER                    (0xFU<<12U)
+#define PPB_DDEVARCH_ARCHVER_0                  (0x1U<<12U)
+#define PPB_DDEVARCH_REVISION                   (0xFU<<16U)
+#define PPB_DDEVARCH_REVISION_0                 (0x1U<<16U)
+#define PPB_DDEVARCH_PRESENT                    (0x1U<<20U)
+#define PPB_DDEVARCH_ARCHITECT                  (0x7FFU<<21U)
+#define PPB_DDEVARCH_ARCHITECT_0                (0x1U<<21U)
 
 // DDEVTYPE Configuration
 
-#define PPB_DDEVTYPE_MAJOR                      (0xFU<<0)
-#define PPB_DDEVTYPE_MAJOR_0                    (0x1U<<0)
-#define PPB_DDEVTYPE_SUB                        (0xFU<<4)
-#define PPB_DDEVTYPE_SUB_0                      (0x1U<<4)
+#define PPB_DDEVTYPE_MAJOR                      (0xFU<<0U)
+#define PPB_DDEVTYPE_MAJOR_0                    (0x1U<<0U)
+#define PPB_DDEVTYPE_SUB                        (0xFU<<4U)
+#define PPB_DDEVTYPE_SUB_0                      (0x1U<<4U)
 
 // DPIDR4 Configuration
 
-#define PPB_DPIDR4_DES_2                        (0xFU<<0)
-#define PPB_DPIDR4_DES_2_0                      (0x1U<<0)
-#define PPB_DPIDR4_SIZE                         (0xFU<<4)
-#define PPB_DPIDR4_SIZE_0                       (0x1U<<4)
+#define PPB_DPIDR4_DES_2                        (0xFU<<0U)
+#define PPB_DPIDR4_DES_2_0                      (0x1U<<0U)
+#define PPB_DPIDR4_SIZE                         (0xFU<<4U)
+#define PPB_DPIDR4_SIZE_0                       (0x1U<<4U)
 
 // DPIDR5 Configuration
 
-#define PPB_DPIDR5_DPIDR5                       (0xFFFFFFFFU<<0)
-#define PPB_DPIDR5_DPIDR5_0                     (0x1U<<0)
+#define PPB_DPIDR5_DPIDR5                       (0xFFFFFFFFU<<0U)
+#define PPB_DPIDR5_DPIDR5_0                     (0x1U<<0U)
 
 // DPIDR6 Configuration
 
-#define PPB_DPIDR6_DPIDR6                       (0xFFFFFFFFU<<0)
-#define PPB_DPIDR6_DPIDR6_0                     (0x1U<<0)
+#define PPB_DPIDR6_DPIDR6                       (0xFFFFFFFFU<<0U)
+#define PPB_DPIDR6_DPIDR6_0                     (0x1U<<0U)
 
 // DPIDR7 Configuration
 
-#define PPB_DPIDR7_DPIDR7                       (0xFFFFFFFFU<<0)
-#define PPB_DPIDR7_DPIDR7_0                     (0x1U<<0)
+#define PPB_DPIDR7_DPIDR7                       (0xFFFFFFFFU<<0U)
+#define PPB_DPIDR7_DPIDR7_0                     (0x1U<<0U)
 
 // DPIDR0 Configuration
 
-#define PPB_DPIDR0_PART_0                       (0xFFU<<0)
-#define PPB_DPIDR0_PART_0_0                     (0x1U<<0)
+#define PPB_DPIDR0_PART_0                       (0xFFU<<0U)
+#define PPB_DPIDR0_PART_0_0                     (0x1U<<0U)
 
 // DPIDR1 Configuration
 
-#define PPB_DPIDR1_PART_1                       (0xFU<<0)
-#define PPB_DPIDR1_PART_1_0                     (0x1U<<0)
-#define PPB_DPIDR1_DES_0                        (0xFU<<4)
-#define PPB_DPIDR1_DES_0_0                      (0x1U<<4)
+#define PPB_DPIDR1_PART_1                       (0xFU<<0U)
+#define PPB_DPIDR1_PART_1_0                     (0x1U<<0U)
+#define PPB_DPIDR1_DES_0                        (0xFU<<4U)
+#define PPB_DPIDR1_DES_0_0                      (0x1U<<4U)
 
 // DPIDR2 Configuration
 
-#define PPB_DPIDR2_DES_1                        (0x7U<<0)
-#define PPB_DPIDR2_DES_1_0                      (0x1U<<0)
-#define PPB_DPIDR2_JEDEC                        (0x1U<<3)
-#define PPB_DPIDR2_REVISION                     (0xFU<<4)
-#define PPB_DPIDR2_REVISION_0                   (0x1U<<4)
+#define PPB_DPIDR2_DES_1                        (0x7U<<0U)
+#define PPB_DPIDR2_DES_1_0                      (0x1U<<0U)
+#define PPB_DPIDR2_JEDEC                        (0x1U<<3U)
+#define PPB_DPIDR2_REVISION                     (0xFU<<4U)
+#define PPB_DPIDR2_REVISION_0                   (0x1U<<4U)
 
 // DPIDR3 Configuration
 
-#define PPB_DPIDR3_CMOD                         (0xFU<<0)
-#define PPB_DPIDR3_CMOD_0                       (0x1U<<0)
-#define PPB_DPIDR3_REVAND                       (0xFU<<4)
-#define PPB_DPIDR3_REVAND_0                     (0x1U<<4)
+#define PPB_DPIDR3_CMOD                         (0xFU<<0U)
+#define PPB_DPIDR3_CMOD_0                       (0x1U<<0U)
+#define PPB_DPIDR3_REVAND                       (0xFU<<4U)
+#define PPB_DPIDR3_REVAND_0                     (0x1U<<4U)
 
 // DCIDR0 Configuration
 
-#define PPB_DCIDR0_PRMBL_0                      (0xFFU<<0)
-#define PPB_DCIDR0_PRMBL_0_0                    (0x1U<<0)
+#define PPB_DCIDR0_PRMBL_0                      (0xFFU<<0U)
+#define PPB_DCIDR0_PRMBL_0_0                    (0x1U<<0U)
 
 // DCIDR1 Configuration
 
-#define PPB_DCIDR1_PRMBL_1                      (0xFU<<0)
-#define PPB_DCIDR1_PRMBL_1_0                    (0x1U<<0)
-#define PPB_DCIDR1_CLASS                        (0xFU<<4)
-#define PPB_DCIDR1_CLASS_0                      (0x1U<<4)
+#define PPB_DCIDR1_PRMBL_1                      (0xFU<<0U)
+#define PPB_DCIDR1_PRMBL_1_0                    (0x1U<<0U)
+#define PPB_DCIDR1_CLASS                        (0xFU<<4U)
+#define PPB_DCIDR1_CLASS_0                      (0x1U<<4U)
 
 // DCIDR2 Configuration
 
-#define PPB_DCIDR2_PRMBL_2                      (0xFFU<<0)
-#define PPB_DCIDR2_PRMBL_2_0                    (0x1U<<0)
+#define PPB_DCIDR2_PRMBL_2                      (0xFFU<<0U)
+#define PPB_DCIDR2_PRMBL_2_0                    (0x1U<<0U)
 
 // DCIDR3 Configuration
 
-#define PPB_DCIDR3_PRMBL_3                      (0xFFU<<0)
-#define PPB_DCIDR3_PRMBL_3_0                    (0x1U<<0)
+#define PPB_DCIDR3_PRMBL_3                      (0xFFU<<0U)
+#define PPB_DCIDR3_PRMBL_3_0                    (0x1U<<0U)
 
 // TRCPRGCTLR Configuration
 
-#define PPB_TRCPRGCTLR_EN                       (0x1U<<0)
+#define PPB_TRCPRGCTLR_EN                       (0x1U<<0U)
 
 // TRCSTATR Configuration
 
-#define PPB_TRCSTATR_IDLE                       (0x1U<<0)
-#define PPB_TRCSTATR_PMSTABLE                   (0x1U<<1)
+#define PPB_TRCSTATR_IDLE                       (0x1U<<0U)
+#define PPB_TRCSTATR_PMSTABLE                   (0x1U<<1U)
 
 // TRCCONFIGR Configuration
 
-#define PPB_TRCCONFIGR_BB                       (0x1U<<3)
-#define PPB_TRCCONFIGR_CCI                      (0x1U<<4)
-#define PPB_TRCCONFIGR_COND                     (0x3FU<<5)
-#define PPB_TRCCONFIGR_COND_0                   (0x1U<<5)
-#define PPB_TRCCONFIGR_TS                       (0x1U<<11)
-#define PPB_TRCCONFIGR_RS                       (0x1U<<12)
+#define PPB_TRCCONFIGR_BB                       (0x1U<<3U)
+#define PPB_TRCCONFIGR_CCI                      (0x1U<<4U)
+#define PPB_TRCCONFIGR_COND                     (0x3FU<<5U)
+#define PPB_TRCCONFIGR_COND_0                   (0x1U<<5U)
+#define PPB_TRCCONFIGR_TS                       (0x1U<<11U)
+#define PPB_TRCCONFIGR_RS                       (0x1U<<12U)
 
 // TRCEVENTCTL0R Configuration
 
-#define PPB_TRCEVENTCTL0R_SEL0                  (0x7U<<0)
-#define PPB_TRCEVENTCTL0R_SEL0_0                (0x1U<<0)
-#define PPB_TRCEVENTCTL0R_TYPE0                 (0x1U<<7)
-#define PPB_TRCEVENTCTL0R_SEL1                  (0x7U<<8)
-#define PPB_TRCEVENTCTL0R_SEL1_0                (0x1U<<8)
-#define PPB_TRCEVENTCTL0R_TYPE1                 (0x1U<<15)
+#define PPB_TRCEVENTCTL0R_SEL0                  (0x7U<<0U)
+#define PPB_TRCEVENTCTL0R_SEL0_0                (0x1U<<0U)
+#define PPB_TRCEVENTCTL0R_TYPE0                 (0x1U<<7U)
+#define PPB_TRCEVENTCTL0R_SEL1                  (0x7U<<8U)
+#define PPB_TRCEVENTCTL0R_SEL1_0                (0x1U<<8U)
+#define PPB_TRCEVENTCTL0R_TYPE1                 (0x1U<<15U)
 
 // TRCEVENTCTL1R Configuration
 
-#define PPB_TRCEVENTCTL1R_INSTEN0               (0x1U<<0)
-#define PPB_TRCEVENTCTL1R_INSTEN1               (0x1U<<1)
-#define PPB_TRCEVENTCTL1R_ATB                   (0x1U<<11)
-#define PPB_TRCEVENTCTL1R_LPOVERRIDE            (0x1U<<12)
+#define PPB_TRCEVENTCTL1R_INSTEN0               (0x1U<<0U)
+#define PPB_TRCEVENTCTL1R_INSTEN1               (0x1U<<1U)
+#define PPB_TRCEVENTCTL1R_ATB                   (0x1U<<11U)
+#define PPB_TRCEVENTCTL1R_LPOVERRIDE            (0x1U<<12U)
 
 // TRCSTALLCTLR Configuration
 
-#define PPB_TRCSTALLCTLR_LEVEL                  (0x3U<<2)
-#define PPB_TRCSTALLCTLR_LEVEL_0                (0x1U<<2)
-#define PPB_TRCSTALLCTLR_ISTALL                 (0x1U<<8)
-#define PPB_TRCSTALLCTLR_INSTPRIORITY           (0x1U<<10)
+#define PPB_TRCSTALLCTLR_LEVEL                  (0x3U<<2U)
+#define PPB_TRCSTALLCTLR_LEVEL_0                (0x1U<<2U)
+#define PPB_TRCSTALLCTLR_ISTALL                 (0x1U<<8U)
+#define PPB_TRCSTALLCTLR_INSTPRIORITY           (0x1U<<10U)
 
 // TRCTSCTLR Configuration
 
-#define PPB_TRCTSCTLR_SEL0                      (0x3U<<0)
-#define PPB_TRCTSCTLR_SEL0_0                    (0x1U<<0)
-#define PPB_TRCTSCTLR_TYPE0                     (0x1U<<7)
+#define PPB_TRCTSCTLR_SEL0                      (0x3U<<0U)
+#define PPB_TRCTSCTLR_SEL0_0                    (0x1U<<0U)
+#define PPB_TRCTSCTLR_TYPE0                     (0x1U<<7U)
 
 // TRCSYNCPR Configuration
 
-#define PPB_TRCSYNCPR_PERIOD                    (0x1FU<<0)
-#define PPB_TRCSYNCPR_PERIOD_0                  (0x1U<<0)
+#define PPB_TRCSYNCPR_PERIOD                    (0x1FU<<0U)
+#define PPB_TRCSYNCPR_PERIOD_0                  (0x1U<<0U)
 
 // TRCCCCTLR Configuration
 
-#define PPB_TRCCCCTLR_THRESHOLD                 (0xFFFU<<0)
-#define PPB_TRCCCCTLR_THRESHOLD_0               (0x1U<<0)
+#define PPB_TRCCCCTLR_THRESHOLD                 (0xFFFU<<0U)
+#define PPB_TRCCCCTLR_THRESHOLD_0               (0x1U<<0U)
 
 // TRCVICTLR Configuration
 
-#define PPB_TRCVICTLR_SEL0                      (0x3U<<0)
-#define PPB_TRCVICTLR_SEL0_0                    (0x1U<<0)
-#define PPB_TRCVICTLR_TYPE0                     (0x1U<<7)
-#define PPB_TRCVICTLR_SSSTATUS                  (0x1U<<9)
-#define PPB_TRCVICTLR_TRCRESET                  (0x1U<<10)
-#define PPB_TRCVICTLR_TRCERR                    (0x1U<<11)
-#define PPB_TRCVICTLR_EXLEVEL_S0                (0x1U<<16)
-#define PPB_TRCVICTLR_EXLEVEL_S3                (0x1U<<19)
+#define PPB_TRCVICTLR_SEL0                      (0x3U<<0U)
+#define PPB_TRCVICTLR_SEL0_0                    (0x1U<<0U)
+#define PPB_TRCVICTLR_TYPE0                     (0x1U<<7U)
+#define PPB_TRCVICTLR_SSSTATUS                  (0x1U<<9U)
+#define PPB_TRCVICTLR_TRCRESET                  (0x1U<<10U)
+#define PPB_TRCVICTLR_TRCERR                    (0x1U<<11U)
+#define PPB_TRCVICTLR_EXLEVEL_S0                (0x1U<<16U)
+#define PPB_TRCVICTLR_EXLEVEL_S3                (0x1U<<19U)
 
 // TRCCNTRLDVR0 Configuration
 
-#define PPB_TRCCNTRLDVR0_VALUE                  (0xFFFFU<<0)
-#define PPB_TRCCNTRLDVR0_VALUE_0                (0x1U<<0)
+#define PPB_TRCCNTRLDVR0_VALUE                  (0xFFFFU<<0U)
+#define PPB_TRCCNTRLDVR0_VALUE_0                (0x1U<<0U)
 
 // TRCIDR8 Configuration
 
-#define PPB_TRCIDR8_MAXSPEC                     (0xFFFFFFFFU<<0)
-#define PPB_TRCIDR8_MAXSPEC_0                   (0x1U<<0)
+#define PPB_TRCIDR8_MAXSPEC                     (0xFFFFFFFFU<<0U)
+#define PPB_TRCIDR8_MAXSPEC_0                   (0x1U<<0U)
 
 // TRCIDR9 Configuration
 
-#define PPB_TRCIDR9_NUMP0KEY                    (0xFFFFFFFFU<<0)
-#define PPB_TRCIDR9_NUMP0KEY_0                  (0x1U<<0)
+#define PPB_TRCIDR9_NUMP0KEY                    (0xFFFFFFFFU<<0U)
+#define PPB_TRCIDR9_NUMP0KEY_0                  (0x1U<<0U)
 
 // TRCIDR10 Configuration
 
-#define PPB_TRCIDR10_NUMP1KEY                   (0xFFFFFFFFU<<0)
-#define PPB_TRCIDR10_NUMP1KEY_0                 (0x1U<<0)
+#define PPB_TRCIDR10_NUMP1KEY                   (0xFFFFFFFFU<<0U)
+#define PPB_TRCIDR10_NUMP1KEY_0                 (0x1U<<0U)
 
 // TRCIDR11 Configuration
 
-#define PPB_TRCIDR11_NUMP1SPC                   (0xFFFFFFFFU<<0)
-#define PPB_TRCIDR11_NUMP1SPC_0                 (0x1U<<0)
+#define PPB_TRCIDR11_NUMP1SPC                   (0xFFFFFFFFU<<0U)
+#define PPB_TRCIDR11_NUMP1SPC_0                 (0x1U<<0U)
 
 // TRCIDR12 Configuration
 
-#define PPB_TRCIDR12_NUMCONDKEY                 (0xFFFFFFFFU<<0)
-#define PPB_TRCIDR12_NUMCONDKEY_0               (0x1U<<0)
+#define PPB_TRCIDR12_NUMCONDKEY                 (0xFFFFFFFFU<<0U)
+#define PPB_TRCIDR12_NUMCONDKEY_0               (0x1U<<0U)
 
 // TRCIDR13 Configuration
 
-#define PPB_TRCIDR13_NUMCONDSPC                 (0xFFFFFFFFU<<0)
-#define PPB_TRCIDR13_NUMCONDSPC_0               (0x1U<<0)
+#define PPB_TRCIDR13_NUMCONDSPC                 (0xFFFFFFFFU<<0U)
+#define PPB_TRCIDR13_NUMCONDSPC_0               (0x1U<<0U)
 
 // TRCIMSPEC Configuration
 
-#define PPB_TRCIMSPEC_SUPPORT                   (0xFU<<0)
-#define PPB_TRCIMSPEC_SUPPORT_0                 (0x1U<<0)
+#define PPB_TRCIMSPEC_SUPPORT                   (0xFU<<0U)
+#define PPB_TRCIMSPEC_SUPPORT_0                 (0x1U<<0U)
 
 // TRCIDR0 Configuration
 
-#define PPB_TRCIDR0_RES1                        (0x1U<<0)
-#define PPB_TRCIDR0_INSTP0                      (0x3U<<1)
-#define PPB_TRCIDR0_INSTP0_0                    (0x1U<<1)
-#define PPB_TRCIDR0_TRCDATA                     (0x3U<<3)
-#define PPB_TRCIDR0_TRCDATA_0                   (0x1U<<3)
-#define PPB_TRCIDR0_TRCBB                       (0x1U<<5)
-#define PPB_TRCIDR0_TRCCOND                     (0x1U<<6)
-#define PPB_TRCIDR0_TRCCCI                      (0x1U<<7)
-#define PPB_TRCIDR0_RETSTACK                    (0x1U<<9)
-#define PPB_TRCIDR0_NUMEVENT                    (0x3U<<10)
-#define PPB_TRCIDR0_NUMEVENT_0                  (0x1U<<10)
-#define PPB_TRCIDR0_CONDTYPE                    (0x3U<<12)
-#define PPB_TRCIDR0_CONDTYPE_0                  (0x1U<<12)
-#define PPB_TRCIDR0_QFILT                       (0x1U<<14)
-#define PPB_TRCIDR0_QSUPP                       (0x3U<<15)
-#define PPB_TRCIDR0_QSUPP_0                     (0x1U<<15)
-#define PPB_TRCIDR0_TRCEXDATA                   (0x1U<<17)
-#define PPB_TRCIDR0_TSSIZE                      (0x1FU<<24)
-#define PPB_TRCIDR0_TSSIZE_0                    (0x1U<<24)
-#define PPB_TRCIDR0_COMMOPT                     (0x1U<<29)
+#define PPB_TRCIDR0_RES1                        (0x1U<<0U)
+#define PPB_TRCIDR0_INSTP0                      (0x3U<<1U)
+#define PPB_TRCIDR0_INSTP0_0                    (0x1U<<1U)
+#define PPB_TRCIDR0_TRCDATA                     (0x3U<<3U)
+#define PPB_TRCIDR0_TRCDATA_0                   (0x1U<<3U)
+#define PPB_TRCIDR0_TRCBB                       (0x1U<<5U)
+#define PPB_TRCIDR0_TRCCOND                     (0x1U<<6U)
+#define PPB_TRCIDR0_TRCCCI                      (0x1U<<7U)
+#define PPB_TRCIDR0_RETSTACK                    (0x1U<<9U)
+#define PPB_TRCIDR0_NUMEVENT                    (0x3U<<10U)
+#define PPB_TRCIDR0_NUMEVENT_0                  (0x1U<<10U)
+#define PPB_TRCIDR0_CONDTYPE                    (0x3U<<12U)
+#define PPB_TRCIDR0_CONDTYPE_0                  (0x1U<<12U)
+#define PPB_TRCIDR0_QFILT                       (0x1U<<14U)
+#define PPB_TRCIDR0_QSUPP                       (0x3U<<15U)
+#define PPB_TRCIDR0_QSUPP_0                     (0x1U<<15U)
+#define PPB_TRCIDR0_TRCEXDATA                   (0x1U<<17U)
+#define PPB_TRCIDR0_TSSIZE                      (0x1FU<<24U)
+#define PPB_TRCIDR0_TSSIZE_0                    (0x1U<<24U)
+#define PPB_TRCIDR0_COMMOPT                     (0x1U<<29U)
 
 // TRCIDR1 Configuration
 
-#define PPB_TRCIDR1_REVISION                    (0xFU<<0)
-#define PPB_TRCIDR1_REVISION_0                  (0x1U<<0)
-#define PPB_TRCIDR1_TRCARCHMIN                  (0xFU<<4)
-#define PPB_TRCIDR1_TRCARCHMIN_0                (0x1U<<4)
-#define PPB_TRCIDR1_TRCARCHMAJ                  (0xFU<<8)
-#define PPB_TRCIDR1_TRCARCHMAJ_0                (0x1U<<8)
-#define PPB_TRCIDR1_RES1                        (0xFU<<12)
-#define PPB_TRCIDR1_RES1_0                      (0x1U<<12)
-#define PPB_TRCIDR1_DESIGNER                    (0xFFU<<24)
-#define PPB_TRCIDR1_DESIGNER_0                  (0x1U<<24)
+#define PPB_TRCIDR1_REVISION                    (0xFU<<0U)
+#define PPB_TRCIDR1_REVISION_0                  (0x1U<<0U)
+#define PPB_TRCIDR1_TRCARCHMIN                  (0xFU<<4U)
+#define PPB_TRCIDR1_TRCARCHMIN_0                (0x1U<<4U)
+#define PPB_TRCIDR1_TRCARCHMAJ                  (0xFU<<8U)
+#define PPB_TRCIDR1_TRCARCHMAJ_0                (0x1U<<8U)
+#define PPB_TRCIDR1_RES1                        (0xFU<<12U)
+#define PPB_TRCIDR1_RES1_0                      (0x1U<<12U)
+#define PPB_TRCIDR1_DESIGNER                    (0xFFU<<24U)
+#define PPB_TRCIDR1_DESIGNER_0                  (0x1U<<24U)
 
 // TRCIDR2 Configuration
 
-#define PPB_TRCIDR2_IASIZE                      (0x1FU<<0)
-#define PPB_TRCIDR2_IASIZE_0                    (0x1U<<0)
-#define PPB_TRCIDR2_CIDSIZE                     (0x1FU<<5)
-#define PPB_TRCIDR2_CIDSIZE_0                   (0x1U<<5)
-#define PPB_TRCIDR2_VMIDSIZE                    (0x1FU<<10)
-#define PPB_TRCIDR2_VMIDSIZE_0                  (0x1U<<10)
-#define PPB_TRCIDR2_DASIZE                      (0x1FU<<15)
-#define PPB_TRCIDR2_DASIZE_0                    (0x1U<<15)
-#define PPB_TRCIDR2_DVSIZE                      (0x1FU<<20)
-#define PPB_TRCIDR2_DVSIZE_0                    (0x1U<<20)
-#define PPB_TRCIDR2_CCSIZE                      (0xFU<<25)
-#define PPB_TRCIDR2_CCSIZE_0                    (0x1U<<25)
+#define PPB_TRCIDR2_IASIZE                      (0x1FU<<0U)
+#define PPB_TRCIDR2_IASIZE_0                    (0x1U<<0U)
+#define PPB_TRCIDR2_CIDSIZE                     (0x1FU<<5U)
+#define PPB_TRCIDR2_CIDSIZE_0                   (0x1U<<5U)
+#define PPB_TRCIDR2_VMIDSIZE                    (0x1FU<<10U)
+#define PPB_TRCIDR2_VMIDSIZE_0                  (0x1U<<10U)
+#define PPB_TRCIDR2_DASIZE                      (0x1FU<<15U)
+#define PPB_TRCIDR2_DASIZE_0                    (0x1U<<15U)
+#define PPB_TRCIDR2_DVSIZE                      (0x1FU<<20U)
+#define PPB_TRCIDR2_DVSIZE_0                    (0x1U<<20U)
+#define PPB_TRCIDR2_CCSIZE                      (0xFU<<25U)
+#define PPB_TRCIDR2_CCSIZE_0                    (0x1U<<25U)
 
 // TRCIDR3 Configuration
 
-#define PPB_TRCIDR3_CCITMIN                     (0xFFFU<<0)
-#define PPB_TRCIDR3_CCITMIN_0                   (0x1U<<0)
-#define PPB_TRCIDR3_EXLEVEL_S                   (0xFU<<16)
-#define PPB_TRCIDR3_EXLEVEL_S_0                 (0x1U<<16)
-#define PPB_TRCIDR3_EXLEVEL_NS                  (0xFU<<20)
-#define PPB_TRCIDR3_EXLEVEL_NS_0                (0x1U<<20)
-#define PPB_TRCIDR3_TRCERR                      (0x1U<<24)
-#define PPB_TRCIDR3_SYNCPR                      (0x1U<<25)
-#define PPB_TRCIDR3_STALLCTL                    (0x1U<<26)
-#define PPB_TRCIDR3_SYSSTALL                    (0x1U<<27)
-#define PPB_TRCIDR3_NUMPROC                     (0x7U<<28)
-#define PPB_TRCIDR3_NUMPROC_0                   (0x1U<<28)
-#define PPB_TRCIDR3_NOOVERFLOW                  (0x1U<<31)
+#define PPB_TRCIDR3_CCITMIN                     (0xFFFU<<0U)
+#define PPB_TRCIDR3_CCITMIN_0                   (0x1U<<0U)
+#define PPB_TRCIDR3_EXLEVEL_S                   (0xFU<<16U)
+#define PPB_TRCIDR3_EXLEVEL_S_0                 (0x1U<<16U)
+#define PPB_TRCIDR3_EXLEVEL_NS                  (0xFU<<20U)
+#define PPB_TRCIDR3_EXLEVEL_NS_0                (0x1U<<20U)
+#define PPB_TRCIDR3_TRCERR                      (0x1U<<24U)
+#define PPB_TRCIDR3_SYNCPR                      (0x1U<<25U)
+#define PPB_TRCIDR3_STALLCTL                    (0x1U<<26U)
+#define PPB_TRCIDR3_SYSSTALL                    (0x1U<<27U)
+#define PPB_TRCIDR3_NUMPROC                     (0x7U<<28U)
+#define PPB_TRCIDR3_NUMPROC_0                   (0x1U<<28U)
+#define PPB_TRCIDR3_NOOVERFLOW                  (0x1U<<31U)
 
 // TRCIDR4 Configuration
 
-#define PPB_TRCIDR4_NUMACPAIRS                  (0xFU<<0)
-#define PPB_TRCIDR4_NUMACPAIRS_0                (0x1U<<0)
-#define PPB_TRCIDR4_NUMDVC                      (0xFU<<4)
-#define PPB_TRCIDR4_NUMDVC_0                    (0x1U<<4)
-#define PPB_TRCIDR4_SUPPDAC                     (0x1U<<8)
-#define PPB_TRCIDR4_NUMPC                       (0xFU<<12)
-#define PPB_TRCIDR4_NUMPC_0                     (0x1U<<12)
-#define PPB_TRCIDR4_NUMRSPAIR                   (0xFU<<16)
-#define PPB_TRCIDR4_NUMRSPAIR_0                 (0x1U<<16)
-#define PPB_TRCIDR4_NUMSSCC                     (0xFU<<20)
-#define PPB_TRCIDR4_NUMSSCC_0                   (0x1U<<20)
-#define PPB_TRCIDR4_NUMCIDC                     (0xFU<<24)
-#define PPB_TRCIDR4_NUMCIDC_0                   (0x1U<<24)
-#define PPB_TRCIDR4_NUMVMIDC                    (0xFU<<28)
-#define PPB_TRCIDR4_NUMVMIDC_0                  (0x1U<<28)
+#define PPB_TRCIDR4_NUMACPAIRS                  (0xFU<<0U)
+#define PPB_TRCIDR4_NUMACPAIRS_0                (0x1U<<0U)
+#define PPB_TRCIDR4_NUMDVC                      (0xFU<<4U)
+#define PPB_TRCIDR4_NUMDVC_0                    (0x1U<<4U)
+#define PPB_TRCIDR4_SUPPDAC                     (0x1U<<8U)
+#define PPB_TRCIDR4_NUMPC                       (0xFU<<12U)
+#define PPB_TRCIDR4_NUMPC_0                     (0x1U<<12U)
+#define PPB_TRCIDR4_NUMRSPAIR                   (0xFU<<16U)
+#define PPB_TRCIDR4_NUMRSPAIR_0                 (0x1U<<16U)
+#define PPB_TRCIDR4_NUMSSCC                     (0xFU<<20U)
+#define PPB_TRCIDR4_NUMSSCC_0                   (0x1U<<20U)
+#define PPB_TRCIDR4_NUMCIDC                     (0xFU<<24U)
+#define PPB_TRCIDR4_NUMCIDC_0                   (0x1U<<24U)
+#define PPB_TRCIDR4_NUMVMIDC                    (0xFU<<28U)
+#define PPB_TRCIDR4_NUMVMIDC_0                  (0x1U<<28U)
 
 // TRCIDR5 Configuration
 
-#define PPB_TRCIDR5_NUMEXTIN                    (0x1FFU<<0)
-#define PPB_TRCIDR5_NUMEXTIN_0                  (0x1U<<0)
-#define PPB_TRCIDR5_NUMEXTINSEL                 (0x7U<<9)
-#define PPB_TRCIDR5_NUMEXTINSEL_0               (0x1U<<9)
-#define PPB_TRCIDR5_TRACEIDSIZE                 (0x3FU<<16)
-#define PPB_TRCIDR5_TRACEIDSIZE_0               (0x1U<<16)
-#define PPB_TRCIDR5_ATBTRIG                     (0x1U<<22)
-#define PPB_TRCIDR5_LPOVERRIDE                  (0x1U<<23)
-#define PPB_TRCIDR5_NUMSEQSTATE                 (0x7U<<25)
-#define PPB_TRCIDR5_NUMSEQSTATE_0               (0x1U<<25)
-#define PPB_TRCIDR5_NUMCNTR                     (0x7U<<28)
-#define PPB_TRCIDR5_NUMCNTR_0                   (0x1U<<28)
-#define PPB_TRCIDR5_REDFUNCNTR                  (0x1U<<31)
+#define PPB_TRCIDR5_NUMEXTIN                    (0x1FFU<<0U)
+#define PPB_TRCIDR5_NUMEXTIN_0                  (0x1U<<0U)
+#define PPB_TRCIDR5_NUMEXTINSEL                 (0x7U<<9U)
+#define PPB_TRCIDR5_NUMEXTINSEL_0               (0x1U<<9U)
+#define PPB_TRCIDR5_TRACEIDSIZE                 (0x3FU<<16U)
+#define PPB_TRCIDR5_TRACEIDSIZE_0               (0x1U<<16U)
+#define PPB_TRCIDR5_ATBTRIG                     (0x1U<<22U)
+#define PPB_TRCIDR5_LPOVERRIDE                  (0x1U<<23U)
+#define PPB_TRCIDR5_NUMSEQSTATE                 (0x7U<<25U)
+#define PPB_TRCIDR5_NUMSEQSTATE_0               (0x1U<<25U)
+#define PPB_TRCIDR5_NUMCNTR                     (0x7U<<28U)
+#define PPB_TRCIDR5_NUMCNTR_0                   (0x1U<<28U)
+#define PPB_TRCIDR5_REDFUNCNTR                  (0x1U<<31U)
 
 // TRCIDR6 Configuration
 
-#define PPB_TRCIDR6_TRCIDR6                     (0xFFFFFFFFU<<0)
-#define PPB_TRCIDR6_TRCIDR6_0                   (0x1U<<0)
+#define PPB_TRCIDR6_TRCIDR6                     (0xFFFFFFFFU<<0U)
+#define PPB_TRCIDR6_TRCIDR6_0                   (0x1U<<0U)
 
 // TRCIDR7 Configuration
 
-#define PPB_TRCIDR7_TRCIDR7                     (0xFFFFFFFFU<<0)
-#define PPB_TRCIDR7_TRCIDR7_0                   (0x1U<<0)
+#define PPB_TRCIDR7_TRCIDR7                     (0xFFFFFFFFU<<0U)
+#define PPB_TRCIDR7_TRCIDR7_0                   (0x1U<<0U)
 
 // TRCRSCTLR2 Configuration
 
-#define PPB_TRCRSCTLR2_SELECT                   (0xFFU<<0)
-#define PPB_TRCRSCTLR2_SELECT_0                 (0x1U<<0)
-#define PPB_TRCRSCTLR2_GROUP                    (0x7U<<16)
-#define PPB_TRCRSCTLR2_GROUP_0                  (0x1U<<16)
-#define PPB_TRCRSCTLR2_INV                      (0x1U<<20)
-#define PPB_TRCRSCTLR2_PAIRINV                  (0x1U<<21)
+#define PPB_TRCRSCTLR2_SELECT                   (0xFFU<<0U)
+#define PPB_TRCRSCTLR2_SELECT_0                 (0x1U<<0U)
+#define PPB_TRCRSCTLR2_GROUP                    (0x7U<<16U)
+#define PPB_TRCRSCTLR2_GROUP_0                  (0x1U<<16U)
+#define PPB_TRCRSCTLR2_INV                      (0x1U<<20U)
+#define PPB_TRCRSCTLR2_PAIRINV                  (0x1U<<21U)
 
 // TRCRSCTLR3 Configuration
 
-#define PPB_TRCRSCTLR3_SELECT                   (0xFFU<<0)
-#define PPB_TRCRSCTLR3_SELECT_0                 (0x1U<<0)
-#define PPB_TRCRSCTLR3_GROUP                    (0x7U<<16)
-#define PPB_TRCRSCTLR3_GROUP_0                  (0x1U<<16)
-#define PPB_TRCRSCTLR3_INV                      (0x1U<<20)
-#define PPB_TRCRSCTLR3_PAIRINV                  (0x1U<<21)
+#define PPB_TRCRSCTLR3_SELECT                   (0xFFU<<0U)
+#define PPB_TRCRSCTLR3_SELECT_0                 (0x1U<<0U)
+#define PPB_TRCRSCTLR3_GROUP                    (0x7U<<16U)
+#define PPB_TRCRSCTLR3_GROUP_0                  (0x1U<<16U)
+#define PPB_TRCRSCTLR3_INV                      (0x1U<<20U)
+#define PPB_TRCRSCTLR3_PAIRINV                  (0x1U<<21U)
 
 // TRCSSCSR Configuration
 
-#define PPB_TRCSSCSR_INST                       (0x1U<<0)
-#define PPB_TRCSSCSR_DA                         (0x1U<<1)
-#define PPB_TRCSSCSR_DV                         (0x1U<<2)
-#define PPB_TRCSSCSR_PC                         (0x1U<<3)
-#define PPB_TRCSSCSR_STATUS                     (0x1U<<31)
+#define PPB_TRCSSCSR_INST                       (0x1U<<0U)
+#define PPB_TRCSSCSR_DA                         (0x1U<<1U)
+#define PPB_TRCSSCSR_DV                         (0x1U<<2U)
+#define PPB_TRCSSCSR_PC                         (0x1U<<3U)
+#define PPB_TRCSSCSR_STATUS                     (0x1U<<31U)
 
 // TRCSSPCICR Configuration
 
-#define PPB_TRCSSPCICR_PC                       (0xFU<<0)
-#define PPB_TRCSSPCICR_PC_0                     (0x1U<<0)
+#define PPB_TRCSSPCICR_PC                       (0xFU<<0U)
+#define PPB_TRCSSPCICR_PC_0                     (0x1U<<0U)
 
 // TRCPDCR Configuration
 
-#define PPB_TRCPDCR_PU                          (0x1U<<3)
+#define PPB_TRCPDCR_PU                          (0x1U<<3U)
 
 // TRCPDSR Configuration
 
-#define PPB_TRCPDSR_POWER                       (0x1U<<0)
-#define PPB_TRCPDSR_STICKYPD                    (0x1U<<1)
-#define PPB_TRCPDSR_OSLK                        (0x1U<<5)
+#define PPB_TRCPDSR_POWER                       (0x1U<<0U)
+#define PPB_TRCPDSR_STICKYPD                    (0x1U<<1U)
+#define PPB_TRCPDSR_OSLK                        (0x1U<<5U)
 
 // TRCITATBIDR Configuration
 
-#define PPB_TRCITATBIDR_ID                      (0x7FU<<0)
-#define PPB_TRCITATBIDR_ID_0                    (0x1U<<0)
+#define PPB_TRCITATBIDR_ID                      (0x7FU<<0U)
+#define PPB_TRCITATBIDR_ID_0                    (0x1U<<0U)
 
 // TRCITIATBINR Configuration
 
-#define PPB_TRCITIATBINR_ATREADYM               (0x1U<<0)
-#define PPB_TRCITIATBINR_AFVALIDM               (0x1U<<1)
+#define PPB_TRCITIATBINR_ATREADYM               (0x1U<<0U)
+#define PPB_TRCITIATBINR_AFVALIDM               (0x1U<<1U)
 
 // TRCITIATBOUTR Configuration
 
-#define PPB_TRCITIATBOUTR_ATVALID               (0x1U<<0)
-#define PPB_TRCITIATBOUTR_AFREADY               (0x1U<<1)
+#define PPB_TRCITIATBOUTR_ATVALID               (0x1U<<0U)
+#define PPB_TRCITIATBOUTR_AFREADY               (0x1U<<1U)
 
 // TRCCLAIMSET Configuration
 
-#define PPB_TRCCLAIMSET_SET0                    (0x1U<<0)
-#define PPB_TRCCLAIMSET_SET1                    (0x1U<<1)
-#define PPB_TRCCLAIMSET_SET2                    (0x1U<<2)
-#define PPB_TRCCLAIMSET_SET3                    (0x1U<<3)
+#define PPB_TRCCLAIMSET_SET0                    (0x1U<<0U)
+#define PPB_TRCCLAIMSET_SET1                    (0x1U<<1U)
+#define PPB_TRCCLAIMSET_SET2                    (0x1U<<2U)
+#define PPB_TRCCLAIMSET_SET3                    (0x1U<<3U)
 
 // TRCCLAIMCLR Configuration
 
-#define PPB_TRCCLAIMCLR_CLR0                    (0x1U<<0)
-#define PPB_TRCCLAIMCLR_CLR1                    (0x1U<<1)
-#define PPB_TRCCLAIMCLR_CLR2                    (0x1U<<2)
-#define PPB_TRCCLAIMCLR_CLR3                    (0x1U<<3)
+#define PPB_TRCCLAIMCLR_CLR0                    (0x1U<<0U)
+#define PPB_TRCCLAIMCLR_CLR1                    (0x1U<<1U)
+#define PPB_TRCCLAIMCLR_CLR2                    (0x1U<<2U)
+#define PPB_TRCCLAIMCLR_CLR3                    (0x1U<<3U)
 
 // TRCAUTHSTATUS Configuration
 
-#define PPB_TRCAUTHSTATUS_NSID                  (0x3U<<0)
-#define PPB_TRCAUTHSTATUS_NSID_0                (0x1U<<0)
-#define PPB_TRCAUTHSTATUS_NSNID                 (0x3U<<2)
-#define PPB_TRCAUTHSTATUS_NSNID_0               (0x1U<<2)
-#define PPB_TRCAUTHSTATUS_SID                   (0x3U<<4)
-#define PPB_TRCAUTHSTATUS_SID_0                 (0x1U<<4)
-#define PPB_TRCAUTHSTATUS_SNID                  (0x3U<<6)
-#define PPB_TRCAUTHSTATUS_SNID_0                (0x1U<<6)
+#define PPB_TRCAUTHSTATUS_NSID                  (0x3U<<0U)
+#define PPB_TRCAUTHSTATUS_NSID_0                (0x1U<<0U)
+#define PPB_TRCAUTHSTATUS_NSNID                 (0x3U<<2U)
+#define PPB_TRCAUTHSTATUS_NSNID_0               (0x1U<<2U)
+#define PPB_TRCAUTHSTATUS_SID                   (0x3U<<4U)
+#define PPB_TRCAUTHSTATUS_SID_0                 (0x1U<<4U)
+#define PPB_TRCAUTHSTATUS_SNID                  (0x3U<<6U)
+#define PPB_TRCAUTHSTATUS_SNID_0                (0x1U<<6U)
 
 // TRCDEVARCH Configuration
 
-#define PPB_TRCDEVARCH_ARCHID                   (0xFFFFU<<0)
-#define PPB_TRCDEVARCH_ARCHID_0                 (0x1U<<0)
-#define PPB_TRCDEVARCH_REVISION                 (0xFU<<16)
-#define PPB_TRCDEVARCH_REVISION_0               (0x1U<<16)
-#define PPB_TRCDEVARCH_PRESENT                  (0x1U<<20)
-#define PPB_TRCDEVARCH_ARCHITECT                (0x7FFU<<21)
-#define PPB_TRCDEVARCH_ARCHITECT_0              (0x1U<<21)
+#define PPB_TRCDEVARCH_ARCHID                   (0xFFFFU<<0U)
+#define PPB_TRCDEVARCH_ARCHID_0                 (0x1U<<0U)
+#define PPB_TRCDEVARCH_REVISION                 (0xFU<<16U)
+#define PPB_TRCDEVARCH_REVISION_0               (0x1U<<16U)
+#define PPB_TRCDEVARCH_PRESENT                  (0x1U<<20U)
+#define PPB_TRCDEVARCH_ARCHITECT                (0x7FFU<<21U)
+#define PPB_TRCDEVARCH_ARCHITECT_0              (0x1U<<21U)
 
 // TRCDEVID Configuration
 
-#define PPB_TRCDEVID_TRCDEVID                   (0xFFFFFFFFU<<0)
-#define PPB_TRCDEVID_TRCDEVID_0                 (0x1U<<0)
+#define PPB_TRCDEVID_TRCDEVID                   (0xFFFFFFFFU<<0U)
+#define PPB_TRCDEVID_TRCDEVID_0                 (0x1U<<0U)
 
 // TRCDEVTYPE Configuration
 
-#define PPB_TRCDEVTYPE_MAJOR                    (0xFU<<0)
-#define PPB_TRCDEVTYPE_MAJOR_0                  (0x1U<<0)
-#define PPB_TRCDEVTYPE_SUB                      (0xFU<<4)
-#define PPB_TRCDEVTYPE_SUB_0                    (0x1U<<4)
+#define PPB_TRCDEVTYPE_MAJOR                    (0xFU<<0U)
+#define PPB_TRCDEVTYPE_MAJOR_0                  (0x1U<<0U)
+#define PPB_TRCDEVTYPE_SUB                      (0xFU<<4U)
+#define PPB_TRCDEVTYPE_SUB_0                    (0x1U<<4U)
 
 // TRCPIDR4 Configuration
 
-#define PPB_TRCPIDR4_DES_2                      (0xFU<<0)
-#define PPB_TRCPIDR4_DES_2_0                    (0x1U<<0)
-#define PPB_TRCPIDR4_SIZE                       (0xFU<<4)
-#define PPB_TRCPIDR4_SIZE_0                     (0x1U<<4)
+#define PPB_TRCPIDR4_DES_2                      (0xFU<<0U)
+#define PPB_TRCPIDR4_DES_2_0                    (0x1U<<0U)
+#define PPB_TRCPIDR4_SIZE                       (0xFU<<4U)
+#define PPB_TRCPIDR4_SIZE_0                     (0x1U<<4U)
 
 // TRCPIDR5 Configuration
 
-#define PPB_TRCPIDR5_TRCPIDR5                   (0xFFFFFFFFU<<0)
-#define PPB_TRCPIDR5_TRCPIDR5_0                 (0x1U<<0)
+#define PPB_TRCPIDR5_TRCPIDR5                   (0xFFFFFFFFU<<0U)
+#define PPB_TRCPIDR5_TRCPIDR5_0                 (0x1U<<0U)
 
 // TRCPIDR6 Configuration
 
-#define PPB_TRCPIDR6_TRCPIDR6                   (0xFFFFFFFFU<<0)
-#define PPB_TRCPIDR6_TRCPIDR6_0                 (0x1U<<0)
+#define PPB_TRCPIDR6_TRCPIDR6                   (0xFFFFFFFFU<<0U)
+#define PPB_TRCPIDR6_TRCPIDR6_0                 (0x1U<<0U)
 
 // TRCPIDR7 Configuration
 
-#define PPB_TRCPIDR7_TRCPIDR7                   (0xFFFFFFFFU<<0)
-#define PPB_TRCPIDR7_TRCPIDR7_0                 (0x1U<<0)
+#define PPB_TRCPIDR7_TRCPIDR7                   (0xFFFFFFFFU<<0U)
+#define PPB_TRCPIDR7_TRCPIDR7_0                 (0x1U<<0U)
 
 // TRCPIDR0 Configuration
 
-#define PPB_TRCPIDR0_PART_0                     (0xFFU<<0)
-#define PPB_TRCPIDR0_PART_0_0                   (0x1U<<0)
+#define PPB_TRCPIDR0_PART_0                     (0xFFU<<0U)
+#define PPB_TRCPIDR0_PART_0_0                   (0x1U<<0U)
 
 // TRCPIDR1 Configuration
 
-#define PPB_TRCPIDR1_PART_0                     (0xFU<<0)
-#define PPB_TRCPIDR1_PART_0_0                   (0x1U<<0)
-#define PPB_TRCPIDR1_DES_0                      (0xFU<<4)
-#define PPB_TRCPIDR1_DES_0_0                    (0x1U<<4)
+#define PPB_TRCPIDR1_PART_0                     (0xFU<<0U)
+#define PPB_TRCPIDR1_PART_0_0                   (0x1U<<0U)
+#define PPB_TRCPIDR1_DES_0                      (0xFU<<4U)
+#define PPB_TRCPIDR1_DES_0_0                    (0x1U<<4U)
 
 // TRCPIDR2 Configuration
 
-#define PPB_TRCPIDR2_DES_0                      (0x7U<<0)
-#define PPB_TRCPIDR2_DES_0_0                    (0x1U<<0)
-#define PPB_TRCPIDR2_JEDEC                      (0x1U<<3)
-#define PPB_TRCPIDR2_REVISION                   (0xFU<<4)
-#define PPB_TRCPIDR2_REVISION_0                 (0x1U<<4)
+#define PPB_TRCPIDR2_DES_0                      (0x7U<<0U)
+#define PPB_TRCPIDR2_DES_0_0                    (0x1U<<0U)
+#define PPB_TRCPIDR2_JEDEC                      (0x1U<<3U)
+#define PPB_TRCPIDR2_REVISION                   (0xFU<<4U)
+#define PPB_TRCPIDR2_REVISION_0                 (0x1U<<4U)
 
 // TRCPIDR3 Configuration
 
-#define PPB_TRCPIDR3_CMOD                       (0xFU<<0)
-#define PPB_TRCPIDR3_CMOD_0                     (0x1U<<0)
-#define PPB_TRCPIDR3_REVAND                     (0xFU<<4)
-#define PPB_TRCPIDR3_REVAND_0                   (0x1U<<4)
+#define PPB_TRCPIDR3_CMOD                       (0xFU<<0U)
+#define PPB_TRCPIDR3_CMOD_0                     (0x1U<<0U)
+#define PPB_TRCPIDR3_REVAND                     (0xFU<<4U)
+#define PPB_TRCPIDR3_REVAND_0                   (0x1U<<4U)
 
 // TRCCIDR0 Configuration
 
-#define PPB_TRCCIDR0_PRMBL_0                    (0xFFU<<0)
-#define PPB_TRCCIDR0_PRMBL_0_0                  (0x1U<<0)
+#define PPB_TRCCIDR0_PRMBL_0                    (0xFFU<<0U)
+#define PPB_TRCCIDR0_PRMBL_0_0                  (0x1U<<0U)
 
 // TRCCIDR1 Configuration
 
-#define PPB_TRCCIDR1_PRMBL_1                    (0xFU<<0)
-#define PPB_TRCCIDR1_PRMBL_1_0                  (0x1U<<0)
-#define PPB_TRCCIDR1_CLASS                      (0xFU<<4)
-#define PPB_TRCCIDR1_CLASS_0                    (0x1U<<4)
+#define PPB_TRCCIDR1_PRMBL_1                    (0xFU<<0U)
+#define PPB_TRCCIDR1_PRMBL_1_0                  (0x1U<<0U)
+#define PPB_TRCCIDR1_CLASS                      (0xFU<<4U)
+#define PPB_TRCCIDR1_CLASS_0                    (0x1U<<4U)
 
 // TRCCIDR2 Configuration
 
-#define PPB_TRCCIDR2_PRMBL_2                    (0xFFU<<0)
-#define PPB_TRCCIDR2_PRMBL_2_0                  (0x1U<<0)
+#define PPB_TRCCIDR2_PRMBL_2                    (0xFFU<<0U)
+#define PPB_TRCCIDR2_PRMBL_2_0                  (0x1U<<0U)
 
 // TRCCIDR3 Configuration
 
-#define PPB_TRCCIDR3_PRMBL_3                    (0xFFU<<0)
-#define PPB_TRCCIDR3_PRMBL_3_0                  (0x1U<<0)
+#define PPB_TRCCIDR3_PRMBL_3                    (0xFFU<<0U)
+#define PPB_TRCCIDR3_PRMBL_3_0                  (0x1U<<0U)
 
 // CTICONTROL Configuration
 
-#define PPB_CTICONTROL_GLBEN                    (0x1U<<0)
+#define PPB_CTICONTROL_GLBEN                    (0x1U<<0U)
 
 // CTIINTACK Configuration
 
-#define PPB_CTIINTACK_INTACK                    (0xFFU<<0)
-#define PPB_CTIINTACK_INTACK_0                  (0x1U<<0)
+#define PPB_CTIINTACK_INTACK                    (0xFFU<<0U)
+#define PPB_CTIINTACK_INTACK_0                  (0x1U<<0U)
 
 // CTIAPPSET Configuration
 
-#define PPB_CTIAPPSET_APPSET                    (0xFU<<0)
-#define PPB_CTIAPPSET_APPSET_0                  (0x1U<<0)
+#define PPB_CTIAPPSET_APPSET                    (0xFU<<0U)
+#define PPB_CTIAPPSET_APPSET_0                  (0x1U<<0U)
 
 // CTIAPPCLEAR Configuration
 
-#define PPB_CTIAPPCLEAR_APPCLEAR                (0xFU<<0)
-#define PPB_CTIAPPCLEAR_APPCLEAR_0              (0x1U<<0)
+#define PPB_CTIAPPCLEAR_APPCLEAR                (0xFU<<0U)
+#define PPB_CTIAPPCLEAR_APPCLEAR_0              (0x1U<<0U)
 
 // CTIAPPPULSE Configuration
 
-#define PPB_CTIAPPPULSE_APPULSE                 (0xFU<<0)
-#define PPB_CTIAPPPULSE_APPULSE_0               (0x1U<<0)
+#define PPB_CTIAPPPULSE_APPULSE                 (0xFU<<0U)
+#define PPB_CTIAPPPULSE_APPULSE_0               (0x1U<<0U)
 
 // CTIINEN0 Configuration
 
-#define PPB_CTIINEN0_TRIGINEN                   (0xFU<<0)
-#define PPB_CTIINEN0_TRIGINEN_0                 (0x1U<<0)
+#define PPB_CTIINEN0_TRIGINEN                   (0xFU<<0U)
+#define PPB_CTIINEN0_TRIGINEN_0                 (0x1U<<0U)
 
 // CTIINEN1 Configuration
 
-#define PPB_CTIINEN1_TRIGINEN                   (0xFU<<0)
-#define PPB_CTIINEN1_TRIGINEN_0                 (0x1U<<0)
+#define PPB_CTIINEN1_TRIGINEN                   (0xFU<<0U)
+#define PPB_CTIINEN1_TRIGINEN_0                 (0x1U<<0U)
 
 // CTIINEN2 Configuration
 
-#define PPB_CTIINEN2_TRIGINEN                   (0xFU<<0)
-#define PPB_CTIINEN2_TRIGINEN_0                 (0x1U<<0)
+#define PPB_CTIINEN2_TRIGINEN                   (0xFU<<0U)
+#define PPB_CTIINEN2_TRIGINEN_0                 (0x1U<<0U)
 
 // CTIINEN3 Configuration
 
-#define PPB_CTIINEN3_TRIGINEN                   (0xFU<<0)
-#define PPB_CTIINEN3_TRIGINEN_0                 (0x1U<<0)
+#define PPB_CTIINEN3_TRIGINEN                   (0xFU<<0U)
+#define PPB_CTIINEN3_TRIGINEN_0                 (0x1U<<0U)
 
 // CTIINEN4 Configuration
 
-#define PPB_CTIINEN4_TRIGINEN                   (0xFU<<0)
-#define PPB_CTIINEN4_TRIGINEN_0                 (0x1U<<0)
+#define PPB_CTIINEN4_TRIGINEN                   (0xFU<<0U)
+#define PPB_CTIINEN4_TRIGINEN_0                 (0x1U<<0U)
 
 // CTIINEN5 Configuration
 
-#define PPB_CTIINEN5_TRIGINEN                   (0xFU<<0)
-#define PPB_CTIINEN5_TRIGINEN_0                 (0x1U<<0)
+#define PPB_CTIINEN5_TRIGINEN                   (0xFU<<0U)
+#define PPB_CTIINEN5_TRIGINEN_0                 (0x1U<<0U)
 
 // CTIINEN6 Configuration
 
-#define PPB_CTIINEN6_TRIGINEN                   (0xFU<<0)
-#define PPB_CTIINEN6_TRIGINEN_0                 (0x1U<<0)
+#define PPB_CTIINEN6_TRIGINEN                   (0xFU<<0U)
+#define PPB_CTIINEN6_TRIGINEN_0                 (0x1U<<0U)
 
 // CTIINEN7 Configuration
 
-#define PPB_CTIINEN7_TRIGINEN                   (0xFU<<0)
-#define PPB_CTIINEN7_TRIGINEN_0                 (0x1U<<0)
+#define PPB_CTIINEN7_TRIGINEN                   (0xFU<<0U)
+#define PPB_CTIINEN7_TRIGINEN_0                 (0x1U<<0U)
 
 // CTIOUTEN0 Configuration
 
-#define PPB_CTIOUTEN0_TRIGOUTEN                 (0xFU<<0)
-#define PPB_CTIOUTEN0_TRIGOUTEN_0               (0x1U<<0)
+#define PPB_CTIOUTEN0_TRIGOUTEN                 (0xFU<<0U)
+#define PPB_CTIOUTEN0_TRIGOUTEN_0               (0x1U<<0U)
 
 // CTIOUTEN1 Configuration
 
-#define PPB_CTIOUTEN1_TRIGOUTEN                 (0xFU<<0)
-#define PPB_CTIOUTEN1_TRIGOUTEN_0               (0x1U<<0)
+#define PPB_CTIOUTEN1_TRIGOUTEN                 (0xFU<<0U)
+#define PPB_CTIOUTEN1_TRIGOUTEN_0               (0x1U<<0U)
 
 // CTIOUTEN2 Configuration
 
-#define PPB_CTIOUTEN2_TRIGOUTEN                 (0xFU<<0)
-#define PPB_CTIOUTEN2_TRIGOUTEN_0               (0x1U<<0)
+#define PPB_CTIOUTEN2_TRIGOUTEN                 (0xFU<<0U)
+#define PPB_CTIOUTEN2_TRIGOUTEN_0               (0x1U<<0U)
 
 // CTIOUTEN3 Configuration
 
-#define PPB_CTIOUTEN3_TRIGOUTEN                 (0xFU<<0)
-#define PPB_CTIOUTEN3_TRIGOUTEN_0               (0x1U<<0)
+#define PPB_CTIOUTEN3_TRIGOUTEN                 (0xFU<<0U)
+#define PPB_CTIOUTEN3_TRIGOUTEN_0               (0x1U<<0U)
 
 // CTIOUTEN4 Configuration
 
-#define PPB_CTIOUTEN4_TRIGOUTEN                 (0xFU<<0)
-#define PPB_CTIOUTEN4_TRIGOUTEN_0               (0x1U<<0)
+#define PPB_CTIOUTEN4_TRIGOUTEN                 (0xFU<<0U)
+#define PPB_CTIOUTEN4_TRIGOUTEN_0               (0x1U<<0U)
 
 // CTIOUTEN5 Configuration
 
-#define PPB_CTIOUTEN5_TRIGOUTEN                 (0xFU<<0)
-#define PPB_CTIOUTEN5_TRIGOUTEN_0               (0x1U<<0)
+#define PPB_CTIOUTEN5_TRIGOUTEN                 (0xFU<<0U)
+#define PPB_CTIOUTEN5_TRIGOUTEN_0               (0x1U<<0U)
 
 // CTIOUTEN6 Configuration
 
-#define PPB_CTIOUTEN6_TRIGOUTEN                 (0xFU<<0)
-#define PPB_CTIOUTEN6_TRIGOUTEN_0               (0x1U<<0)
+#define PPB_CTIOUTEN6_TRIGOUTEN                 (0xFU<<0U)
+#define PPB_CTIOUTEN6_TRIGOUTEN_0               (0x1U<<0U)
 
 // CTIOUTEN7 Configuration
 
-#define PPB_CTIOUTEN7_TRIGOUTEN                 (0xFU<<0)
-#define PPB_CTIOUTEN7_TRIGOUTEN_0               (0x1U<<0)
+#define PPB_CTIOUTEN7_TRIGOUTEN                 (0xFU<<0U)
+#define PPB_CTIOUTEN7_TRIGOUTEN_0               (0x1U<<0U)
 
 // CTITRIGINSTATUS Configuration
 
-#define PPB_CTITRIGINSTATUS_TRIGINSTATUS        (0xFFU<<0)
-#define PPB_CTITRIGINSTATUS_TRIGINSTATUS_0      (0x1U<<0)
+#define PPB_CTITRIGINSTATUS_TRIGINSTATUS        (0xFFU<<0U)
+#define PPB_CTITRIGINSTATUS_TRIGINSTATUS_0      (0x1U<<0U)
 
 // CTITRIGOUTSTATUS Configuration
 
-#define PPB_CTITRIGOUTSTATUS_TRIGOUTSTATUS      (0xFFU<<0)
-#define PPB_CTITRIGOUTSTATUS_TRIGOUTSTATUS_0    (0x1U<<0)
+#define PPB_CTITRIGOUTSTATUS_TRIGOUTSTATUS      (0xFFU<<0U)
+#define PPB_CTITRIGOUTSTATUS_TRIGOUTSTATUS_0    (0x1U<<0U)
 
 // CTICHINSTATUS Configuration
 
-#define PPB_CTICHINSTATUS_CTICHOUTSTATUS        (0xFU<<0)
-#define PPB_CTICHINSTATUS_CTICHOUTSTATUS_0      (0x1U<<0)
+#define PPB_CTICHINSTATUS_CTICHOUTSTATUS        (0xFU<<0U)
+#define PPB_CTICHINSTATUS_CTICHOUTSTATUS_0      (0x1U<<0U)
 
 // CTIGATE Configuration
 
-#define PPB_CTIGATE_CTIGATEEN0                  (0x1U<<0)
-#define PPB_CTIGATE_CTIGATEEN1                  (0x1U<<1)
-#define PPB_CTIGATE_CTIGATEEN2                  (0x1U<<2)
-#define PPB_CTIGATE_CTIGATEEN3                  (0x1U<<3)
+#define PPB_CTIGATE_CTIGATEEN0                  (0x1U<<0U)
+#define PPB_CTIGATE_CTIGATEEN1                  (0x1U<<1U)
+#define PPB_CTIGATE_CTIGATEEN2                  (0x1U<<2U)
+#define PPB_CTIGATE_CTIGATEEN3                  (0x1U<<3U)
 
 // ASICCTL Configuration
 
-#define PPB_ASICCTL_ASICCTL                     (0xFFFFFFFFU<<0)
-#define PPB_ASICCTL_ASICCTL_0                   (0x1U<<0)
+#define PPB_ASICCTL_ASICCTL                     (0xFFFFFFFFU<<0U)
+#define PPB_ASICCTL_ASICCTL_0                   (0x1U<<0U)
 
 // ITCHOUT Configuration
 
-#define PPB_ITCHOUT_CTCHOUT                     (0xFU<<0)
-#define PPB_ITCHOUT_CTCHOUT_0                   (0x1U<<0)
+#define PPB_ITCHOUT_CTCHOUT                     (0xFU<<0U)
+#define PPB_ITCHOUT_CTCHOUT_0                   (0x1U<<0U)
 
 // ITTRIGOUT Configuration
 
-#define PPB_ITTRIGOUT_CTTRIGOUT                 (0xFFU<<0)
-#define PPB_ITTRIGOUT_CTTRIGOUT_0               (0x1U<<0)
+#define PPB_ITTRIGOUT_CTTRIGOUT                 (0xFFU<<0U)
+#define PPB_ITTRIGOUT_CTTRIGOUT_0               (0x1U<<0U)
 
 // ITCHIN Configuration
 
-#define PPB_ITCHIN_CTCHIN                       (0xFU<<0)
-#define PPB_ITCHIN_CTCHIN_0                     (0x1U<<0)
+#define PPB_ITCHIN_CTCHIN                       (0xFU<<0U)
+#define PPB_ITCHIN_CTCHIN_0                     (0x1U<<0U)
 
 // ITCTRL Configuration
 
-#define PPB_ITCTRL_IME                          (0x1U<<0)
+#define PPB_ITCTRL_IME                          (0x1U<<0U)
 
 // DEVARCH Configuration
 
-#define PPB_DEVARCH_ARCHID                      (0xFFFFU<<0)
-#define PPB_DEVARCH_ARCHID_0                    (0x1U<<0)
-#define PPB_DEVARCH_REVISION                    (0xFU<<16)
-#define PPB_DEVARCH_REVISION_0                  (0x1U<<16)
-#define PPB_DEVARCH_PRESENT                     (0x1U<<20)
-#define PPB_DEVARCH_ARCHITECT                   (0x7FFU<<21)
-#define PPB_DEVARCH_ARCHITECT_0                 (0x1U<<21)
+#define PPB_DEVARCH_ARCHID                      (0xFFFFU<<0U)
+#define PPB_DEVARCH_ARCHID_0                    (0x1U<<0U)
+#define PPB_DEVARCH_REVISION                    (0xFU<<16U)
+#define PPB_DEVARCH_REVISION_0                  (0x1U<<16U)
+#define PPB_DEVARCH_PRESENT                     (0x1U<<20U)
+#define PPB_DEVARCH_ARCHITECT                   (0x7FFU<<21U)
+#define PPB_DEVARCH_ARCHITECT_0                 (0x1U<<21U)
 
 // DEVID Configuration
 
-#define PPB_DEVID_EXTMUXNUM                     (0x1FU<<0)
-#define PPB_DEVID_EXTMUXNUM_0                   (0x1U<<0)
-#define PPB_DEVID_NUMTRIG                       (0xFFU<<8)
-#define PPB_DEVID_NUMTRIG_0                     (0x1U<<8)
-#define PPB_DEVID_NUMCH                         (0xFU<<16)
-#define PPB_DEVID_NUMCH_0                       (0x1U<<16)
+#define PPB_DEVID_EXTMUXNUM                     (0x1FU<<0U)
+#define PPB_DEVID_EXTMUXNUM_0                   (0x1U<<0U)
+#define PPB_DEVID_NUMTRIG                       (0xFFU<<8U)
+#define PPB_DEVID_NUMTRIG_0                     (0x1U<<8U)
+#define PPB_DEVID_NUMCH                         (0xFU<<16U)
+#define PPB_DEVID_NUMCH_0                       (0x1U<<16U)
 
 // DEVTYPE Configuration
 
-#define PPB_DEVTYPE_MAJOR                       (0xFU<<0)
-#define PPB_DEVTYPE_MAJOR_0                     (0x1U<<0)
-#define PPB_DEVTYPE_SUB                         (0xFU<<4)
-#define PPB_DEVTYPE_SUB_0                       (0x1U<<4)
+#define PPB_DEVTYPE_MAJOR                       (0xFU<<0U)
+#define PPB_DEVTYPE_MAJOR_0                     (0x1U<<0U)
+#define PPB_DEVTYPE_SUB                         (0xFU<<4U)
+#define PPB_DEVTYPE_SUB_0                       (0x1U<<4U)
 
 // PIDR4 Configuration
 
-#define PPB_PIDR4_DES_2                         (0xFU<<0)
-#define PPB_PIDR4_DES_2_0                       (0x1U<<0)
-#define PPB_PIDR4_SIZE                          (0xFU<<4)
-#define PPB_PIDR4_SIZE_0                        (0x1U<<4)
+#define PPB_PIDR4_DES_2                         (0xFU<<0U)
+#define PPB_PIDR4_DES_2_0                       (0x1U<<0U)
+#define PPB_PIDR4_SIZE                          (0xFU<<4U)
+#define PPB_PIDR4_SIZE_0                        (0x1U<<4U)
 
 // PIDR5 Configuration
 
-#define PPB_PIDR5_PIDR5                         (0xFFFFFFFFU<<0)
-#define PPB_PIDR5_PIDR5_0                       (0x1U<<0)
+#define PPB_PIDR5_PIDR5                         (0xFFFFFFFFU<<0U)
+#define PPB_PIDR5_PIDR5_0                       (0x1U<<0U)
 
 // PIDR6 Configuration
 
-#define PPB_PIDR6_PIDR6                         (0xFFFFFFFFU<<0)
-#define PPB_PIDR6_PIDR6_0                       (0x1U<<0)
+#define PPB_PIDR6_PIDR6                         (0xFFFFFFFFU<<0U)
+#define PPB_PIDR6_PIDR6_0                       (0x1U<<0U)
 
 // PIDR7 Configuration
 
-#define PPB_PIDR7_PIDR7                         (0xFFFFFFFFU<<0)
-#define PPB_PIDR7_PIDR7_0                       (0x1U<<0)
+#define PPB_PIDR7_PIDR7                         (0xFFFFFFFFU<<0U)
+#define PPB_PIDR7_PIDR7_0                       (0x1U<<0U)
 
 // PIDR0 Configuration
 
-#define PPB_PIDR0_PART_0                        (0xFFU<<0)
-#define PPB_PIDR0_PART_0_0                      (0x1U<<0)
+#define PPB_PIDR0_PART_0                        (0xFFU<<0U)
+#define PPB_PIDR0_PART_0_0                      (0x1U<<0U)
 
 // PIDR1 Configuration
 
-#define PPB_PIDR1_PART_1                        (0xFU<<0)
-#define PPB_PIDR1_PART_1_0                      (0x1U<<0)
-#define PPB_PIDR1_DES_0                         (0xFU<<4)
-#define PPB_PIDR1_DES_0_0                       (0x1U<<4)
+#define PPB_PIDR1_PART_1                        (0xFU<<0U)
+#define PPB_PIDR1_PART_1_0                      (0x1U<<0U)
+#define PPB_PIDR1_DES_0                         (0xFU<<4U)
+#define PPB_PIDR1_DES_0_0                       (0x1U<<4U)
 
 // PIDR2 Configuration
 
-#define PPB_PIDR2_DES_1                         (0x7U<<0)
-#define PPB_PIDR2_DES_1_0                       (0x1U<<0)
-#define PPB_PIDR2_JEDEC                         (0x1U<<3)
-#define PPB_PIDR2_REVISION                      (0xFU<<4)
-#define PPB_PIDR2_REVISION_0                    (0x1U<<4)
+#define PPB_PIDR2_DES_1                         (0x7U<<0U)
+#define PPB_PIDR2_DES_1_0                       (0x1U<<0U)
+#define PPB_PIDR2_JEDEC                         (0x1U<<3U)
+#define PPB_PIDR2_REVISION                      (0xFU<<4U)
+#define PPB_PIDR2_REVISION_0                    (0x1U<<4U)
 
 // PIDR3 Configuration
 
-#define PPB_PIDR3_CMOD                          (0xFU<<0)
-#define PPB_PIDR3_CMOD_0                        (0x1U<<0)
-#define PPB_PIDR3_REVAND                        (0xFU<<4)
-#define PPB_PIDR3_REVAND_0                      (0x1U<<4)
+#define PPB_PIDR3_CMOD                          (0xFU<<0U)
+#define PPB_PIDR3_CMOD_0                        (0x1U<<0U)
+#define PPB_PIDR3_REVAND                        (0xFU<<4U)
+#define PPB_PIDR3_REVAND_0                      (0x1U<<4U)
 
 // CIDR0 Configuration
 
-#define PPB_CIDR0_PRMBL_0                       (0xFFU<<0)
-#define PPB_CIDR0_PRMBL_0_0                     (0x1U<<0)
+#define PPB_CIDR0_PRMBL_0                       (0xFFU<<0U)
+#define PPB_CIDR0_PRMBL_0_0                     (0x1U<<0U)
 
 // CIDR1 Configuration
 
-#define PPB_CIDR1_PRMBL_1                       (0xFU<<0)
-#define PPB_CIDR1_PRMBL_1_0                     (0x1U<<0)
-#define PPB_CIDR1_CLASS                         (0xFU<<4)
-#define PPB_CIDR1_CLASS_0                       (0x1U<<4)
+#define PPB_CIDR1_PRMBL_1                       (0xFU<<0U)
+#define PPB_CIDR1_PRMBL_1_0                     (0x1U<<0U)
+#define PPB_CIDR1_CLASS                         (0xFU<<4U)
+#define PPB_CIDR1_CLASS_0                       (0x1U<<4U)
 
 // CIDR2 Configuration
 
-#define PPB_CIDR2_PRMBL_2                       (0xFFU<<0)
-#define PPB_CIDR2_PRMBL_2_0                     (0x1U<<0)
+#define PPB_CIDR2_PRMBL_2                       (0xFFU<<0U)
+#define PPB_CIDR2_PRMBL_2_0                     (0x1U<<0U)
 
 // CIDR3 Configuration
 
-#define PPB_CIDR3_PRMBL_3                       (0xFFU<<0)
-#define PPB_CIDR3_PRMBL_3_0                     (0x1U<<0)
+#define PPB_CIDR3_PRMBL_3                       (0xFFU<<0U)
+#define PPB_CIDR3_PRMBL_3_0                     (0x1U<<0U)

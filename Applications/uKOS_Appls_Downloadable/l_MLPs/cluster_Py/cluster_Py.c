@@ -134,8 +134,8 @@ static void aProcess_0(const void *argument) {
 // Prepare the inputs
 
         random_read(KRANDOM_SOFT, &random[0], 2U);
-        x = (((float32_t)random[0] / (float32_t)(KRAND_MAX)) - 0.5f) * gain;
-        y = (((float32_t)random[1] / (float32_t)(KRAND_MAX)) - 0.5f) * gain;
+        x = (((float32_t)random[0] / (float32_t)(KRAND_MAX)) - 0.5F) * gain;
+        y = (((float32_t)random[1] / (float32_t)(KRAND_MAX)) - 0.5F) * gain;
 
         vInput_L1[0] = x;
         vInput_L1[1] = y;

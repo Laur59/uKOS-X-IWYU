@@ -3,8 +3,9 @@
 #
 # Cross-platform signature generation script for uKOS-X.
 #
-# This script generates a SHA-256 signature from a binary file and creates
-# C source files containing the signature as a compile-time constant.
+# This script generates a SHA-256 signature from a binary file
+# and creates C source files containing the signature as a.
+# compile-time constant
 #
 # Required input variables (pass via -D on command line):
 #   INPUT_FILE   - Path to input binary file (e.g., NOSIG.bin)

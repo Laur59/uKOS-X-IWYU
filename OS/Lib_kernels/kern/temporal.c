@@ -150,7 +150,7 @@ int32_t kern_setNewTimeout(proc_t *handle, uint32_t timeout) {
     INTERRUPTION_OFF;
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
 
-    wkHandle = (wkHandle == nullptr) ? (vKern_runProc[core]) : wkHandle;
+    wkHandle = (wkHandle == nullptr) ? vKern_runProc[core] : wkHandle;
 
     if ((wkHandle->oInternal.oState & (1U<<BPROC_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 1"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOPRO; }
 
@@ -163,7 +163,7 @@ int32_t kern_setNewTimeout(proc_t *handle, uint32_t timeout) {
 //                                              == timeout value    = (timeout value / unit)                                = (timeout value / unit)
 
     wkTimeout = (timeout == KWAIT_INFINITY)          ? (KWAIT_INFINITY)                          : (timeout / KKERN_TIC_TIME);
-    wkTimeout = (timeout == KWAIT_REMAINING_TIMEOUT) ? (vKern_runProc[core]->oInternal.oTimeout) : wkTimeout;
+    wkTimeout = (timeout == KWAIT_REMAINING_TIMEOUT) ? vKern_runProc[core]->oInternal.oTimeout : wkTimeout;
     vKern_runProc[core]->oInternal.oTimeout = wkTimeout;
 
     DEBUG_KERN_TRACE("exit: OK");
@@ -254,7 +254,7 @@ int32_t kern_readRemainingProcessTimeout(uint32_t *timeout) {
 
     PRIVILEGE_ELEVATE;
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
-    *timeout = (IS_EXCEPTION) ? 0U : (vKern_runProc[core]->oInternal.oTimeout);
+    *timeout = (IS_EXCEPTION) ? 0U : vKern_runProc[core]->oInternal.oTimeout;
     DEBUG_KERN_TRACE("exit: OK");
     PRIVILEGE_RESTORE;
     return KERR_KERN_NOERR;
@@ -413,14 +413,13 @@ int32_t kern_hasPendingTimeoutProcesses(bool *nonInfTOActive) {
     for (i = 0U; i < KKERN_NB_PROCESSES; i++) {
         process = &vKern_proc[core][i];
         const uint16_t state = process->oInternal.oState;
-        if (((state & (1U<<BPROC_INSTALLED)) != 0U) && ((state & KSTATE_EOT_MASK) != 0U)) {
-            if ((process->oInternal.oTimeout > 0U) && (process->oInternal.oTimeout != KWAIT_INFINITY)) {
-                *nonInfTOActive = true;
-                DEBUG_KERN_TRACE("exit: OK");
-                return KERR_KERN_NOERR;
-            }
-
+        if (((state & (1U<<BPROC_INSTALLED)) != 0U) && ((state & KSTATE_EOT_MASK) != 0U) &&
+            (process->oInternal.oTimeout > 0U) && (process->oInternal.oTimeout != KWAIT_INFINITY)) {
+            *nonInfTOActive = true;
+            DEBUG_KERN_TRACE("exit: OK");
+            return KERR_KERN_NOERR;
         }
+
     }
     *nonInfTOActive = false;
     DEBUG_KERN_TRACE("exit: OK");
@@ -447,8 +446,7 @@ void    temporal_testEOTime(uint32_t time) {
     PRIVILEGE_ELEVATE;
     INTERRUPTION_OFF;
     for (i = 0U; i < KKERN_NB_PROCESSES; i++) {
-        if ((vKern_proc[core][i].oInternal.oState & KSTATE_EOT_MASK) != 0U) {
-            if (vKern_proc[core][i].oInternal.oTimeout != KWAIT_INFINITY) {
+        if (((vKern_proc[core][i].oInternal.oState & KSTATE_EOT_MASK) != 0U) && (vKern_proc[core][i].oInternal.oTimeout != KWAIT_INFINITY)) {
 
                 vKern_proc[core][i].oInternal.oTimeout = (vKern_proc[core][i].oInternal.oTimeout < time) ? 0U : (vKern_proc[core][i].oInternal.oTimeout - time);
 
@@ -459,20 +457,17 @@ void    temporal_testEOTime(uint32_t time) {
 
 // If the ready process has a higher priority, then preemption occurs
 
-                    preemption |= ((vKern_proc[core][i].oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority) || (vKern_runProc[core] == &vKern_proc[core][0]));
+                    preemption |= (bool)((vKern_proc[core][i].oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority) || (vKern_runProc[core] == &vKern_proc[core][0]));
                 }
             }
-        }
 
 // Decrement the internal timeout of all the process installed and not suspended.
 // The process that can be scheduled
 
-        if (((vKern_proc[core][i].oInternal.oState & (1U<<BPROC_INSTALLED)) != 0U) && ((vKern_proc[core][i].oInternal.oState & KSTATE_EOT_MASK) == 0U)) {
-            if (vKern_proc[core][i].oInternal.oTimeout != KWAIT_INFINITY) {
+        if (((vKern_proc[core][i].oInternal.oState & (1U<<BPROC_INSTALLED)) != 0U) && ((vKern_proc[core][i].oInternal.oState & KSTATE_EOT_MASK) == 0U) && (vKern_proc[core][i].oInternal.oTimeout != KWAIT_INFINITY)) {
                 vKern_proc[core][i].oInternal.oTimeout = (vKern_proc[core][i].oInternal.oTimeout < time) ? 0U : (vKern_proc[core][i].oInternal.oTimeout - time);
             }
         }
-    }
     INTERRUPTION_RESTORE;
 
     if (preemption) { PREEMPTION; }
@@ -497,12 +492,11 @@ uint32_t    temporal_getNextLowPowerTime(void) {
     minTime = KWAIT_INFINITY;
 
     for (i = 0U; i < KKERN_NB_PROCESSES; i++) {
-        if ((vKern_proc[core][i].oInternal.oState & KSTATE_EOT_MASK) != 0U) {
-            if (vKern_proc[core][i].oInternal.oTimeout < minTime) {
-                minTime = vKern_proc[core][i].oInternal.oTimeout;
-                if (minTime == 0U) {
-                    break;
-                }
+        if (((vKern_proc[core][i].oInternal.oState & KSTATE_EOT_MASK) != 0U) &&
+            (vKern_proc[core][i].oInternal.oTimeout < minTime)) {
+            minTime = vKern_proc[core][i].oInternal.oTimeout;
+            if (minTime == 0U) {
+                break;
             }
         }
     }

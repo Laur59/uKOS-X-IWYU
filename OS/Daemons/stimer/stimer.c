@@ -129,7 +129,7 @@ static  void    local_execute(uint16_t i) {
     vKern_runProc[core]->oInternal.oState &= (uint16_t)~(1U<<BPROC_LIKE_ISR);
     vKern_curStim[core] = (uint16_t)-1;
 
-    (vKern_stim[core][i].oTimerSpec.oMode == KSTIM_SINGLE_SHOT) ? (vKern_stim[core][i].oState &= (uint16_t)~((1U<<BSTIM_RUNNING) | (1U<<BSTIM_CONFIGURED))) : (vKern_stim[core][i].oState &= (uint16_t)~0x00);
+    (vKern_stim[core][i].oTimerSpec.oMode == KSTIM_SINGLE_SHOT) ? (vKern_stim[core][i].oState &= (uint16_t)~((1U<<BSTIM_RUNNING) | (1U<<BSTIM_CONFIGURED))) : (vKern_stim[core][i].oState &= (uint16_t)~0x00U);
     vKern_stim[core][i].oState |= (1U<<BSTIM_EXECUTED);
 }
 
@@ -168,7 +168,7 @@ static void local_process(const void *argument) {
         while (kern_readQueue(mailBox, &data, 0) == KERR_KERN_NOERR) {
             newSTimer         = (stim_t *)data;
             newSTimer->oState = (newSTimer->oTimerSpec.oMode == KSTIM_STOP) ? 0                         : ((1U<<BSTIM_CONFIGURED) | (1U<<BSTIM_RUNNING));
-            nextTimeout       = (newSTimer->oInitCounter < nextTimeout)     ? (newSTimer->oInitCounter) : nextTimeout;
+            nextTimeout       = (newSTimer->oInitCounter < nextTimeout)     ? newSTimer->oInitCounter : nextTimeout;
         }
     }
 
@@ -186,47 +186,45 @@ static void local_process(const void *argument) {
             nextTimeout = KWAIT_INFINITY;
             kern_readTickCount(&time[0]);
             for (i = 0U; i < KKERN_NB_SOFTWARE_TIMERS; i++) {
-                if (((vKern_stim[core][i].oState & (1U<<BSTIM_CONFIGURED)) != 0U)) {
 
 // Execute only if mode = Continue
 // or, if mode = SingleShot but never executed
 
-                    if ((vKern_stim[core][i].oState & (1U<<BSTIM_RE_CONFIGURED)) == 0U) {
-                        if ((vKern_stim[core][i].oTimerSpec.oMode == KSTIM_CONTINUOUS) || ((vKern_stim[core][i].oTimerSpec.oMode == KSTIM_SINGLE_SHOT) && ((vKern_stim[core][i].oState & (1U<<BSTIM_EXECUTED)) == 0U))) {
+                if (((vKern_stim[core][i].oState & (1U<<BSTIM_CONFIGURED)) != 0U) &&
+                    ((vKern_stim[core][i].oState & (1U<<BSTIM_RE_CONFIGURED)) == 0U) &&
+                    ((vKern_stim[core][i].oTimerSpec.oMode == KSTIM_CONTINUOUS) || ((vKern_stim[core][i].oTimerSpec.oMode == KSTIM_SINGLE_SHOT) && ((vKern_stim[core][i].oState & (1U<<BSTIM_EXECUTED)) == 0U)))) {
 
 // Verify the initial time
 // Verify the time
 
-                            if (vKern_stim[core][i].oInitCounter <= lastTimeout) {
-                                if (vKern_stim[core][i].oInitCounter > 0U) {
-                                    vKern_stim[core][i].oCounter = (vKern_stim[core][i].oCounter > (lastTimeout - vKern_stim[core][i].oInitCounter)) ? (vKern_stim[core][i].oCounter - (lastTimeout - vKern_stim[core][i].oInitCounter)) : 0U;
-                                    vKern_stim[core][i].oInitCounter = 0U;
-                                    if (vKern_stim[core][i].oCounter == 0U){
-                                        local_execute(i);
-                                        if (vKern_stim[core][i].oTimerSpec.oMode == KSTIM_CONTINUOUS) {
-                                            nextTimeout = (nextTimeout < vKern_stim[core][i].oCounter) ? nextTimeout : (vKern_stim[core][i].oCounter);
-                                        }
-                                    }
-                                    else {
-                                        nextTimeout = (nextTimeout < vKern_stim[core][i].oCounter) ? nextTimeout : (vKern_stim[core][i].oCounter);
-                                    }
-                                }
-                                else if (vKern_stim[core][i].oCounter <= lastTimeout) {
-                                    local_execute(i);
-                                    if (vKern_stim[core][i].oTimerSpec.oMode == KSTIM_CONTINUOUS) {
-                                        nextTimeout = (nextTimeout < vKern_stim[core][i].oCounter) ? nextTimeout : (vKern_stim[core][i].oCounter);
-                                    }
-                                }
-                                else {
-                                    vKern_stim[core][i].oCounter = (vKern_stim[core][i].oCounter < lastTimeout) ? 0U          : (vKern_stim[core][i].oCounter - lastTimeout);
-                                    nextTimeout = (nextTimeout < vKern_stim[core][i].oCounter)                  ? nextTimeout : (vKern_stim[core][i].oCounter);
+                    if (vKern_stim[core][i].oInitCounter <= lastTimeout) {
+                        if (vKern_stim[core][i].oInitCounter > 0U) {
+                            vKern_stim[core][i].oCounter = (vKern_stim[core][i].oCounter > (lastTimeout - vKern_stim[core][i].oInitCounter)) ? (vKern_stim[core][i].oCounter - (lastTimeout - vKern_stim[core][i].oInitCounter)) : 0U;
+                            vKern_stim[core][i].oInitCounter = 0U;
+                            if (vKern_stim[core][i].oCounter == 0U){
+                                local_execute(i);
+                                if (vKern_stim[core][i].oTimerSpec.oMode == KSTIM_CONTINUOUS) {
+                                    nextTimeout = (nextTimeout < vKern_stim[core][i].oCounter) ? nextTimeout : vKern_stim[core][i].oCounter;
                                 }
                             }
                             else {
-                                vKern_stim[core][i].oInitCounter = (vKern_stim[core][i].oInitCounter < lastTimeout) ? 0U          : (vKern_stim[core][i].oInitCounter - lastTimeout);
-                                nextTimeout = (nextTimeout < vKern_stim[core][i].oInitCounter)                      ? nextTimeout : (vKern_stim[core][i].oInitCounter);
+                                nextTimeout = (nextTimeout < vKern_stim[core][i].oCounter) ? nextTimeout : vKern_stim[core][i].oCounter;
                             }
                         }
+                        else if (vKern_stim[core][i].oCounter <= lastTimeout) {
+                            local_execute(i);
+                            if (vKern_stim[core][i].oTimerSpec.oMode == KSTIM_CONTINUOUS) {
+                                nextTimeout = (nextTimeout < vKern_stim[core][i].oCounter) ? nextTimeout : vKern_stim[core][i].oCounter;
+                            }
+                        }
+                        else {
+                            vKern_stim[core][i].oCounter = (vKern_stim[core][i].oCounter < lastTimeout) ? 0U          : (vKern_stim[core][i].oCounter - lastTimeout);
+                            nextTimeout = (nextTimeout < vKern_stim[core][i].oCounter)                  ? nextTimeout : vKern_stim[core][i].oCounter;
+                        }
+                    }
+                    else {
+                        vKern_stim[core][i].oInitCounter = (vKern_stim[core][i].oInitCounter < lastTimeout) ? 0U          : (vKern_stim[core][i].oInitCounter - lastTimeout);
+                        nextTimeout = (nextTimeout < vKern_stim[core][i].oInitCounter)                      ? nextTimeout : vKern_stim[core][i].oInitCounter;
                     }
                 }
             }
@@ -251,10 +249,9 @@ static void local_process(const void *argument) {
 // If yes, check if there is a new software timer that
 // need to be included
 
-        if (!gotMailBox) {
-            if (kern_getMailboxById(KMBOX_SOFTWARE_TIMER, &mailBox) == KERR_KERN_NOERR) {
-                gotMailBox = true;
-            }
+        if (!gotMailBox &&
+            (kern_getMailboxById(KMBOX_SOFTWARE_TIMER, &mailBox) == KERR_KERN_NOERR)) {
+            gotMailBox = true;
         }
 
         if (gotMailBox) {
@@ -262,10 +259,10 @@ static void local_process(const void *argument) {
                 newSTimer         = (stim_t *)data;
                 newSTimer->oState = (newSTimer->oTimerSpec.oMode == KSTIM_STOP) ? (1U<<BSTIM_INSTALLED)     : ((1U<<BSTIM_INSTALLED) | (1U<<BSTIM_CONFIGURED) | (1U<<BSTIM_RUNNING));
                 if (newSTimer->oInitCounter > 0U) {
-                    nextTimeout   = (newSTimer->oInitCounter < nextTimeout)     ? (newSTimer->oInitCounter) : nextTimeout;
+                    nextTimeout   = (newSTimer->oInitCounter < nextTimeout)     ? newSTimer->oInitCounter : nextTimeout;
                 }
                 else {
-                    nextTimeout   = (newSTimer->oCounter < nextTimeout)         ? (newSTimer->oCounter)     : nextTimeout;
+                    nextTimeout   = (newSTimer->oCounter < nextTimeout)         ? newSTimer->oCounter     : nextTimeout;
                 }
             }
         }

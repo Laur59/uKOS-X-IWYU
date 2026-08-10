@@ -87,7 +87,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
                     .oStopBits = KSERIAL_STOPBITS_1,
                     .oParity   = KSERIAL_PARITY_NONE,
                     .oBaudRate = KSERIAL_BAUDRATE_DEFAULT,
-                    .oKernSync = ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_RX)
+                    .oKernSync = ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_RX),
                 };
 
     (void)dprintf(KSYST, "Control of the ESP32 chip.\n");
@@ -186,10 +186,8 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
                     nbBytes = KSZ_BUFFER;
                     if (local_getByte(KSYST, &data[0], &nbBytes)) {
-                        if (nbBytes >= 4U) {
-                            if (local_checkExit(&data[0])) {
-                                terminate = true;
-                            }
+                        if ((nbBytes >= 4U) && local_checkExit(&data[0])) {
+                            terminate = true;
                         }
                         local_putByte(KURT2, &data[0], &nbBytes);
                     }

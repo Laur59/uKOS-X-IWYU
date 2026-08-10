@@ -196,7 +196,7 @@ const   uintptr_t   g_pfnVectors_C0[] = {
     (uintptr_t)SAI4_C0_IRQHandler,                              // Address: 0x0000_0288
     (uintptr_t)0,                                               // Address: 0x0000_028C
     (uintptr_t)0,                                               // Address: 0x0000_0290
-    (uintptr_t)WKUP_C0_IRQHandler                               // Address: 0x0000_0294
+    (uintptr_t)WKUP_C0_IRQHandler,                              // Address: 0x0000_0294
 };
 
 EXCEPTION_SPECIFIC_HANDLER(NonMaskableInt_C0)

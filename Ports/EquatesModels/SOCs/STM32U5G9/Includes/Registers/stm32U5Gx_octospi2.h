@@ -76,229 +76,229 @@ typedef struct {
 
 // CR Configuration
 
-#define OCTOSPI2_CR_EN              (0x1U<<0)
-#define OCTOSPI2_CR_ABORT           (0x1U<<1)
-#define OCTOSPI2_CR_DMAEN           (0x1U<<2)
-#define OCTOSPI2_CR_TCEN            (0x1U<<3)
-#define OCTOSPI2_CR_DQM             (0x1U<<6)
-#define OCTOSPI2_CR_FSEL            (0x1U<<7)
-#define OCTOSPI2_CR_FTHRES          (0x1FU<<8)
-#define OCTOSPI2_CR_FTHRES_0        (0x1U<<8)
-#define OCTOSPI2_CR_TEIE            (0x1U<<16)
-#define OCTOSPI2_CR_TCIE            (0x1U<<17)
-#define OCTOSPI2_CR_FTIE            (0x1U<<18)
-#define OCTOSPI2_CR_SMIE            (0x1U<<19)
-#define OCTOSPI2_CR_TOIE            (0x1U<<20)
-#define OCTOSPI2_CR_APMS            (0x1U<<22)
-#define OCTOSPI2_CR_PMM             (0x1U<<23)
-#define OCTOSPI2_CR_FMODE           (0x3U<<28)
-#define OCTOSPI2_CR_FMODE_0         (0x1U<<28)
+#define OCTOSPI2_CR_EN              (0x1U<<0U)
+#define OCTOSPI2_CR_ABORT           (0x1U<<1U)
+#define OCTOSPI2_CR_DMAEN           (0x1U<<2U)
+#define OCTOSPI2_CR_TCEN            (0x1U<<3U)
+#define OCTOSPI2_CR_DQM             (0x1U<<6U)
+#define OCTOSPI2_CR_FSEL            (0x1U<<7U)
+#define OCTOSPI2_CR_FTHRES          (0x1FU<<8U)
+#define OCTOSPI2_CR_FTHRES_0        (0x1U<<8U)
+#define OCTOSPI2_CR_TEIE            (0x1U<<16U)
+#define OCTOSPI2_CR_TCIE            (0x1U<<17U)
+#define OCTOSPI2_CR_FTIE            (0x1U<<18U)
+#define OCTOSPI2_CR_SMIE            (0x1U<<19U)
+#define OCTOSPI2_CR_TOIE            (0x1U<<20U)
+#define OCTOSPI2_CR_APMS            (0x1U<<22U)
+#define OCTOSPI2_CR_PMM             (0x1U<<23U)
+#define OCTOSPI2_CR_FMODE           (0x3U<<28U)
+#define OCTOSPI2_CR_FMODE_0         (0x1U<<28U)
 
 // DCR1 Configuration
 
-#define OCTOSPI2_DCR1_MTYP          (0x7U<<24)
-#define OCTOSPI2_DCR1_MTYP_0        (0x1U<<24)
-#define OCTOSPI2_DCR1_DEVSIZE       (0x1FU<<16)
-#define OCTOSPI2_DCR1_DEVSIZE_0     (0x1U<<16)
-#define OCTOSPI2_DCR1_CSHT          (0x3FU<<8)
-#define OCTOSPI2_DCR1_CSHT_0        (0x1U<<8)
-#define OCTOSPI2_DCR1_DLYBYP        (0x1U<<3)
-#define OCTOSPI2_DCR1_FRCK          (0x1U<<1)
-#define OCTOSPI2_DCR1_CKMODE        (0x1U<<0)
+#define OCTOSPI2_DCR1_MTYP          (0x7U<<24U)
+#define OCTOSPI2_DCR1_MTYP_0        (0x1U<<24U)
+#define OCTOSPI2_DCR1_DEVSIZE       (0x1FU<<16U)
+#define OCTOSPI2_DCR1_DEVSIZE_0     (0x1U<<16U)
+#define OCTOSPI2_DCR1_CSHT          (0x3FU<<8U)
+#define OCTOSPI2_DCR1_CSHT_0        (0x1U<<8U)
+#define OCTOSPI2_DCR1_DLYBYP        (0x1U<<3U)
+#define OCTOSPI2_DCR1_FRCK          (0x1U<<1U)
+#define OCTOSPI2_DCR1_CKMODE        (0x1U<<0U)
 
 // DCR2 Configuration
 
-#define OCTOSPI2_DCR2_WRAPSIZE      (0x7U<<16)
-#define OCTOSPI2_DCR2_WRAPSIZE_0    (0x1U<<16)
-#define OCTOSPI2_DCR2_PRESCALER     (0xFFU<<0)
-#define OCTOSPI2_DCR2_PRESCALER_0   (0x1U<<0)
+#define OCTOSPI2_DCR2_WRAPSIZE      (0x7U<<16U)
+#define OCTOSPI2_DCR2_WRAPSIZE_0    (0x1U<<16U)
+#define OCTOSPI2_DCR2_PRESCALER     (0xFFU<<0U)
+#define OCTOSPI2_DCR2_PRESCALER_0   (0x1U<<0U)
 
 // DCR3 Configuration
 
-#define OCTOSPI2_DCR3_CSBOUND       (0x1FU<<16)
-#define OCTOSPI2_DCR3_CSBOUND_0     (0x1U<<16)
-#define OCTOSPI2_DCR3_MAXTRAN       (0xFFU<<0)
-#define OCTOSPI2_DCR3_MAXTRAN_0     (0x1U<<0)
+#define OCTOSPI2_DCR3_CSBOUND       (0x1FU<<16U)
+#define OCTOSPI2_DCR3_CSBOUND_0     (0x1U<<16U)
+#define OCTOSPI2_DCR3_MAXTRAN       (0xFFU<<0U)
+#define OCTOSPI2_DCR3_MAXTRAN_0     (0x1U<<0U)
 
 // DCR4 Configuration
 
-#define OCTOSPI2_DCR4_REFRESH       (0xFFFFFFFFU<<0)
-#define OCTOSPI2_DCR4_REFRESH_0     (0x1U<<0)
+#define OCTOSPI2_DCR4_REFRESH       (0xFFFFFFFFU<<0U)
+#define OCTOSPI2_DCR4_REFRESH_0     (0x1U<<0U)
 
 // SR Configuration
 
-#define OCTOSPI2_SR_FLEVEL          (0x3FU<<8)
-#define OCTOSPI2_SR_FLEVEL_0        (0x1U<<8)
-#define OCTOSPI2_SR_BUSY            (0x1U<<5)
-#define OCTOSPI2_SR_TOF             (0x1U<<4)
-#define OCTOSPI2_SR_SMF             (0x1U<<3)
-#define OCTOSPI2_SR_FTF             (0x1U<<2)
-#define OCTOSPI2_SR_TCF             (0x1U<<1)
-#define OCTOSPI2_SR_TEF             (0x1U<<0)
+#define OCTOSPI2_SR_FLEVEL          (0x3FU<<8U)
+#define OCTOSPI2_SR_FLEVEL_0        (0x1U<<8U)
+#define OCTOSPI2_SR_BUSY            (0x1U<<5U)
+#define OCTOSPI2_SR_TOF             (0x1U<<4U)
+#define OCTOSPI2_SR_SMF             (0x1U<<3U)
+#define OCTOSPI2_SR_FTF             (0x1U<<2U)
+#define OCTOSPI2_SR_TCF             (0x1U<<1U)
+#define OCTOSPI2_SR_TEF             (0x1U<<0U)
 
 // FCR Configuration
 
-#define OCTOSPI2_FCR_CTOF           (0x1U<<4)
-#define OCTOSPI2_FCR_CSMF           (0x1U<<3)
-#define OCTOSPI2_FCR_CTCF           (0x1U<<1)
-#define OCTOSPI2_FCR_CTEF           (0x1U<<0)
+#define OCTOSPI2_FCR_CTOF           (0x1U<<4U)
+#define OCTOSPI2_FCR_CSMF           (0x1U<<3U)
+#define OCTOSPI2_FCR_CTCF           (0x1U<<1U)
+#define OCTOSPI2_FCR_CTEF           (0x1U<<0U)
 
 // DLR Configuration
 
-#define OCTOSPI2_DLR_DL             (0xFFFFFFFFU<<0)
-#define OCTOSPI2_DLR_DL_0           (0x1U<<0)
+#define OCTOSPI2_DLR_DL             (0xFFFFFFFFU<<0U)
+#define OCTOSPI2_DLR_DL_0           (0x1U<<0U)
 
 // AR Configuration
 
-#define OCTOSPI2_AR_ADDRESS         (0xFFFFFFFFU<<0)
-#define OCTOSPI2_AR_ADDRESS_0       (0x1U<<0)
+#define OCTOSPI2_AR_ADDRESS         (0xFFFFFFFFU<<0U)
+#define OCTOSPI2_AR_ADDRESS_0       (0x1U<<0U)
 
 // DR Configuration
 
-#define OCTOSPI2_DR_DATA            (0xFFFFFFFFU<<0)
-#define OCTOSPI2_DR_DATA_0          (0x1U<<0)
+#define OCTOSPI2_DR_DATA            (0xFFFFFFFFU<<0U)
+#define OCTOSPI2_DR_DATA_0          (0x1U<<0U)
 
 // PSMKR Configuration
 
-#define OCTOSPI2_PSMKR_MASK         (0xFFFFFFFFU<<0)
-#define OCTOSPI2_PSMKR_MASK_0       (0x1U<<0)
+#define OCTOSPI2_PSMKR_MASK         (0xFFFFFFFFU<<0U)
+#define OCTOSPI2_PSMKR_MASK_0       (0x1U<<0U)
 
 // PSMAR Configuration
 
-#define OCTOSPI2_PSMAR_MATCH        (0xFFFFFFFFU<<0)
-#define OCTOSPI2_PSMAR_MATCH_0      (0x1U<<0)
+#define OCTOSPI2_PSMAR_MATCH        (0xFFFFFFFFU<<0U)
+#define OCTOSPI2_PSMAR_MATCH_0      (0x1U<<0U)
 
 // PIR Configuration
 
-#define OCTOSPI2_PIR_INTERVAL       (0xFFFFU<<0)
-#define OCTOSPI2_PIR_INTERVAL_0     (0x1U<<0)
+#define OCTOSPI2_PIR_INTERVAL       (0xFFFFU<<0U)
+#define OCTOSPI2_PIR_INTERVAL_0     (0x1U<<0U)
 
 // CCR Configuration
 
-#define OCTOSPI2_CCR_SIOO           (0x1U<<31)
-#define OCTOSPI2_CCR_DQSE           (0x1U<<29)
-#define OCTOSPI2_CCR_DDTR           (0x1U<<27)
-#define OCTOSPI2_CCR_DMODE          (0x7U<<24)
-#define OCTOSPI2_CCR_DMODE_0        (0x1U<<24)
-#define OCTOSPI2_CCR_ABSIZE         (0x3U<<20)
-#define OCTOSPI2_CCR_ABSIZE_0       (0x1U<<20)
-#define OCTOSPI2_CCR_ABDTR          (0x1U<<19)
-#define OCTOSPI2_CCR_ABMODE         (0x7U<<16)
-#define OCTOSPI2_CCR_ABMODE_0       (0x1U<<16)
-#define OCTOSPI2_CCR_ADSIZE         (0x3U<<12)
-#define OCTOSPI2_CCR_ADSIZE_0       (0x1U<<12)
-#define OCTOSPI2_CCR_ADDTR          (0x1U<<11)
-#define OCTOSPI2_CCR_ADMODE         (0x7U<<8)
-#define OCTOSPI2_CCR_ADMODE_0       (0x1U<<8)
-#define OCTOSPI2_CCR_ISIZE          (0x3U<<4)
-#define OCTOSPI2_CCR_ISIZE_0        (0x1U<<4)
-#define OCTOSPI2_CCR_IDTR           (0x1U<<3)
-#define OCTOSPI2_CCR_IMODE          (0x7U<<0)
-#define OCTOSPI2_CCR_IMODE_0        (0x1U<<0)
+#define OCTOSPI2_CCR_SIOO           (0x1U<<31U)
+#define OCTOSPI2_CCR_DQSE           (0x1U<<29U)
+#define OCTOSPI2_CCR_DDTR           (0x1U<<27U)
+#define OCTOSPI2_CCR_DMODE          (0x7U<<24U)
+#define OCTOSPI2_CCR_DMODE_0        (0x1U<<24U)
+#define OCTOSPI2_CCR_ABSIZE         (0x3U<<20U)
+#define OCTOSPI2_CCR_ABSIZE_0       (0x1U<<20U)
+#define OCTOSPI2_CCR_ABDTR          (0x1U<<19U)
+#define OCTOSPI2_CCR_ABMODE         (0x7U<<16U)
+#define OCTOSPI2_CCR_ABMODE_0       (0x1U<<16U)
+#define OCTOSPI2_CCR_ADSIZE         (0x3U<<12U)
+#define OCTOSPI2_CCR_ADSIZE_0       (0x1U<<12U)
+#define OCTOSPI2_CCR_ADDTR          (0x1U<<11U)
+#define OCTOSPI2_CCR_ADMODE         (0x7U<<8U)
+#define OCTOSPI2_CCR_ADMODE_0       (0x1U<<8U)
+#define OCTOSPI2_CCR_ISIZE          (0x3U<<4U)
+#define OCTOSPI2_CCR_ISIZE_0        (0x1U<<4U)
+#define OCTOSPI2_CCR_IDTR           (0x1U<<3U)
+#define OCTOSPI2_CCR_IMODE          (0x7U<<0U)
+#define OCTOSPI2_CCR_IMODE_0        (0x1U<<0U)
 
 // TCR Configuration
 
-#define OCTOSPI2_TCR_SSHIFT         (0x1U<<30)
-#define OCTOSPI2_TCR_DHQC           (0x1U<<28)
-#define OCTOSPI2_TCR_DCYC           (0x1FU<<0)
-#define OCTOSPI2_TCR_DCYC_0         (0x1U<<0)
+#define OCTOSPI2_TCR_SSHIFT         (0x1U<<30U)
+#define OCTOSPI2_TCR_DHQC           (0x1U<<28U)
+#define OCTOSPI2_TCR_DCYC           (0x1FU<<0U)
+#define OCTOSPI2_TCR_DCYC_0         (0x1U<<0U)
 
 // IR Configuration
 
-#define OCTOSPI2_IR_INSTRUCTION     (0xFFFFFFFFU<<0)
-#define OCTOSPI2_IR_INSTRUCTION_0   (0x1U<<0)
+#define OCTOSPI2_IR_INSTRUCTION     (0xFFFFFFFFU<<0U)
+#define OCTOSPI2_IR_INSTRUCTION_0   (0x1U<<0U)
 
 // ABR Configuration
 
-#define OCTOSPI2_ABR_ALTERNATE      (0xFFFFFFFFU<<0)
-#define OCTOSPI2_ABR_ALTERNATE_0    (0x1U<<0)
+#define OCTOSPI2_ABR_ALTERNATE      (0xFFFFFFFFU<<0U)
+#define OCTOSPI2_ABR_ALTERNATE_0    (0x1U<<0U)
 
 // LPTR Configuration
 
-#define OCTOSPI2_LPTR_TIMEOUT       (0xFFFFU<<0)
-#define OCTOSPI2_LPTR_TIMEOUT_0     (0x1U<<0)
+#define OCTOSPI2_LPTR_TIMEOUT       (0xFFFFU<<0U)
+#define OCTOSPI2_LPTR_TIMEOUT_0     (0x1U<<0U)
 
 // WPCCR Configuration
 
-#define OCTOSPI2_WPCCR_DQSE         (0x1U<<29)
-#define OCTOSPI2_WPCCR_DDTR         (0x1U<<27)
-#define OCTOSPI2_WPCCR_DMODE        (0x7U<<24)
-#define OCTOSPI2_WPCCR_DMODE_0      (0x1U<<24)
-#define OCTOSPI2_WPCCR_ABSIZE       (0x3U<<20)
-#define OCTOSPI2_WPCCR_ABSIZE_0     (0x1U<<20)
-#define OCTOSPI2_WPCCR_ABDTR        (0x1U<<19)
-#define OCTOSPI2_WPCCR_ABMODE       (0x7U<<16)
-#define OCTOSPI2_WPCCR_ABMODE_0     (0x1U<<16)
-#define OCTOSPI2_WPCCR_ADSIZE       (0x3U<<12)
-#define OCTOSPI2_WPCCR_ADSIZE_0     (0x1U<<12)
-#define OCTOSPI2_WPCCR_ADDTR        (0x1U<<11)
-#define OCTOSPI2_WPCCR_ADMODE       (0x7U<<8)
-#define OCTOSPI2_WPCCR_ADMODE_0     (0x1U<<8)
-#define OCTOSPI2_WPCCR_ISIZE        (0x3U<<4)
-#define OCTOSPI2_WPCCR_ISIZE_0      (0x1U<<4)
-#define OCTOSPI2_WPCCR_IDTR         (0x1U<<3)
-#define OCTOSPI2_WPCCR_IMODE        (0x7U<<0)
-#define OCTOSPI2_WPCCR_IMODE_0      (0x1U<<0)
+#define OCTOSPI2_WPCCR_DQSE         (0x1U<<29U)
+#define OCTOSPI2_WPCCR_DDTR         (0x1U<<27U)
+#define OCTOSPI2_WPCCR_DMODE        (0x7U<<24U)
+#define OCTOSPI2_WPCCR_DMODE_0      (0x1U<<24U)
+#define OCTOSPI2_WPCCR_ABSIZE       (0x3U<<20U)
+#define OCTOSPI2_WPCCR_ABSIZE_0     (0x1U<<20U)
+#define OCTOSPI2_WPCCR_ABDTR        (0x1U<<19U)
+#define OCTOSPI2_WPCCR_ABMODE       (0x7U<<16U)
+#define OCTOSPI2_WPCCR_ABMODE_0     (0x1U<<16U)
+#define OCTOSPI2_WPCCR_ADSIZE       (0x3U<<12U)
+#define OCTOSPI2_WPCCR_ADSIZE_0     (0x1U<<12U)
+#define OCTOSPI2_WPCCR_ADDTR        (0x1U<<11U)
+#define OCTOSPI2_WPCCR_ADMODE       (0x7U<<8U)
+#define OCTOSPI2_WPCCR_ADMODE_0     (0x1U<<8U)
+#define OCTOSPI2_WPCCR_ISIZE        (0x3U<<4U)
+#define OCTOSPI2_WPCCR_ISIZE_0      (0x1U<<4U)
+#define OCTOSPI2_WPCCR_IDTR         (0x1U<<3U)
+#define OCTOSPI2_WPCCR_IMODE        (0x7U<<0U)
+#define OCTOSPI2_WPCCR_IMODE_0      (0x1U<<0U)
 
 // WPTCR Configuration
 
-#define OCTOSPI2_WPTCR_SSHIFT       (0x1U<<30)
-#define OCTOSPI2_WPTCR_DHQC         (0x1U<<28)
-#define OCTOSPI2_WPTCR_DCYC         (0x1FU<<0)
-#define OCTOSPI2_WPTCR_DCYC_0       (0x1U<<0)
+#define OCTOSPI2_WPTCR_SSHIFT       (0x1U<<30U)
+#define OCTOSPI2_WPTCR_DHQC         (0x1U<<28U)
+#define OCTOSPI2_WPTCR_DCYC         (0x1FU<<0U)
+#define OCTOSPI2_WPTCR_DCYC_0       (0x1U<<0U)
 
 // WPIR Configuration
 
-#define OCTOSPI2_WPIR_INSTRUCTION   (0xFFFFFFFFU<<0)
-#define OCTOSPI2_WPIR_INSTRUCTION_0 (0x1U<<0)
+#define OCTOSPI2_WPIR_INSTRUCTION   (0xFFFFFFFFU<<0U)
+#define OCTOSPI2_WPIR_INSTRUCTION_0 (0x1U<<0U)
 
 // WPABR Configuration
 
-#define OCTOSPI2_WPABR_ALTERNATE    (0xFFFFFFFFU<<0)
-#define OCTOSPI2_WPABR_ALTERNATE_0  (0x1U<<0)
+#define OCTOSPI2_WPABR_ALTERNATE    (0xFFFFFFFFU<<0U)
+#define OCTOSPI2_WPABR_ALTERNATE_0  (0x1U<<0U)
 
 // WCCR Configuration
 
-#define OCTOSPI2_WCCR_DQSE          (0x1U<<29)
-#define OCTOSPI2_WCCR_DDTR          (0x1U<<27)
-#define OCTOSPI2_WCCR_DMODE         (0x7U<<24)
-#define OCTOSPI2_WCCR_DMODE_0       (0x1U<<24)
-#define OCTOSPI2_WCCR_ABSIZE        (0x3U<<20)
-#define OCTOSPI2_WCCR_ABSIZE_0      (0x1U<<20)
-#define OCTOSPI2_WCCR_ABDTR         (0x1U<<19)
-#define OCTOSPI2_WCCR_ABMODE        (0x7U<<16)
-#define OCTOSPI2_WCCR_ABMODE_0      (0x1U<<16)
-#define OCTOSPI2_WCCR_ADSIZE        (0x3U<<12)
-#define OCTOSPI2_WCCR_ADSIZE_0      (0x1U<<12)
-#define OCTOSPI2_WCCR_ADDTR         (0x1U<<11)
-#define OCTOSPI2_WCCR_ADMODE        (0x7U<<8)
-#define OCTOSPI2_WCCR_ADMODE_0      (0x1U<<8)
-#define OCTOSPI2_WCCR_ISIZE         (0x3U<<4)
-#define OCTOSPI2_WCCR_ISIZE_0       (0x1U<<4)
-#define OCTOSPI2_WCCR_IDTR          (0x1U<<3)
-#define OCTOSPI2_WCCR_IMODE         (0x7U<<0)
-#define OCTOSPI2_WCCR_IMODE_0       (0x1U<<0)
+#define OCTOSPI2_WCCR_DQSE          (0x1U<<29U)
+#define OCTOSPI2_WCCR_DDTR          (0x1U<<27U)
+#define OCTOSPI2_WCCR_DMODE         (0x7U<<24U)
+#define OCTOSPI2_WCCR_DMODE_0       (0x1U<<24U)
+#define OCTOSPI2_WCCR_ABSIZE        (0x3U<<20U)
+#define OCTOSPI2_WCCR_ABSIZE_0      (0x1U<<20U)
+#define OCTOSPI2_WCCR_ABDTR         (0x1U<<19U)
+#define OCTOSPI2_WCCR_ABMODE        (0x7U<<16U)
+#define OCTOSPI2_WCCR_ABMODE_0      (0x1U<<16U)
+#define OCTOSPI2_WCCR_ADSIZE        (0x3U<<12U)
+#define OCTOSPI2_WCCR_ADSIZE_0      (0x1U<<12U)
+#define OCTOSPI2_WCCR_ADDTR         (0x1U<<11U)
+#define OCTOSPI2_WCCR_ADMODE        (0x7U<<8U)
+#define OCTOSPI2_WCCR_ADMODE_0      (0x1U<<8U)
+#define OCTOSPI2_WCCR_ISIZE         (0x3U<<4U)
+#define OCTOSPI2_WCCR_ISIZE_0       (0x1U<<4U)
+#define OCTOSPI2_WCCR_IDTR          (0x1U<<3U)
+#define OCTOSPI2_WCCR_IMODE         (0x7U<<0U)
+#define OCTOSPI2_WCCR_IMODE_0       (0x1U<<0U)
 
 // WTCR Configuration
 
-#define OCTOSPI2_WTCR_DCYC          (0x1FU<<0)
-#define OCTOSPI2_WTCR_DCYC_0        (0x1U<<0)
+#define OCTOSPI2_WTCR_DCYC          (0x1FU<<0U)
+#define OCTOSPI2_WTCR_DCYC_0        (0x1U<<0U)
 
 // WIR Configuration
 
-#define OCTOSPI2_WIR_INSTRUCTION    (0xFFFFFFFFU<<0)
-#define OCTOSPI2_WIR_INSTRUCTION_0  (0x1U<<0)
+#define OCTOSPI2_WIR_INSTRUCTION    (0xFFFFFFFFU<<0U)
+#define OCTOSPI2_WIR_INSTRUCTION_0  (0x1U<<0U)
 
 // WABR Configuration
 
-#define OCTOSPI2_WABR_ALTERNATE     (0xFFFFFFFFU<<0)
-#define OCTOSPI2_WABR_ALTERNATE_0   (0x1U<<0)
+#define OCTOSPI2_WABR_ALTERNATE     (0xFFFFFFFFU<<0U)
+#define OCTOSPI2_WABR_ALTERNATE_0   (0x1U<<0U)
 
 // HLCR Configuration
 
-#define OCTOSPI2_HLCR_TRWR          (0xFFU<<16)
-#define OCTOSPI2_HLCR_TRWR_0        (0x1U<<16)
-#define OCTOSPI2_HLCR_TACC          (0xFFU<<8)
-#define OCTOSPI2_HLCR_TACC_0        (0x1U<<8)
-#define OCTOSPI2_HLCR_WZL           (0x1U<<1)
-#define OCTOSPI2_HLCR_LM            (0x1U<<0)
+#define OCTOSPI2_HLCR_TRWR          (0xFFU<<16U)
+#define OCTOSPI2_HLCR_TRWR_0        (0x1U<<16U)
+#define OCTOSPI2_HLCR_TACC          (0xFFU<<8U)
+#define OCTOSPI2_HLCR_TACC_0        (0x1U<<8U)
+#define OCTOSPI2_HLCR_WZL           (0x1U<<1U)
+#define OCTOSPI2_HLCR_LM            (0x1U<<0U)

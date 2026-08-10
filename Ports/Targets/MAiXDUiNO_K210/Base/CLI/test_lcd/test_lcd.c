@@ -79,7 +79,7 @@ static  const   uint16_t    aTabColor[KNB_COLORS] = { KBLACK, KNAVY, KDARKGREEN,
                                               KMAROON, KPURPLE, KOLIVE, KLIGHTGREY,
                                               KBLUE, KGREEN, KCYAN, KRED,
                                               KMAGENTA, KYELLOW, KWHITE, KORANGE,
-                                              KGREENYELLOW, KPINK };
+                                              KGREENYELLOW, KPINK, };
 
 #define KBACKGROUNG     KBLACK
 
@@ -360,7 +360,7 @@ static void local_process_3(const void *argument) {
                                     { "    11     1  2      2   3       3          4             6      6                 7      7       8      9       9          0" },
                                     { "   1  11111   2       2   3333333   44444444             6        6                7       7      8       9999999   00000000 " },
                                     { "  1                                                                                                                          " },
-                                    { " 1                                                                                                                           " }
+                                    { " 1                                                                                                                           " },
                                 };
 
     UNUSED(argument);

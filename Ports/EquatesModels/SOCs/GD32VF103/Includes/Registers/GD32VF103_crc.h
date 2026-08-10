@@ -28,14 +28,14 @@ typedef struct {
 
 // DATA Configuration
 
-#define CRC_DATA_DATA       (0xFFFFFFFFU<<0)
-#define CRC_DATA_DATA_0     (0x1U<<0)
+#define CRC_DATA_DATA       (0xFFFFFFFFU<<0U)
+#define CRC_DATA_DATA_0     (0x1U<<0U)
 
 // FDATA Configuration
 
-#define CRC_FDATA_FDATA     (0xFFU<<0)
-#define CRC_FDATA_FDATA_0   (0x1U<<0)
+#define CRC_FDATA_FDATA     (0xFFU<<0U)
+#define CRC_FDATA_FDATA_0   (0x1U<<0U)
 
 // CTL Configuration
 
-#define CRC_CTL_RST         (0x1U<<0)
+#define CRC_CTL_RST         (0x1U<<0U)

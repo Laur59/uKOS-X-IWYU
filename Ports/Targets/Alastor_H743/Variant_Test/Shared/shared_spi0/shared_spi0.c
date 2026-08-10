@@ -209,7 +209,7 @@ static  void    local_spi0_imu_init(void) {
     static  const   spiCnf_t    configure = {
                                     .oSpeed    = 5000000U,
                                     .oMode     = (uint8_t)KSPI_MASTER,
-                                    .oClock    = (1U<<(uint8_t)BSPI_POL) | (1U<<(uint8_t)BSPI_PHA)
+                                    .oClock    = (1U<<(uint8_t)BSPI_POL) | (1U<<(uint8_t)BSPI_PHA),
                                 };
 
     spi_configure(KSPI0, &configure);
@@ -226,7 +226,7 @@ static  void    local_spi0_flash_init(void) {
     static  const   spiCnf_t    configure = {
                                     .oSpeed    = 20000000U,
                                     .oMode     = (uint8_t)KSPI_MASTER,
-                                    .oClock    = 0U
+                                    .oClock    = 0U,
                                 };
 
     spi_configure(KSPI0, &configure);

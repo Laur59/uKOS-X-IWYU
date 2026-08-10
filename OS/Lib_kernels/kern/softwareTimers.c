@@ -148,7 +148,7 @@ int32_t kern_createSoftwareTimer(const char_t *identifier, stim_t **handle) {
             *handle = &vKern_stim[core][i];
 
             vKern_nbStim[core]    = (uint16_t)(vKern_nbStim[core] + 1);
-            vKern_nbMaxStim[core] = (vKern_nbStim[core] > vKern_nbMaxStim[core]) ? (vKern_nbStim[core]) : (vKern_nbMaxStim[core]);
+            vKern_nbMaxStim[core] = (vKern_nbStim[core] > vKern_nbMaxStim[core]) ? vKern_nbStim[core] : vKern_nbMaxStim[core];
             DEBUG_KERN_TRACE("exit: OK");
             INTERRUPTION_RESTORE;
             PRIVILEGE_RESTORE;
@@ -226,25 +226,23 @@ int32_t kern_setSoftwareTimer(stim_t *handle, const tspc_t *configure) {
 
 // Prepare the pack for the software timer process
 
-    if (kern_getMailboxById(KMBOX_SOFTWARE_TIMER, &mailBox) == KERR_KERN_NOERR) {
-        if (kern_writeQueue(mailBox, (uintptr_t)vSoftTimer[core][i], 0U) == KERR_KERN_NOERR) {
+    if ((kern_getMailboxById(KMBOX_SOFTWARE_TIMER, &mailBox) == KERR_KERN_NOERR) &&
+        (kern_writeQueue(mailBox, (uintptr_t)vSoftTimer[core][i], 0U) == KERR_KERN_NOERR)) {
 
-            vI[core]++;
-            vI[core] = (vI[core] == (KNB_MAX_STIM_IN_QUEUE + 1U)) ? 0U : (vI[core]);
+        vI[core]++;
+        vI[core] = (vI[core] == (KNB_MAX_STIM_IN_QUEUE + 1U)) ? 0U : vI[core];
 
 // If the software timer process is suspended for ever, then, relaunch it
 
-            if ((vStimer_handle[core]->oInternal.oState & (1U<<BPROC_LIKE_ISR)) == 0U) {
-                vStimer_handle[core]->oInternal.oTimeout = 0U;
-            }
-            DEBUG_KERN_TRACE("exit: OK");
-            INTERRUPTION_RESTORE;
-            PRIVILEGE_RESTORE;
-
-            temporal_testEOTime(0U);
-            return KERR_KERN_NOERR;
+        if ((vStimer_handle[core]->oInternal.oState & (1U<<BPROC_LIKE_ISR)) == 0U) {
+            vStimer_handle[core]->oInternal.oTimeout = 0U;
         }
+        DEBUG_KERN_TRACE("exit: OK");
+        INTERRUPTION_RESTORE;
+        PRIVILEGE_RESTORE;
 
+        temporal_testEOTime(0U);
+        return KERR_KERN_NOERR;
     }
     DEBUG_KERN_TRACE("exit: KO 3");
     INTERRUPTION_RESTORE;

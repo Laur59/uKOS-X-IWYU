@@ -12,6 +12,7 @@
 #include    <stdio.h>
 #include    <string.h>
 
+#include    "linker.h"
 #include    "macros.h"
 #include    "modules.h"
 #include    "serial/serial.h"
@@ -37,9 +38,6 @@ STRG_LOC_CONST(aStrHelp[])        = "Launch a function module\n"
 static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 static  int32_t     pre_init(uint32_t argc, const char_t *argv[]);
 
-extern  uint8_t     linker_stUMemo[];
-extern  uint8_t     linker_stExtFlash[];
-
 MODULE(
     RunDemo,                                    // Module name (the first letter has to be upper case)
     KID_FAM_CLI,                                // Family (defined in the module.h)
@@ -48,14 +46,14 @@ MODULE(
     prgm,                                       // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                                    // Address of the clean code (clean the module)
     " 1.0",                                     // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)),         // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),         // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                           // Execution cores
 );
 
 // CLI tool specific
 // =================
 
-#define KIDUSER ((KID_FAM_APPLICATIONS<<24u) | (KNUM_APPLICATION<<8u) | '_')
+#define KIDUSER ((KID_FAM_APPLICATIONS<<24U) | (KNUM_APPLICATION<<8U) | '_')
 
 /*
  * \brief Main entry point
@@ -66,7 +64,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
             uKOS_header_t   APSRamHeader;
             uKOS_header_t   flashHeader;
             uint8_t         *demoAPSRAM = linker_stUMemo;
-    const   uint8_t         *demoFlash  = (linker_stExtFlash + 0x300000u + 0x400);
+    const   uint8_t         *demoFlash  = (linker_stExtFlash + 0x300000U + 0x400);
     const   size_t          demoSize    = 0x800000;
 
     (void)dprintf(KSYST, "Execute the flash demo application.\n");
@@ -83,8 +81,8 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 // Verify the size
 
         if ((size_t)flashHeader.oLnApplication > demoSize) {
-            (void)dprintf(KSYST, "Demo application is too large: %" PRIuPTR " bytes.\n\n", (uintptr_t)flashHeader.oLnApplication);
-            return (EXIT_OS_FAILURE);
+            (void)dprintf(KSYST, "Demo application is too large: %" PRIuPTR " bytes.\n\n", flashHeader.oLnApplication);
+            return EXIT_OS_FAILURE;
         }
 
 // It seems that an available demo is available
@@ -95,13 +93,13 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
         code = APSRamHeader.oStart;
         (void)dprintf(KSYST, "Run the demo application...@address = 0x%016"PRIXPTR"\n\n", (uintptr_t)code);
-        status = ((*code)(argc, argv));
-        return (status);
+        status = (*code)(argc, argv);
+        return status;
     }
 
     (void)dprintf(KSYST, "No demo in the flash!\n\n");
     status = EXIT_OS_FAILURE;
-    return (status);
+    return status;
 }
 
 /*
@@ -120,5 +118,5 @@ static  int32_t pre_init(uint32_t argc, const char_t *argv[]) {
 
     memset(demoAPSRAM, 0, demoSize);
 
-    return (EXIT_OS_SUCCESS);
+    return EXIT_OS_SUCCESS;
 }

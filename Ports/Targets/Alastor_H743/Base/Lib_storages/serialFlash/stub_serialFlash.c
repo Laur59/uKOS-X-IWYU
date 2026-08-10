@@ -29,7 +29,7 @@ enum {
         KFLASH_RESERVE_SPI,
         KFLASH_RELEASE_SPI,
         KFLASH_SELECT,
-        KFLASH_DESELECT
+        KFLASH_DESELECT,
 };
 
 // Model callbacks

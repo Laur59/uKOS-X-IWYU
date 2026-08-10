@@ -59,7 +59,7 @@
 
 static  const           char_t      *tableCoreReference[KNB_CORES] = {
                                     "core_0",
-                                    "core_1"
+                                    "core_1",
                                 };
 
 // Prototypes

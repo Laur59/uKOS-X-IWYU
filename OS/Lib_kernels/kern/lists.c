@@ -103,7 +103,7 @@ enum {
         KLIST_ALONE,                                            // Only one process connected
         KLIST_FIRST,                                            // The process is the first of the list
         KLIST_MIDDLE,                                           // The process is in the middle of the list
-        KLIST_LAST                                              // The process is the last of the list
+        KLIST_LAST,                                             // The process is the last of the list
 };
 
 // Prototypes
@@ -156,7 +156,7 @@ void    lists_connect(list_t *list, proc_t *handle) {
 
 // Connect the process to the list_c
 
-    (list->oFirst == nullptr) ? (local_nextAction(KLIST_EMPTY, list, handle)) : (local_nextAction(KLIST_NORMAL, list, handle));
+    (list->oFirst == nullptr) ? local_nextAction(KLIST_EMPTY, list, handle) : local_nextAction(KLIST_NORMAL, list, handle);
 
     handle->oObject.oList    = list;
     handle->oObject.oForward = nullptr;
@@ -217,10 +217,10 @@ void    lists_disconnectConnect(list_t *list_d, list_t *list_c, proc_t *handle) 
 // Disconnect the process from the list_d
 
     if (handle->oObject.oBack == nullptr) {
-        (handle->oObject.oForward == nullptr) ? (local_nextAction(KLIST_ALONE, list_d, handle)) : (local_nextAction(KLIST_FIRST,  list_d, handle));
+        (handle->oObject.oForward == nullptr) ? local_nextAction(KLIST_ALONE, list_d, handle) : local_nextAction(KLIST_FIRST,  list_d, handle);
     }
     else {
-        (handle->oObject.oForward == nullptr) ? (local_nextAction(KLIST_LAST,  list_d, handle)) : (local_nextAction(KLIST_MIDDLE, list_d, handle));
+        (handle->oObject.oForward == nullptr) ? local_nextAction(KLIST_LAST,  list_d, handle) : local_nextAction(KLIST_MIDDLE, list_d, handle);
     }
 
     handle->oObject.oBack    = nullptr;
@@ -230,7 +230,7 @@ void    lists_disconnectConnect(list_t *list_d, list_t *list_c, proc_t *handle) 
 
 // Connect the process to the list_c
 
-    (list_c->oFirst == nullptr) ? (local_nextAction(KLIST_EMPTY, list_c, handle)) : (local_nextAction(KLIST_NORMAL, list_c, handle));
+    (list_c->oFirst == nullptr) ? local_nextAction(KLIST_EMPTY, list_c, handle) : local_nextAction(KLIST_NORMAL, list_c, handle);
 
     handle->oObject.oList    = list_c;
     handle->oObject.oForward = nullptr;

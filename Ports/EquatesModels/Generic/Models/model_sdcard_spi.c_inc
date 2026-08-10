@@ -194,7 +194,7 @@ int32_t model_sdcard_initialise(sdcard_specification_t *specification) {
     for (i = 0U; i <  5U; i++) { specification->oProductName[i] = cid[3U + i]; }
     specification->oProductName[5] = 0U;
     specification->oManufacturer   = cid[0];
-    specification->oSerialNumber   = (uint32_t)(cid[8]<<24U | cid[9]<<16U | cid[10]<<8U | cid[11]);
+    specification->oSerialNumber   = (uint32_t)(cid[8]<<24U) | (uint32_t)(cid[9]<<16U) | (uint32_t)(cid[10]<<8U) | (uint32_t)cid[11];
 
 // Read the CSD (sdcard size)
 

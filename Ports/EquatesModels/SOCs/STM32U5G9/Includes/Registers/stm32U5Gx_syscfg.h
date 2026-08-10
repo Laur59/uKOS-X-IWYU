@@ -41,99 +41,99 @@ typedef struct {
 
 // SECCFGR Configuration
 
-#define SYSCFG_SECCFGR_FPUSEC       (0x1U<<3)
-#define SYSCFG_SECCFGR_CLASSBSEC    (0x1U<<1)
-#define SYSCFG_SECCFGR_SYSCFGSEC    (0x1U<<0)
+#define SYSCFG_SECCFGR_FPUSEC       (0x1U<<3U)
+#define SYSCFG_SECCFGR_CLASSBSEC    (0x1U<<1U)
+#define SYSCFG_SECCFGR_SYSCFGSEC    (0x1U<<0U)
 
 // CFGR1 Configuration
 
-#define SYSCFG_CFGR1_BOOSTEN        (0x1U<<8)
-#define SYSCFG_CFGR1_ANASWVDD       (0x1U<<9)
-#define SYSCFG_CFGR1_PB6_FMP        (0x1U<<16)
-#define SYSCFG_CFGR1_PB7_FMP        (0x1U<<17)
-#define SYSCFG_CFGR1_PB8_FMP        (0x1U<<18)
-#define SYSCFG_CFGR1_PB9_FMP        (0x1U<<19)
-#define SYSCFG_CFGR1_ENDCAP         (0x3U<<24)
-#define SYSCFG_CFGR1_ENDCAP_0       (0x1U<<24)
+#define SYSCFG_CFGR1_BOOSTEN        (0x1U<<8U)
+#define SYSCFG_CFGR1_ANASWVDD       (0x1U<<9U)
+#define SYSCFG_CFGR1_PB6_FMP        (0x1U<<16U)
+#define SYSCFG_CFGR1_PB7_FMP        (0x1U<<17U)
+#define SYSCFG_CFGR1_PB8_FMP        (0x1U<<18U)
+#define SYSCFG_CFGR1_PB9_FMP        (0x1U<<19U)
+#define SYSCFG_CFGR1_ENDCAP         (0x3U<<24U)
+#define SYSCFG_CFGR1_ENDCAP_0       (0x1U<<24U)
 
 // FPUIMR Configuration
 
-#define SYSCFG_FPUIMR_FPU_IE        (0x3FU<<0)
-#define SYSCFG_FPUIMR_FPU_IE_0      (0x1U<<0)
+#define SYSCFG_FPUIMR_FPU_IE        (0x3FU<<0U)
+#define SYSCFG_FPUIMR_FPU_IE_0      (0x1U<<0U)
 
 // CNSLCKR Configuration
 
-#define SYSCFG_CNSLCKR_LOCKNSMPU    (0x1U<<1)
-#define SYSCFG_CNSLCKR_LOCKNSVTOR   (0x1U<<0)
+#define SYSCFG_CNSLCKR_LOCKNSMPU    (0x1U<<1U)
+#define SYSCFG_CNSLCKR_LOCKNSVTOR   (0x1U<<0U)
 
 // CSLOCKR Configuration
 
-#define SYSCFG_CSLOCKR_LOCKSAU      (0x1U<<2)
-#define SYSCFG_CSLOCKR_LOCKSMPU     (0x1U<<1)
-#define SYSCFG_CSLOCKR_LOCKSVTAIRCR (0x1U<<0)
+#define SYSCFG_CSLOCKR_LOCKSAU      (0x1U<<2U)
+#define SYSCFG_CSLOCKR_LOCKSMPU     (0x1U<<1U)
+#define SYSCFG_CSLOCKR_LOCKSVTAIRCR (0x1U<<0U)
 
 // CFGR2 Configuration
 
-#define SYSCFG_CFGR2_CLL            (0x1U<<0)
-#define SYSCFG_CFGR2_SPL            (0x1U<<1)
-#define SYSCFG_CFGR2_PVDL           (0x1U<<2)
-#define SYSCFG_CFGR2_ECCL           (0x1U<<3)
+#define SYSCFG_CFGR2_CLL            (0x1U<<0U)
+#define SYSCFG_CFGR2_SPL            (0x1U<<1U)
+#define SYSCFG_CFGR2_PVDL           (0x1U<<2U)
+#define SYSCFG_CFGR2_ECCL           (0x1U<<3U)
 
 // MESR Configuration
 
-#define SYSCFG_MESR_MCLR            (0x1U<<0)
-#define SYSCFG_MESR_IPMEE           (0x1U<<16)
+#define SYSCFG_MESR_MCLR            (0x1U<<0U)
+#define SYSCFG_MESR_IPMEE           (0x1U<<16U)
 
 // CCCSR Configuration
 
-#define SYSCFG_CCCSR_RDY3           (0x1U<<10)
-#define SYSCFG_CCCSR_RDY2           (0x1U<<9)
-#define SYSCFG_CCCSR_RDY1           (0x1U<<8)
-#define SYSCFG_CCCSR_CS3            (0x1U<<5)
-#define SYSCFG_CCCSR_EN3            (0x1U<<4)
-#define SYSCFG_CCCSR_CS2            (0x1U<<3)
-#define SYSCFG_CCCSR_EN2            (0x1U<<2)
-#define SYSCFG_CCCSR_CS1            (0x1U<<1)
-#define SYSCFG_CCCSR_EN1            (0x1U<<0)
+#define SYSCFG_CCCSR_RDY3           (0x1U<<10U)
+#define SYSCFG_CCCSR_RDY2           (0x1U<<9U)
+#define SYSCFG_CCCSR_RDY1           (0x1U<<8U)
+#define SYSCFG_CCCSR_CS3            (0x1U<<5U)
+#define SYSCFG_CCCSR_EN3            (0x1U<<4U)
+#define SYSCFG_CCCSR_CS2            (0x1U<<3U)
+#define SYSCFG_CCCSR_EN2            (0x1U<<2U)
+#define SYSCFG_CCCSR_CS1            (0x1U<<1U)
+#define SYSCFG_CCCSR_EN1            (0x1U<<0U)
 
 // CCVR Configuration
 
-#define SYSCFG_CCVR_PCV3            (0xFU<<20)
-#define SYSCFG_CCVR_PCV3_0          (0x1U<<20)
-#define SYSCFG_CCVR_NCV3            (0xFU<<16)
-#define SYSCFG_CCVR_NCV3_0          (0x1U<<16)
-#define SYSCFG_CCVR_PCV2            (0xFU<<12)
-#define SYSCFG_CCVR_PCV2_0          (0x1U<<12)
-#define SYSCFG_CCVR_NCV2            (0xFU<<8)
-#define SYSCFG_CCVR_NCV2_0          (0x1U<<8)
-#define SYSCFG_CCVR_PCV1            (0xFU<<4)
-#define SYSCFG_CCVR_PCV1_0          (0x1U<<4)
-#define SYSCFG_CCVR_NCV1            (0xFU<<0)
-#define SYSCFG_CCVR_NCV1_0          (0x1U<<0)
+#define SYSCFG_CCVR_PCV3            (0xFU<<20U)
+#define SYSCFG_CCVR_PCV3_0          (0x1U<<20U)
+#define SYSCFG_CCVR_NCV3            (0xFU<<16U)
+#define SYSCFG_CCVR_NCV3_0          (0x1U<<16U)
+#define SYSCFG_CCVR_PCV2            (0xFU<<12U)
+#define SYSCFG_CCVR_PCV2_0          (0x1U<<12U)
+#define SYSCFG_CCVR_NCV2            (0xFU<<8U)
+#define SYSCFG_CCVR_NCV2_0          (0x1U<<8U)
+#define SYSCFG_CCVR_PCV1            (0xFU<<4U)
+#define SYSCFG_CCVR_PCV1_0          (0x1U<<4U)
+#define SYSCFG_CCVR_NCV1            (0xFU<<0U)
+#define SYSCFG_CCVR_NCV1_0          (0x1U<<0U)
 
 // CCCR Configuration
 
-#define SYSCFG_CCCR_PCC3            (0xFU<<20)
-#define SYSCFG_CCCR_PCC3_0          (0x1U<<20)
-#define SYSCFG_CCCR_NCC3            (0xFU<<16)
-#define SYSCFG_CCCR_NCC3_0          (0x1U<<16)
-#define SYSCFG_CCCR_PCC2            (0xFU<<12)
-#define SYSCFG_CCCR_PCC2_0          (0x1U<<12)
-#define SYSCFG_CCCR_NCC2            (0xFU<<8)
-#define SYSCFG_CCCR_NCC2_0          (0x1U<<8)
-#define SYSCFG_CCCR_PCC1            (0xFU<<4)
-#define SYSCFG_CCCR_PCC1_0          (0x1U<<4)
-#define SYSCFG_CCCR_NCC1            (0xFU<<0)
-#define SYSCFG_CCCR_NCC1_0          (0x1U<<0)
+#define SYSCFG_CCCR_PCC3            (0xFU<<20U)
+#define SYSCFG_CCCR_PCC3_0          (0x1U<<20U)
+#define SYSCFG_CCCR_NCC3            (0xFU<<16U)
+#define SYSCFG_CCCR_NCC3_0          (0x1U<<16U)
+#define SYSCFG_CCCR_PCC2            (0xFU<<12U)
+#define SYSCFG_CCCR_PCC2_0          (0x1U<<12U)
+#define SYSCFG_CCCR_NCC2            (0xFU<<8U)
+#define SYSCFG_CCCR_NCC2_0          (0x1U<<8U)
+#define SYSCFG_CCCR_PCC1            (0xFU<<4U)
+#define SYSCFG_CCCR_PCC1_0          (0x1U<<4U)
+#define SYSCFG_CCCR_NCC1            (0xFU<<0U)
+#define SYSCFG_CCCR_NCC1_0          (0x1U<<0U)
 
 // RSSCMDR Configuration
 
-#define SYSCFG_RSSCMDR_RSSCMD       (0xFFFFU<<0)
-#define SYSCFG_RSSCMDR_RSSCMD_0     (0x1U<<0)
+#define SYSCFG_RSSCMDR_RSSCMD       (0xFFFFU<<0U)
+#define SYSCFG_RSSCMDR_RSSCMD_0     (0x1U<<0U)
 
 // OTGHSPHYCR Configuration
 
-#define SYSCFG_OTGHSPHYCR_CLKSEL    (0xFU<<2)
-#define SYSCFG_OTGHSPHYCR_CLKSEL_0  (0x1U<<2)
-#define SYSCFG_OTGHSPHYCR_PDCTRL    (0x1U<<1)
-#define SYSCFG_OTGHSPHYCR_EN        (0x1U<<0)
+#define SYSCFG_OTGHSPHYCR_CLKSEL    (0xFU<<2U)
+#define SYSCFG_OTGHSPHYCR_CLKSEL_0  (0x1U<<2U)
+#define SYSCFG_OTGHSPHYCR_PDCTRL    (0x1U<<1U)
+#define SYSCFG_OTGHSPHYCR_EN        (0x1U<<0U)

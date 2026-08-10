@@ -117,7 +117,7 @@ const   uintptr_t   g_pfnVectors_C0[] = {
     (uintptr_t)0,                                               // Address: 0x0000_0144
     (uintptr_t)0,                                               // Address: 0x0000_0148
     (uintptr_t)0,                                               // Address: 0x0000_014C
-    (uintptr_t)CRYPTOCELL_C0_IRQHandler                         // Address: 0x0000_0150
+    (uintptr_t)CRYPTOCELL_C0_IRQHandler,                        // Address: 0x0000_0150
 };
 
 // cppcheck-suppress-begin premium-unreadVariable

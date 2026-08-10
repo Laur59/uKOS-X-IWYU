@@ -29,20 +29,20 @@ typedef struct {
 
 // CTL Configuration
 
-#define FWDGT_CTL_CMD   (0xFFFFU<<0)
-#define FWDGT_CTL_CMD_0 (0x1U<<0)
+#define FWDGT_CTL_CMD   (0xFFFFU<<0U)
+#define FWDGT_CTL_CMD_0 (0x1U<<0U)
 
 // PSC Configuration
 
-#define FWDGT_PSC_PSC   (0x7U<<0)
-#define FWDGT_PSC_PSC_0 (0x1U<<0)
+#define FWDGT_PSC_PSC   (0x7U<<0U)
+#define FWDGT_PSC_PSC_0 (0x1U<<0U)
 
 // RLD Configuration
 
-#define FWDGT_RLD_RLD   (0xFFFU<<0)
-#define FWDGT_RLD_RLD_0 (0x1U<<0)
+#define FWDGT_RLD_RLD   (0xFFFU<<0U)
+#define FWDGT_RLD_RLD_0 (0x1U<<0U)
 
 // STAT Configuration
 
-#define FWDGT_STAT_RUD  (0x1U<<1)
-#define FWDGT_STAT_PUD  (0x1U<<0)
+#define FWDGT_STAT_RUD  (0x1U<<1U)
+#define FWDGT_STAT_PUD  (0x1U<<0U)

@@ -29,4 +29,4 @@ typedef struct {
 
 // DEMCR register
 
-#define CoreDebug_DEMCR_TRCENA      (1U<<24)
+#define CoreDebug_DEMCR_TRCENA      (1U<<24U)

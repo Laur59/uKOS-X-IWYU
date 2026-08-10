@@ -195,7 +195,7 @@ static  void    local_SPI_IRQHandler(void) {
             else        { vRkBuffer[vNbBytes - 1U] = data; }
 
             if (vNbBytes < vRSize) {
-                *((volatile uint8_t *)&SPI->TXDR) = (vWkBuffer == nullptr) ? 0U : (vWkBuffer[vNbBytes]);
+                *((volatile uint8_t *)&SPI->TXDR) = (vWkBuffer == nullptr) ? 0U : vWkBuffer[vNbBytes];
                 vNbBytes++;
                 return;
             }

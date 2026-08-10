@@ -52,10 +52,10 @@ static  const   char_t  *argv_cnsCdc0_C0[] = { "console", "cdc0" };
 static  const   char_t  *argv_cnsUrt0_C1[] = { "console", "urt0" };
 
 static  const   boot_t  aFunction_C0[] = {
-                            { .oFunction="console", .oSerialManager=KCDC0, .oArgV=argv_cnsCdc0_C0, .oArgC=2U, .oSW=0x00U, .oBaudrate=KSERIAL_BAUDRATE_460800 }
+                            { .oFunction="console", .oSerialManager=KCDC0, .oArgV=argv_cnsCdc0_C0, .oArgC=2U, .oSW=0x00U, .oBaudrate=KSERIAL_BAUDRATE_460800 },
                         };
 static  const   boot_t  aFunction_C1[] = {
-                            { .oFunction="console", .oSerialManager=KURT0, .oArgV=argv_cnsUrt0_C1, .oArgC=2U, .oSW=0x00U, .oBaudrate=KSERIAL_BAUDRATE_460800 }
+                            { .oFunction="console", .oSerialManager=KURT0, .oArgV=argv_cnsUrt0_C1, .oArgC=2U, .oSW=0x00U, .oBaudrate=KSERIAL_BAUDRATE_460800 },
                         };
 
 #define KDEF_COMM_C0        KCDC0

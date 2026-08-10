@@ -141,7 +141,7 @@ const   uintptr_t   g_pfnVectors_C0[] = {
     (uintptr_t)LCD_TFT_C0_IRQHandler,                           // Address: 0x0000_01AC
     (uintptr_t)LCD_TFT_ER_C0_IRQHandler,                        // Reserved
     (uintptr_t)GFXMMU_C0_IRQHandler,                            // Reserved
-    (uintptr_t)DMAMUX1_OVR_C0_IRQHandler                        // Address: 0x0000_01B8
+    (uintptr_t)DMAMUX1_OVR_C0_IRQHandler,                       // Address: 0x0000_01B8
 };
 
 EXCEPTION_SPECIFIC_HANDLER(NonMaskableInt_C0)

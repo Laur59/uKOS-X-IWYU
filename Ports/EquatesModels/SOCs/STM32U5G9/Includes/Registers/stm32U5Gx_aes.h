@@ -55,157 +55,157 @@ typedef struct {
 
 // CR Configuration
 
-#define AES_CR_EN               (0x1U<<0)
-#define AES_CR_DATATYPE         (0x3U<<1)
-#define AES_CR_DATATYPE_0       (0x1U<<1)
-#define AES_CR_MODE             (0x3U<<3)
-#define AES_CR_MODE_0           (0x1U<<3)
-#define AES_CR_CHMOD            (0x3U<<5)
-#define AES_CR_CHMOD_0          (0x1U<<5)
-#define AES_CR_DMAINEN          (0x1U<<11)
-#define AES_CR_DMAOUTEN         (0x1U<<12)
-#define AES_CR_GCMPH            (0x3U<<13)
-#define AES_CR_GCMPH_0          (0x1U<<13)
-#define AES_CR_CHMOD_2          (0x1U<<16)
-#define AES_CR_KEYSIZE          (0x1U<<18)
-#define AES_CR_NPBLB            (0xFU<<20)
-#define AES_CR_NPBLB_0          (0x1U<<20)
-#define AES_CR_KMOD             (0x3U<<24)
-#define AES_CR_KMOD_0           (0x1U<<24)
-#define AES_CR_IPRST            (0x1U<<31)
+#define AES_CR_EN               (0x1U<<0U)
+#define AES_CR_DATATYPE         (0x3U<<1U)
+#define AES_CR_DATATYPE_0       (0x1U<<1U)
+#define AES_CR_MODE             (0x3U<<3U)
+#define AES_CR_MODE_0           (0x1U<<3U)
+#define AES_CR_CHMOD            (0x3U<<5U)
+#define AES_CR_CHMOD_0          (0x1U<<5U)
+#define AES_CR_DMAINEN          (0x1U<<11U)
+#define AES_CR_DMAOUTEN         (0x1U<<12U)
+#define AES_CR_GCMPH            (0x3U<<13U)
+#define AES_CR_GCMPH_0          (0x1U<<13U)
+#define AES_CR_CHMOD_2          (0x1U<<16U)
+#define AES_CR_KEYSIZE          (0x1U<<18U)
+#define AES_CR_NPBLB            (0xFU<<20U)
+#define AES_CR_NPBLB_0          (0x1U<<20U)
+#define AES_CR_KMOD             (0x3U<<24U)
+#define AES_CR_KMOD_0           (0x1U<<24U)
+#define AES_CR_IPRST            (0x1U<<31U)
 
 // SR Configuration
 
-#define AES_SR_CCF              (0x1U<<0)
-#define AES_SR_RDERR            (0x1U<<1)
-#define AES_SR_WRERR            (0x1U<<2)
-#define AES_SR_BUSY             (0x1U<<3)
-#define AES_SR_KEYVALID         (0x1U<<7)
+#define AES_SR_CCF              (0x1U<<0U)
+#define AES_SR_RDERR            (0x1U<<1U)
+#define AES_SR_WRERR            (0x1U<<2U)
+#define AES_SR_BUSY             (0x1U<<3U)
+#define AES_SR_KEYVALID         (0x1U<<7U)
 
 // DINR Configuration
 
-#define AES_DINR_DIN            (0xFFFFFFFFU<<0)
-#define AES_DINR_DIN_0          (0x1U<<0)
+#define AES_DINR_DIN            (0xFFFFFFFFU<<0U)
+#define AES_DINR_DIN_0          (0x1U<<0U)
 
 // DOUTR Configuration
 
-#define AES_DOUTR_DOUT          (0xFFFFFFFFU<<0)
-#define AES_DOUTR_DOUT_0        (0x1U<<0)
+#define AES_DOUTR_DOUT          (0xFFFFFFFFU<<0U)
+#define AES_DOUTR_DOUT_0        (0x1U<<0U)
 
 // KEYR0 Configuration
 
-#define AES_KEYR0_KEY           (0xFFFFFFFFU<<0)
-#define AES_KEYR0_KEY_0         (0x1U<<0)
+#define AES_KEYR0_KEY           (0xFFFFFFFFU<<0U)
+#define AES_KEYR0_KEY_0         (0x1U<<0U)
 
 // KEYR1 Configuration
 
-#define AES_KEYR1_KEY           (0xFFFFFFFFU<<0)
-#define AES_KEYR1_KEY_0         (0x1U<<0)
+#define AES_KEYR1_KEY           (0xFFFFFFFFU<<0U)
+#define AES_KEYR1_KEY_0         (0x1U<<0U)
 
 // KEYR2 Configuration
 
-#define AES_KEYR2_KEYR          (0xFFFFFFFFU<<0)
-#define AES_KEYR2_KEYR_0        (0x1U<<0)
+#define AES_KEYR2_KEYR          (0xFFFFFFFFU<<0U)
+#define AES_KEYR2_KEYR_0        (0x1U<<0U)
 
 // KEYR3 Configuration
 
-#define AES_KEYR3_AES_KEYR3     (0xFFFFFFFFU<<0)
-#define AES_KEYR3_AES_KEYR3_0   (0x1U<<0)
+#define AES_KEYR3_AES_KEYR3     (0xFFFFFFFFU<<0U)
+#define AES_KEYR3_AES_KEYR3_0   (0x1U<<0U)
 
 // IVR0 Configuration
 
-#define AES_IVR0_IVI            (0xFFFFFFFFU<<0)
-#define AES_IVR0_IVI_0          (0x1U<<0)
+#define AES_IVR0_IVI            (0xFFFFFFFFU<<0U)
+#define AES_IVR0_IVI_0          (0x1U<<0U)
 
 // IVR1 Configuration
 
-#define AES_IVR1_IVI            (0xFFFFFFFFU<<0)
-#define AES_IVR1_IVI_0          (0x1U<<0)
+#define AES_IVR1_IVI            (0xFFFFFFFFU<<0U)
+#define AES_IVR1_IVI_0          (0x1U<<0U)
 
 // IVR2 Configuration
 
-#define AES_IVR2_IVI            (0xFFFFFFFFU<<0)
-#define AES_IVR2_IVI_0          (0x1U<<0)
+#define AES_IVR2_IVI            (0xFFFFFFFFU<<0U)
+#define AES_IVR2_IVI_0          (0x1U<<0U)
 
 // IVR3 Configuration
 
-#define AES_IVR3_IVI            (0xFFFFFFFFU<<0)
-#define AES_IVR3_IVI_0          (0x1U<<0)
+#define AES_IVR3_IVI            (0xFFFFFFFFU<<0U)
+#define AES_IVR3_IVI_0          (0x1U<<0U)
 
 // KEYR4 Configuration
 
-#define AES_KEYR4_KEY           (0xFFFFFFFFU<<0)
-#define AES_KEYR4_KEY_0         (0x1U<<0)
+#define AES_KEYR4_KEY           (0xFFFFFFFFU<<0U)
+#define AES_KEYR4_KEY_0         (0x1U<<0U)
 
 // KEYR5 Configuration
 
-#define AES_KEYR5_KEY           (0xFFFFFFFFU<<0)
-#define AES_KEYR5_KEY_0         (0x1U<<0)
+#define AES_KEYR5_KEY           (0xFFFFFFFFU<<0U)
+#define AES_KEYR5_KEY_0         (0x1U<<0U)
 
 // KEYR6 Configuration
 
-#define AES_KEYR6_KEY           (0xFFFFFFFFU<<0)
-#define AES_KEYR6_KEY_0         (0x1U<<0)
+#define AES_KEYR6_KEY           (0xFFFFFFFFU<<0U)
+#define AES_KEYR6_KEY_0         (0x1U<<0U)
 
 // KEYR7 Configuration
 
-#define AES_KEYR7_KEY           (0xFFFFFFFFU<<0)
-#define AES_KEYR7_KEY_0         (0x1U<<0)
+#define AES_KEYR7_KEY           (0xFFFFFFFFU<<0U)
+#define AES_KEYR7_KEY_0         (0x1U<<0U)
 
 // SUSP0R Configuration
 
-#define AES_SUSP0R_SUSP0        (0xFFFFFFFFU<<0)
-#define AES_SUSP0R_SUSP0_0      (0x1U<<0)
+#define AES_SUSP0R_SUSP0        (0xFFFFFFFFU<<0U)
+#define AES_SUSP0R_SUSP0_0      (0x1U<<0U)
 
 // SUSP1R Configuration
 
-#define AES_SUSP1R_SUSP1        (0xFFFFFFFFU<<0)
-#define AES_SUSP1R_SUSP1_0      (0x1U<<0)
+#define AES_SUSP1R_SUSP1        (0xFFFFFFFFU<<0U)
+#define AES_SUSP1R_SUSP1_0      (0x1U<<0U)
 
 // SUSP2R Configuration
 
-#define AES_SUSP2R_SUSP2        (0xFFFFFFFFU<<0)
-#define AES_SUSP2R_SUSP2_0      (0x1U<<0)
+#define AES_SUSP2R_SUSP2        (0xFFFFFFFFU<<0U)
+#define AES_SUSP2R_SUSP2_0      (0x1U<<0U)
 
 // SUSP3R Configuration
 
-#define AES_SUSP3R_SUSP3        (0xFFFFFFFFU<<0)
-#define AES_SUSP3R_SUSP3_0      (0x1U<<0)
+#define AES_SUSP3R_SUSP3        (0xFFFFFFFFU<<0U)
+#define AES_SUSP3R_SUSP3_0      (0x1U<<0U)
 
 // SUSP4R Configuration
 
-#define AES_SUSP4R_SUSP4        (0xFFFFFFFFU<<0)
-#define AES_SUSP4R_SUSP4_0      (0x1U<<0)
+#define AES_SUSP4R_SUSP4        (0xFFFFFFFFU<<0U)
+#define AES_SUSP4R_SUSP4_0      (0x1U<<0U)
 
 // SUSP5R Configuration
 
-#define AES_SUSP5R_SUSP5        (0xFFFFFFFFU<<0)
-#define AES_SUSP5R_SUSP5_0      (0x1U<<0)
+#define AES_SUSP5R_SUSP5        (0xFFFFFFFFU<<0U)
+#define AES_SUSP5R_SUSP5_0      (0x1U<<0U)
 
 // SUSP6R Configuration
 
-#define AES_SUSP6R_SUSP6        (0xFFFFFFFFU<<0)
-#define AES_SUSP6R_SUSP6_0      (0x1U<<0)
+#define AES_SUSP6R_SUSP6        (0xFFFFFFFFU<<0U)
+#define AES_SUSP6R_SUSP6_0      (0x1U<<0U)
 
 // SUSP7R Configuration
 
-#define AES_SUSP7R_SUSP7        (0xFFFFFFFFU<<0)
-#define AES_SUSP7R_SUSP7_0      (0x1U<<0)
+#define AES_SUSP7R_SUSP7        (0xFFFFFFFFU<<0U)
+#define AES_SUSP7R_SUSP7_0      (0x1U<<0U)
 
 // IER Configuration
 
-#define AES_IER_CCFIE           (0x1U<<0)
-#define AES_IER_RWEIE           (0x1U<<1)
-#define AES_IER_KEIE            (0x1U<<2)
+#define AES_IER_CCFIE           (0x1U<<0U)
+#define AES_IER_RWEIE           (0x1U<<1U)
+#define AES_IER_KEIE            (0x1U<<2U)
 
 // ISR Configuration
 
-#define AES_ISR_CCF             (0x1U<<0)
-#define AES_ISR_RWEIF           (0x1U<<1)
-#define AES_ISR_KEIF            (0x1U<<2)
+#define AES_ISR_CCF             (0x1U<<0U)
+#define AES_ISR_RWEIF           (0x1U<<1U)
+#define AES_ISR_KEIF            (0x1U<<2U)
 
 // ICR Configuration
 
-#define AES_ICR_CCF             (0x1U<<0)
-#define AES_ICR_RWEIF           (0x1U<<1)
-#define AES_ICR_KEIF            (0x1U<<2)
+#define AES_ICR_CCF             (0x1U<<0U)
+#define AES_ICR_RWEIF           (0x1U<<1U)
+#define AES_ICR_KEIF            (0x1U<<2U)
