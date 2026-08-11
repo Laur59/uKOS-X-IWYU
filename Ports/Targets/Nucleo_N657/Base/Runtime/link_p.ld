@@ -109,7 +109,7 @@ linker_lnPrgmData           = config_sizeData;                                  
 /* equates necessary for the arm_v8 MPU regions             */
 /* for the arm_v8 MPU the regions have to be 32-B aligned   */
 
-linker_ST_RAM_INT_1         = (stm_stAXISRAM1);                                             /* 0x34000000: Privileged/User RAM                          */
+linker_ST_RAM_INT_1         = stm_stAXISRAM1;                                               /* 0x34000000: Privileged/User RAM                          */
 linker_EN_RAM_INT_1         = (stm_stAXISRAM1 + stm_lnAXISRAM1 - 1);                        /* 0x340FFFFF: 1-M                                          */
 
 linker_ST_RAM_INT_2         = (stm_stAXISRAM2);                                             /* 0x34100000: Privileged/User RAM                          */

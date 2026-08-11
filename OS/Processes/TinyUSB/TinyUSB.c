@@ -31,9 +31,6 @@
 // Ignore the GCC diagnostic
 //
 #pragma GCC diagnostic  ignored "-Wpedantic"
-
-// cppcheck-suppress missingInclude
-//
 #include    "tusb.h"    // IWYU pragma: keep
 
 // Restore the GCC diagnostic

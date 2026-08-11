@@ -18,8 +18,6 @@
 #include    "os_errors.h"
 #include    "record/record.h"
 #include    "serial_common.h"
-// cppcheck-suppress missingInclude
-//
 #include    "tusb_config.h"
 #include    "types.h"
 
