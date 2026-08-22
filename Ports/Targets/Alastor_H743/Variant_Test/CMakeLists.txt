@@ -212,7 +212,6 @@ target_sources(tool_u PRIVATE
     ${PATH_OSYS}/CLI/dumplog/dumplog.c
     ${PATH_OSYS}/CLI/dumptrace/dumptrace.c
     ${PATH_OSYS}/CLI/echo/echo.c
-    ${PATH_BASE}/CLI/esp32/esp32.c
     ${PATH_OSYS}/CLI/fill/fill.c
     ${PATH_OSYS}/CLI/gdb/gdb.c
     ${PATH_OSYS}/CLI/hexloader/hexloader.c
@@ -240,17 +239,18 @@ target_sources(tool_u PRIVATE
     ${PATH_OSYS}/CLI/wkserial/wkserial.c
     ${PATH_OSYS}/CLI/wkspi/wkspi.c
     ${PATH_OSYS}/CLI/X/X.c
+    ${PATH_BASE}/CLI/esp32/esp32.c
 )
 if(DEFINED WITHAPP AND WITHAPP STREQUAL "class_Py")
     target_sources(tool_u PRIVATE ${PATH_UKOS}/Applications/uKOS_Appls_Downloadable/l_MLPs/class_Py/class_Py.c)
-  add_compile_definitions(WITHAPP_S)
+    add_compile_definitions(WITHAPP_class_Py_S)
 endif()
 target_link_libraries(tool_u PUBLIC system_compiler_flags)
 
 # All library components
 set(UKOS_COMPONENTS rtcb_p kern_p kern_u libx_p libx_u shar_p proc_p proc_u tool_u)
 
-# Optional managers
+# Optional manager
 add_MicroPython()
 add_FatFs(STORAGE sdcard_flash)
 
@@ -264,9 +264,6 @@ add_compile_definitions(
     KRECORD_SZ_LOG_BUF=100
     KRECORD_SZ_TRACE_FIFO=100
 )
-
-# SPI MMX support
-add_compile_definitions(KGLOBAL_WITH_MMX1_S=false)
 
 # Stack integrity monitoring
 add_compile_definitions(

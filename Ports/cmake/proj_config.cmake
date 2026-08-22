@@ -48,7 +48,7 @@ set(TARGET_TRIPLE_MIDDLE unknown-none)
 # ==============================================================================
 #
 # The CPU_FEATURES variable allows specifying optional CPU capabilities that
-# modify compiler flags and code generation.
+# modify compiler flags and code generation. Feature names are case-sensitive.
 #
 # USAGE:
 #   In your target's CMakeLists.txt, BEFORE include(proj_config):
@@ -62,88 +62,97 @@ set(TARGET_TRIPLE_MIDDLE unknown-none)
 #     (No configurable features)
 #
 #   CORTEX_M4:
-#     nofp            - Disable floating point unit
+#     nofp            - Disable the FPU (-mcpu=cortex-m4+nofp, soft-float ABI)
 #
 #   CORTEX_M7:
-#     Double          - Enable double-precision FPU (fpv5-d16 instead of fpv5-sp-d16)
-#     nofp            - Disable floating point unit
+#     Double          - Double-precision FPU (-mfpu=fpv5-d16 instead of fpv5-sp-d16)
+#     nofp            - Disable the FPU (-mcpu=cortex-m7+nofp, soft-float ABI);
+#                       takes precedence over Double
 #
 #   CORTEX_M33:
-#     nodsp           - Disable DSP instructions
-#     nofp            - Disable floating point unit
+#     nodsp           - Disable the DSP instructions (+nodsp)
+#     nofp            - Disable the FPU (+nofp, soft-float ABI)
 #
 #   CORTEX_M55:
-#     mve             - Enable Arm Helium M-Profile Vector Extension
-#                       (integer and floating-point vector processing)
-#     mve.fp          - Enable Helium with explicit FP support
-#     nofp            - Disable floating point unit
+#     Helium          - Arm Helium M-Profile Vector Extension (+mve.fp: integer and
+#                       single-precision floating-point vector processing)
+#     Double          - Double-precision FPU (+fp.dp), combines with Helium
+#     nofp            - Disable the FPU (+nofp, soft-float ABI)
+#                       Precedence: Helium > Double > nofp
+#                       Default (no feature): scalar single-precision FPU (+fp)
 #
 #   CORTEX_M85:
-#     mve             - Enable Arm Helium M-Profile Vector Extension
-#                       (integer and floating-point vector processing)
-#     mve.fp          - Enable Helium with explicit FP support
-#     nofp            - Disable floating point unit
-#     pacbti          - Enable Pointer Authentication, Branch Target Identification
+#     Helium, Double, nofp - As for CORTEX_M55
+#     PACBTI          - Pointer Authentication and Branch Target Identification
+#                       (+pacbti, -mbranch-protection=standard); ignored with nofp
 #
 #   CORTEX_A7:
-#     (No optional features)
+#     (No configurable features)
 #
-#   RV32IMAC:
-#     zicsr           - Control and Status Register instructions
-#     zifencei        - Instruction-Fetch Fence instructions
-#     <z...>          - Any further RISC-V Z-extension (e.g. zba, zbb, zbs, zbkb, zca,
-#                       zcb, zcmp), appended to -march for both GCC and Clang. Requesting
-#                       any Zc* code-size extension drops the monolithic "c" from the base
-#                       ISA (Zca/Zcb/Zcmp supersede C — list "zca" to keep compression).
+#   RV32IMAC (ilp32), RV32IMAFDC (ilp32d), RV32EMAC (ilp32e),
+#   RV64IMAFC (lp64f), RV64IMAFDC (lp64d):
+#     <z...>          - Any RISC-V Z-extension (zicsr, zifencei, zba, zbb, zbs, zbkb,
+#                       zca, zcb, zcmp, ...), appended to -march in the listed order for
+#                       both GCC and Clang. Requesting any Zc* code-size extension drops
+#                       the monolithic "c" from the base ISA (Zca/Zcb/Zcmp supersede C -
+#                       list "zca" to keep compression).
 #     user_mode       - Capability (not an ISA extension): enable the privileged/user
 #                       split (M+U mode + PMP). Requires core + port support.
 #
-#   RV32IMAFDC (ilp32d), RV32EMAC (ilp32e), RV64IMAFC (lp64f):
-#     zicsr / zifencei / <z...> - As above; any further RISC-V Z-extension is appended
-#                       to -march. The base ISA + ABI is fixed per core (the toolchain
-#                       ships a matching libc multilib for each ABI).
-#
-#   RV64IMAFDC:
-#     zicsr           - Control and Status Register instructions
-#     zifencei        - Instruction-Fetch Fence instructions
-#     <z...>          - Any further RISC-V Z-extension, appended to -march
+# VALIDATION:
+#   Unknown feature names are a fatal error on every core (names are
+#   case-sensitive). Conflicting ARM features are resolved by precedence
+#   (see above), not by errors.
 #
 # EXAMPLES:
 #
-#   # Cortex-M55 with Helium/MVE enabled for neural networks
+#   # Cortex-M55 with Helium/MVE and double-precision FPU (STM32N657)
 #   set(SOC STM32N657)
 #   set(CORE CORTEX_M55)
-#   set(CPU_FEATURES "mve")
+#   set(CPU_FEATURES "Helium;Double")
 #   include(proj_config)
 #
-#   # Cortex-M33 without FPU or DSP (minimal configuration)
+#   # Cortex-M85 with Helium/MVE and PACBTI (STM32V873)
+#   set(SOC STM32V873)
+#   set(CORE CORTEX_M85)
+#   set(CPU_FEATURES "Helium;PACBTI")
+#   include(proj_config)
+#
+#   # Cortex-M33 without FPU or DSP (nRF5340 network core)
 #   set(SOC nRF5340)
 #   set(CORE CORTEX_M33)
 #   set(CPU_FEATURES "nodsp;nofp")
 #   include(proj_config)
 #
+#   # RISC-V with ISA extensions and the privileged/user split (RP2350)
+#   set(CORE RV32IMAC)
+#   set(CPU_FEATURES "zicsr;zifencei;zba;zbb;zbs;zbkb;user_mode")
+#   include(proj_config)
+#
 #   # Cortex-M55 with scalar FPU only (default behaviour)
 #   set(SOC STM32N657)
 #   set(CORE CORTEX_M55)
-#   # No CPU_FEATURES needed - scalar FPU is default
+#   # No CPU_FEATURES needed - scalar FPU is the default
 #   include(proj_config)
 #
-# MIGRATION FROM OLD SYSTEM:
+# MIGRATION FROM THE LEGACY VARIABLES:
 #
 #   Old: set(NOFPU ON)
-#   New: Remove line entirely (scalar FPU is now the default)
-#        OR set(CPU_FEATURES "nofp") to disable FPU completely
+#   New: Remove the line entirely (scalar FPU is the default)
+#        OR set(CPU_FEATURES "nofp") to disable the FPU completely
 #
 #   Old: set(CPU_SPEC "-mcpu=cortex-m33+nodsp+nofp")
 #   New: set(CPU_FEATURES "nodsp;nofp")
 #
+#   Specifying CPU_FEATURES together with NOFPU or CPU_SPEC is a fatal error.
+#
 # FEATURE EFFECTS:
 #
 #   Features automatically:
-#   - Modify compiler flags (-march, -mcpu, -mfpu, etc.)
-#   - Add compile definitions (e.g., MLPN_HAVE_HELIUM_FP_S)
-#   - Adjust linker flags
-#   - Set appropriate LLVM target triple
+#   - Modify the compiler flags (-mcpu/-march, -mfpu, -mfloat-abi, ...)
+#   - Apply the same flags to the linker
+#   - Select the matching LLVM target triple
+#   - On RISC-V, "user_mode" enables the privileged/user build (MODE _pu)
 #
 # ==============================================================================
 
@@ -155,6 +164,30 @@ function(configure_arm_core)
             "Please use only CPU_FEATURES for feature configuration.")
     endif()
 
+    # Valid feature names per core (case-sensitive). An unknown name is a hard
+    # error to catch typos early, as for RISC-V; cores without features reject
+    # any name.
+    set(CORTEX_M3_VALID_FEATURES "")
+    set(CORTEX_M4_VALID_FEATURES "nofp")
+    set(CORTEX_M7_VALID_FEATURES "Double;nofp")
+    set(CORTEX_M33_VALID_FEATURES "nodsp;nofp")
+    set(CORTEX_M55_VALID_FEATURES "Helium;Double;nofp")
+    set(CORTEX_M85_VALID_FEATURES "Helium;Double;nofp;PACBTI")
+    set(CORTEX_A7_VALID_FEATURES "")
+    if(DEFINED CPU_FEATURES AND DEFINED ${CORE}_VALID_FEATURES)
+        string(JOIN ", " _valid_list ${${CORE}_VALID_FEATURES})
+        if(_valid_list STREQUAL "")
+            set(_valid_list "(none)")
+        endif()
+        foreach(feature IN LISTS CPU_FEATURES)
+            if(NOT feature IN_LIST ${CORE}_VALID_FEATURES)
+                message(FATAL_ERROR
+                    "Unknown ARM CPU feature: '${feature}' (CORE=${CORE})\n"
+                    "Valid features for ${CORE}: ${_valid_list}")
+            endif()
+        endforeach()
+    endif()
+
     add_link_options($<$<C_COMPILER_ID:GNU>:-Wl,--no-warn-rwx-segment>)
     target_compile_options(core_compiler_flags INTERFACE -mthumb -Wformat-security
         $<$<C_COMPILER_ID:Clang>:-ffunction-sections>
@@ -163,8 +196,9 @@ function(configure_arm_core)
     target_compile_definitions(core_compiler_flags INTERFACE _MACHTIME_H_ _CLOCKS_PER_SEC_=1000000)
 
     # ARM Cortex-M core configurations
-    # All cores use -mcpu= with feature extensions (not -march=).
+    # Cores other than M55/M85 use -mcpu= with feature extensions (not -march=):
     # -mcpu= implies -march= and additionally enables CPU-specific scheduling.
+    # M55/M85 use -march= only (see below).
     if(${CORE} STREQUAL "CORTEX_M3")
         set(LLVM_TARGET "thumbv7m-${TARGET_TRIPLE_MIDDLE}-eabi")
         set(MCPU "cortex-m3")
@@ -174,8 +208,8 @@ function(configure_arm_core)
         set(LLVM_TARGET "thumbv7em-${TARGET_TRIPLE_MIDDLE}-eabi")
         set(MCPU "cortex-m4")
         if(DEFINED CPU_FEATURES AND NOT "${CPU_FEATURES}" STREQUAL "")
-            # CORTEX_M4_VALID_FEATURES
-            #   "nofp|Disable floating point unit||"
+            # CORTEX_M4 features:
+            #   nofp    - Disable the FPU (+nofp, soft-float ABI)
             foreach(feature IN LISTS CPU_FEATURES)
                 if(${feature} STREQUAL "nofp")
                     set(MCPU "${MCPU}+nofp")
@@ -187,7 +221,7 @@ function(configure_arm_core)
             # Default: hard float SP
             set(LLVM_TARGET "${LLVM_TARGET}hf")
             set(MFLOAT_ABI "hard")
-            set(MFPU "fpv4-sp-d16")      # GCC only via filter further down
+            set(MFPU "fpv4-sp-d16")
         endif()
 
     elseif(${CORE} STREQUAL "CORTEX_M7")
@@ -195,9 +229,9 @@ function(configure_arm_core)
         set(MCPU "cortex-m7")
         # Check for feature-based configuration
         if(DEFINED CPU_FEATURES AND NOT "${CPU_FEATURES}" STREQUAL "")
-            # CORTEX_M7_VALID_FEATURES
-            #   "Double|Double-precision FPU||"
-            #   "nofp|Disable floating point unit||"
+            # CORTEX_M7 features:
+            #   Double  - Double-precision FPU (-mfpu=fpv5-d16)
+            #   nofp    - Disable the FPU (+nofp, soft-float ABI); takes precedence over Double
             foreach(feature IN LISTS CPU_FEATURES)
                 if(${feature} STREQUAL "Double")
                     set(has_dp TRUE)
@@ -232,9 +266,9 @@ function(configure_arm_core)
         set(MFPU "fpv5-sp-d16")
         # Check for feature-based configuration
         if(DEFINED CPU_FEATURES AND NOT "${CPU_FEATURES}" STREQUAL "")
-            # CORTEX_M33_VALID_FEATURES
-            #   "nodsp|Disable DSP instructions||+nodsp"
-            #   "nofp|Disable floating point unit||+nofp"
+            # CORTEX_M33 features:
+            #   nodsp   - Disable the DSP instructions (+nodsp)
+            #   nofp    - Disable the FPU (+nofp, soft-float ABI)
             foreach(feature IN LISTS CPU_FEATURES)
                 if(${feature} STREQUAL "nodsp")
                     set(MCPU "${MCPU}+nodsp")
@@ -254,10 +288,11 @@ function(configure_arm_core)
         set(MFLOAT_ABI "hard")
         # Check for feature-based configuration
         if(DEFINED CPU_FEATURES AND NOT "${CPU_FEATURES}" STREQUAL "")
-            # CORTEX_M55_VALID_FEATURES
-            #   "Helium|Helium M-Profile Vector Extension|MLPN_HAVE_HELIUM_FP_S|+mve"
-            #   "Double|Double precision FP support|MLPN_HAVE_HELIUM_FP_S|+mve.fp"
-            #   "nofp|Disable floating point unit||+nofp"
+            # CORTEX_M55 features:
+            #   Helium  - Arm Helium M-Profile Vector Extension (+mve.fp)
+            #   Double  - Double-precision FPU (+fp.dp)
+            #   nofp    - Disable the FPU (+nofp, soft-float ABI)
+            #   Precedence: Helium > Double > nofp
             foreach(feature IN LISTS CPU_FEATURES)
                 if(${feature} STREQUAL "Helium")
                     set(has_mve TRUE)
@@ -282,6 +317,10 @@ function(configure_arm_core)
             set(MARCH "${MARCH}+nofp")
             set(MFLOAT_ABI "soft")
             unset(MFPU)
+        else()
+            # Default: scalar single-precision FPU. -march=armv8.1-m.main alone has
+            # no FPU and GCC rejects it together with -mfloat-abi=hard.
+            set(MARCH "${MARCH}+fp")
         endif()
 
     elseif(${CORE} STREQUAL "CORTEX_M85")
@@ -291,11 +330,12 @@ function(configure_arm_core)
         set(MFLOAT_ABI "hard")
         # Check for feature-based configuration
         if(DEFINED CPU_FEATURES AND NOT "${CPU_FEATURES}" STREQUAL "")
-            # CORTEX_M85_VALID_FEATURES
-            #   "Helium|Helium M-Profile Vector Extension||MLPN_HAVE_HELIUM_FP_S|+mve"
-            #   "PACBTI|Pointer Authentication, Branch Target Identification||+pacbti"
-            #   "Double|Double precision FP support|MLPN_HAVE_HELIUM_FP_S|+mve.fp"
-            #   "nofp|Disable floating point unit||+nofp"
+            # CORTEX_M85 features:
+            #   Helium  - Arm Helium M-Profile Vector Extension (+mve.fp)
+            #   PACBTI  - Pointer Authentication, Branch Target Identification (+pacbti)
+            #   Double  - Double-precision FPU (+fp.dp)
+            #   nofp    - Disable the FPU (+nofp, soft-float ABI)
+            #   Precedence: Helium > Double > nofp; PACBTI ignored with nofp
             foreach(feature IN LISTS CPU_FEATURES)
                 if(${feature} STREQUAL "Helium")
                     set(has_mve TRUE)
@@ -322,6 +362,10 @@ function(configure_arm_core)
             set(MARCH "${MARCH}+nofp")
             set(MFLOAT_ABI "soft")
             unset(MFPU)
+        else()
+            # Default: scalar single-precision FPU. -march=armv8.1-m.main alone has
+            # no FPU and GCC rejects it together with -mfloat-abi=hard.
+            set(MARCH "${MARCH}+fp")
         endif()
         # PACBTI is orthogonal to other features: appended last
         # Incompatible with nofp as it requires the FPU for PAC keys
@@ -346,6 +390,7 @@ function(configure_arm_core)
     # Apply LLVM target if using LLVM
     if(CMAKE_C_COMPILER_ID STREQUAL "Clang" AND DEFINED LLVM_TARGET)
         set(CMAKE_C_COMPILER_TARGET ${LLVM_TARGET} PARENT_SCOPE)
+        set(CMAKE_CXX_COMPILER_TARGET ${LLVM_TARGET} PARENT_SCOPE)
     endif()
 
     # Build compile flags — -mcpu= for scheduling, -march= only for M55/M85
@@ -418,7 +463,14 @@ function(configure_riscv_core)
             "-Wno-format"
             "-Wno-format-security"
         )
-        set(EXTRA_FLAGS_GNU "-fstrict-volatile-bitfields")
+        # GCC only, and only for this core: gcc_system_RV64IMAFDC.mk adds the section
+        # flags that no other GCC configuration uses. Clang gets them above, for every
+        # RISC-V core, which is what the llvm_system_RV*.mk files do.
+        set(EXTRA_FLAGS_GNU
+            "-fstrict-volatile-bitfields"
+            "-ffunction-sections"
+            "-fdata-sections"
+        )
     else()
         message(FATAL_ERROR "Unsupported RISC-V core: ${CORE}")
     endif()
@@ -457,6 +509,7 @@ function(configure_riscv_core)
     # Apply LLVM target if using LLVM
     if(${COMPILER_FAMILY} STREQUAL "llvm" AND DEFINED LLVM_TARGET)
         set(CMAKE_C_COMPILER_TARGET ${LLVM_TARGET} PARENT_SCOPE)
+        set(CMAKE_CXX_COMPILER_TARGET ${LLVM_TARGET} PARENT_SCOPE)
         set(CMAKE_ASM_COMPILER_TARGET ${LLVM_TARGET} PARENT_SCOPE)
     endif()
 
@@ -564,8 +617,9 @@ macro(add_FatFs)
         message(FATAL_ERROR "add_FatFs: STORAGE must be flash, or sdcard, or sdcard_flash, got '${FATFS_STORAGE}'")
     endif()
 
-    add_compile_definitions(CONFIG_MAN_STORAGE_S)
+    add_compile_definitions(CONFIG_MAN_FATFS_S)
     find_library(FATFS FatFs ${PATH_UKOS}/Third_Parties/FatFs/Library/${CORE}/${FATFS_STORAGE})
+    file(APPEND "${ARTEFACTS_DIR}/FLASH.cnf" "-DCONFIG_MAN_FATFS_S ")
     list(APPEND UKOS_COMPONENTS ${FATFS})
 endmacro()
 

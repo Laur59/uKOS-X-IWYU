@@ -32,7 +32,7 @@
 #
 # Supported SoCs and profiles are defined in core.list.
 
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.31)
 
 project(TinyUSB_Package
     VERSION 0.21.0
@@ -70,7 +70,7 @@ message("")
 
 # Package version and commit hash (matching build_with_cmake.sh)
 set(TINYUSB_VERSION "0.21.0")
-set(TINYUSB_HASH "32530d8")
+set(TINYUSB_HASH "9fb2f9c")
 
 message(STATUS "Fetching TinyUSB version ${TINYUSB_VERSION} (commit ${TINYUSB_HASH})")
 

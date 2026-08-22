@@ -35,9 +35,9 @@ INCLUDE     rp2350.ld
 /* SRAM:     Stacks              0x20000000                 */
 /*            └ 12K                                         */
 /*           Program Data        0x20003000                 */
-/*            └ 128K                                        */
-/*           Heap                0x20030000                 */
 /*            └ 180K                                        */
+/*          Heap                0x20030000                  */
+/*            └ 128K                                        */
 /*           User Memory         0x20050000                 */
 /*            └ 136K                                        */
 /*           Share               0x20072000                 */
@@ -47,8 +47,8 @@ linker_sizeStackSystem_C0   = (4K);                                             
 linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */
 linker_sizeStackSystem_C1   = (4K);                                                         /* Length of the System stack                               */
 linker_sizeStackFirst_C1    = (2K);                                                         /* Length of the First stack                                */
-config_sizeData             = (128K);
-config_sizeHeap             = (180K);
+config_sizeData             = (180K);
+config_sizeHeap             = (128K);
 config_sizeUserMemory       = (136K);
 config_sizeShare            = (64K);
 
@@ -59,13 +59,13 @@ config_sizeShare            = (64K);
 linker_lowStackFirst_C0     = rp_stSRAM;                                                    /* 0x20000000: start of the First stack                     */
 linker_topStackFirst_C0     = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0 - 8;       /* 0x200007f8                                               */
 
-linker_lowStackFirst_C1     = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;           /* 0x20000800: start of the First stack                     */
-linker_topStackFirst_C1     = linker_lowStackFirst_C1 + linker_sizeStackFirst_C1 - 8;       /* 0x20000ff8                                               */
-
-linker_lowStackSystem_C0    = linker_lowStackFirst_C1 + linker_sizeStackFirst_C1;           /* 0x20001000: start of the System stack                    */
+linker_lowStackSystem_C0    = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;           /* 0x20001000: start of the System stack                    */
 linker_topStackSystem_C0    = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0 - 8;     /* 0x20001ff8                                               */
 
-linker_lowStackSystem_C1    = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;         /* 0x20002000: start of the System stack                    */
+linker_lowStackFirst_C1     = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;         /* 0x20000800: start of the First stack                     */
+linker_topStackFirst_C1     = linker_lowStackFirst_C1 + linker_sizeStackFirst_C1 - 8;       /* 0x20000ff8                                               */
+
+linker_lowStackSystem_C1    = linker_lowStackFirst_C1 + linker_sizeStackFirst_C1;           /* 0x20002000: start of the System stack                    */
 linker_topStackSystem_C1    = linker_lowStackSystem_C1 + linker_sizeStackSystem_C1 - 8;     /* 0x20002ff8                                               */
 
 ASSERT((linker_lowStackSystem_C0 & 7) == 0, "Stack system must be 8-byte aligned")

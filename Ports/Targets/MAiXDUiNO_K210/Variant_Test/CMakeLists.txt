@@ -174,10 +174,6 @@ target_sources(tool_u PRIVATE
     ${PATH_OSYS}/CLI/bench/bench_03.c
     ${PATH_OSYS}/CLI/bench/bench_04.c
     ${PATH_OSYS}/CLI/bench/bench_05.c
-    ${PATH_BASE}/CLI/esp32/esp32.c
-    ${PATH_BASE}/CLI/test_img/test_img.c
-    ${PATH_BASE}/CLI/test_ipi/test_ipi.c
-    ${PATH_BASE}/CLI/test_lcd/test_lcd.c
     ${PATH_OSYS}/CLI/console/console.c
     ${PATH_OSYS}/CLI/cycle/cycle.c
     ${PATH_OSYS}/CLI/date/date.c
@@ -205,6 +201,10 @@ target_sources(tool_u PRIVATE
     ${PATH_OSYS}/CLI/test_malloc/test_malloc.c
     ${PATH_OSYS}/CLI/test_mcore/test_mcore.c
     ${PATH_OSYS}/CLI/uKOS/uKOS.c
+    ${PATH_BASE}/CLI/esp32/esp32.c
+    ${PATH_BASE}/CLI/test_img/test_img.c
+    ${PATH_BASE}/CLI/test_ipi/test_ipi.c
+    ${PATH_BASE}/CLI/test_lcd/test_lcd.c
 )
 target_link_libraries(tool_u PUBLIC system_compiler_flags)
 

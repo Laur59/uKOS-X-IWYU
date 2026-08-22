@@ -38,9 +38,9 @@ INCLUDE     STM32N657xD.ld
 /*            └ 1K                                          */
 /*           Program Code        0x34000400                 */
 /*            └ (1024K - 1K)                                */
-/* SRAM2:    Stack System        0x34100000                 */
+/* SRAM2:   Stack First         0x34100000                      */
 /*            └ 8K                                          */
-/*           Stack First         0x34102000                 */
+/*          Stack System        0x34102000                      */
 /*            └ 8K                                          */
 /*           Program Data        0x34104000                 */
 /*            └ 240K                                        */
@@ -83,7 +83,7 @@ ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
 linker_stEXRAM              = 0;                                                            /* 0x00000000: EXRAM, start of the external memory          */
 linker_lnEXRAM              = (0);                                                          /* Length of the external memory                            */
 
-linker_stUMemo              = (linker_stPrgmData + linker_lnPrgmData);                      /* 0x34140000: UMemo, start of the user memory              */
+linker_stUMemo              = (linker_stPrgmData + config_sizeData);                        /* 0x34140000: UMemo, start of the user memory              */
 linker_lnUMemo              = config_sizeUserMemory;                                        /* Length of the user memory                                */
 
 linker_stExtFlash           = 0x70000000;                                                   /* 0x70000000: ExtFlash, start of the external flash memory */
@@ -102,7 +102,7 @@ linker_lnHeap               = (config_sizeHeapS2 + stm_lnAXISRAM3_6);           
 linker_stPrgmCode           = (stm_stAXISRAM1 + 1K);                                        /* 0x34000400: PrgmCode, start of the Flash                 */
 linker_lnPrgmCode           = (stm_lnAXISRAM1 - 1K);                                        /* Length of the the Flash                                  */
 
-linker_stPrgmData           = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;           /* 0x34104000: start of program data                        */
+linker_stPrgmData           = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;         /* 0x34104000: start of program data                        */
 linker_lnPrgmData           = config_sizeData;                                              /* Length of program data                                   */
 
 /* IMPORTANT:                                               */

@@ -29,7 +29,7 @@ set(SOC nRF5340)
 set(CORE CORTEX_M33)
 
 # Core without fpu nor dsp
-add_compile_definitions( "NOFPU_S" )
+add_compile_definitions(NOFPU_S)
 set(CPU_FEATURES "nodsp;nofp")
 # Apply project settings
 include(proj_config)
@@ -38,6 +38,10 @@ include(proj_config)
 add_compile_definitions(
     "uKOS_NAME="
     "uKOS_OWNER=(c) et Luce"
+)
+
+# Network core with non-secure register aliases and a single NVIC
+add_compile_definitions(
     "CPU_NETWORK_S"
     "ONLY_ONE_NVIC_S"
     "SECURE_NS"
@@ -64,10 +68,10 @@ set(FIRST_P
 add_library(rtcb_p)
 target_sources(rtcb_p PRIVATE
     ${PATH_OSYS}/Boots/boot/boot.c
+    ${PATH_PORT}/EquatesModels/Cores/${CORE}/Runtime/syscallDispatcher.c
     ${PATH_PORT}/EquatesModels/Generic/Runtime/crt0.c
     ${PATH_PORT}/EquatesModels/Generic/Runtime/crt0_exit.c
     ${PATH_PORT}/EquatesModels/Generic/Runtime/crt0_module.c
-    ${PATH_PORT}/EquatesModels/Cores/${CORE}/Runtime/syscallDispatcher.c
     ${PATH_BASE}/Runtime/cmns.c
     ${PATH_BASE}/Runtime/exce.c
     ${PATH_VARI}/Runtime/init.c
@@ -93,6 +97,11 @@ target_sources(kern_p PRIVATE
     ${PATH_OSYS}/Lib_kernels/kern/statistics.c
     ${PATH_OSYS}/Lib_kernels/kern/temporal.c
     ${PATH_BASE}/Lib_kernels/kern/stub_kern_kernel.c
+)
+add_compile_definitions(
+    KKERN_NB_POOLS=0
+    KKERN_NB_PRECISE_SIGNALS=0
+    KKERN_NB_SOFTWARE_TIMERS=0
 )
 target_link_libraries(kern_p PUBLIC system_compiler_flags)
 
@@ -140,7 +149,7 @@ target_sources(proc_p PRIVATE
     ${PATH_OSYS}/Daemons/idle/idle.c
     ${PATH_OSYS}/Daemons/mcore/mcore.c
     ${PATH_OSYS}/Daemons/stack/stack.c
-    # ${PATH_OSYS}/Daemons/stimer/stimer.c
+    ${PATH_OSYS}/Daemons/stimer/stimer.c
 )
 target_link_libraries(proc_p PUBLIC system_compiler_flags)
 
@@ -203,12 +212,9 @@ add_compile_definitions(
 add_compile_definitions(
     KKERN_NB_MAILBOXES=8
     KKERN_NB_MUTEXES=8
-    KKERN_NB_POOLS=0
-    KKERN_NB_PRECISE_SIGNALS=0
     KKERN_NB_PROCESSES=8
     KKERN_NB_SEMAPHORES=8
     KKERN_NB_SIGNALS=2
-    KKERN_NB_SOFTWARE_TIMERS=0
 )
 
 # Apply system configuration

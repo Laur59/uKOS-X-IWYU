@@ -30,7 +30,7 @@
 # Build outputs:
 #   - Library/*/libIntelRDFPMath.a
 
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.31)
 
 project(IntelRDFPMath_Package
     VERSION 2.3

@@ -39,6 +39,10 @@ file(APPEND "${ARTEFACTS_DIR}/FLASH.cnf" "-DCACHE_D_S ")
 add_compile_definitions(
     "uKOS_NAME="
     "uKOS_OWNER=(c) et Luce"
+)
+
+# Secure register aliases and newlib reentrancy
+add_compile_definitions(
     "SECURE_S"
     "__DYNAMIC_REENT__"
 )
@@ -166,18 +170,18 @@ target_link_libraries(proc_p PUBLIC system_compiler_flags)
 # Process components (user) -> libproc_u.a
 add_library(proc_u)
 target_sources(proc_u PRIVATE
+    ${PATH_OSYS}/Processes/TinyUSB/TinyUSB.c
     ${PATH_OSYS}/Processes/alive/alive.c
     ${PATH_OSYS}/Processes/launcher/launcher.c
     ${PATH_OSYS}/Processes/startUp/startUp.c
-    ${PATH_OSYS}/Processes/TinyUSB/TinyUSB.c
-    ${PATH_BASE}/Processes/alive/stub_alive.c
     ${PATH_BASE}/Processes/TinyUSB/stub_TinyUSB.c
+    ${PATH_BASE}/Processes/alive/stub_alive.c
     ${PATH_VARI}/Processes/startUp/stub_startUp.c
 )
 target_link_libraries(proc_u PUBLIC system_compiler_flags ${TINYUSB})
 
 # CLI components (user) -> libtool_u.a
-add_library(tool_u )
+add_library(tool_u)
 target_sources(tool_u PRIVATE
     ${PATH_OSYS}/CLI/bangla/BaNgLa.c
     ${PATH_OSYS}/CLI/bench/bench.c
@@ -212,14 +216,14 @@ target_sources(tool_u PRIVATE
     ${PATH_OSYS}/CLI/sloader/sloader.c
     ${PATH_OSYS}/CLI/szkern/szkern.c
     ${PATH_OSYS}/CLI/uKOS/uKOS.c
-    ${PATH_OSYS}/CLI/viewer/viewer_uvc0_simule.c
     ${PATH_OSYS}/CLI/viewer/viewer.c
+    ${PATH_OSYS}/CLI/viewer/viewer_uvc0_simule.c
     ${PATH_OSYS}/CLI/wki2c/wki2c.c
     ${PATH_OSYS}/CLI/wkserial/wkserial.c
 )
-if(DEFINED WITHAPP AND WITHAPP STREQUAL coherence)
+if(DEFINED WITHAPP AND WITHAPP STREQUAL "coherence")
     target_sources(tool_u PRIVATE ${PATH_UKOS}/Applications/uKOS_Appls_Downloadable/b_MailBoxes/coherence/coherence.c)
-  add_compile_definitions(WITHAPP_S)
+    add_compile_definitions(WITHAPP_coherence_S)
 endif()
 target_link_libraries(tool_u PUBLIC system_compiler_flags ${TINYUSB})
 

@@ -65,7 +65,7 @@ set(FIRST_P
 )
 
 # Runtime & common components (privileged) -> librtcb_p.a
-add_library(rtcb_p ${RTCB_P})
+add_library(rtcb_p)
 target_sources(rtcb_p PRIVATE
     ${PATH_OSYS}/Boots/boot/boot.c
     ${PATH_PORT}/EquatesModels/Cores/${CORE}/Runtime/syscallDispatcher.c
@@ -176,13 +176,13 @@ target_link_libraries(proc_p PUBLIC system_compiler_flags)
 # Process components (user) -> libproc_u.a
 add_library(proc_u)
 target_sources(proc_u PRIVATE
+    ${PATH_OSYS}/Processes/TinyUSB/TinyUSB.c
     ${PATH_OSYS}/Processes/alive/alive.c
     ${PATH_OSYS}/Processes/launcher/launcher.c
     ${PATH_OSYS}/Processes/startUp/startUp.c
-    ${PATH_OSYS}/Processes/TinyUSB/TinyUSB.c
+    ${PATH_BASE}/Processes/TinyUSB/stub_TinyUSB.c
     ${PATH_BASE}/Processes/alive/stub_alive.c
     ${PATH_VARI}/Processes/startUp/stub_startUp.c
-    ${PATH_BASE}/Processes/TinyUSB/stub_TinyUSB.c
 )
 target_link_libraries(proc_u PUBLIC system_compiler_flags ${TINYUSB})
 
@@ -224,8 +224,8 @@ target_sources(tool_u PRIVATE
     ${PATH_OSYS}/CLI/test_mcore/test_mcore.c
     ${PATH_OSYS}/CLI/test_ram/test_ram.c
     ${PATH_OSYS}/CLI/uKOS/uKOS.c
-    ${PATH_OSYS}/CLI/viewer/viewer_uvc0_imager.c
     ${PATH_OSYS}/CLI/viewer/viewer.c
+    ${PATH_OSYS}/CLI/viewer/viewer_uvc0_imager.c
     ${PATH_OSYS}/CLI/wki2c/wki2c.c
     ${PATH_OSYS}/CLI/wkserial/wkserial.c
     ${PATH_OSYS}/CLI/wkspi/wkspi.c

@@ -4,7 +4,7 @@
 # uKOS-X build system
 # Builds MicroPython library for RV64IMAFDC (e.g. K210)
 
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.31)
 
 # Include common MicroPython RISC-V build setup
 include(${CMAKE_CURRENT_LIST_DIR}/../cmake/common-setup-rv32.cmake)

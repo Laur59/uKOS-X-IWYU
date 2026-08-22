@@ -102,8 +102,22 @@ while IFS= read -r entry; do
         isystem_path="${PATH_LLVM_ARM}/lib/clang-runtimes/arm-none-eabi/include"
     fi
 
+    # C++ sources need libc++'s headers (<cinttypes>, etc.) in addition to the C
+    # runtime include dir above. The toolchain's own clang++ finds these on its
+    # own via its bundled layout; IWYU, a separate binary, does not, so add the
+    # matching include/c++/v1 explicitly - and search it BEFORE the plain C
+    # include dir: libc++'s own math.h/cmath etc. are wrappers that #include_next
+    # the real newlib header. Reversing the order lets newlib's math.h (with its
+    # isfinite() etc. macros) shadow the wrapper, which then fails to parse.
+    cxx_isystem=""
+    if [[ "$file" =~ \.(cpp|cc|cxx)$ ]]; then
+        cxx_isystem="-isystem${isystem_path}/c++/v1 "
+    fi
+
     # Transform the command
-    transformed_cmd=$(sed -e "s|[^ ]*/clang --target=[^ ]*|include-what-you-use -Xiwyu --mapping_file=${mapping_file} --target=${iwyu_target} -isystem${isystem_path}|" \
+    # NOTE: [+]* matches clang or clang++ (C and C++ compiles alike) without relying
+    # on GNU sed's extended-regex alternation, which BSD sed lacks.
+    transformed_cmd=$(sed -e "s|[^ ]*/clang[+]* --target=[^ ]*|include-what-you-use -Xiwyu --mapping_file=${mapping_file} --target=${iwyu_target} ${cxx_isystem}-isystem${isystem_path}|" \
         -e 's/ -mcpu=[^ ]*//g' \
         -e 's/ -march=[^ ]*//g' \
         -e 's/ -mfloat-abi=[^ ]*//g' \
@@ -114,5 +128,15 @@ while IFS= read -r entry; do
         -e 's/ -c / /' <<< "$command")
 
     printf '\n%sProcessing:%s %s' "${BLUE}" "${NC}" "$file"
+
+    # Guard: if the compiler-command substitution above did not match (e.g. a
+    # future entry with no "clang[++] --target=..." prefix), transformed_cmd is
+    # still the original compile/link command. eval'ing it would run the real
+    # compiler with -c/-o stripped, i.e. a stray full link. Skip instead.
+    if [[ "$transformed_cmd" != *"include-what-you-use"* ]]; then
+        print -u2 "\n${RED}Error: Could not transform command for ${file} (no clang[++] --target= match) - skipping${NC}"
+        continue
+    fi
+
     eval "$transformed_cmd"
 done < <(jq -cr '.[] | [.file, .command]' build/compile_commands.json)

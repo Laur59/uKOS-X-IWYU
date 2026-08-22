@@ -41,6 +41,10 @@ file(APPEND "${ARTEFACTS_DIR}/FLASH.cnf" "-DCACHE_D_S ")
 add_compile_definitions(
  "uKOS_NAME="
  "uKOS_OWNER=(c) et Luce"
+)
+
+# Secure register aliases and newlib reentrancy
+add_compile_definitions(
  "SECURE_S"
  "__DYNAMIC_REENT__"
 )
@@ -166,12 +170,12 @@ target_link_libraries(proc_p PUBLIC system_compiler_flags)
 # Process components (user) -> libproc_u.a
 add_library(proc_u)
 target_sources(proc_u PRIVATE
+    ${PATH_OSYS}/Processes/TinyUSB/TinyUSB.c
  ${PATH_OSYS}/Processes/alive/alive.c
  ${PATH_OSYS}/Processes/launcher/launcher.c
  ${PATH_OSYS}/Processes/startUp/startUp.c
- ${PATH_OSYS}/Processes/TinyUSB/TinyUSB.c
+    ${PATH_BASE}/Processes/TinyUSB/stub_TinyUSB.c
  ${PATH_BASE}/Processes/alive/stub_alive.c
- ${PATH_BASE}/Processes/TinyUSB/stub_TinyUSB.c
  ${PATH_VARI}/Processes/startUp/stub_startUp.c
 )
 target_link_libraries(proc_u PUBLIC system_compiler_flags ${TINYUSB})
@@ -224,7 +228,7 @@ target_link_libraries(tool_u PUBLIC system_compiler_flags ${TINYUSB})
 # All library components
 set(UKOS_COMPONENTS rtcb_p kern_p kern_u libx_p libx_u proc_p proc_u tool_u ${TINYUSB})
 
-# Optional managers
+# Optional manager
 add_MicroPython()
 add_LVGL(DISPLAY RK050HR18_5_Inches)
 

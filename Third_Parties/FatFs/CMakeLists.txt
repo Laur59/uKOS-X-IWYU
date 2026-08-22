@@ -32,7 +32,7 @@
 #   - Library/*/sdcard/libFatFs.a
 #   - Library/*/sdcard_flash/libFatFs.a
 
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.31)
 
 project(FatFs_Package
     VERSION 0.16

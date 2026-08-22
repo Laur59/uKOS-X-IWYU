@@ -29,7 +29,7 @@
 # Build outputs:
 #   - Library/*/*/libLVGL.a
 
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.31)
 
 project(LVGL_Package
     VERSION 9.5.0

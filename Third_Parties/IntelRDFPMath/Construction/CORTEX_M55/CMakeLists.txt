@@ -4,7 +4,7 @@
 # uKOS-X build system
 # Builds IntelRDFPMath library for Cortex-M55
 
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.31)
 
 # Include common build setup
 include(${CMAKE_CURRENT_LIST_DIR}/../cmake/common-setup.cmake)

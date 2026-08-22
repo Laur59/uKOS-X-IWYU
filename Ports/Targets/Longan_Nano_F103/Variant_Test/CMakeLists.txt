@@ -141,7 +141,7 @@ target_link_libraries(libx_u PUBLIC system_compiler_flags)
 add_library(proc_p)
 target_sources(proc_p PRIVATE
     ${PATH_OSYS}/Daemons/idle/idle.c
-    # ${PATH_OSYS}/Daemons/stimer/stimer.c
+    ${PATH_OSYS}/Daemons/stimer/stimer.c
 )
 target_link_libraries(proc_p PUBLIC system_compiler_flags)
 

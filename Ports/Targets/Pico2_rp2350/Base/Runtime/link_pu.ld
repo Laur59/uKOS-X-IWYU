@@ -42,9 +42,9 @@ INCLUDE     rp2350.ld
 /*            └ 8K                                          */
 /*           Program Data        0x20002000  (Protected)    */
 /*            └ 88K                                         */
-/*           Stack First         0x20010000  (User)         */
+/*           Stack First         0x20018000  (User)         */
 /*            └ 4K                                          */
-/*           Program Data        0x20011000  (User)         */
+/*           Program Data        0x20019000  (User)         */
 /*            └ 92K                                         */
 /*           Heap                0x20030000  (User)         */
 /*            └ 128K                                        */

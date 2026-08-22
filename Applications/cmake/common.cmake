@@ -109,37 +109,59 @@ elseif(EXISTS "${PATH_MYPR}/${APP_NAME}.cpp")
     set(MAIN_SRC ${PATH_MYPR}/${APP_NAME}.cpp)
 endif()
 
+# Reproduce the link order of the make build. application.mk links
+#
+#   $(RUNTIME_OBJ) $(APPL_C_OBJ) $(APPL_CPP_OBJ)
+#
+# where each APPL_* list is built by globbing every directory of APPL_SRC in
+# declaration order -- the directories the application makefile adds first,
+# then the application directory, then the board directory (appended by
+# common.mk) -- with the sources of each directory in alphabetical order.
+# The make order is therefore: every C source grouped by directory, then
+# every C++ source grouped by the same directory order.
+#
+# CMake cannot see APPL_SRC; the directory order is recovered from the first
+# appearance of each extra directory in OBJ, which the CMakeLists must list
+# in the makefile's APPL_SRC order. The main source, when auto-detected,
+# joins the application directory at its alphabetical position.
+set(OBJ_ABS "")
+set(OBJ_DIRS "")
+foreach(SRC IN LISTS OBJ)
+    cmake_path(ABSOLUTE_PATH SRC BASE_DIRECTORY ${PROJECT_SOURCE_DIR} NORMALIZE OUTPUT_VARIABLE SRC_ABS)
+    list(APPEND OBJ_ABS ${SRC_ABS})
+    cmake_path(GET SRC_ABS PARENT_PATH SRC_DIR)
+    if(NOT SRC_DIR STREQUAL PATH_MYPR AND NOT SRC_DIR STREQUAL PROJECT_SOURCE_DIR)
+        list(APPEND OBJ_DIRS ${SRC_DIR})
+    endif()
+endforeach()
 if(DEFINED MAIN_SRC)
-    # Reproduce the source order of the make build, which globs every directory
-    # listed in APPL_SRC and links the resulting objects in that order. An
-    # application makefile appends its own directories before including
-    # common.mk, which is what appends the application and the board directory,
-    # so APPL_SRC ends up as:
-    #
-    #   <directories added by the application> <application> <board>
-    #
-    # and the sources of each directory are compiled in alphabetical order. The
-    # main source therefore belongs at its alphabetical position among the other
-    # sources of the application directory, not simply in front of them.
-    set(OBJ_EXTRA_DIRS "")
-    set(OBJ_APP_DIR "")
-    set(OBJ_BOARD_DIR "")
-    foreach(SRC IN LISTS OBJ)
-        cmake_path(ABSOLUTE_PATH SRC BASE_DIRECTORY ${PROJECT_SOURCE_DIR} NORMALIZE OUTPUT_VARIABLE SRC_ABS)
-        cmake_path(GET SRC_ABS PARENT_PATH SRC_DIR)
-        if(SRC_DIR STREQUAL PATH_MYPR)
-            list(APPEND OBJ_APP_DIR ${SRC_ABS})
-        elseif(SRC_DIR STREQUAL PROJECT_SOURCE_DIR)
-            list(APPEND OBJ_BOARD_DIR ${SRC_ABS})
-        else()
-            list(APPEND OBJ_EXTRA_DIRS ${SRC})
+    list(APPEND OBJ_ABS ${MAIN_SRC})
+endif()
+list(REMOVE_DUPLICATES OBJ_DIRS)
+list(APPEND OBJ_DIRS ${PATH_MYPR} ${PROJECT_SOURCE_DIR})
+
+set(OBJ_C "")
+set(OBJ_CPP "")
+foreach(DIR IN LISTS OBJ_DIRS)
+    set(DIR_C "")
+    set(DIR_CPP "")
+    foreach(SRC IN LISTS OBJ_ABS)
+        cmake_path(GET SRC PARENT_PATH SRC_DIR)
+        if(SRC_DIR STREQUAL DIR)
+            cmake_path(GET SRC EXTENSION LAST_ONLY SRC_EXT)
+            if(SRC_EXT STREQUAL ".cpp")
+                list(APPEND DIR_CPP ${SRC})
+            else()
+                list(APPEND DIR_C ${SRC})
+            endif()
         endif()
     endforeach()
-    list(APPEND OBJ_APP_DIR ${MAIN_SRC})
-    list(SORT OBJ_APP_DIR)
-    list(SORT OBJ_BOARD_DIR)
-    set(OBJ ${OBJ_EXTRA_DIRS} ${OBJ_APP_DIR} ${OBJ_BOARD_DIR})
-endif()
+    list(SORT DIR_C)
+    list(SORT DIR_CPP)
+    list(APPEND OBJ_C ${DIR_C})
+    list(APPEND OBJ_CPP ${DIR_CPP})
+endforeach()
+set(OBJ ${OBJ_C} ${OBJ_CPP})
 
 # Apply application configuration
 include(application)

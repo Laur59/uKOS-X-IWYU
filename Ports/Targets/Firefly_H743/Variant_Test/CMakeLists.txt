@@ -165,13 +165,13 @@ target_link_libraries(proc_p PUBLIC system_compiler_flags)
 # Process components (user) -> libproc_u.a
 add_library(proc_u)
 target_sources(proc_u PRIVATE
+    ${PATH_OSYS}/Processes/TinyUSB/TinyUSB.c
     ${PATH_OSYS}/Processes/alive/alive.c
     ${PATH_OSYS}/Processes/getTemp/getTemp.c
     ${PATH_OSYS}/Processes/launcher/launcher.c
     ${PATH_OSYS}/Processes/startUp/startUp.c
-    ${PATH_OSYS}/Processes/TinyUSB/TinyUSB.c
-    ${PATH_BASE}/Processes/alive/stub_alive.c
     ${PATH_BASE}/Processes/TinyUSB/stub_TinyUSB.c
+    ${PATH_BASE}/Processes/alive/stub_alive.c
     ${PATH_VARI}/Processes/startUp/stub_startUp.c
 )
 target_link_libraries(proc_u PUBLIC system_compiler_flags ${TINYUSB})

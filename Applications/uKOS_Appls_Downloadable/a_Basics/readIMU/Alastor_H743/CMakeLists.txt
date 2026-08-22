@@ -29,6 +29,5 @@ add_compile_options(
     -g3 # include extra information for debugger
     -Os # optimisation
 )
-add_compile_definitions(${BOARD}_S)
 
 include(common)

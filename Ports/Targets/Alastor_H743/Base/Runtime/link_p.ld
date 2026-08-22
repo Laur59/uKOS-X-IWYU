@@ -69,7 +69,7 @@ ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
 linker_stEXRAM              = 0x70000000;                                                   /* 0x70000000: EXRAM, start of the external memory          */
 linker_lnEXRAM              = (65536K);                                                     /* Length of the external memory                            */
 
-linker_stUMemo              = 0x70200000;                                                   /* 0x70200000: UMemo, start of the user memory              */
+linker_stUMemo              = 0x72000000;                                                   /* 0x72000000: UMemo, start of the user memory              */
 linker_lnUMemo              = linker_lnEXRAM - config_sizeHeap;                             /* Length of the user memory                                */
 
 /* IMPORTANT:                                               */

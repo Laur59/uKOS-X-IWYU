@@ -5,7 +5,7 @@
 # Builds LVGL library for RV64IMAFDC
 # Display TFT 2.4"
 
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.31)
 
 # Include common build setup
 include(${CMAKE_CURRENT_LIST_DIR}/../../cmake/common-setup.cmake)

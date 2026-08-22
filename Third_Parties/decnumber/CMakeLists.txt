@@ -30,7 +30,7 @@
 # Build outputs:
 #   - Library/*/libdecnumber.a
 
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.31)
 
 project(decnumber_Package
     VERSION 3.68
