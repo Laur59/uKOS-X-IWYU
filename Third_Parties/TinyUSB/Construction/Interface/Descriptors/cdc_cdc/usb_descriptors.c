@@ -7,10 +7,10 @@
  */
 
 #include    <stddef.h>
+#include    <stdint.h>
 #include    <string.h>
 
 #include    "types.h"
-#include    "macros.h"
 #include    "bsp/board_api.h"
 #include    "tusb.h"
 
@@ -192,9 +192,7 @@ uint8_t const   *tud_descriptor_device_qualifier_cb(void) {
 // Application return pointer to descriptor, whose contents must exist long enough for transfer to complete
 // Configuration descriptor in the other speed e.g if high speed then this is for full speed and vice versa
 
-uint8_t const   *tud_descriptor_other_speed_configuration_cb(uint8_t index) {
-
-    UNUSED(index);
+uint8_t const   *tud_descriptor_other_speed_configuration_cb([[maybe_unused]] uint8_t index) {
 
 // If link speed is high return fullspeed config, and vice versa
 
@@ -206,9 +204,7 @@ uint8_t const   *tud_descriptor_other_speed_configuration_cb(uint8_t index) {
 // Application return pointer to descriptor
 // Descriptor contents must exist long enough for transfer to complete
 
-uint8_t const   *tud_descriptor_configuration_cb(uint8_t index) {
-
-    UNUSED(index);
+uint8_t const   *tud_descriptor_configuration_cb([[maybe_unused]] uint8_t index) {
 
     #if (TUD_OPT_HIGH_SPEED != 0)
 
@@ -247,12 +243,10 @@ char_t  const   *string_desc_arr [] = {
 // Called when received GET STRING DESCRIPTOR request
 // Application return pointer to descriptor, whose contents must exist long enough for transfer to complete
 
-uint16_t    const   *tud_descriptor_string_cb(uint8_t index, uint16_t langid) {
+uint16_t    const   *tud_descriptor_string_cb(uint8_t index, [[maybe_unused]] uint16_t langid) {
             size_t      i, chr_count;
     static  uint16_t    vDesc_str[1 + 32];
     const   char_t      *str = string_desc_arr[index];
-
-    UNUSED(langid);
 
     switch (index) {
         case STRID_LANGID: {

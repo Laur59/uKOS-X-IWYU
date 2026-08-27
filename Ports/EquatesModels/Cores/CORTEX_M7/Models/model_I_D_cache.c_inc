@@ -5,6 +5,8 @@
  * Goal:     Cortex H743 L1 cache management.
  */
 
+#include    <stdint.h>
+
 #define DCACHE_LINE_SIZE    32      // Cortex M7 cache line size of 32-bytes
 #define ICACHE_LINE_SIZE    32      // Cortex M7 cache line size of 32-bytes
 #define KCACHE_API          [[maybe_unused]]

@@ -7,6 +7,10 @@
 # root .clangd file and updates the clangd binary in .zed/settings.json to
 # match the target architecture (ARM or RISC-V).
 #
+# When the root .clangd file is missing, offer to create it from the versioned
+# template Tools/Developer/dot-clangd.text and sync the clangd binary with the
+# target the template selects.
+#
 # Usage:
 #   clangd-target.sh                       # show current default and list targets
 #   clangd-target.sh <Target>              # use <Target>/Variant_Test/build
@@ -20,11 +24,9 @@ readonly CLANGD_FILE="${REPO_ROOT}/.clangd"
 readonly ZED_SETTINGS="${REPO_ROOT}/.zed/settings.json"
 readonly TARGETS_DIR="${REPO_ROOT}/Ports/Targets"
 readonly VARIANTS_YAML="${TARGETS_DIR}/variants.yaml"
+readonly CLANGD_TEMPLATE="${REPO_ROOT}/Tools/Developer/dot-clangd.text"
 
-if [[ ! -f $CLANGD_FILE ]]; then
-    print -u2 "error: $CLANGD_FILE not found"
-    exit 1
-fi
+fresh_install=0
 
 list_targets() {
     local variant_dir rel
@@ -53,6 +55,11 @@ show_current() {
             print "clangd binary:  $clangd_path"
         fi
     fi
+}
+
+# Print the CompilationDatabase path currently set in the .clangd file.
+current_db_path() {
+    sed -nE 's/^[[:space:]]*CompilationDatabase:[[:space:]]*//p' "$CLANGD_FILE" | head -n1
 }
 
 # Detect architecture from an existing compile_commands.json.
@@ -130,7 +137,44 @@ get_clangd_binary() {
     print "$clangd_bin"
 }
 
+# Point .zed/settings.json at the clangd matching the build path architecture.
+sync_zed_clangd() {
+    local build_path=$1 arch clangd_bin
+    arch=$(detect_arch "$build_path")
+    clangd_bin=$(get_clangd_binary "$arch")
+    if [[ -n $clangd_bin ]]; then
+        update_zed_clangd "$clangd_bin"
+        print "clangd binary:  ${clangd_bin}  (${arch})"
+    fi
+}
+
+if [[ ! -f $CLANGD_FILE ]]; then
+    print -u2 "warning: ${CLANGD_FILE#$REPO_ROOT/} not found"
+    if [[ ! -f $CLANGD_TEMPLATE ]]; then
+        print -u2 "error: template ${CLANGD_TEMPLATE#$REPO_ROOT/} not found"
+        exit 1
+    fi
+    if [[ ! -t 0 ]]; then
+        print -u2 "error: run the script from a terminal to install the default configuration"
+        exit 1
+    fi
+    reply=""
+    read "reply?install the default one from ${CLANGD_TEMPLATE#$REPO_ROOT/}? [y/N] " || print
+    if [[ ${reply:l} != (y|yes) ]]; then
+        print -u2 "error: no ${CLANGD_FILE#$REPO_ROOT/} — aborted"
+        exit 1
+    fi
+    cp "$CLANGD_TEMPLATE" "$CLANGD_FILE" || exit 1
+    print "created ${CLANGD_FILE#$REPO_ROOT/} from ${CLANGD_TEMPLATE#$REPO_ROOT/}"
+    fresh_install=1
+fi
+
 if (( $# == 0 )); then
+    # A fresh .clangd brings the template default with it: align the binary.
+    if (( fresh_install )); then
+        db_path=$(current_db_path)
+        [[ -n $db_path ]] && sync_zed_clangd "$db_path"
+    fi
     show_current
     print
     print "Available variants:"
@@ -158,11 +202,6 @@ fi
 # macOS BSD sed requires an explicit (possibly empty) backup suffix after -i.
 sed -i '' -E "s|^([[:space:]]*CompilationDatabase:[[:space:]]*).*|\1${new_path}|" "$CLANGD_FILE"
 
-arch=$(detect_arch "$new_path")
-clangd_bin=$(get_clangd_binary "$arch")
-if [[ -n $clangd_bin ]]; then
-    update_zed_clangd "$clangd_bin"
-    print "clangd binary:  ${clangd_bin}  (${arch})"
-fi
+sync_zed_clangd "$new_path"
 
 show_current

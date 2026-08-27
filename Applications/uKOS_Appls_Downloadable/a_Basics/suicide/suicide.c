@@ -181,9 +181,7 @@ MODULE(
  *
  */
 [[noreturn]]
-static void aProcess_0(const void *argument) {
-
-    UNUSED(argument);
+static void aProcess_0([[maybe_unused]] const void *argument) {
 
     while (true) {
         kern_suspendProcess(1000U);
@@ -202,11 +200,9 @@ static void aProcess_0(const void *argument) {
 #define KIDMODULE   ((KID_FAM_CLI<<24U) | (KNUM_LIST<<8U) | '_')
 
 [[noreturn]]
-static void aProcess_1(const void *argument) {
+static void aProcess_1([[maybe_unused]] const void *argument) {
             uint16_t        index;
     const   uKOS_module_t   *module;
-
-    UNUSED(argument);
 
 // looking for the cmdLine module ...
 
@@ -233,9 +229,6 @@ MAIN_ENTRY(argc, argv[]) {
     STRG_LOC_CONST(aStrIden_1[]) = "Process_User_1";
     STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2026";
     STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2026";
-
-    UNUSED(argc);
-    UNUSED(argv);
 
 // Specifications for the processes
 

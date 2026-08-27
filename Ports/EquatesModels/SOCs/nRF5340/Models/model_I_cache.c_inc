@@ -3,7 +3,13 @@
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  *
  * Goal:     Cortex nRF5340 cache management.
+ *
+ * Composition: this fragment is a template; the including .c must define:
+ *   NCACHE
  */
+
+#include    "macros_core.h"
+#include    "soc_reg.h"
 
 /*
  * \brief cache_I_Enable

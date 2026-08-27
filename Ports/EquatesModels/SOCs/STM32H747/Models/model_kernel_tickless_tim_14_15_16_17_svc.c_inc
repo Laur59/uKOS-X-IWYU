@@ -20,11 +20,16 @@
  *           - model_kernel_readTickCount
  *           - model_kernel_newProcessTimeout
  *           - model_kernel_stopProcessTimeout
+ *
+ * Composition: this fragment is a template; the including .c must define:
+ *   KFREQUENCY_T14 KFREQUENCY_T15 KFREQUENCY_T16 KFREQUENCY_T17
  */
 
+#include    <stdint.h>
 #include    <stdlib.h>          // IWYU pragma: keep (for CHECK_STACK_SANITY)
 
 #include    "Registers/nvic.h"
+#include    "clockTree.h"
 #include    "exce.h"
 #include    "kern/private/private_preciseSignals.h"
 #include    "kern/private/private_processes.h"

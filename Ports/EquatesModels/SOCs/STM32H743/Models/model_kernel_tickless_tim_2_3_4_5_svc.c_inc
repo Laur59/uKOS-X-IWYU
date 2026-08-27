@@ -20,12 +20,16 @@
  *           - model_kernel_readTickCount
  *           - model_kernel_newProcessTimeout
  *           - model_kernel_stopProcessTimeout
+ *
+ * Composition: this fragment is a template; the including .c must define:
+ *   KFREQUENCY_T2 KFREQUENCY_T3 KFREQUENCY_T4 KFREQUENCY_T5
  */
 
 #include    <stdint.h>
 #include    <stdlib.h>          // IWYU pragma: keep (for exit in CHECK_STACK_SANITY)
 
 #include    "Registers/nvic.h"
+#include    "clockTree.h"
 #include    "core_reg.h"
 #include    "exce.h"
 #include    "kern/kern.h"

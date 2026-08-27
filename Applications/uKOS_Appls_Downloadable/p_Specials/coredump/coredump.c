@@ -105,9 +105,6 @@ MODULE(
  */
 MAIN_ENTRY(argc, argv[]) {
 
-    UNUSED(argc);
-    UNUSED(argv);
-
     LOG(KINFO_USER, "Triggering UDF #0 -> UsageFault UNDEFINSTR");
 
 // Undefined instruction: guaranteed UsageFault UNDEFINSTR on all ARM Cortex-M

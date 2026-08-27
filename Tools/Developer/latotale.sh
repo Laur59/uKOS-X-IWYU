@@ -147,9 +147,10 @@ if [[ $do_picolibc ]]; then
     fi
 fi
 #
-# llvmlibc is Clang/LLVM-only (Arm Toolchain for Embedded) and ARM-only. It is
-# built only when its dedicated toolchain (PATH_LLVM_ARML) is available; the two
-# RISC-V targets are reported as FAIL by _build.sh (unsupported, by design).
+# llvmlibc is Clang/LLVM-only: ARM builds against the Arm Toolchain for Embedded
+# (PATH_LLVM_ARML), RISC-V against its own LLVM libc toolchain (PATH_LLVM_RVXXL).
+# The pass runs only when PATH_LLVM_ARML is available; without PATH_LLVM_RVXXL
+# the RISC-V targets stop on a missing-variable configuration error.
 if [[ $do_llvmlibc ]] && [[ $do_clang ]]; then
     if [[ -n "${PATH_LLVM_ARML:-}" ]]; then
         ./_build.sh -L

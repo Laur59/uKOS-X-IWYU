@@ -4,14 +4,17 @@
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
  * Goal:     Model for the core dump (generic).
+ *
+ * Composition: bottom of the coreDump stack, included first by a board exce.c.
+ * Provides local_printFunction() to the core and SOC fragments.
  */
 
 #include    <stdint.h>
 
 #include    "cmns.h"
-#include    "kern/kern.h"
 #include    "kern/private/private_processes.h"
 #include    "machine/machine.h"
+#include    "macros.h"
 #include    "macros_soc.h"
 #include    "serial/serial.h"
 #include    "types.h"
@@ -22,9 +25,7 @@
  * - Return the function name that belong to a given PC
  *
  */
-static  void    local_readFunctionName(const uintptr_t pc, const char_t **function) {
-
-    UNUSED(pc);
+static  void    local_readFunctionName([[maybe_unused]] const uintptr_t pc, const char_t **function) {
 
     #if ((uKOS_ARCHITECTURE == 0U) && (!defined(__clang__)))
             intptr_t    offset, nameLen;

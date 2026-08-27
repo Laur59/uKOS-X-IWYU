@@ -313,7 +313,7 @@ static  bool    local_getProcessByNb(uint8_t core, uint16_t number, proc_t **han
  * - Print a parameter P(riority), T(imes) & N(umbers) ..
  *
  */
-static  void    local_printParameter_P0(uint8_t core, uint16_t number, process_t *handle) {
+static  void    local_printParameter_P0([[maybe_unused]] uint8_t core, uint16_t number, process_t *handle) {
 
             #if (KKERN_WITH_STATISTICS_S == true)
             uint64_t    pRatio, kRatio, eRatio;
@@ -321,7 +321,6 @@ static  void    local_printParameter_P0(uint8_t core, uint16_t number, process_t
             float64_t   sum;
 
             #else
-            UNUSED(core);
             #endif
 
     const   char_t      *idSpacer;
@@ -416,10 +415,8 @@ static  void    local_printParameter_P0(uint8_t core, uint16_t number, process_t
         #endif
 }
 
-static  void    local_printParameter_P1(uint8_t core, uint16_t number, process_t *handle) {
+static  void    local_printParameter_P1([[maybe_unused]] uint8_t core, uint16_t number, process_t *handle) {
     const   char_t  *space, *father;
-
-    UNUSED(core);
 
     father = (handle->oInternal.oProcFather == nullptr)   ? "Orphan" : handle->oInternal.oProcFather->oSpecification.oIdentifier;
     space  = (handle->oSpecification.oMode == KPROC_USER) ? "User"   : "Privileged";
@@ -432,11 +429,9 @@ static  void    local_printParameter_P1(uint8_t core, uint16_t number, process_t
 }
 
 #if (KKERN_WITH_STATISTICS_S == true)
-static  void    local_printParameter_T1(uint8_t core, uint16_t number, process_t *handle) {
+static  void    local_printParameter_T1(uint8_t core, [[maybe_unused]] uint16_t number, process_t *handle) {
     uint64_t    ratio;
     float64_t   ratioF;
-
-    UNUSED(number);
 
     ratio  = handle->oStatistic.oTimePAvg * handle->oStatistic.oNbExecutions * 100U;
     ratioF = (float64_t)ratio / (float64_t)vTotalTimeCPU[core];
@@ -445,11 +440,9 @@ static  void    local_printParameter_T1(uint8_t core, uint16_t number, process_t
                          handle->oStatistic.oTimePMin, handle->oStatistic.oTimePMax, handle->oStatistic.oTimePAvg, ratioF);
 }
 
-static  void    local_printParameter_T2(uint8_t core, uint16_t number, process_t *handle) {
+static  void    local_printParameter_T2(uint8_t core, [[maybe_unused]] uint16_t number, process_t *handle) {
     uint64_t    ratio;
     float64_t   ratioF;
-
-    UNUSED(number);
 
     ratio  = handle->oStatistic.oTimeKAvg * handle->oStatistic.oNbExecutions * 100U;
     ratioF = (float64_t)ratio / (float64_t)vTotalTimeCPU[core];
@@ -458,11 +451,9 @@ static  void    local_printParameter_T2(uint8_t core, uint16_t number, process_t
                          handle->oStatistic.oTimeKMin, handle->oStatistic.oTimeKMax, handle->oStatistic.oTimeKAvg, ratioF);
 }
 
-static  void    local_printParameter_T3(uint8_t core, uint16_t number, process_t *handle) {
+static  void    local_printParameter_T3(uint8_t core, [[maybe_unused]] uint16_t number, process_t *handle) {
     uint64_t    ratio;
     float64_t   ratioF;
-
-    UNUSED(number);
 
     ratio  = handle->oStatistic.oTimeEAvg * handle->oStatistic.oNbExecutions * 100U;
     ratioF = (float64_t)ratio / (float64_t)vTotalTimeCPU[core];
@@ -472,10 +463,7 @@ static  void    local_printParameter_T3(uint8_t core, uint16_t number, process_t
 }
 
 #if (KDAEMONS_WITH_STACK_INT_S == true)
-static  void    local_printParameter_S0(uint8_t core, uint16_t number, process_t *handle) {
-
-    UNUSED(core);
-    UNUSED(number);
+static  void    local_printParameter_S0([[maybe_unused]] uint8_t core, [[maybe_unused]] uint16_t number, process_t *handle) {
 
     if (handle->oStatistic.oAvStack != 0xFFFFFFFFU) {
         (void)dprintf(KSYST, "Available stack size:                        %-"PRIu32" [Bytes]\n", handle->oStatistic.oAvStack);
@@ -487,18 +475,12 @@ static  void    local_printParameter_S0(uint8_t core, uint16_t number, process_t
 #endif
 #endif
 
-static  void    local_printParameter_N1(uint8_t core, uint16_t number, process_t *handle) {
-
-    UNUSED(core);
-    UNUSED(number);
+static  void    local_printParameter_N1([[maybe_unused]] uint8_t core, [[maybe_unused]] uint16_t number, process_t *handle) {
 
     (void)dprintf(KSYST, "Nb of time that the process was scheduled:   %-lld\n", handle->oStatistic.oNbExecutions);
 }
 
-static  void    local_printParameter_S2(uint8_t core, uint16_t number, process_t *handle) {
-
-    UNUSED(core);
-    UNUSED(number);
+static  void    local_printParameter_S2([[maybe_unused]] uint8_t core, [[maybe_unused]] uint16_t number, process_t *handle) {
 
     (void)dprintf(KSYST, "Nb of system calls to the uKernel functions: %-lld\n\n", handle->oStatistic.oNbKernCalls);
 }

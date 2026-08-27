@@ -37,7 +37,10 @@ Splitting addresses the second cost directly and is a precondition for fixing th
 
 - `crt0_exit()`, `exit_terminate()`
 - `local_killProcess()`, `local_panicMallocBroken()`, `local_panicStackUnderflow()`, `local_panicNoSystemCall()`, `local_panicElevation()`, `local_panicGeneral()`
-- `#include "model_coreDump_tracing.c_inc"` (and its `local_printTrace` / `local_printLog`)
+- The trace/log dump on the exit path. Originally `#include "model_coreDump_tracing.c_inc"`;
+  since superseded by calls to `record_printTrace()` / `record_printLog()`, now compiled once in
+  `OS/Lib_generics/record/recordDump.c` instead of being textually included by both `crt0_exit.c`
+  and every board `exce.c`.
 - The kernel/serial/private-process includes that only this code needs (`kern/kern.h`, `kern/private/private_processes.h`, `serial/serial.h`)
 
 ### 2.3 What does not change

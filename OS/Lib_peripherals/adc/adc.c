@@ -75,11 +75,9 @@ static  int32_t     local_init(void);
  * \return      KERR_ADC_CHBSY  The manager is busy
  *
  */
-int32_t adc_reserve(reserveMode_t reserveMode, uint32_t timeout) {
+int32_t adc_reserve([[maybe_unused]] reserveMode_t reserveMode, uint32_t timeout) {
     int32_t     status;
     uint32_t    core;
-
-    UNUSED(reserveMode);
 
     core = GET_RUNNING_CORE;
 
@@ -114,11 +112,9 @@ int32_t adc_reserve(reserveMode_t reserveMode, uint32_t timeout) {
  * \return      KERR_ADC_CAREL  Cannot release the manager
  *
  */
-int32_t adc_release(reserveMode_t reserveMode) {
+int32_t adc_release([[maybe_unused]] reserveMode_t reserveMode) {
     int32_t     status;
     uint32_t    core;
-
-    UNUSED(reserveMode);
 
     core = GET_RUNNING_CORE;
 

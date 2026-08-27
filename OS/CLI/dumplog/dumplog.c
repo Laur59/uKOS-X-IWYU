@@ -62,7 +62,7 @@ static  void    local_compose(const char_t *identifier, const char_t **idSpacer)
  * \brief Main entry point
  *
  */
-static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
+static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char_t *argv[]) {
             char_t              *dummy;
             uint64_t            olderTime;
             uint32_t            i;
@@ -70,9 +70,6 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
             recordLogging_t     *logBuffer, *rLogBuffer, *rOldLogBuffer;
             bool                terminate = false;
     const   char_t              *category, *idSpacerI, *idSpacerF;
-
-    UNUSED(argc);
-    UNUSED(argv);
 
     (void)dprintf(KSYST, "Log dump.\n");
 

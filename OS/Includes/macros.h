@@ -61,8 +61,6 @@
                                 ((uint32_t)((const uint8_t *)(ptr))[2]<<8U)  |              \
                                 ((uint32_t)((const uint8_t *)(ptr))[3]<<0U))
 
-#define UNUSED(x)               (void)(x)
-
 #define STRG_LOC_CONST(aId)     VAR_DECLARED_ALIGN(static const char_t  aId, 4)
 #define STRG_LOC_STATI(aId)     VAR_DECLARED_ALIGN(static       char_t  aId, 4)
 #define STRG_GLB_CONST(aId)     VAR_DECLARED_ALIGN(const        char_t  aId, 4)
@@ -77,19 +75,22 @@
 //
 // If tool (romable application):
 // static   int32_t prgm(uint32_t argc, const char_t *argv[]);
+//
+// argc & argv carry [[maybe_unused]]: most entry points ignore them, and the
+// attribute cannot be added by the caller (it must precede the type specifiers).
 
 #if defined(ROMABLE_S)
 #if defined(__cplusplus)
 #define CPP_INTERNAL_SCOPE_BEGIN        namespace {
 #define CPP_INTERNAL_SCOPE_END          }
-#define MAIN_ENTRY(argc, argv)          int32_t prgm(uint32_t argc, const char_t *argv)
+#define MAIN_ENTRY(argc, argv)          int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char_t *argv)
 
 #else
-#define MAIN_ENTRY(argc, argv)  static  int32_t prgm(uint32_t argc, const char_t *argv)
+#define MAIN_ENTRY(argc, argv)  static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char_t *argv)
 #endif
 
 #else
 #define CPP_INTERNAL_SCOPE_BEGIN
 #define CPP_INTERNAL_SCOPE_END
-#define MAIN_ENTRY(argc, argv)  int main(int argc, const char *argv)
+#define MAIN_ENTRY(argc, argv)  int main([[maybe_unused]] int argc, [[maybe_unused]] const char *argv)
 #endif

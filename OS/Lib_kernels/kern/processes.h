@@ -232,8 +232,8 @@ struct proc {
             work_t          oInternal;                                          // Process internal stuff
             stts_t          oStatistic;                                         // uKernel statistic
 
-            #ifdef CONFIG_MAN_PICOLIBC_S
-            int             oErrnoPicolibc;                                     // Per-process errno for picolibc
+            #if defined(CONFIG_MAN_PICOLIBC_S) || defined(CONFIG_MAN_LLVMLIBC_S)
+            int             oErrno;                                             // Parked errno while the process is not running (picolibc, llvmlibc)
             #endif
 };
 

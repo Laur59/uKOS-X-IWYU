@@ -9,9 +9,9 @@
 #include    <stdint.h>
 #include    <time.h>
 
-#include    "types.h"
-#include    "soc_reg.h"
 #include    "kern/kern.h"
+#include    "soc_reg.h"
+#include    "types.h"
 
 // Prototypes
 

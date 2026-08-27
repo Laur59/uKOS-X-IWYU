@@ -47,28 +47,36 @@
 #ifndef PICOLIBC_H_
 #define PICOLIBC_H_
 
-#ifdef CONFIG_MAN_PICOLIBC_S
-
 /*
- * CRITICAL: Define custom errno function BEFORE including ANY C library headers
+ * errno
  *
- * This enables picolibc's custom errno mechanism, allowing uKOS-X to provide
- * per-process errno storage without Thread-Local Storage (TLS) overhead.
+ * errno is picolibc's ordinary global int, and uKOS-X makes it per-process by
+ * saving and restoring it across context switches in xLibrary_update()
+ * (OS/Lib_kernels/kern/xLibrary.c). The value lives in proc_t.oErrno while the
+ * process is not running.
  *
- * The __ukos_get_errno() function returns a pointer to the current process's
- * errno variable, which is updated automatically by the kernel on process
- * context switches.
+ * The obvious alternative -- picolibc's __PICOLIBC_ERRNO_FUNCTION hook, which
+ * turns errno into (*__ukos_get_errno()) -- is NOT usable here, and was removed
+ * after being found broken:
+ *
+ * - It is a picolibc BUILD-time option (meson -Derrno-function=). The installed
+ *   <errno.h> honours the macro, but the shipped libc.a was compiled without it,
+ *   so its 89 members that touch errno bind to the global. Defining the macro in
+ *   uKOS-X translation units only would split errno in two: picolibc's strtol(),
+ *   vfprintf(), vfscanf(), ... would report through the global while uKOS-X read
+ *   a per-process slot, and never see each other's values.
+ *
+ * - The accessor returned a pointer into proc_t. On a privileged/user build
+ *   proc_t lives in libkern_p.a data, i.e. the privileged RAM region, so a
+ *   user-mode process assigning errno faulted with DACCVIOL.
+ *
+ * Restoring that hook therefore requires rebuilding picolibc itself with
+ * -Derrno-function=, which also makes the toolchain uKOS-X specific. See
+ * Documentation/,USER_GUIDES/TLS_SUPPORT_ASSESSMENT.md.
  */
-#define __PICOLIBC_ERRNO_FUNCTION __ukos_get_errno
-int *__ukos_get_errno(void);
-
-#endif  // CONFIG_MAN_PICOLIBC_S
 
 /*
  * Standard file descriptor constants (matching newlib.h)
- *
- * These are defined after the errno function because they require
- * <unistd.h> which needs the errno function to be defined first.
  */
 #include    <unistd.h>        // for STDERR_FILENO, STDIN_FILENO, STDOUT_FILENO
 #include    <stdio.h>         // for dprintf declaration (if available)

@@ -73,16 +73,13 @@ static  void    local_process(const void *argument);
  * \brief Main entry point
  *
  */
-static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
+static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char_t *argv[]) {
     uint32_t    core;
     proc_t      *process;
 
     core = GET_RUNNING_CORE;
 
     VAR_DECLARED_ALIGN(static uintptr_t vStack[KNB_CORES][KKERN_SZ_STACK_MM], KSTACK_ALIGNMENT);
-
-    UNUSED(argc);
-    UNUSED(argv);
 
     DAEMON_PRIVILEGED(
         core,                               // Core
@@ -112,10 +109,8 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
  *
  */
 [[noreturn]]
-static void local_process(const void *argument) {
+static void local_process([[maybe_unused]] const void *argument) {
     uint64_t    unixTime;
-
-    UNUSED(argument);
 
     DEBUG_KERN_TRACE("entry: rtc precision daemon");
 
@@ -134,10 +129,7 @@ static void local_process(const void *argument) {
  * \brief Main entry point
  *
  */
-static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
-
-    UNUSED(argc);
-    UNUSED(argv);
+static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char_t *argv[]) {
 
     return EXIT_OS_SUCCESS_CLI;
 }

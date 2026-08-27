@@ -115,8 +115,8 @@ cmake --build build
 
 **Key features:**
 - No specs file needed
-- Uses LLD linker with custom `.lld` linker scripts
-- Includes TLS support for errno and time buffers
+- Uses the LLD linker with the same `.ld` linker scripts as GCC
+- No TLS: picolibc must be built with `-Dthread-local-storage=false` (see below)
 - Defines: `CONFIG_MAN_PICOLIBC_S`, `_GNU_SOURCE`, `_REENT_GLOBAL_ERRNO`
 
 ---
@@ -128,10 +128,61 @@ cmake --build build
 | **Toolchain Path** | `/opt/embedded/cross/gcc-current/arm` | `/Users/scratch/todelete/embedded/cross/llvm-current/arm-picolibc` |
 | **Specs File** | Uses `-specs=picolibc.specs` | No specs needed |
 | **Linker** | GNU ld | LLD |
-| **Linker Script** | `.ld` files | `.lld` files |
-| **TLS Support** | No (errno is global) | Yes (errno in .tbss) |
-| **Binary Size** | ~278 KB | ~291 KB (+13 KB) |
-| **errno Implementation** | Global variable | Thread-local storage |
+| **Linker Script** | `.ld` files | the same `.ld` files |
+| **TLS Support** | No | No — picolibc must be built with `-Dthread-local-storage=false` |
+| **errno Implementation** | One global, swapped per process by the kernel | One global, swapped per process by the kernel |
+
+### Thread-local storage
+
+picolibc decides at build time whether its per-thread state (`errno`, `_asctime_buf`,
+`_localtime_buf`, `_locale`, `_strtok_last`, …) lives in `.tbss` or in ordinary globals.
+Its default (`thread-local-storage = 'picolibc'`) derives that from
+`not cc.has_function('__emutls_get_address')` — false for GCC, whose libgcc ships
+`emutls.o`, and true for Clang/compiler-rt. The two C libraries therefore diverged with
+neither build ever choosing.
+
+That matters because µKOS-X never installs a thread pointer: it links `-nostartfiles` with
+its own `crt0.c`, so picolibc's crt0 — the only caller of `_set_tls()` — is never linked
+and `__tls` stays zero. TLS accesses then land near address `0x00000008`: harmless-looking
+in privileged mode on a Cortex-M (`PRIVDEFENA`, no MPU region at 0) and a `DACCVIOL` fault
+in user mode.
+
+Both LLVM toolchains must therefore pass `-Dthread-local-storage=false` when building
+picolibc, and every linker script asserts that `.tdata` / `.tbss` are empty so a
+TLS-enabled C library fails at link instead of at run time. See *picolibc and
+thread-local storage* in `CLAUDE.md` for the full account, and
+[TLS_SUPPORT_ASSESSMENT.md](TLS_SUPPORT_ASSESSMENT.md) for what it would cost to lift
+the restriction.
+
+#### errno is per-process, by swapping
+
+picolibc exposes `errno` as a single global `int` (`libc_errno_errno.c.o`). Every one
+of its own members that reports an error binds to it — 89 of them in the archive, and
+a real uKOS-X image links many (`strtol`, `vfprintf`, `vfscanf`, `sscanf`, `abort`,
+`signal`, the stack protector, the Ryu float conversions) — as does every uKOS-X
+translation unit and every downloadable application.
+
+uKOS-X therefore does not try to redirect `errno`; it gives the one global per-process
+semantics by parking and reloading it at each context switch, in `xLibrary_update()`
+(`OS/Lib_kernels/kern/xLibrary.c`) — the same hook where the newlib build swaps
+`_impure_ptr`. The parked value lives in `proc_t.oErrnoPicolibc`. The swap runs
+privileged with interrupts off and costs 17 Thumb instructions, with an early exit when
+the scheduler re-selects the same process.
+
+An earlier design instead defined picolibc's `__PICOLIBC_ERRNO_FUNCTION` hook in
+`picolibc.h`, making `errno` expand to `(*__ukos_get_errno())`. That has been removed:
+the hook is a picolibc *build-time* option, so the shipped `libc.a` still used the
+global and the two would have diverged; and the accessor returned a pointer into
+`proc_t`, which on a privileged/user build lives in the privileged RAM region and
+faulted with `DACCVIOL` when a user-mode process assigned `errno`. Reinstating it would
+mean rebuilding picolibc with `-Derrno-function=`, which also makes the toolchain
+uKOS-X-specific. See [TLS_SUPPORT_ASSESSMENT.md](TLS_SUPPORT_ASSESSMENT.md) §4.1.
+
+**Known limitation:** on a multi-core image (K210, rp2350) the harts share the one
+global, so `errno` remains racy *between cores*.
+
+Note also that `_REENT_GLOBAL_ERRNO`, listed among the compile definitions above, is a
+newlib-era name; picolibc spells it `__GLOBAL_ERRNO`, so the define has no effect.
 
 ---
 
@@ -142,24 +193,18 @@ cmake --build build
   - Lines 95-110: Added picolibc compile definitions including `_REENT_GLOBAL_ERRNO`
   - Lines 112-128: Added proper `-specs=picolibc.specs` for GCC compilation AND linking
 
-### Linker Scripts - GNU ld (7 files for GCC)
-Added `end` and `_end` symbols after BSS section:
-- `/Ports/EquatesModels/Cores/CORTEX_M3/Runtime/system_p.ld`
-- `/Ports/EquatesModels/Cores/CORTEX_M4/Runtime/system_p.ld`
-- `/Ports/EquatesModels/Cores/CORTEX_M7/Runtime/system_p.ld`
-- `/Ports/EquatesModels/Cores/CORTEX_M33/Runtime/system_p.ld`
-- `/Ports/EquatesModels/Cores/CORTEX_M55/Runtime/system_pu.ld`
+### Linker Scripts (17 files, shared by GCC and Clang)
+`end` / `_end` after the BSS section, and the `.tdata` / `.tbss` collectors with the
+`ASSERT(SIZEOF(...) == 0)` thread-local-storage guard:
+- `/Ports/EquatesModels/Cores/CORTEX_{M3,M4,M7,M33,M55,M85}/Runtime/system_p.ld`
+- `/Ports/EquatesModels/Cores/CORTEX_{M3,M4,M7,M33,M55,M85}/Runtime/system_pu.ld`
 - `/Ports/EquatesModels/Cores/RV32IMAC/Runtime/system_p.ld`
 - `/Ports/EquatesModels/Cores/RV64IMAFDC/Runtime/system_p.ld`
+- `/Ports/EquatesModels/SOCs/rp2350/Runtime/system_p.ld`, `system_pu.ld`, `system_pu-riscv.ld`
 
-### Linker Scripts - LLD (6 files for Clang)
-Added TLS sections (`.tdata`, `.tbss`) and `end`/`_end` after `.tbss`:
-- `/Ports/EquatesModels/Cores/CORTEX_M3/Runtime/system_pu.lld`
-- `/Ports/EquatesModels/Cores/CORTEX_M4/Runtime/system_p.lld`
-- `/Ports/EquatesModels/Cores/CORTEX_M4/Runtime/system_pu.lld`
-- `/Ports/EquatesModels/Cores/CORTEX_M33/Runtime/system_pu.lld`
-- `/Ports/EquatesModels/Cores/CORTEX_M55/Runtime/system_pu.lld`
-- `/Ports/EquatesModels/Cores/CORTEX_M7/Runtime/system_pu.lld`
+The same guard is in the 8 `/Ports/EquatesModels/Cores/*/Runtime/application.ld` scripts.
+
+> There are no separate `.lld` linker scripts — GNU ld and LLD share the `.ld` files.
 
 ### Runtime Code (2 files)
 - **`/Ports/EquatesModels/Generic/Runtime/linker.h`**

@@ -10,20 +10,20 @@
     {
       "name": "base",
       "hidden": true,
-      "description": "Base preset with default options",
       "generator": "Ninja",
       "binaryDir": "build",
       "cacheVariables": {
         "USER_MODE": "ON",
         "CANARY": "ON",
-        "USE_LLVM": "ON",
+        "C_LIBRARY": "newlib",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       }
     },
     {
       "name": "gcc",
       "inherits": "base",
-      "description": "GCC toolchain, user mode ON, stack protection ON",
+      "displayName": "GCC   · newlib",
+      "description": "GCC toolchain, newlib (default C library), user mode ON, stack protection ON",
       "cacheVariables": {
         "USE_LLVM": "OFF"
       }
@@ -31,9 +31,33 @@
     {
       "name": "llvm",
       "inherits": "base",
-      "description": "Clang/LLVM toolchain, user mode ON, stack protection ON",
+      "displayName": "Clang · newlib",
+      "description": "Clang/LLVM toolchain, newlib (default C library), user mode ON, stack protection ON",
       "cacheVariables": {
         "USE_LLVM": "ON"
+      }
+    },
+	{
+	  "name": "gcc-picolibc",
+	  "inherits": "gcc",
+	  "displayName": "GCC   · picolibc",
+	  "description": "GNU GCC toolchain, picolibc",
+	  "cacheVariables": { "C_LIBRARY": "picolibc" }
+	},
+	{
+	  "name": "llvm-picolibc",
+	  "inherits": "llvm",
+	  "displayName": "Clang · picolibc",
+	  "description": "LLVM Clang toolchain, picolibc",
+	  "cacheVariables": { "C_LIBRARY": "picolibc" }
+	},
+    {
+      "name": "llvm-llvmlibc",
+      "inherits": "llvm",
+      "displayName": "Clang · llvm-libc",
+      "description": "Clang/LLVM toolchain, user mode ON, stack protection ON, C library LLVM libc",
+      "cacheVariables": {
+        "C_LIBRARY": "llvmlibc"
       }
     },
     {
@@ -64,11 +88,10 @@
         "CANARY": "OFF"
       }
     },
-
     {
       "name": "llvm-nocanary",
       "inherits": "base",
-      "description": "Clang/LLVM toolchain, user mode ON, canary OFF",
+      "description": "Clang/LLVM toolchain, user mode ON, stack protection OFF",
       "cacheVariables": {
         "USE_LLVM": "ON",
         "CANARY": "OFF"

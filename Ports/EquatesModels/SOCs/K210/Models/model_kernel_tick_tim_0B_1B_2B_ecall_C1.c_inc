@@ -25,15 +25,15 @@
  *           - kernel_message_C1
  */
 
+#include    <stdint.h>
+
 #include    "kern/private/private_processes.h"
 #include    "kern/private/private_scheduler.h"
 #include    "kern/private/private_temporal.h"
 #include    "kern/private/private_preciseSignals.h"
-#include    "macros.h"
 #include    "macros_core.h"
 #include    "macros_core_stackFrame.h"
 #include    "macros_soc.h"
-#include    "lib_generics.h"
 
 #define K1ms_B      ((float64_t)(0.001))
 
@@ -203,9 +203,7 @@ static  void    model_kernel_setLowPower_C1(uint8_t mode) {
  * - Set the precise timer
  *
  */
-static  void    model_kernel_setPreciseSignal_C1(volatile prcs_t *handle) {
-
-    UNUSED(handle);
+static  void    model_kernel_setPreciseSignal_C1([[maybe_unused]] volatile prcs_t *handle) {
 }
 #endif
 
@@ -434,11 +432,9 @@ static  void    local_newContextPRE_C1(uint32_t core, uint64_t parameter) {
 static  void    local_changeContext_TOU_C1(uint32_t core, uint64_t parameter, uint64_t *threshold, uintptr_t *stack);
 
 [[gnu::naked]]
-static  void    local_TIM2_B_IRQHandler_C1(uint32_t core, uint64_t parameter) {
+static  void    local_TIM2_B_IRQHandler_C1([[maybe_unused]] uint32_t core, [[maybe_unused]] uint64_t parameter) {
 
     #ifndef __clang__
-    UNUSED(core);
-    UNUSED(parameter);
     #endif
 
     KERN_SAVE_FRAME;
@@ -566,11 +562,9 @@ static  void    local_newContextTOU_C1(uint32_t core, uint64_t parameter) {
 static  void    local_changeContext_MSG_C1(uint32_t core, uint64_t message, uint64_t *threshold, uintptr_t *stack);
 
 [[gnu::naked]]
-static  void    local_ECALL_message_C1(uint32_t core, uint64_t message) {
+static  void    local_ECALL_message_C1([[maybe_unused]] uint32_t core, [[maybe_unused]] uint64_t message) {
 
     #ifndef __clang__
-    UNUSED(core);
-    UNUSED(message);
     #endif
 
     KERN_SAVE_FRAME;

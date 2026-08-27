@@ -72,11 +72,8 @@ static  void    local_process(const void *argument);
  * \brief Main entry point
  *
  */
-static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
+static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char_t *argv[]) {
     proc_t  *process;
-
-    UNUSED(argc);
-    UNUSED(argv);
 
     PROCESS_STACKMALLOC(
         0,                                  // Index
@@ -109,7 +106,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
  *
  */
 [[noreturn]]
-static void local_process(const void *argument) {
+static void local_process([[maybe_unused]] const void *argument) {
             uint16_t        index = 0U;
             uint32_t        core, idModule, argc = 4U;
     const   uKOS_module_t   *module;
@@ -122,8 +119,6 @@ static void local_process(const void *argument) {
                                         { "alive", "50", "950", "2" },  // Core 2
                                         { "alive", "50", "950", "3" },  // Core 3
                                     };
-
-    UNUSED(argument);
 
     core = GET_RUNNING_CORE;
     LOG(KINFO_SYSTEM, "launcher: launching all the processes");

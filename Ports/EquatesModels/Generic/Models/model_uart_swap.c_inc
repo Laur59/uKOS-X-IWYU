@@ -3,10 +3,15 @@
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  *
  * Goal:        Model for the connection of the "DEVICE_IN" manager to the "DEVICE_OUT" manager.
+ *
+ * Composition: this fragment is a template; the including .c must define:
+ *   DEVICE_OUT_configure DEVICE_OUT_flush DEVICE_OUT_getIdSemaphore DEVICE_OUT_read
+ *   DEVICE_OUT_release DEVICE_OUT_reserve DEVICE_OUT_write
  */
 
 #include    <stdint.h>
 
+#include    "serial_common.h"
 #include    "types.h"
 
 #define CAT_(a,b)   a##b

@@ -106,6 +106,7 @@ add_source_with_define(libx_p ${PATH_OSYS}/Lib_generics/calendar/calendar.c CONF
 add_source_with_define(libx_p ${PATH_OSYS}/Lib_generics/machine/machine.c CONFIG_MAN_MACHINE_S)
 add_source_with_define(libx_p ${PATH_OSYS}/Lib_generics/memo/memo.c CONFIG_MAN_MEMO_S)
 add_source_with_define(libx_p ${PATH_OSYS}/Lib_generics/record/record.c CONFIG_MAN_RECORD_S)
+add_source_with_define(libx_p ${PATH_OSYS}/Lib_generics/record/recordDump.c CONFIG_MAN_RECORD_S)
 add_source_with_define(libx_p ${PATH_OSYS}/Lib_generics/system/system.c CONFIG_MAN_SYSTEM_S)
 add_source_with_define(libx_p ${PATH_OSYS}/Lib_peripherals/led/led.c CONFIG_MAN_LED_S)
 add_source_with_define(libx_p ${PATH_OSYS}/Lib_peripherals/switch/switch.c CONFIG_MAN_SWITCH_S)

@@ -67,12 +67,9 @@ static  void    local_process(const void *argument);
  * \brief Main entry point
  *
  */
-static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
+static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char_t *argv[]) {
     uint32_t    core;
     proc_t      *process;
-
-    UNUSED(argc);
-    UNUSED(argv);
 
     core = GET_RUNNING_CORE;
 
@@ -108,11 +105,9 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
  *
  */
 [[noreturn]]
-static void local_process(const void *argument) {
+static void local_process([[maybe_unused]] const void *argument) {
     void        (*code)(uint8_t state);
     uint32_t    core;
-
-    UNUSED(argument);
 
     DEBUG_KERN_TRACE("entry: idle daemon");
     core = GET_RUNNING_CORE;

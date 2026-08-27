@@ -110,12 +110,27 @@ do
     fi
 
     if [[ ${model} == riscv32_generic ]]; then
-        # rv32imac targets the Pico2's small RAM-resident downloadable-app region
-        # (~116 KB code), so build size-optimised (release: -O + strip error strings;
-        # the app strips to match). rv64imafdc has room, so keep its debug build.
+        # Both RISC-V variants build release (-O, -DNDEBUG, -DTF_LITE_STRIP_ERROR_STRINGS).
+        #
+        # rv32imac needs it for size: it targets the Pico2's small RAM-resident
+        # downloadable-app region (~116 KB code), and the app strips to match.
+        #
+        # rv64imafdc has room, but TF_LITE_STRIP_ERROR_STRINGS matters for a second
+        # reason: riscv32_generic/debug_log.cc logs with std::fputs(..., stdout),
+        # unlike cortex_m_generic/debug_log.cc which goes through DebugLogCallback.
+        # That FILE* use drags newlib's _impure_ptr into debug_log.o, and a uKOS-X
+        # application built with C_LIBRARY=llvmlibc then fails to link:
+        #
+        #   ld.lld: error: undefined symbol: _impure_ptr
+        #   >>> referenced by debug_log.o:(DebugLog) in archive libTFLite.a
+        #
+        # Stripping the error strings compiles that body away, which is why the
+        # rv32 (release) archive never had the problem. TFLite log messages are
+        # lost on RISC-V as a result; the Arm archives keep theirs through the
+        # callback.
         case ${target_arch} in
             rv32*) riscv_abi=ilp32; build_type=release ;;
-            rv64*) riscv_abi=lp64d; build_type=debug   ;;
+            rv64*) riscv_abi=lp64d; build_type=release ;;
             *)     printf '%bError: unknown RISC-V target_arch %s%b\n' "${RED}" "${target_arch}" "${NC}" >&2; exit 1 ;;
         esac
         make -f tensorflow/lite/micro/tools/make/Makefile \

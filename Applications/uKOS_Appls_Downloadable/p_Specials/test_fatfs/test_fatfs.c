@@ -195,7 +195,7 @@ static  void    test_folder(const char_t *folder);
 #define DRIVE_SDCARD    "/sdcard"
 
 [[noreturn]]
-static void aProcess_0(const void *argument) {
+static void aProcess_0([[maybe_unused]] const void *argument) {
     [[maybe_unused]]
     UINT    bytesRead_sdcard_1, bytesRead_sdcard_2, bytesRead_sdcard_3;
 
@@ -207,8 +207,6 @@ static void aProcess_0(const void *argument) {
 
     [[maybe_unused]]
     UINT    bytesWrote_serialFlash_1, bytesWrote_serialFlash_2, bytesWrote_serialFlash_3;
-
-    UNUSED(argument);
 
 // Format the devices
 // ------------------
@@ -391,9 +389,6 @@ MAIN_ENTRY(argc, argv[]) {
 
     STRG_LOC_CONST(aStrIden_0[]) = "Process_User_0";
     STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2026";
-
-    UNUSED(argc);
-    UNUSED(argv);
 
 // Specifications for the processes
 
@@ -600,7 +595,6 @@ static  void    test_listDirectory(const char_t *path) {
 // Read a directory item
 
             res = f_readdir(&dir, &fno);
-            UNUSED(res);
 
             if (fno.fname[0] == 0) { break; }
             if (fno.fattrib & AM_DIR) {

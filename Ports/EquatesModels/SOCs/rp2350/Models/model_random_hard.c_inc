@@ -13,6 +13,7 @@
 #include    "macros.h"
 #include    "macros_core.h"
 #include    "macros_soc.h"
+#include    "random/random.h"
 #include    "soc_reg.h"
 
 static              bool        vTerminated = false;

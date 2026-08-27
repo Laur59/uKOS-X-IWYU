@@ -8,8 +8,8 @@
 
 #include    <stdint.h>
 
-#include    "soc_reg.h"
 #include    "macros_core.h"
+#include    "soc_reg.h"
 
 /*
  * \brief Arm the watchdog

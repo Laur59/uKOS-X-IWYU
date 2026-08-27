@@ -67,6 +67,13 @@ if(C_LIBRARY STREQUAL "picolibc")
     )
     message(STATUS "C library compile definitions (picolibc): CONFIG_MAN_PICOLIBC_S, _REENT_GLOBAL_ERRNO")
 elseif(C_LIBRARY STREQUAL "llvmlibc")
+    # CLOCKS_PER_SEC is not set here: stock baremetal LLVM libc defaults it to 100
+    # on ARM (Arm semihosting counts centiseconds), and the uKOS-X toolchain patch
+    # ukos_patches/0006-llvm-libc-use-microsecond-also-for-32-bit-Arm-cores.patch
+    # moves 32-bit Arm to the microsecond branch instead. Patching rather than
+    # passing -D__CLK_TCK also rebuilds libc.a with the same unit, so the library
+    # and the application agree. A static_assert in llvmlibc.c fails the build on
+    # an unpatched toolchain.
     target_compile_definitions(system_compiler_flags INTERFACE
         CONFIG_MAN_LLVMLIBC_S
     )
@@ -75,6 +82,12 @@ elseif(C_LIBRARY STREQUAL "llvmlibc")
     target_compile_options(system_compiler_flags INTERFACE
         "$<$<COMPILE_LANGUAGE:C,CXX>:-include;${PATH_OSYS}/Lib_generics/llvmlibc/llvmlibc_shim.h>"
     )
+    # Baremetal LLVM libc ships no POSIX <sys/*> header (it declares struct
+    # timeval and gettimeofday() in <time.h>); supply the <sys/time.h> the
+    # portable sources include, so they stay C-library agnostic.
+    target_include_directories(system_compiler_flags INTERFACE
+        ${PATH_OSYS}/Lib_generics/llvmlibc/compat
+    )
     # Overlay installs need --config=llvmlibc.cfg to select LLVM libc; a
     # dedicated LLVM-libc toolchain build does not (and has no such file).
     # Set LLVMLIBC_CONFIG=llvmlibc.cfg to enable it for overlay installs.
@@ -82,7 +95,7 @@ elseif(C_LIBRARY STREQUAL "llvmlibc")
         target_compile_options(system_compiler_flags INTERFACE --config=${LLVMLIBC_CONFIG})
         target_link_options(system_compiler_flags INTERFACE --config=${LLVMLIBC_CONFIG})
     endif()
-    message(STATUS "C library compile definitions (llvmlibc): CONFIG_MAN_LLVMLIBC_S (dprintf shim force-included)")
+    message(STATUS "C library compile definitions (llvmlibc): CONFIG_MAN_LLVMLIBC_S (dprintf shim force-included, <sys/time.h> compatibility header)")
 else()
     # newlib (default)
     target_compile_definitions(system_compiler_flags INTERFACE

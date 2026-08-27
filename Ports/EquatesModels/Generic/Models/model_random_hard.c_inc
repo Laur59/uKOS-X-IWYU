@@ -19,6 +19,8 @@
 
 #include    <stdint.h>
 
+#include    "random/random.h"
+
 /*
  * \brief model_random_hard_init
  *

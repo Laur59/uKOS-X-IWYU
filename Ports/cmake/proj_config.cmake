@@ -112,8 +112,8 @@ set(TARGET_TRIPLE_MIDDLE unknown-none)
 #   set(CPU_FEATURES "Helium;Double")
 #   include(proj_config)
 #
-#   # Cortex-M85 with Helium/MVE and PACBTI (STM32V873)
-#   set(SOC STM32V873)
+#   # Cortex-M85 with Helium/MVE and PACBTI (illustrative: no M85 port in this fork yet)
+#   set(SOC <your_M85_SoC>)
 #   set(CORE CORTEX_M85)
 #   set(CPU_FEATURES "Helium;PACBTI")
 #   include(proj_config)
@@ -420,6 +420,11 @@ endfunction()
 
 function(configure_riscv_core)
     add_link_options($<$<C_COMPILER_ID:GNU>:-Wl,--no-warn-rwx-segment>)
+    # Same clock-tick contract as the ARM cores: _CLOCKS_PER_SEC_ is the 1-us
+    # resolution of the kernel counter, and _MACHTIME_H_ keeps newlib's
+    # machine/time.h from defining it (it agrees on RISC-V, but the value must
+    # not depend on which C library is in use -- LLVM libc ships no machine/).
+    target_compile_definitions(core_compiler_flags INTERFACE _MACHTIME_H_ _CLOCKS_PER_SEC_=1000000)
     target_compile_options(core_compiler_flags INTERFACE
         $<$<C_COMPILER_ID:Clang>:-ffunction-sections>
         $<$<C_COMPILER_ID:Clang>:-fdata-sections>

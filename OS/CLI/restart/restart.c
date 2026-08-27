@@ -54,10 +54,7 @@ MODULE(
  * \brief Main entry point
  *
  */
-static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
-
-    UNUSED(argc);
-    UNUSED(argv);
+static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char_t *argv[]) {
 
     (void)dprintf(KSYST, "System restart.\n");
 

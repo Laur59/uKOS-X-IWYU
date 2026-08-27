@@ -6,16 +6,11 @@
  *
  *           This module provides the integration layer between picolibc
  *           and uKOS-X kernel services. It implements:
- *           - Custom per-process errno mechanism
  *           - I/O redirection to serial device managers
  *           - Memory allocation wrapping to uKOS-X memo_malloc
  *           - System call implementations
  */
 
-/*
- * CRITICAL: Include picolibc.h FIRST to define custom errno function
- * before any C library headers are included.
- */
 #include    "picolibc.h"
 
 #include    <stddef.h>
@@ -56,14 +51,15 @@ STRG_LOC_CONST(aStrHelp[])        = "picolibc manager\n"
                                     "================\n\n"
 
                                     "This manager provides integration between picolibc C library\n"
-                                    "and uKOS-X kernel services. It implements custom errno handling,\n"
-                                    "I/O redirection, and memory allocation wrapping.\n\n"
+                                    "and uKOS-X kernel services. It implements I/O redirection and\n"
+                                    "memory allocation wrapping.\n\n"
 
                                     "Picolibc advantages:\n"
                                     "- Smaller code size (typically 10-30% reduction)\n"
                                     "- Modern C standards compliance (C23)\n"
                                     "- Better floating-point support\n"
-                                    "- No Thread-Local Storage (TLS) overhead\n\n"
+                                    "- No Thread-Local Storage (TLS) overhead\n"
+                                    "- errno kept per process by the kernel across switches\n\n"
 
                                     "Module built on "__DATE__"  "__TIME__" (c) EFr-2026\n\n";
 
@@ -98,31 +94,6 @@ extern  void        crt0_exit(int number);
 
 /*
  * ============================================================================
- * Custom errno function implementation
- * ============================================================================
- *
- * This function is called by picolibc whenever errno is accessed. It returns
- * a pointer to the current process's errno variable, enabling per-process
- * error state without Thread-Local Storage overhead.
- *
- * The kernel maintains errno as part of each process's control structure and
- * this function simply returns the appropriate pointer based on which process
- * is currently running.
- */
-
-int *__ukos_get_errno(void) {
-    proc_t *process;
-
-    // Get the currently running process
-    kern_getProcessRun(&process);
-
-    // Return pointer to this process's errno
-    // Note: The errno field must be added to proc_t structure
-    return &process->oErrnoPicolibc;
-}
-
-/*
- * ============================================================================
  * I/O functions (open, close, read, write)
  * ============================================================================
  *
@@ -137,10 +108,7 @@ int *__ukos_get_errno(void) {
  *
  * Picolibc version (no reent parameter, direct errno access)
  */
-int _open(const char_t *path, int oflag, int mode) {
-    UNUSED(path);
-    UNUSED(oflag);
-    UNUSED(mode);
+int _open([[maybe_unused]] const char_t *path, [[maybe_unused]] int oflag, [[maybe_unused]] int mode) {
 
     errno = ENODEV;
     return (-1);
@@ -153,8 +121,7 @@ int _open(const char_t *path, int oflag, int mode) {
  *
  * Picolibc version (no reent parameter, direct errno access)
  */
-int _close(int fd) {
-    UNUSED(fd);
+int _close([[maybe_unused]] int fd) {
 
     errno = EBADF;
     return (-1);
@@ -283,8 +250,7 @@ ssize_t _read(int fd, void *buf, size_t count) {
  *
  * Picolibc version (no reent parameter, direct errno access)
  */
-int _fstat(int fd, struct stat *st) {
-    UNUSED(fd);
+int _fstat([[maybe_unused]] int fd, struct stat *st) {
 
     // All file descriptors are character devices (TTY)
     st->st_mode = S_IFCHR;
@@ -320,10 +286,7 @@ int _isatty(int fd) {
  *
  * Picolibc version (no reent parameter, direct errno access)
  */
-off_t _lseek(int fd, off_t offset, int whence) {
-    UNUSED(fd);
-    UNUSED(offset);
-    UNUSED(whence);
+off_t _lseek([[maybe_unused]] int fd, [[maybe_unused]] off_t offset, [[maybe_unused]] int whence) {
 
     // Serial devices don't support seeking
     errno = ESPIPE;
@@ -362,9 +325,7 @@ pid_t _getpid(void) {
  *
  * Picolibc version (no reent parameter, direct errno access)
  */
-int _kill(pid_t pid, int sig) {
-    UNUSED(pid);
-    UNUSED(sig);
+int _kill([[maybe_unused]] pid_t pid, [[maybe_unused]] int sig) {
 
     errno = ENOSYS;     // Function not implemented
     return (-1);
@@ -400,8 +361,7 @@ void _exit(int status) {
  *
  * Picolibc version (no reent parameter, direct errno access)
  */
-int _gettimeofday(struct timeval *tv, void *tz) {
-    UNUSED(tz);
+int _gettimeofday(struct timeval *tv, [[maybe_unused]] void *tz) {
 
     uint64_t    unixTime;
 
@@ -441,18 +401,28 @@ clock_t _times(struct tms *buf) {
     kern_getProcessRun(&process);
 
     PRIVILEGE_ELEVATE;
-    buf->tms_utime  = (clock_t) process->oStatistic.oTimePAvg;
-    buf->tms_stime  = (clock_t)(process->oStatistic.oTimeKAvg + process->oStatistic.oTimeEAvg);
-    buf->tms_cutime = (clock_t) process->oStatistic.oTimePCum;
-    buf->tms_cstime = (clock_t)(process->oStatistic.oTimeKCum + process->oStatistic.oTimeECum);
+    buf->tms_utime  = (clock_t) process->oStatistic.oTimePCum;
+    buf->tms_stime  = (clock_t)(process->oStatistic.oTimeKCum + process->oStatistic.oTimeECum);
     PRIVILEGE_RESTORE;
+
+// POSIX reserves tms_cutime / tms_cstime for terminated children. uKOS-X has no
+// process hierarchy, so there is never anything to report there.
+
+    buf->tms_cutime = 0;
+    buf->tms_cstime = 0;
 
     #else
     *buf = (struct tms){ 0 };
     #endif
 
+// times() returns the elapsed real time since an arbitrary point, in
+// CLOCKS_PER_SEC units. tv_usec alone is only the sub-second remainder, so it
+// wrapped every second; combine both fields. clock_t is 32-bit on the 32-bit
+// targets, so this still wraps every 2^32 us (about 71 minutes) - callers are
+// expected to use differences.
+
     _gettimeofday(&tv, NULL);
-    return ((clock_t)tv.tv_usec);
+    return ((clock_t)(((uint64_t)tv.tv_sec * (uint64_t)CLOCKS_PER_SEC) + (uint64_t)tv.tv_usec));
 }
 
 /*

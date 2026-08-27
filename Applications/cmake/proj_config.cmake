@@ -163,6 +163,11 @@ endfunction()
 
 function(configure_riscv_core)
     add_link_options($<$<C_COMPILER_ID:GNU>:-Wl,--no-warn-rwx-segment>)
+    # Same clock-tick contract as the ARM cores: _CLOCKS_PER_SEC_ is the 1-us
+    # resolution of the kernel counter, and _MACHTIME_H_ keeps newlib's
+    # machine/time.h from defining it (it agrees on RISC-V, but the value must
+    # not depend on which C library is in use -- LLVM libc ships no machine/).
+    target_compile_definitions(core_compiler_flags INTERFACE _MACHTIME_H_ _CLOCKS_PER_SEC_=1000000)
 
     # RISC-V core configurations
     if(${CORE} STREQUAL "RV32IMAC")

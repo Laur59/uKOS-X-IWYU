@@ -17,6 +17,14 @@
  *
  *          Important STM32 QUADSPI note:
  *              For transactions with address phase, configure CCR first, then write AR.
+ *
+ * Composition: this fragment is a template; the including .c must define:
+ *   BFLASH_xSPI_BUSY BFLASH_xSPI_QE BFLASH_xSPI_WEL KFLASH_QSPI_CMD_READ
+ *   KFLASH_QSPI_CMD_READ_STATUS KFLASH_QSPI_CMD_WRITE KFLASH_QSPI_CMD_WRITE_STATUS
+ *   KFLASH_xSPI_CMD_ERASE_SECTOR KFLASH_xSPI_CMD_READ_STATUS
+ *   KFLASH_xSPI_CMD_WRITE_ENABLE KFLASH_xSPI_NB_SECTOR KFLASH_xSPI_SZ_FLASH
+ *   KFLASH_xSPI_SZ_PAGE KFLASH_xSPI_SZ_SECTOR KQSPI_FREQUENCY KQSPI_READ_CHUNK
+ *   KQSPI_SPEED QSPI cb_enable
  */
 
 #include    <stdint.h>

@@ -11,6 +11,11 @@
  *           (located in the internal SRAM) to collect a complete horizontal line.
  *           During the H blanking the CPU copies the data from the collected
  *           horizontal line into the SDRAM for building the final image.
+ *
+ * Composition: this fragment is a template; the including .c must define:
+ *   KIMAGER_DCMI_SEMAPHORE_IM KIMAGER_DCMI_SEMAPHORE_VS KIMAGER_NB_COLS
+ *   KIMAGER_NB_ROWS KIMG_EXPOSITION KIMG_INIT KIMG_NORMAL KIMG_PIXEL_MODE KIMG_STANDBY
+ *   KIMG_TRIGGER cb_configure cb_control cb_getRegister cb_putRegister
  */
 
 #include    <stdint.h>
@@ -26,6 +31,7 @@
 #include    "macros_soc.h"
 #include    "memo/memo.h"
 #include    "model_I_D_cache.c_inc"
+#include    "os_errors.h"
 #include    "soc_reg.h"
 
 static              void        (*vHSyncCodeRoutine)(void) = nullptr;
@@ -429,13 +435,11 @@ static  int32_t local_confPixe(const imagerCnf_t *configure) {
  * - Configure the memory buffers
  *
  */
-static  int32_t local_confMemo(const imagerCnf_t *configure) {
+static  int32_t local_confMemo([[maybe_unused]] const imagerCnf_t *configure) {
             int32_t     status = KERR_IMAGER_NOERR;
     const   size_t      nbPixels = (size_t)vFrameNbPixels;
     const   size_t      elemSize = (size_t)vSize;
     const   size_t      nbBytes  = nbPixels * elemSize;
-
-    UNUSED(configure);
 
     if (vImageE0 != nullptr) { memo_free(vImageE0); }
 

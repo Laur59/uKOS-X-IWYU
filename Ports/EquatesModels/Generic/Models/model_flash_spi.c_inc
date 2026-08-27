@@ -4,10 +4,17 @@
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
  * Goal:     Model for controlling the "flash" device by an SPI.
+ *
+ * Composition: this fragment is a template; the including .c must define:
+ *   KFLASH_DESELECT KFLASH_INIT KFLASH_RELEASE_SPI KFLASH_RESERVE_SPI KFLASH_SELECT
+ *   KFLASH_xSPI_CMD_ERASE_SECTOR KFLASH_xSPI_CMD_READ KFLASH_xSPI_CMD_WRITE
+ *   KFLASH_xSPI_CMD_WRITE_ENABLE KFLASH_xSPI_NB_SECTOR KFLASH_xSPI_SZ_PAGE
+ *   KFLASH_xSPI_SZ_SECTOR cb_control cb_writeRead
  */
 
 #include    <stdint.h>
 
+#include    "kern/temporal.h"
 #include    "os_errors.h"
 #include    "storage/storage.h"
 

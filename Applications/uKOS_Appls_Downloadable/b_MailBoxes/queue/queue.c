@@ -114,7 +114,7 @@ MODULE(
  *
  */
 [[noreturn]]
-static void aProcess_0(const void *argument) {
+static void aProcess_0([[maybe_unused]] const void *argument) {
     uintptr_t   message_1_to_0, expected_1_to_0 = 0U;
     mbox_t      *queue_1_to_0;
     mcnf_t      configure = {
@@ -122,8 +122,6 @@ static void aProcess_0(const void *argument) {
                     .oDataEntrySize = 0U
             };
     uint32_t ledDecimationCounter = 0U;
-
-    UNUSED(argument);
 
     if (kern_createMailbox("Queue 1-to-0", &queue_1_to_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create mbox");    exit(EXIT_OS_FAILURE); }
     if (kern_setMailbox(queue_1_to_0, &configure)         != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Configure mbox"); exit(EXIT_OS_FAILURE); }
@@ -162,11 +160,9 @@ static void aProcess_0(const void *argument) {
  *
  */
 [[noreturn]]
-static void aProcess_1(const void *argument) {
+static void aProcess_1([[maybe_unused]] const void *argument) {
     uintptr_t   message_1_to_0 = 0;
     mbox_t      *queue_1_to_0;
-
-    UNUSED(argument);
 
 // Waiting for the queue 1-to-0
 
@@ -203,9 +199,6 @@ MAIN_ENTRY(argc, argv[]) {
     STRG_LOC_CONST(aStrIden_1[]) = "Process_User_1";
     STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2026";
     STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2026";
-
-    UNUSED(argc);
-    UNUSED(argv);
 
 // Specifications for the processes
 

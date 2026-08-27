@@ -4,19 +4,24 @@
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
  * Goal:     Model for controlling the "usart" device.
+ *
+ * Composition: this fragment is a template; the including .c must define:
+ *   KUSART_SEMAPHORE_RX KUSART_SEMAPHORE_TX KUSART_SZ_RX_BUF KUSART_SZ_TX_BUF USART
+ *   USART_FREQUENCY USART_VECTOR_NUMBER cb_CTSCheck cb_enable cb_init
  */
 
 #include    <stdint.h>
 #include    <stdlib.h>
 
 #include    "exce.h"
-#include    "serial/serial.h"
 #include    "kern/kern.h"
 #include    "macros.h"
 #include    "macros_core.h"
 #include    "macros_soc.h"
 #include    "os_errors.h"
 #include    "record/record.h"
+#include    "serial/serial.h"
+#include    "serial_common.h"
 
 static  volatile    bool        vSending = false;
 static  volatile    bool        vWithSemaphore_RX = false;

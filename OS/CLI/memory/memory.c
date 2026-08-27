@@ -97,7 +97,7 @@ static  void    local_displayHeap(uint8_t *stHeap, uint32_t blocks, uint32_t use
  * \brief Main entry point
  *
  */
-static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
+static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char_t *argv[]) {
     uint32_t    usdMemory, nbBlocks;
     intptr_t    length;
 
@@ -122,9 +122,6 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     size_t  size_system_C1 = (size_t)linker_sizeStackSystem_C1;
     #   endif
     #endif
-
-    UNUSED(argc);
-    UNUSED(argv);
 
     PRIVILEGE_ELEVATE;
 

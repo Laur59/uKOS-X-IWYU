@@ -3,31 +3,35 @@
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
- * Goal:     Model for the core dump (tracing).
+ * Dump of the record trace fifo and log buffer, for the crash and exit paths.
  */
 
 #include    <inttypes.h>
 #include    <stdio.h>
 #include    <string.h>
 
+#include    "cmns.h"
 #include    "macros_soc.h"
-#include    "record/private/private_record.h"
-#include    "record/record.h"
+#include    "private/private_record.h"
+#include    "private/private_recordDump.h"
+#include    "record.h"
 #include    "serial/serial.h"
 #include    "types.h"
 
 // Prototypes
 
+#ifndef NO_KERNEL_S
 static  void    local_compose(const char_t *identifier, const char_t **idSpacer);
+#endif
 
 /*
- * \brief local_printTrace
+ * \brief record_printTrace
  *
  * - Display the user trace
  *
  */
 [[gnu::noinline]]
-static  void    local_printTrace(void) {
+void    record_printTrace(void) {
 
     #ifndef NO_KERNEL_S
     uint32_t    core, i;
@@ -52,13 +56,13 @@ static  void    local_printTrace(void) {
 }
 
 /*
- * \brief local_printLog
+ * \brief record_printLog
  *
  * - Display the user log
  *
  */
 [[gnu::noinline]]
-static  void    local_printLog(void) {
+void    record_printLog(void) {
 
     #ifndef NO_KERNEL_S
             uint32_t            core, i;
@@ -151,6 +155,7 @@ static  void    local_printLog(void) {
     #endif
 }
 
+#ifndef NO_KERNEL_S
 /*
  * \brief local_compose
  *
@@ -175,3 +180,4 @@ static  void    local_compose(const char_t *identifier, const char_t **idSpacer)
     len = strlen(identifier);
     *idSpacer = (len <= (sizeof(aSpacer) - 1U)) ? (&aSpacer[len]) : (&aSpacer[0]);
 }
+#endif

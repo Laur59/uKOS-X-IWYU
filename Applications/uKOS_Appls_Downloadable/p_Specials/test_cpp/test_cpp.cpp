@@ -112,9 +112,7 @@ MODULE(
 namespace {
 
 [[noreturn]]
-void    aProcess_0(const void *argument) {
-
-    UNUSED(argument);
+void    aProcess_0([[maybe_unused]] const void *argument) {
 
 // Waiting from the uKOS-X prompt
 
@@ -149,9 +147,6 @@ MAIN_ENTRY(argc, argv[]) {
 
     STRG_LOC_CONST(aStrIden_0[]) =    "Process_User";
     STRG_LOC_CONST(aStrText_0[]) =    "Process user.                             (c) EFr-2026";
-
-    UNUSED(argc);
-    UNUSED(argv);
 
 // Initialise the C++ constructors
 

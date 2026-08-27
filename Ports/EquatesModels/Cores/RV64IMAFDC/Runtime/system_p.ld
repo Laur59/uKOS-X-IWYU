@@ -126,4 +126,26 @@ SECTIONS {
         _end = ABSOLUTE(.);
     } > prgm_data
 
+/* uKOS-X installs no thread pointer: it links -nostartfiles with its own crt0, so
+   picolibc's crt0 - the only caller of _set_tls() - is never linked and the thread
+   pointer is never set (tp stays unset on RISC-V). Every thread-local access would
+   then land at a near-null address: silently tolerated in machine mode, where no
+   PMP region covers 0, but a fault in user mode. Build picolibc with
+   -Dthread-local-storage=false; the ASSERTs below turn a thread-local input that
+   slips through into a link error rather than a fault at run time.
+   This target loads .data in place from prgm_code, so .tdata belongs there too. */
+
+    .tdata : {
+        *(.tdata .tdata.* .gnu.linkonce.td.*)
+    } > prgm_code
+
+    .tbss (NOLOAD) : {
+        linker_stTBSS = ABSOLUTE(.);
+        *(.tbss .tbss.* .gnu.linkonce.tb.*)
+        *(.tcommon)
+        linker_enTBSS = ABSOLUTE(.);
+    } > prgm_data
+
+    ASSERT(SIZEOF(.tdata) == 0, "Thread-local data present: rebuild picolibc with -Dthread-local-storage=false")
+    ASSERT(SIZEOF(.tbss) == 0, "Thread-local bss present: rebuild picolibc with -Dthread-local-storage=false")
 }

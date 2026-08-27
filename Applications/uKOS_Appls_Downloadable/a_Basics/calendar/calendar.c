@@ -124,7 +124,7 @@ MODULE(
  *
  */
 [[noreturn]]
-static void aProcess_0(const void *argument) {
+static void aProcess_0([[maybe_unused]] const void *argument) {
             time_t      now, newTime;
             clock_t     tic1, toc1;
             timeval_t   tic2, toc2;
@@ -132,8 +132,6 @@ static void aProcess_0(const void *argument) {
             float64_t   totalTime;
             tm_t        localTime, currentTime;
     static  char_t      formattedTime[100];
-
-    UNUSED(argument);
 
 // Time now (uinxtime)
 
@@ -225,16 +223,27 @@ MAIN_ENTRY(argc, argv[]) {
     STRG_LOC_CONST(aStrIden_0[]) = "Process_User_0";
     STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2026";
 
-    UNUSED(argc);
-    UNUSED(argv);
-
 // Specifications for the processes
+
+// Under LLVM libc a single dprintf("%f", ...) nests ~3.2 KB deep in the C library's own
+// printf internals: decimal_digits() is a 472-byte frame and it then calls the 320-bit
+// DyadicFloat exact-decimal routines (rounded_div 888 B, rounding_direction 456 B,
+// round<640> 296 B). KKERN_SZ_STACK_LL's 2400 bytes cannot hold that, and the overflow
+// destroys the magic word at the bottom of the stack, which the kernel reports as
+// "stack underflow" at the next context switch. picolibc and newlib use lighter float
+// printf implementations and stay well inside KKERN_SZ_STACK_LL.
+
+    #ifdef CONFIG_MAN_LLVMLIBC_S
+    #define KLOCAL_SZ_STACK_PROCESS     KKERN_SZ_STACK_XLIB
+    #else
+    #define KLOCAL_SZ_STACK_PROCESS     KKERN_SZ_STACK_LL
+    #endif
 
     PROCESS_STACKMALLOC(
         0,                                  // Index
         specification_0,                    // Specifications (just use specification_x)
         aStrText_0,                         // Info string (nullptr if anonymous)
-        KKERN_SZ_STACK_LL,                  // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
+        KLOCAL_SZ_STACK_PROCESS,            // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
         aProcess_0,                         // Code of the process
         aStrIden_0,                         // Identifier (nullptr if anonymous)
         KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)

@@ -129,11 +129,9 @@ volatile    uint32_t    vTimer = 0U;
  *
  */
 [[noreturn]]
-static void aProcess(const void *argument) {
+static void aProcess([[maybe_unused]] const void *argument) {
     int32_t     status;
     sema_t      *semaphore;
-
-    UNUSED(argument);
 
     kern_getSemaphoreById("Semaphore tim", &semaphore);
 
@@ -187,9 +185,6 @@ MAIN_ENTRY(argc, argv[]) {
 
     STRG_LOC_CONST(aStrIden[]) = "Process_User";
     STRG_LOC_CONST(aStrText[]) = "Process user.                             (c) EFr-2026";
-
-    UNUSED(argc);
-    UNUSED(argv);
 
 // Specifications for the processes
 

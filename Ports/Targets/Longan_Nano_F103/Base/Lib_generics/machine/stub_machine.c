@@ -10,7 +10,6 @@
 
 #include    <stdint.h>
 
-#include    "macros.h"
 #include    "macros_soc.h"
 #include    "os_errors.h"
 #include    "types.h"
@@ -71,9 +70,7 @@ int32_t stub_machine_readPC(const uintptr_t *stackProcess, uintptr_t *pc) {
  * - Return the function name that belong to a given PC
  *
  */
-int32_t stub_machine_readFunctionName(const uintptr_t pc, const char_t **function) {
-
-    UNUSED(pc);
+int32_t stub_machine_readFunctionName([[maybe_unused]] const uintptr_t pc, const char_t **function) {
 
     *function = nullptr;
     return KERR_SYSTEM_NOERR;

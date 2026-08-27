@@ -6,12 +6,12 @@
  *          Interface between the lvgl and the hardware.
  */
 
+#include    <stdint.h>
 #include    <string.h>
 
 #include    "Registers/stm32N657_rcc.h"
 #include    "board.h"
 #include    "lcd_display.h"
-#include    "macros.h"
 #include    "macros_core.h"
 #include    "ulvgl.h"
 
@@ -36,14 +36,12 @@ extern  uint32_t                    linker_stLCD_F_BUFFER[];
  * - Callback for flushing an image in the LCD display
  *
  */
-void    stub_LCD_flush_cb(lv_display_t *lv_display, const lv_area_t *area, uint8_t *pixelMapping) {
+void    stub_LCD_flush_cb([[maybe_unused]] lv_display_t *lv_display, const lv_area_t *area, uint8_t *pixelMapping) {
     uint8_t     *frameBuffer = (uint8_t *)FB_ADDR;
     int32_t     w = area->x2 - area->x1 + 1;
     int32_t     h = area->y2 - area->y1 + 1;
     int32_t     line, x, y;
     uint8_t     *src, *dst;
-
-    UNUSED(lv_display);
 
     for (line = 0; line < h; line++) {
         y = area->y1 + line;

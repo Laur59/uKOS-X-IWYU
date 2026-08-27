@@ -43,6 +43,13 @@ if(C_LIBRARY STREQUAL "picolibc")
     )
     message(STATUS "C library compile definitions: CONFIG_MAN_PICOLIBC_S, _GNU_SOURCE, _REENT_GLOBAL_ERRNO")
 elseif(C_LIBRARY STREQUAL "llvmlibc")
+    # CLOCKS_PER_SEC is not set here: stock baremetal LLVM libc defaults it to 100
+    # on ARM (Arm semihosting counts centiseconds), and the uKOS-X toolchain patch
+    # ukos_patches/0006-llvm-libc-use-microsecond-also-for-32-bit-Arm-cores.patch
+    # moves 32-bit Arm to the microsecond branch instead. Patching rather than
+    # passing -D__CLK_TCK also rebuilds libc.a with the same unit, so the library
+    # and the application agree. A static_assert in llvmlibc.c fails the build on
+    # an unpatched toolchain.
     target_compile_definitions(system_compiler_flags INTERFACE
         CONFIG_MAN_LLVMLIBC_S
     )
@@ -51,13 +58,19 @@ elseif(C_LIBRARY STREQUAL "llvmlibc")
     target_compile_options(system_compiler_flags INTERFACE
         "$<$<COMPILE_LANGUAGE:C,CXX>:-include;${PATH_UKOS}/OS/Lib_generics/llvmlibc/llvmlibc_shim.h>"
     )
+    # Baremetal LLVM libc ships no POSIX <sys/*> header (it declares struct
+    # timeval and gettimeofday() in <time.h>); supply the <sys/time.h> the
+    # portable application sources include, so they stay C-library agnostic.
+    target_include_directories(system_compiler_flags INTERFACE
+        ${PATH_UKOS}/OS/Lib_generics/llvmlibc/compat
+    )
     # Overlay installs need --config=llvmlibc.cfg to select LLVM libc; a
     # dedicated LLVM-libc toolchain build does not. Set LLVMLIBC_CONFIG to enable.
     if(LLVMLIBC_CONFIG)
         target_compile_options(system_compiler_flags INTERFACE --config=${LLVMLIBC_CONFIG})
         target_link_options(system_compiler_flags INTERFACE --config=${LLVMLIBC_CONFIG})
     endif()
-    message(STATUS "C library compile definitions: CONFIG_MAN_LLVMLIBC_S (dprintf shim force-included)")
+    message(STATUS "C library compile definitions: CONFIG_MAN_LLVMLIBC_S (dprintf shim force-included, <sys/time.h> compatibility header)")
 else()
     # newlib (default)
     target_compile_definitions(system_compiler_flags INTERFACE
@@ -177,6 +190,17 @@ target_link_options(system_compiler_flags INTERFACE
     -Wall
     $<$<BOOL:${VERBOSE_LINK}>:-v>
 )
+
+# LLVM libc console hooks.
+#
+# LLVM libc is built with hidden visibility, so the copy linked into FLASH.elf
+# contributes only LOCAL HIDDEN symbols and --just-symbols cannot hand them to
+# an application. An application calling printf() links its own libc stdio
+# objects and has to define the retargeting hooks itself; this shim does that
+# and forwards to the system image. See the file for the full rationale.
+if(C_LIBRARY STREQUAL "llvmlibc")
+    list(APPEND RUNTIME ${PATH_UKOS}/OS/Lib_generics/llvmlibc/llvmlibc_app_stdio.c)
+endif()
 
 # Executable Target
 add_executable(${TARGET_ELF} ${RUNTIME} ${OBJ})

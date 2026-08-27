@@ -108,6 +108,7 @@ static  bool        local_checkSignature(void);
  *
  */
 static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
+    [[maybe_unused]]
     char_t          *dummy;
     uint8_t         *address = nullptr, byte = 0U, checksum, counter;
     int32_t         error = KERR_S_LOADER_NOT, (*code)(uint32_t argc, const char_t *argv[]);
@@ -115,8 +116,6 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     uint8_t         run = KRUN;
     uint32_t        size = 0U;
     uKOS_header_t   ramHeader;
-
-    UNUSED(dummy);
 
     (void)dprintf(KSYST, "S format Motorola loader mode; waiting for the code.\n");
 

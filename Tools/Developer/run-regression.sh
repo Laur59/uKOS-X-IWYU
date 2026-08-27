@@ -8,10 +8,12 @@
 #   dedicated 'artefacts' directory.
 #
 # Usage:
-#   ./run-regression.sh [-G] [-U] [-Y] [-v] [-t <target>]
+#   ./run-regression.sh [-G] [-P|-L] [-U] [-Y] [-v] [-t <target>]
 #
 # Options:
 #   -G  Use gcc compiler
+#   -P  Use picolibc
+#   -L  Use llvmlibc (LLVM libc; requires clang, ARM and RISC-V targets)
 #   -U  Privileged mode only (User mode OFF)
 #   -Y  Disable canary stack protection
 #   -v  Verbose: display full build output
@@ -20,6 +22,7 @@
 
 emulate -L zsh
 setopt NO_UNSET PIPE_FAIL EXTENDED_GLOB NULL_GLOB
+zmodload zsh/zutil
 
 # Colours
 readonly RED=$'\033[0;31m'
@@ -48,22 +51,75 @@ USER_MODE="ON"
 CANARY="ON"
 VERBOSE=0
 TARGET_FILTER=""
+C_LIB="newlib"
 
-while getopts "GUYvt:" option; do
-    case "${option}" in
-        G) COMPILER="gcc"; USE_LLVM="OFF" ;;
-        U) USER_MODE="OFF" ;;
-        Y) CANARY="OFF" ;;
-        v) VERBOSE=1 ;;
-        t) TARGET_FILTER="${OPTARG}" ;;
-        *) exit 1 ;;
-    esac
-done
+usage() {
+    cat <<'EOF'
+Usage: ./_build.sh [-G] [-P|-L] [-U] [-Y] [-v] [-t <target>]
+
+Options:
+  -G  Use gcc compiler
+  -P  Use picolibc
+  -L  Use llvmlibc (LLVM libc; requires clang, ARM and RISC-V targets)
+  -U  Privileged mode only
+  -Y  Disable canary stack protection
+  -v  Verbose: display full build output
+  -t  Filter by target name (e.g. Nucleo_H743)
+  -h  Show this help message
+EOF
+}
+
+# Parse options with zparseopts. -P and -L both feed a single array so that
+# passing both can be detected as a conflict (they are mutually exclusive).
+# Pre-initialise every result array because the script runs under NO_UNSET.
+
+o_gcc=() clib_flag=() o_user=() o_canary=() o_verbose=() o_filter=() o_help=()
+
+zparseopts -D -F - \
+    G=o_gcc \
+    P=clib_flag \
+    L=clib_flag \
+    U=o_user \
+    Y=o_canary \
+    v=o_verbose \
+    t:=o_filter \
+    h=o_help || { usage; exit 1; }
+
+# -h short-circuits everything else
+if (( $#o_help )); then
+    usage
+    exit 0
+fi
+
+# -P (picolibc) and -L (llvmlibc) are mutually exclusive
+if (( $#clib_flag > 1 )); then
+    printf "%bError:%b -P and -L are mutually exclusive.\n" "${RED}" "${NC}" >&2
+    usage
+    exit 1
+fi
+
+# llvmlibc is a Clang/LLVM-only C library (Arm Toolchain for Embedded), so
+# -M cannot be combined with -G (gcc). Checked before -M rewrites COMPILER_TOOL.
+if (( $#o_gcc )) && [[ ${clib_flag[1]:-} == -L ]]; then
+    printf "%bError:%b -M (llvmlibc) cannot be combined with -G (gcc); llvmlibc requires clang.\n" "${RED}" "${NC}" >&2
+    exit 1
+fi
+
+# Apply the parsed options
+(( $#o_gcc ))    && { COMPILER="gcc"; USE_LLVM="OFF"; }
+(( $#o_user ))   && USER_MODE="OFF"
+(( $#o_canary )) && CANARY="OFF"
+(( $#o_verbose )) && VERBOSE=1
+(( $#o_filter )) && TARGET_FILTER=${o_filter[2]}
+
+case ${clib_flag[1]:-} in
+    -P) C_LIB="picolibc" ;;
+    -L) C_LIB="llvmlibc"; COMPILER="llvm"; USE_LLVM="ON" ;;
+    '') ;;                             # keep default (newlib)
+esac
 
 # Determine the preset (systems and applications share the same matrix)
 PRESET="${COMPILER}"
-[[ "${USER_MODE}" == "OFF" ]] && PRESET+="-nouser"
-[[ "${CANARY}" == "OFF" ]] && PRESET+="-nocanary"
 
 rm -fr "${PATH_ARTEFACTS}"
 
@@ -71,6 +127,7 @@ printf "%bStarting Regression Test%b\n" "${BOLD}${BLUE}" "${NC}"
 printf "Source:    %s\n" "${PATH_ROOT}"
 printf "Artefacts: %s\n" "${PATH_ARTEFACTS}"
 printf "Compiler:  %s (LLVM=%s)\n" "${COMPILER}" "${USE_LLVM}"
+printf "C library: %s\n" "${C_LIB}"
 printf "Options:   USER_MODE=%s, CANARY=%s\n" "${USER_MODE}" "${CANARY}"
 [[ -n "${TARGET_FILTER}" ]] && printf "Filter:    Target = %s\n" "${TARGET_FILTER}"
 printf "\n"
@@ -102,7 +159,10 @@ build_target() {
     # Systems and applications share the same preset matrix; only the system
     # build redirects its artefacts into the build tree. -B overrides the
     # binaryDir of the preset, which keeps the out-of-source layout.
-    local -a config_args=(--preset "${PRESET}")
+    local -a config_args=(--preset "${PRESET}"
+                          -DC_LIBRARY="${C_LIB}"
+                          -DUSER_MODE="${USER_MODE}"
+                          -DCANARY="${CANARY}")
     [[ "$name" == App:* ]] || config_args+=(-DARTEFACTS_DIR="${build_dir}/System")
 
     cmake -S "${source_dir}" -B "${build_dir}" "${config_args[@]}" \

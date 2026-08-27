@@ -11,7 +11,6 @@
 #include    "core.h"
 #include    "core_reg.h"
 #include    "crt0.h"
-#include    "macros.h"
 #include    "macros_soc.h"
 #include    "soc_reg.h"
 
@@ -174,11 +173,9 @@ static  void    local_exception(uint32_t core, uint64_t number, uint64_t message
  *   PLIC dispatcher
  *
  */
-void    first_handle_MachineExternal(uint32_t core, uint64_t parameter) {
+void    first_handle_MachineExternal(uint32_t core, [[maybe_unused]] uint64_t parameter) {
     void        (*go)(uint32_t core, uint64_t number);
     uint64_t    number;
-
-    UNUSED(parameter);
 
     number = (uint64_t)plic->targets.target[core].claim_complete;
 

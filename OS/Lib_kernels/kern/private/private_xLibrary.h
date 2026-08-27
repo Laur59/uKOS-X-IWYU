@@ -43,7 +43,16 @@ extern  reent_t     vKern_impureData[KNB_CORES][KKERN_NB_PROCESSES];    // Array
 #elif defined(CONFIG_MAN_PICOLIBC_S)
 #include    "picolibc/picolibc.h"
 
-// No global impure data for picolibc - errno is stored per-process in proc_t
+// No global impure data for picolibc - errno is picolibc's own global, parked
+// in proc_t.oErrno while a process is not running
+
+#elif defined(CONFIG_MAN_LLVMLIBC_S)
+#include    "llvmlibc/llvmlibc.h"
+
+// No global impure data for llvmlibc - errno is LLVM libc's own global, parked
+// in proc_t.oErrno while a process is not running
+
+// No global impure data for llvmlibc - errno is owned by LLVM libc (__llvm_libc_errno)
 
 #elif defined(CONFIG_MAN_LLVMLIBC_S)
 #include    "llvmlibc/llvmlibc.h"

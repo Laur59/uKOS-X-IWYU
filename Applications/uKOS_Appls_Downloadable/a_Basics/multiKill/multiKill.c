@@ -175,10 +175,8 @@ static void aThread_Px(const void *argument) {
 #define KPRIORITY   KKERN_PRIORITY_LOW_01
 
 [[noreturn]]
-static void aProcess_a(const void *argument) {
+static void aProcess_a([[maybe_unused]] const void *argument) {
     uint32_t    i;
-
-    UNUSED(argument);
 
     for (i = 0U; i < 1000000000U; i++) {
 
@@ -376,9 +374,6 @@ MAIN_ENTRY(argc, argv[]) {
 
     STRG_LOC_CONST(aStrIden_a[]) = "Process_User_0";
     STRG_LOC_CONST(aStrText_a[]) = "Process user 0.                           (c) EFr-2026";
-
-    UNUSED(argc);
-    UNUSED(argv);
 
 // Specifications for the processes
 

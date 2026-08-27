@@ -3,6 +3,9 @@
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  *
  * Goal:    Hardware specific stub.
+ *
+ * Composition: this fragment is a template; the including .c must define:
+ *   KSDCARD_INIT SDMMC SDMMC_FREQUENCY cb_control
  */
 
 #include    <stdint.h>
@@ -10,6 +13,7 @@
 #include    "kern/kern.h"
 #include    "os_errors.h"
 #include    "sdcard/sdcard.h"       // IWYU pragma: keep (for symbol sdcard_specification_t)
+#include    "soc_reg.h"
 
 // Definitions for the SDC commands
 

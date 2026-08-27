@@ -130,7 +130,7 @@ extern              proc_t  *vKern_runProc[KNB_CORES];
                                 *(--stack) = 0x04040404U;                                                                       \
                                 *(--stack) = ((uintptr_t)priority<<(uintptr_t)KNVIC_PRIORITY_SHIFT);                            \
                                 *(--stack) = 0xFFFFFFFDU;                                                                       \
-                                UNUSED(core)
+                                (void)(core)
 #endif
 
 // Recover the message & save the frame message

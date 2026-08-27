@@ -4,6 +4,9 @@
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
  * Goal:     Model for controlling the "spi" device.
+ *
+ * Composition: this fragment is a template; the including .c must define:
+ *   SPI SPI_FREQUENCY SPI_VECTOR_NUMBER UNIT cb_enable
  */
 
 #include    <stdint.h>
@@ -15,8 +18,8 @@
 #include    "macros_core.h"
 #include    "macros_soc.h"
 #include    "os_errors.h"
-#include    "spi_common.h"
 #include    "soc_reg.h"
+#include    "spi_common.h"
 
 static  const   volatile    uint8_t     *vWkBuffer;
 static          volatile    uint8_t     *vRkBuffer;

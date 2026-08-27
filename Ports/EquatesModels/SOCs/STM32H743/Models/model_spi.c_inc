@@ -4,6 +4,9 @@
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
  * Goal:     Model for controlling the "spi" device.
+ *
+ * Composition: this fragment is a template; the including .c must define:
+ *   SPI SPI_FREQUENCY SPI_VECTOR_NUMBER UNIT cb_enable
  */
 
 #include    <stdint.h>

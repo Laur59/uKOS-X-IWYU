@@ -4,17 +4,23 @@
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
  * Goal:     Model for controlling the "usart" device for C1.
+ *
+ * Composition: this fragment is a template; the including .c must define:
+ *   KUSART_SEMAPHORE_RX_C1 KUSART_SEMAPHORE_TX_C1 KUSART_SZ_RX_BUF_C1
+ *   KUSART_SZ_TX_BUF_C1 USART_C1 USART_FREQUENCY_C1 USART_VECTOR_NUMBER_C1
+ *   cb_CTSCheck_C1 cb_enable_C1 cb_init_C1
  */
 
+#include    <stdint.h>
 #include    <stdlib.h>
 
-#include    "os_errors.h"
+#include    "kern/kern.h"
 #include    "macros.h"
 #include    "macros_core.h"
 #include    "macros_soc.h"
-#include    "kern/kern.h"
+#include    "os_errors.h"
 #include    "record/record.h"
-#include    "serial/serial.h"
+#include    "serial_common.h"
 
 static  volatile    bool        vSending_C1          = false;
 static  volatile    bool        vWithSemaphore_RX_C1 = false;
@@ -261,10 +267,8 @@ static  int32_t model_usart_flush_C1(void) {
  * - Interruption RX-TX
  *
  */
-static  void    local_USART_IRQHandler_C1(uint32_t core, uint64_t parameter) {
+static  void    local_USART_IRQHandler_C1(uint32_t core, [[maybe_unused]] uint64_t parameter) {
     volatile    uint32_t    iir;
-
-    UNUSED(parameter);
 
     iir = USART_C1->IIR;
     if ((iir & UART_IIR_ERBFI) != 0U) {

@@ -4,12 +4,14 @@
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
  * Goal:     Model for controlling the "lsM9ds1" device (the TMP part).
+ *
+ * Composition: this fragment is a template; the including .c must define:
+ *   KTEMPERATURE_INIT KTEMPERATURE_RELEASE KTEMPERATURE_RESERVE cb_control cb_readTemp
  */
 
 #include    <stdint.h>
 
 #include    "LSM9DS1/LSM9DS1.h"
-#include    "macros.h"
 #include    "os_errors.h"
 #include    "temperature/temperature.h"
 #include    "types.h"
@@ -52,9 +54,7 @@ int32_t model_lsM9ds1tmp_read(float64_t *temperature) {
  * - Set the temperature
  *
  */
-int32_t model_lsM9ds1tmp_write(float64_t temperature) {
-
-    UNUSED(temperature);
+int32_t model_lsM9ds1tmp_write([[maybe_unused]] float64_t temperature) {
 
     return KERR_TEMPERATURE_SYCNA;
 }

@@ -64,11 +64,8 @@ static  void    local_process(const void *argument);
  * \brief Main entry point
  *
  */
-static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
+static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char_t *argv[]) {
     proc_t  *process;
-
-    UNUSED(argc);
-    UNUSED(argv);
 
     PROCESS_STACKMALLOC(
         0,                                  // Index
@@ -97,9 +94,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
  *
  */
 [[noreturn]]
-static void local_process(const void *argument) {
-
-    UNUSED(argument);
+static void local_process([[maybe_unused]] const void *argument) {
 
     stub_startUp_launch();
     exit(EXIT_OS_SUCCESS);

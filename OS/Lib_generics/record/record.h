@@ -7,8 +7,6 @@
 
 #pragma once
 
-#include    "macros.h"
-
 /*!
  * \addtogroup Lib_generics
  */
@@ -70,7 +68,7 @@ typedef enum {
 
 // Logs macro
 
-#define LOG(cat, msg)           (UNUSED(record_log((cat), __LINE__, __func__, (msg))))
+#define LOG(cat, msg)           ((void)record_log((cat), __LINE__, __func__, (msg)))
 
 // Prototypes
 

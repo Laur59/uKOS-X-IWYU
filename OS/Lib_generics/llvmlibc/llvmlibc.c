@@ -9,14 +9,20 @@
  *           - I/O retargeting hooks (__llvm_libc_stdio_read/write + cookies)
  *           - dprintf/vdprintf shim (LLVM libc has no FILE*-based dprintf)
  *           - Memory allocation wrapping to uKOS-X memo_malloc
+ *           - The time source (time, gettimeofday, clock) on top of the
+ *             kernel 64-bit Unix-time counter
  *           - Finalisation (__llvm_libc_exit) and heap boundary symbol
  *
  *           Unlike newlib/picolibc, baremetal LLVM libc:
  *           - does not use the POSIX _open/_close/_read/_write syscall layer
  *             (standard I/O is retargeted via the __llvm_libc_stdio_* hooks),
- *           - does not provide unistd.h / sys headers or FILE*,
- *           - owns its own errno (__llvm_libc_errno is defined inside libc.a),
- *             so no per-process errno is managed here.
+ *           - does not provide unistd.h / sys headers or FILE* (a <sys/time.h>
+ *             compatibility header is supplied in compat/, see that file),
+ *           - owns its own errno storage: one global, reached both by
+ *             __llvm_libc_errno() and by the library's internal Errno operators,
+ *             which share a libc.a member and so cannot be overridden. The
+ *             kernel makes it per-process by swapping it at each context switch
+ *             (xLibrary_update() in OS/Lib_kernels/kern/xLibrary.c).
  */
 
 #include    "llvmlibc.h"
@@ -84,6 +90,7 @@ MODULE(
 #define KLLVMLIBC_LN_OUTPUT_BUFFER  128U    // Size of the serial send buffer
 #define KLLVMLIBC_LN_DPRINTF_BUFFER 256U    // Size of the dprintf fast-path stack buffer
 #define KLLVMLIBC_LN_DPRINTF_BIG    2048U   // Size of the per-core dprintf overflow buffer
+#define KLLVMLIBC_US_PER_SEC        1000000ULL  // Resolution of the kernel 64-bit Unix-time counter
 
 // Prototypes
 
@@ -104,6 +111,8 @@ void    exit(int status);
 // (e.g. the Pico SDK TinyUSB port) reference but LLVM libc does not provide.
 void    _exit(int status);
 void    __assert_func(const char *file, int line, const char *func, const char *failedexpr);
+int     raise(int sig);
+int     *__errno(void);
 
 // NOLINTBEGIN(bugprone-reserved-identifier,cert-dcl37-c,cert-dcl51-cpp)
 
@@ -348,15 +357,49 @@ static  int     local_stdinFd  = KSTDIN;
 static  int     local_stdoutFd = KSTDOUT;
 static  int     local_stderrFd = KSTDERR;
 
-void    *__llvm_libc_stdin_cookie  = &local_stdinFd;
-void    *__llvm_libc_stdout_cookie = &local_stdoutFd;
-void    *__llvm_libc_stderr_cookie = &local_stderrFd;
+// The hooks and cookies are private to this link unit.
+//
+// LLVM libc declares them HIDDEN, so whichever ones a libc object happens to
+// reference are demoted to LOCAL in FLASH.elf while the others stay GLOBAL --
+// a split that varies per board with what the system image pulls from libc.a.
+// A downloadable application then imports some of them through --just-symbols
+// and collides with its own definitions (llvmlibc_app_stdio.c), while the rest
+// stay unresolved. Marking all five hidden here makes the system image export
+// none of them, so the application always supplies its own set.
+
+[[gnu::visibility("hidden")]] void  *__llvm_libc_stdin_cookie  = &local_stdinFd;
+[[gnu::visibility("hidden")]] void  *__llvm_libc_stdout_cookie = &local_stdoutFd;
+[[gnu::visibility("hidden")]] void  *__llvm_libc_stderr_cookie = &local_stderrFd;
+
+/*
+ * \brief llvmlibc_fdwrite
+ *
+ * - Write bytes to the serial manager selected by a uKOS-X file descriptor.
+ *
+ * Exported for the downloadable applications, which have to define their own
+ * __llvm_libc_stdio_write (see llvmlibc.h for why) and forward to this.
+ */
+ssize_t llvmlibc_fdwrite(uint32_t fd, const void *buf, size_t count) {
+
+    return (local_fdwrite(fd, buf, count));
+}
+
+/*
+ * \brief llvmlibc_fdread
+ *
+ * - Read bytes from the serial manager selected by a uKOS-X file descriptor.
+ */
+ssize_t llvmlibc_fdread(uint32_t fd, void *buf, size_t count) {
+
+    return (local_fdread(fd, buf, count));
+}
 
 /*
  * \brief __llvm_libc_stdio_read
  *
  * - LLVM libc read retargeting hook
  */
+[[gnu::visibility("hidden")]]
 ssize_t __llvm_libc_stdio_read(void *cookie, char *buf, size_t size) {
     uint32_t    fd = (cookie != NULL) ? (uint32_t)*(const int *)cookie : (uint32_t)KSTDIN;
 
@@ -368,6 +411,7 @@ ssize_t __llvm_libc_stdio_read(void *cookie, char *buf, size_t size) {
  *
  * - LLVM libc write retargeting hook
  */
+[[gnu::visibility("hidden")]]
 ssize_t __llvm_libc_stdio_write(void *cookie, const char *buf, size_t size) {
     uint32_t    fd = (cookie != NULL) ? (uint32_t)*(const int *)cookie : (uint32_t)KSTDOUT;
 
@@ -583,10 +627,23 @@ static  void    local_outLine(serialManager_t serialManager, const uint8_t *outp
  * ============================================================================
  *
  * LLVM libc provides the calendar conversion functions (gmtime_r, localtime_r,
- * mktime, asctime, ...) but not time(), which needs a platform clock source.
- * uKOS-X supplies it from the kernel's 64-bit Unix-time counter (1-us
- * resolution). Note: CLOCKS_PER_SEC is 100 under LLVM libc, so the
- * microsecond-to-second divisor is spelled out explicitly.
+ * mktime, asctime, strftime, ...) but none of the functions that need a
+ * platform clock source. uKOS-X supplies them from the kernel's 64-bit
+ * Unix-time counter (1-us resolution):
+ *
+ * - time()          is absent from the baremetal libc.a,
+ * - gettimeofday()  is declared by <time.h> but likewise not implemented,
+ * - clock()         is in libc.a, but it is built on the platform hook
+ *                   __llvm_libc_timespec_get_active, which uKOS-X does not
+ *                   provide. Defining clock() here keeps clock.cpp.obj out of
+ *                   the link entirely, which is both simpler and independent
+ *                   of an internal hook name that upstream may rename. Should
+ *                   timespec_get() ever be needed, implement the hooks
+ *                   __llvm_libc_timespec_get_utc / _active instead.
+ *
+ * The divisor is spelled out as KLLVMLIBC_US_PER_SEC rather than taken from
+ * CLOCKS_PER_SEC: the two are equal on the uKOS-X toolchain (see below), but
+ * CLOCKS_PER_SEC describes clock() alone, not the kernel counter.
  */
 
 /*
@@ -599,7 +656,7 @@ time_t time(time_t *tloc) {
     time_t      seconds;
 
     calendar_readUnixTime(KFROM_TIMER, &unixTime);
-    seconds = (time_t)(unixTime / 1000000ULL);      // 64-bit counter is 1-us resolution
+    seconds = (time_t)(unixTime / KLLVMLIBC_US_PER_SEC);
 
     if (tloc != NULL) {
         *tloc = seconds;
@@ -608,14 +665,107 @@ time_t time(time_t *tloc) {
 }
 
 /*
+ * \brief gettimeofday
+ *
+ * - Return the current time as a seconds / micro-seconds pair.
+ *
+ * The timezone argument is obsolete in POSIX and ignored, as in the newlib and
+ * picolibc managers.
+ */
+int gettimeofday(struct timeval *tv, [[maybe_unused]] void *tz) {
+    uint64_t    unixTime = 0U;
+
+    if (tv == NULL) {
+        errno = EFAULT;
+        return (-1);
+    }
+
+    calendar_readUnixTime(KFROM_TIMER, &unixTime);
+
+    tv->tv_sec  = (time_t)     (unixTime / KLLVMLIBC_US_PER_SEC);
+    tv->tv_usec = (suseconds_t)(unixTime % KLLVMLIBC_US_PER_SEC);
+    return (0);
+}
+
+/*
+ * \brief clock
+ *
+ * - Return the processor time consumed by the running process, in
+ *   CLOCKS_PER_SEC units.
+ *
+ * C requires clock() to report processor time, not elapsed wall time, so this
+ * reads the per-process accounting the kernel keeps in statistics_statistic():
+ * oTimePCum is the time the process itself ran, and oTimeKCum + oTimeECum the
+ * uKernel and exception time charged to it - together the equivalent of
+ * tms_utime + tms_stime, which is what the newlib and picolibc clock() build
+ * from times(). A process that is suspended or blocked accumulates none of it,
+ * so timing a kern_suspendProcess() window now yields the CPU actually burnt
+ * rather than the delay itself.
+ *
+ * The kernel counts in microseconds (TIM2 and friends are prescaled to 1 MHz),
+ * and CLOCKS_PER_SEC is 1'000'000, so the mapping is one to one. Stock
+ * baremetal LLVM libc defaults CLOCKS_PER_SEC to 100 on ARM (Arm semihosting
+ * counts centiseconds); the uKOS-X toolchain patch
+ * ukos_patches/0006-llvm-libc-use-microsecond-also-for-32-bit-Arm-cores.patch
+ * moves 32-bit Arm to the microsecond branch, matching _CLOCKS_PER_SEC_ and the
+ * newlib / picolibc managers. RISC-V already lands in that branch and needs no
+ * patch.
+ *
+ * clock_t is a 32-bit long on the 32-bit targets, so the returned value wraps
+ * every 2^32 us (about 71 minutes) of consumed CPU; a difference of two calls
+ * stays exact for any interval shorter than half of that.
+ *
+ * Without KKERN_WITH_STATISTICS_S the kernel keeps no per-process accounting,
+ * and C says to return (clock_t)-1 when the processor time is unavailable.
+ */
+static_assert(CLOCKS_PER_SEC == (long)KLLVMLIBC_US_PER_SEC,
+              "clock() maps the 1-us kernel counter one to one: build with the uKOS-X "
+              "LLVM toolchain (ukos_patches 0006), or add -DCFLAGS_APPEND=-D__CLK_TCK=1000000");
+
+clock_t clock(void) {
+    #if (KKERN_WITH_STATISTICS_S == true)
+    proc_t      *process;
+    uint64_t    cpuTime;
+
+    kern_getProcessRun(&process);
+
+    PRIVILEGE_ELEVATE;
+    cpuTime = process->oStatistic.oTimePCum
+            + process->oStatistic.oTimeKCum
+            + process->oStatistic.oTimeECum;
+    PRIVILEGE_RESTORE;
+
+    return ((clock_t)cpuTime);
+
+    #else
+    return ((clock_t)(-1));
+    #endif
+}
+
+/*
  * ============================================================================
  * POSIX environment / timezone stubs
  * ============================================================================
  *
  * The calendar manager configures the timezone with setenv("TZ", ...) followed
- * by tzset(). Baremetal LLVM libc provides neither a process environment nor
- * these functions, so uKOS-X supplies minimal stubs. There is no environment
- * to store into, so local time effectively runs in UTC under LLVM libc.
+ * by tzset() (calendar.c:120 and :246). Baremetal LLVM libc provides neither a
+ * process environment nor these functions, so uKOS-X supplies minimal stubs to
+ * keep the manager linking.
+ *
+ * Storing the TZ string would gain nothing: LLVM libc has no timezone support
+ * at all, so nothing would ever read it. localtime_r() and localtime() return
+ * UTC (libc/src/time/time_utils.h:176, "TODO: timezone support"),
+ * get_timezone_offset() is a constant stub (time_utils.h:351), and mktime()
+ * treats the struct tm as UTC and forces tm_isdst = 0 (time_utils.cpp:238).
+ * Local time therefore runs in UTC under LLVM libc, unlike newlib and picolibc
+ * which parse TZ themselves.
+ *
+ * Honouring TZ would mean implementing the timezone logic here - a POSIX TZ
+ * parser, a DST-in-effect test, and overrides for localtime_r, localtime and
+ * mktime (the last one because the date command converts local time back to an
+ * epoch). See "Known limitations" in
+ * Documentation/,USER_GUIDES/LLVMLIBC_TOOLCHAIN_GUIDE.md. Deferred until
+ * upstream LLVM libc implements its TODO.
  */
 
 /*
@@ -674,10 +824,19 @@ char __llvm_libc_heap_limit[1];
  * POSIX / newlib compatibility symbols
  * ============================================================================
  *
- * Prebuilt third-party archives (notably the Pico SDK TinyUSB port used by the
- * RP2350 target) are compiled against newlib and reference _exit and
- * __assert_func, neither of which LLVM libc provides (it has exit and
- * __assert_fail). uKOS-X supplies both, routing termination to the CRT0 exit.
+ * Prebuilt third-party archives are compiled against newlib and reference
+ * symbols that LLVM libc does not provide:
+ *
+ * - the Pico SDK TinyUSB port used by the RP2350 target needs _exit and
+ *   __assert_func (LLVM libc has exit and __assert_fail); both route
+ *   termination to the CRT0 exit,
+ * - libdecnumber (Third_Parties/decnumber, used by the rpn and bid64_xyz
+ *   applications) needs raise: decContextDefault and decContextSetStatus call
+ *   raise(SIGFPE) when the caller enabled the matching trap in the decNumber
+ *   context. Baremetal LLVM libc ships no <signal.h> at all.
+ * - the ST N6 ATON driver (Third_Parties/STM32/STM32N6/Library/AI, used by the
+ *   gan application on the N657 boards) needs __errno, which is how newlib
+ *   spells the errno accessor. LLVM libc spells it __llvm_libc_errno.
  */
 
 /*
@@ -727,6 +886,33 @@ void __assert_func(const char *file, int line, const char *func, const char *fai
     while (1) {
         // Should never reach here
     }
+}
+
+/*
+ * \brief raise
+ *
+ * - Raise a signal (C name expected by newlib-compiled code).
+ *
+ * uKOS-X has no signal delivery: a Cortex-M exception or a RISC-V trap is
+ * handled by the kernel, never turned into a POSIX signal. Report failure
+ * rather than terminating the process, which is what a decNumber caller that
+ * enabled a trap sees when no handler could be run.
+ */
+int raise([[maybe_unused]] int sig) {
+    return (-1);
+}
+
+/*
+ * \brief __errno
+ *
+ * - Return the address of errno (newlib name expected by newlib-compiled code).
+ *
+ * newlib spells the accessor __errno() and LLVM libc spells it
+ * __llvm_libc_errno(); both return the address of the same int. Going through
+ * the errno macro keeps this independent of the LLVM libc internal name.
+ */
+int *__errno(void) {
+    return (&errno);
 }
 
 // NOLINTEND(bugprone-reserved-identifier,cert-dcl37-c,cert-dcl51-cpp)

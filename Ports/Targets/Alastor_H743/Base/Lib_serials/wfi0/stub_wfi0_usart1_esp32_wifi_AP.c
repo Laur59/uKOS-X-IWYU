@@ -14,7 +14,6 @@
 #include    "board.h"
 #include    "clockTree.h"
 #include    "kern/kern.h"
-#include    "macros.h"
 #include    "os_errors.h"
 #include    "soc_reg.h"
 #include    "types.h"
@@ -389,9 +388,7 @@ static  void    local_state_EM(uint8_t data) {
  * - Set the flag vReadyToSend
  *
  */
-static  void    local_state_BG(uint8_t data) {
-
-    UNUSED(data);
+static  void    local_state_BG([[maybe_unused]] uint8_t data) {
 
     vReadyToSend = true;
     vState = nullptr;

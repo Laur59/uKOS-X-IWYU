@@ -20,11 +20,15 @@
  *           - model_kernel_readTickCount
  *           - model_kernel_newProcessTimeout
  *           - model_kernel_stopProcessTimeout
+ *
+ * Composition: this fragment is a template; the including .c must define:
+ *   KFREQUENCY_T1 KFREQUENCY_T2 KFREQUENCY_T3
  */
 
 #include    <stdint.h>
 #include    <stdlib.h>
 
+#include    "clockTree.h"
 #include    "core.h"
 #include    "exce.h"
 #include    "kern/private/private_processes.h"

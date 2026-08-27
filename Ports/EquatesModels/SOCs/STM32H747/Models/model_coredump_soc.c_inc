@@ -4,9 +4,25 @@
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
  * Goal:     Model for the core dump (SOC specific).
+ *
+ * Composition: included last by a board exce.c, after model_coreDump_generic.c_inc
+ * (local_printFunction) and model_coreDump_core.c_inc (vStackBefore/After/CoreDump, vExceptionNb,
+ * local_printCore, local_printStackFrame). The includer must provide cb_signal().
+ *
+ * The including .c must define:
+ *   cb_signal local_printCore local_printFunction local_printStackFrame vExceptionNb vStackAfter vStackBefore vStackCoreDump
  */
 
-#include    "lib_serials.h"
+#include    <stdint.h>
+
+#include    "cmns.h"
+#include    "core.h"
+#include    "macros_core.h"
+#include    "macros_core_stackFrame.h"
+#include    "macros_soc.h"
+#include    "record/private/private_recordDump.h"
+#include    "serial/serial.h"
+#include    "types.h"
 
 // Prototypes
 
@@ -112,8 +128,8 @@ static  void    local_processInterruption(uintptr_t *stackBefore, uintptr_t *sta
     local_printInterruption(&vectorName);
     local_printFunction(vStackCoreDump[core][PC], vectorName, "Interruption: ");
     local_printCore();
-    local_printTrace();
-    local_printLog();
+    record_printTrace();
+    record_printLog();
     local_printStackFrame();
     cb_signal(KINTERRUPTION);
 }

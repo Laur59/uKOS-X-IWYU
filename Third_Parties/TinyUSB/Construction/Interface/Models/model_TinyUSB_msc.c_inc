@@ -142,13 +142,11 @@ void    TinyUSB_msc_clean(void) {
  * - Called when received SCSI_CMD_INQUIRY
  *
  */
-void    tud_msc_inquiry_cb(uint8_t lun, uint8_t vendor_id[8], uint8_t product_id[16], uint8_t product_rev[4]) {
+void    tud_msc_inquiry_cb([[maybe_unused]] uint8_t lun, uint8_t vendor_id[8], uint8_t product_id[16], uint8_t product_rev[4]) {
             uint32_t    core;
     const   char_t      vid[] = "TinyUSB";
     const   char_t      pid[] = "Mass Storage";
     const   char_t      rev[] = "1.0";
-
-    UNUSED(lun);
 
     core = GET_RUNNING_CORE;
 
@@ -169,11 +167,9 @@ void    tud_msc_inquiry_cb(uint8_t lun, uint8_t vendor_id[8], uint8_t product_id
  * - Called when received Test Unit Ready command
  *
  */
-bool    tud_msc_test_unit_ready_cb(uint8_t lun) {
+bool    tud_msc_test_unit_ready_cb([[maybe_unused]] uint8_t lun) {
     bool        status = true;
     uint32_t    core;
-
-    UNUSED(lun);
 
     core = GET_RUNNING_CORE;
 
@@ -199,10 +195,8 @@ bool    tud_msc_test_unit_ready_cb(uint8_t lun) {
  *   SCSI_CMD_READ_FORMAT_CAPACITY to determine the disk size
  *
  */
-void    tud_msc_capacity_cb(uint8_t lun, uint32_t *block_count, uint16_t *block_size) {
+void    tud_msc_capacity_cb([[maybe_unused]] uint8_t lun, uint32_t *block_count, uint16_t *block_size) {
     uint32_t    core;
-
-    UNUSED(lun);
 
     core = GET_RUNNING_CORE;
 
@@ -218,11 +212,8 @@ void    tud_msc_capacity_cb(uint8_t lun, uint32_t *block_count, uint16_t *block_
  * - Called when received Start Stop Unit command
  *
  */
-bool    tud_msc_start_stop_cb(uint8_t lun, uint8_t power_condition, bool start, bool load_eject) {
+bool    tud_msc_start_stop_cb([[maybe_unused]] uint8_t lun, [[maybe_unused]] uint8_t power_condition, bool start, bool load_eject) {
     uint32_t    core;
-
-    UNUSED(lun);
-    UNUSED(power_condition);
 
     core = GET_RUNNING_CORE;
 
@@ -250,11 +241,9 @@ bool    tud_msc_start_stop_cb(uint8_t lun, uint8_t power_condition, bool start, 
  * - Called when received READ10 command
  *
  */
-int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void *buffer, uint32_t bufsize) {
+int32_t tud_msc_read10_cb([[maybe_unused]] uint8_t lun, uint32_t lba, uint32_t offset, void *buffer, uint32_t bufsize) {
     uint32_t    core;
     uint8_t     const   *addr = msc_disk[lba] + offset;
-
-    UNUSED(lun);
 
     core = GET_RUNNING_CORE;
 
@@ -278,9 +267,7 @@ int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void *buff
  * - Called to determine if the device is writable
  *
  */
-bool    tud_msc_is_writable_cb(uint8_t lun) {
-
-    UNUSED(lun);
+bool    tud_msc_is_writable_cb([[maybe_unused]] uint8_t lun) {
 
     #if (defined(CFG_EXAMPLE_MSC_READONLY))
     return (false);
@@ -296,10 +283,8 @@ bool    tud_msc_is_writable_cb(uint8_t lun) {
  * - Called when received WRITE10 command
  *
  */
-int32_t tud_msc_write10_cb(uint8_t lun, uint32_t lba, uint32_t offset, uint8_t *buffer, uint32_t bufsize) {
+int32_t tud_msc_write10_cb([[maybe_unused]] uint8_t lun, [[maybe_unused]] uint32_t lba, [[maybe_unused]] uint32_t offset, [[maybe_unused]] uint8_t *buffer, uint32_t bufsize) {
     uint32_t    core;
-
-    UNUSED(lun);
 
     core = GET_RUNNING_CORE;
 
@@ -316,9 +301,6 @@ int32_t tud_msc_write10_cb(uint8_t lun, uint32_t lba, uint32_t offset, uint8_t *
     memcpy(addr, buffer, bufsize);
 
     #else
-    UNUSED(lba);
-    UNUSED(offset);
-    UNUSED(buffer);
     #endif
 
     kern_unlockMutex(vTinyUSB_API[core]);

@@ -32,7 +32,6 @@
 #include    "kern/private/private_lists.h"
 #include    "kern/private/private_processes.h"
 #include    "kern/private/private_kern.h"
-#include    "macros.h"
 #include    "macros_core.h"
 #include    "macros_soc.h"
 #include    "macros_core_stackFrame.h"
@@ -769,11 +768,9 @@ static  int32_t local_readMailbox(uint32_t core, mbox_t *handle, void **message,
     return KERR_KERN_TIMEO;
 }
 
-static  void    local_read(uint32_t core, mbox_t *handle, void **message, uint32_t *size, bool *preemption) {
+static  void    local_read([[maybe_unused]] uint32_t core, mbox_t *handle, void **message, uint32_t *size, bool *preemption) {
     uint32_t    nbMaxPacks, copySize;
     proc_t      *process;
-
-    UNUSED(core);
 
 // Read the message
 

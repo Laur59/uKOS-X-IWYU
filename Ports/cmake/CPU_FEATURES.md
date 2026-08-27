@@ -135,8 +135,8 @@ Same features, flags and precedence as Cortex-M55, plus:
 | `"nofp;PACBTI"` | `-march=armv8.1-m.main+nofp -mfloat-abi=soft` (PACBTI dropped) |
 
 ```cmake
-# STM32V873 (Ports/Targets/Discovery_V873)
-set(SOC STM32V873)
+# Illustrative only: this fork has no Cortex-M85 port yet
+set(SOC <your_M85_SoC>)
 set(CORE CORTEX_M85)
 set(CPU_FEATURES "Helium;PACBTI")
 include(proj_config)
@@ -322,13 +322,11 @@ There is no table-driven feature database: each core's features are hard-coded i
 1. ARM: add the name to the core's `<CORE>_VALID_FEATURES` list at the top of `configure_arm_core()`, then to the `foreach(feature IN LISTS CPU_FEATURES)` loop of the core, and set the flag variables (`MCPU` / `MARCH`, `MFLOAT_ABI`, `MFPU`, `LLVM_TARGET`, `EXTRA_COMPILE_FLAGS`). RISC-V: extend the token parser in `configure_riscv_core()`
 2. Update the `VALID FEATURES BY CORE` comment at the top of `proj_config.cmake` and the per-core `features:` comment next to the loop
 3. Document the feature in this guide and in the `CPU Features Configuration` section of `CLAUDE.md`
-4. Verify the generated flags and a full build with both GCC and LLVM
-5. Check that the corresponding `Ports/Mkfiles/{gcc,llvm}_system_<CORE>.mk` (fixed per-core `CPU_SPEC`) still agree with the CMake flags
+4. Verify the generated flags and a full build with both GCC and LLVM (`Ports/Targets/_build.sh` and `_build.sh -G` rebuild every variant)
 
 ## See Also
 
 - `Ports/cmake/proj_config.cmake` - implementation (`configure_arm_core()`, `configure_riscv_core()`)
-- `Ports/Mkfiles/gcc_system_<CORE>.mk`, `llvm_system_<CORE>.mk` - Make build equivalents
 - `CLAUDE.md` - project overview and the short form of this guide
 - Arm Cortex-M55 / Cortex-M85 Technical Reference Manuals - Helium/MVE and PACBTI
 - RISC-V ISA manual - Zc* code-size extensions

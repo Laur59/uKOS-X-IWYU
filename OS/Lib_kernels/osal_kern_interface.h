@@ -56,7 +56,6 @@ typedef struct  mcnf            mcnf_t;
 #define KERR_KERN_NOERR         0                               // No error
 #define KWAIT_INFINITY          ((uint32_t)(-1))                // Waiting forever
 #define KWAIT_REMAINING_TIMEOUT ((uint32_t)(-2))                // Waiting for the remaining timeout
-#define UNUSED(x)               (void)(x)                       // Unused variable
 
 // List equates
 // ------------

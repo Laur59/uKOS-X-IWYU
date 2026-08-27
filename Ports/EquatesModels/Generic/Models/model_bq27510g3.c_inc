@@ -4,13 +4,17 @@
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
  * Goal:     Model for controlling the "bq27510G3" device.
+ *
+ * Composition: this fragment is a template; the including .c must define:
+ *   KBAT_CHARGED_CAPACITY KBAT_CURRENT KBAT_CYCLE_COUNT KBAT_REMAINING_CAPACITY
+ *   KBAT_TEMPERATURE KBAT_TIME_TO_EMPTY KBAT_VOLTAGE cb_configure cb_getValue
  */
 
 #include    <stdint.h>
 
 #include    "battery_common.h"
-#include    "types.h"
 #include    "os_errors.h"
+#include    "types.h"
 
 /*
  * \brief model_bq27510g3_init

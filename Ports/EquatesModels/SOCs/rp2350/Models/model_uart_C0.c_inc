@@ -4,6 +4,11 @@
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
  * Goal:     Model for controlling the "uart" device for C0.
+ *
+ * Composition: this fragment is a template; the including .c must define:
+ *   KUART_SEMAPHORE_RX_C0 KUART_SEMAPHORE_TX_C0 KUART_SZ_RX_BUF_C0 KUART_SZ_TX_BUF_C0
+ *   UART_C0 UART_FREQUENCY_C0 UART_VECTOR_NUMBER_C0 cb_CTSCheck_C0 cb_enable_C0
+ *   cb_init_C0
  */
 
 #include    <stdint.h>
@@ -13,12 +18,13 @@
 #include    "Registers/soc_vectors.h"
 #include    "cmns.h"
 #include    "kern/kern.h"
-#include    "os_errors.h"
 #include    "macros.h"
 #include    "macros_core.h"
 #include    "macros_soc.h"
+#include    "os_errors.h"
 #include    "record/record.h"
 #include    "serial/serial.h"
+#include    "serial_common.h"
 
 static  volatile    bool        vFirstKick_C0 = false;
 static  volatile    bool        vSending_C0 = false;

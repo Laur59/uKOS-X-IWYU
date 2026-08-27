@@ -105,7 +105,6 @@ static void cb_signal(uint8_t mode) {
     }
 }
 
-#include    "model_coreDump_tracing.c_inc"      // IWYU pragma: keep
 #include    "model_coreDump_generic.c_inc"      // IWYU pragma: keep
 #include    "model_coreDump_core.c_inc"         // IWYU pragma: keep
 

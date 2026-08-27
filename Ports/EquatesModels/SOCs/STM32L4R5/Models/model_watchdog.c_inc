@@ -6,6 +6,8 @@
  * Goal:     Model for controlling the watchdog device.
  */
 
+#include    <stdint.h>
+
 /*
  * \brief Arm the watchdog
  *

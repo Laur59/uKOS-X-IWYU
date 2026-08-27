@@ -156,7 +156,6 @@ SECTIONS {
         . = ALIGN(4);
         linker_stDATA_u = ABSOLUTE(.);
         *(EXCLUDE_FILE (lib*_p.a:*) .data .data.*)
-        *(.tdata .tdata.*)
         . = ALIGN(4);
         *(vtable)
         . = ALIGN(4);
@@ -176,16 +175,32 @@ SECTIONS {
         linker_enBSS_u = ABSOLUTE(.);
     } > prgm_data_u AT> prgm_data_u
 
-    /* Thread-local storage BSS section - treated as regular BSS for bare-metal */
+/* uKOS-X installs no thread pointer: it links -nostartfiles with its own crt0, so
+   picolibc's crt0 - the only caller of _set_tls() - is never linked and the thread
+   pointer is never set (__tls stays zero on Arm, tp stays unset on RISC-V). Every
+   thread-local access would then land at a near-null address: silently tolerated in
+   privileged mode, where no MPU/PMP region covers 0, but a fault in user mode.
+   Build picolibc with -Dthread-local-storage=false; the ASSERTs below turn a
+   thread-local input that slips through into a link error rather than a fault at
+   run time. */
+
+    .tdata : {
+        *(.tdata .tdata.* .gnu.linkonce.td.*)
+    } > prgm_data_u
+
     .tbss (NOLOAD) : {
         linker_stTBSS = ABSOLUTE(.);
-        *(.tbss .tbss.*)
+        *(.tbss .tbss.* .gnu.linkonce.tb.*)
+        *(.tcommon)
         linker_enTBSS = ABSOLUTE(.);
         /* Standard symbol used by C library for heap start */
         /* Placed after .tbss so heap doesn't overlap with TLS data */
         end = ABSOLUTE(.);
         _end = ABSOLUTE(.);
     } > prgm_data_u
+
+    ASSERT(SIZEOF(.tdata) == 0, "Thread-local data present: rebuild picolibc with -Dthread-local-storage=false")
+    ASSERT(SIZEOF(.tbss) == 0, "Thread-local bss present: rebuild picolibc with -Dthread-local-storage=false")
 
 /* Fail if some BSS/DATA still escape into orphan sections */
 

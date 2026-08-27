@@ -4,6 +4,10 @@
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
  * Goal:     Model for controlling an "SCDard" device by an SPI.
+ *
+ * Composition: this fragment is a template; the including .c must define:
+ *   KSDCARD_DESELECT KSDCARD_INIT KSDCARD_RELEASE KSDCARD_SELECT cb_cardInserted
+ *   cb_control cb_readSPI cb_speed cb_write cb_writeRead
  */
 
 #include    <stdint.h>

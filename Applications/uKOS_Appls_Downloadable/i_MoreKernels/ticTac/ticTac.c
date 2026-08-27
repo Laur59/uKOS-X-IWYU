@@ -136,11 +136,9 @@ MODULE(
  *
  */
 [[noreturn]]
-static void aProcess_0(const void *argument) {
+static void aProcess_0([[maybe_unused]] const void *argument) {
     uint64_t    time[2];
     uint32_t    delta;
-
-    UNUSED(argument);
 
     while (true) {
         kern_suspendProcess(1000U);
@@ -162,11 +160,9 @@ static void aProcess_0(const void *argument) {
  *
  */
 [[noreturn]]
-static void aProcess_1(const void *argument) {
+static void aProcess_1([[maybe_unused]] const void *argument) {
     uint64_t    time[2];
     uint32_t    delta = 0U;
-
-    UNUSED(argument);
 
     while (true) {
         kern_suspendProcess(200U);
@@ -187,12 +183,10 @@ static void aProcess_1(const void *argument) {
  *
  */
 [[noreturn]]
-static void aProcess_2(const void *argument) {
+static void aProcess_2([[maybe_unused]] const void *argument) {
             uint32_t    cpt = 0;
     const   char_t      *identifier;
     const   char_t      *family;
-
-    UNUSED(argument);
 
     system_getSystemId(&identifier);
     system_getFamilyId(&family);
@@ -223,9 +217,6 @@ MAIN_ENTRY(argc, argv[]) {
     STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2026";
     STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2026";
     STRG_LOC_CONST(aStrText_2[]) = "Process user 2.                           (c) EFr-2026";
-
-    UNUSED(argc);
-    UNUSED(argv);
 
 // Specifications for the processes
 

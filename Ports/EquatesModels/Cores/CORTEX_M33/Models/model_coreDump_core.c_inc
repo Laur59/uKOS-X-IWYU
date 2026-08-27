@@ -4,11 +4,28 @@
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
  * Goal:     Model for the core dump (Core specific).
+ *
+ * Composition: included by a board exce.c after model_coreDump_generic.c_inc
+ * (local_printFunction) and before model_coredump_soc.c_inc. The includer must
+ * provide cb_signal(). Defines the vStackBefore/After/CoreDump, vExceptionNb dump state and
+ * local_printCore() / local_printStackFrame() used by the SOC fragment.
+ *
+ * The including .c must define:
+ *   cb_signal local_printFunction
  */
 
+#include    <inttypes.h>
+#include    <stdio.h>
+
+#include    "cmns.h"
+#include    "core.h"
+#include    "core_reg.h"
+#include    "macros_core.h"
 #include    "macros_core_stackFrame.h"
-#include    "record/private/private_record.h"
-#include    "kern/private/private_processes.h"
+#include    "macros_soc.h"
+#include    "record/private/private_recordDump.h"
+#include    "serial/serial.h"
+#include    "types.h"
 
 static  uintptr_t   *vStackBefore[KNB_CORES], *vStackAfter[KNB_CORES], vStackCoreDump[KNB_CORES][ENDREG];
 static  uint32_t    vExceptionNb[KNB_CORES];
@@ -122,8 +139,8 @@ static  void    local_processException(uintptr_t *stackBefore, uintptr_t *stackA
     local_printException(&vectorName);
     local_printFunction(vStackCoreDump[core][PC], vectorName, "Exception:    ");
     local_printCore();
-    local_printTrace();
-    local_printLog();
+    record_printTrace();
+    record_printLog();
     local_printStackFrame();
     cb_signal(KEXCEPTION);
 }

@@ -6,7 +6,7 @@
 #
 # Usage:
 #       cd cloned_directory/Ports/Targets
-#       ./_build.sh [-G] [-P] [-U] [-Y] [-v|-w]
+#       ./_build.sh [-G] [-P|-L] [-U] [-Y] [-v|-w]
 
 emulate -L zsh
 setopt ERR_EXIT NO_UNSET PIPE_FAIL EXTENDED_GLOB
@@ -126,28 +126,6 @@ case ${clib_flag[1]:-} in
     '') ;;                             # keep default (newlib)
 esac
 
-get_cmake_preset() {
-    local compiler="$1"
-    local user_mode="$2"
-    local canary_mode="$3"
-    local preset="${compiler}"
-
-    if [ "$user_mode" = "OFF" ]; then
-        preset="${preset}-nouser"
-        if [ "$canary_mode" = "OFF" ]; then
-            preset="${preset}-nocanary"
-        fi
-    else
-        # user_mode = ON
-        if [ "$canary_mode" = "OFF" ]; then
-            preset="${preset}-nocanary"
-        fi
-        # When user_mode=ON and canary_mode=ON, preset stays as just "${compiler}"
-    fi
-
-    echo "$preset"
-}
-
 case ${COMPILER_TOOL} in
     "gcc")
         if [[ -z "${PATH_GCC_ARM}" ]]; then
@@ -163,7 +141,7 @@ case ${COMPILER_TOOL} in
         gcc_arm_version=$("${PATH_GCC_ARM}"/bin/arm-none-eabi-gcc --version | awk 'NR==1{print $3; exit}')
         gcc_rvxx_version=$("${PATH_GCC_RVXX}"/bin/riscv64-unknown-elf-gcc --version | awk 'NR==1{print $3; exit}')
         COMPILER_VERSIONS="arm:${gcc_arm_version} - riscv:${gcc_rvxx_version}"
-        CMAKE_PRESET=$(get_cmake_preset "gcc" "${USER_MODE}" "${CANARY_MODE}")
+        CMAKE_PRESET="gcc"
         ;;
     "LLVM clang")
         if [[ "${C_LIB}" == "llvmlibc" ]]; then
@@ -188,12 +166,11 @@ case ${COMPILER_TOOL} in
             llvm_rvxx_version=$("${PATH_LLVM_RVXX}"/bin/clang --version | awk 'NR==1{for(i=1;i<=NF;i++)if($i=="version"){print $(i+1); exit}}')
             COMPILER_VERSIONS="arm:${llvm_arm_version} - riscv:${llvm_rvxx_version}"
         fi
-        CMAKE_PRESET=$(get_cmake_preset "llvm" "${USER_MODE}" "${CANARY_MODE}")
+        CMAKE_PRESET="llvm"
         ;;
 esac
 
 readonly cmake_version=$(cmake --version | awk 'NR==1{print $3; exit}')
-printf "%bUsing cmake (%s) and %s (%s)%b\n" "${YELLOW}" "${cmake_version}" "${COMPILER_TOOL}" "${COMPILER_VERSIONS}" "${NC}"
 
 process_option()
 {
@@ -233,7 +210,8 @@ build_failure=""
 build_success=""
 readonly LOG_FILE="build/compilation.log"
 
-printf "%bBuilding all the systems for (USER_MODE=%s CANARY=%s) with:\n   %bcmake --preset %s -DC_LIBRARY=%s%b\n" "${YELLOW}" "${USER_MODE}" "${CANARY_MODE}" "${BOLD}" "${CMAKE_PRESET}" "${C_LIB}" "${NC}"
+printf "%bUsing cmake (%s) and %s (%s) to build all the systems with\n" "${YELLOW}" "${cmake_version}" "${COMPILER_TOOL}" "${COMPILER_VERSIONS}"
+printf "   %bcmake --preset %s -DC_LIBRARY=%s -DUSER_MODE=%s -DCANARY=%s%b\n" "${BOLD}" "${CMAKE_PRESET}" "${C_LIB}" "${USER_MODE}" "${CANARY_MODE}" "${NC}"
 # Parse YAML and iterate through all build targets
 while IFS=$'\t' read -r family variant_name; do
     CURRENT_VARIANT="${family}/Variant_${variant_name}"
@@ -247,7 +225,7 @@ while IFS=$'\t' read -r family variant_name; do
 
     was_error=0
     rm -fr build
-    cmake --preset "${CMAKE_PRESET}" -DC_LIBRARY=${C_LIB} &>/dev/null && \
+    cmake --preset "${CMAKE_PRESET}" -DC_LIBRARY=${C_LIB} -DUSER_MODE=${USER_MODE} -DCANARY=${CANARY_MODE} &>/dev/null && \
     cmake --build build --parallel >"${LOG_FILE}" 2>&1 || was_error=1
 
     # Filter out Ninja progress lines (e.g., "[1/100] Building...") to keep only warnings/errors

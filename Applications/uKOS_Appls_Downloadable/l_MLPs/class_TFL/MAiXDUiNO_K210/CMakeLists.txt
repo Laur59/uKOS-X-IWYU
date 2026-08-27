@@ -33,6 +33,13 @@ add_compile_options(-g3 # includes extra information for debugger
 add_compile_definitions(
     $<$<COMPILE_LANGUAGE:CXX>:TF_LITE_STATIC_MEMORY=1>
     $<$<COMPILE_LANGUAGE:CXX>:RISCV>
+    # The RV64IMAFDC libTFLite.a is built release, which strips the error strings
+    # (no MicroPrintf symbol) and with them riscv32_generic/debug_log.cc's
+    # std::fputs(..., stdout) -- the newlib _impure_ptr reference that stopped the
+    # llvmlibc link. The app must strip too, otherwise its op-resolver references
+    # MicroPrintf. Same contract as the Pico2 rv32 build.
+    $<$<COMPILE_LANGUAGE:CXX>:TF_LITE_STRIP_ERROR_STRINGS>
+    $<$<COMPILE_LANGUAGE:CXX>:NDEBUG>
 )
 
 set(PATH_INCLUDES

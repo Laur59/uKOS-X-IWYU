@@ -93,12 +93,9 @@ static  void    local_transfer(void);
  * \brief Main entry point
  *
  */
-static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
+static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char_t *argv[]) {
     uint32_t    core;
     proc_t      *process;
-
-    UNUSED(argc);
-    UNUSED(argv);
 
     core = GET_RUNNING_CORE;
     vKillRequest[core] = false;
@@ -127,11 +124,8 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
  *      - Free all the ressources
  *
  */
-static  int32_t imager_clean(uint32_t argc, const char_t *argv[]) {
+static  int32_t imager_clean([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char_t *argv[]) {
     uint32_t    core;
-
-    UNUSED(argc);
-    UNUSED(argv);
 
     core = GET_RUNNING_CORE;
     vKillRequest[core] = true;

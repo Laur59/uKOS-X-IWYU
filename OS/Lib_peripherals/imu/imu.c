@@ -79,11 +79,9 @@ static  int32_t     local_init(void);
  * \return      KERR_IMU_CHBSY  The manager is busy
  *
  */
-int32_t imu_reserve(reserveMode_t reserveMode, uint32_t timeout) {
+int32_t imu_reserve([[maybe_unused]] reserveMode_t reserveMode, uint32_t timeout) {
     int32_t     status;
     uint32_t    core;
-
-    UNUSED(reserveMode);
 
     core = GET_RUNNING_CORE;
 
@@ -118,11 +116,9 @@ int32_t imu_reserve(reserveMode_t reserveMode, uint32_t timeout) {
  * \return      KERR_IMU_CAREL  Cannot release the manager
  *
  */
-int32_t imu_release(reserveMode_t reserveMode) {
+int32_t imu_release([[maybe_unused]] reserveMode_t reserveMode) {
     int32_t     status;
     uint32_t    core;
-
-    UNUSED(reserveMode);
 
     core = GET_RUNNING_CORE;
 

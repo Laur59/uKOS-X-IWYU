@@ -10,7 +10,6 @@
 
 #include    <stdint.h>
 
-#include    "macros.h"
 #include    "osal_kern_interface.h"
 
 extern  uint32_t    SystemCoreClock;
@@ -189,9 +188,7 @@ extern  bool    osal_queue_delete(osal_queue_t qhdl);
  * - Init the spinlock
  *
  */
-TU_ATTR_ALWAYS_INLINE   static  inline  void    osal_spin_init(osal_spinlock_t *ctx) {
-
-    UNUSED(ctx);
+TU_ATTR_ALWAYS_INLINE   static  inline  void    osal_spin_init([[maybe_unused]] osal_spinlock_t *ctx) {
 }
 
 /*
@@ -200,9 +197,7 @@ TU_ATTR_ALWAYS_INLINE   static  inline  void    osal_spin_init(osal_spinlock_t *
  * - De-init the spinlock
  *
  */
-TU_ATTR_ALWAYS_INLINE   static  inline  void    osal_spin_deinit(osal_spinlock_t *ctx) {
-
-    UNUSED(ctx);
+TU_ATTR_ALWAYS_INLINE   static  inline  void    osal_spin_deinit([[maybe_unused]] osal_spinlock_t *ctx) {
 }
 
 /*
@@ -211,14 +206,13 @@ TU_ATTR_ALWAYS_INLINE   static  inline  void    osal_spin_deinit(osal_spinlock_t
  * - Lock the spinlock
  *
  */
-TU_ATTR_ALWAYS_INLINE   static  inline  void    osal_spin_lock(osal_spinlock_t *ctx, bool in_isr) {
+TU_ATTR_ALWAYS_INLINE   static  inline  void    osal_spin_lock([[maybe_unused]] osal_spinlock_t *ctx, bool in_isr) {
 
     if (in_isr == true) {
         if (TUP_MCU_MULTIPLE_CORE == false) {
 
 // Single core MCU does not need to lock in ISR
 
-            UNUSED(ctx);
             return;
         }
     }
@@ -230,14 +224,13 @@ TU_ATTR_ALWAYS_INLINE   static  inline  void    osal_spin_lock(osal_spinlock_t *
  * - Unlock the spinlock
  *
  */
-TU_ATTR_ALWAYS_INLINE   static  inline  void    osal_spin_unlock(osal_spinlock_t *ctx, bool in_isr) {
+TU_ATTR_ALWAYS_INLINE   static  inline  void    osal_spin_unlock([[maybe_unused]] osal_spinlock_t *ctx, bool in_isr) {
 
     if (in_isr == true) {
         if (TUP_MCU_MULTIPLE_CORE == false) {
 
 // Single core MCU does not need to lock in ISR
 
-            UNUSED(ctx);
             return;
         }
     }

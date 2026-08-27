@@ -4,7 +4,16 @@
  *
  * Goal:    Model for controlling the "APSRam" device via an XSPI.
  *          APS256XXN-OBx9 OPI/HPI Xccela
+ *
+ * Composition: this fragment is a template; the including .c must define:
+ *   KAPS_OP_LIN_BURST_READ KAPS_OP_LIN_BURST_WRITE XSPI_UNIT cb_enable
+ *   local_APSRamWriteRegistar
  */
+
+#include    <stdint.h>
+
+#include    "macros_core.h"
+#include    "soc_reg.h"
 
 // Prototypes
 

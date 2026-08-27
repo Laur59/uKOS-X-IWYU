@@ -98,6 +98,26 @@ SECTIONS {
         linker_enBSS = ABSOLUTE(.);
     } > prgm_data
 
+/* uKOS-X applications share the system image's C library and its thread pointer:
+   the thread-pointer accessor resolves from FLASH.elf through -Wl,--just-symbols,
+   while a thread-local symbol defined here would have its offsets computed against
+   the application's own, unallocated, TLS block - the accesses would then land in
+   the middle of the system's thread-local data. The system libraries are built
+   without thread-local storage, so nothing should reach these sections; fail the
+   link rather than corrupt the system at run time. */
+
+    .tdata : {
+        *(.tdata .tdata.* .gnu.linkonce.td.*)
+    } > prgm_code
+
+    .tbss (NOLOAD) : {
+        *(.tbss .tbss.* .gnu.linkonce.tb.*)
+        *(.tcommon)
+    } > prgm_data
+
+    ASSERT(SIZEOF(.tdata) == 0, "Application defines initialised thread-local data: not supported")
+    ASSERT(SIZEOF(.tbss) == 0, "Application defines thread-local bss: not supported (a C library object holding thread-local state was pulled in because the system image does not export that function)")
+
     /DISCARD/ : {
         *(.note .note.*)
     }

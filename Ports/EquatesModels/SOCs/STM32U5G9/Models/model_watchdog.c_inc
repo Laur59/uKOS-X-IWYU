@@ -6,6 +6,8 @@
  * Goal:     Model for controlling the watchdog device.
  */
 
+#include    <stdint.h>
+
 #include    "macros_core.h"
 #include    "soc_reg.h"
 

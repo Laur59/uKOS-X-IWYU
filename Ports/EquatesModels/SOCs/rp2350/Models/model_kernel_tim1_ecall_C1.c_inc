@@ -21,17 +21,25 @@
  *   model_kernel_newProcessTimeout_C1
  *   model_kernel_stopProcessTimeout_C1
  *   kernel_message_C1   (called from syscallDispatcher via exce slot 11)
+ *
+ * Composition: this fragment is a template; the including .c must define:
+ *   RESETS TIMER_ALA0_VECTOR_NUMBER_C1 TIMER_ALA1_VECTOR_NUMBER_C1 TIMER_C1
+ *   core_setBitCSR
  */
+
+#include    <stdint.h>
 
 #include    "Registers/RP2350_resets.h"
 #include    "Registers/RP2350_timer.h"
 #include    "Registers/nvic.h"
 #include    "clockTree.h"
+#include    "core_reg.h"
 #include    "exce.h"
-#include    "macros_core_stackFrame.h"
 #include    "kern/private/private_processes.h"
 #include    "kern/private/private_scheduler.h"
 #include    "kern/private/private_temporal.h"
+#include    "macros_core.h"
+#include    "macros_core_stackFrame.h"
 
 #define K1ms_C1         ((float64_t)(0.001))
 

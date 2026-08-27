@@ -122,7 +122,7 @@ MODULE(
  *
  */
 [[noreturn]]
-static void aProcess(const void *argument) {
+static void aProcess([[maybe_unused]] const void *argument) {
     uintptr_t   counter = 0U, expectedCounter = 0U;
     int32_t     status;
     mbox_t      *queue;
@@ -131,8 +131,6 @@ static void aProcess(const void *argument) {
                     .oDataEntrySize = 0U
                 };
     uint32_t ledDecimationCounter = 0U;
-
-    UNUSED(argument);
 
     #if(defined(ALLOW_HARDWARE_ACCESS_S))
     LOG(KWARNING_USER, "Direct hardware access permitted");
@@ -197,9 +195,6 @@ MAIN_ENTRY(argc, argv[]) {
 
     STRG_LOC_CONST(aStrIden[]) = "Process_User";
     STRG_LOC_CONST(aStrText[]) = "Process user.                             (c) EFr-2026";
-
-    UNUSED(argc);
-    UNUSED(argv);
 
 // Specifications for the processes
 

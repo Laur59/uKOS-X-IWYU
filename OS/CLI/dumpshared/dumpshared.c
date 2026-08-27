@@ -52,11 +52,8 @@ MODULE(
  * \brief Main entry point
  *
  */
-static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
+static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char_t *argv[]) {
     uint32_t    i;
-
-    UNUSED(argc);
-    UNUSED(argv);
 
     (void)dprintf(KSYST, "Shared dump.\n");
 

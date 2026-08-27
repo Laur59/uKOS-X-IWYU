@@ -242,7 +242,6 @@ static  void    local_cpyLEDs(uint8_t value) {
     }
 }
 
-#include    "model_coreDump_tracing.c_inc"      // IWYU pragma: keep
 #include    "model_coreDump_generic.c_inc"      // IWYU pragma: keep
 #include    "model_coreDump_core.c_inc"         // IWYU pragma: keep
 #include    "model_coredump_soc.c_inc"          // IWYU pragma: keep

@@ -41,6 +41,7 @@
 #include    "macros.h"
 #include    "macros_core.h"
 #include    "macros_soc.h"
+#include    "record/private/private_recordDump.h"
 #include    "modules.h"
 #include    "serial/serial.h"
 #include    "types.h"
@@ -93,8 +94,6 @@ static  void    local_panicMallocBroken(void);
 static  void    local_panicStackUnderflow(void);
 static  void    local_panicNoSystemCall(void);
 static  void    local_panicGeneral(void);
-static  void    local_printTrace(void);
-static  void    local_printLog(void);
 
 /*
  * \brief crt0
@@ -231,8 +230,8 @@ void    crt0_exit(int number) {
     }
 
     cmns_send(KSYST, "\n");
-    local_printTrace();
-    local_printLog();
+    record_printTrace();
+    record_printLog();
 }
 
 // Local routines
@@ -338,4 +337,3 @@ static  void    local_panicGeneral(void) {
     cmns_send(KSYST, "\nPanic: system stopped!\n");
 }
 
-#include    "model_coreDump_tracing.c_inc"      // IWYU pragma: keep

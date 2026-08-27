@@ -33,6 +33,7 @@
 #include    "exce.h"
 #include    "kern/kern.h"
 #include    "kern/private/private_processes.h"
+
 #if KKERN_NB_PRECISE_SIGNALS > 0
 #include    "kern/private/private_preciseSignals.h"
 #endif

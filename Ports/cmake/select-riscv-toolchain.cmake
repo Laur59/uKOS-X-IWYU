@@ -64,6 +64,10 @@ else()
     set(COMPILER_FAMILY gcc)
     set(PREFIX riscv64-unknown-elf-)
 
+    if(DEFINED C_LIBRARY AND C_LIBRARY STREQUAL "llvmlibc")
+        message(FATAL_ERROR "C_LIBRARY=llvmlibc requires the LLVM toolchain (USE_LLVM=ON); it is not available with GCC")
+    endif()
+
     if(DEFINED ENV{PATH_GCC_RVXX})
         set(PATH_GCC_RVXX $ENV{PATH_GCC_RVXX})
     else()

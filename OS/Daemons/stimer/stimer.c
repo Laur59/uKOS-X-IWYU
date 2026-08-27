@@ -71,11 +71,8 @@ static  void    local_process(const void *argument);
  * \brief Main entry point
  *
  */
-static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
+static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char_t *argv[]) {
     uint32_t    core;
-
-    UNUSED(argc);
-    UNUSED(argv);
 
     core = GET_RUNNING_CORE;
 
@@ -141,7 +138,7 @@ static  void    local_execute(uint16_t i) {
  *
  */
 [[noreturn]]
-static void local_process(const void *argument) {
+static void local_process([[maybe_unused]] const void *argument) {
     uint16_t    i;
     uintptr_t   data;
     uint32_t    core, delay, nextTimeout, lastTimeout, errorTimeout, compTime;
@@ -149,8 +146,6 @@ static void local_process(const void *argument) {
     bool        gotMailBox = false;
     stim_t      *newSTimer;
     mbox_t      *mailBox;
-
-    UNUSED(argument);
 
     DEBUG_KERN_TRACE("entry: software timer daemon");
     core = GET_RUNNING_CORE;

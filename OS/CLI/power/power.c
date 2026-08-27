@@ -57,14 +57,11 @@ MODULE(
  * \brief Main entry point
  *
  */
-static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
+static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char_t *argv[]) {
             batteryInfo_t   batteryInfo;
             int32_t         status;
             uint16_t        i2cTries = 0;
     static  uint16_t        maxI2cTries = 0;
-
-    UNUSED(argc);
-    UNUSED(argv);
 
     (void)dprintf(KSYST, "Battery information.\n");
 

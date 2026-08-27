@@ -14,7 +14,6 @@
 #include    "ulvgl.h"
 #include    "kern/kern.h"
 #include    "kern/kern_types.h"
-#include    "macros.h"
 #include    "macros_soc.h"
 #include    "random/random.h"
 
@@ -78,10 +77,8 @@ static  void    local_DrawText_1(void) {
     kern_unlockMutex(vLVGL_API[core]);
 }
 
-static  void    local_colorL1_cb(lv_timer_t *time) {
+static  void    local_colorL1_cb([[maybe_unused]] lv_timer_t *time) {
     uint32_t    core, color;
-
-    UNUSED(time);
 
     core = GET_RUNNING_CORE;
 
@@ -177,13 +174,11 @@ static  void    local_DrawRandomSquares(void) {
     lv_timer_create(local_square_cb, 100, nullptr);
 }
 
-static  void    local_square_cb(lv_timer_t *time) {
+static  void    local_square_cb([[maybe_unused]] lv_timer_t *time) {
             uint32_t    core, position, color;
             int32_t     x, y, max_x, max_y;
             lv_obj_t    *localSquare;
     static  uint32_t    index = 0;
-
-    UNUSED(time);
 
     core = GET_RUNNING_CORE;
 

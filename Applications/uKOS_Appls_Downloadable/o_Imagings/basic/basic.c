@@ -109,9 +109,7 @@ static  void    local_transfer(void);
  *
  */
 [[noreturn]]
-static void aProcess_0(const void *argument) {
-
-    UNUSED(argument);
+static void aProcess_0([[maybe_unused]] const void *argument) {
 
     while (true) {
         kern_suspendProcess(1000U);
@@ -127,9 +125,7 @@ static void aProcess_0(const void *argument) {
  *
  */
 [[noreturn]]
-static void aProcess_1(const void *argument) {
-
-    UNUSED(argument);
+static void aProcess_1([[maybe_unused]] const void *argument) {
 
     volatile        uint8_t         *image;
     static  const   imagerCnf_t configureIMG0 = {
@@ -204,9 +200,6 @@ MAIN_ENTRY(argc, argv[]) {
     STRG_LOC_CONST(aStrText_0[]) = "Process user 0.                           (c) EFr-2026";
     STRG_LOC_CONST(aStrIden_1[]) = "Process_User_1";
     STRG_LOC_CONST(aStrText_1[]) = "Process user 1.                           (c) EFr-2026";
-
-    UNUSED(argc);
-    UNUSED(argv);
 
 // Specifications for the processes
 

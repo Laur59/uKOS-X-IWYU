@@ -6,9 +6,9 @@
  *
  *           This module provides the integration layer between LLVM libc and
  *           uKOS-X kernel services. Unlike newlib/picolibc, baremetal LLVM libc
- *           does not use the POSIX _open/_read/_write syscall layer, does not
- *           provide FILE* (so no fprintf/dprintf), and owns its own errno
- *           storage. The integration therefore implements only:
+ *           does not use the POSIX _open/_read/_write syscall layer and does not
+ *           provide FILE* (so no fprintf/dprintf). The integration therefore
+ *           implements only:
  *
  *           I/O retargeting hooks (see libc/src/__support/OSUtil/baremetal/io.h)
  *           __llvm_libc_stdio_read
@@ -24,9 +24,11 @@
  *           __llvm_libc_exit
  *           __llvm_libc_heap_limit
  *
- *           Note: errno is provided by LLVM libc itself (__llvm_libc_errno is
- *           defined inside libc.a), so uKOS-X does not manage a per-process
- *           errno for this C library.
+ *           Note: errno storage belongs to LLVM libc (one global reached both
+ *           by __llvm_libc_errno() and by the library's own Errno operators).
+ *           uKOS-X does not redirect it - it cannot - but the kernel does give
+ *           it per-process semantics by swapping it at every context switch in
+ *           xLibrary_update(); see OS/Lib_kernels/kern/xLibrary.c.
  */
 
 #ifndef LLVMLIBC_H_
@@ -42,5 +44,28 @@
 #define KSTDIN      0
 #define KSTDOUT     1
 #define KSTDERR     2
+
+#ifdef CONFIG_MAN_LLVMLIBC_S
+
+#include    <stddef.h>      // for size_t
+#include    <stdint.h>      // for uint32_t
+#include    <sys/types.h>   // for ssize_t (llvmlibc compat header)
+
+/*
+ * Byte-level console access, exported for the downloadable applications.
+ *
+ * A downloadable application cannot reuse the system image's copy of LLVM libc:
+ * the library is built with hidden visibility, so every libc symbol comes out
+ * LOCAL HIDDEN in FLASH.elf and --just-symbols hands over globals only. An
+ * application that calls printf() therefore links its own copy of the libc
+ * stdio objects and must supply the __llvm_libc_stdio_* hooks itself -- see
+ * llvmlibc_app_stdio.c, which the application build compiles into every target.
+ * These two entry points are what that shim forwards to, so the console path,
+ * the serial reservation and the framing all stay in one place.
+ */
+extern  ssize_t llvmlibc_fdwrite(uint32_t fd, const void *buf, size_t count);
+extern  ssize_t llvmlibc_fdread(uint32_t fd, void *buf, size_t count);
+
+#endif  // CONFIG_MAN_LLVMLIBC_S
 
 #endif  // LLVMLIBC_H_
