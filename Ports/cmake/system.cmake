@@ -276,6 +276,30 @@ if(C_LIBRARY STREQUAL "picolibc")
     list(APPEND TARGET_COMMON_LINK_OPTIONS
         $<$<C_COMPILER_ID:GNU>:-Wl,--no-gc-sections>
     )
+    # RISC-V GCC only: -specs=picolibc.specs, at LINK time.
+    #
+    # gcc/config/riscv/elf.h hardcodes
+    #     *lib: --start-group -lc %{!specs=nosys.specs:-lgloss} --end-group
+    # so the driver always asks for -lgloss, newlib's board-support library.
+    # picolibc does not ship it (nor a nosys.specs to suppress it), and the link
+    # dies with "cannot find -lgloss". ARM's spec adds no such library, which is
+    # why only RISC-V needs this.
+    #
+    # picolibc.specs replaces that *lib stanza, so the reference disappears. It is
+    # applied to the link ONLY: the include-path damage that keeps these specs off
+    # the compile line lives in the *cpp: and *cc1plus: stanzas, which the linker
+    # never expands. See "picolibc with GCC - the toolchain must be
+    # picolibc-native" (§2.2) in Documentation/USER_GUIDES/C-library-selection.md.
+    #
+    # Its *link stanza also carries an unconditional --gc-sections; the
+    # --no-gc-sections above is emitted after it on the ld command line and wins,
+    # which is what keeps whole-archive kernel code alive. -Tpicolibc.ld is guarded
+    # by %{!T:...} and we always pass -T, so it never applies.
+    if(CMAKE_SYSTEM_PROCESSOR STREQUAL "RISCV")
+        list(APPEND TARGET_COMMON_LINK_OPTIONS
+            $<$<C_COMPILER_ID:GNU>:-specs=picolibc.specs>
+        )
+    endif()
     message(STATUS "C library malloc wrapping: --wrap=malloc, --wrap=free, --wrap=realloc, --wrap=calloc")
 elseif(C_LIBRARY STREQUAL "llvmlibc")
     # LLVM libc uses standard function names (no _r suffix), like picolibc

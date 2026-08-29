@@ -84,20 +84,41 @@ endif()
 # Note: Clang/LLVM uses picolibc by default, no specs needed
 if(COMPILER_FAMILY STREQUAL "gcc")
     if(C_LIBRARY STREQUAL "picolibc")
-        # GCC with picolibc: Use specs for both compilation and linking
-        # The picolibc.specs file provides:
-        # - Include paths to picolibc headers
-        # - Library paths to picolibc libraries
-        # - Automatic --gc-sections for linker (reduces binary size)
-        # - Default picolibc.ld linker script (overridden by our -T flag)
-        # Note: Our custom linker scripts override picolibc's default via -T flag
-        target_compile_options(system_compiler_flags INTERFACE
-            -specs=picolibc.specs
-        )
+        # GCC with picolibc: deliberately NO -specs=picolibc.specs.
+        #
+        # PATH_GCC_ARMP must point at a GCC whose *default* C library is
+        # picolibc, not at a newlib GCC carrying picolibc as an overlay. For a
+        # picolibc-native toolchain the specs file is not merely redundant, it
+        # is harmful: its *cpp: and *cc1plus: stanzas -isystem-prepend
+        # <sysroot>/arm-none-eabi/include so picolibc's headers win over a
+        # co-installed newlib. That hoists the C header directory ABOVE the C++
+        # ones, and libstdc++'s <cstdlib> reaches <stdlib.h> with
+        # #include_next -- which by definition searches only the directories
+        # after its own -- so it can never find it. Every C++ translation unit
+        # then fails with "fatal error: stdlib.h: No such file or directory",
+        # while C compiles fine. See "picolibc with GCC - the toolchain must be
+        # picolibc-native" (§2.2) in Documentation/USER_GUIDES/C-library-selection.md.
+        #
+        # Everything else the specs contributed is already covered: the include
+        # and library paths are the toolchain's own defaults, picolibc.ld is
+        # overridden by our -T, crt0 by -nostartfiles, the --defsym printf
+        # variants need opt-in macros this project never sets, and
+        # -mstack-protector-guard=global is already GCC's default for
+        # arm-none-eabi (verified: identical __stack_chk_guard code with and
+        # without the specs). The one exception is --gc-sections, which the
+        # specs used to supply and which is therefore added explicitly here so
+        # application images keep their previous size.
         target_link_options(system_compiler_flags INTERFACE
-            -specs=picolibc.specs
+            -Wl,--gc-sections
+            # RISC-V GCC only: the driver's *lib stanza (gcc/config/riscv/elf.h)
+            # hardcodes -lgloss, newlib's board-support library, which picolibc does
+            # not ship; the link dies with "cannot find -lgloss". picolibc.specs
+            # replaces that stanza. Applied to the LINK only -- the include-path
+            # damage that keeps these specs off the compile line is in *cpp:/*cc1plus:,
+            # which the linker never expands. ARM adds no such library and needs none.
+            $<$<AND:$<C_COMPILER_ID:GNU>,$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},RISCV>>:-specs=picolibc.specs>
         )
-        message(STATUS "C library specs (GCC): -specs=picolibc.specs for compilation and linking")
+        message(STATUS "C library specs (GCC): none - picolibc must be the toolchain default; --gc-sections added explicitly")
     else()
         # GCC with newlib (default)
         # Note: -specs=nano.specs is typically added in target-specific CMakeLists.txt

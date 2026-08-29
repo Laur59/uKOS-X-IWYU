@@ -4,6 +4,8 @@
 #
 # Purpose:
 #   Building all the uKOS downloadable applications using CMake.
+#   Applications tied to a single C library (see CLIB_ONLY_GROUPS) are
+#   skipped when another C library is selected.
 #
 # Usage:
 #    cd cloned_directory/Applications/uKOS_Appls_Downloadable
@@ -51,6 +53,14 @@ VERBOSITY=''
 CANARY_MODE="ON"
 USER_MODE="ON"
 C_LIB="newlib"
+
+# Application groups that only build against one specific C library. n_NewLibs
+# demonstrates the newlib manager: its source includes "newlib/newlib.h", which
+# pulls <sys/reent.h> - a header picolibc and LLVM libc do not provide.
+
+typeset -rA CLIB_ONLY_GROUPS=(
+    n_NewLibs newlib
+)
 
 # Cleanup trap (runs on Ctrl-C)
 cleanup() {
@@ -165,23 +175,52 @@ get_cmake_preset() {
     echo "$preset"
 }
 
+# Version reported by a toolchain binary, or "unknown" when it cannot be run, so
+# that a missing optional toolchain is reported rather than killing the script on
+# ERR_EXIT before the banner is printed.
+#   $1 toolchain root   $2 binary under bin/   $3 gcc|clang (version field layout)
+toolchain_version() {
+    local root="$1" binary="$2" flavour="$3" program
+
+    case "${flavour}" in
+        gcc)   program='NR==1{print $3; exit}' ;;
+        clang) program='NR==1{for(i=1;i<=NF;i++)if($i=="version"){print $(i+1); exit}}' ;;
+    esac
+
+    [[ -n "${root}" && -x "${root}/bin/${binary}" ]] || { print -r -- unknown; return 0; }
+    print -r -- "$("${root}/bin/${binary}" --version 2>/dev/null | awk "${program}")"
+}
+
+# Each C library other than newlib has its own toolchains; report the versions of
+# the ones the build will actually use. Mirrors Ports/Targets/_build.sh.
 case ${COMPILER_TOOL} in
     "gcc")
-        gcc_arm_version=$(${PATH_GCC_ARM}/bin/arm-none-eabi-gcc --version | awk 'NR==1{print $3; exit}')
-        gcc_rvxx_version=$(${PATH_GCC_RVXX}/bin/riscv64-unknown-elf-gcc --version | awk 'NR==1{print $3; exit}')
+        # No llvmlibc branch: -L forces COMPILER_TOOL to clang and -G -L is rejected
+        # above, so C_LIB is newlib or picolibc whenever this case runs.
+        if [[ "${C_LIB}" == "picolibc" ]]; then
+            gcc_arm_version=$(toolchain_version "${PATH_GCC_ARMP:-}" arm-none-eabi-gcc gcc)
+            gcc_rvxx_version=$(toolchain_version "${PATH_GCC_RVXXP:-}" riscv64-unknown-elf-gcc gcc)
+        else
+            gcc_arm_version=$(toolchain_version "${PATH_GCC_ARM:-}" arm-none-eabi-gcc gcc)
+            gcc_rvxx_version=$(toolchain_version "${PATH_GCC_RVXX:-}" riscv64-unknown-elf-gcc gcc)
+        fi
         COMPILER_VERSIONS="arm:${gcc_arm_version} - riscv:${gcc_rvxx_version}"
         CMAKE_PRESET=$(get_cmake_preset "gcc" "${USER_MODE}" "${CANARY_MODE}")
         ;;
     "LLVM clang")
-        # llvmlibc uses a dedicated ARM toolchain (PATH_LLVM_ARML) and is ARM-only
         if [[ "${C_LIB}" == "llvmlibc" ]]; then
-            llvm_arm_version=$(${PATH_LLVM_ARML:-}/bin/clang --version | awk 'NR==1{for(i=1;i<=NF;i++)if($i=="version"){print $(i+1); exit}}')
-            COMPILER_VERSIONS="arm:${llvm_arm_version}"
+            # llvmlibc uses dedicated toolchains: PATH_LLVM_ARML (ARM) and PATH_LLVM_RVXXL (RISC-V)
+            llvm_arm_version=$(toolchain_version "${PATH_LLVM_ARML:-}" clang clang)
+            llvm_rvxx_version=$(toolchain_version "${PATH_LLVM_RVXXL:-}" clang clang)
+        elif [[ "${C_LIB}" == "picolibc" ]]; then
+            # picolibc uses dedicated toolchains: PATH_LLVM_ARMP (ARM) and PATH_LLVM_RVXXP (RISC-V)
+            llvm_arm_version=$(toolchain_version "${PATH_LLVM_ARMP:-}" clang clang)
+            llvm_rvxx_version=$(toolchain_version "${PATH_LLVM_RVXXP:-}" clang clang)
         else
-            llvm_arm_version=$(${PATH_LLVM_ARM:-}/bin/clang --version | awk 'NR==1{for(i=1;i<=NF;i++)if($i=="version"){print $(i+1); exit}}')
-            llvm_rvxx_version=$(${PATH_LLVM_RVXX:-}/bin/clang --version | awk 'NR==1{for(i=1;i<=NF;i++)if($i=="version"){print $(i+1); exit}}')
-            COMPILER_VERSIONS="arm:${llvm_arm_version} - riscv:${llvm_rvxx_version}"
+            llvm_arm_version=$(toolchain_version "${PATH_LLVM_ARM:-}" clang clang)
+            llvm_rvxx_version=$(toolchain_version "${PATH_LLVM_RVXX:-}" clang clang)
         fi
+        COMPILER_VERSIONS="arm:${llvm_arm_version} - riscv:${llvm_rvxx_version}"
         CMAKE_PRESET=$(get_cmake_preset "llvm" "${USER_MODE}" "${CANARY_MODE}")
         ;;
 esac
@@ -250,12 +289,22 @@ parse_apps_yaml() {
 build_failure=""
 build_warning=""
 build_success=""
+build_skipped=""
 readonly LOG_FILE="build/compilation.log"
 
 printf "%bBuilding all the downloadable applications for (USER_MODE=%s CANARY=%s) with:\n   %bcmake --preset %s -DC_LIBRARY=%s%b\n" "${YELLOW}" "${USER_MODE}" "${CANARY_MODE}" "${BOLD}" "${CMAKE_PRESET}" "${C_LIB}" "${NC}"
 # Parse YAML and iterate through all build targets
 while IFS= read -r CURRENT_TARGET; do
     printf "%-40s " "${CURRENT_TARGET}"
+
+    # Skip the groups that require a C library other than the selected one
+    required_clib="${CLIB_ONLY_GROUPS[${CURRENT_TARGET%%/*}]:-}"
+    if [[ -n "${required_clib}" && "${required_clib}" != "${C_LIB}" ]]; then
+        build_skipped+=$'\n'"${CURRENT_TARGET} (requires ${required_clib})"
+        printf "%bSKIP%b\n" "${BLUE}" "${NC}"
+        continue
+    fi
+
     cd "${PATH_PRG}/${CURRENT_TARGET}"
     BUILD_DIR="${PWD}/build"
     rm -fr build >/dev/null
@@ -287,6 +336,12 @@ while IFS= read -r CURRENT_TARGET; do
         process_option "${LOG_FILE}"
     fi
 done < <(parse_apps_yaml)
+
+# Display the target list that was skipped
+
+if [[ -n "${build_skipped}" ]]; then
+    printf "%bSkipped builds:%b%s\n" "${BLUE}" "${NC}" "${build_skipped}"
+fi
 
 # Display the target list that with warnings
 

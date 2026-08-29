@@ -68,6 +68,10 @@ else()
         else()
             message(FATAL_ERROR "Environment variable PATH_GCC_ARMP is not defined")
         endif()
+        # No -specs=picolibc.specs is passed, so picolibc has to be this
+        # toolchain's default C library; an overlay would silently give newlib
+        include(${mkfiles_cmake_path}/check-picolibc-default.cmake)
+        check_picolibc_is_default(${PATH_GCC_ARM}/bin/${PREFIX}gcc)
     else()
         if(DEFINED ENV{PATH_GCC_ARM})
             set(PATH_GCC_ARM $ENV{PATH_GCC_ARM})

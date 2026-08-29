@@ -32,8 +32,8 @@
  *           __wrap_realloc
  *           __wrap_calloc
  *
- *           Custom errno function
- *           __ukos_get_errno
+ *           newlib compatibility
+ *           __errno
  *
  *           Supported devices controlled by open - close - read - write functions
  *           urt0 - urt4: UART serial devices

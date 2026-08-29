@@ -6,9 +6,13 @@
 #   Full regression build script using CMake out-of-source builds.
 #   Builds all system targets followed by all applications into a
 #   dedicated 'artefacts' directory.
+#   Applications tied to a single C library (see CLIB_ONLY_GROUPS) are
+#   skipped when another C library is selected.
+#   Everything printed on stdout is mirrored into a generated
+#   regression-results-XXXXXX.sh, which prints those results again when run.
 #
 # Usage:
-#   ./run-regression.sh [-G] [-P|-L] [-U] [-Y] [-v] [-t <target>]
+#   ./run-regression.sh [-G] [-P|-L] [-U] [-Y] [-v] [-n] [-t <target>]
 #
 # Options:
 #   -G  Use gcc compiler
@@ -17,12 +21,16 @@
 #   -U  Privileged mode only (User mode OFF)
 #   -Y  Disable canary stack protection
 #   -v  Verbose: display full build output
+#   -n  Do not produce a results script
 #   -t  Filter by target name (e.g. Nucleo_H743)
 #
 
 emulate -L zsh
 setopt NO_UNSET PIPE_FAIL EXTENDED_GLOB NULL_GLOB
 zmodload zsh/zutil
+
+# Recorded in the results script; zparseopts -D consumes the options further down
+readonly -a ARGV_ORIG=("$@")
 
 # Colours
 readonly RED=$'\033[0;31m'
@@ -44,18 +52,26 @@ if [[ ! -f "${PATH_VARIANTS_YAML}" || ! -f "${PATH_APPS_YAML}" ]]; then
     exit 1
 fi
 
+# Application groups that only build against one specific C library. n_NewLibs
+# demonstrates the newlib manager: its source includes "newlib/newlib.h", which
+# pulls <sys/reent.h> - a header picolibc and LLVM libc do not provide.
+typeset -rA CLIB_ONLY_GROUPS=(
+    n_NewLibs newlib
+)
+
 # Defaults (LLVM, as in the _build.sh scripts)
 COMPILER="llvm"
 USE_LLVM="ON"
 USER_MODE="ON"
 CANARY="ON"
 VERBOSE=0
+NO_RESULTS=0
 TARGET_FILTER=""
 C_LIB="newlib"
 
 usage() {
     cat <<'EOF'
-Usage: ./_build.sh [-G] [-P|-L] [-U] [-Y] [-v] [-t <target>]
+Usage: ./run-regression.sh [-G] [-P|-L] [-U] [-Y] [-v] [-n] [-t <target>]
 
 Options:
   -G  Use gcc compiler
@@ -64,6 +80,7 @@ Options:
   -U  Privileged mode only
   -Y  Disable canary stack protection
   -v  Verbose: display full build output
+  -n  Do not produce a results script
   -t  Filter by target name (e.g. Nucleo_H743)
   -h  Show this help message
 EOF
@@ -73,7 +90,7 @@ EOF
 # passing both can be detected as a conflict (they are mutually exclusive).
 # Pre-initialise every result array because the script runs under NO_UNSET.
 
-o_gcc=() clib_flag=() o_user=() o_canary=() o_verbose=() o_filter=() o_help=()
+o_gcc=() clib_flag=() o_user=() o_canary=() o_verbose=() o_nores=() o_filter=() o_help=()
 
 zparseopts -D -F - \
     G=o_gcc \
@@ -82,6 +99,7 @@ zparseopts -D -F - \
     U=o_user \
     Y=o_canary \
     v=o_verbose \
+    n=o_nores \
     t:=o_filter \
     h=o_help || { usage; exit 1; }
 
@@ -110,6 +128,7 @@ fi
 (( $#o_user ))   && USER_MODE="OFF"
 (( $#o_canary )) && CANARY="OFF"
 (( $#o_verbose )) && VERBOSE=1
+(( $#o_nores ))  && NO_RESULTS=1
 (( $#o_filter )) && TARGET_FILTER=${o_filter[2]}
 
 case ${clib_flag[1]:-} in
@@ -121,16 +140,142 @@ esac
 # Determine the preset (systems and applications share the same matrix)
 PRESET="${COMPILER}"
 
+# Results script
+#
+# Everything this script prints on stdout goes through emit(), which mirrors the
+# printf into a generated zsh script; running that script prints the results
+# again. mktemp only substitutes trailing 'X's on BSD/macOS, so the '.sh' suffix
+# is appended afterwards rather than being part of the template. Failing to
+# create the file is not fatal: PATH_RESULTS stays empty and nothing is
+# recorded. An interrupted run leaves a partial results script behind.
+#
+# -n suppresses the recording altogether rather than deleting the file at the
+# end, so an interrupted run leaves nothing behind either.
+PATH_RESULTS=""
+results_tmp=""
+results_argv=()
+if (( NO_RESULTS == 0 )); then
+    if results_tmp=$(mktemp "regression-results-XXXXXX" 2>/dev/null) &&
+       mv -- "${results_tmp}" "${results_tmp}.sh" 2>/dev/null; then
+        PATH_RESULTS="${PWD}/${results_tmp}.sh"
+        chmod u+x "${PATH_RESULTS}"      # BSD chmod has no '--' separator
+
+        # quote element by element; "${(q+)ARGV_ORIG}" would join first and quote once
+        results_argv=("${(@q+)ARGV_ORIG}")
+
+        {
+            print -r -- '#!/usr/bin/env zsh'
+            print -r -- '# SPDX-License-Identifier: MIT'
+            print -r -- '# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen'
+            print -r -- '#'
+            print -r -- "# Regression results recorded on $(date '+%Y-%m-%d %H:%M:%S')."
+            print -r -- "# Invocation: ${0:t} ${results_argv[*]}"
+            cat <<'EOF'
+# Run this script to print those results again.
+
+emulate -L zsh
+
+readonly RED=$'\033[0;31m'
+readonly GREEN=$'\033[0;32m'
+readonly YELLOW=$'\033[0;33m'
+readonly BLUE=$'\033[0;34m'
+readonly BOLD=$'\033[1m'
+readonly NC=$'\033[0m'
+
+EOF
+        } > "${PATH_RESULTS}"
+    else
+        printf "%bWarning:%b cannot create a results script in %s; the results are not recorded.\n" \
+               "${YELLOW}" "${NC}" "${PWD}" >&2
+        [[ -n "${results_tmp}" ]] && rm -f -- "${results_tmp}"
+    fi
+fi
+
+# Symbolic names for the colour arguments, so that the recorded commands read
+# like the originals instead of carrying raw escape sequences
+typeset -rA RESULT_COLOURS=(
+    "${RED}"          '${RED}'
+    "${GREEN}"        '${GREEN}'
+    "${YELLOW}"       '${YELLOW}'
+    "${BLUE}"         '${BLUE}'
+    "${BOLD}"         '${BOLD}'
+    "${NC}"           '${NC}'
+    "${BOLD}${BLUE}"  '${BOLD}${BLUE}'
+)
+
+# printf on stdout, mirrored into the results script as a replayable command.
+# (q+) quotes minimally and leaves the format string untouched, so the recorded
+# printf interprets it exactly as this one does.
+emit() {
+    printf "$@"
+    [[ -n "${PATH_RESULTS}" ]] || return 0
+
+    local -a parts=()
+    local arg name
+    for arg in "$@"; do
+        name="${RESULT_COLOURS[${arg}]:-}"
+        if [[ -n "${name}" ]]; then
+            parts+=("\"${name}\"")
+        else
+            parts+=("${(q+)arg}")
+        fi
+    done
+    print -r -- "printf ${parts[*]}" >> "${PATH_RESULTS}"
+}
+
+# Dump a build log on stdout and embed it in the results script. The log itself
+# is embedded rather than referenced, because it lives under PATH_ARTEFACTS,
+# which the next regression run deletes.
+emit_file() {
+    local file="$1"
+
+    cat -- "${file}"
+    [[ -n "${PATH_RESULTS}" ]] || return 0
+
+    {
+        print -r -- "cat <<'UKOS_REGRESSION_LOG_EOF'"
+        cat -- "${file}"
+        # a log not ending in a newline would glue the terminator to its last line
+        [[ -n "$(tail -c1 -- "${file}")" ]] && print
+        print -r -- "UKOS_REGRESSION_LOG_EOF"
+    } >> "${PATH_RESULTS}"
+}
+
+# Close the results script and ask whether to keep it. With -n there is no file,
+# and the question is skipped when stdin is not a terminal (read -q would fail
+# with "can't open terminal"), the file then being kept. The outcome describes
+# the file rather than the run, so it is printed but not recorded.
+finish_results() {
+    local exit_code="$1"
+
+    [[ -n "${PATH_RESULTS}" ]] || return 0
+
+    print -r -- "exit ${exit_code}" >> "${PATH_RESULTS}"
+
+    if [[ -t 0 ]]; then
+        printf "\n"
+        if ! read -q "?Keep the results script ${PATH_RESULTS} ? [y/N] "; then
+            printf "\n"
+            rm -f -- "${PATH_RESULTS}"
+            printf "Results script removed.\n"
+            return 0
+        fi
+        printf "\n"
+    fi
+
+    printf "\nResults script: %s\n" "${PATH_RESULTS}"
+}
+
 rm -fr "${PATH_ARTEFACTS}"
 
-printf "%bStarting Regression Test%b\n" "${BOLD}${BLUE}" "${NC}"
-printf "Source:    %s\n" "${PATH_ROOT}"
-printf "Artefacts: %s\n" "${PATH_ARTEFACTS}"
-printf "Compiler:  %s (LLVM=%s)\n" "${COMPILER}" "${USE_LLVM}"
-printf "C library: %s\n" "${C_LIB}"
-printf "Options:   USER_MODE=%s, CANARY=%s\n" "${USER_MODE}" "${CANARY}"
-[[ -n "${TARGET_FILTER}" ]] && printf "Filter:    Target = %s\n" "${TARGET_FILTER}"
-printf "\n"
+emit "%bStarting Regression Test%b\n" "${BOLD}${BLUE}" "${NC}"
+emit "Source:    %s\n" "${PATH_ROOT}"
+emit "Artefacts: %s\n" "${PATH_ARTEFACTS}"
+emit "Compiler:  %s (LLVM=%s)\n" "${COMPILER}" "${USE_LLVM}"
+emit "C library: %s\n" "${C_LIB}"
+emit "Options:   USER_MODE=%s, CANARY=%s\n" "${USER_MODE}" "${CANARY}"
+[[ -n "${TARGET_FILTER}" ]] && emit "Filter:    Target = %s\n" "${TARGET_FILTER}"
+emit "\n"
 
 # Statistics
 integer total_builds=0
@@ -146,8 +291,8 @@ build_target() {
     shift 3
     local extra_args=("$@")
 
-    (( total_builds++ ))
-    printf "Building %-65s " "${name}"
+    (( ++total_builds ))
+    emit "Building %-65s " "${name}"
 
     local log_file="${build_dir}/build.log"
     mkdir -p "${build_dir}" || return 1
@@ -172,21 +317,21 @@ build_target() {
         # Build step
         cmake --build "${build_dir}" -j >> "${log_file}" 2>&1
         if [[ $? -eq 0 ]]; then
-            printf "%b[PASS]%b\n" "${GREEN}" "${NC}"
-            (( success_count++ ))
+            emit "%b[PASS]%b\n" "${GREEN}" "${NC}"
+            (( ++success_count ))
             return 0
         fi
     fi
 
-    printf "%b[FAIL]%b\n" "${RED}" "${NC}"
-    (( fail_count++ ))
+    emit "%b[FAIL]%b\n" "${RED}" "${NC}"
+    (( ++fail_count ))
     failed_list+=("${name}")
-    [[ ${VERBOSE} -eq 1 ]] && cat "${log_file}"
+    [[ ${VERBOSE} -eq 1 ]] && emit_file "${log_file}"
     return 1
 }
 
 # 1. Build System Targets
-printf "%b[1/2] Building System Targets%b\n" "${BOLD}" "${NC}"
+emit "%b[1/2] Building System Targets%b\n" "${BOLD}" "${NC}"
 while IFS=$'\t' read -r family variant; do
     # Apply filter if provided
     if [[ -n "${TARGET_FILTER}" && "${family}" != "${TARGET_FILTER}" ]]; then
@@ -198,7 +343,7 @@ while IFS=$'\t' read -r family variant; do
     install_dir="${PATH_ARTEFACTS}/Targets/${family}/${variant}/${PRESET}"
 
     if [[ ! -d "${src}" ]]; then
-        printf "%b[SKIP]%b (Source not found: %s)\n" "${YELLOW}" "${NC}" "${family}/Variant_${variant}"
+        emit "%b[SKIP]%b (Source not found: %s)\n" "${YELLOW}" "${NC}" "${family}/Variant_${variant}"
         continue
     fi
 
@@ -210,10 +355,18 @@ while IFS=$'\t' read -r family variant; do
 done < <(yq eval 'to_entries[] | .key as $f | .value[] | "\($f)\t\(.name)"' "${PATH_VARIANTS_YAML}")
 
 # 2. Build Applications
-printf "\n%b[2/2] Building Applications%b\n" "${BOLD}" "${NC}"
+emit "\n%b[2/2] Building Applications%b\n" "${BOLD}" "${NC}"
 while IFS=$'\t' read -r group project target_board; do
     # Apply filter if provided
     if [[ -n "${TARGET_FILTER}" && "${target_board}" != "${TARGET_FILTER}" ]]; then
+        continue
+    fi
+
+    # Skip the groups that require a C library other than the selected one
+    required_clib="${CLIB_ONLY_GROUPS[${group}]:-}"
+    if [[ -n "${required_clib}" && "${required_clib}" != "${C_LIB}" ]]; then
+        emit "%b[SKIP]%b (%s requires the %s C library)\n" "${YELLOW}" "${NC}" \
+             "${group}/${project}/${target_board}" "${required_clib}"
         continue
     fi
 
@@ -221,7 +374,7 @@ while IFS=$'\t' read -r group project target_board; do
     build_root="${PATH_ARTEFACTS}/build/Apps/${group}/${project}/${target_board}/${PRESET}"
 
     if [[ ! -d "${src}" ]]; then
-        printf "%b[SKIP]%b (Source not found: %s)\n" "${YELLOW}" "${NC}" "${group}/${project}/${target_board}"
+        emit "%b[SKIP]%b (Source not found: %s)\n" "${YELLOW}" "${NC}" "${group}/${project}/${target_board}"
         continue
     fi
 
@@ -244,23 +397,24 @@ while IFS=$'\t' read -r group project target_board; do
 done < <(yq eval 'to_entries[] | .key as $g | .value | to_entries[] | .key as $p | .value[] | "\($g)\t\($p)\t\(.)"' "${PATH_APPS_YAML}")
 
 # Summary
-printf "\n%bRegression Summary%b\n" "${BOLD}${BLUE}" "${NC}"
-printf "Total builds: %d\n" "${total_builds}"
-printf "Success:      %b%d%b\n" "${GREEN}" "${success_count}" "${NC}"
-printf "Failed:       %b%d%b\n" "${RED}" "${fail_count}" "${NC}"
+emit "\n%bRegression Summary%b\n" "${BOLD}${BLUE}" "${NC}"
+emit "Total builds: %d\n" "${total_builds}"
+emit "Success:      %b%d%b\n" "${GREEN}" "${success_count}" "${NC}"
+emit "Failed:       %b%d%b\n" "${RED}" "${fail_count}" "${NC}"
+
+integer exit_code=0
 
 if (( total_builds == 0 )); then
-    printf "\n%bNo targets matched the filter: %s%b\n" "${YELLOW}" "${TARGET_FILTER}" "${NC}"
-    exit 0
-fi
-
-if (( fail_count > 0 )); then
-    printf "\n%bFailed Targets:%b\n" "${RED}" "${NC}"
+    emit "\n%bNo targets matched the filter: %s%b\n" "${YELLOW}" "${TARGET_FILTER}" "${NC}"
+elif (( fail_count > 0 )); then
+    emit "\n%bFailed Targets:%b\n" "${RED}" "${NC}"
     for f in "${failed_list[@]}"; do
-        printf " - %s\n" "${f}"
+        emit " - %s\n" "${f}"
     done
-    exit 1
+    exit_code=1
+else
+    emit "\n%bAll builds completed successfully.%b\n" "${GREEN}" "${NC}"
 fi
 
-printf "\n%bAll builds completed successfully.%b\n" "${GREEN}" "${NC}"
-exit 0
+finish_results ${exit_code}
+exit ${exit_code}

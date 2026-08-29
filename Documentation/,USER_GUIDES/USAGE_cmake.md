@@ -17,7 +17,8 @@ Before using CMake, ensure the following environment variables are defined:
 Optional, required only for the corresponding C library:
 
 - `PATH_LLVM_ARMP` / `PATH_GCC_ARMP` - ARM toolchains for `-DC_LIBRARY=picolibc`
-- `PATH_LLVM_ARML` - ARM LLVM libc toolchain for `-DC_LIBRARY=llvmlibc` (ARM only)
+- `PATH_LLVM_RVXXP` / `PATH_GCC_RVXXP` - RISC-V toolchains for `-DC_LIBRARY=picolibc`
+- `PATH_LLVM_ARML` / `PATH_LLVM_RVXXL` - LLVM libc toolchains for `-DC_LIBRARY=llvmlibc`
 
 ## Quick Start
 
@@ -64,10 +65,15 @@ CMake accepts several build options that control compilation behaviour:
 The C library is chosen with `-DC_LIBRARY`:
 
 - `newlib` (default) - GCC or Clang, ARM and RISC-V.
-- `picolibc` - GCC or Clang; uses `PATH_*_ARMP` / `PATH_LLVM_RVXXP` toolchains.
-- `llvmlibc` - **LLVM/Clang only, ARM only** (Arm Toolchain for Embedded). Requires
-  `USE_LLVM=ON` and `PATH_LLVM_ARML`; combining it with GCC or a RISC-V target is a
-  configuration error. See **LLVMLIBC_TOOLCHAIN_GUIDE.md**.
+- `picolibc` - GCC or Clang, ARM and RISC-V; uses the `PATH_*_ARMP` / `PATH_*_RVXXP`
+  toolchains, whose default C library must be picolibc.
+- `llvmlibc` - **LLVM/Clang only**, ARM and RISC-V; uses `PATH_LLVM_ARML` /
+  `PATH_LLVM_RVXXL` and requires `USE_LLVM=ON`. Combining it with GCC is a
+  configuration error.
+
+See **[C-library-selection.md](../USER_GUIDES/C-library-selection.md)** for the full
+reference: toolchain requirements, what the build adds per library, and the limitations
+of each.
 
 ```shell
 cmake --preset llvm -DC_LIBRARY=llvmlibc

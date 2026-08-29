@@ -1,6 +1,3 @@
-<!-- SPDX-License-Identifier: MIT -->
-<!-- SPDX-FileCopyrightText: 2026 Laurent von Allmen -->
-
 # LLVM libc Toolchain Guide
 
 uKOS-X can be built against three C libraries, selected with the CMake variable

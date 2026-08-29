@@ -137,7 +137,6 @@ int _close([[maybe_unused]] int fd) {
 ssize_t _write(int fd, const void *buf, size_t count) {
     ssize_t         nbPrintChars;
     serialManager_t     serialManager;
-    ioChannel_t         ioChannel;
     uint32_t            stdio = (uint32_t)fd;
     proc_t              *process;
 
@@ -157,8 +156,7 @@ ssize_t _write(int fd, const void *buf, size_t count) {
         case KSTDOUT:
         case KSYST: {
             kern_getProcessRun(&process);
-            kern_getSerialForProcess(process, &ioChannel);
-            serialManager = (serialManager_t)ioChannel;
+            kern_getSerialForProcess(process, &serialManager);
 
             serial_reserve(serialManager, KMODE_WRITE, KWAIT_INFINITY);
             nbPrintChars = local_write(serialManager, buf, count);
@@ -192,7 +190,6 @@ ssize_t _write(int fd, const void *buf, size_t count) {
 ssize_t _read(int fd, void *buf, size_t count) {
     ssize_t         nbReadChars;
     serialManager_t     serialManager;
-    ioChannel_t         ioChannel;
     uint32_t            stdio = (uint32_t)fd;
     proc_t              *process;
 
@@ -212,8 +209,7 @@ ssize_t _read(int fd, void *buf, size_t count) {
         case KSTDOUT:
         case KSYST: {
             kern_getProcessRun(&process);
-            kern_getSerialForProcess(process, &ioChannel);
-            serialManager = (serialManager_t)ioChannel;
+            kern_getSerialForProcess(process, &serialManager);
 
             serial_reserve(serialManager, KMODE_READ, KWAIT_INFINITY);
             nbReadChars = local_read(serialManager, buf, count);
@@ -709,6 +705,39 @@ void *_sbrk(ptrdiff_t incr)
     (void)incr;
     errno = ENOMEM;
     return (void *)-1;
+}
+
+/*
+ * \brief __errno
+ *
+ * newlib's <errno.h> defines errno as (*__errno()), so every object compiled
+ * against newlib carries an undefined reference to that accessor. picolibc has
+ * no equivalent: its errno is the ordinary global int this manager already
+ * writes to.
+ *
+ * What needs the shim is prebuilt third-party code, which cannot simply be
+ * recompiled against picolibc. The current example is
+ * Third_Parties/STM32/STM32N6/Library/AI/gan/libNN_Hardware.a(ll_aton.o):
+ * without this function l_MLPs/gan fails to link for Discovery_N657 with
+ * "undefined symbol: __errno".
+ *
+ * Returning &errno puts that code on the very same int as uKOS-X and picolibc
+ * itself, so the per-process save and restore done by xLibrary_update() covers
+ * it too. This is safe where the removed __ukos_get_errno hook was not: that
+ * one handed out a pointer into proc_t, which lives in privileged RAM and
+ * faulted for a user-mode process (see picolibc.h).
+ *
+ * Nothing in the system image calls it -- an application does, through
+ * --just-symbols=FLASH.elf -- so it must survive the link like any other
+ * API exported that way: picolibc.specs' --gc-sections is already countered
+ * with --no-gc-sections for GCC in Ports/cmake/system.cmake, and the Clang
+ * system link adds no --gc-sections of its own.
+ */
+int *__errno(void);
+
+int *__errno(void)
+{
+    return &errno;
 }
 
 // NOLINTEND(bugprone-reserved-identifier,cert-dcl37-c,cert-dcl51-cpp)

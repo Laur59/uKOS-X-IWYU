@@ -1,6 +1,3 @@
-<!-- SPDX-License-Identifier: MIT -->
-<!-- SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen -->
-
 # Typography
 
 1. Files shall be encoded in UTF-8 and employ UNIX-style line endings (LF).

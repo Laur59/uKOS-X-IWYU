@@ -6,12 +6,6 @@
 # Get the parent directory of the current file
 cmake_path(GET CMAKE_CURRENT_LIST_FILE PARENT_PATH mkfiles_cmake_path)
 
-# LLVM libc is not yet supported for RISC-V: the Arm Toolchain for Embedded is
-# ARM/AArch64 only, and no RISC-V baremetal LLVM-libc toolchain is wired here.
-if(DEFINED C_LIBRARY AND C_LIBRARY STREQUAL "llvmlibc")
-    message(FATAL_ERROR "C_LIBRARY=llvmlibc is not supported for RISC-V targets (ARM/AArch64 only)")
-endif()
-
 option(USE_LLVM "Selection of toolchain" ON)
 if(${USE_LLVM})
     set(COMPILER_FAMILY llvm)
@@ -68,7 +62,17 @@ else()
         message(FATAL_ERROR "C_LIBRARY=llvmlibc requires the LLVM toolchain (USE_LLVM=ON); it is not available with GCC")
     endif()
 
-    if(DEFINED ENV{PATH_GCC_RVXX})
+    if(DEFINED C_LIBRARY AND C_LIBRARY STREQUAL "picolibc")
+        if(DEFINED ENV{PATH_GCC_RVXXP})
+            set(PATH_GCC_RVXX $ENV{PATH_GCC_RVXXP})
+        else()
+            message(FATAL_ERROR "Environment variable PATH_GCC_RVXXP is not defined")
+        endif()
+        # No -specs=picolibc.specs is passed, so picolibc has to be this
+        # toolchain's default C library; an overlay would silently give newlib
+        include(${mkfiles_cmake_path}/check-picolibc-default.cmake)
+        check_picolibc_is_default(${PATH_GCC_RVXX}/bin/${PREFIX}gcc)
+    elseif(DEFINED ENV{PATH_GCC_RVXX})
         set(PATH_GCC_RVXX $ENV{PATH_GCC_RVXX})
     else()
         # Search GCC for RISC-V in PATH

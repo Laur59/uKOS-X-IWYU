@@ -13,8 +13,8 @@
  *           int32_t kern_init(void) *
  *           int32_t kern_runKernel(void) *
  *           int32_t kern_criticalSection(uint8_t critical) *
- *           int32_t kern_setSerialForProcess(proc_t *handle, ioChannel_t ioChannel);
- *           int32_t kern_getSerialForProcess(proc_t *handle, ioChannel_t *ioChannel);
+ *           int32_t kern_setSerialForProcess(proc_t *handle, serialManager_t serialManager) *
+ *           int32_t kern_getSerialForProcess(proc_t *handle, serialManager_t *serialManager) *
  *           int32_t kern_getState(uint8_t *state) *
  *           int32_t kern_createProcess(const spec_t *specification, const void *argument, proc_t **handle) *
  *           int32_t kern_killProcess(proc_t *handle) *
@@ -159,6 +159,7 @@
 #include    "macros_soc.h"
 #include    "modules.h"
 #include    "os_errors.h"
+#include    "serial/serial.h"
 #ifdef RV32IMAC_S
 #include    "soc_reg.h"
 #endif
@@ -371,7 +372,7 @@ int32_t kern_criticalSection(uint8_t critical) {
 }
 
 /*
- * \brief Set the default I/O channel for a process
+ * \brief Set the default serial device for a process
  *
  * Call example in C:
  *
@@ -382,15 +383,15 @@ int32_t kern_criticalSection(uint8_t critical) {
  *    status = kern_setSerialForProcess(process, KURT1);
  * \endcode
  *
- * - This function sets the default I/O channel for a process
+ * - This function sets the default communication device for a process
  *
- * \param[in]   *handle     Ptr on the handle
- * \param[in]   ioChannel   I/O channel identifier
+ * \param[in]   *handle         Ptr on the handle
+ * \param[in]   serialManager   Serial Communication Manager
  * \return      KERR_KERN_NOERR OK
  * \return      KERR_KERN_NOPRO The process does not exist
  *
  */
-int32_t kern_setSerialForProcess(proc_t *handle, ioChannel_t ioChannel) {
+int32_t kern_setSerialForProcess(proc_t *handle, serialManager_t serialManager) {
     uint32_t    core;
 
     DEBUG_KERN_TRACE("entry: ");
@@ -401,7 +402,7 @@ int32_t kern_setSerialForProcess(proc_t *handle, ioChannel_t ioChannel) {
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
     if (handle == nullptr)  { DEBUG_KERN_TRACE("exit: KO"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOPRO; }
 
-    handle->oSpecification.oSerialManager = ioChannel;
+    handle->oSpecification.oSerialManager = serialManager;
     DEBUG_KERN_TRACE("exit: OK");
     INTERRUPTION_RESTORE;
     PRIVILEGE_RESTORE;
@@ -409,27 +410,27 @@ int32_t kern_setSerialForProcess(proc_t *handle, ioChannel_t ioChannel) {
 }
 
 /*
- * \brief Get the default I/O channel of a process
+ * \brief Get the default communication device of a process
  *
  * Call example in C:
  *
  * \code{.c}
  * int32_t    status;
  * proc_t     *process;
- *            ioChannel_t ioChannel;
+ *            uint32_t    serialManager;
  *
- *    status = kern_getSerialForProcess(process, &ioChannel);
+ *    status = kern_getSerialForProcess(process, &serialManager);
  * \endcode
  *
- * - This function gets the default I/O channel of a process
+ * - This function gets the default communication device of a process
  *
- * \param[in]   *handle     Ptr on the handle
- * \param[out]  *ioChannel  Ptr on the I/O channel identifier
+ * \param[in]   *handle         Ptr on the handle
+ * \param[in]   *serialManager  Ptr on the Serial Communication Manager
  * \return      KERR_KERN_NOERR OK
  * \return      KERR_KERN_NOPRO The process does not exist
  *
  */
-int32_t kern_getSerialForProcess(proc_t *handle, ioChannel_t *ioChannel) {
+int32_t kern_getSerialForProcess(proc_t *handle, serialManager_t *serialManager) {
     uint32_t    core;
 
     DEBUG_KERN_TRACE("entry: ");
@@ -440,7 +441,7 @@ int32_t kern_getSerialForProcess(proc_t *handle, ioChannel_t *ioChannel) {
     vKern_runProc[core]->oStatistic.oNbKernCalls++;
     if (handle == nullptr) { DEBUG_KERN_TRACE("exit: KO"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOPRO; }
 
-    *ioChannel = handle->oSpecification.oSerialManager;
+    *serialManager = handle->oSpecification.oSerialManager;
     DEBUG_KERN_TRACE("exit: OK");
     INTERRUPTION_RESTORE;
     PRIVILEGE_RESTORE;

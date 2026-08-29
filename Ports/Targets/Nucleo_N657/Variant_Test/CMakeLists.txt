@@ -50,7 +50,7 @@ add_compile_definitions(
 )
 
 # Flash programming script selection
-set(BURN secure)
+set(BURN secure_nucleo)
 
 # Extra compilation options
 add_compile_options(

@@ -763,8 +763,8 @@ clock_t clock(void) {
  * Honouring TZ would mean implementing the timezone logic here - a POSIX TZ
  * parser, a DST-in-effect test, and overrides for localtime_r, localtime and
  * mktime (the last one because the date command converts local time back to an
- * epoch). See "Known limitations" in
- * Documentation/,USER_GUIDES/LLVMLIBC_TOOLCHAIN_GUIDE.md. Deferred until
+ * epoch). See "Known limitations of LLVM libc" in
+ * Documentation/USER_GUIDES/C-library-selection.md. Deferred until
  * upstream LLVM libc implements its TODO.
  */
 

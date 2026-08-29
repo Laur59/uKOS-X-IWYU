@@ -300,7 +300,6 @@ int32_t text_checkAsciiBuffer(const char_t *ascii1, const char_t *ascii2, bool *
  */
 int32_t text_waitString(serialManager_t serialManager, char_t *ascii, uint32_t size) {
     serialManager_t     manager;
-    ioChannel_t         ioChannel;
     proc_t              *process;
 
     switch (serialManager) {
@@ -317,8 +316,7 @@ int32_t text_waitString(serialManager_t serialManager, char_t *ascii, uint32_t s
 
         case KSYST: {
             kern_getProcessRun(&process);
-            kern_getSerialForProcess(process, &ioChannel);
-            manager = (serialManager_t)ioChannel;
+            kern_getSerialForProcess(process, &manager);
 
             serial_reserve(manager, KMODE_READ, KWAIT_INFINITY);
 

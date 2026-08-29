@@ -39,6 +39,7 @@
 #include    <stdint.h>
 
 #include    "kern_types.h"  // IWYU pragma: keep
+#include    "serial/serial.h"
 #include    "types.h"
 
 // Structures & macros
@@ -139,7 +140,7 @@ struct spec {
             uint8_t             oKind;                                              // Process kind
             uint8_t             oMode;                                              // Process running mode
             priority_t          oPriority;                                          // Process priority
-            ioChannel_t         oSerialManager;                                     // Default I/O channel
+            serialManager_t     oSerialManager;                                     // Default I/O channel
             void                (*oScheduleHook)(proc_t *handle, bool scheduled);   // Optional call-back, called each time the process is de / scheduled
 };
 

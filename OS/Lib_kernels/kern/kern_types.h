@@ -53,19 +53,6 @@
 
 #include    "types.h"       // IWYU pragma: keep
 
-// Generic I/O channel type
-// ------------------------
-//
-// Opaque handle identifying a process's default I/O channel.
-// The kernel stores and retrieves this value without interpreting it.
-// Concrete channel identifiers (e.g., UART, CDC) are defined by
-// the serial library (serial/serial.h).
-
-typedef uint32_t    ioChannel_t;
-
-#define KIOCHAN_NONE    ((ioChannel_t)(((uint32_t)'n'<<24U) | ((uint32_t)'o'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'R'))
-#define KIOCHAN_DEFAULT ((ioChannel_t)(((uint32_t)'d'<<24U) | ((uint32_t)'e'<<16U) | ((uint32_t)'f'<<8U) | (uint32_t)'0'))
-
 // Exported standard kernel configuration
 // --------------------------------------
 

@@ -23,6 +23,9 @@ Artefacts*/
 *.ck
 FLASH.cnf
 
+# Replayable results recorded by Tools/Developer/run-regression.sh
+regression-results-*.sh
+
 # CMake stuff
 build*/
 

@@ -79,7 +79,7 @@ static  serialManager_t     vDefSerialManager[KNB_CORES];
 
 // Prototypes
 
-static  void    local_getDevice(serialManager_t serialManager, ioChannel_t *manager);
+static  void    local_getDevice(serialManager_t serialManager, serialManager_t *manager);
 
 /*
  * \brief Reserve the Serial Communication Manager
@@ -107,7 +107,7 @@ static  void    local_getDevice(serialManager_t serialManager, ioChannel_t *mana
  *
  */
 int32_t serial_reserve(serialManager_t serialManager, reserveMode_t reserveMode, uint32_t timeout) {
-    ioChannel_t         manager;
+    serialManager_t     manager;
 
     local_getDevice(serialManager, &manager);
 
@@ -172,7 +172,7 @@ int32_t serial_reserve(serialManager_t serialManager, reserveMode_t reserveMode,
  *
  */
 int32_t serial_release(serialManager_t serialManager, reserveMode_t reserveMode) {
-    ioChannel_t         manager;
+    serialManager_t     manager;
 
     local_getDevice(serialManager, &manager);
 
@@ -244,7 +244,7 @@ int32_t serial_release(serialManager_t serialManager, reserveMode_t reserveMode)
  *
  */
 int32_t serial_configure(serialManager_t serialManager, const void *configure) {
-    ioChannel_t         manager;
+    serialManager_t     manager;
 
     local_getDevice(serialManager, &manager);
 
@@ -322,7 +322,7 @@ int32_t serial_configure(serialManager_t serialManager, const void *configure) {
  *
  */
 int32_t serial_write(serialManager_t serialManager, const uint8_t *buffer, uint32_t size) {
-    ioChannel_t         manager;
+    serialManager_t     manager;
 
     local_getDevice(serialManager, &manager);
 
@@ -394,7 +394,7 @@ int32_t serial_write(serialManager_t serialManager, const uint8_t *buffer, uint3
  *
  */
 int32_t serial_read(serialManager_t serialManager, uint8_t *buffer, uint32_t *size) {
-    ioChannel_t         manager;
+    serialManager_t     manager;
 
     local_getDevice(serialManager, &manager);
 
@@ -465,7 +465,7 @@ int32_t serial_read(serialManager_t serialManager, uint8_t *buffer, uint32_t *si
  *
  */
 int32_t serial_getIdSemaphore(serialManager_t serialManager, uint8_t semaphore, char_t **identifier) {
-    ioChannel_t         manager;
+    serialManager_t     manager;
 
     local_getDevice(serialManager, &manager);
 
@@ -528,7 +528,7 @@ int32_t serial_getIdSemaphore(serialManager_t serialManager, uint8_t semaphore, 
  *
  */
 int32_t serial_flush(serialManager_t serialManager) {
-    ioChannel_t         manager;
+    serialManager_t     manager;
 
     local_getDevice(serialManager, &manager);
 
@@ -644,10 +644,8 @@ int32_t serial_getDefSerialManager(serialManager_t *serialManager) {
  *
  */
 int32_t serial_getFatherSerialManager(serialManager_t *serialManager) {
-    ioChannel_t manager;
 
-    local_getDevice(KSYST, &manager);
-    *serialManager = (serialManager_t)manager;
+    local_getDevice(KSYST, serialManager);
     return KERR_SERIAL_NOERR;
 }
 
@@ -662,14 +660,14 @@ int32_t serial_getFatherSerialManager(serialManager_t *serialManager) {
  * - if (serialManager == KXYZT) ---> use the KXYZT Serial Communication Manager
  *
  */
-static  void    local_getDevice(serialManager_t serialManager, ioChannel_t *manager) {
+static  void    local_getDevice(serialManager_t serialManager, serialManager_t *manager) {
     uint32_t    core;
     proc_t      *process;
 
     core = GET_RUNNING_CORE;
 
     PRIVILEGE_ELEVATE;
-    *manager = (ioChannel_t)serialManager;
+    *manager = serialManager;
 
 // As long as we have KSYST, scan the dynasty for a logical device (KURT0, KCDC0, ...)
 // Stop searching for a valuable logical device or if the process is orphan
@@ -689,7 +687,7 @@ static  void    local_getDevice(serialManager_t serialManager, ioChannel_t *mana
 // - KSYST --> *manager = vDefSerialManager
 
     if ((*manager == KDEF0) || (*manager == KSYST)) {
-        *manager = (ioChannel_t)vDefSerialManager[core];
+        *manager = vDefSerialManager[core];
     }
     PRIVILEGE_RESTORE;
 }

@@ -102,9 +102,9 @@ if (( $#clib_flag > 1 )); then
 fi
 
 # llvmlibc is a Clang/LLVM-only C library (Arm Toolchain for Embedded), so
-# -M cannot be combined with -G (gcc). Checked before -M rewrites COMPILER_TOOL.
+# -L cannot be combined with -G (gcc). Checked before -L rewrites COMPILER_TOOL.
 if (( $#o_gcc )) && [[ ${clib_flag[1]:-} == -L ]]; then
-    printf "%bError:%b -M (llvmlibc) cannot be combined with -G (gcc); llvmlibc requires clang.\n" "${RED}" "${NC}" >&2
+    printf "%bError:%b -L (llvmlibc) cannot be combined with -G (gcc); llvmlibc requires clang.\n" "${RED}" "${NC}" >&2
     exit 1
 fi
 
@@ -126,20 +126,51 @@ case ${clib_flag[1]:-} in
     '') ;;                             # keep default (newlib)
 esac
 
+# Version reported by a toolchain binary, or "unknown" when it cannot be run.
+# Without this the script dies on ERR_EXIT at the first missing toolchain, right
+# after warning that the corresponding targets "will not build" -- so the warning
+# could never be followed by the partial build it promises.
+#   $1 toolchain root   $2 binary under bin/   $3 gcc|clang (version field layout)
+toolchain_version() {
+    local root="$1" binary="$2" flavour="$3" program
+
+    case "${flavour}" in
+        gcc)   program='NR==1{print $3; exit}' ;;
+        clang) program='NR==1{for(i=1;i<=NF;i++)if($i=="version"){print $(i+1); exit}}' ;;
+    esac
+
+    [[ -n "${root}" && -x "${root}/bin/${binary}" ]] || { print -r -- unknown; return 0; }
+    print -r -- "$("${root}/bin/${binary}" --version 2>/dev/null | awk "${program}")"
+}
+
 case ${COMPILER_TOOL} in
     "gcc")
-        if [[ -z "${PATH_GCC_ARM}" ]]; then
-            if ! command -v arm-none-eabi-gcc >/dev/null 2>&1; then
-                printf "%bWarning:%b PATH_GCC_ARM not set and arm-none-eabi-gcc not in PATH; ARM targets will not build!\n" "${YELLOW}" "${NC}" >&2
+        # No llvmlibc branch here: -L forces COMPILER_TOOL to clang and -G -L is
+        # rejected above, so C_LIB is newlib or picolibc whenever this case runs.
+        if [[ "${C_LIB}" == "picolibc" ]]; then
+            # picolibc uses dedicated toolchains: PATH_GCC_ARMP (ARM) and PATH_GCC_RVXXP (RISC-V)
+            if [[ -z "${PATH_GCC_ARMP:-}" ]]; then
+                printf "%bWarning:%b PATH_GCC_ARMP not set; picolibc ARM targets will not build!\n" "${YELLOW}" "${NC}" >&2
             fi
-        fi
-        if [[ -z "${PATH_GCC_RVXX}" ]]; then
-            if ! command -v riscv64-unknown-elf-gcc >/dev/null 2>&1; then
-                printf "%bWarning:%b PATH_GCC_RVXX not set and riscv64-unknown-elf-gcc not in PATH; RISC-V targets will not build!\n" "${YELLOW}" "${NC}" >&2
+            if [[ -z "${PATH_GCC_RVXXP:-}" ]]; then
+                printf "%bWarning:%b PATH_GCC_RVXXP not set; picolibc RISC-V targets will not build!\n" "${YELLOW}" "${NC}" >&2
             fi
+            gcc_arm_version=$(toolchain_version "${PATH_GCC_ARMP:-}" arm-none-eabi-gcc gcc)
+            gcc_rvxx_version=$(toolchain_version "${PATH_GCC_RVXXP:-}" riscv64-unknown-elf-gcc gcc)
+        else
+            if [[ -z "${PATH_GCC_ARM:-}" ]]; then
+                if ! command -v arm-none-eabi-gcc >/dev/null 2>&1; then
+                    printf "%bWarning:%b PATH_GCC_ARM not set and arm-none-eabi-gcc not in PATH; ARM targets will not build!\n" "${YELLOW}" "${NC}" >&2
+                fi
+            fi
+            if [[ -z "${PATH_GCC_RVXX:-}" ]]; then
+                if ! command -v riscv64-unknown-elf-gcc >/dev/null 2>&1; then
+                    printf "%bWarning:%b PATH_GCC_RVXX not set and riscv64-unknown-elf-gcc not in PATH; RISC-V targets will not build!\n" "${YELLOW}" "${NC}" >&2
+                fi
+            fi
+            gcc_arm_version=$(toolchain_version "${PATH_GCC_ARM:-}" arm-none-eabi-gcc gcc)
+            gcc_rvxx_version=$(toolchain_version "${PATH_GCC_RVXX:-}" riscv64-unknown-elf-gcc gcc)
         fi
-        gcc_arm_version=$("${PATH_GCC_ARM}"/bin/arm-none-eabi-gcc --version | awk 'NR==1{print $3; exit}')
-        gcc_rvxx_version=$("${PATH_GCC_RVXX}"/bin/riscv64-unknown-elf-gcc --version | awk 'NR==1{print $3; exit}')
         COMPILER_VERSIONS="arm:${gcc_arm_version} - riscv:${gcc_rvxx_version}"
         CMAKE_PRESET="gcc"
         ;;
@@ -152,20 +183,29 @@ case ${COMPILER_TOOL} in
             if [[ -z "${PATH_LLVM_RVXXL:-}" ]]; then
                 printf "%bWarning:%b PATH_LLVM_RVXXL not set; llvmlibc RISC-V targets will not build!\n" "${YELLOW}" "${NC}" >&2
             fi
-            llvm_arm_version=$("${PATH_LLVM_ARML:-}"/bin/clang --version | awk 'NR==1{for(i=1;i<=NF;i++)if($i=="version"){print $(i+1); exit}}')
-            llvm_rvxx_version=$("${PATH_LLVM_RVXXL:-}"/bin/clang --version | awk 'NR==1{for(i=1;i<=NF;i++)if($i=="version"){print $(i+1); exit}}')
-            COMPILER_VERSIONS="arm:${llvm_arm_version} - riscv:${llvm_rvxx_version}"
+            llvm_arm_version=$(toolchain_version "${PATH_LLVM_ARML:-}" clang clang)
+            llvm_rvxx_version=$(toolchain_version "${PATH_LLVM_RVXXL:-}" clang clang)
+        elif [[ "${C_LIB}" == "picolibc" ]]; then
+            # picolibc uses dedicated toolchains: PATH_LLVM_ARMP (ARM) and PATH_LLVM_RVXXP (RISC-V)
+            if [[ -z "${PATH_LLVM_ARMP:-}" ]]; then
+                printf "%bWarning:%b PATH_LLVM_ARMP not set; picolibc ARM targets will not build!\n" "${YELLOW}" "${NC}" >&2
+            fi
+            if [[ -z "${PATH_LLVM_RVXXP:-}" ]]; then
+                printf "%bWarning:%b PATH_LLVM_RVXXP not set; picolibc RISC-V targets will not build!\n" "${YELLOW}" "${NC}" >&2
+            fi
+            llvm_arm_version=$(toolchain_version "${PATH_LLVM_ARMP:-}" clang clang)
+            llvm_rvxx_version=$(toolchain_version "${PATH_LLVM_RVXXP:-}" clang clang)
         else
-            if [[ -z "${PATH_LLVM_ARM}" ]]; then
+            if [[ -z "${PATH_LLVM_ARM:-}" ]]; then
                 printf "%bWarning:%b PATH_LLVM_ARM not set; ARM targets will not build!\n" "${YELLOW}" "${NC}" >&2
             fi
-            if [[ -z "${PATH_LLVM_RVXX}" ]]; then
+            if [[ -z "${PATH_LLVM_RVXX:-}" ]]; then
                 printf "%bWarning:%b PATH_LLVM_RVXX not set; RISC-V targets will not build!\n" "${YELLOW}" "${NC}" >&2
             fi
-            llvm_arm_version=$("${PATH_LLVM_ARM}"/bin/clang --version | awk 'NR==1{for(i=1;i<=NF;i++)if($i=="version"){print $(i+1); exit}}')
-            llvm_rvxx_version=$("${PATH_LLVM_RVXX}"/bin/clang --version | awk 'NR==1{for(i=1;i<=NF;i++)if($i=="version"){print $(i+1); exit}}')
-            COMPILER_VERSIONS="arm:${llvm_arm_version} - riscv:${llvm_rvxx_version}"
+            llvm_arm_version=$(toolchain_version "${PATH_LLVM_ARM:-}" clang clang)
+            llvm_rvxx_version=$(toolchain_version "${PATH_LLVM_RVXX:-}" clang clang)
         fi
+        COMPILER_VERSIONS="arm:${llvm_arm_version} - riscv:${llvm_rvxx_version}"
         CMAKE_PRESET="llvm"
         ;;
 esac

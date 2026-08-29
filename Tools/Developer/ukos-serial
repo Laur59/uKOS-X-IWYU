@@ -1,0 +1,725 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2026 Laurent von Allmen
+
+"""
+uKOS-X - Serial session holder for a target board.
+
+Keeps one serial port open inside a background daemon, so repeated commands
+never re-open the device.  Re-opening toggles DTR, which on some boards resets
+the target between every command and always loses the output in between.
+
+Clients talk to the daemon over a Unix socket and get line-oriented,
+prompt-synchronised request/response behaviour.
+
+Defaults match the uKOS-X console: 460800 8N2, prompt "uKOS-X > ", commands
+terminated by CR.  The target does not echo (OS/Lib_generics/text/text.c),
+so captured output holds only the command result and the next prompt.
+"""
+
+import argparse
+import errno
+import json
+import os
+import re
+import socket
+import subprocess
+import sys
+import tempfile
+import threading
+import time
+
+try:
+    import serial
+    import serial.tools.list_ports
+except ImportError:
+    sys.stderr.write("error: pyserial is not installed (pip install pyserial)\n")
+    sys.exit(1)
+
+
+# Console defaults
+# ================
+
+KDEFAULT_BAUD = 460800
+KDEFAULT_PROMPT = "uKOS-X > "
+KDEFAULT_TIMEOUT = 10.0
+KBUFFER_MAX = 4 * 1024 * 1024
+KSETTLE = 0.025
+
+KEOL = {"cr": b"\r", "lf": b"\n", "crlf": b"\r\n"}
+
+# Console commands that reset the board, kill processes or write memory.
+# Refused unless the caller passes --unsafe.
+
+KUNSAFE = frozenset({
+    "restart", "kill", "power", "fill", "memory", "sloader", "hexloader",
+})
+
+
+def rundir():
+    """Directory holding the socket, log and metadata of every session."""
+
+    base = os.environ.get("XDG_RUNTIME_DIR") or tempfile.gettempdir()
+    path = os.path.join(base, "ukos-serial")
+    os.makedirs(path, mode=0o700, exist_ok=True)
+    return path
+
+
+def session_name(port):
+    """Derive a short session name from a device path."""
+
+    return os.path.basename(port).replace("cu.", "").replace("tty.", "")
+
+
+def paths(name):
+    d = rundir()
+    return (os.path.join(d, name + ".sock"),
+            os.path.join(d, name + ".log"),
+            os.path.join(d, name + ".json"))
+
+
+# Daemon
+# ======
+
+class Session:
+    """Owns the serial port and serves control requests."""
+
+    def __init__(self, port, baud, stopbits, eol, prompt, logpath,
+                 assert_dtr, settle):
+        self.eol = KEOL[eol]
+        self.settle = settle
+        self.prompt = prompt
+        self.buf = bytearray()
+        self.discarded = 0
+        self.total = 0
+        self.last_rx = None
+        self.stopping = False
+        self.cond = threading.Condition()
+
+        self.ser = serial.Serial()
+        self.ser.port = port
+        self.ser.baudrate = baud
+        self.ser.bytesize = serial.EIGHTBITS
+        self.ser.parity = serial.PARITY_NONE
+        self.ser.stopbits = (serial.STOPBITS_TWO if stopbits == 2
+                             else serial.STOPBITS_ONE)
+        self.ser.timeout = 0.1
+        if not assert_dtr:
+            self.ser.dtr = False
+        self.ser.open()
+
+        self.log = open(logpath, "ab", buffering=0)
+        self.reader = threading.Thread(target=self._read_loop, daemon=True)
+        self.reader.start()
+
+    def _read_loop(self):
+        while not self.stopping:
+            try:
+                data = self.ser.read(1)
+                if data:
+                    pending = self.ser.in_waiting
+                    if pending:
+                        data += self.ser.read(pending)
+            except (OSError, serial.SerialException):
+                break
+            if not data:
+                continue
+            try:
+                self.log.write(data)
+            except OSError:
+                pass
+            with self.cond:
+                self.buf.extend(data)
+                self.total += len(data)
+                self.last_rx = time.time()
+                excess = len(self.buf) - KBUFFER_MAX
+                if excess > 0:
+                    del self.buf[:excess]
+                    self.discarded += excess
+                self.cond.notify_all()
+
+    def mark(self):
+        """Absolute stream position of the current end of buffer."""
+
+        with self.cond:
+            return self.discarded + len(self.buf)
+
+    def wait_for(self, pattern, start, timeout):
+        """Wait until `pattern` matches after absolute position `start`.
+
+        Returns (text, matched).  Never blocks past `timeout`.
+        """
+
+        rx = re.compile(pattern.encode("utf-8", "replace"))
+        deadline = time.monotonic() + timeout
+        with self.cond:
+            while True:
+                rel = max(0, start - self.discarded)
+                m = rx.search(self.buf, rel)
+                if m:
+                    return bytes(self.buf[rel:m.end()]), True
+                left = deadline - time.monotonic()
+                if left <= 0:
+                    return bytes(self.buf[rel:]), False
+                self.cond.wait(min(left, 0.25))
+
+    def drain(self, start, timeout):
+        """Collect whatever arrives until the line goes quiet."""
+
+        deadline = time.monotonic() + timeout
+        with self.cond:
+            while time.monotonic() < deadline:
+                self.cond.wait(min(0.25, deadline - time.monotonic()))
+            rel = max(0, start - self.discarded)
+            return bytes(self.buf[rel:])
+
+    def wait_quiet(self, quiet, cap=2.0):
+        """Block until the line has been silent for `quiet` seconds.
+
+        The console arms its receiver only after printing the prompt
+        (OS/CLI/console/console.c -> text_waitString), so a byte written in
+        that window is dropped: measured on a Nucleo_H743, a 0 ms gap loses
+        the command outright while 10 ms is already reliable.  Waiting for
+        quiet also covers the case where the board is still streaming the
+        previous command's output.
+        """
+
+        if quiet <= 0:
+            return
+        deadline = time.monotonic() + cap
+        with self.cond:
+            while self.last_rx is not None:
+                idle = time.time() - self.last_rx
+                if idle >= quiet or time.monotonic() >= deadline:
+                    return
+                self.cond.wait(min(quiet - idle, 0.05))
+
+    def write(self, data):
+        self.ser.write(data)
+        self.ser.flush()
+
+    def close(self):
+        self.stopping = True
+        try:
+            self.reader.join(timeout=1.0)
+        except RuntimeError:
+            pass
+        for handle in (self.ser, self.log):
+            try:
+                handle.close()
+            except OSError:
+                pass
+
+
+def handle(session, req):
+    """Execute one control request, return the response dict."""
+
+    cmd = req.get("cmd")
+
+    if cmd == "status":
+        return {
+            "ok": True, "port": session.ser.port,
+            "baud": session.ser.baudrate,
+            "stopbits": int(session.ser.stopbits),
+            "open": session.ser.is_open, "pid": os.getpid(),
+            "bytes": session.total, "last_rx": session.last_rx,
+        }
+
+    if cmd == "send":
+        text = req.get("text", "")
+        head = text.strip().split()[0] if text.strip() else ""
+        if head in KUNSAFE and not req.get("unsafe"):
+            return {"ok": False,
+                    "error": "'%s' is in the unsafe list; pass --unsafe to "
+                             "allow it" % head}
+        session.wait_quiet(session.settle)
+        start = session.mark()
+        session.write(text.encode("utf-8", "replace") + session.eol)
+        if not req.get("expect_prompt", True):
+            return {"ok": True, "matched": True, "text": ""}
+        out, matched = session.wait_for(re.escape(session.prompt), start,
+                                        req.get("timeout", KDEFAULT_TIMEOUT))
+        return {"ok": True, "matched": matched,
+                "text": out.decode("utf-8", "replace")}
+
+    if cmd == "expect":
+        start = session.mark()
+        out, matched = session.wait_for(req["pattern"], start,
+                                        req.get("timeout", KDEFAULT_TIMEOUT))
+        return {"ok": True, "matched": matched,
+                "text": out.decode("utf-8", "replace")}
+
+    if cmd == "read":
+        start = session.mark()
+        out = session.drain(start, req.get("timeout", 1.0))
+        return {"ok": True, "matched": True,
+                "text": out.decode("utf-8", "replace")}
+
+    if cmd == "raw":
+        session.write(req["data"].encode("utf-8", "replace"))
+        return {"ok": True, "matched": True, "text": ""}
+
+    if cmd == "stop":
+        return {"ok": True, "stopping": True}
+
+    return {"ok": False, "error": "unknown command '%s'" % cmd}
+
+
+def serve(args):
+    """Daemon entry point."""
+
+    name = args.name or session_name(args.port)
+    sock_path, log_path, meta_path = paths(name)
+
+    if os.path.exists(sock_path):
+        os.unlink(sock_path)
+
+    session = Session(args.port, args.baud, args.stopbits, args.eol,
+                      args.prompt, log_path, args.assert_dtr,
+                      args.settle)
+
+    srv = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    srv.bind(sock_path)
+    srv.listen(8)
+    os.chmod(sock_path, 0o600)
+
+    with open(meta_path, "w") as fd:
+        json.dump({"port": args.port, "baud": args.baud, "pid": os.getpid(),
+                   "sock": sock_path, "log": log_path}, fd)
+
+    running = True
+    try:
+        while running:
+            conn, _ = srv.accept()
+            try:
+                data = b""
+                while not data.endswith(b"\n"):
+                    chunk = conn.recv(65536)
+                    if not chunk:
+                        break
+                    data += chunk
+                if not data:
+                    continue
+                try:
+                    rep = handle(session, json.loads(data))
+                except Exception as exc:                # noqa: BLE001
+                    rep = {"ok": False, "error": "%s: %s" %
+                           (type(exc).__name__, exc)}
+                if rep.get("stopping"):
+                    running = False
+                conn.sendall(json.dumps(rep).encode() + b"\n")
+            finally:
+                conn.close()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        session.close()
+        srv.close()
+        for path in (sock_path, meta_path):
+            try:
+                os.unlink(path)
+            except OSError:
+                pass
+    return 0
+
+
+# Client
+# ======
+
+def resolve(name):
+    """Find the session to talk to, or exit with a helpful message."""
+
+    if name:
+        return name
+    found = [f[:-5] for f in os.listdir(rundir()) if f.endswith(".sock")]
+    if len(found) == 1:
+        return found[0]
+    if not found:
+        sys.stderr.write("error: no running session; use 'ukos-serial start "
+                         "--port /dev/cu.usbmodemXXXX'\n")
+        sys.exit(1)
+    sys.stderr.write("error: several sessions (%s); pick one with --name\n"
+                     % ", ".join(sorted(found)))
+    sys.exit(1)
+
+
+def request(name, req):
+    sock_path, _, _ = paths(name)
+    cli = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    try:
+        cli.connect(sock_path)
+    except OSError as exc:
+        if exc.errno in (errno.ENOENT, errno.ECONNREFUSED):
+            sys.stderr.write("error: no session '%s' (stale socket?)\n" % name)
+            sys.exit(1)
+        raise
+    cli.sendall(json.dumps(req).encode() + b"\n")
+    data = b""
+    while not data.endswith(b"\n"):
+        chunk = cli.recv(65536)
+        if not chunk:
+            break
+        data += chunk
+    cli.close()
+    if not data.strip():
+        sys.stderr.write("error: session '%s' closed the connection\n"
+                         % name)
+        sys.exit(1)
+    try:
+        return json.loads(data)
+    except ValueError:
+        sys.stderr.write("error: malformed reply from session '%s'\n"
+                         % name)
+        sys.exit(1)
+
+
+def emit(rep, prompt, strip_prompt):
+    """Print a response, return the process exit code."""
+
+    if not rep.get("ok"):
+        sys.stderr.write("error: %s\n" % rep.get("error", "unknown"))
+        return 1
+    text = rep.get("text", "")
+    if strip_prompt and text.endswith(prompt):
+        text = text[:-len(prompt)]
+    if text:
+        sys.stdout.write(text if text.endswith("\n") else text + "\n")
+    if not rep.get("matched", True):
+        sys.stderr.write("error: timeout waiting for the prompt\n")
+        return 2
+    return 0
+
+
+def cmd_start(args):
+    name = args.name or session_name(args.port)
+    sock_path, log_path, _ = paths(name)
+
+    if os.path.exists(sock_path):
+        try:
+            request(name, {"cmd": "status"})
+            print("session '%s' is already running" % name)
+            return 0
+        except (SystemExit, OSError, ValueError):
+            try:
+                os.unlink(sock_path)
+            except OSError:
+                pass
+
+    if not os.path.exists(args.port):
+        sys.stderr.write("error: %s does not exist\n" % args.port)
+        return 1
+    if "/tty." in args.port:
+        sys.stderr.write("warning: %s is a tty.* device; cu.* is the one that "
+                         "does not block on DCD\n" % args.port)
+
+    cmdline = [sys.executable, os.path.abspath(__file__),
+               "--name", name, "--prompt", args.prompt, "_serve",
+               "--port", args.port, "--baud", str(args.baud),
+               "--stopbits", str(args.stopbits), "--eol", args.eol,
+               "--settle", str(args.settle)]
+    if args.assert_dtr:
+        cmdline.append("--assert-dtr")
+
+    subprocess.Popen(cmdline, start_new_session=True,
+                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+    for _ in range(50):
+        if os.path.exists(sock_path):
+            print("session '%s' holding %s @ %d 8N%d (log: %s)"
+                  % (name, args.port, args.baud, args.stopbits, log_path))
+            return 0
+        time.sleep(0.1)
+    sys.stderr.write("error: the daemon did not come up; check %s\n" % log_path)
+    return 1
+
+
+def cmd_stop(args):
+    name = resolve(args.name)
+    request(name, {"cmd": "stop"})
+    print("session '%s' stopped" % name)
+    return 0
+
+
+def cmd_status(args):
+    name = resolve(args.name)
+    rep = request(name, {"cmd": "status"})
+    if not rep.get("ok"):
+        sys.stderr.write("error: %s\n" % rep.get("error"))
+        return 1
+    idle = ("%.1fs" % (time.time() - rep["last_rx"])) if rep["last_rx"] else "-"
+    print("name     %s" % name)
+    print("port     %s @ %d 8N%d" % (rep["port"], rep["baud"], rep["stopbits"]))
+    print("pid      %d" % rep["pid"])
+    print("rx       %d byte(s), idle %s" % (rep["bytes"], idle))
+    return 0
+
+
+def cmd_send(args):
+    name = resolve(args.name)
+    rep = request(name, {"cmd": "send", "text": args.text,
+                         "timeout": args.timeout, "unsafe": args.unsafe,
+                         "expect_prompt": not args.no_expect})
+    return emit(rep, args.prompt, not args.keep_prompt)
+
+
+def cmd_expect(args):
+    name = resolve(args.name)
+    rep = request(name, {"cmd": "expect", "pattern": args.pattern,
+                         "timeout": args.timeout})
+    return emit(rep, args.prompt, False)
+
+
+def cmd_read(args):
+    name = resolve(args.name)
+    rep = request(name, {"cmd": "read", "timeout": args.timeout})
+    return emit(rep, args.prompt, False)
+
+
+def cmd_raw(args):
+    name = resolve(args.name)
+    data = args.data.encode().decode("unicode_escape")
+    return emit(request(name, {"cmd": "raw", "data": data}), args.prompt, False)
+
+
+def cmd_log(args):
+    name = resolve(args.name)
+    _, log_path, _ = paths(name)
+    if not os.path.exists(log_path):
+        sys.stderr.write("error: no log for '%s'\n" % name)
+        return 1
+    if args.path:
+        print(log_path)
+        return 0
+    with open(log_path, "rb") as fd:
+        data = fd.read()
+    lines = data.decode("utf-8", "replace").splitlines()
+    for line in lines[-args.lines:]:
+        print(line)
+    return 0
+
+
+# Verification
+# ============
+
+# Process states printed by the "process" tool (OS/CLI/process/process.c).
+# Every "Susp." state is a normal blocking wait; "Freezed" is not.
+
+KFROZEN = "Freezed"
+
+# Log severities printed by "dumplog" (OS/Lib_generics/record/record.h).
+
+KSEVERITIES = ("Fatal", "Error", "Warning", "Info")
+
+RX_IDENT = re.compile(r"^\s*(Board|Variant|SoC|Core|VCS#)\s*:\s*(\S+)\s*$",
+                      re.M)
+RX_CLIB = re.compile(r"\b(newlib|picolibc|llvmlibc)\s+manager\b")
+RX_PROC = re.compile(
+    r"^\s*(\d+)\s+(.+?)\s+-\s+"
+    r"(Susp\.\s+\w+|Freezed|Running|Scheduled)\s+-\s+"
+    r"used CPU\s+([\d.]+)", re.M)
+RX_LOG = re.compile(
+    r"^\s*(\d+)-us\s+(Fatal|Error|Warning|Info)\s+"
+    r"(system|kernel|manager|user)\s+(\S+)\s+(\S+)\s+(\d+)\s+(.*?)\s*$",
+    re.M)
+
+
+def ask(name, text, timeout):
+    """Run one read-only console command.  Returns (text, error)."""
+
+    rep = request(name, {"cmd": "send", "text": text, "timeout": timeout,
+                         "unsafe": False, "expect_prompt": True})
+    if not rep.get("ok"):
+        return None, rep.get("error", "unknown")
+    if not rep.get("matched"):
+        return None, "timeout: no prompt after '%s'" % text
+    return rep["text"], None
+
+
+def cmd_verify(args):
+    """Post-flash health check: identity, C library, processes, log."""
+
+    name = resolve(args.name)
+    out = {"pass": True, "board": {}, "checks": [], "findings": []}
+
+    def check(label, ok, detail):
+        out["checks"].append({"check": label, "ok": bool(ok),
+                              "detail": detail})
+        if not ok:
+            out["pass"] = False
+
+    def fail(err):
+        sys.stderr.write("error: %s\n" % err)
+        return 2 if err.startswith("timeout") else 1
+
+    # Identity
+
+    text, err = ask(name, "uKOS", args.timeout)
+    if err:
+        return fail(err)
+    ident = dict(RX_IDENT.findall(text))
+    out["board"] = ident
+    sha = ident.get("VCS#", "?")
+    if args.expect_sha:
+        check("firmware", sha == args.expect_sha,
+              "%s (expected %s)" % (sha, args.expect_sha))
+    else:
+        check("firmware", sha != "?", sha)
+
+    # C library manager
+
+    text, err = ask(name, "list", args.timeout)
+    if err:
+        return fail(err)
+    found = sorted(set(RX_CLIB.findall(text)))
+    clib = found[0] if len(found) == 1 else "?"
+    if args.expect_libc:
+        check("c library", clib == args.expect_libc,
+              "%s (expected %s)" % (clib, args.expect_libc))
+    else:
+        check("c library", len(found) == 1,
+              clib if found else "no manager registered")
+
+    # Processes
+
+    text, err = ask(name, "process", args.timeout)
+    if err:
+        return fail(err)
+    procs = [{"id": int(m[0]), "text": m[1].strip(),
+              "state": " ".join(m[2].split()), "cpu": float(m[3])}
+             for m in RX_PROC.findall(text)]
+    frozen = [p for p in procs if p["state"] == KFROZEN]
+    console = [p for p in procs if "console" in p["text"].lower()]
+    running = [p for p in console if p["state"] == "Running"]
+    out["findings"] += ["process %d %s is %s" % (p["id"], p["text"], KFROZEN)
+                        for p in frozen]
+    check("processes", procs and not frozen and running,
+          "%d listed, console %s, %d frozen"
+          % (len(procs),
+             running[0]["state"] if running else
+             (console[0]["state"] if console else "absent"),
+             len(frozen)))
+
+    # Log buffer
+
+    text, err = ask(name, "dumplog", args.timeout)
+    if err:
+        return fail(err)
+    recs = RX_LOG.findall(text)
+    bad = [r for r in recs if r[1] != "Info"]
+    out["findings"] += ["%s-us %s %s %s %s:%s %s" % r for r in bad]
+    check("log", not bad,
+          "%d records, %d non-Info" % (len(recs), len(bad)))
+
+    # Report
+
+    if args.json:
+        print(json.dumps(out, indent=2))
+        return 0 if out["pass"] else 3
+
+    print("board      %s" % " / ".join(
+        ident.get(k, "?") for k in ("Board", "Variant", "SoC", "Core")))
+    for c in out["checks"]:
+        print("%-10s %-44s %s"
+              % (c["check"], c["detail"], "OK" if c["ok"] else "FAIL"))
+    for finding in out["findings"]:
+        print("  ! %s" % finding)
+    print("VERDICT    %s" % ("PASS" if out["pass"] else "FAIL"))
+    return 0 if out["pass"] else 3
+
+
+def cmd_ports(_args):
+    found = list(serial.tools.list_ports.comports())
+    if not found:
+        print("no serial port found")
+        return 0
+    for p in sorted(found, key=lambda x: x.device):
+        print("%-28s %s" % (p.device, p.description or "-"))
+    return 0
+
+
+def main():
+    ap = argparse.ArgumentParser(
+        prog="ukos-serial",
+        description="Hold a uKOS-X target serial port open and drive its "
+                    "console.")
+    ap.add_argument("--name", help="session name (default: derived from port)")
+    ap.add_argument("--prompt", default=KDEFAULT_PROMPT,
+                    help="console prompt (default: %(default)r)")
+    sub = ap.add_subparsers(dest="action", required=True)
+
+    p = sub.add_parser("start", help="open the port and hold it")
+    p.add_argument("--port", required=True, help="e.g. /dev/cu.usbmodem1103")
+    p.add_argument("--baud", type=int, default=KDEFAULT_BAUD)
+    p.add_argument("--stopbits", type=int, choices=(1, 2), default=2)
+    p.add_argument("--eol", choices=sorted(KEOL), default="cr")
+    p.add_argument("--settle", type=float, default=KSETTLE,
+                   help="quiet time required before writing a command, "
+                        "in seconds (default: %(default)s)")
+    p.add_argument("--assert-dtr", action="store_true",
+                   help="assert DTR on open (default: leave it low)")
+    p.set_defaults(func=cmd_start)
+
+    p = sub.add_parser("stop", help="close the port and exit the daemon")
+    p.set_defaults(func=cmd_stop)
+
+    p = sub.add_parser("status", help="show the session state")
+    p.set_defaults(func=cmd_status)
+
+    p = sub.add_parser("send", help="send a command, read until the prompt")
+    p.add_argument("text")
+    p.add_argument("--timeout", type=float, default=KDEFAULT_TIMEOUT)
+    p.add_argument("--unsafe", action="store_true",
+                   help="allow a command from the unsafe list (%s)"
+                        % ", ".join(sorted(KUNSAFE)))
+    p.add_argument("--no-expect", action="store_true",
+                   help="write and return without waiting")
+    p.add_argument("--keep-prompt", action="store_true")
+    p.set_defaults(func=cmd_send)
+
+    p = sub.add_parser("expect", help="wait for a regex")
+    p.add_argument("pattern")
+    p.add_argument("--timeout", type=float, default=KDEFAULT_TIMEOUT)
+    p.set_defaults(func=cmd_expect)
+
+    p = sub.add_parser("read", help="collect output until the line is quiet")
+    p.add_argument("--timeout", type=float, default=1.0)
+    p.set_defaults(func=cmd_read)
+
+    p = sub.add_parser("raw", help="write bytes verbatim (\\r, \\n, \\x03)")
+    p.add_argument("data")
+    p.set_defaults(func=cmd_raw)
+
+    p = sub.add_parser("log", help="show the captured session log")
+    p.add_argument("-n", "--lines", type=int, default=40)
+    p.add_argument("--path", action="store_true", help="print the path only")
+    p.set_defaults(func=cmd_log)
+
+    p = sub.add_parser("verify", help="post-flash health check")
+    p.add_argument("--expect-sha",
+                   help="require this firmware VCS# "
+                        "(e.g. \"$(git rev-parse --short HEAD)\")")
+    p.add_argument("--expect-libc", choices=("newlib", "picolibc", "llvmlibc"),
+                   help="require this C library manager")
+    p.add_argument("--timeout", type=float, default=KDEFAULT_TIMEOUT)
+    p.add_argument("--json", action="store_true", help="machine-readable")
+    p.set_defaults(func=cmd_verify)
+
+    p = sub.add_parser("ports", help="list the serial ports")
+    p.set_defaults(func=cmd_ports)
+
+    p = sub.add_parser("_serve", help=argparse.SUPPRESS)
+    p.add_argument("--port", required=True)
+    p.add_argument("--baud", type=int, default=KDEFAULT_BAUD)
+    p.add_argument("--stopbits", type=int, default=2)
+    p.add_argument("--eol", choices=sorted(KEOL), default="cr")
+    p.add_argument("--settle", type=float, default=KSETTLE)
+    p.add_argument("--assert-dtr", action="store_true")
+    p.set_defaults(func=serve)
+
+    args = ap.parse_args()
+    return args.func(args)
+
+
+if __name__ == "__main__":
+    sys.exit(main())

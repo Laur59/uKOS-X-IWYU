@@ -170,7 +170,6 @@ int     _close_r(reent_t *reent, [[maybe_unused]] int fd) {
 _ssize_t    _write_r([[maybe_unused]] reent_t *reent, int fd, const void *buf, size_t count) {
     _ssize_t            nbPrintChars;
     serialManager_t     serialManager;
-    ioChannel_t         ioChannel;
     uint32_t            stdio = (uint32_t)fd;
     proc_t              *process;
 
@@ -190,8 +189,7 @@ _ssize_t    _write_r([[maybe_unused]] reent_t *reent, int fd, const void *buf, s
         case KSTDOUT:
         case KSYST: {
             kern_getProcessRun(&process);
-            kern_getSerialForProcess(process, &ioChannel);
-            serialManager = (serialManager_t)ioChannel;
+            kern_getSerialForProcess(process, &serialManager);
 
             serial_reserve(serialManager, KMODE_WRITE, KWAIT_INFINITY);
             nbPrintChars = local_write(serialManager, buf, count);
@@ -224,7 +222,6 @@ _ssize_t    _write_r([[maybe_unused]] reent_t *reent, int fd, const void *buf, s
 _ssize_t    _read_r([[maybe_unused]] reent_t *reent, int fd, void *buf, size_t count) {
     _ssize_t            nbReadChars;
     serialManager_t     serialManager;
-    ioChannel_t         ioChannel;
     uint32_t            stdio = (uint32_t)fd;
     proc_t              *process;
 
@@ -244,8 +241,7 @@ _ssize_t    _read_r([[maybe_unused]] reent_t *reent, int fd, void *buf, size_t c
         case KSTDOUT:
         case KSYST: {
             kern_getProcessRun(&process);
-            kern_getSerialForProcess(process, &ioChannel);
-            serialManager = (serialManager_t)ioChannel;
+            kern_getSerialForProcess(process, &serialManager);
 
             serial_reserve(serialManager, KMODE_READ, KWAIT_INFINITY);
             nbReadChars = local_read(serialManager, buf, count);
