@@ -10,8 +10,7 @@
 #       1. Fetches the upstream FatFs repository from GitHub
 #       2. Builds all FatFs static libraries for supported architectures
 #
-#   It is functionally equivalent to build.sh and provides
-#   a single, declarative CMake-based build entry point.
+#   It provides a single, declarative CMake-based build entry point.
 #
 # Reproducibility:
 #   This build definition is intended to be deterministic and reproducible.
@@ -26,6 +25,7 @@
 #   cd Third_Parties/FatFs
 #   cmake -S . -B build
 #   cmake --build build
+#   cmake --install build
 #
 # Build outputs:
 #   - Library/*/flash/libFatFs.a
@@ -39,6 +39,12 @@ project(FatFs_Package
     DESCRIPTION "FatFs filesystem package with upstream source fetch"
     LANGUAGES NONE
 )
+
+# Default install prefix: keep Library/ adjacent to Construction/ inside the source tree.
+# Override with cmake --install build --prefix /other/path if needed.
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}" CACHE PATH "Install prefix" FORCE)
+endif()
 
 # Include FetchContent module for downloading upstream FatFs
 include(FetchContent)
@@ -139,6 +145,8 @@ else()
 endif()
 
 # Create an ExternalProject for each core
+set(ALL_CORE_PROJECTS "")
+
 foreach(CORE ${SUPPORTED_CORES})
     if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${CORE}/CMakeLists.txt")
         message(STATUS "Configuring build for core: ${CORE}")
@@ -147,7 +155,7 @@ foreach(CORE ${SUPPORTED_CORES})
         set(CORE_BYPRODUCTS "")
         foreach(VARIANT ${FATFS_VARIANTS})
             list(APPEND CORE_BYPRODUCTS
-                "${CMAKE_CURRENT_SOURCE_DIR}/Library/${CORE}/${VARIANT}/libFatFs.a")
+                "${CMAKE_CURRENT_BINARY_DIR}/build-${CORE}/${VARIANT}/libFatFs.a")
         endforeach()
 
         ExternalProject_Add(FatFs_${CORE}
@@ -172,7 +180,7 @@ foreach(CORE ${SUPPORTED_CORES})
             BUILD_ALWAYS      OFF
             BUILD_BYPRODUCTS  ${CORE_BYPRODUCTS}
 
-            # Install step - libraries stay in-place
+            # Install step - deferred to 'cmake --install' of the top-level project
             INSTALL_COMMAND   ""
 
             # Download/Update steps - we use local source
@@ -195,7 +203,26 @@ foreach(CORE ${SUPPORTED_CORES})
 endforeach()
 
 #------------------------------------------------------------------------
-# Step 4: Create convenience targets
+# Step 4: Install rules
+#
+# cmake --install build gathers libFatFs.a for every core/variant from the
+# per-core build trees (build/build-<CORE>/<VARIANT>/) and deploys them to
+# Library/<CORE>/<VARIANT>/.
+#------------------------------------------------------------------------
+
+foreach(CORE ${SUPPORTED_CORES})
+    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${CORE}/CMakeLists.txt")
+        foreach(VARIANT ${FATFS_VARIANTS})
+            install(FILES "${CMAKE_CURRENT_BINARY_DIR}/build-${CORE}/${VARIANT}/libFatFs.a"
+                    DESTINATION "Library/${CORE}/${VARIANT}"
+                    OPTIONAL
+            )
+        endforeach()
+    endif()
+endforeach()
+
+#------------------------------------------------------------------------
+# Step 5: Create convenience targets
 #------------------------------------------------------------------------
 
 # Create a custom target that depends on all external projects
@@ -219,8 +246,9 @@ message("FatFs version:   ${FATFS_VERSION}")
 message("Git commit:      ${FATFS_HASH}")
 message("Source location: ${CMAKE_CURRENT_SOURCE_DIR}/FatFs-current")
 message("")
-message("To build all FatFs libraries, run:")
+message("To build and deploy all FatFs libraries, run:")
 message("  cmake --build build")
+message("  cmake --install build")
 message("")
 message("Individual architecture targets:")
 foreach(CORE ${SUPPORTED_CORES})

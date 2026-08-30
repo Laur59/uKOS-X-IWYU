@@ -10,8 +10,7 @@
 #       1. Fetches the upstream IntelRDFPMath repository from GitHub
 #       2. Builds all IntelRDFPMath static libraries for supported architectures
 #
-#   It is functionally equivalent to build.sh and provides
-#   a single, declarative CMake-based build entry point.
+#   It provides a single, declarative CMake-based build entry point.
 #
 # Reproducibility:
 #   This build definition is intended to be deterministic and reproducible.
@@ -26,6 +25,7 @@
 #   cd Third_Parties/IntelRDFPMath
 #   cmake -S . -B build
 #   cmake --build build
+#   cmake --install build
 #
 # Build outputs:
 #   - Library/*/libIntelRDFPMath.a
@@ -37,6 +37,12 @@ project(IntelRDFPMath_Package
     DESCRIPTION "Intel RDFP Math package with upstream source fetch"
     LANGUAGES NONE
 )
+
+# Default install prefix: keep Library/ adjacent to Construction/ inside the source tree.
+# Override with cmake --install build --prefix /other/path if needed.
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}" CACHE PATH "Install prefix" FORCE)
+endif()
 
 # Include FetchContent module for downloading upstream IntelRDFPMath
 include(FetchContent)
@@ -110,6 +116,8 @@ else()
 endif()
 
 # Create an ExternalProject for each core
+set(ALL_CORE_PROJECTS "")
+
 foreach(CORE ${SUPPORTED_CORES})
     if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${CORE}/CMakeLists.txt")
         message(STATUS "Configuring build for core: ${CORE}")
@@ -131,9 +139,9 @@ foreach(CORE ${SUPPORTED_CORES})
             # Build step
             BUILD_COMMAND     ${CMAKE_COMMAND} --build <BINARY_DIR>
             BUILD_ALWAYS      OFF
-            BUILD_BYPRODUCTS  "${CMAKE_CURRENT_SOURCE_DIR}/Library/${CORE}/libIntelRDFPMath.a"
+            BUILD_BYPRODUCTS  "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${CORE}/build/libIntelRDFPMath.a"
 
-            # Install step - libraries stay in-place
+            # Install step - deferred to 'cmake --install' of the top-level project
             INSTALL_COMMAND   ""
 
             # Download/Update steps - we use local source
@@ -156,7 +164,24 @@ foreach(CORE ${SUPPORTED_CORES})
 endforeach()
 
 #------------------------------------------------------------------------
-# Step 3: Create convenience targets
+# Step 3: Install rules
+#
+# cmake --install build gathers libIntelRDFPMath.a from each per-core build
+# tree (Construction/<CORE>/build/) and deploys it to Library/<CORE>/.
+#------------------------------------------------------------------------
+
+foreach(CORE ${SUPPORTED_CORES})
+    set(CORE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${CORE}")
+    if(EXISTS "${CORE_SOURCE_DIR}/CMakeLists.txt")
+        install(FILES "${CORE_SOURCE_DIR}/build/libIntelRDFPMath.a"
+                DESTINATION "Library/${CORE}"
+                OPTIONAL
+        )
+    endif()
+endforeach()
+
+#------------------------------------------------------------------------
+# Step 4: Create convenience targets
 #------------------------------------------------------------------------
 
 # Create a custom target that depends on all external projects
@@ -180,8 +205,9 @@ message("IntelRDFPMath version:   ${INTELRDFPMATH_VERSION}")
 message("Git commit:      ${INTELRDFPMATH_HASH}")
 message("Source location: ${CMAKE_CURRENT_SOURCE_DIR}/IntelRDFPMath-current")
 message("")
-message("To build all IntelRDFPMath libraries, run:")
+message("To build and deploy all IntelRDFPMath libraries, run:")
 message("  cmake --build build")
+message("  cmake --install build")
 message("")
 message("Individual architecture targets:")
 foreach(CORE ${SUPPORTED_CORES})

@@ -168,3 +168,49 @@ regression           # full regression, out-of-source builds
 
 They are the coarse net: anything that breaks a target under some combination of toolchain,
 C library, user mode and canary shows up there rather than in a single-variant build.
+
+## 6. Reproducibility
+
+The third-party libraries under `Third_Parties/` build the same bytes from the same
+commit. Two things used to prevent that, and `ukos_reproducible_build()` in
+`Ports/cmake/reproducible.cmake` handles both. Each package calls it from its
+`Construction/cmake/common-build.cmake` (TinyUSB from `Construction/Family/cmake/TinyUSB.cmake`).
+
+- **Archive metadata.** `ar` records each member's mtime, uid and gid, so an archive
+  differed even when every object in it was identical. The archive rules now use the
+  deterministic `D` modifier and `ranlib -D`. The post-build `strip` needs `-D` too:
+  stripping an archive rewrites its members, and without the flag it puts the wall-clock
+  metadata straight back.
+- **`__DATE__` and `__TIME__`.** Nearly every module ends its help string with
+  `"Module built on " __DATE__ " " __TIME__`, so one object per module changed on every
+  build. GCC and Clang both compute those macros from `SOURCE_DATE_EPOCH`, which is
+  supplied through the compiler launcher. The epoch is the commit date of `HEAD`, so it
+  follows the source: move the checkout to another commit and the date moves with it,
+  because the configure step depends on the git `HEAD` and `index` files. An epoch
+  exported in the environment wins; a checkout that is not a git working tree keeps
+  wall-clock dates rather than a misleading fixed one.
+
+The date therefore reports *which commit was built*, not when the compiler ran — the two
+coincide only for a freshly committed tree. A dirty tree keeps the epoch of the last
+commit; `version.h` carries the `-dirty` marker, and `ukos-serial verify --expect-sha`
+is the reliable way to confirm what a board is running.
+
+The launcher does not appear in `compile_commands.json`, so clangd and the IWYU checks
+above see the plain compiler command exactly as before.
+
+To check a package, build it twice from clean and compare:
+
+```bash
+cd Third_Parties/decnumber
+for pass in 1 2; do
+    ./very_clean.sh
+    cmake -S . -B build -GNinja && cmake --build build && cmake --install build
+    (cd Library && find . -type f | sort | xargs shasum -a 256) > /tmp/pass$pass.txt
+done
+diff /tmp/pass1.txt /tmp/pass2.txt      # no output
+```
+
+Scope is the third-party libraries. The system image and the downloadable applications
+are **not** covered: the same two settings would extend to a target variant, and the
+applications would need `-ffile-prefix-map` besides, because they compile with `-g3` and
+absolute paths land in the debug information.

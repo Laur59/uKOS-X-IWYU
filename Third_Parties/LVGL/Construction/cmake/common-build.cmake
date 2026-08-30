@@ -32,6 +32,16 @@ cmake_path(GET CMAKE_CURRENT_SOURCE_DIR PARENT_PATH PARENT_DIR)
 cmake_path(GET PARENT_DIR               FILENAME     DISPLAY_NAME)
 set(VALID_CORE_NAMES CORTEX_M3 CORTEX_M4 CORTEX_M7 CORTEX_M33 CORTEX_M55)
 
+# Default install prefix (set here, after project(), so CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT
+# is reliable). Allows 'cmake --install <build>' without an explicit --prefix.
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    set(CMAKE_INSTALL_PREFIX "${PATH_LVGL}" CACHE PATH "Install prefix" FORCE)
+endif()
+
+# Deterministic archives and a git-derived SOURCE_DATE_EPOCH
+include(${PATH_UKOS}/Ports/cmake/reproducible.cmake)
+ukos_reproducible_build()
+
 # Define the path to LVGL source
 set(LIB_SRC_DIR ${PATH_LVGL}/LVGL-current/src)
 message(STATUS "Using LVGL source at ${LIB_SRC_DIR}")
@@ -42,7 +52,7 @@ file(GLOB_RECURSE LVGL_SOURCES "${LIB_SRC_DIR}/*.c")
 set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${LIB_SRC_DIR}")
 
 # Create unique target name for CMake (to avoid conflicts when building all cores)
-# But keep output filename as libFatFs.a
+# But keep output filename as libLVGL.a
 set(TARGET_LIB LVGL_${CORE_NAME})
 add_library(${TARGET_LIB} STATIC
     ${PATH_LVGL}/Construction/System/headerLVGL.c
@@ -51,7 +61,7 @@ add_library(${TARGET_LIB} STATIC
 
 target_include_directories(${TARGET_LIB} PRIVATE
     ${PATH_UKOS}/OS/Includes
-    ${PATH_LVGL}/Library/${DISPLAY_NAME}/${CORE_NAME}
+    ${CMAKE_CURRENT_SOURCE_DIR}
     ${LIB_SRC_DIR}
 )
 
@@ -90,23 +100,25 @@ if(CORE_NAME IN_LIST VALID_CORE_NAMES)
     )
 endif()
 
-file(MAKE_DIRECTORY "${PATH_LVGL}/Library/${DISPLAY_NAME}/${CORE_NAME}")
-file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/lv_conf.h"
-     DESTINATION "${PATH_LVGL}/Library/${DISPLAY_NAME}/${CORE_NAME}"
-)
-file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/../lcd_display.h"
-     DESTINATION "${PATH_LVGL}/Library/${DISPLAY_NAME}"
+set_target_properties(${TARGET_LIB} PROPERTIES
+    OUTPUT_NAME "LVGL"
 )
 
-set_target_properties(${TARGET_LIB} PROPERTIES
-    ARCHIVE_OUTPUT_DIRECTORY "${PATH_LVGL}/Library/${DISPLAY_NAME}/${CORE_NAME}"
-    OUTPUT_NAME "LVGL"
+# Installation (deployed by 'cmake --install').
+# The panel headers ship with the archive: the downloadable LVGL applications
+# include lcd_display.h and lv_conf.h from Library/.
+install(TARGETS ${TARGET_LIB} ARCHIVE DESTINATION "Library/${DISPLAY_NAME}/${CORE_NAME}")
+install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/lv_conf.h"
+        DESTINATION "Library/${DISPLAY_NAME}/${CORE_NAME}"
+)
+install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../lcd_display.h"
+        DESTINATION "Library/${DISPLAY_NAME}"
 )
 
 # Strip unnecessary symbols after build
 add_custom_command(TARGET ${TARGET_LIB}
     POST_BUILD
-    COMMAND ${CMAKE_STRIP} --strip-unneeded ${PATH_LVGL}/Library/${DISPLAY_NAME}/${CORE_NAME}/libLVGL.a
+    COMMAND ${CMAKE_STRIP} -D --strip-unneeded $<TARGET_FILE:${TARGET_LIB}>
 )
 
 # Post-build notification

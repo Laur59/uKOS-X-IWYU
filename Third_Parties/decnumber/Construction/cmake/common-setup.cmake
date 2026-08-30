@@ -19,7 +19,7 @@
 #   SOURCE_DATE_EPOCH is expected to be honored by all toolchain components.
 
 # Compute PATH_UKOS from directory structure
-# CMAKE_CURRENT_LIST_DIR points to the directory containing this file (Library/)
+# CMAKE_CURRENT_LIST_DIR points to the directory containing this file (Construction/cmake/)
 get_filename_component(PATH_UKOS "${CMAKE_CURRENT_LIST_DIR}/../../../.." ABSOLUTE)
 set(PATH_DECNUMBER "${PATH_UKOS}/Third_Parties/decnumber")
 

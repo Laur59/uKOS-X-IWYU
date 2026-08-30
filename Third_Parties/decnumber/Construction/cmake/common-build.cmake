@@ -24,11 +24,21 @@ if(PROJECT_NAME MATCHES "^DecNumber_(.+)$")
     message("Building decnumber for core: ${CORE_NAME}")
 else()
     message(FATAL_ERROR "Project name '${PROJECT_NAME}' does not follow expected naming convention.\n"
-                        "Expected format: DecNUMBER_<CORE_NAME> (e.g., FatFs_CORTEX_M4)")
+                        "Expected format: DecNumber_<CORE_NAME> (e.g., DecNumber_CORTEX_M4)")
 endif()
 set(VALID_CORE_NAMES CORTEX_M3 CORTEX_M4 CORTEX_M7 CORTEX_M33 CORTEX_M55 CORTEX_M85 RV32IMAC RV64IMAFDC)
 
-# Define the path to FatFs source
+# Default install prefix (set here, after project(), so CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT
+# is reliable). Allows 'cmake --install <build>' without an explicit --prefix.
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    set(CMAKE_INSTALL_PREFIX "${PATH_DECNUMBER}" CACHE PATH "Install prefix" FORCE)
+endif()
+
+# Deterministic archives and a git-derived SOURCE_DATE_EPOCH
+include(${PATH_UKOS}/Ports/cmake/reproducible.cmake)
+ukos_reproducible_build()
+
+# Define the path to the decnumber source
 set(DECNUMBER_SRC_DIR ${PATH_DECNUMBER}/decnumber-current/src)
 message(STATUS "Using decnumber source at ${DECNUMBER_SRC_DIR}")
 
@@ -38,9 +48,7 @@ file(GLOB_RECURSE DECNUMBER_SOURCES "${DECNUMBER_SRC_DIR}/bid/*.c")
 set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${DECNUMBER_SRC_DIR}")
 
 # Create unique target name for CMake (to avoid conflicts when building all cores)
-# But keep output filename as libFatFs.a
-file(MAKE_DIRECTORY "${PATH_DECNUMBER}/Library/${CORE_NAME}")
-
+# But keep output filename as libdecnumber.a
 set(TARGET_LIB DecNumber_${CORE_NAME})
 add_library(${TARGET_LIB} STATIC
     ${PATH_DECNUMBER}/Construction/System/headerdecnumber.c
@@ -54,8 +62,6 @@ target_include_directories(${TARGET_LIB} PRIVATE
     ${PATH_DECNUMBER}/Construction/Interface/Patches
     ${DECNUMBER_SRC_DIR}
     ${PATH_DECNUMBER}/decnumber-current/include
-    ${PATH_DECNUMBER}/decnumber-current/include/decnumber
-    ${PATH_DECNUMBER}/decnumber-current/include/decnumber/bid
 )
 
 # Build OPTS_UKOS as a proper list
@@ -89,14 +95,16 @@ if(CORE_NAME IN_LIST SUPPORTED_CORES)
 endif()
 
 set_target_properties(${TARGET_LIB} PROPERTIES
-    ARCHIVE_OUTPUT_DIRECTORY "${PATH_DECNUMBER}/Library/${CORE_NAME}"
     OUTPUT_NAME "decnumber"
 )
+
+# Installation (deployed by 'cmake --install')
+install(TARGETS ${TARGET_LIB} ARCHIVE DESTINATION "Library/${CORE_NAME}")
 
 # Strip unnecessary symbols after build
 add_custom_command(TARGET ${TARGET_LIB}
     POST_BUILD
-    COMMAND ${CMAKE_STRIP} --strip-unneeded ${PATH_DECNUMBER}/Library/${CORE_NAME}/libdecnumber.a
+    COMMAND ${CMAKE_STRIP} -D --strip-unneeded $<TARGET_FILE:${TARGET_LIB}>
 )
 
 # Post-build notification

@@ -38,8 +38,8 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang")
 endif()
 
 set(PATH_INCLUDES
-    ${PATH_DECNUMBER}/decnumber-current/include
-    ${PATH_DECNUMBER}/decnumber-current/include/libdecnumber
+    ${PATH_DECNUMBER}/Library/include
+    ${PATH_DECNUMBER}/Library/include/libdecnumber
 )
 find_library(MYLIB decnumber ${PATH_DECNUMBER}/Library/${CORE})
 

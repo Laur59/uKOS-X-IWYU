@@ -23,11 +23,6 @@
 get_filename_component(PATH_UKOS "${CMAKE_CURRENT_LIST_DIR}/../../../../.." ABSOLUTE)
 set(PATH_TINYUSB "${PATH_UKOS}/Third_Parties/TinyUSB")
 
-# Default install prefix: install back into the source tree so Library/ stays adjacent to Construction/
-if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-    set(CMAKE_INSTALL_PREFIX "${PATH_TINYUSB}" CACHE PATH "Install prefix" FORCE)
-endif()
-
 # Verify PATH_UKOS points to a valid uKOS-X root directory
 if(NOT EXISTS "${PATH_UKOS}/OS/Includes")
     message(FATAL_ERROR "Invalid PATH_UKOS: ${PATH_UKOS}\n"

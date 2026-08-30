@@ -10,8 +10,7 @@
 #       1. Fetches the upstream decnumber repository from GitHub
 #       2. Builds all decnumber static libraries for supported architectures
 #
-#   It is functionally equivalent to build.sh and provides
-#   a single, declarative CMake-based build entry point.
+#   It provides a single, declarative CMake-based build entry point.
 #
 # Reproducibility:
 #   This build definition is intended to be deterministic and reproducible.
@@ -26,6 +25,7 @@
 #   cd Third_Parties/decnumber
 #   cmake -S . -B build
 #   cmake --build build
+#   cmake --install build
 #
 # Build outputs:
 #   - Library/*/libdecnumber.a
@@ -37,6 +37,12 @@ project(decnumber_Package
     DESCRIPTION "decnumber filesystem package with upstream source fetch"
     LANGUAGES NONE
 )
+
+# Default install prefix: keep Library/ adjacent to Construction/ inside the source tree.
+# Override with cmake --install build --prefix /other/path if needed.
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}" CACHE PATH "Install prefix" FORCE)
+endif()
 
 # Include FetchContent module for downloading upstream decnumber
 include(FetchContent)
@@ -111,6 +117,8 @@ else()
 endif()
 
 # Create an ExternalProject for each core
+set(ALL_CORE_PROJECTS "")
+
 foreach(CORE ${SUPPORTED_CORES})
     if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${CORE}/CMakeLists.txt")
         message(STATUS "Configuring build for core: ${CORE}")
@@ -132,9 +140,9 @@ foreach(CORE ${SUPPORTED_CORES})
             # Build step
             BUILD_COMMAND     ${CMAKE_COMMAND} --build <BINARY_DIR>
             BUILD_ALWAYS      OFF
-            BUILD_BYPRODUCTS  "${CMAKE_CURRENT_SOURCE_DIR}/Library/${CORE}/libdecnumber.a"
+            BUILD_BYPRODUCTS  "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${CORE}/build/libdecnumber.a"
 
-            # Install step - libraries stay in-place
+            # Install step - deferred to 'cmake --install' of the top-level project
             INSTALL_COMMAND   ""
 
             # Download/Update steps - we use local source
@@ -157,17 +165,27 @@ foreach(CORE ${SUPPORTED_CORES})
 endforeach()
 
 #------------------------------------------------------------------------
-# Step 3: Install headers from upstream source to Library/include
+# Step 3: Install rules
+#
+# cmake --install build gathers libdecnumber.a from each per-core build tree
+# (Construction/<CORE>/build/) and deploys it to Library/<CORE>/, and stages
+# the upstream headers into Library/include/.
 #------------------------------------------------------------------------
 
-set(DECNUMBER_INCLUDE_SRC "${CMAKE_CURRENT_SOURCE_DIR}/decnumber-current/include")
-set(DECNUMBER_INCLUDE_DST "${CMAKE_CURRENT_SOURCE_DIR}/Library/include")
+foreach(CORE ${SUPPORTED_CORES})
+    set(CORE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${CORE}")
+    if(EXISTS "${CORE_SOURCE_DIR}/CMakeLists.txt")
+        install(FILES "${CORE_SOURCE_DIR}/build/libdecnumber.a"
+                DESTINATION "Library/${CORE}"
+                OPTIONAL
+        )
+    endif()
+endforeach()
 
-add_custom_target(decnumber_Install_Headers ALL
-    COMMAND ${CMAKE_COMMAND} -E make_directory "${DECNUMBER_INCLUDE_DST}"
-    COMMAND ${CMAKE_COMMAND} -E copy_directory "${DECNUMBER_INCLUDE_SRC}" "${DECNUMBER_INCLUDE_DST}"
-    DEPENDS decnumber_Fetch_Complete
-    COMMENT "Installing decnumber headers to Library/include"
+# Install the upstream headers (mirrors decnumber-current/include/ verbatim)
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/decnumber-current/include/"
+        DESTINATION "Library/include"
+        FILES_MATCHING PATTERN "*.h"
 )
 
 #------------------------------------------------------------------------
@@ -176,7 +194,7 @@ add_custom_target(decnumber_Install_Headers ALL
 
 # Create a custom target that depends on all external projects
 add_custom_target(build_all_decnumber ALL
-    DEPENDS ${ALL_CORE_PROJECTS} decnumber_Install_Headers
+    DEPENDS ${ALL_CORE_PROJECTS}
     COMMENT "Building decnumber for all architectures"
 )
 
@@ -195,8 +213,9 @@ message("decnumber version:   ${DECNUMBER_VERSION}")
 message("Git commit:      ${DECNUMBER_HASH}")
 message("Source location: ${CMAKE_CURRENT_SOURCE_DIR}/decnumber-current")
 message("")
-message("To build all decnumber libraries, run:")
+message("To build and deploy all decnumber libraries, run:")
 message("  cmake --build build")
+message("  cmake --install build")
 message("")
 message("Individual architecture targets:")
 foreach(CORE ${SUPPORTED_CORES})

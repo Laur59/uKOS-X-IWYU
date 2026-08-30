@@ -7,8 +7,6 @@
 
 #include    "stub.h"
 
-#include    "stub.h"
-
 #include    <stdint.h>
 
 #include    "types.h"

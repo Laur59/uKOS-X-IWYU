@@ -10,8 +10,7 @@
 #       1. Fetches the upstream LVGL repository from GitHub
 #       2. Builds all LVGL static libraries for supported architectures
 #
-#   It is functionally equivalent to build.sh and provides
-#   a single, declarative CMake-based build entry point.
+#   It provides a single, declarative CMake-based build entry point.
 #
 # Reproducibility:
 #   This build is reproducible: given the same source code, build environment,
@@ -25,9 +24,12 @@
 #   cd Third_Parties/LVGL
 #   cmake -S . -B build
 #   cmake --build build
+#   cmake --install build
 #
 # Build outputs:
 #   - Library/*/*/libLVGL.a
+#   - Library/*/*/lv_conf.h
+#   - Library/*/lcd_display.h
 
 cmake_minimum_required(VERSION 3.31)
 
@@ -36,6 +38,12 @@ project(LVGL_Package
     DESCRIPTION "LVGL package with upstream source fetch"
     LANGUAGES NONE
 )
+
+# Default install prefix: keep Library/ adjacent to Construction/ inside the source tree.
+# Override with cmake --install build --prefix /other/path if needed.
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}" CACHE PATH "Install prefix" FORCE)
+endif()
 
 # Include ExternalProject module for downloading and building
 include(ExternalProject)
@@ -112,6 +120,9 @@ else()
 endif()
 
 # Create an ExternalProject for each core
+set(ALL_CORE_PROJECTS "")
+set(ALL_VARIANTS "")
+
 list(LENGTH SUPPORTED_CORES NUM_CORES)
 math(EXPR LAST_INDEX "${NUM_CORES} - 1")
 foreach(CORE_INDEX RANGE 0 ${LAST_INDEX})
@@ -140,9 +151,9 @@ foreach(CORE_INDEX RANGE 0 ${LAST_INDEX})
             # Build step
             BUILD_COMMAND     ${CMAKE_COMMAND} --build <BINARY_DIR>
             BUILD_ALWAYS      OFF
-            BUILD_BYPRODUCTS  "${CMAKE_CURRENT_SOURCE_DIR}/Library/${DISPLAY}/${CORE}/libLVGL.a"
+            BUILD_BYPRODUCTS  "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${DISPLAY}/${CORE}/build/libLVGL.a"
 
-            # Install step - libraries stay in-place
+            # Install step - deferred to 'cmake --install' of the top-level project
             INSTALL_COMMAND   ""
 
             # Download/Update steps - we use local source
@@ -159,13 +170,49 @@ foreach(CORE_INDEX RANGE 0 ${LAST_INDEX})
         )
 
         list(APPEND ALL_CORE_PROJECTS LVGL_${CORE}_${DISPLAY})
+        list(APPEND ALL_VARIANTS "${DISPLAY}|${CORE}")
     else()
         message(WARNING "Skipping ${CORE}: CMakeLists.txt not found at Construction/${DISPLAY}/${CORE}")
     endif()
 endforeach()
 
 #------------------------------------------------------------------------
-# Step 3: Create convenience targets
+# Step 3: Install rules
+#
+# cmake --install build gathers libLVGL.a from each per-core build tree
+# (Construction/<DISPLAY>/<CORE>/build/) and deploys it to
+# Library/<DISPLAY>/<CORE>/, together with the panel headers that the
+# downloadable LVGL applications include from there.
+#------------------------------------------------------------------------
+
+set(ALL_DISPLAYS "")
+
+foreach(VARIANT ${ALL_VARIANTS})
+    string(REPLACE "|" ";" VARIANT_PARTS "${VARIANT}")
+    list(GET VARIANT_PARTS 0 DISPLAY)
+    list(GET VARIANT_PARTS 1 CORE)
+    set(CORE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${DISPLAY}/${CORE}")
+
+    install(FILES "${CORE_SOURCE_DIR}/build/libLVGL.a"
+            DESTINATION "Library/${DISPLAY}/${CORE}"
+            OPTIONAL
+    )
+    install(FILES "${CORE_SOURCE_DIR}/lv_conf.h"
+            DESTINATION "Library/${DISPLAY}/${CORE}"
+    )
+    list(APPEND ALL_DISPLAYS "${DISPLAY}")
+endforeach()
+
+# One lcd_display.h per panel, shared by every core built for it
+list(REMOVE_DUPLICATES ALL_DISPLAYS)
+foreach(DISPLAY ${ALL_DISPLAYS})
+    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${DISPLAY}/lcd_display.h"
+            DESTINATION "Library/${DISPLAY}"
+    )
+endforeach()
+
+#------------------------------------------------------------------------
+# Step 4: Create convenience targets
 #------------------------------------------------------------------------
 
 # Create a custom target that depends on all external projects
@@ -186,12 +233,13 @@ message("LVGL version:    ${LVGL_VERSION}")
 message("Git commit:      ${LVGL_HASH}")
 message("Source location: ${CMAKE_CURRENT_SOURCE_DIR}/LVGL-current")
 message("")
-message("To build all LVGL libraries, run:")
+message("To build and deploy all LVGL libraries, run:")
 message("  cmake --build build")
+message("  cmake --install build")
 message("")
 message("Individual architecture targets:")
-foreach(CORE ${SUPPORTED_CORES})
-    message("  - LVGL_${CORE}")
+foreach(PROJECT_TARGET ${ALL_CORE_PROJECTS})
+    message("  - ${PROJECT_TARGET}")
 endforeach()
 message("")
 message("Output libraries will be in:")

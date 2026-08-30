@@ -15,6 +15,19 @@
 
 include_guard(GLOBAL)
 
+# Default install prefix: install back into the source tree so Library/ stays adjacent
+# to Construction/. This has to live here rather than in common-setup.cmake, which the
+# per-SOC CMakeLists.txt includes before project() - and project() is what sets
+# CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT, so the guard was never true there and a
+# standalone per-SOC 'cmake --install' aimed at /usr/local.
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    set(CMAKE_INSTALL_PREFIX "${PATH_TINYUSB}" CACHE PATH "Install prefix" FORCE)
+endif()
+
+# Deterministic archives and a git-derived SOURCE_DATE_EPOCH
+include(${PATH_UKOS}/Ports/cmake/reproducible.cmake)
+ukos_reproducible_build()
+
 # Include upstream TinyUSB CMakeLists.txt to access tinyusb_sources_get() function
 include(${PATH_TINYUSB}/TinyUSB-current/src/CMakeLists.txt)
 
@@ -388,12 +401,12 @@ function(add_tinyusb_libraries)
         # Strip libraries
         if(CMAKE_STRIP)
             add_custom_command(TARGET ${LIB_FS} POST_BUILD
-                COMMAND ${CMAKE_STRIP} --strip-unneeded $<TARGET_FILE:${LIB_FS}>
+                COMMAND ${CMAKE_STRIP} -D --strip-unneeded $<TARGET_FILE:${LIB_FS}>
                 COMMENT "Stripping libTinyUSB_FS.a for ${SOC}/${PROFILE}"
             )
 
             add_custom_command(TARGET ${LIB_HS} POST_BUILD
-                COMMAND ${CMAKE_STRIP} --strip-unneeded $<TARGET_FILE:${LIB_HS}>
+                COMMAND ${CMAKE_STRIP} -D --strip-unneeded $<TARGET_FILE:${LIB_HS}>
                 COMMENT "Stripping libTinyUSB_HS.a for ${SOC}/${PROFILE}"
             )
         endif()

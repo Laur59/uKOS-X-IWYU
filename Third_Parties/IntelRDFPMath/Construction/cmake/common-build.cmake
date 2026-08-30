@@ -28,6 +28,16 @@ else()
 endif()
 set(VALID_CORE_NAMES CORTEX_M3 CORTEX_M4 CORTEX_M7 CORTEX_M33 CORTEX_M55 CORTEX_M85 RV32IMAC RV64IMAFDC)
 
+# Default install prefix (set here, after project(), so CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT
+# is reliable). Allows 'cmake --install <build>' without an explicit --prefix.
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    set(CMAKE_INSTALL_PREFIX "${PATH_INTELRDFPMATH}" CACHE PATH "Install prefix" FORCE)
+endif()
+
+# Deterministic archives and a git-derived SOURCE_DATE_EPOCH
+include(${PATH_UKOS}/Ports/cmake/reproducible.cmake)
+ukos_reproducible_build()
+
 # Define the path to IntelRDFPMath source
 set(INTELRDFPMATH_SRC_DIR ${PATH_INTELRDFPMATH}/IntelRDFPMath-current/LIBRARY/src)
 message(STATUS "Using IntelRDFPMath source at ${INTELRDFPMATH_SRC_DIR}")
@@ -50,8 +60,6 @@ set(CMAKE_C_FLAGS_RELWITHDEBINFO "${_tmp_flags}" CACHE STRING "Flags for RelWith
 
 # Create unique target name for CMake (to avoid conflicts when building all cores)
 # But keep output filename as libIntelRDFPMath.a
-file(MAKE_DIRECTORY "${PATH_INTELRDFPMATH}/Library/${CORE_NAME}")
-
 set(TARGET_LIB IntelRDFPMath_${CORE_NAME})
 add_library(${TARGET_LIB} STATIC
     ${PATH_INTELRDFPMATH}/Construction/System/headerIntelRDFPMath.c
@@ -108,14 +116,16 @@ if(CORE_NAME MATCHES "^CORTEX_M(.+)$")
 endif()
 
 set_target_properties(${TARGET_LIB} PROPERTIES
-    ARCHIVE_OUTPUT_DIRECTORY "${PATH_INTELRDFPMATH}/Library/${CORE_NAME}"
     OUTPUT_NAME "IntelRDFPMath"
 )
+
+# Installation (deployed by 'cmake --install')
+install(TARGETS ${TARGET_LIB} ARCHIVE DESTINATION "Library/${CORE_NAME}")
 
 # Strip unnecessary symbols after build
 add_custom_command(TARGET ${TARGET_LIB}
     POST_BUILD
-    COMMAND ${CMAKE_STRIP} --strip-unneeded ${PATH_INTELRDFPMATH}/Library/${CORE_NAME}/libIntelRDFPMath.a
+    COMMAND ${CMAKE_STRIP} -D --strip-unneeded $<TARGET_FILE:${TARGET_LIB}>
 )
 
 # Post-build notification

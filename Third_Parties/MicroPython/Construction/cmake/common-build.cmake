@@ -31,6 +31,10 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     set(CMAKE_INSTALL_PREFIX "${PATH_MICROPYTHON}" CACHE PATH "Install prefix" FORCE)
 endif()
 
+# Deterministic archives and a git-derived SOURCE_DATE_EPOCH
+include(${PATH_UKOS}/Ports/cmake/reproducible.cmake)
+ukos_reproducible_build()
+
 # Extract core name from project name with strict validation
 if(CMAKE_PROJECT_NAME MATCHES "^MicroPython_(.+)$")
     set(CORE_NAME ${CMAKE_MATCH_1})
@@ -147,7 +151,7 @@ install(TARGETS ${MICROPY_TARGET} ARCHIVE DESTINATION "Library/${CORE_NAME}")
 # Strip unnecessary symbols after build
 add_custom_command(TARGET ${MICROPY_TARGET}
     POST_BUILD
-    COMMAND ${CMAKE_STRIP} --strip-unneeded lib${MICROPY_TARGET}.a
+    COMMAND ${CMAKE_STRIP} -D --strip-unneeded lib${MICROPY_TARGET}.a
 )
 
 # Post-build notification

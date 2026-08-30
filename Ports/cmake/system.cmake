@@ -190,17 +190,29 @@ if(VERSIONING STREQUAL "git")
         OUTPUT_VARIABLE SW_VERSION_VAR
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
-    # Trick to have version.h updated when git status changed
+    # Trick to have version.h updated when git status changed.
+    # Two details this depends on:
+    #   - CMAKE_CONFIGURE_DEPENDS is a DIRECTORY property; set on any other scope
+    #     it is silently ignored.
+    #   - --absolute-git-dir, not --git-dir: the latter answers ".git", a relative
+    #     path that CMake then resolves against the variant directory, where no
+    #     such file exists, and a dependency on a missing file is dropped. It is
+    #     also already correct for a worktree or a submodule, which the plain form
+    #     needed a regex to paper over.
+    # HEAD covers the commit that "git describe" reports, index the "-dirty" part.
     execute_process(
-        COMMAND ${GIT_EXECUTABLE} -C "${PATH_UKOS}" rev-parse --git-dir
+        COMMAND ${GIT_EXECUTABLE} -C "${PATH_UKOS}" rev-parse --absolute-git-dir
         OUTPUT_VARIABLE PROJECT_SOURCE_GIT
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
-    string(REGEX REPLACE "\\.git.*" ".git" PROJECT_SOURCE_GIT "${PROJECT_SOURCE_GIT}")
-    set_property(GLOBAL APPEND
-        PROPERTY CMAKE_CONFIGURE_DEPENDS
-        "${PROJECT_SOURCE_GIT}/index"
-    )
+    foreach(GIT_WATCHED HEAD index)
+        if(EXISTS "${PROJECT_SOURCE_GIT}/${GIT_WATCHED}")
+            set_property(DIRECTORY APPEND
+                PROPERTY CMAKE_CONFIGURE_DEPENDS
+                "${PROJECT_SOURCE_GIT}/${GIT_WATCHED}"
+            )
+        endif()
+    endforeach()
 elseif(VERSIONING STREQUAL "svn")
     execute_process(
         COMMAND svnversion

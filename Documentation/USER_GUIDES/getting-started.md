@@ -68,6 +68,12 @@ Once the environment is configured, typically the next step is to build all the 
 This step is only mandatory if you intend to build the targets in `Ports/Targets/`. Run the
 following commands from the cloned directory.
 
+Every CMake package follows the same three steps. `cmake --build build` only compiles the
+libraries into the package build tree; `cmake --install build` is what deploys them into
+`Third_Parties/<package>/Library/`, which is where the target and application builds look
+for them. Skipping the install step leaves `find_library()` empty and the failure only
+shows up later as a link error.
+
 ### Building TinyUSB
 
 ```bash
@@ -83,6 +89,7 @@ cmake --install build
 cd Third_Parties/MicroPython
 cmake -S . -B build
 cmake --build build
+cmake --install build
 ```
 
 ### Building FatFs
@@ -91,6 +98,7 @@ cmake --build build
 cd Third_Parties/FatFs
 cmake -S . -B build
 cmake --build build
+cmake --install build
 ```
 
 ### Building TFLite-micro
@@ -120,6 +128,16 @@ cd Third_Parties/Tflite-micro
 cd Third_Parties/decnumber
 cmake -S . -B build
 cmake --build build
+cmake --install build
+```
+
+### Building IntelRDFPMath
+
+```bash
+cd Third_Parties/IntelRDFPMath
+cmake -S . -B build
+cmake --build build
+cmake --install build
 ```
 
 ### Building LVGL
@@ -128,6 +146,7 @@ cmake --build build
 cd Third_Parties/LVGL
 cmake -S . -B build
 cmake --build build
+cmake --install build
 ```
 
 ### Building STM32 (N6 FSBL + N6 NPU)
