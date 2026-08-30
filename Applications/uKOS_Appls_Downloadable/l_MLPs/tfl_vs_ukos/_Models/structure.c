@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+//
 // uKOS-X
 // TFLite MLP dump (pip-only) - float32
 // Model: NN_model.tflite

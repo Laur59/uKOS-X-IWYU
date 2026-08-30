@@ -53,9 +53,6 @@
 
 #pragma once
 
-#ifdef __riscv
-#include    <machine/time.h>  // for _CLOCKS_PER_SEC_
-#endif
 #include    <sys/reent.h>
 #include    <unistd.h>        // for STDERR_FILENO, STDIN_FILENO, STDOUT_FILENO
 
@@ -82,11 +79,23 @@ typedef struct  _reent  reent_t;
 #define KSTDOUT     STDOUT_FILENO
 #define KSTDERR     STDERR_FILENO
 
-// This value has to be re-defined accordingly to the
-// µKernel specification. For an unclear reason, the newlib
-// define:
-// #define _CLOCKS_PER_SEC_ 100
-// in a machine/time.h
+// _CLOCKS_PER_SEC_ must match the µKernel specification: the kernel counter has
+// a 1-us resolution, so the value is 1'000'000. Two independent mechanisms make
+// it so, and they agree.
+//
+// Upstream newlib gives Arm 100 in machine/time.h, following Arm semihosting,
+// which counts centiseconds; RISC-V already gets 1'000'000 there. Both uKOS-X
+// toolchains patch that header to move __arm__ into the microsecond branch --
+// Patches/newlib/<version>/0002-Patch-time.h-for-uKOS.patch for GCC, and for
+// LLVM the same file carried by ukos_patches 0001, which also fixes LLVM libc.
+//
+// Independently of the toolchain, configure_arm_core() and
+// configure_riscv_core() in Ports/cmake/proj_config.cmake pass
+// -D_CLOCKS_PER_SEC_=1000000 together with -D_MACHTIME_H_, the header's own
+// include guard, so the header is suppressed and the value comes from the
+// command line. uKOS-X therefore gets 1'000'000 even on an unpatched toolchain.
+//
+// The assertion below catches a build where neither mechanism applied.
 
 #define CLOCKS_PER_SEC_CHECK(x) ((x) == 1000000U)
 static_assert(CLOCKS_PER_SEC_CHECK(_CLOCKS_PER_SEC_), "_CLOCKS_PER_SEC_ must be 1000000");

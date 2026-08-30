@@ -1,6 +1,3 @@
-<!-- SPDX-License-Identifier: MIT -->
-<!-- SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen -->
-
 # System customisation
 
 The system offers extensive customization capabilities to achieve the desired behaviour, with fine-tuning accomplished by strategically modifying the behavioural descriptions within CMakeLists.txt.

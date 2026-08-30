@@ -1,3 +1,8 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+#
+# Network geometry, activations and training parameters for the classifier MLP.
+
 # Application / Network configuration
 #
 # L1 - 2 inputs

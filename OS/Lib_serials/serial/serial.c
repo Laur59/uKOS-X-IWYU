@@ -75,6 +75,12 @@ MODULE(
 // Library specific
 // ================
 
+// The kernel declares serialManager_t without its enumerators, so it spells
+// the initial channel of a process itself. This is the only place that sees
+// both spellings: keep them in step.
+
+static_assert(KIOCHAN_DEFAULT == KDEF0, "kern_types.h KIOCHAN_DEFAULT and serial.h KDEF0 have diverged");
+
 static  serialManager_t     vDefSerialManager[KNB_CORES];
 
 // Prototypes

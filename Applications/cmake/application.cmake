@@ -45,7 +45,7 @@ if(C_LIBRARY STREQUAL "picolibc")
 elseif(C_LIBRARY STREQUAL "llvmlibc")
     # CLOCKS_PER_SEC is not set here: stock baremetal LLVM libc defaults it to 100
     # on ARM (Arm semihosting counts centiseconds), and the uKOS-X toolchain patch
-    # ukos_patches/0006-llvm-libc-use-microsecond-also-for-32-bit-Arm-cores.patch
+    # ukos_patches/0001-newlib-llvm-libc-use-microsecond-also-for-32-bit-Arm.patch
     # moves 32-bit Arm to the microsecond branch instead. Patching rather than
     # passing -D__CLK_TCK also rebuilds libc.a with the same unit, so the library
     # and the application agree. A static_assert in llvmlibc.c fails the build on

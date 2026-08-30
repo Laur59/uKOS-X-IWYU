@@ -20,6 +20,7 @@
 #include    "macros_soc.h"
 #include    "os_errors.h"
 #include    "record/record.h"
+#include    "serial/serial.h"
 #include    "serial_common.h"
 
 static  volatile    bool        vSending_C1          = false;

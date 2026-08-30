@@ -17,7 +17,6 @@
  *
  */
 
-#include    <stdint.h>
 #include    "soc_reg.h"
 
 #define KTIME_WATCHDOG_RES  (256U / 32U)                                        // Resolution of 8-ms; 1 / (32000 / 256)

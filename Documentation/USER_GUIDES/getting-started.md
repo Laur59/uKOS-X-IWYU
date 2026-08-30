@@ -1,19 +1,27 @@
-<!-- SPDX-License-Identifier: MIT -->
-<!-- SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen -->
+# uKOS-X – Getting started
 
-# uKOS-X Pack v. 3.x.x
+This document provides a quick onboarding guide for users.
 
-NOTE: Throughout the documentation, the term *`PATH_UKOS_X_PACKAGE`* is used to refer to the location where uKOS-X is located (typically git clone destination).
+NOTE: Throughout the documentation, the term *`PATH_UKOS_X_PACKAGE`* is used to refer to
+the location where uKOS-X is located (typically the git clone destination).
 
 ## Prerequisites
 
-The installation of **µKOS-X** requires a set of development tools. Before proceeding, ensure that the following components are available on your system.
+To build binaries of **µKOS-X**, a set of development tools is required. Before proceeding,
+ensure that the following components are available on your system.
 
-- cmake
+Mandatory:
+- cmake, **3.31 or newer** (the build uses preset schema version 10)
 - toolchain for Arm processors with newlib
 - toolchain for RISC-V processors with newlib
-- yq
-- python3
+
+Optional:
+- yq (required by `Ports/Targets/_build.sh`, which builds every target)
+- python3 (for building libraries such as Tensorflow Lite)
+- toolchain for Arm processors with picolibc
+- toolchain for RISC-V processors with picolibc
+- toolchain for Arm processors with LLVM libc
+- toolchain for RISC-V processors with LLVM libc
 
 ## Preparing work environment
 
@@ -51,12 +59,14 @@ export PATH_LLVM_ARML
 export PATH_LLVM_RVXXL
 ```
 
-See **[C-library-selection.md](../USER_GUIDES/C-library-selection.md)** for the
+See **[C-library-selection.md](C-library-selection.md)** for the
 toolchain requirements of each C library and for building with them.
 
-## Building the package
+## Building the package libraries
 
-Once the installation is terminated, we can build all the targets and start to work with the OS. Run the following commands from  *`PATH_UKOS_X_PACKAGE`* directory.
+Once the environment is configured, typically the next step is to build all the libraries.
+This step is only mandatory if you intend to build the targets in `Ports/Targets/`. Run the
+following commands from the cloned directory.
 
 ### Building TinyUSB
 
@@ -83,30 +93,24 @@ cmake -S . -B build
 cmake --build build
 ```
 
-### Building esp32
-
-```bash
-cd Third_Parties/esp32
-./build.sh
-```
-
-### Building esp32
-
-```bash
-cd Third_Parties/esp32
-./build.sh
-```
-
 ### Building TFLite-micro
+
+If it is the first time you build TFLite-micro, you need to create the virtual environment
+first.
 
 ```bash
 cd Third_Parties/Tflite-micro/Construction/Pyenv
 python3.13 -m venv Tflite_Pyenv
 source Tflite_Pyenv/bin/activate
-
 pip install -r requirements.txt
-
 deactivate
+```
+
+Then, you can build TFLite-micro as follows. The script activates the virtual environment
+itself, so there is nothing to source beforehand:
+
+```bash
+cd Third_Parties/Tflite-micro
 ./build.sh
 ```
 
@@ -134,42 +138,46 @@ cmake --build build
 # "${PATH_UKOS_X_PACKAGE}/Third_Parties/STM32/STM32N6/STEdgeAI
 # https://www.st.com/en/development-tools/stedgeai-core.html
 
-cd Third_Parties/STM32
+cd Third_Parties/STM32/STM32N6
 ./build.sh
 ```
 
-### Building all the targets of the package
+### Building esp32
+
+```bash
+cd Third_Parties/esp32
+./build.sh
+```
+
+## Building all the targets of the package
+
+This command will build all the targets of the package. It requires that the above
+libraries have been built first, and that `yq` is installed.
 
 ```bash
 cd Ports/Targets
-._/build.sh
+./_build.sh
 ```
 
 In the folder Targets you can read the document **README.md** for more information.
 
-### Possible operations with one target
+## Possible operations with one target
 
-For building one specific target we simply need to enter in the **Variant__** folder of the target and play with **cmake**. For example, if we need to **build** and **burn** the **FLASH** of the target **Nucleo_H743**.
+For building one specific target we simply need to enter in the **Variant__** folder of the
+target and play with **cmake**. For example, if we need to **build** and **burn** the
+**FLASH** of the target **Nucleo_H743**.
 
 ```bash
-cd Ports/Nucleo_H743/Variant_Test
+cd Ports/Targets/Nucleo_H743/Variant_Test
 cmake --preset gcc
 cmake --build build --target burn
 ```
 
-CMake offers the following presets:
-
-- gcc
-- llvm
-- gcc-nocanary, suppress detection if a buffer overflow in stack
-- gcc-nouser, compile the system without the privileged/user separation
-- gcc-nouser-nocanary
-- llvm-nocanary, suppress detection if a buffer overflow in stack
-- llvm-nouser, compile the system without the privileged/user separation
-- llvm-nouser-nocanary
+See **[USAGE_cmake.md](USAGE_cmake.md)** for the full list of presets and build options.
 
 #### Working with the target
 
-1. Connect a serial terminal (e.g. CoolTerm) set with the baudrate **460800-b/s** (**115200-b/s** for MAIXDUINO)
+1. Connect a serial terminal (e.g. CoolTerm) set with the baudrate **460800-b/s**
+   (**115200-b/s** for MAIXDUINO)
 
 2. Push reset. On the terminal the OS prompt should appear

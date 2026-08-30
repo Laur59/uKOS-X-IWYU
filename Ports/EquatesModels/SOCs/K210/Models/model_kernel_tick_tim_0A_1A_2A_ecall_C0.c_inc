@@ -33,7 +33,6 @@
 #include    "kern/private/private_processes.h"
 #include    "kern/private/private_scheduler.h"
 #include    "kern/private/private_temporal.h"
-#include    "kern/private/private_preciseSignals.h"
 #include    "macros_core.h"
 #include    "macros_core_stackFrame.h"
 #include    "macros_soc.h"

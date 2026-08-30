@@ -72,7 +72,7 @@
  *
  * Restoring that hook therefore requires rebuilding picolibc itself with
  * -Derrno-function=, which also makes the toolchain uKOS-X specific. See
- * Documentation/,USER_GUIDES/TLS_SUPPORT_ASSESSMENT.md.
+ * Documentation/USER_GUIDES/TLS_SUPPORT_ASSESSMENT.md.
  */
 
 /*

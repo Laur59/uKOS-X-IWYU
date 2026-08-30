@@ -18,6 +18,10 @@ The main differences compared to the upstream repository are:
 This fork aims to improve maintainability and build correctness rather than to
 extend or modify functionality.
 
+To build the package for the first time, start with
+[getting-started.md](Documentation/USER_GUIDES/getting-started.md); the other guides
+sit beside it in `Documentation/USER_GUIDES/`.
+
 For project history, heritage, and credits, see [ABOUT.md](ABOUT.md).
 
 ## Components not included in this fork

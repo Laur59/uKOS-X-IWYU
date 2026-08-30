@@ -706,10 +706,13 @@ int gettimeofday(struct timeval *tv, [[maybe_unused]] void *tz) {
  * and CLOCKS_PER_SEC is 1'000'000, so the mapping is one to one. Stock
  * baremetal LLVM libc defaults CLOCKS_PER_SEC to 100 on ARM (Arm semihosting
  * counts centiseconds); the uKOS-X toolchain patch
- * ukos_patches/0006-llvm-libc-use-microsecond-also-for-32-bit-Arm-cores.patch
+ * ukos_patches/0001-newlib-llvm-libc-use-microsecond-also-for-32-bit-Arm.patch
  * moves 32-bit Arm to the microsecond branch, matching _CLOCKS_PER_SEC_ and the
  * newlib / picolibc managers. RISC-V already lands in that branch and needs no
- * patch.
+ * patch. That one patch does both libraries: it edits llvm-libc-macros/
+ * baremetal/time-macros.h and adds the newlib machine/time.h patch to the ATfE
+ * tree, which the GCC toolchain applies separately as
+ * Patches/newlib/<version>/0002-Patch-time.h-for-uKOS.patch.
  *
  * clock_t is a 32-bit long on the 32-bit targets, so the returned value wraps
  * every 2^32 us (about 71 minutes) of consumed CPU; a difference of two calls
@@ -720,7 +723,7 @@ int gettimeofday(struct timeval *tv, [[maybe_unused]] void *tz) {
  */
 static_assert(CLOCKS_PER_SEC == (long)KLLVMLIBC_US_PER_SEC,
               "clock() maps the 1-us kernel counter one to one: build with the uKOS-X "
-              "LLVM toolchain (ukos_patches 0006), or add -DCFLAGS_APPEND=-D__CLK_TCK=1000000");
+              "LLVM toolchain (ukos_patches 0001), or add -DCFLAGS_APPEND=-D__CLK_TCK=1000000");
 
 clock_t clock(void) {
     #if (KKERN_WITH_STATISTICS_S == true)

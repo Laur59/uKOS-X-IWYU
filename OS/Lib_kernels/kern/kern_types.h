@@ -53,6 +53,21 @@
 
 #include    "types.h"       // IWYU pragma: keep
 
+// Default I/O channel of a process
+// --------------------------------
+//
+// A process carries the identifier of the Serial Communication Manager it
+// reads from and writes to (spec_t.oSerialManager). The kernel only stores
+// and returns that identifier; resolving it to a device is the business of
+// the serial library, so serialManager_t is declared in types.h and defined
+// in serial/serial.h - Lib_kernels needs no Lib_serials include.
+//
+// This is the one channel the kernel has to name: the initial value of
+// spec_t.oSerialManager. It is KDEF0, "let the serial library pick the
+// default device"; serial.c asserts that the two spellings agree.
+
+#define KIOCHAN_DEFAULT ((serialManager_t)(((uint32_t)'d'<<24U) | ((uint32_t)'e'<<16U) | ((uint32_t)'f'<<8U) | (uint32_t)'0'))
+
 // Exported standard kernel configuration
 // --------------------------------------
 

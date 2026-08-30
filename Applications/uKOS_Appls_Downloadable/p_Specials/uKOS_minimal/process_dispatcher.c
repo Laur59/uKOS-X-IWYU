@@ -21,6 +21,7 @@
 #include    "record/record.h"
 #include    "types.h"
 #include    "record/record.h"
+#include    "serial/serial.h"
 
 extern  mbox_t  *vQueue_dispatcher;
 

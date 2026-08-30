@@ -1,4 +1,9 @@
 #!/usr/bin/env zsh
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+#
+# Compare object files built the BDFL way against the IWYU way.
+
 #
 # compare_obj.sh - Compare object files compiled with BDFL vs IWYU approaches
 #

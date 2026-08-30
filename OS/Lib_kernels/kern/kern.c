@@ -159,10 +159,6 @@
 #include    "macros_soc.h"
 #include    "modules.h"
 #include    "os_errors.h"
-#include    "serial/serial.h"
-#ifdef RV32IMAC_S
-#include    "soc_reg.h"
-#endif
 
 #define KKERN_VERSION   " 1.2"
 
@@ -384,6 +380,8 @@ int32_t kern_criticalSection(uint8_t critical) {
  * \endcode
  *
  * - This function sets the default communication device for a process
+ * - The manager identifiers (KURT1, KCDC0, KSYST, ...) are declared in serial/serial.h;
+ *   the kernel only stores the value
  *
  * \param[in]   *handle         Ptr on the handle
  * \param[in]   serialManager   Serial Communication Manager
@@ -417,7 +415,7 @@ int32_t kern_setSerialForProcess(proc_t *handle, serialManager_t serialManager) 
  * \code{.c}
  * int32_t    status;
  * proc_t     *process;
- *            uint32_t    serialManager;
+ * serialManager_t    serialManager;
  *
  *    status = kern_getSerialForProcess(process, &serialManager);
  * \endcode
@@ -425,7 +423,7 @@ int32_t kern_setSerialForProcess(proc_t *handle, serialManager_t serialManager) 
  * - This function gets the default communication device of a process
  *
  * \param[in]   *handle         Ptr on the handle
- * \param[in]   *serialManager  Ptr on the Serial Communication Manager
+ * \param[out]  *serialManager  Ptr on the Serial Communication Manager
  * \return      KERR_KERN_NOERR OK
  * \return      KERR_KERN_NOPRO The process does not exist
  *

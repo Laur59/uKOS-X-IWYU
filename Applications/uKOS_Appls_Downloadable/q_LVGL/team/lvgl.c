@@ -17,6 +17,7 @@
 #include    "macros_core_stackFrame.h"
 #include    "macros_soc.h"
 #include    "os_errors.h"
+#include    "serial/serial.h"
 #include    "stub.h"
 #include    "ui.h"
 

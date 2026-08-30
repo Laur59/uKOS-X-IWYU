@@ -38,7 +38,7 @@ the third-party components shipped in this repository.
 - Location: `Third_Parties/decnumber/`
 - Upstream: https://github.com/raitechnology/libdecnumber.git
 - Version: 3.68 / commit 4771421
-- License: See `,LICENSES/License_DecNumbers.txt`
+- License: See `LICENSES/License_DecNumbers.txt`
 - Copyright:
   -  See upstream project copyright notices in source headers
 

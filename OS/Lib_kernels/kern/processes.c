@@ -40,7 +40,6 @@
 #include    "memo/memo.h"
 #include    "os_errors.h"
 #include    "record/record.h"
-#include    "serial/serial.h"
 #include    "syscallDispatcher.h"           // IWYU pragma: keep
 #include    "types.h"
 
@@ -90,7 +89,7 @@ void    processes_init(void) {
                                     .oStack         = nullptr,
                                     .oStackSize     = 0U,
                                     .oStackMode     = 0U,
-                                    .oSerialManager = KDEF0,
+                                    .oSerialManager = KIOCHAN_DEFAULT,
                                     .oPriority      = KKERN_PRIORITY_HIGH_01,
                                     .oKind          = KPROC_NORMAL,
                                     .oMode          = KPROC_PRIVILEGED,
@@ -650,7 +649,7 @@ static  void    local_initialise(proc_t *handle) {
                                 .oStack         = nullptr,
                                 .oStackSize     = 0U,
                                 .oStackMode     = 0U,
-                                .oSerialManager = KDEF0,
+                                .oSerialManager = KIOCHAN_DEFAULT,
                                 .oPriority      = KKERN_PRIORITY_HIGH_01,
                                 .oKind          = 0U,
                                 .oMode          = 0U,

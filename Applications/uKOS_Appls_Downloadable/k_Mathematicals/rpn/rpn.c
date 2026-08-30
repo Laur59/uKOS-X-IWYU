@@ -43,6 +43,7 @@
 #include    "modules.h"
 #include    "os_errors.h"
 #include    "record/record.h"
+#include    "serial/serial.h"
 #include    "text/text.h"
 #include    "types.h"
 

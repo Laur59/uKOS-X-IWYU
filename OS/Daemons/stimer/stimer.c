@@ -5,6 +5,12 @@
  * Goal:     stim daemon; software timer management
  */
 
+// Everything below the #if is compiled only when the kernel is configured with
+// software timers. On a variant built with KKERN_NB_SOFTWARE_TIMERS == 0 the file
+// preprocesses to nothing, so IWYU reports every include here as removable -- true
+// for that configuration and wrong for every other one, which needs them all.
+//
+// IWYU pragma: begin_keep
 #include    <stdint.h>
 #include    <stdlib.h>
 
@@ -19,6 +25,7 @@
 #include    "record/record.h"
 #include    "serial/serial.h"
 #include    "types.h"
+// IWYU pragma: end_keep
 
 #if (KKERN_NB_SOFTWARE_TIMERS > 0)
 

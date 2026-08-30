@@ -20,24 +20,6 @@
 
 #ifndef UKOS_S
 
-// The comm
-// --------
-
-typedef enum {
-            KNOTR = (((uint32_t)'n'<<24U) | ((uint32_t)'o'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'R'),    // notr manager
-            KSYST = (((uint32_t)'s'<<24U) | ((uint32_t)'y'<<16U) | ((uint32_t)'s'<<8U) | (uint32_t)'t'),    // syst manager
-            KDEF0 = (((uint32_t)'d'<<24U) | ((uint32_t)'e'<<16U) | ((uint32_t)'f'<<8U) | (uint32_t)'0'),    // def0 manager
-            KURT0 = (((uint32_t)'u'<<24U) | ((uint32_t)'r'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'0'),    // urt0 manager
-            KURT1 = (((uint32_t)'u'<<24U) | ((uint32_t)'r'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'1'),    // urt1 manager
-            KURT2 = (((uint32_t)'u'<<24U) | ((uint32_t)'r'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'2'),    // urt2 manager
-            KURT3 = (((uint32_t)'u'<<24U) | ((uint32_t)'r'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'3'),    // urt3 manager
-            KURT4 = (((uint32_t)'u'<<24U) | ((uint32_t)'r'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'4'),    // urt4 manager
-            KCDC0 = (((uint32_t)'c'<<24U) | ((uint32_t)'d'<<16U) | ((uint32_t)'c'<<8U) | (uint32_t)'0'),    // cdc0 manager
-            KCDC1 = (((uint32_t)'c'<<24U) | ((uint32_t)'d'<<16U) | ((uint32_t)'c'<<8U) | (uint32_t)'1'),    // cdc1 manager
-            KWFI0 = (((uint32_t)'w'<<24U) | ((uint32_t)'f'<<16U) | ((uint32_t)'i'<<8U) | (uint32_t)'0'),    // wfi0 manager
-            KBLE0 = (((uint32_t)'b'<<24U) | ((uint32_t)'l'<<16U) | ((uint32_t)'e'<<8U) | (uint32_t)'0')     // ble0 manager
-} serialManager_t;
-
 // Some necessary equates
 // ----------------------
 

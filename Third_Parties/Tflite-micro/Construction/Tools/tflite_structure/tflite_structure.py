@@ -216,6 +216,9 @@ def main() -> int:
 			return 1
 
 		# --- Print header
+		print( "// SPDX-License-Identifier: MIT", file=out)
+		print( "// SPDX-FileCopyrightText: 2025-2026 Edo. Franzi", file=out)
+		print( "//", file=out)
 		print( "// uKOS-X", file=out)
 		print( "// TFLite MLP dump (pip-only) - float32", file=out)
 		print(f"// Model: {args.model}", file=out)

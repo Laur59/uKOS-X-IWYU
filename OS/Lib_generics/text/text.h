@@ -24,7 +24,6 @@
 
 #include    <stdint.h>
 
-#include    "serial/serial.h"
 #include    "types.h"
 
 // Prototypes

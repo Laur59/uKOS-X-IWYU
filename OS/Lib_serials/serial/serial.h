@@ -33,8 +33,13 @@
 #endif
 
 // Supported managers
+//
+// serialManager_t itself is declared in types.h, which this header includes,
+// so code that only names a manager does not depend on Lib_serials. The
+// underlying type is fixed and must stay identical in both places; the
+// compiler checks that here, where the two declarations meet.
 
-typedef enum {
+enum    serialManager_e : uint32_t {
             KNOTR = (((uint32_t)'n'<<24U) | ((uint32_t)'o'<<16U) | ((uint32_t)'t'<<8U) | (uint32_t)'R'),    // notr manager
             KSYST = (((uint32_t)'s'<<24U) | ((uint32_t)'y'<<16U) | ((uint32_t)'s'<<8U) | (uint32_t)'t'),    // syst manager
             KDEF0 = (((uint32_t)'d'<<24U) | ((uint32_t)'e'<<16U) | ((uint32_t)'f'<<8U) | (uint32_t)'0'),    // def0 manager
@@ -47,7 +52,7 @@ typedef enum {
             KCDC1 = (((uint32_t)'c'<<24U) | ((uint32_t)'d'<<16U) | ((uint32_t)'c'<<8U) | (uint32_t)'1'),    // cdc1 manager
             KWFI0 = (((uint32_t)'w'<<24U) | ((uint32_t)'f'<<16U) | ((uint32_t)'i'<<8U) | (uint32_t)'0'),    // wfi0 manager
             KBLE0 = (((uint32_t)'b'<<24U) | ((uint32_t)'l'<<16U) | ((uint32_t)'e'<<8U) | (uint32_t)'0')     // ble0 manager
-} serialManager_t;
+};
 
 // Prototypes
 

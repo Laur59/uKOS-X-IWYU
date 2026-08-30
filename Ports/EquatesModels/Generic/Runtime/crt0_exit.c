@@ -14,7 +14,9 @@
 #include    <stdlib.h>
 
 #include    "cmns.h"
-#include    "core.h"
+#ifndef RV32IMAC_S
+#include    "core.h"  // for core_getMSP, core_getPSP
+#endif
 #include    "kern/kern.h"
 #include    "kern/private/private_processes.h"
 #include    "macros_core.h"

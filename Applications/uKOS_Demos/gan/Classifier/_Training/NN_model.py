@@ -1,152 +1,108 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-# NN_model.
-# =========
-
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+#
+# Train a GAN to generate faces and export its generator as a TensorFlow Lite model.
 
-#------------------------------------------------------------------------
-# Author:	Edo. Franzi		The 2026-05-18
+# The database is downloaded from:
+# https://scikit-learn.org
 #
-# Project:	uKOS-X
-# Goal:		Generate the TensorFlow Lite C model for the uKOS system.
-#			This application trains a GAN network to generate faces
-#			from random vectors.
+# A dedicated Python script downloads 1000 samples for training:
+# python DB_Creator.py
 #
-#			The database is downloaded from:
-#			https://scikit-learn.org
+# The GAN is composed of a Generator and a Discriminator.
 #
-#			A dedicated Python script downloads 1000 samples for training:
-#			python DB_Creator.py
+# Generator architecture (embedded-friendly CNN):
+# -----------------------------------------------
 #
-#			The GAN is composed of a Generator and a Discriminator.
+# Input:
+# 	Random latent vector of 64 float32 values
 #
-#			Generator architecture (embedded-friendly CNN):
-#			-----------------------------------------------
+# Dense:
+# 	64 -> 4 x 4 x 96
 #
-#			Input:
-#				Random latent vector of 64 float32 values
+# Feature map expansion:
 #
-#			Dense:
-#				64 -> 4 x 4 x 96
+# 	4x4x96
+# 		|
+# 		+-- Resize 8x8
+# 		+-- Conv2D(48)
+# 		+-- BatchNorm
+# 		+-- ReLU
 #
-#			Feature map expansion:
+# 	8x8x48
+# 		|
+# 		+-- Resize 16x16
+# 		+-- Conv2D(24)
+# 		+-- BatchNorm
+# 		+-- ReLU
 #
-#				4x4x96
-#					|
-#					+-- Resize 8x8
-#					+-- Conv2D(48)
-#					+-- BatchNorm
-#					+-- ReLU
+# 	16x16x24
+# 		|
+# 		+-- Resize 32x32
+# 		+-- Conv2D(12)
+# 		+-- BatchNorm
+# 		+-- ReLU
 #
-#				8x8x48
-#					|
-#					+-- Resize 16x16
-#					+-- Conv2D(24)
-#					+-- BatchNorm
-#					+-- ReLU
+# 	32x32x12
+# 		|
+# 		+-- Resize 64x64
+# 		+-- Conv2D(8)
+# 		+-- BatchNorm
+# 		+-- ReLU
 #
-#				16x16x24
-#					|
-#					+-- Resize 32x32
-#					+-- Conv2D(12)
-#					+-- BatchNorm
-#					+-- ReLU
+# 	64x64x8
+# 		|
+# 		+-- Conv2D(8)
+# 		+-- BatchNorm
+# 		+-- ReLU
 #
-#				32x32x12
-#					|
-#					+-- Resize 64x64
-#					+-- Conv2D(8)
-#					+-- BatchNorm
-#					+-- ReLU
+# 	64x64x8
+# 		|
+# 		+-- Conv2D(1)
+# 		+-- tanh
 #
-#				64x64x8
-#					|
-#					+-- Conv2D(8)
-#					+-- BatchNorm
-#					+-- ReLU
+# Output:
+# 	64x64 grayscale image
 #
-#				64x64x8
-#					|
-#					+-- Conv2D(1)
-#					+-- tanh
+# Discriminator architecture:
+# ---------------------------
 #
-#			Output:
-#				64x64 grayscale image
+# Input:
+# 	64x64 grayscale image
 #
-#			Discriminator architecture:
-#			---------------------------
+# 	Conv2D(24), stride=2
+# 	LeakyReLU(0.2)
 #
-#			Input:
-#				64x64 grayscale image
+# 	Conv2D(48), stride=2
+# 	LeakyReLU(0.2)
 #
-#				Conv2D(24), stride=2
-#				LeakyReLU(0.2)
+# 	Conv2D(96), stride=2
+# 	LeakyReLU(0.2)
 #
-#				Conv2D(48), stride=2
-#				LeakyReLU(0.2)
+# 	Flatten
 #
-#				Conv2D(96), stride=2
-#				LeakyReLU(0.2)
+# 	Dense(96)
+# 	LeakyReLU(0.2)
 #
-#				Flatten
+# 	Dense(1)
 #
-#				Dense(96)
-#				LeakyReLU(0.2)
+# Embedded constraints:
+# 	- Only the Generator is exported to TensorFlow Lite.
+# 	- int8 inference.
+# 	- Reduced channel count for embedded execution.
+# 	- Compatible with TensorFlow Lite Micro.
 #
-#				Dense(1)
+# Notes:
+# 	- BatchNormalization layers are used only during training.
+# 	- They are typically folded into Conv2D layers during
+# 	  TensorFlow Lite conversion.
 #
-#			Embedded constraints:
-#				- Only the Generator is exported to TensorFlow Lite.
-#				- int8 inference.
-#				- Reduced channel count for embedded execution.
-#				- Compatible with TensorFlow Lite Micro.
-#
-#			Notes:
-#				- BatchNormalization layers are used only during training.
-#				- They are typically folded into Conv2D layers during
-#				  TensorFlow Lite conversion.
-#
-#			Output files:
-#				- best_generator.keras
-#				- generator_epoch_xxxx.keras
-#				- NN_model.tflite
-#
-#   (c) 2025-2026, Edo. Franzi
-#   --------------------------
-#                                              __ ______  _____
-#   Edo. Franzi                         __  __/ //_/ __ \/ ___/
-#   5-Route de Cheseaux                / / / / ,< / / / /\__ \
-#   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
-#                                     \__,_/_/ |_\____//____/
-#   edo.franzi@ukos.ch
-#
-#   Description: Lightweight, real-time multitasking operating
-#   system for embedded microcontroller and DSP-based systems.
-#
-#   Permission is hereby granted, free of charge, to any person
-#   obtaining a copy of this software and associated documentation
-#   files (the "Software"), to deal in the Software without restriction,
-#   including without limitation the rights to use, copy, modify,
-#   merge, publish, distribute, sublicense, and/or sell copies of the
-#   Software, and to permit persons to whom the Software is furnished
-#   to do so, subject to the following conditions:
-#
-#   The above copyright notice and this permission notice shall be
-#   included in all copies or substantial portions of the Software.
-#
-#   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-#   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-#   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-#   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
-#   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-#   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-#   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-#   SOFTWARE.
-#
-#------------------------------------------------------------------------
+# Output files:
+# 	- best_generator.keras
+# 	- generator_epoch_xxxx.keras
+# 	- NN_model.tflite
 
 import	os
 import	glob

@@ -39,7 +39,6 @@
 #include    <stdint.h>
 
 #include    "kern_types.h"  // IWYU pragma: keep
-#include    "serial/serial.h"
 #include    "types.h"
 
 // Structures & macros

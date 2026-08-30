@@ -20,6 +20,7 @@
 #include    "record/record.h"
 #include    "types.h"
 #include    "record/record.h"
+#include    "serial/serial.h"
 
 #define KTIME_SAMPLING_ACTUATOR     1000U
 

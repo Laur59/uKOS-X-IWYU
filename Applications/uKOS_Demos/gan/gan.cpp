@@ -52,6 +52,7 @@
 #include    "nn.h"
 #include    "os_errors.h"
 #include    "random/random.h"
+#include    "serial/serial.h"
 #include    "ui.h"
 #include    "ulvgl.h"
 

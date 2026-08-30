@@ -300,6 +300,8 @@ extern  int32_t kern_criticalSection(uint8_t critical);
  * \endcode
  *
  * - This function sets the default communication device for a process
+ * - The manager identifiers (KURT1, KCDC0, KSYST, ...) are declared in serial/serial.h;
+ *   the kernel only stores the value
  *
  * \param[in]   *handle         Ptr on the handle
  * \param[in]   serialManager   Serial Communication Manager
@@ -317,7 +319,7 @@ extern  int32_t kern_setSerialForProcess(proc_t *handle, serialManager_t serialM
  * \code{.c}
  * int32_t    status;
  * proc_t     *process;
- *            uint32_t    serialManager;
+ * serialManager_t    serialManager;
  *
  *    status = kern_getSerialForProcess(process, &serialManager);
  * \endcode
@@ -325,7 +327,7 @@ extern  int32_t kern_setSerialForProcess(proc_t *handle, serialManager_t serialM
  * - This function gets the default communication device of a process
  *
  * \param[in]   *handle         Ptr on the handle
- * \param[in]   *serialManager  Ptr on the Serial Communication Manager
+ * \param[out]  *serialManager  Ptr on the Serial Communication Manager
  * \return      KERR_KERN_NOERR OK
  * \return      KERR_KERN_NOPRO The process does not exist
  *

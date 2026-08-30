@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include    <stdint.h>
+
 #include    "exit_codes.h"      // IWYU pragma: export
 
 // uKOS-X misc
@@ -27,6 +29,21 @@ typedef enum {
 } reserveMode_t;
 
 #define KMODE_ALL   KMODE_READ_WRITE
+#endif
+
+// Serial Communication Manager identifier
+//
+// Declared here, defined in serial/serial.h (C23 opaque enumeration: the
+// fixed underlying type makes the type complete without the enumerators).
+// Code that only names a manager - the kernel storing spec_t.oSerialManager,
+// a prototype taking one - needs nothing from Lib_serials; only code that
+// spells KURT0, KCDC0, ... includes serial/serial.h. Both declarations must
+// keep the same underlying type.
+
+#ifndef serialManager_t
+enum    serialManager_e : uint32_t;
+
+typedef enum serialManager_e    serialManager_t;
 #endif
 
 // Types defined by gcc (version > than 4.8)

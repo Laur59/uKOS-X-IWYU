@@ -10,6 +10,7 @@
 
 #include    <stdint.h>
 
+#include    "Registers/memsys.h"
 #include    "core.h"
 #include    "crt0.h"
 #include    "soc_reg.h"
