@@ -1,3 +1,15 @@
+# Target list consumed by _build.sh, _clean.sh and run-regression.sh.
+#
+# Each entry under a board key accepts:
+#   name:       mandatory - the variant directory is Variant_<name>
+#   core:       mandatory - arm | riscv, the architecture family. Read by
+#               Tools/Developer/clangd-target.sh to select a clangd binary.
+#   cmake_core: optional  - CMake CORE value, for a board that builds several
+#               architectures out of a single variant directory. When present,
+#               _build.sh adds -DCORE=<value>, writes into Artefacts-<value>/
+#               and labels the row Variant_<name>-<value>. Only Pico2_rp2350
+#               (Cortex-M33 by default, Hazard3 RV32IMAC) uses it.
+
 Alastor_H743:
   - name: Test
     core: arm
@@ -55,3 +67,6 @@ MAiXDUiNO_K210:
 Pico2_rp2350:
   - name: Test
     core: arm
+  - name: Test
+    core: riscv
+    cmake_core: RV32IMAC

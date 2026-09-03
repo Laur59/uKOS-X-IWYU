@@ -60,6 +60,19 @@ STRG_LOC_CONST(aStrText[]) = "Process startUp: start of the system.     (c) EFr-
 
 static  void    local_process(const void *argument);
 
+// Stack size of the start-up process.
+//
+// The default suits a stub that prints no floating-point value. A variant whose
+// stub_startUp.c does - Discovery_U5G9 prints the die temperature with %5.2f -
+// has to raise it to KKERN_SZ_STACK_XLIB, because the C library's float
+// formatter needs markedly more stack under LLVM libc than under picolibc or
+// newlib, and overruns KKERN_SZ_STACK_LL. The symptom is a UsageFault with
+// CFSR = 0x00100000 (STKOF) in Process_startUp, at the first float printed.
+
+#ifndef KSTARTUP_SZ_STACK
+#define KSTARTUP_SZ_STACK           KKERN_SZ_STACK_LL
+#endif
+
 /*
  * \brief Main entry point
  *
@@ -71,7 +84,7 @@ static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char
         0,                                  // Index
         specification,                      // Specifications (just use specification_x)
         aStrText,                           // Info string (nullptr if anonymous)
-        KKERN_SZ_STACK_LL,                  // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
+        KSTARTUP_SZ_STACK,                  // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
         local_process,                      // Code of the process
         aStrIden,                           // Identifier (nullptr if anonymous)
         KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)

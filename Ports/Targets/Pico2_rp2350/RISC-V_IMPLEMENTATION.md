@@ -19,6 +19,11 @@ audited against `KERN_PREPARE_FRAME` and confirmed correct slot-by-slot.
 
 **Date:** 2026-05-12
 
+**Re-verified:** 2026-09-02 at `fc59305a2`. `cmake --preset llvm -DCORE=RV32IMAC`
+flashed with `--target burn` boots into privileged-user mode on both harts, each
+reaching its own console prompt: `Console core 0.` on USB-CDC0 and `Console core 1.`
+on UART0, banner `V.5.23.2 RISC-V`, `clang 23.1.0`.
+
 ### Target Structure
 
 Implementation of this target `Pico2_rp2350_RV32IMAC` follows the layout used by other targets.
@@ -363,7 +368,7 @@ Run P0
 - The 35-word frame layout, `mret` path, and `vSaveStack` swap mechanism are all
   correct. Phase 3.5 is unblocked.
 
-### Phase 3.5 — Full kernel boot [in progress — builds clean, awaiting hardware]
+### Phase 3.5 — Full kernel boot [done — superseded by Phase 5, hardware-verified]
 
 **Goal.** Call `kern_init()`, install idle + launcher via `boot.c`, enable timers
 with `kern_runKernel()`, then perform the first context switch with
@@ -391,6 +396,14 @@ all `KID_FAM_DAEMONS` modules (stimer), then exits. `stub_startUp_launch()` call
 - `kern_suspendProcess(N)` suspends for N milliseconds ± 1 ms.
 - At least two processes running (idle + startUp), with `dprintf` output on UART0.
 - Phase 2 coreDump still fires on a deliberate fault.
+
+**Outcome.** The intermediate Phase 3.5 image was never flashed on its own: the phase
+was overtaken by Phase 5, whose dual-core build subsumes every criterion above. All
+four hold for the current build, re-confirmed on hardware 2026-09-02 (see
+**Re-verified** in the Overview) — the kernel reaches the CLI on both harts, `startUp`
+prints over UART0 after its `kern_suspendProcess()` delay, and the Phase 2 coreDump
+path is untouched. The heading is corrected here because "awaiting hardware" was
+inconsistent with Phase 5 below already being marked hardware-verified.
 
 ### Phase 5 — Dual-core kernel parity [complete, hardware-verified]
 

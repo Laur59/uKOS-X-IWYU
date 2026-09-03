@@ -92,14 +92,32 @@ static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char
         case KERR_KERN_MBKIL: {
             (void)dprintf(KSYST, "The process Temperature was killed!\n");
             vInitialised[core] = false;
-            break;
+            return EXIT_OS_FAILURE;
         }
         default: {
+
+// Report the failure as a status. This runs in the process of the console that
+// invoked the module, so exit(EXIT_OS_FAILURE) here reached crt0_exit's
+// local_killProcess() and silently killed the console itself.
+//
+// Drop the cached handle as the timeout case does, so the next call re-runs
+// kern_getMailboxById() instead of reusing a mailbox that has gone. Without this the
+// module answers "mbox problem" for ever once the producer has been killed, even after
+// it is restarted, because vMailBox still points at the mailbox that was destroyed.
+//
+// KERROR rather than KFATAL: nothing dies here any more, and a record above Info makes
+// a post-flash health check report the board as failed.
+
             (void)dprintf(KSYST, "mbox problem\n");
-            LOG(KFATAL_USER, "x: mbox problem");
-            exit(EXIT_OS_FAILURE);
+            LOG(KERROR_USER, "x: mbox problem");
+            vInitialised[core] = false;
+            return EXIT_OS_FAILURE;
         }
     }
+
+// Past this point the read succeeded, so bufRec is a real message. Neither error case
+// above may fall through to it: kern_readMailbox() stores nullptr in bufRec whenever it
+// returns an error, and the memcpy below would read from address 0.
 
 // Copy it into the temperature buffer before to "free" the memory
 

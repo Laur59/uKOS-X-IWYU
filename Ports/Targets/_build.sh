@@ -242,8 +242,9 @@ parse_variants_yaml() {
         exit 1
     fi
 
-    # Parse YAML: iterate through families and their variants
-    yq eval 'to_entries[] | .key as $family | .value[] | "\($family)\t\(.name)"' "${yaml_file}"
+    # Parse YAML: iterate through families and their variants. The third field
+    # is the optional cmake_core, empty for every single-architecture variant.
+    yq eval 'to_entries[] | .key as $family | .value[] | (.cmake_core // "") as $c | "\($family)\t\(.name)\t\($c)"' "${yaml_file}"
 }
 
 build_failure=""
@@ -253,10 +254,27 @@ readonly LOG_FILE="build/compilation.log"
 printf "%bUsing cmake (%s) and %s (%s) to build all the systems with\n" "${YELLOW}" "${cmake_version}" "${COMPILER_TOOL}" "${COMPILER_VERSIONS}"
 printf "   %bcmake --preset %s -DC_LIBRARY=%s -DUSER_MODE=%s -DCANARY=%s%b\n" "${BOLD}" "${CMAKE_PRESET}" "${C_LIB}" "${USER_MODE}" "${CANARY_MODE}" "${NC}"
 # Parse YAML and iterate through all build targets
-while IFS=$'\t' read -r family variant_name; do
-    CURRENT_VARIANT="${family}/Variant_${variant_name}"
+while IFS=$'\t' read -r family variant_name cmake_core; do
+    VARIANT_DIR="${family}/Variant_${variant_name}"
+
+    # A board that builds several architectures out of a single variant
+    # directory (Pico2_rp2350) carries cmake_core. The directory is unchanged;
+    # only the label, the CORE selection and the artefacts directory differ, so
+    # the two rows cannot overwrite each other's images.
+
+    if [[ -n "${cmake_core}" ]]; then
+        CURRENT_VARIANT="${VARIANT_DIR}-${cmake_core}"
+        core_args=(
+            -DCORE="${cmake_core}"
+            -DARTEFACTS_DIR="${PATH_PRG}/${VARIANT_DIR}/Artefacts-${cmake_core}"
+        )
+    else
+        CURRENT_VARIANT="${VARIANT_DIR}"
+        core_args=()
+    fi
+
     printf "%-40s " "${CURRENT_VARIANT}"
-    cd "${PATH_PRG}/${CURRENT_VARIANT}"
+    cd "${PATH_PRG}/${VARIANT_DIR}"
 
     # Normal output on the stdout, error/warnings on comp.log
     # If comp.log empty     -> "PASS"
@@ -265,7 +283,7 @@ while IFS=$'\t' read -r family variant_name; do
 
     was_error=0
     rm -fr build
-    cmake --preset "${CMAKE_PRESET}" -DC_LIBRARY=${C_LIB} -DUSER_MODE=${USER_MODE} -DCANARY=${CANARY_MODE} &>/dev/null && \
+    cmake --preset "${CMAKE_PRESET}" -DC_LIBRARY=${C_LIB} -DUSER_MODE=${USER_MODE} -DCANARY=${CANARY_MODE} "${core_args[@]}" &>/dev/null && \
     cmake --build build --parallel >"${LOG_FILE}" 2>&1 || was_error=1
 
     # Filter out Ninja progress lines (e.g., "[1/100] Building...") to keep only warnings/errors

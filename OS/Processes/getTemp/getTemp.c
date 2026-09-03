@@ -228,6 +228,7 @@ static void local_process(const void *argument) {
 
 // Kill the process & the ressources
 
+    PRIVILEGE_ELEVATE;      // INTERRUPTION_OFF writes the interrupt mask: privileged
     INTERRUPTION_OFF;
     kern_killMailbox(mailBox);
     memo_free(temperature);

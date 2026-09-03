@@ -67,6 +67,20 @@ SECTIONS {
         linker_enDirectory = ABSOLUTE(.);
     } > prgm_code
 
+/* Without this, .preinit_array is an orphan: ld.lld places it after the last RAM
+   section as a LOADABLE segment whose load address is in RAM, which makes
+   objcopy -O binary span from flash all the way to it - a 268 MB FLASH.bin. The
+   privileged-only script of this SOC already collects it; the _pu ones did not. */
+
+    .preinit_array : {
+        . = ALIGN(4);
+        linker_stPreInitArray = ABSOLUTE(.);
+        KEEP(*(SORT_BY_INIT_PRIORITY(.preinit_array.*)))
+        KEEP(*(.preinit_array))
+        . = ALIGN(4);
+        linker_enPreInitArray = ABSOLUTE(.);
+    } > prgm_code
+
     .init_array : {
         . = ALIGN(4);
         linker_stInitArray = ABSOLUTE(.);

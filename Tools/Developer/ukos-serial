@@ -513,7 +513,16 @@ KSEVERITIES = ("Fatal", "Error", "Warning", "Info")
 
 RX_IDENT = re.compile(r"^\s*(Board|Variant|SoC|Core|VCS#)\s*:\s*(\S+)\s*$",
                       re.M)
-RX_CLIB = re.compile(r"\b(newlib|picolibc|llvmlibc)\s+manager\b")
+# The C library managers all sit in the Generics family, and "list" prints
+# "FLASH %3d  <id>  v<rev>   <name>  <description>" (OS/CLI/list/list.c).
+# Anchor on the module id so the NAME column is what is matched: llvmlibc
+# announces itself as "llvmlibc     LLVM libc manager (ATfE 22.1+)", so its
+# name is never followed by the word "manager" the way newlib's and
+# picolibc's are, and matching "<name> manager" made verify --expect-libc
+# llvmlibc fail on every healthy llvmlibc image.  Anchoring also stops an
+# unrelated module that merely mentions a library in its description from
+# being counted as a second C library manager.
+RX_CLIB = re.compile(r"\bL\d\d_\s+v\s*\S+\s+(newlib|picolibc|llvmlibc)\b")
 RX_PROC = re.compile(
     r"^\s*(\d+)\s+(.+?)\s+-\s+"
     r"(Susp\.\s+\w+|Freezed|Running|Scheduled)\s+-\s+"

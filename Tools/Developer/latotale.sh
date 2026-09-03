@@ -9,6 +9,7 @@
 
 emulate -L zsh
 setopt ERR_EXIT NO_UNSET PIPE_FAIL
+zmodload zsh/zutil
 
 # Paths ( :A resolves symlinks, so the root is correct when called through Tools/Developer/bin )
 
@@ -19,77 +20,56 @@ readonly PATH_ROOT="${0:A:h:h:h}"
 readonly RED=$'\033[0;31m'
 readonly GREEN=$'\033[0;32m'
 readonly YELLOW=$'\033[0;33m'
+readonly BLUE=$'\033[0;34m'
 readonly BOLD=$'\033[1m'
 readonly FAINT=$'\033[2m'
 readonly ITALIC=$'\033[3m'
 readonly NC=$'\033[0m' # No Color
 
-do_clang=1
-do_gcc=1
-do_newlib=1
-do_picolibc=1
-do_llvmlibc=1
-do_U=1
-do_Y=1
+usage() {
+    cat <<'EOF'
+Usage: ./latotale.sh [-C] [-G] [-L] [-N] [-P] [-U] [-Y]
 
-OPTSTRING=":GLMNPUYh"
-while getopts ${OPTSTRING} option; do
-    case ${option} in
-        h)
-            echo "USAGE: ./latotale.sh [-L] [-G] [-M] [-N] [-P] [-U] [-Y]"
-            echo
-            echo "OPTIONS:"
-            echo "    -G: exclude gcc"
-            echo "    -L: exclude clang"
-            echo "    -M: exclude llvmlibc"
-            echo "    -P: exclude picolibc"
-            echo "    -U: exclude user mode"
-            echo "    -Y: exclude canary"
-            exit 0
-            ;;
-        M)
-            do_llvmlibc=
-            ;;
-        L)
-            if [[ ! $do_gcc ]]; then
-                print 'Nothing to be done.'
-                exit 0
-            fi
-            do_clang=
-            ;;
-        G)
-            if [[ ! $do_clang ]]; then
-                print 'Nothing to be done.'
-                exit 0
-            fi
-            do_gcc=
-            ;;
-        N)
-            if [[ ! $do_picolibc ]]; then
-                print 'Nothing to be done.'
-                exit 0
-            fi
-            do_newlib=
-            ;;
-        P)
-            if [[ ! $do_newlib ]]; then
-                print 'Nothing to be done.'
-                exit 0
-            fi
-            do_picolibc=
-            ;;
-        U)
-            do_U=
-            ;;
-        Y)
-            do_Y=
-            ;;
-        ?)
-            echo "Invalid option: -${OPTARG}"
-            exit 1
-        ;;
-    esac
-done
+Options:
+  -G  Exclude gcc
+  -C  Exclude clang
+  -L  Exclude llvmlibc
+  -P  Exclude picolibc
+  -U  Exclude user mode
+  -Y  Exclude canary
+  -N  Exclude newlib
+  -h  Show this help message
+EOF
+}
+
+o_clang=()
+o_gcc=()
+o_newlib=()
+o_picolibc=()
+o_llvmlibc=()
+o_U=()
+o_Y=()
+o_help=()
+
+zparseopts -D -F - \
+    C=o_clang \
+    G=o_gcc \
+    N=o_newlib \
+    P=o_picolibc \
+    L=o_llvmlibc \
+    U=o_U \
+    Y=o_Y \
+    h=o_help || { usage; exit 1; }
+
+# -h short-circuits everything else
+if (( $#o_help )); then
+    usage
+    exit 0
+fi
+
+# Apply the parsed options
+(( $#o_gcc )) && (( $#o_clang )) && { print 'Nothing to be done.'; exit 0; }
+(( $#o_newlib )) && (( $#o_picolibc )) && (( $#o_llvmlibc )) && { print 'Nothing to be done.'; exit 0; }
 
 tic=$(date +%s)
 print "$(date -r $tic)"
@@ -107,42 +87,42 @@ print "\nVersion of clang for RISC-V"
 "$PATH_LLVM_RVXX"/bin/clang --version
 print
 #
-if [[ $do_newlib ]]; then
-    [[ $do_gcc ]] && ./_build.sh -G
-    [[ $do_clang ]] && ./_build.sh
+if (( !$#o_newlib )); then
+    (( !$#o_gcc )) && ./_build.sh -G
+    (( !$#o_clang )) && ./_build.sh -P
 
-    if [[ $do_Y ]]; then
-        [[ $do_gcc ]] && ./_build.sh -GY
-        [[ $do_clang ]] && ./_build.sh -Y
+    if (( !$#o_Y )); then
+        (( !$#o_gcc )) && ./_build.sh -GY
+        (( !$#o_clang )) && ./_build.sh -Y
     fi
 
-    if [[ $do_U ]]; then
-        [[ $do_gcc ]] && ./_build.sh -GU
-        [[ $do_clang ]] && ./_build.sh -U
+    if (( !$#o_U )); then
+        (( !$#o_gcc )) && ./_build.sh -GU
+        (( !$#o_clang )) && ./_build.sh -U
 
-        if [[ $do_Y ]]; then
-            [[ $do_gcc ]] && ./_build.sh -GUY
-            [[ $do_clang ]] && ./_build.sh -UY
+        if (( !$#o_Y )); then
+            (( !$#o_gcc )) && ./_build.sh -GUY
+            (( !$#o_clang )) && ./_build.sh -UY
         fi
     fi
 fi
 #
-if [[ $do_picolibc ]]; then
-    [[ $do_gcc ]] && ./_build.sh -GP
-    [[ $do_clang ]] && ./_build.sh -P
+if (( !$#o_picolibc )); then
+    (( !$#o_gcc )) && ./_build.sh -GP
+    (( !$#o_clang )) && ./_build.sh -P
 
-    if [[ $do_Y ]]; then
-        [[ $do_gcc ]] && ./_build.sh -GPY
-        [[ $do_clang ]] && ./_build.sh -PY
+    if (( !$#o_Y )); then
+        (( !$#o_gcc )) && ./_build.sh -GPY
+        (( !$#o_clang )) && ./_build.sh -PY
     fi
 
-    if [[ $do_U ]]; then
-        [[ $do_gcc ]] && ./_build.sh -GPU
-        [[ $do_clang ]] && ./_build.sh -PU
+    if (( !$#o_U )); then
+        (( !$#o_gcc )) && ./_build.sh -GPU
+        (( !$#o_clang )) && ./_build.sh -PU
 
-        if [[ $do_Y ]]; then
-            [[ $do_gcc ]] && ./_build.sh -GPUY
-            [[ $do_clang ]] && ./_build.sh -PUY
+        if (( !$#o_Y )); then
+            (( !$#o_gcc )) && ./_build.sh -GPUY
+            (( !$#o_clang )) && ./_build.sh -PUY
         fi
     fi
 fi
@@ -151,14 +131,14 @@ fi
 # (PATH_LLVM_ARML), RISC-V against its own LLVM libc toolchain (PATH_LLVM_RVXXL).
 # The pass runs only when PATH_LLVM_ARML is available; without PATH_LLVM_RVXXL
 # the RISC-V targets stop on a missing-variable configuration error.
-if [[ $do_llvmlibc ]] && [[ $do_clang ]]; then
+if (( !$#o_llvmlibc )) && (( $#o_clang )); then
     if [[ -n "${PATH_LLVM_ARML:-}" ]]; then
         ./_build.sh -L
-        [[ $do_Y ]] && ./_build.sh -LY
+        (( !$#o_Y )) && ./_build.sh -LY
 
-        if [[ $do_U ]]; then
+        if (( !$#o_U )); then
             ./_build.sh -LU
-            [[ $do_Y ]] && ./_build.sh -LUY
+            (( !$#o_Y )) && ./_build.sh -LUY
         fi
     else
         print "${YELLOW}Skipping llvmlibc: PATH_LLVM_ARML not set${NC}"

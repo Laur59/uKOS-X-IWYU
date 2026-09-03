@@ -14,10 +14,9 @@
 #include    "kern/kern.h"
 #include    "led/led.h"
 #include    "macros.h"
-#ifdef __arm__
-#include    "macros_core.h" // ARM: INTERRUPTION_OFF in core
-                            // RISC-V: INTERRUPTION_OFF already in macros_soc.h
-#endif
+#include    "macros_core.h" // for PRIVILEGE_ELEVATE, needed on both architectures;
+                            // on ARM also INTERRUPTION_OFF (RISC-V takes it from
+                            // macros_soc.h)
 #include    "macros_core_stackFrame.h"
 #include    "macros_soc.h"
 #include    "memo/memo.h"
@@ -37,6 +36,14 @@ STRG_LOC_CONST(aStrHelp[])        = "Test of the multi-core communications\n"
                                     "=====================================\n\n"
 
                                     "This tool launch the communications between the core 0-1 & core 1-0.\n\n"
+
+                                    "Start it on EACH core, from that core's own console: the pair created\n"
+                                    "here only sends to, and receives from, the other core. Started on one\n"
+                                    "core alone it has no peer, so it correctly reports 'Timeout write\n"
+                                    "mailbox' (nothing drains it) and 'Timeout read mailbox' (nothing fills\n"
+                                    "it) once per second, and no message is ever exchanged.\n\n"
+
+                                    "Likewise kill it on each core: the kill request is per core.\n\n"
 
                                     "Input format:  test_mcore\n"
                                     "Output format: [result]\n\n"
@@ -92,6 +99,24 @@ static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char
     proc_t      *process_RX, *process_TX;
 
     core = GET_RUNNING_CORE;
+
+// Refuse a second launch on this core, before anything has been allocated.
+//
+// kern_createProcess() does reject the duplicate identifier, with KERR_KERN_IDPRO, but
+// by then PROCESS_STACKMALLOC has already memo_malloc'ed two KKERN_SZ_STACK_XL stacks,
+// and the answer to that error used to be exit(EXIT_OS_FAILURE). A CLI module runs in
+// the process of the console that invoked it, so exiting killed the console itself: a
+// second "test_mcore" took down the console it was typed on, leaked both stacks, and
+// left the first pair running with no way left to reach it. kern_getProcessById() is
+// safe as a presence test because local_initialise() clears oIdentifier when a process
+// is killed, so a freed slot cannot match.
+
+    if ((kern_getProcessById(aStrIden_TX, &process_TX) == KERR_KERN_NOERR) ||
+        (kern_getProcessById(aStrIden_RX, &process_RX) == KERR_KERN_NOERR)) {
+        (void)dprintf(KSYST, "Already running on this core, kill it first.\n\n");
+        return EXIT_OS_FAILURE;
+    }
+
     vKillRequest[core] = false;
 
     (void)dprintf(KSYST, "Test of the mcore multi-core communication layer.\n");
@@ -118,8 +143,27 @@ static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char
         KKERN_PRIORITY_MEDIUM_01            // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
     );
 
-    if (kern_createProcess(&specification_TX, &vKillRequest[core], &process_TX) != KERR_KERN_NOERR) { LOG(KFATAL_SYSTEM, "test_mcore: create proc"); exit(EXIT_OS_FAILURE); }
-    if (kern_createProcess(&specification_RX, &vKillRequest[core], &process_RX) != KERR_KERN_NOERR) { LOG(KFATAL_SYSTEM, "test_mcore: create proc"); exit(EXIT_OS_FAILURE); }
+// Report a creation failure as a status, never with exit(), for the reason above. Give
+// back whatever was not handed over to a process, so a failed launch stays repeatable
+// instead of leaking a stack every time. A process that was created owns its stack and
+// releases it when killed, so only the unused ones are freed here.
+
+    if (kern_createProcess(&specification_TX, &vKillRequest[core], &process_TX) != KERR_KERN_NOERR) {
+        LOG(KFATAL_SYSTEM, "test_mcore: create proc");
+        memo_free(vStack_1);
+        memo_free(vStack_0);
+        (void)dprintf(KSYST, "Cannot create the processes.\n\n");
+        return EXIT_OS_FAILURE;
+    }
+
+    if (kern_createProcess(&specification_RX, &vKillRequest[core], &process_RX) != KERR_KERN_NOERR) {
+        LOG(KFATAL_SYSTEM, "test_mcore: create proc");
+        (void)kern_killProcess(process_TX);
+        memo_free(vStack_0);
+        (void)dprintf(KSYST, "Cannot create the processes.\n\n");
+        return EXIT_OS_FAILURE;
+    }
+
     return EXIT_OS_SUCCESS_CLI;
 }
 
@@ -213,6 +257,7 @@ static void local_process_TX(const void *argument) {
 
 // Kill the process & the ressources
 
+    PRIVILEGE_ELEVATE;      // INTERRUPTION_OFF writes the interrupt mask: privileged
     INTERRUPTION_OFF;
     memo_free(send);
     led_off(KLED_TX);
@@ -279,6 +324,7 @@ static void local_process_RX(const void *argument) {
 
 // Kill the process & the ressources
 
+    PRIVILEGE_ELEVATE;      // INTERRUPTION_OFF writes the interrupt mask: privileged
     INTERRUPTION_OFF;
     memo_free(message);
     led_off(KLED_RX);

@@ -174,11 +174,15 @@ target_sources(proc_u PRIVATE
     ${PATH_OSYS}/Processes/TinyUSB/TinyUSB.c
     ${PATH_OSYS}/Processes/alive/alive.c
     ${PATH_OSYS}/Processes/launcher/launcher.c
-    ${PATH_OSYS}/Processes/startUp/startUp.c
     ${PATH_BASE}/Processes/TinyUSB/stub_TinyUSB.c
     ${PATH_BASE}/Processes/alive/stub_alive.c
     ${PATH_VARI}/Processes/startUp/stub_startUp.c
 )
+
+# This board's stub_startUp.c prints the die temperature with %5.2f, and LLVM
+# libc's float formatter overruns the default KKERN_SZ_STACK_LL.
+
+add_source_with_define(proc_u ${PATH_OSYS}/Processes/startUp/startUp.c KSTARTUP_SZ_STACK=KKERN_SZ_STACK_XLIB)
 target_link_libraries(proc_u PUBLIC system_compiler_flags ${TINYUSB})
 
 # CLI components (user) -> libtool_u.a

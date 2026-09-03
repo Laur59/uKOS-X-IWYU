@@ -13,7 +13,8 @@
 
 #include    "kern/kern.h"
 #include    "led/led.h"
-#include    "macros_soc.h"
+#include    "macros_core.h" // for PRIVILEGE_ELEVATE
+#include    "macros_soc.h"  // for INTERRUPTION_OFF
 #include    "types.h"
 
 /*
@@ -44,6 +45,7 @@ void    stub_alive_process(const void *argument) {
 
 // Kill the process & the ressources
 
+    PRIVILEGE_ELEVATE;      // INTERRUPTION_OFF writes the interrupt mask: privileged
     INTERRUPTION_OFF;
     led_off(led);
 

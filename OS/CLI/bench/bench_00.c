@@ -26,9 +26,8 @@
 #include    <stdio.h>
 
 #include    "kern/kern.h"
-#ifdef __arm__
-#include    "macros_core.h" // ARM: INTERRUPTION_OFF in core
-#endif
+#include    "macros_core.h" // for PRIVILEGE_ELEVATE / PRIVILEGE_RESTORE, needed on
+                            // both architectures; on ARM also INTERRUPTION_OFF_HARD
 #ifdef __riscv
 #include    "macros_soc.h"  // RISC-V: INTERRUPTION_OFF in soc
 #endif
@@ -102,6 +101,7 @@ static  void    local_fill(uint8_t *array, uint64_t *time) {
                 uint64_t    tStamp[2];
     register    uint32_t    i, j;
 
+    PRIVILEGE_ELEVATE;      // INTERRUPTION_OFF_HARD writes the interrupt mask: privileged
     kern_readTickCount(&tStamp[0]);
 
     INTERRUPTION_OFF_HARD;
@@ -113,6 +113,7 @@ static  void    local_fill(uint8_t *array, uint64_t *time) {
     INTERRUPTION_ON_HARD;
 
     kern_readTickCount(&tStamp[1]);
+    PRIVILEGE_RESTORE;
     *time = tStamp[1] - tStamp[0];
 }
 
@@ -126,6 +127,7 @@ static  void    local_prjX(const uint8_t *array, uint64_t *time, uint32_t *x) {
                 uint64_t    tStamp[2];
     register    uint32_t    *p, i, j;
 
+    PRIVILEGE_ELEVATE;      // INTERRUPTION_OFF_HARD writes the interrupt mask: privileged
     kern_readTickCount(&tStamp[0]);
 
     INTERRUPTION_OFF_HARD;
@@ -139,6 +141,7 @@ static  void    local_prjX(const uint8_t *array, uint64_t *time, uint32_t *x) {
     INTERRUPTION_ON_HARD;
 
     kern_readTickCount(&tStamp[1]);
+    PRIVILEGE_RESTORE;
     *time = tStamp[1] - tStamp[0];
 }
 
@@ -152,6 +155,7 @@ static  void    local_prjY(const uint8_t *array, uint64_t *time, uint32_t *y) {
                 uint64_t    tStamp[2];
     register    uint32_t    *p, i, j, k;
 
+    PRIVILEGE_ELEVATE;      // INTERRUPTION_OFF_HARD writes the interrupt mask: privileged
     kern_readTickCount(&tStamp[0]);
 
     INTERRUPTION_OFF_HARD;
@@ -166,6 +170,7 @@ static  void    local_prjY(const uint8_t *array, uint64_t *time, uint32_t *y) {
     INTERRUPTION_ON_HARD;
 
     kern_readTickCount(&tStamp[1]);
+    PRIVILEGE_RESTORE;
     *time = tStamp[1] - tStamp[0];
 }
 
@@ -179,6 +184,7 @@ static  void    local_hist(const uint8_t *array, uint64_t *time, uint32_t *h) {
                 uint64_t    tStamp[2];
     register    uint32_t    *p, i;
 
+    PRIVILEGE_ELEVATE;      // INTERRUPTION_OFF_HARD writes the interrupt mask: privileged
     kern_readTickCount(&tStamp[0]);
 
     INTERRUPTION_OFF_HARD;
@@ -195,5 +201,6 @@ static  void    local_hist(const uint8_t *array, uint64_t *time, uint32_t *h) {
     INTERRUPTION_ON_HARD;
 
     kern_readTickCount(&tStamp[1]);
+    PRIVILEGE_RESTORE;
     *time = tStamp[1] - tStamp[0];
 }

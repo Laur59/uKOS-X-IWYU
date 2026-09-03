@@ -76,7 +76,13 @@ This sub-task makes `configure_riscv_core()` consume `CPU_FEATURES` in two categ
 
 ---
 
-# PARKED (approved): Add a User/Privileged-mode split build to Pico2_rp2350 RISC-V (RV32IMAC / Hazard3)
+# DELIVERED (plan kept as a record): Add a User/Privileged-mode split build to Pico2_rp2350 RISC-V (RV32IMAC / Hazard3)
+
+> Was "PARKED (approved)". The split has since shipped: the variant carries
+> `user_mode` in `CPU_FEATURES`, `Base/Runtime/link_pu-riscv.ld` exists, and the
+> `-DCORE=RV32IMAC` image boots into **privileged-user mode** on hardware
+> (2026-09-02, `fc59305a2`). Everything below is the original plan, left unedited
+> as the design record; its staged phases are not tracked as open work.
 
 ## Context
 

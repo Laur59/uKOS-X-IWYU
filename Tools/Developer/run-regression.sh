@@ -331,28 +331,44 @@ build_target() {
 }
 
 # 1. Build System Targets
+#
+# A board that builds several architectures out of a single variant directory
+# (Pico2_rp2350) repeats the same variant with a different cmake_core. The source
+# directory is shared, so the identity that keys the build and install trees
+# carries the core as well - otherwise the two images overwrite each other.
+
 emit "%b[1/2] Building System Targets%b\n" "${BOLD}" "${NC}"
-while IFS=$'\t' read -r family variant; do
+while IFS=$'\t' read -r family variant cmake_core; do
     # Apply filter if provided
     if [[ -n "${TARGET_FILTER}" && "${family}" != "${TARGET_FILTER}" ]]; then
         continue
     fi
 
+    # variant names the directory; variant_id names the build and install trees.
+    # They differ only for an entry carrying cmake_core, which is then also
+    # selected on the configure line with -DCORE.
+    core_args=()
+    variant_id="${variant}"
+    if [[ -n "${cmake_core}" ]]; then
+        variant_id="${variant}-${cmake_core}"
+        core_args=(-DCORE="${cmake_core}")
+    fi
+
     src="${PATH_ROOT}/Ports/Targets/${family}/Variant_${variant}"
-    build_root="${PATH_ARTEFACTS}/build/Targets/${family}/${variant}/${PRESET}"
-    install_dir="${PATH_ARTEFACTS}/Targets/${family}/${variant}/${PRESET}"
+    build_root="${PATH_ARTEFACTS}/build/Targets/${family}/${variant_id}/${PRESET}"
+    install_dir="${PATH_ARTEFACTS}/Targets/${family}/${variant_id}/${PRESET}"
 
     if [[ ! -d "${src}" ]]; then
         emit "%b[SKIP]%b (Source not found: %s)\n" "${YELLOW}" "${NC}" "${family}/Variant_${variant}"
         continue
     fi
 
-    build_target "${src}" "${build_root}" "System: ${family}/${variant}"
+    build_target "${src}" "${build_root}" "System: ${family}/${variant_id}" "${core_args[@]}"
 
     if [[ $? -eq 0 ]]; then
         cmake --install "${build_root}" --prefix "${install_dir}" >> "${build_root}/build.log" 2>&1
     fi
-done < <(yq eval 'to_entries[] | .key as $f | .value[] | "\($f)\t\(.name)"' "${PATH_VARIANTS_YAML}")
+done < <(yq eval 'to_entries[] | .key as $f | .value[] | (.cmake_core // "") as $c | "\($f)\t\(.name)\t\($c)"' "${PATH_VARIANTS_YAML}")
 
 # 2. Build Applications
 emit "\n%b[2/2] Building Applications%b\n" "${BOLD}" "${NC}"
@@ -384,9 +400,13 @@ while IFS=$'\t' read -r group project target_board; do
 
     sys_install_dir="${PATH_ARTEFACTS}/Targets/${target_board}/${variant_name}/${PRESET}"
 
-    # Fallback search if the specific variant isn't installed
+    # Fallback search if the specific variant isn't installed. A "<variant>-<CORE>"
+    # tree is the same variant built for another architecture and is excluded here:
+    # substituting it would link the application against a system image of the wrong
+    # architecture. Applications thus always build against the board's default core
+    # (no variant name contains a '-', so the exclusion only ever removes those).
     if [[ ! -d "${sys_install_dir}" ]]; then
-        local candidates=(${PATH_ARTEFACTS}/Targets/${target_board}/*/${PRESET}(N/))
+        local candidates=(${PATH_ARTEFACTS}/Targets/${target_board}/^*-*/${PRESET}(N/))
         if [[ ${#candidates} -gt 0 ]]; then
             sys_install_dir="${candidates[1]}"
         fi

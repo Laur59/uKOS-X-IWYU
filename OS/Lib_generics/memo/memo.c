@@ -343,9 +343,17 @@ void    memo_free(void *address) {  // NOLINT(misc-no-recursion): intentional bo
     PRIVILEGE_ELEVATE;
     if ((IS_EXCEPTION) || (address == nullptr)) { PRIVILEGE_RESTORE; return; }
 
-    SPIN_LOCK(vMemo);
+// local_init() has to run BEFORE the spinlock is taken, as it does in memo_malloc
+// and memo_delayedFree. It services the pending delayed free by calling memo_free()
+// recursively, and vMemo is a plain atomic_flag busy-wait that is not recursive: taken
+// from inside the lock, the nested call spins for ever while holding it, which wedges
+// this core and then every other core at its next memo call. kern_killProcess() arms
+// exactly that pending free (memo_delayedFree of the dying process stack), so any
+// process calling memo_free() after another one has exited used to deadlock the system.
 
     local_init();
+
+    SPIN_LOCK(vMemo);
 
     curBlock = (memoMab_t *)((uintptr_t)address - (uintptr_t)sizeof(memoMab_t));
     stHeap   = ALIGNED_PTR(uintptr_t, linker_stHeap);

@@ -40,7 +40,8 @@
 #include    "kern/kern.h"
 #include    "kern/private/private_processes.h"
 #include    "macros.h"
-#include    "macros_core.h" // for INTERRUPTION_OFF / INTERRUPTION_RESTORE
+#include    "macros_core.h" // for INTERRUPTION_OFF / INTERRUPTION_RESTORE and
+                            // PRIVILEGE_ELEVATE / PRIVILEGE_RESTORE
 #include    "memo/memo.h"
 #include    "modules.h"
 #include    "os_errors.h"
@@ -251,10 +252,23 @@ static  mutx_t  *vDprintfBigMutex[KNB_CORES];
  *
  * - Lazily create this core's big-buffer mutex. Race-free: bracketed by
  *   INTERRUPTION_OFF/RESTORE, mirroring the memo manager's local_init.
+ *
+ * The elevation around that bracket is not optional. This manager is the only
+ * Lib_generics module that lives in liblibx_u.a, so unlike memo/record/system
+ * (all privileged) it runs with the privileges of its caller, i.e. user mode
+ * for every _pu build. INTERRUPTION_OFF/RESTORE touch the interrupt-enable
+ * state of the core, which is privileged everywhere: on RISC-V it is
+ * csrrci/csrsi on mstatus.MIE, and a CSR access from U-mode traps as an
+ * illegal instruction (mcause = 2) instead of being ignored the way an ARM
+ * MSR BASEPRI is. The first oversized dprintf therefore killed the process
+ * that printed it — the boot banner, from Process_startUp — on the RISC-V
+ * _pu image, while the same code passed silently (but without ever masking
+ * anything, so the guard below was never actually race-free) on ARM.
  */
 static  void local_dprintfBigBufferInit(uint32_t core) {
     static  bool    vInit[KNB_CORES] = MCSET(false);
 
+    PRIVILEGE_ELEVATE;
     INTERRUPTION_OFF;
     if (!vInit[core]) {
         vInit[core] = true;
@@ -264,6 +278,7 @@ static  void local_dprintfBigBufferInit(uint32_t core) {
         }
     }
     INTERRUPTION_RESTORE;
+    PRIVILEGE_RESTORE;
 }
 
 /*

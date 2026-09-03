@@ -27,9 +27,8 @@
 #include    <stdio.h>
 
 #include    "kern/kern.h"
-#ifdef __arm__
-#include    "macros_core.h" // ARM: INTERRUPTION_OFF in core
-#endif
+#include    "macros_core.h" // for PRIVILEGE_ELEVATE / PRIVILEGE_RESTORE, needed on
+                            // both architectures; on ARM also INTERRUPTION_OFF_HARD
 #ifdef __riscv
 #include    "macros_soc.h"  // RISC-V: INTERRUPTION_OFF in soc
 #endif
@@ -97,6 +96,7 @@ static  void    local_minMax(const uint32_t *array, uint64_t *time, uint32_t *mi
     uint64_t    tStamp[2];
     uint32_t    i;
 
+    PRIVILEGE_ELEVATE;      // INTERRUPTION_OFF_HARD writes the interrupt mask: privileged
     kern_readTickCount(&tStamp[0]);
 
     INTERRUPTION_OFF_HARD;
@@ -108,5 +108,6 @@ static  void    local_minMax(const uint32_t *array, uint64_t *time, uint32_t *mi
     INTERRUPTION_ON_HARD;
 
     kern_readTickCount(&tStamp[1]);
+    PRIVILEGE_RESTORE;
     *time = tStamp[1] - tStamp[0];
 }

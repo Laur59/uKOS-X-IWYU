@@ -38,7 +38,7 @@ add_compile_definitions(
 )
 
 # Flash programming script selection
-set(BURN jlinkexe)
+set(BURN stm32programmer)
 
 # Extra compilation options
 add_compile_options(

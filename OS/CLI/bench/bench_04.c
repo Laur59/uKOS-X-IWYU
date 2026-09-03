@@ -26,9 +26,8 @@
 #include    <stdio.h>
 
 #include    "kern/kern.h"
-#ifdef __arm__
-#include    "macros_core.h" // ARM: INTERRUPTION_OFF in core
-#endif
+#include    "macros_core.h" // for PRIVILEGE_ELEVATE / PRIVILEGE_RESTORE, needed on
+                            // both architectures; on ARM also INTERRUPTION_OFF_HARD
 #ifdef __riscv
 #include    "macros_soc.h"  // RISC-V: INTERRUPTION_OFF in soc
 #endif
@@ -114,6 +113,7 @@ static  void local_atan2(uint64_t *time, float64_t *angle, int32_t y, int32_t x)
                                         0.000000000931322574615479000000, 0.000000000465661287307739000000,
                                     };
 
+    PRIVILEGE_ELEVATE;      // INTERRUPTION_OFF_HARD writes the interrupt mask: privileged
     kern_readTickCount(&tStamp[0]);
 
     INTERRUPTION_OFF_HARD;
@@ -127,6 +127,7 @@ static  void local_atan2(uint64_t *time, float64_t *angle, int32_t y, int32_t x)
             INTERRUPTION_ON_HARD;
 
             kern_readTickCount(&tStamp[1]);
+            PRIVILEGE_RESTORE;
             *time = ((uint32_t)(tStamp[1] - tStamp[0]));
             return;
         }
@@ -166,5 +167,6 @@ static  void local_atan2(uint64_t *time, float64_t *angle, int32_t y, int32_t x)
     INTERRUPTION_ON_HARD;
 
     kern_readTickCount(&tStamp[1]);
+    PRIVILEGE_RESTORE;
     *time = tStamp[1] - tStamp[0];
 }

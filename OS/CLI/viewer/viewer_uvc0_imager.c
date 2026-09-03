@@ -200,7 +200,8 @@ static void aProcess_acquisition(const void *argument) {
 
 // Kill the process & the ressources
 
-    PRIVILEGE_RESTORE;
+// Stay elevated through the teardown: INTERRUPTION_OFF writes the interrupt
+// mask, which is privileged, and the process is destroyed by exit() below.
 
     INTERRUPTION_OFF;
     RELEASE(IMAGER, KMODE_READ_WRITE);

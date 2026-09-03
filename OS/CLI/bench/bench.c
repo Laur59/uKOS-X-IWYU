@@ -60,8 +60,12 @@ MODULE(
  *
  */
 static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char_t *argv[]) {
+    static  bool    (* const aBench[])(void) = { bench_00, bench_01, bench_02, bench_03, bench_04, bench_05 };
+
+    int32_t     status = EXIT_OS_SUCCESS_CLI;
     priority_t  priority;
     proc_t      *process;
+    uint32_t    i;
 
     PRIVILEGE_ELEVATE;
 
@@ -73,13 +77,16 @@ static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char
     kern_getPriority(process, &priority);
     kern_setPriority(process, KKERN_PRIORITY_HIGH_01);
 
-    if (!bench_00()) { (void)dprintf(KSYST, "Not enough memory.\n"); return EXIT_OS_FAILURE; }
-    if (!bench_01()) { (void)dprintf(KSYST, "Not enough memory.\n"); return EXIT_OS_FAILURE; }
-    if (!bench_02()) { (void)dprintf(KSYST, "Not enough memory.\n"); return EXIT_OS_FAILURE; }
-    if (!bench_03()) { (void)dprintf(KSYST, "Not enough memory.\n"); return EXIT_OS_FAILURE; }
-    if (!bench_04()) { (void)dprintf(KSYST, "Not enough memory.\n"); return EXIT_OS_FAILURE; }
-    if (!bench_05()) { (void)dprintf(KSYST, "Not enough memory.\n"); return EXIT_OS_FAILURE; }
+    for (i = 0U; i < (sizeof(aBench) / sizeof(aBench[0])); i++) {
+        if (!aBench[i]()) {
+            (void)dprintf(KSYST, "Not enough memory.\n");
+            status = EXIT_OS_FAILURE;
+            break;
+        }
+    }
+
+// Give the console back with its original priority, whatever happened
 
     kern_setPriority(process, priority);
-    return EXIT_OS_SUCCESS_CLI;
+    return status;
 }

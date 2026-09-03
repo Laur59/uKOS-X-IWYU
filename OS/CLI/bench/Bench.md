@@ -88,6 +88,11 @@
 ; Goal:    Bench 05:    Compute a simple loop. 1000000 iterations.
 ```
 
+The analyser output is pulsed for the duration of every pass, so the loop time can
+also be read on a scope. The burst is bounded (8 passes), and the reported time is
+the mean of one pass. Only `Nucleo_H743` and `Nucleo_N657` wire the analyser pin;
+the other targets report *not available*.
+
 |                          | CoreMark/MHz     | _loop  [µs] |
 | ------------------------ | ---------------- | ----------- |
 | Nucleo_H743 @ 480-MHz    | 5.29             | 10400       |

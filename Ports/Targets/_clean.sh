@@ -41,8 +41,11 @@ parse_variants_yaml() {
         exit 1
     fi
 
-    # Parse YAML: iterate through families and their variants
-    yq eval 'to_entries[] | .key as $family | .value[] | "\($family)\t\(.name)"' "${yaml_file}"
+    # Parse YAML: iterate through families and their variants. Boards that build
+    # several architectures out of one variant directory have several entries
+    # pointing at the same directory, so the list is deduplicated: cleaning it
+    # once removes every build/ and Artefacts*/ it holds.
+    yq eval '[to_entries[] | .key as $family | .value[] | "\($family)\t\(.name)"] | unique | .[]' "${yaml_file}"
 }
 
 printf "%bCleaning all the systems ...%b\n" "${BOLD}" "${NC}"
