@@ -87,7 +87,10 @@ typedef struct  _reent  reent_t;
 // which counts centiseconds; RISC-V already gets 1'000'000 there. Both uKOS-X
 // toolchains patch that header to move __arm__ into the microsecond branch --
 // Patches/newlib/<version>/0002-Patch-time.h-for-uKOS.patch for GCC, and for
-// LLVM the same file carried by ukos_patches 0001, which also fixes LLVM libc.
+// LLVM the same file, nested into the ATfE tree by a patch in
+// Patches/llvm-arm/<version>/ (0001 in 23.1.0). A sibling patch there (0005 in
+// 23.1.0) does the equivalent for LLVM libc's own time-macros.h. The numbers
+// are renumbered at every LLVM bump, so identify them by what they do.
 //
 // Independently of the toolchain, configure_arm_core() and
 // configure_riscv_core() in Ports/cmake/proj_config.cmake pass

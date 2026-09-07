@@ -13,6 +13,10 @@
  *             kernel 64-bit Unix-time counter
  *           - Finalisation (__llvm_libc_exit) and heap boundary symbol
  *
+ *           The POSIX environment and timezone half (setenv, getenv, unsetenv,
+ *           tzset, and the localtime_r / localtime / mktime overrides) lives in
+ *           llvmlibc_tz.c, which the build compiles alongside this file.
+ *
  *           Unlike newlib/picolibc, baremetal LLVM libc:
  *           - does not use the POSIX _open/_close/_read/_write syscall layer
  *             (standard I/O is retargeted via the __llvm_libc_stdio_* hooks),
@@ -92,6 +96,13 @@ MODULE(
 #define KLLVMLIBC_LN_DPRINTF_BUFFER 256U    // Size of the dprintf fast-path stack buffer
 #define KLLVMLIBC_LN_DPRINTF_BIG    2048U   // Size of the per-core dprintf overflow buffer
 #define KLLVMLIBC_US_PER_SEC        1000000ULL  // Resolution of the kernel 64-bit Unix-time counter
+
+// Floating-point conversions in the LLVM libc printf. See __printf_float below;
+// the option is LLVMLIBC_PRINTF_FLOAT in Ports/cmake/proj_config.cmake.
+
+#ifndef KLLVMLIBC_WITH_PRINTF_FLOAT_S
+#define KLLVMLIBC_WITH_PRINTF_FLOAT_S   true
+#endif
 
 // Prototypes
 
@@ -720,14 +731,19 @@ int gettimeofday(struct timeval *tv, [[maybe_unused]] void *tz) {
  * The kernel counts in microseconds (TIM2 and friends are prescaled to 1 MHz),
  * and CLOCKS_PER_SEC is 1'000'000, so the mapping is one to one. Stock
  * baremetal LLVM libc defaults CLOCKS_PER_SEC to 100 on ARM (Arm semihosting
- * counts centiseconds); the uKOS-X toolchain patch
- * ukos_patches/0001-newlib-llvm-libc-use-microsecond-also-for-32-bit-Arm.patch
- * moves 32-bit Arm to the microsecond branch, matching _CLOCKS_PER_SEC_ and the
- * newlib / picolibc managers. RISC-V already lands in that branch and needs no
- * patch. That one patch does both libraries: it edits llvm-libc-macros/
- * baremetal/time-macros.h and adds the newlib machine/time.h patch to the ATfE
- * tree, which the GCC toolchain applies separately as
- * Patches/newlib/<version>/0002-Patch-time.h-for-uKOS.patch.
+ * counts centiseconds); the uKOS-X ARM toolchain carries a patch that drops
+ * __arm__ from the centisecond branch of llvm-libc-macros/baremetal/
+ * time-macros.h, moving 32-bit Arm to the microsecond branch and matching
+ * _CLOCKS_PER_SEC_ and the newlib / picolibc managers. RISC-V already lands in
+ * that branch and needs no patch. A sibling patch nests the newlib
+ * machine/time.h change into the ATfE tree, which the GCC toolchain applies
+ * separately as Patches/newlib/<version>/0002-Patch-time.h-for-uKOS.patch.
+ *
+ * Both live in Patches/llvm-arm/<version>/ of the toolchain build scripts, and
+ * are 0005-llvm-libc-use-microsecond-also-for-32-bit-Arm-cores.patch and
+ * 0001-Add-patch-so-that-newlib-uses-also-microsecond-for-A.patch in 23.1.0.
+ * The numbers are not stable: the directory is keyed on the LLVM version and
+ * the series is renumbered at every bump, so identify them by what they do.
  *
  * clock_t is a 32-bit long on the 32-bit targets, so the returned value wraps
  * every 2^32 us (about 71 minutes) of consumed CPU; a difference of two calls
@@ -738,7 +754,8 @@ int gettimeofday(struct timeval *tv, [[maybe_unused]] void *tz) {
  */
 static_assert(CLOCKS_PER_SEC == (long)KLLVMLIBC_US_PER_SEC,
               "clock() maps the 1-us kernel counter one to one: build with the uKOS-X "
-              "LLVM toolchain (ukos_patches 0001), or add -DCFLAGS_APPEND=-D__CLK_TCK=1000000");
+              "LLVM toolchain (the time-macros.h patch, see above), or add "
+              "-DCFLAGS_APPEND=-D__CLK_TCK=1000000");
 
 clock_t clock(void) {
     #if (KKERN_WITH_STATISTICS_S == true)
@@ -762,50 +779,18 @@ clock_t clock(void) {
 
 /*
  * ============================================================================
- * POSIX environment / timezone stubs
+ * POSIX environment / timezone
  * ============================================================================
  *
  * The calendar manager configures the timezone with setenv("TZ", ...) followed
  * by tzset() (calendar.c:120 and :246). Baremetal LLVM libc provides neither a
- * process environment nor these functions, so uKOS-X supplies minimal stubs to
- * keep the manager linking.
+ * process environment nor a timezone implementation: it declares setenv,
+ * getenv and unsetenv without defining them, has no tzset at all, and its
+ * localtime_r / localtime / mktime work in UTC.
  *
- * Storing the TZ string would gain nothing: LLVM libc has no timezone support
- * at all, so nothing would ever read it. localtime_r() and localtime() return
- * UTC (libc/src/time/time_utils.h:176, "TODO: timezone support"),
- * get_timezone_offset() is a constant stub (time_utils.h:351), and mktime()
- * treats the struct tm as UTC and forces tm_isdst = 0 (time_utils.cpp:238).
- * Local time therefore runs in UTC under LLVM libc, unlike newlib and picolibc
- * which parse TZ themselves.
- *
- * Honouring TZ would mean implementing the timezone logic here - a POSIX TZ
- * parser, a DST-in-effect test, and overrides for localtime_r, localtime and
- * mktime (the last one because the date command converts local time back to an
- * epoch). See "Known limitations of LLVM libc" in
- * Documentation/USER_GUIDES/C-library-selection.md. Deferred until
- * upstream LLVM libc implements its TODO.
+ * All of that lives in llvmlibc_tz.c, which the build compiles alongside this
+ * file (add_clib_manager_source in Ports/cmake/proj_config.cmake).
  */
-
-/*
- * \brief setenv
- *
- * - No environment on baremetal; accept and ignore.
- */
-int setenv(const char *name, const char *value, int overwrite) {
-    (void)name;
-    (void)value;
-    (void)overwrite;
-    return (0);
-}
-
-/*
- * \brief tzset
- *
- * - No timezone database on baremetal; no action.
- */
-void tzset(void) {
-    // No action: LLVM libc has no TZ environment support on baremetal
-}
 
 /*
  * ============================================================================
@@ -836,6 +821,36 @@ void __llvm_libc_exit(int status) {
  * symbol is provided only to satisfy the linker should any object reference it.
  */
 char __llvm_libc_heap_limit[1];
+
+#if (KLLVMLIBC_WITH_PRINTF_FLOAT_S == false)
+
+/*
+ * \brief __printf_float
+ *
+ * - Keep LLVM libc's floating-point conversions out of the link.
+ *
+ * The toolchain builds llvm-libc with LIBC_CONF_PRINTF_MODULAR, so the float
+ * converters are weak declarations and their code lives in one archive member,
+ * float_impl.cpp.obj. printf_main reaches that member through a single strong
+ * reference, emitted as ".reloc ., BFD_RELOC_NONE, __printf_float"; defining the
+ * symbol here satisfies it, and the member -- between 39 KB on a Cortex-M7 and
+ * 77 KB on RV32, depending on how many printf entry points the image links --
+ * is never extracted. This definition must live in an object linked
+ * before -lc, which every uKOS-X library is; -Wl,--defsym=__printf_float=0 does
+ * NOT work, because LLD applies --defsym after archive extraction.
+ *
+ * WARNING: printf_core/converter.h calls convert_float() with no null guard, so
+ * in an image built this way a %a, %A, %e, %E, %f, %F, %g or %G branches to
+ * address 0. Only a target that provably never formats a floating-point value
+ * may set LLVMLIBC_PRINTF_FLOAT to OFF.
+ *
+ */
+void    __printf_float(void);
+void    __printf_float(void) {
+    // No body: the symbol exists only to keep float_impl.cpp.obj out of the link
+}
+
+#endif
 
 /*
  * ============================================================================

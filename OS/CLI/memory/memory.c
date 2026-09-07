@@ -92,6 +92,7 @@ MODULE(
 // Prototypes
 
 static  void    local_displayHeap(uint8_t *stHeap, uint32_t blocks, uint32_t used, intptr_t heapSize);
+static  uint32_t local_usedPercent(uint32_t used, uintptr_t size);
 
 /*
  * \brief Main entry point
@@ -149,7 +150,7 @@ static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char
 
     #ifdef PRIVILEGED_USER_S
     uint32_t    usedPrgmCode, usedPrgmData_p, usedPrgmData_u;
-    float64_t   usedPrgmCodef, usedPrgmData_pf, usedPrgmData_uf;
+    uint32_t    usedPrgmCodep, usedPrgmData_pp, usedPrgmData_up;
 
     usedPrgmCode    = (uint32_t)((uintptr_t)linker_enTEXT   - (uintptr_t)linker_stTEXT)     \
                     + (uint32_t)((uintptr_t)linker_enRODATA - (uintptr_t)linker_stRODATA)   \
@@ -162,18 +163,18 @@ static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char
     usedPrgmData_u  = (uint32_t)((uintptr_t)linker_enDATA_u - (uintptr_t)linker_stDATA_u)   \
                     + (uint32_t)((uintptr_t)linker_enBSS_u  - (uintptr_t)linker_stBSS_u);
 
-    usedPrgmCodef   = ((float64_t)usedPrgmCode   / (float64_t)(uintptr_t)linker_lnPrgmCode)   * 100.0;
-    (void)dprintf(KSYST, "uKOS code:         addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes], used: %5.2f [%%]\n", (uintptr_t)linker_stPrgmCode,        (uintptr_t)linker_lnPrgmCode,   usedPrgmCodef);
+    usedPrgmCodep = local_usedPercent(usedPrgmCode, (uintptr_t)linker_lnPrgmCode);
+    (void)dprintf(KSYST, "uKOS code:         addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes], used: %2"PRIu32".%02"PRIu32" [%%]\n", (uintptr_t)linker_stPrgmCode,        (uintptr_t)linker_lnPrgmCode,   usedPrgmCodep / 100U, usedPrgmCodep % 100U);
 
-    usedPrgmData_pf = ((float64_t)usedPrgmData_p / (float64_t)(uintptr_t)linker_lnPrgmData_p) * 100.0;
-    (void)dprintf(KSYST, "uKOS data_p:       addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes], used: %5.2f [%%]\n", (uintptr_t)linker_stPrgmData_p,      (uintptr_t)linker_lnPrgmData_p, usedPrgmData_pf);
+    usedPrgmData_pp = local_usedPercent(usedPrgmData_p, (uintptr_t)linker_lnPrgmData_p);
+    (void)dprintf(KSYST, "uKOS data_p:       addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes], used: %2"PRIu32".%02"PRIu32" [%%]\n", (uintptr_t)linker_stPrgmData_p,      (uintptr_t)linker_lnPrgmData_p, usedPrgmData_pp / 100U, usedPrgmData_pp % 100U);
 
-    usedPrgmData_uf = ((float64_t)usedPrgmData_u / (float64_t)(uintptr_t)linker_lnPrgmData_u) * 100.0;
-    (void)dprintf(KSYST, "uKOS data_u:       addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes], used: %5.2f [%%]\n", (uintptr_t)linker_stPrgmData_u,      (uintptr_t)linker_lnPrgmData_u, usedPrgmData_uf);
+    usedPrgmData_up = local_usedPercent(usedPrgmData_u, (uintptr_t)linker_lnPrgmData_u);
+    (void)dprintf(KSYST, "uKOS data_u:       addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes], used: %2"PRIu32".%02"PRIu32" [%%]\n", (uintptr_t)linker_stPrgmData_u,      (uintptr_t)linker_lnPrgmData_u, usedPrgmData_up / 100U, usedPrgmData_up % 100U);
 
     #else
     uint32_t    usedPrgmCode, usedPrgmData;
-    float64_t   usedPrgmCodef, usedPrgmDataf;
+    uint32_t    usedPrgmCodep, usedPrgmDatap;
 
     usedPrgmCode  = (uint32_t)((uintptr_t)linker_enTEXT   - (uintptr_t)linker_stTEXT)       \
                   + (uint32_t)((uintptr_t)linker_enRODATA - (uintptr_t)linker_stRODATA)     \
@@ -182,11 +183,11 @@ static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char
     usedPrgmData  = (uint32_t)((uintptr_t)linker_enDATA   - (uintptr_t)linker_stDATA)       \
                   + (uint32_t)((uintptr_t)linker_enBSS    - (uintptr_t)linker_stBSS);
 
-    usedPrgmCodef = ((float64_t)usedPrgmCode / (float64_t)((uintptr_t)linker_lnPrgmCode)) * 100.0;
-    (void)dprintf(KSYST, "uKOS code:         addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes], used: %5.2f [%%]\n", (uintptr_t)linker_stPrgmCode, (uintptr_t)linker_lnPrgmCode, usedPrgmCodef);
+    usedPrgmCodep = local_usedPercent(usedPrgmCode, (uintptr_t)linker_lnPrgmCode);
+    (void)dprintf(KSYST, "uKOS code:         addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes], used: %2"PRIu32".%02"PRIu32" [%%]\n", (uintptr_t)linker_stPrgmCode, (uintptr_t)linker_lnPrgmCode, usedPrgmCodep / 100U, usedPrgmCodep % 100U);
 
-    usedPrgmDataf = ((float64_t)usedPrgmData / (float64_t)((uintptr_t)linker_lnPrgmData)) * 100.0;
-    (void)dprintf(KSYST, "uKOS data:         addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes], used: %5.2f [%%]\n", (uintptr_t)linker_stPrgmData, (uintptr_t)linker_lnPrgmData, usedPrgmDataf);
+    usedPrgmDatap = local_usedPercent(usedPrgmData, (uintptr_t)linker_lnPrgmData);
+    (void)dprintf(KSYST, "uKOS data:         addr = 0x%016"PRIXPTR", size = 0x%016"PRIXPTR" [Bytes], used: %2"PRIu32".%02"PRIu32" [%%]\n", (uintptr_t)linker_stPrgmData, (uintptr_t)linker_lnPrgmData, usedPrgmDatap / 100U, usedPrgmDatap % 100U);
     #endif
 
     #if (KNB_CORES == 1)
@@ -233,6 +234,27 @@ static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char
  * - Display the memory segment characteristics
  *
  */
+/*
+ * \brief local_usedPercent
+ *
+ * - Return the used fraction of a memory region, in hundredths of a percent
+ *
+ * The caller prints it as <whole>.<hundredths> instead of using %5.2f, so that
+ * the memory command needs no floating-point conversion in printf. That keeps it
+ * working on a target built with LLVMLIBC_PRINTF_FLOAT=OFF, where LLVM libc's
+ * float converters are deliberately absent and a %f would branch to address 0
+ * (see __printf_float in OS/Lib_generics/llvmlibc/llvmlibc.c). The rendering is
+ * unchanged: both forms occupy five columns for a value below 100.
+ *
+ * The division rounds to nearest, as %.2f does.
+ *
+ */
+static  uint32_t    local_usedPercent(uint32_t used, uintptr_t size) {
+
+    if (size == 0U) { return (0U); }
+    return ((uint32_t)((((uint64_t)used * 10000U) + ((uint64_t)size / 2U)) / (uint64_t)size));
+}
+
 static  void    local_displayHeap(uint8_t *stHeap, uint32_t blocks, uint32_t used, intptr_t heapSize) {
 
     (void)dprintf(KSYST, "Heap:              addr = 0x%016"PRIXPTR"\n", (uintptr_t)stHeap);

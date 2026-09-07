@@ -1,0 +1,264 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2026 Laurent von Allmen
+
+"""Run a table of console commands against a flashed uKOS-X board.
+
+The host suite (Tools/Developer/bin/run-tests) proves a CLI module's logic with
+no hardware. This proves that the firmware on a real board still behaves, which
+is a different question: roughly half the error strings in these modules need a
+manager to fail and are unreachable here, a module's exit status is invisible
+because the console collapses success and failure into the same break, and the
+values - timestamps, addresses, uptimes, the VCS# - all move between builds.
+Every assertion is therefore about the SHAPE of the output.
+
+The table is data, so another board is a new JSON file rather than new code.
+
+This never opens the serial port itself and never starts a session: re-opening
+the device toggles DTR, which resets some targets. Start one with
+`ukos-serial start --port ...` first.
+
+Exit codes match ukos-serial: 0 all passed, 1 error, 2 the board went
+unreachable mid-run, 3 at least one assertion failed.
+"""
+
+import argparse
+import json
+import os
+import re
+import subprocess
+import sys
+
+# realpath, not abspath: this is reached through Tools/Developer/bin, and the
+# shell tools resolve their own symlink the same way with ${0:A}.
+KHERE   = os.path.dirname(os.path.realpath(__file__))
+KSERIAL = os.path.normpath(os.path.join(KHERE, "..", "..", "ukos-serial"))
+KTABLES = os.path.join(KHERE, "tables")
+
+RED = GREEN = YELLOW = BOLD = DIM = NC = ""
+
+
+def colours(enable):
+    global RED, GREEN, YELLOW, BOLD, DIM, NC
+    if enable:
+        RED, GREEN, YELLOW = "\033[0;31m", "\033[0;32m", "\033[0;33m"
+        BOLD, DIM, NC = "\033[1m", "\033[2m", "\033[0m"
+
+
+def serial(args, name=None):
+    """Run one ukos-serial subcommand. Returns (exit code, stdout, stderr)."""
+
+    cmd = [sys.executable, KSERIAL]
+    if name:
+        cmd += ["--name", name]
+    cmd += args
+    done = subprocess.run(cmd, capture_output=True, text=True)
+    return done.returncode, done.stdout, done.stderr
+
+
+def send_json(command, name, timeout, unsafe=False, expect=None, refute=None):
+    args = ["send", command, "--timeout", str(timeout), "--json"]
+    if unsafe:
+        args.append("--unsafe")
+    for pattern in (expect or []):
+        args += ["--expect", pattern]
+    for pattern in (refute or []):
+        args += ["--refute", pattern]
+
+    rc, out, err = serial(args, name)
+    try:
+        return rc, json.loads(out)
+    except ValueError:
+        return rc, {"pass": False, "error": (err or out).strip()}
+
+
+RX_IDENT = re.compile(r"^\s*(Board|Variant|SoC|Core|VCS#)\s*:\s*(\S+)\s*$",
+                      re.M)
+# "FLASH  36  X08_  v 1.1   date         Set / display ..." - the module name is
+# the first word of the application string.
+RX_MODULE = re.compile(r"^FLASH\s+\d+\s+\S+\s+v\s*\S+\s+(\S+)", re.M)
+
+
+def main():
+    ap = argparse.ArgumentParser(
+        prog="run-board-tests",
+        description="Run a command table against a flashed uKOS-X board.")
+    ap.add_argument("--name", help="ukos-serial session name")
+    ap.add_argument("--table", help="table file (default: by board name)")
+    ap.add_argument("-t", "--filter", help="only ids containing this substring")
+    ap.add_argument("-l", "--list", action="store_true",
+                    help="list the table's ids and exit")
+    ap.add_argument("-n", "--dry-run", action="store_true",
+                    help="print what would be sent, send nothing")
+    ap.add_argument("--have", action="append", default=[], metavar="TAG",
+                    help="declare an available hw: tag; repeatable")
+    ap.add_argument("--allow-unsafe", action="store_true",
+                    help="run rows that need ukos-serial's --unsafe")
+    ap.add_argument("-v", "--verbose", action="store_true",
+                    help="print the capture for every row, not only failures")
+    ap.add_argument("--json", action="store_true")
+    ap.add_argument("--stop-on-fail", action="store_true")
+    args = ap.parse_args()
+
+    colours(sys.stdout.isatty() and os.environ.get("NO_COLOR") is None)
+
+    if not os.path.exists(KSERIAL):
+        sys.stderr.write("error: ukos-serial not found next to this script\n")
+        return 1
+
+    # --list and --dry-run must work with no board attached, so the table has to
+    # be resolvable without asking the hardware what it is.
+    ident, modules = {}, set()
+    if not (args.list or args.dry_run):
+        rc, _, err = serial(["status"], args.name)
+        if rc != 0:
+            sys.stderr.write("error: no usable session (%s)\n"
+                             "start one with: ukos-serial start --port "
+                             "/dev/cu.usbmodemXXXX\n" % err.strip())
+            return 1
+
+        rc, rep = send_json("uKOS", args.name, 10)
+        if rc == 2:
+            sys.stderr.write("error: the board did not answer 'uKOS'\n")
+            return 2
+        if rc != 0:
+            sys.stderr.write("error: %s\n" % rep.get("error", "unknown"))
+            return 1
+        ident = dict(RX_IDENT.findall(rep.get("text", "")))
+
+        rc, rep = send_json("list", args.name, 15)
+        if rc == 2:
+            sys.stderr.write("error: the board did not answer 'list'\n")
+            return 2
+        modules = set(RX_MODULE.findall(rep.get("text", "")))
+
+    path = args.table
+    if path is None:
+        board = ident.get("Board")
+        if board is None:
+            sys.stderr.write("error: --table is required without a board\n")
+            return 1
+        path = os.path.join(KTABLES, board + ".json")
+    if not os.path.exists(path):
+        sys.stderr.write("error: no table at %s\n" % path)
+        return 1
+
+    with open(path) as handle:
+        try:
+            table = json.load(handle)
+        except ValueError as exc:
+            sys.stderr.write("error: %s is not valid JSON: %s\n" % (path, exc))
+            return 1
+
+    tests = table.get("tests", [])
+    if args.list:
+        for test in tests:
+            print(test["id"])
+        return 0
+
+    # Refuse to run the wrong table against the wrong board. Without this an
+    # H743 table would half-pass on a Pico2 and the failures would look like
+    # firmware bugs.
+    if ident and (table.get("board") != ident.get("Board")):
+        sys.stderr.write("error: table is for %s, the board says %s\n"
+                         % (table.get("board"), ident.get("Board")))
+        return 1
+
+    print("%sBoard%s" % (BOLD, NC))
+    if ident:
+        print("  board      %s" % " / ".join(
+            ident.get(k, "?") for k in ("Board", "Variant", "SoC", "Core")))
+        print("  firmware   VCS# %s" % ident.get("VCS#", "?"))
+    print("  table      %s  (%d tests)" % (os.path.relpath(path), len(tests)))
+    print("\n%sRun%s" % (BOLD, NC))
+
+    passed = failed = skipped = 0
+    results = []
+
+    for test in tests:
+        tid = test["id"]
+        if args.filter and (args.filter not in tid):
+            continue
+
+        skip = None
+        for need in test.get("requires", []):
+            if need.startswith("module:") and not (args.dry_run or args.list):
+                if need[7:] not in modules:
+                    skip = "%s not built into this variant" % need
+            elif need.startswith("hw:") and (need[3:] not in args.have):
+                skip = "%s not available (pass --have %s)" % (need, need[3:])
+            elif need == "unsafe" and not args.allow_unsafe:
+                skip = "needs --allow-unsafe"
+            if skip:
+                break
+
+        if skip:
+            skipped += 1
+            results.append({"id": tid, "result": "skip", "reason": skip})
+            print("  %sSKIP%s  %-34s %s" % (YELLOW, NC, tid, skip))
+            continue
+
+        if args.dry_run:
+            print("  %ssend%s  %-34s %s" % (DIM, NC, tid, test["cmd"]))
+            continue
+
+        rc, rep = send_json(test["cmd"], args.name, test.get("timeout", 10),
+                            unsafe=test.get("unsafe", False),
+                            expect=test.get("expect"),
+                            refute=test.get("refute"))
+
+        if rc == 2:
+            # The prompt never came back; every later verdict would be noise.
+            print("  %sFAIL%s  %-34s board unreachable (timeout)"
+                  % (RED, NC, tid))
+            print("\n%sAborting: the session is in an unknown state.%s"
+                  % (RED, NC))
+            return 2
+
+        if rc == 0:
+            passed += 1
+            results.append({"id": tid, "result": "pass"})
+            if args.verbose:
+                print("  %sok%s    %-34s" % (GREEN, NC, tid))
+                print(indent(rep.get("text", "")))
+            continue
+
+        failed += 1
+        results.append({"id": tid, "result": "fail",
+                        "failures": rep.get("failures", []),
+                        "error": rep.get("error")})
+        print("  %sFAIL%s  %s" % (RED, NC, tid))
+        for failure in rep.get("failures", []):
+            if failure["kind"] == "expect":
+                print("          expect %s  did not hold" % failure["pattern"])
+            else:
+                print("          refute %s  matched %r"
+                      % (failure["pattern"], failure.get("at", "")))
+        if rep.get("error"):
+            print("          %s" % rep["error"])
+        if test.get("note"):
+            print("          %snote: %s%s" % (DIM, test["note"], NC))
+        print("          board said:")
+        print(indent(rep.get("text", "")))
+        if args.stop_on_fail:
+            break
+
+    if args.dry_run:
+        print("\ndry run: nothing was sent")
+        return 0
+
+    print("\n%d passed, %d failed, %d skipped" % (passed, failed, skipped))
+    if args.json:
+        print(json.dumps({"pass": failed == 0, "board": ident,
+                          "results": results}, indent=2))
+    return 3 if failed else 0
+
+
+def indent(text):
+    lines = [l for l in text.replace("\r\n", "\n").split("\n") if l.strip()]
+    return "\n".join("            " + l for l in lines[:12]) or "            (nothing)"
+
+
+if __name__ == "__main__":
+    sys.exit(main())

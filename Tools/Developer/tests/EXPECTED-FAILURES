@@ -1,0 +1,36 @@
+# Suites expected to fail on this branch
+# ======================================
+#
+# This branch adds the host test suites WITHOUT the source fixes they assert.
+# That is deliberate: the tests are a detector, and the team decides whether to
+# take the fixes or to schedule the work. Every entry below is a defect the
+# suite has found in code this branch does not touch.
+#
+# run-tests reads this file and reports these separately from real regressions:
+#
+#   - a suite listed here that fails  -> "failed as expected", the run still
+#                                        exits 0
+#   - a suite listed here that PASSES -> reported loudly and the run FAILS, the
+#                                        same polarity as the harness's XPASS.
+#                                        The fix has landed; delete the line.
+#   - anything else that fails        -> an unexpected failure, exit 1
+#
+# So the file has to be maintained: it is not a way to silence a test, it is a
+# statement that a specific defect is still present. Deleting a line is how a
+# fix gets acknowledged.
+#
+# Format, whitespace separated:
+#
+#   <suite>  <fix>  <what the suite detects>
+#
+# <fix> is the commit on Features/unit-test that makes the suite pass, for
+# whoever picks the work up. Full details for every entry are in DEFECTS.md.
+
+ukos_tests_port_hexloader       9db073a93  hexloader.c:163 - the mark-waiting loop discards local_getByte's status, and that function zeroes the byte before returning an error, so 0 never matches ':' and the loop spins forever. The suite TIMES OUT rather than failing, which is the defect showing itself.
+ukos_tests_port_sloader         9db073a93  sloader.c:162 - the same defect, twice: the mark-waiting loop and the type byte that follows it. Also times out.
+ukos_tests_date                 bab328dfc  date.c - "date -gmt <arg>" drops the operand, no calendar_* status is checked, gmtime_r/localtime_r/asctime results are used unchecked, and no field is validated, so an impossible date is accepted.
+ukos_tests_date_rtc             bab328dfc  as above, with KCALENDAR_WITH_HW_RTC_S.
+ukos_tests_ukos                 123639afc  uKOS.c - "uKOS -history" prints the intellectual-property notice twice. TWO assertions fail here: the notice count, which is the defect, and oStrRevision, which the suite expects at " 1.1" because the fix bumps the module revision. The second is not a defect, only the revision that comes with the fix.
+ukos_tests_port_dumplog         92f41db34  dumplog.c and recordDump.c - oMark is shared state and record_printLog() leaves it set on the live buffer, so dumplog prints nothing at all after a core dump. dumplog's own attempt to clear it runs before the memcpy that overwrites it.
+ukos_tests_port_dumplog_nouser  92f41db34  as above, without PRIVILEGED_USER_S.
+ukos_tests_mlpn                 4aa03390a  class_Py/_Training/DB_Creator.py divides by KABS_MAX_FUNCTION twice, so the demo network was trained on data 40x too small. It scores 73% on its own databases and never predicts class 1. The suite's golden pins the retrained weights.

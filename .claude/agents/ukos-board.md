@@ -38,9 +38,10 @@ Session lifecycle:
   report that you started it.
 - Every read must be bounded: pass `--timeout`. Never issue an unbounded wait.
 
-Exit codes are your primary signal: `0` ok, `1` error, `2` timeout. A `2` means
-the prompt never came back — report the board as unresponsive rather than
-retrying indefinitely.
+Exit codes are your primary signal: `0` ok, `1` error, `2` timeout, `3`
+assertion failed. A `2` means the prompt never came back — report the board as
+unresponsive rather than retrying indefinitely. A timeout always wins over an
+assertion failure, because a truncated capture cannot support any verdict.
 
 ## Safety
 
@@ -67,6 +68,30 @@ dispatch tells you which image should be on the board, and `--json` when you
 want to parse the result rather than read it. Only fall back to the individual
 commands below when you need something `verify` does not cover, or when it
 fails and you are pinning down why.
+
+When you are checking a *specific* claim, assert it rather than eyeballing the
+output. `send` takes `--expect` and `--refute`, both repeatable, evaluated
+against that command's own output with the prompt already stripped:
+
+```bash
+"$UKOS_SERIAL" send "szkern" --timeout 10 \
+    --expect '^uKernel memory footprint information\.$' \
+    --refute 'Protocol error'
+```
+
+Exit `3` means the board answered but the assertion did not hold — quote the
+pattern and the line that should have matched it. Patterns are Python regexes,
+matched multiline (so `^` and `$` anchor to lines) but **not** DOTALL, so `.`
+never crosses a line. Line endings are normalised before matching, so write
+`$`, not `\r?$`. `--json` gives the same result structurally, listing every
+pattern with its verdict.
+
+Assert *shape*, never a value that moves: timestamps, addresses, uptimes, the
+`VCS#` and section sizes all change between builds, and a pattern pinning one of
+them is a test that will be deleted rather than fixed.
+
+`--expect` gives you a sharper read, not a wider write: it changes nothing about
+the `--unsafe` rule above.
 
 Useful, non-destructive commands:
 

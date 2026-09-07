@@ -10,6 +10,12 @@ Keeps one serial port open inside a background daemon, so repeated commands
 never re-open the device.  Re-opening toggles DTR, which on some boards resets
 the target between every command and always loses the output in between.
 
+DTR is asserted by default on USB CDC ports, because TinyUSB gates transmission
+on tud_cdc_connected(), which follows DTR: with DTR low the board discards
+everything it writes and looks dead while still enumerating.  UART bridges keep
+DTR low, since asserting it resets some targets.  Override either way with
+--assert-dtr / --no-assert-dtr.
+
 Clients talk to the daemon over a Unix socket and get line-oriented,
 prompt-synchronised request/response behaviour.
 
@@ -41,6 +47,21 @@ except ImportError:
 # Console defaults
 # ================
 
+# send --expect / --refute
+#
+#   ukos-serial send "list P" --expect '^FLASH +[0-9]+ +P[0-9]{2}_' \
+#                             --refute 'does not exist'
+#
+# Both are repeatable: every --expect must match and no --refute may. They are
+# evaluated inside the send handler, against the bytes that send captured, which
+# is why they exist at all - the "expect" subcommand takes its mark when its own
+# request arrives and so can never match output of a send that has finished.
+#
+# Matching is multiline but not DOTALL, the trailing prompt is removed first,
+# and CRLF is normalised to LF so a pattern can end in "$" rather than "\r?$".
+# Exit 3 means the board answered but an assertion did not hold; a timeout (2)
+# always wins, because a truncated capture cannot support a verdict.
+
 KDEFAULT_BAUD = 460800
 KDEFAULT_PROMPT = "uKOS-X > "
 KDEFAULT_TIMEOUT = 10.0
@@ -55,6 +76,18 @@ KEOL = {"cr": b"\r", "lf": b"\n", "crlf": b"\r\n"}
 KUNSAFE = frozenset({
     "restart", "kill", "power", "fill", "memory", "sloader", "hexloader",
 })
+
+# USB CDC ACM device nodes, by platform naming.  CDC consoles need DTR asserted
+# (see the module docstring); UART bridges (usbserial-, ttyUSB, SLAB, wch) do
+# not, and are left alone because DTR resets some targets.
+
+KCDC_PATTERNS = ("cu.usbmodem", "tty.usbmodem", "ttyACM")
+
+
+def is_cdc_port(port):
+    """True when the port looks like a USB CDC ACM device node."""
+
+    return any(tag in port for tag in KCDC_PATTERNS)
 
 
 def rundir():
@@ -240,8 +273,61 @@ def handle(session, req):
             return {"ok": True, "matched": True, "text": ""}
         out, matched = session.wait_for(re.escape(session.prompt), start,
                                         req.get("timeout", KDEFAULT_TIMEOUT))
-        return {"ok": True, "matched": matched,
-                "text": out.decode("utf-8", "replace")}
+        rep = {"ok": True, "matched": matched,
+               "text": out.decode("utf-8", "replace")}
+
+        # Assertions are evaluated here, on the bytes this send captured, rather
+        # than through "expect": that subcommand takes its mark when the request
+        # reaches the daemon, so it can never match output of a send that has
+        # already completed.
+        #
+        # The trailing prompt is stripped first, so a pattern cannot
+        # accidentally match it and the asserted text is exactly what emit()
+        # prints.  re.MULTILINE is on because console output is line oriented
+        # and "^Memory dump\.$" is the natural way to write an assertion;
+        # re.DOTALL is deliberately off, so ".*" cannot silently span the whole
+        # capture.
+        expect = req.get("expect") or []
+        refute = req.get("refute") or []
+        if expect or refute:
+            body = out
+            tail = session.prompt.encode("utf-8", "replace")
+            if body.endswith(tail):
+                body = body[:-len(tail)]
+
+            # The console terminates lines with CRLF, so "$" would never match
+            # at end of line - the CR sits in the way.  Assertions are about
+            # content, not about how a line happens to be terminated, so the CRs
+            # are dropped for matching only; the text reported back is
+            # untouched.  A table full of "\r?$" would be pure noise and a trap
+            # for whoever writes the next one.
+            body = body.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+
+            checks, failures = [], []
+            try:
+                for pat in expect:
+                    ok = re.search(pat.encode("utf-8", "replace"), body,
+                                   re.MULTILINE) is not None
+                    checks.append({"kind": "expect", "pattern": pat, "ok": ok})
+                    if not ok:
+                        failures.append({"kind": "expect", "pattern": pat})
+                for pat in refute:
+                    m = re.search(pat.encode("utf-8", "replace"), body,
+                                  re.MULTILINE)
+                    checks.append({"kind": "refute", "pattern": pat,
+                                   "ok": m is None})
+                    if m is not None:
+                        failures.append({"kind": "refute", "pattern": pat,
+                                         "at": m.group(0).decode("utf-8",
+                                                                 "replace")})
+            except re.error as exc:
+                # An operator error, not an assertion failure: exit 1, and the
+                # daemon stays up.
+                return {"ok": False, "error": "bad pattern: %s" % exc}
+
+            rep["assertions"] = checks
+            rep["failures"] = failures
+        return rep
 
     if cmd == "expect":
         start = session.mark()
@@ -413,6 +499,9 @@ def cmd_start(args):
         sys.stderr.write("warning: %s is a tty.* device; cu.* is the one that "
                          "does not block on DCD\n" % args.port)
 
+    if args.assert_dtr is None:
+        args.assert_dtr = is_cdc_port(args.port)
+
     cmdline = [sys.executable, os.path.abspath(__file__),
                "--name", name, "--prompt", args.prompt, "_serve",
                "--port", args.port, "--baud", str(args.baud),
@@ -426,8 +515,9 @@ def cmd_start(args):
 
     for _ in range(50):
         if os.path.exists(sock_path):
-            print("session '%s' holding %s @ %d 8N%d (log: %s)"
-                  % (name, args.port, args.baud, args.stopbits, log_path))
+            print("session '%s' holding %s @ %d 8N%d DTR %s (log: %s)"
+                  % (name, args.port, args.baud, args.stopbits,
+                     "high" if args.assert_dtr else "low", log_path))
             return 0
         time.sleep(0.1)
     sys.stderr.write("error: the daemon did not come up; check %s\n" % log_path)
@@ -457,10 +547,58 @@ def cmd_status(args):
 
 def cmd_send(args):
     name = resolve(args.name)
+    if args.no_expect and (args.expect or args.refute):
+        sys.stderr.write("error: --no-expect returns before any output is "
+                         "read; it cannot be combined with --expect/--refute\n")
+        return 1
+
     rep = request(name, {"cmd": "send", "text": args.text,
                          "timeout": args.timeout, "unsafe": args.unsafe,
-                         "expect_prompt": not args.no_expect})
-    return emit(rep, args.prompt, not args.keep_prompt)
+                         "expect_prompt": not args.no_expect,
+                         "expect": args.expect, "refute": args.refute})
+    if args.json:
+        return emit_json_send(args.text, rep, args.prompt)
+
+    rc = emit(rep, args.prompt, not args.keep_prompt)
+    if rc != 0:
+        # A timeout beats an assertion failure: the capture is truncated, so any
+        # verdict on it would be unsound and would send the reader after the
+        # wrong bug.
+        return rc
+
+    for failure in rep.get("failures", []):
+        if failure["kind"] == "expect":
+            sys.stderr.write("assertion: expected %r, not found\n"
+                             % failure["pattern"])
+        else:
+            sys.stderr.write("assertion: refused %r, matched %r\n"
+                             % (failure["pattern"], failure.get("at", "")))
+    return 3 if rep.get("failures") else 0
+
+
+def emit_json_send(command, rep, prompt):
+    """Machine-readable result for one send, shaped like verify's."""
+
+    if not rep.get("ok"):
+        print(json.dumps({"pass": False, "command": command, "exit": 1,
+                          "error": rep.get("error", "unknown")}, indent=2))
+        return 1
+
+    matched = rep.get("matched", True)
+    failures = rep.get("failures", [])
+    rc = 0 if matched else 2
+    if (rc == 0) and failures:
+        rc = 3
+
+    print(json.dumps({"pass": rc == 0,
+                      "command": command,
+                      "exit": rc,
+                      "matched": matched,
+                      "timeout": not matched,
+                      "text": rep.get("text", ""),
+                      "assertions": rep.get("assertions", []),
+                      "failures": failures}, indent=2))
+    return rc
 
 
 def cmd_expect(args):
@@ -665,8 +803,14 @@ def main():
     p.add_argument("--settle", type=float, default=KSETTLE,
                    help="quiet time required before writing a command, "
                         "in seconds (default: %(default)s)")
-    p.add_argument("--assert-dtr", action="store_true",
-                   help="assert DTR on open (default: leave it low)")
+    g = p.add_mutually_exclusive_group()
+    g.add_argument("--assert-dtr", dest="assert_dtr", action="store_true",
+                   default=None,
+                   help="assert DTR on open (default on USB CDC ports, "
+                        "where the board stays silent without it)")
+    g.add_argument("--no-assert-dtr", dest="assert_dtr", action="store_false",
+                   help="leave DTR low (default on UART bridges, where "
+                        "asserting it resets some targets)")
     p.set_defaults(func=cmd_start)
 
     p = sub.add_parser("stop", help="close the port and exit the daemon")
@@ -684,6 +828,13 @@ def main():
     p.add_argument("--no-expect", action="store_true",
                    help="write and return without waiting")
     p.add_argument("--keep-prompt", action="store_true")
+    p.add_argument("--expect", action="append", default=[], metavar="RE",
+                   help="assert this regex matches the output; repeatable, "
+                        "all must match (multiline, no DOTALL)")
+    p.add_argument("--refute", action="append", default=[], metavar="RE",
+                   help="assert this regex does NOT match; repeatable")
+    p.add_argument("--json", action="store_true",
+                   help="machine-readable result")
     p.set_defaults(func=cmd_send)
 
     p = sub.add_parser("expect", help="wait for a regex")

@@ -68,12 +68,14 @@ if(C_LIBRARY STREQUAL "picolibc")
     message(STATUS "C library compile definitions (picolibc): CONFIG_MAN_PICOLIBC_S, _REENT_GLOBAL_ERRNO")
 elseif(C_LIBRARY STREQUAL "llvmlibc")
     # CLOCKS_PER_SEC is not set here: stock baremetal LLVM libc defaults it to 100
-    # on ARM (Arm semihosting counts centiseconds), and the uKOS-X toolchain patch
-    # ukos_patches/0001-newlib-llvm-libc-use-microsecond-also-for-32-bit-Arm.patch
-    # moves 32-bit Arm to the microsecond branch instead. Patching rather than
-    # passing -D__CLK_TCK also rebuilds libc.a with the same unit, so the library
-    # and the application agree. A static_assert in llvmlibc.c fails the build on
-    # an unpatched toolchain.
+    # on ARM (Arm semihosting counts centiseconds), and the uKOS-X ARM toolchain
+    # carries a patch that drops __arm__ from the centisecond branch of
+    # llvm-libc-macros/baremetal/time-macros.h, moving 32-bit Arm to the
+    # microsecond branch instead (Patches/llvm-arm/<version>/ of the toolchain
+    # build scripts; 0005 in 23.1.0, but the series is renumbered at every LLVM
+    # bump). Patching rather than passing -D__CLK_TCK also rebuilds libc.a with
+    # the same unit, so the library and the application agree. A static_assert
+    # in llvmlibc.c fails the build on an unpatched toolchain.
     target_compile_definitions(system_compiler_flags INTERFACE
         CONFIG_MAN_LLVMLIBC_S
     )

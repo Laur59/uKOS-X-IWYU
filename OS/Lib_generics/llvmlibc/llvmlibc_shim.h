@@ -50,12 +50,13 @@ int     dprintf(int fd, const char *format, ...) KLLVMLIBC_NOEXCEPT;
 int     vdprintf(int fd, const char *format, va_list ap) KLLVMLIBC_NOEXCEPT;
 
 // POSIX timezone function used by the calendar manager: baremetal LLVM libc
-// neither declares nor implements it, and uKOS-X supplies a minimal stub in
-// llvmlibc.c (no environment on baremetal; local time therefore runs in UTC).
+// neither declares nor implements it, and uKOS-X supplies it in llvmlibc_tz.c
+// together with a TZ-only environment and the localtime/mktime overrides.
 //
 // setenv() is deliberately NOT declared here. <stdlib.h> already declares it --
-// only the implementation is missing, and llvmlibc.c provides that. The former
-// declaration collided with the libc one in every C++ translation unit.
+// only the implementation is missing, and llvmlibc_tz.c provides that. The
+// former declaration collided with the libc one in every C++ translation unit.
+// The same holds for getenv() and unsetenv().
 void    tzset(void) KLLVMLIBC_NOEXCEPT;
 
 #ifdef __cplusplus

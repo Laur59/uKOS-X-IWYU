@@ -24,6 +24,11 @@
  *           __llvm_libc_exit
  *           __llvm_libc_heap_limit
  *
+ *           The POSIX environment and timezone functions LLVM libc declares
+ *           but does not implement (setenv, getenv, unsetenv, tzset), together
+ *           with the localtime_r / localtime / mktime overrides that make local
+ *           time honour TZ, live in the companion file llvmlibc_tz.c.
+ *
  *           Note: errno storage belongs to LLVM libc (one global reached both
  *           by __llvm_libc_errno() and by the library's own Errno operators).
  *           uKOS-X does not redirect it - it cannot - but the kernel does give

@@ -1,7 +1,7 @@
 # Package quality
 
 This fork's stated purpose is code hygiene rather than new functionality, so the checks
-below are part of ordinary work rather than an occasional audit. They form four layers,
+below are part of ordinary work rather than an occasional audit. They form six layers,
 from the one that runs on every build to the ones you invoke deliberately:
 
 | Layer | Tool | Invoked |
@@ -10,10 +10,18 @@ from the one that runs on every build to the ones you invoke deliberately:
 | Include hygiene | `include-what-you-use` | `checkiwyu`, `module-check-iwyu.sh` |
 | Header self-containment | clang `-fsyntax-only` | `check-self-contained.sh` |
 | Static analysis | clang-tidy, Cppcheck | `run-analyser`, `code_analysis.sh` |
+| **Host unit tests** | a native harness under `Tools/Developer/tests` | `run-tests` |
+| **On-target console tests** | `ukos-serial` driven from a per-board table | `run-board-tests` |
+
+The first four layers read the code. The last two **run** it, and they answer different
+questions: the host suite proves what a CLI module computes, including error paths that
+need a manager to fail; the board suite proves that the firmware on a real target still
+behaves. Neither subsumes the other — see §7 and §8.
 
 `Tools/Developer/bin/` holds symlinks to the scripts, so putting that directory on your
-`PATH` gives you `checkiwyu`, `run-analyser`, `clangd-target`, `latotale` and `regression`
-as plain commands. The examples below use the symlink names.
+`PATH` gives you `checkiwyu`, `run-analyser`, `clangd-target`, `latotale`, `regression`,
+`run-tests` and `run-board-tests` as plain commands. The examples below use the symlink
+names.
 
 The result of the last full sweep is recorded in `../analysis-baseline.md`, one section per
 variant. Compare a new run against it: a finding that is not listed there is a regression,
@@ -214,3 +222,127 @@ Scope is the third-party libraries. The system image and the downloadable applic
 are **not** covered: the same two settings would extend to a target variant, and the
 applications would need `-ffile-prefix-map` besides, because they compile with `-g3` and
 absolute paths land in the debug information.
+
+## 7. Host unit tests
+
+`Tools/Developer/bin/run-tests` builds and runs a native test suite over the CLI modules.
+The module under test is compiled **unmodified** from `OS/` and executed on the host, so a
+command's argument parsing, conversion and output can be checked in seconds rather than
+through a cross-compile, a flash and a serial session.
+
+```sh
+run-tests               # drift checks, configure, build, run
+run-tests -s            # again under asan + ubsan
+run-tests -i            # one process per test, so a crash names its test
+run-tests -t port_      # one tier, or any substring of a suite or test name
+```
+
+It needs no cross toolchain and no board — but note that the uKOS-X shell environment puts
+the embedded toolchain first in `PATH`, so a bare `clang` is the **ARM cross compiler**.
+The build pins the host compiler through `xcrun` before `project()` for that reason.
+
+Two tiers: modules that compile against the production headers unchanged, and modules that
+additionally need a small stub for the per-core and per-SoC headers, which are inline
+assembly and MMIO. A tier-2 run labels itself. `Tools/Developer/tests/README.md` documents
+the method for adding a module — costing it with `nm -u` before starting, deriving the
+matrix from the dispatch rather than the happy path, keeping a hand-copied double honest
+with a drift check, and mutation checking the result rather than trusting a first green
+run.
+
+The suites currently sit on `develop` **without** the source fixes they assert, so eight of
+them fail on purpose — each failure is a defect the suite detected in code the branch does not
+change. `Tools/Developer/tests/EXPECTED-FAILURES` names them and the commit that fixes each;
+a listed suite failing keeps the run green, a listed suite *passing* fails it so the entry
+gets removed, and anything else failing is a genuine regression. Two of the eight (`hexloader`
+and `sloader`) hang rather than fail, which is why every suite runs under a hard 10-second
+budget — a suite normally takes about 3 ms.
+
+Defects found while writing these tests are recorded in `Tools/Developer/tests/DEFECTS.md`
+and left unfixed unless fixing them is the task at hand; tests that touch one pin **current**
+behaviour and say so, so that a later fix turns the suite red rather than silently changing
+what it asserts.
+
+### Beyond the CLI and the kernel
+
+Two further modules are covered. `mlpn` (`OS/Lib_neurals`, tier 1) is the only one in the
+tree with no environmental coupling at all — no clock, no random source, no heap, no port
+layer, no kernel — so its assertions are exact numeric ones rather than string comparisons.
+`text` (`OS/Lib_generics`, tier 2) covers the four pure functions behind the CLI's
+tokeniser; its blocking line editor is deliberately excluded, because it would hang the
+runner rather than fail it.
+
+### The kernel tier
+
+A third tier compiles real `OS/Lib_kernels/kern` sources on the host and fakes only
+what surrounds them — the interrupt mask, the running process, the allocator, the four
+semaphore calls a pool makes. It covers `identifier`, `lists`, `mailboxes`, `mutexes`, `pools`, `semaphores`,
+`signals` and `statistics` — about 3500 of the kernel's ~6900 lines, a little over half.
+
+It must not be mixed with the CLI tiers, and the build enforces that rather than trusting
+a convention: `fakes/ukos_fakes_kern.c` *defines* the kernel object tables that the real
+kernel sources also define, so the two live in separate libraries and a mistake is a
+duplicate symbol at link.
+
+`INTERRUPTION_OFF` / `INTERRUPTION_RESTORE` are stubbed as a **counting** fake, which is
+the one sanctioned exception to the rule in `tests/port/README.md` that a working macro
+must not become a no-op. It counts scopes and checks they unwind LIFO, so an early return
+that skips its restore fails — `pools.c` has 26 restore sites across six error-heavy
+functions. It asserts pairing and order, never effect.
+
+What this tier does **not** prove is the kernel's actual job: no interrupt is masked and no
+context switch occurs, so `GOTO_KERN_*` records the *decision* to block and then returns
+where the real macro never would — the suspension is not modelled, and a test that needs a
+waiting process places it on the wait list itself. `KNB_CORES` is 1, so there is no
+interleaving. `scheduler.c`, `processes.c` and `privileges.c` are board-only.
+
+## 8. On-target console tests
+
+`Tools/Developer/bin/run-board-tests` drives a table of console commands against a flashed
+board through `ukos-serial` and asserts what comes back. Start a session first — the runner
+never opens the port itself, because re-opening the device toggles DTR and resets some
+targets:
+
+```sh
+ukos-serial start --port /dev/cu.usbmodem21403
+run-board-tests                      # picks the table by board name
+run-board-tests -n                   # dry run: print what would be sent
+run-board-tests --allow-unsafe --have loopback
+```
+
+The table is data, one JSON file per board under `tests/board/tables/`, so another board is
+a new file rather than new code. Rows that need a module the variant does not build, or
+hardware that is not attached, are **printed as skips with their reason** rather than
+silently passing. Exit codes match `ukos-serial`: `0` pass, `1` error, `2` the board went
+unreachable, `3` an assertion failed.
+
+Assertions rest on `ukos-serial send --expect` / `--refute`, which are evaluated against
+that command's own captured output. Every pattern must assert *shape*: timestamps,
+addresses, uptimes, the `VCS#` and section sizes all move between builds, and a row pinning
+one of them is a test that gets deleted rather than fixed.
+
+`Tools/Developer/tests/board/README.md` covers the table schema and, more importantly, what
+this layer cannot prove — any branch needing a manager to fail, a module's exit status
+(`OS/CLI/console/console.c` collapses success and failure into the same `break;`), and
+anything about the other boards.
+
+### The core dump
+
+One check cannot be a table row. `coredump-test` provokes a real fault, and every path that
+prints a core dump is terminal — the dump ends in `cb_signal()`, which is `[[noreturn]]`,
+and every `crt0_exit()` panic ends with `INTERRUPTION_OFF` and never re-enables — so nothing
+answers afterwards. The script asserts the dump's structure, then resets the board over SWD
+and waits for it to come back.
+
+```sh
+coredump-test --name u5g9 -n                     # dry run
+coredump-test --name u5g9 --sn <ST-Link serial>  # --sn: leave the other boards alone
+```
+
+It is the only on-target test that reaches `record_printLog()`, whose marks are its loop's
+termination condition — so ascending timestamps with no repeat is a real assertion, verified
+by mutation (unmarked, the board reprinted one record 3865 times and failed on two
+assertions). It cannot, however, detect a `dumplog` inheriting those marks: that needs a
+prompt after a dump, which no ARM board offers. Only §7 covers it.
+
+This layer does not replace the hardware verification `CLAUDE.md` requires before changes
+under `OS/`, `Ports/` or `Applications/` reach `develop`; it makes it repeatable.

@@ -134,6 +134,19 @@ target_link_libraries(libx_p PUBLIC system_compiler_flags)
 # Lib_xxxx components (user) -> liblibx_u.a
 add_library(libx_u)
 # C library integration (newlib, picolibc or llvmlibc, selected by C_LIBRARY)
+#
+# The GD32VF103 has 128 KB of flash, and under C_LIBRARY=llvmlibc more than a
+# third of it went on one thing: LLVM libc's correctly-rounded float printing,
+# 47 KB of DyadicFloat<320> and BigInt arithmetic that newlib does in 8 KB. The
+# image did not fit at all.
+#
+# Nothing in this variant formats a floating-point value -- no %a/%e/%f/%g in any
+# of its 52 sources, and no downloadable application targets this board -- so the
+# conversions are dropped, which is what buys the room for everything else.
+# Read the WARNING on __printf_float in OS/Lib_generics/llvmlibc/llvmlibc.c
+# before adding a float format to anything this variant compiles: there is no
+# null guard, and such a format would branch to address 0 at run time.
+set(LLVMLIBC_PRINTF_FLOAT OFF)
 add_clib_manager_source(libx_u)
 add_source_with_define(libx_u ${PATH_OSYS}/Lib_generics/text/text.c CONFIG_MAN_TEXT_S)
 target_link_libraries(libx_u PUBLIC system_compiler_flags)

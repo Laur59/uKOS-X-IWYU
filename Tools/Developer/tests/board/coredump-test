@@ -1,0 +1,262 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2026 Laurent von Allmen
+
+"""Provoke a real core dump on a flashed uKOS-X board and check what it printed.
+
+This is the only on-target test that reaches record_printLog(). Every call site
+of that function is terminal - the core dump ends in cb_signal(), which is
+[[noreturn]] and blinks an LED forever, and every crt0_exit() panic ends with
+INTERRUPTION_OFF and never re-enables - so the console cannot survive to be
+asked a second question. That is why this cannot be a row in a board table and
+needs its own script: it kills the console, then resets the board over SWD.
+
+What it actually proves. record_printLog() selects the oldest unmarked record,
+prints it, marks it, and repeats; the marks are the loop's termination
+condition. So a single dump does exercise the mark mechanism end to end: if the
+marks were not set the oldest record would print forever, and if the clearing
+loop added in 92f41db34 sat inside the print loop rather than after it the same
+thing would happen. Strictly increasing timestamps with no repeat is therefore
+a real assertion about that code, not just a smoke test.
+
+What it does not prove. The defect the marks were leaking into - dumplog
+inheriting marks that record_printLog() left in the LIVE buffer - is not
+reachable from a console on any ARM board, for the reason in the first
+paragraph. Only the host suite covers that. See Tools/Developer/tests/DEFECTS.md.
+
+Exit codes match ukos-serial and run-board-tests: 0 passed, 1 error, 2 the
+board did not come back after the reset, 3 an assertion failed.
+"""
+
+import argparse
+import json
+import os
+import re
+import subprocess
+import sys
+import time
+
+# realpath, not abspath: this is reached through Tools/Developer/bin, and the
+# shell tools resolve their own symlink the same way with ${0:A}.
+KHERE = os.path.dirname(os.path.realpath(__file__))
+KSERIAL = os.path.normpath(os.path.join(KHERE, "..", "..", "ukos-serial"))
+
+# Per board: an address whose read faults, and the device name the ST-Link
+# programmer reports for it. The address is deliberately far outside anything
+# the memory map claims, so it stays valid across firmware revisions; which
+# fault it raises is not fixed (an MPU region can claim it as DACCVIOL before
+# the bus reports PRECISERR), so the exception class is never asserted.
+KBOARDS = {
+    "Discovery_U5G9": {"addr": "F0000000", "device": "STM32U5xx"},
+    "Nucleo_H743":    {"addr": "F0000000", "device": "STM32H7xx"},
+    "Nucleo_L4R5":    {"addr": "F0000000", "device": "STM32L4Rxxx/STM32L4Sxxx"},
+}
+
+KREVIVE_TRIES = 6
+KREVIVE_WAIT = 2          # seconds between attempts
+
+KPROGRAMMER_HINTS = (
+    "/Applications/STM32CubeProgrammer/Contents/Resources/bin/STM32_Programmer_CLI",
+    "/opt/st/stm32cubeprog/bin/STM32_Programmer_CLI",
+)
+
+
+def serial(args, name=None):
+    """Run one ukos-serial subcommand. Returns (exit code, stdout, stderr)."""
+    cmd = [KSERIAL]
+    if name:
+        cmd += ["--name", name]
+    cmd += args
+    p = subprocess.run(cmd, capture_output=True, text=True)
+    return p.returncode, p.stdout, p.stderr
+
+
+def find_programmer(explicit):
+    if explicit:
+        return explicit if os.path.isfile(explicit) else None
+    for cand in KPROGRAMMER_HINTS:
+        if os.path.isfile(cand):
+            return cand
+    from shutil import which
+    return which("STM32_Programmer_CLI")
+
+
+def find_probe(cli, device, verbose):
+    """Serial number of the ST-Link attached to `device`.
+
+    Matching needs a connection, and connecting with mode=UR resets whatever is
+    on the other end, so a board that is not the target can get rebooted here.
+    Pass --sn to address the probe directly and leave the others alone.
+    """
+    listing = subprocess.run([cli, "-getTargetSelList"],
+                             capture_output=True, text=True).stdout + \
+              subprocess.run([cli, "-getTargetSelList"],
+                             capture_output=True, text=True).stderr
+    serials = re.findall(r'Serial:\s*"([^"]+)"', listing)
+    for sn in serials:
+        info = subprocess.run([cli, "-c", "port=SWD", "mode=UR", "sn=" + sn],
+                              capture_output=True, text=True).stdout
+        m = re.search(r"Device name\s*:\s*(\S+)", info)
+        if verbose:
+            print("  probe %s -> %s" % (sn, m.group(1) if m else "?"))
+        if m and m.group(1) == device:
+            return sn
+    return None
+
+
+def check(capture, board, verbose):
+    """Assertions on the core dump text. Returns a list of failure strings."""
+    fails = []
+
+    def want(pattern, why):
+        if not re.search(pattern, capture, re.MULTILINE):
+            fails.append("%s (no match for %r)" % (why, pattern))
+
+    want(r"^System dead! Core DUMP!!", "no core dump banner")
+    want(r"^Exception:\s+\S+", "no exception class line")
+    want(r"^CFSR\s+= 0x[0-9A-F]{8}", "no CFSR line")
+    want(r"^Logs core \d+", "the log section is missing from the dump")
+    want(r"^Stack content before the fault", "the dump stopped before the stack frame")
+
+    records = re.findall(r"^\s*(\d+)-us\s{2}(.+?)\s*$", capture, re.MULTILINE)
+    if not records:
+        # Exactly the pre-fix symptom, had it been reachable here.
+        fails.append("the log section printed no records at all")
+        return fails
+
+    stamps = [int(t) for t, _ in records]
+    if stamps != sorted(stamps):
+        fails.append("records are not in ascending time order: %s" % stamps)
+    if len(set(stamps)) != len(stamps):
+        fails.append("a record was printed more than once - marks are not being set")
+    if verbose:
+        print("  %d log records, %d-us .. %d-us" % (len(stamps), stamps[0], stamps[-1]))
+    return fails
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__,
+                                 formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--name", help="ukos-serial session name")
+    ap.add_argument("--addr", help="override the faulting address (hex, no 0x)")
+    ap.add_argument("--sn", help="ST-Link serial number, to avoid probing every board")
+    ap.add_argument("--programmer", help="path to STM32_Programmer_CLI")
+    ap.add_argument("--timeout", type=int, default=12,
+                    help="seconds to wait for the dump (default 12)")
+    ap.add_argument("-n", "--dry-run", action="store_true",
+                    help="say what would be done, touch nothing")
+    ap.add_argument("--no-reset", action="store_true",
+                    help="leave the board dead instead of resetting it")
+    ap.add_argument("-v", "--verbose", action="store_true")
+    ap.add_argument("--json", action="store_true")
+    args = ap.parse_args()
+
+    if not os.path.isfile(KSERIAL):
+        sys.stderr.write("error: ukos-serial not found next to this script\n")
+        return 1
+
+    rc, out, err = serial(["verify", "--json"], args.name)
+    if rc == 1 and "no session" in (out + err).lower():
+        sys.stderr.write("error: no session; start one with: "
+                         "ukos-serial start --port /dev/cu.usbmodemXXXX\n")
+        return 1
+    try:
+        board = json.loads(out)["board"]["Board"]
+    except Exception:
+        sys.stderr.write("error: could not read the board name from "
+                         "'ukos-serial verify --json'\n")
+        return 1
+
+    if board not in KBOARDS:
+        sys.stderr.write("error: %s has no entry in KBOARDS; add a faulting "
+                         "address for it\n" % board)
+        return 1
+    spec = KBOARDS[board]
+    addr = args.addr or spec["addr"]
+    end = "%08X" % (int(addr, 16) + 0x10)
+
+    cli = find_programmer(args.programmer)
+    if cli is None and not args.no_reset and not args.dry_run:
+        sys.stderr.write("error: STM32_Programmer_CLI not found; the board "
+                         "could not be revived after the dump. Pass "
+                         "--programmer, or --no-reset to accept that.\n")
+        return 1
+
+    print("board      %s" % board)
+    print("fault      dump %s %s" % (addr, end))
+    print("recovery   %s" % ("none (--no-reset)" if args.no_reset else "SWD reset via %s" % cli))
+    if args.dry_run:
+        print("\ndry run: nothing was sent, the board is untouched")
+        return 0
+
+    logpath = serial(["log", "--path"], args.name)[1].strip()
+    try:
+        with open(logpath, errors="replace") as fh:
+            mark = len(fh.readlines())
+    except OSError as exc:
+        sys.stderr.write("error: cannot read the session log: %s\n" % exc)
+        return 1
+
+    print("\nprovoking the fault ...")
+    serial(["send", "dump %s %s" % (addr, end),
+            "--timeout", str(args.timeout)], args.name)
+
+    with open(logpath, errors="replace") as fh:
+        capture = "".join(fh.readlines()[mark:])
+
+    # The send's own exit code is not the fault signal. It reads until the
+    # prompt, and the prompt printed *before* the command can land after its
+    # mark - so the very same fault exits 2 on Discovery_U5G9 and 0 on
+    # Nucleo_H743. Ask the capture what happened instead.
+    if not re.search(r"^System dead! Core DUMP!!", capture, re.MULTILINE):
+        if serial(["send", "uKOS", "--timeout", "6"], args.name)[0] == 0:
+            # Still answering, so it never faulted: nothing to reset.
+            sys.stderr.write("error: reading %s did not fault - the console is "
+                             "still answering. Pick another address with "
+                             "--addr.\n" % addr)
+            return 1
+        print("warning: the console stopped but printed no core dump banner")
+
+    fails = check(capture, board, args.verbose)
+
+    revived = None
+    if not args.no_reset:
+        print("resetting the board over SWD ...")
+        sn = args.sn or find_probe(cli, spec["device"], args.verbose)
+        if sn is None:
+            sys.stderr.write("error: no ST-Link reporting %s\n" % spec["device"])
+            return 1
+        subprocess.run([cli, "-c", "port=SWD", "mode=UR", "sn=" + sn, "-rst"],
+                       capture_output=True, text=True)
+
+        # The reset returns as soon as the core is released, well before the
+        # firmware has booted far enough to answer, so a single verify here
+        # reports a healthy board as dead. Retry rather than sleep a fixed
+        # guess: a cold start is a few seconds, a slow one longer.
+        revived = False
+        for _ in range(KREVIVE_TRIES):
+            time.sleep(KREVIVE_WAIT)
+            if serial(["verify"], args.name)[0] == 0:
+                revived = True
+                break
+        print("console    %s" % ("back up" if revived else "did NOT come back"))
+
+    if args.json:
+        print(json.dumps({"board": board, "address": addr,
+                          "failures": fails, "revived": revived}, indent=2))
+
+    if fails:
+        print("\nFAILED")
+        for f in fails:
+            print("  - %s" % f)
+        return 3
+    if revived is False:
+        print("\nDUMP OK, but the board did not come back")
+        return 2
+    print("\nPASS")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

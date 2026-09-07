@@ -8,14 +8,6 @@ cmake_minimum_required(VERSION 3.31)
 # uKOS-X CMake module setup
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/../../../cmake")
 
-# Microcontroller description (mandatory variables)
-set(SOC rp2350)
-set(CORE "CORTEX_M33" CACHE STRING "Target core selection")
-set_property(CACHE CORE PROPERTY STRINGS
-    CORTEX_M33
-    RV32IMAC
-)
-
 # Project path configuration
 # - PATH_UKOS   --> Main uKOS-X folder
 # - PATH_OSYS   --> Main OS folder
@@ -24,23 +16,10 @@ set_property(CACHE CORE PROPERTY STRINGS
 # - PATH_PORT   --> PATH_UKOS/Ports
 include(set-project-paths)
 
-if(${CORE} STREQUAL "CORTEX_M33")
-  include(select-arm-toolchain)
-  # Flash programming script selection
-  set(BURN picotool-arm)
-    add_compile_definitions(
-        "uKOS_NAME=ARM"
-    )
+if(NOT DEFINED CORE OR CORE STREQUAL "CORTEX_M33")
+    include(select-arm-toolchain)
 else()
-  include(select-riscv-toolchain)
-  # Flash programming script selection
-  set(BURN picotool-riscv)
-    add_compile_definitions(
-        "uKOS_NAME=RISC-V"
-    )
-  # RISC-V ISA extensions per the RP2350 datasheet (Hazard3) + user/privileged split
-  # capability (M+U mode + PMP). Resulting -march: rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb
-  set(CPU_FEATURES "zicsr;zifencei;zba;zbb;zbs;zbkb;user_mode")
+    include(select-riscv-toolchain)
 endif()
 
 project(
@@ -48,6 +27,26 @@ project(
     VERSION 1.0
     LANGUAGES C ASM
 )
+# Microcontroller description (mandatory variables)
+set(SOC rp2350)
+if(NOT DEFINED CORE OR CORE STREQUAL "CORTEX_M33")
+    set(CORE CORTEX_M33)
+    # Flash programming script selection
+    set(BURN picotool-arm)
+    add_compile_definitions(
+        "uKOS_NAME=ARM"
+    )
+else()
+    set(CORE RV32IMAC)
+    # Flash programming script selection
+    set(BURN picotool-riscv)
+    add_compile_definitions(
+        "uKOS_NAME=RISC-V"
+    )
+    # RISC-V ISA extensions per the RP2350 datasheet (Hazard3) + user/privileged split
+    # capability (M+U mode + PMP). Resulting -march: rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb
+    set(CPU_FEATURES "zicsr;zifencei;zba;zbb;zbs;zbkb;user_mode")
+endif()
 
 # Apply project settings
 include(proj_config)
@@ -200,6 +199,7 @@ target_sources(tool_u PRIVATE
     ${PATH_OSYS}/CLI/bangla/BaNgLa.c
     ${PATH_OSYS}/CLI/console/console.c
     ${PATH_OSYS}/CLI/cycle/cycle.c
+    ${PATH_OSYS}/CLI/date/date.c
     ${PATH_OSYS}/CLI/dump/dump.c
     ${PATH_OSYS}/CLI/dumplog/dumplog.c
     ${PATH_OSYS}/CLI/dumptrace/dumptrace.c

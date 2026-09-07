@@ -1,0 +1,262 @@
+{
+  "board":   "Nucleo_H743",
+  "variant": "Variant_Test",
+  "note": "Assert SHAPE, never a value that moves: timestamps, addresses, uptimes, the VCS# and section sizes all change between builds. A row pinning one of those is a test that gets deleted rather than fixed.",
+
+  "tests": [
+    {
+      "id": "uKOS/identity",
+      "cmd": "uKOS",
+      "expect": ["^Target:$",
+                 "^Board:   Nucleo_H743$",
+                 "^SoC:     STM32H743$",
+                 "^Core:    CORTEX_M7$",
+                 "^VCS#:    [0-9a-f]{7,}(-dirty)?$"],
+      "refute": ["Incorrect arguments"],
+      "timeout": 10,
+      "requires": ["module:uKOS"],
+      "note": "the VCS# is asserted by shape only; it changes with every commit"
+    },
+    {
+      "id": "uKOS/history-notice-once",
+      "cmd": "uKOS -history",
+      "expect": ["^uKOS History$", "^1984 - 1986, uKOS-0$", "^Main contributors to uKOS-X:$"],
+      "refute": ["^Target:$"],
+      "timeout": 10,
+      "requires": ["module:uKOS"],
+      "note": "the notice used to be printed twice here; fixed in 123639afc"
+    },
+    {
+      "id": "uKOS/bad-option",
+      "cmd": "uKOS -xyz",
+      "expect": ["^Incorrect arguments\\.$"],
+      "refute": ["^Target:$", "uKOS History"],
+      "timeout": 10,
+      "requires": ["module:uKOS"]
+    },
+
+    {
+      "id": "list/cli-family",
+      "cmd": "list X",
+      "expect": ["^uKOS-X module list\\.$",
+                 "^FLASH +[0-9]+  X[0-9]{2}_  v ?[0-9]+\\.[0-9]+   \\S+"],
+      "refute": ["does not exist"],
+      "timeout": 15,
+      "requires": ["module:list"]
+    },
+    {
+      "id": "list/unknown-family",
+      "cmd": "list W",
+      "expect": ["^This family does not exist\\.$"],
+      "timeout": 10,
+      "requires": ["module:list"],
+      "note": "W is not a family letter at all (modules.h defines A U X F Q D L K N P T Z C G S M), so this cannot start passing because a manager was added"
+    },
+
+    {
+      "id": "man/known-module",
+      "cmd": "man date",
+      "expect": ["^Set/display the date$", "date -gmt \\[GMT\\[\\+/-n\\]\\]"],
+      "refute": ["^Protocol error\\.$"],
+      "timeout": 10,
+      "requires": ["module:man", "module:date"]
+    },
+    {
+      "id": "man/unknown-module",
+      "cmd": "man nosuchmodule",
+      "expect": ["^Protocol error\\.$"],
+      "timeout": 10,
+      "requires": ["module:man"]
+    },
+
+    {
+      "id": "date/read",
+      "cmd": "date",
+      "expect": ["^Set/display the date\\.$",
+                 "^From timer: Epoch = [0-9]+, UTC time:    \\w{3} \\w{3} [ 0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} [0-9]{4}$",
+                 "^From timer: Epoch = [0-9]+, Local time:  \\w{3} \\w{3} [ 0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} [0-9]{4}$"],
+      "refute": ["Incorrect", "Calendar not available"],
+      "timeout": 10,
+      "requires": ["module:date"],
+      "note": "four spaces after 'UTC time:' and two after 'Local time:' are part of the contract"
+    },
+    {
+      "id": "date/impossible-date-rejected",
+      "cmd": "date 31 2 2025 12 0 0",
+      "expect": ["^Incorrect format\\.$"],
+      "timeout": 10,
+      "requires": ["module:date"],
+      "note": "31 February must not be normalised into 3 March"
+    },
+    {
+      "id": "date/leap-day-accepted",
+      "cmd": "date 29 2 2024 12 0 0",
+      "refute": ["^Incorrect format\\.$", "Calendar not available"],
+      "timeout": 10,
+      "requires": ["module:date"],
+      "note": "changes the board clock; date/read above no longer reflects real time afterwards"
+    },
+    {
+      "id": "date/bad-flag",
+      "cmd": "date -xyz",
+      "expect": ["^Incorrect format\\.$"],
+      "timeout": 10,
+      "requires": ["module:date"]
+    },
+
+    {
+      "id": "rnd/single",
+      "cmd": "rnd",
+      "expect": ["^Give random number\\(s\\)\\.$", "^[0-9]+$"],
+      "refute": ["^Protocol error\\.$"],
+      "timeout": 10,
+      "requires": ["module:rnd"]
+    },
+    {
+      "id": "rnd/hardware-generator",
+      "cmd": "rnd -hard 2",
+      "expect": ["^[0-9]+$"],
+      "refute": ["^Protocol error\\.$"],
+      "timeout": 10,
+      "requires": ["module:rnd"],
+      "note": "the H743 has a TRNG; only the shape is assertable, never a value"
+    },
+
+    {
+      "id": "process/list",
+      "cmd": "process",
+      "expect": ["console"],
+      "refute": ["Freezed"],
+      "timeout": 15,
+      "requires": ["module:process"]
+    },
+
+    {
+      "id": "szkern/footprint",
+      "cmd": "szkern",
+      "expect": ["^uKernel memory footprint information\\.$",
+                 "^uKernel objects - statistics (on|off)$",
+                 "^Number of daemons          +[0-9]+$",
+                 "^Section text:      addr = 0x[0-9A-F]{16}, size = 0x[0-9A-F]{8} "],
+      "timeout": 15,
+      "requires": ["module:szkern"],
+      "note": "sizes and addresses are board specific; only the shape is asserted"
+    },
+
+    {
+      "id": "mutex/list",
+      "cmd": "mutex",
+      "expect": ["^List of the system mutexes\\.$", "^Mutexes used by the core 0$"],
+      "timeout": 15,
+      "requires": ["module:mutex"]
+    },
+    {
+      "id": "semaphore/list",
+      "cmd": "semaphore",
+      "expect": ["^List of the system semaphores\\.$", "^Semaphores used by the core 0$"],
+      "refute": ["Mutex identifier"],
+      "timeout": 15,
+      "requires": ["module:semaphore"],
+      "note": "mutex and semaphore are near-identical; the wording is what says which ran"
+    },
+
+    {
+      "id": "object/summary",
+      "cmd": "object",
+      "expect": ["^uKOS-X object information\\.$",
+                 "^Objects used by the core 0$",
+                 "^Available processes      = +[0-9]+, max\\. used processes      = +[0-9]+, used processes      = +[0-9]+$"],
+      "timeout": 15,
+      "requires": ["module:object"]
+    },
+    {
+      "id": "object/long-form-mutx-refused",
+      "cmd": "object 0 -mutx 0",
+      "expect": ["^The object does not exist\\.$"],
+      "timeout": 10,
+      "requires": ["module:object"],
+      "note": "DEFECT object.c:138 tests argv[1] where every sibling tests argv[2]; this row pins CURRENT behaviour and turns red when it is fixed"
+    },
+    {
+      "id": "object/bad-core",
+      "cmd": "object 9 -proc 0",
+      "expect": ["^The core does not exist\\.$"],
+      "timeout": 10,
+      "requires": ["module:object"]
+    },
+
+    {
+      "id": "dumplog/header",
+      "cmd": "dumplog",
+      "expect": ["^Log dump\\.$",
+                 "^Log provided by the core 0$",
+                 "^ +Time \\[us\\]  Category "],
+      "timeout": 15,
+      "requires": ["module:dumplog"]
+    },
+    {
+      "id": "dumptrace/header",
+      "cmd": "dumptrace",
+      "expect": ["^Trace dump\\.$",
+                 "^Trace provided by the core 0$",
+                 "^ +Time \\[us\\]   Parameter "],
+      "timeout": 15,
+      "requires": ["module:dumptrace"]
+    },
+
+    {
+      "id": "run/nothing-downloaded",
+      "cmd": "run",
+      "expect": ["^No application in the memory!$"],
+      "timeout": 10,
+      "requires": ["module:run"],
+      "note": "assumes nothing has been loaded; a preceding hexloader/sloader row would invalidate it"
+    },
+
+    {
+      "id": "test_ram/one-pass",
+      "cmd": "test_ram 1",
+      "expect": ["^Test passed$"],
+      "refute": ["Memory error:", "Hardware problem\\.", "^Protocol error\\.$"],
+      "timeout": 120,
+      "requires": ["module:test_ram"],
+      "note": "includes a 60 s retention phase, hence the long timeout"
+    },
+
+    {
+      "id": "kill/unknown-module",
+      "cmd": "kill nosuchmodule",
+      "expect": ["^The module does not exist\\.$"],
+      "timeout": 10,
+      "unsafe": true,
+      "requires": ["module:kill", "unsafe"],
+      "note": "kill is on ukos-serial's unsafe list; this argument cannot kill anything"
+    },
+    {
+      "id": "kill/no-argument",
+      "cmd": "kill",
+      "expect": ["^Protocol error\\.$"],
+      "timeout": 10,
+      "unsafe": true,
+      "requires": ["module:kill", "unsafe"],
+      "note": "kill is the only CLI module that validates its argument count"
+    },
+
+    {
+      "id": "echo/loopback",
+      "cmd": "echo",
+      "expect": ["^Protocol error\\.$"],
+      "timeout": 10,
+      "requires": ["module:echo", "hw:loopback"],
+      "note": "needs two serial managers wired together; skipped on a bare board"
+    },
+    {
+      "id": "wki2c/read",
+      "cmd": "wki2c 0 -R 50 1",
+      "refute": ["^Protocol error\\.$"],
+      "timeout": 10,
+      "requires": ["module:wki2c", "hw:i2c-device"],
+      "note": "needs a device answering at a known address"
+    }
+  ]
+}

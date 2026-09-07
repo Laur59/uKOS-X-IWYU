@@ -23,6 +23,20 @@ option(USER_MODE "User mode activated" ON)
 
 option(CONSTANT_SIG "Use SHA-256 of zero to generate signature" OFF)
 
+# POSIX timezone support in the LLVM libc build (OS/Lib_generics/llvmlibc/llvmlibc_tz.c).
+# Costs about 2.4 KB of flash and 180 B of RAM; OFF leaves local time equal to UTC,
+# as it was before the support existed. A variant with no room for it overrides this
+# with set(LLVMLIBC_TIMEZONE OFF) before its add_clib_manager_source() call.
+option(LLVMLIBC_TIMEZONE "POSIX timezone support in the LLVM libc build" ON)
+
+# Floating-point conversions in the LLVM libc printf (the __printf_float definition in
+# OS/Lib_generics/llvmlibc/llvmlibc.c). OFF keeps libc.a's float_impl.cpp.obj out of the
+# link -- 39 KB on a Cortex-M7 up to 77 KB on RV32 -- at the price of %a/%e/%f/%g branching
+# to address 0, the library having no null guard. Only a variant that provably never
+# formats a floating-point value may override this with set(LLVMLIBC_PRINTF_FLOAT OFF)
+# before its add_clib_manager_source() call.
+option(LLVMLIBC_PRINTF_FLOAT "Floating-point conversions in the LLVM libc printf" ON)
+
 add_library(core_compiler_flags INTERFACE)
 
 # RISC-V "user_mode" capability pre-scan.
@@ -593,6 +607,19 @@ macro(add_clib_manager_source the_lib)
         add_source_with_define(${the_lib} ${PATH_OSYS}/Lib_generics/picolibc/picolibc.c CONFIG_MAN_PICOLIBC_S)
     elseif(C_LIBRARY STREQUAL "llvmlibc")
         add_source_with_define(${the_lib} ${PATH_OSYS}/Lib_generics/llvmlibc/llvmlibc.c CONFIG_MAN_LLVMLIBC_S)
+        # POSIX environment and timezone: setenv/getenv/unsetenv, tzset and the
+        # localtime_r / localtime / mktime overrides that LLVM libc lacks. Kept
+        # in its own translation unit; CONFIG_MAN_LLVMLIBC_S is recorded above.
+        # With LLVMLIBC_TIMEZONE=OFF the file shrinks to the setenv/tzset stubs.
+        target_sources(${the_lib} PRIVATE ${PATH_OSYS}/Lib_generics/llvmlibc/llvmlibc_tz.c)
+        if(NOT LLVMLIBC_TIMEZONE)
+            add_compile_definitions(KLLVMLIBC_WITH_TIMEZONE_S=false)
+            file(APPEND "${ARTEFACTS_DIR}/FLASH.cnf" "-DKLLVMLIBC_WITH_TIMEZONE_S=false ")
+        endif()
+        if(NOT LLVMLIBC_PRINTF_FLOAT)
+            add_compile_definitions(KLLVMLIBC_WITH_PRINTF_FLOAT_S=false)
+            file(APPEND "${ARTEFACTS_DIR}/FLASH.cnf" "-DKLLVMLIBC_WITH_PRINTF_FLOAT_S=false ")
+        endif()
     else()
         add_source_with_define(${the_lib} ${PATH_OSYS}/Lib_generics/newlib/newlib.c CONFIG_MAN_NEWLIB_S)
     endif()

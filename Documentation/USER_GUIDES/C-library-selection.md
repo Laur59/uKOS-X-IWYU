@@ -162,19 +162,22 @@ ls $PATH_LLVM_RVXXL/lib/clang-runtimes/*/include/__llvm-libc-common.h
 
 Stock baremetal LLVM libc defaults `CLOCKS_PER_SEC` to **100** on Arm, matching the
 centiseconds an Arm semihosting `SYS_CLOCK` time source returns. uKOS-X drives `clock()`
-from its own 1-µs kernel counter, so the ARM toolchain is built with
+from its own 1-µs kernel counter, so the ARM toolchain is built with two patches from
+`Patches/llvm-arm/<version>/` in the toolchain build scripts:
 
-```
-ukos_patches/0001-newlib-llvm-libc-use-microsecond-also-for-32-bit-Arm.patch
-```
+- the one that drops `__arm__` from the centisecond branch of
+  `libc/include/llvm-libc-macros/baremetal/time-macros.h`, moving 32-bit Arm to the
+  microsecond branch — `0005-llvm-libc-use-microsecond-also-for-32-bit-Arm-cores.patch`
+  in 23.1.0;
+- the one that nests `arm-software/embedded/patches/newlib/0002-Patch-time.h-for-uKOS.patch`
+  into the ATfE tree, so newlib's own `machine/time.h` reports 1'000'000 on Arm rather than
+  100 — `0001-Add-patch-so-that-newlib-uses-also-microsecond-for-A.patch` in 23.1.0.
 
-which moves 32-bit Arm to the microsecond branch of
-`libc/include/llvm-libc-macros/baremetal/time-macros.h`.
+Refer to them by what they do rather than by number: the directory is keyed on the LLVM
+version and the series is renumbered at every bump — the same logical change has been
+0002, 0001 and 0001/0005 across 21.1.8, 22.1.8 and 23.1.0.
 
-That single patch covers both C libraries: besides the LLVM libc header it adds
-`arm-software/embedded/patches/newlib/0002-Patch-time.h-for-uKOS.patch` to the ATfE tree,
-which makes newlib's own `machine/time.h` report 1'000'000 on Arm rather than 100. The GCC
-toolchain applies that same newlib patch from
+The GCC toolchain applies that same newlib patch from
 `Patches/newlib/<version>/0002-Patch-time.h-for-uKOS.patch`. So on a uKOS-X toolchain every
 C library agrees on the microsecond, and the `-D_CLOCKS_PER_SEC_=1000000` /
 `-D_MACHTIME_H_` pair that `proj_config.cmake` passes for newlib and picolibc is a second,
@@ -335,9 +338,10 @@ supplies extra glue the other two get from the library itself.
 | `clock()` | library | library | defined by uKOS-X, which keeps `clock.cpp.obj` out of the link |
 | `<sys/time.h>` | library | library | compatibility header in `OS/Lib_generics/llvmlibc/compat/sys/` |
 | `CLOCKS_PER_SEC` | toolchain patch | toolchain | toolchain patch (§2.5) |
-| `setenv` / `tzset` | library | library | stubs — accepted and ignored (§8) |
+| `setenv`, `getenv`, `unsetenv`, `tzset` | library | library | TZ-only environment and POSIX TZ parser in `llvmlibc_tz.c` (§8) |
+| `localtime_r`, `localtime`, `mktime` | library | library | uKOS-X overrides in `llvmlibc_tz.c`, so local time honours TZ (§8) |
 | Termination | `_exit` | `_exit` | `exit`, `_exit`, `__llvm_libc_exit` → `crt0_exit` |
-| `gmtime_r`, `mktime`, `strftime`, … | library | library | library |
+| `gmtime_r`, `asctime`, `strftime`, … | library | library | library |
 
 ### Compatibility symbols for prebuilt newlib archives
 
@@ -465,24 +469,17 @@ assessed in [TLS_SUPPORT_ASSESSMENT.md](TLS_SUPPORT_ASSESSMENT.md).
 Beyond the multi-core `errno` note in §6.4, LLVM libc carries limitations the other two
 libraries do not.
 
-- **Local time runs in UTC.** The cause is not the `setenv` / `tzset` stubs — LLVM libc has
-  no timezone support at all, so nothing would read a stored TZ string. `localtime_r()` and
+- **Timezone support is uKOS-X's own** (see §8.1). LLVM libc has none: `localtime_r()` and
   `localtime()` return UTC (`libc/src/time/time_utils.h:176`, *"TODO: timezone support"*),
-  `get_timezone_offset()` is a constant stub (`time_utils.h:351`), and `mktime()` treats the
-  `struct tm` as UTC and forces `tm_isdst = 0` (`libc/src/time/time_utils.cpp:238`). The
-  calendar manager still calls `setenv("TZ", ...)` + `tzset()`
-  (`OS/Lib_generics/calendar/calendar.c:120,246`) because newlib and picolibc honour them;
-  under LLVM libc the call is simply inert.
-
-  Honouring TZ would mean uKOS-X implementing the timezone logic itself: a POSIX TZ parser
-  (`CET-1CEST,M3.5.0/2,M10.5.0/2` → std/dst names, offsets, `Mm.w.d/h` transition rules), a
-  DST-in-effect test, and overrides for `localtime_r`, `localtime` **and** `mktime` — the
-  last because `date <d> <m> <y> <h> <m> <s>` converts local time back to an epoch and would
-  otherwise set the clock off by the offset. The three are strong symbols in separate
-  `libc.a` members, so uKOS-X definitions would win the link the way the `dprintf` shim
-  already does. Two gaps would remain: `ctime()` / `ctime_r()` call the internal helper
-  directly (`libc/src/time/ctime.cpp:23`) and would stay UTC, and LLVM libc's `struct tm`
-  has no `tm_gmtoff` / `tm_zone` to populate. Deferred until upstream implements its TODO.
+  `get_timezone_offset()` is a constant stub (`time_utils.h:351`), `mktime()` treats the
+  `struct tm` as UTC and forces `tm_isdst = 0` (`libc/src/time/time_utils.cpp:238`), there
+  is no `tzset()` at all, and `setenv` / `getenv` / `unsetenv` are declared but never
+  defined. `OS/Lib_generics/llvmlibc/llvmlibc_tz.c` fills all of it in, so the calendar
+  manager behaves as it does under newlib and picolibc. Two gaps remain: `ctime()` and
+  `ctime_r()` call the internal helper directly (`libc/src/time/ctime.cpp:23`) and stay in
+  UTC, and LLVM libc's `struct tm` has no `tm_gmtoff` / `tm_zone` to populate (the library
+  declares no `tzname[]`, `timezone` or `daylight` either, so those are not provided).
+  Why the support lives here rather than in a patched toolchain is §8.2.
 - **No `FILE*`.** File-based stdio (`fopen`, `fprintf`) is not available on baremetal LLVM
   libc; uKOS-X uses `dprintf` to file descriptors, which the shim covers.
 - **No POSIX `sys/` headers** apart from `<sys/queue.h>`. Only `<sys/time.h>` has a
@@ -498,6 +495,276 @@ libraries do not.
   so its `__errno` shim (§5) hands prebuilt code the very same `int` the kernel swaps. Under
   LLVM libc the shim returns the address of whichever `shared_errno` its own image links.
 - **Clang only.** GCC has no LLVM libc path; asking for it is a configuration error.
+
+### 8.1 Timezone support — `llvmlibc_tz.c`
+
+`OS/Lib_generics/llvmlibc/llvmlibc_tz.c` supplies the half of the timezone story LLVM libc
+leaves out, so that `date` prints a real local time instead of a second copy of UTC:
+
+| Provided | What it does |
+|---|---|
+| `setenv`, `getenv`, `unsetenv` | a TZ-only environment — any other variable is accepted and discarded |
+| `tzset` | parses the TZ string into a per-core descriptor |
+| `localtime_r`, `localtime` | shift UTC by the offset in force at that instant, then call the library's own `gmtime_r` |
+| `mktime` | civil local time → epoch, resolving `tm_isdst = -1` against the rules, then normalise the caller's `struct tm` |
+
+The parser takes the full POSIX form `std offset [dst [offset] [,start[/time],end[/time]]]`:
+`<...>`-quoted designations, `[+|-]hh[:mm[:ss]]` offsets, and `Jn` / `n` / `Mm.w.d[/time]`
+transition rules, including `w = 5` for "last" and a start later than the end for the
+southern hemisphere. A DST designation with no rule falls back on the current United States
+rules, as newlib and musl do — POSIX leaves that case implementation defined. Anything that
+does not parse leaves the descriptor on UTC.
+
+The three time functions are strong symbols in their own `libc.a` members
+(`localtime.cpp.obj`, `localtime_r.cpp.obj`, `mktime.cpp.obj`) that nothing else in the
+library references, so these definitions win the link and those members are never pulled in
+— the same mechanism the `dprintf` shim uses. `gmtime_r` is deliberately left to the
+library. A downloadable application picks the overrides up through `-Wl,--just-symbols`,
+because all four entry points are global symbols in `FLASH.elf`.
+
+State is per core, matching the calendar manager's own per-core TZ strings; on a single-core
+SoC `GET_RUNNING_CORE` is the constant `0U` and the indexing costs nothing.
+
+**Cost.** Measured as the difference in the linker's `prgm_code` / `prgm_data` report,
+`cmake --preset llvm -DC_LIBRARY=llvmlibc`, ATfE 23.1.0:
+
+| Variant | flash | RAM |
+|---|---|---|
+| the eleven single-core ARM variants | +2412 … +2572 B | +160 … +192 B |
+| `MAiXDUiNO_K210` (RV32, two cores) | +3104 B | +0 B (`.bss` unchanged in the report) |
+| `Pico2_rp2350`, both cores/architectures | +5032 … +5228 B | +352 B |
+| `Longan_Nano_F103` | +2408 B | +176 B |
+
+The object itself is about 2.7 KB of `.text` everywhere; the two outliers are second-order
+effects. `Pico2_rp2350` is the only variant without the `date` CLI, so nothing referenced
+`gmtime_r` before and LLVM libc's `time_utils.cpp.obj` (2350 B) now joins the link for the
+first time. The K210 pays for two cores' worth of descriptor and for RV32 code density.
+
+**Turning it off.** `LLVMLIBC_TIMEZONE` (cache option, default `ON`) reduces the file to the
+`setenv` / `tzset` stubs it held before the support existed; local time is then equal to UTC
+and LLVM libc's own `localtime_r` / `mktime` are linked. A variant with no room overrides it
+before its `add_clib_manager_source()` call:
+
+```cmake
+set(LLVMLIBC_TIMEZONE OFF)
+add_clib_manager_source(libx_u)
+```
+
+`-DKLLVMLIBC_WITH_TIMEZONE_S=false` is recorded in `Artefacts/FLASH.cnf` when the option is
+off. **No variant currently sets it.** `Longan_Nano_F103` did between `e8934a55b` and the
+toolchain fix in §8.3 — the support overflowed its 128 KB by 1056 B — but it now has 39% of
+its flash free and carries the timezone code like every other board.
+
+### 8.2 Why this is not a toolchain patch
+
+The obvious alternative — patch upstream LLVM libc (borrowing from this code or from
+picolibc), rebuild the toolchains, and let `libc.a` carry the feature — was measured and
+rejected. This fork already patches the toolchain for `CLOCKS_PER_SEC` (§2.5), so the idea
+looks reasonable; it is not.
+
+| | `llvmlibc_tz.c` (today) | patched into `libc.a` |
+|---|---|---|
+| system flash, the 15 variants with `date` | baseline | **−126 B** |
+| system flash, `Longan_Nano_F103` | overflows by 1056 B | **still overflows by ~930 B** |
+| system flash, `Pico2_rp2350` | +5228 B | ≈ −4 KB (board is at 8 % of 4 MB) |
+| flash per application using local time | **0 B** | **+2.6 KB** and its own `time_utils` |
+| application behaviour | correct local time | **UTC** — the bug returns |
+| per-core TZ (K210, RP2350) | supported | lost — a libc has one global TZ |
+| build cost | none | ~1 h per C-library variant, two delivery mechanisms |
+| recurring cost | none | rebase the patch series at every LLVM bump |
+
+**On-demand linking is worth 126 bytes.** The one structural advantage of `libc.a` is
+per-member extraction: uKOS-X links its own libraries with `-Wl,-whole-archive`
+(`Ports/cmake/system.cmake:242-255`) and passes **no `--gc-sections` on any path** — the
+only occurrence in the tree is the `-Wl,--no-gc-sections` at `system.cmake:288-290` that
+cancels `picolibc.specs` — whereas `-lc` is driver-injected at the end of the link line,
+outside that wrapper. But almost everything in the file is reachable: `calendar.c:120,246`
+calls `setenv` + `tzset` unconditionally, and 15 of the 16 variants compile
+`OS/CLI/date/date.c`, which calls `localtime_r`, `mktime`, `gmtime_r` and `asctime`. From
+the call graph (`llvm-objdump -r -d` on `llvmlibc_tz.o`), only `getenv` and `unsetenv`
+— 126 B together — are unreferenced. `Pico2_rp2350` is the one exception, being the only
+variant without `date`; it has 4 MB of flash.
+
+**It would break the downloadable applications.** LLVM libc is built with hidden
+visibility, so every libc symbol in `FLASH.elf` is LOCAL and `-Wl,--just-symbols` cannot
+hand it over — the same boundary that makes `llvmlibc_app_stdio.c` necessary and gives an
+application its own `errno` (§8). Today the four entry points are global, so an
+application binds to the system image, pays nothing, and shares the TZ the calendar
+manager set:
+
+```
+0800f164 T localtime_r    <- uKOS-X, GLOBAL   0803761c t memcpy    <- libc, local
+0800f2ba T mktime         <- uKOS-X, GLOBAL   08042d68 t gmtime_r  <- libc, local
+```
+
+Inside `libc.a` they would be local, so each application would link its own copy **and its
+own empty TZ environment**, printing UTC unless it called `setenv` + `tzset` itself.
+
+**This implementation is already the smallest of the three.** Measured with
+`llvm-size --format=sysv` on the `armv7m_hard_fpv4_sp_d16_exn_rtti_unaligned_size` multilib
+of each installed toolchain:
+
+| | TZ parser | `localtime_r`+`localtime`+`mktime`+`gmtime_r` | flash | static RAM | also drags in |
+|---|---|---|---|---|---|
+| newlib | 2321 B | 3416 B | ~5961 B | 132 B | `siscanf` 5886 B + `_malloc_r` 2622 B |
+| picolibc | 1456 B | 2128 B | ~3600 B | 120 B | `sscanf` 2983 B + `getenv`/`environ` 198 B |
+| **`llvmlibc_tz.c`** | 1064 B | 1472 B | **2716 B** | 176 B | **nothing** |
+
+Borrowing from picolibc would make it *larger*: its `tzset` parses the TZ string with
+`sscanf`, and newlib's also calls `malloc`. Neither dependency exists here — the parser
+reads its own digits. Nor is there an optimization-level win:
+`Tag_ABI_optimization_goals` in `.ARM.attributes` shows LLVM libc is built **`-Os`**
+(Size × 286 members; Aggressive Speed × 6, only `mem*`), exactly what every variant already
+compiles with. newlib is `-O2` and picolibc `-Oz`, so part of the spread in the table above
+is an optimization artefact rather than source quality.
+
+**What upstream is missing is the environment, not the algorithm.** The baremetal ARM
+`libc.a` in ATfE 23.1.0 has no `tzset`, `setenv`, `getenv`, `unsetenv` or `environ` member
+at all; its whole time inventory is `time_utils`, `asctime{,_r}`, `ctime{,_r}`, `difftime`,
+`gmtime{,_r}`, `localtime{,_r}`, `mktime`, `strftime{,_l}` and `timespec_get`. Upstream's
+`time.h` status page marks `tzset` implemented, but that is the hosted entrypoint set. A
+patch would have to invent a process environment for baremetal and extend the entrypoint
+list — a design discussion upstream, not a port. It would also have to be delivered twice:
+ARM patches live in `Patches/llvm-arm/<version>/`, while the RISC-V build script has **no
+patch mechanism at all** and carries its divergence as commits in the `Laur59/RTfE` fork.
+
+Finally, §2.5's rule — patch the toolchain *when `libc.a` and the application must agree on
+a value* — argues the other way here. Timezone behaviour is code, not a shared constant,
+and the point of keeping it in the system image is precisely that the application does
+**not** get an independent copy.
+
+### 8.3 The `Longan_Nano_F103` flash budget
+
+`Longan_Nano_F103` is the only board where the 2.4 KB mattered, and the timezone code is
+not really what is wrong there:
+
+| C library | flash used | of 128 KB | timezone support |
+|---|---|---|---|
+| picolibc | 96 373 B | 73.53 % | yes |
+| newlib | 119 033 B | 90.81 % | yes |
+| **llvmlibc** | **129 781 B** | **99.02 %** | no (option off) |
+
+The LLVM libc image is **10.7 KB larger than the newlib one while delivering less** — the
+newlib build carries a working `tzset`/`localtime`/`mktime` inside its 90.81 %. So the
+obstacle is not `llvmlibc_tz.c`, and shaving it cannot help: the support needs 1056 B more
+than the board has, and its conversion half is only 1472 B in total.
+
+**Where the gap actually is: `printf` float formatting.** Decomposing both maps by archive
+member, the difference is entirely in `libc.a` (+10 837 B; every uKOS-X library is within a
+few bytes, and compiler-rt is 1956 B *smaller*):
+
+| LLVM libc `libc.a` = 62 670 B | | newlib `libc.a` = 51 833 B | |
+|---|---|---|---|
+| `snprintf.cpp.obj` | **58 607** | printf / FILE machinery | 16 918 |
+| | | scanf family | 7 886 |
+| `time_utils.cpp.obj` | 1 440 | float ↔ string (`dtoa`, `mprec`) | 7 958 |
+| `strtoul.cpp.obj` | 1 000 | timezone + time | 5 807 |
+| everything else (13 members) | 1 623 | malloc family | 4 044 |
+| | | everything else | 9 220 |
+
+Of that 58 607 B, **47 738 B is float-to-decimal conversion** — `DyadicFloat<320>`,
+`BigInt<128/320/640>` and `multiword` shift/multiply instantiations, i.e. LLVM libc's
+correctly-rounded float printing done in arbitrary-precision arithmetic. newlib does the
+same job in `dtoa` + `mprec` for **7 958 B**. That single feature is a ~40 KB difference;
+LLVM libc claws ~29 KB of it back by not linking `FILE`, `malloc`, `scanf`, `locale` or
+`signal`, which is why the *net* is only +10.7 KB.
+
+(Symmetrically, newlib's timezone support is what pulls its scanf and part of its malloc in
+on this board: `libc_a-tzset_r.o` has strong undefined references to `siscanf`, `_malloc_r`,
+`free` and `_getenv_r`, and no uKOS-X code calls `scanf` at all. Newlib charges roughly
+15 KB for the feature `llvmlibc_tz.c` provides in 2716 B.)
+
+**The fix: build `printf` modularly.** LLVM libc can put the float converters behind weak
+declarations and move their code into one archive member, `float_impl.cpp.obj`, which
+`printf_main` reaches through a single strong reference emitted as
+`.reloc ., BFD_RELOC_NONE, __printf_float`. ATfE has passed
+`-DLIBC_CONF_PRINTF_MODULAR=ON` since 23.1.0; RTfE set the two neighbouring printf options
+and omitted it, which is what made the RISC-V float code unavoidable. Adding it to the RTfE
+fork (`release/riscv-software/23.x`, commit `c83a76a0`, pinned by `LLVM_RVXX_COMMIT`)
+changed `float_impl.cpp.obj` from 78 bytes with an empty `.text` to 79 774 bytes, and
+`snprintf.cpp.obj` from 58 607 to 7 354.
+
+A firmware that never formats a float then defines `__printf_float` itself and the member is
+never extracted. That is the `LLVMLIBC_PRINTF_FLOAT` option (cache, default `ON`); `OFF`
+compiles the definition in `llvmlibc.c` and records
+`-DKLLVMLIBC_WITH_PRINTF_FLOAT_S=false` in `Artefacts/FLASH.cnf`:
+
+```cmake
+set(LLVMLIBC_PRINTF_FLOAT OFF)
+add_clib_manager_source(libx_u)
+```
+
+Two things to know before using it. `-Wl,--defsym=__printf_float=0` does **not** work — LLD
+applies `--defsym` after archive extraction, so the definition has to come from a real
+object linked before `-lc`, which every uKOS-X library is. And `printf_core/converter.h`
+calls `convert_float()` with **no null guard**, so in such an image a `%a`, `%A`, `%e`,
+`%E`, `%f`, `%F`, `%g` or `%G` branches to address 0. Only a variant that provably never
+formats a floating-point value may set it.
+
+**Result on the three RISC-V variants**, `cmake --preset llvm -DC_LIBRARY=llvmlibc`:
+
+| | before (non-modular RTfE) | now | |
+|---|---|---|---|
+| `Longan_Nano_F103` — option **OFF** | 129 781 B (99.02 %), timezone support off and no room for it | **79 793 B (60.88 %)**, timezone support on | **−49 988 B** |
+| `MAiXDUiNO_K210` — option `ON` | 1 005 057 B (47.92 %) | 1 026 993 B (48.97 %) | +21 936 B |
+| `Pico2_rp2350-RV32IMAC` — option `ON` | 365 572 B (8.72 %) | 391 512 B (9.33 %) | +25 940 B |
+
+**How much the option is worth** varies with architecture and with how much of the printf
+surface the image links, so measure rather than assume. Same-image comparisons, option ON
+against OFF:
+
+| variant | ON | OFF | saving |
+|---|---|---|---|
+| `Nucleo_H743` (Cortex-M7) | 347 508 B | 308 440 B | 39 068 B |
+| `MAiXDUiNO_K210` (RV64) | 1 026 993 B | 982 361 B | 44 632 B |
+| `Pico2_rp2350-RV32IMAC` | 391 512 B | 314 148 B | **77 364 B** |
+
+(The ARM and Pico2 rows are measurements only — neither variant sets the option.)
+
+**The modular build is not free where floats are kept.** Its `float_impl.cpp.obj` is
+somewhat larger than the instantiations it replaces, so a variant that still links it pays
+about 22–26 KB more than it did under the non-modular toolchain. The K210 and the Pico2 sit
+at 49 % of 2 MB and 9 % of 4 MB, so they absorb it; the trade is worth taking because the
+Longan is the binding constraint and it is the one that can drop the module. ARM is
+unaffected — ATfE has always built modularly, so nothing changed there.
+
+**The precondition has two halves, and the first one is easy to get wrong.**
+
+*No float conversion may survive preprocessing.* Grepping the sources is **not** good
+enough — it misses conversions behind `#if`, and it is easy to write a pattern that
+silently matches nothing. `OS/CLI/process/process.c:345` prints `%6.2f`, but only inside
+`#if (KKERN_WITH_STATISTICS_S == true)`, which `Longan_Nano_F103` disables; whereas
+`OS/CLI/memory/memory.c` printed `%5.2f` unconditionally, which a source-level grep of that
+variant's file list initially missed. Check the preprocessed output of the configured
+build instead, which accounts for every guard:
+
+```bash
+# from a configured variant directory
+python3 - <<'EOF' > /tmp/pp.sh
+import json, re
+for e in json.load(open('build/compile_commands.json')):
+    c = re.sub(r' -o [^ ]+', '', e['command']).replace(' -c ', ' -E -P ')
+    print(f'echo "@@FILE {e["file"]}"; {c} 2>/dev/null')
+EOF
+zsh /tmp/pp.sh 2>/dev/null | awk '/^@@FILE/{f=$2}
+    /"/{ if (match($0, /"[^"]*%[-+ #0-9]*(\.[0-9]+)?[aAeEfFgG]/))
+             print f": "substr($0, RSTART, RLENGTH) }' | sort -u
+```
+
+Empty output means no `%a`/`%e`/`%f`/`%g` reaches the compiler. The Longan passes it across
+all 53 translation units, but only since `memory.c` was changed to print its percentages
+with integer arithmetic — that change is what made the option safe there.
+
+*And no downloadable application may target the board.* An application reaches the system
+image's `dprintf`, so it inherits whatever the system image linked. `Longan_Nano_F103` has
+no applications. The K210 has 31, of which 7 format a float (`a_Basics/calendar`,
+`a_Basics/plotSin`, `k_Mathematicals/cordic` and the four `l_MLPs` demos), so it could not
+take the option even though it would fit.
+
+Note the option is only useful on a toolchain built with `LIBC_CONF_PRINTF_MODULAR`. Turning
+it on against a toolchain without it is harmless but saves nothing: there is no
+`__printf_float` reference to satisfy, and the float code sits inside every printf
+translation unit instead.
 
 ---
 
