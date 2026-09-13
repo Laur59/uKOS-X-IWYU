@@ -34,6 +34,3 @@ endif()
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE MinSizeRel CACHE STRING "Build type")
 endif()
-
-# Ensure libraries are compiled with GNU gcc
-set(USE_LLVM OFF)

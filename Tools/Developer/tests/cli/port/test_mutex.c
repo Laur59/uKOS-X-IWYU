@@ -51,12 +51,13 @@ TEST(mutex_module_metadata) {
 
     ukos_t_begin("UTC0");
 
-// DEFECT (DEFECTS.md): mutex.c:43 declares KNUM_SEMAPHORE, so this module and
-// semaphore both register as X33_ and KNUM_MUTEX is used by nothing. Pinned as
-// CURRENT behaviour - correcting the module will turn this red.
+// mutex.c used to declare KNUM_SEMAPHORE, so this module and semaphore both
+// registered as X33_ while KNUM_MUTEX was defined and used by nothing. Fixed:
+// the module now carries its own identifier. The inequality below was the
+// witness for that defect and is kept as the guard against it coming back.
 
     EXPECT_EQ_U(aMutex_Specifications.oIdModule,
-                (((uint32_t)KID_FAM_CLI << 24U) | ((uint32_t)KNUM_SEMAPHORE << 8U) | (uint32_t)(uint8_t)'_'));
+                (((uint32_t)KID_FAM_CLI << 24U) | ((uint32_t)KNUM_MUTEX << 8U) | (uint32_t)(uint8_t)'_'));
     EXPECT_TRUE(KNUM_MUTEX != KNUM_SEMAPHORE);
     EXPECT_EQ_U(aMutex_Specifications.oFlag, (1U << BSHOW) | (1U << BEXE_CONSOLE));
 }

@@ -94,8 +94,13 @@ A complete script for downloading, building and organising the libraries is avai
 # For arm:    cortex-m3, -m4, -m7 -m33 -m55 and -m85
 
 cd ${PATH_UKOS_X_PACKAGE}/Third_Parties/Tflite-micro
-./build.sh
+./build.sh      # Clang/LLVM (default)
+./build.sh -G   # GNU gcc
 ```
+
+The upstream make only exports the source trees (`Library/Generic/`); `CMakeLists.txt`
+compiles them with the uKOS-X toolchains and the flags of the upstream `microlite`
+target, plus `-fshort-enums`.
 
 ## Building the example
 

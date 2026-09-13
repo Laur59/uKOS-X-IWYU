@@ -15,10 +15,10 @@
 
 #pragma once
 
-#ifndef __clang__
-#include    "types.h"
-
+// Only standalone libraries (TinyUSB) see this interface; uKOS-X itself uses
+// the real kernel headers.
 #ifndef UKOS_S
+#include    "types.h"
 
 // Some necessary equates
 // ----------------------
@@ -316,6 +316,4 @@ extern  int32_t kern_killMailbox(mbox_t *handle);
 extern  int32_t kern_readMailbox(mbox_t *handle, void **message, uint32_t *size, uint32_t timeout);
 extern  int32_t kern_writeMailbox(mbox_t *handle, void *message, uint32_t size, uint32_t timeout);
 extern  int32_t kern_killMailbox(mbox_t *handle);
-#endif
-
 #endif

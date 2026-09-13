@@ -114,21 +114,24 @@ static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char
 
 // Copy the buffer into a memory (to ensure the coherence between the buffer & the parameter)
 
-    rLogBuffer = logBuffer;
-    for (i = 0U; i < KRECORD_SZ_LOG_BUF; i++) {
-        rLogBuffer->oLogCategory = KINFO_USER;
-        rLogBuffer->oMark        = false;
-        rLogBuffer->oTimeStamp   = 0U;
-        rLogBuffer->oFunction    = nullptr;
-        rLogBuffer->oMessage     = nullptr;
-        rLogBuffer->oLineNumber  = 0U;
-        rLogBuffer->oIdentifier  = nullptr;
-        rLogBuffer++;
-    }
-
     kern_criticalSection(KENTER_CRITICAL);
     memcpy(logBuffer, vRecord_logBuffer[core], (KRECORD_SZ_LOG_BUF * sizeof(recordLogging_t)));
     kern_criticalSection(KEXIT_CRITICAL);
+
+// Clear the marks in the COPY, and only after the copy.
+//
+// oMark is the "already printed" flag of the selection sort below, so a record
+// that arrives marked is never selected. The live buffer carries whatever marks
+// record_printLog() left behind on the coredump path, and inheriting those makes
+// this tool print nothing at all - precisely after a fault, when the log is most
+// wanted. Clearing them before the memcpy, as this once did, cleared bytes that
+// the copy then overwrote.
+
+    rLogBuffer = logBuffer;
+    for (i = 0U; i < KRECORD_SZ_LOG_BUF; i++) {
+        rLogBuffer->oMark = false;
+        rLogBuffer++;
+    }
 
     (void)dprintf(KSYST, "Log provided by the core %"PRIu32"\n\n", core);
     (void)dprintf(KSYST, "      Time [us]  Category          Process or ISR identifier            Function                              Line   Information\n\n");

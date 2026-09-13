@@ -52,10 +52,10 @@ TEST(semaphore_module_metadata) {
 
     ukos_t_begin("UTC0");
 
-// This identifier is correct for THIS module, but it is not unique: mutex.c:43
-// declares KNUM_SEMAPHORE as well, so both register as X33_ (DEFECTS.md). The
-// collision itself is asserted in the mutex suite, which is the only place both
-// descriptors are linked together.
+// This identifier belongs to this module alone. mutex.c:43 used to declare
+// KNUM_SEMAPHORE as well, so both registered as X33_; it now carries KNUM_MUTEX.
+// The two being distinct is asserted in the mutex suite, which is the only
+// place both descriptors are linked together.
 
     EXPECT_EQ_U(aSemaphore_Specifications.oIdModule,
                 (((uint32_t)KID_FAM_CLI << 24U) | ((uint32_t)KNUM_SEMAPHORE << 8U) | (uint32_t)(uint8_t)'_'));

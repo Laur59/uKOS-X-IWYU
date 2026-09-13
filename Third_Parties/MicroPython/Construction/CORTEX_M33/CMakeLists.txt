@@ -11,8 +11,12 @@ include(${CMAKE_CURRENT_LIST_DIR}/../cmake/common-setup.cmake)
 
 project(MicroPython_CORTEX_M33
     DESCRIPTION "MicroPython static library for Cortex_M33"
-    LANGUAGES C
+    LANGUAGES C ASM
 )
+
+# The garbage collector needs the callee-saved registers spilled onto the stack
+# before it traces it (gc_collect in Construction/System/microPython.c).
+set(MICROPY_GC_HELPER ${MICROPY_DIR}/shared/runtime/gchelper_thumb2.s)
 
 # Settings for cortex M33 cores
 

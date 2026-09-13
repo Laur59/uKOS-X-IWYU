@@ -1,11 +1,27 @@
 #!/usr/bin/env zsh
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+# SPDX-FileCopyrightText: 2026 Laurent von Allmen
 #
 # Goal:     Build the Tflite-micro package
+#
+# Usage:
+#   ./build.sh [-G]
+#
+#   -G  Build with GNU gcc instead of Clang/LLVM (the default)
+#
+# Upstream's make is only used to export the standalone source trees
+# (create_tflm_tree.py); CMakeLists.txt compiles them with the uKOS-X toolchains.
 
 emulate -L zsh
 setopt ERR_EXIT NO_UNSET PIPE_FAIL
+
+zparseopts -D -F -- G=opt_gcc || exit 1
+if (( ${#opt_gcc} )); then
+    use_llvm=OFF
+else
+    use_llvm=ON
+fi
 
 # Determine script directory (works if executed via ./script.sh or zsh script.sh)
 
@@ -50,27 +66,30 @@ else
 fi
 git -C Tflite-micro-current checkout "${hash}"
 
-# Parse core.yaml file using yq
-parse_core_yaml() {
-    local yaml_file='../core.yaml'
+# Upstream's make checks for its GCC toolchains while it lists the sources, and
+# downloads them when they are missing. Point it at the installed ones before
+# the export; nothing is compiled with them.
+cd "Tflite-micro-current/tensorflow/lite/micro/tools/make"
+mkdir -p downloads
+cd downloads
+if [[ ! -L gcc_embedded ]]; then
+    rm -fr gcc_embedded
+    ln -s "${PATH_GCC_ARM}" gcc_embedded
+fi
+if [[ ! -L riscv_toolchain ]]; then
+    rm -fr riscv_toolchain
+    ln -s "${PATH_GCC_RVXX}" riscv_toolchain
+fi
+cd "${PATH_PRG}"
 
-    if ! [[ -f "${yaml_file}" ]]; then
-        printf "%bError: YAML file not found: %s%b\n" "${RED}" "${yaml_file}" "${NC}" >&2
-        exit 1
-    fi
+# Export the standalone source trees (and the headers the applications include):
+# cortex-M with the CMSIS-NN kernels, RISC-V with the reference kernels.
+# The exporter writes over an existing tree, so clear it first.
 
-    if ! command -v yq >/dev/null 2>&1; then
-        printf "%bError: yq is not installed%b\n" "${RED}" "${NC}" >&2
-        exit 1
-    fi
+printf '\n%bExport the Tflite-micro source trees ...%b\n\n' "${BOLD}" "${NC}"
 
-    # Parse YAML: iterate through models and their cores
-    yq eval 'to_entries[] | .key as $model | .value[] | "\($model)\t\(.core)\t\(.target_arch)\t\(.fpu)"' "${yaml_file}"
-}
-
-# Generate the `.h` interface files for all the cortex-M (generic, -m3, m4, -m7, -m33, -m55 -m85)
-# Generate the `.h` interface files for all the risc-v (generic, rv64imafdc)
-cd ./Tflite-micro-current/
+rm -fr Library/Generic/CORTEX_M_generic Library/Generic/RISCV64_generic
+cd Tflite-micro-current
 
 python3 tensorflow/lite/micro/tools/project_generation/create_tflm_tree.py \
     --makefile_options='TARGET=cortex_m_generic OPTIMIZED_KERNEL_DIR=cmsis_nn TARGET_ARCH=project_generation' \
@@ -80,72 +99,15 @@ python3 tensorflow/lite/micro/tools/project_generation/create_tflm_tree.py \
     --makefile_options='TARGET=riscv32_generic TARGET_ARCH=project_generation' \
     ../Library/Generic/RISCV64_generic
 
-printf '\n%bBuilding all the Tflite-micro libraries ...%b\n' "${BOLD}" "${NC}"
+cd "${PATH_PRG}"
 
-cd "tensorflow/lite/micro/tools/make/downloads"
-if [[ ! -L gcc_embedded ]]; then
-    rm -fr gcc_embedded
-    ln -s "${PATH_GCC_ARM}" gcc_embedded
-fi
-if [[ ! -L riscv_toolchain ]]; then
-    rm -fr riscv_toolchain
-    ln -s "${PATH_GCC_RVXX}" riscv_toolchain
-fi
-cd ../../../../../..
+# Build and install Library/<CORE>/libTFLite.a for every core
 
-# Parse YAML and iterate through all build targets
-while IFS=$'\t' read -r model core target_arch fpu
-do
+printf '\n%bBuilding all the Tflite-micro libraries (USE_LLVM=%s) ...%b\n' "${BOLD}" "${use_llvm}" "${NC}"
 
-    # Build a specific core library
-    printf '\n%bBuild for the core %s ...%b\n' "${BOLD}" "${core}" "${NC}"
-
-    if [[ ${model} == cortex_m_generic ]]; then
-        make -f tensorflow/lite/micro/tools/make/Makefile \
-            TARGET=cortex_m_generic TARGET_ARCH="${target_arch}" \
-            OPTIMIZED_KERNEL_DIR=cmsis_nn microlite -j8 FLOAT="${fpu}" BUILD_TYPE=debug
-        mkdir -p "../Library/${core}"
-        cp "./gen/cortex_m_generic_${target_arch}_debug_cmsis_nn_gcc/lib/libtensorflow-microlite.a" \
-            "../Library/${core}/libTFLite.a"
-    fi
-
-    if [[ ${model} == riscv32_generic ]]; then
-        # Both RISC-V variants build release (-O, -DNDEBUG, -DTF_LITE_STRIP_ERROR_STRINGS).
-        #
-        # rv32imac needs it for size: it targets the Pico2's small RAM-resident
-        # downloadable-app region (~116 KB code), and the app strips to match.
-        #
-        # rv64imafdc has room, but TF_LITE_STRIP_ERROR_STRINGS matters for a second
-        # reason: riscv32_generic/debug_log.cc logs with std::fputs(..., stdout),
-        # unlike cortex_m_generic/debug_log.cc which goes through DebugLogCallback.
-        # That FILE* use drags newlib's _impure_ptr into debug_log.o, and a uKOS-X
-        # application built with C_LIBRARY=llvmlibc then fails to link:
-        #
-        #   ld.lld: error: undefined symbol: _impure_ptr
-        #   >>> referenced by debug_log.o:(DebugLog) in archive libTFLite.a
-        #
-        # Stripping the error strings compiles that body away, which is why the
-        # rv32 (release) archive never had the problem. TFLite log messages are
-        # lost on RISC-V as a result; the Arm archives keep theirs through the
-        # callback.
-        case ${target_arch} in
-            rv32*) riscv_abi=ilp32; build_type=release ;;
-            rv64*) riscv_abi=lp64d; build_type=release ;;
-            *)     printf '%bError: unknown RISC-V target_arch %s%b\n' "${RED}" "${target_arch}" "${NC}" >&2; exit 1 ;;
-        esac
-        make -f tensorflow/lite/micro/tools/make/Makefile \
-            TARGET=riscv32_generic TARGET_ARCH="${target_arch}" \
-            RISCV_ARCH="${target_arch}" \
-            RISCV_ABI="${riscv_abi}" \
-            DISABLE_PRINTF=true \
-            microlite -j8 FLOAT="${fpu}" BUILD_TYPE="${build_type}" \
-            CFLAGS_EXTRA="-march=${target_arch} -mabi=${riscv_abi}" \
-            CXXFLAGS_EXTRA="-march=${target_arch} -mabi=${riscv_abi}" \
-            LDFLAGS_EXTRA="-march=${target_arch} -mabi=${riscv_abi}"
-        mkdir -p "../Library/${core}"
-        cp "./gen/riscv32_generic_${target_arch}_${build_type}_gcc/lib/libtensorflow-microlite.a" \
-            "../Library/${core}/libTFLite.a"
-    fi
-done < <(parse_core_yaml)
+rm -fr build
+cmake -S . -B build -G Ninja -DUSE_LLVM="${use_llvm}"
+cmake --build build
+cmake --install build
 
 printf '\n🎉 %bBuild Complete%b\n\n' "${GREEN}" "${NC}"

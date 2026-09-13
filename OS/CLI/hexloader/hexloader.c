@@ -159,8 +159,20 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     while (!terminate) {
 
 // Waiting for the mark ":"
+//
+// local_getByte() sets *byte to 0 before returning a framing, noise or parity
+// error, so its status has to be tested here as it is everywhere else. Without
+// that test a serial error while waiting for a record start spins forever - 0
+// never equals ':' - and the console can only be recovered with a reset.
 
-        do { local_getByte(&byte); } while (byte != ':');
+        do {
+            error = local_getByte(&byte);
+        } while ((error == KERR_H_LOADER_NOT) && (byte != ':'));
+
+        if (error != KERR_H_LOADER_NOT) {
+            terminate = true;
+            continue;
+        }
 
         error = local_getCounter(&counter, &checksum);
         if (error == KERR_H_LOADER_NOT) {

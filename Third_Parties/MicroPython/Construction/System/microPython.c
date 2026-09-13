@@ -32,6 +32,7 @@
 #include    "py/mperrno.h"
 #include    "extmod/vfs.h"
 #include    "shared/runtime/pyexec.h"
+#include    "shared/runtime/gchelper.h"
 
 // Library specific
 // ================
@@ -247,32 +248,35 @@ char_t  mp_hal_stdin_rx_chr(void) {
 // Needed by the package
 // ---------------------
 
-// !!! Not clear how the garbage collector works !!!
-// !!! Just follow some implementation examples  !!!
+// The collector traces the C stack conservatively, so it must see every word
+// that may hold a reference to a Python object: the live stack and the
+// callee-saved registers. gc_helper_get_regs_and_sp() (the assembly helper of
+// shared/runtime/gchelper_<arch>.s) spills those registers onto the current
+// stack and returns the stack pointer below them, so tracing from there covers
+// both. An object reachable only from a register, or only from a stack slot,
+// would otherwise be swept while still in use.
+
+// Provided by shared/runtime/gchelper_<arch>.s
+
+extern  uintptr_t   gc_helper_get_regs_and_sp(uintptr_t *regs);
 
 void    gc_collect(void) {
-    uintptr_t   *stack;
-    uintptr_t   stackEnd, usedStack, stackSize;
-    proc_t      *process;
+    gc_helper_regs_t    regs;
+    uintptr_t           stack, stackTop;
+    proc_t              *process;
 
     kern_getProcessRun(&process);
 
-// Stack pointer
-// Stack size in bytes = oStackSize * 4
-// Stack end  = stack start + Stack size
-// Used stack = (Stack end - stack) / 4
+// oStack is the initial stack pointer of the process, that is the top of its
+// stack; the stack grows down, so the live area is [stack, stackTop).
 
-    stack     = process->oSpecification.oStack;
-    stackSize = ((uintptr_t)process->oSpecification.oStackSize * 4U);
-    stackEnd  = ((uintptr_t)process->oSpecification.oStackStart + (uintptr_t)stackSize);
-    usedStack = (stackEnd - (uintptr_t)stack) / sizeof(uintptr_t);
+    stackTop = (uintptr_t)process->oSpecification.oStack;
 
     gc_collect_start();
-
-// Trace the stack, including the registers (since they live on the stack in this function)
-// Not sure what is the purpose of this function
-
-    gc_collect_root((void *)stack, usedStack);
+    stack = gc_helper_get_regs_and_sp(regs);
+    if (stack < stackTop) {
+        gc_collect_root((void **)stack, (stackTop - stack) / sizeof(uintptr_t));
+    }
     gc_collect_end();
     gc_dump_info(&mp_plat_print);
 }

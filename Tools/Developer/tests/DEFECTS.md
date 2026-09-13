@@ -9,7 +9,6 @@ while deriving a test matrix.
 
 | Where | Defect |
 |---|---|
-| `OS/CLI/mutex/mutex.c:43` | Declares `KNUM_SEMAPHORE` as its module identifier, so `mutex` and `semaphore` both register as `X33_`. `KNUM_MUTEX` (`modules.h:210`) is defined but used by nothing, and `list X` shows two rows with the same identifier. Found by a host test asserting the id from `modules.h`. |
 | `OS/CLI/mutex/mutex.c:67,133` | The `KERR_MEM` arm is unreachable: `error` is initialised `KERR_NOT` and never assigned, so "Not enough memory." can never print. |
 | `OS/CLI/object/object.c:138` | `-mutx` tests `argv[1]` inside the `argc == 4` arm where all six sibling lines test `argv[2]`. Structurally identical to the `-gmt` defect fixed on `Features/unit-test` in `bab328dfc`, so `object 0 -mutx 5` answers "The object does not exist." |
 | `OS/CLI/fill/fill.c:85` | `nbBytes = (uint32_t)(endAdd - startAdd)` with no reversed-range handling. `dump.c:96` reinterprets `end < start` as a length; `fill` instead underflows and writes ~4 GB. **No test may pass `fill` a reversed range.** |
@@ -46,19 +45,33 @@ while deriving a test matrix.
 
 ## Fixed on `Features/unit-test` — the fix is NOT in this branch
 
-Each row below is a defect one of the suites found *and* a fix that exists, on the branch
-this tooling came from. **This branch carries the tests only.** The code described here is
-still broken in it, and the suite that detects the defect still fails — `EXPECTED-FAILURES`
-names the same commits and reports those failures as expected rather than as regressions.
+The row below is a defect one of the suites found *and* a fix that exists, on the branch
+this tooling came from. That code is still broken here, and the suite that detects it still
+fails — `EXPECTED-FAILURES` names the same commit and reports that failure as expected
+rather than as a regression.
 
-They are kept in full, with the measurements taken at the time, so that whoever takes the
-work up has the diagnosis and the commit to cherry-pick rather than just a symptom.
+It is kept in full, with the measurements taken at the time, so that whoever takes the work
+up has the diagnosis and the commit to cherry-pick rather than just a symptom.
 
 | Where | Defect | Fixing commit |
 |---|---|---|
-| `OS/CLI/dumplog/dumplog.c`, `OS/Lib_generics/record/recordDump.c` | `oMark` is the "already printed" flag of the log's selection sort, and it is **shared state**. `record_printLog()` walks the live `vRecord_logBuffer` in place — it runs on the coredump path, where the allocator cannot be relied on — and left every record it printed marked. `dumplog` copies that buffer, and a record arriving marked is never selected, so **`dumplog` printed nothing at all after a coredump**, exactly when the log is most wanted. `dumplog`'s own attempt to clear the marks was dead code: it ran *before* the `memcpy` that overwrote it. Neither file was wrong alone. `dumplog` now clears the marks in its own copy after the copy, and `record_printLog()` gives the marks back when it is done, so a second dump works too. **Not reachable from a console:** every caller of `record_printLog()` is terminal — the coredump ends in `cb_signal()`, which is `[[noreturn]]`, and every `crt0_exit()` panic ends with `INTERRUPTION_OFF` and never re-enables — so no board can be asked for a `dumplog` after a dump. The host suite is the only cover for the leak itself. What hardware *can* check is that the fix left the coredump path intact, which `Tools/Developer/bin/coredump-test` does on `Discovery_U5G9`: verified identical 13-record output before (`35f7ba715`) and after (`92f41db34`) the fix. | `92f41db34` |
 | `Applications/uKOS_Appls_Downloadable/l_MLPs/class_Py/_Training/DB_Creator.py:76`, `:91`, `:102`, `:113` | **The training data was generated 40x too small, and the shipped demo network was consequently useless.** `normalize_point()` already divided by `KABS_MAX_FUNCTION`, and all four `fd.write` calls divided by it again; with `KABS_MAX_FUNCTION = 40` the database held points in +/-0.025 where +/-1 was intended. The `ax.plot()` call between the two used the correct value, which is why `class.png` looked right and only the data was wrong. Measured before the fix: the database spanned +/-0.0250 with a maximum radius of 0.0351 (= 0.025*sqrt(2)) and the ring at 0.0100..0.0175 - every figure exactly 1/40 of the intended geometry. The network trained on it scored **73% on its own learning and validation sets**, never predicted class 1 at all (0 of 1000), and its decision boundary was a single straight line; its layer-2 weights still sat at their initialisation spread. The four write calls now emit the already-normalised value, matching what the sibling `cluster_Py` generator does. **After regenerating and retraining: 98.6% on validation, 99.0% on learning, class 1 predicted 970 of 1000, and the decision map shows the intended ring / inner-outer / square geometry.** The `class_Py` golden in `tests/neural/test_mlpn.c` was refreshed with the new weights, and the test that recorded the misclassification is now a real assertion that all five `KVALIDATION` samples are classified correctly. **That golden is in this branch and the retrained `network.c_inc` is not**, so `ukos_tests_mlpn` fails here until the fix is taken. | `4aa03390a` |
-| `OS/CLI/hexloader/hexloader.c`, `OS/CLI/sloader/sloader.c` | The loop waiting for a record mark discarded `local_getByte`'s status. That function sets `*byte = 0` before returning a framing, noise or parity error, so 0 never matched `':'` / `'S'` and any serial error while a loader waited **spun forever** — recoverable only by resetting the board. `sloader` discarded it twice: the mark loop and the type byte that follows. Both now test the status as every other call site does. The suites gained the empty-stream and no-mark tests that were impossible before; against the unfixed code they hang rather than fail. | `9db073a93` |
+
+## Fixed in this branch
+
+Each row is a defect a suite found and a fix that has since been cherry-picked here, so the
+suite passes and carries no `EXPECTED-FAILURES` line. Verified not merely by the suites
+going green but by diffing every file against the original fix commit (`git diff --quiet`,
+exit 0 on each) and confirming the cherry-pick is an ancestor of HEAD. The commit named is
+the one on *this* branch; SHAs quoted inside a row are where the measurement was taken.
+
+| Where | Defect | Fixed in |
+|---|---|---|
+| `OS/CLI/dumplog/dumplog.c`, `OS/Lib_generics/record/recordDump.c` | `oMark` is the "already printed" flag of the log's selection sort, and it is **shared state**. `record_printLog()` walks the live `vRecord_logBuffer` in place — it runs on the coredump path, where the allocator cannot be relied on — and left every record it printed marked. `dumplog` copies that buffer, and a record arriving marked is never selected, so **`dumplog` printed nothing at all after a coredump**, exactly when the log is most wanted. `dumplog`'s own attempt to clear the marks was dead code: it ran *before* the `memcpy` that overwrote it. Neither file was wrong alone. `dumplog` now clears the marks in its own copy after the copy, and `record_printLog()` gives the marks back when it is done, so a second dump works too. **Not reachable from a console:** every caller of `record_printLog()` is terminal — the coredump ends in `cb_signal()`, which is `[[noreturn]]`, and every `crt0_exit()` panic ends with `INTERRUPTION_OFF` and never re-enables — so no board can be asked for a `dumplog` after a dump. The host suite is the only cover for the leak itself. What hardware *can* check is that the fix left the coredump path intact, which `Tools/Developer/bin/coredump-test` does on `Discovery_U5G9`: verified identical 13-record output before (`35f7ba715`) and after (`92f41db34`) the fix. | `991804aa4` |
+| `OS/CLI/hexloader/hexloader.c`, `OS/CLI/sloader/sloader.c` | The loop waiting for a record mark discarded `local_getByte`'s status. That function sets `*byte = 0` before returning a framing, noise or parity error, so 0 never matched `':'` / `'S'` and any serial error while a loader waited **spun forever** — recoverable only by resetting the board. `sloader` discarded it twice: the mark loop and the type byte that follows. Both now test the status as every other call site does. The suites gained the empty-stream and no-mark tests that were impossible before; against the unfixed code they hang rather than fail. | `ad2a09945` |
+| `OS/CLI/date/date.c` | `date -gmt <arg>` dropped the operand, no `calendar_*` status was checked, the `gmtime_r`/`localtime_r`/`asctime` results were used unchecked, and no field was validated, so an impossible date was accepted. Detected by `ukos_tests_date` and, with `KCALENDAR_WITH_HW_RTC_S=true`, by `ukos_tests_date_rtc` - the same source under a different build define. | `6e292b3bc` |
+| `OS/CLI/uKOS/uKOS.c` | `uKOS -history` printed the intellectual-property notice twice. The suite failed on two assertions: the notice count, which was the defect, and `oStrRevision`, which it expects at `" 1.1"` because the fix bumps the module revision - now the literal at `uKOS.c:46`. | `f95b28c47` |
+| `OS/CLI/mutex/mutex.c:43` | Declared `KNUM_SEMAPHORE` as its module identifier, so `mutex` and `semaphore` both registered as `X33_` while `KNUM_MUTEX` (`modules.h:210`) was used by nothing. Now `X20_`, read back from the linked Nucleo_H743 image. | `23bcad0e9` |
 
 ## Not defects
 

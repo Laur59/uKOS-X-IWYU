@@ -87,62 +87,33 @@ print "\nVersion of clang for RISC-V"
 "$PATH_LLVM_RVXX"/bin/clang --version
 print
 #
-if (( !$#o_newlib )); then
-    (( !$#o_gcc )) && ./_build.sh -G
-    (( !$#o_clang )) && ./_build.sh -P
-
+sweep_UY() {
+    ./_build.sh "$@"
     if (( !$#o_Y )); then
-        (( !$#o_gcc )) && ./_build.sh -GY
-        (( !$#o_clang )) && ./_build.sh -Y
+        ./_build.sh "$@" -Y
     fi
-
     if (( !$#o_U )); then
-        (( !$#o_gcc )) && ./_build.sh -GU
-        (( !$#o_clang )) && ./_build.sh -U
-
+        ./_build.sh "$@" -U
         if (( !$#o_Y )); then
-            (( !$#o_gcc )) && ./_build.sh -GUY
-            (( !$#o_clang )) && ./_build.sh -UY
+            ./_build.sh "$@" -UY
         fi
     fi
+}
+#
+if (( !$#o_newlib )); then
+    if (( !$#o_gcc )); then sweep_UY -G; fi
+    if (( !$#o_clang )); then sweep_UY; fi
 fi
 #
 if (( !$#o_picolibc )); then
-    (( !$#o_gcc )) && ./_build.sh -GP
-    (( !$#o_clang )) && ./_build.sh -P
-
-    if (( !$#o_Y )); then
-        (( !$#o_gcc )) && ./_build.sh -GPY
-        (( !$#o_clang )) && ./_build.sh -PY
-    fi
-
-    if (( !$#o_U )); then
-        (( !$#o_gcc )) && ./_build.sh -GPU
-        (( !$#o_clang )) && ./_build.sh -PU
-
-        if (( !$#o_Y )); then
-            (( !$#o_gcc )) && ./_build.sh -GPUY
-            (( !$#o_clang )) && ./_build.sh -PUY
-        fi
-    fi
+    if (( !$#o_gcc )); then sweep_UY -G -P; fi
+    if (( !$#o_clang )); then sweep_UY -P; fi
 fi
 #
 # llvmlibc is Clang/LLVM-only: ARM builds against the Arm Toolchain for Embedded
 # (PATH_LLVM_ARML), RISC-V against its own LLVM libc toolchain (PATH_LLVM_RVXXL).
-# The pass runs only when PATH_LLVM_ARML is available; without PATH_LLVM_RVXXL
-# the RISC-V targets stop on a missing-variable configuration error.
-if (( !$#o_llvmlibc )) && (( $#o_clang )); then
-    if [[ -n "${PATH_LLVM_ARML:-}" ]]; then
-        ./_build.sh -L
-        (( !$#o_Y )) && ./_build.sh -LY
-
-        if (( !$#o_U )); then
-            ./_build.sh -LU
-            (( !$#o_Y )) && ./_build.sh -LUY
-        fi
-    else
-        print "${YELLOW}Skipping llvmlibc: PATH_LLVM_ARML not set${NC}"
-    fi
+if (( !$#o_llvmlibc )); then
+    if (( !$#o_clang )); then sweep_UY -L; fi
 fi
 
 ./_clean.sh > /dev/null 2>&1

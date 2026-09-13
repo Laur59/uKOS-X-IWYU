@@ -8,6 +8,7 @@ cmake_minimum_required(VERSION 3.15)
 
 # Include common TinyUSB setup
 include(${CMAKE_CURRENT_LIST_DIR}/../../cmake/common-setup.cmake)
+set(CMAKE_C_COMPILER_TARGET thumbv7m-unknown-none-eabi)   # Clang only; ignored by GCC
 
 project(TinyUSB_STM32F207 C)
 

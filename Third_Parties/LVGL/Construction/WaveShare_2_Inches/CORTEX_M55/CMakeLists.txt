@@ -8,8 +8,8 @@ cmake_minimum_required(VERSION 3.31)
 
 # Include common build setup
 include(${CMAKE_CURRENT_LIST_DIR}/../../cmake/common-setup.cmake)
-set(USE_LLVM OFF)
 include(${PATH_UKOS}/Ports/cmake/select-arm-toolchain.cmake)
+set(CMAKE_C_COMPILER_TARGET thumbv8.1m.main-unknown-none-eabihf)   # Clang only; ignored by GCC
 
 project(LVGL_CORTEX_M55
     DESCRIPTION "LVGL static library for Cortex_M55"

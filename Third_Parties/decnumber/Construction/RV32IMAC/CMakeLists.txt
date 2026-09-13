@@ -9,6 +9,7 @@ cmake_minimum_required(VERSION 3.31)
 # Include common build setup
 include(${CMAKE_CURRENT_LIST_DIR}/../cmake/common-setup.cmake)
 include(${PATH_UKOS}/Ports/cmake/select-riscv-toolchain.cmake)
+set(CMAKE_C_COMPILER_TARGET riscv32-unknown-elf)   # Clang only; ignored by GCC
 
 project(DecNumber_RV32IMAC
     DESCRIPTION "decnumber static library for RV32IMAC"

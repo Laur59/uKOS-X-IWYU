@@ -408,11 +408,25 @@ set_property(TARGET ${TARGET_ELF} APPEND
 # Artifact output directory configuration
 set(ARTEFACTS_DIR "$ENV{PWD}/Artefacts" CACHE PATH "Directory for build artifacts")
 
-# Print executable size
+# Print executable size of following sections
+set(SIZE_SECTIONS
+    "\\.text"
+    "\\.init_array"
+    "\\.fini_array"
+    "\\.rodata"
+    "\\.signature"
+    "\\.data"
+    "\\.bss"
+    "\\.tbss"
+)
+set(GREP_ARGS "")
+foreach(section IN LISTS SIZE_SECTIONS)
+    list(APPEND GREP_ARGS -e "${section}")
+endforeach()
 add_custom_command(
     TARGET ${TARGET_ELF}
     POST_BUILD
-    COMMAND ${CMAKE_SIZE} -A --radix=16 ${TARGET_ELF} | grep -E -e \.text -e \.init_array -e \.fini_array -e \.rodata -e \.signature -e \.data* -e \.bss* -e \.tbss
+    COMMAND ${CMAKE_SIZE} -A --radix=16 ${TARGET_ELF} | grep -E ${GREP_ARGS}
     VERBATIM
 )
 

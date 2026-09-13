@@ -16,12 +16,6 @@ set_property(CACHE CORE PROPERTY STRINGS CORTEX_M33 RV32IMAC)
 if(CORE STREQUAL "CORTEX_M33")
     include(${PATH_UKOS}/Ports/cmake/select-arm-toolchain.cmake)
 else()
-    # The prebuilt RV32IMAC libTFLite.a is GCC-built. GNU ld resolves its
-    # linker-relaxation relocations, but ld.lld (Clang) rejects them
-    # (R_RISCV_PCREL_LO12 without a paired R_RISCV_PCREL_HI20), so force GCC here.
-    # This lets -DCORE=RV32IMAC build without also needing -DUSE_LLVM=OFF.
-    set(USE_LLVM OFF)
-    message(STATUS "class_TFL RV32IMAC: forcing GCC toolchain (GCC-built libTFLite.a)")
     include(${PATH_UKOS}/Ports/cmake/select-riscv-toolchain.cmake)
 endif()
 

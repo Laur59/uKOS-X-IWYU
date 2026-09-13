@@ -320,12 +320,14 @@ function(add_tinyusb_libraries)
     # storage size on both sides of the project/library boundary. Without
     # this, structs like tusb_rhport_init_t have a different layout in the
     # caller and the prebuilt callee, which silently breaks USB init.
+    # No -fsingle-precision-constant: it changes no TinyUSB object under GCC,
+    # and Clang only accepts the -cl- spelling.
     list(APPEND OPTS_UKOS
         ${CPU_SPEC_LIST}
         ${FLAGS_FP_LIST}
         ${C_STANDARD_FLAG}
-        -Wall -Wno-pedantic -Wlogical-op
-        -fsingle-precision-constant
+        -Wall -Wno-pedantic
+        $<$<C_COMPILER_ID:GNU>:-Wlogical-op>
         -fshort-enums
         -Wno-error=undef -Wno-error=unused-parameter
         -Wno-error=cast-align -Wno-error=cast-qual
@@ -335,6 +337,12 @@ function(add_tinyusb_libraries)
     )
 
     # Add provider-specific compile flags
+    if(TINYUSB_PROVIDER STREQUAL "nordic" AND CMAKE_C_COMPILER_ID STREQUAL "Clang")
+        # dcd_nrf5x.c includes <stdatomic.h> before <stdint.h>. In a hosted build
+        # Clang forwards that header to newlib's, which uses int_least*_t without
+        # including <stdint.h> (GCC ships its own <stdatomic.h> and never sees it).
+        list(APPEND OPTS_UKOS "SHELL:-include stdint.h")
+    endif()
     if(TINYUSB_PROVIDER STREQUAL "raspberrypi")
         # Disable flash macro (code is already in RAM)
         list(APPEND OPTS_UKOS "-D__not_in_flash\(x\)=")

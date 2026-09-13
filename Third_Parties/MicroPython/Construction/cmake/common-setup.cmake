@@ -30,10 +30,7 @@ if(NOT EXISTS "${PATH_UKOS}/OS/Includes")
                         "Consider setting PATH_UKOS explicitly or check directory structure.")
 endif()
 
-# Ensure libraries are compiled with GNU gcc
-set(USE_LLVM OFF)
-
-# Include toolchain
+# Include toolchain (USE_LLVM, default ON, selects Clang or GNU gcc)
 include(${PATH_UKOS}/Ports/cmake/select-arm-toolchain.cmake)
 
 # Set build type to reduce firmware size (automatically adds -Os -DNDEBUG)

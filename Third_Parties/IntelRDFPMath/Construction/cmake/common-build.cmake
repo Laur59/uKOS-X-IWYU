@@ -84,8 +84,16 @@ target_compile_definitions(${TARGET_LIB} PRIVATE
     ${FLAGS_UKOS}
 )
 
+# -fshort-enums: the consumers compile with it (Ports/cmake/system.cmake,
+# Applications/cmake/application.cmake). arm-none-eabi-gcc packs enums
+# implicitly; Clang and RISC-V GCC do not.
+# No -fsingle-precision-constant: GCC rounds the double literals of the bid32
+# transcendental functions to float precision, Intel's own build does not use
+# it, and Clang's -cl-single-precision-constant leaves such literals alone, so
+# the two toolchains would build different libraries.
 target_compile_options(${TARGET_LIB} PRIVATE
     ${OPTS_UKOS}
+    -fshort-enums
     -Wall
     -Wno-pedantic
     $<$<C_COMPILER_ID:GNU>:-Wlogical-op>
@@ -106,8 +114,17 @@ target_compile_options(${TARGET_LIB} PRIVATE
     -fdata-sections
     -fno-strict-aliasing
     -fno-builtin
-    $<$<C_COMPILER_ID:GNU>:-fsingle-precision-constant>
-    $<$<C_COMPILER_ID:Clang>:-cl-single-precision-constant>
+
+    # The BID division and square-root helpers accelerate wide integer arithmetic
+    # with a floating-point estimate and then correct it: __div_256_by_128 computes
+    # Ql = dq - (double)Qh * d64.d, and short_sqrt128 lx = (double)A10.w[1] * l64 +
+    # (double)A10.w[0]. Those corrections assume the multiply and the add each round
+    # on their own. Clang defaults to -ffp-contract=on and fuses them into a single
+    # multiply-add -- 56 fused instructions in the RV64 archive, against none from
+    # GCC -- which changes the estimate and therefore the result. Only cores with a
+    # hardware FMA are exposed. Same trap as MicroPython's fdlibm; see CLAUDE.md
+    # "Third-Party Archives (Clang vs GCC)".
+    -ffp-contract=off
 )
 if(CORE_NAME MATCHES "^CORTEX_M(.+)$")
     target_compile_options(${TARGET_LIB} PRIVATE

@@ -1,0 +1,22 @@
+diff --git a/py/parsenum.c b/py/parsenum.c
+index 05bcc0f0a..9b33ffd02 100644
+--- a/py/parsenum.c
++++ b/py/parsenum.c
+@@ -270,13 +270,14 @@ mp_large_float_t mp_decimal_exp(mp_large_float_t num, int dec_exp) {
+     // - we don't need to care about p.exp overflow, as (5.0 ** dec_exp) will anyway
+     //   force the final result toward the proper edge if needed (0.0 or inf)
+     res.p.exp += dec_exp;
++    volatile mp_float_t vres = res.f;
+     // Use positive exponents when they are more precise then negative
+     if (dec_exp < 0 && dec_exp >= -MAX_EXACT_POWER_OF_5) {
+-        res.f /= MICROPY_FLOAT_C_FUN(pow)(5, -dec_exp);
++        vres /= MICROPY_FLOAT_C_FUN(pow)(5, -dec_exp);
+     } else {
+-        res.f *= MICROPY_FLOAT_C_FUN(pow)(5, dec_exp);
++        vres *= MICROPY_FLOAT_C_FUN(pow)(5, dec_exp);
+     }
+-    return (mp_large_float_t)res.f;
++    return (mp_large_float_t)vres;
+ 
+     #endif
+ }

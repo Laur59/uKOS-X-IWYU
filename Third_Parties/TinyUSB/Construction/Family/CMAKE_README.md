@@ -37,10 +37,13 @@ Le fichier `Mkfiles/TinyUSB.cmake` contient une fonction réutilisable `add_tiny
 
 ### Prérequis
 
-1. Variable d'environnement `PATH_GCC_ARM` doit être définie et pointer vers votre toolchain ARM GCC.
+1. Les bibliothèques sont compilées avec Clang/LLVM par défaut : `PATH_LLVM_ARM` (et
+   `PATH_LLVM_RVXX` pour pico2riscv) doivent pointer vers les toolchains LLVM. Avec
+   `-DUSE_LLVM=OFF`, GNU gcc est utilisé à la place (`PATH_GCC_ARM`, `PATH_GCC_RVXX`).
 
 ```bash
-export PATH_GCC_ARM=/path/to/gcc-arm-none-eabi
+export PATH_LLVM_ARM=/path/to/llvm-arm
+export PATH_LLVM_RVXX=/path/to/llvm-riscv
 ```
 
 ### Construction de base
@@ -49,10 +52,10 @@ Pour construire les bibliothèques TinyUSB pour un SOC spécifique :
 
 ```bash
 # Exemple pour STM32H743
-cd Third_Parties/TinyUSB/Library/Family/h7/STM32H743
-mkdir build && cd build
-cmake ..
-cmake --build .
+cd Third_Parties/TinyUSB/Construction/Family/h7/STM32H743
+cmake -S . -B build_cmake -G Ninja                 # Clang/LLVM
+cmake -S . -B build_cmake -G Ninja -DUSE_LLVM=OFF  # ou GNU gcc
+cmake --build build_cmake
 ```
 
 Cela construira par défaut tous les profils disponibles (cdc_cdc, cdc_msc, etc.).
@@ -116,25 +119,21 @@ Pour ajouter un nouveau SOC, créez un nouveau `CMakeLists.txt` dans le dossier 
 ```cmake
 cmake_minimum_required(VERSION 3.15)
 
-# Configuration du compilateur ARM
-set(CMAKE_SYSTEM_NAME Generic)
-set(CMAKE_SYSTEM_PROCESSOR arm)
-
-if(NOT DEFINED CMAKE_C_COMPILER)
-    if(DEFINED ENV{PATH_GCC_ARM})
-        set(CMAKE_C_COMPILER "$ENV{PATH_GCC_ARM}/bin/arm-none-eabi-gcc")
-        set(CMAKE_AR "$ENV{PATH_GCC_ARM}/bin/arm-none-eabi-ar")
-        set(CMAKE_RANLIB "$ENV{PATH_GCC_ARM}/bin/arm-none-eabi-ranlib")
-        set(CMAKE_STRIP "$ENV{PATH_GCC_ARM}/bin/arm-none-eabi-strip")
-    else()
-        message(FATAL_ERROR "PATH_GCC_ARM n'est pas défini")
-    endif()
-endif()
+# Toolchain (Clang/LLVM par défaut, GNU gcc avec -DUSE_LLVM=OFF);
+# common-setup-riscv.cmake pour un cœur RISC-V
+include(${CMAKE_CURRENT_LIST_DIR}/../../cmake/common-setup.cmake)
+# Triple Clang du cœur, avant project() (ignoré par GCC) ; ajouter
+# CMAKE_ASM_COMPILER_TARGET si le SOC compile de l'assembleur
+set(CMAKE_C_COMPILER_TARGET thumbv7em-unknown-none-eabihf)
 
 project(TinyUSB_YOUR_SOC C)
 
+# Description du microcontrôleur (variables obligatoires)
+set(SOC YOUR_SOC)
+set(CORE CORTEX_MX)
+
 # Inclure le module TinyUSB commun
-include(${CMAKE_CURRENT_SOURCE_DIR}/../../Mkfiles/TinyUSB.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/TinyUSB.cmake)
 
 # Options pour les profils
 option(BUILD_CDC_CDC "Construire le profil cdc_cdc" ON)
@@ -151,9 +150,7 @@ endif()
 
 # Appeler la fonction de construction
 add_tinyusb_libraries(
-    SOC "YOUR_SOC"
     FAMILY "your_family"
-    CORE "CORTEX_MX"
     CPU_SPEC "-mcpu=cortex-mx"
     FLAGS_FP "-mfloat-abi=hard -mfpu=fpvX-sp-d16"
     DEFS_UKOS_EXTRA ""  # ou "-DEXTRA_FLAG" si nécessaire

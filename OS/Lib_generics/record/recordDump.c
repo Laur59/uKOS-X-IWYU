@@ -147,6 +147,17 @@ void    record_printLog(void) {
                         terminate = true;
                     }
                 }
+
+// Give the marks back.
+//
+// This walks the live buffer rather than a copy, because it runs on the
+// coredump path where the allocator cannot be relied on. oMark is therefore
+// shared state, and leaving it set makes both this function and dumplog print
+// nothing on a second look at the same records.
+
+                for (i = 0U; i < KRECORD_SZ_LOG_BUF; i++) {
+                    vRecord_logBuffer[core][i].oMark = false;
+                }
             }
             cmns_send(KDEF0, "\n");
         }

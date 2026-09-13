@@ -23,9 +23,13 @@
 #
 # Usage:
 #   cd Third_Parties/FatFs
-#   cmake -S . -B build
+#   cmake -S . -B build                 # Clang/LLVM (default)
+#   cmake -S . -B build -DUSE_LLVM=OFF  # GNU gcc
 #   cmake --build build
 #   cmake --install build
+#
+#   The per-core build trees under build/ cache their compiler: run
+#   ./very_clean.sh before switching toolchains.
 #
 # Build outputs:
 #   - Library/*/flash/libFatFs.a
@@ -45,6 +49,9 @@ project(FatFs_Package
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}" CACHE PATH "Install prefix" FORCE)
 endif()
+
+# Toolchain used for every per-core archive (forwarded to the ExternalProjects)
+option(USE_LLVM "Build the archives with Clang/LLVM (OFF: GNU gcc)" ON)
 
 # Include FetchContent module for downloading upstream FatFs
 include(FetchContent)
@@ -172,7 +179,7 @@ foreach(CORE ${SUPPORTED_CORES})
             # Configure step - pass build type explicitly for optimization
             CMAKE_ARGS        -DCMAKE_BUILD_TYPE=${SUBPROJECT_BUILD_TYPE}
                               -G ${CMAKE_GENERATOR}
-                              -DUSE_LLVM=OFF
+                              -DUSE_LLVM=${USE_LLVM}
             CMAKE_CACHE_ARGS  ""
 
             # Build step
@@ -244,6 +251,11 @@ message("Configuration complete.")
 message("")
 message("FatFs version:   ${FATFS_VERSION}")
 message("Git commit:      ${FATFS_HASH}")
+if(USE_LLVM)
+    message("Toolchain:       Clang/LLVM")
+else()
+    message("Toolchain:       GNU gcc")
+endif()
 message("Source location: ${CMAKE_CURRENT_SOURCE_DIR}/FatFs-current")
 message("")
 message("To build and deploy all FatFs libraries, run:")

@@ -273,7 +273,11 @@ endif()
 # Link options
 set(TARGET_COMMON_LINK_OPTIONS
     $<$<BOOL:${CANARY}>:-Wl,--wrap=__stack_chk_fail>
-    $<$<C_COMPILER_ID:Clang>:-Wl,--gc-sections>
+    # Both toolchains: the compile side always passes -ffunction-sections
+    # -fdata-sections, and GCC+picolibc already collected (it inherited
+    # --gc-sections from picolibc.specs). Without it a GCC+newlib link keeps
+    # every function of each archive member it pulls in.
+    -Wl,--gc-sections
     -Wall
     -L${PATH_UKOS}/Ports/EquatesModels/Cores/${CORE}/Runtime
     -T${LINKS_LD}

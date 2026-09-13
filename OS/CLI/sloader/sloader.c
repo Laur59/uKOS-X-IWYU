@@ -158,9 +158,26 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     while (!terminate) {
 
 // Waiting for a header S1, S2, S3 or S7, S8, S9
+//
+// local_getByte() sets *byte to 0 before returning a framing, noise or parity
+// error, so its status has to be tested here as it is everywhere else. Without
+// that test a serial error while waiting for a record start spins forever - 0
+// never equals 'S' - and the console can only be recovered with a reset. The
+// type byte that follows needs the same care: a 0 there falls through to the
+// default arm and sends the scan straight back to waiting for a mark.
 
-        do { local_getByte(&byte); } while (byte != 'S');
-        local_getByte(&byte);
+        do {
+            error = local_getByte(&byte);
+        } while ((error == KERR_S_LOADER_NOT) && (byte != 'S'));
+
+        if (error == KERR_S_LOADER_NOT) {
+            error = local_getByte(&byte);
+        }
+
+        if (error != KERR_S_LOADER_NOT) {
+            terminate = true;
+            continue;
+        }
 
         switch (byte) {
             case '1':

@@ -22,9 +22,13 @@
 #
 # Usage:
 #   cd Third_Parties/TinyUSB
-#   cmake -S . -B build -GNinja
+#   cmake -S . -B build -GNinja                 # Clang/LLVM (default)
+#   cmake -S . -B build -GNinja -DUSE_LLVM=OFF  # GNU gcc
 #   cmake --build build
 #   cmake --install build
+#
+#   Each Construction/Family/<FAMILY>/<SOC>/build_cmake caches its compiler:
+#   run ./very_clean.sh before switching toolchains.
 #
 # Build outputs:
 #   - Family/*/SOC/profile/libTinyUSB_FS.a
@@ -52,6 +56,9 @@ endif()
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}" CACHE PATH "Install prefix" FORCE)
 endif()
+
+# Toolchain used for every per-SOC archive (forwarded to the ExternalProjects)
+option(USE_LLVM "Build the archives with Clang/LLVM (OFF: GNU gcc)" ON)
 
 # Include FetchContent module for downloading upstream TinyUSB
 include(FetchContent)
@@ -347,6 +354,7 @@ foreach(SOC_CONFIG ${SUPPORTED_SOCS})
             # Pass build type explicitly to ensure optimization
             CMAKE_ARGS        -DCMAKE_BUILD_TYPE=${SUBPROJECT_BUILD_TYPE}
                               -G ${CMAKE_GENERATOR}
+                              -DUSE_LLVM=${USE_LLVM}
             CMAKE_CACHE_ARGS  ""
 
             # Build step
@@ -435,6 +443,11 @@ message("Configuration complete.")
 message("")
 message("TinyUSB version:   ${TINYUSB_VERSION}")
 message("Git commit:        ${TINYUSB_HASH}")
+if(USE_LLVM)
+    message("Toolchain:         Clang/LLVM")
+else()
+    message("Toolchain:         GNU gcc")
+endif()
 message("Source location:   ${CMAKE_CURRENT_SOURCE_DIR}/TinyUSB-current")
 message("")
 message("To build all TinyUSB libraries, run:")

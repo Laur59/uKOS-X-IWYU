@@ -8,6 +8,8 @@ cmake_minimum_required(VERSION 3.15)
 
 # Include common TinyUSB setup
 include(${CMAKE_CURRENT_LIST_DIR}/../../cmake/common-setup.cmake)
+set(CMAKE_C_COMPILER_TARGET thumbv8m.main-unknown-none-eabihf)     # Clang only; ignored by GCC
+set(CMAKE_ASM_COMPILER_TARGET thumbv8m.main-unknown-none-eabihf)   # irq_handler_chain.S
 
 project(TinyUSB_RP2350 C ASM)
 

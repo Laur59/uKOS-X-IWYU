@@ -230,7 +230,6 @@ target_sources(tool_u PRIVATE
     ${PATH_OSYS}/CLI/rnd/rnd.c
     ${PATH_OSYS}/CLI/run/run.c
     ${PATH_OSYS}/CLI/semaphore/semaphore.c
-    ${PATH_OSYS}/CLI/sloader/sloader.c
     ${PATH_OSYS}/CLI/szkern/szkern.c
     ${PATH_OSYS}/CLI/test_malloc/test_malloc.c
     ${PATH_OSYS}/CLI/test_ram/test_ram.c

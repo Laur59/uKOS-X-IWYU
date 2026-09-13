@@ -251,7 +251,7 @@ static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char
  */
 static  uint32_t    local_usedPercent(uint32_t used, uintptr_t size) {
 
-    if (size == 0U) { return (0U); }
+    if (size == 0U) { return 0U; }
     return ((uint32_t)((((uint64_t)used * 10000U) + ((uint64_t)size / 2U)) / (uint64_t)size));
 }
 

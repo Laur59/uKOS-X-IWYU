@@ -1,8 +1,9 @@
 /*
  * SPDX-License-Identifier: MIT
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2026 Laurent von Allmen
  *
- * Goal:     Give some uKOS-X info.
+ * Display the uKOS-X target implementation and its history.
  */
 
 #include    <stdint.h>
@@ -42,7 +43,7 @@ MODULE(
     nullptr,                                    // Address of the initialisation code (early pre-init)
     prgm,                                       // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                                    // Address of the clean code (clean the module)
-    " 1.0",                                     // Revision string (major . minor)
+    " 1.1",                                     // Revision string (major . minor)
     ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)),         // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                           // Execution cores
 );
@@ -155,5 +156,4 @@ static  void    local_displayHistory(void) {
     (void)dprintf(KSYST, "   Antonio Jose Restrepo Zea - New ideas, quality, testing, rigour\n\n");
 
     (void)dprintf(KSYST, "VCS#: %s\n\n", aStrShowRev);
-    (void)dprintf(KSYST, "%s", aStruKOS);
 }

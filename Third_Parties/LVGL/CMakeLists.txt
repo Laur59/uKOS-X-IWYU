@@ -22,9 +22,13 @@
 #
 # Usage:
 #   cd Third_Parties/LVGL
-#   cmake -S . -B build
+#   cmake -S . -B build                 # Clang/LLVM (default)
+#   cmake -S . -B build -DUSE_LLVM=OFF  # GNU gcc
 #   cmake --build build
 #   cmake --install build
+#
+#   Each Construction/<DISPLAY>/<CORE>/build caches its compiler: run
+#   ./very_clean.sh before switching toolchains.
 #
 # Build outputs:
 #   - Library/*/*/libLVGL.a
@@ -44,6 +48,9 @@ project(LVGL_Package
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}" CACHE PATH "Install prefix" FORCE)
 endif()
+
+# Toolchain used for every per-core archive (forwarded to the ExternalProjects)
+option(USE_LLVM "Build the archives with Clang/LLVM (OFF: GNU gcc)" ON)
 
 # Include ExternalProject module for downloading and building
 include(ExternalProject)
@@ -145,7 +152,7 @@ foreach(CORE_INDEX RANGE 0 ${LAST_INDEX})
             # Configure step - pass build type explicitly for optimization
             CMAKE_ARGS        -DCMAKE_BUILD_TYPE=${SUBPROJECT_BUILD_TYPE}
                               -G ${CMAKE_GENERATOR}
-                              -DUSE_LLVM=OFF
+                              -DUSE_LLVM=${USE_LLVM}
             CMAKE_CACHE_ARGS  ""
 
             # Build step
@@ -231,6 +238,11 @@ message("Configuration complete.")
 message("")
 message("LVGL version:    ${LVGL_VERSION}")
 message("Git commit:      ${LVGL_HASH}")
+if(USE_LLVM)
+    message("Toolchain:       Clang/LLVM")
+else()
+    message("Toolchain:       GNU gcc")
+endif()
 message("Source location: ${CMAKE_CURRENT_SOURCE_DIR}/LVGL-current")
 message("")
 message("To build and deploy all LVGL libraries, run:")

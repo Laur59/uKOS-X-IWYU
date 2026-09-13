@@ -8,6 +8,8 @@ cmake_minimum_required(VERSION 3.15)
 
 # Include common TinyUSB setup (selects the RISC-V toolchain)
 include(${CMAKE_CURRENT_LIST_DIR}/../../cmake/common-setup-riscv.cmake)
+set(CMAKE_C_COMPILER_TARGET riscv32-unknown-elf)     # Clang only; ignored by GCC
+set(CMAKE_ASM_COMPILER_TARGET riscv32-unknown-elf)   # irq_handler_chain.S
 
 project(TinyUSB_RP2350_RISCV C ASM)
 

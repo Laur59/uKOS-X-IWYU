@@ -149,7 +149,7 @@ static void aProcess_1([[maybe_unused]] const void *argument) {
 
 // Try to reserve the MPY memory segment
 
-    size   = 90000U;
+    size   = 60000U;
     memory = (uint8_t *)memo_malloc(KMEMO_ALIGN_8, (size * sizeof(uint8_t)), "fibonacciMPY");
     if (memory == nullptr) {
         LOG(KFATAL_USER, "Out of memory");

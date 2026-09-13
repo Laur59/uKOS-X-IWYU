@@ -40,7 +40,7 @@ static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 MODULE(
     Mutex,                                      // Module name (the first letter has to be upper case)
     KID_FAM_CLI,                                // Family (defined in the module.h)
-    KNUM_SEMAPHORE,                             // Module identifier (defined in the module.h)
+    KNUM_MUTEX,                                 // Module identifier (defined in the module.h)
     nullptr,                                    // Address of the initialisation code (early pre-init)
     prgm,                                       // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                                    // Address of the clean code (clean the module)

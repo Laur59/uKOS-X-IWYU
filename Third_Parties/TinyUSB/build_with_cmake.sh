@@ -4,9 +4,16 @@
 #
 # Purpose:
 #   Build the TinyUSB package using CMake
+#
+# Usage:
+#   ./build_with_cmake.sh [-G]
+#
+#   -G  Build with GNU gcc instead of Clang/LLVM (the default)
 
 emulate -L zsh
 setopt ERR_EXIT NO_UNSET PIPE_FAIL
+
+zparseopts -D -F -- G=opt_gcc || exit 1
 
 # Determine script directory (works if executed via ./script.sh or zsh script.sh)
 
@@ -83,13 +90,20 @@ parse_core_yaml() {
 
 printf '\n%bBuilding all TinyUSB libraries with CMake ...%b\n' "${BOLD}" "${NC}"
 
-# Check if PATH_GCC_ARM is set
-if [ -z "${PATH_GCC_ARM:-}" ]; then
-    echo -e "${RED}Error: PATH_GCC_ARM environment variable is not set${NC}"
-    echo -e "Please set it to your ARM GCC toolchain path, e.g.:"
-    echo -e "  export PATH_GCC_ARM=/path/to/gcc-arm-none-eabi"
-    exit 1
+# Select the toolchain and check that its paths are set (ARM, and RISC-V for pico2riscv)
+if (( ${#opt_gcc} )); then
+    use_llvm=OFF
+    toolchain_vars=(PATH_GCC_ARM PATH_GCC_RVXX)
+else
+    use_llvm=ON
+    toolchain_vars=(PATH_LLVM_ARM PATH_LLVM_RVXX)
 fi
+for var in ${toolchain_vars}; do
+    if [[ -z "${(P)var:-}" ]]; then
+        printf '%bError: %s environment variable is not set%b\n' "${RED}" "${var}" "${NC}" >&2
+        exit 1
+    fi
+done
 
 # Track the current SOC to avoid running get-deps multiple times for the same SOC
 prev_soc=""
@@ -126,7 +140,7 @@ while IFS=$'\t' read -r family dependency soc profile; do
     echo "Start of building: $(date)" > ../libTinyUSB_temp.log
 
     # Configure with CMake
-    if cmake .. -G Ninja -DCMAKE_INSTALL_PREFIX="${PATH_PRG}"; then
+    if cmake .. -G Ninja -DCMAKE_INSTALL_PREFIX="${PATH_PRG}" -DUSE_LLVM=${use_llvm}; then
         # Build all targets
         if cmake --build . -j ; then
             # Install the built libraries

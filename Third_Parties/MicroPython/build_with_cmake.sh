@@ -12,18 +12,18 @@ setopt ERR_EXIT NO_UNSET PIPE_FAIL
 
 readonly PATH_PRG="${0:a:h}"
 
-use_clang=0
-while getopts ":Lh" option; do
+use_llvm=ON
+while getopts ":Gh" option; do
     case ${option} in
         h)
-            echo "USAGE: ./build_with_cmake.sh [-L]"
+            echo "USAGE: ./build_with_cmake.sh [-G] [micropython-ref]"
             echo
             echo "OPTIONS:"
-            echo "    -L: compiler is LLVM/clang"
+            echo "    -G: build with GNU gcc instead of Clang/LLVM (the default)"
             exit 0
             ;;
-        L)
-            use_clang=1
+        G)
+            use_llvm=OFF
             ;;
         ?)
             echo "Invalid option: -${OPTARG}"
@@ -64,6 +64,12 @@ fi
 
 cd "${MICROPY_DIR}"
 
+# Drop any previously applied uKOS-X patch. git refuses a checkout that would
+# overwrite locally modified tracked files, so without this the second run of
+# this script fails. The patches are re-applied right after the checkout.
+
+git checkout -- . 2>/dev/null || true
+
 # Check if the ref exists as a branch
 
 if git ls-remote --heads origin "${MICROPY_REF}" | grep -q .; then
@@ -78,6 +84,10 @@ else
 fi
 
 echo "MicroPython ready at $(git rev-parse HEAD)"
+
+# Apply the uKOS-X patches (idempotent; the CMake flow calls the same script)
+
+"${PATH_PRG}/Patches/apply-patches.sh" "${MICROPY_DIR}"
 
 # Build per-core function
 
@@ -94,12 +104,7 @@ build_core() {
     echo "Start of building ${CORE}: $(date)" > libMicroPython_temp.log
 
     # Configure, build, and install with CMake
-    if [ $use_clang -eq 1 ]
-    then
-        cmake "${CORE_DIR}" -GNinja -DUSE_LLVM=ON
-    else
-        cmake "${CORE_DIR}" -GNinja
-    fi
+    cmake "${CORE_DIR}" -GNinja -DUSE_LLVM=${use_llvm}
     cmake --build . --parallel
     cmake --install . --prefix "${PATH_PRG}"   # installs libMicroPython.a in Library/${CORE}/
 

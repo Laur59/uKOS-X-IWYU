@@ -83,6 +83,9 @@ set(TARGET_TRIPLE_MIDDLE unknown-none)
 
 function(configure_arm_core)
     add_link_options($<$<C_COMPILER_ID:GNU>:-Wl,--no-warn-rwx-segment>)
+    # GCC emits no .note.GNU-stack, Clang does: once a Clang-built archive is linked, GNU ld
+    # warns that the GCC objects imply an executable stack. Declare the stack non-executable.
+    add_link_options($<$<C_COMPILER_ID:GNU>:-Wl,-z,noexecstack>)
     target_compile_options(core_compiler_flags INTERFACE -mthumb -Wformat-security)
     target_compile_definitions(core_compiler_flags INTERFACE _MACHTIME_H_ _CLOCKS_PER_SEC_=1000000)
 
@@ -163,6 +166,7 @@ endfunction()
 
 function(configure_riscv_core)
     add_link_options($<$<C_COMPILER_ID:GNU>:-Wl,--no-warn-rwx-segment>)
+    add_link_options($<$<C_COMPILER_ID:GNU>:-Wl,-z,noexecstack>)
     # Same clock-tick contract as the ARM cores: _CLOCKS_PER_SEC_ is the 1-us
     # resolution of the kernel counter, and _MACHTIME_H_ keeps newlib's
     # machine/time.h from defining it (it agrees on RISC-V, but the value must

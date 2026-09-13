@@ -78,8 +78,16 @@ target_compile_definitions(${TARGET_LIB} PRIVATE
     ${FLAGS_UKOS}
 )
 
+# -fshort-enums: the consumers compile with it (Ports/cmake/system.cmake,
+# Applications/cmake/application.cmake), and LVGL enums cross the boundary in
+# structs and arguments. arm-none-eabi-gcc packs enums implicitly; Clang and
+# RISC-V GCC do not.
+# The single-precision-constant flags keep literals mixed with floats in float
+# arithmetic on single-precision FPUs; Clang's -cl- spelling does that too, but
+# unlike GCC it does not round literals that stay in double arithmetic.
 target_compile_options(${TARGET_LIB} PRIVATE
     ${OPTS_UKOS}
+    -fshort-enums
     -Wall
     -Wno-pedantic
     $<$<C_COMPILER_ID:GNU>:-Wlogical-op>

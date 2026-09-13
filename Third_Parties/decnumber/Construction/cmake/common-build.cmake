@@ -76,8 +76,12 @@ target_compile_definitions(${TARGET_LIB} PRIVATE
     ${FLAGS_UKOS}
 )
 
+# -fshort-enums: the consumers compile with it (Ports/cmake/system.cmake,
+# Applications/cmake/application.cmake), and decContext carries an enum.
+# arm-none-eabi-gcc packs enums implicitly; Clang and RISC-V GCC do not.
 target_compile_options(${TARGET_LIB} PRIVATE
     ${OPTS_UKOS}
+    -fshort-enums
     -Wall
     -Wextra
     -Wno-pedantic

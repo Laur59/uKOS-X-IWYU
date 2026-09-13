@@ -106,8 +106,13 @@ foreach(VARIANT_ENTRY ${FATFS_VARIANTS})
         ${VARIANT_DEFS}
     )
 
+    # -fshort-enums: the consumers compile with it (Ports/cmake/system.cmake,
+    # Applications/cmake/application.cmake), and every f_*() returns an FRESULT
+    # enum. arm-none-eabi-gcc packs enums implicitly; Clang and RISC-V GCC do not.
+    # No -fsingle-precision-constant: FatFs has no floating-point literal.
     target_compile_options(${TARGET_LIB} PRIVATE
         ${OPTS_UKOS}
+        -fshort-enums
         -Wall
         -Wno-pedantic
         $<$<C_COMPILER_ID:GNU>:-Wlogical-op>
@@ -119,8 +124,7 @@ foreach(VARIANT_ENTRY ${FATFS_VARIANTS})
         -Wno-error=strict-prototypes
         -Wno-missing-braces
         -Wno-misleading-indentation
-        $<$<C_COMPILER_ID:GNU>:-fsingle-precision-constant>
-        $<$<C_COMPILER_ID:Clang>:-cl-single-precision-constant>
+        -Wno-empty-body
     )
 
     if(CORE_NAME IN_LIST VALID_CORE_NAMES)

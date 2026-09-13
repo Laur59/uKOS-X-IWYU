@@ -128,6 +128,22 @@
                                 )
 #endif
 
+// Mirrors the RV32IMAC definitions; this core had none. __riscv_zifencei is
+// defined by the compiler when the zifencei extension is in -march, which the
+// K210 asks for through CPU_FEATURES.
+
+#ifndef INST_SYNC_BARRIER
+#ifdef  __riscv_zifencei
+#define INST_SYNC_BARRIER       __asm volatile ("fence.i" ::: "memory")
+#else
+#define INST_SYNC_BARRIER       __asm volatile ("fence" ::: "memory")  // fallback, weaker
+#endif
+#endif
+
+#ifndef DATA_SYNC_BARRIER
+#define DATA_SYNC_BARRIER       __asm volatile ("fence" ::: "memory")
+#endif
+
 #ifndef JUMP_FNCT
 #define JUMP_FNCT(function)                                                                                                     \
                                 __asm volatile ("                                                                            \n \

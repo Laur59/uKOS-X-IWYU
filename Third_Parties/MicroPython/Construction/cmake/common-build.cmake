@@ -89,8 +89,13 @@ target_sources(${MICROPY_TARGET} PRIVATE
 )
 
 # Architecture-specific GC helper (assembly) — set MICROPY_GC_HELPER in the per-core CMakeLists.txt.
+# gc_collect() needs it to spill the callee-saved registers before tracing the stack.
 if(DEFINED MICROPY_GC_HELPER)
     target_sources(${MICROPY_TARGET} PRIVATE ${MICROPY_GC_HELPER})
+    # The definitions and the core_flags options reach the assembler too, where
+    # Clang reports each of them as unused; GCC ignores them silently.
+    set_source_files_properties(${MICROPY_GC_HELPER} PROPERTIES
+        COMPILE_OPTIONS "$<$<C_COMPILER_ID:Clang>:-Wno-unused-command-line-argument>")
 endif()
 
 # Super-optimisation flag for performance-critical files (following py.mk line 22)
@@ -125,13 +130,25 @@ target_compile_definitions(${MICROPY_TARGET} PUBLIC
     _POSIX_C_SOURCE=200809L
 )
 
+# C only: Clang reports every one of these as unused when it assembles the
+# architecture GC helper (.s), which GCC just ignores silently.
 target_compile_options(${MICROPY_TARGET} PUBLIC
-    -std=c23
-    -nostdlib
-    -Wall
-    -Wno-pedantic
-    $<$<C_COMPILER_ID:GNU>:-Wno-dangling-pointer>
-    -fshort-enums
+    $<$<COMPILE_LANGUAGE:C>:-std=c23>
+    $<$<COMPILE_LANGUAGE:C>:-nostdlib>
+    $<$<COMPILE_LANGUAGE:C>:-Wall>
+    $<$<COMPILE_LANGUAGE:C>:-Wno-pedantic>
+    $<$<AND:$<COMPILE_LANGUAGE:C>,$<C_COMPILER_ID:GNU>>:-Wno-dangling-pointer>
+    $<$<COMPILE_LANGUAGE:C>:-fshort-enums>
+
+    # lib/libm is fdlibm: powf(), logf() and friends split a value into an exact
+    # high and low half (lg2_h/lg2_l, cp_h/cp_l, ivln2_h/ivln2_l) and rely on the
+    # intermediate rounding of every multiply-add. Contracting a*b+c into a single
+    # fused multiply-add skips that rounding and destroys the identities, so the
+    # results come back badly wrong -- powf(2,10) returned 1 and logf(100) a NaN.
+    # Clang defaults to -ffp-contract=on and fuses; GCC here emits none. Only cores
+    # with a hardware FMA are affected, which is why RV32IMAC (no F extension) was
+    # correct while RV64IMAFDC was not. Demand the arithmetic as written.
+    $<$<COMPILE_LANGUAGE:C>:-ffp-contract=off>
 )
 
 # -mpoke-function-name is an ARM-specific GCC extension; skip it on RISC-V.

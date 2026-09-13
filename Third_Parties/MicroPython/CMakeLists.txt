@@ -19,9 +19,13 @@
 #
 # Usage:
 #   cd Third_Parties/MicroPython
-#   cmake -S . -B build -GNinja
+#   cmake -S . -B build -GNinja                 # Clang/LLVM (default)
+#   cmake -S . -B build -GNinja -DUSE_LLVM=OFF  # GNU gcc
 #   cmake --build build
 #   cmake --install build
+#
+#   Each Construction/<CORE>/build caches its compiler: run ./very_clean.sh
+#   before switching toolchains.
 #
 # Build outputs:
 #   - Library/*/libMicroPython.a
@@ -39,6 +43,9 @@ project(MicroPython_Package
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}" CACHE PATH "Install prefix" FORCE)
 endif()
+
+# Toolchain used for every per-core archive (forwarded to the ExternalProjects)
+option(USE_LLVM "Build the archives with Clang/LLVM (OFF: GNU gcc)" ON)
 
 # Include FetchContent module for downloading upstream MicroPython
 include(FetchContent)
@@ -77,6 +84,29 @@ set(FETCHCONTENT_UPDATES_DISCONNECTED ON)
 FetchContent_MakeAvailable(MicroPython_Upstream)
 
 message(STATUS "MicroPython source fetched to: ${CMAKE_CURRENT_SOURCE_DIR}/MicroPython-current")
+
+# uKOS-X patches on top of the pinned upstream tag
+#
+# Applied here rather than through FetchContent's PATCH_COMMAND: with
+# FETCHCONTENT_UPDATES_DISCONNECTED the populate step is skipped on every
+# configure after the first, and the patch step with it. This runs always, and
+# Patches/apply-patches.sh is idempotent. build_with_cmake.sh calls the same
+# script after its own checkout.
+
+execute_process(
+    COMMAND         ${CMAKE_CURRENT_SOURCE_DIR}/Patches/apply-patches.sh
+                    ${CMAKE_CURRENT_SOURCE_DIR}/MicroPython-current
+    RESULT_VARIABLE MICROPY_PATCH_RESULT
+    OUTPUT_VARIABLE MICROPY_PATCH_OUTPUT
+    ERROR_VARIABLE  MICROPY_PATCH_ERROR
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    ERROR_STRIP_TRAILING_WHITESPACE
+)
+if(NOT MICROPY_PATCH_RESULT EQUAL 0)
+    message(FATAL_ERROR "Failed to patch MicroPython:\n"
+                        "${MICROPY_PATCH_OUTPUT}\n${MICROPY_PATCH_ERROR}")
+endif()
+message(STATUS "${MICROPY_PATCH_OUTPUT}")
 
 # Create a custom target to track MicroPython fetch completion
 add_custom_target(MicroPython_Fetch_Complete
@@ -139,6 +169,7 @@ foreach(CORE ${SUPPORTED_CORES})
             # Pass build type explicitly to ensure optimisation
             CMAKE_ARGS        -DCMAKE_BUILD_TYPE=${SUBPROJECT_BUILD_TYPE}
                               -G ${CMAKE_GENERATOR}
+                              -DUSE_LLVM=${USE_LLVM}
             CMAKE_CACHE_ARGS  ""
 
             # Build step
@@ -211,6 +242,11 @@ message("Configuration complete.")
 message("")
 message("MicroPython version:  ${MICROPYTHON_VERSION}")
 message("Git tag:              ${MICROPYTHON_TAG}")
+if(USE_LLVM)
+    message("Toolchain:            Clang/LLVM")
+else()
+    message("Toolchain:            GNU gcc")
+endif()
 message("Source location:      ${CMAKE_CURRENT_SOURCE_DIR}/MicroPython-current")
 message("")
 message("To build all MicroPython libraries, run:")

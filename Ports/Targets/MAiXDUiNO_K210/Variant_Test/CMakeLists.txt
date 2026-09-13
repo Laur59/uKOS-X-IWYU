@@ -195,10 +195,10 @@ target_sources(tool_u PRIVATE
     ${PATH_OSYS}/CLI/mutex/mutex.c
     ${PATH_OSYS}/CLI/object/object.c
     ${PATH_OSYS}/CLI/process/process.c
+    ${PATH_OSYS}/CLI/restart/restart.c
     ${PATH_OSYS}/CLI/rnd/rnd.c
     ${PATH_OSYS}/CLI/run/run.c
     ${PATH_OSYS}/CLI/semaphore/semaphore.c
-    ${PATH_OSYS}/CLI/sloader/sloader.c
     ${PATH_OSYS}/CLI/test_malloc/test_malloc.c
     ${PATH_OSYS}/CLI/test_mcore/test_mcore.c
     ${PATH_OSYS}/CLI/uKOS/uKOS.c
